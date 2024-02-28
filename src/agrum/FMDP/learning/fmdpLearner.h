@@ -55,9 +55,9 @@ namespace gum {
              LEARNERNAME LearnerSelection >
   class FMDPLearner: public ILearningStrategy {
     using VariableLearnerType =
-       typename LearnerSelect< LearnerSelection,
-                               IMDDI< VariableAttributeSelection, false >,
-                               ITI< VariableAttributeSelection, false > >::type;
+        typename LearnerSelect< LearnerSelection,
+                                IMDDI< VariableAttributeSelection, false >,
+                                ITI< VariableAttributeSelection, false > >::type;
 
     using RewardLearnerType = typename LearnerSelect< LearnerSelection,
                                                       IMDDI< RewardAttributeSelection, true >,

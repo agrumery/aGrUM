@@ -32,7 +32,7 @@ namespace gum {
   // Default Constructor
   template < typename GUM_SCALAR >
   EvidenceMRFInference< GUM_SCALAR >::EvidenceMRFInference(
-     const IMarkovRandomField< GUM_SCALAR >* mn) :
+      const IMarkovRandomField< GUM_SCALAR >* mn) :
       MRFInference< GUM_SCALAR >(mn) {
     // assign a MRF if this has not been done before (due to virtual inheritance)
     if (this->hasNoModel_()) { MRFInference< GUM_SCALAR >::_setMRFDuringConstruction_(mn); }

@@ -75,11 +75,11 @@ namespace gum {
    */
   struct HashFuncConst {
     static constexpr Size gold
-       = sizeof(Size) == 4 ? Size(2654435769UL) : Size(11400714819323198486UL);
+        = sizeof(Size) == 4 ? Size(2654435769UL) : Size(11400714819323198486UL);
     static constexpr Size pi
-       = sizeof(Size) == 4 ? Size(3373259426UL) : Size(14488038916154245684UL);
+        = sizeof(Size) == 4 ? Size(3373259426UL) : Size(14488038916154245684UL);
     static constexpr Size mask
-       = sizeof(Size) == 4 ? Size(4294967295UL) : Size(18446744073709551615UL);
+        = sizeof(Size) == 4 ? Size(4294967295UL) : Size(18446744073709551615UL);
     static constexpr Size offset = sizeof(Size) == 4 ? Size(32) : Size(64);
   };
 
@@ -381,17 +381,17 @@ namespace gum {
   struct HashFuncCastKey {
     /// The type used by this class.
     using type = typename std::conditional<
-       sizeof(Key) <= sizeof(Size) && std::is_integral< Key >::value,
-       HashFuncSmallKey< Key >,
-       typename std::conditional<
-          sizeof(Key) < sizeof(Size),
-          HashFuncSmallCastKey< Key >,
-          typename std::conditional< sizeof(Key) == sizeof(Size),
-                                     HashFuncMediumCastKey< Key >,
-                                     typename std::conditional< sizeof(Key) == 2 * sizeof(Size),
-                                                                HashFuncLargeCastKey< Key >,
-                                                                void >::type >::type >::type >::
-       type;
+        sizeof(Key) <= sizeof(Size) && std::is_integral< Key >::value,
+        HashFuncSmallKey< Key >,
+        typename std::conditional<
+            sizeof(Key) < sizeof(Size),
+            HashFuncSmallCastKey< Key >,
+            typename std::conditional< sizeof(Key) == sizeof(Size),
+                                       HashFuncMediumCastKey< Key >,
+                                       typename std::conditional< sizeof(Key) == 2 * sizeof(Size),
+                                                                  HashFuncLargeCastKey< Key >,
+                                                                  void >::type >::type >::type >::
+        type;
   };
 
   // ===========================================================================
@@ -416,7 +416,7 @@ namespace gum {
   template < typename KEY_TYPE, typename TYPE >
   struct HashFuncConditionalType< KEY_TYPE, TYPE > {
     using type = typename std::
-       conditional< std::is_same< KEY_TYPE, TYPE >::value, dummyHash< KEY_TYPE >, KEY_TYPE >::type;
+        conditional< std::is_same< KEY_TYPE, TYPE >::value, dummyHash< KEY_TYPE >, KEY_TYPE >::type;
   };
 
   /**
@@ -443,9 +443,9 @@ namespace gum {
   template < typename KEY_TYPE, typename FIRST_TYPE, typename... OTHER_TYPES >
   struct HashFuncConditionalType< KEY_TYPE, FIRST_TYPE, OTHER_TYPES... > {
     using type = typename std::conditional<
-       std::is_same< KEY_TYPE, FIRST_TYPE >::value,
-       dummyHash< KEY_TYPE >,
-       typename HashFuncConditionalType< KEY_TYPE, OTHER_TYPES... >::type >::type;
+        std::is_same< KEY_TYPE, FIRST_TYPE >::value,
+        dummyHash< KEY_TYPE >,
+        typename HashFuncConditionalType< KEY_TYPE, OTHER_TYPES... >::type >::type;
   };
 
   // ===========================================================================
@@ -543,8 +543,8 @@ namespace gum {
    */
   template <>
   class HashFunc<
-     typename HashFuncConditionalType< std::size_t, unsigned long, unsigned int, long, int >::
-        type >: public HashFuncCastKey< std::size_t >::type {};
+      typename HashFuncConditionalType< std::size_t, unsigned long, unsigned int, long, int >::
+          type >: public HashFuncCastKey< std::size_t >::type {};
 
   /**
    * @headerfile hashFunc.h <agrum/tools/core/hashFunc.h>

@@ -64,7 +64,7 @@ namespace gum {
   // assigns a MRF to a newly constructed inference engine
   template < typename GUM_SCALAR >
   void MRFInference< GUM_SCALAR >::_setMRFDuringConstruction_(
-     const IMarkovRandomField< GUM_SCALAR >* mn) {
+      const IMarkovRandomField< GUM_SCALAR >* mn) {
     this->setModelDuringConstruction_(mn);
   }
 } /* namespace gum */

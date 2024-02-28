@@ -36,9 +36,9 @@ namespace gum_tests {
   class [[maybe_unused]] RecordCounterTestSuite: public CxxTest::TestSuite {
     private:
     gum::Potential< double >
-       _infer_(const gum::BayesNet< double >&                                  bn,
-               const std::vector< std::size_t >&                               targets,
-               const gum::learning::DBRow< gum::learning::DBTranslatedValue >& row) {
+        _infer_(const gum::BayesNet< double >&                                  bn,
+                const std::vector< std::size_t >&                               targets,
+                const gum::learning::DBRow< gum::learning::DBTranslatedValue >& row) {
       gum::LazyPropagation< double > ve(&bn);
 
       gum::NodeSet target_set;
@@ -185,9 +185,9 @@ namespace gum_tests {
       TS_ASSERT_EQUALS(counts[8], double(0));      // A=2, B=2
 
       std::vector< std::pair< std::size_t, std::size_t > > new_ranges{
-         std::pair< std::size_t, std::size_t >(500, 600),
-         std::pair< std::size_t, std::size_t >(1050, 1125),
-         std::pair< std::size_t, std::size_t >(100, 150)};
+          std::pair< std::size_t, std::size_t >(500, 600),
+          std::pair< std::size_t, std::size_t >(1050, 1125),
+          std::pair< std::size_t, std::size_t >(100, 150)};
       counter.setRanges(new_ranges);
 
       counts = counter.counts(ids7);
@@ -319,7 +319,7 @@ namespace gum_tests {
       nodeId2columns.insert(gum::NodeId(4), std::size_t(3));
       nodeId2columns.insert(gum::NodeId(5), std::size_t(0));
       std::vector< std::pair< std::size_t, std::size_t > > ranges{
-         std::pair< std::size_t, std::size_t >(std::size_t(0), database.nbRows())};
+          std::pair< std::size_t, std::size_t >(std::size_t(0), database.nbRows())};
       gum::learning::RecordCounter counter(parser, ranges, nodeId2columns);
 
       gum::learning::IdCondSet ids(5, std::vector< gum::NodeId >{0, 3}, true);
@@ -415,9 +415,9 @@ namespace gum_tests {
       TS_ASSERT_EQUALS(counts[8], double(0));      // A=2, B=2
 
       std::vector< std::pair< std::size_t, std::size_t > > new_ranges{
-         std::pair< std::size_t, std::size_t >(500, 600),
-         std::pair< std::size_t, std::size_t >(1050, 1125),
-         std::pair< std::size_t, std::size_t >(100, 150)};
+          std::pair< std::size_t, std::size_t >(500, 600),
+          std::pair< std::size_t, std::size_t >(1050, 1125),
+          std::pair< std::size_t, std::size_t >(100, 150)};
       counter.setRanges(new_ranges);
 
       counts = counter.counts(ids7);
@@ -553,7 +553,7 @@ namespace gum_tests {
       nodeId2columns.insert(gum::NodeId(3), std::size_t(1));
       nodeId2columns.insert(gum::NodeId(4), std::size_t(0));
       std::vector< std::pair< std::size_t, std::size_t > > ranges{
-         std::pair< std::size_t, std::size_t >(std::size_t(0), database.nbRows())};
+          std::pair< std::size_t, std::size_t >(std::size_t(0), database.nbRows())};
       gum::learning::RecordCounter counter(parser, ranges, nodeId2columns);
 
       gum::learning::IdCondSet ids(4, std::vector< gum::NodeId >{0, 3}, true);
@@ -712,9 +712,9 @@ namespace gum_tests {
       TS_ASSERT_EQUALS(counts[8], double(0));     // A=2, B=2
 
       std::vector< std::pair< std::size_t, std::size_t > > new_ranges{
-         std::pair< std::size_t, std::size_t >(500, 600),
-         std::pair< std::size_t, std::size_t >(1050, 1125),
-         std::pair< std::size_t, std::size_t >(100, 150)};
+          std::pair< std::size_t, std::size_t >(500, 600),
+          std::pair< std::size_t, std::size_t >(1050, 1125),
+          std::pair< std::size_t, std::size_t >(100, 150)};
       counter.setRanges(new_ranges);
 
       counts = counter.counts(ids7);
@@ -925,9 +925,9 @@ namespace gum_tests {
         TS_ASSERT_EQUALS(counts[8], double(0));     // A=2, B=2
 
         std::vector< std::pair< std::size_t, std::size_t > > new_ranges{
-           std::pair< std::size_t, std::size_t >(500, 600),
-           std::pair< std::size_t, std::size_t >(1050, 1125),
-           std::pair< std::size_t, std::size_t >(100, 150)};
+            std::pair< std::size_t, std::size_t >(500, 600),
+            std::pair< std::size_t, std::size_t >(1050, 1125),
+            std::pair< std::size_t, std::size_t >(100, 150)};
         counter.setRanges(new_ranges);
 
         counts = counter.counts(ids7);
@@ -1040,10 +1040,10 @@ namespace gum_tests {
       }
 
       const std::vector< gum::learning::DBTranslatedValueType > col_types{
-         gum::learning::DBTranslatedValueType::DISCRETE,
-         gum::learning::DBTranslatedValueType::DISCRETE,
-         gum::learning::DBTranslatedValueType::DISCRETE,
-         gum::learning::DBTranslatedValueType::DISCRETE};
+          gum::learning::DBTranslatedValueType::DISCRETE,
+          gum::learning::DBTranslatedValueType::DISCRETE,
+          gum::learning::DBTranslatedValueType::DISCRETE,
+          gum::learning::DBTranslatedValueType::DISCRETE};
 
       auto bn0 = gum::BayesNet< double >::fastPrototype("A;B;C;D");
       bn0.cpt("A").fillWith({0.3, 0.7});

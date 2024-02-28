@@ -285,8 +285,8 @@ namespace gum {
 
     // a structure storing the number of neighbours previously processed
     PriorityQueue< NodeId, unsigned int, std::greater< unsigned int > > numbered_neighbours(
-       std::greater< unsigned int >(),
-       _triangulated_graph_.size());
+        std::greater< unsigned int >(),
+        _triangulated_graph_.size());
 
     for (Size i = 0; i < _elim_order_.size(); ++i)
       numbered_neighbours.insert(_elim_order_[i], 0);
@@ -454,7 +454,7 @@ namespace gum {
     // compute for each node which clique of the max prime junction tree was
     // created by the elimination of the node
     const NodeProperty< NodeId >& node_2_junction_clique
-       = junction_tree_strategy_->createdCliques();
+        = junction_tree_strategy_->createdCliques();
 
     for (const auto& elt: node_2_junction_clique)
       _node_2_max_prime_clique_.insert(elt.first, T_mpd_cliques[elt.second]);

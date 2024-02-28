@@ -54,25 +54,25 @@ namespace gum {
 
     /// checks whether the constraints enable to add an arc
     INLINE bool
-       StructuralConstraintPossibleEdges::checkModificationAlone(const ArcAddition& change) const {
+        StructuralConstraintPossibleEdges::checkModificationAlone(const ArcAddition& change) const {
       return checkArcAdditionAlone(change.node1(), change.node2());
     }
 
     /// checks whether the constraints enable to remove an arc
     INLINE bool
-       StructuralConstraintPossibleEdges::checkModificationAlone(const ArcDeletion& change) const {
+        StructuralConstraintPossibleEdges::checkModificationAlone(const ArcDeletion& change) const {
       return checkArcDeletionAlone(change.node1(), change.node2());
     }
 
     /// checks whether the constraints enable to reverse an arc
     INLINE bool
-       StructuralConstraintPossibleEdges::checkModificationAlone(const ArcReversal& change) const {
+        StructuralConstraintPossibleEdges::checkModificationAlone(const ArcReversal& change) const {
       return checkArcReversalAlone(change.node1(), change.node2());
     }
 
     /// checks whether the constraints enable to perform a graph change
     INLINE bool
-       StructuralConstraintPossibleEdges::checkModificationAlone(const GraphChange& change) const {
+        StructuralConstraintPossibleEdges::checkModificationAlone(const GraphChange& change) const {
       switch (change.type()) {
         case GraphChangeType::ARC_ADDITION :
           return checkArcAdditionAlone(change.node1(), change.node2());
@@ -104,7 +104,7 @@ namespace gum {
 
     /// indicates whether a change will always violate the constraint
     INLINE bool
-       StructuralConstraintPossibleEdges::isAlwaysInvalidAlone(const GraphChange& change) const {
+        StructuralConstraintPossibleEdges::isAlwaysInvalidAlone(const GraphChange& change) const {
       switch (change.type()) {
         case GraphChangeType::ARC_ADDITION :
           return !checkArcAdditionAlone(change.node1(), change.node2());

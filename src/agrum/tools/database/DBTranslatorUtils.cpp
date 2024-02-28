@@ -87,7 +87,8 @@ namespace gum {
 
         GUM_ERROR(NotImplementedYet,
                   "The translator for Variable "
-                     << var.name() << " cannot yet be created yet by named constructor CreatePtr.");
+                      << var.name()
+                      << " cannot yet be created yet by named constructor CreatePtr.");
       }
 
     } /* namespace DBTranslators */

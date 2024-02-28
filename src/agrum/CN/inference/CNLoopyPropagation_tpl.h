@@ -34,7 +34,7 @@ namespace gum::credal {
       GUM_ERROR(NotFound,
                 "CNLoopyPropagation<GUM_SCALAR>::saveInference(std::"
                 "string & path) : could not open file : "
-                   + path_name)
+                    + path_name)
     }
 
 
@@ -47,7 +47,7 @@ namespace gum::credal {
         GUM_ERROR(NotFound,
                   "CNLoopyPropagation<GUM_SCALAR>::saveInference(std::"
                   "string & path) : could not open file : "
-                     + ext)
+                      + ext)
       }
 
       while (evi.good()) {
@@ -261,12 +261,12 @@ namespace gum::credal {
    */
   template < typename GUM_SCALAR >
   void CNLoopyPropagation< GUM_SCALAR >::compute_ext_(
-     std::vector< std::vector< GUM_SCALAR > >& combi_msg_p,
-     const NodeId&                             id,
-     GUM_SCALAR&                               msg_l_min,
-     GUM_SCALAR&                               msg_l_max,
-     std::vector< GUM_SCALAR >&                lx,
-     const Idx&                                pos) {
+      std::vector< std::vector< GUM_SCALAR > >& combi_msg_p,
+      const NodeId&                             id,
+      GUM_SCALAR&                               msg_l_min,
+      GUM_SCALAR&                               msg_l_max,
+      std::vector< GUM_SCALAR >&                lx,
+      const Idx&                                pos) {
     GUM_SCALAR num_min = 0.;
     GUM_SCALAR num_max = 0.;
     GUM_SCALAR den_min = 0.;
@@ -327,10 +327,10 @@ namespace gum::credal {
    */
   template < typename GUM_SCALAR >
   void CNLoopyPropagation< GUM_SCALAR >::compute_ext_(
-     std::vector< std::vector< GUM_SCALAR > >& combi_msg_p,
-     const NodeId&                             id,
-     GUM_SCALAR&                               msg_p_min,
-     GUM_SCALAR&                               msg_p_max) {
+      std::vector< std::vector< GUM_SCALAR > >& combi_msg_p,
+      const NodeId&                             id,
+      GUM_SCALAR&                               msg_p_min,
+      GUM_SCALAR&                               msg_p_max) {
     GUM_SCALAR min = 0.;
     GUM_SCALAR max = 0.;
 
@@ -376,10 +376,10 @@ namespace gum::credal {
    */
   template < typename GUM_SCALAR >
   void CNLoopyPropagation< GUM_SCALAR >::enum_combi_(
-     std::vector< std::vector< std::vector< GUM_SCALAR > > >& msgs_p,
-     const NodeId&                                            id,
-     GUM_SCALAR&                                              msg_p_min,
-     GUM_SCALAR&                                              msg_p_max) {
+      std::vector< std::vector< std::vector< GUM_SCALAR > > >& msgs_p,
+      const NodeId&                                            id,
+      GUM_SCALAR&                                              msg_p_min,
+      GUM_SCALAR&                                              msg_p_max) {
     auto taille = msgs_p.size();
 
     // source node
@@ -397,8 +397,8 @@ namespace gum::credal {
     // dispatch the messages among the threads and prepare the data
     // they will process
     Size nb_threads = ThreadExecutor::nbRunningThreadsExecutors() == 0
-                       ? this->getNumberOfThreads()
-                       : 1;   // no nested multithreading
+                        ? this->getNumberOfThreads()
+                        : 1;   // no nested multithreading
     nb_threads      = std::min(msgPerm * taille / this->threadMinimalNbOps_, nb_threads);
     if (nb_threads < 1) nb_threads = 1;
 
@@ -409,27 +409,27 @@ namespace gum::credal {
 
     // create the function to be executed by the threads
     auto threadedExec
-       = [this, &msg_pmin, &msg_pmax, msgs_p, taille, ranges, id](const std::size_t this_thread,
-                                                                  const std::size_t nb_threads) {
-           std::vector< std::vector< GUM_SCALAR > > combi_msg_p(taille);
+        = [this, &msg_pmin, &msg_pmax, msgs_p, taille, ranges, id](const std::size_t this_thread,
+                                                                   const std::size_t nb_threads) {
+            std::vector< std::vector< GUM_SCALAR > > combi_msg_p(taille);
 
-           const auto& [first, second] = ranges[this_thread];
-           for (Idx j = first; j < second; ++j) {
-             // get jth msg :
-             auto jvalue = j;
+            const auto& [first, second] = ranges[this_thread];
+            for (Idx j = first; j < second; ++j) {
+              // get jth msg :
+              auto jvalue = j;
 
-             for (Idx i = 0; i < taille; i++) {
-               if (msgs_p[i].size() == 2) {
-                 combi_msg_p[i] = (jvalue & 1) ? msgs_p[i][1] : msgs_p[i][0];
-                 jvalue /= 2;
-               } else {
-                 combi_msg_p[i] = msgs_p[i][0];
-               }
-             }
+              for (Idx i = 0; i < taille; i++) {
+                if (msgs_p[i].size() == 2) {
+                  combi_msg_p[i] = (jvalue & 1) ? msgs_p[i][1] : msgs_p[i][0];
+                  jvalue /= 2;
+                } else {
+                  combi_msg_p[i] = msgs_p[i][0];
+                }
+              }
 
-             compute_ext_(combi_msg_p, id, msg_pmin[this_thread], msg_pmax[this_thread]);
-           }
-         };
+              compute_ext_(combi_msg_p, id, msg_pmin[this_thread], msg_pmax[this_thread]);
+            }
+          };
 
     // launch the threads
     ThreadExecutor::execute(real_nb_threads, threadedExec);
@@ -446,12 +446,12 @@ namespace gum::credal {
    */
   template < typename GUM_SCALAR >
   void CNLoopyPropagation< GUM_SCALAR >::enum_combi_(
-     std::vector< std::vector< std::vector< GUM_SCALAR > > >& msgs_p,
-     const NodeId&                                            id,
-     GUM_SCALAR&                                              real_msg_l_min,
-     GUM_SCALAR&                                              real_msg_l_max,
-     std::vector< GUM_SCALAR >&                               lx,
-     const Idx&                                               pos) {
+      std::vector< std::vector< std::vector< GUM_SCALAR > > >& msgs_p,
+      const NodeId&                                            id,
+      GUM_SCALAR&                                              real_msg_l_min,
+      GUM_SCALAR&                                              real_msg_l_max,
+      std::vector< GUM_SCALAR >&                               lx,
+      const Idx&                                               pos) {
     GUM_SCALAR msg_l_min = real_msg_l_min;
     GUM_SCALAR msg_l_max = real_msg_l_max;
 
@@ -479,8 +479,8 @@ namespace gum::credal {
     // dispatch the messages among the threads and prepare the data
     // they will process
     Size nb_threads = ThreadExecutor::nbRunningThreadsExecutors() == 0
-                       ? this->getNumberOfThreads()
-                       : 1;   // no nested multithreading
+                        ? this->getNumberOfThreads()
+                        : 1;   // no nested multithreading
     nb_threads      = std::min(msgPerm * taille / this->threadMinimalNbOps_, nb_threads);
     if (nb_threads < 1) nb_threads = 1;
 
@@ -491,8 +491,8 @@ namespace gum::credal {
 
     // create the function to be executed by the threads
     auto threadedExec = [this, &msg_lmin, &msg_lmax, msgs_p, taille, ranges, id, &lx, pos](
-                           const std::size_t this_thread,
-                           const std::size_t nb_threads) {
+                            const std::size_t this_thread,
+                            const std::size_t nb_threads) {
       std::vector< std::vector< GUM_SCALAR > > combi_msg_p(taille);
 
       const auto& [first, second] = ranges[this_thread];
@@ -1501,7 +1501,7 @@ namespace gum::credal {
 
   template < typename GUM_SCALAR >
   typename CNLoopyPropagation< GUM_SCALAR >::InferenceType
-     CNLoopyPropagation< GUM_SCALAR >::inferenceType() {
+      CNLoopyPropagation< GUM_SCALAR >::inferenceType() {
     return _inferenceType_;
   }
 }   // namespace gum::credal

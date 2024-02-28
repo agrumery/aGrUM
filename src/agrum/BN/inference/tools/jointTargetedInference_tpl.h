@@ -184,7 +184,7 @@ namespace gum {
   // Compute the posterior of a nodeset.
   template < typename GUM_SCALAR >
   const Potential< GUM_SCALAR >&
-     JointTargetedInference< GUM_SCALAR >::jointPosterior(const NodeSet& nodes) {
+      JointTargetedInference< GUM_SCALAR >::jointPosterior(const NodeSet& nodes) {
     // try to get the smallest set of targets that contains "nodes"
     NodeSet set;
     bool    found_exact_target = false;
@@ -223,7 +223,7 @@ namespace gum {
   // Compute the posterior of a node
   template < typename GUM_SCALAR >
   const Potential< GUM_SCALAR >&
-     JointTargetedInference< GUM_SCALAR >::posterior(const std::string& nodeName) {
+      JointTargetedInference< GUM_SCALAR >::posterior(const std::string& nodeName) {
     return posterior(this->BN().idFromName(nodeName));
   }
 
@@ -232,7 +232,7 @@ namespace gum {
   // ##############################################################################
   template < typename GUM_SCALAR >
   [[deprecated("Please directly use class gum::InformationTheory (since 1.7.1)")]] GUM_SCALAR
-     JointTargetedInference< GUM_SCALAR >::I(const std::string& Xname, const std::string& Yname) {
+      JointTargetedInference< GUM_SCALAR >::I(const std::string& Xname, const std::string& Yname) {
     InformationTheory it(*this,
                          NodeSet{this->model().idFromName(Xname)},
                          NodeSet{this->model().idFromName(Yname)});
@@ -241,7 +241,7 @@ namespace gum {
 
   template < typename GUM_SCALAR >
   [[deprecated("Please directly use class gum::InformationTheory (since 1.7.1)")]] GUM_SCALAR
-     JointTargetedInference< GUM_SCALAR >::VI(const std::string& Xname, const std::string& Yname) {
+      JointTargetedInference< GUM_SCALAR >::VI(const std::string& Xname, const std::string& Yname) {
     InformationTheory it(*this,
                          NodeSet{this->model().idFromName(Xname)},
                          NodeSet{this->model().idFromName(Yname)});
@@ -257,7 +257,7 @@ namespace gum {
    */
   template < typename GUM_SCALAR >
   [[deprecated("Please directly use class gum::InformationTheory (since 1.7.1)")]] GUM_SCALAR
-     JointTargetedInference< GUM_SCALAR >::I(NodeId X, NodeId Y) {
+      JointTargetedInference< GUM_SCALAR >::I(NodeId X, NodeId Y) {
     InformationTheory< JointTargetedInference, GUM_SCALAR > it(*this, NodeSet{X}, NodeSet{Y});
     return it.mutualInformationXY();
   }
@@ -270,15 +270,15 @@ namespace gum {
    */
   template < typename GUM_SCALAR >
   [[deprecated("Please directly use class gum::InformationTheory (since 1.7.1)")]] INLINE GUM_SCALAR
-     JointTargetedInference< GUM_SCALAR >::VI(NodeId X, NodeId Y) {
+      JointTargetedInference< GUM_SCALAR >::VI(NodeId X, NodeId Y) {
     InformationTheory it(*this, NodeSet{X}, NodeSet{Y});
     return it.variationOfInformationXY();
   }
 
   template < typename GUM_SCALAR >
   Potential< GUM_SCALAR >
-     JointTargetedInference< GUM_SCALAR >::evidenceJointImpact(const NodeSet& targets,
-                                                               const NodeSet& evs) {
+      JointTargetedInference< GUM_SCALAR >::evidenceJointImpact(const NodeSet& targets,
+                                                                const NodeSet& evs) {
     if (!(evs * targets).empty()) {
       GUM_ERROR(InvalidArgument,
                 "Targets (" << targets << ") can not intersect evs (" << evs << ").");
@@ -319,8 +319,8 @@ namespace gum {
 
   template < typename GUM_SCALAR >
   Potential< GUM_SCALAR > JointTargetedInference< GUM_SCALAR >::evidenceJointImpact(
-     const std::vector< std::string >& targets,
-     const std::vector< std::string >& evs) {
+      const std::vector< std::string >& targets,
+      const std::vector< std::string >& evs) {
     const auto& bn = this->BN();
     return evidenceJointImpact(bn.nodeset(targets), bn.nodeset(evs));
   }
@@ -377,7 +377,7 @@ namespace gum {
 
   template < typename GUM_SCALAR >
   GUM_SCALAR JointTargetedInference< GUM_SCALAR >::jointMutualInformation(
-     const std::vector< std::string >& targets) {
+      const std::vector< std::string >& targets) {
     return jointMutualInformation(this->BN().ids(targets));
   }
 

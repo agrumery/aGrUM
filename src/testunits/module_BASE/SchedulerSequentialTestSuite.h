@@ -128,8 +128,8 @@ namespace gum_tests {
 
       auto&       op4 = const_cast< gum::ScheduleOperator& >(schedule.operation(gum::NodeId(4)));
       const auto& op4_res
-         = dynamic_cast< const gum::ScheduleMultiDim< gum::Potential< double > >& >(
-            *op4.results()[0]);
+          = dynamic_cast< const gum::ScheduleMultiDim< gum::Potential< double > >& >(
+              *op4.results()[0]);
       TS_ASSERT(result4.hasSameVariables(op4_res));
       TS_ASSERT(result4.hasSameContent(op4_res));
       TS_ASSERT(!result4.isAbstract());

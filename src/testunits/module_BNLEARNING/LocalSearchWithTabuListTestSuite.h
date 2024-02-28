@@ -76,7 +76,7 @@ namespace gum_tests {
                                                     gum::learning::StructuralConstraintIndegree,
                                                     gum::learning::StructuralConstraintSliceOrder,
                                                     gum::learning::StructuralConstraintTabuList >
-         struct_constraint;
+          struct_constraint;
 
       struct_constraint.setMaxIndegree(2);
       struct_constraint.setTabuListSize(100);
@@ -89,10 +89,10 @@ namespace gum_tests {
       gum::learning::ParamEstimatorML estimator(parser, prior, score.internalPrior());
 
       gum::learning::GraphChangesGenerator4DiGraph< decltype(struct_constraint) > op_set(
-         struct_constraint);
+          struct_constraint);
 
       gum::learning::GraphChangesSelector4DiGraph< decltype(struct_constraint), decltype(op_set) >
-         selector(score, struct_constraint, op_set);
+          selector(score, struct_constraint, op_set);
 
       gum::learning::LocalSearchWithTabuList search;
       search.setMaxNbDecreasingChanges(2);

@@ -32,7 +32,7 @@ namespace gum {
   /// inserts a new table as a source multidim
   template < typename TABLE >
   const IScheduleMultiDim*
-     Schedule::insertTable(const TABLE& table, const bool copy, const Idx id) {
+      Schedule::insertTable(const TABLE& table, const bool copy, const Idx id) {
     // if the schedule already contains the id, throw an error
     if (_multidim2id_.existsSecond(id)) {
       GUM_ERROR(DuplicateScheduleMultiDim,
@@ -56,15 +56,15 @@ namespace gum {
   /// emplace a new schedule binary combination operator
   template < typename TABLE1, typename TABLE2, typename TABLE_RES >
   const ScheduleOperator&
-     Schedule::emplaceBinaryCombination(const ScheduleMultiDim< TABLE1 >& table1,
-                                        const ScheduleMultiDim< TABLE2 >& table2,
-                                        TABLE_RES (*combine)(const TABLE1&, const TABLE2&),
-                                        const bool is_result_persistent) {
+      Schedule::emplaceBinaryCombination(const ScheduleMultiDim< TABLE1 >& table1,
+                                         const ScheduleMultiDim< TABLE2 >& table2,
+                                         TABLE_RES (*combine)(const TABLE1&, const TABLE2&),
+                                         const bool is_result_persistent) {
     // note that the insertOperation will check that table1 and table2
     // already belong to the schedule
     return insertOperation(
-       ScheduleBinaryCombination< TABLE1, TABLE2, TABLE_RES >(table1, table2, combine, false),
-       is_result_persistent);
+        ScheduleBinaryCombination< TABLE1, TABLE2, TABLE_RES >(table1, table2, combine, false),
+        is_result_persistent);
   }
 
   /// emplace a new schedule projection operator

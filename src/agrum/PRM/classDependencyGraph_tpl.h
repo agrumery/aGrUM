@@ -70,13 +70,13 @@ namespace gum {
     // Add arcs in  _graph_.
     template < typename GUM_SCALAR >
     void ClassDependencyGraph< GUM_SCALAR >::_addArcs_(
-       const PRMClassElementContainer< GUM_SCALAR >&              c,
-       NodeId                                                     node,
-       HashTable< const PRMClassElement< GUM_SCALAR >*, NodeId >& map) {
+        const PRMClassElementContainer< GUM_SCALAR >&              c,
+        NodeId                                                     node,
+        HashTable< const PRMClassElement< GUM_SCALAR >*, NodeId >& map) {
       switch (c.get(node).elt_type()) {
         case PRMClassElement< GUM_SCALAR >::prm_slotchain : {
           const PRMSlotChain< GUM_SCALAR >& sc
-             = static_cast< const PRMSlotChain< GUM_SCALAR >& >(c.get(node));
+              = static_cast< const PRMSlotChain< GUM_SCALAR >& >(c.get(node));
 
           for (const auto chi: c.containerDag().children(node))
             _graph_.addArc((*(_node_map_[&(sc.end())]))[&(sc.end().get(sc.lastElt().safeName()))],
@@ -106,15 +106,15 @@ namespace gum {
 
     template < typename GUM_SCALAR >
     INLINE ClassDependencyGraph< GUM_SCALAR >::ClassDependencyGraph(
-       const ClassDependencyGraph< GUM_SCALAR >& source) :
+        const ClassDependencyGraph< GUM_SCALAR >& source) :
         _graph_(source._graph_),
         _modalitites_(source._modalitites_), _elt_map_(source._elt_map_) {
       GUM_CONS_CPY(ClassDependencyGraph);
 
       for (const auto& elt: source._node_map_) {
         _node_map_.insert(
-           elt.first,
-           new HashTable< const PRMClassElement< GUM_SCALAR >*, NodeId >(*elt.second));
+            elt.first,
+            new HashTable< const PRMClassElement< GUM_SCALAR >*, NodeId >(*elt.second));
       }
     }
 
@@ -125,14 +125,14 @@ namespace gum {
 
     template < typename GUM_SCALAR >
     INLINE const typename ClassDependencyGraph< GUM_SCALAR >::EltPair&
-       ClassDependencyGraph< GUM_SCALAR >::get(NodeId id) const {
+        ClassDependencyGraph< GUM_SCALAR >::get(NodeId id) const {
       return *(_elt_map_[id]);
     }
 
     template < typename GUM_SCALAR >
     INLINE NodeId
-       ClassDependencyGraph< GUM_SCALAR >::get(const PRMClassElementContainer< GUM_SCALAR >& c,
-                                               const PRMClassElement< GUM_SCALAR >& elt) const {
+        ClassDependencyGraph< GUM_SCALAR >::get(const PRMClassElementContainer< GUM_SCALAR >& c,
+                                                const PRMClassElement< GUM_SCALAR >& elt) const {
       return (*(_node_map_[&c]))[&elt];
     }
 
@@ -143,8 +143,8 @@ namespace gum {
 
     template < typename GUM_SCALAR >
     INLINE void ClassDependencyGraph< GUM_SCALAR >::_addNode_(
-       const PRMClassElementContainer< GUM_SCALAR >* c,
-       const PRMClassElement< GUM_SCALAR >&          elt) {
+        const PRMClassElementContainer< GUM_SCALAR >* c,
+        const PRMClassElement< GUM_SCALAR >&          elt) {
       switch (elt.elt_type()) {
         case PRMClassElement< GUM_SCALAR >::prm_attribute :
         case PRMClassElement< GUM_SCALAR >::prm_aggregate : {

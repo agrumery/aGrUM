@@ -506,7 +506,7 @@ namespace gum_tests {
       TS_ASSERT(id.dag().existsArc(idList[7], idList[8]))
 
       gum::Size dmnSize_1
-         = id.variable(idList[7]).domainSize() * id.variable(idList[6]).domainSize();
+          = id.variable(idList[7]).domainSize() * id.variable(idList[6]).domainSize();
       dmnSize_1 *= id.variable(idList[8]).domainSize();
       TS_ASSERT_EQUALS(id.cpt(idList[8]).domainSize(), dmnSize_1)
 
@@ -534,7 +534,7 @@ namespace gum_tests {
       TS_ASSERT(id.dag().existsArc(idList[8], idList[10]))
 
       gum::Size dmnSize_3
-         = id.variable(idList[3]).domainSize() * id.variable(idList[8]).domainSize();
+          = id.variable(idList[3]).domainSize() * id.variable(idList[8]).domainSize();
       dmnSize_3 *= id.variable(idList[10]).domainSize();
       TS_ASSERT_EQUALS(id.utility(idList[10]).domainSize(), dmnSize_3)
 
@@ -569,7 +569,7 @@ namespace gum_tests {
       TS_ASSERT(id.dag().existsArc(idList[7], idList[8]))
 
       gum::Size dmnSize_1
-         = id.variable(idList[7]).domainSize() * id.variable(idList[6]).domainSize();
+          = id.variable(idList[7]).domainSize() * id.variable(idList[6]).domainSize();
       dmnSize_1 *= id.variable(idList[8]).domainSize();
       TS_ASSERT_EQUALS(id.cpt(idList[8]).domainSize(), dmnSize_1)
 
@@ -597,7 +597,7 @@ namespace gum_tests {
       TS_ASSERT(id.dag().existsArc(idList[8], idList[10]))
 
       gum::Size dmnSize_3
-         = id.variable(idList[3]).domainSize() * id.variable(idList[8]).domainSize();
+          = id.variable(idList[3]).domainSize() * id.variable(idList[8]).domainSize();
       dmnSize_3 *= id.variable(idList[10]).domainSize();
       TS_ASSERT_EQUALS(id.utility(idList[10]).domainSize(), dmnSize_3)
 
@@ -816,7 +816,7 @@ namespace gum_tests {
 
     GUM_ACTIVE_TEST(FastPrototypeVarType) {
       auto infdiag = gum::InfluenceDiagram< float >::fastPrototype(
-         "a{1|4|6}->b{1|-4|6}->c{1|toto|6}->d{1.0|-4.0|6.0}->e{1|-4|6.0}->f{1.0|-4.0|+6.0}");
+          "a{1|4|6}->b{1|-4|6}->c{1|toto|6}->d{1.0|-4.0|6.0}->e{1|-4|6.0}->f{1.0|-4.0|+6.0}");
       TS_ASSERT_EQUALS(infdiag.variable("a").varType(), gum::VarType::Integer)
       TS_ASSERT_EQUALS(infdiag.variable("b").varType(), gum::VarType::Integer)
       TS_ASSERT_EQUALS(infdiag.variable("c").varType(), gum::VarType::Labelized)
@@ -874,7 +874,7 @@ namespace gum_tests {
     GUM_ACTIVE_TEST(operatorEqual) {
       auto model  = gum::InfluenceDiagram< double >::fastPrototype("C<-A->*B<-C->D->$U<-B;*E->B");
       auto model2 = gum::InfluenceDiagram< double >::fastPrototype(
-         "C{yes|no}<-A{yes|no}->*B{yes|no}<-C->D{yes|no}->$U<-B;*E{yes|no}->B");
+          "C{yes|no}<-A{yes|no}->*B{yes|no}<-C->D{yes|no}->$U<-B;*E{yes|no}->B");
       auto model3 = gum::InfluenceDiagram< double >::fastPrototype("C<-A->*B<-C->D->$U<-B;*E->B");
 
       for (const auto i: model.nodes()) {

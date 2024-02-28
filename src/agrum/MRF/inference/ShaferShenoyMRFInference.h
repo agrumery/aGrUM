@@ -227,7 +227,7 @@ namespace gum {
     /// the operator for performing the combinations
     Potential< GUM_SCALAR > (*_combination_op_)(const Potential< GUM_SCALAR >&,
                                                 const Potential< GUM_SCALAR >&){
-       SSNewMNmultiPotential};
+        SSNewMNmultiPotential};
 
     /// the triangulation class creating the junction tree used for inference
     Triangulation* _triangulation_;
@@ -347,7 +347,7 @@ namespace gum {
      * these nodes anymore.
      * @warning These potentials are owned by the inference class. */
     HashTable< const Potential< GUM_SCALAR >*, const IScheduleMultiDim* >
-       _hard_ev_projected_factors_;
+        _hard_ev_projected_factors_;
 
     /// the hard evidence nodes which were projected in factors
     NodeSet _hard_ev_nodes_;
@@ -441,7 +441,7 @@ namespace gum {
 
     /// avoid copy operators
     ShaferShenoyMRFInference< GUM_SCALAR >& operator=(const ShaferShenoyMRFInference< GUM_SCALAR >&)
-       = delete;
+        = delete;
   };
 
 

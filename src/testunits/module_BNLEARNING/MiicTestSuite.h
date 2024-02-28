@@ -81,7 +81,7 @@ namespace gum_tests {
     public:
     GUM_ACTIVE_TEST(_latent_var_) {
       gum::learning::DBInitializerFromCSV initializer(
-         GET_RESSOURCES_PATH("csv/latent_variable.csv"));
+          GET_RESSOURCES_PATH("csv/latent_variable.csv"));
       const auto&       var_names = initializer.variableNames();
       const std::size_t nb_vars   = var_names.size();
 
@@ -518,7 +518,7 @@ namespace gum_tests {
       //             FilterListenerForMiic::whenStructuralModification);
 
       gum::learning::DBInitializerFromCSV initializer(
-         GET_RESSOURCES_PATH("csv/ordinal_ms_order_1.csv"));
+          GET_RESSOURCES_PATH("csv/ordinal_ms_order_1.csv"));
       const auto&       var_names = initializer.variableNames();
       const std::size_t nb_vars   = var_names.size();
 
@@ -577,7 +577,7 @@ namespace gum_tests {
       //             FilterListenerForMiic::whenStructuralModification);
 
       gum::learning::DBInitializerFromCSV initializer(
-         GET_RESSOURCES_PATH("csv/ordinal_ms_order_2.csv"));
+          GET_RESSOURCES_PATH("csv/ordinal_ms_order_2.csv"));
       const auto&       var_names = initializer.variableNames();
       const std::size_t nb_vars   = var_names.size();
 

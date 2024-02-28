@@ -69,7 +69,7 @@ namespace gum {
 
   /// default constructor
   IncrementalTriangulation::IncrementalTriangulation(
-     const UnconstrainedTriangulation& triang_algo) :
+      const UnconstrainedTriangulation& triang_algo) :
       _triangulation_(triang_algo.newFactory()) {
     GUM_CONSTRUCTOR(IncrementalTriangulation);
 
@@ -114,7 +114,7 @@ namespace gum {
 
   /// copy operator
   IncrementalTriangulation&
-     IncrementalTriangulation::operator=(const IncrementalTriangulation& from) {
+      IncrementalTriangulation::operator=(const IncrementalTriangulation& from) {
     // avoid self assignment
     if (this != &from) {
       GUM_OP_CPY(IncrementalTriangulation)
@@ -166,7 +166,7 @@ namespace gum {
 
     // indicate in which MPS the clique added to the junction tree belongs
     std::vector< NodeId >& cliquesMPS
-       = _cliques_of_mps_.insert(MPS, std::vector< NodeId >()).second;
+        = _cliques_of_mps_.insert(MPS, std::vector< NodeId >()).second;
 
     cliquesMPS.push_back(new_clique);
     _mps_of_clique_.insert(new_clique, MPS);
@@ -704,11 +704,11 @@ namespace gum {
   /// set up a connected subgraph to be triangulated
 
   void IncrementalTriangulation::_setUpConnectedTriangulation_(
-     NodeId                     Mx,
-     NodeId                     Mfrom,
-     UndiGraph&                 theGraph,
-     std::vector< Edge >&       notAffectedneighbourCliques,
-     HashTable< NodeId, bool >& cliques_affected) {
+      NodeId                     Mx,
+      NodeId                     Mfrom,
+      UndiGraph&                 theGraph,
+      std::vector< Edge >&       notAffectedneighbourCliques,
+      HashTable< NodeId, bool >& cliques_affected) {
     // mark the clique so that we won't try to update it several times
     cliques_affected[Mx] = false;
 
@@ -856,12 +856,12 @@ namespace gum {
             // was
             // not affected
             NodeId& to_connect
-               = tmp2global_junction_tree[_triangulation_->createdJunctionTreeClique(elim_node)];
+                = tmp2global_junction_tree[_triangulation_->createdJunctionTreeClique(elim_node)];
 
             NodeId not_affected
-               = all_cliques_affected.exists(notAffectedneighbourCliques[i].first())
-                  ? notAffectedneighbourCliques[i].second()
-                  : notAffectedneighbourCliques[i].first();
+                = all_cliques_affected.exists(notAffectedneighbourCliques[i].first())
+                    ? notAffectedneighbourCliques[i].second()
+                    : notAffectedneighbourCliques[i].first();
 
             _junction_tree_.addEdge(not_affected, to_connect);
 
@@ -908,11 +908,11 @@ namespace gum {
   /// used for computing the junction tree of the maximal prime subgraphs
 
   void IncrementalTriangulation::_computeMaxPrimeMergings_(
-     const NodeId                                node,
-     const NodeId                                from,
-     std::vector< std::pair< NodeId, NodeId > >& merged_cliques,
-     HashTable< NodeId, bool >&                  mark,
-     const NodeSet&                              new_nodes_in_junction_tree) const {
+      const NodeId                                node,
+      const NodeId                                from,
+      std::vector< std::pair< NodeId, NodeId > >& merged_cliques,
+      HashTable< NodeId, bool >&                  mark,
+      const NodeSet&                              new_nodes_in_junction_tree) const {
     mark[node] = true;
 
     // check the separators on all the adjacent edges of Mx
@@ -949,9 +949,9 @@ namespace gum {
 
   /// update the max prime subgraph
 
-  void
-     IncrementalTriangulation::_updateMaxPrimeSubgraph_(NodeProperty< bool >& all_cliques_affected,
-                                                        const NodeSet& new_nodes_in_junction_tree) {
+  void IncrementalTriangulation::_updateMaxPrimeSubgraph_(
+      NodeProperty< bool >& all_cliques_affected,
+      const NodeSet&        new_nodes_in_junction_tree) {
     // the maximal prime subgraph join tree is created by aggregation of some
     // cliques. More precisely, when the separator between 2 cliques is not
     // complete in the original graph, then the two cliques must be merged.
@@ -1001,7 +1001,7 @@ namespace gum {
         NodeId newId = _T_mpd_.addNode(_junction_tree_.clique(elt.second));
         clique2MPS.insert(elt.second, newId);
         std::vector< NodeId >& vect_of_cliques
-           = _cliques_of_mps_.insert(newId, std::vector< NodeId >()).second;
+            = _cliques_of_mps_.insert(newId, std::vector< NodeId >()).second;
         vect_of_cliques.push_back(elt.second);
       }
 

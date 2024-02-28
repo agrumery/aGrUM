@@ -59,16 +59,16 @@ namespace gum {
         try {
           if (_graph_->nodes(iter.second()).size() >= 2) {
             _cost_.insert(
-               iter.second(),
-               _cost_func_(iter.second()->tree_width, _graph_->nodes(iter.second()).size()));
+                iter.second(),
+                _cost_func_(iter.second()->tree_width, _graph_->nodes(iter.second()).size()));
             _nodes_.push_back(const_cast< gspan::LabelData* >(iter.second()));
           }
         } catch (NotFound const&) {
           // It's a label over edges
           if (_isEdgeEligible_(*(_graph_->edges(iter.second()).begin()))) {
             _cost_.insert(
-               iter.second(),
-               _cost_func_(iter.second()->tree_width, _graph_->edges(iter.second()).size()));
+                iter.second(),
+                _cost_func_(iter.second()->tree_width, _graph_->edges(iter.second()).size()));
             _edges_.push_back(iter.second());
           }
         }
@@ -136,7 +136,7 @@ namespace gum {
 
           for (size_t i = 0; i < r_path.size(); ++i)
             count_vector.push_back(
-               new HashTable< std::string, gspan::EdgeGrowth< GUM_SCALAR >* >());
+                new HashTable< std::string, gspan::EdgeGrowth< GUM_SCALAR >* >());
 
           // For each subgraph represented by p, we look for a valid edge growth
           // for
@@ -248,7 +248,7 @@ namespace gum {
         // We start by the best Pattern and add it's maximal independent set to
         //  _chosen_
         GSpan< GUM_SCALAR >::MatchedInstances* matches
-           = new GSpan< GUM_SCALAR >::MatchedInstances();
+            = new GSpan< GUM_SCALAR >::MatchedInstances();
         Sequence< PRMInstance< GUM_SCALAR >* >* match = nullptr;
 
         for (const auto node: tree().max_indep_set(*(_patterns_.front()))) {
@@ -396,13 +396,13 @@ namespace gum {
 
     template < typename GUM_SCALAR >
     INLINE typename GSpan< GUM_SCALAR >::MatchedInstances&
-       GSpan< GUM_SCALAR >::matches(const gspan::Pattern& p) {
+        GSpan< GUM_SCALAR >::matches(const gspan::Pattern& p) {
       return *(_matched_instances_[const_cast< gspan::Pattern* >(&p)]);
     }
 
     template < typename GUM_SCALAR >
     INLINE const typename GSpan< GUM_SCALAR >::MatchedInstances&
-       GSpan< GUM_SCALAR >::matches(const gspan::Pattern& p) const {
+        GSpan< GUM_SCALAR >::matches(const gspan::Pattern& p) const {
       return *(_matched_instances_[const_cast< gspan::Pattern* >(&p)]);
     }
 

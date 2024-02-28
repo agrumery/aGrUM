@@ -97,7 +97,7 @@ namespace gum {
 
   template < typename GUM_SCALAR >
   void UAIMRFReader< GUM_SCALAR >::buildFromQuartets(
-     std::vector< std::tuple< float, int, int, int > > quartets) {
+      std::vector< std::tuple< float, int, int, int > > quartets) {
     Idx  current;
     Size max = quartets.size();
     if (max == 0) {

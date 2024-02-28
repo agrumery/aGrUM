@@ -71,7 +71,7 @@ namespace gum {
      * An empty set of ranges is equivalent to an interval [X,Y) ranging over
      * the whole database. */
     void PseudoCount::setRanges(
-       const std::vector< std::pair< std::size_t, std::size_t > >& new_ranges) {
+        const std::vector< std::pair< std::size_t, std::size_t > >& new_ranges) {
       std::vector< std::pair< std::size_t, std::size_t > > old_ranges = ranges();
       counter_.setRanges(new_ranges);
       if (old_ranges != ranges()) clear();

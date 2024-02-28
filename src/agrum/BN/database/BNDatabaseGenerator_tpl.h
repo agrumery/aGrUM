@@ -403,8 +403,8 @@ namespace gum::learning {
   /// returns varOrder from a csv file
   template < typename GUM_SCALAR >
   std::vector< Idx >
-     BNDatabaseGenerator< GUM_SCALAR >::_varOrderFromCSV_(const std::string& csvFileURL,
-                                                          const std::string& csvSeparator) const {
+      BNDatabaseGenerator< GUM_SCALAR >::_varOrderFromCSV_(const std::string& csvFileURL,
+                                                           const std::string& csvSeparator) const {
     std::ifstream      csvFile(csvFileURL);
     std::vector< Idx > varOrder;
     if (csvFile) {
@@ -420,8 +420,8 @@ namespace gum::learning {
   /// returns varOrder from a csv file
   template < typename GUM_SCALAR >
   std::vector< Idx >
-     BNDatabaseGenerator< GUM_SCALAR >::_varOrderFromCSV_(std::ifstream&     csvFile,
-                                                          const std::string& csvSeparator) const {
+      BNDatabaseGenerator< GUM_SCALAR >::_varOrderFromCSV_(std::ifstream&     csvFile,
+                                                           const std::string& csvSeparator) const {
     std::string                line;
     std::vector< std::string > header_found;
     header_found.reserve(_nbVars_);

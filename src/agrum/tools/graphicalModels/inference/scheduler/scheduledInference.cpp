@@ -60,8 +60,8 @@ namespace gum {
       ThreadNumberManager::operator=(std::move(from));
       _scheduler_parallel_.setMaxMemory(from._scheduler_parallel_.maxMemory());
       _scheduler_parallel_.setNumberOfThreads(_scheduler_parallel_.isGumNumberOfThreadsOverriden()
-                                                 ? _scheduler_parallel_.getNumberOfThreads()
-                                                 : 0);
+                                                  ? _scheduler_parallel_.getNumberOfThreads()
+                                                  : 0);
       _scheduler_sequential_.setMaxMemory(from._scheduler_sequential_.maxMemory());
     }
     return *this;
@@ -73,8 +73,8 @@ namespace gum {
       ThreadNumberManager::operator=(from);
       _scheduler_parallel_.setMaxMemory(from._scheduler_parallel_.maxMemory());
       _scheduler_parallel_.setNumberOfThreads(_scheduler_parallel_.isGumNumberOfThreadsOverriden()
-                                                 ? _scheduler_parallel_.getNumberOfThreads()
-                                                 : 0);
+                                                  ? _scheduler_parallel_.getNumberOfThreads()
+                                                  : 0);
       _scheduler_sequential_.setMaxMemory(from._scheduler_sequential_.maxMemory());
     }
     return *this;

@@ -739,7 +739,7 @@ namespace gum {
        * @throw OperationNotAllowed Raised if the given operation is illegal.
        */
       virtual void
-         addReferenceSlot(const std::string& type, const std::string& name, bool isArray) override;
+          addReferenceSlot(const std::string& type, const std::string& name, bool isArray) override;
 
       /// @}
       // ======================================================================
@@ -841,7 +841,7 @@ namespace gum {
       PRMObject* _checkStack_(Idx i, PRMObject::prm_type obj_type);
 
       PRMClassElement< GUM_SCALAR >*
-         _checkStack_(Idx i, typename PRMClassElement< GUM_SCALAR >::ClassElementType obj_type);
+          _checkStack_(Idx i, typename PRMClassElement< GUM_SCALAR >::ClassElementType obj_type);
 
       PRMClassElementContainer< GUM_SCALAR >* _checkStackContainter_(Idx i);
 

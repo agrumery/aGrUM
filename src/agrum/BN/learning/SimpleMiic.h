@@ -192,15 +192,15 @@ namespace gum {
        * the previous phase
        */
       void orientationMiic_(
-         CorrectedMutualInformation&                                            mutualInformation,
-         MixedGraph&                                                            graph,
-         const HashTable< std::pair< NodeId, NodeId >, std::vector< NodeId > >& sepSet);
+          CorrectedMutualInformation&                                            mutualInformation,
+          MixedGraph&                                                            graph,
+          const HashTable< std::pair< NodeId, NodeId >, std::vector< NodeId > >& sepSet);
       /// @}
 
       void orientationLatents_(
-         CorrectedMutualInformation&                                            mutualInformation,
-         MixedGraph&                                                            graph,
-         const HashTable< std::pair< NodeId, NodeId >, std::vector< NodeId > >& sepSet);
+          CorrectedMutualInformation&                                            mutualInformation,
+          MixedGraph&                                                            graph,
+          const HashTable< std::pair< NodeId, NodeId >, std::vector< NodeId > >& sepSet);
 
       /// finds the best contributor node for a pair given a conditioning set
       /**@param x first node
@@ -225,9 +225,9 @@ namespace gum {
        *@param sep_set hashtable storing the separation sets for pairs of variables
        */
       std::vector< Ranking > unshieldedTriples_(
-         const MixedGraph&                                                      graph,
-         CorrectedMutualInformation&                                            mutualInformation,
-         const HashTable< std::pair< NodeId, NodeId >, std::vector< NodeId > >& sepSet);
+          const MixedGraph&                                                      graph,
+          CorrectedMutualInformation&                                            mutualInformation,
+          const HashTable< std::pair< NodeId, NodeId >, std::vector< NodeId > >& sepSet);
 
       /// gets the list of unshielded triples in the graph in decreasing value of
       ///|I'(x, y, z|{ui})|, prepares the orientation matrix for MIIC
@@ -237,18 +237,18 @@ namespace gum {
        * @param marks hashtable containing the orientation marks for edges
        */
       std::vector< ProbabilisticRanking > unshieldedTriplesMiic_(
-         const MixedGraph&                                                      graph,
-         CorrectedMutualInformation&                                            mutualInformation,
-         const HashTable< std::pair< NodeId, NodeId >, std::vector< NodeId > >& sepSet,
-         HashTable< std::pair< NodeId, NodeId >, char >&                        marks);
+          const MixedGraph&                                                      graph,
+          CorrectedMutualInformation&                                            mutualInformation,
+          const HashTable< std::pair< NodeId, NodeId >, std::vector< NodeId > >& sepSet,
+          HashTable< std::pair< NodeId, NodeId >, char >&                        marks);
 
       /// Gets the orientation probabilities like MIIC for the orientation phase
       /*@param graph graph in which to find the triples
        *@param proba_triples probabilities for the different triples to update
        */
       std::vector< ProbabilisticRanking >
-         updateProbaTriples_(const MixedGraph&                   graph,
-                             std::vector< ProbabilisticRanking > probaTriples);
+          updateProbaTriples_(const MixedGraph&                   graph,
+                              std::vector< ProbabilisticRanking > probaTriples);
 
       /// Propagates the orientation from a node to its neighbours
       /*@param dag graph in which to which to propagate arcs

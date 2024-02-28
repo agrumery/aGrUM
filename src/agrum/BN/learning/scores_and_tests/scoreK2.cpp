@@ -115,7 +115,7 @@ namespace gum {
           }
           for (std::size_t k = std::size_t(0); k < all_size; ++k) {
             score
-               += _gammalog2_(N_ijk[k] + N_prime_ijk[k] + 1.0) - _gammalog2_(N_prime_ijk[k] + 1.0);
+                += _gammalog2_(N_ijk[k] + N_prime_ijk[k] + 1.0) - _gammalog2_(N_prime_ijk[k] + 1.0);
           }
         } else {
           // the K2 score can be computed as follows:

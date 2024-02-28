@@ -170,11 +170,11 @@ namespace gum_tests {
 
       for (auto iter = deletions.cbegin(); iter != deletions.cend(); ++iter) {
         del_add_changes.push_back(
-           gum::DAGCycleDetector::ArcDel(iter.key().tail(), iter.key().head()));
+            gum::DAGCycleDetector::ArcDel(iter.key().tail(), iter.key().head()));
       }
       for (auto iter = additions.cbegin(); iter != additions.cend(); ++iter) {
         del_add_changes.push_back(
-           gum::DAGCycleDetector::ArcAdd(iter.key().tail(), iter.key().head()));
+            gum::DAGCycleDetector::ArcAdd(iter.key().tail(), iter.key().head()));
       }
     }
 

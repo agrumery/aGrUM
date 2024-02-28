@@ -160,7 +160,7 @@ namespace gum {
       GUM_ERROR(NotFound, "Variable " << id << " is not a LabelizedVariable.")
 
     LabelizedVariable const* var
-     = dynamic_cast< LabelizedVariable* >(const_cast< DiscreteVariable* >(&variable(id)));
+        = dynamic_cast< LabelizedVariable* >(const_cast< DiscreteVariable* >(&variable(id)));
 
     var->changeLabel(var->posLabel(old_label), new_label);
   }
@@ -230,7 +230,7 @@ namespace gum {
 
   template < typename GUM_SCALAR >
   INLINE const DiscreteVariable&
-   BayesNet< GUM_SCALAR >::variableFromName(const std::string& name) const {
+      BayesNet< GUM_SCALAR >::variableFromName(const std::string& name) const {
     return _varMap_.variableFromName(name);
   }
 
@@ -593,14 +593,14 @@ namespace gum {
       GUM_ERROR(OperationNotAllowed,
                 "cannot exchange potentials with different "
                 "dimensions for variable with id "
-                 << id)
+                    << id)
     }
 
     for (Idx i = 0; i < cpt(id).nbrDim(); i++) {
       if (&cpt(id).variable(i) != &(newPot->variable(i))) {
         GUM_ERROR(OperationNotAllowed,
                   "cannot exchange potentials because, for variable with id "
-                   << id << ", dimension " << i << " differs. ")
+                      << id << ", dimension " << i << " differs. ")
       }
     }
 

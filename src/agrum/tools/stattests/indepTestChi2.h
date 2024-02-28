@@ -135,7 +135,7 @@ namespace gum {
       /// get the pair <chi2 statistic,pvalue> for a test var1 indep var2 given
       /// rhs_ids
       std::pair< double, double >
-         statistics(NodeId var1, NodeId var2, const std::vector< NodeId >& rhs_ids = {});
+          statistics(NodeId var1, NodeId var2, const std::vector< NodeId >& rhs_ids = {});
 
       /// @}
 

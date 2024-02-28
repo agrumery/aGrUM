@@ -146,8 +146,9 @@ namespace gum {
                                         BucketSet&                       pool,
                                         BucketSet&                       trash);
 
-      void
-         _insertLiftedNodes_(const PRMInstance< GUM_SCALAR >* i, BucketSet& pool, BucketSet& trash);
+      void _insertLiftedNodes_(const PRMInstance< GUM_SCALAR >* i,
+                               BucketSet&                       pool,
+                               BucketSet&                       trash);
 
       /// Returns true if second can be eliminated before first.
       bool _checkElimOrder_(const PRMInstance< GUM_SCALAR >* first,

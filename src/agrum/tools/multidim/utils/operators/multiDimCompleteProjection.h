@@ -93,7 +93,7 @@ namespace gum {
     private:
     /// Forbid copy operators
     MultiDimCompleteProjection< GUM_SCALAR, TABLE >&
-       operator=(const MultiDimCompleteProjection< GUM_SCALAR, TABLE >&);
+        operator=(const MultiDimCompleteProjection< GUM_SCALAR, TABLE >&);
   };
 
 } /* namespace gum */

@@ -128,7 +128,7 @@ namespace gum_tests {
 
     GUM_ACTIVE_TEST(ReadAfterWriteRandom) {
       gum::BayesNet< double > bn = gum::BayesNet< double >::fastPrototype(
-         "A[5]->B{yes|maybe|no}<-C[4];D[3,6]->E[1,2,3,4,5,6,7]->F<-G;F<-H");
+          "A[5]->B{yes|maybe|no}<-C[4];D[3,6]->E[1,2,3,4,5,6,7]->F<-G;F<-H");
       bn.setProperty("name", "random_written");
 
       gum::O3prmBNWriter< double > writer;

@@ -44,8 +44,8 @@ namespace gum {
 
   template < typename GUM_SCALAR >
   GUM_SCALAR
-     GUM_MULTI_DIM_COMPLETE_PROJECTION_NAME(const MultiDimImplementation< GUM_SCALAR >* table,
-                                            Instantiation* instantiation = 0)
+      GUM_MULTI_DIM_COMPLETE_PROJECTION_NAME(const MultiDimImplementation< GUM_SCALAR >* table,
+                                             Instantiation* instantiation = 0)
 #  endif
 
   // clang-format off

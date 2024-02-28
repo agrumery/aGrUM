@@ -44,9 +44,9 @@ namespace gum {
 
   /// constructor for a (potentially) non empty graph
   OrderedEliminationSequenceStrategy::OrderedEliminationSequenceStrategy(
-     UndiGraph*                   graph,
-     const NodeProperty< Size >*  dom_sizes,
-     const std::vector< NodeId >* order) :
+      UndiGraph*                   graph,
+      const NodeProperty< Size >*  dom_sizes,
+      const std::vector< NodeId >* order) :
       EliminationSequenceStrategy(graph, dom_sizes) {
     // check that the user passed appropriate graphs and orders
     if (((graph == nullptr) && (order != nullptr)) || ((graph != nullptr) && (order == nullptr))) {
@@ -62,7 +62,7 @@ namespace gum {
 
   /// copy constructor
   OrderedEliminationSequenceStrategy::OrderedEliminationSequenceStrategy(
-     const OrderedEliminationSequenceStrategy& from) :
+      const OrderedEliminationSequenceStrategy& from) :
       EliminationSequenceStrategy(from),
       _order_(from._order_), _order_index_(from._order_index_),
       _order_needed_(from._order_needed_) {
@@ -71,7 +71,7 @@ namespace gum {
 
   /// move constructor
   OrderedEliminationSequenceStrategy::OrderedEliminationSequenceStrategy(
-     OrderedEliminationSequenceStrategy&& from) :
+      OrderedEliminationSequenceStrategy&& from) :
       EliminationSequenceStrategy(std::move(from)),
       _order_(from._order_), _order_index_(from._order_index_),
       _order_needed_(from._order_needed_) {
@@ -106,8 +106,8 @@ namespace gum {
   }
 
   /// indicates whether an order is compatible with the current graph
-  bool
-     OrderedEliminationSequenceStrategy::_isOrderNeeded_(const std::vector< NodeId >* order) const {
+  bool OrderedEliminationSequenceStrategy::_isOrderNeeded_(
+      const std::vector< NodeId >* order) const {
     if ((graph_ == nullptr) || (order == nullptr)) return true;
 
     // determine the set of nodes in the order that belong to the graph
@@ -182,7 +182,7 @@ namespace gum {
       if ((_order_index_ >= _order_->size()) || ((*_order_)[_order_index_] != node)) {
         GUM_ERROR(OutOfBounds,
                   "update impossible because node "
-                     << node << " does not correspond to the current elimination index");
+                      << node << " does not correspond to the current elimination index");
       }
 
       // now perform the update: goto the next node that belongs to graph_

@@ -42,7 +42,7 @@ namespace gum {
     if (new_size < 2) {
       GUM_ERROR(SizeError,
                 "the size of the hashtable must be at least 2 but a size of "
-                   << new_size << " was provided to the resize function.");
+                    << new_size << " was provided to the resize function.");
     }
 
     hash_log2_size_ = _hashTableLog2_(new_size);
@@ -167,7 +167,7 @@ namespace gum {
   // Returns the hashed value of a key.
   template < typename Key1, typename Key2 >
   INLINE Size
-     HashFunc< std::pair< Key1, Key2 > >::operator()(const std::pair< Key1, Key2 >& key) const {
+      HashFunc< std::pair< Key1, Key2 > >::operator()(const std::pair< Key1, Key2 >& key) const {
     return (castToSize(key) * HashFuncConst::gold) >> this->right_shift_;
   }
 

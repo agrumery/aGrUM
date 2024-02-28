@@ -76,8 +76,8 @@ namespace gum_tests {
       _local_setUp();
       gum::prm::GSpan< double >* gspan = nullptr;
       TS_GUM_ASSERT_THROWS_NOTHING(
-         gspan
-         = new gum::prm::GSpan< double >(*(_driver_->prm()), _driver_->prm()->getSystem("m")));
+          gspan
+          = new gum::prm::GSpan< double >(*(_driver_->prm()), _driver_->prm()->getSystem("m")));
       TS_ASSERT_DIFFERS(gspan, nullptr)
 
       if (gspan != nullptr) {

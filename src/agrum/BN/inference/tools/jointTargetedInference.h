@@ -286,7 +286,7 @@ namespace gum {
      * contains set */
     virtual const Potential< GUM_SCALAR >& jointPosterior_(const NodeSet& wanted_target,
                                                            const NodeSet& declared_target)
-       = 0;
+        = 0;
 
     /** @brief returns a fresh unnormalized joint posterior of
      * a given set of variables

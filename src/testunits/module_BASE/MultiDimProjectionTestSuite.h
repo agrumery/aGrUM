@@ -950,7 +950,7 @@ namespace gum_tests {
 
         auto t2 = t1.margMaxOut(proj_set);
         TS_ASSERT(dynamic_cast< const gum::ScheduleMultiDim< gum::Potential< double > >* >(ptrRes)
-                     ->multiDim()
+                      ->multiDim()
                   == t2)
       }
 
@@ -960,8 +960,8 @@ namespace gum_tests {
         ops_plus_res.first->execute();
         auto t2 = t1.margMaxOut(proj_set);
         TS_ASSERT(dynamic_cast< const gum::ScheduleMultiDim< gum::Potential< double > >* >(
-                     ops_plus_res.second)
-                     ->multiDim()
+                      ops_plus_res.second)
+                      ->multiDim()
                   == t2)
         delete ops_plus_res.first;
       }
@@ -1001,7 +1001,7 @@ namespace gum_tests {
       // are performed immediately
       TS_ASSERT(avail.size() == 0)
       const auto& xt6sched
-         = dynamic_cast< const gum::ScheduleMultiDim< gum::Potential< double > >& >(*t6sched);
+          = dynamic_cast< const gum::ScheduleMultiDim< gum::Potential< double > >& >(*t6sched);
       TS_ASSERT(xt6sched.multiDim() == t6multi.multiDim())
       TS_ASSERT(schedule.dag().sizeNodes() == 0)
 
@@ -1030,7 +1030,7 @@ namespace gum_tests {
       schedule.updateAfterExecution(node, xavail, false);
       TS_ASSERT(schedule.dag().sizeNodes() == 0)
       const gum::ScheduleMultiDim< gum::Potential< double > >& xt7sched
-         = dynamic_cast< const gum::ScheduleMultiDim< gum::Potential< double > >& >(*t7sched);
+          = dynamic_cast< const gum::ScheduleMultiDim< gum::Potential< double > >& >(*t7sched);
       TS_ASSERT(xt7sched.multiDim() == t7)
 
       for (gum::Idx i = 0; i < vars.size(); ++i)
@@ -1171,7 +1171,7 @@ namespace gum_tests {
 
         auto t2 = t1.margMaxOut(proj_set);
         TS_ASSERT(dynamic_cast< const gum::ScheduleMultiDim< gum::Potential< double > >* >(ptrRes)
-                     ->multiDim()
+                      ->multiDim()
                   == t2)
 
         delete ptrRes;
@@ -1183,8 +1183,8 @@ namespace gum_tests {
         ops_plus_res.first->execute();
         auto t2 = t1.margMaxOut(proj_set);
         TS_ASSERT(dynamic_cast< const gum::ScheduleMultiDim< gum::Potential< double > >* >(
-                     ops_plus_res.second)
-                     ->multiDim()
+                      ops_plus_res.second)
+                      ->multiDim()
                   == t2)
         delete ops_plus_res.first;
         delete ops_plus_res.second;
@@ -1226,7 +1226,7 @@ namespace gum_tests {
       // are performed immediately
       TS_ASSERT(avail.size() == 0)
       const auto& xt6sched
-         = dynamic_cast< const gum::ScheduleMultiDim< gum::Potential< double > >& >(*t6sched);
+          = dynamic_cast< const gum::ScheduleMultiDim< gum::Potential< double > >& >(*t6sched);
       TS_ASSERT(xt6sched.multiDim() == t6multi.multiDim())
       TS_ASSERT(schedule.dag().sizeNodes() == 0)
 
@@ -1256,7 +1256,7 @@ namespace gum_tests {
       schedule.updateAfterExecution(node, xavail, false);
       TS_ASSERT(schedule.dag().sizeNodes() == 0)
       const gum::ScheduleMultiDim< gum::Potential< double > >& xt7sched
-         = dynamic_cast< const gum::ScheduleMultiDim< gum::Potential< double > >& >(*t7sched);
+          = dynamic_cast< const gum::ScheduleMultiDim< gum::Potential< double > >& >(*t7sched);
       TS_ASSERT(xt7sched.multiDim() == t7)
 
       delete t6sched;

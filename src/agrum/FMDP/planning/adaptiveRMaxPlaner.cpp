@@ -154,9 +154,9 @@ namespace gum {
       qAction = addReward_(qAction, *actionIter);
 
       qAction = this->operator_->maximize(
-         _actionsRMaxTable_[*actionIter],
-         this->operator_->multiply(qAction, _actionsBoolTable_[*actionIter], 1),
-         2);
+          _actionsRMaxTable_[*actionIter],
+          this->operator_->multiply(qAction, _actionsBoolTable_[*actionIter], 1),
+          2);
 
       qActionsSet.push_back(qAction);
     }
@@ -188,7 +188,7 @@ namespace gum {
     newVFunction->copyAndReassign(*vFunction_, fmdp_->mapMainPrime());
 
     std::vector< MultiDimFunctionGraph< ArgMaxSet< double, Idx >, SetTerminalNodePolicy >* >
-       argMaxQActionsSet;
+        argMaxQActionsSet;
     // *****************************************************************************************
     // For each action
     for (auto actionIter = fmdp_->beginActions(); actionIter != fmdp_->endActions(); ++actionIter) {
@@ -197,9 +197,9 @@ namespace gum {
       qAction = this->addReward_(qAction, *actionIter);
 
       qAction = this->operator_->maximize(
-         _actionsRMaxTable_[*actionIter],
-         this->operator_->multiply(qAction, _actionsBoolTable_[*actionIter], 1),
-         2);
+          _actionsRMaxTable_[*actionIter],
+          this->operator_->multiply(qAction, _actionsBoolTable_[*actionIter], 1),
+          2);
 
       argMaxQActionsSet.push_back(makeArgMax_(qAction, *actionIter));
     }
@@ -209,7 +209,7 @@ namespace gum {
     // Next to evaluate main value function, we take maximise over all action
     // value, ...
     MultiDimFunctionGraph< ArgMaxSet< double, Idx >, SetTerminalNodePolicy >* argMaxVFunction
-       = argmaximiseQactions_(argMaxQActionsSet);
+        = argmaximiseQactions_(argMaxQActionsSet);
 
     // *****************************************************************************************
     // Next to evaluate main value function, we take maximise over all action
@@ -240,7 +240,7 @@ namespace gum {
         visited->insertSetOfVars(varBoolQ);
 
         std::pair< NodeId, NodeId > rooty
-           = _visitLearner_(visited, visited->root(), varRMax, varBoolQ);
+            = _visitLearner_(visited, visited->root(), varRMax, varBoolQ);
         varRMax->manager()->setRootNode(rooty.first);
         varRMax->manager()->reduce();
         varRMax->manager()->clean();
@@ -286,27 +286,27 @@ namespace gum {
   //
   // ===========================================================================
   std::pair< NodeId, NodeId >
-     AdaptiveRMaxPlaner::_visitLearner_(const IVisitableGraphLearner*    visited,
-                                        NodeId                           currentNodeId,
-                                        MultiDimFunctionGraph< double >* rmax,
-                                        MultiDimFunctionGraph< double >* boolQ) {
+      AdaptiveRMaxPlaner::_visitLearner_(const IVisitableGraphLearner*    visited,
+                                         NodeId                           currentNodeId,
+                                         MultiDimFunctionGraph< double >* rmax,
+                                         MultiDimFunctionGraph< double >* boolQ) {
     std::pair< NodeId, NodeId > rep;
     if (visited->isTerminal(currentNodeId)) {
       rep.first = rmax->manager()->addTerminalNode(
-         visited->nodeNbObservation(currentNodeId) < _rThreshold_ ? _rmax_ : 0.0);
+          visited->nodeNbObservation(currentNodeId) < _rThreshold_ ? _rmax_ : 0.0);
       rep.second = boolQ->manager()->addTerminalNode(
-         visited->nodeNbObservation(currentNodeId) < _rThreshold_ ? 0.0 : 1.0);
+          visited->nodeNbObservation(currentNodeId) < _rThreshold_ ? 0.0 : 1.0);
       return rep;
     }
 
     NodeId* rmaxsons = static_cast< NodeId* >(
-       SOA_ALLOCATE(sizeof(NodeId) * visited->nodeVar(currentNodeId)->domainSize()));
+        SOA_ALLOCATE(sizeof(NodeId) * visited->nodeVar(currentNodeId)->domainSize()));
     NodeId* bqsons = static_cast< NodeId* >(
-       SOA_ALLOCATE(sizeof(NodeId) * visited->nodeVar(currentNodeId)->domainSize()));
+        SOA_ALLOCATE(sizeof(NodeId) * visited->nodeVar(currentNodeId)->domainSize()));
 
     for (Idx moda = 0; moda < visited->nodeVar(currentNodeId)->domainSize(); ++moda) {
       std::pair< NodeId, NodeId > sonp
-         = _visitLearner_(visited, visited->nodeSon(currentNodeId, moda), rmax, boolQ);
+          = _visitLearner_(visited, visited->nodeSon(currentNodeId, moda), rmax, boolQ);
       rmaxsons[moda] = sonp.first;
       bqsons[moda]   = sonp.second;
     }

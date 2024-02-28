@@ -259,7 +259,7 @@ namespace gum_tests {
 
     gum::learning::DatabaseTable _getCompactedDatabase() {
       gum::learning::DBInitializerFromCSV initializer(
-         GET_RESSOURCES_PATH("csv/compactWeightedTest.csv"));
+          GET_RESSOURCES_PATH("csv/compactWeightedTest.csv"));
       const auto&       var_names = initializer.variableNames();
       const std::size_t nb_vars   = var_names.size();
 

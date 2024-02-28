@@ -178,9 +178,9 @@ namespace gum {
   // ===========================================================================
   template < typename GUM_SCALAR >
   INLINE void FMDP< GUM_SCALAR >::addTransitionForAction(
-     Idx                                         actionId,
-     const DiscreteVariable*                     var,
-     const MultiDimImplementation< GUM_SCALAR >* transition) {
+      Idx                                         actionId,
+      const DiscreteVariable*                     var,
+      const MultiDimImplementation< GUM_SCALAR >* transition) {
     if (!_varSeq_.exists(var))
       GUM_ERROR(NotFound, " Variable " << var->name() << " has not been declared before.")
 
@@ -226,8 +226,8 @@ namespace gum {
   // ===========================================================================
   template < typename GUM_SCALAR >
   INLINE void
-     FMDP< GUM_SCALAR >::addCostForAction(Idx                                         actionId,
-                                          const MultiDimImplementation< GUM_SCALAR >* cost) {
+      FMDP< GUM_SCALAR >::addCostForAction(Idx                                         actionId,
+                                           const MultiDimImplementation< GUM_SCALAR >* cost) {
     if (!_actionCostTable_.exists(actionId))
       GUM_ERROR(NotFound, " Action " << actionName(actionId) << " has not been declared before.");
 
@@ -264,8 +264,8 @@ namespace gum {
   // ===========================================================================
   template < typename GUM_SCALAR >
   INLINE void
-     FMDP< GUM_SCALAR >::addRewardForAction(Idx                                         actionId,
-                                            const MultiDimImplementation< GUM_SCALAR >* reward) {
+      FMDP< GUM_SCALAR >::addRewardForAction(Idx                                         actionId,
+                                             const MultiDimImplementation< GUM_SCALAR >* reward) {
     if (!_actionRewardTable_.exists(actionId))
       GUM_ERROR(NotFound, " Action " << actionName(actionId) << " has not been declared before.");
 

@@ -38,10 +38,10 @@ namespace gum {
   // adds a new entry into the register
   template < typename GUM_SCALAR >
   void CompleteProjectionRegister4MultiDim< GUM_SCALAR >::insert(
-     const std::string& projection_name,
-     const std::string& type_multidim,
-     typename CompleteProjectionRegister4MultiDim< GUM_SCALAR >::CompleteProjectionPtr
-        newFunction) {
+      const std::string& projection_name,
+      const std::string& type_multidim,
+      typename CompleteProjectionRegister4MultiDim< GUM_SCALAR >::CompleteProjectionPtr
+          newFunction) {
     // insert the new entry
     CompleteProjectionSet* theset;
 
@@ -74,8 +74,8 @@ namespace gum {
   // indicates whether a given entry exists in the register
   template < typename GUM_SCALAR >
   INLINE bool CompleteProjectionRegister4MultiDim< GUM_SCALAR >::exists(
-     const std::string& projection_name,
-     const std::string& type_multidim) const {
+      const std::string& projection_name,
+      const std::string& type_multidim) const {
     if (!_set_.exists(projection_name)) return false;
 
     const CompleteProjectionSet& theset = *(_set_[projection_name]);
@@ -86,9 +86,9 @@ namespace gum {
    * MultiDimImplementation */
   template < typename GUM_SCALAR >
   INLINE typename CompleteProjectionRegister4MultiDim< GUM_SCALAR >::CompleteProjectionPtr
-     CompleteProjectionRegister4MultiDim< GUM_SCALAR >::get(
-        const std::string& projection_name,
-        const std::string& type_multidim) const {
+      CompleteProjectionRegister4MultiDim< GUM_SCALAR >::get(
+          const std::string& projection_name,
+          const std::string& type_multidim) const {
     const CompleteProjectionSet& theset = *(_set_[projection_name]);
     return theset[type_multidim];
   }
@@ -97,7 +97,7 @@ namespace gum {
   // type
   template < typename GUM_SCALAR >
   CompleteProjectionRegister4MultiDim< GUM_SCALAR >&
-     CompleteProjectionRegister4MultiDim< GUM_SCALAR >::Register() {
+      CompleteProjectionRegister4MultiDim< GUM_SCALAR >::Register() {
     // Here, this initialization is thread-safe due to Meyer’s Singleton property
     static CompleteProjectionRegister4MultiDim container;
 
@@ -136,9 +136,9 @@ namespace gum {
   // a function to more easily register new projection functions in MultiDims
   template < typename GUM_SCALAR >
   void registerCompleteProjection(
-     const std::string& projection_name,
-     const std::string& type_multidim,
-     typename CompleteProjectionRegister4MultiDim< GUM_SCALAR >::CompleteProjectionPtr function) {
+      const std::string& projection_name,
+      const std::string& type_multidim,
+      typename CompleteProjectionRegister4MultiDim< GUM_SCALAR >::CompleteProjectionPtr function) {
     CompleteProjectionRegister4MultiDim< GUM_SCALAR >::Register().insert(projection_name,
                                                                          type_multidim,
                                                                          function);

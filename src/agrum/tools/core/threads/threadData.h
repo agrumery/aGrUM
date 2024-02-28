@@ -122,9 +122,9 @@ namespace gum {
     data_type operator*() { return data; }
 
     using data_pointer =
-       typename std::conditional< std::is_pointer< T_DATA >::value,
-                                  T_DATA,
-                                  typename std::add_pointer< T_DATA >::type >::type;
+        typename std::conditional< std::is_pointer< T_DATA >::value,
+                                   T_DATA,
+                                   typename std::add_pointer< T_DATA >::type >::type;
 
     template < typename X = T_DATA >
     std::enable_if_t< std::is_pointer< X >::value, data_pointer > operator->() {

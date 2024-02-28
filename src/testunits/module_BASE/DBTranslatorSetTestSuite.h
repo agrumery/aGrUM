@@ -95,15 +95,15 @@ namespace gum_tests {
       TS_ASSERT_EQUALS(set.domainSizeSafe(1), std::numeric_limits< std::size_t >::max())
 
       gum::learning::DBTranslator4LabelizedVariable xtrans
-         = dynamic_cast< const gum::learning::DBTranslator4LabelizedVariable& >(set.translator(0));
+          = dynamic_cast< const gum::learning::DBTranslator4LabelizedVariable& >(set.translator(0));
       TS_ASSERT_EQUALS(xtrans.translate("toto").discr_val, (std::size_t)0)
       TS_ASSERT_EQUALS(xtrans.translate("titi").discr_val, (std::size_t)1)
       TS_ASSERT_EQUALS(xtrans.translate("???").discr_val,
                        std::numeric_limits< std::size_t >::max());
 
       gum::learning::DBTranslator4LabelizedVariable xtransb
-         = dynamic_cast< const gum::learning::DBTranslator4LabelizedVariable& >(
-            set.translatorSafe(0));
+          = dynamic_cast< const gum::learning::DBTranslator4LabelizedVariable& >(
+              set.translatorSafe(0));
       TS_ASSERT_EQUALS(xtransb.translate("toto").discr_val, (std::size_t)0)
       TS_ASSERT_EQUALS(xtransb.translate("titi").discr_val, (std::size_t)1)
       TS_ASSERT_EQUALS(xtransb.translate("???").discr_val,
@@ -118,7 +118,7 @@ namespace gum_tests {
       TS_ASSERT_EQUALS(var.label(1), "titi")
 
       gum::LabelizedVariable varb
-         = dynamic_cast< const gum::LabelizedVariable& >(set.variableSafe(0));
+          = dynamic_cast< const gum::LabelizedVariable& >(set.variableSafe(0));
       TS_ASSERT_EQUALS(varb.domainSize(), (gum::Size)2)
       TS_ASSERT_EQUALS(varb.label(0), "toto")
       TS_ASSERT_EQUALS(varb.label(1), "titi")
@@ -180,8 +180,8 @@ namespace gum_tests {
         TS_ASSERT_EQUALS(set.translate(row3, 2).discr_val, (std::size_t)1)
 
         gum::learning::DBTranslator4LabelizedVariable xtrans
-           = dynamic_cast< const gum::learning::DBTranslator4LabelizedVariable& >(
-              set.translator(0));
+            = dynamic_cast< const gum::learning::DBTranslator4LabelizedVariable& >(
+                set.translator(0));
         TS_ASSERT_EQUALS(xtrans.translate("toto").discr_val, (std::size_t)0)
         TS_ASSERT_EQUALS(xtrans.translate("titi").discr_val, (std::size_t)1)
         TS_ASSERT_EQUALS(xtrans.translate("???").discr_val,
@@ -198,8 +198,8 @@ namespace gum_tests {
         TS_ASSERT_EQUALS(set2.translate(row3, 1).cont_val, 0.33f)
         TS_ASSERT_EQUALS(set2.translate(row3, 2).discr_val, (std::size_t)1)
         gum::learning::DBTranslator4LabelizedVariable xtrans2
-           = dynamic_cast< const gum::learning::DBTranslator4LabelizedVariable& >(
-              set2.translator(0));
+            = dynamic_cast< const gum::learning::DBTranslator4LabelizedVariable& >(
+                set2.translator(0));
         TS_ASSERT_EQUALS(xtrans2.translate("toto").discr_val, (std::size_t)0)
         TS_ASSERT_EQUALS(xtrans2.translate("titi").discr_val, (std::size_t)1)
 
@@ -215,8 +215,8 @@ namespace gum_tests {
         TS_ASSERT_EQUALS(set3.translate(row3, 1).cont_val, 0.33f)
         TS_ASSERT_EQUALS(set3.translate(row3, 2).discr_val, (std::size_t)1)
         gum::learning::DBTranslator4LabelizedVariable xtrans3
-           = dynamic_cast< const gum::learning::DBTranslator4LabelizedVariable& >(
-              set3.translator(0));
+            = dynamic_cast< const gum::learning::DBTranslator4LabelizedVariable& >(
+                set3.translator(0));
         TS_ASSERT_EQUALS(xtrans3.translate("toto").discr_val, (std::size_t)0)
         TS_ASSERT_EQUALS(xtrans3.translate("titi").discr_val, (std::size_t)1)
 
@@ -231,8 +231,8 @@ namespace gum_tests {
         TS_ASSERT_EQUALS(set4.translate(row3, 1).cont_val, 0.33f)
         TS_ASSERT_EQUALS(set4.translate(row3, 2).discr_val, (std::size_t)1)
         gum::learning::DBTranslator4LabelizedVariable xtrans4
-           = dynamic_cast< const gum::learning::DBTranslator4LabelizedVariable& >(
-              set4.translator(0));
+            = dynamic_cast< const gum::learning::DBTranslator4LabelizedVariable& >(
+                set4.translator(0));
         TS_ASSERT_EQUALS(xtrans4.translate("toto").discr_val, (std::size_t)0)
         TS_ASSERT_EQUALS(xtrans4.translate("titi").discr_val, (std::size_t)1)
 
@@ -247,8 +247,8 @@ namespace gum_tests {
         TS_ASSERT_EQUALS(set5.translate(row3, 1).cont_val, 0.33f)
         TS_ASSERT_EQUALS(set5.translate(row3, 2).discr_val, (std::size_t)1)
         gum::learning::DBTranslator4LabelizedVariable xtrans5
-           = dynamic_cast< const gum::learning::DBTranslator4LabelizedVariable& >(
-              set5.translator(0));
+            = dynamic_cast< const gum::learning::DBTranslator4LabelizedVariable& >(
+                set5.translator(0));
         TS_ASSERT_EQUALS(xtrans5.translate("toto").discr_val, (std::size_t)0)
         TS_ASSERT_EQUALS(xtrans5.translate("titi").discr_val, (std::size_t)1)
 
@@ -298,8 +298,8 @@ namespace gum_tests {
       TS_ASSERT_EQUALS(set4->translate(row3, 1).cont_val, 0.33f)
       TS_ASSERT_EQUALS(set4->translate(row3, 2).discr_val, (std::size_t)1)
       gum::learning::DBTranslator4LabelizedVariable xtrans4
-         = dynamic_cast< const gum::learning::DBTranslator4LabelizedVariable& >(
-            set4->translator(0));
+          = dynamic_cast< const gum::learning::DBTranslator4LabelizedVariable& >(
+              set4->translator(0));
       TS_ASSERT_EQUALS(xtrans4.translate("toto").discr_val, (std::size_t)0)
       TS_ASSERT_EQUALS(xtrans4.translate("titi").discr_val, (std::size_t)1)
 
@@ -346,20 +346,20 @@ namespace gum_tests {
         TS_ASSERT_EQUALS(set4->translate(row3, 1).cont_val, 0.33f)
         TS_ASSERT_EQUALS(set4->translate(row3, 2).discr_val, (std::size_t)1)
         gum::learning::DBTranslator4LabelizedVariable xtrans4
-           = dynamic_cast< const gum::learning::DBTranslator4LabelizedVariable& >(
-              set4->translator(0));
+            = dynamic_cast< const gum::learning::DBTranslator4LabelizedVariable& >(
+                set4->translator(0));
         TS_ASSERT_EQUALS(xtrans4.translate("toto").discr_val, (std::size_t)0)
         TS_ASSERT_EQUALS(xtrans4.translate("titi").discr_val, (std::size_t)1)
 
         gum::learning::DBTranslator4LabelizedVariable xtrans4b
-           = dynamic_cast< const gum::learning::DBTranslator4LabelizedVariable& >(
-              set4->operator[](0));
+            = dynamic_cast< const gum::learning::DBTranslator4LabelizedVariable& >(
+                set4->operator[](0));
         TS_ASSERT_EQUALS(xtrans4b.translate("toto").discr_val, (std::size_t)0)
         TS_ASSERT_EQUALS(xtrans4b.translate("titi").discr_val, (std::size_t)1)
 
         gum::learning::DBTranslator4LabelizedVariable xtrans4t
-           = dynamic_cast< const gum::learning::DBTranslator4LabelizedVariable& >(
-              set4->translatorSafe(0));
+            = dynamic_cast< const gum::learning::DBTranslator4LabelizedVariable& >(
+                set4->translatorSafe(0));
         TS_ASSERT_EQUALS(xtrans4t.translate("toto").discr_val, (std::size_t)0)
         TS_ASSERT_EQUALS(xtrans4t.translate("titi").discr_val, (std::size_t)1)
 

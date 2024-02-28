@@ -94,7 +94,7 @@ namespace gum {
       } else if (prm->isClass(_entityName_)) {
         ParseError warn(false,
                         "No system '" + _entityName_
-                           + "' found but class found. Generating unnamed instance.",
+                            + "' found but class found. Generating unnamed instance.",
                         _filename_,
                         0);
         _errors_.add(warn);

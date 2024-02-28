@@ -87,7 +87,7 @@ namespace gum {
     /// copy operator
     template < typename GUM_SCALAR >
     BNLearner< GUM_SCALAR >&
-       BNLearner< GUM_SCALAR >::operator=(const BNLearner< GUM_SCALAR >& src) {
+        BNLearner< GUM_SCALAR >::operator=(const BNLearner< GUM_SCALAR >& src) {
       IBNLearner::operator=(src);
       return *this;
     }
@@ -95,7 +95,7 @@ namespace gum {
     /// move operator
     template < typename GUM_SCALAR >
     BNLearner< GUM_SCALAR >&
-       BNLearner< GUM_SCALAR >::operator=(BNLearner< GUM_SCALAR >&& src) noexcept {
+        BNLearner< GUM_SCALAR >::operator=(BNLearner< GUM_SCALAR >&& src) noexcept {
       IBNLearner::operator=(std::move(src));
       return *this;
     }
@@ -110,7 +110,7 @@ namespace gum {
       createScore_();
 
       std::unique_ptr< ParamEstimator > param_estimator(
-         createParamEstimator_(scoreDatabase_.parser(), true));
+          createParamEstimator_(scoreDatabase_.parser(), true));
 
       return Dag2BN_.createBN< GUM_SCALAR >(*(param_estimator.get()), learnDag_());
     }
@@ -159,15 +159,15 @@ namespace gum {
                 && priorDatabase_->databaseTable().hasMissingValues())) {
           GUM_ERROR(MissingValueInDatabase,
                     "In general, the BNLearner is unable to cope with "
-                       << "missing values in databases. To learn parameters in "
-                       << "such situations, you should first use method "
-                       << "useEM()");
+                        << "missing values in databases. To learn parameters in "
+                        << "such situations, you should first use method "
+                        << "useEM()");
         }
 
         // create the usual estimator
         DBRowGeneratorParser parser(scoreDatabase_.databaseTable().handler(), DBRowGeneratorSet());
         std::unique_ptr< ParamEstimator > param_estimator(
-           createParamEstimator_(parser, takeIntoAccountScore));
+            createParamEstimator_(parser, takeIntoAccountScore));
 
         return Dag2BN_.createBN< GUM_SCALAR >(*(param_estimator.get()), dag);
       } else {
@@ -178,8 +178,8 @@ namespace gum {
         const auto&       database = scoreDatabase_.databaseTable();
         const std::size_t nb_vars  = database.nbVariables();
         const std::vector< gum::learning::DBTranslatedValueType > col_types(
-           nb_vars,
-           gum::learning::DBTranslatedValueType::DISCRETE);
+            nb_vars,
+            gum::learning::DBTranslatedValueType::DISCRETE);
 
         // create the bootstrap estimator
         DBRowGenerator4CompleteRows generator_bootstrap(col_types);
@@ -187,7 +187,7 @@ namespace gum {
         genset_bootstrap.insertGenerator(generator_bootstrap);
         DBRowGeneratorParser              parser_bootstrap(database.handler(), genset_bootstrap);
         std::unique_ptr< ParamEstimator > param_estimator_bootstrap(
-           createParamEstimator_(parser_bootstrap, takeIntoAccountScore));
+            createParamEstimator_(parser_bootstrap, takeIntoAccountScore));
 
         // create the EM estimator
         BayesNet< GUM_SCALAR >         dummy_bn;
@@ -197,7 +197,7 @@ namespace gum {
         genset_EM.insertGenerator(gen_EM);
         DBRowGeneratorParser              parser_EM(database.handler(), genset_EM);
         std::unique_ptr< ParamEstimator > param_estimator_EM(
-           createParamEstimator_(parser_EM, takeIntoAccountScore));
+            createParamEstimator_(parser_EM, takeIntoAccountScore));
 
         Dag2BN_.setEpsilon(epsilonEM_);
         return Dag2BN_.createBN< GUM_SCALAR >(*(param_estimator_bootstrap.get()),
@@ -214,8 +214,8 @@ namespace gum {
 
     template < typename GUM_SCALAR >
     NodeProperty< Sequence< std::string > >
-       BNLearner< GUM_SCALAR >::_labelsFromBN_(const std::string&            filename,
-                                               const BayesNet< GUM_SCALAR >& src) {
+        BNLearner< GUM_SCALAR >::_labelsFromBN_(const std::string&            filename,
+                                                const BayesNet< GUM_SCALAR >& src) {
       std::ifstream in(filename, std::ifstream::in);
 
       if ((in.rdstate() & std::ifstream::failbit) != 0) {
@@ -263,7 +263,7 @@ namespace gum {
 
     template < typename GUM_SCALAR >
     std::vector< std::tuple< std::string, std::string, std::string > >
-       BNLearner< GUM_SCALAR >::state() const {
+        BNLearner< GUM_SCALAR >::state() const {
       std::vector< std::tuple< std::string, std::string, std::string > > vals;
 
       std::string key;
@@ -441,7 +441,7 @@ namespace gum {
 
         case BNLearnerPriorType::SMOOTHING :
           prior_
-             = new SmoothingPrior(scoreDatabase_.databaseTable(), scoreDatabase_.nodeId2Columns());
+              = new SmoothingPrior(scoreDatabase_.databaseTable(), scoreDatabase_.nodeId2Columns());
           break;
 
         case BNLearnerPriorType::DIRICHLET_FROM_DATABASE :
@@ -451,7 +451,7 @@ namespace gum {
           }
 
           priorDatabase_
-             = new Database(priorDbname_, scoreDatabase_, scoreDatabase_.missingSymbols());
+              = new Database(priorDbname_, scoreDatabase_, scoreDatabase_.missingSymbols());
 
           prior_ = new DirichletPriorFromDatabase(scoreDatabase_.databaseTable(),
                                                   priorDatabase_->parser(),
@@ -460,7 +460,7 @@ namespace gum {
 
         case BNLearnerPriorType::DIRICHLET_FROM_BAYESNET :
           prior_
-             = new DirichletPriorFromBN< GUM_SCALAR >(scoreDatabase_.databaseTable(), &_prior_bn_);
+              = new DirichletPriorFromBN< GUM_SCALAR >(scoreDatabase_.databaseTable(), &_prior_bn_);
           break;
 
         case BNLearnerPriorType::BDEU :

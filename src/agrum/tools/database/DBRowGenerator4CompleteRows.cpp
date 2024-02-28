@@ -41,14 +41,14 @@ namespace gum {
 
     /// default constructor
     DBRowGenerator4CompleteRows::DBRowGenerator4CompleteRows(
-       const std::vector< DBTranslatedValueType >& column_types) :
+        const std::vector< DBTranslatedValueType >& column_types) :
         DBRowGenerator(column_types, DBRowGeneratorGoal::ONLY_REMOVE_MISSING_VALUES) {
       GUM_CONSTRUCTOR(DBRowGenerator4CompleteRows);
     }
 
     /// copy constructor
     DBRowGenerator4CompleteRows::DBRowGenerator4CompleteRows(
-       const DBRowGenerator4CompleteRows& from) :
+        const DBRowGenerator4CompleteRows& from) :
         DBRowGenerator(from),
         _input_row_(from._input_row_) {
       GUM_CONS_CPY(DBRowGenerator4CompleteRows);
@@ -72,7 +72,7 @@ namespace gum {
 
     /// copy operator
     DBRowGenerator4CompleteRows&
-       DBRowGenerator4CompleteRows::operator=(const DBRowGenerator4CompleteRows& from) {
+        DBRowGenerator4CompleteRows::operator=(const DBRowGenerator4CompleteRows& from) {
       DBRowGenerator::operator=(from);
       _input_row_ = from._input_row_;
       return *this;
@@ -80,7 +80,7 @@ namespace gum {
 
     /// move operator
     DBRowGenerator4CompleteRows&
-       DBRowGenerator4CompleteRows::operator=(DBRowGenerator4CompleteRows&& from) {
+        DBRowGenerator4CompleteRows::operator=(DBRowGenerator4CompleteRows&& from) {
       DBRowGenerator::operator=(std::move(from));
       _input_row_ = from._input_row_;
       return *this;

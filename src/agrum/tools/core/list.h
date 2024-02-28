@@ -1658,7 +1658,7 @@ namespace gum {
   /// For STL compliance, a distance operator.
   template < typename Val >
   typename ListConstIterator< Val >::difference_type
-     operator-(const ListConstIterator< Val >& iter1, const ListConstIterator< Val >& iter2);
+      operator-(const ListConstIterator< Val >& iter1, const ListConstIterator< Val >& iter2);
 
   // ===========================================================================
   // ===                         UNSAFE LIST ITERATORS                       ===
@@ -2239,8 +2239,8 @@ namespace gum {
   /// For STL compliance, a distance operator.
   template < typename Val >
   typename ListConstIteratorSafe< Val >::difference_type
-     operator-(const ListConstIteratorSafe< Val >& iter1,
-               const ListConstIteratorSafe< Val >& iter2);
+      operator-(const ListConstIteratorSafe< Val >& iter1,
+                const ListConstIteratorSafe< Val >& iter2);
 
   // ===========================================================================
   // ===                             LIST ITERATORS                          ===

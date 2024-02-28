@@ -74,7 +74,7 @@ namespace gum_tests {
       // id1 = score.addNodeSet(6, 7, std::vector< gum::Idx >{5, 1, 4});
       // id2 = score.addNodeSet(6, 7, std::vector< gum::Idx >{1, 4});
       TS_ASSERT_DELTA(score.score(6, 7, std::vector< gum::NodeId >{5, 1, 4})
-                         - score.score(6, 7, std::vector< gum::NodeId >{1, 4}),
+                          - score.score(6, 7, std::vector< gum::NodeId >{1, 4}),
                       0.0,
                       1e-2);
     }

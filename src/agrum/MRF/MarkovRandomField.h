@@ -158,7 +158,7 @@ namespace gum {
     virtual const Potential< GUM_SCALAR >& factor(const NodeSet& varIds) const final;
 
     virtual const Potential< GUM_SCALAR >&
-     factor(const std::vector< std::string >& varnames) const final;
+        factor(const std::vector< std::string >& varnames) const final;
 
     /**
      * Returns a factor that contains this variable

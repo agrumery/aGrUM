@@ -135,7 +135,7 @@ namespace gum {
           GUM_ERROR(OperationNotAllowed,
                     "BNdistance : the 2 BNs are not compatible "
                     "(not the same variable for the same name : "
-                       + vp.toString() + "and " + vq.toString() + ")");
+                        + vp.toString() + "and " + vq.toString() + ")");
       } catch (NotFound const&) {
         GUM_ERROR(OperationNotAllowed,
                   "BNdistance : the 2 BNs are not compatible (variable : " + vp.name() + ")");
@@ -145,8 +145,8 @@ namespace gum {
     if (std::fabs(p_.log10DomainSize() - q_.log10DomainSize()) > 1e-14) {
       GUM_ERROR(OperationNotAllowed,
                 "BNdistance : the 2 BNs are not compatible (not the same domainSize) : p="
-                   << p_.log10DomainSize() << " q=" << q_.log10DomainSize() << " => "
-                   << p_.log10DomainSize() - q_.log10DomainSize());
+                    << p_.log10DomainSize() << " q=" << q_.log10DomainSize() << " => "
+                    << p_.log10DomainSize() - q_.log10DomainSize());
     }
 
     return true;

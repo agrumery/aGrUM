@@ -42,7 +42,7 @@ namespace gum {
 
   template < typename GUM_SCALAR >
   INLINE MultiDimNoisyORCompound< GUM_SCALAR >::MultiDimNoisyORCompound(
-     const MultiDimNoisyORCompound< GUM_SCALAR >& from) :
+      const MultiDimNoisyORCompound< GUM_SCALAR >& from) :
       MultiDimICIModel< GUM_SCALAR >(from) {
     GUM_CONS_CPY(MultiDimNoisyORCompound);
   }
@@ -51,8 +51,8 @@ namespace gum {
 
   template < typename GUM_SCALAR >
   INLINE MultiDimNoisyORCompound< GUM_SCALAR >::MultiDimNoisyORCompound(
-     const Bijection< const DiscreteVariable*, const DiscreteVariable* >& bij,
-     const MultiDimNoisyORCompound< GUM_SCALAR >&                         from) :
+      const Bijection< const DiscreteVariable*, const DiscreteVariable* >& bij,
+      const MultiDimNoisyORCompound< GUM_SCALAR >&                         from) :
       MultiDimICIModel< GUM_SCALAR >(bij, from) {
     GUM_CONSTRUCTOR(MultiDimNoisyORCompound);
   }

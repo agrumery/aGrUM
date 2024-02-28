@@ -246,7 +246,7 @@ namespace gum {
       /// variables
       /// were eliminated.
       HashTable< const Sequence< PRMInstance< GUM_SCALAR >* >*, Set< Potential< GUM_SCALAR >* >* >
-         _elim_map_;
+          _elim_map_;
 
       /// Mapping between a Class<GUM_SCALAR> and data about instances reduced
       /// using
@@ -332,22 +332,22 @@ namespace gum {
       /// Proceeds with the elimination of observed variables in math and then
       /// call  _translatePotSet_().
       Set< Potential< GUM_SCALAR >* >*
-         _eliminateObservedNodes_(typename StructuredInference::PData&          data,
-                                  const Set< Potential< GUM_SCALAR >* >&        pool,
-                                  const Sequence< PRMInstance< GUM_SCALAR >* >& match,
-                                  const std::vector< NodeId >&                  elim_order);
+          _eliminateObservedNodes_(typename StructuredInference::PData&          data,
+                                   const Set< Potential< GUM_SCALAR >* >&        pool,
+                                   const Sequence< PRMInstance< GUM_SCALAR >* >& match,
+                                   const std::vector< NodeId >&                  elim_order);
 
       Set< Potential< GUM_SCALAR >* >*
-         _eliminateObservedNodesInSource_(typename StructuredInference::PData&          data,
-                                          const Set< Potential< GUM_SCALAR >* >&        pool,
-                                          const Sequence< PRMInstance< GUM_SCALAR >* >& match,
-                                          const std::vector< NodeId >&                  elim_order);
+          _eliminateObservedNodesInSource_(typename StructuredInference::PData&          data,
+                                           const Set< Potential< GUM_SCALAR >* >&        pool,
+                                           const Sequence< PRMInstance< GUM_SCALAR >* >& match,
+                                           const std::vector< NodeId >& elim_order);
 
       /// Translate a given Potential Set into one w.r.t. variables in match.
       Set< Potential< GUM_SCALAR >* >*
-         _translatePotSet_(typename StructuredInference::PData&          data,
-                           const Set< Potential< GUM_SCALAR >* >&        pool,
-                           const Sequence< PRMInstance< GUM_SCALAR >* >& match);
+          _translatePotSet_(typename StructuredInference::PData&          data,
+                            const Set< Potential< GUM_SCALAR >* >&        pool,
+                            const Sequence< PRMInstance< GUM_SCALAR >* >& match);
 
       /// Unreduce the match containing the query.
       // MVSC void  _unreduceMatchWithQuery_();

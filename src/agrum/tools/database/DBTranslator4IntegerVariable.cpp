@@ -40,9 +40,9 @@ namespace gum {
 
     /// default constructor with a integer variable as translator
     DBTranslator4IntegerVariable::DBTranslator4IntegerVariable(
-       const IntegerVariable&            var,
-       const std::vector< std::string >& missing_symbols,
-       std::size_t                       max_dico_entries) :
+        const IntegerVariable&            var,
+        const std::vector< std::string >& missing_symbols,
+        std::size_t                       max_dico_entries) :
         DBTranslator(DBTranslatedValueType::DISCRETE,
                      true,
                      missing_symbols,
@@ -104,7 +104,7 @@ namespace gum {
 
     /// copy constructor
     DBTranslator4IntegerVariable::DBTranslator4IntegerVariable(
-       const DBTranslator4IntegerVariable& from) :
+        const DBTranslator4IntegerVariable& from) :
         DBTranslator(from),
         _variable_(from._variable_) {
       // for debugging purposes
@@ -113,7 +113,7 @@ namespace gum {
 
     /// move constructor
     DBTranslator4IntegerVariable::DBTranslator4IntegerVariable(
-       DBTranslator4IntegerVariable&& from) :
+        DBTranslator4IntegerVariable&& from) :
         DBTranslator(std::move(from)),
         _variable_(std::move(from._variable_)) {
       // for debugging purposes
@@ -127,7 +127,7 @@ namespace gum {
 
     /// copy operator
     DBTranslator4IntegerVariable&
-       DBTranslator4IntegerVariable::operator=(const DBTranslator4IntegerVariable& from) {
+        DBTranslator4IntegerVariable::operator=(const DBTranslator4IntegerVariable& from) {
       if (this != &from) {
         DBTranslator::operator=(from);
         _variable_ = from._variable_;
@@ -138,7 +138,7 @@ namespace gum {
 
     /// move operator
     DBTranslator4IntegerVariable&
-       DBTranslator4IntegerVariable::operator=(DBTranslator4IntegerVariable&& from) {
+        DBTranslator4IntegerVariable::operator=(DBTranslator4IntegerVariable&& from) {
       if (this != &from) {
         DBTranslator::operator=(std::move(from));
         _variable_ = std::move(from._variable_);

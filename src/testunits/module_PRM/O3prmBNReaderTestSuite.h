@@ -88,9 +88,9 @@ namespace gum_tests {
     GUM_ACTIVE_TEST(ClassesWithSystem) {
       gum::BayesNet< double >      bn;
       gum::O3prmBNReader< double > reader(
-         &bn,
-         GET_RESSOURCES_PATH("o3prm/AsiaClassAndSystemWithTwoClasses.o3prm"),
-         "Asia");
+          &bn,
+          GET_RESSOURCES_PATH("o3prm/AsiaClassAndSystemWithTwoClasses.o3prm"),
+          "Asia");
       gum::Size res = 0;
       TS_GUM_ASSERT_THROWS_NOTHING(res = reader.proceed())
       TS_ASSERT_EQUALS(bn.property("name"), "Asia")
@@ -133,10 +133,10 @@ namespace gum_tests {
     GUM_ACTIVE_TEST(WithClassPathAndSystem) {
       gum::BayesNet< double >      bn;
       gum::O3prmBNReader< double > reader(
-         &bn,
-         GET_RESSOURCES_PATH("/o3prmr/ComplexPrinters/fr/lip6/printers/system.o3prm"),
-         "Work",
-         GET_RESSOURCES_PATH("o3prmr/ComplexPrinters"));
+          &bn,
+          GET_RESSOURCES_PATH("/o3prmr/ComplexPrinters/fr/lip6/printers/system.o3prm"),
+          "Work",
+          GET_RESSOURCES_PATH("o3prmr/ComplexPrinters"));
       gum::Size res = 0;
       TS_GUM_ASSERT_THROWS_NOTHING(res = reader.proceed())
       TS_ASSERT_EQUALS(res, (gum::Size)0)
@@ -161,9 +161,9 @@ namespace gum_tests {
       {
         gum::BayesNet< double >      bn;
         gum::O3prmBNReader< double > reader(
-           &bn,
-           GET_RESSOURCES_PATH("o3prm/AsiaClassAndSystemWithTwoClasses.o3prm"),
-           "Asia");
+            &bn,
+            GET_RESSOURCES_PATH("o3prm/AsiaClassAndSystemWithTwoClasses.o3prm"),
+            "Asia");
         gum::Size res = 0;
         TS_GUM_ASSERT_THROWS_NOTHING(res = reader.proceed())
         TS_ASSERT_EQUALS(res, (gum::Size)0)

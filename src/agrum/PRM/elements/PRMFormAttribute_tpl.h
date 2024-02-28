@@ -60,15 +60,15 @@ namespace gum {
 
     template < typename GUM_SCALAR >
     PRMAttribute< GUM_SCALAR >*
-       PRMFormAttribute< GUM_SCALAR >::newFactory(const PRMClass< GUM_SCALAR >& c) const {
+        PRMFormAttribute< GUM_SCALAR >::newFactory(const PRMClass< GUM_SCALAR >& c) const {
       auto impl
-         = static_cast< MultiDimImplementation< std::string >* >(this->_formulas_->newFactory());
+          = static_cast< MultiDimImplementation< std::string >* >(this->_formulas_->newFactory());
       return new PRMFormAttribute< GUM_SCALAR >(c, this->name(), this->type(), impl);
     }
 
     template < typename GUM_SCALAR >
     PRMAttribute< GUM_SCALAR >* PRMFormAttribute< GUM_SCALAR >::copy(
-       Bijection< const DiscreteVariable*, const DiscreteVariable* > bij) const {
+        Bijection< const DiscreteVariable*, const DiscreteVariable* > bij) const {
       auto copy = new PRMFormAttribute< GUM_SCALAR >(*_class_, this->name(), this->type());
       for (auto var: _formulas_->variablesSequence()) {
         if (var != &(_type_->variable())) { copy->_formulas_->add(*var); }
@@ -85,8 +85,8 @@ namespace gum {
 
     template < typename GUM_SCALAR >
     void PRMFormAttribute< GUM_SCALAR >::copyCpf(
-       const Bijection< const DiscreteVariable*, const DiscreteVariable* >& bij,
-       const PRMAttribute< GUM_SCALAR >&                                    source) {
+        const Bijection< const DiscreteVariable*, const DiscreteVariable* >& bij,
+        const PRMAttribute< GUM_SCALAR >&                                    source) {
       delete _formulas_;
       _formulas_ = new MultiDimArray< std::string >();
 
@@ -129,7 +129,7 @@ namespace gum {
 
     template < typename GUM_SCALAR >
     typename PRMClassElement< GUM_SCALAR >::ClassElementType
-       PRMFormAttribute< GUM_SCALAR >::elt_type() const {
+        PRMFormAttribute< GUM_SCALAR >::elt_type() const {
       return this->prm_attribute;
     }
 
@@ -247,7 +247,7 @@ namespace gum {
 
     template < typename GUM_SCALAR >
     PRMFormAttribute< GUM_SCALAR >&
-       PRMFormAttribute< GUM_SCALAR >::operator=(const PRMFormAttribute< GUM_SCALAR >& source) {
+        PRMFormAttribute< GUM_SCALAR >::operator=(const PRMFormAttribute< GUM_SCALAR >& source) {
       GUM_ERROR(OperationNotAllowed, "Cannot copy FormAttribute")
     }
 

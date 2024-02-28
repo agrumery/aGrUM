@@ -39,8 +39,8 @@ namespace gum {
 #  ifdef GUM_MULTI_DIM_OPERATOR_NAME
   template < typename T >
   MultiDimImplementation< T >*
-     GUM_MULTI_DIM_OPERATOR_NAME(const MultiDimImplementation< T >& impl1,
-                                 const MultiDimImplementation< T >& impl2) {
+      GUM_MULTI_DIM_OPERATOR_NAME(const MultiDimImplementation< T >& impl1,
+                                  const MultiDimImplementation< T >& impl2) {
 #  endif
 
     typename OperatorRegister4MultiDim< T >::OperatorPtr func;

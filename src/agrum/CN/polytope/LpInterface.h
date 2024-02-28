@@ -655,10 +655,10 @@ namespace gum {
          */
         template < typename T >
         friend std::ostream&
-           operator<<(std::ostream&           out,
-                      const LpInterface< T >& lpi);   // calls lpi.toString(),
-                                                      // friend is useless but good
-                                                      // for documentation purpose
+            operator<<(std::ostream&           out,
+                       const LpInterface< T >& lpi);   // calls lpi.toString(),
+                                                       // friend is useless but good
+                                                       // for documentation purpose
 
         /**
          * @brief Insert a new column, i.e. a new variable.

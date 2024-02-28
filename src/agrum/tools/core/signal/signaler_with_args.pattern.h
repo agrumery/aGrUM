@@ -181,7 +181,7 @@ namespace gum {
   template < LIST_DECL_CLASSES >
   class MAKE_NAME(Signaler) : public __sig__::MAKE_NAME(BasicSignaler)< LIST_CLASSES > {
     using ConnectorIterator
-       = typename __sig__::MAKE_NAME(BasicSignaler)< LIST_CLASSES >::ConnectorIterator;
+        = typename __sig__::MAKE_NAME(BasicSignaler)< LIST_CLASSES >::ConnectorIterator;
 
     public:
     using BasicSignaler = __sig__::MAKE_NAME(BasicSignaler)< LIST_CLASSES >;
@@ -205,7 +205,7 @@ namespace gum {
     template < class TargetClass >
     void attach(TargetClass* target, void (TargetClass::*action)(const void*, LIST_CLASSES)) {
       __sig__::MAKE_NAME(Connector)< TargetClass, LIST_CLASSES >* conn
-         = new __sig__::MAKE_NAME(Connector)< TargetClass, LIST_CLASSES >(target, action);
+          = new __sig__::MAKE_NAME(Connector)< TargetClass, LIST_CLASSES >(target, action);
       this->connectors_.pushBack(conn);
       target->_attachSignal_(this);
     }

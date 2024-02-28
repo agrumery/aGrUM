@@ -34,7 +34,7 @@ namespace gum_tests {
   class [[maybe_unused]] DiscretizedVariableTestSuite: public CxxTest::TestSuite {
     public:
     GUM_ACTIVE_TEST(Creation){
-       TS_GUM_ASSERT_THROWS_NOTHING(gum::DiscretizedVariable< int > v("var", "a var"))}
+        TS_GUM_ASSERT_THROWS_NOTHING(gum::DiscretizedVariable< int > v("var", "a var"))}
 
     GUM_ACTIVE_TEST(DiscreteVariableProperties) {
       gum::DiscretizedVariable< int > v("var", "a var");

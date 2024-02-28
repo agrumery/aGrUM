@@ -39,22 +39,22 @@ namespace gum {
 
   /// constructor for a (potentially) non empty graph
   UnconstrainedEliminationSequenceStrategy::UnconstrainedEliminationSequenceStrategy(
-     UndiGraph*                  graph,
-     const NodeProperty< Size >* dom_sizes) :
+      UndiGraph*                  graph,
+      const NodeProperty< Size >* dom_sizes) :
       EliminationSequenceStrategy(graph, dom_sizes) {
     GUM_CONSTRUCTOR(UnconstrainedEliminationSequenceStrategy);
   }
 
   /// copy constructor
   UnconstrainedEliminationSequenceStrategy::UnconstrainedEliminationSequenceStrategy(
-     const UnconstrainedEliminationSequenceStrategy& from) :
+      const UnconstrainedEliminationSequenceStrategy& from) :
       EliminationSequenceStrategy(from) {
     GUM_CONS_CPY(UnconstrainedEliminationSequenceStrategy);
   }
 
   /// move constructor
   UnconstrainedEliminationSequenceStrategy::UnconstrainedEliminationSequenceStrategy(
-     UnconstrainedEliminationSequenceStrategy&& from) :
+      UnconstrainedEliminationSequenceStrategy&& from) :
       EliminationSequenceStrategy(std::move(from)) {
     GUM_CONS_MOV(UnconstrainedEliminationSequenceStrategy)
   }

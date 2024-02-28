@@ -60,7 +60,7 @@ namespace gum {
 
       /// See gum::prm::PRMAttribute.
       virtual PRMAttribute< GUM_SCALAR >*
-         copy(Bijection< const DiscreteVariable*, const DiscreteVariable* > bij) const;
+          copy(Bijection< const DiscreteVariable*, const DiscreteVariable* > bij) const;
 
       /// See gum::prm::PRMAttribute.
       virtual void copyCpf(const Bijection< const DiscreteVariable*, const DiscreteVariable* >& bif,

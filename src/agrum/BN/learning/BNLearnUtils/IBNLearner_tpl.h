@@ -74,7 +74,7 @@ namespace gum {
       const std::size_t      nb_vars = _database_.nbVariables();
       for (std::size_t i = 0; i < nb_vars; ++i) {
         const DiscreteVariable& var
-           = dynamic_cast< const DiscreteVariable& >(_database_.variable(i));
+            = dynamic_cast< const DiscreteVariable& >(_database_.variable(i));
         bn.add(var);
       }
       return bn;

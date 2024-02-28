@@ -41,7 +41,7 @@ namespace gum {
 
     /// returns the translation of a string, as found in the current dictionary
     INLINE DBTranslatedValue
-       DBTranslator4NumericalDiscreteVariable::translate(const std::string& str) {
+        DBTranslator4NumericalDiscreteVariable::translate(const std::string& str) {
       // try to get the index of str within the NumericalDiscrete variable.
       double     d;
       const bool b = isNumericalWithResult(str, &d);
@@ -64,7 +64,7 @@ namespace gum {
 
     /// returns the original value for a given translation
     INLINE std::string DBTranslator4NumericalDiscreteVariable::translateBack(
-       const DBTranslatedValue translated_val) const {
+        const DBTranslatedValue translated_val) const {
       if (this->back_dico_.existsFirst(translated_val.discr_val))
         return this->back_dico_.second(translated_val.discr_val);
 
@@ -102,7 +102,7 @@ namespace gum {
 
     /// returns the variable stored into the translator
     INLINE const NumericalDiscreteVariable*
-       DBTranslator4NumericalDiscreteVariable::variable() const {
+        DBTranslator4NumericalDiscreteVariable::variable() const {
       return &_variable_;
     }
 

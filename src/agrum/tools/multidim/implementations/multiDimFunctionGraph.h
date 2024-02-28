@@ -101,7 +101,7 @@ namespace gum {
      * @return Returns this MultiDimFunctionGraph.
      */
     MultiDimFunctionGraph< GUM_SCALAR, TerminalNodePolicy >&
-       operator=(const MultiDimFunctionGraph< GUM_SCALAR, TerminalNodePolicy >& from);
+        operator=(const MultiDimFunctionGraph< GUM_SCALAR, TerminalNodePolicy >& from);
 
     /**
      * @brief Class destructor.
@@ -213,8 +213,8 @@ namespace gum {
      * @param reassign A Bijection form variables in src to variables in this.
      */
     void copyAndReassign(
-       const MultiDimFunctionGraph< GUM_SCALAR, TerminalNodePolicy >&       src,
-       const Bijection< const DiscreteVariable*, const DiscreteVariable* >& reassign);
+        const MultiDimFunctionGraph< GUM_SCALAR, TerminalNodePolicy >&       src,
+        const Bijection< const DiscreteVariable*, const DiscreteVariable* >& reassign);
 
     /**
      * @brief Copies src diagrams and multiply every value by the given scalar.

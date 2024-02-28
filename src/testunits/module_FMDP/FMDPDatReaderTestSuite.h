@@ -77,8 +77,8 @@ namespace gum_tests {
              varIter != fmdp.endVariables();
              ++varIter) {
           gum::MultiDimFunctionGraph< double >* hey = new gum::MultiDimFunctionGraph< double >(
-             *static_cast< const gum::MultiDimFunctionGraph< double >* >(
-                fmdp.transition(*actIter, *varIter)));
+              *static_cast< const gum::MultiDimFunctionGraph< double >* >(
+                  fmdp.transition(*actIter, *varIter)));
           delete hey;
         }
     }

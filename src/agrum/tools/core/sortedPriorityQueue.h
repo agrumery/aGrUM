@@ -196,7 +196,7 @@ namespace gum {
      * @return Returns this gum::SortedPriorityQueue.
      */
     SortedPriorityQueue< Val, Priority, Cmp >&
-       operator=(const SortedPriorityQueue< Val, Priority, Cmp >& from);
+        operator=(const SortedPriorityQueue< Val, Priority, Cmp >& from);
 
     /**
      * @brief Move operator.
@@ -205,7 +205,7 @@ namespace gum {
      * @return Returns this gum::SortedPriorityQueue.
      */
     SortedPriorityQueue< Val, Priority, Cmp >&
-       operator=(SortedPriorityQueue< Val, Priority, Cmp >&& from) noexcept;
+        operator=(SortedPriorityQueue< Val, Priority, Cmp >&& from) noexcept;
 
     /// @}
 
@@ -471,7 +471,7 @@ namespace gum {
       static constexpr std::size_t offset_to_priority = offsetof(HashElt, second);
       static constexpr std::size_t offset_to_value    = offsetof(AVLTreeNode< Val >, value);
       static constexpr std::size_t offset_from_value_to_priority
-         = offset_to_priority - offset_to_value;
+          = offset_to_priority - offset_to_value;
     };
 #endif   // DOXYGEN_SHOULD_SKIP_THIS
 
@@ -533,8 +533,8 @@ namespace gum {
   template < typename Val, typename Priority = int, typename Cmp = std::less< Priority > >
   class SortedPriorityQueueIterator:
       protected SharedAVLTreeReverseIterator<
-         Val,
-         typename SortedPriorityQueue< Val, Priority, Cmp >::TreeCmp > {
+          Val,
+          typename SortedPriorityQueue< Val, Priority, Cmp >::TreeCmp > {
     public:
     /// Types for STL compliance.
     /// @{
@@ -571,7 +571,7 @@ namespace gum {
 
     /// copy constructor
     SortedPriorityQueueIterator(
-       const SortedPriorityQueueIterator< Val, Priority, Cmp >& from) noexcept;
+        const SortedPriorityQueueIterator< Val, Priority, Cmp >& from) noexcept;
 
     /// move constructor
     SortedPriorityQueueIterator(SortedPriorityQueueIterator< Val, Priority, Cmp >&& from) noexcept;
@@ -589,11 +589,11 @@ namespace gum {
 
     /// copy operator
     SortedPriorityQueueIterator< Val, Priority, Cmp >&
-       operator=(const SortedPriorityQueueIterator< Val, Priority, Cmp >& from) noexcept;
+        operator=(const SortedPriorityQueueIterator< Val, Priority, Cmp >& from) noexcept;
 
     /// move operator
     SortedPriorityQueueIterator< Val, Priority, Cmp >&
-       operator=(SortedPriorityQueueIterator< Val, Priority, Cmp >&& from) noexcept;
+        operator=(SortedPriorityQueueIterator< Val, Priority, Cmp >&& from) noexcept;
 
     /// indicates whether two iterator point to the same element
     bool operator==(const SortedPriorityQueueIterator< Val, Priority, Cmp >& from) const;
@@ -651,8 +651,8 @@ namespace gum {
   template < typename Val, typename Priority = int, typename Cmp = std::less< Val > >
   class SortedPriorityQueueIteratorSafe:
       protected SharedAVLTreeReverseIteratorSafe<
-         Val,
-         typename SortedPriorityQueue< Val, Priority, Cmp >::TreeCmp > {
+          Val,
+          typename SortedPriorityQueue< Val, Priority, Cmp >::TreeCmp > {
     public:
     /// Types for STL compliance.
     /// @{
@@ -689,7 +689,7 @@ namespace gum {
 
     /// copy constructor
     SortedPriorityQueueIteratorSafe(
-       const SortedPriorityQueueIteratorSafe< Val, Priority, Cmp >& from);
+        const SortedPriorityQueueIteratorSafe< Val, Priority, Cmp >& from);
 
     /// move constructor
     SortedPriorityQueueIteratorSafe(SortedPriorityQueueIteratorSafe< Val, Priority, Cmp >&& from);
@@ -706,11 +706,11 @@ namespace gum {
 
     /// copy operator
     SortedPriorityQueueIteratorSafe< Val, Priority, Cmp >&
-       operator=(const SortedPriorityQueueIteratorSafe< Val, Priority, Cmp >& from);
+        operator=(const SortedPriorityQueueIteratorSafe< Val, Priority, Cmp >& from);
 
     /// move operator
     SortedPriorityQueueIteratorSafe< Val, Priority, Cmp >&
-       operator=(SortedPriorityQueueIteratorSafe< Val, Priority, Cmp >&& from);
+        operator=(SortedPriorityQueueIteratorSafe< Val, Priority, Cmp >&& from);
 
     /// indicates whether two iterator point to the same element
     bool operator==(const SortedPriorityQueueIteratorSafe< Val, Priority, Cmp >& from) const;
@@ -769,8 +769,8 @@ namespace gum {
   template < typename Val, typename Priority = int, typename Cmp = std::less< Val > >
   class SortedPriorityQueueReverseIterator:
       protected SharedAVLTreeIterator<
-         Val,
-         typename SortedPriorityQueue< Val, Priority, Cmp >::TreeCmp > {
+          Val,
+          typename SortedPriorityQueue< Val, Priority, Cmp >::TreeCmp > {
     public:
     /// Types for STL compliance.
     /// @{
@@ -796,8 +796,8 @@ namespace gum {
      * else it points to the highest value
      */
     explicit SortedPriorityQueueReverseIterator(
-       const SortedPriorityQueue< Val, Priority, Cmp >& queue,
-       const bool                                       rbegin = true) noexcept;
+        const SortedPriorityQueue< Val, Priority, Cmp >& queue,
+        const bool                                       rbegin = true) noexcept;
 
 #ifndef DOXYGEN_SHOULD_SKIP_THIS
     // constructor for the static rend iterator
@@ -808,11 +808,11 @@ namespace gum {
 
     /// copy constructor
     SortedPriorityQueueReverseIterator(
-       const SortedPriorityQueueReverseIterator< Val, Priority, Cmp >& from) noexcept;
+        const SortedPriorityQueueReverseIterator< Val, Priority, Cmp >& from) noexcept;
 
     /// move constructor
     SortedPriorityQueueReverseIterator(
-       SortedPriorityQueueReverseIterator< Val, Priority, Cmp >&& from) noexcept;
+        SortedPriorityQueueReverseIterator< Val, Priority, Cmp >&& from) noexcept;
 
     /// destructor
     ~SortedPriorityQueueReverseIterator() noexcept;
@@ -826,11 +826,11 @@ namespace gum {
 
     /// copy operator
     SortedPriorityQueueReverseIterator< Val, Priority, Cmp >&
-       operator=(const SortedPriorityQueueReverseIterator< Val, Priority, Cmp >& from) noexcept;
+        operator=(const SortedPriorityQueueReverseIterator< Val, Priority, Cmp >& from) noexcept;
 
     /// move operator
     SortedPriorityQueueReverseIterator< Val, Priority, Cmp >&
-       operator=(SortedPriorityQueueReverseIterator< Val, Priority, Cmp >&& from) noexcept;
+        operator=(SortedPriorityQueueReverseIterator< Val, Priority, Cmp >&& from) noexcept;
 
     /// indicates whether two iterator point to the same element
     bool operator==(const SortedPriorityQueueReverseIterator< Val, Priority, Cmp >& from) const;
@@ -890,8 +890,8 @@ namespace gum {
   template < typename Val, typename Priority = int, typename Cmp = std::less< Val > >
   class SortedPriorityQueueReverseIteratorSafe:
       protected SharedAVLTreeIteratorSafe<
-         Val,
-         typename SortedPriorityQueue< Val, Priority, Cmp >::TreeCmp > {
+          Val,
+          typename SortedPriorityQueue< Val, Priority, Cmp >::TreeCmp > {
     public:
     /// Types for STL compliance.
     /// @{
@@ -917,8 +917,8 @@ namespace gum {
      * else it points to the highest value
      */
     explicit SortedPriorityQueueReverseIteratorSafe(
-       SortedPriorityQueue< Val, Priority, Cmp >& queue,
-       const bool                                 rbegin = true);
+        SortedPriorityQueue< Val, Priority, Cmp >& queue,
+        const bool                                 rbegin = true);
 
 #ifndef DOXYGEN_SHOULD_SKIP_THIS
     // constructor for the static rendSafe iterator
@@ -929,11 +929,11 @@ namespace gum {
 
     /// copy constructor
     SortedPriorityQueueReverseIteratorSafe(
-       const SortedPriorityQueueReverseIteratorSafe< Val, Priority, Cmp >& from);
+        const SortedPriorityQueueReverseIteratorSafe< Val, Priority, Cmp >& from);
 
     /// move constructor
     SortedPriorityQueueReverseIteratorSafe(
-       SortedPriorityQueueReverseIteratorSafe< Val, Priority, Cmp >&& from);
+        SortedPriorityQueueReverseIteratorSafe< Val, Priority, Cmp >&& from);
 
     /// destructor
     ~SortedPriorityQueueReverseIteratorSafe() noexcept;
@@ -947,11 +947,11 @@ namespace gum {
 
     /// copy operator
     SortedPriorityQueueReverseIteratorSafe< Val, Priority, Cmp >&
-       operator=(const SortedPriorityQueueReverseIteratorSafe< Val, Priority, Cmp >& from);
+        operator=(const SortedPriorityQueueReverseIteratorSafe< Val, Priority, Cmp >& from);
 
     /// move operator
     SortedPriorityQueueReverseIteratorSafe< Val, Priority, Cmp >&
-       operator=(SortedPriorityQueueReverseIteratorSafe< Val, Priority, Cmp >&& from);
+        operator=(SortedPriorityQueueReverseIteratorSafe< Val, Priority, Cmp >&& from);
 
     /// indicates whether two iterator point to the same element
     bool operator==(const SortedPriorityQueueReverseIteratorSafe< Val, Priority, Cmp >& from) const;
@@ -1017,22 +1017,22 @@ namespace gum {
   // pointers to void to be cast into pointers to other types (and conversely).
   // This avoids the painful strict-aliasing rule warning
   extern const SortedPriorityQueueIterator< int, std::less< int > >
-     _static_SortedPriorityQueue_end_;
+      _static_SortedPriorityQueue_end_;
   extern const SortedPriorityQueueReverseIterator< int, std::less< int > >
-     _static_SortedPriorityQueue_rend_;
+      _static_SortedPriorityQueue_rend_;
   extern const SortedPriorityQueueIteratorSafe< int, std::less< int > >
-     _static_SortedPriorityQueue_end_safe_;
+      _static_SortedPriorityQueue_end_safe_;
   extern const SortedPriorityQueueReverseIteratorSafe< int, std::less< int > >
-     _static_SortedPriorityQueue_rend_safe_;
+      _static_SortedPriorityQueue_rend_safe_;
 
   inline constexpr void* const _SortedPriorityQueue_end_
-     = (void* const)&_static_SortedPriorityQueue_end_;
+      = (void* const)&_static_SortedPriorityQueue_end_;
   inline constexpr void* const _SortedPriorityQueue_rend_
-     = (void* const)&_static_SortedPriorityQueue_rend_;
+      = (void* const)&_static_SortedPriorityQueue_rend_;
   inline constexpr void* const _SortedPriorityQueue_end_safe_
-     = (void* const)&_static_SortedPriorityQueue_end_safe_;
+      = (void* const)&_static_SortedPriorityQueue_end_safe_;
   inline constexpr void* const _SortedPriorityQueue_rend_safe_
-     = (void* const)&_static_SortedPriorityQueue_rend_safe_;
+      = (void* const)&_static_SortedPriorityQueue_rend_safe_;
 #endif   // DOXYGEN_SHOULD_SKIP_THIS
 
 } /* namespace gum */

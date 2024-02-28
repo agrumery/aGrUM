@@ -64,7 +64,7 @@ namespace gum {
     public:
     /// the type of functions used by the register
     using CompleteProjectionPtr
-       = GUM_SCALAR (*)(const MultiDimImplementation< GUM_SCALAR >*, Instantiation* instantiation);
+        = GUM_SCALAR (*)(const MultiDimImplementation< GUM_SCALAR >*, Instantiation* instantiation);
 
     // =========================================================================
     /// @name Accessors / Modifiers
@@ -201,9 +201,9 @@ namespace gum {
   /// @ingroup multidim_op_group
   template < typename GUM_SCALAR >
   void registerCompleteProjection(
-     const std::string& projection_name,
-     const std::string& type_multidim,
-     typename CompleteProjectionRegister4MultiDim< GUM_SCALAR >::CompleteProjectionPtr function);
+      const std::string& projection_name,
+      const std::string& type_multidim,
+      typename CompleteProjectionRegister4MultiDim< GUM_SCALAR >::CompleteProjectionPtr function);
 
 } /* namespace gum */
 

@@ -98,7 +98,8 @@ namespace gum {
      * @return the resulting Bayesian network
      */
     static BayesNet< GUM_SCALAR > fastPrototype(const std::string& dotlike, Size domainSize);
-    static BayesNet< GUM_SCALAR > fastPrototype(const std::string& dotlike, const std::string& domainSize = "[2]");
+    static BayesNet< GUM_SCALAR > fastPrototype(const std::string& dotlike,
+                                                const std::string& domainSize = "[2]");
 
     // ===========================================================================
     /// @name Constructors and Destructor
@@ -259,7 +260,7 @@ namespace gum {
      *                        gum::BayesNet.
      */
     NodeId
-       add(const DiscreteVariable& var, MultiDimImplementation< GUM_SCALAR >* aContent, NodeId id);
+        add(const DiscreteVariable& var, MultiDimImplementation< GUM_SCALAR >* aContent, NodeId id);
 
     /**
      * @brief clear the whole Bayes net     *

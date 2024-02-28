@@ -49,8 +49,8 @@ namespace gum {
         if (iter.second() >= db_nb_cols) {
           GUM_ERROR(OutOfBounds,
                     "the mapping between ids and database columns "
-                       << "is incorrect because Column " << iter.second()
-                       << " does not belong to the database.");
+                        << "is incorrect because Column " << iter.second()
+                        << " does not belong to the database.");
         }
       }
 
@@ -222,7 +222,7 @@ namespace gum {
     // returns a mapping from the nodes ids to the columns of the database
     // for a given sequence of ids
     HashTable< NodeId, std::size_t >
-       RecordCounter::_getNodeIds2Columns_(const IdCondSet& ids) const {
+        RecordCounter::_getNodeIds2Columns_(const IdCondSet& ids) const {
       HashTable< NodeId, std::size_t > res(ids.size());
       if (_nodeId2columns_.empty()) {
         for (const auto id: ids) {
@@ -238,9 +238,9 @@ namespace gum {
 
     /// extracts some new counts from previously computed ones
     std::vector< double >&
-       RecordCounter::_extractFromCountings_(const IdCondSet&             subset_ids,
-                                             const IdCondSet&             superset_ids,
-                                             const std::vector< double >& superset_vect) {
+        RecordCounter::_extractFromCountings_(const IdCondSet&             subset_ids,
+                                              const IdCondSet&             superset_ids,
+                                              const std::vector< double >& superset_vect) {
       // get a mapping between the node Ids and their columns in the database.
       // This should be stored into _nodeId2columns_, except if the latter is
       // empty, in which case there is an identity mapping
@@ -471,10 +471,10 @@ namespace gum {
       // we sort the columns and offsets by increasing column index. This
       // may speed up threaded counts by improving the cacheline hits
       std::sort(
-         cols_offsets.begin(),
-         cols_offsets.end(),
-         [](const std::pair< std::size_t, std::size_t >& a,
-            const std::pair< std::size_t, std::size_t >& b) -> bool { return a.first < b.first; });
+          cols_offsets.begin(),
+          cols_offsets.end(),
+          [](const std::pair< std::size_t, std::size_t >& a,
+             const std::pair< std::size_t, std::size_t >& b) -> bool { return a.first < b.first; });
 
       // create parsers if needed
       const std::size_t nb_ranges      = _thread_ranges_.size();
@@ -501,15 +501,15 @@ namespace gum {
       // for all these vectors with zeroes
       std::vector< double >                              counting_vect(counting_vect_size, 0.0);
       std::vector< ThreadData< std::vector< double > > > thread_countings(
-         nb_threads,
-         ThreadData< std::vector< double > >(counting_vect));
+          nb_threads,
+          ThreadData< std::vector< double > >(counting_vect));
 
       // here, we create a lambda that will be executed by all the threads
       // to perform the counts in a parallel manner
       auto threadedCount = [this, nb_ranges, ids_size, &thread_countings, cols_offsets](
-                              const std::size_t this_thread,
-                              const std::size_t nb_threads,
-                              const std::size_t nb_loop) -> void {
+                               const std::size_t this_thread,
+                               const std::size_t nb_threads,
+                               const std::size_t nb_loop) -> void {
         if (this_thread + nb_loop < nb_ranges) {
           // get the database parser and the contingency table to fill
           DBRowGeneratorParser& parser = this->_parsers_[this_thread].data;
@@ -561,7 +561,7 @@ namespace gum {
 
     /// checks that the ranges passed in argument are ok or raise an exception
     void RecordCounter::_checkRanges_(
-       const std::vector< std::pair< std::size_t, std::size_t > >& new_ranges) const {
+        const std::vector< std::pair< std::size_t, std::size_t > >& new_ranges) const {
       const std::size_t dbsize = _parsers_[0].data.database().nbRows();
       std::vector< std::pair< std::size_t, std::size_t > > incorrect_ranges;
       for (const auto& range: new_ranges) {
@@ -594,7 +594,7 @@ namespace gum {
       if (_ranges_.empty()) {
         const auto& database = _parsers_[0].data.database();
         _ranges_.push_back(
-           std::pair< std::size_t, std::size_t >(std::size_t(0), database.nbRows()));
+            std::pair< std::size_t, std::size_t >(std::size_t(0), database.nbRows()));
         add_range = true;
       }
 
@@ -617,7 +617,7 @@ namespace gum {
               --rest_rows;
             }
             _thread_ranges_.push_back(
-               std::pair< std::size_t, std::size_t >(begin_index, end_index));
+                std::pair< std::size_t, std::size_t >(begin_index, end_index));
             begin_index = end_index;
           }
         }
@@ -638,7 +638,7 @@ namespace gum {
 
     /// sets new ranges to perform the counts
     void RecordCounter::setRanges(
-       const std::vector< std::pair< std::size_t, std::size_t > >& new_ranges) {
+        const std::vector< std::pair< std::size_t, std::size_t > >& new_ranges) {
       // first, we check that all ranges are within the database's bounds
       _checkRanges_(new_ranges);
 

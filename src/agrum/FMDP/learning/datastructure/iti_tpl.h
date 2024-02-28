@@ -87,9 +87,9 @@ namespace gum {
                                            double           attributeSelectionThreshold,
                                            gum::VariableSet attributeListe) :
       IncrementalGraphLearner< AttributeSelection, isScalar >(
-         target,
-         attributeListe,
-         new LabelizedVariable("Reward", "", 2)),
+          target,
+          attributeListe,
+          new LabelizedVariable("Reward", "", 2)),
       _nbTotalObservation_(0), _attributeSelectionThreshold_(attributeSelectionThreshold) {
     GUM_CONSTRUCTOR(ITI);
     _staleTable_.insert(this->root_, false);
@@ -123,8 +123,8 @@ namespace gum {
   void ITI< AttributeSelection, isScalar >::updateNodeWithObservation_(const Observation* newObs,
                                                                        NodeId currentNodeId) {
     IncrementalGraphLearner< AttributeSelection, isScalar >::updateNodeWithObservation_(
-       newObs,
-       currentNodeId);
+        newObs,
+        currentNodeId);
     _staleTable_[currentNodeId] = true;
   }
 
@@ -198,8 +198,8 @@ namespace gum {
   // ############################################################################
   template < TESTNAME AttributeSelection, bool isScalar >
   NodeId ITI< AttributeSelection, isScalar >::insertNode_(
-     NodeDatabase< AttributeSelection, isScalar >* nDB,
-     const DiscreteVariable*                       boundVar) {
+      NodeDatabase< AttributeSelection, isScalar >* nDB,
+      const DiscreteVariable*                       boundVar) {
     NodeId n = IncrementalGraphLearner< AttributeSelection, isScalar >::insertNode_(nDB, boundVar);
     _staleTable_.insert(n, true);
     return n;
@@ -293,7 +293,7 @@ namespace gum {
     if (tot == Size(0)) return this->target_->manager()->addTerminalNode(0.0);
 
     NodeId* sonsMap
-       = static_cast< NodeId* >(SOA_ALLOCATE(sizeof(NodeId) * this->value_->domainSize()));
+        = static_cast< NodeId* >(SOA_ALLOCATE(sizeof(NodeId) * this->value_->domainSize()));
     for (Idx modality = 0; modality < this->value_->domainSize(); ++modality) {
       double newVal = 0.0;
       newVal = (double)this->nodeId2Database_[currentNodeId]->effectif(modality) / (double)tot;

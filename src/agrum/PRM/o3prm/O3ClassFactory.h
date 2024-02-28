@@ -161,8 +161,8 @@ namespace gum {
                                  const O3RuleCPT::O3Rule&      rule);
 
         void _addParamsToForms_(
-           const HashTable< std::string, const PRMParameter< GUM_SCALAR >* >& scope,
-           O3RuleCPT::O3Rule&                                                 rule);
+            const HashTable< std::string, const PRMParameter< GUM_SCALAR >* >& scope,
+            O3RuleCPT::O3Rule&                                                 rule);
 
         bool _checkRuleCPTSumsTo1_(const PRMClass< GUM_SCALAR >& c,
                                    const O3RuleCPT&              attr,
@@ -173,8 +173,8 @@ namespace gum {
         /// @name Utility methods
         /// @{
         const PRMClassElement< GUM_SCALAR >*
-           _resolveSlotChain_(const PRMClassElementContainer< GUM_SCALAR >& c,
-                              const O3Label&                                chain);
+            _resolveSlotChain_(const PRMClassElementContainer< GUM_SCALAR >& c,
+                               const O3Label&                                chain);
 
         bool _checkSlotChainLink_(const PRMClassElementContainer< GUM_SCALAR >& c,
                                   const O3Label&                                chain,

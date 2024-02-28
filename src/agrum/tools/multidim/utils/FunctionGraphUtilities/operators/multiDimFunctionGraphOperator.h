@@ -61,8 +61,8 @@ namespace gum {
      * @brief Default constructor.
      */
     MultiDimFunctionGraphOperator(
-       const MultiDimFunctionGraph< GUM_SCALAR, TerminalNodePolicy >* DG1,
-       const MultiDimFunctionGraph< GUM_SCALAR, TerminalNodePolicy >* DG2);
+        const MultiDimFunctionGraph< GUM_SCALAR, TerminalNodePolicy >* DG1,
+        const MultiDimFunctionGraph< GUM_SCALAR, TerminalNodePolicy >* DG2);
 
     /**
      * @brief Default destructor.
@@ -105,8 +105,8 @@ namespace gum {
     /// Establish for each node in both function graph if it has retrograde
     /// variables beneath it
     void
-       _findRetrogradeVariables_(const MultiDimFunctionGraph< GUM_SCALAR, TerminalNodePolicy >* dg,
-                                 HashTable< NodeId, short int* >& dgInstNeed);
+        _findRetrogradeVariables_(const MultiDimFunctionGraph< GUM_SCALAR, TerminalNodePolicy >* dg,
+                                  HashTable< NodeId, short int* >& dgInstNeed);
 
     /// The main recursion function
     NodeId _compute_(O4DGContext& currentSituation, Idx lastInstVarPos);

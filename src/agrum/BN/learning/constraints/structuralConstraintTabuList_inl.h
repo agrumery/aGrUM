@@ -47,9 +47,9 @@ namespace gum {
         while (_TabuList_changes_.size() < new_size) {
           --_TabuList_offset_;
           _TabuList_changes_.insert(
-             ArcAddition(std::numeric_limits< NodeId >::max() - _TabuList_offset_,
-                         std::numeric_limits< NodeId >::max()),
-             _TabuList_offset_);
+              ArcAddition(std::numeric_limits< NodeId >::max() - _TabuList_offset_,
+                          std::numeric_limits< NodeId >::max()),
+              _TabuList_offset_);
         }
       }
     }
@@ -77,25 +77,25 @@ namespace gum {
 
     /// checks whether the constraints enable to add an arc
     INLINE bool
-       StructuralConstraintTabuList::checkModificationAlone(const ArcAddition& change) const {
+        StructuralConstraintTabuList::checkModificationAlone(const ArcAddition& change) const {
       return checkArcAdditionAlone(change.node1(), change.node2());
     }
 
     /// checks whether the constraints enable to remove an arc
     INLINE bool
-       StructuralConstraintTabuList::checkModificationAlone(const ArcDeletion& change) const {
+        StructuralConstraintTabuList::checkModificationAlone(const ArcDeletion& change) const {
       return checkArcDeletionAlone(change.node1(), change.node2());
     }
 
     /// checks whether the constraints enable to reverse an arc
     INLINE bool
-       StructuralConstraintTabuList::checkModificationAlone(const ArcReversal& change) const {
+        StructuralConstraintTabuList::checkModificationAlone(const ArcReversal& change) const {
       return checkArcReversalAlone(change.node1(), change.node2());
     }
 
     /// checks whether the constraints enable to perform a graph change
     INLINE bool
-       StructuralConstraintTabuList::checkModificationAlone(const GraphChange& change) const {
+        StructuralConstraintTabuList::checkModificationAlone(const GraphChange& change) const {
       switch (change.type()) {
         case GraphChangeType::ARC_ADDITION :
           return checkArcAdditionAlone(change.node1(), change.node2());

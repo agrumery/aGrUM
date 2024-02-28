@@ -31,13 +31,13 @@
 #define GUM_ACTIVE_TEST(nom)   [[maybe_unused]] void test##nom()
 #define GUM_INACTIVE_TEST(nom) [[maybe_unused]] void inactive_test##nom()
 
-#define TS_GUM_ASSERT_THROWS_NOTHING(block)      \
-  TS_ASSERT_THROWS_NOTHING(                      \
-     try { block; } catch (gum::Exception & e) { \
-       GUM_TRACE_NEWLINE;                        \
-       GUM_SHOWERROR(e);                         \
-       TS_FAIL("gum::Exception thrown");         \
-     })
+#define TS_GUM_ASSERT_THROWS_NOTHING(block)       \
+  TS_ASSERT_THROWS_NOTHING(                       \
+      try { block; } catch (gum::Exception & e) { \
+        GUM_TRACE_NEWLINE;                        \
+        GUM_SHOWERROR(e);                         \
+        TS_FAIL("gum::Exception thrown");         \
+      })
 
 #define TS_GUM_POTENTIAL_DELTA(p1, p2, delta) TS_ASSERT_LESS_THAN(((p1) - (p2)).abs().max(), delta)
 

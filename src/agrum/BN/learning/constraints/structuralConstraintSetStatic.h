@@ -88,8 +88,8 @@ namespace gum {
     template < typename CONSTRAINT, typename SET1, typename... SETS >
     struct _IsInConstraintSet_< CONSTRAINT, _ConstraintSet_< SET1, SETS... > > {
       constexpr static bool value
-         = std::is_same< CONSTRAINT, SET1 >::value
-        || _IsInConstraintSet_< CONSTRAINT, _ConstraintSet_< SETS... > >::value;
+          = std::is_same< CONSTRAINT, SET1 >::value
+         || _IsInConstraintSet_< CONSTRAINT, _ConstraintSet_< SETS... > >::value;
     };
 
     // ============================================================================
@@ -106,11 +106,11 @@ namespace gum {
     template < typename FIRST_CONSTRAINT, typename... OTHER_CONSTRAINTS >
     struct _ConstraintSet_: public _ConstraintSet_< OTHER_CONSTRAINTS... > {
       using minset = typename std::conditional<
-         _IsInConstraintSet_< FIRST_CONSTRAINT, _ConstraintSet_< OTHER_CONSTRAINTS... > >::value,
-         typename _ConstraintSet_< OTHER_CONSTRAINTS... >::minset,
-         typename _ConcatConstraintSet_<
-            FIRST_CONSTRAINT,
-            typename _ConstraintSet_< OTHER_CONSTRAINTS... >::minset >::type >::type;
+          _IsInConstraintSet_< FIRST_CONSTRAINT, _ConstraintSet_< OTHER_CONSTRAINTS... > >::value,
+          typename _ConstraintSet_< OTHER_CONSTRAINTS... >::minset,
+          typename _ConcatConstraintSet_<
+              FIRST_CONSTRAINT,
+              typename _ConstraintSet_< OTHER_CONSTRAINTS... >::minset >::type >::type;
       using set = _StructuralConstraintSetStatic_< FIRST_CONSTRAINT, OTHER_CONSTRAINTS... >;
     };
 
@@ -175,12 +175,12 @@ namespace gum {
       // determines the set of all constraints in the set (included inherited
       // ones)
       using allConstraints = typename _ConcatConstraintSet_<
-         typename std::conditional<
-            std::is_base_of< _StructuralRoot_, CONSTRAINT1 >::value,
-            typename _ConcatConstraintSet_< CONSTRAINT1,
-                                            typename CONSTRAINT1::allConstraints >::type,
-            _ConstraintSet_< CONSTRAINT1 > >::type,
-         typename next_constraints::allConstraints >::type;
+          typename std::conditional<
+              std::is_base_of< _StructuralRoot_, CONSTRAINT1 >::value,
+              typename _ConcatConstraintSet_< CONSTRAINT1,
+                                              typename CONSTRAINT1::allConstraints >::type,
+              _ConstraintSet_< CONSTRAINT1 > >::type,
+          typename next_constraints::allConstraints >::type;
 
       /** @brief determines the minimal set of constraints included in the set
        * (removing duplicates)
@@ -202,7 +202,7 @@ namespace gum {
 
       /// copy constructor
       _StructuralConstraintSetStatic_(
-         const _StructuralConstraintSetStatic_< CONSTRAINT1, OTHER_CONSTRAINTS... >&);
+          const _StructuralConstraintSetStatic_< CONSTRAINT1, OTHER_CONSTRAINTS... >&);
 
       /// destructor
       ~_StructuralConstraintSetStatic_();
@@ -216,7 +216,7 @@ namespace gum {
 
       /// copy operator
       _StructuralConstraintSetStatic_< CONSTRAINT1, OTHER_CONSTRAINTS... >&
-         operator=(const _StructuralConstraintSetStatic_< CONSTRAINT1, OTHER_CONSTRAINTS... >&);
+          operator=(const _StructuralConstraintSetStatic_< CONSTRAINT1, OTHER_CONSTRAINTS... >&);
 
       /// @}
 
@@ -281,9 +281,9 @@ namespace gum {
       // determines the set of all constraints in the set (included inherited
       // ones). Rhis produces an  _ConstraintSet_. This type is to be used internally.
       using allConstraints = typename std::conditional<
-         std::is_base_of< _StructuralRoot_, CONSTRAINT >::value,
-         typename _ConcatConstraintSet_< CONSTRAINT, typename CONSTRAINT::allConstraints >::type,
-         _ConstraintSet_< CONSTRAINT > >::type;
+          std::is_base_of< _StructuralRoot_, CONSTRAINT >::value,
+          typename _ConcatConstraintSet_< CONSTRAINT, typename CONSTRAINT::allConstraints >::type,
+          _ConstraintSet_< CONSTRAINT > >::type;
 
       /** @brief determines the minimal set of constraints included in the set
        * (removing duplicates)
@@ -318,7 +318,7 @@ namespace gum {
 
       /// copy operator
       _StructuralConstraintSetStatic_< CONSTRAINT >&
-         operator=(const _StructuralConstraintSetStatic_< CONSTRAINT >&);
+          operator=(const _StructuralConstraintSetStatic_< CONSTRAINT >&);
 
       /// @}
 
@@ -404,8 +404,8 @@ namespace gum {
                                                         OTHER_CONSTRAINTS... >::minConstraints {
       public:
       using constraints =
-         typename _StructuralConstraintSetStatic_< CONSTRAINT1,
-                                                   OTHER_CONSTRAINTS... >::minConstraints;
+          typename _StructuralConstraintSetStatic_< CONSTRAINT1,
+                                                    OTHER_CONSTRAINTS... >::minConstraints;
 
       // ##########################################################################
       /// @name Constructors / Destructors
@@ -417,7 +417,7 @@ namespace gum {
 
       /// copy constructor
       StructuralConstraintSetStatic(
-         const StructuralConstraintSetStatic< CONSTRAINT1, OTHER_CONSTRAINTS... >&);
+          const StructuralConstraintSetStatic< CONSTRAINT1, OTHER_CONSTRAINTS... >&);
 
       /// destructor
       ~StructuralConstraintSetStatic();
@@ -431,7 +431,7 @@ namespace gum {
 
       /// copy operator
       StructuralConstraintSetStatic< CONSTRAINT1, OTHER_CONSTRAINTS... >&
-         operator=(const StructuralConstraintSetStatic< CONSTRAINT1, OTHER_CONSTRAINTS... >&);
+          operator=(const StructuralConstraintSetStatic< CONSTRAINT1, OTHER_CONSTRAINTS... >&);
 
       /// @}
 
@@ -513,7 +513,7 @@ namespace gum {
 
       /// copy operator
       StructuralConstraintSetStatic< CONSTRAINT >&
-         operator=(const StructuralConstraintSetStatic< CONSTRAINT >&);
+          operator=(const StructuralConstraintSetStatic< CONSTRAINT >&);
 
       /// @}
 

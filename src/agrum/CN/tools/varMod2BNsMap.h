@@ -175,7 +175,7 @@ namespace gum {
        * @return The vector of not yet constant pointers to the nets.
        */
       std::vector< std::vector< std::vector< std::vector< bool > > > >
-         getFullBNOptsFromKey(const std::vector< Size >& key);
+          getFullBNOptsFromKey(const std::vector< Size >& key);
 
       /** Get the number of IBayesNet stored. */
       Size getEntrySize() const;

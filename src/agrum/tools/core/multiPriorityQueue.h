@@ -194,14 +194,14 @@ namespace gum {
      * @param from The gum::MultiPriorityQueue to copy.
      */
     MultiPriorityQueue< Val, Priority, Cmp >&
-       operator=(const MultiPriorityQueue< Val, Priority, Cmp >& from);
+        operator=(const MultiPriorityQueue< Val, Priority, Cmp >& from);
 
     /**
      * @brief Move operator.
      * @param from The gum::MultiPriorityQueue to copy.
      */
     MultiPriorityQueue< Val, Priority, Cmp >&
-       operator=(MultiPriorityQueue< Val, Priority, Cmp >&& from);
+        operator=(MultiPriorityQueue< Val, Priority, Cmp >&& from);
 
     /**
      * @brief Returns the element at index "index_elt" from the priority queue.

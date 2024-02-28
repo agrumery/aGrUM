@@ -182,7 +182,7 @@ namespace gum_tests {
 
     GUM_ACTIVE_TEST(WeightedNaryTreeWithMultipleEvidence) {
       auto bn = gum::BayesNet< double >::fastPrototype(
-         "a[4]->d[8]->f[3];b->d->g[5];b->e[4]->h;c->e;i[10]->j[3]->h");
+          "a[4]->d[8]->f[3];b->d->g[5];b->e[4]->h;c->e;i[10]->j[3]->h");
       unsharpen(bn);
 
       try {
@@ -268,8 +268,8 @@ namespace gum_tests {
 
     GUM_ACTIVE_TEST(WeightedCplxBN) {
       auto bn = gum::BayesNet< double >::fastPrototype(
-         "a->d->f;b->d->g;b->e->h;c->e->g;i->j->h;c->j;x->c;x->j;",
-         3);
+          "a->d->f;b->d->g;b->e->h;c->e->g;i->j->h;c->j;x->c;x->j;",
+          3);
       unsharpen(bn);
 
       try {
@@ -394,8 +394,8 @@ namespace gum_tests {
 
     GUM_ACTIVE_TEST(EvidenceAsTargetOnCplxBN) {
       auto bn = gum::BayesNet< double >::fastPrototype(
-         "a->d->f;b->d->g;b->e->h;c->e->g;i->j->h;c->j;x->c;x->j;",
-         3);
+          "a->d->f;b->d->g;b->e->h;c->e->g;i->j->h;c->j;x->c;x->j;",
+          3);
       unsharpen(bn);
 
       try {

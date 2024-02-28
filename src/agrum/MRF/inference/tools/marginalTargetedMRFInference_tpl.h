@@ -32,7 +32,7 @@ namespace gum {
   // Default Constructor
   template < typename GUM_SCALAR >
   MarginalTargetedMRFInference< GUM_SCALAR >::MarginalTargetedMRFInference(
-     const IMarkovRandomField< GUM_SCALAR >* mn) :
+      const IMarkovRandomField< GUM_SCALAR >* mn) :
       MRFInference< GUM_SCALAR >(mn) {
     // assign a MRF if this has not been done before (due to virtual inheritance)
     if (this->hasNoModel_()) { MRFInference< GUM_SCALAR >::_setMRFDuringConstruction_(mn); }
@@ -81,7 +81,7 @@ namespace gum {
   // Add a single target to the list of targets
   template < typename GUM_SCALAR >
   INLINE bool
-     MarginalTargetedMRFInference< GUM_SCALAR >::isTarget(const std::string& nodeName) const {
+      MarginalTargetedMRFInference< GUM_SCALAR >::isTarget(const std::string& nodeName) const {
     return isTarget(this->MRF().idFromName(nodeName));
   }
 
@@ -214,7 +214,7 @@ namespace gum {
   // Compute the posterior of a node.
   template < typename GUM_SCALAR >
   const Potential< GUM_SCALAR >&
-     MarginalTargetedMRFInference< GUM_SCALAR >::posterior(NodeId node) {
+      MarginalTargetedMRFInference< GUM_SCALAR >::posterior(NodeId node) {
     if (this->hardEvidenceNodes().contains(node)) { return *(this->evidence()[node]); }
 
     if (!isTarget(node)) {
@@ -230,7 +230,7 @@ namespace gum {
   // Compute the posterior of a node.
   template < typename GUM_SCALAR >
   const Potential< GUM_SCALAR >&
-     MarginalTargetedMRFInference< GUM_SCALAR >::posterior(const std::string& nodeName) {
+      MarginalTargetedMRFInference< GUM_SCALAR >::posterior(const std::string& nodeName) {
     return posterior(this->MRF().idFromName(nodeName));
   }
 
@@ -252,7 +252,8 @@ namespace gum {
 
   template < typename GUM_SCALAR >
   Potential< GUM_SCALAR >
-     MarginalTargetedMRFInference< GUM_SCALAR >::evidenceImpact(NodeId target, const NodeSet& evs) {
+      MarginalTargetedMRFInference< GUM_SCALAR >::evidenceImpact(NodeId         target,
+                                                                 const NodeSet& evs) {
     const auto& vtarget = this->MRF().variable(target);
 
     if (evs.contains(target)) {
@@ -290,8 +291,8 @@ namespace gum {
 
   template < typename GUM_SCALAR >
   Potential< GUM_SCALAR > MarginalTargetedMRFInference< GUM_SCALAR >::evidenceImpact(
-     const std::string&                target,
-     const std::vector< std::string >& evs) {
+      const std::string&                target,
+      const std::vector< std::string >& evs) {
     const auto& mn = this->MRF();
     return evidenceImpact(mn.idFromName(target), mn.nodeset(evs));
   }

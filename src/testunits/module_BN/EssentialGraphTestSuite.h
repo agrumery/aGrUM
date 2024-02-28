@@ -61,7 +61,7 @@ namespace gum_tests {
 
     GUM_ACTIVE_TEST(Notebook1) {
       auto bn = gum::BayesNet< float >::fastPrototype(
-         "A->B->C->D;E->B;F->G->D;F->H->I;E->J->K->I->M;K->L");
+          "A->B->C->D;E->B;F->G->D;F->H->I;E->J->K->I->M;K->L");
       auto eg = gum::EssentialGraph(bn);
 
       TS_ASSERT_EQUALS(eg.size(), 13u)

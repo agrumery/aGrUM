@@ -61,7 +61,7 @@ namespace gum_tests {
       int         good_discr = 1;
       try {
         const gum::DiscretizedVariable< int >& xvar_discr
-           = dynamic_cast< const gum::DiscretizedVariable< int >& >(tr_var);
+            = dynamic_cast< const gum::DiscretizedVariable< int >& >(tr_var);
         TS_ASSERT_EQUALS(xvar_discr.domainSize(), (gum::Size)(gum::Size)2)
         TS_ASSERT_EQUALS(xvar_discr.label(0), "[1;3[")
         TS_ASSERT_EQUALS(xvar_discr.label(1), "[3;10]")
@@ -107,7 +107,7 @@ namespace gum_tests {
       TS_ASSERT_THROWS(translator3.translateBack(gum::learning::DBTranslatedValue{std::size_t{2}}),
                        const gum::UnknownLabelInDatabase&)
       TS_ASSERT(translator3.translateBack(
-                   gum::learning::DBTranslatedValue{std::numeric_limits< std::size_t >::max()})
+                    gum::learning::DBTranslatedValue{std::numeric_limits< std::size_t >::max()})
                 == "?");
 
       TS_ASSERT_EQUALS(translator3.domainSize(), (gum::Size)2)
@@ -137,8 +137,8 @@ namespace gum_tests {
         TS_ASSERT_EQUALS(translator.variable()->toString(), "X1:Discretized(<[1;2[,[2;3[,[3;4]>)")
 
         TS_ASSERT_EQUALS(
-           translator.translate(translator.translateBack(translator.translate("1"))).discr_val,
-           (std::size_t)0);
+            translator.translate(translator.translateBack(translator.translate("1"))).discr_val,
+            (std::size_t)0);
 
         gum::DiscretizedVariable< double > var2("X2", "");
         var2.addTick(1);
@@ -151,14 +151,14 @@ namespace gum_tests {
         TS_ASSERT_EQUALS(translator2.translate("2").discr_val, (std::size_t)1)
         TS_ASSERT_EQUALS(translator2.translate("4").discr_val, (std::size_t)2)
         TS_ASSERT_EQUALS(
-           translator2.translateBack(gum::learning::DBTranslatedValue{std::size_t{0}}),
-           "[1;2[");
+            translator2.translateBack(gum::learning::DBTranslatedValue{std::size_t{0}}),
+            "[1;2[");
         TS_ASSERT_EQUALS(
-           translator2.translateBack(gum::learning::DBTranslatedValue{std::size_t{1}}),
-           "[2;3[");
+            translator2.translateBack(gum::learning::DBTranslatedValue{std::size_t{1}}),
+            "[2;3[");
         TS_ASSERT_EQUALS(
-           translator2.translateBack(gum::learning::DBTranslatedValue{std::size_t{2}}),
-           "[3;4]");
+            translator2.translateBack(gum::learning::DBTranslatedValue{std::size_t{2}}),
+            "[3;4]");
         TS_ASSERT_EQUALS(translator2.variable()->toString(), "X2:Discretized(<[1;2[,[2;3[,[3;4]>)")
 
         gum::learning::DBTranslator4DiscretizedVariable translator3(translator);
@@ -166,14 +166,14 @@ namespace gum_tests {
         TS_ASSERT_EQUALS(translator3.translate("4").discr_val, (std::size_t)2)
         TS_ASSERT_EQUALS(translator3.translate("2").discr_val, (std::size_t)1)
         TS_ASSERT_EQUALS(
-           translator3.translateBack(gum::learning::DBTranslatedValue{std::size_t{0}}),
-           "[1;2[");
+            translator3.translateBack(gum::learning::DBTranslatedValue{std::size_t{0}}),
+            "[1;2[");
         TS_ASSERT_EQUALS(
-           translator3.translateBack(gum::learning::DBTranslatedValue{std::size_t{1}}),
-           "[2;3[");
+            translator3.translateBack(gum::learning::DBTranslatedValue{std::size_t{1}}),
+            "[2;3[");
         TS_ASSERT_EQUALS(
-           translator3.translateBack(gum::learning::DBTranslatedValue{std::size_t{2}}),
-           "[3;4]");
+            translator3.translateBack(gum::learning::DBTranslatedValue{std::size_t{2}}),
+            "[3;4]");
         TS_ASSERT_EQUALS(translator3.variable()->toString(), "X1:Discretized(<[1;2[,[2;3[,[3;4]>)")
 
         gum::learning::DBTranslator4DiscretizedVariable translator4(translator2);
@@ -181,14 +181,14 @@ namespace gum_tests {
         TS_ASSERT_EQUALS(translator4.translate("2").discr_val, (std::size_t)1)
         TS_ASSERT_EQUALS(translator4.translate("4").discr_val, (std::size_t)2)
         TS_ASSERT_EQUALS(
-           translator4.translateBack(gum::learning::DBTranslatedValue{std::size_t{0}}),
-           "[1;2[");
+            translator4.translateBack(gum::learning::DBTranslatedValue{std::size_t{0}}),
+            "[1;2[");
         TS_ASSERT_EQUALS(
-           translator4.translateBack(gum::learning::DBTranslatedValue{std::size_t{1}}),
-           "[2;3[");
+            translator4.translateBack(gum::learning::DBTranslatedValue{std::size_t{1}}),
+            "[2;3[");
         TS_ASSERT_EQUALS(
-           translator4.translateBack(gum::learning::DBTranslatedValue{std::size_t{2}}),
-           "[3;4]");
+            translator4.translateBack(gum::learning::DBTranslatedValue{std::size_t{2}}),
+            "[3;4]");
         TS_ASSERT_EQUALS(translator4.variable()->toString(), "X2:Discretized(<[1;2[,[2;3[,[3;4]>)")
 
         gum::learning::DBTranslator4DiscretizedVariable translator5(std::move(translator3));
@@ -196,14 +196,14 @@ namespace gum_tests {
         TS_ASSERT_EQUALS(translator5.translate("4").discr_val, (std::size_t)2)
         TS_ASSERT_EQUALS(translator5.translate("2").discr_val, (std::size_t)1)
         TS_ASSERT_EQUALS(
-           translator5.translateBack(gum::learning::DBTranslatedValue{std::size_t{0}}),
-           "[1;2[");
+            translator5.translateBack(gum::learning::DBTranslatedValue{std::size_t{0}}),
+            "[1;2[");
         TS_ASSERT_EQUALS(
-           translator5.translateBack(gum::learning::DBTranslatedValue{std::size_t{1}}),
-           "[2;3[");
+            translator5.translateBack(gum::learning::DBTranslatedValue{std::size_t{1}}),
+            "[2;3[");
         TS_ASSERT_EQUALS(
-           translator5.translateBack(gum::learning::DBTranslatedValue{std::size_t{2}}),
-           "[3;4]");
+            translator5.translateBack(gum::learning::DBTranslatedValue{std::size_t{2}}),
+            "[3;4]");
         TS_ASSERT_EQUALS(translator5.variable()->toString(), "X1:Discretized(<[1;2[,[2;3[,[3;4]>)")
 
         gum::learning::DBTranslator4DiscretizedVariable translator6(std::move(translator4));
@@ -211,14 +211,14 @@ namespace gum_tests {
         TS_ASSERT_EQUALS(translator6.translate("2").discr_val, (std::size_t)1)
         TS_ASSERT_EQUALS(translator6.translate("4").discr_val, (std::size_t)2)
         TS_ASSERT_EQUALS(
-           translator6.translateBack(gum::learning::DBTranslatedValue{std::size_t{0}}),
-           "[1;2[");
+            translator6.translateBack(gum::learning::DBTranslatedValue{std::size_t{0}}),
+            "[1;2[");
         TS_ASSERT_EQUALS(
-           translator6.translateBack(gum::learning::DBTranslatedValue{std::size_t{1}}),
-           "[2;3[");
+            translator6.translateBack(gum::learning::DBTranslatedValue{std::size_t{1}}),
+            "[2;3[");
         TS_ASSERT_EQUALS(
-           translator6.translateBack(gum::learning::DBTranslatedValue{std::size_t{2}}),
-           "[3;4]");
+            translator6.translateBack(gum::learning::DBTranslatedValue{std::size_t{2}}),
+            "[3;4]");
         TS_ASSERT_EQUALS(translator6.variable()->toString(), "X2:Discretized(<[1;2[,[2;3[,[3;4]>)")
 
         gum::learning::DBTranslator4DiscretizedVariable* translator7 = translator6.clone();
@@ -226,14 +226,14 @@ namespace gum_tests {
         TS_ASSERT_EQUALS(translator7->translate("2").discr_val, (std::size_t)1)
         TS_ASSERT_EQUALS(translator7->translate("4").discr_val, (std::size_t)2)
         TS_ASSERT_EQUALS(
-           translator7->translateBack(gum::learning::DBTranslatedValue{std::size_t{0}}),
-           "[1;2[");
+            translator7->translateBack(gum::learning::DBTranslatedValue{std::size_t{0}}),
+            "[1;2[");
         TS_ASSERT_EQUALS(
-           translator7->translateBack(gum::learning::DBTranslatedValue{std::size_t{1}}),
-           "[2;3[");
+            translator7->translateBack(gum::learning::DBTranslatedValue{std::size_t{1}}),
+            "[2;3[");
         TS_ASSERT_EQUALS(
-           translator7->translateBack(gum::learning::DBTranslatedValue{std::size_t{2}}),
-           "[3;4]");
+            translator7->translateBack(gum::learning::DBTranslatedValue{std::size_t{2}}),
+            "[3;4]");
         TS_ASSERT_EQUALS(translator7->variable()->toString(),
                          "X2:Discretized(<[1;2[,[2;3[,[3;4]>)");
 
@@ -245,14 +245,14 @@ namespace gum_tests {
         TS_ASSERT_EQUALS(translator4.translate("2").discr_val, (std::size_t)1)
         TS_ASSERT_EQUALS(translator4.translate("4").discr_val, (std::size_t)2)
         TS_ASSERT_EQUALS(
-           translator4.translateBack(gum::learning::DBTranslatedValue{std::size_t{0}}),
-           "[1;2[");
+            translator4.translateBack(gum::learning::DBTranslatedValue{std::size_t{0}}),
+            "[1;2[");
         TS_ASSERT_EQUALS(
-           translator4.translateBack(gum::learning::DBTranslatedValue{std::size_t{1}}),
-           "[2;3[");
+            translator4.translateBack(gum::learning::DBTranslatedValue{std::size_t{1}}),
+            "[2;3[");
         TS_ASSERT_EQUALS(
-           translator4.translateBack(gum::learning::DBTranslatedValue{std::size_t{2}}),
-           "[3;4]");
+            translator4.translateBack(gum::learning::DBTranslatedValue{std::size_t{2}}),
+            "[3;4]");
         TS_ASSERT_EQUALS(translator4.variable()->toString(), "X2:Discretized(<[1;2[,[2;3[,[3;4]>)")
 
         translator3 = translator5;
@@ -260,14 +260,14 @@ namespace gum_tests {
         TS_ASSERT_EQUALS(translator3.translate("2").discr_val, (std::size_t)1)
         TS_ASSERT_EQUALS(translator3.translate("4").discr_val, (std::size_t)2)
         TS_ASSERT_EQUALS(
-           translator3.translateBack(gum::learning::DBTranslatedValue{std::size_t{0}}),
-           "[1;2[");
+            translator3.translateBack(gum::learning::DBTranslatedValue{std::size_t{0}}),
+            "[1;2[");
         TS_ASSERT_EQUALS(
-           translator3.translateBack(gum::learning::DBTranslatedValue{std::size_t{1}}),
-           "[2;3[");
+            translator3.translateBack(gum::learning::DBTranslatedValue{std::size_t{1}}),
+            "[2;3[");
         TS_ASSERT_EQUALS(
-           translator3.translateBack(gum::learning::DBTranslatedValue{std::size_t{2}}),
-           "[3;4]");
+            translator3.translateBack(gum::learning::DBTranslatedValue{std::size_t{2}}),
+            "[3;4]");
         TS_ASSERT_EQUALS(translator3.variable()->toString(), "X1:Discretized(<[1;2[,[2;3[,[3;4]>)")
 
         translator5 = std::move(translator3);
@@ -275,14 +275,14 @@ namespace gum_tests {
         TS_ASSERT_EQUALS(translator5.translate("2").discr_val, (std::size_t)1)
         TS_ASSERT_EQUALS(translator5.translate("4").discr_val, (std::size_t)2)
         TS_ASSERT_EQUALS(
-           translator5.translateBack(gum::learning::DBTranslatedValue{std::size_t{0}}),
-           "[1;2[");
+            translator5.translateBack(gum::learning::DBTranslatedValue{std::size_t{0}}),
+            "[1;2[");
         TS_ASSERT_EQUALS(
-           translator5.translateBack(gum::learning::DBTranslatedValue{std::size_t{1}}),
-           "[2;3[");
+            translator5.translateBack(gum::learning::DBTranslatedValue{std::size_t{1}}),
+            "[2;3[");
         TS_ASSERT_EQUALS(
-           translator5.translateBack(gum::learning::DBTranslatedValue{std::size_t{2}}),
-           "[3;4]");
+            translator5.translateBack(gum::learning::DBTranslatedValue{std::size_t{2}}),
+            "[3;4]");
         TS_ASSERT_EQUALS(translator5.variable()->toString(), "X1:Discretized(<[1;2[,[2;3[,[3;4]>)")
       }
     }
@@ -453,7 +453,7 @@ namespace gum_tests {
                 == "[7;9]");
 
       std::string back = translator.translateBack(
-         gum::learning::DBTranslatedValue{std::numeric_limits< std::size_t >::max()});
+          gum::learning::DBTranslatedValue{std::numeric_limits< std::size_t >::max()});
       TS_ASSERT_EQUALS(back, *(translator.missingSymbols().begin()))
       gum::Set< std::string > missing_kept{"NA", "10", "?"};
       TS_ASSERT_EQUALS(translator.missingSymbols(), missing_kept)

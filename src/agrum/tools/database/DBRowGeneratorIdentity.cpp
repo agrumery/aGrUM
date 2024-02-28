@@ -40,7 +40,7 @@ namespace gum {
 
     /// default constructor
     DBRowGeneratorIdentity::DBRowGeneratorIdentity(
-       const std::vector< DBTranslatedValueType >& column_types) :
+        const std::vector< DBTranslatedValueType >& column_types) :
         DBRowGenerator(column_types, DBRowGeneratorGoal::OTHER_THINGS_THAN_REMOVE_MISSING_VALUES) {
       GUM_CONSTRUCTOR(DBRowGeneratorIdentity);
     }

@@ -603,7 +603,7 @@ namespace gum_tests {
         auto     or_inputs = new Reference("inputs", event, true);
         orGate.add(or_inputs);
         auto or_state
-           = new PRMAggregate("state", PRMAggregate::AggregateType::EXISTS, *_boolean_, 1);
+            = new PRMAggregate("state", PRMAggregate::AggregateType::EXISTS, *_boolean_, 1);
         orGate.add(or_state);
         gum::Sequence< gum::prm::PRMClassElement< double >* > or_seq;
         or_seq << &(orGate.get("inputs")) << &(event.get("state"));
@@ -615,7 +615,7 @@ namespace gum_tests {
         auto     and_inputs = new Reference("inputs", event, true);
         andGate.add(and_inputs);
         auto and_state
-           = new PRMAggregate("state", PRMAggregate::AggregateType::FORALL, *_boolean_, 1);
+            = new PRMAggregate("state", PRMAggregate::AggregateType::FORALL, *_boolean_, 1);
         andGate.add(and_state);
         gum::Sequence< gum::prm::PRMClassElement< double >* > and_seq;
         and_seq << and_inputs << &(event.get("state"));
@@ -628,7 +628,7 @@ namespace gum_tests {
         knGate.add(kn_inputs);
         PRMType intervalle(gum::LabelizedVariable("intervalle", "", 6));
         auto    nb_true
-           = new PRMAggregate("Nb_true", PRMAggregate::AggregateType::COUNT, *_boolean_, 1);
+            = new PRMAggregate("Nb_true", PRMAggregate::AggregateType::COUNT, *_boolean_, 1);
         knGate.add(nb_true);
         gum::Sequence< gum::prm::PRMClassElement< double >* > kn_seq;
         kn_seq << kn_inputs << &(event.get("state"));

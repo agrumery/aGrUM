@@ -85,7 +85,7 @@ namespace gum {
       }
 
       void
-         O3PRM_TYPE_UNKNOWN_LABEL(const O3Label& type, const O3Label& l, ErrorsContainer& errors) {
+          O3PRM_TYPE_UNKNOWN_LABEL(const O3Label& type, const O3Label& l, ErrorsContainer& errors) {
         const auto&       pos = l.position();
         std::stringstream msg;
         msg << "Error : "
@@ -207,8 +207,9 @@ namespace gum {
         errors.addError(msg.str(), pos.file(), pos.line(), pos.column());
       }
 
-      void
-         O3PRM_CLASS_SELF_REFERENCE(const O3Label& c, const O3Label& ref, ErrorsContainer& errors) {
+      void O3PRM_CLASS_SELF_REFERENCE(const O3Label&   c,
+                                      const O3Label&   ref,
+                                      ErrorsContainer& errors) {
         const auto&       pos = ref.position();
         std::stringstream msg;
         msg << "Error : "

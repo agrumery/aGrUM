@@ -47,7 +47,7 @@ namespace gum {
 
       // if there are multiple threads, compute the ranges of rows they should process
       const std::vector< std::pair< std::size_t, std::size_t > > ranges
-         = this->rangesProcessingThreads_(nb_threads);
+          = this->rangesProcessingThreads_(nb_threads);
 
       // here, we shall create the threads, but also one std::exception_ptr
       // for each thread. This will allow us to catch the exception raised

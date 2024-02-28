@@ -72,7 +72,7 @@ namespace gum_tests {
       TS_GUM_ASSERT_THROWS_NOTHING(prm->getSystem("aSys").groundedBN(bn_factory))
       TS_GUM_ASSERT_THROWS_NOTHING(ve = new gum::VariableElimination< double >(&bn))
       TS_GUM_ASSERT_THROWS_NOTHING(
-         g_ve = new gum::prm::GroundedInference< double >(*prm, prm->getSystem("aSys")));
+          g_ve = new gum::prm::GroundedInference< double >(*prm, prm->getSystem("aSys")));
       TS_GUM_ASSERT_THROWS_NOTHING(g_ve->setBNInference(ve))
       const gum::prm::PRMInstance< double >&  instance  = prm->getSystem("aSys").get("c1");
       const gum::prm::PRMAttribute< double >& attribute = instance.get("can_print");
@@ -97,7 +97,7 @@ namespace gum_tests {
       TS_GUM_ASSERT_THROWS_NOTHING(small->getSystem("microSys").groundedBN(bn_factory))
       TS_GUM_ASSERT_THROWS_NOTHING(ve = new gum::VariableElimination< double >(&bn))
       TS_GUM_ASSERT_THROWS_NOTHING(
-         g_ve = new gum::prm::GroundedInference< double >(*small, small->getSystem("microSys")));
+          g_ve = new gum::prm::GroundedInference< double >(*small, small->getSystem("microSys")));
       TS_GUM_ASSERT_THROWS_NOTHING(g_ve->setBNInference(ve))
       // Building query
       {
@@ -142,7 +142,7 @@ namespace gum_tests {
     GUM_ACTIVE_TEST(SmallSVEInference) {
       gum::prm::SVE< double >* sve = 0;
       TS_GUM_ASSERT_THROWS_NOTHING(
-         sve = new gum::prm::SVE< double >(*small, small->getSystem("microSys")));
+          sve = new gum::prm::SVE< double >(*small, small->getSystem("microSys")));
       {
         gum::BayesNet< double >        bn;
         gum::BayesNetFactory< double > bn_factory(&bn);
@@ -196,7 +196,7 @@ namespace gum_tests {
     GUM_ACTIVE_TEST(SmallSVEDInference) {
       gum::prm::SVED< double >* sved = 0;
       TS_GUM_ASSERT_THROWS_NOTHING(
-         sved = new gum::prm::SVED< double >(*small, small->getSystem("microSys")));
+          sved = new gum::prm::SVED< double >(*small, small->getSystem("microSys")));
       {
         const gum::prm::PRMInstance< double >&  instance  = small->getSystem("microSys").get("c");
         const gum::prm::PRMAttribute< double >& attribute = instance.get("can_print");
@@ -239,7 +239,7 @@ namespace gum_tests {
     GUM_ACTIVE_TEST(SmallStructInference) {
       gum::prm::StructuredInference< double >* inf = 0;
       TS_GUM_ASSERT_THROWS_NOTHING(
-         inf = new gum::prm::StructuredInference< double >(*small, small->getSystem("microSys")));
+          inf = new gum::prm::StructuredInference< double >(*small, small->getSystem("microSys")));
       {
         const gum::prm::PRMInstance< double >&  instance  = small->getSystem("microSys").get("c");
         const gum::prm::PRMAttribute< double >& attribute = instance.get("can_print");
@@ -290,10 +290,10 @@ namespace gum_tests {
       TS_GUM_ASSERT_THROWS_NOTHING(ve = new gum::VariableElimination< double >(&bn))
       TS_GUM_ASSERT_THROWS_NOTHING(ss = new gum::ShaferShenoyInference< double >(&bn))
       TS_GUM_ASSERT_THROWS_NOTHING(
-         g_ve = new gum::prm::GroundedInference< double >(*prm, prm->getSystem("aSys")));
+          g_ve = new gum::prm::GroundedInference< double >(*prm, prm->getSystem("aSys")));
       TS_GUM_ASSERT_THROWS_NOTHING(g_ve->setBNInference(ve))
       TS_GUM_ASSERT_THROWS_NOTHING(
-         g_ss = new gum::prm::GroundedInference< double >(*prm, prm->getSystem("aSys")));
+          g_ss = new gum::prm::GroundedInference< double >(*prm, prm->getSystem("aSys")));
       TS_GUM_ASSERT_THROWS_NOTHING(g_ss->setBNInference(ss))
 
       for (const auto node: bn.nodes()) {
@@ -302,9 +302,9 @@ namespace gum_tests {
         try {
           size_t pos = bn.variableNodeMap().name(node).find_first_of('.');
           const gum::prm::PRMInstance< double >& instance
-             = prm->getSystem("aSys").get(bn.variableNodeMap().name(node).substr(0, pos));
+              = prm->getSystem("aSys").get(bn.variableNodeMap().name(node).substr(0, pos));
           const gum::prm::PRMAttribute< double >& attribute
-             = instance.get(bn.variableNodeMap().name(node).substr(pos + 1));
+              = instance.get(bn.variableNodeMap().name(node).substr(pos + 1));
           gum::prm::PRMInference< double >::Chain chain = std::make_pair(&instance, &attribute);
           std::string                             dot   = ".";
           g_ve->posterior(chain, m_ve);
@@ -368,12 +368,12 @@ namespace gum_tests {
       TS_GUM_ASSERT_THROWS_NOTHING(prm->getSystem("aSys").groundedBN(bn_factory))
       TS_GUM_ASSERT_THROWS_NOTHING(ve = new gum::VariableElimination< double >(&bn))
       TS_GUM_ASSERT_THROWS_NOTHING(
-         g_ve = new gum::prm::GroundedInference< double >(*prm, prm->getSystem("aSys")));
+          g_ve = new gum::prm::GroundedInference< double >(*prm, prm->getSystem("aSys")));
       TS_GUM_ASSERT_THROWS_NOTHING(g_ve->setBNInference(ve))
       // Adding evidence
       {
         const gum::prm::PRMInstance< double >& instance
-           = prm->getSystem("aSys").get("bw_printers[0]");
+            = prm->getSystem("aSys").get("bw_printers[0]");
         const gum::prm::PRMAttribute< double >& attribute = instance.get("(t_degraded)equipState");
         gum::Potential< double >                e;
         e.add(attribute.type().variable());
@@ -422,7 +422,7 @@ namespace gum_tests {
       }
       {
         const gum::prm::PRMInstance< double >& instance
-           = prm->getSystem("aSys").get("bw_printers[0]");
+            = prm->getSystem("aSys").get("bw_printers[0]");
         const gum::prm::PRMAttribute< double >& attribute = instance.get("(t_degraded)equipState");
         gum::prm::PRMInference< double >::Chain chain     = std::make_pair(&instance, &attribute);
         TS_GUM_ASSERT_THROWS_NOTHING(g_ve->removeEvidence(chain))
@@ -450,7 +450,7 @@ namespace gum_tests {
       // Adding evidence
       {
         const gum::prm::PRMInstance< double >& instance
-           = prm->getSystem("aSys").get("bw_printers[0]");
+            = prm->getSystem("aSys").get("bw_printers[0]");
         const gum::prm::PRMAttribute< double >& attribute = instance.get("(t_degraded)equipState");
         gum::Potential< double >                e;
         e.add(attribute.type().variable());
@@ -500,7 +500,7 @@ namespace gum_tests {
       }
       {
         const gum::prm::PRMInstance< double >& instance
-           = prm->getSystem("aSys").get("bw_printers[0]");
+            = prm->getSystem("aSys").get("bw_printers[0]");
         const gum::prm::PRMAttribute< double >& attribute = instance.get("(t_degraded)equipState");
         gum::prm::PRMInference< double >::Chain chain     = std::make_pair(&instance, &attribute);
         TS_GUM_ASSERT_THROWS_NOTHING(g_ve->removeEvidence(chain))
@@ -544,7 +544,7 @@ namespace gum_tests {
       // Adding evidence
       {
         const gum::prm::PRMInstance< double >& instance
-           = prm->getSystem("aSys").get("bw_printers[0]");
+            = prm->getSystem("aSys").get("bw_printers[0]");
         const gum::prm::PRMAttribute< double >& attribute = instance.get("(t_degraded)equipState");
         gum::Potential< double >                e;
         e.add(attribute.type().variable());
@@ -593,7 +593,7 @@ namespace gum_tests {
       }
       {
         const gum::prm::PRMInstance< double >& instance
-           = prm->getSystem("aSys").get("bw_printers[0]");
+            = prm->getSystem("aSys").get("bw_printers[0]");
         const gum::prm::PRMAttribute< double >& attribute = instance.get("(t_degraded)equipState");
         gum::prm::PRMInference< double >::Chain chain     = std::make_pair(&instance, &attribute);
         TS_GUM_ASSERT_THROWS_NOTHING(g_ve->removeEvidence(chain))

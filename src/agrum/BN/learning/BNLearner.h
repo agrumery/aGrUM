@@ -285,7 +285,7 @@ namespace gum {
       }
 
       BNLearner< GUM_SCALAR >&
-         setSliceOrder(const std::vector< std::vector< std::string > >& slices) {
+          setSliceOrder(const std::vector< std::vector< std::string > >& slices) {
         IBNLearner::setSliceOrder(slices);
         return *this;
       }

@@ -48,8 +48,8 @@ namespace gum {
   // Copy constructor using a bijection to replace variables from source.
   template < typename GUM_SCALAR >
   INLINE MultiDimLogit< GUM_SCALAR >::MultiDimLogit(
-     const Bijection< const DiscreteVariable*, const DiscreteVariable* >& bij,
-     const MultiDimLogit< GUM_SCALAR >&                                   from) :
+      const Bijection< const DiscreteVariable*, const DiscreteVariable* >& bij,
+      const MultiDimLogit< GUM_SCALAR >&                                   from) :
       MultiDimICIModel< GUM_SCALAR >(bij, from) {
     GUM_CONSTRUCTOR(MultiDimLogit);
   }

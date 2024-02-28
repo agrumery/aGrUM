@@ -286,8 +286,8 @@ namespace gum_tests {
       TS_ASSERT_EQUALS(database.content().size(), (gum::Size)3)
 
       std::vector< gum::learning::RawDatabaseTable::IsMissing > is_miss(
-         4,
-         gum::learning::RawDatabaseTable::IsMissing::False);
+          4,
+          gum::learning::RawDatabaseTable::IsMissing::False);
       database.insertRows(std::vector< gum::learning::DBRow< gum::learning::DBCell > >(4, row),
                           is_miss);
       TS_ASSERT_EQUALS(database.content().size(), (gum::Size)7)
@@ -343,8 +343,8 @@ namespace gum_tests {
       TS_ASSERT_THROWS(database2.insertRow(row2, xmiss), const gum::SizeError&)
 
       std::vector< gum::learning::RawDatabaseTable::IsMissing > is_miss(
-         2,
-         gum::learning::RawDatabaseTable::IsMissing::False);
+          2,
+          gum::learning::RawDatabaseTable::IsMissing::False);
       gum::learning::DBRow< gum::learning::DBCell > row3(3, gum::learning::DBCell(4), 1.0f);
       gum::learning::DBRow< gum::learning::DBCell > row4(3, gum::learning::DBCell(5), 1.0f);
       database2.insertRows({row3, row4}, is_miss);
@@ -409,8 +409,8 @@ namespace gum_tests {
       TS_ASSERT_EQUALS(database.content().size(), (gum::Size)4)
 
       std::vector< gum::learning::RawDatabaseTable::IsMissing > is_miss(
-         2,
-         gum::learning::RawDatabaseTable::IsMissing::False);
+          2,
+          gum::learning::RawDatabaseTable::IsMissing::False);
       gum::learning::DBRow< gum::learning::DBCell > row3(3, gum::learning::DBCell(4), 1.0f);
       gum::learning::DBRow< gum::learning::DBCell > row4(3, gum::learning::DBCell(5), 1.0f);
       database.insertRows({row3, row4}, is_miss);
@@ -494,8 +494,8 @@ namespace gum_tests {
       TS_ASSERT_EQUALS(database.content().size(), (gum::Size)4)
 
       std::vector< gum::learning::RawDatabaseTable::IsMissing > is_miss(
-         2,
-         gum::learning::RawDatabaseTable::IsMissing::False);
+          2,
+          gum::learning::RawDatabaseTable::IsMissing::False);
       gum::learning::DBRow< gum::learning::DBCell > row3(3, gum::learning::DBCell(4), 1.0f);
       gum::learning::DBRow< gum::learning::DBCell > row4(3, gum::learning::DBCell(5), 1.0f);
       database.insertRows({row3, row4}, is_miss);
@@ -547,8 +547,8 @@ namespace gum_tests {
       TS_ASSERT_EQUALS(database.content().size(), (gum::Size)4)
 
       std::vector< gum::learning::RawDatabaseTable::IsMissing > is_miss(
-         2,
-         gum::learning::RawDatabaseTable::IsMissing::False);
+          2,
+          gum::learning::RawDatabaseTable::IsMissing::False);
       gum::learning::DBRow< gum::learning::DBCell > row3(3, gum::learning::DBCell(4), 1.0f);
       gum::learning::DBRow< gum::learning::DBCell > row4(3, gum::learning::DBCell(5), 1.0f);
       database.insertRows({row3, row4}, is_miss);
@@ -639,8 +639,8 @@ namespace gum_tests {
       TS_ASSERT_EQUALS(nb_col2, 8)
 
       std::vector< gum::learning::RawDatabaseTable::IsMissing > is_miss(
-         2,
-         gum::learning::RawDatabaseTable::IsMissing::False);
+          2,
+          gum::learning::RawDatabaseTable::IsMissing::False);
       gum::learning::DBRow< gum::learning::DBCell > row3(3, gum::learning::DBCell(4), 1.0f);
       gum::learning::DBRow< gum::learning::DBCell > row4(3, gum::learning::DBCell(5), 1.0f);
       database.insertRows({row3, row4}, is_miss);

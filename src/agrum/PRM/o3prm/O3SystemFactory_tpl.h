@@ -45,7 +45,7 @@ namespace gum {
 
       template < typename GUM_SCALAR >
       INLINE
-         O3SystemFactory< GUM_SCALAR >::O3SystemFactory(const O3SystemFactory< GUM_SCALAR >& src) :
+          O3SystemFactory< GUM_SCALAR >::O3SystemFactory(const O3SystemFactory< GUM_SCALAR >& src) :
           _prm_(src._prm_),
           _o3_prm_(src._o3_prm_), _solver_(src._solver_), _errors_(src._errors_),
           _nameMap_(src._nameMap_) {
@@ -213,8 +213,8 @@ namespace gum {
 
       template < typename GUM_SCALAR >
       INLINE bool
-         O3SystemFactory< GUM_SCALAR >::_checkParameters_(const PRMClass< GUM_SCALAR >& type,
-                                                          const O3Instance&             inst) {
+          O3SystemFactory< GUM_SCALAR >::_checkParameters_(const PRMClass< GUM_SCALAR >& type,
+                                                           const O3Instance&             inst) {
         for (const auto& param: inst.parameters()) {
           if (!type.exists(param.name().label())) {
             O3PRM_SYSTEM_PARAMETER_NOT_FOUND(param, *_errors_);
@@ -227,7 +227,7 @@ namespace gum {
           }
 
           const auto& type_param
-             = static_cast< const PRMParameter< GUM_SCALAR >& >(type.get(param.name().label()));
+              = static_cast< const PRMParameter< GUM_SCALAR >& >(type.get(param.name().label()));
 
           switch (type_param.valueType()) {
             case PRMParameter< GUM_SCALAR >::ParameterType::INT : {
@@ -278,7 +278,7 @@ namespace gum {
           }
 
           const auto& real_ref
-             = static_cast< const PRMReferenceSlot< GUM_SCALAR >& >(type.get(ref));
+              = static_cast< const PRMReferenceSlot< GUM_SCALAR >& >(type.get(ref));
 
           if (!_nameMap_.exists(ass.rightInstance().label())) {
             O3PRM_SYSTEM_INSTANCE_NOT_FOUND(ass.rightInstance(), *_errors_);
@@ -323,7 +323,7 @@ namespace gum {
           }
 
           const auto& real_ref
-             = static_cast< const PRMReferenceSlot< GUM_SCALAR >& >(type.get(ref));
+              = static_cast< const PRMReferenceSlot< GUM_SCALAR >& >(type.get(ref));
 
           if (!real_ref.isArray()) {
             O3PRM_SYSTEM_NOT_AN_ARRAY(inc.leftReference(), *_errors_);

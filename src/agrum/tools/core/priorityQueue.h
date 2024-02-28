@@ -156,7 +156,7 @@ namespace gum {
      * @return Returns this gum::PriorityQueueImplementation.
      */
     PriorityQueueImplementation< Val, Priority, Cmp, Gen >&
-       operator=(const PriorityQueueImplementation< Val, Priority, Cmp, Gen >& from);
+        operator=(const PriorityQueueImplementation< Val, Priority, Cmp, Gen >& from);
 
     /**
      * @brief Move operator.
@@ -165,7 +165,7 @@ namespace gum {
      * @return Returns this gum::PriorityQueueImplementation.
      */
     PriorityQueueImplementation< Val, Priority, Cmp, Gen >&
-       operator=(PriorityQueueImplementation< Val, Priority, Cmp, Gen >&& from);
+        operator=(PriorityQueueImplementation< Val, Priority, Cmp, Gen >&& from);
 
     /**
      * @brief Returns the element at index "index_elt" from the priority queue.
@@ -494,7 +494,7 @@ namespace gum {
      * @param from The gum::PriorityQueueImplementation to copy.
      */
     PriorityQueueImplementation(
-       const PriorityQueueImplementation< Val, Priority, Cmp, true >& from);
+        const PriorityQueueImplementation< Val, Priority, Cmp, true >& from);
 
     /**
      * @brief Move constructor.
@@ -527,7 +527,7 @@ namespace gum {
      * @return Returns this gum::PriorityQueueImplementation.
      */
     PriorityQueueImplementation< Val, Priority, Cmp, true >&
-       operator=(const PriorityQueueImplementation< Val, Priority, Cmp, true >& from);
+        operator=(const PriorityQueueImplementation< Val, Priority, Cmp, true >& from);
 
     /**
      * @brief Move operator.
@@ -536,7 +536,7 @@ namespace gum {
      * @return Returns this gum::PriorityQueueImplementation.
      */
     PriorityQueueImplementation< Val, Priority, Cmp, true >&
-       operator=(PriorityQueueImplementation< Val, Priority, Cmp, true >&& from);
+        operator=(PriorityQueueImplementation< Val, Priority, Cmp, true >&& from);
 
     /**
      * @brief Returns the element at index "index_elt" from the priority queue.
@@ -874,7 +874,7 @@ namespace gum {
     /// @}
 
     using Implementation
-       = PriorityQueueImplementation< Val, Priority, Cmp, std::is_scalar< Val >::value >;
+        = PriorityQueueImplementation< Val, Priority, Cmp, std::is_scalar< Val >::value >;
 
     // ============================================================================
     /// @name Constructors / Destructors

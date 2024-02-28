@@ -49,7 +49,7 @@ namespace gum_tests {
     GUM_ACTIVE_TEST(ConstructorDestructor) {
       gum::prm::gspan::InterfaceGraph< double >* ig = 0;
       TS_GUM_ASSERT_THROWS_NOTHING(
-         ig = new gum::prm::gspan::InterfaceGraph< double >(_prm_->getSystem("microSys")));
+          ig = new gum::prm::gspan::InterfaceGraph< double >(_prm_->getSystem("microSys")));
       TS_GUM_ASSERT_THROWS_NOTHING(delete ig)
     }
 
@@ -167,16 +167,16 @@ namespace gum_tests {
       for (int i = 0; i < 2; ++i, ++edge_count) {
         for (int j = 0; j < 4; ++j, ++edge_count) {
           TS_ASSERT(
-             ig->graph().existsEdge(ig->id(m.get(getPrinter(i))), ig->id(m.get(getComputer(j)))));
+              ig->graph().existsEdge(ig->id(m.get(getPrinter(i))), ig->id(m.get(getComputer(j)))));
         }
 
-        TS_ASSERT(
-           ig->graph().existsEdge(ig->id(m.get(getPrinter(i))), ig->id(m.get("another_computer"))));
+        TS_ASSERT(ig->graph().existsEdge(ig->id(m.get(getPrinter(i))),
+                                         ig->id(m.get("another_computer"))));
       }
 
       for (int i = 0; i < 4; ++i, ++edge_count) {
-        TS_ASSERT(
-           ig->graph().existsEdge(ig->id(m.get("another_printer")), ig->id(m.get(getComputer(i)))));
+        TS_ASSERT(ig->graph().existsEdge(ig->id(m.get("another_printer")),
+                                         ig->id(m.get(getComputer(i)))));
       }
 
       TS_ASSERT(ig->graph().existsEdge(ig->id(m.get("another_printer")),
@@ -209,12 +209,12 @@ namespace gum_tests {
                        (gum::Size)3);
       edge_count += 3;
       TS_ASSERT_EQUALS(
-         ig->size(ig->edge(ig->id(m.get("pow")), ig->id(m.get("another_computer"))).l),
-         (gum::Size)5);
+          ig->size(ig->edge(ig->id(m.get("pow")), ig->id(m.get("another_computer"))).l),
+          (gum::Size)5);
       edge_count += 5;
       TS_ASSERT_EQUALS(
-         ig->size(ig->edge(ig->id(m.get("another_printer")), ig->id(m.get("another_computer"))).l),
-         (gum::Size)15);
+          ig->size(ig->edge(ig->id(m.get("another_printer")), ig->id(m.get("another_computer"))).l),
+          (gum::Size)15);
       edge_count += 15;
       TS_ASSERT_EQUALS(ig->graph().sizeEdges(), (gum::Size)edge_count)
       TS_GUM_ASSERT_THROWS_NOTHING(delete ig)

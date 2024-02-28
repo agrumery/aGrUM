@@ -81,10 +81,10 @@ namespace gum_tests {
       }
 
       gum::learning::GraphChangesGenerator4K2< decltype(struct_constraint) > op_set(
-         struct_constraint);
+          struct_constraint);
 
       gum::learning::GraphChangesSelector4DiGraph< decltype(struct_constraint), decltype(op_set) >
-         selector(score, struct_constraint, op_set);
+          selector(score, struct_constraint, op_set);
 
       gum::learning::K2 k2;
       k2.setOrder(order);

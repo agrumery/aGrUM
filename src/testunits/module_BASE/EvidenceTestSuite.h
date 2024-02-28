@@ -78,8 +78,9 @@ namespace gum_tests {
     }
 
     GUM_ACTIVE_TEST(Likelihood) {
-      const auto bn = gum::BayesNet< double >::fastPrototype(
-       "A[10];B[1,10];C{1.0:20.0:10};D{1:100:10};E[1.0:20.0:10];X{A1|A2|A3|A4|A5|A6|A7|A8|A9|A10}");
+      const auto bn
+          = gum::BayesNet< double >::fastPrototype("A[10];B[1,10];C{1.0:20.0:10};D{1:100:10};E[1.0:"
+                                                   "20.0:10];X{A1|A2|A3|A4|A5|A6|A7|A8|A9|A10}");
       for (auto i: bn.nodes()) {
         TS_ASSERT_EQUALS(bn.variable(i).domainSize(), 10)
       }

@@ -32,7 +32,7 @@ namespace gum {
   // Default Constructor
   template < typename GUM_SCALAR >
   MarginalTargetedInference< GUM_SCALAR >::MarginalTargetedInference(
-     const IBayesNet< GUM_SCALAR >* bn) :
+      const IBayesNet< GUM_SCALAR >* bn) :
       BayesNetInference< GUM_SCALAR >(bn) {
     // assign a BN if this has not been done before (due to virtual inheritance)
     if (this->hasNoModel_()) {
@@ -236,7 +236,7 @@ namespace gum {
   // Compute the posterior of a node.
   template < typename GUM_SCALAR >
   const Potential< GUM_SCALAR >&
-     MarginalTargetedInference< GUM_SCALAR >::posterior(const std::string& nodeName) {
+      MarginalTargetedInference< GUM_SCALAR >::posterior(const std::string& nodeName) {
     return posterior(this->BN().idFromName(nodeName));
   }
 
@@ -258,7 +258,7 @@ namespace gum {
 
   template < typename GUM_SCALAR >
   Potential< GUM_SCALAR >
-     MarginalTargetedInference< GUM_SCALAR >::evidenceImpact(NodeId target, const NodeSet& evs) {
+      MarginalTargetedInference< GUM_SCALAR >::evidenceImpact(NodeId target, const NodeSet& evs) {
     const auto& vtarget = this->BN().variable(target);
 
     if (evs.contains(target)) {
@@ -297,8 +297,8 @@ namespace gum {
 
   template < typename GUM_SCALAR >
   Potential< GUM_SCALAR > MarginalTargetedInference< GUM_SCALAR >::evidenceImpact(
-     const std::string&                target,
-     const std::vector< std::string >& evs) {
+      const std::string&                target,
+      const std::vector< std::string >& evs) {
     const auto& bn = this->BN();
     return evidenceImpact(bn.idFromName(target), bn.nodeset(evs));
   }

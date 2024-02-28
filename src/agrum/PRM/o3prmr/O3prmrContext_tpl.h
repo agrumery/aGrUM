@@ -95,7 +95,7 @@ namespace gum {
 
       template < typename GUM_SCALAR >
       void
-         O3prmrContext< GUM_SCALAR >::addImport(int line, const std::string& import, bool ismain) {
+          O3prmrContext< GUM_SCALAR >::addImport(int line, const std::string& import, bool ismain) {
         m_imports.push_back(new ImportCommand(line, import, import));
 
         if (ismain) m_mainImport = m_imports.back();
@@ -226,17 +226,17 @@ namespace gum {
 
           case O3prmrCommand::RequestType::Observe :
             m_commands.push_back(
-               new ObserveCommand< GUM_SCALAR >(*(ObserveCommand< GUM_SCALAR >*)command));
+                new ObserveCommand< GUM_SCALAR >(*(ObserveCommand< GUM_SCALAR >*)command));
             break;
 
           case O3prmrCommand::RequestType::Unobserve :
             m_commands.push_back(
-               new UnobserveCommand< GUM_SCALAR >(*(UnobserveCommand< GUM_SCALAR >*)command));
+                new UnobserveCommand< GUM_SCALAR >(*(UnobserveCommand< GUM_SCALAR >*)command));
             break;
 
           case O3prmrCommand::RequestType::Query :
             m_commands.push_back(
-               new QueryCommand< GUM_SCALAR >(*(QueryCommand< GUM_SCALAR >*)command));
+                new QueryCommand< GUM_SCALAR >(*(QueryCommand< GUM_SCALAR >*)command));
             break;
         }
       }
@@ -261,7 +261,7 @@ namespace gum {
 
       template < typename GUM_SCALAR >
       O3prmrSession< GUM_SCALAR >&
-         O3prmrSession< GUM_SCALAR >::operator+=(const O3prmrSession< GUM_SCALAR >& c) {
+          O3prmrSession< GUM_SCALAR >::operator+=(const O3prmrSession< GUM_SCALAR >& c) {
         for (std::vector< O3prmrCommand* >::const_iterator i = c.m_commands.begin();
              i < c.m_commands.end();
              i++)

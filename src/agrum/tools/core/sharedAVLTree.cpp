@@ -36,13 +36,13 @@ namespace gum {
   // constinit keyword rather than constexpr because, in debugging mode, the
   // iterators' destructors cannot be declared as constepxr.
   constinit const SharedAVLTreeIterator< int, std::less< int > >
-     _static_SharedAVLTree_end_(StaticInitializer::CONSTINIT);
+      _static_SharedAVLTree_end_(StaticInitializer::CONSTINIT);
   constinit const SharedAVLTreeReverseIterator< int, std::less< int > >
-     _static_SharedAVLTree_rend_(StaticInitializer::CONSTINIT);
+      _static_SharedAVLTree_rend_(StaticInitializer::CONSTINIT);
   constinit const SharedAVLTreeIteratorSafe< int, std::less< int > >
-     _static_SharedAVLTree_end_safe_(StaticInitializer::CONSTINIT);
+      _static_SharedAVLTree_end_safe_(StaticInitializer::CONSTINIT);
   constinit const SharedAVLTreeReverseIteratorSafe< int, std::less< int > >
-     _static_SharedAVLTree_rend_safe_(StaticInitializer::CONSTINIT);
+      _static_SharedAVLTree_rend_safe_(StaticInitializer::CONSTINIT);
 
 }   // namespace gum
 

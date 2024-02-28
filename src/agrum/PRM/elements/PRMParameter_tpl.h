@@ -48,7 +48,7 @@ namespace gum {
 
     template < typename GUM_SCALAR >
     PRMParameter< GUM_SCALAR >&
-       PRMParameter< GUM_SCALAR >::operator=(const PRMParameter< GUM_SCALAR >& from) {
+        PRMParameter< GUM_SCALAR >::operator=(const PRMParameter< GUM_SCALAR >& from) {
       GUM_ERROR(OperationNotAllowed, "cannot copy Paramter<GUM_SCALAR")
     }
 
@@ -59,7 +59,7 @@ namespace gum {
 
     template < typename GUM_SCALAR >
     typename PRMClassElement< GUM_SCALAR >::ClassElementType
-       PRMParameter< GUM_SCALAR >::elt_type() const {
+        PRMParameter< GUM_SCALAR >::elt_type() const {
       return PRMClassElement< GUM_SCALAR >::ClassElementType::prm_parameter;
     }
 
@@ -75,7 +75,7 @@ namespace gum {
 
     template < typename GUM_SCALAR >
     typename PRMParameter< GUM_SCALAR >::ParameterType
-       PRMParameter< GUM_SCALAR >::valueType() const {
+        PRMParameter< GUM_SCALAR >::valueType() const {
       return _type_;
     }
 

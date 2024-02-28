@@ -72,8 +72,8 @@ namespace gum {
 
   template < typename GUM_SCALAR >
   GUM_SCALAR
-     MultiDimArray< GUM_SCALAR >::reduce(std::function< GUM_SCALAR(GUM_SCALAR, GUM_SCALAR) > f,
-                                         GUM_SCALAR base) const {
+      MultiDimArray< GUM_SCALAR >::reduce(std::function< GUM_SCALAR(GUM_SCALAR, GUM_SCALAR) > f,
+                                          GUM_SCALAR base) const {
     return std::accumulate(values_.begin(), values_.end(), base, f);
   }
 

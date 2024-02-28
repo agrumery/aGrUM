@@ -89,7 +89,7 @@ namespace gum {
   Instantiation GibbsOperator< GUM_SCALAR >::nextSample(Instantiation prev) {
     for (Idx i = 0; i < nbr_; i++) {
       auto pos
-         = atRandom_ ? randomValue(samplingNodes_.size()) : (counting_ % samplingNodes_.size());
+          = atRandom_ ? randomValue(samplingNodes_.size()) : (counting_ % samplingNodes_.size());
       this->_GibbsSample_(samplingNodes_[pos], &prev);
       counting_++;
     }

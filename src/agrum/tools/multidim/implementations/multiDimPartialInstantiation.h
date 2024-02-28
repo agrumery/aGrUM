@@ -83,7 +83,7 @@ namespace gum {
      * @return Returns this MultiDimPartialInstantiation.
      */
     MultiDimPartialInstantiation< GUM_SCALAR, TABLE >&
-       operator=(const MultiDimPartialInstantiation< GUM_SCALAR, TABLE >& src);
+        operator=(const MultiDimPartialInstantiation< GUM_SCALAR, TABLE >& src);
 
     /// @}
     // =========================================================================

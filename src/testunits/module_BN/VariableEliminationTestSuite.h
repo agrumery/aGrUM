@@ -196,7 +196,7 @@ namespace gum_tests {
       gum::VariableElimination< double > inf(bn);
 
       TS_GUM_ASSERT_THROWS_NOTHING(
-         gum::InformationTheory itheo(inf, gum::NodeSet({2}), gum::NodeSet({4})))
+          gum::InformationTheory itheo(inf, gum::NodeSet({2}), gum::NodeSet({4})))
       gum::InformationTheory itheo(inf, gum::NodeSet({2}), gum::NodeSet({4}));
       TS_GUM_ASSERT_THROWS_NOTHING(inf.H((gum::NodeId)2))
       TS_GUM_ASSERT_THROWS_NOTHING(itheo.mutualInformationXY())
@@ -312,7 +312,7 @@ namespace gum_tests {
       vars.insert(&(bn->variable(3)));
       vars.insert(&(bn->variable(4)));
       TS_ASSERT(
-         equalPotentials(inf.jointPosterior(gum::NodeSet{2, 3, 4}), bn_joint.margSumIn(vars)))
+          equalPotentials(inf.jointPosterior(gum::NodeSet{2, 3, 4}), bn_joint.margSumIn(vars)))
     }
 
     GUM_ACTIVE_TEST(Asia) {
@@ -537,7 +537,7 @@ namespace gum_tests {
 
                 gum::VariableElimination< double > inf1(&bn);
                 inf1.setRelevantPotentialsFinderType(
-                   gum::RelevantPotentialsFinderType::DSEP_BAYESBALL_NODES);
+                    gum::RelevantPotentialsFinderType::DSEP_BAYESBALL_NODES);
                 gum::ShaferShenoyInference< double > inf2(&bn);
                 auto                                 joint = bn_joint;
                 for (auto pot: evidences) {
@@ -603,7 +603,7 @@ namespace gum_tests {
 
                 gum::VariableElimination< double > inf1(&bn);
                 inf1.setRelevantPotentialsFinderType(
-                   gum::RelevantPotentialsFinderType::DSEP_BAYESBALL_POTENTIALS);
+                    gum::RelevantPotentialsFinderType::DSEP_BAYESBALL_POTENTIALS);
                 gum::VariableElimination< double > inf2(&bn);
                 auto                               joint = bn_joint;
                 for (auto pot: evidences) {
@@ -622,7 +622,7 @@ namespace gum_tests {
                                                 joint.margSumIn({&bn.variable(xnode)}).normalize()))
                     }
                     [[maybe_unused]] auto f
-                       = equalPotentials(inf1.posterior(xnode), inf2.posterior(xnode));
+                        = equalPotentials(inf1.posterior(xnode), inf2.posterior(xnode));
                   } catch (gum::IncompatibleEvidence&) {
                     // check evidence incompatibility:
                     if (node2 == gum::NodeId(2)) {

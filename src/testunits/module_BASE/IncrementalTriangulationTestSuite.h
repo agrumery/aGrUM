@@ -174,15 +174,15 @@ namespace gum_tests {
             triang.addNode(triang.graph().bound(), 10);
           } else if (nb < 50) {
             gum::NodeId id1
-               = (gum::NodeId)(((float)rand() / float(RAND_MAX)) * triang.graph().bound());
+                = (gum::NodeId)(((float)rand() / float(RAND_MAX)) * triang.graph().bound());
             gum::NodeId id2
-               = (gum::NodeId)(((float)rand() / float(RAND_MAX)) * triang.graph().bound());
+                = (gum::NodeId)(((float)rand() / float(RAND_MAX)) * triang.graph().bound());
             triang.eraseEdge(gum::Edge(id1, id2));
           } else {
             gum::NodeId id1
-               = (gum::NodeId)(((float)rand() / float(RAND_MAX)) * triang.graph().bound());
+                = (gum::NodeId)(((float)rand() / float(RAND_MAX)) * triang.graph().bound());
             gum::NodeId id2
-               = (gum::NodeId)(((float)rand() / float(RAND_MAX)) * triang.graph().bound());
+                = (gum::NodeId)(((float)rand() / float(RAND_MAX)) * triang.graph().bound());
             triang.addEdge(id1, id2);
           }
 

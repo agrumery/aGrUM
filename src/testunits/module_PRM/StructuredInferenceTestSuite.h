@@ -94,7 +94,7 @@ namespace gum_tests {
     }
 
     const gum::prm::PRMAttribute< double >&
-       pickAttribute(const gum::prm::PRMInstance< double >& i) {
+        pickAttribute(const gum::prm::PRMInstance< double >& i) {
       gum::Sequence< const gum::prm::PRMAttribute< double >* > seq;
 
       for (gum::prm::PRMInstance< double >::const_iterator iter = i.begin(); iter != i.end();

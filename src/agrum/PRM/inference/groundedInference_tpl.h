@@ -47,7 +47,7 @@ namespace gum {
 
     template < typename GUM_SCALAR >
     void GroundedInference< GUM_SCALAR >::evidenceAdded_(
-       const typename PRMInference< GUM_SCALAR >::Chain& chain) {
+        const typename PRMInference< GUM_SCALAR >::Chain& chain) {
       Potential< GUM_SCALAR >* bn_obs = new Potential< GUM_SCALAR >();
       // Retrieving the BN's variable
       std::stringstream var_name;
@@ -66,7 +66,7 @@ namespace gum {
 
     template < typename GUM_SCALAR >
     void GroundedInference< GUM_SCALAR >::evidenceRemoved_(
-       const typename PRMInference< GUM_SCALAR >::Chain& chain) {
+        const typename PRMInference< GUM_SCALAR >::Chain& chain) {
       std::stringstream var_name;
       var_name << chain.first->name() << "." << chain.second->safeName();
       const DiscreteVariable& var = _inf_->BN().variableFromName(var_name.str());
@@ -85,8 +85,8 @@ namespace gum {
 
     template < typename GUM_SCALAR >
     INLINE
-       GroundedInference< GUM_SCALAR >::GroundedInference(const PRM< GUM_SCALAR >&       prm,
-                                                          const PRMSystem< GUM_SCALAR >& system) :
+        GroundedInference< GUM_SCALAR >::GroundedInference(const PRM< GUM_SCALAR >&       prm,
+                                                           const PRMSystem< GUM_SCALAR >& system) :
         PRMInference< GUM_SCALAR >(prm, system),
         _inf_(0) {
       GUM_CONSTRUCTOR(GroundedInference);
@@ -94,7 +94,7 @@ namespace gum {
 
     template < typename GUM_SCALAR >
     INLINE GroundedInference< GUM_SCALAR >::GroundedInference(
-       const GroundedInference< GUM_SCALAR >& source) :
+        const GroundedInference< GUM_SCALAR >& source) :
         PRMInference< GUM_SCALAR >(source),
         _inf_(0) {
       GUM_CONS_CPY(GroundedInference);
@@ -103,7 +103,7 @@ namespace gum {
 
     template < typename GUM_SCALAR >
     INLINE GroundedInference< GUM_SCALAR >&
-       GroundedInference< GUM_SCALAR >::operator=(const GroundedInference< GUM_SCALAR >& source) {
+        GroundedInference< GUM_SCALAR >::operator=(const GroundedInference< GUM_SCALAR >& source) {
       GUM_ERROR(FatalError, "illegal call to copy operator")
     }
 
@@ -119,7 +119,7 @@ namespace gum {
 
     template < typename GUM_SCALAR >
     INLINE void GroundedInference< GUM_SCALAR >::setBNInference(
-       MarginalTargetedInference< GUM_SCALAR >* bn_inf) {
+        MarginalTargetedInference< GUM_SCALAR >* bn_inf) {
       if (_inf_ != 0) { delete _inf_; }
 
       _inf_ = bn_inf;
@@ -127,8 +127,8 @@ namespace gum {
 
     template < typename GUM_SCALAR >
     INLINE void GroundedInference< GUM_SCALAR >::posterior_(
-       const typename PRMInference< GUM_SCALAR >::Chain& chain,
-       Potential< GUM_SCALAR >&                          m) {
+        const typename PRMInference< GUM_SCALAR >::Chain& chain,
+        Potential< GUM_SCALAR >&                          m) {
       if (_inf_ == 0) { GUM_ERROR(OperationNotAllowed, "no inference engine defined") }
 
       std::stringstream sBuff;
@@ -147,8 +147,8 @@ namespace gum {
 
     template < typename GUM_SCALAR >
     INLINE void GroundedInference< GUM_SCALAR >::joint_(
-       const std::vector< typename PRMInference< GUM_SCALAR >::Chain >& queries,
-       Potential< GUM_SCALAR >&                                         j) {
+        const std::vector< typename PRMInference< GUM_SCALAR >::Chain >& queries,
+        Potential< GUM_SCALAR >&                                         j) {
       GUM_ERROR(FatalError, "not yet implemented")
     }
 

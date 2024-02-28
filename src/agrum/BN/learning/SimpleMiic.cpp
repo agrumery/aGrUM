@@ -108,10 +108,10 @@ namespace gum {
      * the edge is deleted. If not, the best contributor is found.
      */
     void SimpleMiic::initiation_(
-       CorrectedMutualInformation&                                      mutualInformation,
-       MixedGraph&                                                      graph,
-       HashTable< std::pair< NodeId, NodeId >, std::vector< NodeId > >& sepSet,
-       Heap< CondRanking, GreaterPairOn2nd >&                           rank) {
+        CorrectedMutualInformation&                                      mutualInformation,
+        MixedGraph&                                                      graph,
+        HashTable< std::pair< NodeId, NodeId >, std::vector< NodeId > >& sepSet,
+        Heap< CondRanking, GreaterPairOn2nd >&                           rank) {
       NodeId  x, y;
       EdgeSet edges      = graph.edges();
       Size    steps_init = edges.size();
@@ -142,10 +142,10 @@ namespace gum {
      * we can assess the independence of the variables.
      */
     void SimpleMiic::iteration_(
-       CorrectedMutualInformation&                                      mutualInformation,
-       MixedGraph&                                                      graph,
-       HashTable< std::pair< NodeId, NodeId >, std::vector< NodeId > >& sepSet,
-       Heap< CondRanking, GreaterPairOn2nd >&                           rank) {
+        CorrectedMutualInformation&                                      mutualInformation,
+        MixedGraph&                                                      graph,
+        HashTable< std::pair< NodeId, NodeId >, std::vector< NodeId > >& sepSet,
+        Heap< CondRanking, GreaterPairOn2nd >&                           rank) {
       // if no triples to further examine pass
       CondRanking best;
 
@@ -194,9 +194,9 @@ namespace gum {
 
     /// variant trying to propagate both orientations in a bidirected arc
     void SimpleMiic::orientationLatents_(
-       CorrectedMutualInformation&                                            mutualInformation,
-       MixedGraph&                                                            graph,
-       const HashTable< std::pair< NodeId, NodeId >, std::vector< NodeId > >& sepSet) {
+        CorrectedMutualInformation&                                            mutualInformation,
+        MixedGraph&                                                            graph,
+        const HashTable< std::pair< NodeId, NodeId >, std::vector< NodeId > >& sepSet) {
       std::vector< Ranking > triples      = unshieldedTriples_(graph, mutualInformation, sepSet);
       Size                   steps_orient = triples.size();
       Size                   past_steps   = current_step_;
@@ -324,9 +324,9 @@ namespace gum {
 
     /// Orientation protocol of MIIC
     void SimpleMiic::orientationMiic_(
-       CorrectedMutualInformation&                                            mutualInformation,
-       MixedGraph&                                                            graph,
-       const HashTable< std::pair< NodeId, NodeId >, std::vector< NodeId > >& sepSet) {
+        CorrectedMutualInformation&                                            mutualInformation,
+        MixedGraph&                                                            graph,
+        const HashTable< std::pair< NodeId, NodeId >, std::vector< NodeId > >& sepSet) {
       // structure to store the orientations marks -, o, or >,
       // Considers the head of the arc/edge first node -* second node
       HashTable< std::pair< NodeId, NodeId >, char > marks = _initialMarks_;
@@ -342,7 +342,7 @@ namespace gum {
       }
 
       std::vector< ProbabilisticRanking > proba_triples
-         = unshieldedTriplesMiic_(graph, mutualInformation, sepSet, marks);
+          = unshieldedTriplesMiic_(graph, mutualInformation, sepSet, marks);
 
       const Size steps_orient = proba_triples.size();
       Size       past_steps   = current_step_;
@@ -474,9 +474,9 @@ namespace gum {
     /// gets the list of unshielded triples in the graph in decreasing value of
     ///|I'(x, y, z|{ui})|
     std::vector< Ranking > SimpleMiic::unshieldedTriples_(
-       const MixedGraph&                                                      graph,
-       CorrectedMutualInformation&                                            mutualInformation,
-       const HashTable< std::pair< NodeId, NodeId >, std::vector< NodeId > >& sepSet) {
+        const MixedGraph&                                                      graph,
+        CorrectedMutualInformation&                                            mutualInformation,
+        const HashTable< std::pair< NodeId, NodeId >, std::vector< NodeId > >& sepSet) {
       std::vector< Ranking > triples;
       for (NodeId z: graph) {
         for (NodeId x: graph.neighbours(z)) {
@@ -511,10 +511,10 @@ namespace gum {
     /// gets the list of unshielded triples in the graph in decreasing value of
     ///|I'(x, y, z|{ui})|, prepares the orientation matrix for MIIC
     std::vector< ProbabilisticRanking > SimpleMiic::unshieldedTriplesMiic_(
-       const MixedGraph&                                                      graph,
-       CorrectedMutualInformation&                                            mutualInformation,
-       const HashTable< std::pair< NodeId, NodeId >, std::vector< NodeId > >& sepSet,
-       HashTable< std::pair< NodeId, NodeId >, char >&                        marks) {
+        const MixedGraph&                                                      graph,
+        CorrectedMutualInformation&                                            mutualInformation,
+        const HashTable< std::pair< NodeId, NodeId >, std::vector< NodeId > >& sepSet,
+        HashTable< std::pair< NodeId, NodeId >, char >&                        marks) {
       std::vector< ProbabilisticRanking > triples;
       for (NodeId z: graph) {
         for (NodeId x: graph.neighbours(z)) {
@@ -551,8 +551,8 @@ namespace gum {
 
     /// Gets the orientation probabilities like MIIC for the orientation phase
     std::vector< ProbabilisticRanking >
-       SimpleMiic::updateProbaTriples_(const MixedGraph&                   graph,
-                                       std::vector< ProbabilisticRanking > probaTriples) {
+        SimpleMiic::updateProbaTriples_(const MixedGraph&                   graph,
+                                        std::vector< ProbabilisticRanking > probaTriples) {
       for (auto& triple: probaTriples) {
         NodeId x, y, z;
         x                 = std::get< 0 >(*std::get< 0 >(triple));
@@ -831,8 +831,9 @@ namespace gum {
       return false;
     }
 
-    bool
-       SimpleMiic::_existsDirectedPath_(const MixedGraph& graph, const NodeId n1, const NodeId n2) {
+    bool SimpleMiic::_existsDirectedPath_(const MixedGraph& graph,
+                                          const NodeId      n1,
+                                          const NodeId      n2) {
       // not recursive version => use a FIFO for simulating the recursion
       List< NodeId > nodeFIFO;
       // mark[node] = successor if visited, else mark[node] does not exist
@@ -867,13 +868,13 @@ namespace gum {
     }
 
     void
-       SimpleMiic::_orientingVstructureMiic_(MixedGraph&                                     graph,
-                                             HashTable< std::pair< NodeId, NodeId >, char >& marks,
-                                             NodeId                                          x,
-                                             NodeId                                          y,
-                                             NodeId                                          z,
-                                             double                                          p1,
-                                             double                                          p2) {
+        SimpleMiic::_orientingVstructureMiic_(MixedGraph&                                     graph,
+                                              HashTable< std::pair< NodeId, NodeId >, char >& marks,
+                                              NodeId                                          x,
+                                              NodeId                                          y,
+                                              NodeId                                          z,
+                                              double                                          p1,
+                                              double                                          p2) {
       // v-structure discovery
       if (marks[{x, z}] == 'o' && marks[{y, z}] == 'o') {   // If x-z-y
         if (!_existsNonTrivialDirectedPath_(graph, z, x)) {
@@ -963,13 +964,13 @@ namespace gum {
     }
 
     void SimpleMiic::_propagatingOrientationMiic_(
-       MixedGraph&                                     graph,
-       HashTable< std::pair< NodeId, NodeId >, char >& marks,
-       NodeId                                          x,
-       NodeId                                          y,
-       NodeId                                          z,
-       double                                          p1,
-       double                                          p2) {
+        MixedGraph&                                     graph,
+        HashTable< std::pair< NodeId, NodeId >, char >& marks,
+        NodeId                                          x,
+        NodeId                                          y,
+        NodeId                                          z,
+        double                                          p1,
+        double                                          p2) {
       // orientation propagation
       if (marks[{x, z}] == '>' && marks[{y, z}] == 'o' && marks[{z, y}] != '-') {
         graph.eraseEdge(Edge(z, y));

@@ -59,9 +59,9 @@ namespace gum {
 
     /// Default constructor.
     TreeRegress(
-       const MultiDimFunctionGraph< GUM_SCALAR, TerminalNodePolicy >*                    qAction,
-       const Bijection< const DiscreteVariable*,
-                        const MultiDimFunctionGraph< GUM_SCALAR, TerminalNodePolicy >* > pxi);
+        const MultiDimFunctionGraph< GUM_SCALAR, TerminalNodePolicy >*                    qAction,
+        const Bijection< const DiscreteVariable*,
+                         const MultiDimFunctionGraph< GUM_SCALAR, TerminalNodePolicy >* > pxi);
 
     /// Default destructor.
     ~TreeRegress();

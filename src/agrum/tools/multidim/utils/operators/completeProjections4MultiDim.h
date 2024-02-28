@@ -462,8 +462,8 @@ namespace gum {
    */
   template < typename GUM_SCALAR >
   GUM_SCALAR*
-     projectProductMultiDimArray4Pointers(const MultiDimImplementation< GUM_SCALAR* >* table,
-                                          Instantiation* instantiation = 0);
+      projectProductMultiDimArray4Pointers(const MultiDimImplementation< GUM_SCALAR* >* table,
+                                           Instantiation* instantiation = 0);
 
   /// @}
 

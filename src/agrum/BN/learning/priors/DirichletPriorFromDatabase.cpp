@@ -41,9 +41,9 @@ namespace gum {
 
     /// default constructor
     DirichletPriorFromDatabase::DirichletPriorFromDatabase(
-       const DatabaseTable&                    learning_db,
-       const DBRowGeneratorParser&             prior_parser,
-       const Bijection< NodeId, std::size_t >& nodeId2columns) :
+        const DatabaseTable&                    learning_db,
+        const DBRowGeneratorParser&             prior_parser,
+        const Bijection< NodeId, std::size_t >& nodeId2columns) :
         Prior(prior_parser.database(), Bijection< NodeId, std::size_t >()),
         _counter_(prior_parser,
                   std::vector< std::pair< std::size_t, std::size_t > >(),

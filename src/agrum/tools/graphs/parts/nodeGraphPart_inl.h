@@ -75,7 +75,7 @@ namespace gum {
 
   /// copy assignment operator
   INLINE NodeGraphPartIterator&
-     NodeGraphPartIterator::operator=(const NodeGraphPartIterator& it) noexcept {
+      NodeGraphPartIterator::operator=(const NodeGraphPartIterator& it) noexcept {
     nodes_ = it.nodes_;
     pos_   = it.pos_;
     valid_ = it.valid_;
@@ -86,7 +86,7 @@ namespace gum {
 
   /// move assignment operator
   INLINE NodeGraphPartIterator&
-     NodeGraphPartIterator::operator=(NodeGraphPartIterator&& it) noexcept {
+      NodeGraphPartIterator::operator=(NodeGraphPartIterator&& it) noexcept {
     nodes_ = it.nodes_;
     pos_   = it.pos_;
     valid_ = it.valid_;
@@ -175,7 +175,7 @@ namespace gum {
 
   /// copy assignment operator
   INLINE NodeGraphPartIteratorSafe&
-     NodeGraphPartIteratorSafe::operator=(const NodeGraphPartIteratorSafe& it) {
+      NodeGraphPartIteratorSafe::operator=(const NodeGraphPartIteratorSafe& it) {
     //  avoid self assignment
     if (&it != this) {
       NodeGraphPartIterator::operator=(it);
@@ -188,7 +188,7 @@ namespace gum {
 
   /// move assignment operator
   INLINE NodeGraphPartIteratorSafe&
-     NodeGraphPartIteratorSafe::operator=(NodeGraphPartIteratorSafe&& it) {
+      NodeGraphPartIteratorSafe::operator=(NodeGraphPartIteratorSafe&& it) {
     //  avoid self assignment
     if (&it != this) {
       NodeGraphPartIterator::operator=(std::move(it));

@@ -46,7 +46,7 @@ namespace gum {
   }
 
   void
-     GraphicalModel::spaceCplxToStream(std::stringstream& s, double dSize, int dim, Size usedMem) {
+      GraphicalModel::spaceCplxToStream(std::stringstream& s, double dSize, int dim, Size usedMem) {
     if (dSize > 6) s << "domainSize: 10^" << dSize;
     else s << "domainSize: " << std::round(std::pow(10.0, dSize));
 

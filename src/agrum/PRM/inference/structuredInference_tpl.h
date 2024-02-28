@@ -33,9 +33,9 @@ namespace gum {
 
     template < typename GUM_SCALAR >
     StructuredInference< GUM_SCALAR >::StructuredInference(
-       const PRM< GUM_SCALAR >&             prm,
-       const PRMSystem< GUM_SCALAR >&       system,
-       gspan::SearchStrategy< GUM_SCALAR >* strategy) :
+        const PRM< GUM_SCALAR >&             prm,
+        const PRMSystem< GUM_SCALAR >&       system,
+        gspan::SearchStrategy< GUM_SCALAR >* strategy) :
         PRMInference< GUM_SCALAR >(prm, system),
         _gspan_(0), _pdata_(0), _mining_(false), _dot_(".") {
       GUM_CONSTRUCTOR(StructuredInference);
@@ -50,7 +50,7 @@ namespace gum {
 
     template < typename GUM_SCALAR >
     StructuredInference< GUM_SCALAR >::StructuredInference(
-       const StructuredInference< GUM_SCALAR >& source) :
+        const StructuredInference< GUM_SCALAR >& source) :
         PRMInference< GUM_SCALAR >(source),
         _gspan_(0), _pdata_(0), _mining_(source._mining_), _found_query_(false), _dot_(".") {
       GUM_CONS_CPY(StructuredInference);
@@ -79,7 +79,7 @@ namespace gum {
 
     template < typename GUM_SCALAR >
     StructuredInference< GUM_SCALAR >& StructuredInference< GUM_SCALAR >::operator=(
-       const StructuredInference< GUM_SCALAR >& source) {
+        const StructuredInference< GUM_SCALAR >& source) {
       this->prm_ = source.prm_;
       this->sys_ = source.sys_;
 
@@ -91,16 +91,16 @@ namespace gum {
 
     template < typename GUM_SCALAR >
     void StructuredInference< GUM_SCALAR >::evidenceAdded_(
-       const typename PRMInference< GUM_SCALAR >::Chain& chain) {}
+        const typename PRMInference< GUM_SCALAR >::Chain& chain) {}
 
     template < typename GUM_SCALAR >
     void StructuredInference< GUM_SCALAR >::evidenceRemoved_(
-       const typename PRMInference< GUM_SCALAR >::Chain& chain) {}
+        const typename PRMInference< GUM_SCALAR >::Chain& chain) {}
 
     template < typename GUM_SCALAR >
     void StructuredInference< GUM_SCALAR >::posterior_(
-       const typename PRMInference< GUM_SCALAR >::Chain& chain,
-       Potential< GUM_SCALAR >&                          m) {
+        const typename PRMInference< GUM_SCALAR >::Chain& chain,
+        Potential< GUM_SCALAR >&                          m) {
       timer.reset();
       _found_query_ = false;
       _query_       = chain;
@@ -170,8 +170,8 @@ namespace gum {
 
     template < typename GUM_SCALAR >
     void StructuredInference< GUM_SCALAR >::joint_(
-       const std::vector< typename PRMInference< GUM_SCALAR >::Chain >& queries,
-       Potential< GUM_SCALAR >&                                         j) {
+        const std::vector< typename PRMInference< GUM_SCALAR >::Chain >& queries,
+        Potential< GUM_SCALAR >&                                         j) {
       GUM_ERROR(FatalError, "not implemented")
     }
 
@@ -201,7 +201,7 @@ namespace gum {
 
     template < typename GUM_SCALAR >
     void StructuredInference< GUM_SCALAR >::_buildReduceGraph_(
-       typename StructuredInference< GUM_SCALAR >::RGData& data) {
+        typename StructuredInference< GUM_SCALAR >::RGData& data) {
       // Launch the pattern mining
       plopTimer.reset();
 
@@ -284,22 +284,22 @@ namespace gum {
         for (const auto m: data.matches)
           if (!(m->exists(const_cast< PRMInstance< GUM_SCALAR >* >(_query_.first))))
             eliminateNode(
-               &(m->atPos(_query_data_.first)->get(_query_data_.second).type().variable()),
-               *(_elim_map_[m]),
-               _trash_);
+                &(m->atPos(_query_data_.first)->get(_query_data_.second).type().variable()),
+                *(_elim_map_[m]),
+                _trash_);
     }
 
     template < typename GUM_SCALAR >
     void StructuredInference< GUM_SCALAR >::_insertNodeInElimLists_(
-       typename StructuredInference< GUM_SCALAR >::PData& data,
-       const Sequence< PRMInstance< GUM_SCALAR >* >&      match,
-       PRMInstance< GUM_SCALAR >*                         inst,
-       PRMAttribute< GUM_SCALAR >*                        attr,
-       NodeId                                             id,
-       std::pair< Idx, std::string >&                     v) {
+        typename StructuredInference< GUM_SCALAR >::PData& data,
+        const Sequence< PRMInstance< GUM_SCALAR >* >&      match,
+        PRMInstance< GUM_SCALAR >*                         inst,
+        PRMAttribute< GUM_SCALAR >*                        attr,
+        NodeId                                             id,
+        std::pair< Idx, std::string >&                     v) {
       if ((*inst).hasRefAttr((*inst).get(v.second).id())) {
         std::vector< std::pair< PRMInstance< GUM_SCALAR >*, std::string > >& refs
-           = inst->getRefAttr(inst->get(v.second).id());
+            = inst->getRefAttr(inst->get(v.second).id());
 
         for (auto r = refs.begin(); r != refs.end(); ++r) {
           if (!match.exists(r->first)) {
@@ -325,9 +325,9 @@ namespace gum {
 
     template < typename GUM_SCALAR >
     void StructuredInference< GUM_SCALAR >::_buildPatternGraph_(
-       typename StructuredInference< GUM_SCALAR >::PData& data,
-       Set< Potential< GUM_SCALAR >* >&                   pool,
-       const Sequence< PRMInstance< GUM_SCALAR >* >&      match) {
+        typename StructuredInference< GUM_SCALAR >::PData& data,
+        Set< Potential< GUM_SCALAR >* >&                   pool,
+        const Sequence< PRMInstance< GUM_SCALAR >* >&      match) {
       std::pair< Idx, std::string > v;
       Potential< GUM_SCALAR >*      pot = 0;
 
@@ -363,7 +363,7 @@ namespace gum {
           if (mat->exists(const_cast< PRMInstance< GUM_SCALAR >* >(_query_.first))) {
             Idx pos = mat->pos(const_cast< PRMInstance< GUM_SCALAR >* >(_query_.first));
             DiscreteVariable& var
-               = match.atPos(pos)->get(_query_.second->safeName()).type().variable();
+                = match.atPos(pos)->get(_query_.second->safeName()).type().variable();
             NodeId id = data.vars.first(&var);
             data.barren.erase(id);
             data.inners().erase(id);
@@ -380,8 +380,8 @@ namespace gum {
 
     template < typename GUM_SCALAR >
     bool StructuredInference< GUM_SCALAR >::_allInstanceNoRefAttr_(
-       typename StructuredInference< GUM_SCALAR >::PData& data,
-       std::pair< Idx, std::string >                      attr) {
+        typename StructuredInference< GUM_SCALAR >::PData& data,
+        std::pair< Idx, std::string >                      attr) {
       for (const auto mat: data.matches)
         if (mat->atPos(attr.first)->hasRefAttr(mat->atPos(attr.first)->get(attr.second).id()))
           return false;
@@ -391,8 +391,8 @@ namespace gum {
 
     template < typename GUM_SCALAR >
     void StructuredInference< GUM_SCALAR >::_removeBarrenNodes_(
-       typename StructuredInference< GUM_SCALAR >::PData& data,
-       Set< Potential< GUM_SCALAR >* >&                   pool) {
+        typename StructuredInference< GUM_SCALAR >::PData& data,
+        Set< Potential< GUM_SCALAR >* >&                   pool) {
       Sequence< NodeId > candidates;
 
       for (const auto node: data.barren) {
@@ -443,11 +443,11 @@ namespace gum {
 
     template < typename GUM_SCALAR >
     Set< Potential< GUM_SCALAR >* >*
-       StructuredInference< GUM_SCALAR >::_eliminateObservedNodesInSource_(
-          typename StructuredInference< GUM_SCALAR >::PData& data,
-          const Set< Potential< GUM_SCALAR >* >&             pool,
-          const Sequence< PRMInstance< GUM_SCALAR >* >&      match,
-          const std::vector< NodeId >&                       elim_order) {
+        StructuredInference< GUM_SCALAR >::_eliminateObservedNodesInSource_(
+            typename StructuredInference< GUM_SCALAR >::PData& data,
+            const Set< Potential< GUM_SCALAR >* >&             pool,
+            const Sequence< PRMInstance< GUM_SCALAR >* >&      match,
+            const std::vector< NodeId >&                       elim_order) {
       Set< Potential< GUM_SCALAR >* >* my_pool = new Set< Potential< GUM_SCALAR >* >(pool);
       std::pair< Idx, std::string >    target;
       size_t                           end = data.inners().size() + data.obs().size();
@@ -464,10 +464,10 @@ namespace gum {
 
     template < typename GUM_SCALAR >
     Set< Potential< GUM_SCALAR >* >* StructuredInference< GUM_SCALAR >::_eliminateObservedNodes_(
-       typename StructuredInference< GUM_SCALAR >::PData& data,
-       const Set< Potential< GUM_SCALAR >* >&             pool,
-       const Sequence< PRMInstance< GUM_SCALAR >* >&      match,
-       const std::vector< NodeId >&                       elim_order) {
+        typename StructuredInference< GUM_SCALAR >::PData& data,
+        const Set< Potential< GUM_SCALAR >* >&             pool,
+        const Sequence< PRMInstance< GUM_SCALAR >* >&      match,
+        const std::vector< NodeId >&                       elim_order) {
       Set< Potential< GUM_SCALAR >* >* my_pool = _translatePotSet_(data, pool, match);
       std::pair< Idx, std::string >    target;
       size_t                           end = data.inners().size() + data.obs().size();
@@ -484,9 +484,9 @@ namespace gum {
 
     template < typename GUM_SCALAR >
     Set< Potential< GUM_SCALAR >* >* StructuredInference< GUM_SCALAR >::_translatePotSet_(
-       typename StructuredInference< GUM_SCALAR >::PData& data,
-       const Set< Potential< GUM_SCALAR >* >&             pool,
-       const Sequence< PRMInstance< GUM_SCALAR >* >&      match) {
+        typename StructuredInference< GUM_SCALAR >::PData& data,
+        const Set< Potential< GUM_SCALAR >* >&             pool,
+        const Sequence< PRMInstance< GUM_SCALAR >* >&      match) {
 #ifdef DEBUG
 
       for (const auto iter = data.matches.begin(); iter != data.matches.end(); ++iter) {
@@ -514,27 +514,27 @@ namespace gum {
 
           try {
             bij.insert(&(source[idx]
-                            ->getInstance(sc->id())
-                            .get(sc->lastElt().safeName())
-                            .type()
-                            .variable()),
+                             ->getInstance(sc->id())
+                             .get(sc->lastElt().safeName())
+                             .type()
+                             .variable()),
                        &(match[idx]
-                            ->getInstance(sc->id())
-                            .get(sc->lastElt().safeName())
-                            .type()
-                            .variable()));
+                             ->getInstance(sc->id())
+                             .get(sc->lastElt().safeName())
+                             .type()
+                             .variable()));
           } catch (DuplicateElement const&) {
             try {
               if (bij.first(&(match[idx]
-                                 ->getInstance(sc->id())
-                                 .get(sc->lastElt().safeName())
-                                 .type()
-                                 .variable()))
+                                  ->getInstance(sc->id())
+                                  .get(sc->lastElt().safeName())
+                                  .type()
+                                  .variable()))
                   != &(source[idx]
-                          ->getInstance(sc->id())
-                          .get(sc->lastElt().safeName())
-                          .type()
-                          .variable())) {
+                           ->getInstance(sc->id())
+                           .get(sc->lastElt().safeName())
+                           .type()
+                           .variable())) {
                 delete my_pool;
                 GUM_ERROR(OperationNotAllowed, "fake pattern")
               }
@@ -572,7 +572,7 @@ namespace gum {
 
     template < typename GUM_SCALAR >
     void StructuredInference< GUM_SCALAR >::_reduceAloneInstances_(
-       typename StructuredInference< GUM_SCALAR >::RGData& rg_data) {
+        typename StructuredInference< GUM_SCALAR >::RGData& rg_data) {
       StructuredInference< GUM_SCALAR >::CData* data = 0;
       Potential< GUM_SCALAR >*                  pot  = nullptr;
       PRMInstance< GUM_SCALAR >*                inst = nullptr;
@@ -686,7 +686,7 @@ namespace gum {
 
     template < typename GUM_SCALAR >
     void StructuredInference< GUM_SCALAR >::_addEdgesInReducedGraph_(
-       typename StructuredInference< GUM_SCALAR >::RGData& data) {
+        typename StructuredInference< GUM_SCALAR >::RGData& data) {
       // We first add edges between variables already in pool (i.e. those of the
       // reduced instances)
       NodeId id_1, id_2;
@@ -766,8 +766,8 @@ namespace gum {
 
     template < typename GUM_SCALAR >
     StructuredInference< GUM_SCALAR >::PData::PData(
-       const gspan::Pattern&                           p,
-       typename GSpan< GUM_SCALAR >::MatchedInstances& m) :
+        const gspan::Pattern&                           p,
+        typename GSpan< GUM_SCALAR >::MatchedInstances& m) :
         pattern(p),
         matches(m), _real_order_(0) {
       GUM_CONSTRUCTOR(StructuredInference< GUM_SCALAR >::PData);
@@ -778,7 +778,7 @@ namespace gum {
 
     template < typename GUM_SCALAR >
     StructuredInference< GUM_SCALAR >::PData::PData(
-       const typename StructuredInference< GUM_SCALAR >::PData& source) :
+        const typename StructuredInference< GUM_SCALAR >::PData& source) :
         pattern(source.pattern),
         matches(source.matches), graph(source.graph), mod(source.mod), node2attr(source.node2attr),
         vars(source.vars), _partial_order_(source._partial_order_), _real_order_(0) {
@@ -920,21 +920,21 @@ namespace gum {
     template < typename GUM_SCALAR >
     INLINE std::string
            StructuredInference< GUM_SCALAR >::_str_(const PRMInstance< GUM_SCALAR >*  i,
-                                                const PRMAttribute< GUM_SCALAR >* a) const {
+                                                 const PRMAttribute< GUM_SCALAR >* a) const {
       return i->name() + _dot_ + a->safeName();
     }
 
     template < typename GUM_SCALAR >
     INLINE std::string
            StructuredInference< GUM_SCALAR >::_str_(const PRMInstance< GUM_SCALAR >*  i,
-                                                const PRMAttribute< GUM_SCALAR >& a) const {
+                                                 const PRMAttribute< GUM_SCALAR >& a) const {
       return i->name() + _dot_ + a.safeName();
     }
 
     template < typename GUM_SCALAR >
     INLINE std::string
            StructuredInference< GUM_SCALAR >::_str_(const PRMInstance< GUM_SCALAR >*  i,
-                                                const PRMSlotChain< GUM_SCALAR >& a) const {
+                                                 const PRMSlotChain< GUM_SCALAR >& a) const {
       return i->name() + _dot_ + a.lastElt().safeName();
     }
 
@@ -965,9 +965,9 @@ namespace gum {
 
     template < typename GUM_SCALAR >
     INLINE void StructuredInference< GUM_SCALAR >::_removeNode_(
-       typename StructuredInference< GUM_SCALAR >::PData& data,
-       NodeId                                             id,
-       Set< Potential< GUM_SCALAR >* >&                   pool) {
+        typename StructuredInference< GUM_SCALAR >::PData& data,
+        NodeId                                             id,
+        Set< Potential< GUM_SCALAR >* >&                   pool) {
       data.graph.eraseNode(id);
       GUM_ASSERT(!data.graph.exists(id));
       data.mod.erase(id);

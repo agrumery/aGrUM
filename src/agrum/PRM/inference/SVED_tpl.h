@@ -108,12 +108,12 @@ namespace gum {
 
     template < typename GUM_SCALAR >
     void SVED< GUM_SCALAR >::_eliminateNodesDownward_(
-       const PRMInstance< GUM_SCALAR >*          from,
-       const PRMInstance< GUM_SCALAR >*          i,
-       BucketSet&                                pool,
-       BucketSet&                                trash,
-       List< const PRMInstance< GUM_SCALAR >* >& elim_list,
-       Set< const PRMInstance< GUM_SCALAR >* >&  ignore) {
+        const PRMInstance< GUM_SCALAR >*          from,
+        const PRMInstance< GUM_SCALAR >*          i,
+        BucketSet&                                pool,
+        BucketSet&                                trash,
+        List< const PRMInstance< GUM_SCALAR >* >& elim_list,
+        Set< const PRMInstance< GUM_SCALAR >* >&  ignore) {
       ignore.insert(i);
       // Extracting required attributes and slotchains
       Set< NodeId >& attr_set = _getAttrSet_(i);
@@ -176,11 +176,11 @@ namespace gum {
 
     template < typename GUM_SCALAR >
     void SVED< GUM_SCALAR >::_eliminateNodesUpward_(
-       const PRMInstance< GUM_SCALAR >*          i,
-       BucketSet&                                pool,
-       BucketSet&                                trash,
-       List< const PRMInstance< GUM_SCALAR >* >& elim_list,
-       Set< const PRMInstance< GUM_SCALAR >* >&  ignore) {
+        const PRMInstance< GUM_SCALAR >*          i,
+        BucketSet&                                pool,
+        BucketSet&                                trash,
+        List< const PRMInstance< GUM_SCALAR >* >& elim_list,
+        Set< const PRMInstance< GUM_SCALAR >* >&  ignore) {
       ignore.insert(i);
       // Extracting required attributes and slotchains
       Set< NodeId >& attr_set = _getAttrSet_(i);
@@ -510,19 +510,19 @@ namespace gum {
     template < typename GUM_SCALAR >
     INLINE Potential< GUM_SCALAR >*
            SVED< GUM_SCALAR >::_getAggPotential_(const PRMInstance< GUM_SCALAR >*  i,
-                                             const PRMAggregate< GUM_SCALAR >* agg) {
+                                              const PRMAggregate< GUM_SCALAR >* agg) {
       return &(const_cast< Potential< GUM_SCALAR >& >(i->get(agg->safeName()).cpf()));
     }
 
     template < typename GUM_SCALAR >
     INLINE void
-       SVED< GUM_SCALAR >::evidenceAdded_(const typename SVED< GUM_SCALAR >::Chain& chain) {
+        SVED< GUM_SCALAR >::evidenceAdded_(const typename SVED< GUM_SCALAR >::Chain& chain) {
       // Do nothing
     }
 
     template < typename GUM_SCALAR >
     INLINE void
-       SVED< GUM_SCALAR >::evidenceRemoved_(const typename SVED< GUM_SCALAR >::Chain& chain) {
+        SVED< GUM_SCALAR >::evidenceRemoved_(const typename SVED< GUM_SCALAR >::Chain& chain) {
       // Do nothing
     }
 
@@ -548,12 +548,12 @@ namespace gum {
 
     template < typename GUM_SCALAR >
     INLINE void
-       SVED< GUM_SCALAR >::_reduceElimList_(const PRMInstance< GUM_SCALAR >*          i,
-                                            List< const PRMInstance< GUM_SCALAR >* >& elim_list,
-                                            List< const PRMInstance< GUM_SCALAR >* >& reduced_list,
-                                            Set< const PRMInstance< GUM_SCALAR >* >&  ignore,
-                                            BucketSet&                                pool,
-                                            BucketSet&                                trash) {
+        SVED< GUM_SCALAR >::_reduceElimList_(const PRMInstance< GUM_SCALAR >*          i,
+                                             List< const PRMInstance< GUM_SCALAR >* >& elim_list,
+                                             List< const PRMInstance< GUM_SCALAR >* >& reduced_list,
+                                             Set< const PRMInstance< GUM_SCALAR >* >&  ignore,
+                                             BucketSet&                                pool,
+                                             BucketSet&                                trash) {
       while (!elim_list.empty()) {
         if (_checkElimOrder_(i, elim_list.front())) {
           if ((!ignore.exists(elim_list.front())) && (_bb_.exists(elim_list.front()))) {

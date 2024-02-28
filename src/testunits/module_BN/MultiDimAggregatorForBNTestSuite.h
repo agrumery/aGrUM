@@ -100,10 +100,10 @@ namespace gum_tests {
         try {
           TS_ASSERT_EQUALS(inf.posterior(idList[0]),
                            (gum::Potential< double >() << bn.variable(idList[0]))
-                              .fillWith({0.468559, 0.269297, 0.144495, 0.117649}))
+                               .fillWith({0.468559, 0.269297, 0.144495, 0.117649}))
           TS_ASSERT_EQUALS(
-             inf.posterior(idList[1]),
-             (gum::Potential< double >() << bn.variable(idList[1])).fillWith({0.1, 0.1, 0.1, 0.7}))
+              inf.posterior(idList[1]),
+              (gum::Potential< double >() << bn.variable(idList[1])).fillWith({0.1, 0.1, 0.1, 0.7}))
         } catch (const gum::Exception& e) {
           GUM_UNUSED(e);
           TS_ASSERT(false)
@@ -117,10 +117,10 @@ namespace gum_tests {
         try {
           TS_ASSERT_EQUALS(inf.posterior(idList[0]),
                            (gum::Potential< double >() << bn.variable(idList[0]))
-                              .fillWith({0.468559, 0.269297, 0.144495, 0.117649}))
+                               .fillWith({0.468559, 0.269297, 0.144495, 0.117649}))
           TS_ASSERT_EQUALS(
-             inf.posterior(idList[1]),
-             (gum::Potential< double >() << bn.variable(idList[1])).fillWith({0.1, 0.1, 0.1, 0.7}))
+              inf.posterior(idList[1]),
+              (gum::Potential< double >() << bn.variable(idList[1])).fillWith({0.1, 0.1, 0.1, 0.7}))
         } catch (const gum::Exception& e) {
           GUM_UNUSED(e);
           TS_ASSERT(false)

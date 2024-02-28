@@ -79,7 +79,7 @@ namespace gum {
 
   /// copy operator
   INLINE NumericalDiscreteVariable&
-     NumericalDiscreteVariable::operator=(const NumericalDiscreteVariable& from) {
+      NumericalDiscreteVariable::operator=(const NumericalDiscreteVariable& from) {
     // avoid self assignment
     if (&from != this) {
       DiscreteVariable::operator=(from);
@@ -91,7 +91,7 @@ namespace gum {
 
   /// move operator
   INLINE NumericalDiscreteVariable&
-     NumericalDiscreteVariable::operator=(NumericalDiscreteVariable&& from) {
+      NumericalDiscreteVariable::operator=(NumericalDiscreteVariable&& from) {
     // avoid self assignment
     if (&from != this) {
       DiscreteVariable::operator=(std::move(from));

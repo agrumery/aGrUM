@@ -87,7 +87,7 @@ namespace gum {
     }
 
     PRMType& PRMType::operator=(const PRMType& from){
-       GUM_ERROR(FatalError, "Copy operator must not be used")}
+        GUM_ERROR(FatalError, "Copy operator must not be used")}
 
 
     PRMType& PRMType::operator=(PRMType&& from) {

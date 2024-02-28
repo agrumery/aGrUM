@@ -844,7 +844,7 @@ namespace gum {
        * vector is inadequate. */
       virtual void setVariableNames(const std::vector< std::string >& names,
                                     const bool                        from_external_object = true)
-         = 0;
+          = 0;
 
       /// returns the name of the kth column of the IDatabaseTable
       /** @throw OutOfBounds is raised if the IDatabaseTable contains fewer
@@ -1095,7 +1095,7 @@ namespace gum {
 
       /// returns the ranges that threads should process
       std::vector< std::pair< std::size_t, std::size_t > >
-         rangesProcessingThreads_(const std::size_t nb_threads) const;
+          rangesProcessingThreads_(const std::size_t nb_threads) const;
 
       /// copy operator
       IDatabaseTable< T_DATA >& operator=(const IDatabaseTable< T_DATA >& from);

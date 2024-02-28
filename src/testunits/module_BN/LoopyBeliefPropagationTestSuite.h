@@ -73,7 +73,7 @@ namespace gum_tests {
     GUM_ACTIVE_TEST(LBPBinaryTreeWithoutEvidence) {
       for (int i = 0; i < MAX_ITER; i++) {
         const auto bn
-           = gum::BayesNet< double >::fastPrototype("a->d->f;b->d->g;b->e->h;c->e;i->j->h");
+            = gum::BayesNet< double >::fastPrototype("a->d->f;b->d->g;b->e->h;c->e;i->j->h");
 
         gum::LazyPropagation< double > lazy(&bn);
         lazy.makeInference();
@@ -94,7 +94,7 @@ namespace gum_tests {
       const std::string ev = "b";
       for (int i = 0; i < MAX_ITER; i++) {
         const auto bn
-           = gum::BayesNet< double >::fastPrototype("a->d->f;b->d->g;b->e->h;c->e;i->j->h");
+            = gum::BayesNet< double >::fastPrototype("a->d->f;b->d->g;b->e->h;c->e;i->j->h");
 
         try {
           gum::LazyPropagation< double > lazy(&bn);
@@ -114,7 +114,7 @@ namespace gum_tests {
 
       for (int i = 0; i < MAX_ITER; i++) {
         const auto bn
-           = gum::BayesNet< double >::fastPrototype("a->d->f;b->d->g;b->e->h;c->e;i->j->h");
+            = gum::BayesNet< double >::fastPrototype("a->d->f;b->d->g;b->e->h;c->e;i->j->h");
         try {
           gum::LazyPropagation< double > lazy(&bn);
           lazy.addEvidence(bn.idFromName(ev), std::vector< double >{0.2f, 0.8f});
@@ -136,7 +136,7 @@ namespace gum_tests {
       const std::string ev = "h";
       for (int i = 0; i < MAX_ITER; i++) {
         const auto bn
-           = gum::BayesNet< double >::fastPrototype("a->d->f;b->d->g;b->e->h;c->e;i->j->h");
+            = gum::BayesNet< double >::fastPrototype("a->d->f;b->d->g;b->e->h;c->e;i->j->h");
 
         try {
           gum::LazyPropagation< double > lazy(&bn);
@@ -155,7 +155,7 @@ namespace gum_tests {
       }
       for (int i = 0; i < MAX_ITER; i++) {
         const auto bn
-           = gum::BayesNet< double >::fastPrototype("a->d->f;b->d->g;b->e->h;c->e;i->j->h");
+            = gum::BayesNet< double >::fastPrototype("a->d->f;b->d->g;b->e->h;c->e;i->j->h");
         try {
           gum::LazyPropagation< double > lazy(&bn);
           lazy.addEvidence(bn.idFromName(ev), std::vector< double >{0.2f, 0.8f});
@@ -177,7 +177,7 @@ namespace gum_tests {
       const std::string ev = "e";
       for (int i = 0; i < MAX_ITER; i++) {
         const auto bn
-           = gum::BayesNet< double >::fastPrototype("a->d->f;b->d->g;b->e->h;c->e;i->j->h");
+            = gum::BayesNet< double >::fastPrototype("a->d->f;b->d->g;b->e->h;c->e;i->j->h");
 
         try {
           gum::LazyPropagation< double > lazy(&bn);
@@ -196,7 +196,7 @@ namespace gum_tests {
       }
       for (int i = 0; i < MAX_ITER; i++) {
         const auto bn
-           = gum::BayesNet< double >::fastPrototype("a->d->f;b->d->g;b->e->h;c->e;i->j->h");
+            = gum::BayesNet< double >::fastPrototype("a->d->f;b->d->g;b->e->h;c->e;i->j->h");
         try {
           gum::LazyPropagation< double > lazy(&bn);
           lazy.addEvidence(bn.idFromName(ev), std::vector< double >{0.2f, 0.8f});
@@ -217,7 +217,7 @@ namespace gum_tests {
     GUM_ACTIVE_TEST(LBPBinaryTreeWithMultipleEvidence) {
       for (int i = 0; i < MAX_ITER; i++) {
         const auto bn
-           = gum::BayesNet< double >::fastPrototype("a->d->f;b->d->g;b->e->h;c->e;i->j->h");
+            = gum::BayesNet< double >::fastPrototype("a->d->f;b->d->g;b->e->h;c->e;i->j->h");
 
         try {
           gum::LazyPropagation< double > lazy(&bn);
@@ -240,7 +240,7 @@ namespace gum_tests {
       }
       for (int i = 0; i < MAX_ITER; i++) {
         const auto bn
-           = gum::BayesNet< double >::fastPrototype("a->d->f;b->d->g;b->e->h;c->e;i->j->h");
+            = gum::BayesNet< double >::fastPrototype("a->d->f;b->d->g;b->e->h;c->e;i->j->h");
         try {
           gum::LazyPropagation< double > lazy(&bn);
           lazy.addEvidence(bn.idFromName("e"), std::vector< double >{0.2f, 0.8f});
@@ -265,7 +265,7 @@ namespace gum_tests {
     GUM_ACTIVE_TEST(LBPNaryTreeWithMultipleEvidence) {
       for (int i = 0; i < MAX_ITER; i++) {
         const auto bn = gum::BayesNet< double >::fastPrototype(
-           "a[4]->d[8]->f[3];b->d->g[5];b->e[4]->h;c->e;i[10]->j[3]->h");
+            "a[4]->d[8]->f[3];b->d->g[5];b->e[4]->h;c->e;i[10]->j[3]->h");
 
         try {
           gum::LazyPropagation< double > lazy(&bn);
@@ -288,7 +288,7 @@ namespace gum_tests {
       }
       for (int i = 0; i < MAX_ITER; i++) {
         const auto bn = gum::BayesNet< double >::fastPrototype(
-           "a[4]->d[8]->f[3];b->d->g[5];b->e[4]->h;c->e;i[10]->j[3]->h");
+            "a[4]->d[8]->f[3];b->d->g[5];b->e[4]->h;c->e;i[10]->j[3]->h");
         try {
           gum::LazyPropagation< double > lazy(&bn);
           lazy.addEvidence(bn.idFromName("e"), std::vector< double >{0.1f, 0.3f, 0.4f, 0.7f});
@@ -404,8 +404,8 @@ namespace gum_tests {
     GUM_ACTIVE_TEST(LBPCplxBN) {
       for (int i = 0; i < MAX_ITER; i++) {
         const auto bn = gum::BayesNet< double >::fastPrototype(
-           "a->d->f;b->d->g;b->e->h;c->e->g;i->j->h;c->j;x->c;x->j;",
-           3);
+            "a->d->f;b->d->g;b->e->h;c->e->g;i->j->h;c->j;x->c;x->j;",
+            3);
 
         try {
           gum::LazyPropagation< double > lazy(&bn);
@@ -422,8 +422,8 @@ namespace gum_tests {
       }
       for (int i = 0; i < MAX_ITER; i++) {
         const auto bn = gum::BayesNet< double >::fastPrototype(
-           "a->d->f;b->d->g;b->e->h;c->e->g;i->j->h;c->j;x->c;x->j;",
-           3);
+            "a->d->f;b->d->g;b->e->h;c->e->g;i->j->h;c->j;x->c;x->j;",
+            3);
 
         try {
           gum::LazyPropagation< double > lazy(&bn);
@@ -442,8 +442,8 @@ namespace gum_tests {
       }
       for (int i = 0; i < MAX_ITER; i++) {
         const auto bn = gum::BayesNet< double >::fastPrototype(
-           "a->d->f;b->d->g;b->e->h;c->e->g;i->j->h;c->j;x->c;x->j;",
-           3);
+            "a->d->f;b->d->g;b->e->h;c->e->g;i->j->h;c->j;x->c;x->j;",
+            3);
 
         try {
           gum::LazyPropagation< double > lazy(&bn);
@@ -462,8 +462,8 @@ namespace gum_tests {
       }
       for (int i = 0; i < MAX_ITER; i++) {
         const auto bn = gum::BayesNet< double >::fastPrototype(
-           "a->d->f;b->d->g;b->e->h;c->e->g;i->j->h;c->j;x->c;x->j;",
-           3);
+            "a->d->f;b->d->g;b->e->h;c->e->g;i->j->h;c->j;x->c;x->j;",
+            3);
 
         try {
           gum::LazyPropagation< double > lazy(&bn);
@@ -482,8 +482,8 @@ namespace gum_tests {
       }
       for (int i = 0; i < MAX_ITER; i++) {
         const auto bn = gum::BayesNet< double >::fastPrototype(
-           "a->d->f;b->d->g;b->e->h;c->e->g;i->j->h;c->j;x->c;x->j;",
-           3);
+            "a->d->f;b->d->g;b->e->h;c->e->g;i->j->h;c->j;x->c;x->j;",
+            3);
 
         try {
           gum::LazyPropagation< double > lazy(&bn);

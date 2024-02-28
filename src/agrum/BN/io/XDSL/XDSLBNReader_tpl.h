@@ -92,7 +92,7 @@ namespace gum {
       GUM_EMIT2(onProceed, 55, status);
 
       ticpp::Element* extensionsElement
-         = bifElement->FirstChildElement("extensions")->FirstChildElement("genie");
+          = bifElement->FirstChildElement("extensions")->FirstChildElement("genie");
 
       // Filling diagram
       _parsingExtension_(extensionsElement);
@@ -164,7 +164,7 @@ namespace gum {
       }
 
       std::istringstream issTableString(
-         currentVar->FirstChildElement("probabilities")->GetTextOrDefault(""));
+          currentVar->FirstChildElement("probabilities")->GetTextOrDefault(""));
       std::vector< GUM_SCALAR > tablevector;
       GUM_SCALAR                value;
 

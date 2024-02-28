@@ -43,7 +43,7 @@ namespace gum {
 
   /// copy constructor
   INLINE VariableLog2ParamComplexity::VariableLog2ParamComplexity(
-     const VariableLog2ParamComplexity& from) :
+      const VariableLog2ParamComplexity& from) :
       _use_cache_(from._use_cache_),
       _cache_(from._cache_) {
     GUM_CONS_CPY(VariableLog2ParamComplexity);
@@ -68,13 +68,13 @@ namespace gum {
 
   /// copy operator
   INLINE VariableLog2ParamComplexity&
-     VariableLog2ParamComplexity::operator=(const VariableLog2ParamComplexity& from) {
+      VariableLog2ParamComplexity::operator=(const VariableLog2ParamComplexity& from) {
     return *this;
   }
 
   /// move operator
   INLINE VariableLog2ParamComplexity&
-     VariableLog2ParamComplexity::operator=(VariableLog2ParamComplexity&& from) {
+      VariableLog2ParamComplexity::operator=(VariableLog2ParamComplexity&& from) {
     return *this;
   }
 

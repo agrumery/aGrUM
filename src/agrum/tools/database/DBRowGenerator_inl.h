@@ -95,14 +95,14 @@ namespace gum {
     // sets the columns of interest: the output DBRow needs only
     // contain values fot these columns
     INLINE void
-       DBRowGenerator::setColumnsOfInterest(const std::vector< std::size_t >& cols_of_interest) {
+        DBRowGenerator::setColumnsOfInterest(const std::vector< std::size_t >& cols_of_interest) {
       columns_of_interest_ = cols_of_interest;
     }
 
     // sets the columns of interest: the output DBRow needs only
     // contain values fot these columns
     INLINE void
-       DBRowGenerator::setColumnsOfInterest(std::vector< std::size_t >&& cols_of_interest) {
+        DBRowGenerator::setColumnsOfInterest(std::vector< std::size_t >&& cols_of_interest) {
       columns_of_interest_ = std::move(cols_of_interest);
     }
 

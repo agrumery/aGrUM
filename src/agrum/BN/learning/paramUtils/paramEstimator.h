@@ -179,7 +179,7 @@ namespace gum {
        * order in which they were specified). */
       virtual std::vector< double > parameters(const NodeId                 target_node,
                                                const std::vector< NodeId >& conditioning_nodes)
-         = 0;
+          = 0;
 
       /// sets the CPT's parameters corresponding to a given Potential
       /** The potential is assumed to be a conditional probability, the first
@@ -244,18 +244,18 @@ namespace gum {
       // GUM_SCALAR is different from a double
       template < typename GUM_SCALAR >
       typename std::enable_if< !std::is_same< GUM_SCALAR, double >::value, void >::type
-         _setParameters_(const NodeId                 target_node,
-                         const std::vector< NodeId >& conditioning_nodes,
-                         Potential< GUM_SCALAR >&     pot);
+          _setParameters_(const NodeId                 target_node,
+                          const std::vector< NodeId >& conditioning_nodes,
+                          Potential< GUM_SCALAR >&     pot);
 
       // sets the CPT's parameters corresponding to a given Potential
       // when the potential belongs to a BayesNet<GUM_SCALAR> when
       // GUM_SCALAR is equal to double (the code is optimized for doubles)
       template < typename GUM_SCALAR >
       typename std::enable_if< std::is_same< GUM_SCALAR, double >::value, void >::type
-         _setParameters_(const NodeId                 target_node,
-                         const std::vector< NodeId >& conditioning_nodes,
-                         Potential< GUM_SCALAR >&     pot);
+          _setParameters_(const NodeId                 target_node,
+                          const std::vector< NodeId >& conditioning_nodes,
+                          Potential< GUM_SCALAR >&     pot);
 
 #endif /* DOXYGEN_SHOULD_SKIP_THIS */
     };

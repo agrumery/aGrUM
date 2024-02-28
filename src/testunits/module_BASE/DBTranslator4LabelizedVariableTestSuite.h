@@ -91,7 +91,7 @@ namespace gum_tests {
       TS_ASSERT_THROWS(translator3.translateBack(gum::learning::DBTranslatedValue{std::size_t{3}}),
                        const gum::UnknownLabelInDatabase&)
       const std::string back = translator3.translateBack(
-         gum::learning::DBTranslatedValue{std::numeric_limits< std::size_t >::max()});
+          gum::learning::DBTranslatedValue{std::numeric_limits< std::size_t >::max()});
       TS_ASSERT(translator3.missingSymbols().exists(back))
     }
 
@@ -153,7 +153,7 @@ namespace gum_tests {
       TS_ASSERT_THROWS(translator3.translateBack(gum::learning::DBTranslatedValue{std::size_t{3}}),
                        const gum::UnknownLabelInDatabase&)
       TS_ASSERT(translator3.translateBack(
-                   gum::learning::DBTranslatedValue{std::numeric_limits< std::size_t >::max()})
+                    gum::learning::DBTranslatedValue{std::numeric_limits< std::size_t >::max()})
                 == "?");
     }
 
@@ -219,14 +219,14 @@ namespace gum_tests {
       TS_ASSERT_THROWS(translator3.translateBack(gum::learning::DBTranslatedValue{std::size_t{3}}),
                        const gum::UnknownLabelInDatabase&)
       TS_ASSERT_EQUALS(translator3.translateBack(gum::learning::DBTranslatedValue{
-                          std::numeric_limits< std::size_t >::max()}),
+                           std::numeric_limits< std::size_t >::max()}),
                        "?");
 
       TS_ASSERT_EQUALS(translator3.domainSize(), (gum::Size)3)
 
       TS_ASSERT_THROWS(
-         gum::learning::DBTranslator4LabelizedVariable translator4(var, missing, true, 2),
-         const gum::SizeError&)
+          gum::learning::DBTranslator4LabelizedVariable translator4(var, missing, true, 2),
+          const gum::SizeError&)
     }
 
     GUM_ACTIVE_TEST(_trans4) {
@@ -547,7 +547,7 @@ namespace gum_tests {
                        "3");
 
       std::string back = translator.translateBack(
-         gum::learning::DBTranslatedValue{std::numeric_limits< std::size_t >::max()});
+          gum::learning::DBTranslatedValue{std::numeric_limits< std::size_t >::max()});
 
       gum::Set< std::string > missing_kept{"N/A", "toto"};
       TS_ASSERT(missing_kept.exists(back))
@@ -591,7 +591,7 @@ namespace gum_tests {
       TS_ASSERT_EQUALS(translator2.translateBack(gum::learning::DBTranslatedValue{std::size_t{2}}),
                        "7");
       back = translator2.translateBack(
-         gum::learning::DBTranslatedValue{std::numeric_limits< std::size_t >::max()});
+          gum::learning::DBTranslatedValue{std::numeric_limits< std::size_t >::max()});
       TS_ASSERT(translator2.missingSymbols().exists(back))
 
       gum::Set< std::string > missing_kept2{"N/A", "toto"};

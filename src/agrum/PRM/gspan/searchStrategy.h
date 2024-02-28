@@ -90,7 +90,7 @@ namespace gum {
         virtual bool accept_growth(const Pattern*                  parent,
                                    const Pattern*                  child,
                                    const EdgeGrowth< GUM_SCALAR >& growth)
-           = 0;
+            = 0;
 
         virtual bool operator()(LabelData* i, LabelData* j) = 0;
         virtual bool operator()(Pattern* i, Pattern* j)     = 0;

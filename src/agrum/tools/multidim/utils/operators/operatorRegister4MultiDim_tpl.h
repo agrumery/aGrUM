@@ -38,10 +38,10 @@ namespace gum {
   // adds a new entry into the register
   template < typename GUM_SCALAR >
   void OperatorRegister4MultiDim< GUM_SCALAR >::insert(
-     const std::string&                                            operation_name,
-     const std::string&                                            type1,
-     const std::string&                                            type2,
-     typename OperatorRegister4MultiDim< GUM_SCALAR >::OperatorPtr newFunction) {
+      const std::string&                                            operation_name,
+      const std::string&                                            type1,
+      const std::string&                                            type2,
+      typename OperatorRegister4MultiDim< GUM_SCALAR >::OperatorPtr newFunction) {
     // insert the new entry
     OperatorSet* theset;
 
@@ -89,9 +89,9 @@ namespace gum {
    * MultiDimImplementations */
   template < typename GUM_SCALAR >
   INLINE typename OperatorRegister4MultiDim< GUM_SCALAR >::OperatorPtr
-     OperatorRegister4MultiDim< GUM_SCALAR >::get(const std::string& operation_name,
-                                                  const std::string& type1,
-                                                  const std::string& type2) const {
+      OperatorRegister4MultiDim< GUM_SCALAR >::get(const std::string& operation_name,
+                                                   const std::string& type1,
+                                                   const std::string& type2) const {
     const OperatorSet&                          theset = *(_set_[operation_name]);
     const std::pair< std::string, std::string > key(type1, type2);
     return theset[key];

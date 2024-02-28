@@ -45,11 +45,11 @@ namespace gum {
 
   template < typename GUM_SCALAR >
   BayesNet< GUM_SCALAR >&
-     AggregatorDecomposition< GUM_SCALAR >::getDecomposedAggregator(BayesNet< GUM_SCALAR >& bn) {
+      AggregatorDecomposition< GUM_SCALAR >::getDecomposedAggregator(BayesNet< GUM_SCALAR >& bn) {
     for (NodeId node: bn.nodes().asNodeSet()) {
       std::string description = bn.cpt(node).toString();
       auto        p = dynamic_cast< const gum::aggregator::MultiDimAggregator< GUM_SCALAR >* >(
-         bn.cpt(node).content());
+          bn.cpt(node).content());
       if (p != nullptr && p->isDecomposable()) { decomposeAggregator_(bn, node); }
     }
     return bn;
@@ -89,10 +89,10 @@ namespace gum {
 
   template < typename GUM_SCALAR >
   BayesNet< GUM_SCALAR >&
-     AggregatorDecomposition< GUM_SCALAR >::decomposeAggregator_(BayesNet< GUM_SCALAR >& bn,
-                                                                 NodeId initialAggregator) {
+      AggregatorDecomposition< GUM_SCALAR >::decomposeAggregator_(BayesNet< GUM_SCALAR >& bn,
+                                                                  NodeId initialAggregator) {
     auto p = static_cast< const gum::aggregator::MultiDimAggregator< GUM_SCALAR >* >(
-       bn.cpt(initialAggregator).content());
+        bn.cpt(initialAggregator).content());
     auto newAgg = bn.variable(initialAggregator).clone();
 
     Set< NodeId > parents = bn.parents(initialAggregator);
@@ -118,7 +118,7 @@ namespace gum {
     int j = 1;
 
     std::string newName
-       = std::string(bn.variable(initialAggregator).name()) + "_" + std::to_string(j);
+        = std::string(bn.variable(initialAggregator).name()) + "_" + std::to_string(j);
     const std::string aggType = p->aggregatorName();
 
     for (auto parent: parents) {
@@ -226,7 +226,7 @@ namespace gum {
                                                                       NodeId initialAggregator,
                                                                       int&   j) {
     auto p = static_cast< const gum::aggregator::MultiDimAggregator< GUM_SCALAR >* >(
-       bn.cpt(initialAggregator).content());
+        bn.cpt(initialAggregator).content());
 
     gum::Size   arity   = getMaximumArity();
     std::string aggType = p->aggregatorName();
@@ -256,7 +256,7 @@ namespace gum {
       j++;
 
       std::string newName
-         = std::string(bn.variable(initialAggregator).name()) + "_" + std::to_string(j);
+          = std::string(bn.variable(initialAggregator).name()) + "_" + std::to_string(j);
 
       newAgg->setName(newName);
       newAgg->setDescription(aggType);

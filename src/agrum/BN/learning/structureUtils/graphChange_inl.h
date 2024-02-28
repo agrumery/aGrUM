@@ -351,7 +351,7 @@ namespace gum {
 
   /// computes the hashed value of a key
   INLINE Size
-     HashFunc< learning::GraphChange >::operator()(const learning::GraphChange& key) const {
+      HashFunc< learning::GraphChange >::operator()(const learning::GraphChange& key) const {
     return castToSize(key) >> this->right_shift_;
   }
 
@@ -362,7 +362,7 @@ namespace gum {
 
   /// computes the hashed value of a key
   INLINE Size
-     HashFunc< learning::ArcAddition >::operator()(const learning::ArcAddition& key) const {
+      HashFunc< learning::ArcAddition >::operator()(const learning::ArcAddition& key) const {
     return castToSize(key) >> this->right_shift_;
   }
 
@@ -373,7 +373,7 @@ namespace gum {
 
   /// computes the hashed value of a key
   INLINE Size
-     HashFunc< learning::ArcDeletion >::operator()(const learning::ArcDeletion& key) const {
+      HashFunc< learning::ArcDeletion >::operator()(const learning::ArcDeletion& key) const {
     return castToSize(key) >> this->right_shift_;
   }
 
@@ -384,7 +384,7 @@ namespace gum {
 
   /// computes the hashed value of a key
   INLINE Size
-     HashFunc< learning::ArcReversal >::operator()(const learning::ArcReversal& key) const {
+      HashFunc< learning::ArcReversal >::operator()(const learning::ArcReversal& key) const {
     return castToSize(key) >> this->right_shift_;
   }
 
@@ -395,7 +395,7 @@ namespace gum {
 
   /// computes the hashed value of a key
   INLINE Size
-     HashFunc< learning::EdgeAddition >::operator()(const learning::EdgeAddition& key) const {
+      HashFunc< learning::EdgeAddition >::operator()(const learning::EdgeAddition& key) const {
     return castToSize(key) >> this->right_shift_;
   }
 
@@ -406,7 +406,7 @@ namespace gum {
 
   /// computes the hashed value of a key
   INLINE Size
-     HashFunc< learning::EdgeDeletion >::operator()(const learning::EdgeDeletion& key) const {
+      HashFunc< learning::EdgeDeletion >::operator()(const learning::EdgeDeletion& key) const {
     return castToSize(key) >> this->right_shift_;
   }
 

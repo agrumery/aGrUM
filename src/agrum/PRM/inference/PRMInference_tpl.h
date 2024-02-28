@@ -66,7 +66,7 @@ namespace gum {
 
     template < typename GUM_SCALAR >
     PRMInference< GUM_SCALAR >&
-       PRMInference< GUM_SCALAR >::operator=(const PRMInference< GUM_SCALAR >& source) {
+        PRMInference< GUM_SCALAR >::operator=(const PRMInference< GUM_SCALAR >& source) {
       clearEvidence();
       prm_ = source.prm_;
       sys_ = source.sys_;
@@ -92,7 +92,7 @@ namespace gum {
 
     template < typename GUM_SCALAR >
     typename PRMInference< GUM_SCALAR >::EMap&
-       PRMInference< GUM_SCALAR >::_EMap_(const PRMInstance< GUM_SCALAR >* i) {
+        PRMInference< GUM_SCALAR >::_EMap_(const PRMInstance< GUM_SCALAR >* i) {
       if (_evidences_.exists(i)) {
         return *(_evidences_[i]);
       } else {
@@ -148,7 +148,7 @@ namespace gum {
 
     template < typename GUM_SCALAR >
     INLINE typename PRMInference< GUM_SCALAR >::EMap&
-       PRMInference< GUM_SCALAR >::evidence(const PRMInstance< GUM_SCALAR >& i) {
+        PRMInference< GUM_SCALAR >::evidence(const PRMInstance< GUM_SCALAR >& i) {
       try {
         return *(_evidences_[&i]);
       } catch (NotFound const&) { GUM_ERROR(NotFound, "this instance has no evidence.") }
@@ -156,7 +156,7 @@ namespace gum {
 
     template < typename GUM_SCALAR >
     INLINE const typename PRMInference< GUM_SCALAR >::EMap&
-       PRMInference< GUM_SCALAR >::evidence(const PRMInstance< GUM_SCALAR >& i) const {
+        PRMInference< GUM_SCALAR >::evidence(const PRMInstance< GUM_SCALAR >& i) const {
       try {
         return *(_evidences_[&i]);
       } catch (NotFound const&) { GUM_ERROR(NotFound, "this instance has no evidence.") }
@@ -164,7 +164,7 @@ namespace gum {
 
     template < typename GUM_SCALAR >
     INLINE typename PRMInference< GUM_SCALAR >::EMap&
-       PRMInference< GUM_SCALAR >::evidence(const PRMInstance< GUM_SCALAR >* i) {
+        PRMInference< GUM_SCALAR >::evidence(const PRMInstance< GUM_SCALAR >* i) {
       try {
         return *(_evidences_[i]);
       } catch (NotFound const&) { GUM_ERROR(NotFound, "this instance has no evidence.") }
@@ -172,7 +172,7 @@ namespace gum {
 
     template < typename GUM_SCALAR >
     INLINE const typename PRMInference< GUM_SCALAR >::EMap&
-       PRMInference< GUM_SCALAR >::evidence(const PRMInstance< GUM_SCALAR >* i) const {
+        PRMInference< GUM_SCALAR >::evidence(const PRMInstance< GUM_SCALAR >* i) const {
       try {
         return *(_evidences_[i]);
       } catch (NotFound const&) { GUM_ERROR(NotFound, "this instance has no evidence.") }
@@ -213,8 +213,8 @@ namespace gum {
 
     template < typename GUM_SCALAR >
     INLINE void PRMInference< GUM_SCALAR >::posterior(
-       const typename PRMInference< GUM_SCALAR >::Chain& chain,
-       Potential< GUM_SCALAR >&                          m) {
+        const typename PRMInference< GUM_SCALAR >::Chain& chain,
+        Potential< GUM_SCALAR >&                          m) {
       if (m.nbrDim() > 0) { GUM_ERROR(OperationNotAllowed, "the given Potential is not empty.") }
 
       if (hasEvidence(chain)) {
@@ -227,7 +227,7 @@ namespace gum {
       } else {
         if (chain.second != &(chain.first->get(chain.second->safeName()))) {
           typename PRMInference< GUM_SCALAR >::Chain good_chain
-             = std::make_pair(chain.first, &(chain.first->get(chain.second->safeName())));
+              = std::make_pair(chain.first, &(chain.first->get(chain.second->safeName())));
           m.add(good_chain.second->type().variable());
           posterior_(good_chain, m);
         } else {
@@ -239,8 +239,8 @@ namespace gum {
 
     template < typename GUM_SCALAR >
     INLINE void PRMInference< GUM_SCALAR >::joint(
-       const std::vector< typename PRMInference< GUM_SCALAR >::Chain >& chains,
-       Potential< GUM_SCALAR >&                                         j) {
+        const std::vector< typename PRMInference< GUM_SCALAR >::Chain >& chains,
+        Potential< GUM_SCALAR >&                                         j) {
       if (j.nbrDim() > 0) { GUM_ERROR(OperationNotAllowed, "the given Potential is not empty.") }
 
       for (auto chain = chains.begin(); chain != chains.end(); ++chain) {

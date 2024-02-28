@@ -65,7 +65,7 @@ namespace gum {
     }
 
     void
-       BNLearnerListener::whenProgress(const void* src, Size pourcent, double error, double time) {
+        BNLearnerListener::whenProgress(const void* src, Size pourcent, double error, double time) {
       _bnlearner_->distributeProgress(static_cast< const ApproximationScheme* >(src),
                                       pourcent,
                                       error,

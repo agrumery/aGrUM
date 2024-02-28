@@ -168,7 +168,7 @@ namespace gum {
         GUM_ERROR(OperationNotAllowed,
                   "LRSWrapper< GUM_SCALAR >::nextHInput : only for H-representation "
                   "as input. Previous state was : "
-                     << _setUpStateNames_[static_cast< int >(_state_)]);
+                      << _setUpStateNames_[static_cast< int >(_state_)]);
       } else {
         _input_.clear();
         _state_ = _states_::none;
@@ -185,13 +185,13 @@ namespace gum {
         GUM_ERROR(OperationNotAllowed,
                   "LRSWrapper< GUM_SCALAR >::fillH : setUpH or nextInput has not "
                   "been called or H-representation is complete, current state is : "
-                     << _setUpStateNames_[static_cast< int >(_state_)]);
+                      << _setUpStateNames_[static_cast< int >(_state_)]);
 
       if (modal >= _card_)
         GUM_ERROR(OutOfBounds,
                   "LRSWrapper< GUM_SCALAR >::fillH : modality is "
                   "greater or equal than cardinality : "
-                     << modal << " >= " << _card_);
+                      << modal << " >= " << _card_);
 
       _input_[modal * 2][0]         = -min;
       _input_[modal * 2][modal + 1] = 1;
@@ -208,18 +208,18 @@ namespace gum {
 
     template < typename GUM_SCALAR >
     void LRSWrapper< GUM_SCALAR >::fillMatrix(
-       const std::vector< std::vector< GUM_SCALAR > >& matrix) {
+        const std::vector< std::vector< GUM_SCALAR > >& matrix) {
       if (_state_ != _states_::Hup)
         GUM_ERROR(OperationNotAllowed,
                   "LRSWrapper< GUM_SCALAR >::fillH : setUpH or nextInput has not "
                   "been called or H-representation is complete, current state is : "
-                     << _setUpStateNames_[static_cast< int >(_state_)]);
+                      << _setUpStateNames_[static_cast< int >(_state_)]);
 
       if (matrix[0].size() - 1 != _card_)
         GUM_ERROR(OutOfBounds,
                   "LRSWrapper< GUM_SCALAR >::fillMatrix : size is "
                   "different than cardinality : "
-                     << (matrix[0].size() - 1) << " != " << _card_);
+                      << (matrix[0].size() - 1) << " != " << _card_);
 
       _input_ = matrix;
 
@@ -236,7 +236,7 @@ namespace gum {
         GUM_ERROR(OperationNotAllowed,
                   "LRSWrapper< GUM_SCALAR >::fillV : setUpV or nextInput has not "
                   "been called or V-representation is complete, current state is : "
-                     << _setUpStateNames_[static_cast< int >(_state_)]);
+                      << _setUpStateNames_[static_cast< int >(_state_)]);
 
       if (_insertedVertices_.size() == _vertices_)
         GUM_ERROR(OutOfBounds,
@@ -279,7 +279,7 @@ namespace gum {
         GUM_ERROR(OperationNotAllowed,
                   "LRSWrapper< GUM_SCALAR >::H2V : fillH has not been called with "
                   "all modalities, current state is still : "
-                     << _setUpStateNames_[static_cast< int >(_state_)]);
+                      << _setUpStateNames_[static_cast< int >(_state_)]);
 
       // check that we have a credal set and not a precise point probability,
       // i.e.
@@ -318,8 +318,8 @@ namespace gum {
             if (_dat_->hull
                 || ((((_lrsOutput_[0])[0] == 2 || (_lrsOutput_[0])[0] == -2)
                      && (_lrsOutput_[0])[1] == 0)
-                       ? 1L
-                       : 0L)) {
+                        ? 1L
+                        : 0L)) {
               //  _coutOn_();
               /*for ( decltype(Q->n) i = 0; i < Q->n; i++ )
                 pmp ("", output[i]);*/
@@ -356,7 +356,7 @@ namespace gum {
                   "LRSWrapper< GUM_SCALAR >::V2H : fillV has "
                   "not been called with all vertices, current "
                   "state is still : "
-                     << _setUpStateNames_[_state_]);
+                      << _setUpStateNames_[_state_]);
     }
 
     template < typename GUM_SCALAR >
@@ -367,7 +367,7 @@ namespace gum {
                   "volume is only for V-representation or "
                   "fillV has not been called with all "
                   "vertices, current state is still : "
-                     << _setUpStateNames_[_state_]);
+                      << _setUpStateNames_[_state_]);
 
       //  _coutOff_();
 
@@ -418,7 +418,7 @@ namespace gum {
                   "LRSWrapper< GUM_SCALAR >::elimRedundVrep : only for "
                   "V-representation or fillV has not been called with all vertices, "
                   "current state is still : "
-                     << _setUpStateNames_[static_cast< int >(_state_)]);
+                      << _setUpStateNames_[static_cast< int >(_state_)]);
 
       //  _coutOff_();
 
@@ -586,7 +586,7 @@ namespace gum {
         GUM_ERROR(OperationNotAllowed,
                   "LRSWrapper< GUM_SCALAR >:: _initLrs_ : not ready, current state "
                   "is still : "
-                     << _setUpStateNames_[static_cast< int >(_state_)]);
+                      << _setUpStateNames_[static_cast< int >(_state_)]);
 
       // __coutOff();
 

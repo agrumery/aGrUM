@@ -34,7 +34,7 @@ namespace gum {
     /// default constructor
     template < typename STRUCT_CONSTRAINT >
     GraphChangesGenerator4K2< STRUCT_CONSTRAINT >::GraphChangesGenerator4K2(
-       STRUCT_CONSTRAINT& constraint) :
+        STRUCT_CONSTRAINT& constraint) :
         constraint_(&constraint) {
       GUM_CONSTRUCTOR(GraphChangesGenerator4K2);
     }
@@ -42,7 +42,7 @@ namespace gum {
     /// copy constructor
     template < typename STRUCT_CONSTRAINT >
     GraphChangesGenerator4K2< STRUCT_CONSTRAINT >::GraphChangesGenerator4K2(
-       const GraphChangesGenerator4K2& from) :
+        const GraphChangesGenerator4K2& from) :
         graph_(from.graph_),
         constraint_(from.constraint_), order_(from.order_), legal_changes_(from.legal_changes_),
         _max_threads_number_(from._max_threads_number_) {
@@ -52,7 +52,7 @@ namespace gum {
     /// move operator
     template < typename STRUCT_CONSTRAINT >
     GraphChangesGenerator4K2< STRUCT_CONSTRAINT >::GraphChangesGenerator4K2(
-       GraphChangesGenerator4K2&& from) :
+        GraphChangesGenerator4K2&& from) :
         graph_(std::move(from.graph_)),
         constraint_(from.constraint_), order_(std::move(from.order_)),
         legal_changes_(std::move(from.legal_changes_)),
@@ -69,8 +69,8 @@ namespace gum {
     /// copy operator
     template < typename STRUCT_CONSTRAINT >
     GraphChangesGenerator4K2< STRUCT_CONSTRAINT >&
-       GraphChangesGenerator4K2< STRUCT_CONSTRAINT >::operator=(
-          const GraphChangesGenerator4K2< STRUCT_CONSTRAINT >& from) {
+        GraphChangesGenerator4K2< STRUCT_CONSTRAINT >::operator=(
+            const GraphChangesGenerator4K2< STRUCT_CONSTRAINT >& from) {
       if (this != &from) {
         graph_               = from.graph_;
         constraint_          = from.constraint_;
@@ -84,8 +84,8 @@ namespace gum {
     /// move operator
     template < typename STRUCT_CONSTRAINT >
     GraphChangesGenerator4K2< STRUCT_CONSTRAINT >&
-       GraphChangesGenerator4K2< STRUCT_CONSTRAINT >::operator=(
-          GraphChangesGenerator4K2< STRUCT_CONSTRAINT >&& from) {
+        GraphChangesGenerator4K2< STRUCT_CONSTRAINT >::operator=(
+            GraphChangesGenerator4K2< STRUCT_CONSTRAINT >&& from) {
       if (this != &from) {
         graph_               = std::move(from.graph_);
         constraint_          = std::move(from.constraint_);
@@ -156,14 +156,14 @@ namespace gum {
     /// set a new order on the random variables
     template < typename STRUCT_CONSTRAINT >
     INLINE void
-       GraphChangesGenerator4K2< STRUCT_CONSTRAINT >::setOrder(const Sequence< NodeId >& order) {
+        GraphChangesGenerator4K2< STRUCT_CONSTRAINT >::setOrder(const Sequence< NodeId >& order) {
       order_ = order;
     }
 
     /// set a new order on the random variables
     template < typename STRUCT_CONSTRAINT >
-    INLINE void
-       GraphChangesGenerator4K2< STRUCT_CONSTRAINT >::setOrder(const std::vector< NodeId >& order) {
+    INLINE void GraphChangesGenerator4K2< STRUCT_CONSTRAINT >::setOrder(
+        const std::vector< NodeId >& order) {
       order_.clear();
       for (const auto node: order) {
         order_.insert(node);
@@ -179,36 +179,36 @@ namespace gum {
     /// returns an (unsafe) iterator on the beginning of the list of operators
     template < typename STRUCT_CONSTRAINT >
     INLINE typename GraphChangesGenerator4K2< STRUCT_CONSTRAINT >::iterator
-       GraphChangesGenerator4K2< STRUCT_CONSTRAINT >::begin() const {
+        GraphChangesGenerator4K2< STRUCT_CONSTRAINT >::begin() const {
       return legal_changes_.cbegin();
     }
 
     /// returns an (unsafe) iterator on the end of the list of operators
     template < typename STRUCT_CONSTRAINT >
     INLINE const typename GraphChangesGenerator4K2< STRUCT_CONSTRAINT >::iterator&
-       GraphChangesGenerator4K2< STRUCT_CONSTRAINT >::end() const {
+        GraphChangesGenerator4K2< STRUCT_CONSTRAINT >::end() const {
       return legal_changes_.cend();
     }
 
     /// notify the operator set of a change applied to the graph
     template < typename STRUCT_CONSTRAINT >
     INLINE void
-       GraphChangesGenerator4K2< STRUCT_CONSTRAINT >::modifyGraph(const ArcAddition& change) {}
+        GraphChangesGenerator4K2< STRUCT_CONSTRAINT >::modifyGraph(const ArcAddition& change) {}
 
     /// notify the operator set of a change applied to the graph
     template < typename STRUCT_CONSTRAINT >
     INLINE void
-       GraphChangesGenerator4K2< STRUCT_CONSTRAINT >::modifyGraph(const ArcDeletion& change) {}
+        GraphChangesGenerator4K2< STRUCT_CONSTRAINT >::modifyGraph(const ArcDeletion& change) {}
 
     /// notify the operator set of a change applied to the graph
     template < typename STRUCT_CONSTRAINT >
     INLINE void
-       GraphChangesGenerator4K2< STRUCT_CONSTRAINT >::modifyGraph(const ArcReversal& change) {}
+        GraphChangesGenerator4K2< STRUCT_CONSTRAINT >::modifyGraph(const ArcReversal& change) {}
 
     /// notify the operator set of a change applied to the graph
     template < typename STRUCT_CONSTRAINT >
     INLINE void
-       GraphChangesGenerator4K2< STRUCT_CONSTRAINT >::modifyGraph(const GraphChange& change) {}
+        GraphChangesGenerator4K2< STRUCT_CONSTRAINT >::modifyGraph(const GraphChange& change) {}
 
     /// notifies the generator that we have parsed all its legal changes
     template < typename STRUCT_CONSTRAINT >
@@ -226,7 +226,7 @@ namespace gum {
     /// returns the constraint that is used by the generator
     template < typename STRUCT_CONSTRAINT >
     INLINE STRUCT_CONSTRAINT&
-       GraphChangesGenerator4K2< STRUCT_CONSTRAINT >::constraint() const noexcept {
+        GraphChangesGenerator4K2< STRUCT_CONSTRAINT >::constraint() const noexcept {
       return *constraint_;
     }
 

@@ -52,7 +52,7 @@ namespace gum {
 
   // returns a vector equally splitting elements of a range among threads
   std::vector< std::pair< Idx, Idx > >
-     dispatchRangeToThreads(Idx beg, Idx end, unsigned int nb_threads) {
+      dispatchRangeToThreads(Idx beg, Idx end, unsigned int nb_threads) {
     // there should always be at least one thread
     const auto real_nb_threads = nb_threads < 1 ? Idx(1) : Idx(nb_threads);
     const Idx  range_size      = end - beg;

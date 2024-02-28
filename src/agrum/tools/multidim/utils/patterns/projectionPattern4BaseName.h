@@ -44,8 +44,8 @@ namespace gum {
 
   template < typename GUM_SCALAR >
   MultiDimImplementation< GUM_SCALAR >*
-     GUM_MULTI_DIM_PROJECTION_NAME(const MultiDimImplementation< GUM_SCALAR >* table,
-                                   const gum::VariableSet&                     del_vars)
+      GUM_MULTI_DIM_PROJECTION_NAME(const MultiDimImplementation< GUM_SCALAR >* table,
+                                    const gum::VariableSet&                     del_vars)
 #  endif
 
   // clang-format off
@@ -152,7 +152,7 @@ namespace gum {
       // in "table" Hence, ++ operations on an instantiation on table will more
       // or less correspond to a ++ operation on an instantiation on result
       MultiDimArray< GUM_MULTI_DIM_PROJECTION_TYPE >* result
-         = new MultiDimArray< GUM_MULTI_DIM_PROJECTION_TYPE >;
+          = new MultiDimArray< GUM_MULTI_DIM_PROJECTION_TYPE >;
 
       if (!result_varSeq.size()) { return result; }
 
@@ -201,7 +201,7 @@ namespace gum {
             *res = GUM_MULTI_DIM_PROJECTION(res, table->get(table_inst));
 #  else
             GUM_MULTI_DIM_PROJECTION_TYPE& res
-               = const_cast< GUM_MULTI_DIM_PROJECTION_TYPE& >(result->unsafeGet(result_offset));
+                = const_cast< GUM_MULTI_DIM_PROJECTION_TYPE& >(result->unsafeGet(result_offset));
             res = GUM_MULTI_DIM_PROJECTION(res, table->get(table_inst));
 #  endif
 
@@ -229,7 +229,7 @@ namespace gum {
           *res                              = GUM_MULTI_DIM_PROJECTION(res, table->get(table_inst));
 #  else
           GUM_MULTI_DIM_PROJECTION_TYPE& res
-             = const_cast< GUM_MULTI_DIM_PROJECTION_TYPE& >(result->unsafeGet(result_offset));
+              = const_cast< GUM_MULTI_DIM_PROJECTION_TYPE& >(result->unsafeGet(result_offset));
           res = GUM_MULTI_DIM_PROJECTION(res, table->get(table_inst));
 #  endif
 
@@ -335,7 +335,7 @@ namespace gum {
       // in "table" Hence, ++ operations on an instantiation on table will more
       // or less correspond to a ++ operation on an instantiation on result
       MultiDimArray< GUM_MULTI_DIM_PROJECTION_TYPE >* result
-         = new MultiDimArray< GUM_MULTI_DIM_PROJECTION_TYPE >;
+          = new MultiDimArray< GUM_MULTI_DIM_PROJECTION_TYPE >;
       result->beginMultipleChanges();
 
       for (const auto var: result_varSeq)
@@ -384,7 +384,7 @@ namespace gum {
             *res = GUM_MULTI_DIM_PROJECTION(res, table->get(table_inst));
 #  else
             GUM_MULTI_DIM_PROJECTION_TYPE& res
-               = const_cast< GUM_MULTI_DIM_PROJECTION_TYPE& >(result->unsafeGet(result_offset));
+                = const_cast< GUM_MULTI_DIM_PROJECTION_TYPE& >(result->unsafeGet(result_offset));
             res = GUM_MULTI_DIM_PROJECTION(res, table->get(table_inst));
 #  endif
 
@@ -412,7 +412,7 @@ namespace gum {
             *res = GUM_MULTI_DIM_PROJECTION(res, table->get(table_inst));
 #  else
             GUM_MULTI_DIM_PROJECTION_TYPE& res
-               = const_cast< GUM_MULTI_DIM_PROJECTION_TYPE& >(result->unsafeGet(result_offset));
+                = const_cast< GUM_MULTI_DIM_PROJECTION_TYPE& >(result->unsafeGet(result_offset));
             res = GUM_MULTI_DIM_PROJECTION(res, table->get(table_inst));
 #  endif
 

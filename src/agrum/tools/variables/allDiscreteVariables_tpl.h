@@ -36,9 +36,9 @@ namespace gum {
   }
 
   template < typename GUM_SCALAR >
-  std::unique_ptr< DiscreteVariable > fastVariable(std::string var_description,
+  std::unique_ptr< DiscreteVariable > fastVariable(std::string        var_description,
                                                    const std::string& default_domain) {
-    Size                       ds=0;
+    Size                       ds        = 0;
     long                       range_min = 0;
     long                       range_max = 1;
     std::vector< std::string > labels;
@@ -68,7 +68,7 @@ namespace gum {
       if (posBrack != std::string::npos) {
         name = var_description.substr(0, posBrack);
         const auto& s_args
-         = var_description.substr(posBrack + 1, var_description.size() - posBrack - 2);
+            = var_description.substr(posBrack + 1, var_description.size() - posBrack - 2);
         const auto& args = split(s_args, ",");
         if (args.empty()) {              // n[]
           GUM_ERROR(InvalidArgument, "Empty range for variable " << var_description)
@@ -79,7 +79,7 @@ namespace gum {
           if (labels.size() == 3) {   // b{1.1:3.31:5}
             const double fmin = std::stod(labels[0]);
             const double fmax = std::stod(labels[1]);
-            const int  nbr  = std::stoi(labels[2]);
+            const int    nbr  = std::stoi(labels[2]);
 
             if (fmax <= fmin) { GUM_ERROR(InvalidArgument, "last<=first in " << var_description) }
             if (nbr <= 1) { GUM_ERROR(InvalidArgument, "nbr<=1 in " << var_description) }
@@ -87,7 +87,7 @@ namespace gum {
             for (double i = 0.0; i < nbr + 1.0; i += 1.0) {
               ticks.push_back(fmin + i * step);
             }
-            ds=ticks.size();
+            ds = ticks.size();
           } else {   // n[4]
             int n = std::stoi(args[0]);
             if (n < 2)
@@ -107,7 +107,7 @@ namespace gum {
           if (range_max == range_min && default_domain != "[1]")
             GUM_ERROR(InvalidArgument,
                       "Invalid range for variable "
-                       << var_description << ": max==min not allowed if default_domain_size>1")
+                          << var_description << ": max==min not allowed if default_domain_size>1")
 
           ds = static_cast< Size >(1 + range_max - range_min);
         } else {   // n[3.14,5,10,12]
@@ -121,9 +121,9 @@ namespace gum {
     } else if (*(var_description.rbegin()) == '}') {
       auto posBrack = var_description.find('{');
       if (posBrack != std::string::npos) {
-        name = var_description.substr(0, posBrack);
-        labels
-         = split(var_description.substr(posBrack + 1, var_description.size() - posBrack - 2), ":");
+        name   = var_description.substr(0, posBrack);
+        labels = split(var_description.substr(posBrack + 1, var_description.size() - posBrack - 2),
+                       ":");
         if (labels.size() == 3) {   // b{1.1:3.31:5}
           const auto fmin = std::stod(labels[0]);
           const auto fmax = std::stod(labels[1]);
@@ -157,8 +157,8 @@ namespace gum {
           }
         } else {
           labels
-           = split(var_description.substr(posBrack + 1, var_description.size() - posBrack - 2),
-                   "|");
+              = split(var_description.substr(posBrack + 1, var_description.size() - posBrack - 2),
+                      "|");
           if (labels.size() < 2) {
             if (labels.size() == 1
                 && default_domain != "[1]")   // 1 is ok if default_domain_size==1

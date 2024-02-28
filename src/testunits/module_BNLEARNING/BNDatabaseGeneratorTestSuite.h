@@ -229,7 +229,7 @@ namespace gum_tests {
 
       // log2likelihood must be aprox nbSamples * entropy (theorical result)
       double entropy
-         = (bn->cpt(0) * bn->cpt(1) * bn->cpt(2) * bn->cpt(3) * bn->cpt(4) * bn->cpt(5)).entropy();
+          = (bn->cpt(0) * bn->cpt(1) * bn->cpt(2) * bn->cpt(3) * bn->cpt(4) * bn->cpt(5)).entropy();
       TS_ASSERT_LESS_THAN(std::abs(1 + entropy * nbSamples1 / ll_1), tolerance)
       TS_ASSERT_LESS_THAN(std::abs(1 + entropy * nbSamples2 / ll_2), tolerance)
       TS_ASSERT_LESS_THAN(std::abs(1 + entropy * nbSamples3 / ll_3), tolerance)
@@ -263,7 +263,7 @@ namespace gum_tests {
 
       TS_GUM_ASSERT_THROWS_NOTHING(dbgen->drawSamples(nbSamples))
       TS_GUM_ASSERT_THROWS_NOTHING(
-         dbgen->toCSV(csvFileURL, useLabels, append, csvSeparator, checkOnAppend));
+          dbgen->toCSV(csvFileURL, useLabels, append, csvSeparator, checkOnAppend));
 
       std::vector< std::string > vOrder2 = {"S", "T", "E", "R", "O", "A"};
       TS_ASSERT_THROWS_NOTHING(dbgen->setVarOrder(vOrder2))
@@ -273,7 +273,7 @@ namespace gum_tests {
                        const gum::OperationNotAllowed&)
       TS_GUM_ASSERT_THROWS_NOTHING(dbgen->setVarOrderFromCSV(csvFileURL, csvSeparator))
       TS_GUM_ASSERT_THROWS_NOTHING(
-         dbgen->toCSV(csvFileURL, useLabels, append, csvSeparator, checkOnAppend));
+          dbgen->toCSV(csvFileURL, useLabels, append, csvSeparator, checkOnAppend));
 
       std::ifstream              csvFile(csvFileURL);
       std::string                line;
@@ -334,7 +334,7 @@ namespace gum_tests {
 
       TS_GUM_ASSERT_THROWS_NOTHING(dbgen->drawSamples(nbSamples))
       TS_GUM_ASSERT_THROWS_NOTHING(
-         dbgen->toCSV(csvFileURL, useLabels, append, csvSeparator, checkOnAppend));
+          dbgen->toCSV(csvFileURL, useLabels, append, csvSeparator, checkOnAppend));
 
       std::vector< std::string > vOrder2 = {"S", "T", "E", "R", "O", "A"};
       TS_ASSERT_THROWS_NOTHING(dbgen->setVarOrder(vOrder2))
@@ -344,7 +344,7 @@ namespace gum_tests {
                        const gum::OperationNotAllowed&)
       TS_GUM_ASSERT_THROWS_NOTHING(dbgen->setVarOrderFromCSV(csvFileURL, csvSeparator))
       TS_GUM_ASSERT_THROWS_NOTHING(
-         dbgen->toCSV(csvFileURL, useLabels, append, csvSeparator, checkOnAppend));
+          dbgen->toCSV(csvFileURL, useLabels, append, csvSeparator, checkOnAppend));
 
       std::ifstream              csvFile(csvFileURL);
       std::string                line;
@@ -408,23 +408,23 @@ namespace gum_tests {
       while (handler.hasRows()) {
         auto row = handler.row();
         TS_ASSERT_DIFFERS(
-           std::find(domA.begin(), domA.end(), db.translator(0).translateBack(row[0])),
-           domA.end());
+            std::find(domA.begin(), domA.end(), db.translator(0).translateBack(row[0])),
+            domA.end());
         TS_ASSERT_DIFFERS(
-           std::find(domS.begin(), domS.end(), db.translator(1).translateBack(row[1])),
-           domS.end());
+            std::find(domS.begin(), domS.end(), db.translator(1).translateBack(row[1])),
+            domS.end());
         TS_ASSERT_DIFFERS(
-           std::find(domE.begin(), domE.end(), db.translator(2).translateBack(row[2])),
-           domE.end());
+            std::find(domE.begin(), domE.end(), db.translator(2).translateBack(row[2])),
+            domE.end());
         TS_ASSERT_DIFFERS(
-           std::find(domO.begin(), domO.end(), db.translator(3).translateBack(row[3])),
-           domO.end());
+            std::find(domO.begin(), domO.end(), db.translator(3).translateBack(row[3])),
+            domO.end());
         TS_ASSERT_DIFFERS(
-           std::find(domR.begin(), domR.end(), db.translator(4).translateBack(row[4])),
-           domR.end());
+            std::find(domR.begin(), domR.end(), db.translator(4).translateBack(row[4])),
+            domR.end());
         TS_ASSERT_DIFFERS(
-           std::find(domT.begin(), domT.end(), db.translator(5).translateBack(row[5])),
-           domT.end());
+            std::find(domT.begin(), domT.end(), db.translator(5).translateBack(row[5])),
+            domT.end());
         handler.nextRow();
       }
 
@@ -453,23 +453,23 @@ namespace gum_tests {
 
 
         TS_ASSERT_DIFFERS(
-           std::find(domS.begin(), domS.end(), db.translator(0).translateBack(row[0])),
-           domS.end());
+            std::find(domS.begin(), domS.end(), db.translator(0).translateBack(row[0])),
+            domS.end());
         TS_ASSERT_DIFFERS(
-           std::find(domE.begin(), domE.end(), db.translator(1).translateBack(row[1])),
-           domE.end());
+            std::find(domE.begin(), domE.end(), db.translator(1).translateBack(row[1])),
+            domE.end());
         TS_ASSERT_DIFFERS(
-           std::find(domT.begin(), domT.end(), db.translator(2).translateBack(row[2])),
-           domT.end());
+            std::find(domT.begin(), domT.end(), db.translator(2).translateBack(row[2])),
+            domT.end());
         TS_ASSERT_DIFFERS(
-           std::find(domR.begin(), domR.end(), db.translator(3).translateBack(row[3])),
-           domR.end());
+            std::find(domR.begin(), domR.end(), db.translator(3).translateBack(row[3])),
+            domR.end());
         TS_ASSERT_DIFFERS(
-           std::find(domA.begin(), domA.end(), db.translator(4).translateBack(row[4])),
-           domA.end());
+            std::find(domA.begin(), domA.end(), db.translator(4).translateBack(row[4])),
+            domA.end());
         TS_ASSERT_DIFFERS(
-           std::find(domO.begin(), domO.end(), db.translator(5).translateBack(row[5])),
-           domO.end());
+            std::find(domO.begin(), domO.end(), db.translator(5).translateBack(row[5])),
+            domO.end());
 
         handler.nextRow();
       }
@@ -549,17 +549,17 @@ namespace gum_tests {
       ie.makeInference();
 
       TS_ASSERT_LESS_THAN(
-         (bn2.cpt("A")
-          - (gum::Potential< double >() << bn2.variable("A")).fillWith(ie.posterior("A")))
-            .abs()
-            .max(),
-         1e-2)
+          (bn2.cpt("A")
+           - (gum::Potential< double >() << bn2.variable("A")).fillWith(ie.posterior("A")))
+              .abs()
+              .max(),
+          1e-2)
       TS_ASSERT_LESS_THAN(
-         (bn2.cpt("B")
-          - (gum::Potential< double >() << bn2.variable("B")).fillWith(ie.posterior("B")))
-            .abs()
-            .max(),
-         1e-2)
+          (bn2.cpt("B")
+           - (gum::Potential< double >() << bn2.variable("B")).fillWith(ie.posterior("B")))
+              .abs()
+              .max(),
+          1e-2)
     }
 
     GUM_ACTIVE_TEST(AccuracyWithEvidence) {
@@ -581,17 +581,17 @@ namespace gum_tests {
       ie.makeInference();
 
       TS_ASSERT_LESS_THAN(
-         (bn2.cpt("A")
-          - (gum::Potential< double >() << bn2.variable("A")).fillWith(ie.posterior("A")))
-            .abs()
-            .max(),
-         1e-2)
+          (bn2.cpt("A")
+           - (gum::Potential< double >() << bn2.variable("A")).fillWith(ie.posterior("A")))
+              .abs()
+              .max(),
+          1e-2)
       TS_ASSERT_LESS_THAN(
-         (bn2.cpt("B")
-          - (gum::Potential< double >() << bn2.variable("B")).fillWith(ie.posterior("B")))
-            .abs()
-            .max(),
-         1e-2)
+          (bn2.cpt("B")
+           - (gum::Potential< double >() << bn2.variable("B")).fillWith(ie.posterior("B")))
+              .abs()
+              .max(),
+          1e-2)
     }
   };
 }   // namespace gum_tests

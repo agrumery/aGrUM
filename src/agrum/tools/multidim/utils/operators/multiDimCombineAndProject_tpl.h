@@ -41,7 +41,7 @@ namespace gum {
   // copy constructor
   template < class TABLE >
   MultiDimCombineAndProject< TABLE >::MultiDimCombineAndProject(
-     const MultiDimCombineAndProject< TABLE >&) {
+      const MultiDimCombineAndProject< TABLE >&) {
     // for debugging purposes
     GUM_CONS_CPY(MultiDimCombineAndProject);
   }
@@ -56,10 +56,10 @@ namespace gum {
   // add to a given schedule the set of operations needed
   template < class TABLE >
   Set< const IScheduleMultiDim* > MultiDimCombineAndProject< TABLE >::schedule(
-     Schedule&                              schedule,
-     const Set< const IScheduleMultiDim* >& original_tables,
-     const gum::VariableSet&                del_vars,
-     const bool                             is_result_persistent) const {
+      Schedule&                              schedule,
+      const Set< const IScheduleMultiDim* >& original_tables,
+      const gum::VariableSet&                del_vars,
+      const bool                             is_result_persistent) const {
     // compute the set of operations to perform and insert them into the schedule
     auto ops_res = operations(original_tables, del_vars, false);
     for (const auto op: ops_res.first)

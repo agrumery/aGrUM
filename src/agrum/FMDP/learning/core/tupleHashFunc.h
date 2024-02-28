@@ -50,7 +50,7 @@ namespace gum {
 
     /// computes the hashed value of a key
     virtual Size operator()(
-       const std::tuple< unsigned int, unsigned int, unsigned int >& key) const override final;
+        const std::tuple< unsigned int, unsigned int, unsigned int >& key) const override final;
   };
 }   // namespace gum
 

@@ -130,7 +130,7 @@ namespace CxxTest {
       if (message) tracker().failedTest(file, line, message);
 
       tracker()
-         .failedAssertLessThanEquals(file, line, xExpr, yExpr, TS_AS_STRING(x), TS_AS_STRING(y));
+          .failedAssertLessThanEquals(file, line, xExpr, yExpr, TS_AS_STRING(x), TS_AS_STRING(y));
       TS_ABORT();
     }
   }
@@ -165,7 +165,7 @@ namespace CxxTest {
       if (message) tracker().failedTest(file, line, message);
 
       tracker()
-         .failedAssertRelation(file, line, rExpr, xExpr, yExpr, TS_AS_STRING(x), TS_AS_STRING(y));
+          .failedAssertRelation(file, line, rExpr, xExpr, yExpr, TS_AS_STRING(x), TS_AS_STRING(y));
       TS_ABORT();
     }
   }

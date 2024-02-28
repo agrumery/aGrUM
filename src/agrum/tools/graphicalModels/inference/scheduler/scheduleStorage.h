@@ -90,7 +90,7 @@ namespace gum {
   class ScheduleStorage:
       public ScheduleOperator,
       private ScheduleStorageMethod::
-         Execution< typename std::remove_pointer< TABLE >::type, TABLE, CONTAINER > {
+          Execution< typename std::remove_pointer< TABLE >::type, TABLE, CONTAINER > {
     public:
     using SCHED_TABLE = typename std::remove_pointer< TABLE >::type;
 

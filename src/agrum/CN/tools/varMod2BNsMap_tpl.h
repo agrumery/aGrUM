@@ -90,13 +90,13 @@ namespace gum {
       if (isBetter) {
         // get all nets of this key (maybe entry does not exists)
         std::list< Size >& old_nets
-           = myVarHashs_.getWithDefault(key, std::list< Size >());   //[ key ];
+            = myVarHashs_.getWithDefault(key, std::list< Size >());   //[ key ];
 
         // for each one
         for (std::list< Size >::iterator it = old_nets.begin(); it != old_nets.end(); ++it) {
           // get all keys associated to this net
           std::list< varKey >& netKeys
-             = myHashVars_.getWithDefault(*it, std::list< varKey >());   //[ *it ];
+              = myHashVars_.getWithDefault(*it, std::list< varKey >());   //[ *it ];
 
           // if we are the sole user, delete the net entry
           if (netKeys.size() == 1) {
@@ -122,8 +122,8 @@ namespace gum {
         old_nets.push_back(currentHash_);
         // insert out key in the hash key list
         myHashVars_
-           .getWithDefault(currentHash_, std::list< varKey >()) /*[currentHash_]*/
-           .push_back(key);
+            .getWithDefault(currentHash_, std::list< varKey >()) /*[currentHash_]*/
+            .push_back(key);
         return true;
 
       }   // end of isBetter
@@ -157,7 +157,7 @@ namespace gum {
 
     template < typename GUM_SCALAR >
     void VarMod2BNsMap< GUM_SCALAR >::setCurrentSample(
-       const std::vector< std::vector< std::vector< bool > > >& sample) {
+        const std::vector< std::vector< std::vector< bool > > >& sample) {
       currentSample_.clear();
 
       for (Size i = 0; i < sample.size(); i++)
@@ -178,13 +178,13 @@ namespace gum {
 
     template < typename GUM_SCALAR >
     const std::vector< std::vector< std::vector< bool > > >&
-       VarMod2BNsMap< GUM_SCALAR >::getSampleDef() {
+        VarMod2BNsMap< GUM_SCALAR >::getSampleDef() {
       return sampleDef_;
     }
 
     template < typename GUM_SCALAR >
     const std::vector< std::vector< bool >* >
-       VarMod2BNsMap< GUM_SCALAR >::getBNOptsFromKey(const std::vector< Size >& key) {
+        VarMod2BNsMap< GUM_SCALAR >::getBNOptsFromKey(const std::vector< Size >& key) {
       // return something even if key does not exist
       if (!myVarHashs_.exists(key)) return std::vector< std::vector< bool >* >();
 
@@ -204,7 +204,7 @@ namespace gum {
 
     template < typename GUM_SCALAR >
     std::vector< std::vector< std::vector< std::vector< bool > > > >
-       VarMod2BNsMap< GUM_SCALAR >::getFullBNOptsFromKey(const std::vector< Size >& key) {
+        VarMod2BNsMap< GUM_SCALAR >::getFullBNOptsFromKey(const std::vector< Size >& key) {
       if (cnet == nullptr)
         GUM_ERROR(OperationNotAllowed,
                   "No CredalNet associated to me ! Can't get FullBNOptsFromKey : " << key);

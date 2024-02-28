@@ -44,7 +44,7 @@ namespace gum {
              TESTNAME    RewardAttributeSelection,
              LEARNERNAME LearnerSelection >
   FMDPLearner< VariableAttributeSelection, RewardAttributeSelection, LearnerSelection >::
-     FMDPLearner(double lT, bool actionReward, double sT) :
+      FMDPLearner(double lT, bool actionReward, double sT) :
       _actionReward_(actionReward),
       _learningThreshold_(lT), _similarityThreshold_(sT) {
     GUM_CONSTRUCTOR(FMDPLearner);
@@ -58,7 +58,7 @@ namespace gum {
              TESTNAME    RewardAttributeSelection,
              LEARNERNAME LearnerSelection >
   FMDPLearner< VariableAttributeSelection, RewardAttributeSelection, LearnerSelection >::
-     ~FMDPLearner() {
+      ~FMDPLearner() {
     for (auto actionIter = _actionLearners_.beginSafe(); actionIter != _actionLearners_.endSafe();
          ++actionIter) {
       for (auto learnerIter = actionIter.val()->beginSafe();
@@ -86,7 +86,7 @@ namespace gum {
              TESTNAME    RewardAttributeSelection,
              LEARNERNAME LearnerSelection >
   void FMDPLearner< VariableAttributeSelection, RewardAttributeSelection, LearnerSelection >::
-     initialize(FMDP< double >* fmdp) {
+      initialize(FMDP< double >* fmdp) {
     _fmdp_ = fmdp;
 
     _modaMax_ = 0;
@@ -110,8 +110,8 @@ namespace gum {
                                + " - VARIABLE : " + (*varIter)->name());
         _fmdp_->addTransitionForAction(*actionIter, *varIter, varTrans);
         _actionLearners_[*actionIter]->insert(
-           (*varIter),
-           _instantiateVarLearner_(varTrans, mainVariables, _fmdp_->main2prime(*varIter)));
+            (*varIter),
+            _instantiateVarLearner_(varTrans, mainVariables, _fmdp_->main2prime(*varIter)));
       }
 
       if (_actionReward_) {
@@ -138,7 +138,7 @@ namespace gum {
              TESTNAME    RewardAttributeSelection,
              LEARNERNAME LearnerSelection >
   bool FMDPLearner< VariableAttributeSelection, RewardAttributeSelection, LearnerSelection >::
-     addObservation(Idx actionId, const Observation* newObs) {
+      addObservation(Idx actionId, const Observation* newObs) {
     for (SequenceIteratorSafe< const DiscreteVariable* > varIter = _fmdp_->beginVariables();
          varIter != _fmdp_->endVariables();
          ++varIter) {
@@ -165,8 +165,8 @@ namespace gum {
   template < TESTNAME    VariableAttributeSelection,
              TESTNAME    RewardAttributeSelection,
              LEARNERNAME LearnerSelection >
-  Size
-     FMDPLearner< VariableAttributeSelection, RewardAttributeSelection, LearnerSelection >::size() {
+  Size FMDPLearner< VariableAttributeSelection, RewardAttributeSelection, LearnerSelection >::
+      size() {
     Size s = 0;
     for (SequenceIteratorSafe< Idx > actionIter = _fmdp_->beginActions();
          actionIter != _fmdp_->endActions();
@@ -190,7 +190,7 @@ namespace gum {
              TESTNAME    RewardAttributeSelection,
              LEARNERNAME LearnerSelection >
   void FMDPLearner< VariableAttributeSelection, RewardAttributeSelection, LearnerSelection >::
-     updateFMDP() {
+      updateFMDP() {
     for (SequenceIteratorSafe< Idx > actionIter = _fmdp_->beginActions();
          actionIter != _fmdp_->endActions();
          ++actionIter) {

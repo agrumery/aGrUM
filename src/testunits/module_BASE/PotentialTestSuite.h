@@ -44,7 +44,7 @@ namespace gum_tests {
       TS_ASSERT(p.empty())
 
       gum::LabelizedVariable a("a", "first var", 2), b("b", "second var", 4),
-         c("c", "third var", 5), other_a("a", "first var", 2);
+          c("c", "third var", 5), other_a("a", "first var", 2);
       TS_GUM_ASSERT_THROWS_NOTHING(p << a << b << c)
       TS_ASSERT_THROWS(p << a << a, const gum::DuplicateElement&)
       TS_ASSERT_THROWS(p << a << other_a, const gum::DuplicateElement&)
@@ -54,7 +54,7 @@ namespace gum_tests {
       gum::Potential< double > p(new gum::MultiDimArray< double >());
 
       gum::LabelizedVariable a("a", "first var", 2), b("b", "second var", 4),
-         c("c", "third var", 5);
+          c("c", "third var", 5);
 
       p << a << b << c;
 
@@ -83,7 +83,7 @@ namespace gum_tests {
     GUM_ACTIVE_TEST(DomainSizeChanges) {
       gum::Potential< double > p1(new gum::MultiDimArray< double >());
       gum::LabelizedVariable   var1("var1", "first var", 2), var2("var2", "second var", 2),
-         var3("var3", "third var", 2);
+          var3("var3", "third var", 2);
       p1 << var1 << var2 << var3;
 
       TS_ASSERT_EQUALS(p1.domainSize(),
@@ -93,7 +93,7 @@ namespace gum_tests {
     GUM_ACTIVE_TEST(AddAnyNumber) {
       gum::Potential< double > proba(new gum::MultiDimArray< double >());
       gum::LabelizedVariable   a("a", "first var", 2), b("b", "second var", 4),
-         c("c", "third var", 5);
+          c("c", "third var", 5);
       proba << a << b << c;
 
       gum::Instantiation i(proba);
@@ -105,7 +105,7 @@ namespace gum_tests {
     GUM_ACTIVE_TEST(CopyProba) {
       gum::Potential< double > m(new gum::MultiDimArray< double >());
       gum::LabelizedVariable   a("a", "first var", 2), b("b", "second var", 4),
-         c("c", "third var", 5);
+          c("c", "third var", 5);
 
       m << a << b << c;
       gum::Instantiation i(m);
@@ -120,7 +120,7 @@ namespace gum_tests {
       gum::Potential< double > mm(new gum::MultiDimArray< double >());
 
       gum::LabelizedVariable x("x", "first var", 2), y("y", "second var", 4),
-         z("z", "third var", 5);
+          z("z", "third var", 5);
       mm << x << z;
       TS_ASSERT_THROWS_ANYTHING(mm.copyFrom(m))
       mm << y;
@@ -134,7 +134,7 @@ namespace gum_tests {
 
     GUM_ACTIVE_TEST(RegressionCopy) {
       gum::LabelizedVariable a("a", "first var", 2), b("b", "second var", 4),
-         c("c", "third var", 5);
+          c("c", "third var", 5);
 
       {
         gum::Potential< double > P1, P2;
@@ -237,13 +237,13 @@ namespace gum_tests {
       auto pA = p1 * p2;
 
       TS_ASSERT_EQUALS(
-         pA,
-         (gum::Potential< int >() << b << c << a).fillWith({5, 18, 7, 24, 10, 24, 14, 32}))
+          pA,
+          (gum::Potential< int >() << b << c << a).fillWith({5, 18, 7, 24, 10, 24, 14, 32}))
 
       auto pB = p1 + p2;
       TS_ASSERT_EQUALS(
-         pB,
-         (gum::Potential< int >() << b << c << a).fillWith({6, 9, 8, 11, 7, 10, 9, 12}))
+          pB,
+          (gum::Potential< int >() << b << c << a).fillWith({6, 9, 8, 11, 7, 10, 9, 12}))
 
       auto pC = p2 / p1;
       TS_ASSERT_EQUALS(pC,
@@ -254,15 +254,15 @@ namespace gum_tests {
                        (gum::Potential< int >() << b << a << c).fillWith({4, 3, 3, 2, 6, 5, 5, 4}))
 
       TS_ASSERT_EQUALS(
-         ((p1 * p2) - (p2 / p1) + p1),
-         (gum::Potential< int >() << b << a << c).fillWith({1, 19, 10, 27, 1, 25, 13, 34}))
+          ((p1 * p2) - (p2 / p1) + p1),
+          (gum::Potential< int >() << b << a << c).fillWith({1, 19, 10, 27, 1, 25, 13, 34}))
 
       p = p1 * p2;
       p -= (p2 / p1);
       p += p1;
       TS_ASSERT_EQUALS(
-         p,
-         (gum::Potential< int >() << b << a << c).fillWith({1, 19, 10, 27, 1, 25, 13, 34}))
+          p,
+          (gum::Potential< int >() << b << a << c).fillWith({1, 19, 10, 27, 1, 25, 13, 34}))
     }
 
     GUM_ACTIVE_TEST(MargOutFunctions) {
@@ -919,7 +919,7 @@ namespace gum_tests {
         TS_ASSERT_DELTA(s, int(0.2 * NBRITER), DELTA)
 
         p.add(w);
-        TS_ASSERT_THROWS(auto x=p.draw(), const gum::FatalError&)
+        TS_ASSERT_THROWS(auto x = p.draw(), const gum::FatalError&)
 
         gum::Potential< double > q;
         q.add(w);
@@ -1192,8 +1192,8 @@ namespace gum_tests {
       p.randomDistribution();
 
       TS_GUM_ASSERT_QUASI_EQUALS(
-         p.expectedValue([](const gum::Instantiation&) -> auto { return 1.0; }),
-         1.0)
+          p.expectedValue([](const gum::Instantiation&) -> auto { return 1.0; }),
+          1.0)
 
       gum::Potential< double > q;
       q.add(u);
@@ -1208,8 +1208,8 @@ namespace gum_tests {
       }
 
       TS_GUM_ASSERT_QUASI_EQUALS(
-         q.expectedValue([](const gum::Instantiation& i) -> auto { return double(i.val(0)); }),
-         mean);
+          q.expectedValue([](const gum::Instantiation& i) -> auto { return double(i.val(0)); }),
+          mean);
     }
 
     GUM_ACTIVE_TEST(Inverse) {

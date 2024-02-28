@@ -103,10 +103,10 @@ namespace gum_tests {
       gum::learning::ScoreLog2Likelihood score(parser, prior);
 
       TS_GUM_ASSERT_THROWS_NOTHING(gum::learning::ScoreLog2Likelihood::isPriorCompatible(
-         gum::learning::PriorType::SmoothingPriorType));
+          gum::learning::PriorType::SmoothingPriorType));
       TS_GUM_ASSERT_THROWS_NOTHING(gum::learning::ScoreLog2Likelihood::isPriorCompatible(prior));
       TS_GUM_ASSERT_THROWS_NOTHING(
-         score.isPriorCompatible(gum::learning::PriorType::SmoothingPriorType));
+          score.isPriorCompatible(gum::learning::PriorType::SmoothingPriorType));
       TS_GUM_ASSERT_THROWS_NOTHING(score.isPriorCompatible(prior))
 
       gum::NodeId                node0 = 0;
@@ -141,7 +141,7 @@ namespace gum_tests {
 
       gum::learning::ScoreLog2Likelihood score2(score);
       TS_GUM_ASSERT_THROWS_NOTHING(
-         score2.isPriorCompatible(gum::learning::PriorType::SmoothingPriorType));
+          score2.isPriorCompatible(gum::learning::PriorType::SmoothingPriorType));
       TS_GUM_ASSERT_THROWS_NOTHING(score2.isPriorCompatible(prior))
 
       TS_ASSERT(_equal_(xscore_1, score2.score(node0)))
@@ -150,7 +150,7 @@ namespace gum_tests {
 
       gum::learning::ScoreLog2Likelihood score3(std::move(score2));
       TS_GUM_ASSERT_THROWS_NOTHING(
-         score3.isPriorCompatible(gum::learning::PriorType::SmoothingPriorType));
+          score3.isPriorCompatible(gum::learning::PriorType::SmoothingPriorType));
       TS_GUM_ASSERT_THROWS_NOTHING(score3.isPriorCompatible(prior))
 
       TS_ASSERT(_equal_(xscore_1, score3.score(node0)))
@@ -159,7 +159,7 @@ namespace gum_tests {
 
       gum::learning::ScoreLog2Likelihood* score4 = score3.clone();
       TS_GUM_ASSERT_THROWS_NOTHING(
-         score4->isPriorCompatible(gum::learning::PriorType::SmoothingPriorType));
+          score4->isPriorCompatible(gum::learning::PriorType::SmoothingPriorType));
       TS_GUM_ASSERT_THROWS_NOTHING(score4->isPriorCompatible(prior))
 
       TS_ASSERT(_equal_(xscore_1, score4->score(node0)))
@@ -168,7 +168,7 @@ namespace gum_tests {
 
       score4->operator=(score);
       TS_GUM_ASSERT_THROWS_NOTHING(
-         score4->isPriorCompatible(gum::learning::PriorType::SmoothingPriorType));
+          score4->isPriorCompatible(gum::learning::PriorType::SmoothingPriorType));
       TS_GUM_ASSERT_THROWS_NOTHING(score4->isPriorCompatible(prior))
 
       TS_ASSERT(_equal_(xscore_1, score4->score(node0)))
@@ -177,7 +177,7 @@ namespace gum_tests {
 
       score4->operator=(std::move(score));
       TS_GUM_ASSERT_THROWS_NOTHING(
-         score4->isPriorCompatible(gum::learning::PriorType::SmoothingPriorType));
+          score4->isPriorCompatible(gum::learning::PriorType::SmoothingPriorType));
       TS_GUM_ASSERT_THROWS_NOTHING(score4->isPriorCompatible(prior))
 
       TS_ASSERT(_equal_(xscore_1, score4->score(node0)))
@@ -246,10 +246,10 @@ namespace gum_tests {
       gum::learning::ScoreLog2Likelihood score(parser, prior, nodeId2columns);
 
       TS_GUM_ASSERT_THROWS_NOTHING(gum::learning::ScoreLog2Likelihood::isPriorCompatible(
-         gum::learning::PriorType::SmoothingPriorType));
+          gum::learning::PriorType::SmoothingPriorType));
       TS_GUM_ASSERT_THROWS_NOTHING(gum::learning::ScoreLog2Likelihood::isPriorCompatible(prior));
       TS_GUM_ASSERT_THROWS_NOTHING(
-         score.isPriorCompatible(gum::learning::PriorType::SmoothingPriorType));
+          score.isPriorCompatible(gum::learning::PriorType::SmoothingPriorType));
       TS_GUM_ASSERT_THROWS_NOTHING(score.isPriorCompatible(prior))
 
       std::vector< gum::NodeId > cond_empty;
@@ -282,7 +282,7 @@ namespace gum_tests {
 
       gum::learning::ScoreLog2Likelihood score2(score);
       TS_GUM_ASSERT_THROWS_NOTHING(
-         score2.isPriorCompatible(gum::learning::PriorType::SmoothingPriorType));
+          score2.isPriorCompatible(gum::learning::PriorType::SmoothingPriorType));
       TS_GUM_ASSERT_THROWS_NOTHING(score2.isPriorCompatible(prior))
 
       TS_ASSERT(_equal_(xscore_1, score2.score(node2)))
@@ -291,7 +291,7 @@ namespace gum_tests {
 
       gum::learning::ScoreLog2Likelihood score3(std::move(score2));
       TS_GUM_ASSERT_THROWS_NOTHING(
-         score3.isPriorCompatible(gum::learning::PriorType::SmoothingPriorType));
+          score3.isPriorCompatible(gum::learning::PriorType::SmoothingPriorType));
       TS_GUM_ASSERT_THROWS_NOTHING(score3.isPriorCompatible(prior))
 
       TS_ASSERT(_equal_(xscore_1, score3.score(node2)))
@@ -300,7 +300,7 @@ namespace gum_tests {
 
       gum::learning::ScoreLog2Likelihood* score4 = score3.clone();
       TS_GUM_ASSERT_THROWS_NOTHING(
-         score4->isPriorCompatible(gum::learning::PriorType::SmoothingPriorType));
+          score4->isPriorCompatible(gum::learning::PriorType::SmoothingPriorType));
       TS_GUM_ASSERT_THROWS_NOTHING(score4->isPriorCompatible(prior))
 
       TS_ASSERT(_equal_(xscore_1, score4->score(node2)))
@@ -309,7 +309,7 @@ namespace gum_tests {
 
       score4->operator=(score);
       TS_GUM_ASSERT_THROWS_NOTHING(
-         score4->isPriorCompatible(gum::learning::PriorType::SmoothingPriorType));
+          score4->isPriorCompatible(gum::learning::PriorType::SmoothingPriorType));
       TS_GUM_ASSERT_THROWS_NOTHING(score4->isPriorCompatible(prior))
 
       TS_ASSERT(_equal_(xscore_1, score4->score(node2)))
@@ -318,7 +318,7 @@ namespace gum_tests {
 
       score4->operator=(std::move(score));
       TS_GUM_ASSERT_THROWS_NOTHING(
-         score4->isPriorCompatible(gum::learning::PriorType::SmoothingPriorType));
+          score4->isPriorCompatible(gum::learning::PriorType::SmoothingPriorType));
       TS_GUM_ASSERT_THROWS_NOTHING(score4->isPriorCompatible(prior))
 
       TS_ASSERT(_equal_(xscore_1, score4->score(node2)))
@@ -375,10 +375,10 @@ namespace gum_tests {
       gum::learning::ScoreLog2Likelihood score(parser, prior, ranges);
 
       TS_GUM_ASSERT_THROWS_NOTHING(gum::learning::ScoreLog2Likelihood::isPriorCompatible(
-         gum::learning::PriorType::SmoothingPriorType));
+          gum::learning::PriorType::SmoothingPriorType));
       TS_GUM_ASSERT_THROWS_NOTHING(gum::learning::ScoreLog2Likelihood::isPriorCompatible(prior));
       TS_GUM_ASSERT_THROWS_NOTHING(
-         score.isPriorCompatible(gum::learning::PriorType::SmoothingPriorType));
+          score.isPriorCompatible(gum::learning::PriorType::SmoothingPriorType));
       TS_GUM_ASSERT_THROWS_NOTHING(score.isPriorCompatible(prior))
 
       gum::NodeId                node0 = 0;
@@ -413,7 +413,7 @@ namespace gum_tests {
 
       gum::learning::ScoreLog2Likelihood score2(score);
       TS_GUM_ASSERT_THROWS_NOTHING(
-         score2.isPriorCompatible(gum::learning::PriorType::SmoothingPriorType));
+          score2.isPriorCompatible(gum::learning::PriorType::SmoothingPriorType));
       TS_GUM_ASSERT_THROWS_NOTHING(score2.isPriorCompatible(prior))
 
       TS_ASSERT(_equal_(xscore_1, score2.score(node0)))
@@ -422,7 +422,7 @@ namespace gum_tests {
 
       gum::learning::ScoreLog2Likelihood score3(std::move(score2));
       TS_GUM_ASSERT_THROWS_NOTHING(
-         score3.isPriorCompatible(gum::learning::PriorType::SmoothingPriorType));
+          score3.isPriorCompatible(gum::learning::PriorType::SmoothingPriorType));
       TS_GUM_ASSERT_THROWS_NOTHING(score3.isPriorCompatible(prior))
 
       TS_ASSERT(_equal_(xscore_1, score3.score(node0)))
@@ -431,7 +431,7 @@ namespace gum_tests {
 
       gum::learning::ScoreLog2Likelihood* score4 = score3.clone();
       TS_GUM_ASSERT_THROWS_NOTHING(
-         score4->isPriorCompatible(gum::learning::PriorType::SmoothingPriorType));
+          score4->isPriorCompatible(gum::learning::PriorType::SmoothingPriorType));
       TS_GUM_ASSERT_THROWS_NOTHING(score4->isPriorCompatible(prior))
 
       TS_ASSERT(_equal_(xscore_1, score4->score(node0)))
@@ -440,7 +440,7 @@ namespace gum_tests {
 
       score4->operator=(score);
       TS_GUM_ASSERT_THROWS_NOTHING(
-         score4->isPriorCompatible(gum::learning::PriorType::SmoothingPriorType));
+          score4->isPriorCompatible(gum::learning::PriorType::SmoothingPriorType));
       TS_GUM_ASSERT_THROWS_NOTHING(score4->isPriorCompatible(prior))
 
       TS_ASSERT(_equal_(xscore_1, score4->score(node0)))
@@ -449,7 +449,7 @@ namespace gum_tests {
 
       score4->operator=(std::move(score));
       TS_GUM_ASSERT_THROWS_NOTHING(
-         score4->isPriorCompatible(gum::learning::PriorType::SmoothingPriorType));
+          score4->isPriorCompatible(gum::learning::PriorType::SmoothingPriorType));
       TS_GUM_ASSERT_THROWS_NOTHING(score4->isPriorCompatible(prior))
 
       TS_ASSERT(_equal_(xscore_1, score4->score(node0)))
@@ -520,10 +520,10 @@ namespace gum_tests {
       gum::learning::ScoreLog2Likelihood score(parser, prior, ranges, nodeId2columns);
 
       TS_GUM_ASSERT_THROWS_NOTHING(gum::learning::ScoreLog2Likelihood::isPriorCompatible(
-         gum::learning::PriorType::SmoothingPriorType));
+          gum::learning::PriorType::SmoothingPriorType));
       TS_GUM_ASSERT_THROWS_NOTHING(gum::learning::ScoreLog2Likelihood::isPriorCompatible(prior));
       TS_GUM_ASSERT_THROWS_NOTHING(
-         score.isPriorCompatible(gum::learning::PriorType::SmoothingPriorType));
+          score.isPriorCompatible(gum::learning::PriorType::SmoothingPriorType));
       TS_GUM_ASSERT_THROWS_NOTHING(score.isPriorCompatible(prior))
 
       std::vector< gum::NodeId > cond_empty;
@@ -556,7 +556,7 @@ namespace gum_tests {
 
       gum::learning::ScoreLog2Likelihood score2(score);
       TS_GUM_ASSERT_THROWS_NOTHING(
-         score2.isPriorCompatible(gum::learning::PriorType::SmoothingPriorType));
+          score2.isPriorCompatible(gum::learning::PriorType::SmoothingPriorType));
       TS_GUM_ASSERT_THROWS_NOTHING(score2.isPriorCompatible(prior))
 
       TS_ASSERT(_equal_(xscore_1, score2.score(node2)))
@@ -565,7 +565,7 @@ namespace gum_tests {
 
       gum::learning::ScoreLog2Likelihood score3(std::move(score2));
       TS_GUM_ASSERT_THROWS_NOTHING(
-         score3.isPriorCompatible(gum::learning::PriorType::SmoothingPriorType));
+          score3.isPriorCompatible(gum::learning::PriorType::SmoothingPriorType));
       TS_GUM_ASSERT_THROWS_NOTHING(score3.isPriorCompatible(prior))
 
       TS_ASSERT(_equal_(xscore_1, score3.score(node2)))
@@ -574,7 +574,7 @@ namespace gum_tests {
 
       gum::learning::ScoreLog2Likelihood* score4 = score3.clone();
       TS_GUM_ASSERT_THROWS_NOTHING(
-         score4->isPriorCompatible(gum::learning::PriorType::SmoothingPriorType));
+          score4->isPriorCompatible(gum::learning::PriorType::SmoothingPriorType));
       TS_GUM_ASSERT_THROWS_NOTHING(score4->isPriorCompatible(prior))
 
       TS_ASSERT(_equal_(xscore_1, score4->score(node2)))
@@ -583,7 +583,7 @@ namespace gum_tests {
 
       score4->operator=(score);
       TS_GUM_ASSERT_THROWS_NOTHING(
-         score4->isPriorCompatible(gum::learning::PriorType::SmoothingPriorType));
+          score4->isPriorCompatible(gum::learning::PriorType::SmoothingPriorType));
       TS_GUM_ASSERT_THROWS_NOTHING(score4->isPriorCompatible(prior))
 
       TS_ASSERT(_equal_(xscore_1, score4->score(node2)))
@@ -592,7 +592,7 @@ namespace gum_tests {
 
       score4->operator=(std::move(score));
       TS_GUM_ASSERT_THROWS_NOTHING(
-         score4->isPriorCompatible(gum::learning::PriorType::SmoothingPriorType));
+          score4->isPriorCompatible(gum::learning::PriorType::SmoothingPriorType));
       TS_GUM_ASSERT_THROWS_NOTHING(score4->isPriorCompatible(prior))
 
       TS_ASSERT(_equal_(xscore_1, score4->score(node2)))
@@ -651,10 +651,10 @@ namespace gum_tests {
         score.setNumberOfThreads(i);
 
         TS_GUM_ASSERT_THROWS_NOTHING(gum::learning::ScoreLog2Likelihood::isPriorCompatible(
-           gum::learning::PriorType::SmoothingPriorType));
+            gum::learning::PriorType::SmoothingPriorType));
         TS_GUM_ASSERT_THROWS_NOTHING(gum::learning::ScoreLog2Likelihood::isPriorCompatible(prior));
         TS_GUM_ASSERT_THROWS_NOTHING(
-           score.isPriorCompatible(gum::learning::PriorType::SmoothingPriorType));
+            score.isPriorCompatible(gum::learning::PriorType::SmoothingPriorType));
         TS_GUM_ASSERT_THROWS_NOTHING(score.isPriorCompatible(prior))
 
         gum::NodeId                node0 = 0;
@@ -689,7 +689,7 @@ namespace gum_tests {
 
         gum::learning::ScoreLog2Likelihood score2(score);
         TS_GUM_ASSERT_THROWS_NOTHING(
-           score2.isPriorCompatible(gum::learning::PriorType::SmoothingPriorType));
+            score2.isPriorCompatible(gum::learning::PriorType::SmoothingPriorType));
         TS_GUM_ASSERT_THROWS_NOTHING(score2.isPriorCompatible(prior))
 
         TS_ASSERT(_equal_(xscore_1, score2.score(node0)))
@@ -698,7 +698,7 @@ namespace gum_tests {
 
         gum::learning::ScoreLog2Likelihood score3(std::move(score2));
         TS_GUM_ASSERT_THROWS_NOTHING(
-           score3.isPriorCompatible(gum::learning::PriorType::SmoothingPriorType));
+            score3.isPriorCompatible(gum::learning::PriorType::SmoothingPriorType));
         TS_GUM_ASSERT_THROWS_NOTHING(score3.isPriorCompatible(prior))
 
         TS_ASSERT(_equal_(xscore_1, score3.score(node0)))
@@ -707,7 +707,7 @@ namespace gum_tests {
 
         gum::learning::ScoreLog2Likelihood* score4 = score3.clone();
         TS_GUM_ASSERT_THROWS_NOTHING(
-           score4->isPriorCompatible(gum::learning::PriorType::SmoothingPriorType));
+            score4->isPriorCompatible(gum::learning::PriorType::SmoothingPriorType));
         TS_GUM_ASSERT_THROWS_NOTHING(score4->isPriorCompatible(prior))
 
         TS_ASSERT(_equal_(xscore_1, score4->score(node0)))
@@ -716,7 +716,7 @@ namespace gum_tests {
 
         score4->operator=(score);
         TS_GUM_ASSERT_THROWS_NOTHING(
-           score4->isPriorCompatible(gum::learning::PriorType::SmoothingPriorType));
+            score4->isPriorCompatible(gum::learning::PriorType::SmoothingPriorType));
         TS_GUM_ASSERT_THROWS_NOTHING(score4->isPriorCompatible(prior))
 
         TS_ASSERT(_equal_(xscore_1, score4->score(node0)))
@@ -725,7 +725,7 @@ namespace gum_tests {
 
         score4->operator=(std::move(score));
         TS_GUM_ASSERT_THROWS_NOTHING(
-           score4->isPriorCompatible(gum::learning::PriorType::SmoothingPriorType));
+            score4->isPriorCompatible(gum::learning::PriorType::SmoothingPriorType));
         TS_GUM_ASSERT_THROWS_NOTHING(score4->isPriorCompatible(prior))
 
         TS_ASSERT(_equal_(xscore_1, score4->score(node0)))

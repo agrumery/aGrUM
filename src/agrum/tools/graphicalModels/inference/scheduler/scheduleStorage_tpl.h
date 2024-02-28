@@ -62,7 +62,7 @@ namespace gum {
     // all the computations within the schedule
     try {
       _arg_ = dynamic_cast< ScheduleMultiDim< SCHED_TABLE >* >(
-         const_cast< IScheduleMultiDim* >(&table));
+          const_cast< IScheduleMultiDim* >(&table));
     } catch (std::bad_cast&) {
       GUM_ERROR(TypeError,
                 "The ScheduleMultiDim cannot be stored in the container "
@@ -79,7 +79,7 @@ namespace gum {
   /// copy constructor
   template < typename TABLE, template < typename... > class CONTAINER >
   ScheduleStorage< TABLE, CONTAINER >::ScheduleStorage(
-     const ScheduleStorage< TABLE, CONTAINER >& from) :
+      const ScheduleStorage< TABLE, CONTAINER >& from) :
       ScheduleOperator(from),
       _arg_(from._arg_), _container_(from._container_), _is_executed_(from._is_executed_) {
     // save the arg into _args_ (no need to update _results_)
@@ -117,7 +117,7 @@ namespace gum {
   /// copy operator
   template < typename TABLE, template < typename... > class CONTAINER >
   ScheduleStorage< TABLE, CONTAINER >& ScheduleStorage< TABLE, CONTAINER >::operator=(
-     const ScheduleStorage< TABLE, CONTAINER >& from) {
+      const ScheduleStorage< TABLE, CONTAINER >& from) {
     if (this != &from) {
       _arg_ = from._arg_;
       _args_.clear();
@@ -132,7 +132,7 @@ namespace gum {
   /// move operator
   template < typename TABLE, template < typename... > class CONTAINER >
   ScheduleStorage< TABLE, CONTAINER >&
-     ScheduleStorage< TABLE, CONTAINER >::operator=(ScheduleStorage< TABLE, CONTAINER >&& from) {
+      ScheduleStorage< TABLE, CONTAINER >::operator=(ScheduleStorage< TABLE, CONTAINER >&& from) {
     if (this != &from) {
       _arg_ = from._arg_;
       _args_.clear();
@@ -147,7 +147,7 @@ namespace gum {
   /// operator ==
   template < typename TABLE, template < typename... > class CONTAINER >
   INLINE bool ScheduleStorage< TABLE, CONTAINER >::operator==(
-     const ScheduleStorage< TABLE, CONTAINER >& op) const {
+      const ScheduleStorage< TABLE, CONTAINER >& op) const {
     return (_container_ == op._container_) && (*_arg_ == *op._arg_);
   }
 
@@ -156,7 +156,7 @@ namespace gum {
   bool ScheduleStorage< TABLE, CONTAINER >::operator==(const ScheduleOperator& op) const {
     try {
       const ScheduleStorage< TABLE, CONTAINER >& real_op
-         = dynamic_cast< const ScheduleStorage< TABLE, CONTAINER >& >(op);
+          = dynamic_cast< const ScheduleStorage< TABLE, CONTAINER >& >(op);
       return ScheduleStorage< TABLE, CONTAINER >::operator==(real_op);
     } catch (std::bad_cast&) { return false; }
   }
@@ -164,7 +164,7 @@ namespace gum {
   /// operator !=
   template < typename TABLE, template < typename... > class CONTAINER >
   INLINE bool ScheduleStorage< TABLE, CONTAINER >::operator!=(
-     const ScheduleStorage< TABLE, CONTAINER >& op) const {
+      const ScheduleStorage< TABLE, CONTAINER >& op) const {
     return !ScheduleStorage< TABLE, CONTAINER >::operator==(op);
   }
 
@@ -177,7 +177,7 @@ namespace gum {
   /// checks whether two ScheduleOperator have similar parameters
   template < typename TABLE, template < typename... > class CONTAINER >
   INLINE bool ScheduleStorage< TABLE, CONTAINER >::hasSimilarArguments(
-     const ScheduleStorage< TABLE, CONTAINER >& op) const {
+      const ScheduleStorage< TABLE, CONTAINER >& op) const {
     return _arg_->hasSameVariables(*op._arg_);
   }
 
@@ -186,7 +186,7 @@ namespace gum {
   bool ScheduleStorage< TABLE, CONTAINER >::hasSimilarArguments(const ScheduleOperator& op) const {
     try {
       const ScheduleStorage< TABLE, CONTAINER >& real_op
-         = dynamic_cast< const ScheduleStorage< TABLE, CONTAINER >& >(op);
+          = dynamic_cast< const ScheduleStorage< TABLE, CONTAINER >& >(op);
       return ScheduleStorage< TABLE, CONTAINER >::hasSimilarArguments(real_op);
     } catch (std::bad_cast&) { return false; }
   }
@@ -194,7 +194,7 @@ namespace gum {
   /// checks whether two ScheduleOperator have the same parameters
   template < typename TABLE, template < typename... > class CONTAINER >
   INLINE bool ScheduleStorage< TABLE, CONTAINER >::hasSameArguments(
-     const ScheduleStorage< TABLE, CONTAINER >& op) const {
+      const ScheduleStorage< TABLE, CONTAINER >& op) const {
     return (_container_ == op._container_) && _arg_->hasSameVariables(*op._arg_)
         && _arg_->hasSameContent(*op._arg_);
   }
@@ -204,7 +204,7 @@ namespace gum {
   bool ScheduleStorage< TABLE, CONTAINER >::hasSameArguments(const ScheduleOperator& op) const {
     try {
       const ScheduleStorage< TABLE, CONTAINER >& real_op
-         = dynamic_cast< const ScheduleStorage< TABLE, CONTAINER >& >(op);
+          = dynamic_cast< const ScheduleStorage< TABLE, CONTAINER >& >(op);
       return ScheduleStorage< TABLE, CONTAINER >::hasSameArguments(real_op);
     } catch (std::bad_cast&) { return false; }
   }
@@ -212,7 +212,7 @@ namespace gum {
   /// checks whether two ScheduleOperator perform the same operation
   template < typename TABLE, template < typename... > class CONTAINER >
   INLINE bool ScheduleStorage< TABLE, CONTAINER >::isSameOperator(
-     const ScheduleStorage< TABLE, CONTAINER >& op) const {
+      const ScheduleStorage< TABLE, CONTAINER >& op) const {
     return true;
   }
 
@@ -221,7 +221,7 @@ namespace gum {
   bool ScheduleStorage< TABLE, CONTAINER >::isSameOperator(const ScheduleOperator& op) const {
     try {
       const ScheduleStorage< TABLE, CONTAINER >& real_op
-         = dynamic_cast< const ScheduleStorage< TABLE, CONTAINER >& >(op);
+          = dynamic_cast< const ScheduleStorage< TABLE, CONTAINER >& >(op);
       return ScheduleStorage< TABLE, CONTAINER >::isSameOperator(real_op);
     } catch (std::bad_cast&) { return false; }
   }
@@ -264,8 +264,8 @@ namespace gum {
         // here, the ScheduleMultiDim owns the table, so it can pass directly
         // its table to the container
         ScheduleStorageMethod::Execution< SCHED_TABLE, TABLE, CONTAINER >::execute(
-           const_cast< SCHED_TABLE& >(_arg_->multiDim()),
-           *_container_);
+            const_cast< SCHED_TABLE& >(_arg_->multiDim()),
+            *_container_);
       } else {
         // here, the container just contains a reference on the table, hence
         // we should first copy it and this is this copy that will be inserted
@@ -311,23 +311,23 @@ namespace gum {
   /// modifies the arguments of the operator
   template < typename TABLE, template < typename... > class CONTAINER >
   void ScheduleStorage< TABLE, CONTAINER >::updateArgs(
-     const Sequence< const IScheduleMultiDim* >& new_args) {
+      const Sequence< const IScheduleMultiDim* >& new_args) {
     // check that there is exactly one argument in new_args and that its type
     // is compatible with TABLE
     if (new_args.size() != Size(1)) {
       GUM_ERROR(SizeError,
                 "Method ScheduleStorage::updateArgs expects 1 new "
-                   << "argument, but " << new_args.size() << " were passed.");
+                    << "argument, but " << new_args.size() << " were passed.");
     }
     ScheduleMultiDim< SCHED_TABLE >* arg;
     try {
       arg = dynamic_cast< ScheduleMultiDim< SCHED_TABLE >* >(
-         const_cast< IScheduleMultiDim* >(new_args[0]));
+          const_cast< IScheduleMultiDim* >(new_args[0]));
     } catch (std::bad_cast&) {
       GUM_ERROR(TypeError,
                 "The type of the argument passed to "
-                   << "ScheduleStorage::updateArgs does not match what "
-                   << "the ScheduleOperator expects");
+                    << "ScheduleStorage::updateArgs does not match what "
+                    << "the ScheduleOperator expects");
     }
 
     // save the new argument

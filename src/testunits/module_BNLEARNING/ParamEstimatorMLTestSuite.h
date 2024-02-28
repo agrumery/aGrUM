@@ -60,9 +60,9 @@ namespace gum_tests {
     }
 
     gum::Potential< double >
-       _infer_(const gum::BayesNet< double >&                                  bn,
-               const std::vector< std::size_t >&                               targets,
-               const gum::learning::DBRow< gum::learning::DBTranslatedValue >& row) {
+        _infer_(const gum::BayesNet< double >&                                  bn,
+                const std::vector< std::size_t >&                               targets,
+                const gum::learning::DBRow< gum::learning::DBTranslatedValue >& row) {
       gum::LazyPropagation< double > ve(&bn);
 
       gum::NodeSet target_set;
@@ -822,10 +822,10 @@ namespace gum_tests {
       }
 
       const std::vector< gum::learning::DBTranslatedValueType > col_types{
-         gum::learning::DBTranslatedValueType::DISCRETE,
-         gum::learning::DBTranslatedValueType::DISCRETE,
-         gum::learning::DBTranslatedValueType::DISCRETE,
-         gum::learning::DBTranslatedValueType::DISCRETE};
+          gum::learning::DBTranslatedValueType::DISCRETE,
+          gum::learning::DBTranslatedValueType::DISCRETE,
+          gum::learning::DBTranslatedValueType::DISCRETE,
+          gum::learning::DBTranslatedValueType::DISCRETE};
 
       auto bn0 = gum::BayesNet< double >::fastPrototype("A;B;C;D");
       bn0.cpt("A").fillWith({0.3, 0.7});

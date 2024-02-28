@@ -34,8 +34,8 @@
 namespace gum {
   template < typename GUM_SCALAR >
   using ShaferShenoyMNInference
-     [[deprecated("Class ShaferShenoyMNInfrence<GUM_SCALAR> is deprecated. Please use class "
-                  "MarkovRandomField<GUM_SCALAR> instead.")]]
-     = ShaferShenoyMRFInference< GUM_SCALAR >;
+      [[deprecated("Class ShaferShenoyMNInfrence<GUM_SCALAR> is deprecated. Please use class "
+                   "MarkovRandomField<GUM_SCALAR> instead.")]]
+      = ShaferShenoyMRFInference< GUM_SCALAR >;
 }   // namespace gum
 #endif /* GUM_SHAFER_SHENOY_MN_INFERENCE */

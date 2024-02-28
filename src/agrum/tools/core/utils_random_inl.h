@@ -64,8 +64,8 @@ namespace gum {
   // returns the aGrUM's seed used by the std::generators
   INLINE unsigned int randomGeneratorSeed() {
     return (unsigned int)((GUM_RANDOMSEED == 0)
-                             ? std::chrono::system_clock::now().time_since_epoch().count()
-                             : GUM_RANDOMSEED);
+                              ? std::chrono::system_clock::now().time_since_epoch().count()
+                              : GUM_RANDOMSEED);
   }
 
   INLINE std::mt19937& randomGenerator() { return _rand_namespace_::Generator_; }

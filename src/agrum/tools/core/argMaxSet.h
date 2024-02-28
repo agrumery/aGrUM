@@ -78,7 +78,7 @@ namespace gum {
     ArgMaxSet(const ArgMaxSet< GUM_SCALAR_VAL, GUM_SCALAR_SEQ >& src);
 
     ArgMaxSet< GUM_SCALAR_VAL, GUM_SCALAR_SEQ >&
-       operator=(const ArgMaxSet< GUM_SCALAR_VAL, GUM_SCALAR_SEQ >& src);
+        operator=(const ArgMaxSet< GUM_SCALAR_VAL, GUM_SCALAR_SEQ >& src);
 
     // ============================================================================
     /// Destructor
@@ -92,8 +92,8 @@ namespace gum {
 
     void operator delete(void* p) {
       SmallObjectAllocator::instance().deallocate(
-         p,
-         sizeof(ArgMaxSet< GUM_SCALAR_VAL, GUM_SCALAR_SEQ >));
+          p,
+          sizeof(ArgMaxSet< GUM_SCALAR_VAL, GUM_SCALAR_SEQ >));
     }
 
     /// @}
@@ -129,7 +129,7 @@ namespace gum {
     /// Use to insert the content of another set inside this one
     // ============================================================================
     ArgMaxSet< GUM_SCALAR_VAL, GUM_SCALAR_SEQ >&
-       operator+=(const ArgMaxSet< GUM_SCALAR_VAL, GUM_SCALAR_SEQ >& src);
+        operator+=(const ArgMaxSet< GUM_SCALAR_VAL, GUM_SCALAR_SEQ >& src);
 
     // ============================================================================
     /// Gives the ith element

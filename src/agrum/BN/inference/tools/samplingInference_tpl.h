@@ -79,8 +79,8 @@ namespace gum {
 
   template < typename GUM_SCALAR >
   void SamplingInference< GUM_SCALAR >::setEstimatorFromLBP_(
-     LoopyBeliefPropagation< GUM_SCALAR >* lbp,
-     GUM_SCALAR                            virtualLBPSize) {
+      LoopyBeliefPropagation< GUM_SCALAR >* lbp,
+      GUM_SCALAR                            virtualLBPSize) {
     _estimator_.setFromLBP(lbp, this->hardEvidenceNodes(), virtualLBPSize);
     this->isSetEstimator = true;
   }
@@ -92,7 +92,7 @@ namespace gum {
 
   template < typename GUM_SCALAR >
   const Potential< GUM_SCALAR >&
-     SamplingInference< GUM_SCALAR >::currentPosterior(const std::string& name) {
+      SamplingInference< GUM_SCALAR >::currentPosterior(const std::string& name) {
     return currentPosterior(this->BN().idFromName(name));
   }
 

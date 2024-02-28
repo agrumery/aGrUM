@@ -128,7 +128,7 @@ namespace gum {
        * @warning the method assumes that the size of the vector is exactly
        * the domain size of the joint RHS variables of the idset. */
       virtual void addConditioningPseudoCount(const IdCondSet& idset, std::vector< double >& counts)
-         = 0;
+          = 0;
 
       /// @}
 

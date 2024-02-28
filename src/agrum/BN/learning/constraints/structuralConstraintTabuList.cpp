@@ -67,7 +67,7 @@ namespace gum {
 
     /// copy constructor
     StructuralConstraintTabuList::StructuralConstraintTabuList(
-       const StructuralConstraintTabuList& from) :
+        const StructuralConstraintTabuList& from) :
         _TabuList_changes_(from._TabuList_changes_),
         _TabuList_offset_(from._TabuList_offset_) {
       GUM_CONS_CPY(StructuralConstraintTabuList);
@@ -75,7 +75,7 @@ namespace gum {
 
     /// move constructor
     StructuralConstraintTabuList::StructuralConstraintTabuList(
-       StructuralConstraintTabuList&& from) :
+        StructuralConstraintTabuList&& from) :
         _TabuList_changes_(std::move(from._TabuList_changes_)),
         _TabuList_offset_(std::move(from._TabuList_offset_)) {
       GUM_CONS_MOV(StructuralConstraintTabuList);
@@ -88,7 +88,7 @@ namespace gum {
 
     /// copy operator
     StructuralConstraintTabuList&
-       StructuralConstraintTabuList::operator=(const StructuralConstraintTabuList& from) {
+        StructuralConstraintTabuList::operator=(const StructuralConstraintTabuList& from) {
       if (this != &from) {
         _TabuList_changes_ = from._TabuList_changes_;
         _TabuList_offset_  = from._TabuList_offset_;
@@ -98,7 +98,7 @@ namespace gum {
 
     /// move operator
     StructuralConstraintTabuList&
-       StructuralConstraintTabuList::operator=(StructuralConstraintTabuList&& from) {
+        StructuralConstraintTabuList::operator=(StructuralConstraintTabuList&& from) {
       if (this != &from) {
         _TabuList_changes_ = std::move(from._TabuList_changes_);
         _TabuList_offset_  = std::move(from._TabuList_offset_);

@@ -40,8 +40,8 @@ namespace gum {
 
     /// default constructor
     DBTranslator4RangeVariable::DBTranslator4RangeVariable(
-       const std::vector< std::string >& missing_symbols,
-       std::size_t                       max_dico_entries) :
+        const std::vector< std::string >& missing_symbols,
+        std::size_t                       max_dico_entries) :
         DBTranslator(DBTranslatedValueType::DISCRETE,
                      true,
                      missing_symbols,
@@ -74,10 +74,10 @@ namespace gum {
 
     /// default constructor with a range variable as translator
     DBTranslator4RangeVariable::DBTranslator4RangeVariable(
-       const RangeVariable&              var,
-       const std::vector< std::string >& missing_symbols,
-       const bool                        editable_dictionary,
-       std::size_t                       max_dico_entries) :
+        const RangeVariable&              var,
+        const std::vector< std::string >& missing_symbols,
+        const bool                        editable_dictionary,
+        std::size_t                       max_dico_entries) :
         DBTranslator(DBTranslatedValueType::DISCRETE,
                      true,
                      missing_symbols,
@@ -187,7 +187,7 @@ namespace gum {
 
     /// copy operator
     DBTranslator4RangeVariable&
-       DBTranslator4RangeVariable::operator=(const DBTranslator4RangeVariable& from) {
+        DBTranslator4RangeVariable::operator=(const DBTranslator4RangeVariable& from) {
       if (this != &from) {
         DBTranslator::operator=(from);
         _variable_                       = from._variable_;
@@ -201,7 +201,7 @@ namespace gum {
 
     /// move operator
     DBTranslator4RangeVariable&
-       DBTranslator4RangeVariable::operator=(DBTranslator4RangeVariable&& from) {
+        DBTranslator4RangeVariable::operator=(DBTranslator4RangeVariable&& from) {
       if (this != &from) {
         DBTranslator::operator=(std::move(from));
         _variable_                       = std::move(from._variable_);

@@ -113,7 +113,7 @@ namespace gum {
   /// copy operator
   template < typename TABLE >
   ScheduleProjection< TABLE >&
-     ScheduleProjection< TABLE >::operator=(const ScheduleProjection< TABLE >& from) {
+      ScheduleProjection< TABLE >::operator=(const ScheduleProjection< TABLE >& from) {
     // avoid self assignment
     if (this != &from) {
       // copy the set of variables to delete in a temporary variable, just
@@ -136,7 +136,7 @@ namespace gum {
   /// move operator
   template < typename TABLE >
   ScheduleProjection< TABLE >&
-     ScheduleProjection< TABLE >::operator=(ScheduleProjection< TABLE >&& from) {
+      ScheduleProjection< TABLE >::operator=(ScheduleProjection< TABLE >&& from) {
     // avoid self assignment
     if (this != &from) {
       if (!this->hasPersistentResults()) delete _result_;
@@ -168,7 +168,7 @@ namespace gum {
 
     try {
       const ScheduleProjection< TABLE >& real_op
-         = dynamic_cast< const ScheduleProjection< TABLE >& >(op);
+          = dynamic_cast< const ScheduleProjection< TABLE >& >(op);
       return ScheduleProjection< TABLE >::operator==(real_op);
     } catch (std::bad_cast&) { return false; }
   }
@@ -187,8 +187,8 @@ namespace gum {
 
   /// checks whether two ScheduleOperator have similar parameters
   template < typename TABLE >
-  INLINE bool
-     ScheduleProjection< TABLE >::hasSimilarArguments(const ScheduleProjection< TABLE >& op) const {
+  INLINE bool ScheduleProjection< TABLE >::hasSimilarArguments(
+      const ScheduleProjection< TABLE >& op) const {
     return (_arg_->hasSameVariables(*op._arg_) && (_del_vars_ == op._del_vars_));
   }
 
@@ -197,7 +197,7 @@ namespace gum {
   bool ScheduleProjection< TABLE >::hasSimilarArguments(const ScheduleOperator& op) const {
     try {
       const ScheduleProjection< TABLE >& real_op
-         = dynamic_cast< const ScheduleProjection< TABLE >& >(op);
+          = dynamic_cast< const ScheduleProjection< TABLE >& >(op);
       return ScheduleProjection< TABLE >::hasSimilarArguments(real_op);
     } catch (std::bad_cast&) { return false; }
   }
@@ -205,7 +205,7 @@ namespace gum {
   /// checks whether two ScheduleOperator have the same parameters
   template < typename TABLE >
   INLINE bool
-     ScheduleProjection< TABLE >::hasSameArguments(const ScheduleProjection< TABLE >& op) const {
+      ScheduleProjection< TABLE >::hasSameArguments(const ScheduleProjection< TABLE >& op) const {
     return (_arg_->hasSameVariables(*op._arg_) && _arg_->hasSameContent(*op._arg_)
             && (_del_vars_ == op._del_vars_));
   }
@@ -215,7 +215,7 @@ namespace gum {
   bool ScheduleProjection< TABLE >::hasSameArguments(const ScheduleOperator& op) const {
     try {
       const ScheduleProjection< TABLE >& real_op
-         = dynamic_cast< const ScheduleProjection< TABLE >& >(op);
+          = dynamic_cast< const ScheduleProjection< TABLE >& >(op);
       return ScheduleProjection< TABLE >::hasSameArguments(real_op);
     } catch (std::bad_cast&) { return false; }
   }
@@ -223,7 +223,7 @@ namespace gum {
   /// checks whether two ScheduleOperator perform the same operation
   template < typename TABLE >
   INLINE bool
-     ScheduleProjection< TABLE >::isSameOperator(const ScheduleProjection< TABLE >& op) const {
+      ScheduleProjection< TABLE >::isSameOperator(const ScheduleProjection< TABLE >& op) const {
     return _project_ == op._project_;
   }
 
@@ -232,7 +232,7 @@ namespace gum {
   bool ScheduleProjection< TABLE >::isSameOperator(const ScheduleOperator& op) const {
     try {
       const ScheduleProjection< TABLE >& real_op
-         = dynamic_cast< const ScheduleProjection< TABLE >& >(op);
+          = dynamic_cast< const ScheduleProjection< TABLE >& >(op);
       return ScheduleProjection< TABLE >::isSameOperator(real_op);
     } catch (std::bad_cast&) { return false; }
   }
@@ -263,14 +263,14 @@ namespace gum {
 
   /// modifies the arguments of the operator
   template < typename TABLE >
-  void
-     ScheduleProjection< TABLE >::updateArgs(const Sequence< const IScheduleMultiDim* >& new_args) {
+  void ScheduleProjection< TABLE >::updateArgs(
+      const Sequence< const IScheduleMultiDim* >& new_args) {
     // check that there is exactly one argument in new_args and that its type
     // is compatible with TABLE
     if (new_args.size() != Size(1)) {
       GUM_ERROR(SizeError,
                 "Method ScheduleProjection::updateArgs expects 1 new "
-                   << "argument, but " << new_args.size() << " were passed.");
+                    << "argument, but " << new_args.size() << " were passed.");
     }
     const ScheduleMultiDim< TABLE >* new_table;
     try {
@@ -278,8 +278,8 @@ namespace gum {
     } catch (std::bad_cast&) {
       GUM_ERROR(TypeError,
                 "The type of the argument passed to "
-                   << "ScheduleProjection::updateArgs does not match what "
-                   << "the ScheduleOperator expects");
+                    << "ScheduleProjection::updateArgs does not match what "
+                    << "the ScheduleOperator expects");
     }
 
     // if the new table is a constant, just copy it
@@ -337,7 +337,7 @@ namespace gum {
   template < typename TABLE >
   std::pair< double, double > ScheduleProjection< TABLE >::memoryUsage() const {
     const double domsize
-       = double(_result_->domainSize()) * _result_->sizeOfContent() + sizeof(TABLE);
+        = double(_result_->domainSize()) * _result_->sizeOfContent() + sizeof(TABLE);
     return {domsize, domsize};
   }
 
@@ -351,7 +351,7 @@ namespace gum {
   /// use a new projection function
   template < typename TABLE >
   void ScheduleProjection< TABLE >::setProjectionFunction(
-     TABLE (*project)(const TABLE&, const gum::VariableSet&)) {
+      TABLE (*project)(const TABLE&, const gum::VariableSet&)) {
     _project_ = project;
     _result_->makeAbstract();
   }

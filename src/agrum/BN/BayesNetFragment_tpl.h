@@ -59,13 +59,13 @@ namespace gum {
 
   template < typename GUM_SCALAR >
   INLINE void
-     BayesNetFragment< GUM_SCALAR >::whenArcAdded(const void* src, NodeId from, NodeId to) {
+      BayesNetFragment< GUM_SCALAR >::whenArcAdded(const void* src, NodeId from, NodeId to) {
     // nothing to do
   }
 
   template < typename GUM_SCALAR >
   INLINE void
-     BayesNetFragment< GUM_SCALAR >::whenArcDeleted(const void* src, NodeId from, NodeId to) {
+      BayesNetFragment< GUM_SCALAR >::whenArcDeleted(const void* src, NodeId from, NodeId to) {
     if (dag().existsArc(from, to)) uninstallArc_(from, to);
   }
 
@@ -112,7 +112,7 @@ namespace gum {
 
   template < typename GUM_SCALAR >
   INLINE const DiscreteVariable&
-     BayesNetFragment< GUM_SCALAR >::variableFromName(const std::string& name) const {
+      BayesNetFragment< GUM_SCALAR >::variableFromName(const std::string& name) const {
     NodeId id = idFromName(name);
 
     if (!isInstalledNode(id)) GUM_ERROR(NotFound, "variable " << name << " is not installed")

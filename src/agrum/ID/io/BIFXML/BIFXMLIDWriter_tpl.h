@@ -189,8 +189,8 @@ namespace gum {
    */
   template < typename GUM_SCALAR >
   INLINE std::string BIFXMLIDWriter< GUM_SCALAR >::_variableDefinition_(
-     const NodeId&                         varNodeId,
-     const InfluenceDiagram< GUM_SCALAR >& infdiag) {
+      const NodeId&                         varNodeId,
+      const InfluenceDiagram< GUM_SCALAR >& infdiag) {
     //<DEFINITION>
     //<FOR>var</FOR>
     //<GIVEN>conditional var</GIVEN>

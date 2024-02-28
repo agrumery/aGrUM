@@ -47,7 +47,7 @@ namespace gum {
   // @param cptGenerator The policy used to generate CPT.
   template < typename GUM_SCALAR >
   InfluenceDiagramGenerator< GUM_SCALAR >::InfluenceDiagramGenerator(
-     ICPTGenerator< GUM_SCALAR >* cptGenerator) {
+      ICPTGenerator< GUM_SCALAR >* cptGenerator) {
     GUM_CONSTRUCTOR(InfluenceDiagramGenerator)
     _cptGenerator_ = cptGenerator;
     _utGenerator_  = new SimpleUTGenerator();
@@ -72,8 +72,8 @@ namespace gum {
   // @param utGenerator The policy used to generate UT.
   template < typename GUM_SCALAR >
   InfluenceDiagramGenerator< GUM_SCALAR >::InfluenceDiagramGenerator(
-     ICPTGenerator< GUM_SCALAR >* cptGenerator,
-     UTGenerator*                 utGenerator) {
+      ICPTGenerator< GUM_SCALAR >* cptGenerator,
+      UTGenerator*                 utGenerator) {
     GUM_CONSTRUCTOR(InfluenceDiagramGenerator)
     _cptGenerator_ = cptGenerator;
     _utGenerator_  = utGenerator;
@@ -96,11 +96,11 @@ namespace gum {
   // @return A IDs randomly generated.
   template < typename GUM_SCALAR >
   InfluenceDiagram< GUM_SCALAR >*
-     InfluenceDiagramGenerator< GUM_SCALAR >::generateID(Size       nbrNodes,
-                                                         GUM_SCALAR arcDensity,
-                                                         GUM_SCALAR chanceNodeDensity,
-                                                         GUM_SCALAR utilityNodeDensity,
-                                                         Size       max_modality) {
+      InfluenceDiagramGenerator< GUM_SCALAR >::generateID(Size       nbrNodes,
+                                                          GUM_SCALAR arcDensity,
+                                                          GUM_SCALAR chanceNodeDensity,
+                                                          GUM_SCALAR utilityNodeDensity,
+                                                          Size       max_modality) {
     auto influenceDiagram = new InfluenceDiagram< GUM_SCALAR >();
     // First we add nodes
     HashTable< Size, NodeId > map;
@@ -140,12 +140,12 @@ namespace gum {
     for (Size i = 0; i < nbrNodes; ++i)
       if (influenceDiagram->isChanceNode(map[i]))
         _cptGenerator_->generateCPT(
-           influenceDiagram->cpt(map[i]).pos(influenceDiagram->variable(map[i])),
-           influenceDiagram->cpt(map[i]));
+            influenceDiagram->cpt(map[i]).pos(influenceDiagram->variable(map[i])),
+            influenceDiagram->cpt(map[i]));
       else if (influenceDiagram->isUtilityNode(map[i]))
         _utGenerator_->generateUT(
-           influenceDiagram->utility(map[i]).pos(influenceDiagram->variable(map[i])),
-           influenceDiagram->utility(map[i]));
+            influenceDiagram->utility(map[i]).pos(influenceDiagram->variable(map[i])),
+            influenceDiagram->utility(map[i]));
 
     _checkTemporalOrder_(influenceDiagram);
 
@@ -154,7 +154,7 @@ namespace gum {
 
   template < typename GUM_SCALAR >
   void InfluenceDiagramGenerator< GUM_SCALAR >::_checkTemporalOrder_(
-     InfluenceDiagram< GUM_SCALAR >* infdiag) {
+      InfluenceDiagram< GUM_SCALAR >* infdiag) {
     if (!infdiag->decisionOrderExists()) {
       Sequence< NodeId > order = infdiag->topologicalOrder();
 

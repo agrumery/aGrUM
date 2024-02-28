@@ -40,9 +40,9 @@ namespace gum {
 
     /// default constructor with a IDiscretized variable as translator
     DBTranslator4DiscretizedVariable::DBTranslator4DiscretizedVariable(
-       const IDiscretizedVariable&       var,
-       const std::vector< std::string >& missing_symbols,
-       std::size_t                       max_dico_entries) :
+        const IDiscretizedVariable&       var,
+        const std::vector< std::string >& missing_symbols,
+        std::size_t                       max_dico_entries) :
         DBTranslator(DBTranslatedValueType::DISCRETE,
                      false,
                      missing_symbols,
@@ -101,8 +101,8 @@ namespace gum {
 
     /// default constructor with a IDiscretized variable as translator
     DBTranslator4DiscretizedVariable::DBTranslator4DiscretizedVariable(
-       const IDiscretizedVariable& var,
-       std::size_t                 max_dico_entries) :
+        const IDiscretizedVariable& var,
+        std::size_t                 max_dico_entries) :
         DBTranslator(DBTranslatedValueType::DISCRETE, false, false, max_dico_entries),
         _variable_(var.name(), var.description()) {
       // check that the variable has not too many entries
@@ -131,7 +131,7 @@ namespace gum {
 
     /// copy constructor
     DBTranslator4DiscretizedVariable::DBTranslator4DiscretizedVariable(
-       const DBTranslator4DiscretizedVariable& from) :
+        const DBTranslator4DiscretizedVariable& from) :
         DBTranslator(from),
         _variable_(from._variable_) {
       // store a copy of the variable, that should be used by method variable ()
@@ -142,7 +142,7 @@ namespace gum {
 
     /// move constructor
     DBTranslator4DiscretizedVariable::DBTranslator4DiscretizedVariable(
-       DBTranslator4DiscretizedVariable&& from) :
+        DBTranslator4DiscretizedVariable&& from) :
         DBTranslator(std::move(from)),
         _variable_(std::move(from._variable_)) {
       // moves the copy of the variable, that should be used by method variable ()
@@ -159,7 +159,7 @@ namespace gum {
 
     /// copy operator
     DBTranslator4DiscretizedVariable&
-       DBTranslator4DiscretizedVariable::operator=(const DBTranslator4DiscretizedVariable& from) {
+        DBTranslator4DiscretizedVariable::operator=(const DBTranslator4DiscretizedVariable& from) {
       if (this != &from) {
         DBTranslator::operator=(from);
         _variable_ = from._variable_;
@@ -173,7 +173,7 @@ namespace gum {
 
     /// move operator
     DBTranslator4DiscretizedVariable&
-       DBTranslator4DiscretizedVariable::operator=(DBTranslator4DiscretizedVariable&& from) {
+        DBTranslator4DiscretizedVariable::operator=(DBTranslator4DiscretizedVariable&& from) {
       if (this != &from) {
         DBTranslator::operator=(std::move(from));
         _variable_ = std::move(from._variable_);

@@ -56,9 +56,9 @@ namespace gum {
         std::vector< std::exception_ptr > func_exceptions(nb_threads, nullptr);
 
         // create a lambda that will execute exec_func while catching its exceptions
-        auto real_exec_func
-           = [&exec_func,
-              nb_threads](std::size_t this_thread, std::exception_ptr& exc, ARGS&... args) -> void {
+        auto real_exec_func = [&exec_func, nb_threads](std::size_t         this_thread,
+                                                       std::exception_ptr& exc,
+                                                       ARGS&... args) -> void {
           try {
             exec_func(this_thread, nb_threads, std::forward< ARGS >(args)...);
           } catch (...) { exc = std::current_exception(); }
@@ -67,7 +67,7 @@ namespace gum {
         // launch the threads
         for (std::size_t i = std::size_t(0); i < nb_threads; ++i) {
           threads.push_back(
-             std::thread(real_exec_func, i, std::ref(func_exceptions[i]), std::ref(func_args)...));
+              std::thread(real_exec_func, i, std::ref(func_exceptions[i]), std::ref(func_args)...));
           //                                     std::ref(std::forward< ARGS >(func_args))...));
         }
 
@@ -109,9 +109,9 @@ namespace gum {
         std::vector< std::exception_ptr > func_exceptions(nb_threads, nullptr);
 
         // create a lambda that will execute exec_func while catching its exceptions
-        auto real_exec_func
-           = [&exec_func,
-              nb_threads](std::size_t this_thread, std::exception_ptr& exc, ARGS&... args) -> void {
+        auto real_exec_func = [&exec_func, nb_threads](std::size_t         this_thread,
+                                                       std::exception_ptr& exc,
+                                                       ARGS&... args) -> void {
           try {
             exec_func(this_thread, nb_threads, std::forward< ARGS >(args)...);
           } catch (...) { exc = std::current_exception(); }
@@ -121,7 +121,7 @@ namespace gum {
         // launch the threads
         for (std::size_t i = std::size_t(0); i < nb_threads; ++i) {
           threads.push_back(
-             std::thread(real_exec_func, i, std::ref(func_exceptions[i]), std::ref(func_args)...));
+              std::thread(real_exec_func, i, std::ref(func_exceptions[i]), std::ref(func_args)...));
           //                                     std::ref(std::forward< ARGS >(func_args))...));
         }
 

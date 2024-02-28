@@ -35,9 +35,9 @@ namespace gum {
     /// default constructor
     template < typename GUM_SCALAR >
     DBRowGeneratorEM< GUM_SCALAR >::DBRowGeneratorEM(
-       const std::vector< DBTranslatedValueType >& column_types,
-       const BayesNet< GUM_SCALAR >&               bn,
-       const Bijection< NodeId, std::size_t >&     nodeId2columns) :
+        const std::vector< DBTranslatedValueType >& column_types,
+        const BayesNet< GUM_SCALAR >&               bn,
+        const Bijection< NodeId, std::size_t >&     nodeId2columns) :
         DBRowGeneratorWithBN< GUM_SCALAR >(column_types,
                                            bn,
                                            DBRowGeneratorGoal::ONLY_REMOVE_MISSING_VALUES,
@@ -104,7 +104,7 @@ namespace gum {
     /// copy operator
     template < typename GUM_SCALAR >
     DBRowGeneratorEM< GUM_SCALAR >&
-       DBRowGeneratorEM< GUM_SCALAR >::operator=(const DBRowGeneratorEM< GUM_SCALAR >& from) {
+        DBRowGeneratorEM< GUM_SCALAR >::operator=(const DBRowGeneratorEM< GUM_SCALAR >& from) {
       if (this != &from) {
         DBRowGeneratorWithBN< GUM_SCALAR >::operator=(from);
         _input_row_       = from._input_row_;
@@ -137,7 +137,7 @@ namespace gum {
     /// move operator
     template < typename GUM_SCALAR >
     DBRowGeneratorEM< GUM_SCALAR >&
-       DBRowGeneratorEM< GUM_SCALAR >::operator=(DBRowGeneratorEM< GUM_SCALAR >&& from) {
+        DBRowGeneratorEM< GUM_SCALAR >::operator=(DBRowGeneratorEM< GUM_SCALAR >&& from) {
       if (this != &from) {
         DBRowGeneratorWithBN< GUM_SCALAR >::operator=(std::move(from));
         _input_row_       = from._input_row_;
@@ -225,7 +225,7 @@ namespace gum {
           case DBTranslatedValueType::CONTINUOUS :
             GUM_ERROR(NotImplementedYet,
                       "The BDRowGeneratorEM does not handle yet continuous "
-                         << "variables. But the variable in column" << col << " is continuous.");
+                          << "variables. But the variable in column" << col << " is continuous.");
             break;
 
           default :
@@ -296,7 +296,7 @@ namespace gum {
             case DBTranslatedValueType::CONTINUOUS :
               GUM_ERROR(NotImplementedYet,
                         "The BDRowGeneratorEM does not handle yet continuous "
-                           << "variables. But the variable in column" << col << " is continuous.");
+                            << "variables. But the variable in column" << col << " is continuous.");
               break;
 
             default :
@@ -318,7 +318,7 @@ namespace gum {
             case DBTranslatedValueType::CONTINUOUS :
               GUM_ERROR(NotImplementedYet,
                         "The BDRowGeneratorEM does not handle yet continuous "
-                           << "variables. But the variable in column" << col << " is continuous.");
+                            << "variables. But the variable in column" << col << " is continuous.");
               break;
 
             default :
@@ -331,7 +331,7 @@ namespace gum {
 
       // get the potential of the target set
       Potential< GUM_SCALAR >& pot
-         = const_cast< Potential< GUM_SCALAR >& >(ve.jointPosterior(target_set));
+          = const_cast< Potential< GUM_SCALAR >& >(ve.jointPosterior(target_set));
       _joint_proba_ = std::move(pot);
       if (_joint_inst_ != nullptr) delete _joint_inst_;
       _joint_inst_ = new Instantiation(_joint_proba_);

@@ -37,10 +37,10 @@ namespace gum {
 
     /// default constructor
     INLINE ScoreLog2Likelihood::ScoreLog2Likelihood(
-       const DBRowGeneratorParser&                                 parser,
-       const Prior&                                                prior,
-       const std::vector< std::pair< std::size_t, std::size_t > >& ranges,
-       const Bijection< NodeId, std::size_t >&                     nodeId2columns) :
+        const DBRowGeneratorParser&                                 parser,
+        const Prior&                                                prior,
+        const std::vector< std::pair< std::size_t, std::size_t > >& ranges,
+        const Bijection< NodeId, std::size_t >&                     nodeId2columns) :
         Score(parser, prior, ranges, nodeId2columns),
         _internal_prior_(parser.database(), nodeId2columns) {
       GUM_CONSTRUCTOR(ScoreLog2Likelihood);
@@ -48,9 +48,9 @@ namespace gum {
 
     /// default constructor
     INLINE ScoreLog2Likelihood::ScoreLog2Likelihood(
-       const DBRowGeneratorParser&             parser,
-       const Prior&                            prior,
-       const Bijection< NodeId, std::size_t >& nodeId2columns) :
+        const DBRowGeneratorParser&             parser,
+        const Prior&                            prior,
+        const Bijection< NodeId, std::size_t >& nodeId2columns) :
         Score(parser, prior, nodeId2columns),
         _internal_prior_(parser.database(), nodeId2columns) {
       GUM_CONSTRUCTOR(ScoreLog2Likelihood);

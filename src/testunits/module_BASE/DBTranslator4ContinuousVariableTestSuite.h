@@ -84,7 +84,7 @@ namespace gum_tests {
       int         good_cont = 1;
       try {
         const gum::ContinuousVariable< double >& xvar_cont
-           = dynamic_cast< const gum::ContinuousVariable< double >& >(tr_var);
+            = dynamic_cast< const gum::ContinuousVariable< double >& >(tr_var);
         TS_ASSERT_EQUALS(xvar_cont.lowerBound(), -2.0)
         TS_ASSERT_EQUALS(xvar_cont.upperBound(), 10.0)
       } catch (std::bad_cast&) { good_cont = 0; }
@@ -113,7 +113,7 @@ namespace gum_tests {
       TS_ASSERT_THROWS(translator4.translateBack(gum::learning::DBTranslatedValue{-50.0f}),
                        const gum::UnknownLabelInDatabase&)
       TS_ASSERT(translator4.missingSymbols().exists(translator4.translateBack(
-         gum::learning::DBTranslatedValue{std::numeric_limits< float >::max()})));
+          gum::learning::DBTranslatedValue{std::numeric_limits< float >::max()})));
 
 
       gum::learning::DBTranslator4ContinuousVariable translator5(var, missing4, true);
@@ -145,7 +145,7 @@ namespace gum_tests {
         TS_ASSERT_THROWS(translator.translateBack(gum::learning::DBTranslatedValue{-50.0f}),
                          const gum::UnknownLabelInDatabase&)
         TS_ASSERT(translator.missingSymbols().exists(translator.translateBack(
-           gum::learning::DBTranslatedValue{std::numeric_limits< float >::max()})));
+            gum::learning::DBTranslatedValue{std::numeric_limits< float >::max()})));
 
         gum::learning::DBTranslator4ContinuousVariable translator2(translator);
         TS_ASSERT(!translator2.missingSymbols().exists("2"))
@@ -160,7 +160,7 @@ namespace gum_tests {
         TS_ASSERT_THROWS(translator2.translateBack(gum::learning::DBTranslatedValue{-50.0f}),
                          const gum::UnknownLabelInDatabase&)
         TS_ASSERT(translator2.missingSymbols().exists(translator2.translateBack(
-           gum::learning::DBTranslatedValue{std::numeric_limits< float >::max()})));
+            gum::learning::DBTranslatedValue{std::numeric_limits< float >::max()})));
 
         gum::learning::DBTranslator4ContinuousVariable translator3(translator2);
         TS_ASSERT(!translator3.missingSymbols().exists("2"))
@@ -175,7 +175,7 @@ namespace gum_tests {
         TS_ASSERT_THROWS(translator3.translateBack(gum::learning::DBTranslatedValue{-50.0f}),
                          const gum::UnknownLabelInDatabase&)
         TS_ASSERT(translator3.missingSymbols().exists(translator3.translateBack(
-           gum::learning::DBTranslatedValue{std::numeric_limits< float >::max()})));
+            gum::learning::DBTranslatedValue{std::numeric_limits< float >::max()})));
 
         gum::learning::DBTranslator4ContinuousVariable translator4(std::move(translator3));
         TS_ASSERT(!translator4.missingSymbols().exists("2"))
@@ -190,7 +190,7 @@ namespace gum_tests {
         TS_ASSERT_THROWS(translator4.translateBack(gum::learning::DBTranslatedValue{-50.0f}),
                          const gum::UnknownLabelInDatabase&)
         TS_ASSERT(translator4.missingSymbols().exists(translator4.translateBack(
-           gum::learning::DBTranslatedValue{std::numeric_limits< float >::max()})));
+            gum::learning::DBTranslatedValue{std::numeric_limits< float >::max()})));
 
         gum::learning::DBTranslator4ContinuousVariable* translator5 = translator4.clone();
 
@@ -206,7 +206,7 @@ namespace gum_tests {
         TS_ASSERT_THROWS(translator5->translateBack(gum::learning::DBTranslatedValue{-50.0f}),
                          const gum::UnknownLabelInDatabase&)
         TS_ASSERT(translator5->missingSymbols().exists(translator5->translateBack(
-           gum::learning::DBTranslatedValue{std::numeric_limits< float >::max()})));
+            gum::learning::DBTranslatedValue{std::numeric_limits< float >::max()})));
 
         delete translator5;
 

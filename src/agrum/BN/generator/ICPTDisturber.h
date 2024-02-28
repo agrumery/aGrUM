@@ -73,7 +73,7 @@ namespace gum {
                                  BayesNet< GUM_SCALAR >&  bayesNet,
                                  Potential< GUM_SCALAR >& src,
                                  Potential< GUM_SCALAR >& marg)
-       = 0;
+        = 0;
 
     /**
      * Disturb a CPT using GUM_SCALAR when inserting a new parent.
@@ -86,7 +86,7 @@ namespace gum {
                                 BayesNet< GUM_SCALAR >&  bayesNet,
                                 Potential< GUM_SCALAR >& src,
                                 GUM_SCALAR               variation)
-       = 0;
+        = 0;
   };
 
 

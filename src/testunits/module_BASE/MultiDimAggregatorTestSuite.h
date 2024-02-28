@@ -316,8 +316,8 @@ namespace gum_tests {
       gum::aggregator::Or< double > p;
       TS_GUM_ASSERT_THROWS_NOTHING(p << a << b << c << d)
       TS_ASSERT_EQUALS(
-         p.toString(),
-         "a:Labelized({0|1})=or(b:Labelized({0|1|2|3}),c:Labelized({0|1}),d:Labelized({0|1}))");
+          p.toString(),
+          "a:Labelized({0|1})=or(b:Labelized({0|1|2|3}),c:Labelized({0|1}),d:Labelized({0|1}))");
 
       gum::Instantiation i(p);
 
@@ -331,8 +331,8 @@ namespace gum_tests {
       gum::aggregator::And< double > p;
       TS_GUM_ASSERT_THROWS_NOTHING(p << a << b << c << d)
       TS_ASSERT_EQUALS(
-         p.toString(),
-         "a:Labelized({0|1})=and(b:Labelized({0|1|2|3}),c:Labelized({0|1}),d:Labelized({0|1}))");
+          p.toString(),
+          "a:Labelized({0|1})=and(b:Labelized({0|1|2|3}),c:Labelized({0|1}),d:Labelized({0|1}))");
 
       gum::Instantiation i(p);
 
@@ -358,7 +358,7 @@ namespace gum_tests {
 
     GUM_ACTIVE_TEST(CreationMedian4) {
       gum::LabelizedVariable a("a", "", 4), b("b", "", 4), c("c", "", 4), d("d", "", 4),
-         e("e", "", 4);
+          e("e", "", 4);
       gum::aggregator::Median< double > p;
       TS_GUM_ASSERT_THROWS_NOTHING(p << a << b << c << d << e)
       TS_ASSERT_EQUALS(p.toString(),
@@ -374,7 +374,7 @@ namespace gum_tests {
 
     GUM_ACTIVE_TEST(CreationAmplitude) {
       gum::LabelizedVariable a("a", "", 4), b("b", "", 4), c("c", "", 4), d("d", "", 4),
-         e("e", "", 4);
+          e("e", "", 4);
       gum::aggregator::Amplitude< double > p;
       TS_GUM_ASSERT_THROWS_NOTHING(p << a << b << c << d << e)
       TS_ASSERT_EQUALS(p.toString(),

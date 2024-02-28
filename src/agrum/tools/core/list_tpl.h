@@ -249,7 +249,7 @@ namespace gum {
   // makes the iterator point to the next element in the List
   template < typename Val >
   INLINE ListConstIterator< Val >& ListConstIterator< Val >::operator+=(
-     typename ListConstIterator< Val >::difference_type i) noexcept {
+      typename ListConstIterator< Val >::difference_type i) noexcept {
     if (i >= 0) {
       for (; i && (_bucket_ != nullptr); --i, _bucket_ = _bucket_->_next_) {}
     } else {
@@ -271,7 +271,7 @@ namespace gum {
   // makes the iterator point to i elements before in the list
   template < typename Val >
   INLINE ListConstIterator< Val >& ListConstIterator< Val >::operator-=(
-     typename ListConstIterator< Val >::difference_type i) noexcept {
+      typename ListConstIterator< Val >::difference_type i) noexcept {
     if (i >= 0) {
       for (; i && (_bucket_ != nullptr); --i, _bucket_ = _bucket_->_prev_) {}
     } else {
@@ -283,28 +283,28 @@ namespace gum {
   // returns a new iterator
   template < typename Val >
   INLINE ListConstIterator< Val > ListConstIterator< Val >::operator+(
-     typename ListConstIterator< Val >::difference_type i) noexcept {
+      typename ListConstIterator< Val >::difference_type i) noexcept {
     return ListConstIterator< Val >(*this) += i;
   }
 
   // returns a new iterator
   template < typename Val >
   INLINE ListConstIterator< Val > ListConstIterator< Val >::operator-(
-     typename ListConstIterator< Val >::difference_type i) noexcept {
+      typename ListConstIterator< Val >::difference_type i) noexcept {
     return ListConstIterator< Val >(*this) -= i;
   }
 
   // checks whether two iterators point toward different elements
   template < typename Val >
   INLINE bool
-     ListConstIterator< Val >::operator!=(const ListConstIterator< Val >& src) const noexcept {
+      ListConstIterator< Val >::operator!=(const ListConstIterator< Val >& src) const noexcept {
     return (_bucket_ != src._bucket_);
   }
 
   // checks whether two iterators point toward the same elements.
   template < typename Val >
   INLINE bool
-     ListConstIterator< Val >::operator==(const ListConstIterator< Val >& src) const noexcept {
+      ListConstIterator< Val >::operator==(const ListConstIterator< Val >& src) const noexcept {
     return (_bucket_ == src._bucket_);
   }
 
@@ -325,7 +325,7 @@ namespace gum {
   // for STL compliance, a distance operator
   template < typename Val >
   INLINE typename ListConstIterator< Val >::difference_type
-     operator-(const ListConstIterator< Val >& iter1, const ListConstIterator< Val >& iter2) {
+      operator-(const ListConstIterator< Val >& iter1, const ListConstIterator< Val >& iter2) {
     typename ListConstIterator< Val >::difference_type res = 0;
 
     for (ListConstIterator< Val > iter3 = iter2; iter1 != iter3; ++iter3, ++res) {}
@@ -504,7 +504,7 @@ namespace gum {
   // copy constructor
   template < typename Val >
   INLINE
-     ListConstIteratorSafe< Val >::ListConstIteratorSafe(const ListConstIteratorSafe< Val >& src) :
+      ListConstIteratorSafe< Val >::ListConstIteratorSafe(const ListConstIteratorSafe< Val >& src) :
       _list_{src._list_},
       _bucket_{src._bucket_}, _next_current_bucket_{src._next_current_bucket_},
       _prev_current_bucket_{src._prev_current_bucket_}, _null_pointing_{src._null_pointing_} {
@@ -586,7 +586,7 @@ namespace gum {
   // Copy operator
   template < typename Val >
   ListConstIteratorSafe< Val >&
-     ListConstIteratorSafe< Val >::operator=(const ListConstIteratorSafe< Val >& src) {
+      ListConstIteratorSafe< Val >::operator=(const ListConstIteratorSafe< Val >& src) {
     // avoid self assignment
     if (this != &src) {
       // for debugging purposes
@@ -625,7 +625,7 @@ namespace gum {
   // move operator
   template < typename Val >
   ListConstIteratorSafe< Val >&
-     ListConstIteratorSafe< Val >::operator=(ListConstIteratorSafe< Val >&& src) {
+      ListConstIteratorSafe< Val >::operator=(ListConstIteratorSafe< Val >&& src) {
     // avoid self assignment
     if (this != &src) {
       // for debugging purposes
@@ -707,8 +707,8 @@ namespace gum {
   template < typename Val >
   INLINE bool ListConstIteratorSafe< Val >::isEnd() const {
     return _null_pointing_
-            ? (_next_current_bucket_ == nullptr) && (_prev_current_bucket_ == nullptr)
-            : (_bucket_ == nullptr);
+             ? (_next_current_bucket_ == nullptr) && (_prev_current_bucket_ == nullptr)
+             : (_bucket_ == nullptr);
   }
 
   // makes the iterator point to the next element in the List
@@ -824,7 +824,7 @@ namespace gum {
   // makes the iterator point to the next element in the List
   template < typename Val >
   INLINE ListConstIteratorSafe< Val >& ListConstIteratorSafe< Val >::operator+=(
-     typename ListConstIteratorSafe< Val >::difference_type i) noexcept {
+      typename ListConstIteratorSafe< Val >::difference_type i) noexcept {
     if (!i) return *this;
 
     if (i < 0) return _opMinus_(-i);
@@ -870,7 +870,7 @@ namespace gum {
   // makes the iterator point to i elements before in the List
   template < typename Val >
   INLINE ListConstIteratorSafe< Val >& ListConstIteratorSafe< Val >::operator-=(
-     typename ListConstIteratorSafe< Val >::difference_type i) noexcept {
+      typename ListConstIteratorSafe< Val >::difference_type i) noexcept {
     if (!i) return *this;
 
     if (i < 0) return _opPlus_(-i);
@@ -880,32 +880,32 @@ namespace gum {
   // returns a new iterator
   template < typename Val >
   INLINE ListConstIteratorSafe< Val > ListConstIteratorSafe< Val >::operator+(
-     typename ListConstIteratorSafe< Val >::difference_type i) noexcept {
+      typename ListConstIteratorSafe< Val >::difference_type i) noexcept {
     return ListConstIteratorSafe< Val >(*this) += i;
   }
 
   // returns a new iterator
   template < typename Val >
   INLINE ListConstIteratorSafe< Val > ListConstIteratorSafe< Val >::operator-(
-     typename ListConstIteratorSafe< Val >::difference_type i) noexcept {
+      typename ListConstIteratorSafe< Val >::difference_type i) noexcept {
     return ListConstIteratorSafe< Val >(*this) -= i;
   }
 
   // checks whether two iterators point toward different elements
   template < typename Val >
   INLINE bool
-     ListConstIteratorSafe< Val >::operator!=(const ListConstIteratorSafe< Val >& src) const {
+      ListConstIteratorSafe< Val >::operator!=(const ListConstIteratorSafe< Val >& src) const {
     return _null_pointing_ ? (_next_current_bucket_ != src._next_current_bucket_)
-                                || (_prev_current_bucket_ != src._prev_current_bucket_)
+                                 || (_prev_current_bucket_ != src._prev_current_bucket_)
                            : (_bucket_ != src._bucket_);
   }
 
   // checks whether two iterators point toward the same elements.
   template < typename Val >
   INLINE bool
-     ListConstIteratorSafe< Val >::operator==(const ListConstIteratorSafe< Val >& src) const {
+      ListConstIteratorSafe< Val >::operator==(const ListConstIteratorSafe< Val >& src) const {
     return _null_pointing_ ? (_next_current_bucket_ == src._next_current_bucket_)
-                                && (_prev_current_bucket_ == src._prev_current_bucket_)
+                                 && (_prev_current_bucket_ == src._prev_current_bucket_)
                            : (_bucket_ == src._bucket_);
   }
 
@@ -926,8 +926,8 @@ namespace gum {
   // for STL compliance, a distance operator
   template < typename Val >
   INLINE typename ListConstIteratorSafe< Val >::difference_type
-     operator-(const ListConstIteratorSafe< Val >& iter1,
-               const ListConstIteratorSafe< Val >& iter2) {
+      operator-(const ListConstIteratorSafe< Val >& iter1,
+                const ListConstIteratorSafe< Val >& iter2) {
     typename ListConstIteratorSafe< Val >::difference_type res = 0;
     ListConstIteratorSafe< Val >                           iter3{iter2};
 
@@ -1026,7 +1026,7 @@ namespace gum {
   // makes the iterator point to the next element in the List
   template < typename Val >
   INLINE ListIteratorSafe< Val >& ListIteratorSafe< Val >::operator+=(
-     typename ListIteratorSafe< Val >::difference_type i) noexcept {
+      typename ListIteratorSafe< Val >::difference_type i) noexcept {
     ListConstIteratorSafe< Val >::operator+=(i);
     return *this;
   }
@@ -1041,7 +1041,7 @@ namespace gum {
   // makes the iterator point to the preceding element in the List
   template < typename Val >
   INLINE ListIteratorSafe< Val >& ListIteratorSafe< Val >::operator-=(
-     typename ListIteratorSafe< Val >::difference_type i) noexcept {
+      typename ListIteratorSafe< Val >::difference_type i) noexcept {
     ListConstIteratorSafe< Val >::operator-=(i);
     return *this;
   }
@@ -1049,14 +1049,14 @@ namespace gum {
   // returns a new iterator
   template < typename Val >
   INLINE ListIteratorSafe< Val > ListIteratorSafe< Val >::operator+(
-     typename ListIteratorSafe< Val >::difference_type i) noexcept {
+      typename ListIteratorSafe< Val >::difference_type i) noexcept {
     return ListIteratorSafe< Val >(*this) += i;
   }
 
   // returns a new iterator
   template < typename Val >
   INLINE ListIteratorSafe< Val > ListIteratorSafe< Val >::operator-(
-     typename ListIteratorSafe< Val >::difference_type i) noexcept {
+      typename ListIteratorSafe< Val >::difference_type i) noexcept {
     return ListIteratorSafe< Val >(*this) -= i;
   }
 
@@ -1606,8 +1606,9 @@ namespace gum {
   // inserts a new bucket before or after the location pointed to by an
   // iterator
   template < typename Val >
-  INLINE Val&
-     List< Val >::_insert_(const const_iterator& iter, ListBucket< Val >* new_elt, location place) {
+  INLINE Val& List< Val >::_insert_(const const_iterator& iter,
+                                    ListBucket< Val >*    new_elt,
+                                    location              place) {
     // find the location around which the new element should be inserted
     ListBucket< Val >* ptr = iter._getBucket_();
 

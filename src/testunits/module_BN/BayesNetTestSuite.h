@@ -83,7 +83,7 @@ namespace gum_tests {
             {0.4f, 0.6f,
              0.5f, 0.5f,
              0.5f, 0.5f,
-             1.0f, 0.0f});                     // clang-format on
+             1.0f, 0.0f});   // clang-format on
 
         bn.cpt(idList[4]).fillWith(   // clang-format off
             {0.3f, 0.6f, 0.1f,
@@ -569,7 +569,7 @@ namespace gum_tests {
       TS_ASSERT(bn.dag().existsArc(idList[1], idList[3]))
 
       gum::Size dmnSize_1
-         = bn.variable(idList[0]).domainSize() * bn.variable(idList[1]).domainSize();
+          = bn.variable(idList[0]).domainSize() * bn.variable(idList[1]).domainSize();
       dmnSize_1 *= bn.variable(idList[3]).domainSize();
       TS_ASSERT_EQUALS(bn.cpt(idList[3]).domainSize(), dmnSize_1)
 
@@ -603,7 +603,7 @@ namespace gum_tests {
       TS_ASSERT(bn.dag().existsArc(idList[1], idList[3]))
 
       gum::Size dmnSize_1
-         = bn.variable(idList[0]).domainSize() * bn.variable(idList[1]).domainSize();
+          = bn.variable(idList[0]).domainSize() * bn.variable(idList[1]).domainSize();
       dmnSize_1 *= bn.variable(idList[3]).domainSize();
       TS_ASSERT_EQUALS(bn.cpt(idList[3]).domainSize(), dmnSize_1)
 
@@ -793,7 +793,7 @@ namespace gum_tests {
 
       TS_ASSERT_EQUALS(bn.variable(0).toString(), "var1:Labelized({0|1})")
       TS_ASSERT_THROWS_NOTHING(
-         dynamic_cast< const gum::LabelizedVariable& >(bn.variable(0)).changeLabel(0, "x"))
+          dynamic_cast< const gum::LabelizedVariable& >(bn.variable(0)).changeLabel(0, "x"))
       TS_ASSERT_EQUALS(bn.variable(0).toString(), "var1:Labelized({x|1})")
     }
 
@@ -1010,7 +1010,7 @@ namespace gum_tests {
                        "a:Discretized(<[-0.4;0.1[,[0.1;0.5[,[0.5;3.14[,[3.14;10]>)")
 
       bn = gum::BayesNet< float >::fastPrototype(
-         "a{1|4|6}->b{1|-4|6}->c{1|toto|6}->d{1.0|-4.0|6.0}->e{1|-4|6.0}->f{1.0|-4.0|+6.0}");
+          "a{1|4|6}->b{1|-4|6}->c{1|toto|6}->d{1.0|-4.0|6.0}->e{1|-4|6.0}->f{1.0|-4.0|+6.0}");
       TS_ASSERT_EQUALS(bn.variable("a").varType(), gum::VarType::Integer)
       TS_ASSERT_EQUALS(bn.variable("b").varType(), gum::VarType::Integer)
       TS_ASSERT_EQUALS(bn.variable("c").varType(), gum::VarType::Labelized)
@@ -1079,7 +1079,7 @@ namespace gum_tests {
       }
       {
         const auto bn
-           = gum::BayesNet< double >::fastPrototype("Y->X->T1;Z2->X;Z1->X;Z1->T1;Z1->Z3->T2");
+            = gum::BayesNet< double >::fastPrototype("Y->X->T1;Z2->X;Z1->X;Z1->T1;Z1->Z3->T2");
         TS_ASSERT_EQUALS(bn.check().size(), gum::Size(0))
 
         bn.cpt("X").scale(12);

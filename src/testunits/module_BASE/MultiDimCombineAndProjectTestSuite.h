@@ -125,7 +125,7 @@ namespace gum_tests {
       projcomb2.setProjectionFunction(myMax);
 
       gum::MultiDimCombineAndProjectDefault< gum::Potential< double > >* projcomb3
-         = projcomb.clone();
+          = projcomb.clone();
 
       delete projcomb3;
 
@@ -153,14 +153,14 @@ namespace gum_tests {
           const_cast< gum::ScheduleOperator* >(op)->execute();
         }
         result1 = dynamic_cast< const gum::ScheduleMultiDim< gum::Potential< double > >* >(
-                     comb_ops_plus_res.second)
-                     ->multiDim();
+                      comb_ops_plus_res.second)
+                      ->multiDim();
         for (auto op: comb_ops_plus_res.first)
           delete op;
       } else {
         result1 = dynamic_cast< const gum::ScheduleMultiDim< gum::Potential< double > >* >(
-                     *(ops_plus_res.second.begin()))
-                     ->multiDim();
+                      *(ops_plus_res.second.begin()))
+                      ->multiDim();
       }
 
       gum::Potential< double >* result2a = comb.execute(to_comb);
@@ -223,7 +223,7 @@ namespace gum_tests {
       gum::ScheduleMultiDim< gum::Potential< double > > xt7(t7, false);
       gum::ScheduleMultiDim< gum::Potential< double > > xt8(t8, false);
       gum::Set< const gum::IScheduleMultiDim* >
-         sched_to_comb{&xt1, &xt2, &xt3, &xt4, &xt5, &xt6, &xt7, &xt8};
+          sched_to_comb{&xt1, &xt2, &xt3, &xt4, &xt5, &xt6, &xt7, &xt8};
 
       gum::Schedule schedule;
       schedule.insertScheduleMultiDim(xt1);
@@ -243,7 +243,7 @@ namespace gum_tests {
         do {
           gum::NodeId            node = *available_operations.begin();
           gum::ScheduleOperator& op
-             = const_cast< gum::ScheduleOperator& >(schedule.operation(node));
+              = const_cast< gum::ScheduleOperator& >(schedule.operation(node));
           op.execute();
 
           for (const auto res: op.results())
@@ -262,7 +262,7 @@ namespace gum_tests {
         TS_ASSERT(results.exists(table->id()))
         TS_ASSERT(!table->isAbstract())
         const auto& xtable
-           = dynamic_cast< const gum::ScheduleMultiDim< gum::Potential< double > >& >(*table);
+            = dynamic_cast< const gum::ScheduleMultiDim< gum::Potential< double > >& >(*table);
         const gum::Potential< double >* pot = &xtable.multiDim();
         if ((pot == &t7) || (pot == &t8)) nb++;
       }
@@ -271,7 +271,7 @@ namespace gum_tests {
       gum::Set< const gum::Potential< double >* > result_tables;
       for (const auto node: results) {
         const auto table = static_cast< const gum::ScheduleMultiDim< gum::Potential< double > >* >(
-           schedule.scheduleMultiDim(node));
+            schedule.scheduleMultiDim(node));
         TS_ASSERT(!table->isAbstract())
         result_tables.insert(&table->multiDim());
       }
@@ -350,14 +350,14 @@ namespace gum_tests {
           const_cast< gum::ScheduleOperator* >(op)->execute();
         }
         result1 = dynamic_cast< const gum::ScheduleMultiDim< gum::Potential< double > >* >(
-                     comb_ops_plus_res.second)
-                     ->multiDim();
+                      comb_ops_plus_res.second)
+                      ->multiDim();
         for (auto op: comb_ops_plus_res.first)
           delete op;
       } else {
         result1 = dynamic_cast< const gum::ScheduleMultiDim< gum::Potential< double > >* >(
-                     *(ops_plus_res.second.begin()))
-                     ->multiDim();
+                      *(ops_plus_res.second.begin()))
+                      ->multiDim();
       }
 
       gum::Potential< double >* result2a = comb.execute(to_comb);
@@ -424,7 +424,7 @@ namespace gum_tests {
       gum::ScheduleMultiDim< gum::Potential< double > > xt7(t7, false);
       gum::ScheduleMultiDim< gum::Potential< double > > xt8(t8, false);
       gum::Set< const gum::IScheduleMultiDim* >
-         sched_to_comb{&xt1, &xt2, &xt3, &xt4, &xt5, &xt6, &xt7, &xt8};
+          sched_to_comb{&xt1, &xt2, &xt3, &xt4, &xt5, &xt6, &xt7, &xt8};
 
       gum::Schedule schedule;
       auto          xxt1 = schedule.insertScheduleMultiDim(xt1);
@@ -436,7 +436,7 @@ namespace gum_tests {
       auto          xxt7 = schedule.insertScheduleMultiDim(xt7);
       auto          xxt8 = schedule.insertScheduleMultiDim(xt8);
       gum::Set< const gum::IScheduleMultiDim* >
-         xxsched_to_comb{xxt1, xxt2, xxt3, xxt4, xxt5, xxt6, xxt7, xxt8};
+          xxsched_to_comb{xxt1, xxt2, xxt3, xxt4, xxt5, xxt6, xxt7, xxt8};
 
       auto                       xxres = projcomb.schedule(schedule, sched_to_comb, del_vars, true);
       gum::NodeSet               available_operations = schedule.availableOperations();
@@ -446,7 +446,7 @@ namespace gum_tests {
         do {
           gum::NodeId            node = *available_operations.begin();
           gum::ScheduleOperator& op
-             = const_cast< gum::ScheduleOperator& >(schedule.operation(node));
+              = const_cast< gum::ScheduleOperator& >(schedule.operation(node));
           op.execute();
 
           for (const auto res: op.results())
@@ -465,7 +465,7 @@ namespace gum_tests {
         TS_ASSERT(results.exists(table->id()))
         TS_ASSERT(!table->isAbstract())
         const auto& xtable
-           = dynamic_cast< const gum::ScheduleMultiDim< gum::Potential< double > >& >(*table);
+            = dynamic_cast< const gum::ScheduleMultiDim< gum::Potential< double > >& >(*table);
         const gum::Potential< double >* pot = &xtable.multiDim();
         if ((pot == &t7) || (pot == &t8)) nb++;
       }
@@ -474,7 +474,7 @@ namespace gum_tests {
       gum::Set< const gum::Potential< double >* > result_tables;
       for (const auto node: results) {
         const auto table = static_cast< const gum::ScheduleMultiDim< gum::Potential< double > >* >(
-           schedule.scheduleMultiDim(node));
+            schedule.scheduleMultiDim(node));
         TS_ASSERT(!table->isAbstract())
         result_tables.insert(&table->multiDim());
       }
@@ -586,7 +586,7 @@ namespace gum_tests {
       projcomb2.setProjectionFunction(myMax);
 
       gum::MultiDimCombineAndProjectDefault< gum::Potential< float > >* projcomb3
-         = projcomb.clone();
+          = projcomb.clone();
 
       delete projcomb3;
 

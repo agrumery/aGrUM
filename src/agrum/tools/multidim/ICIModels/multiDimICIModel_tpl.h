@@ -47,7 +47,7 @@ namespace gum {
   // Default constructor
   template < typename GUM_SCALAR >
   INLINE
-     MultiDimICIModel< GUM_SCALAR >::MultiDimICIModel(const MultiDimICIModel< GUM_SCALAR >& from) :
+      MultiDimICIModel< GUM_SCALAR >::MultiDimICIModel(const MultiDimICIModel< GUM_SCALAR >& from) :
       MultiDimReadOnly< GUM_SCALAR >(from) {
     GUM_CONS_CPY(MultiDimICIModel);
     _default_weight_  = from._default_weight_;
@@ -58,8 +58,8 @@ namespace gum {
   // Copy constructor using a bijection to replace variables from source.
   template < typename GUM_SCALAR >
   INLINE MultiDimICIModel< GUM_SCALAR >::MultiDimICIModel(
-     const Bijection< const DiscreteVariable*, const DiscreteVariable* >& bij,
-     const MultiDimICIModel< GUM_SCALAR >&                                from) :
+      const Bijection< const DiscreteVariable*, const DiscreteVariable* >& bij,
+      const MultiDimICIModel< GUM_SCALAR >&                                from) :
       MultiDimReadOnly< GUM_SCALAR >() {
     GUM_CONSTRUCTOR(MultiDimICIModel);
     _default_weight_  = from._default_weight_;

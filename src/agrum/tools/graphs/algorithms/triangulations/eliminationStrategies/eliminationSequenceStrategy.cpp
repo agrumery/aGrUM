@@ -61,8 +61,8 @@ namespace gum {
 
   // constructor for a (potentially) non empty graph
   EliminationSequenceStrategy::EliminationSequenceStrategy(
-     UndiGraph*                  graph,
-     const NodeProperty< Size >* domain_sizes) {
+      UndiGraph*                  graph,
+      const NodeProperty< Size >* domain_sizes) {
     EliminationSequenceStrategy::setGraph(graph, domain_sizes);
 
     GUM_CONSTRUCTOR(EliminationSequenceStrategy);
@@ -70,7 +70,7 @@ namespace gum {
 
   // copy constructor
   EliminationSequenceStrategy::EliminationSequenceStrategy(
-     const EliminationSequenceStrategy& from) :
+      const EliminationSequenceStrategy& from) :
       graph_(from.graph_),
       domain_sizes_(from.domain_sizes_), log_domain_sizes_(from.log_domain_sizes_) {
     GUM_CONS_CPY(EliminationSequenceStrategy);

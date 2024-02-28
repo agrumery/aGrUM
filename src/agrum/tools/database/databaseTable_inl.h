@@ -49,7 +49,7 @@ namespace gum {
      *
      * @warning the indices are sorted by deacreasing order */
     INLINE typename DatabaseTable::template DBVector< std::size_t >
-       DatabaseTable::_getKthIndices_(const std::size_t k, const bool k_is_input_col) const {
+        DatabaseTable::_getKthIndices_(const std::size_t k, const bool k_is_input_col) const {
       const std::size_t nb_trans = _translators_.size();
       if (!k_is_input_col) {
         if (k < nb_trans) return DBVector< std::size_t >{k};
@@ -100,9 +100,9 @@ namespace gum {
     }
 
     /// insert a new DBRow at the end of the database
-    INLINE void
-       DatabaseTable::insertRow(typename DatabaseTable::template Row< DBTranslatedValue >&& new_row,
-                                const typename DatabaseTable::IsMissing contains_missing_data) {
+    INLINE void DatabaseTable::insertRow(
+        typename DatabaseTable::template Row< DBTranslatedValue >&& new_row,
+        const typename DatabaseTable::IsMissing                     contains_missing_data) {
       // check that the new rows values are compatible with the values of
       // the variables stored within the translators
       if (!_isRowCompatible_(new_row)) {
@@ -121,8 +121,8 @@ namespace gum {
 
     /// insert a new row at the end of the database
     INLINE void DatabaseTable::insertRow(
-       const typename DatabaseTable::template Row< DBTranslatedValue >& new_row,
-       const typename DatabaseTable::IsMissing                          contains_missing_data) {
+        const typename DatabaseTable::template Row< DBTranslatedValue >& new_row,
+        const typename DatabaseTable::IsMissing                          contains_missing_data) {
       // check that the new rows values are compatible with the values of
       // the variables stored within the translators
       if (!_isRowCompatible_(new_row)) {

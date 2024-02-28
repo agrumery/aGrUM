@@ -59,7 +59,7 @@ namespace gum {
         delta_score                        = 0;
 
         std::vector< std::pair< NodeId, double > > ordered_queues
-           = selector.nodesSortedByBestScore();
+            = selector.nodesSortedByBestScore();
 
         for (Idx j = 0; j < dag.size(); ++j) {
           NodeId i = ordered_queues[j].first;

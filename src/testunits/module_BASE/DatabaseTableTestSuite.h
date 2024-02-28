@@ -179,9 +179,9 @@ namespace gum_tests {
 
       const auto xmiss = gum::learning::DatabaseTable::IsMissing::False;
       gum::learning::DBRow< gum::learning::DBTranslatedValue > row(
-         3,
-         gum::learning::DBTranslatedValue{std::size_t(1)},
-         1.0);
+          3,
+          gum::learning::DBTranslatedValue{std::size_t(1)},
+          1.0);
       database.insertRow(row, xmiss);
       TS_ASSERT_EQUALS(database.size(), (gum::Size)1)
 
@@ -325,9 +325,9 @@ namespace gum_tests {
 
       const auto xmiss = gum::learning::DatabaseTable::IsMissing::False;
       gum::learning::DBRow< gum::learning::DBTranslatedValue > row(
-         3,
-         gum::learning::DBTranslatedValue{std::size_t(2)},
-         1.0f);
+          3,
+          gum::learning::DBTranslatedValue{std::size_t(2)},
+          1.0f);
       database.insertRow(row, xmiss);
       TS_ASSERT_EQUALS(database.content().size(), (gum::Size)1)
 
@@ -341,23 +341,23 @@ namespace gum_tests {
       TS_ASSERT_EQUALS(database.domainSize(2), dom1[2])
 
       gum::learning::DBRow< gum::learning::DBTranslatedValue > row2(
-         3,
-         gum::learning::DBTranslatedValue{std::size_t(1)},
-         1.0f);
+          3,
+          gum::learning::DBTranslatedValue{std::size_t(1)},
+          1.0f);
       database.insertRow(row2, xmiss);
       gum::learning::DBRow< gum::learning::DBTranslatedValue > row3(
-         3,
-         gum::learning::DBTranslatedValue{std::size_t(0)},
-         1.0f);
+          3,
+          gum::learning::DBTranslatedValue{std::size_t(0)},
+          1.0f);
       database.insertRow(std::move(row3), xmiss);
       TS_ASSERT_EQUALS(database.content().size(), (gum::Size)3)
 
       std::vector< gum::learning::DatabaseTable::IsMissing > is_miss(
-         4,
-         gum::learning::DatabaseTable::IsMissing::False);
+          4,
+          gum::learning::DatabaseTable::IsMissing::False);
       database.insertRows(
-         std::vector< gum::learning::DBRow< gum::learning::DBTranslatedValue > >(4, row),
-         is_miss);
+          std::vector< gum::learning::DBRow< gum::learning::DBTranslatedValue > >(4, row),
+          is_miss);
       TS_ASSERT_EQUALS(database.content().size(), (gum::Size)7)
       std::vector< gum::learning::DBRow< gum::learning::DBTranslatedValue > > vectx(4, row2);
       database.insertRows(vectx, is_miss);
@@ -415,9 +415,9 @@ namespace gum_tests {
 
       const auto xmiss = gum::learning::DatabaseTable::IsMissing::False;
       gum::learning::DBRow< gum::learning::DBTranslatedValue > row(
-         3,
-         gum::learning::DBTranslatedValue{2.0f},
-         1.0f);
+          3,
+          gum::learning::DBTranslatedValue{2.0f},
+          1.0f);
       database.insertRow(row, xmiss);
       database.insertRow(row, xmiss);
       database.insertRow(row, xmiss);
@@ -430,22 +430,22 @@ namespace gum_tests {
       TS_ASSERT_EQUALS(database2.nbVariables(), (std::size_t)3)
 
       gum::learning::DBRow< gum::learning::DBTranslatedValue > row2(
-         2,
-         gum::learning::DBTranslatedValue{2.0f},
-         1.0f);
+          2,
+          gum::learning::DBTranslatedValue{2.0f},
+          1.0f);
       TS_ASSERT_THROWS(database2.insertRow(row2, xmiss), const gum::SizeError&)
 
       gum::learning::DBRow< gum::learning::DBTranslatedValue > row3(
-         3,
-         gum::learning::DBTranslatedValue{4.0f},
-         1.0f);
+          3,
+          gum::learning::DBTranslatedValue{4.0f},
+          1.0f);
       gum::learning::DBRow< gum::learning::DBTranslatedValue > row4(
-         3,
-         gum::learning::DBTranslatedValue{5.0f},
-         1.0f);
+          3,
+          gum::learning::DBTranslatedValue{5.0f},
+          1.0f);
       std::vector< gum::learning::DatabaseTable::IsMissing > is_miss(
-         2,
-         gum::learning::DatabaseTable::IsMissing::False);
+          2,
+          gum::learning::DatabaseTable::IsMissing::False);
       database2.insertRows({row3, row4}, is_miss);
       auto handler2 = database2.beginSafe();
       auto handler3 = database2.endSafe();
@@ -510,9 +510,9 @@ namespace gum_tests {
 
         const auto xmiss = gum::learning::DatabaseTable::IsMissing::False;
         gum::learning::DBRow< gum::learning::DBTranslatedValue > row(
-           3,
-           gum::learning::DBTranslatedValue{2.0f},
-           1.0f);
+            3,
+            gum::learning::DBTranslatedValue{2.0f},
+            1.0f);
         database.insertRow(row, xmiss);
         database.insertRow(row, xmiss);
         database.insertRow(row, xmiss);
@@ -520,16 +520,16 @@ namespace gum_tests {
         TS_ASSERT_EQUALS(database.content().size(), (gum::Size)4)
 
         gum::learning::DBRow< gum::learning::DBTranslatedValue > row3(
-           3,
-           gum::learning::DBTranslatedValue{4.0f},
-           1.0f);
+            3,
+            gum::learning::DBTranslatedValue{4.0f},
+            1.0f);
         gum::learning::DBRow< gum::learning::DBTranslatedValue > row4(
-           3,
-           gum::learning::DBTranslatedValue{5.0f},
-           1.0f);
+            3,
+            gum::learning::DBTranslatedValue{5.0f},
+            1.0f);
         std::vector< gum::learning::DatabaseTable::IsMissing > is_miss(
-           2,
-           gum::learning::DatabaseTable::IsMissing::False);
+            2,
+            gum::learning::DatabaseTable::IsMissing::False);
         database.insertRows({row3, row4}, is_miss);
         typename gum::learning::DatabaseTable::Handler handler(database);
 
@@ -577,9 +577,9 @@ namespace gum_tests {
 
       const auto xmiss = gum::learning::DatabaseTable::IsMissing::False;
       gum::learning::DBRow< gum::learning::DBTranslatedValue > row(
-         3,
-         gum::learning::DBTranslatedValue{2.0f},
-         1.0f);
+          3,
+          gum::learning::DBTranslatedValue{2.0f},
+          1.0f);
       database.insertRow(row, xmiss);
       database.insertRow(row, xmiss);
       database.insertRow(row, xmiss);
@@ -615,9 +615,9 @@ namespace gum_tests {
       database.insertRow(row2);
 
       gum::learning::DBRow< gum::learning::DBTranslatedValue > row3(
-         2,
-         gum::learning::DBTranslatedValue{4.0f},
-         1.0f);
+          2,
+          gum::learning::DBTranslatedValue{4.0f},
+          1.0f);
       database.insertRow(row3, xmiss);
       database.insertRow(row3, xmiss);
       TS_ASSERT_EQUALS(database.content().size(), (gum::Size)8)
@@ -646,9 +646,9 @@ namespace gum_tests {
 
         const auto xmiss = gum::learning::DatabaseTable::IsMissing::False;
         gum::learning::DBRow< gum::learning::DBTranslatedValue > row(
-           3,
-           gum::learning::DBTranslatedValue{2.0f},
-           1.0f);
+            3,
+            gum::learning::DBTranslatedValue{2.0f},
+            1.0f);
         database.insertRow(row, xmiss);
         database.insertRow(row, xmiss);
         database.insertRow(row, xmiss);
@@ -656,16 +656,16 @@ namespace gum_tests {
         TS_ASSERT_EQUALS(database.content().size(), (gum::Size)4)
 
         gum::learning::DBRow< gum::learning::DBTranslatedValue > row3(
-           3,
-           gum::learning::DBTranslatedValue{4.0f},
-           1.0f);
+            3,
+            gum::learning::DBTranslatedValue{4.0f},
+            1.0f);
         gum::learning::DBRow< gum::learning::DBTranslatedValue > row4(
-           3,
-           gum::learning::DBTranslatedValue{5.0f},
-           1.0f);
+            3,
+            gum::learning::DBTranslatedValue{5.0f},
+            1.0f);
         std::vector< gum::learning::DatabaseTable::IsMissing > is_miss(
-           2,
-           gum::learning::DatabaseTable::IsMissing::False);
+            2,
+            gum::learning::DatabaseTable::IsMissing::False);
         database.insertRows({row3, row4}, is_miss);
 
         const unsigned int num_threads = gum::getNumberOfThreads();
@@ -720,9 +720,9 @@ namespace gum_tests {
 
         const auto xmiss = gum::learning::DatabaseTable::IsMissing::False;
         gum::learning::DBRow< gum::learning::DBTranslatedValue > row(
-           3,
-           gum::learning::DBTranslatedValue{2.0f},
-           1.0f);
+            3,
+            gum::learning::DBTranslatedValue{2.0f},
+            1.0f);
         database.insertRow(row, xmiss);
         database.insertRow(row, xmiss);
         database.insertRow(row, xmiss);
@@ -730,16 +730,16 @@ namespace gum_tests {
         TS_ASSERT_EQUALS(database.content().size(), (gum::Size)4)
 
         gum::learning::DBRow< gum::learning::DBTranslatedValue > row3(
-           3,
-           gum::learning::DBTranslatedValue{4.0f},
-           1.0f);
+            3,
+            gum::learning::DBTranslatedValue{4.0f},
+            1.0f);
         gum::learning::DBRow< gum::learning::DBTranslatedValue > row4(
-           3,
-           gum::learning::DBTranslatedValue{5.0f},
-           1.0f);
+            3,
+            gum::learning::DBTranslatedValue{5.0f},
+            1.0f);
         std::vector< gum::learning::DatabaseTable::IsMissing > is_miss(
-           2,
-           gum::learning::DatabaseTable::IsMissing::False);
+            2,
+            gum::learning::DatabaseTable::IsMissing::False);
         database.insertRows({row3, row4}, is_miss);
 
         const unsigned int num_threads = gum::getNumberOfThreads();
@@ -794,9 +794,9 @@ namespace gum_tests {
 
         const auto xmiss = gum::learning::DatabaseTable::IsMissing::False;
         gum::learning::DBRow< gum::learning::DBTranslatedValue > row(
-           3,
-           gum::learning::DBTranslatedValue{2.0f},
-           1.0f);
+            3,
+            gum::learning::DBTranslatedValue{2.0f},
+            1.0f);
         database.insertRow(row, xmiss);
         database.insertRow(row, xmiss);
         database.insertRow(row, xmiss);
@@ -843,16 +843,16 @@ namespace gum_tests {
         TS_ASSERT_EQUALS(nb_col2, 8)
 
         gum::learning::DBRow< gum::learning::DBTranslatedValue > row3(
-           3,
-           gum::learning::DBTranslatedValue{4.0f},
-           1.0f);
+            3,
+            gum::learning::DBTranslatedValue{4.0f},
+            1.0f);
         gum::learning::DBRow< gum::learning::DBTranslatedValue > row4(
-           3,
-           gum::learning::DBTranslatedValue{5.0f},
-           1.0f);
+            3,
+            gum::learning::DBTranslatedValue{5.0f},
+            1.0f);
         std::vector< gum::learning::DatabaseTable::IsMissing > is_miss(
-           2,
-           gum::learning::DatabaseTable::IsMissing::False);
+            2,
+            gum::learning::DatabaseTable::IsMissing::False);
         database.insertRows({row3, row4}, is_miss);
 
         nb_col1 = 0;
@@ -1034,9 +1034,9 @@ namespace gum_tests {
 
       const auto xmiss = gum::learning::DatabaseTable::IsMissing::False;
       gum::learning::DBRow< gum::learning::DBTranslatedValue > row(
-         3,
-         gum::learning::DBTranslatedValue{std::size_t(2)},
-         1.0f);
+          3,
+          gum::learning::DBTranslatedValue{std::size_t(2)},
+          1.0f);
       database.insertRow(row, xmiss);
       TS_ASSERT_EQUALS(database.content().size(), (gum::Size)1)
 
@@ -1050,23 +1050,23 @@ namespace gum_tests {
       TS_ASSERT_EQUALS(database.domainSize(2), dom1[2])
 
       gum::learning::DBRow< gum::learning::DBTranslatedValue > row2(
-         3,
-         gum::learning::DBTranslatedValue{std::size_t(1)},
-         1.0f);
+          3,
+          gum::learning::DBTranslatedValue{std::size_t(1)},
+          1.0f);
       database.insertRow(row2, xmiss);
       gum::learning::DBRow< gum::learning::DBTranslatedValue > row3(
-         3,
-         gum::learning::DBTranslatedValue{std::size_t(0)},
-         1.0f);
+          3,
+          gum::learning::DBTranslatedValue{std::size_t(0)},
+          1.0f);
       database.insertRow(std::move(row3), xmiss);
       TS_ASSERT_EQUALS(database.nbRows(), (std::size_t)3)
 
       std::vector< gum::learning::DatabaseTable::IsMissing > is_miss(
-         4,
-         gum::learning::DatabaseTable::IsMissing::False);
+          4,
+          gum::learning::DatabaseTable::IsMissing::False);
       database.insertRows(
-         std::vector< gum::learning::DBRow< gum::learning::DBTranslatedValue > >(4, row),
-         is_miss);
+          std::vector< gum::learning::DBRow< gum::learning::DBTranslatedValue > >(4, row),
+          is_miss);
       TS_ASSERT_EQUALS(database.content().size(), (gum::Size)7)
       std::vector< gum::learning::DBRow< gum::learning::DBTranslatedValue > > vectx(4, row2);
       database.insertRows(vectx, is_miss);
@@ -1105,9 +1105,9 @@ namespace gum_tests {
 
       const auto xmiss = gum::learning::DatabaseTable::IsMissing::False;
       gum::learning::DBRow< gum::learning::DBTranslatedValue > row(
-         3,
-         gum::learning::DBTranslatedValue{std::size_t(2)},
-         1.0f);
+          3,
+          gum::learning::DBTranslatedValue{std::size_t(2)},
+          1.0f);
       database.insertRow(row, xmiss);
       TS_ASSERT_EQUALS(database.content().size(), (gum::Size)1)
 
@@ -1121,14 +1121,14 @@ namespace gum_tests {
       TS_ASSERT_EQUALS(database.domainSize(2), dom1[2])
 
       gum::learning::DBRow< gum::learning::DBTranslatedValue > row2(
-         3,
-         gum::learning::DBTranslatedValue{std::size_t(1)},
-         1.0f);
+          3,
+          gum::learning::DBTranslatedValue{std::size_t(1)},
+          1.0f);
       database.insertRow(row2, xmiss);
       gum::learning::DBRow< gum::learning::DBTranslatedValue > row3(
-         3,
-         gum::learning::DBTranslatedValue{std::size_t(0)},
-         1.0f);
+          3,
+          gum::learning::DBTranslatedValue{std::size_t(0)},
+          1.0f);
       database.insertRow(std::move(row3), xmiss);
       TS_ASSERT_EQUALS(database.content().size(), (gum::Size)3)
 
@@ -1288,9 +1288,9 @@ namespace gum_tests {
 
       const auto xmiss = gum::learning::DatabaseTable::IsMissing::False;
       gum::learning::DBRow< gum::learning::DBTranslatedValue > row(
-         3,
-         gum::learning::DBTranslatedValue{2.0f},
-         1.0f);
+          3,
+          gum::learning::DBTranslatedValue{2.0f},
+          1.0f);
       std::size_t xsize = 1004;
       for (std::size_t i = 0; i < xsize; ++i)
         database.insertRow(row, xmiss);

@@ -38,9 +38,9 @@ namespace gum {
 
     template < typename GUM_SCALAR >
     PRMScalarAttribute< GUM_SCALAR >::PRMScalarAttribute(
-       const std::string&                    name,
-       const PRMType&                        type,
-       MultiDimImplementation< GUM_SCALAR >* impl) :
+        const std::string&                    name,
+        const PRMType&                        type,
+        MultiDimImplementation< GUM_SCALAR >* impl) :
         PRMAttribute< GUM_SCALAR >(name),
         _type_(new PRMType(type)), _cpf_(new Potential< GUM_SCALAR >(impl)) {
       GUM_CONSTRUCTOR(PRMScalarAttribute);
@@ -51,7 +51,7 @@ namespace gum {
 
     template < typename GUM_SCALAR >
     PRMScalarAttribute< GUM_SCALAR >::PRMScalarAttribute(
-       const PRMScalarAttribute< GUM_SCALAR >& source) :
+        const PRMScalarAttribute< GUM_SCALAR >& source) :
         PRMAttribute< GUM_SCALAR >(source),
         _type_(0), _cpf_(0) {
       GUM_CONS_CPY(PRMScalarAttribute);
@@ -67,15 +67,15 @@ namespace gum {
 
     template < typename GUM_SCALAR >
     PRMAttribute< GUM_SCALAR >*
-       PRMScalarAttribute< GUM_SCALAR >::newFactory(const PRMClass< GUM_SCALAR >& c) const {
+        PRMScalarAttribute< GUM_SCALAR >::newFactory(const PRMClass< GUM_SCALAR >& c) const {
       auto impl = static_cast< MultiDimImplementation< GUM_SCALAR >* >(
-         this->cpf().content()->newFactory());
+          this->cpf().content()->newFactory());
       return new PRMScalarAttribute< GUM_SCALAR >(this->name(), this->type(), impl);
     }
 
     template < typename GUM_SCALAR >
     PRMAttribute< GUM_SCALAR >* PRMScalarAttribute< GUM_SCALAR >::copy(
-       Bijection< const DiscreteVariable*, const DiscreteVariable* > bij) const {
+        Bijection< const DiscreteVariable*, const DiscreteVariable* > bij) const {
       auto copy = new PRMScalarAttribute< GUM_SCALAR >(this->name(), this->type());
 
       if (!bij.existsFirst(&(type().variable()))) {
@@ -90,8 +90,8 @@ namespace gum {
 
     template < typename GUM_SCALAR >
     void PRMScalarAttribute< GUM_SCALAR >::copyCpf(
-       const Bijection< const DiscreteVariable*, const DiscreteVariable* >& bij,
-       const PRMAttribute< GUM_SCALAR >&                                    source) {
+        const Bijection< const DiscreteVariable*, const DiscreteVariable* >& bij,
+        const PRMAttribute< GUM_SCALAR >&                                    source) {
       delete _cpf_;
       _cpf_ = new Potential< GUM_SCALAR >();
 
@@ -112,13 +112,13 @@ namespace gum {
 
     template < typename GUM_SCALAR >
     PRMScalarAttribute< GUM_SCALAR >&
-       PRMScalarAttribute< GUM_SCALAR >::operator=(const PRMScalarAttribute< GUM_SCALAR >& from) {
+        PRMScalarAttribute< GUM_SCALAR >::operator=(const PRMScalarAttribute< GUM_SCALAR >& from) {
       GUM_ERROR(FatalError, "Illegal call to the copy operator of gum::ScalarAttribute")
     }
 
     template < typename GUM_SCALAR >
     INLINE typename PRMClassElement< GUM_SCALAR >::ClassElementType
-       PRMScalarAttribute< GUM_SCALAR >::elt_type() const {
+        PRMScalarAttribute< GUM_SCALAR >::elt_type() const {
       return this->prm_attribute;
     }
 
@@ -139,7 +139,7 @@ namespace gum {
 
     template < typename GUM_SCALAR >
     INLINE void
-       PRMScalarAttribute< GUM_SCALAR >::addParent(const PRMClassElement< GUM_SCALAR >& elt) {
+        PRMScalarAttribute< GUM_SCALAR >::addParent(const PRMClassElement< GUM_SCALAR >& elt) {
       try {
         _cpf_->add(elt.type().variable());
       } catch (DuplicateElement const&) {
@@ -152,7 +152,7 @@ namespace gum {
     // See gum::PRMClassElement<GUM_SCALAR>::addChild_().
     template < typename GUM_SCALAR >
     INLINE void
-       PRMScalarAttribute< GUM_SCALAR >::addChild(const PRMClassElement< GUM_SCALAR >& elt) {}
+        PRMScalarAttribute< GUM_SCALAR >::addChild(const PRMClassElement< GUM_SCALAR >& elt) {}
 
     template < typename GUM_SCALAR >
     PRMAttribute< GUM_SCALAR >* PRMScalarAttribute< GUM_SCALAR >::getCastDescendant() const {

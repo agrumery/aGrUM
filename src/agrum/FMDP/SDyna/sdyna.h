@@ -71,10 +71,10 @@ namespace gum {
                                 Idx    nbValueIterationStep        = 10) {
       bool               actionReward = false;
       ILearningStrategy* ls
-         = new FMDPLearner< CHI2TEST, CHI2TEST, ITILEARNER >(attributeSelectionThreshold,
-                                                             actionReward);
+          = new FMDPLearner< CHI2TEST, CHI2TEST, ITILEARNER >(attributeSelectionThreshold,
+                                                              actionReward);
       IPlanningStrategy< double >* ps
-         = StructuredPlaner< double >::sviInstance(discountFactor, epsilon);
+          = StructuredPlaner< double >::sviInstance(discountFactor, epsilon);
       IDecisionStrategy* ds = new E_GreedyDecider();
       return new SDYNA(ls, ps, ds, observationPhaseLenght, nbValueIterationStep, actionReward);
     }
@@ -90,11 +90,11 @@ namespace gum {
                                   Idx    nbValueIterationStep        = 10) {
       bool               actionReward = false;
       ILearningStrategy* ls
-         = new FMDPLearner< GTEST, GTEST, IMDDILEARNER >(attributeSelectionThreshold,
-                                                         actionReward,
-                                                         similarityThreshold);
+          = new FMDPLearner< GTEST, GTEST, IMDDILEARNER >(attributeSelectionThreshold,
+                                                          actionReward,
+                                                          similarityThreshold);
       IPlanningStrategy< double >* ps
-         = StructuredPlaner< double >::spumddInstance(discountFactor, epsilon, false);
+          = StructuredPlaner< double >::spumddInstance(discountFactor, epsilon, false);
       IDecisionStrategy* ds = new E_GreedyDecider();
       return new SDYNA(ls,
                        ps,
@@ -116,11 +116,11 @@ namespace gum {
                                   Idx    nbValueIterationStep        = 10) {
       bool               actionReward = true;
       ILearningStrategy* ls
-         = new FMDPLearner< GTEST, GTEST, IMDDILEARNER >(attributeSelectionThreshold,
-                                                         actionReward,
-                                                         similarityThreshold);
+          = new FMDPLearner< GTEST, GTEST, IMDDILEARNER >(attributeSelectionThreshold,
+                                                          actionReward,
+                                                          similarityThreshold);
       AdaptiveRMaxPlaner* rm
-         = AdaptiveRMaxPlaner::ReducedAndOrderedInstance(ls, discountFactor, epsilon);
+          = AdaptiveRMaxPlaner::ReducedAndOrderedInstance(ls, discountFactor, epsilon);
       IPlanningStrategy< double >* ps = rm;
       IDecisionStrategy*           ds = rm;
       return new SDYNA(ls, ps, ds, observationPhaseLenght, nbValueIterationStep, actionReward);
@@ -136,7 +136,7 @@ namespace gum {
                                    Idx    nbValueIterationStep        = 10) {
       bool               actionReward = true;
       ILearningStrategy* ls
-         = new FMDPLearner< GTEST, GTEST, ITILEARNER >(attributeSelectionThreshold, actionReward);
+          = new FMDPLearner< GTEST, GTEST, ITILEARNER >(attributeSelectionThreshold, actionReward);
       AdaptiveRMaxPlaner* rm = AdaptiveRMaxPlaner::TreeInstance(ls, discountFactor, epsilon);
       IPlanningStrategy< double >* ps = rm;
       IDecisionStrategy*           ds = rm;
@@ -154,11 +154,11 @@ namespace gum {
                                     Idx    nbValueIterationStep        = 10) {
       bool               actionReward = true;
       ILearningStrategy* ls
-         = new FMDPLearner< GTEST, GTEST, IMDDILEARNER >(attributeSelectionThreshold,
-                                                         actionReward,
-                                                         similarityThreshold);
+          = new FMDPLearner< GTEST, GTEST, IMDDILEARNER >(attributeSelectionThreshold,
+                                                          actionReward,
+                                                          similarityThreshold);
       IPlanningStrategy< double >* ps
-         = StructuredPlaner< double >::spumddInstance(discountFactor, epsilon);
+          = StructuredPlaner< double >::spumddInstance(discountFactor, epsilon);
       IDecisionStrategy* ds = new RandomDecider();
       return new SDYNA(ls, ps, ds, observationPhaseLenght, nbValueIterationStep, actionReward);
     }
@@ -173,10 +173,10 @@ namespace gum {
                                      Idx    nbValueIterationStep        = 10) {
       bool               actionReward = true;
       ILearningStrategy* ls
-         = new FMDPLearner< CHI2TEST, CHI2TEST, ITILEARNER >(attributeSelectionThreshold,
-                                                             actionReward);
+          = new FMDPLearner< CHI2TEST, CHI2TEST, ITILEARNER >(attributeSelectionThreshold,
+                                                              actionReward);
       IPlanningStrategy< double >* ps
-         = StructuredPlaner< double >::sviInstance(discountFactor, epsilon);
+          = StructuredPlaner< double >::sviInstance(discountFactor, epsilon);
       IDecisionStrategy* ds = new RandomDecider();
       return new SDYNA(ls, ps, ds, observationPhaseLenght, nbValueIterationStep, actionReward);
     }

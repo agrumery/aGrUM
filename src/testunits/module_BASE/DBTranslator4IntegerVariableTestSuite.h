@@ -58,7 +58,7 @@ namespace gum_tests {
       int         good   = 1;
       try {
         const gum::IntegerVariable& xvar_discr
-           = dynamic_cast< const gum::IntegerVariable& >(tr_var);
+            = dynamic_cast< const gum::IntegerVariable& >(tr_var);
         TS_ASSERT_EQUALS(xvar_discr.domainSize(), (gum::Size)4)
         TS_ASSERT_EQUALS(xvar_discr.label(0), "1")
         TS_ASSERT_EQUALS(xvar_discr.label(1), "3")
@@ -104,7 +104,7 @@ namespace gum_tests {
       TS_ASSERT_THROWS(translator3.translateBack(gum::learning::DBTranslatedValue{std::size_t{4}}),
                        const gum::UnknownLabelInDatabase&)
       TS_ASSERT_EQUALS(translator3.translateBack(gum::learning::DBTranslatedValue{
-                          std::numeric_limits< std::size_t >::max()}),
+                           std::numeric_limits< std::size_t >::max()}),
                        "?");
 
       TS_ASSERT_EQUALS(translator3.domainSize(), (gum::Size)4)
@@ -141,8 +141,8 @@ namespace gum_tests {
         TS_ASSERT_EQUALS(translator.variable()->toString(), "X1:Integer({1|3|10|12})")
 
         TS_ASSERT_EQUALS(
-           translator.translate(translator.translateBack(translator.translate("1"))).discr_val,
-           (std::size_t)0);
+            translator.translate(translator.translateBack(translator.translate("1"))).discr_val,
+            (std::size_t)0);
 
         gum::IntegerVariable var2("X2", "");
         var2.addValue(1);
@@ -155,14 +155,14 @@ namespace gum_tests {
         TS_ASSERT_EQUALS(translator2.translate("2").discr_val, (std::size_t)1)
         TS_ASSERT_EQUALS(translator2.translate("4").discr_val, (std::size_t)3)
         TS_ASSERT_EQUALS(
-           translator2.translateBack(gum::learning::DBTranslatedValue{std::size_t{0}}),
-           "1");
+            translator2.translateBack(gum::learning::DBTranslatedValue{std::size_t{0}}),
+            "1");
         TS_ASSERT_EQUALS(
-           translator2.translateBack(gum::learning::DBTranslatedValue{std::size_t{1}}),
-           "2");
+            translator2.translateBack(gum::learning::DBTranslatedValue{std::size_t{1}}),
+            "2");
         TS_ASSERT_EQUALS(
-           translator2.translateBack(gum::learning::DBTranslatedValue{std::size_t{2}}),
-           "3");
+            translator2.translateBack(gum::learning::DBTranslatedValue{std::size_t{2}}),
+            "3");
         TS_ASSERT_EQUALS(translator2.variable()->toString(), "X2:Integer({1|2|3|4})")
 
         gum::learning::DBTranslator4IntegerVariable translator3(translator);
@@ -170,14 +170,14 @@ namespace gum_tests {
         TS_ASSERT_EQUALS(translator3.translate("10").discr_val, (std::size_t)2)
         TS_ASSERT_EQUALS(translator3.translate("12").discr_val, (std::size_t)3)
         TS_ASSERT_EQUALS(
-           translator3.translateBack(gum::learning::DBTranslatedValue{std::size_t{0}}),
-           "1");
+            translator3.translateBack(gum::learning::DBTranslatedValue{std::size_t{0}}),
+            "1");
         TS_ASSERT_EQUALS(
-           translator3.translateBack(gum::learning::DBTranslatedValue{std::size_t{1}}),
-           "3");
+            translator3.translateBack(gum::learning::DBTranslatedValue{std::size_t{1}}),
+            "3");
         TS_ASSERT_EQUALS(
-           translator3.translateBack(gum::learning::DBTranslatedValue{std::size_t{2}}),
-           "10");
+            translator3.translateBack(gum::learning::DBTranslatedValue{std::size_t{2}}),
+            "10");
         TS_ASSERT_EQUALS(translator3.variable()->toString(), "X1:Integer({1|3|10|12})")
 
         gum::learning::DBTranslator4IntegerVariable translator4(translator2);
@@ -185,14 +185,14 @@ namespace gum_tests {
         TS_ASSERT_EQUALS(translator4.translate("2").discr_val, (std::size_t)1)
         TS_ASSERT_EQUALS(translator4.translate("4").discr_val, (std::size_t)3)
         TS_ASSERT_EQUALS(
-           translator4.translateBack(gum::learning::DBTranslatedValue{std::size_t{0}}),
-           "1");
+            translator4.translateBack(gum::learning::DBTranslatedValue{std::size_t{0}}),
+            "1");
         TS_ASSERT_EQUALS(
-           translator4.translateBack(gum::learning::DBTranslatedValue{std::size_t{1}}),
-           "2");
+            translator4.translateBack(gum::learning::DBTranslatedValue{std::size_t{1}}),
+            "2");
         TS_ASSERT_EQUALS(
-           translator4.translateBack(gum::learning::DBTranslatedValue{std::size_t{2}}),
-           "3");
+            translator4.translateBack(gum::learning::DBTranslatedValue{std::size_t{2}}),
+            "3");
         TS_ASSERT_EQUALS(translator4.variable()->toString(), "X2:Integer({1|2|3|4})")
 
         gum::learning::DBTranslator4IntegerVariable translator5(std::move(translator3));
@@ -200,14 +200,14 @@ namespace gum_tests {
         TS_ASSERT_EQUALS(translator5.translate("10").discr_val, (std::size_t)2)
         TS_ASSERT_EQUALS(translator5.translate("12").discr_val, (std::size_t)3)
         TS_ASSERT_EQUALS(
-           translator5.translateBack(gum::learning::DBTranslatedValue{std::size_t{0}}),
-           "1");
+            translator5.translateBack(gum::learning::DBTranslatedValue{std::size_t{0}}),
+            "1");
         TS_ASSERT_EQUALS(
-           translator5.translateBack(gum::learning::DBTranslatedValue{std::size_t{1}}),
-           "3");
+            translator5.translateBack(gum::learning::DBTranslatedValue{std::size_t{1}}),
+            "3");
         TS_ASSERT_EQUALS(
-           translator5.translateBack(gum::learning::DBTranslatedValue{std::size_t{2}}),
-           "10");
+            translator5.translateBack(gum::learning::DBTranslatedValue{std::size_t{2}}),
+            "10");
         TS_ASSERT_EQUALS(translator5.variable()->toString(), "X1:Integer({1|3|10|12})")
 
         gum::learning::DBTranslator4IntegerVariable translator6(std::move(translator4));
@@ -215,14 +215,14 @@ namespace gum_tests {
         TS_ASSERT_EQUALS(translator6.translate("2").discr_val, (std::size_t)1)
         TS_ASSERT_EQUALS(translator6.translate("4").discr_val, (std::size_t)3)
         TS_ASSERT_EQUALS(
-           translator6.translateBack(gum::learning::DBTranslatedValue{std::size_t{0}}),
-           "1");
+            translator6.translateBack(gum::learning::DBTranslatedValue{std::size_t{0}}),
+            "1");
         TS_ASSERT_EQUALS(
-           translator6.translateBack(gum::learning::DBTranslatedValue{std::size_t{1}}),
-           "2");
+            translator6.translateBack(gum::learning::DBTranslatedValue{std::size_t{1}}),
+            "2");
         TS_ASSERT_EQUALS(
-           translator6.translateBack(gum::learning::DBTranslatedValue{std::size_t{2}}),
-           "3");
+            translator6.translateBack(gum::learning::DBTranslatedValue{std::size_t{2}}),
+            "3");
         TS_ASSERT_EQUALS(translator6.variable()->toString(), "X2:Integer({1|2|3|4})")
 
         gum::learning::DBTranslator4IntegerVariable* translator7 = translator6.clone();
@@ -230,14 +230,14 @@ namespace gum_tests {
         TS_ASSERT_EQUALS(translator7->translate("2").discr_val, (std::size_t)1)
         TS_ASSERT_EQUALS(translator7->translate("4").discr_val, (std::size_t)3)
         TS_ASSERT_EQUALS(
-           translator7->translateBack(gum::learning::DBTranslatedValue{std::size_t{0}}),
-           "1");
+            translator7->translateBack(gum::learning::DBTranslatedValue{std::size_t{0}}),
+            "1");
         TS_ASSERT_EQUALS(
-           translator7->translateBack(gum::learning::DBTranslatedValue{std::size_t{1}}),
-           "2");
+            translator7->translateBack(gum::learning::DBTranslatedValue{std::size_t{1}}),
+            "2");
         TS_ASSERT_EQUALS(
-           translator7->translateBack(gum::learning::DBTranslatedValue{std::size_t{2}}),
-           "3");
+            translator7->translateBack(gum::learning::DBTranslatedValue{std::size_t{2}}),
+            "3");
         TS_ASSERT_EQUALS(translator7->variable()->toString(), "X2:Integer({1|2|3|4})")
 
         delete translator7;
@@ -248,14 +248,14 @@ namespace gum_tests {
         TS_ASSERT_EQUALS(translator8.translate("2").discr_val, (std::size_t)1)
         TS_ASSERT_EQUALS(translator8.translate("4").discr_val, (std::size_t)3)
         TS_ASSERT_EQUALS(
-           translator8.translateBack(gum::learning::DBTranslatedValue{std::size_t{0}}),
-           "1");
+            translator8.translateBack(gum::learning::DBTranslatedValue{std::size_t{0}}),
+            "1");
         TS_ASSERT_EQUALS(
-           translator8.translateBack(gum::learning::DBTranslatedValue{std::size_t{1}}),
-           "2");
+            translator8.translateBack(gum::learning::DBTranslatedValue{std::size_t{1}}),
+            "2");
         TS_ASSERT_EQUALS(
-           translator8.translateBack(gum::learning::DBTranslatedValue{std::size_t{2}}),
-           "3");
+            translator8.translateBack(gum::learning::DBTranslatedValue{std::size_t{2}}),
+            "3");
         TS_ASSERT_EQUALS(translator8.variable()->toString(), "X2:Integer({1|2|3|4})")
 
         gum::learning::DBTranslator4IntegerVariable translator8bis(var);
@@ -265,14 +265,14 @@ namespace gum_tests {
         TS_ASSERT_EQUALS(translator9.translate("3").discr_val, (std::size_t)1)
         TS_ASSERT_EQUALS(translator9.translate("10").discr_val, (std::size_t)2)
         TS_ASSERT_EQUALS(
-           translator9.translateBack(gum::learning::DBTranslatedValue{std::size_t{0}}),
-           "1");
+            translator9.translateBack(gum::learning::DBTranslatedValue{std::size_t{0}}),
+            "1");
         TS_ASSERT_EQUALS(
-           translator9.translateBack(gum::learning::DBTranslatedValue{std::size_t{1}}),
-           "3");
+            translator9.translateBack(gum::learning::DBTranslatedValue{std::size_t{1}}),
+            "3");
         TS_ASSERT_EQUALS(
-           translator9.translateBack(gum::learning::DBTranslatedValue{std::size_t{2}}),
-           "10");
+            translator9.translateBack(gum::learning::DBTranslatedValue{std::size_t{2}}),
+            "10");
         TS_ASSERT_EQUALS(translator9.variable()->toString(), "X1:Integer({1|3|10|12})")
 
         translator8 = std::move(translator9);
@@ -280,14 +280,14 @@ namespace gum_tests {
         TS_ASSERT_EQUALS(translator8.translate("3").discr_val, (std::size_t)1)
         TS_ASSERT_EQUALS(translator8.translate("10").discr_val, (std::size_t)2)
         TS_ASSERT_EQUALS(
-           translator8.translateBack(gum::learning::DBTranslatedValue{std::size_t{0}}),
-           "1");
+            translator8.translateBack(gum::learning::DBTranslatedValue{std::size_t{0}}),
+            "1");
         TS_ASSERT_EQUALS(
-           translator8.translateBack(gum::learning::DBTranslatedValue{std::size_t{1}}),
-           "3");
+            translator8.translateBack(gum::learning::DBTranslatedValue{std::size_t{1}}),
+            "3");
         TS_ASSERT_EQUALS(
-           translator8.translateBack(gum::learning::DBTranslatedValue{std::size_t{2}}),
-           "10");
+            translator8.translateBack(gum::learning::DBTranslatedValue{std::size_t{2}}),
+            "10");
         TS_ASSERT_EQUALS(translator8.variable()->toString(), "X1:Integer({1|3|10|12})")
 
         TS_ASSERT_THROWS(translator8.translate("5"), gum::UnknownLabelInDatabase&)

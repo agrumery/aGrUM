@@ -124,7 +124,7 @@ namespace gum {
   // indicates whether two iterators point to different elements or sets
   template < typename Key >
   INLINE bool
-     SetIteratorSafe< Key >::operator!=(const SetIteratorSafe< Key >& from) const noexcept {
+      SetIteratorSafe< Key >::operator!=(const SetIteratorSafe< Key >& from) const noexcept {
     return _ht_iter_ != from._ht_iter_;
   }
 
@@ -132,7 +132,7 @@ namespace gum {
   // set
   template < typename Key >
   INLINE bool
-     SetIteratorSafe< Key >::operator==(const SetIteratorSafe< Key >& from) const noexcept {
+      SetIteratorSafe< Key >::operator==(const SetIteratorSafe< Key >& from) const noexcept {
     return _ht_iter_ == from._ht_iter_;
   }
 

@@ -56,8 +56,8 @@ namespace gum {
 
     /// returns the CPT's parameters corresponding to a given set of nodes
     std::vector< double >
-       ParamEstimatorML::parameters(const NodeId                 target_node,
-                                    const std::vector< NodeId >& conditioning_nodes) {
+        ParamEstimatorML::parameters(const NodeId                 target_node,
+                                     const std::vector< NodeId >& conditioning_nodes) {
       // create an idset that contains all the nodes in the following order:
       // first, the target node, then all the conditioning nodes
       IdCondSet idset(target_node, conditioning_nodes, true);
@@ -134,7 +134,7 @@ namespace gum {
               std::size_t             col = node2cols.empty() ? conditioning_nodes[i]
                                                               : node2cols.second(conditioning_nodes[i]);
               const DiscreteVariable& var
-                 = dynamic_cast< const DiscreteVariable& >(database.variable(col));
+                  = dynamic_cast< const DiscreteVariable& >(database.variable(col));
               str << var.name() << "=" << var.labels()[values[i]];
             }
             auto target_col     = node2cols.empty() ? target_node : node2cols.second(target_node);

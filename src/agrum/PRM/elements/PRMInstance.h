@@ -294,7 +294,7 @@ namespace gum {
        * @brief Returns a vector of pairs of refering attributes of id.
        */
       const std::vector< std::pair< PRMInstance< GUM_SCALAR >*, std::string > >&
-         getRefAttr(NodeId id) const;
+          getRefAttr(NodeId id) const;
 
       /// @}
       // ========================================================================
@@ -431,9 +431,9 @@ namespace gum {
       RefConstIterator begin(NodeId id) const;
 
       using InvRefIterator = typename NodeProperty<
-         std::vector< std::pair< PRMInstance< GUM_SCALAR >*, std::string > >* >::iterator;
+          std::vector< std::pair< PRMInstance< GUM_SCALAR >*, std::string > >* >::iterator;
       using InvRefConstIterator = typename NodeProperty<
-         std::vector< std::pair< PRMInstance< GUM_SCALAR >*, std::string > >* >::const_iterator;
+          std::vector< std::pair< PRMInstance< GUM_SCALAR >*, std::string > >* >::const_iterator;
 
       InvRefIterator        beginInvRef();
       const InvRefIterator& endInvRef();

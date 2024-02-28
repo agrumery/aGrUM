@@ -189,8 +189,9 @@ namespace gum {
        *credal net
        *!
        */
-      void
-         setCPT(const NodeId& id, Size& entry, const std::vector< std::vector< GUM_SCALAR > >& cpt);
+      void setCPT(const NodeId&                                   id,
+                  Size&                                           entry,
+                  const std::vector< std::vector< GUM_SCALAR > >& cpt);
 
       /**
        * @brief %Set the vertices of one credal set of a given node ( any
@@ -446,14 +447,14 @@ namespace gum {
        * CPTs.
        */
       const NodeProperty< std::vector< std::vector< std::vector< GUM_SCALAR > > > >&
-         credalNet_currentCpt() const;
+          credalNet_currentCpt() const;
 
       /**
        * @return Returns a constant reference to the ( up-to-date ) CredalNet
        * CPTs.
        */
       const NodeProperty< std::vector< std::vector< std::vector< GUM_SCALAR > > > >&
-         credalNet_srcCpt() const;
+          credalNet_srcCpt() const;
 
       /**
        * @param id The constant reference to the choosen NodeId
@@ -586,7 +587,7 @@ namespace gum {
 
       /** @brief This CredalNet up-to-date CPTs. */
       NodeProperty< std::vector< std::vector< std::vector< GUM_SCALAR > > > >*
-         _credalNet_current_cpt_;   // =  nullptr;
+          _credalNet_current_cpt_;   // =  nullptr;
 
       /** @deprecated @brief Corresponding bits of each variable. */
       NodeProperty< std::vector< NodeId > > _var_bits_;
@@ -625,7 +626,7 @@ namespace gum {
        * @return Returns the cardinality of the Decision Node.
        */
       int _find_dNode_card_(
-         const std::vector< std::vector< std::vector< GUM_SCALAR > > >& var_cpt) const;
+          const std::vector< std::vector< std::vector< GUM_SCALAR > > >& var_cpt) const;
 
       /**
        * Computes the vertices of each credal set according to their interval

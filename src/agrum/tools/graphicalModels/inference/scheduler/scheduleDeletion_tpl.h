@@ -84,7 +84,7 @@ namespace gum {
   /// copy operator
   template < typename TABLE >
   ScheduleDeletion< TABLE >&
-     ScheduleDeletion< TABLE >::operator=(const ScheduleDeletion< TABLE >& from) {
+      ScheduleDeletion< TABLE >::operator=(const ScheduleDeletion< TABLE >& from) {
     _arg_ = from._arg_;
     _args_.clear();
     _args_ << _arg_;
@@ -96,7 +96,7 @@ namespace gum {
   /// move operator
   template < typename TABLE >
   ScheduleDeletion< TABLE >&
-     ScheduleDeletion< TABLE >::operator=(ScheduleDeletion< TABLE >&& from) {
+      ScheduleDeletion< TABLE >::operator=(ScheduleDeletion< TABLE >&& from) {
     _arg_         = from._arg_;
     _args_        = std::move(from._args_);
     _is_executed_ = from._is_executed_;
@@ -115,7 +115,7 @@ namespace gum {
   bool ScheduleDeletion< TABLE >::operator==(const ScheduleOperator& op) const {
     try {
       const ScheduleDeletion< TABLE >& real_op
-         = dynamic_cast< const ScheduleDeletion< TABLE >& >(op);
+          = dynamic_cast< const ScheduleDeletion< TABLE >& >(op);
       return ScheduleDeletion< TABLE >::operator==(real_op);
     } catch (std::bad_cast&) { return false; }
   }
@@ -135,7 +135,7 @@ namespace gum {
   /// checks whether two ScheduleOperator have similar parameters
   template < typename TABLE >
   INLINE bool
-     ScheduleDeletion< TABLE >::hasSimilarArguments(const ScheduleDeletion< TABLE >& op) const {
+      ScheduleDeletion< TABLE >::hasSimilarArguments(const ScheduleDeletion< TABLE >& op) const {
     return _arg_->hasSameVariables(*op._arg_);
   }
 
@@ -144,7 +144,7 @@ namespace gum {
   bool ScheduleDeletion< TABLE >::hasSimilarArguments(const ScheduleOperator& op) const {
     try {
       const ScheduleDeletion< TABLE >& real_op
-         = dynamic_cast< const ScheduleDeletion< TABLE >& >(op);
+          = dynamic_cast< const ScheduleDeletion< TABLE >& >(op);
       return ScheduleDeletion< TABLE >::hasSimilarArguments(real_op);
     } catch (std::bad_cast&) { return false; }
   }
@@ -152,7 +152,7 @@ namespace gum {
   /// checks whether two ScheduleOperator have the same parameters
   template < typename TABLE >
   INLINE bool
-     ScheduleDeletion< TABLE >::hasSameArguments(const ScheduleDeletion< TABLE >& op) const {
+      ScheduleDeletion< TABLE >::hasSameArguments(const ScheduleDeletion< TABLE >& op) const {
     return _arg_->hasSameVariables(*op._arg_) && _arg_->hasSameContent(*op._arg_);
   }
 
@@ -161,7 +161,7 @@ namespace gum {
   bool ScheduleDeletion< TABLE >::hasSameArguments(const ScheduleOperator& op) const {
     try {
       const ScheduleDeletion< TABLE >& real_op
-         = dynamic_cast< const ScheduleDeletion< TABLE >& >(op);
+          = dynamic_cast< const ScheduleDeletion< TABLE >& >(op);
       return ScheduleDeletion< TABLE >::hasSameArguments(real_op);
     } catch (std::bad_cast&) { return false; }
   }
@@ -177,7 +177,7 @@ namespace gum {
   bool ScheduleDeletion< TABLE >::isSameOperator(const ScheduleOperator& op) const {
     try {
       const ScheduleDeletion< TABLE >& real_op
-         = dynamic_cast< const ScheduleDeletion< TABLE >& >(op);
+          = dynamic_cast< const ScheduleDeletion< TABLE >& >(op);
       return ScheduleDeletion< TABLE >::isSameOperator(real_op);
     } catch (std::bad_cast&) { return false; }
   }
@@ -208,7 +208,7 @@ namespace gum {
     if (new_args.size() != Size(1)) {
       GUM_ERROR(SizeError,
                 "Method ScheduleDeletion::updateArgs expects 1 new "
-                   << "argument, but " << new_args.size() << " were passed.");
+                    << "argument, but " << new_args.size() << " were passed.");
     }
     const ScheduleMultiDim< TABLE >* arg;
     try {
@@ -216,8 +216,8 @@ namespace gum {
     } catch (std::bad_cast&) {
       GUM_ERROR(TypeError,
                 "The type of the argument passed to "
-                   << "ScheduleDeletion::updateArgs does not match what "
-                   << "the ScheduleOperator expects");
+                    << "ScheduleDeletion::updateArgs does not match what "
+                    << "the ScheduleOperator expects");
     }
 
     // save the new argument

@@ -106,7 +106,7 @@ namespace gum {
   }
 
   INLINE UndiGraph
-     DAGmodel::moralizedAncestralGraph(const std::vector< std::string >& nodenames) const {
+      DAGmodel::moralizedAncestralGraph(const std::vector< std::string >& nodenames) const {
     return moralizedAncestralGraph(nodeset(nodenames));
   }
 

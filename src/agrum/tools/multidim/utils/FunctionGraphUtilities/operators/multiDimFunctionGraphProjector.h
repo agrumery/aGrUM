@@ -61,9 +61,9 @@ namespace gum {
      * @brief Default constructor.
      */
     MultiDimFunctionGraphProjector(
-       const MultiDimFunctionGraph< GUM_SCALAR, TerminalNodePolicy >* src,
-       const gum::VariableSet&                                        delVars,
-       const GUM_SCALAR                                               neutral);
+        const MultiDimFunctionGraph< GUM_SCALAR, TerminalNodePolicy >* src,
+        const gum::VariableSet&                                        delVars,
+        const GUM_SCALAR                                               neutral);
 
     /**
      * @brief Default destructor.

@@ -89,7 +89,7 @@ namespace gum {
 
     /// avoid copy operators
     ShaferShenoyInference< GUM_SCALAR >& operator=(const ShaferShenoyInference< GUM_SCALAR >&)
-       = delete;
+        = delete;
 
     /// destructor
     ~ShaferShenoyInference();
@@ -248,13 +248,13 @@ namespace gum {
 
     /// the type of relevant potential finding algorithm to be used
     RelevantPotentialsFinderType _find_relevant_potential_type_{
-       RelevantPotentialsFinderType::DSEP_BAYESBALL_POTENTIALS};
+        RelevantPotentialsFinderType::DSEP_BAYESBALL_POTENTIALS};
 
     /** @brief update a set of potentials: the remaining are those to be
      * combined to produce a message on a separator */
     void (ShaferShenoyInference< GUM_SCALAR >::*_findRelevantPotentials_)(
-       Set< const IScheduleMultiDim* >& pot_list,
-       gum::VariableSet&                kept_vars);
+        Set< const IScheduleMultiDim* >& pot_list,
+        gum::VariableSet&                kept_vars);
 
     /// the type of barren nodes computation we wish
     FindBarrenNodesType _barren_nodes_type_{FindBarrenNodesType::FIND_BARREN_NODES};
@@ -266,7 +266,7 @@ namespace gum {
     /// the operator for performing the combinations
     Potential< GUM_SCALAR > (*_combination_op_)(const Potential< GUM_SCALAR >&,
                                                 const Potential< GUM_SCALAR >&){
-       SSNewmultiPotential};
+        SSNewmultiPotential};
 
     /// the triangulation class creating the junction tree used for inference
     Triangulation* _triangulation_;

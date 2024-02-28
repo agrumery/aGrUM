@@ -361,7 +361,7 @@ namespace gum::learning {
       GUM_ERROR(FormatNotFound,
                 "IBNLearner could not determine the "
                 "file type of the database '"
-                   << filename << "'")
+                    << filename << "'")
     }
 
     std::string extension = filename.substr(filename.size() - 4);
@@ -519,12 +519,12 @@ namespace gum::learning {
       default :
         GUM_ERROR(OperationNotAllowed,
                   "IBNLearner does not support "
-                     << "yet this parameter estimator")
+                      << "yet this parameter estimator")
     }
 
     // assign the number of threads
     param_estimator->setNumberOfThreads(
-       this->isGumNumberOfThreadsOverriden() ? this->getNumberOfThreads() : 0);
+        this->isGumNumberOfThreadsOverriden() ? this->getNumberOfThreads() : 0);
 
     // assign the set of ranges
     param_estimator->setRanges(ranges_);
@@ -645,7 +645,7 @@ namespace gum::learning {
     if (scoreDatabase_.databaseTable().hasMissingValues()) {
       GUM_ERROR(MissingValueInDatabase,
                 "For the moment, the BNLearner is unable to learn "
-                   << "structures with missing values in databases")
+                    << "structures with missing values in databases")
     }
 
     MixedGraph        mg;
@@ -688,7 +688,7 @@ namespace gum::learning {
       default :
         GUM_ERROR(NotImplementedYet,
                   "The BNLearner's corrected mutual information class does "
-                     << "not implement yet this correction : " << int(kmodeMiic_))
+                      << "not implement yet this correction : " << int(kmodeMiic_))
     }
   }
 
@@ -735,19 +735,19 @@ namespace gum::learning {
                                        StructuralConstraintForbiddenArcs,
                                        StructuralConstraintPossibleEdges,
                                        StructuralConstraintSliceOrder >
-           gen_constraint;
+            gen_constraint;
         static_cast< StructuralConstraintMandatoryArcs& >(gen_constraint)
-           = constraintMandatoryArcs_;
+            = constraintMandatoryArcs_;
         static_cast< StructuralConstraintForbiddenArcs& >(gen_constraint)
-           = constraintForbiddenArcs_;
+            = constraintForbiddenArcs_;
         static_cast< StructuralConstraintPossibleEdges& >(gen_constraint)
-           = constraintPossibleEdges_;
+            = constraintPossibleEdges_;
         static_cast< StructuralConstraintSliceOrder& >(gen_constraint) = constraintSliceOrder_;
 
         GraphChangesGenerator4DiGraph op_set(gen_constraint);
 
         StructuralConstraintSetStatic< StructuralConstraintIndegree, StructuralConstraintDAG >
-           sel_constraint;
+            sel_constraint;
         static_cast< StructuralConstraintIndegree& >(sel_constraint) = constraintIndegree_;
 
         GraphChangesSelector4DiGraph selector(*score_, sel_constraint, op_set);
@@ -762,13 +762,13 @@ namespace gum::learning {
                                        StructuralConstraintForbiddenArcs,
                                        StructuralConstraintPossibleEdges,
                                        StructuralConstraintSliceOrder >
-           gen_constraint;
+            gen_constraint;
         static_cast< StructuralConstraintMandatoryArcs& >(gen_constraint)
-           = constraintMandatoryArcs_;
+            = constraintMandatoryArcs_;
         static_cast< StructuralConstraintForbiddenArcs& >(gen_constraint)
-           = constraintForbiddenArcs_;
+            = constraintForbiddenArcs_;
         static_cast< StructuralConstraintPossibleEdges& >(gen_constraint)
-           = constraintPossibleEdges_;
+            = constraintPossibleEdges_;
         static_cast< StructuralConstraintSliceOrder& >(gen_constraint) = constraintSliceOrder_;
 
         GraphChangesGenerator4DiGraph op_set(gen_constraint);
@@ -776,7 +776,7 @@ namespace gum::learning {
         StructuralConstraintSetStatic< StructuralConstraintTabuList,
                                        StructuralConstraintIndegree,
                                        StructuralConstraintDAG >
-           sel_constraint;
+            sel_constraint;
         static_cast< StructuralConstraintTabuList& >(sel_constraint) = constraintTabuList_;
         static_cast< StructuralConstraintIndegree& >(sel_constraint) = constraintIndegree_;
 
@@ -791,20 +791,20 @@ namespace gum::learning {
         StructuralConstraintSetStatic< StructuralConstraintMandatoryArcs,
                                        StructuralConstraintForbiddenArcs,
                                        StructuralConstraintPossibleEdges >
-           gen_constraint;
+            gen_constraint;
         static_cast< StructuralConstraintMandatoryArcs& >(gen_constraint)
-           = constraintMandatoryArcs_;
+            = constraintMandatoryArcs_;
         static_cast< StructuralConstraintForbiddenArcs& >(gen_constraint)
-           = constraintForbiddenArcs_;
+            = constraintForbiddenArcs_;
         static_cast< StructuralConstraintPossibleEdges& >(gen_constraint)
-           = constraintPossibleEdges_;
+            = constraintPossibleEdges_;
 
         GraphChangesGenerator4K2 op_set(gen_constraint);
 
         // if some mandatory arcs are incompatible with the order, use a DAG
         // constraint instead of a DiGraph constraint to avoid cycles
         const ArcSet& mandatory_arcs
-           = static_cast< StructuralConstraintMandatoryArcs& >(gen_constraint).arcs();
+            = static_cast< StructuralConstraintMandatoryArcs& >(gen_constraint).arcs();
         const Sequence< NodeId >& order            = algoK2_.order();
         bool                      order_compatible = true;
 
@@ -817,7 +817,7 @@ namespace gum::learning {
 
         if (order_compatible) {
           StructuralConstraintSetStatic< StructuralConstraintIndegree, StructuralConstraintDiGraph >
-             sel_constraint;
+              sel_constraint;
           static_cast< StructuralConstraintIndegree& >(sel_constraint) = constraintIndegree_;
 
           GraphChangesSelector4DiGraph selector(*score_, sel_constraint, op_set);
@@ -825,7 +825,7 @@ namespace gum::learning {
           return algoK2_.learnStructure(selector, init_graph);
         } else {
           StructuralConstraintSetStatic< StructuralConstraintIndegree, StructuralConstraintDAG >
-             sel_constraint;
+              sel_constraint;
           static_cast< StructuralConstraintIndegree& >(sel_constraint) = constraintIndegree_;
 
           GraphChangesSelector4DiGraph selector(*score_, sel_constraint, op_set);
@@ -867,7 +867,8 @@ namespace gum::learning {
 
   /// sets the ranges of rows to be used for cross-validation learning
   std::pair< std::size_t, std::size_t >
-     IBNLearner::useCrossValidationFold(const std::size_t learning_fold, const std::size_t k_fold) {
+      IBNLearner::useCrossValidationFold(const std::size_t learning_fold,
+                                         const std::size_t k_fold) {
     if (k_fold == 0) { GUM_ERROR(OutOfBounds, "K-fold cross validation with k=0 is forbidden") }
 
     if (learning_fold >= k_fold) {
@@ -905,7 +906,7 @@ namespace gum::learning {
   }
 
   std::pair< double, double >
-     IBNLearner::chi2(const NodeId id1, const NodeId id2, const std::vector< NodeId >& knowing) {
+      IBNLearner::chi2(const NodeId id1, const NodeId id2, const std::vector< NodeId >& knowing) {
     createPrior_();
     gum::learning::IndepTestChi2 chi2score(scoreDatabase_.parser(), *prior_, databaseRanges());
 
@@ -924,7 +925,7 @@ namespace gum::learning {
   }
 
   std::pair< double, double >
-     IBNLearner::G2(const NodeId id1, const NodeId id2, const std::vector< NodeId >& knowing) {
+      IBNLearner::G2(const NodeId id1, const NodeId id2, const std::vector< NodeId >& knowing) {
     createPrior_();
     gum::learning::IndepTestG2 g2score(scoreDatabase_.parser(), *prior_, databaseRanges());
     return g2score.statistics(id1, id2, knowing);
@@ -989,7 +990,7 @@ namespace gum::learning {
       default :
         GUM_ERROR(NotImplementedYet,
                   "The BNLearner's corrected mutual information class does "
-                     << "not implement yet this correction : " << int(kmodeMiic_))
+                      << "not implement yet this correction : " << int(kmodeMiic_))
     }
     if (knowing.size() == (Size)0) return cmi.score(id1, id2) / scoreDatabase_.weight();
     else return cmi.score(id1, id2, knowing) / scoreDatabase_.weight();
@@ -1067,7 +1068,7 @@ namespace gum::learning {
 
   /// use a new set of database rows' ranges to perform learning
   void IBNLearner::useDatabaseRanges(
-     const std::vector< std::pair< std::size_t, std::size_t > >& new_ranges) {
+      const std::vector< std::pair< std::size_t, std::size_t > >& new_ranges) {
     // use a score to detect whether the ranges are ok
     ScoreLog2Likelihood score(scoreDatabase_.parser(), *noPrior_);
     score.setRanges(new_ranges);

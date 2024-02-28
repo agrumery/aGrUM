@@ -55,7 +55,7 @@ namespace gum {
   // The copy will have an exact copy of the constructed BayesNet in source.
   template < typename GUM_SCALAR >
   INLINE
-     BayesNetFactory< GUM_SCALAR >::BayesNetFactory(const BayesNetFactory< GUM_SCALAR >& source) :
+      BayesNetFactory< GUM_SCALAR >::BayesNetFactory(const BayesNetFactory< GUM_SCALAR >& source) :
       _parents_(nullptr),
       _impl_(nullptr), _bn_(nullptr) {
     GUM_CONS_CPY(BayesNetFactory);
@@ -117,7 +117,7 @@ namespace gum {
   // @throw NotFound Raised if no variable matches the name.
   template < typename GUM_SCALAR >
   INLINE const DiscreteVariable&
-     BayesNetFactory< GUM_SCALAR >::variable(const std::string& name) const {
+      BayesNetFactory< GUM_SCALAR >::variable(const std::string& name) const {
     try {
       return _bn_->variable(variableId(name));
     } catch (NotFound const&) { GUM_ERROR(NotFound, name) }
@@ -214,7 +214,7 @@ namespace gum {
         case VarType::Continuous :
           GUM_ERROR(OperationNotAllowed,
                     "Continuous variable (" + _stringBag_[0]
-                       + ") are not supported in Bayesian networks.")
+                        + ") are not supported in Bayesian networks.")
         default : GUM_ERROR(OperationNotAllowed, "Unknown type for (" + _stringBag_[0] + ")")
       }
     }
@@ -281,7 +281,7 @@ namespace gum {
   //                            current variable.
   template < typename GUM_SCALAR >
   INLINE void
-     BayesNetFactory< GUM_SCALAR >::setVariableCPTImplementation(MultiDimAdressable* adressable) {
+      BayesNetFactory< GUM_SCALAR >::setVariableCPTImplementation(MultiDimAdressable* adressable) {
     auto impl = dynamic_cast< MultiDimImplementation< GUM_SCALAR >* >(adressable);
 
     if (state() != factory_state::VARIABLE) {
@@ -325,7 +325,7 @@ namespace gum {
         }
 
         IntegerVariable* v
-           = new IntegerVariable(_stringBag_[0], _bar_flag_ ? _stringBag_[1] : "", domain);
+            = new IntegerVariable(_stringBag_[0], _bar_flag_ ? _stringBag_[1] : "", domain);
         var = v;
       } else if (_stringBag_[2] == "R") {
         RangeVariable* r = new RangeVariable(_stringBag_[0],
@@ -443,7 +443,7 @@ namespace gum {
   // @param var The concerned variable's name.
   template < typename GUM_SCALAR >
   INLINE void
-     BayesNetFactory< GUM_SCALAR >::startRawProbabilityDeclaration(const std::string& var) {
+      BayesNetFactory< GUM_SCALAR >::startRawProbabilityDeclaration(const std::string& var) {
     if (state() != factory_state::NONE) {
       _illegalStateError_("startRawProbabilityDeclaration");
     } else {
@@ -465,9 +465,9 @@ namespace gum {
   // [1, 1, ..., 1, 0], [1, 1, ..., 1, 1].
   // @param rawTable The raw table.
   template < typename GUM_SCALAR >
-  INLINE void
-     BayesNetFactory< GUM_SCALAR >::rawConditionalTable(const std::vector< std::string >& variables,
-                                                        const std::vector< float >& rawTable) {
+  INLINE void BayesNetFactory< GUM_SCALAR >::rawConditionalTable(
+      const std::vector< std::string >& variables,
+      const std::vector< float >&       rawTable) {
     if (state() != factory_state::RAW_CPT) {
       _illegalStateError_("rawConditionalTable");
     } else {
@@ -477,8 +477,8 @@ namespace gum {
 
   template < typename GUM_SCALAR >
   INLINE void BayesNetFactory< GUM_SCALAR >::_fillProbaWithValuesTable_(
-     const std::vector< std::string >& variables,
-     const std::vector< float >&       rawTable) {
+      const std::vector< std::string >& variables,
+      const std::vector< float >&       rawTable) {
     const Potential< GUM_SCALAR >& table = _bn_->cpt(_varNameMap_[_stringBag_[0]]);
     Instantiation                  cptInst(table);
 
@@ -510,7 +510,7 @@ namespace gum {
 
   template < typename GUM_SCALAR >
   INLINE void
-     BayesNetFactory< GUM_SCALAR >::rawConditionalTable(const std::vector< float >& rawTable) {
+      BayesNetFactory< GUM_SCALAR >::rawConditionalTable(const std::vector< float >& rawTable) {
     if (state() != factory_state::RAW_CPT) {
       _illegalStateError_("rawConditionalTable");
     } else {
@@ -520,7 +520,7 @@ namespace gum {
 
   template < typename GUM_SCALAR >
   INLINE void BayesNetFactory< GUM_SCALAR >::_fillProbaWithValuesTable_(
-     const std::vector< float >& rawTable) {
+      const std::vector< float >& rawTable) {
     const Potential< GUM_SCALAR >& table = _bn_->cpt(_varNameMap_[_stringBag_[0]]);
 
     Instantiation cptInst(table);
@@ -540,8 +540,8 @@ namespace gum {
 
   template < typename GUM_SCALAR >
   INLINE bool
-     BayesNetFactory< GUM_SCALAR >::_increment_(std::vector< gum::Idx >&         modCounter,
-                                                List< const DiscreteVariable* >& varList) const {
+      BayesNetFactory< GUM_SCALAR >::_increment_(std::vector< gum::Idx >&         modCounter,
+                                                 List< const DiscreteVariable* >& varList) const {
     bool last = true;
 
     for (NodeId j = 0; j < modCounter.size(); j++) {
@@ -586,7 +586,7 @@ namespace gum {
   // Tells the factory that we're starting a factorized declaration.
   template < typename GUM_SCALAR >
   INLINE void
-     BayesNetFactory< GUM_SCALAR >::startFactorizedProbabilityDeclaration(const std::string& var) {
+      BayesNetFactory< GUM_SCALAR >::startFactorizedProbabilityDeclaration(const std::string& var) {
     if (state() != factory_state::NONE) {
       _illegalStateError_("startFactorizedProbabilityDeclaration");
     } else {
@@ -663,8 +663,8 @@ namespace gum {
   // modalities of the current variable, we don't use the supplementary values and
   // we fill by 0 the missing values.
   template < typename GUM_SCALAR >
-  INLINE void
-     BayesNetFactory< GUM_SCALAR >::setVariableValuesUnchecked(const std::vector< float >& values) {
+  INLINE void BayesNetFactory< GUM_SCALAR >::setVariableValuesUnchecked(
+      const std::vector< float >& values) {
     if (state() != factory_state::FACT_ENTRY) {
       _illegalStateError_("setVariableValues");
     } else {
@@ -686,9 +686,9 @@ namespace gum {
         // Filling the variable's table.
         for (inst.setFirstIn(inst_default); !inst.end(); inst.incIn(inst_default)) {
           (_bn_->cpt(varId))
-             .set(inst,
-                  inst.val(var) < values.size() ? (GUM_SCALAR)values[inst.val(var)]
-                                                : (GUM_SCALAR)0);
+              .set(inst,
+                   inst.val(var) < values.size() ? (GUM_SCALAR)values[inst.val(var)]
+                                                 : (GUM_SCALAR)0);
         }
       } else {
         Instantiation inst(_bn_->cpt(_varNameMap_[var.name()]));
@@ -700,9 +700,9 @@ namespace gum {
 
           for (inst.setFirstOut(var_inst); !inst.end(); inst.incOut(var_inst)) {
             (_bn_->cpt(varId))
-               .set(inst,
-                    inst.val(var) < values.size() ? (GUM_SCALAR)values[inst.val(var)]
-                                                  : (GUM_SCALAR)0);
+                .set(inst,
+                     inst.val(var) < values.size() ? (GUM_SCALAR)values[inst.val(var)]
+                                                   : (GUM_SCALAR)0);
           }
         }
       }

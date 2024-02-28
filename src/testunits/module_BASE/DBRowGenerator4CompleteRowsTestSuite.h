@@ -34,37 +34,37 @@ namespace gum_tests {
     public:
     GUM_ACTIVE_TEST(_identity) {
       const std::vector< gum::learning::DBTranslatedValueType > col_types{
-         gum::learning::DBTranslatedValueType::DISCRETE,
-         gum::learning::DBTranslatedValueType::DISCRETE,
-         gum::learning::DBTranslatedValueType::CONTINUOUS,
-         gum::learning::DBTranslatedValueType::DISCRETE};
+          gum::learning::DBTranslatedValueType::DISCRETE,
+          gum::learning::DBTranslatedValueType::DISCRETE,
+          gum::learning::DBTranslatedValueType::CONTINUOUS,
+          gum::learning::DBTranslatedValueType::DISCRETE};
 
       gum::learning::DBRowGenerator4CompleteRows generator(col_types);
       TS_ASSERT(!generator.hasRows())
 
       const gum::learning::DBRow< gum::learning::DBTranslatedValue > input_row1{
-         gum::learning::DBTranslatedValue{std::size_t(0)},
-         gum::learning::DBTranslatedValue{std::size_t(4)},
-         gum::learning::DBTranslatedValue{4.5f},
-         gum::learning::DBTranslatedValue{std::size_t(7)}};
+          gum::learning::DBTranslatedValue{std::size_t(0)},
+          gum::learning::DBTranslatedValue{std::size_t(4)},
+          gum::learning::DBTranslatedValue{4.5f},
+          gum::learning::DBTranslatedValue{std::size_t(7)}};
 
       const gum::learning::DBRow< gum::learning::DBTranslatedValue > input_row2{
-         gum::learning::DBTranslatedValue{std::size_t(0)},
-         gum::learning::DBTranslatedValue{std::numeric_limits< std::size_t >::max()},
-         gum::learning::DBTranslatedValue{4.5f},
-         gum::learning::DBTranslatedValue{std::size_t(7)}};
+          gum::learning::DBTranslatedValue{std::size_t(0)},
+          gum::learning::DBTranslatedValue{std::numeric_limits< std::size_t >::max()},
+          gum::learning::DBTranslatedValue{4.5f},
+          gum::learning::DBTranslatedValue{std::size_t(7)}};
 
       const gum::learning::DBRow< gum::learning::DBTranslatedValue > input_row3{
-         gum::learning::DBTranslatedValue{std::size_t(0)},
-         gum::learning::DBTranslatedValue{std::numeric_limits< std::size_t >::max()},
-         gum::learning::DBTranslatedValue{std::numeric_limits< float >::max()},
-         gum::learning::DBTranslatedValue{std::size_t(7)}};
+          gum::learning::DBTranslatedValue{std::size_t(0)},
+          gum::learning::DBTranslatedValue{std::numeric_limits< std::size_t >::max()},
+          gum::learning::DBTranslatedValue{std::numeric_limits< float >::max()},
+          gum::learning::DBTranslatedValue{std::size_t(7)}};
 
       const gum::learning::DBRow< gum::learning::DBTranslatedValue > input_row4{
-         gum::learning::DBTranslatedValue{std::numeric_limits< std::size_t >::max()},
-         gum::learning::DBTranslatedValue{std::numeric_limits< std::size_t >::max()},
-         gum::learning::DBTranslatedValue{4.5f},
-         gum::learning::DBTranslatedValue{std::size_t(7)}};
+          gum::learning::DBTranslatedValue{std::numeric_limits< std::size_t >::max()},
+          gum::learning::DBTranslatedValue{std::numeric_limits< std::size_t >::max()},
+          gum::learning::DBTranslatedValue{4.5f},
+          gum::learning::DBTranslatedValue{std::size_t(7)}};
 
 
       generator.setInputRow(input_row1);

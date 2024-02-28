@@ -57,7 +57,7 @@ namespace gum {
       if (!_node2op_.existsSecond(const_cast< ScheduleOperator* >(&op))) {
         GUM_ERROR(UnknownScheduleOperation,
                   "the schedule cannot be updated because Operation "
-                     << op.toString() << " that has been executed does not belong to its DAG.");
+                      << op.toString() << " that has been executed does not belong to its DAG.");
       }
     }
 
@@ -83,7 +83,7 @@ namespace gum {
 
   /// returns the operation, if any, that created a given scheduleMultiDim
   INLINE const ScheduleOperator*
-     Schedule::scheduleMultiDimCreator(const IScheduleMultiDim* multidim) const {
+      Schedule::scheduleMultiDimCreator(const IScheduleMultiDim* multidim) const {
     return _multidim_location_[multidim].first;
   }
 

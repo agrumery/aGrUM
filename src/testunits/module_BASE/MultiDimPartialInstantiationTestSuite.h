@@ -166,8 +166,8 @@ namespace gum_tests {
     // ==========================================================================
     template < typename T >
     gum::Potential< T >* manual_instantiate(
-       const gum::Potential< T >&                                      t_in,
-       const gum::HashTable< const gum::DiscreteVariable*, gum::Idx >& inst_vars) {
+        const gum::Potential< T >&                                      t_in,
+        const gum::HashTable< const gum::DiscreteVariable*, gum::Idx >& inst_vars) {
       // construction of the output table
       gum::Potential< T >*                                 t_out = new gum::Potential< T >;
       gum::Instantiation                                   partial_inst;
@@ -203,8 +203,8 @@ namespace gum_tests {
     // ==========================================================================
     template < typename T >
     gum::Potential< T* >* manual_instantiate(
-       const gum::Potential< T* >&                                     t_in,
-       const gum::HashTable< const gum::DiscreteVariable*, gum::Idx >& inst_vars) {
+        const gum::Potential< T* >&                                     t_in,
+        const gum::HashTable< const gum::DiscreteVariable*, gum::Idx >& inst_vars) {
       // construction of the output table
       gum::Potential< T* >*                                t_out = new gum::Potential< T* >;
       gum::Instantiation                                   partial_inst;
@@ -240,8 +240,8 @@ namespace gum_tests {
     // ==========================================================================
     template < typename T >
     gum::MultiDimArray< T >* manual_instantiate(
-       const gum::MultiDimArray< T >&                                  t_in,
-       const gum::HashTable< const gum::DiscreteVariable*, gum::Idx >& inst_vars) {
+        const gum::MultiDimArray< T >&                                  t_in,
+        const gum::HashTable< const gum::DiscreteVariable*, gum::Idx >& inst_vars) {
       // construction of the output table
       gum::MultiDimArray< T >*                             t_out = new gum::MultiDimArray< T >;
       gum::Instantiation                                   partial_inst;
@@ -277,8 +277,8 @@ namespace gum_tests {
     // ==========================================================================
     template < typename T >
     gum::MultiDimArray< T* >* manual_instantiate(
-       const gum::MultiDimArray< T* >&                                 t_in,
-       const gum::HashTable< const gum::DiscreteVariable*, gum::Idx >& inst_vars) {
+        const gum::MultiDimArray< T* >&                                 t_in,
+        const gum::HashTable< const gum::DiscreteVariable*, gum::Idx >& inst_vars) {
       // construction of the output table
       gum::MultiDimArray< T* >*                            t_out = new gum::MultiDimArray< T* >;
       gum::Instantiation                                   partial_inst;
@@ -392,7 +392,7 @@ namespace gum_tests {
       inst_set.insert(vars[9], 2);
 
       gum::MultiDimImplementation< double >* t2
-         = partialInstantiationMultiDimImplementation(&t1, inst_set);
+          = partialInstantiationMultiDimImplementation(&t1, inst_set);
 
       gum::MultiDimArray< double >* t3 = manual_instantiate(t1, inst_set);
 
@@ -507,7 +507,7 @@ namespace gum_tests {
       inst_set.insert(vars[9], 2);
 
       gum::MultiDimImplementation< double* >* t2
-         = partialInstantiationMultiDimImplementation4Pointers(&t1, inst_set);
+          = partialInstantiationMultiDimImplementation4Pointers(&t1, inst_set);
 
       gum::MultiDimArray< double* >* t3 = manual_instantiate(t1, inst_set);
 
@@ -681,7 +681,7 @@ namespace gum_tests {
       inst_set.insert(vars[9], 2);
 
       gum::Potential< double >* t2
-         = new gum::Potential< double >(partialInstantiation(t1, inst_set));
+          = new gum::Potential< double >(partialInstantiation(t1, inst_set));
       gum::Potential< double >* t3 = manual_instantiate(t1, inst_set);
 
       TS_ASSERT(*t2 == *t3)
@@ -738,7 +738,7 @@ namespace gum_tests {
       inst_set.insert(vars[9], 2);
 
       gum::Potential< double* >* t2
-         = new gum::Potential< double* >(partialInstantiation(t1, inst_set));
+          = new gum::Potential< double* >(partialInstantiation(t1, inst_set));
       gum::Potential< double* >* t3 = manual_instantiate(t1, inst_set);
 
       TS_ASSERT(equal(*t2, *t3))

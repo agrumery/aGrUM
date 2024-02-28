@@ -118,7 +118,7 @@ namespace gum {
 
       template < typename GUM_SCALAR >
       LpInterface< GUM_SCALAR >&
-         LpInterface< GUM_SCALAR >::operator=(const LpInterface< GUM_SCALAR >& from) {
+          LpInterface< GUM_SCALAR >::operator=(const LpInterface< GUM_SCALAR >& from) {
         /// faster than clear (), delete only rows
         for (const auto& row: _rows_)
           delete row;
@@ -140,7 +140,7 @@ namespace gum {
 
       template < typename GUM_SCALAR >
       LpInterface< GUM_SCALAR >&
-         LpInterface< GUM_SCALAR >::operator=(LpInterface< GUM_SCALAR >&& from) {
+          LpInterface< GUM_SCALAR >::operator=(LpInterface< GUM_SCALAR >&& from) {
         _rows_.swap(from._rows_);
         _cols_.swap(from._cols_);
 
@@ -171,7 +171,7 @@ namespace gum {
           GUM_ERROR(OperationNotAllowed,
                     "LpInterface::addCols ( cols ) : cols "
                     "needs must be equal or greater than 1 : "
-                       << cols << " < 1");
+                        << cols << " < 1");
 
         for (unsigned int i = 0; i < cols; i++) {
           _cols_.push_back(LpCol((unsigned int)_cols_.size()));

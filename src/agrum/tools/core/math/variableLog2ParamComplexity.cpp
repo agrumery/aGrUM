@@ -47,7 +47,7 @@ namespace gum {
     if (n < 0.0) {
       GUM_ERROR(OutOfBounds,
                 "In the penalty of the fNML score, n must be greater "
-                   << "than or equal to 0. But, here, n = " << n);
+                    << "than or equal to 0. But, here, n = " << n);
     }
 
     if (n < VariableLog2ParamComplexityCTableNSize) {
@@ -213,7 +213,7 @@ namespace gum {
     for (std::size_t i = std::size_t(0); i < VariableLog2ParamComplexityCTableNSize; ++i) {
       if (i > std::size_t(0)) outfile << ",\n        ";
       const double logCn5
-         = (double)std::log2(cn2_table[i] * (1.0 + 5.0 * i / 6.0) + i + i * i / 3.0);
+          = (double)std::log2(cn2_table[i] * (1.0 + 5.0 * i / 6.0) + i + i * i / 3.0);
       outfile << logCn5;
     }
     outfile << " }\n";

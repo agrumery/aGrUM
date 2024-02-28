@@ -88,8 +88,8 @@ namespace gum {
     public:
     virtual void checkState(const Instantiation& newState, Idx actionId) = 0;
 
-    void
-       setOptimalStrategy(const MultiDimFunctionGraph< ActionSet, SetTerminalNodePolicy >* optPol) {
+    void setOptimalStrategy(
+        const MultiDimFunctionGraph< ActionSet, SetTerminalNodePolicy >* optPol) {
       optPol_ = const_cast< MultiDimFunctionGraph< ActionSet, SetTerminalNodePolicy >* >(optPol);
     }
 

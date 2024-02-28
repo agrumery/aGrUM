@@ -309,7 +309,7 @@ namespace gum {
 
     /// copy operator
     SharedAVLTreeIterator< Val, Cmp >&
-       operator=(const SharedAVLTreeIterator< Val, Cmp >& from) noexcept;
+        operator=(const SharedAVLTreeIterator< Val, Cmp >& from) noexcept;
 
     /// move operator
     SharedAVLTreeIterator< Val, Cmp >& operator=(SharedAVLTreeIterator< Val, Cmp >&& from) noexcept;
@@ -421,7 +421,7 @@ namespace gum {
 
     /// copy operator
     SharedAVLTreeIteratorSafe< Val, Cmp >&
-       operator=(const SharedAVLTreeIteratorSafe< Val, Cmp >& from);
+        operator=(const SharedAVLTreeIteratorSafe< Val, Cmp >& from);
 
     /// move operator
     SharedAVLTreeIteratorSafe< Val, Cmp >& operator=(SharedAVLTreeIteratorSafe< Val, Cmp >&& from);
@@ -536,11 +536,11 @@ namespace gum {
 
     /// copy operator
     SharedAVLTreeReverseIterator< Val, Cmp >&
-       operator=(const SharedAVLTreeReverseIterator< Val, Cmp >& from) noexcept;
+        operator=(const SharedAVLTreeReverseIterator< Val, Cmp >& from) noexcept;
 
     /// move operator
     SharedAVLTreeReverseIterator< Val, Cmp >&
-       operator=(SharedAVLTreeReverseIterator< Val, Cmp >&& from) noexcept;
+        operator=(SharedAVLTreeReverseIterator< Val, Cmp >&& from) noexcept;
 
     /// indicates whether two iterator point to the same element
     bool operator==(const SharedAVLTreeReverseIterator< Val, Cmp >& from) const;
@@ -652,11 +652,11 @@ namespace gum {
 
     /// copy operator
     SharedAVLTreeReverseIteratorSafe< Val, Cmp >&
-       operator=(const SharedAVLTreeReverseIteratorSafe< Val, Cmp >& from);
+        operator=(const SharedAVLTreeReverseIteratorSafe< Val, Cmp >& from);
 
     /// move operator
     SharedAVLTreeReverseIteratorSafe< Val, Cmp >&
-       operator=(SharedAVLTreeReverseIteratorSafe< Val, Cmp >&& from);
+        operator=(SharedAVLTreeReverseIteratorSafe< Val, Cmp >&& from);
 
     /// indicates whether two iterator point to the same element
     bool operator==(const SharedAVLTreeReverseIteratorSafe< Val, Cmp >& from) const;
@@ -723,14 +723,14 @@ namespace gum {
   extern const SharedAVLTreeReverseIterator< int, std::less< int > > _static_SharedAVLTree_rend_;
   extern const SharedAVLTreeIteratorSafe< int, std::less< int > > _static_SharedAVLTree_end_safe_;
   extern const SharedAVLTreeReverseIteratorSafe< int, std::less< int > >
-     _static_SharedAVLTree_rend_safe_;
+      _static_SharedAVLTree_rend_safe_;
 
   inline constexpr void* const _SharedAVLTree_end_  = (void* const)&_static_SharedAVLTree_end_;
   inline constexpr void* const _SharedAVLTree_rend_ = (void* const)&_static_SharedAVLTree_rend_;
   inline constexpr void* const _SharedAVLTree_end_safe_
-     = (void* const)&_static_SharedAVLTree_end_safe_;
+      = (void* const)&_static_SharedAVLTree_end_safe_;
   inline constexpr void* const _SharedAVLTree_rend_safe_
-     = (void* const)&_static_SharedAVLTree_rend_safe_;
+      = (void* const)&_static_SharedAVLTree_rend_safe_;
 #  endif   // DOXYGEN_SHOULD_SKIP_THIS
 
 

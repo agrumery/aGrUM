@@ -340,15 +340,17 @@ namespace gum {
       double _NI_score_(NodeId var_x, NodeId var_y, const std::vector< NodeId >& vars_z);
 
       /// returns the 3-point mutual information corresponding to a given nodeset
-      double
-         _NI_score_(NodeId var_x, NodeId var_y, NodeId var_z, const std::vector< NodeId >& vars_ui);
+      double _NI_score_(NodeId                       var_x,
+                        NodeId                       var_y,
+                        NodeId                       var_z,
+                        const std::vector< NodeId >& vars_ui);
 
       /// computes the complexity correction for the mutual information
       double _K_score_(NodeId var_x, NodeId var_y, const std::vector< NodeId >& vars_z);
 
       /// computes the complexity correction for the mutual information
       double
-         _K_score_(NodeId var_x, NodeId var_y, NodeId var_z, const std::vector< NodeId >& vars_ui);
+          _K_score_(NodeId var_x, NodeId var_y, NodeId var_z, const std::vector< NodeId >& vars_ui);
 
 #endif /* DOXYGEN_SHOULD_SKIP_THIS */
     };

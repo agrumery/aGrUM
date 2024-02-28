@@ -177,8 +177,10 @@ namespace gum::prm::gspan {
     return false;
   }
 
-  bool
-     Pattern::_not_rec_(Pattern& p, Bijection< NodeId, NodeId >& node_map, NodeId a_u, NodeId a_v) {
+  bool Pattern::_not_rec_(Pattern&                     p,
+                          Bijection< NodeId, NodeId >& node_map,
+                          NodeId                       a_u,
+                          NodeId                       a_v) {
     std::vector< std::pair< NodeId, NodeId > > stack;
     stack.emplace_back(a_u, a_v);
     NodeId u = 0;

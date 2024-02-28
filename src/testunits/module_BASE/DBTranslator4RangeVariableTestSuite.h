@@ -105,7 +105,7 @@ namespace gum_tests {
 
       gum::Set< std::string > possible_translated_miss{"N/A", "xxx"};
       TS_ASSERT(possible_translated_miss.exists(translator2.translateBack(
-         gum::learning::DBTranslatedValue{std::numeric_limits< std::size_t >::max()})));
+          gum::learning::DBTranslatedValue{std::numeric_limits< std::size_t >::max()})));
       TS_ASSERT_EQUALS(translator2.needsReordering(), false)
       const auto new_order = translator2.reorder();
       TS_ASSERT_EQUALS(new_order.size(), (gum::Size)0)
@@ -234,7 +234,7 @@ namespace gum_tests {
 
       gum::Set< std::string > possible_translated_miss{"N/A", "xxx"};
       TS_ASSERT(possible_translated_miss.exists(translator2.translateBack(
-         gum::learning::DBTranslatedValue{std::numeric_limits< std::size_t >::max()})));
+          gum::learning::DBTranslatedValue{std::numeric_limits< std::size_t >::max()})));
       TS_ASSERT_EQUALS(translator2.needsReordering(), false)
       const auto new_order = translator2.reorder();
       TS_ASSERT_EQUALS(new_order.size(), (gum::Size)0)
@@ -343,23 +343,23 @@ namespace gum_tests {
         TS_ASSERT_EQUALS(translator2.translate("0").discr_val, (std::size_t)4)
         TS_ASSERT_EQUALS(translator2.translate("1").discr_val, (std::size_t)5)
         TS_ASSERT_EQUALS(
-           translator2.translateBack(gum::learning::DBTranslatedValue{std::size_t{0}}),
-           "2");
+            translator2.translateBack(gum::learning::DBTranslatedValue{std::size_t{0}}),
+            "2");
         TS_ASSERT_EQUALS(
-           translator2.translateBack(gum::learning::DBTranslatedValue{std::size_t{1}}),
-           "3");
+            translator2.translateBack(gum::learning::DBTranslatedValue{std::size_t{1}}),
+            "3");
         TS_ASSERT_EQUALS(
-           translator2.translateBack(gum::learning::DBTranslatedValue{std::size_t{2}}),
-           "4");
+            translator2.translateBack(gum::learning::DBTranslatedValue{std::size_t{2}}),
+            "4");
         TS_ASSERT_EQUALS(
-           translator2.translateBack(gum::learning::DBTranslatedValue{std::size_t{3}}),
-           "5");
+            translator2.translateBack(gum::learning::DBTranslatedValue{std::size_t{3}}),
+            "5");
         TS_ASSERT_EQUALS(
-           translator2.translateBack(gum::learning::DBTranslatedValue{std::size_t{4}}),
-           "0");
+            translator2.translateBack(gum::learning::DBTranslatedValue{std::size_t{4}}),
+            "0");
         TS_ASSERT_EQUALS(
-           translator2.translateBack(gum::learning::DBTranslatedValue{std::size_t{5}}),
-           "1");
+            translator2.translateBack(gum::learning::DBTranslatedValue{std::size_t{5}}),
+            "1");
         TS_ASSERT(translator2.needsReordering())
         const auto new_order2 = translator2.reorder();
         TS_ASSERT_EQUALS(new_order2[0], (std::size_t)2)
@@ -377,23 +377,23 @@ namespace gum_tests {
         TS_ASSERT_EQUALS(translator3.translate("4").discr_val, (std::size_t)4)
         TS_ASSERT_EQUALS(translator3.translate("5").discr_val, (std::size_t)5)
         TS_ASSERT_EQUALS(
-           translator3.translateBack(gum::learning::DBTranslatedValue{std::size_t{0}}),
-           "0");
+            translator3.translateBack(gum::learning::DBTranslatedValue{std::size_t{0}}),
+            "0");
         TS_ASSERT_EQUALS(
-           translator3.translateBack(gum::learning::DBTranslatedValue{std::size_t{1}}),
-           "1");
+            translator3.translateBack(gum::learning::DBTranslatedValue{std::size_t{1}}),
+            "1");
         TS_ASSERT_EQUALS(
-           translator3.translateBack(gum::learning::DBTranslatedValue{std::size_t{2}}),
-           "2");
+            translator3.translateBack(gum::learning::DBTranslatedValue{std::size_t{2}}),
+            "2");
         TS_ASSERT_EQUALS(
-           translator3.translateBack(gum::learning::DBTranslatedValue{std::size_t{3}}),
-           "3");
+            translator3.translateBack(gum::learning::DBTranslatedValue{std::size_t{3}}),
+            "3");
         TS_ASSERT_EQUALS(
-           translator3.translateBack(gum::learning::DBTranslatedValue{std::size_t{4}}),
-           "4");
+            translator3.translateBack(gum::learning::DBTranslatedValue{std::size_t{4}}),
+            "4");
         TS_ASSERT_EQUALS(
-           translator3.translateBack(gum::learning::DBTranslatedValue{std::size_t{5}}),
-           "5");
+            translator3.translateBack(gum::learning::DBTranslatedValue{std::size_t{5}}),
+            "5");
 
         gum::learning::DBTranslator4RangeVariable translator4(translator2);
         TS_ASSERT_EQUALS(translator4.translate("0").discr_val, (std::size_t)0)
@@ -402,23 +402,23 @@ namespace gum_tests {
         TS_ASSERT_EQUALS(translator4.translate("4").discr_val, (std::size_t)4)
         TS_ASSERT_EQUALS(translator4.translate("5").discr_val, (std::size_t)5)
         TS_ASSERT_EQUALS(
-           translator4.translateBack(gum::learning::DBTranslatedValue{std::size_t{0}}),
-           "0");
+            translator4.translateBack(gum::learning::DBTranslatedValue{std::size_t{0}}),
+            "0");
         TS_ASSERT_EQUALS(
-           translator4.translateBack(gum::learning::DBTranslatedValue{std::size_t{1}}),
-           "1");
+            translator4.translateBack(gum::learning::DBTranslatedValue{std::size_t{1}}),
+            "1");
         TS_ASSERT_EQUALS(
-           translator4.translateBack(gum::learning::DBTranslatedValue{std::size_t{2}}),
-           "2");
+            translator4.translateBack(gum::learning::DBTranslatedValue{std::size_t{2}}),
+            "2");
         TS_ASSERT_EQUALS(
-           translator4.translateBack(gum::learning::DBTranslatedValue{std::size_t{3}}),
-           "3");
+            translator4.translateBack(gum::learning::DBTranslatedValue{std::size_t{3}}),
+            "3");
         TS_ASSERT_EQUALS(
-           translator4.translateBack(gum::learning::DBTranslatedValue{std::size_t{4}}),
-           "4");
+            translator4.translateBack(gum::learning::DBTranslatedValue{std::size_t{4}}),
+            "4");
         TS_ASSERT_EQUALS(
-           translator4.translateBack(gum::learning::DBTranslatedValue{std::size_t{5}}),
-           "5");
+            translator4.translateBack(gum::learning::DBTranslatedValue{std::size_t{5}}),
+            "5");
 
         gum::learning::DBTranslator4RangeVariable translator5(std::move(translator3));
         TS_ASSERT_EQUALS(translator5.translate("0").discr_val, (std::size_t)0)
@@ -427,23 +427,23 @@ namespace gum_tests {
         TS_ASSERT_EQUALS(translator5.translate("4").discr_val, (std::size_t)4)
         TS_ASSERT_EQUALS(translator5.translate("5").discr_val, (std::size_t)5)
         TS_ASSERT_EQUALS(
-           translator5.translateBack(gum::learning::DBTranslatedValue{std::size_t{0}}),
-           "0");
+            translator5.translateBack(gum::learning::DBTranslatedValue{std::size_t{0}}),
+            "0");
         TS_ASSERT_EQUALS(
-           translator5.translateBack(gum::learning::DBTranslatedValue{std::size_t{1}}),
-           "1");
+            translator5.translateBack(gum::learning::DBTranslatedValue{std::size_t{1}}),
+            "1");
         TS_ASSERT_EQUALS(
-           translator5.translateBack(gum::learning::DBTranslatedValue{std::size_t{2}}),
-           "2");
+            translator5.translateBack(gum::learning::DBTranslatedValue{std::size_t{2}}),
+            "2");
         TS_ASSERT_EQUALS(
-           translator5.translateBack(gum::learning::DBTranslatedValue{std::size_t{3}}),
-           "3");
+            translator5.translateBack(gum::learning::DBTranslatedValue{std::size_t{3}}),
+            "3");
         TS_ASSERT_EQUALS(
-           translator5.translateBack(gum::learning::DBTranslatedValue{std::size_t{4}}),
-           "4");
+            translator5.translateBack(gum::learning::DBTranslatedValue{std::size_t{4}}),
+            "4");
         TS_ASSERT_EQUALS(
-           translator5.translateBack(gum::learning::DBTranslatedValue{std::size_t{5}}),
-           "5");
+            translator5.translateBack(gum::learning::DBTranslatedValue{std::size_t{5}}),
+            "5");
 
         gum::learning::DBTranslator4RangeVariable translator6(std::move(translator4));
         TS_ASSERT_EQUALS(translator6.translate("0").discr_val, (std::size_t)0)
@@ -452,23 +452,23 @@ namespace gum_tests {
         TS_ASSERT_EQUALS(translator6.translate("4").discr_val, (std::size_t)4)
         TS_ASSERT_EQUALS(translator6.translate("5").discr_val, (std::size_t)5)
         TS_ASSERT_EQUALS(
-           translator6.translateBack(gum::learning::DBTranslatedValue{std::size_t{0}}),
-           "0");
+            translator6.translateBack(gum::learning::DBTranslatedValue{std::size_t{0}}),
+            "0");
         TS_ASSERT_EQUALS(
-           translator6.translateBack(gum::learning::DBTranslatedValue{std::size_t{1}}),
-           "1");
+            translator6.translateBack(gum::learning::DBTranslatedValue{std::size_t{1}}),
+            "1");
         TS_ASSERT_EQUALS(
-           translator6.translateBack(gum::learning::DBTranslatedValue{std::size_t{2}}),
-           "2");
+            translator6.translateBack(gum::learning::DBTranslatedValue{std::size_t{2}}),
+            "2");
         TS_ASSERT_EQUALS(
-           translator6.translateBack(gum::learning::DBTranslatedValue{std::size_t{3}}),
-           "3");
+            translator6.translateBack(gum::learning::DBTranslatedValue{std::size_t{3}}),
+            "3");
         TS_ASSERT_EQUALS(
-           translator6.translateBack(gum::learning::DBTranslatedValue{std::size_t{4}}),
-           "4");
+            translator6.translateBack(gum::learning::DBTranslatedValue{std::size_t{4}}),
+            "4");
         TS_ASSERT_EQUALS(
-           translator6.translateBack(gum::learning::DBTranslatedValue{std::size_t{5}}),
-           "5");
+            translator6.translateBack(gum::learning::DBTranslatedValue{std::size_t{5}}),
+            "5");
 
         gum::learning::DBTranslator4RangeVariable* translator7 = translator6.clone();
         TS_ASSERT_EQUALS(translator7->translate("0").discr_val, (std::size_t)0)
@@ -477,23 +477,23 @@ namespace gum_tests {
         TS_ASSERT_EQUALS(translator7->translate("4").discr_val, (std::size_t)4)
         TS_ASSERT_EQUALS(translator7->translate("5").discr_val, (std::size_t)5)
         TS_ASSERT_EQUALS(
-           translator7->translateBack(gum::learning::DBTranslatedValue{std::size_t{0}}),
-           "0");
+            translator7->translateBack(gum::learning::DBTranslatedValue{std::size_t{0}}),
+            "0");
         TS_ASSERT_EQUALS(
-           translator7->translateBack(gum::learning::DBTranslatedValue{std::size_t{1}}),
-           "1");
+            translator7->translateBack(gum::learning::DBTranslatedValue{std::size_t{1}}),
+            "1");
         TS_ASSERT_EQUALS(
-           translator7->translateBack(gum::learning::DBTranslatedValue{std::size_t{2}}),
-           "2");
+            translator7->translateBack(gum::learning::DBTranslatedValue{std::size_t{2}}),
+            "2");
         TS_ASSERT_EQUALS(
-           translator7->translateBack(gum::learning::DBTranslatedValue{std::size_t{3}}),
-           "3");
+            translator7->translateBack(gum::learning::DBTranslatedValue{std::size_t{3}}),
+            "3");
         TS_ASSERT_EQUALS(
-           translator7->translateBack(gum::learning::DBTranslatedValue{std::size_t{4}}),
-           "4");
+            translator7->translateBack(gum::learning::DBTranslatedValue{std::size_t{4}}),
+            "4");
         TS_ASSERT_EQUALS(
-           translator7->translateBack(gum::learning::DBTranslatedValue{std::size_t{5}}),
-           "5");
+            translator7->translateBack(gum::learning::DBTranslatedValue{std::size_t{5}}),
+            "5");
 
         delete translator7;
 
@@ -504,23 +504,23 @@ namespace gum_tests {
         TS_ASSERT_EQUALS(translator4.translate("4").discr_val, (std::size_t)4)
         TS_ASSERT_EQUALS(translator4.translate("5").discr_val, (std::size_t)5)
         TS_ASSERT_EQUALS(
-           translator4.translateBack(gum::learning::DBTranslatedValue{std::size_t{0}}),
-           "0");
+            translator4.translateBack(gum::learning::DBTranslatedValue{std::size_t{0}}),
+            "0");
         TS_ASSERT_EQUALS(
-           translator4.translateBack(gum::learning::DBTranslatedValue{std::size_t{1}}),
-           "1");
+            translator4.translateBack(gum::learning::DBTranslatedValue{std::size_t{1}}),
+            "1");
         TS_ASSERT_EQUALS(
-           translator4.translateBack(gum::learning::DBTranslatedValue{std::size_t{2}}),
-           "2");
+            translator4.translateBack(gum::learning::DBTranslatedValue{std::size_t{2}}),
+            "2");
         TS_ASSERT_EQUALS(
-           translator4.translateBack(gum::learning::DBTranslatedValue{std::size_t{3}}),
-           "3");
+            translator4.translateBack(gum::learning::DBTranslatedValue{std::size_t{3}}),
+            "3");
         TS_ASSERT_EQUALS(
-           translator4.translateBack(gum::learning::DBTranslatedValue{std::size_t{4}}),
-           "4");
+            translator4.translateBack(gum::learning::DBTranslatedValue{std::size_t{4}}),
+            "4");
         TS_ASSERT_EQUALS(
-           translator4.translateBack(gum::learning::DBTranslatedValue{std::size_t{5}}),
-           "5");
+            translator4.translateBack(gum::learning::DBTranslatedValue{std::size_t{5}}),
+            "5");
 
         translator3 = translator5;
         TS_ASSERT_EQUALS(translator3.translate("0").discr_val, (std::size_t)0)
@@ -529,23 +529,23 @@ namespace gum_tests {
         TS_ASSERT_EQUALS(translator3.translate("4").discr_val, (std::size_t)4)
         TS_ASSERT_EQUALS(translator3.translate("5").discr_val, (std::size_t)5)
         TS_ASSERT_EQUALS(
-           translator3.translateBack(gum::learning::DBTranslatedValue{std::size_t{0}}),
-           "0");
+            translator3.translateBack(gum::learning::DBTranslatedValue{std::size_t{0}}),
+            "0");
         TS_ASSERT_EQUALS(
-           translator3.translateBack(gum::learning::DBTranslatedValue{std::size_t{1}}),
-           "1");
+            translator3.translateBack(gum::learning::DBTranslatedValue{std::size_t{1}}),
+            "1");
         TS_ASSERT_EQUALS(
-           translator3.translateBack(gum::learning::DBTranslatedValue{std::size_t{2}}),
-           "2");
+            translator3.translateBack(gum::learning::DBTranslatedValue{std::size_t{2}}),
+            "2");
         TS_ASSERT_EQUALS(
-           translator3.translateBack(gum::learning::DBTranslatedValue{std::size_t{3}}),
-           "3");
+            translator3.translateBack(gum::learning::DBTranslatedValue{std::size_t{3}}),
+            "3");
         TS_ASSERT_EQUALS(
-           translator3.translateBack(gum::learning::DBTranslatedValue{std::size_t{4}}),
-           "4");
+            translator3.translateBack(gum::learning::DBTranslatedValue{std::size_t{4}}),
+            "4");
         TS_ASSERT_EQUALS(
-           translator3.translateBack(gum::learning::DBTranslatedValue{std::size_t{5}}),
-           "5");
+            translator3.translateBack(gum::learning::DBTranslatedValue{std::size_t{5}}),
+            "5");
 
         translator5 = std::move(translator3);
         TS_ASSERT_EQUALS(translator5.translate("0").discr_val, (std::size_t)0)
@@ -554,23 +554,23 @@ namespace gum_tests {
         TS_ASSERT_EQUALS(translator5.translate("4").discr_val, (std::size_t)4)
         TS_ASSERT_EQUALS(translator5.translate("5").discr_val, (std::size_t)5)
         TS_ASSERT_EQUALS(
-           translator5.translateBack(gum::learning::DBTranslatedValue{std::size_t{0}}),
-           "0");
+            translator5.translateBack(gum::learning::DBTranslatedValue{std::size_t{0}}),
+            "0");
         TS_ASSERT_EQUALS(
-           translator5.translateBack(gum::learning::DBTranslatedValue{std::size_t{1}}),
-           "1");
+            translator5.translateBack(gum::learning::DBTranslatedValue{std::size_t{1}}),
+            "1");
         TS_ASSERT_EQUALS(
-           translator5.translateBack(gum::learning::DBTranslatedValue{std::size_t{2}}),
-           "2");
+            translator5.translateBack(gum::learning::DBTranslatedValue{std::size_t{2}}),
+            "2");
         TS_ASSERT_EQUALS(
-           translator5.translateBack(gum::learning::DBTranslatedValue{std::size_t{3}}),
-           "3");
+            translator5.translateBack(gum::learning::DBTranslatedValue{std::size_t{3}}),
+            "3");
         TS_ASSERT_EQUALS(
-           translator5.translateBack(gum::learning::DBTranslatedValue{std::size_t{4}}),
-           "4");
+            translator5.translateBack(gum::learning::DBTranslatedValue{std::size_t{4}}),
+            "4");
         TS_ASSERT_EQUALS(
-           translator5.translateBack(gum::learning::DBTranslatedValue{std::size_t{5}}),
-           "5");
+            translator5.translateBack(gum::learning::DBTranslatedValue{std::size_t{5}}),
+            "5");
       }
     }
 
@@ -645,7 +645,7 @@ namespace gum_tests {
 
       gum::Set< std::string > possible_translated_miss{"N/A", "xxx"};
       TS_ASSERT(possible_translated_miss.exists(translator2.translateBack(
-         gum::learning::DBTranslatedValue{std::numeric_limits< std::size_t >::max()})));
+          gum::learning::DBTranslatedValue{std::numeric_limits< std::size_t >::max()})));
       TS_ASSERT_EQUALS(translator2.needsReordering(), false)
       const auto new_order = translator2.reorder();
       TS_ASSERT_EQUALS(new_order[0], (std::size_t)0)
@@ -790,10 +790,10 @@ namespace gum_tests {
       TS_ASSERT_EQUALS(translator.translateBack(gum::learning::DBTranslatedValue{std::size_t{5}}),
                        "7");
       TS_ASSERT((translator.translateBack(
-                    gum::learning::DBTranslatedValue{std::numeric_limits< std::size_t >::max()})
+                     gum::learning::DBTranslatedValue{std::numeric_limits< std::size_t >::max()})
                  == "N/A")
                 || (translator.translateBack(
-                       gum::learning::DBTranslatedValue{std::numeric_limits< std::size_t >::max()})
+                        gum::learning::DBTranslatedValue{std::numeric_limits< std::size_t >::max()})
                     == "toto"));
 
       gum::Set< std::string > missing_kept{"N/A", "toto"};

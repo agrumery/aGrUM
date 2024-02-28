@@ -730,11 +730,11 @@ namespace gum {
 
     /// copy operator
     AVLTreeReverseIterator< Val, Cmp >&
-       operator=(const AVLTreeReverseIterator< Val, Cmp >& from) noexcept;
+        operator=(const AVLTreeReverseIterator< Val, Cmp >& from) noexcept;
 
     /// move operator
     AVLTreeReverseIterator< Val, Cmp >&
-       operator=(AVLTreeReverseIterator< Val, Cmp >&& from) noexcept;
+        operator=(AVLTreeReverseIterator< Val, Cmp >&& from) noexcept;
 
     /// indicates whether two iterator point to the same element
     bool operator==(const AVLTreeReverseIterator< Val, Cmp >& from) const;
@@ -840,11 +840,11 @@ namespace gum {
 
     /// copy operator
     AVLTreeReverseIteratorSafe< Val, Cmp >&
-       operator=(const AVLTreeReverseIteratorSafe< Val, Cmp >& from);
+        operator=(const AVLTreeReverseIteratorSafe< Val, Cmp >& from);
 
     /// move operator
     AVLTreeReverseIteratorSafe< Val, Cmp >&
-       operator=(AVLTreeReverseIteratorSafe< Val, Cmp >&& from);
+        operator=(AVLTreeReverseIteratorSafe< Val, Cmp >&& from);
 
     /// indicates whether two iterator point to the same element
     bool operator==(const AVLTreeReverseIteratorSafe< Val, Cmp >& from) const;

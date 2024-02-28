@@ -99,7 +99,7 @@ namespace gum {
       void O3PRM_CLASS_DUPLICATE_REFERENCE(const O3Label& ref, ErrorsContainer& errors);
 
       void
-         O3PRM_CLASS_SELF_REFERENCE(const O3Label& c, const O3Label& ref, ErrorsContainer& errors);
+          O3PRM_CLASS_SELF_REFERENCE(const O3Label& c, const O3Label& ref, ErrorsContainer& errors);
 
       void O3PRM_CLASS_ILLEGAL_SUB_REFERENCE(const O3Label&   c,
                                              const O3Label&   sub,

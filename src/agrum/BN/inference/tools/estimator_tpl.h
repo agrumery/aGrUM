@@ -66,11 +66,11 @@ namespace gum {
       if (!hardEvidence.contains(*iter)) {
         if (estimator_.exists(v))
           estimator_[v]
-             = std::vector< GUM_SCALAR >(bn->variable(*iter).domainSize(), (GUM_SCALAR)0.0);
+              = std::vector< GUM_SCALAR >(bn->variable(*iter).domainSize(), (GUM_SCALAR)0.0);
         else
           estimator_.insert(
-             v,
-             std::vector< GUM_SCALAR >(bn->variable(*iter).domainSize(), (GUM_SCALAR)0.0));
+              v,
+              std::vector< GUM_SCALAR >(bn->variable(*iter).domainSize(), (GUM_SCALAR)0.0));
       }
     }
   }

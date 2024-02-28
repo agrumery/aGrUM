@@ -49,7 +49,7 @@ namespace gum {
   /// copy constructor
   template < class TABLE >
   MultiDimCombinationDefault< TABLE >::MultiDimCombinationDefault(
-     const MultiDimCombinationDefault< TABLE >& from) :
+      const MultiDimCombinationDefault< TABLE >& from) :
       MultiDimCombination< TABLE >(),
       _combine_(from._combine_) {
     // for debugging purposes
@@ -117,7 +117,7 @@ namespace gum {
 
     // get the schedule multidim of the last combination and save it
     auto& schedule_result = const_cast< ScheduleMultiDim< TABLE >& >(
-       static_cast< const ScheduleMultiDim< TABLE >& >(*ops_plus_res.second));
+        static_cast< const ScheduleMultiDim< TABLE >& >(*ops_plus_res.second));
 
     // note that, as ScheduleCombinations always produce new freshly allocated
     // tables, we can safely export the multiDims of their results
@@ -132,7 +132,7 @@ namespace gum {
   // returns the result of the combination
   template < class TABLE >
   double MultiDimCombinationDefault< TABLE >::nbOperations(
-     const Set< const Sequence< const DiscreteVariable* >* >& set) const {
+      const Set< const Sequence< const DiscreteVariable* >* >& set) const {
     // check if the set passed in argument is empty.
     if (set.size() < 2) return 0.0;
 
@@ -175,7 +175,7 @@ namespace gum {
   // returns the memory consumption used during the combination
   template < class TABLE >
   std::pair< double, double > MultiDimCombinationDefault< TABLE >::memoryUsage(
-     const Set< const Sequence< const DiscreteVariable* >* >& set) const {
+      const Set< const Sequence< const DiscreteVariable* >* >& set) const {
     // check if the set passed in argument is empty.
     if (set.size() < 2) return {0.0, 0.0};
 
@@ -207,7 +207,7 @@ namespace gum {
   // returns the memory consumption used during the combination
   template < class TABLE >
   std::pair< double, double >
-     MultiDimCombinationDefault< TABLE >::memoryUsage(const Set< const TABLE* >& set) const {
+      MultiDimCombinationDefault< TABLE >::memoryUsage(const Set< const TABLE* >& set) const {
     // check if the set passed in argument is empty.
     if (set.size() < 2) return {0.0, 0.0};
 
@@ -225,8 +225,8 @@ namespace gum {
   // variables in seq1 and seq2
   template < class TABLE >
   INLINE double
-     MultiDimCombinationDefault< TABLE >::_combinedSize_(const IScheduleMultiDim& table1,
-                                                         const IScheduleMultiDim& table2) const {
+      MultiDimCombinationDefault< TABLE >::_combinedSize_(const IScheduleMultiDim& table1,
+                                                          const IScheduleMultiDim& table2) const {
     auto        size  = double(table1.domainSize());
     const auto& vars1 = table1.variablesSequence();
     const auto& vars2 = table2.variablesSequence();
@@ -239,9 +239,9 @@ namespace gum {
   // returns the set of operations to perform to make the combination
   template < class TABLE >
   std::pair< std::vector< ScheduleOperator* >, const IScheduleMultiDim* >
-     MultiDimCombinationDefault< TABLE >::operations(
-        const std::vector< const IScheduleMultiDim* >& original_tables,
-        const bool                                     is_result_persistent) const {
+      MultiDimCombinationDefault< TABLE >::operations(
+          const std::vector< const IScheduleMultiDim* >& original_tables,
+          const bool                                     is_result_persistent) const {
     // check if the set passed in argument is empty.
     const Size tabsize = original_tables.size();
     if (tabsize < 2) return {};
@@ -292,9 +292,9 @@ namespace gum {
 
       // compute the operations and free the temporary tables
       auto combination = new ScheduleBinaryCombination< TABLE, TABLE, TABLE >(
-         static_cast< const ScheduleMultiDim< TABLE >& >(*tables[ti]),
-         static_cast< const ScheduleMultiDim< TABLE >& >(*tables[tj]),
-         _combine_);
+          static_cast< const ScheduleMultiDim< TABLE >& >(*tables[ti]),
+          static_cast< const ScheduleMultiDim< TABLE >& >(*tables[tj]),
+          _combine_);
       operations.push_back(combination);
       resulting_table = &combination->result();
       resulting_op    = combination;
@@ -302,12 +302,12 @@ namespace gum {
       // add operations to remove the temporary tables
       if (is_t_new[ti]) {
         auto deletion = new ScheduleDeletion< TABLE >(
-           static_cast< const ScheduleMultiDim< TABLE >& >(*tables[ti]));
+            static_cast< const ScheduleMultiDim< TABLE >& >(*tables[ti]));
         operations.push_back(deletion);
       }
       if (is_t_new[tj]) {
         auto deletion = new ScheduleDeletion< TABLE >(
-           static_cast< const ScheduleMultiDim< TABLE >& >(*tables[tj]));
+            static_cast< const ScheduleMultiDim< TABLE >& >(*tables[tj]));
         operations.push_back(deletion);
       }
 
@@ -361,8 +361,8 @@ namespace gum {
   /// returns the set of operations to perform to make the combination
   template < class TABLE >
   std::pair< std::vector< ScheduleOperator* >, const IScheduleMultiDim* >
-     MultiDimCombinationDefault< TABLE >::operations(const Set< const IScheduleMultiDim* >& set,
-                                                     const bool is_result_persistent) const {
+      MultiDimCombinationDefault< TABLE >::operations(const Set< const IScheduleMultiDim* >& set,
+                                                      const bool is_result_persistent) const {
     std::vector< const IScheduleMultiDim* > vect;
     vect.reserve(set.size());
     for (const auto elt: set) {
@@ -374,8 +374,8 @@ namespace gum {
   /// free scheduing memory
   template < class TABLE >
   INLINE void MultiDimCombinationDefault< TABLE >::_freeData_(
-     std::vector< const IScheduleMultiDim* >& tables,
-     std::vector< ScheduleOperator* >&        operations) const {
+      std::vector< const IScheduleMultiDim* >& tables,
+      std::vector< ScheduleOperator* >&        operations) const {
     for (auto op: operations)
       delete op;
 

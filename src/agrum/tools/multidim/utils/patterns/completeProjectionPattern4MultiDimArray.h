@@ -114,7 +114,7 @@ namespace gum {
     // now, parse the table and compute the projection. Start with the
     // neutral element
     GUM_MULTI_DIM_COMPLETE_PROJECTION_TYPE* ptable
-       = const_cast< GUM_MULTI_DIM_COMPLETE_PROJECTION_TYPE* >(&(table->unsafeGet(0)));
+        = const_cast< GUM_MULTI_DIM_COMPLETE_PROJECTION_TYPE* >(&(table->unsafeGet(0)));
     GUM_SCALAR current_val = GUM_MULTI_DIM_COMPLETE_PROJECTION_NEUTRAL;
 
     if (instantiation) {

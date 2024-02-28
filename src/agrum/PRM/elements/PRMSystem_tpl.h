@@ -267,9 +267,9 @@ namespace gum {
 
             case PRMClassElement< GUM_SCALAR >::prm_slotchain : {
               std::string parent_name
-                 = static_cast< const PRMSlotChain< GUM_SCALAR >& >(instance.type().get(par))
-                      .lastElt()
-                      .safeName();
+                  = static_cast< const PRMSlotChain< GUM_SCALAR >& >(instance.type().get(par))
+                        .lastElt()
+                        .safeName();
 
               try {
                 for (const auto ref: instance.getInstances(par)) {
@@ -323,11 +323,11 @@ namespace gum {
           case PRMClassElement< GUM_SCALAR >::prm_slotchain : {
             std::stringstream                 parent_name;
             const PRMSlotChain< GUM_SCALAR >& sc
-               = static_cast< const PRMSlotChain< GUM_SCALAR >& >(instance.type().get(parent));
+                = static_cast< const PRMSlotChain< GUM_SCALAR >& >(instance.type().get(parent));
             parent_name << instance.getInstance(sc.id()).name() << "." << sc.lastElt().safeName();
             bijection.insert(
-               &(instance.getInstance(sc.id()).get(sc.lastElt().safeName()).type().variable()),
-               &(factory.variable(parent_name.str())));
+                &(instance.getInstance(sc.id()).get(sc.lastElt().safeName()).type().variable()),
+                &(factory.variable(parent_name.str())));
             break;
           }
 
@@ -445,7 +445,7 @@ namespace gum {
     template < typename GUM_SCALAR >
     INLINE const Set< PRMInstance< GUM_SCALAR >* >&
 
-       PRMSystem< GUM_SCALAR >::get(const PRMClass< GUM_SCALAR >& type) const {
+        PRMSystem< GUM_SCALAR >::get(const PRMClass< GUM_SCALAR >& type) const {
       try {
         return *(instanceMap_[const_cast< PRMClass< GUM_SCALAR >* >(&type)]);
       } catch (NotFound const&) {
@@ -456,7 +456,7 @@ namespace gum {
     template < typename GUM_SCALAR >
     INLINE const Sequence< PRMInstance< GUM_SCALAR >* >&
 
-       PRMSystem< GUM_SCALAR >::getArray(const std::string& name) const {
+        PRMSystem< GUM_SCALAR >::getArray(const std::string& name) const {
       try {
         return *(arrayMap_[name].second);
       } catch (NotFound const&) { GUM_ERROR(NotFound, "found no array matching the given name") }
@@ -502,8 +502,8 @@ namespace gum {
       }
 
       arrayMap_.insert(
-         array,
-         PRMSystem< GUM_SCALAR >::model_pair(&type, new Sequence< PRMInstance< GUM_SCALAR >* >()));
+          array,
+          PRMSystem< GUM_SCALAR >::model_pair(&type, new Sequence< PRMInstance< GUM_SCALAR >* >()));
     }
 
     template < typename GUM_SCALAR >
@@ -523,13 +523,13 @@ namespace gum {
 
     template < typename GUM_SCALAR >
     INLINE const typename PRMSystem< GUM_SCALAR >::const_iterator&
-       PRMSystem< GUM_SCALAR >::end() const {
+        PRMSystem< GUM_SCALAR >::end() const {
       return nodeIdMap_.end();
     }
 
     template < typename GUM_SCALAR >
     INLINE typename PRMSystem< GUM_SCALAR >::array_iterator
-       PRMSystem< GUM_SCALAR >::begin(const std::string& a) {
+        PRMSystem< GUM_SCALAR >::begin(const std::string& a) {
       try {
         return arrayMap_[a].second->begin();
       } catch (NotFound const&) { GUM_ERROR(NotFound, "found no array matching the given name") }
@@ -537,7 +537,7 @@ namespace gum {
 
     template < typename GUM_SCALAR >
     INLINE const typename PRMSystem< GUM_SCALAR >::array_iterator&
-       PRMSystem< GUM_SCALAR >::end(const std::string& a) {
+        PRMSystem< GUM_SCALAR >::end(const std::string& a) {
       try {
         return arrayMap_[a].second->end();
       } catch (NotFound const&) { GUM_ERROR(NotFound, "found no array matching the given name") }
@@ -545,7 +545,7 @@ namespace gum {
 
     template < typename GUM_SCALAR >
     INLINE typename PRMSystem< GUM_SCALAR >::const_array_iterator
-       PRMSystem< GUM_SCALAR >::begin(const std::string& a) const {
+        PRMSystem< GUM_SCALAR >::begin(const std::string& a) const {
       try {
         return arrayMap_[a].second->begin();
       } catch (NotFound const&) { GUM_ERROR(NotFound, "found no array matching the given name") }
@@ -553,7 +553,7 @@ namespace gum {
 
     template < typename GUM_SCALAR >
     INLINE const typename PRMSystem< GUM_SCALAR >::const_array_iterator&
-       PRMSystem< GUM_SCALAR >::end(const std::string& a) const {
+        PRMSystem< GUM_SCALAR >::end(const std::string& a) const {
       try {
         return arrayMap_[a].second->end();
       } catch (NotFound const&) { GUM_ERROR(NotFound, "found no array matching the given name") }

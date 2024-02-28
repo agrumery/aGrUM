@@ -179,11 +179,11 @@ namespace gum {
 
       /// copy operator
       DBTranslator4NumericalDiscreteVariable&
-         operator=(const DBTranslator4NumericalDiscreteVariable& from);
+          operator=(const DBTranslator4NumericalDiscreteVariable& from);
 
       /// move operator
       DBTranslator4NumericalDiscreteVariable&
-         operator=(DBTranslator4NumericalDiscreteVariable&& from);
+          operator=(DBTranslator4NumericalDiscreteVariable&& from);
 
       /// @}
 

@@ -38,9 +38,9 @@ namespace gum {
       if (_translators_.size() < pos) {
         GUM_ERROR(OutOfBounds,
                   "The translatorSet contains only "
-                     << _translators_.size()
-                     << " translators. It is therefore impossible to substitute "
-                     << "the translator at index " << pos);
+                      << _translators_.size()
+                      << " translators. It is therefore impossible to substitute "
+                      << "the translator at index " << pos);
       }
 
       // copy the new translator

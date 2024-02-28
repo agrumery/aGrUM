@@ -88,8 +88,8 @@ namespace gum {
     /// variables
     /// beneath it
     void
-       _findRetrogradeVariables_(const MultiDimFunctionGraph< GUM_SCALAR, TerminalNodePolicy >* dg,
-                                 HashTable< NodeId, short int* >& dgInstNeed);
+        _findRetrogradeVariables_(const MultiDimFunctionGraph< GUM_SCALAR, TerminalNodePolicy >* dg,
+                                  HashTable< NodeId, short int* >& dgInstNeed);
 
     /// The main recursion function
     NodeId _compute_(O4DGContext& currentSituation, Idx lastInstVarPos);

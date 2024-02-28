@@ -54,25 +54,25 @@ namespace gum {
 
     /// checks whether the constraints enable to add an arc
     INLINE bool
-       StructuralConstraintDiGraph::checkModificationAlone(const ArcAddition& change) const {
+        StructuralConstraintDiGraph::checkModificationAlone(const ArcAddition& change) const {
       return checkArcAdditionAlone(change.node1(), change.node2());
     }
 
     /// checks whether the constraints enable to remove an arc
     INLINE bool
-       StructuralConstraintDiGraph::checkModificationAlone(const ArcDeletion& change) const {
+        StructuralConstraintDiGraph::checkModificationAlone(const ArcDeletion& change) const {
       return checkArcDeletionAlone(change.node1(), change.node2());
     }
 
     /// checks whether the constraints enable to reverse an arc
     INLINE bool
-       StructuralConstraintDiGraph::checkModificationAlone(const ArcReversal& change) const {
+        StructuralConstraintDiGraph::checkModificationAlone(const ArcReversal& change) const {
       return checkArcReversalAlone(change.node1(), change.node2());
     }
 
     /// checks whether the constraints enable to perform a graph change
     INLINE bool
-       StructuralConstraintDiGraph::checkModificationAlone(const GraphChange& change) const {
+        StructuralConstraintDiGraph::checkModificationAlone(const GraphChange& change) const {
       switch (change.type()) {
         case GraphChangeType::ARC_ADDITION :
           return checkArcAdditionAlone(change.node1(), change.node2());

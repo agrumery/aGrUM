@@ -235,9 +235,9 @@ namespace gum_tests {
 
     GUM_ACTIVE_TEST(InfiniteValue) {
       TS_ASSERT_THROWS(gum::NumericalDiscreteVariable(
-                          "var",
-                          "this is var2",
-                          {-std::numeric_limits< double >::infinity(), 0.0, 2.5, 3.7, 4.9}),
+                           "var",
+                           "this is var2",
+                           {-std::numeric_limits< double >::infinity(), 0.0, 2.5, 3.7, 4.9}),
                        const gum::DefaultInLabel&);
     }
 

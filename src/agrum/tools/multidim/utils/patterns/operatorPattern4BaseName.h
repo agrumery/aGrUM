@@ -185,7 +185,7 @@ namespace gum {
     // are those that belong to t1 but not t2. This order will be used in the
     // next for loops.
     MultiDimArray< GUM_MULTI_DIM_OPERATOR_TYPE >* result
-       = new MultiDimArray< GUM_MULTI_DIM_OPERATOR_TYPE >;
+        = new MultiDimArray< GUM_MULTI_DIM_OPERATOR_TYPE >;
     result->beginMultipleChanges();
 
     for (const auto var: t1_vars)

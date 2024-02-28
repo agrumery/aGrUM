@@ -39,7 +39,7 @@ namespace gum {
 
     /// copy constructor
     INLINE DBTranslator4LabelizedVariable::DBTranslator4LabelizedVariable(
-       const DBTranslator4LabelizedVariable& from) :
+        const DBTranslator4LabelizedVariable& from) :
         DBTranslator(from),
         _variable_(from._variable_) {
       GUM_CONS_CPY(DBTranslator4LabelizedVariable);
@@ -47,7 +47,7 @@ namespace gum {
 
     /// move constructor
     INLINE DBTranslator4LabelizedVariable::DBTranslator4LabelizedVariable(
-       DBTranslator4LabelizedVariable&& from) :
+        DBTranslator4LabelizedVariable&& from) :
         DBTranslator(std::move(from)),
         _variable_(std::move(from._variable_)) {
       GUM_CONS_MOV(DBTranslator4LabelizedVariable);
@@ -59,8 +59,8 @@ namespace gum {
     }
 
     /// returns the original value for a given translation
-    INLINE std::string
-       DBTranslator4LabelizedVariable::translateBack(const DBTranslatedValue translated_val) const {
+    INLINE std::string DBTranslator4LabelizedVariable::translateBack(
+        const DBTranslatedValue translated_val) const {
       try {
         return this->back_dico_.second(translated_val.discr_val);
       } catch (Exception const&) {

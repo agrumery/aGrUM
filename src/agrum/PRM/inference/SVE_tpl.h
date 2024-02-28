@@ -233,13 +233,13 @@ namespace gum {
 
     template < typename GUM_SCALAR >
     void SVE< GUM_SCALAR >::_eliminateNodesDownward_(
-       const PRMInstance< GUM_SCALAR >*          from,
-       const PRMInstance< GUM_SCALAR >*          i,
-       BucketSet&                                pool,
-       BucketSet&                                trash,
-       List< const PRMInstance< GUM_SCALAR >* >& elim_list,
-       Set< const PRMInstance< GUM_SCALAR >* >&  ignore,
-       Set< const PRMInstance< GUM_SCALAR >* >&  eliminated) {
+        const PRMInstance< GUM_SCALAR >*          from,
+        const PRMInstance< GUM_SCALAR >*          i,
+        BucketSet&                                pool,
+        BucketSet&                                trash,
+        List< const PRMInstance< GUM_SCALAR >* >& elim_list,
+        Set< const PRMInstance< GUM_SCALAR >* >&  ignore,
+        Set< const PRMInstance< GUM_SCALAR >* >&  eliminated) {
       Set< NodeId > delayedVars;
       ignore.insert(i);
       // Calling elimination over child instance
@@ -321,12 +321,12 @@ namespace gum {
 
     template < typename GUM_SCALAR >
     void SVE< GUM_SCALAR >::_eliminateNodesUpward_(
-       const PRMInstance< GUM_SCALAR >*          i,
-       BucketSet&                                pool,
-       BucketSet&                                trash,
-       List< const PRMInstance< GUM_SCALAR >* >& elim_list,
-       Set< const PRMInstance< GUM_SCALAR >* >&  ignore,
-       Set< const PRMInstance< GUM_SCALAR >* >&  eliminated) {
+        const PRMInstance< GUM_SCALAR >*          i,
+        BucketSet&                                pool,
+        BucketSet&                                trash,
+        List< const PRMInstance< GUM_SCALAR >* >& elim_list,
+        Set< const PRMInstance< GUM_SCALAR >* >&  ignore,
+        Set< const PRMInstance< GUM_SCALAR >* >&  eliminated) {
       // Downward elimination
       ignore.insert(i);
 
@@ -382,7 +382,7 @@ namespace gum {
 
       for (const auto& elt: this->evidence(i)) {
         inner
-           = i->type().isInputNode(i->get(elt.first)) || i->type().isInnerNode(i->get(elt.first));
+            = i->type().isInputNode(i->get(elt.first)) || i->type().isInnerNode(i->get(elt.first));
 
         if (inner) { break; }
       }
@@ -642,7 +642,7 @@ namespace gum {
     template < typename GUM_SCALAR >
     INLINE Potential< GUM_SCALAR >*
            SVE< GUM_SCALAR >::_getAggPotential_(const PRMInstance< GUM_SCALAR >*  i,
-                                            const PRMAggregate< GUM_SCALAR >* agg) {
+                                             const PRMAggregate< GUM_SCALAR >* agg) {
       return &(const_cast< Potential< GUM_SCALAR >& >(i->get(agg->id()).cpf()));
     }
 

@@ -376,7 +376,7 @@ namespace gum {
       protected:
       /// Copy operator. Don't use it.
       PRMClassElementContainer< GUM_SCALAR >&
-         operator=(const PRMClassElementContainer< GUM_SCALAR >& source);
+          operator=(const PRMClassElementContainer< GUM_SCALAR >& source);
 
       /// Copy constructor. Don't use it.
       PRMClassElementContainer(const PRMClassElementContainer< GUM_SCALAR >& source);
@@ -403,7 +403,7 @@ namespace gum {
       /// @return elt's IO flags.
       /// @throw NotFound Raised if elt does not have any IO flags.
       virtual const std::pair< bool, bool >&
-         getIOFlag_(const PRMClassElement< GUM_SCALAR >& elt) const;
+          getIOFlag_(const PRMClassElement< GUM_SCALAR >& elt) const;
 
       /// Defines the IO flags of a PRMClassElement<GUM_SCALAR>.
       /// @param elt The PRMClassElement<GUM_SCALAR>.

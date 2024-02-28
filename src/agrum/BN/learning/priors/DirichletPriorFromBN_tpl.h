@@ -68,7 +68,7 @@ namespace gum::learning {
   /// copy operator
   template < typename GUM_SCALAR >
   DirichletPriorFromBN< GUM_SCALAR >&
-     DirichletPriorFromBN< GUM_SCALAR >::operator=(const DirichletPriorFromBN& from) {
+      DirichletPriorFromBN< GUM_SCALAR >::operator=(const DirichletPriorFromBN& from) {
     if (this != &from) {
       Prior::operator=(from);
       _prior_bn_ = from._prior_bn_;
@@ -79,7 +79,7 @@ namespace gum::learning {
   /// move operator
   template < typename GUM_SCALAR >
   DirichletPriorFromBN< GUM_SCALAR >&
-     DirichletPriorFromBN< GUM_SCALAR >::operator=(DirichletPriorFromBN&& from) {
+      DirichletPriorFromBN< GUM_SCALAR >::operator=(DirichletPriorFromBN&& from) {
     if (this != &from) {
       Prior::operator=(std::move(from));
       _prior_bn_ = from._prior_bn_;
@@ -110,8 +110,8 @@ namespace gum::learning {
   /// returns the prior vector all the variables in the idset
   template < typename GUM_SCALAR >
   INLINE void
-     DirichletPriorFromBN< GUM_SCALAR >::addJointPseudoCount(const IdCondSet&       idset,
-                                                             std::vector< double >& counts) {
+      DirichletPriorFromBN< GUM_SCALAR >::addJointPseudoCount(const IdCondSet&       idset,
+                                                              std::vector< double >& counts) {
     if (this->weight_ == 0.0) return;
     const auto [X, Y] = idset.toNodeSets();
 
@@ -125,9 +125,9 @@ namespace gum::learning {
 
   /// returns the prior vector over only the conditioning set of an idset
   template < typename GUM_SCALAR >
-  INLINE void
-     DirichletPriorFromBN< GUM_SCALAR >::addConditioningPseudoCount(const IdCondSet&       idset,
-                                                                    std::vector< double >& counts) {
+  INLINE void DirichletPriorFromBN< GUM_SCALAR >::addConditioningPseudoCount(
+      const IdCondSet&       idset,
+      std::vector< double >& counts) {
     if (this->weight_ == 0.0) return;
     const auto [X, Y] = idset.toNodeSets();
     gum::Instantiation Ijoint;
@@ -144,8 +144,8 @@ namespace gum::learning {
     if (size != Ijoint.domainSize())
       GUM_ERROR(ArgumentError,
                 "The size of counts ("
-                   << size << ") does not match with the size of the asked prior (" << joint
-                   << " : " << Ijoint.domainSize() << ")")
+                    << size << ") does not match with the size of the asked prior (" << joint
+                    << " : " << Ijoint.domainSize() << ")")
 
     if (joint.empty()) {
       counts[0] += weight_;

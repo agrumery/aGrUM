@@ -174,7 +174,7 @@ namespace gum_tests {
     GUM_ACTIVE_TEST(1) {
       std::vector< std::string > names{"A", "B", "C", "D", "E", "F"};
       gum::BayesNet< double >    bn
-         = gum::BayesNet< double >::fastPrototype("A[3];B[3];C<-D[3];E[3];F[3]");
+          = gum::BayesNet< double >::fastPrototype("A[3];B[3];C<-D[3];E[3];F[3]");
       for (const auto& nom: names)
         bn.cpt(nom).fillWith(1).normalizeAsCPT();
       bn.cpt("B").fillWith({0.2, 0.3, 0.5});

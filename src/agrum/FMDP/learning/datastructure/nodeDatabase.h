@@ -153,7 +153,7 @@ namespace gum {
     /// Merges given NodeDatabase informations into current nDB.
     // ###################################################################
     NodeDatabase< AttributeSelection, isScalar >&
-       operator+=(const NodeDatabase< AttributeSelection, isScalar >& src);
+        operator+=(const NodeDatabase< AttributeSelection, isScalar >& src);
 
     // ###################################################################
     /// Returns a reference to nDB test policy for given variable

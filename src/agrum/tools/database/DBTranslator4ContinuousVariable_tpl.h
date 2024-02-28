@@ -40,9 +40,9 @@ namespace gum {
     /// default constructor with a continuous variable as translator
     template < typename GUM_SCALAR >
     DBTranslator4ContinuousVariable::DBTranslator4ContinuousVariable(
-       const ContinuousVariable< GUM_SCALAR >& var,
-       const std::vector< std::string >&       missing_symbols,
-       const bool                              fit_range) :
+        const ContinuousVariable< GUM_SCALAR >& var,
+        const std::vector< std::string >&       missing_symbols,
+        const bool                              fit_range) :
         DBTranslator(DBTranslatedValueType::CONTINUOUS, true, missing_symbols, fit_range, 1),
         _variable_(var.name(), var.description()), _fit_range_(fit_range) {
       // get the bounds of the range variable
@@ -76,8 +76,8 @@ namespace gum {
     /// default constructor with a continuous variable as translator
     template < typename GUM_SCALAR >
     DBTranslator4ContinuousVariable::DBTranslator4ContinuousVariable(
-       const ContinuousVariable< GUM_SCALAR >& var,
-       const bool                              fit_range) :
+        const ContinuousVariable< GUM_SCALAR >& var,
+        const bool                              fit_range) :
         DBTranslator(DBTranslatedValueType::CONTINUOUS, true, fit_range, 1),
         _variable_(var.name(), var.description()), _fit_range_(fit_range) {
       // get the bounds of the range variable

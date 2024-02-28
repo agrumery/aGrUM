@@ -66,11 +66,11 @@ namespace gum_tests {
       gum::prm::ClassBayesNet< double >* c = 0;
       TS_GUM_ASSERT_THROWS_NOTHING(prm->getClass("SafeComputer"))
       TS_GUM_ASSERT_THROWS_NOTHING(
-         c = new gum::prm::ClassBayesNet< double >(prm->getClass("SafeComputer")));
+          c = new gum::prm::ClassBayesNet< double >(prm->getClass("SafeComputer")));
       TS_GUM_ASSERT_THROWS_NOTHING(delete c)
       gum::prm::InstanceBayesNet< double >* inst = 0;
       TS_GUM_ASSERT_THROWS_NOTHING(
-         inst = new gum::prm::InstanceBayesNet< double >(prm->getSystem("aSys").get("c1")));
+          inst = new gum::prm::InstanceBayesNet< double >(prm->getSystem("aSys").get("c1")));
       TS_GUM_ASSERT_THROWS_NOTHING(delete inst)
     }
 
@@ -78,7 +78,7 @@ namespace gum_tests {
       gum::prm::PRMClass< double >&      c  = prm->getClass("SafeComputer");
       gum::prm::ClassBayesNet< double >* bn = 0;
       TS_GUM_ASSERT_THROWS_NOTHING(
-         bn = new gum::prm::ClassBayesNet< double >(prm->getClass("SafeComputer")));
+          bn = new gum::prm::ClassBayesNet< double >(prm->getClass("SafeComputer")));
       gum::Size elts = c.attributes().size() + c.aggregates().size();
       TS_ASSERT_EQUALS(bn->size(), elts)
 

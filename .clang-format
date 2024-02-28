@@ -30,7 +30,7 @@ CompactNamespaces: false
 FixNamespaceComments: true
 
 IndentWidth: 2
-ContinuationIndentWidth: 1
+ContinuationIndentWidth: 4
 UseTab: Never
 AccessModifierOffset: 0
 IndentCaseLabels: true

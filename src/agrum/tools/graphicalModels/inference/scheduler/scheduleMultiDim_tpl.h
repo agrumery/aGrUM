@@ -158,7 +158,7 @@ namespace gum {
   /// copy operator
   template < typename TABLE >
   ScheduleMultiDim< TABLE >&
-     ScheduleMultiDim< TABLE >::operator=(const ScheduleMultiDim< TABLE >& from) {
+      ScheduleMultiDim< TABLE >::operator=(const ScheduleMultiDim< TABLE >& from) {
     // avoid self assignment
     if (this != &from) {
       // assign the table of from
@@ -205,7 +205,7 @@ namespace gum {
   /// move operator
   template < typename TABLE >
   ScheduleMultiDim< TABLE >&
-     ScheduleMultiDim< TABLE >::operator=(ScheduleMultiDim< TABLE >&& from) {
+      ScheduleMultiDim< TABLE >::operator=(ScheduleMultiDim< TABLE >&& from) {
     // avoid self assignment
     if (this != &from) {
       // assign the table of from
@@ -252,7 +252,7 @@ namespace gum {
   /// checks whether two ScheduleMultiDim have the same variables
   template < typename TABLE >
   INLINE bool
-     ScheduleMultiDim< TABLE >::hasSameVariables(const ScheduleMultiDim< TABLE >& m) const {
+      ScheduleMultiDim< TABLE >::hasSameVariables(const ScheduleMultiDim< TABLE >& m) const {
     return ((_domain_size_ == m._domain_size_) && (_var_sequence_ == m._var_sequence_));
   }
 
@@ -293,7 +293,7 @@ namespace gum {
     if (_table_ == nullptr) {
       GUM_ERROR(NullElement,
                 "the ScheduleMultiDim is abstract, so its table "
-                   << "cannot be returned");
+                    << "cannot be returned");
     }
     return *_table_;
   }
@@ -322,7 +322,7 @@ namespace gum {
     if (_table_ == nullptr) {
       GUM_ERROR(NullElement,
                 "The ScheduleMultiDim being abstract, "
-                   << "it is impossible to export its table");
+                    << "it is impossible to export its table");
     }
     if (!_table_contained_) {
       GUM_ERROR(OperationNotAllowed,

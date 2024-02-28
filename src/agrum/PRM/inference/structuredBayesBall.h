@@ -117,7 +117,7 @@ namespace gum {
 
       /// Code alias
       std::pair< bool, bool >&
-         _getMark_(InstanceMap& marks, const PRMInstance< GUM_SCALAR >* i, NodeId n);
+          _getMark_(InstanceMap& marks, const PRMInstance< GUM_SCALAR >* i, NodeId n);
       /// Code alias
       const PRMSlotChain< GUM_SCALAR >& _getSC_(const PRMInstance< GUM_SCALAR >* i, NodeId n);
 
@@ -147,7 +147,7 @@ namespace gum {
       /// the
       /// set of requisite nodes deduced from d-separation analysis.
       HashTable< const PRMInstance< GUM_SCALAR >*, std::pair< std::string, Set< NodeId >* > >
-         _keyMap_;
+          _keyMap_;
 
       /// Associate a Key with the set of requisite nodes associated with it.
       /// The Size value is the number of instance with the same key.

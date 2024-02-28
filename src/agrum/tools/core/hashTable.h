@@ -1698,7 +1698,7 @@ namespace gum {
      * @return Returns this gum::HashTableConstIteratorSafe.
      */
     HashTableConstIteratorSafe< Key, Val >&
-       operator=(const HashTableConstIteratorSafe< Key, Val >& from);
+        operator=(const HashTableConstIteratorSafe< Key, Val >& from);
 
     /**
      * @brief Copy operator.
@@ -1706,7 +1706,7 @@ namespace gum {
      * @return Returns this gum::HashTableConstIteratorSafe.
      */
     HashTableConstIteratorSafe< Key, Val >&
-       operator=(const HashTableConstIterator< Key, Val >& from);
+        operator=(const HashTableConstIterator< Key, Val >& from);
 
     /**
      * @brief Move operator.
@@ -1714,7 +1714,7 @@ namespace gum {
      * @return Returns this gum::HashTableConstIteratorSafe.
      */
     HashTableConstIteratorSafe< Key, Val >&
-       operator=(HashTableConstIteratorSafe< Key, Val >&& from) noexcept;
+        operator=(HashTableConstIteratorSafe< Key, Val >&& from) noexcept;
 
     /**
      * @brief Makes the iterator point to the next element in the hash table.
@@ -2239,7 +2239,7 @@ namespace gum {
      * @return Returns this gum::HashTableConstIterator.
      */
     HashTableConstIterator< Key, Val >&
-       operator=(const HashTableConstIterator< Key, Val >& from) noexcept;
+        operator=(const HashTableConstIterator< Key, Val >& from) noexcept;
 
     /**
      * @brief Move operator.
@@ -2247,7 +2247,7 @@ namespace gum {
      * @return Returns this gum::HashTableConstIterator.
      */
     HashTableConstIterator< Key, Val >&
-       operator=(HashTableConstIterator< Key, Val >&& from) noexcept;
+        operator=(HashTableConstIterator< Key, Val >&& from) noexcept;
 
     ///
     /**

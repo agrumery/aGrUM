@@ -32,9 +32,9 @@
 
                 == == == ==
 #include <agrum/MRF/MarkovRandomField.h>
-                > > > > > > > > df1b713db([aGrUM] renaming                    gum::MarkovNetwok to
-                                                                              gum::MarkovRandomField
-                                                .Using MRF instead of MN when needed.) :
+                > > > > > > > > df1b713db([aGrUM] renaming gum::MarkovNetwok to
+                                                           gum::MarkovRandomField
+                                                  .Using MRF instead of MN when needed.) :
     src
     / testunits / module_MRF
     / MarkovRandomFieldTestSuite.h
@@ -61,7 +61,7 @@
       public CxxTest::TestSuite {
     == == == == class [[maybe_unused]] MarkovRandomFieldTestSuite: public CxxTest::TestSuite {
       >>>>>>>> df1b713db([aGrUM] renaming gum::MarkovNetwok to
-                            gum::MarkovRandomField.Using MRF instead of MN when needed.) :
+                             gum::MarkovRandomField.Using MRF instead of MN when needed.) :
           src
           / testunits / module_MRF
           / MarkovRandomFieldTestSuite.h private:
@@ -119,12 +119,12 @@
             / MarkovNetLegacyTestSuite.h gum::MarkovNet< double > mn2(mn);
         == == == == gum::MarkovRandomField< double >              mn2(mn);
         >>>>>>>> df1b713db([aGrUM] renaming gum::MarkovNetwok to
-                              gum::MarkovRandomField.Using MRF instead of MN when needed.) :
+                               gum::MarkovRandomField.Using MRF instead of MN when needed.) :
             src
             / testunits / module_MRF
             / MarkovRandomFieldTestSuite.h TS_ASSERT_EQUALS(
-               mn2.toString(),
-               "MRF{nodes: 5, edges: 6, domainSize: 567, dim: 102}")
+                mn2.toString(),
+                "MRF{nodes: 5, edges: 6, domainSize: 567, dim: 102}")
 
         TS_GUM_ASSERT_THROWS_NOTHING({
           for (const auto n: mn.nodes()) {
@@ -296,14 +296,14 @@
 
       GUM_TEST(ToDot) {
         < < < < < < < < HEAD: src / testunits / module_MRF / MarkovNetLegacyTestSuite.h auto mn
-           = gum::MarkovNet< double >::fastPrototype("A--B--C;B--D;C--E;D--E--F");
+            = gum::MarkovNet< double >::fastPrototype("A--B--C;B--D;C--E;D--E--F");
         == == == == gum::MarkovRandomField< double > mn
-           = gum::MarkovRandomField< double >::fastPrototype("A--B--C;B--D;C--E;D--E--F");
+            = gum::MarkovRandomField< double >::fastPrototype("A--B--C;B--D;C--E;D--E--F");
         >>>>>>>> df1b713db([aGrUM] renaming gum::MarkovNetwok to
-                              gum::MarkovRandomField.Using MRF instead of MN when needed.) :
+                               gum::MarkovRandomField.Using MRF instead of MN when needed.) :
             src
             / testunits / module_MRF / MarkovRandomFieldTestSuite.h const auto s1
-           = mn.toDot();
+            = mn.toDot();
         const auto s2 = mn.toDotAsFactorGraph();
         GUM_UNUSED(s1);
         GUM_UNUSED(s2);
@@ -369,7 +369,7 @@
 
       GUM_TEST(Independence) {
         auto mn
-           = gum::MarkovRandomField< double >::fastPrototype("A--B--C;C--D;E--F--G;B--E;D--G;X");
+            = gum::MarkovRandomField< double >::fastPrototype("A--B--C;C--D;E--F--G;B--E;D--G;X");
         TS_ASSERT(mn.isIndependent("D", "X", {}))
         TS_ASSERT(!mn.isIndependent("D", "A", {"C"}))
         TS_ASSERT(mn.isIndependent("D", "A", {"C", "G"}))
@@ -379,7 +379,7 @@
 
       GUM_TEST(FastPrototypeVarType) {
         auto mn = gum::MarkovRandomField< float >::fastPrototype(
-           "a{1|4|6}--b{1|-4|6};c{1|toto|6}--d{1.0|-4.0|6.0};e{1|-4|6.0}--f{1.0|-4.0|+6.0}");
+            "a{1|4|6}--b{1|-4|6};c{1|toto|6}--d{1.0|-4.0|6.0};e{1|-4|6.0}--f{1.0|-4.0|+6.0}");
         TS_ASSERT_EQUALS(mn.variable("a").varType(), gum::VarType::Integer)
         TS_ASSERT_EQUALS(mn.variable("b").varType(), gum::VarType::Integer)
         TS_ASSERT_EQUALS(mn.variable("c").varType(), gum::VarType::Labelized)

@@ -114,7 +114,7 @@ namespace gum_tests {
       myproj3.execute();
       TS_ASSERT(!xxres3.isAbstract());
       gum::Potential< double > res3
-         = gum::Potential< double >(gum::projectMin(*(pot2.content()), del_vars2));
+          = gum::Potential< double >(gum::projectMin(*(pot2.content()), del_vars2));
       TS_ASSERT(xxres3.multiDim() == res3);
 
       myproj3 = myproj;
@@ -144,7 +144,7 @@ namespace gum_tests {
 
       myproj3.setProjectionFunction(myProjectMin);
       gum::Potential< double > res3b
-         = gum::Potential< double >(gum::projectMin(*(pot1.content()), del_vars1));
+          = gum::Potential< double >(gum::projectMin(*(pot1.content()), del_vars1));
       TS_ASSERT(!myproj3.isExecuted());
       myproj3.execute();
       TS_ASSERT(myproj3.result().multiDim() == res3b);
@@ -243,8 +243,8 @@ namespace gum_tests {
       TS_ASSERT(myproj1.result().domainSize() == 16)
       TS_ASSERT(myproj1.nbOperations() == 16.0)
       auto mem_usage
-         = std::pair< double, double >(16.0 * sizeof(double) + sizeof(gum::Potential< double >),
-                                       16.0 * sizeof(double) + sizeof(gum::Potential< double >));
+          = std::pair< double, double >(16.0 * sizeof(double) + sizeof(gum::Potential< double >),
+                                        16.0 * sizeof(double) + sizeof(gum::Potential< double >));
       TS_ASSERT(myproj1.memoryUsage() == mem_usage)
       TS_ASSERT(myproj1.result().isAbstract())
       myproj1.execute();
@@ -256,16 +256,16 @@ namespace gum_tests {
       TS_ASSERT(myproj1b.result().domainSize() == 1)
       TS_ASSERT(myproj1b.nbOperations() == 16.0)
       mem_usage
-         = std::pair< double, double >(1.0 * sizeof(double) + sizeof(gum::Potential< double >),
-                                       1.0 * sizeof(double) + sizeof(gum::Potential< double >));
+          = std::pair< double, double >(1.0 * sizeof(double) + sizeof(gum::Potential< double >),
+                                        1.0 * sizeof(double) + sizeof(gum::Potential< double >));
       TS_ASSERT(myproj1b.memoryUsage() == mem_usage)
       TS_ASSERT(myproj1b.result().isAbstract())
       myproj1b.execute();
       TS_ASSERT(!myproj1b.result().isAbstract())
       TS_ASSERT(myproj1b.result().multiDim().domainSize() == 1);
       gum::Potential< double >* pot1b
-         = const_cast< gum::ScheduleMultiDim< gum::Potential< double > >& >(myproj1b.result())
-              .exportMultiDim();
+          = const_cast< gum::ScheduleMultiDim< gum::Potential< double > >& >(myproj1b.result())
+                .exportMultiDim();
       TS_ASSERT(pot1b->domainSize() == 1);
       delete pot1b;
 
@@ -283,8 +283,8 @@ namespace gum_tests {
       TS_ASSERT(myproj2.result().domainSize() == 8)
       TS_ASSERT(myproj2.nbOperations() == 8.0)
       mem_usage
-         = std::pair< double, double >(8.0 * sizeof(double) + sizeof(gum::Potential< double >),
-                                       8.0 * sizeof(double) + sizeof(gum::Potential< double >));
+          = std::pair< double, double >(8.0 * sizeof(double) + sizeof(gum::Potential< double >),
+                                        8.0 * sizeof(double) + sizeof(gum::Potential< double >));
       TS_ASSERT(myproj2.memoryUsage() == mem_usage)
       TS_ASSERT(myproj2.result().isAbstract())
       myproj2.execute();
@@ -312,8 +312,8 @@ namespace gum_tests {
       TS_ASSERT(myproj2.result().multiDim() == pot4)
       TS_ASSERT(myproj2.result().domainSize() == 1)
       mem_usage
-         = std::pair< double, double >(1.0 * sizeof(double) + sizeof(gum::Potential< double >),
-                                       1.0 * sizeof(double) + sizeof(gum::Potential< double >));
+          = std::pair< double, double >(1.0 * sizeof(double) + sizeof(gum::Potential< double >),
+                                        1.0 * sizeof(double) + sizeof(gum::Potential< double >));
       TS_ASSERT(myproj2.nbOperations() == 1.0)
       TS_ASSERT(myproj2.memoryUsage() == mem_usage)
       myproj2.execute();

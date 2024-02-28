@@ -68,9 +68,9 @@ namespace gum {
     public:
     /// The type of functions used by the register
     using PartialInstantiationPtr
-       = MultiDimImplementation< GUM_SCALAR >* (*)(const MultiDimImplementation< GUM_SCALAR >*,
-                                                   const HashTable< const DiscreteVariable*,
-                                                                    Idx >&);
+        = MultiDimImplementation< GUM_SCALAR >* (*)(const MultiDimImplementation< GUM_SCALAR >*,
+                                                    const HashTable< const DiscreteVariable*,
+                                                                     Idx >&);
 
     // ========================================================================
     /// @name Accessors / Modifiers
@@ -209,10 +209,10 @@ namespace gum {
   /// MultiDims
   template < typename GUM_SCALAR >
   void registerPartialInstantiation(
-     const std::string& instantiation_func_name,
-     const std::string& type_multidim,
-     typename PartialInstantiationRegister4MultiDim< GUM_SCALAR >::PartialInstantiationPtr
-        function);
+      const std::string& instantiation_func_name,
+      const std::string& type_multidim,
+      typename PartialInstantiationRegister4MultiDim< GUM_SCALAR >::PartialInstantiationPtr
+          function);
 
 } /* namespace gum */
 

@@ -212,28 +212,28 @@ namespace gum {
     /// Performs the P(s'|s,a).V^{t-1}(s') part of the value itération
     // ==========================================================================
     virtual MultiDimFunctionGraph< GUM_SCALAR >*
-       evalQaction_(const MultiDimFunctionGraph< GUM_SCALAR >*, Idx);
+        evalQaction_(const MultiDimFunctionGraph< GUM_SCALAR >*, Idx);
 
     // ==========================================================================
     /// Performs max_a Q(s,a)
     /// @warning Performs also the deallocation of the QActions
     // ==========================================================================
     virtual MultiDimFunctionGraph< GUM_SCALAR >*
-       maximiseQactions_(std::vector< MultiDimFunctionGraph< GUM_SCALAR >* >&);
+        maximiseQactions_(std::vector< MultiDimFunctionGraph< GUM_SCALAR >* >&);
 
     // ==========================================================================
     /// Performs min_i F_i
     /// @warning Performs also the deallocation of the F_i
     // ==========================================================================
     virtual MultiDimFunctionGraph< GUM_SCALAR >*
-       minimiseFunctions_(std::vector< MultiDimFunctionGraph< GUM_SCALAR >* >&);
+        minimiseFunctions_(std::vector< MultiDimFunctionGraph< GUM_SCALAR >* >&);
 
     // ==========================================================================
     /// Perform the R(s) + gamma . function
     /// @warning function is deleted, new one is returned
     // ==========================================================================
     virtual MultiDimFunctionGraph< GUM_SCALAR >*
-       addReward_(MultiDimFunctionGraph< GUM_SCALAR >* function, Idx actionId = 0);
+        addReward_(MultiDimFunctionGraph< GUM_SCALAR >* function, Idx actionId = 0);
 
     /// @}
 
@@ -262,18 +262,18 @@ namespace gum {
      */
     // ==========================================================================
     MultiDimFunctionGraph< ArgMaxSet< GUM_SCALAR, Idx >, SetTerminalNodePolicy >*
-       makeArgMax_(const MultiDimFunctionGraph< GUM_SCALAR >* Qaction, Idx actionId);
+        makeArgMax_(const MultiDimFunctionGraph< GUM_SCALAR >* Qaction, Idx actionId);
 
     private:
     // ==========================================================================
     /// Recursion part for the createArgMaxCopy
     // ==========================================================================
     NodeId _recurArgMaxCopy_(
-       NodeId,
-       Idx,
-       const MultiDimFunctionGraph< GUM_SCALAR >*,
-       MultiDimFunctionGraph< ArgMaxSet< GUM_SCALAR, Idx >, SetTerminalNodePolicy >*,
-       HashTable< NodeId, NodeId >&);
+        NodeId,
+        Idx,
+        const MultiDimFunctionGraph< GUM_SCALAR >*,
+        MultiDimFunctionGraph< ArgMaxSet< GUM_SCALAR, Idx >, SetTerminalNodePolicy >*,
+        HashTable< NodeId, NodeId >&);
 
     protected:
     // ==========================================================================
@@ -281,8 +281,8 @@ namespace gum {
     /// @warning Performs also the deallocation of the QActions
     // ==========================================================================
     virtual MultiDimFunctionGraph< ArgMaxSet< GUM_SCALAR, Idx >, SetTerminalNodePolicy >*
-       argmaximiseQactions_(std::vector< MultiDimFunctionGraph< ArgMaxSet< GUM_SCALAR, Idx >,
-                                                                SetTerminalNodePolicy >* >&);
+        argmaximiseQactions_(std::vector< MultiDimFunctionGraph< ArgMaxSet< GUM_SCALAR, Idx >,
+                                                                 SetTerminalNodePolicy >* >&);
 
     // ==========================================================================
     /// From V(s)* = argmax_a Q*(s,a), this function extract pi*(s)
@@ -291,17 +291,17 @@ namespace gum {
     /// @warning deallocate the argmax optimal value function
     // ==========================================================================
     void extractOptimalPolicy_(
-       const MultiDimFunctionGraph< ArgMaxSet< GUM_SCALAR, Idx >, SetTerminalNodePolicy >*
-          optimalValueFunction);
+        const MultiDimFunctionGraph< ArgMaxSet< GUM_SCALAR, Idx >, SetTerminalNodePolicy >*
+            optimalValueFunction);
 
     private:
     // ==========================================================================
     /// Recursion part for the createArgMaxCopy
     // ==========================================================================
     NodeId _recurExtractOptPol_(
-       NodeId,
-       const MultiDimFunctionGraph< ArgMaxSet< GUM_SCALAR, Idx >, SetTerminalNodePolicy >*,
-       HashTable< NodeId, NodeId >&);
+        NodeId,
+        const MultiDimFunctionGraph< ArgMaxSet< GUM_SCALAR, Idx >, SetTerminalNodePolicy >*,
+        HashTable< NodeId, NodeId >&);
 
     // ==========================================================================
     /// Extract from an ArgMaxSet the associated ActionSet

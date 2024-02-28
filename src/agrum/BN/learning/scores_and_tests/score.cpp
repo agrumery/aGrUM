@@ -101,7 +101,7 @@ namespace gum {
       const auto&       nodeId2cols = this->counter_.nodeId2Columns();
       const auto&       database    = this->counter_.database();
       const std::size_t X_size
-         = database.domainSize(nodeId2cols.empty() ? X_id : nodeId2cols.second(X_id));
+          = database.domainSize(nodeId2cols.empty() ? X_id : nodeId2cols.second(X_id));
 
       // determine the size of the output vector
       std::size_t out_size = N_xyz.size() / X_size;

@@ -52,7 +52,7 @@ namespace gum {
   /// Copy Constructor.
   template < typename GUM_SCALAR >
   INLINE ContinuousVariable< GUM_SCALAR >::ContinuousVariable(
-     const ContinuousVariable< GUM_SCALAR >& from) :
+      const ContinuousVariable< GUM_SCALAR >& from) :
       IContinuousVariable(from),
       _lower_bound_(from._lower_bound_), _upper_bound_(from._upper_bound_) {
     GUM_CONS_CPY(ContinuousVariable);
@@ -62,7 +62,7 @@ namespace gum {
   template < typename GUM_SCALAR >
   template < typename TX_VAL >
   INLINE ContinuousVariable< GUM_SCALAR >::ContinuousVariable(
-     const ContinuousVariable< TX_VAL >& from) :
+      const ContinuousVariable< TX_VAL >& from) :
       IContinuousVariable(from),
       _lower_bound_(GUM_SCALAR(from._lower_bound_)), _upper_bound_(GUM_SCALAR(from._upper_bound_)) {
     GUM_CONS_CPY(ContinuousVariable);
@@ -70,8 +70,8 @@ namespace gum {
 
   /// move constructor
   template < typename GUM_SCALAR >
-  INLINE
-     ContinuousVariable< GUM_SCALAR >::ContinuousVariable(ContinuousVariable< GUM_SCALAR >&& from) :
+  INLINE ContinuousVariable< GUM_SCALAR >::ContinuousVariable(
+      ContinuousVariable< GUM_SCALAR >&& from) :
       IContinuousVariable(std::move(from)),
       _lower_bound_(from._lower_bound_), _upper_bound_(from._upper_bound_) {
     GUM_CONS_MOV(ContinuousVariable);

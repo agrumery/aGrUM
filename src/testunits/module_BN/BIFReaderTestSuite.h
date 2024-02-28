@@ -764,8 +764,8 @@ namespace gum_tests {
 
       TS_GUM_ASSERT_THROWS_NOTHING(nbrErr = reader.proceed())
       TS_ASSERT_EQUALS(
-         net->toString(),
-         "BN{nodes: 47, arcs: 82, domainSize: 10^41.2492, dim: 113749, mem: 1014Ko 640o}")
+          net->toString(),
+          "BN{nodes: 47, arcs: 82, domainSize: 10^41.2492, dim: 113749, mem: 1014Ko 640o}")
 
       TS_ASSERT(nbrErr > (gum::Size)0)
       TS_ASSERT_EQUALS(reader.warnings(), (gum::Size)96)
@@ -801,8 +801,8 @@ namespace gum_tests {
 
       TS_GUM_ASSERT_THROWS_NOTHING(nbrErr = reader.proceed())
       TS_ASSERT_EQUALS(
-         net->toString(),
-         "BN{nodes: 413, arcs: 602, domainSize: 10^406.108, dim: 429409, mem: 3Mo 530Ko 104o}")
+          net->toString(),
+          "BN{nodes: 413, arcs: 602, domainSize: 10^406.108, dim: 429409, mem: 3Mo 530Ko 104o}")
 
       TS_ASSERT_EQUALS(nbrErr, (gum::Size)0)
       TS_ASSERT_EQUALS(reader.warnings(), (gum::Size)826)
@@ -856,8 +856,8 @@ namespace gum_tests {
 
       TS_GUM_ASSERT_THROWS_NOTHING(nbrErr = reader.proceed())
       TS_ASSERT_EQUALS(
-         net->toString(),
-         "BN{nodes: 724, arcs: 1125, domainSize: 10^277.761, dim: 14211, mem: 160Ko 176o}")
+          net->toString(),
+          "BN{nodes: 724, arcs: 1125, domainSize: 10^277.761, dim: 14211, mem: 160Ko 176o}")
 
       TS_ASSERT_EQUALS(nbrErr, (gum::Size)0)
       TS_ASSERT_EQUALS(reader.warnings(), (gum::Size)724)
@@ -875,8 +875,8 @@ namespace gum_tests {
 
       TS_GUM_ASSERT_THROWS_NOTHING(nbrErr = reader.proceed())
       TS_ASSERT_EQUALS(
-         net->toString(),
-         "BN{nodes: 35, arcs: 46, domainSize: 10^32.6263, dim: 540150, mem: 4Mo 178Ko 688o}")
+          net->toString(),
+          "BN{nodes: 35, arcs: 46, domainSize: 10^32.6263, dim: 540150, mem: 4Mo 178Ko 688o}")
 
       TS_ASSERT_EQUALS(nbrErr, (gum::Size)0)
       TS_ASSERT_EQUALS(reader.warnings(), (gum::Size)70)
@@ -909,8 +909,8 @@ namespace gum_tests {
 
       TS_GUM_ASSERT_THROWS_NOTHING(nbrErr = reader.proceed())
       TS_ASSERT_EQUALS(
-         net->toString(),
-         "BN{nodes: 441, arcs: 592, domainSize: 10^210.41, dim: 5618, mem: 65Ko 856o}")
+          net->toString(),
+          "BN{nodes: 441, arcs: 592, domainSize: 10^210.41, dim: 5618, mem: 65Ko 856o}")
 
       TS_ASSERT_EQUALS(nbrErr, (gum::Size)0)
       TS_ASSERT_EQUALS(reader.warnings(), (gum::Size)441)
@@ -923,8 +923,8 @@ namespace gum_tests {
       {
         gum::BayesNet< double >  net;
         gum::BIFReader< double > reader(
-           &net,
-           std::string(GET_RESSOURCES_PATH("bif/dBN_with_errors.bif")));
+            &net,
+            std::string(GET_RESSOURCES_PATH("bif/dBN_with_errors.bif")));
         TS_ASSERT_EQUALS(reader.warnings(), (gum::Size)3)
         TS_ASSERT_EQUALS(reader.errors(), (gum::Size)3)
       }
@@ -945,8 +945,8 @@ namespace gum_tests {
 
       TS_GUM_ASSERT_THROWS_NOTHING(nbrErr = reader.proceed())
       TS_ASSERT_EQUALS(
-         net->toString(),
-         "BN{nodes: 32, arcs: 66, domainSize: 10^17.7667, dim: 10083, mem: 105Ko 352o}")
+          net->toString(),
+          "BN{nodes: 32, arcs: 66, domainSize: 10^17.7667, dim: 10083, mem: 105Ko 352o}")
 
       TS_ASSERT_EQUALS(nbrErr, (gum::Size)0)
       TS_ASSERT_EQUALS(reader.warnings(), (gum::Size)64)

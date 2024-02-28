@@ -41,11 +41,11 @@ namespace gum {
 
     /// default constructor
     ParamEstimator::ParamEstimator(
-       const DBRowGeneratorParser&                                 parser,
-       const Prior&                                                external_prior,
-       const Prior&                                                score_internal_prior,
-       const std::vector< std::pair< std::size_t, std::size_t > >& ranges,
-       const Bijection< NodeId, std::size_t >&                     nodeId2columns) :
+        const DBRowGeneratorParser&                                 parser,
+        const Prior&                                                external_prior,
+        const Prior&                                                score_internal_prior,
+        const std::vector< std::pair< std::size_t, std::size_t > >& ranges,
+        const Bijection< NodeId, std::size_t >&                     nodeId2columns) :
         counter_(parser, ranges, nodeId2columns) {
       // copy the a prioris
       external_prior_ = external_prior.clone();
@@ -125,7 +125,7 @@ namespace gum {
      * An empty set of ranges is equivalent to an interval [X,Y) ranging over
      * the whole database. */
     void ParamEstimator::setRanges(
-       const std::vector< std::pair< std::size_t, std::size_t > >& new_ranges) {
+        const std::vector< std::pair< std::size_t, std::size_t > >& new_ranges) {
       std::vector< std::pair< std::size_t, std::size_t > > old_ranges = ranges();
       counter_.setRanges(new_ranges);
       if (old_ranges != ranges()) clear();

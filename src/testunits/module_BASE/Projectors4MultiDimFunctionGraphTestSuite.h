@@ -47,7 +47,7 @@ namespace gum_tests {
     // ************************************************************************************************
     gum::Sequence< const gum::DiscreteVariable* >* _generateFixVarList_() {
       gum::Sequence< const gum::DiscreteVariable* >* ret
-         = new gum::Sequence< const gum::DiscreteVariable* >();
+          = new gum::Sequence< const gum::DiscreteVariable* >();
       ret->insert(new gum::LabelizedVariable("A", "", 2));
       ret->insert(new gum::LabelizedVariable("B", "", 2));
       ret->insert(new gum::LabelizedVariable("C", "", 2));
@@ -70,7 +70,7 @@ namespace gum_tests {
       //        return ret;
 
       gum::Sequence< const gum::DiscreteVariable* >* ret
-         = new gum::Sequence< const gum::DiscreteVariable* >();
+          = new gum::Sequence< const gum::DiscreteVariable* >();
 
       for (int j = 0; j < 10; j++) {
         std::stringstream varName;
@@ -93,9 +93,9 @@ namespace gum_tests {
     /// Génération fixe de diagramme de décision
     // ************************************************************************************************
     gum::MultiDimFunctionGraph< double >*
-       _generateFunctionGraph1_(const gum::Sequence< const gum::DiscreteVariable* >* varList) {
+        _generateFunctionGraph1_(const gum::Sequence< const gum::DiscreteVariable* >* varList) {
       gum::MultiDimFunctionGraph< double >* generatedFunctionGraph
-         = gum::MultiDimFunctionGraph< double >::getReducedAndOrderedInstance();
+          = gum::MultiDimFunctionGraph< double >::getReducedAndOrderedInstance();
 
       for (gum::SequenceIterator< const gum::DiscreteVariable* > varIter = varList->begin();
            varIter != varList->end();
@@ -130,9 +130,9 @@ namespace gum_tests {
     /// Génération aléatoire de diagramme de décision
     // ************************************************************************************************
     gum::MultiDimFunctionGraph< double >*
-       _generateRandomFunctionGraph_(const gum::Sequence< const gum::DiscreteVariable* >* varList,
-                                     double lowLimit  = -100,
-                                     double highLimit = 100) {
+        _generateRandomFunctionGraph_(const gum::Sequence< const gum::DiscreteVariable* >* varList,
+                                      double lowLimit  = -100,
+                                      double highLimit = 100) {
       gum::MultiDimFunctionGraphGenerator gene(2, 5, *varList);
 
       return gene.generate();
@@ -412,7 +412,7 @@ namespace gum_tests {
         gum::LabelizedVariable* vD = new gum::LabelizedVariable("D", "", 4);
 
         gum::MultiDimFunctionGraph< double >* dg1
-           = gum::MultiDimFunctionGraph< double >::getReducedAndOrderedInstance();
+            = gum::MultiDimFunctionGraph< double >::getReducedAndOrderedInstance();
 
         dg1->add(*vA);
         dg1->add(*vB);
@@ -420,7 +420,7 @@ namespace gum_tests {
         dg1->add(*vD);
 
         gum::NodeId n01, n02, n03, n04, n05, n06, n07, n08, n09, n10, n11, n12, n13, n14, n15, n16,
-           n17, n18, n19, n20, n21, n22, n23, n24, n25, n26, n27, n28, n29, n30, n31, n32;
+            n17, n18, n19, n20, n21, n22, n23, n24, n25, n26, n27, n28, n29, n30, n31, n32;
 
 
         n01 = dg1->manager()->addInternalNode(vA);
@@ -533,7 +533,7 @@ namespace gum_tests {
         gum::LabelizedVariable* vD = new gum::LabelizedVariable("D", "", 4);
 
         gum::MultiDimFunctionGraph< double >* dg1
-           = gum::MultiDimFunctionGraph< double >::getReducedAndOrderedInstance();
+            = gum::MultiDimFunctionGraph< double >::getReducedAndOrderedInstance();
 
         dg1->add(*vA);
         dg1->add(*vB);
@@ -541,7 +541,7 @@ namespace gum_tests {
         dg1->add(*vD);
 
         gum::NodeId n01, n02, n03, n04, n05, n06, n07, n08, n09, n10, n11, n12, n13, n14, n15, n16,
-           n17, n18, n19, n20, n21, n22, n23, n24, n25, n26, n27, n28, n29;
+            n17, n18, n19, n20, n21, n22, n23, n24, n25, n26, n27, n28, n29;
 
 
         n01 = dg1->manager()->addInternalNode(vA);
@@ -654,7 +654,7 @@ namespace gum_tests {
         gum::LabelizedVariable* v6 = new gum::LabelizedVariable("var6", "", 4);
 
         gum::MultiDimFunctionGraph< double >* dg1
-           = gum::MultiDimFunctionGraph< double >::getReducedAndOrderedInstance();
+            = gum::MultiDimFunctionGraph< double >::getReducedAndOrderedInstance();
 
         dg1->add(*v0);
         dg1->add(*v1);
@@ -664,9 +664,9 @@ namespace gum_tests {
         dg1->add(*v5);
 
         gum::NodeId n01, n02, n03, n04, n05, n06, n07, n08, n09, n10, n11, n12, n13, n14, n15, n16,
-           n17, n18, n19, n20, n21, n22, n23, n24, n25, n26, n27, n28, n29, n30, n31, n32, n33, n34,
-           n35, n36, n37, n38, n39, n40, n41, n42, n43, n44, n45, n46, n47, n48, n49, n50, n51, n52,
-           n53, n54, n55, n56, n57, n58, n59, n60;
+            n17, n18, n19, n20, n21, n22, n23, n24, n25, n26, n27, n28, n29, n30, n31, n32, n33,
+            n34, n35, n36, n37, n38, n39, n40, n41, n42, n43, n44, n45, n46, n47, n48, n49, n50,
+            n51, n52, n53, n54, n55, n56, n57, n58, n59, n60;
 
 
         n01 = dg1->manager()->addInternalNode(v0);

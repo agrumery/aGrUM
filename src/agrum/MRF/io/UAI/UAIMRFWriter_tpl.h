@@ -116,7 +116,7 @@ namespace gum {
   template < typename GUM_SCALAR >
   INLINE std::string
          UAIMRFWriter< GUM_SCALAR >::_factorBloc_(const IMarkovRandomField< GUM_SCALAR >& MN,
-                                              const Potential< GUM_SCALAR >&          clikpot) {
+                                               const Potential< GUM_SCALAR >&          clikpot) {
     std::stringstream str;
 
     str << clikpot.domainSize() << " # {";

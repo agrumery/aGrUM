@@ -89,15 +89,15 @@ namespace gum {
 
       template < typename GUM_SCALAR >
       void
-         DFSTree< GUM_SCALAR >::_initialiaze_root_(Pattern*                             p,
-                                                   Sequence< EdgeData< GUM_SCALAR >* >& edge_seq) {
+          DFSTree< GUM_SCALAR >::_initialiaze_root_(Pattern*                             p,
+                                                    Sequence< EdgeData< GUM_SCALAR >* >& edge_seq) {
         DFSTree< GUM_SCALAR >::PatternData* data = _data_[p];
         std::vector< NodeId >               degree_list;
 
         for (auto iter = edge_seq.begin(); iter != edge_seq.end(); ++iter) {
           const auto&                             edge = *iter;
           Sequence< PRMInstance< GUM_SCALAR >* >* seq
-             = new Sequence< PRMInstance< GUM_SCALAR >* >();
+              = new Sequence< PRMInstance< GUM_SCALAR >* >();
 
           // Creating the multiset of instances matching p
           bool u_first = (edge->l_u->id < edge->l_v->id);
@@ -138,8 +138,8 @@ namespace gum {
 
       template < typename GUM_SCALAR >
       bool DFSTree< GUM_SCALAR >::_is_new_seq_(
-         Sequence< PRMInstance< GUM_SCALAR >* >&                  seq,
-         NodeProperty< Sequence< PRMInstance< GUM_SCALAR >* >* >& iso_map) {
+          Sequence< PRMInstance< GUM_SCALAR >* >&                  seq,
+          NodeProperty< Sequence< PRMInstance< GUM_SCALAR >* >* >& iso_map) {
         for (const auto& elt: iso_map) {
           bool found = false;
 
@@ -264,7 +264,7 @@ namespace gum {
             } else {
               if (elt.second->exists(match.val().first) && elt.second->exists(match.val().second)) {
                 Sequence< PRMInstance< GUM_SCALAR >* >* new_seq
-                   = new Sequence< PRMInstance< GUM_SCALAR >* >(*elt.second);
+                    = new Sequence< PRMInstance< GUM_SCALAR >* >(*elt.second);
 
                 if (_is_new_seq_(*new_seq, data->iso_map)) {
                   id = data->iso_graph.addNode();
@@ -330,8 +330,8 @@ namespace gum {
 
       template < typename GUM_SCALAR >
       bool DFSTree< GUM_SCALAR >::_test_equality_(
-         HashTable< PRMClassElement< GUM_SCALAR >*, Size >& x,
-         HashTable< PRMClassElement< GUM_SCALAR >*, Size >& y) {
+          HashTable< PRMClassElement< GUM_SCALAR >*, Size >& x,
+          HashTable< PRMClassElement< GUM_SCALAR >*, Size >& y) {
         try {
           for (const auto& elt: x)
             if (y[elt.first] != elt.second) return false;
@@ -385,7 +385,7 @@ namespace gum {
       INLINE Pattern& DFSTree< GUM_SCALAR >::parent(const Pattern& p) {
         try {
           return *(_node_map_.second(
-             *(DiGraph::parents(_node_map_.first(const_cast< Pattern* >(&p))).begin())));
+              *(DiGraph::parents(_node_map_.first(const_cast< Pattern* >(&p))).begin())));
         } catch (NotFound const&) {
           if (_node_map_.existsSecond(const_cast< Pattern* >(&p))) {
             GUM_ERROR(NotFound, "the given pattern is a root node")
@@ -399,7 +399,7 @@ namespace gum {
       INLINE const Pattern& DFSTree< GUM_SCALAR >::parent(const Pattern& p) const {
         try {
           return *(_node_map_.second(
-             *(DiGraph::parents(_node_map_.first(const_cast< Pattern* >(&p))).begin())));
+              *(DiGraph::parents(_node_map_.first(const_cast< Pattern* >(&p))).begin())));
         } catch (NotFound const&) {
           if (_node_map_.existsSecond(const_cast< Pattern* >(&p))) {
             GUM_ERROR(NotFound, "the given pattern is a root node")
@@ -483,13 +483,13 @@ namespace gum {
 
       template < typename GUM_SCALAR >
       INLINE typename DFSTree< GUM_SCALAR >::PatternData&
-         DFSTree< GUM_SCALAR >::data(const Pattern& p) {
+          DFSTree< GUM_SCALAR >::data(const Pattern& p) {
         return *(_data_[const_cast< Pattern* >(&p)]);
       }
 
       template < typename GUM_SCALAR >
       INLINE const typename DFSTree< GUM_SCALAR >::PatternData&
-         DFSTree< GUM_SCALAR >::data(const Pattern& p) const {
+          DFSTree< GUM_SCALAR >::data(const Pattern& p) const {
         return *(_data_[const_cast< Pattern* >(&p)]);
       }
 
@@ -513,7 +513,7 @@ namespace gum {
 
       template < typename GUM_SCALAR >
       INLINE DFSTree< GUM_SCALAR >::NeighborDegreeSort::NeighborDegreeSort(
-         const NeighborDegreeSort& source) :
+          const NeighborDegreeSort& source) :
           g(source.g) {
         GUM_CONS_CPY(DFSTree< GUM_SCALAR >::NeighborDegreeSort);
       }

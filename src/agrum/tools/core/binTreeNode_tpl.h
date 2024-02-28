@@ -57,7 +57,7 @@ namespace gum {
     // update the tree accordingly to the removal of this
     if (parent_ != nullptr)
       parent_->children_[static_cast< int >(parent_dir_)]
-         = nullptr;   // parent_dir can not be NO_PARENT (... sure ?)
+          = nullptr;   // parent_dir can not be NO_PARENT (... sure ?)
 
     if (children_[0] != nullptr) {
       children_[0]->parent_     = nullptr;

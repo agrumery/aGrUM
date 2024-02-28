@@ -125,11 +125,11 @@ namespace gum {
      * triangulation but not both. This will necessarily be OK in
      * DefaultTriangulations. */
     DefaultPartialOrderedEliminationSequenceStrategy(
-       const DefaultPartialOrderedEliminationSequenceStrategy& from);
+        const DefaultPartialOrderedEliminationSequenceStrategy& from);
 
     /// move constructor
     DefaultPartialOrderedEliminationSequenceStrategy(
-       DefaultPartialOrderedEliminationSequenceStrategy&& from);
+        DefaultPartialOrderedEliminationSequenceStrategy&& from);
 
     /// destructor
     virtual ~DefaultPartialOrderedEliminationSequenceStrategy();

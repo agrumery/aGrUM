@@ -90,7 +90,8 @@ namespace gum {
     if (this->isModified_()) computeScore();
     //      std::cout << this->toString() << std::endl;
     double score
-       = 1 - ChiSquare::probaChi2(_GStat_, (_conTab_.attrASize() - 1) * (_conTab_.attrBSize() - 1));
+        = 1
+        - ChiSquare::probaChi2(_GStat_, (_conTab_.attrASize() - 1) * (_conTab_.attrBSize() - 1));
     return score;
   }
 

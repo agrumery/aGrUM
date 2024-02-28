@@ -258,7 +258,7 @@ namespace gum {
                         y,
                         "Remove " << x << " - " << y,
                         "Independent based on MutualInformation knowing Sep "
-                           << ui << "Mutual information:" << i_xy_ui)
+                            << ui << "Mutual information:" << i_xy_ui)
 
             sepSet.insert(std::make_pair(x, y), std::move(ui));
           } else {
@@ -289,9 +289,9 @@ namespace gum {
 
     /// The orientation protocol of MIIC
     void Miic::orientationMiic_(
-       CorrectedMutualInformation&                                            mutualInformation,
-       MixedGraph&                                                            graph,
-       const HashTable< std::pair< NodeId, NodeId >, std::vector< NodeId > >& sepSet) {
+        CorrectedMutualInformation&                                            mutualInformation,
+        MixedGraph&                                                            graph,
+        const HashTable< std::pair< NodeId, NodeId >, std::vector< NodeId > >& sepSet) {
       // structure to store the orientations marks -, o, or >,
       // Considers the head of the arc/edge: first node -* second node
       HashTable< std::pair< NodeId, NodeId >, char > marks = _initialMarks_;
@@ -345,7 +345,7 @@ namespace gum {
       }
 
       std::vector< ProbabilisticRanking > proba_triples
-         = unshieldedTriplesMiic_(graph, mutualInformation, sepSet, marks);
+          = unshieldedTriplesMiic_(graph, mutualInformation, sepSet, marks);
 
       const Size steps_orient = proba_triples.size();
       Size       past_steps   = current_step_;
@@ -471,7 +471,7 @@ namespace gum {
                         z,
                         "Add Arc " << y << " -> " << z,
                         "V-structure Orientation | existing "
-                           << x << " -> " << z << ", then orienting " << y << " -> " << z)
+                            << x << " -> " << z << ", then orienting " << y << " -> " << z)
             // GUM_TRACE("2.a Removing edge (" << y << "," << z << ")")
             // GUM_TRACE("2.a Adding arc (" << y << "," << z << ")")
             marks[{y, z}] = '>';
@@ -490,7 +490,7 @@ namespace gum {
                           y,
                           "Add Arc " << z << " -> " << y,
                           "V-structure Orientation | existing "
-                             << x << " -> " << z << ", then orienting " << z << " -> " << y)
+                              << x << " -> " << z << ", then orienting " << z << " -> " << y)
               // GUM_TRACE("2.b Adding arc (" << y << "," << z << ")")
               marks[{z, y}] = '>';
             }
@@ -774,9 +774,9 @@ namespace gum {
     /// gets the list of unshielded triples in the graph in decreasing value of
     ///|I'(x, y, z|{ui})|
     std::vector< Ranking > Miic::unshieldedTriples_(
-       const MixedGraph&                                                      graph,
-       CorrectedMutualInformation&                                            mutualInformation,
-       const HashTable< std::pair< NodeId, NodeId >, std::vector< NodeId > >& sepSet) {
+        const MixedGraph&                                                      graph,
+        CorrectedMutualInformation&                                            mutualInformation,
+        const HashTable< std::pair< NodeId, NodeId >, std::vector< NodeId > >& sepSet) {
       std::vector< Ranking > triples;
       for (NodeId z: graph) {
         for (NodeId x: graph.neighbours(z)) {
@@ -811,10 +811,10 @@ namespace gum {
     /// gets the list of unshielded triples in the graph in decreasing value of
     ///|I'(x, y, z|{ui})|, prepares the orientation matrix for MIIC
     std::vector< ProbabilisticRanking > Miic::unshieldedTriplesMiic_(
-       const MixedGraph&                                                      graph,
-       CorrectedMutualInformation&                                            mutualInformation,
-       const HashTable< std::pair< NodeId, NodeId >, std::vector< NodeId > >& sepSet,
-       HashTable< std::pair< NodeId, NodeId >, char >&                        marks) {
+        const MixedGraph&                                                      graph,
+        CorrectedMutualInformation&                                            mutualInformation,
+        const HashTable< std::pair< NodeId, NodeId >, std::vector< NodeId > >& sepSet,
+        HashTable< std::pair< NodeId, NodeId >, char >&                        marks) {
       std::vector< ProbabilisticRanking > triples;
       for (NodeId z: graph) {
         for (NodeId x: graph.neighbours(z)) {
@@ -851,8 +851,8 @@ namespace gum {
 
     /// Gets the orientation probabilities like MIIC for the orientation phase
     std::vector< ProbabilisticRanking >
-       Miic::updateProbaTriples_(const MixedGraph&                   graph,
-                                 std::vector< ProbabilisticRanking > probaTriples) {
+        Miic::updateProbaTriples_(const MixedGraph&                   graph,
+                                  std::vector< ProbabilisticRanking > probaTriples) {
       for (auto& triple: probaTriples) {
         NodeId x, y, z;
         x                 = std::get< 0 >(*std::get< 0 >(triple));

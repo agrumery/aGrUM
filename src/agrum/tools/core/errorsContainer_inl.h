@@ -36,8 +36,10 @@ namespace gum {
   }
 
   INLINE
-  void
-     ErrorsContainer::Warning(const std::wstring& filename, Idx line, Idx col, const wchar_t* msg) {
+  void ErrorsContainer::Warning(const std::wstring& filename,
+                                Idx                 line,
+                                Idx                 col,
+                                const wchar_t*      msg) {
     add(ParseError(false, narrow(std::wstring(msg)), narrow(filename), line, col));
   }
 

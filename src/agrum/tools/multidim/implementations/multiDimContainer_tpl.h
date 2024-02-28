@@ -34,7 +34,7 @@ namespace gum {
 
   template < typename GUM_SCALAR >
   INLINE
-     MultiDimContainer< GUM_SCALAR >::MultiDimContainer(MultiDimContainer< GUM_SCALAR >&& from) :
+      MultiDimContainer< GUM_SCALAR >::MultiDimContainer(MultiDimContainer< GUM_SCALAR >&& from) :
       MultiDimAdressable(std::forward< MultiDimAdressable >(from)) {
     GUM_CONS_MOV(MultiDimContainer);
   }
@@ -48,7 +48,7 @@ namespace gum {
   // Copy constructor
   template < typename GUM_SCALAR >
   INLINE MultiDimContainer< GUM_SCALAR >::MultiDimContainer(
-     const MultiDimContainer< GUM_SCALAR >& src) :
+      const MultiDimContainer< GUM_SCALAR >& src) :
       MultiDimAdressable(src) {
     GUM_CONS_CPY(MultiDimContainer);
   }
@@ -148,7 +148,7 @@ namespace gum {
 
   template < typename GUM_SCALAR >
   INLINE bool
-     MultiDimContainer< GUM_SCALAR >::operator!=(const MultiDimContainer< GUM_SCALAR >& p) const {
+      MultiDimContainer< GUM_SCALAR >::operator!=(const MultiDimContainer< GUM_SCALAR >& p) const {
     return !operator==(p);
   }
 
@@ -191,8 +191,8 @@ namespace gum {
 
   template < typename GUM_SCALAR >
   GUM_SCALAR
-     MultiDimContainer< GUM_SCALAR >::reduce(std::function< GUM_SCALAR(GUM_SCALAR, GUM_SCALAR) > f,
-                                             GUM_SCALAR base) const {
+      MultiDimContainer< GUM_SCALAR >::reduce(std::function< GUM_SCALAR(GUM_SCALAR, GUM_SCALAR) > f,
+                                              GUM_SCALAR base) const {
     GUM_SCALAR    tmp = base;
     Instantiation i(*this);
     for (i.setFirst(); !i.end(); ++i) {

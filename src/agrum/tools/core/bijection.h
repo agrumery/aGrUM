@@ -151,7 +151,7 @@ namespace gum {
      * @return Returns the gum::Bijection in which the copy was made.
      */
     BijectionImplementation< T1, T2, Gen >&
-       operator=(const BijectionImplementation< T1, T2, Gen >& toCopy);
+        operator=(const BijectionImplementation< T1, T2, Gen >& toCopy);
 
     /**
      * @brief Move operator.
@@ -159,7 +159,7 @@ namespace gum {
      * @return Returns the moved gum::Bijection in which the move was made.
      */
     BijectionImplementation< T1, T2, Gen >&
-       operator=(BijectionImplementation< T1, T2, Gen >&& toCopy);
+        operator=(BijectionImplementation< T1, T2, Gen >&& toCopy);
 
     public:
     // ============================================================================
@@ -690,7 +690,7 @@ namespace gum {
      * @return Returns the gum::Bijection in which the copy was made.
      */
     BijectionImplementation< T1, T2, true >&
-       operator=(const BijectionImplementation< T1, T2, true >& toCopy);
+        operator=(const BijectionImplementation< T1, T2, true >& toCopy);
 
     /**
      * @brief Move operator.
@@ -698,7 +698,7 @@ namespace gum {
      * @return Returns the moved gum::Bijection in which the move was made.
      */
     BijectionImplementation< T1, T2, true >&
-       operator=(BijectionImplementation< T1, T2, true >&& from);
+        operator=(BijectionImplementation< T1, T2, true >&& from);
 
     public:
     // ============================================================================
@@ -1198,7 +1198,7 @@ namespace gum {
      * scalars and non-scalars functions second in iterators
      */
     using Getter
-       = BijectionIteratorGet< std::is_scalar< T1 >::value && std::is_scalar< T2 >::value >;
+        = BijectionIteratorGet< std::is_scalar< T1 >::value && std::is_scalar< T2 >::value >;
 
     /**
      * @brief Begin constructor.
@@ -1346,9 +1346,9 @@ namespace gum {
     private:
     /// Alias for one of the internal gum::HashTable of the gum::Bijection.
     using HashTable12 =
-       typename std::conditional< std::is_scalar< T1 >::value && std::is_scalar< T2 >::value,
-                                  HashTable< T1, T2 >,
-                                  HashTable< T1, T2* > >::type;
+        typename std::conditional< std::is_scalar< T1 >::value && std::is_scalar< T2 >::value,
+                                   HashTable< T1, T2 >,
+                                   HashTable< T1, T2* > >::type;
 
     /// Alias for one of the internal gum::HastTableIterator of the
     /// gum::Bijection.
@@ -1398,7 +1398,7 @@ namespace gum {
      * scalars and non-scalars functions second in iterators
      */
     using Getter
-       = BijectionIteratorGet< std::is_scalar< T1 >::value && std::is_scalar< T2 >::value >;
+        = BijectionIteratorGet< std::is_scalar< T1 >::value && std::is_scalar< T2 >::value >;
 
     /**
      * @brief Begin constructor.
@@ -1540,9 +1540,9 @@ namespace gum {
     private:
     /// Alias for one of the internal gum::HashTable of the gum::Bijection.
     using HashTable12 =
-       typename std::conditional< std::is_scalar< T1 >::value && std::is_scalar< T2 >::value,
-                                  HashTable< T1, T2 >,
-                                  HashTable< T1, T2* > >::type;
+        typename std::conditional< std::is_scalar< T1 >::value && std::is_scalar< T2 >::value,
+                                   HashTable< T1, T2 >,
+                                   HashTable< T1, T2* > >::type;
     using HashIter = typename HashTable12::const_iterator;
 
     /// The hashTable iterator that actually does all the job.
@@ -1595,9 +1595,9 @@ namespace gum {
 
     /// The Implementation of this gum::Bijection.
     using Implementation
-       = BijectionImplementation< T1,
-                                  T2,
-                                  std::is_scalar< T1 >::value && std::is_scalar< T2 >::value >;
+        = BijectionImplementation< T1,
+                                   T2,
+                                   std::is_scalar< T1 >::value && std::is_scalar< T2 >::value >;
 
     // ============================================================================
     /// @name Constructors/destructors

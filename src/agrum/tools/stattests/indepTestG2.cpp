@@ -89,11 +89,11 @@ namespace gum {
 
         // get the counts for the conditioning nodes
         std::vector< double > N_xz
-           = this->marginalize_(std::size_t(1), X_size, Y_size, Z_size, N_xyz);
+            = this->marginalize_(std::size_t(1), X_size, Y_size, Z_size, N_xyz);
         std::vector< double > N_yz
-           = this->marginalize_(std::size_t(0), X_size, Y_size, Z_size, N_xyz);
+            = this->marginalize_(std::size_t(0), X_size, Y_size, Z_size, N_xyz);
         std::vector< double > N_z
-           = this->marginalize_(std::size_t(2), X_size, Y_size, Z_size, N_xyz);
+            = this->marginalize_(std::size_t(2), X_size, Y_size, Z_size, N_xyz);
 
         // indicate to the chi2 distribution the set of conditioning nodes
         std::vector< Idx > cond_nodes;
@@ -143,9 +143,9 @@ namespace gum {
 
         // get the counts for all the targets and for the conditioning nodes
         std::vector< double > N_x
-           = this->marginalize_(std::size_t(1), X_size, Y_size, std::size_t(1), N_xyz);
+            = this->marginalize_(std::size_t(1), X_size, Y_size, std::size_t(1), N_xyz);
         std::vector< double > N_y
-           = this->marginalize_(std::size_t(0), X_size, Y_size, std::size_t(1), N_xyz);
+            = this->marginalize_(std::size_t(0), X_size, Y_size, std::size_t(1), N_xyz);
 
         // count N
         double N = 0.0;

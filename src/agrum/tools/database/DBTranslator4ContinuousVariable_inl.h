@@ -35,7 +35,7 @@ namespace gum {
 
     /// returns the original value for a given translation
     INLINE std::string DBTranslator4ContinuousVariable::translateBack(
-       const DBTranslatedValue translated_val) const {
+        const DBTranslatedValue translated_val) const {
       if (translated_val.cont_val == std::numeric_limits< float >::max()) {
         if (!_nonfloat_missing_symbol_.empty()) return _nonfloat_missing_symbol_;
         if (this->missing_symbols_.empty()) return *(this->missing_symbols_.begin());
@@ -45,9 +45,9 @@ namespace gum {
           || (translated_val.cont_val > _variable_.upperBound())) {
         GUM_ERROR(UnknownLabelInDatabase,
                   "The back translation of "
-                     << translated_val.cont_val
-                     << " could not be found because the value is outside the "
-                     << "domain of the continuous variable");
+                      << translated_val.cont_val
+                      << " could not be found because the value is outside the "
+                      << "domain of the continuous variable");
       }
 
       char buffer[100];

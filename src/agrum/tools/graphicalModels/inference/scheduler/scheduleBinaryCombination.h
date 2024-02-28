@@ -125,11 +125,11 @@ namespace gum {
 
     /// copy operator
     ScheduleBinaryCombination< TABLE1, TABLE2, TABLE_RES >&
-       operator=(const ScheduleBinaryCombination< TABLE1, TABLE2, TABLE_RES >&);
+        operator=(const ScheduleBinaryCombination< TABLE1, TABLE2, TABLE_RES >&);
 
     /// move operator
     ScheduleBinaryCombination< TABLE1, TABLE2, TABLE_RES >&
-       operator=(ScheduleBinaryCombination< TABLE1, TABLE2, TABLE_RES >&&);
+        operator=(ScheduleBinaryCombination< TABLE1, TABLE2, TABLE_RES >&&);
 
     /// operator ==
     /** Two operators are identical if and only if they have equal (==)

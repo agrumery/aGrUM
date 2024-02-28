@@ -46,8 +46,8 @@ namespace gum {
 
   template < typename GUM_SCALAR >
   MultiDimImplementation< GUM_SCALAR >* GUM_MULTI_DIM_PARTIAL_INSTANTIATION_NAME(
-     const MultiDimImplementation< GUM_SCALAR >*      table,
-     const HashTable< const DiscreteVariable*, Idx >& inst_vars)
+      const MultiDimImplementation< GUM_SCALAR >*      table,
+      const HashTable< const DiscreteVariable*, Idx >& inst_vars)
 #  endif
 
   // clang-format off
@@ -130,7 +130,7 @@ namespace gum {
     // will more or less correspond to a ++ operation on an instantiation on
     // result
     MultiDimArray< GUM_MULTI_DIM_PARTIAL_INSTANTIATION_TYPE >* result
-       = new MultiDimArray< GUM_MULTI_DIM_PARTIAL_INSTANTIATION_TYPE >;
+        = new MultiDimArray< GUM_MULTI_DIM_PARTIAL_INSTANTIATION_TYPE >;
     result->beginMultipleChanges();
 
     for (const auto var: result_varSeq)
@@ -158,7 +158,7 @@ namespace gum {
     // that were not instantiated. ptable and presult are pointers on the
     // arrays that are directly used for this loop
     GUM_MULTI_DIM_PARTIAL_INSTANTIATION_TYPE* presult
-       = const_cast< GUM_MULTI_DIM_PARTIAL_INSTANTIATION_TYPE* >(&(result->unsafeGet(0)));
+        = const_cast< GUM_MULTI_DIM_PARTIAL_INSTANTIATION_TYPE* >(&(result->unsafeGet(0)));
     // TODO: change into Instantiation table_inst(table); when Potentials will support
     // thread-safe creations of Instantiations
     Instantiation table_inst;

@@ -204,7 +204,7 @@ namespace gum {
 
   /// copy operator
   INLINE DAGCycleDetector::ArcReverse&
-     DAGCycleDetector::ArcReverse::operator=(const DAGCycleDetector::ArcReverse& from) noexcept {
+      DAGCycleDetector::ArcReverse::operator=(const DAGCycleDetector::ArcReverse& from) noexcept {
     DAGCycleDetector::Change::operator=(from);
     return *this;
   }
@@ -332,7 +332,7 @@ namespace gum {
   /// check the equality between two DAGCycleDetectors
   INLINE bool DAGCycleDetector::operator==(const DAGCycleDetector& from) const {
     return (   //(  _dagmodel_ == from. _dagmodel_ ) &&
-       (_ancestors_ == from._ancestors_) && (_descendants_ == from._descendants_));
+        (_ancestors_ == from._ancestors_) && (_descendants_ == from._descendants_));
   }
 
   /// check the inequality between two DAGCycleDetectors

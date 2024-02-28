@@ -95,7 +95,7 @@ namespace gum {
       const Arc& arc = elt.first;
       if (!result[arc].empty()) {    // no need to further process cliques
         const NodeSet& separator =   // with no barren nodes
-           junction_tree.separator(Edge(arc.tail(), arc.head()));
+            junction_tree.separator(Edge(arc.tail(), arc.head()));
 
         for (const auto node: separator) {
           node2arc[node].insert(arc);

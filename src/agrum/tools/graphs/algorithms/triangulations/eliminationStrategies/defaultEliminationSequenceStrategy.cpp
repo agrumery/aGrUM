@@ -43,10 +43,10 @@ namespace gum {
 
   /// constructor for a (potentially) non empty graph
   DefaultEliminationSequenceStrategy::DefaultEliminationSequenceStrategy(
-     UndiGraph*                  graph,
-     const NodeProperty< Size >* domain_sizes,
-     double                      ratio,
-     double                      threshold) :
+      UndiGraph*                  graph,
+      const NodeProperty< Size >* domain_sizes,
+      double                      ratio,
+      double                      threshold) :
       _simplicial_ratio_(ratio),
       _simplicial_threshold_(threshold) {
     setGraph(graph, domain_sizes);
@@ -56,7 +56,7 @@ namespace gum {
 
   /// copy constructor
   DefaultEliminationSequenceStrategy::DefaultEliminationSequenceStrategy(
-     const DefaultEliminationSequenceStrategy& from) :
+      const DefaultEliminationSequenceStrategy& from) :
       UnconstrainedEliminationSequenceStrategy(from),
       // no need to set  _log_weights_ because the copy of the simplicial set
       // will set it properly
@@ -73,7 +73,7 @@ namespace gum {
 
   /// move constructor
   DefaultEliminationSequenceStrategy::DefaultEliminationSequenceStrategy(
-     DefaultEliminationSequenceStrategy&& from) :
+      DefaultEliminationSequenceStrategy&& from) :
       UnconstrainedEliminationSequenceStrategy(std::move(from)),
       _log_weights_(std::move(from._log_weights_)), _simplicial_set_(from._simplicial_set_),
       _simplicial_ratio_(from._simplicial_ratio_),

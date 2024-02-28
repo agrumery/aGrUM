@@ -57,13 +57,13 @@ namespace gum {
     // Copy operator. Raise a FatalError.
     template < typename GUM_SCALAR >
     PRMReferenceSlot< GUM_SCALAR >&
-       PRMReferenceSlot< GUM_SCALAR >::operator=(const PRMReferenceSlot< GUM_SCALAR >& from) {
+        PRMReferenceSlot< GUM_SCALAR >::operator=(const PRMReferenceSlot< GUM_SCALAR >& from) {
       GUM_ERROR(FatalError, "illegal call to gum::ReferenceSlot copy operator.")
     }
 
     template < typename GUM_SCALAR >
     INLINE typename PRMClassElement< GUM_SCALAR >::ClassElementType
-       PRMReferenceSlot< GUM_SCALAR >::elt_type() const {
+        PRMReferenceSlot< GUM_SCALAR >::elt_type() const {
       return this->prm_refslot;
     }
 
@@ -110,7 +110,7 @@ namespace gum {
 
     template < typename GUM_SCALAR >
     INLINE void
-       PRMReferenceSlot< GUM_SCALAR >::addParent(const PRMClassElement< GUM_SCALAR >& elt) {}
+        PRMReferenceSlot< GUM_SCALAR >::addParent(const PRMClassElement< GUM_SCALAR >& elt) {}
 
     template < typename GUM_SCALAR >
     INLINE void PRMReferenceSlot< GUM_SCALAR >::addChild(const PRMClassElement< GUM_SCALAR >& elt) {

@@ -44,7 +44,7 @@ namespace gum {
   // initializer list constructor
   template < typename Val, typename Priority, typename Cmp >
   MultiPriorityQueue< Val, Priority, Cmp >::MultiPriorityQueue(
-     std::initializer_list< std::pair< Val, Priority > > list) :
+      std::initializer_list< std::pair< Val, Priority > > list) :
       _indices_(Size(list.size()) / 2, true, false) {
     // fill the queue
     _heap_.reserve(list.size());
@@ -59,7 +59,7 @@ namespace gum {
   // copy constructor
   template < typename Val, typename Priority, typename Cmp >
   MultiPriorityQueue< Val, Priority, Cmp >::MultiPriorityQueue(
-     const MultiPriorityQueue< Val, Priority, Cmp >& from) :
+      const MultiPriorityQueue< Val, Priority, Cmp >& from) :
       _heap_(from._heap_),
       _indices_(from._indices_), _nb_elements_(from._nb_elements_), _cmp_(from._cmp_) {
     // for debugging purposes
@@ -78,7 +78,7 @@ namespace gum {
   // move constructor
   template < typename Val, typename Priority, typename Cmp >
   MultiPriorityQueue< Val, Priority, Cmp >::MultiPriorityQueue(
-     MultiPriorityQueue< Val, Priority, Cmp >&& from) :
+      MultiPriorityQueue< Val, Priority, Cmp >&& from) :
       _heap_(std::move(from._heap_)),
       _indices_(std::move(from._indices_)), _nb_elements_(std::move(from._nb_elements_)),
       _cmp_(std::move(from._cmp_)) {
@@ -96,7 +96,7 @@ namespace gum {
   // copy operator
   template < typename Val, typename Priority, typename Cmp >
   MultiPriorityQueue< Val, Priority, Cmp >& MultiPriorityQueue< Val, Priority, Cmp >::operator=(
-     const MultiPriorityQueue< Val, Priority, Cmp >& from) {
+      const MultiPriorityQueue< Val, Priority, Cmp >& from) {
     // for debugging purposes
     GUM_OP_CPY(MultiPriorityQueue);
 
@@ -131,7 +131,7 @@ namespace gum {
   // move operator
   template < typename Val, typename Priority, typename Cmp >
   MultiPriorityQueue< Val, Priority, Cmp >& MultiPriorityQueue< Val, Priority, Cmp >::operator=(
-     MultiPriorityQueue< Val, Priority, Cmp >&& from) {
+      MultiPriorityQueue< Val, Priority, Cmp >&& from) {
     // avoid self assignment
     if (this != &from) {
       // for debugging purposes
@@ -396,7 +396,7 @@ namespace gum {
   template < typename... Args >
   INLINE Size MultiPriorityQueue< Val, Priority, Cmp >::emplace(Args&&... args) {
     std::pair< Val, Priority > new_elt
-       = std::make_pair< Val, Priority >(std::forward< Args >(args)...);
+        = std::make_pair< Val, Priority >(std::forward< Args >(args)...);
     return insert(std::move(new_elt.first), std::move(new_elt.second));
   }
 

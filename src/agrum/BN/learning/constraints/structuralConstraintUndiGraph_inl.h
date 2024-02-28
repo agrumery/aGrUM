@@ -49,19 +49,19 @@ namespace gum {
 
     /// checks whether the constraints enable to add an edge
     INLINE bool
-       StructuralConstraintUndiGraph::checkModificationAlone(const EdgeAddition& change) const {
+        StructuralConstraintUndiGraph::checkModificationAlone(const EdgeAddition& change) const {
       return checkEdgeAdditionAlone(change.node1(), change.node2());
     }
 
     /// checks whether the constraints enable to remove an edge
     INLINE bool
-       StructuralConstraintUndiGraph::checkModificationAlone(const EdgeDeletion& change) const {
+        StructuralConstraintUndiGraph::checkModificationAlone(const EdgeDeletion& change) const {
       return checkEdgeDeletionAlone(change.node1(), change.node2());
     }
 
     /// checks whether the constraints enable to perform a graph change
     INLINE bool
-       StructuralConstraintUndiGraph::checkModificationAlone(const GraphChange& change) const {
+        StructuralConstraintUndiGraph::checkModificationAlone(const GraphChange& change) const {
       switch (change.type()) {
         case GraphChangeType::EDGE_ADDITION :
           return checkEdgeAdditionAlone(change.node1(), change.node2());

@@ -277,7 +277,7 @@ namespace gum {
       const ClassEltIterator& end();
 
       using const_ClassEltIterator =
-         typename NodeProperty< PRMClassElement< GUM_SCALAR >* >::const_iterator;
+          typename NodeProperty< PRMClassElement< GUM_SCALAR >* >::const_iterator;
       const_ClassEltIterator        begin() const;
       const const_ClassEltIterator& end() const;
 

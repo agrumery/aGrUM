@@ -39,9 +39,9 @@ namespace gum {
   // constinit keyword rather than constexpr because, in debugging mode, the
   // iterators' destructors cannot be declared as constepxr.
   constinit const BijectionIterator< int, int >
-     _static_Bijection_end_(StaticInitializer::CONSTINIT);
+      _static_Bijection_end_(StaticInitializer::CONSTINIT);
   constinit const BijectionIteratorSafe< int, int >
-     _static_Bijection_end_safe_(StaticInitializer::CONSTINIT);
+      _static_Bijection_end_safe_(StaticInitializer::CONSTINIT);
 
 } /* namespace gum */
 

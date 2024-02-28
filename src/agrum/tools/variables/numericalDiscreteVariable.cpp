@@ -38,8 +38,7 @@ namespace gum {
     _domain_.reserve(domain.size());
     for (const auto value: domain) {
       if (!gum::isfinite< double >(value)) {
-        GUM_ERROR(DefaultInLabel,
-                  "Value '" << value << "' is not allowed for variable " << aName)
+        GUM_ERROR(DefaultInLabel, "Value '" << value << "' is not allowed for variable " << aName)
       }
       if (!isValue(value)) { _domain_.push_back(value); }
     }

@@ -194,7 +194,7 @@ namespace gum {
         if ((_deallocChunk_ + offset) < _chunks_.end()) {
           if ((_deallocChunk_ + offset)->_pData_ <= pDeallocatedBlock
               && pDeallocatedBlock
-                    < ((_deallocChunk_ + offset)->_pData_ + (_numBlocks_ * _blockSize_))) {
+                     < ((_deallocChunk_ + offset)->_pData_ + (_numBlocks_ * _blockSize_))) {
             // If pointed chunk contains this pointer, deallocation find the
             // place
             _deallocChunk_ = (_deallocChunk_ + offset);
@@ -206,7 +206,7 @@ namespace gum {
         if ((_deallocChunk_ - offset) >= _chunks_.begin()) {
           if ((_deallocChunk_ - offset)->_pData_ <= pDeallocatedBlock
               && pDeallocatedBlock
-                    < ((_deallocChunk_ - offset)->_pData_ + (_numBlocks_ * _blockSize_))) {
+                     < ((_deallocChunk_ - offset)->_pData_ + (_numBlocks_ * _blockSize_))) {
             // If pointed chunk contains this pointer, deallocation find the
             // place
             _deallocChunk_ = (_deallocChunk_ - offset);

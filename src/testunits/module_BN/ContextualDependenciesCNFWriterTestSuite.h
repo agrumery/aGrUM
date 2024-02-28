@@ -107,7 +107,7 @@ namespace gum_tests {
     GUM_ACTIVE_TEST(Writer_string) {
       gum::ContextualDependenciesCNFWriter< double > writer;
       std::string                                    file
-         = GET_RESSOURCES_PATH("outputs/ContextualDependenciesCNFWriter_TestFile.cnf");
+          = GET_RESSOURCES_PATH("outputs/ContextualDependenciesCNFWriter_TestFile.cnf");
       TS_GUM_ASSERT_THROWS_NOTHING(writer.write(file, *bn))
     }
 
@@ -118,12 +118,12 @@ namespace gum_tests {
       writer.setLowLimit(0);
       writer.setHighLimit(1);
       std::string file = GET_RESSOURCES_PATH(
-         "outputs/ContextualDependenciesCNFWriter_TestFile_Approximation.cnf");
+          "outputs/ContextualDependenciesCNFWriter_TestFile_Approximation.cnf");
 
       TS_GUM_ASSERT_THROWS_NOTHING(writer.write(file, *bn))
 
       file = GET_RESSOURCES_PATH(
-         "outputs/ContextualDependenciesCNFWriter_RO_TestFile_Approximation.cnf");
+          "outputs/ContextualDependenciesCNFWriter_RO_TestFile_Approximation.cnf");
 
       try {
         writer.write(file, *bn);

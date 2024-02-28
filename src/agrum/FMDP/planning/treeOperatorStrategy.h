@@ -78,7 +78,7 @@ namespace gum {
     }
 
     MultiDimFunctionGraph< ArgMaxSet< GUM_SCALAR, Idx >, SetTerminalNodePolicy >*
-       getArgMaxFunctionInstance() {
+        getArgMaxFunctionInstance() {
       return MultiDimFunctionGraph< ArgMaxSet< GUM_SCALAR, Idx >,
                                     SetTerminalNodePolicy >::getTreeInstance();
     }
@@ -108,34 +108,34 @@ namespace gum {
     /// @warning given vFunction and qAction are deleted, returns the new one
     // ==========================================================================
     virtual MultiDimFunctionGraph< GUM_SCALAR >*
-       maximize(const MultiDimFunctionGraph< GUM_SCALAR >* f1,
-                const MultiDimFunctionGraph< GUM_SCALAR >* f2,
-                Idx                                        del = 3);
+        maximize(const MultiDimFunctionGraph< GUM_SCALAR >* f1,
+                 const MultiDimFunctionGraph< GUM_SCALAR >* f2,
+                 Idx                                        del = 3);
 
     // ==========================================================================
     /// @warning Minimze the two given functions
     // ==========================================================================
     virtual MultiDimFunctionGraph< GUM_SCALAR >*
-       minimize(const MultiDimFunctionGraph< GUM_SCALAR >* f1,
-                const MultiDimFunctionGraph< GUM_SCALAR >* f2,
-                Idx                                        del = 3);
+        minimize(const MultiDimFunctionGraph< GUM_SCALAR >* f1,
+                 const MultiDimFunctionGraph< GUM_SCALAR >* f2,
+                 Idx                                        del = 3);
 
     // ==========================================================================
     /// @warning given f1 and f2 are deleted, returns the new one
     // ==========================================================================
     virtual MultiDimFunctionGraph< GUM_SCALAR >*
-       multiply(const MultiDimFunctionGraph< GUM_SCALAR >* f1,
-                const MultiDimFunctionGraph< GUM_SCALAR >* f2,
-                Idx                                        del = 3);
+        multiply(const MultiDimFunctionGraph< GUM_SCALAR >* f1,
+                 const MultiDimFunctionGraph< GUM_SCALAR >* f2,
+                 Idx                                        del = 3);
 
     // ==========================================================================
     /// @warning given vFunction and qAction are deleted, returns the new one
     // ==========================================================================
     virtual MultiDimFunctionGraph< ArgMaxSet< GUM_SCALAR, Idx >, SetTerminalNodePolicy >*
-       argmaximize(
-          const MultiDimFunctionGraph< ArgMaxSet< GUM_SCALAR, Idx >, SetTerminalNodePolicy >* f1,
-          const MultiDimFunctionGraph< ArgMaxSet< GUM_SCALAR, Idx >, SetTerminalNodePolicy >* f2,
-          Idx del = 3);
+        argmaximize(
+            const MultiDimFunctionGraph< ArgMaxSet< GUM_SCALAR, Idx >, SetTerminalNodePolicy >* f1,
+            const MultiDimFunctionGraph< ArgMaxSet< GUM_SCALAR, Idx >, SetTerminalNodePolicy >* f2,
+            Idx del = 3);
 
     // ==========================================================================
     /// @warning given function is deleted, returns the new one
@@ -148,9 +148,9 @@ namespace gum {
     /// @warning this time, nothing is deleted
     // ==========================================================================
     virtual MultiDimFunctionGraph< GUM_SCALAR >*
-       subtract(const MultiDimFunctionGraph< GUM_SCALAR >* f1,
-                const MultiDimFunctionGraph< GUM_SCALAR >* f2,
-                Idx                                        del = 0);
+        subtract(const MultiDimFunctionGraph< GUM_SCALAR >* f1,
+                 const MultiDimFunctionGraph< GUM_SCALAR >* f2,
+                 Idx                                        del = 0);
 
 
     /// @}

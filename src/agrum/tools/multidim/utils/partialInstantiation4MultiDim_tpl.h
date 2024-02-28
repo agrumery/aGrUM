@@ -31,15 +31,15 @@
 
 #include <agrum/tools/multidim/utils/partialInstantiationRegister4MultiDim.h>
 
-#define GUM_MULTI_DIM_DECORATOR_PARTIAL_INST(NAME)                        \
-  namespace gum {                                                         \
-    template < typename GUM_SCALAR >                                      \
-    MultiDimImplementation< GUM_SCALAR >*                                 \
-       NAME(const MultiDimDecorator< GUM_SCALAR >&           table,       \
-            const HashTable< const DiscreteVariable*, Idx >& inst_vars) { \
-      const MultiDimImplementation< GUM_SCALAR >* impl = table.content(); \
-      return NAME(*impl, inst_vars);                                      \
-    }                                                                     \
+#define GUM_MULTI_DIM_DECORATOR_PARTIAL_INST(NAME)                         \
+  namespace gum {                                                          \
+    template < typename GUM_SCALAR >                                       \
+    MultiDimImplementation< GUM_SCALAR >*                                  \
+        NAME(const MultiDimDecorator< GUM_SCALAR >&           table,       \
+             const HashTable< const DiscreteVariable*, Idx >& inst_vars) { \
+      const MultiDimImplementation< GUM_SCALAR >* impl = table.content();  \
+      return NAME(*impl, inst_vars);                                       \
+    }                                                                      \
   }
 
 /// a specialized partial instantiation function for multiDimArrays
@@ -127,9 +127,9 @@ namespace gum {
 
       // register default basename functions
       registerPartialInstantiation< GUM_SCALAR* >(
-         "i",
-         BaseNameString,
-         &partialInstantiationMultiDimImplementation4Pointers);
+          "i",
+          BaseNameString,
+          &partialInstantiationMultiDimImplementation4Pointers);
     });
   }
 

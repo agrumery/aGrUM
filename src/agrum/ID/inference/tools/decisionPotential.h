@@ -150,14 +150,14 @@ namespace gum {
     }
 
     static DecisionPotential< GUM_SCALAR >
-       marginalization(const DecisionPotential< GUM_SCALAR >& dp, const gum::VariableSet& onto) {
+        marginalization(const DecisionPotential< GUM_SCALAR >& dp, const gum::VariableSet& onto) {
       const auto pr = dp.probPot.margSumIn(onto);
       return DecisionPotential(pr, divideEvenZero((dp.probPot * dp.utilPot).margSumIn(onto), pr));
     }
 
     static DecisionPotential< GUM_SCALAR >
-       marginalization(const DecisionPotential< GUM_SCALAR >& dp,
-                       const std::vector< std::string >&      ontonames) {
+        marginalization(const DecisionPotential< GUM_SCALAR >& dp,
+                        const std::vector< std::string >&      ontonames) {
       gum::VariableSet onto;
       for (const auto& varname: ontonames) {
         onto.insert(dp.variable(varname));

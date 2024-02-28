@@ -32,14 +32,14 @@ namespace gum {
   // Default constructor.
   template < typename GUM_SCALAR, template < class > class IApproximationPolicy >
   INLINE
-     FactorisedValuesCNFWriter< GUM_SCALAR, IApproximationPolicy >::FactorisedValuesCNFWriter() {
+      FactorisedValuesCNFWriter< GUM_SCALAR, IApproximationPolicy >::FactorisedValuesCNFWriter() {
     GUM_CONSTRUCTOR(FactorisedValuesCNFWriter);
   }
 
   // Default destructor.
   template < typename GUM_SCALAR, template < class > class IApproximationPolicy >
   INLINE
-     FactorisedValuesCNFWriter< GUM_SCALAR, IApproximationPolicy >::~FactorisedValuesCNFWriter() {
+      FactorisedValuesCNFWriter< GUM_SCALAR, IApproximationPolicy >::~FactorisedValuesCNFWriter() {
     GUM_DESTRUCTOR(FactorisedValuesCNFWriter);
   }
 
@@ -51,8 +51,8 @@ namespace gum {
   // @throws Raised if an I/O error occurs.
   template < typename GUM_SCALAR, template < class > class IApproximationPolicy >
   INLINE void FactorisedValuesCNFWriter< GUM_SCALAR, IApproximationPolicy >::_doWrite(
-     std::ostream&                  output,
-     const IBayesNet< GUM_SCALAR >& bn) {
+      std::ostream&                  output,
+      const IBayesNet< GUM_SCALAR >& bn) {
     if (!output.good()) GUM_ERROR(IOError, "Input/Output error : stream not writable.")
 
     std::stringstream strfile, strfile2;
@@ -144,8 +144,8 @@ namespace gum {
   // @throws Raised if an I/O error occurs.
   template < typename GUM_SCALAR, template < class > class IApproximationPolicy >
   INLINE void FactorisedValuesCNFWriter< GUM_SCALAR, IApproximationPolicy >::_doWrite(
-     const std::string&             filePath,
-     const IBayesNet< GUM_SCALAR >& bn) {
+      const std::string&             filePath,
+      const IBayesNet< GUM_SCALAR >& bn) {
     std::ofstream output(filePath.c_str(), std::ios_base::trunc);
     std::ofstream outputvar((filePath + ".var").c_str(), std::ios_base::trunc);
 

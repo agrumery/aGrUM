@@ -72,7 +72,7 @@ namespace gum_tests {
       const auto bn = gum::BayesNet< double >::fastPrototype("C->A->B");
       bn.cpt("C").fillWith({0.5, 0.5});
       bn.cpt("A").fillWith(
-         {0.8, 0.2, 0.2, 0.8});   // so that bn|ev={"C"=0} is the same as the last test
+          {0.8, 0.2, 0.2, 0.8});   // so that bn|ev={"C"=0} is the same as the last test
       bn.cpt("B").fillWith({0.1, 0.9, 0.3, 0.7});
 
       gum::LazyPropagation ie(&bn);
@@ -104,7 +104,7 @@ namespace gum_tests {
       const auto bn = gum::BayesNet< double >::fastPrototype("C->A->B");
       bn.cpt("C").fillWith({0.5, 0.5});
       bn.cpt("A").fillWith(
-         {0.8, 0.2, 0.2, 0.8});   // so that bn|ev={"C"=0} is the same as the last test
+          {0.8, 0.2, 0.2, 0.8});   // so that bn|ev={"C"=0} is the same as the last test
       bn.cpt("B").fillWith({0.1, 0.9, 0.3, 0.7});
 
       gum::ShaferShenoyInference ie(&bn);

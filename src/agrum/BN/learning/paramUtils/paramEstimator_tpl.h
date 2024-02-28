@@ -86,9 +86,9 @@ namespace gum {
     /// sets the CPT's parameters corresponding to a given nodeset
     template < typename GUM_SCALAR >
     INLINE typename std::enable_if< !std::is_same< GUM_SCALAR, double >::value, void >::type
-       ParamEstimator::_setParameters_(const NodeId                 target_node,
-                                       const std::vector< NodeId >& conditioning_nodes,
-                                       Potential< GUM_SCALAR >&     pot) {
+        ParamEstimator::_setParameters_(const NodeId                 target_node,
+                                        const std::vector< NodeId >& conditioning_nodes,
+                                        Potential< GUM_SCALAR >&     pot) {
       _checkParameters_(target_node, conditioning_nodes, pot);
 
       const std::vector< double > params(parameters(target_node, conditioning_nodes));
@@ -105,9 +105,9 @@ namespace gum {
     /// sets the CPT's parameters corresponding to a given nodeset
     template < typename GUM_SCALAR >
     INLINE typename std::enable_if< std::is_same< GUM_SCALAR, double >::value, void >::type
-       ParamEstimator::_setParameters_(const NodeId                 target_node,
-                                       const std::vector< NodeId >& conditioning_nodes,
-                                       Potential< GUM_SCALAR >&     pot) {
+        ParamEstimator::_setParameters_(const NodeId                 target_node,
+                                        const std::vector< NodeId >& conditioning_nodes,
+                                        Potential< GUM_SCALAR >&     pot) {
       _checkParameters_(target_node, conditioning_nodes, pot);
 
       const std::vector< double > params(parameters(target_node, conditioning_nodes));

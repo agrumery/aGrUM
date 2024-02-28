@@ -221,8 +221,8 @@ namespace gum {
 
     if (current_state_ != ApproximationSchemeSTATE::Continue) {
       GUM_ERROR(
-         OperationNotAllowed,
-         "state of the approximation scheme is not correct : " << messageApproximationScheme());
+          OperationNotAllowed,
+          "state of the approximation scheme is not correct : " << messageApproximationScheme());
     }
 
     if (verbosity()) { history_.push_back(error); }

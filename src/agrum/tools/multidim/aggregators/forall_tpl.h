@@ -72,8 +72,8 @@ namespace gum {
     template < typename GUM_SCALAR >
     INLINE
 
-       std::string
-       Forall< GUM_SCALAR >::aggregatorName() const {
+        std::string
+        Forall< GUM_SCALAR >::aggregatorName() const {
       std::stringstream ss;
       ss << "forall[" << _value_ << "]";
       return ss.str();

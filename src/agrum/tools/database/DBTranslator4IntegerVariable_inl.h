@@ -60,7 +60,7 @@ namespace gum {
 
     /// returns the original value for a given translation
     INLINE std::string
-       DBTranslator4IntegerVariable::translateBack(const DBTranslatedValue translated_val) const {
+        DBTranslator4IntegerVariable::translateBack(const DBTranslatedValue translated_val) const {
       try {
         return this->back_dico_.second(translated_val.discr_val);
       } catch (Exception const&) {

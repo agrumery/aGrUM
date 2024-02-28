@@ -40,9 +40,9 @@ namespace gum {
 
     /// default constructor with a integer variable as translator
     DBTranslator4NumericalDiscreteVariable::DBTranslator4NumericalDiscreteVariable(
-       const NumericalDiscreteVariable&  var,
-       const std::vector< std::string >& missing_symbols,
-       std::size_t                       max_dico_entries) :
+        const NumericalDiscreteVariable&  var,
+        const std::vector< std::string >& missing_symbols,
+        std::size_t                       max_dico_entries) :
         DBTranslator(DBTranslatedValueType::DISCRETE,
                      true,
                      missing_symbols,
@@ -84,8 +84,8 @@ namespace gum {
 
     /// default constructor with an integer variable as translator but no missing value
     DBTranslator4NumericalDiscreteVariable::DBTranslator4NumericalDiscreteVariable(
-       const NumericalDiscreteVariable& var,
-       std::size_t                      max_dico_entries) :
+        const NumericalDiscreteVariable& var,
+        std::size_t                      max_dico_entries) :
         DBTranslator(DBTranslatedValueType::DISCRETE, true, false, max_dico_entries),
         _variable_(var) {
       // check that the variable has not too many entries
@@ -106,7 +106,7 @@ namespace gum {
 
     /// copy constructor
     DBTranslator4NumericalDiscreteVariable::DBTranslator4NumericalDiscreteVariable(
-       const DBTranslator4NumericalDiscreteVariable& from) :
+        const DBTranslator4NumericalDiscreteVariable& from) :
         DBTranslator(from),
         _variable_(from._variable_) {
       // for debugging purposes
@@ -115,7 +115,7 @@ namespace gum {
 
     /// move constructor
     DBTranslator4NumericalDiscreteVariable::DBTranslator4NumericalDiscreteVariable(
-       DBTranslator4NumericalDiscreteVariable&& from) :
+        DBTranslator4NumericalDiscreteVariable&& from) :
         DBTranslator(std::move(from)),
         _variable_(std::move(from._variable_)) {
       // for debugging purposes
@@ -129,7 +129,7 @@ namespace gum {
 
     /// copy operator
     DBTranslator4NumericalDiscreteVariable& DBTranslator4NumericalDiscreteVariable::operator=(
-       const DBTranslator4NumericalDiscreteVariable& from) {
+        const DBTranslator4NumericalDiscreteVariable& from) {
       if (this != &from) {
         DBTranslator::operator=(from);
         _variable_ = from._variable_;
@@ -140,7 +140,7 @@ namespace gum {
 
     /// move operator
     DBTranslator4NumericalDiscreteVariable& DBTranslator4NumericalDiscreteVariable::operator=(
-       DBTranslator4NumericalDiscreteVariable&& from) {
+        DBTranslator4NumericalDiscreteVariable&& from) {
       if (this != &from) {
         DBTranslator::operator=(std::move(from));
         _variable_ = std::move(from._variable_);

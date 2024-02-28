@@ -191,7 +191,7 @@ namespace gum {
         _restrictWeightedSet_(anc, _ancestors_[modif.tail()], extremities);
 
         NodeProperty< Size >& desc
-           = descendants.insert(modif.tail(), NodeProperty< Size >()).second;
+            = descendants.insert(modif.tail(), NodeProperty< Size >()).second;
         _restrictWeightedSet_(desc, _descendants_[modif.tail()], extremities);
       }
 
@@ -200,7 +200,7 @@ namespace gum {
         _restrictWeightedSet_(anc, _ancestors_[modif.head()], extremities);
 
         NodeProperty< Size >& desc
-           = descendants.insert(modif.head(), NodeProperty< Size >()).second;
+            = descendants.insert(modif.head(), NodeProperty< Size >()).second;
         _restrictWeightedSet_(desc, _descendants_[modif.head()], extremities);
       }
     }

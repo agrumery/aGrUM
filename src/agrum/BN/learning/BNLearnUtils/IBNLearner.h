@@ -435,7 +435,7 @@ namespace gum::learning {
      * @return a std::pair<double,double>
      */
     std::pair< double, double >
-       chi2(const NodeId id1, const NodeId id2, const std::vector< NodeId >& knowing = {});
+        chi2(const NodeId id1, const NodeId id2, const std::vector< NodeId >& knowing = {});
     /**
      * Return the <statistic,pvalue> pair for the BNLearner
      * @param id1 first variable
@@ -455,7 +455,7 @@ namespace gum::learning {
      * @return a std::pair<double,double>
      */
     std::pair< double, double >
-       G2(const NodeId id1, const NodeId id2, const std::vector< NodeId >& knowing = {});
+        G2(const NodeId id1, const NodeId id2, const std::vector< NodeId >& knowing = {});
     /**
      * Return the <statistic,pvalue> pair for for G2 test in the database
      * @param id1 first variable
@@ -874,7 +874,7 @@ namespace gum::learning {
 
     /// the penalty used in MIIC
     typename CorrectedMutualInformation::KModeTypes kmodeMiic_{
-       CorrectedMutualInformation::KModeTypes::MDL};
+        CorrectedMutualInformation::KModeTypes::MDL};
 
     /// the parametric EM
     DAG2BNLearner Dag2BN_;

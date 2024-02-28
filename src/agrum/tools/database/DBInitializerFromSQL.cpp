@@ -47,7 +47,7 @@ namespace gum {
       // string or this is an aGrUM-constructed one derived from a datasource,
       // a login and a password
       bool agrum_connection
-         = (connection_string.size() > 4) && (connection_string.compare(0, 4, "gum ") == 0);
+          = (connection_string.size() > 4) && (connection_string.compare(0, 4, "gum ") == 0);
 
       // perform the connection to the database
       if (!agrum_connection) {
@@ -128,7 +128,7 @@ namespace gum {
                                                const std::string& query,
                                                long               timeout) :
         DBInitializerFromSQL("gum datasource=|" + dataSource + "|; login=|" + login
-                                + "|; password=|" + password + "|",
+                                 + "|; password=|" + password + "|",
                              query,
                              timeout) {}
 

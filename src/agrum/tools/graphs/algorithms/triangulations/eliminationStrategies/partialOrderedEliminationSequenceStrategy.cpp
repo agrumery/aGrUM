@@ -46,9 +46,9 @@ namespace gum {
 
   /// constructor for a (potentially) non empty graph
   PartialOrderedEliminationSequenceStrategy::PartialOrderedEliminationSequenceStrategy(
-     UndiGraph*                  graph,
-     const NodeProperty< Size >* dom_sizes,
-     const List< NodeSet >*      subsets) {
+      UndiGraph*                  graph,
+      const NodeProperty< Size >* dom_sizes,
+      const List< NodeSet >*      subsets) {
     setGraph(graph, dom_sizes);
     setPartialOrder(subsets);
 
@@ -58,7 +58,7 @@ namespace gum {
 
   /// copy constructor
   PartialOrderedEliminationSequenceStrategy::PartialOrderedEliminationSequenceStrategy(
-     const PartialOrderedEliminationSequenceStrategy& from) :
+      const PartialOrderedEliminationSequenceStrategy& from) :
       EliminationSequenceStrategy(from),
       subsets_(from.subsets_), subset_iter_(from.subset_iter_), nodeset_(from.nodeset_),
       partial_order_needed_(from.partial_order_needed_) {
@@ -68,7 +68,7 @@ namespace gum {
 
   /// move constructor
   PartialOrderedEliminationSequenceStrategy::PartialOrderedEliminationSequenceStrategy(
-     PartialOrderedEliminationSequenceStrategy&& from) :
+      PartialOrderedEliminationSequenceStrategy&& from) :
       EliminationSequenceStrategy(std::move(from)),
       subsets_(from.subsets_), subset_iter_(from.subset_iter_), nodeset_(std::move(from.nodeset_)),
       partial_order_needed_(from.partial_order_needed_) {
@@ -85,9 +85,9 @@ namespace gum {
   }
 
   /// sets a new graph to be triangulated
-  bool
-     PartialOrderedEliminationSequenceStrategy::setGraph(UndiGraph*                  graph,
-                                                         const NodeProperty< Size >* domain_sizes) {
+  bool PartialOrderedEliminationSequenceStrategy::setGraph(
+      UndiGraph*                  graph,
+      const NodeProperty< Size >* domain_sizes) {
     if (EliminationSequenceStrategy::setGraph(graph, domain_sizes)) {
       setPartialOrder(subsets_);
       return true;
@@ -97,7 +97,7 @@ namespace gum {
 
   /// indicate whether a partial ordering is compatible with the current graph
   bool PartialOrderedEliminationSequenceStrategy::isPartialOrderNeeded_(
-     const List< NodeSet >* subsets) const {
+      const List< NodeSet >* subsets) const {
     if ((graph_ == nullptr) || (subsets == nullptr)) return true;
 
     // determine the set of nodes in the subsets that belong to the graph

@@ -334,8 +334,8 @@ namespace gum {
   // ===========================================================================
   template < typename GUM_SCALAR >
   MultiDimFunctionGraph< GUM_SCALAR >*
-     StructuredPlaner< GUM_SCALAR >::evalQaction_(const MultiDimFunctionGraph< GUM_SCALAR >* Vold,
-                                                  Idx actionId) {
+      StructuredPlaner< GUM_SCALAR >::evalQaction_(const MultiDimFunctionGraph< GUM_SCALAR >* Vold,
+                                                   Idx actionId) {
     // ******************************************************************************
     // Initialisation :
     // Creating a copy of last Vfunction to deduce from the new Qaction
@@ -349,7 +349,7 @@ namespace gum {
   // ===========================================================================
   template < typename GUM_SCALAR >
   MultiDimFunctionGraph< GUM_SCALAR >* StructuredPlaner< GUM_SCALAR >::maximiseQactions_(
-     std::vector< MultiDimFunctionGraph< GUM_SCALAR >* >& qActionsSet) {
+      std::vector< MultiDimFunctionGraph< GUM_SCALAR >* >& qActionsSet) {
     MultiDimFunctionGraph< GUM_SCALAR >* newVFunction = qActionsSet.back();
     qActionsSet.pop_back();
 
@@ -367,7 +367,7 @@ namespace gum {
   // ===========================================================================
   template < typename GUM_SCALAR >
   MultiDimFunctionGraph< GUM_SCALAR >* StructuredPlaner< GUM_SCALAR >::minimiseFunctions_(
-     std::vector< MultiDimFunctionGraph< GUM_SCALAR >* >& qActionsSet) {
+      std::vector< MultiDimFunctionGraph< GUM_SCALAR >* >& qActionsSet) {
     MultiDimFunctionGraph< GUM_SCALAR >* newVFunction = qActionsSet.back();
     qActionsSet.pop_back();
 
@@ -385,8 +385,8 @@ namespace gum {
   // ===========================================================================
   template < typename GUM_SCALAR >
   MultiDimFunctionGraph< GUM_SCALAR >*
-     StructuredPlaner< GUM_SCALAR >::addReward_(MultiDimFunctionGraph< GUM_SCALAR >* Vold,
-                                                Idx                                  actionId) {
+      StructuredPlaner< GUM_SCALAR >::addReward_(MultiDimFunctionGraph< GUM_SCALAR >* Vold,
+                                                 Idx                                  actionId) {
     // *****************************************************************************************
     // ... we multiply the result by the discount factor, ...
     MultiDimFunctionGraph< GUM_SCALAR >* newVFunction = operator_->getFunctionInstance();
@@ -419,7 +419,7 @@ namespace gum {
     newVFunction->copyAndReassign(*vFunction_, fmdp_->mapMainPrime());
 
     std::vector< MultiDimFunctionGraph< ArgMaxSet< GUM_SCALAR, Idx >, SetTerminalNodePolicy >* >
-       argMaxQActionsSet;
+        argMaxQActionsSet;
     // *****************************************************************************************
     // For each action
     for (auto actionIter = fmdp_->beginActions(); actionIter != fmdp_->endActions(); ++actionIter) {
@@ -436,7 +436,7 @@ namespace gum {
     // Next to evaluate main value function, we take maximise over all action
     // value, ...
     MultiDimFunctionGraph< ArgMaxSet< GUM_SCALAR, Idx >, SetTerminalNodePolicy >* argMaxVFunction
-       = argmaximiseQactions_(argMaxQActionsSet);
+        = argmaximiseQactions_(argMaxQActionsSet);
 
     // *****************************************************************************************
     // Next to evaluate main value function, we take maximise over all action
@@ -451,10 +451,11 @@ namespace gum {
   // ===========================================================================
   template < typename GUM_SCALAR >
   MultiDimFunctionGraph< ArgMaxSet< GUM_SCALAR, Idx >, SetTerminalNodePolicy >*
-     StructuredPlaner< GUM_SCALAR >::makeArgMax_(const MultiDimFunctionGraph< GUM_SCALAR >* qAction,
-                                                 Idx actionId) {
+      StructuredPlaner< GUM_SCALAR >::makeArgMax_(
+          const MultiDimFunctionGraph< GUM_SCALAR >* qAction,
+          Idx                                        actionId) {
     MultiDimFunctionGraph< ArgMaxSet< GUM_SCALAR, Idx >, SetTerminalNodePolicy >* amcpy
-       = operator_->getArgMaxFunctionInstance();
+        = operator_->getArgMaxFunctionInstance();
 
     // Insertion des nouvelles variables
     for (SequenceIteratorSafe< const DiscreteVariable* > varIter
@@ -465,7 +466,7 @@ namespace gum {
 
     HashTable< NodeId, NodeId > src2dest;
     amcpy->manager()->setRootNode(
-       _recurArgMaxCopy_(qAction->root(), actionId, qAction, amcpy, src2dest));
+        _recurArgMaxCopy_(qAction->root(), actionId, qAction, amcpy, src2dest));
 
     delete qAction;
     return amcpy;
@@ -476,11 +477,11 @@ namespace gum {
   // ==========================================================================
   template < typename GUM_SCALAR >
   NodeId StructuredPlaner< GUM_SCALAR >::_recurArgMaxCopy_(
-     NodeId                                                                        currentNodeId,
-     Idx                                                                           actionId,
-     const MultiDimFunctionGraph< GUM_SCALAR >*                                    src,
-     MultiDimFunctionGraph< ArgMaxSet< GUM_SCALAR, Idx >, SetTerminalNodePolicy >* argMaxCpy,
-     HashTable< NodeId, NodeId >&                                                  visitedNodes) {
+      NodeId                                                                        currentNodeId,
+      Idx                                                                           actionId,
+      const MultiDimFunctionGraph< GUM_SCALAR >*                                    src,
+      MultiDimFunctionGraph< ArgMaxSet< GUM_SCALAR, Idx >, SetTerminalNodePolicy >* argMaxCpy,
+      HashTable< NodeId, NodeId >&                                                  visitedNodes) {
     if (visitedNodes.exists(currentNodeId)) return visitedNodes[currentNodeId];
 
     NodeId nody;
@@ -490,10 +491,10 @@ namespace gum {
     } else {
       const InternalNode* currentNode = src->node(currentNodeId);
       NodeId*             sonsMap     = static_cast< NodeId* >(
-         SOA_ALLOCATE(sizeof(NodeId) * currentNode->nodeVar()->domainSize()));
+          SOA_ALLOCATE(sizeof(NodeId) * currentNode->nodeVar()->domainSize()));
       for (Idx moda = 0; moda < currentNode->nodeVar()->domainSize(); ++moda)
         sonsMap[moda]
-           = _recurArgMaxCopy_(currentNode->son(moda), actionId, src, argMaxCpy, visitedNodes);
+            = _recurArgMaxCopy_(currentNode->son(moda), actionId, src, argMaxCpy, visitedNodes);
       nody = argMaxCpy->manager()->addInternalNode(currentNode->nodeVar(), sonsMap);
     }
     visitedNodes.insert(currentNodeId, nody);
@@ -505,16 +506,16 @@ namespace gum {
   // ===========================================================================
   template < typename GUM_SCALAR >
   MultiDimFunctionGraph< ArgMaxSet< GUM_SCALAR, Idx >, SetTerminalNodePolicy >*
-     StructuredPlaner< GUM_SCALAR >::argmaximiseQactions_(
-        std::vector< MultiDimFunctionGraph< ArgMaxSet< GUM_SCALAR, Idx >,
-                                            SetTerminalNodePolicy >* >& qActionsSet) {
+      StructuredPlaner< GUM_SCALAR >::argmaximiseQactions_(
+          std::vector< MultiDimFunctionGraph< ArgMaxSet< GUM_SCALAR, Idx >,
+                                              SetTerminalNodePolicy >* >& qActionsSet) {
     MultiDimFunctionGraph< ArgMaxSet< GUM_SCALAR, Idx >, SetTerminalNodePolicy >* newVFunction
-       = qActionsSet.back();
+        = qActionsSet.back();
     qActionsSet.pop_back();
 
     while (!qActionsSet.empty()) {
       MultiDimFunctionGraph< ArgMaxSet< GUM_SCALAR, Idx >, SetTerminalNodePolicy >* qAction
-         = qActionsSet.back();
+          = qActionsSet.back();
       qActionsSet.pop_back();
       newVFunction = operator_->argmaximize(newVFunction, qAction);
     }
@@ -529,8 +530,8 @@ namespace gum {
   // ===========================================================================
   template < typename GUM_SCALAR >
   void StructuredPlaner< GUM_SCALAR >::extractOptimalPolicy_(
-     const MultiDimFunctionGraph< ArgMaxSet< GUM_SCALAR, Idx >, SetTerminalNodePolicy >*
-        argMaxOptimalValueFunction) {
+      const MultiDimFunctionGraph< ArgMaxSet< GUM_SCALAR, Idx >, SetTerminalNodePolicy >*
+          argMaxOptimalValueFunction) {
     optimalPolicy_->clear();
 
     // Insertion des nouvelles variables
@@ -553,10 +554,10 @@ namespace gum {
   // ==========================================================================
   template < typename GUM_SCALAR >
   NodeId StructuredPlaner< GUM_SCALAR >::_recurExtractOptPol_(
-     NodeId currentNodeId,
-     const MultiDimFunctionGraph< ArgMaxSet< GUM_SCALAR, Idx >, SetTerminalNodePolicy >*
-                                  argMaxOptVFunc,
-     HashTable< NodeId, NodeId >& visitedNodes) {
+      NodeId currentNodeId,
+      const MultiDimFunctionGraph< ArgMaxSet< GUM_SCALAR, Idx >, SetTerminalNodePolicy >*
+                                   argMaxOptVFunc,
+      HashTable< NodeId, NodeId >& visitedNodes) {
     if (visitedNodes.exists(currentNodeId)) return visitedNodes[currentNodeId];
 
     NodeId nody;
@@ -567,7 +568,7 @@ namespace gum {
     } else {
       const InternalNode* currentNode = argMaxOptVFunc->node(currentNodeId);
       NodeId*             sonsMap     = static_cast< NodeId* >(
-         SOA_ALLOCATE(sizeof(NodeId) * currentNode->nodeVar()->domainSize()));
+          SOA_ALLOCATE(sizeof(NodeId) * currentNode->nodeVar()->domainSize()));
       for (Idx moda = 0; moda < currentNode->nodeVar()->domainSize(); ++moda)
         sonsMap[moda] = _recurExtractOptPol_(currentNode->son(moda), argMaxOptVFunc, visitedNodes);
       nody = optimalPolicy_->manager()->addInternalNode(currentNode->nodeVar(), sonsMap);

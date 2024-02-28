@@ -339,7 +339,7 @@ namespace gum {
        * bound and the latter is also lower than or equal to the number of rows
        * in the database. */
       void _checkRanges_(
-         const std::vector< std::pair< std::size_t, std::size_t > >& new_ranges) const;
+          const std::vector< std::pair< std::size_t, std::size_t > >& new_ranges) const;
 
       /// check that the variables at indices [beg,end) of an idset are discrete
       /** @throw TypeError is raised if at least one variable in ids is

@@ -36,13 +36,13 @@ namespace gum {
   // use the constinit keyword rather than constexpr because, in debugging mode,
   // the iterators' destructors cannot be declared as constepxr.
   constinit const SortedPriorityQueueIterator< int, std::less< int > >
-     _static_SortedPriorityQueue_end_(StaticInitializer::CONSTINIT);
+      _static_SortedPriorityQueue_end_(StaticInitializer::CONSTINIT);
   constinit const SortedPriorityQueueReverseIterator< int, std::less< int > >
-     _static_SortedPriorityQueue_rend_(StaticInitializer::CONSTINIT);
+      _static_SortedPriorityQueue_rend_(StaticInitializer::CONSTINIT);
   constinit const SortedPriorityQueueIteratorSafe< int, std::less< int > >
-     _static_SortedPriorityQueue_end_safe_(StaticInitializer::CONSTINIT);
+      _static_SortedPriorityQueue_end_safe_(StaticInitializer::CONSTINIT);
   constinit const SortedPriorityQueueReverseIteratorSafe< int, std::less< int > >
-     _static_SortedPriorityQueue_rend_safe_(StaticInitializer::CONSTINIT);
+      _static_SortedPriorityQueue_rend_safe_(StaticInitializer::CONSTINIT);
 
 }   // namespace gum
 

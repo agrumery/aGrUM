@@ -41,10 +41,10 @@ namespace gum {
              template < typename >
              class TerminalNodePolicy >
   MultiDimFunctionGraphProjector< GUM_SCALAR, FUNCTOR, TerminalNodePolicy >::
-     MultiDimFunctionGraphProjector(
-        const MultiDimFunctionGraph< GUM_SCALAR, TerminalNodePolicy >* src,
-        const gum::VariableSet&                                        delVars,
-        const GUM_SCALAR                                               neutral) :
+      MultiDimFunctionGraphProjector(
+          const MultiDimFunctionGraph< GUM_SCALAR, TerminalNodePolicy >* src,
+          const gum::VariableSet&                                        delVars,
+          const GUM_SCALAR                                               neutral) :
       _src_(src),
       _delVars_(delVars), _function_(), _neutral_(neutral) {
     GUM_CONSTRUCTOR(MultiDimFunctionGraphProjector);
@@ -58,7 +58,7 @@ namespace gum {
              template < typename >
              class TerminalNodePolicy >
   MultiDimFunctionGraphProjector< GUM_SCALAR, FUNCTOR, TerminalNodePolicy >::
-     ~MultiDimFunctionGraphProjector() {
+      ~MultiDimFunctionGraphProjector() {
     GUM_DESTRUCTOR(MultiDimFunctionGraphProjector);
   }
 
@@ -70,7 +70,7 @@ namespace gum {
              template < typename >
              class TerminalNodePolicy >
   MultiDimFunctionGraph< GUM_SCALAR, TerminalNodePolicy >*
-     MultiDimFunctionGraphProjector< GUM_SCALAR, FUNCTOR, TerminalNodePolicy >::project() {
+      MultiDimFunctionGraphProjector< GUM_SCALAR, FUNCTOR, TerminalNodePolicy >::project() {
     _rd_->copy(*_src_);
 
     for (SetIteratorSafe< const DiscreteVariable* > varIter = _delVars_.beginSafe();

@@ -61,8 +61,8 @@ namespace gum {
     public:
     /// The type of functions used by the register
     using OperatorPtr
-       = MultiDimImplementation< GUM_SCALAR >* (*)(const MultiDimImplementation< GUM_SCALAR >*,
-                                                   const MultiDimImplementation< GUM_SCALAR >*);
+        = MultiDimImplementation< GUM_SCALAR >* (*)(const MultiDimImplementation< GUM_SCALAR >*,
+                                                    const MultiDimImplementation< GUM_SCALAR >*);
 
     // ========================================================================
     /// @name Accessors / Modifiers
@@ -116,8 +116,9 @@ namespace gum {
      * @param type2 the \e real type of the second multiDim taken in argument
      * by the function to remove.
      */
-    void
-       erase(const std::string& operation_name, const std::string& type1, const std::string& type2);
+    void erase(const std::string& operation_name,
+               const std::string& type1,
+               const std::string& type2);
 
     /**
      * @brief Indicates whether a given entry exists in the register.

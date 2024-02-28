@@ -63,8 +63,8 @@ namespace gum {
   // constructors
   template < typename GUM_SCALAR >
   INLINE MultiDimDecorator< GUM_SCALAR >::MultiDimDecorator(
-     MultiDimImplementation< GUM_SCALAR >* aContent,
-     GUM_SCALAR                            empty_value) :
+      MultiDimImplementation< GUM_SCALAR >* aContent,
+      GUM_SCALAR                            empty_value) :
       content_(aContent),
       empty_value_(empty_value) {
     _initPotentialOperators__< GUM_SCALAR >();
@@ -73,7 +73,7 @@ namespace gum {
 
   template < typename GUM_SCALAR >
   INLINE MultiDimDecorator< GUM_SCALAR >::MultiDimDecorator(
-     const MultiDimDecorator< GUM_SCALAR >& from) :
+      const MultiDimDecorator< GUM_SCALAR >& from) :
       MultiDimContainer< GUM_SCALAR >(from) {
     GUM_CONS_CPY(MultiDimDecorator);
     _initPotentialOperators__< GUM_SCALAR >();
@@ -85,7 +85,7 @@ namespace gum {
   INLINE MultiDimDecorator< GUM_SCALAR >&
          MultiDimDecorator< GUM_SCALAR >::operator=(MultiDimDecorator< GUM_SCALAR >&& from) {
     MultiDimContainer< GUM_SCALAR >::operator=(
-       std::forward< MultiDimContainer< GUM_SCALAR > >(from));
+        std::forward< MultiDimContainer< GUM_SCALAR > >(from));
     GUM_OP_MOV(MultiDimDecorator);
 
     if (this != &from) {
@@ -100,7 +100,7 @@ namespace gum {
 
   template < typename GUM_SCALAR >
   INLINE MultiDimDecorator< GUM_SCALAR >::MultiDimDecorator(
-     MultiDimDecorator< GUM_SCALAR >&& from) noexcept :
+      MultiDimDecorator< GUM_SCALAR >&& from) noexcept :
       MultiDimContainer< GUM_SCALAR >(std::forward< MultiDimContainer< GUM_SCALAR > >(from)) {
     GUM_CONS_MOV(MultiDimDecorator);
 
@@ -111,7 +111,7 @@ namespace gum {
 
   template < typename GUM_SCALAR >
   INLINE MultiDimDecorator< GUM_SCALAR >& MultiDimDecorator< GUM_SCALAR >::operator=(
-     const MultiDimDecorator< GUM_SCALAR >& from) noexcept {
+      const MultiDimDecorator< GUM_SCALAR >& from) noexcept {
     GUM_OP_CPY(MultiDimDecorator);
     _initPotentialOperators__< GUM_SCALAR >();
     MultiDimContainer< GUM_SCALAR >::operator=(from);
@@ -246,7 +246,7 @@ namespace gum {
 
   template < typename GUM_SCALAR >
   INLINE const DiscreteVariable&
-     MultiDimDecorator< GUM_SCALAR >::variable(const std::string& name) const {
+      MultiDimDecorator< GUM_SCALAR >::variable(const std::string& name) const {
     return static_cast< MultiDimContainer< GUM_SCALAR >* >(content_)->variable(name);
   }
 
@@ -327,8 +327,8 @@ namespace gum {
 
   template < typename GUM_SCALAR >
   GUM_SCALAR
-     MultiDimDecorator< GUM_SCALAR >::reduce(std::function< GUM_SCALAR(GUM_SCALAR, GUM_SCALAR) > f,
-                                             GUM_SCALAR base) const {
+      MultiDimDecorator< GUM_SCALAR >::reduce(std::function< GUM_SCALAR(GUM_SCALAR, GUM_SCALAR) > f,
+                                              GUM_SCALAR base) const {
     if (static_cast< MultiDimContainer< GUM_SCALAR >* >(content_)->empty()) {
       return base;
     } else {
@@ -366,7 +366,7 @@ namespace gum {
 
   template < typename GUM_SCALAR >
   INLINE void MultiDimDecorator< GUM_SCALAR >::swapContent_(
-     MultiDimImplementation< GUM_SCALAR >* aContent) const {
+      MultiDimImplementation< GUM_SCALAR >* aContent) const {
     if (aContent != nullptr) {
       // TODO : frees all slave instantiations
       // TODO : control the dimensions ?

@@ -88,8 +88,8 @@ namespace gum {
 
     /// sets the columns of interest: the output DBRow needs only
     /// contain values fot these columns
-    INLINE void
-       DBRowGeneratorSet::setColumnsOfInterest(const std::vector< std::size_t >& cols_of_interest) {
+    INLINE void DBRowGeneratorSet::setColumnsOfInterest(
+        const std::vector< std::size_t >& cols_of_interest) {
       // check that no output row generation is still active
       if (_output_row_ != nullptr)
         GUM_ERROR(OperationNotAllowed,
@@ -102,7 +102,7 @@ namespace gum {
     /// sets the columns of interest: the output DBRow needs only
     /// contain values fot these columns
     INLINE void
-       DBRowGeneratorSet::setColumnsOfInterest(std::vector< std::size_t >&& cols_of_interest) {
+        DBRowGeneratorSet::setColumnsOfInterest(std::vector< std::size_t >&& cols_of_interest) {
       if (_output_row_ != nullptr)
         GUM_ERROR(OperationNotAllowed,
                   "you cannot change the columns of interest while a "

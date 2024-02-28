@@ -77,7 +77,7 @@ namespace gum {
   // initializer list constructor
   template < typename T1, typename T2, bool Gen >
   INLINE BijectionImplementation< T1, T2, Gen >::BijectionImplementation(
-     std::initializer_list< std::pair< T1, T2 > > list) :
+      std::initializer_list< std::pair< T1, T2 > > list) :
       _firstToSecond_(Size(list.size()) / 2, true, false),
       _secondToFirst_(Size(list.size()) / 2, true, false) {
     GUM_CONSTRUCTOR(BijectionImplementation);
@@ -90,7 +90,7 @@ namespace gum {
   // Copy constructor
   template < typename T1, typename T2, bool Gen >
   INLINE BijectionImplementation< T1, T2, Gen >::BijectionImplementation(
-     const BijectionImplementation< T1, T2, Gen >& toCopy) :
+      const BijectionImplementation< T1, T2, Gen >& toCopy) :
       _firstToSecond_(toCopy._firstToSecond_.capacity(), true, false),
       _secondToFirst_(toCopy._secondToFirst_.capacity(), true, false) {
     GUM_CONS_CPY(BijectionImplementation);
@@ -100,7 +100,7 @@ namespace gum {
   // move constructor
   template < typename T1, typename T2, bool Gen >
   INLINE BijectionImplementation< T1, T2, Gen >::BijectionImplementation(
-     BijectionImplementation< T1, T2, Gen >&& from) noexcept :
+      BijectionImplementation< T1, T2, Gen >&& from) noexcept :
       _firstToSecond_(std::move(from._firstToSecond_)),
       _secondToFirst_(std::move(from._secondToFirst_)) {
     GUM_CONS_MOV(BijectionImplementation);
@@ -125,7 +125,7 @@ namespace gum {
   // Copy operator
   template < typename T1, typename T2, bool Gen >
   INLINE BijectionImplementation< T1, T2, Gen >& BijectionImplementation< T1, T2, Gen >::operator=(
-     const BijectionImplementation< T1, T2, Gen >& toCopy) {
+      const BijectionImplementation< T1, T2, Gen >& toCopy) {
     // avoid self assignment
     if (this != &toCopy) {
       clear();
@@ -141,7 +141,7 @@ namespace gum {
   // move operator
   template < typename T1, typename T2, bool Gen >
   INLINE BijectionImplementation< T1, T2, Gen >& BijectionImplementation< T1, T2, Gen >::operator=(
-     BijectionImplementation< T1, T2, Gen >&& from) {
+      BijectionImplementation< T1, T2, Gen >&& from) {
     // avoid self assignment
     if (this != &from) {
       clear();
@@ -158,56 +158,56 @@ namespace gum {
   // returns the iterator at the beginning of the bijection
   template < typename T1, typename T2, bool Gen >
   INLINE typename BijectionImplementation< T1, T2, Gen >::iterator
-     BijectionImplementation< T1, T2, Gen >::begin() const {
+      BijectionImplementation< T1, T2, Gen >::begin() const {
     return BijectionIterator< T1, T2 >{*this};
   }
 
   // returns the iterator at the beginning of the bijection
   template < typename T1, typename T2, bool Gen >
   INLINE typename BijectionImplementation< T1, T2, Gen >::const_iterator
-     BijectionImplementation< T1, T2, Gen >::cbegin() const {
+      BijectionImplementation< T1, T2, Gen >::cbegin() const {
     return BijectionIterator< T1, T2 >{*this};
   }
 
   // returns the iterator to the end of the bijection
   template < typename T1, typename T2, bool Gen >
   INLINE const typename BijectionImplementation< T1, T2, Gen >::iterator&
-     BijectionImplementation< T1, T2, Gen >::end() const noexcept {
+      BijectionImplementation< T1, T2, Gen >::end() const noexcept {
     return *(reinterpret_cast< const BijectionIterator< T1, T2 >* >(_Bijection_end_));
   }
 
   // returns the iterator to the end of the bijection
   template < typename T1, typename T2, bool Gen >
   INLINE const typename BijectionImplementation< T1, T2, Gen >::const_iterator&
-     BijectionImplementation< T1, T2, Gen >::cend() const noexcept {
+      BijectionImplementation< T1, T2, Gen >::cend() const noexcept {
     return *(reinterpret_cast< const BijectionIterator< T1, T2 >* >(_Bijection_end_));
   }
 
   // returns the iterator at the beginning of the bijection
   template < typename T1, typename T2, bool Gen >
   INLINE typename BijectionImplementation< T1, T2, Gen >::iterator_safe
-     BijectionImplementation< T1, T2, Gen >::beginSafe() const {
+      BijectionImplementation< T1, T2, Gen >::beginSafe() const {
     return BijectionIteratorSafe< T1, T2 >{*this};
   }
 
   // returns the iterator at the beginning of the bijection
   template < typename T1, typename T2, bool Gen >
   INLINE typename BijectionImplementation< T1, T2, Gen >::const_iterator_safe
-     BijectionImplementation< T1, T2, Gen >::cbeginSafe() const {
+      BijectionImplementation< T1, T2, Gen >::cbeginSafe() const {
     return BijectionIteratorSafe< T1, T2 >{*this};
   }
 
   // returns the iterator to the end of the bijection
   template < typename T1, typename T2, bool Gen >
   INLINE const typename BijectionImplementation< T1, T2, Gen >::iterator_safe&
-     BijectionImplementation< T1, T2, Gen >::endSafe() const noexcept {
+      BijectionImplementation< T1, T2, Gen >::endSafe() const noexcept {
     return *(reinterpret_cast< const BijectionIteratorSafe< T1, T2 >* >(_Bijection_end_safe_));
   }
 
   // returns the iterator to the end of the bijection
   template < typename T1, typename T2, bool Gen >
   INLINE const typename BijectionImplementation< T1, T2, Gen >::const_iterator_safe&
-     BijectionImplementation< T1, T2, Gen >::cendSafe() const noexcept {
+      BijectionImplementation< T1, T2, Gen >::cendSafe() const noexcept {
     return *(reinterpret_cast< const BijectionIteratorSafe< T1, T2 >* >(_Bijection_end_safe_));
   }
 
@@ -238,7 +238,7 @@ namespace gum {
   // inserts a new association in the bijection
   template < typename T1, typename T2, bool Gen >
   INLINE typename BijectionImplementation< T1, T2, Gen >::HashTable12::value_type*
-     BijectionImplementation< T1, T2, Gen >::_insert_(const T1& first, const T2& second) {
+      BijectionImplementation< T1, T2, Gen >::_insert_(const T1& first, const T2& second) {
     // check the uniqueness property
     if (existsFirst(first) || existsSecond(second)) {
       GUM_ERROR(DuplicateElement,
@@ -266,7 +266,7 @@ namespace gum {
   // inserts a new association in the bijection
   template < typename T1, typename T2, bool Gen >
   INLINE typename BijectionImplementation< T1, T2, Gen >::HashTable12::value_type*
-     BijectionImplementation< T1, T2, Gen >::_insert_(T1&& first, T2&& second) {
+      BijectionImplementation< T1, T2, Gen >::_insert_(T1&& first, T2&& second) {
     // check the uniqueness property
     if (existsFirst(first) || existsSecond(second)) {
       GUM_ERROR(DuplicateElement,
@@ -379,7 +379,7 @@ namespace gum {
   // enables the user to change dynamically the resizing policy
   template < typename T1, typename T2, bool Gen >
   INLINE void
-     BijectionImplementation< T1, T2, Gen >::setResizePolicy(const bool new_policy) noexcept {
+      BijectionImplementation< T1, T2, Gen >::setResizePolicy(const bool new_policy) noexcept {
     _firstToSecond_.setResizePolicy(new_policy);
     _secondToFirst_.setResizePolicy(new_policy);
   }
@@ -429,7 +429,7 @@ namespace gum {
   // initializer list constructor
   template < typename T1, typename T2 >
   INLINE BijectionImplementation< T1, T2, true >::BijectionImplementation(
-     std::initializer_list< std::pair< T1, T2 > > list) :
+      std::initializer_list< std::pair< T1, T2 > > list) :
       _firstToSecond_(Size(list.size()) / 2, true, false),
       _secondToFirst_(Size(list.size()) / 2, true, false) {
     GUM_CONSTRUCTOR(BijectionImplementation);
@@ -462,7 +462,7 @@ namespace gum {
   // Copy constructor
   template < typename T1, typename T2 >
   INLINE BijectionImplementation< T1, T2, true >::BijectionImplementation(
-     const BijectionImplementation< T1, T2, true >& toCopy) :
+      const BijectionImplementation< T1, T2, true >& toCopy) :
       _firstToSecond_(toCopy._firstToSecond_.capacity(), true, false),
       _secondToFirst_(toCopy._secondToFirst_.capacity(), true, false) {
     GUM_CONS_CPY(BijectionImplementation);
@@ -472,7 +472,7 @@ namespace gum {
   // move constructor
   template < typename T1, typename T2 >
   INLINE BijectionImplementation< T1, T2, true >::BijectionImplementation(
-     BijectionImplementation< T1, T2, true >&& toCopy) noexcept :
+      BijectionImplementation< T1, T2, true >&& toCopy) noexcept :
       _firstToSecond_(std::move(toCopy._firstToSecond_)),
       _secondToFirst_(std::move(toCopy._secondToFirst_)) {
     GUM_CONS_MOV(BijectionImplementation);
@@ -487,56 +487,56 @@ namespace gum {
   // returns the iterator at the beginning of the bijection
   template < typename T1, typename T2 >
   INLINE typename BijectionImplementation< T1, T2, true >::iterator
-     BijectionImplementation< T1, T2, true >::begin() const {
+      BijectionImplementation< T1, T2, true >::begin() const {
     return BijectionIterator< T1, T2 >{*this};
   }
 
   // returns the iterator at the beginning of the bijection
   template < typename T1, typename T2 >
   INLINE typename BijectionImplementation< T1, T2, true >::const_iterator
-     BijectionImplementation< T1, T2, true >::cbegin() const {
+      BijectionImplementation< T1, T2, true >::cbegin() const {
     return BijectionIterator< T1, T2 >{*this};
   }
 
   // returns the iterator to the end of the bijection
   template < typename T1, typename T2 >
   INLINE const typename BijectionImplementation< T1, T2, true >::iterator&
-     BijectionImplementation< T1, T2, true >::end() const noexcept {
+      BijectionImplementation< T1, T2, true >::end() const noexcept {
     return *(reinterpret_cast< const BijectionIterator< T1, T2 >* >(_Bijection_end_));
   }
 
   // returns the iterator to the end of the bijection
   template < typename T1, typename T2 >
   INLINE const typename BijectionImplementation< T1, T2, true >::const_iterator&
-     BijectionImplementation< T1, T2, true >::cend() const noexcept {
+      BijectionImplementation< T1, T2, true >::cend() const noexcept {
     return *(reinterpret_cast< const BijectionIterator< T1, T2 >* >(_Bijection_end_));
   }
 
   // returns the iterator at the beginning of the bijection
   template < typename T1, typename T2 >
   INLINE typename BijectionImplementation< T1, T2, true >::iterator_safe
-     BijectionImplementation< T1, T2, true >::beginSafe() const {
+      BijectionImplementation< T1, T2, true >::beginSafe() const {
     return BijectionIteratorSafe< T1, T2 >{*this};
   }
 
   // returns the iterator at the beginning of the bijection
   template < typename T1, typename T2 >
   INLINE typename BijectionImplementation< T1, T2, true >::const_iterator_safe
-     BijectionImplementation< T1, T2, true >::cbeginSafe() const {
+      BijectionImplementation< T1, T2, true >::cbeginSafe() const {
     return BijectionIteratorSafe< T1, T2 >{*this};
   }
 
   // returns the iterator to the end of the bijection
   template < typename T1, typename T2 >
   INLINE const typename BijectionImplementation< T1, T2, true >::iterator_safe&
-     BijectionImplementation< T1, T2, true >::endSafe() const noexcept {
+      BijectionImplementation< T1, T2, true >::endSafe() const noexcept {
     return *(reinterpret_cast< const BijectionIteratorSafe< T1, T2 >* >(_Bijection_end_safe_));
   }
 
   // returns the iterator to the end of the bijection
   template < typename T1, typename T2 >
   INLINE const typename BijectionImplementation< T1, T2, true >::const_iterator_safe&
-     BijectionImplementation< T1, T2, true >::cendSafe() const noexcept {
+      BijectionImplementation< T1, T2, true >::cendSafe() const noexcept {
     return *(reinterpret_cast< const BijectionIteratorSafe< T1, T2 >* >(_Bijection_end_safe_));
   }
 
@@ -554,7 +554,7 @@ namespace gum {
   template < typename T1, typename T2 >
   INLINE BijectionImplementation< T1, T2, true >&
          BijectionImplementation< T1, T2, true >::operator=(
-        const BijectionImplementation< T1, T2, true >& toCopy) {
+          const BijectionImplementation< T1, T2, true >& toCopy) {
     // avoid self assignment
     if (this != &toCopy) {
       clear();
@@ -571,7 +571,7 @@ namespace gum {
   template < typename T1, typename T2 >
   INLINE BijectionImplementation< T1, T2, true >&
          BijectionImplementation< T1, T2, true >::operator=(
-        BijectionImplementation< T1, T2, true >&& toCopy) {
+          BijectionImplementation< T1, T2, true >&& toCopy) {
     // avoid self assignment
     if (this != &toCopy) {
       clear();
@@ -718,7 +718,7 @@ namespace gum {
   // enables the user to change dynamically the resizing policy
   template < typename T1, typename T2 >
   INLINE void
-     BijectionImplementation< T1, T2, true >::setResizePolicy(const bool new_policy) noexcept {
+      BijectionImplementation< T1, T2, true >::setResizePolicy(const bool new_policy) noexcept {
     _firstToSecond_.setResizePolicy(new_policy);
     _secondToFirst_.setResizePolicy(new_policy);
   }
@@ -761,7 +761,7 @@ namespace gum {
   template < typename T1, typename T2 >
   template < bool Gen >
   INLINE BijectionIteratorSafe< T1, T2 >::BijectionIteratorSafe(
-     const BijectionImplementation< T1, T2, Gen >& bijection) :
+      const BijectionImplementation< T1, T2, Gen >& bijection) :
       _iter_{bijection._firstToSecond_.cbeginSafe()} {
     GUM_CONSTRUCTOR(BijectionIteratorSafe);
   }
@@ -769,7 +769,7 @@ namespace gum {
   /// Constructor
   template < typename T1, typename T2 >
   INLINE
-     BijectionIteratorSafe< T1, T2 >::BijectionIteratorSafe(const Bijection< T1, T2 >& bijection) :
+      BijectionIteratorSafe< T1, T2 >::BijectionIteratorSafe(const Bijection< T1, T2 >& bijection) :
       _iter_{bijection._firstToSecond_.cbeginSafe()} {
     GUM_CONSTRUCTOR(BijectionIteratorSafe);
   }
@@ -777,7 +777,7 @@ namespace gum {
   /// Copy constructor
   template < typename T1, typename T2 >
   INLINE BijectionIteratorSafe< T1, T2 >::BijectionIteratorSafe(
-     const BijectionIteratorSafe< T1, T2 >& toCopy) :
+      const BijectionIteratorSafe< T1, T2 >& toCopy) :
       _iter_{toCopy._iter_} {
     GUM_CONS_CPY(BijectionIteratorSafe);
   }
@@ -785,7 +785,7 @@ namespace gum {
   /// move constructor
   template < typename T1, typename T2 >
   INLINE BijectionIteratorSafe< T1, T2 >::BijectionIteratorSafe(
-     BijectionIteratorSafe< T1, T2 >&& from) noexcept :
+      BijectionIteratorSafe< T1, T2 >&& from) noexcept :
       _iter_{std::move(from._iter_)} {
     GUM_CONS_MOV(BijectionIteratorSafe);
   }
@@ -806,8 +806,8 @@ namespace gum {
 
   /// move operator
   template < typename T1, typename T2 >
-  INLINE BijectionIteratorSafe< T1, T2 >&
-     BijectionIteratorSafe< T1, T2 >::operator=(BijectionIteratorSafe< T1, T2 >&& toCopy) noexcept {
+  INLINE BijectionIteratorSafe< T1, T2 >& BijectionIteratorSafe< T1, T2 >::operator=(
+      BijectionIteratorSafe< T1, T2 >&& toCopy) noexcept {
     _iter_ = std::move(toCopy._iter_);
     return *this;
   }
@@ -837,14 +837,14 @@ namespace gum {
   /// Comparison of iterators
   template < typename T1, typename T2 >
   INLINE bool BijectionIteratorSafe< T1, T2 >::operator!=(
-     const BijectionIteratorSafe< T1, T2 >& toCompare) const noexcept {
+      const BijectionIteratorSafe< T1, T2 >& toCompare) const noexcept {
     return _iter_ != toCompare._iter_;
   }
 
   /// Comparison of iterators
   template < typename T1, typename T2 >
   INLINE bool BijectionIteratorSafe< T1, T2 >::operator==(
-     const BijectionIteratorSafe< T1, T2 >& toCompare) const noexcept {
+      const BijectionIteratorSafe< T1, T2 >& toCompare) const noexcept {
     return _iter_ == toCompare._iter_;
   }
 
@@ -877,7 +877,7 @@ namespace gum {
   template < typename T1, typename T2 >
   template < bool Gen >
   INLINE BijectionIterator< T1, T2 >::BijectionIterator(
-     const BijectionImplementation< T1, T2, Gen >& bijection) :
+      const BijectionImplementation< T1, T2, Gen >& bijection) :
       _iter_{bijection._firstToSecond_.cbegin()} {
     GUM_CONSTRUCTOR(BijectionIterator);
   }
@@ -949,14 +949,14 @@ namespace gum {
   /// Comparison of iterators
   template < typename T1, typename T2 >
   INLINE bool BijectionIterator< T1, T2 >::operator!=(
-     const BijectionIterator< T1, T2 >& toCompare) const noexcept {
+      const BijectionIterator< T1, T2 >& toCompare) const noexcept {
     return _iter_ != toCompare._iter_;
   }
 
   /// Comparison of iterators
   template < typename T1, typename T2 >
   INLINE bool BijectionIterator< T1, T2 >::operator==(
-     const BijectionIterator< T1, T2 >& toCompare) const noexcept {
+      const BijectionIterator< T1, T2 >& toCompare) const noexcept {
     return _iter_ == toCompare._iter_;
   }
 
@@ -980,8 +980,8 @@ namespace gum {
   template < typename T1, typename T2 >
   INLINE Bijection< T1, T2 >::Bijection(Size size, bool resize_policy) :
       BijectionImplementation< T1, T2, std::is_scalar< T1 >::value && std::is_scalar< T2 >::value >(
-         size,
-         resize_policy) {
+          size,
+          resize_policy) {
     GUM_CONSTRUCTOR(Bijection);
   }
 
@@ -989,7 +989,7 @@ namespace gum {
   template < typename T1, typename T2 >
   INLINE Bijection< T1, T2 >::Bijection(std::initializer_list< std::pair< T1, T2 > > list) :
       BijectionImplementation< T1, T2, std::is_scalar< T1 >::value && std::is_scalar< T2 >::value >(
-         list) {
+          list) {
     GUM_CONSTRUCTOR(Bijection);
   }
 
@@ -997,7 +997,7 @@ namespace gum {
   template < typename T1, typename T2 >
   INLINE Bijection< T1, T2 >::Bijection(const Bijection< T1, T2 >& toCopy) :
       BijectionImplementation< T1, T2, std::is_scalar< T1 >::value && std::is_scalar< T2 >::value >(
-         toCopy) {
+          toCopy) {
     GUM_CONS_CPY(Bijection);
   }
 
@@ -1005,7 +1005,7 @@ namespace gum {
   template < typename T1, typename T2 >
   INLINE Bijection< T1, T2 >::Bijection(Bijection< T1, T2 >&& from) noexcept :
       BijectionImplementation< T1, T2, std::is_scalar< T1 >::value && std::is_scalar< T2 >::value >(
-         std::move(from)) {
+          std::move(from)) {
     GUM_CONS_MOV(Bijection);
   }
 

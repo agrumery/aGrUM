@@ -43,9 +43,9 @@ namespace gum_tests {
 
       TS_ASSERT(bn.hasSameStructure(gum::BayesNet< float >::fastPrototype("a->b[1,5]->c;a->c")));
       TS_ASSERT(
-         bn.hasSameStructure(gum::BayesNet< float >::fastPrototype("a ->b  [1,5]->c ;  a->c  ")));
+          bn.hasSameStructure(gum::BayesNet< float >::fastPrototype("a ->b  [1,5]->c ;  a->c  ")));
       TS_ASSERT(bn.hasSameStructure(
-         gum::BayesNet< float >::fastPrototype("a ->b  [1,\n5]->c ;\n  a->c  ")));
+          gum::BayesNet< float >::fastPrototype("a ->b  [1,\n5]->c ;\n  a->c  ")));
     }
 
     GUM_ACTIVE_TEST(Ancestors) {

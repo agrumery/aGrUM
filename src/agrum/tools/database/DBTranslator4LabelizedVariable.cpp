@@ -40,8 +40,8 @@ namespace gum {
 
     /// default constructor
     DBTranslator4LabelizedVariable::DBTranslator4LabelizedVariable(
-       const std::vector< std::string >& missing_symbols,
-       std::size_t                       max_dico_entries) :
+        const std::vector< std::string >& missing_symbols,
+        std::size_t                       max_dico_entries) :
         DBTranslator(DBTranslatedValueType::DISCRETE,
                      true,
                      missing_symbols,
@@ -60,10 +60,10 @@ namespace gum {
 
     /// default constructor with a labelized variable as translator
     DBTranslator4LabelizedVariable::DBTranslator4LabelizedVariable(
-       const LabelizedVariable&          var,
-       const std::vector< std::string >& missing_symbols,
-       const bool                        editable_dictionary,
-       std::size_t                       max_dico_entries) :
+        const LabelizedVariable&          var,
+        const std::vector< std::string >& missing_symbols,
+        const bool                        editable_dictionary,
+        std::size_t                       max_dico_entries) :
         DBTranslator(DBTranslatedValueType::DISCRETE,
                      true,
                      missing_symbols,
@@ -119,7 +119,7 @@ namespace gum {
 
     /// copy operator
     DBTranslator4LabelizedVariable&
-       DBTranslator4LabelizedVariable::operator=(const DBTranslator4LabelizedVariable& from) {
+        DBTranslator4LabelizedVariable::operator=(const DBTranslator4LabelizedVariable& from) {
       if (this != &from) {
         DBTranslator::operator=(from);
         _variable_ = from._variable_;
@@ -130,7 +130,7 @@ namespace gum {
 
     /// move operator
     DBTranslator4LabelizedVariable&
-       DBTranslator4LabelizedVariable::operator=(DBTranslator4LabelizedVariable&& from) {
+        DBTranslator4LabelizedVariable::operator=(DBTranslator4LabelizedVariable&& from) {
       if (this != &from) {
         DBTranslator::operator=(std::move(from));
         _variable_ = std::move(from._variable_);

@@ -80,8 +80,8 @@ namespace gum_tests {
       auto res = d1 ^ std::vector< std::string >({"C"});
       TS_ASSERT_EQUALS(res.probPot, gum::Potential< double >().fillWith(1))
       TS_ASSERT_EQUALS(
-         res.utilPot,
-         (gum::Potential< double >() << infdiag.variableFromName("C")).fillWith({37, 58}));
+          res.utilPot,
+          (gum::Potential< double >() << infdiag.variableFromName("C")).fillWith({37, 58}));
     }
 
     GUM_ACTIVE_TEST(Equalities) {

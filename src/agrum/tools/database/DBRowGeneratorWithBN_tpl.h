@@ -35,10 +35,10 @@ namespace gum {
     /// default constructor
     template < typename GUM_SCALAR >
     DBRowGeneratorWithBN< GUM_SCALAR >::DBRowGeneratorWithBN(
-       const std::vector< DBTranslatedValueType >& column_types,
-       const BayesNet< GUM_SCALAR >&               bn,
-       const DBRowGeneratorGoal                    goal,
-       const Bijection< NodeId, std::size_t >&     nodeId2columns) :
+        const std::vector< DBTranslatedValueType >& column_types,
+        const BayesNet< GUM_SCALAR >&               bn,
+        const DBRowGeneratorGoal                    goal,
+        const Bijection< NodeId, std::size_t >&     nodeId2columns) :
         DBRowGenerator(column_types, goal),
         bn_(&bn), nodeId2columns_(nodeId2columns) {
       GUM_CONSTRUCTOR(DBRowGeneratorWithBN);
@@ -47,7 +47,7 @@ namespace gum {
     /// copy constructor
     template < typename GUM_SCALAR >
     DBRowGeneratorWithBN< GUM_SCALAR >::DBRowGeneratorWithBN(
-       const DBRowGeneratorWithBN< GUM_SCALAR >& from) :
+        const DBRowGeneratorWithBN< GUM_SCALAR >& from) :
         DBRowGenerator(from),
         bn_(from.bn_), nodeId2columns_(from.nodeId2columns_) {
       GUM_CONS_CPY(DBRowGeneratorWithBN);
@@ -56,7 +56,7 @@ namespace gum {
     /// move constructor
     template < typename GUM_SCALAR >
     DBRowGeneratorWithBN< GUM_SCALAR >::DBRowGeneratorWithBN(
-       DBRowGeneratorWithBN< GUM_SCALAR >&& from) :
+        DBRowGeneratorWithBN< GUM_SCALAR >&& from) :
         DBRowGenerator(std::move(from)),
         bn_(from.bn_), nodeId2columns_(std::move(from.nodeId2columns_)) {
       GUM_CONS_MOV(DBRowGeneratorWithBN);
@@ -71,7 +71,7 @@ namespace gum {
     /// copy operator
     template < typename GUM_SCALAR >
     DBRowGeneratorWithBN< GUM_SCALAR >& DBRowGeneratorWithBN< GUM_SCALAR >::operator=(
-       const DBRowGeneratorWithBN< GUM_SCALAR >& from) {
+        const DBRowGeneratorWithBN< GUM_SCALAR >& from) {
       if (this != &from) {
         DBRowGenerator::operator=(from);
         bn_             = from.bn_;
@@ -84,7 +84,7 @@ namespace gum {
     /// move operator
     template < typename GUM_SCALAR >
     DBRowGeneratorWithBN< GUM_SCALAR >&
-       DBRowGeneratorWithBN< GUM_SCALAR >::operator=(DBRowGeneratorWithBN< GUM_SCALAR >&& from) {
+        DBRowGeneratorWithBN< GUM_SCALAR >::operator=(DBRowGeneratorWithBN< GUM_SCALAR >&& from) {
       if (this != &from) {
         DBRowGenerator::operator=(std::move(from));
         bn_             = from.bn_;
@@ -97,7 +97,7 @@ namespace gum {
     /// assign a new Bayes net to the generator
     template < typename GUM_SCALAR >
     INLINE void
-       DBRowGeneratorWithBN< GUM_SCALAR >::setBayesNet(const BayesNet< GUM_SCALAR >& new_bn) {
+        DBRowGeneratorWithBN< GUM_SCALAR >::setBayesNet(const BayesNet< GUM_SCALAR >& new_bn) {
       bn_ = &new_bn;
     }
 

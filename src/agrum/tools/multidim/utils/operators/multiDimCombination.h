@@ -162,13 +162,13 @@ namespace gum {
      * @warning MultiDimCombinations always produce a new freshly allocated resulting table
      */
     virtual std::pair< std::vector< ScheduleOperator* >, const IScheduleMultiDim* >
-       operations(const std::vector< const IScheduleMultiDim* >& set,
-                  const bool                                     is_result_persistent = false) const
-       = 0;
+        operations(const std::vector< const IScheduleMultiDim* >& set,
+                   const bool is_result_persistent = false) const
+        = 0;
     virtual std::pair< std::vector< ScheduleOperator* >, const IScheduleMultiDim* >
-       operations(const Set< const IScheduleMultiDim* >& set,
-                  const bool                             is_result_persistent = false) const
-       = 0;
+        operations(const Set< const IScheduleMultiDim* >& set,
+                   const bool                             is_result_persistent = false) const
+        = 0;
 
     /// add to a given schedule the set of operations needed to perform the combination
     /** @warning whenever this method is executed, it is assumed that the
@@ -194,7 +194,7 @@ namespace gum {
      */
     virtual double nbOperations(const Set< const TABLE* >& set) const = 0;
     virtual double nbOperations(const Set< const Sequence< const DiscreteVariable* >* >& set) const
-       = 0;
+        = 0;
 
     /**
      * @brief Returns the memory consumption used during the combination.
@@ -210,7 +210,7 @@ namespace gum {
      */
     virtual std::pair< double, double > memoryUsage(const Set< const TABLE* >& set) const = 0;
     virtual std::pair< double, double >
-       memoryUsage(const Set< const Sequence< const DiscreteVariable* >* >& set) const = 0;
+        memoryUsage(const Set< const Sequence< const DiscreteVariable* >* >& set) const = 0;
 
     private:
     /// forbid copy operators

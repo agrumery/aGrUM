@@ -58,7 +58,7 @@ namespace gum_tests {
         query.insert(nodes_seq.atPos(j));
 
       TS_ASSERT_THROWS_NOTHING(
-         gum::BayesBall::requisiteNodes(bn.dag(), query, hardEvidence, softEvidence, requisite));
+          gum::BayesBall::requisiteNodes(bn.dag(), query, hardEvidence, softEvidence, requisite));
 
       TS_ASSERT(requisite.size() >= 5)
     }
@@ -87,9 +87,9 @@ namespace gum_tests {
       hardEvidence.insert(gum::NodeId(5));   // smoking
 
       TS_ASSERT_THROWS_NOTHING(
-         gum::BayesBall::requisiteNodes(bn.dag(), query, hardEvidence, softEvidence, requisite));
+          gum::BayesBall::requisiteNodes(bn.dag(), query, hardEvidence, softEvidence, requisite));
       TS_ASSERT_THROWS_NOTHING(
-         gum::BayesBall::relevantPotentials(bn, query, hardEvidence, softEvidence, potentials));
+          gum::BayesBall::relevantPotentials(bn, query, hardEvidence, softEvidence, potentials));
 
       TS_ASSERT(potentials.size() == 5)
     }
@@ -108,7 +108,7 @@ namespace gum_tests {
       for (const auto node: bn.nodes()) {
         nodes_seq.insert(node);
         auto sched
-           = new gum::ScheduleMultiDim< gum::Potential< double > >(bn.cpt(node), false, node);
+            = new gum::ScheduleMultiDim< gum::Potential< double > >(bn.cpt(node), false, node);
         potentials.insert(sched);
         // std::cout << node << " : " << bn.variable(node).name() << std::endl;
       }
@@ -121,9 +121,9 @@ namespace gum_tests {
       hardEvidence.insert(gum::NodeId(5));   // smoking
 
       TS_ASSERT_THROWS_NOTHING(
-         gum::BayesBall::requisiteNodes(bn.dag(), query, hardEvidence, softEvidence, requisite));
+          gum::BayesBall::requisiteNodes(bn.dag(), query, hardEvidence, softEvidence, requisite));
       TS_ASSERT_THROWS_NOTHING(
-         gum::BayesBall::relevantPotentials(bn, query, hardEvidence, softEvidence, potentials));
+          gum::BayesBall::relevantPotentials(bn, query, hardEvidence, softEvidence, potentials));
 
       TS_ASSERT(potentials.size() == 5)
 

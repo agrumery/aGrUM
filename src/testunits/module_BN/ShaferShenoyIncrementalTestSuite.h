@@ -58,7 +58,7 @@ namespace gum_tests {
 
     static void defineVariables(gum::BayesNet< double >& bn, gum::Potential< double >& joint) {
       bn = gum::BayesNet< double >::fastPrototype(
-         "A->B[3]->C->D[3];C->E[2];D->F[3];C<-G[4]->H[3]->E");
+          "A->B[3]->C->D[3];C->E[2];D->F[3];C<-G[4]->H[3]->E");
 
       for (const auto node: bn.nodes()) {
         joint *= bn.cpt(node);
@@ -570,15 +570,15 @@ namespace gum_tests {
       inf.makeInference();
 
       TS_GUM_ASSERT_THROWS_NOTHING(
-         inf.jointPosterior(gum::NodeSet{bn.idFromName("D"), bn.idFromName("C")}))
+          inf.jointPosterior(gum::NodeSet{bn.idFromName("D"), bn.idFromName("C")}))
 
       TS_ASSERT_THROWS(inf.jointPosterior(gum::NodeSet{bn.idFromName("F"), bn.idFromName("H")}),
                        gum::UndefinedElement&)
 
       TS_GUM_POTENTIAL_DELTA(
-         inf.jointPosterior(gum::NodeSet{bn.idFromName("D"), bn.idFromName("C")}),
-         joint.margSumIn({&bn.variable("D"), &bn.variable("C")}).normalize(),
-         TS_GUM_SMALL_ERROR)
+          inf.jointPosterior(gum::NodeSet{bn.idFromName("D"), bn.idFromName("C")}),
+          joint.margSumIn({&bn.variable("D"), &bn.variable("C")}).normalize(),
+          TS_GUM_SMALL_ERROR)
     }
   };
 }   // namespace gum_tests

@@ -173,7 +173,7 @@ namespace gum_tests {
       TS_ASSERT_EQUALS(table.size(), (gum::Size)6)
 
       gum::HashTable< int, std::string >::iterator_safe iter
-         = table.beginSafe();   // safe iterator needed here
+          = table.beginSafe();   // safe iterator needed here
 
       TS_GUM_ASSERT_THROWS_NOTHING(table.erase(iter))
       TS_ASSERT_EQUALS(table.size(), (gum::Size)5)

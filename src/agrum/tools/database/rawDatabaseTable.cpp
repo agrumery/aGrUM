@@ -71,8 +71,8 @@ namespace gum {
         } else {
           GUM_ERROR(SizeError,
                     "the number of variable's names (i.e., "
-                       << size << ") does not correspond to the number of columns of the "
-                       << "raw database table (i.e.," << this->rows_[0].size() << ")");
+                        << size << ") does not correspond to the number of columns of the "
+                        << "raw database table (i.e.," << this->rows_[0].size() << ")");
         }
       } else {
         // check that the size of the names vector (after removing the ignored
@@ -104,9 +104,9 @@ namespace gum {
         } else {
           GUM_ERROR(SizeError,
                     "the number of variable's names excluding the ignored "
-                       << "columns (i.e., " << (size - ignored_size)
-                       << ") does not correspond to the number of columns of the "
-                       << "raw database table (i.e.," << this->rows_[0].size() << ")");
+                        << "columns (i.e., " << (size - ignored_size)
+                        << ") does not correspond to the number of columns of the "
+                        << "raw database table (i.e.," << this->rows_[0].size() << ")");
         }
       }
     }
@@ -176,7 +176,7 @@ namespace gum {
 
     /// returns the set of columns parsed
     const typename RawDatabaseTable::template DBVector< std::size_t >
-       RawDatabaseTable::inputColumns() const {
+        RawDatabaseTable::inputColumns() const {
       const auto& data = IDatabaseTable< DBCell >::content();
       if (data.empty()) { return DBVector< std::size_t >(); }
 

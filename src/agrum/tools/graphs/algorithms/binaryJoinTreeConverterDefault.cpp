@@ -79,9 +79,9 @@ namespace gum {
 
   /// returns the domain size of the union of two cliques
   float BinaryJoinTreeConverterDefault::_combinedSize_(
-     const NodeSet&              nodes1,
-     const NodeSet&              nodes2,
-     const NodeProperty< Size >& domain_sizes) const {
+      const NodeSet&              nodes1,
+      const NodeSet&              nodes2,
+      const NodeProperty< Size >& domain_sizes) const {
     float result = 1;
 
     for (const auto node: nodes1)
@@ -98,10 +98,10 @@ namespace gum {
 
   /// convert a clique and its adjacent cliques into a binary join tree
   void BinaryJoinTreeConverterDefault::_convertClique_(
-     CliqueGraph&                JT,
-     NodeId                      clique,
-     NodeId                      from,
-     const NodeProperty< Size >& domain_sizes) const {
+      CliqueGraph&                JT,
+      NodeId                      clique,
+      NodeId                      from,
+      const NodeProperty< Size >& domain_sizes) const {
     // get the neighbors of clique. If there are fewer than 3 neighbors,
     // there is nothing to do
     const NodeSet& neighbors = JT.neighbours(clique);
@@ -215,11 +215,11 @@ namespace gum {
 
   /// convert a whole connected component into a binary join tree
   void BinaryJoinTreeConverterDefault::_convertConnectedComponent_(
-     CliqueGraph&                JT,
-     NodeId                      current_node,
-     NodeId                      from,
-     const NodeProperty< Size >& domain_sizes,
-     NodeProperty< bool >&       mark) const {
+      CliqueGraph&                JT,
+      NodeId                      current_node,
+      NodeId                      from,
+      const NodeProperty< Size >& domain_sizes,
+      NodeProperty< bool >&       mark) const {
     // first, indicate that the node has been marked (this avoids looping
     // if JT is not a tree
     mark[current_node] = true;
@@ -259,7 +259,7 @@ namespace gum {
         GUM_ERROR(InvalidNode,
                   "several roots have been specified for a given "
                   "connected component (last : "
-                     << root << ")");
+                      << root << ")");
 
       _markConnectedComponent_(JT, root, mark);
     }

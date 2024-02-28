@@ -55,8 +55,8 @@ namespace gum {
   template < typename GUM_SCALAR >
   INLINE Potential< GUM_SCALAR >::Potential(const Potential< GUM_SCALAR >& src) :
       Potential< GUM_SCALAR >(
-       static_cast< MultiDimImplementation< GUM_SCALAR >* >(src.content() -> newFactory()),
-       *(src.content())) {
+          static_cast< MultiDimImplementation< GUM_SCALAR >* >(src.content()->newFactory()),
+          *(src.content())) {
     this->empty_value_ = src.empty_value_;
     // GUM_CONS_CPY not here because in called Potential
     // GUM_CONS_CPY( Potential );
@@ -104,7 +104,7 @@ namespace gum {
     GUM_OP_MOV(Potential)
     if (&src == this) return *this;
     MultiDimDecorator< GUM_SCALAR >::operator=(
-     std::forward< MultiDimDecorator< GUM_SCALAR > >(src));
+        std::forward< MultiDimDecorator< GUM_SCALAR > >(src));
     return *this;
   }
 
@@ -119,7 +119,7 @@ namespace gum {
   template < typename GUM_SCALAR >
   INLINE Potential< GUM_SCALAR >* Potential< GUM_SCALAR >::newFactory() const {
     return new Potential< GUM_SCALAR >(
-     static_cast< MultiDimImplementation< GUM_SCALAR >* >(this->content()->newFactory()));
+        static_cast< MultiDimImplementation< GUM_SCALAR >* >(this->content()->newFactory()));
   }
 
   // sum of all elements in this
@@ -168,12 +168,12 @@ namespace gum {
       res = this->empty_value_;
     } else {
       res = this->reduce(
-       [](GUM_SCALAR z, GUM_SCALAR p) {
-         return (p == static_cast< GUM_SCALAR >(1)) ? z
-              : (z == static_cast< GUM_SCALAR >(1)) ? p
-                                                    : (p > z ? p : z);
-       },
-       static_cast< GUM_SCALAR >(1));
+          [](GUM_SCALAR z, GUM_SCALAR p) {
+            return (p == static_cast< GUM_SCALAR >(1)) ? z
+                 : (z == static_cast< GUM_SCALAR >(1)) ? p
+                                                       : (p > z ? p : z);
+          },
+          static_cast< GUM_SCALAR >(1));
     }
 
     return res;
@@ -189,19 +189,19 @@ namespace gum {
       res = this->empty_value_;
     } else {
       res = this->reduce(
-       [](GUM_SCALAR z, GUM_SCALAR p) {
-         return (p == static_cast< GUM_SCALAR >(0)) ? z
-              : (z == static_cast< GUM_SCALAR >(0)) ? p
-                                                    : (p < z ? p : z);
-       },
-       static_cast< GUM_SCALAR >(0));
+          [](GUM_SCALAR z, GUM_SCALAR p) {
+            return (p == static_cast< GUM_SCALAR >(0)) ? z
+                 : (z == static_cast< GUM_SCALAR >(0)) ? p
+                                                       : (p < z ? p : z);
+          },
+          static_cast< GUM_SCALAR >(0));
     }
     return res;
   }
 
   template < typename GUM_SCALAR >
   GUM_SCALAR Potential< GUM_SCALAR >::expectedValue(
-   std::function< GUM_SCALAR(const gum::Instantiation&) > f) const {
+      std::function< GUM_SCALAR(const gum::Instantiation&) > f) const {
     if (static_cast< MultiDimContainer< GUM_SCALAR >* >(this->content_)->empty()) {
       return static_cast< GUM_SCALAR >(0);
     }
@@ -273,7 +273,7 @@ namespace gum {
   template < typename GUM_SCALAR >
   INLINE const Potential< GUM_SCALAR >&
                Potential< GUM_SCALAR >::fillWith(const Potential< GUM_SCALAR >&    src,
-                                     const std::vector< std::string >& mapSrc) const {
+                                        const std::vector< std::string >& mapSrc) const {
     if (src.nbrDim() != this->nbrDim()) {
       GUM_ERROR(InvalidArgument, "Potential to copy has not the same size.")
     }
@@ -542,7 +542,7 @@ namespace gum {
     if (kept_vars.empty()) { return Potential< GUM_SCALAR >().fillWith(this->product()); }
 
     return Potential< GUM_SCALAR >(
-     gum::projectProduct(*this->content(), complementVars_(kept_vars)));
+        gum::projectProduct(*this->content(), complementVars_(kept_vars)));
   }
 
   template < typename GUM_SCALAR >
@@ -594,8 +594,8 @@ namespace gum {
   }
 
   template < typename GUM_SCALAR >
-  Potential< GUM_SCALAR >
-   Potential< GUM_SCALAR >::reorganize(const std::vector< const DiscreteVariable* >& vars) const {
+  Potential< GUM_SCALAR > Potential< GUM_SCALAR >::reorganize(
+      const std::vector< const DiscreteVariable* >& vars) const {
     if (vars.size() != this->nbrDim())
       GUM_ERROR(InvalidArgument,
                 "The argument contains " << vars.size() << " variables instead of "
@@ -617,7 +617,7 @@ namespace gum {
 
   template < typename GUM_SCALAR >
   Potential< GUM_SCALAR >
-   Potential< GUM_SCALAR >::reorganize(const std::vector< std::string >& vars) const {
+      Potential< GUM_SCALAR >::reorganize(const std::vector< std::string >& vars) const {
     std::vector< const DiscreteVariable* > res;
 
     gum::HashTable< std::string, const gum::DiscreteVariable* > namesToVars;
@@ -788,7 +788,7 @@ namespace gum {
   /// the function to be used to add two Potentials
   template < typename GUM_SCALAR >
   Potential< GUM_SCALAR >
-   Potential< GUM_SCALAR >::operator+(const Potential< GUM_SCALAR >& p2) const {
+      Potential< GUM_SCALAR >::operator+(const Potential< GUM_SCALAR >& p2) const {
     if (p2.empty()) return Potential< GUM_SCALAR >(*this).translate(p2.empty_value_);
     if (this->empty()) return Potential< GUM_SCALAR >(p2).translate(this->empty_value_);
 
@@ -812,7 +812,7 @@ namespace gum {
   // max function between two evidence
   template < typename GUM_SCALAR >
   Potential< GUM_SCALAR >
-   Potential< GUM_SCALAR >::operator|(const Potential< GUM_SCALAR >& p2) const {
+      Potential< GUM_SCALAR >::operator|(const Potential< GUM_SCALAR >& p2) const {
     if (!isEvidence() || !p2.isEvidence())
       GUM_ERROR(InvalidArgument, "The potentials are not evidences.")
     if (this->variable(0) != p2.variable(0))
@@ -828,7 +828,7 @@ namespace gum {
   // min function between two evidence
   template < typename GUM_SCALAR >
   Potential< GUM_SCALAR >
-   Potential< GUM_SCALAR >::operator&(const Potential< GUM_SCALAR >& p2) const {
+      Potential< GUM_SCALAR >::operator&(const Potential< GUM_SCALAR >& p2) const {
     if (!isEvidence() || !p2.isEvidence())
       GUM_ERROR(InvalidArgument, "The potentials are not evidences.")
     if (this->variable(0) != p2.variable(0))
@@ -857,7 +857,7 @@ namespace gum {
   /// the function to be used to subtract two Potentials
   template < typename GUM_SCALAR >
   Potential< GUM_SCALAR >
-   Potential< GUM_SCALAR >::operator-(const Potential< GUM_SCALAR >& p2) const {
+      Potential< GUM_SCALAR >::operator-(const Potential< GUM_SCALAR >& p2) const {
     if (p2.empty()) return Potential< GUM_SCALAR >(*this).translate(-p2.empty_value_);
     if (this->empty()) {
       auto p = Potential< GUM_SCALAR >(p2);
@@ -876,7 +876,7 @@ namespace gum {
   /// the function to be used to multiply two Potentials
   template < typename GUM_SCALAR >
   Potential< GUM_SCALAR >
-   Potential< GUM_SCALAR >::operator*(const Potential< GUM_SCALAR >& p2) const {
+      Potential< GUM_SCALAR >::operator*(const Potential< GUM_SCALAR >& p2) const {
     if (p2.empty()) return Potential< GUM_SCALAR >(*this).scale(p2.empty_value_);
     if (this->empty()) return Potential< GUM_SCALAR >(p2).scale(this->empty_value_);
 
@@ -892,7 +892,7 @@ namespace gum {
   /// the function to be used to divide two Potentials
   template < typename GUM_SCALAR >
   Potential< GUM_SCALAR >
-   Potential< GUM_SCALAR >::operator/(const Potential< GUM_SCALAR >& p2) const {
+      Potential< GUM_SCALAR >::operator/(const Potential< GUM_SCALAR >& p2) const {
     if (p2.empty()) return Potential< GUM_SCALAR >(*this).scale(1 / p2.empty_value_);
     if (this->empty()) {
       auto p = Potential< GUM_SCALAR >(p2);
@@ -1068,7 +1068,7 @@ namespace gum {
 
   template < typename GUM_SCALAR >
   Potential< GUM_SCALAR >
-   Potential< GUM_SCALAR >::evIn(const DiscreteVariable& v, double val1, double val2) {
+      Potential< GUM_SCALAR >::evIn(const DiscreteVariable& v, double val1, double val2) {
     if (val2 < val1) {
       GUM_ERROR(InvalidArgument,
                 "val2 (" << val2 << ") must be greater than val1 (" << val1 << ").")

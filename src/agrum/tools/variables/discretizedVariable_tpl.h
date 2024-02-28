@@ -41,17 +41,17 @@ namespace gum {
     if (target < _ticks_[0]) return Idx(0);
     if (target > _ticks_[_ticks_.size() - 1]) return Idx(_ticks_.size() - 2);
     // now target is in the range [T1,Tn]
-    const Idx res=std::lower_bound(_ticks_.begin(), _ticks_.end(), target) - _ticks_.begin();
-    if (res+1>=_ticks_.size()) return Idx(_ticks_.size()-2);
-    if (_ticks_[res]==target) return res;
+    const Idx res = std::lower_bound(_ticks_.begin(), _ticks_.end(), target) - _ticks_.begin();
+    if (res + 1 >= _ticks_.size()) return Idx(_ticks_.size() - 2);
+    if (_ticks_[res] == target) return res;
     // res>0 because target>=_ticks_[0]
-    return res-1;
+    return res - 1;
   }
 
   template < typename T_TICKS >
   INLINE Idx DiscretizedVariable< T_TICKS >::index(const T_TICKS target) const {
-    const Idx ind =  std::lower_bound(_ticks_.begin(), _ticks_.end(), target) - _ticks_.begin();
-    if (ind+1 >= _ticks_.size() ) {
+    const Idx ind = std::lower_bound(_ticks_.begin(), _ticks_.end(), target) - _ticks_.begin();
+    if (ind + 1 >= _ticks_.size()) {
       GUM_ERROR(OutOfBounds, target << " is not a tick in " << *this)
     }
     if (_ticks_[ind] == target) return ind;
@@ -59,13 +59,10 @@ namespace gum {
     GUM_ERROR(OutOfBounds, target << " is not a tick in " << *this)
   }
 
-
   template < typename T_TICKS >
   INLINE bool DiscretizedVariable< T_TICKS >::isTick(const T_TICKS& target) const {
-    const Size ind =  std::lower_bound(_ticks_.begin(), _ticks_.end(), target) - _ticks_.begin();
-    if (ind >= _ticks_.size()) {
-      return false;
-    }
+    const Size ind = std::lower_bound(_ticks_.begin(), _ticks_.end(), target) - _ticks_.begin();
+    if (ind >= _ticks_.size()) { return false; }
     return (_ticks_[ind] == target);
   }
 
@@ -189,7 +186,7 @@ namespace gum {
         else GUM_ERROR(OutOfBounds, "less than first range for " << target << " in " << *this)
       }
 
-      const auto size=_ticks_.size();
+      const auto size = _ticks_.size();
       if (target > _ticks_[size - 1]) {
         if (_is_empirical) return size - 2;
         else GUM_ERROR(OutOfBounds, "more than last range for " << target << " in " << *this)
@@ -200,8 +197,8 @@ namespace gum {
 
     // second check if label contains an interval '[t1;t2]'
     std::istringstream ii(label);
-    T_TICKS t2;
-    char    c;
+    T_TICKS            t2;
+    char               c;
     if (!(ii >> c >> target >> c >> t2 >> c)) {
       GUM_ERROR(NotFound, "Bad label : " << label << " for " << *this)
     }

@@ -232,11 +232,11 @@ namespace gum {
   // ==================================================================================================================
   void TaxiSimulator::_performPickUp_() {
     TaxiSimulationLandmarkX xCurPos
-       = (TaxiSimulationLandmarkX)this->currentState_.valFromPtr(_xPos_);
+        = (TaxiSimulationLandmarkX)this->currentState_.valFromPtr(_xPos_);
     TaxiSimulationLandmarkY yCurPos
-       = (TaxiSimulationLandmarkY)this->currentState_.valFromPtr(_yPos_);
+        = (TaxiSimulationLandmarkY)this->currentState_.valFromPtr(_yPos_);
     TaxiSimulationLandmark passPos
-       = (TaxiSimulationLandmark)this->currentState_.valFromPtr(_passengerPos_);
+        = (TaxiSimulationLandmark)this->currentState_.valFromPtr(_passengerPos_);
     switch (passPos) {
       case HOME : {
         if (xCurPos == HOMEX && yCurPos == HOMEY) currentState_.chgVal(*_passengerPos_, TAXI);
@@ -263,13 +263,13 @@ namespace gum {
   // ==================================================================================================================
   void TaxiSimulator::_performPutDown_() {
     TaxiSimulationLandmarkX xCurPos
-       = (TaxiSimulationLandmarkX)this->currentState_.valFromPtr(_xPos_);
+        = (TaxiSimulationLandmarkX)this->currentState_.valFromPtr(_xPos_);
     TaxiSimulationLandmarkY yCurPos
-       = (TaxiSimulationLandmarkY)this->currentState_.valFromPtr(_yPos_);
+        = (TaxiSimulationLandmarkY)this->currentState_.valFromPtr(_yPos_);
     TaxiSimulationLandmark passPos
-       = (TaxiSimulationLandmark)this->currentState_.valFromPtr(_passengerPos_);
+        = (TaxiSimulationLandmark)this->currentState_.valFromPtr(_passengerPos_);
     TaxiSimulationLandmark passDest
-       = (TaxiSimulationLandmark)this->currentState_.valFromPtr(_passengerDest_);
+        = (TaxiSimulationLandmark)this->currentState_.valFromPtr(_passengerDest_);
     if (passPos == TAXI) {
       switch (passDest) {
         case HOME : {
@@ -299,9 +299,9 @@ namespace gum {
   // ==================================================================================================================
   void TaxiSimulator::_performFillUp_() {
     TaxiSimulationLandmarkX xCurPos
-       = (TaxiSimulationLandmarkX)this->currentState_.valFromPtr(_xPos_);
+        = (TaxiSimulationLandmarkX)this->currentState_.valFromPtr(_xPos_);
     TaxiSimulationLandmarkY yCurPos
-       = (TaxiSimulationLandmarkY)this->currentState_.valFromPtr(_yPos_);
+        = (TaxiSimulationLandmarkY)this->currentState_.valFromPtr(_yPos_);
 
     if (xCurPos == STATIONX && yCurPos == STATIONY) currentState_.chgVal(*_fuelLevel_, 13);
   }
@@ -311,13 +311,13 @@ namespace gum {
   // ==================================================================================================================
   void TaxiSimulator::_evalReward_() {
     TaxiSimulationLandmarkX xCurPos
-       = (TaxiSimulationLandmarkX)this->currentState_.valFromPtr(_xPos_);
+        = (TaxiSimulationLandmarkX)this->currentState_.valFromPtr(_xPos_);
     TaxiSimulationLandmarkY yCurPos
-       = (TaxiSimulationLandmarkY)this->currentState_.valFromPtr(_yPos_);
+        = (TaxiSimulationLandmarkY)this->currentState_.valFromPtr(_yPos_);
     TaxiSimulationLandmark passPos
-       = (TaxiSimulationLandmark)this->currentState_.valFromPtr(_passengerPos_);
+        = (TaxiSimulationLandmark)this->currentState_.valFromPtr(_passengerPos_);
     TaxiSimulationLandmark passDest
-       = (TaxiSimulationLandmark)this->currentState_.valFromPtr(_passengerDest_);
+        = (TaxiSimulationLandmark)this->currentState_.valFromPtr(_passengerDest_);
 
     if (_lastAction_ == PutDown) {
       if (passPos == TAXI) {

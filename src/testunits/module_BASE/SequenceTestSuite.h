@@ -144,12 +144,12 @@ namespace gum_tests {
       TS_GUM_ASSERT_THROWS_NOTHING(if (p_seq2) delete (p_seq2))
 
       TS_GUM_ASSERT_THROWS_NOTHING(
-         gum::Sequence< int > seq2(seq);
-         if (seq2.toString() != "[0:1 - 1:3 - 2:5 - 3:2 - 4:4]") throw(gum::Exception("oups")););
+          gum::Sequence< int > seq2(seq);
+          if (seq2.toString() != "[0:1 - 1:3 - 2:5 - 3:2 - 4:4]") throw(gum::Exception("oups")););
 
       TS_GUM_ASSERT_THROWS_NOTHING(
-         gum::Sequence< int > seq3 = seq;
-         if (seq3.toString() != "[0:1 - 1:3 - 2:5 - 3:2 - 4:4]") throw(gum::Exception("oups")););
+          gum::Sequence< int > seq3 = seq;
+          if (seq3.toString() != "[0:1 - 1:3 - 2:5 - 3:2 - 4:4]") throw(gum::Exception("oups")););
     }
 
     GUM_ACTIVE_TEST(Equality) {

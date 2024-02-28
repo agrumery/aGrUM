@@ -26,7 +26,7 @@ namespace gum::credal {
 
   template < typename GUM_SCALAR, class BNInferenceEngine >
   CNMonteCarloSampling< GUM_SCALAR, BNInferenceEngine >::CNMonteCarloSampling(
-     const CredalNet< GUM_SCALAR >& credalNet) :
+      const CredalNet< GUM_SCALAR >& credalNet) :
       MultipleInferenceEngine< GUM_SCALAR, BNInferenceEngine >::MultipleInferenceEngine(credalNet) {
     _infEs_::repetitiveInd_ = false;
     _infEs_::storeVertices_ = false;
@@ -67,21 +67,21 @@ namespace gum::credal {
     if (this->continueApproximationScheme(eps)) {
       // compute the number of threads to use
       const Size nb_threads = ThreadExecutor::nbRunningThreadsExecutors() == 0
-                               ? this->getNumberOfThreads()
-                               : 1;   // no nested multithreading
+                                ? this->getNumberOfThreads()
+                                : 1;   // no nested multithreading
 
       // dispatch {0,...,psize} among the threads
       const auto ranges = gum::dispatchRangeToThreads(0, psize, (unsigned int)(nb_threads));
 
       // create the function to be executed by the threads
       auto threadedExec
-         = [this, ranges](const std::size_t this_thread, const std::size_t nb_threads) {
-             const auto& this_range = ranges[this_thread];
-             for (Idx j = this_range.first; j < this_range.second; ++j) {
-               _threadInference_(this_thread);
-               _threadUpdate_(this_thread);
-             }
-           };
+          = [this, ranges](const std::size_t this_thread, const std::size_t nb_threads) {
+              const auto& this_range = ranges[this_thread];
+              for (Idx j = this_range.first; j < this_range.second; ++j) {
+                _threadInference_(this_thread);
+                _threadUpdate_(this_thread);
+              }
+            };
 
       do {
         eps = 0;
@@ -196,9 +196,9 @@ namespace gum::credal {
   }
 
   template < typename GUM_SCALAR, class BNInferenceEngine >
-  inline void
-     CNMonteCarloSampling< GUM_SCALAR, BNInferenceEngine >::_binaryRep_(std::vector< bool >& toFill,
-                                                                        const Idx value) const {
+  inline void CNMonteCarloSampling< GUM_SCALAR, BNInferenceEngine >::_binaryRep_(
+      std::vector< bool >& toFill,
+      const Idx            value) const {
     Idx  n      = value;
     auto tfsize = toFill.size();
 
@@ -211,7 +211,7 @@ namespace gum::credal {
 
   template < typename GUM_SCALAR, class BNInferenceEngine >
   inline void
-     CNMonteCarloSampling< GUM_SCALAR, BNInferenceEngine >::_verticesSampling_(Size this_thread) {
+      CNMonteCarloSampling< GUM_SCALAR, BNInferenceEngine >::_verticesSampling_(Size this_thread) {
     IBayesNet< GUM_SCALAR >* working_bn       = this->workingSet_[this_thread];
     auto&                    random_generator = this->generators_[this_thread];
     const auto               cpt              = &this->credalNet_->credalNet_currentCpt();
@@ -229,7 +229,7 @@ namespace gum::credal {
       for (const auto& elt: t0) {
         auto                     dSize = working_bn->variable(elt.first).domainSize();
         Potential< GUM_SCALAR >* potential(
-           const_cast< Potential< GUM_SCALAR >* >(&working_bn->cpt(elt.first)));
+            const_cast< Potential< GUM_SCALAR >* >(&working_bn->cpt(elt.first)));
         std::vector< GUM_SCALAR > var_cpt(potential->domainSize());
 
         Size pconfs = Size((*cpt)[elt.first].size());
@@ -252,7 +252,7 @@ namespace gum::credal {
           if (_infEs_::storeBNOpt_) { sample[elt.second[pos]] = sample[elt.first]; }
 
           Potential< GUM_SCALAR >* potential2(
-             const_cast< Potential< GUM_SCALAR >* >(&working_bn->cpt(elt.second[pos])));
+              const_cast< Potential< GUM_SCALAR >* >(&working_bn->cpt(elt.second[pos])));
           potential2->fillWith(var_cpt);
         }
       }
@@ -260,7 +260,7 @@ namespace gum::credal {
       for (const auto& elt: t1) {
         auto                     dSize = working_bn->variable(elt.first).domainSize();
         Potential< GUM_SCALAR >* potential(
-           const_cast< Potential< GUM_SCALAR >* >(&working_bn->cpt(elt.first)));
+            const_cast< Potential< GUM_SCALAR >* >(&working_bn->cpt(elt.first)));
         std::vector< GUM_SCALAR > var_cpt(potential->domainSize());
 
         for (Size pconf = 0; pconf < (*cpt)[elt.first].size(); pconf++) {
@@ -281,7 +281,7 @@ namespace gum::credal {
           if (_infEs_::storeBNOpt_) { sample[elt.second[pos]] = sample[elt.first]; }
 
           Potential< GUM_SCALAR >* potential2(
-             const_cast< Potential< GUM_SCALAR >* >(&working_bn->cpt(elt.second[pos])));
+              const_cast< Potential< GUM_SCALAR >* >(&working_bn->cpt(elt.second[pos])));
           potential2->fillWith(var_cpt);
         }
       }
@@ -291,7 +291,7 @@ namespace gum::credal {
       for (auto node: working_bn->nodes()) {
         auto                     dSize = working_bn->variable(node).domainSize();
         Potential< GUM_SCALAR >* potential(
-           const_cast< Potential< GUM_SCALAR >* >(&working_bn->cpt(node)));
+            const_cast< Potential< GUM_SCALAR >* >(&working_bn->cpt(node)));
         std::vector< GUM_SCALAR > var_cpt(potential->domainSize());
 
         auto pConfs = (*cpt)[node].size();
@@ -316,7 +316,7 @@ namespace gum::credal {
 
   template < typename GUM_SCALAR, class BNInferenceEngine >
   inline void
-     CNMonteCarloSampling< GUM_SCALAR, BNInferenceEngine >::_insertEvidence_(Size this_thread) {
+      CNMonteCarloSampling< GUM_SCALAR, BNInferenceEngine >::_insertEvidence_(Size this_thread) {
     if (this->evidence_.size() == 0) { return; }
 
     BNInferenceEngine* inference_engine = this->l_inferenceEngine_[this_thread];

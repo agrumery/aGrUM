@@ -73,13 +73,13 @@ namespace gum_tests {
     GUM_ACTIVE_TEST(_CPP20_int_two_cplt) {
       int i1 = -1;
       TS_ASSERT_EQUALS(
-         i1 <<= 1,
-         -2)   // left-shift for signed negative integers(previously undefined behavior)
+          i1 <<= 1,
+          -2)   // left-shift for signed negative integers(previously undefined behavior)
 
       int i2 = std::numeric_limits< int >::max();
       TS_ASSERT_EQUALS(
-         i2 <<= 1,
-         -2)   // "unrepresentable" left-shift for signed integers(previously undefined behavior)
+          i2 <<= 1,
+          -2)   // "unrepresentable" left-shift for signed integers(previously undefined behavior)
     }
 
     GUM_ACTIVE_TEST(_CPP20_lambda_implicit_this_capture) {

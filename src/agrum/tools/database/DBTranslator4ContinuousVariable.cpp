@@ -39,8 +39,8 @@ namespace gum {
   namespace learning {
     /// default constructor
     DBTranslator4ContinuousVariable::DBTranslator4ContinuousVariable(
-       const std::vector< std::string >& missing_symbols,
-       const bool                        fit_range) :
+        const std::vector< std::string >& missing_symbols,
+        const bool                        fit_range) :
         DBTranslator(DBTranslatedValueType::CONTINUOUS, true, missing_symbols, fit_range, 1),
         _variable_("var", ""), _fit_range_(fit_range) {
       // Here, if fit_range is set to false, and the range of the
@@ -89,9 +89,9 @@ namespace gum {
 
     /// default constructor with a IContinuous variable as translator
     DBTranslator4ContinuousVariable::DBTranslator4ContinuousVariable(
-       const IContinuousVariable&        var,
-       const std::vector< std::string >& missing_symbols,
-       const bool                        fit_range) :
+        const IContinuousVariable&        var,
+        const std::vector< std::string >& missing_symbols,
+        const bool                        fit_range) :
         DBTranslator(DBTranslatedValueType::CONTINUOUS, true, missing_symbols, fit_range, 1),
         _variable_(var.name(), var.description()), _fit_range_(fit_range) {
       // get the bounds of the range variable
@@ -141,7 +141,7 @@ namespace gum {
 
     /// copy constructor
     DBTranslator4ContinuousVariable::DBTranslator4ContinuousVariable(
-       const DBTranslator4ContinuousVariable& from) :
+        const DBTranslator4ContinuousVariable& from) :
         DBTranslator(from),
         _variable_(from._variable_),
         _status_float_missing_symbols_(from._status_float_missing_symbols_),
@@ -154,7 +154,7 @@ namespace gum {
 
     /// move constructor
     DBTranslator4ContinuousVariable::DBTranslator4ContinuousVariable(
-       DBTranslator4ContinuousVariable&& from) :
+        DBTranslator4ContinuousVariable&& from) :
         DBTranslator(std::move(from)),
         _variable_(std::move(from._variable_)),
         _status_float_missing_symbols_(std::move(from._status_float_missing_symbols_)),
@@ -174,7 +174,7 @@ namespace gum {
 
     /// copy operator
     DBTranslator4ContinuousVariable&
-       DBTranslator4ContinuousVariable::operator=(const DBTranslator4ContinuousVariable& from) {
+        DBTranslator4ContinuousVariable::operator=(const DBTranslator4ContinuousVariable& from) {
       if (this != &from) {
         DBTranslator::operator=(from);
         _variable_                     = from._variable_;
@@ -191,7 +191,7 @@ namespace gum {
 
     /// move operator
     DBTranslator4ContinuousVariable&
-       DBTranslator4ContinuousVariable::operator=(DBTranslator4ContinuousVariable&& from) {
+        DBTranslator4ContinuousVariable::operator=(DBTranslator4ContinuousVariable&& from) {
       if (this != &from) {
         DBTranslator::operator=(std::move(from));
         _variable_                     = std::move(from._variable_);

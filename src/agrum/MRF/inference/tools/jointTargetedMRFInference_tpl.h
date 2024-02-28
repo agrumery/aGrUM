@@ -35,7 +35,7 @@ namespace gum {
   // Default Constructor
   template < typename GUM_SCALAR >
   JointTargetedMRFInference< GUM_SCALAR >::JointTargetedMRFInference(
-     const IMarkovRandomField< GUM_SCALAR >* mn) :
+      const IMarkovRandomField< GUM_SCALAR >* mn) :
       MarginalTargetedMRFInference< GUM_SCALAR >(mn) {
     // assign a MRF if this has not been done before (due to virtual inheritance)
     if (this->hasNoModel_()) { MRFInference< GUM_SCALAR >::_setMRFDuringConstruction_(mn); }
@@ -186,7 +186,7 @@ namespace gum {
   // Compute the posterior of a nodeset.
   template < typename GUM_SCALAR >
   const Potential< GUM_SCALAR >&
-     JointTargetedMRFInference< GUM_SCALAR >::jointPosterior(const NodeSet& nodes) {
+      JointTargetedMRFInference< GUM_SCALAR >::jointPosterior(const NodeSet& nodes) {
     NodeSet real_nodes;
     for (const auto& node: nodes) {
       if (!this->hasHardEvidence(node)) { real_nodes.insert(node); }
@@ -222,7 +222,7 @@ namespace gum {
   // Compute the posterior of a node
   template < typename GUM_SCALAR >
   const Potential< GUM_SCALAR >&
-     JointTargetedMRFInference< GUM_SCALAR >::posterior(const std::string& nodeName) {
+      JointTargetedMRFInference< GUM_SCALAR >::posterior(const std::string& nodeName) {
     return posterior(this->MRF().idFromName(nodeName));
   }
 
@@ -231,8 +231,8 @@ namespace gum {
   // ##############################################################################
   template < typename GUM_SCALAR >
   [[deprecated("Please directly use class gum::InformationTheory (since 1.7.1)")]] GUM_SCALAR
-     JointTargetedMRFInference< GUM_SCALAR >::I(const std::string& Xname,
-                                                const std::string& Yname) {
+      JointTargetedMRFInference< GUM_SCALAR >::I(const std::string& Xname,
+                                                 const std::string& Yname) {
     InformationTheory it(*this,
                          NodeSet{this->MRF().idFromName(Xname)},
                          NodeSet{this->MRF().idFromName(Yname)});
@@ -241,8 +241,8 @@ namespace gum {
 
   template < typename GUM_SCALAR >
   [[deprecated("Please directly use class gum::InformationTheory (since 1.7.1)")]] GUM_SCALAR
-     JointTargetedMRFInference< GUM_SCALAR >::VI(const std::string& Xname,
-                                                 const std::string& Yname) {
+      JointTargetedMRFInference< GUM_SCALAR >::VI(const std::string& Xname,
+                                                  const std::string& Yname) {
     InformationTheory it(*this,
                          NodeSet{this->MRF().idFromName(Xname)},
                          NodeSet{this->MRF().idFromName(Yname)});
@@ -257,7 +257,7 @@ namespace gum {
    */
   template < typename GUM_SCALAR >
   [[deprecated("Please directly use class gum::InformationTheory (since 1.7.1)")]] GUM_SCALAR
-     JointTargetedMRFInference< GUM_SCALAR >::I(NodeId X, NodeId Y) {
+      JointTargetedMRFInference< GUM_SCALAR >::I(NodeId X, NodeId Y) {
     InformationTheory it(*this, NodeSet{X}, NodeSet{Y});
     return it.mutualInformationXY();
   }
@@ -270,15 +270,15 @@ namespace gum {
    */
   template < typename GUM_SCALAR >
   [[deprecated("Please directly use class gum::InformationTheory (since 1.7.1)")]] INLINE GUM_SCALAR
-     JointTargetedMRFInference< GUM_SCALAR >::VI(NodeId X, NodeId Y) {
+      JointTargetedMRFInference< GUM_SCALAR >::VI(NodeId X, NodeId Y) {
     InformationTheory it(*this, NodeSet{X}, NodeSet{Y});
     return it.variationOfInformationXY();
   }
 
   template < typename GUM_SCALAR >
   Potential< GUM_SCALAR >
-     JointTargetedMRFInference< GUM_SCALAR >::evidenceJointImpact(const NodeSet& targets,
-                                                                  const NodeSet& evs) {
+      JointTargetedMRFInference< GUM_SCALAR >::evidenceJointImpact(const NodeSet& targets,
+                                                                   const NodeSet& evs) {
     if (!(evs * targets).empty()) {
       GUM_ERROR(InvalidArgument,
                 "Targets (" << targets << ") can not intersect evs (" << evs << ").");
@@ -319,15 +319,15 @@ namespace gum {
 
   template < typename GUM_SCALAR >
   Potential< GUM_SCALAR > JointTargetedMRFInference< GUM_SCALAR >::evidenceJointImpact(
-     const std::vector< std::string >& targets,
-     const std::vector< std::string >& evs) {
+      const std::vector< std::string >& targets,
+      const std::vector< std::string >& evs) {
     const auto& mn = this->MRF();
     return evidenceJointImpact(mn.nodeset(targets), mn.nodeset(evs));
   }
 
   template < typename GUM_SCALAR >
   GUM_SCALAR
-     JointTargetedMRFInference< GUM_SCALAR >::jointMutualInformation(const NodeSet& targets) {
+      JointTargetedMRFInference< GUM_SCALAR >::jointMutualInformation(const NodeSet& targets) {
     const auto& mn  = this->MRF();
     const Size  siz = targets.size();
     if (siz <= 1) {
@@ -378,7 +378,7 @@ namespace gum {
 
   template < typename GUM_SCALAR >
   GUM_SCALAR JointTargetedMRFInference< GUM_SCALAR >::jointMutualInformation(
-     const std::vector< std::string >& targets) {
+      const std::vector< std::string >& targets) {
     return jointMutualInformation(this->MRF().nodeset(targets));
   }
 

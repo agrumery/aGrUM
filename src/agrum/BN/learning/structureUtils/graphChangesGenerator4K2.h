@@ -151,11 +151,11 @@ namespace gum {
 
       /// copy operator
       GraphChangesGenerator4K2< STRUCT_CONSTRAINT >&
-         operator=(const GraphChangesGenerator4K2< STRUCT_CONSTRAINT >& from);
+          operator=(const GraphChangesGenerator4K2< STRUCT_CONSTRAINT >& from);
 
       /// move operator
       GraphChangesGenerator4K2< STRUCT_CONSTRAINT >&
-         operator=(GraphChangesGenerator4K2< STRUCT_CONSTRAINT >&& from);
+          operator=(GraphChangesGenerator4K2< STRUCT_CONSTRAINT >&& from);
 
       /// @}
 

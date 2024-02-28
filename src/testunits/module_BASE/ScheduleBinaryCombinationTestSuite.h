@@ -66,7 +66,7 @@ namespace gum_tests {
       gum::ScheduleBinaryCombination< gum::Potential< double >,
                                       gum::Potential< double >,
                                       gum::Potential< double > >
-         comb1(f1, f2, myadd);
+          comb1(f1, f2, myadd);
       TS_ASSERT(!comb1.implyDeletion());
 
       const gum::ScheduleMultiDim< gum::Potential< double > >& result1 = comb1.result();
@@ -141,7 +141,7 @@ namespace gum_tests {
       gum::ScheduleBinaryCombination< gum::Potential< double >,
                                       gum::Potential< double >,
                                       gum::Potential< double > >
-         comb3(comb2);
+          comb3(comb2);
       TS_ASSERT(!comb3.implyDeletion());
       TS_ASSERT(comb3 == comb2);
       TS_ASSERT(comb3 != comb1);
@@ -170,12 +170,12 @@ namespace gum_tests {
       gum::ScheduleBinaryCombination< gum::Potential< double >,
                                       gum::Potential< double >,
                                       gum::Potential< double > >
-         comb3b = comb1;
+          comb3b = comb1;
       TS_ASSERT(!comb3b.implyDeletion());
       gum::ScheduleBinaryCombination< gum::Potential< double >,
                                       gum::Potential< double >,
                                       gum::Potential< double > >
-         comb3c = comb2;
+          comb3c = comb2;
       TS_ASSERT(!comb3c.implyDeletion());
       TS_ASSERT(comb3b == comb1);
       TS_ASSERT(comb3b.isExecuted());
@@ -195,7 +195,7 @@ namespace gum_tests {
       gum::ScheduleBinaryCombination< gum::Potential< double >,
                                       gum::Potential< double >,
                                       gum::Potential< double > >
-         comb4(std::move(comb3));
+          comb4(std::move(comb3));
       TS_ASSERT(!comb4.implyDeletion());
       TS_ASSERT_EQUALS(comb4, comb1)
       TS_ASSERT_DIFFERS(comb4, comb2)
@@ -204,7 +204,7 @@ namespace gum_tests {
       gum::ScheduleBinaryCombination< gum::Potential< double >,
                                       gum::Potential< double >,
                                       gum::Potential< double > >* comb5
-         = comb4.clone();
+          = comb4.clone();
       TS_ASSERT(!comb5->implyDeletion());
       TS_ASSERT(*comb5 == comb4);
       TS_ASSERT(comb5->result().multiDim() == pot4);
@@ -214,7 +214,7 @@ namespace gum_tests {
       gum::ScheduleBinaryCombination< gum::Potential< double >,
                                       gum::Potential< double >,
                                       gum::Potential< double > >* comb6
-         = comb4.clone();
+          = comb4.clone();
       TS_ASSERT(!comb6->implyDeletion())
       TS_ASSERT_EQUALS(*comb6, comb4)
       TS_ASSERT_EQUALS(comb6->result().multiDim(), pot4)
@@ -223,7 +223,7 @@ namespace gum_tests {
       gum::ScheduleBinaryCombination< gum::Potential< double >,
                                       gum::Potential< double >,
                                       gum::Potential< double > >
-         comb7 = comb1;
+          comb7 = comb1;
 
       const gum::Sequence< const gum::IScheduleMultiDim* > new_args32{&f3, &f2};
       comb1.updateArgs(new_args32);
@@ -299,7 +299,7 @@ namespace gum_tests {
       gum::ScheduleBinaryCombination< gum::Potential< double >,
                                       gum::Potential< double >,
                                       gum::Potential< double > >
-         comb2(f1, f3, myadd);
+          comb2(f1, f3, myadd);
       comb2.execute();
       const gum::Potential< double >& result2 = comb2.result().multiDim();
       TS_ASSERT_EQUALS(result2.domainSize(), 2u)
@@ -313,7 +313,7 @@ namespace gum_tests {
       gum::ScheduleBinaryCombination< gum::Potential< double >,
                                       gum::Potential< double >,
                                       gum::Potential< double > >
-         comb3(f1, f4, myadd);
+          comb3(f1, f4, myadd);
       comb3.execute();
       const gum::Potential< double >& result3 = comb3.result().multiDim();
       TS_ASSERT_EQUALS(result3.domainSize(), 4u)

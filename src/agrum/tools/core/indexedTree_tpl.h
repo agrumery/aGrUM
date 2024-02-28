@@ -94,7 +94,7 @@ namespace gum {
 
   template < typename Key, typename Data >
   IndexedTree< Key, Data >&
-     IndexedTree< Key, Data >::operator=(const IndexedTree< Key, Data >& from) {
+      IndexedTree< Key, Data >::operator=(const IndexedTree< Key, Data >& from) {
     // avoid self assignment
     if (this != &from) {
       // for debugging purposes
@@ -173,7 +173,7 @@ namespace gum {
 
       // here, the node to be inserted does not exist, so we must create it
       IndexedTree< Key, Data >* new_node
-         = new IndexedTree< Key, Data >(index[i], const_cast< Data* >(theData));
+          = new IndexedTree< Key, Data >(index[i], const_cast< Data* >(theData));
 
       current_node->children.insert(index[i], new_node);
 

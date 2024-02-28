@@ -57,7 +57,7 @@ namespace gum {
     /// learns the structure and the parameters of a BN
     template < typename GUM_SCALAR, typename GRAPH_CHANGES_SELECTOR, typename PARAM_ESTIMATOR >
     BayesNet< GUM_SCALAR >
-       K2::learnBN(GRAPH_CHANGES_SELECTOR& selector, PARAM_ESTIMATOR& estimator, DAG initial_dag) {
+        K2::learnBN(GRAPH_CHANGES_SELECTOR& selector, PARAM_ESTIMATOR& estimator, DAG initial_dag) {
       // check that we used a selector compatible with the K2 algorithm
       static_assert(std::is_base_of< _GraphChangesGenerator4K2_,
                                      typename GRAPH_CHANGES_SELECTOR::GeneratorType >::value,

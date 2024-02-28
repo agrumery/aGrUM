@@ -101,7 +101,7 @@ namespace gum_tests {
       TS_ASSERT_EQUALS(bij_bis.size(), (gum::Size)4)
 
       gum::Bijection< std::string, std::string >* bijection3
-         = new gum::Bijection< std::string, std::string >;
+          = new gum::Bijection< std::string, std::string >;
       bijection3->insert("a", "b");
       bijection3->insert("b", "a");
 
@@ -117,8 +117,8 @@ namespace gum_tests {
       TS_ASSERT_EQUALS(bij_ter.size(), (gum::Size)4)
 
       gum::Bijection< std::string, std::string > bij5{
-         std::pair< std::string, std::string >("3", "4"),
-         std::pair< std::string, std::string >("5", "6")};
+          std::pair< std::string, std::string >("3", "4"),
+          std::pair< std::string, std::string >("5", "6")};
       TS_ASSERT_EQUALS(bij5.size(), (gum::Size)2)
 
       bij5 = bijection;

@@ -223,7 +223,7 @@ namespace gum_tests {
       gum::ShaferShenoyInference< double > inf(bn);
 
       TS_GUM_ASSERT_THROWS_NOTHING(
-         gum::InformationTheory itheo(inf, gum::NodeSet({2}), gum::NodeSet({4})))
+          gum::InformationTheory itheo(inf, gum::NodeSet({2}), gum::NodeSet({4})))
       gum::InformationTheory itheo(inf, gum::NodeSet({2}), gum::NodeSet({4}));
       TS_GUM_ASSERT_THROWS_NOTHING(inf.H((gum::NodeId)2))
       TS_GUM_ASSERT_THROWS_NOTHING(itheo.mutualInformationXY())
@@ -289,7 +289,7 @@ namespace gum_tests {
       vars.insert(&(bn->variable(3)));
       vars.insert(&(bn->variable(4)));
       TS_ASSERT(
-         equalPotentials(inf.jointPosterior(gum::NodeSet{2, 3, 4}), bn_joint.margSumIn(vars)))
+          equalPotentials(inf.jointPosterior(gum::NodeSet{2, 3, 4}), bn_joint.margSumIn(vars)))
     }
 
     GUM_ACTIVE_TEST(EvidenceProbability) {
@@ -687,7 +687,7 @@ namespace gum_tests {
                                                 joint.margSumIn({&bn.variable(xnode)}).normalize()))
                     }
                     [[maybe_unused]] auto f
-                       = equalPotentials(inf1.posterior(xnode), inf2.posterior(xnode));
+                        = equalPotentials(inf1.posterior(xnode), inf2.posterior(xnode));
                   } catch (gum::IncompatibleEvidence&) {
                     // check evidence incompatibility:
                     if (node2 == gum::NodeId(2)) {
@@ -1278,7 +1278,7 @@ namespace gum_tests {
 
         gum::VariableSet               set3{&x0, &x1, &x2, &x4};
         const gum::Potential< double > pot3bis
-           = (p0 * p1 * p2 * p3 * p4).margSumOut(set3).normalize();
+            = (p0 * p1 * p2 * p3 * p4).margSumOut(set3).normalize();
         TS_ASSERT(equalPotentials(pot3, pot3bis))
       }
 
@@ -1299,7 +1299,7 @@ namespace gum_tests {
         ev4 << x4;
         ev4.fillWith({0.0, 1.0});
         const gum::Potential< double > pot2bis
-           = (p0 * p1 * p2 * p3 * p4 * ev4).margSumOut(set2).normalize();
+            = (p0 * p1 * p2 * p3 * p4 * ev4).margSumOut(set2).normalize();
         TS_ASSERT(equalPotentials(pot2, pot2bis))
       }
 
@@ -1321,7 +1321,7 @@ namespace gum_tests {
         ev4 << x4;
         ev4.fillWith({0.0, 1.0});
         const gum::Potential< double > pot2bis
-           = (p0 * p1 * p2 * p3 * p4 * ev4).margSumOut(set2).normalize();
+            = (p0 * p1 * p2 * p3 * p4 * ev4).margSumOut(set2).normalize();
         TS_ASSERT(equalPotentials(pot2, pot2bis))
       }
 
@@ -1344,7 +1344,7 @@ namespace gum_tests {
         ev4 << x4;
         ev4.fillWith({0.0, 1.0});
         const gum::Potential< double > pot2bis
-           = (p0 * p1 * p2 * p3 * p4 * ev4).margSumOut(set2).normalize();
+            = (p0 * p1 * p2 * p3 * p4 * ev4).margSumOut(set2).normalize();
         TS_ASSERT(equalPotentials(pot2, pot2bis))
       }
 
@@ -1476,14 +1476,14 @@ namespace gum_tests {
       }
       TS_GUM_POTENTIAL_DELTA(phard, psoft, TS_GUM_VERY_SMALL_ERROR)
       TS_ASSERT(
-         equalPotentials(phard, jointhard.margSumIn({&bn.variableFromName("C")}).normalize()))
+          equalPotentials(phard, jointhard.margSumIn({&bn.variableFromName("C")}).normalize()))
       TS_ASSERT(
-         equalPotentials(psoft, jointsoft.margSumIn({&bn.variableFromName("C")}).normalize()))
+          equalPotentials(psoft, jointsoft.margSumIn({&bn.variableFromName("C")}).normalize()))
     }
 
     GUM_ACTIVE_TEST(NonRegressionBugJoinTarget) {
       auto bn = gum::BayesNet< double >::fastPrototype(
-         "X02->X03->X11<-X08->X09->X10<-X07<-X05->X09<-X04<-X00;X03->X04;X01->X10;X05->X06");
+          "X02->X03->X11<-X08->X09->X10<-X07<-X05->X09<-X04<-X00;X03->X04;X01->X10;X05->X06");
       auto ie = gum::ShaferShenoyInference(&bn);
       ie.addJointTarget(bn.nodeset({"X04", "X11"}));
       ie.addJointTarget(bn.nodeset({"X00", "X01", "X06"}));

@@ -64,10 +64,10 @@ namespace gum {
   template < typename Key >
   template < bool Gen >
   INLINE SequenceIteratorSafe< Key >::SequenceIteratorSafe(
-     const SequenceImplementation< Key, Gen >& seq,
-     Idx                                       pos) noexcept :
+      const SequenceImplementation< Key, Gen >& seq,
+      Idx                                       pos) noexcept :
       _seq_{reinterpret_cast< const SequenceImplementation< Key, std::is_scalar< Key >::value >* >(
-         &seq)} {
+          &seq)} {
     GUM_CONSTRUCTOR(SequenceIteratorSafe);
 
     if (pos > _seq_->size()) _iterator_ = _seq_->size();   // make the iterator point to end
@@ -79,7 +79,7 @@ namespace gum {
   INLINE SequenceIteratorSafe< Key >::SequenceIteratorSafe(const Sequence< Key >& seq,
                                                            Idx                    pos) noexcept :
       _seq_{reinterpret_cast< const SequenceImplementation< Key, std::is_scalar< Key >::value >* >(
-         &seq)} {
+          &seq)} {
     GUM_CONSTRUCTOR(SequenceIteratorSafe);
 
     if (pos > _seq_->size()) _iterator_ = _seq_->size();   // make the iterator point to end
@@ -89,7 +89,7 @@ namespace gum {
   // copy constructor
   template < typename Key >
   INLINE SequenceIteratorSafe< Key >::SequenceIteratorSafe(
-     const SequenceIteratorSafe< Key >& source) noexcept :
+      const SequenceIteratorSafe< Key >& source) noexcept :
       _iterator_{source._iterator_},
       _seq_{source._seq_} {
     GUM_CONS_CPY(SequenceIteratorSafe);
@@ -98,7 +98,7 @@ namespace gum {
   // move constructor
   template < typename Key >
   INLINE SequenceIteratorSafe< Key >::SequenceIteratorSafe(
-     SequenceIteratorSafe< Key >&& source) noexcept :
+      SequenceIteratorSafe< Key >&& source) noexcept :
       _iterator_{source._iterator_},
       _seq_{source._seq_} {
     GUM_CONS_MOV(SequenceIteratorSafe);
@@ -113,7 +113,7 @@ namespace gum {
   // copy operator
   template < typename Key >
   INLINE SequenceIteratorSafe< Key >&
-     SequenceIteratorSafe< Key >::operator=(const SequenceIteratorSafe< Key >& source) noexcept {
+      SequenceIteratorSafe< Key >::operator=(const SequenceIteratorSafe< Key >& source) noexcept {
     _iterator_ = source._iterator_;
     _seq_      = source._seq_;
     return *this;
@@ -180,7 +180,7 @@ namespace gum {
   // checks whether two iterators are pointing to the same element
   template < typename Key >
   INLINE bool SequenceIteratorSafe< Key >::operator==(
-     const SequenceIteratorSafe< Key >& source) const noexcept {
+      const SequenceIteratorSafe< Key >& source) const noexcept {
     if (_seq_->empty()) return true;   // all iterators are the same if seq is empty
 
     if ((_iterator_ != source._iterator_) || (_seq_ != source._seq_)) return false;
@@ -191,7 +191,7 @@ namespace gum {
   // checks whether two iterators are pointing to different elements
   template < typename Key >
   INLINE bool SequenceIteratorSafe< Key >::operator!=(
-     const SequenceIteratorSafe< Key >& source) const noexcept {
+      const SequenceIteratorSafe< Key >& source) const noexcept {
     return !operator==(source);
   }
 
@@ -257,7 +257,7 @@ namespace gum {
   // clears the current sequence and fill it with copies the element of aSeq
   template < typename Key, bool Gen >
   INLINE void
-     SequenceImplementation< Key, Gen >::_copy_(const SequenceImplementation< Key, Gen >& aSeq) {
+      SequenceImplementation< Key, Gen >::_copy_(const SequenceImplementation< Key, Gen >& aSeq) {
     clear();
 
     for (Size i = 0; i < aSeq.size(); ++i) {
@@ -279,8 +279,8 @@ namespace gum {
 
   // initializer list constructor
   template < typename Key, bool Gen >
-  INLINE
-     SequenceImplementation< Key, Gen >::SequenceImplementation(std::initializer_list< Key > list) :
+  INLINE SequenceImplementation< Key, Gen >::SequenceImplementation(
+      std::initializer_list< Key > list) :
       _end_safe_{*this},
       _rend_safe_{*this} {
     GUM_CONSTRUCTOR(SequenceImplementation);
@@ -293,7 +293,7 @@ namespace gum {
   // copy constructor
   template < typename Key, bool Gen >
   INLINE SequenceImplementation< Key, Gen >::SequenceImplementation(
-     const SequenceImplementation< Key, Gen >& aSeq) :
+      const SequenceImplementation< Key, Gen >& aSeq) :
       _end_safe_{*this},
       _rend_safe_{*this} {
     GUM_CONS_CPY(SequenceImplementation);
@@ -304,7 +304,7 @@ namespace gum {
   // move constructor
   template < typename Key, bool Gen >
   INLINE SequenceImplementation< Key, Gen >::SequenceImplementation(
-     SequenceImplementation< Key, Gen >&& aSeq) :
+      SequenceImplementation< Key, Gen >&& aSeq) :
       _h_(std::move(aSeq._h_)),
       _v_(std::move(aSeq._v_)), _end_safe_{*this}, _rend_safe_{*this} {
     GUM_CONS_MOV(SequenceImplementation);
@@ -320,8 +320,8 @@ namespace gum {
 
   // copy operator
   template < typename Key, bool Gen >
-  INLINE SequenceImplementation< Key, Gen >&
-     SequenceImplementation< Key, Gen >::operator=(const SequenceImplementation< Key, Gen >& aSeq) {
+  INLINE SequenceImplementation< Key, Gen >& SequenceImplementation< Key, Gen >::operator=(
+      const SequenceImplementation< Key, Gen >& aSeq) {
     // avoid self assignment
     if (&aSeq != this) {
       _copy_(aSeq);   // performs the  _update_end_ ()
@@ -532,7 +532,7 @@ namespace gum {
   // returns true if the content of k equals that of *this
   template < typename Key, bool Gen >
   bool SequenceImplementation< Key, Gen >::operator==(
-     const SequenceImplementation< Key, Gen >& k) const {
+      const SequenceImplementation< Key, Gen >& k) const {
     if (size() != k.size()) return false;
     else {
       for (Idx i = 0; i < size(); ++i)
@@ -545,7 +545,7 @@ namespace gum {
   // returns true if the content of k is different from that of *this
   template < typename Key, bool Gen >
   INLINE bool SequenceImplementation< Key, Gen >::operator!=(
-     const SequenceImplementation< Key, Gen >& k) const {
+      const SequenceImplementation< Key, Gen >& k) const {
     return !operator==(k);
   }
 
@@ -641,7 +641,7 @@ namespace gum {
   // clears the current sequence and fill it with copies the element of aSeq
   template < typename Key >
   INLINE void
-     SequenceImplementation< Key, true >::_copy_(const SequenceImplementation< Key, true >& aSeq) {
+      SequenceImplementation< Key, true >::_copy_(const SequenceImplementation< Key, true >& aSeq) {
     clear();
 
     for (Size i = 0; i < aSeq.size(); ++i) {
@@ -664,7 +664,7 @@ namespace gum {
   // initializer list constructor
   template < typename Key >
   INLINE SequenceImplementation< Key, true >::SequenceImplementation(
-     std::initializer_list< Key > list) :
+      std::initializer_list< Key > list) :
       _end_safe_{*this},
       _rend_safe_{*this} {
     GUM_CONSTRUCTOR(SequenceImplementation);
@@ -677,7 +677,7 @@ namespace gum {
   // copy constructor
   template < typename Key >
   SequenceImplementation< Key, true >::SequenceImplementation(
-     const SequenceImplementation< Key, true >& aSeq) :
+      const SequenceImplementation< Key, true >& aSeq) :
       _h_(aSeq._h_),
       _v_(aSeq._v_), _end_safe_{*this}, _rend_safe_{*this} {
     GUM_CONS_CPY(SequenceImplementation);
@@ -688,7 +688,7 @@ namespace gum {
   // move constructor
   template < typename Key >
   INLINE SequenceImplementation< Key, true >::SequenceImplementation(
-     SequenceImplementation< Key, true >&& aSeq) :
+      SequenceImplementation< Key, true >&& aSeq) :
       _h_(std::move(aSeq._h_)),
       _v_(std::move(aSeq._v_)), _end_safe_{*this}, _rend_safe_{*this} {
     GUM_CONS_MOV(SequenceImplementation);
@@ -705,7 +705,7 @@ namespace gum {
   // copy operator
   template < typename Key >
   INLINE SequenceImplementation< Key, true >& SequenceImplementation< Key, true >::operator=(
-     const SequenceImplementation< Key, true >& aSeq) {
+      const SequenceImplementation< Key, true >& aSeq) {
     // avoid self assignment
     if (&aSeq != this) { _copy_(aSeq); }
 
@@ -715,7 +715,7 @@ namespace gum {
   // move operator
   template < typename Key >
   INLINE SequenceImplementation< Key, true >&
-     SequenceImplementation< Key, true >::operator=(SequenceImplementation< Key, true >&& aSeq) {
+      SequenceImplementation< Key, true >::operator=(SequenceImplementation< Key, true >&& aSeq) {
     // avoid self assignment
     if (&aSeq != this) {
       _h_ = std::move(aSeq._h_);
@@ -885,7 +885,7 @@ namespace gum {
   // returns true if the content of k equals that of *this
   template < typename Key >
   bool SequenceImplementation< Key, true >::operator==(
-     const SequenceImplementation< Key, true >& k) const {
+      const SequenceImplementation< Key, true >& k) const {
     if (size() != k.size()) return false;
     else {
       for (Idx i = 0; i < size(); ++i)
@@ -898,7 +898,7 @@ namespace gum {
   // returns true if the content of k is different from that of *this
   template < typename Key >
   INLINE bool SequenceImplementation< Key, true >::operator!=(
-     const SequenceImplementation< Key, true >& k) const {
+      const SequenceImplementation< Key, true >& k) const {
     return !operator==(k);
   }
 

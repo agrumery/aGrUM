@@ -129,7 +129,7 @@ namespace gum {
                                     const DiscreteVariable* const var,
                                     Idx                           oldval,
                                     Idx                           newval)
-       = 0;
+        = 0;
 
     /**
      * @brief Listen to setFirst in a given Instantiation.

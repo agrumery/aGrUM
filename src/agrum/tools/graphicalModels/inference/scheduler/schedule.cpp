@@ -98,7 +98,7 @@ namespace gum {
     // here, we create the mapping from all the ScheduleMultiDims contained into
     // from to those contained into this
     HashTable< const IScheduleMultiDim*, const IScheduleMultiDim* > multidim_from2this(
-       from._multidim2id_.size());
+        from._multidim2id_.size());
 
     // we copy the source multidims, i.e., those that are not the result of any
     // operation, and we store the mapping from these IScheduleMultiDim contained
@@ -106,7 +106,7 @@ namespace gum {
     for (const auto& [first, second]: from._multidim_location_) {
       if (second.first == nullptr) {   // here, this is a source
         const IScheduleMultiDim* new_multidim
-           = from._emplaced_multidims_.exists(first) ? first : first->clone();
+            = from._emplaced_multidims_.exists(first) ? first : first->clone();
         multidim_from2this.insert(first, new_multidim);
         _multidim_location_.insert(new_multidim, second);
         _multidim2id_.insert(new_multidim, new_multidim->id());
@@ -121,8 +121,8 @@ namespace gum {
     // This is the order in which we will reconstruct all the operations. This
     // will allow us to construct the ScheduleMultiDims in the right order.
     const Sequence< NodeId > nodes_sequence = (from._dag_.sizeNodes() == from._node2op_.size())
-                                               ? from._dag_.topologicalOrder()
-                                               : from._fullDAG_().topologicalOrder();
+                                                ? from._dag_.topologicalOrder()
+                                                : from._fullDAG_().topologicalOrder();
 
     // we can now create all the operations contained in this in the same
     // topological order as from: this enables to create all the ScheduleMultiDims
@@ -310,15 +310,15 @@ namespace gum {
     // map "this"'s operations and source multidims to those of "from"
     HashTable< const ScheduleOperator*, const ScheduleOperator* >   this_op2from(_node2op_.size());
     Bijection< const IScheduleMultiDim*, const IScheduleMultiDim* > this_multidim2from(
-       _multidim2nodes_.size());
+        _multidim2nodes_.size());
 
     // get a topological order of the full graph. We will use it to compare the
     // parameters of the operations. This order enforces that the parameters are
     // already known before we examine them in the operations.
     // check if all the operations have the same type and the same parameters
     for (const Sequence< NodeId > order = (_dag_.sizeNodes() == _node2op_.size())
-                                           ? _dag_.topologicalOrder()
-                                           : _fullDAG_().topologicalOrder();
+                                            ? _dag_.topologicalOrder()
+                                            : _fullDAG_().topologicalOrder();
          const auto               node: order) {
       // get the operations corresponding to node
       const ScheduleOperator* this_op = _node2op_.second(node);
@@ -391,7 +391,7 @@ namespace gum {
     if (multidim.isAbstract()) {
       GUM_ERROR(AbstractScheduleMultiDim,
                 "It is impossible to insert an abstract ScheduleMultiDim "
-                   << "into a Schedule")
+                    << "into a Schedule")
     }
 
     // now, everything is ok, so we should insert a copy of the ScheduleMultiDim
@@ -420,7 +420,7 @@ namespace gum {
     if (multidim.isAbstract()) {
       GUM_ERROR(AbstractScheduleMultiDim,
                 "It is impossible to insert an abstract ScheduleMultiDim "
-                   << "into a Schedule")
+                    << "into a Schedule")
     }
 
     // now, everything is ok, so we should insert the ScheduleMultiDim
@@ -455,9 +455,9 @@ namespace gum {
       if (!_multidim2id_.existsSecond(op_args[i]->id())) {
         GUM_ERROR(UnknownScheduleMultiDim,
                   "Schedule::insertOperation: the "
-                     << _paramString_(i + 1) << " (id: " << op_args[i]->id()
-                     << ") operation's argument does not already belong to"
-                     << " the schedule")
+                      << _paramString_(i + 1) << " (id: " << op_args[i]->id()
+                      << ") operation's argument does not already belong to"
+                      << " the schedule")
       }
     }
 
@@ -473,7 +473,7 @@ namespace gum {
               || op.implyDeletion())) {
         GUM_ERROR(OperationNotAllowed,
                   "Schedule::insertOperation: The operation deletes its "
-                     << _paramString_(i + 1) << " argument, already deleted by another operation.")
+                      << _paramString_(i + 1) << " argument, already deleted by another operation.")
       }
     }
 
@@ -487,9 +487,9 @@ namespace gum {
           if (!_node2op_.second(using_node)->isExecuted()) {
             GUM_ERROR(OperationNotAllowed,
                       "Schedule::insertOperation: the operation has"
-                         << " deleted its " << _paramString_(i + 1)
-                         << " argument, which is used by another operation"
-                         << " not executed yet.")
+                          << " deleted its " << _paramString_(i + 1)
+                          << " argument, which is used by another operation"
+                          << " not executed yet.")
           }
         }
       }
@@ -622,7 +622,7 @@ namespace gum {
       if (!_dag_.existsNode(exec_node)) {
         GUM_ERROR(UnknownScheduleOperation,
                   "the schedule cannot be updated because Operation of Id "
-                     << exec_node << " that has been executed does not belong to its DAG.")
+                      << exec_node << " that has been executed does not belong to its DAG.")
       }
 
       // before performing the update, check that the operation was available
@@ -630,14 +630,14 @@ namespace gum {
       if (!_dag_.parents(exec_node).empty()) {
         GUM_ERROR(UnavailableScheduleOperation,
                   "the schedule cannot be updated because Operation of Id "
-                     << exec_node << " is not available yet and should not have been executed.")
+                      << exec_node << " is not available yet and should not have been executed.")
       }
 
       // check that the operation has really been executed
       if (!_node2op_.second(exec_node)->isExecuted()) {
         GUM_ERROR(UnexecutedScheduleOperation,
                   "the schedule cannot be updated because Operation of Id "
-                     << exec_node << " has not been executed yet.")
+                      << exec_node << " has not been executed yet.")
       }
     }
 

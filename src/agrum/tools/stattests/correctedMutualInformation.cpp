@@ -41,10 +41,10 @@ namespace gum {
 
     /// default constructor
     CorrectedMutualInformation::CorrectedMutualInformation(
-       const DBRowGeneratorParser&                                 parser,
-       const Prior&                                                prior,
-       const std::vector< std::pair< std::size_t, std::size_t > >& ranges,
-       const Bijection< NodeId, std::size_t >&                     nodeId2columns) :
+        const DBRowGeneratorParser&                                 parser,
+        const Prior&                                                prior,
+        const std::vector< std::pair< std::size_t, std::size_t > >& ranges,
+        const Bijection< NodeId, std::size_t >&                     nodeId2columns) :
         _NH_(parser, prior, ranges, nodeId2columns),
         _k_NML_(parser, prior, ranges, nodeId2columns),
         _score_MDL_(parser, prior, ranges, nodeId2columns) {
@@ -53,9 +53,9 @@ namespace gum {
 
     /// default constructor
     CorrectedMutualInformation::CorrectedMutualInformation(
-       const DBRowGeneratorParser&             parser,
-       const Prior&                            prior,
-       const Bijection< NodeId, std::size_t >& nodeId2columns) :
+        const DBRowGeneratorParser&             parser,
+        const Prior&                            prior,
+        const Bijection< NodeId, std::size_t >& nodeId2columns) :
         _NH_(parser, prior, nodeId2columns),
         _k_NML_(parser, prior, nodeId2columns), _score_MDL_(parser, prior, nodeId2columns) {
       GUM_CONSTRUCTOR(CorrectedMutualInformation);
@@ -93,7 +93,7 @@ namespace gum {
 
     /// copy operator
     CorrectedMutualInformation&
-       CorrectedMutualInformation::operator=(const CorrectedMutualInformation& from) {
+        CorrectedMutualInformation::operator=(const CorrectedMutualInformation& from) {
       if (this != &from) {
         _NH_           = from._NH_;
         _k_NML_        = from._k_NML_;
@@ -111,7 +111,7 @@ namespace gum {
 
     /// move operator
     CorrectedMutualInformation&
-       CorrectedMutualInformation::operator=(CorrectedMutualInformation&& from) {
+        CorrectedMutualInformation::operator=(CorrectedMutualInformation&& from) {
       if (this != &from) {
         _NH_           = std::move(from._NH_);
         _k_NML_        = std::move(from._k_NML_);
@@ -135,7 +135,7 @@ namespace gum {
      * An empty set of ranges is equivalent to an interval [X,Y) ranging over
      * the whole database. */
     void CorrectedMutualInformation::setRanges(
-       const std::vector< std::pair< std::size_t, std::size_t > >& new_ranges) {
+        const std::vector< std::pair< std::size_t, std::size_t > >& new_ranges) {
       std::vector< std::pair< std::size_t, std::size_t > > old_ranges = ranges();
 
       _NH_.setRanges(new_ranges);
@@ -217,7 +217,7 @@ namespace gum {
         score = NHxz_NHyz - NHz_NHxyz;
       } else {
         const double NHxy
-           = -_NH_.score(IdCondSet(var_x, var_y, _empty_conditioning_set_, true, false));
+            = -_NH_.score(IdCondSet(var_x, var_y, _empty_conditioning_set_, true, false));
         const double NHx = -_NH_.score(var_x);
         const double NHy = -_NH_.score(var_y);
 

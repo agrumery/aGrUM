@@ -101,7 +101,7 @@ namespace gum {
     }
     // TN = #possible edges - #existing edges
     _true_none_
-       = ref.size() * (ref.size() - 1) / 2 - _true_edge_ - _wrong_edge_none_ - _wrong_none_edge_;
+        = ref.size() * (ref.size() - 1) / 2 - _true_edge_ - _wrong_edge_none_ - _wrong_none_edge_;
   }
 
   void StructuralComparator::compare(const PDAG& ref, const PDAG& test) {

@@ -82,19 +82,19 @@ namespace gum {
 
     template < typename GUM_SCALAR >
     PRMAggregate< GUM_SCALAR >&
-       PRMAggregate< GUM_SCALAR >::operator=(const PRMAggregate< GUM_SCALAR >& source) {
+        PRMAggregate< GUM_SCALAR >::operator=(const PRMAggregate< GUM_SCALAR >& source) {
       GUM_ERROR(FatalError, "illegal call to gum::PRMAggregate copy operator.")
     }
 
     template < typename GUM_SCALAR >
     INLINE typename PRMClassElement< GUM_SCALAR >::ClassElementType
-       PRMAggregate< GUM_SCALAR >::elt_type() const {
+        PRMAggregate< GUM_SCALAR >::elt_type() const {
       return this->prm_aggregate;
     }
 
     template < typename GUM_SCALAR >
     INLINE typename PRMAggregate< GUM_SCALAR >::AggregateType
-       PRMAggregate< GUM_SCALAR >::agg_type() const {
+        PRMAggregate< GUM_SCALAR >::agg_type() const {
       return _agg_type_;
     }
 

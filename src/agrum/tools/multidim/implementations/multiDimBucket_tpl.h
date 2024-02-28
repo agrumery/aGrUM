@@ -108,7 +108,7 @@ namespace gum {
 
   template < typename GUM_SCALAR >
   INLINE bool
-     MultiDimBucket< GUM_SCALAR >::contains(const MultiDimContainer< GUM_SCALAR >& impl) const {
+      MultiDimBucket< GUM_SCALAR >::contains(const MultiDimContainer< GUM_SCALAR >& impl) const {
     return _multiDims_.exists(&impl);
   }
 
@@ -248,7 +248,7 @@ namespace gum {
     if (_bucket_) {
       try {
         _bucket_->setFirstNotification(
-           *(_instantiations_).second(const_cast< Instantiation* >(&i)));
+            *(_instantiations_).second(const_cast< Instantiation* >(&i)));
       } catch (NotFound const&) {
         // Then i is not a slave of this
       }
@@ -301,7 +301,7 @@ namespace gum {
     if (_bucket_) {
       try {
         _bucket_->setChangeNotification(
-           *(_instantiations_.second(const_cast< Instantiation* >(&i))));
+            *(_instantiations_.second(const_cast< Instantiation* >(&i))));
       } catch (NotFound const&) {
         // Then i is not a slave of this
       }
@@ -384,7 +384,7 @@ namespace gum {
 
     for (   // HashTableIteratorSafe<const MultiDimContainer<GUM_SCALAR>*,
             // Instantiation*>
-       auto iter = _multiDims_.beginSafe(); iter != _multiDims_.endSafe(); ++iter) {
+        auto iter = _multiDims_.beginSafe(); iter != _multiDims_.endSafe(); ++iter) {
       for (auto var: iter.key()->variablesSequence()) {
         _addVariable_(var);
       }

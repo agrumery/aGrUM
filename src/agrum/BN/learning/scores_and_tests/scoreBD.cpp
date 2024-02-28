@@ -79,7 +79,7 @@ namespace gum {
       if (!this->prior_->isInformative()) {
         GUM_ERROR(OutOfBounds,
                   "The BD score requires its external prior to "
-                     << "be strictly positive");
+                      << "be strictly positive");
       }
 
       // get the counts for all the nodes in the idset and add the prior

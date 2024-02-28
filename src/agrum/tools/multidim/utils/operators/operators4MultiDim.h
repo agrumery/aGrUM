@@ -247,8 +247,8 @@ namespace gum {
    */
   template < typename T >
   MultiDimImplementation< T* >*
-     subtract2MultiDimArrays4Pointers(const MultiDimImplementation< T* >* t1,
-                                      const MultiDimImplementation< T* >* t2);
+      subtract2MultiDimArrays4Pointers(const MultiDimImplementation< T* >* t1,
+                                       const MultiDimImplementation< T* >* t2);
 
   /**
    * @brief a specialized function for subtracting two multiDimArrays
@@ -288,8 +288,8 @@ namespace gum {
    */
   template < typename T >
   MultiDimImplementation< T >*
-     subtract2MultiDimFunctionGraphs(const MultiDimImplementation< T >* t1,
-                                     const MultiDimImplementation< T >* t2);
+      subtract2MultiDimFunctionGraphs(const MultiDimImplementation< T >* t1,
+                                      const MultiDimImplementation< T >* t2);
 
   /// @}
   // ==========================================================================
@@ -375,8 +375,8 @@ namespace gum {
    */
   template < typename T >
   MultiDimImplementation< T* >*
-     multiply2MultiDimArrays4Pointers(const MultiDimImplementation< T* >* t1,
-                                      const MultiDimImplementation< T* >* t2);
+      multiply2MultiDimArrays4Pointers(const MultiDimImplementation< T* >* t1,
+                                       const MultiDimImplementation< T* >* t2);
 
   /**
    * @brief a specialized function for multiplying two multiDimArrays
@@ -416,8 +416,8 @@ namespace gum {
    */
   template < typename T >
   MultiDimImplementation< T >*
-     multiply2MultiDimFunctionGraphs(const MultiDimImplementation< T >* t1,
-                                     const MultiDimImplementation< T >* t2);
+      multiply2MultiDimFunctionGraphs(const MultiDimImplementation< T >* t1,
+                                      const MultiDimImplementation< T >* t2);
 
   /// @}
   // ==========================================================================
@@ -503,8 +503,8 @@ namespace gum {
    */
   template < typename T >
   MultiDimImplementation< T* >*
-     divide2MultiDimArrays4Pointers(const MultiDimImplementation< T* >* t1,
-                                    const MultiDimImplementation< T* >* t2);
+      divide2MultiDimArrays4Pointers(const MultiDimImplementation< T* >* t1,
+                                     const MultiDimImplementation< T* >* t2);
 
   /**
    * @brief a specialized function for dividing two multiDimArrays
@@ -586,8 +586,8 @@ namespace gum {
    */
   template < typename T >
   MultiDimImplementation< T >*
-     maximise2MultiDimFunctionGraphs(const MultiDimImplementation< T >* t1,
-                                     const MultiDimImplementation< T >* t2);
+      maximise2MultiDimFunctionGraphs(const MultiDimImplementation< T >* t1,
+                                      const MultiDimImplementation< T >* t2);
 
   /// @}
   // ==========================================================================

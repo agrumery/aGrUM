@@ -51,16 +51,16 @@ namespace gum_tests {
       TS_ASSERT_EQUALS(p.toString(), "a:Labelized({0|1})=logit(0.2 +0.4*b:Labelized({0|1}))")
       TS_GUM_ASSERT_THROWS_NOTHING(p.causalWeight(d, 0.7f))
       TS_ASSERT_EQUALS(
-         p.toString(),
-         "a:Labelized({0|1})=logit(0.2 +0.4*b:Labelized({0|1}) +0.7*d:Labelized({0|1}))");
+          p.toString(),
+          "a:Labelized({0|1})=logit(0.2 +0.4*b:Labelized({0|1}) +0.7*d:Labelized({0|1}))");
 
       TS_ASSERT_EQUALS(p.nbrDim(), (gum::Size)4)
       TS_ASSERT_EQUALS(p.realSize(), (gum::Size)4)
 
       gum::MultiDimLogit< double > q(p);
       TS_ASSERT_EQUALS(
-         q.toString(),
-         "a:Labelized({0|1})=logit(0.2 +0.4*b:Labelized({0|1}) +0.7*d:Labelized({0|1}))");
+          q.toString(),
+          "a:Labelized({0|1})=logit(0.2 +0.4*b:Labelized({0|1}) +0.7*d:Labelized({0|1}))");
       TS_ASSERT_EQUALS(p.realSize(), (gum::Size)4)
 
       TS_GUM_ASSERT_THROWS_NOTHING(q.causalWeight(c, -1.3f))
@@ -136,7 +136,7 @@ namespace gum_tests {
 
       gum::Instantiation i(p);
       float              witness[] = {
-         // clang-format off
+          // clang-format off
               0.26896108301760213f,0.7310389169823979f,
               0.13011979280757435f,0.8698802071924256f,
               0.14186323827049419f,0.8581367617295058f,

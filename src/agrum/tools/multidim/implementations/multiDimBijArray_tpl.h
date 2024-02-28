@@ -72,7 +72,7 @@ namespace gum {
 
   template < typename GUM_SCALAR >
   MultiDimBijArray< GUM_SCALAR >&
-     MultiDimBijArray< GUM_SCALAR >::operator=(const MultiDimBijArray< GUM_SCALAR >& from) {
+      MultiDimBijArray< GUM_SCALAR >::operator=(const MultiDimBijArray< GUM_SCALAR >& from) {
     GUM_ERROR(OperationNotAllowed, "MultiDimBijArray are readonly.")
   }
 
@@ -133,7 +133,7 @@ namespace gum {
 
   template < typename GUM_SCALAR >
   INLINE void
-     MultiDimBijArray< GUM_SCALAR >::populate(std::initializer_list< GUM_SCALAR > l) const {
+      MultiDimBijArray< GUM_SCALAR >::populate(std::initializer_list< GUM_SCALAR > l) const {
     GUM_ERROR(OperationNotAllowed, "MultiDimBijArray<GUM_SCALAR> are read only.")
   }
 

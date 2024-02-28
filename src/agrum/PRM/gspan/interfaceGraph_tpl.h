@@ -170,7 +170,7 @@ namespace gum {
 
       template < typename GUM_SCALAR >
       InterfaceGraph< GUM_SCALAR >&
-         InterfaceGraph< GUM_SCALAR >::operator=(const InterfaceGraph< GUM_SCALAR >& source) {
+          InterfaceGraph< GUM_SCALAR >::operator=(const InterfaceGraph< GUM_SCALAR >& source) {
         GUM_ERROR(FatalError, "not implemented")
       }
 

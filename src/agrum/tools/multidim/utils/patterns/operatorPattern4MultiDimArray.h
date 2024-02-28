@@ -237,7 +237,7 @@ namespace gum {
     // are those that belong to t1 but not t2. This order will be used in the
     // next for loops.
     MultiDimArray< GUM_MULTI_DIM_OPERATOR_TYPE >* result
-       = new MultiDimArray< GUM_MULTI_DIM_OPERATOR_TYPE >;
+        = new MultiDimArray< GUM_MULTI_DIM_OPERATOR_TYPE >;
     result->beginMultipleChanges();
 
     for (const auto var: t1_vars)
@@ -256,11 +256,11 @@ namespace gum {
     // loop to the variables that belong to t2 but not to t1. Finally, the
     // outer loop corresponds to the variables that belong to t1 but not t2.
     GUM_MULTI_DIM_OPERATOR_TYPE* pt1
-       = const_cast< GUM_MULTI_DIM_OPERATOR_TYPE* >(&(t1->unsafeGet(0)));
+        = const_cast< GUM_MULTI_DIM_OPERATOR_TYPE* >(&(t1->unsafeGet(0)));
     GUM_MULTI_DIM_OPERATOR_TYPE* pt2
-       = const_cast< GUM_MULTI_DIM_OPERATOR_TYPE* >(&(t2->unsafeGet(0)));
+        = const_cast< GUM_MULTI_DIM_OPERATOR_TYPE* >(&(t2->unsafeGet(0)));
     GUM_MULTI_DIM_OPERATOR_TYPE* pres
-       = const_cast< GUM_MULTI_DIM_OPERATOR_TYPE* >(&(result->unsafeGet(0)));
+        = const_cast< GUM_MULTI_DIM_OPERATOR_TYPE* >(&(result->unsafeGet(0)));
     GUM_MULTI_DIM_OPERATOR_TYPE* pt2_deb = pt2;
     GUM_MULTI_DIM_OPERATOR_TYPE* pt1_alone_begin;
 

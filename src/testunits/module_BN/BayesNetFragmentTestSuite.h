@@ -110,7 +110,7 @@ namespace gum_tests {
           if (node != bn.idFromName("v5")) {
             const gum::Potential< double >& pot = bn.cpt(node);
             const gum::Potential< double >& src
-               = source.cpt(source.idFromName(bn.variable(node).name()));
+                = source.cpt(source.idFromName(bn.variable(node).name()));
             gum::Instantiation I(pot);
             gum::Instantiation J(src);
 

@@ -165,7 +165,7 @@ namespace gum_tests {
       lps[2][0].addProba();
 
       lps_sols[2][0]
-         = {{1. / 4, 1. / 2, 1. / 4}, {0, 0, 1}, {0, 1. / 2, 1. / 2}};   // C lp solution A:0 B:0
+          = {{1. / 4, 1. / 2, 1. / 4}, {0, 0, 1}, {0, 1. / 2, 1. / 2}};   // C lp solution A:0 B:0
 
       /// C : ins idx = 1, A:1 B:0
       /// 2 * x0 + x1 <= x2 written as x0 + x1 <= x2 - x0
@@ -217,7 +217,7 @@ namespace gum_tests {
       lps[2][5].addProba();
 
       lps_sols[2][5]
-         = {{1. / 7, 2. / 7, 4. / 7}, {0, 1. / 3, 2. / 3}, {0, 0, 1}};   // C lp solution A:2 B:1
+          = {{1. / 7, 2. / 7, 4. / 7}, {0, 1. / 3, 2. / 3}, {0, 0, 1}};   // C lp solution A:2 B:1
 
       /// C : ins idx = 6, A:0 B:2
       /// x2 - x1 <= x0
@@ -255,7 +255,7 @@ namespace gum_tests {
 
         while (!ins.end()) {
           std::vector< std::vector< double > > vertices(
-             lps[id][entry].solve());   // we solve the lp
+              lps[id][entry].solve());   // we solve the lp
 
           gum::Size sols_size = gum::Size(lps_sols[id][entry].size());
           TS_ASSERT_EQUALS(vertices.size(), sols_size)
@@ -336,14 +336,14 @@ namespace gum_tests {
     GUM_ACTIVE_TEST(BadMinMaxFile) {
       gum::BayesNet< double >  monBNa;
       gum::BIFReader< double > readera(
-         &monBNa,
-         GET_RESSOURCES_PATH("cn/errorBN_min.bif"));   // not well defined
+          &monBNa,
+          GET_RESSOURCES_PATH("cn/errorBN_min.bif"));   // not well defined
       readera.proceed();
 
       gum::BayesNet< double >  monBNb;
       gum::BIFReader< double > readerb(
-         &monBNb,
-         GET_RESSOURCES_PATH("cn/errorBN_max.bif"));   // not well defined
+          &monBNb,
+          GET_RESSOURCES_PATH("cn/errorBN_max.bif"));   // not well defined
       readerb.proceed();
 
       gum::credal::CredalNet< double > cn(monBNa, monBNb);

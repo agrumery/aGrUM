@@ -282,7 +282,7 @@ namespace gum_tests {
       gum::DiGraph graph = buildGraph();
 
       gum::NodeProperty< gum::Size > hashmap
-         = graph.nodesPropertyFromFunction(&simpleDoubleFunction);
+          = graph.nodesPropertyFromFunction(&simpleDoubleFunction);
       TS_ASSERT_EQUALS(hashmap.size(), graph.size())
 
       gum::Size sk = 0;

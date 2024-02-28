@@ -50,14 +50,14 @@ namespace gum {
 
     /// copy constructor
     StructuralConstraintPossibleEdges::StructuralConstraintPossibleEdges(
-       const StructuralConstraintPossibleEdges& from) :
+        const StructuralConstraintPossibleEdges& from) :
         _PossibleEdges_possible_edges_(from._PossibleEdges_possible_edges_) {
       GUM_CONS_CPY(StructuralConstraintPossibleEdges);
     }
 
     /// move constructor
     StructuralConstraintPossibleEdges::StructuralConstraintPossibleEdges(
-       StructuralConstraintPossibleEdges&& from) :
+        StructuralConstraintPossibleEdges&& from) :
         _PossibleEdges_possible_edges_(std::move(from._PossibleEdges_possible_edges_)) {
       GUM_CONS_MOV(StructuralConstraintPossibleEdges);
     }
@@ -68,15 +68,15 @@ namespace gum {
     }
 
     /// copy operator
-    StructuralConstraintPossibleEdges&
-       StructuralConstraintPossibleEdges::operator=(const StructuralConstraintPossibleEdges& from) {
+    StructuralConstraintPossibleEdges& StructuralConstraintPossibleEdges::operator=(
+        const StructuralConstraintPossibleEdges& from) {
       if (this != &from) { _PossibleEdges_possible_edges_ = from._PossibleEdges_possible_edges_; }
       return *this;
     }
 
     /// move operator
     StructuralConstraintPossibleEdges&
-       StructuralConstraintPossibleEdges::operator=(StructuralConstraintPossibleEdges&& from) {
+        StructuralConstraintPossibleEdges::operator=(StructuralConstraintPossibleEdges&& from) {
       if (this != &from) {
         _PossibleEdges_possible_edges_ = std::move(from._PossibleEdges_possible_edges_);
       }

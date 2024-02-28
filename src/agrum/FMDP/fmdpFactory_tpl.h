@@ -105,7 +105,7 @@ namespace gum {
 
   template < typename GUM_SCALAR >
   INLINE const DiscreteVariable*
-     FMDPFactory< GUM_SCALAR >::variable(const std::string& name) const {
+      FMDPFactory< GUM_SCALAR >::variable(const std::string& name) const {
     for (const auto& elt: _varNameMap_)
       if (elt.first.compare(name) == 0) return elt.second;
 
@@ -192,7 +192,7 @@ namespace gum {
     if (state() != FMDPfactory_state::VARIABLE) _illegalStateError_("endVariableDeclaration");
     else if (_foo_flag_ && (_stringBag_.size() > 3)) {
       LabelizedVariable* var
-         = new LabelizedVariable(_stringBag_[0], (_bar_flag_) ? _stringBag_[1] : "", 0);
+          = new LabelizedVariable(_stringBag_[0], (_bar_flag_) ? _stringBag_[1] : "", 0);
 
       for (size_t i = 2; i < _stringBag_.size(); ++i) {
         var->addLabel(_stringBag_[i]);
@@ -302,7 +302,7 @@ namespace gum {
   INLINE void FMDPFactory< GUM_SCALAR >::addTransition(const std::string&        var,
                                                        const MultiDimAdressable* transition) {
     const MultiDimImplementation< GUM_SCALAR >* t
-       = reinterpret_cast< const MultiDimImplementation< GUM_SCALAR >* >(transition);
+        = reinterpret_cast< const MultiDimImplementation< GUM_SCALAR >* >(transition);
 
     if (state() != FMDPfactory_state::TRANSITION) _illegalStateError_("addTransition");
     else if (_foo_flag_)
@@ -369,7 +369,7 @@ namespace gum {
   template < typename GUM_SCALAR >
   INLINE void FMDPFactory< GUM_SCALAR >::addCost(const MultiDimAdressable* cost) {
     const MultiDimImplementation< GUM_SCALAR >* c
-       = reinterpret_cast< const MultiDimImplementation< GUM_SCALAR >* >(cost);
+        = reinterpret_cast< const MultiDimImplementation< GUM_SCALAR >* >(cost);
 
     if (state() != FMDPfactory_state::COST) _illegalStateError_("addCost");
     else if (_foo_flag_) _fmdp_->addCostForAction(_fmdp_->actionId(_stringBag_[0]), c);
@@ -439,7 +439,7 @@ namespace gum {
   template < typename GUM_SCALAR >
   INLINE void FMDPFactory< GUM_SCALAR >::addReward(const MultiDimAdressable* reward) {
     const MultiDimImplementation< GUM_SCALAR >* r
-       = reinterpret_cast< const MultiDimImplementation< GUM_SCALAR >* >(reward);
+        = reinterpret_cast< const MultiDimImplementation< GUM_SCALAR >* >(reward);
 
     if (state() != FMDPfactory_state::REWARD) _illegalStateError_("addReward");
     else _fmdp_->addReward(r);

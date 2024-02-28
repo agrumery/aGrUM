@@ -104,7 +104,7 @@ namespace gum_tests {
       writer.setLowLimit(0);
       writer.setHighLimit(1);
       std::string file
-         = GET_RESSOURCES_PATH("outputs/FactorisedValuesCNFWriter_TestFile_Approximation.cnf");
+          = GET_RESSOURCES_PATH("outputs/FactorisedValuesCNFWriter_TestFile_Approximation.cnf");
       TS_GUM_ASSERT_THROWS_NOTHING(writer.write(file, *bn))
     }
 
@@ -119,7 +119,7 @@ namespace gum_tests {
                0.5, 0.5,
                0.5, 0.5,
                1.0, 0.0} );   // clang-format on
-      bn.cpt(i5).fillWith(                             // clang-format off
+      bn.cpt(i5).fillWith(                              // clang-format off
               {0.3, 0.6, 0.1,
                0.5, 0.5, 0.0,
                0.5, 0.5, 0.0,

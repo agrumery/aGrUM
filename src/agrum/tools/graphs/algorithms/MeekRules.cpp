@@ -213,7 +213,7 @@ namespace gum {
   }
 
   gum::Arc
-     MeekRules::_critereMinParents_(const gum::MixedGraph& graph, gum::NodeId x, gum::NodeId y) {
+      MeekRules::_critereMinParents_(const gum::MixedGraph& graph, gum::NodeId x, gum::NodeId y) {
     // If the number of parents of x is less than the number of parents of y.
     if (graph.parents(x).size() < graph.parents(y).size()) {
       // If the number of parents of x is less than the number of parents of y.

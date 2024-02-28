@@ -61,12 +61,12 @@ namespace gum {
 
       /// copy constructor
       GraphChangesSelector4DiGraph(
-         const GraphChangesSelector4DiGraph< STRUCTURAL_CONSTRAINT, GRAPH_CHANGES_GENERATOR >&
-            from);
+          const GraphChangesSelector4DiGraph< STRUCTURAL_CONSTRAINT, GRAPH_CHANGES_GENERATOR >&
+              from);
 
       /// move constructor
       GraphChangesSelector4DiGraph(
-         GraphChangesSelector4DiGraph< STRUCTURAL_CONSTRAINT, GRAPH_CHANGES_GENERATOR >&& from);
+          GraphChangesSelector4DiGraph< STRUCTURAL_CONSTRAINT, GRAPH_CHANGES_GENERATOR >&& from);
 
       /// destructor
       ~GraphChangesSelector4DiGraph();
@@ -80,12 +80,12 @@ namespace gum {
 
       /// copy operator
       GraphChangesSelector4DiGraph< STRUCTURAL_CONSTRAINT, GRAPH_CHANGES_GENERATOR >&
-         operator=(const GraphChangesSelector4DiGraph< STRUCTURAL_CONSTRAINT,
-                                                       GRAPH_CHANGES_GENERATOR >& from);
+          operator=(const GraphChangesSelector4DiGraph< STRUCTURAL_CONSTRAINT,
+                                                        GRAPH_CHANGES_GENERATOR >& from);
 
       /// move operator
       GraphChangesSelector4DiGraph< STRUCTURAL_CONSTRAINT, GRAPH_CHANGES_GENERATOR >& operator=(
-         GraphChangesSelector4DiGraph< STRUCTURAL_CONSTRAINT, GRAPH_CHANGES_GENERATOR >&& from);
+          GraphChangesSelector4DiGraph< STRUCTURAL_CONSTRAINT, GRAPH_CHANGES_GENERATOR >&& from);
 
       /// @}
 
@@ -183,7 +183,7 @@ namespace gum {
       /** within each queue, the changes are determined by their index in
        * sequence  _changes_. */
       NodeProperty< PriorityQueue< std::size_t, double, std::greater< double > > >
-         _change_queue_per_node_;
+          _change_queue_per_node_;
 
       /// a global priority queue indicating for each node its best score
       PriorityQueue< NodeId, double, std::greater< double > > _node_queue_;

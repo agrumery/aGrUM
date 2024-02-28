@@ -109,7 +109,7 @@ namespace gum {
     virtual void   startRawProbabilityDeclaration(const std::string& var)                      = 0;
     virtual void   rawConditionalTable(const std::vector< std::string >& variables,
                                        const std::vector< float >&       rawTable)
-       = 0;
+        = 0;
     virtual void rawConditionalTable(const std::vector< float >& rawTable)                 = 0;
     virtual void endRawProbabilityDeclaration()                                            = 0;
     virtual void startFactorizedProbabilityDeclaration(const std::string& var)             = 0;
@@ -121,8 +121,8 @@ namespace gum {
     virtual void endFactorizedProbabilityDeclaration()                                     = 0;
     virtual void setVariable(const DiscreteVariable& var)                                  = 0;
     virtual void
-       setVariableCPT(const std::string& varName, MultiDimAdressable* table, bool redefineParents)
-       = 0;
+        setVariableCPT(const std::string& varName, MultiDimAdressable* table, bool redefineParents)
+        = 0;
     /// @}
 
     private:

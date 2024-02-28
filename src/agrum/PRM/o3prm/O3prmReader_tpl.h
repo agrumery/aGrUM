@@ -420,7 +420,7 @@ namespace gum {
           auto type_factory = O3TypeFactory< GUM_SCALAR >(*_prm_, *_o3_prm_, solver, _errors_);
 
           auto interface_factory
-             = O3InterfaceFactory< GUM_SCALAR >(*_prm_, *_o3_prm_, solver, _errors_);
+              = O3InterfaceFactory< GUM_SCALAR >(*_prm_, *_o3_prm_, solver, _errors_);
           auto class_factory = O3ClassFactory< GUM_SCALAR >(*_prm_, *_o3_prm_, solver, _errors_);
 
           auto system_factory = O3SystemFactory< GUM_SCALAR >(*_prm_, *_o3_prm_, solver, _errors_);

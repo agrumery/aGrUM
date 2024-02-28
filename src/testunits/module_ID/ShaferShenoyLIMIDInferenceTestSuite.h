@@ -80,31 +80,31 @@ namespace gum_tests {
 
       TS_ASSERT_EQUALS(dIDI.posterior("OilContents"),
                        (gum::Potential< double >() << net.variableFromName("OilContents"))
-                          .fillWith({0.5, 0.3, 0.2}))
+                           .fillWith({0.5, 0.3, 0.2}))
       TS_ASSERT_EQUALS(dIDI.posteriorUtility("OilContents"),
                        (gum::Potential< double >() << net.variableFromName("OilContents"))
-                          .fillWith({-38, 25, 170}))
+                           .fillWith({-38, 25, 170}))
 
       TS_ASSERT_EQUALS(dIDI.posterior("TestResult"),
                        (gum::Potential< double >() << net.variableFromName("TestResult"))
-                          .fillWith({0.24, 0.35, 0.41}))
+                           .fillWith({0.24, 0.35, 0.41}))
       TS_ASSERT_EQUALS(dIDI.posteriorUtility("TestResult"),
                        (gum::Potential< double >() << net.variableFromName("TestResult"))
-                          .fillWith({77.5, 22.8571, -10}))
+                           .fillWith({77.5, 22.8571, -10}))
 
       TS_ASSERT_EQUALS(
-         dIDI.posterior("Testing"),
-         (gum::Potential< double >() << net.variableFromName("Testing")).fillWith({1, 0}))
+          dIDI.posterior("Testing"),
+          (gum::Potential< double >() << net.variableFromName("Testing")).fillWith({1, 0}))
       TS_ASSERT_EQUALS(
-         dIDI.posteriorUtility("Testing"),
-         (gum::Potential< double >() << net.variableFromName("Testing")).fillWith({22.5, 20}))
+          dIDI.posteriorUtility("Testing"),
+          (gum::Potential< double >() << net.variableFromName("Testing")).fillWith({22.5, 20}))
 
       TS_ASSERT_EQUALS(
-         dIDI.posterior("Drilling"),
-         (gum::Potential< double >() << net.variableFromName("Drilling")).fillWith({0.59, 0.41}))
+          dIDI.posterior("Drilling"),
+          (gum::Potential< double >() << net.variableFromName("Drilling")).fillWith({0.59, 0.41}))
       TS_ASSERT_EQUALS(
-         dIDI.posteriorUtility("Drilling"),
-         (gum::Potential< double >() << net.variableFromName("Drilling")).fillWith({45.0847, -10}))
+          dIDI.posteriorUtility("Drilling"),
+          (gum::Potential< double >() << net.variableFromName("Drilling")).fillWith({45.0847, -10}))
 
       TS_ASSERT_DELTA(dIDI.meanVar("Cost").first, -10, TS_GUM_SMALL_ERROR)
       TS_ASSERT_DELTA(dIDI.meanVar("Cost").second, 0, TS_GUM_SMALL_ERROR)
@@ -125,39 +125,39 @@ namespace gum_tests {
 
       TS_GUM_POTENTIAL_DELTA(dIDI.posterior("OilContents"),
                              (gum::Potential< double >() << net.variableFromName("OilContents"))
-                                .fillWith({0.5, 0.3, 0.2}),
+                                 .fillWith({0.5, 0.3, 0.2}),
                              TS_GUM_SMALL_ERROR)
       TS_GUM_POTENTIAL_DELTA(dIDI.posteriorUtility("OilContents"),
                              (gum::Potential< double >() << net.variableFromName("OilContents"))
-                                .fillWith({-70, 50, 200}),
+                                 .fillWith({-70, 50, 200}),
                              TS_GUM_SMALL_ERROR)
 
       TS_GUM_POTENTIAL_DELTA(dIDI.posterior("TestResult"),
                              (gum::Potential< double >() << net.variableFromName("TestResult"))
-                                .fillWith({0.333333, 0.333333, 0.333333}),
+                                 .fillWith({0.333333, 0.333333, 0.333333}),
                              TS_GUM_SMALL_ERROR)
       TS_GUM_POTENTIAL_DELTA(
-         dIDI.posteriorUtility("TestResult"),
-         (gum::Potential< double >() << net.variableFromName("TestResult")).fillWith({20, 20, 20}),
-         TS_GUM_SMALL_ERROR)
+          dIDI.posteriorUtility("TestResult"),
+          (gum::Potential< double >() << net.variableFromName("TestResult")).fillWith({20, 20, 20}),
+          TS_GUM_SMALL_ERROR)
 
       TS_GUM_POTENTIAL_DELTA(
-         dIDI.posterior("Testing"),
-         (gum::Potential< double >() << net.variableFromName("Testing")).fillWith({0, 1}),
-         TS_GUM_SMALL_ERROR)
+          dIDI.posterior("Testing"),
+          (gum::Potential< double >() << net.variableFromName("Testing")).fillWith({0, 1}),
+          TS_GUM_SMALL_ERROR)
       TS_GUM_POTENTIAL_DELTA(
-         dIDI.posteriorUtility("Testing"),
-         (gum::Potential< double >() << net.variableFromName("Testing")).fillWith({0, 20}),
-         TS_GUM_SMALL_ERROR)
+          dIDI.posteriorUtility("Testing"),
+          (gum::Potential< double >() << net.variableFromName("Testing")).fillWith({0, 20}),
+          TS_GUM_SMALL_ERROR)
 
       TS_GUM_POTENTIAL_DELTA(
-         dIDI.posterior("Drilling"),
-         (gum::Potential< double >() << net.variableFromName("Drilling")).fillWith({1, 0}),
-         TS_GUM_SMALL_ERROR)
+          dIDI.posterior("Drilling"),
+          (gum::Potential< double >() << net.variableFromName("Drilling")).fillWith({1, 0}),
+          TS_GUM_SMALL_ERROR)
       TS_GUM_POTENTIAL_DELTA(
-         dIDI.posteriorUtility("Drilling"),
-         (gum::Potential< double >() << net.variableFromName("Drilling")).fillWith({20, 0}),
-         TS_GUM_SMALL_ERROR)
+          dIDI.posteriorUtility("Drilling"),
+          (gum::Potential< double >() << net.variableFromName("Drilling")).fillWith({20, 0}),
+          TS_GUM_SMALL_ERROR)
 
       TS_ASSERT_DELTA(dIDI.meanVar("Cost").first, 0, TS_GUM_SMALL_ERROR)
       TS_ASSERT_DELTA(dIDI.meanVar("Cost").second, 0, TS_GUM_SMALL_ERROR)
@@ -180,39 +180,39 @@ namespace gum_tests {
 
       TS_GUM_POTENTIAL_DELTA(dIDI.posterior("OilContents"),
                              (gum::Potential< double >() << net.variableFromName("OilContents"))
-                                .fillWith({0.0, 1.0, 0.0}),
+                                 .fillWith({0.0, 1.0, 0.0}),
                              TS_GUM_SMALL_ERROR)
       TS_GUM_POTENTIAL_DELTA(
-         dIDI.posteriorUtility("OilContents"),
-         (gum::Potential< double >() << net.variableFromName("OilContents")).fillWith({0, 50, 0}),
-         TS_GUM_SMALL_ERROR)
+          dIDI.posteriorUtility("OilContents"),
+          (gum::Potential< double >() << net.variableFromName("OilContents")).fillWith({0, 50, 0}),
+          TS_GUM_SMALL_ERROR)
 
       TS_GUM_POTENTIAL_DELTA(dIDI.posterior("TestResult"),
                              (gum::Potential< double >() << net.variableFromName("TestResult"))
-                                .fillWith({0.333333, 0.333333, 0.333333}),
+                                 .fillWith({0.333333, 0.333333, 0.333333}),
                              TS_GUM_SMALL_ERROR)
       TS_GUM_POTENTIAL_DELTA(
-         dIDI.posteriorUtility("TestResult"),
-         (gum::Potential< double >() << net.variableFromName("TestResult")).fillWith({50, 50, 50}),
-         TS_GUM_SMALL_ERROR)
+          dIDI.posteriorUtility("TestResult"),
+          (gum::Potential< double >() << net.variableFromName("TestResult")).fillWith({50, 50, 50}),
+          TS_GUM_SMALL_ERROR)
 
       TS_GUM_POTENTIAL_DELTA(
-         dIDI.posterior("Testing"),
-         (gum::Potential< double >() << net.variableFromName("Testing")).fillWith({0, 1}),
-         TS_GUM_SMALL_ERROR)
+          dIDI.posterior("Testing"),
+          (gum::Potential< double >() << net.variableFromName("Testing")).fillWith({0, 1}),
+          TS_GUM_SMALL_ERROR)
       TS_GUM_POTENTIAL_DELTA(
-         dIDI.posteriorUtility("Testing"),
-         (gum::Potential< double >() << net.variableFromName("Testing")).fillWith({40, 50}),
-         TS_GUM_SMALL_ERROR)
+          dIDI.posteriorUtility("Testing"),
+          (gum::Potential< double >() << net.variableFromName("Testing")).fillWith({40, 50}),
+          TS_GUM_SMALL_ERROR)
 
       TS_GUM_POTENTIAL_DELTA(
-         dIDI.posterior("Drilling"),
-         (gum::Potential< double >() << net.variableFromName("Drilling")).fillWith({1, 0}),
-         TS_GUM_SMALL_ERROR)
+          dIDI.posterior("Drilling"),
+          (gum::Potential< double >() << net.variableFromName("Drilling")).fillWith({1, 0}),
+          TS_GUM_SMALL_ERROR)
       TS_GUM_POTENTIAL_DELTA(
-         dIDI.posteriorUtility("Drilling"),
-         (gum::Potential< double >() << net.variableFromName("Drilling")).fillWith({50, 0}),
-         TS_GUM_SMALL_ERROR)
+          dIDI.posteriorUtility("Drilling"),
+          (gum::Potential< double >() << net.variableFromName("Drilling")).fillWith({50, 0}),
+          TS_GUM_SMALL_ERROR)
 
       TS_ASSERT_DELTA(dIDI.meanVar("Cost").first, 0, TS_GUM_SMALL_ERROR)
       TS_ASSERT_DELTA(dIDI.meanVar("Cost").second, 0, TS_GUM_SMALL_ERROR)
@@ -285,14 +285,15 @@ namespace gum_tests {
       gum::InfluenceDiagram< double > model;
 
       model.addDecisionNode(
-         gum::LabelizedVariable("DoTest", "which tests to run", {"None", "First", "Both"}));
+          gum::LabelizedVariable("DoTest", "which tests to run", {"None", "First", "Both"}));
       model.addDecisionNode(gum::LabelizedVariable("Buy", "Buy the car", {"No", "Yes"}));
 
       model.addChanceNode(gum::LabelizedVariable("Condition", "Car Condition", {"Good", "Lemon"}));
       model.addChanceNode(
-         gum::LabelizedVariable("FirstTest", "Test Results", {"NotDone", "Positive", "Negative"}));
-      model.addChanceNode(
-         gum::LabelizedVariable("SecondTest", "Test Results", {"NotDone", "Positive", "Negative"}));
+          gum::LabelizedVariable("FirstTest", "Test Results", {"NotDone", "Positive", "Negative"}));
+      model.addChanceNode(gum::LabelizedVariable("SecondTest",
+                                                 "Test Results",
+                                                 {"NotDone", "Positive", "Negative"}));
 
       model.addUtilityNode(gum::LabelizedVariable("U", "test satisfaction", 1));
       model.addUtilityNode(gum::LabelizedVariable("V", "car satisfaction", 1));
@@ -314,8 +315,8 @@ namespace gum_tests {
       model.cpt("Condition").fillWith({0.8, 0.2});
 
       model.cpt("FirstTest")
-         .fillWith(
-            // clang-format off
+          .fillWith(
+              // clang-format off
                    {1,0,0,
                     1,0,0,
                     0,.90,.10,
@@ -324,8 +325,8 @@ namespace gum_tests {
                     0,.40,.60});   // clang-format on
 
       model.cpt("SecondTest")
-         .fillWith(
-            // clang-format off
+          .fillWith(
+              // clang-format off
                    {1, 0, 0,
                     1, 0, 0,
                     1, 0, 0,
@@ -400,9 +401,9 @@ namespace gum_tests {
 
       {
         auto infdiag = gum::InfluenceDiagram< double >::fastPrototype(
-           "*D1->Z->*D2->U->*D3->V->*D4<-W<-*D5<-L;"
-           "*D3<-M<-*D6->N->*D4<-*D2;X<-*D1->Y->D3;D5->$Q1<-W;"
-           "U->$Q2<-D4;N->$Q3;X->$Q4<-D2;Q2<-*D7->Q4");
+            "*D1->Z->*D2->U->*D3->V->*D4<-W<-*D5<-L;"
+            "*D3<-M<-*D6->N->*D4<-*D2;X<-*D1->Y->D3;D5->$Q1<-W;"
+            "U->$Q2<-D4;N->$Q3;X->$Q4<-D2;Q2<-*D7->Q4");
         auto ieid = gum::ShaferShenoyLIMIDInference< double >(&infdiag);
         auto res  = ieid.reversePartialOrder();
         TS_ASSERT_EQUALS(res.size(), 4U)
@@ -435,9 +436,9 @@ namespace gum_tests {
     GUM_ACTIVE_TEST(NoForgettingAssumption) {
       // From Evaluating IDs using LIMIDS, Nillson et Lauritzen, 2000
       auto infdiag = gum::InfluenceDiagram< double >::fastPrototype(
-         "*D1->$U3<-R1->R2->R3<-*D4->$U4<-R4<-R1<-*D2;"
-         "R4->D4<-*D3<-D2<-D1;"
-         "D3->$U1<-R2;R3->$U2");
+          "*D1->$U3<-R1->R2->R3<-*D4->$U4<-R4<-R1<-*D2;"
+          "R4->D4<-*D3<-D2<-D1;"
+          "D3->$U1<-R2;R3->$U2");
       auto ieid = gum::ShaferShenoyLIMIDInference< double >(&infdiag);
 
       TS_ASSERT(!ieid.hasNoForgettingAssumption())
@@ -481,8 +482,8 @@ namespace gum_tests {
       // from LIMIDS of decision Problems, Lauritzen et Nilsson, 1999
       // p33
       auto limids = gum::InfluenceDiagram< double >::fastPrototype(
-         "a->c->e->g->*d4->l->$u4;c<-b->d->f->h->k<-*d3->$u2;$u1<-*d1->d->e->*d2->"
-         "i->l;g->i;f->d2;b->d1;h->j->$u3<-k");
+          "a->c->e->g->*d4->l->$u4;c<-b->d->f->h->k<-*d3->$u2;$u1<-*d1->d->e->*d2->"
+          "i->l;g->i;f->d2;b->d1;h->j->$u3<-k");
       std::vector< std::string > order({"d1", "d2", "d3", "d4"});
 
       auto       ieid    = gum::ShaferShenoyLIMIDInference< double >(&limids);
@@ -513,9 +514,9 @@ namespace gum_tests {
     GUM_ACTIVE_TEST(JunctionTree) {
       // From Evaluating IDs using LIMIDS, Nillson et Lauritzen, 2000
       auto infdiag = gum::InfluenceDiagram< double >::fastPrototype(
-         "*D1->$U3<-R1->R2->R3<-*D4->$U4<-R4<-R1<-*D2;"
-         "R4->D4<-*D3<-D2<-D1;"
-         "D3->$U1<-R2;R3->$U2");
+          "*D1->$U3<-R1->R2->R3<-*D4->$U4<-R4<-R1<-*D2;"
+          "R4->D4<-*D3<-D2<-D1;"
+          "D3->$U1<-R2;R3->$U2");
       auto ieid = gum::ShaferShenoyLIMIDInference< double >(&infdiag);
 
       ieid.addNoForgettingAssumption({"D1", "D2", "D3", "D4"});
@@ -536,16 +537,16 @@ namespace gum_tests {
 
       TS_ASSERT_EQUALS(ieid.posteriorUtility("BusinessDecision"),
                        (gum::Potential< double >() << net.variableFromName("BusinessDecision"))
-                          .fillWith({181.0879, 276.25, 200}))
+                           .fillWith({181.0879, 276.25, 200}))
 
 
       TS_ASSERT_EQUALS(
-         ieid.posterior("RentalRate"),
-         (gum::Potential< double >() << net.variableFromName("RentalRate")).fillWith({0.25, 0.75}))
+          ieid.posterior("RentalRate"),
+          (gum::Potential< double >() << net.variableFromName("RentalRate")).fillWith({0.25, 0.75}))
 
       TS_ASSERT_EQUALS(ieid.posterior("RevenueLevel"),
                        (gum::Potential< double >() << net.variableFromName("RevenueLevel"))
-                          .fillWith({0.185, 0.63, 0.185}))
+                           .fillWith({0.185, 0.63, 0.185}))
     }
 
     GUM_ACTIVE_TEST(DavidAndescavage) {
@@ -557,9 +558,9 @@ namespace gum_tests {
       auto ieid = gum::ShaferShenoyLIMIDInference< double >(&net);
       TS_ASSERT_THROWS(ieid.addEvidence("U", 0), const gum::InvalidNode&)
       TS_ASSERT_THROWS(
-         ieid.addEvidence(
-            (gum::Potential< double >() << net.variableFromName("DoTest")).fillWith({0.5, 1, 0})),
-         const gum::InvalidNode&)
+          ieid.addEvidence(
+              (gum::Potential< double >() << net.variableFromName("DoTest")).fillWith({0.5, 1, 0})),
+          const gum::InvalidNode&)
       TS_ASSERT_THROWS(ieid.addEvidence("DoTest", "Both"), const gum::InvalidArgument&)
       ieid.eraseAllEvidence();
       ieid.addEvidence("DoTest", "Both");
@@ -568,8 +569,8 @@ namespace gum_tests {
       ieid.makeInference();
       try {
         TS_ASSERT_EQUALS(
-           ieid.posterior("DoTest"),
-           (gum::Potential< double >() << net.variableFromName("DoTest")).fillWith({0, 0, 1}))
+            ieid.posterior("DoTest"),
+            (gum::Potential< double >() << net.variableFromName("DoTest")).fillWith({0, 0, 1}))
         // are this values correct ?
         TS_ASSERT_DELTA(ieid.MEU().first, -10.600002592, TS_GUM_SMALL_ERROR)
         TS_ASSERT_DELTA(ieid.MEU().second, 138.2398, 1e-4)
@@ -589,12 +590,12 @@ namespace gum_tests {
                        (gum::Potential< double >() << net.variableFromName("d")).fillWith({0, 1}))
       TS_ASSERT_EQUALS(ie.MEU().first, 110.5)
       TS_ASSERT_EQUALS(
-         ie.posterior("c1"),
-         (gum::Potential< double >() << net.variableFromName("c1")).fillWith({0.5, 0.5}))
+          ie.posterior("c1"),
+          (gum::Potential< double >() << net.variableFromName("c1")).fillWith({0.5, 0.5}))
       TS_GUM_POTENTIAL_DELTA(
-         ie.posteriorUtility("d"),
-         (gum::Potential< double >() << net.variableFromName("d")).fillWith({55.0, 110.5}),
-         TS_GUM_SMALL_ERROR)
+          ie.posteriorUtility("d"),
+          (gum::Potential< double >() << net.variableFromName("d")).fillWith({55.0, 110.5}),
+          TS_GUM_SMALL_ERROR)
     }
 
     GUM_ACTIVE_TEST(BugWithEvidence2) {
@@ -611,9 +612,9 @@ namespace gum_tests {
       TS_ASSERT_EQUALS(ie.posterior("c1"),
                        (gum::Potential< double >() << net.variableFromName("c1")).fillWith({0, 1}))
       TS_GUM_POTENTIAL_DELTA(
-         ie.posteriorUtility("d"),
-         (gum::Potential< double >() << net.variableFromName("d")).fillWith({100, 200}),
-         TS_GUM_SMALL_ERROR)
+          ie.posteriorUtility("d"),
+          (gum::Potential< double >() << net.variableFromName("d")).fillWith({100, 200}),
+          TS_GUM_SMALL_ERROR)
     }
 
     GUM_ACTIVE_TEST(BugWithEvidence3) {
@@ -627,17 +628,17 @@ namespace gum_tests {
       ie.makeInference();
 
       TS_GUM_POTENTIAL_DELTA(
-         ie.optimalDecision("d"),
-         (gum::Potential< double >() << net.variableFromName("d")).fillWith({0, 1}),
-         TS_GUM_SMALL_ERROR)
+          ie.optimalDecision("d"),
+          (gum::Potential< double >() << net.variableFromName("d")).fillWith({0, 1}),
+          TS_GUM_SMALL_ERROR)
       TS_ASSERT_EQUALS(ie.MEU().first, 110.5)
       TS_ASSERT_EQUALS(
-         ie.posterior("c1"),
-         (gum::Potential< double >() << net.variableFromName("c1")).fillWith({0.5, 0.5}))
+          ie.posterior("c1"),
+          (gum::Potential< double >() << net.variableFromName("c1")).fillWith({0.5, 0.5}))
       TS_GUM_POTENTIAL_DELTA(
-         ie.posteriorUtility("d"),
-         (gum::Potential< double >() << net.variableFromName("d")).fillWith({0, 110.5}),
-         TS_GUM_SMALL_ERROR)
+          ie.posteriorUtility("d"),
+          (gum::Potential< double >() << net.variableFromName("d")).fillWith({0, 110.5}),
+          TS_GUM_SMALL_ERROR)
     }
 
     GUM_ACTIVE_TEST(BugWithEvidence4) {
@@ -654,13 +655,13 @@ namespace gum_tests {
       TS_ASSERT_EQUALS(ie.MEU().first, 56.8)
       TS_ASSERT_DELTA(ie.MEU().second, 5126.56, TS_GUM_SMALL_ERROR)
       TS_GUM_POTENTIAL_DELTA(
-         ie.posterior("c"),
-         (gum::Potential< double >() << net.variableFromName("c")).fillWith({0.8, 0.2}),
-         TS_GUM_SMALL_ERROR)
+          ie.posterior("c"),
+          (gum::Potential< double >() << net.variableFromName("c")).fillWith({0.8, 0.2}),
+          TS_GUM_SMALL_ERROR)
       TS_GUM_POTENTIAL_DELTA(
-         ie.posteriorUtility("d"),
-         (gum::Potential< double >() << net.variableFromName("d")).fillWith({28, 56.8}),
-         TS_GUM_SMALL_ERROR)
+          ie.posteriorUtility("d"),
+          (gum::Potential< double >() << net.variableFromName("d")).fillWith({28, 56.8}),
+          TS_GUM_SMALL_ERROR)
     }
 
     GUM_ACTIVE_TEST(InferenceWithClemenFigure4_12) {
@@ -674,24 +675,24 @@ namespace gum_tests {
         TS_GUM_ASSERT_THROWS_NOTHING(ie.makeInference())
         TS_GUM_POTENTIAL_DELTA(ie.posteriorUtility("Accept2B"),
                                (gum::Potential< double >() << net.variableFromName("Accept2B"))
-                                  .fillWith({2.000, 4.6348}),
+                                   .fillWith({2.000, 4.6348}),
                                TS_GUM_SMALL_ERROR)
         TS_GUM_POTENTIAL_DELTA(
-           ie.posterior("Court_Decision"),
-           (gum::Potential< double >() << net.variableFromName("Court_Decision"))
-              .fillWith({0.2, 0.5, 0.3}),
-           TS_GUM_SMALL_ERROR)
+            ie.posterior("Court_Decision"),
+            (gum::Potential< double >() << net.variableFromName("Court_Decision"))
+                .fillWith({0.2, 0.5, 0.3}),
+            TS_GUM_SMALL_ERROR)
         TS_GUM_POTENTIAL_DELTA(
-           ie.posterior("Texaco_Reaction"),
-           (gum::Potential< double >() << net.variableFromName("Texaco_Reaction"))
-              .fillWith({0.17, 0.5, 0.33}),
-           TS_GUM_SMALL_ERROR)
+            ie.posterior("Texaco_Reaction"),
+            (gum::Potential< double >() << net.variableFromName("Texaco_Reaction"))
+                .fillWith({0.17, 0.5, 0.33}),
+            TS_GUM_SMALL_ERROR)
       } catch (gum::Exception& e) { GUM_SHOWERROR(e) }
     }
 
     GUM_ACTIVE_TEST(NegativeUtilityNonRegression) {
       auto fs = gum::InfluenceDiagram< double >::fastPrototype(
-         "ActualUtility{U1|U2}->$Utility<-*Options{Opt0|Opt1}");
+          "ActualUtility{U1|U2}->$Utility<-*Options{Opt0|Opt1}");
       fs.cpt("ActualUtility").fillWith(1).normalize();
       fs.utility("Utility").fillWith({-10, -10, -50, -50});
 
@@ -699,14 +700,14 @@ namespace gum_tests {
       ie.makeInference();
 
       TS_GUM_POTENTIAL_DELTA(
-         ie.optimalDecision("Options"),
-         (gum::Potential< double >() << fs.variableFromName("Options")).fillWith({1, 0}),
-         TS_GUM_SMALL_ERROR)
+          ie.optimalDecision("Options"),
+          (gum::Potential< double >() << fs.variableFromName("Options")).fillWith({1, 0}),
+          TS_GUM_SMALL_ERROR)
     }
 
     GUM_ACTIVE_TEST(UtilityForDeterministicDecision) {
       auto defer = gum::InfluenceDiagram< double >::fastPrototype(
-         "*D{D1|D2}->$L<-A{A1|A2}<-H->E{E1|E2|E3}->A;E->L");
+          "*D{D1|D2}->$L<-A{A1|A2}<-H->E{E1|E2|E3}->A;E->L");
       defer.cpt("H").fillWith(1).normalize();   // uniform for H
       defer.cpt("E").fillWith({0.9, 0.09, 0.01, 0.2, 0.09, 0.71});
       defer.cpt("A").fillWith({1, 0, 0, 1, 0.5, 0.5, 0.5, 0.5, 0, 1, 1, 0});
@@ -716,16 +717,16 @@ namespace gum_tests {
       ie.makeInference();
 
       TS_GUM_POTENTIAL_DELTA(
-         ie.posteriorUtility("D"),
-         (gum::Potential< double >() << defer.variableFromName("D")).fillWith({-0.1014, -0.400}),
-         1e-4)
+          ie.posteriorUtility("D"),
+          (gum::Potential< double >() << defer.variableFromName("D")).fillWith({-0.1014, -0.400}),
+          1e-4)
 
       ie.addEvidence("E", "E1");
       ie.makeInference();
       TS_GUM_POTENTIAL_DELTA(
-         ie.posteriorUtility("D"),
-         (gum::Potential< double >() << defer.variableFromName("D")).fillWith({-0.1818, -0.0818}),
-         1e-4)
+          ie.posteriorUtility("D"),
+          (gum::Potential< double >() << defer.variableFromName("D")).fillWith({-0.1818, -0.0818}),
+          1e-4)
 
       gum::InfluenceDiagram< double > defer2(defer);
       defer2.addArc("E", "D");
@@ -734,14 +735,14 @@ namespace gum_tests {
       ie2.makeInference();
 
       TS_GUM_POTENTIAL_DELTA(
-         ie2.posteriorUtility("D"),
-         (gum::Potential< double >() << defer2.variableFromName("D")).fillWith({-0.1818, -0.0818}),
-         1e-4)
+          ie2.posteriorUtility("D"),
+          (gum::Potential< double >() << defer2.variableFromName("D")).fillWith({-0.1818, -0.0818}),
+          1e-4)
     }
 
     GUM_ACTIVE_TEST(OtherNonRegression) {
       auto infdiag
-         = gum::InfluenceDiagram< double >::fastPrototype("C1->*D1->C2->$U<-C3<-*D2<-C1->U");
+          = gum::InfluenceDiagram< double >::fastPrototype("C1->*D1->C2->$U<-C3<-*D2<-C1->U");
       infdiag.cpt("C1").fillWith({0.6, 0.4});
       infdiag.cpt("C2").fillWith({0.85, 0.15, 0.7, 0.3});
       infdiag.cpt("C3").fillWith({0.45, 0.55, 0.80718672, 0.19281328});
@@ -782,13 +783,13 @@ namespace gum_tests {
       ie.makeInference();
 
       TS_GUM_POTENTIAL_DELTA(
-         iediag.posterior("L2"),
-         (gum::Potential< double >() << diag.variableFromName("L2")).fillWith(ie.posterior("L2")),
-         TS_GUM_SMALL_ERROR);
+          iediag.posterior("L2"),
+          (gum::Potential< double >() << diag.variableFromName("L2")).fillWith(ie.posterior("L2")),
+          TS_GUM_SMALL_ERROR);
       TS_GUM_POTENTIAL_DELTA(
-         iediag.posterior("L3"),
-         (gum::Potential< double >() << diag.variableFromName("L3")).fillWith(ie.posterior("L3")),
-         TS_GUM_SMALL_ERROR);
+          iediag.posterior("L3"),
+          (gum::Potential< double >() << diag.variableFromName("L3")).fillWith(ie.posterior("L3")),
+          TS_GUM_SMALL_ERROR);
     }
 
     GUM_ACTIVE_TEST(NonRegressionFromMikailo2) {
@@ -817,22 +818,22 @@ namespace gum_tests {
 
       for (const auto nod: bn.nodes()) {
         const std::string& name = bn.variable(nod).name();
-        TS_GUM_POTENTIAL_DELTA(
-           iediag.posterior(name),
-           (gum::Potential< double >() << diag.variableFromName(name)).fillWith(ie.posterior(name)),
-           TS_GUM_SMALL_ERROR);
+        TS_GUM_POTENTIAL_DELTA(iediag.posterior(name),
+                               (gum::Potential< double >() << diag.variableFromName(name))
+                                   .fillWith(ie.posterior(name)),
+                               TS_GUM_SMALL_ERROR);
       }
     }
 
     GUM_ACTIVE_TEST(NonRegression_BDatko) {
       // from Learning Bayesian Networks by Richard E. Neapolitan page 264, Chapter 5.
       auto diag = gum::InfluenceDiagram< double >::fastPrototype(
-         "Test{positive|negative}->*D{Buy Spiffycar|Do not buy}->$U<-Tran{bad|good};"
-         "Tran->Test;$U<-*R{Run test|Buy Spiffycar|Do not buy}->*D");
+          "Test{positive|negative}->*D{Buy Spiffycar|Do not buy}->$U<-Tran{bad|good};"
+          "Tran->Test;$U<-*R{Run test|Buy Spiffycar|Do not buy}->*D");
       diag.cpt("Tran").fillWith({0.2, 0.8});
       diag.cpt("Test").fillWith({0.9, 0.1, 0.3, 0.7});
       diag.utility("U").fillWith(
-         {7800, 9800, 10800, 9800, 8000, 8000, 11000, 11000, 10000, 10000, 10000, 10000});
+          {7800, 9800, 10800, 9800, 8000, 8000, 11000, 11000, 10000, 10000, 10000, 10000});
 
 
       auto iediag = gum::ShaferShenoyLIMIDInference< double >(&diag);

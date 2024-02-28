@@ -65,7 +65,7 @@ namespace std {
     static typename std::enable_if< (N < sizeof...(T)) >::type print(std::ostream&             os,
                                                                      const std::tuple< T... >& t) {
       char quote
-         = (std::is_convertible< decltype(std::get< N >(t)), std::string >::value) ? '"' : 0;
+          = (std::is_convertible< decltype(std::get< N >(t)), std::string >::value) ? '"' : 0;
       os << ", " << quote << std::get< N >(t) << quote;
       _auxiliary_print_tuple_< N + 1 >::print(os, t);
     }

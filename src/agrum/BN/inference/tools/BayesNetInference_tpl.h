@@ -64,7 +64,7 @@ namespace gum {
   // assigns a BN to a newly constructed inference engine
   template < typename GUM_SCALAR >
   void BayesNetInference< GUM_SCALAR >::_setBayesNetDuringConstruction_(
-     const IBayesNet< GUM_SCALAR >* bn) {
+      const IBayesNet< GUM_SCALAR >* bn) {
     this->setModelDuringConstruction_(bn);
   }
 

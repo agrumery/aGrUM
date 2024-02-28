@@ -186,10 +186,10 @@ namespace gum_tests {
         TS_ASSERT_EQUALS(row7.weight(), 4)
 
         gum::learning::DBRow< gum::learning::DBCell > row8(
-           std::vector< gum::learning::DBCell >{gum::learning::DBCell(1),
-                                                gum::learning::DBCell(2),
-                                                gum::learning::DBCell(3)},
-           4);
+            std::vector< gum::learning::DBCell >{gum::learning::DBCell(1),
+                                                 gum::learning::DBCell(2),
+                                                 gum::learning::DBCell(3)},
+            4);
         TS_ASSERT_EQUALS(row8.size(), (gum::Size)3)
         TS_ASSERT_EQUALS(row8[1], gum::learning::DBCell(2))
         TS_ASSERT_EQUALS(row8.weight(), 4)
@@ -246,8 +246,8 @@ namespace gum_tests {
       gum::learning::DBRow< gum::learning::DBCell > row9(row8);
 
       gum::learning::DBRow< gum::learning::DBCell > row10(
-         {gum::learning::DBCell(1), gum::learning::DBCell(2), gum::learning::DBCell(3)},
-         1.0);
+          {gum::learning::DBCell(1), gum::learning::DBCell(2), gum::learning::DBCell(3)},
+          1.0);
 
       std::vector< gum::learning::DBCell >          vect{gum::learning::DBCell(1),
                                                 gum::learning::DBCell(2),
@@ -255,7 +255,7 @@ namespace gum_tests {
       gum::learning::DBRow< gum::learning::DBCell > row11(vect, 1.0);
 
       std::vector< gum::learning::DBCell > vect2(
-         {gum::learning::DBCell(1), gum::learning::DBCell(2), gum::learning::DBCell(3)});
+          {gum::learning::DBCell(1), gum::learning::DBCell(2), gum::learning::DBCell(3)});
       gum::learning::DBRow< gum::learning::DBCell > row12(std::move(vect2), 1.0);
     }
   };

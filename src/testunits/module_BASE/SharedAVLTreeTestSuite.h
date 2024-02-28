@@ -225,7 +225,7 @@ namespace gum_tests {
 
       std::sort(vectp.begin(), vectp.end(), Mycmp());
       gum::SharedAVLTreeIterator< std::pair< int, int >, Mycmp > tree1_beg(tree1, true),
-         tree1_end = tree1.end();
+          tree1_end = tree1.end();
       for (int i = 0; tree1_beg != tree1_end; ++tree1_beg, ++i)
         TS_GUM_ASSERT_EQUALS((*tree1_beg).value, vectp[i]);
 

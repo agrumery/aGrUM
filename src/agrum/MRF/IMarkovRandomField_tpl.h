@@ -51,14 +51,14 @@ namespace gum {
 
   template < typename GUM_SCALAR >
   IMarkovRandomField< GUM_SCALAR >::IMarkovRandomField(
-     const IMarkovRandomField< GUM_SCALAR >& source) :
+      const IMarkovRandomField< GUM_SCALAR >& source) :
       UGmodel(source) {
     GUM_CONS_CPY(IMarkovRandomField);
   }
 
   template < typename GUM_SCALAR >
   IMarkovRandomField< GUM_SCALAR >&
-     IMarkovRandomField< GUM_SCALAR >::operator=(const IMarkovRandomField< GUM_SCALAR >& source) {
+      IMarkovRandomField< GUM_SCALAR >::operator=(const IMarkovRandomField< GUM_SCALAR >& source) {
     if (this != &source) { UGmodel::operator=(source); }
 
     return *this;
@@ -304,7 +304,7 @@ namespace gum {
 
   template < typename GUM_SCALAR >
   INLINE const NodeSet&
-     IMarkovRandomField< GUM_SCALAR >::smallestFactorFromNode(const std::string& name) const {
+      IMarkovRandomField< GUM_SCALAR >::smallestFactorFromNode(const std::string& name) const {
     try {
       return smallestFactorFromNode(idFromName(name));
     } catch (NotFound const&) {

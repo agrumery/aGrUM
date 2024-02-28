@@ -46,7 +46,7 @@ namespace gum {
 
   template < typename GUM_SCALAR >
   MultiDimWithOffset< GUM_SCALAR >::MultiDimWithOffset(
-     const MultiDimWithOffset< GUM_SCALAR >& from) :
+      const MultiDimWithOffset< GUM_SCALAR >& from) :
       MultiDimImplementation< GUM_SCALAR >(from),
       gaps_(from.gaps_) {
     // for debugging purposes
@@ -103,10 +103,10 @@ namespace gum {
 
   template < typename GUM_SCALAR >
   INLINE void
-     MultiDimWithOffset< GUM_SCALAR >::changeNotification(const Instantiation&          i,
-                                                          const DiscreteVariable* const var,
-                                                          Idx                           oldval,
-                                                          Idx                           newval) {
+      MultiDimWithOffset< GUM_SCALAR >::changeNotification(const Instantiation&          i,
+                                                           const DiscreteVariable* const var,
+                                                           Idx                           oldval,
+                                                           Idx                           newval) {
     GUM_ASSERT(offsets_.exists(&i));
     GUM_ASSERT(offsets_[&i] < this->domainSize());
     GUM_ASSERT(newval < var->domainSize());

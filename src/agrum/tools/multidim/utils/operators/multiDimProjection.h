@@ -150,9 +150,9 @@ namespace gum {
      * resulting table
      */
     std::pair< ScheduleOperator*, const IScheduleMultiDim* >
-       operations(const IScheduleMultiDim* table,
-                  const gum::VariableSet&  del_vars,
-                  const bool               is_result_persistent = false) const;
+        operations(const IScheduleMultiDim* table,
+                   const gum::VariableSet&  del_vars,
+                   const bool               is_result_persistent = false) const;
 
     /// add to a given schedule the set of operations needed to perform the projection
     /**

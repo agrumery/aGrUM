@@ -44,11 +44,11 @@ namespace gum {
              template < typename >
              class TerminalNodePolicy >
   INLINE Regress< GUM_SCALAR, COMBINEOPERATOR, PROJECTOPERATOR, TerminalNodePolicy >::Regress(
-     const MultiDimFunctionGraph< GUM_SCALAR, TerminalNodePolicy >* DG1,
-     const MultiDimFunctionGraph< GUM_SCALAR, TerminalNodePolicy >* DG2,
-     const gum::VariableSet*                                        primedVars,
-     const DiscreteVariable*                                        targetVar,
-     const GUM_SCALAR                                               neutral) :
+      const MultiDimFunctionGraph< GUM_SCALAR, TerminalNodePolicy >* DG1,
+      const MultiDimFunctionGraph< GUM_SCALAR, TerminalNodePolicy >* DG2,
+      const gum::VariableSet*                                        primedVars,
+      const DiscreteVariable*                                        targetVar,
+      const GUM_SCALAR                                               neutral) :
       _DG1_(DG1),
       _DG2_(DG2), _neutral_(neutral), _combine_(), _project_(),
       _DG1InstantiationNeeded_(DG1->realSize(), true, false),
@@ -131,7 +131,7 @@ namespace gum {
              template < typename >
              class TerminalNodePolicy >
   INLINE void Regress< GUM_SCALAR, COMBINEOPERATOR, PROJECTOPERATOR, TerminalNodePolicy >::
-     _establishVarOrder_() {
+      _establishVarOrder_() {
     SequenceIteratorSafe< const DiscreteVariable* > fite = _DG1_->variablesSequence().beginSafe();
     SequenceIteratorSafe< const DiscreteVariable* > site = _DG2_->variablesSequence().beginSafe();
 
@@ -214,8 +214,8 @@ namespace gum {
              template < typename >
              class TerminalNodePolicy >
   INLINE void Regress< GUM_SCALAR, COMBINEOPERATOR, PROJECTOPERATOR, TerminalNodePolicy >::
-     _findRetrogradeVariables_(const MultiDimFunctionGraph< GUM_SCALAR, TerminalNodePolicy >* dg,
-                               HashTable< NodeId, short int* >& dgInstNeed) {
+      _findRetrogradeVariables_(const MultiDimFunctionGraph< GUM_SCALAR, TerminalNodePolicy >* dg,
+                                HashTable< NodeId, short int* >& dgInstNeed) {
     HashTable< NodeId, short int* > nodesVarDescendant;
     Size                            tableSize = Size(_nbVar_ * sizeof(short int));
 
@@ -240,7 +240,7 @@ namespace gum {
         for (Idx modality = 0; modality < dg->node(nodeIter->element())->nbSons(); ++modality) {
           if (!dg->isTerminalNode(dg->node(nodeIter->element())->son(modality))) {
             short int* sonVarDescendant
-               = nodesVarDescendant[dg->node(nodeIter->element())->son(modality)];
+                = nodesVarDescendant[dg->node(nodeIter->element())->son(modality)];
             for (Idx varIdx = 0; varIdx < _nbVar_; varIdx++) {
               varDescendant[varIdx] += sonVarDescendant[varIdx];
               if (varDescendant[varIdx] && varIdx < varPos)
@@ -306,9 +306,9 @@ namespace gum {
              template < typename >
              class TerminalNodePolicy >
   INLINE NodeId
-     Regress< GUM_SCALAR, COMBINEOPERATOR, PROJECTOPERATOR, TerminalNodePolicy >::_compute_(
-        O4DGContext& currentSituation,
-        Idx          lastInstVarPos) {
+      Regress< GUM_SCALAR, COMBINEOPERATOR, PROJECTOPERATOR, TerminalNodePolicy >::_compute_(
+          O4DGContext& currentSituation,
+          Idx          lastInstVarPos) {
     NodeId newNode = 0;
 
     // If both current nodes are terminal,
@@ -331,19 +331,19 @@ namespace gum {
     // First we ensure that we hadn't already visit this pair of node under hte
     // same circumstances
     short int* dg1NeededVar = _DG1InstantiationNeeded_.exists(currentSituation.DG1Node())
-                               ? _DG1InstantiationNeeded_[currentSituation.DG1Node()]
-                               : _default_;
+                                ? _DG1InstantiationNeeded_[currentSituation.DG1Node()]
+                                : _default_;
     Idx        dg1CurrentVarPos
-       = _DG1_->isTerminalNode(currentSituation.DG1Node())
-          ? _nbVar_
-          : _rd_->variablesSequence().pos(_DG1_->node(currentSituation.DG1Node())->nodeVar());
+        = _DG1_->isTerminalNode(currentSituation.DG1Node())
+            ? _nbVar_
+            : _rd_->variablesSequence().pos(_DG1_->node(currentSituation.DG1Node())->nodeVar());
     short int* dg2NeededVar = _DG2InstantiationNeeded_.exists(currentSituation.DG2Node())
-                               ? _DG2InstantiationNeeded_[currentSituation.DG2Node()]
-                               : _default_;
+                                ? _DG2InstantiationNeeded_[currentSituation.DG2Node()]
+                                : _default_;
     Idx        dg2CurrentVarPos
-       = _DG2_->isTerminalNode(currentSituation.DG2Node())
-          ? _nbVar_
-          : _rd_->variablesSequence().pos(_DG2_->node(currentSituation.DG2Node())->nodeVar());
+        = _DG2_->isTerminalNode(currentSituation.DG2Node())
+            ? _nbVar_
+            : _rd_->variablesSequence().pos(_DG2_->node(currentSituation.DG2Node())->nodeVar());
 
     short int* instNeeded = static_cast< short int* >(ALLOCATE(sizeof(short int) * _nbVar_));
 
@@ -376,7 +376,7 @@ namespace gum {
         // If var associated to current node has already been instanciated, we
         // have to jump it
         currentSituation.setDG1Node(_DG1_->node(currentSituation.DG1Node())
-                                       ->son(currentSituation.varModality(dg1CurrentVarPos) - 1));
+                                        ->son(currentSituation.varModality(dg1CurrentVarPos) - 1));
 
         newNode = _compute_(currentSituation, lastInstVarPos);
         _explorationTable_.insert(curSitKey, newNode);
@@ -399,7 +399,7 @@ namespace gum {
         // If var associated to current node has already been instanciated, we
         // have to jump it
         currentSituation.setDG2Node(_DG2_->node(currentSituation.DG2Node())
-                                       ->son(currentSituation.varModality(dg2CurrentVarPos) - 1));
+                                        ->son(currentSituation.varModality(dg2CurrentVarPos) - 1));
 
         newNode = _compute_(currentSituation, lastInstVarPos);
         _explorationTable_.insert(curSitKey, newNode);

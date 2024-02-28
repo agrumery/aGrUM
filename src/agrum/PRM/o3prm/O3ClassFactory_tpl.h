@@ -277,8 +277,8 @@ namespace gum {
 
       template < typename GUM_SCALAR >
       INLINE bool O3ClassFactory< GUM_SCALAR >::_checkImplementation_(
-         O3Label&                                      o3_type,
-         const PRMClassElementContainer< GUM_SCALAR >& type) {
+          O3Label&                                      o3_type,
+          const PRMClassElementContainer< GUM_SCALAR >& type) {
         if (!_solver_->resolveSlotType(o3_type)) { return false; }
 
         if (_prm_->isInterface(o3_type.label())) {
@@ -489,12 +489,12 @@ namespace gum {
 
             for (auto& a: c->attributes()) {
               to_complete.erase(
-                 _prm_->getClass(c->name().label()).get(a->name().label()).safeName());
+                  _prm_->getClass(c->name().label()).get(a->name().label()).safeName());
             }
 
             for (auto& a: c->aggregates()) {
               to_complete.erase(
-                 _prm_->getClass(c->name().label()).get(a.name().label()).safeName());
+                  _prm_->getClass(c->name().label()).get(a.name().label()).safeName());
             }
 
             for (auto a: to_complete) {
@@ -522,8 +522,8 @@ namespace gum {
 
       template < typename GUM_SCALAR >
       INLINE void
-         O3ClassFactory< GUM_SCALAR >::_completeAggregates_(PRMFactory< GUM_SCALAR >& factory,
-                                                            O3Class&                  c) {
+          O3ClassFactory< GUM_SCALAR >::_completeAggregates_(PRMFactory< GUM_SCALAR >& factory,
+                                                             O3Class&                  c) {
         // Attributes
         for (auto& agg: c.aggregates()) {
           if (_checkAggregateForCompletion_(c, agg)) {
@@ -553,8 +553,8 @@ namespace gum {
 
       template < typename GUM_SCALAR >
       INLINE void
-         O3ClassFactory< GUM_SCALAR >::_completeAttribute_(PRMFactory< GUM_SCALAR >& factory,
-                                                           O3Class&                  c) {
+          O3ClassFactory< GUM_SCALAR >::_completeAttribute_(PRMFactory< GUM_SCALAR >& factory,
+                                                            O3Class&                  c) {
         // Attributes
         for (auto& attr: c.attributes()) {
           if (_checkAttributeForCompletion_(c, *attr)) {
@@ -648,8 +648,8 @@ namespace gum {
 
       template < typename GUM_SCALAR >
       INLINE bool O3ClassFactory< GUM_SCALAR >::_checkRemoteParent_(
-         const PRMClassElementContainer< GUM_SCALAR >& c,
-         const O3Label&                                prnt) {
+          const PRMClassElementContainer< GUM_SCALAR >& c,
+          const O3Label&                                prnt) {
         if (_resolveSlotChain_(c, prnt) == nullptr) { return false; }
         return true;
       }
@@ -678,7 +678,7 @@ namespace gum {
             // c.get(prnt.label()).type()->labels();
             if (label.label() != "*"
                 && std::find(real_labels.begin(), real_labels.end(), label.label())
-                      == real_labels.end()) {
+                       == real_labels.end()) {
               O3PRM_CLASS_ILLEGAL_RULE_LABEL(rule, label, prnt, *_errors_);
               errors = true;
             }
@@ -691,8 +691,8 @@ namespace gum {
 
       template < typename GUM_SCALAR >
       INLINE void O3ClassFactory< GUM_SCALAR >::_addParamsToForms_(
-         const HashTable< std::string, const PRMParameter< GUM_SCALAR >* >& scope,
-         O3RuleCPT::O3Rule&                                                 rule) {
+          const HashTable< std::string, const PRMParameter< GUM_SCALAR >* >& scope,
+          O3RuleCPT::O3Rule&                                                 rule) {
         // Add parameters to formulas
         for (auto& f: rule.second) {
           f.formula().variables().clear();
@@ -704,9 +704,9 @@ namespace gum {
 
       template < typename GUM_SCALAR >
       INLINE bool
-         O3ClassFactory< GUM_SCALAR >::_checkRuleCPTSumsTo1_(const PRMClass< GUM_SCALAR >& c,
-                                                             const O3RuleCPT&              attr,
-                                                             const O3RuleCPT::O3Rule&      rule) {
+          O3ClassFactory< GUM_SCALAR >::_checkRuleCPTSumsTo1_(const PRMClass< GUM_SCALAR >& c,
+                                                              const O3RuleCPT&              attr,
+                                                              const O3RuleCPT::O3Rule&      rule) {
         bool errors = false;
         // Check that formulas are valid and sums to 1
         GUM_SCALAR sum = 0.0;
@@ -823,8 +823,8 @@ namespace gum {
 
       template < typename GUM_SCALAR >
       INLINE const PRMClassElement< GUM_SCALAR >* O3ClassFactory< GUM_SCALAR >::_resolveSlotChain_(
-         const PRMClassElementContainer< GUM_SCALAR >& c,
-         const O3Label&                                chain) {
+          const PRMClassElementContainer< GUM_SCALAR >& c,
+          const O3Label&                                chain) {
         auto                       s       = chain.label();
         auto                       current = &c;
         std::vector< std::string > v;
@@ -861,9 +861,9 @@ namespace gum {
 
       template < typename GUM_SCALAR >
       INLINE bool O3ClassFactory< GUM_SCALAR >::_checkSlotChainLink_(
-         const PRMClassElementContainer< GUM_SCALAR >& c,
-         const O3Label&                                chain,
-         const std::string&                            s) {
+          const PRMClassElementContainer< GUM_SCALAR >& c,
+          const O3Label&                                chain,
+          const std::string&                            s) {
         if (!c.exists(s)) {
           O3PRM_CLASS_LINK_NOT_FOUND(chain, s, *_errors_);
           return false;

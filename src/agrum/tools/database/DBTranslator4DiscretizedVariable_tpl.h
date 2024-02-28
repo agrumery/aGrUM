@@ -42,9 +42,9 @@ namespace gum {
     /// default constructor with a discretized variable as translator
     template < typename GUM_SCALAR >
     DBTranslator4DiscretizedVariable::DBTranslator4DiscretizedVariable(
-       const DiscretizedVariable< GUM_SCALAR >& var,
-       const std::vector< std::string >&        missing_symbols,
-       std::size_t                              max_dico_entries) :
+        const DiscretizedVariable< GUM_SCALAR >& var,
+        const std::vector< std::string >&        missing_symbols,
+        std::size_t                              max_dico_entries) :
         DBTranslator(DBTranslatedValueType::DISCRETE,
                      false,
                      missing_symbols,
@@ -101,8 +101,8 @@ namespace gum {
     /// default constructor with a discretized variable as translator
     template < typename GUM_SCALAR >
     DBTranslator4DiscretizedVariable::DBTranslator4DiscretizedVariable(
-       const DiscretizedVariable< GUM_SCALAR >& var,
-       std::size_t                              max_dico_entries) :
+        const DiscretizedVariable< GUM_SCALAR >& var,
+        std::size_t                              max_dico_entries) :
         DBTranslator(DBTranslatedValueType::DISCRETE, false, false, max_dico_entries),
         _variable_(var.name(), var.description()) {
       // check that the variable has not too many entries

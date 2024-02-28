@@ -50,10 +50,10 @@ namespace gum_tests {
       }
 
       std::sort(
-         sorted_nodes.begin(),
-         sorted_nodes.end(),
-         [](const std::pair< gum::NodeId, double >& a,
-            const std::pair< gum::NodeId, double >& b) -> bool { return a.second > b.second; });
+          sorted_nodes.begin(),
+          sorted_nodes.end(),
+          [](const std::pair< gum::NodeId, double >& a,
+             const std::pair< gum::NodeId, double >& b) -> bool { return a.second > b.second; });
     }
 
     void _compute_scores_(gum::learning::ScoreK2&               score,
@@ -155,13 +155,13 @@ namespace gum_tests {
       gum::learning::ScoreK2        score(parser, prior);
 
       gum::learning::StructuralConstraintSetStatic< gum::learning::StructuralConstraintDiGraph >
-         struct_constraint;
+          struct_constraint;
 
       gum::learning::GraphChangesGenerator4DiGraph< decltype(struct_constraint) > op_set(
-         struct_constraint);
+          struct_constraint);
 
       gum::learning::GraphChangesSelector4DiGraph< decltype(struct_constraint), decltype(op_set) >
-         selector(score, struct_constraint, op_set);
+          selector(score, struct_constraint, op_set);
 
       gum::DAG graph;
       selector.setGraph(graph);

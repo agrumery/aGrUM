@@ -32,8 +32,9 @@ namespace gum {
     namespace DBTranslators {
 
       /// named constructor using dynamic allocation
-      INLINE DBTranslator*
-         create(const Variable& var, const bool editable_dictionary, std::size_t max_dico_entries) {
+      INLINE DBTranslator* create(const Variable& var,
+                                  const bool      editable_dictionary,
+                                  std::size_t     max_dico_entries) {
         return create(var, std::vector< std::string >(), editable_dictionary, max_dico_entries);
       }
 

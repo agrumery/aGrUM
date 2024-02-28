@@ -36,7 +36,7 @@ namespace gum {
 
   /// default constructor (uses an empty graph)
   DefaultPartialOrderedEliminationSequenceStrategy::
-     DefaultPartialOrderedEliminationSequenceStrategy(double theRatio, double theThreshold) :
+      DefaultPartialOrderedEliminationSequenceStrategy(double theRatio, double theThreshold) :
       _simplicial_ratio_(theRatio),
       _simplicial_threshold_(theThreshold) {
     // for debugging purposes
@@ -45,11 +45,11 @@ namespace gum {
 
   /// constructor for a (potentially) non empty graph
   DefaultPartialOrderedEliminationSequenceStrategy::
-     DefaultPartialOrderedEliminationSequenceStrategy(UndiGraph*                  graph,
-                                                      const NodeProperty< Size >* dom_sizes,
-                                                      const List< NodeSet >*      subsets,
-                                                      double                      ratio,
-                                                      double                      threshold) :
+      DefaultPartialOrderedEliminationSequenceStrategy(UndiGraph*                  graph,
+                                                       const NodeProperty< Size >* dom_sizes,
+                                                       const List< NodeSet >*      subsets,
+                                                       double                      ratio,
+                                                       double                      threshold) :
       _simplicial_ratio_(ratio),
       _simplicial_threshold_(threshold) {
     setGraph(graph, dom_sizes);
@@ -61,8 +61,8 @@ namespace gum {
 
   /// copy constructor
   DefaultPartialOrderedEliminationSequenceStrategy::
-     DefaultPartialOrderedEliminationSequenceStrategy(
-        const DefaultPartialOrderedEliminationSequenceStrategy& from) :
+      DefaultPartialOrderedEliminationSequenceStrategy(
+          const DefaultPartialOrderedEliminationSequenceStrategy& from) :
       PartialOrderedEliminationSequenceStrategy(from),
       // no need to set  _log_weights_ because the copy of the simplicial set
       // will set it properly
@@ -80,8 +80,8 @@ namespace gum {
 
   /// move constructor
   DefaultPartialOrderedEliminationSequenceStrategy::
-     DefaultPartialOrderedEliminationSequenceStrategy(
-        DefaultPartialOrderedEliminationSequenceStrategy&& from) :
+      DefaultPartialOrderedEliminationSequenceStrategy(
+          DefaultPartialOrderedEliminationSequenceStrategy&& from) :
       PartialOrderedEliminationSequenceStrategy(std::move(from)),
       _log_weights_(std::move(from._log_weights_)), _simplicial_set_(from._simplicial_set_),
       _simplicial_ratio_(from._simplicial_ratio_),
@@ -96,7 +96,7 @@ namespace gum {
 
   /// destructor
   DefaultPartialOrderedEliminationSequenceStrategy::
-     ~DefaultPartialOrderedEliminationSequenceStrategy() {
+      ~DefaultPartialOrderedEliminationSequenceStrategy() {
     // for debugging purposes
     GUM_DESTRUCTOR(DefaultPartialOrderedEliminationSequenceStrategy);
 
@@ -125,8 +125,8 @@ namespace gum {
 
   /// sets a new graph to be triangulated
   bool DefaultPartialOrderedEliminationSequenceStrategy::setGraph(
-     UndiGraph*                  graph,
-     const NodeProperty< Size >* domain_sizes) {
+      UndiGraph*                  graph,
+      const NodeProperty< Size >* domain_sizes) {
     if (PartialOrderedEliminationSequenceStrategy::setGraph(graph, domain_sizes)) {
       _createSimplicialSet_();
       return true;
@@ -148,7 +148,7 @@ namespace gum {
 
   /// returns the best possible node to be eliminated
   NodeId DefaultPartialOrderedEliminationSequenceStrategy::_nodeToEliminate_(
-     const PriorityQueue< NodeId, double >& possibleNodes) {
+      const PriorityQueue< NodeId, double >& possibleNodes) {
     bool   found     = false;
     double min_score = 0;
     NodeId best_node = 0;
@@ -270,14 +270,14 @@ namespace gum {
   /** @brief creates a new elimination sequence of the same type as the current
    * object, but this sequence contains only an empty graph */
   DefaultPartialOrderedEliminationSequenceStrategy*
-     DefaultPartialOrderedEliminationSequenceStrategy::newFactory() const {
+      DefaultPartialOrderedEliminationSequenceStrategy::newFactory() const {
     return new DefaultPartialOrderedEliminationSequenceStrategy(_simplicial_ratio_,
                                                                 _simplicial_threshold_);
   }
 
   /// virtual copy constructor
   DefaultPartialOrderedEliminationSequenceStrategy*
-     DefaultPartialOrderedEliminationSequenceStrategy::copyFactory() const {
+      DefaultPartialOrderedEliminationSequenceStrategy::copyFactory() const {
     return new DefaultPartialOrderedEliminationSequenceStrategy(*this);
   }
 

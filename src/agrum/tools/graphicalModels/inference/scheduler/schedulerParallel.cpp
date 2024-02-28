@@ -116,11 +116,11 @@ namespace gum {
     // the number of threads asked by the user or, if the used did not ask for a
     // particular number, the aGrUM's current max number of threads
     const auto desired_nb_threads = this->isGumNumberOfThreadsOverriden()
-                                     ? this->getNumberOfThreads()
-                                     : gum::getNumberOfThreads();
+                                      ? this->getNumberOfThreads()
+                                      : gum::getNumberOfThreads();
     const Size nb_threads         = nb_remaining_operations.load() < desired_nb_threads
-                                     ? nb_remaining_operations.load()
-                                     : desired_nb_threads;
+                                      ? nb_remaining_operations.load()
+                                      : desired_nb_threads;
 
     // indicate which threads are active
     std::vector< std::atomic< bool > > active_threads(nb_remaining_operations.load());

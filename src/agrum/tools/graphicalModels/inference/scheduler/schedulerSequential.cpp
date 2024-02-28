@@ -121,13 +121,13 @@ namespace gum {
 
   /// add the currently executable operations into the set of available operations
   Size SchedulerSequential::_addExecutableOps_(
-     std::vector< UnexecutedOperation >& unexecuted_deletions,
-     std::vector< UnexecutedOperation >& unexecuted_operations,
-     bool&                               unexecuted_deletions_sorted,
-     bool&                               unexecuted_operations_sorted,
-     double                              memory_used,
-     double                              max_memory,
-     List< NodeId >&                     available_nodes) const {
+      std::vector< UnexecutedOperation >& unexecuted_deletions,
+      std::vector< UnexecutedOperation >& unexecuted_operations,
+      bool&                               unexecuted_deletions_sorted,
+      bool&                               unexecuted_operations_sorted,
+      double                              memory_used,
+      double                              max_memory,
+      List< NodeId >&                     available_nodes) const {
     double added_mem = 0.0;
 
     // sort the vectors by increasing memory usage
@@ -199,11 +199,11 @@ namespace gum {
 
   /// execute one operation
   void SchedulerSequential::_simulateExecuteOneOperation_(
-     const NodeId           node,
-     ScheduleOperator&      op,
-     DAG&                   dag,
-     List< NodeId >&        available_nodes,
-     std::vector< NodeId >& new_available_nodes) {
+      const NodeId           node,
+      ScheduleOperator&      op,
+      DAG&                   dag,
+      List< NodeId >&        available_nodes,
+      std::vector< NodeId >& new_available_nodes) {
     // save the fact that operation node/op is to be executed
     _operations_.push_back(node);
 
@@ -300,13 +300,13 @@ namespace gum {
       // some operations that were previously unexecutable
       if (!unexecuted_operations.empty() || !unexecuted_deletions.empty()) {
         const Size nb_new_ops = const_cast< SchedulerSequential* >(this)->_addExecutableOps_(
-           unexecuted_deletions,
-           unexecuted_operations,
-           unexecuted_deletions_sorted,
-           unexecuted_operations_sorted,
-           memory_used,
-           max_memory,
-           available_nodes);
+            unexecuted_deletions,
+            unexecuted_operations,
+            unexecuted_deletions_sorted,
+            unexecuted_operations_sorted,
+            memory_used,
+            max_memory,
+            available_nodes);
 
         if (nb_new_ops == 0) {
           // here, there exists no more operation that can be executed given the

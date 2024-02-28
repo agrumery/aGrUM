@@ -704,7 +704,7 @@ namespace gum {
           return prm()->getSystem(m_context->mainImport()->value);
 
         throw "could not find any system or alias in '" + ident
-           + "' and no default alias has been set.";
+            + "' and no default alias has been set.";
       }
 
       ///
