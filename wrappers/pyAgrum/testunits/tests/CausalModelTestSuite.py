@@ -194,6 +194,13 @@ class TestCausalModel(pyAgrumTestCase):
     edex.cpt("Us").fillWith(1).normalize()
     edex.cpt("Ux").fillWith(1).normalize()
     edex.cpt("education")[:] = [0.4, 0.4, 0.2]
+
+    # just check math function inside formula
+    with self.assertRaises(NameError):
+      edex.cpt("experience").fillWithFunction("10-4*education+cos(Ux)")
+    edex.cpt("experience").fillWithFunction("10-4*education+math.cos(Ux)")
+
+    # back to the original function
     edex.cpt("experience").fillWithFunction("10-4*education+Ux")
     edex.cpt("salary").fillWithFunction("round(65+2.5*experience+5*education+Us)")
 
