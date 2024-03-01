@@ -33,20 +33,20 @@ class TestPickler(pyAgrumTestCase):
 
     model.setProperty("test", "test")
     model.setProperty("test2", "test2")
-    self.assertIn("test",model.properties())
-    self.assertEqual(model.property("test"),"test")
-    self.assertIn("test2",model.properties())
-    self.assertEqual(model.property("test2"),"test2")
+    self.assertIn("test", model.properties())
+    self.assertEqual(model.property("test"), "test")
+    self.assertIn("test2", model.properties())
+    self.assertEqual(model.property("test2"), "test2")
 
     filename = self.agrumSrcDir("pickled.pkl")
     gum.saveBN(model, filename)
     model2 = gum.loadBN(filename)
 
     self.assertEqual(model, model2)
-    self.assertIn("test",model.properties())
-    self.assertEqual(model.property("test"),"test")
-    self.assertIn("test2",model.properties())
-    self.assertEqual(model.property("test2"),"test2")
+    self.assertIn("test", model.properties())
+    self.assertEqual(model.property("test"), "test")
+    self.assertIn("test2", model.properties())
+    self.assertEqual(model.property("test2"), "test2")
 
   def testPicklingInfluenceDiagram(self):
     model = gum.fastID("C<-A->*B<-C->D->$U<-B;*E->B")
@@ -55,19 +55,19 @@ class TestPickler(pyAgrumTestCase):
 
     model.setProperty("test", "test")
     model.setProperty("test2", "test2")
-    self.assertIn("test",model.properties())
-    self.assertEqual(model.property("test"),"test")
-    self.assertIn("test2",model.properties())
-    self.assertEqual(model.property("test2"),"test2")
+    self.assertIn("test", model.properties())
+    self.assertEqual(model.property("test"), "test")
+    self.assertIn("test2", model.properties())
+    self.assertEqual(model.property("test2"), "test2")
 
     filename = self.agrumSrcDir("pickled.pkl")
     gum.saveBN(model, filename)
     model2 = gum.loadBN(filename)
     self.assertEqual(model, model2)
-    self.assertIn("test",model.properties())
-    self.assertEqual(model.property("test"),"test")
-    self.assertIn("test2",model.properties())
-    self.assertEqual(model.property("test2"),"test2")
+    self.assertIn("test", model.properties())
+    self.assertEqual(model.property("test"), "test")
+    self.assertIn("test2", model.properties())
+    self.assertEqual(model.property("test2"), "test2")
 
   def testPicklingMarkovRandomField(self):
     model = gum.fastMRF("A--B--C;D--A--F;G--B--C;G--C")
@@ -76,19 +76,19 @@ class TestPickler(pyAgrumTestCase):
 
     model.setProperty("test", "test")
     model.setProperty("test2", "test2")
-    self.assertIn("test",model.properties())
-    self.assertEqual(model.property("test"),"test")
-    self.assertIn("test2",model.properties())
-    self.assertEqual(model.property("test2"),"test2")
+    self.assertIn("test", model.properties())
+    self.assertEqual(model.property("test"), "test")
+    self.assertIn("test2", model.properties())
+    self.assertEqual(model.property("test2"), "test2")
 
     filename = self.agrumSrcDir("pickled.pkl")
     gum.saveBN(model, filename)
     model2 = gum.loadBN(filename)
     self.assertEqual(model, model2)
-    self.assertIn("test",model.properties())
-    self.assertEqual(model.property("test"),"test")
-    self.assertIn("test2",model.properties())
-    self.assertEqual(model.property("test2"),"test2")
+    self.assertIn("test", model.properties())
+    self.assertEqual(model.property("test"), "test")
+    self.assertIn("test2", model.properties())
+    self.assertEqual(model.property("test2"), "test2")
 
   def testProperties(self):
     model = gum.randomBN(n=30, ratio_arc=1.3, domain_size=5)
@@ -97,10 +97,24 @@ class TestPickler(pyAgrumTestCase):
     filename = self.agrumSrcDir("pickled.pkl")
     gum.saveBN(model, filename)
 
-    model2= gum.loadBN(filename)
+    model2 = gum.loadBN(filename)
     self.assertEqual(model.property("version"), f"pyAgrum {gum.__version__}")
-    self.assertIn("creation",model.properties())
-    self.assertIn("lastModification",model.properties())
+    self.assertIn("creation", model.properties())
+    self.assertIn("lastModification", model.properties())
+
+  def testEmpiricalDistribution(self):
+    s = "A+[1.5,2.5,5,10.5]"
+    model = gum.fastBN(s)
+    self.assertTrue(model["A"].isEmpirical())
+    self.assertEqual(model["A"].toFast(), s)
+
+    filename = self.agrumSrcDir("pickled.pkl")
+    gum.saveBN(model, filename)
+
+    model2 = gum.loadBN(filename)
+    self.assertTrue(model2["A"].isEmpirical())
+    self.assertEqual(model2["A"].toFast(), s)
+
 
 ts = unittest.TestSuite()
 addTests(ts, TestPickler)

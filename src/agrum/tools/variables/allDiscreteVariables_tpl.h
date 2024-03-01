@@ -199,7 +199,14 @@ namespace gum {
       if (!std::all_of(ticks.cbegin(), ticks.cend(), gum::isfinite< double >)) {
         GUM_ERROR(DefaultInLabel, "Infinite value is not allowed for variable " << name)
       }
-      return std::make_unique< DiscretizedVariable< GUM_SCALAR > >(name, name, ticks);
+      // if last character of name is a +, we remove the character from the name and set empirical to True
+        if (name.back() == '+') {
+          name.pop_back();
+          trim(name);
+          return std::make_unique< DiscretizedVariable< GUM_SCALAR > >(name, name, ticks, true);
+        } else {
+          return std::make_unique< DiscretizedVariable< GUM_SCALAR > >(name, name, ticks);
+        }
     } else {
       return std::make_unique< RangeVariable >(name, name, range_min, range_max);
     }

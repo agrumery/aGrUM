@@ -117,6 +117,12 @@ namespace gum_tests {
       {
         auto a = FASTVARDBL("A[1,2,3,4,5,6]", 4);
         TS_ASSERT_EQUALS(a->toString(), "A:Discretized(<[1;2[,[2;3[,[3;4[,[4;5[,[5;6]>)");
+        TS_ASSERT(!a->isEmpirical())
+      }
+      {
+        auto a = FASTVARDBL("A+[1,2,3,4,5,6]", 4);
+        TS_ASSERT_EQUALS(a->toString(), "A:Discretized(<(1;2[,[2;3[,[3;4[,[4;5[,[5;6)>)");
+        TS_ASSERT(a->isEmpirical())
       }
 
       TS_ASSERT_THROWS(auto a = FASTVARDBL("A[0.3]", 4), gum::InvalidArgument&);
@@ -127,10 +133,22 @@ namespace gum_tests {
       {
         auto a = FASTVARDBL("A[1:6:5]", 4);
         TS_ASSERT_EQUALS(a->toString(), "A:Discretized(<[1;2[,[2;3[,[3;4[,[4;5[,[5;6]>)");
+        TS_ASSERT(!a->isEmpirical())
       }
       {
         auto a = FASTVARDBL("A[1:6:2]", 4);
         TS_ASSERT_EQUALS(a->toString(), "A:Discretized(<[1;3.5[,[3.5;6]>)");
+        TS_ASSERT(!a->isEmpirical())
+      }
+      {
+        auto a = FASTVARDBL("A+[1:6:5]", 4);
+        TS_ASSERT_EQUALS(a->toString(), "A:Discretized(<(1;2[,[2;3[,[3;4[,[4;5[,[5;6)>)");
+        TS_ASSERT(a->isEmpirical())
+      }
+      {
+        auto a = FASTVARDBL("A+[1:6:2]", 4);
+        TS_ASSERT_EQUALS(a->toString(), "A:Discretized(<(1;3.5[,[3.5;6)>)");
+        TS_ASSERT(a->isEmpirical())
       }
 
       TS_ASSERT_THROWS(auto a = FASTVARDBL("A[1:6:1]", 4), gum::InvalidArgument&);
@@ -185,6 +203,9 @@ namespace gum_tests {
       s = "A[1,2,3,4,5,6]";
       TS_ASSERT_EQUALS(s, (FASTVARDBL(s)->toFast()));            // Discretized
       TS_ASSERT_EQUALS(s, (FASTVARDBL("A[1:6:5]")->toFast()));   // Discretized
+      s = "A+[1,2,3,4,5,6]";
+      TS_ASSERT_EQUALS(s, (FASTVARDBL(s)->toFast()));            // Discretized
+      TS_ASSERT_EQUALS(s, (FASTVARDBL("A+[1:6:5]")->toFast()));   // Discretized
     }
 
     GUM_ACTIVE_TEST(FastNumericalWithoutInfinity) {

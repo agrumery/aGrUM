@@ -308,7 +308,9 @@ namespace gum {
   std::string DiscretizedVariable< T_TICKS >::toFast() const {
     std::stringstream s;
     bool              first = true;
-    s << name() << "[";
+    s << name();
+    if (_is_empirical) s << "+";
+    s << "[";
     for (const auto& t: _ticks_) {
       if (!first) s << ",";
       else first = false;

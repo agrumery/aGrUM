@@ -72,7 +72,7 @@ namespace gum {
      *
      * @return true if the tick is considered as empirical (relaxeds bounds)
      */
-    bool isEmpirical() const;
+    bool isEmpirical() const final;
 
     /**
      *

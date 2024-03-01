@@ -102,6 +102,8 @@ namespace gum {
     /// get a numerical representation of the indice-th value.
     virtual double numerical(Idx indice) const = 0;
 
+    virtual bool isEmpirical() const { return false; };
+
     /// for numerical variables, returns the closest index for the value
     virtual Idx closestIndex(double val) const = 0;
     /// for numerical variables, returns the closest label for the value
