@@ -69,9 +69,9 @@ from pyAgrum.lib.bn_vs_bn import GraphicalBNComparator, graphDiff
 from pyAgrum.lib.proba_histogram import proba2histo, probaMinMaxH
 from pyAgrum.lib.image import prepareShowInference, prepareLinksForSVG
 
-from pyAgrum.lib._colors import setDarkTheme, setLightTheme, getBlackInTheme
+from pyAgrum.lib._utils import setDarkTheme, setLightTheme, getBlackInTheme
 
-import pyAgrum.lib._colors as gumcols
+import pyAgrum.lib._utils as gumcols
 
 
 class FlowLayout(object):

@@ -29,7 +29,7 @@ import math
 from itertools import product, combinations
 
 import pyAgrum as gum
-import pyAgrum.lib._colors as gumcols
+import pyAgrum.lib._utils as gumcols
 
 STRUCTURAL_HAMMING = "structural hamming"
 PURE_HAMMING = "hamming"

@@ -33,7 +33,7 @@ import matplotlib.pyplot as plt
 import pydot as dot
 
 import pyAgrum as gum
-import pyAgrum.lib._colors as gumcols
+import pyAgrum.lib._utils as gumcols
 from pyAgrum.lib.proba_histogram import saveFigProbaMinMax
 
 

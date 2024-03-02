@@ -45,7 +45,7 @@ import matplotlib.colors as mcolors
 
 import pyAgrum as gum
 from pyAgrum.lib.bn2graph import BN2dot
-import pyAgrum.lib._colors as gumcols
+import pyAgrum.lib._utils as gumcols
 
 _cdict = {
   'red': ((0.0, 0.1, 0.3),

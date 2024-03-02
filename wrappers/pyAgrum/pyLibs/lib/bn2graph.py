@@ -35,7 +35,7 @@ import pydot as dot
 import pyAgrum as gum
 
 from pyAgrum.lib import proba_histogram
-import pyAgrum.lib._colors as gumcols
+import pyAgrum.lib._utils as gumcols
 
 
 def BN2dot(bn, size=None, nodeColor=None, arcWidth=None, arcLabel=None, arcColor=None, cmapNode=None, cmapArc=None,
