@@ -33,7 +33,7 @@ import matplotlib.pyplot as plt
 import pydot as dot
 
 import pyAgrum as gum
-import pyAgrum.lib._utils as gumcols
+import pyAgrum.lib._colors as gumcols
 from pyAgrum.lib.proba_histogram import saveFigProbaMinMax
 
 
@@ -262,9 +262,6 @@ def CNinference2dot(cn, size=None, engine=None, evs=None, targets=None, nodeColo
   dotstr += '}'
 
   g = dot.graph_from_dot_data(dotstr)[0]
-
-  # workaround for some badly parsed graph (pyparsing>=3.03)
-  g.del_node('"\\n"')
 
   if size is None:
     size = gum.config["notebook", "default_graph_inference_size"]

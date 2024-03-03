@@ -85,19 +85,6 @@ def showGraph(gr, size=None):
 
 def _from_dotstring(dotstring):
   g = dot.graph_from_dot_data(dotstring)[0]
-
-  # workaround for some badly parsed graph (pyparsing>=3.03)
-  g.del_node('"\\n"')
-
-  g.set_bgcolor("transparent")
-  for e in g.get_edges():
-    if e.get_color() is None:
-      e.set_color(gum.getBlackInTheme())
-  for n in g.get_nodes():
-    if n.get_color() is None:
-      n.set_color(gum.getBlackInTheme())
-    if n.get_fontcolor() is None:
-      n.set_fontcolor(gum.getBlackInTheme())
   return g
 
 

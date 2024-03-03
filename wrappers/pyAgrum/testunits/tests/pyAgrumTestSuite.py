@@ -30,7 +30,8 @@ class pyAgrumTestCase(unittest.TestCase):
     self.log = logging.getLogger('gumTestLog')
     self.nbLoopForApproximatedTest = 10
 
-  def agrumSrcDir(self, s):
+  @staticmethod
+  def agrumSrcDir(s: str) -> str:
     return os.path.dirname(__file__) + "/resources/" + s
 
   def assertListsAlmostEqual(self, seq1, seq2, places=7, delta=None):

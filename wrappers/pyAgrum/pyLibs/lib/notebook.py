@@ -22,9 +22,6 @@ tools for BN in jupyter notebook
 """
 
 import time
-import re
-import sys
-import warnings
 
 # fix DeprecationWarning of base64.encodestring()
 try:
@@ -69,9 +66,8 @@ from pyAgrum.lib.bn_vs_bn import GraphicalBNComparator, graphDiff
 from pyAgrum.lib.proba_histogram import proba2histo, probaMinMaxH
 from pyAgrum.lib.image import prepareShowInference, prepareLinksForSVG
 
-from pyAgrum.lib._utils import setDarkTheme, setLightTheme, getBlackInTheme
-
-import pyAgrum.lib._utils as gumcols
+import pyAgrum.lib.utils as gutils
+import pyAgrum.lib._colors as gumcols
 
 
 class FlowLayout(object):
@@ -244,7 +240,7 @@ def configuration():
   IPython.display.display(IPython.display.HTML(res))
 
 
-def _reprGraph(gr, size, asString, format=None):
+def _reprGraph(gr, size, asString, graph_format=None):
   """
   repr a pydot graph in a notebook
 
@@ -256,7 +252,7 @@ def _reprGraph(gr, size, asString, format=None):
     the size argument for the representation
   asString : bool
     display the graph or return a string containing the corresponding HTML fragment
-  format! str
+  graph_format: str
     "svg" or "png" ?
 
   Returns
@@ -264,18 +260,12 @@ def _reprGraph(gr, size, asString, format=None):
   str | None
     return the HTML representation as a str or display the graph
   """
-  if size is not None:
-    gr.set_size(size)
+  gumcols.prepareDot(gr, size=size)
 
-  if gr.get_rankdir() is None:
-    gr.set_rankdir(gum.config["notebook", "graph_rankdir"])
-  if gr.get_layout() is None:
-    gr.set_layout(gum.config["notebook", "graph_layout"])
+  if graph_format is None:
+    graph_format = gum.config["notebook", "graph_format"]
 
-  if format is None:
-    format = gum.config["notebook", "graph_format"]
-
-  if format == "svg":
+  if graph_format == "svg":
     gsvg = IPython.display.SVG(prepareLinksForSVG(
       gr.create_svg(encoding="utf-8").decode('utf-8')))
     if asString:
@@ -326,29 +316,11 @@ def getGraph(gr: dot.Dot, size=None) -> str:
   if size is None:
     size = gum.config["notebook", "default_graph_size"]
 
-  # workaround for some badly parsed graph (pyparsing>=3.03)
-  gr.del_node('"\\n"')
-  gr.del_node('"\\n\\n"')
-
   return _reprGraph(gr, size, asString=True)
 
 
 def _from_dotstring(dotstring):
   g = dot.graph_from_dot_data(dotstring)[0]
-
-  # workaround for some badly parsed graph (pyparsing>=3.03)
-  g.del_node('"\\n"')
-  g.del_node('"\\n\\n"')
-
-  g.set_bgcolor("transparent")
-  for e in g.get_edges():
-    if e.get_color() is None:
-      e.set_color(getBlackInTheme())
-  for n in g.get_nodes():
-    if n.get_color() is None:
-      n.set_color(getBlackInTheme())
-    if n.get_fontcolor() is None:
-      n.set_fontcolor(getBlackInTheme())
   return g
 
 

@@ -98,9 +98,9 @@ class TestPickler(pyAgrumTestCase):
     gum.saveBN(model, filename)
 
     model2 = gum.loadBN(filename)
-    self.assertEqual(model.property("version"), f"pyAgrum {gum.__version__}")
-    self.assertIn("creation", model.properties())
-    self.assertIn("lastModification", model.properties())
+    self.assertEqual(model2.property("version"), f"pyAgrum {gum.__version__}")
+    self.assertIn("creation", model2.properties())
+    self.assertIn("lastModification", model2.properties())
 
   def testEmpiricalDistribution(self):
     s = "A+[1.5,2.5,5,10.5]"

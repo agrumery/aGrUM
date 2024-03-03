@@ -28,8 +28,13 @@ import os
 import math
 from itertools import product, combinations
 
+import pydot as dot
+
 import pyAgrum as gum
-import pyAgrum.lib._utils as gumcols
+import pyAgrum.lib.bn2graph as ggr
+import  pyAgrum.lib.utils as gutils
+import pyAgrum.lib._colors as gcols
+
 
 STRUCTURAL_HAMMING = "structural hamming"
 PURE_HAMMING = "hamming"
@@ -418,32 +423,18 @@ def graphDiff(bnref, bncmp, noStyle=False):
   pydot.Dot
     the result dot graph or None if pydot can not be imported
   """
-
-  try:
-    # pydot is optional
-    # pylint: disable=import-outside-toplevel
-    import pydot as dot
-    import csv
-    import pyAgrum.lib.bn2graph as ggr
-  except ImportError:
-    return None
-
   g = ggr.BN2dot(bnref)
-  positions = {l[1]: f"{l[2]},{l[3]}!"
-               for l in csv.reader(g.create(format="plain")
-                                   .decode("utf8")
-                                   .split("\n")
-                                   , delimiter=' ', quotechar='"')
-               if len(l) > 3 and l[0] == "node"}
+  positions = gutils.dot_layout(g)
 
   res = dot.Dot(graph_type='digraph', bgcolor="transparent", layout="fdp", splines=True)
   for i1 in bnref.nodes():
+    pos=positions[bnref.variable(i1).name()]
     if bnref.variable(i1).name() in bncmp.names():
       res.add_node(dot.Node(f'"{bnref.variable(i1).name()}"',
                             style="filled",
                             fillcolor=gum.config["notebook", "graphdiff_correct_color"],
-                            color=gumcols.getBlackInTheme(),
-                            pos=positions[bnref.variable(i1).name()]
+                            color=gutils.getBlackInTheme(),
+                            pos=f'"{pos[0]},{pos[1]}"!'
                             )
                    )
     else:
@@ -451,8 +442,8 @@ def graphDiff(bnref, bncmp, noStyle=False):
         res.add_node(dot.Node(f'"{bnref.variable(i1).name()}"',
                               style="dashed",
                               fillcolor=gum.config["notebook", "graphdiff_correct_color"],
-                              color=gumcols.getBlackInTheme(),
-                              pos=positions[bnref.variable(i1).name()]
+                              color=gutils.getBlackInTheme(),
+                              pos=f'"{pos[0]},{pos[1]}"!'
                               )
                      )
   if noStyle:

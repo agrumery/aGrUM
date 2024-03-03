@@ -361,7 +361,7 @@ if len(args)>1:
       Parameters
       ----------
       s_fns : a list of named arguments (str)
-          the named arguments with an evalation of the expresions in s_fns are pased as argument for the chosen distribution.
+          the named arguments with an evaluation of the expressions in s_fns are passed as argument for the chosen distribution.
 
       Returns
       -------
@@ -381,10 +381,10 @@ if len(args)>1:
         raise InvalidArgument("[pyAgrum] The variable "+self.variable(0).name()+" is a LabelizedVariable")
 
       codes={k:float(s_fns[k]) if isinstance(s_fns[k], (int, float)) else compile(s_fns[k],"<string>","eval") for k in s_fns.keys()}
-      for code in codes:
-        if not isinstance(s_fns[k], (int, float)):
-          if forbidden & set(codes[code].co_names):
-            raise InvalidArgument("[pyAgrum] '__import__' is not allowed in the expression '"+s_fns[code]+"'")
+      for _,code in codes.items():
+        if not isinstance(code, (int, float)):
+          if forbidden & set(code.co_names):
+            raise InvalidArgument("[pyAgrum] '__import__' is not allowed in the expression '"+code+"'")
 
       I=gum.Instantiation()
       for i in range(1,self.nbrDim()):

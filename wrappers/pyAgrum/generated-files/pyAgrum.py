@@ -6655,7 +6655,7 @@ class Instantiation(object):
         Parameters
         ----------
         withLabels : boolean
-        	The value will be a label (string) if True. It will be a position (int) if False.
+        	The value will be a label (string) if True. It will be a position (int) if False. Default is False
 
         Returns
         -------
@@ -6665,7 +6665,7 @@ class Instantiation(object):
         """
         return _pyAgrum.Instantiation_todict(self, withLabels)
 
-    def fromdict(self, dict: object) -> None:
+    def fromdict(self, dict: object) -> "pyAgrum.Instantiation":
         r"""
 
         Change the values in an instantiation from a dictionary `{variable_name:value}` where value can be a position (int) or a label (string).
@@ -9438,6 +9438,7 @@ class Potential(object):
         i.inc()
       return
 
+
     def fillWithFunction(self,s,noise=None):
       """
       Automatically fills the potential as a (quasi) deterministic CPT with the evaluation of the expression s.
@@ -9456,12 +9457,14 @@ class Potential(object):
       ----------
       s : str
           an expression using the name of the last variables of the Potential and giving a value to the first variable of the Potential
-      noise : list
-          an (odd) list of numerics giving a pattern of 'probabilistic noise' around the value.
 
       Warning
       -------
           The expression may have any numerical values, but will be then transformed to the closest correct value for the range of the variable.
+
+      Note
+      ----
+          Deprecated. Please use pyAgrum.Potential.fillFromFunction instead.
 
       Returns
       -------
@@ -9471,44 +9474,127 @@ class Potential(object):
       Raises
       ------
         pyAgrum.InvalidArgument
-        If the first variable is Labelized or Integer, or if the len of the noise is not odd.
+          If the first variable is Labelized or Integer, or if the len of the noise is not odd.
       """
-      if self.variable(0).varType()==VarType_Labelized:
-        raise InvalidArgument("[pyAgrum] The variable "+self.variable(0).name()+" is a LabelizedVariable")
-      if self.variable(0).varType()==VarType_Integer:
-        raise InvalidArgument("[pyAgrum] The variable "+self.variable(0).name()+" is neither Range nor Discretized variable.")
 
-      if noise==None:
-        mid=0
-      else:
-        if len(noise)%2==0:
-          raise InvalidArgument("[pyAgrum] len(noise) must not be even")
-        mid=int((len(noise)-1)/2)
+      warnings.warn("""
+        ** pyAgrum.fillWithFunction is deprecated from pyAgrum>1.12.1. Please use pyAgrum.fillFromFunction instead (Noise is not used anymore).
+      """, DeprecationWarning, stacklevel=2)
+      return self.fillFromFunction(s)
+
+
+    def fillFromFunction(self,s_fn):
+      """
+      Automatically fills the potential as a deterministic CPT with the evaluation of the expression s_fn.
+
+      The symbolic expression s_fn gives a value for the first variable, depending on the following variables.
+      The computed CPT is deterministic.
+
+      Examples
+      --------
+      >>> import pyAgrum as gum
+      >>> bn=pyAgrum.fastBN('A[3]->B[3]<-C[3]')
+      >>> bn.cpt('B').fillFromFunction('(A+C)/2')
+
+      Parameters
+      ----------
+      s_fn : str
+          a symbolic expression using the name of the second and following variables of the Potential and giving a value to the first variable of the Potential. This evaluation is done in a context that inclides 'math' module.
+
+      Warning
+      -------
+          The expression may have any numerical values, but will be then transformed to the closest correct value for the range of the variable.
+
+
+      Returns
+      -------
+      pyAgrum.Potential
+            a reference to the modified potential
+
+      Raises
+      ------
+        pyAgrum.InvalidArgument
+          If the first variable is Labelized.
+      """
+      import math
+      forbidden=frozenset(['__import__','__class__'])
+
+      if self.variable(0).varType()== pyAgrum.VarType_Labelized:
+        raise InvalidArgument("[pyAgrum] The variable "+self.variable(0).name()+" is a LabelizedVariable")
 
       self.fillWith(0)
-      mi=self.variable(0).numerical(0)
-      ma=self.variable(0).numerical(self.variable(0).domainSize()-1)
-
-      I=Instantiation(self)
+      I=pyAgrum.Instantiation(self)
+      code=float(s_fn) if isinstance(s_fn, (int, float)) else compile(s_fn,"<string>","eval")
+      if not isinstance(s_fn, (int, float)):
+        if forbidden & set(code.co_names):
+          raise InvalidArgument("[pyAgrum] '__import__' is not allowed in the expression '"+s_fn+"'")
 
       I.setFirst()
       while not I.end():
         vars={self.variable(i).name():self.variable(i).numerical(I.val(i)) for i in range(1,self.nbrDim())}
-        res=eval(s,None,vars)
-        if res<mi:
-          res=mi
-        if res>ma:
-          res=ma
-        pos=self.variable(0).index(str(res))
-        if mid==0:
-          I.chgVal(0,pos)
-          self.set(I,1)
-        else:
-          for i,v in enumerate(noise):
-            if 0<=pos+i-mid<self.variable(0).domainSize():
-              I.chgVal(0,pos+i-mid)
-              self.set(I,v)
+        res=s_fn if isinstance(s_fn, (int, float)) else eval(code,{'math':math},vars)
+        pos=self.variable(0).closestIndex(res)
+        I.chgVal(0,pos)
+        self.set(I,1)
         I.incNotVar(self.variable(0))
+
+      self.normalizeAsCPT()
+      return self
+
+
+    def fillFromDistribution(self,distribution,**s_fns):
+      """
+      Automatically fills the potential as a familly of distributions whose parameters are found using evaluation of the expressions s_fns.
+
+      The symbolic expressions s_fns gives a value for the named parameters of the distributions.
+
+      Examples
+      --------
+      >>> import pyAgrum as gum
+      >>> bn=pyAgrum.fastBN('A[3]->B[3]<-C[3]')
+      >>> bn.cpt('B').fillFromFunction('(A+C)/2')
+
+      Parameters
+      ----------
+      s_fns : a list of named arguments (str)
+          the named arguments with an evaluation of the expressions in s_fns are passed as argument for the chosen distribution.
+
+      Returns
+      -------
+      pyAgrum.Potential
+            a reference to the modified potential
+
+      Raises
+      ------
+        pyAgrum.InvalidArgument
+          If the first variable is Labelized.
+      """
+      import math
+      forbidden=frozenset(['__import__','__class__'])
+
+      var=self.variable(0)
+      if var.varType()== pyAgrum.VarType_Labelized:
+        raise InvalidArgument("[pyAgrum] The variable "+self.variable(0).name()+" is a LabelizedVariable")
+
+      codes={k:float(s_fns[k]) if isinstance(s_fns[k], (int, float)) else compile(s_fns[k],"<string>","eval") for k in s_fns.keys()}
+      for _,code in codes.items():
+        if not isinstance(code, (int, float)):
+          if forbidden & set(code.co_names):
+            raise InvalidArgument("[pyAgrum] '__import__' is not allowed in the expression '"+code+"'")
+
+      I=pyAgrum.Instantiation()
+      for i in range(1,self.nbrDim()):
+        I.add(self.variable(i))
+
+      d=distribution
+      I.setFirst()
+      vals=[var.numerical(i) for i in range(var.domainSize())]
+      while not I.end():
+        vars={self.variable(i).name():self.variable(i).numerical(I.val(i-1)) for i in range(1,self.nbrDim())}
+        args={k:float(s_fns[k]) if isinstance(s_fns[k], (int, float)) else eval(codes[k],{'math':math},vars) for k in s_fns.keys()}
+        di=I.todict()
+        self[di]=d.pdf(vals,**args)
+        I.inc()
       self.normalizeAsCPT()
       return self
 
@@ -10197,6 +10283,12 @@ class IBayesNet(DAGmodel):
 
         """
         return _pyAgrum.IBayesNet_toDot(self)
+
+    def evEq(self, name: str, value: float) -> "pyAgrum.Potential":
+        return _pyAgrum.IBayesNet_evEq(self, name, value)
+
+    def evIn(self, name: str, val1: float, val2: float) -> "pyAgrum.Potential":
+        return _pyAgrum.IBayesNet_evIn(self, name, val1, val2)
 
     def ids(self, names: List[str]) -> object:
         r"""
@@ -14392,8 +14484,8 @@ class LazyPropagation(object):
 
         Parameters
         ----------
-        evidces : dict
-          a dict of evidences
+        evidces : Dict[str,Union[int,str,List[float]]] or List[pyAgrum.Potential]
+          a dict of "name:evidence" where name is a string (the name of the variable) and evidence is an integer (an index) or a string (a label) or a list of float (a likelihood).
 
         Raises
         ------
@@ -14406,11 +14498,17 @@ class LazyPropagation(object):
           pyAgrum.UndefinedElement
             If one node does not belong to the Bayesian network
         """
-        if not isinstance(evidces, dict):
-            raise TypeError("setEvidence parameter must be a dict, not %s"%(type(evidces)))
-        self.eraseAllEvidence()
-        for k,v in evidces.items():
+        if isinstance(evidces, dict):
+          self.eraseAllEvidence()
+          for k,v in evidces.items():
             self.addEvidence(k,v)
+          return
+        elif isinstance(evidces, list):#should be a list of Potential
+          self.eraseAllEvidence()
+          for p in evidces:
+            self.addEvidence(p)
+          return
+        raise TypeError("Parameter must be a dict or a list, not %s"%(type(evidces)))
 
 
 
@@ -14420,8 +14518,8 @@ class LazyPropagation(object):
 
         Parameters
         ----------
-        evidces : dict
-          a dict of evidences
+        evidces : Dict[str,Union[int,str,List[float]]] or List[pyAgrum.Potential]
+          a dict of "name:evidence" where name is a string (the name of the variable) and evidence is an integer (an index) or a string (a label) or a list of float (a likelihood).
 
         Raises
         ------
@@ -14434,14 +14532,23 @@ class LazyPropagation(object):
           pyAgrum.UndefinedElement
             If one node does not belong to the Bayesian network
         """
-        if not isinstance(evidces, dict):
-            raise TypeError("setEvidence parameter must be a dict, not %s"%(type(evidces)))
+        if isinstance(evidces, dict):
+          for k,v in evidces.items():
+              if self.hasEvidence(k):
+                  self.chgEvidence(k,v)
+              else:
+                  self.addEvidence(k,v)
+          return
+        elif isinstance(evidces, list):#should be a list of Potential
+          for p in evidces:
+              k=p.variable(0)
+              if self.hasEvidence(k):
+                  self.chgEvidence(p)
+              else:
+                  self.addEvidence(p)
+          return
 
-        for k,v in evidces.items():
-            if self.hasEvidence(k):
-                self.chgEvidence(k,v)
-            else:
-                self.addEvidence(k,v)
+        raise TypeError("Parameter must be a dict or a list, not %s"%(type(evidces)))
 
 
 
@@ -15216,8 +15323,8 @@ class ShaferShenoyInference(object):
 
         Parameters
         ----------
-        evidces : dict
-          a dict of evidences
+        evidces : Dict[str,Union[int,str,List[float]]] or List[pyAgrum.Potential]
+          a dict of "name:evidence" where name is a string (the name of the variable) and evidence is an integer (an index) or a string (a label) or a list of float (a likelihood).
 
         Raises
         ------
@@ -15230,11 +15337,17 @@ class ShaferShenoyInference(object):
           pyAgrum.UndefinedElement
             If one node does not belong to the Bayesian network
         """
-        if not isinstance(evidces, dict):
-            raise TypeError("setEvidence parameter must be a dict, not %s"%(type(evidces)))
-        self.eraseAllEvidence()
-        for k,v in evidces.items():
+        if isinstance(evidces, dict):
+          self.eraseAllEvidence()
+          for k,v in evidces.items():
             self.addEvidence(k,v)
+          return
+        elif isinstance(evidces, list):#should be a list of Potential
+          self.eraseAllEvidence()
+          for p in evidces:
+            self.addEvidence(p)
+          return
+        raise TypeError("Parameter must be a dict or a list, not %s"%(type(evidces)))
 
 
 
@@ -15244,8 +15357,8 @@ class ShaferShenoyInference(object):
 
         Parameters
         ----------
-        evidces : dict
-          a dict of evidences
+        evidces : Dict[str,Union[int,str,List[float]]] or List[pyAgrum.Potential]
+          a dict of "name:evidence" where name is a string (the name of the variable) and evidence is an integer (an index) or a string (a label) or a list of float (a likelihood).
 
         Raises
         ------
@@ -15258,14 +15371,23 @@ class ShaferShenoyInference(object):
           pyAgrum.UndefinedElement
             If one node does not belong to the Bayesian network
         """
-        if not isinstance(evidces, dict):
-            raise TypeError("setEvidence parameter must be a dict, not %s"%(type(evidces)))
+        if isinstance(evidces, dict):
+          for k,v in evidces.items():
+              if self.hasEvidence(k):
+                  self.chgEvidence(k,v)
+              else:
+                  self.addEvidence(k,v)
+          return
+        elif isinstance(evidces, list):#should be a list of Potential
+          for p in evidces:
+              k=p.variable(0)
+              if self.hasEvidence(k):
+                  self.chgEvidence(p)
+              else:
+                  self.addEvidence(p)
+          return
 
-        for k,v in evidces.items():
-            if self.hasEvidence(k):
-                self.chgEvidence(k,v)
-            else:
-                self.addEvidence(k,v)
+        raise TypeError("Parameter must be a dict or a list, not %s"%(type(evidces)))
 
 
 
@@ -16022,8 +16144,8 @@ class VariableElimination(object):
 
         Parameters
         ----------
-        evidces : dict
-          a dict of evidences
+        evidces : Dict[str,Union[int,str,List[float]]] or List[pyAgrum.Potential]
+          a dict of "name:evidence" where name is a string (the name of the variable) and evidence is an integer (an index) or a string (a label) or a list of float (a likelihood).
 
         Raises
         ------
@@ -16036,11 +16158,17 @@ class VariableElimination(object):
           pyAgrum.UndefinedElement
             If one node does not belong to the Bayesian network
         """
-        if not isinstance(evidces, dict):
-            raise TypeError("setEvidence parameter must be a dict, not %s"%(type(evidces)))
-        self.eraseAllEvidence()
-        for k,v in evidces.items():
+        if isinstance(evidces, dict):
+          self.eraseAllEvidence()
+          for k,v in evidces.items():
             self.addEvidence(k,v)
+          return
+        elif isinstance(evidces, list):#should be a list of Potential
+          self.eraseAllEvidence()
+          for p in evidces:
+            self.addEvidence(p)
+          return
+        raise TypeError("Parameter must be a dict or a list, not %s"%(type(evidces)))
 
 
 
@@ -16050,8 +16178,8 @@ class VariableElimination(object):
 
         Parameters
         ----------
-        evidces : dict
-          a dict of evidences
+        evidces : Dict[str,Union[int,str,List[float]]] or List[pyAgrum.Potential]
+          a dict of "name:evidence" where name is a string (the name of the variable) and evidence is an integer (an index) or a string (a label) or a list of float (a likelihood).
 
         Raises
         ------
@@ -16064,14 +16192,23 @@ class VariableElimination(object):
           pyAgrum.UndefinedElement
             If one node does not belong to the Bayesian network
         """
-        if not isinstance(evidces, dict):
-            raise TypeError("setEvidence parameter must be a dict, not %s"%(type(evidces)))
+        if isinstance(evidces, dict):
+          for k,v in evidces.items():
+              if self.hasEvidence(k):
+                  self.chgEvidence(k,v)
+              else:
+                  self.addEvidence(k,v)
+          return
+        elif isinstance(evidces, list):#should be a list of Potential
+          for p in evidces:
+              k=p.variable(0)
+              if self.hasEvidence(k):
+                  self.chgEvidence(p)
+              else:
+                  self.addEvidence(p)
+          return
 
-        for k,v in evidces.items():
-            if self.hasEvidence(k):
-                self.chgEvidence(k,v)
-            else:
-                self.addEvidence(k,v)
+        raise TypeError("Parameter must be a dict or a list, not %s"%(type(evidces)))
 
 
 
@@ -16751,8 +16888,8 @@ class GibbsSampling(object):
 
         Parameters
         ----------
-        evidces : dict
-          a dict of evidences
+        evidces : Dict[str,Union[int,str,List[float]]] or List[pyAgrum.Potential]
+          a dict of "name:evidence" where name is a string (the name of the variable) and evidence is an integer (an index) or a string (a label) or a list of float (a likelihood).
 
         Raises
         ------
@@ -16765,11 +16902,17 @@ class GibbsSampling(object):
           pyAgrum.UndefinedElement
             If one node does not belong to the Bayesian network
         """
-        if not isinstance(evidces, dict):
-            raise TypeError("setEvidence parameter must be a dict, not %s"%(type(evidces)))
-        self.eraseAllEvidence()
-        for k,v in evidces.items():
+        if isinstance(evidces, dict):
+          self.eraseAllEvidence()
+          for k,v in evidces.items():
             self.addEvidence(k,v)
+          return
+        elif isinstance(evidces, list):#should be a list of Potential
+          self.eraseAllEvidence()
+          for p in evidces:
+            self.addEvidence(p)
+          return
+        raise TypeError("Parameter must be a dict or a list, not %s"%(type(evidces)))
 
 
 
@@ -16779,8 +16922,8 @@ class GibbsSampling(object):
 
         Parameters
         ----------
-        evidces : dict
-          a dict of evidences
+        evidces : Dict[str,Union[int,str,List[float]]] or List[pyAgrum.Potential]
+          a dict of "name:evidence" where name is a string (the name of the variable) and evidence is an integer (an index) or a string (a label) or a list of float (a likelihood).
 
         Raises
         ------
@@ -16793,14 +16936,23 @@ class GibbsSampling(object):
           pyAgrum.UndefinedElement
             If one node does not belong to the Bayesian network
         """
-        if not isinstance(evidces, dict):
-            raise TypeError("setEvidence parameter must be a dict, not %s"%(type(evidces)))
+        if isinstance(evidces, dict):
+          for k,v in evidces.items():
+              if self.hasEvidence(k):
+                  self.chgEvidence(k,v)
+              else:
+                  self.addEvidence(k,v)
+          return
+        elif isinstance(evidces, list):#should be a list of Potential
+          for p in evidces:
+              k=p.variable(0)
+              if self.hasEvidence(k):
+                  self.chgEvidence(p)
+              else:
+                  self.addEvidence(p)
+          return
 
-        for k,v in evidces.items():
-            if self.hasEvidence(k):
-                self.chgEvidence(k,v)
-            else:
-                self.addEvidence(k,v)
+        raise TypeError("Parameter must be a dict or a list, not %s"%(type(evidces)))
 
 
 
@@ -17555,8 +17707,8 @@ class ImportanceSampling(object):
 
         Parameters
         ----------
-        evidces : dict
-          a dict of evidences
+        evidces : Dict[str,Union[int,str,List[float]]] or List[pyAgrum.Potential]
+          a dict of "name:evidence" where name is a string (the name of the variable) and evidence is an integer (an index) or a string (a label) or a list of float (a likelihood).
 
         Raises
         ------
@@ -17569,11 +17721,17 @@ class ImportanceSampling(object):
           pyAgrum.UndefinedElement
             If one node does not belong to the Bayesian network
         """
-        if not isinstance(evidces, dict):
-            raise TypeError("setEvidence parameter must be a dict, not %s"%(type(evidces)))
-        self.eraseAllEvidence()
-        for k,v in evidces.items():
+        if isinstance(evidces, dict):
+          self.eraseAllEvidence()
+          for k,v in evidces.items():
             self.addEvidence(k,v)
+          return
+        elif isinstance(evidces, list):#should be a list of Potential
+          self.eraseAllEvidence()
+          for p in evidces:
+            self.addEvidence(p)
+          return
+        raise TypeError("Parameter must be a dict or a list, not %s"%(type(evidces)))
 
 
 
@@ -17583,8 +17741,8 @@ class ImportanceSampling(object):
 
         Parameters
         ----------
-        evidces : dict
-          a dict of evidences
+        evidces : Dict[str,Union[int,str,List[float]]] or List[pyAgrum.Potential]
+          a dict of "name:evidence" where name is a string (the name of the variable) and evidence is an integer (an index) or a string (a label) or a list of float (a likelihood).
 
         Raises
         ------
@@ -17597,14 +17755,23 @@ class ImportanceSampling(object):
           pyAgrum.UndefinedElement
             If one node does not belong to the Bayesian network
         """
-        if not isinstance(evidces, dict):
-            raise TypeError("setEvidence parameter must be a dict, not %s"%(type(evidces)))
+        if isinstance(evidces, dict):
+          for k,v in evidces.items():
+              if self.hasEvidence(k):
+                  self.chgEvidence(k,v)
+              else:
+                  self.addEvidence(k,v)
+          return
+        elif isinstance(evidces, list):#should be a list of Potential
+          for p in evidces:
+              k=p.variable(0)
+              if self.hasEvidence(k):
+                  self.chgEvidence(p)
+              else:
+                  self.addEvidence(p)
+          return
 
-        for k,v in evidces.items():
-            if self.hasEvidence(k):
-                self.chgEvidence(k,v)
-            else:
-                self.addEvidence(k,v)
+        raise TypeError("Parameter must be a dict or a list, not %s"%(type(evidces)))
 
 
 
@@ -18315,8 +18482,8 @@ class WeightedSampling(object):
 
         Parameters
         ----------
-        evidces : dict
-          a dict of evidences
+        evidces : Dict[str,Union[int,str,List[float]]] or List[pyAgrum.Potential]
+          a dict of "name:evidence" where name is a string (the name of the variable) and evidence is an integer (an index) or a string (a label) or a list of float (a likelihood).
 
         Raises
         ------
@@ -18329,11 +18496,17 @@ class WeightedSampling(object):
           pyAgrum.UndefinedElement
             If one node does not belong to the Bayesian network
         """
-        if not isinstance(evidces, dict):
-            raise TypeError("setEvidence parameter must be a dict, not %s"%(type(evidces)))
-        self.eraseAllEvidence()
-        for k,v in evidces.items():
+        if isinstance(evidces, dict):
+          self.eraseAllEvidence()
+          for k,v in evidces.items():
             self.addEvidence(k,v)
+          return
+        elif isinstance(evidces, list):#should be a list of Potential
+          self.eraseAllEvidence()
+          for p in evidces:
+            self.addEvidence(p)
+          return
+        raise TypeError("Parameter must be a dict or a list, not %s"%(type(evidces)))
 
 
 
@@ -18343,8 +18516,8 @@ class WeightedSampling(object):
 
         Parameters
         ----------
-        evidces : dict
-          a dict of evidences
+        evidces : Dict[str,Union[int,str,List[float]]] or List[pyAgrum.Potential]
+          a dict of "name:evidence" where name is a string (the name of the variable) and evidence is an integer (an index) or a string (a label) or a list of float (a likelihood).
 
         Raises
         ------
@@ -18357,14 +18530,23 @@ class WeightedSampling(object):
           pyAgrum.UndefinedElement
             If one node does not belong to the Bayesian network
         """
-        if not isinstance(evidces, dict):
-            raise TypeError("setEvidence parameter must be a dict, not %s"%(type(evidces)))
+        if isinstance(evidces, dict):
+          for k,v in evidces.items():
+              if self.hasEvidence(k):
+                  self.chgEvidence(k,v)
+              else:
+                  self.addEvidence(k,v)
+          return
+        elif isinstance(evidces, list):#should be a list of Potential
+          for p in evidces:
+              k=p.variable(0)
+              if self.hasEvidence(k):
+                  self.chgEvidence(p)
+              else:
+                  self.addEvidence(p)
+          return
 
-        for k,v in evidces.items():
-            if self.hasEvidence(k):
-                self.chgEvidence(k,v)
-            else:
-                self.addEvidence(k,v)
+        raise TypeError("Parameter must be a dict or a list, not %s"%(type(evidces)))
 
 
 
@@ -19075,8 +19257,8 @@ class MonteCarloSampling(object):
 
         Parameters
         ----------
-        evidces : dict
-          a dict of evidences
+        evidces : Dict[str,Union[int,str,List[float]]] or List[pyAgrum.Potential]
+          a dict of "name:evidence" where name is a string (the name of the variable) and evidence is an integer (an index) or a string (a label) or a list of float (a likelihood).
 
         Raises
         ------
@@ -19089,11 +19271,17 @@ class MonteCarloSampling(object):
           pyAgrum.UndefinedElement
             If one node does not belong to the Bayesian network
         """
-        if not isinstance(evidces, dict):
-            raise TypeError("setEvidence parameter must be a dict, not %s"%(type(evidces)))
-        self.eraseAllEvidence()
-        for k,v in evidces.items():
+        if isinstance(evidces, dict):
+          self.eraseAllEvidence()
+          for k,v in evidces.items():
             self.addEvidence(k,v)
+          return
+        elif isinstance(evidces, list):#should be a list of Potential
+          self.eraseAllEvidence()
+          for p in evidces:
+            self.addEvidence(p)
+          return
+        raise TypeError("Parameter must be a dict or a list, not %s"%(type(evidces)))
 
 
 
@@ -19103,8 +19291,8 @@ class MonteCarloSampling(object):
 
         Parameters
         ----------
-        evidces : dict
-          a dict of evidences
+        evidces : Dict[str,Union[int,str,List[float]]] or List[pyAgrum.Potential]
+          a dict of "name:evidence" where name is a string (the name of the variable) and evidence is an integer (an index) or a string (a label) or a list of float (a likelihood).
 
         Raises
         ------
@@ -19117,14 +19305,23 @@ class MonteCarloSampling(object):
           pyAgrum.UndefinedElement
             If one node does not belong to the Bayesian network
         """
-        if not isinstance(evidces, dict):
-            raise TypeError("setEvidence parameter must be a dict, not %s"%(type(evidces)))
+        if isinstance(evidces, dict):
+          for k,v in evidces.items():
+              if self.hasEvidence(k):
+                  self.chgEvidence(k,v)
+              else:
+                  self.addEvidence(k,v)
+          return
+        elif isinstance(evidces, list):#should be a list of Potential
+          for p in evidces:
+              k=p.variable(0)
+              if self.hasEvidence(k):
+                  self.chgEvidence(p)
+              else:
+                  self.addEvidence(p)
+          return
 
-        for k,v in evidces.items():
-            if self.hasEvidence(k):
-                self.chgEvidence(k,v)
-            else:
-                self.addEvidence(k,v)
+        raise TypeError("Parameter must be a dict or a list, not %s"%(type(evidces)))
 
 
 
@@ -19849,8 +20046,8 @@ class LoopyImportanceSampling(ImportanceSampling):
 
         Parameters
         ----------
-        evidces : dict
-          a dict of evidences
+        evidces : Dict[str,Union[int,str,List[float]]] or List[pyAgrum.Potential]
+          a dict of "name:evidence" where name is a string (the name of the variable) and evidence is an integer (an index) or a string (a label) or a list of float (a likelihood).
 
         Raises
         ------
@@ -19863,11 +20060,17 @@ class LoopyImportanceSampling(ImportanceSampling):
           pyAgrum.UndefinedElement
             If one node does not belong to the Bayesian network
         """
-        if not isinstance(evidces, dict):
-            raise TypeError("setEvidence parameter must be a dict, not %s"%(type(evidces)))
-        self.eraseAllEvidence()
-        for k,v in evidces.items():
+        if isinstance(evidces, dict):
+          self.eraseAllEvidence()
+          for k,v in evidces.items():
             self.addEvidence(k,v)
+          return
+        elif isinstance(evidces, list):#should be a list of Potential
+          self.eraseAllEvidence()
+          for p in evidces:
+            self.addEvidence(p)
+          return
+        raise TypeError("Parameter must be a dict or a list, not %s"%(type(evidces)))
 
 
 
@@ -19877,8 +20080,8 @@ class LoopyImportanceSampling(ImportanceSampling):
 
         Parameters
         ----------
-        evidces : dict
-          a dict of evidences
+        evidces : Dict[str,Union[int,str,List[float]]] or List[pyAgrum.Potential]
+          a dict of "name:evidence" where name is a string (the name of the variable) and evidence is an integer (an index) or a string (a label) or a list of float (a likelihood).
 
         Raises
         ------
@@ -19891,14 +20094,23 @@ class LoopyImportanceSampling(ImportanceSampling):
           pyAgrum.UndefinedElement
             If one node does not belong to the Bayesian network
         """
-        if not isinstance(evidces, dict):
-            raise TypeError("setEvidence parameter must be a dict, not %s"%(type(evidces)))
+        if isinstance(evidces, dict):
+          for k,v in evidces.items():
+              if self.hasEvidence(k):
+                  self.chgEvidence(k,v)
+              else:
+                  self.addEvidence(k,v)
+          return
+        elif isinstance(evidces, list):#should be a list of Potential
+          for p in evidces:
+              k=p.variable(0)
+              if self.hasEvidence(k):
+                  self.chgEvidence(p)
+              else:
+                  self.addEvidence(p)
+          return
 
-        for k,v in evidces.items():
-            if self.hasEvidence(k):
-                self.chgEvidence(k,v)
-            else:
-                self.addEvidence(k,v)
+        raise TypeError("Parameter must be a dict or a list, not %s"%(type(evidces)))
 
 
 
@@ -20623,8 +20835,8 @@ class LoopyWeightedSampling(WeightedSampling):
 
         Parameters
         ----------
-        evidces : dict
-          a dict of evidences
+        evidces : Dict[str,Union[int,str,List[float]]] or List[pyAgrum.Potential]
+          a dict of "name:evidence" where name is a string (the name of the variable) and evidence is an integer (an index) or a string (a label) or a list of float (a likelihood).
 
         Raises
         ------
@@ -20637,11 +20849,17 @@ class LoopyWeightedSampling(WeightedSampling):
           pyAgrum.UndefinedElement
             If one node does not belong to the Bayesian network
         """
-        if not isinstance(evidces, dict):
-            raise TypeError("setEvidence parameter must be a dict, not %s"%(type(evidces)))
-        self.eraseAllEvidence()
-        for k,v in evidces.items():
+        if isinstance(evidces, dict):
+          self.eraseAllEvidence()
+          for k,v in evidces.items():
             self.addEvidence(k,v)
+          return
+        elif isinstance(evidces, list):#should be a list of Potential
+          self.eraseAllEvidence()
+          for p in evidces:
+            self.addEvidence(p)
+          return
+        raise TypeError("Parameter must be a dict or a list, not %s"%(type(evidces)))
 
 
 
@@ -20651,8 +20869,8 @@ class LoopyWeightedSampling(WeightedSampling):
 
         Parameters
         ----------
-        evidces : dict
-          a dict of evidences
+        evidces : Dict[str,Union[int,str,List[float]]] or List[pyAgrum.Potential]
+          a dict of "name:evidence" where name is a string (the name of the variable) and evidence is an integer (an index) or a string (a label) or a list of float (a likelihood).
 
         Raises
         ------
@@ -20665,14 +20883,23 @@ class LoopyWeightedSampling(WeightedSampling):
           pyAgrum.UndefinedElement
             If one node does not belong to the Bayesian network
         """
-        if not isinstance(evidces, dict):
-            raise TypeError("setEvidence parameter must be a dict, not %s"%(type(evidces)))
+        if isinstance(evidces, dict):
+          for k,v in evidces.items():
+              if self.hasEvidence(k):
+                  self.chgEvidence(k,v)
+              else:
+                  self.addEvidence(k,v)
+          return
+        elif isinstance(evidces, list):#should be a list of Potential
+          for p in evidces:
+              k=p.variable(0)
+              if self.hasEvidence(k):
+                  self.chgEvidence(p)
+              else:
+                  self.addEvidence(p)
+          return
 
-        for k,v in evidces.items():
-            if self.hasEvidence(k):
-                self.chgEvidence(k,v)
-            else:
-                self.addEvidence(k,v)
+        raise TypeError("Parameter must be a dict or a list, not %s"%(type(evidces)))
 
 
 
@@ -21397,8 +21624,8 @@ class LoopyGibbsSampling(GibbsSampling):
 
         Parameters
         ----------
-        evidces : dict
-          a dict of evidences
+        evidces : Dict[str,Union[int,str,List[float]]] or List[pyAgrum.Potential]
+          a dict of "name:evidence" where name is a string (the name of the variable) and evidence is an integer (an index) or a string (a label) or a list of float (a likelihood).
 
         Raises
         ------
@@ -21411,11 +21638,17 @@ class LoopyGibbsSampling(GibbsSampling):
           pyAgrum.UndefinedElement
             If one node does not belong to the Bayesian network
         """
-        if not isinstance(evidces, dict):
-            raise TypeError("setEvidence parameter must be a dict, not %s"%(type(evidces)))
-        self.eraseAllEvidence()
-        for k,v in evidces.items():
+        if isinstance(evidces, dict):
+          self.eraseAllEvidence()
+          for k,v in evidces.items():
             self.addEvidence(k,v)
+          return
+        elif isinstance(evidces, list):#should be a list of Potential
+          self.eraseAllEvidence()
+          for p in evidces:
+            self.addEvidence(p)
+          return
+        raise TypeError("Parameter must be a dict or a list, not %s"%(type(evidces)))
 
 
 
@@ -21425,8 +21658,8 @@ class LoopyGibbsSampling(GibbsSampling):
 
         Parameters
         ----------
-        evidces : dict
-          a dict of evidences
+        evidces : Dict[str,Union[int,str,List[float]]] or List[pyAgrum.Potential]
+          a dict of "name:evidence" where name is a string (the name of the variable) and evidence is an integer (an index) or a string (a label) or a list of float (a likelihood).
 
         Raises
         ------
@@ -21439,14 +21672,23 @@ class LoopyGibbsSampling(GibbsSampling):
           pyAgrum.UndefinedElement
             If one node does not belong to the Bayesian network
         """
-        if not isinstance(evidces, dict):
-            raise TypeError("setEvidence parameter must be a dict, not %s"%(type(evidces)))
+        if isinstance(evidces, dict):
+          for k,v in evidces.items():
+              if self.hasEvidence(k):
+                  self.chgEvidence(k,v)
+              else:
+                  self.addEvidence(k,v)
+          return
+        elif isinstance(evidces, list):#should be a list of Potential
+          for p in evidces:
+              k=p.variable(0)
+              if self.hasEvidence(k):
+                  self.chgEvidence(p)
+              else:
+                  self.addEvidence(p)
+          return
 
-        for k,v in evidces.items():
-            if self.hasEvidence(k):
-                self.chgEvidence(k,v)
-            else:
-                self.addEvidence(k,v)
+        raise TypeError("Parameter must be a dict or a list, not %s"%(type(evidces)))
 
 
 
@@ -22237,8 +22479,8 @@ class LoopyMonteCarloSampling(MonteCarloSampling):
 
         Parameters
         ----------
-        evidces : dict
-          a dict of evidences
+        evidces : Dict[str,Union[int,str,List[float]]] or List[pyAgrum.Potential]
+          a dict of "name:evidence" where name is a string (the name of the variable) and evidence is an integer (an index) or a string (a label) or a list of float (a likelihood).
 
         Raises
         ------
@@ -22251,11 +22493,17 @@ class LoopyMonteCarloSampling(MonteCarloSampling):
           pyAgrum.UndefinedElement
             If one node does not belong to the Bayesian network
         """
-        if not isinstance(evidces, dict):
-            raise TypeError("setEvidence parameter must be a dict, not %s"%(type(evidces)))
-        self.eraseAllEvidence()
-        for k,v in evidces.items():
+        if isinstance(evidces, dict):
+          self.eraseAllEvidence()
+          for k,v in evidces.items():
             self.addEvidence(k,v)
+          return
+        elif isinstance(evidces, list):#should be a list of Potential
+          self.eraseAllEvidence()
+          for p in evidces:
+            self.addEvidence(p)
+          return
+        raise TypeError("Parameter must be a dict or a list, not %s"%(type(evidces)))
 
 
 
@@ -22265,8 +22513,8 @@ class LoopyMonteCarloSampling(MonteCarloSampling):
 
         Parameters
         ----------
-        evidces : dict
-          a dict of evidences
+        evidces : Dict[str,Union[int,str,List[float]]] or List[pyAgrum.Potential]
+          a dict of "name:evidence" where name is a string (the name of the variable) and evidence is an integer (an index) or a string (a label) or a list of float (a likelihood).
 
         Raises
         ------
@@ -22279,14 +22527,23 @@ class LoopyMonteCarloSampling(MonteCarloSampling):
           pyAgrum.UndefinedElement
             If one node does not belong to the Bayesian network
         """
-        if not isinstance(evidces, dict):
-            raise TypeError("setEvidence parameter must be a dict, not %s"%(type(evidces)))
+        if isinstance(evidces, dict):
+          for k,v in evidces.items():
+              if self.hasEvidence(k):
+                  self.chgEvidence(k,v)
+              else:
+                  self.addEvidence(k,v)
+          return
+        elif isinstance(evidces, list):#should be a list of Potential
+          for p in evidces:
+              k=p.variable(0)
+              if self.hasEvidence(k):
+                  self.chgEvidence(p)
+              else:
+                  self.addEvidence(p)
+          return
 
-        for k,v in evidces.items():
-            if self.hasEvidence(k):
-                self.chgEvidence(k,v)
-            else:
-                self.addEvidence(k,v)
+        raise TypeError("Parameter must be a dict or a list, not %s"%(type(evidces)))
 
 
 
@@ -22997,8 +23254,8 @@ class LoopyBeliefPropagation(object):
 
         Parameters
         ----------
-        evidces : dict
-          a dict of evidences
+        evidces : Dict[str,Union[int,str,List[float]]] or List[pyAgrum.Potential]
+          a dict of "name:evidence" where name is a string (the name of the variable) and evidence is an integer (an index) or a string (a label) or a list of float (a likelihood).
 
         Raises
         ------
@@ -23011,11 +23268,17 @@ class LoopyBeliefPropagation(object):
           pyAgrum.UndefinedElement
             If one node does not belong to the Bayesian network
         """
-        if not isinstance(evidces, dict):
-            raise TypeError("setEvidence parameter must be a dict, not %s"%(type(evidces)))
-        self.eraseAllEvidence()
-        for k,v in evidces.items():
+        if isinstance(evidces, dict):
+          self.eraseAllEvidence()
+          for k,v in evidces.items():
             self.addEvidence(k,v)
+          return
+        elif isinstance(evidces, list):#should be a list of Potential
+          self.eraseAllEvidence()
+          for p in evidces:
+            self.addEvidence(p)
+          return
+        raise TypeError("Parameter must be a dict or a list, not %s"%(type(evidces)))
 
 
 
@@ -23025,8 +23288,8 @@ class LoopyBeliefPropagation(object):
 
         Parameters
         ----------
-        evidces : dict
-          a dict of evidences
+        evidces : Dict[str,Union[int,str,List[float]]] or List[pyAgrum.Potential]
+          a dict of "name:evidence" where name is a string (the name of the variable) and evidence is an integer (an index) or a string (a label) or a list of float (a likelihood).
 
         Raises
         ------
@@ -23039,14 +23302,23 @@ class LoopyBeliefPropagation(object):
           pyAgrum.UndefinedElement
             If one node does not belong to the Bayesian network
         """
-        if not isinstance(evidces, dict):
-            raise TypeError("setEvidence parameter must be a dict, not %s"%(type(evidces)))
+        if isinstance(evidces, dict):
+          for k,v in evidces.items():
+              if self.hasEvidence(k):
+                  self.chgEvidence(k,v)
+              else:
+                  self.addEvidence(k,v)
+          return
+        elif isinstance(evidces, list):#should be a list of Potential
+          for p in evidces:
+              k=p.variable(0)
+              if self.hasEvidence(k):
+                  self.chgEvidence(p)
+              else:
+                  self.addEvidence(p)
+          return
 
-        for k,v in evidces.items():
-            if self.hasEvidence(k):
-                self.chgEvidence(k,v)
-            else:
-                self.addEvidence(k,v)
+        raise TypeError("Parameter must be a dict or a list, not %s"%(type(evidces)))
 
 
 
@@ -26263,6 +26535,14 @@ class ShaferShenoyLIMIDInference(object):
     __swig_destroy__ = _pyAgrum.delete_ShaferShenoyLIMIDInference
 
     def junctionTree(self) -> "pyAgrum.JunctionTree":
+        r"""
+
+        Returns
+        -------
+        pyAgrum.CliqueGraph
+          the current junction tree
+
+        """
         val = _pyAgrum.ShaferShenoyLIMIDInference_junctionTree(self)
 
         val._engine=self
@@ -26281,15 +26561,47 @@ class ShaferShenoyLIMIDInference(object):
         return _pyAgrum.ShaferShenoyLIMIDInference_hasNoForgettingAssumption(self)
 
     def reducedGraph(self) -> "pyAgrum.DAG":
+        r"""
+
+        Returns the DAG build to solve the influence diagram.
+
+        Returns
+        -------
+        pyAgrum.DAG
+          a copy of the reduced graph
+
+
+        """
         return _pyAgrum.ShaferShenoyLIMIDInference_reducedGraph(self)
 
     def reversePartialOrder(self) -> "pyAgrum.YetUnWrapped":
         return _pyAgrum.ShaferShenoyLIMIDInference_reversePartialOrder(self)
 
     def reducedLIMID(self) -> "pyAgrum.InfluenceDiagram":
+        r"""
+
+        Returns the (reduced) LIMID build to solve the influence diagram.
+
+        Returns
+        -------
+        pyAgrum.InfluenceDiagram
+          a copy of the reduced influence Diagram (LIMID)
+
+
+        """
         return _pyAgrum.ShaferShenoyLIMIDInference_reducedLIMID(self)
 
     def isSolvable(self) -> bool:
+        r"""
+
+        check wether the influence diagram is solvable or not
+
+        Returns
+        -------
+        bool
+          True if the influence diagram is solvable
+
+        """
         return _pyAgrum.ShaferShenoyLIMIDInference_isSolvable(self)
 
     def optimalDecision(self, *args) -> "pyAgrum.Potential":
@@ -26313,6 +26625,24 @@ class ShaferShenoyLIMIDInference(object):
         return _pyAgrum.ShaferShenoyLIMIDInference_optimalDecision(self, *args)
 
     def posteriorUtility(self, *args) -> "pyAgrum.Potential":
+        r"""
+
+        Returns the posterior utiliyt of a utility node (after optimisation) depending on decision nodes, if any.
+
+        Parameters
+        ----------
+        var : int
+          the node Id of the node for which we need a posterior probability
+        nodeName : str
+          the node name of the node for which we need a posterior probability
+
+        Returns
+        -------
+        pyAgrum.Potential
+          a const ref to the posterior utility of the utility node
+
+
+        """
         return _pyAgrum.ShaferShenoyLIMIDInference_posteriorUtility(self, *args)
 
     def setEvidence(self, evidces):
@@ -26375,6 +26705,14 @@ class ShaferShenoyLIMIDInference(object):
 
 
     def hardEvidenceNodes(self) -> object:
+        r"""
+
+        Returns
+        -------
+        set
+          the set of nodes with hard evidence
+
+        """
         return _pyAgrum.ShaferShenoyLIMIDInference_hardEvidenceNodes(self)
 
     def softEvidenceNodes(self) -> object:
@@ -26394,32 +26732,144 @@ class ShaferShenoyLIMIDInference(object):
         return _pyAgrum.ShaferShenoyLIMIDInference_MEU(self, *args)
 
     def meanVar(self, *args) -> object:
+        r"""
+
+        Parameters
+        ----------
+        id : int
+          a node Id
+        nodeName : str
+          a node name
+
+        Returns
+        -------
+        dict[str, float]
+          a dictionary with the mean and variance of the node (after the inference)
+
+        """
         return _pyAgrum.ShaferShenoyLIMIDInference_meanVar(self, *args)
 
     def makeInference(self) -> None:
         r"""
 
-        Makes the inference.
+        Perform the heavy computations needed to compute the optimal decisions.
 
         """
         return _pyAgrum.ShaferShenoyLIMIDInference_makeInference(self)
 
     def posterior(self, *args) -> "pyAgrum.Potential":
+        r"""
+
+        Returns the posterior of a chance or a decision node (after optimisation).
+
+        Parameters
+        ----------
+        var : int
+          the node Id of the node for which we need a posterior probability
+        nodeName : str
+          the node name of the node for which we need a posterior probability
+
+        Returns
+        -------
+        pyAgrum.Potential
+          a const ref to the posterior probability of the node
+
+        """
         return _pyAgrum.ShaferShenoyLIMIDInference_posterior(self, *args)
 
     def addEvidence(self, *args) -> None:
+        r"""
+
+        Adds a new evidence on a node (might be soft or hard).
+
+        Parameters
+        ----------
+        id : int
+          a node Id
+        nodeName : int
+          a node name
+        val :
+          (int) a node value
+        val :
+          (str) the label of the node value
+        vals : list
+          a list of values
+
+        Raises
+        ------
+          pyAgrum.InvalidArgument
+            If the node already has an evidence
+          pyAgrum.InvalidArgument
+            If val is not a value for the node
+          pyAgrum.InvalidArgument
+            If the size of vals is different from the domain side of the node
+          pyAgrum.FatalError
+            If vals is a vector of 0s
+          pyAgrum.UndefinedElement
+            If the node does not belong to the Bayesian network
+
+        """
         return _pyAgrum.ShaferShenoyLIMIDInference_addEvidence(self, *args)
 
     def chgEvidence(self, *args) -> None:
+        r"""
+
+        Change the value of an already existing evidence on a node (might be soft or hard).
+
+        Parameters
+        ----------
+        id : int
+          a node Id
+        nodeName : int
+          a node name
+        val : intstr
+          a node value or the label of the node value
+        vals : List[float]
+          a list of values
+
+        Raises
+        ------
+        pyAgrum.InvalidArgument
+          If the node does not already have an evidence
+        pyAgrum.InvalidArgument
+          If val is not a value for the node
+        pyAgrum.InvalidArgument
+          If the size of vals is different from the domain side of the node
+        pyAgrum.FatalError
+          If vals is a vector of 0s
+        pyAgrum.UndefinedElement
+          If the node does not belong to the Bayesian network
+
+        """
         return _pyAgrum.ShaferShenoyLIMIDInference_chgEvidence(self, *args)
 
     def hasEvidence(self, *args) -> bool:
+        r"""
+
+        Parameters
+        ----------
+        id : int
+          a node Id
+        nodeName : str
+          a node name
+
+        Returns
+        -------
+        bool
+          True if some node(s) (or the one in parameters) have received evidence
+
+        Raises
+        ------
+        pyAgrum.IndexError
+          If the node does not belong to the Bayesian network
+
+        """
         return _pyAgrum.ShaferShenoyLIMIDInference_hasEvidence(self, *args)
 
     def eraseAllEvidence(self) -> None:
         r"""
 
-        Removes all the evidence entered into the diagram.
+        Remove all evidence.
 
         """
         return _pyAgrum.ShaferShenoyLIMIDInference_eraseAllEvidence(self)
@@ -26427,32 +26877,100 @@ class ShaferShenoyLIMIDInference(object):
     def eraseEvidence(self, *args) -> None:
         r"""
 
+        Remove the evidence, if any, corresponding to the node Id or name.
+
         Parameters
         ----------
-        evidence : pyAgrum.Potential
-        	the evidence to remove
+        id : int
+          a node Id
+        nodeName : int
+          a node name
 
         Raises
         ------
-          pyAgrum.IndexError
-        	If the evidence does not belong to the influence diagram
+        pyAgrum.IndexError
+          If the node does not belong to the Bayesian network
 
         """
         return _pyAgrum.ShaferShenoyLIMIDInference_eraseEvidence(self, *args)
 
     def hasHardEvidence(self, nodeName: str) -> bool:
+        r"""
+
+        Parameters
+        ----------
+        id : int
+          a node Id
+        nodeName : str
+          a node name
+
+        Returns
+        -------
+        bool
+          True if node has received a hard evidence
+
+        Raises
+        ------
+        pyAgrum.IndexError
+          If the node does not belong to the Bayesian network
+
+        """
         return _pyAgrum.ShaferShenoyLIMIDInference_hasHardEvidence(self, nodeName)
 
     def hasSoftEvidence(self, *args) -> bool:
+        r"""
+
+        Parameters
+        ----------
+        id : int
+          a node Id
+        nodeName : str
+          a node name
+
+        Returns
+        -------
+        bool
+          True if node has received a soft evidence
+
+        Raises
+        ------
+        pyAgrum.IndexError
+          If the node does not belong to the Bayesian network
+
+        """
         return _pyAgrum.ShaferShenoyLIMIDInference_hasSoftEvidence(self, *args)
 
     def nbrEvidence(self) -> int:
+        r"""
+
+        Returns
+        -------
+        int
+          the number of evidence entered into the Bayesian network
+
+        """
         return _pyAgrum.ShaferShenoyLIMIDInference_nbrEvidence(self)
 
     def nbrHardEvidence(self) -> int:
+        r"""
+
+        Returns
+        -------
+        int
+          the number of hard evidence entered into the Bayesian network
+
+        """
         return _pyAgrum.ShaferShenoyLIMIDInference_nbrHardEvidence(self)
 
     def nbrSoftEvidence(self) -> int:
+        r"""
+
+        Returns
+        -------
+        int
+          the number of soft evidence entered into the Bayesian network
+
+        """
         return _pyAgrum.ShaferShenoyLIMIDInference_nbrSoftEvidence(self)
 
     def influenceDiagram(self) -> "pyAgrum.InfluenceDiagram":

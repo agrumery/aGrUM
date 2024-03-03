@@ -101,14 +101,17 @@ def computeScores(bn_name, csv_name, visible=False, dialect=None):
       k = 1024
       buffer = ""
       while True:
-        buffer += csvfile.read(k)
-        dialect = csv.Sniffer().sniff(buffer)
-        break
-      except csv.Error:
-        if k==-1:
-          raise gum.DatabaseError("csv.Sniffer could not determine delimiter even with the whole file")
-        if len(buffer)>16384:
-          k=-1
+        try:
+          buffer += csvfile.read(k)
+          dialect = csv.Sniffer().sniff(buffer)
+          break
+        except csv.Error:
+          if k == -1:
+            # we already tried with all the file
+            raise gum.DatabaseError("csv.Sniffer could not determine delimiter even with the whole file")
+          if len(buffer) > 16384:
+            # we try with all the file now
+            k = -1
 
   nbr_insignificant = 0
   num_ligne = 1

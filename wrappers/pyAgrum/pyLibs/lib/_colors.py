@@ -28,6 +28,7 @@ import matplotlib as mpl
 import matplotlib.colors
 
 import pyAgrum as gum
+from pyAgrum.lib.utils import getBlackInTheme
 
 
 def hex2rgb(vstr: str) -> List[int]:
@@ -181,3 +182,29 @@ def fontFromMatplotlib():
   if family == "sans-serif":
     family = mpl.rcParams['font.sans-serif'][0]
   return family, mpl.rcParams['font.size']
+
+
+def prepareDot(dotgraph, **kwargs):
+  if "size" in kwargs and kwargs["size"] is not None:
+    dotgraph.set_size(kwargs["size"])
+
+  # workaround for some badly parsed graph (pyparsing>=3.03)
+  dotgraph.del_node('"\\n"')
+  dotgraph.del_node('"\\n\\n"')
+
+  if dotgraph.get_rankdir() is None:
+    dotgraph.set_rankdir(gum.config["notebook", "graph_rankdir"])
+  if dotgraph.get_layout() is None:
+    dotgraph.set_layout(gum.config["notebook", "graph_layout"])
+
+  dotgraph.set_bgcolor("red") #transparent")
+  for e in dotgraph.get_edges():
+    if e.get_color() is None:
+      e.set_color(getBlackInTheme())
+  for n in dotgraph.get_nodes():
+    if n.get_color() is None:
+      n.set_color(getBlackInTheme())
+    if n.get_fontcolor() is None:
+      n.set_fontcolor(getBlackInTheme())
+
+  return dotgraph

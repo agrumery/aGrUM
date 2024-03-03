@@ -29,13 +29,15 @@ import time
 import hashlib
 
 from tempfile import mkdtemp
+
 import matplotlib.pyplot as plt
 import pydot as dot
 
 import pyAgrum as gum
 
 from pyAgrum.lib import proba_histogram
-import pyAgrum.lib._utils as gumcols
+import pyAgrum.lib._colors as gumcols
+from pyAgrum.lib.utils import getBlackInTheme
 
 
 def BN2dot(bn, size=None, nodeColor=None, arcWidth=None, arcLabel=None, arcColor=None, cmapNode=None, cmapArc=None,
@@ -106,7 +108,7 @@ def BN2dot(bn, size=None, nodeColor=None, arcWidth=None, arcLabel=None, arcColor
     (n, j) = a
     pw = 1
     av = f"{n}&nbsp;&rarr;&nbsp;{j}"
-    col = gumcols.getBlackInTheme()
+    col = getBlackInTheme()
     lb = ""
 
     if arcWidth is not None and a in arcWidth:
@@ -202,14 +204,14 @@ def BNinference2dot(bn, size=None, engine=None, evs=None, targets=None, nodeColo
   temp_dir = mkdtemp("", "tmp", None)  # with TemporaryDirectory() as temp_dir:
 
   dotstr = "digraph structs {\n  fontcolor=\"" + \
-           gumcols.getBlackInTheme() + "\";bgcolor=\"transparent\";"
+           getBlackInTheme() + "\";bgcolor=\"transparent\";"
 
   if gum.config.asBool["notebook", "show_inference_time"]:
     dotstr += f"  label=\"Inference in {1000 * (stopTime - startTime):6.2f}ms\";\n"
 
   fontname, fontsize = gumcols.fontFromMatplotlib()
   dotstr += f'  node [fillcolor="{gum.config["notebook", "default_node_bgcolor"]}", style=filled,color="{gum.config["notebook", "default_node_fgcolor"]}",fontname="{fontname}",fontsize="{fontsize}"];\n'
-  dotstr += f'  edge [color="{gumcols.getBlackInTheme()}"];\n'
+  dotstr += f'  edge [color="{getBlackInTheme()}"];\n'
 
   showdag = bn.dag() if dag is None else dag
 
@@ -245,7 +247,7 @@ def BNinference2dot(bn, size=None, engine=None, evs=None, targets=None, nodeColo
     (n, j) = a
     pw = 1
     av = f"{n}&nbsp;&rarr;&nbsp;{j}"
-    col = gumcols.getBlackInTheme()
+    col = getBlackInTheme()
 
     if arcWidth is not None and a in arcWidth:
       if maxarcs != minarcs:
@@ -260,9 +262,6 @@ def BNinference2dot(bn, size=None, engine=None, evs=None, targets=None, nodeColo
   dotstr += '}'
 
   g = dot.graph_from_dot_data(dotstr)[0]
-
-  # workaround for some badly parsed graph (pyparsing>=3.03)
-  g.del_node('"\\n"')
 
   if size is None:
     size = gum.config["notebook", "default_graph_inference_size"]

@@ -33,7 +33,7 @@ import matplotlib.pyplot as plt
 import pydot as dot
 
 import pyAgrum as gum
-import pyAgrum.lib._utils as gumcols
+import pyAgrum.lib._colors as gumcols
 
 from .proba_histogram import saveFigProba
 
@@ -346,9 +346,6 @@ def MRFinference2UGdot(mrf, size=None, engine=None, evs=None, targets=None, node
 
   g = dot.graph_from_dot_data(dotstr)[0]
 
-  # workaround for some badly parsed graph (pyparsing>=3.03)
-  g.del_node('"\\n"')
-
   if size is None:
     size = gum.config["notebook", "default_graph_inference_size"]
   g.set_size(size)
@@ -458,9 +455,6 @@ def MRFinference2FactorGraphdot(mrf, size=None, engine=None, evs=None, targets=N
   dotstr += '}'
 
   g = dot.graph_from_dot_data(dotstr)[0]
-
-  # workaround for some badly parsed graph (pyparsing>=3.03)
-  g.del_node('"\\n"')
 
   if size is None:
     size = gum.config["notebook", "default_graph_inference_size"]
