@@ -26,25 +26,8 @@ from typing import List, Tuple
 
 import matplotlib as mpl
 import matplotlib.colors
+
 import pyAgrum as gum
-
-
-def setDarkTheme():
-  """ change the color for arcs and text in graphs to be more visible in dark theme
-  """
-  gum.config["notebook", "default_arc_color"] = "#AAAAAA"
-
-
-def setLightTheme():
-  """ change the color for arcs and text in graphs to be more visible in light theme
-  """
-  gum.config["notebook", "default_arc_color"] = "#4A4A4A"
-
-
-def getBlackInTheme():
-  """ return the color used for arc and text in graphs
-  """
-  return gum.config["notebook", "default_arc_color"]
 
 
 def hex2rgb(vstr: str) -> List[int]:

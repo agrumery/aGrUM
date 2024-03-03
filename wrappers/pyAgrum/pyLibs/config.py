@@ -113,6 +113,7 @@ class PyAgrumConfiguration(metaclass=GumSingleton):
     self.__parser.read(defaultsfn)
     self.__defaults = self.__str__()
     self.__hooks = []
+    self.__stacks = []
 
     self.asInt = self._CastAsInt(self)
     self.asFloat = self._CastAsFloat(self)
@@ -267,3 +268,19 @@ class PyAgrumConfiguration(metaclass=GumSingleton):
 
   def __delitem__(self, key):
     raise SyntaxError("No deletion of item in configuration")
+
+  def pop(self):
+    """
+    Pop the last config from the stack and set it as the current configuration
+    """
+    if len(self.__stacks) > 0:
+      self.__parser.read_string(self.__stacks.pop())
+      self.run_hooks()
+    else:
+      raise IndexError("[pyAgrum] No configuration to pop")
+
+  def push(self):
+    """
+    Push the current configuration in the stack
+    """
+    self.__stacks.append(str(self))
