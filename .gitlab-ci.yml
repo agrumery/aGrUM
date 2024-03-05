@@ -33,8 +33,7 @@ stages:
   <<: *build_template
   tags:
     - docker
-    - linux
-    - manylinux1
+    - gumlin
 
 .linux_wheel_template: &linux_wheel_template
   <<: *common_artifacts
@@ -47,8 +46,7 @@ stages:
   image: $LINUX_64_IMAGE
   tags:
     - docker
-    - linux
-    - triskele
+    - gumlin
 
 .macos_build_template: &macos_build_template
   <<: *common_artifacts
@@ -75,9 +73,8 @@ stages:
     - web@agrumery/aGrUM
     - merge_requests
   tags:
-    - windows
+    - gumwin
     - conda
-    - agrumerie2-powershell
   cache:
     key: mvsc
     paths:
@@ -167,7 +164,7 @@ build_wheel_osx_py312:
 build_wheel_windows_py38:
   <<: *windows_build_template
   variables:
-    PATH: $PATH_64_MVSC22_AGRUMERIE2
+    PATH: $PATH_MVSC22_GUMWIN
     PYTHON_VERSION: "3.8"
   script:
     - *windows_wheel_script
@@ -175,7 +172,7 @@ build_wheel_windows_py38:
 build_wheel_windows_py312:
   <<: *windows_build_template
   variables:
-    PATH: $PATH_64_MVSC22_AGRUMERIE2
+    PATH: $PATH_MVSC22_GUMWIN
     PYTHON_VERSION: "3.12"
   script:
     - *windows_wheel_script
@@ -215,7 +212,7 @@ macos_pyagrum:
 windows_agrum_2019:
   <<: *windows_build_template
   variables:
-    PATH: $PATH_64_MVSC19_AGRUMERIE2
+    PATH: $PATH_MVSC19_GUMWIN
     PYTHON_VERSION: "3.8"
     TARGET: "aGrUM"
     COMPILER: "mvsc19"
@@ -225,7 +222,7 @@ windows_agrum_2019:
 windows_agrum_2022:  
   <<: *windows_build_template
   variables:
-    PATH: $PATH_64_MVSC22_AGRUMERIE2
+    PATH: $PATH_MVSC22_GUMWIN
     PYTHON_VERSION: "3.8"
     TARGET: "aGrUM"
     COMPILER: "mvsc22"
@@ -235,7 +232,7 @@ windows_agrum_2022:
 windows_pyagrum_2022:  
   <<: *windows_build_template
   variables:
-    PATH: $PATH_64_MVSC22_AGRUMERIE2
+    PATH: $PATH_MVSC22_GUMWIN
     PYTHON_VERSION: "3.12"
     TARGET: "pyAgrum"
     COMPILER: "mvsc22"
@@ -249,7 +246,7 @@ windows_pyagrum_2022:
 windows_pyagrum_mingw:  
   <<: *windows_build_template
   variables:
-    PATH: $PATH_64_MINGW_AGRUMERIE2
+    PATH: $PATH_MINGW_GUMWIN
     PYTHON_VERSION: "3.12"
     TARGET: "pyAgrum"
     COMPILER: "mingw64"
