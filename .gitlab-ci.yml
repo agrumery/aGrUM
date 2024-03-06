@@ -85,10 +85,10 @@ stages:
 ################################################################################
 
 .windows_wheel_script: &windows_wheel_script
-  - powershell -File $WINDOWS_WHEELHOUSE -CI_JOB_ID $CI_JOB_ID -CI_PROJECT_DIR $CI_PROJECT_DIR -PYTHON_VERSION $PYTHON_VERSION
+  - powershell -File $WINDOWS_WHEELHOUSE -CI_JOB_ID $CI_JOB_ID -CI_PROJECT_DIR $CI_PROJECT_DIR -CONDA_ENV $CONDA_ENV
 
 .windows_build_script: &windows_build_script
-  - powershell -File $WINDOWS_BUILD -CI_JOB_ID $CI_JOB_ID -CI_PROJECT_DIR $CI_PROJECT_DIR -PYTHON_VERSION $PYTHON_VERSION -TARGET $TARGET -COMPILER $COMPILER
+  - powershell -File $WINDOWS_BUILD -CI_JOB_ID $CI_JOB_ID -CI_PROJECT_DIR $CI_PROJECT_DIR -CONDA_ENV $CONDA_ENV -TARGET $TARGET -COMPILER $COMPILER
 
 ################################################################################
 #                               ON PUSH                                        #
@@ -165,7 +165,7 @@ build_wheel_windows_py38:
   <<: *windows_build_template
   variables:
     PATH: $PATH_MVSC22_GUMWIN
-    PYTHON_VERSION: "3.8"
+    CONDA_ENV: "py38"
   script:
     - *windows_wheel_script
 
@@ -173,7 +173,7 @@ build_wheel_windows_py312:
   <<: *windows_build_template
   variables:
     PATH: $PATH_MVSC22_GUMWIN
-    PYTHON_VERSION: "3.12"
+    CONDA_ENV: "py312"
   script:
     - *windows_wheel_script
 
@@ -213,7 +213,7 @@ windows_agrum_2019:
   <<: *windows_build_template
   variables:
     PATH: $PATH_MVSC19_GUMWIN
-    PYTHON_VERSION: "3.8"
+    CONDA_ENV: "py38"
     TARGET: "aGrUM"
     COMPILER: "mvsc19"
   script:
@@ -223,7 +223,7 @@ windows_agrum_2022:
   <<: *windows_build_template
   variables:
     PATH: $PATH_MVSC22_GUMWIN
-    PYTHON_VERSION: "3.8"
+    CONDA_ENV: "py38"
     TARGET: "aGrUM"
     COMPILER: "mvsc22"
   script:
@@ -233,7 +233,7 @@ windows_pyagrum_2022:
   <<: *windows_build_template
   variables:
     PATH: $PATH_MVSC22_GUMWIN
-    PYTHON_VERSION: "3.12"
+    CONDA_ENV: "py312"
     TARGET: "pyAgrum"
     COMPILER: "mvsc22"
   script:
@@ -247,7 +247,7 @@ windows_pyagrum_mingw:
   <<: *windows_build_template
   variables:
     PATH: $PATH_MINGW_GUMWIN
-    PYTHON_VERSION: "3.12"
+    CONDA_ENV: "py312"
     TARGET: "pyAgrum"
     COMPILER: "mingw64"
   script:

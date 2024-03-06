@@ -1,7 +1,7 @@
 param(
     [string]$CI_JOB_ID,
     [string]$CI_PROJECT_DIR,
-    [string]$PYTHON_VERSION
+    [string]$CONDA_ENV
 )
 
 # Stop the script on any non-terminating errors
@@ -14,19 +14,8 @@ function Check-LastCommand {
     }
 }
 
-# Create and activate a new conda environment
-Write-Host "Creating a new conda environment with Python $PYTHON_VERSION"
-conda create -n gitlab-ci-$CI_JOB_ID -c conda-forge python=$PYTHON_VERSION -y
-Check-LastCommand
-
-Write-Host "Activating the new conda environment: gitlab-ci-$CI_JOB_ID"
-conda activate gitlab-ci-$CI_JOB_ID
-Check-LastCommand
-
-# Install dependencies
-Write-Host "Installing requirements and cmake..."
-conda install -y -c conda-forge --file $CI_PROJECT_DIR\wrappers\pyAgrum\testunits\requirements.txt
-conda install -y -c conda-forge cmake
+Write-Host "Activating the conda environment: $CONDA_ENV"
+conda activate $CONDA_ENV
 Check-LastCommand
 
 # Update version
@@ -45,12 +34,6 @@ Write-Host "Building the wheels..."
 Set-Location $CI_PROJECT_DIR
 python act clean
 python act --no-fun --compiler=mvsc22 -d wheels release wheel pyAgrum -j halfexcept1
-Check-LastCommand
-
-# Cleanup
-Write-Host "Cleaning up..."
-conda deactivate
-conda remove -y -n gitlab-ci-$CI_JOB_ID --all --force
 Check-LastCommand
 
 Write-Host "Script completed successfully."
