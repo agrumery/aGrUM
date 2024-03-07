@@ -34,13 +34,7 @@ import base64
 
 import matplotlib as mpl
 import matplotlib.pyplot as plt
-
-try:
-  from matplotlib_inline.backend_inline import set_matplotlib_formats
-except ImportError:  # because of python 2.7, matplotlib-inline cannot be part of requirements.txt
-  def set_matplotlib_formats(*args, **kwargs):
-    # dummy version when no matplotlib_inline package
-    print("** pyAgrum** For better visualizations, please install matplotlib-inline.")
+from matplotlib_inline.backend_inline import set_matplotlib_formats
 
 import numpy as np
 import pydot as dot

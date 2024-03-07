@@ -199,8 +199,8 @@ def getInformationGraph(bn, evs=None, size=None, cmap=_INFOcmap, withMinMax=Fals
 
   Returns
   -------
-  dot.Dot | Tuple[dot.Dot,float,float]
-    graph as a dot representation and if asked, min_information_value, max_information_value
+  dot.Dot | Tuple[dot.Dot,float,float,float,float]
+    graph as a dot representation and if asked, min_information_value, max_information_value, min_mutual_information_value, max_mutual_information_value
   """
   if size is None:
     size = gum.config["notebook", "default_graph_size"]
@@ -234,11 +234,12 @@ def getInformationGraph(bn, evs=None, size=None, cmap=_INFOcmap, withMinMax=Fals
   gr = BN2dot(bn, size, nodeColor=_normalizeVals(nodevals, hilightExtrema=False), arcWidth=arcvals, cmapNode=cmap,
               cmapArc=cmap, showMsg=nodevals)
 
-  mi = min(nodevals.values())
-  ma = max(nodevals.values())
-
   if withMinMax:
-    return gr, mi, ma
+    mi_node = min(nodevals.values())
+    ma_node = max(nodevals.values())
+    mi_arc = min(arcvals.values())
+    ma_arc = max(arcvals.values())
+    return gr, mi_node, ma_node, mi_arc, ma_arc
   else:
     return gr
 
@@ -271,7 +272,9 @@ def _reprInformation(bn, evs=None, size=None, cmap=_INFOcmap, asString=False):
   if evs is None:
     evs = {}
 
-  gr, mi, ma = getInformationGraph(bn, evs, size, cmap, withMinMax=True)
+  gr, mi, ma, _, _ = getInformationGraph(bn, evs, size, cmap, withMinMax=True)
+  gumcols.prepareDot(gr, size=size)
+
   # dynamic member makes pylink unhappy
   # pylint: disable=no-member
   gsvg = IPython.display.SVG(gr.create_svg(encoding="utf-8"))
@@ -956,9 +959,8 @@ def _buildMB(model, x: int, k: int = 1):
         arcs.add((z, y))
 
   def visit(x, k):
-    if x in nodes:
-      if depth[x] >= k:
-        return
+    if x in nodes and depth[x] >= k:
+      return
     _internal_build_markov_blanket(model, x, k)
 
   _internal_build_markov_blanket(model, x, k)
@@ -1000,7 +1002,7 @@ def nestedMarkovBlankets(bn, x, k: int = 1, cmapNode=None):
 
   mb = dot.Dot(f'MB({x},{k}', graph_type='digraph', bgcolor='transparent')
 
-  if type(x) == str:
+  if isinstance(x, str):
     nx = bn.idFromName(x)
   else:
     nx = x
@@ -1050,7 +1052,7 @@ def nestedMarkovBlanketsNames(bn, x, k: int = 1):
   Dict[str,int]
     the list of names and their depth.
   """
-  if type(x) == str:
+  if isinstance(x, str):
     nx = bn.idFromName(x)
   else:
     nx = x
