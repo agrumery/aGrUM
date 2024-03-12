@@ -1211,12 +1211,12 @@ def _reprPotential(pot, digits=None, withColors=None, varnames=None, asString=Fa
           str_val += f"{frac_val}"
         str_val += "</td>"
     if str_val == "":
-      str_val = f"text-align:right;'>{val:.{digits}f}</td>"
+      str_val = f"text-align:right;padding: 3px;'>{val:.{digits}f}</td>"
 
     return s + str_val
 
   html = list()
-  html.append('<table style="border:1px solid black;">')
+  html.append('<table style="border:1px solid black;border-collapse: collapse;">')
   if pot.empty():
     html.append(
       "<tr><th>&nbsp;</th></tr>"

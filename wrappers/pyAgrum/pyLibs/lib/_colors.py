@@ -197,7 +197,7 @@ def prepareDot(dotgraph, **kwargs):
   if dotgraph.get_layout() is None:
     dotgraph.set_layout(gum.config["notebook", "graph_layout"])
 
-  dotgraph.set_bgcolor("red") #transparent")
+  dotgraph.set_bgcolor("transparent")
   for e in dotgraph.get_edges():
     if e.get_color() is None:
       e.set_color(getBlackInTheme())
