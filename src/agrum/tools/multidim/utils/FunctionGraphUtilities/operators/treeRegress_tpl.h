@@ -48,8 +48,7 @@ namespace gum {
       const MultiDimFunctionGraph< GUM_SCALAR, TerminalNodePolicy >*                    qAction,
       const Bijection< const DiscreteVariable*,
                        const MultiDimFunctionGraph< GUM_SCALAR, TerminalNodePolicy >* > pxi) :
-      _vFunc_(qAction),
-      _pxi_(pxi) {
+      _vFunc_(qAction), _pxi_(pxi) {
     GUM_CONSTRUCTOR(TreeRegress);
   }
 

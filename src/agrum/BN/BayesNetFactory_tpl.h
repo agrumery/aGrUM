@@ -56,8 +56,7 @@ namespace gum {
   template < typename GUM_SCALAR >
   INLINE
       BayesNetFactory< GUM_SCALAR >::BayesNetFactory(const BayesNetFactory< GUM_SCALAR >& source) :
-      _parents_(nullptr),
-      _impl_(nullptr), _bn_(nullptr) {
+      _parents_(nullptr), _impl_(nullptr), _bn_(nullptr) {
     GUM_CONS_CPY(BayesNetFactory);
 
     if (source.state() != factory_state::NONE) {

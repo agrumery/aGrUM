@@ -61,8 +61,8 @@ namespace gum {
                Idx                          nbValueIterationStep,
                bool                         actionReward,
                bool                         verbose) :
-      _learner_(learner),
-      _planer_(planer), _decider_(decider), _observationPhaseLenght_(observationPhaseLenght),
+      _learner_(learner), _planer_(planer), _decider_(decider),
+      _observationPhaseLenght_(observationPhaseLenght),
       _nbValueIterationStep_(nbValueIterationStep), _actionReward_(actionReward),
       verbose_(verbose) {
     GUM_CONSTRUCTOR(SDYNA);

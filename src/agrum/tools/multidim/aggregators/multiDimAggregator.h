@@ -117,17 +117,17 @@ namespace gum {
       void changeNotification(const gum::Instantiation&,
                               const gum::DiscreteVariable* const,
                               gum::Idx,
-                              gum::Idx) override{};
+                              gum::Idx) override {};
 
-      void setFirstNotification(const gum::Instantiation&) override{};
+      void setFirstNotification(const gum::Instantiation&) override {};
 
-      void setLastNotification(const gum::Instantiation&) override{};
+      void setLastNotification(const gum::Instantiation&) override {};
 
-      void setIncNotification(const gum::Instantiation&) override{};
+      void setIncNotification(const gum::Instantiation&) override {};
 
-      void setDecNotification(const gum::Instantiation&) override{};
+      void setDecNotification(const gum::Instantiation&) override {};
 
-      void setChangeNotification(const gum::Instantiation&) override{};
+      void setChangeNotification(const gum::Instantiation&) override {};
 
       std::string toString(const gum::Instantiation* i) const override { return i->toString(); };
 

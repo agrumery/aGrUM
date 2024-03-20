@@ -36,8 +36,8 @@ namespace gum {
         const PRM< GUM_SCALAR >&             prm,
         const PRMSystem< GUM_SCALAR >&       system,
         gspan::SearchStrategy< GUM_SCALAR >* strategy) :
-        PRMInference< GUM_SCALAR >(prm, system),
-        _gspan_(0), _pdata_(0), _mining_(false), _dot_(".") {
+        PRMInference< GUM_SCALAR >(prm, system), _gspan_(0), _pdata_(0), _mining_(false),
+        _dot_(".") {
       GUM_CONSTRUCTOR(StructuredInference);
       _gspan_      = new GSpan< GUM_SCALAR >(prm, system, strategy);
       triang_time  = 0.0;
@@ -51,8 +51,8 @@ namespace gum {
     template < typename GUM_SCALAR >
     StructuredInference< GUM_SCALAR >::StructuredInference(
         const StructuredInference< GUM_SCALAR >& source) :
-        PRMInference< GUM_SCALAR >(source),
-        _gspan_(0), _pdata_(0), _mining_(source._mining_), _found_query_(false), _dot_(".") {
+        PRMInference< GUM_SCALAR >(source), _gspan_(0), _pdata_(0), _mining_(source._mining_),
+        _found_query_(false), _dot_(".") {
       GUM_CONS_CPY(StructuredInference);
       _gspan_ = new GSpan< GUM_SCALAR >(*(this->prm_), *(this->sys_));
     }
@@ -768,8 +768,7 @@ namespace gum {
     StructuredInference< GUM_SCALAR >::PData::PData(
         const gspan::Pattern&                           p,
         typename GSpan< GUM_SCALAR >::MatchedInstances& m) :
-        pattern(p),
-        matches(m), _real_order_(0) {
+        pattern(p), matches(m), _real_order_(0) {
       GUM_CONSTRUCTOR(StructuredInference< GUM_SCALAR >::PData);
 
       for (int i = 0; i < 4; ++i)
@@ -779,9 +778,9 @@ namespace gum {
     template < typename GUM_SCALAR >
     StructuredInference< GUM_SCALAR >::PData::PData(
         const typename StructuredInference< GUM_SCALAR >::PData& source) :
-        pattern(source.pattern),
-        matches(source.matches), graph(source.graph), mod(source.mod), node2attr(source.node2attr),
-        vars(source.vars), _partial_order_(source._partial_order_), _real_order_(0) {
+        pattern(source.pattern), matches(source.matches), graph(source.graph), mod(source.mod),
+        node2attr(source.node2attr), vars(source.vars), _partial_order_(source._partial_order_),
+        _real_order_(0) {
       GUM_CONS_CPY(StructuredInference< GUM_SCALAR >::PData);
     }
 

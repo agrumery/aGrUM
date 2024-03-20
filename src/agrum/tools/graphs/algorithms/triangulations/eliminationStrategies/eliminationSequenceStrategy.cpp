@@ -71,8 +71,8 @@ namespace gum {
   // copy constructor
   EliminationSequenceStrategy::EliminationSequenceStrategy(
       const EliminationSequenceStrategy& from) :
-      graph_(from.graph_),
-      domain_sizes_(from.domain_sizes_), log_domain_sizes_(from.log_domain_sizes_) {
+      graph_(from.graph_), domain_sizes_(from.domain_sizes_),
+      log_domain_sizes_(from.log_domain_sizes_) {
     GUM_CONS_CPY(EliminationSequenceStrategy);
   }
 

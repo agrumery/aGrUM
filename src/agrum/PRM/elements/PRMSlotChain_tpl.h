@@ -63,8 +63,7 @@ namespace gum {
     // happened)
     template < typename GUM_SCALAR >
     PRMSlotChain< GUM_SCALAR >::PRMSlotChain(Sequence< PRMClassElement< GUM_SCALAR >* >* chain,
-                                             const std::string&                          name) :
-        PRMSlotChain(name, *chain) {
+                                             const std::string& name) : PRMSlotChain(name, *chain) {
       // No need to
       // GUM_CONSTRUCTOR(PRMSlotChain);
 

@@ -107,8 +107,7 @@ namespace gum {
     /// copy constructor
     DBTranslator4NumericalDiscreteVariable::DBTranslator4NumericalDiscreteVariable(
         const DBTranslator4NumericalDiscreteVariable& from) :
-        DBTranslator(from),
-        _variable_(from._variable_) {
+        DBTranslator(from), _variable_(from._variable_) {
       // for debugging purposes
       GUM_CONS_CPY(DBTranslator4NumericalDiscreteVariable);
     }
@@ -116,8 +115,7 @@ namespace gum {
     /// move constructor
     DBTranslator4NumericalDiscreteVariable::DBTranslator4NumericalDiscreteVariable(
         DBTranslator4NumericalDiscreteVariable&& from) :
-        DBTranslator(std::move(from)),
-        _variable_(std::move(from._variable_)) {
+        DBTranslator(std::move(from)), _variable_(std::move(from._variable_)) {
       // for debugging purposes
       GUM_CONS_MOV(DBTranslator4NumericalDiscreteVariable);
     }

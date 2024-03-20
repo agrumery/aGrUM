@@ -44,6 +44,7 @@ namespace gum {
      * @ingroup learning_scores
      */
     // clang-format on
+
     class IndepTestG2: public IndependenceTest {
       public:
       // ##########################################################################
@@ -157,7 +158,7 @@ namespace gum {
 #endif /* DOXYGEN_SHOULD_SKIP_THIS */
     };
 
-  }    /* namespace learning */
+  } /* namespace learning */
 
 } /* namespace gum */
 

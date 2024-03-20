@@ -66,8 +66,7 @@ namespace gum {
                                                           GUM_SCALAR discountFactor,
                                                           GUM_SCALAR epsilon,
                                                           bool       verbose) :
-      discountFactor_(discountFactor),
-      operator_(opi), verbose_(verbose) {
+      discountFactor_(discountFactor), operator_(opi), verbose_(verbose) {
     GUM_CONSTRUCTOR(StructuredPlaner);
 
     _threshold_    = epsilon;

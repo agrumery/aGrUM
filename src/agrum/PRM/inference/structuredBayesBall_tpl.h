@@ -242,15 +242,13 @@ namespace gum {
 
     template < typename GUM_SCALAR >
     INLINE StructuredBayesBall< GUM_SCALAR >::StructuredBayesBall(
-        const PRMInference< GUM_SCALAR >& inference) :
-        _inf_(&inference) {
+        const PRMInference< GUM_SCALAR >& inference) : _inf_(&inference) {
       GUM_CONSTRUCTOR(StructuredBayesBall);
     }
 
     template < typename GUM_SCALAR >
     INLINE StructuredBayesBall< GUM_SCALAR >::StructuredBayesBall(
-        const StructuredBayesBall< GUM_SCALAR >& source) :
-        _inf_(0) {
+        const StructuredBayesBall< GUM_SCALAR >& source) : _inf_(0) {
       GUM_CONS_CPY(StructuredBayesBall);
       GUM_ERROR(FatalError, "Not allowed.")
     }

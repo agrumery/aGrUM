@@ -37,8 +37,7 @@ namespace gum {
   /// default constructor (uses an empty graph)
   DefaultPartialOrderedEliminationSequenceStrategy::
       DefaultPartialOrderedEliminationSequenceStrategy(double theRatio, double theThreshold) :
-      _simplicial_ratio_(theRatio),
-      _simplicial_threshold_(theThreshold) {
+      _simplicial_ratio_(theRatio), _simplicial_threshold_(theThreshold) {
     // for debugging purposes
     GUM_CONSTRUCTOR(DefaultPartialOrderedEliminationSequenceStrategy);
   }
@@ -50,8 +49,7 @@ namespace gum {
                                                        const List< NodeSet >*      subsets,
                                                        double                      ratio,
                                                        double                      threshold) :
-      _simplicial_ratio_(ratio),
-      _simplicial_threshold_(threshold) {
+      _simplicial_ratio_(ratio), _simplicial_threshold_(threshold) {
     setGraph(graph, dom_sizes);
     setPartialOrder(subsets);
 

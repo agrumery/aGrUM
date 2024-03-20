@@ -409,9 +409,7 @@ namespace gum {
 
     template < typename GUM_SCALAR >
     INLINE PRMInstance< GUM_SCALAR >::RefIterator::RefIterator(
-        Set< PRMInstance< GUM_SCALAR >* >& set) :
-        _set_(set),
-        _iter_(set.begin()) {
+        Set< PRMInstance< GUM_SCALAR >* >& set) : _set_(set), _iter_(set.begin()) {
       GUM_CONSTRUCTOR(PRMInstance< GUM_SCALAR >::RefIterator);
     }
 
@@ -467,17 +465,13 @@ namespace gum {
 
     template < typename GUM_SCALAR >
     INLINE PRMInstance< GUM_SCALAR >::RefConstIterator::RefConstIterator(
-        const Set< PRMInstance< GUM_SCALAR >* >& set) :
-        _set_(set),
-        _iter_(set.begin()) {
+        const Set< PRMInstance< GUM_SCALAR >* >& set) : _set_(set), _iter_(set.begin()) {
       GUM_CONSTRUCTOR(PRMInstance< GUM_SCALAR >::RefConstIterator);
     }
 
     template < typename GUM_SCALAR >
     INLINE PRMInstance< GUM_SCALAR >::RefConstIterator::RefConstIterator(
-        const RefConstIterator& from) :
-        _set_(from._set_),
-        _iter_(from._iter_) {
+        const RefConstIterator& from) : _set_(from._set_), _iter_(from._iter_) {
       GUM_CONS_CPY(PRMInstance< GUM_SCALAR >::RefConstIterator);
     }
 

@@ -64,9 +64,7 @@ namespace gum {
   IncrementalGraphLearner< AttributeSelection, isScalar >::IncrementalGraphLearner(
       MultiDimFunctionGraph< double >* target,
       gum::VariableSet                 varList,
-      const DiscreteVariable*          value) :
-      target_(target),
-      setOfVars_(varList), value_(value) {
+      const DiscreteVariable* value) : target_(target), setOfVars_(varList), value_(value) {
     GUM_CONSTRUCTOR(IncrementalGraphLearner);
 
     for (auto varIter = setOfVars_.cbeginSafe(); varIter != setOfVars_.cendSafe(); ++varIter)

@@ -41,8 +41,7 @@ namespace gum {
   template < class TABLE >
   MultiDimCombinationDefault< TABLE >::MultiDimCombinationDefault(TABLE (*combine)(const TABLE&,
                                                                                    const TABLE&)) :
-      MultiDimCombination< TABLE >(),
-      _combine_(combine) {
+      MultiDimCombination< TABLE >(), _combine_(combine) {
     GUM_CONSTRUCTOR(MultiDimCombinationDefault);
   }
 
@@ -50,8 +49,7 @@ namespace gum {
   template < class TABLE >
   MultiDimCombinationDefault< TABLE >::MultiDimCombinationDefault(
       const MultiDimCombinationDefault< TABLE >& from) :
-      MultiDimCombination< TABLE >(),
-      _combine_(from._combine_) {
+      MultiDimCombination< TABLE >(), _combine_(from._combine_) {
     // for debugging purposes
     GUM_CONS_CPY(MultiDimCombinationDefault);
   }

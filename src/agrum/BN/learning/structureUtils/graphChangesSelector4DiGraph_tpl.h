@@ -39,8 +39,7 @@ namespace gum {
         GraphChangesSelector4DiGraph(Score&                   score,
                                      STRUCTURAL_CONSTRAINT&   constraint,
                                      GRAPH_CHANGES_GENERATOR& changes_generator) :
-        _score_(score.clone()),
-        _constraint_(&constraint), _changes_generator_(&changes_generator) {
+        _score_(score.clone()), _constraint_(&constraint), _changes_generator_(&changes_generator) {
       _parents_.resize(32);
       GUM_CONSTRUCTOR(GraphChangesSelector4DiGraph);
     }
@@ -67,8 +66,7 @@ namespace gum {
     GraphChangesSelector4DiGraph< STRUCTURAL_CONSTRAINT, GRAPH_CHANGES_GENERATOR >::
         GraphChangesSelector4DiGraph(
             GraphChangesSelector4DiGraph< STRUCTURAL_CONSTRAINT, GRAPH_CHANGES_GENERATOR >&& from) :
-        _score_(from._score_),
-        _constraint_(std::move(from._constraint_)),
+        _score_(from._score_), _constraint_(std::move(from._constraint_)),
         _changes_generator_(std::move(from._changes_generator_)),
         _changes_(std::move(from._changes_)), _change_scores_(std::move(from._change_scores_)),
         _change_queue_per_node_(std::move(from._change_queue_per_node_)),

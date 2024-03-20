@@ -722,5 +722,5 @@ namespace gum {
 #endif   // _MSC_VER
     }
 
-  }      // namespace credal
+  }   // namespace credal
 }   // namespace gum

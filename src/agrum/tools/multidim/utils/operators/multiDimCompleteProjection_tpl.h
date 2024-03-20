@@ -38,8 +38,7 @@ namespace gum {
   // constructor
   template < typename GUM_SCALAR, template < typename > class TABLE >
   MultiDimCompleteProjection< GUM_SCALAR, TABLE >::MultiDimCompleteProjection(
-      GUM_SCALAR (*proj)(const TABLE< GUM_SCALAR >&, Instantiation*)) :
-      proj_(proj) {
+      GUM_SCALAR (*proj)(const TABLE< GUM_SCALAR >&, Instantiation*)) : proj_(proj) {
     // for debugging purposes
     GUM_CONSTRUCTOR(MultiDimCompleteProjection);
   }
@@ -47,8 +46,7 @@ namespace gum {
   // copy constructor
   template < typename GUM_SCALAR, template < typename > class TABLE >
   MultiDimCompleteProjection< GUM_SCALAR, TABLE >::MultiDimCompleteProjection(
-      const MultiDimCompleteProjection< GUM_SCALAR, TABLE >& from) :
-      proj_(from.proj_) {
+      const MultiDimCompleteProjection< GUM_SCALAR, TABLE >& from) : proj_(from.proj_) {
     // for debugging purposes
     GUM_CONS_CPY(MultiDimCompleteProjection);
   }

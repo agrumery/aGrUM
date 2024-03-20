@@ -184,8 +184,7 @@ namespace gum {
 
   /// copy constructor
   INLINE DAGCycleDetector::ArcReverse::ArcReverse(const DAGCycleDetector::ArcReverse& from) noexcept
-      :
-      DAGCycleDetector::Change(from.type(), from.tail(), from.head()) {
+      : DAGCycleDetector::Change(from.type(), from.tail(), from.head()) {
     GUM_CONS_CPY(DAGCycleDetector::ArcReverse);
   }
 

@@ -52,8 +52,7 @@ namespace gum {
   template < typename GUM_SCALAR >
   GibbsBNdistance< GUM_SCALAR >::GibbsBNdistance(const IBayesNet< GUM_SCALAR >& P,
                                                  const IBayesNet< GUM_SCALAR >& Q) :
-      BNdistance< GUM_SCALAR >(P, Q),
-      ApproximationScheme(),
+      BNdistance< GUM_SCALAR >(P, Q), ApproximationScheme(),
       GibbsOperator< GUM_SCALAR >(P,
                                   nullptr,
                                   1 + (P.size() * GIBBSKL_POURCENT_DRAWN_SAMPLE / 100),

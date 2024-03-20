@@ -50,6 +50,7 @@ namespace gum {
    *     never check if it is the case.
    */
   // clang-format on
+
   template < typename GUM_SCALAR >
   class MultiDimNoisyORNet: public MultiDimICIModel< GUM_SCALAR > {
     public:

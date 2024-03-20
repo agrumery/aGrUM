@@ -37,9 +37,8 @@ namespace gum {
   template < typename GUM_SCALAR >
   BNdistance< GUM_SCALAR >::BNdistance(const IBayesNet< GUM_SCALAR >& P,
                                        const IBayesNet< GUM_SCALAR >& Q) :
-      p_(P),
-      q_(Q), klPQ_(0.0), klQP_(0.0), errorPQ_(0), errorQP_(0), _difficulty_(Complexity::Heavy),
-      _done_(false) {
+      p_(P), q_(Q), klPQ_(0.0), klQP_(0.0), errorPQ_(0), errorQP_(0),
+      _difficulty_(Complexity::Heavy), _done_(false) {
     _checkCompatibility_();   // may throw OperationNotAllowed
     GUM_CONSTRUCTOR(BNdistance);
 

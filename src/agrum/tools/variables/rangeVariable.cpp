@@ -41,8 +41,7 @@ namespace gum {
                                const std::string& aDesc,
                                long               minVal,
                                long               maxVal) :
-      DiscreteVariable(aName, aDesc),
-      _minBound_(minVal), _maxBound_(maxVal) {
+      DiscreteVariable(aName, aDesc), _minBound_(minVal), _maxBound_(maxVal) {
     GUM_CONSTRUCTOR(RangeVariable);
   }
 

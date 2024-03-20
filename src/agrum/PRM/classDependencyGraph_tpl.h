@@ -107,8 +107,7 @@ namespace gum {
     template < typename GUM_SCALAR >
     INLINE ClassDependencyGraph< GUM_SCALAR >::ClassDependencyGraph(
         const ClassDependencyGraph< GUM_SCALAR >& source) :
-        _graph_(source._graph_),
-        _modalitites_(source._modalitites_), _elt_map_(source._elt_map_) {
+        _graph_(source._graph_), _modalitites_(source._modalitites_), _elt_map_(source._elt_map_) {
       GUM_CONS_CPY(ClassDependencyGraph);
 
       for (const auto& elt: source._node_map_) {

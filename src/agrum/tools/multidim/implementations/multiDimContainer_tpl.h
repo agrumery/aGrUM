@@ -48,8 +48,7 @@ namespace gum {
   // Copy constructor
   template < typename GUM_SCALAR >
   INLINE MultiDimContainer< GUM_SCALAR >::MultiDimContainer(
-      const MultiDimContainer< GUM_SCALAR >& src) :
-      MultiDimAdressable(src) {
+      const MultiDimContainer< GUM_SCALAR >& src) : MultiDimAdressable(src) {
     GUM_CONS_CPY(MultiDimContainer);
   }
 

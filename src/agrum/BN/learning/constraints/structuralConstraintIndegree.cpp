@@ -54,8 +54,7 @@ namespace gum {
     /// constructor starting with a given graph
     StructuralConstraintIndegree::StructuralConstraintIndegree(const DiGraph& graph,
                                                                Size           max_indegree) :
-        StructuralConstraintDiGraph(graph),
-        _Indegree_max_indegree_(max_indegree) {
+        StructuralConstraintDiGraph(graph), _Indegree_max_indegree_(max_indegree) {
       for (const auto id: graph) {
         _Indegree_max_parents_.insert(id, max_indegree);
       }
@@ -65,8 +64,7 @@ namespace gum {
     /// copy constructor
     StructuralConstraintIndegree::StructuralConstraintIndegree(
         const StructuralConstraintIndegree& from) :
-        StructuralConstraintDiGraph(from),
-        _Indegree_max_parents_(from._Indegree_max_parents_),
+        StructuralConstraintDiGraph(from), _Indegree_max_parents_(from._Indegree_max_parents_),
         _Indegree_max_indegree_(from._Indegree_max_indegree_) {
       GUM_CONS_CPY(StructuralConstraintIndegree);
     }

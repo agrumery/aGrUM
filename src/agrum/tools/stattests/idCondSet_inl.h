@@ -131,8 +131,7 @@ namespace gum {
     /// default constructor with no variable on the left side
     INLINE IdCondSet::IdCondSet(const std::vector< NodeId >& ids,
                                 const bool                   rhs_ids,
-                                const bool                   ordered_ids) :
-        _end_safe_(*this) {
+                                const bool                   ordered_ids) : _end_safe_(*this) {
       _ids_.resize(ids.size());
 
       // if the rhs_ids should be considered as unordered, we sort them by
@@ -159,8 +158,7 @@ namespace gum {
     INLINE IdCondSet::IdCondSet(NodeId                       var1,
                                 const std::vector< NodeId >& rhs_ids,
                                 const bool                   ordered_rhs_ids) :
-        _nb_lhs_ids_(std::size_t(1)),
-        _end_safe_(*this) {
+        _nb_lhs_ids_(std::size_t(1)), _end_safe_(*this) {
       _ids_.resize(rhs_ids.size() + std::size_t(1));
       _ids_ << var1;
 
@@ -188,8 +186,7 @@ namespace gum {
                                 const std::vector< NodeId >& rhs_ids,
                                 const bool                   ordered_lhs_vars,
                                 const bool                   ordered_rhs_ids) :
-        _nb_lhs_ids_(std::size_t(2)),
-        _end_safe_(*this) {
+        _nb_lhs_ids_(std::size_t(2)), _end_safe_(*this) {
       _ids_.resize(rhs_ids.size() + std::size_t(2));
 
       // if the variables on the left side are unordered, sort them by
@@ -223,8 +220,7 @@ namespace gum {
                                 const std::vector< NodeId >& rhs_ids,
                                 const bool                   ordered_lhs_vars,
                                 const bool                   ordered_rhs_ids) :
-        _nb_lhs_ids_(std::size_t(3)),
-        _end_safe_(*this) {
+        _nb_lhs_ids_(std::size_t(3)), _end_safe_(*this) {
       _ids_.resize(rhs_ids.size() + std::size_t(3));
 
       // if the variables on the left side are unordered, sort them by

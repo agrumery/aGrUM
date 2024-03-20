@@ -51,29 +51,29 @@ namespace gum {
     virtual ~LoopyBeliefPropagation();
 
     protected:
-    virtual void onStateChanged_(){};
+    virtual void onStateChanged_() {};
 
-    virtual void onEvidenceAdded_(const NodeId id, bool isHardEvidence){};
+    virtual void onEvidenceAdded_(const NodeId id, bool isHardEvidence) {};
 
-    virtual void onEvidenceErased_(const NodeId id, bool isHardEvidence){};
+    virtual void onEvidenceErased_(const NodeId id, bool isHardEvidence) {};
 
-    virtual void onAllEvidenceErased_(bool contains_hard_evidence){};
+    virtual void onAllEvidenceErased_(bool contains_hard_evidence) {};
 
-    virtual void onEvidenceChanged_(const NodeId id, bool hasChangedSoftHard){};
+    virtual void onEvidenceChanged_(const NodeId id, bool hasChangedSoftHard) {};
 
-    virtual void onModelChanged_(const GraphicalModel* bn){};
+    virtual void onModelChanged_(const GraphicalModel* bn) {};
 
     virtual void updateOutdatedStructure_();
 
-    virtual void updateOutdatedPotentials_(){};
+    virtual void updateOutdatedPotentials_() {};
 
-    virtual void onMarginalTargetAdded_(const NodeId id){};
+    virtual void onMarginalTargetAdded_(const NodeId id) {};
 
-    virtual void onMarginalTargetErased_(const NodeId id){};
+    virtual void onMarginalTargetErased_(const NodeId id) {};
 
-    virtual void onAllMarginalTargetsAdded_(){};
+    virtual void onAllMarginalTargetsAdded_() {};
 
-    virtual void onAllMarginalTargetsErased_(){};
+    virtual void onAllMarginalTargetsErased_() {};
 
     /// asks derived classes for the posterior of a given variable
     /** @param id The variable's id. */

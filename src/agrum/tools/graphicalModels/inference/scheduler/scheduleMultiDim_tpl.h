@@ -78,8 +78,7 @@ namespace gum {
   template < typename TABLE >
   ScheduleMultiDim< TABLE >::ScheduleMultiDim(const Sequence< const DiscreteVariable* >& vars,
                                               const Idx                                  id) :
-      IScheduleMultiDim(id),
-      _var_sequence_(vars) {
+      IScheduleMultiDim(id), _var_sequence_(vars) {
     if (!_var_sequence_.empty()) {
       // compute and store the domain size
       _domain_size_ = Size(1);
@@ -292,8 +291,7 @@ namespace gum {
   INLINE const TABLE& ScheduleMultiDim< TABLE >::multiDim() const {
     if (_table_ == nullptr) {
       GUM_ERROR(NullElement,
-                "the ScheduleMultiDim is abstract, so its table "
-                    << "cannot be returned");
+                "the ScheduleMultiDim is abstract, so its table " << "cannot be returned");
     }
     return *_table_;
   }
@@ -321,8 +319,7 @@ namespace gum {
   TABLE* ScheduleMultiDim< TABLE >::exportMultiDim() {
     if (_table_ == nullptr) {
       GUM_ERROR(NullElement,
-                "The ScheduleMultiDim being abstract, "
-                    << "it is impossible to export its table");
+                "The ScheduleMultiDim being abstract, " << "it is impossible to export its table");
     }
     if (!_table_contained_) {
       GUM_ERROR(OperationNotAllowed,

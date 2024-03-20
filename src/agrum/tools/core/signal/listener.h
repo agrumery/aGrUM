@@ -59,7 +59,7 @@ namespace gum {
       virtual void duplicateTarget(const Listener* oldtarget, Listener* newtarget) = 0;
       virtual bool hasListener()                                                   = 0;
     };
-  }      // namespace  __sig__
+  }   // namespace  __sig__
 
 #endif   // DOXYGEN_SHOULD_SKIP_THIS
 

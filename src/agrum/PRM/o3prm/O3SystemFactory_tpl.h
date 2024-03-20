@@ -38,16 +38,14 @@ namespace gum {
                                                             O3PRM&                      o3_prm,
                                                             O3NameSolver< GUM_SCALAR >& solver,
                                                             ErrorsContainer&            errors) :
-          _prm_(&prm),
-          _o3_prm_(&o3_prm), _solver_(&solver), _errors_(&errors) {
+          _prm_(&prm), _o3_prm_(&o3_prm), _solver_(&solver), _errors_(&errors) {
         GUM_CONSTRUCTOR(O3SystemFactory);
       }
 
       template < typename GUM_SCALAR >
       INLINE
           O3SystemFactory< GUM_SCALAR >::O3SystemFactory(const O3SystemFactory< GUM_SCALAR >& src) :
-          _prm_(src._prm_),
-          _o3_prm_(src._o3_prm_), _solver_(src._solver_), _errors_(src._errors_),
+          _prm_(src._prm_), _o3_prm_(src._o3_prm_), _solver_(src._solver_), _errors_(src._errors_),
           _nameMap_(src._nameMap_) {
         GUM_CONS_CPY(O3SystemFactory);
       }
@@ -334,5 +332,5 @@ namespace gum {
         return true;
       }
     }   // namespace o3prm
-  }     // namespace prm
+  }   // namespace prm
 }   // namespace gum

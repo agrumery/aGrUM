@@ -380,8 +380,8 @@ namespace gum {
       // the separator as node
       const auto sep = clique(edge.first()) * clique(edge.second());
       stream << "  \"" << edge.first() << "~" << edge.second() << "\" [tooltip=\""
-             << expandCliqueTooltip(sep) << "\""
-             << ", width=" << scaleSep * double(sep.size()) << "];" << std::endl;
+             << expandCliqueTooltip(sep) << "\"" << ", width=" << scaleSep * double(sep.size())
+             << "];" << std::endl;
       // the edges
       stream << "  \"" << edge.first() << "\"--\"" << edge.first() << "~" << edge.second()
              << "\"--\"" << edge.second() << "\";" << std::endl

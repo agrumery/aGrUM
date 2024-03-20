@@ -52,8 +52,8 @@ namespace gum {
   template < class TABLE >
   MultiDimCombineAndProjectDefault< TABLE >::MultiDimCombineAndProjectDefault(
       const MultiDimCombineAndProjectDefault< TABLE >& from) :
-      MultiDimCombineAndProject< TABLE >(),
-      _combination_(from._combination_->clone()), _projection_(from._projection_->clone()) {
+      MultiDimCombineAndProject< TABLE >(), _combination_(from._combination_->clone()),
+      _projection_(from._projection_->clone()) {
     // for debugging purposes
     GUM_CONS_CPY(MultiDimCombineAndProjectDefault);
   }

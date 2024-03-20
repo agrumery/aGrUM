@@ -68,8 +68,7 @@ namespace gum {
     /// copy constructor
     StructuralConstraintTabuList::StructuralConstraintTabuList(
         const StructuralConstraintTabuList& from) :
-        _TabuList_changes_(from._TabuList_changes_),
-        _TabuList_offset_(from._TabuList_offset_) {
+        _TabuList_changes_(from._TabuList_changes_), _TabuList_offset_(from._TabuList_offset_) {
       GUM_CONS_CPY(StructuralConstraintTabuList);
     }
 

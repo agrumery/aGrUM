@@ -141,7 +141,7 @@ namespace gum {
       std::ostream& operator<<(std::ostream& out, const EdgeCode& code);
 
     } /* namespace gspan */
-  }   /* namespace prm */
+  } /* namespace prm */
 } /* namespace gum */
 
 #ifndef GUM_NO_INLINE

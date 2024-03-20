@@ -93,7 +93,7 @@ namespace gum {
 
     } /* namespace DBTranslators */
 
-  }   /* namespace learning */
+  } /* namespace learning */
 
 } /* namespace gum */
 

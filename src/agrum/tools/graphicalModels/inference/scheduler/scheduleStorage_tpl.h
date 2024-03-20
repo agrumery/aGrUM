@@ -54,8 +54,7 @@ namespace gum {
   template < typename TABLE, template < typename... > class CONTAINER >
   ScheduleStorage< TABLE, CONTAINER >::ScheduleStorage(const IScheduleMultiDim& table,
                                                        CONTAINER< TABLE >&      container) :
-      ScheduleOperator(ScheduleOperatorType::STORE_MULTIDIM, true, false),
-      _container_(&container) {
+      ScheduleOperator(ScheduleOperatorType::STORE_MULTIDIM, true, false), _container_(&container) {
     // checks that table is a ScheduleMultiDim<T>, where either TABLE=T or
     // TABLE = T*. If this is not the case, then we won't be able to perform the
     // operator, hence we should raise an exception now, i.e., before performing
@@ -80,8 +79,8 @@ namespace gum {
   template < typename TABLE, template < typename... > class CONTAINER >
   ScheduleStorage< TABLE, CONTAINER >::ScheduleStorage(
       const ScheduleStorage< TABLE, CONTAINER >& from) :
-      ScheduleOperator(from),
-      _arg_(from._arg_), _container_(from._container_), _is_executed_(from._is_executed_) {
+      ScheduleOperator(from), _arg_(from._arg_), _container_(from._container_),
+      _is_executed_(from._is_executed_) {
     // save the arg into _args_ (no need to update _results_)
     _args_ << _arg_;
 

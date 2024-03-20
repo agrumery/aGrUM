@@ -56,8 +56,7 @@ namespace gum {
 
     template < typename GUM_SCALAR >
     INLINE PRMFuncAttribute< GUM_SCALAR >::PRMFuncAttribute(
-        const PRMFuncAttribute< GUM_SCALAR >& source) :
-        PRMScalarAttribute< GUM_SCALAR >(source) {
+        const PRMFuncAttribute< GUM_SCALAR >& source) : PRMScalarAttribute< GUM_SCALAR >(source) {
       GUM_CONS_CPY(PRMFuncAttribute);
       GUM_ERROR(FatalError, "illegal call to copy constructor")
     }

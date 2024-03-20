@@ -39,8 +39,7 @@ namespace gum {
                              const Prior&                                                prior,
                              const std::vector< std::pair< std::size_t, std::size_t > >& ranges,
                              const Bijection< NodeId, std::size_t >& nodeId2columns) :
-        prior_(prior.clone()),
-        counter_(parser, ranges, nodeId2columns) {
+        prior_(prior.clone()), counter_(parser, ranges, nodeId2columns) {
       GUM_CONSTRUCTOR(PseudoCount);
     }
 
@@ -48,14 +47,13 @@ namespace gum {
     INLINE PseudoCount::PseudoCount(const DBRowGeneratorParser&             parser,
                                     const Prior&                            prior,
                                     const Bijection< NodeId, std::size_t >& nodeId2columns) :
-        prior_(prior.clone()),
-        counter_(parser, nodeId2columns) {
+        prior_(prior.clone()), counter_(parser, nodeId2columns) {
       GUM_CONSTRUCTOR(PseudoCount);
     }
 
     /// copy constructor
     INLINE PseudoCount::PseudoCount(const PseudoCount& from) :
-        prior_(from.prior_->clone()), counter_(from.counter_) {
+        prior_(from.prior_ -> clone()), counter_(from.counter_) {
       GUM_CONS_CPY(PseudoCount);
     }
 

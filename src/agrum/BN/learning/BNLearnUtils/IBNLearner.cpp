@@ -184,8 +184,8 @@ namespace gum::learning {
   IBNLearner::IBNLearner(const std::string&                filename,
                          const std::vector< std::string >& missing_symbols,
                          const bool                        induceTypes) :
-      inducedTypes_(induceTypes),
-      scoreDatabase_(filename, missing_symbols, induceTypes), filename_(filename) {
+      inducedTypes_(induceTypes), scoreDatabase_(filename, missing_symbols, induceTypes),
+      filename_(filename) {
     noPrior_ = new NoPrior(scoreDatabase_.databaseTable());
 
     GUM_CONSTRUCTOR(IBNLearner)
@@ -518,8 +518,7 @@ namespace gum::learning {
 
       default :
         GUM_ERROR(OperationNotAllowed,
-                  "IBNLearner does not support "
-                      << "yet this parameter estimator")
+                  "IBNLearner does not support " << "yet this parameter estimator")
     }
 
     // assign the number of threads

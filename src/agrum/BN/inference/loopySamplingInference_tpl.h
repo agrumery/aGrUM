@@ -39,8 +39,7 @@ namespace gum {
   template < typename GUM_SCALAR, template < typename > class APPROX >
   LoopySamplingInference< GUM_SCALAR, APPROX >::LoopySamplingInference(
       const IBayesNet< GUM_SCALAR >* BN) :
-      APPROX< GUM_SCALAR >(BN),
-      virtualLBPSize_(DEFAULT_VIRTUAL_LBP_SIZE) {
+      APPROX< GUM_SCALAR >(BN), virtualLBPSize_(DEFAULT_VIRTUAL_LBP_SIZE) {
     GUM_CONSTRUCTOR(LoopySamplingInference);
   }
 

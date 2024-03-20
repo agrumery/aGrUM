@@ -121,8 +121,8 @@ namespace gum {
   template < typename GUM_SCALAR >
   MarkovRandomField< GUM_SCALAR >::MarkovRandomField(
       const MarkovRandomField< GUM_SCALAR >& source) :
-      IMarkovRandomField< GUM_SCALAR >(source),
-      _topologyTransformationInProgress_(false), _varMap_(source._varMap_) {
+      IMarkovRandomField< GUM_SCALAR >(source), _topologyTransformationInProgress_(false),
+      _varMap_(source._varMap_) {
     GUM_CONS_CPY(MarkovRandomField);
     _copyFactors_(source);
   }

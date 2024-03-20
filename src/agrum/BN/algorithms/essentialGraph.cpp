@@ -131,8 +131,7 @@ namespace gum {
     std::stringstream nodeStream;
     std::stringstream edgeStream;
     List< NodeId >    treatedNodes;
-    output << "digraph \""
-           << "no_name\" {" << std::endl;
+    output << "digraph \"" << "no_name\" {" << std::endl;
     nodeStream << "node [shape = ellipse];" << std::endl;
     std::string tab = "  ";
     if (_dagmodel_ != nullptr) {

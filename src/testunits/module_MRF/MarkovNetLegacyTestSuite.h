@@ -35,8 +35,7 @@
                 > > > > > > > > df1b713db([aGrUM] renaming gum::MarkovNetwok to
                                                            gum::MarkovRandomField
                                                   .Using MRF instead of MN when needed.) :
-    src
-    / testunits / module_MRF
+    src / testunits / module_MRF
     / MarkovRandomFieldTestSuite.h
 #include <agrum/tools/multidim/potential.h>
 #include <agrum/tools/variables/discretizedVariable.h>
@@ -62,8 +61,7 @@
     == == == == class [[maybe_unused]] MarkovRandomFieldTestSuite: public CxxTest::TestSuite {
       >>>>>>>> df1b713db([aGrUM] renaming gum::MarkovNetwok to
                              gum::MarkovRandomField.Using MRF instead of MN when needed.) :
-          src
-          / testunits / module_MRF
+          src / testunits / module_MRF
           / MarkovRandomFieldTestSuite.h private:
           void _fill(gum::MarkovRandomField< double > & mn) {
         for (const auto i: {11, 21, 31, 41}) {
@@ -120,8 +118,7 @@
         == == == == gum::MarkovRandomField< double >              mn2(mn);
         >>>>>>>> df1b713db([aGrUM] renaming gum::MarkovNetwok to
                                gum::MarkovRandomField.Using MRF instead of MN when needed.) :
-            src
-            / testunits / module_MRF
+            src / testunits / module_MRF
             / MarkovRandomFieldTestSuite.h TS_ASSERT_EQUALS(
                 mn2.toString(),
                 "MRF{nodes: 5, edges: 6, domainSize: 567, dim: 102}")
@@ -301,8 +298,7 @@
             = gum::MarkovRandomField< double >::fastPrototype("A--B--C;B--D;C--E;D--E--F");
         >>>>>>>> df1b713db([aGrUM] renaming gum::MarkovNetwok to
                                gum::MarkovRandomField.Using MRF instead of MN when needed.) :
-            src
-            / testunits / module_MRF / MarkovRandomFieldTestSuite.h const auto s1
+            src / testunits / module_MRF / MarkovRandomFieldTestSuite.h const auto s1
             = mn.toDot();
         const auto s2 = mn.toDotAsFactorGraph();
         GUM_UNUSED(s1);

@@ -762,7 +762,7 @@ namespace gum {
             maxZ = z;
           }
         }   // if z not in (x, y)
-      }     // for z in graph.nodes
+      }   // for z in graph.nodes
       // storing best z in rank_
       CondRanking final;
       auto        tup = new CondThreePoints{x, y, maxZ, ui};

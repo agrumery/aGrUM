@@ -34,8 +34,7 @@ namespace gum {
     /// default constructor
     template < typename STRUCT_CONSTRAINT >
     GraphChangesGeneratorOnSubDiGraph< STRUCT_CONSTRAINT >::GraphChangesGeneratorOnSubDiGraph(
-        STRUCT_CONSTRAINT& constraint) :
-        constraint_(&constraint) {
+        STRUCT_CONSTRAINT& constraint) : constraint_(&constraint) {
       GUM_CONSTRUCTOR(GraphChangesGeneratorOnSubDiGraph);
     }
 
@@ -43,9 +42,9 @@ namespace gum {
     template < typename STRUCT_CONSTRAINT >
     GraphChangesGeneratorOnSubDiGraph< STRUCT_CONSTRAINT >::GraphChangesGeneratorOnSubDiGraph(
         const GraphChangesGeneratorOnSubDiGraph& from) :
-        constraint_(from.constraint_),
-        target_nodes_(from.target_nodes_), tail_nodes_(from.tail_nodes_),
-        legal_changes_(from.legal_changes_), _max_threads_number_(from._max_threads_number_) {
+        constraint_(from.constraint_), target_nodes_(from.target_nodes_),
+        tail_nodes_(from.tail_nodes_), legal_changes_(from.legal_changes_),
+        _max_threads_number_(from._max_threads_number_) {
       GUM_CONS_CPY(GraphChangesGeneratorOnSubDiGraph);
     }
 
@@ -53,9 +52,8 @@ namespace gum {
     template < typename STRUCT_CONSTRAINT >
     GraphChangesGeneratorOnSubDiGraph< STRUCT_CONSTRAINT >::GraphChangesGeneratorOnSubDiGraph(
         GraphChangesGeneratorOnSubDiGraph&& from) :
-        constraint_(from.constraint_),
-        target_nodes_(std::move(from.target_nodes_)), tail_nodes_(std::move(from.tail_nodes_)),
-        legal_changes_(std::move(from.legal_changes_)),
+        constraint_(from.constraint_), target_nodes_(std::move(from.target_nodes_)),
+        tail_nodes_(std::move(from.tail_nodes_)), legal_changes_(std::move(from.legal_changes_)),
         _max_threads_number_(from._max_threads_number_) {
       GUM_CONS_MOV(GraphChangesGeneratorOnSubDiGraph);
     }

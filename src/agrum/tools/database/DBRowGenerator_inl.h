@@ -35,8 +35,7 @@ namespace gum {
     /// default constructor
     INLINE DBRowGenerator::DBRowGenerator(const std::vector< DBTranslatedValueType >& column_types,
                                           const DBRowGeneratorGoal                    goal) :
-        column_types_(column_types),
-        goal_(goal) {
+        column_types_(column_types), goal_(goal) {
       GUM_CONSTRUCTOR(DBRowGenerator);
     }
 

@@ -41,8 +41,8 @@ namespace gum {
         const std::string&                    name,
         const PRMType&                        type,
         MultiDimImplementation< GUM_SCALAR >* impl) :
-        PRMAttribute< GUM_SCALAR >(name),
-        _type_(new PRMType(type)), _cpf_(new Potential< GUM_SCALAR >(impl)) {
+        PRMAttribute< GUM_SCALAR >(name), _type_(new PRMType(type)),
+        _cpf_(new Potential< GUM_SCALAR >(impl)) {
       GUM_CONSTRUCTOR(PRMScalarAttribute);
       _cpf_->add(_type_->variable());
 
@@ -52,8 +52,7 @@ namespace gum {
     template < typename GUM_SCALAR >
     PRMScalarAttribute< GUM_SCALAR >::PRMScalarAttribute(
         const PRMScalarAttribute< GUM_SCALAR >& source) :
-        PRMAttribute< GUM_SCALAR >(source),
-        _type_(0), _cpf_(0) {
+        PRMAttribute< GUM_SCALAR >(source), _type_(0), _cpf_(0) {
       GUM_CONS_CPY(PRMScalarAttribute);
       GUM_ERROR(FatalError, "Illegal call to the copy constructor of gum::ScalarAttribute")
     }

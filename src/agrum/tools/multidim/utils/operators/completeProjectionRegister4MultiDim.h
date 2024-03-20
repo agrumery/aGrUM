@@ -59,6 +59,7 @@ namespace gum {
    *
    */
   // clang-format on
+
   template < typename GUM_SCALAR >
   class CompleteProjectionRegister4MultiDim {
     public:

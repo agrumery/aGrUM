@@ -940,7 +940,7 @@ namespace gum {
       };
 
     }   // namespace o3prm
-  }     // namespace prm
+  }   // namespace prm
 }   // namespace gum
 
 #endif   // GUM_PRM_O3PRM_PRM_H

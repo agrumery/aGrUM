@@ -486,8 +486,8 @@ namespace gum {
             if (std::fabs(1. - sum) > _epsRedund_) {
               GUM_ERROR(CPTError,
                         _src_bn_.variable(node).name()
-                            << "(" << _epsRedund_ << ")  does not sum to one for"
-                            << " " << entry << std::endl
+                            << "(" << _epsRedund_ << ")  does not sum to one for" << " " << entry
+                            << std::endl
                             << vertex << std::endl
                             << ins << std::endl);
             }
@@ -534,9 +534,9 @@ namespace gum {
             ++ins_max;
           }   // end of : for each modality
 
-        }     // end of : for each entry
+        }   // end of : for each entry
 
-      }       // end of : for each variable
+      }   // end of : for each variable
 
       _epsilonMin_ = epsi_min;
       _epsilonMax_ = epsi_max;
@@ -591,7 +591,7 @@ namespace gum {
 
         }   // end of : for each entry
 
-      }     // end of : for each variable
+      }   // end of : for each variable
     }
 
     template < typename GUM_SCALAR >
@@ -656,9 +656,9 @@ namespace gum {
             ++ins_max;
           }   // end of : for each modality
 
-        }     // end of : for each entry
+        }   // end of : for each entry
 
-      }       // end of : for each variable
+      }   // end of : for each variable
 
       _epsilonMin_ = GUM_SCALAR(s);
       _epsilonMax_ = GUM_SCALAR(s);
@@ -1142,7 +1142,7 @@ namespace gum {
 
         }   // end of bit i
 
-      }     // end of old variable
+      }   // end of old variable
 
       bin_bn->beginTopologyTransformation();
 
@@ -1443,7 +1443,7 @@ namespace gum {
           if (_current_bn_->nodeId(*parent_idIt) != node)
             dest.addArc(_current_bn_->nodeId(*parent_idIt), node);
         }   // end of : for each parent in order of appearence
-      }     // end of : for each variable
+      }   // end of : for each variable
 
       dest.endTopologyTransformation();
     }
@@ -1776,10 +1776,10 @@ namespace gum {
                   elem[probability - vertex->begin()] = true;
                   break;
                 }
-              }        // end of : for each modality
+              }   // end of : for each modality
 
               break;   // not vacuous
-            }          // end of : for each vertex
+            }   // end of : for each vertex
 
             for (auto /*std::vector< bool >::const_iterator*/ probability = elem.cbegin();
                  probability != elem.cend();
@@ -1803,5 +1803,5 @@ namespace gum {
       }   // end of : for each variable
     }
 
-  }       // namespace credal
+  }   // namespace credal
 }   // namespace gum

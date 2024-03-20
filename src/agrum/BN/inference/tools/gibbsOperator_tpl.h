@@ -38,8 +38,7 @@ namespace gum {
                                              const NodeProperty< Idx >*     hardEv,
                                              Size                           nbr,
                                              bool                           atRandom) :
-      counting_(0),
-      samplingBn_(BN), hardEv_(hardEv), nbr_(nbr), atRandom_(atRandom) {
+      counting_(0), samplingBn_(BN), hardEv_(hardEv), nbr_(nbr), atRandom_(atRandom) {
     GUM_CONSTRUCTOR(GibbsOperator);
   }
 

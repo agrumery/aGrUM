@@ -142,8 +142,7 @@ namespace gum {
     /// copy constructor
     DBTranslator4ContinuousVariable::DBTranslator4ContinuousVariable(
         const DBTranslator4ContinuousVariable& from) :
-        DBTranslator(from),
-        _variable_(from._variable_),
+        DBTranslator(from), _variable_(from._variable_),
         _status_float_missing_symbols_(from._status_float_missing_symbols_),
         _nonfloat_missing_symbol_(from._nonfloat_missing_symbol_), _fit_range_(from._fit_range_) {
       // store a copy of the variable, that should be used by method variable ()
@@ -155,8 +154,7 @@ namespace gum {
     /// move constructor
     DBTranslator4ContinuousVariable::DBTranslator4ContinuousVariable(
         DBTranslator4ContinuousVariable&& from) :
-        DBTranslator(std::move(from)),
-        _variable_(std::move(from._variable_)),
+        DBTranslator(std::move(from)), _variable_(std::move(from._variable_)),
         _status_float_missing_symbols_(std::move(from._status_float_missing_symbols_)),
         _nonfloat_missing_symbol_(std::move(from._nonfloat_missing_symbol_)),
         _fit_range_(from._fit_range_) {

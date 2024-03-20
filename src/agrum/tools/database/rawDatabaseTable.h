@@ -297,7 +297,7 @@ namespace gum {
 #endif /* DOXYGEN_SHOULD_SKIP_THIS */
     };
 
-  }    /* namespace learning */
+  } /* namespace learning */
 
 } /* namespace gum */
 

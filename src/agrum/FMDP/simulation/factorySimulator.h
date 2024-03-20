@@ -75,6 +75,7 @@ namespace gum {
    * @ingroup fmdp_group
    */
   // clang-format on
+
   class FactorySimulator: public AbstractSimulator {
     public:
     // ===========================================================================

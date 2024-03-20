@@ -1048,8 +1048,7 @@ namespace gum {
   template < typename Key, typename Val >
   HashTableConstIteratorSafe< Key, Val >::HashTableConstIteratorSafe(
       const HashTable< Key, Val >& tab,
-      Size                         ind_elt) :
-      _table_{reinterpret_cast< const HashTable< Key, Val >* >(&tab)} {
+      Size ind_elt) : _table_{reinterpret_cast< const HashTable< Key, Val >* >(&tab)} {
     Size i;
 
     // check if we are looking for a begin() and we know for sure its index
@@ -1109,8 +1108,8 @@ namespace gum {
   template < typename Key, typename Val >
   INLINE HashTableConstIteratorSafe< Key, Val >::HashTableConstIteratorSafe(
       const HashTableConstIteratorSafe< Key, Val >& from) :
-      _table_{from._table_},
-      _index_{from._index_}, _bucket_{from._bucket_}, _next_bucket_{from._next_bucket_} {
+      _table_{from._table_}, _index_{from._index_}, _bucket_{from._bucket_},
+      _next_bucket_{from._next_bucket_} {
     // make the hashtable keep track of this iterator
     if (_table_ != nullptr) { _insertIntoSafeList_(); }
 
@@ -1121,8 +1120,7 @@ namespace gum {
   template < typename Key, typename Val >
   INLINE HashTableConstIteratorSafe< Key, Val >::HashTableConstIteratorSafe(
       const HashTableConstIterator< Key, Val >& from) :
-      _table_{from._table_},
-      _index_{from._index_}, _bucket_{from._bucket_} {
+      _table_{from._table_}, _index_{from._index_}, _bucket_{from._bucket_} {
     // make the hashtable keep track of this iterator
     if (_table_ != nullptr) { _insertIntoSafeList_(); }
 
@@ -1133,8 +1131,8 @@ namespace gum {
   template < typename Key, typename Val >
   INLINE HashTableConstIteratorSafe< Key, Val >::HashTableConstIteratorSafe(
       HashTableConstIteratorSafe< Key, Val >&& from) :
-      _table_{from._table_},
-      _index_{from._index_}, _bucket_{from._bucket_}, _next_bucket_{from._next_bucket_} {
+      _table_{from._table_}, _index_{from._index_}, _bucket_{from._bucket_},
+      _next_bucket_{from._next_bucket_} {
     GUM_CONS_MOV(HashTableConstIteratorSafe);
 
     // find "from" in the hashtable's list of safe iterators and substitute
@@ -1453,8 +1451,7 @@ namespace gum {
 
   template < typename Key, typename Val >
   INLINE HashTableIteratorSafe< Key, Val >::HashTableIteratorSafe(
-      const HashTableIterator< Key, Val >& from) :
-      HashTableConstIteratorSafe< Key, Val >(from) {
+      const HashTableIterator< Key, Val >& from) : HashTableConstIteratorSafe< Key, Val >(from) {
     GUM_CONS_CPY(HashTableIteratorSafe);
   }
 
@@ -1640,16 +1637,14 @@ namespace gum {
   template < typename Key, typename Val >
   INLINE HashTableConstIterator< Key, Val >::HashTableConstIterator(
       const HashTableConstIterator< Key, Val >& from) noexcept :
-      _table_{from._table_},
-      _index_{from._index_}, _bucket_{from._bucket_} {
+      _table_{from._table_}, _index_{from._index_}, _bucket_{from._bucket_} {
     GUM_CONS_CPY(HashTableConstIterator);
   }
 
   template < typename Key, typename Val >
   INLINE HashTableConstIterator< Key, Val >::HashTableConstIterator(
       HashTableConstIterator< Key, Val >&& from) noexcept :
-      _table_{from._table_},
-      _index_{from._index_}, _bucket_{from._bucket_} {
+      _table_{from._table_}, _index_{from._index_}, _bucket_{from._bucket_} {
     GUM_CONS_MOV(HashTableConstIterator);
   }
 
@@ -1831,8 +1826,7 @@ namespace gum {
 
   template < typename Key, typename Val >
   INLINE HashTableIterator< Key, Val >::HashTableIterator(const HashTable< Key, Val >& tab) noexcept
-      :
-      HashTableConstIterator< Key, Val >(tab) {
+      : HashTableConstIterator< Key, Val >(tab) {
     GUM_CONSTRUCTOR(HashTableIterator);
   }
 

@@ -51,8 +51,7 @@ namespace gum {
 
   template < typename GUM_SCALAR >
   IMarkovRandomField< GUM_SCALAR >::IMarkovRandomField(
-      const IMarkovRandomField< GUM_SCALAR >& source) :
-      UGmodel(source) {
+      const IMarkovRandomField< GUM_SCALAR >& source) : UGmodel(source) {
     GUM_CONS_CPY(IMarkovRandomField);
   }
 
@@ -174,8 +173,8 @@ namespace gum {
       if (neighbours(node).size() > 0) {
         for (auto nei: neighbours(node)) {
           if (variable(node).name() < variable(nei).name()) {
-            output << tab << "\"" << variable(node).name() << "\" -- "
-                   << "\"" << variable(nei).name() << "\";" << std::endl;
+            output << tab << "\"" << variable(node).name() << "\" -- " << "\""
+                   << variable(nei).name() << "\";" << std::endl;
           }
         }
       } else {

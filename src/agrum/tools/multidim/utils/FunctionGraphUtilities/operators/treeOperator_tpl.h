@@ -44,8 +44,7 @@ namespace gum {
   INLINE TreeOperator< GUM_SCALAR, COMBINEOPERATOR, TerminalNodePolicy >::TreeOperator(
       const MultiDimFunctionGraph< GUM_SCALAR, TerminalNodePolicy >* dt1,
       const MultiDimFunctionGraph< GUM_SCALAR, TerminalNodePolicy >* dt2) :
-      _dt1_(dt1),
-      _dt2_(dt2), _combine_() {
+      _dt1_(dt1), _dt2_(dt2), _combine_() {
     GUM_CONSTRUCTOR(TreeOperator);
 
     _rd_ = MultiDimFunctionGraph< GUM_SCALAR, TerminalNodePolicy >::getTreeInstance();
@@ -60,8 +59,7 @@ namespace gum {
       const MultiDimFunctionGraph< GUM_SCALAR, TerminalNodePolicy >* dt1,
       const MultiDimFunctionGraph< GUM_SCALAR, TerminalNodePolicy >* dt2,
       const HashTable< const DiscreteVariable*, Idx >                givenContext) :
-      _dt1_(dt1),
-      _dt2_(dt2), _combine_(), _context_(givenContext) {
+      _dt1_(dt1), _dt2_(dt2), _combine_(), _context_(givenContext) {
     GUM_CONSTRUCTOR(TreeOperator);
 
     _rd_ = MultiDimFunctionGraph< GUM_SCALAR, TerminalNodePolicy >::getTreeInstance();

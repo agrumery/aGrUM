@@ -230,8 +230,7 @@ namespace gum {
       template < typename GUM_SCALAR >
       INLINE FrequenceSearch< GUM_SCALAR >::FrequenceSearch(
           const FrequenceSearch< GUM_SCALAR >& from) :
-          SearchStrategy< GUM_SCALAR >(from),
-          _freq_(from._freq_) {
+          SearchStrategy< GUM_SCALAR >(from), _freq_(from._freq_) {
         GUM_CONS_CPY(FrequenceSearch);
       }
 
@@ -384,8 +383,7 @@ namespace gum {
 
       template < typename GUM_SCALAR >
       INLINE TreeWidthSearch< GUM_SCALAR >::TreeWidthSearch(
-          const TreeWidthSearch< GUM_SCALAR >& from) :
-          SearchStrategy< GUM_SCALAR >(from) {
+          const TreeWidthSearch< GUM_SCALAR >& from) : SearchStrategy< GUM_SCALAR >(from) {
         GUM_CONS_CPY(TreeWidthSearch);
       }
 
@@ -439,5 +437,5 @@ namespace gum {
       }
 
     } /* namespace gspan */
-  }   /* namespace prm */
+  } /* namespace prm */
 } /* namespace gum */

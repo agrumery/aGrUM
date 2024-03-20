@@ -34,8 +34,8 @@ namespace gum {
   /// Default constructor
   SpanningForestPrim::SpanningForestPrim(const UndiGraph*             graph,
                                          const EdgeProperty< float >* cost) :
-      SpanningForest(),
-      _graph_(*graph), _costTable_(*cost), _spanning_tree_cost_(0), _require_computation_(true) {
+      SpanningForest(), _graph_(*graph), _costTable_(*cost), _spanning_tree_cost_(0),
+      _require_computation_(true) {
     if (!graph || !cost) { GUM_ERROR(GraphError, "invalid null graph or edge cost pointer") }
 
     // for debugging purposes

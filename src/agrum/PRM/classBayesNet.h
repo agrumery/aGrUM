@@ -54,6 +54,7 @@ namespace gum {
      * variables are missing in the DAG but not in the nodes CPT.
      */
     // clang-format on
+
     template < typename GUM_SCALAR >
     class ClassBayesNet: public IBayesNet< GUM_SCALAR > {
       public:

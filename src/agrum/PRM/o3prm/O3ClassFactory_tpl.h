@@ -38,8 +38,7 @@ namespace gum {
                                                           O3PRM&                      o3_prm,
                                                           O3NameSolver< GUM_SCALAR >& solver,
                                                           ErrorsContainer&            errors) :
-          _prm_(&prm),
-          _o3_prm_(&o3_prm), _solver_(&solver), _errors_(&errors) {
+          _prm_(&prm), _o3_prm_(&o3_prm), _solver_(&solver), _errors_(&errors) {
         GUM_CONSTRUCTOR(O3ClassFactory);
       }
 
@@ -1034,5 +1033,5 @@ namespace gum {
       }
 
     }   // namespace o3prm
-  }     // namespace prm
+  }   // namespace prm
 }   // namespace gum

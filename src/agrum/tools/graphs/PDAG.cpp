@@ -40,13 +40,12 @@ namespace gum {
              bool arcs_resize_policy,
              Size edges_size,
              bool edges_resize_policy) :
-      NodeGraphPart(nodes_size, nodes_resize_policy),
-      MixedGraph(nodes_size,
-                 nodes_resize_policy,
-                 arcs_size,
-                 arcs_resize_policy,
-                 edges_size,
-                 edges_resize_policy) {
+      NodeGraphPart(nodes_size, nodes_resize_policy), MixedGraph(nodes_size,
+                                                                 nodes_resize_policy,
+                                                                 arcs_size,
+                                                                 arcs_resize_policy,
+                                                                 edges_size,
+                                                                 edges_resize_policy) {
     GUM_CONSTRUCTOR(PDAG);
   }
 
@@ -183,8 +182,7 @@ namespace gum {
   std::string PDAG::toDot() const {
     std::stringstream output;
     List< NodeId >    treatedNodes;
-    output << "digraph \""
-           << "no_name\" {" << std::endl;
+    output << "digraph \"" << "no_name\" {" << std::endl;
 
     std::string tab = "  ";
     output << tab << "rankdir = TD;" << std::endl;

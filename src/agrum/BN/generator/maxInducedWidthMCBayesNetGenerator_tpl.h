@@ -67,8 +67,7 @@ namespace gum {
                                          Size                   maxInducedWidth,
                                          Idx                    iteration,
                                          Idx                    p,
-                                         Idx                    q) :
-      MCBG(bayesNet, iteration, p, q) {
+                                         Idx q) : MCBG(bayesNet, iteration, p, q) {
     maxlog10InducedWidth_ = maxInducedWidth;
     GUM_CONSTRUCTOR(MaxInducedWidthMCBayesNetGenerator);
   }

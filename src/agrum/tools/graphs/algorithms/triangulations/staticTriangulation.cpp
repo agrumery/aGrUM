@@ -42,8 +42,7 @@ namespace gum {
                                            const EliminationSequenceStrategy& elimSeq,
                                            const JunctionTreeStrategy&        JTStrategy,
                                            bool                               minimality) :
-      Triangulation(domsizes),
-      elimination_sequence_strategy_(elimSeq.newFactory()),
+      Triangulation(domsizes), elimination_sequence_strategy_(elimSeq.newFactory()),
       junction_tree_strategy_(JTStrategy.newFactory()), _original_graph_(theGraph),
       _minimality_required_(minimality) {
     // for debugging purposes

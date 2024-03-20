@@ -188,23 +188,23 @@ namespace gum_tests {
     GUM_ACTIVE_TEST(ToFastMethod) {
       std::string s;
       s = "A{On|Off|Defun}";
-      TS_ASSERT_EQUALS(s, (FASTVARDBL(s)->toFast()));            // labelized
+      TS_ASSERT_EQUALS(s, (FASTVARDBL(s)->toFast()));             // labelized
       s = "A{0|1.15|2.3}";
-      TS_ASSERT_EQUALS(s, (FASTVARDBL(s)->toFast()));            // NumericalDiscrete
+      TS_ASSERT_EQUALS(s, (FASTVARDBL(s)->toFast()));             // NumericalDiscrete
       TS_ASSERT_EQUALS(s,
-                       (FASTVARDBL("A{0:2.3:3}")->toFast()));    // NumericalDiscrete
+                       (FASTVARDBL("A{0:2.3:3}")->toFast()));     // NumericalDiscrete
       s = "A{1|3|5}";
-      TS_ASSERT_EQUALS(s, (FASTVARDBL(s)->toFast()));            // Integer
-      TS_ASSERT_EQUALS(s, (FASTVARDBL("A{1:5:3}")->toFast()));   // Integer
+      TS_ASSERT_EQUALS(s, (FASTVARDBL(s)->toFast()));             // Integer
+      TS_ASSERT_EQUALS(s, (FASTVARDBL("A{1:5:3}")->toFast()));    // Integer
       s = "A[3,5]";
-      TS_ASSERT_EQUALS(s, (FASTVARDBL(s)->toFast()));            // Range
+      TS_ASSERT_EQUALS(s, (FASTVARDBL(s)->toFast()));             // Range
       s = "A[5]";
-      TS_ASSERT_EQUALS(s, (FASTVARDBL(s)->toFast()));            // Range
+      TS_ASSERT_EQUALS(s, (FASTVARDBL(s)->toFast()));             // Range
       s = "A[1,2,3,4,5,6]";
-      TS_ASSERT_EQUALS(s, (FASTVARDBL(s)->toFast()));            // Discretized
-      TS_ASSERT_EQUALS(s, (FASTVARDBL("A[1:6:5]")->toFast()));   // Discretized
+      TS_ASSERT_EQUALS(s, (FASTVARDBL(s)->toFast()));             // Discretized
+      TS_ASSERT_EQUALS(s, (FASTVARDBL("A[1:6:5]")->toFast()));    // Discretized
       s = "A+[1,2,3,4,5,6]";
-      TS_ASSERT_EQUALS(s, (FASTVARDBL(s)->toFast()));            // Discretized
+      TS_ASSERT_EQUALS(s, (FASTVARDBL(s)->toFast()));             // Discretized
       TS_ASSERT_EQUALS(s, (FASTVARDBL("A+[1:6:5]")->toFast()));   // Discretized
     }
 

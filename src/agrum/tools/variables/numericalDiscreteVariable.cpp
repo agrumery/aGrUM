@@ -53,8 +53,7 @@ namespace gum {
                                                        const std::string& aDesc,
                                                        double             first,
                                                        double             last,
-                                                       Size               nb) :
-      DiscreteVariable(aName, aDesc) {
+                                                       Size nb) : DiscreteVariable(aName, aDesc) {
     // store the sorted values into a sequence
     if (nb < 2) GUM_ERROR(ArgumentError, "The size of the domain must be >2 (here :" << nb << ").")
     if (first >= last)

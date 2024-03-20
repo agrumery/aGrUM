@@ -64,17 +64,14 @@ namespace gum {
   template < typename GUM_SCALAR >
   INLINE MultiDimDecorator< GUM_SCALAR >::MultiDimDecorator(
       MultiDimImplementation< GUM_SCALAR >* aContent,
-      GUM_SCALAR                            empty_value) :
-      content_(aContent),
-      empty_value_(empty_value) {
+      GUM_SCALAR empty_value) : content_(aContent), empty_value_(empty_value) {
     _initPotentialOperators__< GUM_SCALAR >();
     GUM_CONSTRUCTOR(MultiDimDecorator);
   }
 
   template < typename GUM_SCALAR >
   INLINE MultiDimDecorator< GUM_SCALAR >::MultiDimDecorator(
-      const MultiDimDecorator< GUM_SCALAR >& from) :
-      MultiDimContainer< GUM_SCALAR >(from) {
+      const MultiDimDecorator< GUM_SCALAR >& from) : MultiDimContainer< GUM_SCALAR >(from) {
     GUM_CONS_CPY(MultiDimDecorator);
     _initPotentialOperators__< GUM_SCALAR >();
     empty_value_ = from.empty_value_;

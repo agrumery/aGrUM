@@ -41,6 +41,7 @@ namespace gum {
    * @brief An efficient class for combining and projecting MultiDim tables
    */
   // clang-format on
+
   template < class TABLE >
   class MultiDimCombineAndProjectDefault: public MultiDimCombineAndProject< TABLE > {
     public:

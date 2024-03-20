@@ -43,8 +43,7 @@ namespace gum {
     template < typename GUM_SCALAR >
     INLINE MultiDimAggregator< GUM_SCALAR >::MultiDimAggregator(
         const MultiDimAggregator< GUM_SCALAR >& from) :
-        MultiDimReadOnly< GUM_SCALAR >(from),
-        decomposable_(from.decomposable_) {
+        MultiDimReadOnly< GUM_SCALAR >(from), decomposable_(from.decomposable_) {
       GUM_CONS_CPY(MultiDimAggregator);
     }
 

@@ -98,6 +98,7 @@ namespace gum {
    * @endcode
    */
   // clang-format on
+
   template < class TABLE >
   class MultiDimCombinationDefault: public MultiDimCombination< TABLE > {
     public:

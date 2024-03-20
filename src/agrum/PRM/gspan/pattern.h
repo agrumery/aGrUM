@@ -243,7 +243,7 @@ namespace gum {
         using DiGraph::children;
       };
     } /* namespace gspan */
-  }   /* namespace prm */
+  } /* namespace prm */
 } /* namespace gum */
 #ifndef GUM_NO_INLINE
 #  include <agrum/PRM/gspan/pattern_inl.h>

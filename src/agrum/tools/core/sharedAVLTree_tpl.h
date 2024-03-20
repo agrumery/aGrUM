@@ -167,16 +167,14 @@ namespace gum {
   template < typename Val, typename Cmp >
   INLINE SharedAVLTreeIterator< Val, Cmp >::SharedAVLTreeIterator(
       const SharedAVLTree< Val, Cmp >& tree,
-      const bool                       begin) noexcept :
-      AVLTreeIterator< Val, Cmp >(tree, begin) {
+      const bool                       begin) noexcept : AVLTreeIterator< Val, Cmp >(tree, begin) {
     GUM_CONSTRUCTOR(SharedAVLTreeIterator)
   }
 
   /// copy constructor
   template < typename Val, typename Cmp >
   INLINE SharedAVLTreeIterator< Val, Cmp >::SharedAVLTreeIterator(
-      const SharedAVLTreeIterator< Val, Cmp >& from) noexcept :
-      AVLTreeIterator< Val, Cmp >(from) {
+      const SharedAVLTreeIterator< Val, Cmp >& from) noexcept : AVLTreeIterator< Val, Cmp >(from) {
     GUM_CONS_CPY(SharedAVLTreeIterator)
   }
 
@@ -283,16 +281,14 @@ namespace gum {
   template < typename Val, typename Cmp >
   INLINE SharedAVLTreeIteratorSafe< Val, Cmp >::SharedAVLTreeIteratorSafe(
       SharedAVLTree< Val, Cmp >& tree,
-      const bool                 rbegin) :
-      AVLTreeIteratorSafe< Val, Cmp >(tree, rbegin) {
+      const bool                 rbegin) : AVLTreeIteratorSafe< Val, Cmp >(tree, rbegin) {
     GUM_CONSTRUCTOR(SharedAVLTreeIteratorSafe)
   }
 
   /// copy constructor
   template < typename Val, typename Cmp >
   INLINE SharedAVLTreeIteratorSafe< Val, Cmp >::SharedAVLTreeIteratorSafe(
-      const SharedAVLTreeIteratorSafe< Val, Cmp >& from) :
-      AVLTreeIteratorSafe< Val, Cmp >(from) {
+      const SharedAVLTreeIteratorSafe< Val, Cmp >& from) : AVLTreeIteratorSafe< Val, Cmp >(from) {
     GUM_CONS_CPY(SharedAVLTreeIteratorSafe)
   }
 
@@ -399,8 +395,7 @@ namespace gum {
   template < typename Val, typename Cmp >
   INLINE SharedAVLTreeReverseIterator< Val, Cmp >::SharedAVLTreeReverseIterator(
       const SharedAVLTree< Val, Cmp >& tree,
-      const bool                       rbegin) noexcept :
-      SharedAVLTreeIterator< Val, Cmp >(tree, !rbegin) {
+      const bool rbegin) noexcept : SharedAVLTreeIterator< Val, Cmp >(tree, !rbegin) {
     GUM_CONSTRUCTOR(SharedAVLTreeReverseIterator)
   }
 
@@ -505,8 +500,7 @@ namespace gum {
   template < typename Val, typename Cmp >
   INLINE SharedAVLTreeReverseIteratorSafe< Val, Cmp >::SharedAVLTreeReverseIteratorSafe(
       SharedAVLTree< Val, Cmp >& tree,
-      const bool                 rbegin) :
-      SharedAVLTreeIteratorSafe< Val, Cmp >(tree, !rbegin) {
+      const bool                 rbegin) : SharedAVLTreeIteratorSafe< Val, Cmp >(tree, !rbegin) {
     GUM_CONSTRUCTOR(SharedAVLTreeReverseIteratorSafe)
   }
 

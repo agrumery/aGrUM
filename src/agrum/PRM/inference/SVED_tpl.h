@@ -472,8 +472,7 @@ namespace gum {
     template < typename GUM_SCALAR >
     INLINE SVED< GUM_SCALAR >::SVED(const PRM< GUM_SCALAR >&       prm,
                                     const PRMSystem< GUM_SCALAR >& model) :
-        PRMInference< GUM_SCALAR >(prm, model),
-        _class_elim_order_(0), _bb_(*this) {
+        PRMInference< GUM_SCALAR >(prm, model), _class_elim_order_(0), _bb_(*this) {
       GUM_CONSTRUCTOR(SVED);
     }
 

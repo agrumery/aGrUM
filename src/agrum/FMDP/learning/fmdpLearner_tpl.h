@@ -45,8 +45,7 @@ namespace gum {
              LEARNERNAME LearnerSelection >
   FMDPLearner< VariableAttributeSelection, RewardAttributeSelection, LearnerSelection >::
       FMDPLearner(double lT, bool actionReward, double sT) :
-      _actionReward_(actionReward),
-      _learningThreshold_(lT), _similarityThreshold_(sT) {
+      _actionReward_(actionReward), _learningThreshold_(lT), _similarityThreshold_(sT) {
     GUM_CONSTRUCTOR(FMDPLearner);
     _rewardLearner_ = nullptr;
   }

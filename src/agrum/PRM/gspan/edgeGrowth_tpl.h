@@ -37,8 +37,7 @@ namespace gum {
                                                   LabelData* an_edge,
                                                   LabelData* a_l_v,
                                                   NodeId     a_v) :
-          u(a_u),
-          edge(an_edge), l_v(a_l_v), v(a_v), degree_list(new std::vector< NodeId >()) {
+          u(a_u), edge(an_edge), l_v(a_l_v), v(a_v), degree_list(new std::vector< NodeId >()) {
         GUM_CONSTRUCTOR(EdgeGrowth);
       }
 
@@ -83,5 +82,5 @@ namespace gum {
       }
 
     } /* namespace gspan */
-  }   /* namespace prm */
+  } /* namespace prm */
 } /* namespace gum */

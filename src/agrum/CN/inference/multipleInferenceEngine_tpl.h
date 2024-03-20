@@ -471,9 +471,9 @@ namespace gum {
               if (l_marginalMax_[tId][i][j] > this->oldMarginalMax_[i][j])
                 this->oldMarginalMax_[i][j] = l_marginalMax_[tId][i][j];
             }   // end of : all threads
-          }     // end of : all modalities
-        }       // end of : all variables
-      }         // end of : parallel region
+          }   // end of : all modalities
+        }   // end of : all variables
+      }   // end of : parallel region
     }
 
     template < typename GUM_SCALAR, class BNInferenceEngine >
@@ -505,8 +505,8 @@ namespace gum {
               // should be enough
               _infE_::updateCredalSets_(i, vtx, (vtx.size() > 2) ? true : false);
             }   // end of : nodeThreadCredalSet
-          }     // end of : all threads
-        }       // end of : all variables
+          }   // end of : all threads
+        }   // end of : all variables
       };
 
       const Size working_size = workingSet_.size();
@@ -625,7 +625,7 @@ namespace gum {
             if (l_expectationMin_[tId][i] < this->expectationMin_[i])
               this->expectationMin_[i] = l_expectationMin_[tId][i];
           }   // end of : each thread
-        }     // end of : each variable
+        }   // end of : each variable
       };
 
       const Size working_size = workingSet_.size();
@@ -753,8 +753,8 @@ namespace gum {
               }
             }
           }   // end of : all threads
-        }     // end of : all modalities
-      }       // end of : all variables
+        }   // end of : all modalities
+      }   // end of : all variables
     }
 
     template < typename GUM_SCALAR, class BNInferenceEngine >

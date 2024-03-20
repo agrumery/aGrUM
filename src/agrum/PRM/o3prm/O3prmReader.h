@@ -161,7 +161,7 @@ namespace gum {
       };
 
     }   // namespace o3prm
-  }     // namespace prm
+  }   // namespace prm
 }   // namespace gum
 
 // always include the implementation of the templates

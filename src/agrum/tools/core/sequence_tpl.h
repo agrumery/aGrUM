@@ -90,8 +90,7 @@ namespace gum {
   template < typename Key >
   INLINE SequenceIteratorSafe< Key >::SequenceIteratorSafe(
       const SequenceIteratorSafe< Key >& source) noexcept :
-      _iterator_{source._iterator_},
-      _seq_{source._seq_} {
+      _iterator_{source._iterator_}, _seq_{source._seq_} {
     GUM_CONS_CPY(SequenceIteratorSafe);
   }
 
@@ -99,8 +98,7 @@ namespace gum {
   template < typename Key >
   INLINE SequenceIteratorSafe< Key >::SequenceIteratorSafe(
       SequenceIteratorSafe< Key >&& source) noexcept :
-      _iterator_{source._iterator_},
-      _seq_{source._seq_} {
+      _iterator_{source._iterator_}, _seq_{source._seq_} {
     GUM_CONS_MOV(SequenceIteratorSafe);
   }
 
@@ -280,9 +278,7 @@ namespace gum {
   // initializer list constructor
   template < typename Key, bool Gen >
   INLINE SequenceImplementation< Key, Gen >::SequenceImplementation(
-      std::initializer_list< Key > list) :
-      _end_safe_{*this},
-      _rend_safe_{*this} {
+      std::initializer_list< Key > list) : _end_safe_{*this}, _rend_safe_{*this} {
     GUM_CONSTRUCTOR(SequenceImplementation);
     _rend_safe_._setAtRend_();
     for (const auto& elt: list) {
@@ -293,9 +289,7 @@ namespace gum {
   // copy constructor
   template < typename Key, bool Gen >
   INLINE SequenceImplementation< Key, Gen >::SequenceImplementation(
-      const SequenceImplementation< Key, Gen >& aSeq) :
-      _end_safe_{*this},
-      _rend_safe_{*this} {
+      const SequenceImplementation< Key, Gen >& aSeq) : _end_safe_{*this}, _rend_safe_{*this} {
     GUM_CONS_CPY(SequenceImplementation);
     _rend_safe_._setAtRend_();
     _copy_(aSeq);   // performs the  _update_end_ ()
@@ -305,8 +299,7 @@ namespace gum {
   template < typename Key, bool Gen >
   INLINE SequenceImplementation< Key, Gen >::SequenceImplementation(
       SequenceImplementation< Key, Gen >&& aSeq) :
-      _h_(std::move(aSeq._h_)),
-      _v_(std::move(aSeq._v_)), _end_safe_{*this}, _rend_safe_{*this} {
+      _h_(std::move(aSeq._h_)), _v_(std::move(aSeq._v_)), _end_safe_{*this}, _rend_safe_{*this} {
     GUM_CONS_MOV(SequenceImplementation);
     _rend_safe_._setAtRend_();
     _update_end_();
@@ -664,9 +657,7 @@ namespace gum {
   // initializer list constructor
   template < typename Key >
   INLINE SequenceImplementation< Key, true >::SequenceImplementation(
-      std::initializer_list< Key > list) :
-      _end_safe_{*this},
-      _rend_safe_{*this} {
+      std::initializer_list< Key > list) : _end_safe_{*this}, _rend_safe_{*this} {
     GUM_CONSTRUCTOR(SequenceImplementation);
     _rend_safe_._setAtRend_();
     for (const auto& elt: list) {
@@ -678,8 +669,7 @@ namespace gum {
   template < typename Key >
   SequenceImplementation< Key, true >::SequenceImplementation(
       const SequenceImplementation< Key, true >& aSeq) :
-      _h_(aSeq._h_),
-      _v_(aSeq._v_), _end_safe_{*this}, _rend_safe_{*this} {
+      _h_(aSeq._h_), _v_(aSeq._v_), _end_safe_{*this}, _rend_safe_{*this} {
     GUM_CONS_CPY(SequenceImplementation);
     _rend_safe_._setAtRend_();
     _end_safe_._setAtEnd_();
@@ -689,8 +679,7 @@ namespace gum {
   template < typename Key >
   INLINE SequenceImplementation< Key, true >::SequenceImplementation(
       SequenceImplementation< Key, true >&& aSeq) :
-      _h_(std::move(aSeq._h_)),
-      _v_(std::move(aSeq._v_)), _end_safe_{*this}, _rend_safe_{*this} {
+      _h_(std::move(aSeq._h_)), _v_(std::move(aSeq._v_)), _end_safe_{*this}, _rend_safe_{*this} {
     GUM_CONS_MOV(SequenceImplementation);
     _rend_safe_._setAtRend_();
     _end_safe_._setAtEnd_();

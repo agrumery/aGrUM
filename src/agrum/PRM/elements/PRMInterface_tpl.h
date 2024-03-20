@@ -41,8 +41,7 @@ namespace gum {
     PRMInterface< GUM_SCALAR >::PRMInterface(const std::string&          name,
                                              PRMInterface< GUM_SCALAR >& super,
                                              bool                        delayInheritance) :
-        PRMClassElementContainer< GUM_SCALAR >(name),
-        _superInterface_(&super) {
+        PRMClassElementContainer< GUM_SCALAR >(name), _superInterface_(&super) {
       GUM_CONSTRUCTOR(PRMInterface);
       if (!delayInheritance) { _inheritInterface_(super); }
     }

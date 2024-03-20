@@ -575,8 +575,7 @@ namespace gum {
       O3InterfaceElement::O3InterfaceElement(const O3Label& type,
                                              const O3Label& name,
                                              bool           isArray) :
-          _type_(type),
-          _name_(name), _isArray_(isArray) {
+          _type_(type), _name_(name), _isArray_(isArray) {
         GUM_CONSTRUCTOR(O3InterfaceElement);
       }
 
@@ -686,8 +685,7 @@ namespace gum {
       O3Attribute::O3Attribute(const O3Label&     type,
                                const O3Label&     name,
                                const O3LabelList& parents) :
-          _type_(type),
-          _name_(name), _parents_(parents) {
+          _type_(type), _name_(name), _parents_(parents) {
         GUM_CONSTRUCTOR(O3Attribute);
       }
 
@@ -742,8 +740,7 @@ namespace gum {
       O3RawCPT::O3RawCPT(const O3Label&       type,
                          const O3Label&       name,
                          const O3LabelList&   parents,
-                         const O3FormulaList& values) :
-          O3Attribute(type, name, parents) {
+                         const O3FormulaList& values) : O3Attribute(type, name, parents) {
         GUM_CONSTRUCTOR(O3RawCPT);
         auto copy = new O3FormulaList(values);
         _values_  = std::unique_ptr< O3FormulaList >(copy);
@@ -1476,5 +1473,5 @@ namespace gum {
       O3Label& O3Import::import() { return _import_; }
 
     }   // namespace o3prm
-  }     // namespace prm
+  }   // namespace prm
 }   // namespace gum

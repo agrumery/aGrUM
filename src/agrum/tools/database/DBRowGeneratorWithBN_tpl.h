@@ -39,8 +39,7 @@ namespace gum {
         const BayesNet< GUM_SCALAR >&               bn,
         const DBRowGeneratorGoal                    goal,
         const Bijection< NodeId, std::size_t >&     nodeId2columns) :
-        DBRowGenerator(column_types, goal),
-        bn_(&bn), nodeId2columns_(nodeId2columns) {
+        DBRowGenerator(column_types, goal), bn_(&bn), nodeId2columns_(nodeId2columns) {
       GUM_CONSTRUCTOR(DBRowGeneratorWithBN);
     }
 
@@ -48,8 +47,7 @@ namespace gum {
     template < typename GUM_SCALAR >
     DBRowGeneratorWithBN< GUM_SCALAR >::DBRowGeneratorWithBN(
         const DBRowGeneratorWithBN< GUM_SCALAR >& from) :
-        DBRowGenerator(from),
-        bn_(from.bn_), nodeId2columns_(from.nodeId2columns_) {
+        DBRowGenerator(from), bn_(from.bn_), nodeId2columns_(from.nodeId2columns_) {
       GUM_CONS_CPY(DBRowGeneratorWithBN);
     }
 
@@ -57,8 +55,8 @@ namespace gum {
     template < typename GUM_SCALAR >
     DBRowGeneratorWithBN< GUM_SCALAR >::DBRowGeneratorWithBN(
         DBRowGeneratorWithBN< GUM_SCALAR >&& from) :
-        DBRowGenerator(std::move(from)),
-        bn_(from.bn_), nodeId2columns_(std::move(from.nodeId2columns_)) {
+        DBRowGenerator(std::move(from)), bn_(from.bn_),
+        nodeId2columns_(std::move(from.nodeId2columns_)) {
       GUM_CONS_MOV(DBRowGeneratorWithBN);
     }
 

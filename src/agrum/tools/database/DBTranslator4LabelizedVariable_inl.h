@@ -40,16 +40,14 @@ namespace gum {
     /// copy constructor
     INLINE DBTranslator4LabelizedVariable::DBTranslator4LabelizedVariable(
         const DBTranslator4LabelizedVariable& from) :
-        DBTranslator(from),
-        _variable_(from._variable_) {
+        DBTranslator(from), _variable_(from._variable_) {
       GUM_CONS_CPY(DBTranslator4LabelizedVariable);
     }
 
     /// move constructor
     INLINE DBTranslator4LabelizedVariable::DBTranslator4LabelizedVariable(
         DBTranslator4LabelizedVariable&& from) :
-        DBTranslator(std::move(from)),
-        _variable_(std::move(from._variable_)) {
+        DBTranslator(std::move(from)), _variable_(std::move(from._variable_)) {
       GUM_CONS_MOV(DBTranslator4LabelizedVariable);
     }
 

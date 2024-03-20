@@ -45,10 +45,9 @@ namespace gum {
                                                const std::string delimiter,
                                                const char        commentmarker,
                                                const char        quoteMarker) :
-        IDBInitializer(IDBInitializer::InputType::STRING),
-        _filename_(filename), _delimiter_(delimiter), _comment_marker_(commentmarker),
-        _quote_marker_(quoteMarker), _first_row_has_names_(fileContainsNames),
-        _input_stream_(_filename_, std::ifstream::in),
+        IDBInitializer(IDBInitializer::InputType::STRING), _filename_(filename),
+        _delimiter_(delimiter), _comment_marker_(commentmarker), _quote_marker_(quoteMarker),
+        _first_row_has_names_(fileContainsNames), _input_stream_(_filename_, std::ifstream::in),
         _parser_(_input_stream_, filename, delimiter, commentmarker, quoteMarker) {
       // check that the input file was opened correctly
       if ((_input_stream_.rdstate() & std::ifstream::failbit) != 0) {

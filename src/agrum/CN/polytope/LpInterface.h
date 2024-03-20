@@ -165,7 +165,7 @@ namespace gum {
 
     }   // end of namespace lp
 
-  }     // end of namespace credal
+  }   // end of namespace credal
 
 }   // end of namespace gum
 
@@ -1014,7 +1014,7 @@ namespace gum {
 
     }   // end of namespace lp
 
-  }     // namespace credal
+  }   // namespace credal
 
 }   // end of namespace gum
 

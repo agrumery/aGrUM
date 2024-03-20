@@ -604,8 +604,7 @@ namespace gum {
     template < typename GUM_SCALAR >
     INLINE SVE< GUM_SCALAR >::SVE(const PRM< GUM_SCALAR >&       prm,
                                   const PRMSystem< GUM_SCALAR >& system) :
-        PRMInference< GUM_SCALAR >(prm, system),
-        _class_elim_order_(0) {
+        PRMInference< GUM_SCALAR >(prm, system), _class_elim_order_(0) {
       GUM_CONSTRUCTOR(SVE);
     }
 

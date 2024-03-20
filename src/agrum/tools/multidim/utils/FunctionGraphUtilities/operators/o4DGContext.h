@@ -46,6 +46,7 @@ namespace gum {
    * @brief Class used to manipulate context during Function Graph Operations
    */
   // clang-format on
+
   class O4DGContext {
     public:
     // ============================================================================

@@ -55,8 +55,7 @@ namespace gum {
   template < typename GUM_SCALAR >
   INLINE MultiDimNoisyAND< GUM_SCALAR >::MultiDimNoisyAND(
       const Bijection< const DiscreteVariable*, const DiscreteVariable* >& bij,
-      const MultiDimNoisyAND< GUM_SCALAR >&                                from) :
-      MultiDimICIModel< GUM_SCALAR >(bij, from) {
+      const MultiDimNoisyAND< GUM_SCALAR >& from) : MultiDimICIModel< GUM_SCALAR >(bij, from) {
     GUM_CONSTRUCTOR(MultiDimNoisyAND);
   }
 

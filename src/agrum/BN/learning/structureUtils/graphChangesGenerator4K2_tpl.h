@@ -34,8 +34,7 @@ namespace gum {
     /// default constructor
     template < typename STRUCT_CONSTRAINT >
     GraphChangesGenerator4K2< STRUCT_CONSTRAINT >::GraphChangesGenerator4K2(
-        STRUCT_CONSTRAINT& constraint) :
-        constraint_(&constraint) {
+        STRUCT_CONSTRAINT& constraint) : constraint_(&constraint) {
       GUM_CONSTRUCTOR(GraphChangesGenerator4K2);
     }
 
@@ -43,9 +42,8 @@ namespace gum {
     template < typename STRUCT_CONSTRAINT >
     GraphChangesGenerator4K2< STRUCT_CONSTRAINT >::GraphChangesGenerator4K2(
         const GraphChangesGenerator4K2& from) :
-        graph_(from.graph_),
-        constraint_(from.constraint_), order_(from.order_), legal_changes_(from.legal_changes_),
-        _max_threads_number_(from._max_threads_number_) {
+        graph_(from.graph_), constraint_(from.constraint_), order_(from.order_),
+        legal_changes_(from.legal_changes_), _max_threads_number_(from._max_threads_number_) {
       GUM_CONS_CPY(GraphChangesGenerator4K2);
     }
 
@@ -53,9 +51,8 @@ namespace gum {
     template < typename STRUCT_CONSTRAINT >
     GraphChangesGenerator4K2< STRUCT_CONSTRAINT >::GraphChangesGenerator4K2(
         GraphChangesGenerator4K2&& from) :
-        graph_(std::move(from.graph_)),
-        constraint_(from.constraint_), order_(std::move(from.order_)),
-        legal_changes_(std::move(from.legal_changes_)),
+        graph_(std::move(from.graph_)), constraint_(from.constraint_),
+        order_(std::move(from.order_)), legal_changes_(std::move(from.legal_changes_)),
         _max_threads_number_(from._max_threads_number_) {
       GUM_CONS_MOV(GraphChangesGenerator4K2);
     }

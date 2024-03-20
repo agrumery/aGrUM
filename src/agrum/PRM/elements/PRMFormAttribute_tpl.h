@@ -43,8 +43,8 @@ namespace gum {
                                                      const std::string&                     name,
                                                      const PRMType&                         type,
                                                      MultiDimImplementation< std::string >* impl) :
-        PRMAttribute< GUM_SCALAR >(name),
-        _type_(new PRMType(type)), _cpf_(0), _formulas_(impl), _class_(&c) {
+        PRMAttribute< GUM_SCALAR >(name), _type_(new PRMType(type)), _cpf_(0), _formulas_(impl),
+        _class_(&c) {
       GUM_CONSTRUCTOR(PRMFormAttribute);
       _formulas_->add(_type_->variable());
       this->safeName_ = PRMObject::LEFT_CAST() + _type_->name() + PRMObject::RIGHT_CAST() + name;

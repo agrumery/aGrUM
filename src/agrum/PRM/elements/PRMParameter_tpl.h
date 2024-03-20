@@ -33,8 +33,7 @@ namespace gum {
     PRMParameter< GUM_SCALAR >::PRMParameter(const std::string& name,
                                              ParameterType      type,
                                              GUM_SCALAR         value) :
-        PRMClassElement< GUM_SCALAR >(name),
-        _type_(type), _value_(value) {
+        PRMClassElement< GUM_SCALAR >(name), _type_(type), _value_(value) {
       GUM_CONSTRUCTOR(PRMParameter);
       this->safeName_ = name;
     }

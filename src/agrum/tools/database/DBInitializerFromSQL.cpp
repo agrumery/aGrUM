@@ -97,8 +97,8 @@ namespace gum {
     DBInitializerFromSQL::DBInitializerFromSQL(const std::string& connection_string,
                                                const std::string& query,
                                                long               timeout) :
-        IDBInitializer(IDBInitializer::InputType::STRING),
-        _connection_string_(connection_string), _query_(query), _timeout_(timeout) {
+        IDBInitializer(IDBInitializer::InputType::STRING), _connection_string_(connection_string),
+        _query_(query), _timeout_(timeout) {
       // save the current locale because the connection to the database
       // will change it
       const std::string current_locale = std::setlocale(LC_NUMERIC, NULL);

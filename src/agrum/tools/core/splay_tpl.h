@@ -72,9 +72,7 @@ namespace gum {
       HashTable< Element, SplayBinaryNode< Element >* >& addr,
       SplayBinaryNode*                                   g,
       SplayBinaryNode*                                   d,
-      SplayBinaryNode*                                   p) :
-      elt(e),
-      size(1), fg(g), fd(d), pere(p) {
+      SplayBinaryNode* p) : elt(e), size(1), fg(g), fd(d), pere(p) {
     if (addr.exists(elt)) addr[elt] = this;
     else addr.insert(elt, this);
 

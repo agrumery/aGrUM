@@ -55,6 +55,7 @@ namespace gum {
    * the causes.
    */
   // clang-format on
+
   template < typename GUM_SCALAR >
   class MultiDimICIModel: public MultiDimReadOnly< GUM_SCALAR > {
     public:
@@ -99,17 +100,17 @@ namespace gum {
     virtual void changeNotification(const gum::Instantiation&,
                                     const gum::DiscreteVariable* const,
                                     gum::Idx,
-                                    gum::Idx) override{};
+                                    gum::Idx) override {};
 
-    virtual void setFirstNotification(const gum::Instantiation&) override{};
+    virtual void setFirstNotification(const gum::Instantiation&) override {};
 
-    virtual void setLastNotification(const gum::Instantiation&) override{};
+    virtual void setLastNotification(const gum::Instantiation&) override {};
 
-    virtual void setIncNotification(const gum::Instantiation&) override{};
+    virtual void setIncNotification(const gum::Instantiation&) override {};
 
-    virtual void setDecNotification(const gum::Instantiation&) override{};
+    virtual void setDecNotification(const gum::Instantiation&) override {};
 
-    virtual void setChangeNotification(const gum::Instantiation&) override{};
+    virtual void setChangeNotification(const gum::Instantiation&) override {};
 
     std::string toString(const gum::Instantiation* i) const override { return i->toString(); };
 

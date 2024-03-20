@@ -67,8 +67,7 @@ namespace gum {
   template < typename TABLE1, typename TABLE2, typename TABLE_RES >
   ScheduleBinaryCombination< TABLE1, TABLE2, TABLE_RES >::ScheduleBinaryCombination(
       const ScheduleBinaryCombination< TABLE1, TABLE2, TABLE_RES >& from) :
-      ScheduleOperator(from),
-      _arg1_(from._arg1_), _arg2_(from._arg2_), _combine_(from._combine_) {
+      ScheduleOperator(from), _arg1_(from._arg1_), _arg2_(from._arg2_), _combine_(from._combine_) {
     // copy the result of the from operator
     _result_ = from._result_->clone();
 
@@ -84,8 +83,8 @@ namespace gum {
   template < typename TABLE1, typename TABLE2, typename TABLE_RES >
   ScheduleBinaryCombination< TABLE1, TABLE2, TABLE_RES >::ScheduleBinaryCombination(
       ScheduleBinaryCombination< TABLE1, TABLE2, TABLE_RES >&& from) :
-      ScheduleOperator(std::move(from)),
-      _arg1_(from._arg1_), _arg2_(from._arg2_), _result_(from._result_), _combine_(from._combine_) {
+      ScheduleOperator(std::move(from)), _arg1_(from._arg1_), _arg2_(from._arg2_),
+      _result_(from._result_), _combine_(from._combine_) {
     // indicate that from does not contain anything anymore
     from.makeResultsPersistent(true);   // prevent deleting nullptr
     from._result_ = nullptr;

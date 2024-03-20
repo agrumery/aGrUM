@@ -46,6 +46,7 @@ namespace gum {
    * @brief Class used to perform Function Graph Operations
    */
   // clang-format on
+
   template < typename GUM_SCALAR,
              template < typename >
              class FUNCTOR,

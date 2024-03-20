@@ -44,9 +44,7 @@ namespace gum {
     template < typename T_DATA >
     INLINE DBRow< T_DATA >::DBRow(const std::size_t size,
                                   const T_DATA      default_cell,
-                                  const double      weight) :
-        row_(size, default_cell),
-        weight_(weight) {
+                                  const double weight) : row_(size, default_cell), weight_(weight) {
       GUM_CONSTRUCTOR(DBRow);
     }
 

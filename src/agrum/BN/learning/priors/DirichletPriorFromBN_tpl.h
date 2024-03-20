@@ -33,8 +33,7 @@ namespace gum::learning {
   template < typename GUM_SCALAR >
   DirichletPriorFromBN< GUM_SCALAR >::DirichletPriorFromBN(const DatabaseTable& learning_db,
                                                            const BayesNet< GUM_SCALAR >* priorbn) :
-      Prior(learning_db),
-      _prior_bn_(priorbn) {
+      Prior(learning_db), _prior_bn_(priorbn) {
     GUM_CONSTRUCTOR(DirichletPriorFromBN)
   }
 

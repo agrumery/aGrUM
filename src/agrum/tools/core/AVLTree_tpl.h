@@ -918,8 +918,8 @@ namespace gum {
   INLINE
       AVLTreeIterator< Val, Cmp >::AVLTreeIterator(const AVLTreeIterator< Val, Cmp >& from) noexcept
       :
-      tree_(from.tree_),
-      node_(from.node_), next_node_(from.next_node_), preceding_node_(from.preceding_node_) {
+      tree_(from.tree_), node_(from.node_), next_node_(from.next_node_),
+      preceding_node_(from.preceding_node_) {
     GUM_CONS_CPY(AVLTreeIterator)
   }
 
@@ -1066,8 +1066,7 @@ namespace gum {
   /// copy constructor
   template < typename Val, typename Cmp >
   INLINE AVLTreeIteratorSafe< Val, Cmp >::AVLTreeIteratorSafe(
-      const AVLTreeIteratorSafe< Val, Cmp >& from) :
-      AVLTreeIterator< Val, Cmp >(from) {
+      const AVLTreeIteratorSafe< Val, Cmp >& from) : AVLTreeIterator< Val, Cmp >(from) {
     if (this->tree_ != nullptr) this->tree_->insertIntoSafeList_(this);
     GUM_CONS_CPY(AVLTreeIteratorSafe)
   }
@@ -1176,8 +1175,7 @@ namespace gum {
   /// copy constructor
   template < typename Val, typename Cmp >
   INLINE AVLTreeReverseIterator< Val, Cmp >::AVLTreeReverseIterator(
-      const AVLTreeReverseIterator< Val, Cmp >& from) noexcept :
-      AVLTreeIterator< Val, Cmp >(from) {
+      const AVLTreeReverseIterator< Val, Cmp >& from) noexcept : AVLTreeIterator< Val, Cmp >(from) {
     GUM_CONS_CPY(AVLTreeReverseIterator)
   }
 
@@ -1285,8 +1283,7 @@ namespace gum {
   /// copy constructor
   template < typename Val, typename Cmp >
   INLINE AVLTreeReverseIteratorSafe< Val, Cmp >::AVLTreeReverseIteratorSafe(
-      const AVLTreeReverseIteratorSafe< Val, Cmp >& from) :
-      AVLTreeIteratorSafe< Val, Cmp >(from) {
+      const AVLTreeReverseIteratorSafe< Val, Cmp >& from) : AVLTreeIteratorSafe< Val, Cmp >(from) {
     GUM_CONS_CPY(AVLTreeReverseIteratorSafe)
   }
 

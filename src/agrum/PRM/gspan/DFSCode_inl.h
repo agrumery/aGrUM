@@ -152,5 +152,5 @@ namespace gum {
       }
 
     } /* namespace gspan */
-  }   /* namespace prm */
+  } /* namespace prm */
 } /* namespace gum */

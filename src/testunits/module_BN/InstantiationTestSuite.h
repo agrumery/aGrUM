@@ -358,7 +358,7 @@ namespace gum_tests {
                              {0.4, 0.6,
                               0.5, 0.5,
                               0.5, 0.5,
-                              1.0, 0.0});   // clang-format on
+                              1.0, 0.0});                                   // clang-format on
       bn.cpt(i5).fillWith(   // clang-format off
                              {1.0,0.0,
                               0.0,1.0,
@@ -367,7 +367,7 @@ namespace gum_tests {
                               0.0,1.0,
                               0.0,1.0,
                               0.0,1.0,
-                              0.0,1.0});                                      // clang-format on
+                              0.0,1.0});   // clang-format on
     }
   };
 }   // namespace gum_tests

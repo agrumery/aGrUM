@@ -45,8 +45,7 @@ namespace gum {
     PRMClass< GUM_SCALAR >::PRMClass(const std::string&      name,
                                      PRMClass< GUM_SCALAR >& super,
                                      bool                    delayInheritance) :
-        PRMClassElementContainer< GUM_SCALAR >(name),
-        _superClass_(&super), _implements_(nullptr),
+        PRMClassElementContainer< GUM_SCALAR >(name), _superClass_(&super), _implements_(nullptr),
         _bijection_(new Bijection< const DiscreteVariable*, const DiscreteVariable* >()) {
       GUM_CONSTRUCTOR(PRMClass);
       if (!delayInheritance) {
@@ -59,9 +58,8 @@ namespace gum {
     PRMClass< GUM_SCALAR >::PRMClass(const std::string&                        name,
                                      const Set< PRMInterface< GUM_SCALAR >* >& set,
                                      bool                                      delayInheritance) :
-        PRMClassElementContainer< GUM_SCALAR >(name),
-        _superClass_(nullptr), _implements_(new Set< PRMInterface< GUM_SCALAR >* >(set)),
-        _bijection_(nullptr) {
+        PRMClassElementContainer< GUM_SCALAR >(name), _superClass_(nullptr),
+        _implements_(new Set< PRMInterface< GUM_SCALAR >* >(set)), _bijection_(nullptr) {
       GUM_CONSTRUCTOR(PRMClass);
 
       if (!delayInheritance) { _implementInterfaces_(false); }
@@ -72,8 +70,7 @@ namespace gum {
                                      PRMClass< GUM_SCALAR >&                   super,
                                      const Set< PRMInterface< GUM_SCALAR >* >& set,
                                      bool                                      delayInheritance) :
-        PRMClassElementContainer< GUM_SCALAR >(name),
-        _superClass_(&super), _implements_(nullptr),
+        PRMClassElementContainer< GUM_SCALAR >(name), _superClass_(&super), _implements_(nullptr),
         _bijection_(new Bijection< const DiscreteVariable*, const DiscreteVariable* >()) {
       GUM_CONSTRUCTOR(PRMClass);
       if (!delayInheritance) {

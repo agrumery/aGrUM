@@ -44,9 +44,7 @@ namespace gum {
       INFERENCE_ENGINE< GUM_SCALAR >& engine,
       gum::NodeSet                    X,
       gum::NodeSet                    Y,
-      gum::NodeSet                    Z) :
-      engine_(engine),
-      X_(std::move(X)), Y_(std::move(Y)), Z_(std::move(Z)) {
+      gum::NodeSet Z) : engine_(engine), X_(std::move(X)), Y_(std::move(Y)), Z_(std::move(Z)) {
     GUM_CONSTRUCTOR(InformationTheory)
     if ((!(X_ * Y_).empty()) || (!(X_ * Z_).empty()) || (!(Z_ * Y_).empty()))
       GUM_ERROR(OperationNotAllowed, "The intersection between the set of variables must be empty")
@@ -57,8 +55,7 @@ namespace gum {
   InformationTheory< INFERENCE_ENGINE, GUM_SCALAR >::InformationTheory(
       INFERENCE_ENGINE< GUM_SCALAR >& engine,
       const gum::NodeSet&             X,
-      const gum::NodeSet&             Y) :
-      InformationTheory(engine, X, Y, NodeSet()) {}
+      const gum::NodeSet&             Y) : InformationTheory(engine, X, Y, NodeSet()) {}
 
   INFORMATION_THEORY_TEMPLATE
   InformationTheory< INFERENCE_ENGINE, GUM_SCALAR >::InformationTheory(

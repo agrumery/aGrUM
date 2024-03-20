@@ -181,7 +181,7 @@ namespace gum {
     void _dumpObjects_();
     void _atexit_();
 
-  }        // namespace  __debug__
+  }   // namespace  __debug__
 
 #  endif   // GUM_DEBUG_MODE
 

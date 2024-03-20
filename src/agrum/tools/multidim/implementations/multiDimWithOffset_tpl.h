@@ -47,8 +47,7 @@ namespace gum {
   template < typename GUM_SCALAR >
   MultiDimWithOffset< GUM_SCALAR >::MultiDimWithOffset(
       const MultiDimWithOffset< GUM_SCALAR >& from) :
-      MultiDimImplementation< GUM_SCALAR >(from),
-      gaps_(from.gaps_) {
+      MultiDimImplementation< GUM_SCALAR >(from), gaps_(from.gaps_) {
     // for debugging purposes
     GUM_CONS_CPY(MultiDimWithOffset);
   }

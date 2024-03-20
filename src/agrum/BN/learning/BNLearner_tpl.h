@@ -160,8 +160,7 @@ namespace gum {
           GUM_ERROR(MissingValueInDatabase,
                     "In general, the BNLearner is unable to cope with "
                         << "missing values in databases. To learn parameters in "
-                        << "such situations, you should first use method "
-                        << "useEM()");
+                        << "such situations, you should first use method " << "useEM()");
         }
 
         // create the usual estimator

@@ -44,9 +44,8 @@ namespace gum {
                                       const std::vector< std::string >& missing_symbols,
                                       const bool                        dynamic_dictionary,
                                       std::size_t                       max_dico_entries) :
-        is_lossless_(is_lossless),
-        is_dictionary_dynamic_(dynamic_dictionary), max_dico_entries_(max_dico_entries),
-        val_type_(val_type) {
+        is_lossless_(is_lossless), is_dictionary_dynamic_(dynamic_dictionary),
+        max_dico_entries_(max_dico_entries), val_type_(val_type) {
       const std::size_t size = missing_symbols.size();
 
       if (size) {
@@ -65,9 +64,8 @@ namespace gum {
                                       const bool            is_lossless,
                                       const bool            dynamic_dictionary,
                                       std::size_t           max_dico_entries) :
-        is_lossless_(is_lossless),
-        is_dictionary_dynamic_(dynamic_dictionary), max_dico_entries_(max_dico_entries),
-        val_type_(val_type) {
+        is_lossless_(is_lossless), is_dictionary_dynamic_(dynamic_dictionary),
+        max_dico_entries_(max_dico_entries), val_type_(val_type) {
       GUM_CONSTRUCTOR(DBTranslator);
     }
 

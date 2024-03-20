@@ -67,16 +67,14 @@ namespace gum {
     StructuralConstraintSliceOrder::StructuralConstraintSliceOrder(
         const DiGraph&                graph,
         const NodeProperty< NodeId >& order) :
-        StructuralConstraintDiGraph(graph),
-        _SliceOrder_order_(order) {
+        StructuralConstraintDiGraph(graph), _SliceOrder_order_(order) {
       GUM_CONSTRUCTOR(StructuralConstraintSliceOrder);
     }
 
     /// copy constructor
     StructuralConstraintSliceOrder::StructuralConstraintSliceOrder(
         const StructuralConstraintSliceOrder& from) :
-        StructuralConstraintDiGraph(from),
-        _SliceOrder_order_(from._SliceOrder_order_) {
+        StructuralConstraintDiGraph(from), _SliceOrder_order_(from._SliceOrder_order_) {
       GUM_CONS_CPY(StructuralConstraintSliceOrder);
     }
 

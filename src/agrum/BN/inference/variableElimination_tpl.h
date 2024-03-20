@@ -48,8 +48,7 @@ namespace gum {
   INLINE VariableElimination< GUM_SCALAR >::VariableElimination(
       const IBayesNet< GUM_SCALAR >* BN,
       RelevantPotentialsFinderType   relevant_type,
-      FindBarrenNodesType            barren_type) :
-      JointTargetedInference< GUM_SCALAR >(BN) {
+      FindBarrenNodesType            barren_type) : JointTargetedInference< GUM_SCALAR >(BN) {
     // sets the relevant potential and the barren nodes finding algorithm
     _findRelevantPotentials_
         = &VariableElimination< GUM_SCALAR >::_findRelevantPotentialsWithdSeparation2_;
@@ -786,8 +785,7 @@ namespace gum {
           // there should be only one potential in new_cpt_list
           if (new_cpt_list.size() != 1) {
             GUM_ERROR(FatalError,
-                      "the projection of a potential containing "
-                          << "hard evidence is empty!");
+                      "the projection of a potential containing " << "hard evidence is empty!");
           }
           auto projected_pot = const_cast< ScheduleMultiDim< Potential< GUM_SCALAR > >* >(
               static_cast< const ScheduleMultiDim< Potential< GUM_SCALAR > >* >(
@@ -879,8 +877,7 @@ namespace gum {
               if (!marg_cpt_set.contains(pot)) delete pot;
             }
             GUM_ERROR(FatalError,
-                      "the projection of a potential containing "
-                          << "hard evidence is empty!");
+                      "the projection of a potential containing " << "hard evidence is empty!");
           }
           const Potential< GUM_SCALAR >* projected_cpt = *(new_cpt_list.begin());
           res.first.insert(projected_cpt);

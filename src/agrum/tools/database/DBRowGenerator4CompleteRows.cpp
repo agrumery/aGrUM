@@ -49,8 +49,7 @@ namespace gum {
     /// copy constructor
     DBRowGenerator4CompleteRows::DBRowGenerator4CompleteRows(
         const DBRowGenerator4CompleteRows& from) :
-        DBRowGenerator(from),
-        _input_row_(from._input_row_) {
+        DBRowGenerator(from), _input_row_(from._input_row_) {
       GUM_CONS_CPY(DBRowGenerator4CompleteRows);
     }
 

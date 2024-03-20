@@ -580,8 +580,7 @@ namespace gum {
                 Size               nol,
                 Size               noc,
                 const std::string& aType = "Syntax Error") :
-        IOError(aMsg, aType),
-        noLine_(nol), noCol_(noc), filename_(std::move(aFilename)) {
+        IOError(aMsg, aType), noLine_(nol), noCol_(noc), filename_(std::move(aFilename)) {
 #  ifdef GUM_FOR_SWIG
       what_ = "[pyAgrum] " + msg_;
 #  else    // GUM_FOR_SWIG

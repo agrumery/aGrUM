@@ -197,7 +197,7 @@ namespace gum {
       /// an empty vector
       const std::vector< NodeId > empty_ids_;
     }; /* namespace learning */
-  }    // namespace learning
+  }   // namespace learning
 } /* namespace gum */
 
 // include the inlined functions if necessary

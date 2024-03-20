@@ -46,8 +46,7 @@ namespace gum {
   OrderedEliminationSequenceStrategy::OrderedEliminationSequenceStrategy(
       UndiGraph*                   graph,
       const NodeProperty< Size >*  dom_sizes,
-      const std::vector< NodeId >* order) :
-      EliminationSequenceStrategy(graph, dom_sizes) {
+      const std::vector< NodeId >* order) : EliminationSequenceStrategy(graph, dom_sizes) {
     // check that the user passed appropriate graphs and orders
     if (((graph == nullptr) && (order != nullptr)) || ((graph != nullptr) && (order == nullptr))) {
       GUM_ERROR(GraphError,
@@ -63,8 +62,7 @@ namespace gum {
   /// copy constructor
   OrderedEliminationSequenceStrategy::OrderedEliminationSequenceStrategy(
       const OrderedEliminationSequenceStrategy& from) :
-      EliminationSequenceStrategy(from),
-      _order_(from._order_), _order_index_(from._order_index_),
+      EliminationSequenceStrategy(from), _order_(from._order_), _order_index_(from._order_index_),
       _order_needed_(from._order_needed_) {
     GUM_CONS_CPY(OrderedEliminationSequenceStrategy);
   }
@@ -72,9 +70,8 @@ namespace gum {
   /// move constructor
   OrderedEliminationSequenceStrategy::OrderedEliminationSequenceStrategy(
       OrderedEliminationSequenceStrategy&& from) :
-      EliminationSequenceStrategy(std::move(from)),
-      _order_(from._order_), _order_index_(from._order_index_),
-      _order_needed_(from._order_needed_) {
+      EliminationSequenceStrategy(std::move(from)), _order_(from._order_),
+      _order_index_(from._order_index_), _order_needed_(from._order_needed_) {
     GUM_CONS_MOV(OrderedEliminationSequenceStrategy);
   }
 

@@ -43,8 +43,8 @@ namespace gum {
   // copy constructor
   DefaultJunctionTreeStrategy::DefaultJunctionTreeStrategy(
       const DefaultJunctionTreeStrategy& from) :
-      JunctionTreeStrategy(from),
-      _has_junction_tree_(from._has_junction_tree_), _junction_tree_(from._junction_tree_),
+      JunctionTreeStrategy(from), _has_junction_tree_(from._has_junction_tree_),
+      _junction_tree_(from._junction_tree_),
       _node_2_junction_clique_(from._node_2_junction_clique_) {
     GUM_CONS_CPY(DefaultJunctionTreeStrategy);
   }

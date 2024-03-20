@@ -82,7 +82,7 @@ namespace gum {
       }
     }   // namespace lp
 
-  }     // namespace credal
+  }   // namespace credal
 
 } /* namespace gum */
 

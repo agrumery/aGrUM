@@ -45,8 +45,7 @@ namespace gum {
                          const std::string& filename,
                          Idx                line,
                          Idx                col) :
-      is_error(is_error),
-      line(line), column(col), msg(msg), filename(filename), code("") {}
+      is_error(is_error), line(line), column(col), msg(msg), filename(filename), code("") {}
 
   ParseError::ParseError(bool               is_error,
                          const std::string& msg,
@@ -54,8 +53,7 @@ namespace gum {
                          const std::string& code,
                          Idx                line,
                          Idx                col) :
-      is_error(is_error),
-      line(line), column(col), msg(msg), filename(filename), code(code) {}
+      is_error(is_error), line(line), column(col), msg(msg), filename(filename), code(code) {}
 
   ParseError::ParseError(const ParseError& err) {
     is_error = err.is_error;

@@ -28,8 +28,7 @@ namespace gum {
   template < typename Val, typename Priority, typename Cmp >
   INLINE SortedPriorityQueue< Val, Priority, Cmp >::SortedPriorityQueue(Cmp  compare,
                                                                         Size capacity) :
-      _nodes_(capacity, true, true),
-      _tree_cmp_(compare) {
+      _nodes_(capacity, true, true), _tree_cmp_(compare) {
     GUM_CONSTRUCTOR(SortedPriorityQueue);
   }
 
@@ -50,8 +49,7 @@ namespace gum {
   template < typename Val, typename Priority, typename Cmp >
   SortedPriorityQueue< Val, Priority, Cmp >::SortedPriorityQueue(
       const SortedPriorityQueue< Val, Priority, Cmp >& from) :
-      _nodes_(from._nodes_),
-      _tree_cmp_(from._tree_cmp_) {
+      _nodes_(from._nodes_), _tree_cmp_(from._tree_cmp_) {
     // fill the heap structure
     for (const auto& node_prio: _nodes_) {
       _tree_.insert(&node_prio.first);
@@ -64,8 +62,8 @@ namespace gum {
   template < typename Val, typename Priority, typename Cmp >
   SortedPriorityQueue< Val, Priority, Cmp >::SortedPriorityQueue(
       SortedPriorityQueue< Val, Priority, Cmp >&& from) noexcept :
-      _tree_(std::move(from._tree_)),
-      _nodes_(std::move(from._nodes_)), _tree_cmp_(std::move(from._tree_cmp_)) {
+      _tree_(std::move(from._tree_)), _nodes_(std::move(from._nodes_)),
+      _tree_cmp_(std::move(from._tree_cmp_)) {
     GUM_CONS_MOV(SortedPriorityQueue)
   }
 
@@ -562,8 +560,7 @@ namespace gum {
   template < typename Val, typename Priority, typename Cmp >
   INLINE SortedPriorityQueueIteratorSafe< Val, Priority, Cmp >::SortedPriorityQueueIteratorSafe(
       SortedPriorityQueue< Val, Priority, Cmp >& queue,
-      const bool                                 rbegin) :
-      SharedAVLTreeReverseIteratorSafe< Val, TreeCmp >(queue._tree_, rbegin) {
+      const bool rbegin) : SharedAVLTreeReverseIteratorSafe< Val, TreeCmp >(queue._tree_, rbegin) {
     GUM_CONSTRUCTOR(SortedPriorityQueueIteratorSafe)
   }
 

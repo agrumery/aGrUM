@@ -45,6 +45,7 @@ namespace gum {
    * to value.
    */
   // clang-format on
+
   template < typename GUM_SCALAR >
   class ExactTerminalNodePolicy: public ITerminalNodePolicy< GUM_SCALAR > {
     public:

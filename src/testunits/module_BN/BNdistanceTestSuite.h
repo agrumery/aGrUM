@@ -260,5 +260,5 @@ namespace gum_tests {
         break;   // everything is ok : can stop the loop
       }
     }
-  };             // namespace gum_tests
+  };   // namespace gum_tests
 }   // namespace gum_tests

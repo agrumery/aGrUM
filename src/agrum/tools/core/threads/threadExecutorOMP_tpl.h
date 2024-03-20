@@ -154,7 +154,7 @@ namespace gum {
 #  endif   // _OPENMP
     }
 
-  }        /* namespace threadsOMP */
+  } /* namespace threadsOMP */
 
 } /* namespace gum */
 

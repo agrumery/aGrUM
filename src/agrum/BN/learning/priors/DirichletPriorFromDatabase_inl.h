@@ -33,8 +33,7 @@ namespace gum {
     /// copy constructor
     INLINE DirichletPriorFromDatabase::DirichletPriorFromDatabase(
         const DirichletPriorFromDatabase& from) :
-        Prior(from),
-        _counter_(from._counter_), _internal_weight_(from._internal_weight_) {
+        Prior(from), _counter_(from._counter_), _internal_weight_(from._internal_weight_) {
       GUM_CONS_CPY(DirichletPriorFromDatabase);
     }
 
@@ -42,8 +41,8 @@ namespace gum {
     INLINE
     DirichletPriorFromDatabase::DirichletPriorFromDatabase(
         DirichletPriorFromDatabase&& from) noexcept :
-        Prior(std::move(from)),
-        _counter_(std::move(from._counter_)), _internal_weight_(from._internal_weight_) {
+        Prior(std::move(from)), _counter_(std::move(from._counter_)),
+        _internal_weight_(from._internal_weight_) {
       GUM_CONS_MOV(DirichletPriorFromDatabase);
     }
 

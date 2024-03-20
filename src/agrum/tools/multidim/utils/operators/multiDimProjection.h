@@ -84,6 +84,7 @@ namespace gum {
    * @endcode
    */
   // clang-format on
+
   template < class TABLE >
   class MultiDimProjection {
 #ifndef DOXYGEN_SHOULD_SKIP_THIS

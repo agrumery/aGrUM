@@ -66,8 +66,7 @@ namespace gum {
     ConcreteLeaf(NodeId                                        leafId,
                  NodeDatabase< AttributeSelection, isScalar >* n1,
                  const Sequence< ValueType >*                  valueDomain) :
-        AbstractLeaf(leafId),
-        _n1_(n1), _valueDomain_(valueDomain) {
+        AbstractLeaf(leafId), _n1_(n1), _valueDomain_(valueDomain) {
       GUM_CONSTRUCTOR(ConcreteLeaf);
     }
 

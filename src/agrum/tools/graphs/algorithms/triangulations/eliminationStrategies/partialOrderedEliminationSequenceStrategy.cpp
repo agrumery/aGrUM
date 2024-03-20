@@ -59,9 +59,8 @@ namespace gum {
   /// copy constructor
   PartialOrderedEliminationSequenceStrategy::PartialOrderedEliminationSequenceStrategy(
       const PartialOrderedEliminationSequenceStrategy& from) :
-      EliminationSequenceStrategy(from),
-      subsets_(from.subsets_), subset_iter_(from.subset_iter_), nodeset_(from.nodeset_),
-      partial_order_needed_(from.partial_order_needed_) {
+      EliminationSequenceStrategy(from), subsets_(from.subsets_), subset_iter_(from.subset_iter_),
+      nodeset_(from.nodeset_), partial_order_needed_(from.partial_order_needed_) {
     // for debugging purposes
     GUM_CONS_CPY(PartialOrderedEliminationSequenceStrategy);
   }
@@ -69,8 +68,8 @@ namespace gum {
   /// move constructor
   PartialOrderedEliminationSequenceStrategy::PartialOrderedEliminationSequenceStrategy(
       PartialOrderedEliminationSequenceStrategy&& from) :
-      EliminationSequenceStrategy(std::move(from)),
-      subsets_(from.subsets_), subset_iter_(from.subset_iter_), nodeset_(std::move(from.nodeset_)),
+      EliminationSequenceStrategy(std::move(from)), subsets_(from.subsets_),
+      subset_iter_(from.subset_iter_), nodeset_(std::move(from.nodeset_)),
       partial_order_needed_(from.partial_order_needed_) {
     from.partial_order_needed_ = true;
 

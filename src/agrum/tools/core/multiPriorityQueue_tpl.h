@@ -60,8 +60,8 @@ namespace gum {
   template < typename Val, typename Priority, typename Cmp >
   MultiPriorityQueue< Val, Priority, Cmp >::MultiPriorityQueue(
       const MultiPriorityQueue< Val, Priority, Cmp >& from) :
-      _heap_(from._heap_),
-      _indices_(from._indices_), _nb_elements_(from._nb_elements_), _cmp_(from._cmp_) {
+      _heap_(from._heap_), _indices_(from._indices_), _nb_elements_(from._nb_elements_),
+      _cmp_(from._cmp_) {
     // for debugging purposes
     GUM_CONS_CPY(MultiPriorityQueue);
 
@@ -79,9 +79,8 @@ namespace gum {
   template < typename Val, typename Priority, typename Cmp >
   MultiPriorityQueue< Val, Priority, Cmp >::MultiPriorityQueue(
       MultiPriorityQueue< Val, Priority, Cmp >&& from) :
-      _heap_(std::move(from._heap_)),
-      _indices_(std::move(from._indices_)), _nb_elements_(std::move(from._nb_elements_)),
-      _cmp_(std::move(from._cmp_)) {
+      _heap_(std::move(from._heap_)), _indices_(std::move(from._indices_)),
+      _nb_elements_(std::move(from._nb_elements_)), _cmp_(std::move(from._cmp_)) {
     // for debugging purposes
     GUM_CONS_MOV(MultiPriorityQueue);
   }

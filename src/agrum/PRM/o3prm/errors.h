@@ -228,7 +228,7 @@ namespace gum {
       void O3PRM_DEPRECATED_TYPE_WARNING(const O3Label& type, ErrorsContainer& errors);
 
     }   // namespace o3prm
-  }     // namespace prm
+  }   // namespace prm
 }   // namespace gum
 
 #  endif   // DOXYGEN_SHOULD_SKIP_THIS

@@ -87,16 +87,14 @@ namespace gum {
     INLINE
         GroundedInference< GUM_SCALAR >::GroundedInference(const PRM< GUM_SCALAR >&       prm,
                                                            const PRMSystem< GUM_SCALAR >& system) :
-        PRMInference< GUM_SCALAR >(prm, system),
-        _inf_(0) {
+        PRMInference< GUM_SCALAR >(prm, system), _inf_(0) {
       GUM_CONSTRUCTOR(GroundedInference);
     }
 
     template < typename GUM_SCALAR >
     INLINE GroundedInference< GUM_SCALAR >::GroundedInference(
         const GroundedInference< GUM_SCALAR >& source) :
-        PRMInference< GUM_SCALAR >(source),
-        _inf_(0) {
+        PRMInference< GUM_SCALAR >(source), _inf_(0) {
       GUM_CONS_CPY(GroundedInference);
       GUM_ERROR(FatalError, "illegal to copy constructor")
     }

@@ -50,8 +50,7 @@ namespace gum {
                    bool nodes_resize_policy,
                    Size arcs_size,
                    bool arcs_resize_policy) :
-      NodeGraphPart(nodes_size, nodes_resize_policy),
-      ArcGraphPart(arcs_size, arcs_resize_policy) {
+      NodeGraphPart(nodes_size, nodes_resize_policy), ArcGraphPart(arcs_size, arcs_resize_policy) {
     GUM_CONSTRUCTOR(DiGraph)
   }
 

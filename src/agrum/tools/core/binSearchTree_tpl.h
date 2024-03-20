@@ -52,9 +52,9 @@ namespace gum {
   template < typename Val, class Cmp, class Node >
   INLINE BinSearchTreeIterator< Val, Cmp, Node >::BinSearchTreeIterator(
       const BinSearchTreeIterator< Val, Cmp, Node >& from) :
-      node_(from.node_),
-      next_node_(from.next_node_), prev_node_(from.prev_node_), parent_(from.parent_),
-      left_child_(from.left_child_), right_child_(from.right_child_), tree_(from.tree_) {
+      node_(from.node_), next_node_(from.next_node_), prev_node_(from.prev_node_),
+      parent_(from.parent_), left_child_(from.left_child_), right_child_(from.right_child_),
+      tree_(from.tree_) {
     GUM_CONS_CPY(BinSearchTreeIterator);
 
     if (tree_ != nullptr) {

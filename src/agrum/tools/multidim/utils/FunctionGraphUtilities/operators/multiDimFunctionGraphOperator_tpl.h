@@ -41,8 +41,7 @@ namespace gum {
       MultiDimFunctionGraphOperator(
           const MultiDimFunctionGraph< GUM_SCALAR, TerminalNodePolicy >* DG1,
           const MultiDimFunctionGraph< GUM_SCALAR, TerminalNodePolicy >* DG2) :
-      _DG1_(DG1),
-      _DG2_(DG2), _function_(), _DG1InstantiationNeeded_(DG1->realSize(), true, false),
+      _DG1_(DG1), _DG2_(DG2), _function_(), _DG1InstantiationNeeded_(DG1->realSize(), true, false),
       _DG2InstantiationNeeded_(DG2->realSize(), true, false) {
     GUM_CONSTRUCTOR(MultiDimFunctionGraphOperator);
     _rd_ = MultiDimFunctionGraph< GUM_SCALAR, TerminalNodePolicy >::getReducedAndOrderedInstance();

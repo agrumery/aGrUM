@@ -39,8 +39,8 @@ namespace gum {
   template < typename GUM_SCALAR >
   INLINE MultiDimICIModel< GUM_SCALAR >::MultiDimICIModel(GUM_SCALAR external_weight,
                                                           GUM_SCALAR default_weight) :
-      MultiDimReadOnly< GUM_SCALAR >(),
-      _external_weight_(external_weight), _default_weight_(default_weight) {
+      MultiDimReadOnly< GUM_SCALAR >(), _external_weight_(external_weight),
+      _default_weight_(default_weight) {
     GUM_CONSTRUCTOR(MultiDimICIModel);
   }
 
@@ -59,8 +59,7 @@ namespace gum {
   template < typename GUM_SCALAR >
   INLINE MultiDimICIModel< GUM_SCALAR >::MultiDimICIModel(
       const Bijection< const DiscreteVariable*, const DiscreteVariable* >& bij,
-      const MultiDimICIModel< GUM_SCALAR >&                                from) :
-      MultiDimReadOnly< GUM_SCALAR >() {
+      const MultiDimICIModel< GUM_SCALAR >& from) : MultiDimReadOnly< GUM_SCALAR >() {
     GUM_CONSTRUCTOR(MultiDimICIModel);
     _default_weight_  = from._default_weight_;
     _external_weight_ = from._external_weight_;

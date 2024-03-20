@@ -58,8 +58,7 @@ namespace gum::credal {
       evi.close();
     }
 
-    res << "[RESULTATS]"
-        << "\n";
+    res << "[RESULTATS]" << "\n";
 
     for (auto node: _bnet_->nodes()) {
       // calcul distri posteriori
@@ -885,7 +884,7 @@ namespace gum::credal {
 
       }   // end of : node has children & no evidence
 
-    }     // end of : if update_l
+    }   // end of : if update_l
 
     GUM_SCALAR lmin = NodesL_min_[Y];
     GUM_SCALAR lmax;
@@ -1305,7 +1304,7 @@ namespace gum::credal {
         }
       }   // end of update_p
 
-    }     // end of : for each node
+    }   // end of : for each node
   }
 
   template < typename GUM_SCALAR >

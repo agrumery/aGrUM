@@ -45,8 +45,7 @@ namespace gum {
     INLINE _StructuralConstraintSetStatic_< CONSTRAINT1, OTHER_CONSTRAINTS... >::
         _StructuralConstraintSetStatic_(
             const _StructuralConstraintSetStatic_< CONSTRAINT1, OTHER_CONSTRAINTS... >& from) :
-        CONSTRAINT1(from),
-        _StructuralConstraintSetStatic_< OTHER_CONSTRAINTS... >(from) {}
+        CONSTRAINT1(from), _StructuralConstraintSetStatic_< OTHER_CONSTRAINTS... >(from) {}
 
     /// destructor
     template < typename CONSTRAINT1, typename... OTHER_CONSTRAINTS >
@@ -190,8 +189,7 @@ namespace gum {
     /// copy constructor
     template < typename CONSTRAINT >
     INLINE _StructuralConstraintSetStatic_< CONSTRAINT >::_StructuralConstraintSetStatic_(
-        const _StructuralConstraintSetStatic_< CONSTRAINT >& from) :
-        CONSTRAINT(from) {}
+        const _StructuralConstraintSetStatic_< CONSTRAINT >& from) : CONSTRAINT(from) {}
 
     /// destructor
     template < typename CONSTRAINT >
@@ -479,8 +477,7 @@ namespace gum {
     /// copy constructor
     template < typename CONSTRAINT >
     INLINE StructuralConstraintSetStatic< CONSTRAINT >::StructuralConstraintSetStatic(
-        const StructuralConstraintSetStatic< CONSTRAINT >& from) :
-        constraints(from) {
+        const StructuralConstraintSetStatic< CONSTRAINT >& from) : constraints(from) {
       GUM_CONS_CPY(StructuralConstraintSetStatic);
     }
 

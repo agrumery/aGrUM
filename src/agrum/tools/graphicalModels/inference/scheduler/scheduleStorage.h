@@ -76,7 +76,7 @@ namespace gum {
       void execute(TABLE& table, std::vector< TABLE >& container);
     };
 
-  }    // namespace ScheduleStorageMethod
+  }   // namespace ScheduleStorageMethod
 
 #endif /* DOXYGEN_SHOULD_SKIP_THIS */
 

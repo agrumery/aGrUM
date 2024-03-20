@@ -170,7 +170,7 @@ namespace gum {
     void onAllTargetsErased_() final;
 
     /// fired when the state of the inference engine is changed
-    void onStateChanged_() final{};
+    void onStateChanged_() final {};
 
     /// prepares inference when the latter is in OutdatedStructure state
     /** Note that the values of evidence are not necessarily

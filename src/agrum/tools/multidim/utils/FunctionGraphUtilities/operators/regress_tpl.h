@@ -49,9 +49,8 @@ namespace gum {
       const gum::VariableSet*                                        primedVars,
       const DiscreteVariable*                                        targetVar,
       const GUM_SCALAR                                               neutral) :
-      _DG1_(DG1),
-      _DG2_(DG2), _neutral_(neutral), _combine_(), _project_(),
-      _DG1InstantiationNeeded_(DG1->realSize(), true, false),
+      _DG1_(DG1), _DG2_(DG2), _neutral_(neutral), _combine_(), _project_(),
+      _DG1InstantiationNeeded_(DG1 -> realSize(), true, false),
       _DG2InstantiationNeeded_(DG2->realSize(), true, false) {
     GUM_CONSTRUCTOR(Regress);
     _rd_ = MultiDimFunctionGraph< GUM_SCALAR, TerminalNodePolicy >::getReducedAndOrderedInstance();

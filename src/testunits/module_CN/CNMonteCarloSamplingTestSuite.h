@@ -333,6 +333,6 @@ namespace gum_tests {
       clearCNet();
     }   // end of : testCNMonteCarloSamplingListener
 
-  };    // end of : class CNMonteCarloSamplingInferenceTestSuite
+  };   // end of : class CNMonteCarloSamplingInferenceTestSuite
 
 }   // namespace gum_tests

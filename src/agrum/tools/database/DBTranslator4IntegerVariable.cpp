@@ -105,8 +105,7 @@ namespace gum {
     /// copy constructor
     DBTranslator4IntegerVariable::DBTranslator4IntegerVariable(
         const DBTranslator4IntegerVariable& from) :
-        DBTranslator(from),
-        _variable_(from._variable_) {
+        DBTranslator(from), _variable_(from._variable_) {
       // for debugging purposes
       GUM_CONS_CPY(DBTranslator4IntegerVariable);
     }
@@ -114,8 +113,7 @@ namespace gum {
     /// move constructor
     DBTranslator4IntegerVariable::DBTranslator4IntegerVariable(
         DBTranslator4IntegerVariable&& from) :
-        DBTranslator(std::move(from)),
-        _variable_(std::move(from._variable_)) {
+        DBTranslator(std::move(from)), _variable_(std::move(from._variable_)) {
       // for debugging purposes
       GUM_CONS_MOV(DBTranslator4IntegerVariable);
     }

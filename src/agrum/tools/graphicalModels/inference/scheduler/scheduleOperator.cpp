@@ -41,8 +41,8 @@ namespace gum {
   ScheduleOperator::ScheduleOperator(const ScheduleOperatorType type,
                                      const bool                 imply_deletion,
                                      const bool                 are_results_persistent) :
-      _op_type_(type),
-      _imply_deletion_(imply_deletion), _result_persistent_(are_results_persistent) {
+      _op_type_(type), _imply_deletion_(imply_deletion),
+      _result_persistent_(are_results_persistent) {
     // for debugging purposes
     GUM_CONSTRUCTOR(ScheduleOperator);
   }

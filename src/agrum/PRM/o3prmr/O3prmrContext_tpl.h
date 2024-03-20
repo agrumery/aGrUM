@@ -273,5 +273,5 @@ namespace gum {
       /* ******************************************************************* */
 
     }   // namespace o3prmr
-  }     // namespace prm
+  }   // namespace prm
 }   // namespace gum

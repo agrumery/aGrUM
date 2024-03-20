@@ -362,8 +362,7 @@ namespace gum {
       template < typename GUM_SCALAR >
       INLINE DFSTree< GUM_SCALAR >::DFSTree(const InterfaceGraph< GUM_SCALAR >&  graph,
                                             gspan::SearchStrategy< GUM_SCALAR >* strategy) :
-          _graph_(&graph),
-          _strategy_(strategy) {
+          _graph_(&graph), _strategy_(strategy) {
         GUM_CONSTRUCTOR(DFSTree);
 
         if (!_strategy_) _strategy_ = new FrequenceSearch< GUM_SCALAR >(2);
@@ -513,8 +512,7 @@ namespace gum {
 
       template < typename GUM_SCALAR >
       INLINE DFSTree< GUM_SCALAR >::NeighborDegreeSort::NeighborDegreeSort(
-          const NeighborDegreeSort& source) :
-          g(source.g) {
+          const NeighborDegreeSort& source) : g(source.g) {
         GUM_CONS_CPY(DFSTree< GUM_SCALAR >::NeighborDegreeSort);
       }
 
@@ -537,5 +535,5 @@ namespace gum {
       }
 
     } /* namespace gspan */
-  }   /* namespace prm */
+  } /* namespace prm */
 } /* namespace gum */

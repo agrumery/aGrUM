@@ -344,8 +344,8 @@ namespace gum {
     INLINE GSpan< GUM_SCALAR >::GSpan(const PRM< GUM_SCALAR >&             prm,
                                       const PRMSystem< GUM_SCALAR >&       sys,
                                       gspan::SearchStrategy< GUM_SCALAR >* strategy) :
-        _graph_(new gspan::InterfaceGraph< GUM_SCALAR >(sys)),
-        _tree_(*_graph_, strategy), _depth_stop_(INT_MAX) {
+        _graph_(new gspan::InterfaceGraph< GUM_SCALAR >(sys)), _tree_(*_graph_, strategy),
+        _depth_stop_(INT_MAX) {
       GUM_CONSTRUCTOR(GSpan);
     }
 

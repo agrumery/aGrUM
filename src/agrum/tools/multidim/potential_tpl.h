@@ -991,9 +991,7 @@ namespace gum {
     const std::string maskparent(colwidth, '-');
     const std::string masknumber(numberwidth, '-');
 
-    if (nbparents > 0)
-      ss << std::setw(nbparents * (colwidth + 1) - 1) << " "
-         << "||";
+    if (nbparents > 0) ss << std::setw(nbparents * (colwidth + 1) - 1) << " " << "||";
     ss << "  " << std::setw(nbcol * (numberwidth + 1) - 3)
        << var.name().substr(0, nbcol * (numberwidth + 1) - 3) << "|";
     ss << std::endl;

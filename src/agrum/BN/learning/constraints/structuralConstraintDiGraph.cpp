@@ -56,8 +56,7 @@ namespace gum {
 
     /// copy constructor
     StructuralConstraintDiGraph::StructuralConstraintDiGraph(
-        const StructuralConstraintDiGraph& from) :
-        _DiGraph_graph_(from._DiGraph_graph_) {
+        const StructuralConstraintDiGraph& from) : _DiGraph_graph_(from._DiGraph_graph_) {
       GUM_CONS_CPY(StructuralConstraintDiGraph);
     }
 

@@ -54,8 +54,7 @@ namespace gum {
     PRMType::PRMType(PRMType&                  super_type,
                      const std::vector< Idx >& label_map,
                      const DiscreteVariable&   var) :
-        PRMObject(var.name()),
-        _var_(var.clone()), _superType_(&super_type),
+        PRMObject(var.name()), _var_(var.clone()), _superType_(&super_type),
         _label_map_(new std::vector< Idx >(label_map)) {
       GUM_CONSTRUCTOR(PRMType);
       this->_updateName_();

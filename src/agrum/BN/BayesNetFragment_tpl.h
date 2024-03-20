@@ -332,8 +332,8 @@ namespace gum {
     for (auto node: _bn_.nodes()) {
       if (_bn_.children(node).size() > 0) {
         for (auto child: _bn_.children(node)) {
-          output << tab << "\"" << _bn_.variable(node).name() << "\" -> "
-                 << "\"" << _bn_.variable(child).name() << "\" [";
+          output << tab << "\"" << _bn_.variable(node).name() << "\" -> " << "\""
+                 << _bn_.variable(child).name() << "\" [";
 
           if (dag().existsArc(Arc(node, child))) output << inFragmentStyle;
           else output << outFragmentStyle;

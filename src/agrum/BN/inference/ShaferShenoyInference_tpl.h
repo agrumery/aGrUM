@@ -47,8 +47,8 @@ namespace gum {
       RelevantPotentialsFinderType   relevant_type,
       FindBarrenNodesType            barren_type,
       bool                           use_binary_join_tree) :
-      JointTargetedInference< GUM_SCALAR >(BN),
-      EvidenceInference< GUM_SCALAR >(BN), _use_binary_join_tree_(use_binary_join_tree) {
+      JointTargetedInference< GUM_SCALAR >(BN), EvidenceInference< GUM_SCALAR >(BN),
+      _use_binary_join_tree_(use_binary_join_tree) {
     // sets the relevant potential and the barren nodes finding algorithm
     _findRelevantPotentials_
         = &ShaferShenoyInference< GUM_SCALAR >::_findRelevantPotentialsWithdSeparation2_;
@@ -890,8 +890,7 @@ namespace gum {
                 if (!marg_cpt_set.contains(pot)) delete pot;
 
               GUM_ERROR(FatalError,
-                        "the projection of a potential containing "
-                            << "hard evidence is empty!");
+                        "the projection of a potential containing " << "hard evidence is empty!");
             }
             auto new_pot = const_cast< Potential< GUM_SCALAR >* >(*(new_cpt_list.begin()));
             auto projected_pot
@@ -1010,8 +1009,7 @@ namespace gum {
             // there should be only one potential in new_cpt_list
             if (new_cpt_list.size() != 1) {
               GUM_ERROR(FatalError,
-                        "the projection of a potential containing "
-                            << "hard evidence is empty!");
+                        "the projection of a potential containing " << "hard evidence is empty!");
             }
             auto projected_pot = const_cast< ScheduleMultiDim< Potential< GUM_SCALAR > >* >(
                 static_cast< const ScheduleMultiDim< Potential< GUM_SCALAR > >* >(
@@ -1279,8 +1277,7 @@ namespace gum {
         // there should be only one potential in new_cpt_list
         if (new_cpt_list.size() != 1) {
           GUM_ERROR(FatalError,
-                    "the projection of a potential containing "
-                        << "hard evidence is empty!");
+                    "the projection of a potential containing " << "hard evidence is empty!");
         }
         auto projected_pot = const_cast< ScheduleMultiDim< Potential< GUM_SCALAR > >* >(
             static_cast< const ScheduleMultiDim< Potential< GUM_SCALAR > >* >(
@@ -1349,8 +1346,7 @@ namespace gum {
             if (!marg_cpt_set.contains(pot)) delete pot;
 
           GUM_ERROR(FatalError,
-                    "the projection of a potential containing "
-                        << "hard evidence is empty!");
+                    "the projection of a potential containing " << "hard evidence is empty!");
         }
         Potential< GUM_SCALAR >* xprojected_pot
             = const_cast< Potential< GUM_SCALAR >* >(*new_cpt_list.begin());
@@ -2282,8 +2278,8 @@ namespace gum {
       for (const auto node: targets) {
         if (!clique_nodes.contains(node)) {
           GUM_ERROR(UndefinedElement,
-                    this->BN().names(set) << "(" << set << ")"
-                                          << " is not addressable in this optimized inference.")
+                    this->BN().names(set)
+                        << "(" << set << ")" << " is not addressable in this optimized inference.")
         }
       }
 
@@ -2454,8 +2450,8 @@ namespace gum {
       for (const auto node: targets) {
         if (!clique_nodes.contains(node)) {
           GUM_ERROR(UndefinedElement,
-                    this->BN().names(set) << "(" << set << ")"
-                                          << " is not addressable in this optimized inference.")
+                    this->BN().names(set)
+                        << "(" << set << ")" << " is not addressable in this optimized inference.")
         }
       }
 

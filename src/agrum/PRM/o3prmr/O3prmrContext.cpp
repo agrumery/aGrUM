@@ -91,5 +91,5 @@ namespace gum {
 #  endif
 #endif
     }   // namespace o3prmr
-  }     // namespace prm
+  }   // namespace prm
 }   // namespace gum

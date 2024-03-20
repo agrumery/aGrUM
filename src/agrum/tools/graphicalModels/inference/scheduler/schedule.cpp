@@ -390,8 +390,7 @@ namespace gum {
     }
     if (multidim.isAbstract()) {
       GUM_ERROR(AbstractScheduleMultiDim,
-                "It is impossible to insert an abstract ScheduleMultiDim "
-                    << "into a Schedule")
+                "It is impossible to insert an abstract ScheduleMultiDim " << "into a Schedule")
     }
 
     // now, everything is ok, so we should insert a copy of the ScheduleMultiDim
@@ -419,8 +418,7 @@ namespace gum {
     }
     if (multidim.isAbstract()) {
       GUM_ERROR(AbstractScheduleMultiDim,
-                "It is impossible to insert an abstract ScheduleMultiDim "
-                    << "into a Schedule")
+                "It is impossible to insert an abstract ScheduleMultiDim " << "into a Schedule")
     }
 
     // now, everything is ok, so we should insert the ScheduleMultiDim
@@ -456,8 +454,7 @@ namespace gum {
         GUM_ERROR(UnknownScheduleMultiDim,
                   "Schedule::insertOperation: the "
                       << _paramString_(i + 1) << " (id: " << op_args[i]->id()
-                      << ") operation's argument does not already belong to"
-                      << " the schedule")
+                      << ") operation's argument does not already belong to" << " the schedule")
       }
     }
 

@@ -43,8 +43,7 @@ namespace gum {
                                                               const std::string& aDesc,
                                                               GUM_SCALAR         lower_bound,
                                                               GUM_SCALAR         upper_bound) :
-      IContinuousVariable(aName, aDesc),
-      _lower_bound_(lower_bound), _upper_bound_(upper_bound) {
+      IContinuousVariable(aName, aDesc), _lower_bound_(lower_bound), _upper_bound_(upper_bound) {
     if (_lower_bound_ > _upper_bound_) { std::swap(_upper_bound_, _lower_bound_); }
     GUM_CONSTRUCTOR(ContinuousVariable);
   }
@@ -53,8 +52,8 @@ namespace gum {
   template < typename GUM_SCALAR >
   INLINE ContinuousVariable< GUM_SCALAR >::ContinuousVariable(
       const ContinuousVariable< GUM_SCALAR >& from) :
-      IContinuousVariable(from),
-      _lower_bound_(from._lower_bound_), _upper_bound_(from._upper_bound_) {
+      IContinuousVariable(from), _lower_bound_(from._lower_bound_),
+      _upper_bound_(from._upper_bound_) {
     GUM_CONS_CPY(ContinuousVariable);
   }
 
@@ -63,8 +62,8 @@ namespace gum {
   template < typename TX_VAL >
   INLINE ContinuousVariable< GUM_SCALAR >::ContinuousVariable(
       const ContinuousVariable< TX_VAL >& from) :
-      IContinuousVariable(from),
-      _lower_bound_(GUM_SCALAR(from._lower_bound_)), _upper_bound_(GUM_SCALAR(from._upper_bound_)) {
+      IContinuousVariable(from), _lower_bound_(GUM_SCALAR(from._lower_bound_)),
+      _upper_bound_(GUM_SCALAR(from._upper_bound_)) {
     GUM_CONS_CPY(ContinuousVariable);
   }
 
@@ -72,8 +71,8 @@ namespace gum {
   template < typename GUM_SCALAR >
   INLINE ContinuousVariable< GUM_SCALAR >::ContinuousVariable(
       ContinuousVariable< GUM_SCALAR >&& from) :
-      IContinuousVariable(std::move(from)),
-      _lower_bound_(from._lower_bound_), _upper_bound_(from._upper_bound_) {
+      IContinuousVariable(std::move(from)), _lower_bound_(from._lower_bound_),
+      _upper_bound_(from._upper_bound_) {
     GUM_CONS_MOV(ContinuousVariable);
   }
 

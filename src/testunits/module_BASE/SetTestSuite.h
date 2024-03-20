@@ -422,10 +422,7 @@ namespace gum_tests {
 
     GUM_ACTIVE_TEST(Map1) {
       gum::Set< std::string > t1;
-      t1 << "a"
-         << "b"
-         << "c"
-         << "d";
+      t1 << "a" << "b" << "c" << "d";
       gum::HashTable< std::string, std::string > map1, map4;
 
       TS_GUM_ASSERT_THROWS_NOTHING(map1 = t1.hashMap(&mappingTestFunc_1))

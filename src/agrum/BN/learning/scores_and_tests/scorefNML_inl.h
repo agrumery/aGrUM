@@ -47,8 +47,7 @@ namespace gum {
     INLINE ScorefNML::ScorefNML(const DBRowGeneratorParser&             parser,
                                 const Prior&                            prior,
                                 const Bijection< NodeId, std::size_t >& nodeId2columns) :
-        Score(parser, prior, nodeId2columns),
-        _internal_prior_(parser.database(), nodeId2columns) {
+        Score(parser, prior, nodeId2columns), _internal_prior_(parser.database(), nodeId2columns) {
       GUM_CONSTRUCTOR(ScorefNML);
     }
 

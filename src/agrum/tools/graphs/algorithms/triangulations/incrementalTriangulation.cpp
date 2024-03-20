@@ -48,8 +48,7 @@ namespace gum {
   IncrementalTriangulation::IncrementalTriangulation(const UnconstrainedTriangulation& triang_algo,
                                                      const UndiGraph*                  theGraph,
                                                      const NodeProperty< Size >*       domsizes) :
-      Triangulation(domsizes),
-      _triangulation_(triang_algo.newFactory()) {
+      Triangulation(domsizes), _triangulation_(triang_algo.newFactory()) {
     GUM_CONSTRUCTOR(IncrementalTriangulation);
 
     // reset the triangulation algorithm => it starts with an empty graph
@@ -69,8 +68,7 @@ namespace gum {
 
   /// default constructor
   IncrementalTriangulation::IncrementalTriangulation(
-      const UnconstrainedTriangulation& triang_algo) :
-      _triangulation_(triang_algo.newFactory()) {
+      const UnconstrainedTriangulation& triang_algo) : _triangulation_(triang_algo.newFactory()) {
     GUM_CONSTRUCTOR(IncrementalTriangulation);
 
     // reset the triangulation algorithm => it starts with an empty graph

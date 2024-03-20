@@ -505,8 +505,7 @@ namespace gum {
   template < typename Val >
   INLINE
       ListConstIteratorSafe< Val >::ListConstIteratorSafe(const ListConstIteratorSafe< Val >& src) :
-      _list_{src._list_},
-      _bucket_{src._bucket_}, _next_current_bucket_{src._next_current_bucket_},
+      _list_{src._list_}, _bucket_{src._bucket_}, _next_current_bucket_{src._next_current_bucket_},
       _prev_current_bucket_{src._prev_current_bucket_}, _null_pointing_{src._null_pointing_} {
     // for debugging purposes
     GUM_CONS_CPY(ListConstIteratorSafe);

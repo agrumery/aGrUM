@@ -69,8 +69,7 @@ namespace gum {
       // policy set to false because we will do the uniqueness tests ourselves
       // (this
       // will speed-up the process)
-      _firstToSecond_(size, resize_policy, false),
-      _secondToFirst_(size, resize_policy, false) {
+      _firstToSecond_(size, resize_policy, false), _secondToFirst_(size, resize_policy, false) {
     GUM_CONSTRUCTOR(BijectionImplementation);
   }
 
@@ -421,8 +420,7 @@ namespace gum {
       // policy set to false because we will do the uniqueness tests ourselves
       // (this
       // will speed-up the process)
-      _firstToSecond_(size, resize_policy, false),
-      _secondToFirst_(size, resize_policy, false) {
+      _firstToSecond_(size, resize_policy, false), _secondToFirst_(size, resize_policy, false) {
     GUM_CONSTRUCTOR(BijectionImplementation);
   }
 
@@ -777,16 +775,14 @@ namespace gum {
   /// Copy constructor
   template < typename T1, typename T2 >
   INLINE BijectionIteratorSafe< T1, T2 >::BijectionIteratorSafe(
-      const BijectionIteratorSafe< T1, T2 >& toCopy) :
-      _iter_{toCopy._iter_} {
+      const BijectionIteratorSafe< T1, T2 >& toCopy) : _iter_{toCopy._iter_} {
     GUM_CONS_CPY(BijectionIteratorSafe);
   }
 
   /// move constructor
   template < typename T1, typename T2 >
   INLINE BijectionIteratorSafe< T1, T2 >::BijectionIteratorSafe(
-      BijectionIteratorSafe< T1, T2 >&& from) noexcept :
-      _iter_{std::move(from._iter_)} {
+      BijectionIteratorSafe< T1, T2 >&& from) noexcept : _iter_{std::move(from._iter_)} {
     GUM_CONS_MOV(BijectionIteratorSafe);
   }
 
@@ -899,8 +895,7 @@ namespace gum {
   /// move constructor
   template < typename T1, typename T2 >
   INLINE BijectionIterator< T1, T2 >::BijectionIterator(BijectionIterator< T1, T2 >&& from) noexcept
-      :
-      _iter_{std::move(from._iter_)} {
+      : _iter_{std::move(from._iter_)} {
     GUM_CONS_MOV(BijectionIterator);
   }
 

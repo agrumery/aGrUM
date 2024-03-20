@@ -56,6 +56,7 @@ namespace gum {
    * multiDimImplementations
    */
   // clang-format on
+
   template < typename GUM_SCALAR >
   class OperatorRegister4MultiDim {
     public:

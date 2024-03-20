@@ -40,7 +40,7 @@ namespace gum {
     template < typename T_DATA >
     INLINE IDatabaseTable< T_DATA >::Handler::Handler(const IDatabaseTable< T_DATA >& db) :
         DBHandler< T_DATA >(), _db_(&db), _row_(&(db.content())),
-        _end_index_(std::size_t(_row_->size())) {
+        _end_index_(std::size_t(_row_ -> size())) {
       GUM_CONSTRUCTOR(IDatabaseTable::Handler);
     }
 
@@ -48,9 +48,8 @@ namespace gum {
     template < typename T_DATA >
     INLINE IDatabaseTable< T_DATA >::Handler::Handler(
         const typename IDatabaseTable< T_DATA >::Handler& h) :
-        DBHandler< T_DATA >(),
-        _db_(h._db_), _row_(h._row_), _index_(h._index_), _begin_index_(h._begin_index_),
-        _end_index_(h._end_index_) {
+        DBHandler< T_DATA >(), _db_(h._db_), _row_(h._row_), _index_(h._index_),
+        _begin_index_(h._begin_index_), _end_index_(h._end_index_) {
       GUM_CONS_CPY(IDatabaseTable::Handler);
     }
 
@@ -58,9 +57,8 @@ namespace gum {
     template < typename T_DATA >
     INLINE
         IDatabaseTable< T_DATA >::Handler::Handler(typename IDatabaseTable< T_DATA >::Handler&& h) :
-        DBHandler< T_DATA >(),
-        _db_(h._db_), _row_(h._row_), _index_(h._index_), _begin_index_(h._begin_index_),
-        _end_index_(h._end_index_) {
+        DBHandler< T_DATA >(), _db_(h._db_), _row_(h._row_), _index_(h._index_),
+        _begin_index_(h._begin_index_), _end_index_(h._end_index_) {
       GUM_CONS_MOV(IDatabaseTable::Handler);
     }
 
@@ -405,8 +403,7 @@ namespace gum {
     IDatabaseTable< T_DATA >::IDatabaseTable(
         const typename IDatabaseTable< T_DATA >::MissingValType& missing_symbols,
         const std::vector< std::string >&                        var_names) :
-        variable_names_(var_names),
-        missing_symbols_(missing_symbols) {
+        variable_names_(var_names), missing_symbols_(missing_symbols) {
       // create the end iterators
       _createEndIterators_();
 

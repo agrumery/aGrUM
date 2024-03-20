@@ -44,6 +44,7 @@ namespace gum {
    * of value
    */
   // clang-format on
+
   template < typename GUM_SCALAR >
   class SetTerminalNodePolicy {
     public:

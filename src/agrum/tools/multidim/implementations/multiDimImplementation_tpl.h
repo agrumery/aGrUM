@@ -47,8 +47,8 @@ namespace gum {
   template < typename GUM_SCALAR >
   INLINE MultiDimImplementation< GUM_SCALAR >::MultiDimImplementation(
       const MultiDimImplementation< GUM_SCALAR >& from) :
-      MultiDimContainer< GUM_SCALAR >(from),
-      _vars_(from._vars_), _internalChangeMethod_(from._internalChangeMethod_),
+      MultiDimContainer< GUM_SCALAR >(from), _vars_(from._vars_),
+      _internalChangeMethod_(from._internalChangeMethod_),
       _internalChangeState_(from._internalChangeState_), _domainSize_(from._domainSize_) {
     GUM_CONS_CPY(MultiDimImplementation);
     GUM_ASSERT(!this->isCommitNeeded_());

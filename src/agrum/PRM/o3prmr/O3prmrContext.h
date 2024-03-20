@@ -297,7 +297,7 @@ namespace gum {
 
 
     }   // namespace o3prmr
-  }     // namespace prm
+  }   // namespace prm
 }   // namespace gum
 
 #include <agrum/PRM/o3prmr/O3prmrContext_tpl.h>

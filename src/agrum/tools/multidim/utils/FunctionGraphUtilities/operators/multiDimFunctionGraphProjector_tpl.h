@@ -45,8 +45,7 @@ namespace gum {
           const MultiDimFunctionGraph< GUM_SCALAR, TerminalNodePolicy >* src,
           const gum::VariableSet&                                        delVars,
           const GUM_SCALAR                                               neutral) :
-      _src_(src),
-      _delVars_(delVars), _function_(), _neutral_(neutral) {
+      _src_(src), _delVars_(delVars), _function_(), _neutral_(neutral) {
     GUM_CONSTRUCTOR(MultiDimFunctionGraphProjector);
     _rd_ = MultiDimFunctionGraph< GUM_SCALAR >::getReducedAndOrderedInstance();
   }

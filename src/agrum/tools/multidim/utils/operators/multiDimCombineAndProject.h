@@ -44,6 +44,7 @@ namespace gum {
    * @brief A generic interface to combine and project efficiently MultiDim tables.
    */
   // clang-format on
+
   template < class TABLE >
   class MultiDimCombineAndProject {
 #ifndef DOXYGEN_SHOULD_SKIP_THIS

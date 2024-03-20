@@ -37,8 +37,7 @@ namespace gum {
   LinearApproximationPolicy< GUM_SCALAR >::LinearApproximationPolicy(GUM_SCALAR low,
                                                                      GUM_SCALAR high,
                                                                      GUM_SCALAR eps) :
-      ApproximationPolicy< GUM_SCALAR >(),
-      lowLimit_(low), highLimit_(high), epsilon_(eps) {
+      ApproximationPolicy< GUM_SCALAR >(), lowLimit_(low), highLimit_(high), epsilon_(eps) {
     if (eps <= 0) { GUM_ERROR(OutOfBounds, "Epsilon must be >0") }
 
     computeNbInterval_();
@@ -48,8 +47,7 @@ namespace gum {
   template < typename GUM_SCALAR >
   LinearApproximationPolicy< GUM_SCALAR >::LinearApproximationPolicy(
       const LinearApproximationPolicy< GUM_SCALAR >* md) :
-      ApproximationPolicy< GUM_SCALAR >(md),
-      epsilon_(md->epsilon_), nbInterval_(md->nbInterval_) {}
+      ApproximationPolicy< GUM_SCALAR >(md), epsilon_(md->epsilon_), nbInterval_(md->nbInterval_) {}
 
   // @brief Convert value to his approximation.
   template < typename GUM_SCALAR >

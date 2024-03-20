@@ -60,8 +60,7 @@ namespace gum {
 
     template < typename GUM_SCALAR >
     INLINE PRMClassElementContainer< GUM_SCALAR >::PRMClassElementContainer(
-        const PRMClassElementContainer< GUM_SCALAR >& source) :
-        PRMObject(source) {
+        const PRMClassElementContainer< GUM_SCALAR >& source) : PRMObject(source) {
       GUM_CONS_CPY(PRMClassElementContainer);
       GUM_ERROR(FatalError, "illegal call to ClassElementContainer copy constructor")
     }
@@ -191,8 +190,8 @@ std::ostream& operator<<(std::ostream&                                          
   for (const auto node: container.containerDag().nodes()) {
     if (container.containerDag().children(node).size() > 0) {
       for (const auto chi: container.containerDag().children(node)) {
-        output << tab << "\"" << container.get(node).name() << "\" -> "
-               << "\"" << container.get(chi).name() << "\";" << std::endl;
+        output << tab << "\"" << container.get(node).name() << "\" -> " << "\""
+               << container.get(chi).name() << "\";" << std::endl;
       }
     } else if (container.containerDag().parents(node).size() == 0) {
       output << tab << "\"" << container.get(node).name() << "\";" << std::endl;

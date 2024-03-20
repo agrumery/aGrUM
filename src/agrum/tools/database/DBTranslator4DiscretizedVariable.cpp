@@ -132,8 +132,7 @@ namespace gum {
     /// copy constructor
     DBTranslator4DiscretizedVariable::DBTranslator4DiscretizedVariable(
         const DBTranslator4DiscretizedVariable& from) :
-        DBTranslator(from),
-        _variable_(from._variable_) {
+        DBTranslator(from), _variable_(from._variable_) {
       // store a copy of the variable, that should be used by method variable ()
       _real_variable_ = from._real_variable_->clone();
 
@@ -143,8 +142,7 @@ namespace gum {
     /// move constructor
     DBTranslator4DiscretizedVariable::DBTranslator4DiscretizedVariable(
         DBTranslator4DiscretizedVariable&& from) :
-        DBTranslator(std::move(from)),
-        _variable_(std::move(from._variable_)) {
+        DBTranslator(std::move(from)), _variable_(std::move(from._variable_)) {
       // moves the copy of the variable, that should be used by method variable ()
       _real_variable_      = from._real_variable_;
       from._real_variable_ = nullptr;

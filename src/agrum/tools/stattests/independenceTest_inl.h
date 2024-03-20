@@ -36,8 +36,7 @@ namespace gum {
         const Prior&                                                prior,
         const std::vector< std::pair< std::size_t, std::size_t > >& ranges,
         const Bijection< NodeId, std::size_t >&                     nodeId2columns) :
-        prior_(prior.clone()),
-        counter_(parser, ranges, nodeId2columns) {
+        prior_(prior.clone()), counter_(parser, ranges, nodeId2columns) {
       GUM_CONSTRUCTOR(IndependenceTest);
     }
 
@@ -46,14 +45,13 @@ namespace gum {
     IndependenceTest::IndependenceTest(const DBRowGeneratorParser&             parser,
                                        const Prior&                            prior,
                                        const Bijection< NodeId, std::size_t >& nodeId2columns) :
-        prior_(prior.clone()),
-        counter_(parser, nodeId2columns) {
+        prior_(prior.clone()), counter_(parser, nodeId2columns) {
       GUM_CONSTRUCTOR(IndependenceTest);
     }
 
     /// copy constructor
     INLINE IndependenceTest::IndependenceTest(const IndependenceTest& from) :
-        prior_(from.prior_->clone()), counter_(from.counter_), cache_(from.cache_),
+        prior_(from.prior_ -> clone()), counter_(from.counter_), cache_(from.cache_),
         use_cache_(from.use_cache_) {
       GUM_CONS_CPY(IndependenceTest);
     }

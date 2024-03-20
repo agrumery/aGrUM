@@ -37,8 +37,7 @@ namespace gum {
   UnconstrainedTriangulation::UnconstrainedTriangulation(
       const UnconstrainedEliminationSequenceStrategy& elimSeq,
       const JunctionTreeStrategy&                     JTStrategy,
-      bool                                            minimality) :
-      StaticTriangulation(elimSeq, JTStrategy, minimality) {
+      bool minimality) : StaticTriangulation(elimSeq, JTStrategy, minimality) {
     // for debugging purposes
     GUM_CONSTRUCTOR(UnconstrainedTriangulation);
   }
@@ -49,8 +48,7 @@ namespace gum {
       const NodeProperty< Size >*                     domsizes,
       const UnconstrainedEliminationSequenceStrategy& elimSeq,
       const JunctionTreeStrategy&                     JTStrategy,
-      bool                                            minimality) :
-      StaticTriangulation(theGraph, domsizes, elimSeq, JTStrategy, minimality) {
+      bool minimality) : StaticTriangulation(theGraph, domsizes, elimSeq, JTStrategy, minimality) {
     // for debugging purposes
     GUM_CONSTRUCTOR(UnconstrainedTriangulation);
   }

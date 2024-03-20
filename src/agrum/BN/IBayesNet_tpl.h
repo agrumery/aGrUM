@@ -179,8 +179,8 @@ namespace gum {
     for (auto node: nodes()) {
       if (children(node).size() > 0) {
         for (auto child: children(node)) {
-          output << tab << "\"" << variable(node).name() << "\" -> "
-                 << "\"" << variable(child).name() << "\";" << std::endl;
+          output << tab << "\"" << variable(node).name() << "\" -> " << "\""
+                 << variable(child).name() << "\";" << std::endl;
         }
       } else if (parents(node).size() == 0) {
         output << tab << "\"" << variable(node).name() << "\";" << std::endl;
@@ -433,14 +433,12 @@ namespace gum {
   }
 
   template < typename GUM_SCALAR >
-  Potential< GUM_SCALAR >
-      IBayesNet< GUM_SCALAR >::evGt(const std::string& name, double val) const {
+  Potential< GUM_SCALAR > IBayesNet< GUM_SCALAR >::evGt(const std::string& name, double val) const {
     return Potential< GUM_SCALAR >::evGt(variableFromName(name), val);
   }
 
   template < typename GUM_SCALAR >
-  Potential< GUM_SCALAR >
-      IBayesNet< GUM_SCALAR >::evLt(const std::string& name, double val) const {
+  Potential< GUM_SCALAR > IBayesNet< GUM_SCALAR >::evLt(const std::string& name, double val) const {
     return Potential< GUM_SCALAR >::evLt(variableFromName(name), val);
   }
 

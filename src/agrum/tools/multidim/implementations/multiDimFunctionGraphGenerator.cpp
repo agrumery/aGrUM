@@ -41,8 +41,7 @@ namespace gum {
   MultiDimFunctionGraphGenerator::MultiDimFunctionGraphGenerator(
       Idx                                        maxVar,
       Idx                                        minVar,
-      const Sequence< const DiscreteVariable* >& varSeq) :
-      _varSeq_(varSeq) {
+      const Sequence< const DiscreteVariable* >& varSeq) : _varSeq_(varSeq) {
     GUM_CONSTRUCTOR(MultiDimFunctionGraphGenerator);
 
     _nbTotalVar_ = _varSeq_.size();

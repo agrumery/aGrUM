@@ -38,9 +38,7 @@ namespace gum {
   template < typename Val, typename Priority, typename Cmp, bool Gen >
   INLINE PriorityQueueImplementation< Val, Priority, Cmp, Gen >::PriorityQueueImplementation(
       Cmp  compare,
-      Size capacity) :
-      _indices_(capacity >> 1, true, true),
-      _cmp_(compare) {
+      Size capacity) : _indices_(capacity >> 1, true, true), _cmp_(compare) {
     _heap_.reserve(capacity);
 
     GUM_CONSTRUCTOR(PriorityQueueImplementation);
@@ -64,8 +62,8 @@ namespace gum {
   template < typename Val, typename Priority, typename Cmp, bool Gen >
   PriorityQueueImplementation< Val, Priority, Cmp, Gen >::PriorityQueueImplementation(
       const PriorityQueueImplementation< Val, Priority, Cmp, Gen >& from) :
-      _heap_(from._heap_),
-      _indices_(from._indices_), _nb_elements_(from._nb_elements_), _cmp_(from._cmp_) {
+      _heap_(from._heap_), _indices_(from._indices_), _nb_elements_(from._nb_elements_),
+      _cmp_(from._cmp_) {
     // fill the heap structure
     for (const auto& elt: _indices_) {
       _heap_[elt.second].second = &(elt.first);
@@ -78,9 +76,8 @@ namespace gum {
   template < typename Val, typename Priority, typename Cmp, bool Gen >
   PriorityQueueImplementation< Val, Priority, Cmp, Gen >::PriorityQueueImplementation(
       PriorityQueueImplementation< Val, Priority, Cmp, Gen >&& from) :
-      _heap_(std::move(from._heap_)),
-      _indices_(std::move(from._indices_)), _nb_elements_(std::move(from._nb_elements_)),
-      _cmp_(std::move(from._cmp_)) {
+      _heap_(std::move(from._heap_)), _indices_(std::move(from._indices_)),
+      _nb_elements_(std::move(from._nb_elements_)), _cmp_(std::move(from._cmp_)) {
     GUM_CONS_MOV(PriorityQueueImplementation)
   }
 
@@ -506,9 +503,7 @@ namespace gum {
   template < typename Val, typename Priority, typename Cmp >
   INLINE PriorityQueueImplementation< Val, Priority, Cmp, true >::PriorityQueueImplementation(
       Cmp  compare,
-      Size capacity) :
-      _indices_(capacity >> 1, true, true),
-      _cmp_(compare) {
+      Size capacity) : _indices_(capacity >> 1, true, true), _cmp_(compare) {
     _heap_.reserve(capacity);
 
     // for debugging purposes
@@ -534,8 +529,8 @@ namespace gum {
   template < typename Val, typename Priority, typename Cmp >
   PriorityQueueImplementation< Val, Priority, Cmp, true >::PriorityQueueImplementation(
       const PriorityQueueImplementation< Val, Priority, Cmp, true >& from) :
-      _heap_(from._heap_),
-      _indices_(from._indices_), _nb_elements_(from._nb_elements_), _cmp_(from._cmp_) {
+      _heap_(from._heap_), _indices_(from._indices_), _nb_elements_(from._nb_elements_),
+      _cmp_(from._cmp_) {
     // for debugging purposes
     GUM_CONS_CPY(PriorityQueueImplementation);
   }
@@ -544,9 +539,8 @@ namespace gum {
   template < typename Val, typename Priority, typename Cmp >
   PriorityQueueImplementation< Val, Priority, Cmp, true >::PriorityQueueImplementation(
       PriorityQueueImplementation< Val, Priority, Cmp, true >&& from) :
-      _heap_(std::move(from._heap_)),
-      _indices_(std::move(from._indices_)), _nb_elements_(std::move(from._nb_elements_)),
-      _cmp_(std::move(from._cmp_)) {
+      _heap_(std::move(from._heap_)), _indices_(std::move(from._indices_)),
+      _nb_elements_(std::move(from._nb_elements_)), _cmp_(std::move(from._cmp_)) {
     // for debugging purposes
     GUM_CONS_MOV(PriorityQueueImplementation);
   }

@@ -78,6 +78,7 @@ namespace gum {
      * @ingroup core
      */
     // clang-format on
+
     struct _Chunk_ {
       // ============================================================================
       /// Initializes a Chunk object

@@ -56,8 +56,7 @@ namespace gum {
 
     /// copy constructor
     StructuralConstraintUndiGraph::StructuralConstraintUndiGraph(
-        const StructuralConstraintUndiGraph& from) :
-        _UndiGraph_graph_(from._UndiGraph_graph_) {
+        const StructuralConstraintUndiGraph& from) : _UndiGraph_graph_(from._UndiGraph_graph_) {
       GUM_CONS_CPY(StructuralConstraintUndiGraph);
     }
 

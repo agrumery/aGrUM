@@ -47,6 +47,7 @@ namespace gum {
    * @brief Represent a node's parent.
    */
   // clang-format on
+
   struct Parent {
     NodeId parentId;
     Idx    modality;
@@ -99,6 +100,7 @@ namespace gum {
    * @brief Structure used to represent a node internal structure
    */
   // clang-format on
+
   class InternalNode {
     private:
     /// Variable associated to such node

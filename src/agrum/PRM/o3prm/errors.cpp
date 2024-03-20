@@ -38,8 +38,7 @@ namespace gum {
       void O3PRM_TYPE_NOT_FOUND(const O3Label& val, ErrorsContainer& errors) {
         auto              pos = val.position();
         std::stringstream msg;
-        msg << "Error : "
-            << "Unknown type " << val.label();
+        msg << "Error : " << "Unknown type " << val.label();
         errors.addError(msg.str(), pos.file(), pos.line(), pos.column());
       }
 
@@ -48,8 +47,8 @@ namespace gum {
                                 ErrorsContainer&                  errors) {
         const auto&       pos = val.position();
         std::stringstream msg;
-        msg << "Error : "
-            << "Ambiguous name " << val.label() << ", found more than one elligible types: ";
+        msg << "Error : " << "Ambiguous name " << val.label()
+            << ", found more than one elligible types: ";
         for (std::size_t i = 0; i < matches.size() - 1; ++i) {
           msg << matches[i] << ", ";
         }
@@ -60,16 +59,14 @@ namespace gum {
       void O3PRM_TYPE_RESERVED(const O3Label& val, ErrorsContainer& errors) {
         const auto&       pos = val.position();
         std::stringstream msg;
-        msg << "Error : "
-            << "Type name " << val.label() << " is reserved";
+        msg << "Error : " << "Type name " << val.label() << " is reserved";
         errors.addError(msg.str(), pos.file(), pos.line(), pos.column());
       }
 
       void O3PRM_TYPE_DUPPLICATE(const O3Label& val, ErrorsContainer& errors) {
         const auto&       pos = val.position();
         std::stringstream msg;
-        msg << "Error : "
-            << "Type " << val.label() << " exists already";
+        msg << "Error : " << "Type " << val.label() << " exists already";
         errors.addError(msg.str(), pos.file(), pos.line(), pos.column());
       }
 
@@ -78,8 +75,7 @@ namespace gum {
                                          ErrorsContainer& errors) {
         const auto&       pos = sub_type.position();
         std::stringstream msg;
-        msg << "Error : "
-            << "Cyclic inheritance between type " << sub_type.label() << " and type "
+        msg << "Error : " << "Cyclic inheritance between type " << sub_type.label() << " and type "
             << super_type.label();
         errors.addError(msg.str(), pos.file(), pos.line(), pos.column());
       }
@@ -88,32 +84,29 @@ namespace gum {
           O3PRM_TYPE_UNKNOWN_LABEL(const O3Label& type, const O3Label& l, ErrorsContainer& errors) {
         const auto&       pos = l.position();
         std::stringstream msg;
-        msg << "Error : "
-            << "Unknown label " << l.label() << " in " << type.label();
+        msg << "Error : " << "Unknown label " << l.label() << " in " << type.label();
         errors.addError(msg.str(), pos.file(), pos.line(), pos.column());
       }
 
       void O3PRM_TYPE_INVALID_RANGE(const O3IntType& val, ErrorsContainer& errors) {
         const auto&       pos = val.position();
         std::stringstream msg;
-        msg << "Error : "
-            << "Invalid range " << val.start().value() << " -> " << val.end().value();
+        msg << "Error : " << "Invalid range " << val.start().value() << " -> " << val.end().value();
         errors.addError(msg.str(), pos.file(), pos.line(), pos.column());
       }
 
       void O3PRM_TYPE_INVALID_RANGE(const O3RealType& val, ErrorsContainer& errors) {
         const auto&       pos = val.position();
         std::stringstream msg;
-        msg << "Error : "
-            << "Found " << val.values().size() << " values in range expected at least 3";
+        msg << "Error : " << "Found " << val.values().size()
+            << " values in range expected at least 3";
         errors.addError(msg.str(), pos.file(), pos.line(), pos.column());
       }
 
       void O3PRM_CLASS_NOT_FOUND(const O3Label& val, ErrorsContainer& errors) {
         const auto&       pos = val.position();
         std::stringstream msg;
-        msg << "Error : "
-            << "Unknown class " << val.label();
+        msg << "Error : " << "Unknown class " << val.label();
         errors.addError(msg.str(), pos.file(), pos.line(), pos.column());
         GUM_ERROR(FatalError, msg.str())
       }
@@ -123,8 +116,7 @@ namespace gum {
                                  ErrorsContainer&                  errors) {
         const auto&       pos = val.position();
         std::stringstream msg;
-        msg << "Error : "
-            << "Name " << val.label() << " is ambiguous: ";
+        msg << "Error : " << "Name " << val.label() << " is ambiguous: ";
         for (std::size_t i = 0; i < matches.size() - 1; ++i) {
           msg << matches[i] << ", ";
         }
@@ -136,8 +128,7 @@ namespace gum {
         // Raised if duplicate type names
         const auto&       pos = val.position();
         std::stringstream msg;
-        msg << "Error : "
-            << "Class name " << val.label() << " exists already";
+        msg << "Error : " << "Class name " << val.label() << " exists already";
         errors.addError(msg.str(), pos.file(), pos.line(), pos.column());
       }
 
@@ -147,8 +138,8 @@ namespace gum {
         // Cyclic inheritance
         const auto&       pos = sub.position();
         std::stringstream msg;
-        msg << "Error : "
-            << "Cyclic inheritance between class " << sub.label() << " and class " << super.label();
+        msg << "Error : " << "Cyclic inheritance between class " << sub.label() << " and class "
+            << super.label();
         errors.addError(msg.str(), pos.file(), pos.line(), pos.column());
       }
 
@@ -158,8 +149,7 @@ namespace gum {
                                            ErrorsContainer& errors) {
         const auto&       pos = attr.position();
         std::stringstream msg;
-        msg << "Error : "
-            << "Class " << c.label() << " attribute " << attr.label()
+        msg << "Error : " << "Class " << c.label() << " attribute " << attr.label()
             << " does not respect interface " << i.label();
         errors.addError(msg.str(), pos.file(), pos.line(), pos.column());
       }
@@ -170,8 +160,7 @@ namespace gum {
                                           ErrorsContainer& errors) {
         const auto&       pos = attr.position();
         std::stringstream msg;
-        msg << "Error : "
-            << "Class " << c.label() << " aggregate " << attr.label()
+        msg << "Error : " << "Class " << c.label() << " aggregate " << attr.label()
             << " does not respect interface " << i.label();
         errors.addError(msg.str(), pos.file(), pos.line(), pos.column());
       }
@@ -182,8 +171,7 @@ namespace gum {
                                           ErrorsContainer& errors) {
         const auto&       pos = ref.position();
         std::stringstream msg;
-        msg << "Error : "
-            << "Class " << c.label() << " reference " << ref.label()
+        msg << "Error : " << "Class " << c.label() << " reference " << ref.label()
             << " does not respect interface " << i.label();
         errors.addError(msg.str(), pos.file(), pos.line(), pos.column());
       }
@@ -193,17 +181,15 @@ namespace gum {
                                           ErrorsContainer& errors) {
         const auto&       pos = c.position();
         std::stringstream msg;
-        msg << "Error : "
-            << "Class " << c.label() << " does not implement all of interface " << i.label()
-            << " attributes";
+        msg << "Error : " << "Class " << c.label() << " does not implement all of interface "
+            << i.label() << " attributes";
         errors.addError(msg.str(), pos.file(), pos.line(), pos.column());
       }
 
       void O3PRM_CLASS_DUPLICATE_REFERENCE(const O3Label& ref, ErrorsContainer& errors) {
         const auto&       pos = ref.position();
         std::stringstream msg;
-        msg << "Error : "
-            << "Reference Slot name " << ref.label() << " exists already";
+        msg << "Error : " << "Reference Slot name " << ref.label() << " exists already";
         errors.addError(msg.str(), pos.file(), pos.line(), pos.column());
       }
 
@@ -212,8 +198,7 @@ namespace gum {
                                       ErrorsContainer& errors) {
         const auto&       pos = ref.position();
         std::stringstream msg;
-        msg << "Error : "
-            << "Class " << c.label() << " cannot reference itself";
+        msg << "Error : " << "Class " << c.label() << " cannot reference itself";
         errors.addError(msg.str(), pos.file(), pos.line(), pos.column());
       }
 
@@ -222,24 +207,21 @@ namespace gum {
                                              ErrorsContainer& errors) {
         const auto&       pos = sub.position();
         std::stringstream msg;
-        msg << "Error : "
-            << "Class " << c.label() << " cannot reference subclass " << sub.label();
+        msg << "Error : " << "Class " << c.label() << " cannot reference subclass " << sub.label();
         errors.addError(msg.str(), pos.file(), pos.line(), pos.column());
       }
 
       void O3PRM_CLASS_PARENT_NOT_FOUND(const O3Label& parent, ErrorsContainer& errors) {
         const auto&       pos = parent.position();
         std::stringstream msg;
-        msg << "Error : "
-            << "Parent " << parent.label() << " not found";
+        msg << "Error : " << "Parent " << parent.label() << " not found";
         errors.addError(msg.str(), pos.file(), pos.line(), pos.column());
       }
 
       void O3PRM_CLASS_ILLEGAL_PARENT(const O3Label& parent, ErrorsContainer& errors) {
         const auto&       pos = parent.position();
         std::stringstream msg;
-        msg << "Error : "
-            << "Illegal parent " << parent.label();
+        msg << "Error : " << "Illegal parent " << parent.label();
         errors.addError(msg.str(), pos.file(), pos.line(), pos.column());
       }
 
@@ -248,8 +230,7 @@ namespace gum {
                                       ErrorsContainer&   errors) {
         const auto&       pos = chain.position();
         std::stringstream msg;
-        msg << "Error : "
-            << "Link " << s << " in chain " << chain.label() << " not found";
+        msg << "Error : " << "Link " << s << " in chain " << chain.label() << " not found";
         errors.addError(msg.str(), pos.file(), pos.line(), pos.column());
       }
 
@@ -260,9 +241,8 @@ namespace gum {
                                         ErrorsContainer&   errors) {
         const auto&       pos = attr.position();
         std::stringstream msg;
-        msg << "Error : "
-            << "Illegal CPT size, expected " << expected << " found " << found << " for attribute "
-            << c << "." << attr.label();
+        msg << "Error : " << "Illegal CPT size, expected " << expected << " found " << found
+            << " for attribute " << c << "." << attr.label();
         errors.addError(msg.str(), pos.file(), pos.line(), pos.column());
       }
 
@@ -272,15 +252,14 @@ namespace gum {
                                          ErrorsContainer&   errors) {
         const auto&       pos = f.position();
         std::stringstream msg;
-        msg << "Error : "
-            << "Illegal CPT value \"" << f.formula().formula() << "\" in attribute " << c << "."
-            << attr.label();
+        msg << "Error : " << "Illegal CPT value \"" << f.formula().formula() << "\" in attribute "
+            << c << "." << attr.label();
         try {
           auto result = f.formula().result();
           msg << ", formula resolve to " << result;
         } catch (...) {
-          msg << ", could not resolve the following formula: "
-              << "\"" << f.formula().formula() << "\"";
+          msg << ", could not resolve the following formula: " << "\"" << f.formula().formula()
+              << "\"";
         }
         errors.addError(msg.str(), pos.file(), pos.line(), pos.column());
       }
@@ -291,8 +270,8 @@ namespace gum {
                                              ErrorsContainer&   errors) {
         const auto&       pos = attr.position();
         std::stringstream msg;
-        msg << "Error : "
-            << "PRMAttribute " << c << "." << attr.label() << " CPT does not sum to 1, found " << f;
+        msg << "Error : " << "PRMAttribute " << c << "." << attr.label()
+            << " CPT does not sum to 1, found " << f;
         errors.addError(msg.str(), pos.file(), pos.line(), pos.column());
       }
 
@@ -302,8 +281,8 @@ namespace gum {
                                                      ErrorsContainer&   errors) {
         const auto&       pos = attr.position();
         std::stringstream msg;
-        msg << "Warning : "
-            << "PRMAttribute " << c << "." << attr.label() << " CPT does not sum to 1, found " << f;
+        msg << "Warning : " << "PRMAttribute " << c << "." << attr.label()
+            << " CPT does not sum to 1, found " << f;
         errors.addWarning(msg.str(), pos.file(), pos.line(), pos.column());
       }
 
@@ -313,8 +292,7 @@ namespace gum {
                                          ErrorsContainer&         errors) {
         const auto&       pos = rule.first.front().position();
         std::stringstream msg;
-        msg << "Error : "
-            << "Expected " << expected << " value(s), found " << found;
+        msg << "Error : " << "Expected " << expected << " value(s), found " << found;
         errors.addError(msg.str(), pos.file(), pos.line(), pos.column());
       }
 
@@ -324,16 +302,14 @@ namespace gum {
                                           ErrorsContainer&         errors) {
         const auto&       pos = label.position();
         std::stringstream msg;
-        msg << "Error : "
-            << "Label " << label << " is not part of " << parent << " domain";
+        msg << "Error : " << "Label " << label << " is not part of " << parent << " domain";
         errors.addError(msg.str(), pos.file(), pos.line(), pos.column());
       }
 
       void O3PRM_CLASS_WRONG_PARENT(const O3Label& prnt, ErrorsContainer& errors) {
         const auto&       pos = prnt.position();
         std::stringstream msg;
-        msg << "Error : "
-            << "Illegal parent " << prnt;
+        msg << "Error : " << "Illegal parent " << prnt;
         errors.addError(msg.str(), pos.file(), pos.line(), pos.column());
       }
 
@@ -343,9 +319,8 @@ namespace gum {
                                          ErrorsContainer&   errors) {
         const auto&       pos = prnt.position();
         std::stringstream msg;
-        msg << "Error : "
-            << "Expected type " << expected << " for parent " << prnt.label() << ", found "
-            << found;
+        msg << "Error : " << "Expected type " << expected << " for parent " << prnt.label()
+            << ", found " << found;
         errors.addError(msg.str(), pos.file(), pos.line(), pos.column());
       }
 
@@ -354,8 +329,8 @@ namespace gum {
                                         ErrorsContainer& errors) {
         const auto&       pos = elt.position();
         std::stringstream msg;
-        msg << "Error : "
-            << "Illegal overload of element " << elt.label() << " from class " << c.label();
+        msg << "Error : " << "Illegal overload of element " << elt.label() << " from class "
+            << c.label();
         errors.addError(msg.str(), pos.file(), pos.line(), pos.column());
       }
 
@@ -365,9 +340,7 @@ namespace gum {
                                       ErrorsContainer& errors) {
         const auto&       pos = agg.position();
         std::stringstream msg;
-        msg << "Error : "
-            << "Expected " << expected << " parameters "
-            << ", found " << found;
+        msg << "Error : " << "Expected " << expected << " parameters " << ", found " << found;
         errors.addError(msg.str(), pos.file(), pos.line(), pos.column());
       }
 
@@ -376,8 +349,7 @@ namespace gum {
                                                ErrorsContainer& errors) {
         const auto&       pos = param.position();
         std::stringstream msg;
-        msg << "Error : "
-            << "Parameter " << param.label() << " in aggregate " << agg.label()
+        msg << "Error : " << "Parameter " << param.label() << " in aggregate " << agg.label()
             << " does not match any expected values";
         errors.addError(msg.str(), pos.file(), pos.line(), pos.column());
       }
@@ -385,16 +357,14 @@ namespace gum {
       void O3PRM_INTERFACE_ILLEGAL_ARRAY(const O3Label& val, ErrorsContainer& errors) {
         const auto&       pos = val.position();
         std::stringstream msg;
-        msg << "Error : "
-            << "PRMAttribute " << val.label() << " can not be an array";
+        msg << "Error : " << "PRMAttribute " << val.label() << " can not be an array";
         errors.addError(msg.str(), pos.file(), pos.line(), pos.column());
       }
 
       void O3PRM_INTERFACE_NOT_FOUND(const O3Label& val, ErrorsContainer& errors) {
         const auto&       pos = val.position();
         std::stringstream msg;
-        msg << "Error : "
-            << "Interface " << val.label() << " not found";
+        msg << "Error : " << "Interface " << val.label() << " not found";
         errors.addError(msg.str(), pos.file(), pos.line(), pos.column());
       }
 
@@ -403,8 +373,7 @@ namespace gum {
                                      ErrorsContainer&                  errors) {
         const auto&       pos = val.position();
         std::stringstream msg;
-        msg << "Error : "
-            << "Name " << val.label() << " is ambiguous: ";
+        msg << "Error : " << "Name " << val.label() << " is ambiguous: ";
         for (std::size_t i = 0; i < matches.size() - 1; ++i) {
           msg << matches[i] << ", ";
         }
@@ -415,8 +384,7 @@ namespace gum {
       void O3PRM_INTERFACE_DUPLICATE(const O3Label& val, ErrorsContainer& errors) {
         const auto&       pos = val.position();
         std::stringstream msg;
-        msg << "Error : "
-            << "Interface name " << val.label() << " exists already";
+        msg << "Error : " << "Interface name " << val.label() << " exists already";
         errors.addError(msg.str(), pos.file(), pos.line(), pos.column());
       }
 
@@ -424,8 +392,7 @@ namespace gum {
                                              ErrorsContainer&          errors) {
         const auto&       pos = elt.type().position();
         std::stringstream msg;
-        msg << "Error : "
-            << "Element " << elt.name().label() << " already exists";
+        msg << "Error : " << "Element " << elt.name().label() << " already exists";
         errors.addError(msg.str(), pos.file(), pos.line(), pos.column());
       }
 
@@ -434,9 +401,8 @@ namespace gum {
                                               ErrorsContainer& errors) {
         const auto&       pos = super.position();
         std::stringstream msg;
-        msg << "Error : "
-            << "Cyclic inheritance between interface " << sub.label() << " and interface "
-            << super.label();
+        msg << "Error : " << "Cyclic inheritance between interface " << sub.label()
+            << " and interface " << super.label();
         errors.addError(msg.str(), pos.file(), pos.line(), pos.column());
       }
 
@@ -445,8 +411,7 @@ namespace gum {
                                           ErrorsContainer&          errors) {
         const auto&       pos = r.type().position();
         std::stringstream msg;
-        msg << "Error : "
-            << "Interface " << i.name().label() << " cannot reference itself";
+        msg << "Error : " << "Interface " << i.name().label() << " cannot reference itself";
         errors.addError(msg.str(), pos.file(), pos.line(), pos.column());
       }
 
@@ -455,8 +420,7 @@ namespace gum {
                                                  ErrorsContainer&          errors) {
         const auto&       pos = ref.type().position();
         std::stringstream msg;
-        msg << "Error : "
-            << "Interface " << i.name().label() << " cannot reference subinterface "
+        msg << "Error : " << "Interface " << i.name().label() << " cannot reference subinterface "
             << ref.type().label();
         errors.addError(msg.str(), pos.file(), pos.line(), pos.column());
       }
@@ -465,16 +429,14 @@ namespace gum {
                                             ErrorsContainer&          errors) {
         const auto&       pos = elt.type().position();
         std::stringstream msg;
-        msg << "Error : "
-            << "Illegal overload of element " << elt.name().label();
+        msg << "Error : " << "Illegal overload of element " << elt.name().label();
         errors.addError(msg.str(), pos.file(), pos.line(), pos.column());
       }
 
       void O3PRM_REFERENCE_NOT_FOUND(const O3Label& val, ErrorsContainer& errors) {
         const auto&       pos = val.position();
         std::stringstream msg;
-        msg << "Error : "
-            << "Reference Slot type " << val.label() << " not found";
+        msg << "Error : " << "Reference Slot type " << val.label() << " not found";
         errors.addError(msg.str(), pos.file(), pos.line(), pos.column());
       }
 
@@ -483,8 +445,7 @@ namespace gum {
                                      ErrorsContainer&                  errors) {
         const auto&       pos = val.position();
         std::stringstream msg;
-        msg << "Error : "
-            << "Name " << val.label() << " is ambiguous: ";
+        msg << "Error : " << "Name " << val.label() << " is ambiguous: ";
         for (std::size_t i = 0; i < matches.size() - 1; ++i) {
           msg << matches[i] << ", ";
         }
@@ -511,8 +472,7 @@ namespace gum {
       void O3PRM_SYSTEM_DUPLICATE_INSTANCE(const O3Instance& i, ErrorsContainer& errors) {
         const auto&       pos = i.type().position();
         std::stringstream msg;
-        msg << "Error : "
-            << "Instance " << i.name().label() << " already exists";
+        msg << "Error : " << "Instance " << i.name().label() << " already exists";
         errors.addError(msg.str(), pos.file(), pos.line(), pos.column());
       }
 
@@ -527,8 +487,7 @@ namespace gum {
                                             ErrorsContainer&           errors) {
         const auto&       pos = param.name().position();
         std::stringstream msg;
-        msg << "Error : "
-            << "Parameter " << param.name().label() << " not found";
+        msg << "Error : " << "Parameter " << param.name().label() << " not found";
         errors.addError(msg.str(), pos.file(), pos.line(), pos.column());
       }
 
@@ -536,8 +495,7 @@ namespace gum {
                                           ErrorsContainer&           errors) {
         const auto&       pos = param.value().position();
         std::stringstream msg;
-        msg << "Error : "
-            << "Parameter " << param.name().label() << " is an integer";
+        msg << "Error : " << "Parameter " << param.name().label() << " is an integer";
         errors.addError(msg.str(), pos.file(), pos.line(), pos.column());
       }
 
@@ -545,24 +503,21 @@ namespace gum {
                                             ErrorsContainer&           errors) {
         const auto&       pos = param.value().position();
         std::stringstream msg;
-        msg << "Error : "
-            << "Parameter " << param.name().label() << " is a float";
+        msg << "Error : " << "Parameter " << param.name().label() << " is a float";
         errors.addError(msg.str(), pos.file(), pos.line(), pos.column());
       }
 
       void O3PRM_SYSTEM_INVALID_LEFT_VALUE(const O3Label& val, ErrorsContainer& errors) {
         const auto&       pos = val.position();
         std::stringstream msg;
-        msg << "Error : "
-            << "Invalid left expression " << val.label();
+        msg << "Error : " << "Invalid left expression " << val.label();
         errors.addError(msg.str(), pos.file(), pos.line(), pos.column());
       }
 
       void O3PRM_SYSTEM_INSTANCE_NOT_FOUND(const O3Label& i, ErrorsContainer& errors) {
         const auto&       pos = i.position();
         std::stringstream msg;
-        msg << "Error : "
-            << "Instance " << i.label() << " not found";
+        msg << "Error : " << "Instance " << i.label() << " not found";
         errors.addError(msg.str(), pos.file(), pos.line(), pos.column());
       }
 
@@ -571,8 +526,7 @@ namespace gum {
                                             ErrorsContainer&   errors) {
         const auto&       pos = ref.position();
         std::stringstream msg;
-        msg << "Error : "
-            << "Reference " << ref.label() << " not found in class " << type;
+        msg << "Error : " << "Reference " << ref.label() << " not found in class " << type;
         errors.addError(msg.str(), pos.file(), pos.line(), pos.column());
       }
 
@@ -592,7 +546,7 @@ namespace gum {
 
 
     }   // namespace o3prm
-  }     // namespace prm
+  }   // namespace prm
 }   // namespace gum
 
 #endif   // DOXYGEN_SHOULD_SKIP_THIS

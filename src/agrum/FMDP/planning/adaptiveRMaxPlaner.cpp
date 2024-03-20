@@ -66,8 +66,8 @@ namespace gum {
                                          double                       epsilon,
                                          const ILearningStrategy*     learner,
                                          bool                         verbose) :
-      StructuredPlaner(opi, discountFactor, epsilon, verbose),
-      IDecisionStrategy(), _fmdpLearner_(learner), _initialized_(false) {
+      StructuredPlaner(opi, discountFactor, epsilon, verbose), IDecisionStrategy(),
+      _fmdpLearner_(learner), _initialized_(false) {
     GUM_CONSTRUCTOR(AdaptiveRMaxPlaner);
   }
 

@@ -48,8 +48,7 @@ namespace gum {
                                              const OrderedEliminationSequenceStrategy& elimSeq,
                                              const JunctionTreeStrategy&               JTStrategy,
                                              bool                                      minimality) :
-      StaticTriangulation(theGraph, dom, elimSeq, JTStrategy, minimality),
-      _order_(order) {
+      StaticTriangulation(theGraph, dom, elimSeq, JTStrategy, minimality), _order_(order) {
     static_cast< OrderedEliminationSequenceStrategy* >(elimination_sequence_strategy_)
         ->setOrder(_order_);
 

@@ -36,8 +36,7 @@ namespace gum {
   /// default constructor (uses an empty graph)
   DefaultEliminationSequenceStrategy::DefaultEliminationSequenceStrategy(double theRatio,
                                                                          double theThreshold) :
-      _simplicial_ratio_(theRatio),
-      _simplicial_threshold_(theThreshold) {
+      _simplicial_ratio_(theRatio), _simplicial_threshold_(theThreshold) {
     GUM_CONSTRUCTOR(DefaultEliminationSequenceStrategy);
   }
 
@@ -46,9 +45,7 @@ namespace gum {
       UndiGraph*                  graph,
       const NodeProperty< Size >* domain_sizes,
       double                      ratio,
-      double                      threshold) :
-      _simplicial_ratio_(ratio),
-      _simplicial_threshold_(threshold) {
+      double threshold) : _simplicial_ratio_(ratio), _simplicial_threshold_(threshold) {
     setGraph(graph, domain_sizes);
 
     GUM_CONSTRUCTOR(DefaultEliminationSequenceStrategy);

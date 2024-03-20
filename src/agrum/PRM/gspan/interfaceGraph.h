@@ -307,7 +307,7 @@ namespace gum {
 
 
     } /* namespace gspan */
-  }   /* namespace prm */
+  } /* namespace prm */
 } /* namespace gum */
 
 #include <agrum/PRM/gspan/interfaceGraph_tpl.h>

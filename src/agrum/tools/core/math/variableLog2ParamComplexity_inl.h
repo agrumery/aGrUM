@@ -44,8 +44,7 @@ namespace gum {
   /// copy constructor
   INLINE VariableLog2ParamComplexity::VariableLog2ParamComplexity(
       const VariableLog2ParamComplexity& from) :
-      _use_cache_(from._use_cache_),
-      _cache_(from._cache_) {
+      _use_cache_(from._use_cache_), _cache_(from._cache_) {
     GUM_CONS_CPY(VariableLog2ParamComplexity);
   }
 

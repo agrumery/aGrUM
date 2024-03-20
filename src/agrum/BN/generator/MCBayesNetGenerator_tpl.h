@@ -54,8 +54,7 @@ namespace gum {
       Idx  maxModality,
       Size iteration,
       Idx  p,
-      Idx  q) :
-      IBNG(nbrNodes, maxArcs, maxModality) {
+      Idx  q) : IBNG(nbrNodes, maxArcs, maxModality) {
     if (p + q > 100)
       GUM_ERROR(OperationNotAllowed,
                 "the sum of the probabilities p and q must be at most equal to 100");

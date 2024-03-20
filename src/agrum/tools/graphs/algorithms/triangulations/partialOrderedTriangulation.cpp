@@ -36,8 +36,7 @@ namespace gum {
   PartialOrderedTriangulation::PartialOrderedTriangulation(
       const PartialOrderedEliminationSequenceStrategy& elimSeq,
       const JunctionTreeStrategy&                      JTStrategy,
-      bool                                             minimality) :
-      StaticTriangulation(elimSeq, JTStrategy, minimality) {
+      bool minimality) : StaticTriangulation(elimSeq, JTStrategy, minimality) {
     // for debugging purposes
     GUM_CONSTRUCTOR(PartialOrderedTriangulation);
   }
@@ -62,8 +61,7 @@ namespace gum {
   // copy constructor
   PartialOrderedTriangulation::PartialOrderedTriangulation(
       const PartialOrderedTriangulation& from) :
-      StaticTriangulation(from),
-      _partial_order_(from._partial_order_) {
+      StaticTriangulation(from), _partial_order_(from._partial_order_) {
     // for debugging purposes
     GUM_CONS_CPY(PartialOrderedTriangulation);
   }
