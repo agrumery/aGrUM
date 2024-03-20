@@ -86,24 +86,44 @@ namespace gum_tests {
       }
 
 
-      TS_ASSERT_EQUALS(toBoolString(gum::Potential< double >::evEq(bn.variable("A"), 4)),
+      TS_ASSERT_EQUALS(toBoolString(gum::Potential< double >::evEq(bn.variable("A"), 4.0)),
                        "....1.....")
-      TS_ASSERT_EQUALS(toBoolString(gum::Potential< double >::evEq(bn.variable("B"), 4)),
+      TS_ASSERT_EQUALS(toBoolString(gum::Potential< double >::evEq(bn.variable("B"), 4.0)),
                        "...1......")
-      TS_ASSERT_EQUALS(toBoolString(gum::Potential< double >::evEq(bn.variable("C"), 4)),
+      TS_ASSERT_EQUALS(toBoolString(gum::Potential< double >::evEq(bn.variable("C"), 4.0)),
                        ".1........")
-      TS_ASSERT_EQUALS(toBoolString(gum::Potential< double >::evEq(bn.variable("D"), 4)),
+      TS_ASSERT_EQUALS(toBoolString(gum::Potential< double >::evEq(bn.variable("D"), 4.0)),
                        "1.........")
-      TS_ASSERT_EQUALS(toBoolString(gum::Potential< double >::evEq(bn.variable("E"), 4)),
+      TS_ASSERT_EQUALS(toBoolString(gum::Potential< double >::evEq(bn.variable("E"), 4.0)),
                        ".1........")
 
-      TS_ASSERT_EQUALS(toBoolString(gum::Potential< double >::evEq(bn.variable("A"), 4)
-                                    | gum::Potential< double >::evEq(bn.variable("A"), 8)),
+      TS_ASSERT_EQUALS(toBoolString(gum::Potential< double >::evEq(bn.variable("A"), 4.0)
+                                    | gum::Potential< double >::evEq(bn.variable("A"), 8.0)),
                        "....1...1.")
-      TS_ASSERT_EQUALS(toBoolString(gum::Potential< double >::evIn(bn.variable("A"), 4, 8)),
+      TS_ASSERT_EQUALS(toBoolString(gum::Potential< double >::evIn(bn.variable("A"), 4.0, 8.0)),
                        "....11111.")
-      TS_ASSERT_EQUALS(toBoolString(~gum::Potential< double >::evIn(bn.variable("A"), 4, 8)),
+      TS_ASSERT_EQUALS(toBoolString(~gum::Potential< double >::evIn(bn.variable("A"), 4.0, 8.0)),
                        "1111.....1")
+
+      TS_ASSERT_EQUALS(toBoolString(gum::Potential< double >::evLt(bn.variable("A"), 4.0)),
+                       "1111......")
+      TS_ASSERT_EQUALS(toBoolString(gum::Potential< double >::evLt(bn.variable("A"), 0.0)),
+                       "1.........")
+
+      TS_ASSERT_EQUALS(toBoolString(gum::Potential< double >::evGt(bn.variable("A"), 4.0)),
+                       ".....11111")
+      TS_ASSERT_EQUALS(toBoolString(gum::Potential< double >::evGt(bn.variable("A"), 8.0)),
+                       ".........1")
+
+      TS_ASSERT_EQUALS(toBoolString(gum::Potential< double >::evLt(bn.variable("C"), 7.0)),
+                       "111.......")
+      TS_ASSERT_EQUALS(toBoolString(gum::Potential< double >::evLt(bn.variable("C"), 1.0)),
+                       "1.........")
+
+      TS_ASSERT_EQUALS(toBoolString(gum::Potential< double >::evGt(bn.variable("C"), 7.0)),
+                       "....111111")
+      TS_ASSERT_EQUALS(toBoolString(gum::Potential< double >::evGt(bn.variable("C"), 20.0)),
+                       ".........1")
     }
 
     private:

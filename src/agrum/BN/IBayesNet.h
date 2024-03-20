@@ -244,6 +244,17 @@ namespace gum {
      */
     Potential< GUM_SCALAR > evIn(const std::string& name, double val1, double val2) const;
 
+    /**
+     * @return a Potential for a (numerical) discrete variable representing an evidence with an observed value less than the parameter
+     */
+    Potential< GUM_SCALAR > evLt(const std::string& name, double value) const;
+
+
+    /**
+     * @return a Potential for a (numerical) discrete variable representing an evidence with an observed value greater than the parameter
+     */
+    Potential< GUM_SCALAR > evGt(const std::string& name, double value) const;
+
     private:
     void _minimalCondSetVisitUp_(NodeId         node,
                                  const NodeSet& soids,

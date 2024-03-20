@@ -432,4 +432,16 @@ namespace gum {
     return Potential< GUM_SCALAR >::evIn(variableFromName(name), val1, val2);
   }
 
+  template < typename GUM_SCALAR >
+  Potential< GUM_SCALAR >
+      IBayesNet< GUM_SCALAR >::evGt(const std::string& name, double val) const {
+    return Potential< GUM_SCALAR >::evGt(variableFromName(name), val);
+  }
+
+  template < typename GUM_SCALAR >
+  Potential< GUM_SCALAR >
+      IBayesNet< GUM_SCALAR >::evLt(const std::string& name, double val) const {
+    return Potential< GUM_SCALAR >::evLt(variableFromName(name), val);
+  }
+
 } /* namespace gum */

@@ -435,6 +435,8 @@ namespace gum {
     /// numerical evidence generator
     static Potential< GUM_SCALAR > evEq(const DiscreteVariable& v, double val);
     static Potential< GUM_SCALAR > evIn(const DiscreteVariable& v, double val1, double val2);
+    static Potential< GUM_SCALAR > evGt(const DiscreteVariable& v, double val);
+    static Potential< GUM_SCALAR > evLt(const DiscreteVariable& v, double val);
     ///@}
 
     protected:

@@ -55,7 +55,7 @@ namespace gum {
   template < typename GUM_SCALAR >
   INLINE Potential< GUM_SCALAR >::Potential(const Potential< GUM_SCALAR >& src) :
       Potential< GUM_SCALAR >(
-          static_cast< MultiDimImplementation< GUM_SCALAR >* >(src.content()->newFactory()),
+          static_cast< MultiDimImplementation< GUM_SCALAR >* >(src.content() -> newFactory()),
           *(src.content())) {
     this->empty_value_ = src.empty_value_;
     // GUM_CONS_CPY not here because in called Potential
@@ -1086,4 +1086,37 @@ namespace gum {
     }
     return p;
   }
+
+  template < typename GUM_SCALAR >
+  Potential< GUM_SCALAR > Potential< GUM_SCALAR >::evGt(const DiscreteVariable& v, double val) {
+    const auto i = v.closestIndex(val);
+    if (i == v.domainSize() - 1) { return evEq(v, val); }
+
+    gum::Potential< GUM_SCALAR > p;
+    p.add(v);
+    p.fillWith(0);
+    Instantiation I(p);
+    for (Idx i2 = i + 1; i2 < v.domainSize(); i2++) {
+      I.chgVal(0, i2);
+      p.set(I, 1);
+    }
+    return p;
+  }
+
+  template < typename GUM_SCALAR >
+  Potential< GUM_SCALAR > Potential< GUM_SCALAR >::evLt(const DiscreteVariable& v, double val) {
+    const auto i = v.closestIndex(val);
+    if (i == 0) { return evEq(v, val); }
+
+    gum::Potential< GUM_SCALAR > p;
+    p.add(v);
+    p.fillWith(0);
+    Instantiation I(p);
+    for (Idx i2 = 0; i2 < i; i2++) {
+      I.chgVal(0, i2);
+      p.set(I, 1);
+    }
+    return p;
+  }
+
 } /* namespace gum */
