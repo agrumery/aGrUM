@@ -9141,6 +9141,14 @@ class Potential(object):
     def evIn(v: "DiscreteVariable", val1: float, val2: float) -> "pyAgrum.Potential":
         return _pyAgrum.Potential_evIn(v, val1, val2)
 
+    @staticmethod
+    def evGt(v: "DiscreteVariable", val: float) -> "pyAgrum.Potential":
+        return _pyAgrum.Potential_evGt(v, val)
+
+    @staticmethod
+    def evLt(v: "DiscreteVariable", val: float) -> "pyAgrum.Potential":
+        return _pyAgrum.Potential_evLt(v, val)
+
     def __repr__(self) -> str:
         return _pyAgrum.Potential___repr__(self)
 
@@ -10289,6 +10297,12 @@ class IBayesNet(DAGmodel):
 
     def evIn(self, name: str, val1: float, val2: float) -> "pyAgrum.Potential":
         return _pyAgrum.IBayesNet_evIn(self, name, val1, val2)
+
+    def evLt(self, name: str, value: float) -> "pyAgrum.Potential":
+        return _pyAgrum.IBayesNet_evLt(self, name, value)
+
+    def evGt(self, name: str, value: float) -> "pyAgrum.Potential":
+        return _pyAgrum.IBayesNet_evGt(self, name, value)
 
     def ids(self, names: List[str]) -> object:
         r"""

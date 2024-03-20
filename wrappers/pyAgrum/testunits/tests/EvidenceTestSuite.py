@@ -33,9 +33,9 @@ class TestEvidence(pyAgrumTestCase):
     self.assertTrue(bn.cpt("A").isEvidence())
     self.assertFalse(bn.cpt("B").isEvidence())
 
-    p1.fillWith(0)
+    p1.fillWith(0.0)
     self.assertFalse(p1.isEvidence())
-    p1.fillWith(1)
+    p1.fillWith(1.0)
     self.assertTrue(p1.isEvidence())
 
   def tesCombine(self):
@@ -51,9 +51,9 @@ class TestEvidence(pyAgrumTestCase):
     self.assertAlmostEqual(max(M1, M2), (p1 | p2).max(), delta=1e-10)
     self.assertAlmostEqual(min(m1, m2), (p1 & p2).min(), delta=1e-10)
 
-    self.assertAlmostEqual(M1, 1 - (~p1).min(), delta=1e-10)
-    self.assertAlmostEqual(m1, 1 - (~p1).max(), delta=1e-10)
-    self.assertAlmostEqual(10 - 1, (~p1).sum(), delta=1e-10)
+    self.assertAlmostEqual(M1, 1.0 - (~p1).min(), delta=1e-10)
+    self.assertAlmostEqual(m1, 1.0 - (~p1).max(), delta=1e-10)
+    self.assertAlmostEqual(10.0 - 1.0, (~p1).sum(), delta=1e-10)
 
   def testLikelihood(self):
     bn = gum.fastBN("A[10];B[1,10];C{1.0:20.0:10};D{1:100:10};E[1.0:20.0:10];X{A1|A2|A3|A4|A5|A6|A7|A8|A9|A10}")
@@ -63,16 +63,25 @@ class TestEvidence(pyAgrumTestCase):
     vA, vB, vC, vD, vE = [bn.variable(i) for i in "ABCDE"]
 
     gpot = gum.Potential
-    self.assertEqual(gpot.evEq(vA, 4).tolist(), [0, 0, 0, 0, 1, 0, 0, 0, 0, 0])
-    self.assertEqual(gpot.evEq(vB, 4).tolist(), [0, 0, 0, 1, 0, 0, 0, 0, 0, 0])
-    self.assertEqual(gpot.evEq(vC, 4).tolist(), [0, 1, 0, 0, 0, 0, 0, 0, 0, 0])
-    self.assertEqual(gpot.evEq(vD, 4).tolist(), [1, 0, 0, 0, 0, 0, 0, 0, 0, 0])
-    self.assertEqual(gpot.evEq(vE, 4).tolist(), [0, 1, 0, 0, 0, 0, 0, 0, 0, 0])
+    self.assertEqual(gpot.evEq(vA, 4.0).tolist(), [0.0, 0.0, 0.0, 0.0, 1.0, 0.0, 0.0, 0.0, 0.0, 0.0])
+    self.assertEqual(gpot.evEq(vB, 4.0).tolist(), [0.0, 0.0, 0.0, 1.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0])
+    self.assertEqual(gpot.evEq(vC, 4.0).tolist(), [0.0, 1.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0])
+    self.assertEqual(gpot.evEq(vD, 4.0).tolist(), [1.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0])
+    self.assertEqual(gpot.evEq(vE, 4.0).tolist(), [0.0, 1.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0])
 
-    self.assertEqual(gpot.evIn(vA, 4, 6).tolist(), [0, 0, 0, 0, 1, 1, 1, 0, 0, 0])
-    self.assertEqual((gpot.evEq(vA, 4) | gpot.evEq(vA, 6)).tolist(), [0, 0, 0, 0, 1, 0, 1, 0, 0, 0])
-    self.assertEqual((~gpot.evIn(vA, 4, 6)).tolist(), [1, 1, 1, 1, 0, 0, 0, 1, 1, 1])
+    self.assertEqual(gpot.evIn(vA, 4.0, 6.0).tolist(), [0.0, 0.0, 0.0, 0.0, 1.0, 1.0, 1.0, 0.0, 0.0, 0.0])
+    self.assertEqual((gpot.evEq(vA, 4.0) | gpot.evEq(vA, 6)).tolist(), [0.0, 0.0, 0.0, 0.0, 1.0, 0.0, 1.0, 0.0, 0.0, 0.0])
+    self.assertEqual((~gpot.evIn(vA, 4.0, 6.0)).tolist(), [1.0, 1.0, 1.0, 1.0, 0.0, 0.0, 0.0, 1.0, 1.0, 1.0])
 
+
+    self.assertEqual(gpot.evLt(vA, 4.0).tolist(), [1.0, 1.0, 1.0, 1.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0])
+    self.assertEqual(gpot.evLt(vA, 0.0).tolist(), [1.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0])
+    self.assertEqual(gpot.evGt(vA, 4.0).tolist(), [0.0, 0.0, 0.0, 0.0, 0.0, 1.0, 1.0, 1.0, 1.0, 1.0])
+    self.assertEqual(gpot.evGt(vA, 8.0).tolist(), [0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 1.0])
+    self.assertEqual(gpot.evLt(vC, 7.0).tolist(), [1.0, 1.0, 1.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0])
+    self.assertEqual(gpot.evLt(vC, 1.0).tolist(), [1.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0])
+    self.assertEqual(gpot.evGt(vC, 7.0).tolist(), [0.0, 0.0, 0.0, 0.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0])
+    self.assertEqual(gpot.evGt(vC, 20.0).tolist(),[0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 1.0])
 
 ts = unittest.TestSuite()
 addTests(ts, TestEvidence)
