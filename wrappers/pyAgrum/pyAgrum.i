@@ -25,7 +25,8 @@
 %module(docstring=DOCSTRING, directors="1") pyAgrum
 %include "docs.i"
 
-
+// 302 : Identifier 'name' redefined (ignored). 
+// 315 : Nothing known about 'identifier'. 
 // 317 : Specialization of non-template
 // 320 : Explicit template instantiation ignored.
 // 325 : Nested class not currently supported (Database ignored)
@@ -33,7 +34,7 @@
 // 401 : not wrapped class
 // 503 : DAG is not a correct name (still correctly wrapped ... ???)
 // 509 : Overloaded method effectively ignore
-#pragma SWIG nowarn=317,320,325,327,401,503,509
+#pragma SWIG nowarn=302,315,317,320,325,327,401,503,509
 
 // ignore constexpr constructor redefinition
 %ignorewarn("302") SetIteratorSafe;

@@ -433,8 +433,7 @@ def graphDiff(bnref, bncmp, noStyle=False):
       res.add_node(dot.Node(f'"{bnref.variable(i1).name()}"',
                             style="filled",
                             fillcolor=gum.config["notebook", "graphdiff_correct_color"],
-                            color=gutils.getBlackInTheme(),
-                            pos=f'"{pos[0]},{pos[1]}"!'
+                            color=gutils.getBlackInTheme()
                             )
                    )
     else:
@@ -442,8 +441,7 @@ def graphDiff(bnref, bncmp, noStyle=False):
         res.add_node(dot.Node(f'"{bnref.variable(i1).name()}"',
                               style="dashed",
                               fillcolor=gum.config["notebook", "graphdiff_correct_color"],
-                              color=gutils.getBlackInTheme(),
-                              pos=f'"{pos[0]},{pos[1]}"!'
+                              color=gutils.getBlackInTheme()
                               )
                      )
   if noStyle:
@@ -452,8 +450,7 @@ def graphDiff(bnref, bncmp, noStyle=False):
       n2 = bncmp.variable(i2).name()
       res.add_edge(dot.Edge(f'"{n1}"', f'"{n2}"',
                             style=gum.config["notebook", "graphdiff_correct_style"],
-                            color=gum.config["notebook", "graphdiff_correct_color"],
-                            constraint="false"))
+                            color=gum.config["notebook", "graphdiff_correct_color"]))
 
   else:
     for (i1, i2) in bnref.arcs():
@@ -476,8 +473,7 @@ def graphDiff(bnref, bncmp, noStyle=False):
                               style="invis"))
         res.add_edge(dot.Edge(f'"{n2}"', f'"{n1}"',
                               style=gum.config["notebook", "graphdiff_reversed_style"],
-                              color=gum.config["notebook", "graphdiff_reversed_color"],
-                              constraint="false"))
+                              color=gum.config["notebook", "graphdiff_reversed_color"]))
       else:  # arc is missing in BN2
         res.add_edge(dot.Edge(f'"{n1}"', f'"{n2}"',
                               style=gum.config["notebook", "graphdiff_missing_style"],
@@ -489,8 +485,9 @@ def graphDiff(bnref, bncmp, noStyle=False):
       if not bnref.existsArc(n1, n2) and not bnref.existsArc(n2, n1):  # arc only in BN2
         res.add_edge(dot.Edge(f'"{n1}"', f'"{n2}"',
                               style=gum.config["notebook", "graphdiff_overflow_style"],
-                              color=gum.config["notebook", "graphdiff_overflow_color"],
-                              constraint="false"))
+                              color=gum.config["notebook", "graphdiff_overflow_color"]))
+
+    gutils.apply_dot_layout(res, positions)
 
   return res
 

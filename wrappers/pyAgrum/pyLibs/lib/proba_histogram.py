@@ -87,10 +87,12 @@ def __limits(p):
 
   res = range(mi, ma + 1)
   lres = la[mi:ma + 1]
-  if nzmin not in [-1, None]:
-    lres[0] = "..." + str(nzmin)
-  if nzmax not in [-1, None]:
-    lres[-1] = str(nzmax) + "..."
+  #if nzmin not in [-1, 0, None]:
+  if mi>1:
+    lres[0] = "..." + var.label(mi)
+  #if nzmax not in [-1, var.domainSize()-1, None]:
+  if ma<var.domainSize()-2:
+    lres[-1] = var.label(ma+1) + "..."
 
   return res, [v[i] for i in res], lres
 
@@ -286,7 +288,7 @@ def _getProbaH(p, scale=1.0, util=None, txtcolor="black"):
   return fig
 
 
-def _getHistoForDiscretized(p, scale=1.0, txtcolor="Black"):
+def _getHistoForDiscretized(p, scale=1, txtcolor="Black"):
   var = p.variable(0)
   vx = var.ticks()
   widths = [vx[i + 1] - vx[i] for i in range(len(vx) - 1)]
@@ -308,7 +310,7 @@ def _getHistoForDiscretized(p, scale=1.0, txtcolor="Black"):
       lim2 -= 1
 
   fig = plt.figure()
-  fig.set_figwidth(scale * max(15, (lim2 - lim1)) / 8)
+  fig.set_figwidth(scale * max(10, (lim2 - lim1)) / 8)
   fig.set_figheight(scale)
 
   ax = fig.add_subplot(111)
@@ -333,7 +335,7 @@ def _getHistoForDiscretized(p, scale=1.0, txtcolor="Black"):
   return fig
 
 
-def proba2histo(p, scale=1.0, util=None, txtcolor="Black"):
+def proba2histo(p, scale=None, util=None, txtcolor="Black"):
   """
   compute the representation of a histogram for a mono-dim Potential
 
@@ -354,13 +356,22 @@ def proba2histo(p, scale=1.0, util=None, txtcolor="Black"):
     a matplotlib histogram for a Potential p.
   """
   if util is not None:
+    if scale is None:
+      scale = 1.0
     return _getProbaH(p, scale, util=util, txtcolor=txtcolor)
 
-  if p.variable(0).varType() == gum.VarType_Discretized:
+  isev = p.max()==1.0 and p.sum()==1
+
+  if p.variable(0).varType() == gum.VarType_Discretized and not(isev):
     if gum.config['notebook', 'histogram_discretized_visualisation'] == "histogram":
+      if scale is None:
+        scale=gum.config.asFloat['notebook', 'histogram_discretized_scale']
       return _getHistoForDiscretized(p, scale, txtcolor)
 
-  if p.variable(0).domainSize() > int(gum.config['notebook', 'histogram_line_threshold']):
+  if scale is None:
+    scale = 1.0
+
+  if p.variable(0).domainSize() > int(gum.config['notebook', 'histogram_line_threshold']) and not(isev):
     return _getProbaLine(p, scale, txtcolor=txtcolor)
 
   if p.variable(0).domainSize() > int(gum.config['notebook', 'histogram_horizontal_threshold']):

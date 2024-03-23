@@ -253,7 +253,7 @@ ADD_MULTIDIMDECORATOR_API(gum::Potential<double>)
 
 #####################################
 #####################################
-%define ADD_CREDALINFERENCEENGINCE_API(classname)
+%define ADD_CREDALINFERENCEENGINE_API(classname)
 %extend classname  {
   void setRepetitiveInd(const bool flag) {
     self->gum::credal::InferenceEngine<double>::setRepetitiveInd(flag);
@@ -279,10 +279,39 @@ ADD_MULTIDIMDECORATOR_API(gum::Potential<double>)
   const std::vector< double >& dynamicExpMin ( const std::string& varName ) const {
     return self->gum::credal::InferenceEngine<double>::dynamicExpMin(varName);
   }
+  void eraseAllEvidence() {
+    self->gum::credal::InferenceEngine<double>::eraseAllEvidence();
+  }
+  //######## EVIDENCE ##########
+  //############################
+  void addEvidence( const NodeId id, const Idx val ) {
+    self->gum::credal::InferenceEngine<double>::addEvidence(id,val);
+  }
+  void addEvidence( const std::string& nodeName, const Idx val ) {
+    self->gum::credal::InferenceEngine<double>::addEvidence(nodeName,val);
+  }
+  void addEvidence( const NodeId id, const std::string& val ) {
+    self->gum::credal::InferenceEngine<double>::addEvidence(id,val);
+  }
+
+  void addEvidence( const std::string& nodeName, const std::string& val ) {
+    self->gum::credal::InferenceEngine<double>::addEvidence(nodeName,val);
+  }
+
+  void addEvidence( const NodeId id,const std::vector<double>& vals ) {
+    self->gum::credal::InferenceEngine<double>::addEvidence(id,vals);
+  }
+  void addEvidence( const std::string& nodeName,
+                   const std::vector<double>& vals ) {
+    self->gum::credal::InferenceEngine<double>::addEvidence(nodeName,vals);
+  }
+  void addEvidence(const gum::Potential<double>& p) {
+    self->gum::credal::InferenceEngine<double>::addEvidence(p);
+  }
 }
 %enddef
-ADD_CREDALINFERENCEENGINCE_API(gum::credal::CNMonteCarloSampling<double>)
-ADD_CREDALINFERENCEENGINCE_API(gum::credal::CNLoopyPropagation<double>)
+ADD_CREDALINFERENCEENGINE_API(gum::credal::CNMonteCarloSampling<double>)
+ADD_CREDALINFERENCEENGINE_API(gum::credal::CNLoopyPropagation<double>)
 
 
 #####################################

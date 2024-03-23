@@ -390,14 +390,19 @@ if len(args)>1:
       for i in range(1,self.nbrDim()):
         I.add(self.variable(i))
 
-      d=distribution
+      if hasattr(distribution,'pdf'):
+        d=distribution.pdf
+      elif hasattr(distribution,'pmf'):
+        d=distribution.pmf
+      else:
+        raise InvalidArgument("[pyAgrum] The distribution must have a pdf or a pmf method")
       I.setFirst()
       vals=[var.numerical(i) for i in range(var.domainSize())]
       while not I.end():
         vars={self.variable(i).name():self.variable(i).numerical(I.val(i-1)) for i in range(1,self.nbrDim())}
         args={k:float(s_fns[k]) if isinstance(s_fns[k], (int, float)) else eval(codes[k],{'math':math},vars) for k in s_fns.keys()}
         di=I.todict()
-        self[di]=d.pdf(vals,**args)
+        self[di]=d(vals,**args)
         I.inc()
       self.normalizeAsCPT()
       return self

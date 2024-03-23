@@ -270,8 +270,8 @@ def counterfactualModel(cm: CausalModel, profile: Union[Dict[str, int], type(Non
   twincm = cm.clone()
   bn = twincm.observationalBN()
 
-  # calculate the posterior probability of each idiosyncratic factor knowing the profil in the original BN
-  # posteriors will be a dict {factor : posterior probability knowing the profil}
+  # calculate the posterior probability of each idiosyncratic factor knowing the profile in the original BN
+  # posteriors will be a dict {factor : posterior probability knowing the profile}
   posteriors = dict.fromkeys(idiosyncratic)
   ie = pyAgrum.LazyPropagation(bn)
   ie.setEvidence(profile)
@@ -327,9 +327,18 @@ def counterfactual(cm: CausalModel, profile: Union[Dict[str, int], type(None)], 
   # Step 1 and 2 : create the twin causal model
   twincm = counterfactualModel(cm, profile, whatif)
 
+  knowing = set(profile.keys()) if profile is not None else set()
+  # remove the key or the set whatIf from knowing
+  knowing = knowing.difference(whatif if isinstance(whatif, set) else {whatif})
+  knowing = knowing.difference(on if isinstance(on, set) else {on})
+
+  evs=values.copy() if values is not None else dict()
+  for k in knowing:
+    evs[k]=profile[k]
+
   # Step 3 : operate the intervention in the causal model based on bn
   _, adj, _ = causalImpact(
-    twincm, on=on, doing=whatif, values=values)
+    twincm, on=on, doing=whatif, knowing=knowing, values=evs)
   # cslnb.showCausalImpact(cm,on = on,whatif=whatif,values=values)
 
   # adj is using variables from twincm. We copy it in a Potential using variables of cm

@@ -9594,14 +9594,19 @@ class Potential(object):
       for i in range(1,self.nbrDim()):
         I.add(self.variable(i))
 
-      d=distribution
+      if hasattr(distribution,'pdf'):
+        d=distribution.pdf
+      elif hasattr(distribution,'pmf'):
+        d=distribution.pmf
+      else:
+        raise InvalidArgument("[pyAgrum] The distribution must have a pdf or a pmf method")
       I.setFirst()
       vals=[var.numerical(i) for i in range(var.domainSize())]
       while not I.end():
         vars={self.variable(i).name():self.variable(i).numerical(I.val(i-1)) for i in range(1,self.nbrDim())}
         args={k:float(s_fns[k]) if isinstance(s_fns[k], (int, float)) else eval(codes[k],{'math':math},vars) for k in s_fns.keys()}
         di=I.todict()
-        self[di]=d.pdf(vals,**args)
+        self[di]=d(vals,**args)
         I.inc()
       self.normalizeAsCPT()
       return self
@@ -25234,6 +25239,19 @@ class CNMonteCarloSampling(object):
         """
         return _pyAgrum.CNMonteCarloSampling_dynamicExpMin(self, varName)
 
+    def eraseAllEvidence(self) -> None:
+        r"""
+
+        Erase all inference related data to perform another one.
+
+        You need to insert evidence again if needed but modalities are kept. You can insert new ones by using the appropriate method which will delete the old ones.
+
+        """
+        return _pyAgrum.CNMonteCarloSampling_eraseAllEvidence(self)
+
+    def addEvidence(self, *args) -> None:
+        return _pyAgrum.CNMonteCarloSampling_addEvidence(self, *args)
+
     def CN(self) -> "pyAgrum.CredalNet":
         return _pyAgrum.CNMonteCarloSampling_CN(self)
 
@@ -25274,16 +25292,6 @@ class CNLoopyPropagation(object):
 
         """
         return _pyAgrum.CNLoopyPropagation_inferenceType(self, *args)
-
-    def eraseAllEvidence(self) -> None:
-        r"""
-
-        Erase all inference related data to perform another one.
-
-        You need to insert evidence again if needed but modalities are kept. You can insert new ones by using the appropriate method which will delete the old ones.
-
-        """
-        return _pyAgrum.CNLoopyPropagation_eraseAllEvidence(self)
 
     def saveInference(self, path: str) -> None:
         r"""
@@ -25671,6 +25679,19 @@ class CNLoopyPropagation(object):
 
         """
         return _pyAgrum.CNLoopyPropagation_dynamicExpMin(self, varName)
+
+    def eraseAllEvidence(self) -> None:
+        r"""
+
+        Erase all inference related data to perform another one.
+
+        You need to insert evidence again if needed but modalities are kept. You can insert new ones by using the appropriate method which will delete the old ones.
+
+        """
+        return _pyAgrum.CNLoopyPropagation_eraseAllEvidence(self)
+
+    def addEvidence(self, *args) -> None:
+        return _pyAgrum.CNLoopyPropagation_addEvidence(self, *args)
 
     def CN(self) -> "pyAgrum.CredalNet":
         return _pyAgrum.CNLoopyPropagation_CN(self)

@@ -536,7 +536,7 @@ def getJunctionTree(bn, withNames=True, size=None):
     return getDot(jt.toDot(), size)
 
 
-def showProba(p, scale=1.0):
+def showProba(p, scale=None):
   """
   Show a mono-dim Potential (a marginal)
 
@@ -564,7 +564,7 @@ def _getMatplotFig(fig):
   return res
 
 
-def getProba(p, scale=1.0) -> str:
+def getProba(p, scale=None) -> str:
   """
   get a mono-dim Potential as html (png/svg) image
 
@@ -581,7 +581,10 @@ def getProba(p, scale=1.0) -> str:
     the HTML representation of the marginal
   """
   set_matplotlib_formats(gum.config["notebook", "graph_format"])
-  return _getMatplotFig(proba2histo(p, scale))
+  #return _getMatplotFig(proba2histo(p, scale))
+  fig = proba2histo(p, scale)
+  plt.close()
+  return _getMatplotFig(fig)
 
 
 def showProbaMinMax(pmin, pmax, scale=1.0):
