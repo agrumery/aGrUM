@@ -1,5 +1,32 @@
 # aGrUM Changelog
 
+## Changelog for 1.13
+
+* Internal
+  * New servers for (linux and windows) CI !
+* aGrUM
+  * Fast syntax for empirical `gum::DiscretizedVariable`: name suffixed by '+'.
+  * Reorganizing a bit `gum::DiscreteVariable`'s hierarchy.
+  * Working on quasi-continuous (numerical discrete variable with large domain size) :
+    * Logical operators  (`&`,`|`, `~`) to combine evidence (monodimensionnal `gum::Potential` not forced to sum to 1).
+    * New `gum::Potential` and `gum::BayesNet` methods to generate numerical evidence : `evEq`, `evIn`, `evLt`, `evGt`.
+    * Fast syntax now accepts any type as default (and not only the size of the domain).
+
+* pyAgrum
+  * Fixing a bug in `pyAgrum.lib.bn2scores.
+  * Fast syntax for empirical `pyAgrum.DiscretizedVariable`: name suffixed by '+'.
+  * Reorganizing `pyAgrum.lib._colors.py` and `pyAgrum.lib.utils.py`.
+  * Changing a default for `pyAgrum.Instantiation.todict`.
+  * Improving (a lot) histograms for `pyAgrum.DiscretizedVariable`.
+  * Working on quasi-continuous (numerical discrete variable with large domain size) :
+    * Logical operators (`&`,`|`, `~`) to combine evidence (monodimensionnal `pyAgrum.Potential` not forced to sum to 1).
+    * New `pyAgrum.Potential` and `pyAgrum.BayesNet` methods to generate numerical evidence : `evEq`, `evIn`, `evLt`, `evGt`.
+    * Fast syntax now accepts any type as default (and not only the size of the domain).
+    * `pyAgrum.Potential` accepted as evidence for all inference.
+    * Long-awaited `pyAgrum.Potential.fillFrom{Function|Distribution}`.  
+  * Adding `pyAgrum.config.{push|pop}`.
+  * Removing obsolete code for `python2.7`.
+
 ## Changelog for 1.12.1
 
 * aGrUM

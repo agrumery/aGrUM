@@ -209,8 +209,8 @@ class TestCausalModel(pyAgrumTestCase):
                              whatif={"education"},
                              on={"salary"},
                              values={"education": "medium"})
-
-    self.assertEqual(pot[81 - 65], 1.0)
+    
+    self.assertEqual(pot[91 - 65], 1.0)
 
 
 ts = unittest.TestSuite()
