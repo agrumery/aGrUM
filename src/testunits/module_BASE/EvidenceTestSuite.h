@@ -53,9 +53,9 @@ namespace gum_tests {
       p2.randomCPT();
       auto q = gum::Potential(bn.cpt("B"));
 
-      TS_ASSERT_THROWS(p1 | q, gum::InvalidArgument)
-      TS_ASSERT_THROWS(p1 & q, gum::InvalidArgument)
-      TS_ASSERT_THROWS(p1 & bn.cpt("C"), gum::InvalidArgument)
+      TS_ASSERT_THROWS(p1 | q, const gum::InvalidArgument&)
+      TS_ASSERT_THROWS(p1 & q, const gum::InvalidArgument&)
+      TS_ASSERT_THROWS(p1 & bn.cpt("C"), const gum::InvalidArgument&)
 
       auto Mp1 = p1.max();
       auto Mp2 = p2.max();
@@ -82,7 +82,7 @@ namespace gum_tests {
           = gum::BayesNet< double >::fastPrototype("A[10];B[1,10];C{1.0:20.0:10};D{1:100:10};E[1.0:"
                                                    "20.0:10];X{A1|A2|A3|A4|A5|A6|A7|A8|A9|A10}");
       for (auto i: bn.nodes()) {
-        TS_ASSERT_EQUALS(bn.variable(i).domainSize(), 10)
+        TS_ASSERT_EQUALS(bn.variable(i).domainSize(), 10u)
       }
 
 
