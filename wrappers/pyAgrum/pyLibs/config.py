@@ -149,13 +149,10 @@ class PyAgrumConfiguration(metaclass=GumSingleton):
         self.__parser.set(section, option, str(value))
         if not no_hook:
           self.run_hooks()
-        return
       else:
-        raise SyntaxError("You can not add option '" + section +
-                          "," + option + "' in pyAgrum configuration")
+        raise SyntaxError(f"Key '{section},{option}' unknown in pyAgrum configuration.")
     else:
-      raise SyntaxError("You can not add section '" +
-                        section + "' in pyAgrum configuration")
+      raise SyntaxError(f"Section '{section}' unknown in pyAgrum configuration.")
 
   def get(self, section, option):
     """ Give the value associated to section.option. Preferably use ``__getitem__`` and ``__setitem__``.
