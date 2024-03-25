@@ -24,6 +24,18 @@
 
 %extend gum::DiscreteVariable {
   %pythoncode %{
+    def __iter__(self):
+      """
+      Iterate over the labels of the variable
+
+      Yield
+      -----
+      Tuple[int,str]
+        The index of the label and its value
+      """
+      for i in range(self.domainSize()):
+        yield i,self.label(i)
+
     def __hash__(self):
         return hash(self.name()+self.domain())
 

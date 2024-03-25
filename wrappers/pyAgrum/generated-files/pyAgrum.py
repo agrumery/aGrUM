@@ -2605,6 +2605,18 @@ class DiscreteVariable(Variable):
     def __str__(self) -> str:
         return _pyAgrum.DiscreteVariable___str__(self)
 
+    def __iter__(self):
+      """
+      Iterate over the labels of the variable
+
+      Yield
+      -----
+      Tuple[int,str]
+        The index of the label and its value
+      """
+      for i in range(self.domainSize()):
+        yield i,self.label(i)
+
     def __hash__(self):
         return hash(self.name()+self.domain())
 
@@ -4177,6 +4189,18 @@ class UndiGraph(object):
         """
         return _pyAgrum.UndiGraph_addNodes(self, n)
 
+    def __iter__(self):
+      """
+      Iterate over the nodes of the graph
+
+      Yield
+      -----
+      int
+        The index of the node
+      """
+      for i in self.nodes():
+        yield i
+
     def __getstate__(self):
         state=dict()
         if hasattr(self,'arcs'):
@@ -4603,6 +4627,18 @@ class DiGraph(object):
         """
         return _pyAgrum.DiGraph_addNodes(self, n)
 
+    def __iter__(self):
+      """
+      Iterate over the nodes of the graph
+
+      Yield
+      -----
+      int
+        The index of the node
+      """
+      for i in self.nodes():
+        yield i
+
     def __getstate__(self):
         state=dict()
         if hasattr(self,'arcs'):
@@ -4920,6 +4956,18 @@ class DAG(DiGraph):
     def addNodes(self, n: int) -> object:
         return _pyAgrum.DAG_addNodes(self, n)
 
+    def __iter__(self):
+      """
+      Iterate over the nodes of the graph
+
+      Yield
+      -----
+      int
+        The index of the node
+      """
+      for i in self.nodes():
+        yield i
+
     def __getstate__(self):
         state=dict()
         if hasattr(self,'arcs'):
@@ -5083,6 +5131,18 @@ class MixedGraph(UndiGraph, DiGraph):
 
         """
         return _pyAgrum.MixedGraph_addNodes(self, n)
+
+    def __iter__(self):
+      """
+      Iterate over the nodes of the graph
+
+      Yield
+      -----
+      int
+        The index of the node
+      """
+      for i in self.nodes():
+        yield i
 
     def __getstate__(self):
         state=dict()
@@ -5485,6 +5545,18 @@ class PDAG(MixedGraph):
 
     def addNodes(self, n: int) -> object:
         return _pyAgrum.PDAG_addNodes(self, n)
+
+    def __iter__(self):
+      """
+      Iterate over the nodes of the graph
+
+      Yield
+      -----
+      int
+        The index of the node
+      """
+      for i in self.nodes():
+        yield i
 
     def __getstate__(self):
         state=dict()
@@ -9727,6 +9799,18 @@ class Potential(object):
             self.set(inst,float(value[indice]))
             inst.incIn(loopvars)
 
+    def __iter__(self):
+        """
+        Iterate over the data of the Potential
+
+        Yield
+        -----
+        Tuple[pyAgrum.Instantiation,float]
+          The instantiation and the value in the Potential
+        """
+        for i in self.loopIn():
+            yield i,self.get(i)
+
     def tolist(self):
         """
         Returns
@@ -10406,6 +10490,18 @@ class IBayesNet(DAGmodel):
 
         """
         return _pyAgrum.IBayesNet_names(self)
+
+    def __iter__(self):
+      """
+      Iterate over the variables of the model
+
+      Yield
+      -----
+      Tuple[int,str]
+        The index of the variable and its name
+      """
+      for i in self.nodes():
+        yield i,self.variable(i).name()
 
     def __getitem__(self, key):
       if isinstance(key, int):
@@ -11554,6 +11650,18 @@ class BayesNet(IBayesNet):
         """
         return _pyAgrum.BayesNet_names(self)
 
+    def __iter__(self):
+      """
+      Iterate over the variables of the model
+
+      Yield
+      -----
+      Tuple[int,str]
+        The index of the variable and its name
+      """
+      for i in self.nodes():
+        yield i,self.variable(i).name()
+
     def __getitem__(self, key):
       if isinstance(key, int):
         return self.variable(key)
@@ -12589,6 +12697,18 @@ class BayesNetFragment(IBayesNet, ):
         """
         return _pyAgrum.BayesNetFragment_names(self)
 
+    def __iter__(self):
+      """
+      Iterate over the variables of the model
+
+      Yield
+      -----
+      Tuple[int,str]
+        The index of the variable and its name
+      """
+      for i in self.nodes():
+        yield i,self.variable(i).name()
+
     def __getitem__(self, key):
       if isinstance(key, int):
         return self.variable(key)
@@ -12937,6 +13057,18 @@ class IMarkovRandomField(UGmodel):
 
         """
         return _pyAgrum.IMarkovRandomField_names(self)
+
+    def __iter__(self):
+      """
+      Iterate over the variables of the model
+
+      Yield
+      -----
+      Tuple[int,str]
+        The index of the variable and its name
+      """
+      for i in self.nodes():
+        yield i,self.variable(i).name()
 
     def __getitem__(self, key):
       if isinstance(key, int):
@@ -13315,6 +13447,18 @@ class MarkovRandomField(IMarkovRandomField):
 
         """
         return _pyAgrum.MarkovRandomField_names(self)
+
+    def __iter__(self):
+      """
+      Iterate over the variables of the model
+
+      Yield
+      -----
+      Tuple[int,str]
+        The index of the variable and its name
+      """
+      for i in self.nodes():
+        yield i,self.variable(i).name()
 
     def __getitem__(self, key):
       if isinstance(key, int):
@@ -26256,6 +26400,18 @@ class InfluenceDiagram(DAGmodel):
 
         """
         return _pyAgrum.InfluenceDiagram_names(self)
+
+    def __iter__(self):
+      """
+      Iterate over the variables of the model
+
+      Yield
+      -----
+      Tuple[int,str]
+        The index of the variable and its name
+      """
+      for i in self.nodes():
+        yield i,self.variable(i).name()
 
     def __getitem__(self, key):
       if isinstance(key, int):

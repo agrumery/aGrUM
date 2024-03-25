@@ -26,6 +26,8 @@
     * Long-awaited `pyAgrum.Potential.fillFrom{Function|Distribution}`.  
   * Adding `pyAgrum.config.{push|pop}`.
   * Removing obsolete code for `python2.7`.
+  * Removing some oldest depreactionWarning.
+  * Adding '__iter__' for graphs, graphical models, variable and potentials.
 
 ## Changelog for 1.12.1
 
@@ -1008,7 +1010,7 @@ Mainly bugfixes and internal improvements.
   * add forgotten `addPossibleEdge` constraint for `LocalSearchWithTabuList` learning algorithm  in `BNLearner`.
   * bug fix in exact inference leading to an erroneous exception.
 * internal
-  * new values for **act** `-j` option (number of jobs for compilation) : `all`, `except1`, `half`, `halfexcept1`.
+  * new values for __act__ `-j` option (number of jobs for compilation) : `all`, `except1`, `half`, `halfexcept1`.
   * several bugfixes in CI
 
 ## Changelog for 0.15.0
@@ -1119,8 +1121,8 @@ Mainly bugfixes and internal improvements.
 ## Changelog for 0.13.3
 
 * pyAgrum
-  * **pip** : wheels for mac/windows/linux for python 2.7,3.{4-7}
-  * **anaconda** : compilation for maxOS/anaconda64/python3 should be fixed
+  * __pip__ : wheels for mac/windows/linux for python 2.7,3.{4-7}
+  * __anaconda__ : compilation for maxOS/anaconda64/python3 should be fixed
   * updating tests
   * updating pyAgrum.lib
   * updating posterior histograms for notebooks (adding mean/stdev for `RangeVariable` and `DiscretizedVariable`)

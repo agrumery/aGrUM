@@ -170,6 +170,18 @@ ADD_METHODS_FOR_ALL_GUM_GRAPHCLASS(gum::MarkovBlanket);
 
 
 %pythoncode {
+  def __iter__(self):
+    """
+    Iterate over the nodes of the graph
+
+    Yield
+    -----
+    int
+      The index of the node
+    """
+    for i in self.nodes():
+      yield i
+
   def __getstate__(self):
       state=dict()
       if hasattr(self,'arcs'):

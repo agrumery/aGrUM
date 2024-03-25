@@ -523,6 +523,18 @@ if len(args)>1:
             self.set(inst,float(value[indice]))
             inst.incIn(loopvars)
 
+    def __iter__(self):
+        """
+        Iterate over the data of the Potential
+
+        Yield
+        -----
+        Tuple[pyAgrum.Instantiation,float]
+          The instantiation and the value in the Potential
+        """
+        for i in self.loopIn():
+            yield i,self.get(i)
+
     def tolist(self):
         """
         Returns

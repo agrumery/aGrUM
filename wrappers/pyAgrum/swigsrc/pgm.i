@@ -37,6 +37,18 @@
 
 
 %pythoncode {
+  def __iter__(self):
+    """
+    Iterate over the variables of the model
+
+    Yield
+    -----
+    Tuple[int,str]
+      The index of the variable and its name
+    """
+    for i in self.nodes():
+      yield i,self.variable(i).name()
+
   def __getitem__(self, key):
     if isinstance(key, int):
       return self.variable(key)

@@ -60,7 +60,7 @@ def ShaferShenoyMNInference(mrf):
   """
   Deprecated class. Use pyAgrum.ShaferShenoyMRFInference instead.
   """
-  warnings.warn(""""
+  warnings.warn("""
 ** pyAgrum.ShaferShenoyMNInference is deprecated in pyAgrum>1.5.2.
 ** A pyAgrum.ShaferShenoyMRFInference has been created.
 """, DeprecationWarning, stacklevel=2)
@@ -72,7 +72,7 @@ def MarkovNet(*args, **kwargs):
   """
   Deprecated class. Use pyAgrum.MarkovRandomField instead.
   """
-  warnings.warn(""""
+  warnings.warn("""
 ** pyAgrum.MarkovNet is deprecated in pyAgrum>1.5.2.
 ** A pyAgrum.MarkovRandomField has been created.
 """, DeprecationWarning, stacklevel=2)
