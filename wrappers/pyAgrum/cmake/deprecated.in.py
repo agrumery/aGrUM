@@ -54,29 +54,6 @@ def deprecated_arg(newA: str, oldA: str, version: str):
   return deco
 
 
-########################################################################################################
-def InfluenceDiagramInference(infdiag):
-  """
-  Deprecated class. Use pyAgrum.ShaferShenoyIDInference instead.
-  """
-  warnings.warn("""
-** pyAgrum.InfluenceDiagramInference is deprecated in pyAgrum>0.18.2.
-** A pyAgrum.ShaferShenoyLIMIDInference has been created.
-""", DeprecationWarning, stacklevel=2)
-  return ShaferShenoyLIMIDInference(infdiag)
-
-
-########################################################################################################
-def ShaferShenoyIDInference(infdiag):
-  """
-  Deprecated class. Use pyAgrum.ShaferShenoyIDInference instead.
-  """
-  warnings.warn(""""
-** pyAgrum.InfluenceDiagramInference is deprecated in pyAgrum>0.18.2.
-** A pyAgrum.ShaferShenoyLIMIDInference has been created.
-""", DeprecationWarning, stacklevel=2)
-  return ShaferShenoyLIMIDInference(infdiag)
-
 
 ########################################################################################################
 def ShaferShenoyMNInference(mrf):
