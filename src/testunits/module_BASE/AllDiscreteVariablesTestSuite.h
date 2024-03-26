@@ -259,7 +259,8 @@ namespace gum_tests {
     }
 
     GUM_ACTIVE_TEST(ClosestIndex) {
-      TS_ASSERT_THROWS(FASTVARDBL("A{On|Off|Defun}")->closestIndex(1.5), const gum::NotImplementedYet&);
+      TS_ASSERT_THROWS(FASTVARDBL("A{On|Off|Defun}")->closestIndex(1.5),
+                       const gum::NotImplementedYet&);
 
       TS_ASSERT_EQUALS(FASTVARDBL("A{0|1.15|2.3}")->closestIndex(-1.0), 0u)
       TS_ASSERT_EQUALS(FASTVARDBL("A{0|1.15|2.3}")->closestIndex(0.0), 0u)
