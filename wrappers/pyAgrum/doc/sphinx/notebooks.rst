@@ -5,8 +5,8 @@ Tutorials on pyAgrum
     :glob:
 
     notebooks/*-Tutorial*
-    
-Exact and Approxiomated Inference
+
+Exact and Approximated Inference
 =================================
 
 .. nbgallery::
@@ -47,6 +47,14 @@ Causal Bayesian Networks
 
     notebooks/*-Causality*
 
+pyAgrum's specific features
+===========================
+
+.. nbgallery::
+    :glob:
+
+    notebooks/*-Tools*
+
 Examples
 ========
 
@@ -56,10 +64,10 @@ Examples
     notebooks/*-Examples*
     notebooks/*-Applications*
 
-pyAgrum's specific features
-===========================
+Examples from 'The Book of Why' (J. Pearl, 2018)
+=================================================
 
 .. nbgallery::
     :glob:
 
-    notebooks/*-Tools*
+    notebooks/BoW*
