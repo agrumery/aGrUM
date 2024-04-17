@@ -107,8 +107,6 @@ SETPROP_THEN_RETURN_SELF(setNumberOfThreads);
     return  *$self;
   }
 
-    
-
   gum::learning::BNLearner< double >& useK2(PyObject * l) {
     std::vector< gum::NodeId > v;
 
@@ -144,6 +142,12 @@ SETPROP_THEN_RETURN_SELF(setNumberOfThreads);
     }
 
     return res;
+  }
+    
+  void setPossibleEdges(PyObject * soe) {
+    gum::EdgeSet set;
+    PyAgrumHelper::fillEdgeSetFromPyObject(set,soe);
+    $self->setPossibleEdges(set);
   }
 
 %pythoncode {

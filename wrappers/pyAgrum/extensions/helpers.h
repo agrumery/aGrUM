@@ -24,12 +24,13 @@
  *
  * @author Pierre-Henri WUILLEMIN
  */
-#include <agrum/BN/IBayesNet.h>
 #include <agrum/tools/core/set.h>
 #include <agrum/tools/graphs/graphElements.h>
 #include <agrum/tools/graphs/parts/nodeGraphPart.h>
 #include <agrum/tools/multidim/potential.h>
+
 #include <agrum/BN/BayesNet.h>
+#include <agrum/BN/IBayesNet.h>
 
 #ifndef PYAGRUM_HELPER
 #  define PYAGRUM_HELPER
@@ -126,8 +127,29 @@ namespace PyAgrumHelper {
     }
   }
 
-  // filling a Instantiation from a dictionnary<string,int> and a Potential (to find variable and
-  // labels) and vice-versa
+  void fillEdgeSetFromPyObject(gum::EdgeSet& s, PyObject* sofedge) {
+    PyObject* iter = PyObject_GetIter(sofedge);
+    if (iter != NULL) {
+      PyObject* item;
+      while ((item = PyIter_Next(iter))) {
+        if (PyTuple_Check(item)) {
+          if (PyTuple_Size(item) == 2) {
+            s.insert(gum::Edge(PyLong_AsLong(PyTuple_GetItem(item, 0)),
+                               PyLong_AsLong(PyTuple_GetItem(item, 1))));
+          } else {
+            GUM_ERROR(gum::InvalidArgument, "An element in the set is not a tuple of size 2")
+          }
+        } else {
+          GUM_ERROR(gum::InvalidArgument, "An element in the set is not a tuple")
+        }
+      }
+    } else {
+      GUM_ERROR(gum::InvalidArgument, "Argument is not a list nor a set")
+    }
+  }
+
+  // filling a Instantiation from a dictionnary<string,int> and a Potential (to find variable
+  // and labels) and vice-versa
 
   PyObject* instantiationToDict(const gum::Instantiation& inst, bool withLabels = true) {
     auto res = PyDict_New();
@@ -143,6 +165,7 @@ namespace PyAgrumHelper {
     }
     return res;
   }
+
   void fillInstantiationFromPyObject(const gum::Potential< double >* pot,
                                      gum::Instantiation&             inst,
                                      PyObject*                       dict) {
@@ -300,7 +323,6 @@ namespace PyAgrumHelper {
     }
   }
 
-
   void populateNodeSetFromPySequenceOfIntOrString(gum::NodeSet&               nodeset,
                                                   PyObject*                   seq,
                                                   const gum::VariableNodeMap& map) {
@@ -411,8 +433,8 @@ namespace PyAgrumHelper {
     return q;
   }
 
-  std::vector<gum::Arc> populateArcVectFromPyList(PyObject* arcseq) {
-    std::vector<gum::Arc> res;
+  std::vector< gum::Arc > populateArcVectFromPyList(PyObject* arcseq) {
+    std::vector< gum::Arc > res;
     if (PyList_Check(arcseq)) {
       auto siz = PyList_Size(arcseq);
       for (int i = 0; i < siz; i++) {
