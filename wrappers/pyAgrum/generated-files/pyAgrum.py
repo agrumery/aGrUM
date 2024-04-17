@@ -27806,10 +27806,22 @@ class BNLearner(object):
       return self
 
     def learnEssentialGraph(self):
+      """
+      learn an essential graph from a file
+
+      Returns
+      -------
+      pyAgrum.EssentialGraph
+        the learned essential graph
+      """
       bn=BayesNet()
       for i in range(len(self.names())):
         bn.add(self.nameFromId(i),2)
-      ge=EssentialGraph(bn,self.learnPDAG())
+      try:    
+        ge=EssentialGraph(bn,self.learnPDAG()) # for constraint-based methods
+      except:    
+        ge=EssentialGraph(self.learnBN())  # for score-based methods
+
       ge._bn=bn
 
       return ge
@@ -28325,6 +28337,16 @@ class BNLearner(object):
         return _pyAgrum.BNLearner_nbCols(self)
 
     def domainSize(self, *args) -> int:
+        r"""
+
+        Return the domain size of the variable with the given name.
+
+        Parameters
+        ----------
+        n : str | int
+          the name of the id of the variable
+
+        """
         return _pyAgrum.BNLearner_domainSize(self, *args)
 
     def setNumberOfThreads(self, nb: int) -> None:

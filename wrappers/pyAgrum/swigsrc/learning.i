@@ -198,10 +198,22 @@ def fitParameters(self,bn,take_into_account_score=True):
   return self
 
 def learnEssentialGraph(self):
+  """
+  learn an essential graph from a file
+
+  Returns
+  -------
+  pyAgrum.EssentialGraph
+    the learned essential graph
+  """
   bn=BayesNet()
   for i in range(len(self.names())):
     bn.add(self.nameFromId(i),2)
-  ge=EssentialGraph(bn,self.learnPDAG())
+  try:    
+    ge=EssentialGraph(bn,self.learnPDAG()) # for constraint-based methods
+  except:    
+    ge=EssentialGraph(self.learnBN())  # for score-based methods
+
   ge._bn=bn
 
   return ge

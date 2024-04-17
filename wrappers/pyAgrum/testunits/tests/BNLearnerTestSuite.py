@@ -514,6 +514,24 @@ class BNLearnerCSVTestCase(pyAgrumTestCase):
       bn.idFromName("X"), bn.idFromName("V")})
     self.assertEqual(bn.parents(bn.idFromName("Z")), {bn.idFromName("Y")})
 
+  def testHybridLearning2(self):
+    learner = gum.BNLearner(self.agrumSrcDir(
+      'data1.csv'))
+    learner.useGreedyHillClimbing()
+    eg = learner.learnEssentialGraph()
+    skel = eg.skeleton()
+
+    learner = gum.BNLearner(self.agrumSrcDir(
+      'data1.csv'))
+    learner.setPossibleSkeleton(skel)
+    bn = learner.learnBN()
+
+    self.assertEqual(bn.sizeArcs(), 4)
+    self.assertEqual(bn.parents(bn.idFromName("V")), {bn.idFromName("A")})
+    self.assertEqual(bn.parents(bn.idFromName("Y")), {
+      bn.idFromName("X"), bn.idFromName("V")})
+    self.assertEqual(bn.parents(bn.idFromName("Z")), {bn.idFromName("Y")})
+    
   def test_RecordWeight(self):
     filename = self.agrumSrcDir('dataW.csv')
     bn = gum.fastBN("X->Y")
