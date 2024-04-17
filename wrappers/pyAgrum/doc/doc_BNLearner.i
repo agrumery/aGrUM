@@ -19,6 +19,20 @@ BNLearner(learner) -> BNLearner
         - **learner** (*pyAgrum.BNLearner*) -- the BNLearner to copy
 "
 
+%feature("docstring") gum::learning::IBNLearner::learnPDAG
+"
+learn a PDAG from a file
+
+Warnings
+--------
+  The learning method must be constraint-based (MIIC, etc.) and not score-based (K2, GreedyHillClimbing, etc.)
+
+Returns
+-------
+pyAgrum.PDAG
+	the learned PDAG
+"
+
 %feature("docstring") gum::learning::BNLearner::learnBN
 "
 learn a BayesNet from a file (must have read the db before)
@@ -28,6 +42,19 @@ Returns
 pyAgrum.BayesNet
 	the learned BayesNet
 "
+
+
+
+%feature("docstring") gum::learning::BNLearner::state
+"
+Returns a dictionary containing the current state of the BNLearner.
+
+Returns
+-------
+Dict[str,Any]
+    a dictionary containing the current state of the BNLearner.
+"
+
 
 %feature("docstring") gum::learning::BNLearner::learnParameters
 "
@@ -57,6 +84,28 @@ pyAgrum.MissingVariableInDatabase
 pyAgrum.UnknownLabelInDatabase
 	If a label is found in the database that do not correspond to the variable
 "
+
+
+%feature("docstring") gum::learning::BNLearner::setPossibleEdges
+"
+Add a constraint by fixing the set of possible edges.
+
+Parameters
+----------
+edges : Set[Tuple[int]]
+	a set of edges as couples of nodeIds.
+"
+
+%feature("docstring") gum::learning::BNLearner::setPossibleSkeleton
+"
+Add a constraint by fixing the set of possible edges as a pyAgrum.UndiGraph.
+
+Parameters
+----------
+g : pyAgrum.UndiGraph
+	the fixed skeleton
+"
+
 
 %feature("docstring") gum::learning::BNLearner::setInitialDAG
 "
@@ -665,7 +714,7 @@ int
 	the number of columns in the database
 "
 
-%feature("docstring") gum::learning::IBNLearner::getNumberOfThreads
+%feature("docstring") gum::learning::BNLearner::getNumberOfThreads
 "
 Return the number of threads used by the BNLearner during structure and parameter learning.
 
@@ -674,6 +723,17 @@ Returns
 int
 	the number of threads used by the BNLearner during structure and parameter learning
 "
+
+%feature("docstring") gum::learning::BNLearner::isGumNumberOfThreadsOverriden
+"
+Check if the number of threads use by the learner is the default one or not.
+
+Returns
+-------
+bool
+	True if the number of threads used by the BNLearner has been set.
+"
+
 
 %feature("docstring") gum::learning::IBNLearner::setNumberOfThreads
 "
@@ -695,3 +755,14 @@ Returns
 bool
 	A Boolean indicating whether the BNLearner currently overrides pyAgrum default number of threads
 "
+
+%feature("docstring") gum::learning::IBNLearner::domainSize
+"
+Return the domain size of the variable with the given name.
+
+Parameters
+----------
+n : str | int
+  the name of the id of the variable
+"
+

@@ -4899,7 +4899,7 @@ class DAG(DiGraph):
 
     DAG(src) -> DAG
         Parameters:
-            - **src** (*pyAgrum.DAG*) -- the digraph to copy
+            - **src** (*pyAgrum.DAG*) -- the DAG to copy
 
     """
 
@@ -4910,16 +4910,6 @@ class DAG(DiGraph):
     __swig_destroy__ = _pyAgrum.delete_DAG
 
     def moralGraph(self) -> "pyAgrum.UndiGraph":
-        r"""
-
-        Creates the `pyAgrum.UndiGraph` corresponding to the moralization of the DAG
-
-        Returns
-        -------
-        pyAgrum.UndiGraph
-            the moral graph
-
-        """
         return _pyAgrum.DAG_moralGraph(self)
 
     def moralizedAncestralGraph(self, nodes: List[int]) -> "pyAgrum.UndiGraph":
@@ -4932,28 +4922,24 @@ class DAG(DiGraph):
         return _pyAgrum.DAG___str__(self)
 
     def dSeparation(self, *args) -> bool:
-        r"""
-
-        Check if X and Y are dSeparated by Z.
-
-        Parameters:
-        -----------
-        X : intSequence[int]
-          a node set or a node
-        Y : intSequence[int]
-          a node set or a node
-        Z : intSequence[int]
-          a node set or a node
-
-        Returns
-        -------
-        bool
-            true if X and Y are d-separated by Z.
-
-        """
         return _pyAgrum.DAG_dSeparation(self, *args)
 
     def addNodes(self, n: int) -> object:
+        r"""
+
+        Add a set of n nodes.
+
+        Parameters
+        ----------
+        n : int
+          the number of nodes to add.
+
+        Returns
+        -------
+        Set of int
+          the new ids
+
+        """
         return _pyAgrum.DAG_addNodes(self, n)
 
     def __iter__(self):
@@ -4996,12 +4982,48 @@ class DAG(DiGraph):
 
 
     def arcs(self) -> object:
+        r"""
+
+        Returns the set of arcs in the graph.
+
+        Returns
+        -------
+        Set
+        	the set of the arcs
+
+        """
         return _pyAgrum.DAG_arcs(self)
 
     def parents(self, id: int) -> object:
+        r"""
+
+        Parameters
+        ----------
+        id :
+        	The id of the child node
+
+        Returns
+        -------
+        Set
+            the set of the parents ids.
+
+        """
         return _pyAgrum.DAG_parents(self, id)
 
     def children(self, id: int) -> object:
+        r"""
+
+        Parameters
+        ----------
+        id : int
+          the id of the parent
+
+        Returns
+        -------
+        Set
+        	the set of all the children
+
+        """
         return _pyAgrum.DAG_children(self, id)
 
     def addArc(self, *args) -> None:
@@ -5020,29 +5042,96 @@ class DAG(DiGraph):
         ------
           pyAgrum.InvalidNode
             If head or tail does not belong to the graph nodes.
+          pyAgrum.CycleDetected
+            If a cycle is detected
 
-          PyAgrum.InvalidDirectedCycle
-            if the arc would create a cycle.
 
         """
         return _pyAgrum.DAG_addArc(self, *args)
 
     def eraseArc(self, n1: int, n2: int) -> None:
+        r"""
+
+        Erase the arc between n1 and n2.
+
+        Parameters
+        ----------
+        n1 : int
+        	the id of the tail node
+        n2 : int
+        	the id of the head node
+
+        """
         return _pyAgrum.DAG_eraseArc(self, n1, n2)
 
     def existsArc(self, n1: int, n2: int) -> bool:
+        r"""
+
+        Check if an arc exists bewteen n1 and n2.
+
+        Parameters
+        ----------
+        n1 : int
+        	the id of the tail node
+        n2 : int
+        	the id of the head node
+
+        Returns
+        -------
+        bool
+            True if the arc exists
+
+        """
         return _pyAgrum.DAG_existsArc(self, n1, n2)
 
     def eraseParents(self, n: int) -> None:
+        r"""
+
+        Erase the arcs coming to the node.
+
+        Parameters
+        ----------
+        n : int
+        	the id of the child node
+
+        """
         return _pyAgrum.DAG_eraseParents(self, n)
 
     def eraseChildren(self, n: int) -> None:
+        r"""
+
+        Erase the arcs heading through the node's children.
+
+        Parameters
+        ----------
+        n : int
+        	the id of the parent node
+
+        """
         return _pyAgrum.DAG_eraseChildren(self, n)
 
     def sizeArcs(self) -> int:
+        r"""
+
+        Returns
+        -------
+        int
+            the number of arcs in the graph
+
+        """
         return _pyAgrum.DAG_sizeArcs(self)
 
     def emptyArcs(self) -> bool:
+        r"""
+
+        Check if the graph doesn't contains arcs.
+
+        Returns
+        -------
+        bool
+            True if the graph doesn't contains arcs
+
+        """
         return _pyAgrum.DAG_emptyArcs(self)
 
 # Register DAG in _pyAgrum:
@@ -27649,10 +27738,17 @@ class BNLearner(object):
         """
         return _pyAgrum.BNLearner_erasePossibleEdge(self, *args)
 
-    def setPossibleEdges(self, set: Set[Tuple[int,int]]) -> "pyAgrum.BNLearner":
-        return _pyAgrum.BNLearner_setPossibleEdges(self, set)
-
     def setPossibleSkeleton(self, skeleton: "pyAgrum.UndiGraph") -> "pyAgrum.BNLearner":
+        r"""
+
+        Add a constraint by fixing the set of possible edges as a pyAgrum.UndiGraph.
+
+        Parameters
+        ----------
+        g : pyAgrum.UndiGraph
+        	the fixed skeleton
+
+        """
         return _pyAgrum.BNLearner_setPossibleSkeleton(self, skeleton)
 
     def __repr__(self) -> str:
@@ -27753,7 +27849,30 @@ class BNLearner(object):
         return _pyAgrum.BNLearner_latentVariables(self)
 
     def state(self) -> object:
+        r"""
+
+        Returns a dictionary containing the current state of the BNLearner.
+
+        Returns
+        -------
+        Dict[str,Any]
+            a dictionary containing the current state of the BNLearner.
+
+        """
         return _pyAgrum.BNLearner_state(self)
+
+    def setPossibleEdges(self, *args) -> None:
+        r"""
+
+        Add a constraint by fixing the set of possible edges.
+
+        Parameters
+        ----------
+        edges : Set[Tuple[int]]
+        	a set of edges as couples of nodeIds.
+
+        """
+        return _pyAgrum.BNLearner_setPossibleEdges(self, *args)
 
     def pseudoCount(self,vars):
         """ access to pseudo-count (priors taken into account)
@@ -28050,6 +28169,20 @@ class BNLearner(object):
         return _pyAgrum.BNLearner_learnDAG(self)
 
     def learnPDAG(self) -> "pyAgrum.PDAG":
+        r"""
+
+        learn a PDAG from a file
+
+        Warnings
+        --------
+          The learning method must be constraint-based (MIIC, etc.) and not score-based (K2, GreedyHillClimbing, etc.)
+
+        Returns
+        -------
+        pyAgrum.PDAG
+        	the learned PDAG
+
+        """
         return _pyAgrum.BNLearner_learnPDAG(self)
 
     def names(self) -> List[str]:
@@ -28364,9 +28497,29 @@ class BNLearner(object):
         return _pyAgrum.BNLearner_setNumberOfThreads(self, nb)
 
     def getNumberOfThreads(self) -> int:
+        r"""
+
+        Return the number of threads used by the BNLearner during structure and parameter learning.
+
+        Returns
+        -------
+        int
+        	the number of threads used by the BNLearner during structure and parameter learning
+
+        """
         return _pyAgrum.BNLearner_getNumberOfThreads(self)
 
     def isGumNumberOfThreadsOverriden(self) -> bool:
+        r"""
+
+        Check if the number of threads use by the learner is the default one or not.
+
+        Returns
+        -------
+        bool
+        	True if the number of threads used by the BNLearner has been set.
+
+        """
         return _pyAgrum.BNLearner_isGumNumberOfThreadsOverriden(self)
 
 # Register BNLearner in _pyAgrum:
