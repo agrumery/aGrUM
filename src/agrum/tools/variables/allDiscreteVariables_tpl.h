@@ -84,8 +84,10 @@ namespace gum {
             if (fmax <= fmin) { GUM_ERROR(InvalidArgument, "last<=first in " << var_description) }
             if (nbr <= 1) { GUM_ERROR(InvalidArgument, "nbr<=1 in " << var_description) }
             const double step = double((fmax - fmin) / nbr);
-            for (double i = 0.0; i < nbr + 1.0; i += 1.0) {
-              ticks.push_back(fmin + i * step);
+            double current=fmin;
+            for (auto i = 0; i <= nbr ; i += 1) {
+              ticks.push_back(current);
+              current+=step;
             }
             ds = ticks.size();
           } else {   // n[4]

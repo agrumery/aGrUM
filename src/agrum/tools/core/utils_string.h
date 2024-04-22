@@ -137,7 +137,7 @@ namespace gum {
   template < typename T >
   inline std::string compact_tostr(T value) {
     std::ostringstream s;
-    s.precision(std::numeric_limits< T >::digits10);
+    s.precision(7);
     s << value;
     return s.str();
   }

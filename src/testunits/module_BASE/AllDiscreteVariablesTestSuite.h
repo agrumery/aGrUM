@@ -258,6 +258,13 @@ namespace gum_tests {
       TS_ASSERT(*FASTVARDBL("A{1.4:7.4:4}") == *FASTVARDBL("A{1.4|3.4|5.4|7.4}"))
     }
 
+    GUM_ACTIVE_TEST(EquallySpacedIntervall) {
+      auto v=gum::fastVariable("alpha { 0 : 1 : 101 }");
+      for (const auto& la:v->labels()) {
+        TS_ASSERT_LESS_THAN_EQUALS(la.length(),5u) // 0.94 for instance
+      }
+    }
+
     GUM_ACTIVE_TEST(ClosestIndex) {
       TS_ASSERT_THROWS(FASTVARDBL("A{On|Off|Defun}")->closestIndex(1.5),
                        const gum::NotImplementedYet&);
