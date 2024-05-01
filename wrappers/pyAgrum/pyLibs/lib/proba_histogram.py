@@ -123,8 +123,15 @@ def _getProbaLine(p, scale=1.0, txtcolor="black"):
     lv = [var.label(int(i)) for i in np.arange(var.domainSize())]
     v = p.tolist()
     ra = range(var.domainSize())
+
   if var.domainSize() > 15:
-    step = int(var.domainSize() / 15)
+    nbr_step=15
+    max_step=var.domainSize()-1
+    while True:
+      if nbr_step==2 or max_step%nbr_step==0:
+        step = max_step // nbr_step
+        break
+      nbr_step-=1
   else:
     step = 1
 
@@ -321,12 +328,12 @@ def _getHistoForDiscretized(p, scale=1, txtcolor="Black"):
   ax.xaxis.set_minor_locator(AutoMinorLocator())
   ax.tick_params(which="minor", length=4)
   ax.set_ylim(bottom=0, top=1.05 * max(vals))
-  ax.get_xaxis().grid(True, which="minor", zorder=0)
+  ax.get_xaxis().grid(True, which="both", zorder=0)
 
   bars = ax.bar(vx[lim1:1 + lim2], height=vals[lim1:1 + lim2], width=widths[lim1:1 + lim2],
                 align='edge',
                 color=gum.config['notebook', 'histogram_color'],
-                edgecolor=gum.config['notebook', 'histogram_edge_color'], zorder=3)
+                edgecolor=gum.config['notebook', 'histogram_edge_color'], zorder=33)
 
   # Even if utility, now we do show the mean/sigma of the distribution.
   ax.set_title(_getTitleHisto(p, True), color=txtcolor)
@@ -355,12 +362,12 @@ def proba2histo(p, scale=None, util=None, txtcolor="Black"):
   matplotlib.Figure
     a matplotlib histogram for a Potential p.
   """
-  if util is not None:
-    if scale is None:
-      scale = 1.0
-    return _getProbaH(p, scale, util=util, txtcolor=txtcolor)
+  #if util is not None:
+  #  if scale is None:
+  #    scale = 1.0
+  #  return _getProbaH(p, scale, util=util, txtcolor=txtcolor)
 
-  isev = p.max()==1.0 and p.sum()==1
+  isev = p.min()==0.0 and p.max()==1.0 and p.sum()==1.0
 
   if p.variable(0).varType() == gum.VarType_Discretized and not(isev):
     if gum.config['notebook', 'histogram_discretized_visualisation'] == "histogram":
