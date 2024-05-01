@@ -287,6 +287,51 @@ if len(args)>1:
       return self.fillFromFunction(s)
 
 
+    def fillFromExpression(self,s_fn):
+      """
+      Automatically fills the potential with the evaluation of the expression s_fn (no matter if is a CPT or not).
+
+      The symbolic expression s_fn gives a value for each parameters of the Potential
+
+      Examples
+      --------
+      >>> import pyAgrum as gum
+      >>> bn=pyAgrum.fastBN('A[3]->B[3]<-C[3]')
+      >>> bn.cpt('B').fillFromFunction('(B+A+C)/2')
+
+      Parameters
+      ----------
+      s_fn : str
+          a symbolic expression using the name of the variables of the Potential and giving a value to the first variable of the Potential. This evaluation is done in a context that inclides 'math' module.
+
+      Warning
+      -------
+          The expression may have any numerical values, but will be then transformed to the closest correct value for the range of the variable.
+
+
+      Returns
+      -------
+      pyAgrum.Potential
+            a reference to the modified potential
+      """
+      import math
+      forbidden=frozenset(['__import__','__class__'])
+
+      I=pyAgrum.Instantiation(self)
+      code=float(s_fn) if isinstance(s_fn, (int, float)) else compile(s_fn,"<string>","eval")
+      if not isinstance(s_fn, (int, float)):
+        if forbidden & set(code.co_names):
+          raise InvalidArgument("[pyAgrum] '__import__' is not allowed in the expression '"+s_fn+"'")
+
+      I.setFirst()
+      while not I.end():
+        vars={self.variable(i).name():self.variable(i).numerical(I.val(i)) for i in range(self.nbrDim())}
+        res=s_fn if isinstance(s_fn, (int, float)) else eval(code,{'math':math},vars)        
+        self.set(I,res)
+        I.inc()
+
+      return self
+
     def fillFromFunction(self,s_fn):
       """
       Automatically fills the potential as a deterministic CPT with the evaluation of the expression s_fn.
