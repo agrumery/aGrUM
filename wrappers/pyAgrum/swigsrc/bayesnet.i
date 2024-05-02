@@ -115,8 +115,10 @@ def addArcs(self,listArcs):
   listArcs : List[Tuple[int|str,int|str]]
     the list of arcs
   """
+  self.beginTopologyTransformation()
   for arc in listArcs:
     self.addArc(*arc)
+  self.endTopologyTransformation()
 
 def addStructureListener(self,whenNodeAdded=None,whenNodeDeleted=None,whenArcAdded=None,whenArcDeleted=None):
     """
