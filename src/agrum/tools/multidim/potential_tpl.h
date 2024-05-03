@@ -726,13 +726,10 @@ namespace gum {
     if (this->domainSize() == 0) return *this;
 
     std::vector< GUM_SCALAR > v;
-    GUM_SCALAR                sum;
     v.reserve(this->domainSize());
-    sum = 0.0;
     for (Size i = 0; i < this->domainSize(); ++i) {
       auto r = (GUM_SCALAR)randomProba();
       v.push_back(r);
-      sum += r;
     }
     this->fillWith(v);
     return *this;
@@ -740,14 +737,31 @@ namespace gum {
 
   template < typename GUM_SCALAR >
   INLINE const Potential< GUM_SCALAR >& Potential< GUM_SCALAR >::randomDistribution() const {
-    if (this->sum() == 0.0) this->fillWith(1.0);   // a 1 somewhere
+    if (this->domainSize() == 0) {
+      this->fillWith( (GUM_SCALAR)1.0);
+    } else {
+      this->fillWith(gum::randomDistribution< GUM_SCALAR >(this->domainSize()));
+    }
 
-    return this->random().normalize();
+    return *this;
   }
 
   template < typename GUM_SCALAR >
   INLINE const Potential< GUM_SCALAR >& Potential< GUM_SCALAR >::randomCPT() const {
-    return this->random().normalizeAsCPT();
+    if (this->domainSize() == 0) {
+      this->fillWith( (GUM_SCALAR)1.0);
+    } else {
+      gum::Instantiation I(*this);
+      const auto&        v = this->variable(0);
+      for (I.setFirstNotVar(v); !I.end(); I.incNotVar(v)) {
+        const auto& distrib = gum::randomDistribution< GUM_SCALAR >(v.domainSize());
+        for (I.setFirstVar(v); !I.end(); I.incVar(v)) {
+          this->set(I, distrib[I.val(0)]);
+        }
+        I.unsetEnd();
+      }
+    }
+    return *this;
   }
 
   template < typename GUM_SCALAR >

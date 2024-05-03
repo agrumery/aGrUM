@@ -12035,8 +12035,10 @@ class BayesNet(IBayesNet):
       listArcs : List[Tuple[intstr,intstr]]
         the list of arcs
       """
+      self.beginTopologyTransformation()
       for arc in listArcs:
         self.addArc(*arc)
+      self.endTopologyTransformation()
 
     def addStructureListener(self,whenNodeAdded=None,whenNodeDeleted=None,whenArcAdded=None,whenArcDeleted=None):
         """
@@ -13082,8 +13084,10 @@ class BayesNetFragment(IBayesNet, ):
       listArcs : List[Tuple[intstr,intstr]]
         the list of arcs
       """
+      self.beginTopologyTransformation()
       for arc in listArcs:
         self.addArc(*arc)
+      self.endTopologyTransformation()
 
     def addStructureListener(self,whenNodeAdded=None,whenNodeDeleted=None,whenArcAdded=None,whenArcDeleted=None):
         """

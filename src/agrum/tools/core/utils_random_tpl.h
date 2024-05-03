@@ -34,23 +34,22 @@ namespace gum {
   std::vector< GUM_SCALAR > randomDistribution(Size n) {
     if (n < 2) n = 2;
 
-    std::vector< GUM_SCALAR > v(n);
-    GUM_SCALAR                s;
-
-    do {
-      for (Idx i = 0; i < n; i++) {
-        v[i] = (GUM_SCALAR)randomProba();
-      }
-
-      s = std::accumulate(v.begin(), v.end(), (GUM_SCALAR)0.0);
-
-    } while (s < (GUM_SCALAR)(1e-5));
+    // using sort method for uniformly distributed distributions
+    // https://doi.org/10.1016/0377-2217(82)90161-8
+    std::vector< GUM_SCALAR > v(n + 1);
+    std::vector< GUM_SCALAR > res(n);
+    v[0] = (GUM_SCALAR)0.0;
+    v[n] =  (GUM_SCALAR)1.0;
+    for (Idx i = 1; i < n; i++) {
+      v[i] = (GUM_SCALAR)randomProba();
+    }
+    std::sort(v.begin(), v.end());
 
     for (Idx i = 0; i < n; i++) {
-      v[i] /= s;
+      res[i] = v[i + 1] - v[i];
     }
 
-    return v;
+    return res;
   }
 
   template < typename GENERATOR >
