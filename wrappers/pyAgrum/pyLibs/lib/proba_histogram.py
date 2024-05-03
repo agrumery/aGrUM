@@ -26,6 +26,8 @@ from matplotlib.ticker import (MultipleLocator, AutoMinorLocator)
 
 import pyAgrum as gum
 
+LEFT_ARROW = u"\u2190"
+RIGHT_ARROW = u"\u2192" 
 
 def _stats(pot):
   mu = 0.0
@@ -89,10 +91,10 @@ def __limits(p):
   lres = la[mi:ma + 1]
   #if nzmin not in [-1, 0, None]:
   if mi>1:
-    lres[0] = "..." + var.label(mi)
+    lres[0] = LEFT_ARROW + var.label(mi)
   #if nzmax not in [-1, var.domainSize()-1, None]:
   if ma<var.domainSize()-2:
-    lres[-1] = var.label(ma+1) + "..."
+    lres[-1] = var.label(ma+1) + RIGHT_ARROW
 
   return res, [v[i] for i in res], lres
 
@@ -209,9 +211,10 @@ def _getProbaV(p, scale=1.0, util=None, txtcolor="black"):
   for b in bars:
     if b.get_height() != 0:
       txt = f"{b.get_height() * perc:.{gum.config.asInt['notebook', 'histogram_vertical_visible_digits']}f}{suffix}"
-      ax.text(b.get_x() + 0.5, ma, txt, ha='center', va='top', rotation='vertical')
+      ax.text(b.get_x() + 0.5, ma, txt, ha='center', va='top', rotation='vertical',alpha=0.7)
 
   ax.set_ylim(bottom=0, top=p.max())
+  ax.set_yticklabels([])
   ax.set_xticks(ra)
   ax.set_xticklabels(lv, rotation='vertical', color=txtcolor)
   # even if utility, now we do show the mean/sigma of the distribution.
@@ -280,7 +283,7 @@ def _getProbaH(p, scale=1.0, util=None, txtcolor="black"):
   for b in bars:
     if b.get_width() != 0:
       txt = f"{b.get_width() * perc:.{gum.config.asInt['notebook', 'histogram_horizontal_visible_digits']}f}{suffix}"
-      ax.text(1, b.get_y(), txt, ha='right', va='bottom')
+      ax.text(1, b.get_y(), txt, ha='right', va='bottom',alpha=0.7)
 
   ax.set_xlim(0, 1)
   ax.set_yticks(np.arange(var.domainSize()))
@@ -317,7 +320,8 @@ def _getHistoForDiscretized(p, scale=1, txtcolor="Black"):
       lim2 -= 1
 
   fig = plt.figure()
-  fig.set_figwidth(scale * max(10, (lim2 - lim1)) / 8)
+  fw=scale * max(10, (lim2 - lim1)) / 8
+  fig.set_figwidth(fw)
   fig.set_figheight(scale)
 
   ax = fig.add_subplot(111)
@@ -325,6 +329,8 @@ def _getHistoForDiscretized(p, scale=1, txtcolor="Black"):
   delta = 0.025 * (vx[lim2 + 1] - vx[lim1])
   ax.set_xlim(vx[lim1] - delta, vx[lim2 + 1] + delta)
   ax.set_xticks([vx[lim1], (vx[lim2 + 1] + vx[lim1]) / 2, vx[lim2 + 1]])
+  ax.set_xticklabels([f"{vx[lim1]:.2f}", f"{(vx[lim2 + 1] + vx[lim1]) / 2:.2f}", f"{vx[lim2 + 1]:.2f}"],
+                     color=txtcolor, rotation='vertical' if fw<1.3 else 'horizontal')
   ax.xaxis.set_minor_locator(AutoMinorLocator())
   ax.tick_params(which="minor", length=4)
   ax.set_ylim(bottom=0, top=1.05 * max(vals))
@@ -369,7 +375,7 @@ def proba2histo(p, scale=None, util=None, txtcolor="Black"):
 
   isev = p.min()==0.0 and p.max()==1.0 and p.sum()==1.0
 
-  if p.variable(0).varType() == gum.VarType_Discretized and not(isev):
+  if p.variable(0).varType() == gum.VarType_Discretized:
     if gum.config['notebook', 'histogram_discretized_visualisation'] == "histogram":
       if scale is None:
         scale=gum.config.asFloat['notebook', 'histogram_discretized_scale']
