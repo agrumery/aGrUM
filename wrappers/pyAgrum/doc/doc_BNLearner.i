@@ -602,7 +602,7 @@ Tuple[float,float]
 
 %feature("docstring") gum::learning::IBNLearner::mutualInformation
 "
-computes the mutual information between two columns, given a list of other columns (log2).
+computes the (log2) mutual information between two columns, given a list of other columns.
 
 Warnings
 --------
@@ -622,8 +622,8 @@ knowing : List[str]
 
 Returns
 -------
-Tuple[float,float]
-	the G2 statistic and the associated p-value as a Tuple
+float
+  the log2 mutual information
 "
 
 %feature("docstring") gum::learning::IBNLearner::correctedMutualInformation
