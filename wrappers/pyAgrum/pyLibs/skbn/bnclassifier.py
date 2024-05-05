@@ -281,7 +281,8 @@ class BNClassifier(sklearn.base.BaseEstimator, sklearn.base.ClassifierMixin):
     # the index of the variable.
     self.variableNameIndexDictionary = None
 
-  def fit(self, X=None, y=None, data=None, targetName=None, filename=None):
+  @gum.deprecated_arg("data", "filename", "1.13.1")
+  def fit(self, X=None, y=None, data=None, targetName=None):
     """
     Fits the model to the training data provided. The two possible uses of this function are `fit(X,y)` and `fit(data=...,
     targetName=...)`. Any other combination will raise a ValueError
@@ -289,26 +290,17 @@ class BNClassifier(sklearn.base.BaseEstimator, sklearn.base.ClassifierMixin):
     Parameters
     ----------
         X: {array-like, sparse matrix} of shape (n_samples, n_features)
-            training data. Warning: Raises ValueError if either filename or targetname is not None. Raises ValueError
+            training data. Warning: Raises ValueError if either data or targetname is not None. Raises ValueError
             if y is None.
         y: array-like of shape (n_samples)
-            Target values. Warning: Raises ValueError if either filename or targetname is not None. Raises ValueError
+            Target values. Warning: Raises ValueError if either data or targetname is not None. Raises ValueError
             if X is None
         data: Union[str,pandas.DataFrame]
             the source of training data : csv filename or pandas.DataFrame. targetName is mandatory to find the class in this source.
         targetName: str
             specifies the name of the targetVariable in the csv file. Warning: Raises ValueError if either X or y is
-            not None. Raises ValueError if filename is None.
-        filename: str
-            (deprecated, use data instead)
-            specifies the csv file where the training data and target values are located. Warning: Raises ValueError
-            if either X or y is not None. Raises ValueError if targetName is None.
+            not None. Raises ValueError if data is None.
     """
-    if filename is not None:
-      warnings.warn("**pyAgrum** : 'filename' is deprecated since 1.1.1. Please use 'data' instead.")
-      if data is None:
-        data = filename
-
     if data is None:
       if targetName is not None:
         raise ValueError(
@@ -327,7 +319,7 @@ class BNClassifier(sklearn.base.BaseEstimator, sklearn.base.ClassifierMixin):
         raise ValueError(
           "This function should be used either as fit(X,y) or fit(data=...,targetName=...). You can not give "
           "a data and the X and y matrices at the same time.")
-      if type(data) == str:
+      if isinstance(data, str):
         X, y = self.XYfromCSV(data, True, targetName)
       else:  # pandas.DataFrame
         y = data[targetName]
@@ -573,7 +565,7 @@ class BNClassifier(sklearn.base.BaseEstimator, sklearn.base.ClassifierMixin):
         y: array-like of shape (n_samples,)
             Predicted classes
     """
-    if type(X) == str:
+    if isinstance(X, str):
       X, _ = self.XYfromCSV(X, target=self.target)
 
     if isinstance(X, pandas.DataFrame):  # type(X) == pandas.DataFrame:
@@ -702,7 +694,7 @@ class BNClassifier(sklearn.base.BaseEstimator, sklearn.base.ClassifierMixin):
     if isinstance(X, pandas.DataFrame):  # type(X) == pandas.DataFrame:
       dictName = DFNames(X)
       vals = X.to_numpy()
-    elif type(X) == str:
+    elif isinstance(data, str):
       vals, _ = self.XYfromCSV(X, target=self.target)
       dictName = DFNames(vals)
       vals = vals.to_numpy()
@@ -800,7 +792,8 @@ class BNClassifier(sklearn.base.BaseEstimator, sklearn.base.ClassifierMixin):
 
     return X, y
 
-  def preparedData(self, X=None, y=None, data=None, filename=None):
+  @gum.deprecated_arg("data", "filename", "1.13.1")
+  def preparedData(self, X=None, y=None, data=None):
     """
     Given an X and a y (or a data source : filename or pandas.DataFrame), returns a pandas.Dataframe with the prepared (especially discretized) values of the base
 
@@ -815,10 +808,6 @@ class BNClassifier(sklearn.base.BaseEstimator, sklearn.base.ClassifierMixin):
         data: Union[str,pandas.DataFrame]
             specifies the csv file or the DataFrame where the data values are located. Warning: Raises ValueError
             if either X or y is not None.
-        filename: str
-            (deprecated)
-            specifies the csv file where the data are located. Warning: Raises ValueError
-            if either X or y is not None.
 
     Returns
     -------
@@ -826,10 +815,6 @@ class BNClassifier(sklearn.base.BaseEstimator, sklearn.base.ClassifierMixin):
     """
     if self.variableNameIndexDictionary is None:
       raise ValueError("First, you need to fit a model !")
-    if filename is not None:
-      warnings.warn("pyAgrum ** : filename is deprecated. Please use data instead.")
-      if data is None:
-        data = filename
 
     targetName = self.target
     if data is None:
@@ -845,9 +830,9 @@ class BNClassifier(sklearn.base.BaseEstimator, sklearn.base.ClassifierMixin):
       if X is not None or y is not None:
         raise ValueError(
           "This function should be used either as preparedData(X,y) or preparedData(data=...). You have entered "
-          "a filename and the X and y matrices at the same time.")
+          "a data source and the X and y matrices at the same time.")
 
-      if type(data) == str:
+      if isinstance(data, str):
         X, y = self.XYfromCSV(data, True, targetName)
       else:  # pandas.DataFrame
         y = data[targetName]
@@ -888,14 +873,15 @@ class BNClassifier(sklearn.base.BaseEstimator, sklearn.base.ClassifierMixin):
 
     return df
 
-  def showROC_PR(self, filename, *, beta=1, save_fig=False, show_progress=False, bgcolor=None):
+  @gum.deprecated_arg("data", "filename", "1.13.1")
+  def showROC_PR(self, data, *, beta=1, save_fig=False, show_progress=False, bgcolor=None):
     """
     Use the `pyAgrum.lib.bn2roc` tools to create ROC and Precision-Recall curve
 
     Parameters
     ----------
-    filename: str
-        a csv filename
+    data: str | dataframe
+        a csv filename or a DataFrame
     beta : float
         the value of beta for the F-beta score
     save_fig : bool
@@ -906,6 +892,6 @@ class BNClassifier(sklearn.base.BaseEstimator, sklearn.base.ClassifierMixin):
         HTML background color for the figure (default: None if transparent)
     """
     import pyAgrum.lib.bn2roc as bn2roc
-    bn2roc.showROC_PR(self.bn, filename, self.target,
-                      self.label, significant_digits=self.significant_digit, save_fig=save_fig,
-                      show_progress=show_progress,bgcolor=bgcolor)
+    bn2roc.showROC_PR(self.bn, data, self.target, self.label, beta=beta,
+                       significant_digits=self.significant_digit, save_fig=save_fig,
+                      show_progress=show_progress, bgcolor=bgcolor)
