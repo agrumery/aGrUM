@@ -662,7 +662,8 @@ namespace gum {
               if (!marg_factor_set.contains(pot)) delete pot;
             }
             GUM_ERROR(FatalError,
-                      "the projection of a potential containing " << "hard evidence is empty!");
+                      "the projection of a potential containing "
+                          << "hard evidence is empty!");
           }
           auto new_factor = const_cast< Potential< GUM_SCALAR >* >(*(new_factor_list.begin()));
           auto projected_factor
@@ -778,7 +779,8 @@ namespace gum {
           // there should be only one potential in new_factor_list
           if (new_factor_list.size() != 1) {
             GUM_ERROR(FatalError,
-                      "the projection of a potential containing " << "hard evidence is empty!");
+                      "the projection of a potential containing "
+                          << "hard evidence is empty!");
           }
           auto projected_factor = const_cast< ScheduleMultiDim< Potential< GUM_SCALAR > >* >(
               static_cast< const ScheduleMultiDim< Potential< GUM_SCALAR > >* >(
@@ -1045,7 +1047,8 @@ namespace gum {
         // there should be only one potential in new_cpt_list
         if (new_pot_list.size() != 1) {
           GUM_ERROR(FatalError,
-                    "the projection of a potential containing " << "hard evidence is empty!");
+                    "the projection of a potential containing "
+                        << "hard evidence is empty!");
         }
         auto projected_pot = const_cast< ScheduleMultiDim< Potential< GUM_SCALAR > >* >(
             static_cast< const ScheduleMultiDim< Potential< GUM_SCALAR > >* >(
@@ -1109,7 +1112,8 @@ namespace gum {
         // there should be only one potential in new_cpt_list
         if (new_pot_list.size() != 1) {
           GUM_ERROR(FatalError,
-                    "the projection of a potential containing " << "hard evidence is empty!");
+                    "the projection of a potential containing "
+                        << "hard evidence is empty!");
         }
         Potential< GUM_SCALAR >* xprojected_pot
             = const_cast< Potential< GUM_SCALAR >* >(*new_pot_list.begin());
@@ -1715,8 +1719,8 @@ namespace gum {
       for (const auto node: targets) {
         if (!_graph_.exists(node)) {
           GUM_ERROR(UndefinedElement,
-                    "Node " << this->MRF().variable(node).name() << "(" << node
-                            << ") does not belong to this optimized inference.")
+                    "The variable " << this->MRF().variable(node).name() << "(" << node
+                                    << ") does not belong to this optimized inference.")
         }
       }
 
@@ -1743,8 +1747,8 @@ namespace gum {
       for (const auto node: targets) {
         if (!clique_nodes.contains(node)) {
           GUM_ERROR(UndefinedElement,
-                    this->MRF().names(set)
-                        << "(" << set << ")" << " is not addressable in this optimized inference.")
+                    this->MRF().names(set) << "(" << set << ")"
+                                           << " is not addressable in this optimized inference.")
         }
       }
 
@@ -1872,8 +1876,8 @@ namespace gum {
       for (const auto node: targets) {
         if (!_graph_.exists(node)) {
           GUM_ERROR(UndefinedElement,
-                    "Node " << this->MRF().variable(node).name() << "(" << node
-                            << ") does not belong to this optimized inference.")
+                    "The variable " << this->MRF().variable(node).name() << "(" << node
+                                    << ") does not belong to this optimized inference.")
         }
       }
 

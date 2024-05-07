@@ -53,7 +53,7 @@ namespace gum {
 
     /// copy constructor
     INLINE PseudoCount::PseudoCount(const PseudoCount& from) :
-        prior_(from.prior_ -> clone()), counter_(from.counter_) {
+        prior_(from.prior_->clone()), counter_(from.counter_) {
       GUM_CONS_CPY(PseudoCount);
     }
 

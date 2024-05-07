@@ -45,7 +45,7 @@ namespace gum_tests {
 
     public:
     explicit ASimpleDBGeneratorListener(gum::ProgressNotifier& notif) :
-        gum::ProgressListener(notif), _nbr_(0), _mess_(""){};
+        gum::ProgressListener(notif), _nbr_(0), _mess_("") {};
 
     void whenProgress(const void* buffer, const gum::Size a, const double c) { _nbr_ += a; }
 

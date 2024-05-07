@@ -182,7 +182,8 @@ namespace gum {
   std::string PDAG::toDot() const {
     std::stringstream output;
     List< NodeId >    treatedNodes;
-    output << "digraph \"" << "no_name\" {" << std::endl;
+    output << "digraph \""
+           << "no_name\" {" << std::endl;
 
     std::string tab = "  ";
     output << tab << "rankdir = TD;" << std::endl;

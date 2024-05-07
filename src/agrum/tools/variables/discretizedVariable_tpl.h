@@ -182,14 +182,22 @@ namespace gum {
     T_TICKS            target;
     if (i >> target) {
       if (target < _ticks_[0]) {
+        if (_ticks_[0] - target < 1e-10) return 0;
         if (_is_empirical) return 0;
-        else GUM_ERROR(OutOfBounds, "less than first range for " << target << " in " << *this)
+        else
+          GUM_ERROR(OutOfBounds,
+                    "less than first range (< " << _ticks_[0] << ") for " << target << " in "
+                                                << *this)
       }
 
       const auto size = _ticks_.size();
       if (target > _ticks_[size - 1]) {
+        if (target - _ticks_[size - 1] < 1e-10) return size - 2;
         if (_is_empirical) return size - 2;
-        else GUM_ERROR(OutOfBounds, "more than last range for " << target << " in " << *this)
+        else
+          GUM_ERROR(OutOfBounds,
+                    "more than last range (> " << _ticks_[size - 1] << ") for " << target << " in "
+                                               << *this << ":" << target - _ticks_[size - 1])
       }
 
       return pos_(target);

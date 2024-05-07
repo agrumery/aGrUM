@@ -46,7 +46,7 @@ namespace gum_tests {
 
   class SimpleListenerForMiic: public gum::Listener {
     public:
-    SimpleListenerForMiic(){};
+    SimpleListenerForMiic() {};
 
     void whenStructuralModification(const void* src,
                                     gum::NodeId x,
@@ -62,7 +62,7 @@ namespace gum_tests {
   class FilterListenerForMiic: public gum::Listener {
     public:
     gum::Size filter;
-    FilterListenerForMiic(){};
+    FilterListenerForMiic() {};
 
     void whenStructuralModification(const void* src,
                                     gum::NodeId x,

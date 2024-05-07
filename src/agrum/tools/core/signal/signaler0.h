@@ -44,7 +44,7 @@ namespace gum {
 
     class IConnector0 {
       public:
-      virtual ~IConnector0(){};
+      virtual ~IConnector0() {};
 
       virtual Listener*    target() const              = 0;
       virtual void         notify(const void*)         = 0;

@@ -694,7 +694,7 @@ class BNClassifier(sklearn.base.BaseEstimator, sklearn.base.ClassifierMixin):
     if isinstance(X, pandas.DataFrame):  # type(X) == pandas.DataFrame:
       dictName = DFNames(X)
       vals = X.to_numpy()
-    elif isinstance(data, str):
+    elif isinstance(X, str):
       vals, _ = self.XYfromCSV(X, target=self.target)
       dictName = DFNames(vals)
       vals = vals.to_numpy()

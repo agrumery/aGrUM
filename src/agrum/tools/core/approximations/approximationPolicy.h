@@ -55,12 +55,12 @@ namespace gum {
     /**
      * @brief Default constructor.
      */
-    ApproximationPolicy(){};
+    ApproximationPolicy() {};
 
     /**
      *  @brief Copy constructor.
      */
-    ApproximationPolicy(const ApproximationPolicy< GUM_SCALAR >* md){};
+    ApproximationPolicy(const ApproximationPolicy< GUM_SCALAR >* md) {};
 
     /// @}
     // ===========================================================================

@@ -66,9 +66,9 @@ namespace gum {
       FACT_ENTRY
     };
 
-    IBayesNetFactory() : _verbose_(false){};
+    IBayesNetFactory() : _verbose_(false) {};
     // just to make some compilers happy
-    virtual ~IBayesNetFactory(){};
+    virtual ~IBayesNetFactory() {};
 
     /**
      * @name verbosity control

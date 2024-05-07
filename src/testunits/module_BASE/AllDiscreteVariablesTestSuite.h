@@ -259,9 +259,9 @@ namespace gum_tests {
     }
 
     GUM_ACTIVE_TEST(EquallySpacedIntervall) {
-      auto v=gum::fastVariable("alpha { 0 : 1 : 101 }");
-      for (const auto& la:v->labels()) {
-        TS_ASSERT_LESS_THAN_EQUALS(la.length(),5u) // 0.94 for instance
+      auto v = gum::fastVariable("alpha { 0 : 1 : 101 }");
+      for (const auto& la: v->labels()) {
+        TS_ASSERT_LESS_THAN_EQUALS(la.length(), 5u)   // 0.94 for instance
       }
     }
 

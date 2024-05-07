@@ -79,10 +79,12 @@
 
       void tearDown() {}
 
-      GUM_TEST(SimpleConstructor){TS_GUM_ASSERT_THROWS_NOTHING({
-        gum::MarkovRandomField< double > mn;
-        GUM_UNUSED(mn);
-      })};
+      GUM_TEST(SimpleConstructor) {
+        TS_GUM_ASSERT_THROWS_NOTHING({
+          gum::MarkovRandomField< double > mn;
+          GUM_UNUSED(mn);
+        })
+      };
 
       GUM_TEST(Constructor) {
         gum::MarkovRandomField< double > mn;

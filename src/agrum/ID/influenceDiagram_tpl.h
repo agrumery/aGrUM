@@ -245,15 +245,20 @@ namespace gum {
 
     for (const auto node: dag_.nodes()) {
       if (isChanceNode(node))
-        chanceNode << tab << "\"" << node << "-" << variable(node).name() << "\"" << ";";
+        chanceNode << tab << "\"" << node << "-" << variable(node).name() << "\""
+                   << ";";
       else if (isUtilityNode(node))
-        utilityNode << tab << "\"" << node << "-" << variable(node).name() << "\"" << ";";
-      else decisionNode << tab << "\"" << node << "-" << variable(node).name() << "\"" << ";";
+        utilityNode << tab << "\"" << node << "-" << variable(node).name() << "\""
+                    << ";";
+      else
+        decisionNode << tab << "\"" << node << "-" << variable(node).name() << "\""
+                     << ";";
 
       if (dag_.children(node).size() > 0)
         for (const auto chi: dag_.children(node)) {
-          arcstream << "\"" << node << "-" << variable(node).name() << "\"" << " -> " << "\"" << chi
-                    << "-" << variable(chi).name() << "\"";
+          arcstream << "\"" << node << "-" << variable(node).name() << "\""
+                    << " -> "
+                    << "\"" << chi << "-" << variable(chi).name() << "\"";
           if (isDecisionNode(chi)) { arcstream << " [style=\"tapered, bold\"]"; }
           arcstream << ";" << std::endl;
         }

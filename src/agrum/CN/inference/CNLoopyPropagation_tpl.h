@@ -58,7 +58,8 @@ namespace gum::credal {
       evi.close();
     }
 
-    res << "[RESULTATS]" << "\n";
+    res << "[RESULTATS]"
+        << "\n";
 
     for (auto node: _bnet_->nodes()) {
       // calcul distri posteriori

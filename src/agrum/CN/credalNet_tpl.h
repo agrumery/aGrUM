@@ -486,8 +486,8 @@ namespace gum {
             if (std::fabs(1. - sum) > _epsRedund_) {
               GUM_ERROR(CPTError,
                         _src_bn_.variable(node).name()
-                            << "(" << _epsRedund_ << ")  does not sum to one for" << " " << entry
-                            << std::endl
+                            << "(" << _epsRedund_ << ")  does not sum to one for"
+                            << " " << entry << std::endl
                             << vertex << std::endl
                             << ins << std::endl);
             }

@@ -260,10 +260,10 @@ namespace CxxTest {
   {                                                     \
     if (!(e)) CxxTest::doFailAssert((f), (l), #e, (m)); \
   }
-#define __TS__ASSERT(f, l, e, m)           \
-  {                                        \
-    _TS_TRY { __ETS__ASSERT(f, l, e, m); } \
-    __TS_CATCH(f, l)                       \
+#define __TS__ASSERT(f, l, e, m)      \
+  {_TS_TRY{__ETS__ASSERT(f, l, e, m); \
+  }                                   \
+  __TS_CATCH(f, l)                    \
   }
 
 #define _ETS_ASSERT(f, l, e) __ETS__ASSERT(f, l, e, 0)
@@ -280,10 +280,10 @@ namespace CxxTest {
 
 // TS_ASSERT_EQUALS
 #define __ETS_ASSERT__EQUALS(f, l, x, y, m) CxxTest::doAssertEquals((f), (l), #x, (x), #y, (y), (m))
-#define __TS_ASSERT__EQUALS(f, l, x, y, m)           \
-  {                                                  \
-    _TS_TRY { __ETS_ASSERT__EQUALS(f, l, x, y, m); } \
-    __TS_CATCH(f, l)                                 \
+#define __TS_ASSERT__EQUALS(f, l, x, y, m)      \
+  {_TS_TRY{__ETS_ASSERT__EQUALS(f, l, x, y, m); \
+  }                                             \
+  __TS_CATCH(f, l)                              \
   }
 
 #define _ETS_ASSERT_EQUALS(f, l, x, y) __ETS_ASSERT__EQUALS(f, l, x, y, 0)
@@ -301,10 +301,10 @@ namespace CxxTest {
 // TS_ASSERT_SAME_DATA
 #define __ETS_ASSERT_SAME__DATA(f, l, x, y, s, m) \
   CxxTest::doAssertSameData((f), (l), #x, (x), #y, (y), #s, (s), (m))
-#define __TS_ASSERT_SAME__DATA(f, l, x, y, s, m)           \
-  {                                                        \
-    _TS_TRY { __ETS_ASSERT_SAME__DATA(f, l, x, y, s, m); } \
-    __TS_CATCH(f, l)                                       \
+#define __TS_ASSERT_SAME__DATA(f, l, x, y, s, m)      \
+  {_TS_TRY{__ETS_ASSERT_SAME__DATA(f, l, x, y, s, m); \
+  }                                                   \
+  __TS_CATCH(f, l)                                    \
   }
 
 #define _ETS_ASSERT_SAME_DATA(f, l, x, y, s) __ETS_ASSERT_SAME__DATA(f, l, x, y, s, 0)
@@ -324,10 +324,10 @@ namespace CxxTest {
 // TS_ASSERT_DIFFERS
 #define __ETS_ASSERT__DIFFERS(f, l, x, y, m) \
   CxxTest::doAssertDiffers((f), (l), #x, (x), #y, (y), (m))
-#define __TS_ASSERT__DIFFERS(f, l, x, y, m)           \
-  {                                                   \
-    _TS_TRY { __ETS_ASSERT__DIFFERS(f, l, x, y, m); } \
-    __TS_CATCH(f, l)                                  \
+#define __TS_ASSERT__DIFFERS(f, l, x, y, m)      \
+  {_TS_TRY{__ETS_ASSERT__DIFFERS(f, l, x, y, m); \
+  }                                              \
+  __TS_CATCH(f, l)                               \
   }
 
 #define _ETS_ASSERT_DIFFERS(f, l, x, y) __ETS_ASSERT__DIFFERS(f, l, x, y, 0)
@@ -345,10 +345,10 @@ namespace CxxTest {
 // TS_ASSERT_LESS_THAN
 #define __ETS_ASSERT_LESS__THAN(f, l, x, y, m) \
   CxxTest::doAssertLessThan((f), (l), #x, (x), #y, (y), (m))
-#define __TS_ASSERT_LESS__THAN(f, l, x, y, m)           \
-  {                                                     \
-    _TS_TRY { __ETS_ASSERT_LESS__THAN(f, l, x, y, m); } \
-    __TS_CATCH(f, l)                                    \
+#define __TS_ASSERT_LESS__THAN(f, l, x, y, m)      \
+  {_TS_TRY{__ETS_ASSERT_LESS__THAN(f, l, x, y, m); \
+  }                                                \
+  __TS_CATCH(f, l)                                 \
   }
 
 #define _ETS_ASSERT_LESS_THAN(f, l, x, y) __ETS_ASSERT_LESS__THAN(f, l, x, y, 0)
@@ -366,10 +366,10 @@ namespace CxxTest {
 // TS_ASSERT_LESS_THAN_EQUALS
 #define __ETS_ASSERT_LESS_THAN__EQUALS(f, l, x, y, m) \
   CxxTest::doAssertLessThanEquals((f), (l), #x, (x), #y, (y), (m))
-#define __TS_ASSERT_LESS_THAN__EQUALS(f, l, x, y, m)           \
-  {                                                            \
-    _TS_TRY { __ETS_ASSERT_LESS_THAN__EQUALS(f, l, x, y, m); } \
-    __TS_CATCH(f, l)                                           \
+#define __TS_ASSERT_LESS_THAN__EQUALS(f, l, x, y, m)      \
+  {_TS_TRY{__ETS_ASSERT_LESS_THAN__EQUALS(f, l, x, y, m); \
+  }                                                       \
+  __TS_CATCH(f, l)                                        \
   }
 
 #define _ETS_ASSERT_LESS_THAN_EQUALS(f, l, x, y) __ETS_ASSERT_LESS_THAN__EQUALS(f, l, x, y, 0)
@@ -391,10 +391,10 @@ namespace CxxTest {
 // TS_ASSERT_PREDICATE
 #define __ETS_ASSERT__PREDICATE(f, l, p, x, m) \
   CxxTest::doAssertPredicate((f), (l), #p, p(), #x, (x), (m))
-#define __TS_ASSERT__PREDICATE(f, l, p, x, m)           \
-  {                                                     \
-    _TS_TRY { __ETS_ASSERT__PREDICATE(f, l, p, x, m); } \
-    __TS_CATCH(f, l)                                    \
+#define __TS_ASSERT__PREDICATE(f, l, p, x, m)      \
+  {_TS_TRY{__ETS_ASSERT__PREDICATE(f, l, p, x, m); \
+  }                                                \
+  __TS_CATCH(f, l)                                 \
   }
 
 #define _ETS_ASSERT_PREDICATE(f, l, p, x) __ETS_ASSERT__PREDICATE(f, l, p, x, 0)
@@ -412,10 +412,10 @@ namespace CxxTest {
 // TS_ASSERT_RELATION
 #define __ETS_ASSERT__RELATION(f, l, r, x, y, m) \
   CxxTest::doAssertRelation((f), (l), #r, r(), #x, (x), #y, (y), (m))
-#define __TS_ASSERT__RELATION(f, l, r, x, y, m)           \
-  {                                                       \
-    _TS_TRY { __ETS_ASSERT__RELATION(f, l, r, x, y, m); } \
-    __TS_CATCH(f, l)                                      \
+#define __TS_ASSERT__RELATION(f, l, r, x, y, m)      \
+  {_TS_TRY{__ETS_ASSERT__RELATION(f, l, r, x, y, m); \
+  }                                                  \
+  __TS_CATCH(f, l)                                   \
   }
 
 #define _ETS_ASSERT_RELATION(f, l, r, x, y) __ETS_ASSERT__RELATION(f, l, r, x, y, 0)
@@ -434,10 +434,10 @@ namespace CxxTest {
 // TS_ASSERT_DELTA
 #define __ETS_ASSERT__DELTA(f, l, x, y, d, m) \
   CxxTest::doAssertDelta((f), (l), #x, (x), #y, (y), #d, (d), (m))
-#define __TS_ASSERT__DELTA(f, l, x, y, d, m)           \
-  {                                                    \
-    _TS_TRY { __ETS_ASSERT__DELTA(f, l, x, y, d, m); } \
-    __TS_CATCH(f, l)                                   \
+#define __TS_ASSERT__DELTA(f, l, x, y, d, m)      \
+  {_TS_TRY{__ETS_ASSERT__DELTA(f, l, x, y, d, m); \
+  }                                               \
+  __TS_CATCH(f, l)                                \
   }
 
 #define _ETS_ASSERT_DELTA(f, l, x, y, d) __ETS_ASSERT__DELTA(f, l, x, y, d, 0)
@@ -558,11 +558,11 @@ namespace CxxTest {
 #define TSM_ASSERT_THROWS_ANYTHING(m, e) _TSM_ASSERT_THROWS_ANYTHING(__FILE__, __LINE__, m, e)
 
 // TS_ASSERT_THROWS_NOTHING
-#define __TS_ASSERT_THROWS__NOTHING(f, l, e, m)                            \
-  {                                                                        \
-    _TS_TRY { e; }                                                         \
-    _TS_CATCH_ABORT({ throw; })                                            \
-    _TS_LAST_CATCH({ CxxTest::doFailAssertThrowsNot((f), (l), #e, (m)); }) \
+#define __TS_ASSERT_THROWS__NOTHING(f, l, e, m)                          \
+  {_TS_TRY{e;                                                            \
+  }                                                                      \
+  _TS_CATCH_ABORT({ throw; })                                            \
+  _TS_LAST_CATCH({ CxxTest::doFailAssertThrowsNot((f), (l), #e, (m)); }) \
   }
 
 #define _TS_ASSERT_THROWS_NOTHING(f, l, e) __TS_ASSERT_THROWS__NOTHING(f, l, e, 0)

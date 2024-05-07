@@ -173,8 +173,8 @@ namespace gum {
       if (neighbours(node).size() > 0) {
         for (auto nei: neighbours(node)) {
           if (variable(node).name() < variable(nei).name()) {
-            output << tab << "\"" << variable(node).name() << "\" -- " << "\""
-                   << variable(nei).name() << "\";" << std::endl;
+            output << tab << "\"" << variable(node).name() << "\" -- "
+                   << "\"" << variable(nei).name() << "\";" << std::endl;
           }
         }
       } else {

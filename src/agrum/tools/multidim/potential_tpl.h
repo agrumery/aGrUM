@@ -55,7 +55,7 @@ namespace gum {
   template < typename GUM_SCALAR >
   INLINE Potential< GUM_SCALAR >::Potential(const Potential< GUM_SCALAR >& src) :
       Potential< GUM_SCALAR >(
-          static_cast< MultiDimImplementation< GUM_SCALAR >* >(src.content() -> newFactory()),
+          static_cast< MultiDimImplementation< GUM_SCALAR >* >(src.content()->newFactory()),
           *(src.content())) {
     this->empty_value_ = src.empty_value_;
     // GUM_CONS_CPY not here because in called Potential
@@ -738,7 +738,7 @@ namespace gum {
   template < typename GUM_SCALAR >
   INLINE const Potential< GUM_SCALAR >& Potential< GUM_SCALAR >::randomDistribution() const {
     if (this->domainSize() == 0) {
-      this->fillWith( (GUM_SCALAR)1.0);
+      this->fillWith((GUM_SCALAR)1.0);
     } else {
       this->fillWith(gum::randomDistribution< GUM_SCALAR >(this->domainSize()));
     }
@@ -749,7 +749,7 @@ namespace gum {
   template < typename GUM_SCALAR >
   INLINE const Potential< GUM_SCALAR >& Potential< GUM_SCALAR >::randomCPT() const {
     if (this->domainSize() == 0) {
-      this->fillWith( (GUM_SCALAR)1.0);
+      this->fillWith((GUM_SCALAR)1.0);
     } else {
       gum::Instantiation I(*this);
       const auto&        v = this->variable(0);
@@ -1005,7 +1005,9 @@ namespace gum {
     const std::string maskparent(colwidth, '-');
     const std::string masknumber(numberwidth, '-');
 
-    if (nbparents > 0) ss << std::setw(nbparents * (colwidth + 1) - 1) << " " << "||";
+    if (nbparents > 0)
+      ss << std::setw(nbparents * (colwidth + 1) - 1) << " "
+         << "||";
     ss << "  " << std::setw(nbcol * (numberwidth + 1) - 3)
        << var.name().substr(0, nbcol * (numberwidth + 1) - 3) << "|";
     ss << std::endl;

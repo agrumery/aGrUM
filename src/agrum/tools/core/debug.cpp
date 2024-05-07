@@ -142,16 +142,21 @@ namespace gum {
       int  widthColSizeOf      = 5;
       int  widthColItemsNumber = 8;
 
-      std::cout << std::setfill('=') << "|" << std::setw(widthColLibelle + 2) << "" << "|"
-                << std::setw(widthColSizeOf + 4) << "" << "|" << std::setw(widthColItemsNumber + 2)
-                << "" << "|" << std::setw(widthColItemsNumber + 2) << "" << "|" << std::endl;
+      std::cout << std::setfill('=') << "|" << std::setw(widthColLibelle + 2) << ""
+                << "|" << std::setw(widthColSizeOf + 4) << ""
+                << "|" << std::setw(widthColItemsNumber + 2) << ""
+                << "|" << std::setw(widthColItemsNumber + 2) << ""
+                << "|" << std::endl;
       std::cout << std::setfill(' ') << "| " << std::left << std::setw(widthColLibelle)
                 << "Class Name" << std::right << " |   " << std::setw(widthColSizeOf) << "Size"
-                << " | " << std::setw(widthColItemsNumber) << "#Const" << " | "
-                << std::setw(widthColItemsNumber) << "#Dest" << " |" << std::endl;
-      std::cout << std::setfill('-') << "|" << std::setw(widthColLibelle + 2) << "" << "|"
-                << std::setw(widthColSizeOf + 4) << "" << "|" << std::setw(widthColItemsNumber + 2)
-                << "" << "|" << std::setw(widthColItemsNumber + 2) << "" << "|" << std::endl;
+                << " | " << std::setw(widthColItemsNumber) << "#Const"
+                << " | " << std::setw(widthColItemsNumber) << "#Dest"
+                << " |" << std::endl;
+      std::cout << std::setfill('-') << "|" << std::setw(widthColLibelle + 2) << ""
+                << "|" << std::setw(widthColSizeOf + 4) << ""
+                << "|" << std::setw(widthColItemsNumber + 2) << ""
+                << "|" << std::setw(widthColItemsNumber + 2) << ""
+                << "|" << std::endl;
       // list of created objects
       std::map< std::string, std::string > res;
 
@@ -193,10 +198,10 @@ namespace gum {
           std::stringstream stream;
           fillChar = (fillChar == '_') ? ' ' : '_';
           stream << std::setfill(fillChar = (fillChar == '_') ? ' ' : '_') << "| "
-                 << std::setw(widthColLibelle) << std::left << xx->first + " " << " | "
-                 << std::right << std::setw(widthColSizeOf) << sizeOf[xx->first] << " o | "
-                 << std::setw(widthColItemsNumber) << "?????" << " | "
-                 << std::setw(widthColItemsNumber) << xx->second << " |<--- failed";
+                 << std::setw(widthColLibelle) << std::left << xx->first + " "
+                 << " | " << std::right << std::setw(widthColSizeOf) << sizeOf[xx->first] << " o | "
+                 << std::setw(widthColItemsNumber) << "?????"
+                 << " | " << std::setw(widthColItemsNumber) << xx->second << " |<--- failed";
           res.insert(make_pair(xx->first, stream.str()));
 
           nb_err += xx->second;
@@ -209,29 +214,34 @@ namespace gum {
 
       std::cout << std::setfill('-');
 
-      std::cout << "|-" << std::setw(widthColLibelle) << "" << "-|-"
-                << std::setw(widthColSizeOf + 2) << "" << "-|-" << std::setw(widthColItemsNumber)
-                << "" << "-|-" << std::setw(widthColItemsNumber) << "" << "-|" << std::endl;
+      std::cout << "|-" << std::setw(widthColLibelle) << ""
+                << "-|-" << std::setw(widthColSizeOf + 2) << ""
+                << "-|-" << std::setw(widthColItemsNumber) << ""
+                << "-|-" << std::setw(widthColItemsNumber) << ""
+                << "-|" << std::endl;
 
       std::cout << std::setfill(' ');
 
       if (nb_err == 0) {
-        std::cout << "| " << std::setw(widthColLibelle) << "NO MEMORY LEAK !" << " | "
-                  << std::setw(widthColSizeOf + widthColItemsNumber * 2 + 9) << "" << "|"
-                  << std::endl;
+        std::cout << "| " << std::setw(widthColLibelle) << "NO MEMORY LEAK !"
+                  << " | " << std::setw(widthColSizeOf + widthColItemsNumber * 2 + 9) << ""
+                  << "|" << std::endl;
       } else {
-        std::cout << "| " << std::setw(widthColLibelle) << "Memory leaks found " << "" << " | "
-                  << std::setw(widthColSizeOf + widthColItemsNumber * 2 - 6) << nb_err
-                  << " object(s)     " << "|" << std::endl;
+        std::cout << "| " << std::setw(widthColLibelle) << "Memory leaks found "
+                  << ""
+                  << " | " << std::setw(widthColSizeOf + widthColItemsNumber * 2 - 6) << nb_err
+                  << " object(s)     "
+                  << "|" << std::endl;
       }
 
-      std::cout << "| " << std::setw(widthColLibelle) << "total " << " | " << std::fixed
-                << std::setw(widthColSizeOf + widthColItemsNumber * 2 - 4) << std::setprecision(2)
-                << total_size << " Ko          " << "|" << std::endl;
+      std::cout << "| " << std::setw(widthColLibelle) << "total "
+                << " | " << std::fixed << std::setw(widthColSizeOf + widthColItemsNumber * 2 - 4)
+                << std::setprecision(2) << total_size << " Ko          "
+                << "|" << std::endl;
 
-      std::cout << std::setfill('=') << "|" << std::setw(widthColLibelle + 2) << "" << "|"
-                << std::setw(widthColSizeOf + widthColItemsNumber * 2 + 10) << "" << "|"
-                << std::endl;
+      std::cout << std::setfill('=') << "|" << std::setw(widthColLibelle + 2) << ""
+                << "|" << std::setw(widthColSizeOf + widthColItemsNumber * 2 + 10) << ""
+                << "|" << std::endl;
     }
 
     // take into account static objects in agrum (no called destructor before

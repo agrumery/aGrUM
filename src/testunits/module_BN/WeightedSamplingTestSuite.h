@@ -46,7 +46,7 @@ namespace gum_tests {
 
     public:
     explicit aSimpleWeightedListener(gum::ApproximationScheme& sch) :
-        gum::ApproximationSchemeListener(sch){};
+        gum::ApproximationSchemeListener(sch) {};
 
     void whenProgress(const void* buffer, const gum::Size a, const double b, const double c) final {
       _nbr_++;

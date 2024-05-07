@@ -70,14 +70,14 @@ namespace gum_tests {
 
     struct toto {
       int xxx;
-      toto() : xxx(4){};
+      toto() : xxx(4) {};
 
       int getY() { return xxx; }
     };
 
     struct titi: public toto {
       int yyy;
-      titi() : yyy(3){};
+      titi() : yyy(3) {};
 
       int getY() { return yyy; }
     };

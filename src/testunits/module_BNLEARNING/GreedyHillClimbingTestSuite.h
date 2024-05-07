@@ -62,7 +62,7 @@ namespace gum_tests {
 
     public:
     simpleListenerForGHC(gum::ApproximationScheme& sch) :
-        gum::ApproximationSchemeListener(sch), _nbr_(0), _mess_(""){};
+        gum::ApproximationSchemeListener(sch), _nbr_(0), _mess_("") {};
 
     void whenProgress(const void* buffer, const gum::Size a, const double b, const double c) {
       _nbr_++;

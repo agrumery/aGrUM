@@ -49,7 +49,7 @@ namespace gum {
      * @ingroup prm_group
      */
     struct IPRMFactory {
-      virtual ~IPRMFactory(){};
+      virtual ~IPRMFactory() {};
 
       // virtual PRM<GUM_SCALAR>* prm() const=0;
       virtual PRMObject::prm_type currentType() const    = 0;

@@ -204,7 +204,9 @@ namespace gum_tests {
     GUM_ACTIVE_TEST(GettersAndSetters) {
       gum::Sequence< std::string > seq;
 
-      TS_GUM_ASSERT_THROWS_NOTHING(seq << "aaaa" << "b" << "cc");
+      TS_GUM_ASSERT_THROWS_NOTHING(seq << "aaaa"
+                                       << "b"
+                                       << "cc");
       TS_GUM_ASSERT_THROWS_NOTHING(seq.insert("ddd"))
 
       TS_ASSERT_THROWS(seq.insert("ddd"), const gum::DuplicateElement&)

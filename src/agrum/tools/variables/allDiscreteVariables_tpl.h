@@ -83,11 +83,11 @@ namespace gum {
 
             if (fmax <= fmin) { GUM_ERROR(InvalidArgument, "last<=first in " << var_description) }
             if (nbr <= 1) { GUM_ERROR(InvalidArgument, "nbr<=1 in " << var_description) }
-            const double step = double((fmax - fmin) / nbr);
-            double current=fmin;
-            for (auto i = 0; i <= nbr ; i += 1) {
+            const double step    = double((fmax - fmin) / nbr);
+            double       current = fmin;
+            for (auto i = 0; i <= nbr; i += 1) {
               ticks.push_back(current);
-              current+=step;
+              current += step;
             }
             ds = ticks.size();
           } else {   // n[4]

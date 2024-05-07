@@ -39,7 +39,7 @@ namespace gum {
     std::vector< GUM_SCALAR > v(n + 1);
     std::vector< GUM_SCALAR > res(n);
     v[0] = (GUM_SCALAR)0.0;
-    v[n] =  (GUM_SCALAR)1.0;
+    v[n] = (GUM_SCALAR)1.0;
     for (Idx i = 1; i < n; i++) {
       v[i] = (GUM_SCALAR)randomProba();
     }

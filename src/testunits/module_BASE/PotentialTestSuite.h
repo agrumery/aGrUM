@@ -919,7 +919,7 @@ namespace gum_tests {
         TS_ASSERT_DELTA(s, int(0.2 * NBRITER), DELTA)
 
         p.add(w);
-        TS_ASSERT_THROWS(auto x[[maybe_unused]]  = p.draw(), const gum::FatalError&)
+        TS_ASSERT_THROWS(auto x [[maybe_unused]] = p.draw(), const gum::FatalError&)
 
         gum::Potential< double > q;
         q.add(w);

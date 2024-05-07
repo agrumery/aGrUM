@@ -65,7 +65,7 @@ namespace gum {
      * @brief Class destructor.
      * @warning No constructor : interface only.
      */
-    virtual ~MultiDimInterface(){};
+    virtual ~MultiDimInterface() {};
 
     // =========================================================================
     /// @name Accessors / Modifiers

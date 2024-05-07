@@ -40,7 +40,7 @@ namespace gum {
     template < typename T_DATA >
     INLINE IDatabaseTable< T_DATA >::Handler::Handler(const IDatabaseTable< T_DATA >& db) :
         DBHandler< T_DATA >(), _db_(&db), _row_(&(db.content())),
-        _end_index_(std::size_t(_row_ -> size())) {
+        _end_index_(std::size_t(_row_->size())) {
       GUM_CONSTRUCTOR(IDatabaseTable::Handler);
     }
 

@@ -1,5 +1,21 @@
 # aGrUM Changelog
 
+## Changelog for 1.13.2
+
+* aGrUM
+  * Better (compact) format for numerical labels.
+  * Better uniformly distributed random discrete distribution.
+
+* pyAgrum
+  * Better (compact) format for numerical labels.
+  * Better uniformly distributed random discrete distribution.
+  * Continue to implement some automatic `pyAgrum.Potential` filling tools with `pyAgrum.Potential.fillFromExpression`.
+  * Working on better plots for probability+utility
+  * Speeding up `gum.BayesNet.addArcs()` with *jit* memory allocation
+  * Slight adjustments to histogram display.
+  * Fixing documentation of `gum.BNLearner.mutualInformation`.
+  * Fixing (deprecated) arguments in `pyAgrum.skbn.BNClassifier`'s methods.
+  
 ## Changelog for 1.13.1
 
 This release is mainly about documentation.

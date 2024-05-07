@@ -70,8 +70,8 @@
   class TYPE: public SUPERCLASS {                                            \
     public:                                                                  \
     explicit TYPE(const std::string& aMsg, const std::string& aType = MSG) : \
-        SUPERCLASS(aMsg, aType){};                                           \
-    TYPE(const TYPE& src) : SUPERCLASS(src){};                               \
+        SUPERCLASS(aMsg, aType) {};                                          \
+    TYPE(const TYPE& src) : SUPERCLASS(src) {};                              \
   };
 
 #ifdef GUM_FOR_SWIG

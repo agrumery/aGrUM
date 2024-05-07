@@ -51,7 +51,7 @@ namespace gum {
 
     /// copy constructor
     INLINE IndependenceTest::IndependenceTest(const IndependenceTest& from) :
-        prior_(from.prior_ -> clone()), counter_(from.counter_), cache_(from.cache_),
+        prior_(from.prior_->clone()), counter_(from.counter_), cache_(from.cache_),
         use_cache_(from.use_cache_) {
       GUM_CONS_CPY(IndependenceTest);
     }

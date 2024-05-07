@@ -48,7 +48,7 @@ namespace gum_tests {
 
     public:
     aSimpleImportanceListener(gum::ApproximationScheme& sch) :
-        gum::ApproximationSchemeListener(sch), __nbr(0), __mess(""){};
+        gum::ApproximationSchemeListener(sch), __nbr(0), __mess("") {};
 
     void whenProgress(const void* buffer, const gum::Size a, const double b, const double c) {
       __nbr++;

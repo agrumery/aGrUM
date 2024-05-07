@@ -87,7 +87,7 @@ namespace gum {
     // ============================================================================
     /// Copy Constructor (does nothing since we use a Singleton)
     // ============================================================================
-    SmallObjectAllocator(const SmallObjectAllocator&){};
+    SmallObjectAllocator(const SmallObjectAllocator&) {};
 
     // ============================================================================
     /// Operator = (does nothing since we use a Singleton)

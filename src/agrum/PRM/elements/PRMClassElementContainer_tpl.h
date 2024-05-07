@@ -190,8 +190,8 @@ std::ostream& operator<<(std::ostream&                                          
   for (const auto node: container.containerDag().nodes()) {
     if (container.containerDag().children(node).size() > 0) {
       for (const auto chi: container.containerDag().children(node)) {
-        output << tab << "\"" << container.get(node).name() << "\" -> " << "\""
-               << container.get(chi).name() << "\";" << std::endl;
+        output << tab << "\"" << container.get(node).name() << "\" -> "
+               << "\"" << container.get(chi).name() << "\";" << std::endl;
       }
     } else if (container.containerDag().parents(node).size() == 0) {
       output << tab << "\"" << container.get(node).name() << "\";" << std::endl;

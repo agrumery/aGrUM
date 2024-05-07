@@ -55,8 +55,7 @@
         } while (0);                                                                      \
       }
 
-#    define GUM_DEBUG_ONLY(x) \
-      { x }
+#    define GUM_DEBUG_ONLY(x) {x}
 
 // FOR EXPANSION OF MACRO IN ARGS OF GUM_CONSTRUCTOR, WE NEED TO USE A 2-LEVEL
 // DEFINITION OF GUM_CONSTRUCTOR

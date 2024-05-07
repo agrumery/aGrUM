@@ -35,7 +35,7 @@ namespace gum {
 
     /// copy constructor
     INLINE ParamEstimator::ParamEstimator(const ParamEstimator& from) :
-        external_prior_(from.external_prior_ -> clone()),
+        external_prior_(from.external_prior_->clone()),
         score_internal_prior_(from.score_internal_prior_->clone()), counter_(from.counter_) {
       GUM_CONS_CPY(ParamEstimator);
     }

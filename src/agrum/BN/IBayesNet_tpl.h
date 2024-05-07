@@ -179,8 +179,8 @@ namespace gum {
     for (auto node: nodes()) {
       if (children(node).size() > 0) {
         for (auto child: children(node)) {
-          output << tab << "\"" << variable(node).name() << "\" -> " << "\""
-                 << variable(child).name() << "\";" << std::endl;
+          output << tab << "\"" << variable(node).name() << "\" -> "
+                 << "\"" << variable(child).name() << "\";" << std::endl;
         }
       } else if (parents(node).size() == 0) {
         output << tab << "\"" << variable(node).name() << "\";" << std::endl;

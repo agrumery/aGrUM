@@ -60,10 +60,12 @@ namespace gum_tests {
 
     void tearDown() {}
 
-    GUM_ACTIVE_TEST(SimpleConstructor){TS_GUM_ASSERT_THROWS_NOTHING({
-      gum::MarkovRandomField< double > mn;
-      GUM_UNUSED(mn);
-    })};
+    GUM_ACTIVE_TEST(SimpleConstructor) {
+      TS_GUM_ASSERT_THROWS_NOTHING({
+        gum::MarkovRandomField< double > mn;
+        GUM_UNUSED(mn);
+      })
+    };
 
     GUM_ACTIVE_TEST(Constructor) {
       gum::MarkovRandomField< double > mn;

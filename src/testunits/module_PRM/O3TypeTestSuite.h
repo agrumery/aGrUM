@@ -215,7 +215,9 @@ namespace gum_tests {
     GUM_ACTIVE_TEST(ExtendedType) {
       // Arrange
       std::stringstream input;
-      input << "type t_state extends boolean (" << "OK: true," << "NOK: false);";
+      input << "type t_state extends boolean ("
+            << "OK: true,"
+            << "NOK: false);";
       std::stringstream       output;
       gum::prm::PRM< double > prm;
       auto                    factory = gum::prm::o3prm::O3prmReader< double >(prm);
@@ -237,7 +239,9 @@ namespace gum_tests {
     GUM_ACTIVE_TEST(ExtendedTypeError1) {
       // Arrange
       std::stringstream input;
-      input << "type t_state extend boolean (" << "OK: true," << "NOK: false);";
+      input << "type t_state extend boolean ("
+            << "OK: true,"
+            << "NOK: false);";
       std::stringstream       output;
       gum::prm::PRM< double > prm;
       auto                    factory = gum::prm::o3prm::O3prmReader< double >(prm);

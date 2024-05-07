@@ -446,12 +446,13 @@ namespace gum {
         if (this->isTerminalNode((NodeId)*nodeIter))
           terminalStream << tab << *nodeIter << ";" << tab << *nodeIter << " [label=\"" << *nodeIter
                          << " - " << std::setprecision(30) << this->terminalNodeValue(*nodeIter)
-                         << "\"]" << ";" << std::endl;
+                         << "\"]"
+                         << ";" << std::endl;
         else {
           InternalNode* currentNode = _internalNodeMap_[*nodeIter];
           nonTerminalStream << tab << *nodeIter << ";" << tab << *nodeIter << " [label=\""
-                            << *nodeIter << " - " << currentNode->nodeVar()->name() << "\"]" << ";"
-                            << std::endl;
+                            << *nodeIter << " - " << currentNode->nodeVar()->name() << "\"]"
+                            << ";" << std::endl;
 
           //              if (arcMap_[*nodeIter] != NULL)
           HashTable< NodeId, LinkedList< Idx >* > sonMap;
@@ -468,7 +469,8 @@ namespace gum {
               arcstream << currentNode->nodeVar()->label(modaIter->element()) << ", ";
               modaIter = modaIter->nextLink();
             }
-            arcstream << "\",color=\"#0000ff\"]" << ";" << std::endl;
+            arcstream << "\",color=\"#0000ff\"]"
+                      << ";" << std::endl;
             delete sonIter.val();
           }
 

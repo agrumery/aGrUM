@@ -54,7 +54,7 @@ namespace gum_tests {
 
     public:
     CNMonteCarloSamplingListener(gum::ApproximationScheme& aS) :
-        gum::ApproximationSchemeListener(aS), __nbr(0), __msg(""){};
+        gum::ApproximationSchemeListener(aS), __nbr(0), __msg("") {};
 
     void whenProgress(const void* buffer, const gum::Size a, const double b, const double c) {
       __nbr++;

@@ -41,7 +41,7 @@ namespace gum {
       public ApproximationScheme {
     public:
     explicit ApproximateInference(const IBayesNet< GUM_SCALAR >* bn) :
-        MarginalTargetedInference< GUM_SCALAR >(bn){};
+        MarginalTargetedInference< GUM_SCALAR >(bn) {};
   };
 }   // namespace gum
 
