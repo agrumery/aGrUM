@@ -1,4 +1,4 @@
-# (c) 2016-2023 Copyright by Pierre-Henri Wuillemin,LIP6 (pierre-henri.wuillemin@lip6.fr)
+# (c) 2016-2024 Copyright by Pierre-Henri Wuillemin,LIP6 (pierre-henri.wuillemin@lip6.fr)
 
 # Permission to use, copy, modify, and distribute this
 # software and its documentation for any purpose and
@@ -22,4 +22,4 @@
 pyAgrum.lib is a set of python tools for pyAgrum.
 """
 __author__ = "Pierre-Henri Wuillemin"
-__copyright__ = "(c) 2016-2023 PARIS"
+__copyright__ = "(c) 2016-2024 PARIS"

@@ -28915,7 +28915,7 @@ def about():
 
   """
   print(f"pyAgrum {pyAgrum.__version__}")
-  print("(c) 2015-2023 Pierre-Henri Wuillemin, Christophe Gonzales")
+  print("(c) 2015-2024 Pierre-Henri Wuillemin, Christophe Gonzales")
   print("""
     This is free software; see the source code for copying conditions.
     There is ABSOLUTELY NO WARRANTY; not even for MERCHANTABILITY or
@@ -29700,7 +29700,3 @@ try:
   config.load()
 except FileNotFoundError:
   pass
-
-
-
-

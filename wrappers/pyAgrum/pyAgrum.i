@@ -1,6 +1,6 @@
 /**
  *
- *  Copyright 2005-2023 Pierre-Henri WUILLEMIN (@LIP6) and Christophe GONZALES (@AMU)
+ *  Copyright 2005-2024 Pierre-Henri WUILLEMIN (@LIP6) and Christophe GONZALES (@AMU)
  *   {prenom.nom}_at_lip6.fr
  *
  *  This library is free software: you can redistribute it and/or modify
@@ -25,8 +25,8 @@
 %module(docstring=DOCSTRING, directors="1") pyAgrum
 %include "docs.i"
 
-// 302 : Identifier 'name' redefined (ignored). 
-// 315 : Nothing known about 'identifier'. 
+// 302 : Identifier 'name' redefined (ignored).
+// 315 : Nothing known about 'identifier'.
 // 317 : Specialization of non-template
 // 320 : Explicit template instantiation ignored.
 // 325 : Nested class not currently supported (Database ignored)

@@ -1,6 +1,6 @@
 /***************************************************************************
  *  aGrUM modified frames and atg files for cocoR
- *   Copyright (c) 2005-2023 by Pierre-Henri WUILLEMIN(@LIP6) and Christophe GONZALES(@AMU) 
+ *   Copyright (c) 2005-2024 by Pierre-Henri WUILLEMIN(@LIP6) and Christophe GONZALES(@AMU)
  *   info_at_agrum_dot_org
 ***************************************************************************/
 /*----------------------------------------------------------------------
@@ -64,7 +64,7 @@ void Parser::Get() {
 
     if ( la->kind <= maxT ) { ++errDist; break; }
 
-    
+
 
     if ( dummyToken != t ) {
       dummyToken->kind = t->kind;
@@ -111,16 +111,16 @@ bool Parser::WeakSeparator( int n, int syFol, int repFol ) {
 void Parser::DSL() {
 		std::string name_of_network;
 		factory().startNetworkDeclaration();
-		
+
 		Expect(6 /* "net" */);
 		if (la->kind == _ident) {
 			IDENT(name_of_network);
 		} else if (la->kind == _string) {
 			STRING(name_of_network);
 		} else SynErr(34);
-		factory().addNetworkProperty("name", name_of_network); 
+		factory().addNetworkProperty("name", name_of_network);
 		Expect(7 /* "{" */);
-		factory().endNetworkDeclaration(); 
+		factory().endNetworkDeclaration();
 		if (la->kind == 20 /* "HEADER" */) {
 			HEADER_PART();
 		}
@@ -160,12 +160,12 @@ void Parser::DSL() {
 
 void Parser::IDENT(std::string& name) {
 		Expect(_ident);
-		name=narrow(t->val); 
+		name=narrow(t->val);
 }
 
 void Parser::STRING(std::string& str) {
 		Expect(_string);
-		str=narrow(t->val); 
+		str=narrow(t->val);
 }
 
 void Parser::HEADER_PART() {
@@ -220,7 +220,7 @@ void Parser::NODE() {
 		std::string var;
 		std::vector<std::string> parents;
 		Size nbrMod = 0;
-		
+
 		Expect(13 /* "node" */);
 		IDENT(var);
 		Expect(7 /* "{" */);
@@ -252,7 +252,7 @@ void Parser::OBSERVATION_COST_PART() {
 }
 
 void Parser::HEADER() {
-		std::string content; 
+		std::string content;
 		Expect(20 /* "HEADER" */);
 		Expect(7 /* "{" */);
 		Expect(23 /* "ID" */);
@@ -282,27 +282,27 @@ void Parser::VARIABLE_DEFINITION(Size& nbrMod, std::string& var, const std::vect
 		Expect(26 /* "(" */);
 		TRY(factory().startVariableDeclaration());
 		TRY(factory().variableName(var));
-		
+
 		MODALITY_LIST(nbrMod);
 		Expect(27 /* ")" */);
 		Expect(9 /* ";" */);
 		TRY(factory().endVariableDeclaration());
 		gum::Size i;
 		TRY(factory().startParentsDeclaration(var));
-		
+
 		for(i = 0; i < parents.size(); i++){
 			TRY(factory().variableId(parents[i]));
 			TRY(factory().addParent(parents[i]));
 		}
-		
+
 		TRY(factory().endParentsDeclaration());
-		
+
 		PROBA(var, parents);
 		Size nbr=0;
 		TRY(nbr=factory().varInBN(factory().variableId(var)).domainSize());
 		if (nbrMod<nbr) SemErr("Too much modalities for variable "+var);
 		if (nbrMod>nbr) SemErr("Too many modalities for variable "+var);
-		
+
 		Expect(8 /* "}" */);
 		Expect(9 /* ";" */);
 }
@@ -327,23 +327,23 @@ void Parser::BLOC_PART() {
 
 void Parser::PARENTS_LIST(std::vector<std::string>& parents ) {
 		std::string parent;
-		
+
 		IDENT(parent);
-		parents.push_back(parent);	
+		parents.push_back(parent);
 		while (la->kind == 28 /* "," */) {
 			Get();
 			IDENT(parent);
-			parents.push_back(parent); 
+			parents.push_back(parent);
 		}
 }
 
 void Parser::MODALITY_LIST(Size& nbrMod) {
-		std::string label; 
+		std::string label;
 		IDENT_OR_INTEGER(label);
 		if ((label=="") && (nbrMod == 0)) SemErr("Not enough modalities for a discrete variable");
 			TRY(factory().addModality(label));
 			nbrMod++;
-		
+
 		if (la->kind == 28 /* "," */) {
 			Get();
 			MODALITY_LIST(nbrMod);
@@ -372,21 +372,21 @@ void Parser::RAW_PROBA(const std::string& var, const std::vector<std::string>& p
 		std::vector<float> prob;
 		gum::Size i,j, k;
 		gum::Size res, max, nbLabels;
-		
+
 		res = factory().varInBN(factory().variableId(var)).domainSize();
-		
+
 		for(i = 0; i < parents.size(); i++){
 		res = res*(factory().varInBN(factory().variableId(parents[i])).domainSize());
 		}
-		
+
 		//v.resize(res);
 		//prob	.resize(res);
-		
-		
+
+
 		FLOAT_LIST(v);
 		nbLabels = factory().varInBN(factory().variableId(var)).domainSize();
 		max = res / nbLabels;
-		
+
 		j = 0;
 		k = 0;
 		for(i = 0; i < res; i++){
@@ -399,7 +399,7 @@ void Parser::RAW_PROBA(const std::string& var, const std::vector<std::string>& p
 			j++;
 		}
 		}
-		
+
 		TRY(factory().startRawProbabilityDeclaration(var));
 		     gum::Size s=(gum::Size)0;
 		     TRY(s=factory().cptDomainSize(factory().variableId(var)));
@@ -411,14 +411,14 @@ void Parser::RAW_PROBA(const std::string& var, const std::vector<std::string>& p
 			}
 		     TRY(factory().rawConditionalTable(prob));
 		     TRY(factory().endRawProbabilityDeclaration());
-		
-		
+
+
 }
 
 void Parser::FLOAT_LIST(std::vector<float>& v ) {
-		float value; 
+		float value;
 		FLOAT(value);
-		v.push_back(value); 
+		v.push_back(value);
 		while (StartOf(3)) {
 			if (la->kind == 28 /* "," */ || la->kind == 32 /* "|" */) {
 				if (la->kind == 28 /* "," */) {
@@ -428,17 +428,17 @@ void Parser::FLOAT_LIST(std::vector<float>& v ) {
 				}
 			}
 			FLOAT(value);
-			v.push_back(value); 
+			v.push_back(value);
 		}
 }
 
 void Parser::FLOAT(float& val) {
 		if (la->kind == _number) {
 			Get();
-			val=coco_atof(t->val); 
+			val=coco_atof(t->val);
 		} else if (la->kind == _integer) {
 			Get();
-			val=float(coco_atoi(t->val)); 
+			val=float(coco_atoi(t->val));
 		} else SynErr(36);
 }
 
@@ -640,6 +640,3 @@ void Parser::SynErr( const std::wstring& filename,int line, int col, int n ) {
 
 } // namespace
 } // namespace
-
-
-

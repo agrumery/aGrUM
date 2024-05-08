@@ -1,4 +1,4 @@
-# (c) Copyright 2022-2023 by Pierre-Henri Wuillemin(@LIP6)
+# (c) Copyright 2022-2024 by Pierre-Henri Wuillemin(@LIP6)
 # (pierre-henri.wuillemin@lip6.fr)
 # Permission to use, copy, modify, and distribute this
 # software and its documentation for any purpose and

@@ -1,5 +1,5 @@
 # ***************************************************************************
-# *   Copyright (c) 2015-2023 by Pierre-Henri WUILLEMIN                     *
+# *   Copyright (c) 2015-2024 by Pierre-Henri WUILLEMIN                     *
 # *   {prenom.nom}_at_lip6.fr                                               *
 # *                                                                         *
 # *   "act" is free software; you can redistribute it and/or modify         *

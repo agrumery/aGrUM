@@ -1,5 +1,4 @@
-# -*- coding: utf-8 -*-
-# (c) Copyright 2020-2023 by Pierre-Henri Wuillemin(@LIP6)  (pierre-henri.wuillemin@lip6.fr)
+# (c) Copyright 2020-2024 by Pierre-Henri Wuillemin(@LIP6)  (pierre-henri.wuillemin@lip6.fr)
 
 # Permission to use, copy, modify, and distribute this
 # software and its documentation for any purpose and
@@ -26,7 +25,7 @@ do-calculus the causal impact in such a model.
 """
 
 __author__ = "Pierre-Henri Wuillemin, Paul Alam, Ibrahim Merad"
-__copyright__ = "(c) 2019-2023 PARIS"
+__copyright__ = "(c) 2019-2024 PARIS"
 
 from ._causalImpact import causalImpact, counterfactualModel, counterfactual
 from ._doorCriteria import backdoor_generator, frontdoor_generator

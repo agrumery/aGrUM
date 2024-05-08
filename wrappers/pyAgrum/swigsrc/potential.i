@@ -1,6 +1,6 @@
 /**
  *
- *  Copyright 2005-2023 Pierre-Henri WUILLEMIN et Christophe GONZALES (LIP6)
+ *  Copyright 2005-2024 Pierre-Henri WUILLEMIN et Christophe GONZALES (LIP6)
  *   {prenom.nom}_at_lip6.fr
  *
  *  This library is free software: you can redistribute it and/or modify
@@ -326,7 +326,7 @@ if len(args)>1:
       I.setFirst()
       while not I.end():
         vars={self.variable(i).name():self.variable(i).numerical(I.val(i)) for i in range(self.nbrDim())}
-        res=s_fn if isinstance(s_fn, (int, float)) else eval(code,{'math':math},vars)        
+        res=s_fn if isinstance(s_fn, (int, float)) else eval(code,{'math':math},vars)
         self.set(I,res)
         I.inc()
 

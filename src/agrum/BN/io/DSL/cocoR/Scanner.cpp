@@ -1,6 +1,6 @@
 /***************************************************************************
  *  aGrUM modified frames and atg files for cocoR
- *   Copyright (c) 2005-2023 by Pierre-Henri WUILLEMIN(@LIP6) and Christophe GONZALES(@AMU) 
+ *   Copyright (c) 2005-2024 by Pierre-Henri WUILLEMIN(@LIP6) and Christophe GONZALES(@AMU)
  *   info_at_agrum_dot_org
 ***************************************************************************/
 /*----------------------------------------------------------------------
@@ -390,7 +390,7 @@ void Scanner::Init() {
     NextCh();
   }
 
-  
+
   pt = tokens = CreateToken(); // first token is a dummy
 }
 
@@ -419,7 +419,7 @@ void Scanner::NextCh() {
     if ( ch == EOL ) { /*if (trace__) std::cout<<line<<std::endl;*/ line++; col = 0; }
   }
 
-  
+
 }
 
 void Scanner::AddCh() {
@@ -712,6 +712,3 @@ void Scanner::ResetPeek() {
 
 } // namespace
 } // namespace
-
-
-

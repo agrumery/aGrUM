@@ -1,6 +1,6 @@
 /**
  *
- *   Copyright (c) 2005-2023  by Pierre-Henri WUILLEMIN(_at_LIP6) & Christophe GONZALES(_at_AMU)
+ *   Copyright (c) 2005-2024  by Pierre-Henri WUILLEMIN(_at_LIP6) & Christophe GONZALES(_at_AMU)
  *   info_at_agrum_dot_org
  *
  *  This library is free software: you can redistribute it and/or modify
@@ -66,7 +66,7 @@ namespace gum {
     if (*(var_description.rbegin()) == ']') {
       auto posBrack = var_description.find('[');
       if (posBrack != std::string::npos) {
-        name = var_description.substr(0, posBrack);
+        name = var_description.substr(0, posBrack); 
         const auto& s_args
             = var_description.substr(posBrack + 1, var_description.size() - posBrack - 2);
         const auto& args = split(s_args, ",");

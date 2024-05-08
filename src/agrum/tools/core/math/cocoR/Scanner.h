@@ -1,6 +1,6 @@
 /***************************************************************************
  *  aGrUM modified frames and atg files for cocoR
- *   Copyright (c) 2005-2023 by Pierre-Henri WUILLEMIN(@LIP6) and Christophe GONZALES(@AMU) 
+ *   Copyright (c) 2005-2024 by Pierre-Henri WUILLEMIN(@LIP6) and Christophe GONZALES(@AMU)
  *   info_at_agrum_dot_org
 ***************************************************************************/
 /*----------------------------------------------------------------------
@@ -226,7 +226,7 @@ class Scanner {
     Token* pt;        // current peek token
 
     int ch;           // current input character
-    
+
     int pos;          // byte position of current character
     int charPos;      // position by unicode characters starting with 0
     int line;         // line number of current character
@@ -241,7 +241,7 @@ class Scanner {
     void Init();
     void NextCh();
     void AddCh();
-    
+
     Token* NextToken();
 
   public:
@@ -272,4 +272,3 @@ class Scanner {
 
 
 #endif // !defined(COCO_SCANNER_H__)
-

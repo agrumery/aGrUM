@@ -1,6 +1,6 @@
 /***************************************************************************
  *  aGrUM modified frames and atg files for cocoR
- *   Copyright (c) 2005-2023 by Pierre-Henri WUILLEMIN(@LIP6) and Christophe GONZALES(@AMU) 
+ *   Copyright (c) 2005-2024 by Pierre-Henri WUILLEMIN(@LIP6) and Christophe GONZALES(@AMU)
  *   info_at_agrum_dot_org
 ***************************************************************************/
 /*----------------------------------------------------------------------
@@ -64,7 +64,7 @@ void Parser::Get() {
 
     if ( la->kind <= maxT ) { ++errDist; break; }
 
-    
+
 
     if ( dummyToken != t ) {
       dummyToken->kind = t->kind;
@@ -113,49 +113,49 @@ void Parser::EVAL() {
 		while (StartOf(1)) {
 			expression();
 		}
-		_formula_->_finalize_(); 
+		_formula_->_finalize_();
 }
 
 void Parser::expression() {
 		switch (la->kind) {
 		case _integer: {
 			Get();
-			_formula_->_push_number_((double)coco_atoi(t->val)); 
+			_formula_->_push_number_((double)coco_atoi(t->val));
 			break;
 		}
 		case _float: {
 			Get();
-			_formula_->_push_number_((double)coco_atof(t->val)); 
+			_formula_->_push_number_((double)coco_atof(t->val));
 			break;
 		}
 		case _scifloat: {
 			Get();
-			_formula_->_push_number_((double)coco_atof(t->val)); 
+			_formula_->_push_number_((double)coco_atof(t->val));
 			break;
 		}
 		case _operator: {
 			Get();
-			_formula_->_push_operator_(narrow(t->val)[0]); 
+			_formula_->_push_operator_(narrow(t->val)[0]);
 			break;
 		}
 		case 7 /* "(" */: {
 			Get();
-			_formula_->_push_leftParenthesis_(); 
+			_formula_->_push_leftParenthesis_();
 			break;
 		}
 		case 8 /* ")" */: {
 			Get();
-			_formula_->_push_rightParenthesis_(); 
+			_formula_->_push_rightParenthesis_();
 			break;
 		}
 		case _ident: {
 			Get();
-			_formula_->_push_identifier_(narrow(t->val)); 
+			_formula_->_push_identifier_(narrow(t->val));
 			break;
 		}
 		case 9 /* "," */: {
 			Get();
-			_formula_->_push_comma_(); 
+			_formula_->_push_comma_();
 			break;
 		}
 		default: SynErr(11); break;
@@ -333,6 +333,3 @@ void Parser::SynErr( const std::wstring& filename,int line, int col, int n ) {
 
 } // namespace
 } // namespace
-
-
-

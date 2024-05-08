@@ -1,15 +1,15 @@
 aGrUM samples
 (c) Pierre-henri Wuillemin & Christophe Gonzales
-LIP6 2011-2023
+LIP6 2011-2024
 
 
-In each directory, 
+In each directory,
 
 -------------- Linux ------
 mkdir build
 cd build
 cmake .. -DCMAKE_BUILD_TYPE=Releas
-make 
+make
 ./example
 ---------------------------
 

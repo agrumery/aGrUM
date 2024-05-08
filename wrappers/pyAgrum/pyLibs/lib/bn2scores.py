@@ -1,7 +1,7 @@
 """
 The purpose of this module is to provide tools for computing different scores from a BN.
 """
-# (c) Copyright 2015-2023 by Pierre-Henri Wuillemin(@LIP6)
+# (c) Copyright 2015-2024 by Pierre-Henri Wuillemin(@LIP6)
 # (pierre-henri.wuillemin@lip6.fr)
 
 # Permission to use, copy, modify, and distribute this

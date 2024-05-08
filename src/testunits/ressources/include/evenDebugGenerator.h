@@ -1,5 +1,5 @@
 /***************************************************************************
- *   Copyright (c) 2005-2023 by Christophe GONZALES(_at_AMU) and Pierre-Henri WUILLEMIN(_at_LIP6)  *
+ *   Copyright (c) 2005-2024 by Christophe GONZALES(_at_AMU) and Pierre-Henri WUILLEMIN(_at_LIP6)  *
  *   info_at_agrum_dot_org                                               *
  *                                                                         *
  *   This program is free software; you can redistribute it and/or modify  *
@@ -78,7 +78,7 @@ namespace gum {
       ~EvenDebugGenerator() {
         GUM_DESTRUCTOR( EvenDebugGenerator );
       }
-      
+
 
       // ##########################################################################
       // @name Operators
@@ -94,7 +94,7 @@ namespace gum {
          _even_setInputRow_ = from. _even_setInputRow_;
         return *this;
       }
-    
+
 
       /// move operator
       EvenDebugGenerator& operator=( EvenDebugGenerator&& from ) {
@@ -104,7 +104,7 @@ namespace gum {
          _even_setInputRow_ = from. _even_setInputRow_;
         return *this;
       }
-    
+
 
       // ##########################################################################
       /// @name Accessors / Modifiers
@@ -115,8 +115,8 @@ namespace gum {
         this->decreaseRemainingRows();
         return * _input_row_;
       }
-  
-      
+
+
     protected:
 
       /// computes the rows it will provide in output
@@ -134,7 +134,7 @@ namespace gum {
 
 
     private:
-     
+
       /// the row used as input to generate the output DBRows
       const DBRow<DBTranslatedValue>*  _input_row_ { nullptr };
 
@@ -144,7 +144,7 @@ namespace gum {
       // indicates whether there has been an even number of times method
       // setInputDBRow has been called
       bool  _even_setInputRow_ { false };
-      
+
     };
 
   } /* namespace learning */

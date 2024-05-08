@@ -1,6 +1,6 @@
 /**
 *
-*  Copyright 2005-2023 Pierre-Henri WUILLEMIN et Christophe GONZALES (LIP6)
+*  Copyright 2005-2024 Pierre-Henri WUILLEMIN et Christophe GONZALES (LIP6)
 *   {prenom.nom}_at_lip6.fr
 *
 *  This library is free software: you can redistribute it and/or modify
@@ -53,7 +53,7 @@ def about():
 
   """
   print(f"pyAgrum {pyAgrum.__version__}")
-  print("(c) 2015-2023 Pierre-Henri Wuillemin, Christophe Gonzales")
+  print("(c) 2015-2024 Pierre-Henri Wuillemin, Christophe Gonzales")
   print("""
     This is free software; see the source code for copying conditions.
     There is ABSOLUTELY NO WARRANTY; not even for MERCHANTABILITY or

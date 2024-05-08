@@ -59,7 +59,7 @@ Example
     print(c)
 
     # Adding nodes the short way
-    s, r, w = [ bn.add(name, 2) for name in "srw" ] 
+    s, r, w = [ bn.add(name, 2) for name in "srw" ]
     print (s,r,w)
     print (bn)
 
@@ -107,8 +107,8 @@ Example
 LICENSE
 =======
 
-Copyright (C) 2005,2023 by Pierre-Henri WUILLEMIN et Christophe GONZALES
-{prenom.nom}_at_lip6.fr                                               
+Copyright (C) 2005-2024 by Pierre-Henri WUILLEMIN et Christophe GONZALES
+{prenom.nom}_at_lip6.fr
 
 The aGrUM/pyAgrum library and all its derivatives are distributed under the LGPL3 license, see https://www.gnu.org/licenses/lgpl-3.0.en.html.
 

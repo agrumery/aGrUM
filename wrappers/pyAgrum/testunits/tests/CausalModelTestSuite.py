@@ -1,4 +1,4 @@
-# (c) Copyright 2015-2023 by Pierre-Henri Wuillemin(@LIP6)
+# (c) Copyright 2015-2024 by Pierre-Henri Wuillemin(@LIP6)
 # (pierre-henri.wuillemin@lip6.fr)
 
 # Permission to use, copy, modify, and distribute this
@@ -209,7 +209,7 @@ class TestCausalModel(pyAgrumTestCase):
                              whatif={"education"},
                              on={"salary"},
                              values={"education": "medium"})
-    
+
     self.assertEqual(pot[81 - 65], 1.0)
 
 

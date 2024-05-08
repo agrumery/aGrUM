@@ -1,5 +1,5 @@
 /***************************************************************************
- *   Copyright (c) 2005-2023 by Christophe GONZALES(_at_AMU) and Pierre-Henri WUILLEMIN(_at_LIP6)  *
+ *   Copyright (c) 2005-2024 by Christophe GONZALES(_at_AMU) and Pierre-Henri WUILLEMIN(_at_LIP6)  *
  *   info_at_agrum_dot_org                                               *
  *                                                                         *
  *   This program is free software; you can redistribute it and/or modify  *
@@ -272,4 +272,3 @@ namespace gum {
 #endif /* GUM_NO_INLINE */
 
 #endif /* GUM_LEARNING_DB_ROW_GENERATOR_PARSER_H */
-

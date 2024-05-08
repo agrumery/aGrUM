@@ -1,5 +1,5 @@
 ###########################################################################
-#   Copyright (c) 2005-2023 by Pierre-Henri WUILLEMIN (@LIP6) et Christophe GONZALES (@AMU)   #
+#   Copyright (c) 2005-2024 by Pierre-Henri WUILLEMIN (@LIP6) et Christophe GONZALES (@AMU)   #
 #   info_at_agrum_dot_org                                               #
 #                                                                         #
 #   This program is free software; you can redistribute it and/or modify  #
@@ -34,10 +34,10 @@ set( CMAKE_CXX_STANDARD_REQUIRED on )
 # Listing source files
 SET( PRM_RUN_MAIN "${CMAKE_SOURCE_DIR}/src/main.cpp" )
 
-# Using C++ 14 
+# Using C++ 14
 SET( CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -std=c++14" )
 
-# Use this if 
+# Use this if
 #set(AGRUM_INSTALLATION_DIRECTORY "/usr/local/")
 
 #if (NOT DEFINED aGrUM_DIR)
@@ -64,10 +64,10 @@ ELSE ()
 ENDIF()
 
 # Adding boost dependencies
-SET(BOOST_USE_STATIC_LIBS OFF) 
-SET(BOOST_USE_MULTITHREADED ON)  
-SET(BOOST_USE_STATIC_RUNTIME OFF) 
-FIND_PACKAGE(Boost REQUIRED COMPONENTS program_options) 
+SET(BOOST_USE_STATIC_LIBS OFF)
+SET(BOOST_USE_MULTITHREADED ON)
+SET(BOOST_USE_STATIC_RUNTIME OFF)
+FIND_PACKAGE(Boost REQUIRED COMPONENTS program_options)
 
 # Adding include dirs and files
 INCLUDE_DIRECTORIES( ${aGrUM_INCLUDES} ${Boost_INCLUDE_DIRS})
@@ -78,4 +78,3 @@ TARGET_LINK_LIBRARIES( prm_run ${AGRUM_LIBRARIES_${CMAKE_BUILD_TYPE}} ${Boost_PR
 
 INSTALL(TARGETS prm_run
         RUNTIME DESTINATION bin)
-

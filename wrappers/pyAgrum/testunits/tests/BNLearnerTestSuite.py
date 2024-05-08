@@ -1,4 +1,4 @@
-# (c) Copyright 2015-2023 by Pierre-Henri Wuillemin(@LIP6)
+# (c) Copyright 2015-2024 by Pierre-Henri Wuillemin(@LIP6)
 # (pierre-henri.wuillemin@lip6.fr)
 
 # Permission to use, copy, modify, and distribute this
@@ -531,7 +531,7 @@ class BNLearnerCSVTestCase(pyAgrumTestCase):
     self.assertEqual(bn.parents(bn.idFromName("Y")), {
       bn.idFromName("X"), bn.idFromName("V")})
     self.assertEqual(bn.parents(bn.idFromName("Z")), {bn.idFromName("Y")})
-    
+
     learner = gum.BNLearner(self.agrumSrcDir(
       'data1.csv'))
     learner.setPossibleEdges(skel.edges())
@@ -542,8 +542,8 @@ class BNLearnerCSVTestCase(pyAgrumTestCase):
     self.assertEqual(bn.parents(bn.idFromName("Y")), {
       bn.idFromName("X"), bn.idFromName("V")})
     self.assertEqual(bn.parents(bn.idFromName("Z")), {bn.idFromName("Y")})
-    
-    
+
+
   def test_RecordWeight(self):
     filename = self.agrumSrcDir('dataW.csv')
     bn = gum.fastBN("X->Y")

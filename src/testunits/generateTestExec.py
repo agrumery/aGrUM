@@ -2,7 +2,7 @@
 # -*- encoding: UTF-8 -*-
 
 ################################################################################
-#    (c) Copyright 2007-2023 by Lionel Torti and Pierre-Henri Wuillemin(@LIP6)                                        #
+#    (c) Copyright 2007-2024 by Lionel Torti and Pierre-Henri Wuillemin(@LIP6)                                        #
 #    lionel.torti@lip6.fr                                                      #
 #                                                                              #
 #    This program is free software; you can redistribute it and/or modify      #
