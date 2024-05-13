@@ -90,14 +90,14 @@ if len(args)>1:
       PyObject* args=PyTuple_New(1);
       PyTuple_SetItem(args,0,arg);
       PyObject* res=PyObject_Call(pyfunc,args,NULL);
-      Py_DECREF(args);
-      Py_DECREF(arg);
+      Py_DecRef(args);
+      Py_DecRef(arg);
 
       if (res==NULL) {
         val=0;
       } else {
         val=PyFloat_AsDouble(res);
-        Py_DECREF(res);
+        Py_DecRef(res);
       }
       return val;
       });

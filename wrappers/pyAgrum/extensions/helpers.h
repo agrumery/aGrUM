@@ -154,7 +154,7 @@ namespace PyAgrumHelper {
   PyObject* instantiationToDict(const gum::Instantiation& inst, bool withLabels = true) {
     auto res = PyDict_New();
     for (gum::Idx i = 0; i < inst.nbrDim(); i++) {
-      auto      key = PyString_FromString(inst.variable(i).name().c_str());
+      PyObject* key = PyString_FromString(inst.variable(i).name().c_str());
       PyObject* val;
       if (withLabels) {
         val = PyString_FromString(inst.variable(i).label(inst.val(i)).c_str());
@@ -162,6 +162,8 @@ namespace PyAgrumHelper {
         val = PyLong_FromUnsignedLong(inst.val(i));
       }
       PyDict_SetItem(res, key, val);
+      Py_DecRef(key);
+      Py_DecRef(val);
     }
     return res;
   }
@@ -354,8 +356,11 @@ namespace PyAgrumHelper {
   PyObject* PyListFromNodeVect(const std::vector< gum::NodeId >& nodevect) {
     PyObject* q = PyList_New(0);
 
+    PyObject* pyval;
     for (auto node: nodevect) {
-      PyList_Append(q, PyLong_FromUnsignedLong((unsigned long)node));
+      pyval=PyLong_FromUnsignedLong((unsigned long)node);
+      PyList_Append(q,pyval);
+      Py_DecRef(pyval);
     }
 
     return q;
@@ -364,8 +369,11 @@ namespace PyAgrumHelper {
   PyObject* PyListFromNodeSet(const gum::NodeSet& nodeset) {
     PyObject* q = PyList_New(0);
 
+    PyObject* pyval;
     for (auto node: nodeset) {
-      PyList_Append(q, PyLong_FromUnsignedLong((unsigned long)node));
+      pyval=PyLong_FromUnsignedLong((unsigned long)node);
+      PyList_Append(q, pyval);
+      Py_DecRef(pyval);
     }
 
     return q;
@@ -375,8 +383,11 @@ namespace PyAgrumHelper {
     PyObject* q = PyTuple_New(nodevect.size());
 
     int i = 0;
+    PyObject* pyval;
     for (auto node: nodevect) {
-      PyTuple_SET_ITEM(q, i, PyLong_FromUnsignedLong((unsigned long)node));
+      pyval=PyLong_FromUnsignedLong((unsigned long)node);
+      PyTuple_SET_ITEM(q, i, pyval);
+      Py_DecRef(pyval);
       i++;
     }
 
@@ -387,8 +398,11 @@ namespace PyAgrumHelper {
     PyObject* q = PyTuple_New(nodeset.size());
 
     int i = 0;
+    PyObject* pyval;
     for (auto node: nodeset) {
-      PyTuple_SET_ITEM(q, i, PyLong_FromUnsignedLong((unsigned long)node));
+      pyval=PyLong_FromUnsignedLong((unsigned long)node);
+      PyTuple_SET_ITEM(q, i, pyval);
+      Py_DecRef(pyval);
       i++;
     }
 
@@ -398,8 +412,11 @@ namespace PyAgrumHelper {
   PyObject* PySetFromNodeSet(const gum::NodeSet& nodeset) {
     PyObject* q = PySet_New(0);
 
+    PyObject* pyval;
     for (auto node: nodeset) {
-      PySet_Add(q, PyLong_FromUnsignedLong((unsigned long)node));
+      pyval=PyLong_FromUnsignedLong((unsigned long)node);
+      PySet_Add(q, pyval);
+      Py_DecRef(pyval);
     }
 
     return q;
@@ -408,8 +425,11 @@ namespace PyAgrumHelper {
   PyObject* PySetFromNodeVect(const std::vector< gum::NodeId >& nodevect) {
     PyObject* q = PySet_New(0);
 
+    PyObject* pyval;
     for (auto node: nodevect) {
-      PySet_Add(q, PyLong_FromUnsignedLong((unsigned long)node));
+      pyval=PyLong_FromUnsignedLong((unsigned long)node);
+      PySet_Add(q, pyval);
+      Py_DecRef(pyval);
     }
 
     return q;
@@ -418,8 +438,11 @@ namespace PyAgrumHelper {
   PyObject* PySetFromNodeSet(const gum::NodeGraphPart& nodeset) {
     PyObject* q = PySet_New(0);
 
+    PyObject* pyval;
     for (auto node: nodeset) {
-      PySet_Add(q, PyLong_FromUnsignedLong((unsigned long)node));
+      pyval=PyLong_FromUnsignedLong((unsigned long)node);
+      PySet_Add(q,pyval);
+      Py_DecRef(pyval);
     }
 
     return q;
@@ -427,8 +450,12 @@ namespace PyAgrumHelper {
 
   PyObject* PyListFromArcVect(const std::vector< gum::Arc >& arcseq) {
     PyObject* q = PyList_New(0);
+
+    PyObject* pyval;
     for (const auto& arc: arcseq) {
-      PyList_Append(q, Py_BuildValue("(i,i)", arc.tail(), arc.head()));
+      pyval=Py_BuildValue("(i,i)", arc.tail(), arc.head());
+      PyList_Append(q, pyval);
+      Py_DecRef(pyval);
     }
     return q;
   }
@@ -458,57 +485,84 @@ namespace PyAgrumHelper {
 
   PyObject* PyListFromSequenceOfInt(const gum::Sequence< int >& seq) {
     PyObject* q = PyList_New(0);
+    PyObject* pyval;
     for (const auto& val: seq) {
-      PyList_Append(q, PyLong_FromLong(val));
+      pyval=PyLong_FromLong(val);
+      PyList_Append(q, pyval);
+      Py_DecRef(pyval);
     }
     return q;
   }
 
   PyObject* PyListFromSequenceOfDouble(const gum::Sequence< double >& seq) {
     PyObject* q = PyList_New(0);
+    PyObject* pyval;
     for (const auto& val: seq) {
-      PyList_Append(q, PyFloat_FromDouble(val));
+      pyval=PyFloat_FromDouble(val);
+      PyList_Append(q, pyval);
+      Py_DecRef(pyval);
     }
     return q;
   }
 
   PyObject* PySetFromArcSet(const gum::ArcSet& arcset) {
     PyObject* q = PySet_New(0);
+
+    PyObject* pyval;
     for (const auto& arc: arcset) {
-      PySet_Add(q, Py_BuildValue("(i,i)", arc.tail(), arc.head()));
+      pyval=Py_BuildValue("(i,i)", arc.tail(), arc.head());
+      PySet_Add(q, pyval);
+      Py_DecRef(pyval);
     }
     return q;
   }
 
   PyObject* PySetFromEdgeSet(const gum::EdgeSet& edgeset) {
     PyObject* q = PySet_New(0);
+    PyObject* pyval;
+
     for (const auto& edg: edgeset) {
-      PySet_Add(q, Py_BuildValue("(i,i)", edg.first(), edg.second()));
+      pyval=Py_BuildValue("(i,i)", edg.first(), edg.second());
+      PySet_Add(q, pyval);
+      Py_DecRef(pyval);
     }
     return q;
   }
 
   PyObject* PyDictFromInstantiation(const gum::Instantiation& inst) {
     PyObject* q = PyDict_New();
+    PyObject* pyval;
+
     for (const auto& k: inst.variablesSequence()) {
-      PyDict_SetItemString(q,
-                           k->name().c_str(),
-                           PyLong_FromUnsignedLong((unsigned long)inst.val(*k)));
+      pyval=PyLong_FromUnsignedLong((unsigned long)inst.val(*k));
+      PyDict_SetItemString(q,k->name().c_str(),pyval);
+      Py_DecRef(pyval);
     }
     return q;
   }
 
   PyObject* PyDictFromPairMeanVar(std::pair< double, double > mv) {
     PyObject* q = PyDict_New();
+    PyObject* pyval;
+
+    pyval=PyFloat_FromDouble(mv.first);
     PyDict_SetItemString(q, "mean", PyFloat_FromDouble(mv.first));
+    Py_DecRef(pyval);
+
+    pyval=PyFloat_FromDouble(mv.second);
     PyDict_SetItemString(q, "variance", PyFloat_FromDouble(mv.second));
+    Py_DecRef(pyval);
+
     return q;
   }
 
   PyObject* PySeqFromSetOfInstantiation(const gum::Set< gum::Instantiation >& soi) {
     PyObject* q = PyList_New(0);
+    PyObject* pyval;
     for (const auto& inst: soi) {
-      PyList_Append(q, PyDictFromInstantiation(inst));
+      pyval=PyDictFromInstantiation(inst);
+      PyList_Append(q, pyval);
+      Py_DecRef(pyval);
     }
     return q;
   }

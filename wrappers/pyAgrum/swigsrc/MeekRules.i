@@ -21,8 +21,12 @@
 %extend gum::MeekRules {
   PyObject* choices() const {
     PyObject* q=PyList_New(0);
+
+    PyObject* pyval;
     for ( auto arc : self->choices()) {
-      PyList_Append(q, Py_BuildValue("(i,i)", arc.tail(), arc.head()));
+      pyval=Py_BuildValue("(i,i)", arc.tail(), arc.head());
+      PyList_Append(q,pyval);
+      Py_DecRef(pyval);
     }
     return q;
   };

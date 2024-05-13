@@ -33,6 +33,12 @@
      PyAgrumHelper::populateNodeSetFromIntOrPySequenceOfInt(sY,Y);
      return self->dSeparation(sX,sY,sZ);
    }
+
+   gum::UndiGraph moralizedAncestralGraph(PyObject* nodes) {
+     gum::NodeSet sonodes;
+     PyAgrumHelper::populateNodeSetFromIntOrPySequenceOfInt(sonodes,nodes);
+     return self->moralizedAncestralGraph(sonodes);
+   }
  }
 
 %extend gum::PDAG {
@@ -62,13 +68,6 @@
 %extend classname {
   PyObject *nodes() const {
     return PyAgrumHelper::PySetFromNodeSet(self->nodes());
-    PyObject* q=PyList_New(0);
-
-    for ( auto node : self->nodes()) {
-      PyList_Append(q,PyInt_FromLong(node));
-    }
-
-    return q;
   };
 
 %pythoncode {
@@ -161,9 +160,12 @@ ADD_METHODS_FOR_ALL_GUM_GRAPHCLASS(gum::MarkovBlanket);
   PyObject *addNodes(gum::Size n) const {
     PyObject* q=PySet_New(0);
 
+    PyObject* pyval;
     for(auto node : const_cast<classname *>(self)->addNodes(n)) {
-          PySet_Add(q,PyInt_FromLong(node));
-        }
+      pyval=PyInt_FromLong(node);
+      PySet_Add(q,pyval);
+      Py_DecRef(pyval);
+    }
 
     return q;
   };
@@ -289,9 +291,12 @@ ADD_MIXED_METHOD_TO_GRAPHCLASS(gum::PDAG);
   PyObject *clique(const gum::NodeId clique) const {
     PyObject* q=PySet_New(0);
 
-    for(auto node : self->clique(clique)) {
-          PySet_Add(q,PyInt_FromLong(node));
-        }
+    PyObject* pyval;
+    for(auto node :self->clique(clique)) {
+      pyval=PyInt_FromLong(node);
+      PySet_Add(q,pyval);
+      Py_DecRef(pyval);
+    }
 
     return q;
   };
@@ -299,9 +304,12 @@ ADD_MIXED_METHOD_TO_GRAPHCLASS(gum::PDAG);
   PyObject* separator(const gum::NodeId cliq1,const gum::NodeId cliq2) const {
     PyObject* q=PySet_New(0);
 
+    PyObject* pyval;
     for(auto node : self->separator(cliq1,cliq2)) {
-          PySet_Add(q,PyInt_FromLong(node));
-        }
+      pyval=PyInt_FromLong(node);
+      PySet_Add(q,pyval);
+      Py_DecRef(pyval);
+    }
 
     return q;
   };

@@ -4912,9 +4912,6 @@ class DAG(DiGraph):
     def moralGraph(self) -> "pyAgrum.UndiGraph":
         return _pyAgrum.DAG_moralGraph(self)
 
-    def moralizedAncestralGraph(self, nodes: List[int]) -> "pyAgrum.UndiGraph":
-        return _pyAgrum.DAG_moralizedAncestralGraph(self, nodes)
-
     def __repr__(self) -> str:
         return _pyAgrum.DAG___repr__(self)
 
@@ -4923,6 +4920,9 @@ class DAG(DiGraph):
 
     def dSeparation(self, *args) -> bool:
         return _pyAgrum.DAG_dSeparation(self, *args)
+
+    def moralizedAncestralGraph(self, *args) -> "pyAgrum.UndiGraph":
+        return _pyAgrum.DAG_moralizedAncestralGraph(self, *args)
 
     def addNodes(self, n: int) -> object:
         r"""
@@ -27985,9 +27985,9 @@ class BNLearner(object):
       bn=BayesNet()
       for i in range(len(self.names())):
         bn.add(self.nameFromId(i),2)
-      try:    
+      try:
         ge=EssentialGraph(bn,self.learnPDAG()) # for constraint-based methods
-      except:    
+      except:
         ge=EssentialGraph(self.learnBN())  # for score-based methods
 
       ge._bn=bn

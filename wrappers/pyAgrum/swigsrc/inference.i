@@ -216,8 +216,11 @@ IMPROVE_INFERENCE_API(LoopySamplingInference<double,gum::MonteCarloSampling>)
     PyObject* jointTargets() const {
       PyObject* q = PyList_New( 0 );
 
+      PyObject* pyval;
       for ( auto ns : self->JointTargetedInference<double>::jointTargets()) {
-        PyList_Append( q,PyAgrumHelper::PySetFromNodeSet(ns));
+        pyval=PyAgrumHelper::PySetFromNodeSet(ns);
+        PyList_Append( q,pyval);
+        Py_DecRef(pyval);
       }
       return q;
     }

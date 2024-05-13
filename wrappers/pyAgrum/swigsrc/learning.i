@@ -134,16 +134,17 @@ SETPROP_THEN_RETURN_SELF(setNumberOfThreads);
 
   PyObject* state() {
     PyObject* res=PyDict_New();
+
+    PyObject* pyval;
     for(const auto& tuple: self->state()) {
-      PyDict_SetItemString(res,
-                           std::get<0>(tuple).c_str(),
-                           Py_BuildValue("(ss)",std::get<1>(tuple).c_str(),std::get<2>(tuple).c_str())
-                          );
+      pyval=Py_BuildValue("(ss)",std::get<1>(tuple).c_str(),std::get<2>(tuple).c_str());
+      PyDict_SetItemString(res,std::get<0>(tuple).c_str(),pyval);
+      Py_DecRef(pyval);
     }
 
     return res;
   }
-    
+
   void setPossibleEdges(PyObject * soe) {
     gum::EdgeSet set;
     PyAgrumHelper::fillEdgeSetFromPyObject(set,soe);
@@ -213,9 +214,9 @@ def learnEssentialGraph(self):
   bn=BayesNet()
   for i in range(len(self.names())):
     bn.add(self.nameFromId(i),2)
-  try:    
+  try:
     ge=EssentialGraph(bn,self.learnPDAG()) # for constraint-based methods
-  except:    
+  except:
     ge=EssentialGraph(self.learnBN())  # for score-based methods
 
   ge._bn=bn

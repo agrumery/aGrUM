@@ -184,8 +184,11 @@ IMPROVE_MRF_INFERENCE_API(ShaferShenoyMRFInference<double>)
     PyObject* jointTargets() const {
       PyObject* q = PyList_New( 0 );
 
+      PyObject* pyval;
       for ( auto ns : self->JointTargetedMRFInference<double>::jointTargets()) {
-        PyList_Append( q,PyAgrumHelper::PySetFromNodeSet(ns));
+        pyval=PyAgrumHelper::PySetFromNodeSet(ns);
+        PyList_Append( q, pyval );
+        Py_DecRef( pyval );
       }
       return q;
     }

@@ -29,8 +29,11 @@
   PyObject* names() const {
      PyObject* q=PySet_New(0);
 
+     PyObject* pyval;
      for ( auto node : self->nodes()) {
-       PySet_Add(q,PyString_FromString(self->variable(node).name().c_str()));
+       pyval=PyString_FromString(self->variable(node).name().c_str());
+       PySet_Add(q,pyval);
+       Py_DecRef(pyval);
      }
      return q;
   };
