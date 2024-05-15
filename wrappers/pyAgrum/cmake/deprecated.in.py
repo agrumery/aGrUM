@@ -85,7 +85,7 @@ def deprecated_learnMixedGraph(learner):
   Deprecated methods in BNLearner for pyAgrum>1.5.2
   """
   warnings.warn("""
-** pyAgrum.BNLearner.learnMixedGraph() is deprecated from pyAgrum>1.5.2. Please use learnPDAG() methods instead.
+** pyAgrum.BNLearner.learnMixedGraph() is deprecated since pyAgrum>1.5.2. Please use learnPDAG() methods instead.
 """, DeprecationWarning, stacklevel=2)
   return learner.learnPDAG()
 
@@ -99,7 +99,7 @@ def deprecated_toLabelizedVar(var):
   Deprecated method in gum.DiscreteVariable for pyAgrum>1.5.2
   """
   warnings.warn("""
-** pyAgrum.DiscreteVariable.toLabelizedVar() is deprecated from pyAgrum>1.5.2. Please use pyAgrum.DiscreteVariable.asLabelizedVar() method instead.
+** pyAgrum.DiscreteVariable.toLabelizedVar() is deprecated since pyAgrum>1.5.2. Please use pyAgrum.DiscreteVariable.asLabelizedVar() method instead.
 """, DeprecationWarning, stacklevel=2)
   return var.asLabelizedVar()
 
@@ -113,7 +113,7 @@ def deprecated_toRangeVar(var):
   Deprecated method in gum.DiscreteVariable for pyAgrum>1.5.2
   """
   warnings.warn("""
-** pyAgrum.DiscreteVariable.toRangeVar() is deprecated from pyAgrum>1.5.2. Please use pyAgrum.DiscreteVariable.asRangeVar() method instead.
+** pyAgrum.DiscreteVariable.toRangeVar() is deprecated since pyAgrum>1.5.2. Please use pyAgrum.DiscreteVariable.asRangeVar() method instead.
 """, DeprecationWarning, stacklevel=2)
   return var.asRangeVar()
 
@@ -127,7 +127,7 @@ def deprecated_toIntegerVar(var):
   Deprecated method in gum.DiscreteVariable for pyAgrum>1.5.2
   """
   warnings.warn("""
-** pyAgrum.DiscreteVariable.toIntegerVar() is deprecated from pyAgrum>1.5.2. Please use pyAgrum.DiscreteVariable.asIntegerVar() method instead.
+** pyAgrum.DiscreteVariable.toIntegerVar() is deprecated since pyAgrum>1.5.2. Please use pyAgrum.DiscreteVariable.asIntegerVar() method instead.
 """, DeprecationWarning, stacklevel=2)
   return var.asIntegerVar()
 
@@ -141,7 +141,7 @@ def deprecated_toNumericalDiscreteVar(var):
   Deprecated method in gum.DiscreteVariable for pyAgrum>1.5.2
   """
   warnings.warn("""
-** pyAgrum.DiscreteVariable.toNumericalDiscreteVar() is deprecated from pyAgrum>1.5.2. Please use pyAgrum.DiscreteVariable.asNumericalDiscreteVar() method instead.
+** pyAgrum.DiscreteVariable.toNumericalDiscreteVar() is deprecated since pyAgrum>1.5.2. Please use pyAgrum.DiscreteVariable.asNumericalDiscreteVar() method instead.
 """, DeprecationWarning, stacklevel=2)
   return var.asNumericalDiscreteVar()
 
@@ -155,7 +155,7 @@ def deprecated_toDiscretizedVar(var):
   Deprecated method in gum.DiscreteVariable for pyAgrum>1.5.2
   """
   warnings.warn("""
-** pyAgrum.DiscreteVariable.toDiscretizedVar() is deprecated from pyAgrum>1.5.2. Please use pyAgrum.DiscreteVariable.asDiscretizedVar() methods instead.
+** pyAgrum.DiscreteVariable.toDiscretizedVar() is deprecated since pyAgrum>1.5.2. Please use pyAgrum.DiscreteVariable.asDiscretizedVar() methods instead.
 """, DeprecationWarning, stacklevel=2)
   return var.asDiscretizedVar()
 
@@ -169,7 +169,7 @@ def deprecated_MN(mrfie):
   Deprecated method in gum.ShaferShenoyMRFInference for pyAgrum>1.5.2
   """
   warnings.warn("""
-** pyAgrum.ShaferShenoyMRFInference.MN() is deprecated from pyAgrum>1.5.2. Please use pyAgrum.ShaferShenoyMRFInference.MRF() methods instead.
+** pyAgrum.ShaferShenoyMRFInference.MN() is deprecated since pyAgrum>1.5.2. Please use pyAgrum.ShaferShenoyMRFInference.MRF() methods instead.
 """, DeprecationWarning, stacklevel=2)
   return mrfie.MRF()
 
@@ -183,7 +183,7 @@ def deprecatedVI(self, X, Y):
   Deprecated VI in LazyPropagation/ShaferShenoyMRFInference
   """
   warnings.warn("""
-** pyAgrum.{inference}.VI() is deprecated from pyAgrum>1.7.1. Please use class pyAgrum.InformationTheory instead.
+** pyAgrum.{inference}.VI() is deprecated since pyAgrum>1.7.1. Please use class pyAgrum.InformationTheory instead.
 """, DeprecationWarning, stacklevel=2)
   it = InformationTheory(self, X, Y)
   return it.variationOfInformationXY()
@@ -199,7 +199,7 @@ def deprecatedI(self, X, Y):
   Deprecated I in LazyPropagation/ShaferShenoyMRFInference
   """
   warnings.warn("""
-** pyAgrum.{inference}.I() is deprecated from pyAgrum>1.7.1. Please use class pyAgrum.InformationTheory instead.
+** pyAgrum.{inference}.I() is deprecated since pyAgrum>1.7.1. Please use class pyAgrum.InformationTheory instead.
 """, DeprecationWarning, stacklevel=2)
   it = InformationTheory(self, X, Y)
   return it.mutualInformationXY()
@@ -215,7 +215,7 @@ def deprecatedH(self, X):
   Deprecated I in LazyPropagation/ShaferShenoyMRFInference
   """
   warnings.warn("""
-** pyAgrum.{inference}.H() is deprecated from pyAgrum>1.7.1. Please use class pyAgrum.InformationTheory instead.
+** pyAgrum.{inference}.H() is deprecated since pyAgrum>1.7.1. Please use class pyAgrum.InformationTheory instead.
 """, DeprecationWarning, stacklevel=2)
   it = InformationTheory(self, X, [])
   return it.entropyX()

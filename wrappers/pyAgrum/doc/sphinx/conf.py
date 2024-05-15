@@ -1,6 +1,3 @@
-# !/usr/bin/env python3
-# -*- coding: utf-8 -*-
-#
 # pyAgrum documentation build configuration file, created by
 # sphinx-quickstart on Mon Oct 17 16:59:01 2016.
 #
@@ -316,7 +313,9 @@ html_search_options = {'type': 'default'}
 # Output file base name for HTML help builder.
 htmlhelp_basename = 'pyAgrumdoc'
 
+
 # -- Options for LaTeX output ---------------------------------------------
+latex_engine = 'latex'
 
 latex_elements = {
   # The paper size ('letterpaper' or 'a4paper').

@@ -26,6 +26,7 @@ from typing import Dict
 import itertools
 from base64 import encodebytes
 import warnings
+from typing import Union
 
 import numpy as np
 import pandas as pd
@@ -966,8 +967,14 @@ def _buildMB(model, x: int, k: int = 1):
   _internal_build_markov_blanket(model, x, k)
   return nodes, arcs, depth
 
-
 def nestedMarkovBlankets(bn, x, k: int = 1, cmapNode=None):
+  """
+  deprecated : use generalizedMarkovBlanket instead
+  """
+  warnings.warn("nestedMarkovBlankets is deprecated since pyAgrum>1.13.2. Please use generalizedMarkovBlanket instead", DeprecationWarning,stacklevel=2)
+  return generalizedMarkovBlanket(bn, x, k, cmapNode)
+
+def generalizedMarkovBlanket(bn, var : Union[int,str], k: int = 1, cmapNode=None):
   """
   Build a pydot.Dot representation of the nested Markov Blankets (of order k) of node x
 
@@ -979,7 +986,7 @@ def nestedMarkovBlankets(bn, x, k: int = 1, cmapNode=None):
   ----------
   bn: pyAgrum.DirectedGraphicalModel
       i.e. a class with methods parents, children, variable(i), idFromName(name)
-  x : str|int
+  var : str|int
       the name or nodeId of the node for the Markov blanket
   k: int
       the order of the Markov blanket. If k=1, build the MarkovBlanket(MarkovBlanket())
@@ -989,10 +996,6 @@ def nestedMarkovBlankets(bn, x, k: int = 1, cmapNode=None):
   Returns
   -------
       pydotplus.Dot object
-
-  Remarks
-  -------
-  `pyAgrum.lib.notebook.{get|show}Graph()` in order to visualize this dot object
   """
   if cmapNode is None:
     cmapNode = plt.get_cmap("inferno")  # gum.config["notebook", "default_arc_cmap"])
@@ -1000,19 +1003,19 @@ def nestedMarkovBlankets(bn, x, k: int = 1, cmapNode=None):
   maxcols = max(8,
                 k)  # It is assumed that k<=8. If not, every thing is fine except that the colorscale will change in order to accept more colors.
 
-  mb = dot.Dot(f'MB({x},{k}', graph_type='digraph', bgcolor='transparent')
+  mb = dot.Dot(f'MB({var},{k}', graph_type='digraph', bgcolor='transparent')
 
-  if isinstance(x, str):
-    nx = bn.idFromName(x)
+  if isinstance(var, str):
+    nx = bn.idFromName(var)
   else:
-    nx = x
+    nx = var
   nodes, arcs, visited = _buildMB(bn, nx, k)
   names = dict()
 
   for n in nodes:
     protected_name = f"\"{bn.variable(n).name()}\""
     pnode = dot.Node(protected_name, style="filled")
-    if n == x:
+    if n == var:
       bgcol = "#99FF99"
       fgcol = "black"
     else:
@@ -1033,8 +1036,14 @@ def nestedMarkovBlankets(bn, x, k: int = 1, cmapNode=None):
 
   return mb
 
-
 def nestedMarkovBlanketsNames(bn, x, k: int = 1):
+  """
+  deprecated : use generalizedMarkovBlanket instead
+  """
+  warnings.warn("nestedMarkovBlanketsNames is deprecated since pyAgrum>1.13.2. Please use generalizedMarkovBlanketNames instead", DeprecationWarning,stacklevel=2)
+  return generalizedMarkovBlanketNames(bn, x, k)
+
+def generalizedMarkovBlanketNames(bn, var : Union[int,str], depth: int = 1):
   """
   List the name of all nodes in the nested Markov Blankets (of order k) in association with their depth
 
@@ -1042,9 +1051,9 @@ def nestedMarkovBlanketsNames(bn, x, k: int = 1):
   ----------
   bn: pyAgrum.DirectedGraphicalModel
       i.e. a class with methods parents, children, variable(i), idFromName(name)
-  x : str|int
+  var : str|int
       the name or nodeId of the node for the Markov blanket
-  k: int
+  depth: int
       the order of the Markov blanket. If k=1, build the MarkovBlanket(MarkovBlanket()
 
   Returns
@@ -1052,9 +1061,9 @@ def nestedMarkovBlanketsNames(bn, x, k: int = 1):
   Dict[str,int]
     the list of names and their depth.
   """
-  if isinstance(x, str):
-    nx = bn.idFromName(x)
+  if isinstance(var, str):
+    nx = bn.idFromName(var)
   else:
-    nx = x
-  nodes, _, visited = _buildMB(bn, nx, k)
-  return {bn.variable(node).name(): k - visited[node] for node in nodes}
+    nx = var
+  nodes, _, visited = _buildMB(bn, nx, depth)
+  return {bn.variable(node).name(): depth - visited[node] for node in nodes}
