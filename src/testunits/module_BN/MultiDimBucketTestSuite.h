@@ -64,7 +64,7 @@ namespace gum_tests {
       for (auto var: result.variablesSequence()) {
         if (!product.contains(*var)) { del_vars.insert(var); }
       }
-      product = result.margSumOut(del_vars);
+      product = result.sumOut(del_vars);
     }
 
     public:
@@ -483,7 +483,7 @@ namespace gum_tests {
       for (auto var: clique_csr.variablesSequence()) {
         if (!sep_sr.contains(*var)) { del_vars.insert(var); }
       }
-      sep_sr = clique_csr.margSumOut(del_vars);
+      sep_sr = clique_csr.sumOut(del_vars);
       bucket_sr.add(bucket_csr);
 
       {
@@ -537,7 +537,7 @@ namespace gum_tests {
       for (auto var: tmp.variablesSequence()) {
         if (!marg_w.contains(*var)) { del_vars.insert(var); }
       }
-      marg_w = gum::Potential< double >(tmp.margSumOut(del_vars));
+      marg_w = gum::Potential< double >(tmp.sumOut(del_vars));
 
       {
         gum::Instantiation i;

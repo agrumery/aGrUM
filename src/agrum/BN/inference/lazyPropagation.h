@@ -55,14 +55,14 @@ namespace gum {
   template < typename GUM_SCALAR >
   INLINE static Potential< GUM_SCALAR > LPNewprojPotential(const Potential< GUM_SCALAR >& t1,
                                                            const gum::VariableSet& del_vars) {
-    return t1.margSumOut(del_vars);
+    return t1.sumOut(del_vars);
   }
 
   // the function used to combine two tables with max
   template < typename GUM_SCALAR >
   INLINE static Potential< GUM_SCALAR > LPMaxprojPotential(const Potential< GUM_SCALAR >& t1,
                                                            const gum::VariableSet& del_vars) {
-    return t1.margMaxOut(del_vars);
+    return t1.maxOut(del_vars);
   }
 
   /**

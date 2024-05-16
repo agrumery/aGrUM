@@ -151,8 +151,8 @@ namespace gum {
 
     static DecisionPotential< GUM_SCALAR >
         marginalization(const DecisionPotential< GUM_SCALAR >& dp, const gum::VariableSet& onto) {
-      const auto pr = dp.probPot.margSumIn(onto);
-      return DecisionPotential(pr, divideEvenZero((dp.probPot * dp.utilPot).margSumIn(onto), pr));
+      const auto pr = dp.probPot.sumIn(onto);
+      return DecisionPotential(pr, divideEvenZero((dp.probPot * dp.utilPot).sumIn(onto), pr));
     }
 
     static DecisionPotential< GUM_SCALAR >

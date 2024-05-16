@@ -91,7 +91,7 @@ namespace gum {
     for (const auto& U: this->BN().parents(X)) {
       piX *= _messages_[Arc(U, X)];
     }
-    piX = piX.margSumIn({&varX});
+    piX = piX.sumIn({&varX});
 
     return piX;
   }
@@ -105,7 +105,7 @@ namespace gum {
     for (const auto& U: this->BN().parents(X)) {
       if (U != except) { piXexcept *= _messages_[Arc(U, X)]; }
     }
-    piXexcept = piXexcept.margSumIn({&varX, &varExcept});
+    piXexcept = piXexcept.sumIn({&varX, &varExcept});
     return piXexcept;
   }
 
@@ -152,7 +152,7 @@ namespace gum {
 
     // update lambda_par (for arc U->x)
     for (const auto& U: this->BN().parents(X)) {
-      auto newLambda = (_computeProdPi_(X, U) * lamX).margSumIn({&this->BN().variable(U)});
+      auto newLambda = (_computeProdPi_(X, U) * lamX).sumIn({&this->BN().variable(U)});
       newLambda.normalize();
       auto ekl = static_cast< GUM_SCALAR >(0);
       try {

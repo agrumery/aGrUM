@@ -771,12 +771,12 @@ namespace gum_tests {
 
     static gum::Potential< double > mySum(const gum::Potential< double >& table,
                                           const gum::VariableSet&         del_vars) {
-      return table.margSumOut(del_vars);
+      return table.sumOut(del_vars);
     }
 
     static gum::Potential< double > myMax(const gum::Potential< double >& table,
                                           const gum::VariableSet&         del_vars) {
-      return table.margMaxOut(del_vars);
+      return table.maxOut(del_vars);
     }
 
     void randomInitP(gum::Potential< float >& t) {
@@ -800,12 +800,12 @@ namespace gum_tests {
 
     static gum::Potential< float > mySum(const gum::Potential< float >& table,
                                          const gum::VariableSet&        del_vars) {
-      return table.margSumOut(del_vars);
+      return table.sumOut(del_vars);
     }
 
     static gum::Potential< float > myMax(const gum::Potential< float >& table,
                                          const gum::VariableSet&        del_vars) {
-      return table.margMaxOut(del_vars);
+      return table.maxOut(del_vars);
     }
   };
 

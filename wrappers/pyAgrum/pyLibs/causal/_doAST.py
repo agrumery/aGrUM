@@ -713,7 +713,7 @@ class ASTsum(ASTtree):
     if self._verbose:
       print(f"EVAL ${self.fastToLatex(defaultdict(int))}$", flush=True)
 
-    res = self.term.eval(contextual_bn).margSumOut([self.var])
+    res = self.term.eval(contextual_bn).sumOut([self.var])
 
     if self._verbose:
       print(f"END OF EVAL ${self.fastToLatex(defaultdict(int))}$ : {res}", flush=True)

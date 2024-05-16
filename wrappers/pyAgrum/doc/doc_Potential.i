@@ -203,7 +203,7 @@ pyAgrum.Potential
   a boolean-like potential using the predicate `isNonZero`.
 "
 
-%feature("docstring") gum::Potential::margMaxIn
+%feature("docstring") gum::Potential::maxIn
 "
 Projection using `max` as operation.
 
@@ -218,7 +218,7 @@ pyAgrum.Potential
   the projected Potential
 "
 
-%feature("docstring") gum::Potential::margMaxOut
+%feature("docstring") gum::Potential::maxOut
 "
 Projection using `max` as operation.
 
@@ -238,7 +238,7 @@ pyAgrum.InvalidArgument
   If varnames contains only one variable that does not exist in the Potential
 "
 
-%feature("docstring") gum::Potential::margMinIn
+%feature("docstring") gum::Potential::minIn
 "
 Projection using `min` as operation.
 
@@ -253,7 +253,7 @@ pyAgrum.Potential
   the projected Potential
 "
 
-%feature("docstring") gum::Potential::margMinOut
+%feature("docstring") gum::Potential::minOut
 "
 Projection using `min` as operation.
 
@@ -272,7 +272,7 @@ Warnings
 InvalidArgument raised if varnames contains only one variable that does not exist in the Potential
 "
 
-%feature("docstring") gum::Potential::margProdIn
+%feature("docstring") gum::Potential::prodIn
 "
 Projection using multiplication as operation.
 
@@ -287,7 +287,7 @@ pyAgrum.Potential
   the projected Potential
 "
 
-%feature("docstring") gum::Potential::margProdOut
+%feature("docstring") gum::Potential::prodOut
 "
 Projection using multiplication as operation.
 
@@ -307,7 +307,7 @@ pyAgrum.InvalidArgument
   If varnames contains only one variable that does not exist in the Potential
 "
 
-%feature("docstring") gum::Potential::margSumIn
+%feature("docstring") gum::Potential::sumIn
 "
 Projection using sum as operation.
 
@@ -322,7 +322,7 @@ pyAgrum.Potential
   the projected Potential
 "
 
-%feature("docstring") gum::Potential::margSumOut
+%feature("docstring") gum::Potential::sumOut
 "
 Projection using sum as operation.
 

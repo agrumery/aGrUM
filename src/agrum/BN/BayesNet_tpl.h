@@ -364,7 +364,7 @@ namespace gum {
     // update the conditional distributions of head and tail
     gum::VariableSet del_vars;
     del_vars << &(variable(tail));
-    Potential< GUM_SCALAR > new_cpt_head = prod.margSumOut(del_vars).putFirst(&variable(head));
+    Potential< GUM_SCALAR > new_cpt_head = prod.sumOut(del_vars).putFirst(&variable(head));
 
     auto& cpt_head = const_cast< Potential< GUM_SCALAR >& >(cpt(head));
     cpt_head       = std::move(new_cpt_head);

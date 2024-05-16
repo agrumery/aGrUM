@@ -213,22 +213,22 @@ namespace gum_tests {
         using VarSet   = gum::VariableSet;
         const auto vx  = &bn.variable(x);
         const auto vy  = &bn.variable(y);
-        const auto hxy = joint.margSumIn(VarSet{vx, vy}).entropy();
-        const auto hx  = joint.margSumIn(VarSet{vx}).entropy();
-        const auto hy  = joint.margSumIn(VarSet{vy}).entropy();
+        const auto hxy = joint.sumIn(VarSet{vx, vy}).entropy();
+        const auto hx  = joint.sumIn(VarSet{vx}).entropy();
+        const auto hy  = joint.sumIn(VarSet{vy}).entropy();
         return hx + hy - hxy;
       };
       auto h = [&](gum::NodeId x) -> double {
         using VarSet  = gum::VariableSet;
         const auto vx = &bn.variable(x);
-        return joint.margSumIn(VarSet{vx}).entropy();
+        return joint.sumIn(VarSet{vx}).entropy();
       };
 
       gum::LazyPropagation lazy(&bn);
 
       for (const auto& node: bn.nodes()) {
         TS_GUM_POTENTIAL_DELTA(lazy.posterior(node),
-                               joint.margSumIn({&bn.variable(node)}),
+                               joint.sumIn({&bn.variable(node)}),
                                TS_GUM_SMALL_ERROR);
       }
       for (const auto& arc: bn.arcs()) {
@@ -260,15 +260,15 @@ namespace gum_tests {
         using VarSet   = gum::VariableSet;
         const auto vx  = &bn.variable(x);
         const auto vy  = &bn.variable(y);
-        const auto hxy = joint.margSumIn(VarSet{vx, vy}).entropy();
-        const auto hx  = joint.margSumIn(VarSet{vx}).entropy();
-        const auto hy  = joint.margSumIn(VarSet{vy}).entropy();
+        const auto hxy = joint.sumIn(VarSet{vx, vy}).entropy();
+        const auto hx  = joint.sumIn(VarSet{vx}).entropy();
+        const auto hy  = joint.sumIn(VarSet{vy}).entropy();
         return hx + hy - hxy;
       };
       auto h = [&](gum::NodeId x) -> double {
         using VarSet  = gum::VariableSet;
         const auto vx = &bn.variable(x);
-        return joint.margSumIn(VarSet{vx}).entropy();
+        return joint.sumIn(VarSet{vx}).entropy();
       };
 
       gum::LazyPropagation lazy(&bn);
@@ -276,7 +276,7 @@ namespace gum_tests {
 
       for (const auto& node: bn.nodes()) {
         TS_GUM_POTENTIAL_DELTA(lazy.posterior(node),
-                               joint.margSumIn({&bn.variable(node)}),
+                               joint.sumIn({&bn.variable(node)}),
                                TS_GUM_SMALL_ERROR);
       }
       for (const auto& node: bn.nodes()) {
@@ -308,15 +308,15 @@ namespace gum_tests {
         using VarSet   = gum::VariableSet;
         const auto vx  = &bn.variable(x);
         const auto vy  = &bn.variable(y);
-        const auto hxy = joint.margSumIn(VarSet{vx, vy}).entropy();
-        const auto hx  = joint.margSumIn(VarSet{vx}).entropy();
-        const auto hy  = joint.margSumIn(VarSet{vy}).entropy();
+        const auto hxy = joint.sumIn(VarSet{vx, vy}).entropy();
+        const auto hx  = joint.sumIn(VarSet{vx}).entropy();
+        const auto hy  = joint.sumIn(VarSet{vy}).entropy();
         return hx + hy - hxy;
       };
       auto h = [&](gum::NodeId x) -> double {
         using VarSet  = gum::VariableSet;
         const auto vx = &bn.variable(x);
-        return joint.margSumIn(VarSet{vx}).entropy();
+        return joint.sumIn(VarSet{vx}).entropy();
       };
 
       gum::LazyPropagation lazy(&bn);
@@ -324,7 +324,7 @@ namespace gum_tests {
 
       for (const auto& node: bn.nodes()) {
         TS_GUM_POTENTIAL_DELTA(lazy.posterior(node),
-                               joint.margSumIn({&bn.variable(node)}),
+                               joint.sumIn({&bn.variable(node)}),
                                TS_GUM_SMALL_ERROR);
       }
       for (const auto& node: bn.nodes()) {

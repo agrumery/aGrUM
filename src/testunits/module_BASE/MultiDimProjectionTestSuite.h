@@ -121,12 +121,12 @@ namespace gum_tests {
 
     static gum::Potential< double > myMax(const gum::Potential< double >& table,
                                           const gum::VariableSet&         del_vars) {
-      return table.margMaxOut(del_vars);
+      return table.maxOut(del_vars);
     }
 
     static gum::Potential< double > mySum(const gum::Potential< double >& table,
                                           const gum::VariableSet&         del_vars) {
-      return table.margSumOut(del_vars);
+      return table.sumOut(del_vars);
     }
 
     // ==========================================================================
@@ -755,14 +755,14 @@ namespace gum_tests {
       del_vars.insert(vars[9]);
       del_vars.insert(vars[1]);
 
-      gum::Potential< double >* t2 = new gum::Potential< double >(t1.margMaxOut(del_vars));
+      gum::Potential< double >* t2 = new gum::Potential< double >(t1.maxOut(del_vars));
       gum::Potential< double >* t3 = proj(t1, del_vars, 0.0f);
       TS_ASSERT(*t2 == *t3)
 
       delete t2;
       delete t3;
 
-      gum::Potential< double >* t4 = new gum::Potential< double >(t1.margMaxOut(proj_set));
+      gum::Potential< double >* t4 = new gum::Potential< double >(t1.maxOut(proj_set));
       t3                           = proj(t1, proj_set, 0.0f);
       TS_ASSERT(*t4 == *t3)
 
@@ -772,7 +772,7 @@ namespace gum_tests {
       proj_set.insert(vars[0]);
       proj_set.insert(vars[9]);
       proj_set.insert(vars[1]);
-      gum::Potential< double >* t5 = new gum::Potential< double >(t1.margMaxOut(proj_set));
+      gum::Potential< double >* t5 = new gum::Potential< double >(t1.maxOut(proj_set));
       delete t5;
 
       for (gum::Idx i = 0; i < vars.size(); ++i)
@@ -864,14 +864,14 @@ namespace gum_tests {
       del_vars.insert(vars[9]);
       del_vars.insert(vars[1]);
 
-      gum::Potential< double* >* t2 = new gum::Potential< double* >(t1->margMaxOut(del_vars));
+      gum::Potential< double* >* t2 = new gum::Potential< double* >(t1->maxOut(del_vars));
       gum::Potential< double* >* t3 = proj(*t1, del_vars, 0.0f);
       TS_ASSERT(equal(*t2, *t3))
 
       pointerDelete(t2);
       pointerDelete(t3);
 
-      gum::Potential< double* >* t4 = new gum::Potential< double* >(t1->margMaxOut(proj_set));
+      gum::Potential< double* >* t4 = new gum::Potential< double* >(t1->maxOut(proj_set));
       t3                            = proj(*t1, proj_set, 0.0f);
       TS_ASSERT(equal(*t4, *t3))
 
@@ -881,7 +881,7 @@ namespace gum_tests {
       proj_set.insert(vars[0]);
       proj_set.insert(vars[9]);
       proj_set.insert(vars[1]);
-      gum::Potential< double* >* t5 = new gum::Potential< double* >(t1->margMaxOut(proj_set));
+      gum::Potential< double* >* t5 = new gum::Potential< double* >(t1->maxOut(proj_set));
       pointerDelete(t5);
 
       pointerDelete(t1);
@@ -920,20 +920,20 @@ namespace gum_tests {
       gum::MultiDimProjection< gum::Potential< double > > Proj(myMax);
 
       {
-        auto t2 = t1.margMaxOut(del_vars);
+        auto t2 = t1.maxOut(del_vars);
         auto t3 = Proj.execute(t1, del_vars);
         TS_ASSERT_EQUALS(t2, *t3)
         delete t3;
       }
       {
-        auto t2 = t1.margMaxOut(proj_set);
+        auto t2 = t1.maxOut(proj_set);
         auto t3 = Proj.execute(t1, proj_set);
         TS_ASSERT_EQUALS(t2, *t3)
         delete (t3);
       }
       {
         gum::Potential< double > t3;
-        auto                     t2 = t1.margMaxOut(proj_set);
+        auto                     t2 = t1.maxOut(proj_set);
         Proj.execute(t3, t1, proj_set);
         TS_ASSERT_EQUALS(t2, t3)
       }
@@ -948,7 +948,7 @@ namespace gum_tests {
         auto&      op          = schedule.operation(node);
         const_cast< gum::ScheduleOperator& >(op).execute();
 
-        auto t2 = t1.margMaxOut(proj_set);
+        auto t2 = t1.maxOut(proj_set);
         TS_ASSERT(dynamic_cast< const gum::ScheduleMultiDim< gum::Potential< double > >* >(ptrRes)
                       ->multiDim()
                   == t2)
@@ -958,7 +958,7 @@ namespace gum_tests {
         gum::ScheduleMultiDim< gum::Potential< double > > xt1(t1, false);
         const auto ops_plus_res = Proj.operations(&xt1, proj_set);
         ops_plus_res.first->execute();
-        auto t2 = t1.margMaxOut(proj_set);
+        auto t2 = t1.maxOut(proj_set);
         TS_ASSERT(dynamic_cast< const gum::ScheduleMultiDim< gum::Potential< double > >* >(
                       ops_plus_res.second)
                       ->multiDim()
@@ -1051,7 +1051,7 @@ namespace gum_tests {
 
       {
         gum::Potential< double >* t3 = proj.execute(t1, del_vars);
-        auto                      t2 = t1.margSumOut(del_vars);
+        auto                      t2 = t1.sumOut(del_vars);
         TS_ASSERT_EQUALS(t2, *t3)
         TS_ASSERT_EQUALS(t1, *t3)
         gum::Instantiation inst(t3);
@@ -1072,7 +1072,7 @@ namespace gum_tests {
       del_vars.insert(vars[0]);
       {
         gum::Potential< double >* t3 = proj.execute(t1, del_vars);
-        auto                      t2 = t1.margMaxOut(del_vars);
+        auto                      t2 = t1.maxOut(del_vars);
         TS_ASSERT_EQUALS(t2, *t3)
         TS_ASSERT_EQUALS(t1, *t3)
         gum::Instantiation inst(t3);
@@ -1083,7 +1083,7 @@ namespace gum_tests {
       del_vars.insert(vars[1]);
       {
         gum::Potential< double >* t3 = proj.execute(t1, del_vars);
-        auto                      t2 = t1.margMaxOut(del_vars);
+        auto                      t2 = t1.maxOut(del_vars);
         TS_ASSERT_EQUALS(t2, *t3)
         TS_ASSERT_EQUALS(t1, *t3)
         gum::Instantiation inst(t3);
@@ -1101,7 +1101,7 @@ namespace gum_tests {
       del_vars.insert(vars[0]);
       {
         gum::Potential< double >* t3 = proj.execute(t1, del_vars);
-        auto                      t2 = t1.margSumOut(del_vars);
+        auto                      t2 = t1.sumOut(del_vars);
         TS_ASSERT_EQUALS(t2, *t3)
         TS_ASSERT_EQUALS(t3->variablesSequence().size(), gum::Size(0))
         gum::Instantiation inst3(t3);
@@ -1118,7 +1118,7 @@ namespace gum_tests {
       del_vars.insert(vars[1]);
       {
         gum::Potential< double >* t3 = proj.execute(t1, del_vars);
-        auto                      t2 = t1.margSumOut(del_vars);
+        auto                      t2 = t1.sumOut(del_vars);
         TS_ASSERT_EQUALS(t2, *t3)
         TS_ASSERT_EQUALS(t3->variablesSequence().size(), gum::Size(0))
         gum::Instantiation inst3(t3);
@@ -1169,7 +1169,7 @@ namespace gum_tests {
         auto&      op          = schedule.operation(node);
         const_cast< gum::ScheduleOperator& >(op).execute();
 
-        auto t2 = t1.margMaxOut(proj_set);
+        auto t2 = t1.maxOut(proj_set);
         TS_ASSERT(dynamic_cast< const gum::ScheduleMultiDim< gum::Potential< double > >* >(ptrRes)
                       ->multiDim()
                   == t2)
@@ -1181,7 +1181,7 @@ namespace gum_tests {
         gum::ScheduleMultiDim< gum::Potential< double > > xt1(t1, false);
         const auto ops_plus_res = Proj.operations(&xt1, proj_set, true);
         ops_plus_res.first->execute();
-        auto t2 = t1.margMaxOut(proj_set);
+        auto t2 = t1.maxOut(proj_set);
         TS_ASSERT(dynamic_cast< const gum::ScheduleMultiDim< gum::Potential< double > >* >(
                       ops_plus_res.second)
                       ->multiDim()
@@ -1296,13 +1296,13 @@ namespace gum_tests {
       del_vars.insert(vars[1]);
       gum::MultiDimProjection< gum::Potential< double > > Proj(mySum);
       {
-        auto t2 = t1.margSumOut(del_vars);
+        auto t2 = t1.sumOut(del_vars);
         auto t3 = Proj.execute(t1, del_vars);
         TS_ASSERT_EQUALS(t2, *t3)
         delete t3;
       }
       {
-        auto t2 = t1.margSumOut(proj_set);
+        auto t2 = t1.sumOut(proj_set);
         auto t3 = Proj.execute(t1, proj_set);
         TS_ASSERT_EQUALS(t2, *t3)
         delete t3;
@@ -1313,7 +1313,7 @@ namespace gum_tests {
       proj_set.insert(vars[1]);
       gum::Potential< double >* t5 = Proj.execute(t1, proj_set);
       {
-        auto t2 = t1.margSumOut(proj_set);
+        auto t2 = t1.sumOut(proj_set);
         TS_ASSERT_EQUALS(t2, *t5)
 
         gum::Instantiation I5(*t5);

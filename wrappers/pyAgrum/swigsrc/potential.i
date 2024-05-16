@@ -65,14 +65,14 @@ if len(args)>1:
       raise pyAgrum.ArgumentError(f"[pyAgrum] keys in dict {tuple(d.keys())} does not match the Potential's variables {self.names}")
 %}
 
-%rename ("$ignore", fullname=1) gum::Potential<double>::margSumOut(const Set<const DiscreteVariable*>& del_vars) const;
-%rename ("$ignore", fullname=1) gum::Potential<double>::margProdOut(const Set<const DiscreteVariable*>& del_vars) const;
-%rename ("$ignore", fullname=1) gum::Potential<double>::margMaxOut(const Set<const DiscreteVariable*>& del_vars) const;
-%rename ("$ignore", fullname=1) gum::Potential<double>::margMinOut(const Set<const DiscreteVariable*>& del_vars) const;
-%rename ("$ignore", fullname=1) gum::Potential<double>::margSumIn(const Set<const DiscreteVariable*>& kept_vars) const;
-%rename ("$ignore", fullname=1) gum::Potential<double>::margProdIn(const Set<const DiscreteVariable*>& kept_vars) const;
-%rename ("$ignore", fullname=1) gum::Potential<double>::margMaxIn(const Set<const DiscreteVariable*>& kept_vars) const;
-%rename ("$ignore", fullname=1) gum::Potential<double>::margMinIn(const Set<const DiscreteVariable*>& kept_vars) const;
+%rename ("$ignore", fullname=1) gum::Potential<double>::sumOut(const Set<const DiscreteVariable*>& del_vars) const;
+%rename ("$ignore", fullname=1) gum::Potential<double>::prodOut(const Set<const DiscreteVariable*>& del_vars) const;
+%rename ("$ignore", fullname=1) gum::Potential<double>::maxOut(const Set<const DiscreteVariable*>& del_vars) const;
+%rename ("$ignore", fullname=1) gum::Potential<double>::minOut(const Set<const DiscreteVariable*>& del_vars) const;
+%rename ("$ignore", fullname=1) gum::Potential<double>::sumIn(const Set<const DiscreteVariable*>& kept_vars) const;
+%rename ("$ignore", fullname=1) gum::Potential<double>::prodIn(const Set<const DiscreteVariable*>& kept_vars) const;
+%rename ("$ignore", fullname=1) gum::Potential<double>::maxIn(const Set<const DiscreteVariable*>& kept_vars) const;
+%rename ("$ignore", fullname=1) gum::Potential<double>::minIn(const Set<const DiscreteVariable*>& kept_vars) const;
 
 %rename ("$ignore", fullname=1) gum::Potential<double>::reorganize(const Set<const DiscreteVariable*>& vars) const;
 %rename ("$ignore", fullname=1) gum::Potential<double>::putFirst(const DiscreteVariable* var) const;
@@ -80,6 +80,14 @@ if len(args)>1:
 %rename ("$ignore", fullname=1) gum::Potential<double>::argmin() const;
 %rename ("$ignore", fullname=1) gum::Potential<double>::argmax() const;
 
+%rename ("$ignore", fullname=1) gum::Potential<double>::margSumOut(const gum::VariableSet& del_vars) const;
+%rename ("$ignore", fullname=1) gum::Potential<double>::margSumIn(const gum::VariableSet& kept_vars) const;
+%rename ("$ignore", fullname=1) gum::Potential<double>::margProdOut(const gum::VariableSet& del_vars) const;
+%rename ("$ignore", fullname=1) gum::Potential<double>::margProdIn(const gum::VariableSet& kept_vars) const;
+%rename ("$ignore", fullname=1) gum::Potential<double>::margMinOut(const gum::VariableSet& del_vars) const;
+%rename ("$ignore", fullname=1) gum::Potential<double>::margMinIn(const gum::VariableSet& kept_vars) const;
+%rename ("$ignore", fullname=1) gum::Potential<double>::margMaxOut(const gum::VariableSet& del_vars) const;
+%rename ("$ignore", fullname=1) gum::Potential<double>::margMaxIn(const gum::VariableSet& kept_vars) const;
 
 %extend gum::Potential<double> {
   PyObject *expectedValue(PyObject* pyfunc) const {
@@ -119,59 +127,59 @@ if len(args)>1:
   }
 
     Potential<double>
-    margSumOut( PyObject* varnames ) const {
+    sumOut( PyObject* varnames ) const {
       gum::Set<const gum::DiscreteVariable*> s;
       PyAgrumHelper::fillDVSetFromPyObject(self,s,varnames); //from helpers.h
-      return self->margSumOut(s);
+      return self->sumOut(s);
     }
 
     Potential<double>
-    margProdOut( PyObject* varnames ) const {
+    prodOut( PyObject* varnames ) const {
       gum::Set<const gum::DiscreteVariable*> s;
       PyAgrumHelper::fillDVSetFromPyObject(self,s,varnames); //from helpers.h
-      return self->margProdOut(s);
+      return self->prodOut(s);
     }
 
     Potential<double>
-    margMaxOut( PyObject* varnames ) const {
+    maxOut( PyObject* varnames ) const {
       gum::Set<const gum::DiscreteVariable*> s;
       PyAgrumHelper::fillDVSetFromPyObject(self,s,varnames); //from helpers.h
-      return self->margMaxOut(s);
+      return self->maxOut(s);
     }
 
     Potential<double>
-    margMinOut( PyObject* varnames ) const {
+    minOut( PyObject* varnames ) const {
       gum::Set<const gum::DiscreteVariable*> s;
       PyAgrumHelper::fillDVSetFromPyObject(self,s,varnames); //from helpers.h
-      return self->margMinOut(s);
+      return self->minOut(s);
     }
 
     Potential<double>
-    margSumIn( PyObject* varnames ) const {
+    sumIn( PyObject* varnames ) const {
       gum::Set<const gum::DiscreteVariable*> s;
       PyAgrumHelper::fillDVSetFromPyObject(self,s,varnames); //from helpers.h
-      return self->margSumIn(s);
+      return self->sumIn(s);
     }
 
     Potential<double>
-    margProdIn( PyObject* varnames ) const {
+    prodIn( PyObject* varnames ) const {
       gum::Set<const gum::DiscreteVariable*> s;
       PyAgrumHelper::fillDVSetFromPyObject(self,s,varnames); //from helpers.h
-      return self->margProdIn(s);
+      return self->prodIn(s);
     }
 
     Potential<double>
-    margMaxIn( PyObject* varnames ) const {
+    maxIn( PyObject* varnames ) const {
       gum::Set<const gum::DiscreteVariable*> s;
       PyAgrumHelper::fillDVSetFromPyObject(self,s,varnames); //from helpers.h
-      return self->margMaxIn(s);
+      return self->maxIn(s);
     }
 
     Potential<double>
-    margMinIn( PyObject* varnames ) const {
+    minIn( PyObject* varnames ) const {
       gum::Set<const gum::DiscreteVariable*> s;
       PyAgrumHelper::fillDVSetFromPyObject(self,s,varnames); //from helpers.h
-      return self->margMinIn(s);
+      return self->minIn(s);
     }
 
     PyObject* argmin() {

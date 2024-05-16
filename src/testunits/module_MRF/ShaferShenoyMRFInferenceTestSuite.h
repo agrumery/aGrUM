@@ -296,7 +296,7 @@ namespace gum_tests {
         joint *= *factor;
       }
       joint.normalize();
-      return joint.margSumOut({&mn.variable("B")});
+      return joint.sumOut({&mn.variable("B")});
     }
 
     const gum::Potential< double > pAB(const gum::MarkovRandomField< double >& mn) {
@@ -305,7 +305,7 @@ namespace gum_tests {
         joint *= *factor;
       }
       joint.normalize();
-      return joint.margSumOut({&mn.variable("C")});
+      return joint.sumOut({&mn.variable("C")});
     }
 
     GUM_ACTIVE_TEST(JointTargetFromExistingJoint) {

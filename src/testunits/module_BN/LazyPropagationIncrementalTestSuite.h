@@ -90,7 +90,7 @@ namespace gum_tests {
     gum::Potential< double > get_marginal(const gum::Potential< double >& joint,
                                           const gum::NodeId               target_id,
                                           const gum::BayesNet< double >&  bn) {
-      return joint.margSumIn({&bn.variable(target_id)}).normalize();
+      return joint.sumIn({&bn.variable(target_id)}).normalize();
     }
 
     // ============================================================================
@@ -101,7 +101,7 @@ namespace gum_tests {
       gum::VariableSet kept;
       for (const auto n: target_ids)
         kept.insert(&bn.variable(n));
-      return joint.margSumIn(kept).normalize();
+      return joint.sumIn(kept).normalize();
     }
 
     // ============================================================================
@@ -574,7 +574,7 @@ namespace gum_tests {
 
       TS_GUM_POTENTIAL_DELTA(
           inf.jointPosterior(gum::NodeSet{bn.idFromName("D"), bn.idFromName("C")}),
-          joint.margSumIn({&bn.variable("D"), &bn.variable("C")}).normalize(),
+          joint.sumIn({&bn.variable("D"), &bn.variable("C")}).normalize(),
           TS_GUM_SMALL_ERROR)
     }
   };

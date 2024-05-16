@@ -153,7 +153,7 @@ namespace gum_tests {
           const gum::Potential< double >* posterior = nullptr;
           TS_GUM_ASSERT_THROWS_NOTHING(posterior = &(inf->posterior(node)))
           vars.insert(&(bn->variable(node)));
-          TS_ASSERT(equalPotentials(*posterior, bn_joint.margSumIn(vars)))
+          TS_ASSERT(equalPotentials(*posterior, bn_joint.sumIn(vars)))
           vars.clear();
         }
 
@@ -181,7 +181,7 @@ namespace gum_tests {
           const gum::Potential< double >* posterior = nullptr;
           TS_GUM_ASSERT_THROWS_NOTHING(posterior = &(inf->posterior(node)))
           vars.insert(&(bn->variable(node)));
-          TS_ASSERT(equalPotentials(*posterior, bn_joint.margSumIn(vars).normalize()))
+          TS_ASSERT(equalPotentials(*posterior, bn_joint.sumIn(vars).normalize()))
           vars.clear();
         }
 
@@ -218,7 +218,7 @@ namespace gum_tests {
       gum::Set< const gum::DiscreteVariable* > vars;
       vars.insert(&(bn->variable(2)));
       vars.insert(&(bn->variable(4)));
-      TS_ASSERT(equalPotentials(inf.jointPosterior(nodeset), bn_joint.margSumIn(vars)))
+      TS_ASSERT(equalPotentials(inf.jointPosterior(nodeset), bn_joint.sumIn(vars)))
     }
 
     // Testing when there is no evidence
@@ -243,17 +243,17 @@ namespace gum_tests {
       vars.insert(&(bn->variable(4)));
 
       TS_ASSERT_THROWS_NOTHING(inf.jointPosterior(nodeset2))
-      TS_ASSERT(equalPotentials(inf.jointPosterior(nodeset2), bn_joint.margSumIn(vars)))
+      TS_ASSERT(equalPotentials(inf.jointPosterior(nodeset2), bn_joint.sumIn(vars)))
 
       TS_ASSERT_THROWS_NOTHING(inf.posterior(3))
       vars.clear();
       vars.insert(&(bn->variable(3)));
-      TS_ASSERT(equalPotentials(inf.posterior(3), bn_joint.margSumIn(vars)))
+      TS_ASSERT(equalPotentials(inf.posterior(3), bn_joint.sumIn(vars)))
 
       vars.insert(&(bn->variable(1)));
       vars.insert(&(bn->variable(2)));
       vars.insert(&(bn->variable(4)));
-      TS_ASSERT(equalPotentials(inf.jointPosterior(nodeset), bn_joint.margSumIn(vars)))
+      TS_ASSERT(equalPotentials(inf.jointPosterior(nodeset), bn_joint.sumIn(vars)))
     }
 
     GUM_ACTIVE_TEST(Alarm) {
@@ -295,24 +295,23 @@ namespace gum_tests {
       vars.insert(&(bn->variable(1)));
       vars.insert(&(bn->variable(2)));
       TS_ASSERT(equalPotentials(inf.jointPosterior(gum::NodeSet{0, 1, 2}),
-                                bn_joint.margSumIn(vars).normalize()))
+                                bn_joint.sumIn(vars).normalize()))
 
       vars.clear();
       vars.insert(&(bn->variable(2)));
       vars.insert(&(bn->variable(3)));
-      TS_ASSERT(equalPotentials(inf.jointPosterior(gum::NodeSet{2, 3}), bn_joint.margSumIn(vars)))
+      TS_ASSERT(equalPotentials(inf.jointPosterior(gum::NodeSet{2, 3}), bn_joint.sumIn(vars)))
 
       vars.clear();
       vars.insert(&(bn->variable(0)));
       vars.insert(&(bn->variable(1)));
-      TS_ASSERT(equalPotentials(inf.jointPosterior(gum::NodeSet{0, 1}), bn_joint.margSumIn(vars)))
+      TS_ASSERT(equalPotentials(inf.jointPosterior(gum::NodeSet{0, 1}), bn_joint.sumIn(vars)))
 
       vars.clear();
       vars.insert(&(bn->variable(2)));
       vars.insert(&(bn->variable(3)));
       vars.insert(&(bn->variable(4)));
-      TS_ASSERT(
-          equalPotentials(inf.jointPosterior(gum::NodeSet{2, 3, 4}), bn_joint.margSumIn(vars)))
+      TS_ASSERT(equalPotentials(inf.jointPosterior(gum::NodeSet{2, 3, 4}), bn_joint.sumIn(vars)))
     }
 
     GUM_ACTIVE_TEST(Asia) {
@@ -350,7 +349,7 @@ namespace gum_tests {
           for (auto node: bn.dag()) {
             TS_ASSERT(equalPotentials(inf1.posterior(node), inf2.posterior(node)))
             TS_ASSERT(equalPotentials(inf1.posterior(node),
-                                      joint.margSumIn({&bn.variable(node)}).normalize()))
+                                      joint.sumIn({&bn.variable(node)}).normalize()))
           }
           ev_pot.set(inst, (float)0);
         }
@@ -487,7 +486,7 @@ namespace gum_tests {
                 for (auto xnode: bn.dag()) {
                   TS_ASSERT(equalPotentials(inf1.posterior(xnode), inf2.posterior(xnode)))
                   TS_ASSERT(equalPotentials(inf1.posterior(xnode),
-                                            joint.margSumIn({&bn.variable(xnode)}).normalize()))
+                                            joint.sumIn({&bn.variable(xnode)}).normalize()))
                 }
                 ev_pot2.set(inst2, 0.0f);
               }
@@ -551,7 +550,7 @@ namespace gum_tests {
                 for (auto xnode: bn.dag()) {
                   TS_ASSERT(equalPotentials(inf1.posterior(xnode), inf2.posterior(xnode)))
                   TS_ASSERT(equalPotentials(inf1.posterior(xnode),
-                                            joint.margSumIn({&bn.variable(xnode)}).normalize()))
+                                            joint.sumIn({&bn.variable(xnode)}).normalize()))
                 }
                 ev_pot2.set(inst2, 0.0f);
               }
@@ -616,10 +615,10 @@ namespace gum_tests {
 
                 for (auto xnode: bn.dag()) {
                   try {
-                    const auto res = joint.margSumIn({&bn.variable(xnode)});
+                    const auto res = joint.sumIn({&bn.variable(xnode)});
                     if (res.sum() > TS_GUM_SMALL_ERROR) {
                       TS_ASSERT(equalPotentials(inf1.posterior(xnode),
-                                                joint.margSumIn({&bn.variable(xnode)}).normalize()))
+                                                joint.sumIn({&bn.variable(xnode)}).normalize()))
                     }
                     [[maybe_unused]] auto f
                         = equalPotentials(inf1.posterior(xnode), inf2.posterior(xnode));
@@ -690,13 +689,13 @@ namespace gum_tests {
       ie.makeInference();
       TS_ASSERT_EQUALS(p_0, ie.posterior(0))
       const auto& var0 = bn.variable(0);
-      TS_ASSERT(equalPotentials(ie.posterior(0), joint0.margSumIn({&var0}).normalize()))
+      TS_ASSERT(equalPotentials(ie.posterior(0), joint0.sumIn({&var0}).normalize()))
 
       ie.chgEvidence(1, 1);
       ie.makeInference();
       TS_ASSERT_DIFFERS(p_0, ie.posterior(0))
       TS_ASSERT_EQUALS(p_1, ie.posterior(0))
-      TS_ASSERT(equalPotentials(ie.posterior(0), joint1.margSumIn({&var0}).normalize()))
+      TS_ASSERT(equalPotentials(ie.posterior(0), joint1.sumIn({&var0}).normalize()))
     }
 
     GUM_ACTIVE_TEST(ChgEvidence2) {
@@ -745,13 +744,13 @@ namespace gum_tests {
       ie.makeInference();
       TS_ASSERT_EQUALS(p_0, ie.posterior(0))
       const auto& var0 = bn.variable(0);
-      TS_ASSERT(equalPotentials(ie.posterior(0), joint0.margSumIn({&var0}).normalize()))
+      TS_ASSERT(equalPotentials(ie.posterior(0), joint0.sumIn({&var0}).normalize()))
 
       ie.chgEvidence(1, 1);
       ie.makeInference();
       TS_ASSERT_DIFFERS(p_0, ie.posterior(0))
       TS_ASSERT_EQUALS(p_1, ie.posterior(0))
-      TS_ASSERT(equalPotentials(ie.posterior(0), joint1.margSumIn({&var0}).normalize()))
+      TS_ASSERT(equalPotentials(ie.posterior(0), joint1.sumIn({&var0}).normalize()))
     }
 
     GUM_ACTIVE_TEST(StaticEvidenceImpact) {
@@ -884,7 +883,7 @@ namespace gum_tests {
       ie.makeInference();
       try {
         auto p = ie.jointPosterior(joint);
-        TS_ASSERT(equalPotentials(p, pjoint.margSumIn(xjoint).normalize()))
+        TS_ASSERT(equalPotentials(p, pjoint.sumIn(xjoint).normalize()))
       } catch (gum::Exception& e) {
         GUM_SHOWERROR(e);
         TS_ASSERT(false)
@@ -901,23 +900,23 @@ namespace gum_tests {
 
       // target
       TS_GUM_POTENTIAL_DELTA(ie.jointPosterior(bn.nodeset({"B", "Y", "F"})),
-                             p.margSumIn(bn.variables({"B", "Y", "F"})),
+                             p.sumIn(bn.variables({"B", "Y", "F"})),
                              TS_GUM_SMALL_ERROR)
       // subtargets
       TS_GUM_POTENTIAL_DELTA(ie.jointPosterior(bn.nodeset({"B", "Y"})),
-                             p.margSumIn(bn.variables({"B", "Y"})),
+                             p.sumIn(bn.variables({"B", "Y"})),
                              TS_GUM_SMALL_ERROR)
       TS_GUM_POTENTIAL_DELTA(ie.jointPosterior(bn.nodeset({"F", "Y"})),
-                             p.margSumIn(bn.variables({"F", "Y"})),
+                             p.sumIn(bn.variables({"F", "Y"})),
                              TS_GUM_SMALL_ERROR)
       // implicit target
       TS_GUM_POTENTIAL_DELTA(ie.jointPosterior(bn.nodeset({"W", "Z", "X"})),
-                             p.margSumIn(bn.variables({"W", "Z", "X"})),
+                             p.sumIn(bn.variables({"W", "Z", "X"})),
                              TS_GUM_SMALL_ERROR)
 
       // impossible target in optimized inference
       TS_GUM_POTENTIAL_DELTA(ie.jointPosterior(bn.nodeset({"A", "E"})),
-                             p.margSumIn(bn.variables({"A", "E"})),
+                             p.sumIn(bn.variables({"A", "E"})),
                              TS_GUM_SMALL_ERROR)
     }
 
@@ -938,18 +937,18 @@ namespace gum_tests {
 
       // target
       TS_GUM_POTENTIAL_DELTA(ie.jointPosterior(bn.nodeset({"B", "Y", "F"})),
-                             p.margSumIn(bn.variables({"B", "Y", "F"})),
+                             p.sumIn(bn.variables({"B", "Y", "F"})),
                              TS_GUM_SMALL_ERROR)
       // subtargets
       TS_GUM_POTENTIAL_DELTA(ie.jointPosterior(bn.nodeset({"B", "Y"})),
-                             p.margSumIn(bn.variables({"B", "Y"})),
+                             p.sumIn(bn.variables({"B", "Y"})),
                              TS_GUM_SMALL_ERROR)
       TS_GUM_POTENTIAL_DELTA(ie.jointPosterior(bn.nodeset({"F", "Y"})),
-                             p.margSumIn(bn.variables({"F", "Y"})),
+                             p.sumIn(bn.variables({"F", "Y"})),
                              TS_GUM_SMALL_ERROR)
       // implicit target
       TS_GUM_POTENTIAL_DELTA(ie.jointPosterior(bn.nodeset({"W", "Z", "X"})),
-                             p.margSumIn(bn.variables({"W", "Z", "X"})),
+                             p.sumIn(bn.variables({"W", "Z", "X"})),
                              TS_GUM_SMALL_ERROR)
     }
 
@@ -970,18 +969,18 @@ namespace gum_tests {
 
       // target
       TS_GUM_POTENTIAL_DELTA(ie.jointPosterior(bn.nodeset({"B", "Y", "F"})),
-                             p.margSumIn(bn.variables({"B", "Y", "F"})),
+                             p.sumIn(bn.variables({"B", "Y", "F"})),
                              TS_GUM_SMALL_ERROR)
       // subtargets
       TS_GUM_POTENTIAL_DELTA(ie.jointPosterior(bn.nodeset({"B", "Y"})),
-                             p.margSumIn(bn.variables({"B", "Y"})),
+                             p.sumIn(bn.variables({"B", "Y"})),
                              TS_GUM_SMALL_ERROR)
       TS_GUM_POTENTIAL_DELTA(ie.jointPosterior(bn.nodeset({"F", "Y"})),
-                             p.margSumIn(bn.variables({"F", "Y"})),
+                             p.sumIn(bn.variables({"F", "Y"})),
                              TS_GUM_SMALL_ERROR)
       // implicit target
       TS_GUM_POTENTIAL_DELTA(ie.jointPosterior(bn.nodeset({"W", "Z", "X"})),
-                             p.margSumIn(bn.variables({"W", "Z", "X"})),
+                             p.sumIn(bn.variables({"W", "Z", "X"})),
                              TS_GUM_SMALL_ERROR)
     }
 

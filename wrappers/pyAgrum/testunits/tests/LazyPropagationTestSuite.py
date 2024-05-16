@@ -70,8 +70,8 @@ class LazyPropagationTestCase(pyAgrumTestCase):
     res = ie.evidenceJointImpact(["D", "E"], ["A", "B", "C", "F"])
 
     joint = bn.cpt("A") * bn.cpt("B") * bn.cpt("C") * bn.cpt("D") * bn.cpt("E") * bn.cpt("F") * bn.cpt("H")
-    pADCE = joint.margSumIn(["A", "C", "D", "E"])
-    pAC = pADCE.margSumOut(["D", "E"])
+    pADCE = joint.sumIn(["A", "C", "D", "E"])
+    pAC = pADCE.sumOut(["D", "E"])
 
     self.assertEqual(res, pADCE / pAC)
 

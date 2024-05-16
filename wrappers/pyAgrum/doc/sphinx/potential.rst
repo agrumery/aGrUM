@@ -70,7 +70,7 @@ It is used to represent probabilities and utilities tables in aGrUMs' multidimen
     3     |2     || 1.2667  | 1.3333  | 1.4000  |
     4     |2     || 1.2667  | 1.3333  | 1.4000  |
     5     |2     || 1.2667  | 1.3333  | 1.4000  |
-    >>> print((p*q).margSumOut(["B","C"])) # marginalize p*q over B and C(using sum)
+    >>> print((p*q).sumOut(["B","C"])) # marginalize p*q over B and C(using sum)
       A                          |
     1        |2        |3        |
     ---------|---------|---------|

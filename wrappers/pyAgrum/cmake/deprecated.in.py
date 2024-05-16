@@ -6,9 +6,9 @@ import functools
 
 from .pyAgrum import MarkovRandomField, ShaferShenoyMRFInference
 from .pyAgrum import InformationTheory, LazyPropagation
-from .pyAgrum import InfluenceDiagram, ShaferShenoyLIMIDInference
 from .pyAgrum import BNLearner, JunctionTreeGenerator
 from .pyAgrum import DiscreteVariable
+from .pyAgrum import Potential
 
 
 def deprecated_arg(newA: str, oldA: str, version: str):
@@ -52,7 +52,6 @@ def deprecated_arg(newA: str, oldA: str, version: str):
     return wrapper
 
   return deco
-
 
 
 ########################################################################################################
@@ -223,3 +222,70 @@ def deprecatedH(self, X):
 
 ShaferShenoyMRFInference.H = deprecatedH
 LazyPropagation.H = deprecatedH
+
+
+########################################################################################################
+def deprecatedMargSumOut(self, V):
+  warnings.warn("""
+** pyAgrum.Potential.margSumOut() is deprecated since pyAgrum>1.14.0. Please use pyAgrum.Potential.sumOut() instead.
+""", DeprecationWarning, stacklevel=2)
+  return self.sumOut(V)
+
+
+def deprecatedMargSumIn(self, V):
+  warnings.warn("""
+** pyAgrum.Potential.margSumIn() is deprecated since pyAgrum>1.14.0. Please use pyAgrum.Potential.sumIn() instead.
+""", DeprecationWarning, stacklevel=2)
+  return self.sumIn(V)
+
+
+def deprecatedMargProdOut(self, V):
+  warnings.warn("""
+** pyAgrum.Potential.margProdOut() is deprecated since pyAgrum>1.14.0. Please use pyAgrum.Potential.prodOut() instead.
+""", DeprecationWarning, stacklevel=2)
+  return self.prodOut(V)
+
+
+def deprecatedMargProdIn(self, V):
+  warnings.warn("""
+** pyAgrum.Potential.margProdIn() is deprecated since pyAgrum>1.14.0. Please use pyAgrum.Potential.prodIn() instead.
+""", DeprecationWarning, stacklevel=2)
+  return self.prodIn(V)
+
+
+def deprecatedMargMinOut(self, V):
+  warnings.warn("""
+** pyAgrum.Potential.margMinOut() is deprecated since pyAgrum>1.14.0. Please use pyAgrum.Potential.minOut() instead.
+""", DeprecationWarning, stacklevel=2)
+  return self.minOut(V)
+
+
+def deprecatedMargMinIn(self, V):
+  warnings.warn("""
+** pyAgrum.Potential.margMinIn() is deprecated since pyAgrum>1.14.0. Please use pyAgrum.Potential.minIn() instead.
+""", DeprecationWarning, stacklevel=2)
+  return self.minIn(V)
+
+
+def deprecatedMargMaxOut(self, V):
+  warnings.warn("""
+** pyAgrum.Potential.margMaxOut() is deprecated since pyAgrum>1.14.0. Please use pyAgrum.Potential.maxOut() instead.
+""", DeprecationWarning, stacklevel=2)
+  return self.maxOut(V)
+
+
+def deprecatedMargMaxIn(self, V):
+  warnings.warn("""
+** pyAgrum.Potential.margMaxIn() is deprecated since pyAgrum>1.14.0. Please use pyAgrum.Potential.maxIn() instead.
+""", DeprecationWarning, stacklevel=2)
+  return self.maxIn(V)
+
+
+Potential.margSumOut = deprecatedMargSumOut
+Potential.margSumIn = deprecatedMargSumIn
+Potential.margProdOut = deprecatedMargProdOut
+Potential.margProdIn = deprecatedMargProdIn
+Potential.margMinOut = deprecatedMargMinOut
+Potential.margMinIn = deprecatedMargMinIn
+Potential.margMaxOut = deprecatedMargMaxOut
+Potential.margMaxIn = deprecatedMargMaxIn

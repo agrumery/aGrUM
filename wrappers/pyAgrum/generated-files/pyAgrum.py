@@ -9370,7 +9370,7 @@ class Potential(object):
         """
         return _pyAgrum.Potential_extract(self, *args)
 
-    def margSumOut(self, *args) -> "pyAgrum.Potential":
+    def sumOut(self, *args) -> "pyAgrum.Potential":
         r"""
 
         Projection using sum as operation.
@@ -9391,9 +9391,9 @@ class Potential(object):
           If varnames contains only one variable that does not exist in the Potential
 
         """
-        return _pyAgrum.Potential_margSumOut(self, *args)
+        return _pyAgrum.Potential_sumOut(self, *args)
 
-    def margProdOut(self, *args) -> "pyAgrum.Potential":
+    def prodOut(self, *args) -> "pyAgrum.Potential":
         r"""
 
         Projection using multiplication as operation.
@@ -9414,9 +9414,9 @@ class Potential(object):
           If varnames contains only one variable that does not exist in the Potential
 
         """
-        return _pyAgrum.Potential_margProdOut(self, *args)
+        return _pyAgrum.Potential_prodOut(self, *args)
 
-    def margMaxOut(self, *args) -> "pyAgrum.Potential":
+    def maxOut(self, *args) -> "pyAgrum.Potential":
         r"""
 
         Projection using `max` as operation.
@@ -9437,9 +9437,9 @@ class Potential(object):
           If varnames contains only one variable that does not exist in the Potential
 
         """
-        return _pyAgrum.Potential_margMaxOut(self, *args)
+        return _pyAgrum.Potential_maxOut(self, *args)
 
-    def margMinOut(self, *args) -> "pyAgrum.Potential":
+    def minOut(self, *args) -> "pyAgrum.Potential":
         r"""
 
         Projection using `min` as operation.
@@ -9459,9 +9459,9 @@ class Potential(object):
         InvalidArgument raised if varnames contains only one variable that does not exist in the Potential
 
         """
-        return _pyAgrum.Potential_margMinOut(self, *args)
+        return _pyAgrum.Potential_minOut(self, *args)
 
-    def margSumIn(self, *args) -> "pyAgrum.Potential":
+    def sumIn(self, *args) -> "pyAgrum.Potential":
         r"""
 
         Projection using sum as operation.
@@ -9477,9 +9477,9 @@ class Potential(object):
           the projected Potential
 
         """
-        return _pyAgrum.Potential_margSumIn(self, *args)
+        return _pyAgrum.Potential_sumIn(self, *args)
 
-    def margProdIn(self, *args) -> "pyAgrum.Potential":
+    def prodIn(self, *args) -> "pyAgrum.Potential":
         r"""
 
         Projection using multiplication as operation.
@@ -9495,9 +9495,9 @@ class Potential(object):
           the projected Potential
 
         """
-        return _pyAgrum.Potential_margProdIn(self, *args)
+        return _pyAgrum.Potential_prodIn(self, *args)
 
-    def margMaxIn(self, *args) -> "pyAgrum.Potential":
+    def maxIn(self, *args) -> "pyAgrum.Potential":
         r"""
 
         Projection using `max` as operation.
@@ -9513,9 +9513,9 @@ class Potential(object):
           the projected Potential
 
         """
-        return _pyAgrum.Potential_margMaxIn(self, *args)
+        return _pyAgrum.Potential_maxIn(self, *args)
 
-    def margMinIn(self, *args) -> "pyAgrum.Potential":
+    def minIn(self, *args) -> "pyAgrum.Potential":
         r"""
 
         Projection using `min` as operation.
@@ -9531,7 +9531,7 @@ class Potential(object):
           the projected Potential
 
         """
-        return _pyAgrum.Potential_margMinIn(self, *args)
+        return _pyAgrum.Potential_minIn(self, *args)
 
     def argmin(self) -> object:
         r"""
@@ -9691,7 +9691,7 @@ class Potential(object):
       I.setFirst()
       while not I.end():
         vars={self.variable(i).name():self.variable(i).numerical(I.val(i)) for i in range(self.nbrDim())}
-        res=s_fn if isinstance(s_fn, (int, float)) else eval(code,{'math':math},vars)        
+        res=s_fn if isinstance(s_fn, (int, float)) else eval(code,{'math':math},vars)
         self.set(I,res)
         I.inc()
 
@@ -29700,3 +29700,7 @@ try:
   config.load()
 except FileNotFoundError:
   pass
+
+
+
+

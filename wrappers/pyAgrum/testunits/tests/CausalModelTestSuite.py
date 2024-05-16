@@ -41,7 +41,7 @@ class TestCausalModel(pyAgrumTestCase):
     lat, pot, expl = csl.causalImpact(
       modele2, "Cancer", {"Smoking"}, values={"Smoking": 1})
     margCancer = (obs1.cpt("Smoking") * obs1.cpt("Cancer")
-                  ).margSumOut(["Smoking"])
+                  ).sumOut(["Smoking"])
     self.assertEqual(pot, margCancer)
 
     modele3 = csl.CausalModel(
@@ -66,8 +66,8 @@ class TestCausalModel(pyAgrumTestCase):
     #                               \sum_{ Smoking'  }{ P(Cancer\mid Smoking',Tar) \cdot P(Smoking') }
     #                             }
     margCancer = (obs2.cpt("Cancer") * obs2.cpt("Smoking")
-                  ).margSumOut(['Smoking'])
-    margCancer = (margCancer * obs2.cpt("Tar")).margSumOut(['Tar'])
+                  ).sumOut(['Smoking'])
+    margCancer = (margCancer * obs2.cpt("Tar")).sumOut(['Tar'])
 
     lat, pot, _ = csl.causalImpact(
       modele4, "Cancer", "Smoking")  # when smoking=1
@@ -101,7 +101,7 @@ class TestCausalModel(pyAgrumTestCase):
     d1 = csl.CausalModel(m1)
 
     # from formula : \sum_{ Gender  }{ P(Patient\mid Drug,Gender) \cdot P(Gender) }
-    margPatient = (m1.cpt("Patient") * m1.cpt("Gender")).margSumOut(["Gender"])
+    margPatient = (m1.cpt("Patient") * m1.cpt("Gender")).sumOut(["Gender"])
 
     lat, pot, expl = csl.causalImpact(
       d1, on="Patient", doing={"Drug"})  # when drug=1
@@ -126,8 +126,8 @@ class TestCausalModel(pyAgrumTestCase):
     # from the formula \sum_{ z ,w  }{ P(z\mid w,x) \cdot P(w) \cdot
     #                                 \sum_{ x'  }{ P(y\mid w,x',z) \cdot P(x'\mid w) }
     #                               }
-    marg = (bn.cpt("x") * bn.cpt("y")).margSumOut(["x"])
-    marg = (marg * bn.cpt("w") * bn.cpt("z")).margSumOut(["z", "w"])
+    marg = (bn.cpt("x") * bn.cpt("y")).sumOut(["x"])
+    marg = (marg * bn.cpt("w") * bn.cpt("z")).sumOut(["z", "w"])
 
     _, pot, _ = csl.causalImpact(d, on={"y"}, doing={"x"})  # when x=1
     self.assertEqual(pot, marg)

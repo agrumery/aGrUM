@@ -38,7 +38,7 @@ class TestInformationTheory(pyAgrumTestCase):
 
   def testEntropyMRF(self):
     mrf = gum.fastMRF("A--B--C;C--D")
-    qA = (mrf.factor(["A", "B", "C"]) * mrf.factor(["C", "D"])).normalize().margSumIn("A")
+    qA = (mrf.factor(["A", "B", "C"]) * mrf.factor(["C", "D"])).normalize().sumIn("A")
     entropy1 = qA.expectedValue(lambda x: -math.log2(qA[x]))
 
     ie = gum.LazyPropagation(bn)

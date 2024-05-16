@@ -20,7 +20,7 @@
 
 """
 Causality in pyAgrum mainly consists in the ability to build a causal model, i.e. a (observational) Bayesian network
-and a set of latent variables and their relation with observation variables and in the abilidy to compute using
+and a set of latent variables and their relation with observation variables and in the ability to compute using
 do-calculus the causal impact in such a model.
 """
 

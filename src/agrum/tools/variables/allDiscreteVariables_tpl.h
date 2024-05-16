@@ -66,7 +66,7 @@ namespace gum {
     if (*(var_description.rbegin()) == ']') {
       auto posBrack = var_description.find('[');
       if (posBrack != std::string::npos) {
-        name = var_description.substr(0, posBrack); 
+        name = var_description.substr(0, posBrack);
         const auto& s_args
             = var_description.substr(posBrack + 1, var_description.size() - posBrack - 2);
         const auto& args = split(s_args, ",");

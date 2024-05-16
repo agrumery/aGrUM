@@ -214,7 +214,7 @@ def _causalImpact(cm: CausalModel, on: Union[str, NameSet],
   ssum = set(lsum)
   lv += [v for v in adj.names if v not in ssum]
 
-  adj = adj.reorganize(lv)  # margSumIn(lv).reorganize(lv)
+  adj = adj.reorganize(lv)  # sumIn(lv).reorganize(lv)
   explain = "Do-calculus computations"
   return ar, adj, explain
 

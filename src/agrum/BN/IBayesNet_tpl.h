@@ -393,7 +393,7 @@ namespace gum {
 
     // CHECKING distributions sum to 1
     for (const auto i: nodes()) {
-      const auto p              = cpt(i).margSumOut({&variable(i)});
+      const auto p              = cpt(i).sumOut({&variable(i)});
       const auto [amin, minval] = p.argmin();
       if (minval < (GUM_SCALAR)(1.0 - epsilon)) {
         std::stringstream s;

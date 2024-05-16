@@ -293,26 +293,50 @@ namespace gum_tests {
 
         auto joint = p * q;
 
-        auto margAB = joint.margSumOut({&c, &d});
+        auto margAB = joint.sumOut({&c, &d});
         TS_ASSERT_EQUALS(p, margAB)
-        auto margCD = joint.margSumOut({&b, &a});
+        auto margCD = joint.sumOut({&b, &a});
         TS_ASSERT_EQUALS(q, margCD)
 
         p.fillWith({1, 2, 3, 4, 5, 6, 7, 8, 9});
-        TS_ASSERT_EQUALS(p.margProdOut({&a}),
-                         (gum::Potential< double >() << b).fillWith({6, 120, 504}))
-        TS_ASSERT_EQUALS(p.margProdOut({&b}),
-                         (gum::Potential< double >() << a).fillWith({28, 80, 162}))
+        TS_ASSERT_EQUALS(p.prodOut({&a}), (gum::Potential< double >() << b).fillWith({6, 120, 504}))
+        TS_ASSERT_EQUALS(p.prodOut({&b}), (gum::Potential< double >() << a).fillWith({28, 80, 162}))
 
-        TS_ASSERT_EQUALS(p.margMaxOut({&a}), (gum::Potential< double >() << b).fillWith({3, 6, 9}))
-        TS_ASSERT_EQUALS(p.margMaxOut({&b}), (gum::Potential< double >() << a).fillWith({7, 8, 9}))
+        TS_ASSERT_EQUALS(p.maxOut({&a}), (gum::Potential< double >() << b).fillWith({3, 6, 9}))
+        TS_ASSERT_EQUALS(p.maxOut({&b}), (gum::Potential< double >() << a).fillWith({7, 8, 9}))
 
-        TS_ASSERT_EQUALS(p.margMinOut({&a}), (gum::Potential< double >() << b).fillWith({1, 4, 7}))
-        TS_ASSERT_EQUALS(p.margMinOut({&b}), (gum::Potential< double >() << a).fillWith({1, 2, 3}))
+        TS_ASSERT_EQUALS(p.minOut({&a}), (gum::Potential< double >() << b).fillWith({1, 4, 7}))
+        TS_ASSERT_EQUALS(p.minOut({&b}), (gum::Potential< double >() << a).fillWith({1, 2, 3}))
       } catch (gum::Exception& e) { GUM_SHOWERROR(e); }
     }
 
-    GUM_ACTIVE_TEST(MargInFunctions) {
+    GUM_ACTIVE_TEST(MarginalizingFunctions) {
+      auto a = gum::LabelizedVariable("a", "afoo", 3);
+      auto b = gum::LabelizedVariable("b", "bfoo", 3);
+      auto c = gum::LabelizedVariable("c", "cfoo", 3);
+      auto d = gum::LabelizedVariable("d", "dfoo", 3);
+
+      gum::Potential< double > p;
+      p << a << b;
+      p.fillWith({1, 2, 3, 4, 5, 6, 7, 8, 9});
+
+      gum::Potential< double > q;
+      q << c << d;
+      q.fillWith({1, 2, 3, 4, 5, 6, 7, 8, 9});
+
+      auto joint = p * q;
+
+      TS_ASSERT_EQUALS(joint.sumOut({&c, &d}), joint.sumIn({&a, &b}))
+      TS_ASSERT_EQUALS(joint.sumOut({&c, &d}), joint.sumIn({&b, &a}))
+
+      TS_ASSERT_EQUALS(joint.prodOut({&c, &d}), joint.prodIn({&a, &b}))
+
+      TS_ASSERT_EQUALS(joint.minOut({&c, &d}), joint.minIn({&a, &b}))
+
+      TS_ASSERT_EQUALS(joint.maxOut({&c, &d}), joint.maxIn({&a, &b}))
+    }
+
+    GUM_ACTIVE_TEST(DeprecatedMarginalizingFunctions) {
       auto a = gum::LabelizedVariable("a", "afoo", 3);
       auto b = gum::LabelizedVariable("b", "bfoo", 3);
       auto c = gum::LabelizedVariable("c", "cfoo", 3);
@@ -592,7 +616,7 @@ namespace gum_tests {
       p << a << b;
       p.fillWith({1, 2, 3, 4, 5, 6, 7, 8, 9});
 
-      auto q = p / p.margSumOut({&a});
+      auto q = p / p.sumOut({&a});
       p.normalizeAsCPT();
       TS_ASSERT_EQUALS(p, q)
       TS_ASSERT_EQUALS(q, p)
@@ -684,14 +708,14 @@ namespace gum_tests {
       TS_ASSERT_EQUALS(p.fillWith(2.0f).translate(4)[inst], 6.0f)
 
 
-      TS_ASSERT_EQUALS(p.fillWith(2.0f).margSumOut({&var_a})[inst], 2.0f)
-      TS_ASSERT_EQUALS(p.fillWith(3.0f).margSumIn({&var_a})[inst], 3.0f)
-      TS_ASSERT_EQUALS(p.fillWith(4.0f).margProdOut({&var_a})[inst], 4.0f)
-      TS_ASSERT_EQUALS(p.fillWith(5.0f).margProdIn({&var_a})[inst], 5.0f)
-      TS_ASSERT_EQUALS(p.fillWith(6.0f).margMaxIn({&var_a})[inst], 6.0f)
-      TS_ASSERT_EQUALS(p.fillWith(7.0f).margMaxOut({&var_a})[inst], 7.0f)
-      TS_ASSERT_EQUALS(p.fillWith(8.0f).margMinOut({&var_a})[inst], 8.0f)
-      TS_ASSERT_EQUALS(p.fillWith(9.0f).margMinOut({&var_a})[inst], 9.0f)
+      TS_ASSERT_EQUALS(p.fillWith(2.0f).sumOut({&var_a})[inst], 2.0f)
+      TS_ASSERT_EQUALS(p.fillWith(3.0f).sumIn({&var_a})[inst], 3.0f)
+      TS_ASSERT_EQUALS(p.fillWith(4.0f).prodOut({&var_a})[inst], 4.0f)
+      TS_ASSERT_EQUALS(p.fillWith(5.0f).prodIn({&var_a})[inst], 5.0f)
+      TS_ASSERT_EQUALS(p.fillWith(6.0f).maxIn({&var_a})[inst], 6.0f)
+      TS_ASSERT_EQUALS(p.fillWith(7.0f).maxOut({&var_a})[inst], 7.0f)
+      TS_ASSERT_EQUALS(p.fillWith(8.0f).minOut({&var_a})[inst], 8.0f)
+      TS_ASSERT_EQUALS(p.fillWith(9.0f).minOut({&var_a})[inst], 9.0f)
 
       TS_ASSERT_EQUALS(p.fillWith(0.0f).isNonZeroMap()[inst], 0.0f)
       TS_ASSERT_EQUALS(p.fillWith(1.0f).isNonZeroMap()[inst], 1.0f)
@@ -864,7 +888,7 @@ namespace gum_tests {
       gum::Potential< int > p;
       p << a << b;
       p.fillWith({1, 2, 3, 4, 5, 6, 7, 8, 9});
-      TS_ASSERT_EQUALS(p.margSumOut({&a, &b}).toString(), "[45]")
+      TS_ASSERT_EQUALS(p.sumOut({&a, &b}).toString(), "[45]")
     }
 
     GUM_ACTIVE_TEST(KL) {

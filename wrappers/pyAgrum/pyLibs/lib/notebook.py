@@ -1333,7 +1333,7 @@ def __isKindOfProba(pot):
     return False
 
   # is is a CPT ?
-  q = pot.margSumOut([pot.variable(0).name()])
+  q = pot.sumOut([pot.variable(0).name()])
   if abs(q.max() - 1) > epsilon:
     return False
   if abs(q.min() - 1) > epsilon:

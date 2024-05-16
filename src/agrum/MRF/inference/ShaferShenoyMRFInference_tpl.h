@@ -2017,8 +2017,8 @@ namespace gum {
     gum::VariableSet del_vars;
     for (const auto node: declared_target)
       if (!wanted_target.contains(node)) del_vars.insert(&(mn.variable(node)));
-    auto pot = new Potential< GUM_SCALAR >(
-        _joint_target_posteriors_[declared_target]->margSumOut(del_vars));
+    auto pot
+        = new Potential< GUM_SCALAR >(_joint_target_posteriors_[declared_target]->sumOut(del_vars));
 
     // save the result into the cache
     _joint_target_posteriors_.insert(wanted_target, pot);

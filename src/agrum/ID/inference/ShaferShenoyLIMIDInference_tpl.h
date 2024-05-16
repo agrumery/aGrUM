@@ -605,12 +605,12 @@ namespace gum {
       sev.erase(&infdiag.variable(decisionNode));   // only the parents in sev
       if (sev.size() == 0) {                        // deterministic decision node
         unconditionalDecisions_.set(decisionNode, dp);
-      } else if (dp.probPot.margSumIn(sev).normalize().max()
+      } else if (dp.probPot.sumIn(sev).normalize().max()
                  == 1) {                            // with deterministic posterior probability
         // we can use marginalization because we know that dp is deterministic
         unconditionalDecisions_.set(
             decisionNode,
-            DecisionPotential< double >(dp.probPot.margSumOut(sev), dp.utilPot.margSumOut(sev)));
+            DecisionPotential< double >(dp.probPot.sumOut(sev), dp.utilPot.sumOut(sev)));
       }
       decision = dp.utilPot.putFirst(&infdiag.variable(decisionNode));
 

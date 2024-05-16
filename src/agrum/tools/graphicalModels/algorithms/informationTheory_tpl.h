@@ -116,15 +116,15 @@ namespace gum {
 
     if (!Z_.empty()) {
       pXYZ_ = engine_.jointPosterior(joint_vars);
-      pXZ_  = pXYZ_.margSumIn(vX_ + vZ_);
-      pYZ_  = pXYZ_.margSumIn(vY_ + vZ_);
-      pZ_   = pXZ_.margSumIn(vZ_);
-      pXY_  = pXYZ_.margSumIn(vX_ + vY_);
+      pXZ_  = pXYZ_.sumIn(vX_ + vZ_);
+      pYZ_  = pXYZ_.sumIn(vY_ + vZ_);
+      pZ_   = pXZ_.sumIn(vZ_);
+      pXY_  = pXYZ_.sumIn(vX_ + vY_);
     } else {
       pXY_ = engine_.jointPosterior(joint_vars);
     }
-    pX_ = pXY_.margSumIn(vX_);
-    pY_ = pXY_.margSumIn(vY_);
+    pX_ = pXY_.sumIn(vX_);
+    pY_ = pXY_.sumIn(vY_);
   }
 
   INFORMATION_THEORY_TEMPLATE

@@ -406,22 +406,22 @@ class TestOperators(pyAgrumTestCase):
 
     joint = p * q
 
-    margAB = joint.margSumOut(["c", "d"])
+    margAB = joint.sumOut(["c", "d"])
     self.assertEqual(margAB.names, p.names)
     self.assertEqual(margAB.tolist(), p.tolist())
 
-    margCD = joint.margSumOut(
+    margCD = joint.sumOut(
       ["b", "a", "x"])  # note the vars in a different order and with one not present in the potential
     self.assertEqual(margCD.names, q.names)
     self.assertEqual(margCD.tolist(), q.tolist())
 
     p.fillWith([1, 2, 3, 4, 5, 6, 7, 8, 9])
-    self.assertEqual(p.margProdOut(["a"]).tolist(), [6, 120, 504])
-    self.assertEqual(p.margProdOut(["b"]).tolist(), [28, 80, 162])
-    self.assertEqual(p.margMaxOut(["a"]).tolist(), [3, 6, 9])
-    self.assertEqual(p.margMaxOut(["b"]).tolist(), [7, 8, 9])
-    self.assertEqual(p.margMinOut(["a"]).tolist(), [1, 4, 7])
-    self.assertEqual(p.margMinOut(["b"]).tolist(), [1, 2, 3])
+    self.assertEqual(p.prodOut(["a"]).tolist(), [6, 120, 504])
+    self.assertEqual(p.prodOut(["b"]).tolist(), [28, 80, 162])
+    self.assertEqual(p.maxOut(["a"]).tolist(), [3, 6, 9])
+    self.assertEqual(p.maxOut(["b"]).tolist(), [7, 8, 9])
+    self.assertEqual(p.minOut(["a"]).tolist(), [1, 4, 7])
+    self.assertEqual(p.minOut(["b"]).tolist(), [1, 2, 3])
 
   def testMargInOperators(self):
     a, b, c, d = [gum.LabelizedVariable(s, s, 3) for s in "abcd"]
@@ -435,27 +435,27 @@ class TestOperators(pyAgrumTestCase):
 
     joint = p * q
 
-    self.assertEqual(joint.margSumIn(
-      ['a', 'b']), joint.margSumOut(['c', 'd']))
-    self.assertEqual(joint.margSumIn(
-      ['b', 'a']), joint.margSumOut(['c', 'd']))
-    self.assertEqual(joint.margSumIn(
-      ['a', 'b']), joint.margSumOut(['d', 'c']))
-    self.assertEqual(joint.margSumIn(
-      ['b', 'a']), joint.margSumOut(['d', 'c']))
+    self.assertEqual(joint.sumIn(
+      ['a', 'b']), joint.sumOut(['c', 'd']))
+    self.assertEqual(joint.sumIn(
+      ['b', 'a']), joint.sumOut(['c', 'd']))
+    self.assertEqual(joint.sumIn(
+      ['a', 'b']), joint.sumOut(['d', 'c']))
+    self.assertEqual(joint.sumIn(
+      ['b', 'a']), joint.sumOut(['d', 'c']))
 
-    self.assertEqual(joint.margProdIn(
-      ['a', 'b']), joint.margProdOut(['c', 'd']))
+    self.assertEqual(joint.prodIn(
+      ['a', 'b']), joint.prodOut(['c', 'd']))
 
-    self.assertEqual(joint.margMaxIn(
-      ['a', 'b']), joint.margMaxOut(['c', 'd']))
+    self.assertEqual(joint.maxIn(
+      ['a', 'b']), joint.maxOut(['c', 'd']))
 
-    self.assertEqual(joint.margMinIn(
-      ['a', 'b']), joint.margMinOut(['c', 'd']))
+    self.assertEqual(joint.minIn(
+      ['a', 'b']), joint.minOut(['c', 'd']))
 
     # one can not margIn on an invalid variable
     try:
-      p.margSumIn(['d'])
+      p.sumIn(['d'])
       self.assertTrue(False)
     except gum.InvalidArgument:
       self.assertTrue(True)
@@ -682,7 +682,7 @@ class TestOperators(pyAgrumTestCase):
     a, b = [gum.LabelizedVariable(s, s, 3) for s in "ab"]
 
     p = gum.Potential().add(a).add(b).fillWith([1, 2, 3, 4, 5, 6, 7, 8, 9])
-    q = p / p.margSumOut(["a"])
+    q = p / p.sumOut(["a"])
     p.normalizeAsCPT()
     self.assertTrue(p == q)
 
@@ -769,8 +769,8 @@ class TestOperators(pyAgrumTestCase):
 
     bn2 = gum.fastBN("A->B->C")
     bn2.cpt("A").fillWith(bn.cpt("A"))
-    bn2.cpt("B").fillWith(pABC.margSumIn(["A", "B"]) / pABC.margSumIn(["A"]))
-    bn2.cpt("C").fillWith(pABC.margSumIn(["B", "C"]) / pABC.margSumIn(["B"]))
+    bn2.cpt("B").fillWith(pABC.sumIn(["A", "B"]) / pABC.sumIn(["A"]))
+    bn2.cpt("C").fillWith(pABC.sumIn(["B", "C"]) / pABC.sumIn(["B"]))
     pABC2 = (bn2.cpt("A") * bn2.cpt("B") * bn2.cpt("C"))
 
     self.assertAlmostEqual(np.max(pABC2.reorganize(['A', 'B', 'C']).toarray() -

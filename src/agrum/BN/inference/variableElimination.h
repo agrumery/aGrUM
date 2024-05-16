@@ -54,7 +54,7 @@ namespace gum {
   template < typename GUM_SCALAR >
   INLINE static Potential< GUM_SCALAR > VENewprojPotential(const Potential< GUM_SCALAR >& t1,
                                                            const gum::VariableSet& del_vars) {
-    return t1.margSumOut(del_vars);
+    return t1.sumOut(del_vars);
   }
 
   /**

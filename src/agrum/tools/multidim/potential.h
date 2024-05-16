@@ -133,61 +133,110 @@ namespace gum {
      */
     const Potential< GUM_SCALAR >& noising(GUM_SCALAR alpha) const;
 
+    /** deprecated marginalizing methods */
+    [[deprecated(
+        "Depracated since aGrUM 1.14.0. Please use sumOut instead")]] inline Potential< GUM_SCALAR >
+        margSumOut(const gum::VariableSet& del_vars) const {
+      return sumOut(del_vars);
+    };
+
+    [[deprecated(
+        "Depracated since aGrUM 1.14.0. Please use sumIn instead")]] inline Potential< GUM_SCALAR >
+        margSumIn(const gum::VariableSet& kept_vars) const {
+      return sumIn(kept_vars);
+    };
+
+    [[deprecated("Depracated since aGrUM 1.14.0. Please use prodOut instead")]] inline Potential<
+        GUM_SCALAR >
+        margProdOut(const gum::VariableSet& del_vars) const {
+      return prodOut(del_vars);
+    };
+
+    [[deprecated(
+        "Depracated since aGrUM 1.14.0. Please use prodIn instead")]] inline Potential< GUM_SCALAR >
+        margProdIn(const gum::VariableSet& kept_vars) const {
+      return prodIn(kept_vars);
+    };
+
+    [[deprecated(
+        "Depracated since aGrUM 1.14.0. Please use minOut instead")]] inline Potential< GUM_SCALAR >
+        margMinOut(const gum::VariableSet& del_vars) const {
+      return minOut(del_vars);
+    };
+
+    [[deprecated(
+        "Depracated since aGrUM 1.14.0. Please use minIn instead")]] inline Potential< GUM_SCALAR >
+        margMinIn(const gum::VariableSet& kept_vars) const {
+      return minIn(kept_vars);
+    };
+
+    [[deprecated(
+        "Depracated since aGrUM 1.14.0. Please use sumOut instead")]] inline Potential< GUM_SCALAR >
+        margMaxOut(const gum::VariableSet& del_vars) const {
+      return maxOut(del_vars);
+    };
+
+    [[deprecated(
+        "Depracated since aGrUM 1.14.0. Please use sumIn instead")]] inline Potential< GUM_SCALAR >
+        margMaxIn(const gum::VariableSet& kept_vars) const {
+      return maxIn(kept_vars);
+    };
+
     /**
      * Projection using sum as operation (and implementation-optimized
      * operations)
      * @param del_vars is the set of vars to eliminate
      */
-    Potential< GUM_SCALAR > margSumOut(const gum::VariableSet& del_vars) const;
+    Potential< GUM_SCALAR > sumOut(const gum::VariableSet& del_vars) const;
 
     /**
      * Projection using sum as operation (and implementation-optimized
      * operations)
      * @param kept_vars is the set of vars to keep
      */
-    Potential< GUM_SCALAR > margSumIn(const gum::VariableSet& kept_vars) const;
+    Potential< GUM_SCALAR > sumIn(const gum::VariableSet& kept_vars) const;
 
     /**
      * Projection using multiplication as operation (and
      * implementation-optimized operations)
      * @param del_vars is the set of vars to eliminate
      */
-    Potential< GUM_SCALAR > margProdOut(const gum::VariableSet& del_vars) const;
+    Potential< GUM_SCALAR > prodOut(const gum::VariableSet& del_vars) const;
 
     /**
      * Projection using multiplication as operation (and
      * implementation-optimized operations)
      * @param kept_vars is the set of vars to keep
      */
-    Potential< GUM_SCALAR > margProdIn(const gum::VariableSet& kept_vars) const;
+    Potential< GUM_SCALAR > prodIn(const gum::VariableSet& kept_vars) const;
 
     /**
      * Projection using min as operation (and implementation-optimized
      * operations)
      * @param del_vars is the set of vars to eliminate
      */
-    Potential< GUM_SCALAR > margMinOut(const gum::VariableSet& del_vars) const;
+    Potential< GUM_SCALAR > minOut(const gum::VariableSet& del_vars) const;
 
     /**
      * Projection using min as operation (and implementation-optimized
      * operations)
      * @param kept_vars is the set of vars to keep
      */
-    Potential< GUM_SCALAR > margMinIn(const gum::VariableSet& kept_vars) const;
+    Potential< GUM_SCALAR > minIn(const gum::VariableSet& kept_vars) const;
 
     /**
      * Projection using max as operation (and implementation-optimized
      * operations)
      * @param del_vars is the set of vars to eliminate
      */
-    Potential< GUM_SCALAR > margMaxOut(const gum::VariableSet& del_vars) const;
+    Potential< GUM_SCALAR > maxOut(const gum::VariableSet& del_vars) const;
 
     /**
      * Projection using max as operation (and implementation-optimized
      * operations)
      * @param kept_vars is the set of vars to keep
      */
-    Potential< GUM_SCALAR > margMaxIn(const gum::VariableSet& kept_vars) const;
+    Potential< GUM_SCALAR > maxIn(const gum::VariableSet& kept_vars) const;
 
     /**
      * create a boolean-like potential using the predicate isNonZero

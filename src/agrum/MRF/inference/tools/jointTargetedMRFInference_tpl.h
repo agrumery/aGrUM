@@ -365,7 +365,7 @@ namespace gum {
           sov.insert(&variables.variable(i));
         }
       }
-      res += sign * po.margSumIn(sov).entropy();
+      res += sign * po.sumIn(sov).entropy();
     }
 
     for (Idx i = 0; i < caracteristic.nbrDim(); i++) {
