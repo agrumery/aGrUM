@@ -33,9 +33,9 @@ def main():
   current = getCurrent()
   configureOptions(current)
 
-  (options, args) = parseCommandLine(current)
+  (options, args) = parseCommandLine()
   mvscForced = False
-  if platform.system() == "Windows" and options.compiler[:4] == "mvsc":
+  if platform.system() == "Windows" and options.compiler.startswith("mvsc"):
     options.static_lib = True
     options.no_fun = True
     mvscForced = True
@@ -64,7 +64,7 @@ def main():
   if pyAgrumForced:
     notif("Options [static] forced by target [pyAgrum]")
 
-  configureTools(options)
+  configureTools()
 
   # check current consistency and update it if necessary
   checkCurrent(current, options, args)
@@ -104,4 +104,4 @@ def main():
       safe_cd(current, "..")
       safe_cd(current, "..")
 
-  return (gc, gm, gb)
+  return gc, gm, gb

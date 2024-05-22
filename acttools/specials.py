@@ -25,17 +25,17 @@ import sys
 from .configuration import cfg
 from .oneByOne import checkAgrumMemoryLeaks
 from .stats import profileAgrum
-from .utils import trace, notif, critic, srcAgrum
+from .utils import trace, notif, critic
 from .callSphinx import callSphinx
 from .wheel_builder import wheel
 from .wheel_builder import nightly_wheel
 from .guideline import guideline
 
 
-def isSpecialAction(current):
-  if current["oneByOne"] == True:
+def isSpecialAction(current: dict[str, str]) -> bool:
+  if current["oneByOne"]:
     return True
-  if current["stats"] == True:
+  if current["stats"]:
     return True
   if current["action"] == 'doc' and current["target"] == 'pyAgrum':
     return True
@@ -43,16 +43,14 @@ def isSpecialAction(current):
   return current["action"] in set(cfg.specialActions)
 
 
-def specialActions(current):
+def specialActions(current: dict[str, str]) -> bool:
   if current["action"] == "clean":
-    # trace(current,"Special action [clean]")
     if not current["dry_run"]:
       cleanAll()
     print("")
     return True
 
   if current["action"] == "show":
-    # trace(current,"Special action [show]")
     # action=show is the only action still performed even if dry_run=True
     showAct2Config(current)
     print("")
@@ -92,36 +90,35 @@ def specialActions(current):
     profileAgrum(current)
     return True
 
-  if current["action"] == 'doc':
-    if 'pyAgrum' in current["targets"]:
-      callSphinx(current)
-      return True
+  if current["action"] == 'doc' and 'pyAgrum' in current["targets"]:
+    callSphinx(current)
+    return True
 
   return False
 
 
 def cleanAll():
-  print(cfg.C_WARNING + "cleaning" + cfg.C_END + " ... ", end="")
+  print(f"{cfg.C_WARNING}cleaning all{cfg.C_END} ...", end="")
   sys.stdout.flush()
   if os.path.isdir("build"):
     shutil.rmtree("build")
-    print(cfg.C_VALUE + "done" + cfg.C_END)
+    print(f"{cfg.C_VALUE}done{cfg.C_END}")
   else:
-    print(cfg.C_VALUE + "nothing to do" + cfg.C_END)
+    print(f"{cfg.C_VALUE}nothing to do{cfg.C_END}")
 
 
-def showAct2Config(current):
-  def aff(k):
-    notif(f"[{k}] => {current[k]}")
+def showAct2Config(current: dict[str, str]):
+  def aff_key(key: str):
+    notif(f"[{key}] => {current[key]}")
 
   for k in cfg.mains:
-    aff(k)
+    aff_key(k)
   print("")
 
   for k in current.keys():
-    if not k in cfg.mains and not k in cfg.non_persistent:
-      aff(k)
+    if k not in cfg.mains and k not in cfg.non_persistent:
+      aff_key(k)
   print("")
 
   for k in cfg.non_persistent:
-    aff(k)
+    aff_key(k)

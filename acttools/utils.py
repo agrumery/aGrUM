@@ -22,6 +22,7 @@ import os
 import sys
 from os.path import isdir
 import glob
+from typing import Optional, Iterator
 
 from .configuration import cfg
 
@@ -35,13 +36,13 @@ def about():
   print("")
 
 
-def setifyString(s):
+def setifyString(s:str)->set[str]:
   # special case for accepting agrum instead of 'aGrUM'
   return set(map(lambda x: 'aGrUM' if x == 'agrum' else x,
                  filter(None, s.split("+"))))  # filter to setify "a++b+c" into set(['a','b','c'])
 
 
-def safe_cd(current, folder):
+def safe_cd(current:dict[str,str], folder:str):
   trace(current, "cd " + folder)
   if not current['dry_run']:
     if folder != "..":
@@ -50,17 +51,17 @@ def safe_cd(current, folder):
     os.chdir(folder)
 
 
-def colFormat(v, col):
+def colFormat(v:str, col:str)->str:
   # s=str(v) # why should I need to stringify v ? If yes, warning with encoding : sometimes encode('utf-8') is needed
   return col + v.replace("[", cfg.C_VALUE).replace("]", col)
 
 
-def trace(current, cde):
+def trace(current:dict[str,str], cde:str):
   if current['dry_run'] or current['verbose']:
     notif(cde, cfg.prefixe_trace)
 
 
-def notif_oneline(s, pref=None):
+def notif_oneline(s:str, pref:Optional[str]=None):
   if pref is None:
     pref = cfg.prefixe_line
 
@@ -68,14 +69,14 @@ def notif_oneline(s, pref=None):
         end="                                       \r")
 
 
-def notif(s="", pref=None):
+def notif(s:str="", pref:Optional[str]=None):
   if pref is None:
     pref = cfg.prefixe_line
 
   print(pref + colFormat("** act Notification : " + s, cfg.C_MSG) + cfg.C_END)
 
 
-def warn(s, pref=None):
+def warn(s:str, pref:Optional[str]=None):
   if pref is None:
     pref = cfg.prefixe_line
 
@@ -83,14 +84,14 @@ def warn(s, pref=None):
     print(pref + colFormat("** act Warning      : " + s, cfg.C_WARNING) + cfg.C_END)
 
 
-def error(s, pref=None):
+def error(s:str, pref:Optional[str]=None):
   if pref is None:
     pref = cfg.prefixe_line
 
   print(pref + colFormat("** act Error        : " + s, cfg.C_ERROR) + cfg.C_END)
 
 
-def critic(s, pref=None, rc=1):
+def critic(s:str, pref:Optional[str]=None, rc:int=1):
   if pref is None:
     pref = cfg.prefixe_line
 
@@ -100,11 +101,11 @@ def critic(s, pref=None, rc=1):
   sys.exit(rc)
 
 
-def CrossPlatformRelPath(x, y):
+def CrossPlatformRelPath(x:str, y:str)->str:
   return os.path.relpath(x, "src/testunits").replace("\\", "/")
 
 
-def recglob(path, mask):
+def recglob(path:str, mask:str)->Iterator[str]:
   for item in glob.glob(path + "/*"):
     if isdir(item):
       for item in recglob(item, mask):
@@ -115,7 +116,7 @@ def recglob(path, mask):
       yield item
 
 
-def srcAgrum():
+def srcAgrum()->Iterator[str]:
   for i in recglob("src/agrum", "*.cpp"):
     yield i
   for i in recglob("src/agrum", "*.h"):

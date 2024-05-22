@@ -21,7 +21,7 @@
 
 # a way of creating constants in python
 import sys
-from typing import Dict, Any, List
+from typing import Any
 
 
 class _const:
@@ -40,5 +40,6 @@ class _const:
       f"{self.C_MSG}{k}{self.C_END} : {self.C_VALUE}{d[k] if k[:2] != 'C_' else '(escape sequence)'}{self.C_END}" for
       k in sorted(d.keys())]
     return "\n".join(l)
+
 
 sys.modules[__name__] = _const()

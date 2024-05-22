@@ -22,11 +22,13 @@ import os
 import sys
 from subprocess import PIPE, Popen
 
+from typing import Optional
+
 from .configuration import cfg
-from .utils import notif, critic
+from .utils import critic
 
 
-def cmdline(command):
+def cmdline(command: str) -> str:
   process = Popen(
     args=command,
     stdout=PIPE,
@@ -37,17 +39,17 @@ def cmdline(command):
 
 #################################################################################################
 # find make, python3
-def is_tool(prog, longpath=False):
+def is_tool(prog: str, longpath=False) -> Optional[str]:
   progw = prog + ".exe"
-  for dir in os.environ['PATH'].split(os.pathsep):
-    if os.path.exists(os.path.join(dir, prog)):
-      return prog if not longpath else '"' + os.path.join(dir, prog) + '"'
-    if os.path.exists(os.path.join(dir, progw)):
-      return progw if not longpath else '"' + os.path.join(dir, progw) + '"'
+  for dirname in os.environ['PATH'].split(os.pathsep):
+    if os.path.exists(os.path.join(dirname, prog)):
+      return prog if not longpath else '"' + os.path.join(dirname, prog) + '"'
+    if os.path.exists(os.path.join(dirname, progw)):
+      return progw if not longpath else '"' + os.path.join(dirname, progw) + '"'
   return None
 
 
-def check_tools(options):
+def check_tools() -> tuple[str, str, str, str, str]:
   exe_py = f'"{sys.executable}"'
 
   version, subversion, _ = cmdline(

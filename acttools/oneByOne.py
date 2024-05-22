@@ -23,14 +23,15 @@ from subprocess import PIPE, Popen, STDOUT
 
 from .configuration import cfg
 from .tests import checkTests, testNames
-from .utils import notif, warn
+from .utils import notif
 
 
-def checkAgrumMemoryLeak(x, percent):
+def checkAgrumMemoryLeak(x: str, percent: float):
   cmd = f'{sys.executable} act test debug -t {x} -m all'
 
-  first = cfg.C_VALUE + f"[{percent:5.1f}%] "
-  second = cfg.C_WARNING + x + cfg.C_END + " : "
+  first = f"{cfg.C_VALAUE} [{percent:5.1f}%] "
+  second = f"{cfg.C_WARNING}{x}{cfg.C_END} : "
+  last = ""
   flag = 0
 
   sys.stdout.write(first + second)
@@ -40,29 +41,29 @@ def checkAgrumMemoryLeak(x, percent):
   out = proc.stdout.readlines()
   for line in out:
     if b"NO MEMORY LEAK" in line:
-      last = cfg.C_VALUE + "ok" + cfg.C_END
+      last = f"{cfg.C_VALUE}ok{cfg.C_END}"
       flag = 1
     elif b"Memory leaks found" in line:
-      line=str(line)
-      last = cfg.C_ERROR + line.split("|")[2].strip() + cfg.C_END
+      line = str(line)
+      last = f"{cfg.C_ERROR}{line.split('|')[2].strip()}{cfg.C_END}"
       flag = 2
 
   if flag == 0:
-    last = cfg.C_ERROR + "?" + cfg.C_END
+    last = f"{cfg.C_ERROR}?{cfg.C_END}"
 
   print(last)
-  return (second + last, flag == 1)
+  return second + last, flag == 1
 
 
-def checkAgrumMemoryLeaks(current):
+def checkAgrumMemoryLeaks(current: dict[str, str]):
   notif("Searching leaks test by test (may be a bit long).\n")
 
   res = []
-  testslist = sorted(testNames(checkTests(current)))
-  for i, x in enumerate(testslist):
-    (msg, testOK) = checkAgrumMemoryLeak(x, (i + 1) * 100.0 / len(testslist))
+  tests_list = sorted(testNames(checkTests(current)))
+  for i, x in enumerate(tests_list):
+    (msg, testOK) = checkAgrumMemoryLeak(x, (i + 1) * 100.0 / len(tests_list))
     if not testOK:
       res.append(msg)
 
-  sres="\n -".join(res) if len(res) > 0 else cfg.C_VALUE + "none"
-  print("\n" + cfg.C_WARNING + f"Test(s) with problem(s) :\n -{sres}\n" + cfg.C_END)
+  sres = "\n -".join(res) if len(res) > 0 else cfg.C_VALUE + "none"
+  print(f"\n{cfg.C_WARNING}Test(s) with problem(s) :\n -{sres}\n{cfg.C_END}")

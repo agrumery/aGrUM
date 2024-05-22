@@ -25,27 +25,8 @@ from .configuration import cfg
 from .utils import notif, safe_cd
 
 
-def callSphinx(current):
-  if current['build'] != 'doc-only':
-    cmd = f'{cfg.python} act lib pyAgrum release --no-fun'
-    notif("Compiling pyAgrum")
-    if not current['dry_run']:
-      proc = Popen(cmd, shell=True, stdout=PIPE, stderr=STDOUT)
-      out = proc.stdout.readlines()
-      for line in out:
-        try:
-          print(line.decode('utf-8'), end="")
-        except ValueError:
-          print(str(line), end="")
-    else:
-      notif('[' + cmd + ']')
-
-  notif("Sphinxing pyAgrum")
-  safe_cd(current, "wrappers")
-  safe_cd(current, "pyAgrum")
-  safe_cd(current, "doc")
-  cmd = 'make'
-  if not current['dry_run']:
+def _callSphinx(cmd: str):
+  if not cfg.current['dry_run']:
     proc = Popen(cmd, shell=True, stdout=PIPE, stderr=STDOUT)
     out = proc.stdout.readlines()
     for line in out:
@@ -55,6 +36,19 @@ def callSphinx(current):
         print(str(line), end="")
   else:
     notif('[' + cmd + ']')
+
+
+def callSphinx(current: dict[str, str]):
+  if current['build'] != 'doc-only':
+    notif("Compiling pyAgrum")
+    _callSphinx(f'{cfg.python} act lib pyAgrum release --no-fun')
+
+  notif("Sphinxing pyAgrum")
+  safe_cd(current, "wrappers")
+  safe_cd(current, "pyAgrum")
+  safe_cd(current, "doc")
+  _callSphinx('make')
+
   safe_cd(current, "..")
   safe_cd(current, "..")
   safe_cd(current, "..")

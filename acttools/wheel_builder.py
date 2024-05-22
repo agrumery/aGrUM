@@ -54,7 +54,7 @@ except ImportError:
   FOUND_WHEEL = False
 
 
-def wheel(current):
+def wheel(current:dict[str,str]):
   """If the current Python version used differs from the one asked, fork into
   the proper Python interpreter."""
   if FOUND_WHEEL:
@@ -63,7 +63,7 @@ def wheel(current):
     critic("Please install package wheel to build wheels using act (pip install wheel).")
 
 
-def nightly_wheel(current):
+def nightly_wheel(current:dict[str,str]):
   """If the current Python version used differs from the one asked, fork into
   the proper Python interpreter."""
   if FOUND_WHEEL:
@@ -72,7 +72,7 @@ def nightly_wheel(current):
     critic("Please install package wheel to build wheels using act (pip install wheel).")
 
 
-def _go_wheel(current, nightly=False):
+def _go_wheel(current:dict[str,str], nightly=False):
   """Get a temporary directory to build the wheel and cal sequentially all steps
   to build the wheel."""
   print(cfg)
@@ -93,7 +93,7 @@ def _go_wheel(current, nightly=False):
     rmtree(tmp, True)
 
 
-def _prepare_wheel(current, tmp, nightly=False):
+def _prepare_wheel(current:dict[str,str], tmp, nightly=False):
   """Prepare step for building the wheel: builds and install pyAgrum in the temporary
   directory and check that this script was called with the same version of Python used
   to build pyAgrum."""
@@ -112,7 +112,7 @@ def safe_compiler_path(path):
   return path.replace('\\', '/')
 
 
-def install_pyAgrum(current, tmp, nightly=False):
+def install_pyAgrum(current:dict[str,str], tmp, nightly=False):
   """Instals pyAgrum in tmp and return the Python version used to build it."""
   targets = 'install release pyAgrum'
   version = sys.version_info[0]

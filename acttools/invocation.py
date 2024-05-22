@@ -19,33 +19,35 @@
 # *   Free Software Foundation, Inc.,                                       *
 # *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
 # **************************************************************************
+from typing import Any
+
 from .configuration import cfg
 
 
-def _getParam(name, c_error, c_end):
-  return c_end + '--' + c_error + name
+def _getParam(name: str, c_error: str, c_end: str) -> str:
+  return f"{c_end}--{c_error}{name}"
 
 
-def getParam(name, c_error, c_end):
-  return _getParam(name, c_error, c_end) + " "
+def getParam(name: str, c_error: str, c_end: str) -> str:
+  return f"{_getParam(name, c_error, c_end)} "
 
 
-def getValParam(name, val, c_value, c_error, c_end):
-  return _getParam(name, c_error, c_end) + c_end + '=' + c_value + str(val) + " "
+def getValParam(name: str, val: Any, c_value: str, c_error: str, c_end: str):
+  return f"{_getParam(name, c_error, c_end)} {c_end}={c_value}{val} "
 
 
-def getCommand(name, c_warning):
-  return c_warning + name + " "
+def getCommand(name: str, c_warning: str) -> str:
+  return f"{c_warning}{name} "
 
 
-def showInvocation(current, forced=False):
+def showInvocation(current: dict[str, str], forced: bool = False):
   if forced or not current['no_fun']:
     invocation = getInvocation(current, True)
-    print(cfg.C_WARNING + "invocation" + cfg.C_END + " : " + invocation)
+    print(f"{cfg.C_WARNING}invocation{cfg.C_END} : {invocation}")
     print("")
 
 
-def getInvocation(current, colored=False):
+def getInvocation(current: dict[str, str], colored: bool = False) -> str:
   if colored:
     c_warning, c_error, c_value, c_end = cfg.C_WARNING, cfg.C_ERROR, cfg.C_VALUE, cfg.C_END
   else:
@@ -60,9 +62,9 @@ def getInvocation(current, colored=False):
     invocation += getCommand(current['mode'], c_warning)
 
   for opt in current.keys():
-    if not opt in ['action', 'mode', 'targets']:
-      if not opt in cfg.non_persistent:
-        if not opt in cfg.swapOptions.keys():
+    if opt not in ['action', 'mode', 'targets']:
+      if opt not in cfg.non_persistent:
+        if opt not in cfg.swapOptions.keys():
           if opt in current.keys():
             invocation += getValParam(opt, current[opt], c_value, c_error, c_end)
 

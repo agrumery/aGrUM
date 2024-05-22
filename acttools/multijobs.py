@@ -35,13 +35,7 @@ except ImportError:
 ON_POSIX = 'posix' in sys.builtin_module_names
 
 
-def enqueue_output(out, queue):
-  for line in iter(out.readline, b''):
-    queue.put(line)
-  out.close()
-
-
-def prettifying_errors(line):
+def prettifying_errors(line: str) -> str:
   res = ""
 
   if line == "":
@@ -50,7 +44,6 @@ def prettifying_errors(line):
   # swig prettyfying
   s = line.split("aGrUM-dev/wrappers/")
   if len(s) == 2:
-
     ss = s[1].split("src/agrum")
     if len(ss) >= 2:
       s[1] = "agrum" + ss[1]
@@ -61,15 +54,13 @@ def prettifying_errors(line):
 
     t = s[1].split(": ")
     if len(t) == 3:
-      return res + (cfg.C_END + ": ").join([cfg.C_MSG + t[0],
-                                            cfg.C_ERROR + t[1],
-                                            cfg.C_VALUE + t[2] + cfg.C_END])
+      return f"{res} {cfg.C_MSG}{t[0]}{cfg.C_END}: {cfg.C_ERROR}{t[1]}{cfg.C_END}: {cfg.C_VALUE}{t[2]}{cfg.C_END}"
     else:
-      return res + s[1]
+      return f"{res}{s[1]}"
   return line
 
 
-def prettifying(line):
+def prettifying(line: str) -> str:
   # prettifying the line
   res = ""
 
@@ -80,10 +71,10 @@ def prettifying(line):
     leop = len(eop)
     try:
       if line[-leop:] == eop:
-        line = line[:-leop] + cfg.C_VALUE + eop + cfg.C_END
+        line = f"{line[:-leop]}{cfg.C_VALUE}{eop}{cfg.C_END}"
         break
     except TypeError:
-      return "(((" + line + ")))"
+      return f"((({line})))"
 
   # prettifying compilation
   s = line.split("%]")
@@ -94,7 +85,8 @@ def prettifying(line):
   if line == "":
     return res.rstrip()
 
-  remove_dirs = lambda s: s[:s.rfind(" ")]
+  def remove_dirs(path: str) -> str:
+    return path[:path.rfind(" ")]
 
   # prettifying (compacting) path
   if line[0] == "/":  # we keep message beginning with full path
@@ -102,61 +94,65 @@ def prettifying(line):
 
   s = line.split("agrum.dir/")
   if len(s) == 2:
-    return res + remove_dirs(s[0]) + " " + cfg.C_MSG + s[1].rstrip() + cfg.C_END
+    return f"{res}{remove_dirs(s[0])} {cfg.C_MSG}{s[1].rstrip()}{cfg.C_END}"
 
   s = line.split("_pyAgrum.dir/__/__/")  # for agrum in pyAgrum
   if len(s) == 2:
-    return res + remove_dirs(s[0]) + " " + cfg.C_MSG + s[1].rstrip() + cfg.C_END
+    return f"{res}{remove_dirs(s[0])} {cfg.C_MSG}{s[1].rstrip()}{cfg.C_END}"
 
   s = line.split("_pyAgrum.dir/")  # for specific pyAgrum files
   if len(s) == 2:
-    return res + remove_dirs(s[0]) + " " + cfg.C_MSG + s[1].rstrip() + cfg.C_END
+    return f"{res}{remove_dirs(s[0])} {cfg.C_MSG}{s[1].rstrip()}{cfg.C_END}"
 
   s = line.split("/generated-files/")
   if len(s) == 2:
-    return res + remove_dirs(s[0]) + cfg.C_MSG + " generated-files/" + s[1].rstrip() + cfg.C_END
+    return f"{res}{remove_dirs(s[0])} {cfg.C_MSG}generated-files/{s[1].rstrip()}{cfg.C_END}"
 
   s = line.split(" /")
   if len(s) == 2:
-    return res + remove_dirs(s[0]) + cfg.C_MSG + " /" + s[1].rstrip() + cfg.C_END
+    return f"{res}{remove_dirs(s[0])} {cfg.C_MSG}/{s[1].rstrip()}{cfg.C_END}"
 
   # prettifying test execution
   s = line.split(". [")
   if len(s) == 2:
-    return res + s[0] + ". " + cfg.C_VALUE + "[" + s[1].rstrip() + cfg.C_END
+    return f"{res}{s[0]}. {cfg.C_VALUE}[{s[1].rstrip()}{cfg.C_END}"
 
   s = line.split("# [")
   if len(s) == 2:
-    return res + s[0] + "# " + cfg.C_VALUE + "[" + s[1].rstrip() + cfg.C_END
+    return f"{res}{s[0]}# {cfg.C_VALUE}[{s[1].rstrip()}{cfg.C_END}"
 
   s = line.split(" ... ")
   if len(s) == 2:
     ss = s[0].split('(')
     if len(ss) == 2:
-      return res + cfg.C_WARNING + ss[0] + cfg.C_VALUE + '(' + ss[1] + cfg.C_END + " ... " + s[1]
+      return f"{res}{cfg.C_WARNING}{ss[0]}{cfg.C_VALUE}({ss[1]}{cfg.C_END} ... {s[1]}"
+
     ss = s[0].split("-")
     if len(ss) == 2:
       sss = ss[1].split(".")
-      return res + cfg.C_WARNING + ss[0] + cfg.C_VALUE + ' ' + sss[0] + cfg.C_END + " ... " + s[1]
+      return f"{res}{cfg.C_WARNING}{ss[0]}{cfg.C_VALUE} {sss[0]}{cfg.C_END} ... {s[1]}"
 
   # end of test execution
   s = line.split("##")
   if len(s) == 3:
-    return res + cfg.C_WARNING + "##" + cfg.C_END + s[1] + cfg.C_MSG + "##" + cfg.C_END
+    return f"{res}{cfg.C_WARNING}##{cfg.C_END}{s[1]}{cfg.C_MSG}##{cfg.C_END}{s[2]}"
+
   if line[0:6] == "Failed":
-    return "Failed " + cfg.C_MSG + line[7:] + cfg.C_END
+    return f"Failed {cfg.C_MSG}{line[7:]}{cfg.C_END}"
   if line[0:6] == "Succes":
-    return "Success rate: " + cfg.C_MSG + line[14:] + cfg.C_END
-  if line[-11:] == "<--- failed":
-    return res + line[0:-11] + cfg.C_ERROR + "<--- failed" + cfg.C_END
+    return f"Success {cfg.C_MSG}{line[14:]}{cfg.C_END}"
+
+  if line.endswith("<--- failed"):
+    return f"{res}{line[0:-11]}{cfg.C_ERROR}<--- failed{cfg.C_END}"
 
   s = line.split("Memory leaks found")
   if len(s) == 2:
-    return res + s[0] + cfg.C_ERROR + "Memory leaks found" + cfg.C_END + s[1]
+    return f"{res}{s[0]}{cfg.C_ERROR}Memory leaks found{cfg.C_END}{s[1]}"
+
   return line
 
 
-def threaded_execution(cde, verbose):
+def threaded_execution(cde):
   os.environ["PYTHONUNBUFFERED"] = "1"
   p = Popen(cde, shell=True, bufsize=1, stdout=PIPE, stderr=PIPE)
 
@@ -194,7 +190,7 @@ def threaded_execution(cde, verbose):
 
     for tgt in [rdr, clct]:
       th = Thread(target=tgt)
-      th.setDaemon(True)
+      th.daemon = True
       th.start()
 
   Pump(sout, 'stdout')
@@ -202,13 +198,10 @@ def threaded_execution(cde, verbose):
 
   waiter = "|/-\\"
   w_pos = 0
-  lastline = ""
 
-  def readerLoop(lastline):
+  def readerLoop(lastline: str) -> str:
     chan, lines = inp.get(True, timeout=0.1)
     if chan == 'stdout' and lines is not None:
-      # if len(lastline)>1:
-      #  print(" ")
       try:
         lines = (lines.decode('utf-8')).split("\n")
       except:
@@ -233,15 +226,16 @@ def threaded_execution(cde, verbose):
             print(prettifying_errors(line))
           else:
             if "IPKernelApp" in line:
-              pass # do nothing for Kernel App warnings
+              pass  # do nothing for Kernel App warnings
             else:
               error(line)
     return lastline
 
+  last = ""
   while p.poll() is None:
     # App still working
     try:
-      lastline = readerLoop(lastline)
+      last = readerLoop(last)
     except Empty:
       print(waiter[w_pos] + "\b", end="")
       sys.stdout.flush()
@@ -250,7 +244,7 @@ def threaded_execution(cde, verbose):
   # flushing the buffers
   while True:
     try:
-      lastline = readerLoop(lastline)
+      last = readerLoop(last)
     except Empty:
       break
 
@@ -261,6 +255,6 @@ def execCde(commande, current):
   if current["no_fun"]:
     rc = call(commande, shell=True)
   else:
-    rc = threaded_execution(commande, current["verbose"])
+    rc = threaded_execution(commande)
 
   return rc

@@ -25,10 +25,10 @@ from .configuration import cfg
 from .utils import setifyString, notif
 
 
-def parseModulesTxt():
+def parseModulesTxt() -> dict[str, str]:
   modules = {}
   module_line = re.compile(r"^\s*list\s*\(\s*APPEND\s*MODULES\s*\"(.*)\"\s*\)(\s*#\s*(.*))?")
-  with open(cfg.modulesFile, "r") as f:
+  with open(cfg.modulesFile, "r", encoding="utf8") as f:
     for line in f:
       rep = module_line.search(line)
       if rep:
@@ -40,7 +40,7 @@ def parseModulesTxt():
   return modules
 
 
-def check_modules(current):
+def check_modules(current: dict[str, str]):
   setM = setifyString(current['modules'])
 
   if 'pyAgrum' in current['targets']:

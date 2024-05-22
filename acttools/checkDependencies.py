@@ -22,12 +22,12 @@
 # ***************************************************************************
 from pathlib import Path
 import re
-from typing import Dict, List, Set, Optional
+from typing import Sequence, Optional
 
-from .utils import warn, error, notif, notif_oneline
+from .utils import warn, notif, notif_oneline
 
 
-def _header_filter(split_filename: List[str]) -> bool:
+def _header_filter(split_filename: Sequence[str]) -> bool:
   filename = split_filename[-1]
   # exceptions
   exceptions = {"agrum.h", "structuralConstraintPatternHeader.h"}
@@ -38,16 +38,16 @@ def _header_filter(split_filename: List[str]) -> bool:
     return False
 
   if len(filename) > 5:
-    if filename[-6:] == "_tpl.h":
+    if filename.endswith("_tpl.h"):
       return False
-    if filename[-6:] == "_inl.h":
+    if filename.endswith("_inl.h"):
       return False
 
   return True
 
 
-def _gum_scan(file: Path) -> List[str]:
-  patt = re.compile(r"^#[\s]*include <agrum/([^>]*)>")
+def _gum_scan(file: Path) -> list[str]:
+  patt = re.compile(r"^#\s*include <agrum/([^>]*)>")
   s = []
 
   with file.open() as f:
@@ -61,7 +61,7 @@ def _gum_scan(file: Path) -> List[str]:
   return s
 
 
-def _get_dependencies() -> Dict[str, List[str]]:
+def _get_dependencies() -> dict[str, list[str]]:
   deps = {}
   p = Path('src/agrum')
   for file in p.glob('**/*.h'):
@@ -71,7 +71,7 @@ def _get_dependencies() -> Dict[str, List[str]]:
   return deps
 
 
-def _build_ancestral(ancestrals: Dict[str, Set[str]], deps: Dict[str, List[str]], k: str):
+def _build_ancestral(ancestrals: dict[str, dict[str, int]], deps: dict[str, list[str]], k: str) -> dict[str, int]:
   if k not in ancestrals:
     ancestrals[k] = None
     anc_k = {}
@@ -80,18 +80,18 @@ def _build_ancestral(ancestrals: Dict[str, Set[str]], deps: Dict[str, List[str]]
       b = _build_ancestral(ancestrals, deps, f)
       if b is None:
         raise ValueError(f"Cycle detected from {f}->{k}")
-      for pf in _build_ancestral(ancestrals, deps, f):
-        anc_k[pf] = 1 if pf not in anc_k else anc_k[pf] + 1
+      else:
+        for pf in b.keys():
+          anc_k[pf] = 1 if pf not in anc_k else anc_k[pf] + 1
     ancestrals[k] = anc_k
   return ancestrals[k]
 
 
-def _simplyfy_dependencies(ancestrals: Dict[str, Set[str]], deps: Dict[str, List[str]]):
+def _simplyfy_dependencies(ancestrals: dict[str, dict[str, int]], deps: dict[str, list[str]]):
   nbr = 0
   for k in deps.keys():
     first = 0
-    l = list(deps[k])
-    for p in l:
+    for p in deps[k]:
       if ancestrals[k][p] > 1:
         if first == 0:
           warn("")
@@ -104,7 +104,7 @@ def _simplyfy_dependencies(ancestrals: Dict[str, Set[str]], deps: Dict[str, List
         deps[k].remove(p)
 
 
-def draw_gum_dependencies(deps: Dict[str, List[str]]):
+def draw_gum_dependencies(deps: dict[str, list[str]]):
   import pydot as pdp
 
   colors = {
@@ -135,33 +135,33 @@ def draw_gum_dependencies(deps: Dict[str, List[str]]):
     if th is None:
       th = name
 
-    nod = pdp.Node(name)
+    node = pdp.Node(name)
 
-    nod.set("fontname", "Arial")
-    nod.set("fontsize", 6)
-    nod.set("shape", "box")
-    nod.set("margin", 0.03)
-    nod.set("width", 0)
-    nod.set("height", 0)
-    nod.set("style", "filled")
+    node.set("fontname", "Arial")
+    node.set("fontsize", 6)
+    node.set("shape", "box")
+    node.set("margin", 0.03)
+    node.set("width", 0)
+    node.set("height", 0)
+    node.set("style", "filled")
 
-    nod.set("label", '"' + label + '"')
+    node.set("label", '"' + label + '"')
     if th not in colors:
       notif(f"Missing (or irrelevant) type : {th}")
-      nod.set("fillcolor", "green")
+      node.set("fillcolor", "green")
     else:
       cs, c = colors[th]
-      nod.set("fillcolor", c)
-      nod.set("colorscheme", cs)
+      node.set("fillcolor", c)
+      node.set("colorscheme", cs)
 
-    return nod
+    return node
 
   notif("    - building the graph")
   deps_graph = pdp.Dot()
 
   for col in colors:
-    if col[:6] != "legend":
-      if col[:5] == "tools":
+    if not col.startswith("legend"):
+      if not col.startswith("tools"):
         deps_graph.add_node(_get_node(col, col[6:]))
       else:
         deps_graph.add_node(_get_node(col))
@@ -171,7 +171,7 @@ def draw_gum_dependencies(deps: Dict[str, List[str]]):
 
   for col in colors:
     if col != "legend":
-      if col[:5] == "tools":
+      if col.startswith("tools"):
         deps_graph.add_edge(pdp.Edge("legend_tools", col))
       else:
         deps_graph.add_edge(pdp.Edge("legend", col))
@@ -195,15 +195,15 @@ def draw_gum_dependencies(deps: Dict[str, List[str]]):
     deps_graph.add_node(nod)
 
   for k in deps.keys():
-    for l in deps[k]:
-      deps_graph.add_edge(pdp.Edge(l, k))
+    for nei in deps[k]:
+      deps_graph.add_edge(pdp.Edge(nei, k))
 
   notif("    - drawing in pdf (please be patient...)")
   deps_graph.write_pdf("agrum-map.pdf", prog="fdp")
 
 
 def remove_redundant_dependencies(target, includes):
-  patt = re.compile(r"^#[\s]*include <agrum/([^>]*)>")
+  patt = re.compile(r"^#\s*include <agrum/([^>]*)>")
 
   to_keep = set(includes)
 
@@ -214,9 +214,8 @@ def remove_redundant_dependencies(target, includes):
       m = patt.match(line)
       if m:
         filename = m.group(1)
-        if _header_filter(filename.split("/")):
-          if filename not in to_keep:
-            keep_line = False
+        if _header_filter(filename.split("/")) and filename not in to_keep:
+          keep_line = False
       if keep_line:
         res += line
 

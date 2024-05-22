@@ -22,20 +22,21 @@
 import os
 from subprocess import call
 
-from .utils import trace, notif, critic, warn, error, recglob, srcAgrum, notif_oneline
+from .utils import notif, error, recglob, srcAgrum, notif_oneline
 from .configuration import cfg
 
 from .missingDocs import missingDocs
 from .checkDependencies import check_gum_dependencies
 
 
-def _aff_errors(nb: int, typ: str):
+def _aff_errors(nb: int, typ: str) -> int:
   if nb > 0:
     error(f"{nb} {typ} error{'s' if nb > 1 else ''}{' ' * 40}")  # spaces to remove others possible characters
   return nb
 
 
-def guideline(current, modif=False):
+def guideline(current: dict[str, str], modif=False) -> int:
+  print(current)
   if modif:
     notif("[aGrUM guideline (with correction)]")
   else:
@@ -44,28 +45,28 @@ def guideline(current, modif=False):
   nbrError = 0
 
   notif("  [(1) ]*.cpp[ file for every ]*.h[ file]")
-  nbrError += _aff_errors(_checkCppFileExists(current, modif), "missing cppfile")
+  nbrError += _aff_errors(_checkCppFileExists(modif), "missing cppfile")
   notif("  [(2) check for ]LGPL[ license]")
-  nbrError += _aff_errors(_checkForLGPLlicense(current, modif), "missing LGPL licence")
+  nbrError += _aff_errors(_checkForLGPLlicense(modif), "missing LGPL licence")
   notif("  [(3) check for missing documentation in pyAgrum]")
   nbrError += _aff_errors(_checkForMissingDocs(modif), "missing documentation")
   notif("  [(4) check for deps]")
   nbrError += _aff_errors(check_gum_dependencies(graph=current['build_graph'], correction=modif),
                           "redundant dependency")
   notif("  [(5) check for format]")
-  nbrError += _aff_errors(_checkForFormat(current, modif), "format")
+  nbrError += _aff_errors(_checkForFormat(modif), "format")
 
   return nbrError
 
 
-def _checkForFormat(current, modif):
+def _checkForFormat(modif: bool) -> int:
   nbrError = 0
   if cfg.clangformat is None:
     error("No correct [clang-format] tool has been found.")
   else:
     with open(os.devnull, "w") as blackhole:
       for src in srcAgrum():
-        exceptions = [f'{os.sep}external{os.sep}', 'Parser', 'Scanner']
+        exceptions = {f'{os.sep}external{os.sep}', 'Parser', 'Scanner'}
         if any(subs in src for subs in exceptions):
           continue
 
@@ -75,15 +76,16 @@ def _checkForFormat(current, modif):
           if modif:
             line = cfg.clangformat + " -i " + src
             call(line, shell=True)
-            notif("    [" + src + "] not correctly formatted : [changed]")
+            notif(f"    [{src}] not correctly formatted : [changed]")
           else:
-            notif("    [" + src + "] not correctly formatted")
+            notif(f"    [{src}] not correctly formatted")
         else:
-          notif_oneline("    [" + src.split("/")[-1] + "] OK")
+          notif_oneline(f"    [{src.split('/')[-1]}] OK")
+
   return nbrError
 
 
-def __addLGPLatTop(filename):
+def __addLGPLatTop(filename: str):
   with open(filename, "r") as origine:
     codes = origine.read().split("***********/")
 
@@ -100,7 +102,7 @@ def __addLGPLatTop(filename):
     dest.write(code)
 
 
-def _checkForLGPLlicense(current, modif):
+def _checkForLGPLlicense(modif: bool):
   nbrError = 0
 
   exceptions = [f'{os.sep}mvsc{os.sep}', f'{os.sep}external{os.sep}', f'{os.sep}cxxtest{os.sep}', 'Parser', 'Scanner']
@@ -110,7 +112,7 @@ def _checkForLGPLlicense(current, modif):
 
     fragment = ""
     nbr = 0
-    with open(agrumfile, "r") as f:
+    with open(agrumfile, "r", encoding="utf8") as f:
       for line in f:
         if nbr == 40:
           continue
@@ -129,15 +131,15 @@ def _checkForLGPLlicense(current, modif):
   return nbrError
 
 
-def __addCppFileForHeader(header, cppfile):
+def __addCppFileForHeader(header: str):
   subinclude = header[4:]  # remove the /src
   cppfile = header[:-1] + "cpp"  # name
 
-  with open(cppfile, 'w') as out:
+  with open(cppfile, 'w', encoding="utf8") as out:
     out.write(_template_cpp.replace("{include_file}", subinclude))
 
 
-def _checkCppFileExists(current, modif):
+def _checkCppFileExists(modif: bool) -> int:
   nbrError = 0
 
   exceptions = [f'{os.sep}mvsc{os.sep}', f'{os.sep}signal{os.sep}', f'{os.sep}external{os.sep}',
@@ -155,7 +157,7 @@ def _checkCppFileExists(current, modif):
     if not os.path.isfile(cppfile):
       nbrError += 1
       if modif:
-        __addCppFileForHeader(header, cppfile)
+        __addCppFileForHeader(header)
         error("No cpp file for [" + header + "h] : [added]")
       else:
         error("No cpp file for [" + header + "h]")
@@ -163,7 +165,7 @@ def _checkCppFileExists(current, modif):
   return nbrError
 
 
-def _checkForMissingDocs(modif):
+def _checkForMissingDocs(modif: bool) -> int:
   return missingDocs(modif)
 
 

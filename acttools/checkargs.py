@@ -29,12 +29,12 @@ from .tests import checkAndWriteTests
 from .utils import error, notif, critic, setifyString
 
 
-def parseCommandLine(current):
-  a=cfg.parser.parse_args()
-  return a,a.cmds
+def parseCommandLine():
+  a = cfg.parser.parse_args()
+  return a, a.cmds
 
 
-def getCurrent():
+def getCurrent() -> dict[str, str]:
   current = {}
   try:
     with open(cfg.configFile, "rb") as fp:
@@ -51,7 +51,7 @@ def getCurrent():
   return current
 
 
-def setCurrent(current):
+def setCurrent(current: dict[str, str]):
   shlv = {}
   for key in current.keys():
     if key not in cfg.non_persistent:
@@ -61,9 +61,9 @@ def setCurrent(current):
     pickle.dump(shlv, fp)
 
 
-def checkCurrent(current, options, args):
+def checkCurrent(current: dict[str, str], options: dict[str, str], args: list[str]):
   # helper
-  def update(current, key, val, test):
+  def update(current: dict[str, str], key, val, test):
     if test:
       if current[key] != val:
         current[key] = val
@@ -73,7 +73,7 @@ def checkCurrent(current, options, args):
 
   # fixing options
   for opt, value in options.__dict__.items():
-    if opt=='cmds': # cmds are not options
+    if opt == 'cmds':  # cmds are not options
       continue
     if opt not in current:
       error(f"Options not known : {opt} in {current.keys()}")
@@ -115,7 +115,7 @@ def checkCurrent(current, options, args):
   showInvocation(current)
 
 
-def checkConsistency(current):
+def checkConsistency(current: dict[str, str]):
   has_notif = False
 
   # helper

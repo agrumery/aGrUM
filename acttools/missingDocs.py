@@ -20,6 +20,7 @@
 # *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
 # **************************************************************************
 
+from typing import Iterable
 import types
 import inspect
 import sys
@@ -30,12 +31,12 @@ from .utils import notif
 gumPath = join(dirname(sys.argv[0]), "build/pyAgrum/release/wrappers")
 
 
-def _prefix(name):
+def _prefix(name: str) -> str:
   return " " * (4 * (name.count(".") - 1)) + "- "
 
 
 class PyAgrumDocCoverage:
-  def __init__(self, verbose):
+  def __init__(self, verbose: bool):
     self._verbose = verbose
     self.nb_class = 0
     self.nb_meth = 0
@@ -49,7 +50,8 @@ class PyAgrumDocCoverage:
     self.partial_doc_func = []
     self.partial_doc_meth = []
 
-  def _is_not_valid(self, msg):
+  @staticmethod
+  def _is_not_valid(msg: str) -> bool:
     # deprecated does not follow the rules of validity for documentation
     if msg.strip().startswith("Deprecated"):
       return False
@@ -63,7 +65,7 @@ class PyAgrumDocCoverage:
 
     return False
 
-  def _check_function_oc(self, name, func):
+  def _check_function_oc(self, name: str, func: str):
     res = "check"
     is_meth = name.count(".") > 1
 
@@ -91,7 +93,7 @@ class PyAgrumDocCoverage:
     if self._verbose:
       notif(_prefix(name) + name + " : " + res)
 
-  def _check_class_doc(self, name, clas):
+  def _check_class_doc(self, name: str, clas: str):
     res = "check"
 
     self.nb_class += 1
@@ -107,20 +109,15 @@ class PyAgrumDocCoverage:
     if self._verbose:
       notif(_prefix(name) + name + " : " + res)
 
-  def _ignored_class(self, name, clas):
+  @staticmethod
+  def _ignored_class(clas: str) -> bool:
     if gumPath not in sys.path:
       sys.path.insert(0, gumPath)
     import pyAgrum as gum
 
-    if issubclass(clas, gum.GumException):
-      return True
-    return False
+    return clas in {cls.__name__ for cls in gum.GumException.__subclasses__()}
 
-  def _traversal(self, entities, container):
-    if gumPath not in sys.path:
-      sys.path.insert(0, gumPath)
-    import pyAgrum as gum
-
+  def _traversal(self, entities: Iterable[str], container: str):
     for entity in entities:
       if entity[0] != '_':
         complete_entity_name = container + "." + entity
@@ -128,8 +125,8 @@ class PyAgrumDocCoverage:
         if type(instance_entity) is types.FunctionType:
           self._check_function_oc(complete_entity_name, instance_entity)
         elif inspect.isclass(instance_entity):
-          if not self._ignored_class(complete_entity_name, instance_entity):
-            self._check_class_doc(complete_entity_name, instance_entity)
+          if not self._ignored_class(instance_entity.__name__):
+            self._check_class_doc(complete_entity_name, instance_entity.__name__)
             self._traversal(dir(instance_entity), complete_entity_name)
 
   def check_missing_doc(self):
@@ -157,9 +154,9 @@ class PyAgrumDocCoverage:
     pm = 1.0 - (len(self.undoc_meth) + len(self.partial_doc_meth)) / (1.0 * self.nb_meth)
     pf = 1.0 - (len(self.undoc_func) + len(self.partial_doc_func)) / (1.0 * self.nb_func)
 
-    tc=self.nb_class-(len(self.undoc_class) + len(self.partial_doc_class))
-    tm=self.nb_meth-(len(self.undoc_meth) + len(self.partial_doc_meth)) 
-    tf=self.nb_func- (len(self.undoc_func) + len(self.partial_doc_func)) 
+    tc = self.nb_class - (len(self.undoc_class) + len(self.partial_doc_class))
+    tm = self.nb_meth - (len(self.undoc_meth) + len(self.partial_doc_meth))
+    tf = self.nb_func - (len(self.undoc_func) + len(self.partial_doc_func))
 
     notif(f'Documentation in pyAgrum {gum.__version__}')
 
@@ -193,12 +190,15 @@ class PyAgrumDocCoverage:
       notif("  - nbr of undocumented functions : " + str(len(self.undoc_func)))
       notif(DELIM.join([""] + self.undoc_func))
 
-    return len(self.undoc_class) + len(self.partial_doc_class) + \
-      len(self.undoc_meth) + len(self.partial_doc_meth) + \
-      len(self.undoc_func) + len(self.partial_doc_func)
+    return (len(self.undoc_class) +
+            len(self.partial_doc_class) +
+            len(self.undoc_meth) +
+            len(self.partial_doc_meth) +
+            len(self.undoc_func) +
+            len(self.partial_doc_func))
 
 
-def missingDocs(show_funct:bool=False):
+def missingDocs(show_funct: bool = False):
   return PyAgrumDocCoverage(verbose=show_funct).check_missing_doc()
 
 

@@ -26,7 +26,7 @@ from datetime import datetime
 from .utils import error, notif, setifyString, CrossPlatformRelPath, critic
 
 
-def checkTests(current):
+def checkTests(current:dict[str,str]):
   cde = current['tests']
   if cde == "quick":
     if 'aGrUM' in current['targets']:
@@ -45,11 +45,11 @@ def checkTests(current):
     return checkTestList(current, alltests)
 
 
-def checkAndWriteTests(current):
+def checkAndWriteTests(current:dict[str,str]):
   writeTestList(checkTests(current))
 
 
-def checkTestList(current, alltests):
+def checkTestList(current:dict[str,str], alltests):
   res = []
   for ss in setifyString(current['tests']):
     s = '/' + ss + 'TestSuite.h'
@@ -106,7 +106,7 @@ def testNames(testsList):
   return [s.split('/')[-1].split("TestSuite")[0] for s in testsList]
 
 
-def checkTestListCmake(current):
+def checkTestListCmake(current:dict[str,str]):
   if not os.path.exists('src/testunits/testList.cmake'):
     writeTestList(allTests(current['modules']))
   else:
@@ -148,6 +148,6 @@ def printTestsForModule(m):
   print("")
 
 
-def printTests(current):
+def printTests(current:dict[str,str]):
   for modul in setifyString(current['modules']):
     printTestsForModule(modul)
