@@ -4,8 +4,8 @@ apt-get install -y pandoc
 
 root=$PWD
 
-virtualenv py38
-source py38/bin/activate
+virtualenv py39
+source py39/bin/activate
 
 python act clean
 
@@ -15,7 +15,7 @@ pip install -r wrappers/pyAgrum/doc/sphinx/requirements.txt
 pip uninstall -y pyAgrum
 
 echo "Building pyAgrum doc..."
-python act install release pyAgrum -j halfexcept1 -d $root/py38
+python act install release pyAgrum -j halfexcept1 -d $root/py39
 python act doc pyAgrum
 cd wrappers/pyAgrum/doc/sphinx
 make html

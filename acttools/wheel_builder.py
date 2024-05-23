@@ -135,11 +135,11 @@ def get_python_version(out):
     encoding = sys.stdout.encoding if sys.stdout.encoding else 'utf-8'
     try:
       m = re.match(
-          '^-- python version : ([23]\.[0-9]+(\.[0-9]+)*).*$', line.decode(encoding))
+          r'^-- python version : ([23]\.[0-9]+(\.[0-9]+)*).*$', line.decode(encoding))
     except UnicodeDecodeError:
       # Windows may use latin-1 without saying it
       m = re.match(
-          '^-- python version : ([23]\.[0-9]+(\.[0-9]+)*).*$', line.decode('latin-1'))
+          r'^-- python version : ([23]\.[0-9]+(\.[0-9]+)*).*$', line.decode('latin-1'))
     if m:
       version = m.group(1)
   if version == None:
