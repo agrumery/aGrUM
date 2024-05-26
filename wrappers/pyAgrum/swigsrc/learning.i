@@ -178,7 +178,7 @@ def pseudoCount(self,vars):
 
 def fitParameters(self,bn,take_into_account_score=True):
   """
-  Easy shortcut to LearnParameters method. fitParameters directly populates the CPTs of the argument.
+  fitParameters directly populates the CPTs of the argument using the database and the structure of the BN.
 
   Parameters
   ----------

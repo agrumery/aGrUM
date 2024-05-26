@@ -237,7 +237,7 @@ namespace gum {
         // check if we are allowed to update the range variable
         if (!this->hasEditableDictionary()) {
           GUM_ERROR(UnknownLabelInDatabase,
-                    "The translation of String \"" << str << "\" could not be found");
+                    "The translation of String \"" << str << "\" could not be found for variable '"<<_variable_<<"'.");
         }
 
         // check if str could correspond to a bound of the range variable

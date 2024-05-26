@@ -165,7 +165,7 @@ namespace gum {
           return DBTranslatedValue{size};
         } else
           GUM_ERROR(UnknownLabelInDatabase,
-                    "The translation of \"" << str << "\" could not be found")
+                    "The translation of \"" << str << "\" could not be found for variable '"<<_variable_<<"'.");
       }
     }
 
