@@ -25,8 +25,8 @@ from .configuration import cfg
 from .utils import notif, safe_cd
 
 
-def _callSphinx(cmd: str):
-  if not cfg.current['dry_run']:
+def _callSphinx(current:dict[str,str],cmd: str):
+  if not current['dry_run']:
     proc = Popen(cmd, shell=True, stdout=PIPE, stderr=STDOUT)
     out = proc.stdout.readlines()
     for line in out:
@@ -41,13 +41,13 @@ def _callSphinx(cmd: str):
 def callSphinx(current: dict[str, str]):
   if current['build'] != 'doc-only':
     notif("Compiling pyAgrum")
-    _callSphinx(f'{cfg.python} act lib pyAgrum release --no-fun')
+    _callSphinx(current,f'{cfg.python} act lib pyAgrum release --no-fun')
 
   notif("Sphinxing pyAgrum")
   safe_cd(current, "wrappers")
   safe_cd(current, "pyAgrum")
   safe_cd(current, "doc")
-  _callSphinx('make')
+  _callSphinx(current,'make')
 
   safe_cd(current, "..")
   safe_cd(current, "..")

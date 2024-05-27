@@ -1,12 +1,26 @@
 %feature("docstring") InformationTheory
 "
-This class gathers information theory concepts for subsets named X,Y and Z computed with only one inference.
+This class gathers information theory concepts for subsets named X,Y and Z computed with only one (optimized) inference.
 
-Parameters
-----------
-    - **X** (*int|str* or *iterable[int|str]* ) -- a first nodeset
-    - **Y** (*int|str* or *iterable[int|str]* ) -- a second nodeset
-    - **Z** (*int|str* or *iterable[int|str]* ) -- a third (an optional) nodeset
+
+**it=gum.InformationTheory(ie,X,Y,Z)**
+
+  Parameters
+
+    - **ie** (*InferenceEngine*) -- the inference algorithme to use (for instance, `pyAgrum.LazyPropagation`)
+    - **X** (*int or str* or *iterable[int or str]* ) -- a first nodeset
+    - **Y** (*int or str* or *iterable[int or str]* ) -- a second nodeset
+    - **Z** (*int or str* or *iterable[int or str]* ) -- a third (an optional) nodeset
+
+Examples
+--------
+>>> import pyAgrum as gum
+>>> bn=gum.fastBN('A->B<-C<-D->E<-F->G->A')
+>>> ie=gum.LazyPropagation(bn)
+>>> it=gum.InformationTheory(ie,'A',['B','G'],['C'])
+>>> print(f'Entropy(A)={it.entropyX()}'')
+>>> print(f'MutualInformation(A;B,G)={it.mutualInformationXY()}')
+>>> print(f'MutualInformation(A;B,G| C)={it.mutualInformationXYgivenZ()}')
 "
 
 %feature("docstring") InformationTheory::entropyX
@@ -27,7 +41,7 @@ Returns
 %feature("docstring") InformationTheory::XYgivenZ
 "
 Returns
--------   
+-------
   float
     The conditional entropy of nodeset, union of X and Y conditionned by nodeset Z
 "
@@ -65,7 +79,7 @@ Returns
 "
 
 %feature("docstring") InformationTheory::mutualInformationXYgivenZ
-" 
+"
 Returns
 -------
   float
