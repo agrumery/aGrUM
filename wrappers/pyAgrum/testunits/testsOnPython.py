@@ -99,11 +99,18 @@ def runTests(local: bool, test_module) -> int:
 
   from tests import WorkaroundTestSuite
 
+  from tests import CLGLearningTestSuite
+  from tests import CLGSamplingTestSuite
+  from tests import CLGCanonicalFormTestSuite
+  from tests import CLGInferenceTestSuite
+
+  #from tests import MixtureModelTestSuite
+
   import time
 
   tl = list()
   if test_module in {"", "main"}:
-   #tl.append(AggregatorsForBNTestSuite.ts)
+    tl.append(AggregatorsForBNTestSuite.ts)
     tl.append(AllIncrementalInferenceTestSuite.ts)
     tl.append(BayesNetTestSuite.ts)
     tl.append(BayesNetFragmentTestSuite.ts)
@@ -143,6 +150,12 @@ def runTests(local: bool, test_module) -> int:
       tl.append(SkbnTestSuite.ts)
     else:
       logging.warning("Pandas or sklearn not found.")
+
+  if test_module in {"", "clg"}:
+    tl.append(CLGLearningTestSuite.ts)
+    tl.append(CLGSamplingTestSuite.ts)
+    tl.append(CLGCanonicalFormTestSuite.ts)
+    tl.append(CLGInferenceTestSuite.ts)
 
   tests = unittest.TestSuite(tl)
 

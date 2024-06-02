@@ -151,6 +151,7 @@ add_custom_command(TARGET ${_PYAGRUMLIB} POST_BUILD COMMAND ${CMAKE_COMMAND} -E 
 add_custom_command(TARGET ${_PYAGRUMLIB} POST_BUILD COMMAND ${CMAKE_COMMAND} -E copy_directory "${CMAKE_CURRENT_SOURCE_DIR}/pyLibs" "${CMAKE_CURRENT_BINARY_DIR}")
 add_custom_command(TARGET ${_PYAGRUMLIB} POST_BUILD COMMAND ${CMAKE_COMMAND} -E copy_directory "${CMAKE_CURRENT_SOURCE_DIR}/pyLibs/causal" "${CMAKE_CURRENT_BINARY_DIR}/causal")
 add_custom_command(TARGET ${_PYAGRUMLIB} POST_BUILD COMMAND ${CMAKE_COMMAND} -E copy_directory "${CMAKE_CURRENT_SOURCE_DIR}/pyLibs/skbn" "${CMAKE_CURRENT_BINARY_DIR}/skbn")
+add_custom_command(TARGET ${_PYAGRUMLIB} POST_BUILD COMMAND ${CMAKE_COMMAND} -E copy_directory "${CMAKE_CURRENT_SOURCE_DIR}/pyLibs/clg" "${CMAKE_CURRENT_BINARY_DIR}/clg")
 
 # updating generated cat requirements.txt from pyAgrum/requirements.txt and pyAgrum/optional_requirements.txt
 set(PYAGRUM_REQUIREMENTS_LIST
@@ -175,7 +176,7 @@ FOREACH (reqdir ${PYAGRUM_REQUIREMENTS_LIST})
     FILE(APPEND ${reqdir}/requirements.txt "################################\n")
     FILE(APPEND ${reqdir}/requirements.txt "${PYAGRUM_SPECIFIC_REQ_CONTENT}\n")
 ENDFOREACH ()
-# REQUIRMENTS files updated
+# REQUIREMENTS files updated
 
 
 file(GLOB GUMPY_FILES "${CMAKE_CURRENT_SOURCE_DIR}/pyLibs/*.py")
@@ -183,11 +184,12 @@ file(GLOB GUMPY_CONFIG_FILES "${CMAKE_CURRENT_SOURCE_DIR}/pyLibs/*.ini")
 file(GLOB GUMLIB_FILES "${CMAKE_CURRENT_SOURCE_DIR}/pyLibs/lib/*.py")
 file(GLOB GUMCAUSAL_FILES "${CMAKE_CURRENT_SOURCE_DIR}/pyLibs/causal/*.py")
 file(GLOB GUMSKBN_FILES "${CMAKE_CURRENT_SOURCE_DIR}/pyLibs/skbn/*.py")
+file(GLOB GUMCLG_FILES "${CMAKE_CURRENT_SOURCE_DIR}/pyLibs/clg/*.py")
 
 #include("${CMAKE_CURRENT_SOURCE_DIR}/../../VERSION.txt")
 set(PYAGRUM_VERSION "${AGRUM_VERSION_MAJOR}.${AGRUM_VERSION_MINOR}.${AGRUM_VERSION_PATCH}")
 if (DEFINED AGRUM_VERSION_TWEAK)
-    set(PAGRUM_VERSION "${PYAGRUM_VERSION}.{$AGRUM_VERSION_TWEAK}")
+    set(PYAGRUM_VERSION "${PYAGRUM_VERSION}.{$AGRUM_VERSION_TWEAK}")
 endif ()
 
 set(PYAGRUM_DISTDIR "pyAgrum-${PYAGRUM_VERSION}.dist-info")
@@ -209,9 +211,8 @@ install(TARGETS ${_PYAGRUMLIB} DESTINATION ${PYTHON_INSTALL}/pyAgrum)
 install(FILES ${GUMPY_FILES} DESTINATION ${PYTHON_INSTALL}/pyAgrum)
 install(FILES ${GUMPY_CONFIG_FILES} DESTINATION ${PYTHON_INSTALL}/pyAgrum)
 install(FILES ${GUMLIB_FILES} DESTINATION ${PYTHON_INSTALL}/pyAgrum/lib)
-if (NOT Python_VERSION VERSION_LESS 3.7)
-    install(FILES ${GUMCAUSAL_FILES} DESTINATION ${PYTHON_INSTALL}/pyAgrum/causal)
-endif ()
+install(FILES ${GUMCAUSAL_FILES} DESTINATION ${PYTHON_INSTALL}/pyAgrum/causal)
+install(FILES ${GUMCLG_FILES} DESTINATION ${PYTHON_INSTALL}/pyAgrum/clg)
 install(FILES ${GUMSKBN_FILES} DESTINATION ${PYTHON_INSTALL}/pyAgrum/skbn)
 
 # # show all cmake variables
