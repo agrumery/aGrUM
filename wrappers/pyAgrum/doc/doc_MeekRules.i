@@ -39,7 +39,7 @@ pyAgrum.PDAG
 
 %feature("docstring") gum::MeekRules::propagateToDAG
 "
-Call propagateToCPDAG and then orients the remaining edges arbitrarily according to some heuristics. `pyAgrum.MeekRules.Choices` returns the list of the arbitrary choices made by the last execution of `pyAgrum.MeekRules.progagatesToDAG`.
+Calls `propagateToCPDAG` and then orients the remaining edges arbitrarily according to some heuristics. `pyAgrum.MeekRules.Choices` returns the list of the arbitrary choices made by the last execution of `pyAgrum.MeekRules.progagatesToDAG`.
 
 Parameters
 ----------
@@ -54,10 +54,10 @@ Returns
 
 %feature("docstring") gum::MeekRules::choices
 "
-Returns the list of the arbitrary choices made by the last execution of `pyAgrum.MeekRules.progagatesToCPDAG` or `pyAgrum.MeekRules.progagatesToDAG.
+Returns the list of the arbitrary choices made by the last execution of `pyAgrum.MeekRules.progagatesToCPDAG` or `pyAgrum.MeekRules.progagatesToDAG`.
 
 Returns
 -------
 list of tuple
-    The list of the arbitrary choices made by the last execution of `pyAgrum.MeekRules.progagatesToCPDAG` or `pyAgrum.MeekRules.progagatesToDAG`. Each tuple is `pyAgrum.Edge`.
+    The list of the arbitrary choices made by the last execution of `pyAgrum.MeekRules.progagatesToCPDAG` or `pyAgrum.MeekRules.progagatesToDAG`. Each tuple represents a `pyAgrum.Edge`.
 "

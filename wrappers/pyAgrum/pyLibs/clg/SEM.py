@@ -32,7 +32,11 @@ from .GaussianVariable import GaussianVariable
 
 class SEM:
   """
-  @code
+  This class is used to parse a SEM into a CLG model or convert a CLG model into a SEM.
+
+  code
+  ----
+
   sem = SEM('''
   # hyper parameters
   A = 4[5]
@@ -80,7 +84,7 @@ class SEM:
       The position in the string where to start the check.
     pattern : re.Pattern
       The pattern to be matched.
-    
+
     Returns
     -------
     Tuple[str, int] or Tuple[None, None]
@@ -99,9 +103,9 @@ class SEM:
 
     Parameters
     ----------
-    s : str 
+    s : str
       The line to be parsed.
-    
+
     Returns
     -------
     Tuple[str, Dict[str, str | float], float]
@@ -225,7 +229,7 @@ class SEM:
     ----------
     clg : CLG
       The CLG model to be converted.
-    
+
     Returns
     -------
     lines : str

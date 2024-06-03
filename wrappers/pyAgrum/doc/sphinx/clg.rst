@@ -1,5 +1,5 @@
 Continuous Linear Gaussian Bayesian Networks
-=================================
+============================================
 
 .. figure:: _static/clg.jpg
     :align: center
@@ -26,6 +26,7 @@ SEM provides estimates of the strength and significance of the relationships bet
 .. toctree::
    :maxdepth: 3
 
+   clgGaussianVariables
    clgModel
    clgInference
    clgGraphical

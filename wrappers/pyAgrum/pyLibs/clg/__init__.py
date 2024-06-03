@@ -27,17 +27,17 @@ __author__ = "Pierre-Henri Wuillemin, Zhe Huang"
 __copyright__ = "(c) 2022-2023 PARIS"
 
 from .CanonicalForm import CanonicalForm
-from .CLG import CLG
+from .CLG import CLG,randomCLG
 from .ForwardSampling import ForwardSampling
 from .GaussianVariable import GaussianVariable
 from .inference import CLGVariableElimination
-from .learning import RAveL_learning
+from .learning import CLGLearner
 from .SEM import SEM
 
 __all__ = ['CanonicalForm',
-           'CLG',
+           'CLG', 'randomCLG',
            'ForwardSampling',
            'GaussianVariable',
            'CLGVariableElimination',
-           'RAveL_learning',
+           'CLGLearner',
            'SEM']

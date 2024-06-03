@@ -81,15 +81,15 @@ class CLG:
     -------
     NodeId
       The id of the added variable.
-    
+
     Raises
     ------
     ValueError
       if the argument is None.
-    
+
     NameError
       if the name of the variable is empty.
-    
+
     NameError
       if a variable with the same name already exists in the CLG.
     """
@@ -116,7 +116,7 @@ class CLG:
       The id of the variable.
     mu : float
       The new mean of the variable.
-    
+
     Raises
     ------
     gum.NotFound
@@ -134,7 +134,7 @@ class CLG:
       The id of the variable.
     sigma : float
       The new standard deviation of the variable.
-    
+
     Raises
     ------
     gum.NotFound
@@ -150,7 +150,7 @@ class CLG:
     ----------
     val : NameOrId
       The name or the NodeId of the variable.
-    
+
     Returns
     -------
     NodeId
@@ -170,12 +170,12 @@ class CLG:
       The name or the NodeId of the child variable.
     coef : float or int
       The coefficient of the arc.
-    
+
     Returns
     -------
     Tuple[NodeId, NodeId]
       The tuple of the NodeIds of the parent and the child variables.
-    
+
     Raises
     ------
     gum.NotFound
@@ -204,12 +204,12 @@ class CLG:
       The name or the NodeId of the parent variable.
     val2 : NameOrId
       The name or the NodeId of the child variable.
-    
+
     Returns
     -------
     bool
       True if the arc exists.
-    
+
     Raises
     ------
     gum.NotFound
@@ -232,7 +232,7 @@ class CLG:
       The name or the NodeId of the child variable.
     coef : float or int
       The new coefficient of the arc.
-    
+
     Raises
     ------
     gum.NotFound
@@ -278,12 +278,12 @@ class CLG:
     ----------
     node : NodeId
       The id of the variable.
-    
+
     Returns
     -------
     str
       The associated name of the variable.
-    
+
     Raises
     ------
     gum.NotFound
@@ -304,7 +304,7 @@ class CLG:
     -------
     NodeId
       The NodeId of the variable.
-    
+
     Raises
     ------
     gum.NotFound
@@ -320,12 +320,12 @@ class CLG:
     ----------
     val : NameOrId
       The name or the NodeId of the variable.
-    
+
     Returns
     -------
     GaussianVariable
       The variable.
-    
+
     Raises
     ------
     gum.NotFound
@@ -416,7 +416,7 @@ class CLG:
     ----------
     val : NameOrId
       The name or the NodeId of the variable.
-    
+
     Returns
     -------
     Set[NodeId]
@@ -432,7 +432,7 @@ class CLG:
     ----------
     val : NameOrId
       The name or the NodeId of the variable.
-    
+
     Returns
     -------
     List[str]
@@ -448,7 +448,7 @@ class CLG:
     ----------
     val : NameOrId
       The name or the NodeId of the variable.
-    
+
     Returns
     -------
     Set[NodeId]
@@ -464,7 +464,7 @@ class CLG:
     ----------
     val : NameOrId
       The name or the NodeId of the variable.
-    
+
     Returns
     -------
     List[str]
@@ -509,7 +509,7 @@ class CLG:
     ----------
     data : csv file
       The data.
-    
+
     Returns
     -------
     float
@@ -539,55 +539,6 @@ class CLG:
 
     return log_likelihood
 
-  @staticmethod
-  def randomCLG(nb_variables, names, MuMax=5, MuMin=-5, SigmaMax=10, SigmaMin=1, ArcCoefMax=10, ArcCoefMin=5):
-    """
-    This function generates a random CLG with nb_variables variables.
-
-    Parameters
-    ----------
-    nb_variables : int
-      The number of variables in the CLG.
-    names : str
-      The list of names of the variables.
-    MuMax : float
-      The maximum value of mu.
-    MuMin : float
-      The minimum value of mu.
-    SigmaMax : float
-      The maximum value of sigma.
-    SigmaMin : float
-      The minimum value of sigma.
-    ArcCoefMax : float
-      The maximum value of the coefficient of the arc.
-    ArcCoefMin : float
-      The minimum value of the coefficient of the arc.
-    
-    Returns
-    -------
-    CLG
-      The random CLG.
-    """
-    # Create a random BN with nb_variables variables
-    bn = gum.randomBN(names=names, n=nb_variables)
-
-    # Order names by their NodeIds
-    ordered_names = [''] * nb_variables
-    for name in bn.names():
-      ordered_names[bn.idFromName(name)] = name
-
-    # Create a random CLG with nb_variables variables(The CLG is created with the same structure as the BN)
-    clg = CLG()
-    # Add variables
-    for name in ordered_names:
-      new_variable = GaussianVariable(name=name, mu=random.uniform(MuMin, MuMax),
-                                      sigma=random.uniform(SigmaMin, SigmaMax))
-      clg.add(new_variable)
-    # Add arcs
-    for arc in bn.arcs():
-      clg.addArc(val1=arc[0], val2=arc[1],
-                 coef=random.uniform(-1 * ArcCoefMax, -1 * ArcCoefMin) if random.random() < 0.5 else random.uniform(
-                   ArcCoefMin, ArcCoefMax))
 
     return clg
 
@@ -600,7 +551,7 @@ class CLG:
     ----------
     clg_to_compare : CLG
       The CLG to compare with.
-    
+
     Returns
     -------
     float
@@ -630,3 +581,54 @@ class CLG:
     cmp = gcm.GraphicalBNComparator(bn, bn_to_compare)
 
     return cmp.scores()['fscore']
+
+def randomCLG(nb_variables, names, MuMax=5, MuMin=-5, SigmaMax=10, SigmaMin=1, ArcCoefMax=10, ArcCoefMin=5):
+  """
+  This function generates a random CLG with nb_variables variables.
+
+  Parameters
+  ----------
+  nb_variables : int
+    The number of variables in the CLG.
+  names : str
+    The list of names of the variables.
+  MuMax : float
+    The maximum value of mu.
+  MuMin : float
+    The minimum value of mu.
+  SigmaMax : float
+    The maximum value of sigma.
+  SigmaMin : float
+    The minimum value of sigma.
+  ArcCoefMax : float
+    The maximum value of the coefficient of the arc.
+  ArcCoefMin : float
+    The minimum value of the coefficient of the arc.
+
+  Returns
+  -------
+  CLG
+    The random CLG.
+  """
+  # Create a random BN with nb_variables variables
+  bn = gum.randomBN(names=names, n=nb_variables)
+
+  # Order names by their NodeIds
+  ordered_names = [''] * nb_variables
+  for name in bn.names():
+    ordered_names[bn.idFromName(name)] = name
+
+  # Create a random CLG with nb_variables variables(The CLG is created with the same structure as the BN)
+  clg = CLG()
+  # Add variables
+  for name in ordered_names:
+    new_variable = GaussianVariable(name=name, mu=random.uniform(MuMin, MuMax),
+                                    sigma=random.uniform(SigmaMin, SigmaMax))
+    clg.add(new_variable)
+  # Add arcs
+  for arc in bn.arcs():
+    clg.addArc(val1=arc[0], val2=arc[1],
+               coef=random.uniform(-1 * ArcCoefMax, -1 * ArcCoefMin) if random.random() < 0.5 else random.uniform(
+                 ArcCoefMin, ArcCoefMax))
+
+  return clg

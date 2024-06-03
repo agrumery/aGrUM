@@ -38,5 +38,3 @@ A structural property of Bayesian networks is the Markov boundary of a node. A M
     :alt: Generalized Markov Blanket in pyAgrum
 
 .. autofunction:: pyAgrum.lib.explain.generalizedMarkovBlanket
-
-.. autofunction:: pyAgrum.lib.explain.generalizedMarkovBlanket

@@ -35,7 +35,7 @@ from .CLG import CLG
 from .GaussianVariable import GaussianVariable
 
 
-class RAveL_learning:
+class CLGLearner:
   """
   Using Rademacher Average to guarantee FWER(Family Wise Error Rate) in independency test.
   (see "Bounding the Family-Wise Error Rate in Local Causal Discover using Rademacher Averages", Dario Simionato, Fabio Vandin, 2022)
@@ -143,7 +143,7 @@ class RAveL_learning:
     for X in s:
       for Y in s:
         if X < Y:
-          for Z in RAveL_learning.generate_subsets(s - {X, Y}):
+          for Z in CLGLearner.generate_subsets(s - {X, Y}):
             yield X, Y, Z
 
   def supremum_deviation(self, n_sample: int, fwer_delta: float):
@@ -175,7 +175,7 @@ class RAveL_learning:
 
     # iteration over combinations of each pair of variables X,Y and set of conditioned variables Z
     # calcul r_XYZ for every element X,Y,Z
-    for X, Y, Z in RAveL_learning.generate_XYZ(self._model.nodes()):
+    for X, Y, Z in CLGLearner.generate_XYZ(self._model.nodes()):
       self.Pearson_coeff(X, Y, Z)
 
     # [a, b] is range of F

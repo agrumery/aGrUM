@@ -47,6 +47,14 @@ Causal Bayesian Networks
 
     notebooks/*-Causality*
 
+pyAgrum's (experimental) models
+===============================
+
+.. nbgallery::
+    :glob:
+
+    notebooks/*-PyModels*
+
 pyAgrum's specific features
 ===========================
 

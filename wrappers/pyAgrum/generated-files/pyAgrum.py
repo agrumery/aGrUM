@@ -509,13 +509,35 @@ _pyAgrum.BNGenerator_swigregister(BNGenerator)
 class InformationTheory(object):
     r"""
 
-    This class gathers information theory concepts for subsets named X,Y and Z computed with only one inference.
+    This class gathers information theory concepts for subsets named X,Y and Z computed with only one (optimized) inference.
+
+
+    **it=pyAgrum.InformationTheory(ie,X,Y,Z)**
 
     Parameters
     ----------
-        - **X** (*intstr* or *iterable[intstr]* ) -- a first nodeset
-        - **Y** (*intstr* or *iterable[intstr]* ) -- a second nodeset
-        - **Z** (*intstr* or *iterable[intstr]* ) -- a third (an optional) nodeset
+        ie : InferenceEngine
+          the inference algorithme to use (for instance, `pyAgrum.LazyPropagation`)
+        X : int or str or iterable[int or str]
+          a first nodeset
+        Y  : int or str or iterable[int or str]
+          a second nodeset
+        Z :  : int or str or iterable[int or str] (optional)
+          a third (an optional) nodeset
+
+    Example
+    -------
+
+          .. code:: python
+
+              import pyAgrum as gum
+              bn=pyAgrum.fastBN('A->B<-C<-D->E<-F->G->A')
+              ie=pyAgrum.LazyPropagation(bn)
+              it=pyAgrum.InformationTheory(ie,'A',['B','G'],['C'])
+              print(f'Entropy(A)={it.entropyX()}'')
+              print(f'MutualInformation(A;B,G)={it.mutualInformationXY()}')
+              print(f'MutualInformation(A;B,G| C)={it.mutualInformationXYgivenZ()}')
+              print(f'VariationOfInformation(A;B,G)={it.variationOfInformationXY()}')
 
     """
 
@@ -525,13 +547,35 @@ class InformationTheory(object):
     def __init__(self, *args):
         r"""
 
-        This class gathers information theory concepts for subsets named X,Y and Z computed with only one inference.
+        This class gathers information theory concepts for subsets named X,Y and Z computed with only one (optimized) inference.
+
+
+        **it=pyAgrum.InformationTheory(ie,X,Y,Z)**
 
         Parameters
         ----------
-            - **X** (*intstr* or *iterable[intstr]* ) -- a first nodeset
-            - **Y** (*intstr* or *iterable[intstr]* ) -- a second nodeset
-            - **Z** (*intstr* or *iterable[intstr]* ) -- a third (an optional) nodeset
+            ie : InferenceEngine
+              the inference algorithme to use (for instance, `pyAgrum.LazyPropagation`)
+            X : int or str or iterable[int or str]
+              a first nodeset
+            Y  : int or str or iterable[int or str]
+              a second nodeset
+            Z :  : int or str or iterable[int or str] (optional)
+              a third (an optional) nodeset
+
+        Example
+        -------
+
+              .. code:: python
+
+                  import pyAgrum as gum
+                  bn=pyAgrum.fastBN('A->B<-C<-D->E<-F->G->A')
+                  ie=pyAgrum.LazyPropagation(bn)
+                  it=pyAgrum.InformationTheory(ie,'A',['B','G'],['C'])
+                  print(f'Entropy(A)={it.entropyX()}'')
+                  print(f'MutualInformation(A;B,G)={it.mutualInformationXY()}')
+                  print(f'MutualInformation(A;B,G| C)={it.mutualInformationXYgivenZ()}')
+                  print(f'VariationOfInformation(A;B,G)={it.variationOfInformationXY()}')
 
         """
         _pyAgrum.InformationTheory_swiginit(self, _pyAgrum.new_InformationTheory(*args))
@@ -6173,7 +6217,7 @@ class MeekRules(object):
     def propagateToDAG(self, mg: "MixedGraph") -> "pyAgrum.DAG":
         r"""
 
-        Call propagateToCPDAG and then orients the remaining edges arbitrarily according to some heuristics. `pyAgrum.MeekRules.Choices` returns the list of the arbitrary choices made by the last execution of `pyAgrum.MeekRules.progagatesToDAG`.
+        Calls `propagateToCPDAG` and then orients the remaining edges arbitrarily according to some heuristics. `pyAgrum.MeekRules.Choices` returns the list of the arbitrary choices made by the last execution of `pyAgrum.MeekRules.progagatesToDAG`.
 
         Parameters
         ----------
@@ -6191,12 +6235,12 @@ class MeekRules(object):
     def choices(self) -> object:
         r"""
 
-        Returns the list of the arbitrary choices made by the last execution of `pyAgrum.MeekRules.progagatesToCPDAG` or `pyAgrum.MeekRules.progagatesToDAG.
+        Returns the list of the arbitrary choices made by the last execution of `pyAgrum.MeekRules.progagatesToCPDAG` or `pyAgrum.MeekRules.progagatesToDAG`.
 
         Returns
         -------
         list of tuple
-            The list of the arbitrary choices made by the last execution of `pyAgrum.MeekRules.progagatesToCPDAG` or `pyAgrum.MeekRules.progagatesToDAG`. Each tuple is `pyAgrum.Edge`.
+            The list of the arbitrary choices made by the last execution of `pyAgrum.MeekRules.progagatesToCPDAG` or `pyAgrum.MeekRules.progagatesToDAG`. Each tuple represents a `pyAgrum.Edge`.
 
         """
         return _pyAgrum.MeekRules_choices(self)
@@ -27949,7 +27993,7 @@ class BNLearner(object):
 
     def fitParameters(self,bn,take_into_account_score=True):
       """
-      Easy shortcut to LearnParameters method. fitParameters directly populates the CPTs of the argument.
+      fitParameters directly populates the CPTs of the argument using the database and the structure of the BN.
 
       Parameters
       ----------

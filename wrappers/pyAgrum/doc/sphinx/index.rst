@@ -80,11 +80,11 @@ Reference manual
   lib.dBN
   pyAgrum.lib
 
-  .. toctree::
-    :caption: 5- pyAgrum's (experimentals) models
-    :maxdepth: 2
+.. toctree::
+  :caption: 5- pyAgrum's (experimentals) models
+  :maxdepth: 2
 
-    clg
+  clg
 
 .. toctree::
   :caption: 5- Miscellaneous

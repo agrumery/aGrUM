@@ -1,5 +1,5 @@
 Learning a CLG
-^^^^^^^^^^^^^^^
+^^^^^^^^^^^^^^
 
 One of the main features of this library is the possibility to learn a CLG.
 
@@ -9,25 +9,8 @@ More precisely what can be learned is :
 
 **Learning the graph**
 
-To learn the graph of a CLG (ie the dependence between variables) we use a modified PC algorithm based on the work
-of Diego Colombo, Marloes H. Maathuis: Order-Independent Constraint-Based Causal Structure Learning(2014).
-The independence test used is based on the work 
-of Dario Simionato, Fabio Vandin: Bounding the Family-Wise Error Rate in Local Causal Discovery using Rademacher Averages(2022).
+To learn the graph of a CLG (ie the dependence between variables) we use a modified PC algorithm based on the workof Diego Colombo, Marloes H. Maathuis: Order-Independent Constraint-Based Causal Structure Learning(2014).
 
-.. autofunction:: pyAgrum.clg.learning.supremum_deviation
- 
-.. autofunction:: pyAgrum.clg.learning.test_indep
+The independence test used is based on the work of Dario Simionato, Fabio Vandin: Bounding the Family-Wise Error Rate in Local Causal Discovery using Rademacher Averages(2022).
 
-.. autofunction:: pyAgrum.clg.learning.test_indep.RAveL_PC  
-
-.. autofunction:: pyAgrum.clg.learning.test_indep.RAveL_MB
-
-.. autofunction:: pyAgrum.clg.learning.test_indep.PC_algorithm
-
-
-
-**Learning the parameters**
-
-To learn the parameters of a CLG, we use linear regression.
-
-.. autofunction:: pyAgrum.clg.learning.fitParameters
+.. autoclass:: pyAgrum.clg.learning.CLGLearner

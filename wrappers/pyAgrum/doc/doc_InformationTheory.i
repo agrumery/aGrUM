@@ -5,22 +5,30 @@ This class gathers information theory concepts for subsets named X,Y and Z compu
 
 **it=gum.InformationTheory(ie,X,Y,Z)**
 
-  Parameters
+Parameters
+----------
+    ie : InferenceEngine
+      the inference algorithme to use (for instance, `pyAgrum.LazyPropagation`)
+    X : int or str or iterable[int or str]
+      a first nodeset
+    Y  : int or str or iterable[int or str]
+      a second nodeset
+    Z :  : int or str or iterable[int or str] (optional)
+      a third (an optional) nodeset
 
-    - **ie** (*InferenceEngine*) -- the inference algorithme to use (for instance, `pyAgrum.LazyPropagation`)
-    - **X** (*int or str* or *iterable[int or str]* ) -- a first nodeset
-    - **Y** (*int or str* or *iterable[int or str]* ) -- a second nodeset
-    - **Z** (*int or str* or *iterable[int or str]* ) -- a third (an optional) nodeset
+Example
+-------
 
-Examples
---------
->>> import pyAgrum as gum
->>> bn=gum.fastBN('A->B<-C<-D->E<-F->G->A')
->>> ie=gum.LazyPropagation(bn)
->>> it=gum.InformationTheory(ie,'A',['B','G'],['C'])
->>> print(f'Entropy(A)={it.entropyX()}'')
->>> print(f'MutualInformation(A;B,G)={it.mutualInformationXY()}')
->>> print(f'MutualInformation(A;B,G| C)={it.mutualInformationXYgivenZ()}')
+      .. code:: python
+
+          import pyAgrum as gum
+          bn=gum.fastBN('A->B<-C<-D->E<-F->G->A')
+          ie=gum.LazyPropagation(bn)
+          it=gum.InformationTheory(ie,'A',['B','G'],['C'])
+          print(f'Entropy(A)={it.entropyX()}'')
+          print(f'MutualInformation(A;B,G)={it.mutualInformationXY()}')
+          print(f'MutualInformation(A;B,G| C)={it.mutualInformationXYgivenZ()}')
+          print(f'VariationOfInformation(A;B,G)={it.variationOfInformationXY()}')
 "
 
 %feature("docstring") InformationTheory::entropyX

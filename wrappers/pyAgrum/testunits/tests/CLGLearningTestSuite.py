@@ -29,7 +29,7 @@ from .pyAgrumTestSuite import pyAgrumTestCase, addTests
 
 from pyAgrum.clg.CLG import CLG
 from pyAgrum.clg.GaussianVariable import GaussianVariable
-from pyAgrum.clg.learning import RAveL_learning
+from pyAgrum.clg.learning import CLGLearner
 
 
 class CLGLearningTestCase(pyAgrumTestCase):
@@ -51,7 +51,7 @@ class CLGLearningTestCase(pyAgrumTestCase):
     clg.addArc(idC, idD, 1)
 
     # learning
-    learner = RAveL_learning(self.agrumSrcDir("CLGLearningTestSuite2.csv"))
+    learner = CLGLearner(self.agrumSrcDir("CLGLearningTestSuite2.csv"))
     learner.supremum_deviation(n_sample=10, fwer_delta=0.05)
 
     # Assert
@@ -78,7 +78,7 @@ class CLGLearningTestCase(pyAgrumTestCase):
     clg.addArc(idC, idD, 1)
 
     # learning
-    learner = RAveL_learning(self.agrumSrcDir("CLGLearningTestSuite2.csv"))
+    learner = CLGLearner(self.agrumSrcDir("CLGLearningTestSuite2.csv"))
     learner.supremum_deviation(n_sample=10, fwer_delta=0.05)
 
     # Assert
@@ -110,7 +110,7 @@ class CLGLearningTestCase(pyAgrumTestCase):
     clg.addArc(idF, idB, 0.8)
 
     # learning
-    learner = RAveL_learning(self.agrumSrcDir("CLGLearningTestSuite1.csv"))
+    learner = CLGLearner(self.agrumSrcDir("CLGLearningTestSuite1.csv"))
     learner.supremum_deviation(n_sample=10, fwer_delta=0.05)
     # PC algorithm
     C = learner.PC_algorithm(order=clg.nodes())
@@ -136,7 +136,7 @@ class CLGLearningTestCase(pyAgrumTestCase):
     clg.addArc(idC, idD, 1)
 
     # learning
-    learner = RAveL_learning(self.agrumSrcDir("CLGLearningTestSuite2.csv"))
+    learner = CLGLearner(self.agrumSrcDir("CLGLearningTestSuite2.csv"))
     learner.supremum_deviation(n_sample=10, fwer_delta=0.05)
     # PC algorithm
     C = learner.PC_algorithm(order=clg.nodes())
