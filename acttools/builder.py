@@ -1,5 +1,5 @@
 # ***************************************************************************
-# *   Copyright (c) 2015-2024 by Pierre-Henri WUILLEMIN                     *
+# *   Copyright (c) 2015-2023 by Pierre-Henri WUILLEMIN                     *
 # *   {prenom.nom}_at_lip6.fr                                               *
 # *                                                                         *
 # *   "act" is free software; you can redistribute it and/or modify         *
@@ -181,7 +181,7 @@ def getForMsBuildSystem(current: dict[str, str], target: str):
       if target == "aGrUM":
         line = cfg.msbuild + ' agrum.sln /t:gumTest /p:Configuration="Release"'
       elif target == "pyAgrum":
-        line = cfg.msbuild + ' agrum.sln /t:pyAgrum /p:Configuration="Release"'
+        line = cfg.msbuild + ' agrum.sln /t:_pyAgrum /p:Configuration="Release"'
       else:  # if target!= "pyAgrum":
         critic(f"Action '{current['action']}' not treated for target '{target}' for now in compiler strange world.")
     elif current["action"] == "install":
@@ -252,7 +252,8 @@ def getPost(current: dict[str, str], target: str) -> tuple[str, bool]:
         critic(f"Only [-t all] or [-t quick] for testing pyAgrum (instead of [{current['tests']}])")
 
       if cfg.os_platform == "win32":
-        line = cfg.python.replace('"', "") + rf' ../../../wrappers/pyAgrum/testunits/{gumTest}'
+        line = 'copy /Y "wrappers\pyAgrum\Release\_pyAgrum.pyd" "wrappers\pyAgrum\." & ' + \
+            cfg.python + " ..\\..\\..\\wrappers\\pyAgrum\\testunits\\" + gumTest
       else:
         line = f"{cfg.python} ../../../wrappers/pyAgrum/testunits/{gumTest}"
       line += " " + current['mode']
