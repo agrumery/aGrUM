@@ -1,5 +1,21 @@
 # aGrUM Changelog
 
+## Changelog for 1.14.0
+
+* aGrUM
+  * `gum::Potential::marg{Xyz}{In|Out}` are renamed `gum::Potental::{xyz}{In|Out}` to cut down on some verbosity.
+  (for instance : `p.margSumOut` becomes `p.sumOut`)
+  * Better error messages for `gum::BNLearner<GUM_DATA>`
+
+* pyAgrum
+  * Dropping support of python 3.8 (following [NEP29](https://numpy.org/neps/nep-0029-deprecation_policy.html)).
+  * Fixing some memory leaks (in special cases) found by Christophe Gonzales
+  * new `pyAgrum.lib.explain.generalizedMarkovBlanket{Names}` and documentation.
+  * `pyAgrum.Potential.marg{Xyz}{In|Out}` are renamed `pyAgrum.Potental.{xyz}{In|Out}` to cut down on some verbosity.
+      (for instance : `p.margSumOut` becomes `p.sumOut`)
+  * Better error messages for `pyAgrum.BNLearner`
+  * Adding new python's experimental model : Conditional Linear Gaussian (`pyAgrum.clg.*`) : model, learning and inference.
+
 ## Changelog for 1.13.2
 
 * aGrUM
