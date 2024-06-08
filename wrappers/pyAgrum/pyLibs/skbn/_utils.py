@@ -43,7 +43,7 @@ def _CalculateThreshold(bn, targetName, csvfilename, usePR, beta, significant_di
           indicates if the threshold to choose is Prevision-Recall curve's threhsold or ROC's threshold by default.
           ROC curves should be used when there are roughly equal numbers of observations for each class.
           Precision-Recall curves should be used when there is a moderate to large class imbalance especially for the target's class.
-      significant_digit:
+      significant_digits: int
           number of significant digits when computing probabilities
   Returns
   -------

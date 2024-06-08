@@ -150,8 +150,8 @@ class CLGLearner:
     """
     Use n-MCERA to get supremum deviation.
 
-    Parmeters
-    ---------
+    Parameters
+    ----------
     n_sample : int
       The MC number n in n-MCERA.
     fwer_delta : float ∈ (0,1]

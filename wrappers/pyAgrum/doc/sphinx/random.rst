@@ -15,4 +15,4 @@ Random functions
 .. autofunction:: pyAgrum.generateSample
 
 .. autofunction:: pyAgrum.randomBN
-
+  :noindex:

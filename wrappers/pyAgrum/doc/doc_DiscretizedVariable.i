@@ -1,8 +1,8 @@
 %feature("docstring") gum::DiscretizedVariable
 "
-DiscretizedVariable is a discrete random variable with a set of ``ticks`` defining intervals.
+DiscretizedVariable is a discrete random variable with a set of `ticks` defining intervals.
 
-DiscretizedVariable(aName, aDesc ,ticks=None,is_empirical=False) -> DiscretizedVariable`
+DiscretizedVariable(aName, aDesc ,ticks=None,is_empirical=False) -> pyAgrum.DiscretizedVariable
     Parameters:
         - **aName** (*str*) -- the name of the variable
         - **aDesc** (*str*) -- the description of the variable

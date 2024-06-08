@@ -1,9 +1,10 @@
 Inference : Variable Elimination
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
-Exact Inference
----------------
+Exact Inference in Continuous Linear Gaussian)
+----------------------------------------------
 
+Exact inference in the Continuous Linear Gaussian (CLG) model is performed using the Variable Elimination algorithm. The algorithm is implemented in the Inference class.
 Canonical form transformations are used to perform exact inference in the Continuous Linear Gaussian (CLG) model. A junction tree generator is employed to determine the variable elimination order for the sum-product algorithm.
 
 The inference begins with construction of canonical forms from the CLG parameters. These canonical forms are then subjected to the sum-product variable elimination algorithm to compute posterior densities.

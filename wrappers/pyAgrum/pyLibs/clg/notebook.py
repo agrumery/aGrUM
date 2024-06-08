@@ -113,6 +113,7 @@ def CLG2dot(clg, *, size=None, nodeColor=None, arcWidth=None, arcColor=None, cma
       else:
         pw = 1
         av = 1
+
     if arcColor is None:
       col = gumcols.getBlackInTheme()
     else:
