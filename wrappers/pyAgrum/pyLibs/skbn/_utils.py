@@ -17,18 +17,22 @@
 # IN AN ACTION OF CONTRACT, NEGLIGENCE OR OTHER TORTIOUS
 # ACTION, ARISING OUT OF OR IN CONNECTION WITH THE USE
 # OR PERFORMANCE OF THIS SOFTWARE!
+from typing import Any
 
+import pandas
 import sklearn
-import csv
 import numpy
-import pyAgrum.lib.bn2roc as bn2roc
 import pandas as pd
-import tempfile
+
+import pyAgrum
+import pyAgrum.lib.bn2roc as bn2roc
 
 
-def _CalculateThreshold(bn, targetName, csvfilename, usePR, beta, significant_digits):
+def _CalculateThreshold(bn: pyAgrum.BayesNet, targetName: str, csvfilename: str, usePR: bool, beta: float,
+                        significant_digits: int):
   """
-  The Bayesian network gives us the probability of the target knowing the values of the other variables. The value above which the probability needs to be for the input to be classified as that class is called the threshold.
+  The Bayesian network gives us the probability of the target knowing the values of the other variables.
+  The value above which the probability needs to be for the input to be classified as that class is called the threshold.
   This method calculates the optimal threshold using the roc or precision-recall curve.
 
   Parameters
@@ -43,6 +47,8 @@ def _CalculateThreshold(bn, targetName, csvfilename, usePR, beta, significant_di
           indicates if the threshold to choose is Prevision-Recall curve's threhsold or ROC's threshold by default.
           ROC curves should be used when there are roughly equal numbers of observations for each class.
           Precision-Recall curves should be used when there is a moderate to large class imbalance especially for the target's class.
+      beta: float
+          the beta value to use when computing the F score. Only used when usePR is True.
       significant_digits: int
           number of significant digits when computing probabilities
   Returns
@@ -53,25 +59,31 @@ def _CalculateThreshold(bn, targetName, csvfilename, usePR, beta, significant_di
   target = bn.variableFromName(targetName)
 
   if usePR:
-    _, _, _, threshold = bn2roc.showROC_PR(bn, csvfilename, targetName, target.labels(
-    )[1], beta=beta, show_fig=False, show_ROC=False, show_PR=False, significant_digits=significant_digits,
+    _, _, _, threshold = bn2roc.showROC_PR(bn, csvfilename, targetName,
+                                           target.labels()[1], beta=beta,
+                                           show_fig=False, show_ROC=False, show_PR=False,
+                                           significant_digits=significant_digits,
                                            show_progress=False)
   else:
-    _, threshold, _, _ = bn2roc.showROC_PR(bn, csvfilename, targetName, target.labels(
-    )[1], beta=beta, show_fig=False, show_ROC=False, show_PR=False, significant_digits=significant_digits,
+    _, threshold, _, _ = bn2roc.showROC_PR(bn, csvfilename, targetName,
+                                           target.labels()[1], beta=beta,
+                                           show_fig=False, show_ROC=False, show_PR=False,
+                                           significant_digits=significant_digits,
                                            show_progress=False)
 
   return threshold
 
 
-def _ImplementScore(scoringType, learner):
+def _ImplementScore(scoringType: str, learner: pyAgrum.BNLearner):
   """
   Tells the Bayesian network which scoring type to use.
 
   Parameters
   ----------
       scoringType: str
-          A string designating the type of scoring we want to use. Since scoring is used while constructing the network and not when learning its Parameters, the scoring will be ignored if using a learning algorithm
+          A string designating the type of scoring we want to use. Since scoring is used
+          while constructing the network and not when learning its Parameters,
+          the scoring will be ignored if using a learning algorithm
           with a fixed network structure such as Chow-Liu, TAN or NaiveBayes.
           possible values are:  AIC, BIC, BD, BDeu, K2, Log2
           AIC means Akaike information criterion
@@ -95,26 +107,26 @@ def _ImplementScore(scoringType, learner):
   elif scoringType == 'K2':
     learner.useScoreK2()
   elif scoringType == 'Log2':
-    learner.useScoreLog2Likelihood
+    learner.useScoreLog2Likelihood()
   else:
     raise ValueError("Invalid scoringType! Possible values are : \
                           AIC , BD , BDeu, BIC , K2 and Log2")
 
 
-def _ImplementPrior(prior, learner, priorWeight, DirichletCsv):
+def _ImplementPrior(prior: str, learner: pyAgrum.BNLearner, priorWeight: float, DirichletCsv: str):
   """
   Tells the Bayesian network which prior to use
 
   Parameters
   ----------
       prior: str
-          A string designating the type of a priorsmoothing we want to use.
+          A string designating the type of prior we want to use.
           Possible values are Smoothing, BDeu , Dirichlet and NoPrior.
           Note: if using Dirichlet smoothing DirichletCsv cannot be set to none
       learner:
           learner object from pyAgrum to apply the score
-      priorWeight: double
-          The weight used for a priorsmoothing.
+      priorWeight: float
+          The weight used for the prior.
       DirichletCsv: str
           the file name of the csv file we want to use for the dirichlet prior.
           Will be ignored if prior is not set to Dirichlet.
@@ -137,7 +149,7 @@ def _ImplementPrior(prior, learner, priorWeight, DirichletCsv):
       "Invalid prior! Possible values are : Smoothing , Dirichlet , BDeu and NoPrior")
 
 
-def _ImplementConstraints(constraints, learner):
+def _ImplementConstraints(constraints: dict[str, Any], learner: pyAgrum.BNLearner):
   """
   Tells the Bayesian network which constraints should be put on the structure of the network.
   More details on the nature of these constraints can be found in the documentation for the constructor of this class
@@ -156,7 +168,7 @@ def _ImplementConstraints(constraints, learner):
   """
   if constraints is None:  # default
     return
-  if type(constraints) != dict:
+  if type(constraints) is not dict:
     raise ValueError(
       "Invalid syntax for constraints. Constraints should be passed as a dictionary")
   for key in constraints:
@@ -174,7 +186,7 @@ def _ImplementConstraints(constraints, learner):
                              MandatoryArcs, PossibleEdges and ForbiddenArcs")
 
 
-def _DFNames(X):
+def _DFNames(X: pandas.DataFrame):
   """
   Return a dictionary of variable's name and his index from a DataFrame
 
@@ -188,7 +200,6 @@ def _DFNames(X):
       Dict[str,int]
           Dictionary of variable's name and his index
   """
-
   res = dict()
   i = 0
   for var in X.columns.tolist():
@@ -198,7 +209,7 @@ def _DFNames(X):
   return res
 
 
-def _listIdtoName(bn, liste):
+def _listIdtoName(bn: pyAgrum.BayesNet, liste: list[int]):
   """
   Return a list of names of the variable which have their id in list.
 
@@ -217,7 +228,7 @@ def _listIdtoName(bn, liste):
   return [bn.variable(i).name() for i in liste]
 
 
-def _createCSVfromNDArrays(X, y, target, variableNameIndexDictionary, csvfilename):
+def _createCSVfromNDArrays(X, y, target: str, variableNameIndexDictionary: dict[str, int], csvfilename: str):
   """
   Creates a csv file from the matrices passed as Parameters.
   csvfilename  is used by the fit function to learn the network structure and its Parameters
@@ -230,7 +241,7 @@ def _createCSVfromNDArrays(X, y, target, variableNameIndexDictionary, csvfilenam
           Target values
       target: str
           Name of the target
-      variableNameIndexDictionary: dict[str : int]
+      variableNameIndexDictionary: dict[str , int]
           dictionnary of the csvfilename of a variable and his column in the data base
       csvfilename: str
           csv's title
@@ -249,7 +260,7 @@ def _createCSVfromNDArrays(X, y, target, variableNameIndexDictionary, csvfilenam
   training_file.to_csv(csvfilename, index=False)
 
 
-def checkInt(v):
+def checkInt(v: Any) -> bool:
   """
   Test if v is an int or a str representing an int
   """
@@ -264,7 +275,7 @@ def checkInt(v):
   return False
 
 
-def checkFloat(v):
+def checkFloat(v: Any) -> bool:
   """
   Test if v is a float or a str representing a float.
 

@@ -209,7 +209,7 @@ class TestFrontDoors(pyAgrumTestCase):
         return False
     return True
   def testFrontDoorYann(self):
-    self.verbose = True
+    self.verbose = False
     self.assertTrue(self.hasNoFrontDoor("B->C;D", "C", "B"))
 
 ts = unittest.TestSuite()

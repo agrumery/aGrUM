@@ -24,6 +24,7 @@ from sys import platform as os_platform
 
 import logging
 
+
 def go():
   cwd = os.getcwd()
   FORMAT = '[pyAgrum] %(asctime)s | %(levelname)s | %(filename)s:%(lineno)d | %(funcName)s | %(message)s'
@@ -85,9 +86,10 @@ def go():
 
   import testsOnPython
 
-  total_errs += testsOnPython.runTests(local=len(sys.argv) > 1, test_module=test_module)
+  total_errs += testsOnPython.runTests(local=len(sys.argv) > 1, test_module=test_module, log=log)
 
   if testNotebooks:
+    log.info("Tests on notebooks")
     print("\n")
     print("*******************")
     print("Notebook Test Suite")
@@ -98,10 +100,10 @@ def go():
       total_errs += runNotebooks()
     except NameError:
       pass
-    except:
+    except Exception as e:
+      log.warning(f"Error in NotebookTestSuite : {e}")
       total_errs += 1
       print("=> Error in NotebookTestSuite")
-
 
   os.chdir(cwd)
   print("-" * 70)

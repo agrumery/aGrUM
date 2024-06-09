@@ -21,16 +21,15 @@ import os
 import platform
 import sys
 from sys import platform as os_platform
-import logging
 
 if __name__ == "__main__":
   print("[pyAgrum] Please use 'act test pyAgrum release -t [module]|quick|quick_[module]|all'.")
   sys.exit(0)
 
 
-def runTests(local: bool, test_module) -> int:
+def runTests(local: bool, test_module, log) -> int:
   if len(sys.argv) > 1:
-    logging.info("[pyAgrum] Adding local pyAgrum's path")
+    log.info("[pyAgrum] Adding local pyAgrum's path")
     p = os.getcwd() + "\\" + sys.argv[1]
     sys.path.insert(1, p)  # to force to use local pyAgrum for the tests (and not installed one)
 
@@ -61,7 +60,7 @@ def runTests(local: bool, test_module) -> int:
   if pandasFound and sklearnFound:
     from tests import BNClassifierTestSuite
   else:
-    logging.warning("[pyAgrum] pyAgrum.lib.classifier needs pandas and scikit-learn")
+    log.warning("[pyAgrum] pyAgrum.lib.classifier needs pandas and scikit-learn")
 
   from tests import BNDatabaseGeneratorTestSuite
   from tests import BNLearnerTestSuite
@@ -88,7 +87,7 @@ def runTests(local: bool, test_module) -> int:
   if pandasFound and sklearnFound:
     from tests import SkbnTestSuite
   else:
-    logging.warning("[pyAgrum] pyAgrum.lib.classifier needs pandas and scikit-learn")
+    log.warning("[pyAgrum] pyAgrum.lib.classifier needs pandas and scikit-learn")
 
   from tests import VariablesTestSuite
 
@@ -104,12 +103,13 @@ def runTests(local: bool, test_module) -> int:
   from tests import CLGCanonicalFormTestSuite
   from tests import CLGInferenceTestSuite
 
-  #from tests import MixtureModelTestSuite
+  # from tests import MixtureModelTestSuite
 
   import time
 
   tl = list()
   if test_module in {"", "main"}:
+    log.info("testing 'main'")
     tl.append(AggregatorsForBNTestSuite.ts)
     tl.append(AllIncrementalInferenceTestSuite.ts)
     tl.append(BayesNetTestSuite.ts)
@@ -139,19 +139,22 @@ def runTests(local: bool, test_module) -> int:
     tl.append(WorkaroundTestSuite.ts)
 
   if test_module in {"", "causal"}:
+    log.info("testing 'causal'")
     tl.append(CausalASTTestSuite.ts)
     tl.append(CausalDSepTestSuite.ts)
     tl.append(CausalModelTestSuite.ts)
     tl.append(CausalNonRegressionTestSuite.ts)
 
   if test_module in {"", "skbn"}:
+    log.info("testing 'skbn'")
     if pandasFound and sklearnFound:
       tl.append(BNClassifierTestSuite.ts)
       tl.append(SkbnTestSuite.ts)
     else:
-      logging.warning("Pandas or sklearn not found.")
+      log.warning("Pandas or sklearn not found.")
 
   if test_module in {"", "clg"}:
+    log.info("testing 'clg'")
     tl.append(CLGLearningTestSuite.ts)
     tl.append(CLGSamplingTestSuite.ts)
     tl.append(CLGCanonicalFormTestSuite.ts)
