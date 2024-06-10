@@ -383,7 +383,7 @@ class CLGLearner:
 
     def all_satisfied(V, order, C, l):
       """
-      Check if all pairs of adjacent vertices (Xi,Xj) in C satisfy |C[Xi]\{Xj}| ≤ l.
+      Check if all pairs of adjacent vertices (Xi,Xj) in C satisfy that the size of the neighbours of Xi (except Xj) is less or equal than l.
 
       Parameters
       ----------
@@ -399,7 +399,7 @@ class CLGLearner:
       Returns
       -------
       all_satisfied : bool
-        Whether all pairs of adjacent vertices (Xi,Xj) in C satisfy |C[Xi]\{Xj}| ≤ l.
+        Whether all pairs of adjacent vertices (Xi,Xj) in C satisfy the constraint.
       """
       all_satisfied = True
       for i in range(len(V)):
@@ -409,7 +409,7 @@ class CLGLearner:
             continue
           Xj = order[j]
           if Xi in C[Xj] and Xj in C[Xi]:  # if Xi and Xj are adjacent in C
-            if len(C[Xi] - {Xj}) > l:  # if |C[Xi]\{Xj}| > l
+            if len(C[Xi] - {Xj}) > l:  
               all_satisfied = False
               return all_satisfied
       return all_satisfied
