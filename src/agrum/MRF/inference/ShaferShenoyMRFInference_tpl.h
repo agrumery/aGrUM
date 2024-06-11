@@ -662,8 +662,7 @@ namespace gum {
               if (!marg_factor_set.contains(pot)) delete pot;
             }
             GUM_ERROR(FatalError,
-                      "the projection of a potential containing "
-                          << "hard evidence is empty!");
+                      "the projection of a potential containing " << "hard evidence is empty!");
           }
           auto new_factor = const_cast< Potential< GUM_SCALAR >* >(*(new_factor_list.begin()));
           auto projected_factor
@@ -779,8 +778,7 @@ namespace gum {
           // there should be only one potential in new_factor_list
           if (new_factor_list.size() != 1) {
             GUM_ERROR(FatalError,
-                      "the projection of a potential containing "
-                          << "hard evidence is empty!");
+                      "the projection of a potential containing " << "hard evidence is empty!");
           }
           auto projected_factor = const_cast< ScheduleMultiDim< Potential< GUM_SCALAR > >* >(
               static_cast< const ScheduleMultiDim< Potential< GUM_SCALAR > >* >(
@@ -1047,8 +1045,7 @@ namespace gum {
         // there should be only one potential in new_cpt_list
         if (new_pot_list.size() != 1) {
           GUM_ERROR(FatalError,
-                    "the projection of a potential containing "
-                        << "hard evidence is empty!");
+                    "the projection of a potential containing " << "hard evidence is empty!");
         }
         auto projected_pot = const_cast< ScheduleMultiDim< Potential< GUM_SCALAR > >* >(
             static_cast< const ScheduleMultiDim< Potential< GUM_SCALAR > >* >(
@@ -1112,8 +1109,7 @@ namespace gum {
         // there should be only one potential in new_cpt_list
         if (new_pot_list.size() != 1) {
           GUM_ERROR(FatalError,
-                    "the projection of a potential containing "
-                        << "hard evidence is empty!");
+                    "the projection of a potential containing " << "hard evidence is empty!");
         }
         Potential< GUM_SCALAR >* xprojected_pot
             = const_cast< Potential< GUM_SCALAR >* >(*new_pot_list.begin());

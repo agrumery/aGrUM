@@ -124,20 +124,20 @@ In [wrappers](/wrappers) you can find the following folders:
 
 # Building
 
-It is strongly recommended to use ACT to build aGrUM. Act requires Python (>=3.8)
+It is strongly recommended to use ACT to build aGrUM. Act requires Python (>=3.9)
 and you will need, depending of your platform, the following tools:
 
-- Linux:
+- Linux (X86_64 and ARM):
   - Python
   - g++
   - CMake
-- MacOS:
+- MacOS (intel and ARM):
   - Python
   - xCode
   - CMake
 - Microsoft Windows:
   - Python
-  - Microsoft Visual 2022 Comunity Edition
+  - Microsoft Visual 2022 Community Edition
   - CMake
 
 If you chose not to use `act`, you can directly use CMake to build aGrUM, but you will need
@@ -235,7 +235,7 @@ We use the following convention for branch names:
 
 # Continuous Integration
 
-Each commits are tested on Ubuntu 17.04, Mac OS El Capitan and Windows 10. The build
+Each commits are tested on Ubuntu (20.04 for python 3.9, 22.04 for all others), Mac OS (last version, Intel and ARM) and Windows 11. The build
 process as follow:
 
 1. Builds aGrUM on all platforms

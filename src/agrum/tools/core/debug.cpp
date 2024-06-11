@@ -198,8 +198,8 @@ namespace gum {
           std::stringstream stream;
           fillChar = (fillChar == '_') ? ' ' : '_';
           stream << std::setfill(fillChar = (fillChar == '_') ? ' ' : '_') << "| "
-                 << std::setw(widthColLibelle) << std::left << xx->first + " "
-                 << " | " << std::right << std::setw(widthColSizeOf) << sizeOf[xx->first] << " o | "
+                 << std::setw(widthColLibelle) << std::left << xx->first + " " << " | "
+                 << std::right << std::setw(widthColSizeOf) << sizeOf[xx->first] << " o | "
                  << std::setw(widthColItemsNumber) << "?????"
                  << " | " << std::setw(widthColItemsNumber) << xx->second << " |<--- failed";
           res.insert(make_pair(xx->first, stream.str()));

@@ -518,8 +518,7 @@ namespace gum::learning {
 
       default :
         GUM_ERROR(OperationNotAllowed,
-                  "IBNLearner does not support "
-                      << "yet this parameter estimator")
+                  "IBNLearner does not support " << "yet this parameter estimator")
     }
 
     // assign the number of threads

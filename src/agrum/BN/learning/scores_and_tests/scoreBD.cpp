@@ -78,8 +78,7 @@ namespace gum {
       // if the weight of the prior is 0, then gammaLog2 will fail
       if (!this->prior_->isInformative()) {
         GUM_ERROR(OutOfBounds,
-                  "The BD score requires its external prior to "
-                      << "be strictly positive");
+                  "The BD score requires its external prior to " << "be strictly positive");
       }
 
       // get the counts for all the nodes in the idset and add the prior

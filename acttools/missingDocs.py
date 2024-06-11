@@ -118,6 +118,7 @@ class PyAgrumDocCoverage:
     return clas in {cls.__name__ for cls in gum.GumException.__subclasses__()}
 
   def _traversal(self, entities: Iterable[str], container: str):
+    import pyAgrum as gum
     for entity in entities:
       if entity[0] != '_':
         complete_entity_name = container + "." + entity

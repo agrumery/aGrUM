@@ -291,8 +291,7 @@ namespace gum {
   INLINE const TABLE& ScheduleMultiDim< TABLE >::multiDim() const {
     if (_table_ == nullptr) {
       GUM_ERROR(NullElement,
-                "the ScheduleMultiDim is abstract, so its table "
-                    << "cannot be returned");
+                "the ScheduleMultiDim is abstract, so its table " << "cannot be returned");
     }
     return *_table_;
   }
@@ -320,8 +319,7 @@ namespace gum {
   TABLE* ScheduleMultiDim< TABLE >::exportMultiDim() {
     if (_table_ == nullptr) {
       GUM_ERROR(NullElement,
-                "The ScheduleMultiDim being abstract, "
-                    << "it is impossible to export its table");
+                "The ScheduleMultiDim being abstract, " << "it is impossible to export its table");
     }
     if (!_table_contained_) {
       GUM_ERROR(OperationNotAllowed,

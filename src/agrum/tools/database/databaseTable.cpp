@@ -785,8 +785,7 @@ namespace gum {
       if (nb_trans <= kk) {
         if (k_is_input_col) {
           GUM_ERROR(UndefinedElement,
-                    "there is no translator in the database table that "
-                        << "parses Column " << k)
+                    "there is no translator in the database table that " << "parses Column " << k)
         } else {
           GUM_ERROR(UndefinedElement,
                     "the database has " << nb_trans << " translators, so Translator #" << k
@@ -808,8 +807,8 @@ namespace gum {
       if (nb_trans <= kk) {
         if (k_is_input_col) {
           GUM_ERROR(UndefinedElement,
-                    "there is no variable in the database table that "
-                        << "corresponds to Column " << k)
+                    "there is no variable in the database table that " << "corresponds to Column "
+                                                                       << k)
         } else {
           GUM_ERROR(UndefinedElement,
                     "the database has " << nb_trans << " variables, so Variable #" << k
@@ -944,8 +943,8 @@ namespace gum {
       if (nb_trans <= kk) {
         if (k_is_input_col) {
           GUM_ERROR(UndefinedElement,
-                    "there is no variable in the database table that "
-                        << "corresponds to Column " << k)
+                    "there is no variable in the database table that " << "corresponds to Column "
+                                                                       << k)
         } else {
           GUM_ERROR(UndefinedElement,
                     "the database has " << nb_trans << " variables, so Variable #" << k
@@ -967,8 +966,7 @@ namespace gum {
       if (nb_trans <= kk) {
         if (k_is_input_col) {
           GUM_ERROR(UndefinedElement,
-                    "there is no translator in the database table that "
-                        << "parses Column " << k)
+                    "there is no translator in the database table that " << "parses Column " << k)
         } else {
           GUM_ERROR(UndefinedElement,
                     "the database has " << nb_trans << " translators, so Translator #" << k
@@ -990,8 +988,7 @@ namespace gum {
       if (nb_trans <= kk) {
         if (k_is_input_col) {
           GUM_ERROR(UndefinedElement,
-                    "there is no translator in the database table that "
-                        << "parses Column " << k)
+                    "there is no translator in the database table that " << "parses Column " << k)
         } else {
           GUM_ERROR(UndefinedElement,
                     "the database has " << nb_trans << " translators, so Translator #" << k
