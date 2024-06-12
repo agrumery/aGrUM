@@ -70,7 +70,7 @@ def export(model, filename=None, **kwargs):
   if isinstance(model, gum.BayesNet):
     fig = BN2dot(model, **kwargs)
   elif isinstance(model, gum.MarkovRandomField):
-    if gum.config["notebook", "default_markovnetwork_view"] == "graph":
+    if gum.config["notebook", "default_markovrandomfield_view"] == "graph":
       fig = MN2UGdot(model, **kwargs)
     else:
       fig = MN2FactorGraphdot(model, **kwargs)
@@ -160,7 +160,7 @@ def prepareShowInference(model, engine=None, evs=None, targets=None, size=None,
                            )
   if isinstance(model, gum.MarkovRandomField):
     if view is None:
-      view = gum.config["notebook", "default_markovnetwork_view"]
+      view = gum.config["notebook", "default_markovrandomfield_view"]
     if engine is None:
       engine = gum.ShaferShenoyMRFInference(model)
 

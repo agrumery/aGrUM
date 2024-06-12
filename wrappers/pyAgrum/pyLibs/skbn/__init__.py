@@ -30,10 +30,4 @@ from .discretizer import BNDiscretizer
 from ._MBCalcul import compileMarkovBlanket
 import sys
 
-if sys.version_info < (3, 0):
-  import warnings
-
-  warnings.warn("** pyAgrum : python 3 is needed for pyAgrum's skbn package.")
-  sys.exit(1)
-
 __all__ = ['BNClassifier', 'BNDiscretizer', 'compileMarkovBlanket']

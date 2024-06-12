@@ -33,7 +33,7 @@ def runTests(local: bool, test_module, log) -> int:
     p = os.getcwd() + "\\" + sys.argv[1]
     sys.path.insert(1, p)  # to force to use local pyAgrum for the tests (and not installed one)
 
-  print(test_module)
+  print(f"Modules : {test_module if test_module!='' else 'all'}")
   import pyAgrum as gum
 
   try:
@@ -98,6 +98,12 @@ def runTests(local: bool, test_module, log) -> int:
 
   from tests import WorkaroundTestSuite
 
+  from tests import CtbnCimTestSuite
+  from tests import CtbnModelTestSuite
+  from tests import CtbnTrajectoryTestSuite
+  from tests import CtbnIndependenceTestSuite
+  from tests import CtbnLearnerTestSuite
+
   from tests import CLGLearningTestSuite
   from tests import CLGSamplingTestSuite
   from tests import CLGCanonicalFormTestSuite
@@ -152,6 +158,14 @@ def runTests(local: bool, test_module, log) -> int:
       tl.append(SkbnTestSuite.ts)
     else:
       log.warning("Pandas or sklearn not found.")
+
+  if test_module in {"", "ctbn"}:
+    log.info("testing 'ctbn'")
+    tl.append(CtbnCimTestSuite.ts)
+    tl.append(CtbnModelTestSuite.ts)
+    tl.append(CtbnTrajectoryTestSuite.ts)
+    tl.append(CtbnIndependenceTestSuite.ts)
+    tl.append(CtbnLearnerTestSuite.ts)
 
   if test_module in {"", "clg"}:
     log.info("testing 'clg'")

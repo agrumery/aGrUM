@@ -198,7 +198,7 @@ def showMN(mn, view=None, size=None, nodeColor=None, factorColor=None, edgeWidth
   :return: the graph
   """
   if view is None:
-    view = gum.config["notebook", "default_markovnetwork_view"]
+    view = gum.config["notebook", "default_markovrandomfield_view"]
 
   if size is None:
     size = gum.config["notebook", "default_graph_size"]
@@ -207,10 +207,10 @@ def showMN(mn, view=None, size=None, nodeColor=None, factorColor=None, edgeWidth
     cmapEdge = cmap
 
   if view == "graph":
-    dottxt = MN2UGdot(mn, size, nodeColor, edgeWidth,
+    dottxt = MRF2UGdot(mn, size, nodeColor, edgeWidth,
                       edgeColor, cmap, cmapEdge)
   else:
-    dottxt = MN2FactorGraphdot(mn, size, nodeColor, factorColor, cmapNode=cmap)
+    dottxt = MRF2FactorGraphdot(mn, size, nodeColor, factorColor, cmapNode=cmap)
 
   return showGraph(dottxt, size)
 

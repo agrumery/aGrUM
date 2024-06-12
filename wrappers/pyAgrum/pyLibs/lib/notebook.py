@@ -446,6 +446,8 @@ def getJunctionTreeMap(bn, size: str = None, scaleClique: float = None, scaleSep
   jtg = gum.JunctionTreeGenerator()
   jt = jtg.junctionTree(bn)
 
+  if size is None:
+    size = gum.config["notebook", "junctiontree_map_size"]
   return getGraph(jt.map(scaleClique, scaleSep, lenEdge, colorClique, colorSep), size)
 
 
@@ -473,6 +475,8 @@ def showJunctionTreeMap(bn, size: str = None, scaleClique: float = None, scaleSe
   jtg = gum.JunctionTreeGenerator()
   jt = jtg.junctionTree(bn)
 
+  if size is None:
+    size = gum.config["notebook", "junctiontree_map_size"]
   showGraph(jt.map(scaleClique, scaleSep, lenEdge, colorClique, colorSep), size)
 
 
@@ -765,7 +769,7 @@ def showMRF(mrf, view=None, size=None, nodeColor=None, factorColor=None, edgeWid
    the graph
   """
   if view is None:
-    view = gum.config["notebook", "default_markovnetwork_view"]
+    view = gum.config["notebook", "default_markovrandomfield_view"]
 
   if size is None:
     size = gum.config["notebook", "default_graph_size"]
@@ -950,7 +954,7 @@ def getMRF(mrf, view=None, size=None, nodeColor=None, factorColor=None, edgeWidt
     cmapEdge = cmapNode
 
   if view is None:
-    view = gum.config["notebook", "default_markovnetwork_view"]
+    view = gum.config["notebook", "default_markovrandomfield_view"]
 
   if view == "graph":
     dottxt = MRF2UGdot(mrf, size, nodeColor, edgeWidth,
