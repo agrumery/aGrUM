@@ -352,14 +352,14 @@ namespace gum_tests {
 
       auto joint = p * q;
 
-      TS_ASSERT_EQUALS(joint.margSumOut({&c, &d}), joint.margSumIn({&a, &b}))
-      TS_ASSERT_EQUALS(joint.margSumOut({&c, &d}), joint.margSumIn({&b, &a}))
+      TS_ASSERT_EQUALS(joint.sumOut({&c, &d}), joint.sumIn({&a, &b}))
+      TS_ASSERT_EQUALS(joint.sumOut({&c, &d}), joint.sumIn({&b, &a}))
 
-      TS_ASSERT_EQUALS(joint.margProdOut({&c, &d}), joint.margProdIn({&a, &b}))
+      TS_ASSERT_EQUALS(joint.prodOut({&c, &d}), joint.prodIn({&a, &b}))
 
-      TS_ASSERT_EQUALS(joint.margMinOut({&c, &d}), joint.margMinIn({&a, &b}))
+      TS_ASSERT_EQUALS(joint.minOut({&c, &d}), joint.minIn({&a, &b}))
 
-      TS_ASSERT_EQUALS(joint.margMaxOut({&c, &d}), joint.margMaxIn({&a, &b}))
+      TS_ASSERT_EQUALS(joint.maxOut({&c, &d}), joint.maxIn({&a, &b}))
     }
 
     GUM_ACTIVE_TEST(AbsPotential) {
