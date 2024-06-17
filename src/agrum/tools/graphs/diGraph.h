@@ -157,7 +157,7 @@ namespace gum {
     /// tests whether two DiGraphs are different
     /** @param g the DiGraph with which "this" is compared */
     // not virtual : it is a feature !!! :)
-    bool operator!=(const DiGraph& g) const;
+    //bool operator!=(const DiGraph& g) const;
 
     /// @}
 

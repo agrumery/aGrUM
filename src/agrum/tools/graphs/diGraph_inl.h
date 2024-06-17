@@ -69,6 +69,6 @@ namespace gum {
     return ArcGraphPart::operator==(p) && NodeGraphPart::operator==(p);
   }
 
-  INLINE bool DiGraph::operator!=(const DiGraph& p) const { return !operator==(p); }
+  //INLINE bool DiGraph::operator!=(const DiGraph& p) const { return !operator==(p); }
 
 } /* namespace gum */
