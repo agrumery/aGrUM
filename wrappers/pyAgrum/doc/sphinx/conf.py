@@ -27,7 +27,7 @@ import pyAgrum
 
 # General information about the project.
 project = 'pyAgrum '
-copyright = '2018-23, aGrUM/pyAgrum Team <info_at_agrum_dot_org> (pyAgrum re' + pyAgrum.__version__ + ')'
+copyright = '2018-2024, aGrUM/pyAgrum Team <info_at_agrum_dot_org> (pyAgrum re' + pyAgrum.__version__ + ')'
 author = 'Pierre-henri Wuillemin'
 
 import matplotlib
