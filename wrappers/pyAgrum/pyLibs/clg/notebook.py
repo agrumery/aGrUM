@@ -394,4 +394,5 @@ def exportInference(clg, filename: str, *, evs=None, size=None, nodeColor=None, 
   gimg.export(clgdot, filename)
 
 
-CLG._repr_html_ = lambda self: gnb.getGraph(CLG2dot(self))
+CLG.toDot = lambda self: str(CLG2dot(self))
+CLG._repr_html_ = lambda self: gnb.getDot(self.toDot())
