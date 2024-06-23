@@ -156,13 +156,13 @@ def plotFollowVar(v: pyAgrum.DiscreteVariable, trajectories: Dict[int, List[Tupl
 
   YAxisList = [[count[lab][step] for step in division] for lab in domain]
 
-  fig, ax = plt.subplots()
+  _, ax = plt.subplots()
   plt.xlim(left=0, right=T)
   plt.ylim(top=1, bottom=0)
 
   plt.xlabel("time")
   plt.ylabel("state proportion")
-  stack = ax.stackplot(division, YAxisList)
+  ax.stackplot(division, YAxisList)
   plt.title(name)
   plt.legend(domain)
   plt.show()
@@ -241,15 +241,15 @@ def computeCIMFromStats(X: str, M: pyAgrum.Potential, T: pyAgrum.Potential) -> "
     iTime.setVals(i)
 
     iSum = pyAgrum.Instantiation(i)
-    sum = 0
+    sumCIM = 0
     iSum.setFirstVar(i.variable(posJ))
     while not iSum.end():
-      sum += M.get(iSum)
+      sumCIM += M.get(iSum)
       iSum.incVar(i.variable(posJ))
 
     if i.val(posI) == i.val(posJ):
       if T.get(iTime) != 0:
-        res.set(i, -round(sum / T.get(iTime), 3))
+        res.set(i, -round(sumCIM / T.get(iTime), 3))
     else:
       if T.get(iTime) != 0:
         res.set(i, round((M.get(i) / T.get(iTime)), 3))
@@ -371,10 +371,8 @@ class Trajectory:
         ########## end check
 
         if time < self.timeHorizon and var == X:
-          # X_value = state
           X_value = findNextValue(X, traj, l)
         elif time < self.timeHorizon and var in inst_u.keys():
-          # u_values[var] = state
           u_values[var] = findNextValue(var, traj, l)
 
   def computeStats(self, X: str, U: List[str]) -> Tuple[pyAgrum.Potential, pyAgrum.Potential]:
@@ -625,6 +623,6 @@ class Stats:
 
   def __init__(self, trajectory: Trajectory, X: str, Y: str, par: List[str]):
     self.Tx, self.Txy, self.Mxy = trajectory.computeStatsForTests(X, Y, par)
-    self.Mx = pyAgrum.Potential(self.Mxy).margSumOut([Y])
+    self.Mx = pyAgrum.Potential(self.Mxy).sumOut([Y])
     self.Qx = computeCIMFromStats(X, self.Mx, self.Tx)
     self.Qxy = computeCIMFromStats(X, self.Mxy, self.Txy)

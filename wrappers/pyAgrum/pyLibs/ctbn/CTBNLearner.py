@@ -93,8 +93,6 @@ class Learner:
       parentsIdList = list(newGraph.parents(Xi))
       length = len(parentsIdList)
 
-      comb_parentsIdList = list(newGraph.parents(Xi))
-
       parents_done = {id: False for id in parentsIdList}
 
       for b in range(length):  # +1  # (2.2)
@@ -107,12 +105,9 @@ class Learner:
           UXj = parentsIdList.copy()
           UXj.remove(Xj)
 
-          if b > len(UXj):
-            break
-            loop = [UXj]
-          elif b == 0:
+          if b == 0:
             loop = [[]]
-          else:
+          elif b <= len(UXj):
             loop = combinations(UXj, b)
 
           for SXiXj in loop:

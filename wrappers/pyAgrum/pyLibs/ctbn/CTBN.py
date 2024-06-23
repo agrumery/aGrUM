@@ -25,8 +25,6 @@ class CTBN:
   ----------
   _graph : pyAgrum.DiGraph
       Graph representing dependency relations between variables. Also used to link a variable with an id.
-  _vars : pyAgrum.BayesNet
-      Bayesian Network to store variables.
   _cim : Dict[NodeId, CIM]
       Dict containing a CIM for each nodeId(the integer given to a variable).
   _id2var : Dict[NodeId, pyAgrum.DiscreteVariable]
@@ -38,11 +36,9 @@ class CTBN:
   _cim: Dict[NodeId, CIM]
   _id2var: Dict[NodeId, pyAgrum.DiscreteVariable]
   _name2id: Dict[str, NodeId]
-  _vars: pyAgrum.BayesNet
 
   def __init__(self):
     self._graph = pyAgrum.DiGraph()
-    self._vars = pyAgrum.BayesNet()
     self._cim = {}
     self._id2var = {}
     self._name2id = {}
@@ -79,9 +75,6 @@ class CTBN:
     n = NodeId(self._graph.addNode())
     self._id2var[n] = var
     self._name2id[var.name()] = n
-
-    # add variable to the bayesian net
-    self._vars.add(var)
 
     # add leaving and starting states in the CIM
     v_i = var.clone()

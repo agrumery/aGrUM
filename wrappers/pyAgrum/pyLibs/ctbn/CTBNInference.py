@@ -31,10 +31,10 @@ class CTBNInference:
     self._model = model
 
   def makeInference(self):
-    raise NotImplemented("Not yet implemented.")
+    raise NotImplementedError("Not yet implemented.")
 
   def posterior(self, name: str) -> "pyAgrum.Potential":
-    raise NotImplemented("Not yet implemented.")
+    raise NotImplementedError("Not yet implemented.")
 
 
 class SimpleInference(CTBNInference):
@@ -53,7 +53,7 @@ class SimpleInference(CTBNInference):
     self._joint = None
 
   def setEvidence(self, evs=None):
-    pass
+    raise NotImplementedError("Not yet implemented.")
 
   def makeInference(self, t: float = 5000):
     """
@@ -77,7 +77,7 @@ class SimpleInference(CTBNInference):
         t0.add(q._pot.variable(n))
     t0.fillWith(1).normalize()
 
-    self._joint = (t0 * q._pot).margSumOut(list(t0.names))
+    self._joint = (t0 * q._pot).sumOut(list(t0.names))
 
   def posterior(self, v: NameOrId) -> "pyAgrum.Potential":
     """
@@ -92,7 +92,7 @@ class SimpleInference(CTBNInference):
         The computed distribution of variable ``v`` using exact inference.
     """
     vj = CIM.varJ(self._model.variable(v).name())
-    return pyAgrum.Potential().add(self._model.variable(v)).fillWith(self._joint.margSumIn(vj), [vj])
+    return pyAgrum.Potential().add(self._model.variable(v)).fillWith(self._joint.sumIn(vj), [vj])
 
 
 class ForwardSamplingInference(CTBNInference):
@@ -328,7 +328,7 @@ class ForwardSamplingInference(CTBNInference):
         Number of runs before starting the sampling (to ensure ergodicity).
     """
     posteriorsList = [{nod: pyAgrum.Potential().add(self._model.variable(nod))
-                       for nod in self._model.names()} for i in range(nbTrajectories)]
+                       for nod in self._model.names()} for _ in range(nbTrajectories)]
 
     def runMakeSample(task: int):
       res = self.makeSample(posteriorsList[task], timeHorizon, burnIn)
@@ -359,7 +359,7 @@ class ForwardSamplingInference(CTBNInference):
         Number of runs before starting the sampling (to ensure ergodicity).
     """
     posteriorsList = [{nod: pyAgrum.Potential().add(self._model.variable(nod))
-                       for nod in self._model.names()} for i in range(nbTrajectories)]
+                       for nod in self._model.names()} for _ in range(nbTrajectories)]
 
     for i in range(nbTrajectories):
       self.makeSample(posteriorsList[i], timeHorizon, burnIn)

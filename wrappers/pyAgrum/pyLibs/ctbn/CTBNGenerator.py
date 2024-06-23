@@ -56,12 +56,12 @@ def randomCIMs(ctbn: CTBN, valueRange: Tuple[float, float]):
     I1.setFirst()
     while not I1.end():
       I2.setFirst()
-      sum = 0
+      sumCIM = 0
       while not I2.end():
         I1.setVals(I2)
         if I1.val(v_i) != I1.val(v_j):
           draw = random.uniform(valueRange[0], valueRange[1])
-          sum += draw
+          sumCIM += draw
           ctbn.CIM(v)._pot.set(I1, draw)
         else:
           ctbn.CIM(v)._pot.set(I1, 0)
@@ -70,7 +70,7 @@ def randomCIMs(ctbn: CTBN, valueRange: Tuple[float, float]):
 
       tmp = pyAgrum.Instantiation(I1)
       tmp.chgVal(v_j, tmp.val(v_i))
-      ctbn.CIM(v)._pot.set(tmp, -sum)
+      ctbn.CIM(v)._pot.set(tmp, -sumCIM)
       I1.incOut(I2)
 
 
@@ -115,7 +115,7 @@ def randomCTBN(valueRange: Tuple[float, float], n: int = 1, parMax: int = 1, mod
       graph.addArc(1, 0)
 
   elif n > 2:
-    sequence = [random.randint(0, n - 1) for i in range(n - 2)]
+    sequence = [random.randint(0, n - 1) for _ in range(n - 2)]
     degree = {id: 1 for id in range(0, n)}
     par = {id: 0 for id in range(0, n)}
     for i in range(n - 2):

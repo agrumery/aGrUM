@@ -126,8 +126,8 @@ class FChi2Test(IndepTest):
     self.x_from: str = CIM.varI(X)
     self.x_to: str = CIM.varJ(X)
 
-    self.r1: pyAgrum.Potential = self.stats.Mxy.margSumOut([self.x_to])
-    self.r2: pyAgrum.Potential = self.stats.Mx.margSumOut([self.x_to])
+    self.r1: pyAgrum.Potential = self.stats.Mxy.sumOut([self.x_to])
+    self.r2: pyAgrum.Potential = self.stats.Mx.sumOut([self.x_to])
 
     logging.debug("Qx\n%s", str(self.stats.Qx))
     logging.debug("Qx,y\n%s", str(self.stats.Qxy))
@@ -181,7 +181,7 @@ class FChi2Test(IndepTest):
     pyAgrum.Potential
         The potential M_{x, x' | U} by summing over all values of y.
     """
-    return M.margSumOut([Y])
+    return M.sumOut([Y])
 
   def computeF(self) -> "pyAgrum.Potential":
     """
@@ -228,7 +228,7 @@ class FChi2Test(IndepTest):
 
     logging.debug("T:\n%s", T)
 
-    self.chiSqValue: pyAgrum.Potential = T.margSumOut(self.x_to)
+    self.chiSqValue: pyAgrum.Potential = T.sumOut(self.x_to)
 
     return self.chiSqValue
 

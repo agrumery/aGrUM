@@ -66,8 +66,6 @@ def getCIMs(ctbn: CTBN, size=None):
   size : int|str
   """
   gnb.flow.clear()
-  if size is None:
-    size = gum.config['ctbn', 'default_graph_size']
   for var in ctbn.names():
     gnb.flow.add(ctbn.CIM(var)._pot, caption=f"CIM({var})")
   return gnb.flow.html()
@@ -155,7 +153,6 @@ def CTBNinference2dot(ctbn, engine, size=None, targets=None, nodeColor=None, arc
   dotstr += f'  node [fillcolor="{gum.config["notebook", "default_node_bgcolor"]}", style=filled,color="{gum.config["notebook", "default_node_fgcolor"]}",fontname="{fontname}",fontsize="{fontsize}"];\n'
   dotstr += f'  edge [color="{gumcols.getBlackInTheme()}"];\n'
 
-  # showdag = bn.dag() if dag is None else dag
   showdag = ctbn._graph
 
   for nid in showdag.nodes():
@@ -167,8 +164,7 @@ def CTBNinference2dot(ctbn, engine, size=None, targets=None, nodeColor=None, arc
     if len(targets) == 0 or name in targets or nid in targets:
       bgcol = gum.config["notebook", "figure_facecolor"]
 
-    if nodeColor is not None:
-      if name in nodeColor or nid in nodeColor:
+    if nodeColor is not None and name in nodeColor or nid in nodeColor:
         bgcol = gumcols.proba2bgcolor(nodeColor[name], cmapNode)
         fgcol = gumcols.proba2fgcolor(nodeColor[name], cmapNode)
 
@@ -176,7 +172,6 @@ def CTBNinference2dot(ctbn, engine, size=None, targets=None, nodeColor=None, arc
     # if name in evs or nid in evs:
     #   bgcol = gum.config["notebook", "evidence_bgcolor"]
     #   fgcol = gum.config["notebook", "evidence_fgcolor"]
-
     colorattribute = f'fillcolor="{bgcol}", fontcolor="{fgcol}", color="#000000"'
     if len(targets) == 0 or name in targets or nid in targets:
       filename = temp_dir + \
@@ -193,15 +188,13 @@ def CTBNinference2dot(ctbn, engine, size=None, targets=None, nodeColor=None, arc
     av = f"{n}&nbsp;&rarr;&nbsp;{j}"
     col = gumcols.getBlackInTheme()
 
-    if arcWidth is not None:
-      if a in arcWidth:
-        if maxarcs != minarcs:
-          pw = 0.1 + 5 * (arcWidth[a] - minarcs) / (maxarcs - minarcs)
-        av = f"{n}&nbsp;&rarr;&nbsp;{j} : {arcWidth[a]}"
+    if arcWidth is not None and a in arcWidth:
+      if maxarcs != minarcs:
+        pw = 0.1 + 5 * (arcWidth[a] - minarcs) / (maxarcs - minarcs)
+      av = f"{n}&nbsp;&rarr;&nbsp;{j} : {arcWidth[a]}"
 
-    if arcColor is not None:
-      if a in arcColor:
-        col = gumcols.proba2color(arcColor[a], cmapArc)
+    if arcColor is not None and a in arcColor:
+      col = gumcols.proba2color(arcColor[a], cmapArc)
 
     dotstr += f' "{ctbn.variable(n).name()}"->"{ctbn.variable(j).name()}" [penwidth="{pw}",tooltip="{av}",color="{col}"];'
 
