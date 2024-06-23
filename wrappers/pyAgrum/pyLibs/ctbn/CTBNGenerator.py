@@ -30,10 +30,10 @@ def directTree(graph: pyAgrum.MixedGraph, root: NodeId):
     directTree(graph, i)
 
 
-def fillCIMs(ctbn: CTBN, valueRange: Tuple[float, float]):
+def randomCIMs(ctbn: CTBN, valueRange: Tuple[float, float]):
   """
   Fills the ``ctbn``'s CIMs with random values in ``valueRange``.
-  Note : as diagonal coefficents are the egative sum of the coefficients one the line,
+  Note : as diagonal coefficents are the negative sum of the coefficients one the line,
   their value does not necessarily belong to ``valueRange``.
 
   Parameters
@@ -172,6 +172,6 @@ def randomCTBN(valueRange: Tuple[float, float], n: int = 1, parMax: int = 1, mod
   for arc in graph.arcs():
     ctbn.addArc(arc[0], arc[1])
 
-  fillCIMs(ctbn, valueRange)
+  randomCIMs(ctbn, valueRange)
 
   return ctbn

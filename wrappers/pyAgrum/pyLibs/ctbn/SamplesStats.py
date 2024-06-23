@@ -1,4 +1,4 @@
-from typing import Dict, Tuple, List
+from typing import Dict, Tuple, List, Union
 
 import time
 import logging
@@ -44,7 +44,8 @@ def readTrajectoryCSV(filename: str) -> Dict[int, List[Tuple[float, str, str]]]:
   return data
 
 
-def plotTrajectory(v: pyAgrum.DiscreteVariable, traj: List[Tuple[float, str, str]], timeHorizon: float = None,
+def plotTrajectory(v: pyAgrum.DiscreteVariable, traj: List[Tuple[float, str, str]],
+                   timeHorizon: float = None,
                    plotname: str = None):
   """
   Plot a variable's trajectory using matplotlib.pyplot.
@@ -73,18 +74,18 @@ def plotTrajectory(v: pyAgrum.DiscreteVariable, traj: List[Tuple[float, str, str
   XAxis = []
   YAxis = []
 
-  prevtime = 0
-  for time, var, state in traj:
-    if time == 0:
+  prevtimepoint = 0
+  for timepoint, var, state in traj:
+    if timepoint == 0:
       continue
-    if time > Tlim:
+    if timepoint > Tlim:
       break
     if var == v.name():
-      XAxis.append(prevtime)
-      XAxis.append(time)
+      XAxis.append(prevtimepoint)
+      XAxis.append(timepoint)
       YAxis.append(state)
       YAxis.append(state)
-      prevtime = time
+      prevtimepoint = timepoint
 
   plt.plot(XAxis, YAxis)
   plt.yticks(range(v.domainSize()), v.labels())

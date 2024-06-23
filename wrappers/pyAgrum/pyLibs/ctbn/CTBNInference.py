@@ -168,6 +168,7 @@ class ForwardSamplingInference(CTBNInference):
         v = self._model.variable(nod)
         newval = int(choice(range(v.domainSize())))
         current.chgVal(v.name(), newval)
+        posteriors[v.name()][newval] = 1
 
     def getNextEvent(current: pyAgrum.Instantiation, indice: pyAgrum.Instantiation) -> Tuple[NodeId, float]:
       """
