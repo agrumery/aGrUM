@@ -1,5 +1,13 @@
 # aGrUM Changelog
 
+## Changelog for 1.14.1
+
+* aGrUM
+  * Fixing compilation errors for `clang18`.
+
+* pyAgrum
+  * Fixing python version for `readthedocs`.
+
 ## Changelog for 1.14.0
 
 * aGrUM
