@@ -164,7 +164,7 @@ def CTBNinference2dot(ctbn, engine, size=None, targets=None, nodeColor=None, arc
     if len(targets) == 0 or name in targets or nid in targets:
       bgcol = gum.config["notebook", "figure_facecolor"]
 
-    if nodeColor is not None and name in nodeColor or nid in nodeColor:
+    if nodeColor is not None and (name in nodeColor or nid in nodeColor):
         bgcol = gumcols.proba2bgcolor(nodeColor[name], cmapNode)
         fgcol = gumcols.proba2fgcolor(nodeColor[name], cmapNode)
 

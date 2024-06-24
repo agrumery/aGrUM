@@ -431,7 +431,6 @@ class CTBN:
     chaine += "}"
     return chaine
 
-
   def equals(self, ctbn: "CTBN") -> bool:
     """
     Tests the topologic equality with another CTBN.
@@ -471,7 +470,8 @@ class CTBN:
 
     # Checks if all arcs from current CTBN are in the other one
     for arc in arcs1:
-      if not ctbn._graph.existsArc(ctbn._name2id[self._id2var[arc[0]].name()], ctbn._name2id[self._id2var[arc[1]].name()]):
+      if not ctbn._graph.existsArc(ctbn._name2id[self._id2var[arc[0]].name()],
+                                   ctbn._name2id[self._id2var[arc[1]].name()]):
         print(self._id2var[arc[0]].name(), self._id2var[arc[1]].name())
         print("arc non present dans le ctbn en parametres")
         return False
@@ -512,3 +512,22 @@ class CTBN:
     diff = (P - P1).sq().max()
 
     return diff
+
+  def __getstate__(self):
+    state = {"nodes": [self.variable(i).toFast() for i in self.nodes()],
+             # 0 and 1 is the node itself (#i and #j)
+             "parents": {self.variable(i).name(): list(self.CIM(i).varNames)[2:] for i in self.nodes()},
+             "cim": {self.variable(i).name(): self.CIM(i)._pot[:].flatten().tolist() for i in self.nodes()},
+             }
+    return state
+
+  def __setstate__(self, state):
+    self.__init__()
+    for node in state["nodes"]:
+      self.add(pyAgrum.fastVariable(node))
+    for node, parents in state["parents"].items():
+      for parent in parents:
+        self.addArc(parent, node)
+    for node, cim in state["cim"].items():
+      self.CIM(node)._pot.fillWith(cim)
+    return self
