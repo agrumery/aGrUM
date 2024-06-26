@@ -97,7 +97,7 @@ def BN2dot(bn, size=None, nodeColor=None, arcWidth=None, arcLabel=None, arcColor
       fgcol = gumcols.proba2fgcolor(nodeColor[n], cmapNode)
       res = f" : {nodeColor[n] if showMsg is None else showMsg[n]:2.5f}"
 
-    node = dot.Node('"' + n + '"', style="filled",
+    node = dot.Node(f'"{n}"', style="filled",
                     fillcolor=bgcol,
                     fontcolor=fgcol,
                     tooltip=f'"({bn.idFromName(n)}) {n}{res}"'

@@ -64,7 +64,7 @@ Reference manual
   :caption: 3- Other graphical models
   :maxdepth: 2
 
-  influenceDiagram
+  infdiag
   credalNetwork
   markovRandomField
   PRM
@@ -84,6 +84,7 @@ Reference manual
   :caption: 5- pyAgrum's (experimentals) models
   :maxdepth: 2
 
+  ctbn
   clg
 
 .. toctree::

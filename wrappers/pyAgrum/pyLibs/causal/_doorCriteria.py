@@ -321,9 +321,8 @@ def frontdoor_generator(bn: "pyAgrum.BayesNet", x: NodeId, y: NodeId, not_fd: No
     nodiPath = True
     possible=None
     for _,cc in bn.connectedComponents().items():
-      if x in cc:
-        if y in cc:
-          possible=cc
+      if x in cc and y in cc:
+        possible=cc
     if possible is None:
       return
     possible -= {x, y}

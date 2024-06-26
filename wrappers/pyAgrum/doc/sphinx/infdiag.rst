@@ -15,19 +15,8 @@ PyAgrum's so-called influence diagram represents both influence diagrams and LIM
 
 **Reference**
 
-Model for Decision in PGM
--------------------------
-.. autoclass:: pyAgrum.InfluenceDiagram
-			:members:
-			:exclude-members: setProperty, property, propertyWithDefault
+.. toctree::
+   :maxdepth: 3
 
-
-Inference for Influence Diagram
--------------------------------
-
-.. figure:: _static/LIMIDInference.png
-    :align: center
-    :alt: an inference in an influence diagram
-
-.. autoclass:: pyAgrum.ShaferShenoyLIMIDInference
-			:members:
+   infdiagModel
+   infdiagInference

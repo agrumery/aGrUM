@@ -19,7 +19,7 @@ SEM provides estimates of the strength and significance of the relationships bet
 
 **Tutorials**
 
-* `Notebooks on CLGs in pyAgrum <notebooks/27_Models_clg.ipynb>`_.
+* `Notebooks on CLGs in pyAgrum <notebooks/72-PyModels_CLG.ipynb>`_.
 
 **Reference**
 
