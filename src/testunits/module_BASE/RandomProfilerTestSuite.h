@@ -24,11 +24,11 @@
 
 #include <agrum/config.h>
 
-#include <agrum/tools/core/timer.h>
+#include <agrum/base/core/timer.h>
 
 #include <agrum/BN/generator/MCBayesNetGenerator.h>
 
-#include <agrum/tools/core/utils_random.h>
+#include <agrum/base/core/utils_random.h>
 
 namespace gum_tests {
 

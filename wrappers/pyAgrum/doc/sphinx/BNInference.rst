@@ -12,7 +12,7 @@ Lazy Propagation
 
 Lazy Propagation is the main exact inference for classical Bayesian networks in aGrUM/pyAgrum.
 
-.. autoclass:: pyAgrum.LazyPropagation
+.. autoclass:: pyAgrum.bn.LazyPropagation
 			:inherited-members:
 			:exclude-members: setFindBarrenNodesType, setRelevantPotentialsFinderType, setTriangulation
 
@@ -20,13 +20,13 @@ Lazy Propagation is the main exact inference for classical Bayesian networks in 
 Shafer-Shenoy Inference
 ~~~~~~~~~~~~~~~~~~~~~~~
 
-.. autoclass:: pyAgrum.ShaferShenoyInference
+.. autoclass:: pyAgrum.bn.ShaferShenoyInference
 			:exclude-members: setFindBarrenNodesType, setRelevantPotentialsFinderType, setTriangulation
 
 Variable Elimination
 ~~~~~~~~~~~~~~~~~~~~
 
-.. autoclass:: pyAgrum.VariableElimination
+.. autoclass:: pyAgrum.bn.VariableElimination
 			:exclude-members: setFindBarrenNodesType, setRelevantPotentialsFinderType, setTriangulation
 
 
@@ -36,7 +36,7 @@ Approximated Inference
 Loopy Belief Propagation
 ~~~~~~~~~~~~~~~~~~~~~~~~
 
-.. autoclass:: pyAgrum.LoopyBeliefPropagation
+.. autoclass:: pyAgrum.bn.LoopyBeliefPropagation
 			:exclude-members: asIApproximationSchemeConfiguration
 
 Sampling
@@ -45,26 +45,26 @@ Sampling
 Gibbs Sampling for BN
 +++++++++++++++++++++
 
-.. autoclass:: pyAgrum.GibbsSampling
+.. autoclass:: pyAgrum.bn.GibbsSampling
 			:exclude-members: asIApproximationSchemeConfiguration
 
 Simple Monte Carlo Sampling for BN
 ++++++++++++++++++++++++++++++++++
 
-.. autoclass:: pyAgrum.MonteCarloSampling
+.. autoclass:: pyAgrum.bn.MonteCarloSampling
 			:exclude-members: asIApproximationSchemeConfiguration
 
 
 Weighted Sampling for BN
 ++++++++++++++++++++++++
 
-.. autoclass:: pyAgrum.WeightedSampling
+.. autoclass:: pyAgrum.bn.WeightedSampling
 			:exclude-members: asIApproximationSchemeConfiguration
 
 Importance Sampling for BN
 ++++++++++++++++++++++++++
 
-.. autoclass:: pyAgrum.ImportanceSampling
+.. autoclass:: pyAgrum.bn.ImportanceSampling
 			:exclude-members: asIApproximationSchemeConfiguration
 
 Loopy sampling
@@ -73,23 +73,23 @@ Loopy sampling
 Pure Loopy Gibbs Sampling
 +++++++++++++++++++++++++
 
-.. autoclass:: pyAgrum.LoopyGibbsSampling
+.. autoclass:: pyAgrum.bn.LoopyGibbsSampling
 			:exclude-members: asIApproximationSchemeConfiguration
 
 Loopy Monte Carlo Sampling
 ++++++++++++++++++++++++++
 
-.. autoclass:: pyAgrum.LoopyMonteCarloSampling
+.. autoclass:: pyAgrum.bn.LoopyMonteCarloSampling
 			:exclude-members: asIApproximationSchemeConfiguration
 
 Loopy Weighted Sampling
 +++++++++++++++++++++++
 
-.. autoclass:: pyAgrum.LoopyWeightedSampling
+.. autoclass:: pyAgrum.bn.LoopyWeightedSampling
 			:exclude-members: asIApproximationSchemeConfiguration
 
 Loopy Importance Sampling
 +++++++++++++++++++++++++
 
-.. autoclass:: pyAgrum.LoopyImportanceSampling
+.. autoclass:: pyAgrum.bn.LoopyImportanceSampling
 			:exclude-members: asIApproximationSchemeConfiguration

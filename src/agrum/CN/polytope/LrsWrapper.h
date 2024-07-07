@@ -36,7 +36,7 @@
 #ifdef HAVE_UNISTD_H
 #  include <unistd.h>
 #else
-#  include <agrum/tools/core/mvsc/unistd.h>
+#  include <agrum/base/core/mvsc/unistd.h>
 #endif
 
 #include <chrono>
@@ -45,7 +45,7 @@
 #include <fstream>
 #include <vector>
 
-#include <agrum/tools/core/math/rational.h>
+#include <agrum/base/core/math/rational.h>
 
 #include <unordered_set>
 
@@ -56,7 +56,7 @@
 #define MP
 // lrs stuff
 extern "C" {
-#include <agrum/tools/external/lrslib/lrslib.h>
+#include <agrum/base/external/lrslib/lrslib.h>
 }
 /* *** from lrs, we need to know BASE to read multiple precision integers *** */
 #ifdef B32

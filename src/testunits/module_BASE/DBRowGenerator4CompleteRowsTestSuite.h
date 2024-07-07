@@ -24,7 +24,7 @@
 #include <gumtest/AgrumTestSuite.h>
 #include <gumtest/utils.h>
 
-#include <agrum/tools/database/DBRowGenerator4CompleteRows.h>
+#include <agrum/base/database/DBRowGenerator4CompleteRows.h>
 
 #include <ressources/include/simpleDebugGenerator.h>
 

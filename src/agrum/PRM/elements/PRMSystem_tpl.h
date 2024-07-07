@@ -26,10 +26,10 @@
  * @author Lionel TORTI and Pierre-Henri WUILLEMIN(_at_LIP6)
  *
  */
-#include <agrum/tools/multidim/aggregators/exists.h>
-#include <agrum/tools/multidim/aggregators/forall.h>
-#include <agrum/tools/multidim/aggregators/max.h>
-#include <agrum/tools/multidim/aggregators/min.h>
+#include <agrum/base/multidim/aggregators/exists.h>
+#include <agrum/base/multidim/aggregators/forall.h>
+#include <agrum/base/multidim/aggregators/max.h>
+#include <agrum/base/multidim/aggregators/min.h>
 
 #include <agrum/PRM/elements/PRMInstance.h>
 #include <agrum/PRM/elements/PRMSystem.h>

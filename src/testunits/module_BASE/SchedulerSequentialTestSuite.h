@@ -24,10 +24,10 @@
 #include <gumtest/AgrumTestSuite.h>
 #include <gumtest/utils.h>
 
-#include <agrum/tools/graphicalModels/inference/scheduler/schedule.h>
-#include <agrum/tools/graphicalModels/inference/scheduler/schedulerSequential.h>
-#include <agrum/tools/multidim/potential.h>
-#include <agrum/tools/variables/labelizedVariable.h>
+#include <agrum/base/graphicalModels/inference/scheduler/schedule.h>
+#include <agrum/base/graphicalModels/inference/scheduler/schedulerSequential.h>
+#include <agrum/base/multidim/potential.h>
+#include <agrum/base/variables/labelizedVariable.h>
 
 namespace gum_tests {
 

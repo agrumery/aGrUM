@@ -69,8 +69,8 @@
 
 #include <fstream>
 
-#include <agrum/tools/core/progressNotification.h>
-#include <agrum/tools/database/databaseTable.h>
+#include <agrum/base/core/progressNotification.h>
+#include <agrum/base/database/databaseTable.h>
 
 #include <agrum/BN/BayesNet.h>
 

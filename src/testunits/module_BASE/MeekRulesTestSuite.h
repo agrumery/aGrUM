@@ -20,8 +20,8 @@
 
 #include <iostream>
 
-#include <agrum/tools/graphs/algorithms/MeekRules.h>
-#include <agrum/tools/graphs/PDAG.h>
+#include <agrum/base/graphs/algorithms/MeekRules.h>
+#include <agrum/base/graphs/PDAG.h>
 
 #include <testunits/gumtest/AgrumTestSuite.h>
 #include <testunits/gumtest/utils.h>

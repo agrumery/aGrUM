@@ -24,10 +24,10 @@
 #include <gumtest/AgrumTestSuite.h>
 #include <gumtest/utils.h>
 
-#include <agrum/tools/database/DBRowGeneratorEM.h>
-#include <agrum/tools/database/DBRowGeneratorParser.h>
-#include <agrum/tools/database/DBTranslator4LabelizedVariable.h>
-#include <agrum/tools/stattests/recordCounter.h>
+#include <agrum/base/database/DBRowGeneratorEM.h>
+#include <agrum/base/database/DBRowGeneratorParser.h>
+#include <agrum/base/database/DBTranslator4LabelizedVariable.h>
+#include <agrum/base/stattests/recordCounter.h>
 
 #include <agrum/BN/inference/lazyPropagation.h>
 

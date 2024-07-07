@@ -181,7 +181,7 @@ IMPROVE_CONCRETEMARKOVNET_API(MarkovRandomField<double>);
 
   %pythoncode {
 def __getstate__(self):
-    _gum_add_properties_while_getstate_(self)
+    pyAgrum.base._gum_add_properties_while_getstate_(self)
     state={"nodes":[self.variable(i).toFast() for i in self.nodes()],
            "factors":[[n for n in self.factor(factor).names] for factor in self.factors()],
            "potential":{"-".join(self.factor(factor).names):self.factor(factor)[:].flatten().tolist() for factor in self.factors()},

@@ -25,9 +25,9 @@
 #include <gumtest/AgrumTestSuite.h>
 #include <gumtest/utils.h>
 
-#include <agrum/tools/graphs/algorithms/triangulations/defaultTriangulation.h>
-#include <agrum/tools/graphs/undiGraph.h>
-#include <agrum/tools/variables/labelizedVariable.h>
+#include <agrum/base/graphs/algorithms/triangulations/defaultTriangulation.h>
+#include <agrum/base/graphs/undiGraph.h>
+#include <agrum/base/variables/labelizedVariable.h>
 
 #include <agrum/BN/BayesNet.h>
 #include <agrum/BN/inference/lazyPropagation.h>

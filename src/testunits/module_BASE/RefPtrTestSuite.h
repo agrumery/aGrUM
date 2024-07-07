@@ -22,7 +22,7 @@
 #include <gumtest/AgrumTestSuite.h>
 #include <gumtest/utils.h>
 
-#include <agrum/tools/core/refPtr.h>
+#include <agrum/base/core/refPtr.h>
 
 namespace gum_tests {
 

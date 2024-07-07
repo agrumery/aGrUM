@@ -29,7 +29,7 @@
 #ifndef AGRUM_DECISIONPOTENTIAL_H
 #define AGRUM_DECISIONPOTENTIAL_H
 
-#include <agrum/tools/multidim/potential.h>
+#include <agrum/base/multidim/potential.h>
 
 namespace gum {
   /**

@@ -33,10 +33,10 @@
 // =========================================================================
 #include <thread>
 // =========================================================================
-#include <agrum/tools/core/functors.h>
-#include <agrum/tools/core/inline.h>
+#include <agrum/base/core/functors.h>
+#include <agrum/base/core/inline.h>
 // =========================================================================
-#include <agrum/tools/multidim/utils/FunctionGraphUtilities/terminalNodePolicies/SetTerminalNodePolicy.h>
+#include <agrum/base/multidim/utils/FunctionGraphUtilities/terminalNodePolicies/SetTerminalNodePolicy.h>
 // =========================================================================
 #include <agrum/FMDP/fmdp.h>
 

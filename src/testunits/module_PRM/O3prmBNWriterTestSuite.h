@@ -25,8 +25,8 @@
 #include <gumtest/AgrumTestSuite.h>
 #include <gumtest/utils.h>
 
-#include <agrum/tools/multidim/instantiation.h>
-#include <agrum/tools/variables/labelizedVariable.h>
+#include <agrum/base/multidim/instantiation.h>
+#include <agrum/base/variables/labelizedVariable.h>
 
 #include <agrum/BN/BayesNet.h>
 #include <agrum/PRM/o3prm/O3prmBNReader.h>

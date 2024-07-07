@@ -28,8 +28,8 @@
 #include <iostream>
 #include <sstream>
 
-#include <agrum/tools/core/math/formula.h>
-#include <agrum/tools/variables/allDiscreteVariables.h>
+#include <agrum/base/core/math/formula.h>
+#include <agrum/base/variables/allDiscreteVariables.h>
 
 #include <agrum/PRM/elements/PRMFormAttribute.h>
 #include <agrum/PRM/elements/PRMFuncAttribute.h>

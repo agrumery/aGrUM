@@ -26,8 +26,8 @@
 #include <gumtest/AgrumTestSuite.h>
 #include <gumtest/utils.h>
 
-#include <agrum/tools/multidim/implementations/multiDimSparse.h>
-#include <agrum/tools/variables/labelizedVariable.h>
+#include <agrum/base/multidim/implementations/multiDimSparse.h>
+#include <agrum/base/variables/labelizedVariable.h>
 
 #include <agrum/BN/BayesNet.h>
 #include <agrum/BN/BayesNetFactory.h>

@@ -34,12 +34,12 @@
 #include <utility>
 #include <vector>
 // =========================================================================
-#include <agrum/tools/multidim/instantiation.h>
+#include <agrum/base/multidim/instantiation.h>
 
-#include <agrum/tools/core/math/math_utils.h>
+#include <agrum/base/core/math/math_utils.h>
 // =========================================================================
-#include <agrum/tools/multidim/utils/FunctionGraphUtilities/operators/treeOperator.h>
-#include <agrum/tools/multidim/utils/FunctionGraphUtilities/operators/treeRegress.h>
+#include <agrum/base/multidim/utils/FunctionGraphUtilities/operators/treeOperator.h>
+#include <agrum/base/multidim/utils/FunctionGraphUtilities/operators/treeRegress.h>
 
 #include <agrum/FMDP/planning/treeOperatorStrategy.h>
 // =========================================================================

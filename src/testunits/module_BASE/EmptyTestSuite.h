@@ -22,7 +22,7 @@
 #include <gumtest/AgrumTestSuite.h>
 #include <gumtest/utils.h>
 
-#include <agrum/tools/graphs/graphElements.h>
+#include <agrum/base/graphs/graphElements.h>
 
 namespace gum_tests {
 

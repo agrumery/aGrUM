@@ -78,8 +78,8 @@ GONZALES(_at_AMU)
 
 #include <agrum/agrum.h>
 
-#include <agrum/tools/external/tinyxml/ticpp/ticpp.h>
-#include <agrum/tools/variables/labelizedVariable.h>
+#include <agrum/base/external/tinyxml/ticpp/ticpp.h>
+#include <agrum/base/variables/labelizedVariable.h>
 
 #include <agrum/BN/io/BNReader.h>
 

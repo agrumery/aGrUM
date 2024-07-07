@@ -30,7 +30,7 @@
 
 #include <agrum/agrum.h>
 
-#include <agrum/tools/graphs/undiGraph.h>
+#include <agrum/base/graphs/undiGraph.h>
 
 #include <agrum/BN/learning/constraints/structuralConstraint.h>
 

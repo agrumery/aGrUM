@@ -30,7 +30,7 @@
 // =====================================================================
 #include <cstdlib>
 //======================================================================
-#include <agrum/tools/core/utils_random.h>
+#include <agrum/base/core/utils_random.h>
 //======================================================================
 #include <agrum/FMDP/io/dat/fmdpDatReader.h>
 #include <agrum/FMDP/simulation/fmdpSimulator.h>

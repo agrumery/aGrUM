@@ -40,7 +40,7 @@
 
 #include <agrum/agrum.h>
 
-#include <agrum/tools/core/bijection.h>
+#include <agrum/base/core/bijection.h>
 
 #include <agrum/BN/learning/constraints/structuralConstraint.h>
 

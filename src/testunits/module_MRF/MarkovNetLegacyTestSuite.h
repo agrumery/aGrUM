@@ -37,10 +37,10 @@
                                                   .Using MRF instead of MN when needed.) :
     src / testunits / module_MRF
     / MarkovRandomFieldTestSuite.h
-#include <agrum/tools/multidim/potential.h>
-#include <agrum/tools/variables/discretizedVariable.h>
-#include <agrum/tools/variables/labelizedVariable.h>
-#include <agrum/tools/variables/rangeVariable.h>
+#include <agrum/base/multidim/potential.h>
+#include <agrum/base/variables/discretizedVariable.h>
+#include <agrum/base/variables/labelizedVariable.h>
+#include <agrum/base/variables/rangeVariable.h>
 
       // The graph used for the tests:
       //          1   2_

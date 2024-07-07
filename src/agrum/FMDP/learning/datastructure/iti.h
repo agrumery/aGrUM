@@ -30,7 +30,7 @@
 #ifndef GUM_ITI_H
 #define GUM_ITI_H
 // =========================================================================
-#include <agrum/tools/core/multiPriorityQueue.h>
+#include <agrum/base/core/multiPriorityQueue.h>
 // =========================================================================
 // =========================================================================
 #include <agrum/FMDP/learning/datastructure/incrementalGraphLearner.h>

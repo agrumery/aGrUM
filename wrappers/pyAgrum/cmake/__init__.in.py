@@ -28,116 +28,66 @@ pyAgrum includes :
   * a `website <http://agrum.org>`_.
 """
 
-from .deprecated import *
-
 # selection of imports extracted from dir(.pyAgrum)
 
-from .pyAgrum import about
-from .pyAgrum import fastBN, fastID, fastMRF
-from .pyAgrum import availableBNExts, loadBN, saveBN
-from .pyAgrum import availableMRFExts, loadMRF, saveMRF
-from .pyAgrum import availableIDExts, loadID, saveID
-from .pyAgrum import randomBN, generateSample
-from .pyAgrum import mutilateBN
-from .pyAgrum import getPosterior
-from .pyAgrum import log2
-from .pyAgrum import statsObj
-from .pyAgrum import fastGraph
+from .base import log2
+from .base import statsObj
+from .base import fastGraph
+from .base import config
+from .base import DiscretizedVariable, LabelizedVariable, RangeVariable, DiscreteVariable, IntegerVariable, \
+  NumericalDiscreteVariable
+from .base import Potential, Instantiation, Potential
+from .base import Arc, Edge, DiGraph, UndiGraph, MixedGraph, DAG, PDAG, CliqueGraph
+from .base import JunctionTreeGenerator
+from .base import MeekRules
+from .base import ApproximationScheme
+from .base import fastVariable
+from .base import initRandom, randomProba, randomDistribution, randomGeneratorSeed, randomValue
+from .base import isOMP, getNumberOfThreads, getMaxNumberOfThreads, getNumberOfLogicalProcessors, setNumberOfThreads
+from .base import VarType_DISCRETIZED, VarType_LABELIZED, VarType_RANGE, VarType_INTEGER, VarType_NUMERICAL
+from .base import DefaultInLabel, DuplicateElement, DuplicateLabel, GumException, FatalError, FormatNotFound, \
+  GraphError, IOError, InvalidArc, InvalidArgument, InvalidArgumentsNumber, InvalidDirectedCycle, InvalidEdge, \
+  InvalidNode, DatabaseError, MissingValueInDatabase, MissingVariableInDatabase, NoChild, NoNeighbour, NoParent, \
+  NotFound, NullElement, OperationNotAllowed, OutOfBounds, ArgumentError, SizeError, SyntaxError, UndefinedElement, \
+  UndefinedIteratorKey, UndefinedIteratorValue, UnknownLabelInDatabase, CPTError
 
-from .pyAgrum import config
+from .bn import fastBN
+from .bn import availableBNExts, loadBN, saveBN
+from .bn import randomBN, generateSample
+from .bn import mutilateBN
+from .bn import BayesNet, BayesNetFragment, EssentialGraph, MarkovBlanket
+from .bn import ExactBNdistance, GibbsBNdistance, StructuralComparator
+from .bn import LazyPropagation, ShaferShenoyInference, VariableElimination
+from .bn import LoopyBeliefPropagation, GibbsSampling, MonteCarloSampling, ImportanceSampling, WeightedSampling
+from .bn import LoopyImportanceSampling, LoopyGibbsSampling, LoopyWeightedSampling, LoopyMonteCarloSampling
+from .bn import PythonApproximationListener, PythonBNListener, PythonLoadListener, PythonDatabaseGeneratorListener
+from .bn import BNGenerator
+from .bn import BNDatabaseGenerator, InformationTheory
+from .bn import BNLearner
+from .bn import PRMexplorer
 
-from .pyAgrum import Arc, Edge, DiGraph, UndiGraph, MixedGraph, DAG, PDAG, CliqueGraph
-from .pyAgrum import BayesNet, BayesNetFragment, EssentialGraph, MarkovBlanket
-from .pyAgrum import MarkovRandomField, ShaferShenoyMRFInference
-from .pyAgrum import DiscretizedVariable, LabelizedVariable, RangeVariable, DiscreteVariable, IntegerVariable, \
-    NumericalDiscreteVariable
-from .pyAgrum import Potential, Instantiation, Potential
-from .pyAgrum import ExactBNdistance, GibbsBNdistance, StructuralComparator
-from .pyAgrum import LazyPropagation, ShaferShenoyInference, VariableElimination
-from .pyAgrum import LoopyBeliefPropagation, GibbsSampling, MonteCarloSampling, ImportanceSampling, WeightedSampling
-from .pyAgrum import LoopyImportanceSampling, LoopyGibbsSampling, LoopyWeightedSampling, LoopyMonteCarloSampling
-from .pyAgrum import PythonApproximationListener, PythonBNListener, PythonLoadListener, PythonDatabaseGeneratorListener
-from .pyAgrum import BNGenerator, IDGenerator, JunctionTreeGenerator
-from .pyAgrum import BNLearner, InformationTheory
-from .pyAgrum import BNDatabaseGenerator
-from .pyAgrum import InfluenceDiagram, ShaferShenoyLIMIDInference
-from .pyAgrum import CredalNet, CNMonteCarloSampling, CNLoopyPropagation
-from .pyAgrum import PRMexplorer
-from .pyAgrum import MeekRules
+import sys
 
-from .pyAgrum import ApproximationScheme
-from .pyAgrum import fastVariable
+try:
+  from .mrf import getPosterior
+  from .mrf import availableMNExts, loadMN, saveMN
+  from .mrf import fastMRF
+  from .mrf import MarkovRandomField, ShaferShenoyMRFInference
+except ImportError:
+  sys.stderr.write("Could not load pyAgrum.mrf")
 
-from .pyAgrum import initRandom, randomProba, randomDistribution, randomGeneratorSeed, randomValue
-from .pyAgrum import isOMP, getNumberOfThreads, getMaxNumberOfThreads, getNumberOfLogicalProcessors, setNumberOfThreads
+try:
+  from .cn import CredalNet, CNMonteCarloSampling, CNLoopyPropagation
+except ImportError:
+  sys.stderr.write("Could not load pyAgrum.cn")
 
-from .pyAgrum import VarType_DISCRETIZED, VarType_LABELIZED, VarType_RANGE, VarType_INTEGER, VarType_NUMERICAL
+try:
+  from .id import IDGenerator
+  from .id import availableIDExts, loadID, saveID
+  from .id import fastID
+  from .id import InfluenceDiagram, ShaferShenoyLIMIDInference
+except ImportError:
+  sys.stderr.write("Could not load pyAgrum.id")
 
-from .pyAgrum import DefaultInLabel, DuplicateElement, DuplicateLabel, GumException, FatalError, FormatNotFound, \
-    GraphError, IOError, InvalidArc, InvalidArgument, InvalidArgumentsNumber, InvalidDirectedCycle, InvalidEdge, \
-    InvalidNode, DatabaseError, MissingValueInDatabase, MissingVariableInDatabase, NoChild, NoNeighbour, NoParent, \
-    NotFound, NullElement, OperationNotAllowed, OutOfBounds, ArgumentError, SizeError, SyntaxError, UndefinedElement, \
-    UndefinedIteratorKey, UndefinedIteratorValue, UnknownLabelInDatabase, CPTError
-
-
-# selection of imports extracted from dir(pyAgrum)
-__all__ = [
-    'about',
-    'fastBN', 'fastID', 'fastMRF',
-    'availableBNExts', 'loadBN', 'saveBN',
-    'availableMRFExts', 'loadMRF', 'saveMRF',
-    'availableIDExts', 'loadID', 'saveID',
-    'randomBN', 'generateSample',
-    'mutilateBN',
-    'getPosterior',
-    'log2',
-    'statsObj',
-    'fastGraph',
-
-    'config',
-
-    'Arc', 'Edge', 'DiGraph', 'UndiGraph', 'MixedGraph', 'DAG', 'PDAG', 'CliqueGraph',
-    'BayesNet', 'BayesNetFragment', 'EssentialGraph', 'MarkovBlanket',
-    'MarkovRandomField', 'ShaferShenoyMRFInference',
-    'DiscretizedVariable', 'LabelizedVariable', 'RangeVariable', 'DiscreteVariable', 'IntegerVariable',
-    'NumericalDiscreteVariable',
-    'Potential', 'Instantiation', 'Potential',
-    'ExactBNdistance', 'GibbsBNdistance', 'StructuralComparator',
-    'LoopyBeliefPropagation', 'GibbsSampling', 'MonteCarloSampling', 'ImportanceSampling', 'WeightedSampling',
-    'LoopyImportanceSampling', 'LoopyGibbsSampling', 'LoopyWeightedSampling', 'LoopyMonteCarloSampling'
-    'LazyPropagation',
-    'ShaferShenoyInference', 'VariableElimination',
-    'PythonApproximationListener', 'PythonBNListener', 'PythonLoadListener', 'PythonDatabaseGeneratorListener',
-    'BNGenerator', 'IDGenerator', 'JunctionTreeGenerator',
-    'BNLearner', 'InformationTheory',
-    'BNDatabaseGenerator',
-    'InfluenceDiagram', 'ShaferShenoyLIMIDInference',
-    'CredalNet', 'CNMonteCarloSampling', 'CNLoopyPropagation',
-    'PRMexplorer',
-    'MeekRules',
-
-    'ApproximationScheme',
-    'fastVariable',
-    'initRandom', 'randomProba', 'randomDistribution', 'randomGeneratorSeed', 'randomValue',
-
-    'isOMP', 'setNumberOfThreads', 'getNumberOfThreads', 'getMaxNumberOfThreads', 'getNumberOfLogicalProcessors',
-    # 'getThreadNumber','getNumberOfRunningThreads','getDynamicThreadsNumber','setDynamicThreadsNumber','getNestedParallelism', 'setNestedParallelism',
-
-    'VarType_DISCRETIZED', 'VarType_LABELIZED', 'VarType_RANGE', 'VarType_INTEGER', 'VarType_NUMERICAL',
-
-    'DefaultInLabel', 'DuplicateElement', 'DuplicateLabel', 'GumException', 'FatalError', 'FormatNotFound',
-    'GraphError', 'IOError', 'InvalidArc', 'InvalidArgument', 'InvalidArgumentsNumber', 'InvalidDirectedCycle',
-    'InvalidEdge', 'InvalidNode', 'DatabaseError', 'MissingValueInDatabase', 'MissingVariableInDatabase', 'NoChild',
-    'NoNeighbour', 'NoParent', 'NotFound', 'NullElement', 'OperationNotAllowed', 'OutOfBounds', 'ArgumentError',
-    'SizeError', 'SyntaxError', 'UndefinedElement', 'UndefinedIteratorKey', 'UndefinedIteratorValue',
-    'UnknownLabelInDatabase', "CPTError",
-
-    "config"
-]
-
-__version__ = '@PYAGRUM_VERSION@'
-__license__ = __doc__
-__project_url__ = 'http://agrum.org'
-__project_name__ = 'pyAgrum'
-__project_description__ = __doc__
-__project__ = __doc__
+from .deprecated import *
+from .common import __version__, __license__, __project_url__, __project_name__, __project_description__, __project__, about

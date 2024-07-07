@@ -1,26 +1,7 @@
 #include <agrum/BN/BayesNet.h>
 #include <iostream>
 
-#include <agrum/tools/database/DBTranslator4LabelizedVariable.h>
-#include <agrum/tools/database/DBRowGeneratorParser.h>
-#include <agrum/tools/database/DBInitializerFromCSV.h>
-#include <agrum/tools/database/databaseTable.h>
-#include <agrum/tools/database/DBTranslatorSet.h>
-
-#include <agrum/BN/learning/scores_and_tests/scoreBDeu.h>
-#include <agrum/BN/learning/scores_and_tests/scoreBIC.h>
-
-#include <agrum/BN/learning/priors/smoothingPrior.h>
-
-#include <agrum/BN/learning/constraints/structuralConstraintDAG.h>
-#include <agrum/BN/learning/constraints/structuralConstraintDiGraph.h>
-
-#include <agrum/BN/learning/structureUtils/graphChangesGenerator4DiGraph.h>
-#include <agrum/BN/learning/structureUtils/graphChangesSelector4DiGraph.h>
-
-#include <agrum/BN/learning/greedyHillClimbing.h>
-#include <agrum/BN/learning/paramUtils/paramEstimatorML.h>
-
+#include <agrum/bn.h>
 
 int main(int argc, char* argv[]) {
   std::cout << "Simple K-Cross-Validation with aGrUM" << std::endl << std::endl;
@@ -36,17 +17,17 @@ int main(int argc, char* argv[]) {
   }
 
   std::string                           csvfilename("../asia.csv");
-  gum::learning::DBInitializerFromCSV<> initializer(csvfilename);
+  gum::learning::DBInitializerFromCSV initializer(csvfilename);
   const auto&       var_names = initializer.variableNames();
   const std::size_t nb_vars = var_names.size();
 
-  gum::learning::DBTranslatorSet<>                translator_set;
-  gum::learning::DBTranslator4LabelizedVariable<> translator;
+  gum::learning::DBTranslatorSet                translator_set;
+  gum::learning::DBTranslator4LabelizedVariable translator;
   for (std::size_t i = 0; i < nb_vars; ++i) {
     translator_set.insertTranslator(translator, i);
   }
 
-  gum::learning::DatabaseTable<> database(translator_set);
+  gum::learning::DatabaseTable database(translator_set);
   database.setVariableNames(initializer.variableNames());
   initializer.fillDatabase(database);
   database.reorder();
@@ -78,8 +59,8 @@ int main(int argc, char* argv[]) {
 
     gum::learning::GreedyHillClimbing search;
 
-    gum::learning::ScoreBIC<> score(parser, prior);
-    gum::learning::ParamEstimatorML<> estimator(parser, prior,
+    gum::learning::ScoreBIC score(parser, prior);
+    gum::learning::ParamEstimatorML estimator(parser, prior,
                                                 score.internalPrior());
 
     

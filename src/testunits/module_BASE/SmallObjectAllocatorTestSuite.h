@@ -25,9 +25,9 @@
 
 #include <gumtest/AgrumTestSuite.h>
 
-#include <agrum/tools/core/smallobjectallocator/fixedAllocator.h>
-#include <agrum/tools/core/smallobjectallocator/smallObjectAllocator.h>
-#include <agrum/tools/core/timer.h>
+#include <agrum/base/core/smallobjectallocator/fixedAllocator.h>
+#include <agrum/base/core/smallobjectallocator/smallObjectAllocator.h>
+#include <agrum/base/core/timer.h>
 
 #include "utils.h"
 

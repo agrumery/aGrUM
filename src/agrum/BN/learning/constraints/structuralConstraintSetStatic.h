@@ -42,7 +42,7 @@
 
 #include <agrum/agrum.h>
 
-#include <agrum/tools/graphs/diGraph.h>
+#include <agrum/base/graphs/diGraph.h>
 
 #include <agrum/BN/learning/structureUtils/graphChange.h>
 

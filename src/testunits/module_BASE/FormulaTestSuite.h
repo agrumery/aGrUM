@@ -24,8 +24,8 @@
 #include <gumtest/AgrumTestSuite.h>
 #include <gumtest/utils.h>
 
-#include <agrum/tools/core/exceptions.h>
-#include <agrum/tools/core/math/formula.h>
+#include <agrum/base/core/exceptions.h>
+#include <agrum/base/core/math/formula.h>
 
 namespace gum_tests {
 

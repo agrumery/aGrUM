@@ -24,10 +24,10 @@
 #include <gumtest/AgrumTestSuite.h>
 #include <gumtest/utils.h>
 
-#include <agrum/tools/multidim/aggregators/min.h>
-#include <agrum/tools/multidim/implementations/multiDimArray.h>
-#include <agrum/tools/multidim/implementations/multiDimSparse.h>
-#include <agrum/tools/variables/rangeVariable.h>
+#include <agrum/base/multidim/aggregators/min.h>
+#include <agrum/base/multidim/implementations/multiDimArray.h>
+#include <agrum/base/multidim/implementations/multiDimSparse.h>
+#include <agrum/base/variables/rangeVariable.h>
 
 namespace gum_tests {
 

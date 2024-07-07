@@ -20,7 +20,7 @@
 #include <iostream>
 #include <string>
 
-#include <agrum/tools/database/nanodbcParser.h>
+#include <agrum/base/database/nanodbcParser.h>
 
 #include <gumtest/AgrumTestSuite.h>
 #include <gumtest/utils.h>

@@ -27,11 +27,11 @@
 #include <gumtest/AgrumTestSuite.h>
 #include <gumtest/utils.h>
 
-#include <agrum/tools/core/sequence.h>
-#include <agrum/tools/multidim/potential.h>
-#include <agrum/tools/variables/labelizedVariable.h>
+#include <agrum/base/core/sequence.h>
+#include <agrum/base/multidim/potential.h>
+#include <agrum/base/variables/labelizedVariable.h>
 
-#include <agrum/tools/core/utils_random.h>
+#include <agrum/base/core/utils_random.h>
 
 namespace gum_tests {
 

@@ -25,8 +25,8 @@
 #include <gumtest/AgrumTestSuite.h>
 #include <gumtest/utils.h>
 
-#include <agrum/tools/core/AVLTree.h>
-#include <agrum/tools/core/heap.h>
+#include <agrum/base/core/AVLTree.h>
+#include <agrum/base/core/heap.h>
 
 namespace gum_tests {
 

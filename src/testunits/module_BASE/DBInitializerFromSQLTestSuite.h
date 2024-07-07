@@ -28,12 +28,12 @@
 #include <gumtest/AgrumTestSuite.h>
 #include <gumtest/utils.h>
 
-#include <agrum/tools/database/databaseTable.h>
-#include <agrum/tools/database/DBInitializerFromSQL.h>
-#include <agrum/tools/database/DBTranslator4ContinuousVariable.h>
-#include <agrum/tools/database/DBTranslator4LabelizedVariable.h>
-#include <agrum/tools/database/DBTranslatorSet.h>
-#include <agrum/tools/database/rawDatabaseTable.h>
+#include <agrum/base/database/databaseTable.h>
+#include <agrum/base/database/DBInitializerFromSQL.h>
+#include <agrum/base/database/DBTranslator4ContinuousVariable.h>
+#include <agrum/base/database/DBTranslator4LabelizedVariable.h>
+#include <agrum/base/database/DBTranslatorSet.h>
+#include <agrum/base/database/rawDatabaseTable.h>
 
 namespace gum_tests {
 

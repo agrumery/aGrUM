@@ -12,7 +12,7 @@
 #include <cstdlib>
 
 #include <agrum/config.h>
-#include <agrum/tools/core/timer.h>
+#include <agrum/base/core/timer.h>
 
 #include <cxxtest/TestListener.h>
 #include <cxxtest/TestRunner.h>

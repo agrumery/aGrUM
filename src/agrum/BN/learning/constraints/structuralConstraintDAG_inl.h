@@ -28,7 +28,7 @@
 
 #  include <agrum/agrum.h>
 
-#  include <agrum/tools/graphs/algorithms/DAGCycleDetector.h>
+#  include <agrum/base/graphs/algorithms/DAGCycleDetector.h>
 
 #  include <agrum/BN/learning/constraints/structuralConstraintDiGraph.h>
 

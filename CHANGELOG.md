@@ -1,11 +1,21 @@
 # aGrUM Changelog
 
+## Changelog for 2.0
+
+* aGrUM
+  * Split library into agrumBASE/BN/CN/FMDP/ID/MRF sub-libraries
+
+* pyAgrum
+  * Split module into pyAgrum.base/bn/cn/id/mrf sub-modules
+  
+  
 ## Changelog for 1.17.2
 
 * pyAgrum
   * Fixed some bugs in `pyAgrum.lib.shapley` (thanks Stefano Mariani !).
   * Changed last MN->MRF (`pyAgrum.{loadMRF|saveMRF|availableMRFExts}`).
   * Improved pickling of `pyAgrum.skbn.BNClassifier`.
+
 
 ## Changelog for 1.17.1
 

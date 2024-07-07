@@ -30,10 +30,10 @@
 #ifndef DOXYGEN_SHOULD_SKIP_THIS
 #  include <algorithm>
 
-#  include <agrum/tools/graphs/algorithms/binaryJoinTreeConverterDefault.h>
-#  include <agrum/tools/multidim/instantiation.h>
-#  include <agrum/tools/multidim/utils/operators/multiDimCombineAndProjectDefault.h>
-#  include <agrum/tools/multidim/utils/operators/multiDimProjection.h>
+#  include <agrum/base/graphs/algorithms/binaryJoinTreeConverterDefault.h>
+#  include <agrum/base/multidim/instantiation.h>
+#  include <agrum/base/multidim/utils/operators/multiDimCombineAndProjectDefault.h>
+#  include <agrum/base/multidim/utils/operators/multiDimProjection.h>
 
 #  include <agrum/MRF/inference/ShaferShenoyMRFInference.h>
 

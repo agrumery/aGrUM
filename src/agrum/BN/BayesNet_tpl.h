@@ -30,26 +30,26 @@
 #include <limits>
 #include <set>
 
-#include <agrum/tools/multidim/aggregators/amplitude.h>
-#include <agrum/tools/multidim/aggregators/and.h>
-#include <agrum/tools/multidim/aggregators/count.h>
-#include <agrum/tools/multidim/aggregators/exists.h>
-#include <agrum/tools/multidim/aggregators/forall.h>
-#include <agrum/tools/multidim/aggregators/max.h>
-#include <agrum/tools/multidim/aggregators/median.h>
-#include <agrum/tools/multidim/aggregators/min.h>
-#include <agrum/tools/multidim/aggregators/or.h>
-#include <agrum/tools/multidim/aggregators/sum.h>
-#include <agrum/tools/multidim/ICIModels/multiDimLogit.h>
-#include <agrum/tools/multidim/ICIModels/multiDimNoisyAND.h>
-#include <agrum/tools/multidim/ICIModels/multiDimNoisyORCompound.h>
-#include <agrum/tools/multidim/ICIModels/multiDimNoisyORNet.h>
-#include <agrum/tools/variables/allDiscreteVariables.h>
+#include <agrum/base/multidim/aggregators/amplitude.h>
+#include <agrum/base/multidim/aggregators/and.h>
+#include <agrum/base/multidim/aggregators/count.h>
+#include <agrum/base/multidim/aggregators/exists.h>
+#include <agrum/base/multidim/aggregators/forall.h>
+#include <agrum/base/multidim/aggregators/max.h>
+#include <agrum/base/multidim/aggregators/median.h>
+#include <agrum/base/multidim/aggregators/min.h>
+#include <agrum/base/multidim/aggregators/or.h>
+#include <agrum/base/multidim/aggregators/sum.h>
+#include <agrum/base/multidim/ICIModels/multiDimLogit.h>
+#include <agrum/base/multidim/ICIModels/multiDimNoisyAND.h>
+#include <agrum/base/multidim/ICIModels/multiDimNoisyORCompound.h>
+#include <agrum/base/multidim/ICIModels/multiDimNoisyORNet.h>
+#include <agrum/base/variables/allDiscreteVariables.h>
 
 #include <agrum/BN/BayesNet.h>
 #include <agrum/BN/generator/simpleCPTGenerator.h>
 
-#include <agrum/tools/core/utils_string.h>
+#include <agrum/base/core/utils_string.h>
 
 namespace gum {
   template < typename GUM_SCALAR >

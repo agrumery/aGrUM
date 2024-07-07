@@ -2,7 +2,7 @@
 
 %include "../swig/aGrUM_wrap.i"
 
-%include <agrum/tools/graphs/DAG.h>
+%include <agrum/base/graphs/DAG.h>
 
 %{
 // WORKAROUND for a bug in swig C++ parser

@@ -38,7 +38,7 @@
 
 #include <agrum/agrum.h>
 
-#include <agrum/tools/core/approximations/approximationScheme.h>
+#include <agrum/base/core/approximations/approximationScheme.h>
 
 #include <agrum/BN/BayesNet.h>
 

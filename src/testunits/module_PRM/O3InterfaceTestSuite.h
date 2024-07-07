@@ -29,7 +29,7 @@
 #include <agrum/PRM/o3prm/O3prmReader.h>
 #include <agrum/PRM/PRM.h>
 
-#include <agrum/tools/core/math/math_utils.h>
+#include <agrum/base/core/math/math_utils.h>
 
 namespace gum_tests {
 

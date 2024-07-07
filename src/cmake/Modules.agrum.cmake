@@ -50,6 +50,8 @@ endif ()
 
 # modules are all options (except ALL) + BASE module
 set(LIST_OF_MODULES "BASE" ${MODULES})
+list(REMOVE_DUPLICATES LIST_OF_MODULES)
+set(LIST_OF_MODULES ${LIST_OF_MODULES} PARENT_SCOPE)
 
 # creating the lists of files by module
 foreach (MODULE ${LIST_OF_MODULES})
@@ -58,10 +60,10 @@ foreach (MODULE ${LIST_OF_MODULES})
     set(AGRUM_${MODULE}_INLINES "")
     set(AGRUM_${MODULE}_TEMPLATES "")
     set(AGRUM_${MODULE}_C_SOURCES "")
+
     foreach (DIR ${${MODULE}_DIRS})
         file(GLOB_RECURSE LOOP_SRC ${AGRUM_SOURCE_DIR} ${AGRUM_SOURCE_DIR}/agrum/${DIR}/*.cpp)
         set(AGRUM_${MODULE}_SOURCES ${AGRUM_${MODULE}_SOURCES} ${LOOP_SRC})
-
         file(GLOB_RECURSE LOOP_HEADER ${AGRUM_SOURCE_DIR} ${AGRUM_SOURCE_DIR}/agrum/${DIR}/*.h)
         set(AGRUM_${MODULE}_INCLUDES ${AGRUM_${MODULE}_INCLUDES} ${LOOP_HEADER})
     endforeach ()
@@ -69,13 +71,8 @@ endforeach ()
 
 #credal networks has a special case for C files
 if (BUILD_CN OR BUILD_ALL)
-    file(GLOB_RECURSE AGRUM_CN_C_SOURCES ${AGRUM_SOURCE_DIR} ${AGRUM_SOURCE_DIR}/agrum/tools/external/lrslib/lrslib.c ${AGRUM_SOURCE_DIR}/agrum/tools/external/lrslib/lrsmp.c)
+    file(GLOB_RECURSE AGRUM_CN_C_SOURCES ${AGRUM_SOURCE_DIR} ${AGRUM_SOURCE_DIR}/agrum/base/external/lrslib/lrslib.c ${AGRUM_SOURCE_DIR}/agrum/base/external/lrslib/lrsmp.c)
 endif ()
-
-# we always add the BASE module
-set(AGRUM_SOURCES ${AGRUM_BASE_SOURCES})
-set(AGRUM_C_SOURCES ${AGRUM_BASE_C_SOURCES})
-set(AGRUM_INCLUDES ${AGRUM_BASE_INCLUDES})
 
 if (BUILD_ALL)
     message(STATUS "** aGrUM Notification: Building all")
@@ -89,9 +86,27 @@ macro(buildFileListsWithModules)
     foreach (OPTION ${MODULES})
         if (BUILD_${OPTION} OR BUILD_ALL)
             message(STATUS "** aGrUM Notification:      (+) adding ${OPTION}")
-            set(AGRUM_SOURCES ${AGRUM_SOURCES} ${AGRUM_${OPTION}_SOURCES})
-            set(AGRUM_INCLUDES ${AGRUM_INCLUDES} ${AGRUM_${OPTION}_INCLUDES})
-            set(AGRUM_C_SOURCES ${AGRUM_C_SOURCES} ${AGRUM_${OPTION}_C_SOURCES})
+
+            add_library (agrum${OPTION} ${AGRUM_${OPTION}_SOURCES} ${AGRUM_${OPTION}_C_SOURCES} ${AGRUM_${OPTION}_INCLUDES} ${AGRUM_BASE_INCLUDES})
+
+            target_include_directories (agrum${OPTION} PRIVATE ${AGRUM_SOURCE_DIR};${AGRUM_BINARY_DIR})
+            target_include_directories (agrum${OPTION} INTERFACE $<INSTALL_INTERFACE:include>)
+            target_include_directories (agrum${OPTION} INTERFACE $<BUILD_INTERFACE:${AGRUM_SOURCE_DIR}>)
+            target_include_directories (agrum${OPTION} INTERFACE $<BUILD_INTERFACE:${AGRUM_BINARY_DIR}>)
+
+            target_compile_features (agrum${OPTION} PUBLIC cxx_std_20)
+
+            set_target_properties (agrum${OPTION} PROPERTIES POSITION_INDEPENDENT_CODE ON)
+            set_target_properties (agrum${OPTION} PROPERTIES DEBUG_POSTFIX "-dbg")
+            set_target_properties (agrum${OPTION} PROPERTIES VERSION ${AGRUM_VERSION} SOVERSION ${AGRUM_VERSION_MAJOR})
+
+            export (TARGETS agrum${OPTION} FILE agrum${OPTION}-targets.cmake)
+
+            # handle dependencies
+            foreach (DEP ${${OPTION}_DEPS})
+                target_link_libraries (agrum${OPTION} PUBLIC agrum${DEP})
+            endforeach()
+
         endif ()
     endforeach ()
 endmacro(buildFileListsWithModules)

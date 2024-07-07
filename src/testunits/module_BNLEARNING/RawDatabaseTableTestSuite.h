@@ -24,8 +24,8 @@
 #include <gumtest/AgrumTestSuite.h>
 #include <gumtest/utils.h>
 
-#include <agrum/tools/core/threads/threads.h>
-#include <agrum/tools/database/rawDatabaseTable.h>
+#include <agrum/base/core/threads/threads.h>
+#include <agrum/base/database/rawDatabaseTable.h>
 
 namespace gum_tests {
 

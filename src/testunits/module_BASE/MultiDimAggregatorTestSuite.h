@@ -24,20 +24,20 @@
 #include <gumtest/AgrumTestSuite.h>
 #include <gumtest/utils.h>
 
-#include <agrum/tools/core/exceptions.h>
-#include <agrum/tools/multidim/aggregators/amplitude.h>
-#include <agrum/tools/multidim/aggregators/and.h>
-#include <agrum/tools/multidim/aggregators/count.h>
-#include <agrum/tools/multidim/aggregators/exists.h>
-#include <agrum/tools/multidim/aggregators/forall.h>
-#include <agrum/tools/multidim/aggregators/max.h>
-#include <agrum/tools/multidim/aggregators/median.h>
-#include <agrum/tools/multidim/aggregators/min.h>
-#include <agrum/tools/multidim/aggregators/or.h>
-#include <agrum/tools/multidim/aggregators/sum.h>
-#include <agrum/tools/multidim/potential.h>
-#include <agrum/tools/variables/labelizedVariable.h>
-#include <agrum/tools/variables/rangeVariable.h>
+#include <agrum/base/core/exceptions.h>
+#include <agrum/base/multidim/aggregators/amplitude.h>
+#include <agrum/base/multidim/aggregators/and.h>
+#include <agrum/base/multidim/aggregators/count.h>
+#include <agrum/base/multidim/aggregators/exists.h>
+#include <agrum/base/multidim/aggregators/forall.h>
+#include <agrum/base/multidim/aggregators/max.h>
+#include <agrum/base/multidim/aggregators/median.h>
+#include <agrum/base/multidim/aggregators/min.h>
+#include <agrum/base/multidim/aggregators/or.h>
+#include <agrum/base/multidim/aggregators/sum.h>
+#include <agrum/base/multidim/potential.h>
+#include <agrum/base/variables/labelizedVariable.h>
+#include <agrum/base/variables/rangeVariable.h>
 
 #include <agrum/BN/BayesNet.h>
 

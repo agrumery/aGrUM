@@ -24,7 +24,7 @@
 #include <gumtest/AgrumTestSuite.h>
 #include <gumtest/utils.h>
 
-#include <agrum/tools/core/sortedPriorityQueue.h>
+#include <agrum/base/core/sortedPriorityQueue.h>
 
 namespace gum_tests {
 

@@ -24,10 +24,10 @@
 #include <gumtest/AgrumTestSuite.h>
 #include <gumtest/utils.h>
 
-#include <agrum/tools/database/DBRowGenerator4CompleteRows.h>
-#include <agrum/tools/database/DBRowGeneratorEM.h>
-#include <agrum/tools/database/DBTranslator4LabelizedVariable.h>
-#include <agrum/tools/database/DBTranslatorSet.h>
+#include <agrum/base/database/DBRowGenerator4CompleteRows.h>
+#include <agrum/base/database/DBRowGeneratorEM.h>
+#include <agrum/base/database/DBTranslator4LabelizedVariable.h>
+#include <agrum/base/database/DBTranslatorSet.h>
 
 #include <agrum/BN/learning/paramUtils/DAG2BNLearner.h>
 #include <agrum/BN/learning/paramUtils/paramEstimatorML.h>

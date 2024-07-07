@@ -26,8 +26,8 @@
 #include <gumtest/AgrumTestSuite.h>
 #include <gumtest/utils.h>
 
-#include <agrum/tools/core/threads/threadExecutor.h>
-#include <agrum/tools/core/threads/threads.h>
+#include <agrum/base/core/threads/threadExecutor.h>
+#include <agrum/base/core/threads/threads.h>
 
 #include <agrum/CN/credalNet.h>
 #include <agrum/CN/polytope/LpInterface.h>

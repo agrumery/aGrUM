@@ -22,7 +22,7 @@
 #include <gumtest/AgrumTestSuite.h>
 #include <gumtest/utils.h>
 
-#include <agrum/tools/core/binTreeNode.h>
+#include <agrum/base/core/binTreeNode.h>
 
 namespace gum_tests {
 

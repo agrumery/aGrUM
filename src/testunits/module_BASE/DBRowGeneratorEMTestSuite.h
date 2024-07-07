@@ -24,7 +24,7 @@
 #include <gumtest/AgrumTestSuite.h>
 #include <gumtest/utils.h>
 
-#include <agrum/tools/database/DBRowGeneratorEM.h>
+#include <agrum/base/database/DBRowGeneratorEM.h>
 
 #include <agrum/BN/inference/lazyPropagation.h>
 

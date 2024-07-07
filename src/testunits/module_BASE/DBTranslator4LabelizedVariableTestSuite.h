@@ -24,7 +24,7 @@
 #include <gumtest/AgrumTestSuite.h>
 #include <gumtest/utils.h>
 
-#include <agrum/tools/database/DBTranslator4LabelizedVariable.h>
+#include <agrum/base/database/DBTranslator4LabelizedVariable.h>
 
 namespace gum_tests {
 

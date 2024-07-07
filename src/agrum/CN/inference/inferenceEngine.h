@@ -29,9 +29,9 @@
  */
 #include <map>
 
-#include <agrum/tools/core/approximations/approximationScheme.h>
-#include <agrum/tools/core/threads/threadData.h>
-#include <agrum/tools/core/threads/threadNumberManager.h>
+#include <agrum/base/core/approximations/approximationScheme.h>
+#include <agrum/base/core/threads/threadData.h>
+#include <agrum/base/core/threads/threadNumberManager.h>
 
 #include <agrum/CN/tools/varMod2BNsMap.h>
 

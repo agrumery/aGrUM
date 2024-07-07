@@ -130,6 +130,7 @@ def process_filters(src_filename: str, target_filename: str, is_python: bool, de
     ('gum::MultiDimContainer< double >', '"pyAgrum.Potential"'),
     ('gum::MultiDimAdressable', '"pyAgrum.Potential"'),
     ('gum::MultiDimImplementation< double >', '"pyAgrum.Potential"'),
+    ('gum::VariableSet', '"pyAgrum.VariableSet"'),
     ('gum::Variable', '"pyAgrum.Variable"'),
     ('gum::IDiscretizedVariable', '"pyAgrum.DiscretizedVariable"'),
     ('gum::DAG', '"pyAgrum.DAG"'),

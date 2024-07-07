@@ -24,12 +24,12 @@
 #include <gumtest/AgrumTestSuite.h>
 #include <gumtest/utils.h>
 
-#include <agrum/tools/database/databaseTable.h>
-#include <agrum/tools/database/DBInitializerFromCSV.h>
-#include <agrum/tools/database/DBRowGeneratorParser.h>
-#include <agrum/tools/database/DBTranslator4LabelizedVariable.h>
-#include <agrum/tools/database/DBTranslatorSet.h>
-#include <agrum/tools/stattests/indepTestG2.h>
+#include <agrum/base/database/databaseTable.h>
+#include <agrum/base/database/DBInitializerFromCSV.h>
+#include <agrum/base/database/DBRowGeneratorParser.h>
+#include <agrum/base/database/DBTranslator4LabelizedVariable.h>
+#include <agrum/base/database/DBTranslatorSet.h>
+#include <agrum/base/stattests/indepTestG2.h>
 
 #include <agrum/BN/learning/priors/noPrior.h>
 

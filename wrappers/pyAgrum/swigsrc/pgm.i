@@ -21,6 +21,7 @@
 
 
 %pythonappend gum::DAGmodel::dag %{
+  from pyAgrum.base import DAG
   val = DAG(val) # copying the DAG
 %}
 

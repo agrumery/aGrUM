@@ -36,7 +36,7 @@
 
 #include <agrum/agrum.h>
 
-#include <agrum/tools/variables/labelizedVariable.h>
+#include <agrum/base/variables/labelizedVariable.h>
 
 #include <agrum/BN/algorithms/divergence/BNdistance.h>
 #include <agrum/BN/BayesNet.h>

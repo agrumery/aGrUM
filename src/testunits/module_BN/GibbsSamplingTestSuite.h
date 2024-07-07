@@ -25,9 +25,9 @@
 #include <gumtest/AgrumTestSuite.h>
 #include <gumtest/utils.h>
 
-#include <agrum/tools/core/approximations/approximationSchemeListener.h>
-#include <agrum/tools/multidim/implementations/multiDimArray.h>
-#include <agrum/tools/variables/labelizedVariable.h>
+#include <agrum/base/core/approximations/approximationSchemeListener.h>
+#include <agrum/base/multidim/implementations/multiDimArray.h>
+#include <agrum/base/variables/labelizedVariable.h>
 
 #include <agrum/BN/BayesNet.h>
 #include <agrum/BN/inference/GibbsSampling.h>

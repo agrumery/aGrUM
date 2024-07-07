@@ -30,7 +30,7 @@
 #ifndef GUM_LEARNING_STRUCTURAL_COMPARATOR_H
 #define GUM_LEARNING_STRUCTURAL_COMPARATOR_H
 
-#include <agrum/tools/graphs/PDAG.h>
+#include <agrum/base/graphs/PDAG.h>
 
 #include <agrum/BN/BayesNet.h>
 

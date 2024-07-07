@@ -31,8 +31,8 @@
 
 #include <agrum/agrum.h>
 
-#include <agrum/tools/graphicalModels/DAGmodel.h>
-#include <agrum/tools/graphs/PDAG.h>
+#include <agrum/base/graphicalModels/DAGmodel.h>
+#include <agrum/base/graphs/PDAG.h>
 
 namespace gum {
 

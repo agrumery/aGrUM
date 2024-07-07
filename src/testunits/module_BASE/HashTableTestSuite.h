@@ -25,8 +25,8 @@
 #include <gumtest/AgrumTestSuite.h>
 #include <gumtest/utils.h>
 
-#include <agrum/tools/core/hashTable.h>
-#include <agrum/tools/core/list.h>
+#include <agrum/base/core/hashTable.h>
+#include <agrum/base/core/list.h>
 
 namespace gum_tests {
 

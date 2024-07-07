@@ -10,26 +10,26 @@ Useful functions in pyAgrum
 Input/Output for Bayesian networks
 ----------------------------------
 
-.. autofunction:: pyAgrum.availableBNExts
+.. autofunction:: pyAgrum.bn.availableBNExts
 
-.. autofunction:: pyAgrum.loadBN
+.. autofunction:: pyAgrum.bn.loadBN
 
-.. autofunction:: pyAgrum.saveBN
+.. autofunction:: pyAgrum.bn.saveBN
 
 Input/Output for Markov random fields
 -------------------------------------
 
-.. autofunction:: pyAgrum.availableMRFExts
+.. autofunction:: pyAgrum.mrf.availableMRFExts
 
-.. autofunction:: pyAgrum.loadMRF
+.. autofunction:: pyAgrum.mrf.loadMRF
 
-.. autofunction:: pyAgrum.saveMRF
+.. autofunction:: pyAgrum.mrf.saveMRF
 
 Input for influence diagram
 ---------------------------
 
-.. autofunction:: pyAgrum.availableIDExts
+.. autofunction:: pyAgrum.id.availableIDExts
 
-.. autofunction:: pyAgrum.loadID
+.. autofunction:: pyAgrum.id.loadID
 
-.. autofunction:: pyAgrum.saveID
+.. autofunction:: pyAgrum.id.saveID

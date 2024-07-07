@@ -29,7 +29,7 @@
 #include <agrum/BN/inference/ShaferShenoyInference.h>
 #include <agrum/BN/inference/variableElimination.h>
 
-#include <agrum/tools/core/math/math_utils.h>
+#include <agrum/base/core/math/math_utils.h>
 
 // The graph used for the tests:
 //          1   2_          1 -> 3

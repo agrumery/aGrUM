@@ -31,7 +31,7 @@
 
 #include <agrum/agrum.h>
 
-#include <agrum/tools/stattests/recordCounter.h>
+#include <agrum/base/stattests/recordCounter.h>
 
 #include <agrum/BN/learning/priors/prior.h>
 
@@ -41,7 +41,7 @@ namespace gum {
 
     /** @class DirichletPriorFromDatabase
      * @brief A dirichlet priori: computes its N'_ijk from a database
-     * @headerfile DirichletPriorFromDatabase.h <agrum/tools/database/DirichletPriorFromDatabase.h>
+     * @headerfile DirichletPriorFromDatabase.h <agrum/base/database/DirichletPriorFromDatabase.h>
      * @ingroup learning_priors
      */
     class DirichletPriorFromDatabase: public Prior {

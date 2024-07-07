@@ -28,7 +28,7 @@
 // =========================================================================
 #include <agrum/FMDP/learning/core/testPolicy/GTestPolicy.h>
 
-#include <agrum/tools/core/math/math_utils.h>
+#include <agrum/base/core/math/math_utils.h>
 
 // =========================================================================
 

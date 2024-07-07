@@ -3,7 +3,6 @@ include(GNUInstallDirs)
 
 ## installation module for recognize agrum (see documentation "How to use agrum")
 install(FILES
-        ${CMAKE_CURRENT_CMAKE_DIR}/aGrUMUse.cmake
         ${CMAKE_CURRENT_BINARY_DIR}/aGrUMConfig.cmake
         ${CMAKE_CURRENT_BINARY_DIR}/aGrUMConfigVersion.cmake
         DESTINATION ${CMAKE_INSTALL_LIBDIR}/cmake/aGrUM
@@ -33,3 +32,14 @@ install(TARGETS ${LIBAGRUM}
 install(EXPORT ${LIBAGRUM}-targets
         DESTINATION ${CMAKE_INSTALL_LIBDIR}/cmake/aGrUM
         COMPONENT Development)
+
+foreach (OPTION ${LIST_OF_MODULES})
+        install(TARGETS agrum${OPTION}
+                EXPORT agrum${OPTION}-targets
+                RUNTIME DESTINATION ${CMAKE_INSTALL_BINDIR}
+                LIBRARY DESTINATION ${CMAKE_INSTALL_LIBDIR}
+                ARCHIVE DESTINATION ${CMAKE_INSTALL_LIBDIR})
+        install(EXPORT agrum${OPTION}-targets
+                DESTINATION ${CMAKE_INSTALL_LIBDIR}/cmake/aGrUM
+                COMPONENT Development)
+endforeach()

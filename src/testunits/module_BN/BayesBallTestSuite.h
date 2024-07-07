@@ -26,7 +26,7 @@
 #include <gumtest/AgrumTestSuite.h>
 #include <gumtest/utils.h>
 
-#include <agrum/tools/graphicalModels/inference/scheduler/scheduleMultiDim.h>
+#include <agrum/base/graphicalModels/inference/scheduler/scheduleMultiDim.h>
 
 #include <agrum/BN/algorithms/BayesBall.h>
 #include <agrum/BN/generator/simpleBayesNetGenerator.h>

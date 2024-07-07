@@ -18,7 +18,7 @@
  *
  */
 
-#include <agrum/tools/core/exceptions.h>
+#include <agrum/base/core/exceptions.h>
 
 #include <agrum/CN/inference/CNMonteCarloSampling.h>
 

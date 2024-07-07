@@ -24,13 +24,13 @@
 #include <gumtest/AgrumTestSuite.h>
 #include <gumtest/utils.h>
 
-#include <agrum/tools/graphs/DAG.h>
-#include <agrum/tools/graphs/graphElements.h>
-#include <agrum/tools/graphs/mixedGraph.h>
-#include <agrum/tools/graphs/parts/listeners/diGraphListener.h>
-#include <agrum/tools/graphs/parts/listeners/mixedGraphListener.h>
-#include <agrum/tools/graphs/parts/listeners/undiGraphListener.h>
-#include <agrum/tools/graphs/undiGraph.h>
+#include <agrum/base/graphs/DAG.h>
+#include <agrum/base/graphs/graphElements.h>
+#include <agrum/base/graphs/mixedGraph.h>
+#include <agrum/base/graphs/parts/listeners/diGraphListener.h>
+#include <agrum/base/graphs/parts/listeners/mixedGraphListener.h>
+#include <agrum/base/graphs/parts/listeners/undiGraphListener.h>
+#include <agrum/base/graphs/undiGraph.h>
 
 // The graph used for the tests:
 //          0   1_          0 -> 2
@@ -74,11 +74,11 @@ namespace gum_tests {
         if (_isOn_) GUM_TRACE(f << "--" << s << "(" << _nbrEdges_ << ")");
       }
 
-      const int nodes() const { return _nbrNode_; }
+      int nodes() const { return _nbrNode_; }
 
-      const int arcs() const { return _nbrArcs_; }
+      int arcs() const { return _nbrArcs_; }
 
-      const int edges() const { return _nbrEdges_; }
+      int edges() const { return _nbrEdges_; }
 
       void on() { _isOn_ = true; }
 
@@ -100,9 +100,9 @@ namespace gum_tests {
 
       void whenArcDeleted(const void*, gum::NodeId, gum::NodeId) { _nbrArcs_--; }
 
-      const int nodes() const { return _nbrNode_; }
+      int nodes() const { return _nbrNode_; }
 
-      const int arcs() const { return _nbrArcs_; }
+      int arcs() const { return _nbrArcs_; }
     };
 
     class UndiGraphCounter: public gum::UndiGraphListener {
@@ -122,9 +122,9 @@ namespace gum_tests {
 
       void whenEdgeDeleted(const void*, gum::NodeId, gum::NodeId) { _nbrEdges_--; }
 
-      const int nodes() const { return _nbrNode_; }
+      int nodes() const { return _nbrNode_; }
 
-      const int edges() const { return _nbrEdges_; }
+      int edges() const { return _nbrEdges_; }
     };
 
     class MixedGraphCounter: public gum::MixedGraphListener {
@@ -148,11 +148,11 @@ namespace gum_tests {
 
       void whenEdgeDeleted(const void*, gum::NodeId, gum::NodeId) { _nbrEdges_--; }
 
-      const int nodes() const { return _nbrNode_; }
+      int nodes() const { return _nbrNode_; }
 
-      const int arcs() const { return _nbrArcs_; }
+      int arcs() const { return _nbrArcs_; }
 
-      const int edges() const { return _nbrEdges_; }
+      int edges() const { return _nbrEdges_; }
     };
 
     private:

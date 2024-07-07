@@ -22,8 +22,8 @@
 #include <gumtest/AgrumTestSuite.h>
 #include <gumtest/utils.h>
 
-#include <agrum/tools/graphs/graphElements.h>
-#include <agrum/tools/graphs/PDAG.h>
+#include <agrum/base/graphs/graphElements.h>
+#include <agrum/base/graphs/PDAG.h>
 
 // The graph used for the tests:
 //  1 -> 3

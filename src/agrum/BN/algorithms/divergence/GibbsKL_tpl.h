@@ -26,14 +26,14 @@
  * @author Paul ALAM & Pierre-Henri WUILLEMIN(_at_LIP6)
  */
 
-#include <agrum/tools/core/approximations/approximationScheme.h>
-#include <agrum/tools/core/hashTable.h>
+#include <agrum/base/core/approximations/approximationScheme.h>
+#include <agrum/base/core/hashTable.h>
 
 #include <agrum/BN/algorithms/divergence/GibbsBNdistance.h>
 #include <agrum/BN/IBayesNet.h>
 #include <agrum/BN/inference/tools/gibbsOperator.h>
 
-#include <agrum/tools/core/math/math_utils.h>
+#include <agrum/base/core/math/math_utils.h>
 
 #define GIBBSKL_DEFAULT_MAXITER          10000000
 #define GIBBSKL_DEFAULT_EPSILON          1e-10

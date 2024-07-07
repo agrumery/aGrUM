@@ -33,7 +33,7 @@
 #include <vector>
 //======================================================================
 //======================================================================
-#include <agrum/tools/multidim/implementations/multiDimFunctionGraph.h>
+#include <agrum/base/multidim/implementations/multiDimFunctionGraph.h>
 
 //======================================================================
 

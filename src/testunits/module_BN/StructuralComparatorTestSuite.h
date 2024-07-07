@@ -24,10 +24,10 @@
 #include <gumtest/AgrumTestSuite.h>
 #include <gumtest/utils.h>
 
-#include <agrum/tools/graphs/DAG.h>
-#include <agrum/tools/graphs/diGraph.h>
-#include <agrum/tools/graphs/PDAG.h>
-#include <agrum/tools/graphs/undiGraph.h>
+#include <agrum/base/graphs/DAG.h>
+#include <agrum/base/graphs/diGraph.h>
+#include <agrum/base/graphs/PDAG.h>
+#include <agrum/base/graphs/undiGraph.h>
 
 #include <agrum/BN/algorithms/structuralComparator.h>
 #include <agrum/BN/BayesNet.h>

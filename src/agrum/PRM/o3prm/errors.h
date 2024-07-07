@@ -31,7 +31,7 @@
 #include <string>
 #include <vector>
 
-#include <agrum/tools/core/errorsContainer.h>
+#include <agrum/base/core/errorsContainer.h>
 
 #include <agrum/PRM/o3prm/O3prm.h>
 

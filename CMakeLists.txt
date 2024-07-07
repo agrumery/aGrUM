@@ -1,4 +1,4 @@
-cmake_minimum_required(VERSION 3.12)
+cmake_minimum_required(VERSION 3.13)
 
 if (POLICY CMP0042) # use of @rpath
     cmake_policy(SET CMP0042 NEW)
@@ -41,6 +41,8 @@ include(CompilOptions.agrum)
 if (USE_OPENMP)
     include(openMP)
 endif ()
+
+enable_testing()
 
 add_subdirectory(src)
 add_subdirectory(wrappers)

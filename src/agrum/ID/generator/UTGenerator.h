@@ -28,7 +28,7 @@
 #ifndef GUM_UT_GENERATOR_H
 #define GUM_UT_GENERATOR_H
 
-#include <agrum/tools/multidim/potential.h>
+#include <agrum/base/multidim/potential.h>
 
 namespace gum {
 

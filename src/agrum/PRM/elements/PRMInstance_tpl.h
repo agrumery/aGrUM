@@ -26,7 +26,7 @@
  * @author Lionel TORTI and Pierre-Henri WUILLEMIN(_at_LIP6)
  */
 
-#include <agrum/tools/multidim/implementations/multiDimSparse.h>
+#include <agrum/base/multidim/implementations/multiDimSparse.h>
 
 #include <agrum/PRM/elements/PRMInstance.h>
 

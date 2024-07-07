@@ -33,8 +33,8 @@
 
 #include <agrum/agrum.h>
 
-#include <agrum/tools/graphicalModels/UGmodel.h>
-#include <agrum/tools/multidim/potential.h>
+#include <agrum/base/graphicalModels/UGmodel.h>
+#include <agrum/base/multidim/potential.h>
 
 namespace gum {
   template < typename GUM_SCALAR >

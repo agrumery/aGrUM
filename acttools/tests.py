@@ -30,7 +30,7 @@ def checkTests(current: dict[str, str]):
   cde = current['tests']
   if cde == "quick" and 'aGrUM' in current['targets']:
     current['tests'] = 'all'
-    current['modules'] = 'BASE+BN+BNLEARNING'
+    current['modules'] = 'BASE+BN'
     cde = 'all'
 
   alltests = allTests(setifyString(current['modules']))

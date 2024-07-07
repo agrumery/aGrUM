@@ -26,11 +26,11 @@
 #include <gumtest/AgrumTestSuite.h>
 #include <gumtest/utils.h>
 
-#include <agrum/tools/graphs/graphElements.h>
-#include <agrum/tools/variables/discreteVariable.h>
-#include <agrum/tools/variables/discretizedVariable.h>
-#include <agrum/tools/variables/labelizedVariable.h>
-#include <agrum/tools/variables/rangeVariable.h>
+#include <agrum/base/graphs/graphElements.h>
+#include <agrum/base/variables/discreteVariable.h>
+#include <agrum/base/variables/discretizedVariable.h>
+#include <agrum/base/variables/labelizedVariable.h>
+#include <agrum/base/variables/rangeVariable.h>
 
 #include <agrum/BN/BayesNet.h>
 #include <agrum/BN/generator/maxParentsMCBayesNetGenerator.h>

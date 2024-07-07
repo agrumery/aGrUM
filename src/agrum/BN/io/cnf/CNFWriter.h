@@ -45,7 +45,7 @@
 // problème sur template <typename> class IApproximationPolicy = ExactPolicy
 // sinon
 // (reconnaissance de ExactPolicy?)
-#include <agrum/tools/core/approximations/exactPolicy.h>
+#include <agrum/base/core/approximations/exactPolicy.h>
 
 namespace gum {
 

@@ -26,10 +26,10 @@
 #include <ressources/include/evenDebugGenerator.h>
 
 #include <agrum/BN/inference/lazyPropagation.h>
-#include <agrum/tools/database/DBTranslator4LabelizedVariable.h>
-#include <agrum/tools/database/DBTranslator4ContinuousVariable.h>
-#include <agrum/tools/database/DBRowGeneratorParser.h>
-#include <agrum/tools/database/DBRowGeneratorEM.h>
+#include <agrum/base/database/DBTranslator4LabelizedVariable.h>
+#include <agrum/base/database/DBTranslator4ContinuousVariable.h>
+#include <agrum/base/database/DBRowGeneratorParser.h>
+#include <agrum/base/database/DBRowGeneratorEM.h>
 
 namespace gum_tests {
 

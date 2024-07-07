@@ -24,7 +24,7 @@
 #include <gumtest/AgrumTestSuite.h>
 #include <gumtest/utils.h>
 
-#include <agrum/tools/core/math/Dirichlet.h>
+#include <agrum/base/core/math/Dirichlet.h>
 
 namespace gum_tests {
 

@@ -27,15 +27,15 @@
 
 #include <agrum/agrum.h>
 
-#include <agrum/tools/multidim/aggregators/multiDimAggregator.h>
-#include <agrum/tools/multidim/ICIModels/multiDimNoisyORCompound.h>
-#include <agrum/tools/multidim/ICIModels/multiDimNoisyORNet.h>
-#include <agrum/tools/multidim/implementations/multiDimBijArray.h>
-#include <agrum/tools/multidim/implementations/multiDimBucket.h>
-#include <agrum/tools/multidim/implementations/multiDimSparse.h>
-#include <agrum/tools/multidim/potential.h>
-#include <agrum/tools/multidim/utils/operators/multiDimCombinationDefault.h>
-#include <agrum/tools/multidim/utils/operators/projections4MultiDim.h>
+#include <agrum/base/multidim/aggregators/multiDimAggregator.h>
+#include <agrum/base/multidim/ICIModels/multiDimNoisyORCompound.h>
+#include <agrum/base/multidim/ICIModels/multiDimNoisyORNet.h>
+#include <agrum/base/multidim/implementations/multiDimBijArray.h>
+#include <agrum/base/multidim/implementations/multiDimBucket.h>
+#include <agrum/base/multidim/implementations/multiDimSparse.h>
+#include <agrum/base/multidim/potential.h>
+#include <agrum/base/multidim/utils/operators/multiDimCombinationDefault.h>
+#include <agrum/base/multidim/utils/operators/projections4MultiDim.h>
 
 #include <agrum/PRM/elements/PRMObject.h>
 

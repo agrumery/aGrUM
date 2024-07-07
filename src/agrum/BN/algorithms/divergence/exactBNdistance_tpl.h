@@ -30,7 +30,7 @@
 #include <agrum/BN/algorithms/divergence/exactBNdistance.h>
 #include <agrum/BN/IBayesNet.h>
 
-#include <agrum/tools/core/math/math_utils.h>
+#include <agrum/base/core/math/math_utils.h>
 
 namespace gum {
   template < typename GUM_SCALAR >

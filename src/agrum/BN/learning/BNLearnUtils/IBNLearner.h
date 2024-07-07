@@ -37,9 +37,9 @@
 
 #include <agrum/agrum.h>
 
-#include <agrum/tools/database/DBInitializerFromCSV.h>
-#include <agrum/tools/database/DBRowGenerator4CompleteRows.h>
-#include <agrum/tools/database/DBRowGeneratorEM.h>
+#include <agrum/base/database/DBInitializerFromCSV.h>
+#include <agrum/base/database/DBRowGenerator4CompleteRows.h>
+#include <agrum/base/database/DBRowGeneratorEM.h>
 
 #include <agrum/BN/algorithms/essentialGraph.h>
 #include <agrum/BN/learning/constraints/structuralConstraintDAG.h>

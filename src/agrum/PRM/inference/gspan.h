@@ -35,7 +35,7 @@
 #include <string>
 #include <vector>
 
-#include <agrum/tools/core/timer.h>
+#include <agrum/base/core/timer.h>
 
 #include <agrum/BN/inference/variableElimination.h>
 #include <agrum/PRM/gspan/DFSTree.h>

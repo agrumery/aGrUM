@@ -31,7 +31,7 @@
 
 #include <vector>
 
-#include <agrum/tools/graphs/algorithms/triangulations/partialOrderedTriangulation.h>
+#include <agrum/base/graphs/algorithms/triangulations/partialOrderedTriangulation.h>
 
 #include <agrum/BN/inference/variableElimination.h>
 #include <agrum/PRM/classBayesNet.h>

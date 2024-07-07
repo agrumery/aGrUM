@@ -39,7 +39,7 @@ namespace gum::learning {
 
   /** @class DirichletPriorFromBN
    * @brief A dirichlet priori: computes its N'_ijk from a database
-   * @headerfile DirichletPriorFromBN.h <agrum/tools/database/DirichletPriorFromBN.h>
+   * @headerfile DirichletPriorFromBN.h <agrum/base/database/DirichletPriorFromBN.h>
    * @ingroup learning_priors
    */
   template < typename GUM_SCALAR >

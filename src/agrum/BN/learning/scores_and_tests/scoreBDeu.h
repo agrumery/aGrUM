@@ -32,7 +32,7 @@
 
 #include <agrum/agrum.h>
 
-#include <agrum/tools/core/math/gammaLog2.h>
+#include <agrum/base/core/math/gammaLog2.h>
 
 #include <agrum/BN/learning/priors/bdeuPrior.h>
 

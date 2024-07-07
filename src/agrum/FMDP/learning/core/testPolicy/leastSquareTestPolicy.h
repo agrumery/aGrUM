@@ -34,7 +34,7 @@
 #include <agrum/FMDP/learning/core/contingencyTable.h>
 #include <agrum/FMDP/learning/core/testPolicy/ITestPolicy.h>
 // ============================================================================
-#include <agrum/tools/multidim/utils/FunctionGraphUtilities/link.h>
+#include <agrum/base/multidim/utils/FunctionGraphUtilities/link.h>
 
 // ============================================================================
 
@@ -42,7 +42,7 @@ namespace gum {
 
   /**
    * @class LeastSquareTestPolicy leastSquareTestPolicy.h
-   * <agrum/tools/multidim/core/testPolicy/leastSquareTestPolicy.h>
+   * <agrum/base/multidim/core/testPolicy/leastSquareTestPolicy.h>
    *
    * @brief LeastSquareTestPolicy implements a test policy that follows the
    * Least Square statistic

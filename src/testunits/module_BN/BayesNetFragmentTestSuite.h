@@ -26,9 +26,9 @@
 
 #include <agrum/config.h>
 
-#include <agrum/tools/multidim/instantiation.h>
-#include <agrum/tools/multidim/potential.h>
-#include <agrum/tools/variables/labelizedVariable.h>
+#include <agrum/base/multidim/instantiation.h>
+#include <agrum/base/multidim/potential.h>
+#include <agrum/base/variables/labelizedVariable.h>
 
 #include <agrum/BN/BayesNetFragment.h>
 #include <agrum/BN/generator/simpleCPTGenerator.h>

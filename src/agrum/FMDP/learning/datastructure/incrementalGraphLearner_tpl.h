@@ -29,16 +29,16 @@
 // =======================================================
 #include <queue>
 // =======================================================
-#include <agrum/tools/core/multiPriorityQueue.h>
-#include <agrum/tools/core/types.h>
+#include <agrum/base/core/multiPriorityQueue.h>
+#include <agrum/base/core/types.h>
 
-#include <agrum/tools/core/math/math_utils.h>
-#include <agrum/tools/core/utils_random.h>
+#include <agrum/base/core/math/math_utils.h>
+#include <agrum/base/core/utils_random.h>
 // =======================================================
 #include <agrum/FMDP/learning/core/chiSquare.h>
 #include <agrum/FMDP/learning/datastructure/incrementalGraphLearner.h>
 // =======================================================
-#include <agrum/tools/variables/discreteVariable.h>
+#include <agrum/base/variables/discreteVariable.h>
 
 // =======================================================
 

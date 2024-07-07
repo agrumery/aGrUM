@@ -32,9 +32,9 @@
 #ifndef GUM_OBSERVATION_H
 #define GUM_OBSERVATION_H
 // =========================================================================
-#include <agrum/tools/core/smallobjectallocator/smallObjectAllocator.h>
+#include <agrum/base/core/smallobjectallocator/smallObjectAllocator.h>
 // =========================================================================
-#include <agrum/tools/variables/discreteVariable.h>
+#include <agrum/base/variables/discreteVariable.h>
 
 // =========================================================================
 

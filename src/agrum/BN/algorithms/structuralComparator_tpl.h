@@ -21,7 +21,7 @@
 
 #ifndef DOXYGEN_SHOULD_SKIP_THIS
 
-#  include <agrum/tools/graphs/PDAG.h>
+#  include <agrum/base/graphs/PDAG.h>
 
 #  include <agrum/BN/algorithms/essentialGraph.h>
 

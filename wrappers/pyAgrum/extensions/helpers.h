@@ -24,10 +24,10 @@
  *
  * @author Pierre-Henri WUILLEMIN
  */
-#include <agrum/tools/core/set.h>
-#include <agrum/tools/graphs/graphElements.h>
-#include <agrum/tools/graphs/parts/nodeGraphPart.h>
-#include <agrum/tools/multidim/potential.h>
+#include <agrum/base/core/set.h>
+#include <agrum/base/graphs/graphElements.h>
+#include <agrum/base/graphs/parts/nodeGraphPart.h>
+#include <agrum/base/multidim/potential.h>
 
 #include <agrum/BN/BayesNet.h>
 #include <agrum/BN/IBayesNet.h>

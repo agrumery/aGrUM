@@ -30,7 +30,7 @@
 #ifndef GUM_NODE_DATABASE_H
 #define GUM_NODE_DATABASE_H
 // =========================================================================
-#include <agrum/tools/core/sequence.h>
+#include <agrum/base/core/sequence.h>
 // =========================================================================
 #include <agrum/FMDP/learning/core/templateStrategy.h>
 #include <agrum/FMDP/learning/core/testPolicy/Chi2TestPolicy.h>

@@ -9,25 +9,19 @@ list(APPEND MODULES "MRF") # Markov Random Fields
 list(APPEND MODULES "CN") # Credal Networks
 list(APPEND MODULES "FMDP") # Factored Markov Decision Process
 list(APPEND MODULES "ID") # Influence Diagram
-list(APPEND MODULES "PRM") # Probabilistic Relational Model
-list(APPEND MODULES "BNLEARNING") # Learning
 
 # list of required modules
 set(BASE_DEPS)
-set(BN_DEPS)
+set(BN_DEPS "BASE")
 set(MRF_DEPS "BN")
 set(CN_DEPS "BN")
-set(FMDP_DEPS)
+set(FMDP_DEPS "BASE")
 set(ID_DEPS "BN")
-set(PRM_DEPS "BN")
-set(BNLEARNING_DEPS "BN")
 
 # list of all folders by module
-set(BASE_DIRS "tools")
-set(BN_DIRS "BN")
+set(BASE_DIRS "base")
+set(BN_DIRS "BN" "BN/learning" "PRM")
 set(MRF_DIRS "MRF")
 set(CN_DIRS "CN")
 set(FMDP_DIRS "FMDP")
 set(ID_DIRS "ID")
-set(PRM_DIRS "PRM")
-set(BNLEARNING_DIRS "BN/learning")

@@ -30,7 +30,7 @@
 // to ease parsing by IDE
 #  include <limits>
 
-#  include <agrum/tools/multidim/potential.h>
+#  include <agrum/base/multidim/potential.h>
 
 #  include <agrum/ID/inference/ShaferShenoyLIMIDInference.h>
 #  include <agrum/ID/inference/tools/decisionPotential.h>

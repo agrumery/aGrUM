@@ -33,7 +33,7 @@
 
 #include <agrum/agrum.h>
 
-#include <agrum/tools/core/math/formula.h>
+#include <agrum/base/core/math/formula.h>
 
 #ifndef GUM_PRM_O3PRM_PRM_H
 #  define GUM_PRM_O3PRM_PRM_H

@@ -37,7 +37,7 @@ namespace gum::learning {
 
   /** @class BDeuPrior
    * @brief the internal prior for the BDeu score (N' / (r_i * q_i)
-   * @headerfile bdeuPrior.h <agrum/tools/database/bdeuPrior.h>
+   * @headerfile bdeuPrior.h <agrum/base/database/bdeuPrior.h>
    * @ingroup learning_priors
    *
    * BDeu is a BD score with a N'/(r_i * q_i) prior, where N' is an

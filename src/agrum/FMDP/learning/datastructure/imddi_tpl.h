@@ -27,15 +27,15 @@
  * GONZALES(_at_AMU)
  */
 // =======================================================
-#include <agrum/tools/core/priorityQueue.h>
-#include <agrum/tools/core/types.h>
+#include <agrum/base/core/priorityQueue.h>
+#include <agrum/base/core/types.h>
 
-#include <agrum/tools/core/math/math_utils.h>
+#include <agrum/base/core/math/math_utils.h>
 // =======================================================
 #include <agrum/FMDP/learning/core/chiSquare.h>
 #include <agrum/FMDP/learning/datastructure/imddi.h>
 // =======================================================
-#include <agrum/tools/variables/labelizedVariable.h>
+#include <agrum/base/variables/labelizedVariable.h>
 
 // =======================================================
 

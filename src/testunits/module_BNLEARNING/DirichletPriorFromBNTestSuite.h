@@ -24,9 +24,9 @@
 #include <gumtest/AgrumTestSuite.h>
 #include <gumtest/utils.h>
 
-#include <agrum/tools/database/DBTranslator4LabelizedVariable.h>
-#include <agrum/tools/database/DBTranslatorSet.h>
-#include <agrum/tools/stattests/recordCounter.h>
+#include <agrum/base/database/DBTranslator4LabelizedVariable.h>
+#include <agrum/base/database/DBTranslatorSet.h>
+#include <agrum/base/stattests/recordCounter.h>
 
 #include <agrum/BN/learning/priors/DirichletPriorFromBN.h>
 

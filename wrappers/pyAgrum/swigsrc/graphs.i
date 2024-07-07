@@ -148,8 +148,6 @@
 
 ADD_METHODS_FOR_ALL_GUM_GRAPHCLASS(gum::DiGraph); // add for the sub-classes (including DAG, MixedGraph and pdag)
 ADD_METHODS_FOR_ALL_GUM_GRAPHCLASS(gum::UndiGraph);
-ADD_METHODS_FOR_ALL_GUM_GRAPHCLASS(gum::EssentialGraph);
-ADD_METHODS_FOR_ALL_GUM_GRAPHCLASS(gum::MarkovBlanket);
 
 %ignore gum::EssentialGraph::nodes const;
 %ignore gum::MarkovBlanket::nodes const;
@@ -238,15 +236,6 @@ ADD_DI_METHOD_TO_GRAPHCLASS(gum::DAG);
 ADD_DI_METHOD_TO_GRAPHCLASS(gum::MixedGraph);
 ADD_DI_METHOD_TO_GRAPHCLASS(gum::PDAG);
 
-ADD_DI_METHOD_TO_GRAPHCLASS(gum::EssentialGraph);
-%ignore gum::EssentialGraph::arcs const;
-%ignore gum::EssentialGraph::parents const;
-%ignore gum::EssentialGraph::children const;
-ADD_DI_METHOD_TO_GRAPHCLASS(gum::MarkovBlanket);
-%ignore gum::MarkovBlanket::arcs const;
-%ignore gum::MarkovBlanket::parents const;
-%ignore gum::MarkovBlanket::children const;
-
 %define ADD_UNDI_METHOD_TO_GRAPHCLASS(classname)
 %extend classname {
   PyObject *edges() const { // add for the sub-classes (including MixedGraph)
@@ -263,9 +252,6 @@ ADD_DI_METHOD_TO_GRAPHCLASS(gum::MarkovBlanket);
 ADD_UNDI_METHOD_TO_GRAPHCLASS(gum::UndiGraph);
 ADD_UNDI_METHOD_TO_GRAPHCLASS(gum::MixedGraph);
 ADD_UNDI_METHOD_TO_GRAPHCLASS(gum::PDAG);
-
-ADD_UNDI_METHOD_TO_GRAPHCLASS(gum::EssentialGraph);
-
 
 %define ADD_MIXED_METHOD_TO_GRAPHCLASS(classname)
 %extend classname {

@@ -32,7 +32,7 @@
 #include <string>
 #include <utility>
 
-#include <agrum/tools/variables/integerVariable.h>
+#include <agrum/base/variables/integerVariable.h>
 
 #include <agrum/BN/BayesNetFactory.h>
 #include <agrum/PRM/elements/PRMInstance.h>

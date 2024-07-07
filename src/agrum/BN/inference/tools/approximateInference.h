@@ -29,7 +29,7 @@
 #ifndef GUM_APPROXIMATE_INFERENCE_H
 #define GUM_APPROXIMATE_INFERENCE_H
 
-#include <agrum/tools/core/approximations/approximationScheme.h>
+#include <agrum/base/core/approximations/approximationScheme.h>
 
 #include <agrum/BN/inference/tools/marginalTargetedInference.h>
 

@@ -24,8 +24,8 @@
 #include <gumtest/AgrumTestSuite.h>
 #include <gumtest/utils.h>
 
-#include <agrum/tools/core/hashTable.h>
-#include <agrum/tools/variables/labelizedVariable.h>
+#include <agrum/base/core/hashTable.h>
+#include <agrum/base/variables/labelizedVariable.h>
 
 #include <agrum/PRM/elements/PRMSystem.h>
 

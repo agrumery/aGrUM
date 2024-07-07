@@ -24,12 +24,12 @@
 #include <gumtest/AgrumTestSuite.h>
 #include <gumtest/utils.h>
 
-#include <agrum/tools/graphs/diGraph.h>
-#include <agrum/tools/graphs/graphElements.h>
-#include <agrum/tools/graphs/mixedGraph.h>
-#include <agrum/tools/graphs/undiGraph.h>
+#include <agrum/base/graphs/diGraph.h>
+#include <agrum/base/graphs/graphElements.h>
+#include <agrum/base/graphs/mixedGraph.h>
+#include <agrum/base/graphs/undiGraph.h>
 
-#include "agrum/tools/graphs/graphElements.h"
+#include "agrum/base/graphs/graphElements.h"
 
 // The graph used for the tests:
 //          0   1_          0 -- 2

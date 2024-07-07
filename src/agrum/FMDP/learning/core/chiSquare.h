@@ -31,9 +31,9 @@
 #ifndef GUM_CHI_SQUARE_H
 #  define GUM_CHI_SQUARE_H
 
-#  include <agrum/tools/core/hashTable.h>
+#  include <agrum/base/core/hashTable.h>
 
-#  include <agrum/tools/core/math/math_utils.h>
+#  include <agrum/base/core/math/math_utils.h>
 
 namespace gum {
 

@@ -27,8 +27,8 @@
  * GONZALES(_at_AMU)
  */
 
-#include <agrum/tools/multidim/implementations/multiDimImplementation.h>
-#include <agrum/tools/multidim/potential.h>
+#include <agrum/base/multidim/implementations/multiDimImplementation.h>
+#include <agrum/base/multidim/potential.h>
 
 #include <agrum/FMDP/fmdpFactory.h>
 

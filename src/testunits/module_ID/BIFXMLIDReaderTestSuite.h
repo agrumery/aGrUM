@@ -25,8 +25,8 @@
 #include <gumtest/AgrumTestSuite.h>
 #include <gumtest/utils.h>
 
-#include <agrum/tools/graphs/graphElements.h>
-#include <agrum/tools/variables/labelizedVariable.h>
+#include <agrum/base/graphs/graphElements.h>
+#include <agrum/base/variables/labelizedVariable.h>
 
 #include <agrum/ID/influenceDiagram.h>
 #include <agrum/ID/io/BIFXML/BIFXMLIDReader.h>

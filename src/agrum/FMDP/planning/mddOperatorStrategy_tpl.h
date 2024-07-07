@@ -34,13 +34,13 @@
 #include <utility>
 #include <vector>
 // =========================================================================
-#include <agrum/tools/core/functors.h>
+#include <agrum/base/core/functors.h>
 
-#include <agrum/tools/core/math/math_utils.h>
+#include <agrum/base/core/math/math_utils.h>
 // =========================================================================
-#include <agrum/tools/multidim/potential.h>
-#include <agrum/tools/multidim/utils/FunctionGraphUtilities/operators/multiDimFunctionGraphOperator.h>
-#include <agrum/tools/multidim/utils/FunctionGraphUtilities/operators/regress.h>
+#include <agrum/base/multidim/potential.h>
+#include <agrum/base/multidim/utils/FunctionGraphUtilities/operators/multiDimFunctionGraphOperator.h>
+#include <agrum/base/multidim/utils/FunctionGraphUtilities/operators/regress.h>
 // =========================================================================
 #include <agrum/FMDP/planning/mddOperatorStrategy.h>
 // =========================================================================

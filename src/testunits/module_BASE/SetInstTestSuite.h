@@ -22,11 +22,11 @@
 #include <gumtest/AgrumTestSuite.h>
 #include <gumtest/utils.h>
 
-#include <agrum/tools/multidim/implementations/multiDimArray.h>
-#include <agrum/tools/multidim/instantiation.h>
-#include <agrum/tools/multidim/setInst.h>
-#include <agrum/tools/variables/discretizedVariable.h>
-#include <agrum/tools/variables/labelizedVariable.h>
+#include <agrum/base/multidim/implementations/multiDimArray.h>
+#include <agrum/base/multidim/instantiation.h>
+#include <agrum/base/multidim/setInst.h>
+#include <agrum/base/variables/discretizedVariable.h>
+#include <agrum/base/variables/labelizedVariable.h>
 
 namespace gum_tests {
 

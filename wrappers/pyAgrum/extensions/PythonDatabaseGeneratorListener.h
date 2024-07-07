@@ -19,7 +19,7 @@
  ***************************************************************************/
 #include <Python.h>
 
-#include <agrum/tools/core/progressNotification.h>
+#include <agrum/base/core/progressNotification.h>
 #include <agrum/BN/database/BNDatabaseGenerator.h>
 
 class PythonDatabaseGeneratorListener: public gum::ProgressListener {

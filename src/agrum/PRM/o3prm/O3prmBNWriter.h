@@ -40,7 +40,7 @@
 
 #include <agrum/agrum.h>
 
-#include <agrum/tools/variables/allDiscreteVariables.h>
+#include <agrum/base/variables/allDiscreteVariables.h>
 
 #include <agrum/BN/io/BNWriter.h>
 

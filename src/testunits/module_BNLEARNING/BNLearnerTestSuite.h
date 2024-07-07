@@ -27,8 +27,8 @@
 #include <gumtest/AgrumTestSuite.h>
 #include <gumtest/utils.h>
 
-#include <agrum/tools/core/approximations/approximationSchemeListener.h>
-#include <agrum/tools/variables/allDiscreteVariables.h>
+#include <agrum/base/core/approximations/approximationSchemeListener.h>
+#include <agrum/base/variables/allDiscreteVariables.h>
 
 #include <agrum/BN/database/BNDatabaseGenerator.h>
 #include <agrum/BN/learning/BNLearner.h>

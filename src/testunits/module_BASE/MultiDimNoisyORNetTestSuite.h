@@ -24,10 +24,10 @@
 #include <gumtest/AgrumTestSuite.h>
 #include <gumtest/utils.h>
 
-#include <agrum/tools/multidim/ICIModels/multiDimNoisyORNet.h>
-#include <agrum/tools/multidim/potential.h>
-#include <agrum/tools/variables/labelizedVariable.h>
-#include <agrum/tools/variables/rangeVariable.h>
+#include <agrum/base/multidim/ICIModels/multiDimNoisyORNet.h>
+#include <agrum/base/multidim/potential.h>
+#include <agrum/base/variables/labelizedVariable.h>
+#include <agrum/base/variables/rangeVariable.h>
 
 namespace gum_tests {
 

@@ -28,10 +28,10 @@
 #ifdef HAVE_DIRENT_H
 #  include <dirent.h>
 #else
-#  include <agrum/tools/core/mvsc/dirent.h>
+#  include <agrum/base/core/mvsc/dirent.h>
 #endif   // HAVE_DIRENT_H
 
-#include <agrum/tools/core/utils_misc.h>
+#include <agrum/base/core/utils_misc.h>
 
 namespace gum_tests {
 

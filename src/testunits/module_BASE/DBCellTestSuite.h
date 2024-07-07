@@ -24,7 +24,7 @@
 #include <gumtest/AgrumTestSuite.h>
 #include <gumtest/utils.h>
 
-#include <agrum/tools/database/DBCell.h>
+#include <agrum/base/database/DBCell.h>
 
 namespace gum_tests {
 

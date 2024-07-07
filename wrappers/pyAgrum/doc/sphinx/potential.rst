@@ -1,7 +1,7 @@
 Potential and Instantiation
 ============================
 
-:py:class:`pyAgrum.Potential` is a multi-dimensional array with a :py:class:`pyAgrum.DiscreteVariable` associated to each dimension.
+:py:class:`pyAgrum.base.Potential` is a multi-dimensional array with a :py:class:`pyAgrum.base.DiscreteVariable` associated to each dimension.
 It is used to represent probabilities and utilities tables in aGrUMs' multidimensional (graphical) models with some conventions.
 
 * The data are stored by iterating over each variable in the sequence.
@@ -19,7 +19,7 @@ It is used to represent probabilities and utilities tables in aGrUMs' multidimen
     1     || 1.0000  | 2.0000  | 3.0000  |
     2     || 4.0000  | 5.0000  | 6.0000  |
 
-* If a :py:class:`pyAgrum.Potential` with the sequence of :py:class:`pyAgrum.DiscreteVariable` X,Y,Z represents a conditional probability Table (CPT), it will be P(X|Y,Z).
+* If a :py:class:`pyAgrum.base.Potential` with the sequence of :py:class:`pyAgrum.base.DiscreteVariable` X,Y,Z represents a conditional probability Table (CPT), it will be P(X|Y,Z).
 
 
 .. code-block:: python
@@ -32,7 +32,7 @@ It is used to represent probabilities and utilities tables in aGrUMs' multidimen
     2     || 0.2667  | 0.3333  | 0.4000  |
 
 
-* For addressing and looping in a :py:class:`pyAgrum.Potential` structure, pyAgrum provides :py:class:`Instantiation` class which represents a multi-dimensionnal index.
+* For addressing and looping in a :py:class:`pyAgrum.base.Potential` structure, pyAgrum provides :py:class:`pyAgrum.base.Instantiation` class which represents a multi-dimensionnal index.
 
 .. code-block:: python
 
@@ -50,7 +50,7 @@ It is used to represent probabilities and utilities tables in aGrUMs' multidimen
     >>> I["B"]="2";print(f"{I} -> {p.get(I)}")
     <A:1|B:2> -> 0.26666666666666666
 
-* :py:class:`pyAgrum.Potential` include tensor operators (see for instance this `notebook <https://pyagrum.readthedocs.io/en/latest/notebooks/93-Tools_potentials.html>`_).
+* :py:class:`pyAgrum.base.Potential` include tensor operators (see for instance this `notebook <https://pyagrum.readthedocs.io/en/latest/notebooks/93-Tools_potentials.html>`_).
 
 .. code-block:: python
 
@@ -79,10 +79,10 @@ It is used to represent probabilities and utilities tables in aGrUMs' multidimen
 Instantiation
 -------------
 
-.. autoclass:: pyAgrum.Instantiation
+.. autoclass:: pyAgrum.base.Instantiation
 
 Potential
 ---------
 
-.. autoclass:: pyAgrum.Potential
+.. autoclass:: pyAgrum.base.Potential
 		:exclude-members: populate

@@ -31,7 +31,7 @@
 
 #include <agrum/agrum.h>
 
-#include <agrum/tools/graphs/parts/listeners/diGraphListener.h>
+#include <agrum/base/graphs/parts/listeners/diGraphListener.h>
 
 #include <agrum/BN/BayesNet.h>
 

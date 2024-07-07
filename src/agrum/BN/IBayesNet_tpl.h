@@ -29,12 +29,12 @@
 #include <cmath>
 #include <limits>
 
-#include <agrum/tools/multidim/aggregators/and.h>
-#include <agrum/tools/multidim/aggregators/or.h>
-#include <agrum/tools/multidim/ICIModels/multiDimNoisyAND.h>
-#include <agrum/tools/multidim/ICIModels/multiDimNoisyORCompound.h>
-#include <agrum/tools/multidim/ICIModels/multiDimNoisyORNet.h>
-#include <agrum/tools/multidim/potential.h>
+#include <agrum/base/multidim/aggregators/and.h>
+#include <agrum/base/multidim/aggregators/or.h>
+#include <agrum/base/multidim/ICIModels/multiDimNoisyAND.h>
+#include <agrum/base/multidim/ICIModels/multiDimNoisyORCompound.h>
+#include <agrum/base/multidim/ICIModels/multiDimNoisyORNet.h>
+#include <agrum/base/multidim/potential.h>
 
 #include <agrum/BN/generator/simpleCPTGenerator.h>
 #include <agrum/BN/IBayesNet.h>

@@ -29,7 +29,7 @@
 
 #include <agrum/BN/inference/tools/gibbsOperator.h>
 
-#include <agrum/tools/core/utils_random.h>
+#include <agrum/base/core/utils_random.h>
 
 namespace gum {
 

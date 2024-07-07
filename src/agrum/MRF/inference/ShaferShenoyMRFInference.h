@@ -33,8 +33,8 @@
 
 #include <agrum/agrum.h>
 
-#include <agrum/tools/graphicalModels/inference/scheduler/scheduledInference.h>
-#include <agrum/tools/graphs/algorithms/triangulations/defaultTriangulation.h>
+#include <agrum/base/graphicalModels/inference/scheduler/scheduledInference.h>
+#include <agrum/base/graphs/algorithms/triangulations/defaultTriangulation.h>
 
 #include <agrum/MRF/inference/tools/evidenceMRFInference.h>
 #include <agrum/MRF/inference/tools/jointTargetedMRFInference.h>

@@ -35,11 +35,11 @@
 
 #include <agrum/agrum.h>
 
-#include <agrum/tools/core/exceptions.h>
-#include <agrum/tools/graphs/algorithms/triangulations/defaultTriangulation.h>
-#include <agrum/tools/graphs/algorithms/triangulations/partialOrderedTriangulation.h>
-#include <agrum/tools/multidim/implementations/multiDimBucket.h>
-#include <agrum/tools/multidim/implementations/multiDimSparse.h>
+#include <agrum/base/core/exceptions.h>
+#include <agrum/base/graphs/algorithms/triangulations/defaultTriangulation.h>
+#include <agrum/base/graphs/algorithms/triangulations/partialOrderedTriangulation.h>
+#include <agrum/base/multidim/implementations/multiDimBucket.h>
+#include <agrum/base/multidim/implementations/multiDimSparse.h>
 
 #include <agrum/ID/inference/tools/decisionPotential.h>
 #include <agrum/ID/inference/tools/influenceDiagramInference.h>

@@ -26,16 +26,16 @@
  * @author Quentin FALCAND, Marvin LASSERRE and Pierre-Henri WUILLEMIN(_at_LIP6)
  */
 
-#include <agrum/tools/core/hashTable.h>
-#include <agrum/tools/core/heap.h>
-#include <agrum/tools/core/timer.h>
-#include <agrum/tools/graphs/mixedGraph.h>
-#include <agrum/tools/stattests/correctedMutualInformation.h>
+#include <agrum/base/core/hashTable.h>
+#include <agrum/base/core/heap.h>
+#include <agrum/base/core/timer.h>
+#include <agrum/base/graphs/mixedGraph.h>
 
+#include <agrum/BN/learning/correctedMutualInformation.h>
 #include <agrum/BN/learning/Miic.h>
 #include <agrum/BN/learning/paramUtils/DAG2BNLearner.h>
 
-#include <agrum/tools/core/math/math_utils.h>
+#include <agrum/base/core/math/math_utils.h>
 
 namespace gum {
 

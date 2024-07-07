@@ -29,7 +29,7 @@
 // =======================================================
 #include <agrum/FMDP/learning/datastructure/leaves/leafAggregator.h>
 
-#include <agrum/tools/core/math/math_utils.h>
+#include <agrum/base/core/math/math_utils.h>
 
 // =======================================================
 

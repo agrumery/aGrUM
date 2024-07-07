@@ -44,12 +44,12 @@
 
 #include <agrum/config.h>
 
-#include <agrum/tools/core/approximations/approximationScheme.h>
-#include <agrum/tools/core/heap.h>
-#include <agrum/tools/graphs/PDAG.h>
-#include <agrum/tools/stattests/correctedMutualInformation.h>
+#include <agrum/base/core/approximations/approximationScheme.h>
+#include <agrum/base/core/heap.h>
+#include <agrum/base/graphs/PDAG.h>
+#include "agrum/base/graphs/algorithms/MeekRules.h"
 
-#include "agrum/tools/graphs/algorithms/MeekRules.h"
+#include <agrum/BN/learning/correctedMutualInformation.h>
 
 #define GUM_SL_EMIT(x, y, action, explain)                                                \
   {                                                                                       \

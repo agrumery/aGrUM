@@ -1,4 +1,4 @@
 Generation of database 
 ^^^^^^^^^^^^^^^^^^^^^^
 
-.. autoclass:: pyAgrum.BNDatabaseGenerator
+.. autoclass:: pyAgrum.bn.BNDatabaseGenerator

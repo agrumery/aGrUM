@@ -25,7 +25,7 @@
  *
  * @author Lionel TORTI and Pierre-Henri WUILLEMIN(_at_LIP6)
  */
-#include <agrum/tools/core/inline.h>
+#include <agrum/base/core/inline.h>
 
 #include <agrum/PRM/classBayesNet.h>   // to ease IDE parser
 

@@ -28,7 +28,7 @@
 
 #include <limits>
 
-#include <agrum/tools/multidim/potential.h>
+#include <agrum/base/multidim/potential.h>
 
 #include <agrum/MRF/IMarkovRandomField.h>
 

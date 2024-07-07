@@ -30,7 +30,7 @@
 
 #include <agrum/agrum.h>
 
-#include <agrum/tools/multidim/potential.h>
+#include <agrum/base/multidim/potential.h>
 
 namespace gum {
   /** @class ICPTGenerator

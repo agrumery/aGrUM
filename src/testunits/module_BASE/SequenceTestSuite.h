@@ -24,7 +24,7 @@
 #include <gumtest/AgrumTestSuite.h>
 #include <gumtest/utils.h>
 
-#include <agrum/tools/core/sequence.h>
+#include <agrum/base/core/sequence.h>
 
 namespace gum_tests {
   class [[maybe_unused]] SequenceTestSuite: public CxxTest::TestSuite {

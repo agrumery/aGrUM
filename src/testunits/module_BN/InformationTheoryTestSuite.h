@@ -22,7 +22,7 @@
 #include <string>
 #include <vector>
 
-#include <agrum/tools/graphicalModels/algorithms/informationTheory.h>
+#include <agrum/base/graphicalModels/algorithms/informationTheory.h>
 
 #include <agrum/BN/inference/lazyPropagation.h>
 #include <agrum/BN/inference/ShaferShenoyInference.h>
@@ -30,7 +30,7 @@
 #include <agrum/MRF/inference/ShaferShenoyMRFInference.h>
 #include <agrum/MRF/MarkovRandomField.h>
 
-#include "agrum/tools/multidim/potential.h"
+#include "agrum/base/multidim/potential.h"
 #include "cxxtest/TestSuite.h"
 #include "testunits/gumtest/AgrumTestSuite.h"
 #include "testunits/gumtest/utils.h"

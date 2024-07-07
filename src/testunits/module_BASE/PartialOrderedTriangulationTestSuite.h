@@ -25,7 +25,7 @@
 #include <gumtest/AgrumTestSuite.h>
 #include <gumtest/utils.h>
 
-#include <agrum/tools/graphs/algorithms/triangulations/partialOrderedTriangulation.h>
+#include <agrum/base/graphs/algorithms/triangulations/partialOrderedTriangulation.h>
 
 namespace gum_tests {
 

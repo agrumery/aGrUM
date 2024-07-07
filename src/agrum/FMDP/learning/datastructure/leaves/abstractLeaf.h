@@ -30,11 +30,11 @@
 #ifndef GUM_ABSTRACT_LEAF_H
 #define GUM_ABSTRACT_LEAF_H
 // =========================================================================
-#include <agrum/tools/core/multiPriorityQueue.h>
-#include <agrum/tools/core/sequence.h>
-#include <agrum/tools/core/smallobjectallocator/smallObjectAllocator.h>
+#include <agrum/base/core/multiPriorityQueue.h>
+#include <agrum/base/core/sequence.h>
+#include <agrum/base/core/smallobjectallocator/smallObjectAllocator.h>
 // =========================================================================
-#include <agrum/tools/graphs/graphElements.h>
+#include <agrum/base/graphs/graphElements.h>
 
 // =========================================================================
 

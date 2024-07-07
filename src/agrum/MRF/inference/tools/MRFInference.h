@@ -33,7 +33,7 @@
 
 #include <agrum/agrum.h>
 
-#include <agrum/tools/graphicalModels/inference/graphicalModelInference.h>
+#include <agrum/base/graphicalModels/inference/graphicalModelInference.h>
 
 #include <agrum/MRF/IMarkovRandomField.h>
 

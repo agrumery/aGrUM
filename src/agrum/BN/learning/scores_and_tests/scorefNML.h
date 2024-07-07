@@ -32,7 +32,7 @@
 
 #include <agrum/agrum.h>
 
-#include <agrum/tools/core/math/variableLog2ParamComplexity.h>
+#include <agrum/base/core/math/variableLog2ParamComplexity.h>
 
 #include <agrum/BN/learning/priors/noPrior.h>
 

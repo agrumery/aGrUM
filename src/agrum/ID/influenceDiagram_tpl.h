@@ -31,7 +31,7 @@
 #include <cstdio>
 #include <iostream>
 
-#include <agrum/tools/variables/allDiscreteVariables.h>
+#include <agrum/base/variables/allDiscreteVariables.h>
 
 #include <agrum/ID/influenceDiagram.h>
 

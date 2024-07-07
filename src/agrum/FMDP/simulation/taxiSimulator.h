@@ -33,7 +33,7 @@
 //======================================================================
 #include <agrum/FMDP/simulation/abstractSimulator.h>
 //======================================================================
-#include <agrum/tools/variables/labelizedVariable.h>
+#include <agrum/base/variables/labelizedVariable.h>
 
 //======================================================================
 

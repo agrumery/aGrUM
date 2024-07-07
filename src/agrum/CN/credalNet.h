@@ -48,10 +48,10 @@
 #include <string>
 #include <utility>   /// c++11 stuff, like declval ( decltype from prototype without a default constructor )
 
-#include <agrum/tools/core/exceptions.h>
-#include <agrum/tools/core/math/pow.h>   // custom pow functions with integers, faster implementation
-#include <agrum/tools/core/threads/threadExecutor.h>
-#include <agrum/tools/core/threads/threads.h>
+#include <agrum/base/core/exceptions.h>
+#include <agrum/base/core/math/pow.h>   // custom pow functions with integers, faster implementation
+#include <agrum/base/core/threads/threadExecutor.h>
+#include <agrum/base/core/threads/threads.h>
 
 #include <agrum/BN/io/BIF/BIFReader.h>
 #include <agrum/BN/io/BIF/BIFWriter.h>

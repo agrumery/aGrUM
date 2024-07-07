@@ -26,7 +26,7 @@
 
 #include <Python.h>
 
-#include <agrum/tools/core/signal/listener.h>
+#include <agrum/base/core/signal/listener.h>
 
 
 class PythonLoadListener: public gum::Listener {

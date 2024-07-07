@@ -96,10 +96,10 @@
 #endif
 
 
-#include <agrum/tools/core/debug.h>
-#include <agrum/tools/core/inline.h>
-#include <agrum/tools/core/types.h>
-#include <agrum/tools/core/exceptions.h>
-#include <agrum/tools/core/utils_misc.h>
+#include <agrum/base/core/debug.h>
+#include <agrum/base/core/inline.h>
+#include <agrum/base/core/types.h>
+#include <agrum/base/core/exceptions.h>
+#include <agrum/base/core/utils_misc.h>
 
 #endif // GUM_CONFIG_H

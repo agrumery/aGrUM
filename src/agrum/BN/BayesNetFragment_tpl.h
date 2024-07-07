@@ -25,7 +25,7 @@
  *
  * @author Pierre-Henri WUILLEMIN(_at_LIP6) & Christophe GONZALES(_at_AMU)
  */
-#include <agrum/tools/multidim/potential.h>
+#include <agrum/base/multidim/potential.h>
 
 #include <agrum/BN/BayesNet.h>
 #include <agrum/BN/BayesNetFragment.h>

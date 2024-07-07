@@ -28,7 +28,7 @@
 #define GUM_LEARNING_EVENDEBUGGENERATOR_H
 
 #include <agrum/agrum.h>
-#include <agrum/tools/database/DBRowGenerator.h>
+#include <agrum/base/database/DBRowGenerator.h>
 
 namespace gum {
 

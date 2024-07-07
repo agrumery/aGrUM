@@ -164,14 +164,14 @@ def pseudoCount(self,vars):
     -------
     a Potential containing this pseudo-counts
     """
-    p=Potential()
+    p=pyAgrum.base.Potential()
     lv=list()
     for i in vars:
         if type(i) is str:
             name=i
         else:
             name=self.nameFromId(i)
-        p.add(RangeVariable(name,name,0,self.domainSize(i)-1))
+        p.add(pyAgrum.base.RangeVariable(name,name,0,self.domainSize(i)-1))
         lv.append(name)
     p.fillWith(self.rawPseudoCount(lv))
     return p
@@ -192,6 +192,7 @@ def fitParameters(self,bn,take_into_account_score=True):
   if set(self.names())!=bn.names():
     raise Exception("Not the same variable names in the database and in the BN")
 
+  from pyAgrum.base import DAG
   d=DAG()
   for n in bn.names():
     d.addNodeWithId(self.idFromName(n))
@@ -211,14 +212,14 @@ def learnEssentialGraph(self):
   pyAgrum.EssentialGraph
     the learned essential graph
   """
-  bn=BayesNet()
+  bn = BayesNet()
   for i in range(len(self.names())):
     bn.add(self.nameFromId(i),2)
   try:
-    ge=EssentialGraph(bn,self.learnPDAG()) # for constraint-based methods
+    ge = EssentialGraph(bn,self.learnPDAG()) # for constraint-based methods
   except:
-    bn=self.learnBN()
-    ge=EssentialGraph(bn)  # for score-based methods
+    bn = self.learnBN()
+    ge = EssentialGraph(bn)  # for score-based methods
 
   ge._bn=bn
 

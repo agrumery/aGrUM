@@ -32,8 +32,8 @@
 
 #include <agrum/agrum.h>
 
-#include <agrum/tools/database/databaseTable.h>
-#include <agrum/tools/stattests/idCondSet.h>
+#include <agrum/base/database/databaseTable.h>
+#include <agrum/base/stattests/idCondSet.h>
 
 namespace gum {
 

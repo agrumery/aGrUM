@@ -43,6 +43,10 @@ def getCmake(current: dict[str, str], target: str) -> str:
 
   line += " -DCMAKE_INSTALL_PREFIX=" + '"' + current["destination"] + '"'
 
+  # defaults to lib64 on manylinux images
+  if "Linux" in platform.system():
+    line += " -DCMAKE_INSTALL_LIBDIR=lib"
+
   if current["verbose"]:
     line += " -DCMAKE_VERBOSE_MAKEFILE=ON"
   else:
@@ -179,7 +183,7 @@ def getForMsBuildSystem(current: dict[str, str], target: str):
       if target == "aGrUM":
         line = cfg.msbuild + ' agrum.sln /t:gumTest /p:Configuration="Release"'
       elif target == "pyAgrum":
-        line = cfg.msbuild + ' agrum.sln /t:_pyAgrum /p:Configuration="Release"'
+        line = cfg.msbuild + ' agrum.sln /t:_base;_bn;_cn;_id;_mrf /p:Configuration="Release"'
       else:  # if target!= "pyAgrum":
         critic(f"Action '{current['action']}' not treated for target '{target}' for now in compiler strange world.")
     elif current["action"] == "install":

@@ -33,11 +33,11 @@
 #include <sstream>
 #include <string>
 
-#include <agrum/tools/core/hashTable.h>
+#include <agrum/base/core/hashTable.h>
 
 #include <agrum/CN/polytope/LrsWrapper.h>
 
-#include <agrum/tools/core/utils_misc.h>
+#include <agrum/base/core/utils_misc.h>
 
 namespace gum {
   namespace credal {

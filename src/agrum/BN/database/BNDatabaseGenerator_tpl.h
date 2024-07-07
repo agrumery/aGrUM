@@ -25,7 +25,7 @@
  * @author Santiago Cortijo and Pierre-Henri Wuillemin
  */
 
-#include <agrum/tools/core/timer.h>
+#include <agrum/base/core/timer.h>
 
 #include <agrum/BN/database/BNDatabaseGenerator.h>
 

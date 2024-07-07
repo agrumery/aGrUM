@@ -30,9 +30,9 @@
 #ifndef GUM_VARIABLE_SELECTOR_H
 #define GUM_VARIABLE_SELECTOR_H
 // =========================================================================
-#include <agrum/tools/core/multiPriorityQueue.h>
+#include <agrum/base/core/multiPriorityQueue.h>
 // =========================================================================
-#include <agrum/tools/variables/discreteVariable.h>
+#include <agrum/base/variables/discreteVariable.h>
 
 // =========================================================================
 

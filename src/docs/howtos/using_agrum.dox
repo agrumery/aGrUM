@@ -2,8 +2,7 @@
  * \page using_agrum How to create a simple project with aGrUM and cmake
  *
  * As a build system, aGrUM uses CMake (http://www.cmake.org). A minimal project
- * with
- * agrum should look like this (for a project foo):
+ * with agrum should look like this (for a project foo):
  * - in the project folder, a sub-folder src,
  * - in src folder, your *.{cpp|h|etc.} files
  * - in the project folder, a file CMakeLists.txt like this one :
@@ -13,60 +12,46 @@ project(FOO)
 # do not forget to change "FOO", "FOO_SOURCE" and "FOO_SOURCE_DIR" with the name of your project
 # do not forget to change the target "foo" with the name of your executable
 
-cmake_minimum_required(VERSION 2.8)
-set (CMAKE_CXX_STANDARD 14)
+cmake_minimum_required(VERSION 3.13)
 
-# do not forget to change this line : the path where you installed aGrUM with ("act install -d...")
+# make RELEASE the default option
+if(NOT DEFINED CMAKE_BUILD_TYPE)
+  set(CMAKE_BUILD_TYPE Release)
+endif()
+
+project(EXAMPLE)
+
+# do not forget to change this line: the path where you installed aGrUM with ("act install -d...")
 set(AGRUM_INSTALLATION_DIRECTORY "/home/xxx/usr")
 set(aGrUM_DIR "${AGRUM_INSTALLATION_DIRECTORY}/lib/cmake/aGrUM/")
-find_package(aGrUM)
-if (aGrUM_FOUND)
-  message("-- aGrUM found")
-  include_directories(${AGRUM_INCLUDE_DIR})
-  link_directories(${AGRUM_LIB_DIR})
-else (aGrUM_FOUND)
-  message(FATAL_ERROR "Please install aGrUM")
-endif (aGrUM_FOUND)
+find_package(aGrUM CONFIG REQUIRED)
 
 file(GLOB_RECURSE FOO_SOURCE ${FOO_SOURCE_DIR}/src/*.cpp)
 add_executable (foo ${FOO_SOURCE})
 
-target_include_directories (foo PUBLIC src)
+target_include_directories (foo PRIVATE src)
 
-# RELEASE is the default option
-if( NOT CMAKE_BUILD_TYPE )
-  set( CMAKE_BUILD_TYPE RELEASE)
-endif()
-
-if (${CMAKE_BUILD_TYPE}  STREQUAL "DEBUG") # do not forget to install agrum with 'act install debug'
-  target_link_libraries(foo agrum-dbg gomp)
-else() # do not forget to install agrum with 'act install release'
-  target_link_libraries(foo agrum gomp)
-endif()
-
+# here we link to agrumBASE since we're only using the base component
+target_link_libraries (foo PRIVATE agrumBASE)
 
 # (in this folder)
 # to compile release version
 #
-#     mkdir build_release
-#     cd build_release
-#     cmake .. -DCMAKE_BUILD_TYPE=RELEASE
-#     make
+#     cmake -DCMAKE_BUILD_TYPE=RELEASE -B build .
+#     cmake --build build
 #
 # to compile debug version
 #
-#     mkdir build_debug
-#     cd build_debug
-#     cmake .. -DCMAKE_BUILD_TYPE=DEBUG
-#     make
+#     cmake -DCMAKE_BUILD_TYPE=Debug -B build_debug .
+#     cmake --build build_debug
 #
  * \endcode
  *
- * - a small minimum src/example.cpp :
+ * - a minimal src/example.cpp:
  * \code{.cpp}
 #include <iostream>
 
-#include <agrum/core/hashTable.h>
+#include <agrum/base.h>
 
 int main(void) {
   gum::HashTable<std::string,int> h;
@@ -74,17 +59,15 @@ int main(void) {
   h.insert("Hello",1);
   h.insert("World",2);
 
-  std::cout<<h<<std::endl;
+  std::cout << h << std::endl;
 }
  * \endcode
  *
  * - to compile the project (from the project folder)
  *
  * \code{.sh}
- *     mkdir build_release
- *     cd build_release
- *     cmake ..
- *     make
+ *     cmake -B build_release .
+ *     cmake --build build
  * \endcode
  *
  * - build/foo is the executable.

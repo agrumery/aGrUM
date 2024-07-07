@@ -22,7 +22,7 @@
 %{
 #define PYGUM_CATCH(GUMEXCEPTION)                                               \
   catch (gum::GUMEXCEPTION & e) {                                               \
-     PyErr_SetString (SWIG_Python_ExceptionType(SWIGTYPE_p_gum__##GUMEXCEPTION),e.what()); \
+     PyErr_SetString (SWIG_Python_ExceptionType(SWIG_TypeQuery("gum::" #GUMEXCEPTION " *")), e.what()); \
   }
 
 static void SetPythonizeAgrumException() {

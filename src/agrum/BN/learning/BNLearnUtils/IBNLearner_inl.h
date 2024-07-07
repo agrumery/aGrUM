@@ -29,7 +29,7 @@
  */
 
 // to help IDE parser
-#include <agrum/tools/graphs/undiGraph.h>
+#include <agrum/base/graphs/undiGraph.h>
 
 #include <agrum/BN/learning/BNLearnUtils/IBNLearner.h>
 

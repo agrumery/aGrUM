@@ -24,15 +24,15 @@
 #include <gumtest/AgrumTestSuite.h>
 #include <gumtest/utils.h>
 
-#include <agrum/tools/core/approximations/approximationScheme.h>
-#include <agrum/tools/core/approximations/approximationSchemeListener.h>
-#include <agrum/tools/database/databaseTable.h>
-#include <agrum/tools/database/DBInitializerFromCSV.h>
-#include <agrum/tools/database/DBRowGeneratorParser.h>
-#include <agrum/tools/database/DBTranslator4LabelizedVariable.h>
-#include <agrum/tools/database/DBTranslatorSet.h>
-#include <agrum/tools/graphs/DAG.h>
-#include <agrum/tools/variables/labelizedVariable.h>
+#include <agrum/base/core/approximations/approximationScheme.h>
+#include <agrum/base/core/approximations/approximationSchemeListener.h>
+#include <agrum/base/database/databaseTable.h>
+#include <agrum/base/database/DBInitializerFromCSV.h>
+#include <agrum/base/database/DBRowGeneratorParser.h>
+#include <agrum/base/database/DBTranslator4LabelizedVariable.h>
+#include <agrum/base/database/DBTranslatorSet.h>
+#include <agrum/base/graphs/DAG.h>
+#include <agrum/base/variables/labelizedVariable.h>
 
 #include <agrum/BN/BayesNet.h>
 #include <agrum/BN/learning/constraints/structuralConstraintDAG.h>

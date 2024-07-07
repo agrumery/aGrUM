@@ -26,7 +26,7 @@
 #include <agrum/agrum.h>
 #include <agrum/BN/inference/lazyPropagation.h>
 #include <agrum/MRF/inference/ShaferShenoyMRFInference.h>
-#include <agrum/tools/graphicalModels/algorithms/informationTheory.h>
+#include <agrum/base/graphicalModels/algorithms/informationTheory.h>
 #include "helpers.h"
 
 #ifndef AGRUM_INFORMATIONTHEORY_H

@@ -34,7 +34,7 @@
 #include <vector>
 //======================================================================
 
-#include <agrum/tools/variables/labelizedVariable.h>
+#include <agrum/base/variables/labelizedVariable.h>
 
 #include <agrum/FMDP/IfmdpFactory.h>
 

@@ -36,8 +36,8 @@
 
 #include <agrum/agrum.h>
 
-#include <agrum/tools/graphicalModels/DAGmodel.h>
-#include <agrum/tools/multidim/potential.h>
+#include <agrum/base/graphicalModels/DAGmodel.h>
+#include <agrum/base/multidim/potential.h>
 
 namespace gum {
 

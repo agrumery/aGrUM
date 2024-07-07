@@ -49,71 +49,71 @@
     def posLabel(self,s):
       try:
         return self.asLabelizedVar().posLabel(s)
-      except pyAgrum.OperationNotAllowed :
+      except pyAgrum.base.OperationNotAllowed:
          raise NotImplementedError(f"posLabel not implemented for {self}")
     def isLabel(self,s):
       try:
         return self.asLabelizedVar().isLabel(s)
-      except pyAgrum.OperationNotAllowed :
+      except pyAgrum.base.OperationNotAllowed:
          raise NotImplementedError(f"isLabel not implemented for {self}")
     ###########
     # Range
     def belongs(self,x):
       try:
         return self.asRangeVar().belongs(x)
-      except pyAgrum.OperationNotAllowed :
+      except pyAgrum.base.OperationNotAllowed:
          raise NotImplementedError(f"belongs not implemented for {self}")
     def minVal(self):
       try:
         return self.asRangeVar().minVal()
-      except pyAgrum.OperationNotAllowed :
+      except pyAgrum.base.OperationNotAllowed:
          raise NotImplementedError(f"minVal not implemented for {self}")
     def maxVal(self):
       try:
         return self.asRangeVar().maxVal()
-      except pyAgrum.OperationNotAllowed :
+      except pyAgrum.base.OperationNotAllowed:
          raise NotImplementedError(f"maxVal- not implemented for {self}")
     ###########
     # NumericalDiscrete / Integer
     def numericalDomain(self):
       try:
         return self.asNumericalDiscreteVar().numericalDomain()
-      except pyAgrum.OperationNotAllowed :
+      except pyAgrum.base.OperationNotAllowed:
          raise NotImplementedError(f"numericalDomain not implemented for {self}")
     def isValue(self,x):
       try:
         return self.asNumericalDiscreteVar().isValue(x)
-      except pyAgrum.OperationNotAllowed :
+      except pyAgrum.base.OperationNotAllowed:
         try:
           return self.asIntegerVar().isValue(x)
-        except pyAgrum.OperationNotAllowed :
-         raise NotImplementedError(f"isValue not implemented for {self}")
+        except pyAgrum.base.OperationNotAllowed:
+          raise NotImplementedError(f"isValue not implemented for {self}")
     def integerDomain(self):
       try:
         return self.asIntegerVar().integerDomain()
-      except pyAgrum.OperationNotAllowed :
+      except pyAgrum.base.OperationNotAllowed:
         raise NotImplementedError(f"isValue not implemented for {self}")
     ###########
     # DiscretizedVariable
     def isTick(self,x):
       try:
         return self.asDiscretizedVar().isTick(x)
-      except pyAgrum.OperationNotAllowed :
+      except pyAgrum.base.OperationNotAllowed:
         raise NotImplementedError(f"isTick not implemented for {self}")
     def ticks(self):
       try:
         return self.asDiscretizedVar().ticks()
-      except pyAgrum.OperationNotAllowed :
+      except pyAgrum.base.OperationNotAllowed:
         raise NotImplementedError(f"ticks not implemented for {self}")
     def isEmpirical(self):
       try:
         return self.asDiscretizedVar().isEmpirical()
-      except pyAgrum.OperationNotAllowed :
+      except pyAgrum.base.OperationNotAllowed:
         raise NotImplementedError(f"isEmpirical not implemented for {self}")
     def tick(self,x):
       try:
         return self.asDiscretizedVar().tick(x)
-      except pyAgrum.OperationNotAllowed :
+      except pyAgrum.base.OperationNotAllowed:
         raise NotImplementedError(f"tick not implemented for {self}")
     def draw(self,x):
       try:

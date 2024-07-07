@@ -229,9 +229,13 @@ def _checkCppFileExists(correction: bool) -> int:
   nbrError = 0
 
   exceptions = [f'{os.sep}mvsc{os.sep}', f'{os.sep}signal{os.sep}', f'{os.sep}external{os.sep}',
-                f'multidim{os.sep}patterns{os.sep}', 'agrum.h', 'inline.h']
+                f'multidim{os.sep}patterns{os.sep}',
+                'agrum.h', 'inline.h', 'base.h', 'bn.h', 'cn.h', 'id.h', 'mrf.h',
+                f'MN{os.sep}MarkovNet.h', f'MN{os.sep}inference{os.sep}ShaferShenoyMNInference.h']
+
   for header in recglob(f"src{os.sep}agrum", "*.h"):
     if any(subs in header for subs in exceptions):
+      print(f"skip {header}")
       continue
 
     subs = header[:-1]

@@ -26,7 +26,7 @@
 #include <gumtest/AgrumTestSuite.h>
 #include <gumtest/utils.h>
 
-#include <agrum/tools/variables/integerVariable.h>
+#include <agrum/base/variables/integerVariable.h>
 
 namespace gum_tests {
 

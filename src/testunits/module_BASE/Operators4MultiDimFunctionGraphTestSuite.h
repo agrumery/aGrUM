@@ -30,12 +30,12 @@
 
 #include <gumtest/AgrumTestSuite.h>
 // =============================================================================
-#include <agrum/tools/multidim/implementations/multiDimFunctionGraph.h>
-#include <agrum/tools/multidim/implementations/multiDimFunctionGraphGenerator.h>
-#include <agrum/tools/multidim/instantiation.h>
-#include <agrum/tools/multidim/potential.h>
+#include <agrum/base/multidim/implementations/multiDimFunctionGraph.h>
+#include <agrum/base/multidim/implementations/multiDimFunctionGraphGenerator.h>
+#include <agrum/base/multidim/instantiation.h>
+#include <agrum/base/multidim/potential.h>
 // =============================================================================
-#include <agrum/tools/variables/labelizedVariable.h>
+#include <agrum/base/variables/labelizedVariable.h>
 
 // =============================================================================
 

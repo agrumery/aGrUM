@@ -24,7 +24,7 @@
 #include <gumtest/AgrumTestSuite.h>
 #include <gumtest/utils.h>
 
-#include <agrum/tools/stattests/idCondSet.h>
+#include <agrum/base/stattests/idCondSet.h>
 
 namespace gum_tests {
 

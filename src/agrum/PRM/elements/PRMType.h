@@ -34,7 +34,7 @@
 
 #include <agrum/agrum.h>
 
-#include <agrum/tools/variables/labelizedVariable.h>
+#include <agrum/base/variables/labelizedVariable.h>
 
 #include <agrum/PRM/utils_prm.h>
 

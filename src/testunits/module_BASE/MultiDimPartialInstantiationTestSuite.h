@@ -27,16 +27,16 @@
 #include <gumtest/AgrumTestSuite.h>
 #include <gumtest/utils.h>
 
-#include <agrum/tools/core/debug.h>
-#include <agrum/tools/core/set.h>
-#include <agrum/tools/multidim/implementations/multiDimArray.h>
-#include <agrum/tools/multidim/implementations/multiDimPartialInstantiation.h>
-#include <agrum/tools/multidim/instantiation.h>
-#include <agrum/tools/multidim/potential.h>
-#include <agrum/tools/multidim/utils/partialInstantiation4MultiDim.h>
-#include <agrum/tools/variables/labelizedVariable.h>
+#include <agrum/base/core/debug.h>
+#include <agrum/base/core/set.h>
+#include <agrum/base/multidim/implementations/multiDimArray.h>
+#include <agrum/base/multidim/implementations/multiDimPartialInstantiation.h>
+#include <agrum/base/multidim/instantiation.h>
+#include <agrum/base/multidim/potential.h>
+#include <agrum/base/multidim/utils/partialInstantiation4MultiDim.h>
+#include <agrum/base/variables/labelizedVariable.h>
 
-#include <agrum/tools/core/utils_random.h>
+#include <agrum/base/core/utils_random.h>
 
 namespace gum_tests {
 

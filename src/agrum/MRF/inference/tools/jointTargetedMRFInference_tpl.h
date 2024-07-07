@@ -24,8 +24,8 @@
  * @brief Implementation of the non pure virtual methods of class
  * JointTargetedMRFInference.
  */
-#include <agrum/tools/graphicalModels/algorithms/informationTheory.h>
-#include <agrum/tools/variables/rangeVariable.h>
+#include <agrum/base/graphicalModels/algorithms/informationTheory.h>
+#include <agrum/base/variables/rangeVariable.h>
 
 #include <agrum/MRF/inference/tools/jointTargetedMRFInference.h>
 

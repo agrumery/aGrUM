@@ -33,9 +33,9 @@
 
 #include <agrum/agrum.h>
 
-#include <agrum/tools/stattests/indepTestChi2.h>
-#include <agrum/tools/stattests/indepTestG2.h>
-#include <agrum/tools/stattests/pseudoCount.h>
+#include <agrum/base/stattests/indepTestChi2.h>
+#include <agrum/base/stattests/indepTestG2.h>
+#include <agrum/base/stattests/pseudoCount.h>
 
 #include <agrum/BN/learning/BNLearnUtils/BNLearnerListener.h>
 #include <agrum/BN/learning/BNLearnUtils/IBNLearner.h>

@@ -24,10 +24,10 @@
 #include <gumtest/AgrumTestSuite.h>
 #include <gumtest/utils.h>
 
-#include <agrum/tools/core/hashFunc.h>
-#include <agrum/tools/core/multiPriorityQueue.h>
-#include <agrum/tools/core/priorityQueue.h>
-#include <agrum/tools/core/set.h>
+#include <agrum/base/core/hashFunc.h>
+#include <agrum/base/core/multiPriorityQueue.h>
+#include <agrum/base/core/priorityQueue.h>
+#include <agrum/base/core/set.h>
 
 namespace gum {
   template <>

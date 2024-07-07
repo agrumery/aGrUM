@@ -29,7 +29,7 @@
 
 #include <agrum/agrum.h>
 
-#include <agrum/tools/stattests/recordCounter.h>
+#include <agrum/base/stattests/recordCounter.h>
 
 #include <agrum/BN/learning/priors/prior.h>
 

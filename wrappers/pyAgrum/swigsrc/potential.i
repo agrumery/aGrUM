@@ -289,6 +289,7 @@ if len(args)>1:
           If the first variable is Labelized or Integer, or if the len of the noise is not odd.
       """
 
+      import warnings
       warnings.warn("""
         ** pyAgrum.fillWithFunction is deprecated from pyAgrum>1.12.1. Please use pyAgrum.fillFromFunction instead (Noise is not used anymore).
       """, DeprecationWarning, stacklevel=2)
@@ -376,11 +377,11 @@ if len(args)>1:
       import math
       forbidden=frozenset(['__import__','__class__'])
 
-      if self.variable(0).varType()== gum.VarType_LABELIZED:
+      if self.variable(0).varType() == gum.VarType_LABELIZED:
         raise InvalidArgument("[pyAgrum] The variable "+self.variable(0).name()+" is a LabelizedVariable")
 
       self.fillWith(0)
-      I=gum.Instantiation(self)
+      I = Instantiation(self)
       code=float(s_fn) if isinstance(s_fn, (int, float)) else compile(s_fn,"<string>","eval")
       if not isinstance(s_fn, (int, float)):
         if forbidden & set(code.co_names):
@@ -427,11 +428,12 @@ if len(args)>1:
           If the first variable is Labelized.
       """
       import math
+
       forbidden=frozenset(['__import__','__class__'])
 
       var=self.variable(0)
       var_ds=var.domainSize()
-      if var.varType()== gum.VarType_LABELIZED:
+      if var.varType() == gum.VarType_LABELIZED:
         raise InvalidArgument("[pyAgrum] The variable "+self.variable(0).name()+" is a LabelizedVariable")
 
       codes={k:float(s_fns[k]) if isinstance(s_fns[k], (int, float)) else compile(s_fns[k],"<string>","eval") for k in s_fns.keys()}
@@ -486,6 +488,8 @@ if len(args)>1:
       """
       From an indice (dict or tuple), returns a pair of pyAgrum.Instantiation to loop in a part of the Potential.
       """
+      from numbers import Number
+
       loopvars=Instantiation(self)
       loopvars.setMutable()
 
@@ -516,6 +520,7 @@ if len(args)>1:
       return inst,loopvars
 
     def __getitem__(self, id):
+      import numpy
       if isinstance(id,Instantiation):
           return self.get(id)
 
@@ -544,6 +549,8 @@ if len(args)>1:
       return tab
 
     def __setitem__(self, id, value):
+      from numbers import Number
+      import numpy
       if isinstance(id,Instantiation):
           self.set(id,value)
           return
@@ -668,6 +675,7 @@ if len(args)>1:
 
             var_names return a list in the reverse order of the enumeration order of the variables.
         """
+        import warnings
         warnings.warn("\n** pyAgrum.Potential.var_names is obsolete in pyAgrum>0.22.9. Please use pyAgrum.Potential.names.\n")
         return [n for n in reversed(self.names)]
 
@@ -685,6 +693,7 @@ if len(args)>1:
 
             var_dims return a list in the reverse order of the enumeration order of the variables.
         """
+        import warnings
         warnings.warn("\n** pyAgrum.Potential.var_dims is obsolete in pyAgrum>0.22.9. Please use pyAgrum.Potential.shape.\n")
         return [n for n in reversed(self.shape)]
 

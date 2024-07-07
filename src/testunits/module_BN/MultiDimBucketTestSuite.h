@@ -24,11 +24,11 @@
 #include <gumtest/AgrumTestSuite.h>
 #include <gumtest/utils.h>
 
-#include <agrum/tools/multidim/implementations/multiDimBucket.h>
-#include <agrum/tools/multidim/instantiation.h>
-#include <agrum/tools/multidim/utils/operators/operators4MultiDim.h>
-#include <agrum/tools/multidim/utils/operators/projections4MultiDim.h>
-#include <agrum/tools/variables/labelizedVariable.h>
+#include <agrum/base/multidim/implementations/multiDimBucket.h>
+#include <agrum/base/multidim/instantiation.h>
+#include <agrum/base/multidim/utils/operators/operators4MultiDim.h>
+#include <agrum/base/multidim/utils/operators/projections4MultiDim.h>
+#include <agrum/base/variables/labelizedVariable.h>
 
 #include <agrum/BN/BayesNet.h>
 #include <agrum/BN/generator/simpleCPTGenerator.h>

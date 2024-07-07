@@ -26,7 +26,7 @@
 #include <gumtest/AgrumTestSuite.h>
 #include <gumtest/utils.h>
 
-#include <agrum/tools/variables/discretizedVariable.h>
+#include <agrum/base/variables/discretizedVariable.h>
 
 #include <agrum/BN/inference/lazyPropagation.h>
 #include <agrum/BN/inference/tools/aggregatorDecomposition.h>
@@ -40,7 +40,7 @@
 #include <agrum/PRM/o3prm/O3prmReader.h>
 #include <agrum/PRM/PRM.h>
 
-#include <agrum/tools/core/math/math_utils.h>
+#include <agrum/base/core/math/math_utils.h>
 
 namespace gum_tests {
 

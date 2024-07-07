@@ -26,8 +26,8 @@
 #include <gumtest/AgrumTestSuite.h>
 #include <gumtest/utils.h>
 
-#include <agrum/tools/core/exceptions.h>
-#include <agrum/tools/core/set.h>
+#include <agrum/base/core/exceptions.h>
+#include <agrum/base/core/set.h>
 
 #include <agrum/BN/generator/simpleBayesNetGenerator.h>
 #include <agrum/BN/generator/simpleCPTGenerator.h>

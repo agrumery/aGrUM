@@ -32,7 +32,7 @@
 
 #include <agrum/agrum.h>
 
-#include <agrum/tools/graphs/graphElements.h>
+#include <agrum/base/graphs/graphElements.h>
 
 namespace gum {
 

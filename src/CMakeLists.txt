@@ -14,9 +14,9 @@ configure_file("${CMAKE_CURRENT_SOURCE_DIR}/cmake/config.h.in" "${AGRUM_BINARY_D
 
 ### CONDITIONAL RULES (if COCO/R has been found, we add rules) ####
 include(CocoR.agrum)
-if (NOT COCOR_EXECUTABLE STREQUAL "COCOR_EXECUTABLE-NOTFOUND")
+if (COCOR_EXECUTABLE)
     message(STATUS "** aGrUM notification: Coco/R targets")
-    CocoRTarget(tools/core/math/cocoR SyntaxFormula gum:formula BASE)
+    CocoRTarget(base/core/math/cocoR SyntaxFormula gum:formula BASE)
     CocoRTarget(BN/io/UAI/cocoR SyntaxUAIBN gum:UAIBN BN)
     CocoRTarget(BN/io/BIF/cocoR SyntaxBIF gum:BIF BN)
     CocoRTarget(BN/io/DSL/cocoR SyntaxDSL gum:DSL BN)
@@ -25,44 +25,36 @@ if (NOT COCOR_EXECUTABLE STREQUAL "COCOR_EXECUTABLE-NOTFOUND")
     CocoRTarget(PRM/o3prm/cocoR SyntaxO3PRM gum:prm:o3prm PRM)
     CocoRTarget(FMDP/io/dat/cocoR SyntaxDat gum:MDPDAT FMDP)
     CocoRTarget(MRF/io/UAI/cocoR SyntaxUAIMRF gum:UAIMRF MRF)
-endif (NOT COCOR_EXECUTABLE STREQUAL "COCOR_EXECUTABLE-NOTFOUND")
+endif ()
 ####################################################################
 
 #collect all source files 
 buildFileListsWithModules()
 
-include_directories(BEFORE ${AGRUM_BINARY_DIR})
-include_directories(BEFORE ${AGRUM_SOURCE_DIR})
-link_directories(${AGRUM_BINARY_DIR}/lib)
-
-set(AGRUM_FILES ${AGRUM_SOURCES} ${AGRUM_C_SOURCES} ${AGRUM_INLINES} ${AGRUM_INCLUDES} ${AGRUM_TEMPLATES})
-
-#needed for some IDE (such as jetbrain's)
-set(SOURCE_FILES ${AGRUM_FILES})
-
 ####################################################################
-## TARGET library
-add_library(${LIBAGRUM} ${AGRUM_FILES})
-target_compile_features(${LIBAGRUM} PUBLIC cxx_std_20)
-set_target_properties(${LIBAGRUM} PROPERTIES POSITION_INDEPENDENT_CODE ON)
-set_target_properties(${LIBAGRUM} PROPERTIES DEBUG_POSTFIX "-dbg")
-set_target_properties(${LIBAGRUM} PROPERTIES VERSION ${AGRUM_VERSION} SOVERSION ${AGRUM_VERSION_MAJOR})
-target_link_libraries(${LIBAGRUM} ${ODBC_LIBRARIES} ${GUM_COVERAGE_LINK_LIBRARY})
+target_link_libraries(agrumBASE PRIVATE ${ODBC_LIBRARIES} ${GUM_COVERAGE_LINK_LIBRARY})
 if (OPENMP_FOUND)
-    set_target_properties(${LIBAGRUM} PROPERTIES LINK_FLAGS ${OpenMP_CXX_FLAGS})
+    target_link_libraries(agrumBASE PUBLIC OpenMP::OpenMP_CXX)
+endif ()
+if (BUILD_PYTHON OR BUILD_JAVA)
+    target_compile_definitions(agrumBASE PUBLIC GUM_FOR_SWIG)
+endif ()
+if (MSVC)
+    target_compile_definitions(agrumBASE PUBLIC NOMINMAX)
+    target_compile_definitions(agrumBASE PUBLIC _CRT_SECURE_NO_WARNINGS)
+    target_compile_definitions(agrumBASE PUBLIC _CRT_NONSTDC_NO_DEPRECATE)
+    target_compile_options(agrumBASE PUBLIC /bigobj)
 endif ()
 if (MINGW)
-    target_compile_definitions(${LIBAGRUM} PUBLIC GUM_NO_EXTERN_TEMPLATE_CLASS)
+    target_compile_definitions(agrumBASE PUBLIC GUM_NO_EXTERN_TEMPLATE_CLASS)
+    target_compile_definitions(agrumBASE PUBLIC GUM_NO_INLINE)
 endif ()
-GENERATE_EXPORT_HEADER(${LIBAGRUM}
-        BASE_NAME ${LIBAGRUM}
-        EXPORT_MACRO_NAME ${LIBAGRUM}_EXPORT
-        EXPORT_FILE_NAME ${LIBAGRUM}_Export.h
-        STATIC_DEFINE ${LIBAGRUM}_BUILT_AS_STATIC
-        )
-target_include_directories(${LIBAGRUM} INTERFACE
-        $<INSTALL_INTERFACE:include>
-        )
+
+## TARGET library
+add_library(${LIBAGRUM} INTERFACE)
+foreach (OPTION ${LIST_OF_MODULES})
+    target_link_libraries(${LIBAGRUM} INTERFACE agrum${OPTION})
+endforeach()
 
 # Add targets to the build-tree export set
 export(TARGETS ${LIBAGRUM} FILE ${LIBAGRUM}-targets.cmake)

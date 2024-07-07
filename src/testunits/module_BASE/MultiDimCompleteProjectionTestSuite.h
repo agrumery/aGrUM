@@ -27,12 +27,12 @@
 #include <gumtest/AgrumTestSuite.h>
 #include <gumtest/utils.h>
 
-#include <agrum/tools/core/set.h>
-#include <agrum/tools/multidim/implementations/multiDimArray.h>
-#include <agrum/tools/multidim/potential.h>
-#include <agrum/tools/multidim/utils/operators/completeProjections4MultiDim.h>
-#include <agrum/tools/multidim/utils/operators/multiDimCompleteProjection.h>
-#include <agrum/tools/variables/labelizedVariable.h>
+#include <agrum/base/core/set.h>
+#include <agrum/base/multidim/implementations/multiDimArray.h>
+#include <agrum/base/multidim/potential.h>
+#include <agrum/base/multidim/utils/operators/completeProjections4MultiDim.h>
+#include <agrum/base/multidim/utils/operators/multiDimCompleteProjection.h>
+#include <agrum/base/variables/labelizedVariable.h>
 
 namespace gum_tests {
 

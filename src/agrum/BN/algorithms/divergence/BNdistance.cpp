@@ -28,7 +28,7 @@
 
 #include <agrum/BN/algorithms/divergence/BNdistance.h>
 
-#include <agrum/tools/core/math/math_utils.h>
+#include <agrum/base/core/math/math_utils.h>
 
 
 #ifndef GUM_NO_EXTERN_TEMPLATE_CLASS

@@ -37,7 +37,7 @@
 
 #include <agrum/agrum.h>
 
-#include <agrum/tools/stattests/idCondSet.h>
+#include <agrum/base/stattests/idCondSet.h>
 
 namespace gum {
 
@@ -46,7 +46,7 @@ namespace gum {
 
     /** @class ScoringCache
      * @brief a cache for caching scores and independence tests results
-     * @headerfile scoringCache.h <agrum/tools/database/scoringCache.h>
+     * @headerfile scoringCache.h <agrum/base/database/scoringCache.h>
      * @ingroup learning_scores
      *
      * Caching previously computed scores or the results of conditional

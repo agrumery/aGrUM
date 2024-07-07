@@ -42,7 +42,7 @@
 #ifdef HAVE_DIRENT_H
 #  include <dirent.h>
 #else
-#  include <agrum/tools/core/mvsc/dirent.h>
+#  include <agrum/base/core/mvsc/dirent.h>
 #endif
 
 #include <agrum/BN/generator/IBayesNetGenerator.h>

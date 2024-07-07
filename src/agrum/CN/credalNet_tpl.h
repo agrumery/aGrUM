@@ -23,7 +23,7 @@
 
 #include <agrum/CN/credalNet.h>
 
-#include <agrum/tools/core/utils_string.h>
+#include <agrum/base/core/utils_string.h>
 
 namespace gum {
   namespace credal {

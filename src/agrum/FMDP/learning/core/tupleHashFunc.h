@@ -32,7 +32,7 @@
 
 #include <tuple>
 
-#include <agrum/tools/core/hashFunc.h>
+#include <agrum/base/core/hashFunc.h>
 
 namespace gum {
 

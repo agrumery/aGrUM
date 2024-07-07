@@ -7,7 +7,7 @@ if (OPENMP_FOUND)
 endif ()
 configure_file(
         "${CMAKE_CURRENT_CMAKE_DIR}/aGrUMConfig.cmake.in"
-        "${CMAKE_CURRENT_BINARY_DIR}/aGrUMConfig.cmake"
+	"${CMAKE_CURRENT_BINARY_DIR}/aGrUMConfig.cmake" @ONLY
 )
 
 include(CMakePackageConfigHelpers)
