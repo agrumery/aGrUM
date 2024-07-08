@@ -48,7 +48,12 @@ def getBlackInTheme():
   return gum.config["notebook", "default_arc_color"]
 
 
-def dot_layout(g: dot.Dot) -> Dict[str, Tuple[float, float]]:
+from collections import namedtuple
+
+DotPoint = namedtuple("DotPoint", ["x", "y"])
+
+
+def dot_layout(g: dot.Dot) -> Dict[str, DotPoint]:
   """
   extract the layout from a dot graph
 
@@ -62,7 +67,7 @@ def dot_layout(g: dot.Dot) -> Dict[str, Tuple[float, float]]:
   Dict[str,Tuple[float, float]]
      the layout i.e. the position of each node, identified by their name.
   """
-  return {l[1]: (float(l[2]), float(l[3]))
+  return {l[1]: DotPoint(float(l[2]), float(l[3]))
           for l in csv.reader(g.create(format="plain")
                               .decode("utf8")
                               .split("\n")
@@ -71,7 +76,7 @@ def dot_layout(g: dot.Dot) -> Dict[str, Tuple[float, float]]:
           if len(l) > 3 and l[0] == "node"}
 
 
-def apply_dot_layout(g: dot.Dot, layout: Dict[str, Tuple[float, float]]):
+def apply_dot_layout(g: dot.Dot, layout: Dict[str, DotPoint]):
   """
   apply a layout to a dot graph
 
@@ -92,4 +97,30 @@ def apply_dot_layout(g: dot.Dot, layout: Dict[str, Tuple[float, float]]):
       pos = layout[name[1:-1]]
     else:
       pos = layout[name]
-    n.set_pos(f'"{pos[0]:.2f},{pos[1]:.2f}!"')
+    n.set_pos(f'"{pos.x:.2f},{pos.y:.2f}!"')
+
+
+async def async_html2image(htmlcontent: str, filename: str):
+  """
+  convert an html content to an image. The format is determined by the extension of the filename.
+  This function is asynchronous and uses playwright. To install playwright, use `pip install playwright` and then `playwright install`.
+
+  Parameters
+  ----------
+  htmlcontent : str
+    the html content to convert
+  filename: str
+    the filename of the image to create. The format is determined by the extension of the filename (at least pdf and png).
+  """
+  from playwright.async_api import async_playwright
+
+  playwright = await async_playwright().start()
+  browser = await playwright.chromium.launch(headless=True)
+  page = await browser.new_page()
+  await page.set_content(htmlcontent)
+  if filename.endswith(".pdf"):
+    await page.pdf(path=filename, scale=1, print_background=True, width="0")
+  else:
+    print(filename.split(".")[-1])
+    await page.screenshot(path=filename, type=filename.split(".")[-1])
+  return
