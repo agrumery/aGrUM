@@ -4493,9 +4493,6 @@ class DiGraph(object):
     def __eq__(self, g: "DiGraph") -> bool:
         return _pyAgrum.DiGraph___eq__(self, g)
 
-    def __ne__(self, g: "DiGraph") -> bool:
-        return _pyAgrum.DiGraph___ne__(self, g)
-
     def eraseNode(self, id: int) -> None:
         r"""
 
@@ -7613,6 +7610,17 @@ class EssentialGraph(object):
 
     def skeleton(self) -> "pyAgrum.UndiGraph":
         return _pyAgrum.EssentialGraph_skeleton(self)
+
+    def idFromName(self, name: str) -> int:
+        r"""
+
+        Returns
+        -------
+        int
+          the nodeId from the name of the variable in the model
+
+        """
+        return _pyAgrum.EssentialGraph_idFromName(self, name)
 
     def nodes(self) -> object:
         return _pyAgrum.EssentialGraph_nodes(self)
