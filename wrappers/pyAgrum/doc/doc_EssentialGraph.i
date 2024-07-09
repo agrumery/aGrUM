@@ -133,3 +133,11 @@ Returns
 pyAgrum.PDAG
 	the PDAG (Partially Directed Graph)
 "
+
+%feature("docstring") gum::EssentialGraph::idFromName
+"
+Returns
+-------
+int
+  the nodeId from the name of the variable in the model
+"

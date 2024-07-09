@@ -58,4 +58,6 @@ namespace gum {
   INLINE Size EssentialGraph::size() const { return _pdag_.size(); }
 
   INLINE const NodeGraphPart& EssentialGraph::nodes() const { return _pdag_.nodes(); }
+
+  INLINE NodeId EssentialGraph::idFromName(const std::string& name) const {return _dagmodel_->idFromName(name);};
 }   // namespace gum
