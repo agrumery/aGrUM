@@ -6,11 +6,21 @@ The purpose of ``pyAgrum.lib.explain`` is to give tools to explain and interpret
 Dealing with independence
 -------------------------
 
+.. figure:: _static/independenceList.png
+    :align: center
+    :alt: independenceList in pyAgrum
+
+
 .. autofunction:: pyAgrum.lib.explain.independenceListForPairs
 
 
 Dealing with mutual information and entropy
 -------------------------------------------
+
+.. figure:: _static/showInformation.png
+    :align: center
+    :alt: showing entropy and mutual informations in pyAgrum
+
 
 .. autofunction:: pyAgrum.lib.explain.getInformation
 .. autofunction:: pyAgrum.lib.explain.showInformation
