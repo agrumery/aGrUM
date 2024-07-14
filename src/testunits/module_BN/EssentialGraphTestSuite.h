@@ -101,6 +101,12 @@ namespace gum_tests {
       TS_ASSERT_EQUALS(eg.idFromName("U"), 2)
       TS_ASSERT_EQUALS(eg.idFromName("Y"), 3)
       TS_ASSERT_EQUALS(eg.idFromName("W"), 4)
+
+      TS_ASSERT_EQUALS(eg.nameFromId(0), "Z")
+      TS_ASSERT_EQUALS(eg.nameFromId(1), "X")
+      TS_ASSERT_EQUALS(eg.nameFromId(2), "U")
+      TS_ASSERT_EQUALS(eg.nameFromId(3), "Y")
+      TS_ASSERT_EQUALS(eg.nameFromId(4), "W")
     }
 
     GUM_ACTIVE_TEST(NonRegression1) {

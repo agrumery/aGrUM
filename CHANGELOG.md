@@ -2,30 +2,31 @@
 
 ## Changelog for 1.15.0
 
-We continue to add (full python) experimental models. In 1.15, we introduce the CTBN model (Continuous Time Bayesian Network) featuring, as usual, modelisation and representation, inference (exact and sampling) and a learning algorithm.
+We continue to add (full python) experimental models. In 1.15, we introduce the CTBN model (Continuous Time Bayesian Network) featuring, as usual, modelisation and representation, inference (exact and sampling) and a learned algorithm.
 
 * aGrUM
-  * Adding `gum::NodeId gum::EssentialGraph::idFromName(const std::string& name)`
+  * Added `gum::NodeId gum::EssentialGraph::idFromName(const std::string& name)` and  `const std::string&  
+    gum::EssentialGraph::nameFromId(gum::NodeId node)`. 
 
 * pyAgrum
-  * Adding `pyAgrum.EssentialGraph.idFromName(str)->int`
-  * Improving documentation of `pyAgrum.lib.explain`
+  * Added `pyAgrum.EssentialGraph.idFromName(str)->int` and `pyAgrum.EssentialGraph.nameFromId(int)->str` 
+  * Improved documentation of `pyAgrum.lib.explain`
   * Better `pyAgrum.clg.CLG.toDot()` and `pyAgrum.clg.CLG._repr_html()`.
-  * New model `pyAgrum.ctbn`.
-  * Formatting and adjustments in `pyAgrum.ctbn`.
-  * Updating documentations for python experimental models notebooks.
-  * Updating thumbnails for python experimental models notebooks.
-  * Adding serialization (pickle) for CLG and CTBN (consistent with other models in pyAgrum).
-  * Improving `pyAgrum.lib.utils.{apply_}dot_layout`
-  * Adding `pyAgrum.lib.utils.async_html2image` for exporting HTML as png or pdf (notably for `pyAgrum.lib.notebook.getSideBySide` and `pyAgrum.lib.notebook.getPotential`).
+  * New model Continuous Time Bayesian Network `pyAgrum.ctbn`.
+  * Formatted and adjustments in `pyAgrum.ctbn`.
+  * Updated documentations for python experimental models notebooks.
+  * Updated thumbnails for python experimental models notebooks.
+  * Added serialization (pickle) for CLG and CTBN (consistent with other models in pyAgrum).
+  * Improved `pyAgrum.lib.utils.{apply_}dot_layout`
+  * Added `pyAgrum.lib.utils.async_html2image` for exported HTML as png or pdf (notably for `pyAgrum.lib.notebook.getSideBySide` and `pyAgrum.lib.notebook.getPotential`).
   
 ## Changelog for 1.14.1
 
 * aGrUM
-  * Fixing compilation errors for `clang18`.
+  * Fixed compilation errors for `clang18`.
 
 * pyAgrum
-  * Fixing python version for `readthedocs`.
+  * Fixed python version for `readthedocs`.
 
 ## Changelog for 1.14.0
 
@@ -35,13 +36,13 @@ We continue to add (full python) experimental models. In 1.15, we introduce the 
   * Better error messages for `gum::BNLearner<GUM_DATA>`
 
 * pyAgrum
-  * Dropping support of python 3.8 (following [NEP29](https://numpy.org/neps/nep-0029-deprecation_policy.html)).
-  * Fixing some memory leaks (in special cases) found by Christophe Gonzales
+  * Dropped support of python 3.8 (followed [NEP29](https://numpy.org/neps/nep-0029-deprecation_policy.html)).
+  * Fixed some memory leaks (in special cases) found by Christophe Gonzales.
   * new `pyAgrum.lib.explain.generalizedMarkovBlanket{Names}` and documentation.
   * `pyAgrum.Potential.marg{Xyz}{In|Out}` are renamed `pyAgrum.Potental.{xyz}{In|Out}` to cut down on some verbosity.
       (for instance : `p.margSumOut` becomes `p.sumOut`)
   * Better error messages for `pyAgrum.BNLearner`
-  * Adding new python's experimental model : Conditional Linear Gaussian (`pyAgrum.clg.*`) : model, learning and inference.
+  * Added new python's experimental model : Conditional Linear Gaussian (`pyAgrum.clg.*`) : model, learned and inference.
 
 ## Changelog for 1.13.2
 
@@ -52,24 +53,24 @@ We continue to add (full python) experimental models. In 1.15, we introduce the 
 * pyAgrum
   * Better (compact) format for numerical labels.
   * Better uniformly distributed random discrete distribution.
-  * Continue to implement some automatic `pyAgrum.Potential` filling tools with `pyAgrum.Potential.fillFromExpression`.
-  * Working on better plots for probability+utility
-  * Speeding up `gum.BayesNet.addArcs()` with *jit* memory allocation
+  * Continue to implement some automatic `pyAgrum.Potential` filled tools with `pyAgrum.Potential.fillFromExpression`.
+  * Worked on better plots for probability+utility
+  * Speeded up `gum.BayesNet.addArcs()` with *jit* memory allocation
   * Slight adjustments to histogram display.
-  * Fixing documentation of `gum.BNLearner.mutualInformation`.
-  * Fixing (deprecated) arguments in `pyAgrum.skbn.BNClassifier`'s methods.
+  * Fixed documentation of `gum.BNLearner.mutualInformation`.
+  * Fixed (deprecated) arguments in `pyAgrum.skbn.BNClassifier`'s methods.
   
 ## Changelog for 1.13.1
 
 This release is mainly about documentation.
 
 * pyAgrum
-  * Fixing last references to LIP6's notebooks instead of rtd's notebooks (thanks to Benjamin Datko).
-  * Adding 'Book of Why's notebooks to readthedoc's documentation.
-  * Updating Notebooks and thumbnails.
-  * Improving documentation coverage for pyAgrum class methods (from 86.19% to 87.05%)
-  * `gum.BNLearner.learnEssentialGraph` for all learning algorithm.
-  * Better wrapping of `pyAgrum.BNLearner.setPossibleEdges()`.
+  * Fixed last references to LIP6's notebooks instead of rtd's notebooks (thanks to Benjamin Datko).
+  * Added 'Book of Why's notebooks to readthedoc's documentation.
+  * Updated Notebooks and thumbnails.
+  * Improved documentation coverage for pyAgrum class methods (from 86.19% to 87.05%)
+  * `gum.BNLearner.learnEssentialGraph` for all learned algorithm.
+  * Better wrapped of `pyAgrum.BNLearner.setPossibleEdges()`.
 
 ## Changelog for 1.13
 
@@ -77,114 +78,114 @@ This release is mainly about documentation.
   * New servers for (linux and windows) CI !
 * aGrUM
   * Fast syntax for empirical `gum::DiscretizedVariable`: name suffixed by '+'.
-  * Reorganizing a bit `gum::DiscreteVariable`'s hierarchy.
-  * Working on quasi-continuous (numerical discrete variable with large domain size) :
+  * Reorganized a bit `gum::DiscreteVariable`'s hierarchy.
+  * Worked on quasi-continuous (numerical discrete variable with large domain size) :
     * Logical operators  (`&`,`|`, `~`) to combine evidence (monodimensionnal `gum::Potential` not forced to sum to 1).
     * New `gum::Potential` and `gum::BayesNet` methods to generate numerical evidence : `evEq`, `evIn`, `evLt`, `evGt`.
     * Fast syntax now accepts any type as default (and not only the size of the domain).
 
 * pyAgrum
-  * Fixing a bug in `pyAgrum.lib.bn2scores.
+  * Fixed a bug in `pyAgrum.lib.bn2scores.
   * Fast syntax for empirical `pyAgrum.DiscretizedVariable`: name suffixed by '+'.
-  * Reorganizing `pyAgrum.lib._colors.py` and `pyAgrum.lib.utils.py`.
-  * Changing a default for `pyAgrum.Instantiation.todict`.
-  * Improving (a lot) histograms for `pyAgrum.DiscretizedVariable`.
-  * Working on quasi-continuous (numerical discrete variable with large domain size) :
+  * Reorganized `pyAgrum.lib._colors.py` and `pyAgrum.lib.utils.py`.
+  * Changed a default for `pyAgrum.Instantiation.todict`.
+  * Improved (a lot) histograms for `pyAgrum.DiscretizedVariable`.
+  * Worked on quasi-continuous (numerical discrete variable with large domain size) :
     * Logical operators (`&`,`|`, `~`) to combine evidence (monodimensionnal `pyAgrum.Potential` not forced to sum to 1).
     * New `pyAgrum.Potential` and `pyAgrum.BayesNet` methods to generate numerical evidence : `evEq`, `evIn`, `evLt`, `evGt`.
     * Fast syntax now accepts any type as default (and not only the size of the domain).
     * `pyAgrum.Potential` accepted as evidence for all inference.
     * Long-awaited `pyAgrum.Potential.fillFrom{Function|Distribution}`.  
-  * Adding `pyAgrum.config.{push|pop}`.
-  * Removing obsolete code for `python2.7`.
-  * Removing some oldest depreactionWarning.
-  * Adding '__iter__' for graphs, graphical models, variable and potentials.
+  * Added `pyAgrum.config.{push|pop}`.
+  * Removed obsolete code for `python2.7`.
+  * Removed some oldest depreactionWarning.
+  * Added '__iter__' for graphs, graphical models, variable and potentials.
 
 ## Changelog for 1.12.1
 
 * aGrUM
-  * Adding a new job during CI for sphinx documentation.
-  * Fixing a typo in `gum::MeeRules::propagate(s)`.
+  * Added a new job dured CI for sphinx documentation.
+  * Fixed a typo in `gum::MeeRules::propagate(s)`.
 * pyAgrum
-  * Fixing a typo in `pyAgrum.MeekRules.propagate(s)`.
-  * Adding new rules for 'python typification' of generated files.
-  * Fixing and updating documentations and notebooks.
+  * Fixed a typo in `pyAgrum.MeekRules.propagate(s)`.
+  * Added new rules for 'python typification' of generated files.
+  * Fixed and updated documentations and notebooks.
 
 ## Changelog for 1.12.0
 
 * aGrUM
-  * Adding a new class `gum::MeekRules` to complete a learned PDAG to CPADG or BN.
-  * Preventing 'infinities' in the definition of numerical discrete variable.
-  * Adding a new constructor for `gum::PDAG` from`gum::MixedGraph`.
+  * Added a new class `gum::MeekRules` to complete a learned PDAG to CPADG or BN.
+  * Prevented 'infinities' in the definition of numerical discrete variable.
+  * Added a new constructor for `gum::PDAG` from`gum::MixedGraph`.
   * Better (stricter) `operator==` between `gum::DiscreteVariable`.
-  * Adding a new static constructor `gum::{Undi|Di}Graph::completeGraph(int n)`.
-  * Adding `closestIndex()` and `closestLabel()` methods for all numerical `gum::DiscreteVariable`.
-  * Fixing an exception raised in inferences due to the removal of uninformative potentials containing only barren variables
+  * Added a new static constructor `gum::{Undi|Di}Graph::completeGraph(int n)`.
+  * Added `closestIndex()` and `closestLabel()` methods for all numerical `gum::DiscreteVariable`.
+  * Fixed an exception raised in inferences due to the removal of uninformative potentials contained only barren variables
   * new syntax for `fastVariable` : `[a:b:n]` = `gum.Discretiezd` with n intervalls from a to b.
 
 * pyAgrum
   * Pickle for graphs and graphicals models !
-  * Preventing 'infinities' in the definition of numerical discrete variable.
-  * Adding a new class `pyAgrum.MeekRules` to complete a learned PDAG to CPADG or BN.
+  * Prevented 'infinities' in the definition of numerical discrete variable.
+  * Added a new class `pyAgrum.MeekRules` to complete a learned PDAG to CPADG or BN.
   * Better (stricter)  `__eq__` and `__ne_`_ between `pyAgrum.DiscreteVariable`.
-  * Adding a new constructor for `pyAgrum.PDAG` from`pyAgrum.MixedGraph`.
-  * Adding a new `expert` discretization method to `pyAgrum.skbn.BNDiscretizer` (thanks to Ahmed Mabrouk).
+  * Added a new constructor for `pyAgrum.PDAG` from`pyAgrum.MixedGraph`.
+  * Added a new `expert` discretization method to `pyAgrum.skbn.BNDiscretizer` (thanks to Ahmed Mabrouk).
   * `pyAgrum.skbn.BNDiscretizer` can now take csv filename for input.
-  * Adding `pyAgrum.fastGraph` to create `pyAgrum.{Di|Undi|Mixed}Graph`.
+  * Added `pyAgrum.fastGraph` to create `pyAgrum.{Di|Undi|Mixed}Graph`.
   * Dataframes can now come from `pandas` or `polars` (thanks to Mads Linksou).
-  * Adding a `compact` mode for histogram for discretized variable controlled by `histogram_mode`
+  * Added a `compact` mode for histogram for discretized variable controlled by `histogram_mode`
   `histogram_epsilon` in `gum.config` (thanks to Gaspard Ducamp).
-  * Adding a new static constructor `pyAgrum.{Undi|Di}Graph::completeGraph(int n)`.
-  * Adding subscripting to graphical models : `g[name]` gives now a direct access to the `pyAgrum.DiscreteVariable` by its
+  * Added a new static constructor `pyAgrum.{Undi|Di}Graph::completeGraph(int n)`.
+  * Added subscripted to graphical models : `g[name]` gives now a direct access to the `pyAgrum.DiscreteVariable` by its
 name.
   * New syntax for `pyAgrum.fast{Var|BN|ID|MRF}` : `[a:b:n]` = `pyAgrum.DiscretizedVariable` with n intervalls from a to b.
-  * Adding `closestIndex()` and `closestLabel()` methods for all numerical `pyAgrum.DiscreteVariable`.
-  * Adding `g.adjacencyMatrix()` for all graphs and graphical models (thanks to Kenneth Lee).
-  * Adding new `bgcolor` parameter (None by default) for `showROC/PR` in `pyAgrum.lib.bn2roc` and `pyAgrum.skbn` (thanks to Clara Charon).
-  * Adding optional `dialect` parameter to `pyAgrum.lib.bn2roc.computeScores`.
+  * Added `closestIndex()` and `closestLabel()` methods for all numerical `pyAgrum.DiscreteVariable`.
+  * Added `g.adjacencyMatrix()` for all graphs and graphical models (thanks to Kenneth Lee).
+  * Added new `bgcolor` parameter (None by default) for `showROC/PR` in `pyAgrum.lib.bn2roc` and `pyAgrum.skbn` (thanks to Clara Charon).
+  * Added optional `dialect` parameter to `pyAgrum.lib.bn2roc.computeScores`.
   * new syntax for `fastVariable` : `[a:b:n]` = `pyAgrum.Discretiezd` with n intervalls from a to b.
   
 ## Changelog for 1.11.0
 
 * Internal
-  * Removing some warnings in CMakeLists.txt
-  * Refactoring CI, cleaning wheelhouse
+  * Removed some warnings in CMakeLists.txt
+  * Refactored CI, cleaned wheelhouse
 
 * aGrUM
-  * Adding `gum::LazyPropagation::mpe{Log2Posterior}` to compute the Most Probable Explanation with some evidence.
-  * Improving MIIC algorithm and application of Meek Rules in ordre to to better solve (partially) oriented cycle problems.
-  * Fixing a bug in `gum::BNLearner` : EM parameter estimation bug due to a cache used in record counters.
-  * Fixing a bug in `gum::GibbsSampling` : some evidence may not be taken into account (thanks to Micromix@discord).
+  * Added `gum::LazyPropagation::mpe{Log2Posterior}` to compute the Most Probable Explanation with some evidence.
+  * Improved MIIC algorithm and application of Meek Rules in ordre to to better solve (partially) oriented cycle problems.
+  * Fixed a bug in `gum::BNLearner` : EM parameter estimation bug due to a cache used in record counters.
+  * Fixed a bug in `gum::GibbsSampling` : some evidence may not be taken into account (thanks to Micromix@discord).
   * `gum::PDAG` must accept partially directed cycle (thanks to Kenneth Lee).
   * 'infinities' is now forbidden in the definition of numerical `gum::DiscreteVariable`.
 
 * pyAgrum
-  * Updating and adding 3.12 in metadatas.
-  * Adding `pyAgrum.LazyPropagation.mpe{Log2Posterior}` to compute the Most Probable Explanation with some evidence.
-  * Removing reference to `sys.log` and to `setuptools`.
-  * Removing legacy setuptools related files.
-  * Fixing a bug in `pyAgrum.BNLearner` : EM parameter estimation bug due to a cache used in record counters.
-  * Fixing a bug in `pyAgrum.GibbsSampling` : some evidence may not be taken into account (thanks to Micromix@discord).
-  * Fixing a bug in frontdoor detection in a causal model  with multiple connected components.
-  * Fixing some regexp expressions.
+  * Updated and added 3.12 in metadatas.
+  * Added `pyAgrum.LazyPropagation.mpe{Log2Posterior}` to compute the Most Probable Explanation with some evidence.
+  * Removed reference to `sys.log` and to `setuptools`.
+  * Removed legacy setuptools related files.
+  * Fixed a bug in `pyAgrum.BNLearner` : EM parameter estimation bug due to a cache used in record counters.
+  * Fixed a bug in `pyAgrum.GibbsSampling` : some evidence may not be taken into account (thanks to Micromix@discord).
+  * Fixed a bug in frontdoor detection in a causal model  with multiple connected components.
+  * Fixed some regexp expressions.
   * `pyAgrum.PDAG` must accept partially directed cycle (thanks to Kenneth Lee).
   * 'infinities' is now forbidden in the definition of numerical `pyAgrum.DiscreteVariable`.
 
 ## Changelog for 1.10.0
 
 * aGrUM
-  * add contraints to `MIIC` BN learning algorithm.
+  * added contraints to `MIIC` BN learned algorithm.
   * `MIIC` is now the default for `gum::BNLearner`.
-  * Fixing some minor bugs in `gum::BNLearner`.
-  * Removing old `3off2` BN learning algorithm (use MIIC instead).
-  * adding `gum::MIIC::learnPDAG` and give access to this method via `gum::BNLearner`.
+  * Fixed some minor bugs in `gum::BNLearner`.
+  * Removed old `3off2` BN learned algorithm (use MIIC instead).
+  * added `gum::MIIC::learnPDAG` and give access to this method via `gum::BNLearner`.
 
 * pyAgrum
   * package for python 3.12 !
   * New configuration for specification of graphviz engine and rankdir .
   * Constraint for `MIIC` algorithm in `pyAgrum.BNLearner`.
   * `MIIC` is now the default for `pyAgrum.BNLearner`.
-  * Fixing minor bugs in `pyAgrum.BNLearner`.
+  * Fixed minor bugs in `pyAgrum.BNLearner`.
   * new method `pyAgrum.BNLearner.learnPDAG`.
   * Back to classical representation of do() operator in `pyAgrum.causal`.
   * Examples from the Book Of Why (Pearl) are now in the sphinx documentation.
@@ -193,102 +194,102 @@ name.
 ## Changelog for 1.9.0
 
 * aGrUM
-  * Learning algorithm `gum::learning::MIIC` can use the weighted databases.
+  * Learned algorithm `gum::learning::MIIC` can use the weighted databases.
   * Internal improvements for `act` tool, `cmake` and compilers (`clang`).
   
 * pyAgrum
   * New visualisation for `gum::DiscretizedVariable` + new config to select this visualisation.
-  * `pyAgrum.BNLearner` can use now the weighted databases for all learning algorithms.
+  * `pyAgrum.BNLearner` can use now the weighted databases for all learned algorithms.
   * Documentation improvements.
   * `pyAgrum.lib.bn2roc`
-    * adding new functions `get{ROC|PR}points()`.
-    * accepting `pandas.DataFrame` as data source (`datasrc`).
-    * adding Fbeta (beta!=1) scores to bn2roc.
-    * adding F-Beta threshold on ROC and PR curves.
-    * `bn2roc` functions now force many parameters to be keyword-arguments in order to prevent the risk of mixing arguments.
-    * adding new functions `anim{ROC|PR}`.
+    * added new functions `get{ROC|PR}points()`.
+    * accepted `pandas.DataFrame` as data source (`datasrc`).
+    * added Fbeta (beta!=1) scores to bn2roc.
+    * added F-Beta threshold on ROC and PR curves.
+    * `bn2roc` functions now force many parameters to be keyword-arguments in order to prevent the risk of mixed arguments.
+    * added new functions `anim{ROC|PR}`.
   * `pyAgrum.skbn.Discretizer` can propose a set of labels (that includes the labels from the database) when `"NoDiscretization"` is selected. (see tutorial `52-Classifier_Discretizer`).
 
 ## Changelog for 1.8.3
 
 * aGrUM
-  * Removing GCC warnings about overloaded virtual methods.
-  * Fixing a bug in jointree inference in rare cases (when an irrelevant soft evidence is added).
+  * Removed GCC warnings about overloaded virtual methods.
+  * Fixed a bug in jointree inference in rare cases (when an irrelevant soft evidence is added).
   
 * pyAgrum
-  * Fixing a bug in jointree inference in rare cases (when an irrelevant soft evidence is added).
-  * Removing deprecated methods from pyAgrum<1.1.0.
-  * Adding new syntax for set (conditional) marginal with dict : `p[{"A":0,"C":1}]={"no":0.3,"yes":0.7}`.
+  * Fixed a bug in jointree inference in rare cases (when an irrelevant soft evidence is added).
+  * Removed deprecated methods from pyAgrum<1.1.0.
+  * Added new syntax for set (conditional) marginal with dict : `p[{"A":0,"C":1}]={"no":0.3,"yes":0.7}`.
   * small updates for pyAgrum's documentation.
 
 ## Changelog for 1.8.2
 
 * aGrUM
-  * Fixing a bug (still) in `gum::PDAG::cSeparation` (thanks to Keneth Lee).
-  * Fixing a bug in `gum::BIFXMLIdWriter::save`.
+  * Fixed a bug (still) in `gum::PDAG::cSeparation` (thanks to Keneth Lee).
+  * Fixed a bug in `gum::BIFXMLIdWriter::save`.
   * typos in `gum::PDAG::toDot()`.
 
 * pyAgrum
-  * Fixing a bug in `pyAgrum/{load|save}ID`.
-  * Wrapping `gum::PDAG::moralizedAncestralGraph()`.
-  * Adding a warning when importing `pyAgrum.lib.notebook` if graphviz is not installed.
+  * Fixed a bug in `pyAgrum/{load|save}ID`.
+  * Wrapped `gum::PDAG::moralizedAncestralGraph()`.
+  * Added a warned when importing `pyAgrum.lib.notebook` if graphviz is not installed.
 
 ## Changelog for 1.8.1
 
 * aGrUM
-  * Fixing bugs in `gum::PDAG::cSeparation` (thanks to Keneth Lee).
-  * Using 'table' instead of 'default' for marginal cpt in `gum::BIFWriter`.
-  * Adding `std::cout<<(gum::Timer& t)`
+  * Fixed bugs in `gum::PDAG::cSeparation` (thanks to Keneth Lee).
+  * Used 'table' instead of 'default' for marginal cpt in `gum::BIFWriter`.
+  * Added `std::cout<<(gum::Timer& t)`
 
 * pyAgrum
-  * Updating build image for rtd.
-  * Improving documentations.
+  * Updated build image for rtd.
+  * Improved documentations.
   * Documentation for pyAgrum.InformationTheory.
-  * Uniformizing argume `cmap` to `cmapNode` in `pyAgrum.lib.notebook`.
-  * Adding beeswarmplot for shapley values figures in `pyAgrum.lib.explain`.
+  * Uniformized `cmap` to `cmapNode` in `pyAgrum.lib.notebook`.
+  * Added beeswarmplot for shapley values figures in `pyAgrum.lib.explain`.
 
 ## Changelog for 1.8.0
 
 * aGrUM
-  * Adding new class `gum::InfomationTheory` that regroups every information theory concepts (entropies, conditional entropies and mutual information, ...) with only one inference, which allows also conditioned information theory concepts.  
-  * Adding `gum::Potential::expectedValue()`
-  * Adding the alternative *fast* syntax for NumericalDiscreteVariable : `{1.5:3.5:3}` meaning from 1.5 to 3.5 in 3 steps.
-  * Updating `GraphicalModel::exists(const std::string&)` : return false instead of throwing an exception.
-  * Adding `gum::graphicalModels::variables()` and a new alias for `gum::VariableSet`.
-  * Fixing a bug in `gum::ShaferShenoyInference` for joint posterior when some nodes in the target received hard evidence.
-  * Improving error message w.r.t `gum::*::jointPosterior`.
-  * Adding mingw as a target for CI.
-  * Fixing dangling pointers in testsuite, only detected by MSVC.
+  * Added new class `gum::InfomationTheory` that regroups every information theory concepts (entropies, conditional entropies and mutual information, ...) with only one inference, which allows also conditioned information theory concepts.  
+  * Added `gum::Potential::expectedValue()`
+  * Added the alternative *fast* syntax for NumericalDiscreteVariable : `{1.5:3.5:3}` meaned from 1.5 to 3.5 in 3 steps.
+  * Updated `GraphicalModel::exists(const std::string&)` : return false instead of throwed an exception.
+  * Added `gum::graphicalModels::variables()` and a new alias for `gum::VariableSet`.
+  * Fixed a bug in `gum::ShaferShenoyInference` for joint posterior when some nodes in the target received hard evidence.
+  * Improved error message w.r.t `gum::*::jointPosterior`.
+  * Added mingw as a target for CI.
+  * Fixed dangled pointers in testsuite, only detected by MSVC.
   * Optimized `gum::PDAG::cSeparation`
-  * Renaming `gum::Set::isProper{Sub|Super}Set` to `gum::Set::isStrict{Sub|Super}Set`.
+  * Renamed `gum::Set::isProper{Sub|Super}Set` to `gum::Set::isStrict{Sub|Super}Set`.
 
 * pyAgrum
   * swig>4.1 is now needed.
-  * Enabling installation with poetry (thanks to Lorenzo Conti)
-  * Adding new class `pyAgrum.InfomationTheory` that regroups every information theory concepts (entropies, conditional entropies and mutual information, ...) with only one inference, which allows also conditioned information theory concepts.
-  * Adding `pyAgrum.Potential.expectedValue()`.
-  * Restructuring a bit the sphinx documentation.
-  * Down-exporting the read-only API for every types of discrete Variable to `pyAgrum.DiscreteVariable`. (see `VariablesTestSuite.testExportDerivedReadOnlyAPIforDiscreteVariable`)
-  * Updating notebooks to the new down-exported read-only API of `pyAgrum.DiscreteVariable`.
-  * Adding the alternative *fast* syntax for NumericalDiscreteVariable : `{1.5:3.5:3}` meaning from 1.5 to 3.5 in 3 steps.
-  * Updating docs for new *fast* syntax.
-  * Updating `GraphicalModel::exists(const std::string&)` : return false instead of throw an exception.
-  * Initiating a new notebook about the interaction with ipywidget
+  * Enabled installation with poetry (thanks to Lorenzo Conti)
+  * Added new class `pyAgrum.InfomationTheory` that regroups every information theory concepts (entropies, conditional entropies and mutual information, ...) with only one inference, which allows also conditioned information theory concepts.
+  * Added `pyAgrum.Potential.expectedValue()`.
+  * Restructured a bit the sphinx documentation.
+  * Down-exported the read-only API for every types of discrete Variable to `pyAgrum.DiscreteVariable`. (see `VariablesTestSuite.testExportDerivedReadOnlyAPIforDiscreteVariable`)
+  * Updated notebooks to the new down-exported read-only API of `pyAgrum.DiscreteVariable`.
+  * Added the alternative *fast* syntax for NumericalDiscreteVariable : `{1.5:3.5:3}` meaned from 1.5 to 3.5 in 3 steps.
+  * Updated docs for new *fast* syntax.
+  * Updated `GraphicalModel::exists(const std::string&)` : return false instead of throw an exception.
+  * Initiated a new notebook about the interaction with ipywidget
   * Optimized and correctly wrapped `gum::PDAG::cSeparation` (thanks to Kenneth Lee).
   * New functions `pyAgrum.lib.explain.nestedMarkovBlankets` and `pyAgrum.lib.explain.nestedMarkovBlanketsNames`.
 
 ## Changelog for 1.7.1
 
 * aGrUM
-  * Adding `gum::{AllDiscreteVariable}.toFast()` to write the variable in *fast* syntax.
-  * Fixing a bug in BN's random generators : `domain_size` incremented by 1 (thanks to Kenneth Lee).
-  * Fixing a bug in *fast* syntax : `'A[n]' with n<2`.
+  * Added `gum::{AllDiscreteVariable}.toFast()` to write the variable in *fast* syntax.
+  * Fixed a bug in BN's random generators : `domain_size` incremented by 1 (thanks to Kenneth Lee).
+  * Fixed a bug in *fast* syntax : `'A[n]' with n<2`.
 
 * pyAgrum
-  * Adding `pyAgrum.{AllDiscreteVariable}.toFast()` to write the variable in *fast* syntax.
-  * Fixing a bug in BN's random generators (e.g. `pyAgrum.randomBN`) : `domain_size` incremented by 1 (thanks to Kenneth Lee).
-  * Fixing a bug in *fast* syntax : `'A[n]' with n<2`.
-  * Modifying (lightly) the structure for documentation.
+  * Added `pyAgrum.{AllDiscreteVariable}.toFast()` to write the variable in *fast* syntax.
+  * Fixed a bug in BN's random generators (e.g. `pyAgrum.randomBN`) : `domain_size` incremented by 1 (thanks to Kenneth Lee).
+  * Fixed a bug in *fast* syntax : `'A[n]' with n<2`.
+  * Modifyed (lightly) the structure for documentation.
 
 ## Changelog for 1.7.0
 
@@ -296,21 +297,21 @@ name.
   * Add `gum::Potential::sign` and `gum::Potential::new_sign`
   * Bug fix in causalImpact found by Musfiqur Rahman
   * Generalization and rationalization of access of aGrUM's generator of pseudo-random values
-  * Adding `gum::Timer::toString()`.
-  * Improving BN random generator.
+  * Added `gum::Timer::toString()`.
+  * Improved BN random generator.
   * get rid of `sprintf` as much as possible.
-  * Fixing random seed.
-  * Fixing `gum::Potential::random()` : not a distribution.
-  * Updating *Fast* syntax : enumerating consecutive integers (e.g `{1|2|3|4}`) creates a `gum::RangeVariable[1,4]` rather than an `gum::IntegerVariable{1|2|3|4}`.
+  * Fixed random seed.
+  * Fixed `gum::Potential::random()` : not a distribution.
+  * Updated *Fast* syntax : enumerated consecutive integers (e.g `{1|2|3|4}`) creates a `gum::RangeVariable[1,4]` rather than an `gum::IntegerVariable{1|2|3|4}`.
 * pyAgrum
   * Add `pyAgrum.Potential.sign` and `pyAgrum.Potential.new_sign`
   * Bug fix in causalImpact found by Musfiqur Rahman
-  * Adding `pyAgrum.Timer.__str()__`.
-  * Improving BN random generator.
-  * Fixing random seed.
-  * Fixing `pyAgrum.Potential.random()` : not a distribution.
-  * Adding access to `gum.fastVariable()`.
-  * Updating *Fast* syntax : enumerating consecutive integers (e.g `{1|2|3|4}`) creates a `pyAgrum.RangeVariable[1,4]` rather than an `pyAgrum.IntegerVariable{1|2|3|4}`.
+  * Added `pyAgrum.Timer.__str()__`.
+  * Improved BN random generator.
+  * Fixed random seed.
+  * Fixed `pyAgrum.Potential.random()` : not a distribution.
+  * Added access to `gum.fastVariable()`.
+  * Updated *Fast* syntax : enumerated consecutive integers (e.g `{1|2|3|4}`) creates a `pyAgrum.RangeVariable[1,4]` rather than an `pyAgrum.IntegerVariable{1|2|3|4}`.
   * add a new module to export in different formats (for now just GML).
 
 ## Changelog for 1.6.1
@@ -319,74 +320,74 @@ Quick fix for the configuration of pyAgrum documentation generation by readthedo
 
 ## Changelog for 1.6.0
 
-The main points of this tag is the renaming of *Markov network* (`MarkovNet`, `MN`) for the better known *Markov Random Field* (`MarkovRandomField`, `MRF`) and a new reader/writer of XDSL format (Genie/Smile) for Bayesian networks. Other improvements and corrections have naturally also been made.
+The main points of this tag is the renamed of *Markov network* (`MarkovNet`, `MN`) for the better known *Markov Random Field* (`MarkovRandomField`, `MRF`) and a new reader/writer of XDSL format (Genie/Smile) for Bayesian networks. Other improvements and corrections have naturally also been made.
 
 * aGrUM
-  * Renaming `gum::MarkovNet` to `gum::MarkovRandomField`. Renaming `gum::*MN*` to `gum::*MRF*` when necessary.
-  * Fixing glitches and bugs induced or revealed by `gum::MarkovNet`->`gum::MarkovRandomField`.
+  * Renamed `gum::MarkovNet` to `gum::MarkovRandomField`. Renamed `gum::*MN*` to `gum::*MRF*` when necessary.
+  * Fixed glitches and bugs induced or revealed by `gum::MarkovNet`->`gum::MarkovRandomField`.
   * new `XDSL` Reader/writer for Bayesian network.
-  * Renaming `gum::Learning::BNLearner::learnMixedStructure` to `gum::Learning::BNLearner::learnPDAG`
-  * working on documentation : better rendering for doxygen pages.
-  * Renaming `gum::dSeparation` to `gum::dSeparationAlgorithm`.
+  * Renamed `gum::Learning::BNLearner::learnMixedStructure` to `gum::Learning::BNLearner::learnPDAG`
+  * worked on documentation : better rendered for doxygen pages.
+  * Renamed `gum::dSeparation` to `gum::dSeparationAlgorithm`.
 
 * pyAgrum
-  * Renaming `pyAgrum.MarkovNet` to `pyAgrum.MarkovRandomField`. Renaming `pyAgrum.*MN*` to `pyAgrum.*MRF*` when necessary.
+  * Renamed `pyAgrum.MarkovNet` to `pyAgrum.MarkovRandomField`. Renamed `pyAgrum.*MN*` to `pyAgrum.*MRF*` when necessary.
   * new `XDSL` Reader/writer for Bayesian network.
-  * Renaming `pyAgrum.BNLearner.learnMixedStructure()` to `pyAgrum.BNLearner.learnPDAG()`.
-  * For figure containing nodes drawn by matplotlib (e.g. inference), use the same font for all nodes (default from matplotlib) (thanks to Jonathon Blackford).
-  * Working on documentation : better rendering for readthedocs pages, improved structuration, new thumbnail image for some notebooks/tutorials.
+  * Renamed `pyAgrum.BNLearner.learnMixedStructure()` to `pyAgrum.BNLearner.learnPDAG()`.
+  * For figure contained nodes drawn by matplotlib (e.g. inference), use the same font for all nodes (default from matplotlib) (thanks to Jonathon Blackford).
+  * Worked on documentation : better rendered for readthedocs pages, improved structuration, new thumbnail image for some notebooks/tutorials.
   * Significant improvement of the documentation coverage.
-  * Improving `gum.DiscreteVariable.to[typeOfVariable]`, renaming as `gum.DiscreteVariable.as[typeOfVariable]` and adding documentations.
+  * Improved `gum.DiscreteVariable.to[typeOfVariable]`, renamed as `gum.DiscreteVariable.as[typeOfVariable]` and added documentations.
 
 ## Changelog for 1.5.2
 
 Mainly documentation and new analytics for the different sites.
 
 * pyAgrum
-  * Adding a new and very easy to use `pyAgrum.randomBN` that creates a BN from a list of names.
-  * Removing obsolete `pyAgrum.generateCSV` replaced by `pyAgrum.generateSample`. Fixing tests.
-  * Fixing and improving pyAgrum documentation.
+  * Added a new and very easy to use `pyAgrum.randomBN` that creates a BN from a list of names.
+  * Removed obsolete `pyAgrum.generateCSV` replaced by `pyAgrum.generateSample`. Fixed tests.
+  * Fixed and improved pyAgrum documentation.
 
 ## Changelog for 1.5.1
 
 * aGrUM
-  * Improving `gum::BNLearner::state()`.
+  * Improved `gum::BNLearner::state()`.
   * (internals) new macro `GUM_TEST` and `GUM_INACTIVE_TEST` for CI
   
 * pyAgrum
-  * Improving `gum.BNLearner.state()`.
-  * Improving style for readthedoc (pygments and no StickySideBar)
-  * Improving documentation coverage (for methods) from 84.9% to 90.7% : more than 100 newly covered methods.
+  * Improved `gum.BNLearner.state()`.
+  * Improved style for readthedoc (pygments and no StickySideBar)
+  * Improved documentation coverage (for methods) from 84.9% to 90.7% : more than 100 newly covered methods.
 
 ## Changelog for 1.5.0
 
 * aGrUM
 
-  * (internals) Updating `act --stats`.
-  * (internals) Reorganizing build folder : `build/{aGrUM|pyAgrum}/{debug|release}`.
-  * (internals) Improving cmake & CIs.
+  * (internals) Updated `act --stats`.
+  * (internals) Reorganized build folder : `build/{aGrUM|pyAgrum}/{debug|release}`.
+  * (internals) Improved cmake & CIs.
   * Threadsafe graphs and Graphical Models.
-  * Adding new graph `gum::PDAG` (Partially Directed Acyclic Graph).
-  * Renaming `gum::MixedGraph::adjacents` with correct graph notion : `gum::MixedGraph::boundary`.
-  * Initializing the majority of the end/rend iterators at compile time.
-  * Adding AVL binary search trees: `gum::AVLTree`.
-  * Adding priority queues that can be iterated in order: `gum::SortedPriorityQueue`.
+  * Added new graph `gum::PDAG` (Partially Directed Acyclic Graph).
+  * Renamed `gum::MixedGraph::adjacents` with correct graph notion : `gum::MixedGraph::boundary`.
+  * Initialized the majority of the end/rend iterators at compile time.
+  * Added AVL binary search trees: `gum::AVLTree`.
+  * Added priority queues that can be iterated in order: `gum::SortedPriorityQueue`.
   * Better messages for `gum::BayesNet::check()`.
 
 * pyAgrum
 
   * (internals) New docker images with linux gcc 11 for wheels.
   * (internals) CMake: Use FindPython module.
-  * (internals) Removing some (false positive) warning notifications from swig.
-  * Fixing NaN bugs for new versions of Graphviz.
-  * Improving gum.lib.notebooks.flow and light/dark theme compatibility.
-  * Renaming `pyAgrum.MixedGraph.adjacents` with correct graph notion : `pyAgrum.MixedGraph.boundary`.
+  * (internals) Removed some (false positive) warned notifications from swig.
+  * Fixed NaN bugs for new versions of Graphviz.
+  * Improved gum.lib.notebooks.flow and light/dark theme compatibility.
+  * Renamed `pyAgrum.MixedGraph.adjacents` with correct graph notion : `pyAgrum.MixedGraph.boundary`.
   * New graph class `gum.PDAG` (Partially Directed Acyclic Graph).
-  * Fixing a small typo when displaying function as Potential.
+  * Fixed a small typo when displayed function as Potential.
   * better messages for `pyAgrum.BayesNet.check()`.
   * More robust `gum.explain.showInformation()` w.r.t. NaN.
-  * Fixing typos in documentation.
-  * Improving the organization of ReadTheDoc documentation.
+  * Fixed typos in documentation.
+  * Improved the organization of ReadTheDoc documentation.
   
 ## Changelog for 1.4.1
 
@@ -402,10 +403,10 @@ Mainly documentation and new analytics for the different sites.
 
 * pyAgrum
 
-  * __adding conda and pip packages for python 3.11__
+  * __added conda and pip packages for python 3.11__
   * better `__str__` for BN : show the memory used by the parameters.
   * bug fix in obsolete pyAgrum.`BNLearner.useNoAPriori()`.
-  * bug fix when displaying a `pyAgrum.causal.CausalFormula` generated by do-Calculus : retrieving the original `doing` and `knowing` sets.
+  * bug fix when displayed a `pyAgrum.causal.CausalFormula` generated by do-Calculus : retrieved the original `doing` and `knowing` sets.
 
 ## Changelog for 1.3.2
 
@@ -413,8 +414,8 @@ Mainly documentation and new analytics for the different sites.
 
   * `gum::BNDataGenerator` : Add a way to generate sampls from Bayesian Network with evidence
   * More informative error message for `gum::DatabaseTable::insertRow()`.
-  * Code structure for checking syntax before saving a Bayesian Network. Instantiated for BFI and DSL format.
-  * Improving code for `gum::BinSearchTree`.
+  * Code structure for checked syntax before saved a Bayesian Network. Instantiated for BFI and DSL format.
+  * Improved code for `gum::BinSearchTree`.
   * Better error messages for `gum::DSLReader`.
   
 * pyAgrum
@@ -423,70 +424,70 @@ Mainly documentation and new analytics for the different sites.
   * `pyAgrum.lib.dBN` : better dot representation of unrolled BNs.
   * `pyAgrum.lib.notebook.show()` : bugs fixed for some types of parameters.
   * `pyAgrum.config` : new types accessors : `config.as{Int|Float|Bool}`.
-  * Updating documentations for `pyAgrum.lib.notebook.show()`, `pyAgrum.BNDatabaseGenerator.drawSamples()`, `pyAgrum.skbn`.
-  * New argument when drawing graphs : label on arcs (thanks to Mahdi Hadl Ali).
+  * Updated documentations for `pyAgrum.lib.notebook.show()`, `pyAgrum.BNDatabaseGenerator.drawSamples()`, `pyAgrum.skbn`.
+  * New argument when drawed graphs : label on arcs (thanks to Mahdi Hadl Ali).
 
 ## Changelog for 1.3.1
 
 * aGrUM
 
-  * Updating readme
+  * Updated readme
 
 * pyAgrum
 
-  * Fixing warnings in `gum.Potential.topandas()`.
-  * Allowing label or index when addressing variables in dictionary for `gum.Instantiation` (such as in `gum.Potential.extract`).
-  * Allowing dictionnary for mapping variables in `pyAgrum.Potential.fillWith`.
-  * Fixing typos in documentation of `pyAgrum.Potential.fillWith`.
-  * Fixing css for sphinx notebooks gallery.
+  * Fixed warnings in `gum.Potential.topandas()`.
+  * Allowed label or index when addressed variables in dictionary for `gum.Instantiation` (such as in `gum.Potential.extract`).
+  * Allowed dictionnary for mapped variables in `pyAgrum.Potential.fillWith`.
+  * Fixed typos in documentation of `pyAgrum.Potential.fillWith`.
+  * Fixed css for sphinx notebooks gallery.
 
 ## Changelog for 1.3.0
 
 * aGrUM
 
-  * Fixing errors in doxygen configuration.
-  * Adding a new class of discrete variable `gum::NumericalDiscreteVariable` whose support is a (finite) set of
+  * Fixed errors in doxygen configuration.
+  * Added a new class of discrete variable `gum::NumericalDiscreteVariable` whose support is a (finite) set of
     `double`.
-  * Fixing new clang warnings.
-  * Fixing a bug in `gum::Potential::max()` when all values are negative (thanks to Zakarie Aloui).
-  * Adding a new method `gum::learning::BNLearner::score()` which computes the currently selected score for a node and its parents.
-  * Adding a test for a variance being not negative in `gum::ShaferSheoyLIMIDInference` (thanks to Benjamin Datko).
-  * Adding new methods `gum::learning::BNLeaner::mutualInformation()` and `gum::learning::BNLearner::correctedMutualInformation()`.
+  * Fixed new clang warnings.
+  * Fixed a bug in `gum::Potential::max()` when all values are negative (thanks to Zakarie Aloui).
+  * Added a new method `gum::learning::BNLearner::score()` which computes the currently selected score for a node and its parents.
+  * Added a test for a variance beed not negative in `gum::ShaferSheoyLIMIDInference` (thanks to Benjamin Datko).
+  * Added new methods `gum::learning::BNLeaner::mutualInformation()` and `gum::learning::BNLearner::correctedMutualInformation()`.
 
 * pyAgrum
 
-  * Adding a new class of discrete variable `gum.NumericalDiscreteVariable` whose support is a (finite) set of `double`.
-  * Updating notebooks w.r.t. this new variable (`16-Examples_quasiContinuous` and `18-Examples-BayesianBetaCoin`).
-  * Adding a new method `gum.BNLearner.score()` which computes the currently selected score for a node and its parents.
-  * Adding new methods `gum.BNLeaner.mutualInformation()` and `gum.BNLearner.correctedMutualInformation()`.
+  * Added a new class of discrete variable `gum.NumericalDiscreteVariable` whose support is a (finite) set of `double`.
+  * Updated notebooks w.r.t. this new variable (`16-Examples_quasiContinuous` and `18-Examples-BayesianBetaCoin`).
+  * Added a new method `gum.BNLearner.score()` which computes the currently selected score for a node and its parents.
+  * Added new methods `gum.BNLeaner.mutualInformation()` and `gum.BNLearner.correctedMutualInformation()`.
 
 ## Changelog for 1.2.0
 
 * aGrUM
 
-  * Moving naming convention from `apriori` to `prior`.
+  * Moved named convention from `apriori` to `prior`.
   * `gum::CliqueGraph::addNode{WithId}` with the same syntax as in other graphs.
-  * [act] Improving the compliance for various microsoft compilers.
+  * [act] Improved the compliance for various microsoft compilers.
   * [act] option `-windows` is now `-compiler` and accepts `gcc` or `clang` when platform is linux or mac.
   * [act] options `--clangpath` add `--gccpath` to specify the path of the compilers (if those compilers are not in PATH).
-  * Changing internal representation of `gum::Exception` (now derived from `std::exception`).
-  * Adding a new prior : `gum::learning::DirichelPriorFromBN`.
-  * Renaming `genericBNLearner` to `IBNLearner`.
-  * Adding `gum::learning::BNLearner::useDirichletPriorFromBN`.
+  * Changed internal representation of `gum::Exception` (now derived from `std::exception`).
+  * Added a new prior : `gum::learning::DirichelPriorFromBN`.
+  * Renamed `genericBNLearner` to `IBNLearner`.
+  * Added `gum::learning::BNLearner::useDirichletPriorFromBN`.
 
 * pyAgrum
 
-  * Moving naming convention from `apriori` to `prior`.
-  * Adding `pyAgrum.BNLearner.useDirichletPriorFromBN`.
-  * Adding a new function `gum::mutilateBN`.
+  * Moved named convention from `apriori` to `prior`.
+  * Added `pyAgrum.BNLearner.useDirichletPriorFromBN`.
+  * Added a new function `gum::mutilateBN`.
   * `pyAgrum.CliqueGraph.addNode{WithId}` with the same syntax as in other graphs.
 
 ## Changelog for 1.1.1
 
 * aGrUM
 
-  * Fix a regression that was slowing down the inference in credal networks.
-  * Better error messages when IOError caused by writing in 'bad' files.
+  * Fix a regression that was slowed down the inference in credal networks.
+  * Better error messages when IOError caused by writed in 'bad' files.
   * Typos in several error messages.
   * Fix warnings from gcc 12.1 and integrate linter proposals.
 
@@ -494,8 +495,8 @@ Mainly documentation and new analytics for the different sites.
 
   * PEP 3149 implemented.
   * Small typos in pyAgrum.causal.
-  * Adding acces to the database built for learning in `pyAgrum.skbn.BNClassifier.preparedData()`.
-  * Small bug when representing Potential as fractions.
+  * Added acces to the database built for learned in `pyAgrum.skbn.BNClassifier.preparedData()`.
+  * Small bug when represented Potential as fractions.
   * Small bug in type deduction from database for variable in `pyAgrum.skbn`.
   * notebooks now added in the sphinx documentation (and then in readthedocs site).
 
@@ -503,17 +504,17 @@ Mainly documentation and new analytics for the different sites.
 
 * aGrUM
 
-  * Parallelizing inference for Markov Net : `gum::ShaferShenoyMNInference`.
-  * Adding a new `gum::fastVar(std::string)` factory function to easily build variable such as in `gum::*::fastPrototype(std::string)`. See [Documentation](https://pyagrum.readthedocs.io/en/1.1.0/functions.html#quick-specification-of-randomly-parameterized-graphical-models). This syntax is now used in every graphical model with `gum::{BayesNet|MarkovNet|etc}::add(std::string)` to easily add a new variable in the model.
-  * Adding a new graphical representation of cliqueGraph : `gum::CliqueGraph::mapToDot()`.
+  * Parallelized inference for Markov Net : `gum::ShaferShenoyMNInference`.
+  * Added a new `gum::fastVar(std::string)` factory function to easily build variable such as in `gum::*::fastPrototype(std::string)`. See [Documentation](https://pyagrum.readthedocs.io/en/1.1.0/functions.html#quick-specification-of-randomly-parameterized-graphical-models). This syntax is now used in every graphical model with `gum::{BayesNet|MarkovNet|etc}::add(std::string)` to easily add a new variable in the model.
+  * Added a new graphical representation of cliqueGraph : `gum::CliqueGraph::mapToDot()`.
 
 * pyAgrum
 
-  * Following aGrUM, `gum.ShaferShenoyMNInference` is now parallelized too.
-  * Wrapping the new fast syntax for creating variable in functions `gum.{BayesNet|etc}.add(str)`. See [Documentation](https://pyagrum.readthedocs.io/en/1.1.0/functions.html#quick-specification-of-randomly-parameterized-graphical-models).
-  * Introducing a better type induction for discrete variables when created by `gum.skbn.BNDiscretizer`. `gum.IntegerVariable` and `gum.RangeVariable` are now induced from the data.
-  * Adding `gum.JunctionTree.map()` (in notebook) to show a condensed map of a the junction tree.
-  * Still working on documentation (*One must imagine Sisyphus happy*).
+  * Followed aGrUM, `gum.ShaferShenoyMNInference` is now parallelized too.
+  * Wrapped the new fast syntax for created variable in functions `gum.{BayesNet|etc}.add(str)`. See [Documentation](https://pyagrum.readthedocs.io/en/1.1.0/functions.html#quick-specification-of-randomly-parameterized-graphical-models).
+  * Introduced a better type induction for discrete variables when created by `gum.skbn.BNDiscretizer`. `gum.IntegerVariable` and `gum.RangeVariable` are now induced from the data.
+  * Added `gum.JunctionTree.map()` (in notebook) to show a condensed map of a the junction tree.
+  * Still worked on documentation (*One must imagine Sisyphus happy*).
 
 ## Changelog for 1.0.0
 
@@ -533,7 +534,7 @@ In the near future, for aGrUM and pyAgrum, we expect many more new features and 
 
   * VariableElimination, ShaferShenoy and LazyPropagation are now parallelized.
   * Better use of d-separation in ShaferShenoy and LazyPropagation.
-  * Better initialization/registrations using Meyers singleton.
+  * Better initialization/registrations used Meyers singleton.
   * Better 0-dimensional Potential.
   * new `gum::IBayesNet::check()` to test if the BN is completely and well-defined.
 
@@ -554,11 +555,11 @@ This tag is a pre-relase for 1.0.0 (!).
 
   * Added a new Multithreaded facility which supports easily both `openMP` and `STL`.
   * Enabled exceptions raised by threads to be catched.
-  * Made `gum::CredalNetworks` and `gum::learning::BNLearner` use the new multithreading facility.
-  * Made a fully new architecture for scheduling inferences.
+  * Made `gum::CredalNetworks` and `gum::learning::BNLearner` use the new multithreaded facility.
+  * Made a fully new architecture for scheduled inferences.
   * Added a sequential and a parallel schedulers for inferences.
   * Enabled `gum::LazyPropagation` and `gum::ShaferShenoy` to use schedulers for their inferences.
-  * `gum::DiscretizedVariable` can now be declared as "empirical". Meaning that the lower and upper ticks are not always hard limits.
+  * `gum::DiscretizedVariable` can now be declared as "empirical". Meaned that the lower and upper ticks are not always hard limits.
   * improve a bit API for `gum::IntegerVariable`.
 
 * pyAgrum
@@ -568,7 +569,7 @@ This tag is a pre-relase for 1.0.0 (!).
   * Add support for default number of thread in `gum.config`.
   * Added methods to get/set the number of threads used by `pyAgrum.BNLearner`, `pyAgrum.LazyPropagation` and `pyAgrum.ShaferShenoy`.
   * small change in `pyAgrum.skbn.Discretizer.audit` : show the domain size for discrete variable.
-  * better graphical diff between BN, even if a node is missing using `pyAgrum.bn_vs_bn` functionalities.
+  * better graphical diff between BN, even if a node is missed used `pyAgrum.bn_vs_bn` functionalities.
   * empirical gum.DiscretizedVariable used in `pyAgrum.skbn.Discretizer`
   * new configuration for (LaTeX) fractions in `gum.lib.notebook.showCPT` (see tutorial)
   * update a bit `pyAgrum.IntegerVariable` wrapper and documentation.
@@ -609,43 +610,43 @@ Mostly several quick fixes.
 * aGrUM
 
   * Small bugfix on Markov random field with only one factor.
-  * Better behavior for ordering nodes when `gum::MarkovNetwork::addFactor`.
+  * Better behavior for ordered nodes when `gum::MarkovNetwork::addFactor`.
   * Better behavior for `gum::ShaferShenoyMNInference::jointPosterior` when a node of the joint is hard-observed.
 
 * pyAgrum
 
   * Update and fix documentation (mostly for readthedocs and typehints).
-  * Fix and improve ticks when plotting distribution with large domainSize.
-  * Better behavior for ordering nodes when `pyAgrum.MarkovNetwork.addFactor`.
+  * Fix and improve ticks when plotted distribution with large domainSize.
+  * Better behavior for ordered nodes when `pyAgrum.MarkovNetwork.addFactor`.
   * Better behavior for `pyAgrum.ShaferShenoyMNInference.jointPosterior` when a node of the joint is hard-observed.
 
 ## Changelog for 0.22.6
 
 * aGrUM
 
-  * aGrum is now compiled using c++20 (updating cmake).
+  * aGrum is now compiled used c++20 (updated cmake).
   * Fix 'distribute' phase in some cases for `gum::ShaferShenoyLIMIDInference` (Thanks to Michael Kontoulis).
   * Remove a lot of allocators as template parameters.
   * `act`: Improve architecture.
   * `act`: Use of `argparse`  instead of the obsolete `optparse`.
-  * Working on CI : Working on CI : removing some obsolete platform (`MSVC 15`), adding some new (`MSVC 22`)
+  * Worked on CI : Worked on CI : removed some obsolete platform (`MSVC 15`), added some new (`MSVC 22`)
   * use `std::mt19937` instead of `rand()` (thanks to Julien Schueller).
 
 * pyAgrum
 
-  * Drop support for python 3.7 (following [NEP29](https://numpy.org/neps/nep-0029-deprecation_policy.html)).
-  * Drop support for 32bits architectures (following [numpy](https://numpy.org/devdocs/release/1.22.0-notes.html)).
+  * Drop support for python 3.7 (followed [NEP29](https://numpy.org/neps/nep-0029-deprecation_policy.html)).
+  * Drop support for 32bits architectures (followed [numpy](https://numpy.org/devdocs/release/1.22.0-notes.html)).
   * Use of `pydot` instead of `pydotplus`.
   * Several typos in code and documentation of `gum.lib` (thanks to Benjamin Datko).
   * Improve notebooks (thanks to Clara Charon).
 
 ## Changelog for 0.22.5
 
-This release mainly deals with providing a workaround to a pydotplus/pyparsing bug affecting several graph visualizations in pyAgrum.
+This release mainly deals with provided a workaround to a pydotplus/pyparsed bug affected several graph visualizations in pyAgrum.
 
 * pyAgrum
 
-  * workaround to the pydotplus/pyparsing bug : "adding an empty node".
+  * workaround to the pydotplus/pyparsed bug : "added an empty node".
   * remove the use of deprecated distutils in act.
   * (approximate) fix labels in x-axis for lined-histogram.
 
@@ -655,8 +656,8 @@ This release aims to provide a number of new configurations for aGrUM and pyAgru
 
 * aGrUM
 
-  * builder for windows using msvc2022 (new option for `act`)
-  * aGrUM is now compiled using c++17
+  * builder for windows used msvc2022 (new option for `act`)
+  * aGrUM is now compiled used c++17
 
 * pyAgrum
 
@@ -671,7 +672,7 @@ This release aims to provide a number of new configurations for aGrUM and pyAgru
   * new option in `gum.config` for percent or just number in histograms.
   * better wrappers for `gum.Instantiation.variablesSequence()` and `pyAgrum.MixedGraph.adjacents(id)`.
   * better wrappers for `pyAgrum.MixedGraph.{mixedOrientedPath|mixedUnorientedPath}`.
-  * refreshing all `requirements.txt`.
+  * refreshed all `requirements.txt`.
   * better visualisation for `pyagrum.lib.DynamicBN`.
   * improvements in documentations.
   * aarch64 version for linux package
@@ -683,8 +684,8 @@ This release aims to provide a number of new configurations for aGrUM and pyAgru
     very token anymore.
 
 * pyAgrum
-  * Updating documentations
-  * Moving export image utilities in a new `pyAgrum.lib.image`. See the notebook (![Colouring and exporting models]
+  * Updated documentations
+  * Moved export image utilities in a new `pyAgrum.lib.image`. See the notebook (![Coloured and exported models]
     (<https://webia.lip6.fr/~phw/aGrUM/docs/last/notebooks/colouringAndExportingBNs.ipynb.html>)).
   * Minor change in `CSVParser` (`BNLearner`, etc.) : if a token is surrounded by quote characters, those are not part of
     the very token anymore.
@@ -702,33 +703,33 @@ This release aims to provide a number of new configurations for aGrUM and pyAgru
 * pyAgrum
   * better `pyAgrum.SyntaxError` treated as python's SyntaxError,
   * much better annotations for types declaration in python codes,
-  * improving documentation,
+  * improved documentation,
   * update pyAgrum.causal,
   * `gum.fast[Model]` now accepts multiline specifications,
   * `gum.DiscreteVariable` are now hashable.
 
 ## Changelog for 0.22.0
 
-As planned, 0.22.0 is the first version of pyAgrum that does not support python>3.6 (including 2.7).
+As planned, 0.22.0 is the first version of pyAgrum that does not support python>3.6 (included 2.7).
 
 * aGrUM
   * fix issue #27
   * (act) remove (hopefully) all the codes to support both python. In particular, there is no more options for act to choose the targeted version of python.
-  * (ci/deploy) removing 2.7 tests and deploy (thanks to @Aspard)
-  * better and customized type induction when learning Bayesian networks from CSV.
-  * new constructor for `gum::learning::BNLearner` to activate/deactivate the type induction when reading a csv file. (thanks to @gonzalesc)
+  * (ci/deploy) removed 2.7 tests and deploy (thanks to @Aspard)
+  * better and customized type induction when learned Bayesian networks from CSV.
+  * new constructor for `gum::learning::BNLearner` to activate/deactivate the type induction when readed a csv file. (thanks to @gonzalesc)
 
 * pyAgrum
   * remove a large part of the codes dedicated to python2 in the wrapper (`wrapper/python/generated-files2`) and in `pyAgrum.lib`. To be cont'd.
   * many improvements due to linter (pylint especially) in `pyAgrum.lib`.
   * graphical improvement in `pyAgrum.lib.bn2roc` thanks to Clara Charon.
-  * new constructor for `gum.BNLearner` to activate/deactivate the type induction when reading a csv file.
+  * new constructor for `gum.BNLearner` to activate/deactivate the type induction when readed a csv file.
 
 ## Changelog for 0.21.0
 
 Contrary to what was said in the 0.20.0 changelog, we decided to remove support for python 2.7 before the 1.0 release.
 
-This tag (0.21.0) is the last version that supports python 2.7. We are already working and will deliver a 0.22.0 tag as soon as possible, which will be dedicated to this move and will then be the first tag without python 2.7 support.
+This tag (0.21.0) is the last version that supports python 2.7. We are already worked and will deliver a 0.22.0 tag as soon as possible, which will be dedicated to this move and will then be the first tag without python 2.7 support.
 
 The next tag (0.22.0) will be the (new) last minor version before the release of agrum/pyAgrum 1.0.0 (:fist: :smirk: ).
 
@@ -737,39 +738,39 @@ The next tag (0.22.0) will be the (new) last minor version before the release of
   * New syntax for `gum::IntegerVariable` in `gum::*::fastPrototype` : `a{-3|0|3}`.
   * Change in syntax for `gum::MarkovNetwork::fastPrototype` : the link are represented by `--` instead of `-`.
   * New `gum::BNLearner::state()` which gives a view of the activated options in the learner (scores, priors, algorithms, constraints, etc.).
-  * New `gum::BNLearner::toString()` which gives a string representation of `gum::BNLearner::state()`.
+  * New `gum::BNLearner::toString()` which gives a stred representation of `gum::BNLearner::state()`.
   * Add a new CI for last gcc (g++11 for now).
   * Code optimizations for hash function for small-sized values.
   * Better hierarchy for exceptions.
-  * MLEstimator should lead to an error when dividing by 0.
+  * MLEstimator should lead to an error when divided by 0.
 
 * pyAgrum
   * New type for discrete variable (`pyAgrum.IntegerVariable`) which represents a set of non-consecutive integers.
   * New syntax for `pyAgrum.IntegerVariable` in `pyAgrum.fast*` : `a{-3|0|3}`.
   * Change in syntax for `pyAgrum.fastMN` : the links are represented by `--` instead of `-`.
   * New `pyAgrum.BNLearner.state()` which gives a view of the activated options in the learner (scores, priors, algorithms, constraints, etc.).
-  * New `pyAgrum.BNLearner.__str__()` which gives a string representation of `gum::BNLearner::state()`.
+  * New `pyAgrum.BNLearner.__str__()` which gives a stred representation of `gum::BNLearner::state()`.
   * Documentations and notebooks updated w.r.t. this new features.
-  * Adding ShapValues for BN in `pyAgrum.lib.explain` (see notebook).
-  * Adding `pyAgrum.lib.explain.independenceListForPairs()`.
-  * Other improvements in `pyAgrum.lib.explain` and the corresponding notebook and documentations.
-  * Updating notebooks for classifiers.
+  * Added ShapValues for BN in `pyAgrum.lib.explain` (see notebook).
+  * Added `pyAgrum.lib.explain.independenceListForPairs()`.
+  * Other improvements in `pyAgrum.lib.explain` and the corresponded notebook and documentations.
+  * Updated notebooks for classifiers.
   * Better hierarchy for exceptions.
-  * Removing unnecessary and obsolete codes by deleting `pyAgrum.lib._utils`.
+  * Removed unnecessary and obsolete codes by deleted `pyAgrum.lib._utils`.
   * 'Terminology clash' between 'Laplace's adjustment' and 'Smoothing' : use more generic 'Smoothing' everywhere now.
-  * MLEstimator should lead to an error when dividing by 0.
+  * MLEstimator should lead to an error when divided by 0.
 
 ## Changelog for 0.20.3
 
 * aGrUM
-  * Refactoring/fixing MIIC and better heuristic for orientations for constraint-based learning algorithms.
-  * Updating guidelines and new convention for `private` methods/attributes.
-  * Changing behaviour of `gum::MixedGraph::mixed{Oriented|Unoriented}Path` : no misuse of exception when no path is found.
+  * Refactoring/fixed MIIC and better heuristic for orientations for constraint-based learned algorithms.
+  * Updated guidelines and new convention for `private` methods/attributes.
+  * Changed behaviour of `gum::MixedGraph::mixed{Oriented|Unoriented}Path` : no misuse of exception when no path is found.
   
 * pyAgrum
-  * Refactoring MIIC and better heuristic for orientations for constraint-based learning algorithms.
-  * Changing behaviour of `pyAgrum.MixedGraph.mixed{Oriented|Unoriented}Path` : no misuse of exception when no path is found.
-  * Updating new `pyAgrum.Potential`'s methods and documentation.
+  * Refactored MIIC and better heuristic for orientations for constraint-based learned algorithms.
+  * Changed behaviour of `pyAgrum.MixedGraph.mixed{Oriented|Unoriented}Path` : no misuse of exception when no path is found.
+  * Updated new `pyAgrum.Potential`'s methods and documentation.
   * New tool for layout in notebooks : `pyAgrum.notebook.flow`.
   * New gum.config options for background colors in CPT : `potential_color_0` and `potential_color_1`.
   * New module `pyAgrum.lib.explain`.
@@ -777,17 +778,17 @@ The next tag (0.22.0) will be the (new) last minor version before the release of
 ## Changelog for 0.20.2
 
 * aGrUM
-  * Add a check on parameters when building a `gum::credal::CredalNet` from BNmin and BNmax: 'are Pmin<=Pmax' ?".
+  * Add a check on parameters when builded a `gum::credal::CredalNet` from BNmin and BNmax: 'are Pmin<=Pmax' ?".
   * Fix a bug, and a visualisation of results on decision nodes with deterministic optimal strategy in `gum::InfluenceDiagram`.
   
 * pyAgrum
-  * Add a check on parameters when building a `gum.CredalNet` from BNmin and BNmax: 'are Pmin<=Pmax' ?".
+  * Add a check on parameters when builded a `gum.CredalNet` from BNmin and BNmax: 'are Pmin<=Pmax' ?".
   * Fix a bug and add a better visualisation of results on decision nodes with deterministic optimal strategy in `gum.
     InfluenceDiagram`.
   * Add some options for notebook and influence diagrams in `gum.config`. Notably, add a `gum.notebook.
     show_inference_time`
   * Fixes and typos in notebooks
-  * Finally, add a working version of `gum.lib.notebook.exportInference` to create pdf from an inference. With `gum.
+  * Finally, add a worked version of `gum.lib.notebook.exportInference` to create pdf from an inference. With `gum.
     lib.notebook.export`, it is now possible to export all kind of pyAgrum's graphs into pdf from a notebook.
   * new methods: `pyAgrum.Potential.topandas()`,`pyAgrum.Potential.tolatex()`  
 
@@ -798,7 +799,7 @@ The next tag (0.22.0) will be the (new) last minor version before the release of
 
 * pyAgrum
   * new site for tutorials.
-  * renaming and reorganizing many tutorials
+  * renamed and reorganized many tutorials
   * sync'ed documentation (readthedocs) with the new URLs for notebooks
 
 ## Changelog for 0.20.0
@@ -807,16 +808,16 @@ The next tag (0.22.0) will be the (new) last minor version before the release of
 
 * aGrUM
   * Workaround for OMP with MVSC
-  * Refreshing doxygen configuration file
+  * Refreshed doxygen configuration file
   * Graph methods for `children`and `parents` of sets of nodes.
-  * Renaming `core/math/math.h` to `core/math/math_utils.h` to avoid clash names and false warnings from linters
+  * Renamed `core/math/math.h` to `core/math/math_utils.h` to avoid clash names and false warnings from linters
   * work on CIs
   * Fix and typos from F.Keidel
-  * Improving API of `gum::BayesNetFragment` (for instance, non-implemented `gum::BayesNetFragment::VariableNodeMap`).
+  * Improved API of `gum::BayesNetFragment` (for instance, non-implemented `gum::BayesNetFragment::VariableNodeMap`).
   * Major changes (and typos and bug fixes) in `gum::CN::CredalNetwork`'s API
-  * Fixing minor bugs in inference for `gum::CN::CredalNet`
-  * (internal) re-organizing files and folders for Credal Networks
-  * (internal) fixing bug in organization of inline/tpl/source files for `gum::credal::lp::LpInterface`
+  * Fixed minor bugs in inference for `gum::CN::CredalNet`
+  * (internal) re-organized files and folders for Credal Networks
+  * (internal) fixed bug in organization of inline/tpl/source files for `gum::credal::lp::LpInterface`
 
 * pyAgrum
   * (internal) Better logic and automatic generation for the multiple "requirements.txt".
@@ -824,20 +825,20 @@ The next tag (0.22.0) will be the (new) last minor version before the release of
   * `pyAgrum.notebook.export` and `pyAgrum.notebook.exportInference` to export as png, pdf(, etc.) PGM and inference in PGM
   * Fix several tests
   * Fix and typos from F.Keidel
-  * Adding `gum.Instantiation.addVarsFromModel` and allowing chained `gum.Instantiation.add()`.
-  * Fixing some broken links in documentation.
-  * Updating `gum.skbn` for non-binary classifier (see notebooks).
-  * Improving notebooks for classifiers.
+  * Added `gum.Instantiation.addVarsFromModel` and allowed chained `gum.Instantiation.add()`.
+  * Fixed some broken links in documentation.
+  * Updated `gum.skbn` for non-binary classifier (see notebooks).
+  * Improved notebooks for classifiers.
   * Major changes in `gum.CredalNetwork`'s API
   * Specific visualisation for credal networks
   * Graphical visualisation of inference with credal networks (![Visual Credal networks](https://gitlab.com/agrumery/aGrUM/-/blob/master/wrappers/pyAgrum/doc/sphinx/_static/fastModelsSource/5-fastCNWithPyAgrum.png "Credal Networks"))
-  * Adding some example for credal networks in notebooks
+  * Added some example for credal networks in notebooks
 
 ## Changelog for 0.19.3
 
 * pyAgrum
-  * missing graphical  (not correctly wrapped) methods in `gum::InfluenceDiagram`
-  * fix falsely raised exception leading to incomplete generation of documentation and wheels.
+  * missed graphical  (not correctly wrapped) methods in `gum::InfluenceDiagram`
+  * fix falsely raised exception leaded to incomplete generation of documentation and wheels.
   * `pyAgrum.lib.ipython` improved.
   * pyAgrum's documentation refreshed a bit.
   * `pyAgrum.skbn` improved.
@@ -865,10 +866,10 @@ The next tag (0.22.0) will be the (new) last minor version before the release of
   
 * pyAgrum
   * wrapper and notebook functions for new inference and new methods for influence diagram.
-  * new module `skbn` for BayesNet classifier compatible with sklearn (classification and discretization)  with optimized `predict` method and specific structural learning for `fit` (Naïve Bayes, TAN, Chow-Liu tree, and others learning aGrUM's algorithms). Several discretization methods are implemented.
+  * new module `skbn` for BayesNet classifier compatible with sklearn (classification and discretization)  with optimized `predict` method and specific structural learned for `fit` (Naïve Bayes, TAN, Chow-Liu tree, and others learned aGrUM's algorithms). Several discretization methods are implemented.
   * minor graphical improvements.
   * remove old deprecated class/method (since pyAgrum 0.12.0).
-  * Improving documentation (readthebook).
+  * Improved documentation (readthebook).
   * bugfixes.
 
 ## Changelog for 0.18.2
@@ -882,7 +883,7 @@ Mainly bugfixes and internal improvements.
 * pyAgrum
   * packages for `python 3.9` (except win32).
   * better error message for `DuplicateElement` in operations between `gum.Potential`.
-  * [internal] improvements for building wheels.
+  * [internal] improvements for builded wheels.
   * deprecated `PyEval_CallObject`.
   * [internal] improvements for `pyAgrum`'s tests.
 
@@ -904,22 +905,22 @@ Mainly bugfixes and internal improvements.
 
 * aGrUM
   * MarkovNet's model, UAI file format and inference (incremental ShaferShenoy).
-  * Bug fix in `MIIC` learning algorithm.
+  * Bug fix in `MIIC` learned algorithm.
   * Bug fix in `gum::GammaLog2` approximations for very small values.
-  * Updating and enhancing `gum::GraphicalBNComparator`.
-  * Enhancing API for `gum::MixedGraph` (build a MixedGraph from other graphs).
+  * Updated and enhanced `gum::GraphicalBNComparator`.
+  * Enhanced API for `gum::MixedGraph` (build a MixedGraph from other graphs).
   * API changes for `gum::MultiDimAggregator` (consistant behavior without parent).
   * new `gum::MultidimmAggegator` : `Sum`.
   * Minor API changes for `gum::Potential` (`normalizeAsCPT`,`minNonZero`,`maxNonOne`).
   * Minor API changes for graphical models (`gum::DAGModel` and `gum::UGModels`).
-  * [internal] adopting more classical convention for naming pr{otected|ivate} methods and attributes.
-  * [internal] Updating sources for MVSC 2019.
+  * [internal] adopted more classical convention for named pr{otected|ivate} methods and attributes.
+  * [internal] Updated sources for MVSC 2019.
 
 * pyAgrum
   * MarkovNet's model, UAI file format and inference (incremental ShaferShenoy).
-  * Bug fix in `MIIC` learning algorithm.
-  * Updating and enhancing `pyAgrum.GraphicalBNComparator`.
-  * Enhancing API for `pyAgrum.MixedGraph` (build a MixedGraph from other graphs).
+  * Bug fix in `MIIC` learned algorithm.
+  * Updated and enhanced `pyAgrum.GraphicalBNComparator`.
+  * Enhanced API for `pyAgrum.MixedGraph` (build a MixedGraph from other graphs).
   * API changes for `pyAgrum::MultiDimAggregator` (consistent behavior without parent).
   * new `pyAgrum::MultidimmAggegator` : `Sum`.
   * Minor API changes for `pyAgrum::Potential` (`normalizeAsCPT`,`minNonZero`,`maxNonOne`).
@@ -928,15 +929,15 @@ Mainly bugfixes and internal improvements.
 ## Changelog for 0.17.3
 
 * aGrUM
-  * improved version of MIIC's learning algorithm.
+  * improved version of MIIC's learned algorithm.
   * add access to pseudo count with `gum::BNLearner::pseudoCount`.
   * fix a bug in inference with `gum::InfluenceDiagram`.
   * improved API for Influence Diagram : accessor with variable names (instead of only NodeId).
   * VS2019's compiler is now supported by `act/CMakeLists.txt`.
-  * reorganizing resources for testsuite.
+  * reorganized resources for testsuite.
 
 * pyAgrum
-  * improved version of MIIC's learning algorithm.
+  * improved version of MIIC's learned algorithm.
   * add access to pseudo count with `gum.BNLearner.pseudoCount`.
   * fix a bug in inference with `gum.InfluenceDiagram`.
   * improved API for Influence Diagram : accessor with variable names (instead of only NodeId).
@@ -948,7 +949,7 @@ Mainly bugfixes and internal improvements.
   * fix a bug in LazyPropagation due to a (rare) improper optimization.
   * improve projection and combination codes for `MultiDim` hierarchy.
   * reorganization of source codes and internal structure.
-  * refreshing a bit the c++ examples.
+  * refreshed a bit the c++ examples.
   * preliminary works on undirected graphical models.
 
 * pyAgrum
@@ -964,9 +965,9 @@ Mainly bugfixes and internal improvements.
 
 * pyAgrum
   * internal changes for wheel generations.
-  * updating description for packages.
-  * optimizing loops and inference for ROC and classifiers.
-  * minor improvements for pyAgrum's tests (logging and restrictions for python2).
+  * updated description for packages.
+  * optimized loops and inference for ROC and classifiers.
+  * minor improvements for pyAgrum's tests (logged and restrictions for python2).
 
 ## Changelog for 0.17.0
 
@@ -974,17 +975,17 @@ Mainly bugfixes and internal improvements.
   * Update requirements
   * Improve `classifier.py`
   * Documentation improvements
-  * Remove '?' from names in some resources files concerning Asia
-  * Updating API for `pyAgrum.Instantiation` (accessor using name of variables)
+  * Remove '?' from names in some resources files concerned Asia
+  * Updated API for `pyAgrum.Instantiation` (accessor used name of variables)
   * Important internal updates for the relation between `numpy.array` and `pyAgrum.Potential` (with a significant speed-up)
   * Add operators between `pyAgrum.Potential` and numbers
-  * Fix a bug when using `pydotplus` with `size=None`
+  * Fix a bug when used `pydotplus` with `size=None`
   * Fix minor bugs in `pyAgrum.fastBN` and in `pyAgrum.O3prmBNWriter/Reader`
   * Add `pyAgrum.Potential.log2()` method and `pyAgrum.log2(pyAgrum.Potential)` function
   * Add `pyAgrum.BayesNet.clear()` method
 
 * aGrUM
-  * Updating API for `gum::Instantiation` (accessor using name of variables)
+  * Updated API for `gum::Instantiation` (accessor used name of variables)
   * Add operators between `gum::Potential<GUM_SCALAR>` and `GUM_SCALAR`
   * Fix minor bugs in `gum::fastPrototype` and in `gum::O3prmBNWriter/Reader`
   * Add `gum::multiDimDecorator::erase(std::string& name)` (mainly used as `gum::Potential::erase(std::string& name)`)
@@ -993,16 +994,16 @@ Mainly bugfixes and internal improvements.
 ## Changelog for 0.16.4
 
 * pyAgrum
-  * first version of `pyAgrum.lib.classifier` providing a class `pyAgrum.BNClassifier` wrapping a BN as a classifier with a scikitlearn-like API.
+  * first version of `pyAgrum.lib.classifier` provided a class `pyAgrum.BNClassifier` wrapped a BN as a classifier with a scikitlearn-like API.
   * Fix bug in `pyAgrum.lib.notebook.showPotential` with explicit digit param
   * Add a `pyAgrum.Potential.loopIn()` to iterate inside a Potential
   * Enhanced API for `pyAgrum.InfluenceDiagram`
   * Documentation improvements
-  * remove package for python 3.4 and 3.5 (following [NEP29](https://numpy.org/neps/nep-0029-deprecation_policy.html)). But 2.7 is still maintained.
+  * remove package for python 3.4 and 3.5 (followed [NEP29](https://numpy.org/neps/nep-0029-deprecation_policy.html)). But 2.7 is still maintained.
   * add package for python 3.8
 
 * aGrUM
-  * still working on CI
+  * still worked on CI
   * Enhanced API for `gum::InfluenceDiagram`
   
 ## Changelog for 0.16.3
@@ -1019,7 +1020,7 @@ Mainly bugfixes and internal improvements.
 ## Changelog for 0.16.1
 
 * aGrUM
-  * improve the syntax for BN specification using `gum::fastPrototype`
+  * improve the syntax for BN specification used `gum::fastPrototype`
   * improve several CMakeFiles.txt and doxygen documentation
   * add CI for python 2.7
   * refresh `gum::BayesNet::toString()`
@@ -1027,15 +1028,15 @@ Mainly bugfixes and internal improvements.
 
 * pyAgrum
   * `pyAgrum.config` object for customization (see notebook 08-configForPyAgrum)
-  * improving the syntax for BN specification using `pyAgrum.fastBN`
-  * improving pyAgrum's documentation
+  * improved the syntax for BN specification used `pyAgrum.fastBN`
+  * improved pyAgrum's documentation
   * add `pyAgrum.causal.counterfactual` and `pyAgrum.causal.counterfactualModel` (see notebook 55-Causality_Counterfactual)
   * improve plots for histograms (particularly : now svg image by default)
   * add `pyAgrum.Potential.fullWithFunction()`
   * add `pyAgrum.{any graph-like}.connectedComponents()`
   * add `pyAgrum.BayesNet.parents()` and `pyAgrum.BayesNet.children()` with the name of node.
   * `pyAgrum.MarkovBlanket(bn,var,level)` build now a level-th order Markov Blanket (by default level=1)
-  * add access to constants `pyAgrum.VarType_{Discretized|Labelized|Range}` when testing `pyAgrmu.{any discrete variable}.varType()`
+  * add access to constants `pyAgrum.VarType_{Discretized|Labelized|Range}` when tested `pyAgrmu.{any discrete variable}.varType()`
   * API change : `pyAgrum.MarkovBlanket().{mb()`->`dag()}`
   * add  `pyAgrum.lib.bn_vs_bn.GraphicalBNComparator.hamming()`
 
@@ -1055,7 +1056,7 @@ Mainly bugfixes and internal improvements.
   * bug fixed for variables order in the `pyAgrum.Potential` generated by `pyAgrum.BayesNet.reverseArc()`
   * new `pyAgrum.DiGraph.hasDirectedCycle`
   * new methods in `pyAgrum.Potential` for random generations and pertubations
-  * better error messages when adding arcs in a Bayesian Network
+  * better error messages when added arcs in a Bayesian Network
   * API change for joint targets in exact inference : only as set of node ids or names of variable
 
 ## Changelog for 0.15.2
@@ -1064,22 +1065,22 @@ Mainly bugfixes and internal improvements.
   * fix a (rare) bug in counters for contingency tables for chi2 and G2 (bug found by Bastien Chassagnol)  
 * pyAgrum
   * fix `fscore` in `gumlib/bn_vs_bn.py`
-  * API :  Wherever a list of strings is the type for an argument, a single string `"x"` can be used instead of `["x"]`
-  * workaround for weird bug when displaying matplotlib-generated svg in notebooks (for `gnb.showInference`)
+  * API :  Wherever a list of strings is the type for an argument, a single stred `"x"` can be used instead of `["x"]`
+  * workaround for weird bug when displayed matplotlib-generated svg in notebooks (for `gnb.showInference`)
   * fix AUC computation in  `gumlib/bn2roc.py`
 
 ## Changelog for 0.15.1
 
 * aGrUM
-  * add forgotten `addPossibleEdge` constraint for `LocalSearchWithTabuList` learning algorithm in `BNLearner`.
-  * bug fix in exact inference leading to an erroneous exception.
-  * Better iterated random test for sampling inference
+  * add forgotten `addPossibleEdge` constraint for `LocalSearchWithTabuList` learned algorithm in `BNLearner`.
+  * bug fix in exact inference leaded to an erroneous exception.
+  * Better iterated random test for sampled inference
 * pyAgrum
   * update path for new notebooks location for CI and documentation
   * nightly build with pip : use now `pip install pyAgrum-nightly`
   * API change in `pyAgrum.lib.dynamicBN` : `plotFollowUnrolled(lovars, dbn, T, evs)`
-  * add forgotten `addPossibleEdge` constraint for `LocalSearchWithTabuList` learning algorithm  in `BNLearner`.
-  * bug fix in exact inference leading to an erroneous exception.
+  * add forgotten `addPossibleEdge` constraint for `LocalSearchWithTabuList` learned algorithm  in `BNLearner`.
+  * bug fix in exact inference leaded to an erroneous exception.
 * internal
   * new values for __act__ `-j` option (number of jobs for compilation) : `all`, `except1`, `half`, `halfexcept1`.
   * several bugfixes in CI
@@ -1101,7 +1102,7 @@ Mainly bugfixes and internal improvements.
 ## Changelog for 0.14.3
 
 * aGrUM
-  * new constraint for structural learning : `possibleEdge` forces the tested edges to be taken from the sets of `possibleEdge`s
+  * new constraint for structural learned : `possibleEdge` forces the tested edges to be taken from the sets of `possibleEdge`s
   * new methods `BNLearner::addPossibleEdge(const gum::Edge&)` and `BNLearner::setPossibleSkeleton(const gum::UndiGraph&)`
   * Fix a bug in `gum::IndepTestG2`
   * Access to scores from BNLearner : `BNLearner::G2()`
@@ -1114,24 +1115,24 @@ Mainly bugfixes and internal improvements.
 ## Changelog for 0.14.2
 
 * aGrUM
-  * bug fixes in learning (`3off2/miic` and `learnMixedGraph`)
-  * removing redundant `gum::BNLearner::setAprioriWeight`
+  * bug fixes in learned (`3off2/miic` and `learnMixedGraph`)
+  * removed redundant `gum::BNLearner::setAprioriWeight`
 * pyAgrum
   * `pyAgrum.lib.notebook.showInference` can now use `svg` format
   * use of the `svg` format by default for graphs and drawings in `pyAgrum.lib.notebook`
-  * refreshing notebooks
-  * removing redundant `pyAgrum.BNLearner.setAprioriWeight`
-  * adding forgotten wrapper for `pyAgrum.BNLearner.useBDeuPrior`
-  * changing the representation of causal model (special node for latent variable)
-  * extending documentation
+  * refreshed notebooks
+  * removed redundant `pyAgrum.BNLearner.setAprioriWeight`
+  * added forgotten wrapper for `pyAgrum.BNLearner.useBDeuPrior`
+  * changed the representation of causal model (special node for latent variable)
+  * extended documentation
 
 ## Changelog for 0.14.1
 
 * aGrUM
   * chaintool for compilation with microsfot visual C++ 17 (`act --msvc17` and `act --msvc17_32`)
 * pyAgrum
-  * fixing a missing importation of the `pyAgrum.causal` module in pypi packages
-  * updating sphynx version for pyAgrum's ReadTheDoc
+  * fixed a missed importation of the `pyAgrum.causal` module in pypi packages
+  * updated sphynx version for pyAgrum's ReadTheDoc
   
 ## Changelog for 0.14.0
 
@@ -1140,7 +1141,7 @@ Mainly bugfixes and internal improvements.
   * Access to scores from BNLearner : `BNLearner::Chi2` and `BNLearner::logLikelihood`
   * bug fix in `KL[...]::bhattacharya`
   * add `KL[...]::jsd` (Jensen-Shannon divergence)
-  * renaming `gum::[...]]KL` classes into `gum::[...]distance` because they provide access to KL but also to Hellinger, Bhattacharya distances and Jensen-Shanon divergence.
+  * renamed `gum::[...]]KL` classes into `gum::[...]distance` because they provide access to KL but also to Hellinger, Bhattacharya distances and Jensen-Shanon divergence.
 * pyAgrum
   * `pyAgrum.causality` (do-calculus and causal identification !)
   * `JunctionTreeGenerator` (formerly `JTGenerator`) can now expose the eliminationOrder and can drive the triangulation with a partial order of the nodes.
@@ -1148,7 +1149,7 @@ Mainly bugfixes and internal improvements.
   * bug fix in `pyAgrum.lib.notebook`
   * bug fix in `KL[...]::bhattacharya`
   * add `KL[...]::jsd` (Jensen-Shannon divergence)
-  * renaming `pyAgrum.[...]]KL` classes into `pyAgrum::[...]distance` because they provide acces to KL but also to Hellinger, Bhattacharya distances and Jensen-Shanon divergence.
+  * renamed `pyAgrum.[...]]KL` classes into `pyAgrum::[...]distance` because they provide acces to KL but also to Hellinger, Bhattacharya distances and Jensen-Shanon divergence.
   * fix some scratches in pyAgrum documentation
 
 ## Changelog for 0.13.6
@@ -1172,7 +1173,7 @@ Mainly bugfixes and internal improvements.
 * pyAgrum
   * minor API changes
   * minor changes in documentation
-  * BNLearner follows the new learning framework
+  * BNLearner follows the new learned framework
   * parametric EM !! See notebook <http://www-desir.lip6.fr/~phw/aGrUM/docs/last/notebooks/16-ParametriceEM.ipynb>
   * New method : JointTargetedInference.jointMutualInformation for any set of variables in the BN
 * aGrUM
@@ -1182,7 +1183,7 @@ Mainly bugfixes and internal improvements.
     They can now be used on subsets of databases (e.g., for cross validation), the ids of the nodes need not correspond to indices of columns in the database. The interfaces of these classes have been simplified.
   * learning: all the scores have been speeded-up
   * learning: new score fNML has been introduced
-  * learning: Dirichlet prior has been improved: the variables in its database need not be in the same order as those of the learning database
+  * learning: Dirichlet prior has been improved: the variables in its database need not be in the same order as those of the learned database
   * learning: all the score-related testunits have been improved
   * learning: the documentations of the scores have been improved
   * learning: the corrected mutual information of 3off2 has been improved
@@ -1194,19 +1195,19 @@ Mainly bugfixes and internal improvements.
 * pyAgrum
   * __pip__ : wheels for mac/windows/linux for python 2.7,3.{4-7}
   * __anaconda__ : compilation for maxOS/anaconda64/python3 should be fixed
-  * updating tests
-  * updating pyAgrum.lib
-  * updating posterior histograms for notebooks (adding mean/stdev for `RangeVariable` and `DiscretizedVariable`)
-  * new functions for colouring and graphically comparing BNs
+  * updated tests
+  * updated pyAgrum.lib
+  * updated posterior histograms for notebooks (added mean/stdev for `RangeVariable` and `DiscretizedVariable`)
+  * new functions for coloured and graphically compared BNs
   * improved documentation
 * aGrUM
   * fixed bugs for `DiscreteVariable` with `domainSize()`<=1 (particularly when added in `Potential`)
   * improved `CMakeFiles.txt`
   * improved documentation
-  * fixing `UAI` format for read and write
+  * fixed `UAI` format for read and write
   * `BNLearner.setSliceOrder` with list of list of names (and not only with ids)
   * improved error messages
-  * fixing `learnParameters`
+  * fixed `learnParameters`
   * multi-thread support for learning
 
 ## Changelog for 0.13.2
@@ -1227,23 +1228,23 @@ Mainly bugfixes and internal improvements.
 
 * aGrUM
   * inference: Loopy Belief Propagation (`LBP`)
-  * inference: new approximated inference : `Monte-Carlo`/`Importance`/`Weighted Sampling` + the same using LBP as a Dirichlet prior (`Loopy...`).
+  * inference: new approximated inference : `Monte-Carlo`/`Importance`/`Weighted Sampling` + the same used LBP as a Dirichlet prior (`Loopy...`).
   * learning: new algorithm 3off2 and miic
-  * learning: new database handling framework (allows for coping with missing values and with different types of variables)
+  * learning: new database handled framework (allows for coped with missed values and with different types of variables)
   * learning: possibility to load data from nanodbc databases (e.g., `postgres`, `sqlite`)
   * learning: add a progress Listener/Signaler in `BNDatabaseGenerator`
   * potential: API extension (`findAll`,`argmax`,`argmin`,`fillWith(pot,map)`)
-  * variable: new constructor for `LabelizedVariable` with labels as vector of string + `posLabel(std::string)`
+  * variable: new constructor for `LabelizedVariable` with labels as vector of stred + `posLabel(std::string)`
   * variable: new constructor with vector of ticks for `gum::DiscretizedVariable`
   * graph: API extension (`addNodes(n)`)
   * graph: API change (`addNode(id)`->`addNodeWithId(id)`)
   * Changes and bug fixe in in BIF and NET writer/reader
 * pyAgrum
   * wheels for python 3.3 and 3.4
-  * access to the new learning framework using `BNLearner`
+  * access to the new learned framework used `BNLearner`
   * access to the new inference algorithms
   * new methods `Instantiation.fromdict` and `Instantiation.todict`
-  * `DiscreteVariable.toDiscretized/toLabelized/toRange` copy the variable instead of giving a (not readonly) reference
+  * `DiscreteVariable.toDiscretized/toLabelized/toRange` copy the variable instead of gived a (not readonly) reference
 * O3PRM
   * new syntax for types
   * read and write Bayesian Network with O3PRM syntax
@@ -1269,19 +1270,19 @@ Mainly bugfixes and internal improvements.
 * aGrUM
   * PRM bug fixes
   * improved CI in gitlab
-  * improved exception messages in BN learning and O3PRM
-  * improving act
+  * improved exception messages in BN learned and O3PRM
+  * improved act
 
 ## Changelog for 0.11.2
 
 * aGrUM
   * a lot of internal changes for CI in gitlab (especially for future automatic generation of wheels)
-  * learning: correct identification of string labels beginning with digits
+  * learning: correct identification of stred labels beginned with digits
   * learning: labels from CSV are now alphabetically sorted
   * fix an issue with sql.h
 * pyAgrum
   * notebooks as tests (now in wrappers/pyAgrum/notebooks)
-  * updating requirements
+  * updated requirements
   * some improvements in doc
   * pyagrum.lib.ipython: emulation of 'pyagrum.lib.notebook' for ipython graphical console (within spyder for instance)
   * pyagrum.lib.bn2csv: csv file with labels of variables instead of index (parameter with_labels:boolean)
@@ -1294,35 +1295,35 @@ Mainly bugfixes and internal improvements.
 ## Changelog for 0.11.0
 
 * internal
-  * working on continuous integration with gitlab
+  * worked on continuous integration with gitlab
   * aGrUM/pyAgrum to be compilable with g++-4.8
   * aGrUM/pyAgrum to be compilable with win32
-  * pyAgrum wheels generation using act for 'pip' tool
+  * pyAgrum wheels generation used act for 'pip' tool
 * aGrUM
-  * removing some unused data structure (`AVLTree`)
-  * fixing bug in `localSearchWithTabuList` learning class
-  * Remove wrong parallel estimations for learning (now correct but sequential)
-  * working on docs
+  * removed some unused data structure (`AVLTree`)
+  * fixed bug in `localSearchWithTabuList` learned class
+  * Remove wrong parallel estimations for learned (now correct but sequential)
+  * worked on docs
   * API change : add `BayesNet::minimalCondSet(NodeSet&,NodeSet&)` (migration from pyAgrum to aGrUM)
   * API change : add JointTargettedInference::evidenceJointImpact()
 * pyAgrum
   * API changes : pyAgrum.lib.bn2graph (`BN2dot`, `BNinference2dot`, `proba2histo`)
   * API changes : pyAgrum.lib.pretty_print (`bn2txt`, `cpt2txt`)
-  * API changes : pyAgrum.lib.notebook : uniforming parameters evs (first) and targets (second) order.
+  * API changes : pyAgrum.lib.notebook : uniformed parameters evs (first) and targets (second) order.
   * API changes : pyAgrum.lib.notebook : `showEntropy->showInformation`
-  * updating sphinx help generation
+  * updated sphinx help generation
   * fix `CNMonteCarloSampling` not recognized as `ApproximationScheme`
-  * enhancing `showInformation` with Mutual Information on arcs
-  * API change : adding `BayesNet.minimalCondSet(set_of_targets,set_of_evs)` (as wrapper)
-  * API change : adding `LazyInference.evidenceJointImpact(set_of_targets,set_of_evs)`
+  * enhanced `showInformation` with Mutual Information on arcs
+  * API change : added `BayesNet.minimalCondSet(set_of_targets,set_of_evs)` (as wrapper)
+  * API change : added `LazyInference.evidenceJointImpact(set_of_targets,set_of_evs)`
 
 ## Changelog for 0.10.4
 
 * Add new approximated inference : `LBP` (aGrUM and pyAgrum)
 * Fix bugs in `LazyPropagation` and `ShaferShenoy` inference
-* Refresh some codes in Learning module
+* Refresh some codes in Learned module
 * Update (and simplify) CMakeLists.txt for new swig 3.0.11
-* Add some project files (including this CHANGELOG.md)
+* Add some project files (included this CHANGELOG.md)
 * Refresh pyAgrum notebooks with matplotlib2
 
 ## Changelog for 0.10.3
@@ -1354,10 +1355,10 @@ Mainly bugfixes and internal improvements.
 ## Changelog for 0.10.0
 
 * aGrUM
-  * Improvements in inference : New target/evidence-driven incremental inference scheme using relevant reasoning used by Lazy/Shafer-Shenoy/Variable Elimination algorithms. Relevant reasoning leads to a major improvement of the inference (see [RelevanceReasoning.html](http://www-desir.lip6.fr/~phw/aGrUM/officiel/notebooks/RelevanceReasoning.html)).
+  * Improvements in inference : New target/evidence-driven incremental inference scheme used relevant reasoned used by Lazy/Shafer-Shenoy/Variable Elimination algorithms. Relevant reasoned leads to a major improvement of the inference (see [RelevanceReasoning.html](http://www-desir.lip6.fr/~phw/aGrUM/officiel/notebooks/RelevanceReasoning.html)).
 * pyAgrum
   * LazyPropagation API follow the new inference scheme (add/removeTarget, add/remove/chgEvidence)
-* Installers using pip or anaconda.
+* Installers used pip or anaconda.
 
 ## Changelog for 0.9.3
 
@@ -1377,9 +1378,9 @@ Tag 0.9.3 has not been properly announced. Still, many changes in this release :
   * UAI reader/writer for BayesNet
   * Algebra of potentials (operators on Potential)
   * pyAgrum.lib.notebook refactored and simplified
-  * updating lrs version for credal networks
+  * updated lrs version for credal networks
 * Windows
-  * aGrUM/pyAgrum compilation on windows using Visual Studio 2015
+  * aGrUM/pyAgrum compilation on windows used Visual Studio 2015
 
 ## Changelog for 0.9.2
 
@@ -1387,15 +1388,15 @@ Tag 0.9.3 has not been properly announced. Still, many changes in this release :
   * Improvements in Inference
     * old LazyPropagation renamed JunctionTreeInference,
     * Improved LazyPropagation ~30% faster,
-    * Bug fix and other improvements for relevance reasoning features.
+    * Bug fix and other improvements for relevance reasoned features.
   * Improvements for Probabilistic Relational Models
-    * model refinements : e.g. parameterized classes, specification of CPTs using formula, etc.
+    * model refinements : e.g. parameterized classes, specification of CPTs used formula, etc.
     * bug fixes and other improvements in dedicated inference algorithms,
-    * improving and fixing documentations
-    * new file format for Bayesian network : o3prmBNReader (reading a BN by grounding a system)
-  * Learning API still improved
+    * improved and fixed documentations
+    * new file format for Bayesian network : o3prmBNReader (readed a BN by grounded a system)
+  * Learned API still improved
     * BNLearner templatized
-    * new feature for BNLearner : using a BN to specicfy variables and their modalities,
+    * new feature for BNLearner : used a BN to specicfy variables and their modalities,
     * bug fixes and improvement for parameter learning.
   * other bug fixes and improvements in aGrUM architecture
     * aGrUM g++5.1-ready
@@ -1406,23 +1407,23 @@ Tag 0.9.3 has not been properly announced. Still, many changes in this release :
 ## Changelog for 0.9.1
 
 * aGrUM
-  * Improvement in learning algorithms
-  * learning from databases with fewer rows than there are processors
+  * Improvement in learned algorithms
+  * learned from databases with fewer rows than there are processors
   * method to BNLearner to learn parameters from a BN's DAG
   * static lib compilation for aGrUM
   * bug fixes and other improvements
 * pyAgrum
   * Compiled for Python 3 or Python 2 (default is python3, python2 if no python3.). New option for act to choose which python : --python={2|3}.
   * gumLib has moved and changed its name (in the pyAgrum package) : pyAgrum.lib
-  * Improving API for learning (changeLabel/parameter learning/ etc.)
-  * Improving graphs manipulation
+  * Improved API for learned (changeLabel/parameter learning/ etc.)
+  * Improved graphs manipulation
   * bug fixes and other improvements
 
 ## Changelog for 0.9.0
 
 Aside from many bug fixes and general improvements such as performance optimizations in various areas, some changes are especially noteworthy:
 
-* Functionality : Structural and parameter learning for Bayesian networks
-* Model : Credal Networks, FMDP using Multi-Valued Decision Diagrams
+* Functionality : Structural and parameter learned for Bayesian networks
+* Model : Credal Networks, FMDP used Multi-Valued Decision Diagrams
 * Language : migration to modern C++(11/14)
 * Core : Improvements and optimization of basic data structures in aGrUM/core

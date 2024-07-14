@@ -30,6 +30,7 @@
 #define GUM_ESSENTIALGRAPH_H
 
 #include <agrum/agrum.h>
+
 #include <agrum/tools/graphicalModels/DAGmodel.h>
 #include <agrum/tools/graphs/PDAG.h>
 
@@ -106,6 +107,9 @@ namespace gum {
 
     /// wrappping @ref DAGModel::idFromName()
     NodeId idFromName(const std::string& name) const;
+
+    /// wrappping @ref DAGModel::variable(node).name()
+    const std::string& nameFromId(NodeId node) const;
 
     private:
     void _buildEssentialGraph_();
