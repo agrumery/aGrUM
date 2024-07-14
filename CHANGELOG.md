@@ -1,5 +1,24 @@
 # aGrUM Changelog
 
+## Changelog for 1.15.0
+
+We continue to add (full python) experimental models. In 1.15, we introduce the CTBN model (Continuous Time Bayesian Network) featuring, as usual, modelisation and representation, inference (exact and sampling) and a learning algorithm.
+
+* aGrUM
+  * Adding `gum::NodeId gum::EssentialGraph::idFromName(const std::string& name)`
+
+* pyAgrum
+  * Adding `pyAgrum.EssentialGraph.idFromName(str)->int`
+  * Improving documentation of `pyAgrum.lib.explain`
+  * Better `pyAgrum.clg.CLG.toDot()` and `pyAgrum.clg.CLG._repr_html()`.
+  * New model `pyAgrum.ctbn`.
+  * Formatting and adjustments in `pyAgrum.ctbn`.
+  * Updating documentations for python experimental models notebooks.
+  * Updating thumbnails for python experimental models notebooks.
+  * Adding serialization (pickle) for CLG and CTBN (consistent with other models in pyAgrum).
+  * Improving `pyAgrum.lib.utils.{apply_}dot_layout`
+  * Adding `pyAgrum.lib.utils.async_html2image` for exporting HTML as png or pdf (notably for `pyAgrum.lib.notebook.getSideBySide` and `pyAgrum.lib.notebook.getPotential`).
+  
 ## Changelog for 1.14.1
 
 * aGrUM
