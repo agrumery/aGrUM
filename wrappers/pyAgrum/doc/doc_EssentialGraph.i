@@ -136,8 +136,27 @@ pyAgrum.PDAG
 
 %feature("docstring") gum::EssentialGraph::idFromName
 "
+Parameters
+----------
+name : str
+  the name of the variable in the model
+
 Returns
 -------
 int
   the nodeId from the name of the variable in the model
+"
+
+
+%feature("docstring") gum::EssentialGraph::nameFromId
+"
+Parameters
+----------
+node : int
+  the nodeId of the variable in the model
+
+Returns
+-------
+str
+  the name of the variable in the model from the nodeId
 "

@@ -79,6 +79,11 @@ class TestEssentialGraph(pyAgrumTestCase):
     self.assertEqual(eg.idFromName("Y"), 3)
     self.assertEqual(eg.idFromName("W"), 4)
 
+    self.assertEqual(eg.nameFromId(0), "Z")
+    self.assertEqual(eg.nameFromId(1), "X")
+    self.assertEqual(eg.nameFromId(2), "U")
+    self.assertEqual(eg.nameFromId(3), "Y")
+    self.assertEqual(eg.nameFromId(4), "W")
 
 ts = unittest.TestSuite()
 addTests(ts, TestEssentialGraph)

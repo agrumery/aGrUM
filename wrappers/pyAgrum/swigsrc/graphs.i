@@ -327,12 +327,12 @@ ADD_MIXED_METHOD_TO_GRAPHCLASS(gum::PDAG);
       str
         a friendly display of the graph in DOT format where ids have been changed according to their correspondance in the BN
       """
-      def nameFromId(m):
+      def local_nameFromId(m):
         return " ".join([bn.variable(int(n)).name()
                          for n in m.group().split("-")])
       import re
       m = re.compile(r'(?<=label=\")\d+[\-\d+]*')
-      return m.sub(nameFromId,self.toDot())
+      return m.sub(local_nameFromId,self.toDot())
     }
 };
 %rename ( __map_str__ ) gum::CliqueGraph::mapToDot const;
