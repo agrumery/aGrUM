@@ -259,8 +259,9 @@ class BNClassifier(sklearn.base.BaseEstimator, sklearn.base.ClassifierMixin):
     self.discretizationNbBins = discretizationNbBins
     self.discretizationStrategy = discretizationStrategy
     self.discretizationThreshold = discretizationThreshold
-    self.discretizer = BNDiscretizer(
-      discretizationStrategy, discretizationNbBins, discretizationThreshold)
+    self.discretizer = BNDiscretizer(defaultDiscretizationMethod=discretizationStrategy,
+                                     defaultNumberOfBins=discretizationNbBins,
+                                     discretizationThreshold=discretizationThreshold)
 
     # boolean that tells us whether this classifier is obtained from an already trained model (using the function
     # fromTrainedModel) or not

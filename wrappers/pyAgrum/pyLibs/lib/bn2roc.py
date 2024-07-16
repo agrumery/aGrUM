@@ -39,7 +39,7 @@ CSV_TMP_SUFFIX = ".x.csv"
 
 def _getFilename(datasrc):
   "*.CSV_TMP_SUFFIXcsv is the signature of a temp csv file"
-  if datasrc[-len(CSV_TMP_SUFFIX):] == ".x.csv":
+  if datasrc.endswith(CSV_TMP_SUFFIX):
     return "dataframe"
 
   return datasrc

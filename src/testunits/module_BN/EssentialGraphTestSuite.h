@@ -96,17 +96,17 @@ namespace gum_tests {
       TS_ASSERT_EQUALS(eg.sizeEdges(), 1u)
       TS_ASSERT_EQUALS(eg.sizeArcs(), 3u)
 
-      TS_ASSERT_EQUALS(eg.idFromName("Z"), 0)
-      TS_ASSERT_EQUALS(eg.idFromName("X"), 1)
-      TS_ASSERT_EQUALS(eg.idFromName("U"), 2)
-      TS_ASSERT_EQUALS(eg.idFromName("Y"), 3)
-      TS_ASSERT_EQUALS(eg.idFromName("W"), 4)
+      TS_ASSERT_EQUALS(eg.idFromName("Z"), 0u)
+      TS_ASSERT_EQUALS(eg.idFromName("X"), 1u)
+      TS_ASSERT_EQUALS(eg.idFromName("U"), 2u)
+      TS_ASSERT_EQUALS(eg.idFromName("Y"), 3u)
+      TS_ASSERT_EQUALS(eg.idFromName("W"), 4u)
 
-      TS_ASSERT_EQUALS(eg.nameFromId(0), "Z")
-      TS_ASSERT_EQUALS(eg.nameFromId(1), "X")
-      TS_ASSERT_EQUALS(eg.nameFromId(2), "U")
-      TS_ASSERT_EQUALS(eg.nameFromId(3), "Y")
-      TS_ASSERT_EQUALS(eg.nameFromId(4), "W")
+      TS_ASSERT_EQUALS(eg.nameFromId(0u), "Z")
+      TS_ASSERT_EQUALS(eg.nameFromId(1u), "X")
+      TS_ASSERT_EQUALS(eg.nameFromId(2u), "U")
+      TS_ASSERT_EQUALS(eg.nameFromId(3u), "Y")
+      TS_ASSERT_EQUALS(eg.nameFromId(4u), "W")
     }
 
     GUM_ACTIVE_TEST(NonRegression1) {
