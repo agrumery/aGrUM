@@ -1133,4 +1133,9 @@ namespace gum {
     return p;
   }
 
+  template < typename GUM_SCALAR >
+  Size Potential< GUM_SCALAR >::memoryFootprint() const {
+    return this->content()->realSize()*sizeof(GUM_SCALAR);
+  }
+
 } /* namespace gum */

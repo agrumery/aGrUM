@@ -9325,6 +9325,19 @@ class Potential(object):
         """
         return _pyAgrum.Potential_draw(self)
 
+    def memoryFootprint(self) -> int:
+        r"""
+
+        get the size (in byte) of the Potential representation in memory
+
+        Returns
+        -------
+        int
+          the size in byte of the representation of the Potential in memory.
+
+        """
+        return _pyAgrum.Potential_memoryFootprint(self)
+
     def __add__(self, *args) -> "pyAgrum.Potential":
         return _pyAgrum.Potential___add__(self, *args)
 
@@ -10599,6 +10612,19 @@ class IBayesNet(DAGmodel):
 
     def evGt(self, name: str, value: float) -> "pyAgrum.Potential":
         return _pyAgrum.IBayesNet_evGt(self, name, value)
+
+    def memoryFootprint(self) -> int:
+        r"""
+
+        get the size (in byte) of the (main footprint) of the BayesNet
+
+        Returns
+        -------
+        int
+          the size in byte of the representation (of the parameters) of the BayesNet
+
+        """
+        return _pyAgrum.IBayesNet_memoryFootprint(self)
 
     def ids(self, names: List[str]) -> object:
         r"""

@@ -574,6 +574,9 @@ class TestFeatures(BayesNetTestCase):
       self.assertListsAlmostEqual(ie.posterior(n).tolist(),
                                   ie2.posterior(n).tolist())
 
+  def testMemoryFootprint(self):
+    bn = gum.fastBN("P2->N<-P1;A->E2<-N->E1")
+    self.assertEqual(bn.memoryFootprint(), sum([bn.cpt(x).memoryFootprint() for x,_ in bn]))
 
 class TestLoadBN(BayesNetTestCase):
   def listen(self, percent):

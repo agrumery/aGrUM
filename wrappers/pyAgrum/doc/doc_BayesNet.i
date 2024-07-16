@@ -827,3 +827,13 @@ Returns
 List[str]
   list of found issues
 "
+
+%feature("docstring") gum::IBayesNet::memoryFootprint
+"
+get the size (in byte) of the (main footprint) of the BayesNet
+
+Returns
+-------
+int
+  the size in byte of the representation (of the parameters) of the BayesNet
+"

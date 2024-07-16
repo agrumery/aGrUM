@@ -257,6 +257,13 @@ namespace gum {
      */
     Potential< GUM_SCALAR > evGt(const std::string& name, double value) const;
 
+
+    /**
+     * @brief compute the (approximated) footprint in memory of the model (the footprints of CPTs)
+     * @return the size in bytes
+     */
+    Size memoryFootprint() const;
+
     private:
     void _minimalCondSetVisitUp_(NodeId         node,
                                  const NodeSet& soids,

@@ -632,3 +632,14 @@ Returns
 float
     The mathematical expected value of the random variable calculated using the given function as an argument.
 "
+
+
+%feature("docstring") gum::Potential::memoryFootprint
+"
+get the size (in byte) of the Potential representation in memory
+
+Returns
+-------
+int
+  the size in byte of the representation of the Potential in memory.
+"

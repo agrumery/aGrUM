@@ -444,6 +444,12 @@ namespace gum {
      */
     [[nodiscard]] Idx draw() const;
 
+    /**
+     * @brief compute the (approximated) footprint in memory of the potential
+     * @return the size in bytes
+     */
+    Size memoryFootprint() const;
+
     ///@}
 
     // ========================================================================

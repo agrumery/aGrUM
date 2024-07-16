@@ -212,7 +212,7 @@ class PyAgrumConfiguration(metaclass=GumSingleton):
           print(f"[pyagrum.ini] Section '{section}' does not exist.")
         for option in c[section]:
           try:
-            self.set(section, option, c[section][option], no_hooks=True)
+            self.set(section, option, c[section][option], no_hook=True)
           except SyntaxError:
             error_found = True
             print(f"[pyagrum.ini] Option '{section}.{option}' does not exist.")

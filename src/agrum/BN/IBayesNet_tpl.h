@@ -139,16 +139,19 @@ namespace gum {
   }
 
   template < typename GUM_SCALAR >
-  INLINE std::string IBayesNet< GUM_SCALAR >::toString() const {
+  INLINE Size IBayesNet< GUM_SCALAR >::memoryFootprint() const {
     Size usedMem = 0;
 
     for (auto node: nodes())
-      usedMem += cpt(node).content()->realSize();
-    usedMem *= sizeof(GUM_SCALAR);
+      usedMem += cpt(node).memoryFootprint();
+    return usedMem ;
+  }
 
+  template < typename GUM_SCALAR >
+  INLINE std::string IBayesNet< GUM_SCALAR >::toString() const {
     std::stringstream s;
     s << "BN{nodes: " << size() << ", arcs: " << dag().sizeArcs() << ", ";
-    spaceCplxToStream(s, log10DomainSize(), (int)dim(), usedMem);
+    spaceCplxToStream(s, log10DomainSize(), (int)dim(), memoryFootprint());
     s << "}";
     return s.str();
   }
@@ -179,8 +182,8 @@ namespace gum {
     for (auto node: nodes()) {
       if (children(node).size() > 0) {
         for (auto child: children(node)) {
-          output << tab << "\"" << variable(node).name() << "\" -> "
-                 << "\"" << variable(child).name() << "\";" << std::endl;
+          output << tab << "\"" << variable(node).name() << "\" -> " << "\""
+                 << variable(child).name() << "\";" << std::endl;
         }
       } else if (parents(node).size() == 0) {
         output << tab << "\"" << variable(node).name() << "\";" << std::endl;
