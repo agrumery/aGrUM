@@ -2,14 +2,14 @@
 
 ## Changelog for 1.15.0
 
-We continue to add (full python) experimental models. In 1.15, we introduce the CTBN model (Continuous Time Bayesian Network) featuring, as usual, modelisation and representation, inference (exact and sampling) and a learned algorithm.
+We continue to add (full python) experimental models. In 1.15, we introduce the CTBN model (Continuous Time Bayesian Network) featuring, as usual, modelisation and representation, inference (exact and sampling) and a learning algorithm.
 
 * aGrUM
   * Added `gum::NodeId gum::EssentialGraph::idFromName(const std::string& name)` and  `const std::string&  
-    gum::EssentialGraph::nameFromId(gum::NodeId node)`. 
+    gum::EssentialGraph::nameFromId(gum::NodeId node)`.
 
 * pyAgrum
-  * Added `pyAgrum.EssentialGraph.idFromName(str)->int` and `pyAgrum.EssentialGraph.nameFromId(int)->str` 
+  * Added `pyAgrum.EssentialGraph.idFromName(str)->int` and `pyAgrum.EssentialGraph.nameFromId(int)->str`
   * Improved documentation of `pyAgrum.lib.explain`
   * Better `pyAgrum.clg.CLG.toDot()` and `pyAgrum.clg.CLG._repr_html()`.
   * New model Continuous Time Bayesian Network `pyAgrum.ctbn`.
@@ -42,7 +42,7 @@ We continue to add (full python) experimental models. In 1.15, we introduce the 
   * `pyAgrum.Potential.marg{Xyz}{In|Out}` are renamed `pyAgrum.Potental.{xyz}{In|Out}` to cut down on some verbosity.
       (for instance : `p.margSumOut` becomes `p.sumOut`)
   * Better error messages for `pyAgrum.BNLearner`
-  * Added new python's experimental model : Conditional Linear Gaussian (`pyAgrum.clg.*`) : model, learned and inference.
+  * Added new python's experimental model : Conditional Linear Gaussian (`pyAgrum.clg.*`) : model, learning and inference.
 
 ## Changelog for 1.13.2
 
@@ -69,7 +69,7 @@ This release is mainly about documentation.
   * Added 'Book of Why's notebooks to readthedoc's documentation.
   * Updated Notebooks and thumbnails.
   * Improved documentation coverage for pyAgrum class methods (from 86.19% to 87.05%)
-  * `gum.BNLearner.learnEssentialGraph` for all learned algorithm.
+  * `gum.BNLearner.learnEssentialGraph` for all learning algorithm.
   * Better wrapped of `pyAgrum.BNLearner.setPossibleEdges()`.
 
 ## Changelog for 1.13
@@ -114,7 +114,7 @@ This release is mainly about documentation.
 ## Changelog for 1.12.0
 
 * aGrUM
-  * Added a new class `gum::MeekRules` to complete a learned PDAG to CPADG or BN.
+  * Added a new class `gum::MeekRules` to complete a learning PDAG to CPADG or BN.
   * Prevented 'infinities' in the definition of numerical discrete variable.
   * Added a new constructor for `gum::PDAG` from`gum::MixedGraph`.
   * Better (stricter) `operator==` between `gum::DiscreteVariable`.
@@ -126,7 +126,7 @@ This release is mainly about documentation.
 * pyAgrum
   * Pickle for graphs and graphicals models !
   * Prevented 'infinities' in the definition of numerical discrete variable.
-  * Added a new class `pyAgrum.MeekRules` to complete a learned PDAG to CPADG or BN.
+  * Added a new class `pyAgrum.MeekRules` to complete a learning PDAG to CPADG or BN.
   * Better (stricter)  `__eq__` and `__ne_`_ between `pyAgrum.DiscreteVariable`.
   * Added a new constructor for `pyAgrum.PDAG` from`pyAgrum.MixedGraph`.
   * Added a new `expert` discretization method to `pyAgrum.skbn.BNDiscretizer` (thanks to Ahmed Mabrouk).
@@ -174,10 +174,10 @@ name.
 ## Changelog for 1.10.0
 
 * aGrUM
-  * added contraints to `MIIC` BN learned algorithm.
+  * added contraints to `MIIC` BN learning algorithm.
   * `MIIC` is now the default for `gum::BNLearner`.
   * Fixed some minor bugs in `gum::BNLearner`.
-  * Removed old `3off2` BN learned algorithm (use MIIC instead).
+  * Removed old `3off2` BN learning algorithm (use MIIC instead).
   * added `gum::MIIC::learnPDAG` and give access to this method via `gum::BNLearner`.
 
 * pyAgrum
@@ -194,12 +194,12 @@ name.
 ## Changelog for 1.9.0
 
 * aGrUM
-  * Learned algorithm `gum::learning::MIIC` can use the weighted databases.
+  * learning algorithm `gum::learning::MIIC` can use the weighted databases.
   * Internal improvements for `act` tool, `cmake` and compilers (`clang`).
   
 * pyAgrum
   * New visualisation for `gum::DiscretizedVariable` + new config to select this visualisation.
-  * `pyAgrum.BNLearner` can use now the weighted databases for all learned algorithms.
+  * `pyAgrum.BNLearner` can use now the weighted databases for all learning algorithms.
   * Documentation improvements.
   * `pyAgrum.lib.bn2roc`
     * added new functions `get{ROC|PR}points()`.
@@ -495,7 +495,7 @@ Mainly documentation and new analytics for the different sites.
 
   * PEP 3149 implemented.
   * Small typos in pyAgrum.causal.
-  * Added acces to the database built for learned in `pyAgrum.skbn.BNClassifier.preparedData()`.
+  * Added acces to the database built for learning in `pyAgrum.skbn.BNClassifier.preparedData()`.
   * Small bug when represented Potential as fractions.
   * Small bug in type deduction from database for variable in `pyAgrum.skbn`.
   * notebooks now added in the sphinx documentation (and then in readthedocs site).
@@ -716,7 +716,7 @@ As planned, 0.22.0 is the first version of pyAgrum that does not support python>
   * fix issue #27
   * (act) remove (hopefully) all the codes to support both python. In particular, there is no more options for act to choose the targeted version of python.
   * (ci/deploy) removed 2.7 tests and deploy (thanks to @Aspard)
-  * better and customized type induction when learned Bayesian networks from CSV.
+  * better and customized type induction when learning Bayesian networks from CSV.
   * new constructor for `gum::learning::BNLearner` to activate/deactivate the type induction when readed a csv file. (thanks to @gonzalesc)
 
 * pyAgrum
@@ -763,12 +763,12 @@ The next tag (0.22.0) will be the (new) last minor version before the release of
 ## Changelog for 0.20.3
 
 * aGrUM
-  * Refactoring/fixed MIIC and better heuristic for orientations for constraint-based learned algorithms.
+  * Refactoring/fixed MIIC and better heuristic for orientations for constraint-based learning algorithms.
   * Updated guidelines and new convention for `private` methods/attributes.
   * Changed behaviour of `gum::MixedGraph::mixed{Oriented|Unoriented}Path` : no misuse of exception when no path is found.
   
 * pyAgrum
-  * Refactored MIIC and better heuristic for orientations for constraint-based learned algorithms.
+  * Refactored MIIC and better heuristic for orientations for constraint-based learning algorithms.
   * Changed behaviour of `pyAgrum.MixedGraph.mixed{Oriented|Unoriented}Path` : no misuse of exception when no path is found.
   * Updated new `pyAgrum.Potential`'s methods and documentation.
   * New tool for layout in notebooks : `pyAgrum.notebook.flow`.
@@ -866,7 +866,7 @@ The next tag (0.22.0) will be the (new) last minor version before the release of
   
 * pyAgrum
   * wrapper and notebook functions for new inference and new methods for influence diagram.
-  * new module `skbn` for BayesNet classifier compatible with sklearn (classification and discretization)  with optimized `predict` method and specific structural learned for `fit` (Naïve Bayes, TAN, Chow-Liu tree, and others learned aGrUM's algorithms). Several discretization methods are implemented.
+  * new module `skbn` for BayesNet classifier compatible with sklearn (classification and discretization)  with optimized `predict` method and specific structural learning for `fit` (Naïve Bayes, TAN, Chow-Liu tree, and others learning aGrUM's algorithms). Several discretization methods are implemented.
   * minor graphical improvements.
   * remove old deprecated class/method (since pyAgrum 0.12.0).
   * Improved documentation (readthebook).
@@ -905,7 +905,7 @@ Mainly bugfixes and internal improvements.
 
 * aGrUM
   * MarkovNet's model, UAI file format and inference (incremental ShaferShenoy).
-  * Bug fix in `MIIC` learned algorithm.
+  * Bug fix in `MIIC` learning algorithm.
   * Bug fix in `gum::GammaLog2` approximations for very small values.
   * Updated and enhanced `gum::GraphicalBNComparator`.
   * Enhanced API for `gum::MixedGraph` (build a MixedGraph from other graphs).
@@ -918,7 +918,7 @@ Mainly bugfixes and internal improvements.
 
 * pyAgrum
   * MarkovNet's model, UAI file format and inference (incremental ShaferShenoy).
-  * Bug fix in `MIIC` learned algorithm.
+  * Bug fix in `MIIC` learning algorithm.
   * Updated and enhanced `pyAgrum.GraphicalBNComparator`.
   * Enhanced API for `pyAgrum.MixedGraph` (build a MixedGraph from other graphs).
   * API changes for `pyAgrum::MultiDimAggregator` (consistent behavior without parent).
@@ -929,7 +929,7 @@ Mainly bugfixes and internal improvements.
 ## Changelog for 0.17.3
 
 * aGrUM
-  * improved version of MIIC's learned algorithm.
+  * improved version of MIIC's learning algorithm.
   * add access to pseudo count with `gum::BNLearner::pseudoCount`.
   * fix a bug in inference with `gum::InfluenceDiagram`.
   * improved API for Influence Diagram : accessor with variable names (instead of only NodeId).
@@ -937,7 +937,7 @@ Mainly bugfixes and internal improvements.
   * reorganized resources for testsuite.
 
 * pyAgrum
-  * improved version of MIIC's learned algorithm.
+  * improved version of MIIC's learning algorithm.
   * add access to pseudo count with `gum.BNLearner.pseudoCount`.
   * fix a bug in inference with `gum.InfluenceDiagram`.
   * improved API for Influence Diagram : accessor with variable names (instead of only NodeId).
@@ -1072,14 +1072,14 @@ Mainly bugfixes and internal improvements.
 ## Changelog for 0.15.1
 
 * aGrUM
-  * add forgotten `addPossibleEdge` constraint for `LocalSearchWithTabuList` learned algorithm in `BNLearner`.
+  * add forgotten `addPossibleEdge` constraint for `LocalSearchWithTabuList` learning algorithm in `BNLearner`.
   * bug fix in exact inference leaded to an erroneous exception.
   * Better iterated random test for sampled inference
 * pyAgrum
   * update path for new notebooks location for CI and documentation
   * nightly build with pip : use now `pip install pyAgrum-nightly`
   * API change in `pyAgrum.lib.dynamicBN` : `plotFollowUnrolled(lovars, dbn, T, evs)`
-  * add forgotten `addPossibleEdge` constraint for `LocalSearchWithTabuList` learned algorithm  in `BNLearner`.
+  * add forgotten `addPossibleEdge` constraint for `LocalSearchWithTabuList` learning algorithm  in `BNLearner`.
   * bug fix in exact inference leaded to an erroneous exception.
 * internal
   * new values for __act__ `-j` option (number of jobs for compilation) : `all`, `except1`, `half`, `halfexcept1`.
@@ -1102,7 +1102,7 @@ Mainly bugfixes and internal improvements.
 ## Changelog for 0.14.3
 
 * aGrUM
-  * new constraint for structural learned : `possibleEdge` forces the tested edges to be taken from the sets of `possibleEdge`s
+  * new constraint for structural learning : `possibleEdge` forces the tested edges to be taken from the sets of `possibleEdge`s
   * new methods `BNLearner::addPossibleEdge(const gum::Edge&)` and `BNLearner::setPossibleSkeleton(const gum::UndiGraph&)`
   * Fix a bug in `gum::IndepTestG2`
   * Access to scores from BNLearner : `BNLearner::G2()`
@@ -1115,7 +1115,7 @@ Mainly bugfixes and internal improvements.
 ## Changelog for 0.14.2
 
 * aGrUM
-  * bug fixes in learned (`3off2/miic` and `learnMixedGraph`)
+  * bug fixes in learning (`3off2/miic` and `learnMixedGraph`)
   * removed redundant `gum::BNLearner::setAprioriWeight`
 * pyAgrum
   * `pyAgrum.lib.notebook.showInference` can now use `svg` format
@@ -1173,7 +1173,7 @@ Mainly bugfixes and internal improvements.
 * pyAgrum
   * minor API changes
   * minor changes in documentation
-  * BNLearner follows the new learned framework
+  * BNLearner follows the new learning framework
   * parametric EM !! See notebook <http://www-desir.lip6.fr/~phw/aGrUM/docs/last/notebooks/16-ParametriceEM.ipynb>
   * New method : JointTargetedInference.jointMutualInformation for any set of variables in the BN
 * aGrUM
@@ -1183,7 +1183,7 @@ Mainly bugfixes and internal improvements.
     They can now be used on subsets of databases (e.g., for cross validation), the ids of the nodes need not correspond to indices of columns in the database. The interfaces of these classes have been simplified.
   * learning: all the scores have been speeded-up
   * learning: new score fNML has been introduced
-  * learning: Dirichlet prior has been improved: the variables in its database need not be in the same order as those of the learned database
+  * learning: Dirichlet prior has been improved: the variables in its database need not be in the same order as those of the learning database
   * learning: all the score-related testunits have been improved
   * learning: the documentations of the scores have been improved
   * learning: the corrected mutual information of 3off2 has been improved
@@ -1241,7 +1241,7 @@ Mainly bugfixes and internal improvements.
   * Changes and bug fixe in in BIF and NET writer/reader
 * pyAgrum
   * wheels for python 3.3 and 3.4
-  * access to the new learned framework used `BNLearner`
+  * access to the new learning framework used `BNLearner`
   * access to the new inference algorithms
   * new methods `Instantiation.fromdict` and `Instantiation.todict`
   * `DiscreteVariable.toDiscretized/toLabelized/toRange` copy the variable instead of gived a (not readonly) reference
@@ -1270,7 +1270,7 @@ Mainly bugfixes and internal improvements.
 * aGrUM
   * PRM bug fixes
   * improved CI in gitlab
-  * improved exception messages in BN learned and O3PRM
+  * improved exception messages in BN learning and O3PRM
   * improved act
 
 ## Changelog for 0.11.2
@@ -1301,8 +1301,8 @@ Mainly bugfixes and internal improvements.
   * pyAgrum wheels generation used act for 'pip' tool
 * aGrUM
   * removed some unused data structure (`AVLTree`)
-  * fixed bug in `localSearchWithTabuList` learned class
-  * Remove wrong parallel estimations for learned (now correct but sequential)
+  * fixed bug in `localSearchWithTabuList` learning class
+  * Remove wrong parallel estimations for learning (now correct but sequential)
   * worked on docs
   * API change : add `BayesNet::minimalCondSet(NodeSet&,NodeSet&)` (migration from pyAgrum to aGrUM)
   * API change : add JointTargettedInference::evidenceJointImpact()
@@ -1321,7 +1321,7 @@ Mainly bugfixes and internal improvements.
 
 * Add new approximated inference : `LBP` (aGrUM and pyAgrum)
 * Fix bugs in `LazyPropagation` and `ShaferShenoy` inference
-* Refresh some codes in Learned module
+* Refresh some codes in learning module
 * Update (and simplify) CMakeLists.txt for new swig 3.0.11
 * Add some project files (included this CHANGELOG.md)
 * Refresh pyAgrum notebooks with matplotlib2
@@ -1394,7 +1394,7 @@ Tag 0.9.3 has not been properly announced. Still, many changes in this release :
     * bug fixes and other improvements in dedicated inference algorithms,
     * improved and fixed documentations
     * new file format for Bayesian network : o3prmBNReader (readed a BN by grounded a system)
-  * Learned API still improved
+  * learning API still improved
     * BNLearner templatized
     * new feature for BNLearner : used a BN to specicfy variables and their modalities,
     * bug fixes and improvement for parameter learning.
@@ -1407,15 +1407,15 @@ Tag 0.9.3 has not been properly announced. Still, many changes in this release :
 ## Changelog for 0.9.1
 
 * aGrUM
-  * Improvement in learned algorithms
-  * learned from databases with fewer rows than there are processors
+  * Improvement in learning algorithms
+  * learning from databases with fewer rows than there are processors
   * method to BNLearner to learn parameters from a BN's DAG
   * static lib compilation for aGrUM
   * bug fixes and other improvements
 * pyAgrum
   * Compiled for Python 3 or Python 2 (default is python3, python2 if no python3.). New option for act to choose which python : --python={2|3}.
   * gumLib has moved and changed its name (in the pyAgrum package) : pyAgrum.lib
-  * Improved API for learned (changeLabel/parameter learning/ etc.)
+  * Improved API for learning (changeLabel/parameter learning/ etc.)
   * Improved graphs manipulation
   * bug fixes and other improvements
 
@@ -1423,7 +1423,7 @@ Tag 0.9.3 has not been properly announced. Still, many changes in this release :
 
 Aside from many bug fixes and general improvements such as performance optimizations in various areas, some changes are especially noteworthy:
 
-* Functionality : Structural and parameter learned for Bayesian networks
+* Functionality : Structural and parameter learning for Bayesian networks
 * Model : Credal Networks, FMDP used Multi-Valued Decision Diagrams
 * Language : migration to modern C++(11/14)
 * Core : Improvements and optimization of basic data structures in aGrUM/core
