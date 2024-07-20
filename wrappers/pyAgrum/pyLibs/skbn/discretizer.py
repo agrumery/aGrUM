@@ -768,7 +768,7 @@ class BNDiscretizer():
         possibleValuesX = self.discretizationParametersDictionary[variableName]["param"]
 
       if possibleValuesX is None:
-        possibleValuesX = foundValuesX
+        possibleValuesX = sorted(foundValuesX)
       else:
         # foundValuesX must be in possibleValuesX
         if not foundValuesX.issubset(possibleValuesX):
@@ -801,7 +801,7 @@ class BNDiscretizer():
         if is_float_var:
           var = gum.NumericalDiscreteVariable(variableName, variableName, [float(v) for v in possibleValuesX])
         else:
-          var = gum.LabelizedVariable(variableName, variableName, sorted([str(v) for v in possibleValuesX]))
+          var = gum.LabelizedVariable(variableName, variableName, [str(v) for v in possibleValuesX])
     else:
       self.numberOfContinuous += 1
       if self.discretizationParametersDictionary[variableName]['method'] == "expert":
