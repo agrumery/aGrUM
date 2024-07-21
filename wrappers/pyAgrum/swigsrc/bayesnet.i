@@ -388,5 +388,51 @@ def __setstate__(self,state):
     for prop in state['properties']:
         self.setProperty(prop,state['properties'][prop])
     return self
+
+def toFast(self, filename: str = None) -> str:
+  """
+  Export the Bayesian network as *fast* syntax (in a string or in a python file)
+
+  Parameters
+  ----------
+  bn :
+    the Bayesian network to export
+  filename : Optional[str]
+    the name of the file (including the prefix), if None , use sys.stdout
+  """
+
+  def _toFastBN(bn,pythoncode=False):
+    res = ''
+    if pythoncode:
+      res+='bn=gum.fastBN("""'
+    sovars = set()
+    first = True
+    for x, y in bn.arcs():
+      if not first:
+        res += ';'
+        if pythoncode:
+          res +='\n                 '
+      else:
+        first = False
+      if x in sovars:
+        res += bn.variable(x).name()
+      else:
+        res += bn.variable(x).toFast()
+        sovars.add(x)
+      res += "->"
+      if y in sovars:
+        res += bn.variable(y).name()
+      else:
+        res += bn.variable(y).toFast()
+        sovars.add(y)
+    if pythoncode:
+      res += '""")'
+    return res
+
+  if filename is None:
+    return _toFastBN(self)
+  else:
+    with open(filename, "w") as pyfile:
+      print(_toFastBN(self), file=pyfile)
   }
 }
