@@ -11,6 +11,7 @@ from .pyAgrum import DiscreteVariable
 from .pyAgrum import Potential
 
 
+
 def deprecated_arg(newA: str, oldA: str, version: str):
   """
   Annotation of a function when changing the name of an argument of the function

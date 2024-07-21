@@ -74,6 +74,7 @@ Reference manual
   :maxdepth: 2
   :titlesonly:
 
+  lib.discretizer
   lib.notebook
   lib.image
   lib.explain

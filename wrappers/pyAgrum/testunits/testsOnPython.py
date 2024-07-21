@@ -66,6 +66,7 @@ def runTests(local: bool, test_module, log) -> int:
   from tests import BNLearnerTestSuite
   from tests import BNListenerTestSuite
   from tests import ConfigTestSuite
+  from tests import DiscretizerTestSuite
   from tests import EssentialGraphTestSuite
   from tests import EvidenceTestSuite
   from tests import GraphTestSuite
@@ -124,6 +125,7 @@ def runTests(local: bool, test_module, log) -> int:
     tl.append(BNLearnerTestSuite.ts)
     tl.append(BNListenerTestSuite.ts)
     tl.append(ConfigTestSuite.ts)
+    tl.append(DiscretizerTestSuite.ts)
     tl.append(EssentialGraphTestSuite.ts)
     tl.append(EvidenceTestSuite.ts)
     tl.append(GraphTestSuite.ts)

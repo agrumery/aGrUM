@@ -28,13 +28,13 @@ import warnings
 import sklearn
 
 import pyAgrum as gum
+from pyAgrum.lib.discretizer import Discretizer
+from pyAgrum.lib.discretizer import check_int
 
-from .discretizer import BNDiscretizer
 from ._utils import _ImplementPrior as IPrior
 from ._utils import _CalculateThreshold as CThreshold
 from ._utils import _DFNames as DFNames
 from ._utils import _createCSVfromNDArrays as CSV
-from ._utils import checkInt
 
 from ._MBCalcul import compileMarkovBlanket
 from ._MBCalcul import _calcul_proba_for_binary_class, _calcul_most_probable_for_nary_class, \
@@ -52,7 +52,7 @@ class BNClassifier(sklearn.base.BaseEstimator, sklearn.base.ClassifierMixin):
 
    - a Bayesian network,
    - a database and a learning algorithm and parameters
-   - the use of BNDiscretizer to discretize with different algorithms some variables.
+   - the use of Discretizer to discretize with different algorithms some variables.
 
 
   Parameters
@@ -259,7 +259,7 @@ class BNClassifier(sklearn.base.BaseEstimator, sklearn.base.ClassifierMixin):
     self.discretizationNbBins = discretizationNbBins
     self.discretizationStrategy = discretizationStrategy
     self.discretizationThreshold = discretizationThreshold
-    self.discretizer = BNDiscretizer(defaultDiscretizationMethod=discretizationStrategy,
+    self.discretizer = Discretizer(defaultDiscretizationMethod=discretizationStrategy,
                                      defaultNumberOfBins=discretizationNbBins,
                                      discretizationThreshold=discretizationThreshold)
 
@@ -331,7 +331,7 @@ class BNClassifier(sklearn.base.BaseEstimator, sklearn.base.ClassifierMixin):
 
     if isinstance(y, pandas.DataFrame):  # type(y) == pandas.DataFrame:
       self.target = y.columns.tolist()[0]
-      if checkInt(self.target):
+      if check_int(self.target):
         self.target = "Y"
     elif type(y) == pandas.core.series.Series:
       self.target = y.name
@@ -339,7 +339,7 @@ class BNClassifier(sklearn.base.BaseEstimator, sklearn.base.ClassifierMixin):
       self.target = 'y'
 
     if isinstance(X, pandas.DataFrame):  # type(X) == pandas.DataFrame:
-      variableNames = [f"X{x}" if checkInt(x) else x for x in X.columns]
+      variableNames = [f"X{x}" if check_int(x) else x for x in X.columns]
 
     # verifies the shape of the two arrays
     X, y = sklearn.utils.check_X_y(X, y, dtype=None, accept_sparse=True)
@@ -373,7 +373,7 @@ class BNClassifier(sklearn.base.BaseEstimator, sklearn.base.ClassifierMixin):
     is_int_varY = True
     min_vY = max_vY = None
     for value in possibleValuesY:
-      if not checkInt(value):
+      if not check_int(value):
         is_int_varY = False
         break
       else:

@@ -1,5 +1,5 @@
-pyAgrum.lib.notebook
-====================
+Jupyter notebook with Graphical Models
+======================================
 
 ``pyAgrum.lib.notebook`` aims to facilitate the use of pyAgrum with jupyter notebook (or lab).
 
