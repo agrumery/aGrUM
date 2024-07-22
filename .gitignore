@@ -28,6 +28,7 @@ qtcreator-build
 src/testunits/testList.all
 src/testunits/ressources/outputs
 src/testunits/testList.cmake
+pyAgrumTests.log
 
 
 wrappers/pyAgrum/doc/sphinx/notebooks/EM_missing.csv
@@ -57,11 +58,13 @@ wrappers/pyAgrum/doc/sphinx/notebooks/out/*.png
 wrappers/pyAgrum/doc/sphinx/notebooks/out/WaterSprinkler.*
 wrappers/pyAgrum/doc/sphinx/notebooks/out/*.csv
 wrappers/pyAgrum/doc/sphinx/notebooks/out/*.html
-wrappers/pyAgrum/testunits/resources/database.csv
-wrappers/pyAgrum/testunits/resources/dirichlet.csv
-wrappers/pyAgrum/testunits/resources/genere.csv
-wrappers/pyAgrum/testunits/resources/dataW.csv
-wrappers/pyAgrum/testunits/resources/o3prm/BNO3PRMIO_file.o3prm
+wrappers/pyAgrum/testunits/tests/resources/database.csv
+wrappers/pyAgrum/testunits/tests/resources/dirichlet.csv
+wrappers/pyAgrum/testunits/tests/resources/genere.csv
+wrappers/pyAgrum/testunits/tests/resources/dataW.csv
+wrappers/pyAgrum/testunits/tests/resources/trajectory*.csv
+wrappers/pyAgrum/testunits/tests/resources/pickled.pkl
+wrappers/pyAgrum/testunits/tests/resources/o3prm/BNO3PRMIO_file.o3prm
 wrappers/pyAgrum/doc/sphinx/notebooks/res/titanic/*.png
 apps/pyAgrum/doc/sphinx/notebooks/*.png
 apps/pyAgrum/doc/sphinx/notebooks/WaterSprinkler.*

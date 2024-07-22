@@ -32,7 +32,7 @@ class pyAgrumTestCase(unittest.TestCase):
 
   @staticmethod
   def agrumSrcDir(s: str) -> str:
-    return os.path.dirname(__file__) + "/resources/" + s
+    return f"{os.path.dirname(__file__)}/resources/{s}"
 
   def assertListsAlmostEqual(self, seq1, seq2, places=7, delta=None):
     sequence = (tuple, list, ndarray)
