@@ -133,27 +133,25 @@ class CausalModel:
       shap = "ellipse"
     else:
       shap = "point"
-    res += f'''
-    node [fillcolor="{pyAgrum.config['causal', 'default_node_bgcolor']}",
-          fontcolor="{pyAgrum.config['causal', 'default_node_fgcolor']}",
-          style=filled,shape={shap}];
-      '''
-    res += "\n"
 
     for n in self.nodes():
       if n in self.latentVariablesIds():
-        res += '   "' + self.names()[n] + '";' + "\n"
-    # not latent variables
-    res += f'''
-    node [fillcolor="{pyAgrum.config['causal', 'default_node_bgcolor']}",
+        res +=f'''
+    "{self.names()[n]}" [fillcolor="{pyAgrum.config['causal', 'default_node_bgcolor']}",
           fontcolor="{pyAgrum.config['causal', 'default_node_fgcolor']}",
-          style=filled,shape="ellipse"];
+          style=filled,shape={shap}];
+          
       '''
-    res += "\n"
 
+    # not latent variables
     for n in self.nodes():
       if n not in self.latentVariablesIds():
-        res += '   "' + self.names()[n] + '";' + "\n"
+        res +=f'''
+    "{self.names()[n]}" [fillcolor="{pyAgrum.config['causal', 'default_node_bgcolor']}",
+          fontcolor="{pyAgrum.config['causal', 'default_node_fgcolor']}",
+          style=filled,shape="ellipse"];
+          
+      '''
 
     for a, b in self.arcs():
       res += '   "' + self.names()[a] + '"->"' + self.names()[b] + '" '
