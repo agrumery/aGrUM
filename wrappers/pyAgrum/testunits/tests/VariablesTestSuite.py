@@ -90,6 +90,13 @@ class DiscreteVariableTestCase(VariablesTestCase):
     s = set([va, vb, vc] + [vc, vd, ve] + [va, ve])
     self.assertEqual(len(s), 5)
 
+  def testAccessorsWithIntervallForGaspard(self):
+    x = gum.DiscretizedVariable('X','X', [0,1,2,3,4,5], True)
+    self.assertEqual(x["[0,1["], 0)
+    self.assertEqual(x["[4,5["], 4)
+    self.assertEqual(x["[0,1["], 0)
+    self.assertEqual(x["[4,5["], 4)
+
   def testExportDerivedReadOnlyAPIforDiscreteVariable(self):
     bn = gum.fastBN("A{yes|no}->B{3.14|5|10|9.2}->C->D{1|3|9|5}->E[1,3.15,9.23,4.5]")
     self.assertEqual(bn.variable("A").isLabel("no"), True)

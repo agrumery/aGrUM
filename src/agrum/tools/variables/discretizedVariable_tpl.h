@@ -206,13 +206,25 @@ namespace gum {
     // second check if label contains an interval '[t1;t2]'
     std::istringstream ii(label);
     T_TICKS            t2;
-    char               c;
-    if (!(ii >> c >> target >> c >> t2 >> c)) {
+    char               c1, c2, c3;
+    if (!(ii >> c1 >> target >> c2 >> t2 >> c3)) {
       GUM_ERROR(NotFound, "Bad label : " << label << " for " << *this)
     }
+
+    // check if a char is in a string
+    const std::string s1{"[]()"};
+    const std::string s2{",;"};
+    if ((s1.find(c1) == std::string::npos) || (s1.find(c3) == std::string::npos)
+        || (s2.find(c2) == std::string::npos)) {
+      GUM_ERROR(NotFound, "Bad syntax for interval : " << label << " for " << *this)
+    }
+
     const Idx it1 = pos_(target);
-    const Idx it2 = pos_(t2);
-    if (it1 + 1 != it2) { GUM_ERROR(NotFound, "Bad interval : " << label << " for " << *this) }
+
+    if ((it1 + 1 >= _ticks_.size()) || (t2 != _ticks_[it1 + 1])) {
+      GUM_ERROR(NotFound, "Bad interval : " << label << " for " << *this)
+    }
+
     return it1;
   }
 

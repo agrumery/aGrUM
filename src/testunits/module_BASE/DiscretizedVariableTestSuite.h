@@ -75,6 +75,34 @@ namespace gum_tests {
       TS_GUM_ASSERT_THROWS_NOTHING(d["4.5"])
     }
 
+    GUM_ACTIVE_TEST(AccessorWithIntervallsForGaspard) {
+      gum::DiscretizedVariable< double > d("d", "Discretized variable", {3.1, 2.0, 4.0, 10.0});
+
+      TS_GUM_ASSERT_THROWS_NOTHING(d["[2.0,3.1]"])
+      TS_GUM_ASSERT_THROWS_NOTHING(d["[3.1,4.0]"])
+      TS_GUM_ASSERT_THROWS_NOTHING(d["[4.0,10]"])
+
+      TS_GUM_ASSERT_THROWS_NOTHING(d["[2.0;3.1]"])
+      TS_GUM_ASSERT_THROWS_NOTHING(d["[3.1;4.0]"])
+      TS_GUM_ASSERT_THROWS_NOTHING(d["[4.0;10]"])
+
+      TS_ASSERT_THROWS(d["x10y20.0z"], const gum::NotFound&)
+      TS_ASSERT_THROWS(d["[10,20]"], const gum::NotFound&)
+
+      TS_ASSERT_EQUALS(d["[2.0,3.1]"], d["2.5"])
+      TS_ASSERT_EQUALS(d["[3.1,4.0]"], d["3.5"])
+      TS_ASSERT_EQUALS(d["[4.0,10]"], d["6.5"])
+
+      d.setEmpirical(true);
+      TS_GUM_ASSERT_THROWS_NOTHING(d["[2.0,3.1]"])
+      TS_GUM_ASSERT_THROWS_NOTHING(d["[3.1,4.0]"])
+      TS_GUM_ASSERT_THROWS_NOTHING(d["[4.0,10]"])
+
+      TS_ASSERT_EQUALS(d["[2.0,3.1]"], d["2.5"])
+      TS_ASSERT_EQUALS(d["[3.1,4.0]"], d["3.5"])
+      TS_ASSERT_EQUALS(d["[4.0,10]"], d["6.5"])
+    }
+
     GUM_ACTIVE_TEST(AddTicks) {
       gum::DiscretizedVariable< int > v("var", "a var");
 
@@ -318,8 +346,8 @@ namespace gum_tests {
       TS_ASSERT_EQUALS(copy.domainSize(), 2u)
       TS_ASSERT_EQUALS(copy.toString(), "angle:Discretized(<[0;90[,[90;180]>)")
       TS_ASSERT(!copy.empty())
-      TS_ASSERT_EQUALS(copy["[0;90["], (gum::Size)0)
-      TS_ASSERT_EQUALS(copy.index("[0;90["), (gum::Size)0)
+      TS_ASSERT_EQUALS(copy["[0,90["], (gum::Size)0)
+      TS_ASSERT_EQUALS(copy.index("[0,90["), (gum::Size)0)
     }
 
     GUM_ACTIVE_TEST(CopyEmptyVariableWithoutZeros) {
