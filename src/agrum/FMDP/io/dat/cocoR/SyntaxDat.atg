@@ -206,7 +206,7 @@ PRODUCTIONS
         /// *************************************************************************************
         /// Transition diagram leaf rule
         /// *************************************************************************************
-        TRANSITION_LEAF =       (. float value;
+        TRANSITION_LEAF =       (. float value=0.0;
                                    gum::Idx i = 0;
                                    NodeId var_id = factory__->addInternalNode( currentFunctionGraphVar__ );
                                    if( !parentNode__.empty() )
@@ -287,7 +287,7 @@ PRODUCTIONS
         /// *************************************************************************************
         /// Graph leaf rule
         /// *************************************************************************************
-        LEAF =                            (. float value; .)
+        LEAF =                            (. float value=0.0; .)
                 FLOAT<value>         (. NodeId val_id = factory__->addTerminalNode( value );
                                                   factory__->addArc( parentNode__.back(), val_id, parentModality__.back() ); .)
                         {
@@ -299,7 +299,7 @@ PRODUCTIONS
         /// *************************************************************************************
         /// Graph leaf rule
         /// *************************************************************************************
-        DISCOUNT =                         (. float value;
+        DISCOUNT =                         (. float value=0.0;
                                                        factory__->startDiscountDeclaration( ); .)
                         "discount"
                         FLOAT<value>     (. factory__->addDiscount( value );
@@ -309,7 +309,7 @@ PRODUCTIONS
         /// *************************************************************************************
         /// Graph leaf rule
         /// *************************************************************************************
-        TOLERANCE =                         (. float value; .)
+        TOLERANCE =                         (. float value=0.0; .)
                         "tolerance"
                         FLOAT<value>
                         .
@@ -353,4 +353,3 @@ PRODUCTIONS
 
 
 END MDPDAT.
-

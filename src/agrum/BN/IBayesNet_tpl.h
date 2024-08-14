@@ -144,7 +144,7 @@ namespace gum {
 
     for (auto node: nodes())
       usedMem += cpt(node).memoryFootprint();
-    return usedMem ;
+    return usedMem;
   }
 
   template < typename GUM_SCALAR >

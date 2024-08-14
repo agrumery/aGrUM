@@ -64,7 +64,7 @@ void Parser::Get() {
 
     if ( la->kind <= maxT ) { ++errDist; break; }
 
-
+    
 
     if ( dummyToken != t ) {
       dummyToken->kind = t->kind;
@@ -110,12 +110,12 @@ bool Parser::WeakSeparator( int n, int syFol, int repFol ) {
 
 void Parser::STRING(std::string& str) {
 		Expect(_string);
-		str=narrow(t->val);str.erase(std::remove(str.begin(),str.end(),'\"'),str.end());
+		str=narrow(t->val);str.erase(std::remove(str.begin(),str.end(),'\"'),str.end()); 
 }
 
 void Parser::IDENT(std::string& name) {
 		Expect(_ident);
-		name=narrow(t->val);
+		name=narrow(t->val); 
 }
 
 void Parser::ELT_LIST(std::string& val) {
@@ -128,16 +128,16 @@ void Parser::ELT_LIST(std::string& val) {
 		} else if (la->kind == _ident) {
 			Get();
 		} else SynErr(18);
-		val=narrow(t->val);val.erase(std::remove(val.begin(),val.end(),'\"'),val.end());
+		val=narrow(t->val);val.erase(std::remove(val.begin(),val.end(),'\"'),val.end()); 
 }
 
 void Parser::PURE_LIST(std::vector<std::string>& vals ) {
-		std::string val;vals.clear();
+		std::string val;vals.clear(); 
 		ELT_LIST(val);
-		vals.push_back(val);
+		vals.push_back(val); 
 		while (StartOf(1)) {
 			ELT_LIST(val);
-			vals.push_back(val);
+			vals.push_back(val); 
 		}
 }
 
@@ -174,11 +174,11 @@ void Parser::GARBAGE_NESTED_LIST() {
 
 void Parser::Net() {
 		factory().startNetworkDeclaration();
-
+		
 		Expect(7 /* "net" */);
 		std::string prop,val;
 		std::vector<std::string> vals;
-
+		
 		Expect(8 /* "{" */);
 		while (la->kind == _ident) {
 			IDENT(prop);
@@ -186,10 +186,10 @@ void Parser::Net() {
 			while (la->kind == _ident || la->kind == _string || la->kind == 5 /* "(" */) {
 				if (la->kind == _ident) {
 					IDENT(val);
-					factory().addNetworkProperty(prop,val);
+					factory().addNetworkProperty(prop,val); 
 				} else if (la->kind == _string) {
 					STRING(val);
-					factory().addNetworkProperty(prop,val);
+					factory().addNetworkProperty(prop,val); 
 				} else {
 					LIST(vals);
 					std::string merge;
@@ -200,13 +200,13 @@ void Parser::Net() {
 					}
 					merge+=')';
 					factory().addNetworkProperty(prop,merge);
-
+					
 				}
 			}
 			Expect(10 /* ";" */);
 		}
 		Expect(11 /* "}" */);
-		factory().endNetworkDeclaration();
+		factory().endNetworkDeclaration(); 
 		while (la->kind == 12 /* "node" */) {
 			NODE();
 		}
@@ -217,17 +217,17 @@ void Parser::Net() {
 
 void Parser::NODE() {
 		std::string var;
-
+		
 		Expect(12 /* "node" */);
 		IDENT(var);
 		std::string prop;
 		std::string val;
 		std::vector<std::string> vals;
 		bool labels_done=false;;
-
+		
 		TRY( factory().startVariableDeclaration());
 		TRY( factory().variableName(var));
-
+		
 		Expect(8 /* "{" */);
 		while (la->kind == _ident) {
 			IDENT(prop);
@@ -246,20 +246,20 @@ void Parser::NODE() {
 					   TRY(factory().addModality(vals[i]));
 					 }
 					}
-
+					
 				}
 			}
 			Expect(10 /* ";" */);
 		}
 		Expect(11 /* "}" */);
-		TRY(factory().endVariableDeclaration());
+		TRY(factory().endVariableDeclaration()); 
 }
 
 void Parser::POTENTIAL() {
 		std::string variable;
 		std::vector<float> probas;
 		std::vector<std::string> var_seq;
-
+		
 		Expect(16 /* "potential" */);
 		PARENTS_DEFINITION(variable,var_seq);
 		Expect(8 /* "{" */);
@@ -276,7 +276,7 @@ void Parser::PARENTS_DEFINITION(std::string& name,std::vector<std::string>& var_
 		IDENT(name);
 		TRY(factory().startParentsDeclaration(name));
 		var_seq.clear();
-
+		
 		if (la->kind == 13 /* "|" */) {
 			Get();
 			if (StartOf(1)) {
@@ -286,32 +286,32 @@ void Parser::PARENTS_DEFINITION(std::string& name,std::vector<std::string>& var_
 				 TRY(factory().addParent(parents[i]));
 				 var_seq.push_back(parents[i]);
 				}
-
+				
 			}
 		}
 		Expect(6 /* ")" */);
 		var_seq.push_back(name);
 		TRY(factory().endParentsDeclaration());
-
+		
 }
 
 void Parser::FLOAT(float& val) {
 		if (la->kind == _number) {
 			Get();
-			val=coco_atof(t->val);
+			val=coco_atof(t->val); 
 		} else if (la->kind == _integer) {
 			Get();
-			val=float(coco_atoi(t->val));
+			val=float(coco_atoi(t->val)); 
 		} else SynErr(21);
 }
 
 void Parser::FLOAT_LIST(std::vector<float>& v ) {
-		float value;
+		float value=0.0; 
 		FLOAT(value);
-		v.push_back(value);
+		v.push_back(value); 
 		while (la->kind == _integer || la->kind == _number) {
 			FLOAT(value);
-			v.push_back(value);
+			v.push_back(value); 
 		}
 }
 
@@ -344,12 +344,12 @@ void Parser::RAW_DATA(std::string& variable,std::vector<std::string>& var_seq ) 
 		   }
 		   TRY(factory().rawConditionalTable(var_seq,probas));
 		   TRY(factory().endRawProbabilityDeclaration());
-
+		
 		Expect(10 /* ";" */);
 }
 
 void Parser::EXPERIENCE() {
-		std::vector<std::string> vals;std::string val;
+		std::vector<std::string> vals;std::string val; 
 		Expect(15 /* "experience" */);
 		Expect(9 /* "=" */);
 		GARBAGE_NESTED_LIST();
@@ -538,3 +538,6 @@ void Parser::SynErr( const std::wstring& filename,int line, int col, int n ) {
 
 } // namespace
 } // namespace
+
+
+

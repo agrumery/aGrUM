@@ -381,7 +381,7 @@ void Scanner::Init() {
     NextCh();
   }
 
-
+  
   pt = tokens = CreateToken(); // first token is a dummy
 }
 
@@ -410,7 +410,7 @@ void Scanner::NextCh() {
     if ( ch == EOL ) { /*if (trace__) std::cout<<line<<std::endl;*/ line++; col = 0; }
   }
 
-
+  
 }
 
 void Scanner::AddCh() {
@@ -707,3 +707,6 @@ void Scanner::ResetPeek() {
 
 } // namespace
 } // namespace
+
+
+

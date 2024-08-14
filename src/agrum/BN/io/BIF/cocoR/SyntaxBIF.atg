@@ -241,7 +241,7 @@ LISTE_LABELS<. const std::vector<std::string>& parents,std::vector<std::string>&
 
 //==============
 // no "," for proba values
-LISTE_FLOAT<. std::vector<float>& v .> =   (. float value; .)
+LISTE_FLOAT<. std::vector<float>& v .> =   (. float value=0.0; .)
   FLOAT<value>                            (. v.push_back(value); .)
   [ [( ',' | '|' )] LISTE_FLOAT<v>]
 .

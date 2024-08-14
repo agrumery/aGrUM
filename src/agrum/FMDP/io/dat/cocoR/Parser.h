@@ -167,3 +167,4 @@ class Parser {
 
 
 #endif // !defined(COCO_PARSER_H__)
+

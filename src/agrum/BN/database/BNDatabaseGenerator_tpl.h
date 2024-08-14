@@ -177,7 +177,7 @@ namespace gum::learning {
                                                 bool               checkOnAppend) const {
     if (!_drawnSamples_) { GUM_ERROR(OperationNotAllowed, "drawSamples() must be called first.") }
 
-    if (csvSeparator.find("\n") != std::string::npos) {
+    if (csvSeparator.find('\n') != std::string::npos) {
       GUM_ERROR(InvalidArgument, "csvSeparator must not contain end-line characters")
     }
 

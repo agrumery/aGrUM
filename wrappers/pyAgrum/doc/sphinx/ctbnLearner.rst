@@ -11,7 +11,7 @@ More precisely what can be learned is :
 Tools to extract data from samples are necessary. This is the role of class :class:`pyAgrum.ctbn.Trajectory` and function :func:`pyAgrum.ctbn.CTBNFromData`.
 
 Before introducing the algorithms, here are the following definitions :
-    - :math:`M_{xx'|u}` is the number of time a variable `X` go from a state `x` to a sate `x'`, conditioned by an instance of its parents `u`. It is filled using samples.
+    - :math:`M_{xx'|u}` is the number of time a variable `X` go from a state `x` to a state `x'`, conditioned by an instance of its parents `u`. It is filled using samples.
     - :math:`M_{x|u}` is the number of time `X` goes to state `x`.
     - :math:`T_{x|u}` is the time spent in state `x`, conditioned by an instance of its parents `u`.
     - :math:`M_{xx'|y,u}` and :math:`T_{x|y,u}` are the same but with another conditioning variable `Y` in state `y`.

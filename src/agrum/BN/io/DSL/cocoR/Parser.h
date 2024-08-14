@@ -156,3 +156,4 @@ void checkSizeOfProbabilityAssignation__(const std::vector<float>&v,const std::s
 
 
 #endif // !defined(COCO_PARSER_H__)
+

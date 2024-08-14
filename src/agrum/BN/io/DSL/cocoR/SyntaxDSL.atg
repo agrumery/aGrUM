@@ -282,7 +282,7 @@ RAW_PROBA<. const std::string& var, const std::vector<std::string>& parents .> =
 
 //==============
 // no "," for proba values
-FLOAT_LIST<. std::vector<float>& v .> =   	(. float value; .)
+FLOAT_LIST<. std::vector<float>& v .> =   	(. float value=0.0; .)
 	FLOAT<value>  							(. v.push_back(value); .)
 	{ [ (',' | '|' )] FLOAT<value> 			(. v.push_back(value); .)
 	}
