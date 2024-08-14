@@ -15,4 +15,6 @@ pandas
 tqdm
 ################################
 ### Specific requirements for notebooks
-
+cairosvg
+seaborn
+playwright

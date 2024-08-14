@@ -1,5 +1,22 @@
 # aGrUM Changelog
 
+## Changelog for 1.15.1
+
+* aGrUM
+  * Added `gum::Potential<GUM_SCALAR>::memoryFootprint` and `gum::IBayesNet::memoryFootprint` (thanks to Benjamin Datko).
+  * Fixed a bug when subscripting `gum::DiscretizedVariable` with the (last) interval (thanks to Gaspard Ducamp).
+  * Removed gcc warnings (psabi, false positive uninitialized).
+
+* pyAgrum
+  * Added `pyAgrum.Potential.memoryFootprint` and `pyAgrum.BayesNet.memoryFootprint` (thanks to Benjamin Datko).
+  * Fixed a bug when subscripting `gum::DiscretizedVariable` with the (last) interval (thanks to Gaspard Ducamp).
+  * Fixed a bug in `pyAgrum.skbn.BNDiscretizer` for `NoDiscretization` method with given `paramDiscretization`.
+  * Moved function `pyAgrum.lib.export.toFast` to method `pyAgrum.BayesNet.toFast`.
+  * Moved `pyAgrum.skbn.BNDiscretizer` to `pyAgrum.lib.discretizer`.
+  * Worked on documentation for CTBN
+  * Fixed `fontcolor` configuration for causal model.
+  
+
 ## Changelog for 1.15.0
 
 We continue to add (full python) experimental models. In 1.15, we introduce the CTBN model (Continuous Time Bayesian Network) featuring, as usual, modelisation and representation, inference (exact and sampling) and a learning algorithm.

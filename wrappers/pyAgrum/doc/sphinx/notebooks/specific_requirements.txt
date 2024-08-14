@@ -1,1 +1,4 @@
 ### Specific requirements for notebooks
+cairosvg
+seaborn
+playwright
