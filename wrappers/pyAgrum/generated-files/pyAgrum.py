@@ -12513,8 +12513,8 @@ class BayesNet(IBayesNet):
         for x in bn.nodes():
           if x not in sovars:
             if pythoncode:
-              res +='\n                 '   
-            res += bn.variable(x).toFast()+";"
+              res +='\n                 '
+            res += ";"+bn.variable(x).toFast()
 
         if pythoncode:
           res += '""")'
@@ -13973,7 +13973,7 @@ class MarkovRandomField(IMarkovRandomField):
           else:
             first = False
           firstnode=True
-          for x in f:      
+          for x in f:
             if firstnode:
               firstnode=False
             else:
@@ -13988,7 +13988,7 @@ class MarkovRandomField(IMarkovRandomField):
           if x not in sovars:
             if pythoncode:
               res +='\n                 '
-            res += model.variable(x).toFast()+";"
+            res += ";"+model.variable(x).toFast()
 
         if pythoncode:
           res += '""")'
@@ -27145,7 +27145,7 @@ class InfluenceDiagram(DAGmodel):
           if x not in sovars:
             if pythoncode:
               res +='\n                 '
-            res += _toFastVar(model,x)+";"
+            res += ";"+_toFastVar(model,x)
 
         if pythoncode:
           res += '""")'
@@ -27155,7 +27155,7 @@ class InfluenceDiagram(DAGmodel):
         return _toFastBN(self)
       else:
         with open(filename, "w") as pyfile:
-          print(_toFastBN(self,pythoncode=True), file=pyfile)    
+          print(_toFastBN(self,pythoncode=True), file=pyfile)
 
 
     def __repr__(self) -> str:

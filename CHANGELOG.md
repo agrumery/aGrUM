@@ -11,7 +11,7 @@
   * Added `pyAgrum.Potential.memoryFootprint` and `pyAgrum.BayesNet.memoryFootprint` (thanks to Benjamin Datko).
   * Fixed a bug when subscripting `gum::DiscretizedVariable` with the (last) interval (thanks to Gaspard Ducamp).
   * Fixed a bug in `pyAgrum.skbn.BNDiscretizer` for `NoDiscretization` method with given `paramDiscretization`.
-  * Moved function `pyAgrum.lib.export.toFast` to method `pyAgrum.BayesNet.toFast`.
+  * Moved function `pyAgrum.lib.export.toFast` to method `pyAgrum.{BayesNet|InfluenceDiagram|MRF}.toFast()`.
   * Moved `pyAgrum.skbn.BNDiscretizer` to `pyAgrum.lib.discretizer`.
   * Worked on documentation for CTBN
   * Fixed `fontcolor` configuration for causal model.
