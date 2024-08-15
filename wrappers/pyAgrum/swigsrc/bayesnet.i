@@ -395,8 +395,6 @@ def toFast(self, filename: str = None) -> str:
 
   Parameters
   ----------
-  bn :
-    the Bayesian network to export
   filename : Optional[str]
     the name of the file (including the prefix), if None , use sys.stdout
   """
@@ -404,7 +402,7 @@ def toFast(self, filename: str = None) -> str:
   def _toFastBN(bn,pythoncode=False):
     res = ''
     if pythoncode:
-      res+='bn=gum.fastBN("""'
+      res+='model=gum.fastBN("""'
     sovars = set()
     first = True
     for x, y in bn.arcs():
@@ -425,6 +423,13 @@ def toFast(self, filename: str = None) -> str:
       else:
         res += bn.variable(y).toFast()
         sovars.add(y)
+
+    for x in bn.nodes():
+      if x not in sovars:
+        if pythoncode:
+          res +='\n                 '
+        res += ";"+bn.variable(x).toFast()
+
     if pythoncode:
       res += '""")'
     return res
@@ -433,6 +438,6 @@ def toFast(self, filename: str = None) -> str:
     return _toFastBN(self)
   else:
     with open(filename, "w") as pyfile:
-      print(_toFastBN(self), file=pyfile)
+      print(_toFastBN(self,pythoncode=True), file=pyfile)
   }
 }

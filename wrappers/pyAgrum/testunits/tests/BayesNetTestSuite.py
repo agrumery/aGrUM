@@ -772,6 +772,16 @@ class TestSaveBN(BayesNetTestCase):
       self.assertEqual(bn.variable(n).domainSize(),
                        bn2.variable(n).domainSize())
 
+  def testToFast(self):
+    model=gum.fastBN("A->B->C<-D->E;F->G[3];H->I{a|b|c};X")
+    model2=gum.fastBN(model.toFast())
+    self.assertEqual(model.names(),model2.names())
+    for _,n in model:
+      self.assertEqual(model.variable(n).toFast(),
+                       model2.variable(n).toFast())
+      self.assertEqual({model.variable(i).name() for i in model.parents(n)},
+                       {model2.variable(i).name() for i in model2.parents(n)})
+
 
 class TestScore(BayesNetTestCase):
   def testSkeletonPrecision(self):

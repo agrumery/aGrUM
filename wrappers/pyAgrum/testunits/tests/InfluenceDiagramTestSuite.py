@@ -180,6 +180,18 @@ class InfluenceDiagramTestCase(pyAgrumTestCase):
     self.assertEqual(ie.optimalDecision("d"), gum.Potential().add(tst_id.variableFromName("d")).fillWith([0, 1]))
     self.assertEqual(ie.MEU()['mean'], 200)
 
+  def testToFast(self):
+    model=gum.fastID("*A->B->$C<-*D->E;F[3]->$G;*H->I{a|b|c};X")
+    model2=gum.fastID(model.toFast())
+    self.assertEqual(model.names(),model2.names())
+    for _,n in model:
+      self.assertEqual(model.isChanceNode(n),model2.isChanceNode(n))
+      self.assertEqual(model.isUtilityNode(n),model2.isUtilityNode(n))
+      self.assertEqual(model.isDecisionNode(n),model2.isDecisionNode(n))
+      self.assertEqual(model.variable(n).toFast(),
+                       model2.variable(n).toFast())
+      self.assertEqual({model.variable(i).name() for i in model.parents(n)},
+                       {model2.variable(i).name() for i in model2.parents(n)})
 
 ts = unittest.TestSuite()
 addTests(ts, InfluenceDiagramTestCase)

@@ -12481,8 +12481,6 @@ class BayesNet(IBayesNet):
 
       Parameters
       ----------
-      bn :
-        the Bayesian network to export
       filename : Optional[str]
         the name of the file (including the prefix), if None , use sys.stdout
       """
@@ -12490,7 +12488,7 @@ class BayesNet(IBayesNet):
       def _toFastBN(bn,pythoncode=False):
         res = ''
         if pythoncode:
-          res+='bn=pyAgrum.fastBN("""'
+          res+='model=pyAgrum.fastBN("""'
         sovars = set()
         first = True
         for x, y in bn.arcs():
@@ -12511,6 +12509,13 @@ class BayesNet(IBayesNet):
           else:
             res += bn.variable(y).toFast()
             sovars.add(y)
+
+        for x in bn.nodes():
+          if x not in sovars:
+            if pythoncode:
+              res +='\n                 '   
+            res += bn.variable(x).toFast()+";"
+
         if pythoncode:
           res += '""")'
         return res
@@ -12519,7 +12524,7 @@ class BayesNet(IBayesNet):
         return _toFastBN(self)
       else:
         with open(filename, "w") as pyfile:
-          print(_toFastBN(self), file=pyfile)
+          print(_toFastBN(self,pythoncode=True), file=pyfile)
 
 
     def __repr__(self) -> str:
@@ -13943,6 +13948,57 @@ class MarkovRandomField(IMarkovRandomField):
         for prop in state['properties']:
             self.setProperty(prop,state['properties'][prop])
         return self
+
+    def toFast(self, filename: str = None) -> str:
+      """
+      Export the MRF as *fast* syntax (in a string or in a python file)
+
+      Parameters
+      ----------
+      filename : Optional[str]
+        the name of the file (including the prefix), if None , use sys.stdout
+      """
+
+      def _toFastMRF(model,pythoncode=False):
+        res = ''
+        if pythoncode:
+          res+='model=pyAgrum.fastMRF("""'
+        sovars = set()
+        first = True
+        for f in model.factors():
+          if not first:
+            res += ';'
+            if pythoncode:
+              res +='\n                 '
+          else:
+            first = False
+          firstnode=True
+          for x in f:      
+            if firstnode:
+              firstnode=False
+            else:
+              res += "--"
+            if x in sovars:
+              res += model.variable(x).name()
+            else:
+              res += model.variable(x).toFast()
+              sovars.add(x)
+
+        for x in model.nodes():
+          if x not in sovars:
+            if pythoncode:
+              res +='\n                 '
+            res += model.variable(x).toFast()+";"
+
+        if pythoncode:
+          res += '""")'
+        return res
+
+      if filename is None:
+        return _toFastMRF(self)
+      else:
+        with open(filename, "w") as pyfile:
+          print(_toFastBN(self,pythoncode=True), file=pyfile)
 
 
     def __repr__(self) -> str:
@@ -27041,6 +27097,65 @@ class InfluenceDiagram(DAGmodel):
         for prop in state['properties']:
             self.setProperty(prop,state['properties'][prop])
         return self
+
+
+    def toFast(self, filename: str = None) -> str:
+      """
+      Export the influence Diagram as *fast* syntax (in a string or in a python file)
+
+      Parameters
+      ----------
+      filename : Optional[str]
+        the name of the file (including the prefix), if None , use sys.stdout
+      """
+      def _toFastVar(model,i):
+        res=""
+        if model.isUtilityNode(i):
+          res="$"
+        elif model.isDecisionNode(i):
+          res="*"
+        return res+model.variable(i).toFast()
+
+      def _toFastBN(model,pythoncode=False):
+        res = ''
+        if pythoncode:
+          res+='model=pyAgrum.fastBN("""'
+        sovars = set()
+        first = True
+        for x, y in model.arcs():
+          if not first:
+            res += ';'
+            if pythoncode:
+              res +='\n                 '
+          else:
+            first = False
+          if x in sovars:
+            res += model.variable(x).name()
+          else:
+            res += _toFastVar(model,x)
+            sovars.add(x)
+          res += "->"
+          if y in sovars:
+            res += model.variable(y).name()
+          else:
+            res += _toFastVar(model,y)
+            sovars.add(y)
+
+        for x in model.nodes():
+          if x not in sovars:
+            if pythoncode:
+              res +='\n                 '
+            res += _toFastVar(model,x)+";"
+
+        if pythoncode:
+          res += '""")'
+        return res
+
+      if filename is None:
+        return _toFastBN(self)
+      else:
+        with open(filename, "w") as pyfile:
+          print(_toFastBN(self,pythoncode=True), file=pyfile)    
 
 
     def __repr__(self) -> str:

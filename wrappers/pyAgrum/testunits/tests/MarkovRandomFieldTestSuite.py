@@ -296,6 +296,16 @@ class MarkovRandomFieldTestCase(pyAgrumTestCase):
     mrf.addFactor({2, 0})
     self.assertEqual(mrf.factor({2, 0}).variable(0).name(), mrf.variable(0).name())
 
+  def testToFast(self):
+    model=gum.fastMRF("A--B--C--D--E;F--G[3];H--I{a|b|c}--A--B;X")
+    model2=gum.fastMRF(model.toFast())
+    self.assertEqual(model.names(),model2.names())
+    for _,n in model:
+      self.assertEqual(model.variable(n).toFast(),
+                       model2.variable(n).toFast())
+      self.assertEqual({model.variable(i).name() for i in model.neighbours(n)},
+                       {model2.variable(i).name() for i in model2.neighbours(n)})
+
 
 ts = unittest.TestSuite()
 addTests(ts, MarkovRandomFieldTestCase)

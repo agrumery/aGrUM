@@ -152,5 +152,64 @@ def __setstate__(self,state):
     for prop in state['properties']:
         self.setProperty(prop,state['properties'][prop])
     return self
+
+
+def toFast(self, filename: str = None) -> str:
+  """
+  Export the influence Diagram as *fast* syntax (in a string or in a python file)
+
+  Parameters
+  ----------
+  filename : Optional[str]
+    the name of the file (including the prefix), if None , use sys.stdout
+  """
+  def _toFastVar(model,i):
+    res=""
+    if model.isUtilityNode(i):
+      res="$"
+    elif model.isDecisionNode(i):
+      res="*"
+    return res+model.variable(i).toFast()
+
+  def _toFastBN(model,pythoncode=False):
+    res = ''
+    if pythoncode:
+      res+='model=gum.fastBN("""'
+    sovars = set()
+    first = True
+    for x, y in model.arcs():
+      if not first:
+        res += ';'
+        if pythoncode:
+          res +='\n                 '
+      else:
+        first = False
+      if x in sovars:
+        res += model.variable(x).name()
+      else:
+        res += _toFastVar(model,x)
+        sovars.add(x)
+      res += "->"
+      if y in sovars:
+        res += model.variable(y).name()
+      else:
+        res += _toFastVar(model,y)
+        sovars.add(y)
+
+    for x in model.nodes():
+      if x not in sovars:
+        if pythoncode:
+          res +='\n                 '
+        res += ";"+_toFastVar(model,x)
+
+    if pythoncode:
+      res += '""")'
+    return res
+
+  if filename is None:
+    return _toFastBN(self)
+  else:
+    with open(filename, "w") as pyfile:
+      print(_toFastBN(self,pythoncode=True), file=pyfile)
   }
 }

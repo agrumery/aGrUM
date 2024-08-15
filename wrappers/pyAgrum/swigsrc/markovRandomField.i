@@ -202,7 +202,59 @@ def __setstate__(self,state):
     for prop in state['properties']:
         self.setProperty(prop,state['properties'][prop])
     return self
+
+def toFast(self, filename: str = None) -> str:
+  """
+  Export the MRF as *fast* syntax (in a string or in a python file)
+
+  Parameters
+  ----------
+  filename : Optional[str]
+    the name of the file (including the prefix), if None , use sys.stdout
+  """
+
+  def _toFastMRF(model,pythoncode=False):
+    res = ''
+    if pythoncode:
+      res+='model=gum.fastMRF("""'
+    sovars = set()
+    first = True
+    for f in model.factors():
+      if not first:
+        res += ';'
+        if pythoncode:
+          res +='\n                 '
+      else:
+        first = False
+      firstnode=True
+      for x in f:
+        if firstnode:
+          firstnode=False
+        else:
+          res += "--"
+        if x in sovars:
+          res += model.variable(x).name()
+        else:
+          res += model.variable(x).toFast()
+          sovars.add(x)
+
+    for x in model.nodes():
+      if x not in sovars:
+        if pythoncode:
+          res +='\n                 '
+        res += ";"+model.variable(x).toFast()
+
+    if pythoncode:
+      res += '""")'
+    return res
+
+  if filename is None:
+    return _toFastMRF(self)
+  else:
+    with open(filename, "w") as pyfile:
+      print(_toFastBN(self,pythoncode=True), file=pyfile)
   }
+
 %pythonappend gum::UGmodel::graph %{
     val = UndiGraph(val) # copying the graph
 %}
