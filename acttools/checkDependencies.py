@@ -1,8 +1,5 @@
-#!/usr/bin/python
-# -*- coding: utf-8 -*-
-
 # ***************************************************************************
-# *   Copyright (c) 2015-2024 by Pierre-Henri WUILLEMIN                          *
+# *   Copyright (c) 2015-2024 by Pierre-Henri WUILLEMIN                     *
 # *   {prenom.nom}_at_lip6.fr                                               *
 # *                                                                         *
 # *   This program is free software; you can redistribute it and/or modify  *

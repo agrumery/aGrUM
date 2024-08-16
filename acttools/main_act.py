@@ -1,4 +1,3 @@
-#!/usr/bin/env python
 # ***************************************************************************
 # *   Copyright (c) 2015-2024 by Pierre-Henri WUILLEMIN (@LIP6)             *
 # *   info_at_agrum_dot_org                                                 *
