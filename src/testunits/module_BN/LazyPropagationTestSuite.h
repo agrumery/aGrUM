@@ -1,4 +1,4 @@
-/*
+/**
  *   Copyright (c) 2005-2024 by Pierre-Henri WUILLEMIN(_at_LIP6) & Christophe GONZALES(_at_AMU)
  *   info_at_agrum_dot_org
  *

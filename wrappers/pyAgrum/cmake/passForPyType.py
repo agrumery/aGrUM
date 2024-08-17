@@ -1,9 +1,3 @@
-"""
-Swig creates very nice code but cannot induce python
-types for wrapped function. This utility change many
-different c++ oddities in generated pyAgrum.py
-"""
-
 # (c) Copyright 2015-2024 by Pierre-Henri Wuillemin(@LIP6)
 # (pierre-henri.wuillemin@lip6.fr)
 
@@ -24,6 +18,13 @@ different c++ oddities in generated pyAgrum.py
 # IN AN ACTION OF CONTRACT, NEGLIGENCE OR OTHER TORTIOUS
 # ACTION, ARISING OUT OF OR IN CONNECTION WITH THE USE
 # OR PERFORMANCE OF THIS SOFTWARE!
+
+"""
+Swig creates very nice code but cannot induce python
+types for wrapped function. This utility change many
+different c++ oddities in generated pyAgrum.py
+"""
+
 import os
 import shutil
 import sys

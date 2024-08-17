@@ -1,7 +1,3 @@
-"""
-The purpose of this module is to provide tools for comaring different BNs.
-"""
-
 # (c) Copyright 2015-2024 by Pierre-Henri Wuillemin(@LIP6)
 # (pierre-henri.wuillemin@lip6.fr)
 
@@ -22,7 +18,9 @@ The purpose of this module is to provide tools for comaring different BNs.
 # IN AN ACTION OF CONTRACT, NEGLIGENCE OR OTHER TORTIOUS
 # ACTION, ARISING OUT OF OR IN CONNECTION WITH THE USE
 # OR PERFORMANCE OF THIS SOFTWARE!
-
+"""
+The purpose of this module is to provide tools for comaring different BNs.
+"""
 
 import os
 import math

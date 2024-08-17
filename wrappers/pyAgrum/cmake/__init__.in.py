@@ -1,3 +1,24 @@
+# (c) Copyright 2015-2024 by Pierre-Henri Wuillemin(@LIP6)
+# (pierre-henri.wuillemin@lip6.fr)
+
+# Permission to use, copy, modify, and distribute this
+# software and its documentation for any purpose and
+# without fee or royalty is hereby granted, provided
+# that the above copyright notice appear in all copies
+# and that both that copyright notice and this permission
+# notice appear in supporting documentation or portions
+# thereof, including modifications, that you make.
+
+# THE AUTHOR P.H. WUILLEMIN  DISCLAIMS ALL WARRANTIES
+# WITH REGARD TO THIS SOFTWARE, INCLUDING ALL IMPLIED
+# WARRANTIES OF MERCHANTABILITY AND FITNESS, IN NO EVENT
+# SHALL THE AUTHOR BE LIABLE FOR ANY SPECIAL, INDIRECT
+# OR CONSEQUENTIAL DAMAGES OR ANY DAMAGES WHATSOEVER
+# RESULTING FROM LOSS OF USE, DATA OR PROFITS, WHETHER
+# IN AN ACTION OF CONTRACT, NEGLIGENCE OR OTHER TORTIOUS
+# ACTION, ARISING OUT OF OR IN CONNECTION WITH THE USE
+# OR PERFORMANCE OF THIS SOFTWARE!
+
 """
 `pyAgrum <http://agrum.org>`_ a scientific C++ and Python library dedicated to Bayesian Networks and other Probabilistic Graphical Models. Based on the C++ `aGrUM <https://agrum.lip6.fr>`_ library, it provides a high-level interface to the C++ part of aGrUM allowing to create, manage and perform efficient computations with Bayesian networks and others probabilsitic graphical models (Markov random fields, influence diagrams and LIMIDs, dynamic BN, probabilistic relational models).
 
@@ -8,23 +29,6 @@ pyAgrum includes :
   * examples as `notebooks <https://pyagrum.readthedocs.io/en/latest/notebooks/01-Tutorial.html>`_,
   * a `website <http://agrum.org>`_.
 """
-
-# aGrum Licence (LGPL)
-# -------------------
-# *   This program is free software; you can redistribute it and/or modify  *
-# *   it under the terms of the GNU General Public License as published by  *
-# *   the Free Software Foundation; either version 2 of the License, or     *
-# *   (at your option) any later version.                                   *
-# *                                                                         *
-# *   This program is distributed in the hope that it will be useful,       *
-# *   but WITHOUT ANY WARRANTY; without even the implied warranty of        *
-# *   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the         *
-# *   GNU General Public License for more details.                          *
-# *                                                                         *
-# *   You should have received a copy of the GNU General Public License     *
-# *   along with this program; if not, write to the                         *
-# *   Free Software Foundation, Inc.,                                       *
-# *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 
 from .deprecated import *
 

@@ -1,8 +1,3 @@
-"""
-The purpose of this module is to provide tools for mapping Bayesian Network (and inference) in dot language in order to
-be displayed/saved as image.
-"""
-
 # (c) Copyright 2015-2024 by Pierre-Henri Wuillemin(@LIP6)
 # (pierre-henri.wuillemin@lip6.fr)
 
@@ -24,6 +19,10 @@ be displayed/saved as image.
 # ACTION, ARISING OUT OF OR IN CONNECTION WITH THE USE
 # OR PERFORMANCE OF THIS SOFTWARE!
 
+"""
+The purpose of this module is to provide tools for mapping Bayesian Network (and inference) in dot language in order to
+be displayed/saved as image.
+"""
 
 import time
 import hashlib

@@ -1,7 +1,3 @@
-"""
-Color manipulations for pyAgrum.lib module
-"""
-
 # (c) Copyright 2015-2024 by Pierre-Henri Wuillemin(@LIP6)
 # (pierre-henri.wuillemin@lip6.fr)
 
@@ -22,6 +18,11 @@ Color manipulations for pyAgrum.lib module
 # IN AN ACTION OF CONTRACT, NEGLIGENCE OR OTHER TORTIOUS
 # ACTION, ARISING OUT OF OR IN CONNECTION WITH THE USE
 # OR PERFORMANCE OF THIS SOFTWARE!
+
+"""
+Color manipulations for pyAgrum.lib module
+"""
+
 from typing import List, Tuple
 
 import matplotlib as mpl

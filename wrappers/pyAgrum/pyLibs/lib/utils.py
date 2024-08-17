@@ -1,7 +1,3 @@
-"""
-collection of utilities for pyAgrum.lib
-"""
-
 # (c) Copyright 2015-2024 by Pierre-Henri Wuillemin(@LIP6)
 # (pierre-henri.wuillemin@lip6.fr)
 
@@ -22,6 +18,9 @@ collection of utilities for pyAgrum.lib
 # IN AN ACTION OF CONTRACT, NEGLIGENCE OR OTHER TORTIOUS
 # ACTION, ARISING OUT OF OR IN CONNECTION WITH THE USE
 # OR PERFORMANCE OF THIS SOFTWARE!
+"""
+collection of utilities for pyAgrum.lib
+"""
 
 from typing import Dict, Tuple
 import csv

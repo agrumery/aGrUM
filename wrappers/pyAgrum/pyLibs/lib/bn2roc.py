@@ -1,7 +1,3 @@
-"""
-The purpose of this module is to provide tools for building ROC and PR from Bayesian Network.
-"""
-
 # (c) Copyright 2015-2024 by Pierre-Henri Wuillemin(@LIP6)
 # (pierre-henri.wuillemin@lip6.fr)
 
@@ -23,6 +19,9 @@ The purpose of this module is to provide tools for building ROC and PR from Baye
 # ACTION, ARISING OUT OF OR IN CONNECTION WITH THE USE
 # OR PERFORMANCE OF THIS SOFTWARE!
 
+"""
+The purpose of this module is to provide tools for building ROC and PR from Bayesian Network.
+"""
 
 import os
 from typing import List, Tuple
