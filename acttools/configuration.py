@@ -44,10 +44,10 @@ cfg.act_version_major = "2"
 cfg.act_version_minor = "4"
 cfg.act_version = cfg.act_version_major + "." + cfg.act_version_minor
 
-with open("VERSION.txt", "r") as versionfile:
-  cfg.gum_version_major = versionfile.readline().split('"')[1]
-  cfg.gum_version_minor = versionfile.readline().split('"')[1]
-  cfg.gum_version_patch = versionfile.readline().split('"')[1]
+with open("VERSION.txt", "r") as version_file:
+  cfg.gum_version_major = version_file.readline().split('"')[1]
+  cfg.gum_version_minor = version_file.readline().split('"')[1]
+  cfg.gum_version_patch = version_file.readline().split('"')[1]
 cfg.gum_version = f"{cfg.gum_version_major}.{cfg.gum_version_minor}.{cfg.gum_version_patch}"
 
 cfg.modulesFile = "src/modules.txt"  # the file to parse to find the modules
@@ -57,8 +57,8 @@ cfg.fixedSeedValue = "10"
 cfg.nbr_tests_for_stats = 100
 
 # for message
-cfg.prefixe_line = "-- "
-cfg.prefixe_trace = "==> "
+cfg.prefix_line = "-- "
+cfg.prefix_trace = "==> "
 
 cfg.os_platform = sys.platform
 

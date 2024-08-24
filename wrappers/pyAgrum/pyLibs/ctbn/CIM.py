@@ -19,7 +19,7 @@
 # ACTION, ARISING OUT OF OR IN CONNECTION WITH THE USE
 # OR PERFORMANCE OF THIS SOFTWARE!
 
- from typing import Dict, Optional, Union, List
+from typing import Dict, Optional, Union, List
 
 import numpy
 import pyAgrum

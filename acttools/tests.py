@@ -23,16 +23,15 @@ import os
 import sys
 from datetime import datetime
 
-from .utils import error, notif, setifyString, CrossPlatformRelPath, critic
+from .utils import notif, setifyString, CrossPlatformRelPath, critic
 
 
-def checkTests(current:dict[str,str]):
+def checkTests(current: dict[str, str]):
   cde = current['tests']
-  if cde == "quick":
-    if 'aGrUM' in current['targets']:
-      current['tests'] = 'all'
-      current['modules'] = 'BASE+BN+BNLEARNING'
-      cde = 'all'
+  if cde == "quick" and 'aGrUM' in current['targets']:
+    current['tests'] = 'all'
+    current['modules'] = 'BASE+BN+BNLEARNING'
+    cde = 'all'
 
   alltests = allTests(setifyString(current['modules']))
 
@@ -45,27 +44,25 @@ def checkTests(current:dict[str,str]):
     return checkTestList(current, alltests)
 
 
-def checkAndWriteTests(current:dict[str,str]):
+def checkAndWriteTests(current: dict[str, str]):
   writeTestList(checkTests(current))
 
 
-def checkTestList(current:dict[str,str], alltests):
+def checkTestList(current: dict[str, str], alltests):
   res = []
   for ss in setifyString(current['tests']):
     s = '/' + ss + 'TestSuite.h'
     name = ""
     if "aGrUM" not in current['targets']:
-      name = s
       break
     for tryfile in alltests:
       if tryfile.endswith(s):
         name = tryfile
         break
     if name == "":
-      if ss != "show" and ss != "quick":
-        if current['action'] == 'test':
-          printTests(current)
-          critic('Test "src/testunits/[module]/' + ss + 'TestSuite.h" does not exist for the selected modules')
+      if ss != "show" and ss != "quick" and current['action'] == 'test':
+        printTests(current)
+        critic('Test "src/testunits/[module]/' + ss + 'TestSuite.h" does not exist for the selected modules')
     else:
       res.append(name)
   return res
@@ -106,7 +103,7 @@ def testNames(testsList):
   return [s.split('/')[-1].split("TestSuite")[0] for s in testsList]
 
 
-def checkTestListCmake(current:dict[str,str]):
+def checkTestListCmake(current: dict[str, str]):
   if not os.path.exists('src/testunits/testList.cmake'):
     writeTestList(allTests(current['modules']))
   else:
@@ -132,7 +129,7 @@ def printTestsForModule(m):
   print(" " + m + " ")
   print("=" * (2 + len(m)))
 
-  l = testNames(allTests(set([m])))
+  l = testNames(allTests({m}))
 
   w = max([len(x) for x in l])
   nbr = 80 / w
@@ -148,6 +145,6 @@ def printTestsForModule(m):
   print("")
 
 
-def printTests(current:dict[str,str]):
+def printTests(current: dict[str, str]):
   for modul in setifyString(current['modules']):
     printTestsForModule(modul)

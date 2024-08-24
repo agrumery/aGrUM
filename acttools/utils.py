@@ -28,17 +28,15 @@ from .configuration import cfg
 
 
 def about():
-  print(
-    cfg.C_END + cfg.C_WARNING + "aGrUM" + cfg.C_END + " compilation tool " + cfg.C_VALUE + cfg.act_version + cfg.C_END +
-    " for " + cfg.C_WARNING + "aGrUM/pyAgrum " + cfg.C_VALUE + cfg.gum_version + cfg.C_END
-  )
-  print("(c) 2010-21 " + cfg.C_MSG + "aGrUM Team" + cfg.C_END)
+  print(f"{cfg.C_END}{cfg.C_WARNING}aGrUM{cfg.C_END} compilation tool {cfg.C_VALUE}{cfg.act_version}{cfg.C_END} for {cfg.C_WARNING}aGrUM/pyAgrum{cfg.C_VALUE}{cfg.gum_version}{cfg.C_END}")
+  print(f"(c) 2010-2024 {cfg.C_MSG}aGrUM Team{cfg.C_END}")
   print("")
 
 
 def setifyString(s:str)->set[str]:
   # special case for accepting agrum instead of 'aGrUM'
-  return set(map(lambda x: 'aGrUM' if x == 'agrum' else x,
+  return set(map(lambda x: 'aGrUM' if x.lower() == 'agrum' else 
+                           'pyAgrum' if x.lower() == 'pyagrum' else x,       
                  filter(None, s.split("+"))))  # filter to setify "a++b+c" into set(['a','b','c'])
 
 
@@ -58,12 +56,12 @@ def colFormat(v:str, col:str)->str:
 
 def trace(current:dict[str,str], cde:str):
   if current['dry_run'] or current['verbose']:
-    notif(cde, cfg.prefixe_trace)
+    notif(cde, cfg.prefix_trace)
 
 
 def notif_oneline(s:str, pref:Optional[str]=None):
   if pref is None:
-    pref = cfg.prefixe_line
+    pref = cfg.prefix_line
 
   print(pref + colFormat("** act Notification : " + s, cfg.C_MSG) + cfg.C_END,
         end="                                       \r")
@@ -71,14 +69,14 @@ def notif_oneline(s:str, pref:Optional[str]=None):
 
 def notif(s:str="", pref:Optional[str]=None):
   if pref is None:
-    pref = cfg.prefixe_line
+    pref = cfg.prefix_line
 
   print(pref + colFormat("** act Notification : " + s, cfg.C_MSG) + cfg.C_END)
 
 
 def warn(s:str, pref:Optional[str]=None):
   if pref is None:
-    pref = cfg.prefixe_line
+    pref = cfg.prefix_line
 
   if cfg.verbosity:
     print(pref + colFormat("** act Warning      : " + s, cfg.C_WARNING) + cfg.C_END)
@@ -86,14 +84,14 @@ def warn(s:str, pref:Optional[str]=None):
 
 def error(s:str, pref:Optional[str]=None):
   if pref is None:
-    pref = cfg.prefixe_line
+    pref = cfg.prefix_line
 
   print(pref + colFormat("** act Error        : " + s, cfg.C_ERROR) + cfg.C_END)
 
 
 def critic(s:str, pref:Optional[str]=None, rc:int=1):
   if pref is None:
-    pref = cfg.prefixe_line
+    pref = cfg.prefix_line
 
   error(s, pref)
   print(pref + colFormat("Stopped.", cfg.C_MSG) + cfg.C_END + "\n")

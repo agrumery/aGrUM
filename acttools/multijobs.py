@@ -204,7 +204,7 @@ def threaded_execution(cde):
     if chan == 'stdout' and lines is not None:
       try:
         lines = (lines.decode('utf-8')).split("\n")
-      except:
+      except UnicodeDecodeError:
         try:
           lines = lines.split("\n")
         except:

@@ -37,14 +37,13 @@ def getCurrent() -> dict[str, str]:
   try:
     with open(cfg.configFile, "rb") as fp:
       shlv = pickle.load(fp)
-  except:
+  except FileNotFoundError:
     shlv = {}
 
   for key in cfg.default:  # .iterkeys():
     current[key] = cfg.default[key]
-    if key not in cfg.non_persistent:
-      if key in shlv:
-        current[key] = shlv[key]
+    if key not in cfg.non_persistent and key in shlv:
+      current[key] = shlv[key]
 
   return current
 
@@ -62,9 +61,8 @@ def setCurrent(current: dict[str, str]):
 def checkCurrent(current: dict[str, str], options: dict[str, str], args: list[str]):
   # helper
   def update(current: dict[str, str], key, val, test):
-    if test:
-      if current[key] != val:
-        current[key] = val
+    if test and current[key] != val:
+      current[key] = val
     return test
 
   # end of helper
@@ -106,9 +104,7 @@ def checkCurrent(current: dict[str, str], options: dict[str, str], args: list[st
 
   checkConsistency(current)
 
-  if options.noSaveParams:
-    pass
-  else:
+  if not options.noSaveParams:
     setCurrent(current)
   showInvocation(current)
 
@@ -120,7 +116,7 @@ def checkConsistency(current: dict[str, str]):
   def check_aGrumTest(option, current):
     if current[option]:
       prefix = f"Option [{option}] acts only"
-      if current['targets'] != set(['aGrUM']):
+      if current['targets'] != {'aGrUM'}:
         has_notif = True
         notif(prefix + " on target [aGrUM].")
       if current['action'] != 'test':

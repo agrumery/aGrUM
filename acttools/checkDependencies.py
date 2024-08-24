@@ -68,28 +68,27 @@ def _get_dependencies() -> dict[str, list[str]]:
   return deps
 
 
-def _build_ancestral(ancestrals: dict[str, dict[str, int]], deps: dict[str, list[str]], k: str) -> dict[str, int]:
-  if k not in ancestrals:
-    ancestrals[k] = None
+def _build_ancestral(ancestors: dict[str, dict[str, int]], deps: dict[str, list[str]], k: str) -> dict[str, int]:
+  if k not in ancestors:
     anc_k = {}
     for f in deps[k]:
       anc_k[f] = 1 if f not in anc_k else anc_k[f] + 1
-      b = _build_ancestral(ancestrals, deps, f)
+      b = _build_ancestral(ancestors, deps, f)
       if b is None:
         raise ValueError(f"Cycle detected from {f}->{k}")
       else:
         for pf in b.keys():
           anc_k[pf] = 1 if pf not in anc_k else anc_k[pf] + 1
-    ancestrals[k] = anc_k
-  return ancestrals[k]
+    ancestors[k] = anc_k
+  return ancestors[k]
 
 
-def _simplyfy_dependencies(ancestrals: dict[str, dict[str, int]], deps: dict[str, list[str]]):
+def _simplify_dependencies(ancestors: dict[str, dict[str, int]], deps: dict[str, list[str]]):
   nbr = 0
   for k in deps.keys():
     first = 0
     for p in deps[k]:
-      if ancestrals[k][p] > 1:
+      if ancestors[k][p] > 1:
         if first == 0:
           warn("")
           warn("-" * len(k))
@@ -234,10 +233,10 @@ def check_gum_dependencies(graph=True, correction=False):
     notif("  + drawing headers map in [agrum-map.pdf]")
     draw_gum_dependencies(deps)
 
-  ancestrals = {}
+  ancestors = {}
   for k in deps.keys():
-    _build_ancestral(ancestrals, deps, k)
-  _simplyfy_dependencies(ancestrals, deps)
+    _build_ancestral(ancestors, deps, k)
+  _simplify_dependencies(ancestors, deps)
 
   nb_opt_arcs = sum([len(c) for c in deps.values()])
   notif(f"  + Nbr of dependencies optimized : {nb_opt_arcs}")
