@@ -139,9 +139,9 @@ namespace gum {
           i = 0;
           j++;
 
-          if (newAgg->varType() == VarType::Labelized) {
+          if (newAgg->varType() == VarType::LABELIZED) {
             addAggregator_(bn, aggType, *newAgg, p->domainSize());
-          } else if (newAgg->varType() == VarType::Range) {
+          } else if (newAgg->varType() == VarType::RANGE) {
             static_cast< RangeVariable* >(newAgg)->setMinVal(minVal);
             static_cast< RangeVariable* >(newAgg)->setMaxVal(maxVal);
             addAggregator_(bn, aggType, *newAgg, 0);
@@ -174,7 +174,7 @@ namespace gum {
           newAgg->setName(newName);
           newAgg->setDescription(aggType);
 
-          if (bn.variable(parent).varType() == VarType::Range) {
+          if (bn.variable(parent).varType() == VarType::RANGE) {
             minVal += static_cast< const RangeVariable& >(bn.variable(parent)).minVal();
             maxVal += static_cast< const RangeVariable& >(bn.variable(parent)).maxVal();
           }
@@ -182,7 +182,7 @@ namespace gum {
           newAggParents.push_back(parent);
           i++;
         } else {
-          if (bn.variable(parent).varType() == VarType::Range) {
+          if (bn.variable(parent).varType() == VarType::RANGE) {
             minVal += static_cast< const RangeVariable& >(bn.variable(parent)).minVal();
             maxVal += static_cast< const RangeVariable& >(bn.variable(parent)).maxVal();
           }
@@ -196,9 +196,9 @@ namespace gum {
       q++;
     }
 
-    if (newAgg->varType() == VarType::Labelized) {
+    if (newAgg->varType() == VarType::LABELIZED) {
       addAggregator_(bn, aggType, *newAgg, p->domainSize());
-    } else if (newAgg->varType() == VarType::Range) {
+    } else if (newAgg->varType() == VarType::RANGE) {
       static_cast< RangeVariable* >(newAgg)->setMinVal(minVal);
       static_cast< RangeVariable* >(newAgg)->setMaxVal(maxVal);
       addAggregator_(bn, aggType, *newAgg, 0);
@@ -269,9 +269,9 @@ namespace gum {
             i = 0;
             j++;
 
-            if (newAgg->varType() == VarType::Labelized) {
+            if (newAgg->varType() == VarType::LABELIZED) {
               addAggregator_(bn, aggType, *newAgg, p->domainSize());
-            } else if (newAgg->varType() == VarType::Range) {
+            } else if (newAgg->varType() == VarType::RANGE) {
               static_cast< RangeVariable* >(newAgg)->setMinVal(minVal);
               static_cast< RangeVariable* >(newAgg)->setMaxVal(maxVal);
               addAggregator_(bn, aggType, *newAgg, 0);
@@ -297,7 +297,7 @@ namespace gum {
             newAgg->setName(newName);
             newAgg->setDescription(aggType);
 
-            if (bn.variable(parent).varType() == VarType::Range) {
+            if (bn.variable(parent).varType() == VarType::RANGE) {
               minVal += static_cast< const RangeVariable& >(bn.variable(parent)).minVal();
               maxVal += static_cast< const RangeVariable& >(bn.variable(parent)).maxVal();
             }
@@ -305,7 +305,7 @@ namespace gum {
             newAggParents.push_back(parent);
             i++;
           } else {
-            if (bn.variable(parent).varType() == VarType::Range) {
+            if (bn.variable(parent).varType() == VarType::RANGE) {
               minVal += static_cast< const RangeVariable& >(bn.variable(parent)).minVal();
               maxVal += static_cast< const RangeVariable& >(bn.variable(parent)).maxVal();
             }
@@ -319,9 +319,9 @@ namespace gum {
         q++;
       }
 
-      if (newAgg->varType() == VarType::Labelized) {
+      if (newAgg->varType() == VarType::LABELIZED) {
         addAggregator_(bn, aggType, *newAgg, p->domainSize());
-      } else if (newAgg->varType() == VarType::Range) {
+      } else if (newAgg->varType() == VarType::RANGE) {
         static_cast< RangeVariable* >(newAgg)->setMinVal(minVal);
         static_cast< RangeVariable* >(newAgg)->setMaxVal(maxVal);
         addAggregator_(bn, aggType, *newAgg, 0);

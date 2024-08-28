@@ -611,14 +611,14 @@ namespace gum {
         switch (_translators_[i].variable()->varType()) {
           // if the translator is discretized, range or continuous, we cannot
           // improve it
-          case VarType::Continuous :
-          case VarType::Numerical :
-          case VarType::Discretized :
-          case VarType::Range : break;
+          case VarType::CONTINUOUS :
+          case VarType::NUMERICAL :
+          case VarType::DISCRETIZED :
+          case VarType::RANGE : break;
 
           // if the translator can only translate integers ans all the numbers
           // are consecutive, prefer a range variable
-          case VarType::Integer : {
+          case VarType::INTEGER : {
             const IntegerVariable& var
                 = static_cast< const IntegerVariable& >(*(_translators_[i].variable()));
 
@@ -665,7 +665,7 @@ namespace gum {
           // prefer a RangeVariable; if they are integers but not consecutive,
           // prefer an IntegerVariable, else check whether a continuous
           // variable could be ok
-          case VarType::Labelized : {
+          case VarType::LABELIZED : {
             const LabelizedVariable& var
                 = static_cast< const LabelizedVariable& >(*(_translators_[i].variable()));
             if (!var.domainSize()) break;   // we cannot get a better translator

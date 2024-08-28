@@ -151,7 +151,7 @@ namespace gum {
   // returns the size of the random discrete variable domain
   INLINE Size LabelizedVariable::domainSize() const { return _labels_.size(); }
 
-  INLINE VarType LabelizedVariable::varType() const { return VarType::Labelized; }
+  INLINE VarType LabelizedVariable::varType() const { return VarType::LABELIZED; }
 
   INLINE std::string LabelizedVariable::toFast() const {
     std::stringstream s;

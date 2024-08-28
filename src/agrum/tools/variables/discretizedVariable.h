@@ -113,11 +113,11 @@ namespace gum {
     /// @}
 
     /// a virtual clone
-    DiscretizedVariable< T_TICKS >* clone() const final;
+    DiscretizedVariable< T_TICKS >* clone() const override;
 
     /// returns the type of variable
 
-    VarType varType() const final;
+    VarType varType() const override;
 
     /**
      * operator =
@@ -150,14 +150,17 @@ namespace gum {
      * @return the ith label
      * @throw OutOfBound
      */
-    std::string label(Idx i) const final;
+    std::string label(Idx i) const override;
 
-    /// get a numerical representation of he indice-the value.
-    double numerical(Idx indice) const final;
+    /// get a (deterministic) numerical representation of he indice-the value.
+    double numerical(Idx indice) const override;
+
+    /// get a random value in the intervall indice
+    double draw(Idx indice) const override;
 
     /// from the label to its index in var.
     /// @throws NotFound
-    Idx index(const std::string& label) const final;
+    Idx index(const std::string& label) const override;
     /// from the T+TICKS to its index in var.
     /// @throws NotFound
     Idx index(const T_TICKS tick) const;
@@ -166,9 +169,9 @@ namespace gum {
      *
      * @return the size of the random discrete variable domain
      */
-    Size domainSize() const final;
+    Size domainSize() const override;
 
-    std::string domain() const final;
+    std::string domain() const override;
 
     /// string represent the type of the variable
     std::string stype() const final { return "Discretized"; };
@@ -181,20 +184,20 @@ namespace gum {
     const std::vector< T_TICKS >& ticks() const;
 
     /// return the list of ticks as a vector of doubles
-    std::vector< double > ticksAsDoubles() const final;
+    std::vector< double > ticksAsDoubles() const override;
 
     ///  returns the closest index of the value
-    Idx closestIndex(double val) const final;
+    Idx closestIndex(double val) const override;
 
     // returns the variable in fast syntax
-    std::string toFast() const final;
+    std::string toFast() const override;
 
     private:
     /// check the domain
     /**
      * this function use the assumption that the concrete type of the variable is the same as *this
      */
-    bool _checkSameDomain_(const Variable& aRV) const final;
+    bool _checkSameDomain_(const Variable& aRV) const override;
   };
 
 } /* namespace gum */

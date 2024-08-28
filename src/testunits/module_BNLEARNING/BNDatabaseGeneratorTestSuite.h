@@ -593,5 +593,63 @@ namespace gum_tests {
               .max(),
           1e-2)
     }
+
+    GUM_ACTIVE_TEST(DiscretizedVariableTranslation) {
+      std::string csvFileURL = GET_RESSOURCES_PATH("outputs/dbgen_discretized.csv");
+      auto        bn         = gum::BayesNet< double >::fastPrototype("A[1.5,2,2.5,10,14]");
+
+      gum::learning::BNDatabaseGenerator< double > dbgen(bn);
+
+      const auto  nbLines = 100;
+      std::string dummyLine;
+      double      d;
+      auto        pos = 0;
+
+      dbgen.drawSamples(nbLines);
+      // RANDOM VALUES (default)
+      dbgen.toCSV(csvFileURL);
+
+      {
+        std::ifstream stream(csvFileURL);
+        getline(stream, dummyLine);   // skip header
+        pos = 0;
+        while (getline(stream, dummyLine)) {
+          pos++;
+          TS_ASSERT(gum::isNumericalWithResult(dummyLine, &d))
+          TS_ASSERT(d >= 1.5)
+          TS_ASSERT(d <= 14)
+        }
+        TS_ASSERT_EQUALS(pos++, nbLines)
+      }
+
+      // MEDIAN
+      dbgen.setDiscretizedLabelModeMedian();
+      dbgen.toCSV(csvFileURL);
+      {
+        std::ifstream stream(csvFileURL);
+        getline(stream, dummyLine);   // skip header
+        pos = 0;
+        while (getline(stream, dummyLine)) {
+          pos++;
+          TS_ASSERT(gum::isNumericalWithResult(dummyLine, &d))
+          TS_ASSERT((d == 1.75) || (d == 2.25) || (d == 6.25) || (d == 12))
+        }
+        TS_ASSERT_EQUALS(pos, nbLines)
+      }
+
+      // INTERVALLS
+      dbgen.setDiscretizedLabelModeInterval();
+      dbgen.toCSV(csvFileURL);
+      {
+        std::ifstream stream(csvFileURL);
+        getline(stream, dummyLine);   // skip header
+        pos = 0;
+        while (getline(stream, dummyLine)) {
+          pos++;
+          TS_ASSERT_EQUALS(dummyLine.front(), '[')
+        }
+        TS_ASSERT_EQUALS(pos, nbLines)
+      }
+    }
   };
 }   // namespace gum_tests

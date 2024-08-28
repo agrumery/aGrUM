@@ -89,7 +89,7 @@ namespace gum_tests {
       TS_ASSERT_DIFFERS(var7, var6)
       TS_ASSERT_EQUALS(var3, var6)
 
-      TS_ASSERT_EQUALS(var3.varType(), gum::VarType::Numerical)
+      TS_ASSERT_EQUALS(var3.varType(), gum::VarType::NUMERICAL)
       TS_ASSERT_THROWS(var3.index("0"), const gum::NotFound&)
       TS_GUM_ASSERT_THROWS_NOTHING(var3.index("-1"))
       TS_ASSERT_EQUALS(var3.index("-2"), gum::Idx(0))

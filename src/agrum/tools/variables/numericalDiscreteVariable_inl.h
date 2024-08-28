@@ -106,7 +106,7 @@ namespace gum {
   INLINE Size NumericalDiscreteVariable::domainSize() const { return _domain_.size(); }
 
   /// returns the type of variable
-  INLINE VarType NumericalDiscreteVariable::varType() const { return VarType::Numerical; }
+  INLINE VarType NumericalDiscreteVariable::varType() const { return VarType::NUMERICAL; }
 
   /// returns the index of a given label
   INLINE Idx NumericalDiscreteVariable::index(const std::string& aLabel) const {

@@ -161,7 +161,7 @@ namespace gum {
   INLINE void MarkovRandomField< GUM_SCALAR >::changeVariableLabel(NodeId             id,
                                                                    const std::string& old_label,
                                                                    const std::string& new_label) {
-    if (variable(id).varType() != VarType::Labelized) {
+    if (variable(id).varType() != VarType::LABELIZED) {
       GUM_ERROR(NotFound, "Variable " << id << " is not a LabelizedVariable.")
     }
     LabelizedVariable* var

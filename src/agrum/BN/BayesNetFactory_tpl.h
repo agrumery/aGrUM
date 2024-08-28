@@ -206,11 +206,11 @@ namespace gum {
       _illegalStateError_("variableType");
     } else {
       switch (type) {
-        case VarType::Discretized : _stringBag_[2] = "D"; break;
-        case VarType::Range : _stringBag_[2] = "R"; break;
-        case VarType::Integer : _stringBag_[2] = "I"; break;
-        case VarType::Labelized : _stringBag_[2] = "L"; break;
-        case VarType::Continuous :
+        case VarType::DISCRETIZED : _stringBag_[2] = "D"; break;
+        case VarType::RANGE : _stringBag_[2] = "R"; break;
+        case VarType::INTEGER : _stringBag_[2] = "I"; break;
+        case VarType::LABELIZED : _stringBag_[2] = "L"; break;
+        case VarType::CONTINUOUS :
           GUM_ERROR(OperationNotAllowed,
                     "Continuous variable (" + _stringBag_[0]
                         + ") are not supported in Bayesian networks.")

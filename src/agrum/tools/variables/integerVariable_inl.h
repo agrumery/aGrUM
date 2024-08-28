@@ -96,7 +96,7 @@ namespace gum {
   INLINE Size IntegerVariable::domainSize() const { return _domain_.size(); }
 
   /// returns the type of variable
-  INLINE VarType IntegerVariable::varType() const { return VarType::Integer; }
+  INLINE VarType IntegerVariable::varType() const { return VarType::INTEGER; }
 
   /// returns the index of a given label
   INLINE Idx IntegerVariable::index(const std::string& aLabel) const {

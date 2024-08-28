@@ -148,41 +148,41 @@ namespace gum {
       factory.variableType(var_type);
 
       switch (var_type) {
-        case VarType::Labelized : {
+        case VarType::LABELIZED : {
           const auto l = static_cast< const LabelizedVariable& >(agg_var);
           for (Idx i = 0; i < l.domainSize(); ++i) {
             factory.addModality(l.label(i));
           }
           break;
         }
-        case VarType::Integer : {
+        case VarType::INTEGER : {
           const auto l = static_cast< const IntegerVariable& >(agg_var);
           for (Idx i = 0; i < l.domainSize(); ++i) {
             factory.addModality(l.label(i));
           }
           break;
         }
-        case VarType::Numerical : {
+        case VarType::NUMERICAL : {
           const auto l = static_cast< const NumericalDiscreteVariable& >(agg_var);
           for (Idx i = 0; i < l.domainSize(); ++i) {
             factory.addModality(l.label(i));
           }
           break;
         }
-        case VarType::Discretized : {
+        case VarType::DISCRETIZED : {
           const auto d = static_cast< const DiscretizedVariable< GUM_SCALAR >& >(agg_var);
           for (Idx i = 0; i < d.domainSize(); ++i) {
             factory.addTick(d.tick(i));
           }
           break;
         }
-        case VarType::Range : {
+        case VarType::RANGE : {
           const auto r = static_cast< const RangeVariable& >(agg_var);
           factory.addMin(r.minVal());
           factory.addMax(r.maxVal());
           break;
         }
-        case VarType::Continuous : {
+        case VarType::CONTINUOUS : {
           GUM_ERROR(NotImplementedYet,
                     "PRM aggregator grounding does not support yet continuous variables");
         }

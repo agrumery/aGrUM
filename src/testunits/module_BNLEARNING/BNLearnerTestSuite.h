@@ -134,8 +134,8 @@ namespace gum_tests {
                                                     true);
         for (const auto trans2: learner2.database().translatorSet().translators()) {
           const auto& var2 = trans2->variable();
-          TS_ASSERT((var2->varType() == gum::VarType::Range)
-                    || (var2->varType() == gum::VarType::Integer))
+          TS_ASSERT((var2->varType() == gum::VarType::RANGE)
+                    || (var2->varType() == gum::VarType::INTEGER))
         }
 
         learner2.useScoreBDeu();
@@ -157,8 +157,8 @@ namespace gum_tests {
 
         for (const auto trans2: learner2.database().translatorSet().translators()) {
           const auto& var2 = trans2->variable();
-          TS_ASSERT((var2->varType() == gum::VarType::Range)
-                    || (var2->varType() == gum::VarType::Integer))
+          TS_ASSERT((var2->varType() == gum::VarType::RANGE)
+                    || (var2->varType() == gum::VarType::INTEGER))
         }
 
         learner2.useScoreBDeu();
@@ -193,8 +193,8 @@ namespace gum_tests {
 
         for (const auto trans2: learner2.database().translatorSet().translators()) {
           const auto& var2 = trans2->variable();
-          TS_ASSERT((var2->varType() == gum::VarType::Range)
-                    || (var2->varType() == gum::VarType::Integer))
+          TS_ASSERT((var2->varType() == gum::VarType::RANGE)
+                    || (var2->varType() == gum::VarType::INTEGER))
         }
 
         learner2.useDirichletPrior(GET_RESSOURCES_PATH("outputs/bnlearner_dirichlet.csv"), 10);

@@ -1408,13 +1408,13 @@ namespace gum_tests {
       TS_ASSERT_EQUALS(better.size(), (gum::Size)4)
 
       TS_ASSERT_EQUALS(better[0].first, (std::size_t)0)
-      TS_ASSERT_EQUALS(better[0].second->variable()->varType(), gum::VarType::Integer)
+      TS_ASSERT_EQUALS(better[0].second->variable()->varType(), gum::VarType::INTEGER)
       TS_ASSERT_EQUALS(better[1].first, (std::size_t)1)
-      TS_ASSERT_EQUALS(better[1].second->variable()->varType(), gum::VarType::Continuous)
+      TS_ASSERT_EQUALS(better[1].second->variable()->varType(), gum::VarType::CONTINUOUS)
       TS_ASSERT_EQUALS(better[2].first, (std::size_t)2)
-      TS_ASSERT_EQUALS(better[2].second->variable()->varType(), gum::VarType::Range)
+      TS_ASSERT_EQUALS(better[2].second->variable()->varType(), gum::VarType::RANGE)
       TS_ASSERT_EQUALS(better[3].first, (std::size_t)4)
-      TS_ASSERT_EQUALS(better[3].second->variable()->varType(), gum::VarType::Range)
+      TS_ASSERT_EQUALS(better[3].second->variable()->varType(), gum::VarType::RANGE)
 
       for (const auto& tr: better) {
         TS_ASSERT_THROWS_NOTHING(db1.changeTranslator(*tr.second, tr.first))

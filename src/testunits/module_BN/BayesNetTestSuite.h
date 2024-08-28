@@ -1011,12 +1011,12 @@ namespace gum_tests {
 
       bn = gum::BayesNet< float >::fastPrototype(
           "a{1|4|6}->b{1|-4|6}->c{1|toto|6}->d{1.0|-4.0|6.0}->e{1|-4|6.0}->f{1.0|-4.0|+6.0}");
-      TS_ASSERT_EQUALS(bn.variable("a").varType(), gum::VarType::Integer)
-      TS_ASSERT_EQUALS(bn.variable("b").varType(), gum::VarType::Integer)
-      TS_ASSERT_EQUALS(bn.variable("c").varType(), gum::VarType::Labelized)
-      TS_ASSERT_EQUALS(bn.variable("d").varType(), gum::VarType::Numerical)
-      TS_ASSERT_EQUALS(bn.variable("e").varType(), gum::VarType::Numerical)
-      TS_ASSERT_EQUALS(bn.variable("f").varType(), gum::VarType::Numerical)
+      TS_ASSERT_EQUALS(bn.variable("a").varType(), gum::VarType::INTEGER)
+      TS_ASSERT_EQUALS(bn.variable("b").varType(), gum::VarType::INTEGER)
+      TS_ASSERT_EQUALS(bn.variable("c").varType(), gum::VarType::LABELIZED)
+      TS_ASSERT_EQUALS(bn.variable("d").varType(), gum::VarType::NUMERICAL)
+      TS_ASSERT_EQUALS(bn.variable("e").varType(), gum::VarType::NUMERICAL)
+      TS_ASSERT_EQUALS(bn.variable("f").varType(), gum::VarType::NUMERICAL)
     }
 
     GUM_ACTIVE_TEST(NonRegressionCPTinReverseArc) {

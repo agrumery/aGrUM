@@ -82,6 +82,9 @@ namespace gum {
 
     /// return the list of ticks as a vector of doubles
     virtual std::vector< double > ticksAsDoubles() const = 0;
+
+    /// get a (double) random value in the intervall indice
+    virtual double draw(Idx indice) const = 0;
     /// @}
 
 

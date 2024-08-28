@@ -129,7 +129,7 @@ namespace gum_tests {
         // Visit to Asia
         factory.startVariableDeclaration();
         factory.variableName("Visit To Asia");
-        factory.variableType(gum::VarType::Labelized);
+        factory.variableType(gum::VarType::LABELIZED);
         factory.variableDescription("True if patient visited Asia in the past months");
         factory.addModality("True");
         factory.addModality("False");
@@ -138,7 +138,7 @@ namespace gum_tests {
         // Smoker
         factory.startVariableDeclaration();
         factory.variableName("Smoker");
-        factory.variableType(gum::VarType::Labelized);
+        factory.variableType(gum::VarType::LABELIZED);
         factory.addModality("True");
         factory.addModality("False");
         factory.endVariableDeclaration();
@@ -146,7 +146,7 @@ namespace gum_tests {
         // Has Tuberculosis
         factory.startVariableDeclaration();
         factory.variableName("Has Tuberculosis");
-        factory.variableType(gum::VarType::Labelized);
+        factory.variableType(gum::VarType::LABELIZED);
         factory.addModality("True");
         factory.addModality("False");
         factory.endVariableDeclaration();
@@ -154,7 +154,7 @@ namespace gum_tests {
         // Has Lung Cancer
         factory.startVariableDeclaration();
         factory.variableName("Has Lung Cancer");
-        factory.variableType(gum::VarType::Labelized);
+        factory.variableType(gum::VarType::LABELIZED);
         factory.addModality("True");
         factory.addModality("False");
         factory.endVariableDeclaration();
@@ -162,7 +162,7 @@ namespace gum_tests {
         // Tuberculosis or Cancer
         factory.startVariableDeclaration();
         factory.variableName("Tuberculosis or Cancer");
-        factory.variableType(gum::VarType::Labelized);
+        factory.variableType(gum::VarType::LABELIZED);
         factory.addModality("True");
         factory.addModality("False");
         factory.endVariableDeclaration();
@@ -170,7 +170,7 @@ namespace gum_tests {
         // Has Bronchitis
         factory.startVariableDeclaration();
         factory.variableName("Has Bronchitis");
-        factory.variableType(gum::VarType::Labelized);
+        factory.variableType(gum::VarType::LABELIZED);
         factory.addModality("True");
         factory.addModality("False");
         factory.endVariableDeclaration();
@@ -178,7 +178,7 @@ namespace gum_tests {
         // XRay Result
         factory.startVariableDeclaration();
         factory.variableName("XRay Result");
-        factory.variableType(gum::VarType::Labelized);
+        factory.variableType(gum::VarType::LABELIZED);
         factory.addModality("True");
         factory.addModality("False");
         factory.endVariableDeclaration();
@@ -186,7 +186,7 @@ namespace gum_tests {
         // Dyspnea
         factory.startVariableDeclaration();
         factory.variableName("Dyspnea");
-        factory.variableType(gum::VarType::Labelized);
+        factory.variableType(gum::VarType::LABELIZED);
         factory.addModality("True");
         factory.addModality("False");
         factory.endVariableDeclaration();

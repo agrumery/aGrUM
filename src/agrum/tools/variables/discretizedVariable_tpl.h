@@ -26,6 +26,7 @@
 #  include <agrum/tools/variables/discretizedVariable.h>
 
 #  include <agrum/tools/core/math/math_utils.h>
+#  include <agrum/tools/core/utils_random.h>
 
 namespace gum {
   template < typename T_TICKS >
@@ -173,6 +174,30 @@ namespace gum {
     return double((b + a) / 2.0);
   }
 
+  /**  get a numerical representation of he indice-the value.
+   *
+   * @param indice the index of the label we wish to return
+   * @throw OutOfBound if indice is not compatible
+   */
+  template < typename T_TICKS >
+  INLINE double DiscretizedVariable< T_TICKS >::draw(Idx indice) const {
+    if (indice >= _ticks_.size() - 1) {
+      GUM_ERROR(OutOfBounds, "Inexisting label index (" << indice << ") for " << *this << ".")
+    }
+    const auto& a = double(_ticks_[indice]);
+    const auto& b = double(_ticks_[indice + 1]);
+
+    auto p = gum::randomProba() * (b - a) + a;
+    if (indice < _ticks_.size() - 2) {   // p can not be b. We iterate 3 times before returning the
+                                         // median (should not be possible)
+      if (p == b) p = gum::randomProba() * (b - a) + a;
+      if (p == b) p = gum::randomProba() * (b - a) + a;
+      if (p == b) p = (b - a) / 2;
+    }
+
+    return p;
+  }
+
   template < typename T_TICKS >
   INLINE Idx DiscretizedVariable< T_TICKS >::index(const std::string& label) const {
     if (empty()) { GUM_ERROR(OutOfBounds, "empty variable : " + toString()) }
@@ -254,7 +279,7 @@ namespace gum {
 
   template < typename T_TICKS >
   INLINE VarType DiscretizedVariable< T_TICKS >::varType() const {
-    return VarType::Discretized;
+    return VarType::DISCRETIZED;
   }
 
   template < typename T_TICKS >

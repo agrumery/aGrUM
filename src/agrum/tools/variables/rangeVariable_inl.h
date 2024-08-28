@@ -111,7 +111,7 @@ namespace gum {
     return *this;
   }
 
-  INLINE VarType RangeVariable::varType() const { return VarType::Range; }
+  INLINE VarType RangeVariable::varType() const { return VarType::RANGE; }
 
   INLINE bool RangeVariable::_checkSameDomain_(const gum::Variable& aRV) const {
     // we can assume that aRV is a RangeVariable

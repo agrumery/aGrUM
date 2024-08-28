@@ -183,7 +183,7 @@ namespace gum {
   /// returns the type of the variable
   template < typename GUM_SCALAR >
   INLINE VarType ContinuousVariable< GUM_SCALAR >::varType() const {
-    return VarType::Continuous;
+    return VarType::CONTINUOUS;
   }
 
   /// returns a string containing the value of the variable passed in argument

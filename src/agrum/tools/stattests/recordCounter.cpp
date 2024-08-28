@@ -185,13 +185,13 @@ namespace gum {
       if (_nodeId2columns_.empty()) {
         // check all the ids
         for (std::size_t i = std::size_t(0); i < size; ++i) {
-          if (database.variable(i).varType() == VarType::Continuous) {
+          if (database.variable(i).varType() == VarType::CONTINUOUS) {
             // here, var i does not correspond to a discrete variable.
             // we check whether there are other non discrete variables, so that
             // we can generate an exception mentioning all these variables
             std::vector< std::string > bad_vars{database.variable(i).name()};
             for (++i; i < size; ++i) {
-              if (database.variable(i).varType() == VarType::Continuous)
+              if (database.variable(i).varType() == VarType::CONTINUOUS)
                 bad_vars.push_back(database.variable(i).name());
             }
             _raiseCheckException_(bad_vars);
@@ -203,14 +203,14 @@ namespace gum {
           // get the position of the variable in the database
           std::size_t pos = _nodeId2columns_.second(ids[i]);
 
-          if (database.variable(pos).varType() == VarType::Continuous) {
+          if (database.variable(pos).varType() == VarType::CONTINUOUS) {
             // here, id does not correspond to a discrete variable.
             // we check whether there are other non discrete variables, so that
             // we can generate an exception mentioning all these variables
             std::vector< std::string > bad_vars{database.variable(pos).name()};
             for (++i; i < size; ++i) {
               pos = _nodeId2columns_.second(ids[i]);
-              if (database.variable(pos).varType() == VarType::Continuous)
+              if (database.variable(pos).varType() == VarType::CONTINUOUS)
                 bad_vars.push_back(database.variable(pos).name());
             }
             _raiseCheckException_(bad_vars);

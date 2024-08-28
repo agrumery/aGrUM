@@ -47,6 +47,7 @@ namespace gum::learning {
     }
     _nbVars_ = id;
     _varOrder_.resize(_nbVars_);
+    _discretizedLabelMode_ = DiscretizedLabelMode::RANDOM;
     std::iota(_varOrder_.begin(), _varOrder_.end(), (Idx)0);
   }
 
@@ -85,9 +86,6 @@ namespace gum::learning {
     // create instantiations in advance
     for (NodeId node = 0; node < _nbVars_; ++node)
       particule.add(_bn_.variable(node));
-
-    // create the random generator
-    std::uniform_real_distribution distro(0.0, 1.0);
 
     // perform the sampling
     _log2likelihood_ = 0;
@@ -168,6 +166,21 @@ namespace gum::learning {
     return _bn_.variable(_varOrder_.at(col)).label(_database_.at(row).at(_varOrder_.at(col)));
   }
 
+  template < typename GUM_SCALAR >
+  void BNDatabaseGenerator< GUM_SCALAR >::setDiscretizedLabelModeRandom() {
+    _discretizedLabelMode_ = DiscretizedLabelMode::RANDOM;
+  }
+
+  template < typename GUM_SCALAR >
+  void BNDatabaseGenerator< GUM_SCALAR >::setDiscretizedLabelModeMedian() {
+    _discretizedLabelMode_ = DiscretizedLabelMode::MEDIAN;
+  }
+
+  template < typename GUM_SCALAR >
+  void BNDatabaseGenerator< GUM_SCALAR >::setDiscretizedLabelModeInterval() {
+    _discretizedLabelMode_ = DiscretizedLabelMode::INTERVAL;
+  }
+
   /// generates database, and writes csv file
   template < typename GUM_SCALAR >
   void BNDatabaseGenerator< GUM_SCALAR >::toCSV(const std::string& csvFileURL,
@@ -229,7 +242,18 @@ namespace gum::learning {
           os << csvSeparator;
         }
         if (useLabels) {
-          os << _bn_.variable(i).label(row.at(i));
+          const auto& v = _bn_.variable(i);
+          if (v.varType() == VarType::DISCRETIZED) {
+            switch (_discretizedLabelMode_) {
+              case DiscretizedLabelMode::MEDIAN : os << v.numerical(row.at(i)); break;
+              case DiscretizedLabelMode::RANDOM :
+                os << static_cast< const IDiscretizedVariable& >(v).draw(row.at(i));
+                break;
+              case DiscretizedLabelMode::INTERVAL : os << v.label(row.at(i)); break;
+            }
+          } else {
+            os << v.label(row.at(i));
+          }
         } else {
           os << row[i];
         }
@@ -261,8 +285,22 @@ namespace gum::learning {
       std::vector< std::string > xrow(_nbVars_);
       for (const auto& row: _database_) {
         for (Idx i = 0; i < _nbVars_; ++i) {
-          Idx j   = _varOrder_.at(i);
-          xrow[i] = _bn_.variable(j).label(row.at(j));
+          Idx         j = _varOrder_.at(i);
+          const auto& v = _bn_.variable(j);
+          if (v.varType() == VarType::DISCRETIZED) {
+            switch (_discretizedLabelMode_) {
+              case DiscretizedLabelMode::MEDIAN :
+                xrow[i] = std::to_string(v.numerical(row.at(j)));
+                break;
+              case DiscretizedLabelMode::RANDOM :
+                xrow[i]
+                    = std::to_string(static_cast< const IDiscretizedVariable& >(v).draw(row.at(j)));
+                break;
+              case DiscretizedLabelMode::INTERVAL : xrow[i] = v.label(row.at(j)); break;
+            }
+          } else {
+            xrow[i] = v.label(row.at(j));
+          }
         }
         db.insertRow(xrow);
       }

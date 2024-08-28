@@ -80,6 +80,8 @@ namespace gum {
     template < typename GUM_SCALAR >
     class BNDatabaseGenerator: public ProgressNotifier {
       public:
+      enum class DiscretizedLabelMode : char { INTERVAL, MEDIAN, RANDOM };
+
       // #######################################################################
       /// @name Constructors / Destructors
       // #######################################################################
@@ -112,6 +114,22 @@ namespace gum {
       generated database may have only a few samples (even it may be empty).
       */
       double drawSamples(Size nbSamples, const gum::Instantiation& evs);
+
+      /** set the behaviour of sampling for discretized variable to uniformly draw double value
+       *
+       * @warning: each call to toCSV or toDatabase that use labels will then generate different
+       * values
+       *
+       * @warning: this is the default behaviour
+       */
+      void setDiscretizedLabelModeRandom();
+
+      /// set the behaviour of sampling for discretized variable to deterministic select double
+      /// median of intervalls
+      void setDiscretizedLabelModeMedian();
+
+      /// set the behaviour of sampling for discretized variable to select the label : "[min,max["
+      void setDiscretizedLabelModeInterval();
 
       /// generates csv representing the generated database
       void toCSV(const std::string& csvFileURL,
@@ -166,6 +184,7 @@ namespace gum {
       /// @}
 
       private:
+      DiscretizedLabelMode _discretizedLabelMode_;
       /// Bayesian network
       const BayesNet< GUM_SCALAR >& _bn_;
 

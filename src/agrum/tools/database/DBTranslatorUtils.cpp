@@ -45,7 +45,7 @@ namespace gum {
                            const bool                        editable_dictionary,
                            std::size_t                       max_dico_entries) {
         switch (var.varType()) {
-          case VarType::Labelized : {
+          case VarType::LABELIZED : {
             const LabelizedVariable& xvar = static_cast< const LabelizedVariable& >(var);
             return new DBTranslator4LabelizedVariable(xvar,
                                                       missing_symbols,
@@ -53,18 +53,18 @@ namespace gum {
                                                       max_dico_entries);
           }
 
-          case VarType::Integer : {
+          case VarType::INTEGER : {
             const auto& xvar = static_cast< const IntegerVariable& >(var);
 
             return new DBTranslator4IntegerVariable(xvar, missing_symbols, max_dico_entries);
           }
 
-          case VarType::Discretized : {
+          case VarType::DISCRETIZED : {
             const auto& xvar = static_cast< const IDiscretizedVariable& >(var);
             return new DBTranslator4DiscretizedVariable(xvar, missing_symbols, max_dico_entries);
           }
 
-          case VarType::Range : {
+          case VarType::RANGE : {
             const auto& xvar = static_cast< const RangeVariable& >(var);
             return new DBTranslator4RangeVariable(xvar,
                                                   missing_symbols,
@@ -72,12 +72,12 @@ namespace gum {
                                                   max_dico_entries);
           }
 
-          case VarType::Continuous : {
+          case VarType::CONTINUOUS : {
             const auto& xvar = static_cast< const IContinuousVariable& >(var);
             return new DBTranslator4ContinuousVariable(xvar, missing_symbols, editable_dictionary);
           }
 
-          case VarType::Numerical : {
+          case VarType::NUMERICAL : {
             const auto& xvar = static_cast< const NumericalDiscreteVariable& >(var);
             return new DBTranslator4NumericalDiscreteVariable(xvar,
                                                               missing_symbols,
