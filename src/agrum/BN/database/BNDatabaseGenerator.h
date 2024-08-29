@@ -109,11 +109,19 @@ namespace gum {
       Generate and stock the part of the database compatible with the evidence, returns
       log2likelihood using ProgressNotifier as notification.
 
-      @warning nbSamples is not the size of the filtered database but the number of generated
-      samples. It may happen that the evidence is very rare (or even impossible). In that cas the
-      generated database may have only a few samples (even it may be empty).
+
+      @warning nbSamples is not the number of generated samples but the size of the filtered
+      database. It may happen that the evidence is very rare (or even impossible). In that case, the
+      rejection sampling process may be very slow (or even infinite). In that case, the timeout is
+      mandatory.
+
+      @parameter nbSamples: the size of the filtered database.
+      @parameter evs: the evidence.
+      @parameter timeout: the maximum time in seconds to wait for the generation of the samples. If
+      the timeout is reached, the function returns the log2likelihood of the generated samples. if
+      timeout=0, no timeout are watched and the function may run indefinitely.
       */
-      double drawSamples(Size nbSamples, const gum::Instantiation& evs);
+      double drawSamples(Size nbSamples, const gum::Instantiation& evs, int timeout = 300);
 
       /** set the behaviour of sampling for discretized variable to uniformly draw double value
        *
@@ -205,6 +213,10 @@ namespace gum {
 
       /// log2Likelihood of generated samples
       double _log2likelihood_ = 0;
+
+      /// return the final string for a label (taking into account the behavior for
+      /// DiscretizedVariable) from a row
+      std::string _label_(const std::vector< Idx >& row, const DiscreteVariable& v, Idx i) const;
 
       /// returns varOrder from a csv file
       std::vector< Idx > _varOrderFromCSV_(const std::string& csvFileURL,

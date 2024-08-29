@@ -60,19 +60,18 @@ namespace gum::learning {
   /// draw instances from  _bn_
   template < typename GUM_SCALAR >
   double BNDatabaseGenerator< GUM_SCALAR >::drawSamples(Size nbSamples) {
-    Instantiation inst;
+    const Instantiation inst;
     return drawSamples(nbSamples, inst);
   }
 
   /// draw instances from  _bn_
   template < typename GUM_SCALAR >
-  double BNDatabaseGenerator< GUM_SCALAR >::drawSamples(Size nbSamples, const Instantiation& evs) {
+  double BNDatabaseGenerator< GUM_SCALAR >::drawSamples(Size                 nbSamples,
+                                                        const Instantiation& evs,
+                                                        int                  timeout) {
     int progress = 0;
 
-    gum::Timer timer;
-    timer.reset();
-
-    if (onProgress.hasListener()) { GUM_EMIT2(onProgress, progress, timer.step()); }
+    if (onProgress.hasListener()) { GUM_EMIT2(onProgress, progress, 0.0); }
 
     _database_.clear();
     _database_.resize(nbSamples);
@@ -87,12 +86,15 @@ namespace gum::learning {
     for (NodeId node = 0; node < _nbVars_; ++node)
       particule.add(_bn_.variable(node));
 
+    gum::Timer timer;
+    timer.reset();
+
     // perform the sampling
     _log2likelihood_ = 0;
     Idx idSample     = 0;
-    for (Idx step = 0; step < nbSamples; ++step) {
+    while (idSample < nbSamples) {
       if (onProgress.hasListener()) {
-        auto p = int((step * 100) / nbSamples);
+        auto p = int((idSample * 100) / nbSamples);
         if (p != progress) {
           progress = p;
           GUM_EMIT2(onProgress, progress, timer.step());
@@ -121,11 +123,16 @@ namespace gum::learning {
         sample.at(node) = particule.val(var);
         _log2likelihood_ += std::log2(_bn_.cpt(node)[particule]);
       }
+      if (timeout > 0 && timer.step() > timeout) { break; }
       if (reject) { continue; }
-
       idSample++;
     }
 
+    if (idSample > 0) {
+      if (idSample < nbSamples) _database_.resize(idSample);
+    } else {
+      _database_.clear();
+    }
     _drawnSamples_ = true;
 
     if (onProgress.hasListener()) {
@@ -134,8 +141,6 @@ namespace gum::learning {
          << " seconds. Log2likelihood : " << _log2likelihood_;
       GUM_EMIT1(onStop, ss.str());
     }
-
-    if (nbSamples > idSample) _database_.resize(idSample);
 
     return _log2likelihood_;
   }
@@ -163,7 +168,8 @@ namespace gum::learning {
   template < typename GUM_SCALAR >
   INLINE std::string BNDatabaseGenerator< GUM_SCALAR >::samplesLabelAt(Idx row, Idx col) const {
     if (!_drawnSamples_) { GUM_ERROR(OperationNotAllowed, "drawSamples() must be called first.") }
-    return _bn_.variable(_varOrder_.at(col)).label(_database_.at(row).at(_varOrder_.at(col)));
+    const auto j = _varOrder_.at(col);
+    return _label_(_database_.at(row), _bn_.variable(j), j);
   }
 
   template < typename GUM_SCALAR >
@@ -263,6 +269,22 @@ namespace gum::learning {
     os.close();
   }
 
+  template < typename GUM_SCALAR >
+  std::string BNDatabaseGenerator< GUM_SCALAR >::_label_(const std::vector< Idx >& row,
+                                                         const DiscreteVariable&   v,
+                                                         Idx                       i) const {
+    if (v.varType() == VarType::DISCRETIZED) {
+      switch (_discretizedLabelMode_) {
+        case DiscretizedLabelMode::MEDIAN : return std::to_string(v.numerical(row.at(i)));
+        case DiscretizedLabelMode::RANDOM :
+          return std::to_string(static_cast< const IDiscretizedVariable& >(v).draw(row.at(i)));
+        case DiscretizedLabelMode::INTERVAL : return v.label(row.at(i));
+      }
+    }
+
+    return v.label(row.at(i));
+  }
+
   /// generates a DatabaseVectInRAM
   template < typename GUM_SCALAR >
   DatabaseTable BNDatabaseGenerator< GUM_SCALAR >::toDatabaseTable(bool useLabels) const {
@@ -285,22 +307,8 @@ namespace gum::learning {
       std::vector< std::string > xrow(_nbVars_);
       for (const auto& row: _database_) {
         for (Idx i = 0; i < _nbVars_; ++i) {
-          Idx         j = _varOrder_.at(i);
-          const auto& v = _bn_.variable(j);
-          if (v.varType() == VarType::DISCRETIZED) {
-            switch (_discretizedLabelMode_) {
-              case DiscretizedLabelMode::MEDIAN :
-                xrow[i] = std::to_string(v.numerical(row.at(j)));
-                break;
-              case DiscretizedLabelMode::RANDOM :
-                xrow[i]
-                    = std::to_string(static_cast< const IDiscretizedVariable& >(v).draw(row.at(j)));
-                break;
-              case DiscretizedLabelMode::INTERVAL : xrow[i] = v.label(row.at(j)); break;
-            }
-          } else {
-            xrow[i] = v.label(row.at(j));
-          }
+          const Idx j = _varOrder_.at(i);
+          xrow[i]     = _label_(row, _bn_.variable(j), j);
         }
         db.insertRow(xrow);
       }
@@ -313,8 +321,7 @@ namespace gum::learning {
       const auto                 xmiss = gum::learning::DatabaseTable::IsMissing::False;
       for (const auto& row: _database_) {
         for (Idx i = 0; i < _nbVars_; ++i) {
-          Idx j = _varOrder_.at(i);
-
+          const Idx j = _varOrder_.at(i);
           if (translatorType[i] == DBTranslatedValueType::DISCRETE)
             xrow[i].discr_val = std::size_t(row.at(j));
           else xrow[i].cont_val = float(row.at(j));

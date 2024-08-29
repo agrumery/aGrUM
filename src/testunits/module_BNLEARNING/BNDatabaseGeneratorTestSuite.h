@@ -40,42 +40,43 @@ namespace gum_tests {
 
   class ASimpleDBGeneratorListener: public gum::ProgressListener {
     private:
-    gum::Size   _nbr_;
-    std::string _mess_;
+    gum::Size   _nbr_  = 0;
+    std::string _mess_ = "";
 
     public:
     explicit ASimpleDBGeneratorListener(gum::ProgressNotifier& notif) :
-        gum::ProgressListener(notif), _nbr_(0), _mess_("") {};
+        gum::ProgressListener(notif) {};
 
-    void whenProgress(const void* buffer, const gum::Size a, const double c) { _nbr_ += a; }
+    void whenProgress(const void* buffer, const gum::Size a, const double c) override {
+      _nbr_ += a;
+    }
 
-    void whenStop(const void* buffer, const std::string& s) { _mess_ = s; }
+    void whenStop(const void* buffer, const std::string& s) override { _mess_ = s; }
 
-    gum::Size getNbr() { return _nbr_; }
+    gum::Size getNbr() const { return _nbr_; }
 
-    std::string getMess() { return _mess_; }
+    std::string getMess() const { return _mess_; }
   };
 
   class [[maybe_unused]] BNDatabaseGeneratorTestSuite: public CxxTest::TestSuite {
     public:
-    gum::BayesNet< double >* bn;
-
-    void setUp() {
+    static gum::BayesNet< double > initAsia() {
+      gum::BayesNet< double > bn("Asia");
       try {
-        bn                 = new gum::BayesNet< double >("Asia");
         std::string file   = GET_RESSOURCES_PATH("bif/survey.bif");
-        auto        reader = gum::BIFReader< double >(bn, file);
+        auto        reader = gum::BIFReader< double >(&bn, file);
         try {
           reader.proceed();
         } catch (gum::IOError& e) { TS_FAIL(e.errorContent()); }
       } catch (gum::Exception& e) { TS_FAIL(e.errorContent()); }
+
+      return bn;
     }
 
-    void tearDown() { delete bn; }
-
     GUM_ACTIVE_TEST(Constuctor) {
+      gum::BayesNet< double >                       bn    = initAsia();
       gum::learning::BNDatabaseGenerator< double >* dbgen = nullptr;
-      TS_GUM_ASSERT_THROWS_NOTHING(dbgen = new gum::learning::BNDatabaseGenerator< double >(*bn))
+      TS_GUM_ASSERT_THROWS_NOTHING(dbgen = new gum::learning::BNDatabaseGenerator< double >(bn))
 
       auto varOrder = dbgen->varOrder();
       TS_ASSERT_EQUALS(varOrder.size(), (gum::Size)6)
@@ -98,8 +99,9 @@ namespace gum_tests {
     }
 
     GUM_ACTIVE_TEST(SetVarOrder) {
+      gum::BayesNet< double >                       bn    = initAsia();
       gum::learning::BNDatabaseGenerator< double >* dbgen = nullptr;
-      TS_GUM_ASSERT_THROWS_NOTHING(dbgen = new gum::learning::BNDatabaseGenerator< double >(*bn))
+      TS_GUM_ASSERT_THROWS_NOTHING(dbgen = new gum::learning::BNDatabaseGenerator< double >(bn))
 
       std::vector< gum::Idx >    goodOrder1 = {1, 0, 3, 2, 5, 4};
       std::vector< std::string > goodOrder2 = {"A", "E", "O", "R", "S", "T"};
@@ -151,6 +153,8 @@ namespace gum_tests {
     }
 
     GUM_ACTIVE_TEST(DrawSamples) {
+      gum::BayesNet< double > bn = initAsia();
+
       gum::Size domSizeA  = 3;
       gum::Size domSizeS  = 2;
       gum::Size domSizeE  = 2;
@@ -160,7 +164,7 @@ namespace gum_tests {
       gum::Size nbSamples = 100;
 
       gum::learning::BNDatabaseGenerator< double >* dbgen = nullptr;
-      TS_GUM_ASSERT_THROWS_NOTHING(dbgen = new gum::learning::BNDatabaseGenerator< double >(*bn))
+      TS_GUM_ASSERT_THROWS_NOTHING(dbgen = new gum::learning::BNDatabaseGenerator< double >(bn))
 
       TS_ASSERT_THROWS(dbgen->database(), const gum::OperationNotAllowed&)
       TS_GUM_ASSERT_THROWS_NOTHING(dbgen->drawSamples(nbSamples))
@@ -205,9 +209,10 @@ namespace gum_tests {
     }
 
     GUM_ACTIVE_TEST(DrawSamplesLog2likelihood) {
-      gum::Size nbSamples1 = 100;
-      gum::Size nbSamples2 = nbSamples1 * 100;
-      gum::Size nbSamples3 = nbSamples1 * 1000;
+      gum::BayesNet< double > bn         = initAsia();
+      gum::Size               nbSamples1 = 100;
+      gum::Size               nbSamples2 = nbSamples1 * 100;
+      gum::Size               nbSamples3 = nbSamples1 * 1000;
 
       double ll_1      = 0;
       double ll_2      = 0;
@@ -215,7 +220,7 @@ namespace gum_tests {
       double tolerance = 0.1;
 
       gum::learning::BNDatabaseGenerator< double >* dbgen = nullptr;
-      TS_GUM_ASSERT_THROWS_NOTHING(dbgen = new gum::learning::BNDatabaseGenerator< double >(*bn))
+      TS_GUM_ASSERT_THROWS_NOTHING(dbgen = new gum::learning::BNDatabaseGenerator< double >(bn))
       TS_ASSERT_THROWS(dbgen->database(), const gum::OperationNotAllowed&)
       TS_GUM_ASSERT_THROWS_NOTHING(ll_1 = dbgen->drawSamples(nbSamples1))
       TS_GUM_ASSERT_THROWS_NOTHING(ll_2 = dbgen->drawSamples(nbSamples2))
@@ -229,16 +234,17 @@ namespace gum_tests {
 
       // log2likelihood must be aprox nbSamples * entropy (theorical result)
       double entropy
-          = (bn->cpt(0) * bn->cpt(1) * bn->cpt(2) * bn->cpt(3) * bn->cpt(4) * bn->cpt(5)).entropy();
+          = (bn.cpt(0) * bn.cpt(1) * bn.cpt(2) * bn.cpt(3) * bn.cpt(4) * bn.cpt(5)).entropy();
       TS_ASSERT_LESS_THAN(std::abs(1 + entropy * nbSamples1 / ll_1), tolerance)
       TS_ASSERT_LESS_THAN(std::abs(1 + entropy * nbSamples2 / ll_2), tolerance)
       TS_ASSERT_LESS_THAN(std::abs(1 + entropy * nbSamples3 / ll_3), tolerance)
 
-      delete (dbgen);
+      delete dbgen;
     }
 
     GUM_ACTIVE_TEST(ToCSV_1) {
-      gum::Size nbSamples = 5;
+      gum::BayesNet< double > bn        = initAsia();
+      gum::Size               nbSamples = 5;
 
       std::vector< std::string > domA = {"young", "adult", "old"};
       std::vector< std::string > domS = {"M", "F"};
@@ -248,7 +254,7 @@ namespace gum_tests {
       std::vector< std::string > domT = {"car", "train", "other"};
 
       gum::learning::BNDatabaseGenerator< double >* dbgen = nullptr;
-      TS_GUM_ASSERT_THROWS_NOTHING(dbgen = new gum::learning::BNDatabaseGenerator< double >(*bn))
+      TS_GUM_ASSERT_THROWS_NOTHING(dbgen = new gum::learning::BNDatabaseGenerator< double >(bn))
 
       std::vector< std::string > vOrder1 = {"S", "E", "T", "R", "A", "O"};
       TS_ASSERT_THROWS_NOTHING(dbgen->setVarOrder(vOrder1))
@@ -305,11 +311,12 @@ namespace gum_tests {
       }
       csvFile.close();
 
-      delete (dbgen);
+      delete dbgen;
     }
 
     GUM_ACTIVE_TEST(ToCSV_2) {
-      gum::Size nbSamples = 5;
+      gum::BayesNet< double > bn        = initAsia();
+      gum::Size               nbSamples = 5;
 
       gum::Size domSizeA = 3;
       gum::Size domSizeS = 2;
@@ -319,7 +326,7 @@ namespace gum_tests {
       gum::Size domSizeT = 3;
 
       gum::learning::BNDatabaseGenerator< double >* dbgen = nullptr;
-      TS_GUM_ASSERT_THROWS_NOTHING(dbgen = new gum::learning::BNDatabaseGenerator< double >(*bn))
+      TS_GUM_ASSERT_THROWS_NOTHING(dbgen = new gum::learning::BNDatabaseGenerator< double >(bn))
 
       std::vector< std::string > vOrder1 = {"S", "E", "T", "R", "A", "O"};
       TS_ASSERT_THROWS_NOTHING(dbgen->setVarOrder(vOrder1))
@@ -373,21 +380,21 @@ namespace gum_tests {
         TS_ASSERT_LESS_THAN(valR, domSizeR)
         TS_ASSERT_LESS_THAN(valA, domSizeA)
         TS_ASSERT_LESS_THAN(valO, domSizeO)
-        break;
       }
       csvFile.close();
 
-      delete (dbgen);
+      delete dbgen;
     }
 
     GUM_ACTIVE_TEST(ToDatabaseTable) {
-      gum::Size domSizeA  = 3;
-      gum::Size domSizeS  = 2;
-      gum::Size domSizeE  = 2;
-      gum::Size domSizeO  = 2;
-      gum::Size domSizeR  = 2;
-      gum::Size domSizeT  = 3;
-      gum::Size nbSamples = 100;
+      gum::BayesNet< double > bn        = initAsia();
+      gum::Size               domSizeA  = 3;
+      gum::Size               domSizeS  = 2;
+      gum::Size               domSizeE  = 2;
+      gum::Size               domSizeO  = 2;
+      gum::Size               domSizeR  = 2;
+      gum::Size               domSizeT  = 3;
+      gum::Size               nbSamples = 100;
 
       std::vector< std::string > domA = {"young", "adult", "old"};
       std::vector< std::string > domS = {"M", "F"};
@@ -397,7 +404,7 @@ namespace gum_tests {
       std::vector< std::string > domT = {"car", "train", "other"};
 
       gum::learning::BNDatabaseGenerator< double >* dbgen = nullptr;
-      TS_GUM_ASSERT_THROWS_NOTHING(dbgen = new gum::learning::BNDatabaseGenerator< double >(*bn))
+      TS_GUM_ASSERT_THROWS_NOTHING(dbgen = new gum::learning::BNDatabaseGenerator< double >(bn))
       TS_ASSERT_THROWS(dbgen->toDatabaseTable(), const gum::OperationNotAllowed&)
       TS_GUM_ASSERT_THROWS_NOTHING(dbgen->drawSamples(nbSamples))
       gum::learning::DatabaseTable db;
@@ -409,22 +416,22 @@ namespace gum_tests {
         auto row = handler.row();
         TS_ASSERT_DIFFERS(
             std::find(domA.begin(), domA.end(), db.translator(0).translateBack(row[0])),
-            domA.end());
+            domA.end())
         TS_ASSERT_DIFFERS(
             std::find(domS.begin(), domS.end(), db.translator(1).translateBack(row[1])),
-            domS.end());
+            domS.end())
         TS_ASSERT_DIFFERS(
             std::find(domE.begin(), domE.end(), db.translator(2).translateBack(row[2])),
-            domE.end());
+            domE.end())
         TS_ASSERT_DIFFERS(
             std::find(domO.begin(), domO.end(), db.translator(3).translateBack(row[3])),
-            domO.end());
+            domO.end())
         TS_ASSERT_DIFFERS(
             std::find(domR.begin(), domR.end(), db.translator(4).translateBack(row[4])),
-            domR.end());
+            domR.end())
         TS_ASSERT_DIFFERS(
             std::find(domT.begin(), domT.end(), db.translator(5).translateBack(row[5])),
-            domT.end());
+            domT.end())
         handler.nextRow();
       }
 
@@ -454,22 +461,22 @@ namespace gum_tests {
 
         TS_ASSERT_DIFFERS(
             std::find(domS.begin(), domS.end(), db.translator(0).translateBack(row[0])),
-            domS.end());
+            domS.end())
         TS_ASSERT_DIFFERS(
             std::find(domE.begin(), domE.end(), db.translator(1).translateBack(row[1])),
-            domE.end());
+            domE.end())
         TS_ASSERT_DIFFERS(
             std::find(domT.begin(), domT.end(), db.translator(2).translateBack(row[2])),
-            domT.end());
+            domT.end())
         TS_ASSERT_DIFFERS(
             std::find(domR.begin(), domR.end(), db.translator(3).translateBack(row[3])),
-            domR.end());
+            domR.end())
         TS_ASSERT_DIFFERS(
             std::find(domA.begin(), domA.end(), db.translator(4).translateBack(row[4])),
-            domA.end());
+            domA.end())
         TS_ASSERT_DIFFERS(
             std::find(domO.begin(), domO.end(), db.translator(5).translateBack(row[5])),
-            domO.end());
+            domO.end())
 
         handler.nextRow();
       }
@@ -488,11 +495,12 @@ namespace gum_tests {
         handler.nextRow();
       }
 
-      delete (dbgen);
+      delete dbgen;
     }
 
     GUM_ACTIVE_TEST(ListenToDrawSamples) {
-      gum::learning::BNDatabaseGenerator< double > dbgen(*bn);
+      gum::BayesNet< double >                      bn = initAsia();
+      gum::learning::BNDatabaseGenerator< double > dbgen(bn);
 
       ASimpleDBGeneratorListener gener(dbgen);
       TS_ASSERT_EQUALS(gener.getNbr(), (gum::Size)0)
@@ -510,28 +518,15 @@ namespace gum_tests {
     }
 
     GUM_ACTIVE_TEST(DrawingWithEvidence) {
-      gum::learning::BNDatabaseGenerator< double > dbgen(*bn);
-      ASimpleDBGeneratorListener                   gener(dbgen);
-
-      gum::Instantiation filter;
-      filter.add(bn->variable(0));
-      filter.setFirst();
-      dbgen.drawSamples(100, filter);
-      TS_ASSERT_LESS_THAN(dbgen.samplesNbRows(), 100u)   // some samples have been rejected
-    }
-
-    GUM_ACTIVE_TEST(DrawingWithImpossibleEvidence) {
-      auto bn = gum::BayesNet< double >::fastPrototype("A->B");
-      bn.cpt("B").fillWith({0, 1, 0, 1});   // value 0 for B is impossible
-
+      gum::BayesNet< double >                      bn = initAsia();
       gum::learning::BNDatabaseGenerator< double > dbgen(bn);
       ASimpleDBGeneratorListener                   gener(dbgen);
 
       gum::Instantiation filter;
-      filter.add(bn.variable("B"));
-      filter.setFirst();                            // evs={B:0} => imposible
+      filter.add(bn.variable(0));
+      filter.setFirst();
       dbgen.drawSamples(100, filter);
-      TS_ASSERT_EQUALS(dbgen.samplesNbRows(), 0u)   // some samples have been rejected
+      TS_ASSERT_LESS_THAN(dbgen.samplesNbRows(), 101u)   // some samples have been rejected
     }
 
     GUM_ACTIVE_TEST(Accuracy) {
@@ -568,7 +563,7 @@ namespace gum_tests {
       gum::learning::BNDatabaseGenerator< double > dbgen(bn);
       gum::Instantiation                           filter;
       filter.add(bn.variable("B"));
-      filter.setFirst();   // evs={B:0}
+      filter.setFirst();   // evidence B:0
       dbgen.drawSamples(100000, filter);
       dbgen.toCSV(csvFileURL);
 
@@ -650,6 +645,27 @@ namespace gum_tests {
         }
         TS_ASSERT_EQUALS(pos, nbLines)
       }
+    }
+
+    GUM_ACTIVE_TEST(InfiniteRejectionSampling) {
+      gum::Timer timer;
+
+      auto bn = gum::BayesNet< double >::fastPrototype("A->B<-C->D");
+      bn.cpt("B").fillWith({0, 1, 0.5, 0.5, 0.5, 0.5, 0.5, 0.5});   // {B=0|A=0,C=0} impossible
+      gum::learning::BNDatabaseGenerator< double > dbgen(bn);
+
+      gum::Instantiation filter;
+
+      filter.add(bn.variable("A"));
+      filter.add(bn.variable("B"));
+      filter.add(bn.variable("C"));
+      filter.setFirst();   // evs={A:0,B=0,C:0} imposible
+
+      const auto nbLines = 10;
+      timer.reset();
+      dbgen.drawSamples(nbLines, filter, 5);
+      TS_ASSERT_LESS_THAN(timer.step(), 5.5)
+      TS_ASSERT_EQUALS(dbgen.samplesNbRows(), 0u)
     }
   };
 }   // namespace gum_tests
