@@ -375,7 +375,7 @@ def proba2histo(p, scale=None, util=None, txtcolor="Black"):
 
   isev = p.min()==0.0 and p.max()==1.0 and p.sum()==1.0
 
-  if p.variable(0).varType() == gum.VarType_Discretized:
+  if p.variable(0).varType() == gum.VarType_DISCRETIZED:
     if gum.config['notebook', 'histogram_discretized_visualisation'] == "histogram":
       if scale is None:
         scale=gum.config.asFloat['notebook', 'histogram_discretized_scale']

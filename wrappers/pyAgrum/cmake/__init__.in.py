@@ -73,7 +73,7 @@ from .pyAgrum import fastVariable
 from .pyAgrum import initRandom, randomProba, randomDistribution, randomGeneratorSeed, randomValue
 from .pyAgrum import isOMP, getNumberOfThreads, getMaxNumberOfThreads, getNumberOfLogicalProcessors, setNumberOfThreads
 
-from .pyAgrum import VarType_Discretized, VarType_Labelized, VarType_Range, VarType_Integer, VarType_Numerical
+from .pyAgrum import VarType_DISCRETIZED, VarType_LABELIZED, VarType_RANGE, VarType_INTEGER, VarType_NUMERICAL
 
 from .pyAgrum import DefaultInLabel, DuplicateElement, DuplicateLabel, GumException, FatalError, FormatNotFound, \
   GraphError, IOError, InvalidArc, InvalidArgument, InvalidArgumentsNumber, InvalidDirectedCycle, InvalidEdge, \
@@ -125,7 +125,7 @@ __all__ = [
   'isOMP', 'setNumberOfThreads', 'getNumberOfThreads', 'getMaxNumberOfThreads', 'getNumberOfLogicalProcessors',
   # 'getThreadNumber','getNumberOfRunningThreads','getDynamicThreadsNumber','setDynamicThreadsNumber','getNestedParallelism', 'setNestedParallelism',
 
-  'VarType_Discretized', 'VarType_Labelized', 'VarType_Range', 'VarType_Integer', 'VarType_Numerical',
+  'VarType_DISCRETIZED', 'VarType_LABELIZED', 'VarType_RANGE', 'VarType_INTEGER', 'VarType_NUMERICAL',
 
   'DefaultInLabel', 'DuplicateElement', 'DuplicateLabel', 'GumException', 'FatalError', 'FormatNotFound',
   'GraphError', 'IOError', 'InvalidArc', 'InvalidArgument', 'InvalidArgumentsNumber', 'InvalidDirectedCycle',

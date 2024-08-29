@@ -2381,12 +2381,12 @@ def initRandom(seed: int=0) -> None:
 
 def randomGenerator() -> "std::mt19937 &":
     return _pyAgrum.randomGenerator()
-VarType_Discretized = _pyAgrum.VarType_Discretized
-VarType_Labelized = _pyAgrum.VarType_Labelized
-VarType_Integer = _pyAgrum.VarType_Integer
-VarType_Numerical = _pyAgrum.VarType_Numerical
-VarType_Range = _pyAgrum.VarType_Range
-VarType_Continuous = _pyAgrum.VarType_Continuous
+VarType_DISCRETIZED = _pyAgrum.VarType_DISCRETIZED
+VarType_LABELIZED = _pyAgrum.VarType_LABELIZED
+VarType_INTEGER = _pyAgrum.VarType_INTEGER
+VarType_NUMERICAL = _pyAgrum.VarType_NUMERICAL
+VarType_RANGE = _pyAgrum.VarType_RANGE
+VarType_CONTINUOUS = _pyAgrum.VarType_CONTINUOUS
 class Variable(object):
     r"""
 
@@ -2740,6 +2740,11 @@ class DiscreteVariable(Variable):
         return self.asDiscretizedVar().tick(x)
       except pyAgrum.OperationNotAllowed :
         raise NotImplementedError(f"tick not implemented for {self}")
+    def draw(self,x):
+      try:
+        return self.asDiscretizedVar().draw(x)
+      except pyAgrum.OperationNotAllowed :
+        raise NotImplementedError(f"draw not implemented for {self}")
 
 
     def asLabelizedVar(self) -> "pyAgrum.LabelizedVariable":
@@ -3872,6 +3877,9 @@ class IDiscretizedVariable(DiscreteVariable):
 
     def setEmpirical(self, state: bool) -> None:
         return _pyAgrum.IDiscretizedVariable_setEmpirical(self, state)
+
+    def draw(self, indice: int) -> float:
+        return _pyAgrum.IDiscretizedVariable_draw(self, indice)
 
 # Register IDiscretizedVariable in _pyAgrum:
 _pyAgrum.IDiscretizedVariable_swigregister(IDiscretizedVariable)
@@ -8716,6 +8724,24 @@ class DiscretizedVariable(IDiscretizedVariable):
         """
         return _pyAgrum.DiscretizedVariable_numerical(self, indice)
 
+    def draw(self, indice: int) -> float:
+        r"""
+
+        Allow to draw a value in the i-th interval of the discretized variable.1
+
+        Parameters
+        ----------
+        i : int
+        	the index of the interval to draw
+
+        Returns
+        -------
+        float :
+        	the value randomly drawn in the i-th interval
+
+        """
+        return _pyAgrum.DiscretizedVariable_draw(self, indice)
+
     def index(self, *args) -> int:
         r"""
 
@@ -8778,7 +8804,7 @@ class DiscretizedVariable(IDiscretizedVariable):
         Returns
         -------
         aTick : float
-        	the index-th Tick
+        	the i-th Tick
 
         Raises
         ------
@@ -9819,7 +9845,7 @@ class Potential(object):
       import math
       forbidden=frozenset(['__import__','__class__'])
 
-      if self.variable(0).varType()== pyAgrum.VarType_Labelized:
+      if self.variable(0).varType()== pyAgrum.VarType_LABELIZED:
         raise InvalidArgument("[pyAgrum] The variable "+self.variable(0).name()+" is a LabelizedVariable")
 
       self.fillWith(0)
@@ -9873,7 +9899,7 @@ class Potential(object):
       forbidden=frozenset(['__import__','__class__'])
 
       var=self.variable(0)
-      if var.varType()== pyAgrum.VarType_Labelized:
+      if var.varType()== pyAgrum.VarType_LABELIZED:
         raise InvalidArgument("[pyAgrum] The variable "+self.variable(0).name()+" is a LabelizedVariable")
 
       codes={k:float(s_fns[k]) if isinstance(s_fns[k], (int, float)) else compile(s_fns[k],"<string>","eval") for k in s_fns.keys()}
@@ -28852,6 +28878,84 @@ class BNDatabaseGenerator(object):
         _pyAgrum.BNDatabaseGenerator_swiginit(self, _pyAgrum.new_BNDatabaseGenerator(bn))
     __swig_destroy__ = _pyAgrum.delete_BNDatabaseGenerator
 
+    def setDiscretizedLabelModeRandom(self) -> None:
+        r"""
+
+        Set the discretized label mode to RANDOM (default mode) : sampling a `pyAgrum.discretizedVariable` will give a random value from the uniform distribution on that interval.
+
+        Examples
+        --------
+        >>> import pyAgrum as gum
+        >>> bn=pyAgrum.fastBN('A->B{yes|maybe|no}<-C->D->E<-F[1,1.5,3,10.2]<-B')
+        >>> g=pyAgrum.BNDatabaseGenerator(bn)
+        >>> g.setRandomVarOrder()
+        >>> g.drawSamples(5,
+        ...               {'B':'yes','E':'1'})
+        -122.98754206579288
+        >>> g.setDiscretizedLabelModeRandom() # By default
+        >>> g.to_pandas()
+             B         F  A  C  E  D
+        0  yes  2.802302  0  0  1  0
+        1  yes  1.761605  0  0  1  0
+        2  yes  2.507535  0  0  1  1
+        3  yes  2.815282  0  1  1  0
+        4  yes  5.548571  1  0  1  1
+
+        """
+        return _pyAgrum.BNDatabaseGenerator_setDiscretizedLabelModeRandom(self)
+
+    def setDiscretizedLabelModeMedian(self) -> None:
+        r"""
+
+        Set the discretized label mode to MEDIAN : sampling a `pyAgrum.discretizedVariable` will give a deterministic value : the median of the uniform distribution on that interval.
+
+        Examples
+        --------
+        >>> import pyAgrum as gum
+        >>> bn=pyAgrum.fastBN('A->B{yes|maybe|no}<-C->D->E<-F[1,1.5,3,10.2]<-B')
+        >>> g=pyAgrum.BNDatabaseGenerator(bn)
+        >>> g.setRandomVarOrder()
+        >>> g.drawSamples(5,
+        ...               {'B':'yes','E':'1'})
+        -122.98754206579288
+        >>> g.setDiscretizedLabelModeMedian()
+        >>> g.to_pandas()
+             B         F  A  C  E  D
+        0  yes  2.250000  0  0  1  0
+        1  yes  2.250000  0  0  1  0
+        2  yes  2.250000  0  0  1  1
+        3  yes  2.250000  0  1  1  0
+        4  yes  6.600000  1  0  1  1
+
+        """
+        return _pyAgrum.BNDatabaseGenerator_setDiscretizedLabelModeMedian(self)
+
+    def setDiscretizedLabelModeInterval(self) -> None:
+        r"""
+
+        Set the discretized label mode to INTERVAL : sampling a `pyAgrum.discretizedVariable` will give a deterministic value : the string representation of the interval.
+
+        Examples
+        --------
+        >>> import pyAgrum as gum
+        >>> bn=pyAgrum.fastBN('A->B{yes|maybe|no}<-C->D->E<-F[1,1.5,3,10.2]<-B')
+        >>> g=pyAgrum.BNDatabaseGenerator(bn)
+        >>> g.setRandomVarOrder()
+        >>> g.drawSamples(5,
+        ...               {'B':'yes','E':'1'})
+        -122.98754206579288
+        >>> g.setDiscretizedLabelModeInterval()
+        >>> g.to_pandas()
+             B         F  A  C  E  D
+        0  yes   [1.5;3[  0  0  1  0
+        1  yes   [1.5;3[  0  0  1  0
+        2  yes   [1.5;3[  0  0  1  1
+        3  yes   [1.5;3[  0  1  1  0
+        4  yes  [3;10.2]  1  0  1  1
+
+        """
+        return _pyAgrum.BNDatabaseGenerator_setDiscretizedLabelModeInterval(self)
+
     def toCSV(self, *args) -> None:
         r"""
 
@@ -29050,33 +29154,55 @@ class BNDatabaseGenerator(object):
         	the number of samples that will be generated
         evs : "pyAgrum.Instantiation" or Dict[intstr,intstr]
           (optional) The evidence that will be observed by the resulting samples.
+        timeout : int
+          (optional) The maximum time in seconds to generate the samples (default 600)
 
         Warning
         -------
-        `nbSamples` is not the size of the database but the number of generated samples. It may happen that the evidence is very
-        rare (or even impossible). In that cas the generated database may have only a few samples (even it may be empty).
+        `nbSamples` is not the number of generated samples but the size of the database.It may happen that the evidence is very rare (or even impossible). In this case, the generation process may be *very* slow (it may even not stop). For this case a timeout is provided (default 600 seconds) and then the size of the database can be smaller than `nbSamples` (even equal to 0).
+
+        Warning
+        -------
+        For discretized variable, aGrum/pyAgrum defines 3 behaviors when generating sample with labels :
+        - RANDOM (default) : the value is chosen randomly in the interval
+        - MEDIAN : the value is the median of the interval
+        - INTERVAL : the value is the interval itself (for instance `« [0,1[ »`)
+
+        The behavior can be set using `setDiscretizedLabelMode{Random|Median|Interval}`.
 
         Examples
         --------
         >>> import pyAgrum as gum
-        >>> bn=pyAgrum.fastBN('A->B{yes|maybe|no}<-C->D->E<-F<-B')
+        >>> bn=pyAgrum.fastBN('A->B{yes|maybe|no}<-C->D->E<-F[1,1.5,3,10.2]<-B')
         >>> g=pyAgrum.BNDatabaseGenerator(bn)
         >>> g.setRandomVarOrder()
-        >>> g.drawSamples(100,{'B':'yes','E':'1'})
-        -233.16554130404904
+        >>> g.drawSamples(5,
+        ...               {'B':'yes','E':'1'})
+        -122.98754206579288
+        >>> g.setDiscretizedLabelModeRandom() # By default
         >>> g.to_pandas()
-            D  E  C    B  F  A
-        0   1  1  0  yes  1  1
-        1   1  1  0  yes  1  0
-        2   1  1  1  yes  0  1
-        3   1  1  0  yes  0  0
-        4   1  1  0  yes  0  1
-        5   1  1  0  yes  1  0
-        6   1  1  0  yes  0  0
-        7   0  1  1  yes  1  1
-        8   1  1  0  yes  0  1
-        9   0  1  0  yes  1  1
-        10  1  1  0  yes  1  1
+             B         F  A  C  E  D
+        0  yes  2.802302  0  0  1  0
+        1  yes  1.761605  0  0  1  0
+        2  yes  2.507535  0  0  1  1
+        3  yes  2.815282  0  1  1  0
+        4  yes  5.548571  1  0  1  1
+        >>> g.setDiscretizedLabelModeMedian()
+        >>> g.to_pandas()
+             B         F  A  C  E  D
+        0  yes  2.250000  0  0  1  0
+        1  yes  2.250000  0  0  1  0
+        2  yes  2.250000  0  0  1  1
+        3  yes  2.250000  0  1  1  0
+        4  yes  6.600000  1  0  1  1
+        >>> g.setDiscretizedLabelModeInterval()
+        >>> g.to_pandas()
+             B         F  A  C  E  D
+        0  yes   [1.5;3[  0  0  1  0
+        1  yes   [1.5;3[  0  0  1  0
+        2  yes   [1.5;3[  0  0  1  1
+        3  yes   [1.5;3[  0  1  1  0
+        4  yes  [3;10.2]  1  0  1  1
 
         """
         return _pyAgrum.BNDatabaseGenerator_drawSamples(self, *args)

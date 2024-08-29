@@ -376,7 +376,7 @@ if len(args)>1:
       import math
       forbidden=frozenset(['__import__','__class__'])
 
-      if self.variable(0).varType()== gum.VarType_Labelized:
+      if self.variable(0).varType()== gum.VarType_LABELIZED:
         raise InvalidArgument("[pyAgrum] The variable "+self.variable(0).name()+" is a LabelizedVariable")
 
       self.fillWith(0)
@@ -430,7 +430,7 @@ if len(args)>1:
       forbidden=frozenset(['__import__','__class__'])
 
       var=self.variable(0)
-      if var.varType()== gum.VarType_Labelized:
+      if var.varType()== gum.VarType_LABELIZED:
         raise InvalidArgument("[pyAgrum] The variable "+self.variable(0).name()+" is a LabelizedVariable")
 
       codes={k:float(s_fns[k]) if isinstance(s_fns[k], (int, float)) else compile(s_fns[k],"<string>","eval") for k in s_fns.keys()}

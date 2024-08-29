@@ -115,6 +115,11 @@
         return self.asDiscretizedVar().tick(x)
       except pyAgrum.OperationNotAllowed :
         raise NotImplementedError(f"tick not implemented for {self}")
+    def draw(self,x):
+      try:
+        return self.asDiscretizedVar().draw(x)
+      except pyAgrum.OperationNotAllowed :
+        raise NotImplementedError(f"draw not implemented for {self}")
   %}
 }
 

@@ -93,7 +93,7 @@ i : int
 Returns
 -------
 aTick : float
-	the index-th Tick
+	the i-th Tick
 
 Raises
 ------
@@ -107,4 +107,20 @@ Returns
 -------
 tuple :
 	a tuple containing all the Ticks
+"
+
+
+%feature("docstring") gum::DiscretizedVariable::draw
+"
+Allow to draw a value in the i-th interval of the discretized variable.1
+
+Parameters
+----------
+i : int
+	the index of the interval to draw
+
+Returns
+-------
+float :
+	the value randomly drawn in the i-th interval
 "

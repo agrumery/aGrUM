@@ -154,7 +154,7 @@ class LabelizedVariableTestCase(VariablesTestCase):
       self.assertEqual(var.name(), name)
       self.assertEqual(var.description(), name)
       self.assertEqual(var.domainSize(), 2)
-    self.assertEqual(var.varType(), gum.VarType_Labelized)
+    self.assertEqual(var.varType(), gum.VarType_LABELIZED)
 
     c.setDescription("this is a test")
     self.assertEqual(c.description(), "this is a test")
@@ -179,7 +179,7 @@ class LabelizedVariableTestCase(VariablesTestCase):
 class RangeVariableTestCase(VariablesTestCase):
   def testCopyConstructor(self):
     var1 = gum.RangeVariable("var 1", "this is var 1")
-    self.assertEqual(var1.varType(), gum.VarType_Range)
+    self.assertEqual(var1.varType(), gum.VarType_RANGE)
 
     var2 = gum.RangeVariable("var 2", "this is var 2", 1, 4)
 
@@ -216,7 +216,7 @@ class DiscretizedVariableTestCase(VariablesTestCase):
   def testAddTicks(self):
     v = gum.DiscretizedVariable('a', '').addTick(0.5).addTick(
       5.9).addTick(5.99).addTick(0.1).addTick(0.23).addTick(12)
-    self.assertEqual(v.varType(), gum.VarType_Discretized)
+    self.assertEqual(v.varType(), gum.VarType_DISCRETIZED)
 
     var = gum.DiscretizedVariable("var", "test var")
 
@@ -282,7 +282,7 @@ class NumericalDiscreteVariableTestCase(VariablesTestCase):
   def testAddValue(self):
     v = gum.NumericalDiscreteVariable('a', '').addValue(0.5).addValue(
       5.9).addValue(5.99).addValue(0.1).addValue(0.23).addValue(12)
-    self.assertEqual(v.varType(), gum.VarType_Numerical)
+    self.assertEqual(v.varType(), gum.VarType_NUMERICAL)
 
     var = gum.NumericalDiscreteVariable("var", "test var")
 

@@ -839,15 +839,15 @@ class BNClassifier(sklearn.base.BaseEstimator, sklearn.base.ClassifierMixin):
         X = data.drop(targetName, axis=1)
 
     def bestTypedVal(v, idx):
-      if v.varType() == gum.VarType_Discretized:
+      if v.varType() == gum.VarType_DISCRETIZED:
         return v.label(idx)
-      elif v.varType() == gum.VarType_Integer:
+      elif v.varType() == gum.VarType_INTEGER:
         return int(v.numerical(idx))
-      elif v.varType() == gum.VarType_Labelized:
+      elif v.varType() == gum.VarType_LABELIZED:
         return v.label(idx)
-      elif v.varType() == gum.VarType_Range:
+      elif v.varType() == gum.VarType_RANGE:
         return int(v.numerical(idx))
-      elif v.varType() == gum.VarType_Numerical:
+      elif v.varType() == gum.VarType_NUMERICAL:
         return float(v.numerical(idx))
       else:
         raise gum.NotFound("This type of variable does not exist yet.")
