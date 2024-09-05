@@ -82,16 +82,16 @@
      // ##########################################################################
      /// @{
 
-     /// assign a set of forbidden arcs
+     /// assign a set of nodes without parent
      void setNodes(const NodeSet& set);
 
-     /// assign a new forbidden arc
+     /// assign a new node without parent
      void addNode(NodeId node);
 
-     /// remove a forbidden arc
+     /// remove a node without parent
      void eraseNode(NodeId node);
 
-     /// returns the set of mandatory arcs
+     /// returns the set of nodes without parent
      const NodeSet& nodes() const;
 
      /// sets a new graph from which we will perform checkings

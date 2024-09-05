@@ -46,6 +46,7 @@
 #include <agrum/BN/learning/constraints/structuralConstraintForbiddenArcs.h>
 #include <agrum/BN/learning/constraints/structuralConstraintIndegree.h>
 #include <agrum/BN/learning/constraints/structuralConstraintMandatoryArcs.h>
+#include <agrum/BN/learning/constraints/structuralConstraintNoChildrenNodes.h>
 #include <agrum/BN/learning/constraints/structuralConstraintNoParentNodes.h>
 #include <agrum/BN/learning/constraints/structuralConstraintPossibleEdges.h>
 #include <agrum/BN/learning/constraints/structuralConstraintSliceOrder.h>
@@ -785,6 +786,17 @@ namespace gum::learning {
     ///@{
     void eraseNoParentNode(NodeId node);
     void eraseNoParentNode(const std::string& node);
+
+    /// @name add a node with no children
+    ///@{
+    void addNoChildrenNode(NodeId node);
+    void addNoChildrenNode(const std::string& node);
+    /// @}
+
+    /// @name remove a node with no children
+    ///@{
+    void eraseNoChildrenNode(NodeId node);
+    void eraseNoChildrenNode(const std::string& node);
     /// @}
 
     /// assign a set of possible edges
@@ -881,6 +893,9 @@ namespace gum::learning {
 
     /// the constraint on no parent nodes
     StructuralConstraintNoParentNodes constraintNoParentNodes_;
+
+    /// the constraint on no children nodes
+    StructuralConstraintNoChildrenNodes constraintNoChildrenNodes_;
 
 
     /// the selected learning algorithm

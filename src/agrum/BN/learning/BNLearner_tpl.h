@@ -430,6 +430,17 @@ namespace gum {
         res += "}";
         vals.emplace_back("Constraint No Parent Nodes", res, "");
       }
+      if (!constraintNoChildrenNodes_.nodes().empty()) {
+        res     = "{";
+        nofirst = false;
+        for (const auto& node: constraintNoChildrenNodes_.nodes()) {
+          if (nofirst) res += ", ";
+          else nofirst = true;
+          res += nameFromId(node);
+        }
+        res += "}";
+        vals.emplace_back("Constraint No Children Nodes", res, "");
+      }
       if (initialDag_.size() != 0) {
         vals.emplace_back("Initial DAG", "True", initialDag_.toDot());
       }

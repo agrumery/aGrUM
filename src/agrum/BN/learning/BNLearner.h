@@ -417,6 +417,23 @@ namespace gum {
         return *this;
       }
 
+      BNLearner< GUM_SCALAR >& addNoChildrenNode(NodeId node) {
+        IBNLearner::addNoChildrenNode(node);
+        return *this;
+      }
+      BNLearner< GUM_SCALAR >& addNoChildrenNode(const std::string& name) {
+        IBNLearner::addNoChildrenNode(name);
+        return *this;
+      }
+      BNLearner< GUM_SCALAR >& eraseNoChildrenNode(NodeId node) {
+        IBNLearner::eraseNoChildrenNode(node);
+        return *this;
+      }
+      BNLearner< GUM_SCALAR >& eraseNoChildrenNode(const std::string& name) {
+        IBNLearner::eraseNoChildrenNode(name);
+        return *this;
+      }
+
       bool isConstraintBased() const {
         return IBNLearner::isConstraintBased();
       }

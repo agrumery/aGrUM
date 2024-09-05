@@ -340,6 +340,21 @@ namespace gum::learning {
     eraseNoParentNode(idFromName(name));
   }
 
+
+  INLINE void IBNLearner::addNoChildrenNode(NodeId node) { constraintNoChildrenNodes_.addNode(node); }
+
+  INLINE void IBNLearner::addNoChildrenNode(const std::string& name) {
+    addNoChildrenNode(idFromName(name));
+  }
+
+  INLINE void IBNLearner::eraseNoChildrenNode(NodeId node) {
+    constraintNoChildrenNodes_.eraseNode(node);
+  }
+
+  INLINE void IBNLearner::eraseNoChildrenNode(const std::string& name) {
+    eraseNoChildrenNode(idFromName(name));
+  }
+
   // assign a new forbidden arc
   INLINE void IBNLearner::addMandatoryArc(const std::string& tail, const std::string& head) {
     addMandatoryArc(Arc(idFromName(tail), idFromName(head)));
