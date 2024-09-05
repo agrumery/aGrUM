@@ -28092,6 +28092,18 @@ class BNLearner(object):
     def eraseNoParentNode(self, *args) -> "pyAgrum.BNLearner":
         return _pyAgrum.BNLearner_eraseNoParentNode(self, *args)
 
+    def addNoChildrenNode(self, *args) -> "pyAgrum.BNLearner":
+        return _pyAgrum.BNLearner_addNoChildrenNode(self, *args)
+
+    def eraseNoChildrenNode(self, *args) -> "pyAgrum.BNLearner":
+        return _pyAgrum.BNLearner_eraseNoChildrenNode(self, *args)
+
+    def isConstraintBased(self) -> bool:
+        return _pyAgrum.BNLearner_isConstraintBased(self)
+
+    def isScoreBased(self) -> bool:
+        return _pyAgrum.BNLearner_isScoreBased(self)
+
     def __repr__(self) -> str:
         return _pyAgrum.BNLearner___repr__(self)
 
