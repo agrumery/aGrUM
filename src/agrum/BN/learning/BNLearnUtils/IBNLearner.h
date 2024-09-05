@@ -46,6 +46,7 @@
 #include <agrum/BN/learning/constraints/structuralConstraintForbiddenArcs.h>
 #include <agrum/BN/learning/constraints/structuralConstraintIndegree.h>
 #include <agrum/BN/learning/constraints/structuralConstraintMandatoryArcs.h>
+#include <agrum/BN/learning/constraints/structuralConstraintNoParentNodes.h>
 #include <agrum/BN/learning/constraints/structuralConstraintPossibleEdges.h>
 #include <agrum/BN/learning/constraints/structuralConstraintSliceOrder.h>
 #include <agrum/BN/learning/constraints/structuralConstraintTabuList.h>
@@ -435,7 +436,7 @@ namespace gum::learning {
      * @return a std::pair<double,double>
      */
     std::pair< double, double >
-        chi2(const NodeId id1, const NodeId id2, const std::vector< NodeId >& knowing = {});
+        chi2(NodeId id1, NodeId id2, const std::vector< NodeId >& knowing = {});
     /**
      * Return the <statistic,pvalue> pair for the BNLearner
      * @param id1 first variable
@@ -455,7 +456,7 @@ namespace gum::learning {
      * @return a std::pair<double,double>
      */
     std::pair< double, double >
-        G2(const NodeId id1, const NodeId id2, const std::vector< NodeId >& knowing = {});
+        G2(NodeId id1, NodeId id2, const std::vector< NodeId >& knowing = {});
     /**
      * Return the <statistic,pvalue> pair for for G2 test in the database
      * @param id1 first variable
@@ -498,9 +499,7 @@ namespace gum::learning {
      * @param knowing an optional vector of conditioning NodeIds
      * @return a double
      */
-    double mutualInformation(const NodeId                 id1,
-                             const NodeId                 id2,
-                             const std::vector< NodeId >& knowing = {});
+    double mutualInformation(NodeId id1, NodeId id2, const std::vector< NodeId >& knowing = {});
 
     /**
      * Return the mutual information of var1 and var2 in the base, conditioned by knowing for
@@ -530,8 +529,8 @@ namespace gum::learning {
      * @param knowing an optional vector of conditioning NodeIds
      * @return a double
      */
-    double correctedMutualInformation(const NodeId                 id1,
-                                      const NodeId                 id2,
+    double correctedMutualInformation(NodeId                       id1,
+                                      NodeId                       id2,
                                       const std::vector< NodeId >& knowing = {});
 
     /**
@@ -560,7 +559,7 @@ namespace gum::learning {
      * by their NodeIds
      * @return a double corresponding to the value of the score
      */
-    double score(const NodeId vars, const std::vector< NodeId >& knowing = {});
+    double score(NodeId vars, const std::vector< NodeId >& knowing = {});
 
     /**
      * Return the value of the score currently in use by the BNLearner of a
@@ -687,7 +686,15 @@ namespace gum::learning {
     void useMIIC();
 
     /// indicate if the selected algorithm is constraint-based
-    bool isConstraintBased() const { return selectedAlgo_ == AlgoType::MIIC; }
+    bool isConstraintBased() const {
+      switch (selectedAlgo_) {
+        case AlgoType::K2 :
+        case AlgoType::GREEDY_HILL_CLIMBING :
+        case AlgoType::LOCAL_SEARCH_WITH_TABU_LIST : return false;
+        case AlgoType::MIIC : return true;
+        default : throw OperationNotAllowed("Unknown algorithm");
+      }
+    }
 
     /// indicate if the selected algorithm is score-based
     bool isScoreBased() const { return !isConstraintBased(); }
@@ -740,14 +747,14 @@ namespace gum::learning {
     /// @name assign a new forbidden arc
     /// @{
     void addForbiddenArc(const Arc& arc);
-    void addForbiddenArc(const NodeId tail, const NodeId head);
+    void addForbiddenArc(NodeId tail, NodeId head);
     void addForbiddenArc(const std::string& tail, const std::string& head);
     /// @}
 
     /// @name remove a forbidden arc
     /// @{
     void eraseForbiddenArc(const Arc& arc);
-    void eraseForbiddenArc(const NodeId tail, const NodeId head);
+    void eraseForbiddenArc(NodeId tail, NodeId head);
     void eraseForbiddenArc(const std::string& tail, const std::string& head);
     ///@}
 
@@ -757,15 +764,27 @@ namespace gum::learning {
     /// @name assign a new mandatory arc
     ///@{
     void addMandatoryArc(const Arc& arc);
-    void addMandatoryArc(const NodeId tail, const NodeId head);
+    void addMandatoryArc(NodeId tail, NodeId head);
     void addMandatoryArc(const std::string& tail, const std::string& head);
     ///@}
 
     /// @name remove a mandatory arc
     ///@{
     void eraseMandatoryArc(const Arc& arc);
-    void eraseMandatoryArc(const NodeId tail, const NodeId head);
+    void eraseMandatoryArc(NodeId tail, NodeId head);
     void eraseMandatoryArc(const std::string& tail, const std::string& head);
+    /// @}
+
+    /// @name add a node with no parent
+    ///@{
+    void addNoParentNode(NodeId node);
+    void addNoParentNode(const std::string& node);
+    /// @}
+
+    /// @name remove a node with no parent
+    ///@{
+    void eraseNoParentNode(NodeId node);
+    void eraseNoParentNode(const std::string& node);
     /// @}
 
     /// assign a set of possible edges
@@ -782,14 +801,14 @@ namespace gum::learning {
     //  are considered as impossible.
     /// @{
     void addPossibleEdge(const Edge& edge);
-    void addPossibleEdge(const NodeId tail, const NodeId head);
+    void addPossibleEdge(NodeId tail, NodeId head);
     void addPossibleEdge(const std::string& tail, const std::string& head);
     /// @}
 
     /// @name remove a possible edge
     /// @{
     void erasePossibleEdge(const Edge& edge);
-    void erasePossibleEdge(const NodeId tail, const NodeId head);
+    void erasePossibleEdge(NodeId tail, NodeId head);
     void erasePossibleEdge(const std::string& tail, const std::string& head);
     ///@}
 
@@ -859,6 +878,10 @@ namespace gum::learning {
 
     /// the constraint on mandatory arcs
     StructuralConstraintMandatoryArcs constraintMandatoryArcs_;
+
+    /// the constraint on no parent nodes
+    StructuralConstraintNoParentNodes constraintNoParentNodes_;
+
 
     /// the selected learning algorithm
     AlgoType selectedAlgo_{AlgoType::MIIC};

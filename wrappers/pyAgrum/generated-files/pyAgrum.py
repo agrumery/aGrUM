@@ -28086,6 +28086,12 @@ class BNLearner(object):
         """
         return _pyAgrum.BNLearner_setPossibleSkeleton(self, skeleton)
 
+    def addNoParentNode(self, *args) -> "pyAgrum.BNLearner":
+        return _pyAgrum.BNLearner_addNoParentNode(self, *args)
+
+    def eraseNoParentNode(self, *args) -> "pyAgrum.BNLearner":
+        return _pyAgrum.BNLearner_eraseNoParentNode(self, *args)
+
     def __repr__(self) -> str:
         return _pyAgrum.BNLearner___repr__(self)
 

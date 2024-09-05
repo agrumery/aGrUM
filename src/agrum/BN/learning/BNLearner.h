@@ -300,7 +300,7 @@ namespace gum {
         return *this;
       }
 
-      BNLearner< GUM_SCALAR >& addForbiddenArc(const NodeId tail, const NodeId head) {
+      BNLearner< GUM_SCALAR >& addForbiddenArc(NodeId tail, NodeId head) {
         IBNLearner::addForbiddenArc(tail, head);
         return *this;
       }
@@ -315,7 +315,7 @@ namespace gum {
         return *this;
       }
 
-      BNLearner< GUM_SCALAR >& eraseForbiddenArc(const NodeId tail, const NodeId head) {
+      BNLearner< GUM_SCALAR >& eraseForbiddenArc(NodeId tail, NodeId head) {
         IBNLearner::eraseForbiddenArc(tail, head);
         return *this;
       }
@@ -330,7 +330,7 @@ namespace gum {
         return *this;
       }
 
-      BNLearner< GUM_SCALAR >& addMandatoryArc(const NodeId tail, const NodeId head) {
+      BNLearner< GUM_SCALAR >& addMandatoryArc(NodeId tail, NodeId head) {
         IBNLearner::addMandatoryArc(tail, head);
         return *this;
       }
@@ -345,7 +345,7 @@ namespace gum {
         return *this;
       }
 
-      BNLearner< GUM_SCALAR >& eraseMandatoryArc(const NodeId tail, const NodeId head) {
+      BNLearner< GUM_SCALAR >& eraseMandatoryArc(NodeId tail, NodeId head) {
         IBNLearner::eraseMandatoryArc(tail, head);
         return *this;
       }
@@ -360,7 +360,7 @@ namespace gum {
         return *this;
       }
 
-      BNLearner< GUM_SCALAR >& addPossibleEdge(const NodeId tail, const NodeId head) {
+      BNLearner< GUM_SCALAR >& addPossibleEdge(NodeId tail, NodeId head) {
         IBNLearner::addPossibleEdge(tail, head);
         return *this;
       }
@@ -375,7 +375,7 @@ namespace gum {
         return *this;
       }
 
-      BNLearner< GUM_SCALAR >& erasePossibleEdge(const NodeId tail, const NodeId head) {
+      BNLearner< GUM_SCALAR >& erasePossibleEdge(NodeId tail, NodeId head) {
         IBNLearner::erasePossibleEdge(tail, head);
         return *this;
       }
@@ -398,6 +398,30 @@ namespace gum {
       BNLearner< GUM_SCALAR >& setPossibleSkeleton(const UndiGraph& skeleton) {
         IBNLearner::setPossibleSkeleton(skeleton);
         return *this;
+      }
+
+      BNLearner< GUM_SCALAR >& addNoParentNode(NodeId node) {
+        IBNLearner::addNoParentNode(node);
+        return *this;
+      }
+      BNLearner< GUM_SCALAR >& addNoParentNode(const std::string& name) {
+        IBNLearner::addNoParentNode(name);
+        return *this;
+      }
+      BNLearner< GUM_SCALAR >& eraseNoParentNode(NodeId node) {
+        IBNLearner::eraseNoParentNode(node);
+        return *this;
+      }
+      BNLearner< GUM_SCALAR >& eraseNoParentNode(const std::string& name) {
+        IBNLearner::eraseNoParentNode(name);
+        return *this;
+      }
+
+      bool isConstraintBased() const {
+        return IBNLearner::isConstraintBased();
+      }
+      bool isScoreBased() const {
+        return IBNLearner::isScoreBased();
       }
 
       protected:

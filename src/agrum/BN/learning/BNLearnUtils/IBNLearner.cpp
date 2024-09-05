@@ -204,7 +204,8 @@ namespace gum::learning {
       constraintSliceOrder_(from.constraintSliceOrder_),
       constraintIndegree_(from.constraintIndegree_), constraintTabuList_(from.constraintTabuList_),
       constraintForbiddenArcs_(from.constraintForbiddenArcs_),
-      constraintMandatoryArcs_(from.constraintMandatoryArcs_), selectedAlgo_(from.selectedAlgo_),
+      constraintMandatoryArcs_(from.constraintMandatoryArcs_),
+      constraintNoParentNodes_(from.constraintNoParentNodes_), selectedAlgo_(from.selectedAlgo_),
       algoK2_(from.algoK2_), algoSimpleMiic_(from.algoSimpleMiic_), algoMiic_(from.algoMiic_),
       kmodeMiic_(from.kmodeMiic_), greedyHillClimbing_(from.greedyHillClimbing_),
       localSearchWithTabuList_(from.localSearchWithTabuList_), scoreDatabase_(from.scoreDatabase_),
@@ -224,6 +225,7 @@ namespace gum::learning {
       constraintTabuList_(std::move(from.constraintTabuList_)),
       constraintForbiddenArcs_(std::move(from.constraintForbiddenArcs_)),
       constraintMandatoryArcs_(std::move(from.constraintMandatoryArcs_)),
+      constraintNoParentNodes_(std::move(from.constraintNoParentNodes_)),
       selectedAlgo_(from.selectedAlgo_), algoK2_(std::move(from.algoK2_)),
       algoSimpleMiic_(std::move(from.algoSimpleMiic_)), algoMiic_(std::move(from.algoMiic_)),
       kmodeMiic_(from.kmodeMiic_), greedyHillClimbing_(std::move(from.greedyHillClimbing_)),
@@ -283,6 +285,7 @@ namespace gum::learning {
       constraintIndegree_      = from.constraintIndegree_;
       constraintTabuList_      = from.constraintTabuList_;
       constraintForbiddenArcs_ = from.constraintForbiddenArcs_;
+      constraintNoParentNodes_ = from.constraintNoParentNodes_;
       constraintMandatoryArcs_ = from.constraintMandatoryArcs_;
       selectedAlgo_            = from.selectedAlgo_;
       algoK2_                  = from.algoK2_;
@@ -335,6 +338,7 @@ namespace gum::learning {
       constraintIndegree_      = std::move(from.constraintIndegree_);
       constraintTabuList_      = std::move(from.constraintTabuList_);
       constraintForbiddenArcs_ = std::move(from.constraintForbiddenArcs_);
+      constraintNoParentNodes_ = std::move(from.constraintNoParentNodes_);
       constraintMandatoryArcs_ = std::move(from.constraintMandatoryArcs_);
       selectedAlgo_            = from.selectedAlgo_;
       algoK2_                  = from.algoK2_;
@@ -621,6 +625,12 @@ namespace gum::learning {
       copyOrder.erase(n1);
     }
 
+    for (const auto node: constraintNoParentNodes_.nodes()) {
+      for (const auto node2: mgraph.nodes()) {
+        if (node != node2) { forbiddenGraph.addArc(node2, node); }
+      }
+    }
+
     // GUM_CHECKPOINT
     algoMiic_.setMaxIndegree(constraintIndegree_.maxIndegree());
     algoMiic_.addConstraints(initial_marks);
@@ -647,21 +657,10 @@ namespace gum::learning {
                     << "structures with missing values in databases")
     }
 
-    MixedGraph        mg;
     BNLearnerListener listener(this, algoMiic_);
     // create the mixedGraph_constraint_MandatoryArcs.arcs
     MixedGraph mgraph = this->prepareMiic_();
-    mg                = algoMiic_.learnPDAG(*mutualInfo_, mgraph);
-
-    // GUM_TRACE_VAR(mg.toDot())
-    PDAG res;
-    for (auto n: mg.nodes())
-      res.addNodeWithId(n);
-    for (auto& edge: mg.edges())
-      res.addEdge(edge.first(), edge.second());
-    for (auto& arc: mg.arcs())
-      res.addArc(arc.tail(), arc.head());
-    return res;
+    return algoMiic_.learnPDAG(*mutualInfo_, mgraph);
   }
 
   DAG IBNLearner::learnDAG() {
@@ -733,7 +732,8 @@ namespace gum::learning {
         StructuralConstraintSetStatic< StructuralConstraintMandatoryArcs,
                                        StructuralConstraintForbiddenArcs,
                                        StructuralConstraintPossibleEdges,
-                                       StructuralConstraintSliceOrder >
+                                       StructuralConstraintSliceOrder,
+                                       StructuralConstraintNoParentNodes >
             gen_constraint;
         static_cast< StructuralConstraintMandatoryArcs& >(gen_constraint)
             = constraintMandatoryArcs_;
@@ -742,6 +742,8 @@ namespace gum::learning {
         static_cast< StructuralConstraintPossibleEdges& >(gen_constraint)
             = constraintPossibleEdges_;
         static_cast< StructuralConstraintSliceOrder& >(gen_constraint) = constraintSliceOrder_;
+        static_cast< StructuralConstraintNoParentNodes& >(gen_constraint)
+            = constraintNoParentNodes_;
 
         GraphChangesGenerator4DiGraph op_set(gen_constraint);
 
@@ -760,7 +762,8 @@ namespace gum::learning {
         StructuralConstraintSetStatic< StructuralConstraintMandatoryArcs,
                                        StructuralConstraintForbiddenArcs,
                                        StructuralConstraintPossibleEdges,
-                                       StructuralConstraintSliceOrder >
+                                       StructuralConstraintSliceOrder,
+                                       StructuralConstraintNoParentNodes >
             gen_constraint;
         static_cast< StructuralConstraintMandatoryArcs& >(gen_constraint)
             = constraintMandatoryArcs_;
@@ -769,6 +772,8 @@ namespace gum::learning {
         static_cast< StructuralConstraintPossibleEdges& >(gen_constraint)
             = constraintPossibleEdges_;
         static_cast< StructuralConstraintSliceOrder& >(gen_constraint) = constraintSliceOrder_;
+        static_cast< StructuralConstraintNoParentNodes& >(gen_constraint)
+            = constraintNoParentNodes_;
 
         GraphChangesGenerator4DiGraph op_set(gen_constraint);
 
@@ -789,7 +794,8 @@ namespace gum::learning {
         BNLearnerListener listener(this, algoK2_.approximationScheme());
         StructuralConstraintSetStatic< StructuralConstraintMandatoryArcs,
                                        StructuralConstraintForbiddenArcs,
-                                       StructuralConstraintPossibleEdges >
+                                       StructuralConstraintPossibleEdges,
+                                       StructuralConstraintNoParentNodes >
             gen_constraint;
         static_cast< StructuralConstraintMandatoryArcs& >(gen_constraint)
             = constraintMandatoryArcs_;
@@ -797,6 +803,9 @@ namespace gum::learning {
             = constraintForbiddenArcs_;
         static_cast< StructuralConstraintPossibleEdges& >(gen_constraint)
             = constraintPossibleEdges_;
+        ;
+        static_cast< StructuralConstraintNoParentNodes& >(gen_constraint)
+            = constraintNoParentNodes_;
 
         GraphChangesGenerator4K2 op_set(gen_constraint);
 

@@ -160,8 +160,7 @@ namespace gum {
           GUM_ERROR(MissingValueInDatabase,
                     "In general, the BNLearner is unable to cope with "
                         << "missing values in databases. To learn parameters in "
-                        << "such situations, you should first use method "
-                        << "useEM()");
+                        << "such situations, you should first use method " << "useEM()");
         }
 
         // create the usual estimator
@@ -307,36 +306,35 @@ namespace gum {
         default : vals.emplace_back(key, "(unknown)", "?"); break;
       }
 
+      key = "Score";
 
-      key                                             = "Score";
-      const std::string NotUsedForConstraintBasedAlgo = "Not used for constraint-based algorithms";
-      switch (scoreType_) {
-        case ScoreType::K2 : vals.emplace_back(key, "K2", NotUsedForConstraintBasedAlgo); break;
-        case ScoreType::AIC : vals.emplace_back(key, "AIC", NotUsedForConstraintBasedAlgo); break;
-        case ScoreType::BIC : vals.emplace_back(key, "BIC", NotUsedForConstraintBasedAlgo); break;
-        case ScoreType::BD : vals.emplace_back(key, "BD", NotUsedForConstraintBasedAlgo); break;
-        case ScoreType::BDeu : vals.emplace_back(key, "BDeu", NotUsedForConstraintBasedAlgo); break;
-        case ScoreType::LOG2LIKELIHOOD :
-          vals.emplace_back(key, "Log2Likelihood", NotUsedForConstraintBasedAlgo);
-          break;
-        default : vals.emplace_back(key, "(unknown)", "?"); break;
+      if (isScoreBased()) {
+        switch (scoreType_) {
+          case ScoreType::K2 : vals.emplace_back(key, "K2", ""); break;
+          case ScoreType::AIC : vals.emplace_back(key, "AIC", ""); break;
+          case ScoreType::BIC : vals.emplace_back(key, "BIC", ""); break;
+          case ScoreType::BD : vals.emplace_back(key, "BD", ""); break;
+          case ScoreType::BDeu : vals.emplace_back(key, "BDeu", ""); break;
+          case ScoreType::LOG2LIKELIHOOD : vals.emplace_back(key, "Log2Likelihood", ""); break;
+          default : vals.emplace_back(key, "(unknown)", "?"); break;
+        }
       }
 
-      key                                        = "Correction";
-      const std::string NotUsedForScoreBasedAlgo = "Not used for score-based algorithms";
-      switch (kmodeMiic_) {
-        case CorrectedMutualInformation::KModeTypes::MDL :
-          vals.emplace_back(key, "MDL", NotUsedForScoreBasedAlgo);
-          break;
-        case CorrectedMutualInformation::KModeTypes::NML :
-          vals.emplace_back(key, "NML", NotUsedForScoreBasedAlgo);
-          break;
-        case CorrectedMutualInformation::KModeTypes::NoCorr :
-          vals.emplace_back(key, "No correction", "");
-          break;
-        default : vals.emplace_back(key, "(unknown)", "?"); break;
+      if (isConstraintBased()) {
+        key = "Correction";
+        switch (kmodeMiic_) {
+          case CorrectedMutualInformation::KModeTypes::MDL :
+            vals.emplace_back(key, "MDL", "");
+            break;
+          case CorrectedMutualInformation::KModeTypes::NML :
+            vals.emplace_back(key, "NML", "");
+            break;
+          case CorrectedMutualInformation::KModeTypes::NoCorr :
+            vals.emplace_back(key, "No correction", "");
+            break;
+          default : vals.emplace_back(key, "(unknown)", "?"); break;
+        }
       }
-
 
       key     = "Prior";
       comment = checkScorePriorCompatibility();
@@ -420,6 +418,17 @@ namespace gum {
         }
         res += "}";
         vals.emplace_back("Constraint Slice Order", res, "");
+      }
+      if (!constraintNoParentNodes_.nodes().empty()) {
+        res     = "{";
+        nofirst = false;
+        for (const auto& node: constraintNoParentNodes_.nodes()) {
+          if (nofirst) res += ", ";
+          else nofirst = true;
+          res += nameFromId(node);
+        }
+        res += "}";
+        vals.emplace_back("Constraint No Parent Nodes", res, "");
       }
       if (initialDag_.size() != 0) {
         vals.emplace_back("Initial DAG", "True", initialDag_.toDot());
