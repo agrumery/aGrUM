@@ -404,14 +404,17 @@ namespace gum {
         IBNLearner::addNoParentNode(node);
         return *this;
       }
+
       BNLearner< GUM_SCALAR >& addNoParentNode(const std::string& name) {
         IBNLearner::addNoParentNode(name);
         return *this;
       }
+
       BNLearner< GUM_SCALAR >& eraseNoParentNode(NodeId node) {
         IBNLearner::eraseNoParentNode(node);
         return *this;
       }
+
       BNLearner< GUM_SCALAR >& eraseNoParentNode(const std::string& name) {
         IBNLearner::eraseNoParentNode(name);
         return *this;
@@ -421,25 +424,25 @@ namespace gum {
         IBNLearner::addNoChildrenNode(node);
         return *this;
       }
+
       BNLearner< GUM_SCALAR >& addNoChildrenNode(const std::string& name) {
         IBNLearner::addNoChildrenNode(name);
         return *this;
       }
+
       BNLearner< GUM_SCALAR >& eraseNoChildrenNode(NodeId node) {
         IBNLearner::eraseNoChildrenNode(node);
         return *this;
       }
+
       BNLearner< GUM_SCALAR >& eraseNoChildrenNode(const std::string& name) {
         IBNLearner::eraseNoChildrenNode(name);
         return *this;
       }
 
-      bool isConstraintBased() const {
-        return IBNLearner::isConstraintBased();
-      }
-      bool isScoreBased() const {
-        return IBNLearner::isScoreBased();
-      }
+      bool isConstraintBased() const { return IBNLearner::isConstraintBased(); }
+
+      bool isScoreBased() const { return IBNLearner::isScoreBased(); }
 
       protected:
       /// create the prior used for learning

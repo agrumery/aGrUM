@@ -1,30 +1,30 @@
 /**
-*
-*   Copyright (c) 2005-2024  by Pierre-Henri WUILLEMIN(_at_LIP6) & Christophe GONZALES(_at_AMU)
-*   info_at_agrum_dot_org
-*
-*  This library is free software: you can redistribute it and/or modify
-*  it under the terms of the GNU Lesser General Public License as published by
-*  the Free Software Foundation, either version 3 of the License, or
-*  (at your option) any later version.
-*
-*  This library is distributed in the hope that it will be useful,
-*  but WITHOUT ANY WARRANTY; without even the implied warranty of
-*  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-*  GNU Lesser General Public License for more details.
-*
-*  You should have received a copy of the GNU Lesser General Public License
-*  along with this library.  If not, see <http://www.gnu.org/licenses/>.
-*
-*/
+ *
+ *   Copyright (c) 2005-2024  by Pierre-Henri WUILLEMIN(_at_LIP6) & Christophe GONZALES(_at_AMU)
+ *   info_at_agrum_dot_org
+ *
+ *  This library is free software: you can redistribute it and/or modify
+ *  it under the terms of the GNU Lesser General Public License as published by
+ *  the Free Software Foundation, either version 3 of the License, or
+ *  (at your option) any later version.
+ *
+ *  This library is distributed in the hope that it will be useful,
+ *  but WITHOUT ANY WARRANTY; without even the implied warranty of
+ *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ *  GNU Lesser General Public License for more details.
+ *
+ *  You should have received a copy of the GNU Lesser General Public License
+ *  along with this library.  If not, see <http://www.gnu.org/licenses/>.
+ *
+ */
 
 
 /** @file
-* @brief the structural constraint for forbidding parents for some nodes
-* during structure learning
-*
-* @author Christophe GONZALES(_at_AMU) and Pierre-Henri WUILLEMIN(_at_LIP6)
-*/
+ * @brief the structural constraint for forbidding parents for some nodes
+ * during structure learning
+ *
+ * @author Christophe GONZALES(_at_AMU) and Pierre-Henri WUILLEMIN(_at_LIP6)
+ */
 #ifndef GUM_LEARNING_STRUCTURAL_CONSTRAINT_NO_PARENT_NODES_H
 #define GUM_LEARNING_STRUCTURAL_CONSTRAINT_NO_PARENT_NODES_H
 
@@ -32,121 +32,119 @@
 
 #include <agrum/BN/learning/constraints/structuralConstraint.h>
 
+namespace gum::learning {
 
+  /** @class StructuralConstraintNoParentNodes
+   * @brief the structural constraint for forbidding parents for some nodes
+   * @ingroup learning_group
+   */
+  class StructuralConstraintNoParentNodes: public virtual StructuralConstraintEmpty {
+    public:
+    // ##########################################################################
+    /// @name Constructors / Destructors
+    // ##########################################################################
+    /// @{
 
- namespace gum::learning {
+    /// default constructor
+    StructuralConstraintNoParentNodes();
 
-   /** @class StructuralConstraintNoParentNodes
-    * @brief the structural constraint for forbidding parents for some nodes
-    * @ingroup learning_group
-    */
-   class StructuralConstraintNoParentNodes: public virtual StructuralConstraintEmpty {
-     public:
-     // ##########################################################################
-     /// @name Constructors / Destructors
-     // ##########################################################################
-     /// @{
+    /// constructor starting with a given graph
+    StructuralConstraintNoParentNodes(const DiGraph& graph);
 
-     /// default constructor
-     StructuralConstraintNoParentNodes();
+    /// copy constructor
+    StructuralConstraintNoParentNodes(const StructuralConstraintNoParentNodes& from);
 
-     /// constructor starting with a given graph
-     StructuralConstraintNoParentNodes(const DiGraph& graph);
+    /// move constructor
+    StructuralConstraintNoParentNodes(StructuralConstraintNoParentNodes&& from);
 
-     /// copy constructor
-     StructuralConstraintNoParentNodes(const StructuralConstraintNoParentNodes& from);
+    /// destructor
+    virtual ~StructuralConstraintNoParentNodes();
 
-     /// move constructor
-     StructuralConstraintNoParentNodes(StructuralConstraintNoParentNodes&& from);
+    /// @}
 
-     /// destructor
-     virtual ~StructuralConstraintNoParentNodes();
+    // ##########################################################################
+    /// @name Operators
+    // ##########################################################################
+    /// @{
 
-     /// @}
+    /// copy operator
+    StructuralConstraintNoParentNodes& operator=(const StructuralConstraintNoParentNodes& from);
 
-     // ##########################################################################
-     /// @name Operators
-     // ##########################################################################
-     /// @{
+    /// move operator
+    StructuralConstraintNoParentNodes& operator=(StructuralConstraintNoParentNodes&& from);
 
-     /// copy operator
-     StructuralConstraintNoParentNodes& operator=(const StructuralConstraintNoParentNodes& from);
+    /// @}
 
-     /// move operator
-     StructuralConstraintNoParentNodes& operator=(StructuralConstraintNoParentNodes&& from);
+    // ##########################################################################
+    /// @name Specific Accessors / Modifiers
+    // ##########################################################################
+    /// @{
 
-     /// @}
+    /// assign a set of nodes without parent
+    void setNodes(const NodeSet& set);
 
-     // ##########################################################################
-     /// @name Specific Accessors / Modifiers
-     // ##########################################################################
-     /// @{
+    /// assign a new node without parent
+    void addNode(NodeId node);
 
-     /// assign a set of nodes without parent
-     void setNodes(const NodeSet& set);
+    /// remove a node without parent
+    void eraseNode(NodeId node);
 
-     /// assign a new node without parent
-     void addNode(NodeId node);
+    /// returns the set of nodes without parent
+    const NodeSet& nodes() const;
 
-     /// remove a node without parent
-     void eraseNode(NodeId node);
+    /// sets a new graph from which we will perform checkings
+    void setGraphAlone(const DiGraph& graph);
 
-     /// returns the set of nodes without parent
-     const NodeSet& nodes() const;
+    /// notify the constraint of a modification of the graph
+    void modifyGraphAlone(const ArcAddition& change);
 
-     /// sets a new graph from which we will perform checkings
-     void setGraphAlone(const DiGraph& graph);
+    /// notify the constraint of a modification of the graph
+    void modifyGraphAlone(const ArcDeletion& change);
 
-     /// notify the constraint of a modification of the graph
-     void modifyGraphAlone(const ArcAddition& change);
+    /// notify the constraint of a modification of the graph
+    void modifyGraphAlone(const ArcReversal& change);
 
-     /// notify the constraint of a modification of the graph
-     void modifyGraphAlone(const ArcDeletion& change);
+    /// notify the constraint of a modification of the graph
+    void modifyGraphAlone(const GraphChange& change);
 
-     /// notify the constraint of a modification of the graph
-     void modifyGraphAlone(const ArcReversal& change);
+    /// indicates whether a change will always violate the constraint
+    /** Some learning algorithms need examine several times whether a given
+     * graph change can be applied. For instance, the first time arc (X,Y)
+     * addition is considered, the learning algorithm may discard this change
+     * because it violates the structural constraint (e.g., if the latter
+     * enforces a DAG structure, this arc addition might induce a directed
+     * cycle), but, later on, other arc removal may induce that the arc
+     * addition is now possible.
+     * Such change is thus not always invalid. Conversely,
+     * there are changes that can be discarded once and for all. For instance,
+     * in a 2TBN structure, it is always impossible to add a backward-time
+     * arc.
+     * Such graph changes are always invalid and are therefore tagged as such
+     * by the isAlwaysInvalid method. */
+    bool isAlwaysInvalidAlone(const GraphChange& change) const;
 
-     /// notify the constraint of a modification of the graph
-     void modifyGraphAlone(const GraphChange& change);
+    /// checks whether the constraints enable to add arc (x,y)
+    bool checkArcAdditionAlone(NodeId x, NodeId y) const;
 
-     /// indicates whether a change will always violate the constraint
-     /** Some learning algorithms need examine several times whether a given
-      * graph change can be applied. For instance, the first time arc (X,Y)
-      * addition is considered, the learning algorithm may discard this change
-      * because it violates the structural constraint (e.g., if the latter
-      * enforces a DAG structure, this arc addition might induce a directed
-      * cycle), but, later on, other arc removal may induce that the arc
-      * addition is now possible.
-      * Such change is thus not always invalid. Conversely,
-      * there are changes that can be discarded once and for all. For instance,
-      * in a 2TBN structure, it is always impossible to add a backward-time
-      * arc.
-      * Such graph changes are always invalid and are therefore tagged as such
-      * by the isAlwaysInvalid method. */
-     bool isAlwaysInvalidAlone(const GraphChange& change) const;
+    /// checks whether the constraints enable to remove arc (x,y)
+    bool checkArcDeletionAlone(NodeId x, NodeId y) const;
 
-     /// checks whether the constraints enable to add arc (x,y)
-     bool checkArcAdditionAlone(NodeId x, NodeId y) const;
+    /// checks whether the constraints enable to reverse arc (x,y)
+    bool checkArcReversalAlone(NodeId x, NodeId y) const;
 
-     /// checks whether the constraints enable to remove arc (x,y)
-     bool checkArcDeletionAlone(NodeId x, NodeId y) const;
+    /// checks whether the constraints enable to perform a graph change
+    bool checkModificationAlone(const GraphChange& change) const;
 
-     /// checks whether the constraints enable to reverse arc (x,y)
-     bool checkArcReversalAlone(NodeId x, NodeId y) const;
+    /// checks whether the constraints enable to add an arc
+    bool checkModificationAlone(const ArcAddition& change) const;
 
-     /// checks whether the constraints enable to perform a graph change
-     bool checkModificationAlone(const GraphChange& change) const;
+    /// checks whether the constraints enable to remove an arc
+    bool checkModificationAlone(const ArcDeletion& change) const;
 
-     /// checks whether the constraints enable to add an arc
-     bool checkModificationAlone(const ArcAddition& change) const;
+    /// checks whether the constraints enable to reverse an arc
+    bool checkModificationAlone(const ArcReversal& change) const;
 
-     /// checks whether the constraints enable to remove an arc
-     bool checkModificationAlone(const ArcDeletion& change) const;
-
-     /// checks whether the constraints enable to reverse an arc
-     bool checkModificationAlone(const ArcReversal& change) const;
-
-     /// @}
+    /// @}
 
 #ifndef DOXYGEN_SHOULD_SKIP_THIS
 // include the set of methods that enable the structural constraint to
@@ -157,14 +155,12 @@
 #  undef GUM_CONSTRAINT_CLASS_NAME
 #endif   // DOXYGEN_SHOULD_SKIP_THIS
 
-     protected:
-     /// the ForbiddenArcs on which we perform checks
-     NodeSet _noParentNodes_;
-   };
+    protected:
+    /// the ForbiddenArcs on which we perform checks
+    NodeSet _noParentNodes_;
+  };
 
- } // namespace gum::learning
-
-
+}   // namespace gum::learning
 
 /// include the inlined functions if necessary
 #ifndef GUM_NO_INLINE

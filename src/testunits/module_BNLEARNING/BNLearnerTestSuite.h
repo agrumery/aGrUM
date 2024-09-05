@@ -2038,5 +2038,26 @@ namespace gum_tests {
       gum::learning::BNLearner< double > learner(GET_RESSOURCES_PATH("csv/bn125.csv"));
       TS_GUM_ASSERT_THROWS_NOTHING(auto bn = learner.learnBN(););
     }
+
+    GUM_ACTIVE_TEST(NoParentNoChildrenTest) {
+      {
+        gum::learning::BNLearner< double > learner(GET_RESSOURCES_PATH("csv/asia.csv"));
+        auto                               bn = learner.learnBN();
+        TS_ASSERT_LESS_THAN((gum::Size)0, bn.parents("smoking").size())
+        TS_ASSERT_LESS_THAN((gum::Size)0, bn.children("visit_to_Asia").size())
+      }
+      {
+        gum::learning::BNLearner< double > learner(GET_RESSOURCES_PATH("csv/asia.csv"));
+        learner.addNoParentNode("smoking");
+        auto bn = learner.learnBN();
+        TS_ASSERT_EQUALS((gum::Size)0, bn.parents("smoking").size())
+      }
+      {
+        gum::learning::BNLearner< double > learner(GET_RESSOURCES_PATH("csv/asia.csv"));
+        learner.addNoChildrenNode("visit_to_Asia");
+        auto bn = learner.learnBN();
+        TS_ASSERT_EQUALS((gum::Size)0, bn.children("visit_to_Asia").size())
+      }
+    }
   };   // class BNLearnerTestSuite
 } /* namespace gum_tests */

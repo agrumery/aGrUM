@@ -813,16 +813,18 @@ namespace gum::learning {
                                        StructuralConstraintForbiddenArcs,
                                        StructuralConstraintPossibleEdges,
                                        StructuralConstraintNoParentNodes,
-                                       StructuralConstraintNoChildrenNodes>
+                                       StructuralConstraintNoChildrenNodes >
             gen_constraint;
         static_cast< StructuralConstraintMandatoryArcs& >(gen_constraint)
             = constraintMandatoryArcs_;
         static_cast< StructuralConstraintForbiddenArcs& >(gen_constraint)
             = constraintForbiddenArcs_;
         static_cast< StructuralConstraintPossibleEdges& >(gen_constraint)
-            = constraintPossibleEdges_;              ;
+            = constraintPossibleEdges_;
+        ;
         static_cast< StructuralConstraintNoParentNodes& >(gen_constraint)
-            = constraintNoParentNodes_;              ;
+            = constraintNoParentNodes_;
+        ;
         static_cast< StructuralConstraintNoChildrenNodes& >(gen_constraint)
             = constraintNoChildrenNodes_;
 

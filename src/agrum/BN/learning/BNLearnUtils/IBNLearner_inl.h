@@ -340,8 +340,9 @@ namespace gum::learning {
     eraseNoParentNode(idFromName(name));
   }
 
-
-  INLINE void IBNLearner::addNoChildrenNode(NodeId node) { constraintNoChildrenNodes_.addNode(node); }
+  INLINE void IBNLearner::addNoChildrenNode(NodeId node) {
+    constraintNoChildrenNodes_.addNode(node);
+  }
 
   INLINE void IBNLearner::addNoChildrenNode(const std::string& name) {
     addNoChildrenNode(idFromName(name));

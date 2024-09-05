@@ -1,29 +1,29 @@
 /**
-*
-*   Copyright (c) 2005-2024  by Pierre-Henri WUILLEMIN(_at_LIP6) & Christophe GONZALES(_at_AMU)
-*   info_at_agrum_dot_org
-*
-*  This library is free software: you can redistribute it and/or modify
-*  it under the terms of the GNU Lesser General Public License as published by
-*  the Free Software Foundation, either version 3 of the License, or
-*  (at your option) any later version.
-*
-*  This library is distributed in the hope that it will be useful,
-*  but WITHOUT ANY WARRANTY; without even the implied warranty of
-*  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-*  GNU Lesser General Public License for more details.
-*
-*  You should have received a copy of the GNU Lesser General Public License
-*  along with this library.  If not, see <http://www.gnu.org/licenses/>.
-*
+ *
+ *   Copyright (c) 2005-2024  by Pierre-Henri WUILLEMIN(_at_LIP6) & Christophe GONZALES(_at_AMU)
+ *   info_at_agrum_dot_org
+ *
+ *  This library is free software: you can redistribute it and/or modify
+ *  it under the terms of the GNU Lesser General Public License as published by
+ *  the Free Software Foundation, either version 3 of the License, or
+ *  (at your option) any later version.
+ *
+ *  This library is distributed in the hope that it will be useful,
+ *  but WITHOUT ANY WARRANTY; without even the implied warranty of
+ *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ *  GNU Lesser General Public License for more details.
+ *
+ *  You should have received a copy of the GNU Lesser General Public License
+ *  along with this library.  If not, see <http://www.gnu.org/licenses/>.
+ *
  */
 
 
 /** @file
-* @brief the structural constraint for forbidding children for some nodes
-* during structure learning
-*
-* @author Christophe GONZALES(_at_AMU) and Pierre-Henri WUILLEMIN(_at_LIP6)
+ * @brief the structural constraint for forbidding children for some nodes
+ * during structure learning
+ *
+ * @author Christophe GONZALES(_at_AMU) and Pierre-Henri WUILLEMIN(_at_LIP6)
  */
 #ifndef GUM_LEARNING_STRUCTURAL_CONSTRAINT_NO_CHILDREN_NODES_H
 #define GUM_LEARNING_STRUCTURAL_CONSTRAINT_NO_CHILDREN_NODES_H
@@ -32,13 +32,11 @@
 
 #include <agrum/BN/learning/constraints/structuralConstraint.h>
 
-
-
 namespace gum::learning {
 
   /** @class StructuralConstraintNoChildrenNodes
-    * @brief the structural constraint for forbidding children for some nodes
-    * @ingroup learning_group
+   * @brief the structural constraint for forbidding children for some nodes
+   * @ingroup learning_group
    */
   class StructuralConstraintNoChildrenNodes: public virtual StructuralConstraintEmpty {
     public:
@@ -111,18 +109,18 @@ namespace gum::learning {
 
     /// indicates whether a change will always violate the constraint
     /** Some learning algorithms need examine several times whether a given
-      * graph change can be applied. For instance, the first time arc (X,Y)
-      * addition is considered, the learning algorithm may discard this change
-      * because it violates the structural constraint (e.g., if the latter
-      * enforces a DAG structure, this arc addition might induce a directed
-      * cycle), but, later on, other arc removal may induce that the arc
-      * addition is now possible.
-      * Such change is thus not always invalid. Conversely,
-      * there are changes that can be discarded once and for all. For instance,
-      * in a 2TBN structure, it is always impossible to add a backward-time
-      * arc.
-      * Such graph changes are always invalid and are therefore tagged as such
-      * by the isAlwaysInvalid method. */
+     * graph change can be applied. For instance, the first time arc (X,Y)
+     * addition is considered, the learning algorithm may discard this change
+     * because it violates the structural constraint (e.g., if the latter
+     * enforces a DAG structure, this arc addition might induce a directed
+     * cycle), but, later on, other arc removal may induce that the arc
+     * addition is now possible.
+     * Such change is thus not always invalid. Conversely,
+     * there are changes that can be discarded once and for all. For instance,
+     * in a 2TBN structure, it is always impossible to add a backward-time
+     * arc.
+     * Such graph changes are always invalid and are therefore tagged as such
+     * by the isAlwaysInvalid method. */
     bool isAlwaysInvalidAlone(const GraphChange& change) const;
 
     /// checks whether the constraints enable to add arc (x,y)
@@ -162,9 +160,7 @@ namespace gum::learning {
     NodeSet _noChildrenNodes_;
   };
 
-} // namespace gum::learning
-
-
+}   // namespace gum::learning
 
 /// include the inlined functions if necessary
 #ifndef GUM_NO_INLINE
