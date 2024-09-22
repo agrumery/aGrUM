@@ -32,9 +32,10 @@ from ._doCalculus import doCalculusWithObservation, identifyingIntervention
 from ._CausalFormula import CausalFormula
 from ._CausalModel import CausalModel
 from ._exceptions import HedgeException, UnidentifiableException
+from .causalEffectEstimation import CausalEffectEstimation
 import sys
 
-__all__ = ['CausalModel', 'CausalFormula',
+__all__ = ['CausalModel', 'CausalFormula', 'CausalEffectEstimation',
            'causalImpact', 'counterfactualModel', 'counterfactual',
            'doCalculusWithObservation', 'identifyingIntervention',
            'backdoor_generator',
