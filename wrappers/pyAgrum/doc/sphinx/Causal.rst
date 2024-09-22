@@ -26,10 +26,25 @@ Causality is a set of pure python3 scripts based on pyAgrum's tools.
 **Reference**
 
 .. toctree::
-   :maxdepth: 3
+   :maxdepth: 2
 
    CausalModel
    CausalInference
-   CausalAST
+   CausalEffectEstimation 
+   
+**Miscellaneous**
+
+.. toctree::
+   :maxdepth: 2
+
    CausalExceptions
    CausalNotebook
+   CausalAST
+
+
+Other functions
+^^^^^^^^^^^^^^^
+
+.. autofunction:: pyAgrum.causal.backdoor_generator
+
+.. autofunction:: pyAgrum.causal.frontdoor_generator

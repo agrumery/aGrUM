@@ -3,6 +3,8 @@
 wrappers/pyAgrum/sphinx/_build
 *.patch
 *.pyc
+*.bak
+*.log
 *.kate-swp
 .kdev4
 CMakeCache.txt
