@@ -1,5 +1,21 @@
 # aGrUM Changelog
 
+## Changelog for 1.16.0
+
+* aGrUM
+  * Added 3 behaviors for generating sampling from `gum::DiscretizedVariable` in `gum::BNDatabaseGenerator` : `INTERVAL`/`MEDIAN`/`RANDOM`. The default was `INTERVAL` and is now `RANDOM`.
+  * Added timeout for `gum::BNDatabaseGenerator` to prevent slowish (maybe infinite) rejection sampling.
+  * Added two new constraints for learning :`gum::learning::NoParentNode`,`gum::learning::NoChildNode`.
+  * Added these new constraints in `gum::BNLearner` : `addNoParentNode(nodeid)` and `addNoChildrenNode(nodeid)`.
+  * (internal) Improved `act`'s scripts.
+
+* pyAgrum
+  * Added 3 behaviors for generating sampling from `pyAgrum.DiscretizedVariable` in `pyAgrum.BNDatabaseGenerator` : `INTERVAL`/`MEDIAN`/`RANDOM`. The default was `INTERVAL` and is now `RANDOM`.
+  * Added timeout for `pyAgrum.BNDatabaseGenerator` to prevent slowish (maybe infinite) rejection sampling.
+  * Added two new constraints `pyAgrum.BNLearner.addNoParentNode()` and `pyAgrum.BNLearner.addNoChildrenNode()`.
+  * (internal) Standardized licence in python files
+  * Added new `pyAgrum.causal.CausalEffectsEstimation` (thanks to Thierry Rioual).
+  
 ## Changelog for 1.15.1
 
 * aGrUM
@@ -16,7 +32,6 @@
   * Worked on documentation for CTBN
   * Fixed `fontcolor` configuration for causal model.
   
-
 ## Changelog for 1.15.0
 
 We continue to add (full python) experimental models. In 1.15, we introduce the CTBN model (Continuous Time Bayesian Network) featuring, as usual, modelisation and representation, inference (exact and sampling) and a learning algorithm.
