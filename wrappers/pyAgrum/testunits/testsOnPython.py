@@ -96,6 +96,7 @@ def runTests(local: bool, test_module, log) -> int:
   from tests import CausalDSepTestSuite
   from tests import CausalModelTestSuite
   from tests import CausalNonRegressionTestSuite
+  from tests import CausalEffectEstimationTestSuite
 
   from tests import WorkaroundTestSuite
 
@@ -152,6 +153,7 @@ def runTests(local: bool, test_module, log) -> int:
     tl.append(CausalDSepTestSuite.ts)
     tl.append(CausalModelTestSuite.ts)
     tl.append(CausalNonRegressionTestSuite.ts)
+    tl.append(CausalEffectEstimationTestSuite.ts)
 
   if test_module in {"", "skbn"}:
     log.info("testing 'skbn'")
