@@ -10,11 +10,13 @@
   * (internal) Improved `act`'s scripts.
 
 * pyAgrum
+  * Dropped support of python 3.9 (following [NEP29](https://numpy.ingg/nings/nep-0029-deprecation_policy.html)).
   * Added 3 behaviors for generating sampling from `pyAgrum.DiscretizedVariable` in `pyAgrum.BNDatabaseGenerator` : `INTERVAL`/`MEDIAN`/`RANDOM`. The default was `INTERVAL` and is now `RANDOM`.
   * Added timeout for `pyAgrum.BNDatabaseGenerator` to prevent slowish (maybe infinite) rejection sampling.
   * Added two new constraints `pyAgrum.BNLearner.addNoParentNode()` and `pyAgrum.BNLearner.addNoChildrenNode()`.
   * (internal) Standardized licence in python files
   * Added new `pyAgrum.causal.CausalEffectsEstimation` (thanks to Thierry Rioual).
+  * `pyAgrum.causal.BNClassfier`can now be pickled (thanks to Valentin Vassilev).
   
 ## Changelog for 1.15.1
 
@@ -68,7 +70,7 @@ We continue to add (full python) experimental models. In 1.15, we introduce the 
   * Better error messages for `gum::BNLearner<GUM_DATA>`
 
 * pyAgrum
-  * Dropped support of python 3.8 (followed [NEP29](https://numpy.org/neps/nep-0029-deprecation_policy.html)).
+  * Dropped support of python 3.8 (following [NEP29](https://numpy.org/neps/nep-0029-deprecation_policy.html)).
   * Fixed some memory leaks (in special cases) found by Christophe Gonzales.
   * new `pyAgrum.lib.explain.generalizedMarkovBlanket{Names}` and documentation.
   * `pyAgrum.Potential.marg{Xyz}{In|Out}` are renamed `pyAgrum.Potental.{xyz}{In|Out}` to cut down on some verbosity.
@@ -542,7 +544,7 @@ Mainly documentation and new analytics for the different sites.
 
 * pyAgrum
 
-  * Followed aGrUM, `gum.ShaferShenoyMNInference` is now parallelized too.
+  * `gum.ShaferShenoyMNInference` is now parallelized too.
   * Wrapped the new fast syntax for created variable in functions `gum.{BayesNet|etc}.add(str)`. See [Documentation](https://pyagrum.readthedocs.io/en/1.1.0/functions.html#quick-specification-of-randomly-parameterized-graphical-models).
   * Introduced a better type induction for discrete variables when created by `gum.skbn.BNDiscretizer`. `gum.IntegerVariable` and `gum.RangeVariable` are now induced from the data.
   * Added `gum.JunctionTree.map()` (in notebook) to show a condensed map of a the junction tree.
@@ -666,8 +668,8 @@ Mostly several quick fixes.
 
 * pyAgrum
 
-  * Drop support for python 3.7 (followed [NEP29](https://numpy.org/neps/nep-0029-deprecation_policy.html)).
-  * Drop support for 32bits architectures (followed [numpy](https://numpy.org/devdocs/release/1.22.0-notes.html)).
+  * Drop support for python 3.7 (following [NEP29](https://numpy.org/neps/nep-0029-deprecation_policy.html)).
+  * Drop support for 32bits architectures (following [numpy](https://numpy.org/devdocs/release/1.22.0-notes.html)).
   * Use of `pydot` instead of `pydotplus`.
   * Several typos in code and documentation of `gum.lib` (thanks to Benjamin Datko).
   * Improve notebooks (thanks to Clara Charon).
@@ -1026,12 +1028,12 @@ Mainly bugfixes and internal improvements.
 ## Changelog for 0.16.4
 
 * pyAgrum
-  * first version of `pyAgrum.lib.classifier` provided a class `pyAgrum.BNClassifier` wrapped a BN as a classifier with a scikitlearn-like API.
+  * first version of `pyAgrum.lib.classifier` providing a class `pyAgrum.BNClassifier` wrapping a BN as a classifier with a scikitlearn-like API.
   * Fix bug in `pyAgrum.lib.notebook.showPotential` with explicit digit param
   * Add a `pyAgrum.Potential.loopIn()` to iterate inside a Potential
   * Enhanced API for `pyAgrum.InfluenceDiagram`
   * Documentation improvements
-  * remove package for python 3.4 and 3.5 (followed [NEP29](https://numpy.org/neps/nep-0029-deprecation_policy.html)). But 2.7 is still maintained.
+  * remove package for python 3.4 and 3.5 (following [NEP29](https://numpy.org/neps/nep-0029-deprecation_policy.html)). But 2.7 is still maintained.
   * add package for python 3.8
 
 * aGrUM

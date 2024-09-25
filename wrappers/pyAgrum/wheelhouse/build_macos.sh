@@ -24,10 +24,10 @@ python act clean
 
 if [ "${TARGET}" == "aGrUM" ]; then
     echo "Building aGrUM..."
-    python3 act --no-fun test release aGrUM -j halfexcept1
+    python act --no-fun test release aGrUM -j halfexcept1
 elif [ "${TARGET}" == "pyAgrum" ]; then
     echo "Building pyAgrum..."
-    python3 act --no-fun test release pyAgrum -j halfexcept1 -t quick
+    python act --no-fun test release pyAgrum -j halfexcept1 -t quick
 else
     echo "Invalid target type: ${TARGET}. Expected 'aGrUM' or 'pyAgrum'"
     exit 1

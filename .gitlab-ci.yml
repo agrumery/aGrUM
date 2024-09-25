@@ -104,9 +104,9 @@ linux_agrum:
   script:
     - bash $LINUX_BUILD aGrUM
 
-linux_pyagrum_py39:
+linux_pyagrum_py310:
   <<: *linux_build_template
-  image: agrumery/ubuntu_py39
+  image: agrumery/ubuntu_py310
   script:
     - bash $LINUX_BUILD pyAgrum
 
@@ -128,10 +128,10 @@ linux_pyagrum_py312:
 # Linux x86_64 / gcc
 ################################################################################
 
-build_wheel_linux_py39:
+build_wheel_linux_py310:
   <<: *linux_wheel_template
   script:
-    - bash $LINUX_WHEELHOUSE cp39-cp39
+    - bash $LINUX_WHEELHOUSE cp310-cp310
 
 build_wheel_linux_py312:
   <<: *linux_wheel_template
@@ -147,10 +147,10 @@ build_nightly_wheel_linux_py312:
 # MacOS
 ################################################################################
 
-build_wheel_osx_py39:
+build_wheel_osx_py310:
   <<: *macos_build_template
   script:
-    - bash $OSX_WHEELHOUSE py39
+    - bash $OSX_WHEELHOUSE py310
 
 build_wheel_osx_py312:
   <<: *macos_build_template
@@ -161,11 +161,11 @@ build_wheel_osx_py312:
 # Windows / MVSC
 ################################################################################
 
-build_wheel_windows_py39:
+build_wheel_windows_py310:
   <<: *windows_build_template
   variables:
     PATH: $PATH_MVSC22_GUMWIN
-    CONDA_ENV: "py39"
+    CONDA_ENV: "py310"
   script:
     - *windows_wheel_script
 
@@ -213,7 +213,7 @@ windows_agrum_2019:
   <<: *windows_build_template
   variables:
     PATH: $PATH_MVSC19_GUMWIN
-    CONDA_ENV: "py39"
+    CONDA_ENV: "py310"
     TARGET: "aGrUM"
     COMPILER: "mvsc19"
   script:
@@ -223,7 +223,7 @@ windows_agrum_2022:
   <<: *windows_build_template
   variables:
     PATH: $PATH_MVSC22_GUMWIN
-    CONDA_ENV: "py39"
+    CONDA_ENV: "py310"
     TARGET: "aGrUM"
     COMPILER: "mvsc22"
   script:
@@ -280,6 +280,6 @@ linux_build:
 
 build_doc:
   <<: *linux_wheel_template
-  image: agrumery/ubuntu_py39
+  image: agrumery/ubuntu_py310
   script:
     - bash $BUILD_DOC
