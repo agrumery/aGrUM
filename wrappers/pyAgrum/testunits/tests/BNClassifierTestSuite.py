@@ -20,6 +20,8 @@ import unittest
 
 import numpy
 import pandas as pd
+import pickle
+
 import pyAgrum as gum
 from .pyAgrumTestSuite import pyAgrumTestCase, addTests
 
@@ -92,6 +94,22 @@ class BNCLassifierTestCase(pyAgrumTestCase):
     classif3 = skbn.BNClassifier(prior="NoPrior")
     with self.assertRaises(gum.DatabaseError):
       classif3.fit(x_train_asia, y_train_asia)
+
+  def testPickling(self):
+    bn = gum.fastBN("X1->X2{a|b|c}->Y<-X1;X3[3]->Y<-X4")
+    dftrain, _ = gum.generateSample(bn, 500)
+    dftest, _ = gum.generateSample(bn, 300)
+    bnc = skbn.BNClassifier()
+
+    bnc.fit(data=dftrain, targetName="Y")
+
+    smodel = pickle.dumps(bnc)
+    bnc2 = pickle.loads(smodel)
+
+    self.assertEqual((bnc.predict_proba(dftest) - bnc2.predict_proba(dftest)).max(), 0)
+    self.assertEqual((bnc.predict_proba(dftest) - bnc2.predict_proba(dftest)).min(), 0)
+
+    self.assertTrue(all(bnc.predict(dftest) == bnc2.predict(dftest)))
 
 ts = unittest.TestSuite()
 addTests(ts, BNCLassifierTestCase)

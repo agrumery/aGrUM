@@ -52,6 +52,12 @@ class BNClassifier(sklearn.base.BaseEstimator, sklearn.base.ClassifierMixin):
    - a database and a learning algorithm and parameters
    - the use of Discretizer to discretize with different algorithms some variables.
 
+  The classifier can be used to predict the class of new data.
+
+  Warnings
+  --------
+  This class can be pickled. However, the state of this class is only the classifier itself, not the parameter used to train it.
+
 
   Parameters
   ----------
@@ -258,8 +264,8 @@ class BNClassifier(sklearn.base.BaseEstimator, sklearn.base.ClassifierMixin):
     self.discretizationStrategy = discretizationStrategy
     self.discretizationThreshold = discretizationThreshold
     self.discretizer = Discretizer(defaultDiscretizationMethod=discretizationStrategy,
-                                     defaultNumberOfBins=discretizationNbBins,
-                                     discretizationThreshold=discretizationThreshold)
+                                   defaultNumberOfBins=discretizationNbBins,
+                                   discretizationThreshold=discretizationThreshold)
 
     # boolean that tells us whether this classifier is obtained from an already trained model (using the function
     # fromTrainedModel) or not
@@ -871,6 +877,57 @@ class BNClassifier(sklearn.base.BaseEstimator, sklearn.base.ClassifierMixin):
 
     return df
 
+  def __getstate__(self):
+    """
+    Returns the state of the object (used for pickling)
+
+    Warnings
+    --------
+    This method is used for pickling and should not be called directly. Note that the "learning side" of the BNClassifier is not in the state which focus on the classifier itself.
+
+    Returns
+    -------
+    the state as a dictionary.
+    """
+    return {
+      "bn": self.bn,
+      "target": self.target,
+      "targetType": self.targetType,
+      "label": self.label,
+      "fromModel": self.fromModel,
+      "threshold": self.threshold,
+      "variableNameIndexDictionary": self.variableNameIndexDictionary
+    }
+
+  def __setstate__(self, state):
+    """
+    Sets the state of the object (used for pickling)
+
+    Warnings
+    --------
+    This method is used for pickling and should not be called directly. Note that the "learning side" of the BNClassifier is not in the state which focus on the classifier itself.
+
+    Parameters
+    ----------
+    state : dict
+      the state of the object as a dictionary
+
+    Returns
+    -------
+      self
+    """
+    self.__init__()
+    self.fromTrainedModel(bn=state["bn"],
+                          targetAttribute=state["target"],
+                          targetModality=state["label"],
+                          copy=False)
+    self.targetType = state["targetType"]
+    self.fromModel = state["fromModel"]
+    self.threshold = state["threshold"]
+    self.variableNameIndexDictionary = state["variableNameIndexDictionary"]
+    return self
+
+
   @gum.deprecated_arg("data", "filename", "1.13.1")
   def showROC_PR(self, data, *, beta=1, save_fig=False, show_progress=False, bgcolor=None):
     """
@@ -891,5 +948,5 @@ class BNClassifier(sklearn.base.BaseEstimator, sklearn.base.ClassifierMixin):
     """
     import pyAgrum.lib.bn2roc as bn2roc
     bn2roc.showROC_PR(self.bn, data, self.target, self.label, beta=beta,
-                       significant_digits=self.significant_digit, save_fig=save_fig,
+                      significant_digits=self.significant_digit, save_fig=save_fig,
                       show_progress=show_progress, bgcolor=bgcolor)
