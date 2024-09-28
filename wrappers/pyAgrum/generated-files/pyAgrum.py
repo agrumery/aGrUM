@@ -25078,7 +25078,7 @@ class CredalNet(object):
         """
         return _pyAgrum.CredalNet_domainSize(self, id)
 
-    def bnToCredal(self, beta: float, oneNet: bool, keepZeroes: bool=False) -> None:
+    def bnToCredal(self, beta: float, oneNet: bool, keepZeroes: bool=0) -> None:
         r"""
 
         Perturbates the BayesNet provided as input for this CredalNet by generating intervals instead of point probabilities and then computes each vertex of each credal set.
@@ -25132,7 +25132,7 @@ class CredalNet(object):
         """
         return _pyAgrum.CredalNet_lagrangeNormalization(self)
 
-    def idmLearning(self, s: int=0, keepZeroes: bool=False) -> None:
+    def idmLearning(self, s: int=0, keepZeroes: bool=0) -> None:
         r"""
 
         Learns parameters from a BayesNet storing counts of events.

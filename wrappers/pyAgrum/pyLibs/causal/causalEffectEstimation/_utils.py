@@ -20,10 +20,6 @@
 import pyAgrum as gum
 import pyAgrum.causal as csl
 
-import pyAgrum.lib.notebook as gnb
-import pyAgrum.causal.notebook as cslnb
-
-
 from collections import deque
 
 EXCEPTION_TEXT = "\n(Call `.use[estimator_name]()` to select an estimator.)"
@@ -500,4 +496,3 @@ def instrumentalVariable(
                 {obn.variable(w).name() for w in W}
             )
     return (None, None)
-

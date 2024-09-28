@@ -17,11 +17,8 @@
 # ACTION, ARISING OUT OF OR IN CONNECTION WITH THE USE
 # OR PERFORMANCE OF THIS SOFTWARE!
 from typing import Dict, Tuple, List, Set
-import logging
 
 import pyAgrum
-import pydot as dot
-from IPython.display import SVG
 
 from pyAgrum.ctbn import CIM
 from pyAgrum.ctbn.constants import NodeId, NameOrId
