@@ -45,10 +45,8 @@ namespace gum {
    * @brief Class used to perform Decision Tree Regression in the FMDP Framework
    */
   template < typename GUM_SCALAR,
-             template < typename >
-             class COMBINEOPERATOR,
-             template < typename >
-             class PROJECTOPERATOR,
+             template < typename > class COMBINEOPERATOR,
+             template < typename > class PROJECTOPERATOR,
              template < typename > class TerminalNodePolicy = ExactTerminalNodePolicy >
   class TreeRegress {
     public:
