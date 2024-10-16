@@ -6,7 +6,8 @@
   * Added support for `python 3.13`.
   * Added generator `pyAgrum.Instantiation.loopIn()` to iterate on an `pyAgrum.Instantiation`.
   * Significantly accelerated `pyAgrum.Potential.fillFromDistribution()`.
-  
+  * Major acceleration of `pyAgrum.clg.ForwardSampling.make_sample()`.
+
 ## Changelog for 1.16.0
 
 * aGrUM

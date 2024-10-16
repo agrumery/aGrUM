@@ -31,43 +31,11 @@ from .Constants import NodeId
 
 
 class ForwardSampling:
-  _model: CLG
-  id2mu: Dict[NodeId, float]  # the mu value during forward sampling
-  id2samples: Dict[NodeId, List]
-
   def __init__(self, model: CLG):
     self._model = model
-    self.id2mu = {}  # the mu value will change in every sample
-    self.id2samples = {}
+    self._id2samples = {}
 
-  def _findmu(self, i, val):
-    """
-    Find mu of variables in the i-th sample.
-
-    Parameters
-    ----------
-    i : int
-      We are in the No.i sample.
-    val : NameOrId
-      Name or id of the variable.
-    
-    Returns
-    -------
-    Dict[NodeId, float]
-      Dict of NodeId to the mu value during forward sampling.
-    """
-    node = self._model.nameOrId(val)
-
-    # no matter whether a variable have parents or not, its mu contains its own mu.
-    self.id2mu[node] = self._model._id2var[node].mu()
-
-    # check this variable's parents to get its complete mu
-    for parentnode in self._model.parents(node):
-      self.id2mu[node] += self._model._arc2coef[(parentnode, node)] * self.id2samples[parentnode][i]
-
-    return self.id2mu
-
-  def makeSample(self, N):
+  def makeSample(self, N, seed: int = None):
     """
     Make N samples using forward sampling.
 
@@ -75,21 +43,24 @@ class ForwardSampling:
     ----------
     N : int
       Amount of samples.
+    seed : int
+      Seed for the random number generator
 
     Returns
     -------
     ForwardSampling
       the object itself.
     """
-    for node in self._model.nodes():
-      self.id2samples[node] = []
+    nprng = np.random.default_rng(seed)
+    self._id2samples = {}
 
-    for i in range(N):
-      for node in self._model.topologicalOrder():
-        self._findmu(i, node)
-        self.id2samples[node].append(np.random.normal(self.id2mu[node],
-                                                      self._model._id2var[node].sigma(),
-                                                      1)[0])
+    for node in self._model.topologicalOrder():
+      v = self._model.variable(node)
+      mu = v.mu()
+      for parent in self._model.parents(node):
+        mu += self._model.coefArc(parent, node) * self._id2samples[parent]
+      self._id2samples[node] = nprng.normal(mu, v.sigma(), N)
+
     return self
 
   def toarray(self, val=None):
@@ -100,16 +71,16 @@ class ForwardSampling:
     ----------
     val : NameOrId or None
       Name or id of the variable.
-    
+
     Returns
     -------
     np.ndarray
       The samples of variable <val> or all the samples if <val> is None.
     """
     if val is None:
-      return np.array([self.id2samples[node] for node in self._model.nodes()]).T
+      return np.stack([self._id2samples[node] for node in self._model.nodes()]).T
     else:
-      return np.array(self.id2samples[self._model.nameOrId(val)])
+      return self._id2samples[self._model.nameOrId(val)]
 
   def mean_sample(self, val):
     """
@@ -117,15 +88,18 @@ class ForwardSampling:
 
     Parameters
     ----------
-    val : NameOrId
+    val : NameOrId or None
       Name or id of the variable.
-    
+
     Returns
     -------
     float
-      The mean of variable <val>'s samples
+      The mean of variable <val>'s samples or all the means as a dict if <val> is None.
     """
-    return self.toarray(val).mean()
+    if val is None:
+      return {self._model.variable(k).name(): self._id2samples[k].mean() for k in self._model.topologicalOrder()}
+    else:
+      return self._id2samples[self._model.nameOrId(val)].mean()
 
   def variance_sample(self, val):
     """
@@ -133,15 +107,18 @@ class ForwardSampling:
 
     Parameters
     ----------
-    val : NameOrId
+    val : NameOrId or None
       Name or id of the variable.
-    
+
     Returns
     -------
     float
-      The variance of variable <val>'s samples
+      The variance of variable <val>'s samples or all the variances as a dict if <val> is None.
     """
-    return self.toarray(val).var()
+    if val is None:
+      return {self._model.variable(k).name(): self._id2samples[k].var() for k in self._model.topologicalOrder()}
+    else:
+      return self._id2samples[self._model.nameOrId(val)].var()
 
   def stddev_sample(self, val):
     """
@@ -155,25 +132,32 @@ class ForwardSampling:
     Returns
     -------
     float
-      The standard deviation of variable <val>'s samples
+      The standard deviation of variable <val>'s samples or all the standard deviations as a dict if <val> is None.
     """
-    return self.toarray(val).std()
+    if val is None:
+      return {self._model.variable(k).name(): self._id2samples[k].std() for k in self._model.topologicalOrder()}
+    else:
+      return self._id2samples[self._model.nameOrId(val)].std()
 
-  def covariance_sample(self, vals):
+  def covariance_sample(self, vals=None):
     """
     Computes the covariance between variables in <vals>.
 
     Parameters
     ----------
-    vals : List[NameOrId]
+    vals : List[NameOrId] option
       List of names or ids of the variables.
-    
+
     Returns
     -------
     np.ndarray
-      The covariance between variables in <vals>.
+      The covariance between variables in <vals> or all the covariances if <vals> is None.
     """
-    samples = [self.toarray(val) for val in vals]
+    if vals is None:
+      samples = [self._id2samples[k] for k in self._model.nodes()]
+    else:
+      samples = [self._id2samples[self._model.nameOrId(k)] for k in vals]
+
     return np.cov(samples)
 
   def topandas(self):
@@ -185,13 +169,9 @@ class ForwardSampling:
     sample_name : str
       Name of the new csv file.
     """
-    name2samples = {}
-    for node in self._model.nodes():
-      name2samples[self._model.name(node)] = self.id2samples[node]
+    return pd.DataFrame({self._model.name(node): self._id2samples[node] for node in self._model.nodes()})
 
-    return pd.DataFrame(name2samples)
-
-  def tocsv(self, sample_name:str):
+  def tocsv(self, sample_name: str):
     """
     Convert the samples to csv.
 
