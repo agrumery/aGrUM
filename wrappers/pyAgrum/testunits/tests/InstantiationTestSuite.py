@@ -98,6 +98,17 @@ class TestInstantiation(pyAgrumTestCase):
     m1.inc()
     self.assertNotEqual(i, m1)
 
+  def testLoopIn(self):
+    bn = gum.fastBN("a{chaud|tiede|froid}->b[5]<-c->d->e;c->e")
+    for p, i in enumerate(bn.completeInstantiation().loopIn()):
+      if p == 0:
+        self.assertEqual(str(i), "<a:chaud|b:0|c:0|d:0|e:0>")
+        if p == 63:
+          self.assertEqual(str(i), "<a:chaud|b:1|c:0|d:0|e:1>")
+        if p == 104:
+          self.assertEqual(str(i), "<a:froid|b:4|c:0|d:1|e:1>")
+    self.assertEqual(p, 119)
+    self.assertEqual(str(i), "<a:froid|b:4|c:1|d:1|e:1>")
 
 ts = unittest.TestSuite()
 addTests(ts, TestInstantiation)

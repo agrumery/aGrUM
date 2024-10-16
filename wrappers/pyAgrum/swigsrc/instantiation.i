@@ -119,6 +119,29 @@
       self.add(model.variable(name))
     return self
 
+  def loopIn(self):
+      """
+      Generator to iterate on an Instantiation.
+
+      Yield an pyAgrum.Instantiation (copy of self) that iterates over all the possible values for the Instantiation.
+
+      Examples
+      --------
+      >>> import pyAgrum as gum
+      >>> bn=gum.fastBN("A[3]->B[3]<-C[3]")
+      >>> I=gum.Instantiation(bn.cpt("B"))
+      >>> for i in I.loopIn():
+            print(i)
+            print(bn.cpt("B").get(i))
+            bn.cpt("B").set(i,0.3)
+      """
+      J=gum.Instantiation(self)
+      J.setFirst()
+      while not J.end():
+          yield(J)
+          J.inc()
+      J.setLast()
+      return
   }
 };
 

@@ -1,5 +1,11 @@
 # aGrUM Changelog
 
+## Changelog for 1.16.1
+
+* pyAgrum
+  * Added support for python 3.13
+  * Added generator `pyAgrum.Instantiation.loopIn()` to iterate on an Instantiation
+  
 ## Changelog for 1.16.0
 
 * aGrUM
