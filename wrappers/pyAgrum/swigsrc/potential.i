@@ -430,6 +430,7 @@ if len(args)>1:
       forbidden=frozenset(['__import__','__class__'])
 
       var=self.variable(0)
+      var_ds=var.domainSize()
       if var.varType()== gum.VarType_LABELIZED:
         raise InvalidArgument("[pyAgrum] The variable "+self.variable(0).name()+" is a LabelizedVariable")
 
@@ -439,24 +440,33 @@ if len(args)>1:
           if forbidden & set(code.co_names):
             raise InvalidArgument("[pyAgrum] '__import__' is not allowed in the expression '"+code+"'")
 
-      I=gum.Instantiation()
-      for i in range(1,self.nbrDim()):
-        I.add(self.variable(i))
-
       if hasattr(distribution,'pdf'):
         d=distribution.pdf
       elif hasattr(distribution,'pmf'):
         d=distribution.pmf
       else:
         raise InvalidArgument("[pyAgrum] The distribution must have a pdf or a pmf method")
-      I.setFirst()
-      vals=[var.numerical(i) for i in range(var.domainSize())]
-      while not I.end():
-        vars={self.variable(i).name():self.variable(i).numerical(I.val(i-1)) for i in range(1,self.nbrDim())}
-        args={k:float(s_fns[k]) if isinstance(s_fns[k], (int, float)) else eval(codes[k],{'math':math},vars) for k in s_fns.keys()}
-        di=I.todict()
-        self[di]=d(vals,**args)
-        I.inc()
+
+      Xs=[var.numerical(i) for i in range(var_ds)]
+
+      I=gum.Instantiation()
+      for i in range(1,self.nbrDim()):
+        I.add(self.variable(i))
+
+      args={}
+      fnkeys=set(s_fns.keys())
+      for k in s_fns.keys():
+          if isinstance(s_fns[k], (int, float)):
+              args[k]=float(s_fns[k])
+              fnkeys.remove(k)
+
+      l=[]
+      for pos,J in enumerate(I.loopIn()):
+          vars={J.variable(i).name():J.variable(i).numerical(J.val(i)) for i in range(J.nbrDim())}
+          for k in fnkeys:
+              args[k]=eval(codes[k],{'math':math},vars)
+          l+=list(d(Xs,**args))
+      self.fillWith(l)
       self.normalizeAsCPT()
       return self
 
