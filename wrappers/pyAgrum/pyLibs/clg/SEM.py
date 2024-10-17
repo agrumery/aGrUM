@@ -45,7 +45,7 @@ class SEM:
   D = A[.2]  # D is a noisy version of A
   E = 1 + D + 2
   B[2]
-  F = E + C + B + E[0.001]
+  F = E + C + 3.5*B + E[0.001]
   ''')
   """
 
@@ -54,7 +54,7 @@ class SEM:
   FIND_VAR = rf"^({ID})$"
   FIND_STDDEV = rf"^\[({NUMBER})\]$"
   FIND_FLOAT = rf"^({NUMBER})$"
-  FIND_TERM = rf"^({NUMBER})({ID})$"
+  FIND_TERM = rf"^({NUMBER})\*?({ID})$"
 
   _reg_variable = re.compile(FIND_VAR)
   _reg_stddev = re.compile(FIND_STDDEV)

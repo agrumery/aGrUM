@@ -255,7 +255,7 @@ class CausalBNEstimator:
             y: np.ndarray | pd.Series | None = None,
         )-> np.ndarray:
         """
-        Predict the Idividual Causal Effect (ICE),
+        Predict the Individual Causal Effect (ICE),
         also referd to as the Individual Treatment Effect (ITE).
 
         Parameters

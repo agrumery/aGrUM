@@ -28,7 +28,7 @@ import itertools
 from sklearn.linear_model import LinearRegression
 from typing import Dict, List, Set, Tuple, FrozenSet
 
-from .Constants import NodeId
+from .constants import NodeId
 from .CLG import CLG
 from .GaussianVariable import GaussianVariable
 
@@ -407,7 +407,7 @@ class CLGLearner:
             continue
           Xj = order[j]
           if Xi in C[Xj] and Xj in C[Xi]:  # if Xi and Xj are adjacent in C
-            if len(C[Xi] - {Xj}) > l:  
+            if len(C[Xi] - {Xj}) > l:
               all_satisfied = False
               return all_satisfied
       return all_satisfied

@@ -25,7 +25,7 @@ import pyAgrum as gum
 from typing import Dict, Tuple
 import random
 
-from .Constants import NodeId
+from .constants import NodeId
 from .GaussianVariable import GaussianVariable
 
 import pyAgrum.lib.bn_vs_bn as gcm

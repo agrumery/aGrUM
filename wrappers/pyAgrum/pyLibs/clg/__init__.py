@@ -24,11 +24,11 @@
 __author__ = "Pierre-Henri Wuillemin, Zhe Huang"
 __copyright__ = "(c) 2022-2023 PARIS"
 
-from .CanonicalForm import CanonicalForm
+from .canonicalForm import CanonicalForm
 from .CLG import CLG,randomCLG
-from .ForwardSampling import ForwardSampling
+from .forwardSampling import ForwardSampling
 from .GaussianVariable import GaussianVariable
-from .inference import CLGVariableElimination
+from .variableElimination import CLGVariableElimination
 from .learning import CLGLearner
 from .SEM import SEM
 

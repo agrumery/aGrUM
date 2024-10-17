@@ -2,3 +2,4 @@
 cairosvg
 seaborn
 playwright
+xgboost

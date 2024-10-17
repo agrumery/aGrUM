@@ -37,7 +37,7 @@ class CanonicalForm:
 
     # Canonical forms are sorted by increasing
     # variable index (in the CLG or with a user defined order).
-    # This order gives the order of matrix and vector 
+    # This order gives the order of matrix and vector
     # row/columns which is important for the different
     # operations on canonical forms.
     self._sort()
@@ -116,18 +116,18 @@ class CanonicalForm:
   def toGaussian(self):
     """
     Gives the parameters of the gaussian associated to the canonical form.
+
+    Warnings
+    --------
     This operation is only well defined if K is invertible.
 
     Returns
     -------
     List[int]
-      Paremeters of the Gaussian associated to the canonical form.
+      Parematers of the Gaussian associated to the canonical form.
     """
     Sigma = inv(self._K)
     mu = np.dot(Sigma, self._h)
-    # c = np.exp(self._g +
-    # 0.5 * np.dot( np.dot(np.transpose(self._h), Sigma), self._h)
-    # )
     return self._scope, mu, Sigma
 
   @staticmethod
@@ -175,7 +175,7 @@ class CanonicalForm:
 
   def _sort(self):
     """
-    Sort the variable of the scope according to their indices in the CLG.    
+    Sort the variable of the scope according to their indices in the CLG.
     """
     sorted_scope = sorted(self._scope)
     if self._scope != sorted_scope:
@@ -315,12 +315,12 @@ class CanonicalForm:
   def marginalize(self, variables):
     """
     Marginalize the variables from the canonical form.
-    
+
     Parameters
     ----------
     variables : List[int]
       The variables to marginalize.
-    
+
     Returns
     -------
     CanonicalForm
@@ -363,7 +363,7 @@ class CanonicalForm:
     ----------
     evidences : Dict[int, float]
       The evidences.
-    
+
     Returns
     -------
     CanonicalForm

@@ -29,7 +29,7 @@ import pyAgrum.lib._colors as gumcols
 import pyAgrum.lib.image as gimg
 
 import pyAgrum.clg.CLG as CLG
-import pyAgrum.clg.inference as clginference
+import pyAgrum.clg.variableElimination as clginference
 import pyAgrum.lib.notebook as gnb
 
 

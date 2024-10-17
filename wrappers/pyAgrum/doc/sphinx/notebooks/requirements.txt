@@ -18,3 +18,4 @@ tqdm
 cairosvg
 seaborn
 playwright
+xgboost

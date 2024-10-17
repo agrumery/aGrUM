@@ -24,7 +24,7 @@ import math
 
 import numpy as np
 from pyAgrum import JunctionTreeGenerator
-from .CanonicalForm import CanonicalForm
+from .canonicalForm import CanonicalForm
 from .GaussianVariable import GaussianVariable
 
 class CLGVariableElimination:
@@ -53,7 +53,7 @@ class CLGVariableElimination:
     ----------
     variable : str
       The variable name.
-    
+
     Returns
     -------
     bool
@@ -104,7 +104,7 @@ class CLGVariableElimination:
       The list of target variable names.
     normalized : bool, optional
       Optional parameter to normalize the returned canonical form.
-    
+
     Returns
     -------
     CanonicalForm
@@ -197,7 +197,7 @@ class CLGVariableElimination:
       A list of canonical forms.
     evidence : dict
       A dictionary of evidences.
-    
+
     Returns
     -------
     list
@@ -229,7 +229,7 @@ class CLGVariableElimination:
       A list of canonical form.
     variable : int
       The variable id to eliminate.
-    
+
     Returns
     -------
     list

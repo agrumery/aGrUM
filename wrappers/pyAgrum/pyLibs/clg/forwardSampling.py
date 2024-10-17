@@ -27,7 +27,7 @@ from typing import Dict, List
 import pandas as pd
 
 from .CLG import CLG
-from .Constants import NodeId
+from .constants import NodeId
 
 
 class ForwardSampling:
