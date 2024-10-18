@@ -1,6 +1,6 @@
 # aGrUM Changelog
 
-## Changelog for 1.16.1
+## Changelog for 1.17.0
 
 * pyAgrum
   * Added support for `python 3.13`.
