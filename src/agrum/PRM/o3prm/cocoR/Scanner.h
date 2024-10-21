@@ -227,7 +227,7 @@ class Scanner {
     Token* pt;        // current peek token
 
     int ch;           // current input character
-
+    
     int pos;          // byte position of current character
     int charPos;      // position by unicode characters starting with 0
     int line;         // line number of current character
@@ -276,3 +276,4 @@ class Scanner {
 
 
 #endif // !defined(COCO_SCANNER_H__)
+

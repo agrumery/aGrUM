@@ -27,7 +27,9 @@ from .utils import warn, notif, notif_oneline
 def _header_filter(split_filename: Sequence[str]) -> bool:
   filename = split_filename[-1]
   # exceptions
-  exceptions = {"agrum.h", "structuralConstraintPatternHeader.h"}
+  exceptions = {"agrum.h",
+                "base.h", "bn.h", "cn.h", "id.h", "mrf.h",
+                "structuralConstraintPatternHeader.h"}
   if filename in exceptions:
     return False
 
@@ -244,7 +246,8 @@ def check_gum_dependencies(graph=True, correction=False):
   if correction:
     notif("Correction in progress")
     for k in deps.keys():
-      if nb_non_opt[k] != len(deps[k]):  # if some include have to be removed
+      # if some include have to be removed
+      if nb_non_opt[k] != len(deps[k]):
         notif_oneline(f"[{k}]")
         remove_redundant_dependencies(k, deps[k])
 

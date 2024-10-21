@@ -322,7 +322,9 @@ namespace gum {
        *respectively \c TRUE or \c FALSE - we keep zeroes as zeroes. Default is \c
        *FALSE, i.e. zeroes are not kept.
        */
-      void bnToCredal(const GUM_SCALAR beta, const bool oneNet, const bool keepZeroes = false);
+      void bnToCredal(GUM_SCALAR beta, bool oneNet, bool keepZeroes);
+      void bnToCredal(GUM_SCALAR beta, bool oneNet);
+
 
       /**
        * @deprecated Use intervalToCredal ( lrsWrapper with no input / output

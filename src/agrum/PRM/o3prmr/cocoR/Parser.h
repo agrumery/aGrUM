@@ -142,3 +142,4 @@ void setO3prmrContext(gum::prm::o3prmr::O3prmrContext<double> *c) {
 
 
 #endif // !defined(COCO_PARSER_H__)
+

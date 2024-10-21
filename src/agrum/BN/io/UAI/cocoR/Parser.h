@@ -118,3 +118,4 @@ decltype(quartets) getQuartets() {
 
 
 #endif // !defined(COCO_PARSER_H__)
+

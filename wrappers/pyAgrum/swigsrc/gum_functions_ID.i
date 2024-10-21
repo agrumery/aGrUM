@@ -1,4 +1,6 @@
 %pythoncode %{
+import os.path as ospath
+
 def availableIDExts():
   """ Give the list of all formats known by pyAgrum to save a influence diagram.
 
@@ -27,7 +29,7 @@ def loadID(filename):
   extension = filename.split('.')[-1].upper()
 
   if extension in {"BIFXML", "XMLBIF", "XML"}:
-    diag = pyAgrum.ID.InfluenceDiagram()
+    diag = pyAgrum.InfluenceDiagram()
     # for now, just one format
     res = diag.loadBIFXML(filename)
 

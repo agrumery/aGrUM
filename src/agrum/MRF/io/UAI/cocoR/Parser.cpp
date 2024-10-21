@@ -64,7 +64,7 @@ void Parser::Get() {
 
     if ( la->kind <= maxT ) { ++errDist; break; }
 
-
+    
 
     if ( dummyToken != t ) {
       dummyToken->kind = t->kind;
@@ -111,10 +111,10 @@ bool Parser::WeakSeparator( int n, int syFol, int repFol ) {
 void Parser::NUMBER() {
 		if (la->kind == _float) {
 			Get();
-			quartets.push_back(std::make_tuple(coco_atof(t->val),-1               ,t->line,t->col));
+			quartets.push_back(std::make_tuple(coco_atof(t->val),-1               ,t->line,t->col)); 
 		} else if (la->kind == _integer) {
 			Get();
-			quartets.push_back(std::make_tuple(-1.0f             ,coco_atoi(t->val),t->line,t->col));
+			quartets.push_back(std::make_tuple(-1.0f             ,coco_atoi(t->val),t->line,t->col)); 
 		} else SynErr(6);
 }
 
@@ -295,3 +295,6 @@ void Parser::SynErr( const std::wstring& filename,int line, int col, int n ) {
 
 } // namespace
 } // namespace
+
+
+

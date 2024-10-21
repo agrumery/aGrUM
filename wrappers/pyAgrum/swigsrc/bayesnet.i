@@ -84,6 +84,12 @@ IMPROVE_BAYESNET_API(gum::IBayesNet);
 IMPROVE_BAYESNET_API(gum::BayesNet);
 IMPROVE_BAYESNET_API(gum::BayesNetFragment);
 
+%ignore gum::EssentialGraph::nodes const;
+%ignore gum::MarkovBlanket::nodes const;
+ADD_METHODS_FOR_ALL_GUM_GRAPHCLASS(gum::EssentialGraph);
+ADD_METHODS_FOR_ALL_GUM_GRAPHCLASS(gum::MarkovBlanket);
+
+
 %define IMPROVE_CONCRETEBAYESNET_API(classname)
 %extend classname {
 %pythoncode {

@@ -1,6 +1,7 @@
 .directory
 .options.*
 wrappers/pyAgrum/sphinx/_build
+wrappers/pyAgrum/generated-files/*.pyold.py
 *.patch
 *.pyc
 *.bak

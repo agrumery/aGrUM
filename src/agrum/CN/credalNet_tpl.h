@@ -418,9 +418,12 @@ namespace gum {
 
     // from BNs with numerators & denominators or cpts & denominators to credal
     template < typename GUM_SCALAR >
-    void CredalNet< GUM_SCALAR >::bnToCredal(const GUM_SCALAR beta,
-                                             const bool       oneNet,
-                                             const bool       keepZeroes) {
+    void CredalNet< GUM_SCALAR >::bnToCredal(GUM_SCALAR beta, bool oneNet) {
+      this->bnToCredal(beta, oneNet, false);
+    }
+
+    template < typename GUM_SCALAR >
+    void CredalNet< GUM_SCALAR >::bnToCredal(GUM_SCALAR beta, bool oneNet, bool keepZeroes) {
       GUM_SCALAR epsi_min = 1.;
       GUM_SCALAR epsi_max = 0.;
       GUM_SCALAR epsi_moy = 0.;
@@ -486,8 +489,8 @@ namespace gum {
             if (std::fabs(1. - sum) > _epsRedund_) {
               GUM_ERROR(CPTError,
                         _src_bn_.variable(node).name()
-                            << "(" << _epsRedund_ << ")  does not sum to one for"
-                            << " " << entry << std::endl
+                            << "(" << _epsRedund_ << ")  does not sum to one for" << " " << entry
+                            << std::endl
                             << vertex << std::endl
                             << ins << std::endl);
             }
