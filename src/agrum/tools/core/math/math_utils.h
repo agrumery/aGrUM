@@ -64,7 +64,7 @@ namespace gum {
     } else {
       return arg == arg;                                       // not Nan
     }
-  };
+  }
 }   // namespace gum
 
 #endif /* GUM_MATH_H */
