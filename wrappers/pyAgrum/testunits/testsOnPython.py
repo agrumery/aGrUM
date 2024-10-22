@@ -66,7 +66,8 @@ def runTests(local: bool, test_module, log) -> int:
   from tests import BNLearnerTestSuite
   from tests import BNListenerTestSuite
   from tests import ConfigTestSuite
-  from tests import DiscretizerTestSuite
+  if pandasFound:
+      from tests import DiscretizerTestSuite
   from tests import EssentialGraphTestSuite
   from tests import EvidenceTestSuite
   from tests import GraphTestSuite
@@ -92,11 +93,12 @@ def runTests(local: bool, test_module, log) -> int:
 
   from tests import VariablesTestSuite
 
-  from tests import CausalASTTestSuite
-  from tests import CausalDSepTestSuite
-  from tests import CausalModelTestSuite
-  from tests import CausalNonRegressionTestSuite
-  from tests import CausalEffectEstimationTestSuite
+  if pandasFound:
+      from tests import CausalASTTestSuite
+      from tests import CausalDSepTestSuite
+      from tests import CausalModelTestSuite
+      from tests import CausalNonRegressionTestSuite
+      from tests import CausalEffectEstimationTestSuite
 
   from tests import WorkaroundTestSuite
 
@@ -106,10 +108,11 @@ def runTests(local: bool, test_module, log) -> int:
   from tests import CtbnIndependenceTestSuite
   from tests import CtbnLearnerTestSuite
 
-  from tests import CLGLearningTestSuite
-  from tests import CLGSamplingTestSuite
-  from tests import CLGCanonicalFormTestSuite
-  from tests import CLGInferenceTestSuite
+  if pandasFound:
+      from tests import CLGLearningTestSuite
+      from tests import CLGSamplingTestSuite
+      from tests import CLGCanonicalFormTestSuite
+      from tests import CLGInferenceTestSuite
 
   # from tests import MixtureModelTestSuite
 
@@ -126,7 +129,8 @@ def runTests(local: bool, test_module, log) -> int:
     tl.append(BNLearnerTestSuite.ts)
     tl.append(BNListenerTestSuite.ts)
     tl.append(ConfigTestSuite.ts)
-    tl.append(DiscretizerTestSuite.ts)
+    if pandasFound:
+        tl.append(DiscretizerTestSuite.ts)
     tl.append(EssentialGraphTestSuite.ts)
     tl.append(EvidenceTestSuite.ts)
     tl.append(GraphTestSuite.ts)
@@ -149,11 +153,13 @@ def runTests(local: bool, test_module, log) -> int:
 
   if test_module in {"", "causal"}:
     log.info("testing 'causal'")
-    tl.append(CausalASTTestSuite.ts)
-    tl.append(CausalDSepTestSuite.ts)
-    tl.append(CausalModelTestSuite.ts)
-    tl.append(CausalNonRegressionTestSuite.ts)
-    tl.append(CausalEffectEstimationTestSuite.ts)
+    if pandasFound:
+        tl.append(CausalASTTestSuite.ts)
+        tl.append(CausalDSepTestSuite.ts)
+        tl.append(CausalModelTestSuite.ts)
+        tl.append(CausalNonRegressionTestSuite.ts)
+        tl.append(CausalEffectEstimationTestSuite.ts)
+    log.warning("Pandas or sklearn not found.")
 
   if test_module in {"", "skbn"}:
     log.info("testing 'skbn'")
@@ -173,10 +179,13 @@ def runTests(local: bool, test_module, log) -> int:
 
   if test_module in {"", "clg"}:
     log.info("testing 'clg'")
-    tl.append(CLGLearningTestSuite.ts)
-    tl.append(CLGSamplingTestSuite.ts)
-    tl.append(CLGCanonicalFormTestSuite.ts)
-    tl.append(CLGInferenceTestSuite.ts)
+    if pandasFound:
+      tl.append(CLGLearningTestSuite.ts)
+      tl.append(CLGSamplingTestSuite.ts)
+      tl.append(CLGCanonicalFormTestSuite.ts)
+      tl.append(CLGInferenceTestSuite.ts)
+    else:
+      log.warning("Pandas or sklearn not found.")
 
   tests = unittest.TestSuite(tl)
 
