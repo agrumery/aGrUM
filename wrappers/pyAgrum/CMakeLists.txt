@@ -116,7 +116,7 @@ if(SWIG_FOUND)
     set(_PYAGRUMLIB "pyAgrum")
   endif()
 
-  add_custom_command(OUTPUT ${CMAKE_SWIG_OUTDIR}/pyAgrum.py DEPENDS ${CMAKE_SWIG_OUTDIR}/rawPyAgrum.py COMMAND ${Python_EXECUTABLE} "${CMAKE_CURRENT_SOURCE_DIR}/cmake/passForPyType.py" "${CMAKE_SWIG_OUTDIR}/rawPyAgrum.py" "${CMAKE_SWIG_OUTDIR}/pyAgrum.py")
+  add_custom_command(OUTPUT ${CMAKE_SWIG_OUTDIR}/pyAgrum.py DEPENDS ${CMAKE_SWIG_OUTDIR}/rawPyAgrum.py COMMAND ${Python_EXECUTABLE} "${CMAKE_CURRENT_SOURCE_DIR}/cmake/passForPyType.py")
 else(SWIG_FOUND)
   set(_PYAGRUMLIB "_pyAgrum")
   file(GLOB SWIG_GENERATED_FILES "${GENERATED_PYTHON}/*.cxx")
