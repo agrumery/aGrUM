@@ -1,5 +1,16 @@
 # aGrUM Changelog
 
+## Changelog for 1.17.1
+
+* aGrUM
+  * Fixed extra semicolon.
+
+* pyAgrum
+  * Fixed some pyAgrum types in generated files.
+  * Added check for pandas in tests.
+  * Renamed files in module `pyAgrum.clg`.
+  * Fixed METADATA for pypi.
+
 ## Changelog for 1.17.0
 
 * pyAgrum
