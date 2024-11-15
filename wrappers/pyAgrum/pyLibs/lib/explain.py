@@ -511,13 +511,15 @@ def generalizedMarkovBlanketNames(bn, var: Union[int, str], depth: int = 1):
   return {bn.variable(node).name(): depth - visited[node] for node in nodes}
 
 
-def showShapValues(results, cmap='plasma'):
+def showShapValues(bn,shaps, cmap='plasma'):
   """
   Just a wrapper around BN2dot to easily show the Shap values
 
   Parameters
   ----------
-  results: dict[str,float]
+  bn : pyAgrum.BayesNet
+    The Bayesian network
+  shaps: dict[str,float]
     The (Shap) values associates to each variable
   cmap: Matplotlib.ColorMap
     The colormap used for colouring the nodes
@@ -527,12 +529,12 @@ def showShapValues(results, cmap='plasma'):
     a pydot.graph
   """
   norm_color = {}
-  raw = list(results.values())
+  raw = list(shaps.values())
   norm = [float(i) / sum(raw) for i in raw]
-  for i, feat in enumerate(list(results.keys())):
+  for i, feat in enumerate(list(shaps.keys())):
     norm_color[feat] = norm[i]
   cm = plt.get_cmap(cmap)
-  g = BN2dot(self.bn,
+  g = BN2dot(bn,
              nodeColor=norm_color,
              cmapNode=cm
              )

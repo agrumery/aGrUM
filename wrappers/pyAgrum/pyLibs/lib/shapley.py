@@ -482,6 +482,8 @@ class ShapValues:
     min_value = np.min(data, axis=(0, 1))
     max_value = np.max(data, axis=(0, 1))
     bin_size = (max_value - min_value) / N
+    if bin_size == 0:
+        bin_size = 1
     horiz_shift = K * bin_size
 
     if ax is None:
