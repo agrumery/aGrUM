@@ -201,7 +201,7 @@ def saveBN(bn, filename, allowModificationWhenSaving=None):
     [-1] + " unknown. Please use among " + availableBNExts())
 
 
-def availableMNExts():
+def availableMRFExts():
   """ Give the list of all formats known by pyAgrum to save a Markov random field.
 
   Returns
@@ -212,7 +212,7 @@ def availableMNExts():
   return "uai|pkl"
 
 
-def loadMN(filename, listeners=None, verbose=False):
+def loadRF(filename, listeners=None, verbose=False):
   """load a MRF from a file with optional listeners and arguments
 
   Parameters
@@ -279,13 +279,13 @@ def loadMN(filename, listeners=None, verbose=False):
   return mn
 
 
-def saveMN(mn, filename):
+def saveMRF(mrf, filename):
   """
   save a MRF into a file using the format corresponding to one of the availableWriteMNExts() suffixes.
 
   Parameters
   ----------
-  mn : pyAgrum.MarkovRandomField)
+  mrf : pyAgrum.MarkovRandomField)
     the MRF to save
   filename : str
     the name of the output file
@@ -293,13 +293,13 @@ def saveMN(mn, filename):
   extension = filename.split('.')[-1].upper()
 
   if extension == "UAI":
-    mn.saveUAI(filename)
+    mrf.saveUAI(filename)
   elif extension == "PKL":
     import pickle
     with open(filename, "wb") as f:
-      pickle.dump(mn, f, pickle.HIGHEST_PROTOCOL)
+      pickle.dump(mrf, f, pickle.HIGHEST_PROTOCOL)
   else:
-    raise InvalidArgument("extension " + filename.split('.')[-1] + " unknown. Please use among " + availableMNExts())
+    raise InvalidArgument("extension " + filename.split('.')[-1] + " unknown. Please use among " + availableMRFExts())
 
 
 def availableIDExts():

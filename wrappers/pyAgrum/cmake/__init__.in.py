@@ -35,7 +35,7 @@ from .deprecated import *
 from .pyAgrum import about
 from .pyAgrum import fastBN, fastID, fastMRF
 from .pyAgrum import availableBNExts, loadBN, saveBN
-from .pyAgrum import availableMNExts, loadMN, saveMN
+from .pyAgrum import availableMRFExts, loadMRF, saveMRF
 from .pyAgrum import availableIDExts, loadID, saveID
 from .pyAgrum import randomBN, generateSample
 from .pyAgrum import mutilateBN
@@ -50,7 +50,7 @@ from .pyAgrum import Arc, Edge, DiGraph, UndiGraph, MixedGraph, DAG, PDAG, Cliqu
 from .pyAgrum import BayesNet, BayesNetFragment, EssentialGraph, MarkovBlanket
 from .pyAgrum import MarkovRandomField, ShaferShenoyMRFInference
 from .pyAgrum import DiscretizedVariable, LabelizedVariable, RangeVariable, DiscreteVariable, IntegerVariable, \
-  NumericalDiscreteVariable
+    NumericalDiscreteVariable
 from .pyAgrum import Potential, Instantiation, Potential
 from .pyAgrum import ExactBNdistance, GibbsBNdistance, StructuralComparator
 from .pyAgrum import LazyPropagation, ShaferShenoyInference, VariableElimination
@@ -74,65 +74,65 @@ from .pyAgrum import isOMP, getNumberOfThreads, getMaxNumberOfThreads, getNumber
 from .pyAgrum import VarType_DISCRETIZED, VarType_LABELIZED, VarType_RANGE, VarType_INTEGER, VarType_NUMERICAL
 
 from .pyAgrum import DefaultInLabel, DuplicateElement, DuplicateLabel, GumException, FatalError, FormatNotFound, \
-  GraphError, IOError, InvalidArc, InvalidArgument, InvalidArgumentsNumber, InvalidDirectedCycle, InvalidEdge, \
-  InvalidNode, DatabaseError, MissingValueInDatabase, MissingVariableInDatabase, NoChild, NoNeighbour, NoParent, \
-  NotFound, NullElement, OperationNotAllowed, OutOfBounds, ArgumentError, SizeError, SyntaxError, UndefinedElement, \
-  UndefinedIteratorKey, UndefinedIteratorValue, UnknownLabelInDatabase, CPTError
+    GraphError, IOError, InvalidArc, InvalidArgument, InvalidArgumentsNumber, InvalidDirectedCycle, InvalidEdge, \
+    InvalidNode, DatabaseError, MissingValueInDatabase, MissingVariableInDatabase, NoChild, NoNeighbour, NoParent, \
+    NotFound, NullElement, OperationNotAllowed, OutOfBounds, ArgumentError, SizeError, SyntaxError, UndefinedElement, \
+    UndefinedIteratorKey, UndefinedIteratorValue, UnknownLabelInDatabase, CPTError
 
 
 # selection of imports extracted from dir(pyAgrum)
 __all__ = [
-  'about',
-  'fastBN', 'fastID', 'fastMRF',
-  'availableBNExts', 'loadBN', 'saveBN',
-  'availableMNExts', 'loadMN', 'saveMN',
-  'availableIDExts', 'loadID', 'saveID',
-  'randomBN', 'generateSample',
-  'mutilateBN',
-  'getPosterior',
-  'log2',
-  'statsObj',
-  'fastGraph',
+    'about',
+    'fastBN', 'fastID', 'fastMRF',
+    'availableBNExts', 'loadBN', 'saveBN',
+    'availableMRFExts', 'loadMRF', 'saveMRF',
+    'availableIDExts', 'loadID', 'saveID',
+    'randomBN', 'generateSample',
+    'mutilateBN',
+    'getPosterior',
+    'log2',
+    'statsObj',
+    'fastGraph',
 
-  'config',
+    'config',
 
-  'Arc', 'Edge', 'DiGraph', 'UndiGraph', 'MixedGraph', 'DAG', 'PDAG', 'CliqueGraph',
-  'BayesNet', 'BayesNetFragment', 'EssentialGraph', 'MarkovBlanket',
-  'MarkovRandomField', 'ShaferShenoyMRFInference',
-  'DiscretizedVariable', 'LabelizedVariable', 'RangeVariable', 'DiscreteVariable', 'IntegerVariable',
-  'NumericalDiscreteVariable',
-  'Potential', 'Instantiation', 'Potential',
-  'ExactBNdistance', 'GibbsBNdistance', 'StructuralComparator',
-  'LoopyBeliefPropagation', 'GibbsSampling', 'MonteCarloSampling', 'ImportanceSampling', 'WeightedSampling',
-  'LoopyImportanceSampling', 'LoopyGibbsSampling', 'LoopyWeightedSampling', 'LoopyMonteCarloSampling'
-                                                                            'LazyPropagation',
-  'ShaferShenoyInference', 'VariableElimination',
-  'PythonApproximationListener', 'PythonBNListener', 'PythonLoadListener', 'PythonDatabaseGeneratorListener',
-  'BNGenerator', 'IDGenerator', 'JunctionTreeGenerator',
-  'BNLearner', 'InformationTheory',
-  'BNDatabaseGenerator',
-  'InfluenceDiagram', 'ShaferShenoyLIMIDInference',
-  'CredalNet', 'CNMonteCarloSampling', 'CNLoopyPropagation',
-  'PRMexplorer',
-  'MeekRules',
+    'Arc', 'Edge', 'DiGraph', 'UndiGraph', 'MixedGraph', 'DAG', 'PDAG', 'CliqueGraph',
+    'BayesNet', 'BayesNetFragment', 'EssentialGraph', 'MarkovBlanket',
+    'MarkovRandomField', 'ShaferShenoyMRFInference',
+    'DiscretizedVariable', 'LabelizedVariable', 'RangeVariable', 'DiscreteVariable', 'IntegerVariable',
+    'NumericalDiscreteVariable',
+    'Potential', 'Instantiation', 'Potential',
+    'ExactBNdistance', 'GibbsBNdistance', 'StructuralComparator',
+    'LoopyBeliefPropagation', 'GibbsSampling', 'MonteCarloSampling', 'ImportanceSampling', 'WeightedSampling',
+    'LoopyImportanceSampling', 'LoopyGibbsSampling', 'LoopyWeightedSampling', 'LoopyMonteCarloSampling'
+    'LazyPropagation',
+    'ShaferShenoyInference', 'VariableElimination',
+    'PythonApproximationListener', 'PythonBNListener', 'PythonLoadListener', 'PythonDatabaseGeneratorListener',
+    'BNGenerator', 'IDGenerator', 'JunctionTreeGenerator',
+    'BNLearner', 'InformationTheory',
+    'BNDatabaseGenerator',
+    'InfluenceDiagram', 'ShaferShenoyLIMIDInference',
+    'CredalNet', 'CNMonteCarloSampling', 'CNLoopyPropagation',
+    'PRMexplorer',
+    'MeekRules',
 
-  'ApproximationScheme',
-  'fastVariable',
-  'initRandom', 'randomProba', 'randomDistribution', 'randomGeneratorSeed', 'randomValue',
+    'ApproximationScheme',
+    'fastVariable',
+    'initRandom', 'randomProba', 'randomDistribution', 'randomGeneratorSeed', 'randomValue',
 
-  'isOMP', 'setNumberOfThreads', 'getNumberOfThreads', 'getMaxNumberOfThreads', 'getNumberOfLogicalProcessors',
-  # 'getThreadNumber','getNumberOfRunningThreads','getDynamicThreadsNumber','setDynamicThreadsNumber','getNestedParallelism', 'setNestedParallelism',
+    'isOMP', 'setNumberOfThreads', 'getNumberOfThreads', 'getMaxNumberOfThreads', 'getNumberOfLogicalProcessors',
+    # 'getThreadNumber','getNumberOfRunningThreads','getDynamicThreadsNumber','setDynamicThreadsNumber','getNestedParallelism', 'setNestedParallelism',
 
-  'VarType_DISCRETIZED', 'VarType_LABELIZED', 'VarType_RANGE', 'VarType_INTEGER', 'VarType_NUMERICAL',
+    'VarType_DISCRETIZED', 'VarType_LABELIZED', 'VarType_RANGE', 'VarType_INTEGER', 'VarType_NUMERICAL',
 
-  'DefaultInLabel', 'DuplicateElement', 'DuplicateLabel', 'GumException', 'FatalError', 'FormatNotFound',
-  'GraphError', 'IOError', 'InvalidArc', 'InvalidArgument', 'InvalidArgumentsNumber', 'InvalidDirectedCycle',
-  'InvalidEdge', 'InvalidNode', 'DatabaseError', 'MissingValueInDatabase', 'MissingVariableInDatabase', 'NoChild',
-  'NoNeighbour', 'NoParent', 'NotFound', 'NullElement', 'OperationNotAllowed', 'OutOfBounds', 'ArgumentError',
-  'SizeError', 'SyntaxError', 'UndefinedElement', 'UndefinedIteratorKey', 'UndefinedIteratorValue',
-  'UnknownLabelInDatabase', "CPTError",
+    'DefaultInLabel', 'DuplicateElement', 'DuplicateLabel', 'GumException', 'FatalError', 'FormatNotFound',
+    'GraphError', 'IOError', 'InvalidArc', 'InvalidArgument', 'InvalidArgumentsNumber', 'InvalidDirectedCycle',
+    'InvalidEdge', 'InvalidNode', 'DatabaseError', 'MissingValueInDatabase', 'MissingVariableInDatabase', 'NoChild',
+    'NoNeighbour', 'NoParent', 'NotFound', 'NullElement', 'OperationNotAllowed', 'OutOfBounds', 'ArgumentError',
+    'SizeError', 'SyntaxError', 'UndefinedElement', 'UndefinedIteratorKey', 'UndefinedIteratorValue',
+    'UnknownLabelInDatabase', "CPTError",
 
-  "config"
+    "config"
 ]
 
 __version__ = '@PYAGRUM_VERSION@'

@@ -19,11 +19,11 @@ Input/Output for Bayesian networks
 Input/Output for Markov random fields
 -------------------------------------
 
-.. autofunction:: pyAgrum.availableMNExts
+.. autofunction:: pyAgrum.availableMRFExts
 
-.. autofunction:: pyAgrum.loadMN
+.. autofunction:: pyAgrum.loadMRF
 
-.. autofunction:: pyAgrum.saveMN
+.. autofunction:: pyAgrum.saveMRF
 
 Input for influence diagram
 ---------------------------
