@@ -1,5 +1,11 @@
 # aGrUM Changelog
 
+## Changelog for 1.17.2
+
+* pyAgrum
+  * Fixed some bugs in `pyAgrum.lib.shapley` (thanks Stefano Mariani !).
+  * Changed last MN->MRF (`pyAgrum.{loadMRF|saveMRF|availableMRFExts}`).
+
 ## Changelog for 1.17.1
 
 * aGrUM
