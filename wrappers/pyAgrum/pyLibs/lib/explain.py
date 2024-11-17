@@ -24,19 +24,14 @@ tools for BN qualitative analysis and explainability
 import math
 from typing import Dict
 import itertools
-from base64 import encodebytes
 import warnings
 from typing import Union
 
 import pylab
 import pydot as dot
 
-import IPython.display
-import IPython.core.pylabtools
-
 import matplotlib as mpl
 import matplotlib.pyplot as plt
-from matplotlib.backends.backend_agg import FigureCanvasAgg as fc
 
 import pyAgrum as gum
 from pyAgrum.lib.bn2graph import BN2dot
@@ -264,6 +259,11 @@ def _reprInformation(bn, evs=None, size=None, cmap=_INFOcmap, asString=False):
   str|None
     return the HTML string or directly display it.
   """
+  import IPython.display
+  import IPython.core.pylabtools
+  from base64 import encodebytes
+  from matplotlib.backends.backend_agg import FigureCanvasAgg as fc
+ 
   if size is None:
     size = gum.config["notebook", "default_graph_size"]
 
@@ -511,9 +511,9 @@ def generalizedMarkovBlanketNames(bn, var: Union[int, str], depth: int = 1):
   return {bn.variable(node).name(): depth - visited[node] for node in nodes}
 
 
-def showShapValues(bn,shaps, cmap='plasma'):
+def showShapValues(bn,shaps,cmap='plasma')->None:
   """
-  Just a wrapper around BN2dot to easily show the Shap values
+  Show the Shap values in the DAG of the BN
 
   Parameters
   ----------
@@ -523,19 +523,9 @@ def showShapValues(bn,shaps, cmap='plasma'):
     The (Shap) values associates to each variable
   cmap: Matplotlib.ColorMap
     The colormap used for colouring the nodes
-
-  Returns
-  -------
-    a pydot.graph
   """
-  norm_color = {}
-  raw = list(shaps.values())
-  norm = [float(i) / sum(raw) for i in raw]
-  for i, feat in enumerate(list(shaps.keys())):
-    norm_color[feat] = norm[i]
-  cm = plt.get_cmap(cmap)
-  g = BN2dot(bn,
-             nodeColor=norm_color,
-             cmapNode=cm
-             )
-  return g
+  import pyAgrum.lib.shapley as shapley
+  import pyAgrum.lib.notebook as gnb
+
+  g = shapley.getShapValues(bn,shaps,cmap)
+  gnb.showGraph(g)

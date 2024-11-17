@@ -329,3 +329,11 @@ def saveMN(*args, **kwargs):
 ** pyAgrum.saveMN() is deprecated since pyAgrum>1.17.2. Please use pyAgrum.saveMRF() instead.
 """, DeprecationWarning, stacklevel=2)
     return saveMRF(*args, **kwargs)
+
+
+def fastMN(structure, domain="[2]"):
+    warnings.warn("""
+** pyAgrum.fastMN is deprecated since pyAgrum> pyAgrum>1.5.2. Please use pyAgrum.fastMRF() instead.
+** pyAgrum.fastMRF is called instead.
+""", DeprecationWarning, stacklevel=2)
+    return fastMRF(structure, domain)

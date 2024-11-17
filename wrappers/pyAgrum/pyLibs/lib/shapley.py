@@ -611,3 +611,34 @@ class ShapValues:
     ax.set_yticklabels(label)
     ax.set_title('Shapley value (impact on model output)')
     return ax.get_figure()
+
+
+def getShapValues(bn,shaps, cmap='plasma'):
+  """
+  Just a wrapper around BN2dot to easily show the Shap values
+
+  Parameters
+  ----------
+  bn : pyAgrum.BayesNet
+    The Bayesian network
+  shaps: dict[str,float]
+    The (Shap) values associates to each variable
+  cmap: Matplotlib.ColorMap
+    The colormap used for colouring the nodes
+
+  Returns
+  -------
+    a pydot.graph
+  """
+  from pyAgrum.lib.bn2graph import BN2dot
+  norm_color = {}
+  raw = list(shaps.values())
+  norm = [float(i) / sum(raw) for i in raw]
+  for i, feat in enumerate(list(shaps.keys())):
+    norm_color[feat] = norm[i]
+  cm = plt.get_cmap(cmap)
+  g = BN2dot(bn,
+             nodeColor=norm_color,
+             cmapNode=cm
+             )
+  return g

@@ -118,6 +118,5 @@ async def async_html2image(htmlcontent: str, filename: str):
   if filename.endswith(".pdf"):
     await page.pdf(path=filename, scale=1, print_background=True, width="0")
   else:
-    print(filename.split(".")[-1])
     await page.screenshot(path=filename, type=filename.split(".")[-1])
   return

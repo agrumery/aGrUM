@@ -1,25 +1,28 @@
 /**
 *
-*  Copyright 2005-2024 Pierre-Henri WUILLEMIN et Christophe GONZALES (LIP6)
+*  Copyright 2005-2024 Pierre-Henri WUILLEMIN et Christophe GONZALES(LIP6)
 *   {prenom.nom}_at_lip6.fr
 *
-*  This library is free software: you can redistribute it and/or modify
+*  This library is free software: you can redistribute it and / or modify
 *  it under the terms of the GNU Lesser General Public License as published by
 *  the Free Software Foundation, either version 3 of the License, or
 *  (at your option) any later version.
 *
 *  This library is distributed in the hope that it will be useful,
-*  but WITHOUT ANY WARRANTY; without even the implied warranty of
+*  but WITHOUT ANY WARRANTY
+without even the implied warranty of
 *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
 *  GNU Lesser General Public License for more details.
-  *
+*
 *  You should have received a copy of the GNU Lesser General Public License
-*  along with this library.  If not, see <http://www.gnu.org/licenses/>.
+*  along with this library.  If not, see < http: // www.gnu.org/licenses/>.
 *
 */
 
+// #autopep8: off
+
 // This file is part of swig code, include by pyAgrum.i and should not be used directly.
-// It is not a python file but includes only python code. This is why it is a *.py file.
+// It is not a python file but includes only python code. This is why it is a * .py file.
 
 %pythoncode %{
 
@@ -212,7 +215,7 @@ def availableMRFExts():
   return "uai|pkl"
 
 
-def loadRF(filename, listeners=None, verbose=False):
+def loadMRF(filename, listeners=None, verbose=False):
   """load a MRF from a file with optional listeners and arguments
 
   Parameters
@@ -255,7 +258,7 @@ def loadRF(filename, listeners=None, verbose=False):
   >>>        print('50%')
   >>>
   >>> # loadBN with list of listeners
-  >>> gum.loadMN('./bn.uai',listeners=[foo_listener,bar_listener])
+  >>> gum.loadMRF('./bn.uai',listeners=[foo_listener,bar_listener])
   >>> # .........#.........#.........#.........#..50%
   >>> # .......#.........#.........#.........#.........#.........% | bn loaded
   """
@@ -394,14 +397,6 @@ def fastBN(structure:str, domain="[2]"):
           the resulting bayesian network
   """
   return BayesNet.fastPrototype(structure, domain)
-
-
-def fastMN(structure, domain="[2]"):
-  warnings.warn("""
-** pyAgrum.fastMN is deprecated in pyAgrum>1.5.2.
-** pyAgrum.fastMRF is called instead.
-""", DeprecationWarning, stacklevel=2)
-  return fastMRF(structure, domain)
 
 
 def fastMRF(structure, domain="[2]"):
@@ -838,6 +833,5 @@ try:
   config.load()
 except FileNotFoundError:
   pass
-
 
 %}
