@@ -159,7 +159,8 @@ def runTests(local: bool, test_module, log) -> int:
         tl.append(CausalModelTestSuite.ts)
         tl.append(CausalNonRegressionTestSuite.ts)
         tl.append(CausalEffectEstimationTestSuite.ts)
-    log.warning("Pandas or sklearn not found.")
+    else:
+      log.warning("Pandas or sklearn not found.")
 
   if test_module in {"", "skbn"}:
     log.info("testing 'skbn'")
