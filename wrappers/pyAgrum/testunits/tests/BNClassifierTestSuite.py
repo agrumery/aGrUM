@@ -27,11 +27,11 @@ from .pyAgrumTestSuite import pyAgrumTestCase, addTests
 
 import pyAgrum.skbn as skbn
 
-def _normalize_dict(d):
+def _normalizeDiscretizerAudit(discretizer_audit):
     """Convert NumPy arrays in a dictionary to lists for reliable comparison."""
     return {k: {kk: (vv.tolist() if isinstance(vv, np.ndarray) else vv)
                 for kk, vv in v.items()}
-            for k, v in d.items()}
+            for k, v in discretizer_audit.items()}
 
 class BNCLassifierTestCase(pyAgrumTestCase):
   def testFitFromCsv(self):
@@ -113,7 +113,7 @@ class BNCLassifierTestCase(pyAgrumTestCase):
 
     bnc2.fit(data=dftrain, targetName="Y")
 
-    self.assertDictEqual(_normalize_dict(bnc.discertizer.audit(dftrain)),_normalize_dict(bnc2.discertizer.audit(dftrain)))
+    self.assertDictEqual(_normalizeDiscretizerAudit(bnc.discertizer.audit(dftrain)),_normalizeDiscretizerAudit(bnc2.discertizer.audit(dftrain)))
     self.assertDictEqual(bnc.get_params(), bnc2.get_params())
     self.assertEqual(bnc.threshold, bnc2.threshold)
     self.assertEqual((bnc.predict_proba(dftest) - bnc2.predict_proba(dftest)).max(), 0)
