@@ -896,7 +896,9 @@ class BNClassifier(sklearn.base.BaseEstimator, sklearn.base.ClassifierMixin):
       "label": self.label,
       "fromModel": self.fromModel,
       "threshold": self.threshold,
-      "variableNameIndexDictionary": self.variableNameIndexDictionary
+      "variableNameIndexDictionary": self.variableNameIndexDictionary,
+      "params": self.get_params(),
+      "discretizer": self.discretizer
     }
 
   def __setstate__(self, state):
@@ -925,6 +927,8 @@ class BNClassifier(sklearn.base.BaseEstimator, sklearn.base.ClassifierMixin):
     self.fromModel = state["fromModel"]
     self.threshold = state["threshold"]
     self.variableNameIndexDictionary = state["variableNameIndexDictionary"]
+    self.set_params(**state['params'])
+    self.discertizer = state['discretizer']
     return self
 
 

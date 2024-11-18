@@ -106,6 +106,10 @@ class BNCLassifierTestCase(pyAgrumTestCase):
     smodel = pickle.dumps(bnc)
     bnc2 = pickle.loads(smodel)
 
+    bnc2.fit(data=dftrain, targetName="Y")
+
+    self.assertDictEqual(bnc.get_params(), bnc2.get_params())
+    self.assertEqual(bnc.threshold, bnc2.threshold)
     self.assertEqual((bnc.predict_proba(dftest) - bnc2.predict_proba(dftest)).max(), 0)
     self.assertEqual((bnc.predict_proba(dftest) - bnc2.predict_proba(dftest)).min(), 0)
 
