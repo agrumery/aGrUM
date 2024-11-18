@@ -5,7 +5,7 @@
 * pyAgrum
   * Fixed some bugs in `pyAgrum.lib.shapley` (thanks Stefano Mariani !).
   * Changed last MN->MRF (`pyAgrum.{loadMRF|saveMRF|availableMRFExts}`).
-  * Improve pickling of `pyAgrum.skbn.BNClassifier`.
+  * Improved pickling of `pyAgrum.skbn.BNClassifier`.
 
 ## Changelog for 1.17.1
 
