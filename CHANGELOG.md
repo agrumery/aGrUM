@@ -41,7 +41,7 @@
   * Added two new constraints `pyAgrum.BNLearner.addNoParentNode()` and `pyAgrum.BNLearner.addNoChildrenNode()`.
   * (internal) Standardized licence in python files
   * Added new `pyAgrum.causal.CausalEffectsEstimation` (thanks to Thierry Rioual).
-  * `pyAgrum.causal.BNClassfier`can now be pickled (thanks to Valentin Vassilev).
+  * `pyAgrum.skbn.BNClassfier`can now be pickled (thanks to Valentin Vassilev).
   * Added module `pyAgrum.lib.shapley` (included in `pyAgrum.lib.explain`) to allow the use of `ShapValues` not only from notebooks (thanks to Stefano Mariani).
   * Added a parameter `filename` to `pyAgrum.lib.shapley.ShapValues`'s methods for saving the figure instead of showing it (thanks to Stefano Mariani).
   
