@@ -400,39 +400,29 @@ def toFast(self, filename: str = None) -> str:
   """
 
   def _toFastBN(bn,pythoncode=False):
-    res = ''
-    if pythoncode:
-      res+='model=gum.fastBN("""'
+    res = []
     sovars = set()
-    first = True
     for x, y in bn.arcs():
-      if not first:
-        res += ';'
-        if pythoncode:
-          res +='\n                 '
-      else:
-        first = False
       if x in sovars:
-        res += bn.variable(x).name()
+        src = bn.variable(x).name()
       else:
-        res += bn.variable(x).toFast()
+        src = bn.variable(x).toFast()
         sovars.add(x)
-      res += "->"
       if y in sovars:
-        res += bn.variable(y).name()
+        dst = bn.variable(y).name()
       else:
-        res += bn.variable(y).toFast()
+        dst = bn.variable(y).toFast()
         sovars.add(y)
+      res.append(f"{src}->{dst}")
 
     for x in bn.nodes():
       if x not in sovars:
-        if pythoncode:
-          res +='\n                 '
-        res += ";"+bn.variable(x).toFast()
+        res .append(bn.variable(x).toFast())
 
     if pythoncode:
-      res += '""")'
-    return res
+      return 'model=gum.fastBN("""'+';\n     '.join(res)+'""")'
+    else:
+      return ';'.join(res)
 
   if filename is None:
     return _toFastBN(self)

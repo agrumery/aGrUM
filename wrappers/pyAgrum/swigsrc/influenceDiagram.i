@@ -172,39 +172,29 @@ def toFast(self, filename: str = None) -> str:
     return res+model.variable(i).toFast()
 
   def _toFastBN(model,pythoncode=False):
-    res = ''
-    if pythoncode:
-      res+='model=gum.fastBN("""'
+    res = []
     sovars = set()
-    first = True
     for x, y in model.arcs():
-      if not first:
-        res += ';'
-        if pythoncode:
-          res +='\n                 '
-      else:
-        first = False
       if x in sovars:
-        res += model.variable(x).name()
+        src = model.variable(x).name()
       else:
-        res += _toFastVar(model,x)
+        src = _toFastVar(model,x)
         sovars.add(x)
-      res += "->"
       if y in sovars:
-        res += model.variable(y).name()
+        dst = model.variable(y).name()
       else:
-        res += _toFastVar(model,y)
-        sovars.add(y)
+         dst = _toFastVar(model,y)
+         sovars.add(y)
+      res.append(f"{src}->{dst}")
 
     for x in model.nodes():
       if x not in sovars:
-        if pythoncode:
-          res +='\n                 '
-        res += ";"+_toFastVar(model,x)
+         res .append(_toFastVar(model,x))
 
     if pythoncode:
-      res += '""")'
-    return res
+      return 'model=gum.fastID("""'+';\n     '.join(res)+'""")'
+    else:
+      return ';'.join(res)
 
   if filename is None:
     return _toFastBN(self)

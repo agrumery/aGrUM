@@ -38,10 +38,11 @@ def check_int(v: Any) -> bool:
   """
   Test if v is an int or a str representing an int
   """
-  if isinstance(v, bool):
+  if isinstance(v, (bool, numpy.bool_)):
     return False
-  if numpy.issubdtype(type(v), numpy.integer):  # isinstance(v, int)
+  if isinstance(v, (int, numpy.integer)):
     return True
+
   if isinstance(v, str):
     if v[0] in ('-', '+'):
       return v[1:].isdigit()
@@ -62,7 +63,7 @@ def check_float(v: Any) -> bool:
   bool:
     True if v is a float or a str representing a float
   """
-  if isinstance(v, bool):
+  if isinstance(v, (bool, numpy.bool_)):
     return False
 
   try:
@@ -946,7 +947,7 @@ class Discretizer():
   def discretizedTemplate(self, X, y=None, *, possibleValuesY=None, template=None):
     """
     return a graphical model discretized using the suggestion of the Discretized for date source X (and for target y).
-    This graphial model only contains the discretized variables.
+    This graphical model only contains the discretized variables.
     For instance, it can be used as a template for a BNLearner.
 
     Parameters

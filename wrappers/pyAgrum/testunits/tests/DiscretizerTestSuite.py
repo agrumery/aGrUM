@@ -72,6 +72,25 @@ class DiscretizerTestCase(pyAgrumTestCase):
     self.assertEqual(str(discretizer._createVariable('var5', X['var5'])),
                      "var5:Discretized(<(1;1.3[,[1.3;2.6[,[2.6;3.9[,[3.9;5.2[,[5.2;6.5[,[6.5;7.8[,[7.8;9.1[,[9.1;10.4[,[10.4;11.7[,[11.7;13)>)")
 
+  def testBooleanCSVLeBiannic(self):
+    X = pd.DataFrame.from_dict({
+      'var1': [True, False, True, False, True, False, True, False, True, False, True, False, True, False],
+      'var2': [True, True, True, True, True, True, True, True, True, True, True, True, True, True],
+      'var3': [False, False, False, False, False, False, False, False, False, False, False, False, False, False],
+      'var4': [True, False, True, False, True, False, True, False, True, False, True, False, True, False],
+      'var5': [True, True, True, True, True, True, True, True, True, True, True, True, True, True]
+    })
+
+    tmpfilename = self.agrumSrcDir("testBooleanCSVLeBiannic.csv")
+    X.to_csv(tmpfilename, index=False)
+    discretizer = Discretizer(defaultDiscretizationMethod='quantile',
+                              defaultNumberOfBins=7,
+                              discretizationThreshold=10)
+    template = discretizer.discretizedTemplate(tmpfilename)
+
+    self.assertEqual(template.toFast(),
+                     "var1{False|True};var2{True};var3{False};var4{False|True};var5{True}")
+
 
 ts = unittest.TestSuite()
 addTests(ts, DiscretizerTestCase)

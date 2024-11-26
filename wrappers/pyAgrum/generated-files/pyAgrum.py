@@ -12545,39 +12545,29 @@ class BayesNet(IBayesNet):
       """
 
       def _toFastBN(bn,pythoncode=False):
-        res = ''
-        if pythoncode:
-          res+='model=pyAgrum.fastBN("""'
+        res = []
         sovars = set()
-        first = True
         for x, y in bn.arcs():
-          if not first:
-            res += ';'
-            if pythoncode:
-              res +='\n                 '
-          else:
-            first = False
           if x in sovars:
-            res += bn.variable(x).name()
+            src = bn.variable(x).name()
           else:
-            res += bn.variable(x).toFast()
+            src = bn.variable(x).toFast()
             sovars.add(x)
-          res += "->"
           if y in sovars:
-            res += bn.variable(y).name()
+            dst = bn.variable(y).name()
           else:
-            res += bn.variable(y).toFast()
+            dst = bn.variable(y).toFast()
             sovars.add(y)
+          res.append(f"{src}->{dst}")
 
         for x in bn.nodes():
           if x not in sovars:
-            if pythoncode:
-              res +='\n                 '
-            res += ";"+bn.variable(x).toFast()
+            res .append(bn.variable(x).toFast())
 
         if pythoncode:
-          res += '""")'
-        return res
+          return 'model=pyAgrum.fastBN("""'+';\n     '.join(res)+'""")'
+        else:
+          return ';'.join(res)
 
       if filename is None:
         return _toFastBN(self)
@@ -14019,39 +14009,28 @@ class MarkovRandomField(IMarkovRandomField):
       """
 
       def _toFastMRF(model,pythoncode=False):
-        res = ''
-        if pythoncode:
-          res+='model=pyAgrum.fastMRF("""'
+        res = []
         sovars = set()
         first = True
         for f in model.factors():
-          if not first:
-            res += ';'
-            if pythoncode:
-              res +='\n                 '
-          else:
-            first = False
-          firstnode=True
+          l = []
           for x in f:
-            if firstnode:
-              firstnode=False
-            else:
-              res += "--"
-            if x in sovars:
-              res += model.variable(x).name()
-            else:
-              res += model.variable(x).toFast()
-              sovars.add(x)
+              if x in sovars:
+                src = model.variable(x).name()
+              else:
+                src = model.variable(x).toFast()
+                sovars.add(x)
+              l.append(src)
+          res.append("--".join(l))
 
         for x in model.nodes():
           if x not in sovars:
-            if pythoncode:
-              res +='\n                 '
-            res += ";"+model.variable(x).toFast()
+            res.append(model.variable(x).toFast())
 
         if pythoncode:
-          res += '""")'
-        return res
+          return 'model=pyAgrum.fastMRF("""'+';\n     '.join(res)+'""")'
+        else:
+          return ';'.join(res)
 
       if filename is None:
         return _toFastMRF(self)
@@ -27176,39 +27155,29 @@ class InfluenceDiagram(DAGmodel):
         return res+model.variable(i).toFast()
 
       def _toFastBN(model,pythoncode=False):
-        res = ''
-        if pythoncode:
-          res+='model=pyAgrum.fastBN("""'
+        res = []
         sovars = set()
-        first = True
         for x, y in model.arcs():
-          if not first:
-            res += ';'
-            if pythoncode:
-              res +='\n                 '
-          else:
-            first = False
           if x in sovars:
-            res += model.variable(x).name()
+            src = model.variable(x).name()
           else:
-            res += _toFastVar(model,x)
+            src = _toFastVar(model,x)
             sovars.add(x)
-          res += "->"
           if y in sovars:
-            res += model.variable(y).name()
+            dst = model.variable(y).name()
           else:
-            res += _toFastVar(model,y)
-            sovars.add(y)
+             dst = _toFastVar(model,y)
+             sovars.add(y)
+          res.append(f"{src}->{dst}")
 
         for x in model.nodes():
           if x not in sovars:
-            if pythoncode:
-              res +='\n                 '
-            res += ";"+_toFastVar(model,x)
+             res .append(_toFastVar(model,x))
 
         if pythoncode:
-          res += '""")'
-        return res
+          return 'model=pyAgrum.fastID("""'+';\n     '.join(res)+'""")'
+        else:
+          return ';'.join(res)
 
       if filename is None:
         return _toFastBN(self)
