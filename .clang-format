@@ -117,3 +117,11 @@ StatementMacros: ['TS_ASSERT_EQUALS','TS_ASSERT_DIFFERS','TS_ASSERT_THROWS','TS_
                   'GUM_ASSERT',
                   'GUM_CONSTRUCTOR','GUM_DESTRUCTOR','GUM_CONS_CPY','GUM_CONS_MOV','GUM_OP_CPY','GUM_OP_MOV',
                   'GUM_DEBUG_ONLY']
+
+InsertNewLineAtEOF: true
+InsertTrailingCommas: Wrapped
+InsertLiteralSeparator:
+  Binary: 0
+  Decimal: 3
+  DecimalMinDigits: 5
+  Hex: -1

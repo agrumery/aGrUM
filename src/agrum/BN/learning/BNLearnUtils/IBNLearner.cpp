@@ -659,7 +659,9 @@ namespace gum::learning {
 
   PDAG IBNLearner::learnPDAG() {
     if (selectedAlgo_ != AlgoType::MIIC) {
-      GUM_ERROR(OperationNotAllowed, "Must be using the MIIC algorithm")
+      GUM_ERROR(OperationNotAllowed,
+                "Score-based algorithms do not build PDAG. Please use a constraint-based "
+                "algorithm instead")
     }
     // check that the database does not contain any missing value
     if (scoreDatabase_.databaseTable().hasMissingValues()) {
