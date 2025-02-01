@@ -28294,7 +28294,8 @@ class BNLearner(object):
       try:
         ge=EssentialGraph(bn,self.learnPDAG()) # for constraint-based methods
       except:
-        ge=EssentialGraph(self.learnBN())  # for score-based methods
+        bn=self.learnBN()
+        ge=EssentialGraph(bn)  # for score-based methods
 
       ge._bn=bn
 
