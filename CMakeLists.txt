@@ -1,4 +1,4 @@
-cmake_minimum_required(VERSION 3.13)
+cmake_minimum_required(VERSION 3.15)
 
 if (POLICY CMP0042) # use of @rpath
     cmake_policy(SET CMP0042 NEW)
