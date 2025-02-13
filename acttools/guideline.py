@@ -245,7 +245,7 @@ def _checkCppFileExists(correction: bool) -> int:
 
     for header in recglob(f"src{os.sep}agrum", "*.h"):
         if any(subs in header for subs in exceptions):
-            print(f"skip cpp creation for {header}")
+            print(f"skip {header}")
             continue
 
         subs = header[:-1]

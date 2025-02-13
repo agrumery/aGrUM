@@ -29,7 +29,7 @@ def loadID(filename):
   extension = filename.split('.')[-1].upper()
 
   if extension in {"BIFXML", "XMLBIF", "XML"}:
-    diag = pyAgrum.InfluenceDiagram()
+    diag = pyAgrum.ID.InfluenceDiagram()
     # for now, just one format
     res = diag.loadBIFXML(filename)
 
