@@ -48,33 +48,43 @@ file(GLOB PYAGRUMFILES swigsrc/*.i)
 # generate swig into /raw then post-process into /generated-files
 set(CMAKE_SWIG_OUTDIR ${CMAKE_CURRENT_BINARY_DIR}/raw)
 set(GENERATED_PYTHON "${CMAKE_CURRENT_SOURCE_DIR}/generated-files")
+file (MAKE_DIRECTORY ${CMAKE_SWIG_OUTDIR})
 
 macro(gum_add_python_module MODULENAME)
 
     string(TOLOWER "${MODULENAME}" MODULENAME_LOWER)
     if (SWIG_FOUND)
-        set (_PYAGRUMLIB ${MODULENAME_LOWER})
-        set_source_files_properties(${CMAKE_CURRENT_SOURCE_DIR}/${MODULENAME_LOWER}.i PROPERTIES CPLUSPLUS ON)
-        set_source_files_properties(${CMAKE_CURRENT_SOURCE_DIR}/${MODULENAME_LOWER}.i PROPERTIES INCLUDE_DIRECTORIES
-                                    "${AGRUM_SOURCE_DIR};${CMAKE_CURRENT_SOURCE_DIR}/doc;${CMAKE_CURRENT_BINARY_DIR};${CMAKE_CURRENT_SOURCE_DIR};${CMAKE_CURRENT_SOURCE_DIR}/swigsrc;${SWIG_SOURCE_DIR}")
+        add_custom_command(OUTPUT ${CMAKE_SWIG_OUTDIR}/${MODULENAME_LOWER}.py
+                                  ${CMAKE_SWIG_OUTDIR}/${MODULENAME_LOWER}PYTHON_wrap.cxx
+                                  ${CMAKE_SWIG_OUTDIR}/${MODULENAME_LOWER}PYTHON_wrap.h
+                            DEPENDS ${CMAKE_CURRENT_SOURCE_DIR}/${MODULENAME_LOWER}.i
+                                    ${SWIG_SOURCE_DIR}/aGrUM_wrap_${MODULENAME}.i
+                                    ${PYAGRUMFILES}
+                            COMMAND ${SWIG_EXECUTABLE} -c++ -python ${CMAKE_SWIG_FLAGS}
+                                    -outdir ${CMAKE_SWIG_OUTDIR}
+                                    -I${AGRUM_SOURCE_DIR} -I${SWIG_SOURCE_DIR} -I${CMAKE_CURRENT_SOURCE_DIR}/swigsrc/ -I${CMAKE_CURRENT_SOURCE_DIR}/doc
+                                    -o ${CMAKE_SWIG_OUTDIR}/${MODULENAME_LOWER}PYTHON_wrap.cxx
+                                    ${CMAKE_CURRENT_SOURCE_DIR}/${MODULENAME_LOWER}.i
+                            )
+        add_custom_command(OUTPUT ${GENERATED_PYTHON}/${MODULENAME_LOWER}.py
+                                  ${GENERATED_PYTHON}/${MODULENAME_LOWER}PYTHON_wrap.cxx
+                                  ${GENERATED_PYTHON}/${MODULENAME_LOWER}PYTHON_wrap.h
+                           DEPENDS ${CMAKE_SWIG_OUTDIR}/${MODULENAME_LOWER}.py
+                                    ${CMAKE_SWIG_OUTDIR}/${MODULENAME_LOWER}PYTHON_wrap.cxx
+                                    ${CMAKE_SWIG_OUTDIR}/${MODULENAME_LOWER}PYTHON_wrap.h
+                           COMMAND ${Python_EXECUTABLE} ${CMAKE_CURRENT_SOURCE_DIR}/cmake/passForPyType.py
+                                                        ${CMAKE_SWIG_OUTDIR}/${MODULENAME_LOWER}.py ${GENERATED_PYTHON}/${MODULENAME_LOWER}.py
+                           COMMAND ${CMAKE_COMMAND} -E copy ${CMAKE_SWIG_OUTDIR}/${MODULENAME_LOWER}PYTHON_wrap.cxx ${GENERATED_PYTHON}
+                           COMMAND ${CMAKE_COMMAND} -E copy ${CMAKE_SWIG_OUTDIR}/${MODULENAME_LOWER}PYTHON_wrap.h ${GENERATED_PYTHON})
+    endif ()
 
-        set(SWIG_MODULE_${MODULENAME_LOWER}_EXTRA_DEPS ${PYAGRUMFILES} ${PYAGRUM_EXTENSIONS})
-        swig_add_library(${_PYAGRUMLIB} LANGUAGE python SOURCES ${CMAKE_CURRENT_SOURCE_DIR}/${MODULENAME_LOWER}.i)
-        add_custom_command(TARGET ${_PYAGRUMLIB} POST_BUILD
-            COMMAND ${Python_EXECUTABLE} "${CMAKE_CURRENT_SOURCE_DIR}/cmake/passForPyType.py" "${CMAKE_SWIG_OUTDIR}/${MODULENAME_LOWER}.py" "${GENERATED_PYTHON}/${MODULENAME_LOWER}.py"
-            COMMAND ${CMAKE_COMMAND} -E copy ${CMAKE_SWIG_OUTDIR}/${MODULENAME_LOWER}PYTHON_wrap.cxx ${GENERATED_PYTHON}
-            COMMAND ${CMAKE_COMMAND} -E copy ${CMAKE_SWIG_OUTDIR}/${MODULENAME_LOWER}PYTHON_wrap.h ${GENERATED_PYTHON})
-
+    set (_PYAGRUMLIB _${MODULENAME_LOWER})
+    add_library(${_PYAGRUMLIB} MODULE ${GENERATED_PYTHON}/${MODULENAME_LOWER}PYTHON_wrap.cxx)
+    set_target_properties(${_PYAGRUMLIB} PROPERTIES PREFIX "")
+    if (WIN32)
+        set_target_properties(${_PYAGRUMLIB} PROPERTIES SUFFIX ".pyd")
     else ()
-        set (_PYAGRUMLIB _${MODULENAME_LOWER})
-        add_library(${_PYAGRUMLIB} MODULE ${GENERATED_PYTHON}/${MODULENAME_LOWER}PYTHON_wrap.cxx)
-        set_target_properties(${_PYAGRUMLIB} PROPERTIES PREFIX "")
-        set_target_properties(${_PYAGRUMLIB} PROPERTIES LINKER_LANGUAGE CXX)
-        if (WIN32)
-            set_target_properties(${_PYAGRUMLIB} PROPERTIES SUFFIX ".pyd")
-        else ()
-            set_target_properties(${_PYAGRUMLIB} PROPERTIES SUFFIX ".so")
-        endif ()
+        set_target_properties(${_PYAGRUMLIB} PROPERTIES SUFFIX ".so")
     endif ()
 
     target_link_libraries(${_PYAGRUMLIB} PRIVATE ${LIBAGRUM})

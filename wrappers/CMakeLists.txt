@@ -6,19 +6,6 @@ if (USE_SWIG)
     find_package(SWIG 4.1)
     if (SWIG_FOUND)
         message(STATUS "** aGrUM notification : Swig 4.1 found")
-
-        if (POLICY CMP0078)
-            # new swig target name
-            cmake_policy(SET CMP0078 NEW)
-        endif ()
-
-        if (POLICY CMP0086)
-            # UseSWIG honors SWIG_MODULE_NAME via -module
-            cmake_policy(SET CMP0086 NEW)
-        endif ()
-
-        include(${SWIG_USE_FILE})
-
     else ()
         message(STATUS "** aGrUM notification : Swig >4.1 not found : you cannot change *.i files !")
     endif ()
