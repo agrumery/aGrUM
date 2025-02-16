@@ -1,10 +1,10 @@
-#ifndef  __cxxtest__GlobalFixture_h__
-#define  __cxxtest__GlobalFixture_h__
+#ifndef __cxxtest__GlobalFixture_h__
+#define __cxxtest__GlobalFixture_h__
 
 #include <cxxtest/LinkedList.h>
 
 namespace CxxTest {
-  class GlobalFixture : public Link {
+  class GlobalFixture: public Link {
     public:
     virtual bool setUpWorld();
     virtual bool tearDownWorld();
@@ -16,12 +16,12 @@ namespace CxxTest {
 
     static GlobalFixture* firstGlobalFixture();
     static GlobalFixture* lastGlobalFixture();
-    GlobalFixture* nextGlobalFixture();
-    GlobalFixture* prevGlobalFixture();
+    GlobalFixture*        nextGlobalFixture();
+    GlobalFixture*        prevGlobalFixture();
 
     private:
     static List _list;
   };
-}
+}   // namespace CxxTest
 
-#endif  //  __cxxtest__GlobalFixture_h__
+#endif   //  __cxxtest__GlobalFixture_h__

@@ -1,5 +1,5 @@
-#ifndef  __cxxtest__StdioPrinter_h__
-#define  __cxxtest__StdioPrinter_h__
+#ifndef __cxxtest__StdioPrinter_h__
+#define __cxxtest__StdioPrinter_h__
 
 //
 // The StdioPrinter is an StdioFilePrinter which defaults to stdout.
@@ -10,13 +10,11 @@
 #include <cxxtest/StdioFilePrinter.h>
 
 namespace CxxTest {
-  class StdioPrinter : public StdioFilePrinter {
+  class StdioPrinter: public StdioFilePrinter {
     public:
-    StdioPrinter( FILE* o = stdout,
-                  const char* preLine = ":",
-                  const char* postLine = "" )
-        : StdioFilePrinter( o, preLine, postLine ) {}
+    StdioPrinter(FILE* o = stdout, const char* preLine = ":", const char* postLine = "") :
+        StdioFilePrinter(o, preLine, postLine) {}
   };
-}
+}   // namespace CxxTest
 
-#endif  //  __cxxtest__StdioPrinter_h__
+#endif   //  __cxxtest__StdioPrinter_h__

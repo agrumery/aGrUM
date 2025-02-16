@@ -5634,7 +5634,7 @@ SWIGINTERN std::string gum_MarkovRandomField_Sl_double_Sg__loadUAI__SWIG_0(gum::
        reader.showElegantErrorsAndWarnings(stream);
        if (nbErr>0) {
          reader.showErrorCounts(stream);
-              {                                                                                             std::ostringstream error_stream;                                                            error_stream << stream.str();                                                                        throw(gum::FatalError(gum::_createMsg_("/Users/phw/Documents/gits/agrum/aGrUM-dev/wrappers/pyAgrum/swigsrc//markovRandomField.i", __FUNCTION__, 167, error_stream.str())));      }
+              {                                                                                             std::ostringstream error_stream;                                                            error_stream << stream.str();                                                                        throw(gum::FatalError(gum::_createMsg_("/Users/phw/Documents/gits/agrum/aGrUM-dev/wrappers/pyAgrum/swigsrc//markovRandomField.i", __FUNCTION__, 187, error_stream.str())));      }
        } else {
          return stream.str();
        }
@@ -5899,7 +5899,7 @@ SWIGINTERN gum::Potential< double > gum_ShaferShenoyMRFInference_Sl_double_Sg__e
     }
 SWIGINTERN gum::Potential< double > gum_ShaferShenoyMRFInference_Sl_double_Sg__jointPosterior(gum::ShaferShenoyMRFInference< double > *self,PyObject *targets){
       if (! PyAnySet_Check(targets)) {
-             {                                                                                             std::ostringstream error_stream;                                                            error_stream << "The argument must be a set";                                                                        throw(gum::InvalidArgument(gum::_createMsg_("/Users/phw/Documents/gits/agrum/aGrUM-dev/wrappers/pyAgrum/swigsrc//MRFinference.i", __FUNCTION__, 197, error_stream.str())));      }
+             {                                                                                             std::ostringstream error_stream;                                                            error_stream << "The argument must be a set";                                                                        throw(gum::InvalidArgument(gum::_createMsg_("/Users/phw/Documents/gits/agrum/aGrUM-dev/wrappers/pyAgrum/swigsrc//MRFinference.i", __FUNCTION__, 217, error_stream.str())));      }
       }
       gum::NodeSet nodeset;
       PyAgrumHelper::populateNodeSetFromPySequenceOfIntOrString(nodeset,targets,self->MRF().variableNodeMap());
@@ -5907,7 +5907,7 @@ SWIGINTERN gum::Potential< double > gum_ShaferShenoyMRFInference_Sl_double_Sg__j
     }
 SWIGINTERN void gum_ShaferShenoyMRFInference_Sl_double_Sg__addJointTarget(gum::ShaferShenoyMRFInference< double > *self,PyObject *targets){
       if (! PyAnySet_Check(targets)) {
-             {                                                                                             std::ostringstream error_stream;                                                            error_stream << "The argument must be a set";                                                                        throw(gum::InvalidArgument(gum::_createMsg_("/Users/phw/Documents/gits/agrum/aGrUM-dev/wrappers/pyAgrum/swigsrc//MRFinference.i", __FUNCTION__, 197, error_stream.str())));      }
+             {                                                                                             std::ostringstream error_stream;                                                            error_stream << "The argument must be a set";                                                                        throw(gum::InvalidArgument(gum::_createMsg_("/Users/phw/Documents/gits/agrum/aGrUM-dev/wrappers/pyAgrum/swigsrc//MRFinference.i", __FUNCTION__, 217, error_stream.str())));      }
       }
       gum::NodeSet nodeset;
       PyAgrumHelper::populateNodeSetFromPySequenceOfIntOrString(nodeset,targets,self->MRF().variableNodeMap());
@@ -5916,7 +5916,7 @@ SWIGINTERN void gum_ShaferShenoyMRFInference_Sl_double_Sg__addJointTarget(gum::S
     }
 SWIGINTERN void gum_ShaferShenoyMRFInference_Sl_double_Sg__eraseJointTarget(gum::ShaferShenoyMRFInference< double > *self,PyObject *targets){
       if (! PyAnySet_Check(targets)) {
-             {                                                                                             std::ostringstream error_stream;                                                            error_stream << "The argument must be a set";                                                                        throw(gum::InvalidArgument(gum::_createMsg_("/Users/phw/Documents/gits/agrum/aGrUM-dev/wrappers/pyAgrum/swigsrc//MRFinference.i", __FUNCTION__, 197, error_stream.str())));      }
+             {                                                                                             std::ostringstream error_stream;                                                            error_stream << "The argument must be a set";                                                                        throw(gum::InvalidArgument(gum::_createMsg_("/Users/phw/Documents/gits/agrum/aGrUM-dev/wrappers/pyAgrum/swigsrc//MRFinference.i", __FUNCTION__, 217, error_stream.str())));      }
       }
       gum::NodeSet nodeset;
       PyAgrumHelper::populateNodeSetFromPySequenceOfIntOrString(nodeset,targets,self->MRF().variableNodeMap());
@@ -5924,7 +5924,7 @@ SWIGINTERN void gum_ShaferShenoyMRFInference_Sl_double_Sg__eraseJointTarget(gum:
     }
 SWIGINTERN bool gum_ShaferShenoyMRFInference_Sl_double_Sg__isJointTarget(gum::ShaferShenoyMRFInference< double > *self,PyObject *targets){
       if (! PyAnySet_Check(targets)) {
-             {                                                                                             std::ostringstream error_stream;                                                            error_stream << "The argument must be a set";                                                                        throw(gum::InvalidArgument(gum::_createMsg_("/Users/phw/Documents/gits/agrum/aGrUM-dev/wrappers/pyAgrum/swigsrc//MRFinference.i", __FUNCTION__, 197, error_stream.str())));      }
+             {                                                                                             std::ostringstream error_stream;                                                            error_stream << "The argument must be a set";                                                                        throw(gum::InvalidArgument(gum::_createMsg_("/Users/phw/Documents/gits/agrum/aGrUM-dev/wrappers/pyAgrum/swigsrc//MRFinference.i", __FUNCTION__, 217, error_stream.str())));      }
       }
       gum::NodeSet nodeset;
       PyAgrumHelper::populateNodeSetFromPySequenceOfIntOrString(nodeset,targets,self->MRF().variableNodeMap());

@@ -1,33 +1,33 @@
-#ifndef  __cxxtest__RealDescriptions_h__
-#define  __cxxtest__RealDescriptions_h__
+#ifndef __cxxtest__RealDescriptions_h__
+#define __cxxtest__RealDescriptions_h__
 
 //
 // The "real" description classes
 //
 
 #include <cxxtest/Descriptions.h>
-#include <cxxtest/TestSuite.h>
 #include <cxxtest/GlobalFixture.h>
+#include <cxxtest/TestSuite.h>
 
 namespace CxxTest {
-  class RealTestDescription : public TestDescription {
+  class RealTestDescription: public TestDescription {
     public:
     RealTestDescription();
-    RealTestDescription( List& argList,
-                         SuiteDescription& argSuite,
-                         unsigned argLine,
-                         const char* argTestName );
-    void initialize( List& argList,
-                     SuiteDescription& argSuite,
-                     unsigned argLine,
-                     const char* argTestName );
+    RealTestDescription(List&             argList,
+                        SuiteDescription& argSuite,
+                        unsigned          argLine,
+                        const char*       argTestName);
+    void initialize(List&             argList,
+                    SuiteDescription& argSuite,
+                    unsigned          argLine,
+                    const char*       argTestName);
 
     const char* file() const;
-    unsigned line() const;
+    unsigned    line() const;
     const char* testName() const;
     const char* suiteName() const;
 
-    TestDescription* next();
+    TestDescription*       next();
     const TestDescription* next() const;
 
     TestSuite* suite() const;
@@ -37,142 +37,141 @@ namespace CxxTest {
     bool tearDown();
 
     private:
-    RealTestDescription( const RealTestDescription& );
-    RealTestDescription& operator=( const RealTestDescription& );
+    RealTestDescription(const RealTestDescription&);
+    RealTestDescription& operator=(const RealTestDescription&);
 
     virtual void runTest() = 0;
 
     SuiteDescription* _suite;
-    unsigned _line;
-    const char* _testName;
+    unsigned          _line;
+    const char*       _testName;
   };
 
-  class RealSuiteDescription : public SuiteDescription {
+  class RealSuiteDescription: public SuiteDescription {
     public:
     RealSuiteDescription();
-    RealSuiteDescription( const char* argFile,
-                          unsigned argLine,
-                          const char* argSuiteName,
-                          List& argTests );
+    RealSuiteDescription(const char* argFile,
+                         unsigned    argLine,
+                         const char* argSuiteName,
+                         List&       argTests);
 
-    void initialize( const char* argFile,
-                     unsigned argLine,
-                     const char* argSuiteName,
-                     List& argTests );
+    void
+        initialize(const char* argFile, unsigned argLine, const char* argSuiteName, List& argTests);
 
     const char* file() const;
-    unsigned line() const;
+    unsigned    line() const;
     const char* suiteName() const;
 
-    TestDescription* firstTest();
-    const TestDescription* firstTest() const;
-    SuiteDescription* next();
+    TestDescription*        firstTest();
+    const TestDescription*  firstTest() const;
+    SuiteDescription*       next();
     const SuiteDescription* next() const;
 
-    unsigned numTests() const;
-    const TestDescription& testDescription( unsigned i ) const;
+    unsigned               numTests() const;
+    const TestDescription& testDescription(unsigned i) const;
 
     void activateAllTests();
-    bool leaveOnly( const char* testName );
+    bool leaveOnly(const char* testName);
 
     private:
-    RealSuiteDescription( const RealSuiteDescription& );
-    RealSuiteDescription& operator=( const RealSuiteDescription& );
+    RealSuiteDescription(const RealSuiteDescription&);
+    RealSuiteDescription& operator=(const RealSuiteDescription&);
 
     const char* _file;
-    unsigned _line;
+    unsigned    _line;
     const char* _suiteName;
-    List* _tests;
+    List*       _tests;
 
     static List _suites;
     friend class RealWorldDescription;
   };
 
-  class StaticSuiteDescription : public RealSuiteDescription {
+  class StaticSuiteDescription: public RealSuiteDescription {
     public:
     StaticSuiteDescription();
-    StaticSuiteDescription( const char* argFile,
-                            unsigned argLine,
-                            const char* argSuiteName,
-                            TestSuite& argSuite,
-                            List& argTests );
+    StaticSuiteDescription(const char* argFile,
+                           unsigned    argLine,
+                           const char* argSuiteName,
+                           TestSuite&  argSuite,
+                           List&       argTests);
 
-    void initialize( const char* argFile,
-                     unsigned argLine,
-                     const char* argSuiteName,
-                     TestSuite& argSuite,
-                     List& argTests );
+    void       initialize(const char* argFile,
+                          unsigned    argLine,
+                          const char* argSuiteName,
+                          TestSuite&  argSuite,
+                          List&       argTests);
     TestSuite* suite() const;
 
     bool setUp();
     bool tearDown();
 
     private:
-    StaticSuiteDescription( const StaticSuiteDescription& );
-    StaticSuiteDescription& operator=( const StaticSuiteDescription& );
+    StaticSuiteDescription(const StaticSuiteDescription&);
+    StaticSuiteDescription& operator=(const StaticSuiteDescription&);
 
-    void doInitialize( TestSuite& argSuite );
+    void doInitialize(TestSuite& argSuite);
 
     TestSuite* _suite;
   };
 
-  class CommonDynamicSuiteDescription : public RealSuiteDescription {
+  class CommonDynamicSuiteDescription: public RealSuiteDescription {
     public:
     CommonDynamicSuiteDescription();
-    CommonDynamicSuiteDescription( const char* argFile,
-                                   unsigned argLine,
-                                   const char* argSuiteName,
-                                   List& argTests,
-                                   unsigned argCreateLine,
-                                   unsigned argDestroyLine );
+    CommonDynamicSuiteDescription(const char* argFile,
+                                  unsigned    argLine,
+                                  const char* argSuiteName,
+                                  List&       argTests,
+                                  unsigned    argCreateLine,
+                                  unsigned    argDestroyLine);
 
-    void initialize( const char* argFile,
-                     unsigned argLine,
-                     const char* argSuiteName,
-                     List& argTests,
-                     unsigned argCreateLine,
-                     unsigned argDestroyLine );
+    void initialize(const char* argFile,
+                    unsigned    argLine,
+                    const char* argSuiteName,
+                    List&       argTests,
+                    unsigned    argCreateLine,
+                    unsigned    argDestroyLine);
 
     protected:
     unsigned _createLine, _destroyLine;
 
     private:
-    void doInitialize( unsigned argCreateLine, unsigned argDestroyLine );
+    void doInitialize(unsigned argCreateLine, unsigned argDestroyLine);
   };
 
-  template <class S>
-  class DynamicSuiteDescription : public CommonDynamicSuiteDescription {
+  template < class S >
+  class DynamicSuiteDescription: public CommonDynamicSuiteDescription {
     public:
     DynamicSuiteDescription() {}
-    DynamicSuiteDescription( const char* argFile,
-                             unsigned argLine,
-                             const char* argSuiteName,
-                             List& argTests,
-                             S*& argSuite,
-                             unsigned argCreateLine,
-                             unsigned argDestroyLine )
-        : CommonDynamicSuiteDescription( argFile,
-                                         argLine,
-                                         argSuiteName,
-                                         argTests,
-                                         argCreateLine,
-                                         argDestroyLine ) {
+
+    DynamicSuiteDescription(const char* argFile,
+                            unsigned    argLine,
+                            const char* argSuiteName,
+                            List&       argTests,
+                            S*&         argSuite,
+                            unsigned    argCreateLine,
+                            unsigned    argDestroyLine) :
+        CommonDynamicSuiteDescription(argFile,
+                                      argLine,
+                                      argSuiteName,
+                                      argTests,
+                                      argCreateLine,
+                                      argDestroyLine) {
       _suite = &argSuite;
     }
 
-    void initialize( const char* argFile,
-                     unsigned argLine,
-                     const char* argSuiteName,
-                     List& argTests,
-                     S*& argSuite,
-                     unsigned argCreateLine,
-                     unsigned argDestroyLine ) {
-      CommonDynamicSuiteDescription::initialize( argFile,
-                                                 argLine,
-                                                 argSuiteName,
-                                                 argTests,
-                                                 argCreateLine,
-                                                 argDestroyLine );
+    void initialize(const char* argFile,
+                    unsigned    argLine,
+                    const char* argSuiteName,
+                    List&       argTests,
+                    S*&         argSuite,
+                    unsigned    argCreateLine,
+                    unsigned    argDestroyLine) {
+      CommonDynamicSuiteDescription::initialize(argFile,
+                                                argLine,
+                                                argSuiteName,
+                                                argTests,
+                                                argCreateLine,
+                                                argDestroyLine);
       _suite = &argSuite;
     }
 
@@ -183,64 +182,64 @@ namespace CxxTest {
 
     private:
     S* realSuite() const { return *_suite; }
-    void setSuite( S* s ) { *_suite = s; }
 
-    void createSuite() { setSuite( S::createSuite() ); }
+    void setSuite(S* s) { *_suite = s; }
+
+    void createSuite() { setSuite(S::createSuite()); }
 
     void destroySuite() {
       S* s = realSuite();
-      setSuite( 0 );
-      S::destroySuite( s );
+      setSuite(0);
+      S::destroySuite(s);
     }
 
     S** _suite;
   };
 
-  template <class S>
-  bool DynamicSuiteDescription<S>::setUp() {
+  template < class S >
+  bool DynamicSuiteDescription< S >::setUp() {
     _TS_TRY {
-      _TSM_ASSERT_THROWS_NOTHING( file(),
-                                  _createLine,
-                                  "Exception thrown from createSuite()",
-                                  createSuite() );
-      _TSM_ASSERT( file(), _createLine, "createSuite() failed", suite() != 0 );
+      _TSM_ASSERT_THROWS_NOTHING(file(),
+                                 _createLine,
+                                 "Exception thrown from createSuite()",
+                                 createSuite());
+      _TSM_ASSERT(file(), _createLine, "createSuite() failed", suite() != 0);
     }
-    _TS_CATCH_ABORT( { return false; } );
+    _TS_CATCH_ABORT({ return false; });
 
-    return ( suite() != 0 );
+    return (suite() != 0);
   }
 
-  template <class S>
-  bool DynamicSuiteDescription<S>::tearDown() {
-    if ( !_suite ) return true;
+  template < class S >
+  bool DynamicSuiteDescription< S >::tearDown() {
+    if (!_suite) return true;
 
     _TS_TRY {
-      _TSM_ASSERT_THROWS_NOTHING(
-          file(), _destroyLine, "destroySuite() failed", destroySuite() );
+      _TSM_ASSERT_THROWS_NOTHING(file(), _destroyLine, "destroySuite() failed", destroySuite());
     }
-    _TS_CATCH_ABORT( { return false; } );
+    _TS_CATCH_ABORT({ return false; });
 
     return true;
   }
 
-  class RealWorldDescription : public WorldDescription {
+  class RealWorldDescription: public WorldDescription {
     public:
-    static List& suites();
-    unsigned numSuites( void ) const;
-    unsigned numTotalTests( void ) const;
-    SuiteDescription* firstSuite();
+    static List&            suites();
+    unsigned                numSuites(void) const;
+    unsigned                numTotalTests(void) const;
+    SuiteDescription*       firstSuite();
     const SuiteDescription* firstSuite() const;
-    const SuiteDescription& suiteDescription( unsigned i ) const;
-    void activateAllTests();
-    bool leaveOnly( const char* suiteName, const char* testName = 0 );
+    const SuiteDescription& suiteDescription(unsigned i) const;
+    void                    activateAllTests();
+    bool                    leaveOnly(const char* suiteName, const char* testName = 0);
 
-    bool setUp();
-    bool tearDown();
-    static void reportError( const char* message );
+    bool        setUp();
+    bool        tearDown();
+    static void reportError(const char* message);
   };
 
   void activateAllTests();
-  bool leaveOnly( const char* suiteName, const char* testName = 0 );
-}
+  bool leaveOnly(const char* suiteName, const char* testName = 0);
+}   // namespace CxxTest
 
-#endif  //  __cxxtest__RealDescriptions_h__
+#endif   //  __cxxtest__RealDescriptions_h__

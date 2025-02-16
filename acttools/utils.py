@@ -1,7 +1,12 @@
 ############################################################################
 #   This file is part of the aGrUM/pyAgrum library.                        #
 #                                                                          #
-#   Copyright (c) 2005-2024 by                                             #
+#   Copyright (c) 2005-2025 by                                             #
+#       - Pierre-Henri WUILLEMIN(_at_LIP6)                                 #
+#       - Christophe GONZALES(_at_AMU)                                     #
+#   This file is part of the aGrUM/pyAgrum library.                        #
+#                                                                          #
+#   Copyright (c) 2005-2025 by                                             #
 #       - Pierre-Henri WUILLEMIN(_at_LIP6)                                 #
 #       - Christophe GONZALES(_at_AMU)                                     #
 #                                                                          #
@@ -150,3 +155,8 @@ def srcAgrum() -> Iterator[str]:
         yield i
     for i in recglob("src/testunits", "*TestSuite.h"):
         yield i
+
+def srcSwigAgrum() -> Iterator[str]:
+    for i in recglob("wrappers/", "*.i"):
+        yield i
+

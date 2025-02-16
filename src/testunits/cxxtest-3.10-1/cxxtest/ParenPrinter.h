@@ -1,5 +1,5 @@
-#ifndef  __cxxtest__ParenPrinter_h__
-#define  __cxxtest__ParenPrinter_h__
+#ifndef __cxxtest__ParenPrinter_h__
+#define __cxxtest__ParenPrinter_h__
 
 //
 // The ParenPrinter is identical to the ErrorPrinter, except it
@@ -10,11 +10,10 @@
 #include <cxxtest/ErrorPrinter.h>
 
 namespace CxxTest {
-  class ParenPrinter : public ErrorPrinter {
+  class ParenPrinter: public ErrorPrinter {
     public:
-    ParenPrinter( CXXTEST_STD( ostream )& o = CXXTEST_STD( cerr ) )
-        : ErrorPrinter( o, "(", ")" ) {}
+    ParenPrinter(CXXTEST_STD(ostream) & o = CXXTEST_STD(cerr)) : ErrorPrinter(o, "(", ")") {}
   };
-}
+}   // namespace CxxTest
 
-#endif  //  __cxxtest__ParenPrinter_h__
+#endif   //  __cxxtest__ParenPrinter_h__

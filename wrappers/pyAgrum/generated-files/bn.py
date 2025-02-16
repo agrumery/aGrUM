@@ -16385,7 +16385,7 @@ class BNLearner(object):
 # Register BNLearner in _bn:
 _bn.BNLearner_swigregister(BNLearner)
 
-__version__ = '1.17.2.9'
+__version__ = '1.99.9.9'
 __license__ = __doc__
 __project_url__ = 'https://agrum.org'
 __project_name__ = 'pyAgrum'

@@ -1,13 +1,13 @@
 #ifndef GUM_ACTIVE_TEST_LEARNING_ALLOC_H
-#define GUM_ACTIVE_TEST_LEARNING_ALLOC_H
+#  define GUM_ACTIVE_TEST_LEARNING_ALLOC_H
 
-#include <vector>
-#include <utility>
-#include <new>
-#include <memory>
-#include <string>
-#include <iostream>
-#include <sstream>
+#  include <iostream>
+#  include <memory>
+#  include <new>
+#  include <sstream>
+#  include <string>
+#  include <utility>
+#  include <vector>
 
 namespace gum_tests {
 
@@ -63,10 +63,8 @@ namespace gum_tests {
       std::stringstream str;
       str << "allocator " << _mempool_ << " = { ";
       for (auto index: _allocations_) {
-        if (deja)
-          str << ", ";
-        else
-          deja = true;
+        if (deja) str << ", ";
+        else deja = true;
         str << (_mempool_ + index);
       }
       str << " }";
@@ -86,7 +84,6 @@ namespace gum_tests {
     // the set of allocation performed as a set sorted of [begin,end)
     std::vector< std::size_t > _allocations_;
   };
-
 
   template < typename T >
   class LearningAlloc {
@@ -129,7 +126,6 @@ namespace gum_tests {
       return !operator==(other);
     }
 
-
     T* allocate(std::size_t num) {
       return reinterpret_cast< T* >(_mempool_->allocate(num * sizeof(T)));
     }
@@ -157,3 +153,41 @@ namespace gum_tests {
 } /* namespace gum_tests */
 
 #endif /* GUM_ACTIVE_TEST_LEARNING_ALLOC_H */
+/****************************************************************************
+ *   This file is part of the aGrUM/pyAgrum library.                        *
+ *                                                                          *
+ *   Copyright (c) 2005-2025 by                                             *
+ *       - Pierre-Henri WUILLEMIN(_at_LIP6)                                 *
+ *       - Christophe GONZALES(_at_AMU)                                     *
+ *   This file is part of the aGrUM/pyAgrum library.                        *
+ *                                                                          *
+ *   Copyright (c) 2005-2025 by                                             *
+ *       - Pierre-Henri WUILLEMIN(_at_LIP6)                                 *
+ *       - Christophe GONZALES(_at_AMU)                                     *
+ *                                                                          *
+ *   The aGrUM/pyAgrum library is free software; you can redistribute it    *
+ *   and/or modify it under the terms of either :                           *
+ *                                                                          *
+ *    - the GNU Lesser General Public License as published by               *
+ *      the Free Software Foundation, either version 3 of the License,      *
+ *      or (at your option) any later version.                              *
+ *    - the MIT license (MIT)                                               *
+ *    - or both in dual license, as here                                    *
+ *                                                                          *
+ *   This aGrUM/pyAgrum library is distributed in the hope that it will be  *
+ *   useful, but WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED,          *
+ *   INCLUDING BUT NOT LIMITED TO THE WARRANTIES MERCHANTABILITY or FITNESS *
+ *   FOR A PARTICULAR PURPOSE  AND NONINFRINGEMENT. IN NO EVENT SHALL THE   *
+ *   AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER *
+ *   LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE,        *
+ *   ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR  *
+ *   OTHER DEALINGS IN THE SOFTWARE.                                        *
+ *                                                                          *
+ *   See the GNU Lesser General Public License (LICENSE.LGPL) and the MIT   *
+ *   licence (LICENSE.MIT) for more details.                                *
+ *                                                                          *
+ *   Contact  : info_at_agrum_dot_org                                       *
+ *   homepage : http://agrum.gitlab.io                                      *
+ *   gitlab   : https://gitlab.com/agrumery/agrum                           *
+ *                                                                          *
+ ****************************************************************************/

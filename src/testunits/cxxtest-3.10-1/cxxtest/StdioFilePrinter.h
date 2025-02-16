@@ -1,5 +1,5 @@
-#ifndef  __cxxtest__StdioFilePrinter_h__
-#define  __cxxtest__StdioFilePrinter_h__
+#ifndef __cxxtest__StdioFilePrinter_h__
+#define __cxxtest__StdioFilePrinter_h__
 
 //
 // The StdioFilePrinter is a simple TestListener that
@@ -8,42 +8,43 @@
 // This class uses <stdio.h>, i.e. FILE * and fprintf().
 //
 
-#include <cxxtest/ErrorFormatter.h>
 #include <stdio.h>
 
+#include <cxxtest/ErrorFormatter.h>
+
 namespace CxxTest {
-  class StdioFilePrinter : public ErrorFormatter {
+  class StdioFilePrinter: public ErrorFormatter {
     public:
-    StdioFilePrinter( FILE* o,
-                      const char* preLine = ":",
-                      const char* postLine = "" )
-        : ErrorFormatter( new Adapter( o ), preLine, postLine ) {}
+    StdioFilePrinter(FILE* o, const char* preLine = ":", const char* postLine = "") :
+        ErrorFormatter(new Adapter(o), preLine, postLine) {}
+
     virtual ~StdioFilePrinter() { delete outputStream(); }
 
     private:
-    class Adapter : public OutputStream {
-      Adapter( const Adapter& );
-      Adapter& operator=( const Adapter& );
+    class Adapter: public OutputStream {
+      Adapter(const Adapter&);
+      Adapter& operator=(const Adapter&);
 
       FILE* _o;
 
       public:
-      Adapter( FILE* o )
-          : _o( o ) {}
-      void flush() { fflush( _o ); }
-      OutputStream& operator<<( unsigned i ) {
-        fprintf( _o, "%u", i );
+      Adapter(FILE* o) : _o(o) {}
+
+      void flush() { fflush(_o); }
+
+      OutputStream& operator<<(unsigned i) {
+        fprintf(_o, "%u", i);
         return *this;
       }
-      OutputStream& operator<<( const char* s ) {
-        fputs( s, _o );
+
+      OutputStream& operator<<(const char* s) {
+        fputs(s, _o);
         return *this;
       }
-      OutputStream& operator<<( Manipulator m ) {
-        return OutputStream::operator<<( m );
-      }
+
+      OutputStream& operator<<(Manipulator m) { return OutputStream::operator<<(m); }
     };
   };
-}
+}   // namespace CxxTest
 
-#endif  //  __cxxtest__StdioFilePrinter_h__
+#endif   //  __cxxtest__StdioFilePrinter_h__

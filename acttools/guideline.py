@@ -1,7 +1,12 @@
 ############################################################################
 #   This file is part of the aGrUM/pyAgrum library.                        #
 #                                                                          #
-#   Copyright (c) 2005-2024 by                                             #
+#   Copyright (c) 2005-2025 by                                             #
+#       - Pierre-Henri WUILLEMIN(_at_LIP6)                                 #
+#       - Christophe GONZALES(_at_AMU)                                     #
+#   This file is part of the aGrUM/pyAgrum library.                        #
+#                                                                          #
+#   Copyright (c) 2005-2025 by                                             #
 #       - Pierre-Henri WUILLEMIN(_at_LIP6)                                 #
 #       - Christophe GONZALES(_at_AMU)                                     #
 #                                                                          #
@@ -37,7 +42,7 @@ from datetime import datetime
 
 from subprocess import call
 
-from .utils import notif, error, recglob, srcAgrum, srcPyAgrum, notif_oneline
+from .utils import notif, error, recglob, srcAgrum, srcSwigAgrum, srcPyAgrum, srcSwigAgrum, notif_oneline
 from .configuration import cfg
 
 from .missingDocs import missingDocs
@@ -123,7 +128,10 @@ def _LGPL_MIT_atTop_CPP(filename: str, correction: bool) -> int:
                 continue
 
             if state == "before":
-                if not line.startswith("/**"):
+                if line.startswith("%feature"):
+                    state = "after"
+                    code += line
+                elif not line.startswith("/**"):
                     if not in_error:
                         in_error = True
                         notif(f"[{filename}] lines before the license.")
@@ -218,6 +226,11 @@ def _checkLGPL_MIT_license_CPP(correction: bool) -> int:
             notif(f"skip header test for [{gum_file}]")
             continue
         nbrError += _LGPL_MIT_atTop_CPP(gum_file, correction)
+    for gum_file in srcSwigAgrum():
+        if any(subs in gum_file for subs in exceptions):
+            notif(f"skip header test for [{gum_file}]")
+            continue
+        nbrError += _LGPL_MIT_atTop_CPP(gum_file, correction)
 
     return nbrError
 
@@ -278,6 +291,11 @@ def getTemplateLicense() -> tuple[str, str]:
     current_year = datetime.now().year
 
     template_license = f"""
+  This file is part of the aGrUM/pyAgrum library.
+
+  Copyright (c) 2005-{current_year} by
+      - Pierre-Henri WUILLEMIN(_at_LIP6)
+      - Christophe GONZALES(_at_AMU)
   This file is part of the aGrUM/pyAgrum library.
 
   Copyright (c) 2005-{current_year} by
