@@ -1,8 +1,45 @@
+/****************************************************************************
+ *   This file is part of the aGrUM/pyAgrum library.                        *
+ *                                                                          *
+ *   Copyright (c) 2005-2025 by                                             *
+ *       - Pierre-Henri WUILLEMIN(_at_LIP6)                                 *
+ *       - Christophe GONZALES(_at_AMU)                                     *
+ *   This file is part of the aGrUM/pyAgrum library.                        *
+ *                                                                          *
+ *   Copyright (c) 2005-2025 by                                             *
+ *       - Pierre-Henri WUILLEMIN(_at_LIP6)                                 *
+ *       - Christophe GONZALES(_at_AMU)                                     *
+ *                                                                          *
+ *   The aGrUM/pyAgrum library is free software; you can redistribute it    *
+ *   and/or modify it under the terms of either :                           *
+ *                                                                          *
+ *    - the GNU Lesser General Public License as published by               *
+ *      the Free Software Foundation, either version 3 of the License,      *
+ *      or (at your option) any later version.                              *
+ *    - the MIT license (MIT)                                               *
+ *    - or both in dual license, as here                                    *
+ *                                                                          *
+ *   This aGrUM/pyAgrum library is distributed in the hope that it will be  *
+ *   useful, but WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED,          *
+ *   INCLUDING BUT NOT LIMITED TO THE WARRANTIES MERCHANTABILITY or FITNESS *
+ *   FOR A PARTICULAR PURPOSE  AND NONINFRINGEMENT. IN NO EVENT SHALL THE   *
+ *   AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER *
+ *   LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE,        *
+ *   ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR  *
+ *   OTHER DEALINGS IN THE SOFTWARE.                                        *
+ *                                                                          *
+ *   See the GNU Lesser General Public License (LICENSE.LGPL) and the MIT   *
+ *   licence (LICENSE.MIT) for more details.                                *
+ *                                                                          *
+ *   Contact  : info_at_agrum_dot_org                                       *
+ *   homepage : http://agrum.gitlab.io                                      *
+ *   gitlab   : https://gitlab.com/agrumery/agrum                           *
+ *                                                                          *
+ ****************************************************************************/
+
 /***************************************************************************
  *  aGrUM modified frames and atg files for cocoR
- *   Copyright (c) 2005-2024 by Pierre-Henri WUILLEMIN(@LIP6) and Christophe GONZALES(@AMU)
- *   info_at_agrum_dot_org
-***************************************************************************/
+ ***************************************************************************/
 /*----------------------------------------------------------------------
 Compiler Generator Coco/R,
 Copyright (c) 1990, 2004 Hanspeter Moessenboeck, University of Linz
@@ -33,101 +70,95 @@ Coco/R itself) does not fall under the GNU General Public License.
 
 
 #if !defined(gum_formula_COCO_PARSER_H__)
-#define gum_formula_COCO_PARSER_H__
+#  define gum_formula_COCO_PARSER_H__
 
-#include <algorithm>
-#include <fstream>
-#include <list>
-#include <memory>
-#include <sstream>
-#include <stack>
-#include <string>
-#include <vector>
+#  include <algorithm>
+#  include <fstream>
+#  include <iostream>
+#  include <list>
+#  include <memory>
+#  include <sstream>
+#  include <stack>
+#  include <string>
+#  include <vector>
 
-#include <agrum/base/core/math/math_utils.h>
-#include <agrum/base/core/utils_dir.h>
-#include <agrum/base/core/math/formula.h>
+#  include <agrum/base/core/math/formula.h>
 
-#include <iostream>
-#include <string>
-#include <fstream>
-#include "Scanner.h"
+#  include "Scanner.h"
+
+#  include <agrum/base/core/math/math_utils.h>
+#  include <agrum/base/core/utils_dir.h>
 
 namespace gum {
-namespace formula {
+  namespace formula {
 
 
-class Parser {
-  private:
-    	enum {
-		_EOF=0,
-		_integer=1,
-		_float=2,
-		_scifloat=3,
-		_operator=4,
-		_eol=5,
-		_ident=6
-	};
-	int maxT;
+    class Parser {
+      private:
+      enum {
+        _EOF      = 0,
+        _integer  = 1,
+        _float    = 2,
+        _scifloat = 3,
+        _operator = 4,
+        _eol      = 5,
+        _ident    = 6
+      };
 
-    Token* dummyToken;
-    int errDist;
-    int minErrDist;
+      int maxT;
 
-    void SynErr( int n );
-    void Get();
-    void Expect( int n );
-    bool StartOf( int s );
-    void ExpectWeak( int n, int follow );
-    bool WeakSeparator( int n, int syFol, int repFol );
+      Token* dummyToken;
+      int    errDist;
+      int    minErrDist;
 
-    ErrorsContainer  errors__;
+      void SynErr(int n);
+      void Get();
+      void Expect(int n);
+      bool StartOf(int s);
+      void ExpectWeak(int n, int follow);
+      bool WeakSeparator(int n, int syFol, int repFol);
 
-  public:
-    Scanner* scanner;
+      ErrorsContainer errors__;
 
-    Token* t;     // last recognized token
-    Token* la;      // lookahead token
+      public:
+      Scanner* scanner;
 
-    private:
-  gum::Formula* _formula_;
+      Token* t;    // last recognized token
+      Token* la;   // lookahead token
 
-public:
-  void formula( gum::Formula* f ) {
-    _formula_ = f;
-  }
+      private:
+      gum::Formula* _formula_;
 
-  gum::Formula& formula() {
-    return *_formula_;
-  }
+      public:
+      void formula(gum::Formula* f) { _formula_ = f; }
 
-  const gum::Formula& formula() const {
-    return *_formula_;
-  }
+      gum::Formula& formula() { return *_formula_; }
 
-// =============================================================================
-//                              SCANNER RULES
-// =============================================================================
+      const gum::Formula& formula() const { return *_formula_; }
 
-//________________________
+      // =============================================================================
+      //                              SCANNER RULES
+      // =============================================================================
 
-    Parser( Scanner* scanner );
-    ~Parser();
-    void SemErr( const wchar_t* msg );
-    void SynErr( const std::wstring& filename,int line, int col, int n );
-    void Warning( const wchar_t* msg );
-    const ErrorsContainer& errors() const;
-    ErrorsContainer& errors();
+      //________________________
 
-    	void EVAL();
-	void expression();
+      Parser(Scanner* scanner);
+      ~Parser();
+      void                   SemErr(const wchar_t* msg);
+      void                   SynErr(const std::wstring& filename, int line, int col, int n);
+      void                   Warning(const wchar_t* msg);
+      const ErrorsContainer& errors() const;
+      ErrorsContainer&       errors();
 
-    void Parse();
+      void EVAL();
+      void expression();
 
-}; // end Parser
+      void Parse();
 
-} // namespace
-} // namespace
+    };   // end Parser
+
+  }   // namespace formula
+}   // namespace gum
 
 
-#endif // !defined(COCO_PARSER_H__)
+#endif   // !defined(COCO_PARSER_H__)
