@@ -344,9 +344,9 @@ namespace gum {
 
       const O3Position& O3Type::position() const { return _pos_; }
 
-      bool& O3Type::deprecated() { return _dep_flag_; }
+      bool& O3Type::o3prm_deprecated() { return _dep_flag_; }
 
-      const bool& O3Type::deprecated() const { return _dep_flag_; }
+      const bool& O3Type::o3prm_deprecated() const { return _dep_flag_; }
 
       O3IntType::O3IntType() : _dep_flag_(false) {
         GUM_CONSTRUCTOR(O3IntType);
@@ -407,9 +407,9 @@ namespace gum {
 
       const O3Position& O3IntType::position() const { return _pos_; }
 
-      bool& O3IntType::deprecated() { return _dep_flag_; }
+      bool& O3IntType::o3prm_deprecated() { return _dep_flag_; }
 
-      const bool& O3IntType::deprecated() const { return _dep_flag_; }
+      const bool& O3IntType::o3prm_deprecated() const { return _dep_flag_; }
 
       O3RealType::O3RealType() : _dep_flag_(false) {
         GUM_CONSTRUCTOR(O3RealType);
@@ -464,9 +464,9 @@ namespace gum {
 
       const std::vector< O3Float >& O3RealType::values() const { return _values_; }
 
-      bool& O3RealType::deprecated() { return _dep_flag_; }
+      bool& O3RealType::o3prm_deprecated() { return _dep_flag_; }
 
-      const bool& O3RealType::deprecated() const { return _dep_flag_; }
+      const bool& O3RealType::o3prm_deprecated() const { return _dep_flag_; }
 
       O3PRM::O3PRM() {
         GUM_CONSTRUCTOR(O3PRM);

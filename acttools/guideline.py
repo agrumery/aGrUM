@@ -42,7 +42,7 @@ from datetime import datetime
 
 from subprocess import call
 
-from .utils import notif, error, recglob, srcAgrum, srcSwigAgrum, srcPyAgrum, srcSwigAgrum, notif_oneline
+from .utils import notif, error, recglob, srcAgrum, srcPyAgrum, srcGeneratorAgrum, notif_oneline
 from .configuration import cfg
 
 from .missingDocs import missingDocs
@@ -226,7 +226,7 @@ def _checkLGPL_MIT_license_CPP(correction: bool) -> int:
             notif(f"skip header test for [{gum_file}]")
             continue
         nbrError += _LGPL_MIT_atTop_CPP(gum_file, correction)
-    for gum_file in srcSwigAgrum():
+    for gum_file in srcGeneratorAgrum():
         if any(subs in gum_file for subs in exceptions):
             notif(f"skip header test for [{gum_file}]")
             continue

@@ -152,55 +152,6 @@ namespace gum {
      */
     const Potential< GUM_SCALAR >& noising(GUM_SCALAR alpha) const;
 
-    /** deprecated marginalizing methods */
-    [[deprecated(
-        "Deprecated since aGrUM 1.14.0. Please use sumOut instead")]] inline Potential< GUM_SCALAR >
-        margSumOut(const gum::VariableSet& del_vars) const {
-      return sumOut(del_vars);
-    };
-
-    [[deprecated(
-        "Deprecated since aGrUM 1.14.0. Please use sumIn instead")]] inline Potential< GUM_SCALAR >
-        margSumIn(const gum::VariableSet& kept_vars) const {
-      return sumIn(kept_vars);
-    };
-
-    [[deprecated("Deprecated since aGrUM 1.14.0. Please use prodOut instead")]] inline Potential<
-        GUM_SCALAR >
-        margProdOut(const gum::VariableSet& del_vars) const {
-      return prodOut(del_vars);
-    };
-
-    [[deprecated(
-        "Deprecated since aGrUM 1.14.0. Please use prodIn instead")]] inline Potential< GUM_SCALAR >
-        margProdIn(const gum::VariableSet& kept_vars) const {
-      return prodIn(kept_vars);
-    };
-
-    [[deprecated(
-        "Deprecated since aGrUM 1.14.0. Please use minOut instead")]] inline Potential< GUM_SCALAR >
-        margMinOut(const gum::VariableSet& del_vars) const {
-      return minOut(del_vars);
-    };
-
-    [[deprecated(
-        "Deprecated since aGrUM 1.14.0. Please use minIn instead")]] inline Potential< GUM_SCALAR >
-        margMinIn(const gum::VariableSet& kept_vars) const {
-      return minIn(kept_vars);
-    };
-
-    [[deprecated(
-        "Deprecated since aGrUM 1.14.0. Please use sumOut instead")]] inline Potential< GUM_SCALAR >
-        margMaxOut(const gum::VariableSet& del_vars) const {
-      return maxOut(del_vars);
-    };
-
-    [[deprecated(
-        "Deprecated since aGrUM 1.14.0. Please use sumIn instead")]] inline Potential< GUM_SCALAR >
-        margMaxIn(const gum::VariableSet& kept_vars) const {
-      return maxIn(kept_vars);
-    };
-
     /**
      * Projection using sum as operation (and implementation-optimized
      * operations)

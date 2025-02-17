@@ -533,9 +533,9 @@ TYPE_DECLARATION =
     (. auto t = O3Type(); .)
     (. t.name() = name; t.position() = pos; .)
     (
-      DISCRETE_TYPE_DECLARATION<t.deprecated(), t.labels()>
+      DISCRETE_TYPE_DECLARATION<t.o3prm_deprecated(), t.labels()>
     |
-      EXTENDED_TYPE_DECLARATION<t.deprecated(), t.superLabel(), t.labels()>
+      EXTENDED_TYPE_DECLARATION<t.o3prm_deprecated(), t.superLabel(), t.labels()>
     )
     (. if ( _ok_( n ) ) { _addO3Type_( std::move(t) ); } .)
   |
@@ -598,7 +598,7 @@ REAL_TYPE_DECLARATION<O3FloatList& values> =
 DEPRECATED_INT_DECLARATION =
   (. auto n = errors().error_count; .)
   (. auto t = O3IntType(); .)
-  (. t.deprecated() = true; .)
+  (. t.o3prm_deprecated() = true; .)
   INT<t.position()> '(' INTEGER<t.start()> ',' INTEGER<t.end()> ')' LABEL<t.name()> ';'
   (. if ( _ok_( n ) ) { _addO3IntType_( std::move( t ) ); } .)
   .
@@ -615,7 +615,7 @@ INT<O3Position& pos> =
 DEPRECATED_REAL_DECLARATION =
   (. auto n = errors().error_count; .)
   (. auto t= O3RealType(); .)
-  (. t.deprecated() = true; .)
+  (. t.o3prm_deprecated() = true; .)
   REAL<t.position()> '(' FLOAT_LIST<t.values()> ')' LABEL<t.name()> ';'
   (. if ( _ok_( n ) ) { _addO3RealType_( std::move( t ) ); } .)
   .

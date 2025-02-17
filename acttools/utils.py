@@ -156,7 +156,9 @@ def srcAgrum() -> Iterator[str]:
     for i in recglob("src/testunits", "*TestSuite.h"):
         yield i
 
-def srcSwigAgrum() -> Iterator[str]:
+
+def srcGeneratorAgrum() -> Iterator[str]:
     for i in recglob("wrappers/", "*.i"):
         yield i
-
+    for i in recglob("src/", "*.atg"):
+        yield i

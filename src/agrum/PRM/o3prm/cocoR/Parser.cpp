@@ -578,9 +578,9 @@ void Parser::TYPE_DECLARATION() {
 			auto t = O3Type(); 
 			t.name() = name; t.position() = pos; 
 			if (StartOf(5)) {
-				DISCRETE_TYPE_DECLARATION(t.deprecated(), t.labels());
+				DISCRETE_TYPE_DECLARATION(t.o3prm_deprecated(), t.labels());
 			} else {
-				EXTENDED_TYPE_DECLARATION(t.deprecated(), t.superLabel(), t.labels());
+				EXTENDED_TYPE_DECLARATION(t.o3prm_deprecated(), t.superLabel(), t.labels());
 			}
 			if ( _ok_( n ) ) { _addO3Type_( std::move(t) ); } 
 		} else if (la->kind == _int) {
@@ -600,7 +600,7 @@ void Parser::TYPE_DECLARATION() {
 void Parser::DEPRECATED_INT_DECLARATION() {
 		auto n = errors().error_count; 
 		auto t = O3IntType(); 
-		t.deprecated() = true; 
+		t.o3prm_deprecated() = true; 
 		INT(t.position());
 		Expect(26 /* "(" */);
 		INTEGER(t.start());
@@ -615,7 +615,7 @@ void Parser::DEPRECATED_INT_DECLARATION() {
 void Parser::DEPRECATED_REAL_DECLARATION() {
 		auto n = errors().error_count; 
 		auto t= O3RealType(); 
-		t.deprecated() = true; 
+		t.o3prm_deprecated() = true; 
 		REAL(t.position());
 		Expect(26 /* "(" */);
 		FLOAT_LIST(t.values());

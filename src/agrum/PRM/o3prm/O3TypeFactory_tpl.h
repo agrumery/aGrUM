@@ -150,15 +150,15 @@ namespace gum {
       template < typename GUM_SCALAR >
       INLINE void O3TypeFactory< GUM_SCALAR >::_checkDepreactedO3Types_() {
         for (auto& t: _o3_prm_->types()) {
-          if (t->deprecated()) { O3PRM_DEPRECATED_TYPE_WARNING(t->name(), *_errors_); }
+          if (t->o3prm_deprecated()) { O3PRM_DEPRECATED_TYPE_WARNING(t->name(), *_errors_); }
         }
 
         for (auto& t: _o3_prm_->int_types()) {
-          if (t->deprecated()) { O3PRM_DEPRECATED_TYPE_WARNING(t->name(), *_errors_); }
+          if (t->o3prm_deprecated()) { O3PRM_DEPRECATED_TYPE_WARNING(t->name(), *_errors_); }
         }
 
         for (auto& t: _o3_prm_->real_types()) {
-          if (t->deprecated()) { O3PRM_DEPRECATED_TYPE_WARNING(t->name(), *_errors_); }
+          if (t->o3prm_deprecated()) { O3PRM_DEPRECATED_TYPE_WARNING(t->name(), *_errors_); }
         }
       }
 
