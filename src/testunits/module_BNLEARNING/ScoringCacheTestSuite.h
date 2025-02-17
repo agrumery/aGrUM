@@ -43,7 +43,7 @@
 #include <gumtest/AgrumTestSuite.h>
 #include <gumtest/utils.h>
 
-#include <agrum/BN/learning/scores_and_tests/scoringCache.h>
+#include <agrum/base/stattests/scoringCache.h>
 
 namespace gum_tests {
 

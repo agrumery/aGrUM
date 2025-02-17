@@ -172,7 +172,7 @@ namespace gum {
 
 // include the inlined functions if necessary
 #ifndef GUM_NO_INLINE
-#  include <agrum/BN/learning/scores_and_tests/scoringCache_inl.h>
+#  include <agrum/base/stattests/scoringCache_inl.h>
 #endif /* GUM_NO_INLINE */
 
 #endif /* GUM_LEARNING_SCORING_CACHE_H */
