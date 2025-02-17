@@ -118,7 +118,7 @@ class TestCtbnTrajectory(pyAgrumTestCase):
     # check number of transitions
     time, count = traj.computeStats("A", [])
     count = count.normalize()
-    count = count.margSumOut(ct.CIM.varJ("A"))
+    count = count.sumOut(ct.CIM.varJ("A"))
     I = gum.Instantiation(count)
     I.setFirst()
     while not I.end():
@@ -157,8 +157,8 @@ class TestCtbnTrajectory(pyAgrumTestCase):
     traj = ct.Trajectory(self.agrumSrcDir('trajectory_traj_3.csv'))
 
     time, count = traj.computeStats("rain?", ["cloudy?"])
-    timeCloudy = time.margSumIn(["cloudy?"])
-    timeRain = time.margSumIn([ct.CIM.varI("rain?")])
+    timeCloudy = time.sumIn(["cloudy?"])
+    timeRain = time.sumIn([ct.CIM.varI("rain?")])
 
     # check bayes probability : the probability of raining if it is not cloudy should be low
     #                           the probability of cloudy weather should be high if it's raining

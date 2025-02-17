@@ -1013,9 +1013,3 @@ class Discretizer():
     for name in Xp:
       template.add(self._createVariable(name, Xp[name], yp, possibleValuesY))
     return template
-
-  def discretizedBN(self, X, y=None, *, possibleValuesY=None, template=None):
-    warnings.warn("""
-  ** Discretizer.discretizedBN is deprecated since pyAgrum>1.15.0. Please use Discretizer.discretizeTemplate instead.
-  """, DeprecationWarning, stacklevel=2)
-    return self.discretizedTemplate(X, y=y, possibleValuesY=possibleValuesY, template=template)

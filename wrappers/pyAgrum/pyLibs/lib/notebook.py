@@ -749,14 +749,6 @@ def showApproximationScheme(apsc, scale=np.log10):
     plt.plot(scale(apsc.history()), 'g')
 
 
-def showMN(*args, **kwargs):
-  warnings.warn(""""
-** pyAgrum.lib.notebook.showMN is obsolete in pyAgrum>1.5.2. Please use showMRF()
-""", DeprecationWarning, stacklevel=2)
-  showMRF(*args, **kwargs)
-
-
-@gum.deprecated_arg("cmapNode", "cmap", "1.8.1")
 def showMRF(mrf, view=None, size=None, nodeColor=None, factorColor=None, edgeWidth=None, edgeColor=None, cmapNode=None,
             cmapEdge=None
             ):
@@ -929,14 +921,7 @@ def showCN(cn, size=None, nodeColor=None, arcWidth=None, arcLabel=None, arcColor
            cmapArc=cmapArc), size)
 
 
-def getMN(*args, **kwargs):
-  warnings.warn(""""
-** pyAgrum.lib.notebook.getMN is obsolete in pyAgrum>1.5.2. Please use getMRF()
-""", DeprecationWarning, stacklevel=2)
-  showMRF(*args, **kwargs)
 
-
-@gum.deprecated_arg("cmapNode", "cmap", "1.8.1")
 def getMRF(mrf, view=None, size=None, nodeColor=None, factorColor=None, edgeWidth=None, edgeColor=None, cmapNode=None,
            cmapEdge=None):
   """

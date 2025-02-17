@@ -1,3 +1,42 @@
+/****************************************************************************
+ *   This file is part of the aGrUM/pyAgrum library.                        *
+ *                                                                          *
+ *   Copyright (c) 2005-2025 by                                             *
+ *       - Pierre-Henri WUILLEMIN(_at_LIP6)                                 *
+ *       - Christophe GONZALES(_at_AMU)                                     *
+ *   This file is part of the aGrUM/pyAgrum library.                        *
+ *                                                                          *
+ *   Copyright (c) 2005-2025 by                                             *
+ *       - Pierre-Henri WUILLEMIN(_at_LIP6)                                 *
+ *       - Christophe GONZALES(_at_AMU)                                     *
+ *                                                                          *
+ *   The aGrUM/pyAgrum library is free software; you can redistribute it    *
+ *   and/or modify it under the terms of either :                           *
+ *                                                                          *
+ *    - the GNU Lesser General Public License as published by               *
+ *      the Free Software Foundation, either version 3 of the License,      *
+ *      or (at your option) any later version.                              *
+ *    - the MIT license (MIT)                                               *
+ *    - or both in dual license, as here                                    *
+ *                                                                          *
+ *   This aGrUM/pyAgrum library is distributed in the hope that it will be  *
+ *   useful, but WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED,          *
+ *   INCLUDING BUT NOT LIMITED TO THE WARRANTIES MERCHANTABILITY or FITNESS *
+ *   FOR A PARTICULAR PURPOSE  AND NONINFRINGEMENT. IN NO EVENT SHALL THE   *
+ *   AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER *
+ *   LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE,        *
+ *   ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR  *
+ *   OTHER DEALINGS IN THE SOFTWARE.                                        *
+ *                                                                          *
+ *   See the GNU Lesser General Public License (LICENSE.LGPL) and the MIT   *
+ *   licence (LICENSE.MIT) for more details.                                *
+ *                                                                          *
+ *   Contact  : info_at_agrum_dot_org                                       *
+ *   homepage : http://agrum.gitlab.io                                      *
+ *   gitlab   : https://gitlab.com/agrumery/agrum                           *
+ *                                                                          *
+ ****************************************************************************/
+
 %pythoncode %{
 import warnings
 
@@ -47,7 +86,7 @@ def log2(p):
   """
   return Potential(p).log2()
 
-    
+
 def fastGraph(msg:str):
   """
   Create a graph with a dot-like syntax which specifies the structure 'a->b->c;b-d<-e;' where a,b,c,d,e,.. are unsigned int
@@ -127,178 +166,4 @@ def fastGraph(msg:str):
       t=addArcsIn(m,l)
 
   return m
-
-########################################################################################################
-def deprecatedMargSumOut(self, V):
-  warnings.warn("""
-** pyAgrum.Potential.margSumOut() is deprecated since pyAgrum>1.14.0. Please use pyAgrum.Potential.sumOut() instead.
-""", DeprecationWarning, stacklevel=2)
-  return self.sumOut(V)
-
-
-def deprecatedMargSumIn(self, V):
-  warnings.warn("""
-** pyAgrum.Potential.margSumIn() is deprecated since pyAgrum>1.14.0. Please use pyAgrum.Potential.sumIn() instead.
-""", DeprecationWarning, stacklevel=2)
-  return self.sumIn(V)
-
-
-def deprecatedMargProdOut(self, V):
-  warnings.warn("""
-** pyAgrum.Potential.margProdOut() is deprecated since pyAgrum>1.14.0. Please use pyAgrum.Potential.prodOut() instead.
-""", DeprecationWarning, stacklevel=2)
-  return self.prodOut(V)
-
-
-def deprecatedMargProdIn(self, V):
-  warnings.warn("""
-** pyAgrum.Potential.margProdIn() is deprecated since pyAgrum>1.14.0. Please use pyAgrum.Potential.prodIn() instead.
-""", DeprecationWarning, stacklevel=2)
-  return self.prodIn(V)
-
-
-def deprecatedMargMinOut(self, V):
-  warnings.warn("""
-** pyAgrum.Potential.margMinOut() is deprecated since pyAgrum>1.14.0. Please use pyAgrum.Potential.minOut() instead.
-""", DeprecationWarning, stacklevel=2)
-  return self.minOut(V)
-
-
-def deprecatedMargMinIn(self, V):
-  warnings.warn("""
-** pyAgrum.Potential.margMinIn() is deprecated since pyAgrum>1.14.0. Please use pyAgrum.Potential.minIn() instead.
-""", DeprecationWarning, stacklevel=2)
-  return self.minIn(V)
-
-
-def deprecatedMargMaxOut(self, V):
-  warnings.warn("""
-** pyAgrum.Potential.margMaxOut() is deprecated since pyAgrum>1.14.0. Please use pyAgrum.Potential.maxOut() instead.
-""", DeprecationWarning, stacklevel=2)
-  return self.maxOut(V)
-
-
-def deprecatedMargMaxIn(self, V):
-  warnings.warn("""
-** pyAgrum.Potential.margMaxIn() is deprecated since pyAgrum>1.14.0. Please use pyAgrum.Potential.maxIn() instead.
-""", DeprecationWarning, stacklevel=2)
-  return self.maxIn(V)
-
-
-Potential.margSumOut = deprecatedMargSumOut
-Potential.margSumIn = deprecatedMargSumIn
-Potential.margProdOut = deprecatedMargProdOut
-Potential.margProdIn = deprecatedMargProdIn
-Potential.margMinOut = deprecatedMargMinOut
-Potential.margMinIn = deprecatedMargMinIn
-Potential.margMaxOut = deprecatedMargMaxOut
-Potential.margMaxIn = deprecatedMargMaxIn
-
-########################################################################################################
-def deprecated_toLabelizedVar(var):
-  """
-  Deprecated method in gum.DiscreteVariable for pyAgrum>1.5.2
-  """
-  warnings.warn("""
-** pyAgrum.DiscreteVariable.toLabelizedVar() is deprecated since pyAgrum>1.5.2. Please use pyAgrum.DiscreteVariable.asLabelizedVar() method instead.
-""", DeprecationWarning, stacklevel=2)
-  return var.asLabelizedVar()
-
-
-DiscreteVariable.toLabelizedVar = deprecated_toLabelizedVar
-
-
-########################################################################################################
-def deprecated_toRangeVar(var):
-  """
-  Deprecated method in gum.DiscreteVariable for pyAgrum>1.5.2
-  """
-  warnings.warn("""
-** pyAgrum.DiscreteVariable.toRangeVar() is deprecated since pyAgrum>1.5.2. Please use pyAgrum.DiscreteVariable.asRangeVar() method instead.
-""", DeprecationWarning, stacklevel=2)
-  return var.asRangeVar()
-
-
-DiscreteVariable.toRangeVar = deprecated_toRangeVar
-
-
-########################################################################################################
-def deprecated_toIntegerVar(var):
-  """
-  Deprecated method in gum.DiscreteVariable for pyAgrum>1.5.2
-  """
-  warnings.warn("""
-** pyAgrum.DiscreteVariable.toIntegerVar() is deprecated since pyAgrum>1.5.2. Please use pyAgrum.DiscreteVariable.asIntegerVar() method instead.
-""", DeprecationWarning, stacklevel=2)
-  return var.asIntegerVar()
-
-
-DiscreteVariable.toIntegerVar = deprecated_toIntegerVar
-
-
-########################################################################################################
-def deprecated_toNumericalDiscreteVar(var):
-  """
-  Deprecated method in gum.DiscreteVariable for pyAgrum>1.5.2
-  """
-  warnings.warn("""
-** pyAgrum.DiscreteVariable.toNumericalDiscreteVar() is deprecated since pyAgrum>1.5.2. Please use pyAgrum.DiscreteVariable.asNumericalDiscreteVar() method instead.
-""", DeprecationWarning, stacklevel=2)
-  return var.asNumericalDiscreteVar()
-
-
-DiscreteVariable.toNumericalDiscreteVar = deprecated_toNumericalDiscreteVar
-
-
-########################################################################################################
-def deprecated_toDiscretizedVar(var):
-  """
-  Deprecated method in gum.DiscreteVariable for pyAgrum>1.5.2
-  """
-  warnings.warn("""
-** pyAgrum.DiscreteVariable.toDiscretizedVar() is deprecated since pyAgrum>1.5.2. Please use pyAgrum.DiscreteVariable.asDiscretizedVar() methods instead.
-""", DeprecationWarning, stacklevel=2)
-  return var.asDiscretizedVar()
-
-
-DiscreteVariable.toDiscretizedVar = deprecated_toDiscretizedVar
 %}
-/****************************************************************************
- *   This file is part of the aGrUM/pyAgrum library.                        *
- *                                                                          *
- *   Copyright (c) 2005-2025 by                                             *
- *       - Pierre-Henri WUILLEMIN(_at_LIP6)                                 *
- *       - Christophe GONZALES(_at_AMU)                                     *
- *   This file is part of the aGrUM/pyAgrum library.                        *
- *                                                                          *
- *   Copyright (c) 2005-2025 by                                             *
- *       - Pierre-Henri WUILLEMIN(_at_LIP6)                                 *
- *       - Christophe GONZALES(_at_AMU)                                     *
- *                                                                          *
- *   The aGrUM/pyAgrum library is free software; you can redistribute it    *
- *   and/or modify it under the terms of either :                           *
- *                                                                          *
- *    - the GNU Lesser General Public License as published by               *
- *      the Free Software Foundation, either version 3 of the License,      *
- *      or (at your option) any later version.                              *
- *    - the MIT license (MIT)                                               *
- *    - or both in dual license, as here                                    *
- *                                                                          *
- *   This aGrUM/pyAgrum library is distributed in the hope that it will be  *
- *   useful, but WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED,          *
- *   INCLUDING BUT NOT LIMITED TO THE WARRANTIES MERCHANTABILITY or FITNESS *
- *   FOR A PARTICULAR PURPOSE  AND NONINFRINGEMENT. IN NO EVENT SHALL THE   *
- *   AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER *
- *   LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE,        *
- *   ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR  *
- *   OTHER DEALINGS IN THE SOFTWARE.                                        *
- *                                                                          *
- *   See the GNU Lesser General Public License (LICENSE.LGPL) and the MIT   *
- *   licence (LICENSE.MIT) for more details.                                *
- *                                                                          *
- *   Contact  : info_at_agrum_dot_org                                       *
- *   homepage : http://agrum.gitlab.io                                      *
- *   gitlab   : https://gitlab.com/agrumery/agrum                           *
- *                                                                          *
- ****************************************************************************/
-

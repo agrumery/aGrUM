@@ -22,7 +22,7 @@ without even the implied warranty of
 // #autopep8: off
 
 // This file is part of swig code, include by pyAgrum.i and should not be used directly.
-// It is not a python file but includes only python code. This is why it is a * .py file.
+// THIS IS NOT a python file but includes only python code. This is why it is named * .py.
 
 %pythoncode %{
 

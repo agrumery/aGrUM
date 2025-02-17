@@ -8092,52 +8092,6 @@ class Potential(object):
         i.inc()
       return
 
-
-    def fillWithFunction(self,s,noise=None):
-      """
-      Automatically fills the potential as a (quasi) deterministic CPT with the evaluation of the expression s.
-
-      The expression s gives a value for the first variable using the names of the last variables.
-      The computed CPT is deterministic unless noise is used to add a 'probabilistic' noise around the exact value given by the expression.
-
-
-      Examples
-      --------
-      >>> import pyAgrum as gum
-      >>> bn=pyAgrum.fastBN("A[3]->B[3]<-C[3]")
-      >>> bn.cpt("B").fillWithFunction("(A+C)/2")
-
-      Parameters
-      ----------
-      s : str
-          an expression using the name of the last variables of the Potential and giving a value to the first variable of the Potential
-
-      Warning
-      -------
-          The expression may have any numerical values, but will be then transformed to the closest correct value for the range of the variable.
-
-      Note
-      ----
-          Deprecated. Please use pyAgrum.Potential.fillFromFunction instead.
-
-      Returns
-      -------
-      pyAgrum.Potential
-            a reference to the modified potential
-
-      Raises
-      ------
-        pyAgrum.InvalidArgument
-          If the first variable is Labelized or Integer, or if the len of the noise is not odd.
-      """
-
-      import warnings
-      warnings.warn("""
-        ** pyAgrum.fillWithFunction is deprecated from pyAgrum>1.12.1. Please use pyAgrum.fillFromFunction instead (Noise is not used anymore).
-      """, DeprecationWarning, stacklevel=2)
-      return self.fillFromFunction(s)
-
-
     def fillFromExpression(self,s_fn):
       """
       Automatically fills the potential with the evaluation of the expression s_fn (no matter if is a CPT or not).
@@ -8250,9 +8204,10 @@ class Potential(object):
 
       Examples
       --------
+      >>> import scipy.stats as stats
       >>> import pyAgrum as gum
-      >>> bn=pyAgrum.fastBN('A[3]->B[3]<-C[3]')
-      >>> bn.cpt('B').fillFromFunction('(A+C)/2')
+      >>> bn=pyAgrum.fastBN('A[10]->B[10]<-C[10]')
+      >>> bn.cpt("B").fillFromDistribution(stats.norm,loc="(A+C)/2",scale=1)
 
       Parameters
       ----------
@@ -8929,140 +8884,5 @@ def fastGraph(msg:str):
       t=addArcsIn(m,l)
 
   return m
-
-########################################################################################################
-def deprecatedMargSumOut(self, V):
-  warnings.warn("""
-** pyAgrum.Potential.margSumOut() is deprecated since pyAgrum>1.14.0. Please use pyAgrum.Potential.sumOut() instead.
-""", DeprecationWarning, stacklevel=2)
-  return self.sumOut(V)
-
-
-def deprecatedMargSumIn(self, V):
-  warnings.warn("""
-** pyAgrum.Potential.margSumIn() is deprecated since pyAgrum>1.14.0. Please use pyAgrum.Potential.sumIn() instead.
-""", DeprecationWarning, stacklevel=2)
-  return self.sumIn(V)
-
-
-def deprecatedMargProdOut(self, V):
-  warnings.warn("""
-** pyAgrum.Potential.margProdOut() is deprecated since pyAgrum>1.14.0. Please use pyAgrum.Potential.prodOut() instead.
-""", DeprecationWarning, stacklevel=2)
-  return self.prodOut(V)
-
-
-def deprecatedMargProdIn(self, V):
-  warnings.warn("""
-** pyAgrum.Potential.margProdIn() is deprecated since pyAgrum>1.14.0. Please use pyAgrum.Potential.prodIn() instead.
-""", DeprecationWarning, stacklevel=2)
-  return self.prodIn(V)
-
-
-def deprecatedMargMinOut(self, V):
-  warnings.warn("""
-** pyAgrum.Potential.margMinOut() is deprecated since pyAgrum>1.14.0. Please use pyAgrum.Potential.minOut() instead.
-""", DeprecationWarning, stacklevel=2)
-  return self.minOut(V)
-
-
-def deprecatedMargMinIn(self, V):
-  warnings.warn("""
-** pyAgrum.Potential.margMinIn() is deprecated since pyAgrum>1.14.0. Please use pyAgrum.Potential.minIn() instead.
-""", DeprecationWarning, stacklevel=2)
-  return self.minIn(V)
-
-
-def deprecatedMargMaxOut(self, V):
-  warnings.warn("""
-** pyAgrum.Potential.margMaxOut() is deprecated since pyAgrum>1.14.0. Please use pyAgrum.Potential.maxOut() instead.
-""", DeprecationWarning, stacklevel=2)
-  return self.maxOut(V)
-
-
-def deprecatedMargMaxIn(self, V):
-  warnings.warn("""
-** pyAgrum.Potential.margMaxIn() is deprecated since pyAgrum>1.14.0. Please use pyAgrum.Potential.maxIn() instead.
-""", DeprecationWarning, stacklevel=2)
-  return self.maxIn(V)
-
-
-Potential.margSumOut = deprecatedMargSumOut
-Potential.margSumIn = deprecatedMargSumIn
-Potential.margProdOut = deprecatedMargProdOut
-Potential.margProdIn = deprecatedMargProdIn
-Potential.margMinOut = deprecatedMargMinOut
-Potential.margMinIn = deprecatedMargMinIn
-Potential.margMaxOut = deprecatedMargMaxOut
-Potential.margMaxIn = deprecatedMargMaxIn
-
-########################################################################################################
-def deprecated_toLabelizedVar(var):
-  """
-  Deprecated method in pyAgrum.DiscreteVariable for pyAgrum>1.5.2
-  """
-  warnings.warn("""
-** pyAgrum.DiscreteVariable.toLabelizedVar() is deprecated since pyAgrum>1.5.2. Please use pyAgrum.DiscreteVariable.asLabelizedVar() method instead.
-""", DeprecationWarning, stacklevel=2)
-  return var.asLabelizedVar()
-
-
-DiscreteVariable.toLabelizedVar = deprecated_toLabelizedVar
-
-
-########################################################################################################
-def deprecated_toRangeVar(var):
-  """
-  Deprecated method in pyAgrum.DiscreteVariable for pyAgrum>1.5.2
-  """
-  warnings.warn("""
-** pyAgrum.DiscreteVariable.toRangeVar() is deprecated since pyAgrum>1.5.2. Please use pyAgrum.DiscreteVariable.asRangeVar() method instead.
-""", DeprecationWarning, stacklevel=2)
-  return var.asRangeVar()
-
-
-DiscreteVariable.toRangeVar = deprecated_toRangeVar
-
-
-########################################################################################################
-def deprecated_toIntegerVar(var):
-  """
-  Deprecated method in pyAgrum.DiscreteVariable for pyAgrum>1.5.2
-  """
-  warnings.warn("""
-** pyAgrum.DiscreteVariable.toIntegerVar() is deprecated since pyAgrum>1.5.2. Please use pyAgrum.DiscreteVariable.asIntegerVar() method instead.
-""", DeprecationWarning, stacklevel=2)
-  return var.asIntegerVar()
-
-
-DiscreteVariable.toIntegerVar = deprecated_toIntegerVar
-
-
-########################################################################################################
-def deprecated_toNumericalDiscreteVar(var):
-  """
-  Deprecated method in pyAgrum.DiscreteVariable for pyAgrum>1.5.2
-  """
-  warnings.warn("""
-** pyAgrum.DiscreteVariable.toNumericalDiscreteVar() is deprecated since pyAgrum>1.5.2. Please use pyAgrum.DiscreteVariable.asNumericalDiscreteVar() method instead.
-""", DeprecationWarning, stacklevel=2)
-  return var.asNumericalDiscreteVar()
-
-
-DiscreteVariable.toNumericalDiscreteVar = deprecated_toNumericalDiscreteVar
-
-
-########################################################################################################
-def deprecated_toDiscretizedVar(var):
-  """
-  Deprecated method in pyAgrum.DiscreteVariable for pyAgrum>1.5.2
-  """
-  warnings.warn("""
-** pyAgrum.DiscreteVariable.toDiscretizedVar() is deprecated since pyAgrum>1.5.2. Please use pyAgrum.DiscreteVariable.asDiscretizedVar() methods instead.
-""", DeprecationWarning, stacklevel=2)
-  return var.asDiscretizedVar()
-
-
-DiscreteVariable.toDiscretizedVar = deprecated_toDiscretizedVar
 
 

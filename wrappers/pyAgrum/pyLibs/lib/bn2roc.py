@@ -83,7 +83,6 @@ def _lines_count(filename):
   return numlines
 
 
-@gum.deprecated_arg(newA="datasrc", oldA="csvname", version="1.8.3")
 def _checkCompatibility(bn, fields, datasrc):
   """
   check if variables of the bn are in the fields
@@ -145,7 +144,6 @@ def _computeFbeta(points, ind, beta=1):
   return (1 + beta ** 2) * points[ind][1] * points[ind][0] / ((beta ** 2 * points[ind][1]) + points[ind][0])
 
 
-@gum.deprecated_arg(newA="datasrc", oldA="csvname", version="1.8.3")
 def _computePoints(bn, datasrc, target, label, *, beta=1, show_progress=True, with_labels=True, significant_digits=10):
   """
   Compute the ROC points.
@@ -307,7 +305,6 @@ def _computeROC_PR(values, totalP, totalN, beta):
           thresholds)
 
 
-@gum.deprecated_arg(newA="datasrc", oldA="csvname", version="1.8.3")
 def getROCpoints(bn, datasrc, target, label, with_labels=True, significant_digits=10):
   """
   Compute the points of the ROC curve
@@ -360,7 +357,6 @@ def getROCpoints(bn, datasrc, target, label, with_labels=True, significant_digit
   return pointsROC
 
 
-@gum.deprecated_arg(newA="datasrc", oldA="csvname", version="1.8.3")
 def getPRpoints(bn, datasrc, target, label, with_labels=True, significant_digits=10):
   """
   Compute the points of the PR curve
@@ -547,7 +543,6 @@ def _drawPR(points, zeTitle, fbeta_PR, beta, AUC_PR, thresholds, thresholds_to_s
   ax.set_title(zeTitle)
 
 
-@gum.deprecated_arg(newA="datasrc", oldA="csvname", version="1.8.3")
 def showROC_PR(bn, datasrc, target, label, *, beta=1, show_progress=True, show_fig=True, save_fig=False,
                with_labels=True, show_ROC=True, show_PR=True, significant_digits=10, bgcolor=None):
   """
@@ -665,7 +660,6 @@ def showROC_PR(bn, datasrc, target, label, *, beta=1, show_progress=True, show_f
   return AUC_ROC, thresholdROC, AUC_PR, thresholdPR
 
 
-@gum.deprecated_arg(newA="datasrc", oldA="csvname", version="1.8.3")
 def showROC(bn, datasrc, target, label, show_progress=True, show_fig=True, save_fig=False, with_labels=True,
             significant_digits=10):
   """
@@ -697,7 +691,6 @@ def showROC(bn, datasrc, target, label, show_progress=True, show_fig=True, save_
                     with_labels=with_labels, show_ROC=True, show_PR=False, significant_digits=significant_digits)
 
 
-@gum.deprecated_arg(newA="datasrc", oldA="csvname", version="1.8.3")
 def showPR(bn, datasrc, target, label, *, beta=1, show_progress=True, show_fig=True, save_fig=False,
            with_labels=True, significant_digits=10):
   """
@@ -725,7 +718,7 @@ def showPR(bn, datasrc, target, label, *, beta=1, show_progress=True, show_fig=T
     number of significant digits when computing probabilities
   """
 
-  return showROC_PR(bn, datasrc, target, label, show_progress=show_progress, show_fig=show_fig, save_fig=save_fig,
+  return showROC_PR(bn, datasrc, target, label, beta=beta, show_progress=show_progress, show_fig=show_fig, save_fig=save_fig,
                     with_labels=with_labels, show_ROC=False, show_PR=True, significant_digits=significant_digits)
 
 

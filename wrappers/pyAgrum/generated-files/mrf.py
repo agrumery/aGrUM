@@ -1935,12 +1935,6 @@ def availableMNExts():
   return "uai|pkl"
 
 
-def loadMN(filename, listeners=None, verbose=False):
-  warnings.warn("""
-** loadMN() is deprecated since pyAgrum>1.7.2. Please use loadMRF() methods instead.
-""", DeprecationWarning, stacklevel=2)
-  return loadMRF(filename,listeners,verbose)
-
 def loadMRF(filename, listeners=None, verbose=False):
   """load a MRF from a file with optional listeners and arguments
 
@@ -2008,12 +2002,6 @@ def loadMRF(filename, listeners=None, verbose=False):
   return mn
 
 
-def saveMN(mn, filename):
-  warnings.warn("""
-** saveMN() is deprecated since pyAgrum>1.7.2. Please use saveMRF() methods instead.
-""", DeprecationWarning, stacklevel=2)
-  return saveMRF(mn,filename)
-
 def saveMRF(mn, filename):
   """
   save a MRF into a file using the format corresponding to one of the availableWriteMNExts() suffixes.
@@ -2035,13 +2023,6 @@ def saveMRF(mn, filename):
       pickle.dump(mn, f, pickle.HIGHEST_PROTOCOL)
   else:
     raise InvalidArgument("extension " + filename.split('.')[-1] + " unknown. Please use among " + availableMNExts())
-
-
-def fastMN(structure, domain="[2]"):
-  warnings.warn("""
-** fastMN() is deprecated since pyAgrum>1.7.2. Please use fastMRF() methods instead.
-""", DeprecationWarning, stacklevel=2)
-  return fastMRF(structure, domain)
 
 def fastMRF(structure, domain="[2]"):
   """
@@ -2105,44 +2086,5 @@ def getPosterior(model, *, target, evs=None):
   inf.makeInference()
 # creating a new Potential from posterior(will disappear with ie)
   return pyAgrum.base.Potential(inf.posterior(target))
-
-########################################################################################################
-def MarkovNet(*args, **kwargs):
-  """
-  Deprecated class. Use pyAgrum.MarkovRandomField instead.
-  """
-  warnings.warn("""
-** pyAgrum.MarkovNet is deprecated in pyAgrum>1.5.2.
-** A pyAgrum.MarkovRandomField has been created.
-""", DeprecationWarning, stacklevel=2)
-  return MarkovRandomField(*args, **kwargs)
-
-########################################################################################################
-def ShaferShenoyMNInference(mrf):
-  """
-  Deprecated class. Use pyAgrum.ShaferShenoyMRFInference instead.
-  """
-  warnings.warn("""
-** pyAgrum.ShaferShenoyMNInference is deprecated in pyAgrum>1.5.2.
-** A pyAgrum.ShaferShenoyMRFInference has been created.
-""", DeprecationWarning, stacklevel=2)
-  return ShaferShenoyMRFInference(mrf)
-
-########################################################################################################
-def deprecated_MN(mrfie):
-  """
-  Deprecated method in pyAgrum.ShaferShenoyMRFInference for pyAgrum>1.5.2
-  """
-  warnings.warn("""
-** pyAgrum.ShaferShenoyMRFInference.MN() is deprecated since pyAgrum>1.5.2. Please use pyAgrum.ShaferShenoyMRFInference.MRF() methods instead.
-""", DeprecationWarning, stacklevel=2)
-  return mrfie.MRF()
-
-ShaferShenoyMRFInference.MN = deprecated_MN
-
-########################################################################################################
-ShaferShenoyMRFInference.H = pyAgrum.bn.deprecatedH
-ShaferShenoyMRFInference.VI = pyAgrum.bn.deprecatedVI
-ShaferShenoyMRFInference.I = pyAgrum.bn.deprecatedI
 
 

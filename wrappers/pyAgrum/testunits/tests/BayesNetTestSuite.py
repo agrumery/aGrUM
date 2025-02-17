@@ -244,7 +244,7 @@ class TestFeatures(BayesNetTestCase):
     res = bn.loadBIF(self.agrumSrcDir('alarm.bif'))
 
     self.assertEqual(str(bn.variable(0)), "HISTORY:Labelized({TRUE|FALSE})")
-    bn.variable(0).toLabelizedVar().changeLabel(0, "toto")
+    bn.variable(0).asLabelizedVar().changeLabel(0, "toto")
     self.assertNotEqual(str(bn.variable(0)), "HISTORY:Labelized({toto|FALSE})")
     bn.changeVariableLabel(0, "TRUE", "toto")
     self.assertEqual(str(bn.variable(0)), "HISTORY:Labelized({toto|FALSE})")

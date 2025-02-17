@@ -216,12 +216,12 @@ class TestCausalModel(pyAgrumTestCase):
 
     # just check math function inside formula
     with self.assertRaises(NameError):
-      edex.cpt("experience").fillWithFunction("10-4*education+cos(Ux)")
-    edex.cpt("experience").fillWithFunction("10-4*education+math.cos(Ux)")
+      edex.cpt("experience").fillFromFunction("10-4*education+cos(Ux)")
+    edex.cpt("experience").fillFromFunction("10-4*education+math.cos(Ux)")
 
     # back to the original function
-    edex.cpt("experience").fillWithFunction("10-4*education+Ux")
-    edex.cpt("salary").fillWithFunction("round(65+2.5*experience+5*education+Us)")
+    edex.cpt("experience").fillFromFunction("10-4*education+Ux")
+    edex.cpt("salary").fillFromFunction("round(65+2.5*experience+5*education+Us)")
 
     pot = csl.counterfactual(cm=csl.CausalModel(edex),
                              profile={'experience': 8, 'education': 'low', 'salary': '86'},

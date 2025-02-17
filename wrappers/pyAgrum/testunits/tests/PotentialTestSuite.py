@@ -816,11 +816,11 @@ class TestOperators(pyAgrumTestCase):
     with self.assertRaises(gum.InvalidArgument):
       ppp.fillWith(p, ["w", "v"])
 
-  def testFillWithFunction(self):
+  def testfillFromFunction(self):
     bn = gum.fastBN(
       "C[0,1,2,3,4,5,6,7,8]<-A[0,3]->B{0|1|2|3|4|5|6|7|8|12};A->D[9]")
 
-    bn.cpt("D").fillWithFunction("3*A+2")
+    bn.cpt("D").fillFromFunction("3*A+2")
 
     I = gum.Instantiation(bn.cpt("D"))
     while not I.end():
@@ -830,9 +830,7 @@ class TestOperators(pyAgrumTestCase):
       self.assertEqual(bn.cpt("D").get(I), 1 if I.val(0) == v else 0)
       I.inc()
 
-    bn.cpt("B").fillWithFunction("3*A+2", noise=[2, 1])
-
-    bn.cpt("B").fillWithFunction("3*A+2")
+    bn.cpt("B").fillFromFunction("3*A+2")
 
   def __test_val_for_set(self, p, val, soi, nbr):
     self.assertEqual(len(soi), nbr)

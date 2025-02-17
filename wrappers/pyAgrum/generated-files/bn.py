@@ -16803,56 +16803,6 @@ def mutilateBN(bn, intervention=None, observation=None):
 
   return (inter_bn, evidence)
 
-########################################################################################################
-def deprecated_learnMixedGraph(learner):
-  """
-  Deprecated methods in BNLearner for pyAgrum>1.5.2
-  """
-  warnings.warn("""
-** pyAgrum.BNLearner.learnMixedGraph() is deprecated since pyAgrum>1.5.2. Please use learnPDAG() methods instead.
-""", DeprecationWarning, stacklevel=2)
-  return learner.learnPDAG()
 
-
-BNLearner.learnMixedGraph = deprecated_learnMixedGraph
-
-########################################################################################################
-def deprecatedVI(self, X, Y):
-  """
-  Deprecated VI in LazyPropagation/ShaferShenoyMRFInference
-  """
-  warnings.warn("""
-** pyAgrum.{inference}.VI() is deprecated since pyAgrum>1.7.1. Please use class pyAgrum.InformationTheory instead.
-""", DeprecationWarning, stacklevel=2)
-  it = InformationTheory(self, X, Y)
-  return it.variationOfInformationXY()
-
-LazyPropagation.VI = deprecatedVI
-
-########################################################################################################
-def deprecatedI(self, X, Y):
-  """
-  Deprecated I in LazyPropagation/ShaferShenoyMRFInference
-  """
-  warnings.warn("""
-** pyAgrum.{inference}.I() is deprecated since pyAgrum>1.7.1. Please use class pyAgrum.InformationTheory instead.
-""", DeprecationWarning, stacklevel=2)
-  it = InformationTheory(self, X, Y)
-  return it.mutualInformationXY()
-
-LazyPropagation.I = deprecatedI
-
-########################################################################################################
-def deprecatedH(self, X):
-  """
-  Deprecated I in LazyPropagation/ShaferShenoyMRFInference
-  """
-  warnings.warn("""
-** pyAgrum.{inference}.H() is deprecated since pyAgrum>1.7.1. Please use class pyAgrum.InformationTheory instead.
-""", DeprecationWarning, stacklevel=2)
-  it = InformationTheory(self, X, [])
-  return it.entropyX()
-
-LazyPropagation.H = deprecatedH
 
 

@@ -90,7 +90,7 @@ import sys
 
 try:
   from .mrf import getPosterior
-  from .mrf import availableMNExts, loadMN, saveMN
+  from .mrf import availableMNExts, loadMRF, saveMRF
   from .mrf import fastMRF
   from .mrf import MarkovRandomField, ShaferShenoyMRFInference
 except ImportError:

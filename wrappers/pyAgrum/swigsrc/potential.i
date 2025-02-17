@@ -100,15 +100,6 @@ if len(args)>1:
 %rename ("$ignore", fullname=1) gum::Potential<double>::argmin() const;
 %rename ("$ignore", fullname=1) gum::Potential<double>::argmax() const;
 
-%rename ("$ignore", fullname=1) gum::Potential<double>::margSumOut(const gum::VariableSet& del_vars) const;
-%rename ("$ignore", fullname=1) gum::Potential<double>::margSumIn(const gum::VariableSet& kept_vars) const;
-%rename ("$ignore", fullname=1) gum::Potential<double>::margProdOut(const gum::VariableSet& del_vars) const;
-%rename ("$ignore", fullname=1) gum::Potential<double>::margProdIn(const gum::VariableSet& kept_vars) const;
-%rename ("$ignore", fullname=1) gum::Potential<double>::margMinOut(const gum::VariableSet& del_vars) const;
-%rename ("$ignore", fullname=1) gum::Potential<double>::margMinIn(const gum::VariableSet& kept_vars) const;
-%rename ("$ignore", fullname=1) gum::Potential<double>::margMaxOut(const gum::VariableSet& del_vars) const;
-%rename ("$ignore", fullname=1) gum::Potential<double>::margMaxIn(const gum::VariableSet& kept_vars) const;
-
 %extend gum::Potential<double> {
   PyObject *expectedValue(PyObject* pyfunc) const {
     if (!PyCallable_Check(pyfunc)) { PyErr_SetString(PyExc_TypeError, "Need a callable object!"); }
@@ -270,52 +261,6 @@ if len(args)>1:
         i.inc()
       return
 
-
-    def fillWithFunction(self,s,noise=None):
-      """
-      Automatically fills the potential as a (quasi) deterministic CPT with the evaluation of the expression s.
-
-      The expression s gives a value for the first variable using the names of the last variables.
-      The computed CPT is deterministic unless noise is used to add a 'probabilistic' noise around the exact value given by the expression.
-
-
-      Examples
-      --------
-      >>> import pyAgrum as gum
-      >>> bn=gum.fastBN("A[3]->B[3]<-C[3]")
-      >>> bn.cpt("B").fillWithFunction("(A+C)/2")
-
-      Parameters
-      ----------
-      s : str
-          an expression using the name of the last variables of the Potential and giving a value to the first variable of the Potential
-
-      Warning
-      -------
-          The expression may have any numerical values, but will be then transformed to the closest correct value for the range of the variable.
-
-      Note
-      ----
-          Deprecated. Please use pyAgrum.Potential.fillFromFunction instead.
-
-      Returns
-      -------
-      pyAgrum.Potential
-            a reference to the modified potential
-
-      Raises
-      ------
-        pyAgrum.InvalidArgument
-          If the first variable is Labelized or Integer, or if the len of the noise is not odd.
-      """
-
-      import warnings
-      warnings.warn("""
-        ** pyAgrum.fillWithFunction is deprecated from pyAgrum>1.12.1. Please use pyAgrum.fillFromFunction instead (Noise is not used anymore).
-      """, DeprecationWarning, stacklevel=2)
-      return self.fillFromFunction(s)
-
-
     def fillFromExpression(self,s_fn):
       """
       Automatically fills the potential with the evaluation of the expression s_fn (no matter if is a CPT or not).
@@ -428,9 +373,10 @@ if len(args)>1:
 
       Examples
       --------
+      >>> import scipy.stats as stats
       >>> import pyAgrum as gum
-      >>> bn=gum.fastBN('A[3]->B[3]<-C[3]')
-      >>> bn.cpt('B').fillFromFunction('(A+C)/2')
+      >>> bn=gum.fastBN('A[10]->B[10]<-C[10]')
+      >>> bn.cpt("B").fillFromDistribution(stats.norm,loc="(A+C)/2",scale=1)
 
       Parameters
       ----------

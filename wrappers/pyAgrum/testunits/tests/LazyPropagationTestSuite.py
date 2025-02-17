@@ -101,9 +101,12 @@ class LazyPropagationTestCase(pyAgrumTestCase):
 
     with self.assertRaises(gum.InvalidArgument):
       ie.jointMutualInformation([0])
+    jmi01 = -ie.jointPosterior({0, 1}).entropy() + ie.posterior(0).entropy() + ie.posterior(1).entropy()
+    jmiAB = -ie.jointPosterior({"A", "B"}).entropy() + ie.posterior("A").entropy() + ie.posterior("B").entropy()
 
-    self.assertAlmostEqual(ie.I(0, 1), ie.jointMutualInformation([0, 1]))
-    self.assertAlmostEqual(ie.I("A", "B"), ie.jointMutualInformation(["A", "B"]))
+    ie = gum.LazyPropagation(bn)
+    self.assertAlmostEqual(jmi01, ie.jointMutualInformation([0, 1]))
+    self.assertAlmostEqual(jmiAB, ie.jointMutualInformation(["A", "B"]))
 
     ie = gum.LazyPropagation(bn)
     ie.addJointTarget({1, 4, 3})
