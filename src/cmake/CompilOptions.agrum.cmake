@@ -19,9 +19,15 @@ if (MSVC)
     set(CMAKE_C_FLAGS "/utf-8 /MP ${CMAKE_C_FLAGS}")
 endif ()
 
+if (MINGW OR CMAKE_BUILD_TYPE MATCHES "^(DEBUG|Debug|debug)$")
+    option(AGRUM_INLINE "inline code" OFF)
+else ()
+    option(AGRUM_INLINE "inline code" ON)
+endif ()
+
 if (CMAKE_BUILD_TYPE MATCHES "^(DEBUG|Debug|debug)$")
     message(STATUS "** aGrUM Notification : mode DEBUG")
-    set(CMAKE_CXX_FLAGS "-DGUM_DEBUG_MODE -DGUM_NO_INLINE ${CMAKE_CXX_FLAGS}")
+    set(CMAKE_CXX_FLAGS "-DGUM_DEBUG_MODE ${CMAKE_CXX_FLAGS}")
     if (CMAKE_CXX_COMPILER_ID MATCHES "GNU")
         set(CMAKE_EXE_LINKER_FLAGS " -ggdb ${CMAKE_EXE_LINKER_FLAGS}") # add -pg for profiling
         set(CMAKE_SHARED_LINKER_FLAGS " -ggdb ${CMAKE_SHARED_LINKER_FLAGS}") # add -pg for profiling

@@ -28,6 +28,12 @@ if (COCOR_EXECUTABLE)
 endif ()
 ####################################################################
 
+# o4DGContext.cpp:67:91: error: no matching function for call to 'log2(int)
+set_source_files_properties(agrum/base/multidim/utils/FunctionGraphUtilities/operators/o4DGContext.cpp PROPERTIES SKIP_UNITY_BUILD_INCLUSION ON)
+
+# warning: 'nanodbc::result::result_impl' has a field '{anonymous}::bound_column* nanodbc::result::result_impl::bound_columns_' whose type uses the anonymous namespace
+set_source_files_properties(agrum/base/external/nanodbc/nanodbc.cpp  PROPERTIES SKIP_UNITY_BUILD_INCLUSION ON)
+
 #collect all source files 
 buildFileListsWithModules()
 
@@ -47,6 +53,9 @@ if (MSVC)
 endif ()
 if (MINGW)
     target_compile_definitions(agrumBASE PUBLIC GUM_NO_EXTERN_TEMPLATE_CLASS)
+endif ()
+
+if (NOT AGRUM_INLINE)
     target_compile_definitions(agrumBASE PUBLIC GUM_NO_INLINE)
 endif ()
 
