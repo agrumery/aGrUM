@@ -25,5 +25,5 @@ the computations. Finally, the Bayesian networks can be learnt from data.
 
 * `Tutorials on Bayesian network <notebooks.html#tutorials-on-pyagrum>`_
 
-.. autoclass:: pyAgrum.bn.BayesNet
+.. autoclass:: pyAgrum.BayesNet
     :exclude-members: setProperty, property, propertyWithDefault

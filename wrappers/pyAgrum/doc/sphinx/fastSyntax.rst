@@ -35,8 +35,8 @@ These `fastPrototype` aGrUM's methods have also been wrapped in functions of pyA
   - If the dot-like string contains such a specification more than once for a variable, the first specification will be used.
   - the CPTs are randomly generated.
 
-.. autofunction:: pyAgrum.bn.fastBN
+.. autofunction:: pyAgrum.fastBN
 
-.. autofunction:: pyAgrum.mrf.fastMRF
+.. autofunction:: pyAgrum.fastMRF
 
-.. autofunction:: pyAgrum.id.fastID
+.. autofunction:: pyAgrum.fastID

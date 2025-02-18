@@ -12,12 +12,12 @@ Credal networks are probabilistic graphical models based on imprecise probabilit
 CN Model
 --------
 
-.. autoclass:: pyAgrum.cn.CredalNet
+.. autoclass:: pyAgrum.CredalNet
 
 CN Inference
 ------------
 
-.. autoclass:: pyAgrum.cn.CNMonteCarloSampling
+.. autoclass:: pyAgrum.CNMonteCarloSampling
 
-.. autoclass:: pyAgrum.cn.CNLoopyPropagation
+.. autoclass:: pyAgrum.CNLoopyPropagation
 			:exclude-members: asIApproximationSchemeConfiguration

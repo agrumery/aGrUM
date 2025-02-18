@@ -169,8 +169,6 @@
 ADD_METHODS_FOR_ALL_GUM_GRAPHCLASS(gum::DiGraph); // add for the sub-classes (including DAG, MixedGraph and pdag)
 ADD_METHODS_FOR_ALL_GUM_GRAPHCLASS(gum::UndiGraph);
 
-ADD_METHODS_FOR_ALL_GUM_GRAPHCLASS(gum::EssentialGraph);
-ADD_METHODS_FOR_ALL_GUM_GRAPHCLASS(gum::MarkovBlanket);
 
 %define ADD_METHOD_TO_GRAPH_ONLY_CLASS(classname)
 %ignore classname::addNodes(gum::Size n);

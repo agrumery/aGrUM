@@ -1,4 +1,4 @@
 Meek Rules Algorithm
 ^^^^^^^^^^^^^^^^^^^^
 
-.. autoclass:: pyAgrum.base.MeekRules
+.. autoclass:: pyAgrum.MeekRules

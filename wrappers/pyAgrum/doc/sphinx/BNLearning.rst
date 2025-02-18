@@ -14,5 +14,5 @@ BNLearner allows to choose :
 
 BNLearner is able to learn a Bayesian network from a database (a pandas.DataFrame) or from a csv file.
 
-.. autoclass:: pyAgrum.bn.BNLearner
+.. autoclass:: pyAgrum.BNLearner
   :exclude-members: asIApproximationSchemeConfiguration, thisown

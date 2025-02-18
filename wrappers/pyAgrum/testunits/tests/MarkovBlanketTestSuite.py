@@ -85,6 +85,7 @@ class TestMarkovBlanket(pyAgrumTestCase):
     self.assertEqual(gum.MarkovBlanket(bn, "C", 3).size(), 13)
     with self.assertRaises(gum.InvalidArgument):
       err = gum.MarkovBlanket(bn, "C", 0)
+    self.assertEqual(len(gum.MarkovBlanket(bn, "C", 1).nodes()), 5)
 
 
 ts = unittest.TestSuite()

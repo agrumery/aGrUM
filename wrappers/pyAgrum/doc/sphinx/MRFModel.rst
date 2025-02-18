@@ -1,5 +1,5 @@
 Undirected Graphical Model
 --------------------------
 
-.. autoclass:: pyAgrum.mrf.MarkovRandomField
+.. autoclass:: pyAgrum.MarkovRandomField
 			:exclude-members: setProperty, property, propertyWithDefault
