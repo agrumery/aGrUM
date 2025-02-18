@@ -129,7 +129,7 @@ namespace gum {
       /// returns the type of the prior
       PriorType getType() const final;
 
-      /// indicates whether the prior is potentially informative
+      /// indicates whether the prior is tensorly informative
       /** Basically, only the NoPrior is uninformative. However, it may happen
        * that, under some circumstances, an prior, which is usually not equal
        * to the NoPrior, becomes equal to it (e.g., when the weight is equal

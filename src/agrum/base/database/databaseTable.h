@@ -458,7 +458,7 @@ namespace gum {
        * correspond precisely to the columns stored into the database table
        * (in this case, parameter from_external_object is equal to false),
        * or they correspond to the columns of an external database (e.g., a
-       * CSV file) from which we potentially excluded some columns and,
+       * CSV file) from which we tensorly excluded some columns and,
        * consequently, the latter should not be taken into account (in this
        * case, parameter from_external_object is equal to true). As an
        * example, imagine that the database table is created from a CSV file

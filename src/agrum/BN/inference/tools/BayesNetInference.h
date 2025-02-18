@@ -63,9 +63,9 @@ namespace gum {
    * When constructing messages from one clique to its neighbor, we can
    * determine that some nodes are barren, i.e., they are the only one
    * at the left hand side of a conditioning bar and they appear in only one
-   * potential. In such case, in a classical BN inference, there is no need
+   * tensor. In such case, in a classical BN inference, there is no need
    * to take them into account since their removal will necessarily create
-   * a constant potential. So, we can discard their potential from the
+   * a constant tensor. So, we can discard their tensor from the
    * computation. However, when computing p(evidence), we should not do that
    * because the constant is important and need be computed.
    */
@@ -112,7 +112,7 @@ namespace gum {
    * 1- ie=SpecificInference(bn);              // state <- OutdatedStructure
    * 2- set targets and evidence in ie
    * 3- ie.prepareInference();                 // state <- Ready4Inference
-   * 4.a- change values of evidence in ie      // state <- OutdatedPotentials
+   * 4.a- change values of evidence in ie      // state <- OutdatedTensors
    * 4.b- change some hard evidence or targets // state <- OutdatedStructure
    * 5- ie.makeInference();                    // state <- Done
    * 6- get posteriors
@@ -132,26 +132,26 @@ namespace gum {
    *   may be smarter than BayesNetInference and may, in some situations,
    *   find out that their
    *   data structures are still ok for inference and, therefore, only resort to
-   *   perform the actions related to the OutdatedPotentials state. As an
+   *   perform the actions related to the OutdatedTensors state. As an
    *   example, consider a LazyPropagation inference in Bayes Net A->B->C->D->E
    *   in which C has received hard evidence e_C and E is the only target. In
-   *   this case, A and B are not needed for inference, the only potentials that
+   *   this case, A and B are not needed for inference, the only tensors that
    *   matter are P(D|e_C) and P(E|D). So the smallest join tree needed for
    *   inference contains only one clique DE. Now, adding new evidence e_A on A
    *   has no impact on E given hard evidence e_C. In this case, LazyPropagation
    *   can be smart and not update its join tree.
-   * - OutdatedPotentials: in this state, the structure of the BN remains
-   *   unchanged, only some potentials stored in it have changed. Therefore,
+   * - OutdatedTensors: in this state, the structure of the BN remains
+   *   unchanged, only some tensors stored in it have changed. Therefore,
    *   the inference probably just needs to invalidate some already computed
-   *   potentials to be ready. Only a light amount of preparation is needed to
+   *   tensors to be ready. Only a light amount of preparation is needed to
    *   be able to perform inference.
    * - Ready4Inference: in this state, all the data structures are ready for
    *   inference. There just remains to perform the inference computations.
    * - Done: the heavy computations of inference have been done. There might
    *   still remain a few light computations to perform to get the posterior
-   *   potentials we need. Typically, in Lazy Propagation, all the messages in
-   *   the join tree have been computed but, to get the potentials, we still
-   *   need to perform the combinations of the potentials in the cliques with
+   *   tensors we need. Typically, in Lazy Propagation, all the messages in
+   *   the join tree have been computed but, to get the tensors, we still
+   *   need to perform the combinations of the tensors in the cliques with
    *   the messages sent to the cliques. In some inference algorithms, this
    *   step may even be empty.
    */
@@ -175,26 +175,26 @@ namespace gum {
      *   from BayesNetInference may be smarter than BayesNetInference and may,
      *   in some situations, find out that their data structures are still ok for
      *   inference and, therefore, only resort to perform the actions related
-     *   to the OutdatedPotentials state. As an example, consider a
+     *   to the OutdatedTensors state. As an example, consider a
      *   LazyPropagation inference in Bayes Net A->B->C->D->E
      *   in which C has received hard evidence e_C and E is the only target. In
-     *   this case, A and B are not needed for inference, the only potentials
+     *   this case, A and B are not needed for inference, the only tensors
      *   that matter are P(D|e_C) and P(E|D). So the smallest join tree needed
      *   for inference contains only one clique DE. Now, adding new evidence
      *   e_A on A has no impact on E given hard evidence e_C. In this case,
      *   LazyPropagation can be smart and not update its join tree.
-     * - OutdatedPotentials: in this state, the structure of the BN remains
-     *   unchanged, only some potentials stored in it have changed. Therefore,
+     * - OutdatedTensors: in this state, the structure of the BN remains
+     *   unchanged, only some tensors stored in it have changed. Therefore,
      *   the inference probably just needs to invalidate some already computed
-     *   potentials to be ready. Only a light amount of preparation is needed to
+     *   tensors to be ready. Only a light amount of preparation is needed to
      *   be able to perform inference.
      * - Ready4Inference: in this state, all the data structures are ready for
      *   inference. There just remains to perform the inference computations.
      * - Done: the heavy computations of inference have been done. There might
      *   still remain a few light computations to perform to get the posterior
-     *   potentials we need. Typically, in Lazy Propagation, all the messages in
-     *   the join tree have been computed but, to get the potentials, we still
-     *   need to perform the combinations of the potentials in the cliques with
+     *   tensors we need. Typically, in Lazy Propagation, all the messages in
+     *   the join tree have been computed but, to get the tensors, we still
+     *   need to perform the combinations of the tensors in the cliques with
      *   the messages sent to the cliques. In some inference algorithms, this
      *   step may even be empty.
      */

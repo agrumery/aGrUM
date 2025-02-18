@@ -88,7 +88,7 @@ namespace gum {
      * @param varId The variable id of the CPT owner.
      * @param cpt A reference on the CPT to fill.
      */
-    void generateCPT(const Idx& varId, const Potential< GUM_SCALAR >& cpt) const override;
+    void generateCPT(const Idx& varId, const Tensor< GUM_SCALAR >& cpt) const override;
   };
 
 #ifndef GUM_NO_EXTERN_TEMPLATE_CLASS

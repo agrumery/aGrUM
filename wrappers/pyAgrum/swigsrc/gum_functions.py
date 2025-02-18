@@ -476,7 +476,7 @@ def getPosterior(model, *, target, evs=None):
 
   Returns
   -------
-    posterior (pyAgrum.Potential or other)
+    posterior (pyAgrum.Tensor or other)
   """
   if isinstance(model, BayesNet):
     inf = VariableElimination(model)
@@ -489,8 +489,8 @@ def getPosterior(model, *, target, evs=None):
     inf.setEvidence(evs)
   inf.addTarget(target)
   inf.makeInference()
-  # creating a new Potential from posterior(will disappear with ie)
-  return Potential(inf.posterior(target))
+  # creating a new Tensor from posterior(will disappear with ie)
+  return Tensor(inf.posterior(target))
 
 
 def generateSample(bn, n=1, name_out=None, show_progress=False, with_labels=True, random_order=True):
@@ -601,18 +601,18 @@ def randomBN(*, n: int = 5, names: List[str] = None, ratio_arc: float = 1.2, dom
 
 
 def log2(p):
-  """Compute p.log2() in a new Potential without modifying p
+  """Compute p.log2() in a new Tensor without modifying p
 
   Parameters
   ----------
-  p : pyAgrum.Potential
-    The potential on which to apply log2 function
+  p : pyAgrum.Tensor
+    The tensor on which to apply log2 function
 
   Returns
   -------
-    a pyAgrum.Potential
+    a pyAgrum.Tensor
   """
-  return Potential(p).log2()
+  return Tensor(p).log2()
 
 
 def mutilateBN(bn, intervention=None, observation=None):

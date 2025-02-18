@@ -95,7 +95,7 @@ namespace gum {
         strfile << num << "::" << str.str() << "\n";
       }
 
-      const Potential< GUM_SCALAR >& cpt = bn.cpt(node);
+      const Tensor< GUM_SCALAR >& cpt = bn.cpt(node);
 
       Instantiation inst(cpt);
 
@@ -130,7 +130,7 @@ namespace gum {
       str0 << "0\n";
       clause++;
       clausstr << str0.str() << str1.str();
-      const Potential< GUM_SCALAR >& cpt = bn.cpt(node);
+      const Tensor< GUM_SCALAR >& cpt = bn.cpt(node);
       Instantiation                  inst(cpt);
 
       for (inst.setFirst(); !inst.end(); ++inst) {
@@ -195,7 +195,7 @@ namespace gum {
         strfile << num << "::" << str.str() << "\n";
       }
 
-      const Potential< GUM_SCALAR >& cpt = bn.cpt(node);
+      const Tensor< GUM_SCALAR >& cpt = bn.cpt(node);
 
       Instantiation inst(cpt);
 
@@ -230,7 +230,7 @@ namespace gum {
       str0 << "0\n";
       clause++;
       clausstr << str0.str() << str1.str();
-      const Potential< GUM_SCALAR >& cpt = bn.cpt(node);
+      const Tensor< GUM_SCALAR >& cpt = bn.cpt(node);
       Instantiation                  inst(cpt);
 
       for (inst.setFirst(); !inst.end(); ++inst) {
@@ -265,7 +265,7 @@ namespace gum {
   /*template<typename GUM_SCALAR, template<class> class IApproximationPolicy >
   INLINE
     std::string
-    CNFWriter<GUM_SCALAR>:: _variableCPT_( const Potential<GUM_SCALAR>& cpt ) {
+    CNFWriter<GUM_SCALAR>:: _variableCPT_( const Tensor<GUM_SCALAR>& cpt ) {
     std::stringstream str;
     str << "";
     return str.str();

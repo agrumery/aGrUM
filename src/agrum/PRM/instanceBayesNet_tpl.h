@@ -103,7 +103,7 @@ namespace gum {
     }
 
     template < typename GUM_SCALAR >
-    INLINE const Potential< GUM_SCALAR >& InstanceBayesNet< GUM_SCALAR >::cpt(NodeId varId) const {
+    INLINE const Tensor< GUM_SCALAR >& InstanceBayesNet< GUM_SCALAR >::cpt(NodeId varId) const {
       return _get_(varId).cpf();
     }
 

@@ -150,7 +150,7 @@ class BayesNetFragmentTestCase(pyAgrumTestCase):
 
     frag = gum.BayesNetFragment(bn)
     frag.installAscendants("v6")
-    marg = gum.Potential().add(frag.variable("v3"))
+    marg = gum.Tensor().add(frag.variable("v3"))
     marg.fillWith([0, 1])
     frag.installMarginal("v3", marg)
     self.assertEqual(frag.size(), 3)
@@ -186,7 +186,7 @@ class BayesNetFragmentTestCase(pyAgrumTestCase):
       if frag.variable(nod).name() != "v5":
         self.assertTrue(frag.checkConsistency(nod))
 
-    newV5 = gum.Potential().add(frag.variable("v5"))
+    newV5 = gum.Tensor().add(frag.variable("v5"))
     newV5.fillWith([0, 0, 1])
     frag.installMarginal("v5", newV5)
     for nod in frag.nodes():
@@ -212,7 +212,7 @@ class BayesNetFragmentTestCase(pyAgrumTestCase):
     self.assertEqual(frag.size(), 5)
     self.assertEqual(frag.sizeArcs(), 4)
 
-    newV5bis = gum.Potential().add(frag.variable("v5")).add(
+    newV5bis = gum.Tensor().add(frag.variable("v5")).add(
       frag.variable("v2")).add(frag.variable("v3"))
     frag.installCPT("v5", newV5bis)
     self.assertTrue(frag.checkConsistency())
@@ -229,7 +229,7 @@ class BayesNetFragmentTestCase(pyAgrumTestCase):
     self.assertEqual(frag.size(), 6)
     self.assertEqual(frag.sizeArcs(), 7)
 
-    newV5 = gum.Potential().add(frag.variable("v5")).add(
+    newV5 = gum.Tensor().add(frag.variable("v5")).add(
       frag.variable("v2")).add(frag.variable("v3"))
     newV5.fillWith(bn2.cpt("v5"))
     frag.installCPT("v5", newV5)
@@ -259,7 +259,7 @@ class BayesNetFragmentTestCase(pyAgrumTestCase):
       minibn = frag.toBN()
 
     # checking if the nodes are well copied and referenced in frag and then in
-    # minibn checking if the potential are well copied
+    # minibn checking if the tensor are well copied
     frag.installNode("A")
     self.assertTrue(frag.checkConsistency())
     self.assertEqual(repr(bn.variable("A")), repr(frag.variable("A")))

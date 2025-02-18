@@ -271,7 +271,7 @@ namespace gum {
      * MultiDimContainer.
      *
      * @param src The MultiDimContainer src which datas are copied.
-     * @param mask partial instantiation of variables of the Potential : the
+     * @param mask partial instantiation of variables of the Tensor : the
      *
      * extraction will concern every variable not in the instantiation and the
      * copy of data will use the (relevant) values in this instantiation.

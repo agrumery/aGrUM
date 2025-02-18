@@ -318,7 +318,7 @@ def unroll2TBN(dbn, nbr):
           new_name = realNameFrom2TBNname(name, ts)  # necessary current TimeSlice
           bn.addArc(bn.idFromName(new_name_parent), bn.idFromName(new_name))
 
-  # potential creation
+  # tensor creation
   for dbn_id in dbn.nodes():
     name = dbn.variable(dbn_id).name()
     if not _isInSecondTimeSlice(name):

@@ -525,7 +525,7 @@ namespace gum {
     // here, Set "tables" contains the list of the tables resulting from
     // marginalizing out of del_vars of the combination of the tables
     // of original_tables. Note in particular that it will contain all the
-    // potentials with no dimension (constants)
+    // tensors with no dimension (constants)
 
     // if we require persistent results, update the operations that produced some
     // of the tables in Set "tables"

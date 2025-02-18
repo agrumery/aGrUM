@@ -87,14 +87,14 @@ namespace gum {
      * the inference. */
     virtual const InfluenceDiagram< GUM_SCALAR >& influenceDiagram() const final;
 
-    virtual gum::Potential< GUM_SCALAR > optimalDecision(NodeId decisionId)           = 0;
-    virtual gum::Potential< GUM_SCALAR > optimalDecision(const std::string& nodename) = 0;
+    virtual gum::Tensor< GUM_SCALAR > optimalDecision(NodeId decisionId)           = 0;
+    virtual gum::Tensor< GUM_SCALAR > optimalDecision(const std::string& nodename) = 0;
 
-    virtual const Potential< GUM_SCALAR >& posterior(NodeId node)                 = 0;
-    virtual const Potential< GUM_SCALAR >& posterior(const std::string& nodename) = 0;
+    virtual const Tensor< GUM_SCALAR >& posterior(NodeId node)                 = 0;
+    virtual const Tensor< GUM_SCALAR >& posterior(const std::string& nodename) = 0;
 
-    virtual const Potential< GUM_SCALAR >& posteriorUtility(NodeId node)                 = 0;
-    virtual const Potential< GUM_SCALAR >& posteriorUtility(const std::string& nodename) = 0;
+    virtual const Tensor< GUM_SCALAR >& posteriorUtility(NodeId node)                 = 0;
+    virtual const Tensor< GUM_SCALAR >& posteriorUtility(const std::string& nodename) = 0;
 
     virtual std::pair< GUM_SCALAR, GUM_SCALAR > meanVar(NodeId node)                 = 0;
     virtual std::pair< GUM_SCALAR, GUM_SCALAR > meanVar(const std::string& nodename) = 0;

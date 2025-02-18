@@ -221,10 +221,10 @@ namespace gum {
 
         // Filling tables
         if (_infdiag_->isChanceNode(currentVarId)) {
-          const Potential< GUM_SCALAR >* table = &_infdiag_->cpt(currentVarId);
+          const Tensor< GUM_SCALAR >* table = &_infdiag_->cpt(currentVarId);
           table->populate(tablevector);
         } else if (_infdiag_->isUtilityNode(currentVarId)) {
-          const Potential< GUM_SCALAR >* table = &_infdiag_->utility(currentVarId);
+          const Tensor< GUM_SCALAR >* table = &_infdiag_->utility(currentVarId);
           table->populate(tablevector);
         }
       }

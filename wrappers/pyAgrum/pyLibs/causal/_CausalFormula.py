@@ -237,13 +237,13 @@ class CausalFormula:
     """
     return self._root
 
-  def eval(self) -> "pyAgrum.Potential":
+  def eval(self) -> "pyAgrum.Tensor":
     """
-    Compute the Potential from the CausalFormula over vars using cond as value for others variables
+    Compute the Tensor from the CausalFormula over vars using cond as value for others variables
 
     Returns
     -------
-    pyAgrum.Potential
+    pyAgrum.Tensor
       The resulting distribution
     """
     return self.root.eval(self.cm.observationalBN())

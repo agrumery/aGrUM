@@ -254,7 +254,7 @@ namespace gum {
     INLINE void PRMInstance< GUM_SCALAR >::_copyAttribute_(PRMAttribute< GUM_SCALAR >* source) {
       auto attr = new PRMScalarAttribute< GUM_SCALAR >(source->name(), source->type());
       GUM_ASSERT(&(attr->type().variable()) != &(source->type().variable()));
-      // The potential is copied when instantiate() is called
+      // The tensor is copied when instantiate() is called
       attr->cpf().fill((GUM_SCALAR)0);
       attr->setId(source->id());
       _bijection_.insert(&(source->type().variable()), &(attr->type().variable()));

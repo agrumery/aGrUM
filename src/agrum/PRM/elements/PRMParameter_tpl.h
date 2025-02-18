@@ -108,12 +108,12 @@ namespace gum {
     }
 
     template < typename GUM_SCALAR >
-    Potential< GUM_SCALAR >& PRMParameter< GUM_SCALAR >::cpf() {
+    Tensor< GUM_SCALAR >& PRMParameter< GUM_SCALAR >::cpf() {
       GUM_ERROR(OperationNotAllowed, "Parameters do not have a cpf")
     }
 
     template < typename GUM_SCALAR >
-    const Potential< GUM_SCALAR >& PRMParameter< GUM_SCALAR >::cpf() const {
+    const Tensor< GUM_SCALAR >& PRMParameter< GUM_SCALAR >::cpf() const {
       GUM_ERROR(OperationNotAllowed, "Parameters do not have a cpf")
     }
 

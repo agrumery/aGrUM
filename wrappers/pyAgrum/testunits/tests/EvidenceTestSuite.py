@@ -46,8 +46,8 @@ from .pyAgrumTestSuite import pyAgrumTestCase, addTests
 class TestEvidence(pyAgrumTestCase):
   def tesIsEvidence(self):
     bn = gum.fastBN("A[10]->B;C")
-    p1 = gum.Potential(bn.cpt("A"))
-    p2 = gum.Potential(bn.cpt("A"))
+    p1 = gum.Tensor(bn.cpt("A"))
+    p2 = gum.Tensor(bn.cpt("A"))
 
     self.assertTrue(bn.cpt("A").isEvidence())
     self.assertFalse(bn.cpt("B").isEvidence())
@@ -59,8 +59,8 @@ class TestEvidence(pyAgrumTestCase):
 
   def tesCombine(self):
     bn = gum.fastBN("A[10]->B;C")
-    p1 = gum.Potential(bn.cpt("A"))
-    p2 = gum.Potential(bn.cpt("A"))
+    p1 = gum.Tensor(bn.cpt("A"))
+    p2 = gum.Tensor(bn.cpt("A"))
     p1.randomCPT()
     M1 = p1.max()
     M2 = p2.max()
@@ -81,7 +81,7 @@ class TestEvidence(pyAgrumTestCase):
 
     vA, vB, vC, vD, vE = [bn.variable(i) for i in "ABCDE"]
 
-    gpot = gum.Potential
+    gpot = gum.Tensor
     self.assertEqual(gpot.evEq(vA, 4.0).tolist(), [0.0, 0.0, 0.0, 0.0, 1.0, 0.0, 0.0, 0.0, 0.0, 0.0])
     self.assertEqual(gpot.evEq(vB, 4.0).tolist(), [0.0, 0.0, 0.0, 1.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0])
     self.assertEqual(gpot.evEq(vC, 4.0).tolist(), [0.0, 1.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0])

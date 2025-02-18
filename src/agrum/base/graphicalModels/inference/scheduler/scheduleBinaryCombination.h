@@ -68,22 +68,22 @@ namespace gum {
    * a ScheduleBinaryCombination will always produce a freshly allocated table.
    * The following code gives an example of the usage of ScheduleBinaryCombination:
    * @code
-   * // the combination function over "true" Potentials
-   * Potential< double > myadd(const gum::Potential< double >& f1,
-   *                           const gum::Potential< double >& f2) {
+   * // the combination function over "true" Tensors
+   * Tensor< double > myadd(const gum::Tensor< double >& f1,
+   *                           const gum::Tensor< double >& f2) {
    *   return f1 + f2;
    * }
    *
-   * // define the potentials to be combined and wrap them into ScheduleMultiDim
-   * Potential< double > pot1, pot2;
+   * // define the tensors to be combined and wrap them into ScheduleMultiDim
+   * Tensor< double > pot1, pot2;
    * .......
-   * ScheduleMultiDim< Potential< double > > f1(pot1);
-   * ScheduleMultiDim< Potential< double > > f2(pot2);
+   * ScheduleMultiDim< Tensor< double > > f1(pot1);
+   * ScheduleMultiDim< Tensor< double > > f2(pot2);
    *
    * // define the ScheduleBinaryCombination
-   * ScheduleBinaryCombination< Potential< double >,
-   *                            Potential< double >,
-   *                            Potential< double > > comb(f1, f2, myadd);
+   * ScheduleBinaryCombination< Tensor< double >,
+   *                            Tensor< double >,
+   *                            Tensor< double > > comb(f1, f2, myadd);
    *
    * // before executing the combination, check whether we have sufficient
    * // memory and time to do it
@@ -92,8 +92,8 @@ namespace gum {
    *
    * // execute the combination and get the result
    * comb.execute();
-   * const ScheduleMultiDim< Potential< double > >& result = comb.result();
-   * const Potential< double >& pot_result = result.multiDim();
+   * const ScheduleMultiDim< Tensor< double > >& result = comb.result();
+   * const Tensor< double >& pot_result = result.multiDim();
    *
    * @endcode
    */

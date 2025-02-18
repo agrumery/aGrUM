@@ -46,7 +46,7 @@ Reference manual
 
   graph
   randomVariables
-  potential
+  tensor
 
 .. toctree::
   :caption: 2- Bayesian networks

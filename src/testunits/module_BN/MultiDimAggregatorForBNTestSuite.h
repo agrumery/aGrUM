@@ -56,7 +56,7 @@
 #include <agrum/base/multidim/ICIModels/multiDimNoisyAND.h>
 #include <agrum/base/multidim/ICIModels/multiDimNoisyORCompound.h>
 #include <agrum/base/multidim/ICIModels/multiDimNoisyORNet.h>
-#include <agrum/base/multidim/potential.h>
+#include <agrum/base/multidim/tensor.h>
 #include <agrum/base/variables/labelizedVariable.h>
 #include <agrum/base/variables/rangeVariable.h>
 #include <agrum/BN/BayesNet.h>
@@ -117,11 +117,11 @@ namespace gum_tests {
 
         try {
           TS_ASSERT_EQUALS(inf.posterior(idList[0]),
-                           (gum::Potential< double >() << bn.variable(idList[0]))
+                           (gum::Tensor< double >() << bn.variable(idList[0]))
                                .fillWith({0.468559, 0.269297, 0.144495, 0.117649}))
           TS_ASSERT_EQUALS(
               inf.posterior(idList[1]),
-              (gum::Potential< double >() << bn.variable(idList[1])).fillWith({0.1, 0.1, 0.1, 0.7}))
+              (gum::Tensor< double >() << bn.variable(idList[1])).fillWith({0.1, 0.1, 0.1, 0.7}))
         } catch (const gum::Exception& e) {
           GUM_UNUSED(e);
           TS_ASSERT(false)
@@ -134,11 +134,11 @@ namespace gum_tests {
 
         try {
           TS_ASSERT_EQUALS(inf.posterior(idList[0]),
-                           (gum::Potential< double >() << bn.variable(idList[0]))
+                           (gum::Tensor< double >() << bn.variable(idList[0]))
                                .fillWith({0.468559, 0.269297, 0.144495, 0.117649}))
           TS_ASSERT_EQUALS(
               inf.posterior(idList[1]),
-              (gum::Potential< double >() << bn.variable(idList[1])).fillWith({0.1, 0.1, 0.1, 0.7}))
+              (gum::Tensor< double >() << bn.variable(idList[1])).fillWith({0.1, 0.1, 0.1, 0.7}))
         } catch (const gum::Exception& e) {
           GUM_UNUSED(e);
           TS_ASSERT(false)
@@ -171,16 +171,16 @@ namespace gum_tests {
 
       TS_ASSERT_THROWS(bn.addWeightedArc(idMalaria, idCold, 0.8f), const gum::InvalidArc&)
 
-      const gum::Potential< double >& pOneMoreParent1 = bn.cpt(idOneMoreParent1);
+      const gum::Tensor< double >& pOneMoreParent1 = bn.cpt(idOneMoreParent1);
       pOneMoreParent1.fillWith(std::vector< double >{0.2f, 0.8f});
 
-      const gum::Potential< double >& pOneMoreParent2 = bn.cpt(idOneMoreParent2);
+      const gum::Tensor< double >& pOneMoreParent2 = bn.cpt(idOneMoreParent2);
       pOneMoreParent2.fillWith(std::vector< double >{0.3f, 0.7f});
 
       bn.addArc(idOneMoreParent1, idOneMore);
       bn.addArc(idFever, idOneMore);
       bn.addArc(idOneMoreParent2, idOneMore);
-      const gum::Potential< double >& pOneMore = bn.cpt(idOneMore);
+      const gum::Tensor< double >& pOneMore = bn.cpt(idOneMore);
       pOneMore.fillWith(std::vector< double >{0.1f,
                                               0.9f,
                                               0.8f,
@@ -198,7 +198,7 @@ namespace gum_tests {
                                               0.8f,
                                               0.2f});
 
-      const gum::Potential< double >& p = bn.cpt(idFever);
+      const gum::Tensor< double >& p = bn.cpt(idFever);
 
       gum::Instantiation i(p);
       float              witness[] = {1.0f,
@@ -254,18 +254,18 @@ namespace gum_tests {
 
       TS_ASSERT_THROWS(bn.addWeightedArc(idMalaria, idCold, 0.8f), const gum::InvalidArc&)
 
-      const gum::Potential< double >& pOneMoreParent1 = bn.cpt(idOneMoreParent1);
+      const gum::Tensor< double >& pOneMoreParent1 = bn.cpt(idOneMoreParent1);
       // FILLING PARAMS
       pOneMoreParent1.fillWith(std::vector< double >{0.2f, 0.8f});
 
-      const gum::Potential< double >& pOneMoreParent2 = bn.cpt(idOneMoreParent2);
+      const gum::Tensor< double >& pOneMoreParent2 = bn.cpt(idOneMoreParent2);
       // FILLING PARAMS
       pOneMoreParent2.fillWith(std::vector< double >{0.3f, 0.7f});
 
       bn.addArc(idOneMoreParent1, idOneMore);
       bn.addArc(idFever, idOneMore);
       bn.addArc(idOneMoreParent2, idOneMore);
-      const gum::Potential< double >& pOneMore = bn.cpt(idOneMore);
+      const gum::Tensor< double >& pOneMore = bn.cpt(idOneMore);
       // FILLING PARAMS
       pOneMore.fillWith(std::vector< double >{0.1f,
                                               0.9f,
@@ -284,7 +284,7 @@ namespace gum_tests {
                                               0.8f,
                                               0.2f});
 
-      const gum::Potential< double >& p = bn.cpt(idFever);
+      const gum::Tensor< double >& p = bn.cpt(idFever);
 
       gum::Instantiation i(p);
       float              witness[] = {1.0f,
@@ -342,18 +342,18 @@ namespace gum_tests {
 
       TS_ASSERT_THROWS(bn.addWeightedArc(idMalaria, idCold, 0.8f), const gum::InvalidArc&)
 
-      const gum::Potential< double >& pOneMoreParent1 = bn.cpt(idOneMoreParent1);
+      const gum::Tensor< double >& pOneMoreParent1 = bn.cpt(idOneMoreParent1);
       // FILLING PARAMS
       pOneMoreParent1.fillWith(std::vector< double >{0.2f, 0.8f});
 
-      const gum::Potential< double >& pOneMoreParent2 = bn.cpt(idOneMoreParent2);
+      const gum::Tensor< double >& pOneMoreParent2 = bn.cpt(idOneMoreParent2);
       // FILLING PARAMS
       pOneMoreParent2.fillWith(std::vector< double >{0.3f, 0.7f});
 
       bn.addArc(idOneMoreParent1, idOneMore);
       bn.addArc(idFever, idOneMore);
       bn.addArc(idOneMoreParent2, idOneMore);
-      const gum::Potential< double >& pOneMore = bn.cpt(idOneMore);
+      const gum::Tensor< double >& pOneMore = bn.cpt(idOneMore);
       // FILLING PARAMS
       pOneMore.fillWith(std::vector< double >{0.1f,
                                               0.9f,
@@ -372,7 +372,7 @@ namespace gum_tests {
                                               0.8f,
                                               0.2f});
 
-      const gum::Potential< double >& p = bn.cpt(idFever);
+      const gum::Tensor< double >& p = bn.cpt(idFever);
 
       gum::Instantiation i(p);
       float              witness[] = {0.988012f,
@@ -410,7 +410,7 @@ namespace gum_tests {
       {
         gum::LazyPropagation< double > ie(&bn);
         ie.makeInference();
-        gum::Potential< double > p;
+        gum::Tensor< double > p;
         TS_GUM_ASSERT_THROWS_NOTHING(p = ie.posterior("min"))
         gum::Instantiation I(p);
         for (I.setFirst(); !I.end(); I.inc())
@@ -419,7 +419,7 @@ namespace gum_tests {
       {
         gum::ShaferShenoyInference< double > ie(&bn);
         ie.makeInference();
-        gum::Potential< double > p;
+        gum::Tensor< double > p;
         TS_GUM_ASSERT_THROWS_NOTHING(p = ie.posterior("min"))
         gum::Instantiation I(p);
         for (I.setFirst(); !I.end(); I.inc())
@@ -428,7 +428,7 @@ namespace gum_tests {
       {
         gum::VariableElimination< double > ie(&bn);
         ie.makeInference();
-        gum::Potential< double > p;
+        gum::Tensor< double > p;
         TS_GUM_ASSERT_THROWS_NOTHING(p = ie.posterior("min"))
         gum::Instantiation I(p);
         for (I.setFirst(); !I.end(); I.inc())
@@ -437,7 +437,7 @@ namespace gum_tests {
       {
         gum::LoopyBeliefPropagation< double > ie(&bn);
         ie.makeInference();
-        gum::Potential< double > p;
+        gum::Tensor< double > p;
         TS_GUM_ASSERT_THROWS_NOTHING(p = ie.posterior("min"))
         gum::Instantiation I(p);
         for (I.setFirst(); !I.end(); I.inc())

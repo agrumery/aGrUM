@@ -73,27 +73,27 @@ namespace gum {
    * produce a freshly allocated table.
    * The following code gives an example of the usage of ScheduleProjection:
    * @code
-   * // two functions used to project a Potential<float>:
-   * Potential<float> MinPot ( const Potential<float>& table,
+   * // two functions used to project a Tensor<float>:
+   * Tensor<float> MinPot ( const Tensor<float>& table,
    *                           const VariableSet& del_vars ) {
-   *   return Potential<float> (...);
+   *   return Tensor<float> (...);
    * }
    *
-   * Potential<float> MaxPot ( const Potential<float>& table,
+   * Tensor<float> MaxPot ( const Tensor<float>& table,
    *                           const VariableSet& del_vars ) {
-   *   return Potential<float> (...);
+   *   return Tensor<float> (...);
    * }
    *
    *
-   * ScheduleMultiDim< Potential< float > > t1(...), t2(...);
+   * ScheduleMultiDim< Tensor< float > > t1(...), t2(...);
    * VariableSet set1, set2;
-   * ScheduleProjection< Potential<float> > proj1 ( t1, set1, MinPot );
+   * ScheduleProjection< Tensor<float> > proj1 ( t1, set1, MinPot );
    * proj1.execute();
-   * ScheduleProjection< Potential<float> > proj2 ( proj1.result(), set1, MaxPot );
+   * ScheduleProjection< Tensor<float> > proj2 ( proj1.result(), set1, MaxPot );
    *
    * // change the operator to apply
    * proj1.setProjectionFunction ( MaxPot );
-   * SchedulePotential< Potential<float> > proj_table2 = proj1.result();
+   * ScheduleTensor< Tensor<float> > proj_table2 = proj1.result();
    *
    * @endcode
    *
@@ -135,7 +135,7 @@ namespace gum {
 
     /// destructor
     /** @warning If the ScheduleProjection has created some output
-     * SchedulePotential, upon destruction, it is removed from memory */
+     * ScheduleTensor, upon destruction, it is removed from memory */
     virtual ~ScheduleProjection();
 
     /// @}

@@ -59,7 +59,7 @@ namespace gum {
     GUM_CONSTRUCTOR(DefaultEliminationSequenceStrategy);
   }
 
-  /// constructor for a (potentially) non empty graph
+  /// constructor for a (tensorly) non empty graph
   DefaultEliminationSequenceStrategy::DefaultEliminationSequenceStrategy(
       UndiGraph*                  graph,
       const NodeProperty< Size >* domain_sizes,

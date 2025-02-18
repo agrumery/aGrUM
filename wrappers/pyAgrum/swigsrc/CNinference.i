@@ -52,7 +52,7 @@ def setEvidence(self, evidces):
 
   Parameters
   ----------
-  evidces : Dict[str,Union[int,str,List[float]]] or List[pyAgrum.Potential]
+  evidces : Dict[str,Union[int,str,List[float]]] or List[pyAgrum.Tensor]
    a dict of "name:evidence" where name is a string (the name of the variable) and evidence is an integer (an index) or a string (a label) or a list of float (a likelihood).
 
   Raises
@@ -71,7 +71,7 @@ def setEvidence(self, evidces):
     for k,v in evidces.items():
       self.addEvidence(k,v)
     return
-  elif isinstance(evidces, list): # should be a list of Potential
+  elif isinstance(evidces, list): # should be a list of Tensor
     self.eraseAllEvidence()
     for p in evidces:
       self.addEvidence(p)

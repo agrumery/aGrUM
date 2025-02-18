@@ -186,13 +186,13 @@ attribute : str
 
 Returns
 -------
-pyAgrum.Potential
-	the potential of the attribute
+pyAgrum.Tensor
+	the tensor of the attribute
 
 Raises
 ------
 pyAgrum.OperationNotAllowed
-	If the class element doesn't have any gum::Potential (like a gum::PRMReferenceSlot).
+	If the class element doesn't have any gum::Tensor (like a gum::PRMReferenceSlot).
 pyAgrum.IndexError
 	If the class is not in the PRM
 pyAgrum.IndexError

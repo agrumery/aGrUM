@@ -50,7 +50,7 @@ This file contains the CIM class (Conditional Intensity Matrix).
 class CIM:
   """
   This class is used to represent a CIM (random variables and parameters of transition time).
-  A CIM is mainly a pyAgrum.Potential that contains the parameters of an exponential distribution.
+  A CIM is mainly a pyAgrum.Tensor that contains the parameters of an exponential distribution.
   This class contains also contains the ``amalgamation`` operator, used for merging CIMs into one.
 
   Notes
@@ -61,17 +61,17 @@ class CIM:
 
   Parameters
   ----------
-  pot : pyAgrum.Potential | None
-      Defines the new CIM using existing potential.
+  pot : pyAgrum.Tensor | None
+      Defines the new CIM using existing tensor.
   """
   DELIMITER = "#"
-  _pot: pyAgrum.Potential
+  _pot: pyAgrum.Tensor
 
   def __init__(self, pot=None):
     if pot is None:
-      self._pot = pyAgrum.Potential()
+      self._pot = pyAgrum.Tensor()
     else:
-      self._pot = pyAgrum.Potential(pot)
+      self._pot = pyAgrum.Tensor(pot)
     self._recordVars()
 
   def __getitem__(self, i):
@@ -164,15 +164,15 @@ class CIM:
     """
     return CIM(self._pot.extract(ctxt))
 
-  def asPotential(self):
+  def asTensor(self):
     """
 
     Returns
     -------
-    pyAgrum.Potential
-      a copy of the internal potential
+    pyAgrum.Tensor
+      a copy of the internal tensor
     """
-    return pyAgrum.Potential(self._pot)
+    return pyAgrum.Tensor(self._pot)
 
   @property
   def varNames(self):
@@ -233,7 +233,7 @@ class CIM:
     Returns
     -------
     pyAgrum.Instantiation
-        An Instantiation object using the CIM's potential.
+        An Instantiation object using the CIM's tensor.
     """
     return pyAgrum.Instantiation(self._pot)
 
@@ -433,9 +433,9 @@ class CIM:
 
     # Checks if either one of the CIM is empty
     if cimX.nbrDim() == 0:
-      return CIM(pyAgrum.Potential(cimY._pot))
+      return CIM(pyAgrum.Tensor(cimY._pot))
     if cimY.nbrDim() == 0:
-      return CIM(pyAgrum.Potential(cimX._pot))
+      return CIM(pyAgrum.Tensor(cimX._pot))
 
     # Names of the non-parent variables from the CIM
     sX = {self.varRadical(v) for v in cimX.variablesSequence()
@@ -503,11 +503,11 @@ class CIM:
 
     return amal
 
-  def getPotential(self) -> "pyAgrum.Potential":
+  def getTensor(self) -> "pyAgrum.Tensor":
     """
     Returns
     -------
-    pyAgrum.Potential
-        A copy of the CIM's potential
+    pyAgrum.Tensor
+        A copy of the CIM's tensor
     """
-    return pyAgrum.Potential(self._pot)
+    return pyAgrum.Tensor(self._pot)

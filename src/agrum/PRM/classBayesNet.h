@@ -109,13 +109,13 @@ namespace gum {
        * since PRMAggregate's CPT are define at instantiation only.
        *
        * @param varId a variable id.
-       * @return the Potential of varId.
+       * @return the Tensor of varId.
        *
        * @throw NotFound raised if varId does not match any variable in this
        *                 IBayesNet.
        * @throw OperationNotAllowed raised if varId is an PRMAggregate.
        */
-      virtual const Potential< GUM_SCALAR >& cpt(NodeId varId) const;
+      virtual const Tensor< GUM_SCALAR >& cpt(NodeId varId) const;
 
       /// See gum::IBaseBayesNet::variableNodeMap().
       virtual const VariableNodeMap& variableNodeMap() const;

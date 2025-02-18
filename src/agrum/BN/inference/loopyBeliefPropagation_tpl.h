@@ -86,7 +86,7 @@ namespace gum {
   void LoopyBeliefPropagation< GUM_SCALAR >::_init_messages_() {
     _messages_.clear();
     for (const auto& tail: this->BN().nodes()) {
-      Potential< GUM_SCALAR > p;
+      Tensor< GUM_SCALAR > p;
       p.add(this->BN().variable(tail));
       p.fill(static_cast< GUM_SCALAR >(1));
 
@@ -103,7 +103,7 @@ namespace gum {
   }
 
   template < typename GUM_SCALAR >
-  Potential< GUM_SCALAR > LoopyBeliefPropagation< GUM_SCALAR >::_computeProdPi_(NodeId X) {
+  Tensor< GUM_SCALAR > LoopyBeliefPropagation< GUM_SCALAR >::_computeProdPi_(NodeId X) {
     const auto& varX = this->BN().variable(X);
 
     auto piX = this->BN().cpt(X);
@@ -116,7 +116,7 @@ namespace gum {
   }
 
   template < typename GUM_SCALAR >
-  Potential< GUM_SCALAR > LoopyBeliefPropagation< GUM_SCALAR >::_computeProdPi_(NodeId X,
+  Tensor< GUM_SCALAR > LoopyBeliefPropagation< GUM_SCALAR >::_computeProdPi_(NodeId X,
                                                                                 NodeId except) {
     const auto& varX      = this->BN().variable(X);
     const auto& varExcept = this->BN().variable(except);
@@ -129,8 +129,8 @@ namespace gum {
   }
 
   template < typename GUM_SCALAR >
-  Potential< GUM_SCALAR > LoopyBeliefPropagation< GUM_SCALAR >::_computeProdLambda_(NodeId X) {
-    Potential< GUM_SCALAR > lamX;
+  Tensor< GUM_SCALAR > LoopyBeliefPropagation< GUM_SCALAR >::_computeProdLambda_(NodeId X) {
+    Tensor< GUM_SCALAR > lamX;
     if (this->hasEvidence(X)) {
       lamX = *(this->evidence()[X]);
     } else {
@@ -145,9 +145,9 @@ namespace gum {
   }
 
   template < typename GUM_SCALAR >
-  Potential< GUM_SCALAR > LoopyBeliefPropagation< GUM_SCALAR >::_computeProdLambda_(NodeId X,
+  Tensor< GUM_SCALAR > LoopyBeliefPropagation< GUM_SCALAR >::_computeProdLambda_(NodeId X,
                                                                                     NodeId except) {
-    Potential< GUM_SCALAR > lamXexcept;
+    Tensor< GUM_SCALAR > lamXexcept;
     if (this->hasEvidence(X)) {   //
       lamXexcept = *this->evidence()[X];
     } else {
@@ -243,7 +243,7 @@ namespace gum {
 
   /// Returns the probability of the variable.
   template < typename GUM_SCALAR >
-  INLINE const Potential< GUM_SCALAR >&
+  INLINE const Tensor< GUM_SCALAR >&
                LoopyBeliefPropagation< GUM_SCALAR >::posterior_(NodeId id) {
     auto p = _computeProdPi_(id) * _computeProdLambda_(id);
     p.normalize();

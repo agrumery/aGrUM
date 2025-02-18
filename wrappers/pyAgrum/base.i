@@ -87,7 +87,7 @@
 %include "variables.i"
 %include "instantiation.i"
 
-%include "potential.i"
+%include "tensor.i"
 
 %include "graphs.i"
 

@@ -63,7 +63,7 @@ namespace gum_tests {
     gum::LabelizedVariable* node4;
     gum::LabelizedVariable* node5;
 
-    gum::List< gum::Potential< double >* >* evidence;
+    gum::List< gum::Tensor< double >* >* evidence;
 
     void setUp() {
       gum::HashTable< gum::LabelizedVariable*, gum::NodeId > idMap;
@@ -86,13 +86,13 @@ namespace gum_tests {
       bn->addArc(idMap[node3], idMap[node5]);
       bn->addArc(idMap[node4], idMap[node5]);
 
-      evidence = new gum::List< gum::Potential< double >* >();
-      gum::Potential< double >* e1
-          = new gum::Potential< double >(new gum::MultiDimArray< double >());
-      gum::Potential< double >* e2
-          = new gum::Potential< double >(new gum::MultiDimArray< double >());
-      gum::Potential< double >* e3
-          = new gum::Potential< double >(new gum::MultiDimArray< double >());
+      evidence = new gum::List< gum::Tensor< double >* >();
+      gum::Tensor< double >* e1
+          = new gum::Tensor< double >(new gum::MultiDimArray< double >());
+      gum::Tensor< double >* e2
+          = new gum::Tensor< double >(new gum::MultiDimArray< double >());
+      gum::Tensor< double >* e3
+          = new gum::Tensor< double >(new gum::MultiDimArray< double >());
 
       try {
         (*e1) << bn->variable(idMap[node1]);
@@ -153,7 +153,7 @@ namespace gum_tests {
 
     private:
     // Uncomment this to have some outputs.
-    void printProba(const gum::Potential< double >&) {
+    void printProba(const gum::Tensor< double >&) {
       // gum::Instantiation inst(p);
 
       // for (inst.setFirst(); !inst.end(); ++inst)

@@ -121,7 +121,7 @@ def process_filters(src_filename: str, target_filename: str, is_python: bool, de
     ("gum::ArcSet", "Set[Tuple[int,int]]"),
 
     # removing templates and correct namespace for pyAgrum's classes
-    ("gum::Potential< double >", '"pyAgrum.Potential"'),
+    ("gum::Tensor< double >", '"pyAgrum.Tensor"'),
     ("gum::BayesNet< double >", '"pyAgrum.BayesNet"'),
     # ("gum::MarkovNet< double >", '"pyAgrum.MarkovRandomField"'),
     ("gum::MarkovRandomField< double >", '"pyAgrum.MarkovRandomField"'),
@@ -147,9 +147,9 @@ def process_filters(src_filename: str, target_filename: str, is_python: bool, de
     ("gum::IMarkovRandomField< double >", '"pyAgrum.IMarkovRandomField"'),
     ('gum::VariableNodeMap', '"pyAgrum.VariableNodeMap"'),
     ('gum::FactorTable< double >', 'List[Set[int]]'),
-    ('gum::MultiDimContainer< double >', '"pyAgrum.Potential"'),
-    ('gum::MultiDimAdressable', '"pyAgrum.Potential"'),
-    ('gum::MultiDimImplementation< double >', '"pyAgrum.Potential"'),
+    ('gum::MultiDimContainer< double >', '"pyAgrum.Tensor"'),
+    ('gum::MultiDimAdressable', '"pyAgrum.Tensor"'),
+    ('gum::MultiDimImplementation< double >', '"pyAgrum.Tensor"'),
     ('gum::VariableSet', '"pyAgrum.VariableSet"'),
     ('gum::Variable', '"pyAgrum.Variable"'),
     ('gum::IDiscretizedVariable', '"pyAgrum.DiscretizedVariable"'),
@@ -157,7 +157,7 @@ def process_filters(src_filename: str, target_filename: str, is_python: bool, de
     ('gum::learning::BNLearner< double >', '"pyAgrum.BNLearner"'),
 
     # enum
-    ('gum::RelevantPotentialsFinderType', "int"),
+    ('gum::RelevantTensorsFinderType', "int"),
     ('gum::FindBarrenNodesType', "int"),
 
     # weird shortcuts from time to time
@@ -170,7 +170,7 @@ def process_filters(src_filename: str, target_filename: str, is_python: bool, de
     ('"BayesNet"', '"pyAgrum.BayesNet"'),
     ('"VariableNodeMap"', '"pyAgrum.VariableNodeMap"'),
     ('"UGmodel"', '"pyAgrum.UGmodel"'),
-    ('"MultiDimContainer"', '"pyAgrum.Potential"'),
+    ('"MultiDimContainer"', '"pyAgrum.Tensor"'),
     ('"Triangulation"', '"pyAgrum.Triangulation"'),
     ('"DAGmodel"', '"pyAgrum.DAGmodel"'),
 
@@ -198,7 +198,7 @@ def process_filters(src_filename: str, target_filename: str, is_python: bool, de
     # keep correct comment with template
     # ("< float >", "< double >"),
     ("gum::BayesNet", 'pyAgrum.BayesNet'),
-    ("gum::Potential", 'pyAgrum.Potential'),
+    ("gum::Tensor", 'pyAgrum.Tensor'),
     # ("gum::MarkovNet", 'pyAgrum.MarkovRandomField'),
     ("gum::DiGraph", '"pyAgrum.DiGraph"'),
     ("gum::", "pyAgrum."),

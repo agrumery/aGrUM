@@ -44,7 +44,7 @@
 #include <gumtest/utils.h>
 
 #include <agrum/base/multidim/ICIModels/multiDimNoisyORCompound.h>
-#include <agrum/base/multidim/potential.h>
+#include <agrum/base/multidim/tensor.h>
 #include <agrum/base/variables/labelizedVariable.h>
 #include <agrum/base/variables/rangeVariable.h>
 

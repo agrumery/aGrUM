@@ -75,7 +75,7 @@ namespace gum {
    * fragment are *effectively installed (resp.  *when uninstalling a node,
    * etc.).
    *
-   * A BayesNetFragment can redefine potential for node. The main reason is to
+   * A BayesNetFragment can redefine tensor for node. The main reason is to
    * be able to install a node without installing all its parents (and its
    * ascendants). So local CPT to the node can be installed. However, it is not
    * done automatically.
@@ -93,7 +93,7 @@ namespace gum {
 
     /// Mapping between the variable's id and their CPT specific to this
     /// Fragment.
-    NodeProperty< const Potential< GUM_SCALAR >* > _localCPTs_;
+    NodeProperty< const Tensor< GUM_SCALAR >* > _localCPTs_;
 
     public:
     /// @name Constructors / Destructors
@@ -141,9 +141,9 @@ namespace gum {
      *
      * @throw NotFound If no variable's id matches varId.
      */
-    const Potential< GUM_SCALAR >& cpt(NodeId varId) const final;
+    const Tensor< GUM_SCALAR >& cpt(NodeId varId) const final;
 
-    const Potential< GUM_SCALAR >& cpt(const std::string& name) const {
+    const Tensor< GUM_SCALAR >& cpt(const std::string& name) const {
       return cpt(idFromName(name));
     };
 
@@ -237,15 +237,15 @@ namespace gum {
      * install a local marginal BY COPY for a node into the fragment.
      * This function will remove all the arcs from the parents to the node.
      * @param id the nodeId
-     * @param pot the potential
+     * @param pot the tensor
      * @throw NotFound if the id is not in the fragment
-     * @throw OperationNotAllowed if the potential is not compliant with the
+     * @throw OperationNotAllowed if the tensor is not compliant with the
      *variable
      *(or is not a marginal)
      **/
-    void installMarginal(NodeId id, const Potential< GUM_SCALAR >& pot);
+    void installMarginal(NodeId id, const Tensor< GUM_SCALAR >& pot);
 
-    void installMarginal(const std::string& name, const Potential< GUM_SCALAR >& pot) {
+    void installMarginal(const std::string& name, const Tensor< GUM_SCALAR >& pot) {
       installMarginal(_bn_.idFromName(name), pot);
     }
 
@@ -253,17 +253,17 @@ namespace gum {
      * install a local cpt BY COPYfor a node into the fragment.
      * This function will change the arcs from the parents to the node in order
      *to be
-     * consistent with the new local potential.
+     * consistent with the new local tensor.
      * @param id the nodeId
-     * @param pot the potential to be copied
+     * @param pot the tensor to be copied
      *
      * @throw NotFound if the id is not in the fragment
-     * @throw OperationNotAllowed if the potential is not compliant with the
+     * @throw OperationNotAllowed if the tensor is not compliant with the
      *variable or if  a variable in the CPT is not a parent in the referred bn.
      **/
-    void installCPT(NodeId id, const Potential< GUM_SCALAR >& pot);
+    void installCPT(NodeId id, const Tensor< GUM_SCALAR >& pot);
 
-    void installCPT(const std::string& name, const Potential< GUM_SCALAR >& pot) {
+    void installCPT(const std::string& name, const Tensor< GUM_SCALAR >& pot) {
       installCPT(_bn_.idFromName(name), pot);
     };
 
@@ -319,7 +319,7 @@ namespace gum {
     // install a CPT BY COPY, create or delete arcs. Checks are made in public
     // methods In particular, it is assumed that all the variables in the pot are
     // in the fragment
-    void installCPT_(NodeId id, const Potential< GUM_SCALAR >& pot);
+    void installCPT_(NodeId id, const Tensor< GUM_SCALAR >& pot);
 
     /**
      * uninstall a local CPT. Does nothing if no local CPT for this nodeId

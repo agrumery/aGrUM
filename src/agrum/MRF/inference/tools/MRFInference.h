@@ -94,7 +94,7 @@ namespace gum {
    * 1- ie=SpecificInference(mn);              // state <- OutdatedStructure
    * 2- set targets and evidence in ie
    * 3- ie.prepareInference();                 // state <- ReadyForMRFInference
-   * 4.a- change values of evidence in ie      // state <- OutdatedPotentials
+   * 4.a- change values of evidence in ie      // state <- OutdatedTensors
    * 4.b- change some hard evidence or targets // state <- OutdatedStructure
    * 5- ie.makeInference();                    // state <- Done
    * 6- get posteriors
@@ -113,19 +113,19 @@ namespace gum {
    *   may be smarter than MRFInference and may, in some situations,
    *   find out that their data structures are still ok for inference and,
    *   therefore, only resort to perform the actions related to the
-   *   OutdatedPotentials state.
-   * - OutdatedPotentials: in this state, the structure of the MRF remains
-   *   unchanged, only some potentials stored in it have changed. Therefore,
+   *   OutdatedTensors state.
+   * - OutdatedTensors: in this state, the structure of the MRF remains
+   *   unchanged, only some tensors stored in it have changed. Therefore,
    *   the inference probably just needs to invalidate some already computed
-   *   potentials to be ready. Only a light amount of preparation is needed to
+   *   tensors to be ready. Only a light amount of preparation is needed to
    *   be able to perform inference.
    * - ReadyForMRFInference: in this state, all the data structures are ready for
    *   inference. There just remains to perform the inference computations.
    * - Done: the heavy computations of inference have been done. There might
    *   still remain a few light computations to perform to get the posterior
-   *   potentials we need. Typically, in Lazy Propagation, all the messages in
-   *   the join tree have been computed but, to get the potentials, we still
-   *   need to perform the combinations of the potentials in the cliques with
+   *   tensors we need. Typically, in Lazy Propagation, all the messages in
+   *   the join tree have been computed but, to get the tensors, we still
+   *   need to perform the combinations of the tensors in the cliques with
    *   the messages sent to the cliques. In some inference algorithms, this
    *   step may even be empty.
    */
@@ -149,19 +149,19 @@ namespace gum {
      *   from MRFInference may be smarter than MRFInference and may,
      *   in some situations, find out that their data structures are still ok for
      *   inference and, therefore, only resort to perform the actions related
-     *   to the OutdatedPotentials state.
-     * - OutdatedPotentials: in this state, the structure of the MRF remains
-     *   unchanged, only some potentials stored in it have changed. Therefore,
+     *   to the OutdatedTensors state.
+     * - OutdatedTensors: in this state, the structure of the MRF remains
+     *   unchanged, only some tensors stored in it have changed. Therefore,
      *   the inference probably just needs to invalidate some already computed
-     *   potentials to be ready. Only a light amount of preparation is needed to
+     *   tensors to be ready. Only a light amount of preparation is needed to
      *   be able to perform inference.
      * - ReadyForMRFInference: in this state, all the data structures are ready for
      *   inference. There just remains to perform the inference computations.
      * - Done: the heavy computations of inference have been done. There might
      *   still remain a few light computations to perform to get the posterior
-     *   potentials we need. Typically, in Lazy Propagation, all the messages in
-     *   the join tree have been computed but, to get the potentials, we still
-     *   need to perform the combinations of the potentials in the cliques with
+     *   tensors we need. Typically, in Lazy Propagation, all the messages in
+     *   the join tree have been computed but, to get the tensors, we still
+     *   need to perform the combinations of the tensors in the cliques with
      *   the messages sent to the cliques. In some inference algorithms, this
      *   step may even be empty.
      */

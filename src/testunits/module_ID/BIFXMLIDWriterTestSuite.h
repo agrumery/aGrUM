@@ -210,13 +210,13 @@ namespace gum_tests {
         for (const auto n: net->nodes()) {
           if (net->isChanceNode(n)) {
             const std::string&       name = net->variable(n).name();
-            gum::Potential< double > p(net->cpt(name));
+            gum::Tensor< double > p(net->cpt(name));
             p.fillWith(net2.cpt(name));
             if (net->cpt(name) != p) { TS_ASSERT(false) }
           }
           if (net->isUtilityNode(n)) {
             const std::string&       name = net->variable(n).name();
-            gum::Potential< double > p(net->utility(name));
+            gum::Tensor< double > p(net->utility(name));
             p.fillWith(net2.utility(name));
             if (net->utility(name) != p) { TS_ASSERT(false) }
           }

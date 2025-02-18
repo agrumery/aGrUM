@@ -45,7 +45,7 @@ from .pyAgrumTestSuite import pyAgrumTestCase, addTests
 
 
 class SamplingTestCase(pyAgrumTestCase):
-  def iterTest(self, goalPotential, inferenceEngine, target, evs, *, seuil=0.1, nbr=20):
+  def iterTest(self, goalTensor, inferenceEngine, target, evs, *, seuil=0.1, nbr=20):
     min = 1000
 
     for i in range(nbr):
@@ -53,7 +53,7 @@ class SamplingTestCase(pyAgrumTestCase):
       inferenceEngine.setEvidence(evs)
       inferenceEngine.makeInference()
       result = inferenceEngine.posterior(target)
-      diff = (goalPotential - result).abs().max()
+      diff = (goalTensor - result).abs().max()
 
       if diff <= seuil:
         return None

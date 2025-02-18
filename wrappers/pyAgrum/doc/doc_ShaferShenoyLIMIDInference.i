@@ -55,7 +55,7 @@ Removes all the evidence entered into the diagram.
 "
 Parameters
 ----------
-evidence : pyAgrum.Potential
+evidence : pyAgrum.Tensor
 	the evidence to remove
 
 Raises
@@ -108,7 +108,7 @@ Insert new evidence in the graph.
 Parameters
 ----------
 evidenceList : list
-	a list of potentials as evidences
+	a list of tensors as evidences
 
 Warnings
 --------
@@ -366,7 +366,7 @@ nodeName : str
 
 Returns
 -------
-pyAgrum.Potential
+pyAgrum.Tensor
   a const ref to the posterior probability of the node
 "
 
@@ -383,7 +383,7 @@ nodeName : str
 
 Returns
 -------
-pyAgrum.Potential
+pyAgrum.Tensor
   a const ref to the posterior utility of the utility node
 
 "

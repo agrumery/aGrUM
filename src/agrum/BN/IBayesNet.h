@@ -53,7 +53,7 @@
 #include <agrum/agrum.h>
 
 #include <agrum/base/graphicalModels/DAGmodel.h>
-#include <agrum/base/multidim/potential.h>
+#include <agrum/base/multidim/tensor.h>
 
 namespace gum {
 
@@ -114,7 +114,7 @@ namespace gum {
      *
      * @throw NotFound If no variable's id matches varId.
      */
-    virtual const Potential< GUM_SCALAR >& cpt(NodeId varId) const = 0;
+    virtual const Tensor< GUM_SCALAR >& cpt(NodeId varId) const = 0;
 
     /**
      * Returns a constant reference to the VariableNodeMap of thisBN
@@ -252,29 +252,29 @@ namespace gum {
     NodeSet minimalCondSet(const NodeSet& targets, const NodeSet& soids) const;
 
     /**
-     * @return a Potential for a (numerical) discrete variable representing an evidence with a float
+     * @return a Tensor for a (numerical) discrete variable representing an evidence with a float
      * as observed value
      */
-    Potential< GUM_SCALAR > evEq(const std::string& name, double value) const;
+    Tensor< GUM_SCALAR > evEq(const std::string& name, double value) const;
 
     /**
-     * @return a Potential for a (numerical) discrete variable representing an evidence with a
+     * @return a Tensor for a (numerical) discrete variable representing an evidence with a
      * interval of float as observed value
      */
-    Potential< GUM_SCALAR > evIn(const std::string& name, double val1, double val2) const;
+    Tensor< GUM_SCALAR > evIn(const std::string& name, double val1, double val2) const;
 
     /**
-     * @return a Potential for a (numerical) discrete variable representing an evidence with an
+     * @return a Tensor for a (numerical) discrete variable representing an evidence with an
      * observed value less than the parameter
      */
-    Potential< GUM_SCALAR > evLt(const std::string& name, double value) const;
+    Tensor< GUM_SCALAR > evLt(const std::string& name, double value) const;
 
 
     /**
-     * @return a Potential for a (numerical) discrete variable representing an evidence with an
+     * @return a Tensor for a (numerical) discrete variable representing an evidence with an
      * observed value greater than the parameter
      */
-    Potential< GUM_SCALAR > evGt(const std::string& name, double value) const;
+    Tensor< GUM_SCALAR > evGt(const std::string& name, double value) const;
 
 
     /**

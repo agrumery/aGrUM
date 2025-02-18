@@ -199,14 +199,14 @@ namespace gum {
                                                const std::vector< NodeId >& conditioning_nodes)
           = 0;
 
-      /// sets the CPT's parameters corresponding to a given Potential
-      /** The potential is assumed to be a conditional probability, the first
+      /// sets the CPT's parameters corresponding to a given Tensor
+      /** The tensor is assumed to be a conditional probability, the first
        * variable of its variablesSequence() being the target variable, the
        * other ones being on the right side of the conditioning bar. */
       template < typename GUM_SCALAR >
       void setParameters(const NodeId                 target_node,
                          const std::vector< NodeId >& conditioning_nodes,
-                         Potential< GUM_SCALAR >&     pot);
+                         Tensor< GUM_SCALAR >&     pot);
 
       /// returns the mapping from ids to column positions in the database
       /** @warning An empty nodeId2Columns bijection means that the mapping is
@@ -255,25 +255,25 @@ namespace gum {
       template < typename GUM_SCALAR >
       void _checkParameters_(const NodeId                 target_node,
                              const std::vector< NodeId >& conditioning_nodes,
-                             Potential< GUM_SCALAR >&     pot);
+                             Tensor< GUM_SCALAR >&     pot);
 
-      // sets the CPT's parameters corresponding to a given Potential
-      // when the potential belongs to a BayesNet<GUM_SCALAR> when
+      // sets the CPT's parameters corresponding to a given Tensor
+      // when the tensor belongs to a BayesNet<GUM_SCALAR> when
       // GUM_SCALAR is different from a double
       template < typename GUM_SCALAR >
       typename std::enable_if< !std::is_same< GUM_SCALAR, double >::value, void >::type
           _setParameters_(const NodeId                 target_node,
                           const std::vector< NodeId >& conditioning_nodes,
-                          Potential< GUM_SCALAR >&     pot);
+                          Tensor< GUM_SCALAR >&     pot);
 
-      // sets the CPT's parameters corresponding to a given Potential
-      // when the potential belongs to a BayesNet<GUM_SCALAR> when
+      // sets the CPT's parameters corresponding to a given Tensor
+      // when the tensor belongs to a BayesNet<GUM_SCALAR> when
       // GUM_SCALAR is equal to double (the code is optimized for doubles)
       template < typename GUM_SCALAR >
       typename std::enable_if< std::is_same< GUM_SCALAR, double >::value, void >::type
           _setParameters_(const NodeId                 target_node,
                           const std::vector< NodeId >& conditioning_nodes,
-                          Potential< GUM_SCALAR >&     pot);
+                          Tensor< GUM_SCALAR >&     pot);
 
 #endif /* DOXYGEN_SHOULD_SKIP_THIS */
     };

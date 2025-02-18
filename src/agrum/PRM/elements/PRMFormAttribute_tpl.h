@@ -162,7 +162,7 @@ namespace gum {
     }
 
     template < typename GUM_SCALAR >
-    const Potential< GUM_SCALAR >& PRMFormAttribute< GUM_SCALAR >::cpf() const {
+    const Tensor< GUM_SCALAR >& PRMFormAttribute< GUM_SCALAR >::cpf() const {
       if (_cpf_ == 0) { _fillCpf_(); }
       return *_cpf_;
     }
@@ -274,7 +274,7 @@ namespace gum {
       try {
         if (_cpf_) { delete _cpf_; }
 
-        _cpf_ = new Potential< GUM_SCALAR >();
+        _cpf_ = new Tensor< GUM_SCALAR >();
 
         for (auto var: _formulas_->variablesSequence()) {
           _cpf_->add(*var);

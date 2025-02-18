@@ -52,7 +52,7 @@
 #include <agrum/agrum.h>
 
 #include <agrum/base/graphicalModels/graphicalModel.h>
-#include <agrum/base/multidim/potential.h>
+#include <agrum/base/multidim/tensor.h>
 
 namespace gum {
 
@@ -76,7 +76,7 @@ namespace gum {
    * 1- ie=SpecificInference(model);              // state <- OutdatedStructure
    * 2- set targets and evidence in ie
    * 3- ie.prepareInference();                 // state <- Ready4Inference
-   * 4.a- change values of evidence in ie      // state <- OutdatedPotentials
+   * 4.a- change values of evidence in ie      // state <- OutdatedTensors
    * 4.b- change some hard evidence or targets // state <- OutdatedStructure
    * 5- ie.makeInference();                    // state <- Done
    * 6- get posteriors
@@ -88,16 +88,16 @@ namespace gum {
    *   model: for instance a node received a hard evidence, which implies that
    *   its outgoing arcs can be removed from the model, hence involving a
    *   structural change in the model.
-   * - OutdatedPotentials: in this state, the structure of the model remains
-   *   unchanged, only some potentials stored in it have changed. Therefore,
+   * - OutdatedTensors: in this state, the structure of the model remains
+   *   unchanged, only some tensors stored in it have changed. Therefore,
    *   the inference probably just needs to invalidate some already computed
-   *   potentials to be ready. Only a light amount of preparation is needed to
+   *   tensors to be ready. Only a light amount of preparation is needed to
    *   be able to perform inference.
    * - Ready4Inference: in this state, all the data structures are ready for
    *   inference. There just remains to perform the inference computations.
    * - Done: the heavy computations of inference have been done. There might
    *   still remain a few light computations to perform to get the posterior
-   *   potentials we need.
+   *   tensors we need.
    */
 
   template < typename GUM_SCALAR >
@@ -112,18 +112,18 @@ namespace gum {
      *   model: for instance a node received a hard evidence, which implies that
      *   its outgoing arcs can be removed from the model, hence involving a
      *   structural change in the model.
-     * - OutdatedPotentials: in this state, the structure of the model remains
-     *   unchanged, only some potentials stored in it have changed. Therefore,
+     * - OutdatedTensors: in this state, the structure of the model remains
+     *   unchanged, only some tensors stored in it have changed. Therefore,
      *   the inference probably just needs to invalidate some already computed
-     *   potentials to be ready. Only a light amount of preparation is needed to
+     *   tensors to be ready. Only a light amount of preparation is needed to
      *   be able to perform inference.
      * - Ready4Inference: in this state, all the data structures are ready for
      *   inference. There just remains to perform the inference computations.
      * - Done: the heavy computations of inference have been done. There might
      *   still remain a few light computations to perform to get the posterior
-     *   potentials we need.
+     *   tensors we need.
      */
-    enum class StateOfInference { OutdatedStructure, OutdatedPotentials, ReadyForInference, Done };
+    enum class StateOfInference { OutdatedStructure, OutdatedTensors, ReadyForInference, Done };
 
 
     // ############################################################################
@@ -169,8 +169,8 @@ namespace gum {
     virtual bool isInferenceReady() const noexcept final;
     /// returns whether the inference object is in a OutdatedStructure state
     virtual bool isInferenceOutdatedStructure() const noexcept final;
-    /// returns whether the inference object is in a OutdatedPotential state
-    virtual bool isInferenceOutdatedPotentials() const noexcept final;
+    /// returns whether the inference object is in a OutdatedTensor state
+    virtual bool isInferenceOutdatedTensors() const noexcept final;
     /// returns whether the inference object is in a InferenceDone state
     /** The inference object is in a done state when the posteriors can be
      * retrieved without performing a new inference, i.e., all the heavy
@@ -259,47 +259,47 @@ namespace gum {
 
     /// adds a new evidence on node id (might be soft or hard)
     /**
-     * @throw UndefinedElement if the potential is defined over several nodes
-     * @throw UndefinedElement if the node on which the potential is defined
+     * @throw UndefinedElement if the tensor is defined over several nodes
+     * @throw UndefinedElement if the node on which the tensor is defined
      * does not belong to the Bayesian network
-     * @throw InvalidArgument if the node of the potential already has an
+     * @throw InvalidArgument if the node of the tensor already has an
      * evidence
      * @throw FatalError if pot=[0,0,...,0]
      */
-    virtual void addEvidence(const Potential< GUM_SCALAR >& pot) final;
+    virtual void addEvidence(const Tensor< GUM_SCALAR >& pot) final;
 
     /// adds a new evidence on node id (might be soft or hard)
     /**
-     * @throw UndefinedElement if the potential is defined over several nodes
-     * @throw UndefinedElement if the node on which the potential is defined
+     * @throw UndefinedElement if the tensor is defined over several nodes
+     * @throw UndefinedElement if the node on which the tensor is defined
      * does not belong to the Bayesian network
-     * @throw InvalidArgument if the node of the potential already has an
+     * @throw InvalidArgument if the node of the tensor already has an
      * evidence
      * @throw FatalError if pot=[0,0,...,0]
      */
-    virtual void addEvidence(Potential< GUM_SCALAR >&& pot) final;
+    virtual void addEvidence(Tensor< GUM_SCALAR >&& pot) final;
 
     /// adds a new set of evidence
     /**
-     * @throw UndefinedElement if some potential is defined over several nodes
-     * @throw UndefinedElement if the node on which some potential is defined
+     * @throw UndefinedElement if some tensor is defined over several nodes
+     * @throw UndefinedElement if the node on which some tensor is defined
      * does not belong to the Bayesian network
-     * @throw InvalidArgument if the node of some potential already has an
+     * @throw InvalidArgument if the node of some tensor already has an
      * evidence
      * @throw FatalError if pot=[0,0,...,0]
      */
-    virtual void addSetOfEvidence(const Set< const Potential< GUM_SCALAR >* >& potset) final;
+    virtual void addSetOfEvidence(const Set< const Tensor< GUM_SCALAR >* >& potset) final;
 
     /// adds a new list of evidence
     /**
-     * @throw UndefinedElement if some potential is defined over several nodes
-     * @throw UndefinedElement if the node on which some potential is defined
+     * @throw UndefinedElement if some tensor is defined over several nodes
+     * @throw UndefinedElement if the node on which some tensor is defined
      * does not belong to the Bayesian network
-     * @throw InvalidArgument if the node of some potential already has an
+     * @throw InvalidArgument if the node of some tensor already has an
      * evidence
      * @throw FatalError if pot=[0,0,...,0]
      */
-    virtual void addListOfEvidence(const List< const Potential< GUM_SCALAR >* >& potlist) final;
+    virtual void addListOfEvidence(const List< const Tensor< GUM_SCALAR >* >& potlist) final;
 
     /// change the value of an already existing hard evidence
     /**
@@ -356,14 +356,14 @@ namespace gum {
 
     /// change the value of an already existing evidence (might be soft or hard)
     /**
-     * @throw UndefinedElement if the potential is defined over several nodes
-     * @throw UndefinedElement if the node on which the potential is defined
+     * @throw UndefinedElement if the tensor is defined over several nodes
+     * @throw UndefinedElement if the node on which the tensor is defined
      *        does not belong to the Bayesian network
-     * @throw InvalidArgument if the node of the potential does not already
+     * @throw InvalidArgument if the node of the tensor does not already
      *        have an evidence
      * @throw FatalError if pot=[0,0,...,0]
      */
-    virtual void chgEvidence(const Potential< GUM_SCALAR >& pot) final;
+    virtual void chgEvidence(const Tensor< GUM_SCALAR >& pot) final;
 
     /// removes all the evidence entered into the network
     virtual void eraseAllEvidence() final;
@@ -405,7 +405,7 @@ namespace gum {
     virtual Size nbrSoftEvidence() const final;
 
     /// returns the set of evidence
-    const NodeProperty< const Potential< GUM_SCALAR >* >& evidence() const;
+    const NodeProperty< const Tensor< GUM_SCALAR >* >& evidence() const;
 
     /// returns the set of nodes with soft evidence
     const NodeSet& softEvidenceNodes() const;
@@ -451,11 +451,11 @@ namespace gum {
      * makeInference_. */
     virtual void updateOutdatedStructure_() = 0;
 
-    /// prepares inference when the latter is in OutdatedPotentials state
+    /// prepares inference when the latter is in OutdatedTensors state
     /** Note that the values of evidence are not necessarily
-     * known and can be changed between updateOutdatedPotentials_ and
+     * known and can be changed between updateOutdatedTensors_ and
      * makeInference_. */
-    virtual void updateOutdatedPotentials_() = 0;
+    virtual void updateOutdatedTensors_() = 0;
 
     /// called when the inference has to be performed effectively
     /** Once the inference is done, fillPosterior_ can be called. */
@@ -474,25 +474,25 @@ namespace gum {
      * graphicalModelInference may be smarter than graphicalModelInference and may,
      * in some situations, find out that their data structures are still ok for
      * inference and, therefore, only resort to perform the actions related to the
-     * OutdatedPotentials state. As an example, consider a LazyPropagation
+     * OutdatedTensors state. As an example, consider a LazyPropagation
      * inference in Bayes Net A->B->C->D->E in which C has received hard evidence
      * e_C and E is the only target. In this case, A and B are not needed for
-     * inference, the only potentials that matter are P(D|e_C) and P(E|D). So the
+     * inference, the only tensors that matter are P(D|e_C) and P(E|D). So the
      * smallest join tree needed for inference contains only one clique DE. Now,
      * adding new evidence e_A on A has no impact on E given hard evidence e_C. In
      * this case, LazyPropagation can be smart and not update its join tree.*/
     void setOutdatedStructureState_();
 
-    /** @brief puts the inference into an OutdatedPotentials state if it is
+    /** @brief puts the inference into an OutdatedTensors state if it is
      * not already in an OutdatedStructure state
      *
-     * OutdatedPotentials: in this state, the structure of the model remains
-     * unchanged, only some potentials stored in it have changed. Therefore,
+     * OutdatedTensors: in this state, the structure of the model remains
+     * unchanged, only some tensors stored in it have changed. Therefore,
      * the inference probably just needs to invalidate some already computed
-     * potentials to be ready. Only a light amount of preparation is needed to
+     * tensors to be ready. Only a light amount of preparation is needed to
      * be able to perform inference.
      */
-    void setOutdatedPotentialsState_();
+    void setOutdatedTensorsState_();
 
 
     private:
@@ -506,7 +506,7 @@ namespace gum {
     NodeProperty< Size > _domain_sizes_;
 
     /// the set of evidence entered into the network
-    NodeProperty< const Potential< GUM_SCALAR >* > _evidence_;
+    NodeProperty< const Tensor< GUM_SCALAR >* > _evidence_;
 
     /// assign to each node with a hard evidence the index of its observed value
     NodeProperty< Idx > _hard_evidence_;
@@ -519,10 +519,10 @@ namespace gum {
 
 
     /// create the internal structure for a hard evidence
-    Potential< GUM_SCALAR > _createHardEvidence_(NodeId id, Idx val) const;
+    Tensor< GUM_SCALAR > _createHardEvidence_(NodeId id, Idx val) const;
 
-    /// checks whether a potential corresponds to a hard evidence or not
-    bool _isHardEvidence_(const Potential< GUM_SCALAR >& pot, Idx& val) const;
+    /// checks whether a tensor corresponds to a hard evidence or not
+    bool _isHardEvidence_(const Tensor< GUM_SCALAR >& pot, Idx& val) const;
 
     /// computes the domain sizes of the random variables
     void _computeDomainSizes_();

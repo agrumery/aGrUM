@@ -134,12 +134,12 @@ namespace gum {
 #ifndef DOXYGEN_SHOULD_SKIP_THIS
 
       private:
-      /// copy a potential into another whose variables' sequence differs
-      /** The variables of both potential should be the same, only their
+      /// copy a tensor into another whose variables' sequence differs
+      /** The variables of both tensor should be the same, only their
        * order differs */
       template < typename GUM_SCALAR = double >
-      static void _probaVarReordering_(gum::Potential< GUM_SCALAR >&       pot,
-                                       const gum::Potential< GUM_SCALAR >& other_pot);
+      static void _probaVarReordering_(gum::Tensor< GUM_SCALAR >&       pot,
+                                       const gum::Tensor< GUM_SCALAR >& other_pot);
 
 #endif /* DOXYGEN_SHOULD_SKIP_THIS */
     };

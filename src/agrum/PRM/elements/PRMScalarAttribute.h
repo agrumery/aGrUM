@@ -64,7 +64,7 @@ namespace gum {
      *type
      *and
      * by a Conditional Probability Function (aka CPF but represented by a
-     * Potential).
+     * Tensor).
      *
      * An attribute in a PRM is the equivalent of a random variable in a
      *bayesian
@@ -76,7 +76,7 @@ namespace gum {
      * Built-in copies (copy constructor and copy operator) are illegal due to
      * various problems raised by redondant information.
      *
-     * @see PRM PRMFactory Class PRMClassElement PRMType Potential
+     * @see PRM PRMFactory Class PRMClassElement PRMType Tensor
      * @ingroup prm_group
      */
     template < typename GUM_SCALAR >
@@ -95,7 +95,7 @@ namespace gum {
        * implementation.
        * @param name The name of this PRMAttribute.
        * @param type The type of this PRMAttribute, it is copied.
-       * @param impl The MultiDimImplementation used by the internal Potential
+       * @param impl The MultiDimImplementation used by the internal Tensor
        * of this PRMAttribute.
        *             it will be deleted after the call of ~PRMAttribute.
        */
@@ -130,7 +130,7 @@ namespace gum {
       virtual const PRMType& type() const;
 
       /// See gum::PRMClassElement::cpf().
-      virtual const Potential< GUM_SCALAR >& cpf() const;
+      virtual const Tensor< GUM_SCALAR >& cpf() const;
 
       /// See gum::PRMClassElement::addParent_().
       virtual void addParent(const PRMClassElement< GUM_SCALAR >& elt);
@@ -166,8 +166,8 @@ namespace gum {
       /// The random variable type of this attribute
       PRMType* _type_;
 
-      /// A pointer on the Potential of this attribute
-      Potential< GUM_SCALAR >* _cpf_;
+      /// A pointer on the Tensor of this attribute
+      Tensor< GUM_SCALAR >* _cpf_;
 
       /// @}
     };

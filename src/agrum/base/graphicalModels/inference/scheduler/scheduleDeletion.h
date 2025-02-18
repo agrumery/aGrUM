@@ -65,14 +65,14 @@ namespace gum {
    * The following code gives an example of the usage of ScheduleDeletion:
    * @code
    * // create the multidim
-   * Potential< float > p1 (....), p2(....);
-   * ScheduleMultiDim< Potential< float > > t1(p1, true); // contains a copy of pot
-   * ScheduleMultiDim< Potential< float > > t2(p2, false); // contains a ref on pot
+   * Tensor< float > p1 (....), p2(....);
+   * ScheduleMultiDim< Tensor< float > > t1(p1, true); // contains a copy of pot
+   * ScheduleMultiDim< Tensor< float > > t2(p2, false); // contains a ref on pot
    *
    * // create the ScheduleDeletions
-   * ScheduleDeletion< Potential<float> > del1(t1), del2(t2);
+   * ScheduleDeletion< Tensor<float> > del1(t1), del2(t2);
    *
-   * // applying del1 consists of releasing the memory of the potential it
+   * // applying del1 consists of releasing the memory of the tensor it
    * // contains and, subsequently, of making the ScheduleMultiDim abstract
    * del1.execute();
    *

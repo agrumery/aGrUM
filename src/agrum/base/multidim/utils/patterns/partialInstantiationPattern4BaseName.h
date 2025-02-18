@@ -160,7 +160,7 @@ namespace gum {
 #  ifdef GUM_MULTI_DIM_PARTIAL_INSTANTIATION_POINTER
     // fill the matrix with any element
     {
-      // TODO: change into Instantiation table_inst(table); when Potentials will support
+      // TODO: change into Instantiation table_inst(table); when Tensors will support
       // thread-safe creations of Instantiations
       Instantiation table_inst;
       for (const auto var: table->variablesSequence())
@@ -178,7 +178,7 @@ namespace gum {
     // arrays that are directly used for this loop
     GUM_MULTI_DIM_PARTIAL_INSTANTIATION_TYPE* presult
         = const_cast< GUM_MULTI_DIM_PARTIAL_INSTANTIATION_TYPE* >(&(result->unsafeGet(0)));
-    // TODO: change into Instantiation table_inst(table); when Potentials will support
+    // TODO: change into Instantiation table_inst(table); when Tensors will support
     // thread-safe creations of Instantiations
     Instantiation table_inst;
     for (const auto var: table->variablesSequence())

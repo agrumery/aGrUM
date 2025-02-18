@@ -98,7 +98,7 @@ namespace gum {
       /// @{
 
       /// See gum::IBaseBayesNet::cpt().
-      virtual const Potential< GUM_SCALAR >& cpt(NodeId varId) const;
+      virtual const Tensor< GUM_SCALAR >& cpt(NodeId varId) const;
 
       /// See gum::IBaseBayesNet::variableNodeMap().
       virtual const VariableNodeMap& variableNodeMap() const;

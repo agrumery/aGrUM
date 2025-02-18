@@ -563,13 +563,13 @@ namespace gum_tests {
 
       TS_ASSERT_LESS_THAN(
           (bn2.cpt("A")
-           - (gum::Potential< double >() << bn2.variable("A")).fillWith(ie.posterior("A")))
+           - (gum::Tensor< double >() << bn2.variable("A")).fillWith(ie.posterior("A")))
               .abs()
               .max(),
           1e-2)
       TS_ASSERT_LESS_THAN(
           (bn2.cpt("B")
-           - (gum::Potential< double >() << bn2.variable("B")).fillWith(ie.posterior("B")))
+           - (gum::Tensor< double >() << bn2.variable("B")).fillWith(ie.posterior("B")))
               .abs()
               .max(),
           1e-2)
@@ -595,13 +595,13 @@ namespace gum_tests {
 
       TS_ASSERT_LESS_THAN(
           (bn2.cpt("A")
-           - (gum::Potential< double >() << bn2.variable("A")).fillWith(ie.posterior("A")))
+           - (gum::Tensor< double >() << bn2.variable("A")).fillWith(ie.posterior("A")))
               .abs()
               .max(),
           1e-2)
       TS_ASSERT_LESS_THAN(
           (bn2.cpt("B")
-           - (gum::Potential< double >() << bn2.variable("B")).fillWith(ie.posterior("B")))
+           - (gum::Tensor< double >() << bn2.variable("B")).fillWith(ie.posterior("B")))
               .abs()
               .max(),
           1e-2)

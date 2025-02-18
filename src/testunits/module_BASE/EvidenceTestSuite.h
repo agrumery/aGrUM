@@ -41,7 +41,7 @@
 #include <gumtest/AgrumTestSuite.h>
 #include <gumtest/utils.h>
 
-#include <agrum/base/multidim/potential.h>
+#include <agrum/base/multidim/tensor.h>
 #include <agrum/BN/BayesNet.h>
 
 namespace gum_tests {
@@ -55,7 +55,7 @@ namespace gum_tests {
       TS_ASSERT(!((bn.cpt("A").scale(100)).isEvidence()))
       TS_ASSERT(!((bn.cpt("A").translate(1)).isEvidence()))
 
-      auto p = gum::Potential(bn.cpt("A"));
+      auto p = gum::Tensor(bn.cpt("A"));
       p.fillWith(0);
       TS_ASSERT(!(p.isEvidence()))
       p.fillWith(1);
@@ -66,10 +66,10 @@ namespace gum_tests {
 
     GUM_ACTIVE_TEST(CombineEvidence) {
       const auto bn = gum::BayesNet< double >::fastPrototype("A[10]->C;B[10]");
-      auto       p1 = gum::Potential(bn.cpt("A"));
-      auto       p2 = gum::Potential(bn.cpt("A"));
+      auto       p1 = gum::Tensor(bn.cpt("A"));
+      auto       p2 = gum::Tensor(bn.cpt("A"));
       p2.randomCPT();
-      auto q = gum::Potential(bn.cpt("B"));
+      auto q = gum::Tensor(bn.cpt("B"));
 
       TS_ASSERT_THROWS(p1 | q, const gum::InvalidArgument&)
       TS_ASSERT_THROWS(p1 & q, const gum::InvalidArgument&)
@@ -104,48 +104,48 @@ namespace gum_tests {
       }
 
 
-      TS_ASSERT_EQUALS(toBoolString(gum::Potential< double >::evEq(bn.variable("A"), 4.0)),
+      TS_ASSERT_EQUALS(toBoolString(gum::Tensor< double >::evEq(bn.variable("A"), 4.0)),
                        "....1.....")
-      TS_ASSERT_EQUALS(toBoolString(gum::Potential< double >::evEq(bn.variable("B"), 4.0)),
+      TS_ASSERT_EQUALS(toBoolString(gum::Tensor< double >::evEq(bn.variable("B"), 4.0)),
                        "...1......")
-      TS_ASSERT_EQUALS(toBoolString(gum::Potential< double >::evEq(bn.variable("C"), 4.0)),
+      TS_ASSERT_EQUALS(toBoolString(gum::Tensor< double >::evEq(bn.variable("C"), 4.0)),
                        ".1........")
-      TS_ASSERT_EQUALS(toBoolString(gum::Potential< double >::evEq(bn.variable("D"), 4.0)),
+      TS_ASSERT_EQUALS(toBoolString(gum::Tensor< double >::evEq(bn.variable("D"), 4.0)),
                        "1.........")
-      TS_ASSERT_EQUALS(toBoolString(gum::Potential< double >::evEq(bn.variable("E"), 4.0)),
+      TS_ASSERT_EQUALS(toBoolString(gum::Tensor< double >::evEq(bn.variable("E"), 4.0)),
                        ".1........")
 
-      TS_ASSERT_EQUALS(toBoolString(gum::Potential< double >::evEq(bn.variable("A"), 4.0)
-                                    | gum::Potential< double >::evEq(bn.variable("A"), 8.0)),
+      TS_ASSERT_EQUALS(toBoolString(gum::Tensor< double >::evEq(bn.variable("A"), 4.0)
+                                    | gum::Tensor< double >::evEq(bn.variable("A"), 8.0)),
                        "....1...1.")
-      TS_ASSERT_EQUALS(toBoolString(gum::Potential< double >::evIn(bn.variable("A"), 4.0, 8.0)),
+      TS_ASSERT_EQUALS(toBoolString(gum::Tensor< double >::evIn(bn.variable("A"), 4.0, 8.0)),
                        "....11111.")
-      TS_ASSERT_EQUALS(toBoolString(~gum::Potential< double >::evIn(bn.variable("A"), 4.0, 8.0)),
+      TS_ASSERT_EQUALS(toBoolString(~gum::Tensor< double >::evIn(bn.variable("A"), 4.0, 8.0)),
                        "1111.....1")
 
-      TS_ASSERT_EQUALS(toBoolString(gum::Potential< double >::evLt(bn.variable("A"), 4.0)),
+      TS_ASSERT_EQUALS(toBoolString(gum::Tensor< double >::evLt(bn.variable("A"), 4.0)),
                        "1111......")
-      TS_ASSERT_EQUALS(toBoolString(gum::Potential< double >::evLt(bn.variable("A"), 0.0)),
+      TS_ASSERT_EQUALS(toBoolString(gum::Tensor< double >::evLt(bn.variable("A"), 0.0)),
                        "1.........")
 
-      TS_ASSERT_EQUALS(toBoolString(gum::Potential< double >::evGt(bn.variable("A"), 4.0)),
+      TS_ASSERT_EQUALS(toBoolString(gum::Tensor< double >::evGt(bn.variable("A"), 4.0)),
                        ".....11111")
-      TS_ASSERT_EQUALS(toBoolString(gum::Potential< double >::evGt(bn.variable("A"), 8.0)),
+      TS_ASSERT_EQUALS(toBoolString(gum::Tensor< double >::evGt(bn.variable("A"), 8.0)),
                        ".........1")
 
-      TS_ASSERT_EQUALS(toBoolString(gum::Potential< double >::evLt(bn.variable("C"), 7.0)),
+      TS_ASSERT_EQUALS(toBoolString(gum::Tensor< double >::evLt(bn.variable("C"), 7.0)),
                        "111.......")
-      TS_ASSERT_EQUALS(toBoolString(gum::Potential< double >::evLt(bn.variable("C"), 1.0)),
+      TS_ASSERT_EQUALS(toBoolString(gum::Tensor< double >::evLt(bn.variable("C"), 1.0)),
                        "1.........")
 
-      TS_ASSERT_EQUALS(toBoolString(gum::Potential< double >::evGt(bn.variable("C"), 7.0)),
+      TS_ASSERT_EQUALS(toBoolString(gum::Tensor< double >::evGt(bn.variable("C"), 7.0)),
                        "....111111")
-      TS_ASSERT_EQUALS(toBoolString(gum::Potential< double >::evGt(bn.variable("C"), 20.0)),
+      TS_ASSERT_EQUALS(toBoolString(gum::Tensor< double >::evGt(bn.variable("C"), 20.0)),
                        ".........1")
     }
 
     private:
-    std::string toBoolString(const gum::Potential< double >& p) {
+    std::string toBoolString(const gum::Tensor< double >& p) {
       std::string        s = "";
       gum::Instantiation I(p);
       for (I.setFirst(); !I.end(); I.inc())

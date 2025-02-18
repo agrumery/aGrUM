@@ -182,9 +182,9 @@ def pseudoCount(self,vars):
 
     Returns
     -------
-    a Potential containing this pseudo-counts
+    a Tensor containing this pseudo-counts
     """
-    p=pyAgrum.base.Potential()
+    p=pyAgrum.base.Tensor()
     lv=list()
     for i in vars:
         if type(i) is str:

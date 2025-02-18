@@ -3748,18 +3748,18 @@ namespace Swig {
 #define SWIGTYPE_p_gum__MixedGraph swig_types[35]
 #define SWIGTYPE_p_gum__NumericalDiscreteVariable swig_types[36]
 #define SWIGTYPE_p_gum__PDAG swig_types[37]
-#define SWIGTYPE_p_gum__PotentialT_double_t swig_types[38]
-#define SWIGTYPE_p_gum__RangeVariable swig_types[39]
-#define SWIGTYPE_p_gum__ScheduledInference swig_types[40]
-#define SWIGTYPE_p_gum__SetT_gum__Arc_t swig_types[41]
-#define SWIGTYPE_p_gum__SetT_gum__Arc_t__const_iterator swig_types[42]
-#define SWIGTYPE_p_gum__SetT_gum__DiscreteVariable_const_p_t swig_types[43]
-#define SWIGTYPE_p_gum__SetT_gum__Edge_t swig_types[44]
-#define SWIGTYPE_p_gum__SetT_gum__Edge_t__const_iterator swig_types[45]
-#define SWIGTYPE_p_gum__SetT_std__size_t_t swig_types[46]
-#define SWIGTYPE_p_gum__SetT_std__size_t_t__const_iterator swig_types[47]
-#define SWIGTYPE_p_gum__ShaferShenoyInferenceT_double_t swig_types[48]
-#define SWIGTYPE_p_gum__ShaferShenoyMRFInferenceT_double_t swig_types[49]
+#define SWIGTYPE_p_gum__RangeVariable swig_types[38]
+#define SWIGTYPE_p_gum__ScheduledInference swig_types[39]
+#define SWIGTYPE_p_gum__SetT_gum__Arc_t swig_types[40]
+#define SWIGTYPE_p_gum__SetT_gum__Arc_t__const_iterator swig_types[41]
+#define SWIGTYPE_p_gum__SetT_gum__DiscreteVariable_const_p_t swig_types[42]
+#define SWIGTYPE_p_gum__SetT_gum__Edge_t swig_types[43]
+#define SWIGTYPE_p_gum__SetT_gum__Edge_t__const_iterator swig_types[44]
+#define SWIGTYPE_p_gum__SetT_std__size_t_t swig_types[45]
+#define SWIGTYPE_p_gum__SetT_std__size_t_t__const_iterator swig_types[46]
+#define SWIGTYPE_p_gum__ShaferShenoyInferenceT_double_t swig_types[47]
+#define SWIGTYPE_p_gum__ShaferShenoyMRFInferenceT_double_t swig_types[48]
+#define SWIGTYPE_p_gum__TensorT_double_t swig_types[49]
 #define SWIGTYPE_p_gum__ThreadNumberManager swig_types[50]
 #define SWIGTYPE_p_gum__Triangulation swig_types[51]
 #define SWIGTYPE_p_gum__UGmodel swig_types[52]
@@ -4763,7 +4763,7 @@ SWIGINTERN PyObject *gum_IMarkovRandomField_Sl_double_Sg__minimalCondSet__SWIG_3
     PyAgrumHelper::populateNodeSetFromPySequenceOfIntOrString(soids,list,self->variableNodeMap());
     return PyAgrumHelper::PySetFromNodeSet(self->minimalCondSet(sotargets, soids));
   }
-SWIGINTERN gum::Potential< double > const &gum_IMarkovRandomField_Sl_double_Sg__factor__SWIG_1(gum::IMarkovRandomField< double > const *self,PyObject *nodeseq){
+SWIGINTERN gum::Tensor< double > const &gum_IMarkovRandomField_Sl_double_Sg__factor__SWIG_1(gum::IMarkovRandomField< double > const *self,PyObject *nodeseq){
     gum::NodeSet idx;
     PyAgrumHelper::populateNodeSetFromPySequenceOfIntOrString(idx,nodeseq,self->variableNodeMap());
 
@@ -5600,7 +5600,7 @@ SWIGINTERN PyObject *gum_MarkovRandomField_Sl_double_Sg__minimalCondSet__SWIG_1(
     PyAgrumHelper::populateNodeSetFromPySequenceOfIntOrString(soids,list,self->variableNodeMap());
     return PyAgrumHelper::PySetFromNodeSet(self->minimalCondSet(sotargets, soids));
   }
-SWIGINTERN gum::Potential< double > const &gum_MarkovRandomField_Sl_double_Sg__factor__SWIG_2(gum::MarkovRandomField< double > const *self,PyObject *nodeseq){
+SWIGINTERN gum::Tensor< double > const &gum_MarkovRandomField_Sl_double_Sg__factor__SWIG_2(gum::MarkovRandomField< double > const *self,PyObject *nodeseq){
     gum::NodeSet idx;
     PyAgrumHelper::populateNodeSetFromPySequenceOfIntOrString(idx,nodeseq,self->variableNodeMap());
 
@@ -5653,7 +5653,7 @@ SWIGINTERN std::string gum_MarkovRandomField_Sl_double_Sg____repr__(gum::MarkovR
    return s.str();
   }
 SWIGINTERN std::string gum_MarkovRandomField_Sl_double_Sg____str__(gum::MarkovRandomField< double > const *self){ return self->toString();}
-SWIGINTERN gum::Potential< double > const &gum_MarkovRandomField_Sl_double_Sg__addFactor__SWIG_3(gum::MarkovRandomField< double > *self,PyObject *seq){
+SWIGINTERN gum::Tensor< double > const &gum_MarkovRandomField_Sl_double_Sg__addFactor__SWIG_3(gum::MarkovRandomField< double > *self,PyObject *seq){
       if (PyList_Check(seq)) {
         std::vector<std::string> names;
         PyAgrumHelper::populateStrVectorFromPySequenceOfIntOrString(names,seq,self->variableNodeMap());
@@ -5698,10 +5698,10 @@ SWIGINTERN void gum_ShaferShenoyMRFInference_Sl_double_Sg__setMaxMemory(gum::Sha
 SWIGINTERN void gum_ShaferShenoyMRFInference_Sl_double_Sg__makeInference(gum::ShaferShenoyMRFInference< double > *self){
     self->gum::MarginalTargetedMRFInference<double>::makeInference();
   }
-SWIGINTERN gum::Potential< double > const gum_ShaferShenoyMRFInference_Sl_double_Sg__posterior__SWIG_0(gum::ShaferShenoyMRFInference< double > *self,gum::NodeId const var){
+SWIGINTERN gum::Tensor< double > const gum_ShaferShenoyMRFInference_Sl_double_Sg__posterior__SWIG_0(gum::ShaferShenoyMRFInference< double > *self,gum::NodeId const var){
     return self->gum::MarginalTargetedMRFInference<double>::posterior(var);
   }
-SWIGINTERN gum::Potential< double > const gum_ShaferShenoyMRFInference_Sl_double_Sg__posterior__SWIG_1(gum::ShaferShenoyMRFInference< double > *self,std::string const &nodeName){
+SWIGINTERN gum::Tensor< double > const gum_ShaferShenoyMRFInference_Sl_double_Sg__posterior__SWIG_1(gum::ShaferShenoyMRFInference< double > *self,std::string const &nodeName){
     return self->gum::MarginalTargetedMRFInference<double>::posterior(nodeName);
   }
 SWIGINTERN void gum_ShaferShenoyMRFInference_Sl_double_Sg__addEvidence__SWIG_0(gum::ShaferShenoyMRFInference< double > *self,gum::NodeId const id,gum::Idx const val){
@@ -5752,7 +5752,7 @@ SWIGINTERN void gum_ShaferShenoyMRFInference_Sl_double_Sg__addEvidence__SWIG_4(g
 SWIGINTERN void gum_ShaferShenoyMRFInference_Sl_double_Sg__addEvidence__SWIG_5(gum::ShaferShenoyMRFInference< double > *self,std::string const &nodeName,std::vector< double,std::allocator< double > > const &vals){
     self->gum::MarginalTargetedMRFInference<double>::addEvidence(nodeName,vals);
   }
-SWIGINTERN void gum_ShaferShenoyMRFInference_Sl_double_Sg__addEvidence__SWIG_6(gum::ShaferShenoyMRFInference< double > *self,gum::Potential< double > const &p){
+SWIGINTERN void gum_ShaferShenoyMRFInference_Sl_double_Sg__addEvidence__SWIG_6(gum::ShaferShenoyMRFInference< double > *self,gum::Tensor< double > const &p){
     self->gum::MarginalTargetedMRFInference<double>::addEvidence(p);
   }
 SWIGINTERN void gum_ShaferShenoyMRFInference_Sl_double_Sg__chgEvidence__SWIG_0(gum::ShaferShenoyMRFInference< double > *self,gum::NodeId const id,gum::Idx const val){
@@ -5767,7 +5767,7 @@ SWIGINTERN void gum_ShaferShenoyMRFInference_Sl_double_Sg__chgEvidence__SWIG_2(g
 SWIGINTERN void gum_ShaferShenoyMRFInference_Sl_double_Sg__chgEvidence__SWIG_3(gum::ShaferShenoyMRFInference< double > *self,std::string const &nodeName,std::string const &val){
     self->gum::MarginalTargetedMRFInference<double>::chgEvidence(nodeName,val);
   }
-SWIGINTERN void gum_ShaferShenoyMRFInference_Sl_double_Sg__chgEvidence__SWIG_4(gum::ShaferShenoyMRFInference< double > *self,gum::Potential< double > const &p){
+SWIGINTERN void gum_ShaferShenoyMRFInference_Sl_double_Sg__chgEvidence__SWIG_4(gum::ShaferShenoyMRFInference< double > *self,gum::Tensor< double > const &p){
     self->gum::MarginalTargetedMRFInference<double>::chgEvidence(p);
   }
 SWIGINTERN void gum_ShaferShenoyMRFInference_Sl_double_Sg__chgEvidence__SWIG_5(gum::ShaferShenoyMRFInference< double > *self,gum::NodeId const id,std::vector< double,std::allocator< double > > const &vals){
@@ -5842,14 +5842,14 @@ SWIGINTERN double gum_ShaferShenoyMRFInference_Sl_double_Sg__H__SWIG_0(gum::Shaf
 SWIGINTERN double gum_ShaferShenoyMRFInference_Sl_double_Sg__H__SWIG_1(gum::ShaferShenoyMRFInference< double > *self,std::string const &nodeName){
      return self->gum::MarginalTargetedMRFInference<double>::H(nodeName);
    }
-SWIGINTERN gum::Potential< double > gum_ShaferShenoyMRFInference_Sl_double_Sg__evidenceImpact__SWIG_0(gum::ShaferShenoyMRFInference< double > *self,gum::NodeId target,gum::NodeSet const &evs){
+SWIGINTERN gum::Tensor< double > gum_ShaferShenoyMRFInference_Sl_double_Sg__evidenceImpact__SWIG_0(gum::ShaferShenoyMRFInference< double > *self,gum::NodeId target,gum::NodeSet const &evs){
     return self->gum::MarginalTargetedMRFInference<double>::evidenceImpact(target,evs);
   }
-SWIGINTERN gum::Potential< double > gum_ShaferShenoyMRFInference_Sl_double_Sg__evidenceImpact__SWIG_1(gum::ShaferShenoyMRFInference< double > *self,std::string const &target,std::vector< std::string,std::allocator< std::string > > const &evs){
+SWIGINTERN gum::Tensor< double > gum_ShaferShenoyMRFInference_Sl_double_Sg__evidenceImpact__SWIG_1(gum::ShaferShenoyMRFInference< double > *self,std::string const &target,std::vector< std::string,std::allocator< std::string > > const &evs){
    return self->gum::MarginalTargetedMRFInference<double>::evidenceImpact(target,evs);
   }
 SWIGINTERN gum::IMarkovRandomField< double > const &gum_ShaferShenoyMRFInference_Sl_double_Sg__MRF(gum::ShaferShenoyMRFInference< double > const *self){ return self->gum::MarginalTargetedMRFInference<double>::MRF(); }
-SWIGINTERN gum::Potential< double > const gum_ShaferShenoyMRFInference_Sl_double_Sg__posterior__SWIG_2(gum::ShaferShenoyMRFInference< double > *self,std::string const nodeName){
+SWIGINTERN gum::Tensor< double > const gum_ShaferShenoyMRFInference_Sl_double_Sg__posterior__SWIG_2(gum::ShaferShenoyMRFInference< double > *self,std::string const nodeName){
     return self->JointTargetedMRFInference<double>::posterior(nodeName);
   }
 SWIGINTERN void gum_ShaferShenoyMRFInference_Sl_double_Sg__eraseAllJointTargets(gum::ShaferShenoyMRFInference< double > *self){
@@ -5861,10 +5861,10 @@ SWIGINTERN void gum_ShaferShenoyMRFInference_Sl_double_Sg__eraseAllMarginalTarge
 SWIGINTERN gum::Size gum_ShaferShenoyMRFInference_Sl_double_Sg__nbrJointTargets(gum::ShaferShenoyMRFInference< double > *self){
     return self->gum::JointTargetedMRFInference<double>::nbrJointTargets();
   }
-SWIGINTERN gum::Potential< double > gum_ShaferShenoyMRFInference_Sl_double_Sg__evidenceJointImpact__SWIG_0(gum::ShaferShenoyMRFInference< double > *self,gum::NodeSet const &targets,gum::NodeSet const &evs){
+SWIGINTERN gum::Tensor< double > gum_ShaferShenoyMRFInference_Sl_double_Sg__evidenceJointImpact__SWIG_0(gum::ShaferShenoyMRFInference< double > *self,gum::NodeSet const &targets,gum::NodeSet const &evs){
     return self->gum::JointTargetedMRFInference<double>::evidenceJointImpact(targets,evs);
   }
-SWIGINTERN gum::Potential< double > gum_ShaferShenoyMRFInference_Sl_double_Sg__evidenceJointImpact__SWIG_1(gum::ShaferShenoyMRFInference< double > *self,std::vector< std::string,std::allocator< std::string > > const &targets,std::vector< std::string,std::allocator< std::string > > const &evs){
+SWIGINTERN gum::Tensor< double > gum_ShaferShenoyMRFInference_Sl_double_Sg__evidenceJointImpact__SWIG_1(gum::ShaferShenoyMRFInference< double > *self,std::vector< std::string,std::allocator< std::string > > const &targets,std::vector< std::string,std::allocator< std::string > > const &evs){
    return self->gum::JointTargetedMRFInference<double>::evidenceJointImpact(targets,evs);
   }
 SWIGINTERN void gum_ShaferShenoyMRFInference_Sl_double_Sg__setEvidence(gum::ShaferShenoyMRFInference< double > *self,PyObject *evidces){}
@@ -5879,7 +5879,7 @@ SWIGINTERN PyObject *gum_ShaferShenoyMRFInference_Sl_double_Sg__softEvidenceNode
 SWIGINTERN PyObject *gum_ShaferShenoyMRFInference_Sl_double_Sg__targets(gum::ShaferShenoyMRFInference< double > *self){
       return PyAgrumHelper::PySetFromNodeSet(self->targets() );
     }
-SWIGINTERN gum::Potential< double > gum_ShaferShenoyMRFInference_Sl_double_Sg__evidenceImpact__SWIG_2(gum::ShaferShenoyMRFInference< double > *self,PyObject *target,PyObject *evs){
+SWIGINTERN gum::Tensor< double > gum_ShaferShenoyMRFInference_Sl_double_Sg__evidenceImpact__SWIG_2(gum::ShaferShenoyMRFInference< double > *self,PyObject *target,PyObject *evs){
       gum::NodeId itarget=PyAgrumHelper::nodeIdFromNameOrIndex(target,self->MRF().variableNodeMap());
       gum::NodeSet soe;
       PyAgrumHelper::populateNodeSetFromPySequenceOfIntOrString(soe,evs,self->MRF().variableNodeMap());
@@ -5890,14 +5890,14 @@ SWIGINTERN double gum_ShaferShenoyMRFInference_Sl_double_Sg__jointMutualInformat
       PyAgrumHelper::populateNodeSetFromPySequenceOfIntOrString(sot,targets,self->MRF().variableNodeMap());
       return self->jointMutualInformation(sot);
     }
-SWIGINTERN gum::Potential< double > gum_ShaferShenoyMRFInference_Sl_double_Sg__evidenceJointImpact__SWIG_2(gum::ShaferShenoyMRFInference< double > *self,PyObject *targets,PyObject *evs){
+SWIGINTERN gum::Tensor< double > gum_ShaferShenoyMRFInference_Sl_double_Sg__evidenceJointImpact__SWIG_2(gum::ShaferShenoyMRFInference< double > *self,PyObject *targets,PyObject *evs){
       gum::NodeSet sot;
       gum::NodeSet soe;
       PyAgrumHelper::populateNodeSetFromPySequenceOfIntOrString(sot,targets,self->MRF().variableNodeMap());
       PyAgrumHelper::populateNodeSetFromPySequenceOfIntOrString(soe,evs,self->MRF().variableNodeMap());
       return self->evidenceJointImpact(sot,soe);
     }
-SWIGINTERN gum::Potential< double > gum_ShaferShenoyMRFInference_Sl_double_Sg__jointPosterior(gum::ShaferShenoyMRFInference< double > *self,PyObject *targets){
+SWIGINTERN gum::Tensor< double > gum_ShaferShenoyMRFInference_Sl_double_Sg__jointPosterior(gum::ShaferShenoyMRFInference< double > *self,PyObject *targets){
       if (! PyAnySet_Check(targets)) {
              {                                                                                             std::ostringstream error_stream;                                                            error_stream << "The argument must be a set";                                                                        throw(gum::InvalidArgument(gum::_createMsg_("/Users/phw/Documents/gits/agrum/aGrUM-dev/wrappers/pyAgrum/swigsrc//MRFinference.i", __FUNCTION__, 217, error_stream.str())));      }
       }
@@ -7838,7 +7838,7 @@ SWIGINTERN PyObject *_wrap_IMarkovRandomField_factor__SWIG_0(PyObject *self, Py_
   int res1 = 0 ;
   void *argp2 = 0 ;
   int res2 = 0 ;
-  gum::Potential< double > *result = 0 ;
+  gum::Tensor< double > *result = 0 ;
   
   (void)self;
   if ((nobjs < 2) || (nobjs > 2)) SWIG_fail;
@@ -7857,13 +7857,13 @@ SWIGINTERN PyObject *_wrap_IMarkovRandomField_factor__SWIG_0(PyObject *self, Py_
   arg2 = reinterpret_cast< gum::NodeSet * >(argp2);
   {
     try {
-      result = (gum::Potential< double > *) &((gum::IMarkovRandomField< double > const *)arg1)->factor((gum::NodeSet const &)*arg2);
+      result = (gum::Tensor< double > *) &((gum::IMarkovRandomField< double > const *)arg1)->factor((gum::NodeSet const &)*arg2);
     } catch (...) {
       SetPythonizeAgrumException();
       SWIG_fail;
     }
   }
-  resultobj = SWIG_NewPointerObj(SWIG_as_voidptr(result), SWIGTYPE_p_gum__PotentialT_double_t, 0 |  0 );
+  resultobj = SWIG_NewPointerObj(SWIG_as_voidptr(result), SWIGTYPE_p_gum__TensorT_double_t, 0 |  0 );
   return resultobj;
 fail:
   return NULL;
@@ -8943,7 +8943,7 @@ SWIGINTERN PyObject *_wrap_IMarkovRandomField_factor__SWIG_1(PyObject *self, Py_
   PyObject *arg2 = 0 ;
   void *argp1 = 0 ;
   int res1 = 0 ;
-  gum::Potential< double > *result = 0 ;
+  gum::Tensor< double > *result = 0 ;
   
   (void)self;
   if ((nobjs < 2) || (nobjs > 2)) SWIG_fail;
@@ -8955,13 +8955,13 @@ SWIGINTERN PyObject *_wrap_IMarkovRandomField_factor__SWIG_1(PyObject *self, Py_
   arg2 = swig_obj[1];
   {
     try {
-      result = (gum::Potential< double > *) &gum_IMarkovRandomField_Sl_double_Sg__factor__SWIG_1((gum::IMarkovRandomField< double > const *)arg1,arg2);
+      result = (gum::Tensor< double > *) &gum_IMarkovRandomField_Sl_double_Sg__factor__SWIG_1((gum::IMarkovRandomField< double > const *)arg1,arg2);
     } catch (...) {
       SetPythonizeAgrumException();
       SWIG_fail;
     }
   }
-  resultobj = SWIG_NewPointerObj(SWIG_as_voidptr(result), SWIGTYPE_p_gum__PotentialT_double_t, 0 |  0 );
+  resultobj = SWIG_NewPointerObj(SWIG_as_voidptr(result), SWIGTYPE_p_gum__TensorT_double_t, 0 |  0 );
   return resultobj;
 fail:
   return NULL;
@@ -9536,7 +9536,7 @@ SWIGINTERN PyObject *_wrap_MarkovRandomField_factor__SWIG_0(PyObject *self, Py_s
   int res1 = 0 ;
   void *argp2 = 0 ;
   int res2 = 0 ;
-  gum::Potential< double > *result = 0 ;
+  gum::Tensor< double > *result = 0 ;
   
   (void)self;
   if ((nobjs < 2) || (nobjs > 2)) SWIG_fail;
@@ -9555,13 +9555,13 @@ SWIGINTERN PyObject *_wrap_MarkovRandomField_factor__SWIG_0(PyObject *self, Py_s
   arg2 = reinterpret_cast< gum::NodeSet * >(argp2);
   {
     try {
-      result = (gum::Potential< double > *) &((gum::MarkovRandomField< double > const *)arg1)->factor((gum::NodeSet const &)*arg2);
+      result = (gum::Tensor< double > *) &((gum::MarkovRandomField< double > const *)arg1)->factor((gum::NodeSet const &)*arg2);
     } catch (...) {
       SetPythonizeAgrumException();
       SWIG_fail;
     }
   }
-  resultobj = SWIG_NewPointerObj(SWIG_as_voidptr(result), SWIGTYPE_p_gum__PotentialT_double_t, 0 |  0 );
+  resultobj = SWIG_NewPointerObj(SWIG_as_voidptr(result), SWIGTYPE_p_gum__TensorT_double_t, 0 |  0 );
   return resultobj;
 fail:
   return NULL;
@@ -9575,7 +9575,7 @@ SWIGINTERN PyObject *_wrap_MarkovRandomField_factor__SWIG_1(PyObject *self, Py_s
   void *argp1 = 0 ;
   int res1 = 0 ;
   int res2 = SWIG_OLDOBJ ;
-  gum::Potential< double > *result = 0 ;
+  gum::Tensor< double > *result = 0 ;
   
   (void)self;
   if ((nobjs < 2) || (nobjs > 2)) SWIG_fail;
@@ -9597,13 +9597,13 @@ SWIGINTERN PyObject *_wrap_MarkovRandomField_factor__SWIG_1(PyObject *self, Py_s
   }
   {
     try {
-      result = (gum::Potential< double > *) &((gum::MarkovRandomField< double > const *)arg1)->factor((std::vector< std::string,std::allocator< std::string > > const &)*arg2);
+      result = (gum::Tensor< double > *) &((gum::MarkovRandomField< double > const *)arg1)->factor((std::vector< std::string,std::allocator< std::string > > const &)*arg2);
     } catch (...) {
       SetPythonizeAgrumException();
       SWIG_fail;
     }
   }
-  resultobj = SWIG_NewPointerObj(SWIG_as_voidptr(result), SWIGTYPE_p_gum__PotentialT_double_t, 0 |  0 );
+  resultobj = SWIG_NewPointerObj(SWIG_as_voidptr(result), SWIGTYPE_p_gum__TensorT_double_t, 0 |  0 );
   if (SWIG_IsNewObj(res2)) delete arg2;
   return resultobj;
 fail:
@@ -10739,7 +10739,7 @@ SWIGINTERN PyObject *_wrap_MarkovRandomField_addFactor__SWIG_0(PyObject *self, P
   void *argp1 = 0 ;
   int res1 = 0 ;
   int res2 = SWIG_OLDOBJ ;
-  gum::Potential< double > *result = 0 ;
+  gum::Tensor< double > *result = 0 ;
   
   (void)self;
   if ((nobjs < 2) || (nobjs > 2)) SWIG_fail;
@@ -10761,13 +10761,13 @@ SWIGINTERN PyObject *_wrap_MarkovRandomField_addFactor__SWIG_0(PyObject *self, P
   }
   {
     try {
-      result = (gum::Potential< double > *) &(arg1)->addFactor((std::vector< std::string,std::allocator< std::string > > const &)*arg2);
+      result = (gum::Tensor< double > *) &(arg1)->addFactor((std::vector< std::string,std::allocator< std::string > > const &)*arg2);
     } catch (...) {
       SetPythonizeAgrumException();
       SWIG_fail;
     }
   }
-  resultobj = SWIG_NewPointerObj(SWIG_as_voidptr(result), SWIGTYPE_p_gum__PotentialT_double_t, 0 |  0 );
+  resultobj = SWIG_NewPointerObj(SWIG_as_voidptr(result), SWIGTYPE_p_gum__TensorT_double_t, 0 |  0 );
   if (SWIG_IsNewObj(res2)) delete arg2;
   return resultobj;
 fail:
@@ -10784,7 +10784,7 @@ SWIGINTERN PyObject *_wrap_MarkovRandomField_addFactor__SWIG_1(PyObject *self, P
   int res1 = 0 ;
   void *argp2 = 0 ;
   int res2 = 0 ;
-  gum::Potential< double > *result = 0 ;
+  gum::Tensor< double > *result = 0 ;
   
   (void)self;
   if ((nobjs < 2) || (nobjs > 2)) SWIG_fail;
@@ -10803,13 +10803,13 @@ SWIGINTERN PyObject *_wrap_MarkovRandomField_addFactor__SWIG_1(PyObject *self, P
   arg2 = reinterpret_cast< gum::NodeSet * >(argp2);
   {
     try {
-      result = (gum::Potential< double > *) &(arg1)->addFactor((gum::NodeSet const &)*arg2);
+      result = (gum::Tensor< double > *) &(arg1)->addFactor((gum::NodeSet const &)*arg2);
     } catch (...) {
       SetPythonizeAgrumException();
       SWIG_fail;
     }
   }
-  resultobj = SWIG_NewPointerObj(SWIG_as_voidptr(result), SWIGTYPE_p_gum__PotentialT_double_t, 0 |  0 );
+  resultobj = SWIG_NewPointerObj(SWIG_as_voidptr(result), SWIGTYPE_p_gum__TensorT_double_t, 0 |  0 );
   return resultobj;
 fail:
   return NULL;
@@ -10819,12 +10819,12 @@ fail:
 SWIGINTERN PyObject *_wrap_MarkovRandomField_addFactor__SWIG_2(PyObject *self, Py_ssize_t nobjs, PyObject **swig_obj) {
   PyObject *resultobj = 0;
   gum::MarkovRandomField< double > *arg1 = 0 ;
-  gum::Potential< double > *arg2 = 0 ;
+  gum::Tensor< double > *arg2 = 0 ;
   void *argp1 = 0 ;
   int res1 = 0 ;
   void *argp2 = 0 ;
   int res2 = 0 ;
-  gum::Potential< double > *result = 0 ;
+  gum::Tensor< double > *result = 0 ;
   
   (void)self;
   if ((nobjs < 2) || (nobjs > 2)) SWIG_fail;
@@ -10833,23 +10833,23 @@ SWIGINTERN PyObject *_wrap_MarkovRandomField_addFactor__SWIG_2(PyObject *self, P
     SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "MarkovRandomField_addFactor" "', argument " "1"" of type '" "gum::MarkovRandomField< double > *""'"); 
   }
   arg1 = reinterpret_cast< gum::MarkovRandomField< double > * >(argp1);
-  res2 = SWIG_ConvertPtr(swig_obj[1], &argp2, SWIGTYPE_p_gum__PotentialT_double_t,  0  | 0);
+  res2 = SWIG_ConvertPtr(swig_obj[1], &argp2, SWIGTYPE_p_gum__TensorT_double_t,  0  | 0);
   if (!SWIG_IsOK(res2)) {
-    SWIG_exception_fail(SWIG_ArgError(res2), "in method '" "MarkovRandomField_addFactor" "', argument " "2"" of type '" "gum::Potential< double > const &""'"); 
+    SWIG_exception_fail(SWIG_ArgError(res2), "in method '" "MarkovRandomField_addFactor" "', argument " "2"" of type '" "gum::Tensor< double > const &""'"); 
   }
   if (!argp2) {
-    SWIG_exception_fail(SWIG_NullReferenceError, "invalid null reference " "in method '" "MarkovRandomField_addFactor" "', argument " "2"" of type '" "gum::Potential< double > const &""'"); 
+    SWIG_exception_fail(SWIG_NullReferenceError, "invalid null reference " "in method '" "MarkovRandomField_addFactor" "', argument " "2"" of type '" "gum::Tensor< double > const &""'"); 
   }
-  arg2 = reinterpret_cast< gum::Potential< double > * >(argp2);
+  arg2 = reinterpret_cast< gum::Tensor< double > * >(argp2);
   {
     try {
-      result = (gum::Potential< double > *) &(arg1)->addFactor((gum::Potential< double > const &)*arg2);
+      result = (gum::Tensor< double > *) &(arg1)->addFactor((gum::Tensor< double > const &)*arg2);
     } catch (...) {
       SetPythonizeAgrumException();
       SWIG_fail;
     }
   }
-  resultobj = SWIG_NewPointerObj(SWIG_as_voidptr(result), SWIGTYPE_p_gum__PotentialT_double_t, 0 |  0 );
+  resultobj = SWIG_NewPointerObj(SWIG_as_voidptr(result), SWIGTYPE_p_gum__TensorT_double_t, 0 |  0 );
   return resultobj;
 fail:
   return NULL;
@@ -11402,7 +11402,7 @@ SWIGINTERN PyObject *_wrap_MarkovRandomField_factor__SWIG_2(PyObject *self, Py_s
   PyObject *arg2 = 0 ;
   void *argp1 = 0 ;
   int res1 = 0 ;
-  gum::Potential< double > *result = 0 ;
+  gum::Tensor< double > *result = 0 ;
   
   (void)self;
   if ((nobjs < 2) || (nobjs > 2)) SWIG_fail;
@@ -11414,13 +11414,13 @@ SWIGINTERN PyObject *_wrap_MarkovRandomField_factor__SWIG_2(PyObject *self, Py_s
   arg2 = swig_obj[1];
   {
     try {
-      result = (gum::Potential< double > *) &gum_MarkovRandomField_Sl_double_Sg__factor__SWIG_2((gum::MarkovRandomField< double > const *)arg1,arg2);
+      result = (gum::Tensor< double > *) &gum_MarkovRandomField_Sl_double_Sg__factor__SWIG_2((gum::MarkovRandomField< double > const *)arg1,arg2);
     } catch (...) {
       SetPythonizeAgrumException();
       SWIG_fail;
     }
   }
-  resultobj = SWIG_NewPointerObj(SWIG_as_voidptr(result), SWIGTYPE_p_gum__PotentialT_double_t, 0 |  0 );
+  resultobj = SWIG_NewPointerObj(SWIG_as_voidptr(result), SWIGTYPE_p_gum__TensorT_double_t, 0 |  0 );
   return resultobj;
 fail:
   return NULL;
@@ -11784,7 +11784,7 @@ SWIGINTERN PyObject *_wrap_MarkovRandomField_addFactor__SWIG_3(PyObject *self, P
   PyObject *arg2 = 0 ;
   void *argp1 = 0 ;
   int res1 = 0 ;
-  gum::Potential< double > *result = 0 ;
+  gum::Tensor< double > *result = 0 ;
   
   (void)self;
   if ((nobjs < 2) || (nobjs > 2)) SWIG_fail;
@@ -11796,13 +11796,13 @@ SWIGINTERN PyObject *_wrap_MarkovRandomField_addFactor__SWIG_3(PyObject *self, P
   arg2 = swig_obj[1];
   {
     try {
-      result = (gum::Potential< double > *) &gum_MarkovRandomField_Sl_double_Sg__addFactor__SWIG_3(arg1,arg2);
+      result = (gum::Tensor< double > *) &gum_MarkovRandomField_Sl_double_Sg__addFactor__SWIG_3(arg1,arg2);
     } catch (...) {
       SetPythonizeAgrumException();
       SWIG_fail;
     }
   }
-  resultobj = SWIG_NewPointerObj(SWIG_as_voidptr(result), SWIGTYPE_p_gum__PotentialT_double_t, 0 |  0 );
+  resultobj = SWIG_NewPointerObj(SWIG_as_voidptr(result), SWIGTYPE_p_gum__TensorT_double_t, 0 |  0 );
   return resultobj;
 fail:
   return NULL;
@@ -11831,7 +11831,7 @@ check_1:
   if (argc == 2) {
     int _v = 0;
     {
-      int res = SWIG_ConvertPtr(argv[1], 0, SWIGTYPE_p_gum__PotentialT_double_t, SWIG_POINTER_NO_NULL | 0);
+      int res = SWIG_ConvertPtr(argv[1], 0, SWIGTYPE_p_gum__TensorT_double_t, SWIG_POINTER_NO_NULL | 0);
       _v = SWIG_CheckState(res);
     }
     if (!_v) goto check_2;
@@ -11861,7 +11861,7 @@ fail:
     "  Possible C/C++ prototypes are:\n"
     "    gum::MarkovRandomField< double >::addFactor(std::vector< std::string,std::allocator< std::string > > const &)\n"
     "    gum::MarkovRandomField< double >::addFactor(gum::NodeSet const &)\n"
-    "    gum::MarkovRandomField< double >::addFactor(gum::Potential< double > const &)\n"
+    "    gum::MarkovRandomField< double >::addFactor(gum::Tensor< double > const &)\n"
     "    gum::MarkovRandomField< double >::addFactor(PyObject *)\n");
   return 0;
 }
@@ -12385,7 +12385,7 @@ SWIGINTERN PyObject *_wrap_ShaferShenoyMRFInference_posterior__SWIG_0(PyObject *
   int res1 = 0 ;
   size_t val2 ;
   int ecode2 = 0 ;
-  gum::Potential< double > result;
+  gum::Tensor< double > result;
   
   (void)self;
   if ((nobjs < 2) || (nobjs > 2)) SWIG_fail;
@@ -12407,7 +12407,7 @@ SWIGINTERN PyObject *_wrap_ShaferShenoyMRFInference_posterior__SWIG_0(PyObject *
       SWIG_fail;
     }
   }
-  resultobj = SWIG_NewPointerObj((new gum::Potential< double >(result)), SWIGTYPE_p_gum__PotentialT_double_t, SWIG_POINTER_OWN |  0 );
+  resultobj = SWIG_NewPointerObj((new gum::Tensor< double >(result)), SWIGTYPE_p_gum__TensorT_double_t, SWIG_POINTER_OWN |  0 );
   return resultobj;
 fail:
   return NULL;
@@ -12421,7 +12421,7 @@ SWIGINTERN PyObject *_wrap_ShaferShenoyMRFInference_posterior__SWIG_1(PyObject *
   void *argp1 = 0 ;
   int res1 = 0 ;
   int res2 = SWIG_OLDOBJ ;
-  gum::Potential< double > result;
+  gum::Tensor< double > result;
   
   (void)self;
   if ((nobjs < 2) || (nobjs > 2)) SWIG_fail;
@@ -12449,7 +12449,7 @@ SWIGINTERN PyObject *_wrap_ShaferShenoyMRFInference_posterior__SWIG_1(PyObject *
       SWIG_fail;
     }
   }
-  resultobj = SWIG_NewPointerObj((new gum::Potential< double >(result)), SWIGTYPE_p_gum__PotentialT_double_t, SWIG_POINTER_OWN |  0 );
+  resultobj = SWIG_NewPointerObj((new gum::Tensor< double >(result)), SWIGTYPE_p_gum__TensorT_double_t, SWIG_POINTER_OWN |  0 );
   if (SWIG_IsNewObj(res2)) delete arg2;
   return resultobj;
 fail:
@@ -12774,7 +12774,7 @@ fail:
 SWIGINTERN PyObject *_wrap_ShaferShenoyMRFInference_addEvidence__SWIG_6(PyObject *self, Py_ssize_t nobjs, PyObject **swig_obj) {
   PyObject *resultobj = 0;
   gum::ShaferShenoyMRFInference< double > *arg1 = 0 ;
-  gum::Potential< double > *arg2 = 0 ;
+  gum::Tensor< double > *arg2 = 0 ;
   void *argp1 = 0 ;
   int res1 = 0 ;
   void *argp2 = 0 ;
@@ -12787,17 +12787,17 @@ SWIGINTERN PyObject *_wrap_ShaferShenoyMRFInference_addEvidence__SWIG_6(PyObject
     SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "ShaferShenoyMRFInference_addEvidence" "', argument " "1"" of type '" "gum::ShaferShenoyMRFInference< double > *""'"); 
   }
   arg1 = reinterpret_cast< gum::ShaferShenoyMRFInference< double > * >(argp1);
-  res2 = SWIG_ConvertPtr(swig_obj[1], &argp2, SWIGTYPE_p_gum__PotentialT_double_t,  0  | 0);
+  res2 = SWIG_ConvertPtr(swig_obj[1], &argp2, SWIGTYPE_p_gum__TensorT_double_t,  0  | 0);
   if (!SWIG_IsOK(res2)) {
-    SWIG_exception_fail(SWIG_ArgError(res2), "in method '" "ShaferShenoyMRFInference_addEvidence" "', argument " "2"" of type '" "gum::Potential< double > const &""'"); 
+    SWIG_exception_fail(SWIG_ArgError(res2), "in method '" "ShaferShenoyMRFInference_addEvidence" "', argument " "2"" of type '" "gum::Tensor< double > const &""'"); 
   }
   if (!argp2) {
-    SWIG_exception_fail(SWIG_NullReferenceError, "invalid null reference " "in method '" "ShaferShenoyMRFInference_addEvidence" "', argument " "2"" of type '" "gum::Potential< double > const &""'"); 
+    SWIG_exception_fail(SWIG_NullReferenceError, "invalid null reference " "in method '" "ShaferShenoyMRFInference_addEvidence" "', argument " "2"" of type '" "gum::Tensor< double > const &""'"); 
   }
-  arg2 = reinterpret_cast< gum::Potential< double > * >(argp2);
+  arg2 = reinterpret_cast< gum::Tensor< double > * >(argp2);
   {
     try {
-      gum_ShaferShenoyMRFInference_Sl_double_Sg__addEvidence__SWIG_6(arg1,(gum::Potential< double > const &)*arg2);
+      gum_ShaferShenoyMRFInference_Sl_double_Sg__addEvidence__SWIG_6(arg1,(gum::Tensor< double > const &)*arg2);
     } catch (...) {
       SetPythonizeAgrumException();
       SWIG_fail;
@@ -12918,7 +12918,7 @@ fail:
     "    gum::ShaferShenoyMRFInference< double >::addEvidence(std::string const &,std::string const &)\n"
     "    gum::ShaferShenoyMRFInference< double >::addEvidence(gum::NodeId const,std::vector< double,std::allocator< double > > const &)\n"
     "    gum::ShaferShenoyMRFInference< double >::addEvidence(std::string const &,std::vector< double,std::allocator< double > > const &)\n"
-    "    gum::ShaferShenoyMRFInference< double >::addEvidence(gum::Potential< double > const &)\n");
+    "    gum::ShaferShenoyMRFInference< double >::addEvidence(gum::Tensor< double > const &)\n");
   return 0;
 }
 
@@ -13130,7 +13130,7 @@ fail:
 SWIGINTERN PyObject *_wrap_ShaferShenoyMRFInference_chgEvidence__SWIG_4(PyObject *self, Py_ssize_t nobjs, PyObject **swig_obj) {
   PyObject *resultobj = 0;
   gum::ShaferShenoyMRFInference< double > *arg1 = 0 ;
-  gum::Potential< double > *arg2 = 0 ;
+  gum::Tensor< double > *arg2 = 0 ;
   void *argp1 = 0 ;
   int res1 = 0 ;
   void *argp2 = 0 ;
@@ -13143,17 +13143,17 @@ SWIGINTERN PyObject *_wrap_ShaferShenoyMRFInference_chgEvidence__SWIG_4(PyObject
     SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "ShaferShenoyMRFInference_chgEvidence" "', argument " "1"" of type '" "gum::ShaferShenoyMRFInference< double > *""'"); 
   }
   arg1 = reinterpret_cast< gum::ShaferShenoyMRFInference< double > * >(argp1);
-  res2 = SWIG_ConvertPtr(swig_obj[1], &argp2, SWIGTYPE_p_gum__PotentialT_double_t,  0  | 0);
+  res2 = SWIG_ConvertPtr(swig_obj[1], &argp2, SWIGTYPE_p_gum__TensorT_double_t,  0  | 0);
   if (!SWIG_IsOK(res2)) {
-    SWIG_exception_fail(SWIG_ArgError(res2), "in method '" "ShaferShenoyMRFInference_chgEvidence" "', argument " "2"" of type '" "gum::Potential< double > const &""'"); 
+    SWIG_exception_fail(SWIG_ArgError(res2), "in method '" "ShaferShenoyMRFInference_chgEvidence" "', argument " "2"" of type '" "gum::Tensor< double > const &""'"); 
   }
   if (!argp2) {
-    SWIG_exception_fail(SWIG_NullReferenceError, "invalid null reference " "in method '" "ShaferShenoyMRFInference_chgEvidence" "', argument " "2"" of type '" "gum::Potential< double > const &""'"); 
+    SWIG_exception_fail(SWIG_NullReferenceError, "invalid null reference " "in method '" "ShaferShenoyMRFInference_chgEvidence" "', argument " "2"" of type '" "gum::Tensor< double > const &""'"); 
   }
-  arg2 = reinterpret_cast< gum::Potential< double > * >(argp2);
+  arg2 = reinterpret_cast< gum::Tensor< double > * >(argp2);
   {
     try {
-      gum_ShaferShenoyMRFInference_Sl_double_Sg__chgEvidence__SWIG_4(arg1,(gum::Potential< double > const &)*arg2);
+      gum_ShaferShenoyMRFInference_Sl_double_Sg__chgEvidence__SWIG_4(arg1,(gum::Tensor< double > const &)*arg2);
     } catch (...) {
       SetPythonizeAgrumException();
       SWIG_fail;
@@ -13381,7 +13381,7 @@ fail:
     "    gum::ShaferShenoyMRFInference< double >::chgEvidence(std::string const &,gum::Idx const)\n"
     "    gum::ShaferShenoyMRFInference< double >::chgEvidence(gum::NodeId const,std::string const &)\n"
     "    gum::ShaferShenoyMRFInference< double >::chgEvidence(std::string const &,std::string const &)\n"
-    "    gum::ShaferShenoyMRFInference< double >::chgEvidence(gum::Potential< double > const &)\n"
+    "    gum::ShaferShenoyMRFInference< double >::chgEvidence(gum::Tensor< double > const &)\n"
     "    gum::ShaferShenoyMRFInference< double >::chgEvidence(gum::NodeId const,std::vector< double,std::allocator< double > > const &)\n"
     "    gum::ShaferShenoyMRFInference< double >::chgEvidence(std::string const &,std::vector< double,std::allocator< double > > const &)\n");
   return 0;
@@ -14471,7 +14471,7 @@ SWIGINTERN PyObject *_wrap_ShaferShenoyMRFInference_evidenceImpact__SWIG_0(PyObj
   int ecode2 = 0 ;
   void *argp3 = 0 ;
   int res3 = 0 ;
-  gum::Potential< double > result;
+  gum::Tensor< double > result;
   
   (void)self;
   if ((nobjs < 3) || (nobjs > 3)) SWIG_fail;
@@ -14501,7 +14501,7 @@ SWIGINTERN PyObject *_wrap_ShaferShenoyMRFInference_evidenceImpact__SWIG_0(PyObj
       SWIG_fail;
     }
   }
-  resultobj = SWIG_NewPointerObj((new gum::Potential< double >(result)), SWIGTYPE_p_gum__PotentialT_double_t, SWIG_POINTER_OWN |  0 );
+  resultobj = SWIG_NewPointerObj((new gum::Tensor< double >(result)), SWIGTYPE_p_gum__TensorT_double_t, SWIG_POINTER_OWN |  0 );
   return resultobj;
 fail:
   return NULL;
@@ -14517,7 +14517,7 @@ SWIGINTERN PyObject *_wrap_ShaferShenoyMRFInference_evidenceImpact__SWIG_1(PyObj
   int res1 = 0 ;
   int res2 = SWIG_OLDOBJ ;
   int res3 = SWIG_OLDOBJ ;
-  gum::Potential< double > result;
+  gum::Tensor< double > result;
   
   (void)self;
   if ((nobjs < 3) || (nobjs > 3)) SWIG_fail;
@@ -14556,7 +14556,7 @@ SWIGINTERN PyObject *_wrap_ShaferShenoyMRFInference_evidenceImpact__SWIG_1(PyObj
       SWIG_fail;
     }
   }
-  resultobj = SWIG_NewPointerObj((new gum::Potential< double >(result)), SWIGTYPE_p_gum__PotentialT_double_t, SWIG_POINTER_OWN |  0 );
+  resultobj = SWIG_NewPointerObj((new gum::Tensor< double >(result)), SWIGTYPE_p_gum__TensorT_double_t, SWIG_POINTER_OWN |  0 );
   if (SWIG_IsNewObj(res2)) delete arg2;
   if (SWIG_IsNewObj(res3)) delete arg3;
   return resultobj;
@@ -14604,7 +14604,7 @@ SWIGINTERN PyObject *_wrap_ShaferShenoyMRFInference_posterior__SWIG_2(PyObject *
   std::string arg2 ;
   void *argp1 = 0 ;
   int res1 = 0 ;
-  gum::Potential< double > result;
+  gum::Tensor< double > result;
   
   (void)self;
   if ((nobjs < 2) || (nobjs > 2)) SWIG_fail;
@@ -14630,7 +14630,7 @@ SWIGINTERN PyObject *_wrap_ShaferShenoyMRFInference_posterior__SWIG_2(PyObject *
       SWIG_fail;
     }
   }
-  resultobj = SWIG_NewPointerObj((new gum::Potential< double >(result)), SWIGTYPE_p_gum__PotentialT_double_t, SWIG_POINTER_OWN |  0 );
+  resultobj = SWIG_NewPointerObj((new gum::Tensor< double >(result)), SWIGTYPE_p_gum__TensorT_double_t, SWIG_POINTER_OWN |  0 );
   return resultobj;
 fail:
   return NULL;
@@ -14781,7 +14781,7 @@ SWIGINTERN PyObject *_wrap_ShaferShenoyMRFInference_evidenceJointImpact__SWIG_0(
   int res2 = 0 ;
   void *argp3 = 0 ;
   int res3 = 0 ;
-  gum::Potential< double > result;
+  gum::Tensor< double > result;
   
   (void)self;
   if ((nobjs < 3) || (nobjs > 3)) SWIG_fail;
@@ -14814,7 +14814,7 @@ SWIGINTERN PyObject *_wrap_ShaferShenoyMRFInference_evidenceJointImpact__SWIG_0(
       SWIG_fail;
     }
   }
-  resultobj = SWIG_NewPointerObj((new gum::Potential< double >(result)), SWIGTYPE_p_gum__PotentialT_double_t, SWIG_POINTER_OWN |  0 );
+  resultobj = SWIG_NewPointerObj((new gum::Tensor< double >(result)), SWIGTYPE_p_gum__TensorT_double_t, SWIG_POINTER_OWN |  0 );
   return resultobj;
 fail:
   return NULL;
@@ -14830,7 +14830,7 @@ SWIGINTERN PyObject *_wrap_ShaferShenoyMRFInference_evidenceJointImpact__SWIG_1(
   int res1 = 0 ;
   int res2 = SWIG_OLDOBJ ;
   int res3 = SWIG_OLDOBJ ;
-  gum::Potential< double > result;
+  gum::Tensor< double > result;
   
   (void)self;
   if ((nobjs < 3) || (nobjs > 3)) SWIG_fail;
@@ -14869,7 +14869,7 @@ SWIGINTERN PyObject *_wrap_ShaferShenoyMRFInference_evidenceJointImpact__SWIG_1(
       SWIG_fail;
     }
   }
-  resultobj = SWIG_NewPointerObj((new gum::Potential< double >(result)), SWIGTYPE_p_gum__PotentialT_double_t, SWIG_POINTER_OWN |  0 );
+  resultobj = SWIG_NewPointerObj((new gum::Tensor< double >(result)), SWIGTYPE_p_gum__TensorT_double_t, SWIG_POINTER_OWN |  0 );
   if (SWIG_IsNewObj(res2)) delete arg2;
   if (SWIG_IsNewObj(res3)) delete arg3;
   return resultobj;
@@ -15073,7 +15073,7 @@ SWIGINTERN PyObject *_wrap_ShaferShenoyMRFInference_evidenceImpact__SWIG_2(PyObj
   PyObject *arg3 = 0 ;
   void *argp1 = 0 ;
   int res1 = 0 ;
-  gum::Potential< double > result;
+  gum::Tensor< double > result;
   
   (void)self;
   if ((nobjs < 3) || (nobjs > 3)) SWIG_fail;
@@ -15092,7 +15092,7 @@ SWIGINTERN PyObject *_wrap_ShaferShenoyMRFInference_evidenceImpact__SWIG_2(PyObj
       SWIG_fail;
     }
   }
-  resultobj = SWIG_NewPointerObj((new gum::Potential< double >(result)), SWIGTYPE_p_gum__PotentialT_double_t, SWIG_POINTER_OWN |  0 );
+  resultobj = SWIG_NewPointerObj((new gum::Tensor< double >(result)), SWIGTYPE_p_gum__TensorT_double_t, SWIG_POINTER_OWN |  0 );
   return resultobj;
 fail:
   return NULL;
@@ -15196,7 +15196,7 @@ SWIGINTERN PyObject *_wrap_ShaferShenoyMRFInference_evidenceJointImpact__SWIG_2(
   PyObject *arg3 = 0 ;
   void *argp1 = 0 ;
   int res1 = 0 ;
-  gum::Potential< double > result;
+  gum::Tensor< double > result;
   
   (void)self;
   if ((nobjs < 3) || (nobjs > 3)) SWIG_fail;
@@ -15215,7 +15215,7 @@ SWIGINTERN PyObject *_wrap_ShaferShenoyMRFInference_evidenceJointImpact__SWIG_2(
       SWIG_fail;
     }
   }
-  resultobj = SWIG_NewPointerObj((new gum::Potential< double >(result)), SWIGTYPE_p_gum__PotentialT_double_t, SWIG_POINTER_OWN |  0 );
+  resultobj = SWIG_NewPointerObj((new gum::Tensor< double >(result)), SWIGTYPE_p_gum__TensorT_double_t, SWIG_POINTER_OWN |  0 );
   return resultobj;
 fail:
   return NULL;
@@ -15285,7 +15285,7 @@ SWIGINTERN PyObject *_wrap_ShaferShenoyMRFInference_jointPosterior(PyObject *sel
   void *argp1 = 0 ;
   int res1 = 0 ;
   PyObject *swig_obj[2] ;
-  gum::Potential< double > result;
+  gum::Tensor< double > result;
   
   (void)self;
   if (!SWIG_Python_UnpackTuple(args, "ShaferShenoyMRFInference_jointPosterior", 2, 2, swig_obj)) SWIG_fail;
@@ -15303,7 +15303,7 @@ SWIGINTERN PyObject *_wrap_ShaferShenoyMRFInference_jointPosterior(PyObject *sel
       SWIG_fail;
     }
   }
-  resultobj = SWIG_NewPointerObj((new gum::Potential< double >(result)), SWIGTYPE_p_gum__PotentialT_double_t, SWIG_POINTER_OWN |  0 );
+  resultobj = SWIG_NewPointerObj((new gum::Tensor< double >(result)), SWIGTYPE_p_gum__TensorT_double_t, SWIG_POINTER_OWN |  0 );
   return resultobj;
 fail:
   return NULL;
@@ -15708,7 +15708,7 @@ static PyMethodDef SwigMethods[] = {
 		"\n"
 		"Remove a variable from the gum::MarkovRandomField.\n"
 		"\n"
-		"Removes the corresponding variable from the gum::MarkovRandomField and from all of it's children gum::Potential.\n"
+		"Removes the corresponding variable from the gum::MarkovRandomField and from all of it's children gum::Tensor.\n"
 		"\n"
 		"If no variable matches the given id, then nothing is done.\n"
 		"\n"
@@ -15825,7 +15825,7 @@ static PyMethodDef SwigMethods[] = {
 		"\n"
 		"Returns\n"
 		"-------\n"
-		"pyAgrum.Potential\n"
+		"pyAgrum.Tensor\n"
 		"	The factor of the set of nodes.\n"
 		"\n"
 		"Raises\n"
@@ -16251,7 +16251,7 @@ static PyMethodDef SwigMethods[] = {
 		"\n"
 		"Returns\n"
 		"-------\n"
-		"pyAgrum.Potential\n"
+		"pyAgrum.Tensor\n"
 		"  a const ref to the posterior probability of the node\n"
 		"\n"
 		"Raises\n"
@@ -16307,7 +16307,7 @@ static PyMethodDef SwigMethods[] = {
 		""},
 	 { "ShaferShenoyMRFInference_evidenceImpact", _wrap_ShaferShenoyMRFInference_evidenceImpact, METH_VARARGS, "\n"
 		"\n"
-		"Create a pyAgrum.Potential for P(target|evs) (for all instanciation of target and evs)\n"
+		"Create a pyAgrum.Tensor for P(target|evs) (for all instanciation of target and evs)\n"
 		"\n"
 		"Parameters\n"
 		"----------\n"
@@ -16318,18 +16318,18 @@ static PyMethodDef SwigMethods[] = {
 		"\n"
 		"Warnings\n"
 		"--------\n"
-		"if some evs are d-separated, they are not included in the Potential.\n"
+		"if some evs are d-separated, they are not included in the Tensor.\n"
 		"\n"
 		"Returns\n"
 		"-------\n"
-		"pyAgrum.Potential\n"
-		"  a Potential for P(targets|evs)\n"
+		"pyAgrum.Tensor\n"
+		"  a Tensor for P(targets|evs)\n"
 		"\n"
 		""},
 	 { "ShaferShenoyMRFInference_jointMutualInformation", _wrap_ShaferShenoyMRFInference_jointMutualInformation, METH_VARARGS, NULL},
 	 { "ShaferShenoyMRFInference_evidenceJointImpact", _wrap_ShaferShenoyMRFInference_evidenceJointImpact, METH_VARARGS, "\n"
 		"\n"
-		"Create a pyAgrum.Potential for P(joint targets|evs) (for all instanciation of targets and evs)\n"
+		"Create a pyAgrum.Tensor for P(joint targets|evs) (for all instanciation of targets and evs)\n"
 		"\n"
 		"Parameters\n"
 		"----------\n"
@@ -16340,8 +16340,8 @@ static PyMethodDef SwigMethods[] = {
 		"\n"
 		"Returns\n"
 		"-------\n"
-		"pyAgrum.Potential\n"
-		"  a Potential for P(target|evs)\n"
+		"pyAgrum.Tensor\n"
+		"  a Tensor for P(target|evs)\n"
 		"\n"
 		"Raises\n"
 		"------\n"
@@ -16361,11 +16361,11 @@ static PyMethodDef SwigMethods[] = {
 		"\n"
 		"Warnings\n"
 		"--------\n"
-		"The order of the variables given by the list here or when the jointTarget is declared can not be assumed to be used by the Potential.\n"
+		"The order of the variables given by the list here or when the jointTarget is declared can not be assumed to be used by the Tensor.\n"
 		"\n"
 		"Returns\n"
 		"-------\n"
-		"pyAgrum.Potential\n"
+		"pyAgrum.Tensor\n"
 		"  a const ref to the posterior joint probability of the set of nodes.\n"
 		"\n"
 		"Raises\n"
@@ -16582,7 +16582,6 @@ static swig_type_info _swigt__p_gum__learning__BNLearnerT_double_t = {"_p_gum__l
 static swig_type_info _swigt__p_gum__learning__IBNLearner = {"_p_gum__learning__IBNLearner", 0, 0, 0, 0, 0};
 static swig_type_info _swigt__p_gum__IMarkovRandomFieldT_double_t = {"_p_gum__IMarkovRandomFieldT_double_t", "gum::IMarkovRandomField< double > *", 0, 0, (void*)0, 0};
 static swig_type_info _swigt__p_gum__MarkovRandomFieldT_double_t = {"_p_gum__MarkovRandomFieldT_double_t", "gum::MarkovRandomField< double > *", 0, 0, (void*)0, 0};
-static swig_type_info _swigt__p_gum__PotentialT_double_t = {"_p_gum__PotentialT_double_t", "gum::Potential< double > *", 0, 0, (void*)0, 0};
 static swig_type_info _swigt__p_gum__ScheduledInference = {"_p_gum__ScheduledInference", "gum::ScheduledInference *", 0, 0, (void*)0, 0};
 static swig_type_info _swigt__p_gum__LazyPropagationT_double_t = {"_p_gum__LazyPropagationT_double_t", 0, 0, 0, 0, 0};
 static swig_type_info _swigt__p_gum__ShaferShenoyInferenceT_double_t = {"_p_gum__ShaferShenoyInferenceT_double_t", 0, 0, 0, 0, 0};
@@ -16595,6 +16594,7 @@ static swig_type_info _swigt__p_gum__SetT_gum__Edge_t__const_iterator = {"_p_gum
 static swig_type_info _swigt__p_gum__SetT_std__size_t_t = {"_p_gum__SetT_std__size_t_t", "gum::NodeSet *|gum::Set< std::size_t > *", 0, 0, (void*)0, 0};
 static swig_type_info _swigt__p_gum__SetT_std__size_t_t__const_iterator = {"_p_gum__SetT_std__size_t_t__const_iterator", "gum::NodeSetIterator *|gum::Set< std::size_t >::const_iterator *", 0, 0, (void*)0, 0};
 static swig_type_info _swigt__p_gum__ShaferShenoyMRFInferenceT_double_t = {"_p_gum__ShaferShenoyMRFInferenceT_double_t", "gum::ShaferShenoyMRFInference< double > *", 0, 0, (void*)0, 0};
+static swig_type_info _swigt__p_gum__TensorT_double_t = {"_p_gum__TensorT_double_t", "gum::Tensor< double > *", 0, 0, (void*)0, 0};
 static swig_type_info _swigt__p_gum__ThreadNumberManager = {"_p_gum__ThreadNumberManager", "gum::ThreadNumberManager *", 0, 0, (void*)0, 0};
 static swig_type_info _swigt__p_gum__Triangulation = {"_p_gum__Triangulation", "gum::Triangulation *", 0, 0, (void*)0, 0};
 static swig_type_info _swigt__p_gum__UGmodel = {"_p_gum__UGmodel", "gum::UGmodel *", 0, 0, (void*)0, 0};
@@ -16658,7 +16658,6 @@ static swig_type_info *swig_type_initial[] = {
   &_swigt__p_gum__MixedGraph,
   &_swigt__p_gum__NumericalDiscreteVariable,
   &_swigt__p_gum__PDAG,
-  &_swigt__p_gum__PotentialT_double_t,
   &_swigt__p_gum__RangeVariable,
   &_swigt__p_gum__ScheduledInference,
   &_swigt__p_gum__SetT_gum__Arc_t,
@@ -16670,6 +16669,7 @@ static swig_type_info *swig_type_initial[] = {
   &_swigt__p_gum__SetT_std__size_t_t__const_iterator,
   &_swigt__p_gum__ShaferShenoyInferenceT_double_t,
   &_swigt__p_gum__ShaferShenoyMRFInferenceT_double_t,
+  &_swigt__p_gum__TensorT_double_t,
   &_swigt__p_gum__ThreadNumberManager,
   &_swigt__p_gum__Triangulation,
   &_swigt__p_gum__UGmodel,
@@ -16734,7 +16734,6 @@ static swig_cast_info _swigc__p_gum__learning__IBNLearner[] = {{&_swigt__p_gum__
 static swig_cast_info _swigc__p_gum__IApproximationSchemeConfiguration[] = {  {&_swigt__p_gum__IApproximationSchemeConfiguration, 0, 0, 0},  {&_swigt__p_gum__ApproximationScheme, _p_gum__ApproximationSchemeTo_p_gum__IApproximationSchemeConfiguration, 0, 0},  {&_swigt__p_gum__GibbsBNdistanceT_double_t, _p_gum__GibbsBNdistanceT_double_tTo_p_gum__IApproximationSchemeConfiguration, 0, 0},  {&_swigt__p_gum__learning__BNLearnerT_double_t, _p_gum__learning__BNLearnerT_double_tTo_p_gum__IApproximationSchemeConfiguration, 0, 0},  {&_swigt__p_gum__learning__IBNLearner, _p_gum__learning__IBNLearnerTo_p_gum__IApproximationSchemeConfiguration, 0, 0},{0, 0, 0, 0}};
 static swig_cast_info _swigc__p_gum__IMarkovRandomFieldT_double_t[] = {  {&_swigt__p_gum__IMarkovRandomFieldT_double_t, 0, 0, 0},  {&_swigt__p_gum__MarkovRandomFieldT_double_t, _p_gum__MarkovRandomFieldT_double_tTo_p_gum__IMarkovRandomFieldT_double_t, 0, 0},{0, 0, 0, 0}};
 static swig_cast_info _swigc__p_gum__MarkovRandomFieldT_double_t[] = {  {&_swigt__p_gum__MarkovRandomFieldT_double_t, 0, 0, 0},{0, 0, 0, 0}};
-static swig_cast_info _swigc__p_gum__PotentialT_double_t[] = {  {&_swigt__p_gum__PotentialT_double_t, 0, 0, 0},{0, 0, 0, 0}};
 static swig_cast_info _swigc__p_gum__LazyPropagationT_double_t[] = {{&_swigt__p_gum__LazyPropagationT_double_t, 0, 0, 0},{0, 0, 0, 0}};
 static swig_cast_info _swigc__p_gum__ShaferShenoyInferenceT_double_t[] = {{&_swigt__p_gum__ShaferShenoyInferenceT_double_t, 0, 0, 0},{0, 0, 0, 0}};
 static swig_cast_info _swigc__p_gum__VariableEliminationT_double_t[] = {{&_swigt__p_gum__VariableEliminationT_double_t, 0, 0, 0},{0, 0, 0, 0}};
@@ -16747,6 +16746,7 @@ static swig_cast_info _swigc__p_gum__SetT_gum__Edge_t__const_iterator[] = {  {&_
 static swig_cast_info _swigc__p_gum__SetT_std__size_t_t[] = {  {&_swigt__p_gum__SetT_std__size_t_t, 0, 0, 0},{0, 0, 0, 0}};
 static swig_cast_info _swigc__p_gum__SetT_std__size_t_t__const_iterator[] = {  {&_swigt__p_gum__SetT_std__size_t_t__const_iterator, 0, 0, 0},{0, 0, 0, 0}};
 static swig_cast_info _swigc__p_gum__ShaferShenoyMRFInferenceT_double_t[] = {  {&_swigt__p_gum__ShaferShenoyMRFInferenceT_double_t, 0, 0, 0},{0, 0, 0, 0}};
+static swig_cast_info _swigc__p_gum__TensorT_double_t[] = {  {&_swigt__p_gum__TensorT_double_t, 0, 0, 0},{0, 0, 0, 0}};
 static swig_cast_info _swigc__p_gum__ThreadNumberManager[] = {  {&_swigt__p_gum__ThreadNumberManager, 0, 0, 0},  {&_swigt__p_gum__LazyPropagationT_double_t, _p_gum__LazyPropagationT_double_tTo_p_gum__ThreadNumberManager, 0, 0},  {&_swigt__p_gum__ScheduledInference, _p_gum__ScheduledInferenceTo_p_gum__ThreadNumberManager, 0, 0},  {&_swigt__p_gum__ShaferShenoyInferenceT_double_t, _p_gum__ShaferShenoyInferenceT_double_tTo_p_gum__ThreadNumberManager, 0, 0},  {&_swigt__p_gum__ShaferShenoyMRFInferenceT_double_t, _p_gum__ShaferShenoyMRFInferenceT_double_tTo_p_gum__ThreadNumberManager, 0, 0},  {&_swigt__p_gum__VariableEliminationT_double_t, _p_gum__VariableEliminationT_double_tTo_p_gum__ThreadNumberManager, 0, 0},  {&_swigt__p_gum__learning__BNLearnerT_double_t, _p_gum__learning__BNLearnerT_double_tTo_p_gum__ThreadNumberManager, 0, 0},  {&_swigt__p_gum__learning__IBNLearner, _p_gum__learning__IBNLearnerTo_p_gum__ThreadNumberManager, 0, 0},{0, 0, 0, 0}};
 static swig_cast_info _swigc__p_gum__Triangulation[] = {  {&_swigt__p_gum__Triangulation, 0, 0, 0},{0, 0, 0, 0}};
 static swig_cast_info _swigc__p_gum__UGmodel[] = {  {&_swigt__p_gum__UGmodel, 0, 0, 0},  {&_swigt__p_gum__IMarkovRandomFieldT_double_t, _p_gum__IMarkovRandomFieldT_double_tTo_p_gum__UGmodel, 0, 0},  {&_swigt__p_gum__MarkovRandomFieldT_double_t, _p_gum__MarkovRandomFieldT_double_tTo_p_gum__UGmodel, 0, 0},{0, 0, 0, 0}};
@@ -16810,7 +16810,6 @@ static swig_cast_info *swig_cast_initial[] = {
   _swigc__p_gum__MixedGraph,
   _swigc__p_gum__NumericalDiscreteVariable,
   _swigc__p_gum__PDAG,
-  _swigc__p_gum__PotentialT_double_t,
   _swigc__p_gum__RangeVariable,
   _swigc__p_gum__ScheduledInference,
   _swigc__p_gum__SetT_gum__Arc_t,
@@ -16822,6 +16821,7 @@ static swig_cast_info *swig_cast_initial[] = {
   _swigc__p_gum__SetT_std__size_t_t__const_iterator,
   _swigc__p_gum__ShaferShenoyInferenceT_double_t,
   _swigc__p_gum__ShaferShenoyMRFInferenceT_double_t,
+  _swigc__p_gum__TensorT_double_t,
   _swigc__p_gum__ThreadNumberManager,
   _swigc__p_gum__Triangulation,
   _swigc__p_gum__UGmodel,

@@ -103,21 +103,21 @@ class Oracle(IndepTest):
     return not self.ctbn.graph.existsArc(self.ctbn.name2id[Y], self.ctbn.name2id[X])
 
 
-def sqrtPotential(potential: pyAgrum.Potential) -> "pyAgrum.Potential":
+def sqrtTensor(tensor: pyAgrum.Tensor) -> "pyAgrum.Tensor":
   """
-  Applies sqrt function to all values inside the potential.
+  Applies sqrt function to all values inside the tensor.
 
   Parameters
   ----------
-  potential : pyAgrum.Potential
-      potential to play sqrt to.
+  tensor : pyAgrum.Tensor
+      tensor to play sqrt to.
 
   Returns
   -------
-  pyAgrum.Potential
-      sqrt of potential.
+  pyAgrum.Tensor
+      sqrt of tensor.
   """
-  res = pyAgrum.Potential(potential)
+  res = pyAgrum.Tensor(tensor)
   i: pyAgrum.Instantiation = pyAgrum.Instantiation(res)
   i.setFirst()
   while not i.end():
@@ -165,8 +165,8 @@ class FChi2Test(IndepTest):
     self.x_from: str = CIM.varI(X)
     self.x_to: str = CIM.varJ(X)
 
-    self.r1: pyAgrum.Potential = self.stats.Mxy.sumOut([self.x_to])
-    self.r2: pyAgrum.Potential = self.stats.Mx.sumOut([self.x_to])
+    self.r1: pyAgrum.Tensor = self.stats.Mxy.sumOut([self.x_to])
+    self.r2: pyAgrum.Tensor = self.stats.Mx.sumOut([self.x_to])
 
     logging.debug("Qx\n%s", str(self.stats.Qx))
     logging.debug("Qx,y\n%s", str(self.stats.Qxy))
@@ -206,58 +206,58 @@ class FChi2Test(IndepTest):
 
     return True
 
-  def getMxxGivenU(self, M: pyAgrum.Potential, Y: str) -> "pyAgrum.Potential":
+  def getMxxGivenU(self, M: pyAgrum.Tensor, Y: str) -> "pyAgrum.Tensor":
     """
     Parameters
     ----------
-    M : pyAgrum.Potential
+    M : pyAgrum.Tensor
         A matrix M_{x, x' | y, U}, for some instantiation U of the conditioning set and y of a specific parent.
     Y : str
         A parent.
 
     Returns
     -------
-    pyAgrum.Potential
-        The potential M_{x, x' | U} by summing over all values of y.
+    pyAgrum.Tensor
+        The tensor M_{x, x' | U} by summing over all values of y.
     """
     return M.sumOut([Y])
 
-  def computeF(self) -> "pyAgrum.Potential":
+  def computeF(self) -> "pyAgrum.Tensor":
     """
     Compute F-test value for every instance of the variables.
 
     Returns
     -------
-    pyAgrum.Potential
+    pyAgrum.Tensor
         F-test value.
     """
-    F: pyAgrum.Potential = self.stats.Qx / self.stats.Qxy
+    F: pyAgrum.Tensor = self.stats.Qx / self.stats.Qxy
     return F
 
-  def computeChi2(self) -> "pyAgrum.Potential":
+  def computeChi2(self) -> "pyAgrum.Tensor":
     """
     Compute chi2-test value for every instance of the variables.
 
     Returns
     -------
-    pyAgrum.Potential
+    pyAgrum.Tensor
         chi2-test value.
     """
-    Ksq: pyAgrum.Potential = self.r2 / self.r1
-    Lsq: pyAgrum.Potential = self.r1 / self.r2
+    Ksq: pyAgrum.Tensor = self.r2 / self.r1
+    Lsq: pyAgrum.Tensor = self.r1 / self.r2
 
     logging.debug("r1:\n%s", self.r1)
     logging.debug("r2:\n%s", self.r2)
     logging.debug("Ksq:\n%s", Ksq)
     logging.debug("Lsq:\n%s", Lsq)
 
-    K = sqrtPotential(Ksq)
-    L = sqrtPotential(Lsq)
+    K = sqrtTensor(Ksq)
+    L = sqrtTensor(Lsq)
 
     logging.debug("K:\n%s", K)
     logging.debug("L:\n%s", L)
 
-    T: pyAgrum.Potential = ((K * self.stats.Mxy - L * self.stats.Mx).sq()) / (self.stats.Mxy + self.stats.Mx)
+    T: pyAgrum.Tensor = ((K * self.stats.Mxy - L * self.stats.Mx).sq()) / (self.stats.Mxy + self.stats.Mx)
 
     logging.debug("T before:\n%s", T)
     i: pyAgrum.Instantiation
@@ -267,7 +267,7 @@ class FChi2Test(IndepTest):
 
     logging.debug("T:\n%s", T)
 
-    self.chiSqValue: pyAgrum.Potential = T.sumOut(self.x_to)
+    self.chiSqValue: pyAgrum.Tensor = T.sumOut(self.x_to)
 
     return self.chiSqValue
 
@@ -291,7 +291,7 @@ class FChi2Test(IndepTest):
     """
     logging.debug("PERFORMING F TEST")
 
-    F: pyAgrum.Potential = self.computeF()
+    F: pyAgrum.Tensor = self.computeF()
 
     logging.debug("F\n%s", F)
 
@@ -335,7 +335,7 @@ class FChi2Test(IndepTest):
 
     card_val_x = len(self.tr.ctbn.variable(X).labels())
 
-    chiSqValue: pyAgrum.Potential = self.computeChi2()
+    chiSqValue: pyAgrum.Tensor = self.computeChi2()
 
     degrees_of_freedom: int = card_val_x - 1
     max_chi2 = chi2.ppf(ALPHA, degrees_of_freedom)

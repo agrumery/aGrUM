@@ -27,7 +27,7 @@
 #include <agrum/base/core/set.h>
 #include <agrum/base/graphs/graphElements.h>
 #include <agrum/base/graphs/parts/nodeGraphPart.h>
-#include <agrum/base/multidim/potential.h>
+#include <agrum/base/multidim/tensor.h>
 
 #include <agrum/BN/BayesNet.h>
 #include <agrum/BN/IBayesNet.h>
@@ -52,8 +52,8 @@ namespace PyAgrumHelper {
   }
 
   // filling a Set of DiscreteVariable* from a list of string, in the context of a
-  // potential.
-  void fillDVSetFromPyObject(const gum::Potential< double >*           pot,
+  // tensor.
+  void fillDVSetFromPyObject(const gum::Tensor< double >*           pot,
                              gum::Set< const gum::DiscreteVariable* >& s,
                              PyObject*                                 varnames) {
     gum::Set< std::string > names;
@@ -82,8 +82,8 @@ namespace PyAgrumHelper {
   }
 
   // filling a vector of DiscreteVariable* from a list of string, in the context of
-  // a potential.
-  void fillDVVectorFromPyObject(const gum::Potential< double >*              pot,
+  // a tensor.
+  void fillDVVectorFromPyObject(const gum::Tensor< double >*              pot,
                                 std::vector< const gum::DiscreteVariable* >& s,
                                 PyObject*                                    varnames) {
     if (PyList_Check(varnames)) {
@@ -98,7 +98,7 @@ namespace PyAgrumHelper {
         std::string name = stringFromPyObject(PyList_GetItem(varnames, i));
         if (name == "") { GUM_ERROR(gum::InvalidArgument, "Argument is not a list of string") }
         if (!namesToVars.exists(name)) {
-          GUM_ERROR(gum::InvalidArgument, "Argument is not a name of a variable in this potential");
+          GUM_ERROR(gum::InvalidArgument, "Argument is not a name of a variable in this tensor");
         }
         s.push_back(namesToVars[name]);
       }
@@ -107,8 +107,8 @@ namespace PyAgrumHelper {
     }
   }
 
-  // filling a DiscreteVariable* from a string, in the context of a potential.
-  void fillDVFromPyObject(const gum::Potential< double >* pot,
+  // filling a DiscreteVariable* from a string, in the context of a tensor.
+  void fillDVFromPyObject(const gum::Tensor< double >* pot,
                           const gum::DiscreteVariable*&   pvar,
                           PyObject*                       varname) {
     const std::string name = stringFromPyObject(varname);
@@ -123,7 +123,7 @@ namespace PyAgrumHelper {
       }
     }
     if (!isOK) {
-      GUM_ERROR(gum::InvalidArgument, "Argument is not a name of a variable in this potential");
+      GUM_ERROR(gum::InvalidArgument, "Argument is not a name of a variable in this tensor");
     }
   }
 
@@ -148,7 +148,7 @@ namespace PyAgrumHelper {
     }
   }
 
-  // filling a Instantiation from a dictionnary<string,int> and a Potential (to find variable
+  // filling a Instantiation from a dictionnary<string,int> and a Tensor (to find variable
   // and labels) and vice-versa
 
   PyObject* instantiationToDict(const gum::Instantiation& inst, bool withLabels = true) {
@@ -168,7 +168,7 @@ namespace PyAgrumHelper {
     return res;
   }
 
-  void fillInstantiationFromPyObject(const gum::Potential< double >* pot,
+  void fillInstantiationFromPyObject(const gum::Tensor< double >* pot,
                                      gum::Instantiation&             inst,
                                      PyObject*                       dict) {
     if (!PyDict_Check(dict)) { GUM_ERROR(gum::InvalidArgument, "Argument is not a dictionary") }

@@ -49,14 +49,14 @@
 namespace gum {
 
 
-  // update a set of potentials, keeping only those d-connected with
+  // update a set of tensors, keeping only those d-connected with
   // query variables given evidence
   template < typename GUM_SCALAR, class TABLE >
-  void dSeparationAlgorithm::relevantPotentials(const IBayesNet< GUM_SCALAR >& bn,
+  void dSeparationAlgorithm::relevantTensors(const IBayesNet< GUM_SCALAR >& bn,
                                                 const NodeSet&                 query,
                                                 const NodeSet&                 hardEvidence,
                                                 const NodeSet&                 softEvidence,
-                                                Set< const TABLE* >&           potentials) {
+                                                Set< const TABLE* >&           tensors) {
     const DAG& dag = bn.dag();
 
     // mark the set of ancestors of the evidence
@@ -84,15 +84,15 @@ namespace gum {
     NodeSet visited_from_child(dag.size());
     NodeSet visited_from_parent(dag.size());
 
-    /// for relevant potentials: indicate which tables contain a variable
+    /// for relevant tensors: indicate which tables contain a variable
     /// (nodeId)
-    HashTable< NodeId, Set< const TABLE* > > node2potentials;
-    for (const auto pot: potentials) {
+    HashTable< NodeId, Set< const TABLE* > > node2tensors;
+    for (const auto pot: tensors) {
       const Sequence< const DiscreteVariable* >& vars = pot->variablesSequence();
       for (const auto var: vars) {
         const NodeId id = bn.nodeId(*var);
-        if (!node2potentials.exists(id)) { node2potentials.insert(id, Set< const TABLE* >()); }
-        node2potentials[id].insert(pot);
+        if (!node2tensors.exists(id)) { node2tensors.insert(id, Set< const TABLE* >()); }
+        node2tensors[id].insert(pot);
       }
     }
 
@@ -107,7 +107,7 @@ namespace gum {
 
     // perform the bouncing ball until there is no node in the graph to send
     // the ball to
-    while (!nodes_to_visit.empty() && !node2potentials.empty()) {
+    while (!nodes_to_visit.empty() && !node2tensors.empty()) {
       // get the next node to visit
       const NodeId node      = nodes_to_visit.front().first;
       const bool   direction = nodes_to_visit.front().second;
@@ -123,25 +123,25 @@ namespace gum {
         if (!already_visited) { visited_from_parent.insert(node); }
       }
 
-      // if the node belongs to the query, update  _node2potentials_: remove all
-      // the potentials containing the node
-      if (node2potentials.exists(node)) {
-        auto& pot_set = node2potentials[node];
+      // if the node belongs to the query, update  _node2tensors_: remove all
+      // the tensors containing the node
+      if (node2tensors.exists(node)) {
+        auto& pot_set = node2tensors[node];
         for (const auto pot: pot_set) {
           const auto& vars = pot->variablesSequence();
           for (const auto var: vars) {
             const NodeId id = bn.nodeId(*var);
             if (id != node) {
-              node2potentials[id].erase(pot);
-              if (node2potentials[id].empty()) { node2potentials.erase(id); }
+              node2tensors[id].erase(pot);
+              if (node2tensors[id].empty()) { node2tensors.erase(id); }
             }
           }
         }
-        node2potentials.erase(node);
+        node2tensors.erase(node);
 
-        // if  _node2potentials_ is empty, no need to go on: all the potentials
+        // if  _node2tensors_ is empty, no need to go on: all the tensors
         // are d-connected to the query
-        if (node2potentials.empty()) return;
+        if (node2tensors.empty()) return;
       }
 
       // if this is the first time we meet the node, then visit it
@@ -177,11 +177,11 @@ namespace gum {
       }
     }
 
-    // here, all the potentials that belong to  _node2potentials_ are d-separated
+    // here, all the tensors that belong to  _node2tensors_ are d-separated
     // from the query
-    for (const auto& elt: node2potentials) {
+    for (const auto& elt: node2tensors) {
       for (const auto pot: elt.second) {
-        potentials.erase(pot);
+        tensors.erase(pot);
       }
     }
   }

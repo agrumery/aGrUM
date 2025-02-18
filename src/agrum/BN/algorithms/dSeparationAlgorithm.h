@@ -112,14 +112,14 @@ namespace gum {
                         const NodeSet& softEvidence,
                         NodeSet&       requisite) const;
 
-    /** @brief update a set of potentials, keeping only those d-connected with
+    /** @brief update a set of tensors, keeping only those d-connected with
      * query variables given evidence */
     template < typename GUM_SCALAR, class TABLE >
-    void relevantPotentials(const IBayesNet< GUM_SCALAR >& bn,
+    void relevantTensors(const IBayesNet< GUM_SCALAR >& bn,
                             const NodeSet&                 query,
                             const NodeSet&                 hardEvidence,
                             const NodeSet&                 softEvidence,
-                            Set< const TABLE* >&           potentials);
+                            Set< const TABLE* >&           tensors);
 
     /// @}
   };

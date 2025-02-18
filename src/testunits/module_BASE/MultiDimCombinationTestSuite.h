@@ -46,7 +46,7 @@
 #include <gumtest/AgrumTestSuite.h>
 #include <gumtest/utils.h>
 
-#include <agrum/base/multidim/potential.h>
+#include <agrum/base/multidim/tensor.h>
 #include <agrum/base/multidim/utils/operators/multiDimCombinationDefault.h>
 #include <agrum/base/variables/labelizedVariable.h>
 
@@ -57,7 +57,7 @@ namespace gum_tests {
     // ==========================================================================
     /// initialize randomly a table
     // ==========================================================================
-    void randomInitP(gum::Potential< double >& t) {
+    void randomInitP(gum::Tensor< double >& t) {
       gum::Instantiation i(t);
 
       for (i.setFirst(); !i.end(); ++i)
@@ -65,14 +65,14 @@ namespace gum_tests {
     }
 
     // the function used to combine two tables
-    static gum::Potential< double > addPotential(const gum::Potential< double >& t1,
-                                                 const gum::Potential< double >& t2) {
+    static gum::Tensor< double > addTensor(const gum::Tensor< double >& t1,
+                                                 const gum::Tensor< double >& t2) {
       return t1 + t2;
     }
 
     // the function used to combine two tables
-    static gum::Potential< double > multPotential(const gum::Potential< double >& t1,
-                                                  const gum::Potential< double >& t2) {
+    static gum::Tensor< double > multTensor(const gum::Tensor< double >& t1,
+                                                  const gum::Tensor< double >& t2) {
       return t1 * t2;
     }
 
@@ -88,7 +88,7 @@ namespace gum_tests {
           vars[i]       = new gum::LabelizedVariable(s, s, 4);
         }
 
-        gum::Potential< double > t1, t2, t3;
+        gum::Tensor< double > t1, t2, t3;
 
         t1 << *(vars[0]) << *(vars[1]) << *(vars[2]);
         t2 << *(vars[0]) << *(vars[1]) << *(vars[5]);
@@ -98,14 +98,14 @@ namespace gum_tests {
         randomInitP(t2);
         randomInitP(t3);
 
-        gum::Potential< double >*t4, *t5, *t6;
-        t4 = new gum::Potential< double >(t1 + t2);
-        t5 = new gum::Potential< double >(t3 + *t4);
+        gum::Tensor< double >*t4, *t5, *t6;
+        t4 = new gum::Tensor< double >(t1 + t2);
+        t5 = new gum::Tensor< double >(t3 + *t4);
 
-        gum::Set< const gum::Potential< double >* > set;
+        gum::Set< const gum::Tensor< double >* > set;
         set << &t1 << &t2 << &t3;
 
-        gum::MultiDimCombinationDefault< gum::Potential< double > > xxx(addPotential);
+        gum::MultiDimCombinationDefault< gum::Tensor< double > > xxx(addTensor);
         t6 = xxx.execute(set);
         TS_ASSERT(t6)
         TS_ASSERT_EQUALS(*t6, *t5)
@@ -116,12 +116,12 @@ namespace gum_tests {
 
         TS_ASSERT_EQUALS(xxx.nbOperations(set), 16641)
         auto yyy = xxx.memoryUsage(set);
-        TS_ASSERT_EQUALS(yyy.first, 16640 * sizeof(double) + 2 * sizeof(gum::Potential< double >))
-        TS_ASSERT_EQUALS(yyy.second, 16384 * sizeof(double) + sizeof(gum::Potential< double >))
+        TS_ASSERT_EQUALS(yyy.first, 16640 * sizeof(double) + 2 * sizeof(gum::Tensor< double >))
+        TS_ASSERT_EQUALS(yyy.second, 16384 * sizeof(double) + sizeof(gum::Tensor< double >))
 
-        t4 = new gum::Potential< double >(t1 * t2);
-        t5 = new gum::Potential< double >(t3 * (*t4));
-        xxx.setCombinationFunction(multPotential);
+        t4 = new gum::Tensor< double >(t1 * t2);
+        t5 = new gum::Tensor< double >(t3 * (*t4));
+        xxx.setCombinationFunction(multTensor);
         t6 = xxx.execute(set);
         TS_ASSERT(t6)
         TS_ASSERT_EQUALS(*t6, *t5)
@@ -129,7 +129,7 @@ namespace gum_tests {
         gum::Set< const gum::IScheduleMultiDim* >    sched_set;
         std::vector< const gum::IScheduleMultiDim* > sched_vect;
         for (const auto pot: set) {
-          auto new_sched = new gum::ScheduleMultiDim< gum::Potential< double > >(*pot, false);
+          auto new_sched = new gum::ScheduleMultiDim< gum::Tensor< double > >(*pot, false);
           sched_set.insert(new_sched);
           sched_vect.push_back(new_sched);
         }
@@ -199,16 +199,16 @@ namespace gum_tests {
     }
 
     GUM_ACTIVE_TEST(Constants) {
-      gum::Potential< double > t1, t2;
+      gum::Tensor< double > t1, t2;
       gum::Instantiation       inst1(t1), inst2(t2);
       t1.set(inst1, 3.0);
       t2.set(inst2, 4.0);
 
-      gum::MultiDimCombinationDefault< gum::Potential< double > > xxx(multPotential);
-      gum::Set< const gum::Potential< double >* >                 set;
+      gum::MultiDimCombinationDefault< gum::Tensor< double > > xxx(multTensor);
+      gum::Set< const gum::Tensor< double >* >                 set;
       set << &t1 << &t2;
 
-      gum::Potential< double >* t3 = xxx.execute(set);
+      gum::Tensor< double >* t3 = xxx.execute(set);
       {
         gum::Instantiation inst3(t3);
         TS_ASSERT_EQUALS((*t3)[inst3], 12.0)
@@ -226,7 +226,7 @@ namespace gum_tests {
         vars[i]       = new gum::LabelizedVariable(s, s, 2);
       }
 
-      gum::Potential< double > t4;
+      gum::Tensor< double > t4;
       t4 << *(vars[0]) << *(vars[1]);
       randomInitP(t4);
       t4.normalize();
@@ -264,7 +264,7 @@ namespace gum_tests {
       t3 = nullptr;
 
 
-      gum::Potential< double > t5;
+      gum::Tensor< double > t5;
       t5 << *(vars[0]);
       randomInitP(t5);
       t5.normalize();
@@ -317,7 +317,7 @@ namespace gum_tests {
           vars[i]       = new gum::LabelizedVariable(s, s, 4);
         }
 
-        gum::Potential< double > t1, t2, t3;
+        gum::Tensor< double > t1, t2, t3;
 
         t1 << *(vars[0]) << *(vars[1]) << *(vars[2]);
         t2 << *(vars[0]) << *(vars[1]) << *(vars[5]);
@@ -327,14 +327,14 @@ namespace gum_tests {
         randomInitP(t2);
         randomInitP(t3);
 
-        gum::Potential< double >*t4, *t5, *t6;
-        t4 = new gum::Potential< double >(t1 + t2);
-        t5 = new gum::Potential< double >(t3 + *t4);
+        gum::Tensor< double >*t4, *t5, *t6;
+        t4 = new gum::Tensor< double >(t1 + t2);
+        t5 = new gum::Tensor< double >(t3 + *t4);
 
-        gum::Set< const gum::Potential< double >* > set;
+        gum::Set< const gum::Tensor< double >* > set;
         set << &t1 << &t2 << &t3;
 
-        gum::MultiDimCombinationDefault< gum::Potential< double > > xxx(addPotential);
+        gum::MultiDimCombinationDefault< gum::Tensor< double > > xxx(addTensor);
         t6 = xxx.execute(set);
         TS_ASSERT(t6)
         TS_ASSERT_EQUALS(*t6, *t5)
@@ -345,12 +345,12 @@ namespace gum_tests {
 
         TS_ASSERT_EQUALS(xxx.nbOperations(set), 16641)
         auto yyy = xxx.memoryUsage(set);
-        TS_ASSERT_EQUALS(yyy.first, 16640 * sizeof(double) + 2 * sizeof(gum::Potential< double >))
-        TS_ASSERT_EQUALS(yyy.second, 16384 * sizeof(double) + sizeof(gum::Potential< double >))
+        TS_ASSERT_EQUALS(yyy.first, 16640 * sizeof(double) + 2 * sizeof(gum::Tensor< double >))
+        TS_ASSERT_EQUALS(yyy.second, 16384 * sizeof(double) + sizeof(gum::Tensor< double >))
 
-        t4 = new gum::Potential< double >(t1 * t2);
-        t5 = new gum::Potential< double >(t3 * (*t4));
-        xxx.setCombinationFunction(multPotential);
+        t4 = new gum::Tensor< double >(t1 * t2);
+        t5 = new gum::Tensor< double >(t3 * (*t4));
+        xxx.setCombinationFunction(multTensor);
         t6 = xxx.execute(set);
         TS_ASSERT(t6)
         TS_ASSERT_EQUALS(*t6, *t5)
@@ -358,7 +358,7 @@ namespace gum_tests {
         gum::Set< const gum::IScheduleMultiDim* >    sched_set;
         std::vector< const gum::IScheduleMultiDim* > sched_vect;
         for (const auto pot: set) {
-          auto new_sched = new gum::ScheduleMultiDim< gum::Potential< double > >(*pot, false);
+          auto new_sched = new gum::ScheduleMultiDim< gum::Tensor< double > >(*pot, false);
           sched_set.insert(new_sched);
           sched_vect.push_back(new_sched);
         }

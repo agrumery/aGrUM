@@ -88,7 +88,7 @@ from ._IVEstimators import (
 class CausalEffectEstimation:
     """
     Estimates causal effects using a dataset and a causal graph within
-    the Neyman-Rubin Potential Outcomes framework.
+    the Neyman-Rubin Tensor Outcomes framework.
 
     This class performs causal identification based on user-specified datasets
     and causal graphical models. It determines the appropriate adjustment method

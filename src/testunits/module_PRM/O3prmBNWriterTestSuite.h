@@ -135,7 +135,7 @@ namespace gum_tests {
       for (const auto& nod: bn.nodes()) {
         nam = bn.variable(nod).name();
         TS_ASSERT_EQUALS(bn.variable(nam).toString(), bn2.variable(nam).toString())
-        const gum::Potential< double > p(bn.cpt(nam));
+        const gum::Tensor< double > p(bn.cpt(nam));
         std::vector< std::string >     varmap;
         for (gum::Idx i = 0; i < p.nbrDim(); i++)
           varmap.push_back(p.variable(i).name());
@@ -165,7 +165,7 @@ namespace gum_tests {
       for (const auto& nod: bn.nodes()) {
         nam = bn.variable(nod).name();
         TS_ASSERT_EQUALS(bn.variable(nam).toString(), bn2.variable(nam).toString())
-        const gum::Potential< double > p(bn.cpt(nam));
+        const gum::Tensor< double > p(bn.cpt(nam));
         std::vector< std::string >     varmap;
         for (gum::Idx i = 0; i < p.nbrDim(); i++)
           varmap.push_back(p.variable(i).name());

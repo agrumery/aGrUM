@@ -184,7 +184,7 @@ namespace gum {
     }
 
     template < typename GUM_SCALAR >
-    INLINE const Potential< GUM_SCALAR >& PRMSlotChain< GUM_SCALAR >::cpf() const {
+    INLINE const Tensor< GUM_SCALAR >& PRMSlotChain< GUM_SCALAR >::cpf() const {
       return _chain_->back()->cpf();
     }
 

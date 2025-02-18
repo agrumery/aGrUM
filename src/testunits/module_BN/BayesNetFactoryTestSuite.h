@@ -394,7 +394,7 @@ namespace gum_tests {
       TS_GUM_ASSERT_THROWS_NOTHING(factory->endVariableDeclaration())
 
       // Defining CPT
-      auto                         cpt_1 = new gum::Potential< double >();
+      auto                         cpt_1 = new gum::Tensor< double >();
       const gum::DiscreteVariable& var_1 = factory->bayesNet()->variable(factory->variableId("1"));
       cpt_1->add(var_1);
       gum::Instantiation inst_1(*cpt_1);
@@ -404,7 +404,7 @@ namespace gum_tests {
       cpt_1->set(inst_1, 0.8);
       TS_GUM_ASSERT_THROWS_NOTHING(factory->setVariableCPT("1", cpt_1, true))
 
-      auto                         cpt_2 = new gum::Potential< double >();
+      auto                         cpt_2 = new gum::Tensor< double >();
       const gum::DiscreteVariable& var_2 = factory->bayesNet()->variable(factory->variableId("2"));
       cpt_2->add(var_2);
       gum::Instantiation inst_2(*cpt_2);
@@ -414,7 +414,7 @@ namespace gum_tests {
       cpt_2->set(inst_2, 0.8);
       TS_GUM_ASSERT_THROWS_NOTHING(factory->setVariableCPT("2", cpt_2, true))
 
-      auto                         cpt_3 = new gum::Potential< double >();
+      auto                         cpt_3 = new gum::Tensor< double >();
       const gum::DiscreteVariable& var_3 = factory->bayesNet()->variable(factory->variableId("3"));
       cpt_3->add(var_3);
       cpt_3->add(var_1);
@@ -433,7 +433,7 @@ namespace gum_tests {
       cpt_3->set(inst_3, 0.5);
       TS_GUM_ASSERT_THROWS_NOTHING(factory->setVariableCPT("3", cpt_3, true))
 
-      auto                         cpt_4 = new gum::Potential< double >();
+      auto                         cpt_4 = new gum::Tensor< double >();
       const gum::DiscreteVariable& var_4 = factory->bayesNet()->variable(factory->variableId("4"));
       cpt_4->add(var_4);
       cpt_4->add(var_1);
@@ -474,7 +474,7 @@ namespace gum_tests {
       TS_GUM_ASSERT_THROWS_NOTHING(factory->setVariableCPT("4", cpt_4, true))
 
       auto mds   = new gum::MultiDimSparse< double >(0.5);
-      auto cpt_5 = new gum::Potential< double >(mds);
+      auto cpt_5 = new gum::Tensor< double >(mds);
 
       const gum::DiscreteVariable& var_5 = factory->bayesNet()->variable(factory->variableId("5"));
       cpt_5->add(var_5);

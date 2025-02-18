@@ -107,7 +107,7 @@ namespace gum {
      * @param epsilon a default parameter used to scale the modification of the
      * distributions
      *
-     * For every CPT in the BN, epsilon is added to each potential value before
+     * For every CPT in the BN, epsilon is added to each tensor value before
      * normalizing
      *
      */

@@ -80,7 +80,7 @@ namespace gum {
     }
 
     for (const auto node: bn.nodes()) {
-      const Potential< GUM_SCALAR >& proba = bn.cpt(node);
+      const Tensor< GUM_SCALAR >& proba = bn.cpt(node);
       output << _variableCPT_(proba);
     }
 
@@ -111,7 +111,7 @@ namespace gum {
 
   // Returns a bloc defining a variable's CPT in the BIF format.
   template < typename GUM_SCALAR >
-  INLINE std::string BIFWriter< GUM_SCALAR >::_variableCPT_(const Potential< GUM_SCALAR >& cpt) {
+  INLINE std::string BIFWriter< GUM_SCALAR >::_variableCPT_(const Tensor< GUM_SCALAR >& cpt) {
     std::stringstream str;
     std::string       tab = "   ";   // poor tabulation
 

@@ -96,8 +96,8 @@ namespace gum {
       Idx                 cvp         = node2MinVar[currentNodeId];
       const InternalNode* currentNode = generatedFunctionGraph->node(currentNodeId);
 
-      LinkedList< NodeId > potentialSons;
-      Idx                  nbPotentialSons = 0;
+      LinkedList< NodeId > tensorSons;
+      Idx                  nbTensorSons = 0;
       for (Idx varPos = 0; varPos < generatedFunctionGraph->variablesSequence().size(); varPos++) {
         const DiscreteVariable* var = generatedFunctionGraph->variablesSequence().atPos(varPos);
 
@@ -105,15 +105,15 @@ namespace gum {
         if (vsp > cvp) {
           const Link< NodeId >* nicleIter = generatedFunctionGraph->varNodeListe(var)->list();
           while (nicleIter) {
-            nbPotentialSons++;
-            potentialSons.addLink(nicleIter->element());
+            nbTensorSons++;
+            tensorSons.addLink(nicleIter->element());
             nicleIter = nicleIter->nextLink();
           }
         }
       }
 
       for (Idx modality = 0; modality < currentNode->nodeVar()->domainSize(); modality++) {
-        if (!potentialSons.list() || randomProba() > (1.0 / (1.0 + 3.0 / nbPotentialSons))) {
+        if (!tensorSons.list() || randomProba() > (1.0 / (1.0 + 3.0 / nbTensorSons))) {
           if (_createLeaf_(currentNodeId, node2MinVar)) {
             generatedFunctionGraph->manager()->setSon(
                 currentNodeId,
@@ -130,9 +130,9 @@ namespace gum {
             node2MinVar.insert(currentNode->son(modality), sonVarPos);
           }
         } else {
-          Idx sonPos                = randomValue(nbPotentialSons);
-          sonPos                    = sonPos == nbPotentialSons ? nbPotentialSons - 1 : sonPos;
-          Link< NodeId >* nicleIter = potentialSons.list();
+          Idx sonPos                = randomValue(nbTensorSons);
+          sonPos                    = sonPos == nbTensorSons ? nbTensorSons - 1 : sonPos;
+          Link< NodeId >* nicleIter = tensorSons.list();
           while (sonPos) {
             nicleIter = nicleIter->nextLink();
             sonPos--;

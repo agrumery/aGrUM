@@ -214,8 +214,8 @@ namespace gum_tests {
           TS_ASSERT(copy->dag().existsArc(gum::Arc(parent, node)))
         }
 
-        const gum::Potential< double >& srcCPT = source.cpt(node);
-        const gum::Potential< double >& cpCPT  = copy->cpt(node);
+        const gum::Tensor< double >& srcCPT = source.cpt(node);
+        const gum::Tensor< double >& cpCPT  = copy->cpt(node);
 
         gum::Instantiation srcInst(srcCPT);
         gum::Instantiation cpInst(cpCPT);
@@ -264,8 +264,8 @@ namespace gum_tests {
           TS_ASSERT(copy.dag().existsArc(gum::Arc(parent, node)))
         }
 
-        const gum::Potential< double >& srcCPT = source.cpt(node);
-        const gum::Potential< double >& cpCPT  = copy.cpt(node);
+        const gum::Tensor< double >& srcCPT = source.cpt(node);
+        const gum::Tensor< double >& cpCPT  = copy.cpt(node);
         gum::Instantiation              srcInst(srcCPT);
         gum::Instantiation              cpInst(cpCPT);
 

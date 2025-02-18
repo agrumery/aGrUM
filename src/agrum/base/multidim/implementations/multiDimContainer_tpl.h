@@ -138,7 +138,7 @@ namespace gum {
     return ss.str();
   }
 
-  // Test if this potential is equal to p.
+  // Test if this tensor is equal to p.
 
   template < typename GUM_SCALAR >
   bool MultiDimContainer< GUM_SCALAR >::operator==(const MultiDimContainer< GUM_SCALAR >& p) const {
@@ -162,7 +162,7 @@ namespace gum {
     return true;
   }
 
-  // Test if this potential is different of p.
+  // Test if this tensor is different of p.
 
   template < typename GUM_SCALAR >
   INLINE bool
@@ -257,7 +257,7 @@ namespace gum {
 
     this->endMultipleChanges();
 
-    if (this->nbrDim() == 0) { GUM_ERROR(FatalError, "Empty potential") }
+    if (this->nbrDim() == 0) { GUM_ERROR(FatalError, "Empty tensor") }
 
     Instantiation inst(src);
     inst.setVals(imask);

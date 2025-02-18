@@ -63,14 +63,14 @@ def causalImpact(cm: CausalModel,
                  doing: Union[str, NameSet],
                  knowing: Optional[NameSet] = None,
                  values: Optional[Dict[str, int]] = None) -> Tuple[
-  'pyAgrum.causal.CausalFormula', 'pyAgrum.Potential', str]:
+  'pyAgrum.causal.CausalFormula', 'pyAgrum.Tensor', str]:
   """
   Determines the causal impact of interventions.
 
   Determines the causal impact of the interventions specified in ``doing`` on the single or list of variables ``on``
   knowing the states of the variables in ``knowing`` (optional). These last parameters is dictionary <variable
   name>:<value>. The causal impact is determined in the causal DAG ``cm``.
-  This function returns a triplet with a latex format formula used to compute the causal impact, a potential
+  This function returns a triplet with a latex format formula used to compute the causal impact, a tensor
   representing the probability distribution of ``on``  given the interventions and observations as parameters,
   and an explanation of the method allowing the identification. If there is no impact, the joint probability of
   ``on`` is simply returned. If the impact is not identifiable the formula and the adjustment will be ``None`` but an
@@ -91,7 +91,7 @@ def causalImpact(cm: CausalModel,
 
   Returns
   -------
-  Tuple[CausalFormula,pyAgrum.Potential,str]
+  Tuple[CausalFormula,pyAgrum.Tensor,str]
     the CausalFormula, the computation, the explanation
   """
   # Checking the args
@@ -118,16 +118,16 @@ def causalImpact(cm: CausalModel,
   if len(son & sdoing & sk) > 0:
     raise ValueError("The 3 parts of the query (on, doing, knowing) must not intersect.")
 
-  formula, potential, explanation = _causalImpact(cm, son, sdoing, sk)
+  formula, tensor, explanation = _causalImpact(cm, son, sdoing, sk)
 
-  # no need to contextualize the potential
-  if potential is None or values is None:
-    potfinal = potential
+  # no need to contextualize the tensor
+  if tensor is None or values is None:
+    potfinal = tensor
   else:
-    sv = set(potential.names)
+    sv = set(tensor.names)
     extract_values = {k: _getLabelIdx(cm.observationalBN(), k, v)
                       for k, v in values.items() if k in sv}
-    potfinal = potential.extract(extract_values)
+    potfinal = tensor.extract(extract_values)
 
   # doCalculous can change doing and knowing
   if formula is not None:
@@ -140,14 +140,14 @@ def causalImpact(cm: CausalModel,
 def _causalImpact(cm: CausalModel, on: Union[str, NameSet],
                   doing: Union[str, NameSet],
                   knowing: Union[str, NameSet]) \
-   -> Tuple['pyAgrum.causal.CausalFormula', 'pyAgrum.Potential', str]:
+   -> Tuple['pyAgrum.causal.CausalFormula', 'pyAgrum.Tensor', str]:
   """
   Determines the causal impact of interventions.
 
   Determines the causal impact of the interventions specified in ``doing`` on the single or list of variables ``on``
   knowing the states of the variables in ``knowing`` (optional). The causal impact is determined in the causal DAG
   ``cm``.
-  This function returns a triplet with a latex format formula used to compute the causal impact, a potential
+  This function returns a triplet with a latex format formula used to compute the causal impact, a tensor
   representing the probability distribution of ``on``  given the interventions and observations as parameters,
   and an explanation of the method allowing the identification. If there is no impact, the joint probability of
   ``on`` is simply returned. If the impact is not identifiable the formula and the adjustment will be ``None`` but an
@@ -166,7 +166,7 @@ def _causalImpact(cm: CausalModel, on: Union[str, NameSet],
 
   Returns
   -------
-  Tuple[CausalFormula,pyAgrum.Potential,str]
+  Tuple[CausalFormula,pyAgrum.Tensor,str]
     the latex representation, the computation, the explanation
   """
   nY = list(on)
@@ -245,7 +245,7 @@ def counterfactualModel(cm: CausalModel, profile: Union[Dict[str, int], type(Non
 
   This is done according to the following algorithm:
       -Step 1: calculate the posterior probabilities of idiosyncratic nodes (parentless nodes - whatif-latent variables) in the BN with which we created the causal model with  "profile" as evidence.
-      -Step 2 : We replace in the original BN the prior probabilities of idiosyncratic nodes with potentials calculated in step 1 (it will spread to the causal model)
+      -Step 2 : We replace in the original BN the prior probabilities of idiosyncratic nodes with tensors calculated in step 1 (it will spread to the causal model)
 
   This function returns the twin CausalModel
 
@@ -297,7 +297,7 @@ def counterfactualModel(cm: CausalModel, profile: Union[Dict[str, int], type(Non
   for factor in idiosyncratic:
     posteriors[factor] = ie.posterior(factor)
 
-  # Step 2 : We replace the prior probabilities of idiosyncratic nodes with potentials calculated in step 1 in the BN
+  # Step 2 : We replace the prior probabilities of idiosyncratic nodes with tensors calculated in step 1 in the BN
   # Saving the original CPTs of idiosyncratic variables
   for factor in idiosyncratic:
     bn.cpt(factor).fillWith(posteriors[factor])
@@ -307,7 +307,7 @@ def counterfactualModel(cm: CausalModel, profile: Union[Dict[str, int], type(Non
 
 def counterfactual(cm: CausalModel, profile: Union[Dict[str, int], type(None)], on: Union[str, Set[str]],
                    whatif: Union[str, Set[str]],
-                   values: Union[Dict[str, int], type(None)] = None) -> "pyAgrum.Potential":
+                   values: Union[Dict[str, int], type(None)] = None) -> "pyAgrum.Tensor":
   """
   Determines the estimation of a counterfactual query following the the three steps algorithm from "The Book Of Why"
   (Pearl 2018) chapter 8 page 253.
@@ -321,7 +321,7 @@ def counterfactual(cm: CausalModel, profile: Union[Dict[str, int], type(None)], 
       -Step 3 : determine the causal impact of the interventions specified in  "whatif" on the single or list of
       variables "on" in the causal model.
 
-  This function returns the potential calculated in step 3, representing the probability distribution of  "on" given
+  This function returns the tensor calculated in step 3, representing the probability distribution of  "on" given
   the interventions  "whatif", if it had been as specified in "values" (if "values" is omitted, every possible value of
   "whatif")
 
@@ -339,7 +339,7 @@ def counterfactual(cm: CausalModel, profile: Union[Dict[str, int], type(None)], 
 
   Returns
   -------
-  pyAgrum.Potential
+  pyAgrum.Tensor
     the computed counterfactual impact
   """
   # Step 1 and 2 : create the twin causal model
@@ -350,8 +350,8 @@ def counterfactual(cm: CausalModel, profile: Union[Dict[str, int], type(None)], 
     twincm, on=on, doing=whatif, values=values)
   # cslnb.showCausalImpact(cm,on = on,whatif=whatif,values=values)
 
-  # adj is using variables from twincm. We copy it in a Potential using variables of cm
-  res = pyAgrum.Potential()
+  # adj is using variables from twincm. We copy it in a Tensor using variables of cm
+  res = pyAgrum.Tensor()
   for v in adj.names:
     res.add(cm.observationalBN().variableFromName(v))
   res.fillWith(adj)

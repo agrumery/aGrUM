@@ -77,7 +77,7 @@
 %ignore ns::classname::toString;
 %enddef
 
-ADD_REPR_STR_API(gum,Potential<double>);
+ADD_REPR_STR_API(gum,Tensor<double>);
 ADD_REPR_STR_API(gum,Instantiation);
 
 ADD_REPR_STR_API(gum,DiscreteVariable);

@@ -125,14 +125,14 @@ namespace gum {
       /// @param m CPF filled with the marginal of elt. It is initialized
       ///          properly.
       virtual void posterior_(const typename PRMInference< GUM_SCALAR >::Chain& chain,
-                              Potential< GUM_SCALAR >&                          m);
+                              Tensor< GUM_SCALAR >&                          m);
 
       /// @brief Generic method to compute the marginal of given element.
       /// @param queries Set of pairs of PRMInstance and PRMAttribute.
       /// @param j CPF filled with the joint probability of queries. It is
       ///          initialized properly.
       virtual void joint_(const std::vector< typename PRMInference< GUM_SCALAR >::Chain >& queries,
-                          Potential< GUM_SCALAR >&                                         j);
+                          Tensor< GUM_SCALAR >&                                         j);
 
       /// @}
 
@@ -146,7 +146,7 @@ namespace gum {
       /// The bayesnet inference engine used by this class.
       MarginalTargetedInference< GUM_SCALAR >* _inf_;
 
-      List< const Potential< GUM_SCALAR >* > _obs_;
+      List< const Tensor< GUM_SCALAR >* > _obs_;
     };
 
 

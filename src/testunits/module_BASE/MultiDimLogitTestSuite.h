@@ -45,7 +45,7 @@
 
 #include <agrum/base/core/exceptions.h>
 #include <agrum/base/multidim/ICIModels/multiDimLogit.h>
-#include <agrum/base/multidim/potential.h>
+#include <agrum/base/multidim/tensor.h>
 #include <agrum/base/variables/labelizedVariable.h>
 #include <agrum/base/variables/rangeVariable.h>
 

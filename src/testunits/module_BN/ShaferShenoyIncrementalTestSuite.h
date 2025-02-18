@@ -72,9 +72,9 @@ namespace gum_tests {
 
 
   class [[maybe_unused]] ShaferShenoyIncrementalTestSuite: public CxxTest::TestSuite {
-    using TestPotentialSet = gum::Set< const gum::Potential< double >* >;
+    using TestTensorSet = gum::Set< const gum::Tensor< double >* >;
 
-    static void defineVariables(gum::BayesNet< double >& bn, gum::Potential< double >& joint) {
+    static void defineVariables(gum::BayesNet< double >& bn, gum::Tensor< double >& joint) {
       bn = gum::BayesNet< double >::fastPrototype(
           "A->B[3]->C->D[3];C->E[2];D->F[3];C<-G[4]->H[3]->E");
 
@@ -86,10 +86,10 @@ namespace gum_tests {
 
     public:
     // ============================================================================
-    gum::Potential< double > create_evidence(const gum::NodeId              node_id,
+    gum::Tensor< double > create_evidence(const gum::NodeId              node_id,
                                              const std::vector< double >&   ev,
                                              const gum::BayesNet< double >& bn) {
-      gum::Potential< double > proba;
+      gum::Tensor< double > proba;
       proba.add(bn.variable(node_id));
       proba.fillWith(ev);
 
@@ -97,9 +97,9 @@ namespace gum_tests {
     }
 
     // ============================================================================
-    gum::Potential< double > posterior_joint(const gum::Potential< double >&             joint,
-                                             gum::Set< const gum::Potential< double >* > evidence) {
-      gum::Potential< double > joint_pot(joint);
+    gum::Tensor< double > posterior_joint(const gum::Tensor< double >&             joint,
+                                             gum::Set< const gum::Tensor< double >* > evidence) {
+      gum::Tensor< double > joint_pot(joint);
       for (const auto p: evidence)
         joint_pot *= (*p);
       joint_pot.normalize();
@@ -108,14 +108,14 @@ namespace gum_tests {
     }
 
     // ============================================================================
-    gum::Potential< double > get_marginal(const gum::Potential< double >& joint,
+    gum::Tensor< double > get_marginal(const gum::Tensor< double >& joint,
                                           const gum::NodeId               target_id,
                                           const gum::BayesNet< double >&  bn) {
       return joint.sumIn({&bn.variable(target_id)}).normalize();
     }
 
     // ============================================================================
-    gum::Potential< double > get_joint(const gum::Potential< double > joint,
+    gum::Tensor< double > get_joint(const gum::Tensor< double > joint,
                                        const gum::NodeSet&            target_ids,
                                        const gum::BayesNet< double >& bn) {
       // get the set of variables to erase
@@ -126,7 +126,7 @@ namespace gum_tests {
     }
 
     // ============================================================================
-    bool equalPotentials(const gum::Potential< double >& p1, const gum::Potential< double >& p2) {
+    bool equalTensors(const gum::Tensor< double >& p1, const gum::Tensor< double >& p2) {
       gum::Instantiation i1(p1);
       gum::Instantiation i2(p2);
 
@@ -146,7 +146,7 @@ namespace gum_tests {
     // ============================================================================
     GUM_ACTIVE_TEST(_prior) {
       gum::BayesNet< double >  bn;
-      gum::Potential< double > joint;
+      gum::Tensor< double > joint;
       defineVariables(bn, joint);
 
       gum::ShaferShenoyInference< double > inf(&bn);
@@ -158,17 +158,17 @@ namespace gum_tests {
       auto pd = get_marginal(joint, bn.idFromName("D"), bn);
       auto ph = get_marginal(joint, bn.idFromName("H"), bn);
 
-      TS_ASSERT(equalPotentials(inf.posterior(bn.idFromName("A")), pa))
-      TS_ASSERT(equalPotentials(inf.posterior(bn.idFromName("C")), pc))
-      TS_ASSERT(equalPotentials(inf.posterior(bn.idFromName("D")), pd))
-      TS_ASSERT(equalPotentials(inf.posterior(bn.idFromName("H")), ph))
+      TS_ASSERT(equalTensors(inf.posterior(bn.idFromName("A")), pa))
+      TS_ASSERT(equalTensors(inf.posterior(bn.idFromName("C")), pc))
+      TS_ASSERT(equalTensors(inf.posterior(bn.idFromName("D")), pd))
+      TS_ASSERT(equalTensors(inf.posterior(bn.idFromName("H")), ph))
     }
 
     // ============================================================================
     // ============================================================================
     GUM_ACTIVE_TEST(_prior_with_targets) {
       gum::BayesNet< double >  bn;
-      gum::Potential< double > joint;
+      gum::Tensor< double > joint;
       defineVariables(bn, joint);
 
       gum::ShaferShenoyInference< double > inf(&bn);
@@ -186,16 +186,16 @@ namespace gum_tests {
       TS_GUM_ASSERT_THROWS_NOTHING(inf.posterior(bn.idFromName("B")))
       TS_ASSERT_THROWS(inf.posterior(bn.idFromName("D")), const gum::UndefinedElement&)
 
-      TS_ASSERT(equalPotentials(inf.posterior(bn.idFromName("A")), pa))
-      TS_ASSERT(equalPotentials(inf.posterior(bn.idFromName("C")), pc))
-      TS_ASSERT(equalPotentials(inf.posterior(bn.idFromName("B")), pb))
+      TS_ASSERT(equalTensors(inf.posterior(bn.idFromName("A")), pa))
+      TS_ASSERT(equalTensors(inf.posterior(bn.idFromName("C")), pc))
+      TS_ASSERT(equalTensors(inf.posterior(bn.idFromName("B")), pb))
     }
 
     // ============================================================================
     // ============================================================================
     GUM_ACTIVE_TEST(_prior_with_targets_evidence) {
       gum::BayesNet< double >  bn;
-      gum::Potential< double > joint;
+      gum::Tensor< double > joint;
       defineVariables(bn, joint);
 
       gum::ShaferShenoyInference< double > inf(&bn);
@@ -208,7 +208,7 @@ namespace gum_tests {
       auto ev3 = create_evidence(bn.idFromName("D"), {0.2, 0.6, 0.6}, bn);
       inf.addEvidence(ev3);
 
-      const TestPotentialSet evset{&ev1, &ev3};
+      const TestTensorSet evset{&ev1, &ev3};
       auto                   posterior = posterior_joint(joint, evset);
 
       TS_ASSERT_THROWS_NOTHING(inf.makeInference())
@@ -217,15 +217,15 @@ namespace gum_tests {
       auto pa = get_marginal(posterior, bn.idFromName("A"), bn);
       auto pf = get_marginal(posterior, bn.idFromName("F"), bn);
 
-      TS_ASSERT(equalPotentials(inf.posterior(bn.idFromName("A")), pa))
-      TS_ASSERT(equalPotentials(inf.posterior(bn.idFromName("F")), pf))
+      TS_ASSERT(equalTensors(inf.posterior(bn.idFromName("A")), pa))
+      TS_ASSERT(equalTensors(inf.posterior(bn.idFromName("F")), pf))
     }
 
     // ============================================================================
     // ============================================================================
     GUM_ACTIVE_TEST(_prior_with_targets_outside_evidence) {
       gum::BayesNet< double >  bn;
-      gum::Potential< double > joint;
+      gum::Tensor< double > joint;
       defineVariables(bn, joint);
 
       gum::ShaferShenoyInference< double > inf(&bn);
@@ -240,7 +240,7 @@ namespace gum_tests {
       auto ev7 = create_evidence(7, {0.4, 0.2, 0.3}, bn);
       inf.addEvidence(ev7);
 
-      const TestPotentialSet evset{&ev0, &ev1, &ev7};
+      const TestTensorSet evset{&ev0, &ev1, &ev7};
       auto                   posterior = posterior_joint(joint, evset);
 
       TS_ASSERT_THROWS_NOTHING(inf.makeInference())
@@ -249,15 +249,15 @@ namespace gum_tests {
       auto pa = get_marginal(posterior, bn.idFromName("A"), bn);
       auto pd = get_marginal(posterior, bn.idFromName("D"), bn);
 
-      TS_ASSERT(equalPotentials(inf.posterior(bn.idFromName("A")), pa))
-      TS_ASSERT(equalPotentials(inf.posterior(bn.idFromName("D")), pd))
+      TS_ASSERT(equalTensors(inf.posterior(bn.idFromName("A")), pa))
+      TS_ASSERT(equalTensors(inf.posterior(bn.idFromName("D")), pd))
     }
 
     // ============================================================================
     // ============================================================================
     GUM_ACTIVE_TEST(_prior_with_targets_evidence_values_changed) {
       gum::BayesNet< double >  bn;
-      gum::Potential< double > joint;
+      gum::Tensor< double > joint;
       defineVariables(bn, joint);
 
       gum::ShaferShenoyInference< double > inf(&bn);
@@ -274,7 +274,7 @@ namespace gum_tests {
 
 
       {
-        const TestPotentialSet evset{&ev0, &ev1, &ev7};
+        const TestTensorSet evset{&ev0, &ev1, &ev7};
         auto                   posterior = posterior_joint(joint, evset);
 
         TS_ASSERT_THROWS_NOTHING(inf.makeInference())
@@ -283,8 +283,8 @@ namespace gum_tests {
         auto pa = get_marginal(posterior, bn.idFromName("A"), bn);
         auto pd = get_marginal(posterior, bn.idFromName("D"), bn);
 
-        TS_ASSERT(equalPotentials(inf.posterior(bn.idFromName("A")), pa))
-        TS_ASSERT(equalPotentials(inf.posterior(bn.idFromName("D")), pd))
+        TS_ASSERT(equalTensors(inf.posterior(bn.idFromName("A")), pa))
+        TS_ASSERT(equalTensors(inf.posterior(bn.idFromName("D")), pd))
       }
 
 
@@ -296,7 +296,7 @@ namespace gum_tests {
       inf.chgEvidence(evp7);
 
       {
-        const TestPotentialSet evset{&evp0, &evp1, &evp7};
+        const TestTensorSet evset{&evp0, &evp1, &evp7};
         auto                   posterior = posterior_joint(joint, evset);
 
         TS_ASSERT_THROWS_NOTHING(inf.makeInference())
@@ -305,8 +305,8 @@ namespace gum_tests {
         auto pa = get_marginal(posterior, bn.idFromName("A"), bn);
         auto pd = get_marginal(posterior, bn.idFromName("D"), bn);
 
-        TS_ASSERT(equalPotentials(inf.posterior(bn.idFromName("A")), pa))
-        TS_ASSERT(equalPotentials(inf.posterior(bn.idFromName("D")), pd))
+        TS_ASSERT(equalTensors(inf.posterior(bn.idFromName("A")), pa))
+        TS_ASSERT(equalTensors(inf.posterior(bn.idFromName("D")), pd))
       }
 
 
@@ -314,7 +314,7 @@ namespace gum_tests {
       inf.chgEvidence(evpp7);
 
       {
-        const TestPotentialSet evset{&evp0, &evp1, &evpp7};
+        const TestTensorSet evset{&evp0, &evp1, &evpp7};
         auto                   posterior = posterior_joint(joint, evset);
 
         TS_ASSERT_THROWS_NOTHING(inf.makeInference())
@@ -323,15 +323,15 @@ namespace gum_tests {
         auto pa = get_marginal(posterior, bn.idFromName("A"), bn);
         auto pd = get_marginal(posterior, bn.idFromName("D"), bn);
 
-        TS_ASSERT(equalPotentials(inf.posterior(bn.idFromName("A")), pa))
-        TS_ASSERT(equalPotentials(inf.posterior(bn.idFromName("D")), pd))
+        TS_ASSERT(equalTensors(inf.posterior(bn.idFromName("A")), pa))
+        TS_ASSERT(equalTensors(inf.posterior(bn.idFromName("D")), pd))
       }
 
 
       inf.chgEvidence(ev0);
       inf.chgEvidence(evp7);
       {
-        const TestPotentialSet evset{&ev0, &evp1, &evp7};
+        const TestTensorSet evset{&ev0, &evp1, &evp7};
         auto                   posterior = posterior_joint(joint, evset);
 
         TS_ASSERT_THROWS_NOTHING(inf.makeInference())
@@ -340,13 +340,13 @@ namespace gum_tests {
         auto pa = get_marginal(posterior, bn.idFromName("A"), bn);
         auto pd = get_marginal(posterior, bn.idFromName("D"), bn);
 
-        TS_ASSERT(equalPotentials(inf.posterior(bn.idFromName("A")), pa))
-        TS_ASSERT(equalPotentials(inf.posterior(bn.idFromName("D")), pd))
+        TS_ASSERT(equalTensors(inf.posterior(bn.idFromName("A")), pa))
+        TS_ASSERT(equalTensors(inf.posterior(bn.idFromName("D")), pd))
       }
 
       inf.eraseEvidence(0);
       {
-        const TestPotentialSet evset{&evp1, &evp7};
+        const TestTensorSet evset{&evp1, &evp7};
         auto                   posterior = posterior_joint(joint, evset);
 
         TS_ASSERT_THROWS_NOTHING(inf.makeInference())
@@ -355,8 +355,8 @@ namespace gum_tests {
         auto pa = get_marginal(posterior, bn.idFromName("A"), bn);
         auto pd = get_marginal(posterior, bn.idFromName("D"), bn);
 
-        TS_ASSERT(equalPotentials(inf.posterior(bn.idFromName("A")), pa))
-        TS_ASSERT(equalPotentials(inf.posterior(bn.idFromName("D")), pd))
+        TS_ASSERT(equalTensors(inf.posterior(bn.idFromName("A")), pa))
+        TS_ASSERT(equalTensors(inf.posterior(bn.idFromName("D")), pd))
       }
 
 
@@ -365,7 +365,7 @@ namespace gum_tests {
       inf.eraseEvidence(0);
 
       {
-        const TestPotentialSet evset{&evp1, &evp7};
+        const TestTensorSet evset{&evp1, &evp7};
         auto                   posterior = posterior_joint(joint, evset);
 
         TS_ASSERT_THROWS_NOTHING(inf.makeInference())
@@ -374,8 +374,8 @@ namespace gum_tests {
         auto pa = get_marginal(posterior, bn.idFromName("A"), bn);
         auto pd = get_marginal(posterior, bn.idFromName("D"), bn);
 
-        TS_ASSERT(equalPotentials(inf.posterior(bn.idFromName("A")), pa))
-        TS_ASSERT(equalPotentials(inf.posterior(bn.idFromName("D")), pd))
+        TS_ASSERT(equalTensors(inf.posterior(bn.idFromName("A")), pa))
+        TS_ASSERT(equalTensors(inf.posterior(bn.idFromName("D")), pd))
       }
     }
 
@@ -383,7 +383,7 @@ namespace gum_tests {
     // ============================================================================
     GUM_ACTIVE_TEST(_prior_with_targets_hard_evidence_values_changed) {
       gum::BayesNet< double >  bn;
-      gum::Potential< double > joint;
+      gum::Tensor< double > joint;
       defineVariables(bn, joint);
 
       gum::ShaferShenoyInference< double > inf(&bn);
@@ -400,7 +400,7 @@ namespace gum_tests {
 
 
       {
-        TestPotentialSet evset{&ev0, &ev1, &ev7};
+        TestTensorSet evset{&ev0, &ev1, &ev7};
         auto             posterior = posterior_joint(joint, evset);
 
         TS_ASSERT_THROWS_NOTHING(inf.makeInference())
@@ -409,8 +409,8 @@ namespace gum_tests {
         auto pa = get_marginal(posterior, bn.idFromName("A"), bn);
         auto pd = get_marginal(posterior, bn.idFromName("D"), bn);
 
-        TS_ASSERT(equalPotentials(inf.posterior(bn.idFromName("A")), pa))
-        TS_ASSERT(equalPotentials(inf.posterior(bn.idFromName("D")), pd))
+        TS_ASSERT(equalTensors(inf.posterior(bn.idFromName("A")), pa))
+        TS_ASSERT(equalTensors(inf.posterior(bn.idFromName("D")), pd))
       }
 
 
@@ -420,7 +420,7 @@ namespace gum_tests {
       inf.chgEvidence(evp7);
 
       {
-        TestPotentialSet evset{&evp0, &ev1, &evp7};
+        TestTensorSet evset{&evp0, &ev1, &evp7};
         auto             posterior = posterior_joint(joint, evset);
 
         TS_ASSERT_THROWS_NOTHING(inf.makeInference())
@@ -429,15 +429,15 @@ namespace gum_tests {
         auto pa = get_marginal(posterior, bn.idFromName("A"), bn);
         auto pd = get_marginal(posterior, bn.idFromName("D"), bn);
 
-        TS_ASSERT(equalPotentials(inf.posterior(bn.idFromName("A")), pa))
-        TS_ASSERT(equalPotentials(inf.posterior(bn.idFromName("D")), pd))
+        TS_ASSERT(equalTensors(inf.posterior(bn.idFromName("A")), pa))
+        TS_ASSERT(equalTensors(inf.posterior(bn.idFromName("D")), pd))
       }
 
 
       auto evpp0 = create_evidence(0, {0, 1}, bn);
       inf.chgEvidence(evpp0);
       {
-        TestPotentialSet evset{&evpp0, &ev1, &evp7};
+        TestTensorSet evset{&evpp0, &ev1, &evp7};
         auto             posterior = posterior_joint(joint, evset);
 
         TS_ASSERT_THROWS_NOTHING(inf.makeInference())
@@ -446,15 +446,15 @@ namespace gum_tests {
         auto pa = get_marginal(posterior, bn.idFromName("A"), bn);
         auto pd = get_marginal(posterior, bn.idFromName("D"), bn);
 
-        TS_ASSERT(equalPotentials(inf.posterior(bn.idFromName("A")), pa))
-        TS_ASSERT(equalPotentials(inf.posterior(bn.idFromName("D")), pd))
+        TS_ASSERT(equalTensors(inf.posterior(bn.idFromName("A")), pa))
+        TS_ASSERT(equalTensors(inf.posterior(bn.idFromName("D")), pd))
       }
 
 
       inf.chgEvidence(ev0);
       inf.chgEvidence(evp7);
       {
-        TestPotentialSet evset{&ev0, &ev1, &evp7};
+        TestTensorSet evset{&ev0, &ev1, &evp7};
         auto             posterior = posterior_joint(joint, evset);
 
         TS_ASSERT_THROWS_NOTHING(inf.makeInference())
@@ -463,13 +463,13 @@ namespace gum_tests {
         auto pa = get_marginal(posterior, bn.idFromName("A"), bn);
         auto pd = get_marginal(posterior, bn.idFromName("D"), bn);
 
-        TS_ASSERT(equalPotentials(inf.posterior(bn.idFromName("A")), pa))
-        TS_ASSERT(equalPotentials(inf.posterior(bn.idFromName("D")), pd))
+        TS_ASSERT(equalTensors(inf.posterior(bn.idFromName("A")), pa))
+        TS_ASSERT(equalTensors(inf.posterior(bn.idFromName("D")), pd))
       }
 
       inf.eraseEvidence(0);
       {
-        TestPotentialSet evset{&ev1, &evp7};
+        TestTensorSet evset{&ev1, &evp7};
         auto             posterior = posterior_joint(joint, evset);
 
         TS_ASSERT_THROWS_NOTHING(inf.makeInference())
@@ -478,8 +478,8 @@ namespace gum_tests {
         auto pa = get_marginal(posterior, bn.idFromName("A"), bn);
         auto pd = get_marginal(posterior, bn.idFromName("D"), bn);
 
-        TS_ASSERT(equalPotentials(inf.posterior(bn.idFromName("A")), pa))
-        TS_ASSERT(equalPotentials(inf.posterior(bn.idFromName("D")), pd))
+        TS_ASSERT(equalTensors(inf.posterior(bn.idFromName("A")), pa))
+        TS_ASSERT(equalTensors(inf.posterior(bn.idFromName("D")), pd))
       }
 
 
@@ -488,7 +488,7 @@ namespace gum_tests {
       inf.eraseEvidence(0);
 
       {
-        TestPotentialSet evset{&ev1, &evp7};
+        TestTensorSet evset{&ev1, &evp7};
         auto             posterior = posterior_joint(joint, evset);
 
         TS_ASSERT_THROWS_NOTHING(inf.makeInference())
@@ -497,8 +497,8 @@ namespace gum_tests {
         auto pa = get_marginal(posterior, bn.idFromName("A"), bn);
         auto pd = get_marginal(posterior, bn.idFromName("D"), bn);
 
-        TS_ASSERT(equalPotentials(inf.posterior(bn.idFromName("A")), pa))
-        TS_ASSERT(equalPotentials(inf.posterior(bn.idFromName("D")), pd))
+        TS_ASSERT(equalTensors(inf.posterior(bn.idFromName("A")), pa))
+        TS_ASSERT(equalTensors(inf.posterior(bn.idFromName("D")), pd))
       }
     }
 
@@ -506,7 +506,7 @@ namespace gum_tests {
     // ============================================================================
     GUM_ACTIVE_TEST(_prior_with_targets_evidence_changed) {
       gum::BayesNet< double >  bn;
-      gum::Potential< double > joint;
+      gum::Tensor< double > joint;
       defineVariables(bn, joint);
 
       gum::ShaferShenoyInference< double > inf(&bn);
@@ -522,7 +522,7 @@ namespace gum_tests {
       inf.addEvidence(ev7);
 
       {
-        TestPotentialSet evset{&ev0, &ev1, &ev7};
+        TestTensorSet evset{&ev0, &ev1, &ev7};
         auto             posterior = posterior_joint(joint, evset);
 
         TS_ASSERT_THROWS_NOTHING(inf.makeInference())
@@ -531,8 +531,8 @@ namespace gum_tests {
         auto pa = get_marginal(posterior, bn.idFromName("A"), bn);
         auto pd = get_marginal(posterior, bn.idFromName("D"), bn);
 
-        TS_ASSERT(equalPotentials(inf.posterior(bn.idFromName("A")), pa))
-        TS_ASSERT(equalPotentials(inf.posterior(bn.idFromName("D")), pd))
+        TS_ASSERT(equalTensors(inf.posterior(bn.idFromName("A")), pa))
+        TS_ASSERT(equalTensors(inf.posterior(bn.idFromName("D")), pd))
       }
 
 
@@ -542,7 +542,7 @@ namespace gum_tests {
       inf.addEvidence(ev4);
       inf.chgEvidence(evp7);
       {
-        TestPotentialSet evset{&ev1, &ev4, &evp7};
+        TestTensorSet evset{&ev1, &ev4, &evp7};
         auto             posterior = posterior_joint(joint, evset);
 
         TS_ASSERT_THROWS_NOTHING(inf.makeInference())
@@ -551,8 +551,8 @@ namespace gum_tests {
         auto pa = get_marginal(posterior, bn.idFromName("A"), bn);
         auto pd = get_marginal(posterior, bn.idFromName("D"), bn);
 
-        TS_ASSERT(equalPotentials(inf.posterior(bn.idFromName("A")), pa))
-        TS_ASSERT(equalPotentials(inf.posterior(bn.idFromName("D")), pd))
+        TS_ASSERT(equalTensors(inf.posterior(bn.idFromName("A")), pa))
+        TS_ASSERT(equalTensors(inf.posterior(bn.idFromName("D")), pd))
       }
 
       auto evp0  = create_evidence(0, {1, 0}, bn);
@@ -563,7 +563,7 @@ namespace gum_tests {
       inf.chgEvidence(evpp7);
 
       {
-        TestPotentialSet evset{&evp0, &ev1, &evpp4, &evpp7};
+        TestTensorSet evset{&evp0, &ev1, &evpp4, &evpp7};
         auto             posterior = posterior_joint(joint, evset);
 
         TS_ASSERT_THROWS_NOTHING(inf.makeInference())
@@ -571,14 +571,14 @@ namespace gum_tests {
         auto pa = get_marginal(posterior, bn.idFromName("A"), bn);
         auto pd = get_marginal(posterior, bn.idFromName("D"), bn);
 
-        TS_ASSERT(equalPotentials(inf.posterior(bn.idFromName("A")), pa))
-        TS_ASSERT(equalPotentials(inf.posterior(bn.idFromName("D")), pd))
+        TS_ASSERT(equalTensors(inf.posterior(bn.idFromName("A")), pa))
+        TS_ASSERT(equalTensors(inf.posterior(bn.idFromName("D")), pd))
       }
     }
 
     GUM_ACTIVE_TEST(_implicit_joint_target) {
       gum::BayesNet< double >  bn;
-      gum::Potential< double > joint;
+      gum::Tensor< double > joint;
       defineVariables(bn, joint);
 
       gum::ShaferShenoyInference< double > inf(&bn);
@@ -593,7 +593,7 @@ namespace gum_tests {
       TS_ASSERT_THROWS(inf.jointPosterior(gum::NodeSet{bn.idFromName("F"), bn.idFromName("H")}),
                        gum::UndefinedElement&)
 
-      TS_GUM_POTENTIAL_DELTA(
+      TS_GUM_TENSOR_DELTA(
           inf.jointPosterior(gum::NodeSet{bn.idFromName("D"), bn.idFromName("C")}),
           joint.sumIn({&bn.variable("D"), &bn.variable("C")}).normalize(),
           TS_GUM_SMALL_ERROR)

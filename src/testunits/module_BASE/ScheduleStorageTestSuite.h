@@ -46,7 +46,7 @@
 #include <agrum/base/core/set.h>
 #include <agrum/base/graphicalModels/inference/scheduler/scheduleProjection.h>
 #include <agrum/base/graphicalModels/inference/scheduler/scheduleStorage.h>
-#include <agrum/base/multidim/potential.h>
+#include <agrum/base/multidim/tensor.h>
 #include <agrum/base/variables/labelizedVariable.h>
 
 #include <agrum/base/core/utils_random.h>
@@ -69,25 +69,25 @@ namespace gum_tests {
         vars[i]       = new gum::LabelizedVariable(s, s, 2);
       }
 
-      gum::Potential< double > pot1, pot2;
+      gum::Tensor< double > pot1, pot2;
       pot1 << *(vars[0]) << *(vars[2]) << *(vars[3]) << *(vars[4]);
       pot2 << *(vars[0]) << *(vars[2]);
       pot1.random();
       pot2.random();
-      gum::ScheduleMultiDim< gum::Potential< double > > f1(pot1, true);
-      gum::ScheduleMultiDim< gum::Potential< double > > f1b(pot1, false);
-      gum::ScheduleMultiDim< gum::Potential< double > > f2(pot2, true);
-      gum::ScheduleMultiDim< gum::Potential< double > > f2b(pot2, false);
+      gum::ScheduleMultiDim< gum::Tensor< double > > f1(pot1, true);
+      gum::ScheduleMultiDim< gum::Tensor< double > > f1b(pot1, false);
+      gum::ScheduleMultiDim< gum::Tensor< double > > f2(pot2, true);
+      gum::ScheduleMultiDim< gum::Tensor< double > > f2b(pot2, false);
 
-      std::vector< gum::Potential< double > >                       v1;
-      gum::ScheduleStorage< gum::Potential< double >, std::vector > store1(f1, v1);
-      gum::ScheduleStorage< gum::Potential< double >, std::vector > store1bis(f1b, v1);
+      std::vector< gum::Tensor< double > >                       v1;
+      gum::ScheduleStorage< gum::Tensor< double >, std::vector > store1(f1, v1);
+      gum::ScheduleStorage< gum::Tensor< double >, std::vector > store1bis(f1b, v1);
 
-      gum::Set< gum::Potential< double >* >                       set2;
-      gum::ScheduleStorage< gum::Potential< double >*, gum::Set > store2(f2, set2);
-      gum::Set< gum::Potential< double >* >                       set2b;
-      gum::ScheduleStorage< gum::Potential< double >*, gum::Set > store2bis(f2, set2b);
-      gum::ScheduleStorage< gum::Potential< double >*, gum::Set > store2ter(f2b, set2b);
+      gum::Set< gum::Tensor< double >* >                       set2;
+      gum::ScheduleStorage< gum::Tensor< double >*, gum::Set > store2(f2, set2);
+      gum::Set< gum::Tensor< double >* >                       set2b;
+      gum::ScheduleStorage< gum::Tensor< double >*, gum::Set > store2bis(f2, set2b);
+      gum::ScheduleStorage< gum::Tensor< double >*, gum::Set > store2ter(f2b, set2b);
 
 
       TS_ASSERT(store1.implyDeletion())
@@ -159,49 +159,49 @@ namespace gum_tests {
       TS_ASSERT(store2.nbOperations() == 1.0)
 
       const auto [xfirst, xsecond] = store2.memoryUsage();
-      TS_ASSERT_EQUALS(xfirst, -4.0 * sizeof(double) - sizeof(gum::Potential< double >*))
-      TS_ASSERT_EQUALS(xsecond, -4.0 * sizeof(double) - sizeof(gum::Potential< double >*))
+      TS_ASSERT_EQUALS(xfirst, -4.0 * sizeof(double) - sizeof(gum::Tensor< double >*))
+      TS_ASSERT_EQUALS(xsecond, -4.0 * sizeof(double) - sizeof(gum::Tensor< double >*))
 
       const std::pair< double, double > xxx1 = store1.memoryUsage();
-      TS_ASSERT_EQUALS(xxx1.first, -16.0 * sizeof(double) - sizeof(gum::Potential< double >))
-      TS_ASSERT_EQUALS(xxx1.second, -16.0 * sizeof(double) - sizeof(gum::Potential< double >))
+      TS_ASSERT_EQUALS(xxx1.first, -16.0 * sizeof(double) - sizeof(gum::Tensor< double >))
+      TS_ASSERT_EQUALS(xxx1.second, -16.0 * sizeof(double) - sizeof(gum::Tensor< double >))
 
-      gum::ScheduleMultiDim< gum::Potential< double > >             f1c(pot1, true);
-      gum::ScheduleStorage< gum::Potential< double >, std::vector > store4(f1c, v1);
-      gum::ScheduleStorage< gum::Potential< double >, std::vector > store4b(store4);
+      gum::ScheduleMultiDim< gum::Tensor< double > >             f1c(pot1, true);
+      gum::ScheduleStorage< gum::Tensor< double >, std::vector > store4(f1c, v1);
+      gum::ScheduleStorage< gum::Tensor< double >, std::vector > store4b(store4);
       TS_ASSERT(store4b.implyDeletion())
       TS_ASSERT(!store4b.arg().isAbstract())
 
-      gum::ScheduleStorage< gum::Potential< double >, std::vector > store5(std::move(store4));
+      gum::ScheduleStorage< gum::Tensor< double >, std::vector > store5(std::move(store4));
       TS_ASSERT(store5.implyDeletion())
       TS_ASSERT(!store5.arg().isAbstract())
       store5.execute();
       TS_ASSERT(store5.arg().isAbstract())
 
-      gum::ScheduleMultiDim< gum::Potential< double > > f3(pot2, true);
+      gum::ScheduleMultiDim< gum::Tensor< double > > f3(pot2, true);
       TS_ASSERT(store1.isExecuted())
       store1.updateArgs({&f3});
       TS_ASSERT(!store1.arg().isAbstract())
       TS_ASSERT(!store1.isExecuted())
       TS_ASSERT(store1.implyDeletion())
 
-      gum::ScheduleMultiDim< gum::Potential< double > > f4(pot2, true);
+      gum::ScheduleMultiDim< gum::Tensor< double > > f4(pot2, true);
       store2.updateArgs({&f4});
       gum::ScheduleOperator& xstore2 = store2;
       TS_ASSERT(store1 != xstore2)
 
       store2bis.updateArgs({&f4});
-      gum::ScheduleStorage< gum::Potential< double >*, gum::Set > store3bis = store2bis;
+      gum::ScheduleStorage< gum::Tensor< double >*, gum::Set > store3bis = store2bis;
       store3bis                                                             = store2ter;
       TS_ASSERT(store3bis.implyDeletion())
       TS_ASSERT_EQUALS(store3bis, store2ter)
       TS_ASSERT(store3bis != store2bis)
 
-      gum::ScheduleStorage< gum::Potential< double >*, gum::Set > store6 = store2bis;
+      gum::ScheduleStorage< gum::Tensor< double >*, gum::Set > store6 = store2bis;
       store3bis                                                          = std::move(store2bis);
       TS_ASSERT_EQUALS(store6, store3bis)
 
-      gum::ScheduleStorage< gum::Potential< double >*, gum::Set >* store7 = store6.clone();
+      gum::ScheduleStorage< gum::Tensor< double >*, gum::Set >* store7 = store6.clone();
       TS_ASSERT(store7->implyDeletion())
       TS_ASSERT_EQUALS(store6, *store7)
       delete store7;
@@ -212,7 +212,7 @@ namespace gum_tests {
 
       gum::VariableSet del_vars1;
       del_vars1 << vars[0] << vars[3];
-      gum::ScheduleProjection< gum::Potential< double > > myproj(f1b, del_vars1, myProjectMax);
+      gum::ScheduleProjection< gum::Tensor< double > > myproj(f1b, del_vars1, myProjectMax);
       TS_ASSERT(!store1bis.isSameOperator(myproj))
       TS_ASSERT(!store1bis.hasSimilarArguments(myproj))
 
@@ -226,9 +226,9 @@ namespace gum_tests {
     }
 
     private:
-    static gum::Potential< double > myProjectMax(const gum::Potential< double >& pot,
+    static gum::Tensor< double > myProjectMax(const gum::Tensor< double >& pot,
                                                  const gum::VariableSet&         del_vars) {
-      return gum::Potential< double >(gum::projectMax(*(pot.content()), del_vars));
+      return gum::Tensor< double >(gum::projectMax(*(pot.content()), del_vars));
     }
   };
 

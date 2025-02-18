@@ -224,7 +224,7 @@ class InfluenceDiagram(pyAgrum.base.DAGmodel):
         Note
         ----
           - If the dot-like string contains such a specification more than once for a variable, the first specification will be used.
-          - the potentials (probabilities, utilities) are randomly generated.
+          - the tensors (probabilities, utilities) are randomly generated.
           - see also pyAgrum.fastID.
 
         Examples
@@ -271,7 +271,7 @@ class InfluenceDiagram(pyAgrum.base.DAGmodel):
     def clear(self) -> None:
         return _id.InfluenceDiagram_clear(self)
 
-    def cpt(self, *args) -> "pyAgrum.Potential":
+    def cpt(self, *args) -> "pyAgrum.Tensor":
         r"""
 
         Returns the CPT of a variable.
@@ -283,7 +283,7 @@ class InfluenceDiagram(pyAgrum.base.DAGmodel):
 
         Returns
         -------
-        pyAgrum.Potential
+        pyAgrum.Tensor
         	The variable's CPT.
 
         Raises
@@ -294,7 +294,7 @@ class InfluenceDiagram(pyAgrum.base.DAGmodel):
         """
         return _id.InfluenceDiagram_cpt(self, *args)
 
-    def utility(self, *args) -> "pyAgrum.Potential":
+    def utility(self, *args) -> "pyAgrum.Tensor":
         r"""
 
         Parameters
@@ -304,7 +304,7 @@ class InfluenceDiagram(pyAgrum.base.DAGmodel):
 
         Returns
         -------
-        pyAgrum.Potential
+        pyAgrum.Tensor
         	the utility table of the node
 
         Raises
@@ -651,7 +651,7 @@ class InfluenceDiagram(pyAgrum.base.DAGmodel):
     def addArc(self, *args) -> None:
         r"""
 
-        Add an arc in the ID, and update diagram's potential nodes cpt if necessary.
+        Add an arc in the ID, and update diagram's tensor nodes cpt if necessary.
 
         Parameters
         ----------
@@ -673,7 +673,7 @@ class InfluenceDiagram(pyAgrum.base.DAGmodel):
     def eraseArc(self, *args) -> None:
         r"""
 
-        Removes an arc in the ID, and update diagram's potential nodes cpt if necessary.
+        Removes an arc in the ID, and update diagram's tensor nodes cpt if necessary.
 
         If (tail, head) doesn't exist, the nothing happens.
 
@@ -1251,7 +1251,7 @@ class ShaferShenoyLIMIDInference(object):
         """
         return _id.ShaferShenoyLIMIDInference_isSolvable(self)
 
-    def optimalDecision(self, *args) -> "pyAgrum.Potential":
+    def optimalDecision(self, *args) -> "pyAgrum.Tensor":
         r"""
 
         Returns best choice for decision variable given in parameter ( based upon MEU criteria )
@@ -1271,7 +1271,7 @@ class ShaferShenoyLIMIDInference(object):
         """
         return _id.ShaferShenoyLIMIDInference_optimalDecision(self, *args)
 
-    def posteriorUtility(self, *args) -> "pyAgrum.Potential":
+    def posteriorUtility(self, *args) -> "pyAgrum.Tensor":
         r"""
 
         Returns the posterior utiliyt of a utility node (after optimisation) depending on decision nodes, if any.
@@ -1285,7 +1285,7 @@ class ShaferShenoyLIMIDInference(object):
 
         Returns
         -------
-        pyAgrum.Potential
+        pyAgrum.Tensor
           a const ref to the posterior utility of the utility node
 
 
@@ -1300,7 +1300,7 @@ class ShaferShenoyLIMIDInference(object):
         """
         return _id.ShaferShenoyLIMIDInference_makeInference(self)
 
-    def posterior(self, *args) -> "pyAgrum.Potential":
+    def posterior(self, *args) -> "pyAgrum.Tensor":
         r"""
 
         Returns the posterior of a chance or a decision node (after optimisation).
@@ -1314,7 +1314,7 @@ class ShaferShenoyLIMIDInference(object):
 
         Returns
         -------
-        pyAgrum.Potential
+        pyAgrum.Tensor
           a const ref to the posterior probability of the node
 
         """
@@ -1688,7 +1688,7 @@ def loadID(filename):
   extension = filename.split('.')[-1].upper()
 
   if extension in {"BIFXML", "XMLBIF", "XML"}:
-    diag = pyAgrum.ID.InfluenceDiagram()
+    diag = pyAgrum.InfluenceDiagram()
 # for now, just one format
     res = diag.loadBIFXML(filename)
 

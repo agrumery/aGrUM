@@ -47,7 +47,7 @@
 #ifndef GUM_UT_GENERATOR_H
 #define GUM_UT_GENERATOR_H
 
-#include <agrum/base/multidim/potential.h>
+#include <agrum/base/multidim/tensor.h>
 
 namespace gum {
 
@@ -85,14 +85,14 @@ namespace gum {
      * @param varId The variable id of the UT owner.
      * @param ut A reference on the UT to fill.
      */
-    virtual void generateUT(const Idx& varId, const Potential< float >& ut) = 0;
+    virtual void generateUT(const Idx& varId, const Tensor< float >& ut) = 0;
 
     /**
      * Generates a UT using doubles.
      * @param varId The variable id of the UT owner.
      * @param ut A reference on the UT to fill.
      */
-    virtual void generateUT(const Idx& varId, const Potential< double >& ut) = 0;
+    virtual void generateUT(const Idx& varId, const Tensor< double >& ut) = 0;
     /// @}
   };
 

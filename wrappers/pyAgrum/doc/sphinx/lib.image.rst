@@ -1,4 +1,4 @@
-Export and visualize Graphical models and Potentials (png, pdf)
+Export and visualize Graphical models and Tensors (png, pdf)
 ===============================================================
 
 `pyAgrum.lib.image` aims to graphically export models and inference using `pydot <https://pypi.org/project/pydot/>`_ (and then `graphviz <https://graphviz.org/>`_).

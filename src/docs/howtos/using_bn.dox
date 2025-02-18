@@ -110,7 +110,7 @@
  *
  * Finally, use the gum::BayesNet::cpt( gum::NodeId ) to access a variable's
  * conditional probability table. See \ref using_multidims to learn how to fill
- * gum::Potential. Here we use the gum::Potential::fillwith( const std::vector&
+ * gum::Tensor. Here we use the gum::Tensor::fillwith( const std::vector&
  * ) method.
  *
  * \code{.cpp}
@@ -193,8 +193,8 @@
  * \endcode
  *
  * More advance methods can be used for special use case:
- *  - gum::BayesNetInference::insertEvidence( const List<const Potential<GUM_SCALAR>*>&).
- *  - gum::BayesNetInference::eraseEvidence( const Potential<GUM_SCALAR>* ).
+ *  - gum::BayesNetInference::insertEvidence( const List<const Tensor<GUM_SCALAR>*>&).
+ *  - gum::BayesNetInference::eraseEvidence( const Tensor<GUM_SCALAR>* ).
  *
  * \subsection bn_inf_algo Inference Algorithms
  * Here is a list of exact inference algorithms:

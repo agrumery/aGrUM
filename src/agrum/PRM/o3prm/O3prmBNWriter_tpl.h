@@ -124,7 +124,7 @@ namespace gum {
 
     str << "[";
     if (inst.nbrDim() == 1) {
-      // 1D potential
+      // 1D tensor
       for (inst.setFirst(); !inst.end(); inst.inc()) {
         if (!first) {
           str << ", ";
@@ -134,7 +134,7 @@ namespace gum {
         str << bn.cpt(node)[inst];
       }
     } else {
-      // (>1)D potential (with parents)
+      // (>1)D tensor (with parents)
       Instantiation jnst;
       for (auto var = inst.variablesSequence().rbegin(); var != inst.variablesSequence().rend();
            --var) {

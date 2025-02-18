@@ -57,7 +57,7 @@
 
 #include <agrum/base/core/math/math_utils.h>
 // =========================================================================
-#include <agrum/base/multidim/potential.h>
+#include <agrum/base/multidim/tensor.h>
 #include <agrum/base/multidim/utils/FunctionGraphUtilities/operators/multiDimFunctionGraphOperator.h>
 #include <agrum/base/multidim/utils/FunctionGraphUtilities/operators/regress.h>
 // =========================================================================

@@ -506,9 +506,9 @@ def instrumentalVariable(
     if not isinstance(outcome, int):
         y = obn.idFromName(outcome)
 
-    potential_instruments = obn.parents(intervention)
+    tensor_instruments = obn.parents(intervention)
 
-    for z in potential_instruments:
+    for z in tensor_instruments:
         W = _ancestralInstrument(causal_model, t, y, z)
         if W is not None:
             return (

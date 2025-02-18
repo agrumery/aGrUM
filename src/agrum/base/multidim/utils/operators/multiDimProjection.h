@@ -70,7 +70,7 @@ namespace gum {
    * but also more complex objects such as, for instance, pairs of
    * MultiDimImplementations the first one of which being a utility function
    * and the second one being a table of instantiations (useful, e.g., for
-   * computing MPE's) but this can also be a pair (Utility,Potential) for the
+   * computing MPE's) but this can also be a pair (Utility,Tensor) for the
    * inference in an Influence Diagram.
    *
    * To be quite generic, the MultiDimProjection takes in argument the function
@@ -78,27 +78,27 @@ namespace gum {
    * The following code gives an example of the usage of MultiDimProjection:
    *
    * @code
-   * // a function used to project a Potential<float>:
-   * Potential<float> MinPot ( const Potential<float>& table,
+   * // a function used to project a Tensor<float>:
+   * Tensor<float> MinPot ( const Tensor<float>& table,
    *                           const VariableSet& del_vars ) {
-   *   return Potential<float> (...);
+   *   return Tensor<float> (...);
    * }
    *
-   * // another function used to project a Potential<float>:
-   * Potential<float> MaxPot ( const Potential<float>& table,
+   * // another function used to project a Tensor<float>:
+   * Tensor<float> MaxPot ( const Tensor<float>& table,
    *                           const VariableSet& del_vars ) {
-   *   return Potential<float> (...);
+   *   return Tensor<float> (...);
    * }
    *
    *
-   * Potential<float> t1, t2;
+   * Tensor<float> t1, t2;
    * VariableSet set1, set2;
-   * MultiDimProjectionDefault< Potential< float > > Proj ( MinPot );
-   * Potential<float>* projected_table = Proj.project ( t1, set1 );
+   * MultiDimProjectionDefault< Tensor< float > > Proj ( MinPot );
+   * Tensor<float>* projected_table = Proj.project ( t1, set1 );
    *
    * // change the operator to apply
    * Proj.setProjectionFunction ( MaxPot );
-   * Potential<float>* projected_table2 = Proj.project ( t2, set2 );
+   * Tensor<float>* projected_table2 = Proj.project ( t2, set2 );
    *
    * @endcode
    */

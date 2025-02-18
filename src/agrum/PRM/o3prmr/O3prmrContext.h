@@ -139,7 +139,7 @@ namespace gum {
         std::string                                rightValue;
         const PRMSystem< GUM_SCALAR >*             system;
         typename PRMInference< GUM_SCALAR >::Chain chain;
-        Potential< GUM_SCALAR >                    potentiel;
+        Tensor< GUM_SCALAR >                    potentiel;
 
         RequestType type() const { return RequestType::Observe; }
 

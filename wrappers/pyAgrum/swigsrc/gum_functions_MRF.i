@@ -187,7 +187,7 @@ def getPosterior(model, *, target, evs=None):
 
   Returns
   -------
-    posterior (pyAgrum.Potential or other)
+    posterior (pyAgrum.Tensor or other)
   """
   if isinstance(model, pyAgrum.bn.BayesNet):
     inf = pyAgrum.bn.VariableElimination(model)
@@ -200,6 +200,6 @@ def getPosterior(model, *, target, evs=None):
     inf.setEvidence(evs)
   inf.addTarget(target)
   inf.makeInference()
-  # creating a new Potential from posterior(will disappear with ie)
-  return pyAgrum.base.Potential(inf.posterior(target))
+  # creating a new Tensor from posterior(will disappear with ie)
+  return pyAgrum.base.Tensor(inf.posterior(target))
 %}

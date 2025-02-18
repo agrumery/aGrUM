@@ -77,7 +77,7 @@ def __limits(p):
 
   Parameters
   ----------
-    p : gum.Potential
+    p : gum.Tensor
       the marginal to analyze
   """
   var = p.variable(0)
@@ -120,12 +120,12 @@ def __limits(p):
 
 def _getProbaLine(p, scale=1.0, txtcolor="black"):
   """
-  compute the representation of a matplotlib.fill_between for a mono-dim Potential
+  compute the representation of a matplotlib.fill_between for a mono-dim Tensor
 
   Parameters
   ----------
-    p : pyAgrum.Potential
-      the mono-dimensional Potential
+    p : pyAgrum.Tensor
+      the mono-dimensional Tensor
     scale : float
       the scale
     txtcolor : str
@@ -134,7 +134,7 @@ def _getProbaLine(p, scale=1.0, txtcolor="black"):
   Returns
   -------
   matplotlib.Figure
-    a matplotlib figure for a Potential p.
+    a matplotlib figure for a Tensor p.
   """
 
   var = p.variable(0)
@@ -178,21 +178,21 @@ def _getProbaLine(p, scale=1.0, txtcolor="black"):
 
 def _getProbaV(p, scale=1.0, util=None, txtcolor="black"):
   """
-  compute the representation of a vertical histogram for a mono-dim Potential
+  compute the representation of a vertical histogram for a mono-dim Tensor
 
   Parameters
   ----------
-    p : pyAgrum.Potential
-      the mono-dimensional Potential
-    util : pyAgrum.Potential
-      an (optional) secondary Potential (values in labels)
+    p : pyAgrum.Tensor
+      the mono-dimensional Tensor
+    util : pyAgrum.Tensor
+      an (optional) secondary Tensor (values in labels)
     txtcolor : str
       color for text
 
   Returns
   -------
   matplotlib.Figure
-    a matplotlib histogram for a Potential p.
+    a matplotlib histogram for a Tensor p.
 
   """
   if gum.config['notebook', 'histogram_mode'] == "compact":
@@ -247,22 +247,22 @@ def _getProbaV(p, scale=1.0, util=None, txtcolor="black"):
 
 def _getProbaH(p, scale=1.0, util=None, txtcolor="black"):
   """
-  compute the representation of a horizontal histogram for a mono-dim Potential
+  compute the representation of a horizontal histogram for a mono-dim Tensor
 
   Parameters
   ----------
-    p : pyAgrum.Potential
-      the mono-dimensional Potential
+    p : pyAgrum.Tensor
+      the mono-dimensional Tensor
     scale : scale for the size of the graph
-    util : pyAgrum.Potential
-      an (optional) secondary Potential (values in labels)
+    util : pyAgrum.Tensor
+      an (optional) secondary Tensor (values in labels)
     txtcolor : str
       color for text
 
   Returns
   -------
   matplotlib.Figure
-    a matplotlib histogram for a Potential p.
+    a matplotlib histogram for a Tensor p.
   """
   var = p.variable(0)
   ra = np.arange(var.domainSize())
@@ -369,23 +369,23 @@ def _getHistoForDiscretized(p, scale=1, txtcolor="Black"):
 
 def proba2histo(p, scale=None, util=None, txtcolor="Black"):
   """
-  compute the representation of a histogram for a mono-dim Potential
+  compute the representation of a histogram for a mono-dim Tensor
 
   Parameters
   ----------
-    p : pyAgrum.Potential
-      the mono-dimensional Potential
+    p : pyAgrum.Tensor
+      the mono-dimensional Tensor
     scale : float
       scale for the size of the graph
-    util : pyAgrum.Potential
-      an (optional) secondary Potential (values in labels)
+    util : pyAgrum.Tensor
+      an (optional) secondary Tensor (values in labels)
     txtcolor : str
       color for text
 
   Returns
   -------
   matplotlib.Figure
-    a matplotlib histogram for a Potential p.
+    a matplotlib histogram for a Tensor p.
   """
   #if util is not None:
   #  if scale is None:
@@ -414,16 +414,16 @@ def proba2histo(p, scale=None, util=None, txtcolor="Black"):
 
 def saveFigProba(p, filename, util=None, bgcolor=None, txtcolor="Black"):
   """
-  save a figure  which is the representation of a histogram for a mono-dim Potential
+  save a figure  which is the representation of a histogram for a mono-dim Tensor
 
   Parameters
   ----------
-    p : pyAgrum.Potential
-      the mono-dimensional Potential
+    p : pyAgrum.Tensor
+      the mono-dimensional Tensor
     filename: str
       the name of the saved file
-    util : pyAgrum.Potential
-      an (optional) secondary Potential (values in labels)
+    util : pyAgrum.Tensor
+      an (optional) secondary Tensor (values in labels)
     bgcolor: str
       color for background (transparent if None)
     txtcolor : str
@@ -443,12 +443,12 @@ def saveFigProba(p, filename, util=None, bgcolor=None, txtcolor="Black"):
 
 def probaMinMaxH(pmin, pmax, scale=1.0, txtcolor="black"):
   """
-  compute the representation of a horizontal histogram for a mono-dim Potential
+  compute the representation of a horizontal histogram for a mono-dim Tensor
 
   Parameters
   ----------
-    pmin,pmax : pyAgrum.Potential
-      two mono-dimensional Potential
+    pmin,pmax : pyAgrum.Tensor
+      two mono-dimensional Tensor
     scale : float
       scale for the size of the graph
     txtcolor : str
@@ -457,7 +457,7 @@ def probaMinMaxH(pmin, pmax, scale=1.0, txtcolor="black"):
   Returns
   -------
   matplotlib.Figure
-    a matplotlib histogram for a bi-Potential pmin,pmax.
+    a matplotlib histogram for a bi-Tensor pmin,pmax.
   """
   var = pmin.variable(0)
   ra = np.arange(var.domainSize())
@@ -510,14 +510,14 @@ def probaMinMaxH(pmin, pmax, scale=1.0, txtcolor="black"):
 
 def saveFigProbaMinMax(pmin, pmax, filename, bgcolor=None, txtcolor="Black"):
   """
-  save a figure  which is the representation of a histogram for a bi-Potential (min,max)
+  save a figure  which is the representation of a histogram for a bi-Tensor (min,max)
 
   Parameters
   ----------
-    pmin : pyAgrum.Potential
-      the mono-dimensional Potential for min values
-    pmax : pyAgrum.Potential
-      the mono-dimensional Potential for max value
+    pmin : pyAgrum.Tensor
+      the mono-dimensional Tensor for min values
+    pmax : pyAgrum.Tensor
+      the mono-dimensional Tensor for max value
     filename : str
       the name of the saved file
     bgcolor: str

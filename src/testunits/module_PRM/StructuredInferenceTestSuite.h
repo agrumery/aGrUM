@@ -139,7 +139,7 @@ namespace gum_tests {
         const gum::prm::PRMInstance< double >&  i     = pickInstance(sys);
         const gum::prm::PRMAttribute< double >& a     = pickAttribute(i);
         gum::prm::PRMInference< double >::Chain chain = std::make_pair(&i, &a);
-        gum::Potential< double >                m;
+        gum::Tensor< double >                m;
         TS_GUM_ASSERT_THROWS_NOTHING(inf.posterior(chain, m))
         double             sum = 0.0;
         gum::Instantiation inst(m);
@@ -168,7 +168,7 @@ namespace gum_tests {
         const gum::prm::PRMInstance< double >&  i     = pickInstance(sys);
         const gum::prm::PRMAttribute< double >& a     = pickAttribute(i);
         gum::prm::PRMInference< double >::Chain chain = std::make_pair(&i, &a);
-        gum::Potential< double >                m;
+        gum::Tensor< double >                m;
         TS_GUM_ASSERT_THROWS_NOTHING(inf.posterior(chain, m))
         double             sum = 0.0;
         gum::Instantiation inst(m);
@@ -197,7 +197,7 @@ namespace gum_tests {
         const gum::prm::PRMInstance< double >&  i     = pickInstance(sys);
         const gum::prm::PRMAttribute< double >& a     = pickAttribute(i);
         gum::prm::PRMInference< double >::Chain chain = std::make_pair(&i, &a);
-        gum::Potential< double >                m;
+        gum::Tensor< double >                m;
         TS_GUM_ASSERT_THROWS_NOTHING(inf.posterior(chain, m))
         double             sum = 0.0;
         gum::Instantiation inst(m);
@@ -233,7 +233,7 @@ namespace gum_tests {
     //    const gum::prm::PRMAttribute<double>& a = pickAttribute( i );
     //    gum::prm::PRMInference<double>::Chain chain = std::make_pair( &i, &a
     //    );
-    //    gum::Potential<double> m;
+    //    gum::Tensor<double> m;
     //    TS_GUM_ASSERT_THROWS_NOTHING( inf.posterior( chain, m ) )
     //    double sum = 0.0;
     //    gum::Instantiation inst( m );

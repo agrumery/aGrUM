@@ -57,7 +57,7 @@
 namespace gum {
   // instrumental and non-API function
   template < typename GUM_SCALAR >
-  void _initPotentialOperators__() {
+  void _initTensorOperators__() {
     // ensure that only one thread will register the projections
     static std::once_flag first;
     std::call_once(first, []() {
@@ -84,7 +84,7 @@ namespace gum {
   INLINE MultiDimDecorator< GUM_SCALAR >::MultiDimDecorator(
       MultiDimImplementation< GUM_SCALAR >* aContent,
       GUM_SCALAR empty_value) : content_(aContent), empty_value_(empty_value) {
-    _initPotentialOperators__< GUM_SCALAR >();
+    _initTensorOperators__< GUM_SCALAR >();
     GUM_CONSTRUCTOR(MultiDimDecorator);
   }
 
@@ -92,7 +92,7 @@ namespace gum {
   INLINE MultiDimDecorator< GUM_SCALAR >::MultiDimDecorator(
       const MultiDimDecorator< GUM_SCALAR >& from) : MultiDimContainer< GUM_SCALAR >(from) {
     GUM_CONS_CPY(MultiDimDecorator);
-    _initPotentialOperators__< GUM_SCALAR >();
+    _initTensorOperators__< GUM_SCALAR >();
     empty_value_ = from.empty_value_;
     content()->copy(from.content());
   }
@@ -129,7 +129,7 @@ namespace gum {
   INLINE MultiDimDecorator< GUM_SCALAR >& MultiDimDecorator< GUM_SCALAR >::operator=(
       const MultiDimDecorator< GUM_SCALAR >& from) noexcept {
     GUM_OP_CPY(MultiDimDecorator);
-    _initPotentialOperators__< GUM_SCALAR >();
+    _initTensorOperators__< GUM_SCALAR >();
     MultiDimContainer< GUM_SCALAR >::operator=(from);
     empty_value_ = from.empty_value_;
     if (content_ == nullptr)
@@ -185,7 +185,7 @@ namespace gum {
   template < typename GUM_SCALAR >
   INLINE void MultiDimDecorator< GUM_SCALAR >::add(const DiscreteVariable& v) {
     if (v.domainSize() < 1) {
-      GUM_ERROR(InvalidArgument, "Empty variable " << v << " cannot be added in a Potential")
+      GUM_ERROR(InvalidArgument, "Empty variable " << v << " cannot be added in a Tensor")
     }
     static_cast< MultiDimContainer< GUM_SCALAR >* >(content_)->add(v);
   }

@@ -170,7 +170,7 @@ namespace gum {
       std::size_t _nb_miss_;
 
       /// the joint probability of the missing variables of the current row
-      Potential< GUM_SCALAR > _joint_proba_;
+      Tensor< GUM_SCALAR > _joint_proba_;
 
       /// an instantiation over the joint proba
       Instantiation* _joint_inst_{nullptr};

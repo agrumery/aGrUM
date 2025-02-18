@@ -450,21 +450,21 @@ namespace gum {
     }
 
     template < typename GUM_SCALAR >
-    INLINE Potential< GUM_SCALAR >
+    INLINE Tensor< GUM_SCALAR >
            InferenceEngine< GUM_SCALAR >::marginalMin(const std::string& varName) const {
       return marginalMin(credalNet_->current_bn().idFromName(varName));
     }
 
     template < typename GUM_SCALAR >
-    INLINE Potential< GUM_SCALAR >
+    INLINE Tensor< GUM_SCALAR >
            InferenceEngine< GUM_SCALAR >::marginalMax(const std::string& varName) const {
       return marginalMax(credalNet_->current_bn().idFromName(varName));
     }
 
     template < typename GUM_SCALAR >
-    gum::Potential< GUM_SCALAR > InferenceEngine< GUM_SCALAR >::marginalMin(const NodeId id) const {
+    gum::Tensor< GUM_SCALAR > InferenceEngine< GUM_SCALAR >::marginalMin(const NodeId id) const {
       try {
-        Potential< GUM_SCALAR > res;
+        Tensor< GUM_SCALAR > res;
         res.add(credalNet_->current_bn().variable(id));
         res.fillWith(marginalMin_[id]);
         return res;
@@ -472,9 +472,9 @@ namespace gum {
     }
 
     template < typename GUM_SCALAR >
-    gum::Potential< GUM_SCALAR > InferenceEngine< GUM_SCALAR >::marginalMax(const NodeId id) const {
+    gum::Tensor< GUM_SCALAR > InferenceEngine< GUM_SCALAR >::marginalMax(const NodeId id) const {
       try {
-        Potential< GUM_SCALAR > res;
+        Tensor< GUM_SCALAR > res;
         res.add(credalNet_->current_bn().variable(id));
         res.fillWith(marginalMax_[id]);
         return res;
@@ -836,10 +836,10 @@ namespace gum {
             var_0_name             = var_0_name.substr(0, delim);
 
             if (var_name.compare(var_0_name) == 0) {
-              const Potential< GUM_SCALAR >* potential(&credalNet_->current_bn().cpt(node));
-              const Potential< GUM_SCALAR >* potential2(&credalNet_->current_bn().cpt(elt.first));
+              const Tensor< GUM_SCALAR >* tensor(&credalNet_->current_bn().cpt(node));
+              const Tensor< GUM_SCALAR >* tensor2(&credalNet_->current_bn().cpt(elt.first));
 
-              if (potential->domainSize() == potential2->domainSize())
+              if (tensor->domainSize() == tensor2->domainSize())
                 t0_[elt.first].push_back(node);
               else t1_.insert(node, std::vector< NodeId >());
 
@@ -875,10 +875,10 @@ namespace gum {
             var_0_name             = var_0_name.substr(0, delim);
 
             if (var_name.compare(var_0_name) == 0) {
-              const Potential< GUM_SCALAR >* potential(&credalNet_->current_bn().cpt(node));
-              const Potential< GUM_SCALAR >* potential2(&credalNet_->current_bn().cpt(elt.first));
+              const Tensor< GUM_SCALAR >* tensor(&credalNet_->current_bn().cpt(node));
+              const Tensor< GUM_SCALAR >* tensor2(&credalNet_->current_bn().cpt(elt.first));
 
-              if (potential->domainSize() == potential2->domainSize()) {
+              if (tensor->domainSize() == tensor2->domainSize()) {
                 t0_[elt.first].push_back(node);
                 found = true;
                 break;
@@ -893,10 +893,10 @@ namespace gum {
               var_0_name             = var_0_name.substr(0, delim);
 
               if (var_name.compare(var_0_name) == 0) {
-                const Potential< GUM_SCALAR >* potential(&credalNet_->current_bn().cpt(node));
-                const Potential< GUM_SCALAR >* potential2(&credalNet_->current_bn().cpt(elt.first));
+                const Tensor< GUM_SCALAR >* tensor(&credalNet_->current_bn().cpt(node));
+                const Tensor< GUM_SCALAR >* tensor2(&credalNet_->current_bn().cpt(elt.first));
 
-                if (potential->domainSize() == potential2->domainSize()) {
+                if (tensor->domainSize() == tensor2->domainSize()) {
                   t1_[elt.first].push_back(node);
                   break;
                 }
@@ -1232,7 +1232,7 @@ namespace gum {
     }
 
     template < typename GUM_SCALAR >
-    void InferenceEngine< GUM_SCALAR >::addEvidence(const Potential< GUM_SCALAR >& pot) {
+    void InferenceEngine< GUM_SCALAR >::addEvidence(const Tensor< GUM_SCALAR >& pot) {
       const auto id = this->credalNet_->current_bn().idFromName(pot.variable(0).name());
       std::vector< GUM_SCALAR > vals(this->credalNet_->current_bn().variable(id).domainSize(), 0);
       Instantiation             I(pot);

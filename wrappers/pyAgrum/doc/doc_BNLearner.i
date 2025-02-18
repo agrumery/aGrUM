@@ -574,8 +574,8 @@ vars: List[int|str]
 
 Returns
 -------
-pyAgrum.Potential
-	the pseudo-count as a Potential
+pyAgrum.Tensor
+	the pseudo-count as a Tensor
 "
 
 %feature("docstring") gum::learning::IBNLearner::rawPseudoCount

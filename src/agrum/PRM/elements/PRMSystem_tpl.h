@@ -310,16 +310,16 @@ namespace gum {
 
         factory.endParentsDeclaration();
 
-        // Checking if we need to ground the Potential (only for class level
+        // Checking if we need to ground the Tensor (only for class level
         // attributes since
-        // aggregates Potentials are generated)
+        // aggregates Tensors are generated)
         if (PRMClassElement< GUM_SCALAR >::isAttribute(instance.type().get(elt.second->safeName())))
-          _groundPotential_(instance, *elt.second, factory);
+          _groundTensor_(instance, *elt.second, factory);
       }
     }
 
     template < typename GUM_SCALAR >
-    void PRMSystem< GUM_SCALAR >::_groundPotential_(const PRMInstance< GUM_SCALAR >&  instance,
+    void PRMSystem< GUM_SCALAR >::_groundTensor_(const PRMInstance< GUM_SCALAR >&  instance,
                                                     const PRMAttribute< GUM_SCALAR >& attr,
                                                     BayesNetFactory< GUM_SCALAR >& factory) const {
       Bijection< const DiscreteVariable*, const DiscreteVariable* > bijection;
@@ -356,10 +356,10 @@ namespace gum {
         }
       }
 
-      // Copy Potential
+      // Copy Tensor
       // DO NOT USE MultiDimBijArray as they will wreck havok if you delete
       // the prm befor its grounded BN (happens a lot in pyAgrum)
-      Potential< GUM_SCALAR >* p = new Potential< GUM_SCALAR >();
+      Tensor< GUM_SCALAR >* p = new Tensor< GUM_SCALAR >();
       for (auto var: attr.cpf().variablesSequence()) {
         p->add(*(bijection.second(var)));
       }

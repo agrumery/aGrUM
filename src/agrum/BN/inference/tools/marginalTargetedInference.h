@@ -101,9 +101,9 @@ namespace gum {
      * @returns a const ref to the posterior probability of the node.
      * @param node the node for which we need a posterior probability
      *
-     * @warning for efficiency reasons, the potential is stored into the
+     * @warning for efficiency reasons, the tensor is stored into the
      * inference engine and is returned by reference. In order to ensure
-     * that the potential may still exist even if the Inference object is
+     * that the tensor may still exist even if the Inference object is
      * destroyed, the user has to copy it explicitly.
      *
      * @warning prepareInference and makeInference may be applied if needed by
@@ -111,7 +111,7 @@ namespace gum {
      *
      * @throw UndefinedElement if node is not in the set of targets
      */
-    virtual const Potential< GUM_SCALAR >& posterior(NodeId node);
+    virtual const Tensor< GUM_SCALAR >& posterior(NodeId node);
 
     /// Computes and returns the posterior of a node.
     /**
@@ -119,9 +119,9 @@ namespace gum {
      * @param nodeName the anme of the node for which we need a posterior
      * probability
      *
-     * @warning for efficiency reasons, the potential is stored into the
+     * @warning for efficiency reasons, the tensor is stored into the
      * inference engine and is returned by reference. In order to ensure
-     * that the potential may still exist even if the Inference object is
+     * that the tensor may still exist even if the Inference object is
      * destroyed, the user has to copy it explicitly.
      *
      * @warning prepareInference and makeInference may be applied if needed by
@@ -129,7 +129,7 @@ namespace gum {
      *
      * @throw UndefinedElement if node is not in the set of targets
      */
-    virtual const Potential< GUM_SCALAR >& posterior(const std::string& nodeName);
+    virtual const Tensor< GUM_SCALAR >& posterior(const std::string& nodeName);
 
     /// @}
 
@@ -204,29 +204,29 @@ namespace gum {
 
 
     /**
-     * Create a gum::Potential for P(target|evs) (for all instanciation of target
+     * Create a gum::Tensor for P(target|evs) (for all instanciation of target
      * and evs)
      *
-     * @warning If some evs are d-separated, they are not included in the Potential
+     * @warning If some evs are d-separated, they are not included in the Tensor
      *
      * @param bn the BayesNet
      * @param target  the nodeId of the targetted variable
      * @param evs the vector of nodeId of the observed variables
-     * @return a Potential
+     * @return a Tensor
      */
-    Potential< GUM_SCALAR > evidenceImpact(NodeId target, const NodeSet& evs);
+    Tensor< GUM_SCALAR > evidenceImpact(NodeId target, const NodeSet& evs);
 
     /**
-     * Create a gum::Potential for P(target|evs) (for all instanciation of target
+     * Create a gum::Tensor for P(target|evs) (for all instanciation of target
      * and evs)
      *
-     * @warning If some evs are d-separated, they are not included in the Potential
+     * @warning If some evs are d-separated, they are not included in the Tensor
      *
      * @param target  the nodeId of the target variable
      * @param evs the nodeId of the observed variable
-     * @return a Potential
+     * @return a Tensor
      */
-    Potential< GUM_SCALAR > evidenceImpact(const std::string&                target,
+    Tensor< GUM_SCALAR > evidenceImpact(const std::string&                target,
                                            const std::vector< std::string >& evs);
 
     protected:
@@ -249,7 +249,7 @@ namespace gum {
 
     /// asks derived classes for the posterior of a given variable
     /** @param id The variable's id. */
-    virtual const Potential< GUM_SCALAR >& posterior_(NodeId id) = 0;
+    virtual const Tensor< GUM_SCALAR >& posterior_(NodeId id) = 0;
 
     void setTargetedMode_();
     bool isTargetedMode_() const;

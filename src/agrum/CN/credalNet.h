@@ -109,7 +109,7 @@ namespace gum {
       /**
        * Constructor used to create a CredalNet step by step, i.e. node by node,
        * arc
-       * by arc, manually filling potentials.
+       * by arc, manually filling tensors.
        */
       CredalNet();
 

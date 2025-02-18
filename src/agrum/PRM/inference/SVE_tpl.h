@@ -100,7 +100,7 @@ namespace gum {
     }
 
     template < typename GUM_SCALAR >
-    std::string __print_pot__(const Potential< GUM_SCALAR >& pot) {
+    std::string __print_pot__(const Tensor< GUM_SCALAR >& pot) {
       std::stringstream s;
       s << "{";
       for (auto var: pot.variablesSequence()) {
@@ -177,7 +177,7 @@ namespace gum {
       if (this->hasEvidence(query)) { _insertEvidence_(query, pool); }
 
       for (auto attr = query->begin(); attr != query->end(); ++attr) {
-        pool.insert(&(const_cast< Potential< GUM_SCALAR >& >((*(attr.val())).cpf())));
+        pool.insert(&(const_cast< Tensor< GUM_SCALAR >& >((*(attr.val())).cpf())));
       }
 
       for (size_t idx = 0; idx < t.eliminationOrder().size(); ++idx) {
@@ -227,7 +227,7 @@ namespace gum {
     void SVE< GUM_SCALAR >::_eliminateDelayedVariables_(const PRMInstance< GUM_SCALAR >* i,
                                                         BucketSet&                       pool,
                                                         BucketSet&                       trash) {
-      Set< Potential< GUM_SCALAR >* > toRemove;
+      Set< Tensor< GUM_SCALAR >* > toRemove;
 
       for (const auto var: *_delayedVariables_[i]) {
         MultiDimBucket< GUM_SCALAR >* bucket = new MultiDimBucket< GUM_SCALAR >();
@@ -244,7 +244,7 @@ namespace gum {
         for (const auto other: bucket->allVariables())
           if (other != var) bucket->add(*other);
 
-        Potential< GUM_SCALAR >* bucket_pot = new Potential< GUM_SCALAR >(bucket);
+        Tensor< GUM_SCALAR >* bucket_pot = new Tensor< GUM_SCALAR >(bucket);
         trash.insert(bucket_pot);
         pool.insert(bucket_pot);
       }
@@ -309,7 +309,7 @@ namespace gum {
         _insertLiftedNodes_(i, pool, trash);
 
         for (const auto agg: i->type().aggregates())
-          pool.insert(_getAggPotential_(i, agg));
+          pool.insert(_getAggTensor_(i, agg));
 
         try {
           InstanceBayesNet< GUM_SCALAR > bn(*i);
@@ -414,7 +414,7 @@ namespace gum {
         // We need a local to not eliminate queried inner nodes of the same
         // class
         for (const auto& elt: *i) {
-          tmp_pool.insert(&(const_cast< Potential< GUM_SCALAR >& >(elt.second->cpf())));
+          tmp_pool.insert(&(const_cast< Tensor< GUM_SCALAR >& >(elt.second->cpf())));
         }
 
         InstanceBayesNet< GUM_SCALAR > bn(*i);
@@ -440,7 +440,7 @@ namespace gum {
 
         eliminateNodes(inner_elim_order, tmp_pool, trash);
 
-        // Now we add the new potentials in pool and eliminate output nodes
+        // Now we add the new tensors in pool and eliminate output nodes
         for (const auto pot: tmp_pool)
           pool.insert(pot);
 
@@ -452,7 +452,7 @@ namespace gum {
         _insertLiftedNodes_(i, pool, trash);
 
         for (const auto agg: i->type().aggregates())
-          pool.insert(_getAggPotential_(i, agg));
+          pool.insert(_getAggTensor_(i, agg));
 
         try {
           std::vector< const DiscreteVariable* > elim;
@@ -489,7 +489,7 @@ namespace gum {
       }
 
       for (const auto lifted_pot: *lifted_pool) {
-        Potential< GUM_SCALAR >* pot = copyPotential(i->bijection(), *lifted_pot);
+        Tensor< GUM_SCALAR >* pot = copyTensor(i->bijection(), *lifted_pot);
         pool.insert(pot);
         trash.insert(pot);
       }
@@ -506,7 +506,7 @@ namespace gum {
           if (c.isOutputNode(c.get(node))) outers.insert(node);
           else if (!outers.exists(node)) inners.insert(node);
 
-          lifted_pool->insert(const_cast< Potential< GUM_SCALAR >* >(&(c.get(node).cpf())));
+          lifted_pool->insert(const_cast< Tensor< GUM_SCALAR >* >(&(c.get(node).cpf())));
         } else if (PRMClassElement< GUM_SCALAR >::isAggregate(c.get(node))) {
           outers.insert(node);
 
@@ -583,14 +583,14 @@ namespace gum {
     }
 
     template < typename GUM_SCALAR >
-    void SVE< GUM_SCALAR >::posterior_(const Chain& chain, Potential< GUM_SCALAR >& m) {
+    void SVE< GUM_SCALAR >::posterior_(const Chain& chain, Tensor< GUM_SCALAR >& m) {
       const PRMInstance< GUM_SCALAR >*  i   = chain.first;
       const PRMAttribute< GUM_SCALAR >* elt = chain.second;
       SVE< GUM_SCALAR >::BucketSet      pool, trash;
 
       _eliminateNodes_(i, elt->id(), pool, trash);
 
-      std::vector< Potential< GUM_SCALAR >* > result;
+      std::vector< Tensor< GUM_SCALAR >* > result;
 
       for (const auto pot: pool) {
         if (pot->contains(elt->type().variable())) { result.push_back(pot); }
@@ -601,7 +601,7 @@ namespace gum {
         result.pop_back();
         auto& p2 = *(result.back());
         result.pop_back();
-        auto mult = new Potential< GUM_SCALAR >(p1 * p2);
+        auto mult = new Tensor< GUM_SCALAR >(p1 * p2);
         trash.insert(mult);
         result.push_back(mult);
       }
@@ -616,7 +616,7 @@ namespace gum {
 
     template < typename GUM_SCALAR >
     void SVE< GUM_SCALAR >::joint_(const std::vector< Chain >& queries,
-                                   Potential< GUM_SCALAR >&    j) {
+                                   Tensor< GUM_SCALAR >&    j) {
       GUM_ERROR(FatalError, "Not implemented.")
     }
 
@@ -631,7 +631,7 @@ namespace gum {
     INLINE void SVE< GUM_SCALAR >::_insertEvidence_(const PRMInstance< GUM_SCALAR >* i,
                                                     BucketSet&                       pool) {
       for (const auto& elt: this->evidence(i))
-        pool.insert(const_cast< Potential< GUM_SCALAR >* >(elt.second));
+        pool.insert(const_cast< Tensor< GUM_SCALAR >* >(elt.second));
     }
 
     template < typename GUM_SCALAR >
@@ -658,10 +658,10 @@ namespace gum {
     }
 
     template < typename GUM_SCALAR >
-    INLINE Potential< GUM_SCALAR >*
-           SVE< GUM_SCALAR >::_getAggPotential_(const PRMInstance< GUM_SCALAR >*  i,
+    INLINE Tensor< GUM_SCALAR >*
+           SVE< GUM_SCALAR >::_getAggTensor_(const PRMInstance< GUM_SCALAR >*  i,
                                              const PRMAggregate< GUM_SCALAR >* agg) {
-      return &(const_cast< Potential< GUM_SCALAR >& >(i->get(agg->id()).cpf()));
+      return &(const_cast< Tensor< GUM_SCALAR >& >(i->get(agg->id()).cpf()));
     }
 
     template < typename GUM_SCALAR >

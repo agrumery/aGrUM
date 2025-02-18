@@ -42,6 +42,7 @@ tools for BN in jupyter notebook
 """
 
 import time
+import warnings
 
 # fix DeprecationWarning of base64.encodestring()
 try:
@@ -562,11 +563,11 @@ def getJunctionTree(bn, withNames=True, size=None):
 
 def showProba(p, scale=None):
   """
-  Show a mono-dim Potential (a marginal)
+  Show a mono-dim Tensor (a marginal)
 
   Parameters
   ----------
-  p: pyAgrum.Potential
+  p: pyAgrum.Tensor
     the marginal to show
   scale: float
     the zoom factor
@@ -590,11 +591,11 @@ def _getMatplotFig(fig):
 
 def getProba(p, scale=None) -> str:
   """
-  get a mono-dim Potential as html (png/svg) image
+  get a mono-dim Tensor as html (png/svg) image
 
   Parameters
   ----------
-  p: pyAgrum.Potential
+  p: pyAgrum.Tensor
     the marginal to show
   scale: float
     the zoom factor
@@ -613,13 +614,13 @@ def getProba(p, scale=None) -> str:
 
 def showProbaMinMax(pmin, pmax, scale=1.0):
   """
-  Show a bi-Potential (min,max)
+  Show a bi-Tensor (min,max)
 
   Parameters
   ----------
-  pmin: pyAgrum.Potential
+  pmin: pyAgrum.Tensor
     the min pmarginal to show
-  pmax: pyAgrum.Potential
+  pmax: pyAgrum.Tensor
     the max pmarginal to show
   scale: float
     the zoom factor
@@ -631,13 +632,13 @@ def showProbaMinMax(pmin, pmax, scale=1.0):
 
 def getProbaMinMax(pmin, pmax, scale=1.0) -> str:
   """
-  get a bi-Potential (min,max) as html (png/svg) img
+  get a bi-Tensor (min,max) as html (png/svg) img
 
   Parameters
   ----------
-  pmin: pyAgrum.Potential
+  pmin: pyAgrum.Tensor
     the min pmarginal to show
-  pmax: pyAgrum.Potential
+  pmax: pyAgrum.Tensor
     the max pmarginal to show
   scale: float
     the zoom factor
@@ -1150,15 +1151,15 @@ def getInference(model, **kwargs):
   return getGraph(grinf, size)
 
 
-def _reprPotential(pot, digits=None, withColors=None, varnames=None, asString=False):
+def _reprTensor(pot, digits=None, withColors=None, varnames=None, asString=False):
   """
-  return a representation of a gum.Potential as a HTML table.
+  return a representation of a gum.Tensor as a HTML table.
   The first dimension is special (horizontal) due to the representation of conditional probability table
 
   Parameters
   ---------
-  pot: gum.Potential
-   the potential to get
+  pot: gum.Tensor
+   the tensor to get
   digits: int
    number of digits to show
   withColors: Boolean
@@ -1171,26 +1172,26 @@ def _reprPotential(pot, digits=None, withColors=None, varnames=None, asString=Fa
   Returns
   -------
   str
-    the HTML table that represents the potential
+    the HTML table that represents the tensor
   """
   from fractions import Fraction
 
-  r0, g0, b0 = gumcols.hex2rgb(gum.config['notebook', 'potential_color_0'])
-  r1, g1, b1 = gumcols.hex2rgb(gum.config['notebook', 'potential_color_1'])
+  r0, g0, b0 = gumcols.hex2rgb(gum.config['notebook', 'tensor_color_0'])
+  r1, g1, b1 = gumcols.hex2rgb(gum.config['notebook', 'tensor_color_1'])
 
   if digits is None:
-    digits = gum.config.asInt['notebook', 'potential_visible_digits']
+    digits = gum.config.asInt['notebook', 'tensor_visible_digits']
 
   if withColors is None:
-    withColors = gum.config.asBool["notebook", "potential_with_colors"]
+    withColors = gum.config.asBool["notebook", "tensor_with_colors"]
 
-  with_fraction = gum.config['notebook', 'potential_with_fraction'] == "True"
+  with_fraction = gum.config['notebook', 'tensor_with_fraction'] == "True"
   if with_fraction:
-    fraction_limit = int(gum.config['notebook', 'potential_fraction_limit'])
+    fraction_limit = int(gum.config['notebook', 'tensor_fraction_limit'])
     fraction_round_error = float(
-      gum.config['notebook', 'potential_fraction_round_error'])
+      gum.config['notebook', 'tensor_fraction_round_error'])
     fraction_with_latex = gum.config['notebook',
-    'potential_fraction_with_latex'] == "True"
+    'tensor_fraction_with_latex'] == "True"
 
   def _rgb(r, g, b):
     return '#%02x%02x%02x' % (r, g, b)
@@ -1259,7 +1260,7 @@ def _reprPotential(pot, digits=None, withColors=None, varnames=None, asString=Fa
     s = "<tr>"
     if nparents > 0:
       # parents order
-      if gum.config["notebook", "potential_parent_values"] == "revmerge":
+      if gum.config["notebook", "tensor_parent_values"] == "revmerge":
         pmin, pmax, pinc = nparents - 1, 0 - 1, -1
       else:
         pmin, pmax, pinc = 0, nparents, 1
@@ -1288,13 +1289,13 @@ def _reprPotential(pot, digits=None, withColors=None, varnames=None, asString=Fa
     while not inst.end():
       s = "<tr>"
       # parents order
-      if gum.config["notebook", "potential_parent_values"] == "revmerge":
+      if gum.config["notebook", "tensor_parent_values"] == "revmerge":
         pmin, pmax, pinc = 1, nparents + 1, 1
       else:
         pmin, pmax, pinc = nparents, 0, -1
       for par in range(pmin, pmax, pinc):
         label = inst.variable(par).label(inst.val(par))
-        if par == 1 or gum.config["notebook", "potential_parent_values"] == "nomerge":
+        if par == 1 or gum.config["notebook", "tensor_parent_values"] == "nomerge":
           s += f"<th style='border:1px solid black;color:black;background-color:#BBBBBB'><center>{label}</center></th>"
         else:
           if sum([inst.val(i) for i in range(1, par)]) == 0:
@@ -1320,8 +1321,8 @@ def __isKindOfProba(pot):
 
   Parameters
   ----------
-  pot: gum.Potential
-    the potential
+  pot: gum.Tensor
+    the tensor
 
   Returns
   -------
@@ -1352,14 +1353,18 @@ def __isKindOfProba(pot):
 
 
 def showPotential(pot, digits=None, withColors=None, varnames=None):
+  warnings.warn("showPotential is deprecated since pyAgrum 2.0.0. Use showTensor instead", DeprecationWarning)
+  showTensor(pot, digits, withColors, varnames)
+
+def showTensor(pot, digits=None, withColors=None, varnames=None):
   """
-  show a gum.Potential as a HTML table.
+  show a gum.Tensor as a HTML table.
   The first dimension is special (horizontal) due to the representation of conditional probability table
 
   Parameters
   ----------
-  pot : gum.Potential
-    the potential to show
+  pot : gum.Tensor
+    the tensor to show
   digits : int
     number of digits to show
   withColors : bool
@@ -1368,24 +1373,28 @@ def showPotential(pot, digits=None, withColors=None, varnames=None):
     the aliases for variables name in the table
   """
   if withColors is None:
-    withColors = gum.config.asBool["notebook", "potential_with_colors"]
+    withColors = gum.config.asBool["notebook", "tensor_with_colors"]
 
   if withColors:
     withColors = __isKindOfProba(pot)
 
-  s = _reprPotential(pot, digits, withColors, varnames, asString=False)
+  s = _reprTensor(pot, digits, withColors, varnames, asString=False)
   IPython.display.display(s)
 
 
 def getPotential(pot, digits=None, withColors=None, varnames=None):
+  warnings.warn("getPotential is deprecated since pyAgrum 2.0.0. Use getTensor instead", DeprecationWarning)
+  return getTensor(pot, digits, withColors, varnames)
+
+def getTensor(pot, digits=None, withColors=None, varnames=None):
   """
-  return a HTML string of a gum.Potential as a HTML table.
+  return a HTML string of a gum.Tensor as a HTML table.
   The first dimension is special (horizontal) due to the representation of conditional probability table
 
   Parameters
   ----------
-  pot : gum.Potential
-    the potential to show
+  pot : gum.Tensor
+    the tensor to show
   digits : int
     number of digits to show
   withColors : bool
@@ -1396,21 +1405,21 @@ def getPotential(pot, digits=None, withColors=None, varnames=None):
   Returns
   -------
   str
-    the html representation of the Potential (as a string)
+    the html representation of the Tensor (as a string)
   """
   if withColors is None:
-    withColors = gum.config.asBool["notebook", "potential_with_colors"]
+    withColors = gum.config.asBool["notebook", "tensor_with_colors"]
 
   if withColors:
     withColors = __isKindOfProba(pot)
 
-  return _reprPotential(pot, digits, withColors, varnames, asString=True)
+  return _reprTensor(pot, digits, withColors, varnames, asString=True)
 
 
 def showCPTs(bn):
   flow.clear()
   for i in bn.names():
-    flow.add_html(getPotential(bn.cpt(i)))
+    flow.add_html(getTensor(bn.cpt(i)))
   flow.display()
 
 
@@ -1661,15 +1670,15 @@ def getCliqueGraph(cg, size=None):
 @gum.deprecated_arg("cmapNode", "cmap", "1.8.1")
 def show(model, **kwargs):
   """
-  propose a (visual) representation of a graphical model or a graph or a Potential in a notebook
+  propose a (visual) representation of a graphical model or a graph or a Tensor in a notebook
 
   Parameters
   ----------
   model
-    the model to show (pyAgrum.BayesNet, pyAgrum.MarkovRandomField, pyAgrum.InfluenceDiagram or pyAgrum.Potential) or a dot string, or a `pydot.Dot` or even just an object with a method `toDot()`.
+    the model to show (pyAgrum.BayesNet, pyAgrum.MarkovRandomField, pyAgrum.InfluenceDiagram or pyAgrum.Tensor) or a dot string, or a `pydot.Dot` or even just an object with a method `toDot()`.
 
   size: str
-    size (for graphviz) to represent the graphical model (no effect for Potential)
+    size (for graphviz) to represent the graphical model (no effect for Tensor)
   nodeColor: Dict[str,float]
     a nodeMap of values (between 0 and 1) to be shown as color of nodes (with special colors for 0 and 1)
   factorColor: Dict[int,float]
@@ -1695,15 +1704,15 @@ def show(model, **kwargs):
     showInfluenceDiagram(model, **kwargs)
   elif isinstance(model, gum.CredalNet):
     showCN(model, **kwargs)
-  elif isinstance(model, gum.Potential):
-    showPotential(model)
+  elif isinstance(model, gum.Tensor):
+    showTensor(model)
   elif hasattr(model, "toDot"):
     showDot(model.toDot(), **kwargs)
   elif isinstance(model, dot.Dot):
     showGraph(model, **kwargs)
   else:
     raise gum.InvalidArgument(
-      "Argument model should be a PGM (BayesNet, MarkovRandomField, Influence Diagram or Potential or ..."
+      "Argument model should be a PGM (BayesNet, MarkovRandomField, Influence Diagram or Tensor or ..."
     )
 
 
@@ -1771,7 +1780,7 @@ else:
 
   gum.CliqueGraph._repr_html_ = lambda self: getCliqueGraph(self)
 
-  gum.Potential._repr_html_ = lambda self: getPotential(self)
+  gum.Tensor._repr_html_ = lambda self: getTensor(self)
   gum.LazyPropagation._repr_html_ = lambda self: getInferenceEngine(
     self, "Lazy Propagation on this BN"
   )

@@ -7235,28 +7235,28 @@ class MultiDimContainer(object):
     def copyFrom(self, *args) -> None:
         return _base.MultiDimContainer_copyFrom(self, *args)
 
-    def extractFrom(self, src: "pyAgrum.Potential", mask: "Instantiation") -> None:
+    def extractFrom(self, src: "pyAgrum.Tensor", mask: "Instantiation") -> None:
         return _base.MultiDimContainer_extractFrom(self, src, mask)
 
-    def content(self, *args) -> "pyAgrum.Potential":
+    def content(self, *args) -> "pyAgrum.Tensor":
         return _base.MultiDimContainer_content(self, *args)
 
-    def getMasterRef(self, *args) -> "pyAgrum.Potential":
+    def getMasterRef(self, *args) -> "pyAgrum.Tensor":
         return _base.MultiDimContainer_getMasterRef(self, *args)
 
-    def copy(self, src: "pyAgrum.Potential") -> None:
+    def copy(self, src: "pyAgrum.Tensor") -> None:
         return _base.MultiDimContainer_copy(self, src)
 
-    def newFactory(self) -> "pyAgrum.Potential":
+    def newFactory(self) -> "pyAgrum.Tensor":
         return _base.MultiDimContainer_newFactory(self)
 
     def toString(self, *args) -> str:
         return _base.MultiDimContainer_toString(self, *args)
 
-    def __eq__(self, p: "pyAgrum.Potential") -> bool:
+    def __eq__(self, p: "pyAgrum.Tensor") -> bool:
         return _base.MultiDimContainer___eq__(self, p)
 
-    def __ne__(self, p: "pyAgrum.Potential") -> bool:
+    def __ne__(self, p: "pyAgrum.Tensor") -> bool:
         return _base.MultiDimContainer___ne__(self, p)
 
     def apply(self, f: "std::function< float (float) >") -> None:
@@ -7273,66 +7273,66 @@ class MultiDimContainer(object):
 
 # Register MultiDimContainer in _base:
 _base.MultiDimContainer_swigregister(MultiDimContainer)
-class Potential(object):
+class Tensor(object):
     r"""
 
-    Class representing a potential.
+    Class representing a tensor.
 
-    Potential() -> Potential
+    Tensor() -> Tensor
         default constructor
 
-    Potential(src) -> Potential
+    Tensor(src) -> Tensor
         Parameters:
-            - **src** (*pyAgrum.Potential*) -- the Potential to copy
+            - **src** (*pyAgrum.Tensor*) -- the Tensor to copy
 
     """
 
     thisown = property(lambda x: x.this.own(), lambda x, v: x.this.own(v), doc="The membership flag")
 
     def __init__(self, *args):
-        _base.Potential_swiginit(self, _base.new_Potential(*args))
+        _base.Tensor_swiginit(self, _base.new_Tensor(*args))
 
         self._list_vars=list()
 
 
 
-    __swig_destroy__ = _base.delete_Potential
+    __swig_destroy__ = _base.delete_Tensor
 
-    def newFactory(self) -> "pyAgrum.Potential":
+    def newFactory(self) -> "pyAgrum.Tensor":
         r"""
 
-        Erase the Potential content and create a new empty one.
+        Erase the Tensor content and create a new empty one.
 
         Returns
         -------
-        pyAgrum.Potential
-         a reference to the new Potential
+        pyAgrum.Tensor
+         a reference to the new Tensor
 
         """
-        return _base.Potential_newFactory(self)
+        return _base.Tensor_newFactory(self)
 
-    def random(self) -> "pyAgrum.Potential":
-        return _base.Potential_random(self)
+    def random(self) -> "pyAgrum.Tensor":
+        return _base.Tensor_random(self)
 
-    def randomDistribution(self) -> "pyAgrum.Potential":
-        return _base.Potential_randomDistribution(self)
+    def randomDistribution(self) -> "pyAgrum.Tensor":
+        return _base.Tensor_randomDistribution(self)
 
-    def randomCPT(self) -> "pyAgrum.Potential":
-        return _base.Potential_randomCPT(self)
+    def randomCPT(self) -> "pyAgrum.Tensor":
+        return _base.Tensor_randomCPT(self)
 
-    def noising(self, alpha: float) -> "pyAgrum.Potential":
-        return _base.Potential_noising(self, alpha)
+    def noising(self, alpha: float) -> "pyAgrum.Tensor":
+        return _base.Tensor_noising(self, alpha)
 
-    def isNonZeroMap(self) -> "pyAgrum.Potential":
+    def isNonZeroMap(self) -> "pyAgrum.Tensor":
         r"""
 
         Returns
         -------
-        pyAgrum.Potential
-          a boolean-like potential using the predicate `isNonZero`.
+        pyAgrum.Tensor
+          a boolean-like tensor using the predicate `isNonZero`.
 
         """
-        return _base.Potential_isNonZeroMap(self)
+        return _base.Tensor_isNonZeroMap(self)
 
     def sum(self) -> float:
         r"""
@@ -7340,10 +7340,10 @@ class Potential(object):
         Returns
         -------
         float :
-          the sum of all elements in the Potential
+          the sum of all elements in the Tensor
 
         """
-        return _base.Potential_sum(self)
+        return _base.Tensor_sum(self)
 
     def product(self) -> float:
         r"""
@@ -7351,10 +7351,10 @@ class Potential(object):
         Returns
         -------
         float
-          the product of all elements in the Potential
+          the product of all elements in the Tensor
 
         """
-        return _base.Potential_product(self)
+        return _base.Tensor_product(self)
 
     def max(self) -> float:
         r"""
@@ -7362,10 +7362,10 @@ class Potential(object):
         Returns
         -------
         float
-          the maximum of all elements in the Potential
+          the maximum of all elements in the Tensor
 
         """
-        return _base.Potential_max(self)
+        return _base.Tensor_max(self)
 
     def min(self) -> float:
         r"""
@@ -7373,10 +7373,10 @@ class Potential(object):
         Returns
         -------
         float
-          the min of all elements in the Potential
+          the min of all elements in the Tensor
 
         """
-        return _base.Potential_min(self)
+        return _base.Tensor_min(self)
 
     def maxNonOne(self) -> float:
         r"""
@@ -7384,7 +7384,7 @@ class Potential(object):
         Returns
         -------
         float
-          the maximum of non one elements in the Potential
+          the maximum of non one elements in the Tensor
 
         Raises
         ------
@@ -7392,7 +7392,7 @@ class Potential(object):
           If all value == 1.0
 
         """
-        return _base.Potential_maxNonOne(self)
+        return _base.Tensor_maxNonOne(self)
 
     def minNonZero(self) -> float:
         r"""
@@ -7400,7 +7400,7 @@ class Potential(object):
         Returns
         -------
         float
-          the min of non zero elements in the Potential
+          the min of non zero elements in the Tensor
 
         Raises
         ------
@@ -7408,10 +7408,10 @@ class Potential(object):
           If all value == 0.0
 
         """
-        return _base.Potential_minNonZero(self)
+        return _base.Tensor_minNonZero(self)
 
     def findAll(self, v: float) -> List[Dict[str,int]]:
-        return _base.Potential_findAll(self, v)
+        return _base.Tensor_findAll(self, v)
 
     def entropy(self) -> float:
         r"""
@@ -7419,15 +7419,15 @@ class Potential(object):
         Returns
         -------
         float
-          the entropy of the potential
+          the entropy of the tensor
 
         """
-        return _base.Potential_entropy(self)
+        return _base.Tensor_entropy(self)
 
-    def reorganize(self, *args) -> "pyAgrum.Potential":
+    def reorganize(self, *args) -> "pyAgrum.Tensor":
         r"""
 
-        Create a new Potential with another order.
+        Create a new Tensor with another order.
 
         Returns
         -------
@@ -7436,13 +7436,13 @@ class Potential(object):
 
         Returns
         -------
-        pyAgrum.Potential
-          a reference to the modified potential
+        pyAgrum.Tensor
+          a reference to the modified tensor
 
         """
-        return _base.Potential_reorganize(self, *args)
+        return _base.Tensor_reorganize(self, *args)
 
-    def putFirst(self, varname: str) -> "pyAgrum.Potential":
+    def putFirst(self, varname: str) -> "pyAgrum.Tensor":
         r"""
 
         Parameters
@@ -7452,42 +7452,42 @@ class Potential(object):
 
         Returns
         -------
-        pyAgrum.Potential
-          a reference to the modified potential
+        pyAgrum.Tensor
+          a reference to the modified tensor
 
         Raises
         ------
         pyAgrum.InvalidArgument
-          If the var is not in the potential
+          If the var is not in the tensor
 
         """
-        return _base.Potential_putFirst(self, varname)
+        return _base.Tensor_putFirst(self, varname)
 
-    def fillWith(self, *args) -> "pyAgrum.Potential":
+    def fillWith(self, *args) -> "pyAgrum.Tensor":
         r"""
 
-        Automatically fills the potential with v.
+        Automatically fills the tensor with v.
 
         Parameters
         ----------
-        v : number or list of values or pyAgrum.Potential
-            a value or a list/pyAgrum.Potential containing the values to fill the Potential with.
+        v : number or list of values or pyAgrum.Tensor
+            a value or a list/pyAgrum.Tensor containing the values to fill the Tensor with.
 
         mapping : list|tuple|dict
 
         Warning
         -------
-            - if `v` is a list, the size of the list must be the size of the potential
+            - if `v` is a list, the size of the list must be the size of the tensor
 
-            - if `v` is a ref:pyAgrum.Potential, it must contain variables with exactly the same names and labels but not necessarily the same variables. If
+            - if `v` is a ref:pyAgrum.Tensor, it must contain variables with exactly the same names and labels but not necessarily the same variables. If
 
-            - If the second argument `mapping` is given, `mapping` explains how to map the variables of the potential source to the variables of the potential destination.
+            - If the second argument `mapping` is given, `mapping` explains how to map the variables of the tensor source to the variables of the tensor destination.
 
             - If `mapping` is a sequence, the order follows the same order as `destination.names`. If `mapping` is a dict, the keys are the names in the destination and the values are the names in the source.
 
         Returns
         -------
-        pyAgrum.Potential
+        pyAgrum.Tensor
               a reference to the modified potentia
 
         Raises
@@ -7505,10 +7505,10 @@ class Potential(object):
             if set(d.keys())==set(self.names):
               return self.fillWith(args[0],[d[s] for s in self.names])
             else:
-              raise pyAgrum.ArgumentError(f"[pyAgrum] keys in dict {tuple(d.keys())} does not match the Potential's variables {self.names}")
+              raise pyAgrum.ArgumentError(f"[pyAgrum] keys in dict {tuple(d.keys())} does not match the Tensor's variables {self.names}")
 
 
-        val = _base.Potential_fillWith(self, *args)
+        val = _base.Tensor_fillWith(self, *args)
 
         return self
 
@@ -7516,18 +7516,18 @@ class Potential(object):
         return val
 
 
-    def abs(self) -> "pyAgrum.Potential":
+    def abs(self) -> "pyAgrum.Tensor":
         r"""
 
         Apply abs on every element of the container
 
         Returns
         -------
-        pyAgrum.Potential
-            a reference to the modified potential.
+        pyAgrum.Tensor
+            a reference to the modified tensor.
 
         """
-        val = _base.Potential_abs(self)
+        val = _base.Tensor_abs(self)
 
         return self
 
@@ -7535,13 +7535,13 @@ class Potential(object):
         return val
 
 
-    def sq(self) -> "pyAgrum.Potential":
+    def sq(self) -> "pyAgrum.Tensor":
         r"""
 
-        Square all the values in the Potential
+        Square all the values in the Tensor
 
         """
-        val = _base.Potential_sq(self)
+        val = _base.Tensor_sq(self)
 
         return self
 
@@ -7549,17 +7549,17 @@ class Potential(object):
         return val
 
 
-    def log2(self) -> "pyAgrum.Potential":
+    def log2(self) -> "pyAgrum.Tensor":
         r"""
 
-        log2 all the values in the Potential
+        log2 all the values in the Tensor
 
         Warning
         -------
-        When the Potential contains 0 or negative values, no exception are raised but `-inf` or `nan` values are assigned.
+        When the Tensor contains 0 or negative values, no exception are raised but `-inf` or `nan` values are assigned.
 
         """
-        val = _base.Potential_log2(self)
+        val = _base.Tensor_log2(self)
 
         return self
 
@@ -7567,8 +7567,8 @@ class Potential(object):
         return val
 
 
-    def sgn(self) -> "pyAgrum.Potential":
-        val = _base.Potential_sgn(self)
+    def sgn(self) -> "pyAgrum.Tensor":
+        val = _base.Tensor_sgn(self)
 
         return self
 
@@ -7576,30 +7576,30 @@ class Potential(object):
         return val
 
 
-    def new_abs(self) -> "pyAgrum.Potential":
-        return _base.Potential_new_abs(self)
+    def new_abs(self) -> "pyAgrum.Tensor":
+        return _base.Tensor_new_abs(self)
 
-    def new_sq(self) -> "pyAgrum.Potential":
-        return _base.Potential_new_sq(self)
+    def new_sq(self) -> "pyAgrum.Tensor":
+        return _base.Tensor_new_sq(self)
 
-    def new_log2(self) -> "pyAgrum.Potential":
-        return _base.Potential_new_log2(self)
+    def new_log2(self) -> "pyAgrum.Tensor":
+        return _base.Tensor_new_log2(self)
 
-    def new_sgn(self) -> "pyAgrum.Potential":
-        return _base.Potential_new_sgn(self)
+    def new_sgn(self) -> "pyAgrum.Tensor":
+        return _base.Tensor_new_sgn(self)
 
-    def normalize(self) -> "pyAgrum.Potential":
+    def normalize(self) -> "pyAgrum.Tensor":
         r"""
 
-        Normalize the Potential (do nothing if sum is 0)
+        Normalize the Tensor (do nothing if sum is 0)
 
         Returns
         -------
-        pyAgrum.Potential
-          a reference to the normalized Potential
+        pyAgrum.Tensor
+          a reference to the normalized Tensor
 
         """
-        val = _base.Potential_normalize(self)
+        val = _base.Tensor_normalize(self)
 
         return self
 
@@ -7607,15 +7607,15 @@ class Potential(object):
         return val
 
 
-    def KL(self, p: "Potential") -> float:
+    def KL(self, p: "Tensor") -> float:
         r"""
 
-        Check the compatibility and compute the Kullback-Leibler divergence between the potential and.
+        Check the compatibility and compute the Kullback-Leibler divergence between the tensor and.
 
         Parameters
         ----------
-        p : pyAgrum.Potential
-          the potential from which we want to calculate the divergence.
+        p : pyAgrum.Tensor
+          the tensor from which we want to calculate the divergence.
 
         Returns
         -------
@@ -7625,22 +7625,22 @@ class Potential(object):
         Raises
         ------
           pyAgrum.InvalidArgument
-            If p is not compatible with the potential (dimension, variables)
+            If p is not compatible with the tensor (dimension, variables)
           pyAgrum.FatalError
-            If a zero is found in p or the potential and not in the other.
+            If a zero is found in p or the tensor and not in the other.
 
         """
-        return _base.Potential_KL(self, p)
+        return _base.Tensor_KL(self, p)
 
-    def normalizeAsCPT(self, varId: int=0) -> "pyAgrum.Potential":
+    def normalizeAsCPT(self, varId: int=0) -> "pyAgrum.Tensor":
         r"""
 
-        Normalize the Potential as a CPT
+        Normalize the Tensor as a CPT
 
         Returns
         -------
-        pyAgrum.Potential
-          a reference to the normalized Potential
+        pyAgrum.Tensor
+          a reference to the normalized Tensor
 
         Raises
         ------
@@ -7648,7 +7648,7 @@ class Potential(object):
           If some distribution sums to 0
 
         """
-        val = _base.Potential_normalizeAsCPT(self, varId)
+        val = _base.Tensor_normalizeAsCPT(self, varId)
 
         return self
 
@@ -7656,10 +7656,10 @@ class Potential(object):
         return val
 
 
-    def scale(self, v: float) -> "pyAgrum.Potential":
+    def scale(self, v: float) -> "pyAgrum.Tensor":
         r"""
 
-        Create a new potential multiplied by v.
+        Create a new tensor multiplied by v.
 
         Parameters
         ----------
@@ -7668,10 +7668,10 @@ class Potential(object):
 
         Returns
         -------
-          a reference to the modified potential
+          a reference to the modified tensor
 
         """
-        val = _base.Potential_scale(self, v)
+        val = _base.Tensor_scale(self, v)
 
         return self
 
@@ -7679,10 +7679,10 @@ class Potential(object):
         return val
 
 
-    def translate(self, v: float) -> "pyAgrum.Potential":
+    def translate(self, v: float) -> "pyAgrum.Tensor":
         r"""
 
-        Create a new potential added with v.
+        Create a new tensor added with v.
 
         Parameters
         ----------
@@ -7691,10 +7691,10 @@ class Potential(object):
 
         Returns
         -------
-          a reference to the modified potential
+          a reference to the modified tensor
 
         """
-        val = _base.Potential_translate(self, v)
+        val = _base.Tensor_translate(self, v)
 
         return self
 
@@ -7702,8 +7702,8 @@ class Potential(object):
         return val
 
 
-    def inverse(self) -> "pyAgrum.Potential":
-        val = _base.Potential_inverse(self)
+    def inverse(self) -> "pyAgrum.Tensor":
+        val = _base.Tensor_inverse(self)
 
         return self
 
@@ -7714,7 +7714,7 @@ class Potential(object):
     def draw(self) -> int:
         r"""
 
-        draw a value using the potential as a probability table.
+        draw a value using the tensor as a probability table.
 
         Returns
         -------
@@ -7722,84 +7722,84 @@ class Potential(object):
           the index of the drawn value
 
         """
-        return _base.Potential_draw(self)
+        return _base.Tensor_draw(self)
 
     def memoryFootprint(self) -> int:
         r"""
 
-        get the size (in byte) of the Potential representation in memory
+        get the size (in byte) of the Tensor representation in memory
 
         Returns
         -------
         int
-          the size in byte of the representation of the Potential in memory.
+          the size in byte of the representation of the Tensor in memory.
 
         """
-        return _base.Potential_memoryFootprint(self)
+        return _base.Tensor_memoryFootprint(self)
 
-    def __add__(self, *args) -> "pyAgrum.Potential":
-        return _base.Potential___add__(self, *args)
+    def __add__(self, *args) -> "pyAgrum.Tensor":
+        return _base.Tensor___add__(self, *args)
 
-    def __sub__(self, *args) -> "pyAgrum.Potential":
-        return _base.Potential___sub__(self, *args)
+    def __sub__(self, *args) -> "pyAgrum.Tensor":
+        return _base.Tensor___sub__(self, *args)
 
-    def __mul__(self, *args) -> "pyAgrum.Potential":
-        return _base.Potential___mul__(self, *args)
+    def __mul__(self, *args) -> "pyAgrum.Tensor":
+        return _base.Tensor___mul__(self, *args)
 
     def __truediv__(self, *args):
-        return _base.Potential___truediv__(self, *args)
+        return _base.Tensor___truediv__(self, *args)
     __div__ = __truediv__
 
 
 
-    def __iadd__(self, *args) -> "pyAgrum.Potential":
-        return _base.Potential___iadd__(self, *args)
+    def __iadd__(self, *args) -> "pyAgrum.Tensor":
+        return _base.Tensor___iadd__(self, *args)
 
-    def __imul__(self, *args) -> "pyAgrum.Potential":
-        return _base.Potential___imul__(self, *args)
+    def __imul__(self, *args) -> "pyAgrum.Tensor":
+        return _base.Tensor___imul__(self, *args)
 
-    def __isub__(self, *args) -> "pyAgrum.Potential":
-        return _base.Potential___isub__(self, *args)
+    def __isub__(self, *args) -> "pyAgrum.Tensor":
+        return _base.Tensor___isub__(self, *args)
 
     def __itruediv__(self, *args):
-        return _base.Potential___itruediv__(self, *args)
+        return _base.Tensor___itruediv__(self, *args)
     __idiv__ = __itruediv__
 
 
 
     def isEvidence(self) -> bool:
-        return _base.Potential_isEvidence(self)
+        return _base.Tensor_isEvidence(self)
 
-    def __or__(self, p2: "Potential") -> "pyAgrum.Potential":
-        return _base.Potential___or__(self, p2)
+    def __or__(self, p2: "Tensor") -> "pyAgrum.Tensor":
+        return _base.Tensor___or__(self, p2)
 
-    def __and__(self, p2: "Potential") -> "pyAgrum.Potential":
-        return _base.Potential___and__(self, p2)
+    def __and__(self, p2: "Tensor") -> "pyAgrum.Tensor":
+        return _base.Tensor___and__(self, p2)
 
-    def __invert__(self) -> "pyAgrum.Potential":
-        return _base.Potential___invert__(self)
-
-    @staticmethod
-    def evEq(v: "DiscreteVariable", val: float) -> "pyAgrum.Potential":
-        return _base.Potential_evEq(v, val)
+    def __invert__(self) -> "pyAgrum.Tensor":
+        return _base.Tensor___invert__(self)
 
     @staticmethod
-    def evIn(v: "DiscreteVariable", val1: float, val2: float) -> "pyAgrum.Potential":
-        return _base.Potential_evIn(v, val1, val2)
+    def evEq(v: "DiscreteVariable", val: float) -> "pyAgrum.Tensor":
+        return _base.Tensor_evEq(v, val)
 
     @staticmethod
-    def evGt(v: "DiscreteVariable", val: float) -> "pyAgrum.Potential":
-        return _base.Potential_evGt(v, val)
+    def evIn(v: "DiscreteVariable", val1: float, val2: float) -> "pyAgrum.Tensor":
+        return _base.Tensor_evIn(v, val1, val2)
 
     @staticmethod
-    def evLt(v: "DiscreteVariable", val: float) -> "pyAgrum.Potential":
-        return _base.Potential_evLt(v, val)
+    def evGt(v: "DiscreteVariable", val: float) -> "pyAgrum.Tensor":
+        return _base.Tensor_evGt(v, val)
+
+    @staticmethod
+    def evLt(v: "DiscreteVariable", val: float) -> "pyAgrum.Tensor":
+        return _base.Tensor_evLt(v, val)
 
     def __repr__(self) -> str:
-        return _base.Potential___repr__(self)
+        return _base.Tensor___repr__(self)
 
     def __str__(self) -> str:
-        return _base.Potential___str__(self)
+        return _base.Tensor___str__(self)
 
     def expectedValue(self, *args) -> object:
         r"""
@@ -7813,7 +7813,7 @@ class Potential(object):
 
         Warnings
         --------
-        The `pyAgrum.Potential` is assumed to contain a joint distribution.
+        The `pyAgrum.Tensor` is assumed to contain a joint distribution.
 
         Examples
         --------
@@ -7827,12 +7827,12 @@ class Potential(object):
             The mathematical expected value of the random variable calculated using the given function as an argument.
 
         """
-        return _base.Potential_expectedValue(self, *args)
+        return _base.Tensor_expectedValue(self, *args)
 
-    def extract(self, *args) -> "pyAgrum.Potential":
+    def extract(self, *args) -> "pyAgrum.Tensor":
         r"""
 
-        create a new Potential extracted from self given a partial instantiation.
+        create a new Tensor extracted from self given a partial instantiation.
 
         Parameters
         ----------
@@ -7843,19 +7843,19 @@ class Potential(object):
 
         Warning
         --------
-            if the dictionnary contains a key that is not the name of a variable in the `pyAgrum.Potential`,
-            this key is just not used without notification. Then `pyAgrum.Potential.extract` concerns
-            only the variables that  both are in the Potential and in the dictionnary.
+            if the dictionnary contains a key that is not the name of a variable in the `pyAgrum.Tensor`,
+            this key is just not used without notification. Then `pyAgrum.Tensor.extract` concerns
+            only the variables that  both are in the Tensor and in the dictionnary.
 
         Returns
         -------
-        pyAgrum.Potential
-          the new Potential
+        pyAgrum.Tensor
+          the new Tensor
 
         """
-        return _base.Potential_extract(self, *args)
+        return _base.Tensor_extract(self, *args)
 
-    def sumOut(self, *args) -> "pyAgrum.Potential":
+    def sumOut(self, *args) -> "pyAgrum.Tensor":
         r"""
 
         Projection using sum as operation.
@@ -7867,18 +7867,18 @@ class Potential(object):
 
         Returns
         -------
-        pyAgrum.Potential
-          the projected Potential
+        pyAgrum.Tensor
+          the projected Tensor
 
         Raises
         ------
         pyAgrum.InvalidArgument
-          If varnames contains only one variable that does not exist in the Potential
+          If varnames contains only one variable that does not exist in the Tensor
 
         """
-        return _base.Potential_sumOut(self, *args)
+        return _base.Tensor_sumOut(self, *args)
 
-    def prodOut(self, *args) -> "pyAgrum.Potential":
+    def prodOut(self, *args) -> "pyAgrum.Tensor":
         r"""
 
         Projection using multiplication as operation.
@@ -7890,18 +7890,18 @@ class Potential(object):
 
         Returns
         -------
-        pyAgrum.Potential
-          the projected Potential
+        pyAgrum.Tensor
+          the projected Tensor
 
         Raises
         ------
         pyAgrum.InvalidArgument
-          If varnames contains only one variable that does not exist in the Potential
+          If varnames contains only one variable that does not exist in the Tensor
 
         """
-        return _base.Potential_prodOut(self, *args)
+        return _base.Tensor_prodOut(self, *args)
 
-    def maxOut(self, *args) -> "pyAgrum.Potential":
+    def maxOut(self, *args) -> "pyAgrum.Tensor":
         r"""
 
         Projection using `max` as operation.
@@ -7913,18 +7913,18 @@ class Potential(object):
 
         Returns
         -------
-        pyAgrum.Potential
-          the projected Potential
+        pyAgrum.Tensor
+          the projected Tensor
 
         Raises
         ------
         pyAgrum.InvalidArgument
-          If varnames contains only one variable that does not exist in the Potential
+          If varnames contains only one variable that does not exist in the Tensor
 
         """
-        return _base.Potential_maxOut(self, *args)
+        return _base.Tensor_maxOut(self, *args)
 
-    def minOut(self, *args) -> "pyAgrum.Potential":
+    def minOut(self, *args) -> "pyAgrum.Tensor":
         r"""
 
         Projection using `min` as operation.
@@ -7936,17 +7936,17 @@ class Potential(object):
 
         Returns
         -------
-        pyAgrum.Potential
-          the projected Potential
+        pyAgrum.Tensor
+          the projected Tensor
 
         Warnings
         --------
-        InvalidArgument raised if varnames contains only one variable that does not exist in the Potential
+        InvalidArgument raised if varnames contains only one variable that does not exist in the Tensor
 
         """
-        return _base.Potential_minOut(self, *args)
+        return _base.Tensor_minOut(self, *args)
 
-    def sumIn(self, *args) -> "pyAgrum.Potential":
+    def sumIn(self, *args) -> "pyAgrum.Tensor":
         r"""
 
         Projection using sum as operation.
@@ -7958,13 +7958,13 @@ class Potential(object):
 
         Returns
         -------
-        pyAgrum.Potential
-          the projected Potential
+        pyAgrum.Tensor
+          the projected Tensor
 
         """
-        return _base.Potential_sumIn(self, *args)
+        return _base.Tensor_sumIn(self, *args)
 
-    def prodIn(self, *args) -> "pyAgrum.Potential":
+    def prodIn(self, *args) -> "pyAgrum.Tensor":
         r"""
 
         Projection using multiplication as operation.
@@ -7976,13 +7976,13 @@ class Potential(object):
 
         Returns
         -------
-        pyAgrum.Potential
-          the projected Potential
+        pyAgrum.Tensor
+          the projected Tensor
 
         """
-        return _base.Potential_prodIn(self, *args)
+        return _base.Tensor_prodIn(self, *args)
 
-    def maxIn(self, *args) -> "pyAgrum.Potential":
+    def maxIn(self, *args) -> "pyAgrum.Tensor":
         r"""
 
         Projection using `max` as operation.
@@ -7994,13 +7994,13 @@ class Potential(object):
 
         Returns
         -------
-        pyAgrum.Potential
-          the projected Potential
+        pyAgrum.Tensor
+          the projected Tensor
 
         """
-        return _base.Potential_maxIn(self, *args)
+        return _base.Tensor_maxIn(self, *args)
 
-    def minIn(self, *args) -> "pyAgrum.Potential":
+    def minIn(self, *args) -> "pyAgrum.Tensor":
         r"""
 
         Projection using `min` as operation.
@@ -8012,11 +8012,11 @@ class Potential(object):
 
         Returns
         -------
-        pyAgrum.Potential
-          the projected Potential
+        pyAgrum.Tensor
+          the projected Tensor
 
         """
-        return _base.Potential_minIn(self, *args)
+        return _base.Tensor_minIn(self, *args)
 
     def argmin(self) -> object:
         r"""
@@ -8024,10 +8024,10 @@ class Potential(object):
         Returns
         -------
         Tuple[Dict[str,int],float]
-          the list of positions of the min and the min of all elements in the Potential
+          the list of positions of the min and the min of all elements in the Tensor
 
         """
-        return _base.Potential_argmin(self)
+        return _base.Tensor_argmin(self)
 
     def argmax(self) -> object:
         r"""
@@ -8035,16 +8035,16 @@ class Potential(object):
         Returns
         -------
         Tuple[Dict[str,int],float]
-          the list of positions of the max and the max of all elements in the Potential
+          the list of positions of the max and the max of all elements in the Tensor
 
         """
-        return _base.Potential_argmax(self)
+        return _base.Tensor_argmax(self)
 
     def __eq__(self, *args) -> bool:
-        return _base.Potential___eq__(self, *args)
+        return _base.Tensor___eq__(self, *args)
 
-    def __ne__(self, b: "Potential") -> bool:
-        return _base.Potential___ne__(self, b)
+    def __ne__(self, b: "Tensor") -> bool:
+        return _base.Tensor___ne__(self, b)
 
     def __radd__(self,other):
       return self.__add__(other)
@@ -8056,25 +8056,25 @@ class Potential(object):
       return (self*-1)+other
 
     def __rfloordiv__(self,other):
-      return Potential(self).inverse().scale(other)
+      return Tensor(self).inverse().scale(other)
 
     def __rtruediv__(self,other):
-      return Potential(self).inverse().scale(other)
+      return Tensor(self).inverse().scale(other)
 
     def __rdiv__(self,other):
-      return Potential(self).inverse().scale(other)
+      return Tensor(self).inverse().scale(other)
 
     def __neg__(self):
       return -1*self
 
     def __abs__(self):
-      return Potential(self).abs()
+      return Tensor(self).abs()
 
     def loopIn(self):
       """
-      Generator to iterate inside a Potential.
+      Generator to iterate inside a Tensor.
 
-      Yield an pyAgrum.Instantiation that iterates over all the possible values for the pyAgrum.Potential
+      Yield an pyAgrum.Instantiation that iterates over all the possible values for the pyAgrum.Tensor
 
       Examples
       --------
@@ -8094,9 +8094,9 @@ class Potential(object):
 
     def fillFromExpression(self,s_fn):
       """
-      Automatically fills the potential with the evaluation of the expression s_fn (no matter if is a CPT or not).
+      Automatically fills the tensor with the evaluation of the expression s_fn (no matter if is a CPT or not).
 
-      The symbolic expression s_fn gives a value for each parameters of the Potential
+      The symbolic expression s_fn gives a value for each parameters of the Tensor
 
       Examples
       --------
@@ -8107,7 +8107,7 @@ class Potential(object):
       Parameters
       ----------
       s_fn : str
-          a symbolic expression using the name of the variables of the Potential and giving a value to the first variable of the Potential. This evaluation is done in a context that inclides 'math' module.
+          a symbolic expression using the name of the variables of the Tensor and giving a value to the first variable of the Tensor. This evaluation is done in a context that inclides 'math' module.
 
       Warning
       -------
@@ -8116,8 +8116,8 @@ class Potential(object):
 
       Returns
       -------
-      pyAgrum.Potential
-            a reference to the modified potential
+      pyAgrum.Tensor
+            a reference to the modified tensor
       """
       import math
       forbidden=frozenset(['__import__','__class__'])
@@ -8139,7 +8139,7 @@ class Potential(object):
 
     def fillFromFunction(self,s_fn):
       """
-      Automatically fills the potential as a deterministic CPT with the evaluation of the expression s_fn.
+      Automatically fills the tensor as a deterministic CPT with the evaluation of the expression s_fn.
 
       The symbolic expression s_fn gives a value for the first variable, depending on the following variables.
       The computed CPT is deterministic.
@@ -8153,7 +8153,7 @@ class Potential(object):
       Parameters
       ----------
       s_fn : str
-          a symbolic expression using the name of the second and following variables of the Potential and giving a value to the first variable of the Potential. This evaluation is done in a context that inclides 'math' module.
+          a symbolic expression using the name of the second and following variables of the Tensor and giving a value to the first variable of the Tensor. This evaluation is done in a context that inclides 'math' module.
 
       Warning
       -------
@@ -8162,8 +8162,8 @@ class Potential(object):
 
       Returns
       -------
-      pyAgrum.Potential
-            a reference to the modified potential
+      pyAgrum.Tensor
+            a reference to the modified tensor
 
       Raises
       ------
@@ -8198,7 +8198,7 @@ class Potential(object):
 
     def fillFromDistribution(self,distribution,**s_fns):
       """
-      Automatically fills the potential as a familly of distributions whose parameters are found using evaluation of the expressions s_fns.
+      Automatically fills the tensor as a familly of distributions whose parameters are found using evaluation of the expressions s_fns.
 
       The symbolic expressions s_fns gives a value for the named parameters of the distributions.
 
@@ -8216,8 +8216,8 @@ class Potential(object):
 
       Returns
       -------
-      pyAgrum.Potential
-            a reference to the modified potential
+      pyAgrum.Tensor
+            a reference to the modified tensor
 
       Raises
       ------
@@ -8283,7 +8283,7 @@ class Potential(object):
 
     def __prepareIndices__(self,ind):
       """
-      From an indice (dict or tuple), returns a pair of pyAgrum.Instantiation to loop in a part of the Potential.
+      From an indice (dict or tuple), returns a pair of pyAgrum.Instantiation to loop in a part of the Tensor.
       """
       from numbers import Number
 
@@ -8378,7 +8378,7 @@ class Potential(object):
             value=numpy.array([value[item] for item in var.labels()])
         else:
             if not isinstance(value,numpy.ndarray):
-                raise ArgumentError(f"{value} is not a correct value for a potential.")
+                raise ArgumentError(f"{value} is not a correct value for a tensor.")
 
         shape=tuple([loopvars.variable(i-1).domainSize() for i in range(loopvars.nbrDim(),0,-1)])
         if value.shape!=shape:
@@ -8392,12 +8392,12 @@ class Potential(object):
 
     def __iter__(self):
         """
-        Iterate over the data of the Potential
+        Iterate over the data of the Tensor
 
         Yield
         -----
         Tuple[pyAgrum.Instantiation,float]
-          The instantiation and the value in the Potential
+          The instantiation and the value in the Tensor
         """
         for i in self.loopIn():
             yield i,self.get(i)
@@ -8407,7 +8407,7 @@ class Potential(object):
         Returns
         -------
         list
-            the potential as a list
+            the tensor as a list
         """
         return self.__getitem__({}).tolist()
 
@@ -8416,7 +8416,7 @@ class Potential(object):
         Returns
         -------
         array
-            the potential as an array
+            the tensor as an array
         """
         return self.__getitem__({})
 
@@ -8425,7 +8425,7 @@ class Potential(object):
         Returns
         -------
         pandas.DataFrame
-           the potential as an pandas.DataFrame
+           the tensor as an pandas.DataFrame
         """
         import pandas as pd
         varnames = list(reversed(self.names))
@@ -8448,7 +8448,7 @@ class Potential(object):
         Returns
         -------
         str
-         the potential as LaTeX string
+         the tensor as LaTeX string
         """
         return self.topandas().to_latex()
 
@@ -8464,16 +8464,16 @@ class Potential(object):
         Returns
         -------
         list
-            a list containing the name of each variables in the potential
+            a list containing the name of each variables in the tensor
 
         Warnings
         --------
-            This methods is deprecated. Please use pyAgrum.Potential.names and note the change in the order !
+            This methods is deprecated. Please use pyAgrum.Tensor.names and note the change in the order !
 
             var_names return a list in the reverse order of the enumeration order of the variables.
         """
         import warnings
-        warnings.warn("\n** pyAgrum.Potential.var_names is obsolete in pyAgrum>0.22.9. Please use pyAgrum.Potential.names.\n")
+        warnings.warn("\n** pyAgrum.Tensor.var_names is obsolete in pyAgrum>0.22.9. Please use pyAgrum.Tensor.names.\n")
         return [n for n in reversed(self.names)]
 
     @property
@@ -8482,16 +8482,16 @@ class Potential(object):
         Returns
         -------
         list
-            a list containing the dimensions of each variables in the potential
+            a list containing the dimensions of each variables in the tensor
 
         Warnings
         --------
-            This methods is deprecated. Please use pyAgrum.Potential.shape and note the change in the order !
+            This methods is deprecated. Please use pyAgrum.Tensor.shape and note the change in the order !
 
             var_dims return a list in the reverse order of the enumeration order of the variables.
         """
         import warnings
-        warnings.warn("\n** pyAgrum.Potential.var_dims is obsolete in pyAgrum>0.22.9. Please use pyAgrum.Potential.shape.\n")
+        warnings.warn("\n** pyAgrum.Tensor.var_dims is obsolete in pyAgrum>0.22.9. Please use pyAgrum.Tensor.shape.\n")
         return [n for n in reversed(self.shape)]
 
     @property
@@ -8500,7 +8500,7 @@ class Potential(object):
         Returns
         -------
         list
-            a list containing the name of each variables in the potential
+            a list containing the name of each variables in the tensor
 
         Warnings
         --------
@@ -8514,7 +8514,7 @@ class Potential(object):
         Returns
         -------
         list
-            a list containing the dimensions of each variables in the potential
+            a list containing the dimensions of each variables in the tensor
 
         Warnings
         --------
@@ -8534,10 +8534,10 @@ class Potential(object):
         Returns
         -------
         float
-          the value in the Potential at the position given by the instantiation
+          the value in the Tensor at the position given by the instantiation
 
         """
-        return _base.Potential_get(self, i)
+        return _base.Tensor_get(self, i)
 
     def set(self, i: "Instantiation", value: float) -> None:
         r"""
@@ -8552,7 +8552,7 @@ class Potential(object):
           The new value of the Instantiation
 
         """
-        return _base.Potential_set(self, i, value)
+        return _base.Tensor_set(self, i, value)
 
     def empty(self) -> bool:
         r"""
@@ -8560,10 +8560,10 @@ class Potential(object):
         Returns
         -------
         bool
-            Returns true if no variable is in the potential.
+            Returns true if no variable is in the tensor.
 
         """
-        return _base.Potential_empty(self)
+        return _base.Tensor_empty(self)
 
     def pos(self, v: "DiscreteVariable") -> int:
         r"""
@@ -8583,23 +8583,23 @@ class Potential(object):
           If v is not in this multidimensional matrix.
 
         """
-        return _base.Potential_pos(self, v)
+        return _base.Tensor_pos(self, v)
 
     def contains(self, v: "DiscreteVariable") -> bool:
         r"""
 
         Parameters
         ----------
-        v : pyAgrum.Potential
+        v : pyAgrum.Tensor
             a DiscreteVariable.
 
         Returns
         -------
         bool
-            True if the var is in the potential
+            True if the var is in the tensor
 
         """
-        return _base.Potential_contains(self, v)
+        return _base.Tensor_contains(self, v)
 
     def variable(self, *args) -> "pyAgrum.DiscreteVariable":
         r"""
@@ -8619,7 +8619,7 @@ class Potential(object):
           If i does not reference a variable in this multidimensional matrix.
 
         """
-        return _base.Potential_variable(self, *args)
+        return _base.Tensor_variable(self, *args)
 
     def remove(self, var: "DiscreteVariable") -> None:
         r"""
@@ -8631,15 +8631,15 @@ class Potential(object):
 
         Returns
         -------
-        pyAgrum.Potential
-          a reference to the modified potential
+        pyAgrum.Tensor
+          a reference to the modified tensor
 
         Warnings
         --------
-        IndexError raised if the var is not in the potential
+        IndexError raised if the var is not in the tensor
 
         """
-        val = _base.Potential_remove(self, var)
+        val = _base.Tensor_remove(self, var)
 
         self._list_vars.remove(var)
 
@@ -8650,7 +8650,7 @@ class Potential(object):
     def add(self, v: "DiscreteVariable") -> None:
         r"""
 
-        Add a discrete variable to the potential.
+        Add a discrete variable to the tensor.
 
         Parameters
         ----------
@@ -8660,17 +8660,17 @@ class Potential(object):
         Raises
         ------
         DuplicateElement
-          If the variable is already in this Potential.
+          If the variable is already in this Tensor.
         InvalidArgument
           If the variable is empty.
 
         Returns
         -------
-        pyAgrum.Potential
-            a reference to the modified potential.
+        pyAgrum.Tensor
+            a reference to the modified tensor.
 
         """
-        val = _base.Potential_add(self, v)
+        val = _base.Tensor_add(self, v)
 
         self._list_vars.append(v)
         return self
@@ -8680,7 +8680,7 @@ class Potential(object):
 
 
     def domainSize(self) -> int:
-        return _base.Potential_domainSize(self)
+        return _base.Tensor_domainSize(self)
 
     def nbrDim(self, *args) -> int:
         r"""
@@ -8691,10 +8691,10 @@ class Potential(object):
           the number of vars in the multidimensional container.
 
         """
-        return _base.Potential_nbrDim(self, *args)
+        return _base.Tensor_nbrDim(self, *args)
 
-# Register Potential in _base:
-_base.Potential_swigregister(Potential)
+# Register Tensor in _base:
+_base.Tensor_swigregister(Tensor)
 class PairMPE(object):
     thisown = property(lambda x: x.this.own(), lambda x, v: x.this.own(v), doc="The membership flag")
     __repr__ = _swig_repr
@@ -8791,18 +8791,18 @@ def _gum_add_properties_while_getstate_(model):
 
 
 def log2(p):
-  """Compute p.log2() in a new Potential without modifying p
+  """Compute p.log2() in a new Tensor without modifying p
 
   Parameters
   ----------
-  p : pyAgrum.Potential
-    The potential on which to apply log2 function
+  p : pyAgrum.Tensor
+    The tensor on which to apply log2 function
 
   Returns
   -------
-    a pyAgrum.Potential
+    a pyAgrum.Tensor
   """
-  return Potential(p).log2()
+  return Tensor(p).log2()
 
 
 def fastGraph(msg:str):
@@ -8884,5 +8884,14 @@ def fastGraph(msg:str):
       t=addArcsIn(m,l)
 
   return m
+
+
+
+####################################################################################    
+def Potential(*args, **kwargs):
+  warnings.warn("** pyAgrum : The class pyAgrum.Potential is deprecated since `pyAgrum>=2.0.0`. A pyAgrum.Tensor will be returned instead."
+                , DeprecationWarning, stacklevel=2)
+  return Tensor(*args, **kwargs)
+
 
 

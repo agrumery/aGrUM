@@ -201,7 +201,7 @@ namespace gum {
 
   // Compute the posterior of a nodeset.
   template < typename GUM_SCALAR >
-  const Potential< GUM_SCALAR >&
+  const Tensor< GUM_SCALAR >&
       JointTargetedInference< GUM_SCALAR >::jointPosterior(const NodeSet& nodes) {
     // try to get the smallest set of targets that contains "nodes"
     NodeSet set;
@@ -233,20 +233,20 @@ namespace gum {
 
   // Compute the posterior of a node
   template < typename GUM_SCALAR >
-  const Potential< GUM_SCALAR >& JointTargetedInference< GUM_SCALAR >::posterior(NodeId node) {
+  const Tensor< GUM_SCALAR >& JointTargetedInference< GUM_SCALAR >::posterior(NodeId node) {
     if (this->isTarget(node)) return MarginalTargetedInference< GUM_SCALAR >::posterior(node);
     else return jointPosterior(NodeSet{node});
   }
 
   // Compute the posterior of a node
   template < typename GUM_SCALAR >
-  const Potential< GUM_SCALAR >&
+  const Tensor< GUM_SCALAR >&
       JointTargetedInference< GUM_SCALAR >::posterior(const std::string& nodeName) {
     return posterior(this->BN().idFromName(nodeName));
   }
 
   template < typename GUM_SCALAR >
-  Potential< GUM_SCALAR >
+  Tensor< GUM_SCALAR >
       JointTargetedInference< GUM_SCALAR >::evidenceJointImpact(const NodeSet& targets,
                                                                 const NodeSet& evs) {
     if (!(evs * targets).empty()) {
@@ -259,7 +259,7 @@ namespace gum {
     this->eraseAllEvidence();
 
     Instantiation           iTarget;
-    Potential< GUM_SCALAR > res;
+    Tensor< GUM_SCALAR > res;
     for (const auto& target: targets) {
       res.add(this->BN().variable(target));
       iTarget.add(this->BN().variable(target));
@@ -288,7 +288,7 @@ namespace gum {
   }
 
   template < typename GUM_SCALAR >
-  Potential< GUM_SCALAR > JointTargetedInference< GUM_SCALAR >::evidenceJointImpact(
+  Tensor< GUM_SCALAR > JointTargetedInference< GUM_SCALAR >::evidenceJointImpact(
       const std::vector< std::string >& targets,
       const std::vector< std::string >& evs) {
     const auto& bn = this->BN();

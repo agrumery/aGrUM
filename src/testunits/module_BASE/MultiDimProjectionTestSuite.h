@@ -48,7 +48,7 @@
 
 #include <agrum/base/core/set.h>
 #include <agrum/base/multidim/implementations/multiDimArray.h>
-#include <agrum/base/multidim/potential.h>
+#include <agrum/base/multidim/tensor.h>
 #include <agrum/base/multidim/utils/operators/multiDimProjection.h>
 #include <agrum/base/multidim/utils/operators/projections4MultiDim.h>
 #include <agrum/base/variables/labelizedVariable.h>
@@ -82,7 +82,7 @@ namespace gum_tests {
     // ==========================================================================
     /// initialize randomly a table
     // ==========================================================================
-    void randomInitP(gum::Potential< double >& t) {
+    void randomInitP(gum::Tensor< double >& t) {
       gum::Instantiation i(t);
 
       for (i.setFirst(); !i.end(); ++i)
@@ -92,7 +92,7 @@ namespace gum_tests {
     // ==========================================================================
     /// initialize randomly a table
     // ==========================================================================
-    void randomInitPPointer(gum::Potential< double* >& t) {
+    void randomInitPPointer(gum::Tensor< double* >& t) {
       gum::Instantiation i(t);
 
       for (i.setFirst(); !i.end(); ++i)
@@ -126,7 +126,7 @@ namespace gum_tests {
     }
 
     template < typename T >
-    void pointerDelete(gum::Potential< T* >* t) {
+    void pointerDelete(gum::Tensor< T* >* t) {
       if (t->variablesSequence().size()) {
         gum::Instantiation i(t);
 
@@ -138,12 +138,12 @@ namespace gum_tests {
       delete t;
     }
 
-    static gum::Potential< double > myMax(const gum::Potential< double >& table,
+    static gum::Tensor< double > myMax(const gum::Tensor< double >& table,
                                           const gum::VariableSet&         del_vars) {
       return table.maxOut(del_vars);
     }
 
-    static gum::Potential< double > mySum(const gum::Potential< double >& table,
+    static gum::Tensor< double > mySum(const gum::Tensor< double >& table,
                                           const gum::VariableSet&         del_vars) {
       return table.sumOut(del_vars);
     }
@@ -172,7 +172,7 @@ namespace gum_tests {
     // ==========================================================================
     // ==========================================================================
     template < typename T >
-    bool equal(const gum::Potential< T* >& t1, const gum::Potential< T* >& t2) {
+    bool equal(const gum::Tensor< T* >& t1, const gum::Tensor< T* >& t2) {
       if ((t1.nbrDim() == t2.nbrDim()) && (t1.domainSize() == t2.domainSize())) {
         for (const auto var: t1.variablesSequence())
           if (!t2.variablesSequence().exists(var)) return false;
@@ -190,15 +190,15 @@ namespace gum_tests {
     }
 
     // the function used to combine two tables
-    static gum::Potential< double >* addPotential(const gum::Potential< double >& t1,
-                                                  const gum::Potential< double >& t2) {
-      return new gum::Potential< double >(t1 + t2);
+    static gum::Tensor< double >* addTensor(const gum::Tensor< double >& t1,
+                                                  const gum::Tensor< double >& t2) {
+      return new gum::Tensor< double >(t1 + t2);
     }
 
     // the function used to combine two tables
-    static gum::Potential< double >* multPotential(const gum::Potential< double >& t1,
-                                                   const gum::Potential< double >& t2) {
-      return new gum::Potential< double >(t1 * t2);
+    static gum::Tensor< double >* multTensor(const gum::Tensor< double >& t1,
+                                                   const gum::Tensor< double >& t2) {
+      return new gum::Tensor< double >(t1 * t2);
     }
 
     // projection of a table over a set
@@ -260,10 +260,10 @@ namespace gum_tests {
     }
 
     // projection of a table over a set
-    gum::Potential< double >* proj(const gum::Potential< double >& table,
+    gum::Tensor< double >* proj(const gum::Tensor< double >& table,
                                    const gum::VariableSet&         del_vars,
                                    double                          neutral_elt) {
-      gum::Potential< double >*                            result = new gum::Potential< double >;
+      gum::Tensor< double >*                            result = new gum::Tensor< double >;
       const gum::Sequence< const gum::DiscreteVariable* >& vars   = table.variablesSequence();
       result->beginMultipleChanges();
 
@@ -286,10 +286,10 @@ namespace gum_tests {
     }
 
     // projection of a table over a set
-    gum::Potential< double* >* proj(const gum::Potential< double* >& table,
+    gum::Tensor< double* >* proj(const gum::Tensor< double* >& table,
                                     const gum::VariableSet&          del_vars,
                                     double                           neutral_elt) {
-      gum::Potential< double* >*                           result = new gum::Potential< double* >;
+      gum::Tensor< double* >*                           result = new gum::Tensor< double* >;
       const gum::Sequence< const gum::DiscreteVariable* >& vars   = table.variablesSequence();
       result->beginMultipleChanges();
 
@@ -746,7 +746,7 @@ namespace gum_tests {
         delete vars[i];
     }
 
-    GUM_ACTIVE_TEST(_potentials) {
+    GUM_ACTIVE_TEST(_tensors) {
       std::vector< gum::LabelizedVariable* > vars(10);
 
       for (gum::Idx i = 0; i < 10; ++i) {
@@ -756,7 +756,7 @@ namespace gum_tests {
         vars[i]       = new gum::LabelizedVariable(s, s, 3);
       }
 
-      gum::Potential< double > t1;
+      gum::Tensor< double > t1;
 
       t1 << *(vars[0]) << *(vars[1]) << *(vars[2]) << *(vars[3]) << *(vars[4]) << *(vars[5])
          << *(vars[6]) << *(vars[7]) << *(vars[8]) << *(vars[9]);
@@ -774,14 +774,14 @@ namespace gum_tests {
       del_vars.insert(vars[9]);
       del_vars.insert(vars[1]);
 
-      gum::Potential< double >* t2 = new gum::Potential< double >(t1.maxOut(del_vars));
-      gum::Potential< double >* t3 = proj(t1, del_vars, 0.0f);
+      gum::Tensor< double >* t2 = new gum::Tensor< double >(t1.maxOut(del_vars));
+      gum::Tensor< double >* t3 = proj(t1, del_vars, 0.0f);
       TS_ASSERT(*t2 == *t3)
 
       delete t2;
       delete t3;
 
-      gum::Potential< double >* t4 = new gum::Potential< double >(t1.maxOut(proj_set));
+      gum::Tensor< double >* t4 = new gum::Tensor< double >(t1.maxOut(proj_set));
       t3                           = proj(t1, proj_set, 0.0f);
       TS_ASSERT(*t4 == *t3)
 
@@ -791,7 +791,7 @@ namespace gum_tests {
       proj_set.insert(vars[0]);
       proj_set.insert(vars[9]);
       proj_set.insert(vars[1]);
-      gum::Potential< double >* t5 = new gum::Potential< double >(t1.maxOut(proj_set));
+      gum::Tensor< double >* t5 = new gum::Tensor< double >(t1.maxOut(proj_set));
       delete t5;
 
       for (gum::Idx i = 0; i < vars.size(); ++i)
@@ -855,7 +855,7 @@ namespace gum_tests {
         delete vars[i];
     }
 
-    GUM_ACTIVE_TEST(_Pointer_potential) {
+    GUM_ACTIVE_TEST(_Pointer_tensor) {
       std::vector< gum::LabelizedVariable* > vars(10);
 
       for (gum::Idx i = 0; i < 10; ++i) {
@@ -865,7 +865,7 @@ namespace gum_tests {
         vars[i]       = new gum::LabelizedVariable(s, s, 4);
       }
 
-      gum::Potential< double* >* t1 = new gum::Potential< double* >;
+      gum::Tensor< double* >* t1 = new gum::Tensor< double* >;
 
       *t1 << *(vars[0]) << *(vars[1]) << *(vars[2]) << *(vars[3]) << *(vars[4]) << *(vars[5])
           << *(vars[6]) << *(vars[7]) << *(vars[8]) << *(vars[9]);
@@ -883,14 +883,14 @@ namespace gum_tests {
       del_vars.insert(vars[9]);
       del_vars.insert(vars[1]);
 
-      gum::Potential< double* >* t2 = new gum::Potential< double* >(t1->maxOut(del_vars));
-      gum::Potential< double* >* t3 = proj(*t1, del_vars, 0.0f);
+      gum::Tensor< double* >* t2 = new gum::Tensor< double* >(t1->maxOut(del_vars));
+      gum::Tensor< double* >* t3 = proj(*t1, del_vars, 0.0f);
       TS_ASSERT(equal(*t2, *t3))
 
       pointerDelete(t2);
       pointerDelete(t3);
 
-      gum::Potential< double* >* t4 = new gum::Potential< double* >(t1->maxOut(proj_set));
+      gum::Tensor< double* >* t4 = new gum::Tensor< double* >(t1->maxOut(proj_set));
       t3                            = proj(*t1, proj_set, 0.0f);
       TS_ASSERT(equal(*t4, *t3))
 
@@ -900,7 +900,7 @@ namespace gum_tests {
       proj_set.insert(vars[0]);
       proj_set.insert(vars[9]);
       proj_set.insert(vars[1]);
-      gum::Potential< double* >* t5 = new gum::Potential< double* >(t1->maxOut(proj_set));
+      gum::Tensor< double* >* t5 = new gum::Tensor< double* >(t1->maxOut(proj_set));
       pointerDelete(t5);
 
       pointerDelete(t1);
@@ -919,7 +919,7 @@ namespace gum_tests {
         vars[i]       = new gum::LabelizedVariable(s, s, 3);
       }
 
-      gum::Potential< double > t1;
+      gum::Tensor< double > t1;
 
       t1 << *(vars[0]) << *(vars[1]) << *(vars[2]) << *(vars[3]) << *(vars[4]) << *(vars[5])
          << *(vars[6]) << *(vars[7]) << *(vars[8]) << *(vars[9]);
@@ -936,7 +936,7 @@ namespace gum_tests {
       del_vars.insert(vars[0]);
       del_vars.insert(vars[9]);
       del_vars.insert(vars[1]);
-      gum::MultiDimProjection< gum::Potential< double > > Proj(myMax);
+      gum::MultiDimProjection< gum::Tensor< double > > Proj(myMax);
 
       {
         auto t2 = t1.maxOut(del_vars);
@@ -951,7 +951,7 @@ namespace gum_tests {
         delete (t3);
       }
       {
-        gum::Potential< double > t3;
+        gum::Tensor< double > t3;
         auto                     t2 = t1.maxOut(proj_set);
         Proj.execute(t3, t1, proj_set);
         TS_ASSERT_EQUALS(t2, t3)
@@ -968,17 +968,17 @@ namespace gum_tests {
         const_cast< gum::ScheduleOperator& >(op).execute();
 
         auto t2 = t1.maxOut(proj_set);
-        TS_ASSERT(dynamic_cast< const gum::ScheduleMultiDim< gum::Potential< double > >* >(ptrRes)
+        TS_ASSERT(dynamic_cast< const gum::ScheduleMultiDim< gum::Tensor< double > >* >(ptrRes)
                       ->multiDim()
                   == t2)
       }
 
       {
-        gum::ScheduleMultiDim< gum::Potential< double > > xt1(t1, false);
+        gum::ScheduleMultiDim< gum::Tensor< double > > xt1(t1, false);
         const auto ops_plus_res = Proj.operations(&xt1, proj_set);
         ops_plus_res.first->execute();
         auto t2 = t1.maxOut(proj_set);
-        TS_ASSERT(dynamic_cast< const gum::ScheduleMultiDim< gum::Potential< double > >* >(
+        TS_ASSERT(dynamic_cast< const gum::ScheduleMultiDim< gum::Tensor< double > >* >(
                       ops_plus_res.second)
                       ->multiDim()
                   == t2)
@@ -988,25 +988,25 @@ namespace gum_tests {
       proj_set.insert(vars[0]);
       proj_set.insert(vars[9]);
       proj_set.insert(vars[1]);
-      gum::Potential< double >* t5 = Proj.execute(t1, proj_set);
+      gum::Tensor< double >* t5 = Proj.execute(t1, proj_set);
       delete t5;
 
       TS_ASSERT_EQUALS(Proj.nbOperations(t1, proj_set), 59049)
       TS_ASSERT_EQUALS(Proj.nbOperations(t1.variablesSequence(), proj_set), 59049)
 
       std::pair< double, double > yyy = Proj.memoryUsage(t1, del_vars);
-      TS_ASSERT_EQUALS(yyy.first, 2187 * sizeof(double) + sizeof(gum::Potential< double >))
+      TS_ASSERT_EQUALS(yyy.first, 2187 * sizeof(double) + sizeof(gum::Tensor< double >))
       yyy = Proj.memoryUsage(t1.variablesSequence(), del_vars);
 
-      gum::Potential< double > t6;
+      gum::Tensor< double > t6;
       randomInitP(t6);
       TS_ASSERT(t6.domainSize() == 1)
       TS_ASSERT(Proj.nbOperations(t6, del_vars) == 1.0)
       TS_ASSERT(Proj.nbOperations(t6.variablesSequence(), del_vars) == 1.0)
       auto mem_usage = Proj.memoryUsage(t6.variablesSequence(), del_vars);
-      TS_ASSERT(mem_usage.first == 1.0 * sizeof(double) + sizeof(gum::Potential< double >))
-      TS_ASSERT(mem_usage.second == 1.0 * sizeof(double) + sizeof(gum::Potential< double >))
-      gum::ScheduleMultiDim< gum::Potential< double > > t6multi(t6, false);
+      TS_ASSERT(mem_usage.first == 1.0 * sizeof(double) + sizeof(gum::Tensor< double >))
+      TS_ASSERT(mem_usage.second == 1.0 * sizeof(double) + sizeof(gum::Tensor< double >))
+      gum::ScheduleMultiDim< gum::Tensor< double > > t6multi(t6, false);
       auto                                              xxx1 = Proj.operations(&t6multi, del_vars);
       delete xxx1.first;
 
@@ -1020,20 +1020,20 @@ namespace gum_tests {
       // are performed immediately
       TS_ASSERT(avail.size() == 0)
       const auto& xt6sched
-          = dynamic_cast< const gum::ScheduleMultiDim< gum::Potential< double > >& >(*t6sched);
+          = dynamic_cast< const gum::ScheduleMultiDim< gum::Tensor< double > >& >(*t6sched);
       TS_ASSERT(xt6sched.multiDim() == t6multi.multiDim())
       TS_ASSERT(schedule.dag().sizeNodes() == 0)
 
-      gum::Potential< double > t7;
+      gum::Tensor< double > t7;
       t7 << *(vars[2]);
       randomInitP(t7);
       TS_ASSERT(t7.domainSize() == 3)
       TS_ASSERT(Proj.nbOperations(t7, del_vars) == 3.0)
       TS_ASSERT(Proj.nbOperations(t7.variablesSequence(), del_vars) == 3.0)
-      gum::ScheduleMultiDim< gum::Potential< double > > t7multi(t7, false);
+      gum::ScheduleMultiDim< gum::Tensor< double > > t7multi(t7, false);
       mem_usage = Proj.memoryUsage(t7, del_vars);
-      TS_ASSERT(mem_usage.first == 3.0 * sizeof(double) + sizeof(gum::Potential< double >))
-      TS_ASSERT(mem_usage.second == 3.0 * sizeof(double) + sizeof(gum::Potential< double >))
+      TS_ASSERT(mem_usage.first == 3.0 * sizeof(double) + sizeof(gum::Tensor< double >))
+      TS_ASSERT(mem_usage.second == 3.0 * sizeof(double) + sizeof(gum::Tensor< double >))
       auto xxx2 = Proj.operations(&t7multi, del_vars);
       delete xxx2.first;
 
@@ -1048,8 +1048,8 @@ namespace gum_tests {
       std::vector< gum::NodeId > xavail;
       schedule.updateAfterExecution(node, xavail, false);
       TS_ASSERT(schedule.dag().sizeNodes() == 0)
-      const gum::ScheduleMultiDim< gum::Potential< double > >& xt7sched
-          = dynamic_cast< const gum::ScheduleMultiDim< gum::Potential< double > >& >(*t7sched);
+      const gum::ScheduleMultiDim< gum::Tensor< double > >& xt7sched
+          = dynamic_cast< const gum::ScheduleMultiDim< gum::Tensor< double > >& >(*t7sched);
       TS_ASSERT(xt7sched.multiDim() == t7)
 
       for (gum::Idx i = 0; i < vars.size(); ++i)
@@ -1057,19 +1057,19 @@ namespace gum_tests {
     }
 
     GUM_ACTIVE_TEST(Constants) {
-      gum::Potential< double > t1;
+      gum::Tensor< double > t1;
       gum::Instantiation       inst1(t1);
       t1.set(inst1, 3.0);
 
-      gum::Potential< double > t2;
+      gum::Tensor< double > t2;
       gum::Instantiation       inst2(t2);
       t2.set(inst2, 4.0);
 
-      gum::MultiDimProjection< gum::Potential< double > > proj(mySum);
+      gum::MultiDimProjection< gum::Tensor< double > > proj(mySum);
       gum::VariableSet                                    del_vars;
 
       {
-        gum::Potential< double >* t3 = proj.execute(t1, del_vars);
+        gum::Tensor< double >* t3 = proj.execute(t1, del_vars);
         auto                      t2 = t1.sumOut(del_vars);
         TS_ASSERT_EQUALS(t2, *t3)
         TS_ASSERT_EQUALS(t1, *t3)
@@ -1090,7 +1090,7 @@ namespace gum_tests {
 
       del_vars.insert(vars[0]);
       {
-        gum::Potential< double >* t3 = proj.execute(t1, del_vars);
+        gum::Tensor< double >* t3 = proj.execute(t1, del_vars);
         auto                      t2 = t1.maxOut(del_vars);
         TS_ASSERT_EQUALS(t2, *t3)
         TS_ASSERT_EQUALS(t1, *t3)
@@ -1101,7 +1101,7 @@ namespace gum_tests {
 
       del_vars.insert(vars[1]);
       {
-        gum::Potential< double >* t3 = proj.execute(t1, del_vars);
+        gum::Tensor< double >* t3 = proj.execute(t1, del_vars);
         auto                      t2 = t1.maxOut(del_vars);
         TS_ASSERT_EQUALS(t2, *t3)
         TS_ASSERT_EQUALS(t1, *t3)
@@ -1119,7 +1119,7 @@ namespace gum_tests {
       del_vars.clear();
       del_vars.insert(vars[0]);
       {
-        gum::Potential< double >* t3 = proj.execute(t1, del_vars);
+        gum::Tensor< double >* t3 = proj.execute(t1, del_vars);
         auto                      t2 = t1.sumOut(del_vars);
         TS_ASSERT_EQUALS(t2, *t3)
         TS_ASSERT_EQUALS(t3->variablesSequence().size(), gum::Size(0))
@@ -1136,7 +1136,7 @@ namespace gum_tests {
         t1.set(inst1, t1[inst1] * 5);
       del_vars.insert(vars[1]);
       {
-        gum::Potential< double >* t3 = proj.execute(t1, del_vars);
+        gum::Tensor< double >* t3 = proj.execute(t1, del_vars);
         auto                      t2 = t1.sumOut(del_vars);
         TS_ASSERT_EQUALS(t2, *t3)
         TS_ASSERT_EQUALS(t3->variablesSequence().size(), gum::Size(0))
@@ -1159,7 +1159,7 @@ namespace gum_tests {
         vars[i]       = new gum::LabelizedVariable(s, s, 3);
       }
 
-      gum::Potential< double > t1;
+      gum::Tensor< double > t1;
 
       t1 << *(vars[0]) << *(vars[1]) << *(vars[2]) << *(vars[3]) << *(vars[4]) << *(vars[5])
          << *(vars[6]) << *(vars[7]) << *(vars[8]) << *(vars[9]);
@@ -1176,7 +1176,7 @@ namespace gum_tests {
       del_vars.insert(vars[0]);
       del_vars.insert(vars[9]);
       del_vars.insert(vars[1]);
-      gum::MultiDimProjection< gum::Potential< double > > Proj(myMax);
+      gum::MultiDimProjection< gum::Tensor< double > > Proj(myMax);
 
       {
         gum::Schedule schedule;
@@ -1189,7 +1189,7 @@ namespace gum_tests {
         const_cast< gum::ScheduleOperator& >(op).execute();
 
         auto t2 = t1.maxOut(proj_set);
-        TS_ASSERT(dynamic_cast< const gum::ScheduleMultiDim< gum::Potential< double > >* >(ptrRes)
+        TS_ASSERT(dynamic_cast< const gum::ScheduleMultiDim< gum::Tensor< double > >* >(ptrRes)
                       ->multiDim()
                   == t2)
 
@@ -1197,11 +1197,11 @@ namespace gum_tests {
       }
 
       {
-        gum::ScheduleMultiDim< gum::Potential< double > > xt1(t1, false);
+        gum::ScheduleMultiDim< gum::Tensor< double > > xt1(t1, false);
         const auto ops_plus_res = Proj.operations(&xt1, proj_set, true);
         ops_plus_res.first->execute();
         auto t2 = t1.maxOut(proj_set);
-        TS_ASSERT(dynamic_cast< const gum::ScheduleMultiDim< gum::Potential< double > >* >(
+        TS_ASSERT(dynamic_cast< const gum::ScheduleMultiDim< gum::Tensor< double > >* >(
                       ops_plus_res.second)
                       ->multiDim()
                   == t2)
@@ -1212,25 +1212,25 @@ namespace gum_tests {
       proj_set.insert(vars[0]);
       proj_set.insert(vars[9]);
       proj_set.insert(vars[1]);
-      gum::Potential< double >* t5 = Proj.execute(t1, proj_set);
+      gum::Tensor< double >* t5 = Proj.execute(t1, proj_set);
       delete t5;
 
       TS_ASSERT_EQUALS(Proj.nbOperations(t1, proj_set), 59049)
       TS_ASSERT_EQUALS(Proj.nbOperations(t1.variablesSequence(), proj_set), 59049)
 
       std::pair< double, double > yyy = Proj.memoryUsage(t1, del_vars);
-      TS_ASSERT_EQUALS(yyy.first, 2187 * sizeof(double) + sizeof(gum::Potential< double >))
+      TS_ASSERT_EQUALS(yyy.first, 2187 * sizeof(double) + sizeof(gum::Tensor< double >))
       yyy = Proj.memoryUsage(t1.variablesSequence(), del_vars);
 
-      gum::Potential< double > t6;
+      gum::Tensor< double > t6;
       randomInitP(t6);
       TS_ASSERT(t6.domainSize() == 1)
       TS_ASSERT(Proj.nbOperations(t6, del_vars) == 1.0)
       TS_ASSERT(Proj.nbOperations(t6.variablesSequence(), del_vars) == 1.0)
       auto mem_usage = Proj.memoryUsage(t6.variablesSequence(), del_vars);
-      TS_ASSERT(mem_usage.first == 1.0 * sizeof(double) + sizeof(gum::Potential< double >))
-      TS_ASSERT(mem_usage.second == 1.0 * sizeof(double) + sizeof(gum::Potential< double >))
-      gum::ScheduleMultiDim< gum::Potential< double > > t6multi(t6, false);
+      TS_ASSERT(mem_usage.first == 1.0 * sizeof(double) + sizeof(gum::Tensor< double >))
+      TS_ASSERT(mem_usage.second == 1.0 * sizeof(double) + sizeof(gum::Tensor< double >))
+      gum::ScheduleMultiDim< gum::Tensor< double > > t6multi(t6, false);
       auto xxx1 = Proj.operations(&t6multi, del_vars, true);
       delete xxx1.first;
       delete xxx1.second;
@@ -1245,20 +1245,20 @@ namespace gum_tests {
       // are performed immediately
       TS_ASSERT(avail.size() == 0)
       const auto& xt6sched
-          = dynamic_cast< const gum::ScheduleMultiDim< gum::Potential< double > >& >(*t6sched);
+          = dynamic_cast< const gum::ScheduleMultiDim< gum::Tensor< double > >& >(*t6sched);
       TS_ASSERT(xt6sched.multiDim() == t6multi.multiDim())
       TS_ASSERT(schedule.dag().sizeNodes() == 0)
 
-      gum::Potential< double > t7;
+      gum::Tensor< double > t7;
       t7 << *(vars[2]);
       randomInitP(t7);
       TS_ASSERT(t7.domainSize() == 3)
       TS_ASSERT(Proj.nbOperations(t7, del_vars) == 3.0)
       TS_ASSERT(Proj.nbOperations(t7.variablesSequence(), del_vars) == 3.0)
-      gum::ScheduleMultiDim< gum::Potential< double > > t7multi(t7, false);
+      gum::ScheduleMultiDim< gum::Tensor< double > > t7multi(t7, false);
       mem_usage = Proj.memoryUsage(t7, del_vars);
-      TS_ASSERT(mem_usage.first == 3.0 * sizeof(double) + sizeof(gum::Potential< double >))
-      TS_ASSERT(mem_usage.second == 3.0 * sizeof(double) + sizeof(gum::Potential< double >))
+      TS_ASSERT(mem_usage.first == 3.0 * sizeof(double) + sizeof(gum::Tensor< double >))
+      TS_ASSERT(mem_usage.second == 3.0 * sizeof(double) + sizeof(gum::Tensor< double >))
       auto xxx2 = Proj.operations(&t7multi, del_vars, true);
       delete xxx2.first;
       delete xxx2.second;
@@ -1274,8 +1274,8 @@ namespace gum_tests {
       std::vector< gum::NodeId > xavail;
       schedule.updateAfterExecution(node, xavail, false);
       TS_ASSERT(schedule.dag().sizeNodes() == 0)
-      const gum::ScheduleMultiDim< gum::Potential< double > >& xt7sched
-          = dynamic_cast< const gum::ScheduleMultiDim< gum::Potential< double > >& >(*t7sched);
+      const gum::ScheduleMultiDim< gum::Tensor< double > >& xt7sched
+          = dynamic_cast< const gum::ScheduleMultiDim< gum::Tensor< double > >& >(*t7sched);
       TS_ASSERT(xt7sched.multiDim() == t7)
 
       delete t6sched;
@@ -1295,7 +1295,7 @@ namespace gum_tests {
         vars[i]       = new gum::LabelizedVariable(s, s, 3);
       }
 
-      gum::Potential< double > t1;
+      gum::Tensor< double > t1;
 
       t1 << *(vars[0]) << *(vars[1]) << *(vars[2]) << *(vars[3]) << *(vars[4]) << *(vars[5])
          << *(vars[6]) << *(vars[7]) << *(vars[8]) << *(vars[9]);
@@ -1313,7 +1313,7 @@ namespace gum_tests {
       del_vars.insert(vars[0]);
       del_vars.insert(vars[9]);
       del_vars.insert(vars[1]);
-      gum::MultiDimProjection< gum::Potential< double > > Proj(mySum);
+      gum::MultiDimProjection< gum::Tensor< double > > Proj(mySum);
       {
         auto t2 = t1.sumOut(del_vars);
         auto t3 = Proj.execute(t1, del_vars);
@@ -1330,7 +1330,7 @@ namespace gum_tests {
       proj_set.insert(vars[0]);
       proj_set.insert(vars[9]);
       proj_set.insert(vars[1]);
-      gum::Potential< double >* t5 = Proj.execute(t1, proj_set);
+      gum::Tensor< double >* t5 = Proj.execute(t1, proj_set);
       {
         auto t2 = t1.sumOut(proj_set);
         TS_ASSERT_EQUALS(t2, *t5)
@@ -1344,7 +1344,7 @@ namespace gum_tests {
       TS_ASSERT_EQUALS(Proj.nbOperations(t1.variablesSequence(), proj_set), 59049)
 
       std::pair< double, double > yyy = Proj.memoryUsage(t1, del_vars);
-      TS_ASSERT_EQUALS(yyy.first, 2187 * sizeof(double) + sizeof(gum::Potential< double >))
+      TS_ASSERT_EQUALS(yyy.first, 2187 * sizeof(double) + sizeof(gum::Tensor< double >))
       yyy = Proj.memoryUsage(t1.variablesSequence(), del_vars);
 
       for (gum::Idx i = 0; i < vars.size(); ++i)

@@ -212,7 +212,7 @@ namespace gum {
     // For historical reason, the code is not the same betwen bIXML for BN and
     // for ID
     // ...
-    const Potential< GUM_SCALAR >& cpt = bn.cpt(varNodeId);
+    const Tensor< GUM_SCALAR >& cpt = bn.cpt(varNodeId);
 
     // Conditional Parents
     for (Idx i = 1; i < cpt.nbrDim(); i++)

@@ -109,7 +109,7 @@ namespace gum_tests {
         TS_ASSERT_EQUALS(var_1.name(), "n1")
         TS_ASSERT_EQUALS(var_1.domainSize(), (gum::Size)2)
 
-        const gum::Potential< double >& proba_1 = net->cpt(node_1);
+        const gum::Tensor< double >& proba_1 = net->cpt(node_1);
         TS_ASSERT_EQUALS(proba_1.domainSize(), (gum::Size)2)
 
         gum::Instantiation inst_1(proba_1);
@@ -122,7 +122,7 @@ namespace gum_tests {
         TS_ASSERT_EQUALS(var_2.name(), "n2")
         TS_ASSERT_EQUALS(var_2.domainSize(), (gum::Size)2)
 
-        const gum::Potential< double >& proba_2 = net->cpt(node_2);
+        const gum::Tensor< double >& proba_2 = net->cpt(node_2);
         TS_ASSERT_EQUALS(proba_2.domainSize(), (gum::Size)2)
 
         gum::Instantiation inst_2(proba_2);
@@ -149,7 +149,7 @@ namespace gum_tests {
       if (net != nullptr) {
         TS_ASSERT_EQUALS(net->size(), (gum::Size)5)
 
-        const gum::Potential< double >& proba = net->cpt(net->idFromName("dog-out"));
+        const gum::Tensor< double >& proba = net->cpt(net->idFromName("dog-out"));
 
         TS_ASSERT_EQUALS(proba.domainSize(), (gum::Size)8)
 
@@ -182,7 +182,7 @@ namespace gum_tests {
 
         TS_ASSERT_EQUALS(var_1.domainSize(), (gum::Size)2)
 
-        const gum::Potential< double >& proba_1 = net->cpt(node_1);
+        const gum::Tensor< double >& proba_1 = net->cpt(node_1);
 
         TS_ASSERT_EQUALS(proba_1.domainSize(), (gum::Size)2)
 
@@ -202,7 +202,7 @@ namespace gum_tests {
 
         TS_ASSERT_EQUALS(var_2.domainSize(), (gum::Size)2)
 
-        const gum::Potential< double >& proba_2 = net->cpt(node_2);
+        const gum::Tensor< double >& proba_2 = net->cpt(node_2);
 
         TS_ASSERT_EQUALS(proba_2.domainSize(), (gum::Size)2)
 
@@ -246,7 +246,7 @@ namespace gum_tests {
 
         TS_ASSERT_EQUALS(var_1.label(1), "1")
 
-        const gum::Potential< double >& proba_1 = net->cpt(idMap["n1"]);
+        const gum::Tensor< double >& proba_1 = net->cpt(idMap["n1"]);
 
         TS_ASSERT_EQUALS(proba_1.domainSize(), (gum::Size)2)
 
@@ -270,7 +270,7 @@ namespace gum_tests {
 
         TS_ASSERT_EQUALS(var_2.label(1), "bar")
 
-        const gum::Potential< double >& proba_2 = net->cpt(idMap["n2"]);
+        const gum::Tensor< double >& proba_2 = net->cpt(idMap["n2"]);
 
         TS_ASSERT_EQUALS(proba_2.domainSize(), (gum::Size)2)
 
@@ -296,7 +296,7 @@ namespace gum_tests {
 
         TS_ASSERT(net->dag().existsArc(idMap["n1"], idMap["n3"]))
 
-        const gum::Potential< double >& proba_3 = net->cpt(idMap["n3"]);
+        const gum::Tensor< double >& proba_3 = net->cpt(idMap["n3"]);
 
         TS_ASSERT_EQUALS(proba_3.domainSize(), (gum::Size)4)
 
@@ -336,7 +336,7 @@ namespace gum_tests {
 
         TS_ASSERT(net->dag().existsArc(idMap["n2"], idMap["n4"]))
 
-        const gum::Potential< double >& proba_4 = net->cpt(idMap["n4"]);
+        const gum::Tensor< double >& proba_4 = net->cpt(idMap["n4"]);
 
         TS_ASSERT_EQUALS(proba_4.domainSize(), (gum::Size)8)
 
@@ -406,7 +406,7 @@ namespace gum_tests {
 
         TS_ASSERT(net->dag().existsArc(idMap["n3"], idMap["n5"]))
 
-        const gum::Potential< double >& proba_5 = net->cpt(idMap["n5"]);
+        const gum::Tensor< double >& proba_5 = net->cpt(idMap["n5"]);
 
         TS_ASSERT_EQUALS(proba_5.domainSize(), (gum::Size)12)
 
@@ -490,7 +490,7 @@ namespace gum_tests {
 
         TS_ASSERT(net->dag().existsArc(idMap["n5"], idMap["n6"]))
 
-        const gum::Potential< double >& proba_6 = net->cpt(idMap["n6"]);
+        const gum::Tensor< double >& proba_6 = net->cpt(idMap["n6"]);
 
         TS_ASSERT_EQUALS(proba_6.domainSize(), (gum::Size)12)
 
@@ -586,7 +586,7 @@ namespace gum_tests {
         TS_ASSERT_EQUALS(history.label(1), "FALSE")
         TS_ASSERT(net->dag().existsArc(idMap["LVFAILURE"], idMap["HISTORY"]))
 
-        const gum::Potential< double >& historyCPT = net->cpt(idMap["HISTORY"]);
+        const gum::Tensor< double >& historyCPT = net->cpt(idMap["HISTORY"]);
         TS_ASSERT_EQUALS(historyCPT.domainSize(), (gum::Size)4)
         TS_ASSERT(historyCPT.contains(net->variable(idMap["HISTORY"])))
         TS_ASSERT(historyCPT.contains(net->variable(idMap["LVFAILURE"])))
@@ -618,7 +618,7 @@ namespace gum_tests {
         TS_ASSERT_EQUALS(errlowoutput.label(1), "FALSE")
         TS_ASSERT(net->dag().existsArc(idMap["ERRLOWOUTPUT"], idMap["HRBP"]))
 
-        const gum::Potential< double >& errlowoutputCPT = net->cpt(idMap["ERRLOWOUTPUT"]);
+        const gum::Tensor< double >& errlowoutputCPT = net->cpt(idMap["ERRLOWOUTPUT"]);
         TS_ASSERT_EQUALS(errlowoutputCPT.domainSize(), (gum::Size)2)
         TS_ASSERT(errlowoutputCPT.contains(errlowoutput))
 
@@ -648,7 +648,7 @@ namespace gum_tests {
         TS_ASSERT_EQUALS(lvfailure.label(0), "TRUE")
         TS_ASSERT_EQUALS(lvfailure.label(1), "FALSE")
 
-        const gum::Potential< double >& cpt = net->cpt(idMap["LVEDVOLUME"]);
+        const gum::Tensor< double >& cpt = net->cpt(idMap["LVEDVOLUME"]);
         gum::Instantiation              inst(cpt);
 
         gum::Instantiation var_inst;

@@ -1099,7 +1099,7 @@ namespace gum::learning {
   }
 
   std::vector< double > IBNLearner::rawPseudoCount(const std::vector< NodeId >& vars) {
-    Potential< double > res;
+    Tensor< double > res;
 
     createPrior_();
     gum::learning::PseudoCount count(scoreDatabase_.parser(), *prior_, databaseRanges());

@@ -174,12 +174,12 @@ namespace gum {
      * @return The variable's CPT.
      * @throw NotFound If no variable's id matches varId.
      */
-    const Potential< GUM_SCALAR >& cpt(NodeId varId) const final;
+    const Tensor< GUM_SCALAR >& cpt(NodeId varId) const final;
 
     /**
      * @brief Returns the CPT of a variable.
      */
-    const Potential< GUM_SCALAR >& cpt(const std::string& name) const {
+    const Tensor< GUM_SCALAR >& cpt(const std::string& name) const {
       return cpt(idFromName(name));
     };
 
@@ -194,10 +194,10 @@ namespace gum {
      * @brief Add a variable to the gum::BayesNet.
      *
      * Add a gum::DiscreteVariable, it's associated gum::NodeId and it's
-     * gum::Potential.
+     * gum::Tensor.
      *
      * The variable is added by copy to the gum::BayesNet.
-     * The variable's gum::Potential implementation will be a
+     * The variable's gum::Tensor implementation will be a
      * gum::MultiDimArray.
      *
      * @param var The variable added by copy.
@@ -231,13 +231,13 @@ namespace gum {
      * @brief Add a variable to the gum::BayesNet.
      *
      * Add a gum::DiscreteVariable, it's associated gum::NodeId and it's
-     * gum::Potential.
+     * gum::Tensor.
      *
      * The variable is added by copy to the gum::BayesNet.
      *
      * @param var The variable added by copy.
      * @param aContent The gum::MultiDimImplementation to use for this
-     *                 variable's gum::Potential implementation.
+     *                 variable's gum::Tensor implementation.
      * @return Returns the variable's id in the gum::BayesNet.
      * @throws DuplicateLabel Raised if variable.name() is already used in this
      *                        gum::BayesNet.
@@ -248,10 +248,10 @@ namespace gum {
      * @brief Add a variable to the gum::BayesNet.
      *
      * Add a gum::DiscreteVariable, it's associated gum::NodeId and it's
-     * gum::Potential.
+     * gum::Tensor.
      *
      * The variable is added by copy to the gum::BayesNet.
-     * The variable's gum::Potential implementation will be a
+     * The variable's gum::Tensor implementation will be a
      * gum::MultiDimArray.
      *
      * @param var The variable added by copy.
@@ -267,11 +267,11 @@ namespace gum {
      * @brief Add a variable to the gum::BayesNet.
      *
      * Add a gum::DiscreteVariable, it's associated gum::NodeId and it's
-     * gum::Potential.
+     * gum::Tensor.
      *
      * @param var The variable added by copy.
      * @param aContent The gum::MultiDimImplementation to use for this
-     *                 variable's gum::Potential implementation.
+     *                 variable's gum::Tensor implementation.
      * @param id The variable's forced gum::NodeId in the gum::BayesNet.
      * @return Returns the variable's id in the gum::BayesNet.
      * @throws DuplicateElement Raised id is already used.
@@ -290,7 +290,7 @@ namespace gum {
      * @brief Remove a variable from the gum::BayesNet.
      *
      * Removes the corresponding variable from the gum::BayesNet and from
-     * all of it's children gum::Potential.
+     * all of it's children gum::Tensor.
      *
      * If no variable matches the given id, then nothing is done.
      *
@@ -307,7 +307,7 @@ namespace gum {
      * @brief Remove a variable from the gum::BayesNet.
      *
      * Removes the corresponding variable from the gum::BayesNet and from
-     * all of it's children gum::Potential.
+     * all of it's children gum::Tensor.
      *
      * If no variable matches the given variable, then nothing is done.
      *
@@ -662,27 +662,27 @@ namespace gum {
     /// delete the old CPT associated to nodeId.
     /// @throw NotAllowed if newPot has not the same signature as
     ///  _probaMap_[NodeId]
-    void changePotential(NodeId id, Potential< GUM_SCALAR >* newPot);
-    void changePotential(const std::string& name, Potential< GUM_SCALAR >* newPot);
+    void changeTensor(NodeId id, Tensor< GUM_SCALAR >* newPot);
+    void changeTensor(const std::string& name, Tensor< GUM_SCALAR >* newPot);
 
     private:
-    /// clear all potentials
-    void _clearPotentials_();
+    /// clear all tensors
+    void _clearTensors_();
 
-    /// copy of potentials from a BN to another, using names of vars as ref.
-    void _copyPotentials_(const BayesNet< GUM_SCALAR >& source);
+    /// copy of tensors from a BN to another, using names of vars as ref.
+    void _copyTensors_(const BayesNet< GUM_SCALAR >& source);
 
     /// the map between variable and id
     VariableNodeMap _varMap_;
 
     /// Mapping between the variable's id and their CPT.
-    NodeProperty< Potential< GUM_SCALAR >* > _probaMap_;
+    NodeProperty< Tensor< GUM_SCALAR >* > _probaMap_;
 
     /// change the CPT associated to nodeId to newPot
     /// delete the old CPT associated to nodeId.
     /// @warning no verification of dimensions are performer
-    /// @see changePotential
-    void _unsafeChangePotential_(NodeId id, Potential< GUM_SCALAR >* newPot);
+    /// @see changeTensor
+    void _unsafeChangeTensor_(NodeId id, Tensor< GUM_SCALAR >* newPot);
 
     public:
     using IBayesNet< GUM_SCALAR >::dag;

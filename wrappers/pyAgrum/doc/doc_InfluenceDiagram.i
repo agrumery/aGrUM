@@ -78,7 +78,7 @@ Raises
 
 %feature("docstring") gum::InfluenceDiagram::addArc
 "
-Add an arc in the ID, and update diagram's potential nodes cpt if necessary.
+Add an arc in the ID, and update diagram's tensor nodes cpt if necessary.
 
 Parameters
 ----------
@@ -238,7 +238,7 @@ var : Union[int,str]
 
 Returns
 -------
-pyAgrum.Potential
+pyAgrum.Tensor
 	The variable's CPT.
 
 Raises
@@ -279,7 +279,7 @@ var :  Union[int,str,pyAgrum.DiscreteVariable]
 
 %feature("docstring") gum::InfluenceDiagram::eraseArc
 "
-Removes an arc in the ID, and update diagram's potential nodes cpt if necessary.
+Removes an arc in the ID, and update diagram's tensor nodes cpt if necessary.
 
 If (tail, head) doesn't exist, the nothing happens.
 
@@ -473,7 +473,7 @@ var : Union[int,str]
 
 Returns
 -------
-pyAgrum.Potential
+pyAgrum.Tensor
 	the utility table of the node
 
 Raises
@@ -558,7 +558,7 @@ Create an Influence Diagram with a dot-like syntax which specifies:
 Note
 ----
   - If the dot-like string contains such a specification more than once for a variable, the first specification will be used.
-  - the potentials (probabilities, utilities) are randomly generated.
+  - the tensors (probabilities, utilities) are randomly generated.
   - see also pyAgrum.fastID.
 
 Examples

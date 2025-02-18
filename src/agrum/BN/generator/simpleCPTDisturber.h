@@ -94,8 +94,8 @@ namespace gum {
      */
     void disturbReducCPT(NodeId                   node,
                          BayesNet< GUM_SCALAR >&  bayesNet,
-                         Potential< GUM_SCALAR >& src,
-                         Potential< GUM_SCALAR >& marg) override;
+                         Tensor< GUM_SCALAR >& src,
+                         Tensor< GUM_SCALAR >& marg) override;
 
     /**
      * Disturb a CPT using GUM_SCALAR when inserting a new parent new_parent.
@@ -106,7 +106,7 @@ namespace gum {
      */
     void disturbAugmCPT(NodeId                   node,
                         BayesNet< GUM_SCALAR >&  bayesNet,
-                        Potential< GUM_SCALAR >& src,
+                        Tensor< GUM_SCALAR >& src,
                         GUM_SCALAR               variation) override;
   };
 

@@ -888,7 +888,7 @@ class PRMexplorer(object):
         """
         return _bn.PRMexplorer_getDirectSubClass(self, class_name)
 
-    def cpf(self, class_name: str, attribute: str) -> "pyAgrum.Potential":
+    def cpf(self, class_name: str, attribute: str) -> "pyAgrum.Tensor":
         r"""
 
         Parameters
@@ -901,13 +901,13 @@ class PRMexplorer(object):
 
         Returns
         -------
-        pyAgrum.Potential
-        	the potential of the attribute
+        pyAgrum.Tensor
+        	the tensor of the attribute
 
         Raises
         ------
         pyAgrum.OperationNotAllowed
-        	If the class element doesn't have any pyAgrum.Potential (like a pyAgrum.PRMReferenceSlot).
+        	If the class element doesn't have any pyAgrum.Tensor (like a pyAgrum.PRMReferenceSlot).
         pyAgrum.IndexError
         	If the class is not in the PRM
         pyAgrum.IndexError
@@ -1253,6 +1253,81 @@ class EssentialGraph(object):
         """
         return _bn.EssentialGraph_nameFromId(self, node)
 
+    def nodes(self) -> object:
+        return _bn.EssentialGraph_nodes(self)
+
+    def connectedComponents(self):
+      """ connected components from a graph/graphical models
+
+      Compute the connected components of a pyAgrum's graph or graphical models
+      (more generally an object that has `nodes`, `children`/`parents` or `neighbours` methods)
+
+      The firstly visited node for each component is called a 'root' and is used as a key for the component.
+      This root has been arbitrarily chosen during the algorithm.
+
+      Returns
+      -------
+      dict(int,Set[int])
+        dict of connected components (as set of nodeIds (int)) with a nodeId (root) of each component as key.
+
+      """
+      nodes=self.nodes()
+      connected_components=dict()
+
+      def parcours(node,orig):
+          cc={node}
+          nodes.discard(node)
+          if hasattr(self,'children'):
+              for chi in self.children(node):
+                  if chi!=orig:
+                      if chi in nodes:
+                          cc|=parcours(chi,node)
+
+          if hasattr(self,'parents'):
+              for par in self.parents(node):
+                  if par!=orig:
+                      if par in nodes:
+                          cc|=parcours(par,node)
+
+          if hasattr(self,'neighbours'):
+              for nei in self.neighbours(node):
+                  if nei!=orig:
+                      if nei in nodes:
+                          cc|=parcours(nei,node)
+          return cc
+
+      while (len(nodes)>0):
+          root=nodes.pop()
+          connected_components[root]=parcours(root,None)
+      return connected_components
+
+    def adjacencyMatrix(self):
+      """ adjacency matrix from a graph/graphical models
+
+      Compute the adjacency matrix of a pyAgrum's graph or graphical models
+      (more generally an object that has `nodes`, `children`/`parents` or `neighbours` methods)
+
+      Returns
+      -------
+      numpy.ndarray
+        adjacency matrix (as numpy.ndarray) with nodeId as key.
+
+      """
+      import numpy as np
+      nodes=self.nodes()
+      n=self.size()
+      am=np.zeros((n,n)).astype(int)
+
+      for node in nodes:
+          if hasattr(self,'children'):
+              for children in self.children(node):
+                  am[node,children]=1
+          if hasattr(self,'neighbours'):
+              for neighbour in self.neighbours(node):
+                  am[node,neighbour]=1
+      return am
+
+
     def connectedComponents(self):
       """ connected components from a graph/graphical models
 
@@ -1564,6 +1639,89 @@ class MarkovBlanket(object):
         """
         return _bn.MarkovBlanket_hasSameStructure(self, other)
 
+    def nodes(self) -> object:
+        r"""
+
+        Returns
+        -------
+        set
+            the set of ids
+
+        """
+        return _bn.MarkovBlanket_nodes(self)
+
+    def connectedComponents(self):
+      """ connected components from a graph/graphical models
+
+      Compute the connected components of a pyAgrum's graph or graphical models
+      (more generally an object that has `nodes`, `children`/`parents` or `neighbours` methods)
+
+      The firstly visited node for each component is called a 'root' and is used as a key for the component.
+      This root has been arbitrarily chosen during the algorithm.
+
+      Returns
+      -------
+      dict(int,Set[int])
+        dict of connected components (as set of nodeIds (int)) with a nodeId (root) of each component as key.
+
+      """
+      nodes=self.nodes()
+      connected_components=dict()
+
+      def parcours(node,orig):
+          cc={node}
+          nodes.discard(node)
+          if hasattr(self,'children'):
+              for chi in self.children(node):
+                  if chi!=orig:
+                      if chi in nodes:
+                          cc|=parcours(chi,node)
+
+          if hasattr(self,'parents'):
+              for par in self.parents(node):
+                  if par!=orig:
+                      if par in nodes:
+                          cc|=parcours(par,node)
+
+          if hasattr(self,'neighbours'):
+              for nei in self.neighbours(node):
+                  if nei!=orig:
+                      if nei in nodes:
+                          cc|=parcours(nei,node)
+          return cc
+
+      while (len(nodes)>0):
+          root=nodes.pop()
+          connected_components[root]=parcours(root,None)
+      return connected_components
+
+    def adjacencyMatrix(self):
+      """ adjacency matrix from a graph/graphical models
+
+      Compute the adjacency matrix of a pyAgrum's graph or graphical models
+      (more generally an object that has `nodes`, `children`/`parents` or `neighbours` methods)
+
+      Returns
+      -------
+      numpy.ndarray
+        adjacency matrix (as numpy.ndarray) with nodeId as key.
+
+      """
+      import numpy as np
+      nodes=self.nodes()
+      n=self.size()
+      am=np.zeros((n,n)).astype(int)
+
+      for node in nodes:
+          if hasattr(self,'children'):
+              for children in self.children(node):
+                  am[node,children]=1
+          if hasattr(self,'neighbours'):
+              for neighbour in self.neighbours(node):
+                  am[node,neighbour]=1
+      return am
+
+
     def connectedComponents(self):
       """ connected components from a graph/graphical models
 
@@ -1873,7 +2031,7 @@ class IBayesNet(pyAgrum.base.DAGmodel):
         raise AttributeError("No constructor defined - class is abstract")
     __swig_destroy__ = _bn.delete_IBayesNet
 
-    def cpt(self, varId: int) -> "pyAgrum.Potential":
+    def cpt(self, varId: int) -> "pyAgrum.Tensor":
         r"""
 
         Returns the CPT of a variable.
@@ -1887,7 +2045,7 @@ class IBayesNet(pyAgrum.base.DAGmodel):
 
         Returns
         -------
-        pyAgrum.Potential
+        pyAgrum.Tensor
         	The variable's CPT.
 
         Raises
@@ -2139,16 +2297,16 @@ class IBayesNet(pyAgrum.base.DAGmodel):
         """
         return _bn.IBayesNet_toDot(self)
 
-    def evEq(self, name: str, value: float) -> "pyAgrum.Potential":
+    def evEq(self, name: str, value: float) -> "pyAgrum.Tensor":
         return _bn.IBayesNet_evEq(self, name, value)
 
-    def evIn(self, name: str, val1: float, val2: float) -> "pyAgrum.Potential":
+    def evIn(self, name: str, val1: float, val2: float) -> "pyAgrum.Tensor":
         return _bn.IBayesNet_evIn(self, name, val1, val2)
 
-    def evLt(self, name: str, value: float) -> "pyAgrum.Potential":
+    def evLt(self, name: str, value: float) -> "pyAgrum.Tensor":
         return _bn.IBayesNet_evLt(self, name, value)
 
-    def evGt(self, name: str, value: float) -> "pyAgrum.Potential":
+    def evGt(self, name: str, value: float) -> "pyAgrum.Tensor":
         return _bn.IBayesNet_evGt(self, name, value)
 
     def memoryFootprint(self) -> int:
@@ -2556,7 +2714,7 @@ class BayesNet(IBayesNet):
     def __init__(self, *args):
         _bn.BayesNet_swiginit(self, _bn.new_BayesNet(*args))
 
-    def cpt(self, *args) -> "pyAgrum.Potential":
+    def cpt(self, *args) -> "pyAgrum.Tensor":
         r"""
 
         Returns the CPT of a variable.
@@ -2568,7 +2726,7 @@ class BayesNet(IBayesNet):
 
         Returns
         -------
-        pyAgrum.Potential
+        pyAgrum.Tensor
         	The variable's CPT.
 
         Raises
@@ -2634,7 +2792,7 @@ class BayesNet(IBayesNet):
 
         Remove a variable from the pyAgrum.BayesNet.
 
-        Removes the corresponding variable from the pyAgrum.BayesNet and from all of it's children pyAgrum.Potential.
+        Removes the corresponding variable from the pyAgrum.BayesNet and from all of it's children pyAgrum.Tensor.
 
         If no variable matches the given id, then nothing is done.
 
@@ -3262,7 +3420,7 @@ class BayesNet(IBayesNet):
         """
         return _bn.BayesNet_generateCPT(self, *args)
 
-    def changePotential(self, *args) -> None:
+    def changeTensor(self, *args) -> None:
         r"""
 
         change the CPT associated to nodeId to newPot delete the old CPT associated to nodeId.
@@ -3271,8 +3429,8 @@ class BayesNet(IBayesNet):
         ----------
         var : Union[int,str]
         	the current name or the id of the variable
-        newPot : pyAgrum.Potential
-        	the new potential
+        newPot : pyAgrum.Tensor
+        	the new tensor
 
         Raises
         ------
@@ -3280,7 +3438,7 @@ class BayesNet(IBayesNet):
             If newPot has not the same signature as __probaMap[NodeId]
 
         """
-        return _bn.BayesNet_changePotential(self, *args)
+        return _bn.BayesNet_changeTensor(self, *args)
 
     def dag(self) -> "pyAgrum.DAG":
         r"""
@@ -4094,7 +4252,7 @@ class BayesNetFragment(IBayesNet, ):
     def whenArcDeleted(self, src: object, _from: int, to: int) -> None:
         return _bn.BayesNetFragment_whenArcDeleted(self, src, _from, to)
 
-    def cpt(self, *args) -> "pyAgrum.Potential":
+    def cpt(self, *args) -> "pyAgrum.Tensor":
         r"""
 
         Returns the CPT of a variable.
@@ -4108,7 +4266,7 @@ class BayesNetFragment(IBayesNet, ):
 
         Returns
         -------
-        pyAgrum.Potential
+        pyAgrum.Tensor
         	The variable's CPT.
 
         Raises
@@ -4311,8 +4469,8 @@ class BayesNetFragment(IBayesNet, ):
         ----------
         n : int, str
         	the id or the name of the variable.
-        pot : Potential
-          the Potential (marginal) to install
+        pot : Tensor
+          the Tensor (marginal) to install
 
         Raises
         ------
@@ -4331,8 +4489,8 @@ class BayesNetFragment(IBayesNet, ):
         ----------
         n : int, str
         	the id or the name of the variable.
-        pot : Potential
-          the Potential to install
+        pot : Tensor
+          the Tensor to install
 
         Raises
         ------
@@ -4831,16 +4989,16 @@ class LazyPropagation(object):
     def setTriangulation(self, new_triangulation: "pyAgrum.Triangulation") -> None:
         return _bn.LazyPropagation_setTriangulation(self, new_triangulation)
 
-    def setRelevantPotentialsFinderType(self, type: int) -> None:
+    def setRelevantTensorsFinderType(self, type: int) -> None:
         r"""
 
-        sets how we determine the relevant potentials to combine
+        sets how we determine the relevant tensors to combine
 
-        When a clique sends a message to a separator, it first constitute the set of the potentials it contains and of the potentials contained in the messages it received. If RelevantPotentialsFinderType = FIND_ALL, all these potentials are combined and projected to produce the message sent to the separator. If RelevantPotentialsFinderType = DSEP_BAYESBALL_NODES, then only the set of potentials d-connected to the variables of the separator are kept for combination and projection.
+        When a clique sends a message to a separator, it first constitute the set of the tensors it contains and of the tensors contained in the messages it received. If RelevantTensorsFinderType = FIND_ALL, all these tensors are combined and projected to produce the message sent to the separator. If RelevantTensorsFinderType = DSEP_BAYESBALL_NODES, then only the set of tensors d-connected to the variables of the separator are kept for combination and projection.
 
         0 = FIND_ALL
         1 = DSEP_BAYESBALL_NODES
-        2 = DSEP_BAYESBALL_POTENTIALS
+        2 = DSEP_BAYESBALL_TENSORS
         3 = DSEP_KOLLER_FRIEDMAN_2009
 
         Parameters
@@ -4854,7 +5012,7 @@ class LazyPropagation(object):
           If type is not implemented
 
         """
-        return _bn.LazyPropagation_setRelevantPotentialsFinderType(self, type)
+        return _bn.LazyPropagation_setRelevantTensorsFinderType(self, type)
 
     def setFindBarrenNodesType(self, type: int) -> None:
         r"""
@@ -5281,7 +5439,7 @@ class LazyPropagation(object):
         """
         return _bn.LazyPropagation_BN(self)
 
-    def posterior(self, *args) -> "pyAgrum.Potential":
+    def posterior(self, *args) -> "pyAgrum.Tensor":
         r"""
 
         Computes and returns the posterior of a node.
@@ -5295,7 +5453,7 @@ class LazyPropagation(object):
 
         Returns
         -------
-        pyAgrum.Potential
+        pyAgrum.Tensor
           a const ref to the posterior probability of the node
 
         Raises
@@ -5392,7 +5550,7 @@ class LazyPropagation(object):
 
         Parameters
         ----------
-        evidces : Dict[str,Union[int,str,List[float]]] or List[pyAgrum.Potential]
+        evidces : Dict[str,Union[int,str,List[float]]] or List[pyAgrum.Tensor]
           a dict of "name:evidence" where name is a string (the name of the variable) and evidence is an integer (an index) or a string (a label) or a list of float (a likelihood).
 
         Raises
@@ -5411,7 +5569,7 @@ class LazyPropagation(object):
           for k,v in evidces.items():
             self.addEvidence(k,v)
           return
-        elif isinstance(evidces, list):#should be a list of Potential
+        elif isinstance(evidces, list):#should be a list of Tensor
           self.eraseAllEvidence()
           for p in evidces:
             self.addEvidence(p)
@@ -5426,7 +5584,7 @@ class LazyPropagation(object):
 
         Parameters
         ----------
-        evidces : Dict[str,Union[int,str,List[float]]] or List[pyAgrum.Potential]
+        evidces : Dict[str,Union[int,str,List[float]]] or List[pyAgrum.Tensor]
           a dict of "name:evidence" where name is a string (the name of the variable) and evidence is an integer (an index) or a string (a label) or a list of float (a likelihood).
 
         Raises
@@ -5447,7 +5605,7 @@ class LazyPropagation(object):
               else:
                   self.addEvidence(k,v)
           return
-        elif isinstance(evidces, list):#should be a list of Potential
+        elif isinstance(evidces, list):#should be a list of Tensor
           for p in evidces:
               k=p.variable(0)
               if self.hasEvidence(k):
@@ -5516,10 +5674,10 @@ class LazyPropagation(object):
         """
         return _bn.LazyPropagation_targets(self)
 
-    def evidenceImpact(self, *args) -> "pyAgrum.Potential":
+    def evidenceImpact(self, *args) -> "pyAgrum.Tensor":
         r"""
 
-        Create a pyAgrum.Potential for P(target|evs) (for all instanciation of target and evs)
+        Create a pyAgrum.Tensor for P(target|evs) (for all instanciation of target and evs)
 
         Parameters
         ----------
@@ -5530,12 +5688,12 @@ class LazyPropagation(object):
 
         Warnings
         --------
-        if some evs are d-separated, they are not included in the Potential.
+        if some evs are d-separated, they are not included in the Tensor.
 
         Returns
         -------
-        pyAgrum.Potential
-          a Potential for P(targets|evs)
+        pyAgrum.Tensor
+          a Tensor for P(targets|evs)
 
         """
         return _bn.LazyPropagation_evidenceImpact(self, *args)
@@ -5543,10 +5701,10 @@ class LazyPropagation(object):
     def jointMutualInformation(self, targets: object) -> float:
         return _bn.LazyPropagation_jointMutualInformation(self, targets)
 
-    def evidenceJointImpact(self, *args) -> "pyAgrum.Potential":
+    def evidenceJointImpact(self, *args) -> "pyAgrum.Tensor":
         r"""
 
-        Create a pyAgrum.Potential for P(joint targets|evs) (for all instanciation of targets and evs)
+        Create a pyAgrum.Tensor for P(joint targets|evs) (for all instanciation of targets and evs)
 
         Parameters
         ----------
@@ -5557,8 +5715,8 @@ class LazyPropagation(object):
 
         Returns
         -------
-        pyAgrum.Potential
-          a Potential for P(target|evs)
+        pyAgrum.Tensor
+          a Tensor for P(target|evs)
 
         Raises
         ------
@@ -5568,7 +5726,7 @@ class LazyPropagation(object):
         """
         return _bn.LazyPropagation_evidenceJointImpact(self, *args)
 
-    def jointPosterior(self, targets: object) -> "pyAgrum.Potential":
+    def jointPosterior(self, targets: object) -> "pyAgrum.Tensor":
         r"""
 
         Compute the joint posterior of a set of nodes.
@@ -5581,11 +5739,11 @@ class LazyPropagation(object):
 
         Warnings
         --------
-        The order of the variables given by the list here or when the jointTarget is declared can not be assumed to be used by the Potential.
+        The order of the variables given by the list here or when the jointTarget is declared can not be assumed to be used by the Tensor.
 
         Returns
         -------
-        pyAgrum.Potential
+        pyAgrum.Tensor
           a const ref to the posterior joint probability of the set of nodes.
 
         Raises
@@ -5696,16 +5854,16 @@ class ShaferShenoyInference(object):
     def setTriangulation(self, new_triangulation: "pyAgrum.Triangulation") -> None:
         return _bn.ShaferShenoyInference_setTriangulation(self, new_triangulation)
 
-    def setRelevantPotentialsFinderType(self, type: int) -> None:
+    def setRelevantTensorsFinderType(self, type: int) -> None:
         r"""
 
-        sets how we determine the relevant potentials to combine
+        sets how we determine the relevant tensors to combine
 
-        When a clique sends a message to a separator, it first constitute the set of the potentials it contains and of the potentials contained in the messages it received. If RelevantPotentialsFinderType = FIND_ALL, all these potentials are combined and projected to produce the message sent to the separator. If RelevantPotentialsFinderType = DSEP_BAYESBALL_NODES, then only the set of potentials d-connected to the variables of the separator are kept for combination and projection.
+        When a clique sends a message to a separator, it first constitute the set of the tensors it contains and of the tensors contained in the messages it received. If RelevantTensorsFinderType = FIND_ALL, all these tensors are combined and projected to produce the message sent to the separator. If RelevantTensorsFinderType = DSEP_BAYESBALL_NODES, then only the set of tensors d-connected to the variables of the separator are kept for combination and projection.
 
         0 = FIND_ALL
         1 = DSEP_BAYESBALL_NODES
-        2 = DSEP_BAYESBALL_POTENTIALS
+        2 = DSEP_BAYESBALL_TENSORS
         3 = DSEP_KOLLER_FRIEDMAN_2009
 
         Parameters
@@ -5719,7 +5877,7 @@ class ShaferShenoyInference(object):
           If type is not implemented
 
         """
-        return _bn.ShaferShenoyInference_setRelevantPotentialsFinderType(self, type)
+        return _bn.ShaferShenoyInference_setRelevantTensorsFinderType(self, type)
 
     def setFindBarrenNodesType(self, type: int) -> None:
         r"""
@@ -6120,7 +6278,7 @@ class ShaferShenoyInference(object):
         """
         return _bn.ShaferShenoyInference_BN(self)
 
-    def posterior(self, *args) -> "pyAgrum.Potential":
+    def posterior(self, *args) -> "pyAgrum.Tensor":
         r"""
 
         Computes and returns the posterior of a node.
@@ -6134,7 +6292,7 @@ class ShaferShenoyInference(object):
 
         Returns
         -------
-        pyAgrum.Potential
+        pyAgrum.Tensor
           a const ref to the posterior probability of the node
 
         Raises
@@ -6231,7 +6389,7 @@ class ShaferShenoyInference(object):
 
         Parameters
         ----------
-        evidces : Dict[str,Union[int,str,List[float]]] or List[pyAgrum.Potential]
+        evidces : Dict[str,Union[int,str,List[float]]] or List[pyAgrum.Tensor]
           a dict of "name:evidence" where name is a string (the name of the variable) and evidence is an integer (an index) or a string (a label) or a list of float (a likelihood).
 
         Raises
@@ -6250,7 +6408,7 @@ class ShaferShenoyInference(object):
           for k,v in evidces.items():
             self.addEvidence(k,v)
           return
-        elif isinstance(evidces, list):#should be a list of Potential
+        elif isinstance(evidces, list):#should be a list of Tensor
           self.eraseAllEvidence()
           for p in evidces:
             self.addEvidence(p)
@@ -6265,7 +6423,7 @@ class ShaferShenoyInference(object):
 
         Parameters
         ----------
-        evidces : Dict[str,Union[int,str,List[float]]] or List[pyAgrum.Potential]
+        evidces : Dict[str,Union[int,str,List[float]]] or List[pyAgrum.Tensor]
           a dict of "name:evidence" where name is a string (the name of the variable) and evidence is an integer (an index) or a string (a label) or a list of float (a likelihood).
 
         Raises
@@ -6286,7 +6444,7 @@ class ShaferShenoyInference(object):
               else:
                   self.addEvidence(k,v)
           return
-        elif isinstance(evidces, list):#should be a list of Potential
+        elif isinstance(evidces, list):#should be a list of Tensor
           for p in evidces:
               k=p.variable(0)
               if self.hasEvidence(k):
@@ -6355,10 +6513,10 @@ class ShaferShenoyInference(object):
         """
         return _bn.ShaferShenoyInference_targets(self)
 
-    def evidenceImpact(self, *args) -> "pyAgrum.Potential":
+    def evidenceImpact(self, *args) -> "pyAgrum.Tensor":
         r"""
 
-        Create a pyAgrum.Potential for P(target|evs) (for all instanciation of target and evs)
+        Create a pyAgrum.Tensor for P(target|evs) (for all instanciation of target and evs)
 
         Parameters
         ----------
@@ -6369,12 +6527,12 @@ class ShaferShenoyInference(object):
 
         Warnings
         --------
-        if some evs are d-separated, they are not included in the Potential.
+        if some evs are d-separated, they are not included in the Tensor.
 
         Returns
         -------
-        pyAgrum.Potential
-          a Potential for P(targets|evs)
+        pyAgrum.Tensor
+          a Tensor for P(targets|evs)
 
         """
         return _bn.ShaferShenoyInference_evidenceImpact(self, *args)
@@ -6382,10 +6540,10 @@ class ShaferShenoyInference(object):
     def jointMutualInformation(self, targets: object) -> float:
         return _bn.ShaferShenoyInference_jointMutualInformation(self, targets)
 
-    def evidenceJointImpact(self, *args) -> "pyAgrum.Potential":
+    def evidenceJointImpact(self, *args) -> "pyAgrum.Tensor":
         r"""
 
-        Create a pyAgrum.Potential for P(joint targets|evs) (for all instanciation of targets and evs)
+        Create a pyAgrum.Tensor for P(joint targets|evs) (for all instanciation of targets and evs)
 
         Parameters
         ----------
@@ -6396,8 +6554,8 @@ class ShaferShenoyInference(object):
 
         Returns
         -------
-        pyAgrum.Potential
-          a Potential for P(target|evs)
+        pyAgrum.Tensor
+          a Tensor for P(target|evs)
 
         Raises
         ------
@@ -6407,7 +6565,7 @@ class ShaferShenoyInference(object):
         """
         return _bn.ShaferShenoyInference_evidenceJointImpact(self, *args)
 
-    def jointPosterior(self, targets: object) -> "pyAgrum.Potential":
+    def jointPosterior(self, targets: object) -> "pyAgrum.Tensor":
         r"""
 
         Compute the joint posterior of a set of nodes.
@@ -6420,11 +6578,11 @@ class ShaferShenoyInference(object):
 
         Warnings
         --------
-        The order of the variables given by the list here or when the jointTarget is declared can not be assumed to be used by the Potential.
+        The order of the variables given by the list here or when the jointTarget is declared can not be assumed to be used by the Tensor.
 
         Returns
         -------
-        pyAgrum.Potential
+        pyAgrum.Tensor
           a const ref to the posterior joint probability of the set of nodes.
 
         Raises
@@ -6539,16 +6697,16 @@ class VariableElimination(object):
     def setTriangulation(self, new_triangulation: "pyAgrum.Triangulation") -> None:
         return _bn.VariableElimination_setTriangulation(self, new_triangulation)
 
-    def setRelevantPotentialsFinderType(self, type: int) -> None:
+    def setRelevantTensorsFinderType(self, type: int) -> None:
         r"""
 
-        sets how we determine the relevant potentials to combine
+        sets how we determine the relevant tensors to combine
 
-        When a clique sends a message to a separator, it first constitute the set of the potentials it contains and of the potentials contained in the messages it received. If RelevantPotentialsFinderType = FIND_ALL, all these potentials are combined and projected to produce the message sent to the separator. If RelevantPotentialsFinderType = DSEP_BAYESBALL_NODES, then only the set of potentials d-connected to the variables of the separator are kept for combination and projection.
+        When a clique sends a message to a separator, it first constitute the set of the tensors it contains and of the tensors contained in the messages it received. If RelevantTensorsFinderType = FIND_ALL, all these tensors are combined and projected to produce the message sent to the separator. If RelevantTensorsFinderType = DSEP_BAYESBALL_NODES, then only the set of tensors d-connected to the variables of the separator are kept for combination and projection.
 
         0 = FIND_ALL
         1 = DSEP_BAYESBALL_NODES
-        2 = DSEP_BAYESBALL_POTENTIALS
+        2 = DSEP_BAYESBALL_TENSORS
         3 = DSEP_KOLLER_FRIEDMAN_2009
 
         Parameters
@@ -6562,7 +6720,7 @@ class VariableElimination(object):
           If type is not implemented
 
         """
-        return _bn.VariableElimination_setRelevantPotentialsFinderType(self, type)
+        return _bn.VariableElimination_setRelevantTensorsFinderType(self, type)
 
     def setFindBarrenNodesType(self, type: int) -> None:
         r"""
@@ -6615,7 +6773,7 @@ class VariableElimination(object):
         """
         return _bn.VariableElimination_makeInference(self)
 
-    def posterior(self, *args) -> "pyAgrum.Potential":
+    def posterior(self, *args) -> "pyAgrum.Tensor":
         r"""
 
         Computes and returns the posterior of a node.
@@ -6629,7 +6787,7 @@ class VariableElimination(object):
 
         Returns
         -------
-        pyAgrum.Potential
+        pyAgrum.Tensor
           a const ref to the posterior probability of the node
 
         Raises
@@ -7025,7 +7183,7 @@ class VariableElimination(object):
 
         Parameters
         ----------
-        evidces : Dict[str,Union[int,str,List[float]]] or List[pyAgrum.Potential]
+        evidces : Dict[str,Union[int,str,List[float]]] or List[pyAgrum.Tensor]
           a dict of "name:evidence" where name is a string (the name of the variable) and evidence is an integer (an index) or a string (a label) or a list of float (a likelihood).
 
         Raises
@@ -7044,7 +7202,7 @@ class VariableElimination(object):
           for k,v in evidces.items():
             self.addEvidence(k,v)
           return
-        elif isinstance(evidces, list):#should be a list of Potential
+        elif isinstance(evidces, list):#should be a list of Tensor
           self.eraseAllEvidence()
           for p in evidces:
             self.addEvidence(p)
@@ -7059,7 +7217,7 @@ class VariableElimination(object):
 
         Parameters
         ----------
-        evidces : Dict[str,Union[int,str,List[float]]] or List[pyAgrum.Potential]
+        evidces : Dict[str,Union[int,str,List[float]]] or List[pyAgrum.Tensor]
           a dict of "name:evidence" where name is a string (the name of the variable) and evidence is an integer (an index) or a string (a label) or a list of float (a likelihood).
 
         Raises
@@ -7080,7 +7238,7 @@ class VariableElimination(object):
               else:
                   self.addEvidence(k,v)
           return
-        elif isinstance(evidces, list):#should be a list of Potential
+        elif isinstance(evidces, list):#should be a list of Tensor
           for p in evidces:
               k=p.variable(0)
               if self.hasEvidence(k):
@@ -7149,10 +7307,10 @@ class VariableElimination(object):
         """
         return _bn.VariableElimination_targets(self)
 
-    def evidenceImpact(self, *args) -> "pyAgrum.Potential":
+    def evidenceImpact(self, *args) -> "pyAgrum.Tensor":
         r"""
 
-        Create a pyAgrum.Potential for P(target|evs) (for all instanciation of target and evs)
+        Create a pyAgrum.Tensor for P(target|evs) (for all instanciation of target and evs)
 
         Parameters
         ----------
@@ -7163,12 +7321,12 @@ class VariableElimination(object):
 
         Warnings
         --------
-        if some evs are d-separated, they are not included in the Potential.
+        if some evs are d-separated, they are not included in the Tensor.
 
         Returns
         -------
-        pyAgrum.Potential
-          a Potential for P(targets|evs)
+        pyAgrum.Tensor
+          a Tensor for P(targets|evs)
 
         """
         return _bn.VariableElimination_evidenceImpact(self, *args)
@@ -7176,10 +7334,10 @@ class VariableElimination(object):
     def jointMutualInformation(self, targets: object) -> float:
         return _bn.VariableElimination_jointMutualInformation(self, targets)
 
-    def evidenceJointImpact(self, targets: object, evs: object) -> "pyAgrum.Potential":
+    def evidenceJointImpact(self, targets: object, evs: object) -> "pyAgrum.Tensor":
         r"""
 
-        Create a pyAgrum.Potential for P(joint targets|evs) (for all instanciation of targets and evs)
+        Create a pyAgrum.Tensor for P(joint targets|evs) (for all instanciation of targets and evs)
 
         Parameters
         ----------
@@ -7190,8 +7348,8 @@ class VariableElimination(object):
 
         Returns
         -------
-        pyAgrum.Potential
-          a Potential for P(target|evs)
+        pyAgrum.Tensor
+          a Tensor for P(target|evs)
 
         Raises
         ------
@@ -7201,7 +7359,7 @@ class VariableElimination(object):
         """
         return _bn.VariableElimination_evidenceJointImpact(self, targets, evs)
 
-    def jointPosterior(self, targets: object) -> "pyAgrum.Potential":
+    def jointPosterior(self, targets: object) -> "pyAgrum.Tensor":
         r"""
 
         Compute the joint posterior of a set of nodes.
@@ -7214,11 +7372,11 @@ class VariableElimination(object):
 
         Warnings
         --------
-        The order of the variables given by the list here or when the jointTarget is declared can not be assumed to be used by the Potential.
+        The order of the variables given by the list here or when the jointTarget is declared can not be assumed to be used by the Tensor.
 
         Returns
         -------
-        pyAgrum.Potential
+        pyAgrum.Tensor
           a const ref to the posterior joint probability of the set of nodes.
 
         Raises
@@ -7568,7 +7726,7 @@ class GibbsSampling(object):
         """
         return _bn.GibbsSampling_makeInference(self)
 
-    def posterior(self, *args) -> "pyAgrum.Potential":
+    def posterior(self, *args) -> "pyAgrum.Tensor":
         r"""
 
         Computes and returns the posterior of a node.
@@ -7582,7 +7740,7 @@ class GibbsSampling(object):
 
         Returns
         -------
-        pyAgrum.Potential
+        pyAgrum.Tensor
           a const ref to the posterior probability of the node
 
         Raises
@@ -7919,7 +8077,7 @@ class GibbsSampling(object):
         """
         return _bn.GibbsSampling_BN(self)
 
-    def currentPosterior(self, *args) -> "pyAgrum.Potential":
+    def currentPosterior(self, *args) -> "pyAgrum.Tensor":
         r"""
 
         Computes and returns the current posterior of a node.
@@ -7933,7 +8091,7 @@ class GibbsSampling(object):
 
         Returns
         -------
-        pyAgrum.Potential
+        pyAgrum.Tensor
           a const ref to the current posterior probability of the node
 
         Raises
@@ -7994,7 +8152,7 @@ class GibbsSampling(object):
 
         Parameters
         ----------
-        evidces : Dict[str,Union[int,str,List[float]]] or List[pyAgrum.Potential]
+        evidces : Dict[str,Union[int,str,List[float]]] or List[pyAgrum.Tensor]
           a dict of "name:evidence" where name is a string (the name of the variable) and evidence is an integer (an index) or a string (a label) or a list of float (a likelihood).
 
         Raises
@@ -8013,7 +8171,7 @@ class GibbsSampling(object):
           for k,v in evidces.items():
             self.addEvidence(k,v)
           return
-        elif isinstance(evidces, list):#should be a list of Potential
+        elif isinstance(evidces, list):#should be a list of Tensor
           self.eraseAllEvidence()
           for p in evidces:
             self.addEvidence(p)
@@ -8028,7 +8186,7 @@ class GibbsSampling(object):
 
         Parameters
         ----------
-        evidces : Dict[str,Union[int,str,List[float]]] or List[pyAgrum.Potential]
+        evidces : Dict[str,Union[int,str,List[float]]] or List[pyAgrum.Tensor]
           a dict of "name:evidence" where name is a string (the name of the variable) and evidence is an integer (an index) or a string (a label) or a list of float (a likelihood).
 
         Raises
@@ -8049,7 +8207,7 @@ class GibbsSampling(object):
               else:
                   self.addEvidence(k,v)
           return
-        elif isinstance(evidces, list):#should be a list of Potential
+        elif isinstance(evidces, list):#should be a list of Tensor
           for p in evidces:
               k=p.variable(0)
               if self.hasEvidence(k):
@@ -8118,10 +8276,10 @@ class GibbsSampling(object):
         """
         return _bn.GibbsSampling_targets(self)
 
-    def evidenceImpact(self, *args) -> "pyAgrum.Potential":
+    def evidenceImpact(self, *args) -> "pyAgrum.Tensor":
         r"""
 
-        Create a pyAgrum.Potential for P(target|evs) (for all instanciation of target and evs)
+        Create a pyAgrum.Tensor for P(target|evs) (for all instanciation of target and evs)
 
         Parameters
         ----------
@@ -8132,12 +8290,12 @@ class GibbsSampling(object):
 
         Warnings
         --------
-        if some evs are d-separated, they are not included in the Potential.
+        if some evs are d-separated, they are not included in the Tensor.
 
         Returns
         -------
-        pyAgrum.Potential
-          a Potential for P(targets|evs)
+        pyAgrum.Tensor
+          a Tensor for P(targets|evs)
 
         """
         return _bn.GibbsSampling_evidenceImpact(self, *args)
@@ -8387,7 +8545,7 @@ class ImportanceSampling(object):
         """
         return _bn.ImportanceSampling_makeInference(self)
 
-    def posterior(self, *args) -> "pyAgrum.Potential":
+    def posterior(self, *args) -> "pyAgrum.Tensor":
         r"""
 
         Computes and returns the posterior of a node.
@@ -8401,7 +8559,7 @@ class ImportanceSampling(object):
 
         Returns
         -------
-        pyAgrum.Potential
+        pyAgrum.Tensor
           a const ref to the posterior probability of the node
 
         Raises
@@ -8738,7 +8896,7 @@ class ImportanceSampling(object):
         """
         return _bn.ImportanceSampling_BN(self)
 
-    def currentPosterior(self, *args) -> "pyAgrum.Potential":
+    def currentPosterior(self, *args) -> "pyAgrum.Tensor":
         r"""
 
         Computes and returns the current posterior of a node.
@@ -8752,7 +8910,7 @@ class ImportanceSampling(object):
 
         Returns
         -------
-        pyAgrum.Potential
+        pyAgrum.Tensor
           a const ref to the current posterior probability of the node
 
         Raises
@@ -8769,7 +8927,7 @@ class ImportanceSampling(object):
 
         Parameters
         ----------
-        evidces : Dict[str,Union[int,str,List[float]]] or List[pyAgrum.Potential]
+        evidces : Dict[str,Union[int,str,List[float]]] or List[pyAgrum.Tensor]
           a dict of "name:evidence" where name is a string (the name of the variable) and evidence is an integer (an index) or a string (a label) or a list of float (a likelihood).
 
         Raises
@@ -8788,7 +8946,7 @@ class ImportanceSampling(object):
           for k,v in evidces.items():
             self.addEvidence(k,v)
           return
-        elif isinstance(evidces, list):#should be a list of Potential
+        elif isinstance(evidces, list):#should be a list of Tensor
           self.eraseAllEvidence()
           for p in evidces:
             self.addEvidence(p)
@@ -8803,7 +8961,7 @@ class ImportanceSampling(object):
 
         Parameters
         ----------
-        evidces : Dict[str,Union[int,str,List[float]]] or List[pyAgrum.Potential]
+        evidces : Dict[str,Union[int,str,List[float]]] or List[pyAgrum.Tensor]
           a dict of "name:evidence" where name is a string (the name of the variable) and evidence is an integer (an index) or a string (a label) or a list of float (a likelihood).
 
         Raises
@@ -8824,7 +8982,7 @@ class ImportanceSampling(object):
               else:
                   self.addEvidence(k,v)
           return
-        elif isinstance(evidces, list):#should be a list of Potential
+        elif isinstance(evidces, list):#should be a list of Tensor
           for p in evidces:
               k=p.variable(0)
               if self.hasEvidence(k):
@@ -8893,10 +9051,10 @@ class ImportanceSampling(object):
         """
         return _bn.ImportanceSampling_targets(self)
 
-    def evidenceImpact(self, *args) -> "pyAgrum.Potential":
+    def evidenceImpact(self, *args) -> "pyAgrum.Tensor":
         r"""
 
-        Create a pyAgrum.Potential for P(target|evs) (for all instanciation of target and evs)
+        Create a pyAgrum.Tensor for P(target|evs) (for all instanciation of target and evs)
 
         Parameters
         ----------
@@ -8907,12 +9065,12 @@ class ImportanceSampling(object):
 
         Warnings
         --------
-        if some evs are d-separated, they are not included in the Potential.
+        if some evs are d-separated, they are not included in the Tensor.
 
         Returns
         -------
-        pyAgrum.Potential
-          a Potential for P(targets|evs)
+        pyAgrum.Tensor
+          a Tensor for P(targets|evs)
 
         """
         return _bn.ImportanceSampling_evidenceImpact(self, *args)
@@ -9162,7 +9320,7 @@ class WeightedSampling(object):
         """
         return _bn.WeightedSampling_makeInference(self)
 
-    def posterior(self, *args) -> "pyAgrum.Potential":
+    def posterior(self, *args) -> "pyAgrum.Tensor":
         r"""
 
         Computes and returns the posterior of a node.
@@ -9176,7 +9334,7 @@ class WeightedSampling(object):
 
         Returns
         -------
-        pyAgrum.Potential
+        pyAgrum.Tensor
           a const ref to the posterior probability of the node
 
         Raises
@@ -9513,7 +9671,7 @@ class WeightedSampling(object):
         """
         return _bn.WeightedSampling_BN(self)
 
-    def currentPosterior(self, *args) -> "pyAgrum.Potential":
+    def currentPosterior(self, *args) -> "pyAgrum.Tensor":
         r"""
 
         Computes and returns the current posterior of a node.
@@ -9527,7 +9685,7 @@ class WeightedSampling(object):
 
         Returns
         -------
-        pyAgrum.Potential
+        pyAgrum.Tensor
           a const ref to the current posterior probability of the node
 
         Raises
@@ -9544,7 +9702,7 @@ class WeightedSampling(object):
 
         Parameters
         ----------
-        evidces : Dict[str,Union[int,str,List[float]]] or List[pyAgrum.Potential]
+        evidces : Dict[str,Union[int,str,List[float]]] or List[pyAgrum.Tensor]
           a dict of "name:evidence" where name is a string (the name of the variable) and evidence is an integer (an index) or a string (a label) or a list of float (a likelihood).
 
         Raises
@@ -9563,7 +9721,7 @@ class WeightedSampling(object):
           for k,v in evidces.items():
             self.addEvidence(k,v)
           return
-        elif isinstance(evidces, list):#should be a list of Potential
+        elif isinstance(evidces, list):#should be a list of Tensor
           self.eraseAllEvidence()
           for p in evidces:
             self.addEvidence(p)
@@ -9578,7 +9736,7 @@ class WeightedSampling(object):
 
         Parameters
         ----------
-        evidces : Dict[str,Union[int,str,List[float]]] or List[pyAgrum.Potential]
+        evidces : Dict[str,Union[int,str,List[float]]] or List[pyAgrum.Tensor]
           a dict of "name:evidence" where name is a string (the name of the variable) and evidence is an integer (an index) or a string (a label) or a list of float (a likelihood).
 
         Raises
@@ -9599,7 +9757,7 @@ class WeightedSampling(object):
               else:
                   self.addEvidence(k,v)
           return
-        elif isinstance(evidces, list):#should be a list of Potential
+        elif isinstance(evidces, list):#should be a list of Tensor
           for p in evidces:
               k=p.variable(0)
               if self.hasEvidence(k):
@@ -9668,10 +9826,10 @@ class WeightedSampling(object):
         """
         return _bn.WeightedSampling_targets(self)
 
-    def evidenceImpact(self, *args) -> "pyAgrum.Potential":
+    def evidenceImpact(self, *args) -> "pyAgrum.Tensor":
         r"""
 
-        Create a pyAgrum.Potential for P(target|evs) (for all instanciation of target and evs)
+        Create a pyAgrum.Tensor for P(target|evs) (for all instanciation of target and evs)
 
         Parameters
         ----------
@@ -9682,12 +9840,12 @@ class WeightedSampling(object):
 
         Warnings
         --------
-        if some evs are d-separated, they are not included in the Potential.
+        if some evs are d-separated, they are not included in the Tensor.
 
         Returns
         -------
-        pyAgrum.Potential
-          a Potential for P(targets|evs)
+        pyAgrum.Tensor
+          a Tensor for P(targets|evs)
 
         """
         return _bn.WeightedSampling_evidenceImpact(self, *args)
@@ -9937,7 +10095,7 @@ class MonteCarloSampling(object):
         """
         return _bn.MonteCarloSampling_makeInference(self)
 
-    def posterior(self, *args) -> "pyAgrum.Potential":
+    def posterior(self, *args) -> "pyAgrum.Tensor":
         r"""
 
         Computes and returns the posterior of a node.
@@ -9951,7 +10109,7 @@ class MonteCarloSampling(object):
 
         Returns
         -------
-        pyAgrum.Potential
+        pyAgrum.Tensor
           a const ref to the posterior probability of the node
 
         Raises
@@ -10288,7 +10446,7 @@ class MonteCarloSampling(object):
         """
         return _bn.MonteCarloSampling_BN(self)
 
-    def currentPosterior(self, *args) -> "pyAgrum.Potential":
+    def currentPosterior(self, *args) -> "pyAgrum.Tensor":
         r"""
 
         Computes and returns the current posterior of a node.
@@ -10302,7 +10460,7 @@ class MonteCarloSampling(object):
 
         Returns
         -------
-        pyAgrum.Potential
+        pyAgrum.Tensor
           a const ref to the current posterior probability of the node
 
         Raises
@@ -10319,7 +10477,7 @@ class MonteCarloSampling(object):
 
         Parameters
         ----------
-        evidces : Dict[str,Union[int,str,List[float]]] or List[pyAgrum.Potential]
+        evidces : Dict[str,Union[int,str,List[float]]] or List[pyAgrum.Tensor]
           a dict of "name:evidence" where name is a string (the name of the variable) and evidence is an integer (an index) or a string (a label) or a list of float (a likelihood).
 
         Raises
@@ -10338,7 +10496,7 @@ class MonteCarloSampling(object):
           for k,v in evidces.items():
             self.addEvidence(k,v)
           return
-        elif isinstance(evidces, list):#should be a list of Potential
+        elif isinstance(evidces, list):#should be a list of Tensor
           self.eraseAllEvidence()
           for p in evidces:
             self.addEvidence(p)
@@ -10353,7 +10511,7 @@ class MonteCarloSampling(object):
 
         Parameters
         ----------
-        evidces : Dict[str,Union[int,str,List[float]]] or List[pyAgrum.Potential]
+        evidces : Dict[str,Union[int,str,List[float]]] or List[pyAgrum.Tensor]
           a dict of "name:evidence" where name is a string (the name of the variable) and evidence is an integer (an index) or a string (a label) or a list of float (a likelihood).
 
         Raises
@@ -10374,7 +10532,7 @@ class MonteCarloSampling(object):
               else:
                   self.addEvidence(k,v)
           return
-        elif isinstance(evidces, list):#should be a list of Potential
+        elif isinstance(evidces, list):#should be a list of Tensor
           for p in evidces:
               k=p.variable(0)
               if self.hasEvidence(k):
@@ -10443,10 +10601,10 @@ class MonteCarloSampling(object):
         """
         return _bn.MonteCarloSampling_targets(self)
 
-    def evidenceImpact(self, *args) -> "pyAgrum.Potential":
+    def evidenceImpact(self, *args) -> "pyAgrum.Tensor":
         r"""
 
-        Create a pyAgrum.Potential for P(target|evs) (for all instanciation of target and evs)
+        Create a pyAgrum.Tensor for P(target|evs) (for all instanciation of target and evs)
 
         Parameters
         ----------
@@ -10457,12 +10615,12 @@ class MonteCarloSampling(object):
 
         Warnings
         --------
-        if some evs are d-separated, they are not included in the Potential.
+        if some evs are d-separated, they are not included in the Tensor.
 
         Returns
         -------
-        pyAgrum.Potential
-          a Potential for P(targets|evs)
+        pyAgrum.Tensor
+          a Tensor for P(targets|evs)
 
         """
         return _bn.MonteCarloSampling_evidenceImpact(self, *args)
@@ -10726,7 +10884,7 @@ class LoopyImportanceSampling(ImportanceSampling):
         """
         return _bn.LoopyImportanceSampling_makeInference(self)
 
-    def posterior(self, *args) -> "pyAgrum.Potential":
+    def posterior(self, *args) -> "pyAgrum.Tensor":
         r"""
 
         Computes and returns the posterior of a node.
@@ -10740,7 +10898,7 @@ class LoopyImportanceSampling(ImportanceSampling):
 
         Returns
         -------
-        pyAgrum.Potential
+        pyAgrum.Tensor
           a const ref to the posterior probability of the node
 
         Raises
@@ -11077,7 +11235,7 @@ class LoopyImportanceSampling(ImportanceSampling):
         """
         return _bn.LoopyImportanceSampling_BN(self)
 
-    def currentPosterior(self, *args) -> "pyAgrum.Potential":
+    def currentPosterior(self, *args) -> "pyAgrum.Tensor":
         r"""
 
         Computes and returns the current posterior of a node.
@@ -11091,7 +11249,7 @@ class LoopyImportanceSampling(ImportanceSampling):
 
         Returns
         -------
-        pyAgrum.Potential
+        pyAgrum.Tensor
           a const ref to the current posterior probability of the node
 
         Raises
@@ -11108,7 +11266,7 @@ class LoopyImportanceSampling(ImportanceSampling):
 
         Parameters
         ----------
-        evidces : Dict[str,Union[int,str,List[float]]] or List[pyAgrum.Potential]
+        evidces : Dict[str,Union[int,str,List[float]]] or List[pyAgrum.Tensor]
           a dict of "name:evidence" where name is a string (the name of the variable) and evidence is an integer (an index) or a string (a label) or a list of float (a likelihood).
 
         Raises
@@ -11127,7 +11285,7 @@ class LoopyImportanceSampling(ImportanceSampling):
           for k,v in evidces.items():
             self.addEvidence(k,v)
           return
-        elif isinstance(evidces, list):#should be a list of Potential
+        elif isinstance(evidces, list):#should be a list of Tensor
           self.eraseAllEvidence()
           for p in evidces:
             self.addEvidence(p)
@@ -11142,7 +11300,7 @@ class LoopyImportanceSampling(ImportanceSampling):
 
         Parameters
         ----------
-        evidces : Dict[str,Union[int,str,List[float]]] or List[pyAgrum.Potential]
+        evidces : Dict[str,Union[int,str,List[float]]] or List[pyAgrum.Tensor]
           a dict of "name:evidence" where name is a string (the name of the variable) and evidence is an integer (an index) or a string (a label) or a list of float (a likelihood).
 
         Raises
@@ -11163,7 +11321,7 @@ class LoopyImportanceSampling(ImportanceSampling):
               else:
                   self.addEvidence(k,v)
           return
-        elif isinstance(evidces, list):#should be a list of Potential
+        elif isinstance(evidces, list):#should be a list of Tensor
           for p in evidces:
               k=p.variable(0)
               if self.hasEvidence(k):
@@ -11232,10 +11390,10 @@ class LoopyImportanceSampling(ImportanceSampling):
         """
         return _bn.LoopyImportanceSampling_targets(self)
 
-    def evidenceImpact(self, *args) -> "pyAgrum.Potential":
+    def evidenceImpact(self, *args) -> "pyAgrum.Tensor":
         r"""
 
-        Create a pyAgrum.Potential for P(target|evs) (for all instanciation of target and evs)
+        Create a pyAgrum.Tensor for P(target|evs) (for all instanciation of target and evs)
 
         Parameters
         ----------
@@ -11246,12 +11404,12 @@ class LoopyImportanceSampling(ImportanceSampling):
 
         Warnings
         --------
-        if some evs are d-separated, they are not included in the Potential.
+        if some evs are d-separated, they are not included in the Tensor.
 
         Returns
         -------
-        pyAgrum.Potential
-          a Potential for P(targets|evs)
+        pyAgrum.Tensor
+          a Tensor for P(targets|evs)
 
         """
         return _bn.LoopyImportanceSampling_evidenceImpact(self, *args)
@@ -11515,7 +11673,7 @@ class LoopyWeightedSampling(WeightedSampling):
         """
         return _bn.LoopyWeightedSampling_makeInference(self)
 
-    def posterior(self, *args) -> "pyAgrum.Potential":
+    def posterior(self, *args) -> "pyAgrum.Tensor":
         r"""
 
         Computes and returns the posterior of a node.
@@ -11529,7 +11687,7 @@ class LoopyWeightedSampling(WeightedSampling):
 
         Returns
         -------
-        pyAgrum.Potential
+        pyAgrum.Tensor
           a const ref to the posterior probability of the node
 
         Raises
@@ -11866,7 +12024,7 @@ class LoopyWeightedSampling(WeightedSampling):
         """
         return _bn.LoopyWeightedSampling_BN(self)
 
-    def currentPosterior(self, *args) -> "pyAgrum.Potential":
+    def currentPosterior(self, *args) -> "pyAgrum.Tensor":
         r"""
 
         Computes and returns the current posterior of a node.
@@ -11880,7 +12038,7 @@ class LoopyWeightedSampling(WeightedSampling):
 
         Returns
         -------
-        pyAgrum.Potential
+        pyAgrum.Tensor
           a const ref to the current posterior probability of the node
 
         Raises
@@ -11897,7 +12055,7 @@ class LoopyWeightedSampling(WeightedSampling):
 
         Parameters
         ----------
-        evidces : Dict[str,Union[int,str,List[float]]] or List[pyAgrum.Potential]
+        evidces : Dict[str,Union[int,str,List[float]]] or List[pyAgrum.Tensor]
           a dict of "name:evidence" where name is a string (the name of the variable) and evidence is an integer (an index) or a string (a label) or a list of float (a likelihood).
 
         Raises
@@ -11916,7 +12074,7 @@ class LoopyWeightedSampling(WeightedSampling):
           for k,v in evidces.items():
             self.addEvidence(k,v)
           return
-        elif isinstance(evidces, list):#should be a list of Potential
+        elif isinstance(evidces, list):#should be a list of Tensor
           self.eraseAllEvidence()
           for p in evidces:
             self.addEvidence(p)
@@ -11931,7 +12089,7 @@ class LoopyWeightedSampling(WeightedSampling):
 
         Parameters
         ----------
-        evidces : Dict[str,Union[int,str,List[float]]] or List[pyAgrum.Potential]
+        evidces : Dict[str,Union[int,str,List[float]]] or List[pyAgrum.Tensor]
           a dict of "name:evidence" where name is a string (the name of the variable) and evidence is an integer (an index) or a string (a label) or a list of float (a likelihood).
 
         Raises
@@ -11952,7 +12110,7 @@ class LoopyWeightedSampling(WeightedSampling):
               else:
                   self.addEvidence(k,v)
           return
-        elif isinstance(evidces, list):#should be a list of Potential
+        elif isinstance(evidces, list):#should be a list of Tensor
           for p in evidces:
               k=p.variable(0)
               if self.hasEvidence(k):
@@ -12021,10 +12179,10 @@ class LoopyWeightedSampling(WeightedSampling):
         """
         return _bn.LoopyWeightedSampling_targets(self)
 
-    def evidenceImpact(self, *args) -> "pyAgrum.Potential":
+    def evidenceImpact(self, *args) -> "pyAgrum.Tensor":
         r"""
 
-        Create a pyAgrum.Potential for P(target|evs) (for all instanciation of target and evs)
+        Create a pyAgrum.Tensor for P(target|evs) (for all instanciation of target and evs)
 
         Parameters
         ----------
@@ -12035,12 +12193,12 @@ class LoopyWeightedSampling(WeightedSampling):
 
         Warnings
         --------
-        if some evs are d-separated, they are not included in the Potential.
+        if some evs are d-separated, they are not included in the Tensor.
 
         Returns
         -------
-        pyAgrum.Potential
-          a Potential for P(targets|evs)
+        pyAgrum.Tensor
+          a Tensor for P(targets|evs)
 
         """
         return _bn.LoopyWeightedSampling_evidenceImpact(self, *args)
@@ -12304,7 +12462,7 @@ class LoopyGibbsSampling(GibbsSampling):
         """
         return _bn.LoopyGibbsSampling_makeInference(self)
 
-    def posterior(self, *args) -> "pyAgrum.Potential":
+    def posterior(self, *args) -> "pyAgrum.Tensor":
         r"""
 
         Computes and returns the posterior of a node.
@@ -12318,7 +12476,7 @@ class LoopyGibbsSampling(GibbsSampling):
 
         Returns
         -------
-        pyAgrum.Potential
+        pyAgrum.Tensor
           a const ref to the posterior probability of the node
 
         Raises
@@ -12655,7 +12813,7 @@ class LoopyGibbsSampling(GibbsSampling):
         """
         return _bn.LoopyGibbsSampling_BN(self)
 
-    def currentPosterior(self, *args) -> "pyAgrum.Potential":
+    def currentPosterior(self, *args) -> "pyAgrum.Tensor":
         r"""
 
         Computes and returns the current posterior of a node.
@@ -12669,7 +12827,7 @@ class LoopyGibbsSampling(GibbsSampling):
 
         Returns
         -------
-        pyAgrum.Potential
+        pyAgrum.Tensor
           a const ref to the current posterior probability of the node
 
         Raises
@@ -12752,7 +12910,7 @@ class LoopyGibbsSampling(GibbsSampling):
 
         Parameters
         ----------
-        evidces : Dict[str,Union[int,str,List[float]]] or List[pyAgrum.Potential]
+        evidces : Dict[str,Union[int,str,List[float]]] or List[pyAgrum.Tensor]
           a dict of "name:evidence" where name is a string (the name of the variable) and evidence is an integer (an index) or a string (a label) or a list of float (a likelihood).
 
         Raises
@@ -12771,7 +12929,7 @@ class LoopyGibbsSampling(GibbsSampling):
           for k,v in evidces.items():
             self.addEvidence(k,v)
           return
-        elif isinstance(evidces, list):#should be a list of Potential
+        elif isinstance(evidces, list):#should be a list of Tensor
           self.eraseAllEvidence()
           for p in evidces:
             self.addEvidence(p)
@@ -12786,7 +12944,7 @@ class LoopyGibbsSampling(GibbsSampling):
 
         Parameters
         ----------
-        evidces : Dict[str,Union[int,str,List[float]]] or List[pyAgrum.Potential]
+        evidces : Dict[str,Union[int,str,List[float]]] or List[pyAgrum.Tensor]
           a dict of "name:evidence" where name is a string (the name of the variable) and evidence is an integer (an index) or a string (a label) or a list of float (a likelihood).
 
         Raises
@@ -12807,7 +12965,7 @@ class LoopyGibbsSampling(GibbsSampling):
               else:
                   self.addEvidence(k,v)
           return
-        elif isinstance(evidces, list):#should be a list of Potential
+        elif isinstance(evidces, list):#should be a list of Tensor
           for p in evidces:
               k=p.variable(0)
               if self.hasEvidence(k):
@@ -12876,10 +13034,10 @@ class LoopyGibbsSampling(GibbsSampling):
         """
         return _bn.LoopyGibbsSampling_targets(self)
 
-    def evidenceImpact(self, *args) -> "pyAgrum.Potential":
+    def evidenceImpact(self, *args) -> "pyAgrum.Tensor":
         r"""
 
-        Create a pyAgrum.Potential for P(target|evs) (for all instanciation of target and evs)
+        Create a pyAgrum.Tensor for P(target|evs) (for all instanciation of target and evs)
 
         Parameters
         ----------
@@ -12890,12 +13048,12 @@ class LoopyGibbsSampling(GibbsSampling):
 
         Warnings
         --------
-        if some evs are d-separated, they are not included in the Potential.
+        if some evs are d-separated, they are not included in the Tensor.
 
         Returns
         -------
-        pyAgrum.Potential
-          a Potential for P(targets|evs)
+        pyAgrum.Tensor
+          a Tensor for P(targets|evs)
 
         """
         return _bn.LoopyGibbsSampling_evidenceImpact(self, *args)
@@ -13159,7 +13317,7 @@ class LoopyMonteCarloSampling(MonteCarloSampling):
         """
         return _bn.LoopyMonteCarloSampling_makeInference(self)
 
-    def posterior(self, *args) -> "pyAgrum.Potential":
+    def posterior(self, *args) -> "pyAgrum.Tensor":
         r"""
 
         Computes and returns the posterior of a node.
@@ -13173,7 +13331,7 @@ class LoopyMonteCarloSampling(MonteCarloSampling):
 
         Returns
         -------
-        pyAgrum.Potential
+        pyAgrum.Tensor
           a const ref to the posterior probability of the node
 
         Raises
@@ -13510,7 +13668,7 @@ class LoopyMonteCarloSampling(MonteCarloSampling):
         """
         return _bn.LoopyMonteCarloSampling_BN(self)
 
-    def currentPosterior(self, *args) -> "pyAgrum.Potential":
+    def currentPosterior(self, *args) -> "pyAgrum.Tensor":
         r"""
 
         Computes and returns the current posterior of a node.
@@ -13524,7 +13682,7 @@ class LoopyMonteCarloSampling(MonteCarloSampling):
 
         Returns
         -------
-        pyAgrum.Potential
+        pyAgrum.Tensor
           a const ref to the current posterior probability of the node
 
         Raises
@@ -13541,7 +13699,7 @@ class LoopyMonteCarloSampling(MonteCarloSampling):
 
         Parameters
         ----------
-        evidces : Dict[str,Union[int,str,List[float]]] or List[pyAgrum.Potential]
+        evidces : Dict[str,Union[int,str,List[float]]] or List[pyAgrum.Tensor]
           a dict of "name:evidence" where name is a string (the name of the variable) and evidence is an integer (an index) or a string (a label) or a list of float (a likelihood).
 
         Raises
@@ -13560,7 +13718,7 @@ class LoopyMonteCarloSampling(MonteCarloSampling):
           for k,v in evidces.items():
             self.addEvidence(k,v)
           return
-        elif isinstance(evidces, list):#should be a list of Potential
+        elif isinstance(evidces, list):#should be a list of Tensor
           self.eraseAllEvidence()
           for p in evidces:
             self.addEvidence(p)
@@ -13575,7 +13733,7 @@ class LoopyMonteCarloSampling(MonteCarloSampling):
 
         Parameters
         ----------
-        evidces : Dict[str,Union[int,str,List[float]]] or List[pyAgrum.Potential]
+        evidces : Dict[str,Union[int,str,List[float]]] or List[pyAgrum.Tensor]
           a dict of "name:evidence" where name is a string (the name of the variable) and evidence is an integer (an index) or a string (a label) or a list of float (a likelihood).
 
         Raises
@@ -13596,7 +13754,7 @@ class LoopyMonteCarloSampling(MonteCarloSampling):
               else:
                   self.addEvidence(k,v)
           return
-        elif isinstance(evidces, list):#should be a list of Potential
+        elif isinstance(evidces, list):#should be a list of Tensor
           for p in evidces:
               k=p.variable(0)
               if self.hasEvidence(k):
@@ -13665,10 +13823,10 @@ class LoopyMonteCarloSampling(MonteCarloSampling):
         """
         return _bn.LoopyMonteCarloSampling_targets(self)
 
-    def evidenceImpact(self, *args) -> "pyAgrum.Potential":
+    def evidenceImpact(self, *args) -> "pyAgrum.Tensor":
         r"""
 
-        Create a pyAgrum.Potential for P(target|evs) (for all instanciation of target and evs)
+        Create a pyAgrum.Tensor for P(target|evs) (for all instanciation of target and evs)
 
         Parameters
         ----------
@@ -13679,12 +13837,12 @@ class LoopyMonteCarloSampling(MonteCarloSampling):
 
         Warnings
         --------
-        if some evs are d-separated, they are not included in the Potential.
+        if some evs are d-separated, they are not included in the Tensor.
 
         Returns
         -------
-        pyAgrum.Potential
-          a Potential for P(targets|evs)
+        pyAgrum.Tensor
+          a Tensor for P(targets|evs)
 
         """
         return _bn.LoopyMonteCarloSampling_evidenceImpact(self, *args)
@@ -13934,7 +14092,7 @@ class LoopyBeliefPropagation(object):
         """
         return _bn.LoopyBeliefPropagation_makeInference(self)
 
-    def posterior(self, *args) -> "pyAgrum.Potential":
+    def posterior(self, *args) -> "pyAgrum.Tensor":
         r"""
 
         Computes and returns the posterior of a node.
@@ -13948,7 +14106,7 @@ class LoopyBeliefPropagation(object):
 
         Returns
         -------
-        pyAgrum.Potential
+        pyAgrum.Tensor
           a const ref to the posterior probability of the node
 
         Raises
@@ -14291,7 +14449,7 @@ class LoopyBeliefPropagation(object):
 
         Parameters
         ----------
-        evidces : Dict[str,Union[int,str,List[float]]] or List[pyAgrum.Potential]
+        evidces : Dict[str,Union[int,str,List[float]]] or List[pyAgrum.Tensor]
           a dict of "name:evidence" where name is a string (the name of the variable) and evidence is an integer (an index) or a string (a label) or a list of float (a likelihood).
 
         Raises
@@ -14310,7 +14468,7 @@ class LoopyBeliefPropagation(object):
           for k,v in evidces.items():
             self.addEvidence(k,v)
           return
-        elif isinstance(evidces, list):#should be a list of Potential
+        elif isinstance(evidces, list):#should be a list of Tensor
           self.eraseAllEvidence()
           for p in evidces:
             self.addEvidence(p)
@@ -14325,7 +14483,7 @@ class LoopyBeliefPropagation(object):
 
         Parameters
         ----------
-        evidces : Dict[str,Union[int,str,List[float]]] or List[pyAgrum.Potential]
+        evidces : Dict[str,Union[int,str,List[float]]] or List[pyAgrum.Tensor]
           a dict of "name:evidence" where name is a string (the name of the variable) and evidence is an integer (an index) or a string (a label) or a list of float (a likelihood).
 
         Raises
@@ -14346,7 +14504,7 @@ class LoopyBeliefPropagation(object):
               else:
                   self.addEvidence(k,v)
           return
-        elif isinstance(evidces, list):#should be a list of Potential
+        elif isinstance(evidces, list):#should be a list of Tensor
           for p in evidces:
               k=p.variable(0)
               if self.hasEvidence(k):
@@ -14415,10 +14573,10 @@ class LoopyBeliefPropagation(object):
         """
         return _bn.LoopyBeliefPropagation_targets(self)
 
-    def evidenceImpact(self, *args) -> "pyAgrum.Potential":
+    def evidenceImpact(self, *args) -> "pyAgrum.Tensor":
         r"""
 
-        Create a pyAgrum.Potential for P(target|evs) (for all instanciation of target and evs)
+        Create a pyAgrum.Tensor for P(target|evs) (for all instanciation of target and evs)
 
         Parameters
         ----------
@@ -14429,12 +14587,12 @@ class LoopyBeliefPropagation(object):
 
         Warnings
         --------
-        if some evs are d-separated, they are not included in the Potential.
+        if some evs are d-separated, they are not included in the Tensor.
 
         Returns
         -------
-        pyAgrum.Potential
-          a Potential for P(targets|evs)
+        pyAgrum.Tensor
+          a Tensor for P(targets|evs)
 
         """
         return _bn.LoopyBeliefPropagation_evidenceImpact(self, *args)
@@ -16318,9 +16476,9 @@ class BNLearner(object):
 
         Returns
         -------
-        a Potential containing this pseudo-counts
+        a Tensor containing this pseudo-counts
         """
-        p=pyAgrum.base.Potential()
+        p=pyAgrum.base.Tensor()
         lv=list()
         for i in vars:
             if type(i) is str:

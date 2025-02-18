@@ -90,7 +90,7 @@ namespace gum {
     /// returns the type of the prior
     INLINE PriorType NoPrior::getType() const { return PriorType::NoPriorType; }
 
-    /// indicates whether the prior is potentially informative
+    /// indicates whether the prior is tensorly informative
     INLINE bool NoPrior::isInformative() const { return false; }
 
     /// returns the prior vector all the variables in the idset

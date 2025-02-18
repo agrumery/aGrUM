@@ -134,7 +134,7 @@ namespace gum {
     std::string _variableBloc_(const DiscreteVariable& var);
 
     // Returns a bloc defining a variable's CPT in the BIF format.
-    std::string _variableCPT_(const Potential< GUM_SCALAR >& cpt);
+    std::string _variableCPT_(const Tensor< GUM_SCALAR >& cpt);
 
     // Returns the modalities labels of the variables in varsSeq
     std::string _variablesLabels_(const Sequence< const DiscreteVariable* >& varsSeq,

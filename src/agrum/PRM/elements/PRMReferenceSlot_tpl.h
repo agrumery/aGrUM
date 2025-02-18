@@ -112,12 +112,12 @@ namespace gum {
     }
 
     template < typename GUM_SCALAR >
-    INLINE Potential< GUM_SCALAR >& PRMReferenceSlot< GUM_SCALAR >::cpf() {
+    INLINE Tensor< GUM_SCALAR >& PRMReferenceSlot< GUM_SCALAR >::cpf() {
       GUM_ERROR(OperationNotAllowed, "This is a ReferenceSlot.")
     }
 
     template < typename GUM_SCALAR >
-    INLINE const Potential< GUM_SCALAR >& PRMReferenceSlot< GUM_SCALAR >::cpf() const {
+    INLINE const Tensor< GUM_SCALAR >& PRMReferenceSlot< GUM_SCALAR >::cpf() const {
       GUM_ERROR(OperationNotAllowed, "This is a ReferenceSlot.")
     }
 

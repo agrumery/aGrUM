@@ -136,7 +136,7 @@ namespace gum {
       IBayesNet< GUM_SCALAR >(source), _varMap_(source._varMap_) {
     GUM_CONS_CPY(BayesNet)
 
-    _copyPotentials_(source);
+    _copyTensors_(source);
   }
 
   template < typename GUM_SCALAR >
@@ -145,8 +145,8 @@ namespace gum {
       IBayesNet< GUM_SCALAR >::operator=(source);
       _varMap_ = source._varMap_;
 
-      _clearPotentials_();
-      _copyPotentials_(source);
+      _clearTensors_();
+      _copyTensors_(source);
     }
 
     return *this;
@@ -235,7 +235,7 @@ namespace gum {
     _varMap_.insert(id, var);
     this->dag_.addNodeWithId(id);
 
-    auto cpt = new Potential< GUM_SCALAR >(aContent);
+    auto cpt = new Tensor< GUM_SCALAR >(aContent);
     (*cpt) << variable(id);
     _probaMap_.insert(id, cpt);
     return id;
@@ -253,7 +253,7 @@ namespace gum {
   }
 
   template < typename GUM_SCALAR >
-  INLINE const Potential< GUM_SCALAR >& BayesNet< GUM_SCALAR >::cpt(NodeId varId) const {
+  INLINE const Tensor< GUM_SCALAR >& BayesNet< GUM_SCALAR >::cpt(NodeId varId) const {
     return *(_probaMap_[varId]);
   }
 
@@ -351,7 +351,7 @@ namespace gum {
     // with the same notations as Shachter (1986), "evaluating influence
     // diagrams", p.878, we shall first compute the product of probabilities:
     // pi_j^old (x_j | x_c^old(j) ) * pi_i^old (x_i | x_c^old(i) )
-    Potential< GUM_SCALAR > prod{cpt(tail) * cpt(head)};
+    Tensor< GUM_SCALAR > prod{cpt(tail) * cpt(head)};
 
     // modify the topology of the graph: add to tail all the parents of head
     // and add to head all the parents of tail
@@ -382,13 +382,13 @@ namespace gum {
     // update the conditional distributions of head and tail
     gum::VariableSet del_vars;
     del_vars << &(variable(tail));
-    Potential< GUM_SCALAR > new_cpt_head = prod.sumOut(del_vars).putFirst(&variable(head));
+    Tensor< GUM_SCALAR > new_cpt_head = prod.sumOut(del_vars).putFirst(&variable(head));
 
-    auto& cpt_head = const_cast< Potential< GUM_SCALAR >& >(cpt(head));
+    auto& cpt_head = const_cast< Tensor< GUM_SCALAR >& >(cpt(head));
     cpt_head       = std::move(new_cpt_head);
 
-    Potential< GUM_SCALAR > new_cpt_tail{(prod / cpt_head).putFirst(&variable(tail))};
-    auto&                   cpt_tail = const_cast< Potential< GUM_SCALAR >& >(cpt(tail));
+    Tensor< GUM_SCALAR > new_cpt_tail{(prod / cpt_head).putFirst(&variable(tail))};
+    auto&                   cpt_tail = const_cast< Tensor< GUM_SCALAR >& >(cpt(tail));
     cpt_tail                         = std::move(new_cpt_tail);
   }
 
@@ -561,10 +561,10 @@ namespace gum {
       _probaMap_[node]->endMultipleChanges();
   }
 
-  /// clear all potentials
+  /// clear all tensors
   template < typename GUM_SCALAR >
-  void BayesNet< GUM_SCALAR >::_clearPotentials_() {
-    // Removing previous potentials
+  void BayesNet< GUM_SCALAR >::_clearTensors_() {
+    // Removing previous tensors
     for (const auto& elt: _probaMap_) {
       delete elt.second;
     }
@@ -572,14 +572,14 @@ namespace gum {
     _probaMap_.clear();
   }
 
-  /// copy of potentials from a BN to another, using names of vars as ref.
+  /// copy of tensors from a BN to another, using names of vars as ref.
   template < typename GUM_SCALAR >
-  void BayesNet< GUM_SCALAR >::_copyPotentials_(const BayesNet< GUM_SCALAR >& source) {
-    // Copying potentials
+  void BayesNet< GUM_SCALAR >::_copyTensors_(const BayesNet< GUM_SCALAR >& source) {
+    // Copying tensors
 
     for (const auto& src: source._probaMap_) {
       // First we build the node's CPT
-      auto copy_array = new Potential< GUM_SCALAR >();
+      auto copy_array = new Tensor< GUM_SCALAR >();
       copy_array->beginMultipleChanges();
       for (gum::Idx i = 0; i < src.second->nbrDim(); i++) {
         (*copy_array) << variableFromName(src.second->variable(i).name());
@@ -606,10 +606,10 @@ namespace gum {
   }
 
   template < typename GUM_SCALAR >
-  void BayesNet< GUM_SCALAR >::changePotential(NodeId id, Potential< GUM_SCALAR >* newPot) {
+  void BayesNet< GUM_SCALAR >::changeTensor(NodeId id, Tensor< GUM_SCALAR >* newPot) {
     if (cpt(id).nbrDim() != newPot->nbrDim()) {
       GUM_ERROR(OperationNotAllowed,
-                "cannot exchange potentials with different "
+                "cannot exchange tensors with different "
                 "dimensions for variable with id "
                     << id)
     }
@@ -617,24 +617,24 @@ namespace gum {
     for (Idx i = 0; i < cpt(id).nbrDim(); i++) {
       if (&cpt(id).variable(i) != &(newPot->variable(i))) {
         GUM_ERROR(OperationNotAllowed,
-                  "cannot exchange potentials because, for variable with id "
+                  "cannot exchange tensors because, for variable with id "
                       << id << ", dimension " << i << " differs. ")
       }
     }
 
-    _unsafeChangePotential_(id, newPot);
+    _unsafeChangeTensor_(id, newPot);
   }
 
   template < typename GUM_SCALAR >
-  void BayesNet< GUM_SCALAR >::_unsafeChangePotential_(NodeId id, Potential< GUM_SCALAR >* newPot) {
+  void BayesNet< GUM_SCALAR >::_unsafeChangeTensor_(NodeId id, Tensor< GUM_SCALAR >* newPot) {
     delete _probaMap_[id];
     _probaMap_[id] = newPot;
   }
 
   template < typename GUM_SCALAR >
-  void BayesNet< GUM_SCALAR >::changePotential(const std::string&       name,
-                                               Potential< GUM_SCALAR >* newPot) {
-    changePotential(idFromName(name), newPot);
+  void BayesNet< GUM_SCALAR >::changeTensor(const std::string&       name,
+                                               Tensor< GUM_SCALAR >* newPot) {
+    changeTensor(idFromName(name), newPot);
   }
 
 } /* namespace gum */

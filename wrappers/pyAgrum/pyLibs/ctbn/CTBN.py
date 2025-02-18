@@ -541,7 +541,7 @@ class CTBN:
     P = PCIM._pot
     Q = QCIM._pot
 
-    P1 = pyAgrum.Potential(P)
+    P1 = pyAgrum.Tensor(P)
 
     P1.fillWith(Q)
 

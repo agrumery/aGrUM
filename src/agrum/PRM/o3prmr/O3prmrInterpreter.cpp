@@ -437,7 +437,7 @@ namespace gum {
           command->chain  = std::make_pair(&instance, &attr);
 
           // Check label exists for this type.
-          // Potential<double> e;
+          // Tensor<double> e;
           command->potentiel.add(chain.second->type().variable());
           Instantiation i(command->potentiel);
           bool          found = false;
@@ -798,7 +798,7 @@ namespace gum {
         Timer timer;
         timer.reset();
 
-        Potential< double > m;
+        Tensor< double > m;
         m_inf->posterior(command->chain, m);
 
         // Compute spent time

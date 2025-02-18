@@ -236,7 +236,7 @@ namespace gum_tests {
     GUM_ACTIVE_TEST(Cpf) {
       // Arrange
       PRMAttribute             attr("attr", *_boolean_);
-      gum::Potential< double > expected;
+      gum::Tensor< double > expected;
       expected << attr.type().variable();
       // Act
       auto& actual = attr.cpf();
@@ -254,7 +254,7 @@ namespace gum_tests {
       // Arrange
       PRMAttribute             attr("attr", *_boolean_);
       const auto&              attr_const = attr;
-      gum::Potential< double > expected;
+      gum::Tensor< double > expected;
       expected << attr.type().variable();
       // Act
       const auto& actual = attr_const.cpf();

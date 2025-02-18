@@ -44,7 +44,7 @@
 #include <gumtest/utils.h>
 
 #include <agrum/base/graphicalModels/inference/scheduler/scheduleMultiDim.h>
-#include <agrum/base/multidim/potential.h>
+#include <agrum/base/multidim/tensor.h>
 #include <agrum/base/variables/labelizedVariable.h>
 
 namespace gum_tests {
@@ -68,7 +68,7 @@ namespace gum_tests {
       gum::Sequence< const gum::DiscreteVariable* > seq;
       seq << vars[0] << vars[2] << vars[4];
 
-      gum::ScheduleMultiDim< gum::Potential< double > > f1(seq);
+      gum::ScheduleMultiDim< gum::Tensor< double > > f1(seq);
       TS_ASSERT(f1.isAbstract());
       TS_ASSERT_THROWS(f1.multiDim(), const gum::NullElement&);
       TS_ASSERT(f1.id() == gum::Idx(1));
@@ -78,23 +78,23 @@ namespace gum_tests {
       s2 << "<id: " << f1.id() << ", table: -->";
       TS_ASSERT(s2.str() == s1);
 
-      gum::ScheduleMultiDim< gum::Potential< double > > f1bis(seq, 10);
+      gum::ScheduleMultiDim< gum::Tensor< double > > f1bis(seq, 10);
       TS_ASSERT_THROWS(f1bis.multiDim(), const gum::NullElement&);
       TS_ASSERT(f1.variablesSequence() == f1bis.variablesSequence());
       TS_ASSERT(f1bis.id() == gum::Idx(10));
       TS_ASSERT(f1bis.domainSize() == gum::Size(1000));
 
-      gum::ScheduleMultiDim< gum::Potential< double > > f1ter(seq, 10);
+      gum::ScheduleMultiDim< gum::Tensor< double > > f1ter(seq, 10);
       TS_ASSERT(f1.variablesSequence() == f1ter.variablesSequence());
       TS_ASSERT(f1ter.id() == gum::Idx(10));
       TS_ASSERT(f1ter.domainSize() == gum::Size(1000));
 
-      gum::ScheduleMultiDim< gum::Potential< double > > f1quart(seq);
+      gum::ScheduleMultiDim< gum::Tensor< double > > f1quart(seq);
       TS_ASSERT(f1.variablesSequence() == f1quart.variablesSequence());
       TS_ASSERT(f1quart.id() == gum::Idx(11));
       TS_ASSERT(f1quart.domainSize() == gum::Size(1000));
 
-      gum::ScheduleMultiDim< gum::Potential< double > > f2(f1);
+      gum::ScheduleMultiDim< gum::Tensor< double > > f2(f1);
       TS_ASSERT(f2.isAbstract());
       TS_ASSERT(f2.containsMultiDim() == false);
       TS_ASSERT_THROWS(f2.multiDim(), const gum::NullElement&);
@@ -112,7 +112,7 @@ namespace gum_tests {
       TS_ASSERT(f2.domainSize() == gum::Size(1000));
       TS_ASSERT(f2.variablesSequence() == seq);
 
-      gum::ScheduleMultiDim< gum::Potential< double > > f3(seq);
+      gum::ScheduleMultiDim< gum::Tensor< double > > f3(seq);
       TS_ASSERT(f1 != f3);
       TS_ASSERT(f1.hasSameVariables(f3));
       TS_ASSERT(f1.hasSameContent(f3));
@@ -121,46 +121,46 @@ namespace gum_tests {
       TS_ASSERT(f1.variablesSequence() == f3.variablesSequence());
       TS_ASSERT(f3.domainSize() == gum::Size(1000));
 
-      gum::ScheduleMultiDim< gum::Potential< double > > f3b(std::move(f3));
+      gum::ScheduleMultiDim< gum::Tensor< double > > f3b(std::move(f3));
       TS_ASSERT(f1 != f3b);
       TS_ASSERT(f1.hasSameVariables(f3b));
       TS_ASSERT(f1.hasSameContent(f3b));
       TS_ASSERT(f1.variablesSequence() == f3b.variablesSequence())
 
-      gum::Potential< double > pot;
+      gum::Tensor< double > pot;
       pot << *(vars[0]) << *(vars[2]) << *(vars[4]);
       const std::vector< double > cpt(1000, 10);
       pot.fillWith(cpt);
 
-      gum::ScheduleMultiDim< gum::Potential< double > > f4(pot, true, 5);
+      gum::ScheduleMultiDim< gum::Tensor< double > > f4(pot, true, 5);
       TS_ASSERT(!f4.isAbstract());
       TS_ASSERT(f1 != f4);
       TS_ASSERT(f1.hasSameVariables(f4));
       TS_ASSERT(!f1.hasSameContent(f4));
-      const gum::Potential< double >& res_pot = f4.multiDim();
+      const gum::Tensor< double >& res_pot = f4.multiDim();
       TS_ASSERT(pot == res_pot);
       TS_ASSERT(f4.containsMultiDim());
       TS_ASSERT(f4.domainSize() == gum::Size(1000));
 
-      gum::ScheduleMultiDim< gum::Potential< double > > f4bis(pot, true);
+      gum::ScheduleMultiDim< gum::Tensor< double > > f4bis(pot, true);
       TS_ASSERT(!f4bis.isAbstract());
       TS_ASSERT(f4.hasSameVariables(f4bis));
       TS_ASSERT(f4.hasSameContent(f4bis));
       TS_ASSERT(f4 != f4bis);
       TS_ASSERT(!(f4 == f4bis));
-      const gum::Potential< double >& res_pot_bis = f4bis.multiDim();
+      const gum::Tensor< double >& res_pot_bis = f4bis.multiDim();
       TS_ASSERT(res_pot == res_pot_bis);
       TS_ASSERT(f4bis.id() == gum::Idx(13));
       TS_ASSERT(f4bis.domainSize() == gum::Size(1000));
 
-      gum::ScheduleMultiDim< gum::Potential< double > > f4ter(pot, true, 2);
+      gum::ScheduleMultiDim< gum::Tensor< double > > f4ter(pot, true, 2);
       TS_ASSERT(!f4ter.isAbstract());
-      const gum::Potential< double >& res_pot_ter = f4ter.multiDim();
+      const gum::Tensor< double >& res_pot_ter = f4ter.multiDim();
       TS_ASSERT(res_pot == res_pot_ter);
       TS_ASSERT(f4ter.id() == gum::Idx(2));
       TS_ASSERT(f4ter.domainSize() == gum::Size(1000));
 
-      gum::ScheduleMultiDim< gum::Potential< double > > f4b(pot, false);
+      gum::ScheduleMultiDim< gum::Tensor< double > > f4b(pot, false);
       TS_ASSERT(!f4b.isAbstract());
       TS_ASSERT(f4.multiDim() == f4b.multiDim());
       TS_ASSERT(f4 != f4b);
@@ -169,8 +169,8 @@ namespace gum_tests {
       TS_ASSERT(f4b.id() == gum::Idx(14));
       TS_ASSERT(f4b.domainSize() == gum::Size(1000));
 
-      gum::Potential< double >                          xxpot = res_pot;
-      gum::ScheduleMultiDim< gum::Potential< double > > f4bt(xxpot, false, 5);
+      gum::Tensor< double >                          xxpot = res_pot;
+      gum::ScheduleMultiDim< gum::Tensor< double > > f4bt(xxpot, false, 5);
       TS_ASSERT(!f4bt.isAbstract());
       TS_ASSERT(f4bt.multiDim() == f4.multiDim());
       TS_ASSERT(f4ter.hasSameVariables(f4bt));
@@ -178,8 +178,8 @@ namespace gum_tests {
       TS_ASSERT(f4bt.id() == gum::Idx(5));
       TS_ASSERT(f4bt.domainSize() == gum::Size(1000));
 
-      gum::Potential< double >                          potx = res_pot;
-      gum::ScheduleMultiDim< gum::Potential< double > > f4c(std::move(potx));
+      gum::Tensor< double >                          potx = res_pot;
+      gum::ScheduleMultiDim< gum::Tensor< double > > f4c(std::move(potx));
       TS_ASSERT(!f4c.isAbstract());
       TS_ASSERT(f4c.containsMultiDim());
       TS_ASSERT(f4.multiDim() == f4c.multiDim());
@@ -187,8 +187,8 @@ namespace gum_tests {
       TS_ASSERT(f4c.id() == gum::Idx(15));
       TS_ASSERT(f4c.domainSize() == gum::Size(1000));
 
-      gum::Potential< double >                          potxx = res_pot;
-      gum::ScheduleMultiDim< gum::Potential< double > > f4d(std::move(potxx), 10);
+      gum::Tensor< double >                          potxx = res_pot;
+      gum::ScheduleMultiDim< gum::Tensor< double > > f4d(std::move(potxx), 10);
       TS_ASSERT(!f4d.isAbstract());
       TS_ASSERT(f4d.containsMultiDim());
       TS_ASSERT(f4.multiDim() == f4d.multiDim());
@@ -202,7 +202,7 @@ namespace gum_tests {
       TS_ASSERT(f4d.domainSize() == gum::Size(1000));
       TS_ASSERT(f4d.variablesSequence() == seq);
 
-      gum::ScheduleMultiDim< gum::Potential< double > > f5(f4);
+      gum::ScheduleMultiDim< gum::Tensor< double > > f5(f4);
       TS_ASSERT(!f5.isAbstract());
       TS_ASSERT(f5 == f4);
       TS_ASSERT(f5.hasSameContent(f4));
@@ -214,12 +214,12 @@ namespace gum_tests {
       s6 << "<id: 5, table: " << f5.multiDim().content() << ">";
       TS_ASSERT(s6.str() == s5);
 
-      gum::Potential< double > pot2;
+      gum::Tensor< double > pot2;
       pot2 << *(vars[1]) << *(vars[2]) << *(vars[4]);
       const std::vector< double > cpt2(1000, 42);
       pot2.fillWith(cpt2);
       f4.setMultiDim(pot2, true);
-      gum::ScheduleMultiDim< gum::Potential< double > > f6(f4);
+      gum::ScheduleMultiDim< gum::Tensor< double > > f6(f4);
       TS_ASSERT(f6.multiDim() == pot2);
       f6.setMultiDim(pot, true);
       TS_ASSERT(f6.multiDim() == pot);
@@ -231,12 +231,12 @@ namespace gum_tests {
       TS_ASSERT(f6.hasSameVariables(f4));
       TS_ASSERT(f6.hasSameContent(f4));
 
-      gum::ScheduleMultiDim< gum::Potential< double > > f7(pot, false, 5);
+      gum::ScheduleMultiDim< gum::Tensor< double > > f7(pot, false, 5);
       f7 = f4;
       TS_ASSERT(f7 == f4);
 
-      gum::ScheduleMultiDim< gum::Potential< double > > f8(pot, false, 8);
-      gum::ScheduleMultiDim< gum::Potential< double > > f9(pot2, true, 9);
+      gum::ScheduleMultiDim< gum::Tensor< double > > f8(pot, false, 8);
+      gum::ScheduleMultiDim< gum::Tensor< double > > f9(pot2, true, 9);
       TS_ASSERT(f9.multiDim() != f8.multiDim());
       f9 = f8;
       TS_ASSERT(!f8.containsMultiDim());
@@ -245,8 +245,8 @@ namespace gum_tests {
       TS_ASSERT(f8.hasSameVariables(f9));
       TS_ASSERT(f8.hasSameContent(f9));
 
-      gum::ScheduleMultiDim< gum::Potential< double > > f10(pot, false, 10);
-      gum::ScheduleMultiDim< gum::Potential< double > > f11(pot2, true, 10);
+      gum::ScheduleMultiDim< gum::Tensor< double > > f10(pot, false, 10);
+      gum::ScheduleMultiDim< gum::Tensor< double > > f11(pot2, true, 10);
       f10 = std::move(f11);
       TS_ASSERT(f10.containsMultiDim());
       TS_ASSERT(f10.variablesSequence() == pot2.variablesSequence());
@@ -264,7 +264,7 @@ namespace gum_tests {
       TS_ASSERT(f10.containsMultiDim());
       TS_ASSERT(f10.multiDim() == pot4);
 
-      gum::ScheduleMultiDim< gum::Potential< double > >* f12 = f10.clone();
+      gum::ScheduleMultiDim< gum::Tensor< double > >* f12 = f10.clone();
       TS_ASSERT(*f12 == f10);
       TS_ASSERT(f10.hasSameVariables(*f12));
       TS_ASSERT(f10.hasSameContent(*f12));
@@ -276,23 +276,23 @@ namespace gum_tests {
     }
 
     GUM_ACTIVE_TEST(Constants) {
-      gum::Potential< double > pot;
+      gum::Tensor< double > pot;
       pot.fillWith({42.42});
 
-      gum::ScheduleMultiDim< gum::Potential< double > > f1(pot, false);
+      gum::ScheduleMultiDim< gum::Tensor< double > > f1(pot, false);
       TS_ASSERT(!f1.containsMultiDim());
       TS_ASSERT(f1.domainSize() == 1);
 
-      gum::ScheduleMultiDim< gum::Potential< double > > f2(pot, true);
+      gum::ScheduleMultiDim< gum::Tensor< double > > f2(pot, true);
       TS_ASSERT(f2.containsMultiDim());
       TS_ASSERT(f2.domainSize() == 1);
-      gum::Potential< double >* pot2 = f2.exportMultiDim();
+      gum::Tensor< double >* pot2 = f2.exportMultiDim();
       TS_ASSERT(pot2->max() == pot2->min());
       TS_ASSERT(pot2->min() == 42.42);
       delete pot2;
 
       gum::Sequence< const gum::DiscreteVariable* >     seq;
-      gum::ScheduleMultiDim< gum::Potential< double > > f3(seq, 0);
+      gum::ScheduleMultiDim< gum::Tensor< double > > f3(seq, 0);
       TS_ASSERT(!f3.containsMultiDim());
       TS_ASSERT(f3.domainSize() == 1);
       TS_ASSERT(f3.isAbstract());

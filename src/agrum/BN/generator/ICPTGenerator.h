@@ -49,7 +49,7 @@
 
 #include <agrum/agrum.h>
 
-#include <agrum/base/multidim/potential.h>
+#include <agrum/base/multidim/tensor.h>
 
 namespace gum {
   /** @class ICPTGenerator
@@ -87,7 +87,7 @@ namespace gum {
      * @param varId The variable id of the CPT owner.
      * @param cpt A reference on the CPT to fill.
      */
-    virtual void generateCPT(const Idx& varId, const Potential< GUM_SCALAR >& cpt) const = 0;
+    virtual void generateCPT(const Idx& varId, const Tensor< GUM_SCALAR >& cpt) const = 0;
     /// @}
   };
 

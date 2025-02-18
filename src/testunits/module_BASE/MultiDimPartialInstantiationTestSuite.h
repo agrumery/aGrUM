@@ -51,7 +51,7 @@
 #include <agrum/base/multidim/implementations/multiDimArray.h>
 #include <agrum/base/multidim/implementations/multiDimPartialInstantiation.h>
 #include <agrum/base/multidim/instantiation.h>
-#include <agrum/base/multidim/potential.h>
+#include <agrum/base/multidim/tensor.h>
 #include <agrum/base/multidim/utils/partialInstantiation4MultiDim.h>
 #include <agrum/base/variables/labelizedVariable.h>
 
@@ -84,7 +84,7 @@ namespace gum_tests {
     // ==========================================================================
     /// initialize randomly a table
     // ==========================================================================
-    void randomInitP(gum::Potential< double >& t) {
+    void randomInitP(gum::Tensor< double >& t) {
       gum::Instantiation i(t);
 
       for (i.setFirst(); !i.end(); ++i)
@@ -94,7 +94,7 @@ namespace gum_tests {
     // ==========================================================================
     /// initialize randomly a table
     // ==========================================================================
-    void randomInitPPointer(gum::Potential< double* >& t) {
+    void randomInitPPointer(gum::Tensor< double* >& t) {
       gum::Instantiation i(t);
 
       for (i.setFirst(); !i.end(); ++i)
@@ -128,7 +128,7 @@ namespace gum_tests {
     }
 
     template < typename T >
-    void pointerDelete(gum::Potential< T* >* t) {
+    void pointerDelete(gum::Tensor< T* >* t) {
       if (t->variablesSequence().size()) {
         gum::Instantiation i(t);
 
@@ -164,7 +164,7 @@ namespace gum_tests {
     // ==========================================================================
     // ==========================================================================
     template < typename T >
-    bool equal(const gum::Potential< T* >& t1, const gum::Potential< T* >& t2) {
+    bool equal(const gum::Tensor< T* >& t1, const gum::Tensor< T* >& t2) {
       if ((t1.nbrDim() == t2.nbrDim()) && (t1.domainSize() == t2.domainSize())) {
         for (const auto var: t1.variablesSequence())
           if (!t2.variablesSequence().exists(var)) return false;
@@ -184,11 +184,11 @@ namespace gum_tests {
     // ==========================================================================
     // ==========================================================================
     template < typename T >
-    gum::Potential< T >* manual_instantiate(
-        const gum::Potential< T >&                                      t_in,
+    gum::Tensor< T >* manual_instantiate(
+        const gum::Tensor< T >&                                      t_in,
         const gum::HashTable< const gum::DiscreteVariable*, gum::Idx >& inst_vars) {
       // construction of the output table
-      gum::Potential< T >*                                 t_out = new gum::Potential< T >;
+      gum::Tensor< T >*                                 t_out = new gum::Tensor< T >;
       gum::Instantiation                                   partial_inst;
       const gum::Sequence< const gum::DiscreteVariable* >& tin_vars = t_in.variablesSequence();
       t_out->beginMultipleChanges();
@@ -221,11 +221,11 @@ namespace gum_tests {
     // ==========================================================================
     // ==========================================================================
     template < typename T >
-    gum::Potential< T* >* manual_instantiate(
-        const gum::Potential< T* >&                                     t_in,
+    gum::Tensor< T* >* manual_instantiate(
+        const gum::Tensor< T* >&                                     t_in,
         const gum::HashTable< const gum::DiscreteVariable*, gum::Idx >& inst_vars) {
       // construction of the output table
-      gum::Potential< T* >*                                t_out = new gum::Potential< T* >;
+      gum::Tensor< T* >*                                t_out = new gum::Tensor< T* >;
       gum::Instantiation                                   partial_inst;
       const gum::Sequence< const gum::DiscreteVariable* >& tin_vars = t_in.variablesSequence();
       t_out->beginMultipleChanges();
@@ -676,7 +676,7 @@ namespace gum_tests {
         delete vars[i];
     }
 
-    GUM_ACTIVE_TEST(_potential) {
+    GUM_ACTIVE_TEST(_tensor) {
       std::vector< gum::LabelizedVariable* > vars(10);
 
       for (gum::Idx i = 0; i < 10; ++i) {
@@ -686,7 +686,7 @@ namespace gum_tests {
         vars[i]       = new gum::LabelizedVariable(s, s, 4);
       }
 
-      gum::Potential< double > t1;
+      gum::Tensor< double > t1;
 
       t1 << *(vars[0]) << *(vars[1]) << *(vars[2]) << *(vars[3]) << *(vars[4]) << *(vars[5])
          << *(vars[6]) << *(vars[7]) << *(vars[8]) << *(vars[9]);
@@ -699,9 +699,9 @@ namespace gum_tests {
       inst_set.insert(vars[8], 3);
       inst_set.insert(vars[9], 2);
 
-      gum::Potential< double >* t2
-          = new gum::Potential< double >(partialInstantiation(t1, inst_set));
-      gum::Potential< double >* t3 = manual_instantiate(t1, inst_set);
+      gum::Tensor< double >* t2
+          = new gum::Tensor< double >(partialInstantiation(t1, inst_set));
+      gum::Tensor< double >* t3 = manual_instantiate(t1, inst_set);
 
       TS_ASSERT(*t2 == *t3)
       delete t2;
@@ -712,7 +712,7 @@ namespace gum_tests {
       inst_set.insert(vars[7], 0);
       inst_set.insert(vars[8], 2);
       inst_set.insert(vars[9], 3);
-      t2 = new gum::Potential< double >(partialInstantiation(t1, inst_set));
+      t2 = new gum::Tensor< double >(partialInstantiation(t1, inst_set));
       t3 = manual_instantiate(t1, inst_set);
       TS_ASSERT(*t2 == *t3)
       delete t2;
@@ -723,7 +723,7 @@ namespace gum_tests {
       inst_set.insert(vars[1], 0);
       inst_set.insert(vars[2], 2);
       inst_set.insert(vars[3], 3);
-      t2 = new gum::Potential< double >(partialInstantiation(t1, inst_set));
+      t2 = new gum::Tensor< double >(partialInstantiation(t1, inst_set));
       t3 = manual_instantiate(t1, inst_set);
       TS_ASSERT(*t2 == *t3)
       delete t2;
@@ -733,7 +733,7 @@ namespace gum_tests {
         delete vars[i];
     }
 
-    GUM_ACTIVE_TEST(_potential_pointer) {
+    GUM_ACTIVE_TEST(_tensor_pointer) {
       std::vector< gum::LabelizedVariable* > vars(10);
 
       for (gum::Idx i = 0; i < 10; ++i) {
@@ -743,7 +743,7 @@ namespace gum_tests {
         vars[i]       = new gum::LabelizedVariable(s, s, 4);
       }
 
-      gum::Potential< double* > t1;
+      gum::Tensor< double* > t1;
 
       t1 << *(vars[0]) << *(vars[1]) << *(vars[2]) << *(vars[3]) << *(vars[4]) << *(vars[5])
          << *(vars[6]) << *(vars[7]) << *(vars[8]) << *(vars[9]);
@@ -756,9 +756,9 @@ namespace gum_tests {
       inst_set.insert(vars[8], 3);
       inst_set.insert(vars[9], 2);
 
-      gum::Potential< double* >* t2
-          = new gum::Potential< double* >(partialInstantiation(t1, inst_set));
-      gum::Potential< double* >* t3 = manual_instantiate(t1, inst_set);
+      gum::Tensor< double* >* t2
+          = new gum::Tensor< double* >(partialInstantiation(t1, inst_set));
+      gum::Tensor< double* >* t3 = manual_instantiate(t1, inst_set);
 
       TS_ASSERT(equal(*t2, *t3))
       pointerDelete(t2);
@@ -769,7 +769,7 @@ namespace gum_tests {
       inst_set.insert(vars[7], 0);
       inst_set.insert(vars[8], 2);
       inst_set.insert(vars[9], 3);
-      t2 = new gum::Potential< double* >(partialInstantiation(t1, inst_set));
+      t2 = new gum::Tensor< double* >(partialInstantiation(t1, inst_set));
       t3 = manual_instantiate(t1, inst_set);
       TS_ASSERT(equal(*t2, *t3))
       pointerDelete(t2);
@@ -780,7 +780,7 @@ namespace gum_tests {
       inst_set.insert(vars[1], 0);
       inst_set.insert(vars[2], 2);
       inst_set.insert(vars[3], 3);
-      t2 = new gum::Potential< double* >(partialInstantiation(t1, inst_set));
+      t2 = new gum::Tensor< double* >(partialInstantiation(t1, inst_set));
       t3 = manual_instantiate(t1, inst_set);
       TS_ASSERT(equal(*t2, *t3))
       pointerDelete(t2);
@@ -800,9 +800,9 @@ namespace gum_tests {
         vars[i]       = new gum::LabelizedVariable(s, s, 4);
       }
 
-      gum::MultiDimPartialInstantiation< double, gum::Potential > MDPI;
+      gum::MultiDimPartialInstantiation< double, gum::Tensor > MDPI;
 
-      gum::Potential< double > t1;
+      gum::Tensor< double > t1;
 
       t1 << *(vars[0]) << *(vars[1]) << *(vars[2]) << *(vars[3]) << *(vars[4]) << *(vars[5])
          << *(vars[6]) << *(vars[7]) << *(vars[8]) << *(vars[9]);
@@ -815,8 +815,8 @@ namespace gum_tests {
       inst_set.insert(vars[8], 3);
       inst_set.insert(vars[9], 2);
 
-      gum::Potential< double >* t2 = MDPI.instantiate(t1, inst_set);
-      gum::Potential< double >* t3 = manual_instantiate(t1, inst_set);
+      gum::Tensor< double >* t2 = MDPI.instantiate(t1, inst_set);
+      gum::Tensor< double >* t3 = manual_instantiate(t1, inst_set);
 
       TS_ASSERT(*t2 == *t3)
       delete t2;

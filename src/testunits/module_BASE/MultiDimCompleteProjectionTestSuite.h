@@ -48,7 +48,7 @@
 
 #include <agrum/base/core/set.h>
 #include <agrum/base/multidim/implementations/multiDimArray.h>
-#include <agrum/base/multidim/potential.h>
+#include <agrum/base/multidim/tensor.h>
 #include <agrum/base/multidim/utils/operators/completeProjections4MultiDim.h>
 #include <agrum/base/multidim/utils/operators/multiDimCompleteProjection.h>
 #include <agrum/base/variables/labelizedVariable.h>
@@ -80,7 +80,7 @@ namespace gum_tests {
     // ==========================================================================
     /// initialize randomly a table
     // ==========================================================================
-    void randomInitP(gum::Potential< double >& t) {
+    void randomInitP(gum::Tensor< double >& t) {
       gum::Instantiation i(t);
 
       for (i.setFirst(); !i.end(); ++i)
@@ -90,7 +90,7 @@ namespace gum_tests {
     // ==========================================================================
     /// initialize randomly a table
     // ==========================================================================
-    void randomInitPPointer(gum::Potential< double* >& t) {
+    void randomInitPPointer(gum::Tensor< double* >& t) {
       gum::Instantiation i(t);
 
       for (i.setFirst(); !i.end(); ++i)
@@ -124,7 +124,7 @@ namespace gum_tests {
     }
 
     template < typename T >
-    void pointerDelete(gum::Potential< T* >* t) {
+    void pointerDelete(gum::Tensor< T* >* t) {
       if (t->variablesSequence().size()) {
         gum::Instantiation i(t);
 
@@ -155,7 +155,7 @@ namespace gum_tests {
       return result;
     }
 
-    double local_projmax(const gum::Potential< double >& table, gum::Instantiation& instantiation) {
+    double local_projmax(const gum::Tensor< double >& table, gum::Instantiation& instantiation) {
       const gum::MultiDimArray< double >& impl
           = dynamic_cast< const gum::MultiDimArray< double >& >(*(table.content()));
       return local_projmax(impl, instantiation);
@@ -180,7 +180,7 @@ namespace gum_tests {
       return result;
     }
 
-    double* local_projmax(const gum::Potential< double* >& table,
+    double* local_projmax(const gum::Tensor< double* >& table,
                           gum::Instantiation&              instantiation) {
       const gum::MultiDimArray< double* >& impl
           = dynamic_cast< const gum::MultiDimArray< double* >& >(*(table.content()));
@@ -383,7 +383,7 @@ namespace gum_tests {
         delete vars[i];
     }
 
-    GUM_ACTIVE_TEST(_potentials) {
+    GUM_ACTIVE_TEST(_tensors) {
       std::vector< gum::LabelizedVariable* > vars(10);
 
       for (gum::Idx i = 0; i < 10; ++i) {
@@ -393,7 +393,7 @@ namespace gum_tests {
         vars[i]       = new gum::LabelizedVariable(s, s, 3);
       }
 
-      gum::Potential< double > t1;
+      gum::Tensor< double > t1;
 
       t1 << *(vars[0]) << *(vars[1]) << *(vars[2]) << *(vars[3]) << *(vars[4]) << *(vars[5])
          << *(vars[6]) << *(vars[7]) << *(vars[8]) << *(vars[9]);
@@ -446,7 +446,7 @@ namespace gum_tests {
         delete vars[i];
     }
 
-    static double myMax(const gum::Potential< double >& table, gum::Instantiation* inst) {
+    static double myMax(const gum::Tensor< double >& table, gum::Instantiation* inst) {
       return table.max();
     }
 
@@ -459,12 +459,12 @@ namespace gum_tests {
         vars[i]       = new gum::LabelizedVariable(s, s, 3);
       }
 
-      gum::Potential< double > t1;
+      gum::Tensor< double > t1;
 
       t1 << *(vars[0]) << *(vars[1]) << *(vars[2]) << *(vars[3]) << *(vars[4]) << *(vars[5])
          << *(vars[6]) << *(vars[7]) << *(vars[8]) << *(vars[9]);
       randomInitP(t1);
-      gum::MultiDimCompleteProjection< double, gum::Potential > Proj(myMax);
+      gum::MultiDimCompleteProjection< double, gum::Tensor > Proj(myMax);
 
       gum::Instantiation inst(t1);
       double             t2 = Proj.project(t1);

@@ -104,7 +104,7 @@ class IncrementalLazyPropagationTestCase(pyAgrumTestCase):
                                0.3, 0.4, 0.3,
                                0.7, 0.1, 0.2])
 
-    # @todo add Potential.combine method in pyAgrum
+    # @todo add Tensor.combine method in pyAgrum
     self.joint = self.bn.cpt("A") * \
                  self.bn.cpt("B") * \
                  self.bn.cpt("C") * \
@@ -132,8 +132,8 @@ class IncrementalLazyPropagationTestCase(pyAgrumTestCase):
     self.ie.makeInference()
 
     posterior_joint = self.joint * \
-                      gum.Potential().add(self.bn.variable("B")).fillWith([0, 0, 1]) * \
-                      gum.Potential().add(self.bn.variable("D")).fillWith([0.2, 0.6, 0.6])
+                      gum.Tensor().add(self.bn.variable("B")).fillWith([0, 0, 1]) * \
+                      gum.Tensor().add(self.bn.variable("D")).fillWith([0.2, 0.6, 0.6])
 
     self.assertEqual(gum.getPosterior(self.bn, evs={1: 2, "D": [0.2, 0.6, 0.6]}, target="A"),
                      posterior_joint.sumIn(["A"]).normalize())
@@ -178,8 +178,8 @@ class IncrementalLazyPropagationTestCase(pyAgrumTestCase):
     self.ie.makeInference()
 
     posterior_joint = self.joint * \
-                      gum.Potential().add(self.bn.variable("B")).fillWith([0, 0, 1]) * \
-                      gum.Potential().add(self.bn.variable("D")).fillWith([0.2, 0.6, 0.6])
+                      gum.Tensor().add(self.bn.variable("B")).fillWith([0, 0, 1]) * \
+                      gum.Tensor().add(self.bn.variable("D")).fillWith([0.2, 0.6, 0.6])
 
     self.assertEqual(self.ie.posterior("A"), posterior_joint.sumIn(["A"]).normalize())
     self.assertEqual(self.ie.posterior("F"), posterior_joint.sumIn(["F"]).normalize())
@@ -194,9 +194,9 @@ class IncrementalLazyPropagationTestCase(pyAgrumTestCase):
     self.ie.addEvidence("H", [0.4, 0.2, 0.3])
 
     posterior_joint = self.joint * \
-                      gum.Potential().add(self.bn.variable("A")).fillWith([0.3, 0.7]) * \
-                      gum.Potential().add(self.bn.variable("B")).fillWith([0.3, 0.1, 0.8]) * \
-                      gum.Potential().add(self.bn.variable("H")).fillWith([0.4, 0.2, 0.3])
+                      gum.Tensor().add(self.bn.variable("A")).fillWith([0.3, 0.7]) * \
+                      gum.Tensor().add(self.bn.variable("B")).fillWith([0.3, 0.1, 0.8]) * \
+                      gum.Tensor().add(self.bn.variable("H")).fillWith([0.4, 0.2, 0.3])
 
     self.assertEqual(self.ie.posterior("A"), posterior_joint.sumIn(["A"]).normalize())
     self.assertEqual(self.ie.posterior("D"), posterior_joint.sumIn(["D"]).normalize())
@@ -206,9 +206,9 @@ class IncrementalLazyPropagationTestCase(pyAgrumTestCase):
     self.ie.chgEvidence("H", [0.2, 0.3, 0.6])
 
     posterior_joint = self.joint * \
-                      gum.Potential().add(self.bn.variable("A")).fillWith([1, 0]) * \
-                      gum.Potential().add(self.bn.variable("B")).fillWith([0.8, 0.4, 0.1]) * \
-                      gum.Potential().add(self.bn.variable("H")).fillWith([0.2, 0.3, 0.6])
+                      gum.Tensor().add(self.bn.variable("A")).fillWith([1, 0]) * \
+                      gum.Tensor().add(self.bn.variable("B")).fillWith([0.8, 0.4, 0.1]) * \
+                      gum.Tensor().add(self.bn.variable("H")).fillWith([0.2, 0.3, 0.6])
 
     self.assertEqual(self.ie.posterior("A"), posterior_joint.sumIn(["A"]).normalize())
     self.assertEqual(self.ie.posterior("D"), posterior_joint.sumIn(["D"]).normalize())
@@ -216,9 +216,9 @@ class IncrementalLazyPropagationTestCase(pyAgrumTestCase):
     self.ie.chgEvidence("H", [0.9, 0.1, 0.3])
 
     posterior_joint = self.joint * \
-                      gum.Potential().add(self.bn.variable("A")).fillWith([1, 0]) * \
-                      gum.Potential().add(self.bn.variable("B")).fillWith([0.8, 0.4, 0.1]) * \
-                      gum.Potential().add(self.bn.variable("H")).fillWith([0.9, 0.1, 0.3])
+                      gum.Tensor().add(self.bn.variable("A")).fillWith([1, 0]) * \
+                      gum.Tensor().add(self.bn.variable("B")).fillWith([0.8, 0.4, 0.1]) * \
+                      gum.Tensor().add(self.bn.variable("H")).fillWith([0.9, 0.1, 0.3])
 
     self.assertEqual(self.ie.posterior("A"), posterior_joint.sumIn(["A"]).normalize())
     self.assertEqual(self.ie.posterior("D"), posterior_joint.sumIn(["D"]).normalize())
@@ -227,9 +227,9 @@ class IncrementalLazyPropagationTestCase(pyAgrumTestCase):
     self.ie.chgEvidence("H", [0.8, 0.2, 0.3])
 
     posterior_joint = self.joint * \
-                      gum.Potential().add(self.bn.variable("A")).fillWith([1, 0]) * \
-                      gum.Potential().add(self.bn.variable("B")).fillWith([0.8, 0.4, 0.1]) * \
-                      gum.Potential().add(self.bn.variable("H")).fillWith([0.8, 0.2, 0.3])
+                      gum.Tensor().add(self.bn.variable("A")).fillWith([1, 0]) * \
+                      gum.Tensor().add(self.bn.variable("B")).fillWith([0.8, 0.4, 0.1]) * \
+                      gum.Tensor().add(self.bn.variable("H")).fillWith([0.8, 0.2, 0.3])
 
     self.assertEqual(self.ie.posterior("A"), posterior_joint.sumIn(["A"]).normalize())
     self.assertEqual(self.ie.posterior("D"), posterior_joint.sumIn(["D"]).normalize())
@@ -237,8 +237,8 @@ class IncrementalLazyPropagationTestCase(pyAgrumTestCase):
     self.ie.eraseEvidence("A")
 
     posterior_joint = self.joint * \
-                      gum.Potential().add(self.bn.variable("B")).fillWith([0.8, 0.4, 0.1]) * \
-                      gum.Potential().add(self.bn.variable("H")).fillWith([0.8, 0.2, 0.3])
+                      gum.Tensor().add(self.bn.variable("B")).fillWith([0.8, 0.4, 0.1]) * \
+                      gum.Tensor().add(self.bn.variable("H")).fillWith([0.8, 0.2, 0.3])
 
     self.assertEqual(self.ie.posterior("A"), posterior_joint.sumIn(["A"]).normalize())
     self.assertEqual(self.ie.posterior("D"), posterior_joint.sumIn(["D"]).normalize())
@@ -259,9 +259,9 @@ class IncrementalLazyPropagationTestCase(pyAgrumTestCase):
     self.ie.addEvidence("H", [0.4, 0.2, 0.3])
 
     posterior_joint = self.joint * \
-                      gum.Potential().add(self.bn.variable("A")).fillWith([0.3, 0.7]) * \
-                      gum.Potential().add(self.bn.variable("B")).fillWith([0.3, 0.1, 0.8]) * \
-                      gum.Potential().add(self.bn.variable("H")).fillWith([0.4, 0.2, 0.3])
+                      gum.Tensor().add(self.bn.variable("A")).fillWith([0.3, 0.7]) * \
+                      gum.Tensor().add(self.bn.variable("B")).fillWith([0.3, 0.1, 0.8]) * \
+                      gum.Tensor().add(self.bn.variable("H")).fillWith([0.4, 0.2, 0.3])
 
     self.assertEqual(self.ie.posterior("A"), posterior_joint.sumIn(["A"]).normalize())
     self.assertEqual(self.ie.posterior("D"), posterior_joint.sumIn(["D"]).normalize())
@@ -271,9 +271,9 @@ class IncrementalLazyPropagationTestCase(pyAgrumTestCase):
     self.ie.chgEvidence("H", [0.2, 0.3, 0.6])
 
     posterior_joint = self.joint * \
-                      gum.Potential().add(self.bn.variable("E")).fillWith([1, 0]) * \
-                      gum.Potential().add(self.bn.variable("B")).fillWith([0.3, 0.1, 0.8]) * \
-                      gum.Potential().add(self.bn.variable("H")).fillWith([0.2, 0.3, 0.6])
+                      gum.Tensor().add(self.bn.variable("E")).fillWith([1, 0]) * \
+                      gum.Tensor().add(self.bn.variable("B")).fillWith([0.3, 0.1, 0.8]) * \
+                      gum.Tensor().add(self.bn.variable("H")).fillWith([0.2, 0.3, 0.6])
 
     self.assertEqual(self.ie.posterior("A"), posterior_joint.sumIn(["A"]).normalize())
     self.assertEqual(self.ie.posterior("D"), posterior_joint.sumIn(["D"]).normalize())
@@ -283,10 +283,10 @@ class IncrementalLazyPropagationTestCase(pyAgrumTestCase):
     self.ie.chgEvidence("H", 1)
 
     posterior_joint = self.joint * \
-                      gum.Potential().add(self.bn.variable("A")).fillWith([1, 0]) * \
-                      gum.Potential().add(self.bn.variable("E")).fillWith([0.7, 0.7]) * \
-                      gum.Potential().add(self.bn.variable("B")).fillWith([0.3, 0.1, 0.8]) * \
-                      gum.Potential().add(self.bn.variable("H")).fillWith([0, 1, 0])
+                      gum.Tensor().add(self.bn.variable("A")).fillWith([1, 0]) * \
+                      gum.Tensor().add(self.bn.variable("E")).fillWith([0.7, 0.7]) * \
+                      gum.Tensor().add(self.bn.variable("B")).fillWith([0.3, 0.1, 0.8]) * \
+                      gum.Tensor().add(self.bn.variable("H")).fillWith([0, 1, 0])
 
     self.assertEqual(self.ie.posterior("A"), posterior_joint.sumIn(["A"]).normalize())
     self.assertEqual(self.ie.posterior("D"), posterior_joint.sumIn(["D"]).normalize())
@@ -301,9 +301,9 @@ class IncrementalLazyPropagationTestCase(pyAgrumTestCase):
     self.ie.addEvidence("H", [0.4, 0.2, 0.3])
 
     posterior_joint = self.joint * \
-                      gum.Potential().add(self.bn.variable("A")).fillWith([0.3, 0.7]) * \
-                      gum.Potential().add(self.bn.variable("B")).fillWith([0, 1, 0]) * \
-                      gum.Potential().add(self.bn.variable("H")).fillWith([0.4, 0.2, 0.3])
+                      gum.Tensor().add(self.bn.variable("A")).fillWith([0.3, 0.7]) * \
+                      gum.Tensor().add(self.bn.variable("B")).fillWith([0, 1, 0]) * \
+                      gum.Tensor().add(self.bn.variable("H")).fillWith([0.4, 0.2, 0.3])
 
     self.assertEqual(self.ie.posterior("A"), posterior_joint.sumIn(["A"]).normalize())
     self.assertEqual(self.ie.posterior("D"), posterior_joint.sumIn(["D"]).normalize())
@@ -312,9 +312,9 @@ class IncrementalLazyPropagationTestCase(pyAgrumTestCase):
     self.ie.chgEvidence("H", [0.2, 0.3, 0.6])
 
     posterior_joint = self.joint * \
-                      gum.Potential().add(self.bn.variable("A")).fillWith([1, 0]) * \
-                      gum.Potential().add(self.bn.variable("B")).fillWith([0, 1, 0]) * \
-                      gum.Potential().add(self.bn.variable("H")).fillWith([0.2, 0.3, 0.6])
+                      gum.Tensor().add(self.bn.variable("A")).fillWith([1, 0]) * \
+                      gum.Tensor().add(self.bn.variable("B")).fillWith([0, 1, 0]) * \
+                      gum.Tensor().add(self.bn.variable("H")).fillWith([0.2, 0.3, 0.6])
 
     self.assertEqual(self.ie.posterior("A"), posterior_joint.sumIn(["A"]).normalize())
     self.assertEqual(self.ie.posterior("D"), posterior_joint.sumIn(["D"]).normalize())
@@ -322,9 +322,9 @@ class IncrementalLazyPropagationTestCase(pyAgrumTestCase):
     self.ie.chgEvidence("A", [0, 1])
 
     posterior_joint = self.joint * \
-                      gum.Potential().add(self.bn.variable("A")).fillWith([0, 1]) * \
-                      gum.Potential().add(self.bn.variable("B")).fillWith([0, 1, 0]) * \
-                      gum.Potential().add(self.bn.variable("H")).fillWith([0.2, 0.3, 0.6])
+                      gum.Tensor().add(self.bn.variable("A")).fillWith([0, 1]) * \
+                      gum.Tensor().add(self.bn.variable("B")).fillWith([0, 1, 0]) * \
+                      gum.Tensor().add(self.bn.variable("H")).fillWith([0.2, 0.3, 0.6])
 
     self.assertEqual(self.ie.posterior("A"), posterior_joint.sumIn(["A"]).normalize())
     self.assertEqual(self.ie.posterior("D"), posterior_joint.sumIn(["D"]).normalize())
@@ -333,9 +333,9 @@ class IncrementalLazyPropagationTestCase(pyAgrumTestCase):
     self.ie.chgEvidence("H", [0.4, 0.2, 0.3])
 
     posterior_joint = self.joint * \
-                      gum.Potential().add(self.bn.variable("A")).fillWith([0.3, 0.7]) * \
-                      gum.Potential().add(self.bn.variable("B")).fillWith([0, 1, 0]) * \
-                      gum.Potential().add(self.bn.variable("H")).fillWith([0.4, 0.2, 0.3])
+                      gum.Tensor().add(self.bn.variable("A")).fillWith([0.3, 0.7]) * \
+                      gum.Tensor().add(self.bn.variable("B")).fillWith([0, 1, 0]) * \
+                      gum.Tensor().add(self.bn.variable("H")).fillWith([0.4, 0.2, 0.3])
 
     self.assertEqual(self.ie.posterior("A"), posterior_joint.sumIn(["A"]).normalize())
     self.assertEqual(self.ie.posterior("D"), posterior_joint.sumIn(["D"]).normalize())
@@ -343,8 +343,8 @@ class IncrementalLazyPropagationTestCase(pyAgrumTestCase):
     self.ie.eraseEvidence("A")
 
     posterior_joint = self.joint * \
-                      gum.Potential().add(self.bn.variable("B")).fillWith([0, 1, 0]) * \
-                      gum.Potential().add(self.bn.variable("H")).fillWith([0.4, 0.2, 0.3])
+                      gum.Tensor().add(self.bn.variable("B")).fillWith([0, 1, 0]) * \
+                      gum.Tensor().add(self.bn.variable("H")).fillWith([0.4, 0.2, 0.3])
 
     self.assertEqual(self.ie.posterior("A"), posterior_joint.sumIn(["A"]).normalize())
     self.assertEqual(self.ie.posterior("D"), posterior_joint.sumIn(["D"]).normalize())
@@ -352,9 +352,9 @@ class IncrementalLazyPropagationTestCase(pyAgrumTestCase):
     self.ie.addEvidence("A", 0)
 
     posterior_joint = self.joint * \
-                      gum.Potential().add(self.bn.variable("A")).fillWith([1, 0]) * \
-                      gum.Potential().add(self.bn.variable("B")).fillWith([0, 1, 0]) * \
-                      gum.Potential().add(self.bn.variable("H")).fillWith([0.4, 0.2, 0.3])
+                      gum.Tensor().add(self.bn.variable("A")).fillWith([1, 0]) * \
+                      gum.Tensor().add(self.bn.variable("B")).fillWith([0, 1, 0]) * \
+                      gum.Tensor().add(self.bn.variable("H")).fillWith([0.4, 0.2, 0.3])
 
     self.assertEqual(self.ie.posterior("A"), posterior_joint.sumIn(["A"]).normalize())
     self.assertEqual(self.ie.posterior("D"), posterior_joint.sumIn(["D"]).normalize())
@@ -369,9 +369,9 @@ class IncrementalLazyPropagationTestCase(pyAgrumTestCase):
     self.ie.addEvidence("H", [0.4, 0.2, 0.3])
 
     posterior_joint = self.joint * \
-                      gum.Potential().add(self.bn.variable("A")).fillWith([0.3, 0.7]) * \
-                      gum.Potential().add(self.bn.variable("B")).fillWith([0.3, 0.1, 0.8]) * \
-                      gum.Potential().add(self.bn.variable("H")).fillWith([0.4, 0.2, 0.3])
+                      gum.Tensor().add(self.bn.variable("A")).fillWith([0.3, 0.7]) * \
+                      gum.Tensor().add(self.bn.variable("B")).fillWith([0.3, 0.1, 0.8]) * \
+                      gum.Tensor().add(self.bn.variable("H")).fillWith([0.4, 0.2, 0.3])
 
     self.assertEqual(self.ie.posterior("A"), posterior_joint.sumIn(["A"]).normalize())
     self.assertEqual(self.ie.posterior("D"), posterior_joint.sumIn(["D"]).normalize())
@@ -381,9 +381,9 @@ class IncrementalLazyPropagationTestCase(pyAgrumTestCase):
     self.ie.chgEvidence("H", [0.2, 0.3, 0.6])
 
     posterior_joint = self.joint * \
-                      gum.Potential().add(self.bn.variable("E")).fillWith([1, 0]) * \
-                      gum.Potential().add(self.bn.variable("B")).fillWith([0.3, 0.1, 0.8]) * \
-                      gum.Potential().add(self.bn.variable("H")).fillWith([0.2, 0.3, 0.6])
+                      gum.Tensor().add(self.bn.variable("E")).fillWith([1, 0]) * \
+                      gum.Tensor().add(self.bn.variable("B")).fillWith([0.3, 0.1, 0.8]) * \
+                      gum.Tensor().add(self.bn.variable("H")).fillWith([0.2, 0.3, 0.6])
 
     self.assertEqual(self.ie.posterior("A"), posterior_joint.sumIn(["A"]).normalize())
     self.assertEqual(self.ie.posterior("D"), posterior_joint.sumIn(["D"]).normalize())
@@ -392,10 +392,10 @@ class IncrementalLazyPropagationTestCase(pyAgrumTestCase):
     self.ie.chgEvidence("E", [0.7, 0.7])
     self.ie.chgEvidence("H", [0, 1, 0])
     posterior_joint = self.joint * \
-                      gum.Potential().add(self.bn.variable("A")).fillWith([1, 0]) * \
-                      gum.Potential().add(self.bn.variable("E")).fillWith([0.7, 0.7]) * \
-                      gum.Potential().add(self.bn.variable("B")).fillWith([0.3, 0.1, 0.8]) * \
-                      gum.Potential().add(self.bn.variable("H")).fillWith([0, 1, 0])
+                      gum.Tensor().add(self.bn.variable("A")).fillWith([1, 0]) * \
+                      gum.Tensor().add(self.bn.variable("E")).fillWith([0.7, 0.7]) * \
+                      gum.Tensor().add(self.bn.variable("B")).fillWith([0.3, 0.1, 0.8]) * \
+                      gum.Tensor().add(self.bn.variable("H")).fillWith([0, 1, 0])
 
     self.assertEqual(self.ie.posterior("A"), posterior_joint.sumIn(["A"]).normalize())
     self.assertEqual(self.ie.posterior("D"), posterior_joint.sumIn(["D"]).normalize())
@@ -405,7 +405,7 @@ class IncrementalLazyPropagationTestCase(pyAgrumTestCase):
     self.ie.addJointTarget({"A", "D"})
     self.ie.addEvidence("A", [0.3, 0.7])
 
-    pjoint = self.joint * gum.Potential().add(self.bn.variable("A")).fillWith([0.3, 0.7])
+    pjoint = self.joint * gum.Tensor().add(self.bn.variable("A")).fillWith([0.3, 0.7])
     self.assertEqual(self.ie.jointPosterior({'A', 'D'}), pjoint.sumIn(["A", "D"]).normalize())
     self.assertEqual(self.ie.jointPosterior({'A', 'C'}), pjoint.sumIn(["A", "C"]).normalize())
 

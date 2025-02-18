@@ -98,32 +98,32 @@ namespace gum_tests {
       TS_GUM_ASSERT_THROWS_NOTHING(dIDI.makeInference())
 
       TS_ASSERT_EQUALS(dIDI.posterior("OilContents"),
-                       (gum::Potential< double >() << net.variableFromName("OilContents"))
+                       (gum::Tensor< double >() << net.variableFromName("OilContents"))
                            .fillWith({0.5, 0.3, 0.2}))
       TS_ASSERT_EQUALS(dIDI.posteriorUtility("OilContents"),
-                       (gum::Potential< double >() << net.variableFromName("OilContents"))
+                       (gum::Tensor< double >() << net.variableFromName("OilContents"))
                            .fillWith({-38, 25, 170}))
 
       TS_ASSERT_EQUALS(dIDI.posterior("TestResult"),
-                       (gum::Potential< double >() << net.variableFromName("TestResult"))
+                       (gum::Tensor< double >() << net.variableFromName("TestResult"))
                            .fillWith({0.24, 0.35, 0.41}))
       TS_ASSERT_EQUALS(dIDI.posteriorUtility("TestResult"),
-                       (gum::Potential< double >() << net.variableFromName("TestResult"))
+                       (gum::Tensor< double >() << net.variableFromName("TestResult"))
                            .fillWith({77.5, 22.8571, -10}))
 
       TS_ASSERT_EQUALS(
           dIDI.posterior("Testing"),
-          (gum::Potential< double >() << net.variableFromName("Testing")).fillWith({1, 0}))
+          (gum::Tensor< double >() << net.variableFromName("Testing")).fillWith({1, 0}))
       TS_ASSERT_EQUALS(
           dIDI.posteriorUtility("Testing"),
-          (gum::Potential< double >() << net.variableFromName("Testing")).fillWith({22.5, 20}))
+          (gum::Tensor< double >() << net.variableFromName("Testing")).fillWith({22.5, 20}))
 
       TS_ASSERT_EQUALS(
           dIDI.posterior("Drilling"),
-          (gum::Potential< double >() << net.variableFromName("Drilling")).fillWith({0.59, 0.41}))
+          (gum::Tensor< double >() << net.variableFromName("Drilling")).fillWith({0.59, 0.41}))
       TS_ASSERT_EQUALS(
           dIDI.posteriorUtility("Drilling"),
-          (gum::Potential< double >() << net.variableFromName("Drilling")).fillWith({45.0847, -10}))
+          (gum::Tensor< double >() << net.variableFromName("Drilling")).fillWith({45.0847, -10}))
 
       TS_ASSERT_DELTA(dIDI.meanVar("Cost").first, -10, TS_GUM_SMALL_ERROR)
       TS_ASSERT_DELTA(dIDI.meanVar("Cost").second, 0, TS_GUM_SMALL_ERROR)
@@ -142,40 +142,40 @@ namespace gum_tests {
       dIDI.addEvidence("Testing", "No");
       TS_GUM_ASSERT_THROWS_NOTHING(dIDI.makeInference())
 
-      TS_GUM_POTENTIAL_DELTA(dIDI.posterior("OilContents"),
-                             (gum::Potential< double >() << net.variableFromName("OilContents"))
+      TS_GUM_TENSOR_DELTA(dIDI.posterior("OilContents"),
+                             (gum::Tensor< double >() << net.variableFromName("OilContents"))
                                  .fillWith({0.5, 0.3, 0.2}),
                              TS_GUM_SMALL_ERROR)
-      TS_GUM_POTENTIAL_DELTA(dIDI.posteriorUtility("OilContents"),
-                             (gum::Potential< double >() << net.variableFromName("OilContents"))
+      TS_GUM_TENSOR_DELTA(dIDI.posteriorUtility("OilContents"),
+                             (gum::Tensor< double >() << net.variableFromName("OilContents"))
                                  .fillWith({-70, 50, 200}),
                              TS_GUM_SMALL_ERROR)
 
-      TS_GUM_POTENTIAL_DELTA(dIDI.posterior("TestResult"),
-                             (gum::Potential< double >() << net.variableFromName("TestResult"))
+      TS_GUM_TENSOR_DELTA(dIDI.posterior("TestResult"),
+                             (gum::Tensor< double >() << net.variableFromName("TestResult"))
                                  .fillWith({0.333333, 0.333333, 0.333333}),
                              TS_GUM_SMALL_ERROR)
-      TS_GUM_POTENTIAL_DELTA(
+      TS_GUM_TENSOR_DELTA(
           dIDI.posteriorUtility("TestResult"),
-          (gum::Potential< double >() << net.variableFromName("TestResult")).fillWith({20, 20, 20}),
+          (gum::Tensor< double >() << net.variableFromName("TestResult")).fillWith({20, 20, 20}),
           TS_GUM_SMALL_ERROR)
 
-      TS_GUM_POTENTIAL_DELTA(
+      TS_GUM_TENSOR_DELTA(
           dIDI.posterior("Testing"),
-          (gum::Potential< double >() << net.variableFromName("Testing")).fillWith({0, 1}),
+          (gum::Tensor< double >() << net.variableFromName("Testing")).fillWith({0, 1}),
           TS_GUM_SMALL_ERROR)
-      TS_GUM_POTENTIAL_DELTA(
+      TS_GUM_TENSOR_DELTA(
           dIDI.posteriorUtility("Testing"),
-          (gum::Potential< double >() << net.variableFromName("Testing")).fillWith({0, 20}),
+          (gum::Tensor< double >() << net.variableFromName("Testing")).fillWith({0, 20}),
           TS_GUM_SMALL_ERROR)
 
-      TS_GUM_POTENTIAL_DELTA(
+      TS_GUM_TENSOR_DELTA(
           dIDI.posterior("Drilling"),
-          (gum::Potential< double >() << net.variableFromName("Drilling")).fillWith({1, 0}),
+          (gum::Tensor< double >() << net.variableFromName("Drilling")).fillWith({1, 0}),
           TS_GUM_SMALL_ERROR)
-      TS_GUM_POTENTIAL_DELTA(
+      TS_GUM_TENSOR_DELTA(
           dIDI.posteriorUtility("Drilling"),
-          (gum::Potential< double >() << net.variableFromName("Drilling")).fillWith({20, 0}),
+          (gum::Tensor< double >() << net.variableFromName("Drilling")).fillWith({20, 0}),
           TS_GUM_SMALL_ERROR)
 
       TS_ASSERT_DELTA(dIDI.meanVar("Cost").first, 0, TS_GUM_SMALL_ERROR)
@@ -197,40 +197,40 @@ namespace gum_tests {
       dIDI.addEvidence("OilContents", "Wet");
       TS_GUM_ASSERT_THROWS_NOTHING(dIDI.makeInference())
 
-      TS_GUM_POTENTIAL_DELTA(dIDI.posterior("OilContents"),
-                             (gum::Potential< double >() << net.variableFromName("OilContents"))
+      TS_GUM_TENSOR_DELTA(dIDI.posterior("OilContents"),
+                             (gum::Tensor< double >() << net.variableFromName("OilContents"))
                                  .fillWith({0.0, 1.0, 0.0}),
                              TS_GUM_SMALL_ERROR)
-      TS_GUM_POTENTIAL_DELTA(
+      TS_GUM_TENSOR_DELTA(
           dIDI.posteriorUtility("OilContents"),
-          (gum::Potential< double >() << net.variableFromName("OilContents")).fillWith({0, 50, 0}),
+          (gum::Tensor< double >() << net.variableFromName("OilContents")).fillWith({0, 50, 0}),
           TS_GUM_SMALL_ERROR)
 
-      TS_GUM_POTENTIAL_DELTA(dIDI.posterior("TestResult"),
-                             (gum::Potential< double >() << net.variableFromName("TestResult"))
+      TS_GUM_TENSOR_DELTA(dIDI.posterior("TestResult"),
+                             (gum::Tensor< double >() << net.variableFromName("TestResult"))
                                  .fillWith({0.333333, 0.333333, 0.333333}),
                              TS_GUM_SMALL_ERROR)
-      TS_GUM_POTENTIAL_DELTA(
+      TS_GUM_TENSOR_DELTA(
           dIDI.posteriorUtility("TestResult"),
-          (gum::Potential< double >() << net.variableFromName("TestResult")).fillWith({50, 50, 50}),
+          (gum::Tensor< double >() << net.variableFromName("TestResult")).fillWith({50, 50, 50}),
           TS_GUM_SMALL_ERROR)
 
-      TS_GUM_POTENTIAL_DELTA(
+      TS_GUM_TENSOR_DELTA(
           dIDI.posterior("Testing"),
-          (gum::Potential< double >() << net.variableFromName("Testing")).fillWith({0, 1}),
+          (gum::Tensor< double >() << net.variableFromName("Testing")).fillWith({0, 1}),
           TS_GUM_SMALL_ERROR)
-      TS_GUM_POTENTIAL_DELTA(
+      TS_GUM_TENSOR_DELTA(
           dIDI.posteriorUtility("Testing"),
-          (gum::Potential< double >() << net.variableFromName("Testing")).fillWith({40, 50}),
+          (gum::Tensor< double >() << net.variableFromName("Testing")).fillWith({40, 50}),
           TS_GUM_SMALL_ERROR)
 
-      TS_GUM_POTENTIAL_DELTA(
+      TS_GUM_TENSOR_DELTA(
           dIDI.posterior("Drilling"),
-          (gum::Potential< double >() << net.variableFromName("Drilling")).fillWith({1, 0}),
+          (gum::Tensor< double >() << net.variableFromName("Drilling")).fillWith({1, 0}),
           TS_GUM_SMALL_ERROR)
-      TS_GUM_POTENTIAL_DELTA(
+      TS_GUM_TENSOR_DELTA(
           dIDI.posteriorUtility("Drilling"),
-          (gum::Potential< double >() << net.variableFromName("Drilling")).fillWith({50, 0}),
+          (gum::Tensor< double >() << net.variableFromName("Drilling")).fillWith({50, 0}),
           TS_GUM_SMALL_ERROR)
 
       TS_ASSERT_DELTA(dIDI.meanVar("Cost").first, 0, TS_GUM_SMALL_ERROR)
@@ -279,22 +279,22 @@ namespace gum_tests {
       {
         gum::ShaferShenoyLIMIDInference< double > inf(&net);
         inf.makeInference();
-        TS_GUM_POTENTIAL_DELTA(inf.optimalDecision(d),
-                               (gum::Potential< double >() << net.variable(d)).fillWith({0, 1}),
+        TS_GUM_TENSOR_DELTA(inf.optimalDecision(d),
+                               (gum::Tensor< double >() << net.variable(d)).fillWith({0, 1}),
                                TS_GUM_SMALL_ERROR)
         TS_ASSERT_EQUALS(inf.MEU().first, 110.5)
       }
       {
         gum::ShaferShenoyLIMIDInference< double > inf(&net);
-        gum::Potential< double >                  evidence;
+        gum::Tensor< double >                  evidence;
         evidence.add(net.variableFromName("c"));
         evidence.populate({1, 0});
-        gum::List< const gum::Potential< double >* > l;
+        gum::List< const gum::Tensor< double >* > l;
         l.insert(&evidence);
         inf.addListOfEvidence(l);
         inf.makeInference();
-        TS_GUM_POTENTIAL_DELTA(inf.optimalDecision(d),
-                               (gum::Potential< double >() << net.variable(d)).fillWith({0, 1}),
+        TS_GUM_TENSOR_DELTA(inf.optimalDecision(d),
+                               (gum::Tensor< double >() << net.variable(d)).fillWith({0, 1}),
                                TS_GUM_SMALL_ERROR)
         TS_ASSERT_EQUALS(inf.MEU().first, 21)
       }
@@ -379,19 +379,19 @@ namespace gum_tests {
       auto                                      model = buildNeapolitanModel_();
       gum::ShaferShenoyLIMIDInference< double > inf(&model);
 
-      gum::Potential< double > eDoTest;
+      gum::Tensor< double > eDoTest;
       eDoTest.add(model.variableFromName("DoTest"));
       eDoTest.fillWith({0, 0, 1});   // both
 
-      gum::Potential< double > eFirstTest;
+      gum::Tensor< double > eFirstTest;
       eFirstTest.add(model.variableFromName("FirstTest"));
       eFirstTest.fillWith({0, 1, 0});   // positive
 
-      gum::Potential< double > eSecondTest;
+      gum::Tensor< double > eSecondTest;
       eSecondTest.add(model.variableFromName("SecondTest"));
       eSecondTest.fillWith({0, 1, 0});   // positive
 
-      gum::List< const gum::Potential< double >* > l;
+      gum::List< const gum::Tensor< double >* > l;
       l.insert(&eDoTest);
       l.insert(&eFirstTest);
       l.insert(&eSecondTest);
@@ -555,16 +555,16 @@ namespace gum_tests {
       ieid.makeInference();
 
       TS_ASSERT_EQUALS(ieid.posteriorUtility("BusinessDecision"),
-                       (gum::Potential< double >() << net.variableFromName("BusinessDecision"))
+                       (gum::Tensor< double >() << net.variableFromName("BusinessDecision"))
                            .fillWith({181.0879, 276.25, 200}))
 
 
       TS_ASSERT_EQUALS(
           ieid.posterior("RentalRate"),
-          (gum::Potential< double >() << net.variableFromName("RentalRate")).fillWith({0.25, 0.75}))
+          (gum::Tensor< double >() << net.variableFromName("RentalRate")).fillWith({0.25, 0.75}))
 
       TS_ASSERT_EQUALS(ieid.posterior("RevenueLevel"),
-                       (gum::Potential< double >() << net.variableFromName("RevenueLevel"))
+                       (gum::Tensor< double >() << net.variableFromName("RevenueLevel"))
                            .fillWith({0.185, 0.63, 0.185}))
     }
 
@@ -578,7 +578,7 @@ namespace gum_tests {
       TS_ASSERT_THROWS(ieid.addEvidence("U", 0), const gum::InvalidNode&)
       TS_ASSERT_THROWS(
           ieid.addEvidence(
-              (gum::Potential< double >() << net.variableFromName("DoTest")).fillWith({0.5, 1, 0})),
+              (gum::Tensor< double >() << net.variableFromName("DoTest")).fillWith({0.5, 1, 0})),
           const gum::InvalidNode&)
       TS_ASSERT_THROWS(ieid.addEvidence("DoTest", "Both"), const gum::InvalidArgument&)
       ieid.eraseAllEvidence();
@@ -589,7 +589,7 @@ namespace gum_tests {
       try {
         TS_ASSERT_EQUALS(
             ieid.posterior("DoTest"),
-            (gum::Potential< double >() << net.variableFromName("DoTest")).fillWith({0, 0, 1}))
+            (gum::Tensor< double >() << net.variableFromName("DoTest")).fillWith({0, 0, 1}))
         // are this values correct ?
         TS_ASSERT_DELTA(ieid.MEU().first, -10.600002592, TS_GUM_SMALL_ERROR)
         TS_ASSERT_DELTA(ieid.MEU().second, 138.2398, 1e-4)
@@ -606,14 +606,14 @@ namespace gum_tests {
       auto ie = gum::ShaferShenoyLIMIDInference< double >(&net);
       ie.makeInference();
       TS_ASSERT_EQUALS(ie.optimalDecision("d"),
-                       (gum::Potential< double >() << net.variableFromName("d")).fillWith({0, 1}))
+                       (gum::Tensor< double >() << net.variableFromName("d")).fillWith({0, 1}))
       TS_ASSERT_EQUALS(ie.MEU().first, 110.5)
       TS_ASSERT_EQUALS(
           ie.posterior("c1"),
-          (gum::Potential< double >() << net.variableFromName("c1")).fillWith({0.5, 0.5}))
-      TS_GUM_POTENTIAL_DELTA(
+          (gum::Tensor< double >() << net.variableFromName("c1")).fillWith({0.5, 0.5}))
+      TS_GUM_TENSOR_DELTA(
           ie.posteriorUtility("d"),
-          (gum::Potential< double >() << net.variableFromName("d")).fillWith({55.0, 110.5}),
+          (gum::Tensor< double >() << net.variableFromName("d")).fillWith({55.0, 110.5}),
           TS_GUM_SMALL_ERROR)
     }
 
@@ -626,13 +626,13 @@ namespace gum_tests {
       ie.addEvidence("c", 1);
       ie.makeInference();
       TS_ASSERT_EQUALS(ie.optimalDecision("d"),
-                       (gum::Potential< double >() << net.variableFromName("d")).fillWith({0, 1}))
+                       (gum::Tensor< double >() << net.variableFromName("d")).fillWith({0, 1}))
       TS_ASSERT_EQUALS(ie.MEU().first, 200)
       TS_ASSERT_EQUALS(ie.posterior("c1"),
-                       (gum::Potential< double >() << net.variableFromName("c1")).fillWith({0, 1}))
-      TS_GUM_POTENTIAL_DELTA(
+                       (gum::Tensor< double >() << net.variableFromName("c1")).fillWith({0, 1}))
+      TS_GUM_TENSOR_DELTA(
           ie.posteriorUtility("d"),
-          (gum::Potential< double >() << net.variableFromName("d")).fillWith({100, 200}),
+          (gum::Tensor< double >() << net.variableFromName("d")).fillWith({100, 200}),
           TS_GUM_SMALL_ERROR)
     }
 
@@ -646,17 +646,17 @@ namespace gum_tests {
       ie.addEvidence("d", 1);
       ie.makeInference();
 
-      TS_GUM_POTENTIAL_DELTA(
+      TS_GUM_TENSOR_DELTA(
           ie.optimalDecision("d"),
-          (gum::Potential< double >() << net.variableFromName("d")).fillWith({0, 1}),
+          (gum::Tensor< double >() << net.variableFromName("d")).fillWith({0, 1}),
           TS_GUM_SMALL_ERROR)
       TS_ASSERT_EQUALS(ie.MEU().first, 110.5)
       TS_ASSERT_EQUALS(
           ie.posterior("c1"),
-          (gum::Potential< double >() << net.variableFromName("c1")).fillWith({0.5, 0.5}))
-      TS_GUM_POTENTIAL_DELTA(
+          (gum::Tensor< double >() << net.variableFromName("c1")).fillWith({0.5, 0.5}))
+      TS_GUM_TENSOR_DELTA(
           ie.posteriorUtility("d"),
-          (gum::Potential< double >() << net.variableFromName("d")).fillWith({0, 110.5}),
+          (gum::Tensor< double >() << net.variableFromName("d")).fillWith({0, 110.5}),
           TS_GUM_SMALL_ERROR)
     }
 
@@ -670,16 +670,16 @@ namespace gum_tests {
       ie.addEvidence("c1", std::vector< double >{0.8, 0.2});
       ie.makeInference();
       TS_ASSERT_EQUALS(ie.optimalDecision("d"),
-                       (gum::Potential< double >() << net.variableFromName("d")).fillWith({0, 1}))
+                       (gum::Tensor< double >() << net.variableFromName("d")).fillWith({0, 1}))
       TS_ASSERT_EQUALS(ie.MEU().first, 56.8)
       TS_ASSERT_DELTA(ie.MEU().second, 5126.56, TS_GUM_SMALL_ERROR)
-      TS_GUM_POTENTIAL_DELTA(
+      TS_GUM_TENSOR_DELTA(
           ie.posterior("c"),
-          (gum::Potential< double >() << net.variableFromName("c")).fillWith({0.8, 0.2}),
+          (gum::Tensor< double >() << net.variableFromName("c")).fillWith({0.8, 0.2}),
           TS_GUM_SMALL_ERROR)
-      TS_GUM_POTENTIAL_DELTA(
+      TS_GUM_TENSOR_DELTA(
           ie.posteriorUtility("d"),
-          (gum::Potential< double >() << net.variableFromName("d")).fillWith({28, 56.8}),
+          (gum::Tensor< double >() << net.variableFromName("d")).fillWith({28, 56.8}),
           TS_GUM_SMALL_ERROR)
     }
 
@@ -692,18 +692,18 @@ namespace gum_tests {
 
         gum::ShaferShenoyLIMIDInference< double > ie(&net);
         TS_GUM_ASSERT_THROWS_NOTHING(ie.makeInference())
-        TS_GUM_POTENTIAL_DELTA(ie.posteriorUtility("Accept2B"),
-                               (gum::Potential< double >() << net.variableFromName("Accept2B"))
+        TS_GUM_TENSOR_DELTA(ie.posteriorUtility("Accept2B"),
+                               (gum::Tensor< double >() << net.variableFromName("Accept2B"))
                                    .fillWith({2.000, 4.6348}),
                                TS_GUM_SMALL_ERROR)
-        TS_GUM_POTENTIAL_DELTA(
+        TS_GUM_TENSOR_DELTA(
             ie.posterior("Court_Decision"),
-            (gum::Potential< double >() << net.variableFromName("Court_Decision"))
+            (gum::Tensor< double >() << net.variableFromName("Court_Decision"))
                 .fillWith({0.2, 0.5, 0.3}),
             TS_GUM_SMALL_ERROR)
-        TS_GUM_POTENTIAL_DELTA(
+        TS_GUM_TENSOR_DELTA(
             ie.posterior("Texaco_Reaction"),
-            (gum::Potential< double >() << net.variableFromName("Texaco_Reaction"))
+            (gum::Tensor< double >() << net.variableFromName("Texaco_Reaction"))
                 .fillWith({0.17, 0.5, 0.33}),
             TS_GUM_SMALL_ERROR)
       } catch (gum::Exception& e) { GUM_SHOWERROR(e) }
@@ -718,9 +718,9 @@ namespace gum_tests {
       auto ie = gum::ShaferShenoyLIMIDInference< double >(&fs);
       ie.makeInference();
 
-      TS_GUM_POTENTIAL_DELTA(
+      TS_GUM_TENSOR_DELTA(
           ie.optimalDecision("Options"),
-          (gum::Potential< double >() << fs.variableFromName("Options")).fillWith({1, 0}),
+          (gum::Tensor< double >() << fs.variableFromName("Options")).fillWith({1, 0}),
           TS_GUM_SMALL_ERROR)
     }
 
@@ -735,16 +735,16 @@ namespace gum_tests {
       auto ie = gum::ShaferShenoyLIMIDInference< double >(&defer);
       ie.makeInference();
 
-      TS_GUM_POTENTIAL_DELTA(
+      TS_GUM_TENSOR_DELTA(
           ie.posteriorUtility("D"),
-          (gum::Potential< double >() << defer.variableFromName("D")).fillWith({-0.1014, -0.400}),
+          (gum::Tensor< double >() << defer.variableFromName("D")).fillWith({-0.1014, -0.400}),
           1e-4)
 
       ie.addEvidence("E", "E1");
       ie.makeInference();
-      TS_GUM_POTENTIAL_DELTA(
+      TS_GUM_TENSOR_DELTA(
           ie.posteriorUtility("D"),
-          (gum::Potential< double >() << defer.variableFromName("D")).fillWith({-0.1818, -0.0818}),
+          (gum::Tensor< double >() << defer.variableFromName("D")).fillWith({-0.1818, -0.0818}),
           1e-4)
 
       gum::InfluenceDiagram< double > defer2(defer);
@@ -753,9 +753,9 @@ namespace gum_tests {
       ie2.addEvidence("E", "E1");
       ie2.makeInference();
 
-      TS_GUM_POTENTIAL_DELTA(
+      TS_GUM_TENSOR_DELTA(
           ie2.posteriorUtility("D"),
-          (gum::Potential< double >() << defer2.variableFromName("D")).fillWith({-0.1818, -0.0818}),
+          (gum::Tensor< double >() << defer2.variableFromName("D")).fillWith({-0.1818, -0.0818}),
           1e-4)
     }
 
@@ -801,13 +801,13 @@ namespace gum_tests {
       ie.addEvidence("D", 0);
       ie.makeInference();
 
-      TS_GUM_POTENTIAL_DELTA(
+      TS_GUM_TENSOR_DELTA(
           iediag.posterior("L2"),
-          (gum::Potential< double >() << diag.variableFromName("L2")).fillWith(ie.posterior("L2")),
+          (gum::Tensor< double >() << diag.variableFromName("L2")).fillWith(ie.posterior("L2")),
           TS_GUM_SMALL_ERROR);
-      TS_GUM_POTENTIAL_DELTA(
+      TS_GUM_TENSOR_DELTA(
           iediag.posterior("L3"),
-          (gum::Potential< double >() << diag.variableFromName("L3")).fillWith(ie.posterior("L3")),
+          (gum::Tensor< double >() << diag.variableFromName("L3")).fillWith(ie.posterior("L3")),
           TS_GUM_SMALL_ERROR);
     }
 
@@ -837,8 +837,8 @@ namespace gum_tests {
 
       for (const auto nod: bn.nodes()) {
         const std::string& name = bn.variable(nod).name();
-        TS_GUM_POTENTIAL_DELTA(iediag.posterior(name),
-                               (gum::Potential< double >() << diag.variableFromName(name))
+        TS_GUM_TENSOR_DELTA(iediag.posterior(name),
+                               (gum::Tensor< double >() << diag.variableFromName(name))
                                    .fillWith(ie.posterior(name)),
                                TS_GUM_SMALL_ERROR);
       }

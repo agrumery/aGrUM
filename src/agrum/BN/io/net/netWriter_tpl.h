@@ -105,7 +105,7 @@ namespace gum {
 
   // Returns a bloc defining a variable's CPT in the BN format.
   template < typename GUM_SCALAR >
-  INLINE std::string NetWriter< GUM_SCALAR >::_variableCPT_(const Potential< GUM_SCALAR >& cpt) {
+  INLINE std::string NetWriter< GUM_SCALAR >::_variableCPT_(const Tensor< GUM_SCALAR >& cpt) {
     std::stringstream str;
     std::string       tab = "   ";   // poor tabulation
 

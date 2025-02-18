@@ -46,7 +46,7 @@
 #include <agrum/config.h>
 
 #include <agrum/base/multidim/instantiation.h>
-#include <agrum/base/multidim/potential.h>
+#include <agrum/base/multidim/tensor.h>
 #include <agrum/base/variables/labelizedVariable.h>
 #include <agrum/BN/BayesNetFragment.h>
 #include <agrum/BN/generator/simpleCPTGenerator.h>
@@ -126,8 +126,8 @@ namespace gum_tests {
         // copy the cpt except for var5
         for (const auto node: bn.nodes())
           if (node != bn.idFromName("v5")) {
-            const gum::Potential< double >& pot = bn.cpt(node);
-            const gum::Potential< double >& src
+            const gum::Tensor< double >& pot = bn.cpt(node);
+            const gum::Tensor< double >& src
                 = source.cpt(source.idFromName(bn.variable(node).name()));
             gum::Instantiation I(pot);
             gum::Instantiation J(src);
@@ -479,22 +479,22 @@ namespace gum_tests {
         // propagation in the full BN
         gum::LazyPropagation< double > inf_complete(&bn);
 
-        gum::Potential< double > ev;
+        gum::Tensor< double > ev;
         ev << bn.variable(bn.idFromName("v3"));
         ev.fillWith({0.0, 1.0});
 
-        gum::List< const gum::Potential< double >* > l{&ev};
+        gum::List< const gum::Tensor< double >* > l{&ev};
         inf_complete.addEvidence(ev);
         inf_complete.makeInference();
 
         auto                            p  = inf_complete.posterior(bn.idFromName("v6"));
-        const gum::Potential< double >& p1 = inf_complete.posterior(bn.idFromName("v6"));
+        const gum::Tensor< double >& p1 = inf_complete.posterior(bn.idFromName("v6"));
 
         // propagation in the fragment
         gum::BayesNetFragment< double > frag(bn);
         frag.installAscendants(bn.idFromName("v6"));   // 1->3->6
 
-        gum::Potential< double > newV3;
+        gum::Tensor< double > newV3;
         newV3 << bn.variable(bn.idFromName("v3"));
         newV3.fillWith({0.0, 1.0});
         frag.installMarginal(frag.idFromName("v3"), newV3);   // 1   3->6
@@ -504,7 +504,7 @@ namespace gum_tests {
         gum::LazyPropagation< double > inf_frag(&frag);
         inf_frag.makeInference();
 
-        const gum::Potential< double >& p2 = inf_frag.posterior(bn.idFromName("v6"));
+        const gum::Tensor< double >& p2 = inf_frag.posterior(bn.idFromName("v6"));
 
         // comparison
         gum::Instantiation I(p1);
@@ -538,7 +538,7 @@ namespace gum_tests {
 
       TS_ASSERT(!frag.checkConsistency())
 
-      gum::Potential< double > newV5;
+      gum::Tensor< double > newV5;
       newV5 << bn.variable(bn.idFromName("v5"));
       newV5.fillWith({0.0, 0.0, 1.0});
       frag.installMarginal(frag.idFromName("v5"), newV5);   // 1-->3-->6 5
@@ -552,7 +552,7 @@ namespace gum_tests {
       TS_ASSERT_EQUALS(frag.sizeArcs(), (gum::Size)6)
 
       frag.uninstallCPT(frag.idFromName("v5"));
-      // V5 potential got its 3 parents back from the referred BN
+      // V5 tensor got its 3 parents back from the referred BN
       // the fragment is the BN
       TS_ASSERT(frag.checkConsistency())
       TS_ASSERT_EQUALS(frag.size(), (gum::Size)6)
@@ -564,7 +564,7 @@ namespace gum_tests {
       TS_ASSERT_EQUALS(frag.size(), (gum::Size)5)
       TS_ASSERT_EQUALS(frag.sizeArcs(), (gum::Size)4)
 
-      gum::Potential< double > newV5bis;
+      gum::Tensor< double > newV5bis;
       newV5bis << bn.variable(bn.idFromName("v5")) << bn.variable(bn.idFromName("v2"))
                << bn.variable(bn.idFromName("v3"));
       frag.installCPT(frag.idFromName("v5"), newV5bis);
@@ -588,11 +588,11 @@ namespace gum_tests {
       TS_ASSERT_EQUALS(frag.size(), (gum::Size)6)
       TS_ASSERT_EQUALS(frag.sizeArcs(), (gum::Size)7)
 
-      gum::Potential< double > newV5;
+      gum::Tensor< double > newV5;
       newV5 << bn.variable(bn.idFromName("v5")) << bn.variable(bn.idFromName("v2"))
             << bn.variable(bn.idFromName("v3"));
 
-      const gum::Potential< double >& pot2 = bn2.cpt(bn2.idFromName("v5"));
+      const gum::Tensor< double >& pot2 = bn2.cpt(bn2.idFromName("v5"));
       gum::Instantiation              I(pot2);
       gum::Instantiation              J(newV5);
 
@@ -609,11 +609,11 @@ namespace gum_tests {
 
       gum::LazyPropagation< double > ie2(&bn2);
       ie2.makeInference();
-      const gum::Potential< double >& p2 = ie2.posterior(bn2.idFromName("v5"));
+      const gum::Tensor< double >& p2 = ie2.posterior(bn2.idFromName("v5"));
 
       gum::LazyPropagation< double > ie(&frag);
       ie.makeInference();
-      const gum::Potential< double >& p1 = ie.posterior(frag.idFromName("v5"));
+      const gum::Tensor< double >& p1 = ie.posterior(frag.idFromName("v5"));
 
       // comparison
       gum::Instantiation II(p1);
@@ -634,7 +634,7 @@ namespace gum_tests {
       TS_ASSERT_THROWS(frag.toBN(), const gum::OperationNotAllowed&)
 
       // checking if the nodes are well copied and referenced in frag and then in
-      // minibn checking if the potential are well copied
+      // minibn checking if the tensor are well copied
       frag.installNode("A");
       TS_ASSERT(frag.checkConsistency())
       TS_ASSERT_EQUALS(&bn.variable("A"), &frag.variable("A"))

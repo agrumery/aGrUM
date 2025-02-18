@@ -92,7 +92,7 @@ namespace gum {
       if (this->hasEvidence(query)) _insertEvidence_(query, pool);
 
       for (const auto attr: attr_set)
-        pool.insert(&(const_cast< Potential< GUM_SCALAR >& >(query->get(attr).cpf())));
+        pool.insert(&(const_cast< Tensor< GUM_SCALAR >& >(query->get(attr).cpf())));
 
       for (size_t idx = 0; idx < t.eliminationOrder().size(); ++idx) {
         if (t.eliminationOrder()[idx] != node) {
@@ -157,7 +157,7 @@ namespace gum {
         _insertLiftedNodes_(i, pool, trash);
 
         for (const auto agg: i->type().aggregates())
-          if (_bb_.requisiteNodes(i).exists(agg->id())) pool.insert(_getAggPotential_(i, agg));
+          if (_bb_.requisiteNodes(i).exists(agg->id())) pool.insert(_getAggTensor_(i, agg));
 
         try {
           InstanceBayesNet< GUM_SCALAR >         bn(*i);
@@ -223,7 +223,7 @@ namespace gum {
         _insertLiftedNodes_(i, pool, trash);
 
         for (const auto agg: i->type().aggregates())
-          if (_bb_.requisiteNodes(i).exists(agg->id())) pool.insert(_getAggPotential_(i, agg));
+          if (_bb_.requisiteNodes(i).exists(agg->id())) pool.insert(_getAggTensor_(i, agg));
 
         try {
           InstanceBayesNet< GUM_SCALAR >         bn(*i);
@@ -267,12 +267,12 @@ namespace gum {
       // Adding required evidences
       for (const auto& elt: this->evidence(i))
         if (_bb_.requisiteNodes(i).exists(elt.first))
-          pool.insert(const_cast< Potential< GUM_SCALAR >* >(elt.second));
+          pool.insert(const_cast< Tensor< GUM_SCALAR >* >(elt.second));
 
-      // Adding potentials and eliminating the remaining nodes
+      // Adding tensors and eliminating the remaining nodes
       for (const auto& a: *i)
         if (_bb_.requisiteNodes(i).exists(a.first))
-          pool.insert(&(const_cast< Potential< GUM_SCALAR >& >(a.second->cpf())));
+          pool.insert(&(const_cast< Tensor< GUM_SCALAR >& >(a.second->cpf())));
 
       InstanceBayesNet< GUM_SCALAR > bn(*i);
       const auto                     moralg = bn.moralGraph();
@@ -297,7 +297,7 @@ namespace gum {
       }
 
       for (const auto lifted_pot: *lifted_pool) {
-        Potential< GUM_SCALAR >* pot = copyPotential(i->bijection(), *lifted_pot);
+        Tensor< GUM_SCALAR >* pot = copyTensor(i->bijection(), *lifted_pot);
         pool.insert(pot);
         trash.insert(pot);
       }
@@ -312,7 +312,7 @@ namespace gum {
 
       for (const auto node: _bb_.requisiteNodes(i))
         if (PRMClassElement< GUM_SCALAR >::isAttribute(c.get(node)))
-          lifted_pool->insert(const_cast< Potential< GUM_SCALAR >* >(&(c.get(node).cpf())));
+          lifted_pool->insert(const_cast< Tensor< GUM_SCALAR >* >(&(c.get(node).cpf())));
 
       NodeSet inners, outers, ignore;
 
@@ -403,14 +403,14 @@ namespace gum {
     }
 
     template < typename GUM_SCALAR >
-    void SVED< GUM_SCALAR >::posterior_(const Chain& chain, Potential< GUM_SCALAR >& m) {
+    void SVED< GUM_SCALAR >::posterior_(const Chain& chain, Tensor< GUM_SCALAR >& m) {
       const PRMInstance< GUM_SCALAR >*  i   = chain.first;
       const PRMAttribute< GUM_SCALAR >* elt = chain.second;
       SVED< GUM_SCALAR >::BucketSet     pool, trash;
       _bb_.compute(i, elt->id());
       _eliminateNodes_(i, elt->id(), pool, trash);
 
-      std::vector< const Potential< GUM_SCALAR >* > result;
+      std::vector< const Tensor< GUM_SCALAR >* > result;
       for (auto pot: pool) {
         if (pot->contains(*(m.variablesSequence().atPos(0)))) result.push_back(pot);
       }
@@ -420,7 +420,7 @@ namespace gum {
         result.pop_back();
         const auto& p2 = *(result.back());
         result.pop_back();
-        auto mult = new Potential< GUM_SCALAR >(p1 * p2);
+        auto mult = new Tensor< GUM_SCALAR >(p1 * p2);
         result.push_back(mult);
         trash.insert(mult);
       }
@@ -454,7 +454,7 @@ namespace gum {
 
     template < typename GUM_SCALAR >
     void SVED< GUM_SCALAR >::joint_(const std::vector< Chain >& queries,
-                                    Potential< GUM_SCALAR >&    j) {
+                                    Tensor< GUM_SCALAR >&    j) {
       GUM_ERROR(FatalError, "Not implemented.")
     }
 
@@ -499,7 +499,7 @@ namespace gum {
     INLINE void SVED< GUM_SCALAR >::_insertEvidence_(const PRMInstance< GUM_SCALAR >* i,
                                                      BucketSet&                       pool) {
       for (const auto& elt: this->evidence(i))
-        pool.insert(const_cast< Potential< GUM_SCALAR >* >(elt.second));
+        pool.insert(const_cast< Tensor< GUM_SCALAR >* >(elt.second));
     }
 
     template < typename GUM_SCALAR >
@@ -526,10 +526,10 @@ namespace gum {
     }
 
     template < typename GUM_SCALAR >
-    INLINE Potential< GUM_SCALAR >*
-           SVED< GUM_SCALAR >::_getAggPotential_(const PRMInstance< GUM_SCALAR >*  i,
+    INLINE Tensor< GUM_SCALAR >*
+           SVED< GUM_SCALAR >::_getAggTensor_(const PRMInstance< GUM_SCALAR >*  i,
                                               const PRMAggregate< GUM_SCALAR >* agg) {
-      return &(const_cast< Potential< GUM_SCALAR >& >(i->get(agg->safeName()).cpf()));
+      return &(const_cast< Tensor< GUM_SCALAR >& >(i->get(agg->safeName()).cpf()));
     }
 
     template < typename GUM_SCALAR >

@@ -423,7 +423,7 @@ begin Multiple Change for all CPTs
 These functions delay the CPTs change to be done just once at the end of a sequence of topology modification, begins a sequence of insertions/deletions of arcs without changing the dimensions of the CPTs.
 "
 
-%feature("docstring") gum::BayesNet::changePotential
+%feature("docstring") gum::BayesNet::changeTensor
 "
 change the CPT associated to nodeId to newPot delete the old CPT associated to nodeId.
 
@@ -431,8 +431,8 @@ Parameters
 ----------
 var : Union[int,str]
 	the current name or the id of the variable
-newPot : pyAgrum.Potential
-	the new potential
+newPot : pyAgrum.Tensor
+	the new tensor
 
 Raises
 ------
@@ -499,7 +499,7 @@ Clear the whole BayesNet
 "
 Remove a variable from the gum::BayesNet.
 
-Removes the corresponding variable from the gum::BayesNet and from all of it's children gum::Potential.
+Removes the corresponding variable from the gum::BayesNet and from all of it's children gum::Tensor.
 
 If no variable matches the given id, then nothing is done.
 
@@ -848,7 +848,7 @@ VarId :  Union[int,str]
 
 Returns
 -------
-pyAgrum.Potential
+pyAgrum.Tensor
 	The variable's CPT.
 
 Raises

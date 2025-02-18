@@ -91,11 +91,11 @@ namespace gum {
     return (_state_ == StateOfInference::OutdatedStructure);
   }
 
-  // returns whether the inference object is in a OutdatedPotential state
+  // returns whether the inference object is in a OutdatedTensor state
   template < typename GUM_SCALAR >
   INLINE bool
-      GraphicalModelInference< GUM_SCALAR >::isInferenceOutdatedPotentials() const noexcept {
-    return (_state_ == StateOfInference::OutdatedPotentials);
+      GraphicalModelInference< GUM_SCALAR >::isInferenceOutdatedTensors() const noexcept {
+    return (_state_ == StateOfInference::OutdatedTensors);
   }
 
   // returns whether the inference object is in a InferenceDone state
@@ -179,7 +179,7 @@ namespace gum {
 
   // create the internal structure for a hard evidence
   template < typename GUM_SCALAR >
-  Potential< GUM_SCALAR >
+  Tensor< GUM_SCALAR >
       GraphicalModelInference< GUM_SCALAR >::_createHardEvidence_(NodeId id, const Idx val) const {
     // check that it is possible to create the evidence
     if (_model_ == nullptr)
@@ -194,8 +194,8 @@ namespace gum {
                 "node " << _model_->variable(id) << " has fewer possible values than " << val);
     }
 
-    // create the deterministic potential
-    Potential< GUM_SCALAR > pot;
+    // create the deterministic tensor
+    Tensor< GUM_SCALAR > pot;
     pot.beginMultipleChanges();
     pot << _model_->variable(id);
     pot.endMultipleChanges(0.0);
@@ -207,9 +207,9 @@ namespace gum {
     return pot;
   }
 
-  // checks wether a potential corresponds to a hard evidence
+  // checks wether a tensor corresponds to a hard evidence
   template < typename GUM_SCALAR >
-  bool GraphicalModelInference< GUM_SCALAR >::_isHardEvidence_(const Potential< GUM_SCALAR >& pot,
+  bool GraphicalModelInference< GUM_SCALAR >::_isHardEvidence_(const Tensor< GUM_SCALAR >& pot,
                                                                Idx& val) const {
     // checking if pot is determininstic
     bool          notZero = false;
@@ -279,7 +279,7 @@ namespace gum {
                         << " and its evidence vector have different sizes.");
     }
 
-    Potential< GUM_SCALAR > pot;
+    Tensor< GUM_SCALAR > pot;
     pot.add(_model_->variable(id));
     pot.fillWith(vals);
     addEvidence(std::move(pot));
@@ -294,8 +294,8 @@ namespace gum {
 
   // adds a new evidence on node id (might be soft or hard)
   template < typename GUM_SCALAR >
-  void GraphicalModelInference< GUM_SCALAR >::addEvidence(Potential< GUM_SCALAR >&& pot) {
-    // check if the potential corresponds to an evidence
+  void GraphicalModelInference< GUM_SCALAR >::addEvidence(Tensor< GUM_SCALAR >&& pot) {
+    // check if the tensor corresponds to an evidence
     if (pot.nbrDim() != 1) { GUM_ERROR(InvalidArgument, pot << " is not mono-dimensional.") }
     if (_model_ == nullptr)
       GUM_ERROR(NullElement,
@@ -310,14 +310,14 @@ namespace gum {
     }
 
     // check whether we have a hard evidence (and also check whether the
-    // potential only contains 0 (in this case, this will automatically raise
+    // tensor only contains 0 (in this case, this will automatically raise
     // an exception) )
     Idx  val              = 0;
     bool is_hard_evidence = _isHardEvidence_(pot, val);
 
     // insert the evidence
     _evidence_.insert(id,
-                      new Potential< GUM_SCALAR >(std::forward< Potential< GUM_SCALAR > >(pot)));
+                      new Tensor< GUM_SCALAR >(std::forward< Tensor< GUM_SCALAR > >(pot)));
     if (is_hard_evidence) {   // pot is deterministic
       _hard_evidence_.insert(id, val);
       _hard_evidence_nodes_.insert(id);
@@ -331,15 +331,15 @@ namespace gum {
   // adds a new evidence on node id (might be soft or hard)
   template < typename GUM_SCALAR >
   INLINE void
-      GraphicalModelInference< GUM_SCALAR >::addEvidence(const Potential< GUM_SCALAR >& pot) {
-    Potential< GUM_SCALAR > new_pot(pot);
+      GraphicalModelInference< GUM_SCALAR >::addEvidence(const Tensor< GUM_SCALAR >& pot) {
+    Tensor< GUM_SCALAR > new_pot(pot);
     addEvidence(std::move(new_pot));
   }
 
   /// adds a new list of evidence
   template < typename GUM_SCALAR >
   INLINE void GraphicalModelInference< GUM_SCALAR >::addListOfEvidence(
-      const List< const Potential< GUM_SCALAR >* >& potlist) {
+      const List< const Tensor< GUM_SCALAR >* >& potlist) {
     for (const auto pot: potlist)
       addEvidence(*pot);
   }
@@ -347,7 +347,7 @@ namespace gum {
   /// adds a new set of evidence
   template < typename GUM_SCALAR >
   INLINE void GraphicalModelInference< GUM_SCALAR >::addSetOfEvidence(
-      const Set< const Potential< GUM_SCALAR >* >& potset) {
+      const Set< const Tensor< GUM_SCALAR >* >& potset) {
     for (const auto pot: potset)
       addEvidence(*pot);
   }
@@ -443,8 +443,8 @@ namespace gum {
                 "node " << _model_->variable(id) << " and its evidence have different sizes.");
     }
 
-    // create the potential corresponding to vals
-    Potential< GUM_SCALAR > pot;
+    // create the tensor corresponding to vals
+    Tensor< GUM_SCALAR > pot;
     pot.add(_model_->variable(id));
     pot.fillWith(vals);
     chgEvidence(pot);
@@ -460,10 +460,10 @@ namespace gum {
 
   // change the value of an already existing evidence (might be soft or hard)
   template < typename GUM_SCALAR >
-  void GraphicalModelInference< GUM_SCALAR >::chgEvidence(const Potential< GUM_SCALAR >& pot) {
-    // check if the potential corresponds to an evidence
+  void GraphicalModelInference< GUM_SCALAR >::chgEvidence(const Tensor< GUM_SCALAR >& pot) {
+    // check if the tensor corresponds to an evidence
     if (pot.nbrDim() != 1) {
-      GUM_ERROR(InvalidArgument, pot << " is not a mono-dimensional potential.")
+      GUM_ERROR(InvalidArgument, pot << " is not a mono-dimensional tensor.")
     }
     if (_model_ == nullptr)
       GUM_ERROR(NullElement,
@@ -477,13 +477,13 @@ namespace gum {
     }
 
     // check whether we have a hard evidence (and also check whether the
-    // potential only contains 0 (in this case, this will automatically raise
+    // tensor only contains 0 (in this case, this will automatically raise
     // an exception) )
     Idx  val;
     bool is_hard_evidence = _isHardEvidence_(pot, val);
 
     // modify the evidence already stored
-    const Potential< GUM_SCALAR >* localPot = _evidence_[id];
+    const Tensor< GUM_SCALAR >* localPot = _evidence_[id];
     Instantiation                  I(pot);
     for (I.setFirst(); !I.end(); I.inc()) {
       localPot->set(I, pot[I]);
@@ -514,7 +514,7 @@ namespace gum {
     if (hasChangedSoftHard) {
       setState_(StateOfInference::OutdatedStructure);
     } else {
-      if (!isInferenceOutdatedStructure()) { setState_(StateOfInference::OutdatedPotentials); }
+      if (!isInferenceOutdatedStructure()) { setState_(StateOfInference::OutdatedTensors); }
     }
 
     onEvidenceChanged_(id, hasChangedSoftHard);
@@ -532,7 +532,7 @@ namespace gum {
       } else {
         onEvidenceErased_(id, false);
         _soft_evidence_nodes_.erase(id);
-        if (!isInferenceOutdatedStructure()) { setState_(StateOfInference::OutdatedPotentials); }
+        if (!isInferenceOutdatedStructure()) { setState_(StateOfInference::OutdatedTensors); }
       }
 
       delete (_evidence_[id]);
@@ -564,7 +564,7 @@ namespace gum {
     if (has_hard_evidence) {
       setState_(StateOfInference::OutdatedStructure);
     } else {
-      if (!isInferenceOutdatedStructure()) { setState_(StateOfInference::OutdatedPotentials); }
+      if (!isInferenceOutdatedStructure()) { setState_(StateOfInference::OutdatedTensors); }
     }
   }
 
@@ -594,7 +594,7 @@ namespace gum {
 
   // the set of evidence entered into the network
   template < typename GUM_SCALAR >
-  INLINE const NodeProperty< const Potential< GUM_SCALAR >* >&
+  INLINE const NodeProperty< const Tensor< GUM_SCALAR >* >&
                GraphicalModelInference< GUM_SCALAR >::evidence() const {
     return _evidence_;
   }
@@ -621,11 +621,11 @@ namespace gum {
     setState_(StateOfInference::OutdatedStructure);
   }
 
-  /** puts the inference into an OutdatedPotentials state if it is not
+  /** puts the inference into an OutdatedTensors state if it is not
    *  already in an OutdatedStructure state */
   template < typename GUM_SCALAR >
-  INLINE void GraphicalModelInference< GUM_SCALAR >::setOutdatedPotentialsState_() {
-    setState_(StateOfInference::OutdatedPotentials);
+  INLINE void GraphicalModelInference< GUM_SCALAR >::setOutdatedTensorsState_() {
+    setState_(StateOfInference::OutdatedTensors);
   }
 
   // prepare the internal inference structures for the next inference
@@ -639,7 +639,7 @@ namespace gum {
                 "inference algorithm");
 
     if (_state_ == StateOfInference::OutdatedStructure) updateOutdatedStructure_();
-    else updateOutdatedPotentials_();
+    else updateOutdatedTensors_();
 
     setState_(StateOfInference::ReadyForInference);
   }

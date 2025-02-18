@@ -55,8 +55,8 @@ from .base import statsObj
 from .base import fastGraph
 from .base import config
 from .base import DiscretizedVariable, LabelizedVariable, RangeVariable, DiscreteVariable, IntegerVariable, \
-  NumericalDiscreteVariable
-from .base import Potential, Instantiation, Potential
+    NumericalDiscreteVariable
+from .base import Tensor, Instantiation, Tensor
 from .base import Arc, Edge, DiGraph, UndiGraph, MixedGraph, DAG, PDAG, CliqueGraph
 from .base import JunctionTreeGenerator
 from .base import MeekRules
@@ -66,10 +66,10 @@ from .base import initRandom, randomProba, randomDistribution, randomGeneratorSe
 from .base import isOMP, getNumberOfThreads, getMaxNumberOfThreads, getNumberOfLogicalProcessors, setNumberOfThreads
 from .base import VarType_DISCRETIZED, VarType_LABELIZED, VarType_RANGE, VarType_INTEGER, VarType_NUMERICAL
 from .base import DefaultInLabel, DuplicateElement, DuplicateLabel, GumException, FatalError, FormatNotFound, \
-  GraphError, IOError, InvalidArc, InvalidArgument, InvalidArgumentsNumber, InvalidDirectedCycle, InvalidEdge, \
-  InvalidNode, DatabaseError, MissingValueInDatabase, MissingVariableInDatabase, NoChild, NoNeighbour, NoParent, \
-  NotFound, NullElement, OperationNotAllowed, OutOfBounds, ArgumentError, SizeError, SyntaxError, UndefinedElement, \
-  UndefinedIteratorKey, UndefinedIteratorValue, UnknownLabelInDatabase, CPTError
+    GraphError, IOError, InvalidArc, InvalidArgument, InvalidArgumentsNumber, InvalidDirectedCycle, InvalidEdge, \
+    InvalidNode, DatabaseError, MissingValueInDatabase, MissingVariableInDatabase, NoChild, NoNeighbour, NoParent, \
+    NotFound, NullElement, OperationNotAllowed, OutOfBounds, ArgumentError, SizeError, SyntaxError, UndefinedElement, \
+    UndefinedIteratorKey, UndefinedIteratorValue, UnknownLabelInDatabase, CPTError
 
 from .bn import fastBN
 from .bn import availableBNExts, loadBN, saveBN
@@ -89,25 +89,28 @@ from .bn import PRMexplorer
 import sys
 
 try:
-  from .mrf import getPosterior
-  from .mrf import availableMNExts, loadMRF, saveMRF
-  from .mrf import fastMRF
-  from .mrf import MarkovRandomField, ShaferShenoyMRFInference
+    from .mrf import getPosterior
+    from .mrf import availableMNExts, loadMRF, saveMRF
+    from .mrf import fastMRF
+    from .mrf import MarkovRandomField, ShaferShenoyMRFInference
 except ImportError:
-  sys.stderr.write("Could not load pyAgrum.mrf")
+    sys.stderr.write("Could not load pyAgrum.mrf")
 
 try:
-  from .cn import CredalNet, CNMonteCarloSampling, CNLoopyPropagation
+    from .cn import CredalNet, CNMonteCarloSampling, CNLoopyPropagation
 except ImportError:
-  sys.stderr.write("Could not load pyAgrum.cn")
+    sys.stderr.write("Could not load pyAgrum.cn")
 
 try:
-  from .id import IDGenerator
-  from .id import availableIDExts, loadID, saveID
-  from .id import fastID
-  from .id import InfluenceDiagram, ShaferShenoyLIMIDInference
+    from .id import IDGenerator
+    from .id import availableIDExts, loadID, saveID
+    from .id import fastID
+    from .id import InfluenceDiagram, ShaferShenoyLIMIDInference
 except ImportError:
-  sys.stderr.write("Could not load pyAgrum.id")
+    sys.stderr.write("Could not load pyAgrum.id")
 
 from .deprecated import *
 from .common import __version__, __license__, __project_url__, __project_name__, __project_description__, __project__, about
+
+# deprecated
+from .base import Potential

@@ -62,14 +62,14 @@ namespace gum {
 
   // the function used to combine two tables
   template < typename GUM_SCALAR >
-  INLINE static Potential< GUM_SCALAR > SSNewMNmultiPotential(const Potential< GUM_SCALAR >& t1,
-                                                              const Potential< GUM_SCALAR >& t2) {
+  INLINE static Tensor< GUM_SCALAR > SSNewMNmultiTensor(const Tensor< GUM_SCALAR >& t1,
+                                                              const Tensor< GUM_SCALAR >& t2) {
     return t1 * t2;
   }
 
   // the function used to combine two tables
   template < typename GUM_SCALAR >
-  INLINE static Potential< GUM_SCALAR > SSNewMNprojPotential(const Potential< GUM_SCALAR >& t1,
+  INLINE static Tensor< GUM_SCALAR > SSNewMNprojTensor(const Tensor< GUM_SCALAR >& t1,
                                                              const gum::VariableSet& del_vars) {
     return t1.sumOut(del_vars);
   }
@@ -196,11 +196,11 @@ namespace gum {
      * makeMRFInference_. */
     void updateOutdatedStructure_() final;
 
-    /// prepares inference when the latter is in OutdatedPotentials state
+    /// prepares inference when the latter is in OutdatedTensors state
     /** Note that the values of evidence are not necessarily
      * known and can be changed between updateOutdatedStructure_ and
      * makeMRFInference_. */
-    void updateOutdatedPotentials_() final;
+    void updateOutdatedTensors_() final;
 
     /// called when the inference has to be performed effectively
     /** Once the inference is done, fillPosterior_ can be called. */
@@ -209,12 +209,12 @@ namespace gum {
 
     /// returns the posterior of a given variable
     /** @param id The variable's id. */
-    const Potential< GUM_SCALAR >& posterior_(NodeId id) final;
+    const Tensor< GUM_SCALAR >& posterior_(NodeId id) final;
 
     /// returns the posterior of a declared target set
     /** @param set The set of ids of the variables whose joint posterior is
      * looked for. */
-    const Potential< GUM_SCALAR >& jointPosterior_(const NodeSet& set) final;
+    const Tensor< GUM_SCALAR >& jointPosterior_(const NodeSet& set) final;
 
     /** @brief asks derived classes for the joint posterior of a set of
      * variables not declared as a joint target
@@ -223,29 +223,29 @@ namespace gum {
      * posterior is looked for.
      * @param declared_target the joint target declared by the user that contains
      * set */
-    const Potential< GUM_SCALAR >& jointPosterior_(const NodeSet& wanted_target,
+    const Tensor< GUM_SCALAR >& jointPosterior_(const NodeSet& wanted_target,
                                                    const NodeSet& declared_target) final;
 
-    /// returns a fresh potential equal to P(argument,evidence)
-    Potential< GUM_SCALAR >* unnormalizedJointPosterior_(NodeId id) final;
+    /// returns a fresh tensor equal to P(argument,evidence)
+    Tensor< GUM_SCALAR >* unnormalizedJointPosterior_(NodeId id) final;
 
-    /// returns a fresh potential equal to P(argument,evidence)
-    Potential< GUM_SCALAR >* unnormalizedJointPosterior_(const NodeSet& set) final;
+    /// returns a fresh tensor equal to P(argument,evidence)
+    Tensor< GUM_SCALAR >* unnormalizedJointPosterior_(const NodeSet& set) final;
 
 
     private:
-    using _PotentialSet_         = Set< const Potential< GUM_SCALAR >* >;
+    using _TensorSet_         = Set< const Tensor< GUM_SCALAR >* >;
     using _ScheduleMultiDimSet_  = Set< const IScheduleMultiDim* >;
-    using _PotentialSetIterator_ = SetIteratorSafe< const Potential< GUM_SCALAR >* >;
+    using _TensorSetIterator_ = SetIteratorSafe< const Tensor< GUM_SCALAR >* >;
 
     /// the operator for performing the projections
-    Potential< GUM_SCALAR > (*_projection_op_)(const Potential< GUM_SCALAR >&,
-                                               const gum::VariableSet&){SSNewMNprojPotential};
+    Tensor< GUM_SCALAR > (*_projection_op_)(const Tensor< GUM_SCALAR >&,
+                                               const gum::VariableSet&){SSNewMNprojTensor};
 
     /// the operator for performing the combinations
-    Potential< GUM_SCALAR > (*_combination_op_)(const Potential< GUM_SCALAR >&,
-                                                const Potential< GUM_SCALAR >&){
-        SSNewMNmultiPotential};
+    Tensor< GUM_SCALAR > (*_combination_op_)(const Tensor< GUM_SCALAR >&,
+                                                const Tensor< GUM_SCALAR >&){
+        SSNewMNmultiTensor};
 
     /// the triangulation class creating the junction tree used for inference
     Triangulation* _triangulation_;
@@ -288,61 +288,61 @@ namespace gum {
     NodeProperty< NodeId > _node_to_clique_;
 
     /// assign to each factor in the MRF the clique that will contain it
-    HashTable< const Potential< GUM_SCALAR >*, NodeId > _factor_to_clique_;
+    HashTable< const Tensor< GUM_SCALAR >*, NodeId > _factor_to_clique_;
 
     /// assign to each node the set of factors containing it
     /** Nodes that are assigned no factor (do they exist?) are assigned
      * an empty factor set */
-    NodeProperty< _PotentialSet_ > _node_to_factors_;
+    NodeProperty< _TensorSet_ > _node_to_factors_;
 
     /// for each set target, assign a clique in the JT that contains it
     HashTable< NodeSet, NodeId > _joint_target_to_clique_;
 
-    /// the list of all potentials stored in the cliques
+    /// the list of all tensors stored in the cliques
     /** This structure contains a list for each clique in the join tree. If
-     * a clique did not received any potential, then its list is empty but
-     * the entry for the clique does exist. Note that clique potentials
+     * a clique did not received any tensor, then its list is empty but
+     * the entry for the clique does exist. Note that clique tensors
      * contain also soft evidence and the factors that were projected to
      * remove their variables that received hard evidence. The product of all
-     * these potentials is precisely the potential stored into
-     * _clique_ss_potential_ */
-    NodeProperty< _ScheduleMultiDimSet_ > _clique_potentials_;
+     * these tensors is precisely the tensor stored into
+     * _clique_ss_tensor_ */
+    NodeProperty< _ScheduleMultiDimSet_ > _clique_tensors_;
 
-    /// the potentials stored into the cliques by Shafer-Shenoy
-    /** For a given clique, there is an entry in _clique_ss_potential_ even
-     * if the clique received no potential. In this case, the potential stored is
+    /// the tensors stored into the cliques by Shafer-Shenoy
+    /** For a given clique, there is an entry in _clique_ss_tensor_ even
+     * if the clique received no tensor. In this case, the tensor stored is
      * equal to nullptr, else it is equal to the combination of all the
-     * corresponding list of potentials in _clique_ss_potential_. */
-    NodeProperty< const IScheduleMultiDim* > _clique_ss_potential_;
+     * corresponding list of tensors in _clique_ss_tensor_. */
+    NodeProperty< const IScheduleMultiDim* > _clique_ss_tensor_;
 
-    /// the list of all potentials stored in the separators after inferences
+    /// the list of all tensors stored in the separators after inferences
     /** This structure contains all the arcs of the join tree (edges in both
-     * directions) whether the arc received any potential or not. If they did
-     * not receive any potential, then they contain a nullptr pointer. */
-    ArcProperty< const IScheduleMultiDim* > _separator_potentials_;
+     * directions) whether the arc received any tensor or not. If they did
+     * not receive any tensor, then they contain a nullptr pointer. */
+    ArcProperty< const IScheduleMultiDim* > _separator_tensors_;
 
-    /// the set of potentials created for the last inference messages
+    /// the set of tensors created for the last inference messages
     /** This structure contains some pointer only for the arcs on which a
-     * potential has been created. Arcs for which no potential was created do
+     * tensor has been created. Arcs for which no tensor was created do
      * not belong to this structure.
      * @warning Note that the factors that were projected due to hard
      * evidence do not belong to this structure, they are kept in
      *  _node_to_hard_ev_projected_factors_. */
-    ArcProperty< const IScheduleMultiDim* > _arc_to_created_potentials_;
+    ArcProperty< const IScheduleMultiDim* > _arc_to_created_tensors_;
 
     /// the set of single posteriors computed during the last inference
     /** the posteriors are owned by ShaferShenoyMRFInference. */
-    NodeProperty< const Potential< GUM_SCALAR >* > _target_posteriors_;
+    NodeProperty< const Tensor< GUM_SCALAR >* > _target_posteriors_;
 
     /// the set of set target posteriors computed during the last inference
     /** the posteriors are owned by ShaferShenoyMRFInference. */
-    HashTable< NodeSet, const Potential< GUM_SCALAR >* > _joint_target_posteriors_;
+    HashTable< NodeSet, const Tensor< GUM_SCALAR >* > _joint_target_posteriors_;
 
     /** @brief the constants resulting from the projections of CPTs defined
      * over only hard evidence nodes
      * @TODO remove this constant and insert the notion of a constant into
-     * potentials/multidim arrays */
-    HashTable< const Potential< GUM_SCALAR >*, GUM_SCALAR > _constants_;
+     * tensors/multidim arrays */
+    HashTable< const Tensor< GUM_SCALAR >*, GUM_SCALAR > _constants_;
 
     /// indicates whether a message (from one clique to another) has been computed
     /** Here, all the messages, computed or not, are put into the property, only
@@ -351,10 +351,10 @@ namespace gum {
     ArcProperty< bool > _messages_computed_;
 
     /// the soft evidence stored in the cliques per their assigned node in the MRF
-    /** This variable is useful for method updateOutdatedPotentials_: it
+    /** This variable is useful for method updateOutdatedTensors_: it
      * enables to know which soft evidence should be removed/added into the
      * cliques of the join tree.
-     * @warning These potentials are not owned by ShaferShenoyMRFInference,
+     * @warning These tensors are not owned by ShaferShenoyMRFInference,
      * they are only referenced by it. Only the cliques that contain evidence
      * are filled in this structure. */
     NodeProperty< const IScheduleMultiDim* > _node_to_soft_evidence_;
@@ -363,8 +363,8 @@ namespace gum {
     /** For each node whose factor is defined over some nodes that contain some
      * hard evidence, assigns a new projected factor that does not contain
      * these nodes anymore.
-     * @warning These potentials are owned by the inference class. */
-    HashTable< const Potential< GUM_SCALAR >*, const IScheduleMultiDim* >
+     * @warning These tensors are owned by the inference class. */
+    HashTable< const Tensor< GUM_SCALAR >*, const IScheduleMultiDim* >
         _hard_ev_projected_factors_;
 
     /// the hard evidence nodes which were projected in factors
@@ -400,30 +400,30 @@ namespace gum {
     void _initializeJTCliques_();
 
     /// sets the operator for performing the projections
-    void _setProjectionFunction_(Potential< GUM_SCALAR > (*proj)(const Potential< GUM_SCALAR >&,
+    void _setProjectionFunction_(Tensor< GUM_SCALAR > (*proj)(const Tensor< GUM_SCALAR >&,
                                                                  const gum::VariableSet&));
 
     /// sets the operator for performing the combinations
-    void _setCombinationFunction_(Potential< GUM_SCALAR > (*comb)(const Potential< GUM_SCALAR >&,
-                                                                  const Potential< GUM_SCALAR >&));
+    void _setCombinationFunction_(Tensor< GUM_SCALAR > (*comb)(const Tensor< GUM_SCALAR >&,
+                                                                  const Tensor< GUM_SCALAR >&));
 
     /// invalidate all the messages sent from a given clique
     void _diffuseMessageInvalidations_(NodeId from_id, NodeId to_id, NodeSet& invalidated_cliques);
 
-    /// invalidate all messages, posteriors and created potentials
+    /// invalidate all messages, posteriors and created tensors
     void _invalidateAllMessages_();
 
     /// compute a root for each connected component of  _JT_
     void _computeJoinTreeRoots_();
 
-    /** @brief removes variables del_vars from a list of potentials and
+    /** @brief removes variables del_vars from a list of tensors and
      * returns the resulting list using schedules */
     const IScheduleMultiDim* _marginalizeOut_(Schedule&             schedule,
                                               _ScheduleMultiDimSet_ pot_list,
                                               gum::VariableSet&     del_vars,
                                               gum::VariableSet&     kept_vars);
 
-    /** @brief removes variables del_vars from a list of potentials and
+    /** @brief removes variables del_vars from a list of tensors and
      * returns the resulting list directly without schedules */
     const IScheduleMultiDim* _marginalizeOut_(_ScheduleMultiDimSet_& pot_list,
                                               gum::VariableSet&      del_vars,
@@ -442,16 +442,16 @@ namespace gum {
     void _collectMessage_(NodeId id, NodeId from);
 
     /// computes the unnormalized posterior of a node using schedules
-    Potential< GUM_SCALAR >* _unnormalizedJointPosterior_(Schedule& schedule, NodeId id);
+    Tensor< GUM_SCALAR >* _unnormalizedJointPosterior_(Schedule& schedule, NodeId id);
 
     /// computes the unnormalized posterior of a node without using schedules
-    Potential< GUM_SCALAR >* _unnormalizedJointPosterior_(NodeId id);
+    Tensor< GUM_SCALAR >* _unnormalizedJointPosterior_(NodeId id);
 
-    /// returns a fresh potential equal to P(argument,evidence) using schedules
-    Potential< GUM_SCALAR >* _unnormalizedJointPosterior_(Schedule& schedule, const NodeSet& set);
+    /// returns a fresh tensor equal to P(argument,evidence) using schedules
+    Tensor< GUM_SCALAR >* _unnormalizedJointPosterior_(Schedule& schedule, const NodeSet& set);
 
-    /// returns a fresh potential equal to P(argument,evidence) without using schedules
-    Potential< GUM_SCALAR >* _unnormalizedJointPosterior_(const NodeSet& set);
+    /// returns a fresh tensor equal to P(argument,evidence) without using schedules
+    Tensor< GUM_SCALAR >* _unnormalizedJointPosterior_(const NodeSet& set);
 
 
     /// avoid copy constructors

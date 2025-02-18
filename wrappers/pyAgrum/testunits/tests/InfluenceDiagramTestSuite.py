@@ -142,7 +142,7 @@ class InfluenceDiagramTestCase(pyAgrumTestCase):
 
     ie = gum.ShaferShenoyLIMIDInference(tst_id)
     ie.makeInference()
-    self.assertEqual(ie.optimalDecision("d"), gum.Potential().add(tst_id.variableFromName("d")).fillWith([0, 1]))
+    self.assertEqual(ie.optimalDecision("d"), gum.Tensor().add(tst_id.variableFromName("d")).fillWith([0, 1]))
     self.assertEqual(ie.MEU()['mean'], 110.5)
 
   def testBugInferenceWithEvidence(self):
@@ -161,13 +161,13 @@ class InfluenceDiagramTestCase(pyAgrumTestCase):
     ie = gum.ShaferShenoyLIMIDInference(tst_id)
     ie.setEvidence({'c': 0})
     ie.makeInference()
-    self.assertEqual(ie.optimalDecision("d"), gum.Potential().add(tst_id.variableFromName("d")).fillWith([0, 1]))
+    self.assertEqual(ie.optimalDecision("d"), gum.Tensor().add(tst_id.variableFromName("d")).fillWith([0, 1]))
     self.assertEqual(ie.MEU()['mean'], 21)
 
     ie = gum.ShaferShenoyLIMIDInference(tst_id)
     ie.setEvidence({'c': 1})
     ie.makeInference()
-    self.assertEqual(ie.optimalDecision("d"), gum.Potential().add(tst_id.variableFromName("d")).fillWith([0, 1]))
+    self.assertEqual(ie.optimalDecision("d"), gum.Tensor().add(tst_id.variableFromName("d")).fillWith([0, 1]))
     self.assertEqual(ie.MEU()['mean'], 200)
 
   def testBugInferenceWithEvidenceWithSemiFastSyntax(self):
@@ -190,13 +190,13 @@ class InfluenceDiagramTestCase(pyAgrumTestCase):
     ie = gum.ShaferShenoyLIMIDInference(tst_id)
     ie.setEvidence({'c': 0})
     ie.makeInference()
-    self.assertEqual(ie.optimalDecision("d"), gum.Potential().add(tst_id.variableFromName("d")).fillWith([0, 1]))
+    self.assertEqual(ie.optimalDecision("d"), gum.Tensor().add(tst_id.variableFromName("d")).fillWith([0, 1]))
     self.assertEqual(ie.MEU()['mean'], 21)
 
     ie = gum.ShaferShenoyLIMIDInference(tst_id)
     ie.setEvidence({'c': 1})
     ie.makeInference()
-    self.assertEqual(ie.optimalDecision("d"), gum.Potential().add(tst_id.variableFromName("d")).fillWith([0, 1]))
+    self.assertEqual(ie.optimalDecision("d"), gum.Tensor().add(tst_id.variableFromName("d")).fillWith([0, 1]))
     self.assertEqual(ie.MEU()['mean'], 200)
 
   def testToFast(self):

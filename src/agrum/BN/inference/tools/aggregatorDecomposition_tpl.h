@@ -170,7 +170,7 @@ namespace gum {
 
           /*
            * Adding arcs in the new node from its parents and adding thoses into
-           * the temporary potential
+           * the temporary tensor
            */
           for (NodeId node: newAggParents) {
             bn.addArc(node, bn.idFromName(newName));

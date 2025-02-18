@@ -2,7 +2,7 @@
 
 #include <agrum/tools/variables/labelizedVariable.h>
 
-#include <agrum/tools/multidim/potential.h>
+#include <agrum/tools/multidim/tensor.h>
 #include <agrum/BN/BayesNet.h>
 
 #include <agrum/BN/BayesNetFactory.h>

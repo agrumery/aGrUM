@@ -76,7 +76,7 @@ namespace gum {
      * requires knowing the join tree to be converted (of course), but also
      * which roots will be used by the collect/diffusion inference engine and
      * the domain size of the variables contained in the cliques of JT (to
-     * optimize the combination of the potentials contained in the cliques.
+     * optimize the combination of the tensors contained in the cliques.
      * @throws InvalidNode exception is thrown if some roots do not belong to
      * JT or if several roots belong to the same connected component.
      * @warning If you do not pass in argument a root for each connected

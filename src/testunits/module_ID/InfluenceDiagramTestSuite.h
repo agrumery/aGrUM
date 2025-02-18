@@ -270,9 +270,9 @@ namespace gum_tests {
         }
 
         if (source.isChanceNode(node)) {
-          const gum::Potential< double >& srcCPT = source.cpt(node);
+          const gum::Tensor< double >& srcCPT = source.cpt(node);
 
-          const gum::Potential< double >& cpCPT = copy->cpt(node);
+          const gum::Tensor< double >& cpCPT = copy->cpt(node);
 
           gum::Instantiation srcInst(srcCPT);
 
@@ -288,8 +288,8 @@ namespace gum_tests {
           }
 
         } else if (source.isUtilityNode(node)) {
-          const gum::Potential< double >& srcUT = source.utility(node);
-          const gum::Potential< double >& cpUT  = copy->utility(node);
+          const gum::Tensor< double >& srcUT = source.utility(node);
+          const gum::Tensor< double >& cpUT  = copy->utility(node);
 
           gum::Instantiation srcInst(srcUT);
           gum::Instantiation cpInst(cpUT);

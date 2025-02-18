@@ -76,7 +76,7 @@ namespace gum {
    * but also more complex objects such as, for instance, pairs of
    * MultiDimImplementation the first one of which being a utility function and
    * the second one being a table of instantiations (useful, e.g., for
-   * computing MPE's) but this can also be a pair (Utility,Potential) for the
+   * computing MPE's) but this can also be a pair (Utility,Tensor) for the
    * inference in an Influence Diagram. Actually, the important point for a
    * multidimensional object to be eligible to be combined by the
    * MultiDimCombination is:
@@ -91,27 +91,27 @@ namespace gum {
    * usage of MultiDimCombinations:
    *
    * @code
-   * // a function used to combine two Potential<float>'s:
-   * Potential<float> addPotential ( const Potential<float>& t1,
-   *                                 const Potential<float>& t2 ) {
+   * // a function used to combine two Tensor<float>'s:
+   * Tensor<float> addTensor ( const Tensor<float>& t1,
+   *                                 const Tensor<float>& t2 ) {
    *   return t1 + t2;
    * }
    *
-   * // another function used to combine two Potential<float>'s:
-   * Potential<float> multPotential ( const Potential<float>& t1,
-   *                                  const Potential<float>& t2 ) {
+   * // another function used to combine two Tensor<float>'s:
+   * Tensor<float> multTensor ( const Tensor<float>& t1,
+   *                                  const Tensor<float>& t2 ) {
    *   return t1 * t2;
    * }
    *
-   * Potential<float> t1, t2, t3;
-   * Set<const Potential<float>*> set;
+   * Tensor<float> t1, t2, t3;
+   * Set<const Tensor<float>*> set;
    * set << &table1 << &table2 << &table3;
-   * MultiDimCombinationDefault< Potential< float > > Comb ( addPotential );
-   * Potential<float>* combined_table = Comb.execute ( set );
+   * MultiDimCombinationDefault< Tensor< float > > Comb ( addTensor );
+   * Tensor<float>* combined_table = Comb.execute ( set );
    *
    * // change the operator to apply
-   * Comb.setCombinationFunction ( multPotential );
-   * Potential<float>* combined_table2 = Comb.execute ( set );
+   * Comb.setCombinationFunction ( multTensor );
+   * Tensor<float>* combined_table2 = Comb.execute ( set );
    *
    * @endcode
    */

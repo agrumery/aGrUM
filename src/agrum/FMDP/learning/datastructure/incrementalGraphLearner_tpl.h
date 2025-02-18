@@ -217,7 +217,7 @@ namespace gum {
     if (nodeVarMap_[currentNodeId] != value_) {
       leafDatabase_.insert(currentNodeId, new Set< const Observation* >());
 
-      // Resolving potential sons issue
+      // Resolving tensor sons issue
       for (Idx modality = 0; modality < nodeVarMap_[currentNodeId]->domainSize(); ++modality) {
         NodeId sonId = nodeSonsMap_[currentNodeId][modality];
         convertNode2Leaf_(sonId);

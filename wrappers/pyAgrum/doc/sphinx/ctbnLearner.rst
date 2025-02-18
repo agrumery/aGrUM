@@ -15,7 +15,7 @@ Before introducing the algorithms, here are the following definitions :
     - :math:`M_{x|u}` is the number of time `X` goes to state `x`.
     - :math:`T_{x|u}` is the time spent in state `x`, conditioned by an instance of its parents `u`.
     - :math:`M_{xx'|y,u}` and :math:`T_{x|y,u}` are the same but with another conditioning variable `Y` in state `y`.
-Those can be stored in :class:`pyAgrum.Potential`.
+Those can be stored in :class:`pyAgrum.Tensor`.
 
 Being conditioned by an instance means that the extracted data comes from time intervals where conditioning variables take specific values.
 

@@ -96,7 +96,7 @@ class BNDatabaseGeneratorTestCase(pyAgrumTestCase):
         pass
     self.assertEqual(isOK, True, " Error in loop for Approximated tests")
 
-    jointe = gum.Potential().fillWith(1)
+    jointe = gum.Tensor().fillWith(1)
     for i in bn.nodes():
       jointe *= bn.cpt(i)
     entropy = jointe.entropy()

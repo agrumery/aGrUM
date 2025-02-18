@@ -87,7 +87,7 @@ namespace gum {
     }
 
     template < typename GUM_SCALAR >
-    INLINE void PRMFuncAttribute< GUM_SCALAR >::setCpf_(Potential< GUM_SCALAR >* cpf) {
+    INLINE void PRMFuncAttribute< GUM_SCALAR >::setCpf_(Tensor< GUM_SCALAR >* cpf) {
       GUM_ERROR(OperationNotAllowed, "Cannot change CPF of a functional attribute")
     }
 

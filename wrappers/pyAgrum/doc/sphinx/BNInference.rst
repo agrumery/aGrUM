@@ -14,20 +14,20 @@ Lazy Propagation is the main exact inference for classical Bayesian networks in 
 
 .. autoclass:: pyAgrum.bn.LazyPropagation
 			:inherited-members:
-			:exclude-members: setFindBarrenNodesType, setRelevantPotentialsFinderType, setTriangulation
+			:exclude-members: setFindBarrenNodesType, setRelevantTensorsFinderType, setTriangulation
 
 
 Shafer-Shenoy Inference
 ~~~~~~~~~~~~~~~~~~~~~~~
 
 .. autoclass:: pyAgrum.bn.ShaferShenoyInference
-			:exclude-members: setFindBarrenNodesType, setRelevantPotentialsFinderType, setTriangulation
+			:exclude-members: setFindBarrenNodesType, setRelevantTensorsFinderType, setTriangulation
 
 Variable Elimination
 ~~~~~~~~~~~~~~~~~~~~
 
 .. autoclass:: pyAgrum.bn.VariableElimination
-			:exclude-members: setFindBarrenNodesType, setRelevantPotentialsFinderType, setTriangulation
+			:exclude-members: setFindBarrenNodesType, setRelevantTensorsFinderType, setTriangulation
 
 
 Approximated Inference

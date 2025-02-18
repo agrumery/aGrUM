@@ -63,7 +63,7 @@ def export(model, filename=None, **kwargs):
   Parameters
   ----------
   model: pyAgrum.GraphicalModel
-      the model to show (pyAgrum.BayesNet, pyAgrum.MarkovRandomField, pyAgrum.InfluenceDiagram or pyAgrum.Potential)
+      the model to show (pyAgrum.BayesNet, pyAgrum.MarkovRandomField, pyAgrum.InfluenceDiagram or pyAgrum.Tensor)
   filename: str
       the name of the resulting file (suffix in ['pdf', 'png', 'fig', 'jpg', 'svg', 'ps']). If filename is None, the result is a np.array ready to be used with imshow().
 

@@ -80,7 +80,7 @@ namespace gum {
       template < typename GUM_SCALAR >
       void StrictSearch< GUM_SCALAR >::_buildPatternGraph_(
           typename StrictSearch< GUM_SCALAR >::PData&   data,
-          Set< Potential< GUM_SCALAR >* >&              pool,
+          Set< Tensor< GUM_SCALAR >* >&              pool,
           const Sequence< PRMInstance< GUM_SCALAR >* >& match) {
         for (const auto inst: match) {
           for (const auto& elt: *inst) {
@@ -89,7 +89,7 @@ namespace gum {
             data.node2attr.insert(id, _str_(inst, elt.second));
             data.mod.insert(id, elt.second->type()->domainSize());
             data.vars.insert(id, &elt.second->type().variable());
-            pool.insert(const_cast< Potential< GUM_SCALAR >* >(&(elt.second->cpf())));
+            pool.insert(const_cast< Tensor< GUM_SCALAR >* >(&(elt.second->cpf())));
           }
         }
 
@@ -157,7 +157,7 @@ namespace gum {
       template < typename GUM_SCALAR >
       std::pair< Size, Size > StrictSearch< GUM_SCALAR >::_elimination_cost_(
           typename StrictSearch< GUM_SCALAR >::PData& data,
-          Set< Potential< GUM_SCALAR >* >&            pool) {
+          Set< Tensor< GUM_SCALAR >* >&            pool) {
         List< NodeSet > partial_order;
 
         if (data.inners.size()) partial_order.insert(data.inners);
@@ -167,14 +167,14 @@ namespace gum {
         PartialOrderedTriangulation     t(&(data.graph), &(data.mod), &partial_order);
         const std::vector< NodeId >&    elim_order = t.eliminationOrder();
         Size                            max(0), max_count(1);
-        Set< Potential< GUM_SCALAR >* > trash;
-        Potential< GUM_SCALAR >*        pot = 0;
+        Set< Tensor< GUM_SCALAR >* > trash;
+        Tensor< GUM_SCALAR >*        pot = 0;
 
         for (size_t idx = 0; idx < data.inners.size(); ++idx) {
-          pot = new Potential< GUM_SCALAR >(new MultiDimSparse< GUM_SCALAR >(0));
+          pot = new Tensor< GUM_SCALAR >(new MultiDimSparse< GUM_SCALAR >(0));
           pot->add(*(data.vars.second(elim_order[idx])));
           trash.insert(pot);
-          Set< Potential< GUM_SCALAR >* > toRemove;
+          Set< Tensor< GUM_SCALAR >* > toRemove;
 
           for (const auto p: pool)
             if (p->contains(*(data.vars.second(elim_order[idx])))) {
@@ -386,7 +386,7 @@ namespace gum {
       template < typename GUM_SCALAR >
       INLINE void StrictSearch< GUM_SCALAR >::_compute_costs_(const Pattern* p) {
         typename StrictSearch< GUM_SCALAR >::PData data;
-        Set< Potential< GUM_SCALAR >* >            pool;
+        Set< Tensor< GUM_SCALAR >* >            pool;
         _buildPatternGraph_(data, pool, *(this->tree_->data(*p).iso_map.begin().val()));
         double inner = std::log(_elimination_cost_(data, pool).first);
         double outer = this->computeCost_(*p);

@@ -73,18 +73,18 @@ def _gum_add_properties_while_getstate_(model):
 
 
 def log2(p):
-  """Compute p.log2() in a new Potential without modifying p
+  """Compute p.log2() in a new Tensor without modifying p
 
   Parameters
   ----------
-  p : pyAgrum.Potential
-    The potential on which to apply log2 function
+  p : pyAgrum.Tensor
+    The tensor on which to apply log2 function
 
   Returns
   -------
-    a pyAgrum.Potential
+    a pyAgrum.Tensor
   """
-  return Potential(p).log2()
+  return Tensor(p).log2()
 
 
 def fastGraph(msg:str):
@@ -167,3 +167,14 @@ def fastGraph(msg:str):
 
   return m
 %}
+
+%pythoncode %{
+
+####################################################################################    
+def Potential(*args, **kwargs):
+  warnings.warn("** pyAgrum : The class pyAgrum.Potential is deprecated since `pyAgrum>=2.0.0`. A pyAgrum.Tensor will be returned instead."
+                , DeprecationWarning, stacklevel=2)
+  return Tensor(*args, **kwargs)
+  
+%}
+    

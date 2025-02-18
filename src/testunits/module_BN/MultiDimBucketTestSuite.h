@@ -56,22 +56,22 @@ namespace gum_tests {
   class [[maybe_unused]] MultiDimBucketTestSuite: public CxxTest::TestSuite {
     private:
     std::vector< gum::LabelizedVariable* >*   _variables_;
-    std::vector< gum::Potential< double >* >* _potentials_;
+    std::vector< gum::Tensor< double >* >* _tensors_;
 
     void _fillBucket_(gum::MultiDimBucket< double >* bucket) {
       for (size_t i = 0; i < 5; ++i) {
-        bucket->add(_potentials_->at(i));
+        bucket->add(_tensors_->at(i));
       }
     }
 
     // Product must have variables
-    void _makeProduct_(gum::Potential< double >& product) {
-      if (_potentials_->size() == 0) return;
+    void _makeProduct_(gum::Tensor< double >& product) {
+      if (_tensors_->size() == 0) return;
 
-      std::vector< gum::Potential< double >* > temp(*_potentials_);
+      std::vector< gum::Tensor< double >* > temp(*_tensors_);
 
       // we use the first element as init for the result
-      gum::Potential< double > result = *temp.back();
+      gum::Tensor< double > result = *temp.back();
       temp.pop_back();
       while (temp.size() > 0) {
         result *= (*temp.back());
@@ -96,55 +96,55 @@ namespace gum_tests {
         _variables_->push_back(new gum::LabelizedVariable(sBuff.str(), "A binary variable", 2));
       }
 
-      _potentials_ = new std::vector< gum::Potential< double >* >();
+      _tensors_ = new std::vector< gum::Tensor< double >* >();
 
       for (gum::Size i = 0; i < 5; ++i) {
-        _potentials_->push_back(new gum::Potential< double >(new gum::MultiDimArray< double >()));
+        _tensors_->push_back(new gum::Tensor< double >(new gum::MultiDimArray< double >()));
       }
 
       // Creating a table of 2 elements
-      _potentials_->at(0)->add(*(_variables_->at(0)));
+      _tensors_->at(0)->add(*(_variables_->at(0)));
 
-      cptGenerator.generateCPT(_potentials_->at(0)->pos(*(_variables_->at(0))),
-                               *(_potentials_->at(0)));
+      cptGenerator.generateCPT(_tensors_->at(0)->pos(*(_variables_->at(0))),
+                               *(_tensors_->at(0)));
 
       // Creating a table of 2 elements
-      _potentials_->at(1)->add(*(_variables_->at(1)));
+      _tensors_->at(1)->add(*(_variables_->at(1)));
 
-      cptGenerator.generateCPT(_potentials_->at(1)->pos(*(_variables_->at(1))),
-                               *(_potentials_->at(1)));
+      cptGenerator.generateCPT(_tensors_->at(1)->pos(*(_variables_->at(1))),
+                               *(_tensors_->at(1)));
 
       // Creating a table of 2^4=16 elements
       for (size_t i = 2; i < 6; ++i) {
-        _potentials_->at(2)->add(*(_variables_->at(i)));
+        _tensors_->at(2)->add(*(_variables_->at(i)));
       }
 
-      cptGenerator.generateCPT(_potentials_->at(2)->pos(*(_variables_->at(2))),
-                               *(_potentials_->at(2)));
+      cptGenerator.generateCPT(_tensors_->at(2)->pos(*(_variables_->at(2))),
+                               *(_tensors_->at(2)));
 
       // Creatinh a table of 2^4=16 elements
 
       for (size_t i = 4; i < 8; ++i) {
-        _potentials_->at(3)->add(*(_variables_->at(i)));
+        _tensors_->at(3)->add(*(_variables_->at(i)));
       }
 
-      cptGenerator.generateCPT(_potentials_->at(3)->pos(*(_variables_->at(4))),
-                               *(_potentials_->at(3)));
+      cptGenerator.generateCPT(_tensors_->at(3)->pos(*(_variables_->at(4))),
+                               *(_tensors_->at(3)));
 
       // Creatinh a table of 2^4=16 elements
 
       for (size_t i = 6; i < 10; ++i) {
-        _potentials_->at(4)->add(*(_variables_->at(i)));
+        _tensors_->at(4)->add(*(_variables_->at(i)));
       }
 
-      cptGenerator.generateCPT(_potentials_->at(4)->pos(*(_variables_->at(6))),
-                               *(_potentials_->at(4)));
+      cptGenerator.generateCPT(_tensors_->at(4)->pos(*(_variables_->at(6))),
+                               *(_tensors_->at(4)));
     }
 
     void tearDown() {
-      while (_potentials_->size() > 0) {
-        delete _potentials_->back();
-        _potentials_->pop_back();
+      while (_tensors_->size() > 0) {
+        delete _tensors_->back();
+        _tensors_->pop_back();
       }
 
       while (_variables_->size() > 0) {
@@ -154,7 +154,7 @@ namespace gum_tests {
 
       delete _variables_;
 
-      delete _potentials_;
+      delete _tensors_;
     }
 
     GUM_ACTIVE_TEST(Creation) {
@@ -172,17 +172,17 @@ namespace gum_tests {
         TS_ASSERT(bucket->isBucketEmpty())
 
         for (size_t i = 0; i < 5; ++i) {
-          TS_ASSERT_THROWS_NOTHING(bucket->add(_potentials_->at(i)))
+          TS_ASSERT_THROWS_NOTHING(bucket->add(_tensors_->at(i)))
         }
 
         TS_ASSERT(!bucket->isBucketEmpty())
 
         TS_ASSERT_EQUALS(bucket->bucketSize(), (gum::Size)5)
-        TS_ASSERT_THROWS_NOTHING(bucket->erase(_potentials_->at(4)))
+        TS_ASSERT_THROWS_NOTHING(bucket->erase(_tensors_->at(4)))
         TS_ASSERT_EQUALS(bucket->bucketSize(), (gum::Size)4)
 
         for (size_t i = 5; i > 0; --i) {
-          TS_ASSERT_THROWS_NOTHING(bucket->erase(_potentials_->at(i - 1)))
+          TS_ASSERT_THROWS_NOTHING(bucket->erase(_tensors_->at(i - 1)))
         }
 
         TS_ASSERT_EQUALS(bucket->bucketSize(), (gum::Size)0)
@@ -194,7 +194,7 @@ namespace gum_tests {
 
     GUM_ACTIVE_TEST(Computation) {
       gum::MultiDimBucket< double >* bucket = 0;
-      gum::Potential< double >       product;
+      gum::Tensor< double >       product;
       TS_ASSERT_THROWS_NOTHING(bucket = new gum::MultiDimBucket< double >())
       if (bucket != 0) {
         TS_ASSERT_THROWS_NOTHING(_fillBucket_(bucket))
@@ -220,7 +220,7 @@ namespace gum_tests {
 
     GUM_ACTIVE_TEST(OnTheFly) {
       gum::MultiDimBucket< double >* bucket = 0;
-      gum::Potential< double >       product;
+      gum::Tensor< double >       product;
       TS_ASSERT_THROWS_NOTHING(bucket = new gum::MultiDimBucket< double >(0))
 
       if (bucket != 0) {
@@ -249,7 +249,7 @@ namespace gum_tests {
 
     GUM_ACTIVE_TEST(InstantiationsWithBuffer) {
       gum::MultiDimBucket< double >* bucket = 0;
-      gum::Potential< double >       product;
+      gum::Tensor< double >       product;
       TS_ASSERT_THROWS_NOTHING(bucket = new gum::MultiDimBucket< double >())
 
       if (bucket != 0) {
@@ -284,7 +284,7 @@ namespace gum_tests {
 
     GUM_ACTIVE_TEST(InstantiationsWithBufferAndAutoCompute) {
       gum::MultiDimBucket< double >* bucket = 0;
-      gum::Potential< double >       product;
+      gum::Tensor< double >       product;
       TS_ASSERT_THROWS_NOTHING(bucket = new gum::MultiDimBucket< double >())
 
       if (bucket != 0) {
@@ -317,7 +317,7 @@ namespace gum_tests {
 
     GUM_ACTIVE_TEST(InstantiationsOnTheFly) {
       gum::MultiDimBucket< double >* bucket = 0;
-      gum::Potential< double >       product;
+      gum::Tensor< double >       product;
       TS_ASSERT_THROWS_NOTHING(bucket = new gum::MultiDimBucket< double >(0))
 
       if (bucket != 0) {
@@ -352,7 +352,7 @@ namespace gum_tests {
 
     GUM_ACTIVE_TEST(BucketSizeChanges) {
       gum::MultiDimBucket< double >* bucket = 0;
-      gum::Potential< double >       product;
+      gum::Tensor< double >       product;
       TS_ASSERT_THROWS_NOTHING(bucket = new gum::MultiDimBucket< double >(0))
 
       if (bucket != 0) {
@@ -451,15 +451,15 @@ namespace gum_tests {
       bn->cpt(w).fillWith({1., 0., 0.1, 0.9, 0.1, 0.9, 0.01, 0.99});
 
 
-      gum::Potential< double >* e_s = new gum::Potential< double >();
+      gum::Tensor< double >* e_s = new gum::Tensor< double >();
       e_s->add(bn->variable(s));
       e_s->fillWith({0., 1.});
 
-      gum::Potential< double >* e_c = new gum::Potential< double >();
+      gum::Tensor< double >* e_c = new gum::Tensor< double >();
       e_c->add(bn->variable(c));
       e_c->fillWith({1., 0.});
 
-      gum::Potential< double >      clique_csr;
+      gum::Tensor< double >      clique_csr;
       gum::MultiDimBucket< double > bucket_csr;
       clique_csr.add(bn->variable(c));
       bucket_csr.add(bn->variable(c));
@@ -469,15 +469,15 @@ namespace gum_tests {
       bucket_csr.add(bn->variable(r));
       clique_csr.fill((double)1);
       bucket_csr.add(bn->cpt(c));
-      clique_csr = gum::Potential< double >(clique_csr * bn->cpt(c));
+      clique_csr = gum::Tensor< double >(clique_csr * bn->cpt(c));
       bucket_csr.add(bn->cpt(s));
-      clique_csr = gum::Potential< double >(clique_csr * bn->cpt(r));
+      clique_csr = gum::Tensor< double >(clique_csr * bn->cpt(r));
       bucket_csr.add(bn->cpt(r));
-      clique_csr = gum::Potential< double >(clique_csr * bn->cpt(s));
+      clique_csr = gum::Tensor< double >(clique_csr * bn->cpt(s));
       bucket_csr.add(e_s);
-      clique_csr = gum::Potential< double >(clique_csr * *e_s);
+      clique_csr = gum::Tensor< double >(clique_csr * *e_s);
       bucket_csr.add(e_c);
-      clique_csr = gum::Potential< double >(clique_csr * *e_c);
+      clique_csr = gum::Tensor< double >(clique_csr * *e_c);
 
       {
         gum::Instantiation i;
@@ -490,7 +490,7 @@ namespace gum_tests {
         }
       }
 
-      gum::Potential< double >      sep_sr;
+      gum::Tensor< double >      sep_sr;
       gum::MultiDimBucket< double > bucket_sr;
       sep_sr.add(bn->variable(s));
       bucket_sr.add(bn->variable(s));
@@ -514,7 +514,7 @@ namespace gum_tests {
         }
       }
 
-      gum::Potential< double >      clique_wsr;
+      gum::Tensor< double >      clique_wsr;
       gum::MultiDimBucket< double > bucket_wsr;
       clique_wsr.add(bn->variable(w));
       bucket_wsr.add(bn->variable(w));
@@ -524,7 +524,7 @@ namespace gum_tests {
       bucket_wsr.add(bn->variable(r));
       clique_wsr.fill((double)1);
       bucket_wsr.add(bn->cpt(w));
-      clique_wsr = gum::Potential< double >(clique_wsr * bn->cpt(w));
+      clique_wsr = gum::Tensor< double >(clique_wsr * bn->cpt(w));
 
       {
         gum::Instantiation i;
@@ -537,7 +537,7 @@ namespace gum_tests {
         }
       }
 
-      gum::Potential< double >      tmp;
+      gum::Tensor< double >      tmp;
       gum::MultiDimBucket< double > bucket_marg_w;
       tmp.add(bn->variable(w));
       bucket_marg_w.add(bn->variable(w));
@@ -546,16 +546,16 @@ namespace gum_tests {
       tmp.add(bn->variable(r));
       bucket_marg_w.add(bucket_sr);
       tmp.fill((double)1);
-      tmp = gum::Potential< double >(tmp * clique_wsr);
-      tmp = gum::Potential< double >(tmp * sep_sr);
-      gum::Potential< double > marg_w;
+      tmp = gum::Tensor< double >(tmp * clique_wsr);
+      tmp = gum::Tensor< double >(tmp * sep_sr);
+      gum::Tensor< double > marg_w;
       marg_w.add(bn->variable(w));
 
       del_vars = gum::VariableSet();
       for (auto var: tmp.variablesSequence()) {
         if (!marg_w.contains(*var)) { del_vars.insert(var); }
       }
-      marg_w = gum::Potential< double >(tmp.sumOut(del_vars));
+      marg_w = gum::Tensor< double >(tmp.sumOut(del_vars));
 
       {
         gum::Instantiation i;
@@ -566,7 +566,7 @@ namespace gum_tests {
         }
       }
 
-      gum::Potential< double > norm_b_m_w;
+      gum::Tensor< double > norm_b_m_w;
       norm_b_m_w.add(bn->variable(w));
       {
         gum::Instantiation i(norm_b_m_w);
@@ -585,7 +585,7 @@ namespace gum_tests {
       false_marg_w.add(bn->variable(w));
       false_marg_w.add(false_sep_sr);
       false_marg_w.add(bucket_wsr);
-      gum::Potential< double > fnw;
+      gum::Tensor< double > fnw;
       fnw.add(bn->variable(w));
       {
         gum::Instantiation i;

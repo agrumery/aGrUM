@@ -77,7 +77,7 @@ namespace gum_tests {
       return vout;
     }
 
-    gum::Potential< double >
+    gum::Tensor< double >
         _infer_(const gum::BayesNet< double >&                                  bn,
                 const std::vector< std::size_t >&                               targets,
                 const gum::learning::DBRow< gum::learning::DBTranslatedValue >& row) {
@@ -96,7 +96,7 @@ namespace gum_tests {
         }
       }
 
-      gum::Potential< double > prob = ve.jointPosterior(target_set);
+      gum::Tensor< double > prob = ve.jointPosterior(target_set);
       return prob;
     }
 
@@ -893,7 +893,7 @@ namespace gum_tests {
       std::vector< double > sum(4, 0.0);
       int                   nb_row = 0;
       for (const auto& row: database) {
-        gum::Potential< double > proba = _infer_(bn, {std::size_t(0), std::size_t(1)}, row);
+        gum::Tensor< double > proba = _infer_(bn, {std::size_t(0), std::size_t(1)}, row);
 
         std::size_t idx;
         for (gum::Instantiation inst(proba); !inst.end(); ++inst) {

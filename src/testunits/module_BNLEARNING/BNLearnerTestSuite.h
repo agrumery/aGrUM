@@ -1605,8 +1605,8 @@ namespace gum_tests {
 
       auto bn3 = learner3.learnParameters(templ34.dag());
       {
-        const gum::Potential< double >& p = bn.cpt("lung_cancer");
-        const gum::Potential< double >& q = bn3.cpt("lung_cancer");
+        const gum::Tensor< double >& p = bn.cpt("lung_cancer");
+        const gum::Tensor< double >& q = bn3.cpt("lung_cancer");
 
         auto I = gum::Instantiation(p);
         auto J = gum::Instantiation(q);
@@ -2032,8 +2032,8 @@ namespace gum_tests {
       }
 
       for (const auto& node: full.nodes()) {
-        TS_GUM_POTENTIAL_DELTA(full.cpt(node),
-                               gum::Potential(full.cpt(node)).fillWith(partial.cpt(node)),
+        TS_GUM_TENSOR_DELTA(full.cpt(node),
+                               gum::Tensor(full.cpt(node)).fillWith(partial.cpt(node)),
                                TS_GUM_SMALL_ERROR)
       }
     }

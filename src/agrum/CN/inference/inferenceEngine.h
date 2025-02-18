@@ -233,7 +233,7 @@ namespace gum {
        *update this node lower and upper expectations.
        *
        * @param id The id of the node to be updated
-       * @param vertex A (potential) vertex of the node credal set
+       * @param vertex A (tensor) vertex of the node credal set
        */
       inline void updateExpectations_(const NodeId& id, const std::vector< GUM_SCALAR >& vertex);
 
@@ -245,7 +245,7 @@ namespace gum {
        *(i.e. not at an extreme value for any modality)
        *
        * @param id The id of the node to be updated
-       * @param vertex A (potential) vertex of the node credal set
+       * @param vertex A (tensor) vertex of the node credal set
        * @param elimRedund remove redundant vertex (inside a facet)
        */
       inline void updateCredalSets_(const NodeId&                    id,
@@ -408,14 +408,14 @@ namespace gum {
 
       /// adds a new evidence on node id (might be soft or hard)
       /**
-       * @throw UndefinedElement if the potential is defined over several nodes
-       * @throw UndefinedElement if the node on which the potential is defined
+       * @throw UndefinedElement if the tensor is defined over several nodes
+       * @throw UndefinedElement if the node on which the tensor is defined
        * does not belong to the Bayesian network
-       * @throw InvalidArgument if the node of the potential already has an
+       * @throw InvalidArgument if the node of the tensor already has an
        * evidence
        * @throw FatalError if pot=[0,0,...,0]
        */
-      virtual void addEvidence(const Potential< GUM_SCALAR >& pot) final;
+      virtual void addEvidence(const Tensor< GUM_SCALAR >& pot) final;
 
 
       /// removes all the evidence entered into the network
@@ -475,28 +475,28 @@ namespace gum {
        * @param id The node id which lower marginals we want.
        * @return A constant reference to this node lower marginals.
        */
-      Potential< GUM_SCALAR > marginalMin(const NodeId id) const;
+      Tensor< GUM_SCALAR > marginalMin(const NodeId id) const;
 
       /**
        * Get the upper marginals of a given node id.
        * @param id The node id which upper marginals we want.
        * @return A constant reference to this node upper marginals.
        */
-      Potential< GUM_SCALAR > marginalMax(const NodeId id) const;
+      Tensor< GUM_SCALAR > marginalMax(const NodeId id) const;
 
       /**
        * Get the lower marginals of a given variable name.
        * @param varName The variable name which lower marginals we want.
        * @return A constant reference to this variable lower marginals.
        */
-      Potential< GUM_SCALAR > marginalMin(const std::string& varName) const;
+      Tensor< GUM_SCALAR > marginalMin(const std::string& varName) const;
 
       /**
        * Get the upper marginals of a given variable name.
        * @param varName The variable name which upper marginals we want.
        * @return A constant reference to this variable upper marginals.
        */
-      Potential< GUM_SCALAR > marginalMax(const std::string& varName) const;
+      Tensor< GUM_SCALAR > marginalMax(const std::string& varName) const;
 
       /**
        * Get the lower expectation of a given node id.

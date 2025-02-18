@@ -197,7 +197,7 @@ namespace gum {
       /**
        * Return a reference over the gum::PRMType of this class element.
        * @throw OperationNotAllowed Raised if this class element doesn't have
-       *                            any gum::Potential (like a
+       *                            any gum::Tensor (like a
        * gum::PRMReferenceSlot).
        */
       virtual PRMType& type() = 0;
@@ -206,7 +206,7 @@ namespace gum {
        * Return a constant reference over the gum::PRMType of this class
        * element.
        * @throw OperationNotAllowed Raised if this class element doesn't have
-       *                            any gum::Potential (like a
+       *                            any gum::Tensor (like a
        * gum::PRMReferenceSlot).
        */
       virtual const PRMType& type() const = 0;
@@ -250,21 +250,21 @@ namespace gum {
       virtual std::string cast(const PRMType& t) const;
 
       // /**
-      //  * Return a reference over the gum::Potential of this class element.
+      //  * Return a reference over the gum::Tensor of this class element.
       //  * @throw OperationNotAllowed Raised if this class element doesn't have
-      //  *                            any gum::Potential (like a
+      //  *                            any gum::Tensor (like a
       //  gum::PRMReferenceSlot).
       //  */
-      // virtual Potential<GUM_SCALAR>& cpf() = 0;
+      // virtual Tensor<GUM_SCALAR>& cpf() = 0;
 
       /**
-       * Return a constant reference over the gum::Potential of this class
+       * Return a constant reference over the gum::Tensor of this class
        * element.
        * @throw OperationNotAllowed Raised if the class element doesn't have
-       *                            any gum::Potential (like a
+       *                            any gum::Tensor (like a
        * gum::PRMReferenceSlot).
        */
-      virtual const Potential< GUM_SCALAR >& cpf() const = 0;
+      virtual const Tensor< GUM_SCALAR >& cpf() const = 0;
 
       /// @}
 

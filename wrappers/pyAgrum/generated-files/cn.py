@@ -882,7 +882,7 @@ class CNMonteCarloSampling(object):
         """
         return _cn.CNMonteCarloSampling_setRepetitiveInd(self, flag)
 
-    def marginalMax(self, *args) -> "pyAgrum.Potential":
+    def marginalMax(self, *args) -> "pyAgrum.Tensor":
         r"""
 
         Get the upper marginals of a given node id.
@@ -907,7 +907,7 @@ class CNMonteCarloSampling(object):
         """
         return _cn.CNMonteCarloSampling_marginalMax(self, *args)
 
-    def marginalMin(self, *args) -> "pyAgrum.Potential":
+    def marginalMin(self, *args) -> "pyAgrum.Tensor":
         r"""
 
         Get the lower marginals of a given node id.
@@ -1003,7 +1003,7 @@ class CNMonteCarloSampling(object):
 
       Parameters
       ----------
-      evidces : Dict[str,Union[int,str,List[float]]] or List[pyAgrum.Potential]
+      evidces : Dict[str,Union[int,str,List[float]]] or List[pyAgrum.Tensor]
        a dict of "name:evidence" where name is a string (the name of the variable) and evidence is an integer (an index) or a string (a label) or a list of float (a likelihood).
 
       Raises
@@ -1022,7 +1022,7 @@ class CNMonteCarloSampling(object):
         for k,v in evidces.items():
           self.addEvidence(k,v)
         return
-      elif isinstance(evidces, list):#should be a list of Potential
+      elif isinstance(evidces, list):#should be a list of Tensor
         self.eraseAllEvidence()
         for p in evidces:
           self.addEvidence(p)
@@ -1323,7 +1323,7 @@ class CNLoopyPropagation(object):
         """
         return _cn.CNLoopyPropagation_setRepetitiveInd(self, flag)
 
-    def marginalMax(self, *args) -> "pyAgrum.Potential":
+    def marginalMax(self, *args) -> "pyAgrum.Tensor":
         r"""
 
         Get the upper marginals of a given node id.
@@ -1348,7 +1348,7 @@ class CNLoopyPropagation(object):
         """
         return _cn.CNLoopyPropagation_marginalMax(self, *args)
 
-    def marginalMin(self, *args) -> "pyAgrum.Potential":
+    def marginalMin(self, *args) -> "pyAgrum.Tensor":
         r"""
 
         Get the lower marginals of a given node id.
@@ -1444,7 +1444,7 @@ class CNLoopyPropagation(object):
 
       Parameters
       ----------
-      evidces : Dict[str,Union[int,str,List[float]]] or List[pyAgrum.Potential]
+      evidces : Dict[str,Union[int,str,List[float]]] or List[pyAgrum.Tensor]
        a dict of "name:evidence" where name is a string (the name of the variable) and evidence is an integer (an index) or a string (a label) or a list of float (a likelihood).
 
       Raises
@@ -1463,7 +1463,7 @@ class CNLoopyPropagation(object):
         for k,v in evidces.items():
           self.addEvidence(k,v)
         return
-      elif isinstance(evidces, list):#should be a list of Potential
+      elif isinstance(evidces, list):#should be a list of Tensor
         self.eraseAllEvidence()
         for p in evidces:
           self.addEvidence(p)

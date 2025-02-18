@@ -74,7 +74,7 @@ namespace gum {
         typename PRMInference< GUM_SCALAR >::Chain chain = std::make_pair(i, &(i->get(n)));
 
         if (_inf_->hasEvidence(chain)) {
-          const Potential< GUM_SCALAR >* e = _inf_->evidence(i)[n];
+          const Tensor< GUM_SCALAR >* e = _inf_->evidence(i)[n];
           Instantiation                  inst(e);
           Size                           count = 0;
 

@@ -74,7 +74,7 @@ namespace gum {
     clear();
   }
 
-  /* adds all potential target variables from a given BN to the Estimator */
+  /* adds all tensor target variables from a given BN to the Estimator */
 
   template < typename GUM_SCALAR >
   void Estimator< GUM_SCALAR >::setFromBN(const IBayesNet< GUM_SCALAR >* bn,
@@ -132,8 +132,8 @@ namespace gum {
   /* returns the approximation CPT of a variable */
 
   template < typename GUM_SCALAR >
-  const Potential< GUM_SCALAR >& Estimator< GUM_SCALAR >::posterior(const DiscreteVariable& var) {
-    Potential< GUM_SCALAR >* p = nullptr;
+  const Tensor< GUM_SCALAR >& Estimator< GUM_SCALAR >::posterior(const DiscreteVariable& var) {
+    Tensor< GUM_SCALAR >* p = nullptr;
 
     if (!estimator_.exists(var.name())) GUM_ERROR(NotFound, "Target variable not found")
 
@@ -141,7 +141,7 @@ namespace gum {
     if (_target_posteriors_.exists(var.name())) {
       p = _target_posteriors_[var.name()];
     } else {
-      p = new Potential< GUM_SCALAR >();
+      p = new Tensor< GUM_SCALAR >();
       *p << var;
       _target_posteriors_.insert(var.name(), p);
     }

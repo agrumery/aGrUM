@@ -90,8 +90,8 @@ namespace gum {
      */
     virtual void disturbReducCPT(NodeId                   node,
                                  BayesNet< GUM_SCALAR >&  bayesNet,
-                                 Potential< GUM_SCALAR >& src,
-                                 Potential< GUM_SCALAR >& marg)
+                                 Tensor< GUM_SCALAR >& src,
+                                 Tensor< GUM_SCALAR >& marg)
         = 0;
 
     /**
@@ -103,7 +103,7 @@ namespace gum {
      */
     virtual void disturbAugmCPT(NodeId                   node,
                                 BayesNet< GUM_SCALAR >&  bayesNet,
-                                Potential< GUM_SCALAR >& src,
+                                Tensor< GUM_SCALAR >& src,
                                 GUM_SCALAR               variation)
         = 0;
   };

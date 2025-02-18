@@ -194,7 +194,7 @@ namespace gum {
   }
 
   template < typename GUM_SCALAR >
-  const Potential< GUM_SCALAR >&
+  const Tensor< GUM_SCALAR >&
       MarkovRandomField< GUM_SCALAR >::factor(const NodeSet& varIds) const {
     return *_factors_[varIds];
   }
@@ -219,7 +219,7 @@ namespace gum {
   }
 
   template < typename GUM_SCALAR >
-  const Potential< GUM_SCALAR >&
+  const Tensor< GUM_SCALAR >&
       MarkovRandomField< GUM_SCALAR >::factor(const std::vector< std::string >& varnames) const {
     return factor(this->nodeset(varnames));
   }
@@ -328,7 +328,7 @@ namespace gum {
   }
 
   template < typename GUM_SCALAR >
-  Potential< GUM_SCALAR >&
+  Tensor< GUM_SCALAR >&
       MarkovRandomField< GUM_SCALAR >::_addFactor_(const std::vector< NodeId >& ordered_nodes) {
     NodeSet vars;
     for (auto node: ordered_nodes)
@@ -340,7 +340,7 @@ namespace gum {
       GUM_ERROR(InvalidArgument, "A factor for (" << this->names(vars) << ") already exists.")
     }
 
-    Potential< GUM_SCALAR >* factor = new Potential< GUM_SCALAR >();
+    Tensor< GUM_SCALAR >* factor = new Tensor< GUM_SCALAR >();
 
     for (auto node: ordered_nodes) {
       factor->add(variable(node));
@@ -353,9 +353,9 @@ namespace gum {
   }
 
   template < typename GUM_SCALAR >
-  INLINE const Potential< GUM_SCALAR >&
+  INLINE const Tensor< GUM_SCALAR >&
                MarkovRandomField< GUM_SCALAR >::addFactor(const NodeSet& vars) {
-    // in order to be deterministic, the Potential contains all the vars sorted by id.
+    // in order to be deterministic, the Tensor contains all the vars sorted by id.
     std::vector< NodeId > sorted_nodes;
     for (auto node: vars) {
       sorted_nodes.push_back(node);
@@ -366,7 +366,7 @@ namespace gum {
   }
 
   template < typename GUM_SCALAR >
-  INLINE const Potential< GUM_SCALAR >&
+  INLINE const Tensor< GUM_SCALAR >&
       MarkovRandomField< GUM_SCALAR >::addFactor(const std::vector< std::string >& varnames) {
     std::vector< NodeId > sorted_nodes;
     for (const auto& v: varnames) {
@@ -377,8 +377,8 @@ namespace gum {
   }
 
   template < typename GUM_SCALAR >
-  INLINE const Potential< GUM_SCALAR >&
-               MarkovRandomField< GUM_SCALAR >::addFactor(const Potential< GUM_SCALAR >& factor) {
+  INLINE const Tensor< GUM_SCALAR >&
+               MarkovRandomField< GUM_SCALAR >::addFactor(const Tensor< GUM_SCALAR >& factor) {
     std::vector< NodeId > sorted_nodes;
     for (Idx i = 0; i < factor.nbrDim(); i++) {
       sorted_nodes.push_back(idFromName(factor.variable(i).name()));

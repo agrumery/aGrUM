@@ -51,7 +51,7 @@
 // ==========================================================================
 #include <agrum/base/multidim/implementations/multiDimFunctionGraph.h>
 #include <agrum/base/multidim/implementations/multiDimFunctionGraphGenerator.h>
-#include <agrum/base/multidim/potential.h>
+#include <agrum/base/multidim/tensor.h>
 // ==========================================================================
 #include <agrum/base/variables/labelizedVariable.h>
 

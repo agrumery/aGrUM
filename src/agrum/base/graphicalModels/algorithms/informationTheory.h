@@ -53,7 +53,7 @@
 
 #include <agrum/agrum.h>
 
-#include <agrum/base/multidim/potential.h>
+#include <agrum/base/multidim/tensor.h>
 
 namespace gum {
   template < typename T >
@@ -122,13 +122,13 @@ namespace gum {
     VariableSet vY_;
     VariableSet vZ_;
 
-    Potential< GUM_SCALAR > pXYZ_;
-    Potential< GUM_SCALAR > pXY_;
-    Potential< GUM_SCALAR > pXZ_;
-    Potential< GUM_SCALAR > pYZ_;
-    Potential< GUM_SCALAR > pX_;
-    Potential< GUM_SCALAR > pY_;
-    Potential< GUM_SCALAR > pZ_;
+    Tensor< GUM_SCALAR > pXYZ_;
+    Tensor< GUM_SCALAR > pXY_;
+    Tensor< GUM_SCALAR > pXZ_;
+    Tensor< GUM_SCALAR > pYZ_;
+    Tensor< GUM_SCALAR > pX_;
+    Tensor< GUM_SCALAR > pY_;
+    Tensor< GUM_SCALAR > pZ_;
 
     void makeInference_();
   };

@@ -56,7 +56,7 @@
 #include <agrum/agrum.h>
 
 #include <agrum/base/graphicalModels/DAGmodel.h>
-#include <agrum/base/multidim/potential.h>
+#include <agrum/base/multidim/tensor.h>
 
 namespace gum {
 
@@ -149,12 +149,12 @@ namespace gum {
     /// @{
 
     /**
-     * Returns the CPT of a potential variable.
+     * Returns the CPT of a tensor variable.
      * @throw NotFound If no variable's id matches varId.
      */
-    virtual const Potential< GUM_SCALAR >& cpt(NodeId varId) const;
+    virtual const Tensor< GUM_SCALAR >& cpt(NodeId varId) const;
 
-    virtual const Potential< GUM_SCALAR >& cpt(std::string name) const final {
+    virtual const Tensor< GUM_SCALAR >& cpt(std::string name) const final {
       return cpt(idFromName(name));
     };
 
@@ -162,9 +162,9 @@ namespace gum {
      * Returns the utility table of a utility node.
      * @throw NotFound If no variable's id matches varId.
      */
-    virtual const Potential< GUM_SCALAR >& utility(NodeId varId) const;
+    virtual const Tensor< GUM_SCALAR >& utility(NodeId varId) const;
 
-    virtual const Potential< GUM_SCALAR >& utility(std::string name) const final {
+    virtual const Tensor< GUM_SCALAR >& utility(std::string name) const final {
       return utility(idFromName(name));
     };
 
@@ -238,7 +238,7 @@ namespace gum {
      * Add a chance variable, it's associate node and it's CPT. The id of the
      *new variable is automatically generated.
      *
-     * The implementation of the Potential is by default a MultiDimArray.
+     * The implementation of the Tensor is by default a MultiDimArray.
      *
      * @param variable The variable added by copy.
      * @param id The chosen id. If 0, the NodeGraphPart will choose.
@@ -253,7 +253,7 @@ namespace gum {
      * Add a chance variable, it's associate node and it's CPT. The id of the new
      * variable is automatically generated.
      *
-     * The implementation of the Potential is by default a MultiDimArray.
+     * The implementation of the Tensor is by default a MultiDimArray.
      *
      * @param variable The variable added by copy.
      * @param id The chosen id. If 0, the NodeGraphPart will choose.
@@ -300,7 +300,7 @@ namespace gum {
      * variable is automatically generated.
      *
      * @param variable The variable added by copy.
-     * @param aContent The content used for the variable potential.
+     * @param aContent The content used for the variable tensor.
      * @param id The chosen id. If 0, the NodeGraphPart will choose.
      * @warning give an id (not 0) should be reserved for rare and specific
      *situations !!!
@@ -435,7 +435,7 @@ namespace gum {
     /// @{
 
     /**
-     * Add an arc in the ID, and update diagram's potential nodes cpt if
+     * Add an arc in the ID, and update diagram's tensor nodes cpt if
      *necessary.
      *
      * @param head and
@@ -450,7 +450,7 @@ namespace gum {
     }
 
     /**
-     * Removes an arc in the ID, and update diagram's potential nodes cpt if
+     * Removes an arc in the ID, and update diagram's tensor nodes cpt if
      *necessary.
      *
      * If (tail, head) doesn't exist, the nothing happens.
@@ -459,7 +459,7 @@ namespace gum {
     void eraseArc(const Arc& arc);
 
     /**
-     * Removes an arc in the ID, and update diagram's potential nodes cpt if
+     * Removes an arc in the ID, and update diagram's tensor nodes cpt if
      *necessary.
      *
      * If (tail, head) doesn't exist, the nothing happens.
@@ -555,10 +555,10 @@ namespace gum {
     /// Mapping between id and variable
     VariableNodeMap _variableMap_;
 
-    /// Mapping between potential variable's id and their CPT
-    NodeProperty< Potential< GUM_SCALAR >* > _potentialMap_;
+    /// Mapping between tensor variable's id and their CPT
+    NodeProperty< Tensor< GUM_SCALAR >* > _tensorMap_;
     /// Mapping between utility variable's id and their utility table
-    NodeProperty< Potential< GUM_SCALAR >* > _utilityMap_;
+    NodeProperty< Tensor< GUM_SCALAR >* > _utilityMap_;
 
     /// The temporal order
     mutable List< NodeSet > _temporalOrder_;

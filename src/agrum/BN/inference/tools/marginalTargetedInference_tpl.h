@@ -238,7 +238,7 @@ namespace gum {
 
   // Compute the posterior of a node.
   template < typename GUM_SCALAR >
-  const Potential< GUM_SCALAR >& MarginalTargetedInference< GUM_SCALAR >::posterior(NodeId node) {
+  const Tensor< GUM_SCALAR >& MarginalTargetedInference< GUM_SCALAR >::posterior(NodeId node) {
     if (this->hardEvidenceNodes().contains(node)) { return *(this->evidence()[node]); }
 
     if (!isTarget(node)) {
@@ -253,7 +253,7 @@ namespace gum {
 
   // Compute the posterior of a node.
   template < typename GUM_SCALAR >
-  const Potential< GUM_SCALAR >&
+  const Tensor< GUM_SCALAR >&
       MarginalTargetedInference< GUM_SCALAR >::posterior(const std::string& nodeName) {
     return posterior(this->BN().idFromName(nodeName));
   }
@@ -275,7 +275,7 @@ namespace gum {
   }
 
   template < typename GUM_SCALAR >
-  Potential< GUM_SCALAR >
+  Tensor< GUM_SCALAR >
       MarginalTargetedInference< GUM_SCALAR >::evidenceImpact(NodeId target, const NodeSet& evs) {
     const auto& vtarget = this->BN().variable(target);
 
@@ -286,7 +286,7 @@ namespace gum {
     }
     auto condset = this->BN().minimalCondSet(target, evs);
 
-    Potential< GUM_SCALAR > res;
+    Tensor< GUM_SCALAR > res;
     this->eraseAllTargets();
     this->eraseAllEvidence();
     res.add(this->BN().variable(target));
@@ -314,7 +314,7 @@ namespace gum {
   }
 
   template < typename GUM_SCALAR >
-  Potential< GUM_SCALAR > MarginalTargetedInference< GUM_SCALAR >::evidenceImpact(
+  Tensor< GUM_SCALAR > MarginalTargetedInference< GUM_SCALAR >::evidenceImpact(
       const std::string&                target,
       const std::vector< std::string >& evs) {
     const auto& bn = this->BN();

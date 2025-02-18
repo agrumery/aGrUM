@@ -207,7 +207,7 @@ namespace std {
 %include <agrum/base/multidim/ICIModels/multiDimNoisyAND.h>
 
 %include <agrum/base/multidim/instantiation.h>
-%include <agrum/base/multidim/potential.h>
+%include <agrum/base/multidim/tensor.h>
 
 %import <agrum/base/core/refPtr.h>
 %include <agrum/base/core/list.h>
@@ -242,7 +242,7 @@ namespace std {
 %template ( MultiDimWithOffset ) gum::MultiDimWithOffset<double>;
 %template ( MultiDimArray ) gum::MultiDimArray<double>;
 
-%template ( Potential ) gum::Potential<double>;
+%template ( Tensor ) gum::Tensor<double>;
 
 %template ( PairMPE ) std::pair<gum::Instantiation, double>;
 

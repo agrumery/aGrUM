@@ -93,14 +93,14 @@ namespace gum {
      * @returns a const ref to the posterior probability of the node.
      * @param id the node for which we need a posterior probability
      *
-     * @warning for efficiency reasons, the potential is returned by reference.
-     * In order to ensure that the potential may still exist even if the Inference
+     * @warning for efficiency reasons, the tensor is returned by reference.
+     * In order to ensure that the tensor may still exist even if the Inference
      * object is destroyed, the user has to copy it explicitly.
      *
      * @throw UndefinedElement if node is not in the set of targets.
      * @throw NotFound if node is not in the BN.
      */
-    const Potential< GUM_SCALAR >& currentPosterior(NodeId id);
+    const Tensor< GUM_SCALAR >& currentPosterior(NodeId id);
 
     /// Computes and returns the actual estimation of the posterior of a node by
     /// its name.
@@ -109,15 +109,15 @@ namespace gum {
      * name.
      * @param name the name of the node for which we need a posterior probability
      *
-     * @warning for efficiency reasons, the potential is returned by reference.
-     * In order to ensure that the potential may still exist even if the Inference
+     * @warning for efficiency reasons, the tensor is returned by reference.
+     * In order to ensure that the tensor may still exist even if the Inference
      * object is destroyed, the user has to copy it explicitly.
      *
      * @throw UndefinedElement if node corresponding to name is not in the set of
      * targets.
      * @throw NotFound if node corresponding to name is not in the BN.
      */
-    const Potential< GUM_SCALAR >& currentPosterior(const std::string& name);
+    const Tensor< GUM_SCALAR >& currentPosterior(const std::string& name);
     /// @}
     /// @}
 
@@ -134,14 +134,14 @@ namespace gum {
      * @returns a const ref to the posterior probability of the node.
      * @param id the node for which we need a posterior probability
      *
-     * @warning for efficiency reasons, the potential is returned by reference.
-     * In order to ensure that the potential may still exist even if the Inference
+     * @warning for efficiency reasons, the tensor is returned by reference.
+     * In order to ensure that the tensor may still exist even if the Inference
      * object is destroyed, the user has to copy it explicitly.
      *
      * @throw UndefinedElement if node is not in the set of targets.
      * @throw NotFound if node is not in the BN.
      */
-    const Potential< GUM_SCALAR >& posterior_(NodeId id) override;
+    const Tensor< GUM_SCALAR >& posterior_(NodeId id) override;
 
     /// @}
 
@@ -168,7 +168,7 @@ namespace gum {
     /// Initializes the estimators object linked to the simulation
     /**
      * Initializes the estimator object by creating a hashtable between non
-     * evidence nodes and a 0-filled potential which will approximate the node's
+     * evidence nodes and a 0-filled tensor which will approximate the node's
      * posterior
      *
      */
@@ -246,7 +246,7 @@ namespace gum {
 
     void updateOutdatedStructure_() override;
 
-    void updateOutdatedPotentials_() override;
+    void updateOutdatedTensors_() override;
 
     void onMarginalTargetAdded_(const NodeId id) override;
 

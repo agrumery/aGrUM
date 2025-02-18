@@ -57,14 +57,14 @@ namespace gum_tests {
     gum::LabelizedVariable* binVar3;
     gum::LabelizedVariable* binVar4;
 
-    gum::Potential< double >* rootPot1F;
-    gum::Potential< double >* rootPot1D;
+    gum::Tensor< double >* rootPot1F;
+    gum::Tensor< double >* rootPot1D;
 
-    gum::Potential< double >* pot1F;
-    gum::Potential< double >* pot1D;
+    gum::Tensor< double >* pot1F;
+    gum::Tensor< double >* pot1D;
 
-    gum::Potential< double >* pot2F;
-    gum::Potential< double >* pot2D;
+    gum::Tensor< double >* pot2F;
+    gum::Tensor< double >* pot2D;
 
     // n-ary variables
     gum::LabelizedVariable* nVar1;
@@ -73,8 +73,8 @@ namespace gum_tests {
     gum::LabelizedVariable* nVar4;
     gum::LabelizedVariable* nVar5;
 
-    gum::Potential< double >* pot3F;
-    gum::Potential< double >* pot3D;
+    gum::Tensor< double >* pot3F;
+    gum::Tensor< double >* pot3D;
 
     void setUp() {
       binVar1 = new gum::LabelizedVariable("binVar1", "Binary Variable number 1");
@@ -82,27 +82,27 @@ namespace gum_tests {
       binVar3 = new gum::LabelizedVariable("binVar3", "Binary Variable number 3");
       binVar4 = new gum::LabelizedVariable("binVar4", "Binary Variable number 4");
 
-      rootPot1F = new gum::Potential< double >();
+      rootPot1F = new gum::Tensor< double >();
       rootPot1F->add(*binVar1);
 
-      rootPot1D = new gum::Potential< double >();
+      rootPot1D = new gum::Tensor< double >();
       rootPot1D->add(*binVar1);
 
-      pot1F = new gum::Potential< double >();
+      pot1F = new gum::Tensor< double >();
       pot1F->add(*binVar1);
       pot1F->add(*binVar2);
 
-      pot1D = new gum::Potential< double >();
+      pot1D = new gum::Tensor< double >();
       pot1D->add(*binVar1);
       pot1D->add(*binVar2);
 
-      pot2F = new gum::Potential< double >();
+      pot2F = new gum::Tensor< double >();
       pot2F->add(*binVar1);
       pot2F->add(*binVar2);
       pot2F->add(*binVar3);
       pot2F->add(*binVar4);
 
-      pot2D = new gum::Potential< double >();
+      pot2D = new gum::Tensor< double >();
       pot2D->add(*binVar1);
       pot2D->add(*binVar2);
       pot2D->add(*binVar3);
@@ -114,14 +114,14 @@ namespace gum_tests {
       nVar4 = new gum::LabelizedVariable("nVar4", "A discrete variable", 5);
       nVar5 = new gum::LabelizedVariable("nVar5", "A discrete variable", 10);
 
-      pot3F = new gum::Potential< double >();
+      pot3F = new gum::Tensor< double >();
       pot3F->add(*nVar1);
       pot3F->add(*nVar2);
       pot3F->add(*nVar3);
       pot3F->add(*nVar4);
       pot3F->add(*nVar5);
 
-      pot3D = new gum::Potential< double >();
+      pot3D = new gum::Tensor< double >();
       pot3D->add(*nVar1);
       pot3D->add(*nVar2);
       pot3D->add(*nVar3);
@@ -299,7 +299,7 @@ namespace gum_tests {
 
       for (int i = 2; i < 100; ++i) {
         gum::LabelizedVariable   aVar("aVar", "A discrete variable", i);
-        gum::Potential< double > aPot;
+        gum::Tensor< double > aPot;
         aPot.add(aVar);
         TS_GUM_ASSERT_THROWS_NOTHING(cptGen.generateCPT(aPot.pos(aVar), aPot))
 
@@ -341,7 +341,7 @@ namespace gum_tests {
 
       for (int i = 2; i < 100; ++i) {
         gum::LabelizedVariable   aVar("aVar", "A discrete variable", i);
-        gum::Potential< double > aPot;
+        gum::Tensor< double > aPot;
         aPot.add(aVar);
         TS_GUM_ASSERT_THROWS_NOTHING(cptGen.generateCPT(aPot.pos(aVar), aPot))
 

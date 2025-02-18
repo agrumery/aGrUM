@@ -135,7 +135,7 @@ namespace gum_tests {
     private:
     // Builds a BN to test the inference
     void fill(gum::BayesNet< double >& bn) {
-      const gum::Potential< double >& p1 = bn.cpt(i1);
+      const gum::Tensor< double >& p1 = bn.cpt(i1);
       {
         // FILLING PARAMS
         const double                t[2] = {0.2, 0.8};
@@ -144,7 +144,7 @@ namespace gum_tests {
         p1.fillWith(v);
       }
 
-      const gum::Potential< double >& p2 = bn.cpt(i2);
+      const gum::Tensor< double >& p2 = bn.cpt(i2);
       {
         // FILLING PARAMS
         const double                t[2] = {0.3, 0.7};
@@ -153,7 +153,7 @@ namespace gum_tests {
         p2.fillWith(v);
       }
 
-      const gum::Potential< double >& p3 = bn.cpt(i3);
+      const gum::Tensor< double >& p3 = bn.cpt(i3);
       {
         // FILLING PARAMS
         const double                t[4] = {0.1, 0.9, 0.9, 0.1};
@@ -162,7 +162,7 @@ namespace gum_tests {
         p3.fillWith(v);
       }
 
-      const gum::Potential< double >& p4 = bn.cpt(i4);
+      const gum::Tensor< double >& p4 = bn.cpt(i4);
       {
         // FILLING PARAMS
         const double                t[8] = {0.4, 0.6, 0.5, 0.5, 0.5, 0.5, 1.0, 0.0};
@@ -171,7 +171,7 @@ namespace gum_tests {
         p4.fillWith(v);
       }
 
-      const gum::Potential< double >& p5 = bn.cpt(i5);
+      const gum::Tensor< double >& p5 = bn.cpt(i5);
       {
         // FILLING PARAMS
         const double t[16]

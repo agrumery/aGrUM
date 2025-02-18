@@ -47,7 +47,7 @@
 
 #include <limits>
 
-#include <agrum/base/multidim/potential.h>
+#include <agrum/base/multidim/tensor.h>
 #include <agrum/MRF/IMarkovRandomField.h>
 
 #define EF get

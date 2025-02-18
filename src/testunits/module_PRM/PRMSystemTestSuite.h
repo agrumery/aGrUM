@@ -242,7 +242,7 @@ namespace gum_tests {
       TS_ASSERT_EQUALS(bn->size(), (gum::Size)8)
       TS_ASSERT_EQUALS(bn->sizeArcs(), (gum::Size)8)
       for (auto node: bn->dag()) {
-        const gum::Potential< double >* cpt = nullptr;
+        const gum::Tensor< double >* cpt = nullptr;
         TS_GUM_ASSERT_THROWS_NOTHING(cpt = &(bn->cpt(node)))
         gum::Instantiation inst(*cpt);
         for (inst.setFirst(); !inst.end(); inst.inc()) {
@@ -279,7 +279,7 @@ namespace gum_tests {
       auto                            id = bn->idFromName("asia.(boolean)visitToAsia");
       std::vector< double >           values;
       const auto&                     cpf = _asia_->get("visitToAsia").cpf();
-      gum::Potential< double > const* cpt = nullptr;
+      gum::Tensor< double > const* cpt = nullptr;
       // Act
       TS_ASSERT_THROWS_NOTHING(cpt = &(bn->cpt(id)))
       // Assert
@@ -303,7 +303,7 @@ namespace gum_tests {
       auto                            id = bn->idFromName("asia.(boolean)tuberculosis");
       std::vector< double >           values;
       const auto&                     cpf = _asia_->get("tuberculosis").cpf();
-      gum::Potential< double > const* cpt = nullptr;
+      gum::Tensor< double > const* cpt = nullptr;
       // Act
       TS_ASSERT_THROWS_NOTHING(cpt = &(bn->cpt(id)))
       // Assert
@@ -327,7 +327,7 @@ namespace gum_tests {
       auto                            id = bn->idFromName("asia.(boolean)smoking");
       std::vector< double >           values;
       const auto&                     cpf = _asia_->get("smoking").cpf();
-      gum::Potential< double > const* cpt = nullptr;
+      gum::Tensor< double > const* cpt = nullptr;
       // Act
       TS_ASSERT_THROWS_NOTHING(cpt = &(bn->cpt(id)))
       // Assert
@@ -351,7 +351,7 @@ namespace gum_tests {
       auto                            id = bn->idFromName("asia.(boolean)lungCancer");
       std::vector< double >           values;
       const auto&                     cpf = _asia_->get("lungCancer").cpf();
-      gum::Potential< double > const* cpt = nullptr;
+      gum::Tensor< double > const* cpt = nullptr;
       // Act
       TS_ASSERT_THROWS_NOTHING(cpt = &(bn->cpt(id)))
       // Assert
@@ -375,7 +375,7 @@ namespace gum_tests {
       auto                            id = bn->idFromName("asia.(boolean)bronchitis");
       std::vector< double >           values;
       const auto&                     cpf = _asia_->get("bronchitis").cpf();
-      gum::Potential< double > const* cpt = nullptr;
+      gum::Tensor< double > const* cpt = nullptr;
       // Act
       TS_ASSERT_THROWS_NOTHING(cpt = &(bn->cpt(id)))
       // Assert
@@ -399,7 +399,7 @@ namespace gum_tests {
       auto                            id = bn->idFromName("asia.(boolean)tubOrCancer");
       std::vector< double >           values;
       const auto&                     cpf = _asia_->get("tubOrCancer").cpf();
-      gum::Potential< double > const* cpt = nullptr;
+      gum::Tensor< double > const* cpt = nullptr;
       // Act
       TS_ASSERT_THROWS_NOTHING(cpt = &(bn->cpt(id)))
       // Assert
@@ -423,7 +423,7 @@ namespace gum_tests {
       auto                            id = bn->idFromName("asia.(boolean)positiveXRay");
       std::vector< double >           values;
       const auto&                     cpf = _asia_->get("positiveXRay").cpf();
-      gum::Potential< double > const* cpt = nullptr;
+      gum::Tensor< double > const* cpt = nullptr;
       // Act
       TS_ASSERT_THROWS_NOTHING(cpt = &(bn->cpt(id)))
       // Assert
@@ -447,7 +447,7 @@ namespace gum_tests {
       auto                            id = bn->idFromName("asia.(boolean)dyspnea");
       std::vector< double >           values;
       const auto&                     cpf = _asia_->get("dyspnea").cpf();
-      gum::Potential< double > const* cpt = nullptr;
+      gum::Tensor< double > const* cpt = nullptr;
       // Act
       TS_ASSERT_THROWS_NOTHING(cpt = &(bn->cpt(id)))
       // Assert

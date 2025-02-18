@@ -7,6 +7,4 @@ DESTDIR=${SRCDIR}/build/pyAgrum/release
 #swig -c++ -python -outdir $(DESTDIR) -py3 -I../../swig -I../../../src -I../../../build/pyAgrum/release -I.. pyAgrum.i
 # please run this command if this Makefile fails : `act lib pyAgrum --python3`
 run:
-	cd ${DESTDIR} && make pyAgrum_swig_compilation
-	cp ${SRCDIR}/wrappers/pyAgrum/generated-files/pyAgrum.py ${DESTDIR}/wrappers/pyAgrum/.
 	cd sphinx && make html

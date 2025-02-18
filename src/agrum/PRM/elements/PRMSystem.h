@@ -312,15 +312,15 @@ namespace gum {
       void _groundAttr_(const PRMInstance< GUM_SCALAR >& instance,
                         BayesNetFactory< GUM_SCALAR >&   factory) const;
 
-      /// @brief Method which copy node's Potential of an PRMInstance to the
+      /// @brief Method which copy node's Tensor of an PRMInstance to the
       /// grounded
       ///        Bayesian network.
       /// @param instance The PRMInstance currently grounded.
-      /// @param attr     The PRMAttribute<GUM_SCALAR> for which the Potential
+      /// @param attr     The PRMAttribute<GUM_SCALAR> for which the Tensor
       /// is
       /// grounded.
       /// @param factory  The factory used to build the grounded IBayesNet.
-      void _groundPotential_(const PRMInstance< GUM_SCALAR >&  instance,
+      void _groundTensor_(const PRMInstance< GUM_SCALAR >&  instance,
                              const PRMAttribute< GUM_SCALAR >& attr,
                              BayesNetFactory< GUM_SCALAR >&    factory) const;
 

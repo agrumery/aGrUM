@@ -230,18 +230,18 @@ namespace gum {
       virtual const PRMType& type() const;
 
       /**
-       * @brief Aggregates don't have Potential until they are instantiated as
+       * @brief Aggregates don't have Tensor until they are instantiated as
        * PRMAttribute, so this will raise an OperationNotAllowed exception.
        * See gum::PRMClassElement::cpf().
        */
-      virtual Potential< GUM_SCALAR >& cpf();
+      virtual Tensor< GUM_SCALAR >& cpf();
 
       /**
-       * @brief Aggregates don't have Potential until they are instantiated as
+       * @brief Aggregates don't have Tensor until they are instantiated as
        * PRMAttribute, so this will raise an OperationNotAllowed exception.
        * See gum::PRMClassElement::cpf().
        */
-      virtual const Potential< GUM_SCALAR >& cpf() const;
+      virtual const Tensor< GUM_SCALAR >& cpf() const;
 
       /**
        * Returns a pointer over an empty gum::MultiDimImplementation of the good

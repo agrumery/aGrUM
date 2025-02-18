@@ -131,7 +131,7 @@ def _calcul_proba_for_nary_class(row, local_inst, dictName, MarkovBlanket, targe
   ----------
       row: numpyArray shape: (n features)
           test data
-      local_inst: pyAgrum.Potential
+      local_inst: pyAgrum.Tensor
           Instantiation of the Markov Blanket EXCEPT the target
       dictName: Dict[str : int]
           dictionary of the name of a variable and his column in the data base
@@ -166,7 +166,7 @@ def _calcul_most_probable_for_nary_class(row, local_inst, dictName, MarkovBlanke
   ----------
       row: numpyArray shape: (n features)
           test data
-      local_inst: pyAgrum.Potential
+      local_inst: pyAgrum.Tensor
           Instantiation of the Markov Blanket EXCEPT the target
       dictName: Dict[str : int]
           dictionary of the name of a variable and his column in the data base
@@ -196,7 +196,7 @@ def _calcul_proba_for_binary_class(row, label1, labels, Inst, dictName, MarkovBl
           the True value of y
       labels:
           the False values of y
-      Inst: Potential
+      Inst: Tensor
           Instantiation of the Markov Blanket
       dictName: dict[str : int]
           dictionary of the name of a variable and his column in the data base

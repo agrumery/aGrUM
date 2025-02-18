@@ -12,7 +12,7 @@ A Markov random field uses a undirected graph to represent conditional independe
 .. math::
    P(X_1,\cdots,X_n)\propto\prod_{i=1}^{n_c} \phi_i(C_i)
 
-Where the :math:`\phi_i` are potentials over the :math:`n_c` cliques of the undirected graph.
+Where the :math:`\phi_i` are tensors over the :math:`n_c` cliques of the undirected graph.
 
 Moreover, inference algorithms can also use this graph to speed up the computations.
 

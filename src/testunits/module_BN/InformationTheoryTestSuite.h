@@ -49,7 +49,7 @@
 #include <agrum/MRF/inference/ShaferShenoyMRFInference.h>
 #include <agrum/MRF/MarkovRandomField.h>
 
-#include "agrum/base/multidim/potential.h"
+#include "agrum/base/multidim/tensor.h"
 #include "cxxtest/TestSuite.h"
 #include "testunits/gumtest/AgrumTestSuite.h"
 #include "testunits/gumtest/utils.h"
@@ -224,7 +224,7 @@ namespace gum_tests {
 
     GUM_ACTIVE_TEST(checkMutalInformationOnArc) {
       auto bn = gum::BayesNet< double >::fastPrototype("A->B->C->D;C->E;D->F;C<-G->H->E", 4);
-      gum::Potential< double > joint;
+      gum::Tensor< double > joint;
       for (auto n: bn.nodes())
         joint *= bn.cpt(n);
 
@@ -246,7 +246,7 @@ namespace gum_tests {
       gum::LazyPropagation lazy(&bn);
 
       for (const auto& node: bn.nodes()) {
-        TS_GUM_POTENTIAL_DELTA(lazy.posterior(node),
+        TS_GUM_TENSOR_DELTA(lazy.posterior(node),
                                joint.sumIn({&bn.variable(node)}),
                                TS_GUM_SMALL_ERROR);
       }
@@ -266,10 +266,10 @@ namespace gum_tests {
 
     GUM_ACTIVE_TEST(checkMutalInformationOnArcWithEvidence) {
       auto bn = gum::BayesNet< double >::fastPrototype("A->B->C->D;C->E;D->F;C<-G->H->E", 4);
-      gum::Potential< double > joint;
+      gum::Tensor< double > joint;
       for (auto n: bn.nodes())
         joint *= bn.cpt(n);
-      gum::Potential< double > evc;
+      gum::Tensor< double > evc;
       evc.add(bn.variable("C"));
       evc.fillWith({0, 1, 0, 0});
       joint *= evc;
@@ -294,7 +294,7 @@ namespace gum_tests {
       lazy.addEvidence(evc);
 
       for (const auto& node: bn.nodes()) {
-        TS_GUM_POTENTIAL_DELTA(lazy.posterior(node),
+        TS_GUM_TENSOR_DELTA(lazy.posterior(node),
                                joint.sumIn({&bn.variable(node)}),
                                TS_GUM_SMALL_ERROR);
       }
@@ -314,10 +314,10 @@ namespace gum_tests {
 
     GUM_ACTIVE_TEST(checkMutalInformationOnArcWithSoftEvidence) {
       auto bn = gum::BayesNet< double >::fastPrototype("A->B->C->D;C->E;D->F;C<-G->H->E", 4);
-      gum::Potential< double > joint;
+      gum::Tensor< double > joint;
       for (auto n: bn.nodes())
         joint *= bn.cpt(n);
-      gum::Potential< double > evc;
+      gum::Tensor< double > evc;
       evc.add(bn.variable("D"));
       evc.fillWith({0, 1, 1, 0});
       joint *= evc;
@@ -342,7 +342,7 @@ namespace gum_tests {
       lazy.addEvidence(evc);
 
       for (const auto& node: bn.nodes()) {
-        TS_GUM_POTENTIAL_DELTA(lazy.posterior(node),
+        TS_GUM_TENSOR_DELTA(lazy.posterior(node),
                                joint.sumIn({&bn.variable(node)}),
                                TS_GUM_SMALL_ERROR);
       }

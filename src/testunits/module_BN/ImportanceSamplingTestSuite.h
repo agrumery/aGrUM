@@ -45,7 +45,7 @@
 #include <gumtest/utils.h>
 
 #include <agrum/base/core/approximations/approximationSchemeListener.h>
-#include <agrum/base/multidim/potential.h>
+#include <agrum/base/multidim/tensor.h>
 #include <agrum/base/variables/labelizedVariable.h>
 #include <agrum/BN/BayesNet.h>
 #include <agrum/BN/inference/importanceSampling.h>

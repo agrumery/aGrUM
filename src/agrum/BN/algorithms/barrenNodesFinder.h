@@ -117,10 +117,10 @@ namespace gum {
     /// returns the set of barren nodes in the messages sent in a junction tree
     ArcProperty< NodeSet > barrenNodes(const CliqueGraph& junction_tree);
 
-    /// returns the set of barren potentials in messages sent in a junction tree
+    /// returns the set of barren tensors in messages sent in a junction tree
     template < typename GUM_SCALAR >
-    ArcProperty< Set< const Potential< GUM_SCALAR >* > >
-        barrenPotentials(const CliqueGraph& junction_tree, const IBayesNet< GUM_SCALAR >& bn);
+    ArcProperty< Set< const Tensor< GUM_SCALAR >* > >
+        barrenTensors(const CliqueGraph& junction_tree, const IBayesNet< GUM_SCALAR >& bn);
 
     /// @}
 

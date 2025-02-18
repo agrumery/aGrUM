@@ -193,11 +193,11 @@ namespace gum {
     void addTick(const GUM_SCALAR& tick);
 
     /**
-     * @brief Defines the implementation to use for var's Potential.
+     * @brief Defines the implementation to use for var's Tensor.
      *
      * @warning The implementation must be empty.
      *
-     * @warning The pointer is always delegated to var's Potential! No copy of
+     * @warning The pointer is always delegated to var's Tensor! No copy of
      * it is made.
      *
      * @todo When copy of a MultiDimImplementation is available use a copy
@@ -462,15 +462,15 @@ namespace gum {
 
     /// Sub method of setVariableCPT() which redefine the BayesNet's DAG with
     /// respect to table.
-    void _setCPTAndParents_(const DiscreteVariable& var, Potential< GUM_SCALAR >* table);
+    void _setCPTAndParents_(const DiscreteVariable& var, Tensor< GUM_SCALAR >* table);
 
     /// Reset the different parts used to constructed the BayesNet.
     void _resetParts_();
 
-    /// Fill a potential from a raw CPT.
+    /// Fill a tensor from a raw CPT.
     void _fillProbaWithValuesTable_(const std::vector< std::string >& variables,
                                     const std::vector< float >&       rawTable);
-    /// Fill a potential from a raw CPT.(using the canonical order of vars)
+    /// Fill a tensor from a raw CPT.(using the canonical order of vars)
     void _fillProbaWithValuesTable_(const std::vector< float >& rawTable);
 
     /// Increment a modality counter for the  _fillProbaWithValuesTable_ method.

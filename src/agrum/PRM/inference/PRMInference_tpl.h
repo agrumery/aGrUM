@@ -71,7 +71,7 @@ namespace gum {
         _evidences_.insert(elt.first, new PRMInference< GUM_SCALAR >::EMap());
 
         for (const auto& elt2: *elt.second) {
-          Potential< GUM_SCALAR >* e = new Potential< GUM_SCALAR >();
+          Tensor< GUM_SCALAR >* e = new Tensor< GUM_SCALAR >();
           e->add(*(elt2.second->variablesSequence().front()));
           Instantiation i(*e);
 
@@ -94,7 +94,7 @@ namespace gum {
         _evidences_.insert(elt.first, new PRMInference< GUM_SCALAR >::EMap());
 
         for (const auto& elt2: *elt.second) {
-          Potential< GUM_SCALAR >* e = new Potential< GUM_SCALAR >();
+          Tensor< GUM_SCALAR >* e = new Tensor< GUM_SCALAR >();
           e->add(*(elt2.second->variablesSequence().front()));
           Instantiation i(*e);
 
@@ -122,12 +122,12 @@ namespace gum {
 
     template < typename GUM_SCALAR >
     void PRMInference< GUM_SCALAR >::addEvidence(const Chain&                   chain,
-                                                 const Potential< GUM_SCALAR >& p) {
+                                                 const Tensor< GUM_SCALAR >& p) {
       if (chain.first->exists(chain.second->id())) {
         if ((p.nbrDim() != 1) || (!p.contains(chain.second->type().variable())))
           GUM_ERROR(OperationNotAllowed, "illegal evidence for the given PRMAttribute.")
 
-        Potential< GUM_SCALAR >* e = new Potential< GUM_SCALAR >();
+        Tensor< GUM_SCALAR >* e = new Tensor< GUM_SCALAR >();
         e->add(chain.second->type().variable());
         Instantiation i(*e);
 
@@ -232,12 +232,12 @@ namespace gum {
     template < typename GUM_SCALAR >
     INLINE void PRMInference< GUM_SCALAR >::posterior(
         const typename PRMInference< GUM_SCALAR >::Chain& chain,
-        Potential< GUM_SCALAR >&                          m) {
-      if (m.nbrDim() > 0) { GUM_ERROR(OperationNotAllowed, "the given Potential is not empty.") }
+        Tensor< GUM_SCALAR >&                          m) {
+      if (m.nbrDim() > 0) { GUM_ERROR(OperationNotAllowed, "the given Tensor is not empty.") }
 
       if (hasEvidence(chain)) {
         m.add(chain.second->type().variable());
-        const Potential< GUM_SCALAR >& e = *(evidence(chain.first)[chain.second->id()]);
+        const Tensor< GUM_SCALAR >& e = *(evidence(chain.first)[chain.second->id()]);
         Instantiation                  i(m), j(e);
 
         for (i.setFirst(), j.setFirst(); !i.end(); i.inc(), j.inc())
@@ -258,8 +258,8 @@ namespace gum {
     template < typename GUM_SCALAR >
     INLINE void PRMInference< GUM_SCALAR >::joint(
         const std::vector< typename PRMInference< GUM_SCALAR >::Chain >& chains,
-        Potential< GUM_SCALAR >&                                         j) {
-      if (j.nbrDim() > 0) { GUM_ERROR(OperationNotAllowed, "the given Potential is not empty.") }
+        Tensor< GUM_SCALAR >&                                         j) {
+      if (j.nbrDim() > 0) { GUM_ERROR(OperationNotAllowed, "the given Tensor is not empty.") }
 
       for (auto chain = chains.begin(); chain != chains.end(); ++chain) {
         j.add(chain->second->type().variable());

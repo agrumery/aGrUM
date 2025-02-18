@@ -475,7 +475,7 @@ namespace gum {
      * underlying hash table.
      *
      * When new_policy is false, the set will not try to change its memory
-     * size, hence resulting in potentially slower accesses.
+     * size, hence resulting in tensorly slower accesses.
      *
      * @param new_policy If true the set updates dynamically its memory
      * consumption to guarantee that its elements are fast to retrieve.

@@ -16,7 +16,7 @@
 %include "doc_NumericalDiscreteVariable.i"
 
 %include "doc_Instantiation.i"
-%include "doc_Potential.i"
+%include "doc_Tensor.i"
 
 %include "doc_GraphicalModel.i"
 %include "doc_DAGmodel.i"

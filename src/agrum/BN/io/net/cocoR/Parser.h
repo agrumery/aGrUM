@@ -129,7 +129,7 @@ void checkSizeOfProbabilityAssignation__(const std::vector<float>&v,const std::s
 	void GARBAGE_NESTED_LIST();
 	void Net();
 	void NODE();
-	void POTENTIAL();
+	void TENSOR();
 	void PARENTS_DEFINITION(std::string& name,std::vector<std::string>& var_seq);
 	void FLOAT(float& val);
 	void FLOAT_LIST(std::vector<float>& v );

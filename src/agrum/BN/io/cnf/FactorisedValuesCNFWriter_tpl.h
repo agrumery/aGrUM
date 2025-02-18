@@ -95,7 +95,7 @@ namespace gum {
         strfile << num << "::" << str.str() << "\n";
       }
 
-      const Potential< GUM_SCALAR >& cpt = bn.cpt(node);
+      const Tensor< GUM_SCALAR >& cpt = bn.cpt(node);
 
       Instantiation inst(cpt);
 
@@ -124,7 +124,7 @@ namespace gum {
       str0 << "0\n";
       clause++;
       clausstr << str0.str();
-      const Potential< GUM_SCALAR >& cpt = bn.cpt(node);
+      const Tensor< GUM_SCALAR >& cpt = bn.cpt(node);
       Instantiation                  inst(cpt);
 
       for (inst.setFirst(); !inst.end(); ++inst) {
@@ -196,7 +196,7 @@ namespace gum {
         strfile << num << "::" << str.str() << "\n";
       }
 
-      const Potential< GUM_SCALAR >& cpt = bn.cpt(node);
+      const Tensor< GUM_SCALAR >& cpt = bn.cpt(node);
 
       Instantiation inst(cpt);
 
@@ -227,7 +227,7 @@ namespace gum {
       str0 << "0\n";
       clause++;
       clausstr << str0.str();
-      const Potential< GUM_SCALAR >& cpt = bn.cpt(node);
+      const Tensor< GUM_SCALAR >& cpt = bn.cpt(node);
       Instantiation                  inst(cpt);
 
       for (inst.setFirst(); !inst.end(); ++inst) {
@@ -268,7 +268,7 @@ namespace gum {
   // Returns a bloc defining a variable's CPT in the BN format.
   /*  template<typename GUM_SCALAR> INLINE
       std::string
-      OCNFWriter<GUM_SCALAR>:: _variableCPT_( const Potential<GUM_SCALAR>& cpt )
+      OCNFWriter<GUM_SCALAR>:: _variableCPT_( const Tensor<GUM_SCALAR>& cpt )
     {
         std::stringstream str;
         str << "";

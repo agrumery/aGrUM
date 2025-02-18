@@ -133,16 +133,16 @@ class GraphicalBNComparator:
 
     return "OK"
 
-  def _comparePotentials(self, pot1, pot2):
+  def _compareTensors(self, pot1, pot2):
 
     """
-    Compare 2 potentials one in each Bayesian network
+    Compare 2 tensors one in each Bayesian network
 
     Parameters
     ----------
-    pot1 : pyAgrum.Potential
+    pot1 : pyAgrum.Tensor
       one of b1's cpts
-    pot2 : pyAgrum.Potential
+    pot2 : pyAgrum.Tensor
       one of _bn2's cpts
 
     Returns
@@ -173,7 +173,7 @@ class GraphicalBNComparator:
       'OK' if _bn2 have (at least) the same variable as b1 and their cpts are the same
     """
     for i in self._bn1.nodes():
-      res = self._comparePotentials(self._bn1.cpt(i), self._bn2.cpt(self._bn1.variable(i).name()))
+      res = self._compareTensors(self._bn1.cpt(i), self._bn2.cpt(self._bn1.variable(i).name()))
       if res != "OK":
         return res
     return "OK"

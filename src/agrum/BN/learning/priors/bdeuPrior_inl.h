@@ -95,7 +95,7 @@ namespace gum::learning {
   /// returns the type of the prior
   INLINE PriorType BDeuPrior::getType() const { return PriorType::BDeuPriorType; }
 
-  /// indicates whether the prior is potentially informative
+  /// indicates whether the prior is tensorly informative
   INLINE bool BDeuPrior::isInformative() const { return this->weight_ != 0.0; }
 
   /// returns the prior vector all the variables in the idset

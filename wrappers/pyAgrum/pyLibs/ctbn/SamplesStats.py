@@ -244,27 +244,27 @@ def CTBNFromData(data: Dict[int, List[Tuple[float, str, str]]]) -> CTBN:
   return ctbn
 
 
-def computeCIMFromStats(X: str, M: pyAgrum.Potential, T: pyAgrum.Potential) -> "pyAgrum.Potential":
+def computeCIMFromStats(X: str, M: pyAgrum.Tensor, T: pyAgrum.Tensor) -> "pyAgrum.Tensor":
   """
-  Computes a CIM (Conditional Intensity Matrix) using stats from a trajectory. Variables in the potential
+  Computes a CIM (Conditional Intensity Matrix) using stats from a trajectory. Variables in the tensor
   are not copied but directly used in the result to avoid memory issues.
 
   Parameters
   ----------
   X : str
       Name of the variable to compute CIM for.
-  M : pyAgrum.Potential
-      Potential containing the number of transitions for each pair of ``X``'s states.
-  T : pyAgrum.Potential
-      Potential containing the time spent to transition from every state of ``X``.
+  M : pyAgrum.Tensor
+      Tensor containing the number of transitions for each pair of ``X``'s states.
+  T : pyAgrum.Tensor
+      Tensor containing the time spent to transition from every state of ``X``.
 
   Returns
   -------
-  pyAgrum.Potential
-      The resulting potential, ``X``'s CIM.
+  pyAgrum.Tensor
+      The resulting tensor, ``X``'s CIM.
   """
 
-  res: pyAgrum.Potential = pyAgrum.Potential(M)
+  res: pyAgrum.Tensor = pyAgrum.Tensor(M)
   res.fillWith(0)
 
   i = pyAgrum.Instantiation(res)
@@ -334,9 +334,9 @@ class Trajectory:
     # to assert
     self.timeHorizon = self.data[0][-1][0]
 
-  def setStatValues(self, X: str, inst_u: Dict[str, str], Txu: pyAgrum.Potential, Mxu: pyAgrum.Potential):
+  def setStatValues(self, X: str, inst_u: Dict[str, str], Txu: pyAgrum.Tensor, Mxu: pyAgrum.Tensor):
     """
-    Fills the potentials given.
+    Fills the tensors given.
 
     Parameters
     ----------
@@ -344,10 +344,10 @@ class Trajectory:
         Name of the variable.
     inst_u : Dict[str, str]
         Instance of conditioning variables.
-    Txu : pyAgrum.Potential
-        Potential to fill. Contains the time spent in each state.
-    Mxu : pyAgrum.Potential
-        Potential to fill. Contains the number of transitions from any pair of states.
+    Txu : pyAgrum.Tensor
+        Tensor to fill. Contains the time spent in each state.
+    Mxu : pyAgrum.Tensor
+        Tensor to fill. Contains the number of transitions from any pair of states.
     """
 
     def checkAllValues(curr, goal):
@@ -414,9 +414,9 @@ class Trajectory:
         elif time < self.timeHorizon and var in inst_u.keys():
           u_values[var] = findNextValue(var, traj, l)
 
-  def computeStats(self, X: str, U: List[str]) -> Tuple[pyAgrum.Potential, pyAgrum.Potential]:
+  def computeStats(self, X: str, U: List[str]) -> Tuple[pyAgrum.Tensor, pyAgrum.Tensor]:
     """
-    Computes time spent and number of transitions values of ``X`` and returns them as ``pyAgrum.Potential``.
+    Computes time spent and number of transitions values of ``X`` and returns them as ``pyAgrum.Tensor``.
 
     Parameters
     ----------
@@ -427,14 +427,14 @@ class Trajectory:
 
     Returns
     -------
-    Tuple[pyAgrum.Potential, pyAgrum.Potential]
-        The resulting potentials.
+    Tuple[pyAgrum.Tensor, pyAgrum.Tensor]
+        The resulting tensors.
     """
     par = [self.ctbn.variable(nv) for nv in U]
     n = len(self.data)
 
-    Txu = pyAgrum.Potential()
-    Mxu = pyAgrum.Potential()
+    Txu = pyAgrum.Tensor()
+    Mxu = pyAgrum.Tensor()
     current = pyAgrum.Instantiation()
 
     X_from = self.ctbn.CIM(X).findVar(CIM.varI(X))
@@ -467,13 +467,13 @@ class Trajectory:
     """
     for var in self.ctbn.variables():
       T, M = self.computeStats(var.name(), self.ctbn.parentNames(var.name()))
-      self.ctbn.CIM(var.name())._pot = pyAgrum.Potential(
+      self.ctbn.CIM(var.name())._pot = pyAgrum.Tensor(
         computeCIMFromStats(var.name(), M.putFirst(CIM.varJ(var.name())), T))
 
-  def setStatsForTests(self, X: str, Y: str, inst_u: Dict[str, str], Txu: pyAgrum.Potential, Txyu: pyAgrum.Potential,
-                       Mxyu: pyAgrum.Potential):
+  def setStatsForTests(self, X: str, Y: str, inst_u: Dict[str, str], Txu: pyAgrum.Tensor, Txyu: pyAgrum.Tensor,
+                       Mxyu: pyAgrum.Tensor):
     """
-    Fills the potentials given. They are used for independence testing.
+    Fills the tensors given. They are used for independence testing.
 
     Parameters
     ----------
@@ -483,12 +483,12 @@ class Trajectory:
         Name of a conditioning variable.
     inst_u : Dict[str, str]
         Instance of conditioning variables.
-    Txu : pyAgrum.Potential
-        Potential to fill. Contains the time spent in each state. Conditioned by variables in ``inst_u``.
-    Txyu : pyAgrum.Potential
-        Potential to fill. Contains the time spent in each state. Conditioned by ``Y`` and variables in ``inst_u``.
-    Mxyu : pyAgrum.Potential
-        Potential to fill. Contains the number of transitions from any pair of states. Conditioned by ``Y`` and variables in ``inst_u``.
+    Txu : pyAgrum.Tensor
+        Tensor to fill. Contains the time spent in each state. Conditioned by variables in ``inst_u``.
+    Txyu : pyAgrum.Tensor
+        Tensor to fill. Contains the time spent in each state. Conditioned by ``Y`` and variables in ``inst_u``.
+    Mxyu : pyAgrum.Tensor
+        Tensor to fill. Contains the number of transitions from any pair of states. Conditioned by ``Y`` and variables in ``inst_u``.
     """
 
     def checkAllValues(curr, goal):
@@ -566,10 +566,10 @@ class Trajectory:
           u_values[var] = findNextValue(var, traj, l)
 
   def computeStatsForTests(self, X: str, Y: str, U: List[str]) -> Tuple[
-    pyAgrum.Potential, pyAgrum.Potential, pyAgrum.Potential]:
+    pyAgrum.Tensor, pyAgrum.Tensor, pyAgrum.Tensor]:
     """
     Computes time spent and number of transitions values of ``X`` when conditioned by ``Y`` and ``U`` and
-    returns them as ``pyAgrum.Potential``. Used for independence testing.
+    returns them as ``pyAgrum.Tensor``. Used for independence testing.
 
     Parameters
     ----------
@@ -582,15 +582,15 @@ class Trajectory:
 
     Returns
     -------
-    Tuple[pyAgrum.Potential, pyAgrum.Potential, pyAgrum.Potential]
-        The resulting potentials.
+    Tuple[pyAgrum.Tensor, pyAgrum.Tensor, pyAgrum.Tensor]
+        The resulting tensors.
     """
     par = [self.ctbn.variable(nv) for nv in U]
     n = len(self.data)
 
-    Txu = pyAgrum.Potential()
-    Txyu = pyAgrum.Potential()
-    Mxyu = pyAgrum.Potential()
+    Txu = pyAgrum.Tensor()
+    Txyu = pyAgrum.Tensor()
+    Mxyu = pyAgrum.Tensor()
     current = pyAgrum.Instantiation()
 
     X_from = self.ctbn.CIM(X).findVar(CIM.varI(X))
@@ -629,7 +629,7 @@ class Trajectory:
 
 class Stats:
   """
-  Stores all potentials used for learning.
+  Stores all tensors used for learning.
 
   Parameters
   ----------
@@ -644,24 +644,24 @@ class Stats:
 
   Attributes
   ----------
-  Mxy : pyAgrum.Potential
-      Potential containing the number of transitions the variable ``X`` does from any
+  Mxy : pyAgrum.Tensor
+      Tensor containing the number of transitions the variable ``X`` does from any
       of its states for any instance of its parents and variable``Y``.
-  Mx : pyAgrum.Potential
-      Potential containing the number of transitions the variable ``X`` does from any
+  Mx : pyAgrum.Tensor
+      Tensor containing the number of transitions the variable ``X`` does from any
       of its states for any instance of its parents.
-  Tx : pyAgrum.Potential
-      Potential containing the time spent by ``X`` to transition from a state to another for any instance of its parents.
-  Txy : pyAgrum.Potential
-      Potential containing the time spent by ``X`` to transition from a state to another for any instance of its parents and of ``Y``.
-  Qx : pyAgrum.Potential
+  Tx : pyAgrum.Tensor
+      Tensor containing the time spent by ``X`` to transition from a state to another for any instance of its parents.
+  Txy : pyAgrum.Tensor
+      Tensor containing the time spent by ``X`` to transition from a state to another for any instance of its parents and of ``Y``.
+  Qx : pyAgrum.Tensor
       Conditional Intensity Matrix(CIM) of ``X``.
-  QxY : pyAgrum.Potential
+  QxY : pyAgrum.Tensor
       Conditional Intensity Matrix(CIM) of ``X`` that includes the conditioning variable ``Y``.
   """
 
   def __init__(self, trajectory: Trajectory, X: str, Y: str, par: List[str]):
     self.Tx, self.Txy, self.Mxy = trajectory.computeStatsForTests(X, Y, par)
-    self.Mx = pyAgrum.Potential(self.Mxy).sumOut([Y])
+    self.Mx = pyAgrum.Tensor(self.Mxy).sumOut([Y])
     self.Qx = computeCIMFromStats(X, self.Mx, self.Tx)
     self.Qxy = computeCIMFromStats(X, self.Mxy, self.Txy)

@@ -27,14 +27,14 @@ Visualization of graphical models
 .. autofunction:: pyAgrum.lib.notebook.showJunctionTree
 .. autofunction:: pyAgrum.lib.notebook.getJunctionTree
 
-Visualization of Potentials
+Visualization of Tensors
 ---------------------------
 
 .. autofunction:: pyAgrum.lib.notebook.showProba
 .. autofunction:: pyAgrum.lib.notebook.getPosterior
 .. autofunction:: pyAgrum.lib.notebook.showPosterior
-.. autofunction:: pyAgrum.lib.notebook.getPotential
-.. autofunction:: pyAgrum.lib.notebook.showPotential
+.. autofunction:: pyAgrum.lib.notebook.getTensor
+.. autofunction:: pyAgrum.lib.notebook.showTensor
 
 Visualization of graphs
 -----------------------

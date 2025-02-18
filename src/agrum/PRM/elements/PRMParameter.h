@@ -107,10 +107,10 @@ namespace gum {
       virtual const PRMType& type() const;
 
       /// See gum::PRMClassElement::cpf().
-      virtual Potential< GUM_SCALAR >& cpf();
+      virtual Tensor< GUM_SCALAR >& cpf();
 
       /// See gum::PRMClassElement::cpf().
-      virtual const Potential< GUM_SCALAR >& cpf() const;
+      virtual const Tensor< GUM_SCALAR >& cpf() const;
 
       /// See gum::PRMClassElement::addParent().
       void addParent(const gum::prm::PRMClassElement< GUM_SCALAR >&);

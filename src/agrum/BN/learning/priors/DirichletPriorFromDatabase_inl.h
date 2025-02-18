@@ -103,7 +103,7 @@ namespace gum {
       return PriorType::DirichletPriorType;
     }
 
-    /// indicates whether the prior is potentially informative
+    /// indicates whether the prior is tensorly informative
     INLINE bool DirichletPriorFromDatabase::isInformative() const { return (this->weight_ != 0.0); }
 
     /// sets the weight of the a prior(kind of effective sample size)

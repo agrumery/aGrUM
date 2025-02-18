@@ -116,21 +116,21 @@ class MarkovRandomFieldTestCase(pyAgrumTestCase):
     self._fill(mrf)
 
     with self.assertRaises(gum.InvalidArgument):
-      mrf.addFactor(gum.Potential())  # no empty factor
+      mrf.addFactor(gum.Tensor())  # no empty factor
 
     with self.assertRaises(gum.InvalidArgument):
       mrf.addFactor({"11", "31"})  # already exist
 
     mn1 = gum.MarkovRandomField()
     self._fill(mn1)
-    pot = gum.Potential().add(mn1.variable("11")).add(mn1.variable("21"))
+    pot = gum.Tensor().add(mn1.variable("11")).add(mn1.variable("21"))
     pot.randomDistribution()
     mn1.addFactor(pot)
     self.assertEqual(pot.__str__(), mn1.factor({"11", "21"}).__str__())
 
     mn1 = gum.MarkovRandomField()
     self._fill(mn1)
-    pot = gum.Potential().add(mn1.variable("21")).add(mn1.variable("11"))
+    pot = gum.Tensor().add(mn1.variable("21")).add(mn1.variable("11"))
     pot.randomDistribution()
     mn1.addFactor(pot)
 
@@ -218,19 +218,19 @@ class MarkovRandomFieldTestCase(pyAgrumTestCase):
     bn = gum.fastBN("A->B->C<-D;C<-E->F<-G;F<-A")
     mrf = gum.MarkovRandomField.fromBN(bn)
 
-    pbn = gum.Potential()
+    pbn = gum.Tensor()
     pbn.fillWith(1)
     for nod in bn.nodes():
       self.assertEqual(bn.variable(nod).__str__(), mrf.variable(nod).__str__())
       pbn *= bn.cpt(nod)
 
-    pmn = gum.Potential()
+    pmn = gum.Tensor()
     pmn.fillWith(1)
     for f in mrf.factors():
       pmn *= mrf.factor(f)
     pmn.normalize()
 
-    ppmn = gum.Potential(pbn)
+    ppmn = gum.Tensor(pbn)
     ppmn.fillWith(pmn)  # copy of pmn using pbn's variables
     diff = (pbn - ppmn).abs()
     self.assertEqual(pbn.domainSize(), diff.domainSize())

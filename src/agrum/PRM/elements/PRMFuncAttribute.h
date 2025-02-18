@@ -81,7 +81,7 @@ namespace gum {
        *
        * @param name The name of this PRMFuncAttribute.
        * @param type The type of this PRMFuncAttribute, it is copied.
-       * @param impl The MultiDimImplementation used by the internal Potential
+       * @param impl The MultiDimImplementation used by the internal Tensor
        *of this PRMFuncAttribute.
        *             it will be deleted after the call of ~PRMFuncAttribute.
        */
@@ -106,7 +106,7 @@ namespace gum {
       /// Copy operator. Don't use it.
       PRMFuncAttribute< GUM_SCALAR >& operator=(const PRMFuncAttribute< GUM_SCALAR >& from);
 
-      virtual void setCpf_(Potential< GUM_SCALAR >* cpf);
+      virtual void setCpf_(Tensor< GUM_SCALAR >* cpf);
     };
 
 

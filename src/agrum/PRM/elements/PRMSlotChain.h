@@ -159,10 +159,10 @@ namespace gum {
       virtual const PRMType& type() const;
 
       // /// This is similar to the following call: this->lastElt().cpf()
-      // virtual Potential<GUM_SCALAR>& cpf();
+      // virtual Tensor<GUM_SCALAR>& cpf();
 
       /// This is similar to the following call: this->lastElt().cpf()
-      virtual const Potential< GUM_SCALAR >& cpf() const;
+      virtual const Tensor< GUM_SCALAR >& cpf() const;
 
       /// Return true if this slot chain contains at least one multiple
       /// reference slot.

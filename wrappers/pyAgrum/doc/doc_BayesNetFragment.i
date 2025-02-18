@@ -90,8 +90,8 @@ Parameters
 ----------
 n : int, str
 	the id or the name of the variable.
-pot : Potential
-  the Potential to install
+pot : Tensor
+  the Tensor to install
 
 Raises
 ------
@@ -107,8 +107,8 @@ Parameters
 ----------
 n : int, str
 	the id or the name of the variable.
-pot : Potential
-  the Potential (marginal) to install
+pot : Tensor
+  the Tensor (marginal) to install
 
 Raises
 ------

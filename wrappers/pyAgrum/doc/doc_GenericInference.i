@@ -270,7 +270,7 @@ pyAgrum.UndefinedElement
 
 %feature("docstring") gum::classname::evidenceImpact
 "
-Create a pyAgrum.Potential for P(target|evs) (for all instanciation of target and evs)
+Create a pyAgrum.Tensor for P(target|evs) (for all instanciation of target and evs)
 
 Parameters
 ----------
@@ -281,17 +281,17 @@ evs : set
 
 Warnings
 --------
-if some evs are d-separated, they are not included in the Potential.
+if some evs are d-separated, they are not included in the Tensor.
 
 Returns
 -------
-pyAgrum.Potential
-  a Potential for P(targets|evs)
+pyAgrum.Tensor
+  a Tensor for P(targets|evs)
 "
 
 %feature("docstring") gum::classname::evidenceJointImpact
 "
-Create a pyAgrum.Potential for P(joint targets|evs) (for all instanciation of targets and evs)
+Create a pyAgrum.Tensor for P(joint targets|evs) (for all instanciation of targets and evs)
 
 Parameters
 ----------
@@ -302,8 +302,8 @@ evs : Set[int|str]
 
 Returns
 -------
-pyAgrum.Potential
-  a Potential for P(target|evs)
+pyAgrum.Tensor
+  a Tensor for P(target|evs)
 
 Raises
 ------
@@ -449,11 +449,11 @@ list :
 
 Warnings
 --------
-The order of the variables given by the list here or when the jointTarget is declared can not be assumed to be used by the Potential.
+The order of the variables given by the list here or when the jointTarget is declared can not be assumed to be used by the Tensor.
 
 Returns
 -------
-pyAgrum.Potential
+pyAgrum.Tensor
   a const ref to the posterior joint probability of the set of nodes.
 
 Raises
@@ -539,7 +539,7 @@ nodeName : str
 
 Returns
 -------
-pyAgrum.Potential
+pyAgrum.Tensor
   a const ref to the posterior probability of the node
 
 Raises
@@ -625,7 +625,7 @@ nodeName : str
 
 Returns
 -------
-pyAgrum.Potential
+pyAgrum.Tensor
   a const ref to the current posterior probability of the node
 
 Raises
@@ -642,15 +642,15 @@ vlbpsize : float
   the size of the virtual LBP
 "
 
-%feature("docstring") gum::classname::setRelevantPotentialsFinderType
+%feature("docstring") gum::classname::setRelevantTensorsFinderType
 "
-sets how we determine the relevant potentials to combine
+sets how we determine the relevant tensors to combine
 
-When a clique sends a message to a separator, it first constitute the set of the potentials it contains and of the potentials contained in the messages it received. If RelevantPotentialsFinderType = FIND_ALL, all these potentials are combined and projected to produce the message sent to the separator. If RelevantPotentialsFinderType = DSEP_BAYESBALL_NODES, then only the set of potentials d-connected to the variables of the separator are kept for combination and projection.
+When a clique sends a message to a separator, it first constitute the set of the tensors it contains and of the tensors contained in the messages it received. If RelevantTensorsFinderType = FIND_ALL, all these tensors are combined and projected to produce the message sent to the separator. If RelevantTensorsFinderType = DSEP_BAYESBALL_NODES, then only the set of tensors d-connected to the variables of the separator are kept for combination and projection.
 
 0 = FIND_ALL
 1 = DSEP_BAYESBALL_NODES
-2 = DSEP_BAYESBALL_POTENTIALS
+2 = DSEP_BAYESBALL_TENSORS
 3 = DSEP_KOLLER_FRIEDMAN_2009
 
 Parameters

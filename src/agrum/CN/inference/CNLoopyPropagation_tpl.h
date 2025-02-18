@@ -656,7 +656,7 @@ namespace gum::credal {
 
       /**
        * messages and so parents need to be read in order of appearance
-       * use potentials instead of dag
+       * use tensors instead of dag
        */
       const auto parents = &_bnet_->cpt(node).variablesSequence();
 

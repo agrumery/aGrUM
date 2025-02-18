@@ -3,7 +3,7 @@
 
  * # Basic principles #
 
- * MultiDims (see also gum::MultiDimInterface, gum::Potential, gum::CPF, etc ...)
+ * MultiDims (see also gum::MultiDimInterface, gum::Tensor, gum::CPF, etc ...)
  * are
  * aGrUM's
  * multidimensional tables and instantiations (@ref gum::Instantiation) are smart

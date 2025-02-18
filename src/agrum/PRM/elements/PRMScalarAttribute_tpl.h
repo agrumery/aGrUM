@@ -61,7 +61,7 @@ namespace gum {
         const PRMType&                        type,
         MultiDimImplementation< GUM_SCALAR >* impl) :
         PRMAttribute< GUM_SCALAR >(name), _type_(new PRMType(type)),
-        _cpf_(new Potential< GUM_SCALAR >(impl)) {
+        _cpf_(new Tensor< GUM_SCALAR >(impl)) {
       GUM_CONSTRUCTOR(PRMScalarAttribute);
       _cpf_->add(_type_->variable());
 
@@ -101,7 +101,7 @@ namespace gum {
       }
 
       delete copy->_cpf_;
-      copy->_cpf_ = copyPotential(bij, cpf());
+      copy->_cpf_ = copyTensor(bij, cpf());
 
       return copy;
     }
@@ -111,7 +111,7 @@ namespace gum {
         const Bijection< const DiscreteVariable*, const DiscreteVariable* >& bij,
         const PRMAttribute< GUM_SCALAR >&                                    source) {
       delete _cpf_;
-      _cpf_ = new Potential< GUM_SCALAR >();
+      _cpf_ = new Tensor< GUM_SCALAR >();
 
       for (auto var: source.cpf().variablesSequence()) {
         _cpf_->add(*(bij.second(var)));
@@ -151,7 +151,7 @@ namespace gum {
     }
 
     template < typename GUM_SCALAR >
-    INLINE const Potential< GUM_SCALAR >& PRMScalarAttribute< GUM_SCALAR >::cpf() const {
+    INLINE const Tensor< GUM_SCALAR >& PRMScalarAttribute< GUM_SCALAR >::cpf() const {
       return *_cpf_;
     }
 
@@ -215,7 +215,7 @@ namespace gum {
     template < typename GUM_SCALAR >
     void PRMScalarAttribute< GUM_SCALAR >::becomeCastDescendant(PRMType& subtype) {
       delete _cpf_;
-      _cpf_ = new Potential< GUM_SCALAR >();
+      _cpf_ = new Tensor< GUM_SCALAR >();
       _cpf_->add(type().variable());
       _cpf_->add(subtype.variable());
 
@@ -245,7 +245,7 @@ namespace gum {
 
       auto old = _cpf_;
 
-      _cpf_ = new Potential< GUM_SCALAR >();
+      _cpf_ = new Tensor< GUM_SCALAR >();
 
       for (auto var: old->variablesSequence()) {
         if (var != &(old_type.variable())) {
@@ -281,7 +281,7 @@ namespace gum {
       }
       auto old = _cpf_;
 
-      _cpf_ = new Potential< GUM_SCALAR >();
+      _cpf_ = new Tensor< GUM_SCALAR >();
 
       for (auto var: old->variablesSequence()) {
         if (var != &(_type_->variable())) {

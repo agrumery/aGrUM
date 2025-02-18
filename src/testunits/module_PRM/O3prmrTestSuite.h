@@ -212,7 +212,7 @@ namespace gum_tests {
         // l'instance c1 est à 1.0
 
         const gum::prm::PRMInference< double >::EMap& e = si->inference()->evidence(c2);
-        const gum::Potential< double >*               p = e[c1.get("equipState").id()];
+        const gum::Tensor< double >*               p = e[c1.get("equipState").id()];
 
         gum::Instantiation                      j(*p);
         const gum::prm::PRMAttribute< double >& c2_equipState = c2.get("equipState");

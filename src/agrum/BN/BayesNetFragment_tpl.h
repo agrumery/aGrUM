@@ -44,7 +44,7 @@
  *
  * @author Pierre-Henri WUILLEMIN(_at_LIP6) & Christophe GONZALES(_at_AMU)
  */
-#include <agrum/base/multidim/potential.h>
+#include <agrum/base/multidim/tensor.h>
 #include <agrum/BN/BayesNet.h>
 #include <agrum/BN/BayesNetFragment.h>
 
@@ -91,7 +91,7 @@ namespace gum {
   // IBayesNet interface : BayesNetFragment here is a decorator for the bn
 
   template < typename GUM_SCALAR >
-  INLINE const Potential< GUM_SCALAR >& BayesNetFragment< GUM_SCALAR >::cpt(NodeId id) const {
+  INLINE const Tensor< GUM_SCALAR >& BayesNetFragment< GUM_SCALAR >::cpt(NodeId id) const {
     if (!isInstalledNode(id)) GUM_ERROR(NotFound, "NodeId " << id << " is not installed")
 
     if (_localCPTs_.exists(id)) return *_localCPTs_[id];
@@ -192,7 +192,7 @@ namespace gum {
   }
 
   template < typename GUM_SCALAR >
-  void BayesNetFragment< GUM_SCALAR >::installCPT_(NodeId id, const Potential< GUM_SCALAR >& pot) {
+  void BayesNetFragment< GUM_SCALAR >::installCPT_(NodeId id, const Tensor< GUM_SCALAR >& pot) {
     // topology
     const auto& parents = this->parents(id);
     for (auto node_it = parents.beginSafe(); node_it != parents.endSafe();
@@ -208,17 +208,17 @@ namespace gum {
     // local cpt
     if (_localCPTs_.exists(id)) uninstallCPT_(id);
 
-    _localCPTs_.insert(id, new gum::Potential< GUM_SCALAR >(pot));
+    _localCPTs_.insert(id, new gum::Tensor< GUM_SCALAR >(pot));
   }
 
   template < typename GUM_SCALAR >
-  void BayesNetFragment< GUM_SCALAR >::installCPT(NodeId id, const Potential< GUM_SCALAR >& pot) {
+  void BayesNetFragment< GUM_SCALAR >::installCPT(NodeId id, const Tensor< GUM_SCALAR >& pot) {
     if (!dag().existsNode(id))
       GUM_ERROR(NotFound, "Node " << id << " is not installed in the fragment")
 
     if (&(pot.variable(0)) != &(variable(id))) {
       GUM_ERROR(OperationNotAllowed,
-                "The potential is not a marginal for  _bn_.variable <" << variable(id).name()
+                "The tensor is not a marginal for  _bn_.variable <" << variable(id).name()
                                                                        << ">")
     }
 
@@ -245,8 +245,8 @@ namespace gum {
     if (_localCPTs_.exists(id)) {
       uninstallCPT_(id);
 
-      // re-create arcs from referred potential
-      const Potential< GUM_SCALAR >& pot = cpt(id);
+      // re-create arcs from referred tensor
+      const Tensor< GUM_SCALAR >& pot = cpt(id);
 
       for (Idx i = 1; i < pot.nbrDim(); i++) {
         NodeId parent = _bn_.idFromName(pot.variable(i).name());
@@ -258,18 +258,18 @@ namespace gum {
 
   template < typename GUM_SCALAR >
   void BayesNetFragment< GUM_SCALAR >::installMarginal(NodeId                         id,
-                                                       const Potential< GUM_SCALAR >& pot) {
+                                                       const Tensor< GUM_SCALAR >& pot) {
     if (!isInstalledNode(id)) {
       GUM_ERROR(NotFound, "The node " << id << " is not part of this fragment")
     }
 
     if (pot.nbrDim() > 1) {
-      GUM_ERROR(OperationNotAllowed, "The potential is not a marginal :" << pot)
+      GUM_ERROR(OperationNotAllowed, "The tensor is not a marginal :" << pot)
     }
 
     if (&(pot.variable(0)) != &(_bn_.variable(id))) {
       GUM_ERROR(OperationNotAllowed,
-                "The potential is not a marginal for  _bn_.variable <" << _bn_.variable(id).name()
+                "The tensor is not a marginal for  _bn_.variable <" << _bn_.variable(id).name()
                                                                        << ">")
     }
 

@@ -202,7 +202,7 @@ namespace gum_tests {
       TS_GUM_ASSERT_THROWS_NOTHING(sys.groundedBN(bn_factory))
 
       for (const auto node: bn.nodes()) {
-        const gum::Potential< double >& cpt = bn.cpt(node);
+        const gum::Tensor< double >& cpt = bn.cpt(node);
         gum::Instantiation              i(cpt), j;
         j.add(bn.variable(node));
 

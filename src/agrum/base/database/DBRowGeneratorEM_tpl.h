@@ -348,9 +348,9 @@ namespace gum {
         }
       }
 
-      // get the potential of the target set
-      Potential< GUM_SCALAR >& pot
-          = const_cast< Potential< GUM_SCALAR >& >(ve.jointPosterior(target_set));
+      // get the tensor of the target set
+      Tensor< GUM_SCALAR >& pot
+          = const_cast< Tensor< GUM_SCALAR >& >(ve.jointPosterior(target_set));
       _joint_proba_ = std::move(pot);
       if (_joint_inst_ != nullptr) delete _joint_inst_;
       _joint_inst_ = new Instantiation(_joint_proba_);

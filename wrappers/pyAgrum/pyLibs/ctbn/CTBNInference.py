@@ -72,7 +72,7 @@ class CTBNInference:
   def makeInference(self):
     raise NotImplementedError("Not yet implemented.")
 
-  def posterior(self, name: str) -> "pyAgrum.Potential":
+  def posterior(self, name: str) -> "pyAgrum.Tensor":
     raise NotImplementedError("Not yet implemented.")
 
 
@@ -110,7 +110,7 @@ class SimpleInference(CTBNInference):
 
     q.fromMatrix(expm(t * q.toMatrix()))
     # initial state distribution
-    t0 = pyAgrum.Potential()
+    t0 = pyAgrum.Tensor()
     for n in q.varNames:
       if n[-1] == "i":
         t0.add(q._pot.variable(n))
@@ -118,7 +118,7 @@ class SimpleInference(CTBNInference):
 
     self._joint = (t0 * q._pot).sumOut(list(t0.names))
 
-  def posterior(self, v: NameOrId) -> "pyAgrum.Potential":
+  def posterior(self, v: NameOrId) -> "pyAgrum.Tensor":
     """
     Parameters
     ----------
@@ -127,11 +127,11 @@ class SimpleInference(CTBNInference):
 
     Returns
     -------
-    pyAgrum.Potential
+    pyAgrum.Tensor
         The computed distribution of variable ``v`` using exact inference.
     """
     vj = CIM.varJ(self._model.variable(v).name())
-    return pyAgrum.Potential().add(self._model.variable(v)).fillWith(self._joint.sumIn(vj), [vj])
+    return pyAgrum.Tensor().add(self._model.variable(v)).fillWith(self._joint.sumIn(vj), [vj])
 
 
 class ForwardSamplingInference(CTBNInference):
@@ -168,16 +168,16 @@ class ForwardSamplingInference(CTBNInference):
     self.trajectory = list()
     self.idtraj = 0
     super().__init__(ctbn)
-    self._posteriors = {nod: pyAgrum.Potential().add(self._model.variable(nod))
+    self._posteriors = {nod: pyAgrum.Tensor().add(self._model.variable(nod))
                         for nod in self._model.names()}
 
-  def makeSample(self, posteriors: Dict[str, pyAgrum.Potential], timeHorizon: float = 5000, burnIn: int = 100) -> int:
+  def makeSample(self, posteriors: Dict[str, pyAgrum.Tensor], timeHorizon: float = 5000, burnIn: int = 100) -> int:
     """
     Fills posteriors using forward sampling.
 
     Parameters
     ----------
-    posteriors : Dict[str, pyAgrum.Potential]
+    posteriors : Dict[str, pyAgrum.Tensor]
         A dict containing a posterior for each variable of the CTBN.
     timeHorizon : float
         Duration of the sampling.
@@ -366,7 +366,7 @@ class ForwardSamplingInference(CTBNInference):
     burnIn : int
         Number of runs before starting the sampling (to ensure ergodicity).
     """
-    posteriorsList = [{nod: pyAgrum.Potential().add(self._model.variable(nod))
+    posteriorsList = [{nod: pyAgrum.Tensor().add(self._model.variable(nod))
                        for nod in self._model.names()} for _ in range(nbTrajectories)]
 
     def runMakeSample(task: int):
@@ -397,7 +397,7 @@ class ForwardSamplingInference(CTBNInference):
     burnIn : int
         Number of runs before starting the sampling (to ensure ergodicity).
     """
-    posteriorsList = [{nod: pyAgrum.Potential().add(self._model.variable(nod))
+    posteriorsList = [{nod: pyAgrum.Tensor().add(self._model.variable(nod))
                        for nod in self._model.names()} for _ in range(nbTrajectories)]
 
     for i in range(nbTrajectories):
@@ -409,7 +409,7 @@ class ForwardSamplingInference(CTBNInference):
         self._posteriors[nam] += posteriorsList[i][nam]
       self._posteriors[nam].normalize()
 
-  def posterior(self, name: str) -> "pyAgrum.Potential":
+  def posterior(self, name: str) -> "pyAgrum.Tensor":
     """
     Parameters
     ----------
@@ -418,10 +418,10 @@ class ForwardSamplingInference(CTBNInference):
 
     Returns
     -------
-    pyAgrum.Potential
+    pyAgrum.Tensor
         The aproximate inference of a given variable.
     """
-    p = pyAgrum.Potential(self._posteriors[name])
+    p = pyAgrum.Tensor(self._posteriors[name])
     p._model = self._model
     return p
 

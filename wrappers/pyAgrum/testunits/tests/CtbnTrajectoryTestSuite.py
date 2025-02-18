@@ -70,9 +70,9 @@ class TestCtbnTrajectory(pyAgrumTestCase):
     ctbn.CIM("C")[{"B": "y"}] = [[-1, 1],
                                  [1, -1]]
 
-    cimA = ctbn.CIM("A").asPotential()
-    cimB = ctbn.CIM("B").asPotential()
-    cimC = ctbn.CIM("C").asPotential()
+    cimA = ctbn.CIM("A").asTensor()
+    cimB = ctbn.CIM("B").asTensor()
+    cimC = ctbn.CIM("C").asTensor()
 
     ie = ct.ForwardSamplingInference(ctbn)
 

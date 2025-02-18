@@ -129,7 +129,7 @@ namespace gum {
       /** Threads IBayesNet. */
       typename std::vector< _bnet_* > workingSet_;
       /** Threads evidence. */
-      typename std::vector< List< const Potential< GUM_SCALAR >* >* > workingSetE_;
+      typename std::vector< List< const Tensor< GUM_SCALAR >* >* > workingSetE_;
 
       /** Threads BNInferenceEngine. */
       typename std::vector< BNInferenceEngine* > l_inferenceEngine_;

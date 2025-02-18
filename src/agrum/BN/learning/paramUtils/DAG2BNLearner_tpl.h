@@ -49,13 +49,13 @@ namespace gum {
 
   namespace learning {
 
-    /// copy a potential into another whose variables' sequence differs
+    /// copy a tensor into another whose variables' sequence differs
     template < typename GUM_SCALAR >
-    void DAG2BNLearner::_probaVarReordering_(gum::Potential< GUM_SCALAR >&       pot,
-                                             const gum::Potential< GUM_SCALAR >& other_pot) {
+    void DAG2BNLearner::_probaVarReordering_(gum::Tensor< GUM_SCALAR >&       pot,
+                                             const gum::Tensor< GUM_SCALAR >& other_pot) {
       // check that the variables are identical
       if (!pot.variablesSequence().diffSet(other_pot.variablesSequence()).empty()) {
-        GUM_ERROR(gum::CPTError, "the potentials do not have the same variables")
+        GUM_ERROR(gum::CPTError, "the tensors do not have the same variables")
       }
 
       // perform the copy
@@ -97,7 +97,7 @@ namespace gum {
       const VariableNodeMap& varmap = bn.variableNodeMap();
       for (const auto id: dag) {
         // get the sequence of variables and make the targets be the last
-        auto& pot = const_cast< Potential< GUM_SCALAR >& >(bn.cpt(id));
+        auto& pot = const_cast< Tensor< GUM_SCALAR >& >(bn.cpt(id));
 
         // get the variables of the CPT of id in the correct order
         const Sequence< const DiscreteVariable* >& vars = pot.variablesSequence();

@@ -207,7 +207,7 @@ namespace gum {
       if (_superClass_) {
         for (const auto c_attr: _superClass_->_attributes_) {
           // using multiDimSparse to prevent unecessary memory allocation for
-          // large arrays (the potentials are copied latter)
+          // large arrays (the tensors are copied latter)
           auto attr = c_attr->newFactory(*this);
 
           _bijection_->insert(&(c_attr->type().variable()), &(attr->type().variable()));
@@ -347,7 +347,7 @@ namespace gum {
         // Copying attributes
         for (const auto c_attr: c._attributes_) {
           // using multiDimSparse to prevent unecessary memory allocation for
-          // large arrays (the potentials are copied latter)
+          // large arrays (the tensors are copied latter)
           auto attr = c_attr->newFactory(*this);
 
           bij.insert(&(c_attr->type().variable()), &(attr->type().variable()));

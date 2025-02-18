@@ -82,7 +82,7 @@ name : str
 
 Returns
 -------
-pyAgrum.Potential
+pyAgrum.Tensor
 	The variable's CPT.
 
 Raises

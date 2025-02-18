@@ -45,7 +45,7 @@
 
 #include <agrum/base/graphicalModels/inference/scheduler/scheduleDeletion.h>
 #include <agrum/base/graphicalModels/inference/scheduler/scheduleProjection.h>
-#include <agrum/base/multidim/potential.h>
+#include <agrum/base/multidim/tensor.h>
 #include <agrum/base/variables/labelizedVariable.h>
 
 #include <agrum/base/core/utils_random.h>
@@ -68,19 +68,19 @@ namespace gum_tests {
         vars[i]       = new gum::LabelizedVariable(s, s, 2);
       }
 
-      gum::Potential< double > pot1;
-      gum::Potential< double > pot2;
+      gum::Tensor< double > pot1;
+      gum::Tensor< double > pot2;
       pot1 << *(vars[0]) << *(vars[2]) << *(vars[3]) << *(vars[4]);
       pot2 << *(vars[0]) << *(vars[2]);
       pot1.random();
       pot2.random();
-      gum::ScheduleMultiDim< gum::Potential< double > > f1(pot1, false);
-      gum::ScheduleMultiDim< gum::Potential< double > > f1b(pot1, true);
-      gum::ScheduleMultiDim< gum::Potential< double > > f2(pot2, true);
+      gum::ScheduleMultiDim< gum::Tensor< double > > f1(pot1, false);
+      gum::ScheduleMultiDim< gum::Tensor< double > > f1b(pot1, true);
+      gum::ScheduleMultiDim< gum::Tensor< double > > f2(pot2, true);
 
-      gum::ScheduleDeletion< gum::Potential< double > > del1(f1);
-      gum::ScheduleDeletion< gum::Potential< double > > del1b(f1b);
-      gum::ScheduleDeletion< gum::Potential< double > > del2(f2);
+      gum::ScheduleDeletion< gum::Tensor< double > > del1(f1);
+      gum::ScheduleDeletion< gum::Tensor< double > > del1b(f1b);
+      gum::ScheduleDeletion< gum::Tensor< double > > del2(f2);
 
       TS_ASSERT(del1.implyDeletion())
       TS_ASSERT(del1b.implyDeletion())
@@ -102,7 +102,7 @@ namespace gum_tests {
 
       const gum::Sequence< const gum::IScheduleMultiDim* >& res1 = del1.results();
       TS_ASSERT(res1.empty());
-      const gum::ScheduleDeletion< gum::Potential< double > > xdel1const(del1);
+      const gum::ScheduleDeletion< gum::Tensor< double > > xdel1const(del1);
       TS_ASSERT(xdel1const.implyDeletion());
       const gum::Sequence< const gum::IScheduleMultiDim* >& xres1 = xdel1const.results();
       TS_ASSERT(xres1.empty())
@@ -129,18 +129,18 @@ namespace gum_tests {
 
       TS_ASSERT_EQUALS(del2.nbOperations(), 1.0)
       const auto [xfirst, xsecond] = del2.memoryUsage();
-      TS_ASSERT_EQUALS(xfirst, -4.0 * sizeof(double) - sizeof(gum::Potential< double >))
-      TS_ASSERT_EQUALS(xsecond, -4.0 * sizeof(double) - sizeof(gum::Potential< double >))
+      TS_ASSERT_EQUALS(xfirst, -4.0 * sizeof(double) - sizeof(gum::Tensor< double >))
+      TS_ASSERT_EQUALS(xsecond, -4.0 * sizeof(double) - sizeof(gum::Tensor< double >))
 
       const auto [xxfirst, xxsecond] = del1.memoryUsage();
-      TS_ASSERT_EQUALS(xxfirst, -16.0 * sizeof(double) - sizeof(gum::Potential< double >))
-      TS_ASSERT_EQUALS(xxsecond, -16.0 * sizeof(double) - sizeof(gum::Potential< double >))
+      TS_ASSERT_EQUALS(xxfirst, -16.0 * sizeof(double) - sizeof(gum::Tensor< double >))
+      TS_ASSERT_EQUALS(xxsecond, -16.0 * sizeof(double) - sizeof(gum::Tensor< double >))
 
-      gum::ScheduleDeletion< gum::Potential< double > > del4(del2);
+      gum::ScheduleDeletion< gum::Tensor< double > > del4(del2);
       TS_ASSERT(del4.implyDeletion())
       TS_ASSERT(!del4.arg().isAbstract())
 
-      gum::ScheduleDeletion< gum::Potential< double > > del5(std::move(del4));
+      gum::ScheduleDeletion< gum::Tensor< double > > del5(std::move(del4));
       TS_ASSERT(del5.implyDeletion())
       TS_ASSERT(!del5.arg().isAbstract())
 
@@ -148,7 +148,7 @@ namespace gum_tests {
 
       TS_ASSERT(del5.arg().isAbstract())
 
-      gum::ScheduleMultiDim< gum::Potential< double > > f3(pot2, true);
+      gum::ScheduleMultiDim< gum::Tensor< double > > f3(pot2, true);
       TS_ASSERT(del1.isExecuted())
 
       del1.updateArgs({&f3});
@@ -157,7 +157,7 @@ namespace gum_tests {
       TS_ASSERT(!del1.isExecuted())
       TS_ASSERT(del1.implyDeletion())
 
-      gum::ScheduleMultiDim< gum::Potential< double > > f4(pot2, true);
+      gum::ScheduleMultiDim< gum::Tensor< double > > f4(pot2, true);
       del2.updateArgs({&f4});
       TS_ASSERT_DIFFERS(del2, del1)
       TS_ASSERT(del1.hasSameArguments(del2))
@@ -167,7 +167,7 @@ namespace gum_tests {
       TS_ASSERT(del2.implyDeletion())
       TS_ASSERT_EQUALS(del2, del1)
       TS_ASSERT_DIFFERS(del1, del1b)
-      gum::ScheduleDeletion< gum::Potential< double > > del6 = del1b;
+      gum::ScheduleDeletion< gum::Tensor< double > > del6 = del1b;
       TS_ASSERT(del6.implyDeletion())
       del1 = std::move(del6);
       TS_ASSERT_EQUALS(del1, del1b)
@@ -193,9 +193,9 @@ namespace gum_tests {
     }
 
     private:
-    static gum::Potential< double > myProjectMax(const gum::Potential< double >& pot,
+    static gum::Tensor< double > myProjectMax(const gum::Tensor< double >& pot,
                                                  const gum::VariableSet&         del_vars) {
-      return gum::Potential< double >(gum::projectMax(*(pot.content()), del_vars));
+      return gum::Tensor< double >(gum::projectMax(*(pot.content()), del_vars));
     }
   };
 

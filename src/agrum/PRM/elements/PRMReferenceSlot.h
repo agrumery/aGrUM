@@ -149,11 +149,11 @@ namespace gum {
 
       /// @brief Raise an OperationNotAllowed.
       /// See gum::PRMClassElement::cpf().
-      virtual Potential< GUM_SCALAR >& cpf();
+      virtual Tensor< GUM_SCALAR >& cpf();
 
       /// @brief Raise an OperationNotAllowed.
       /// See gum::PRMClassElement::cpf().
-      virtual const Potential< GUM_SCALAR >& cpf() const;
+      virtual const Tensor< GUM_SCALAR >& cpf() const;
 
       /// @brief Raise an OperationNotAllowed.
       /// See gum::PRMClassElement::getCastDescendant().

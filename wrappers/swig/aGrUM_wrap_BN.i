@@ -61,7 +61,7 @@
 %import <agrum/base/core/approximations/IApproximationSchemeConfiguration.h>
 %include <agrum/base/core/approximations/approximationScheme.h>
 
-%import <agrum/BN/inference/tools/relevantPotentialsFinderType.h>
+%import <agrum/BN/inference/tools/relevantTensorsFinderType.h>
 
 %ignore gum::BayesNetInference;
 %import <agrum/base/graphicalModels/inference/scheduler/scheduledInference.h>

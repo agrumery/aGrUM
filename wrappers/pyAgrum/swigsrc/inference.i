@@ -51,7 +51,7 @@ def setEvidence(self, evidces):
 
     Parameters
     ----------
-    evidces : Dict[str,Union[int,str,List[float]]] or List[pyAgrum.Potential]
+    evidces : Dict[str,Union[int,str,List[float]]] or List[pyAgrum.Tensor]
       a dict of "name:evidence" where name is a string (the name of the variable) and evidence is an integer (an index) or a string (a label) or a list of float (a likelihood).
 
     Raises
@@ -70,7 +70,7 @@ def setEvidence(self, evidces):
       for k,v in evidces.items():
         self.addEvidence(k,v)
       return
-    elif isinstance(evidces, list): # should be a list of Potential
+    elif isinstance(evidces, list): # should be a list of Tensor
       self.eraseAllEvidence()
       for p in evidces:
         self.addEvidence(p)
@@ -85,7 +85,7 @@ def updateEvidence(self, evidces):
 
     Parameters
     ----------
-    evidces : Dict[str,Union[int,str,List[float]]] or List[pyAgrum.Potential]
+    evidces : Dict[str,Union[int,str,List[float]]] or List[pyAgrum.Tensor]
       a dict of "name:evidence" where name is a string (the name of the variable) and evidence is an integer (an index) or a string (a label) or a list of float (a likelihood).
 
     Raises
@@ -106,7 +106,7 @@ def updateEvidence(self, evidces):
           else:
               self.addEvidence(k,v)
       return
-    elif isinstance(evidces, list): # should be a list of Potential
+    elif isinstance(evidces, list): # should be a list of Tensor
       for p in evidces:
           k=p.variable(0)
           if self.hasEvidence(k):
@@ -159,7 +159,7 @@ def setTargets(self, targets):
     PyObject* targets() {
       return PyAgrumHelper::PySetFromNodeSet(self->targets() );
     }
-    Potential<double> evidenceImpact(PyObject* target,PyObject *evs) {
+    Tensor<double> evidenceImpact(PyObject* target,PyObject *evs) {
       gum::NodeId itarget=PyAgrumHelper::nodeIdFromNameOrIndex(target,self->BN().variableNodeMap());
       gum::NodeSet soe;
       PyAgrumHelper::populateNodeSetFromPySequenceOfIntOrString(soe,evs,self->BN().variableNodeMap());
@@ -190,14 +190,14 @@ IMPROVE_INFERENCE_API(LoopySamplingInference<double,gum::MonteCarloSampling>)
       PyAgrumHelper::populateNodeSetFromPySequenceOfIntOrString(sot,targets,self->BN().variableNodeMap());
       return self->jointMutualInformation(sot);
     }
-    Potential<double> evidenceJointImpact(PyObject* targets,PyObject *evs) {
+    Tensor<double> evidenceJointImpact(PyObject* targets,PyObject *evs) {
       gum::NodeSet sot;
       gum::NodeSet soe;
       PyAgrumHelper::populateNodeSetFromPySequenceOfIntOrString(sot,targets,self->BN().variableNodeMap());
       PyAgrumHelper::populateNodeSetFromPySequenceOfIntOrString(soe,evs,self->BN().variableNodeMap());
       return self->evidenceJointImpact(sot,soe);
     }
-    Potential<double> jointPosterior(PyObject *targets) {
+    Tensor<double> jointPosterior(PyObject *targets) {
       if (! PyAnySet_Check(targets)) {
         GUM_ERROR(gum::InvalidArgument,"The argument must be a set")
       }

@@ -147,7 +147,7 @@ namespace gum {
         inf.makeInference();
 
         for (auto node: bayesNetinit.nodes()) {
-          auto pottemp = new Potential< GUM_SCALAR >();
+          auto pottemp = new Tensor< GUM_SCALAR >();
           pottemp->copy(inf.posterior(node));
           hashMarginal_.insert(node, pottemp);
         }
@@ -372,7 +372,7 @@ namespace gum {
       bool   mustbeconnex) {
     /*if (disturbing_) {
       const BayesNet< GUM_SCALAR > bayesNet(this->bayesNet_);
-      Potential< GUM_SCALAR >      potj;
+      Tensor< GUM_SCALAR >      potj;
       potj.copy(this->bayesNet_.cpt(j));
       this->bayesNet_.eraseArc(i, j);
 

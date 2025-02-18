@@ -139,12 +139,12 @@ namespace gum_tests {
         TS_GUM_ASSERT_THROWS_NOTHING(inf_gibbs.makeInference())
 
         for (const auto i : bn->nodes()) {
-          const gum::Potential< double >& marginal_gibbs = inf_gibbs.posterior(i);
-          const gum::Potential< double >& marginal_ShaShe =
+          const gum::Tensor< double >& marginal_gibbs = inf_gibbs.posterior(i);
+          const gum::Tensor< double >& marginal_ShaShe =
             inf_ShaShe.posterior(i);
-          const gum::Potential< double >& marginal_LazyProp =
+          const gum::Tensor< double >& marginal_LazyProp =
             inf_LazyProp.posterior(i);
-          const gum::Potential< double >& marginal_ValElim =
+          const gum::Tensor< double >& marginal_ValElim =
             inf_ValElim.posterior(i);
 
           gum::Instantiation I;
@@ -173,15 +173,15 @@ namespace gum_tests {
 
     GUM_ACTIVE_TEST(InferencesWithHardEvidence) {
       begin_test_waiting();
-      gum::Potential< double > e_i1;
+      gum::Tensor< double > e_i1;
       e_i1 << bn->variable(i1);
       e_i1.fillWith({1, 0});
 
-      gum::Potential< double > e_i4;
+      gum::Tensor< double > e_i4;
       e_i4 << bn->variable(i4);
       e_i4.fillWith({0, 1});
 
-      gum::List< gum::Potential< double > const* > list_pot;
+      gum::List< gum::Tensor< double > const* > list_pot;
       list_pot.insert(&e_i1);
       list_pot.insert(&e_i4);
 
@@ -213,11 +213,11 @@ namespace gum_tests {
       TS_GUM_ASSERT_THROWS_NOTHING(inf_his.makeInference())
 
       for (const auto i : bn->nodes()) {
-        const gum::Potential< double >& marginal_gibbs = inf_his.posterior(i);
-        const gum::Potential< double >& marginal_ShaShe = inf_ShaShe.posterior(i);
-        const gum::Potential< double >& marginal_LazyProp =
+        const gum::Tensor< double >& marginal_gibbs = inf_his.posterior(i);
+        const gum::Tensor< double >& marginal_ShaShe = inf_ShaShe.posterior(i);
+        const gum::Tensor< double >& marginal_LazyProp =
           inf_LazyProp.posterior(i);
-        const gum::Potential< double >& marginal_VarElim =
+        const gum::Tensor< double >& marginal_VarElim =
           inf_VarElim.posterior(i);
 
         gum::Instantiation I;
@@ -244,15 +244,15 @@ namespace gum_tests {
     GUM_ACTIVE_TEST(InferencesWithSoftEvidence) {
       begin_test_waiting();
 
-      gum::Potential< double > e_i1;
+      gum::Tensor< double > e_i1;
       e_i1 << bn->variable(i1);
       e_i1.fillWith({0.6, 1});
 
-      gum::Potential< double > e_i4;
+      gum::Tensor< double > e_i4;
       e_i4 << bn->variable(i4);
       e_i4.fillWith({0.2, 0.3});
 
-      gum::List< gum::Potential< double > const* > list_pot;
+      gum::List< gum::Tensor< double > const* > list_pot;
       list_pot.insert(&e_i1);
       list_pot.insert(&e_i4);
 
@@ -275,10 +275,10 @@ namespace gum_tests {
       inf_VarElim.makeInference();
 
       for (const auto i : bn->nodes()) {
-        const gum::Potential< double >& marginal_ShaShe = inf_ShaShe.posterior(i);
-        const gum::Potential< double >& marginal_LazyProp =
+        const gum::Tensor< double >& marginal_ShaShe = inf_ShaShe.posterior(i);
+        const gum::Tensor< double >& marginal_LazyProp =
           inf_LazyProp.posterior(i);
-        const gum::Potential< double >& marginal_VarElim =
+        const gum::Tensor< double >& marginal_VarElim =
           inf_VarElim.posterior(i);
 
         gum::Instantiation I;
@@ -322,15 +322,15 @@ namespace gum_tests {
         bn.cpt(r).fillWith({0.8f, 0.2f, 0.2f, 0.8f});
         bn.cpt(w).fillWith({1.0f, 0.0f, 0.1f, 0.9f, 0.1f, 0.9f, 0.01f, 0.99f});
 
-        gum::Potential< double > e_i1;
+        gum::Tensor< double > e_i1;
         e_i1 << bn.variable(c);
         e_i1.fillWith({1, 0});
 
-        gum::Potential< double > e_i4;
+        gum::Tensor< double > e_i4;
         e_i4 << bn.variable(s);
         e_i4.fillWith({0, 1});
 
-        gum::List< gum::Potential< double > const* > list_pot;
+        gum::List< gum::Tensor< double > const* > list_pot;
         list_pot.insert(&e_i1);
         list_pot.insert(&e_i4);
 
@@ -338,7 +338,7 @@ namespace gum_tests {
           gum::LazyPropagation< double > inf(&bn);
           inf.makeInference();
           {
-            const gum::Potential< double >& p = inf.posterior(w);
+            const gum::Tensor< double >& p = inf.posterior(w);
             gum::Instantiation             I(p);
             TS_ASSERT_DELTA(p[I], 0.3529f, TS_GUM_SMALL_ERROR)
             ++I;
@@ -350,7 +350,7 @@ namespace gum_tests {
             inf.addEvidence(*pot);
           inf.makeInference();
           {
-            const gum::Potential< double >& p = inf.posterior(w);
+            const gum::Tensor< double >& p = inf.posterior(w);
             gum::Instantiation             I(p);
             TS_ASSERT_DELTA(p[I], 0.082f, TS_GUM_SMALL_ERROR)
             ++I;
@@ -362,7 +362,7 @@ namespace gum_tests {
           gum::ShaferShenoyInference< double > inf(&bn);
           inf.makeInference();
           {
-            const gum::Potential< double >& p = inf.posterior(w);
+            const gum::Tensor< double >& p = inf.posterior(w);
             gum::Instantiation             I(p);
             TS_ASSERT_DELTA(p[I], 0.3529f, TS_GUM_SMALL_ERROR)
             ++I;
@@ -374,7 +374,7 @@ namespace gum_tests {
             inf.addEvidence(*pot);
           inf.makeInference();
           {
-            const gum::Potential< double >& p = inf.posterior(w);
+            const gum::Tensor< double >& p = inf.posterior(w);
             gum::Instantiation             I(p);
             TS_ASSERT_DELTA(p[I], 0.082f, TS_GUM_SMALL_ERROR)
             ++I;
@@ -386,7 +386,7 @@ namespace gum_tests {
           gum::VariableElimination< double > inf(&bn);
           inf.makeInference();
           {
-            const gum::Potential< double >& p = inf.posterior(w);
+            const gum::Tensor< double >& p = inf.posterior(w);
             gum::Instantiation             I(p);
             TS_ASSERT_DELTA(p[I], 0.3529f, TS_GUM_SMALL_ERROR)
             ++I;
@@ -398,7 +398,7 @@ namespace gum_tests {
             inf.addEvidence(*pot);
           inf.makeInference();
           {
-            const gum::Potential< double >& p = inf.posterior(w);
+            const gum::Tensor< double >& p = inf.posterior(w);
             gum::Instantiation             I(p);
             TS_ASSERT_DELTA(p[I], 0.082f, TS_GUM_SMALL_ERROR)
             ++I;
@@ -422,7 +422,7 @@ namespace gum_tests {
     gum::VariableElimination< double >   ve(&bn);
     gum::ShaferShenoyInference< double > ss(&bn);
     gum::LazyPropagation< double >       lazy(&bn);
-    gum::Potential< double >             p_ve, p_ss, p_lazy;
+    gum::Tensor< double >             p_ve, p_ss, p_lazy;
     for (auto var_id : bn.nodes()) {
       // Act
       TS_GUM_ASSERT_THROWS_NOTHING(p_ve = ve.posterior(var_id))
@@ -447,7 +447,7 @@ namespace gum_tests {
     gum::VariableElimination< double >   ve(&bn);
     gum::ShaferShenoyInference< double > ss(&bn);
     gum::LazyPropagation< double >       lazy(&bn);
-    gum::Potential< double >             p_ve, p_ss, p_lazy;
+    gum::Tensor< double >             p_ve, p_ss, p_lazy;
     auto                                 e_id = bn.idFromName("CATECHOL");
     std::vector< gum::BayesNetInference< double >* > inf_list{&ve, &lazy, &ss};
     for (auto inf : inf_list) {
@@ -477,12 +477,12 @@ namespace gum_tests {
     gum::VariableElimination< double >   ve(&bn);
     gum::ShaferShenoyInference< double > ss(&bn);
     gum::LazyPropagation< double >       lazy(&bn);
-    gum::Potential< double >             p_ve, p_ss, p_lazy;
+    gum::Tensor< double >             p_ve, p_ss, p_lazy;
     auto                                 e_id = bn.idFromName("CATECHOL");
-    auto                                 e_p = gum::Potential< double >();
+    auto                                 e_p = gum::Tensor< double >();
     e_p.add(bn.variable(e_id));
     e_p.fillWith(std::vector< double >{0.1, 0.9});
-    gum::List< const gum::Potential< double >* > list;
+    gum::List< const gum::Tensor< double >* > list;
     list.insert(&e_p);
     auto inf_list =
       std::vector< gum::BayesNetInference< double >* >{&ve, &lazy, &ss};
@@ -518,7 +518,7 @@ namespace gum_tests {
     gum::VariableElimination< double >   ve(&bn);
     gum::ShaferShenoyInference< double > ss(&bn);
     gum::LazyPropagation< double >       lazy(&bn);
-    gum::Potential< double >             p_ve, p_ss, p_lazy;
+    gum::Tensor< double >             p_ve, p_ss, p_lazy;
     for (auto var_id : bn.nodes()) {
       // Act
       TS_GUM_ASSERT_THROWS_NOTHING(p_ve = ve.posterior(var_id))
@@ -545,7 +545,7 @@ namespace gum_tests {
     gum::VariableElimination< double >   ve(&bn);
     gum::ShaferShenoyInference< double > ss(&bn);
     gum::LazyPropagation< double >       lazy(&bn);
-    gum::Potential< double >             p_ve, p_ss, p_lazy;
+    gum::Tensor< double >             p_ve, p_ss, p_lazy;
     auto                                 e_id = bn.idFromName("bronchitis");
     auto                                 inf_list =
       std::vector< gum::BayesNetInference< double >* >{&ve, &lazy, &ss};
@@ -578,12 +578,12 @@ namespace gum_tests {
     gum::VariableElimination< double >   ve(&bn);
     gum::ShaferShenoyInference< double > ss(&bn);
     gum::LazyPropagation< double >       lazy(&bn);
-    gum::Potential< double >             p_ve, p_ss, p_lazy;
+    gum::Tensor< double >             p_ve, p_ss, p_lazy;
     auto                                 e_id = bn.idFromName("bronchitis");
-    auto                                 e_p = gum::Potential< double >();
+    auto                                 e_p = gum::Tensor< double >();
     e_p.add(bn.variable(e_id));
     e_p.fillWith(std::vector< double >{0.1, 0.9});
-    gum::List< const gum::Potential< double >* > list;
+    gum::List< const gum::Tensor< double >* > list;
     list.insert(&e_p);
     auto inf_list =
       std::vector< gum::BayesNetInference< double >* >{&ve, &lazy, &ss};

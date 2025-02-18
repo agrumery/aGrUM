@@ -149,7 +149,7 @@ Clear the whole MarkovRandomField
 "
 Remove a variable from the gum::MarkovRandomField.
 
-Removes the corresponding variable from the gum::MarkovRandomField and from all of it's children gum::Potential.
+Removes the corresponding variable from the gum::MarkovRandomField and from all of it's children gum::Tensor.
 
 If no variable matches the given id, then nothing is done.
 
@@ -254,7 +254,7 @@ vars : Union[Set[int],Set[str]]
 
 Returns
 -------
-pyAgrum.Potential
+pyAgrum.Tensor
 	The factor of the set of nodes.
 
 Raises

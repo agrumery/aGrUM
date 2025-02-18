@@ -3737,15 +3737,15 @@ namespace Swig {
 #define SWIGTYPE_p_gum__LabelizedVariable swig_types[24]
 #define SWIGTYPE_p_gum__NodePropertyT_std__vectorT_std__vectorT_std__vectorT_double_t_std__allocatorT_std__vectorT_double_t_t_t_std__allocatorT_std__vectorT_std__vectorT_double_t_std__allocatorT_std__vectorT_double_t_t_t_t_t_t swig_types[25]
 #define SWIGTYPE_p_gum__NumericalDiscreteVariable swig_types[26]
-#define SWIGTYPE_p_gum__PotentialT_double_t swig_types[27]
-#define SWIGTYPE_p_gum__RangeVariable swig_types[28]
-#define SWIGTYPE_p_gum__SetT_gum__Arc_t swig_types[29]
-#define SWIGTYPE_p_gum__SetT_gum__Arc_t__const_iterator swig_types[30]
-#define SWIGTYPE_p_gum__SetT_gum__DiscreteVariable_const_p_t swig_types[31]
-#define SWIGTYPE_p_gum__SetT_gum__Edge_t swig_types[32]
-#define SWIGTYPE_p_gum__SetT_gum__Edge_t__const_iterator swig_types[33]
-#define SWIGTYPE_p_gum__SetT_std__size_t_t swig_types[34]
-#define SWIGTYPE_p_gum__SetT_std__size_t_t__const_iterator swig_types[35]
+#define SWIGTYPE_p_gum__RangeVariable swig_types[27]
+#define SWIGTYPE_p_gum__SetT_gum__Arc_t swig_types[28]
+#define SWIGTYPE_p_gum__SetT_gum__Arc_t__const_iterator swig_types[29]
+#define SWIGTYPE_p_gum__SetT_gum__DiscreteVariable_const_p_t swig_types[30]
+#define SWIGTYPE_p_gum__SetT_gum__Edge_t swig_types[31]
+#define SWIGTYPE_p_gum__SetT_gum__Edge_t__const_iterator swig_types[32]
+#define SWIGTYPE_p_gum__SetT_std__size_t_t swig_types[33]
+#define SWIGTYPE_p_gum__SetT_std__size_t_t__const_iterator swig_types[34]
+#define SWIGTYPE_p_gum__TensorT_double_t swig_types[35]
 #define SWIGTYPE_p_gum__credal__CNLoopyPropagationT_double_t swig_types[36]
 #define SWIGTYPE_p_gum__credal__CNMonteCarloSamplingT_double_t swig_types[37]
 #define SWIGTYPE_p_gum__credal__CredalNetT_double_t swig_types[38]
@@ -5476,16 +5476,16 @@ SWIGINTERN gum::IApproximationSchemeConfiguration const &gum_credal_CNMonteCarlo
 SWIGINTERN void gum_credal_CNMonteCarloSampling_Sl_double_Sg__setRepetitiveInd(gum::credal::CNMonteCarloSampling< double > *self,bool const flag){
     self->gum::credal::InferenceEngine<double>::setRepetitiveInd(flag);
   }
-SWIGINTERN gum::Potential< double > gum_credal_CNMonteCarloSampling_Sl_double_Sg__marginalMax__SWIG_0(gum::credal::CNMonteCarloSampling< double > const *self,gum::NodeId const id){
+SWIGINTERN gum::Tensor< double > gum_credal_CNMonteCarloSampling_Sl_double_Sg__marginalMax__SWIG_0(gum::credal::CNMonteCarloSampling< double > const *self,gum::NodeId const id){
     return self->gum::credal::InferenceEngine<double>::marginalMax(id);
   }
-SWIGINTERN gum::Potential< double > gum_credal_CNMonteCarloSampling_Sl_double_Sg__marginalMin__SWIG_0(gum::credal::CNMonteCarloSampling< double > const *self,gum::NodeId const id){
+SWIGINTERN gum::Tensor< double > gum_credal_CNMonteCarloSampling_Sl_double_Sg__marginalMin__SWIG_0(gum::credal::CNMonteCarloSampling< double > const *self,gum::NodeId const id){
     return self->gum::credal::InferenceEngine<double>::marginalMin(id);
   }
-SWIGINTERN gum::Potential< double > gum_credal_CNMonteCarloSampling_Sl_double_Sg__marginalMax__SWIG_1(gum::credal::CNMonteCarloSampling< double > const *self,std::string const name){
+SWIGINTERN gum::Tensor< double > gum_credal_CNMonteCarloSampling_Sl_double_Sg__marginalMax__SWIG_1(gum::credal::CNMonteCarloSampling< double > const *self,std::string const name){
     return self->gum::credal::InferenceEngine<double>::marginalMax(name);
   }
-SWIGINTERN gum::Potential< double > gum_credal_CNMonteCarloSampling_Sl_double_Sg__marginalMin__SWIG_1(gum::credal::CNMonteCarloSampling< double > const *self,std::string const name){
+SWIGINTERN gum::Tensor< double > gum_credal_CNMonteCarloSampling_Sl_double_Sg__marginalMin__SWIG_1(gum::credal::CNMonteCarloSampling< double > const *self,std::string const name){
     return self->gum::credal::InferenceEngine<double>::marginalMin(name);
   }
 SWIGINTERN void gum_credal_CNMonteCarloSampling_Sl_double_Sg__insertModalsFile(gum::credal::CNMonteCarloSampling< double > *self,std::string const &path){
@@ -5518,7 +5518,7 @@ SWIGINTERN void gum_credal_CNMonteCarloSampling_Sl_double_Sg__addEvidence__SWIG_
 SWIGINTERN void gum_credal_CNMonteCarloSampling_Sl_double_Sg__addEvidence__SWIG_5(gum::credal::CNMonteCarloSampling< double > *self,std::string const &nodeName,std::vector< double,std::allocator< double > > const &vals){
     self->gum::credal::InferenceEngine<double>::addEvidence(nodeName,vals);
   }
-SWIGINTERN void gum_credal_CNMonteCarloSampling_Sl_double_Sg__addEvidence__SWIG_6(gum::credal::CNMonteCarloSampling< double > *self,gum::Potential< double > const &p){
+SWIGINTERN void gum_credal_CNMonteCarloSampling_Sl_double_Sg__addEvidence__SWIG_6(gum::credal::CNMonteCarloSampling< double > *self,gum::Tensor< double > const &p){
     self->gum::credal::InferenceEngine<double>::addEvidence(p);
   }
 SWIGINTERN gum::credal::CredalNet< double > const &gum_credal_CNMonteCarloSampling_Sl_double_Sg__CN(gum::credal::CNMonteCarloSampling< double > const *self){ return self->gum::credal::InferenceEngine<double>::credalNet(); }
@@ -5560,16 +5560,16 @@ SWIGINTERN gum::IApproximationSchemeConfiguration const &gum_credal_CNLoopyPropa
 SWIGINTERN void gum_credal_CNLoopyPropagation_Sl_double_Sg__setRepetitiveInd(gum::credal::CNLoopyPropagation< double > *self,bool const flag){
     self->gum::credal::InferenceEngine<double>::setRepetitiveInd(flag);
   }
-SWIGINTERN gum::Potential< double > gum_credal_CNLoopyPropagation_Sl_double_Sg__marginalMax__SWIG_0(gum::credal::CNLoopyPropagation< double > const *self,gum::NodeId const id){
+SWIGINTERN gum::Tensor< double > gum_credal_CNLoopyPropagation_Sl_double_Sg__marginalMax__SWIG_0(gum::credal::CNLoopyPropagation< double > const *self,gum::NodeId const id){
     return self->gum::credal::InferenceEngine<double>::marginalMax(id);
   }
-SWIGINTERN gum::Potential< double > gum_credal_CNLoopyPropagation_Sl_double_Sg__marginalMin__SWIG_0(gum::credal::CNLoopyPropagation< double > const *self,gum::NodeId const id){
+SWIGINTERN gum::Tensor< double > gum_credal_CNLoopyPropagation_Sl_double_Sg__marginalMin__SWIG_0(gum::credal::CNLoopyPropagation< double > const *self,gum::NodeId const id){
     return self->gum::credal::InferenceEngine<double>::marginalMin(id);
   }
-SWIGINTERN gum::Potential< double > gum_credal_CNLoopyPropagation_Sl_double_Sg__marginalMax__SWIG_1(gum::credal::CNLoopyPropagation< double > const *self,std::string const name){
+SWIGINTERN gum::Tensor< double > gum_credal_CNLoopyPropagation_Sl_double_Sg__marginalMax__SWIG_1(gum::credal::CNLoopyPropagation< double > const *self,std::string const name){
     return self->gum::credal::InferenceEngine<double>::marginalMax(name);
   }
-SWIGINTERN gum::Potential< double > gum_credal_CNLoopyPropagation_Sl_double_Sg__marginalMin__SWIG_1(gum::credal::CNLoopyPropagation< double > const *self,std::string const name){
+SWIGINTERN gum::Tensor< double > gum_credal_CNLoopyPropagation_Sl_double_Sg__marginalMin__SWIG_1(gum::credal::CNLoopyPropagation< double > const *self,std::string const name){
     return self->gum::credal::InferenceEngine<double>::marginalMin(name);
   }
 SWIGINTERN void gum_credal_CNLoopyPropagation_Sl_double_Sg__insertModalsFile(gum::credal::CNLoopyPropagation< double > *self,std::string const &path){
@@ -5602,7 +5602,7 @@ SWIGINTERN void gum_credal_CNLoopyPropagation_Sl_double_Sg__addEvidence__SWIG_4(
 SWIGINTERN void gum_credal_CNLoopyPropagation_Sl_double_Sg__addEvidence__SWIG_5(gum::credal::CNLoopyPropagation< double > *self,std::string const &nodeName,std::vector< double,std::allocator< double > > const &vals){
     self->gum::credal::InferenceEngine<double>::addEvidence(nodeName,vals);
   }
-SWIGINTERN void gum_credal_CNLoopyPropagation_Sl_double_Sg__addEvidence__SWIG_6(gum::credal::CNLoopyPropagation< double > *self,gum::Potential< double > const &p){
+SWIGINTERN void gum_credal_CNLoopyPropagation_Sl_double_Sg__addEvidence__SWIG_6(gum::credal::CNLoopyPropagation< double > *self,gum::Tensor< double > const &p){
     self->gum::credal::InferenceEngine<double>::addEvidence(p);
   }
 SWIGINTERN gum::credal::CredalNet< double > const &gum_credal_CNLoopyPropagation_Sl_double_Sg__CN(gum::credal::CNLoopyPropagation< double > const *self){ return self->gum::credal::InferenceEngine<double>::credalNet(); }
@@ -9072,7 +9072,7 @@ SWIGINTERN PyObject *_wrap_CNMonteCarloSampling_marginalMax__SWIG_0(PyObject *se
   int res1 = 0 ;
   size_t val2 ;
   int ecode2 = 0 ;
-  gum::Potential< double > result;
+  gum::Tensor< double > result;
   
   (void)self;
   if ((nobjs < 2) || (nobjs > 2)) SWIG_fail;
@@ -9094,7 +9094,7 @@ SWIGINTERN PyObject *_wrap_CNMonteCarloSampling_marginalMax__SWIG_0(PyObject *se
       SWIG_fail;
     }
   }
-  resultobj = SWIG_NewPointerObj((new gum::Potential< double >(result)), SWIGTYPE_p_gum__PotentialT_double_t, SWIG_POINTER_OWN |  0 );
+  resultobj = SWIG_NewPointerObj((new gum::Tensor< double >(result)), SWIGTYPE_p_gum__TensorT_double_t, SWIG_POINTER_OWN |  0 );
   return resultobj;
 fail:
   return NULL;
@@ -9109,7 +9109,7 @@ SWIGINTERN PyObject *_wrap_CNMonteCarloSampling_marginalMin__SWIG_0(PyObject *se
   int res1 = 0 ;
   size_t val2 ;
   int ecode2 = 0 ;
-  gum::Potential< double > result;
+  gum::Tensor< double > result;
   
   (void)self;
   if ((nobjs < 2) || (nobjs > 2)) SWIG_fail;
@@ -9131,7 +9131,7 @@ SWIGINTERN PyObject *_wrap_CNMonteCarloSampling_marginalMin__SWIG_0(PyObject *se
       SWIG_fail;
     }
   }
-  resultobj = SWIG_NewPointerObj((new gum::Potential< double >(result)), SWIGTYPE_p_gum__PotentialT_double_t, SWIG_POINTER_OWN |  0 );
+  resultobj = SWIG_NewPointerObj((new gum::Tensor< double >(result)), SWIGTYPE_p_gum__TensorT_double_t, SWIG_POINTER_OWN |  0 );
   return resultobj;
 fail:
   return NULL;
@@ -9144,7 +9144,7 @@ SWIGINTERN PyObject *_wrap_CNMonteCarloSampling_marginalMax__SWIG_1(PyObject *se
   std::string arg2 ;
   void *argp1 = 0 ;
   int res1 = 0 ;
-  gum::Potential< double > result;
+  gum::Tensor< double > result;
   
   (void)self;
   if ((nobjs < 2) || (nobjs > 2)) SWIG_fail;
@@ -9170,7 +9170,7 @@ SWIGINTERN PyObject *_wrap_CNMonteCarloSampling_marginalMax__SWIG_1(PyObject *se
       SWIG_fail;
     }
   }
-  resultobj = SWIG_NewPointerObj((new gum::Potential< double >(result)), SWIGTYPE_p_gum__PotentialT_double_t, SWIG_POINTER_OWN |  0 );
+  resultobj = SWIG_NewPointerObj((new gum::Tensor< double >(result)), SWIGTYPE_p_gum__TensorT_double_t, SWIG_POINTER_OWN |  0 );
   return resultobj;
 fail:
   return NULL;
@@ -9219,7 +9219,7 @@ SWIGINTERN PyObject *_wrap_CNMonteCarloSampling_marginalMin__SWIG_1(PyObject *se
   std::string arg2 ;
   void *argp1 = 0 ;
   int res1 = 0 ;
-  gum::Potential< double > result;
+  gum::Tensor< double > result;
   
   (void)self;
   if ((nobjs < 2) || (nobjs > 2)) SWIG_fail;
@@ -9245,7 +9245,7 @@ SWIGINTERN PyObject *_wrap_CNMonteCarloSampling_marginalMin__SWIG_1(PyObject *se
       SWIG_fail;
     }
   }
-  resultobj = SWIG_NewPointerObj((new gum::Potential< double >(result)), SWIGTYPE_p_gum__PotentialT_double_t, SWIG_POINTER_OWN |  0 );
+  resultobj = SWIG_NewPointerObj((new gum::Tensor< double >(result)), SWIGTYPE_p_gum__TensorT_double_t, SWIG_POINTER_OWN |  0 );
   return resultobj;
 fail:
   return NULL;
@@ -9768,7 +9768,7 @@ fail:
 SWIGINTERN PyObject *_wrap_CNMonteCarloSampling_addEvidence__SWIG_6(PyObject *self, Py_ssize_t nobjs, PyObject **swig_obj) {
   PyObject *resultobj = 0;
   gum::credal::CNMonteCarloSampling< double > *arg1 = 0 ;
-  gum::Potential< double > *arg2 = 0 ;
+  gum::Tensor< double > *arg2 = 0 ;
   void *argp1 = 0 ;
   int res1 = 0 ;
   void *argp2 = 0 ;
@@ -9781,17 +9781,17 @@ SWIGINTERN PyObject *_wrap_CNMonteCarloSampling_addEvidence__SWIG_6(PyObject *se
     SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "CNMonteCarloSampling_addEvidence" "', argument " "1"" of type '" "gum::credal::CNMonteCarloSampling< double > *""'"); 
   }
   arg1 = reinterpret_cast< gum::credal::CNMonteCarloSampling< double > * >(argp1);
-  res2 = SWIG_ConvertPtr(swig_obj[1], &argp2, SWIGTYPE_p_gum__PotentialT_double_t,  0  | 0);
+  res2 = SWIG_ConvertPtr(swig_obj[1], &argp2, SWIGTYPE_p_gum__TensorT_double_t,  0  | 0);
   if (!SWIG_IsOK(res2)) {
-    SWIG_exception_fail(SWIG_ArgError(res2), "in method '" "CNMonteCarloSampling_addEvidence" "', argument " "2"" of type '" "gum::Potential< double > const &""'"); 
+    SWIG_exception_fail(SWIG_ArgError(res2), "in method '" "CNMonteCarloSampling_addEvidence" "', argument " "2"" of type '" "gum::Tensor< double > const &""'"); 
   }
   if (!argp2) {
-    SWIG_exception_fail(SWIG_NullReferenceError, "invalid null reference " "in method '" "CNMonteCarloSampling_addEvidence" "', argument " "2"" of type '" "gum::Potential< double > const &""'"); 
+    SWIG_exception_fail(SWIG_NullReferenceError, "invalid null reference " "in method '" "CNMonteCarloSampling_addEvidence" "', argument " "2"" of type '" "gum::Tensor< double > const &""'"); 
   }
-  arg2 = reinterpret_cast< gum::Potential< double > * >(argp2);
+  arg2 = reinterpret_cast< gum::Tensor< double > * >(argp2);
   {
     try {
-      gum_credal_CNMonteCarloSampling_Sl_double_Sg__addEvidence__SWIG_6(arg1,(gum::Potential< double > const &)*arg2);
+      gum_credal_CNMonteCarloSampling_Sl_double_Sg__addEvidence__SWIG_6(arg1,(gum::Tensor< double > const &)*arg2);
     } catch (...) {
       SetPythonizeAgrumException();
       SWIG_fail;
@@ -9912,7 +9912,7 @@ fail:
     "    gum::credal::CNMonteCarloSampling< double >::addEvidence(std::string const &,std::string const &)\n"
     "    gum::credal::CNMonteCarloSampling< double >::addEvidence(gum::NodeId const,std::vector< double,std::allocator< double > > const &)\n"
     "    gum::credal::CNMonteCarloSampling< double >::addEvidence(std::string const &,std::vector< double,std::allocator< double > > const &)\n"
-    "    gum::credal::CNMonteCarloSampling< double >::addEvidence(gum::Potential< double > const &)\n");
+    "    gum::credal::CNMonteCarloSampling< double >::addEvidence(gum::Tensor< double > const &)\n");
   return 0;
 }
 
@@ -10842,7 +10842,7 @@ SWIGINTERN PyObject *_wrap_CNLoopyPropagation_marginalMax__SWIG_0(PyObject *self
   int res1 = 0 ;
   size_t val2 ;
   int ecode2 = 0 ;
-  gum::Potential< double > result;
+  gum::Tensor< double > result;
   
   (void)self;
   if ((nobjs < 2) || (nobjs > 2)) SWIG_fail;
@@ -10864,7 +10864,7 @@ SWIGINTERN PyObject *_wrap_CNLoopyPropagation_marginalMax__SWIG_0(PyObject *self
       SWIG_fail;
     }
   }
-  resultobj = SWIG_NewPointerObj((new gum::Potential< double >(result)), SWIGTYPE_p_gum__PotentialT_double_t, SWIG_POINTER_OWN |  0 );
+  resultobj = SWIG_NewPointerObj((new gum::Tensor< double >(result)), SWIGTYPE_p_gum__TensorT_double_t, SWIG_POINTER_OWN |  0 );
   return resultobj;
 fail:
   return NULL;
@@ -10879,7 +10879,7 @@ SWIGINTERN PyObject *_wrap_CNLoopyPropagation_marginalMin__SWIG_0(PyObject *self
   int res1 = 0 ;
   size_t val2 ;
   int ecode2 = 0 ;
-  gum::Potential< double > result;
+  gum::Tensor< double > result;
   
   (void)self;
   if ((nobjs < 2) || (nobjs > 2)) SWIG_fail;
@@ -10901,7 +10901,7 @@ SWIGINTERN PyObject *_wrap_CNLoopyPropagation_marginalMin__SWIG_0(PyObject *self
       SWIG_fail;
     }
   }
-  resultobj = SWIG_NewPointerObj((new gum::Potential< double >(result)), SWIGTYPE_p_gum__PotentialT_double_t, SWIG_POINTER_OWN |  0 );
+  resultobj = SWIG_NewPointerObj((new gum::Tensor< double >(result)), SWIGTYPE_p_gum__TensorT_double_t, SWIG_POINTER_OWN |  0 );
   return resultobj;
 fail:
   return NULL;
@@ -10914,7 +10914,7 @@ SWIGINTERN PyObject *_wrap_CNLoopyPropagation_marginalMax__SWIG_1(PyObject *self
   std::string arg2 ;
   void *argp1 = 0 ;
   int res1 = 0 ;
-  gum::Potential< double > result;
+  gum::Tensor< double > result;
   
   (void)self;
   if ((nobjs < 2) || (nobjs > 2)) SWIG_fail;
@@ -10940,7 +10940,7 @@ SWIGINTERN PyObject *_wrap_CNLoopyPropagation_marginalMax__SWIG_1(PyObject *self
       SWIG_fail;
     }
   }
-  resultobj = SWIG_NewPointerObj((new gum::Potential< double >(result)), SWIGTYPE_p_gum__PotentialT_double_t, SWIG_POINTER_OWN |  0 );
+  resultobj = SWIG_NewPointerObj((new gum::Tensor< double >(result)), SWIGTYPE_p_gum__TensorT_double_t, SWIG_POINTER_OWN |  0 );
   return resultobj;
 fail:
   return NULL;
@@ -10989,7 +10989,7 @@ SWIGINTERN PyObject *_wrap_CNLoopyPropagation_marginalMin__SWIG_1(PyObject *self
   std::string arg2 ;
   void *argp1 = 0 ;
   int res1 = 0 ;
-  gum::Potential< double > result;
+  gum::Tensor< double > result;
   
   (void)self;
   if ((nobjs < 2) || (nobjs > 2)) SWIG_fail;
@@ -11015,7 +11015,7 @@ SWIGINTERN PyObject *_wrap_CNLoopyPropagation_marginalMin__SWIG_1(PyObject *self
       SWIG_fail;
     }
   }
-  resultobj = SWIG_NewPointerObj((new gum::Potential< double >(result)), SWIGTYPE_p_gum__PotentialT_double_t, SWIG_POINTER_OWN |  0 );
+  resultobj = SWIG_NewPointerObj((new gum::Tensor< double >(result)), SWIGTYPE_p_gum__TensorT_double_t, SWIG_POINTER_OWN |  0 );
   return resultobj;
 fail:
   return NULL;
@@ -11538,7 +11538,7 @@ fail:
 SWIGINTERN PyObject *_wrap_CNLoopyPropagation_addEvidence__SWIG_6(PyObject *self, Py_ssize_t nobjs, PyObject **swig_obj) {
   PyObject *resultobj = 0;
   gum::credal::CNLoopyPropagation< double > *arg1 = 0 ;
-  gum::Potential< double > *arg2 = 0 ;
+  gum::Tensor< double > *arg2 = 0 ;
   void *argp1 = 0 ;
   int res1 = 0 ;
   void *argp2 = 0 ;
@@ -11551,17 +11551,17 @@ SWIGINTERN PyObject *_wrap_CNLoopyPropagation_addEvidence__SWIG_6(PyObject *self
     SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "CNLoopyPropagation_addEvidence" "', argument " "1"" of type '" "gum::credal::CNLoopyPropagation< double > *""'"); 
   }
   arg1 = reinterpret_cast< gum::credal::CNLoopyPropagation< double > * >(argp1);
-  res2 = SWIG_ConvertPtr(swig_obj[1], &argp2, SWIGTYPE_p_gum__PotentialT_double_t,  0  | 0);
+  res2 = SWIG_ConvertPtr(swig_obj[1], &argp2, SWIGTYPE_p_gum__TensorT_double_t,  0  | 0);
   if (!SWIG_IsOK(res2)) {
-    SWIG_exception_fail(SWIG_ArgError(res2), "in method '" "CNLoopyPropagation_addEvidence" "', argument " "2"" of type '" "gum::Potential< double > const &""'"); 
+    SWIG_exception_fail(SWIG_ArgError(res2), "in method '" "CNLoopyPropagation_addEvidence" "', argument " "2"" of type '" "gum::Tensor< double > const &""'"); 
   }
   if (!argp2) {
-    SWIG_exception_fail(SWIG_NullReferenceError, "invalid null reference " "in method '" "CNLoopyPropagation_addEvidence" "', argument " "2"" of type '" "gum::Potential< double > const &""'"); 
+    SWIG_exception_fail(SWIG_NullReferenceError, "invalid null reference " "in method '" "CNLoopyPropagation_addEvidence" "', argument " "2"" of type '" "gum::Tensor< double > const &""'"); 
   }
-  arg2 = reinterpret_cast< gum::Potential< double > * >(argp2);
+  arg2 = reinterpret_cast< gum::Tensor< double > * >(argp2);
   {
     try {
-      gum_credal_CNLoopyPropagation_Sl_double_Sg__addEvidence__SWIG_6(arg1,(gum::Potential< double > const &)*arg2);
+      gum_credal_CNLoopyPropagation_Sl_double_Sg__addEvidence__SWIG_6(arg1,(gum::Tensor< double > const &)*arg2);
     } catch (...) {
       SetPythonizeAgrumException();
       SWIG_fail;
@@ -11682,7 +11682,7 @@ fail:
     "    gum::credal::CNLoopyPropagation< double >::addEvidence(std::string const &,std::string const &)\n"
     "    gum::credal::CNLoopyPropagation< double >::addEvidence(gum::NodeId const,std::vector< double,std::allocator< double > > const &)\n"
     "    gum::credal::CNLoopyPropagation< double >::addEvidence(std::string const &,std::vector< double,std::allocator< double > > const &)\n"
-    "    gum::credal::CNLoopyPropagation< double >::addEvidence(gum::Potential< double > const &)\n");
+    "    gum::credal::CNLoopyPropagation< double >::addEvidence(gum::Tensor< double > const &)\n");
   return 0;
 }
 
@@ -12761,7 +12761,6 @@ static swig_type_info _swigt__p_gum__learning__BNLearnerT_double_t = {"_p_gum__l
 static swig_type_info _swigt__p_gum__learning__IBNLearner = {"_p_gum__learning__IBNLearner", 0, 0, 0, 0, 0};
 static swig_type_info _swigt__p_gum__Instantiation = {"_p_gum__Instantiation", "gum::Instantiation *", 0, 0, (void*)0, 0};
 static swig_type_info _swigt__p_gum__NodePropertyT_std__vectorT_std__vectorT_std__vectorT_double_t_std__allocatorT_std__vectorT_double_t_t_t_std__allocatorT_std__vectorT_std__vectorT_double_t_std__allocatorT_std__vectorT_double_t_t_t_t_t_t = {"_p_gum__NodePropertyT_std__vectorT_std__vectorT_std__vectorT_double_t_std__allocatorT_std__vectorT_double_t_t_t_std__allocatorT_std__vectorT_std__vectorT_double_t_std__allocatorT_std__vectorT_double_t_t_t_t_t_t", "gum::NodeProperty< std::vector< std::vector< std::vector< double,std::allocator< double > >,std::allocator< std::vector< double,std::allocator< double > > > >,std::allocator< std::vector< std::vector< double,std::allocator< double > >,std::allocator< std::vector< double,std::allocator< double > > > > > > > *", 0, 0, (void*)0, 0};
-static swig_type_info _swigt__p_gum__PotentialT_double_t = {"_p_gum__PotentialT_double_t", "gum::Potential< double > *", 0, 0, (void*)0, 0};
 static swig_type_info _swigt__p_gum__SetT_gum__Arc_t = {"_p_gum__SetT_gum__Arc_t", "gum::ArcSet *|gum::Set< gum::Arc > *", 0, 0, (void*)0, 0};
 static swig_type_info _swigt__p_gum__SetT_gum__Arc_t__const_iterator = {"_p_gum__SetT_gum__Arc_t__const_iterator", "gum::ArcSetIterator *|gum::Set< gum::Arc >::const_iterator *", 0, 0, (void*)0, 0};
 static swig_type_info _swigt__p_gum__SetT_gum__DiscreteVariable_const_p_t = {"_p_gum__SetT_gum__DiscreteVariable_const_p_t", "gum::VariableSet *|gum::Set< gum::DiscreteVariable const * > *", 0, 0, (void*)0, 0};
@@ -12769,6 +12768,7 @@ static swig_type_info _swigt__p_gum__SetT_gum__Edge_t = {"_p_gum__SetT_gum__Edge
 static swig_type_info _swigt__p_gum__SetT_gum__Edge_t__const_iterator = {"_p_gum__SetT_gum__Edge_t__const_iterator", "gum::EdgeSetIterator *|gum::Set< gum::Edge >::const_iterator *", 0, 0, (void*)0, 0};
 static swig_type_info _swigt__p_gum__SetT_std__size_t_t = {"_p_gum__SetT_std__size_t_t", "gum::NodeSet *|gum::Set< std::size_t > *", 0, 0, (void*)0, 0};
 static swig_type_info _swigt__p_gum__SetT_std__size_t_t__const_iterator = {"_p_gum__SetT_std__size_t_t__const_iterator", "gum::NodeSetIterator *|gum::Set< std::size_t >::const_iterator *", 0, 0, (void*)0, 0};
+static swig_type_info _swigt__p_gum__TensorT_double_t = {"_p_gum__TensorT_double_t", "gum::Tensor< double > *", 0, 0, (void*)0, 0};
 static swig_type_info _swigt__p_gum__credal__CNLoopyPropagationT_double_t = {"_p_gum__credal__CNLoopyPropagationT_double_t", "gum::credal::CNLoopyPropagation< double > *", 0, 0, (void*)0, 0};
 static swig_type_info _swigt__p_gum__credal__CNMonteCarloSamplingT_double_t = {"_p_gum__credal__CNMonteCarloSamplingT_double_t", "gum::credal::CNMonteCarloSampling< double,gum::LazyPropagation< double > > *|gum::credal::CNMonteCarloSampling< double > *", 0, 0, (void*)0, 0};
 static swig_type_info _swigt__p_gum__credal__CredalNetT_double_t = {"_p_gum__credal__CredalNetT_double_t", "gum::credal::CredalNet< double > *", 0, 0, (void*)0, 0};
@@ -12817,7 +12817,6 @@ static swig_type_info *swig_type_initial[] = {
   &_swigt__p_gum__LabelizedVariable,
   &_swigt__p_gum__NodePropertyT_std__vectorT_std__vectorT_std__vectorT_double_t_std__allocatorT_std__vectorT_double_t_t_t_std__allocatorT_std__vectorT_std__vectorT_double_t_std__allocatorT_std__vectorT_double_t_t_t_t_t_t,
   &_swigt__p_gum__NumericalDiscreteVariable,
-  &_swigt__p_gum__PotentialT_double_t,
   &_swigt__p_gum__RangeVariable,
   &_swigt__p_gum__SetT_gum__Arc_t,
   &_swigt__p_gum__SetT_gum__Arc_t__const_iterator,
@@ -12826,6 +12825,7 @@ static swig_type_info *swig_type_initial[] = {
   &_swigt__p_gum__SetT_gum__Edge_t__const_iterator,
   &_swigt__p_gum__SetT_std__size_t_t,
   &_swigt__p_gum__SetT_std__size_t_t__const_iterator,
+  &_swigt__p_gum__TensorT_double_t,
   &_swigt__p_gum__credal__CNLoopyPropagationT_double_t,
   &_swigt__p_gum__credal__CNMonteCarloSamplingT_double_t,
   &_swigt__p_gum__credal__CredalNetT_double_t,
@@ -12879,7 +12879,6 @@ static swig_cast_info _swigc__p_gum__learning__IBNLearner[] = {{&_swigt__p_gum__
 static swig_cast_info _swigc__p_gum__IApproximationSchemeConfiguration[] = {  {&_swigt__p_gum__IApproximationSchemeConfiguration, 0, 0, 0},  {&_swigt__p_gum__ApproximationScheme, _p_gum__ApproximationSchemeTo_p_gum__IApproximationSchemeConfiguration, 0, 0},  {&_swigt__p_gum__GibbsBNdistanceT_double_t, _p_gum__GibbsBNdistanceT_double_tTo_p_gum__IApproximationSchemeConfiguration, 0, 0},  {&_swigt__p_gum__learning__BNLearnerT_double_t, _p_gum__learning__BNLearnerT_double_tTo_p_gum__IApproximationSchemeConfiguration, 0, 0},  {&_swigt__p_gum__learning__IBNLearner, _p_gum__learning__IBNLearnerTo_p_gum__IApproximationSchemeConfiguration, 0, 0},{0, 0, 0, 0}};
 static swig_cast_info _swigc__p_gum__Instantiation[] = {  {&_swigt__p_gum__Instantiation, 0, 0, 0},{0, 0, 0, 0}};
 static swig_cast_info _swigc__p_gum__NodePropertyT_std__vectorT_std__vectorT_std__vectorT_double_t_std__allocatorT_std__vectorT_double_t_t_t_std__allocatorT_std__vectorT_std__vectorT_double_t_std__allocatorT_std__vectorT_double_t_t_t_t_t_t[] = {  {&_swigt__p_gum__NodePropertyT_std__vectorT_std__vectorT_std__vectorT_double_t_std__allocatorT_std__vectorT_double_t_t_t_std__allocatorT_std__vectorT_std__vectorT_double_t_std__allocatorT_std__vectorT_double_t_t_t_t_t_t, 0, 0, 0},{0, 0, 0, 0}};
-static swig_cast_info _swigc__p_gum__PotentialT_double_t[] = {  {&_swigt__p_gum__PotentialT_double_t, 0, 0, 0},{0, 0, 0, 0}};
 static swig_cast_info _swigc__p_gum__SetT_gum__Arc_t[] = {  {&_swigt__p_gum__SetT_gum__Arc_t, 0, 0, 0},{0, 0, 0, 0}};
 static swig_cast_info _swigc__p_gum__SetT_gum__Arc_t__const_iterator[] = {  {&_swigt__p_gum__SetT_gum__Arc_t__const_iterator, 0, 0, 0},{0, 0, 0, 0}};
 static swig_cast_info _swigc__p_gum__SetT_gum__DiscreteVariable_const_p_t[] = {  {&_swigt__p_gum__SetT_gum__DiscreteVariable_const_p_t, 0, 0, 0},{0, 0, 0, 0}};
@@ -12887,6 +12886,7 @@ static swig_cast_info _swigc__p_gum__SetT_gum__Edge_t[] = {  {&_swigt__p_gum__Se
 static swig_cast_info _swigc__p_gum__SetT_gum__Edge_t__const_iterator[] = {  {&_swigt__p_gum__SetT_gum__Edge_t__const_iterator, 0, 0, 0},{0, 0, 0, 0}};
 static swig_cast_info _swigc__p_gum__SetT_std__size_t_t[] = {  {&_swigt__p_gum__SetT_std__size_t_t, 0, 0, 0},{0, 0, 0, 0}};
 static swig_cast_info _swigc__p_gum__SetT_std__size_t_t__const_iterator[] = {  {&_swigt__p_gum__SetT_std__size_t_t__const_iterator, 0, 0, 0},{0, 0, 0, 0}};
+static swig_cast_info _swigc__p_gum__TensorT_double_t[] = {  {&_swigt__p_gum__TensorT_double_t, 0, 0, 0},{0, 0, 0, 0}};
 static swig_cast_info _swigc__p_gum__credal__CNLoopyPropagationT_double_t[] = {  {&_swigt__p_gum__credal__CNLoopyPropagationT_double_t, 0, 0, 0},{0, 0, 0, 0}};
 static swig_cast_info _swigc__p_gum__credal__CNMonteCarloSamplingT_double_t[] = {  {&_swigt__p_gum__credal__CNMonteCarloSamplingT_double_t, 0, 0, 0},{0, 0, 0, 0}};
 static swig_cast_info _swigc__p_gum__credal__CredalNetT_double_t[] = {  {&_swigt__p_gum__credal__CredalNetT_double_t, 0, 0, 0},{0, 0, 0, 0}};
@@ -12935,7 +12935,6 @@ static swig_cast_info *swig_cast_initial[] = {
   _swigc__p_gum__LabelizedVariable,
   _swigc__p_gum__NodePropertyT_std__vectorT_std__vectorT_std__vectorT_double_t_std__allocatorT_std__vectorT_double_t_t_t_std__allocatorT_std__vectorT_std__vectorT_double_t_std__allocatorT_std__vectorT_double_t_t_t_t_t_t,
   _swigc__p_gum__NumericalDiscreteVariable,
-  _swigc__p_gum__PotentialT_double_t,
   _swigc__p_gum__RangeVariable,
   _swigc__p_gum__SetT_gum__Arc_t,
   _swigc__p_gum__SetT_gum__Arc_t__const_iterator,
@@ -12944,6 +12943,7 @@ static swig_cast_info *swig_cast_initial[] = {
   _swigc__p_gum__SetT_gum__Edge_t__const_iterator,
   _swigc__p_gum__SetT_std__size_t_t,
   _swigc__p_gum__SetT_std__size_t_t__const_iterator,
+  _swigc__p_gum__TensorT_double_t,
   _swigc__p_gum__credal__CNLoopyPropagationT_double_t,
   _swigc__p_gum__credal__CNMonteCarloSamplingT_double_t,
   _swigc__p_gum__credal__CredalNetT_double_t,

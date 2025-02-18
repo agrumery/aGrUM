@@ -108,17 +108,17 @@ namespace gum {
       virtual void evidenceRemoved_(const Chain& chain);
 
       /// See PRMInference::posterior_().
-      virtual void posterior_(const Chain& chain, Potential< GUM_SCALAR >& m);
+      virtual void posterior_(const Chain& chain, Tensor< GUM_SCALAR >& m);
 
       /// See PRMInference::joint_().
-      virtual void joint_(const std::vector< Chain >& queries, Potential< GUM_SCALAR >& j);
+      virtual void joint_(const std::vector< Chain >& queries, Tensor< GUM_SCALAR >& j);
 
       /// @}
 
       private:
       /// Code alias
-      using BucketSet         = Set< Potential< GUM_SCALAR >* >;
-      using BucketSetIterator = typename Set< Potential< GUM_SCALAR >* >::iterator_safe;
+      using BucketSet         = Set< Tensor< GUM_SCALAR >* >;
+      using BucketSetIterator = typename Set< Tensor< GUM_SCALAR >* >::iterator_safe;
       using ArraySetIterator  = typename Set< MultiDimArray< GUM_SCALAR >* >::iterator_safe;
 
       HashTable< const PRMClass< GUM_SCALAR >*, std::vector< NodeId >* > _elim_orders_;
@@ -127,7 +127,7 @@ namespace gum {
       /// for
       /// each
       /// family of instances with the same requisite set (thus the same lifted
-      /// potentials).
+      /// tensors).
       HashTable< const Set< NodeId >*, BucketSet* > _lifted_pools_;
 
       Sequence< std::string >* _class_elim_order_;
@@ -178,7 +178,7 @@ namespace gum {
 
       std::vector< NodeId >& _getElimOrder_(const PRMClass< GUM_SCALAR >& c);
 
-      Potential< GUM_SCALAR >* _getAggPotential_(const PRMInstance< GUM_SCALAR >*  i,
+      Tensor< GUM_SCALAR >* _getAggTensor_(const PRMInstance< GUM_SCALAR >*  i,
                                                  const PRMAggregate< GUM_SCALAR >* agg);
 
       void _initLiftedNodes_(const PRMInstance< GUM_SCALAR >* i, BucketSet& trash);

@@ -269,7 +269,7 @@ ADD_MIXEDGRAPHPART_API(gum::PDAG)
   }
 }
 %enddef
-ADD_MULTIDIMDECORATOR_API(gum::Potential<double>)
+ADD_MULTIDIMDECORATOR_API(gum::Tensor<double>)
 
 #####################################
 #####################################
@@ -278,16 +278,16 @@ ADD_MULTIDIMDECORATOR_API(gum::Potential<double>)
   void setRepetitiveInd(const bool flag) {
     self->gum::credal::InferenceEngine<double>::setRepetitiveInd(flag);
   }
- Potential<double> marginalMax ( const NodeId id ) const {
+ Tensor<double> marginalMax ( const NodeId id ) const {
     return self->gum::credal::InferenceEngine<double>::marginalMax(id);
   }
-  Potential<double> marginalMin ( const NodeId id ) const {
+  Tensor<double> marginalMin ( const NodeId id ) const {
     return self->gum::credal::InferenceEngine<double>::marginalMin(id);
   }
-  Potential<double> marginalMax ( const std::string name ) const {
+  Tensor<double> marginalMax ( const std::string name ) const {
     return self->gum::credal::InferenceEngine<double>::marginalMax(name);
   }
-  Potential<double> marginalMin ( const std::string name) const {
+  Tensor<double> marginalMin ( const std::string name) const {
     return self->gum::credal::InferenceEngine<double>::marginalMin(name);
   }
   void insertModalsFile ( const std::string& path ) {
@@ -325,7 +325,7 @@ ADD_MULTIDIMDECORATOR_API(gum::Potential<double>)
                    const std::vector<double>& vals ) {
     self->gum::credal::InferenceEngine<double>::addEvidence(nodeName,vals);
   }
-  void addEvidence(const gum::Potential<double>& p) {
+  void addEvidence(const gum::Tensor<double>& p) {
     self->gum::credal::InferenceEngine<double>::addEvidence(p);
   }
 }
@@ -341,10 +341,10 @@ ADD_CREDALINFERENCEENGINE_API(gum::credal::CNLoopyPropagation<double>)
   void makeInference(void) {
     self->baseclassname::makeInference();
   }
-  const Potential<double> posterior( const NodeId var ) {
+  const Tensor<double> posterior( const NodeId var ) {
     return self->baseclassname::posterior(var);
   }
-  const Potential<double> posterior( const std::string& nodeName ) {
+  const Tensor<double> posterior( const std::string& nodeName ) {
     return self->baseclassname::posterior(nodeName);
   }
 
@@ -371,7 +371,7 @@ ADD_CREDALINFERENCEENGINE_API(gum::credal::CNLoopyPropagation<double>)
                                 const std::vector<double>& vals ) {
     self->baseclassname::addEvidence(nodeName,vals);
   }
-  void addEvidence(const gum::Potential<double>& p) {
+  void addEvidence(const gum::Tensor<double>& p) {
     self->baseclassname::addEvidence(p);
   }
 
@@ -389,7 +389,7 @@ ADD_CREDALINFERENCEENGINE_API(gum::credal::CNLoopyPropagation<double>)
   void chgEvidence( const std::string& nodeName, const std::string& val ) {
     self->baseclassname::chgEvidence(nodeName,val);
   }
-  void chgEvidence(const gum::Potential<double>& p) {
+  void chgEvidence(const gum::Tensor<double>& p) {
     self->baseclassname::chgEvidence(p);
   }
 
@@ -495,10 +495,10 @@ ADD_CREDALINFERENCEENGINE_API(gum::credal::CNLoopyPropagation<double>)
      return self->baseclassname::H(nodeName);
    }
 
-  Potential<double> evidenceImpact(NodeId target,const NodeSet& evs){
+  Tensor<double> evidenceImpact(NodeId target,const NodeSet& evs){
     return self->baseclassname::evidenceImpact(target,evs);
   }
-  Potential<double> evidenceImpact(const std::string& target,const std::vector<std::string>& evs){
+  Tensor<double> evidenceImpact(const std::string& target,const std::vector<std::string>& evs){
    return self->baseclassname::evidenceImpact(target,evs);
   }
 }
@@ -518,9 +518,9 @@ ADD_BN_MONOTARGET_INFERENCE_API(gum::MarginalTargetedInference<double>,gum::Loop
 %define ADD_SAMPLING_INFERENCE_API(classname...)
 ADD_BN_MONOTARGET_INFERENCE_API(gum::MarginalTargetedInference<double>,classname)
 %extend classname  {
-    const gum::Potential<double>& currentPosterior(const NodeId id)
+    const gum::Tensor<double>& currentPosterior(const NodeId id)
         {return self->gum::SamplingInference<double>::currentPosterior(id);};
-    const gum::Potential<double>& currentPosterior(const std::string& name)
+    const gum::Tensor<double>& currentPosterior(const std::string& name)
         {return self->gum::SamplingInference<double>::currentPosterior(name);};
 }
 %enddef
@@ -536,10 +536,10 @@ ADD_SAMPLING_INFERENCE_API(gum::LoopySamplingInference<double,gum::MonteCarloSam
 %define ADD_JOINT_INFERENCE_API(classname)
 ADD_BN_MONOTARGET_INFERENCE_API(gum::MarginalTargetedInference<double>,classname)
 %extend classname {
-  const Potential<double> posterior( const NodeId var ) {
+  const Tensor<double> posterior( const NodeId var ) {
     return self->JointTargetedInference<double>::posterior(var);
   }
-  const Potential<double> posterior( const std::string nodeName ) {
+  const Tensor<double> posterior( const std::string nodeName ) {
     return self->JointTargetedInference<double>::posterior(nodeName);
   }
   void eraseAllTargets() {
@@ -556,10 +556,10 @@ ADD_BN_MONOTARGET_INFERENCE_API(gum::MarginalTargetedInference<double>,classname
     return self->gum::JointTargetedInference<double>::nbrJointTargets();
   }
 
-  Potential<double> evidenceJointImpact(const NodeSet& targets,const NodeSet& evs){
+  Tensor<double> evidenceJointImpact(const NodeSet& targets,const NodeSet& evs){
     return self->gum::JointTargetedInference<double>::evidenceJointImpact(targets,evs);
   }
-  Potential<double> evidenceJointImpact(const std::vector<std::string>& targets,const std::vector<std::string>& evs){
+  Tensor<double> evidenceJointImpact(const std::vector<std::string>& targets,const std::vector<std::string>& evs){
    return self->gum::JointTargetedInference<double>::evidenceJointImpact(targets,evs);
   }
 }
@@ -608,7 +608,7 @@ ADD_GIBBS_OPERATOR_API(gum::GibbsBNdistance<double>)
   void setBurnIn(gum::Size b) { self->gum::GibbsSampling<double>::setBurnIn(b);}
 }
 
-%extend gum::Potential<double> {
+%extend gum::Tensor<double> {
   gum::Size domainSize() {return self->gum::MultiDimDecorator<double>::domainSize();}
   gum::Size nbrDim() {return self->gum::MultiDimDecorator<double>::nbrDim();}
 }
@@ -624,10 +624,10 @@ ADD_MONOTARGET_INFERENCE_API (gum::MarginalTargetedMRFInference<double>,classnam
 %define ADD_JOINT_MRF_INFERENCE_API(classname)
 ADD_MRF_INFERENCE_API(classname)
 %extend classname {
-  const Potential<double> posterior( const NodeId var ) {
+  const Tensor<double> posterior( const NodeId var ) {
     return self->JointTargetedMRFInference<double>::posterior(var);
   }
-  const Potential<double> posterior( const std::string nodeName ) {
+  const Tensor<double> posterior( const std::string nodeName ) {
     return self->JointTargetedMRFInference<double>::posterior(nodeName);
   }
   void eraseAllTargets() {
@@ -644,10 +644,10 @@ ADD_MRF_INFERENCE_API(classname)
     return self->gum::JointTargetedMRFInference<double>::nbrJointTargets();
   }
 
-  Potential<double> evidenceJointImpact(const NodeSet& targets,const NodeSet& evs){
+  Tensor<double> evidenceJointImpact(const NodeSet& targets,const NodeSet& evs){
     return self->gum::JointTargetedMRFInference<double>::evidenceJointImpact(targets,evs);
   }
-  Potential<double> evidenceJointImpact(const std::vector<std::string>& targets,const std::vector<std::string>& evs){
+  Tensor<double> evidenceJointImpact(const std::vector<std::string>& targets,const std::vector<std::string>& evs){
    return self->gum::JointTargetedMRFInference<double>::evidenceJointImpact(targets,evs);
   }
 }

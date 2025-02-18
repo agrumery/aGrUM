@@ -365,7 +365,7 @@ namespace gum {
      * their weight is lower than (1 + threshold) * tree_width */
     double _log_threshold_;
 
-    /// the set of nodes that have potentially changed of status
+    /// the set of nodes that have tensorly changed of status
     NodeSet _changed_status_;
 
     /** @brief a boolean indicating if we want fill-ins list with the standard

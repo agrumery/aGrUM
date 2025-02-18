@@ -47,7 +47,7 @@
 #include <gumtest/utils.h>
 
 #include <agrum/base/core/sequence.h>
-#include <agrum/base/multidim/potential.h>
+#include <agrum/base/multidim/tensor.h>
 #include <agrum/base/variables/labelizedVariable.h>
 
 #include <agrum/base/core/utils_random.h>
@@ -258,7 +258,7 @@ namespace gum_tests {
         delete vars[i];
     }
 
-    GUM_ACTIVE_TEST(_potentials) {
+    GUM_ACTIVE_TEST(_tensors) {
       std::vector< gum::LabelizedVariable* > vars(10);
 
       for (gum::Idx i = 0; i < 10; ++i) {
@@ -268,7 +268,7 @@ namespace gum_tests {
         vars[i]       = new gum::LabelizedVariable(s, s, 4);
       }
 
-      gum::Potential< double > t1, t2, t3;
+      gum::Tensor< double > t1, t2, t3;
 
       t1 << *(vars[0]) << *(vars[1]) << *(vars[2]);
       t2 << *(vars[0]) << *(vars[1]) << *(vars[5]);
@@ -278,28 +278,28 @@ namespace gum_tests {
       randomInitP(t2);
       randomInitP(t3);
 
-      gum::Potential< double >*t4, *t6;
-      gum::Potential< double >*t5, *t7;
+      gum::Tensor< double >*t4, *t6;
+      gum::Tensor< double >*t5, *t7;
 
-      t4 = new gum::Potential< double >(t1 + t2);
-      t5 = add_test_potentials(t1, t2);
+      t4 = new gum::Tensor< double >(t1 + t2);
+      t5 = add_test_tensors(t1, t2);
       TS_ASSERT(*t4 == *t5)
       delete t4;
       delete t5;
-      t4 = new gum::Potential< double >(t3 + t2);
-      t5 = add_test_potentials(t3, t2);
+      t4 = new gum::Tensor< double >(t3 + t2);
+      t5 = add_test_tensors(t3, t2);
       TS_ASSERT(*t4 == *t5)
       delete t4;
-      t4 = new gum::Potential< double >(t2 + t3);
+      t4 = new gum::Tensor< double >(t2 + t3);
       TS_ASSERT(*t4 == *t5)
       delete t4;
       delete t5;
 
-      t4 = new gum::Potential< double >(t1 - t2);
-      t5 = sub_test_potentials(t1, t2);
+      t4 = new gum::Tensor< double >(t1 - t2);
+      t5 = sub_test_tensors(t1, t2);
       TS_ASSERT(*t4 == *t5)
-      t6 = new gum::Potential< double >(t2 - t1);
-      t7 = sub_test_potentials(t2, t1);
+      t6 = new gum::Tensor< double >(t2 - t1);
+      t7 = sub_test_tensors(t2, t1);
       TS_ASSERT(*t6 == *t7)
       TS_ASSERT(*t5 != *t7)
       TS_ASSERT(*t6 != *t4)
@@ -308,25 +308,25 @@ namespace gum_tests {
       delete t6;
       delete t7;
 
-      t4 = new gum::Potential< double >(t1 * t2);
-      t5 = mult_test_potentials(t1, t2);
+      t4 = new gum::Tensor< double >(t1 * t2);
+      t5 = mult_test_tensors(t1, t2);
       TS_ASSERT(*t4 == *t5)
       delete t4;
       delete t5;
-      t4 = new gum::Potential< double >(t3 * t2);
-      t5 = mult_test_potentials(t3, t2);
+      t4 = new gum::Tensor< double >(t3 * t2);
+      t5 = mult_test_tensors(t3, t2);
       TS_ASSERT(*t4 == *t5)
       delete t4;
-      t4 = new gum::Potential< double >(t2 * t3);
+      t4 = new gum::Tensor< double >(t2 * t3);
       TS_ASSERT(*t4 == *t5)
       delete t4;
       delete t5;
 
-      t4 = new gum::Potential< double >(t1 / t2);
-      t5 = div_test_potentials(t1, t2);
+      t4 = new gum::Tensor< double >(t1 / t2);
+      t5 = div_test_tensors(t1, t2);
       TS_ASSERT(*t4 == *t5)
-      t6 = new gum::Potential< double >(t2 / t1);
-      t7 = div_test_potentials(t2, t1);
+      t6 = new gum::Tensor< double >(t2 / t1);
+      t7 = div_test_tensors(t2, t1);
       TS_ASSERT(*t6 == *t7)
       TS_ASSERT(*t5 != *t7)
       TS_ASSERT(*t6 != *t4)
@@ -836,7 +836,7 @@ namespace gum_tests {
     // ==========================================================================
     /// initialize randomly a table
     // ==========================================================================
-    void randomInitP(gum::Potential< double >& t) {
+    void randomInitP(gum::Tensor< double >& t) {
       gum::Instantiation i(t);
 
       for (i.setFirst(); !i.end(); ++i)
@@ -1097,8 +1097,8 @@ namespace gum_tests {
 
     // ==========================================================================
     // ==========================================================================
-    gum::Potential< double >* add_test_potentials(const gum::Potential< double >& t1,
-                                                  const gum::Potential< double >& t2) {
+    gum::Tensor< double >* add_test_tensors(const gum::Tensor< double >& t1,
+                                                  const gum::Tensor< double >& t2) {
       // creation of the resulting variable list
       gum::Sequence< const gum::DiscreteVariable* >        seq  = t1.variablesSequence();
       const gum::Sequence< const gum::DiscreteVariable* >& seq2 = t2.variablesSequence();
@@ -1107,7 +1107,7 @@ namespace gum_tests {
         if (!seq.exists(var)) seq << var;
 
       // creation of the resulting table
-      gum::Potential< double >* result = new gum::Potential< double >;
+      gum::Tensor< double >* result = new gum::Tensor< double >;
 
       result->beginMultipleChanges();
 
@@ -1129,8 +1129,8 @@ namespace gum_tests {
 
     // ==========================================================================
     // ==========================================================================
-    gum::Potential< double >* sub_test_potentials(const gum::Potential< double >& t1,
-                                                  const gum::Potential< double >& t2) {
+    gum::Tensor< double >* sub_test_tensors(const gum::Tensor< double >& t1,
+                                                  const gum::Tensor< double >& t2) {
       // creation of the resulting variable list
       gum::Sequence< const gum::DiscreteVariable* >        seq  = t1.variablesSequence();
       const gum::Sequence< const gum::DiscreteVariable* >& seq2 = t2.variablesSequence();
@@ -1139,7 +1139,7 @@ namespace gum_tests {
         if (!seq.exists(var)) seq << var;
 
       // creation of the resulting table
-      gum::Potential< double >* result = new gum::Potential< double >;
+      gum::Tensor< double >* result = new gum::Tensor< double >;
 
       result->beginMultipleChanges();
 
@@ -1161,8 +1161,8 @@ namespace gum_tests {
 
     // ==========================================================================
     // ==========================================================================
-    gum::Potential< double >* mult_test_potentials(const gum::Potential< double >& t1,
-                                                   const gum::Potential< double >& t2) {
+    gum::Tensor< double >* mult_test_tensors(const gum::Tensor< double >& t1,
+                                                   const gum::Tensor< double >& t2) {
       // creation of the resulting variable list
       gum::Sequence< const gum::DiscreteVariable* >        seq  = t1.variablesSequence();
       const gum::Sequence< const gum::DiscreteVariable* >& seq2 = t2.variablesSequence();
@@ -1171,7 +1171,7 @@ namespace gum_tests {
         if (!seq.exists(var)) seq << var;
 
       // creation of the resulting table
-      gum::Potential< double >* result = new gum::Potential< double >;
+      gum::Tensor< double >* result = new gum::Tensor< double >;
 
       result->beginMultipleChanges();
 
@@ -1193,8 +1193,8 @@ namespace gum_tests {
 
     // ==========================================================================
     // ==========================================================================
-    gum::Potential< double >* div_test_potentials(const gum::Potential< double >& t1,
-                                                  const gum::Potential< double >& t2) {
+    gum::Tensor< double >* div_test_tensors(const gum::Tensor< double >& t1,
+                                                  const gum::Tensor< double >& t2) {
       // creation of the resulting variable list
       gum::Sequence< const gum::DiscreteVariable* >        seq  = t1.variablesSequence();
       const gum::Sequence< const gum::DiscreteVariable* >& seq2 = t2.variablesSequence();
@@ -1203,7 +1203,7 @@ namespace gum_tests {
         if (!seq.exists(var)) seq << var;
 
       // creation of the resulting table
-      gum::Potential< double >* result = new gum::Potential< double >;
+      gum::Tensor< double >* result = new gum::Tensor< double >;
 
       result->beginMultipleChanges();
 

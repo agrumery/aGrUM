@@ -520,7 +520,7 @@ class IMarkovRandomField(pyAgrum.base.UGmodel):
     def minimalCondSet(self, *args) -> object:
         return _mrf.IMarkovRandomField_minimalCondSet(self, *args)
 
-    def factor(self, *args) -> "pyAgrum.Potential":
+    def factor(self, *args) -> "pyAgrum.Tensor":
         return _mrf.IMarkovRandomField_factor(self, *args)
 
     def isIndependent(self, *args) -> bool:
@@ -666,7 +666,7 @@ class MarkovRandomField(IMarkovRandomField):
 
         Remove a variable from the pyAgrum.MarkovRandomField.
 
-        Removes the corresponding variable from the pyAgrum.MarkovRandomField and from all of it's children pyAgrum.Potential.
+        Removes the corresponding variable from the pyAgrum.MarkovRandomField and from all of it's children pyAgrum.Tensor.
 
         If no variable matches the given id, then nothing is done.
 
@@ -910,7 +910,7 @@ class MarkovRandomField(IMarkovRandomField):
     def minimalCondSet(self, *args) -> object:
         return _mrf.MarkovRandomField_minimalCondSet(self, *args)
 
-    def factor(self, *args) -> "pyAgrum.Potential":
+    def factor(self, *args) -> "pyAgrum.Tensor":
         r"""
 
         Returns the factor of a set of variables (if existing).
@@ -922,7 +922,7 @@ class MarkovRandomField(IMarkovRandomField):
 
         Returns
         -------
-        pyAgrum.Potential
+        pyAgrum.Tensor
         	The factor of the set of nodes.
 
         Raises
@@ -1065,7 +1065,7 @@ class MarkovRandomField(IMarkovRandomField):
     def __str__(self) -> str:
         return _mrf.MarkovRandomField___str__(self)
 
-    def addFactor(self, *args) -> "pyAgrum.Potential":
+    def addFactor(self, *args) -> "pyAgrum.Tensor":
         r"""
 
         Add a factor from a list or a set of id or str. If the argument is a set, the order is the order of the IDs of the variables
@@ -1578,7 +1578,7 @@ class ShaferShenoyMRFInference(object):
     def MRF(self) -> "pyAgrum.IMarkovRandomField":
         return _mrf.ShaferShenoyMRFInference_MRF(self)
 
-    def posterior(self, *args) -> "pyAgrum.Potential":
+    def posterior(self, *args) -> "pyAgrum.Tensor":
         r"""
 
         Computes and returns the posterior of a node.
@@ -1592,7 +1592,7 @@ class ShaferShenoyMRFInference(object):
 
         Returns
         -------
-        pyAgrum.Potential
+        pyAgrum.Tensor
           a const ref to the posterior probability of the node
 
         Raises
@@ -1745,10 +1745,10 @@ class ShaferShenoyMRFInference(object):
         """
         return _mrf.ShaferShenoyMRFInference_targets(self)
 
-    def evidenceImpact(self, *args) -> "pyAgrum.Potential":
+    def evidenceImpact(self, *args) -> "pyAgrum.Tensor":
         r"""
 
-        Create a pyAgrum.Potential for P(target|evs) (for all instanciation of target and evs)
+        Create a pyAgrum.Tensor for P(target|evs) (for all instanciation of target and evs)
 
         Parameters
         ----------
@@ -1759,12 +1759,12 @@ class ShaferShenoyMRFInference(object):
 
         Warnings
         --------
-        if some evs are d-separated, they are not included in the Potential.
+        if some evs are d-separated, they are not included in the Tensor.
 
         Returns
         -------
-        pyAgrum.Potential
-          a Potential for P(targets|evs)
+        pyAgrum.Tensor
+          a Tensor for P(targets|evs)
 
         """
         return _mrf.ShaferShenoyMRFInference_evidenceImpact(self, *args)
@@ -1772,10 +1772,10 @@ class ShaferShenoyMRFInference(object):
     def jointMutualInformation(self, targets: object) -> float:
         return _mrf.ShaferShenoyMRFInference_jointMutualInformation(self, targets)
 
-    def evidenceJointImpact(self, *args) -> "pyAgrum.Potential":
+    def evidenceJointImpact(self, *args) -> "pyAgrum.Tensor":
         r"""
 
-        Create a pyAgrum.Potential for P(joint targets|evs) (for all instanciation of targets and evs)
+        Create a pyAgrum.Tensor for P(joint targets|evs) (for all instanciation of targets and evs)
 
         Parameters
         ----------
@@ -1786,8 +1786,8 @@ class ShaferShenoyMRFInference(object):
 
         Returns
         -------
-        pyAgrum.Potential
-          a Potential for P(target|evs)
+        pyAgrum.Tensor
+          a Tensor for P(target|evs)
 
         Raises
         ------
@@ -1797,7 +1797,7 @@ class ShaferShenoyMRFInference(object):
         """
         return _mrf.ShaferShenoyMRFInference_evidenceJointImpact(self, *args)
 
-    def jointPosterior(self, targets: object) -> "pyAgrum.Potential":
+    def jointPosterior(self, targets: object) -> "pyAgrum.Tensor":
         r"""
 
         Compute the joint posterior of a set of nodes.
@@ -1810,11 +1810,11 @@ class ShaferShenoyMRFInference(object):
 
         Warnings
         --------
-        The order of the variables given by the list here or when the jointTarget is declared can not be assumed to be used by the Potential.
+        The order of the variables given by the list here or when the jointTarget is declared can not be assumed to be used by the Tensor.
 
         Returns
         -------
-        pyAgrum.Potential
+        pyAgrum.Tensor
           a const ref to the posterior joint probability of the set of nodes.
 
         Raises
@@ -2071,7 +2071,7 @@ def getPosterior(model, *, target, evs=None):
 
   Returns
   -------
-    posterior (pyAgrum.Potential or other)
+    posterior (pyAgrum.Tensor or other)
   """
   if isinstance(model, pyAgrum.bn.BayesNet):
     inf = pyAgrum.bn.VariableElimination(model)
@@ -2084,7 +2084,7 @@ def getPosterior(model, *, target, evs=None):
     inf.setEvidence(evs)
   inf.addTarget(target)
   inf.makeInference()
-# creating a new Potential from posterior(will disappear with ie)
-  return pyAgrum.base.Potential(inf.posterior(target))
+# creating a new Tensor from posterior(will disappear with ie)
+  return pyAgrum.base.Tensor(inf.posterior(target))
 
 

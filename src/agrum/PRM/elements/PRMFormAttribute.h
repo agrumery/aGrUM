@@ -59,7 +59,7 @@ namespace gum {
      *<agrum/PRM/elements/formAttribute.h>
      * @brief PRMFormAttribute is a member of a Class in a PRM.
      *
-     * @see PRM PRMFactory Class PRMClassElement PRMType<GUM_SCALAR> Potential
+     * @see PRM PRMFactory Class PRMClassElement PRMType<GUM_SCALAR> Tensor
      *PRMAttribute
      * @ingroup prm_group
      */
@@ -95,7 +95,7 @@ namespace gum {
       virtual const PRMType& type() const;
 
       /// See gum::prm::PRMAttribute.
-      virtual const Potential< GUM_SCALAR >& cpf() const;
+      virtual const Tensor< GUM_SCALAR >& cpf() const;
 
       /// See gum::prm::PRMAttribute.
       virtual void addParent(const PRMClassElement< GUM_SCALAR >& elt);
@@ -127,10 +127,10 @@ namespace gum {
       /// The random variable type of this attribute
       PRMType* _type_;
 
-      /// A pointer on the Potential of this attribute
-      mutable Potential< GUM_SCALAR >* _cpf_;
+      /// A pointer on the Tensor of this attribute
+      mutable Tensor< GUM_SCALAR >* _cpf_;
 
-      /// A pointer on the Potential of this attribute
+      /// A pointer on the Tensor of this attribute
       MultiDimImplementation< std::string >* _formulas_;
 
       /// A pointe toward the class of this attribute

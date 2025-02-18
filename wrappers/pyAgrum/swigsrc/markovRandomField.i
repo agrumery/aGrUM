@@ -59,7 +59,7 @@ IMPROVE_UNDIRECTED_GRAPHICAL_MODEL_API(classname)
   };
 
 
-  const gum::Potential<double>& factor(PyObject* nodeseq) const {
+  const gum::Tensor<double>& factor(PyObject* nodeseq) const {
     gum::NodeSet idx;
     PyAgrumHelper::populateNodeSetFromPySequenceOfIntOrString(idx,nodeseq,self->variableNodeMap());
 
@@ -88,12 +88,12 @@ IMPROVE_MARKOVNET_API(gum::MarkovRandomField);
 
 %ignore gum::classname::addFactor(const std::vector<std::string,std::allocator< std::string > > const &);
 %ignore gum::classname::addFactor(const gum::NodeSet &);
-%ignore gum::classname::addFactor(const gum::Potential<double> &);
+%ignore gum::classname::addFactor(const gum::Tensor<double> &);
 %ignore gum::classname::eraseFactor(const std::vector<std::string,std::allocator< std::string > > const &);
 %ignore gum::classname::eraseFactor(const gum::NodeSet &);
 
 %extend gum::classname {
-    const Potential<double>& addFactor(PyObject *seq) {
+    const Tensor<double>& addFactor(PyObject *seq) {
       if (PyList_Check(seq)) {
         std::vector<std::string> names;
         PyAgrumHelper::populateStrVectorFromPySequenceOfIntOrString(names,seq,self->variableNodeMap());

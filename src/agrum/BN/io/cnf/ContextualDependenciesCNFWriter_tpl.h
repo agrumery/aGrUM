@@ -111,7 +111,7 @@ namespace gum {
       clause++;
       numvar++;
       clausstr2 << str0.str();
-      const Potential< GUM_SCALAR >& cpt = bn.cpt(node);
+      const Tensor< GUM_SCALAR >& cpt = bn.cpt(node);
       Instantiation                  inst(cpt);
       inst.forgetMaster();
       inst.reorder(Order);
@@ -344,7 +344,7 @@ namespace gum {
       clause++;
       numvar++;
       clausstr2 << str0.str();
-      const Potential< GUM_SCALAR >& cpt = bn.cpt(node);
+      const Tensor< GUM_SCALAR >& cpt = bn.cpt(node);
       Instantiation                  inst(cpt);
       inst.forgetMaster();
       inst.reorder(Order);

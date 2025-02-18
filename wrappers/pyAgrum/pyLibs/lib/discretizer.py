@@ -952,7 +952,7 @@ class Discretizer():
       if minimalValues['rightSubintervalShannonEntropy'] == 0:
         continueDividingInterval[position + 1] = False
 
-        # if there are no potential boundary points left in this interval, we can't divide it any further
+        # if there are no tensor boundary points left in this interval, we can't divide it any further
       if position > 0 and minimalValues['boundaryIndex'] - 1 == binEdgesIndex[position - 1]:
         continueDividingInterval[position] = False
 

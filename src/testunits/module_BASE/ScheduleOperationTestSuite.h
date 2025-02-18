@@ -44,7 +44,7 @@
 #include <gumtest/utils.h>
 
 #include <agrum/base/graphicalModels/inference/scheduler/scheduleProjection.h>
-#include <agrum/base/multidim/potential.h>
+#include <agrum/base/multidim/tensor.h>
 #include <agrum/base/variables/labelizedVariable.h>
 
 namespace gum_tests {
@@ -65,15 +65,15 @@ namespace gum_tests {
         vars[i]              = new gum::LabelizedVariable(s, s, 2);
       }
 
-      gum::Potential< double > pot1;
+      gum::Tensor< double > pot1;
       pot1 << *(vars[0]) << *(vars[2]) << *(vars[3]) << *(vars[4]);
       pot1.random();
-      gum::ScheduleMultiDim< gum::Potential< double > > f1(pot1, true);
+      gum::ScheduleMultiDim< gum::Tensor< double > > f1(pot1, true);
       gum::VariableSet                                  del_vars;
       del_vars << vars[0] << vars[3];
 
-      gum::ScheduleProjection< gum::Potential< double > > real_myproj(f1, del_vars, myProjectMax);
-      const gum::ScheduleMultiDim< gum::Potential< double > >& res    = real_myproj.result();
+      gum::ScheduleProjection< gum::Tensor< double > > real_myproj(f1, del_vars, myProjectMax);
+      const gum::ScheduleMultiDim< gum::Tensor< double > >& res    = real_myproj.result();
       gum::ScheduleOperator&                                   myproj = real_myproj;
 
       const gum::Sequence< const gum::IScheduleMultiDim* >& multidims = myproj.args();
@@ -85,7 +85,7 @@ namespace gum_tests {
          << " )";
       TS_ASSERT(s1.str() == myproj.toString());
 
-      gum::ScheduleProjection< gum::Potential< double > > real_myproj2 = real_myproj;
+      gum::ScheduleProjection< gum::Tensor< double > > real_myproj2 = real_myproj;
       gum::ScheduleOperator&                              myproj2      = real_myproj2;
       TS_ASSERT(real_myproj2.result().isAbstract());
       TS_ASSERT(myproj2 == myproj);
@@ -94,7 +94,7 @@ namespace gum_tests {
       myproj.execute();
       TS_ASSERT(!res.isAbstract());
       TS_ASSERT(real_myproj2.result().isAbstract());
-      gum::Potential< double >* res2 = proj(pot1, del_vars, 0);
+      gum::Tensor< double >* res2 = proj(pot1, del_vars, 0);
       TS_ASSERT(*(res2->content()) == res.multiDim());
 
       delete res2;
@@ -104,16 +104,16 @@ namespace gum_tests {
     }
 
     private:
-    static gum::Potential< double > myProjectMax(const gum::Potential< double >& pot,
+    static gum::Tensor< double > myProjectMax(const gum::Tensor< double >& pot,
                                                  const gum::VariableSet&         del_vars) {
-      return gum::Potential< double >(gum::projectMax(*(pot.content()), del_vars));
+      return gum::Tensor< double >(gum::projectMax(*(pot.content()), del_vars));
     }
 
     // projection of a table over a set
-    gum::Potential< double >* proj(const gum::Potential< double >& table,
+    gum::Tensor< double >* proj(const gum::Tensor< double >& table,
                                    const gum::VariableSet&         del_vars,
                                    double                          neutral_elt) {
-      gum::Potential< double >* result = new gum::Potential< double >;
+      gum::Tensor< double >* result = new gum::Tensor< double >;
 
       const gum::Sequence< const gum::DiscreteVariable* >& vars = table.variablesSequence();
       result->beginMultipleChanges();

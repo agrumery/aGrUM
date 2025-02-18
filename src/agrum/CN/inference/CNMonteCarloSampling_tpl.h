@@ -134,12 +134,12 @@ namespace gum::credal {
       const DAG& tDag = this->workingSet_[tId]->dag();
 
       for (auto node: tDag) {
-        const Potential< GUM_SCALAR >& potential(this->l_inferenceEngine_[tId]->posterior(node));
-        Instantiation                  ins(potential);
+        const Tensor< GUM_SCALAR >& tensor(this->l_inferenceEngine_[tId]->posterior(node));
+        Instantiation                  ins(tensor);
         std::vector< GUM_SCALAR >      vertex;
 
         for (ins.setFirst(); !ins.end(); ++ins) {
-          vertex.push_back(potential[ins]);
+          vertex.push_back(tensor[ins]);
         }
 
         // true for redundancy elimination of node it credal set but since global
@@ -195,12 +195,12 @@ namespace gum::credal {
 
       if (_infEs_::storeVertices_) { this->l_marginalSets_[this_thread] = this->marginalSets_; }
 
-      this->workingSetE_[this_thread] = new List< const Potential< GUM_SCALAR >* >();
+      this->workingSetE_[this_thread] = new List< const Tensor< GUM_SCALAR >* >();
 
       // #TODO: the next instruction works only for lazy propagation.
       //        => find a way to remove the second argument
       auto inference_engine = new BNInferenceEngine(this->workingSet_[this_thread],
-                                                    RelevantPotentialsFinderType::FIND_ALL);
+                                                    RelevantTensorsFinderType::FIND_ALL);
       inference_engine->setNumberOfThreads(1);
 
       this->l_inferenceEngine_[this_thread] = inference_engine;
@@ -247,9 +247,9 @@ namespace gum::credal {
 
       for (const auto& elt: t0) {
         auto                     dSize = working_bn->variable(elt.first).domainSize();
-        Potential< GUM_SCALAR >* potential(
-            const_cast< Potential< GUM_SCALAR >* >(&working_bn->cpt(elt.first)));
-        std::vector< GUM_SCALAR > var_cpt(potential->domainSize());
+        Tensor< GUM_SCALAR >* tensor(
+            const_cast< Tensor< GUM_SCALAR >* >(&working_bn->cpt(elt.first)));
+        std::vector< GUM_SCALAR > var_cpt(tensor->domainSize());
 
         Size pconfs = Size((*cpt)[elt.first].size());
 
@@ -263,24 +263,24 @@ namespace gum::credal {
           }
         }   // end of : pconf
 
-        potential->fillWith(var_cpt);
+        tensor->fillWith(var_cpt);
 
         Size t0esize = Size(elt.second.size());
 
         for (Size pos = 0; pos < t0esize; pos++) {
           if (_infEs_::storeBNOpt_) { sample[elt.second[pos]] = sample[elt.first]; }
 
-          Potential< GUM_SCALAR >* potential2(
-              const_cast< Potential< GUM_SCALAR >* >(&working_bn->cpt(elt.second[pos])));
-          potential2->fillWith(var_cpt);
+          Tensor< GUM_SCALAR >* tensor2(
+              const_cast< Tensor< GUM_SCALAR >* >(&working_bn->cpt(elt.second[pos])));
+          tensor2->fillWith(var_cpt);
         }
       }
 
       for (const auto& elt: t1) {
         auto                     dSize = working_bn->variable(elt.first).domainSize();
-        Potential< GUM_SCALAR >* potential(
-            const_cast< Potential< GUM_SCALAR >* >(&working_bn->cpt(elt.first)));
-        std::vector< GUM_SCALAR > var_cpt(potential->domainSize());
+        Tensor< GUM_SCALAR >* tensor(
+            const_cast< Tensor< GUM_SCALAR >* >(&working_bn->cpt(elt.first)));
+        std::vector< GUM_SCALAR > var_cpt(tensor->domainSize());
 
         for (Size pconf = 0; pconf < (*cpt)[elt.first].size(); pconf++) {
           Idx choosen_vertex = randomValue(random_generator, (*cpt)[elt.first][pconf].size());
@@ -292,16 +292,16 @@ namespace gum::credal {
           }
         }   // end of : pconf
 
-        potential->fillWith(var_cpt);
+        tensor->fillWith(var_cpt);
 
         auto t1esize = elt.second.size();
 
         for (decltype(t1esize) pos = 0; pos < t1esize; pos++) {
           if (_infEs_::storeBNOpt_) { sample[elt.second[pos]] = sample[elt.first]; }
 
-          Potential< GUM_SCALAR >* potential2(
-              const_cast< Potential< GUM_SCALAR >* >(&working_bn->cpt(elt.second[pos])));
-          potential2->fillWith(var_cpt);
+          Tensor< GUM_SCALAR >* tensor2(
+              const_cast< Tensor< GUM_SCALAR >* >(&working_bn->cpt(elt.second[pos])));
+          tensor2->fillWith(var_cpt);
         }
       }
 
@@ -309,9 +309,9 @@ namespace gum::credal {
     } else {
       for (auto node: working_bn->nodes()) {
         auto                     dSize = working_bn->variable(node).domainSize();
-        Potential< GUM_SCALAR >* potential(
-            const_cast< Potential< GUM_SCALAR >* >(&working_bn->cpt(node)));
-        std::vector< GUM_SCALAR > var_cpt(potential->domainSize());
+        Tensor< GUM_SCALAR >* tensor(
+            const_cast< Tensor< GUM_SCALAR >* >(&working_bn->cpt(node)));
+        std::vector< GUM_SCALAR > var_cpt(tensor->domainSize());
 
         auto pConfs = (*cpt)[node].size();
 
@@ -326,7 +326,7 @@ namespace gum::credal {
           }
         }   // end of : pconf
 
-        potential->fillWith(var_cpt);
+        tensor->fillWith(var_cpt);
       }
 
       if (_infEs_::storeBNOpt_) { this->l_optimalNet_[this_thread]->setCurrentSample(sample); }
@@ -342,7 +342,7 @@ namespace gum::credal {
 
     IBayesNet< GUM_SCALAR >* working_bn = this->workingSet_[this_thread];
 
-    List< const Potential< GUM_SCALAR >* >* evi_list = this->workingSetE_[this_thread];
+    List< const Tensor< GUM_SCALAR >* >* evi_list = this->workingSetE_[this_thread];
 
     if (evi_list->size() > 0) {
       for (const auto pot: *evi_list)
@@ -351,7 +351,7 @@ namespace gum::credal {
     }
 
     for (const auto& elt: this->evidence_) {
-      auto p = new Potential< GUM_SCALAR >;
+      auto p = new Tensor< GUM_SCALAR >;
       (*p) << working_bn->variable(elt.first);
 
       try {

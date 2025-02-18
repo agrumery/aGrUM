@@ -3797,22 +3797,22 @@ namespace Swig {
 #define SWIGTYPE_p_gum__PDAG swig_types[84]
 #define SWIGTYPE_p_gum__PRMTypeError swig_types[85]
 #define SWIGTYPE_p_gum__PossiblyIncompatibleScorePrior swig_types[86]
-#define SWIGTYPE_p_gum__PotentialT_double_t swig_types[87]
-#define SWIGTYPE_p_gum__RangeVariable swig_types[88]
-#define SWIGTYPE_p_gum__ScheduleMultiDimError swig_types[89]
-#define SWIGTYPE_p_gum__ScheduleOperationError swig_types[90]
-#define SWIGTYPE_p_gum__SequenceT_gum__DiscreteVariable_const_p_t swig_types[91]
-#define SWIGTYPE_p_gum__SetIteratorSafeT_int_t swig_types[92]
-#define SWIGTYPE_p_gum__SetIteratorT_int_t swig_types[93]
-#define SWIGTYPE_p_gum__SetT_gum__Arc_t swig_types[94]
-#define SWIGTYPE_p_gum__SetT_gum__Arc_t__const_iterator swig_types[95]
-#define SWIGTYPE_p_gum__SetT_gum__DiscreteVariable_const_p_t swig_types[96]
-#define SWIGTYPE_p_gum__SetT_gum__Edge_t swig_types[97]
-#define SWIGTYPE_p_gum__SetT_gum__Edge_t__const_iterator swig_types[98]
-#define SWIGTYPE_p_gum__SetT_std__size_t_t swig_types[99]
-#define SWIGTYPE_p_gum__SetT_std__size_t_t__const_iterator swig_types[100]
-#define SWIGTYPE_p_gum__SizeError swig_types[101]
-#define SWIGTYPE_p_gum__SyntaxError swig_types[102]
+#define SWIGTYPE_p_gum__RangeVariable swig_types[87]
+#define SWIGTYPE_p_gum__ScheduleMultiDimError swig_types[88]
+#define SWIGTYPE_p_gum__ScheduleOperationError swig_types[89]
+#define SWIGTYPE_p_gum__SequenceT_gum__DiscreteVariable_const_p_t swig_types[90]
+#define SWIGTYPE_p_gum__SetIteratorSafeT_int_t swig_types[91]
+#define SWIGTYPE_p_gum__SetIteratorT_int_t swig_types[92]
+#define SWIGTYPE_p_gum__SetT_gum__Arc_t swig_types[93]
+#define SWIGTYPE_p_gum__SetT_gum__Arc_t__const_iterator swig_types[94]
+#define SWIGTYPE_p_gum__SetT_gum__DiscreteVariable_const_p_t swig_types[95]
+#define SWIGTYPE_p_gum__SetT_gum__Edge_t swig_types[96]
+#define SWIGTYPE_p_gum__SetT_gum__Edge_t__const_iterator swig_types[97]
+#define SWIGTYPE_p_gum__SetT_std__size_t_t swig_types[98]
+#define SWIGTYPE_p_gum__SetT_std__size_t_t__const_iterator swig_types[99]
+#define SWIGTYPE_p_gum__SizeError swig_types[100]
+#define SWIGTYPE_p_gum__SyntaxError swig_types[101]
+#define SWIGTYPE_p_gum__TensorT_double_t swig_types[102]
 #define SWIGTYPE_p_gum__TypeError swig_types[103]
 #define SWIGTYPE_p_gum__UGmodel swig_types[104]
 #define SWIGTYPE_p_gum__UnavailableScheduleOperation swig_types[105]
@@ -6924,13 +6924,13 @@ SWIGINTERN std::string gum_DiscretizedVariable_Sl_double_Sg____repr__(gum::Discr
    return s.str();
   }
 SWIGINTERN std::string gum_DiscretizedVariable_Sl_double_Sg____str__(gum::DiscretizedVariable< double > const *self){ return self->toString();}
-SWIGINTERN std::string gum_Potential_Sl_double_Sg____repr__(gum::Potential< double > const *self){
+SWIGINTERN std::string gum_Tensor_Sl_double_Sg____repr__(gum::Tensor< double > const *self){
    std::stringstream s;
-   s<<"(pyAgrum.Potential@"<<std::hex<<self<<") "<<self->toString();
+   s<<"(pyAgrum.Tensor@"<<std::hex<<self<<") "<<self->toString();
    return s.str();
   }
-SWIGINTERN std::string gum_Potential_Sl_double_Sg____str__(gum::Potential< double > const *self){ return self->toString();}
-SWIGINTERN PyObject *gum_Potential_Sl_double_Sg__expectedValue__SWIG_1(gum::Potential< double > const *self,PyObject *pyfunc){
+SWIGINTERN std::string gum_Tensor_Sl_double_Sg____str__(gum::Tensor< double > const *self){ return self->toString();}
+SWIGINTERN PyObject *gum_Tensor_Sl_double_Sg__expectedValue__SWIG_1(gum::Tensor< double > const *self,PyObject *pyfunc){
     if (!PyCallable_Check(pyfunc)) { PyErr_SetString(PyExc_TypeError, "Need a callable object!"); }
     double res=self->expectedValue([&](const gum::Instantiation& i) -> double {
       double val;
@@ -6951,7 +6951,7 @@ SWIGINTERN PyObject *gum_Potential_Sl_double_Sg__expectedValue__SWIG_1(gum::Pote
       });
     return PyFloat_FromDouble(res);
   }
-SWIGINTERN gum::Potential< double > gum_Potential_Sl_double_Sg__extract__SWIG_1(gum::Potential< double > *self,PyObject *arg){
+SWIGINTERN gum::Tensor< double > gum_Tensor_Sl_double_Sg__extract__SWIG_1(gum::Tensor< double > *self,PyObject *arg){
     if (PyDict_Check(arg)) {
       gum::Instantiation inst;
       PyAgrumHelper::fillInstantiationFromPyObject(self, inst, arg);
@@ -6964,92 +6964,92 @@ SWIGINTERN gum::Potential< double > gum_Potential_Sl_double_Sg__extract__SWIG_1(
       //return self->extract(*arg1);
     }
   }
-SWIGINTERN gum::Potential< double > gum_Potential_Sl_double_Sg__sumOut__SWIG_1(gum::Potential< double > const *self,PyObject *varnames){
+SWIGINTERN gum::Tensor< double > gum_Tensor_Sl_double_Sg__sumOut__SWIG_1(gum::Tensor< double > const *self,PyObject *varnames){
       gum::Set<const gum::DiscreteVariable*> s;
       PyAgrumHelper::fillDVSetFromPyObject(self,s,varnames); //from helpers.h
       return self->sumOut(s);
     }
-SWIGINTERN gum::Potential< double > gum_Potential_Sl_double_Sg__prodOut__SWIG_1(gum::Potential< double > const *self,PyObject *varnames){
+SWIGINTERN gum::Tensor< double > gum_Tensor_Sl_double_Sg__prodOut__SWIG_1(gum::Tensor< double > const *self,PyObject *varnames){
       gum::Set<const gum::DiscreteVariable*> s;
       PyAgrumHelper::fillDVSetFromPyObject(self,s,varnames); //from helpers.h
       return self->prodOut(s);
     }
-SWIGINTERN gum::Potential< double > gum_Potential_Sl_double_Sg__maxOut__SWIG_1(gum::Potential< double > const *self,PyObject *varnames){
+SWIGINTERN gum::Tensor< double > gum_Tensor_Sl_double_Sg__maxOut__SWIG_1(gum::Tensor< double > const *self,PyObject *varnames){
       gum::Set<const gum::DiscreteVariable*> s;
       PyAgrumHelper::fillDVSetFromPyObject(self,s,varnames); //from helpers.h
       return self->maxOut(s);
     }
-SWIGINTERN gum::Potential< double > gum_Potential_Sl_double_Sg__minOut__SWIG_1(gum::Potential< double > const *self,PyObject *varnames){
+SWIGINTERN gum::Tensor< double > gum_Tensor_Sl_double_Sg__minOut__SWIG_1(gum::Tensor< double > const *self,PyObject *varnames){
       gum::Set<const gum::DiscreteVariable*> s;
       PyAgrumHelper::fillDVSetFromPyObject(self,s,varnames); //from helpers.h
       return self->minOut(s);
     }
-SWIGINTERN gum::Potential< double > gum_Potential_Sl_double_Sg__sumIn__SWIG_1(gum::Potential< double > const *self,PyObject *varnames){
+SWIGINTERN gum::Tensor< double > gum_Tensor_Sl_double_Sg__sumIn__SWIG_1(gum::Tensor< double > const *self,PyObject *varnames){
       gum::Set<const gum::DiscreteVariable*> s;
       PyAgrumHelper::fillDVSetFromPyObject(self,s,varnames); //from helpers.h
       return self->sumIn(s);
     }
-SWIGINTERN gum::Potential< double > gum_Potential_Sl_double_Sg__prodIn__SWIG_1(gum::Potential< double > const *self,PyObject *varnames){
+SWIGINTERN gum::Tensor< double > gum_Tensor_Sl_double_Sg__prodIn__SWIG_1(gum::Tensor< double > const *self,PyObject *varnames){
       gum::Set<const gum::DiscreteVariable*> s;
       PyAgrumHelper::fillDVSetFromPyObject(self,s,varnames); //from helpers.h
       return self->prodIn(s);
     }
-SWIGINTERN gum::Potential< double > gum_Potential_Sl_double_Sg__maxIn__SWIG_1(gum::Potential< double > const *self,PyObject *varnames){
+SWIGINTERN gum::Tensor< double > gum_Tensor_Sl_double_Sg__maxIn__SWIG_1(gum::Tensor< double > const *self,PyObject *varnames){
       gum::Set<const gum::DiscreteVariable*> s;
       PyAgrumHelper::fillDVSetFromPyObject(self,s,varnames); //from helpers.h
       return self->maxIn(s);
     }
-SWIGINTERN gum::Potential< double > gum_Potential_Sl_double_Sg__minIn__SWIG_1(gum::Potential< double > const *self,PyObject *varnames){
+SWIGINTERN gum::Tensor< double > gum_Tensor_Sl_double_Sg__minIn__SWIG_1(gum::Tensor< double > const *self,PyObject *varnames){
       gum::Set<const gum::DiscreteVariable*> s;
       PyAgrumHelper::fillDVSetFromPyObject(self,s,varnames); //from helpers.h
       return self->minIn(s);
     }
-SWIGINTERN PyObject *gum_Potential_Sl_double_Sg__argmin(gum::Potential< double > *self){
+SWIGINTERN PyObject *gum_Tensor_Sl_double_Sg__argmin(gum::Tensor< double > *self){
       const auto [argmi,mi] = self->argmin();
       return PyTuple_Pack(2,PyAgrumHelper::PySeqFromSetOfInstantiation(argmi),PyFloat_FromDouble(mi));
     }
-SWIGINTERN PyObject *gum_Potential_Sl_double_Sg__argmax(gum::Potential< double > *self){
+SWIGINTERN PyObject *gum_Tensor_Sl_double_Sg__argmax(gum::Tensor< double > *self){
       const auto [argma,ma] = self->argmax();
       return PyTuple_Pack(2,PyAgrumHelper::PySeqFromSetOfInstantiation(argma),PyFloat_FromDouble(ma));
     }
-SWIGINTERN bool gum_Potential_Sl_double_Sg____eq____SWIG_1(gum::Potential< double > *self,gum::Potential< double > const &b){
+SWIGINTERN bool gum_Tensor_Sl_double_Sg____eq____SWIG_1(gum::Tensor< double > *self,gum::Tensor< double > const &b){
       return *self==b;
     }
-SWIGINTERN bool gum_Potential_Sl_double_Sg____ne__(gum::Potential< double > *self,gum::Potential< double > const &b){
+SWIGINTERN bool gum_Tensor_Sl_double_Sg____ne__(gum::Tensor< double > *self,gum::Tensor< double > const &b){
       return *self!=b;
     }
-SWIGINTERN double gum_Potential_Sl_double_Sg__get(gum::Potential< double > const *self,gum::Instantiation const &i){
+SWIGINTERN double gum_Tensor_Sl_double_Sg__get(gum::Tensor< double > const *self,gum::Instantiation const &i){
     return self->gum::MultiDimDecorator<double>::get(i);
   }
-SWIGINTERN void gum_Potential_Sl_double_Sg__set(gum::Potential< double > const *self,gum::Instantiation const &i,double const &value){
+SWIGINTERN void gum_Tensor_Sl_double_Sg__set(gum::Tensor< double > const *self,gum::Instantiation const &i,double const &value){
     self->gum::MultiDimDecorator<double>::set(i,value);
   }
-SWIGINTERN bool gum_Potential_Sl_double_Sg__empty(gum::Potential< double > const *self){
+SWIGINTERN bool gum_Tensor_Sl_double_Sg__empty(gum::Tensor< double > const *self){
     return self->gum::MultiDimDecorator<double>::empty();
   }
-SWIGINTERN gum::Idx gum_Potential_Sl_double_Sg__pos(gum::Potential< double > const *self,gum::DiscreteVariable const &v){
+SWIGINTERN gum::Idx gum_Tensor_Sl_double_Sg__pos(gum::Tensor< double > const *self,gum::DiscreteVariable const &v){
     return self->gum::MultiDimDecorator<double>::pos(v);
   }
-SWIGINTERN bool gum_Potential_Sl_double_Sg__contains(gum::Potential< double > const *self,gum::DiscreteVariable const &v){
+SWIGINTERN bool gum_Tensor_Sl_double_Sg__contains(gum::Tensor< double > const *self,gum::DiscreteVariable const &v){
     return self->gum::MultiDimDecorator<double>::contains(v);
   }
-SWIGINTERN gum::Idx gum_Potential_Sl_double_Sg__nbrDim__SWIG_0(gum::Potential< double > const *self){
+SWIGINTERN gum::Idx gum_Tensor_Sl_double_Sg__nbrDim__SWIG_0(gum::Tensor< double > const *self){
     return self->gum::MultiDimDecorator<double>::nbrDim();
   }
-SWIGINTERN gum::DiscreteVariable const &gum_Potential_Sl_double_Sg__variable__SWIG_0(gum::Potential< double > const *self,gum::Idx i){
+SWIGINTERN gum::DiscreteVariable const &gum_Tensor_Sl_double_Sg__variable__SWIG_0(gum::Tensor< double > const *self,gum::Idx i){
     return self->gum::MultiDimDecorator<double>::variable(i);
   }
-SWIGINTERN gum::DiscreteVariable const &gum_Potential_Sl_double_Sg__variable__SWIG_1(gum::Potential< double > const *self,std::string const &name){
+SWIGINTERN gum::DiscreteVariable const &gum_Tensor_Sl_double_Sg__variable__SWIG_1(gum::Tensor< double > const *self,std::string const &name){
     return self->gum::MultiDimDecorator<double>::variable(name);
   }
-SWIGINTERN void gum_Potential_Sl_double_Sg__remove(gum::Potential< double > *self,gum::DiscreteVariable const &var){
+SWIGINTERN void gum_Tensor_Sl_double_Sg__remove(gum::Tensor< double > *self,gum::DiscreteVariable const &var){
     self->erase(var);
   }
-SWIGINTERN void gum_Potential_Sl_double_Sg__add(gum::Potential< double > *self,gum::DiscreteVariable const &v){
+SWIGINTERN void gum_Tensor_Sl_double_Sg__add(gum::Tensor< double > *self,gum::DiscreteVariable const &v){
     self->gum::MultiDimDecorator<double>::add(v);
   }
-SWIGINTERN gum::Size gum_Potential_Sl_double_Sg__domainSize(gum::Potential< double > *self){return self->gum::MultiDimDecorator<double>::domainSize();}
-SWIGINTERN gum::Size gum_Potential_Sl_double_Sg__nbrDim__SWIG_1(gum::Potential< double > *self){return self->gum::MultiDimDecorator<double>::nbrDim();}
+SWIGINTERN gum::Size gum_Tensor_Sl_double_Sg__domainSize(gum::Tensor< double > *self){return self->gum::MultiDimDecorator<double>::domainSize();}
+SWIGINTERN gum::Size gum_Tensor_Sl_double_Sg__nbrDim__SWIG_1(gum::Tensor< double > *self){return self->gum::MultiDimDecorator<double>::nbrDim();}
 
   namespace swig {
     template <>  struct traits< gum::Instantiation > {
@@ -54543,57 +54543,57 @@ SWIGINTERN PyObject *MultiDimContainer_swigregister(PyObject *SWIGUNUSEDPARM(sel
   return SWIG_Py_Void();
 }
 
-SWIGINTERN PyObject *_wrap_new_Potential__SWIG_0(PyObject *self, Py_ssize_t nobjs, PyObject **SWIGUNUSEDPARM(swig_obj)) {
+SWIGINTERN PyObject *_wrap_new_Tensor__SWIG_0(PyObject *self, Py_ssize_t nobjs, PyObject **SWIGUNUSEDPARM(swig_obj)) {
   PyObject *resultobj = 0;
-  gum::Potential< double > *result = 0 ;
+  gum::Tensor< double > *result = 0 ;
   
   (void)self;
   if ((nobjs < 0) || (nobjs > 0)) SWIG_fail;
   {
     try {
-      result = (gum::Potential< double > *)new gum::Potential< double >();
+      result = (gum::Tensor< double > *)new gum::Tensor< double >();
     } catch (...) {
       SetPythonizeAgrumException();
       SWIG_fail;
     }
   }
-  resultobj = SWIG_NewPointerObj(SWIG_as_voidptr(result), SWIGTYPE_p_gum__PotentialT_double_t, SWIG_POINTER_NEW |  0 );
+  resultobj = SWIG_NewPointerObj(SWIG_as_voidptr(result), SWIGTYPE_p_gum__TensorT_double_t, SWIG_POINTER_NEW |  0 );
   return resultobj;
 fail:
   return NULL;
 }
 
 
-SWIGINTERN PyObject *_wrap_new_Potential__SWIG_1(PyObject *self, Py_ssize_t nobjs, PyObject **swig_obj) {
+SWIGINTERN PyObject *_wrap_new_Tensor__SWIG_1(PyObject *self, Py_ssize_t nobjs, PyObject **swig_obj) {
   PyObject *resultobj = 0;
   gum::MultiDimImplementation< double > *arg1 = 0 ;
   void *argp1 = 0 ;
   int res1 = 0 ;
-  gum::Potential< double > *result = 0 ;
+  gum::Tensor< double > *result = 0 ;
   
   (void)self;
   if ((nobjs < 1) || (nobjs > 1)) SWIG_fail;
   res1 = SWIG_ConvertPtr(swig_obj[0], &argp1,SWIGTYPE_p_gum__MultiDimImplementationT_double_t, 0 |  0 );
   if (!SWIG_IsOK(res1)) {
-    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "new_Potential" "', argument " "1"" of type '" "gum::MultiDimImplementation< double > *""'"); 
+    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "new_Tensor" "', argument " "1"" of type '" "gum::MultiDimImplementation< double > *""'"); 
   }
   arg1 = reinterpret_cast< gum::MultiDimImplementation< double > * >(argp1);
   {
     try {
-      result = (gum::Potential< double > *)new gum::Potential< double >(arg1);
+      result = (gum::Tensor< double > *)new gum::Tensor< double >(arg1);
     } catch (...) {
       SetPythonizeAgrumException();
       SWIG_fail;
     }
   }
-  resultobj = SWIG_NewPointerObj(SWIG_as_voidptr(result), SWIGTYPE_p_gum__PotentialT_double_t, SWIG_POINTER_NEW |  0 );
+  resultobj = SWIG_NewPointerObj(SWIG_as_voidptr(result), SWIGTYPE_p_gum__TensorT_double_t, SWIG_POINTER_NEW |  0 );
   return resultobj;
 fail:
   return NULL;
 }
 
 
-SWIGINTERN PyObject *_wrap_new_Potential__SWIG_2(PyObject *self, Py_ssize_t nobjs, PyObject **swig_obj) {
+SWIGINTERN PyObject *_wrap_new_Tensor__SWIG_2(PyObject *self, Py_ssize_t nobjs, PyObject **swig_obj) {
   PyObject *resultobj = 0;
   gum::MultiDimImplementation< double > *arg1 = 0 ;
   gum::MultiDimContainer< double > *arg2 = 0 ;
@@ -54601,118 +54601,118 @@ SWIGINTERN PyObject *_wrap_new_Potential__SWIG_2(PyObject *self, Py_ssize_t nobj
   int res1 = 0 ;
   void *argp2 = 0 ;
   int res2 = 0 ;
-  gum::Potential< double > *result = 0 ;
+  gum::Tensor< double > *result = 0 ;
   
   (void)self;
   if ((nobjs < 2) || (nobjs > 2)) SWIG_fail;
   res1 = SWIG_ConvertPtr(swig_obj[0], &argp1,SWIGTYPE_p_gum__MultiDimImplementationT_double_t, 0 |  0 );
   if (!SWIG_IsOK(res1)) {
-    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "new_Potential" "', argument " "1"" of type '" "gum::MultiDimImplementation< double > *""'"); 
+    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "new_Tensor" "', argument " "1"" of type '" "gum::MultiDimImplementation< double > *""'"); 
   }
   arg1 = reinterpret_cast< gum::MultiDimImplementation< double > * >(argp1);
   res2 = SWIG_ConvertPtr(swig_obj[1], &argp2, SWIGTYPE_p_gum__MultiDimContainerT_double_t,  0  | 0);
   if (!SWIG_IsOK(res2)) {
-    SWIG_exception_fail(SWIG_ArgError(res2), "in method '" "new_Potential" "', argument " "2"" of type '" "gum::MultiDimContainer< double > const &""'"); 
+    SWIG_exception_fail(SWIG_ArgError(res2), "in method '" "new_Tensor" "', argument " "2"" of type '" "gum::MultiDimContainer< double > const &""'"); 
   }
   if (!argp2) {
-    SWIG_exception_fail(SWIG_NullReferenceError, "invalid null reference " "in method '" "new_Potential" "', argument " "2"" of type '" "gum::MultiDimContainer< double > const &""'"); 
+    SWIG_exception_fail(SWIG_NullReferenceError, "invalid null reference " "in method '" "new_Tensor" "', argument " "2"" of type '" "gum::MultiDimContainer< double > const &""'"); 
   }
   arg2 = reinterpret_cast< gum::MultiDimContainer< double > * >(argp2);
   {
     try {
-      result = (gum::Potential< double > *)new gum::Potential< double >(arg1,(gum::MultiDimContainer< double > const &)*arg2);
+      result = (gum::Tensor< double > *)new gum::Tensor< double >(arg1,(gum::MultiDimContainer< double > const &)*arg2);
     } catch (...) {
       SetPythonizeAgrumException();
       SWIG_fail;
     }
   }
-  resultobj = SWIG_NewPointerObj(SWIG_as_voidptr(result), SWIGTYPE_p_gum__PotentialT_double_t, SWIG_POINTER_NEW |  0 );
+  resultobj = SWIG_NewPointerObj(SWIG_as_voidptr(result), SWIGTYPE_p_gum__TensorT_double_t, SWIG_POINTER_NEW |  0 );
   return resultobj;
 fail:
   return NULL;
 }
 
 
-SWIGINTERN PyObject *_wrap_new_Potential__SWIG_3(PyObject *self, Py_ssize_t nobjs, PyObject **swig_obj) {
+SWIGINTERN PyObject *_wrap_new_Tensor__SWIG_3(PyObject *self, Py_ssize_t nobjs, PyObject **swig_obj) {
   PyObject *resultobj = 0;
-  gum::Potential< double > *arg1 = 0 ;
+  gum::Tensor< double > *arg1 = 0 ;
   void *argp1 = 0 ;
   int res1 = 0 ;
-  gum::Potential< double > *result = 0 ;
+  gum::Tensor< double > *result = 0 ;
   
   (void)self;
   if ((nobjs < 1) || (nobjs > 1)) SWIG_fail;
-  res1 = SWIG_ConvertPtr(swig_obj[0], &argp1, SWIGTYPE_p_gum__PotentialT_double_t,  0  | 0);
+  res1 = SWIG_ConvertPtr(swig_obj[0], &argp1, SWIGTYPE_p_gum__TensorT_double_t,  0  | 0);
   if (!SWIG_IsOK(res1)) {
-    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "new_Potential" "', argument " "1"" of type '" "gum::Potential< double > const &""'"); 
+    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "new_Tensor" "', argument " "1"" of type '" "gum::Tensor< double > const &""'"); 
   }
   if (!argp1) {
-    SWIG_exception_fail(SWIG_NullReferenceError, "invalid null reference " "in method '" "new_Potential" "', argument " "1"" of type '" "gum::Potential< double > const &""'"); 
+    SWIG_exception_fail(SWIG_NullReferenceError, "invalid null reference " "in method '" "new_Tensor" "', argument " "1"" of type '" "gum::Tensor< double > const &""'"); 
   }
-  arg1 = reinterpret_cast< gum::Potential< double > * >(argp1);
+  arg1 = reinterpret_cast< gum::Tensor< double > * >(argp1);
   {
     try {
-      result = (gum::Potential< double > *)new gum::Potential< double >((gum::Potential< double > const &)*arg1);
+      result = (gum::Tensor< double > *)new gum::Tensor< double >((gum::Tensor< double > const &)*arg1);
     } catch (...) {
       SetPythonizeAgrumException();
       SWIG_fail;
     }
   }
-  resultobj = SWIG_NewPointerObj(SWIG_as_voidptr(result), SWIGTYPE_p_gum__PotentialT_double_t, SWIG_POINTER_NEW |  0 );
+  resultobj = SWIG_NewPointerObj(SWIG_as_voidptr(result), SWIGTYPE_p_gum__TensorT_double_t, SWIG_POINTER_NEW |  0 );
   return resultobj;
 fail:
   return NULL;
 }
 
 
-SWIGINTERN PyObject *_wrap_new_Potential__SWIG_4(PyObject *self, Py_ssize_t nobjs, PyObject **swig_obj) {
+SWIGINTERN PyObject *_wrap_new_Tensor__SWIG_4(PyObject *self, Py_ssize_t nobjs, PyObject **swig_obj) {
   PyObject *resultobj = 0;
-  gum::Potential< double > *arg1 = 0 ;
+  gum::Tensor< double > *arg1 = 0 ;
   void *argp1 = 0 ;
   int res1 = 0 ;
-  std::unique_ptr< gum::Potential< double > > rvrdeleter1 ;
-  gum::Potential< double > *result = 0 ;
+  std::unique_ptr< gum::Tensor< double > > rvrdeleter1 ;
+  gum::Tensor< double > *result = 0 ;
   
   (void)self;
   if ((nobjs < 1) || (nobjs > 1)) SWIG_fail;
-  res1 = SWIG_ConvertPtr(swig_obj[0], &argp1, SWIGTYPE_p_gum__PotentialT_double_t, SWIG_POINTER_RELEASE |  0 );
+  res1 = SWIG_ConvertPtr(swig_obj[0], &argp1, SWIGTYPE_p_gum__TensorT_double_t, SWIG_POINTER_RELEASE |  0 );
   if (!SWIG_IsOK(res1)) {
     if (res1 == SWIG_ERROR_RELEASE_NOT_OWNED) {
-      SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "new_Potential" "', cannot release ownership as memory is not owned for argument " "1"" of type '" "gum::Potential< double > &&""'");
+      SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "new_Tensor" "', cannot release ownership as memory is not owned for argument " "1"" of type '" "gum::Tensor< double > &&""'");
     } else {
-      SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "new_Potential" "', argument " "1"" of type '" "gum::Potential< double > &&""'"); 
+      SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "new_Tensor" "', argument " "1"" of type '" "gum::Tensor< double > &&""'"); 
     }
   }
   if (!argp1) {
-    SWIG_exception_fail(SWIG_NullReferenceError, "invalid null reference " "in method '" "new_Potential" "', argument " "1"" of type '" "gum::Potential< double > &&""'"); 
+    SWIG_exception_fail(SWIG_NullReferenceError, "invalid null reference " "in method '" "new_Tensor" "', argument " "1"" of type '" "gum::Tensor< double > &&""'"); 
   }
-  arg1 = reinterpret_cast< gum::Potential< double > * >(argp1);
+  arg1 = reinterpret_cast< gum::Tensor< double > * >(argp1);
   rvrdeleter1.reset(arg1);
   {
     try {
-      result = (gum::Potential< double > *)new gum::Potential< double >((gum::Potential< double > &&)*arg1);
+      result = (gum::Tensor< double > *)new gum::Tensor< double >((gum::Tensor< double > &&)*arg1);
     } catch (...) {
       SetPythonizeAgrumException();
       SWIG_fail;
     }
   }
-  resultobj = SWIG_NewPointerObj(SWIG_as_voidptr(result), SWIGTYPE_p_gum__PotentialT_double_t, SWIG_POINTER_NEW |  0 );
+  resultobj = SWIG_NewPointerObj(SWIG_as_voidptr(result), SWIGTYPE_p_gum__TensorT_double_t, SWIG_POINTER_NEW |  0 );
   return resultobj;
 fail:
   return NULL;
 }
 
 
-SWIGINTERN PyObject *_wrap_new_Potential(PyObject *self, PyObject *args) {
+SWIGINTERN PyObject *_wrap_new_Tensor(PyObject *self, PyObject *args) {
   Py_ssize_t argc;
   PyObject *argv[3] = {
     0
   };
   
-  if (!(argc = SWIG_Python_UnpackTuple(args, "new_Potential", 0, 2, argv))) SWIG_fail;
+  if (!(argc = SWIG_Python_UnpackTuple(args, "new_Tensor", 0, 2, argv))) SWIG_fail;
   --argc;
   if (argc == 0) {
-    PyObject *retobj = _wrap_new_Potential__SWIG_0(self, argc, argv);
+    PyObject *retobj = _wrap_new_Tensor__SWIG_0(self, argc, argv);
     if (!SWIG_Python_TypeErrorOccurred(retobj)) return retobj;
     SWIG_fail;
   }
@@ -54724,47 +54724,47 @@ SWIGINTERN PyObject *_wrap_new_Potential(PyObject *self, PyObject *args) {
       _v = SWIG_CheckState(res);
     }
     if (!_v) goto check_2;
-    return _wrap_new_Potential__SWIG_1(self, argc, argv);
+    return _wrap_new_Tensor__SWIG_1(self, argc, argv);
   }
 check_2:
   
   if (argc == 1) {
     int _v = 0;
     {
-      int res = SWIG_ConvertPtr(argv[0], 0, SWIGTYPE_p_gum__PotentialT_double_t, SWIG_POINTER_NO_NULL | 0);
+      int res = SWIG_ConvertPtr(argv[0], 0, SWIGTYPE_p_gum__TensorT_double_t, SWIG_POINTER_NO_NULL | 0);
       _v = SWIG_CheckState(res);
     }
     if (!_v) goto check_3;
-    return _wrap_new_Potential__SWIG_3(self, argc, argv);
+    return _wrap_new_Tensor__SWIG_3(self, argc, argv);
   }
 check_3:
   
   if (argc == 1) {
-    PyObject *retobj = _wrap_new_Potential__SWIG_4(self, argc, argv);
+    PyObject *retobj = _wrap_new_Tensor__SWIG_4(self, argc, argv);
     if (!SWIG_Python_TypeErrorOccurred(retobj)) return retobj;
     SWIG_fail;
   }
   if (argc == 2) {
-    PyObject *retobj = _wrap_new_Potential__SWIG_2(self, argc, argv);
+    PyObject *retobj = _wrap_new_Tensor__SWIG_2(self, argc, argv);
     if (!SWIG_Python_TypeErrorOccurred(retobj)) return retobj;
     SWIG_fail;
   }
   
 fail:
-  SWIG_Python_RaiseOrModifyTypeError("Wrong number or type of arguments for overloaded function 'new_Potential'.\n"
+  SWIG_Python_RaiseOrModifyTypeError("Wrong number or type of arguments for overloaded function 'new_Tensor'.\n"
     "  Possible C/C++ prototypes are:\n"
-    "    gum::Potential< double >::Potential()\n"
-    "    gum::Potential< double >::Potential(gum::MultiDimImplementation< double > *)\n"
-    "    gum::Potential< double >::Potential(gum::MultiDimImplementation< double > *,gum::MultiDimContainer< double > const &)\n"
-    "    gum::Potential< double >::Potential(gum::Potential< double > const &)\n"
-    "    gum::Potential< double >::Potential(gum::Potential< double > &&)\n");
+    "    gum::Tensor< double >::Tensor()\n"
+    "    gum::Tensor< double >::Tensor(gum::MultiDimImplementation< double > *)\n"
+    "    gum::Tensor< double >::Tensor(gum::MultiDimImplementation< double > *,gum::MultiDimContainer< double > const &)\n"
+    "    gum::Tensor< double >::Tensor(gum::Tensor< double > const &)\n"
+    "    gum::Tensor< double >::Tensor(gum::Tensor< double > &&)\n");
   return 0;
 }
 
 
-SWIGINTERN PyObject *_wrap_delete_Potential(PyObject *self, PyObject *args) {
+SWIGINTERN PyObject *_wrap_delete_Tensor(PyObject *self, PyObject *args) {
   PyObject *resultobj = 0;
-  gum::Potential< double > *arg1 = 0 ;
+  gum::Tensor< double > *arg1 = 0 ;
   void *argp1 = 0 ;
   int res1 = 0 ;
   PyObject *swig_obj[1] ;
@@ -54772,11 +54772,11 @@ SWIGINTERN PyObject *_wrap_delete_Potential(PyObject *self, PyObject *args) {
   (void)self;
   if (!args) SWIG_fail;
   swig_obj[0] = args;
-  res1 = SWIG_ConvertPtr(swig_obj[0], &argp1,SWIGTYPE_p_gum__PotentialT_double_t, SWIG_POINTER_DISOWN |  0 );
+  res1 = SWIG_ConvertPtr(swig_obj[0], &argp1,SWIGTYPE_p_gum__TensorT_double_t, SWIG_POINTER_DISOWN |  0 );
   if (!SWIG_IsOK(res1)) {
-    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "delete_Potential" "', argument " "1"" of type '" "gum::Potential< double > *""'"); 
+    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "delete_Tensor" "', argument " "1"" of type '" "gum::Tensor< double > *""'"); 
   }
-  arg1 = reinterpret_cast< gum::Potential< double > * >(argp1);
+  arg1 = reinterpret_cast< gum::Tensor< double > * >(argp1);
   {
     try {
       delete arg1;
@@ -54792,522 +54792,522 @@ fail:
 }
 
 
-SWIGINTERN PyObject *_wrap_Potential_newFactory(PyObject *self, PyObject *args) {
+SWIGINTERN PyObject *_wrap_Tensor_newFactory(PyObject *self, PyObject *args) {
   PyObject *resultobj = 0;
-  gum::Potential< double > *arg1 = 0 ;
+  gum::Tensor< double > *arg1 = 0 ;
   void *argp1 = 0 ;
   int res1 = 0 ;
   PyObject *swig_obj[1] ;
-  gum::Potential< double > *result = 0 ;
+  gum::Tensor< double > *result = 0 ;
   
   (void)self;
   if (!args) SWIG_fail;
   swig_obj[0] = args;
-  res1 = SWIG_ConvertPtr(swig_obj[0], &argp1,SWIGTYPE_p_gum__PotentialT_double_t, 0 |  0 );
+  res1 = SWIG_ConvertPtr(swig_obj[0], &argp1,SWIGTYPE_p_gum__TensorT_double_t, 0 |  0 );
   if (!SWIG_IsOK(res1)) {
-    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "Potential_newFactory" "', argument " "1"" of type '" "gum::Potential< double > const *""'"); 
+    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "Tensor_newFactory" "', argument " "1"" of type '" "gum::Tensor< double > const *""'"); 
   }
-  arg1 = reinterpret_cast< gum::Potential< double > * >(argp1);
+  arg1 = reinterpret_cast< gum::Tensor< double > * >(argp1);
   {
     try {
-      result = (gum::Potential< double > *)((gum::Potential< double > const *)arg1)->newFactory();
+      result = (gum::Tensor< double > *)((gum::Tensor< double > const *)arg1)->newFactory();
     } catch (...) {
       SetPythonizeAgrumException();
       SWIG_fail;
     }
   }
-  resultobj = SWIG_NewPointerObj(SWIG_as_voidptr(result), SWIGTYPE_p_gum__PotentialT_double_t, 0 |  0 );
+  resultobj = SWIG_NewPointerObj(SWIG_as_voidptr(result), SWIGTYPE_p_gum__TensorT_double_t, 0 |  0 );
   return resultobj;
 fail:
   return NULL;
 }
 
 
-SWIGINTERN PyObject *_wrap_Potential_random(PyObject *self, PyObject *args) {
+SWIGINTERN PyObject *_wrap_Tensor_random(PyObject *self, PyObject *args) {
   PyObject *resultobj = 0;
-  gum::Potential< double > *arg1 = 0 ;
+  gum::Tensor< double > *arg1 = 0 ;
   void *argp1 = 0 ;
   int res1 = 0 ;
   PyObject *swig_obj[1] ;
-  gum::Potential< double > *result = 0 ;
+  gum::Tensor< double > *result = 0 ;
   
   (void)self;
   if (!args) SWIG_fail;
   swig_obj[0] = args;
-  res1 = SWIG_ConvertPtr(swig_obj[0], &argp1,SWIGTYPE_p_gum__PotentialT_double_t, 0 |  0 );
+  res1 = SWIG_ConvertPtr(swig_obj[0], &argp1,SWIGTYPE_p_gum__TensorT_double_t, 0 |  0 );
   if (!SWIG_IsOK(res1)) {
-    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "Potential_random" "', argument " "1"" of type '" "gum::Potential< double > const *""'"); 
+    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "Tensor_random" "', argument " "1"" of type '" "gum::Tensor< double > const *""'"); 
   }
-  arg1 = reinterpret_cast< gum::Potential< double > * >(argp1);
+  arg1 = reinterpret_cast< gum::Tensor< double > * >(argp1);
   {
     try {
-      result = (gum::Potential< double > *) &((gum::Potential< double > const *)arg1)->random();
+      result = (gum::Tensor< double > *) &((gum::Tensor< double > const *)arg1)->random();
     } catch (...) {
       SetPythonizeAgrumException();
       SWIG_fail;
     }
   }
-  resultobj = SWIG_NewPointerObj(SWIG_as_voidptr(result), SWIGTYPE_p_gum__PotentialT_double_t, 0 |  0 );
+  resultobj = SWIG_NewPointerObj(SWIG_as_voidptr(result), SWIGTYPE_p_gum__TensorT_double_t, 0 |  0 );
   return resultobj;
 fail:
   return NULL;
 }
 
 
-SWIGINTERN PyObject *_wrap_Potential_randomDistribution(PyObject *self, PyObject *args) {
+SWIGINTERN PyObject *_wrap_Tensor_randomDistribution(PyObject *self, PyObject *args) {
   PyObject *resultobj = 0;
-  gum::Potential< double > *arg1 = 0 ;
+  gum::Tensor< double > *arg1 = 0 ;
   void *argp1 = 0 ;
   int res1 = 0 ;
   PyObject *swig_obj[1] ;
-  gum::Potential< double > *result = 0 ;
+  gum::Tensor< double > *result = 0 ;
   
   (void)self;
   if (!args) SWIG_fail;
   swig_obj[0] = args;
-  res1 = SWIG_ConvertPtr(swig_obj[0], &argp1,SWIGTYPE_p_gum__PotentialT_double_t, 0 |  0 );
+  res1 = SWIG_ConvertPtr(swig_obj[0], &argp1,SWIGTYPE_p_gum__TensorT_double_t, 0 |  0 );
   if (!SWIG_IsOK(res1)) {
-    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "Potential_randomDistribution" "', argument " "1"" of type '" "gum::Potential< double > const *""'"); 
+    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "Tensor_randomDistribution" "', argument " "1"" of type '" "gum::Tensor< double > const *""'"); 
   }
-  arg1 = reinterpret_cast< gum::Potential< double > * >(argp1);
+  arg1 = reinterpret_cast< gum::Tensor< double > * >(argp1);
   {
     try {
-      result = (gum::Potential< double > *) &((gum::Potential< double > const *)arg1)->randomDistribution();
+      result = (gum::Tensor< double > *) &((gum::Tensor< double > const *)arg1)->randomDistribution();
     } catch (...) {
       SetPythonizeAgrumException();
       SWIG_fail;
     }
   }
-  resultobj = SWIG_NewPointerObj(SWIG_as_voidptr(result), SWIGTYPE_p_gum__PotentialT_double_t, 0 |  0 );
+  resultobj = SWIG_NewPointerObj(SWIG_as_voidptr(result), SWIGTYPE_p_gum__TensorT_double_t, 0 |  0 );
   return resultobj;
 fail:
   return NULL;
 }
 
 
-SWIGINTERN PyObject *_wrap_Potential_randomCPT(PyObject *self, PyObject *args) {
+SWIGINTERN PyObject *_wrap_Tensor_randomCPT(PyObject *self, PyObject *args) {
   PyObject *resultobj = 0;
-  gum::Potential< double > *arg1 = 0 ;
+  gum::Tensor< double > *arg1 = 0 ;
   void *argp1 = 0 ;
   int res1 = 0 ;
   PyObject *swig_obj[1] ;
-  gum::Potential< double > *result = 0 ;
+  gum::Tensor< double > *result = 0 ;
   
   (void)self;
   if (!args) SWIG_fail;
   swig_obj[0] = args;
-  res1 = SWIG_ConvertPtr(swig_obj[0], &argp1,SWIGTYPE_p_gum__PotentialT_double_t, 0 |  0 );
+  res1 = SWIG_ConvertPtr(swig_obj[0], &argp1,SWIGTYPE_p_gum__TensorT_double_t, 0 |  0 );
   if (!SWIG_IsOK(res1)) {
-    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "Potential_randomCPT" "', argument " "1"" of type '" "gum::Potential< double > const *""'"); 
+    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "Tensor_randomCPT" "', argument " "1"" of type '" "gum::Tensor< double > const *""'"); 
   }
-  arg1 = reinterpret_cast< gum::Potential< double > * >(argp1);
+  arg1 = reinterpret_cast< gum::Tensor< double > * >(argp1);
   {
     try {
-      result = (gum::Potential< double > *) &((gum::Potential< double > const *)arg1)->randomCPT();
+      result = (gum::Tensor< double > *) &((gum::Tensor< double > const *)arg1)->randomCPT();
     } catch (...) {
       SetPythonizeAgrumException();
       SWIG_fail;
     }
   }
-  resultobj = SWIG_NewPointerObj(SWIG_as_voidptr(result), SWIGTYPE_p_gum__PotentialT_double_t, 0 |  0 );
+  resultobj = SWIG_NewPointerObj(SWIG_as_voidptr(result), SWIGTYPE_p_gum__TensorT_double_t, 0 |  0 );
   return resultobj;
 fail:
   return NULL;
 }
 
 
-SWIGINTERN PyObject *_wrap_Potential_noising(PyObject *self, PyObject *args) {
+SWIGINTERN PyObject *_wrap_Tensor_noising(PyObject *self, PyObject *args) {
   PyObject *resultobj = 0;
-  gum::Potential< double > *arg1 = 0 ;
+  gum::Tensor< double > *arg1 = 0 ;
   double arg2 ;
   void *argp1 = 0 ;
   int res1 = 0 ;
   double val2 ;
   int ecode2 = 0 ;
   PyObject *swig_obj[2] ;
-  gum::Potential< double > *result = 0 ;
+  gum::Tensor< double > *result = 0 ;
   
   (void)self;
-  if (!SWIG_Python_UnpackTuple(args, "Potential_noising", 2, 2, swig_obj)) SWIG_fail;
-  res1 = SWIG_ConvertPtr(swig_obj[0], &argp1,SWIGTYPE_p_gum__PotentialT_double_t, 0 |  0 );
+  if (!SWIG_Python_UnpackTuple(args, "Tensor_noising", 2, 2, swig_obj)) SWIG_fail;
+  res1 = SWIG_ConvertPtr(swig_obj[0], &argp1,SWIGTYPE_p_gum__TensorT_double_t, 0 |  0 );
   if (!SWIG_IsOK(res1)) {
-    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "Potential_noising" "', argument " "1"" of type '" "gum::Potential< double > const *""'"); 
+    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "Tensor_noising" "', argument " "1"" of type '" "gum::Tensor< double > const *""'"); 
   }
-  arg1 = reinterpret_cast< gum::Potential< double > * >(argp1);
+  arg1 = reinterpret_cast< gum::Tensor< double > * >(argp1);
   ecode2 = SWIG_AsVal_double(swig_obj[1], &val2);
   if (!SWIG_IsOK(ecode2)) {
-    SWIG_exception_fail(SWIG_ArgError(ecode2), "in method '" "Potential_noising" "', argument " "2"" of type '" "double""'");
+    SWIG_exception_fail(SWIG_ArgError(ecode2), "in method '" "Tensor_noising" "', argument " "2"" of type '" "double""'");
   } 
   arg2 = static_cast< double >(val2);
   {
     try {
-      result = (gum::Potential< double > *) &((gum::Potential< double > const *)arg1)->noising(arg2);
+      result = (gum::Tensor< double > *) &((gum::Tensor< double > const *)arg1)->noising(arg2);
     } catch (...) {
       SetPythonizeAgrumException();
       SWIG_fail;
     }
   }
-  resultobj = SWIG_NewPointerObj(SWIG_as_voidptr(result), SWIGTYPE_p_gum__PotentialT_double_t, 0 |  0 );
+  resultobj = SWIG_NewPointerObj(SWIG_as_voidptr(result), SWIGTYPE_p_gum__TensorT_double_t, 0 |  0 );
   return resultobj;
 fail:
   return NULL;
 }
 
 
-SWIGINTERN PyObject *_wrap_Potential_sumOut__SWIG_0(PyObject *self, Py_ssize_t nobjs, PyObject **swig_obj) {
+SWIGINTERN PyObject *_wrap_Tensor_sumOut__SWIG_0(PyObject *self, Py_ssize_t nobjs, PyObject **swig_obj) {
   PyObject *resultobj = 0;
-  gum::Potential< double > *arg1 = 0 ;
+  gum::Tensor< double > *arg1 = 0 ;
   gum::VariableSet *arg2 = 0 ;
   void *argp1 = 0 ;
   int res1 = 0 ;
   void *argp2 = 0 ;
   int res2 = 0 ;
-  gum::Potential< double > result;
+  gum::Tensor< double > result;
   
   (void)self;
   if ((nobjs < 2) || (nobjs > 2)) SWIG_fail;
-  res1 = SWIG_ConvertPtr(swig_obj[0], &argp1,SWIGTYPE_p_gum__PotentialT_double_t, 0 |  0 );
+  res1 = SWIG_ConvertPtr(swig_obj[0], &argp1,SWIGTYPE_p_gum__TensorT_double_t, 0 |  0 );
   if (!SWIG_IsOK(res1)) {
-    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "Potential_sumOut" "', argument " "1"" of type '" "gum::Potential< double > const *""'"); 
+    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "Tensor_sumOut" "', argument " "1"" of type '" "gum::Tensor< double > const *""'"); 
   }
-  arg1 = reinterpret_cast< gum::Potential< double > * >(argp1);
+  arg1 = reinterpret_cast< gum::Tensor< double > * >(argp1);
   res2 = SWIG_ConvertPtr(swig_obj[1], &argp2, SWIGTYPE_p_gum__SetT_gum__DiscreteVariable_const_p_t,  0  | 0);
   if (!SWIG_IsOK(res2)) {
-    SWIG_exception_fail(SWIG_ArgError(res2), "in method '" "Potential_sumOut" "', argument " "2"" of type '" "gum::VariableSet const &""'"); 
+    SWIG_exception_fail(SWIG_ArgError(res2), "in method '" "Tensor_sumOut" "', argument " "2"" of type '" "gum::VariableSet const &""'"); 
   }
   if (!argp2) {
-    SWIG_exception_fail(SWIG_NullReferenceError, "invalid null reference " "in method '" "Potential_sumOut" "', argument " "2"" of type '" "gum::VariableSet const &""'"); 
+    SWIG_exception_fail(SWIG_NullReferenceError, "invalid null reference " "in method '" "Tensor_sumOut" "', argument " "2"" of type '" "gum::VariableSet const &""'"); 
   }
   arg2 = reinterpret_cast< gum::VariableSet * >(argp2);
   {
     try {
-      result = ((gum::Potential< double > const *)arg1)->sumOut((gum::VariableSet const &)*arg2);
+      result = ((gum::Tensor< double > const *)arg1)->sumOut((gum::VariableSet const &)*arg2);
     } catch (...) {
       SetPythonizeAgrumException();
       SWIG_fail;
     }
   }
-  resultobj = SWIG_NewPointerObj((new gum::Potential< double >(result)), SWIGTYPE_p_gum__PotentialT_double_t, SWIG_POINTER_OWN |  0 );
+  resultobj = SWIG_NewPointerObj((new gum::Tensor< double >(result)), SWIGTYPE_p_gum__TensorT_double_t, SWIG_POINTER_OWN |  0 );
   return resultobj;
 fail:
   return NULL;
 }
 
 
-SWIGINTERN PyObject *_wrap_Potential_sumIn__SWIG_0(PyObject *self, Py_ssize_t nobjs, PyObject **swig_obj) {
+SWIGINTERN PyObject *_wrap_Tensor_sumIn__SWIG_0(PyObject *self, Py_ssize_t nobjs, PyObject **swig_obj) {
   PyObject *resultobj = 0;
-  gum::Potential< double > *arg1 = 0 ;
+  gum::Tensor< double > *arg1 = 0 ;
   gum::VariableSet *arg2 = 0 ;
   void *argp1 = 0 ;
   int res1 = 0 ;
   void *argp2 = 0 ;
   int res2 = 0 ;
-  gum::Potential< double > result;
+  gum::Tensor< double > result;
   
   (void)self;
   if ((nobjs < 2) || (nobjs > 2)) SWIG_fail;
-  res1 = SWIG_ConvertPtr(swig_obj[0], &argp1,SWIGTYPE_p_gum__PotentialT_double_t, 0 |  0 );
+  res1 = SWIG_ConvertPtr(swig_obj[0], &argp1,SWIGTYPE_p_gum__TensorT_double_t, 0 |  0 );
   if (!SWIG_IsOK(res1)) {
-    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "Potential_sumIn" "', argument " "1"" of type '" "gum::Potential< double > const *""'"); 
+    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "Tensor_sumIn" "', argument " "1"" of type '" "gum::Tensor< double > const *""'"); 
   }
-  arg1 = reinterpret_cast< gum::Potential< double > * >(argp1);
+  arg1 = reinterpret_cast< gum::Tensor< double > * >(argp1);
   res2 = SWIG_ConvertPtr(swig_obj[1], &argp2, SWIGTYPE_p_gum__SetT_gum__DiscreteVariable_const_p_t,  0  | 0);
   if (!SWIG_IsOK(res2)) {
-    SWIG_exception_fail(SWIG_ArgError(res2), "in method '" "Potential_sumIn" "', argument " "2"" of type '" "gum::VariableSet const &""'"); 
+    SWIG_exception_fail(SWIG_ArgError(res2), "in method '" "Tensor_sumIn" "', argument " "2"" of type '" "gum::VariableSet const &""'"); 
   }
   if (!argp2) {
-    SWIG_exception_fail(SWIG_NullReferenceError, "invalid null reference " "in method '" "Potential_sumIn" "', argument " "2"" of type '" "gum::VariableSet const &""'"); 
+    SWIG_exception_fail(SWIG_NullReferenceError, "invalid null reference " "in method '" "Tensor_sumIn" "', argument " "2"" of type '" "gum::VariableSet const &""'"); 
   }
   arg2 = reinterpret_cast< gum::VariableSet * >(argp2);
   {
     try {
-      result = ((gum::Potential< double > const *)arg1)->sumIn((gum::VariableSet const &)*arg2);
+      result = ((gum::Tensor< double > const *)arg1)->sumIn((gum::VariableSet const &)*arg2);
     } catch (...) {
       SetPythonizeAgrumException();
       SWIG_fail;
     }
   }
-  resultobj = SWIG_NewPointerObj((new gum::Potential< double >(result)), SWIGTYPE_p_gum__PotentialT_double_t, SWIG_POINTER_OWN |  0 );
+  resultobj = SWIG_NewPointerObj((new gum::Tensor< double >(result)), SWIGTYPE_p_gum__TensorT_double_t, SWIG_POINTER_OWN |  0 );
   return resultobj;
 fail:
   return NULL;
 }
 
 
-SWIGINTERN PyObject *_wrap_Potential_prodOut__SWIG_0(PyObject *self, Py_ssize_t nobjs, PyObject **swig_obj) {
+SWIGINTERN PyObject *_wrap_Tensor_prodOut__SWIG_0(PyObject *self, Py_ssize_t nobjs, PyObject **swig_obj) {
   PyObject *resultobj = 0;
-  gum::Potential< double > *arg1 = 0 ;
+  gum::Tensor< double > *arg1 = 0 ;
   gum::VariableSet *arg2 = 0 ;
   void *argp1 = 0 ;
   int res1 = 0 ;
   void *argp2 = 0 ;
   int res2 = 0 ;
-  gum::Potential< double > result;
+  gum::Tensor< double > result;
   
   (void)self;
   if ((nobjs < 2) || (nobjs > 2)) SWIG_fail;
-  res1 = SWIG_ConvertPtr(swig_obj[0], &argp1,SWIGTYPE_p_gum__PotentialT_double_t, 0 |  0 );
+  res1 = SWIG_ConvertPtr(swig_obj[0], &argp1,SWIGTYPE_p_gum__TensorT_double_t, 0 |  0 );
   if (!SWIG_IsOK(res1)) {
-    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "Potential_prodOut" "', argument " "1"" of type '" "gum::Potential< double > const *""'"); 
+    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "Tensor_prodOut" "', argument " "1"" of type '" "gum::Tensor< double > const *""'"); 
   }
-  arg1 = reinterpret_cast< gum::Potential< double > * >(argp1);
+  arg1 = reinterpret_cast< gum::Tensor< double > * >(argp1);
   res2 = SWIG_ConvertPtr(swig_obj[1], &argp2, SWIGTYPE_p_gum__SetT_gum__DiscreteVariable_const_p_t,  0  | 0);
   if (!SWIG_IsOK(res2)) {
-    SWIG_exception_fail(SWIG_ArgError(res2), "in method '" "Potential_prodOut" "', argument " "2"" of type '" "gum::VariableSet const &""'"); 
+    SWIG_exception_fail(SWIG_ArgError(res2), "in method '" "Tensor_prodOut" "', argument " "2"" of type '" "gum::VariableSet const &""'"); 
   }
   if (!argp2) {
-    SWIG_exception_fail(SWIG_NullReferenceError, "invalid null reference " "in method '" "Potential_prodOut" "', argument " "2"" of type '" "gum::VariableSet const &""'"); 
+    SWIG_exception_fail(SWIG_NullReferenceError, "invalid null reference " "in method '" "Tensor_prodOut" "', argument " "2"" of type '" "gum::VariableSet const &""'"); 
   }
   arg2 = reinterpret_cast< gum::VariableSet * >(argp2);
   {
     try {
-      result = ((gum::Potential< double > const *)arg1)->prodOut((gum::VariableSet const &)*arg2);
+      result = ((gum::Tensor< double > const *)arg1)->prodOut((gum::VariableSet const &)*arg2);
     } catch (...) {
       SetPythonizeAgrumException();
       SWIG_fail;
     }
   }
-  resultobj = SWIG_NewPointerObj((new gum::Potential< double >(result)), SWIGTYPE_p_gum__PotentialT_double_t, SWIG_POINTER_OWN |  0 );
+  resultobj = SWIG_NewPointerObj((new gum::Tensor< double >(result)), SWIGTYPE_p_gum__TensorT_double_t, SWIG_POINTER_OWN |  0 );
   return resultobj;
 fail:
   return NULL;
 }
 
 
-SWIGINTERN PyObject *_wrap_Potential_prodIn__SWIG_0(PyObject *self, Py_ssize_t nobjs, PyObject **swig_obj) {
+SWIGINTERN PyObject *_wrap_Tensor_prodIn__SWIG_0(PyObject *self, Py_ssize_t nobjs, PyObject **swig_obj) {
   PyObject *resultobj = 0;
-  gum::Potential< double > *arg1 = 0 ;
+  gum::Tensor< double > *arg1 = 0 ;
   gum::VariableSet *arg2 = 0 ;
   void *argp1 = 0 ;
   int res1 = 0 ;
   void *argp2 = 0 ;
   int res2 = 0 ;
-  gum::Potential< double > result;
+  gum::Tensor< double > result;
   
   (void)self;
   if ((nobjs < 2) || (nobjs > 2)) SWIG_fail;
-  res1 = SWIG_ConvertPtr(swig_obj[0], &argp1,SWIGTYPE_p_gum__PotentialT_double_t, 0 |  0 );
+  res1 = SWIG_ConvertPtr(swig_obj[0], &argp1,SWIGTYPE_p_gum__TensorT_double_t, 0 |  0 );
   if (!SWIG_IsOK(res1)) {
-    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "Potential_prodIn" "', argument " "1"" of type '" "gum::Potential< double > const *""'"); 
+    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "Tensor_prodIn" "', argument " "1"" of type '" "gum::Tensor< double > const *""'"); 
   }
-  arg1 = reinterpret_cast< gum::Potential< double > * >(argp1);
+  arg1 = reinterpret_cast< gum::Tensor< double > * >(argp1);
   res2 = SWIG_ConvertPtr(swig_obj[1], &argp2, SWIGTYPE_p_gum__SetT_gum__DiscreteVariable_const_p_t,  0  | 0);
   if (!SWIG_IsOK(res2)) {
-    SWIG_exception_fail(SWIG_ArgError(res2), "in method '" "Potential_prodIn" "', argument " "2"" of type '" "gum::VariableSet const &""'"); 
+    SWIG_exception_fail(SWIG_ArgError(res2), "in method '" "Tensor_prodIn" "', argument " "2"" of type '" "gum::VariableSet const &""'"); 
   }
   if (!argp2) {
-    SWIG_exception_fail(SWIG_NullReferenceError, "invalid null reference " "in method '" "Potential_prodIn" "', argument " "2"" of type '" "gum::VariableSet const &""'"); 
+    SWIG_exception_fail(SWIG_NullReferenceError, "invalid null reference " "in method '" "Tensor_prodIn" "', argument " "2"" of type '" "gum::VariableSet const &""'"); 
   }
   arg2 = reinterpret_cast< gum::VariableSet * >(argp2);
   {
     try {
-      result = ((gum::Potential< double > const *)arg1)->prodIn((gum::VariableSet const &)*arg2);
+      result = ((gum::Tensor< double > const *)arg1)->prodIn((gum::VariableSet const &)*arg2);
     } catch (...) {
       SetPythonizeAgrumException();
       SWIG_fail;
     }
   }
-  resultobj = SWIG_NewPointerObj((new gum::Potential< double >(result)), SWIGTYPE_p_gum__PotentialT_double_t, SWIG_POINTER_OWN |  0 );
+  resultobj = SWIG_NewPointerObj((new gum::Tensor< double >(result)), SWIGTYPE_p_gum__TensorT_double_t, SWIG_POINTER_OWN |  0 );
   return resultobj;
 fail:
   return NULL;
 }
 
 
-SWIGINTERN PyObject *_wrap_Potential_minOut__SWIG_0(PyObject *self, Py_ssize_t nobjs, PyObject **swig_obj) {
+SWIGINTERN PyObject *_wrap_Tensor_minOut__SWIG_0(PyObject *self, Py_ssize_t nobjs, PyObject **swig_obj) {
   PyObject *resultobj = 0;
-  gum::Potential< double > *arg1 = 0 ;
+  gum::Tensor< double > *arg1 = 0 ;
   gum::VariableSet *arg2 = 0 ;
   void *argp1 = 0 ;
   int res1 = 0 ;
   void *argp2 = 0 ;
   int res2 = 0 ;
-  gum::Potential< double > result;
+  gum::Tensor< double > result;
   
   (void)self;
   if ((nobjs < 2) || (nobjs > 2)) SWIG_fail;
-  res1 = SWIG_ConvertPtr(swig_obj[0], &argp1,SWIGTYPE_p_gum__PotentialT_double_t, 0 |  0 );
+  res1 = SWIG_ConvertPtr(swig_obj[0], &argp1,SWIGTYPE_p_gum__TensorT_double_t, 0 |  0 );
   if (!SWIG_IsOK(res1)) {
-    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "Potential_minOut" "', argument " "1"" of type '" "gum::Potential< double > const *""'"); 
+    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "Tensor_minOut" "', argument " "1"" of type '" "gum::Tensor< double > const *""'"); 
   }
-  arg1 = reinterpret_cast< gum::Potential< double > * >(argp1);
+  arg1 = reinterpret_cast< gum::Tensor< double > * >(argp1);
   res2 = SWIG_ConvertPtr(swig_obj[1], &argp2, SWIGTYPE_p_gum__SetT_gum__DiscreteVariable_const_p_t,  0  | 0);
   if (!SWIG_IsOK(res2)) {
-    SWIG_exception_fail(SWIG_ArgError(res2), "in method '" "Potential_minOut" "', argument " "2"" of type '" "gum::VariableSet const &""'"); 
+    SWIG_exception_fail(SWIG_ArgError(res2), "in method '" "Tensor_minOut" "', argument " "2"" of type '" "gum::VariableSet const &""'"); 
   }
   if (!argp2) {
-    SWIG_exception_fail(SWIG_NullReferenceError, "invalid null reference " "in method '" "Potential_minOut" "', argument " "2"" of type '" "gum::VariableSet const &""'"); 
+    SWIG_exception_fail(SWIG_NullReferenceError, "invalid null reference " "in method '" "Tensor_minOut" "', argument " "2"" of type '" "gum::VariableSet const &""'"); 
   }
   arg2 = reinterpret_cast< gum::VariableSet * >(argp2);
   {
     try {
-      result = ((gum::Potential< double > const *)arg1)->minOut((gum::VariableSet const &)*arg2);
+      result = ((gum::Tensor< double > const *)arg1)->minOut((gum::VariableSet const &)*arg2);
     } catch (...) {
       SetPythonizeAgrumException();
       SWIG_fail;
     }
   }
-  resultobj = SWIG_NewPointerObj((new gum::Potential< double >(result)), SWIGTYPE_p_gum__PotentialT_double_t, SWIG_POINTER_OWN |  0 );
+  resultobj = SWIG_NewPointerObj((new gum::Tensor< double >(result)), SWIGTYPE_p_gum__TensorT_double_t, SWIG_POINTER_OWN |  0 );
   return resultobj;
 fail:
   return NULL;
 }
 
 
-SWIGINTERN PyObject *_wrap_Potential_minIn__SWIG_0(PyObject *self, Py_ssize_t nobjs, PyObject **swig_obj) {
+SWIGINTERN PyObject *_wrap_Tensor_minIn__SWIG_0(PyObject *self, Py_ssize_t nobjs, PyObject **swig_obj) {
   PyObject *resultobj = 0;
-  gum::Potential< double > *arg1 = 0 ;
+  gum::Tensor< double > *arg1 = 0 ;
   gum::VariableSet *arg2 = 0 ;
   void *argp1 = 0 ;
   int res1 = 0 ;
   void *argp2 = 0 ;
   int res2 = 0 ;
-  gum::Potential< double > result;
+  gum::Tensor< double > result;
   
   (void)self;
   if ((nobjs < 2) || (nobjs > 2)) SWIG_fail;
-  res1 = SWIG_ConvertPtr(swig_obj[0], &argp1,SWIGTYPE_p_gum__PotentialT_double_t, 0 |  0 );
+  res1 = SWIG_ConvertPtr(swig_obj[0], &argp1,SWIGTYPE_p_gum__TensorT_double_t, 0 |  0 );
   if (!SWIG_IsOK(res1)) {
-    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "Potential_minIn" "', argument " "1"" of type '" "gum::Potential< double > const *""'"); 
+    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "Tensor_minIn" "', argument " "1"" of type '" "gum::Tensor< double > const *""'"); 
   }
-  arg1 = reinterpret_cast< gum::Potential< double > * >(argp1);
+  arg1 = reinterpret_cast< gum::Tensor< double > * >(argp1);
   res2 = SWIG_ConvertPtr(swig_obj[1], &argp2, SWIGTYPE_p_gum__SetT_gum__DiscreteVariable_const_p_t,  0  | 0);
   if (!SWIG_IsOK(res2)) {
-    SWIG_exception_fail(SWIG_ArgError(res2), "in method '" "Potential_minIn" "', argument " "2"" of type '" "gum::VariableSet const &""'"); 
+    SWIG_exception_fail(SWIG_ArgError(res2), "in method '" "Tensor_minIn" "', argument " "2"" of type '" "gum::VariableSet const &""'"); 
   }
   if (!argp2) {
-    SWIG_exception_fail(SWIG_NullReferenceError, "invalid null reference " "in method '" "Potential_minIn" "', argument " "2"" of type '" "gum::VariableSet const &""'"); 
+    SWIG_exception_fail(SWIG_NullReferenceError, "invalid null reference " "in method '" "Tensor_minIn" "', argument " "2"" of type '" "gum::VariableSet const &""'"); 
   }
   arg2 = reinterpret_cast< gum::VariableSet * >(argp2);
   {
     try {
-      result = ((gum::Potential< double > const *)arg1)->minIn((gum::VariableSet const &)*arg2);
+      result = ((gum::Tensor< double > const *)arg1)->minIn((gum::VariableSet const &)*arg2);
     } catch (...) {
       SetPythonizeAgrumException();
       SWIG_fail;
     }
   }
-  resultobj = SWIG_NewPointerObj((new gum::Potential< double >(result)), SWIGTYPE_p_gum__PotentialT_double_t, SWIG_POINTER_OWN |  0 );
+  resultobj = SWIG_NewPointerObj((new gum::Tensor< double >(result)), SWIGTYPE_p_gum__TensorT_double_t, SWIG_POINTER_OWN |  0 );
   return resultobj;
 fail:
   return NULL;
 }
 
 
-SWIGINTERN PyObject *_wrap_Potential_maxOut__SWIG_0(PyObject *self, Py_ssize_t nobjs, PyObject **swig_obj) {
+SWIGINTERN PyObject *_wrap_Tensor_maxOut__SWIG_0(PyObject *self, Py_ssize_t nobjs, PyObject **swig_obj) {
   PyObject *resultobj = 0;
-  gum::Potential< double > *arg1 = 0 ;
+  gum::Tensor< double > *arg1 = 0 ;
   gum::VariableSet *arg2 = 0 ;
   void *argp1 = 0 ;
   int res1 = 0 ;
   void *argp2 = 0 ;
   int res2 = 0 ;
-  gum::Potential< double > result;
+  gum::Tensor< double > result;
   
   (void)self;
   if ((nobjs < 2) || (nobjs > 2)) SWIG_fail;
-  res1 = SWIG_ConvertPtr(swig_obj[0], &argp1,SWIGTYPE_p_gum__PotentialT_double_t, 0 |  0 );
+  res1 = SWIG_ConvertPtr(swig_obj[0], &argp1,SWIGTYPE_p_gum__TensorT_double_t, 0 |  0 );
   if (!SWIG_IsOK(res1)) {
-    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "Potential_maxOut" "', argument " "1"" of type '" "gum::Potential< double > const *""'"); 
+    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "Tensor_maxOut" "', argument " "1"" of type '" "gum::Tensor< double > const *""'"); 
   }
-  arg1 = reinterpret_cast< gum::Potential< double > * >(argp1);
+  arg1 = reinterpret_cast< gum::Tensor< double > * >(argp1);
   res2 = SWIG_ConvertPtr(swig_obj[1], &argp2, SWIGTYPE_p_gum__SetT_gum__DiscreteVariable_const_p_t,  0  | 0);
   if (!SWIG_IsOK(res2)) {
-    SWIG_exception_fail(SWIG_ArgError(res2), "in method '" "Potential_maxOut" "', argument " "2"" of type '" "gum::VariableSet const &""'"); 
+    SWIG_exception_fail(SWIG_ArgError(res2), "in method '" "Tensor_maxOut" "', argument " "2"" of type '" "gum::VariableSet const &""'"); 
   }
   if (!argp2) {
-    SWIG_exception_fail(SWIG_NullReferenceError, "invalid null reference " "in method '" "Potential_maxOut" "', argument " "2"" of type '" "gum::VariableSet const &""'"); 
+    SWIG_exception_fail(SWIG_NullReferenceError, "invalid null reference " "in method '" "Tensor_maxOut" "', argument " "2"" of type '" "gum::VariableSet const &""'"); 
   }
   arg2 = reinterpret_cast< gum::VariableSet * >(argp2);
   {
     try {
-      result = ((gum::Potential< double > const *)arg1)->maxOut((gum::VariableSet const &)*arg2);
+      result = ((gum::Tensor< double > const *)arg1)->maxOut((gum::VariableSet const &)*arg2);
     } catch (...) {
       SetPythonizeAgrumException();
       SWIG_fail;
     }
   }
-  resultobj = SWIG_NewPointerObj((new gum::Potential< double >(result)), SWIGTYPE_p_gum__PotentialT_double_t, SWIG_POINTER_OWN |  0 );
+  resultobj = SWIG_NewPointerObj((new gum::Tensor< double >(result)), SWIGTYPE_p_gum__TensorT_double_t, SWIG_POINTER_OWN |  0 );
   return resultobj;
 fail:
   return NULL;
 }
 
 
-SWIGINTERN PyObject *_wrap_Potential_maxIn__SWIG_0(PyObject *self, Py_ssize_t nobjs, PyObject **swig_obj) {
+SWIGINTERN PyObject *_wrap_Tensor_maxIn__SWIG_0(PyObject *self, Py_ssize_t nobjs, PyObject **swig_obj) {
   PyObject *resultobj = 0;
-  gum::Potential< double > *arg1 = 0 ;
+  gum::Tensor< double > *arg1 = 0 ;
   gum::VariableSet *arg2 = 0 ;
   void *argp1 = 0 ;
   int res1 = 0 ;
   void *argp2 = 0 ;
   int res2 = 0 ;
-  gum::Potential< double > result;
+  gum::Tensor< double > result;
   
   (void)self;
   if ((nobjs < 2) || (nobjs > 2)) SWIG_fail;
-  res1 = SWIG_ConvertPtr(swig_obj[0], &argp1,SWIGTYPE_p_gum__PotentialT_double_t, 0 |  0 );
+  res1 = SWIG_ConvertPtr(swig_obj[0], &argp1,SWIGTYPE_p_gum__TensorT_double_t, 0 |  0 );
   if (!SWIG_IsOK(res1)) {
-    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "Potential_maxIn" "', argument " "1"" of type '" "gum::Potential< double > const *""'"); 
+    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "Tensor_maxIn" "', argument " "1"" of type '" "gum::Tensor< double > const *""'"); 
   }
-  arg1 = reinterpret_cast< gum::Potential< double > * >(argp1);
+  arg1 = reinterpret_cast< gum::Tensor< double > * >(argp1);
   res2 = SWIG_ConvertPtr(swig_obj[1], &argp2, SWIGTYPE_p_gum__SetT_gum__DiscreteVariable_const_p_t,  0  | 0);
   if (!SWIG_IsOK(res2)) {
-    SWIG_exception_fail(SWIG_ArgError(res2), "in method '" "Potential_maxIn" "', argument " "2"" of type '" "gum::VariableSet const &""'"); 
+    SWIG_exception_fail(SWIG_ArgError(res2), "in method '" "Tensor_maxIn" "', argument " "2"" of type '" "gum::VariableSet const &""'"); 
   }
   if (!argp2) {
-    SWIG_exception_fail(SWIG_NullReferenceError, "invalid null reference " "in method '" "Potential_maxIn" "', argument " "2"" of type '" "gum::VariableSet const &""'"); 
+    SWIG_exception_fail(SWIG_NullReferenceError, "invalid null reference " "in method '" "Tensor_maxIn" "', argument " "2"" of type '" "gum::VariableSet const &""'"); 
   }
   arg2 = reinterpret_cast< gum::VariableSet * >(argp2);
   {
     try {
-      result = ((gum::Potential< double > const *)arg1)->maxIn((gum::VariableSet const &)*arg2);
+      result = ((gum::Tensor< double > const *)arg1)->maxIn((gum::VariableSet const &)*arg2);
     } catch (...) {
       SetPythonizeAgrumException();
       SWIG_fail;
     }
   }
-  resultobj = SWIG_NewPointerObj((new gum::Potential< double >(result)), SWIGTYPE_p_gum__PotentialT_double_t, SWIG_POINTER_OWN |  0 );
+  resultobj = SWIG_NewPointerObj((new gum::Tensor< double >(result)), SWIGTYPE_p_gum__TensorT_double_t, SWIG_POINTER_OWN |  0 );
   return resultobj;
 fail:
   return NULL;
 }
 
 
-SWIGINTERN PyObject *_wrap_Potential_isNonZeroMap(PyObject *self, PyObject *args) {
+SWIGINTERN PyObject *_wrap_Tensor_isNonZeroMap(PyObject *self, PyObject *args) {
   PyObject *resultobj = 0;
-  gum::Potential< double > *arg1 = 0 ;
+  gum::Tensor< double > *arg1 = 0 ;
   void *argp1 = 0 ;
   int res1 = 0 ;
   PyObject *swig_obj[1] ;
-  gum::Potential< double > result;
+  gum::Tensor< double > result;
   
   (void)self;
   if (!args) SWIG_fail;
   swig_obj[0] = args;
-  res1 = SWIG_ConvertPtr(swig_obj[0], &argp1,SWIGTYPE_p_gum__PotentialT_double_t, 0 |  0 );
+  res1 = SWIG_ConvertPtr(swig_obj[0], &argp1,SWIGTYPE_p_gum__TensorT_double_t, 0 |  0 );
   if (!SWIG_IsOK(res1)) {
-    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "Potential_isNonZeroMap" "', argument " "1"" of type '" "gum::Potential< double > const *""'"); 
+    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "Tensor_isNonZeroMap" "', argument " "1"" of type '" "gum::Tensor< double > const *""'"); 
   }
-  arg1 = reinterpret_cast< gum::Potential< double > * >(argp1);
+  arg1 = reinterpret_cast< gum::Tensor< double > * >(argp1);
   {
     try {
-      result = ((gum::Potential< double > const *)arg1)->isNonZeroMap();
+      result = ((gum::Tensor< double > const *)arg1)->isNonZeroMap();
     } catch (...) {
       SetPythonizeAgrumException();
       SWIG_fail;
     }
   }
-  resultobj = SWIG_NewPointerObj((new gum::Potential< double >(result)), SWIGTYPE_p_gum__PotentialT_double_t, SWIG_POINTER_OWN |  0 );
+  resultobj = SWIG_NewPointerObj((new gum::Tensor< double >(result)), SWIGTYPE_p_gum__TensorT_double_t, SWIG_POINTER_OWN |  0 );
   return resultobj;
 fail:
   return NULL;
 }
 
 
-SWIGINTERN PyObject *_wrap_Potential_sum(PyObject *self, PyObject *args) {
+SWIGINTERN PyObject *_wrap_Tensor_sum(PyObject *self, PyObject *args) {
   PyObject *resultobj = 0;
-  gum::Potential< double > *arg1 = 0 ;
+  gum::Tensor< double > *arg1 = 0 ;
   void *argp1 = 0 ;
   int res1 = 0 ;
   PyObject *swig_obj[1] ;
@@ -55316,14 +55316,14 @@ SWIGINTERN PyObject *_wrap_Potential_sum(PyObject *self, PyObject *args) {
   (void)self;
   if (!args) SWIG_fail;
   swig_obj[0] = args;
-  res1 = SWIG_ConvertPtr(swig_obj[0], &argp1,SWIGTYPE_p_gum__PotentialT_double_t, 0 |  0 );
+  res1 = SWIG_ConvertPtr(swig_obj[0], &argp1,SWIGTYPE_p_gum__TensorT_double_t, 0 |  0 );
   if (!SWIG_IsOK(res1)) {
-    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "Potential_sum" "', argument " "1"" of type '" "gum::Potential< double > const *""'"); 
+    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "Tensor_sum" "', argument " "1"" of type '" "gum::Tensor< double > const *""'"); 
   }
-  arg1 = reinterpret_cast< gum::Potential< double > * >(argp1);
+  arg1 = reinterpret_cast< gum::Tensor< double > * >(argp1);
   {
     try {
-      result = (double)((gum::Potential< double > const *)arg1)->sum();
+      result = (double)((gum::Tensor< double > const *)arg1)->sum();
     } catch (...) {
       SetPythonizeAgrumException();
       SWIG_fail;
@@ -55336,9 +55336,9 @@ fail:
 }
 
 
-SWIGINTERN PyObject *_wrap_Potential_product(PyObject *self, PyObject *args) {
+SWIGINTERN PyObject *_wrap_Tensor_product(PyObject *self, PyObject *args) {
   PyObject *resultobj = 0;
-  gum::Potential< double > *arg1 = 0 ;
+  gum::Tensor< double > *arg1 = 0 ;
   void *argp1 = 0 ;
   int res1 = 0 ;
   PyObject *swig_obj[1] ;
@@ -55347,14 +55347,14 @@ SWIGINTERN PyObject *_wrap_Potential_product(PyObject *self, PyObject *args) {
   (void)self;
   if (!args) SWIG_fail;
   swig_obj[0] = args;
-  res1 = SWIG_ConvertPtr(swig_obj[0], &argp1,SWIGTYPE_p_gum__PotentialT_double_t, 0 |  0 );
+  res1 = SWIG_ConvertPtr(swig_obj[0], &argp1,SWIGTYPE_p_gum__TensorT_double_t, 0 |  0 );
   if (!SWIG_IsOK(res1)) {
-    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "Potential_product" "', argument " "1"" of type '" "gum::Potential< double > const *""'"); 
+    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "Tensor_product" "', argument " "1"" of type '" "gum::Tensor< double > const *""'"); 
   }
-  arg1 = reinterpret_cast< gum::Potential< double > * >(argp1);
+  arg1 = reinterpret_cast< gum::Tensor< double > * >(argp1);
   {
     try {
-      result = (double)((gum::Potential< double > const *)arg1)->product();
+      result = (double)((gum::Tensor< double > const *)arg1)->product();
     } catch (...) {
       SetPythonizeAgrumException();
       SWIG_fail;
@@ -55367,9 +55367,9 @@ fail:
 }
 
 
-SWIGINTERN PyObject *_wrap_Potential_max(PyObject *self, PyObject *args) {
+SWIGINTERN PyObject *_wrap_Tensor_max(PyObject *self, PyObject *args) {
   PyObject *resultobj = 0;
-  gum::Potential< double > *arg1 = 0 ;
+  gum::Tensor< double > *arg1 = 0 ;
   void *argp1 = 0 ;
   int res1 = 0 ;
   PyObject *swig_obj[1] ;
@@ -55378,14 +55378,14 @@ SWIGINTERN PyObject *_wrap_Potential_max(PyObject *self, PyObject *args) {
   (void)self;
   if (!args) SWIG_fail;
   swig_obj[0] = args;
-  res1 = SWIG_ConvertPtr(swig_obj[0], &argp1,SWIGTYPE_p_gum__PotentialT_double_t, 0 |  0 );
+  res1 = SWIG_ConvertPtr(swig_obj[0], &argp1,SWIGTYPE_p_gum__TensorT_double_t, 0 |  0 );
   if (!SWIG_IsOK(res1)) {
-    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "Potential_max" "', argument " "1"" of type '" "gum::Potential< double > const *""'"); 
+    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "Tensor_max" "', argument " "1"" of type '" "gum::Tensor< double > const *""'"); 
   }
-  arg1 = reinterpret_cast< gum::Potential< double > * >(argp1);
+  arg1 = reinterpret_cast< gum::Tensor< double > * >(argp1);
   {
     try {
-      result = (double)((gum::Potential< double > const *)arg1)->max();
+      result = (double)((gum::Tensor< double > const *)arg1)->max();
     } catch (...) {
       SetPythonizeAgrumException();
       SWIG_fail;
@@ -55398,9 +55398,9 @@ fail:
 }
 
 
-SWIGINTERN PyObject *_wrap_Potential_min(PyObject *self, PyObject *args) {
+SWIGINTERN PyObject *_wrap_Tensor_min(PyObject *self, PyObject *args) {
   PyObject *resultobj = 0;
-  gum::Potential< double > *arg1 = 0 ;
+  gum::Tensor< double > *arg1 = 0 ;
   void *argp1 = 0 ;
   int res1 = 0 ;
   PyObject *swig_obj[1] ;
@@ -55409,14 +55409,14 @@ SWIGINTERN PyObject *_wrap_Potential_min(PyObject *self, PyObject *args) {
   (void)self;
   if (!args) SWIG_fail;
   swig_obj[0] = args;
-  res1 = SWIG_ConvertPtr(swig_obj[0], &argp1,SWIGTYPE_p_gum__PotentialT_double_t, 0 |  0 );
+  res1 = SWIG_ConvertPtr(swig_obj[0], &argp1,SWIGTYPE_p_gum__TensorT_double_t, 0 |  0 );
   if (!SWIG_IsOK(res1)) {
-    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "Potential_min" "', argument " "1"" of type '" "gum::Potential< double > const *""'"); 
+    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "Tensor_min" "', argument " "1"" of type '" "gum::Tensor< double > const *""'"); 
   }
-  arg1 = reinterpret_cast< gum::Potential< double > * >(argp1);
+  arg1 = reinterpret_cast< gum::Tensor< double > * >(argp1);
   {
     try {
-      result = (double)((gum::Potential< double > const *)arg1)->min();
+      result = (double)((gum::Tensor< double > const *)arg1)->min();
     } catch (...) {
       SetPythonizeAgrumException();
       SWIG_fail;
@@ -55429,9 +55429,9 @@ fail:
 }
 
 
-SWIGINTERN PyObject *_wrap_Potential_maxNonOne(PyObject *self, PyObject *args) {
+SWIGINTERN PyObject *_wrap_Tensor_maxNonOne(PyObject *self, PyObject *args) {
   PyObject *resultobj = 0;
-  gum::Potential< double > *arg1 = 0 ;
+  gum::Tensor< double > *arg1 = 0 ;
   void *argp1 = 0 ;
   int res1 = 0 ;
   PyObject *swig_obj[1] ;
@@ -55440,14 +55440,14 @@ SWIGINTERN PyObject *_wrap_Potential_maxNonOne(PyObject *self, PyObject *args) {
   (void)self;
   if (!args) SWIG_fail;
   swig_obj[0] = args;
-  res1 = SWIG_ConvertPtr(swig_obj[0], &argp1,SWIGTYPE_p_gum__PotentialT_double_t, 0 |  0 );
+  res1 = SWIG_ConvertPtr(swig_obj[0], &argp1,SWIGTYPE_p_gum__TensorT_double_t, 0 |  0 );
   if (!SWIG_IsOK(res1)) {
-    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "Potential_maxNonOne" "', argument " "1"" of type '" "gum::Potential< double > const *""'"); 
+    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "Tensor_maxNonOne" "', argument " "1"" of type '" "gum::Tensor< double > const *""'"); 
   }
-  arg1 = reinterpret_cast< gum::Potential< double > * >(argp1);
+  arg1 = reinterpret_cast< gum::Tensor< double > * >(argp1);
   {
     try {
-      result = (double)((gum::Potential< double > const *)arg1)->maxNonOne();
+      result = (double)((gum::Tensor< double > const *)arg1)->maxNonOne();
     } catch (...) {
       SetPythonizeAgrumException();
       SWIG_fail;
@@ -55460,9 +55460,9 @@ fail:
 }
 
 
-SWIGINTERN PyObject *_wrap_Potential_minNonZero(PyObject *self, PyObject *args) {
+SWIGINTERN PyObject *_wrap_Tensor_minNonZero(PyObject *self, PyObject *args) {
   PyObject *resultobj = 0;
-  gum::Potential< double > *arg1 = 0 ;
+  gum::Tensor< double > *arg1 = 0 ;
   void *argp1 = 0 ;
   int res1 = 0 ;
   PyObject *swig_obj[1] ;
@@ -55471,14 +55471,14 @@ SWIGINTERN PyObject *_wrap_Potential_minNonZero(PyObject *self, PyObject *args) 
   (void)self;
   if (!args) SWIG_fail;
   swig_obj[0] = args;
-  res1 = SWIG_ConvertPtr(swig_obj[0], &argp1,SWIGTYPE_p_gum__PotentialT_double_t, 0 |  0 );
+  res1 = SWIG_ConvertPtr(swig_obj[0], &argp1,SWIGTYPE_p_gum__TensorT_double_t, 0 |  0 );
   if (!SWIG_IsOK(res1)) {
-    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "Potential_minNonZero" "', argument " "1"" of type '" "gum::Potential< double > const *""'"); 
+    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "Tensor_minNonZero" "', argument " "1"" of type '" "gum::Tensor< double > const *""'"); 
   }
-  arg1 = reinterpret_cast< gum::Potential< double > * >(argp1);
+  arg1 = reinterpret_cast< gum::Tensor< double > * >(argp1);
   {
     try {
-      result = (double)((gum::Potential< double > const *)arg1)->minNonZero();
+      result = (double)((gum::Tensor< double > const *)arg1)->minNonZero();
     } catch (...) {
       SetPythonizeAgrumException();
       SWIG_fail;
@@ -55491,9 +55491,9 @@ fail:
 }
 
 
-SWIGINTERN PyObject *_wrap_Potential_findAll(PyObject *self, PyObject *args) {
+SWIGINTERN PyObject *_wrap_Tensor_findAll(PyObject *self, PyObject *args) {
   PyObject *resultobj = 0;
-  gum::Potential< double > *arg1 = 0 ;
+  gum::Tensor< double > *arg1 = 0 ;
   double arg2 ;
   void *argp1 = 0 ;
   int res1 = 0 ;
@@ -55503,20 +55503,20 @@ SWIGINTERN PyObject *_wrap_Potential_findAll(PyObject *self, PyObject *args) {
   SwigValueWrapper< gum::Set< gum::Instantiation > > result;
   
   (void)self;
-  if (!SWIG_Python_UnpackTuple(args, "Potential_findAll", 2, 2, swig_obj)) SWIG_fail;
-  res1 = SWIG_ConvertPtr(swig_obj[0], &argp1,SWIGTYPE_p_gum__PotentialT_double_t, 0 |  0 );
+  if (!SWIG_Python_UnpackTuple(args, "Tensor_findAll", 2, 2, swig_obj)) SWIG_fail;
+  res1 = SWIG_ConvertPtr(swig_obj[0], &argp1,SWIGTYPE_p_gum__TensorT_double_t, 0 |  0 );
   if (!SWIG_IsOK(res1)) {
-    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "Potential_findAll" "', argument " "1"" of type '" "gum::Potential< double > const *""'"); 
+    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "Tensor_findAll" "', argument " "1"" of type '" "gum::Tensor< double > const *""'"); 
   }
-  arg1 = reinterpret_cast< gum::Potential< double > * >(argp1);
+  arg1 = reinterpret_cast< gum::Tensor< double > * >(argp1);
   ecode2 = SWIG_AsVal_double(swig_obj[1], &val2);
   if (!SWIG_IsOK(ecode2)) {
-    SWIG_exception_fail(SWIG_ArgError(ecode2), "in method '" "Potential_findAll" "', argument " "2"" of type '" "double""'");
+    SWIG_exception_fail(SWIG_ArgError(ecode2), "in method '" "Tensor_findAll" "', argument " "2"" of type '" "double""'");
   } 
   arg2 = static_cast< double >(val2);
   {
     try {
-      result = ((gum::Potential< double > const *)arg1)->findAll(arg2);
+      result = ((gum::Tensor< double > const *)arg1)->findAll(arg2);
     } catch (...) {
       SetPythonizeAgrumException();
       SWIG_fail;
@@ -55531,9 +55531,9 @@ fail:
 }
 
 
-SWIGINTERN PyObject *_wrap_Potential_expectedValue__SWIG_0(PyObject *self, Py_ssize_t nobjs, PyObject **swig_obj) {
+SWIGINTERN PyObject *_wrap_Tensor_expectedValue__SWIG_0(PyObject *self, Py_ssize_t nobjs, PyObject **swig_obj) {
   PyObject *resultobj = 0;
-  gum::Potential< double > *arg1 = 0 ;
+  gum::Tensor< double > *arg1 = 0 ;
   SwigValueWrapper< std::function< double (gum::Instantiation const &) > > arg2 ;
   void *argp1 = 0 ;
   int res1 = 0 ;
@@ -55543,18 +55543,18 @@ SWIGINTERN PyObject *_wrap_Potential_expectedValue__SWIG_0(PyObject *self, Py_ss
   
   (void)self;
   if ((nobjs < 2) || (nobjs > 2)) SWIG_fail;
-  res1 = SWIG_ConvertPtr(swig_obj[0], &argp1,SWIGTYPE_p_gum__PotentialT_double_t, 0 |  0 );
+  res1 = SWIG_ConvertPtr(swig_obj[0], &argp1,SWIGTYPE_p_gum__TensorT_double_t, 0 |  0 );
   if (!SWIG_IsOK(res1)) {
-    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "Potential_expectedValue" "', argument " "1"" of type '" "gum::Potential< double > const *""'"); 
+    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "Tensor_expectedValue" "', argument " "1"" of type '" "gum::Tensor< double > const *""'"); 
   }
-  arg1 = reinterpret_cast< gum::Potential< double > * >(argp1);
+  arg1 = reinterpret_cast< gum::Tensor< double > * >(argp1);
   {
     res2 = SWIG_ConvertPtr(swig_obj[1], &argp2, SWIGTYPE_p_std__functionT_double_fgum__Instantiation_const_RF_t,  0  | 0);
     if (!SWIG_IsOK(res2)) {
-      SWIG_exception_fail(SWIG_ArgError(res2), "in method '" "Potential_expectedValue" "', argument " "2"" of type '" "std::function< double (gum::Instantiation const &) >""'"); 
+      SWIG_exception_fail(SWIG_ArgError(res2), "in method '" "Tensor_expectedValue" "', argument " "2"" of type '" "std::function< double (gum::Instantiation const &) >""'"); 
     }  
     if (!argp2) {
-      SWIG_exception_fail(SWIG_NullReferenceError, "invalid null reference " "in method '" "Potential_expectedValue" "', argument " "2"" of type '" "std::function< double (gum::Instantiation const &) >""'");
+      SWIG_exception_fail(SWIG_NullReferenceError, "invalid null reference " "in method '" "Tensor_expectedValue" "', argument " "2"" of type '" "std::function< double (gum::Instantiation const &) >""'");
     } else {
       std::function< double (gum::Instantiation const &) > * temp = reinterpret_cast< std::function< double (gum::Instantiation const &) > * >(argp2);
       arg2 = *temp;
@@ -55563,7 +55563,7 @@ SWIGINTERN PyObject *_wrap_Potential_expectedValue__SWIG_0(PyObject *self, Py_ss
   }
   {
     try {
-      result = (double)((gum::Potential< double > const *)arg1)->expectedValue(SWIG_STD_MOVE(arg2));
+      result = (double)((gum::Tensor< double > const *)arg1)->expectedValue(SWIG_STD_MOVE(arg2));
     } catch (...) {
       SetPythonizeAgrumException();
       SWIG_fail;
@@ -55576,9 +55576,9 @@ fail:
 }
 
 
-SWIGINTERN PyObject *_wrap_Potential_entropy(PyObject *self, PyObject *args) {
+SWIGINTERN PyObject *_wrap_Tensor_entropy(PyObject *self, PyObject *args) {
   PyObject *resultobj = 0;
-  gum::Potential< double > *arg1 = 0 ;
+  gum::Tensor< double > *arg1 = 0 ;
   void *argp1 = 0 ;
   int res1 = 0 ;
   PyObject *swig_obj[1] ;
@@ -55587,14 +55587,14 @@ SWIGINTERN PyObject *_wrap_Potential_entropy(PyObject *self, PyObject *args) {
   (void)self;
   if (!args) SWIG_fail;
   swig_obj[0] = args;
-  res1 = SWIG_ConvertPtr(swig_obj[0], &argp1,SWIGTYPE_p_gum__PotentialT_double_t, 0 |  0 );
+  res1 = SWIG_ConvertPtr(swig_obj[0], &argp1,SWIGTYPE_p_gum__TensorT_double_t, 0 |  0 );
   if (!SWIG_IsOK(res1)) {
-    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "Potential_entropy" "', argument " "1"" of type '" "gum::Potential< double > const *""'"); 
+    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "Tensor_entropy" "', argument " "1"" of type '" "gum::Tensor< double > const *""'"); 
   }
-  arg1 = reinterpret_cast< gum::Potential< double > * >(argp1);
+  arg1 = reinterpret_cast< gum::Tensor< double > * >(argp1);
   {
     try {
-      result = (double)((gum::Potential< double > const *)arg1)->entropy();
+      result = (double)((gum::Tensor< double > const *)arg1)->entropy();
     } catch (...) {
       SetPythonizeAgrumException();
       SWIG_fail;
@@ -55607,82 +55607,82 @@ fail:
 }
 
 
-SWIGINTERN PyObject *_wrap_Potential_reorganize__SWIG_0(PyObject *self, Py_ssize_t nobjs, PyObject **swig_obj) {
+SWIGINTERN PyObject *_wrap_Tensor_reorganize__SWIG_0(PyObject *self, Py_ssize_t nobjs, PyObject **swig_obj) {
   PyObject *resultobj = 0;
-  gum::Potential< double > *arg1 = 0 ;
+  gum::Tensor< double > *arg1 = 0 ;
   std::vector< gum::DiscreteVariable const *,std::allocator< gum::DiscreteVariable const * > > *arg2 = 0 ;
   void *argp1 = 0 ;
   int res1 = 0 ;
   void *argp2 = 0 ;
   int res2 = 0 ;
-  gum::Potential< double > result;
+  gum::Tensor< double > result;
   
   (void)self;
   if ((nobjs < 2) || (nobjs > 2)) SWIG_fail;
-  res1 = SWIG_ConvertPtr(swig_obj[0], &argp1,SWIGTYPE_p_gum__PotentialT_double_t, 0 |  0 );
+  res1 = SWIG_ConvertPtr(swig_obj[0], &argp1,SWIGTYPE_p_gum__TensorT_double_t, 0 |  0 );
   if (!SWIG_IsOK(res1)) {
-    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "Potential_reorganize" "', argument " "1"" of type '" "gum::Potential< double > const *""'"); 
+    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "Tensor_reorganize" "', argument " "1"" of type '" "gum::Tensor< double > const *""'"); 
   }
-  arg1 = reinterpret_cast< gum::Potential< double > * >(argp1);
+  arg1 = reinterpret_cast< gum::Tensor< double > * >(argp1);
   res2 = SWIG_ConvertPtr(swig_obj[1], &argp2, SWIGTYPE_p_std__vectorT_gum__DiscreteVariable_const_p_std__allocatorT_gum__DiscreteVariable_const_p_t_t,  0  | 0);
   if (!SWIG_IsOK(res2)) {
-    SWIG_exception_fail(SWIG_ArgError(res2), "in method '" "Potential_reorganize" "', argument " "2"" of type '" "std::vector< gum::DiscreteVariable const *,std::allocator< gum::DiscreteVariable const * > > const &""'"); 
+    SWIG_exception_fail(SWIG_ArgError(res2), "in method '" "Tensor_reorganize" "', argument " "2"" of type '" "std::vector< gum::DiscreteVariable const *,std::allocator< gum::DiscreteVariable const * > > const &""'"); 
   }
   if (!argp2) {
-    SWIG_exception_fail(SWIG_NullReferenceError, "invalid null reference " "in method '" "Potential_reorganize" "', argument " "2"" of type '" "std::vector< gum::DiscreteVariable const *,std::allocator< gum::DiscreteVariable const * > > const &""'"); 
+    SWIG_exception_fail(SWIG_NullReferenceError, "invalid null reference " "in method '" "Tensor_reorganize" "', argument " "2"" of type '" "std::vector< gum::DiscreteVariable const *,std::allocator< gum::DiscreteVariable const * > > const &""'"); 
   }
   arg2 = reinterpret_cast< std::vector< gum::DiscreteVariable const *,std::allocator< gum::DiscreteVariable const * > > * >(argp2);
   {
     try {
-      result = ((gum::Potential< double > const *)arg1)->reorganize((std::vector< gum::DiscreteVariable const *,std::allocator< gum::DiscreteVariable const * > > const &)*arg2);
+      result = ((gum::Tensor< double > const *)arg1)->reorganize((std::vector< gum::DiscreteVariable const *,std::allocator< gum::DiscreteVariable const * > > const &)*arg2);
     } catch (...) {
       SetPythonizeAgrumException();
       SWIG_fail;
     }
   }
-  resultobj = SWIG_NewPointerObj((new gum::Potential< double >(result)), SWIGTYPE_p_gum__PotentialT_double_t, SWIG_POINTER_OWN |  0 );
+  resultobj = SWIG_NewPointerObj((new gum::Tensor< double >(result)), SWIGTYPE_p_gum__TensorT_double_t, SWIG_POINTER_OWN |  0 );
   return resultobj;
 fail:
   return NULL;
 }
 
 
-SWIGINTERN PyObject *_wrap_Potential_reorganize__SWIG_1(PyObject *self, Py_ssize_t nobjs, PyObject **swig_obj) {
+SWIGINTERN PyObject *_wrap_Tensor_reorganize__SWIG_1(PyObject *self, Py_ssize_t nobjs, PyObject **swig_obj) {
   PyObject *resultobj = 0;
-  gum::Potential< double > *arg1 = 0 ;
+  gum::Tensor< double > *arg1 = 0 ;
   std::vector< std::string,std::allocator< std::string > > *arg2 = 0 ;
   void *argp1 = 0 ;
   int res1 = 0 ;
   int res2 = SWIG_OLDOBJ ;
-  gum::Potential< double > result;
+  gum::Tensor< double > result;
   
   (void)self;
   if ((nobjs < 2) || (nobjs > 2)) SWIG_fail;
-  res1 = SWIG_ConvertPtr(swig_obj[0], &argp1,SWIGTYPE_p_gum__PotentialT_double_t, 0 |  0 );
+  res1 = SWIG_ConvertPtr(swig_obj[0], &argp1,SWIGTYPE_p_gum__TensorT_double_t, 0 |  0 );
   if (!SWIG_IsOK(res1)) {
-    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "Potential_reorganize" "', argument " "1"" of type '" "gum::Potential< double > const *""'"); 
+    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "Tensor_reorganize" "', argument " "1"" of type '" "gum::Tensor< double > const *""'"); 
   }
-  arg1 = reinterpret_cast< gum::Potential< double > * >(argp1);
+  arg1 = reinterpret_cast< gum::Tensor< double > * >(argp1);
   {
     std::vector< std::string,std::allocator< std::string > > *ptr = (std::vector< std::string,std::allocator< std::string > > *)0;
     res2 = swig::asptr(swig_obj[1], &ptr);
     if (!SWIG_IsOK(res2)) {
-      SWIG_exception_fail(SWIG_ArgError(res2), "in method '" "Potential_reorganize" "', argument " "2"" of type '" "std::vector< std::string,std::allocator< std::string > > const &""'"); 
+      SWIG_exception_fail(SWIG_ArgError(res2), "in method '" "Tensor_reorganize" "', argument " "2"" of type '" "std::vector< std::string,std::allocator< std::string > > const &""'"); 
     }
     if (!ptr) {
-      SWIG_exception_fail(SWIG_NullReferenceError, "invalid null reference " "in method '" "Potential_reorganize" "', argument " "2"" of type '" "std::vector< std::string,std::allocator< std::string > > const &""'"); 
+      SWIG_exception_fail(SWIG_NullReferenceError, "invalid null reference " "in method '" "Tensor_reorganize" "', argument " "2"" of type '" "std::vector< std::string,std::allocator< std::string > > const &""'"); 
     }
     arg2 = ptr;
   }
   {
     try {
-      result = ((gum::Potential< double > const *)arg1)->reorganize((std::vector< std::string,std::allocator< std::string > > const &)*arg2);
+      result = ((gum::Tensor< double > const *)arg1)->reorganize((std::vector< std::string,std::allocator< std::string > > const &)*arg2);
     } catch (...) {
       SetPythonizeAgrumException();
       SWIG_fail;
     }
   }
-  resultobj = SWIG_NewPointerObj((new gum::Potential< double >(result)), SWIGTYPE_p_gum__PotentialT_double_t, SWIG_POINTER_OWN |  0 );
+  resultobj = SWIG_NewPointerObj((new gum::Tensor< double >(result)), SWIGTYPE_p_gum__TensorT_double_t, SWIG_POINTER_OWN |  0 );
   if (SWIG_IsNewObj(res2)) delete arg2;
   return resultobj;
 fail:
@@ -55691,13 +55691,13 @@ fail:
 }
 
 
-SWIGINTERN PyObject *_wrap_Potential_reorganize(PyObject *self, PyObject *args) {
+SWIGINTERN PyObject *_wrap_Tensor_reorganize(PyObject *self, PyObject *args) {
   Py_ssize_t argc;
   PyObject *argv[3] = {
     0
   };
   
-  if (!(argc = SWIG_Python_UnpackTuple(args, "Potential_reorganize", 0, 2, argv))) SWIG_fail;
+  if (!(argc = SWIG_Python_UnpackTuple(args, "Tensor_reorganize", 0, 2, argv))) SWIG_fail;
   --argc;
   if (argc == 2) {
     int _v = 0;
@@ -55706,102 +55706,102 @@ SWIGINTERN PyObject *_wrap_Potential_reorganize(PyObject *self, PyObject *args) 
       _v = SWIG_CheckState(res);
     }
     if (!_v) goto check_1;
-    return _wrap_Potential_reorganize__SWIG_0(self, argc, argv);
+    return _wrap_Tensor_reorganize__SWIG_0(self, argc, argv);
   }
 check_1:
   
   if (argc == 2) {
-    PyObject *retobj = _wrap_Potential_reorganize__SWIG_1(self, argc, argv);
+    PyObject *retobj = _wrap_Tensor_reorganize__SWIG_1(self, argc, argv);
     if (!SWIG_Python_TypeErrorOccurred(retobj)) return retobj;
     SWIG_fail;
   }
   
 fail:
-  SWIG_Python_RaiseOrModifyTypeError("Wrong number or type of arguments for overloaded function 'Potential_reorganize'.\n"
+  SWIG_Python_RaiseOrModifyTypeError("Wrong number or type of arguments for overloaded function 'Tensor_reorganize'.\n"
     "  Possible C/C++ prototypes are:\n"
-    "    gum::Potential< double >::reorganize(std::vector< gum::DiscreteVariable const *,std::allocator< gum::DiscreteVariable const * > > const &) const\n"
-    "    gum::Potential< double >::reorganize(std::vector< std::string,std::allocator< std::string > > const &) const\n");
+    "    gum::Tensor< double >::reorganize(std::vector< gum::DiscreteVariable const *,std::allocator< gum::DiscreteVariable const * > > const &) const\n"
+    "    gum::Tensor< double >::reorganize(std::vector< std::string,std::allocator< std::string > > const &) const\n");
   return 0;
 }
 
 
-SWIGINTERN PyObject *_wrap_Potential_extract__SWIG_0(PyObject *self, Py_ssize_t nobjs, PyObject **swig_obj) {
+SWIGINTERN PyObject *_wrap_Tensor_extract__SWIG_0(PyObject *self, Py_ssize_t nobjs, PyObject **swig_obj) {
   PyObject *resultobj = 0;
-  gum::Potential< double > *arg1 = 0 ;
+  gum::Tensor< double > *arg1 = 0 ;
   gum::Instantiation *arg2 = 0 ;
   void *argp1 = 0 ;
   int res1 = 0 ;
   void *argp2 = 0 ;
   int res2 = 0 ;
-  gum::Potential< double > result;
+  gum::Tensor< double > result;
   
   (void)self;
   if ((nobjs < 2) || (nobjs > 2)) SWIG_fail;
-  res1 = SWIG_ConvertPtr(swig_obj[0], &argp1,SWIGTYPE_p_gum__PotentialT_double_t, 0 |  0 );
+  res1 = SWIG_ConvertPtr(swig_obj[0], &argp1,SWIGTYPE_p_gum__TensorT_double_t, 0 |  0 );
   if (!SWIG_IsOK(res1)) {
-    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "Potential_extract" "', argument " "1"" of type '" "gum::Potential< double > const *""'"); 
+    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "Tensor_extract" "', argument " "1"" of type '" "gum::Tensor< double > const *""'"); 
   }
-  arg1 = reinterpret_cast< gum::Potential< double > * >(argp1);
+  arg1 = reinterpret_cast< gum::Tensor< double > * >(argp1);
   res2 = SWIG_ConvertPtr(swig_obj[1], &argp2, SWIGTYPE_p_gum__Instantiation,  0  | 0);
   if (!SWIG_IsOK(res2)) {
-    SWIG_exception_fail(SWIG_ArgError(res2), "in method '" "Potential_extract" "', argument " "2"" of type '" "gum::Instantiation const &""'"); 
+    SWIG_exception_fail(SWIG_ArgError(res2), "in method '" "Tensor_extract" "', argument " "2"" of type '" "gum::Instantiation const &""'"); 
   }
   if (!argp2) {
-    SWIG_exception_fail(SWIG_NullReferenceError, "invalid null reference " "in method '" "Potential_extract" "', argument " "2"" of type '" "gum::Instantiation const &""'"); 
+    SWIG_exception_fail(SWIG_NullReferenceError, "invalid null reference " "in method '" "Tensor_extract" "', argument " "2"" of type '" "gum::Instantiation const &""'"); 
   }
   arg2 = reinterpret_cast< gum::Instantiation * >(argp2);
   {
     try {
-      result = ((gum::Potential< double > const *)arg1)->extract((gum::Instantiation const &)*arg2);
+      result = ((gum::Tensor< double > const *)arg1)->extract((gum::Instantiation const &)*arg2);
     } catch (...) {
       SetPythonizeAgrumException();
       SWIG_fail;
     }
   }
-  resultobj = SWIG_NewPointerObj((new gum::Potential< double >(result)), SWIGTYPE_p_gum__PotentialT_double_t, SWIG_POINTER_OWN |  0 );
+  resultobj = SWIG_NewPointerObj((new gum::Tensor< double >(result)), SWIGTYPE_p_gum__TensorT_double_t, SWIG_POINTER_OWN |  0 );
   return resultobj;
 fail:
   return NULL;
 }
 
 
-SWIGINTERN PyObject *_wrap_Potential_putFirst(PyObject *self, PyObject *args) {
+SWIGINTERN PyObject *_wrap_Tensor_putFirst(PyObject *self, PyObject *args) {
   PyObject *resultobj = 0;
-  gum::Potential< double > *arg1 = 0 ;
+  gum::Tensor< double > *arg1 = 0 ;
   std::string *arg2 = 0 ;
   void *argp1 = 0 ;
   int res1 = 0 ;
   int res2 = SWIG_OLDOBJ ;
   PyObject *swig_obj[2] ;
-  gum::Potential< double > result;
+  gum::Tensor< double > result;
   
   (void)self;
-  if (!SWIG_Python_UnpackTuple(args, "Potential_putFirst", 2, 2, swig_obj)) SWIG_fail;
-  res1 = SWIG_ConvertPtr(swig_obj[0], &argp1,SWIGTYPE_p_gum__PotentialT_double_t, 0 |  0 );
+  if (!SWIG_Python_UnpackTuple(args, "Tensor_putFirst", 2, 2, swig_obj)) SWIG_fail;
+  res1 = SWIG_ConvertPtr(swig_obj[0], &argp1,SWIGTYPE_p_gum__TensorT_double_t, 0 |  0 );
   if (!SWIG_IsOK(res1)) {
-    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "Potential_putFirst" "', argument " "1"" of type '" "gum::Potential< double > const *""'"); 
+    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "Tensor_putFirst" "', argument " "1"" of type '" "gum::Tensor< double > const *""'"); 
   }
-  arg1 = reinterpret_cast< gum::Potential< double > * >(argp1);
+  arg1 = reinterpret_cast< gum::Tensor< double > * >(argp1);
   {
     std::string *ptr = (std::string *)0;
     res2 = SWIG_AsPtr_std_string(swig_obj[1], &ptr);
     if (!SWIG_IsOK(res2)) {
-      SWIG_exception_fail(SWIG_ArgError(res2), "in method '" "Potential_putFirst" "', argument " "2"" of type '" "std::string const &""'"); 
+      SWIG_exception_fail(SWIG_ArgError(res2), "in method '" "Tensor_putFirst" "', argument " "2"" of type '" "std::string const &""'"); 
     }
     if (!ptr) {
-      SWIG_exception_fail(SWIG_NullReferenceError, "invalid null reference " "in method '" "Potential_putFirst" "', argument " "2"" of type '" "std::string const &""'"); 
+      SWIG_exception_fail(SWIG_NullReferenceError, "invalid null reference " "in method '" "Tensor_putFirst" "', argument " "2"" of type '" "std::string const &""'"); 
     }
     arg2 = ptr;
   }
   {
     try {
-      result = ((gum::Potential< double > const *)arg1)->putFirst((std::string const &)*arg2);
+      result = ((gum::Tensor< double > const *)arg1)->putFirst((std::string const &)*arg2);
     } catch (...) {
       SetPythonizeAgrumException();
       SWIG_fail;
     }
   }
-  resultobj = SWIG_NewPointerObj((new gum::Potential< double >(result)), SWIGTYPE_p_gum__PotentialT_double_t, SWIG_POINTER_OWN |  0 );
+  resultobj = SWIG_NewPointerObj((new gum::Tensor< double >(result)), SWIGTYPE_p_gum__TensorT_double_t, SWIG_POINTER_OWN |  0 );
   if (SWIG_IsNewObj(res2)) delete arg2;
   return resultobj;
 fail:
@@ -55810,93 +55810,93 @@ fail:
 }
 
 
-SWIGINTERN PyObject *_wrap_Potential_fillWith__SWIG_0(PyObject *self, Py_ssize_t nobjs, PyObject **swig_obj) {
+SWIGINTERN PyObject *_wrap_Tensor_fillWith__SWIG_0(PyObject *self, Py_ssize_t nobjs, PyObject **swig_obj) {
   PyObject *resultobj = 0;
-  gum::Potential< double > *arg1 = 0 ;
-  gum::Potential< double > *arg2 = 0 ;
+  gum::Tensor< double > *arg1 = 0 ;
+  gum::Tensor< double > *arg2 = 0 ;
   void *argp1 = 0 ;
   int res1 = 0 ;
   void *argp2 = 0 ;
   int res2 = 0 ;
-  gum::Potential< double > *result = 0 ;
+  gum::Tensor< double > *result = 0 ;
   
   (void)self;
   if ((nobjs < 2) || (nobjs > 2)) SWIG_fail;
-  res1 = SWIG_ConvertPtr(swig_obj[0], &argp1,SWIGTYPE_p_gum__PotentialT_double_t, 0 |  0 );
+  res1 = SWIG_ConvertPtr(swig_obj[0], &argp1,SWIGTYPE_p_gum__TensorT_double_t, 0 |  0 );
   if (!SWIG_IsOK(res1)) {
-    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "Potential_fillWith" "', argument " "1"" of type '" "gum::Potential< double > const *""'"); 
+    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "Tensor_fillWith" "', argument " "1"" of type '" "gum::Tensor< double > const *""'"); 
   }
-  arg1 = reinterpret_cast< gum::Potential< double > * >(argp1);
-  res2 = SWIG_ConvertPtr(swig_obj[1], &argp2, SWIGTYPE_p_gum__PotentialT_double_t,  0  | 0);
+  arg1 = reinterpret_cast< gum::Tensor< double > * >(argp1);
+  res2 = SWIG_ConvertPtr(swig_obj[1], &argp2, SWIGTYPE_p_gum__TensorT_double_t,  0  | 0);
   if (!SWIG_IsOK(res2)) {
-    SWIG_exception_fail(SWIG_ArgError(res2), "in method '" "Potential_fillWith" "', argument " "2"" of type '" "gum::Potential< double > const &""'"); 
+    SWIG_exception_fail(SWIG_ArgError(res2), "in method '" "Tensor_fillWith" "', argument " "2"" of type '" "gum::Tensor< double > const &""'"); 
   }
   if (!argp2) {
-    SWIG_exception_fail(SWIG_NullReferenceError, "invalid null reference " "in method '" "Potential_fillWith" "', argument " "2"" of type '" "gum::Potential< double > const &""'"); 
+    SWIG_exception_fail(SWIG_NullReferenceError, "invalid null reference " "in method '" "Tensor_fillWith" "', argument " "2"" of type '" "gum::Tensor< double > const &""'"); 
   }
-  arg2 = reinterpret_cast< gum::Potential< double > * >(argp2);
+  arg2 = reinterpret_cast< gum::Tensor< double > * >(argp2);
   {
     try {
-      result = (gum::Potential< double > *) &((gum::Potential< double > const *)arg1)->fillWith((gum::Potential< double > const &)*arg2);
+      result = (gum::Tensor< double > *) &((gum::Tensor< double > const *)arg1)->fillWith((gum::Tensor< double > const &)*arg2);
     } catch (...) {
       SetPythonizeAgrumException();
       SWIG_fail;
     }
   }
-  resultobj = SWIG_NewPointerObj(SWIG_as_voidptr(result), SWIGTYPE_p_gum__PotentialT_double_t, 0 |  0 );
+  resultobj = SWIG_NewPointerObj(SWIG_as_voidptr(result), SWIGTYPE_p_gum__TensorT_double_t, 0 |  0 );
   return resultobj;
 fail:
   return NULL;
 }
 
 
-SWIGINTERN PyObject *_wrap_Potential_fillWith__SWIG_1(PyObject *self, Py_ssize_t nobjs, PyObject **swig_obj) {
+SWIGINTERN PyObject *_wrap_Tensor_fillWith__SWIG_1(PyObject *self, Py_ssize_t nobjs, PyObject **swig_obj) {
   PyObject *resultobj = 0;
-  gum::Potential< double > *arg1 = 0 ;
-  gum::Potential< double > *arg2 = 0 ;
+  gum::Tensor< double > *arg1 = 0 ;
+  gum::Tensor< double > *arg2 = 0 ;
   std::vector< std::string,std::allocator< std::string > > *arg3 = 0 ;
   void *argp1 = 0 ;
   int res1 = 0 ;
   void *argp2 = 0 ;
   int res2 = 0 ;
   int res3 = SWIG_OLDOBJ ;
-  gum::Potential< double > *result = 0 ;
+  gum::Tensor< double > *result = 0 ;
   
   (void)self;
   if ((nobjs < 3) || (nobjs > 3)) SWIG_fail;
-  res1 = SWIG_ConvertPtr(swig_obj[0], &argp1,SWIGTYPE_p_gum__PotentialT_double_t, 0 |  0 );
+  res1 = SWIG_ConvertPtr(swig_obj[0], &argp1,SWIGTYPE_p_gum__TensorT_double_t, 0 |  0 );
   if (!SWIG_IsOK(res1)) {
-    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "Potential_fillWith" "', argument " "1"" of type '" "gum::Potential< double > const *""'"); 
+    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "Tensor_fillWith" "', argument " "1"" of type '" "gum::Tensor< double > const *""'"); 
   }
-  arg1 = reinterpret_cast< gum::Potential< double > * >(argp1);
-  res2 = SWIG_ConvertPtr(swig_obj[1], &argp2, SWIGTYPE_p_gum__PotentialT_double_t,  0  | 0);
+  arg1 = reinterpret_cast< gum::Tensor< double > * >(argp1);
+  res2 = SWIG_ConvertPtr(swig_obj[1], &argp2, SWIGTYPE_p_gum__TensorT_double_t,  0  | 0);
   if (!SWIG_IsOK(res2)) {
-    SWIG_exception_fail(SWIG_ArgError(res2), "in method '" "Potential_fillWith" "', argument " "2"" of type '" "gum::Potential< double > const &""'"); 
+    SWIG_exception_fail(SWIG_ArgError(res2), "in method '" "Tensor_fillWith" "', argument " "2"" of type '" "gum::Tensor< double > const &""'"); 
   }
   if (!argp2) {
-    SWIG_exception_fail(SWIG_NullReferenceError, "invalid null reference " "in method '" "Potential_fillWith" "', argument " "2"" of type '" "gum::Potential< double > const &""'"); 
+    SWIG_exception_fail(SWIG_NullReferenceError, "invalid null reference " "in method '" "Tensor_fillWith" "', argument " "2"" of type '" "gum::Tensor< double > const &""'"); 
   }
-  arg2 = reinterpret_cast< gum::Potential< double > * >(argp2);
+  arg2 = reinterpret_cast< gum::Tensor< double > * >(argp2);
   {
     std::vector< std::string,std::allocator< std::string > > *ptr = (std::vector< std::string,std::allocator< std::string > > *)0;
     res3 = swig::asptr(swig_obj[2], &ptr);
     if (!SWIG_IsOK(res3)) {
-      SWIG_exception_fail(SWIG_ArgError(res3), "in method '" "Potential_fillWith" "', argument " "3"" of type '" "std::vector< std::string,std::allocator< std::string > > const &""'"); 
+      SWIG_exception_fail(SWIG_ArgError(res3), "in method '" "Tensor_fillWith" "', argument " "3"" of type '" "std::vector< std::string,std::allocator< std::string > > const &""'"); 
     }
     if (!ptr) {
-      SWIG_exception_fail(SWIG_NullReferenceError, "invalid null reference " "in method '" "Potential_fillWith" "', argument " "3"" of type '" "std::vector< std::string,std::allocator< std::string > > const &""'"); 
+      SWIG_exception_fail(SWIG_NullReferenceError, "invalid null reference " "in method '" "Tensor_fillWith" "', argument " "3"" of type '" "std::vector< std::string,std::allocator< std::string > > const &""'"); 
     }
     arg3 = ptr;
   }
   {
     try {
-      result = (gum::Potential< double > *) &((gum::Potential< double > const *)arg1)->fillWith((gum::Potential< double > const &)*arg2,(std::vector< std::string,std::allocator< std::string > > const &)*arg3);
+      result = (gum::Tensor< double > *) &((gum::Tensor< double > const *)arg1)->fillWith((gum::Tensor< double > const &)*arg2,(std::vector< std::string,std::allocator< std::string > > const &)*arg3);
     } catch (...) {
       SetPythonizeAgrumException();
       SWIG_fail;
     }
   }
-  resultobj = SWIG_NewPointerObj(SWIG_as_voidptr(result), SWIGTYPE_p_gum__PotentialT_double_t, 0 |  0 );
+  resultobj = SWIG_NewPointerObj(SWIG_as_voidptr(result), SWIGTYPE_p_gum__TensorT_double_t, 0 |  0 );
   if (SWIG_IsNewObj(res3)) delete arg3;
   return resultobj;
 fail:
@@ -55905,42 +55905,42 @@ fail:
 }
 
 
-SWIGINTERN PyObject *_wrap_Potential_fillWith__SWIG_2(PyObject *self, Py_ssize_t nobjs, PyObject **swig_obj) {
+SWIGINTERN PyObject *_wrap_Tensor_fillWith__SWIG_2(PyObject *self, Py_ssize_t nobjs, PyObject **swig_obj) {
   PyObject *resultobj = 0;
-  gum::Potential< double > *arg1 = 0 ;
+  gum::Tensor< double > *arg1 = 0 ;
   std::vector< double,std::allocator< double > > *arg2 = 0 ;
   void *argp1 = 0 ;
   int res1 = 0 ;
   int res2 = SWIG_OLDOBJ ;
-  gum::Potential< double > *result = 0 ;
+  gum::Tensor< double > *result = 0 ;
   
   (void)self;
   if ((nobjs < 2) || (nobjs > 2)) SWIG_fail;
-  res1 = SWIG_ConvertPtr(swig_obj[0], &argp1,SWIGTYPE_p_gum__PotentialT_double_t, 0 |  0 );
+  res1 = SWIG_ConvertPtr(swig_obj[0], &argp1,SWIGTYPE_p_gum__TensorT_double_t, 0 |  0 );
   if (!SWIG_IsOK(res1)) {
-    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "Potential_fillWith" "', argument " "1"" of type '" "gum::Potential< double > const *""'"); 
+    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "Tensor_fillWith" "', argument " "1"" of type '" "gum::Tensor< double > const *""'"); 
   }
-  arg1 = reinterpret_cast< gum::Potential< double > * >(argp1);
+  arg1 = reinterpret_cast< gum::Tensor< double > * >(argp1);
   {
     std::vector< double,std::allocator< double > > *ptr = (std::vector< double,std::allocator< double > > *)0;
     res2 = swig::asptr(swig_obj[1], &ptr);
     if (!SWIG_IsOK(res2)) {
-      SWIG_exception_fail(SWIG_ArgError(res2), "in method '" "Potential_fillWith" "', argument " "2"" of type '" "std::vector< double,std::allocator< double > > const &""'"); 
+      SWIG_exception_fail(SWIG_ArgError(res2), "in method '" "Tensor_fillWith" "', argument " "2"" of type '" "std::vector< double,std::allocator< double > > const &""'"); 
     }
     if (!ptr) {
-      SWIG_exception_fail(SWIG_NullReferenceError, "invalid null reference " "in method '" "Potential_fillWith" "', argument " "2"" of type '" "std::vector< double,std::allocator< double > > const &""'"); 
+      SWIG_exception_fail(SWIG_NullReferenceError, "invalid null reference " "in method '" "Tensor_fillWith" "', argument " "2"" of type '" "std::vector< double,std::allocator< double > > const &""'"); 
     }
     arg2 = ptr;
   }
   {
     try {
-      result = (gum::Potential< double > *) &((gum::Potential< double > const *)arg1)->fillWith((std::vector< double,std::allocator< double > > const &)*arg2);
+      result = (gum::Tensor< double > *) &((gum::Tensor< double > const *)arg1)->fillWith((std::vector< double,std::allocator< double > > const &)*arg2);
     } catch (...) {
       SetPythonizeAgrumException();
       SWIG_fail;
     }
   }
-  resultobj = SWIG_NewPointerObj(SWIG_as_voidptr(result), SWIGTYPE_p_gum__PotentialT_double_t, 0 |  0 );
+  resultobj = SWIG_NewPointerObj(SWIG_as_voidptr(result), SWIGTYPE_p_gum__TensorT_double_t, 0 |  0 );
   if (SWIG_IsNewObj(res2)) delete arg2;
   return resultobj;
 fail:
@@ -55949,61 +55949,61 @@ fail:
 }
 
 
-SWIGINTERN PyObject *_wrap_Potential_fillWith__SWIG_3(PyObject *self, Py_ssize_t nobjs, PyObject **swig_obj) {
+SWIGINTERN PyObject *_wrap_Tensor_fillWith__SWIG_3(PyObject *self, Py_ssize_t nobjs, PyObject **swig_obj) {
   PyObject *resultobj = 0;
-  gum::Potential< double > *arg1 = 0 ;
+  gum::Tensor< double > *arg1 = 0 ;
   double *arg2 = 0 ;
   void *argp1 = 0 ;
   int res1 = 0 ;
   double temp2 ;
   double val2 ;
   int ecode2 = 0 ;
-  gum::Potential< double > *result = 0 ;
+  gum::Tensor< double > *result = 0 ;
   
   (void)self;
   if ((nobjs < 2) || (nobjs > 2)) SWIG_fail;
-  res1 = SWIG_ConvertPtr(swig_obj[0], &argp1,SWIGTYPE_p_gum__PotentialT_double_t, 0 |  0 );
+  res1 = SWIG_ConvertPtr(swig_obj[0], &argp1,SWIGTYPE_p_gum__TensorT_double_t, 0 |  0 );
   if (!SWIG_IsOK(res1)) {
-    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "Potential_fillWith" "', argument " "1"" of type '" "gum::Potential< double > const *""'"); 
+    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "Tensor_fillWith" "', argument " "1"" of type '" "gum::Tensor< double > const *""'"); 
   }
-  arg1 = reinterpret_cast< gum::Potential< double > * >(argp1);
+  arg1 = reinterpret_cast< gum::Tensor< double > * >(argp1);
   ecode2 = SWIG_AsVal_double(swig_obj[1], &val2);
   if (!SWIG_IsOK(ecode2)) {
-    SWIG_exception_fail(SWIG_ArgError(ecode2), "in method '" "Potential_fillWith" "', argument " "2"" of type '" "double""'");
+    SWIG_exception_fail(SWIG_ArgError(ecode2), "in method '" "Tensor_fillWith" "', argument " "2"" of type '" "double""'");
   } 
   temp2 = static_cast< double >(val2);
   arg2 = &temp2;
   {
     try {
-      result = (gum::Potential< double > *) &((gum::Potential< double > const *)arg1)->fillWith((double const &)*arg2);
+      result = (gum::Tensor< double > *) &((gum::Tensor< double > const *)arg1)->fillWith((double const &)*arg2);
     } catch (...) {
       SetPythonizeAgrumException();
       SWIG_fail;
     }
   }
-  resultobj = SWIG_NewPointerObj(SWIG_as_voidptr(result), SWIGTYPE_p_gum__PotentialT_double_t, 0 |  0 );
+  resultobj = SWIG_NewPointerObj(SWIG_as_voidptr(result), SWIGTYPE_p_gum__TensorT_double_t, 0 |  0 );
   return resultobj;
 fail:
   return NULL;
 }
 
 
-SWIGINTERN PyObject *_wrap_Potential_fillWith(PyObject *self, PyObject *args) {
+SWIGINTERN PyObject *_wrap_Tensor_fillWith(PyObject *self, PyObject *args) {
   Py_ssize_t argc;
   PyObject *argv[4] = {
     0
   };
   
-  if (!(argc = SWIG_Python_UnpackTuple(args, "Potential_fillWith", 0, 3, argv))) SWIG_fail;
+  if (!(argc = SWIG_Python_UnpackTuple(args, "Tensor_fillWith", 0, 3, argv))) SWIG_fail;
   --argc;
   if (argc == 2) {
     int _v = 0;
     {
-      int res = SWIG_ConvertPtr(argv[1], 0, SWIGTYPE_p_gum__PotentialT_double_t, SWIG_POINTER_NO_NULL | 0);
+      int res = SWIG_ConvertPtr(argv[1], 0, SWIGTYPE_p_gum__TensorT_double_t, SWIG_POINTER_NO_NULL | 0);
       _v = SWIG_CheckState(res);
     }
     if (!_v) goto check_1;
-    return _wrap_Potential_fillWith__SWIG_0(self, argc, argv);
+    return _wrap_Tensor_fillWith__SWIG_0(self, argc, argv);
   }
 check_1:
   
@@ -56016,315 +56016,315 @@ check_1:
       }
     }
     if (!_v) goto check_2;
-    return _wrap_Potential_fillWith__SWIG_3(self, argc, argv);
+    return _wrap_Tensor_fillWith__SWIG_3(self, argc, argv);
   }
 check_2:
   
   if (argc == 2) {
-    PyObject *retobj = _wrap_Potential_fillWith__SWIG_2(self, argc, argv);
+    PyObject *retobj = _wrap_Tensor_fillWith__SWIG_2(self, argc, argv);
     if (!SWIG_Python_TypeErrorOccurred(retobj)) return retobj;
     SWIG_fail;
   }
   if (argc == 3) {
-    PyObject *retobj = _wrap_Potential_fillWith__SWIG_1(self, argc, argv);
+    PyObject *retobj = _wrap_Tensor_fillWith__SWIG_1(self, argc, argv);
     if (!SWIG_Python_TypeErrorOccurred(retobj)) return retobj;
     SWIG_fail;
   }
   
 fail:
-  SWIG_Python_RaiseOrModifyTypeError("Wrong number or type of arguments for overloaded function 'Potential_fillWith'.\n"
+  SWIG_Python_RaiseOrModifyTypeError("Wrong number or type of arguments for overloaded function 'Tensor_fillWith'.\n"
     "  Possible C/C++ prototypes are:\n"
-    "    gum::Potential< double >::fillWith(gum::Potential< double > const &) const\n"
-    "    gum::Potential< double >::fillWith(gum::Potential< double > const &,std::vector< std::string,std::allocator< std::string > > const &) const\n"
-    "    gum::Potential< double >::fillWith(std::vector< double,std::allocator< double > > const &) const\n"
-    "    gum::Potential< double >::fillWith(double const &) const\n");
+    "    gum::Tensor< double >::fillWith(gum::Tensor< double > const &) const\n"
+    "    gum::Tensor< double >::fillWith(gum::Tensor< double > const &,std::vector< std::string,std::allocator< std::string > > const &) const\n"
+    "    gum::Tensor< double >::fillWith(std::vector< double,std::allocator< double > > const &) const\n"
+    "    gum::Tensor< double >::fillWith(double const &) const\n");
   return 0;
 }
 
 
-SWIGINTERN PyObject *_wrap_Potential_abs(PyObject *self, PyObject *args) {
+SWIGINTERN PyObject *_wrap_Tensor_abs(PyObject *self, PyObject *args) {
   PyObject *resultobj = 0;
-  gum::Potential< double > *arg1 = 0 ;
+  gum::Tensor< double > *arg1 = 0 ;
   void *argp1 = 0 ;
   int res1 = 0 ;
   PyObject *swig_obj[1] ;
-  gum::Potential< double > *result = 0 ;
+  gum::Tensor< double > *result = 0 ;
   
   (void)self;
   if (!args) SWIG_fail;
   swig_obj[0] = args;
-  res1 = SWIG_ConvertPtr(swig_obj[0], &argp1,SWIGTYPE_p_gum__PotentialT_double_t, 0 |  0 );
+  res1 = SWIG_ConvertPtr(swig_obj[0], &argp1,SWIGTYPE_p_gum__TensorT_double_t, 0 |  0 );
   if (!SWIG_IsOK(res1)) {
-    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "Potential_abs" "', argument " "1"" of type '" "gum::Potential< double > const *""'"); 
+    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "Tensor_abs" "', argument " "1"" of type '" "gum::Tensor< double > const *""'"); 
   }
-  arg1 = reinterpret_cast< gum::Potential< double > * >(argp1);
+  arg1 = reinterpret_cast< gum::Tensor< double > * >(argp1);
   {
     try {
-      result = (gum::Potential< double > *) &((gum::Potential< double > const *)arg1)->abs();
+      result = (gum::Tensor< double > *) &((gum::Tensor< double > const *)arg1)->abs();
     } catch (...) {
       SetPythonizeAgrumException();
       SWIG_fail;
     }
   }
-  resultobj = SWIG_NewPointerObj(SWIG_as_voidptr(result), SWIGTYPE_p_gum__PotentialT_double_t, 0 |  0 );
+  resultobj = SWIG_NewPointerObj(SWIG_as_voidptr(result), SWIGTYPE_p_gum__TensorT_double_t, 0 |  0 );
   return resultobj;
 fail:
   return NULL;
 }
 
 
-SWIGINTERN PyObject *_wrap_Potential_sq(PyObject *self, PyObject *args) {
+SWIGINTERN PyObject *_wrap_Tensor_sq(PyObject *self, PyObject *args) {
   PyObject *resultobj = 0;
-  gum::Potential< double > *arg1 = 0 ;
+  gum::Tensor< double > *arg1 = 0 ;
   void *argp1 = 0 ;
   int res1 = 0 ;
   PyObject *swig_obj[1] ;
-  gum::Potential< double > *result = 0 ;
+  gum::Tensor< double > *result = 0 ;
   
   (void)self;
   if (!args) SWIG_fail;
   swig_obj[0] = args;
-  res1 = SWIG_ConvertPtr(swig_obj[0], &argp1,SWIGTYPE_p_gum__PotentialT_double_t, 0 |  0 );
+  res1 = SWIG_ConvertPtr(swig_obj[0], &argp1,SWIGTYPE_p_gum__TensorT_double_t, 0 |  0 );
   if (!SWIG_IsOK(res1)) {
-    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "Potential_sq" "', argument " "1"" of type '" "gum::Potential< double > const *""'"); 
+    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "Tensor_sq" "', argument " "1"" of type '" "gum::Tensor< double > const *""'"); 
   }
-  arg1 = reinterpret_cast< gum::Potential< double > * >(argp1);
+  arg1 = reinterpret_cast< gum::Tensor< double > * >(argp1);
   {
     try {
-      result = (gum::Potential< double > *) &((gum::Potential< double > const *)arg1)->sq();
+      result = (gum::Tensor< double > *) &((gum::Tensor< double > const *)arg1)->sq();
     } catch (...) {
       SetPythonizeAgrumException();
       SWIG_fail;
     }
   }
-  resultobj = SWIG_NewPointerObj(SWIG_as_voidptr(result), SWIGTYPE_p_gum__PotentialT_double_t, 0 |  0 );
+  resultobj = SWIG_NewPointerObj(SWIG_as_voidptr(result), SWIGTYPE_p_gum__TensorT_double_t, 0 |  0 );
   return resultobj;
 fail:
   return NULL;
 }
 
 
-SWIGINTERN PyObject *_wrap_Potential_log2(PyObject *self, PyObject *args) {
+SWIGINTERN PyObject *_wrap_Tensor_log2(PyObject *self, PyObject *args) {
   PyObject *resultobj = 0;
-  gum::Potential< double > *arg1 = 0 ;
+  gum::Tensor< double > *arg1 = 0 ;
   void *argp1 = 0 ;
   int res1 = 0 ;
   PyObject *swig_obj[1] ;
-  gum::Potential< double > *result = 0 ;
+  gum::Tensor< double > *result = 0 ;
   
   (void)self;
   if (!args) SWIG_fail;
   swig_obj[0] = args;
-  res1 = SWIG_ConvertPtr(swig_obj[0], &argp1,SWIGTYPE_p_gum__PotentialT_double_t, 0 |  0 );
+  res1 = SWIG_ConvertPtr(swig_obj[0], &argp1,SWIGTYPE_p_gum__TensorT_double_t, 0 |  0 );
   if (!SWIG_IsOK(res1)) {
-    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "Potential_log2" "', argument " "1"" of type '" "gum::Potential< double > const *""'"); 
+    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "Tensor_log2" "', argument " "1"" of type '" "gum::Tensor< double > const *""'"); 
   }
-  arg1 = reinterpret_cast< gum::Potential< double > * >(argp1);
+  arg1 = reinterpret_cast< gum::Tensor< double > * >(argp1);
   {
     try {
-      result = (gum::Potential< double > *) &((gum::Potential< double > const *)arg1)->log2();
+      result = (gum::Tensor< double > *) &((gum::Tensor< double > const *)arg1)->log2();
     } catch (...) {
       SetPythonizeAgrumException();
       SWIG_fail;
     }
   }
-  resultobj = SWIG_NewPointerObj(SWIG_as_voidptr(result), SWIGTYPE_p_gum__PotentialT_double_t, 0 |  0 );
+  resultobj = SWIG_NewPointerObj(SWIG_as_voidptr(result), SWIGTYPE_p_gum__TensorT_double_t, 0 |  0 );
   return resultobj;
 fail:
   return NULL;
 }
 
 
-SWIGINTERN PyObject *_wrap_Potential_sgn(PyObject *self, PyObject *args) {
+SWIGINTERN PyObject *_wrap_Tensor_sgn(PyObject *self, PyObject *args) {
   PyObject *resultobj = 0;
-  gum::Potential< double > *arg1 = 0 ;
+  gum::Tensor< double > *arg1 = 0 ;
   void *argp1 = 0 ;
   int res1 = 0 ;
   PyObject *swig_obj[1] ;
-  gum::Potential< double > *result = 0 ;
+  gum::Tensor< double > *result = 0 ;
   
   (void)self;
   if (!args) SWIG_fail;
   swig_obj[0] = args;
-  res1 = SWIG_ConvertPtr(swig_obj[0], &argp1,SWIGTYPE_p_gum__PotentialT_double_t, 0 |  0 );
+  res1 = SWIG_ConvertPtr(swig_obj[0], &argp1,SWIGTYPE_p_gum__TensorT_double_t, 0 |  0 );
   if (!SWIG_IsOK(res1)) {
-    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "Potential_sgn" "', argument " "1"" of type '" "gum::Potential< double > const *""'"); 
+    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "Tensor_sgn" "', argument " "1"" of type '" "gum::Tensor< double > const *""'"); 
   }
-  arg1 = reinterpret_cast< gum::Potential< double > * >(argp1);
+  arg1 = reinterpret_cast< gum::Tensor< double > * >(argp1);
   {
     try {
-      result = (gum::Potential< double > *) &((gum::Potential< double > const *)arg1)->sgn();
+      result = (gum::Tensor< double > *) &((gum::Tensor< double > const *)arg1)->sgn();
     } catch (...) {
       SetPythonizeAgrumException();
       SWIG_fail;
     }
   }
-  resultobj = SWIG_NewPointerObj(SWIG_as_voidptr(result), SWIGTYPE_p_gum__PotentialT_double_t, 0 |  0 );
+  resultobj = SWIG_NewPointerObj(SWIG_as_voidptr(result), SWIGTYPE_p_gum__TensorT_double_t, 0 |  0 );
   return resultobj;
 fail:
   return NULL;
 }
 
 
-SWIGINTERN PyObject *_wrap_Potential_new_abs(PyObject *self, PyObject *args) {
+SWIGINTERN PyObject *_wrap_Tensor_new_abs(PyObject *self, PyObject *args) {
   PyObject *resultobj = 0;
-  gum::Potential< double > *arg1 = 0 ;
+  gum::Tensor< double > *arg1 = 0 ;
   void *argp1 = 0 ;
   int res1 = 0 ;
   PyObject *swig_obj[1] ;
-  gum::Potential< double > result;
+  gum::Tensor< double > result;
   
   (void)self;
   if (!args) SWIG_fail;
   swig_obj[0] = args;
-  res1 = SWIG_ConvertPtr(swig_obj[0], &argp1,SWIGTYPE_p_gum__PotentialT_double_t, 0 |  0 );
+  res1 = SWIG_ConvertPtr(swig_obj[0], &argp1,SWIGTYPE_p_gum__TensorT_double_t, 0 |  0 );
   if (!SWIG_IsOK(res1)) {
-    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "Potential_new_abs" "', argument " "1"" of type '" "gum::Potential< double > const *""'"); 
+    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "Tensor_new_abs" "', argument " "1"" of type '" "gum::Tensor< double > const *""'"); 
   }
-  arg1 = reinterpret_cast< gum::Potential< double > * >(argp1);
+  arg1 = reinterpret_cast< gum::Tensor< double > * >(argp1);
   {
     try {
-      result = ((gum::Potential< double > const *)arg1)->new_abs();
+      result = ((gum::Tensor< double > const *)arg1)->new_abs();
     } catch (...) {
       SetPythonizeAgrumException();
       SWIG_fail;
     }
   }
-  resultobj = SWIG_NewPointerObj((new gum::Potential< double >(result)), SWIGTYPE_p_gum__PotentialT_double_t, SWIG_POINTER_OWN |  0 );
+  resultobj = SWIG_NewPointerObj((new gum::Tensor< double >(result)), SWIGTYPE_p_gum__TensorT_double_t, SWIG_POINTER_OWN |  0 );
   return resultobj;
 fail:
   return NULL;
 }
 
 
-SWIGINTERN PyObject *_wrap_Potential_new_sq(PyObject *self, PyObject *args) {
+SWIGINTERN PyObject *_wrap_Tensor_new_sq(PyObject *self, PyObject *args) {
   PyObject *resultobj = 0;
-  gum::Potential< double > *arg1 = 0 ;
+  gum::Tensor< double > *arg1 = 0 ;
   void *argp1 = 0 ;
   int res1 = 0 ;
   PyObject *swig_obj[1] ;
-  gum::Potential< double > result;
+  gum::Tensor< double > result;
   
   (void)self;
   if (!args) SWIG_fail;
   swig_obj[0] = args;
-  res1 = SWIG_ConvertPtr(swig_obj[0], &argp1,SWIGTYPE_p_gum__PotentialT_double_t, 0 |  0 );
+  res1 = SWIG_ConvertPtr(swig_obj[0], &argp1,SWIGTYPE_p_gum__TensorT_double_t, 0 |  0 );
   if (!SWIG_IsOK(res1)) {
-    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "Potential_new_sq" "', argument " "1"" of type '" "gum::Potential< double > const *""'"); 
+    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "Tensor_new_sq" "', argument " "1"" of type '" "gum::Tensor< double > const *""'"); 
   }
-  arg1 = reinterpret_cast< gum::Potential< double > * >(argp1);
+  arg1 = reinterpret_cast< gum::Tensor< double > * >(argp1);
   {
     try {
-      result = ((gum::Potential< double > const *)arg1)->new_sq();
+      result = ((gum::Tensor< double > const *)arg1)->new_sq();
     } catch (...) {
       SetPythonizeAgrumException();
       SWIG_fail;
     }
   }
-  resultobj = SWIG_NewPointerObj((new gum::Potential< double >(result)), SWIGTYPE_p_gum__PotentialT_double_t, SWIG_POINTER_OWN |  0 );
+  resultobj = SWIG_NewPointerObj((new gum::Tensor< double >(result)), SWIGTYPE_p_gum__TensorT_double_t, SWIG_POINTER_OWN |  0 );
   return resultobj;
 fail:
   return NULL;
 }
 
 
-SWIGINTERN PyObject *_wrap_Potential_new_log2(PyObject *self, PyObject *args) {
+SWIGINTERN PyObject *_wrap_Tensor_new_log2(PyObject *self, PyObject *args) {
   PyObject *resultobj = 0;
-  gum::Potential< double > *arg1 = 0 ;
+  gum::Tensor< double > *arg1 = 0 ;
   void *argp1 = 0 ;
   int res1 = 0 ;
   PyObject *swig_obj[1] ;
-  gum::Potential< double > result;
+  gum::Tensor< double > result;
   
   (void)self;
   if (!args) SWIG_fail;
   swig_obj[0] = args;
-  res1 = SWIG_ConvertPtr(swig_obj[0], &argp1,SWIGTYPE_p_gum__PotentialT_double_t, 0 |  0 );
+  res1 = SWIG_ConvertPtr(swig_obj[0], &argp1,SWIGTYPE_p_gum__TensorT_double_t, 0 |  0 );
   if (!SWIG_IsOK(res1)) {
-    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "Potential_new_log2" "', argument " "1"" of type '" "gum::Potential< double > const *""'"); 
+    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "Tensor_new_log2" "', argument " "1"" of type '" "gum::Tensor< double > const *""'"); 
   }
-  arg1 = reinterpret_cast< gum::Potential< double > * >(argp1);
+  arg1 = reinterpret_cast< gum::Tensor< double > * >(argp1);
   {
     try {
-      result = ((gum::Potential< double > const *)arg1)->new_log2();
+      result = ((gum::Tensor< double > const *)arg1)->new_log2();
     } catch (...) {
       SetPythonizeAgrumException();
       SWIG_fail;
     }
   }
-  resultobj = SWIG_NewPointerObj((new gum::Potential< double >(result)), SWIGTYPE_p_gum__PotentialT_double_t, SWIG_POINTER_OWN |  0 );
+  resultobj = SWIG_NewPointerObj((new gum::Tensor< double >(result)), SWIGTYPE_p_gum__TensorT_double_t, SWIG_POINTER_OWN |  0 );
   return resultobj;
 fail:
   return NULL;
 }
 
 
-SWIGINTERN PyObject *_wrap_Potential_new_sgn(PyObject *self, PyObject *args) {
+SWIGINTERN PyObject *_wrap_Tensor_new_sgn(PyObject *self, PyObject *args) {
   PyObject *resultobj = 0;
-  gum::Potential< double > *arg1 = 0 ;
+  gum::Tensor< double > *arg1 = 0 ;
   void *argp1 = 0 ;
   int res1 = 0 ;
   PyObject *swig_obj[1] ;
-  gum::Potential< double > result;
+  gum::Tensor< double > result;
   
   (void)self;
   if (!args) SWIG_fail;
   swig_obj[0] = args;
-  res1 = SWIG_ConvertPtr(swig_obj[0], &argp1,SWIGTYPE_p_gum__PotentialT_double_t, 0 |  0 );
+  res1 = SWIG_ConvertPtr(swig_obj[0], &argp1,SWIGTYPE_p_gum__TensorT_double_t, 0 |  0 );
   if (!SWIG_IsOK(res1)) {
-    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "Potential_new_sgn" "', argument " "1"" of type '" "gum::Potential< double > const *""'"); 
+    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "Tensor_new_sgn" "', argument " "1"" of type '" "gum::Tensor< double > const *""'"); 
   }
-  arg1 = reinterpret_cast< gum::Potential< double > * >(argp1);
+  arg1 = reinterpret_cast< gum::Tensor< double > * >(argp1);
   {
     try {
-      result = ((gum::Potential< double > const *)arg1)->new_sgn();
+      result = ((gum::Tensor< double > const *)arg1)->new_sgn();
     } catch (...) {
       SetPythonizeAgrumException();
       SWIG_fail;
     }
   }
-  resultobj = SWIG_NewPointerObj((new gum::Potential< double >(result)), SWIGTYPE_p_gum__PotentialT_double_t, SWIG_POINTER_OWN |  0 );
+  resultobj = SWIG_NewPointerObj((new gum::Tensor< double >(result)), SWIGTYPE_p_gum__TensorT_double_t, SWIG_POINTER_OWN |  0 );
   return resultobj;
 fail:
   return NULL;
 }
 
 
-SWIGINTERN PyObject *_wrap_Potential_normalize(PyObject *self, PyObject *args) {
+SWIGINTERN PyObject *_wrap_Tensor_normalize(PyObject *self, PyObject *args) {
   PyObject *resultobj = 0;
-  gum::Potential< double > *arg1 = 0 ;
+  gum::Tensor< double > *arg1 = 0 ;
   void *argp1 = 0 ;
   int res1 = 0 ;
   PyObject *swig_obj[1] ;
-  gum::Potential< double > *result = 0 ;
+  gum::Tensor< double > *result = 0 ;
   
   (void)self;
   if (!args) SWIG_fail;
   swig_obj[0] = args;
-  res1 = SWIG_ConvertPtr(swig_obj[0], &argp1,SWIGTYPE_p_gum__PotentialT_double_t, 0 |  0 );
+  res1 = SWIG_ConvertPtr(swig_obj[0], &argp1,SWIGTYPE_p_gum__TensorT_double_t, 0 |  0 );
   if (!SWIG_IsOK(res1)) {
-    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "Potential_normalize" "', argument " "1"" of type '" "gum::Potential< double > const *""'"); 
+    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "Tensor_normalize" "', argument " "1"" of type '" "gum::Tensor< double > const *""'"); 
   }
-  arg1 = reinterpret_cast< gum::Potential< double > * >(argp1);
+  arg1 = reinterpret_cast< gum::Tensor< double > * >(argp1);
   {
     try {
-      result = (gum::Potential< double > *) &((gum::Potential< double > const *)arg1)->normalize();
+      result = (gum::Tensor< double > *) &((gum::Tensor< double > const *)arg1)->normalize();
     } catch (...) {
       SetPythonizeAgrumException();
       SWIG_fail;
     }
   }
-  resultobj = SWIG_NewPointerObj(SWIG_as_voidptr(result), SWIGTYPE_p_gum__PotentialT_double_t, 0 |  0 );
+  resultobj = SWIG_NewPointerObj(SWIG_as_voidptr(result), SWIGTYPE_p_gum__TensorT_double_t, 0 |  0 );
   return resultobj;
 fail:
   return NULL;
 }
 
 
-SWIGINTERN PyObject *_wrap_Potential_KL(PyObject *self, PyObject *args) {
+SWIGINTERN PyObject *_wrap_Tensor_KL(PyObject *self, PyObject *args) {
   PyObject *resultobj = 0;
-  gum::Potential< double > *arg1 = 0 ;
-  gum::Potential< double > *arg2 = 0 ;
+  gum::Tensor< double > *arg1 = 0 ;
+  gum::Tensor< double > *arg2 = 0 ;
   void *argp1 = 0 ;
   int res1 = 0 ;
   void *argp2 = 0 ;
@@ -56333,23 +56333,23 @@ SWIGINTERN PyObject *_wrap_Potential_KL(PyObject *self, PyObject *args) {
   double result;
   
   (void)self;
-  if (!SWIG_Python_UnpackTuple(args, "Potential_KL", 2, 2, swig_obj)) SWIG_fail;
-  res1 = SWIG_ConvertPtr(swig_obj[0], &argp1,SWIGTYPE_p_gum__PotentialT_double_t, 0 |  0 );
+  if (!SWIG_Python_UnpackTuple(args, "Tensor_KL", 2, 2, swig_obj)) SWIG_fail;
+  res1 = SWIG_ConvertPtr(swig_obj[0], &argp1,SWIGTYPE_p_gum__TensorT_double_t, 0 |  0 );
   if (!SWIG_IsOK(res1)) {
-    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "Potential_KL" "', argument " "1"" of type '" "gum::Potential< double > const *""'"); 
+    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "Tensor_KL" "', argument " "1"" of type '" "gum::Tensor< double > const *""'"); 
   }
-  arg1 = reinterpret_cast< gum::Potential< double > * >(argp1);
-  res2 = SWIG_ConvertPtr(swig_obj[1], &argp2, SWIGTYPE_p_gum__PotentialT_double_t,  0  | 0);
+  arg1 = reinterpret_cast< gum::Tensor< double > * >(argp1);
+  res2 = SWIG_ConvertPtr(swig_obj[1], &argp2, SWIGTYPE_p_gum__TensorT_double_t,  0  | 0);
   if (!SWIG_IsOK(res2)) {
-    SWIG_exception_fail(SWIG_ArgError(res2), "in method '" "Potential_KL" "', argument " "2"" of type '" "gum::Potential< double > const &""'"); 
+    SWIG_exception_fail(SWIG_ArgError(res2), "in method '" "Tensor_KL" "', argument " "2"" of type '" "gum::Tensor< double > const &""'"); 
   }
   if (!argp2) {
-    SWIG_exception_fail(SWIG_NullReferenceError, "invalid null reference " "in method '" "Potential_KL" "', argument " "2"" of type '" "gum::Potential< double > const &""'"); 
+    SWIG_exception_fail(SWIG_NullReferenceError, "invalid null reference " "in method '" "Tensor_KL" "', argument " "2"" of type '" "gum::Tensor< double > const &""'"); 
   }
-  arg2 = reinterpret_cast< gum::Potential< double > * >(argp2);
+  arg2 = reinterpret_cast< gum::Tensor< double > * >(argp2);
   {
     try {
-      result = (double)((gum::Potential< double > const *)arg1)->KL((gum::Potential< double > const &)*arg2);
+      result = (double)((gum::Tensor< double > const *)arg1)->KL((gum::Tensor< double > const &)*arg2);
     } catch (...) {
       SetPythonizeAgrumException();
       SWIG_fail;
@@ -56362,212 +56362,212 @@ fail:
 }
 
 
-SWIGINTERN PyObject *_wrap_Potential_normalizeAsCPT__SWIG_0(PyObject *self, Py_ssize_t nobjs, PyObject **swig_obj) {
+SWIGINTERN PyObject *_wrap_Tensor_normalizeAsCPT__SWIG_0(PyObject *self, Py_ssize_t nobjs, PyObject **swig_obj) {
   PyObject *resultobj = 0;
-  gum::Potential< double > *arg1 = 0 ;
+  gum::Tensor< double > *arg1 = 0 ;
   gum::Idx *arg2 = 0 ;
   void *argp1 = 0 ;
   int res1 = 0 ;
   gum::Idx temp2 ;
   size_t val2 ;
   int ecode2 = 0 ;
-  gum::Potential< double > *result = 0 ;
+  gum::Tensor< double > *result = 0 ;
   
   (void)self;
   if ((nobjs < 2) || (nobjs > 2)) SWIG_fail;
-  res1 = SWIG_ConvertPtr(swig_obj[0], &argp1,SWIGTYPE_p_gum__PotentialT_double_t, 0 |  0 );
+  res1 = SWIG_ConvertPtr(swig_obj[0], &argp1,SWIGTYPE_p_gum__TensorT_double_t, 0 |  0 );
   if (!SWIG_IsOK(res1)) {
-    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "Potential_normalizeAsCPT" "', argument " "1"" of type '" "gum::Potential< double > const *""'"); 
+    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "Tensor_normalizeAsCPT" "', argument " "1"" of type '" "gum::Tensor< double > const *""'"); 
   }
-  arg1 = reinterpret_cast< gum::Potential< double > * >(argp1);
+  arg1 = reinterpret_cast< gum::Tensor< double > * >(argp1);
   ecode2 = SWIG_AsVal_size_t(swig_obj[1], &val2);
   if (!SWIG_IsOK(ecode2)) {
-    SWIG_exception_fail(SWIG_ArgError(ecode2), "in method '" "Potential_normalizeAsCPT" "', argument " "2"" of type '" "gum::Idx""'");
+    SWIG_exception_fail(SWIG_ArgError(ecode2), "in method '" "Tensor_normalizeAsCPT" "', argument " "2"" of type '" "gum::Idx""'");
   } 
   temp2 = static_cast< gum::Idx >(val2);
   arg2 = &temp2;
   {
     try {
-      result = (gum::Potential< double > *) &((gum::Potential< double > const *)arg1)->normalizeAsCPT((gum::Idx const &)*arg2);
+      result = (gum::Tensor< double > *) &((gum::Tensor< double > const *)arg1)->normalizeAsCPT((gum::Idx const &)*arg2);
     } catch (...) {
       SetPythonizeAgrumException();
       SWIG_fail;
     }
   }
-  resultobj = SWIG_NewPointerObj(SWIG_as_voidptr(result), SWIGTYPE_p_gum__PotentialT_double_t, 0 |  0 );
+  resultobj = SWIG_NewPointerObj(SWIG_as_voidptr(result), SWIGTYPE_p_gum__TensorT_double_t, 0 |  0 );
   return resultobj;
 fail:
   return NULL;
 }
 
 
-SWIGINTERN PyObject *_wrap_Potential_normalizeAsCPT__SWIG_1(PyObject *self, Py_ssize_t nobjs, PyObject **swig_obj) {
+SWIGINTERN PyObject *_wrap_Tensor_normalizeAsCPT__SWIG_1(PyObject *self, Py_ssize_t nobjs, PyObject **swig_obj) {
   PyObject *resultobj = 0;
-  gum::Potential< double > *arg1 = 0 ;
+  gum::Tensor< double > *arg1 = 0 ;
   void *argp1 = 0 ;
   int res1 = 0 ;
-  gum::Potential< double > *result = 0 ;
+  gum::Tensor< double > *result = 0 ;
   
   (void)self;
   if ((nobjs < 1) || (nobjs > 1)) SWIG_fail;
-  res1 = SWIG_ConvertPtr(swig_obj[0], &argp1,SWIGTYPE_p_gum__PotentialT_double_t, 0 |  0 );
+  res1 = SWIG_ConvertPtr(swig_obj[0], &argp1,SWIGTYPE_p_gum__TensorT_double_t, 0 |  0 );
   if (!SWIG_IsOK(res1)) {
-    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "Potential_normalizeAsCPT" "', argument " "1"" of type '" "gum::Potential< double > const *""'"); 
+    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "Tensor_normalizeAsCPT" "', argument " "1"" of type '" "gum::Tensor< double > const *""'"); 
   }
-  arg1 = reinterpret_cast< gum::Potential< double > * >(argp1);
+  arg1 = reinterpret_cast< gum::Tensor< double > * >(argp1);
   {
     try {
-      result = (gum::Potential< double > *) &((gum::Potential< double > const *)arg1)->normalizeAsCPT();
+      result = (gum::Tensor< double > *) &((gum::Tensor< double > const *)arg1)->normalizeAsCPT();
     } catch (...) {
       SetPythonizeAgrumException();
       SWIG_fail;
     }
   }
-  resultobj = SWIG_NewPointerObj(SWIG_as_voidptr(result), SWIGTYPE_p_gum__PotentialT_double_t, 0 |  0 );
+  resultobj = SWIG_NewPointerObj(SWIG_as_voidptr(result), SWIGTYPE_p_gum__TensorT_double_t, 0 |  0 );
   return resultobj;
 fail:
   return NULL;
 }
 
 
-SWIGINTERN PyObject *_wrap_Potential_normalizeAsCPT(PyObject *self, PyObject *args) {
+SWIGINTERN PyObject *_wrap_Tensor_normalizeAsCPT(PyObject *self, PyObject *args) {
   Py_ssize_t argc;
   PyObject *argv[3] = {
     0
   };
   
-  if (!(argc = SWIG_Python_UnpackTuple(args, "Potential_normalizeAsCPT", 0, 2, argv))) SWIG_fail;
+  if (!(argc = SWIG_Python_UnpackTuple(args, "Tensor_normalizeAsCPT", 0, 2, argv))) SWIG_fail;
   --argc;
   if (argc == 1) {
-    PyObject *retobj = _wrap_Potential_normalizeAsCPT__SWIG_1(self, argc, argv);
+    PyObject *retobj = _wrap_Tensor_normalizeAsCPT__SWIG_1(self, argc, argv);
     if (!SWIG_Python_TypeErrorOccurred(retobj)) return retobj;
     SWIG_fail;
   }
   if (argc == 2) {
-    PyObject *retobj = _wrap_Potential_normalizeAsCPT__SWIG_0(self, argc, argv);
+    PyObject *retobj = _wrap_Tensor_normalizeAsCPT__SWIG_0(self, argc, argv);
     if (!SWIG_Python_TypeErrorOccurred(retobj)) return retobj;
     SWIG_fail;
   }
   
 fail:
-  SWIG_Python_RaiseOrModifyTypeError("Wrong number or type of arguments for overloaded function 'Potential_normalizeAsCPT'.\n"
+  SWIG_Python_RaiseOrModifyTypeError("Wrong number or type of arguments for overloaded function 'Tensor_normalizeAsCPT'.\n"
     "  Possible C/C++ prototypes are:\n"
-    "    gum::Potential< double >::normalizeAsCPT(gum::Idx const &) const\n"
-    "    gum::Potential< double >::normalizeAsCPT() const\n");
+    "    gum::Tensor< double >::normalizeAsCPT(gum::Idx const &) const\n"
+    "    gum::Tensor< double >::normalizeAsCPT() const\n");
   return 0;
 }
 
 
-SWIGINTERN PyObject *_wrap_Potential_scale(PyObject *self, PyObject *args) {
+SWIGINTERN PyObject *_wrap_Tensor_scale(PyObject *self, PyObject *args) {
   PyObject *resultobj = 0;
-  gum::Potential< double > *arg1 = 0 ;
+  gum::Tensor< double > *arg1 = 0 ;
   double arg2 ;
   void *argp1 = 0 ;
   int res1 = 0 ;
   double val2 ;
   int ecode2 = 0 ;
   PyObject *swig_obj[2] ;
-  gum::Potential< double > *result = 0 ;
+  gum::Tensor< double > *result = 0 ;
   
   (void)self;
-  if (!SWIG_Python_UnpackTuple(args, "Potential_scale", 2, 2, swig_obj)) SWIG_fail;
-  res1 = SWIG_ConvertPtr(swig_obj[0], &argp1,SWIGTYPE_p_gum__PotentialT_double_t, 0 |  0 );
+  if (!SWIG_Python_UnpackTuple(args, "Tensor_scale", 2, 2, swig_obj)) SWIG_fail;
+  res1 = SWIG_ConvertPtr(swig_obj[0], &argp1,SWIGTYPE_p_gum__TensorT_double_t, 0 |  0 );
   if (!SWIG_IsOK(res1)) {
-    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "Potential_scale" "', argument " "1"" of type '" "gum::Potential< double > const *""'"); 
+    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "Tensor_scale" "', argument " "1"" of type '" "gum::Tensor< double > const *""'"); 
   }
-  arg1 = reinterpret_cast< gum::Potential< double > * >(argp1);
+  arg1 = reinterpret_cast< gum::Tensor< double > * >(argp1);
   ecode2 = SWIG_AsVal_double(swig_obj[1], &val2);
   if (!SWIG_IsOK(ecode2)) {
-    SWIG_exception_fail(SWIG_ArgError(ecode2), "in method '" "Potential_scale" "', argument " "2"" of type '" "double""'");
+    SWIG_exception_fail(SWIG_ArgError(ecode2), "in method '" "Tensor_scale" "', argument " "2"" of type '" "double""'");
   } 
   arg2 = static_cast< double >(val2);
   {
     try {
-      result = (gum::Potential< double > *) &((gum::Potential< double > const *)arg1)->scale(arg2);
+      result = (gum::Tensor< double > *) &((gum::Tensor< double > const *)arg1)->scale(arg2);
     } catch (...) {
       SetPythonizeAgrumException();
       SWIG_fail;
     }
   }
-  resultobj = SWIG_NewPointerObj(SWIG_as_voidptr(result), SWIGTYPE_p_gum__PotentialT_double_t, 0 |  0 );
+  resultobj = SWIG_NewPointerObj(SWIG_as_voidptr(result), SWIGTYPE_p_gum__TensorT_double_t, 0 |  0 );
   return resultobj;
 fail:
   return NULL;
 }
 
 
-SWIGINTERN PyObject *_wrap_Potential_translate(PyObject *self, PyObject *args) {
+SWIGINTERN PyObject *_wrap_Tensor_translate(PyObject *self, PyObject *args) {
   PyObject *resultobj = 0;
-  gum::Potential< double > *arg1 = 0 ;
+  gum::Tensor< double > *arg1 = 0 ;
   double arg2 ;
   void *argp1 = 0 ;
   int res1 = 0 ;
   double val2 ;
   int ecode2 = 0 ;
   PyObject *swig_obj[2] ;
-  gum::Potential< double > *result = 0 ;
+  gum::Tensor< double > *result = 0 ;
   
   (void)self;
-  if (!SWIG_Python_UnpackTuple(args, "Potential_translate", 2, 2, swig_obj)) SWIG_fail;
-  res1 = SWIG_ConvertPtr(swig_obj[0], &argp1,SWIGTYPE_p_gum__PotentialT_double_t, 0 |  0 );
+  if (!SWIG_Python_UnpackTuple(args, "Tensor_translate", 2, 2, swig_obj)) SWIG_fail;
+  res1 = SWIG_ConvertPtr(swig_obj[0], &argp1,SWIGTYPE_p_gum__TensorT_double_t, 0 |  0 );
   if (!SWIG_IsOK(res1)) {
-    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "Potential_translate" "', argument " "1"" of type '" "gum::Potential< double > const *""'"); 
+    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "Tensor_translate" "', argument " "1"" of type '" "gum::Tensor< double > const *""'"); 
   }
-  arg1 = reinterpret_cast< gum::Potential< double > * >(argp1);
+  arg1 = reinterpret_cast< gum::Tensor< double > * >(argp1);
   ecode2 = SWIG_AsVal_double(swig_obj[1], &val2);
   if (!SWIG_IsOK(ecode2)) {
-    SWIG_exception_fail(SWIG_ArgError(ecode2), "in method '" "Potential_translate" "', argument " "2"" of type '" "double""'");
+    SWIG_exception_fail(SWIG_ArgError(ecode2), "in method '" "Tensor_translate" "', argument " "2"" of type '" "double""'");
   } 
   arg2 = static_cast< double >(val2);
   {
     try {
-      result = (gum::Potential< double > *) &((gum::Potential< double > const *)arg1)->translate(arg2);
+      result = (gum::Tensor< double > *) &((gum::Tensor< double > const *)arg1)->translate(arg2);
     } catch (...) {
       SetPythonizeAgrumException();
       SWIG_fail;
     }
   }
-  resultobj = SWIG_NewPointerObj(SWIG_as_voidptr(result), SWIGTYPE_p_gum__PotentialT_double_t, 0 |  0 );
+  resultobj = SWIG_NewPointerObj(SWIG_as_voidptr(result), SWIGTYPE_p_gum__TensorT_double_t, 0 |  0 );
   return resultobj;
 fail:
   return NULL;
 }
 
 
-SWIGINTERN PyObject *_wrap_Potential_inverse(PyObject *self, PyObject *args) {
+SWIGINTERN PyObject *_wrap_Tensor_inverse(PyObject *self, PyObject *args) {
   PyObject *resultobj = 0;
-  gum::Potential< double > *arg1 = 0 ;
+  gum::Tensor< double > *arg1 = 0 ;
   void *argp1 = 0 ;
   int res1 = 0 ;
   PyObject *swig_obj[1] ;
-  gum::Potential< double > *result = 0 ;
+  gum::Tensor< double > *result = 0 ;
   
   (void)self;
   if (!args) SWIG_fail;
   swig_obj[0] = args;
-  res1 = SWIG_ConvertPtr(swig_obj[0], &argp1,SWIGTYPE_p_gum__PotentialT_double_t, 0 |  0 );
+  res1 = SWIG_ConvertPtr(swig_obj[0], &argp1,SWIGTYPE_p_gum__TensorT_double_t, 0 |  0 );
   if (!SWIG_IsOK(res1)) {
-    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "Potential_inverse" "', argument " "1"" of type '" "gum::Potential< double > const *""'"); 
+    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "Tensor_inverse" "', argument " "1"" of type '" "gum::Tensor< double > const *""'"); 
   }
-  arg1 = reinterpret_cast< gum::Potential< double > * >(argp1);
+  arg1 = reinterpret_cast< gum::Tensor< double > * >(argp1);
   {
     try {
-      result = (gum::Potential< double > *) &((gum::Potential< double > const *)arg1)->inverse();
+      result = (gum::Tensor< double > *) &((gum::Tensor< double > const *)arg1)->inverse();
     } catch (...) {
       SetPythonizeAgrumException();
       SWIG_fail;
     }
   }
-  resultobj = SWIG_NewPointerObj(SWIG_as_voidptr(result), SWIGTYPE_p_gum__PotentialT_double_t, 0 |  0 );
+  resultobj = SWIG_NewPointerObj(SWIG_as_voidptr(result), SWIGTYPE_p_gum__TensorT_double_t, 0 |  0 );
   return resultobj;
 fail:
   return NULL;
 }
 
 
-SWIGINTERN PyObject *_wrap_Potential_draw(PyObject *self, PyObject *args) {
+SWIGINTERN PyObject *_wrap_Tensor_draw(PyObject *self, PyObject *args) {
   PyObject *resultobj = 0;
-  gum::Potential< double > *arg1 = 0 ;
+  gum::Tensor< double > *arg1 = 0 ;
   void *argp1 = 0 ;
   int res1 = 0 ;
   PyObject *swig_obj[1] ;
@@ -56576,14 +56576,14 @@ SWIGINTERN PyObject *_wrap_Potential_draw(PyObject *self, PyObject *args) {
   (void)self;
   if (!args) SWIG_fail;
   swig_obj[0] = args;
-  res1 = SWIG_ConvertPtr(swig_obj[0], &argp1,SWIGTYPE_p_gum__PotentialT_double_t, 0 |  0 );
+  res1 = SWIG_ConvertPtr(swig_obj[0], &argp1,SWIGTYPE_p_gum__TensorT_double_t, 0 |  0 );
   if (!SWIG_IsOK(res1)) {
-    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "Potential_draw" "', argument " "1"" of type '" "gum::Potential< double > const *""'"); 
+    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "Tensor_draw" "', argument " "1"" of type '" "gum::Tensor< double > const *""'"); 
   }
-  arg1 = reinterpret_cast< gum::Potential< double > * >(argp1);
+  arg1 = reinterpret_cast< gum::Tensor< double > * >(argp1);
   {
     try {
-      result = ((gum::Potential< double > const *)arg1)->draw();
+      result = ((gum::Tensor< double > const *)arg1)->draw();
     } catch (...) {
       SetPythonizeAgrumException();
       SWIG_fail;
@@ -56596,9 +56596,9 @@ fail:
 }
 
 
-SWIGINTERN PyObject *_wrap_Potential_memoryFootprint(PyObject *self, PyObject *args) {
+SWIGINTERN PyObject *_wrap_Tensor_memoryFootprint(PyObject *self, PyObject *args) {
   PyObject *resultobj = 0;
-  gum::Potential< double > *arg1 = 0 ;
+  gum::Tensor< double > *arg1 = 0 ;
   void *argp1 = 0 ;
   int res1 = 0 ;
   PyObject *swig_obj[1] ;
@@ -56607,14 +56607,14 @@ SWIGINTERN PyObject *_wrap_Potential_memoryFootprint(PyObject *self, PyObject *a
   (void)self;
   if (!args) SWIG_fail;
   swig_obj[0] = args;
-  res1 = SWIG_ConvertPtr(swig_obj[0], &argp1,SWIGTYPE_p_gum__PotentialT_double_t, 0 |  0 );
+  res1 = SWIG_ConvertPtr(swig_obj[0], &argp1,SWIGTYPE_p_gum__TensorT_double_t, 0 |  0 );
   if (!SWIG_IsOK(res1)) {
-    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "Potential_memoryFootprint" "', argument " "1"" of type '" "gum::Potential< double > const *""'"); 
+    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "Tensor_memoryFootprint" "', argument " "1"" of type '" "gum::Tensor< double > const *""'"); 
   }
-  arg1 = reinterpret_cast< gum::Potential< double > * >(argp1);
+  arg1 = reinterpret_cast< gum::Tensor< double > * >(argp1);
   {
     try {
-      result = ((gum::Potential< double > const *)arg1)->memoryFootprint();
+      result = ((gum::Tensor< double > const *)arg1)->memoryFootprint();
     } catch (...) {
       SetPythonizeAgrumException();
       SWIG_fail;
@@ -56627,40 +56627,40 @@ fail:
 }
 
 
-SWIGINTERN PyObject *_wrap_Potential___add____SWIG_0(PyObject *self, Py_ssize_t nobjs, PyObject **swig_obj) {
+SWIGINTERN PyObject *_wrap_Tensor___add____SWIG_0(PyObject *self, Py_ssize_t nobjs, PyObject **swig_obj) {
   PyObject *resultobj = 0;
-  gum::Potential< double > *arg1 = 0 ;
-  gum::Potential< double > *arg2 = 0 ;
+  gum::Tensor< double > *arg1 = 0 ;
+  gum::Tensor< double > *arg2 = 0 ;
   void *argp1 = 0 ;
   int res1 = 0 ;
   void *argp2 = 0 ;
   int res2 = 0 ;
-  gum::Potential< double > result;
+  gum::Tensor< double > result;
   
   (void)self;
   if ((nobjs < 2) || (nobjs > 2)) SWIG_fail;
-  res1 = SWIG_ConvertPtr(swig_obj[0], &argp1,SWIGTYPE_p_gum__PotentialT_double_t, 0 |  0 );
+  res1 = SWIG_ConvertPtr(swig_obj[0], &argp1,SWIGTYPE_p_gum__TensorT_double_t, 0 |  0 );
   if (!SWIG_IsOK(res1)) {
-    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "Potential___add__" "', argument " "1"" of type '" "gum::Potential< double > const *""'"); 
+    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "Tensor___add__" "', argument " "1"" of type '" "gum::Tensor< double > const *""'"); 
   }
-  arg1 = reinterpret_cast< gum::Potential< double > * >(argp1);
-  res2 = SWIG_ConvertPtr(swig_obj[1], &argp2, SWIGTYPE_p_gum__PotentialT_double_t,  0  | 0);
+  arg1 = reinterpret_cast< gum::Tensor< double > * >(argp1);
+  res2 = SWIG_ConvertPtr(swig_obj[1], &argp2, SWIGTYPE_p_gum__TensorT_double_t,  0  | 0);
   if (!SWIG_IsOK(res2)) {
-    SWIG_exception_fail(SWIG_ArgError(res2), "in method '" "Potential___add__" "', argument " "2"" of type '" "gum::Potential< double > const &""'"); 
+    SWIG_exception_fail(SWIG_ArgError(res2), "in method '" "Tensor___add__" "', argument " "2"" of type '" "gum::Tensor< double > const &""'"); 
   }
   if (!argp2) {
-    SWIG_exception_fail(SWIG_NullReferenceError, "invalid null reference " "in method '" "Potential___add__" "', argument " "2"" of type '" "gum::Potential< double > const &""'"); 
+    SWIG_exception_fail(SWIG_NullReferenceError, "invalid null reference " "in method '" "Tensor___add__" "', argument " "2"" of type '" "gum::Tensor< double > const &""'"); 
   }
-  arg2 = reinterpret_cast< gum::Potential< double > * >(argp2);
+  arg2 = reinterpret_cast< gum::Tensor< double > * >(argp2);
   {
     try {
-      result = ((gum::Potential< double > const *)arg1)->operator +((gum::Potential< double > const &)*arg2);
+      result = ((gum::Tensor< double > const *)arg1)->operator +((gum::Tensor< double > const &)*arg2);
     } catch (...) {
       SetPythonizeAgrumException();
       SWIG_fail;
     }
   }
-  resultobj = SWIG_NewPointerObj((new gum::Potential< double >(result)), SWIGTYPE_p_gum__PotentialT_double_t, SWIG_POINTER_OWN |  0 );
+  resultobj = SWIG_NewPointerObj((new gum::Tensor< double >(result)), SWIGTYPE_p_gum__TensorT_double_t, SWIG_POINTER_OWN |  0 );
   return resultobj;
 fail:
   if (PyErr_Occurred() && !PyErr_ExceptionMatches(PyExc_TypeError)) {
@@ -56672,39 +56672,39 @@ fail:
 }
 
 
-SWIGINTERN PyObject *_wrap_Potential___add____SWIG_1(PyObject *self, Py_ssize_t nobjs, PyObject **swig_obj) {
+SWIGINTERN PyObject *_wrap_Tensor___add____SWIG_1(PyObject *self, Py_ssize_t nobjs, PyObject **swig_obj) {
   PyObject *resultobj = 0;
-  gum::Potential< double > *arg1 = 0 ;
+  gum::Tensor< double > *arg1 = 0 ;
   double *arg2 = 0 ;
   void *argp1 = 0 ;
   int res1 = 0 ;
   double temp2 ;
   double val2 ;
   int ecode2 = 0 ;
-  gum::Potential< double > result;
+  gum::Tensor< double > result;
   
   (void)self;
   if ((nobjs < 2) || (nobjs > 2)) SWIG_fail;
-  res1 = SWIG_ConvertPtr(swig_obj[0], &argp1,SWIGTYPE_p_gum__PotentialT_double_t, 0 |  0 );
+  res1 = SWIG_ConvertPtr(swig_obj[0], &argp1,SWIGTYPE_p_gum__TensorT_double_t, 0 |  0 );
   if (!SWIG_IsOK(res1)) {
-    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "Potential___add__" "', argument " "1"" of type '" "gum::Potential< double > const *""'"); 
+    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "Tensor___add__" "', argument " "1"" of type '" "gum::Tensor< double > const *""'"); 
   }
-  arg1 = reinterpret_cast< gum::Potential< double > * >(argp1);
+  arg1 = reinterpret_cast< gum::Tensor< double > * >(argp1);
   ecode2 = SWIG_AsVal_double(swig_obj[1], &val2);
   if (!SWIG_IsOK(ecode2)) {
-    SWIG_exception_fail(SWIG_ArgError(ecode2), "in method '" "Potential___add__" "', argument " "2"" of type '" "double""'");
+    SWIG_exception_fail(SWIG_ArgError(ecode2), "in method '" "Tensor___add__" "', argument " "2"" of type '" "double""'");
   } 
   temp2 = static_cast< double >(val2);
   arg2 = &temp2;
   {
     try {
-      result = ((gum::Potential< double > const *)arg1)->operator +((double const &)*arg2);
+      result = ((gum::Tensor< double > const *)arg1)->operator +((double const &)*arg2);
     } catch (...) {
       SetPythonizeAgrumException();
       SWIG_fail;
     }
   }
-  resultobj = SWIG_NewPointerObj((new gum::Potential< double >(result)), SWIGTYPE_p_gum__PotentialT_double_t, SWIG_POINTER_OWN |  0 );
+  resultobj = SWIG_NewPointerObj((new gum::Tensor< double >(result)), SWIGTYPE_p_gum__TensorT_double_t, SWIG_POINTER_OWN |  0 );
   return resultobj;
 fail:
   if (PyErr_Occurred() && !PyErr_ExceptionMatches(PyExc_TypeError)) {
@@ -56716,27 +56716,27 @@ fail:
 }
 
 
-SWIGINTERN PyObject *_wrap_Potential___add__(PyObject *self, PyObject *args) {
+SWIGINTERN PyObject *_wrap_Tensor___add__(PyObject *self, PyObject *args) {
   Py_ssize_t argc;
   PyObject *argv[3] = {
     0
   };
   
-  if (!(argc = SWIG_Python_UnpackTuple(args, "Potential___add__", 0, 2, argv))) SWIG_fail;
+  if (!(argc = SWIG_Python_UnpackTuple(args, "Tensor___add__", 0, 2, argv))) SWIG_fail;
   --argc;
   if (argc == 2) {
     int _v = 0;
     {
-      int res = SWIG_ConvertPtr(argv[1], 0, SWIGTYPE_p_gum__PotentialT_double_t, SWIG_POINTER_NO_NULL | 0);
+      int res = SWIG_ConvertPtr(argv[1], 0, SWIGTYPE_p_gum__TensorT_double_t, SWIG_POINTER_NO_NULL | 0);
       _v = SWIG_CheckState(res);
     }
     if (!_v) goto check_1;
-    return _wrap_Potential___add____SWIG_0(self, argc, argv);
+    return _wrap_Tensor___add____SWIG_0(self, argc, argv);
   }
 check_1:
   
   if (argc == 2) {
-    PyObject *retobj = _wrap_Potential___add____SWIG_1(self, argc, argv);
+    PyObject *retobj = _wrap_Tensor___add____SWIG_1(self, argc, argv);
     if (!SWIG_Python_TypeErrorOccurred(retobj)) return retobj;
     SWIG_fail;
   }
@@ -56747,40 +56747,40 @@ fail:
 }
 
 
-SWIGINTERN PyObject *_wrap_Potential___sub____SWIG_0(PyObject *self, Py_ssize_t nobjs, PyObject **swig_obj) {
+SWIGINTERN PyObject *_wrap_Tensor___sub____SWIG_0(PyObject *self, Py_ssize_t nobjs, PyObject **swig_obj) {
   PyObject *resultobj = 0;
-  gum::Potential< double > *arg1 = 0 ;
-  gum::Potential< double > *arg2 = 0 ;
+  gum::Tensor< double > *arg1 = 0 ;
+  gum::Tensor< double > *arg2 = 0 ;
   void *argp1 = 0 ;
   int res1 = 0 ;
   void *argp2 = 0 ;
   int res2 = 0 ;
-  gum::Potential< double > result;
+  gum::Tensor< double > result;
   
   (void)self;
   if ((nobjs < 2) || (nobjs > 2)) SWIG_fail;
-  res1 = SWIG_ConvertPtr(swig_obj[0], &argp1,SWIGTYPE_p_gum__PotentialT_double_t, 0 |  0 );
+  res1 = SWIG_ConvertPtr(swig_obj[0], &argp1,SWIGTYPE_p_gum__TensorT_double_t, 0 |  0 );
   if (!SWIG_IsOK(res1)) {
-    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "Potential___sub__" "', argument " "1"" of type '" "gum::Potential< double > const *""'"); 
+    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "Tensor___sub__" "', argument " "1"" of type '" "gum::Tensor< double > const *""'"); 
   }
-  arg1 = reinterpret_cast< gum::Potential< double > * >(argp1);
-  res2 = SWIG_ConvertPtr(swig_obj[1], &argp2, SWIGTYPE_p_gum__PotentialT_double_t,  0  | 0);
+  arg1 = reinterpret_cast< gum::Tensor< double > * >(argp1);
+  res2 = SWIG_ConvertPtr(swig_obj[1], &argp2, SWIGTYPE_p_gum__TensorT_double_t,  0  | 0);
   if (!SWIG_IsOK(res2)) {
-    SWIG_exception_fail(SWIG_ArgError(res2), "in method '" "Potential___sub__" "', argument " "2"" of type '" "gum::Potential< double > const &""'"); 
+    SWIG_exception_fail(SWIG_ArgError(res2), "in method '" "Tensor___sub__" "', argument " "2"" of type '" "gum::Tensor< double > const &""'"); 
   }
   if (!argp2) {
-    SWIG_exception_fail(SWIG_NullReferenceError, "invalid null reference " "in method '" "Potential___sub__" "', argument " "2"" of type '" "gum::Potential< double > const &""'"); 
+    SWIG_exception_fail(SWIG_NullReferenceError, "invalid null reference " "in method '" "Tensor___sub__" "', argument " "2"" of type '" "gum::Tensor< double > const &""'"); 
   }
-  arg2 = reinterpret_cast< gum::Potential< double > * >(argp2);
+  arg2 = reinterpret_cast< gum::Tensor< double > * >(argp2);
   {
     try {
-      result = ((gum::Potential< double > const *)arg1)->operator -((gum::Potential< double > const &)*arg2);
+      result = ((gum::Tensor< double > const *)arg1)->operator -((gum::Tensor< double > const &)*arg2);
     } catch (...) {
       SetPythonizeAgrumException();
       SWIG_fail;
     }
   }
-  resultobj = SWIG_NewPointerObj((new gum::Potential< double >(result)), SWIGTYPE_p_gum__PotentialT_double_t, SWIG_POINTER_OWN |  0 );
+  resultobj = SWIG_NewPointerObj((new gum::Tensor< double >(result)), SWIGTYPE_p_gum__TensorT_double_t, SWIG_POINTER_OWN |  0 );
   return resultobj;
 fail:
   if (PyErr_Occurred() && !PyErr_ExceptionMatches(PyExc_TypeError)) {
@@ -56792,39 +56792,39 @@ fail:
 }
 
 
-SWIGINTERN PyObject *_wrap_Potential___sub____SWIG_1(PyObject *self, Py_ssize_t nobjs, PyObject **swig_obj) {
+SWIGINTERN PyObject *_wrap_Tensor___sub____SWIG_1(PyObject *self, Py_ssize_t nobjs, PyObject **swig_obj) {
   PyObject *resultobj = 0;
-  gum::Potential< double > *arg1 = 0 ;
+  gum::Tensor< double > *arg1 = 0 ;
   double *arg2 = 0 ;
   void *argp1 = 0 ;
   int res1 = 0 ;
   double temp2 ;
   double val2 ;
   int ecode2 = 0 ;
-  gum::Potential< double > result;
+  gum::Tensor< double > result;
   
   (void)self;
   if ((nobjs < 2) || (nobjs > 2)) SWIG_fail;
-  res1 = SWIG_ConvertPtr(swig_obj[0], &argp1,SWIGTYPE_p_gum__PotentialT_double_t, 0 |  0 );
+  res1 = SWIG_ConvertPtr(swig_obj[0], &argp1,SWIGTYPE_p_gum__TensorT_double_t, 0 |  0 );
   if (!SWIG_IsOK(res1)) {
-    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "Potential___sub__" "', argument " "1"" of type '" "gum::Potential< double > const *""'"); 
+    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "Tensor___sub__" "', argument " "1"" of type '" "gum::Tensor< double > const *""'"); 
   }
-  arg1 = reinterpret_cast< gum::Potential< double > * >(argp1);
+  arg1 = reinterpret_cast< gum::Tensor< double > * >(argp1);
   ecode2 = SWIG_AsVal_double(swig_obj[1], &val2);
   if (!SWIG_IsOK(ecode2)) {
-    SWIG_exception_fail(SWIG_ArgError(ecode2), "in method '" "Potential___sub__" "', argument " "2"" of type '" "double""'");
+    SWIG_exception_fail(SWIG_ArgError(ecode2), "in method '" "Tensor___sub__" "', argument " "2"" of type '" "double""'");
   } 
   temp2 = static_cast< double >(val2);
   arg2 = &temp2;
   {
     try {
-      result = ((gum::Potential< double > const *)arg1)->operator -((double const &)*arg2);
+      result = ((gum::Tensor< double > const *)arg1)->operator -((double const &)*arg2);
     } catch (...) {
       SetPythonizeAgrumException();
       SWIG_fail;
     }
   }
-  resultobj = SWIG_NewPointerObj((new gum::Potential< double >(result)), SWIGTYPE_p_gum__PotentialT_double_t, SWIG_POINTER_OWN |  0 );
+  resultobj = SWIG_NewPointerObj((new gum::Tensor< double >(result)), SWIGTYPE_p_gum__TensorT_double_t, SWIG_POINTER_OWN |  0 );
   return resultobj;
 fail:
   if (PyErr_Occurred() && !PyErr_ExceptionMatches(PyExc_TypeError)) {
@@ -56836,27 +56836,27 @@ fail:
 }
 
 
-SWIGINTERN PyObject *_wrap_Potential___sub__(PyObject *self, PyObject *args) {
+SWIGINTERN PyObject *_wrap_Tensor___sub__(PyObject *self, PyObject *args) {
   Py_ssize_t argc;
   PyObject *argv[3] = {
     0
   };
   
-  if (!(argc = SWIG_Python_UnpackTuple(args, "Potential___sub__", 0, 2, argv))) SWIG_fail;
+  if (!(argc = SWIG_Python_UnpackTuple(args, "Tensor___sub__", 0, 2, argv))) SWIG_fail;
   --argc;
   if (argc == 2) {
     int _v = 0;
     {
-      int res = SWIG_ConvertPtr(argv[1], 0, SWIGTYPE_p_gum__PotentialT_double_t, SWIG_POINTER_NO_NULL | 0);
+      int res = SWIG_ConvertPtr(argv[1], 0, SWIGTYPE_p_gum__TensorT_double_t, SWIG_POINTER_NO_NULL | 0);
       _v = SWIG_CheckState(res);
     }
     if (!_v) goto check_1;
-    return _wrap_Potential___sub____SWIG_0(self, argc, argv);
+    return _wrap_Tensor___sub____SWIG_0(self, argc, argv);
   }
 check_1:
   
   if (argc == 2) {
-    PyObject *retobj = _wrap_Potential___sub____SWIG_1(self, argc, argv);
+    PyObject *retobj = _wrap_Tensor___sub____SWIG_1(self, argc, argv);
     if (!SWIG_Python_TypeErrorOccurred(retobj)) return retobj;
     SWIG_fail;
   }
@@ -56867,40 +56867,40 @@ fail:
 }
 
 
-SWIGINTERN PyObject *_wrap_Potential___mul____SWIG_0(PyObject *self, Py_ssize_t nobjs, PyObject **swig_obj) {
+SWIGINTERN PyObject *_wrap_Tensor___mul____SWIG_0(PyObject *self, Py_ssize_t nobjs, PyObject **swig_obj) {
   PyObject *resultobj = 0;
-  gum::Potential< double > *arg1 = 0 ;
-  gum::Potential< double > *arg2 = 0 ;
+  gum::Tensor< double > *arg1 = 0 ;
+  gum::Tensor< double > *arg2 = 0 ;
   void *argp1 = 0 ;
   int res1 = 0 ;
   void *argp2 = 0 ;
   int res2 = 0 ;
-  gum::Potential< double > result;
+  gum::Tensor< double > result;
   
   (void)self;
   if ((nobjs < 2) || (nobjs > 2)) SWIG_fail;
-  res1 = SWIG_ConvertPtr(swig_obj[0], &argp1,SWIGTYPE_p_gum__PotentialT_double_t, 0 |  0 );
+  res1 = SWIG_ConvertPtr(swig_obj[0], &argp1,SWIGTYPE_p_gum__TensorT_double_t, 0 |  0 );
   if (!SWIG_IsOK(res1)) {
-    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "Potential___mul__" "', argument " "1"" of type '" "gum::Potential< double > const *""'"); 
+    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "Tensor___mul__" "', argument " "1"" of type '" "gum::Tensor< double > const *""'"); 
   }
-  arg1 = reinterpret_cast< gum::Potential< double > * >(argp1);
-  res2 = SWIG_ConvertPtr(swig_obj[1], &argp2, SWIGTYPE_p_gum__PotentialT_double_t,  0  | 0);
+  arg1 = reinterpret_cast< gum::Tensor< double > * >(argp1);
+  res2 = SWIG_ConvertPtr(swig_obj[1], &argp2, SWIGTYPE_p_gum__TensorT_double_t,  0  | 0);
   if (!SWIG_IsOK(res2)) {
-    SWIG_exception_fail(SWIG_ArgError(res2), "in method '" "Potential___mul__" "', argument " "2"" of type '" "gum::Potential< double > const &""'"); 
+    SWIG_exception_fail(SWIG_ArgError(res2), "in method '" "Tensor___mul__" "', argument " "2"" of type '" "gum::Tensor< double > const &""'"); 
   }
   if (!argp2) {
-    SWIG_exception_fail(SWIG_NullReferenceError, "invalid null reference " "in method '" "Potential___mul__" "', argument " "2"" of type '" "gum::Potential< double > const &""'"); 
+    SWIG_exception_fail(SWIG_NullReferenceError, "invalid null reference " "in method '" "Tensor___mul__" "', argument " "2"" of type '" "gum::Tensor< double > const &""'"); 
   }
-  arg2 = reinterpret_cast< gum::Potential< double > * >(argp2);
+  arg2 = reinterpret_cast< gum::Tensor< double > * >(argp2);
   {
     try {
-      result = ((gum::Potential< double > const *)arg1)->operator *((gum::Potential< double > const &)*arg2);
+      result = ((gum::Tensor< double > const *)arg1)->operator *((gum::Tensor< double > const &)*arg2);
     } catch (...) {
       SetPythonizeAgrumException();
       SWIG_fail;
     }
   }
-  resultobj = SWIG_NewPointerObj((new gum::Potential< double >(result)), SWIGTYPE_p_gum__PotentialT_double_t, SWIG_POINTER_OWN |  0 );
+  resultobj = SWIG_NewPointerObj((new gum::Tensor< double >(result)), SWIGTYPE_p_gum__TensorT_double_t, SWIG_POINTER_OWN |  0 );
   return resultobj;
 fail:
   if (PyErr_Occurred() && !PyErr_ExceptionMatches(PyExc_TypeError)) {
@@ -56912,39 +56912,39 @@ fail:
 }
 
 
-SWIGINTERN PyObject *_wrap_Potential___mul____SWIG_1(PyObject *self, Py_ssize_t nobjs, PyObject **swig_obj) {
+SWIGINTERN PyObject *_wrap_Tensor___mul____SWIG_1(PyObject *self, Py_ssize_t nobjs, PyObject **swig_obj) {
   PyObject *resultobj = 0;
-  gum::Potential< double > *arg1 = 0 ;
+  gum::Tensor< double > *arg1 = 0 ;
   double *arg2 = 0 ;
   void *argp1 = 0 ;
   int res1 = 0 ;
   double temp2 ;
   double val2 ;
   int ecode2 = 0 ;
-  gum::Potential< double > result;
+  gum::Tensor< double > result;
   
   (void)self;
   if ((nobjs < 2) || (nobjs > 2)) SWIG_fail;
-  res1 = SWIG_ConvertPtr(swig_obj[0], &argp1,SWIGTYPE_p_gum__PotentialT_double_t, 0 |  0 );
+  res1 = SWIG_ConvertPtr(swig_obj[0], &argp1,SWIGTYPE_p_gum__TensorT_double_t, 0 |  0 );
   if (!SWIG_IsOK(res1)) {
-    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "Potential___mul__" "', argument " "1"" of type '" "gum::Potential< double > const *""'"); 
+    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "Tensor___mul__" "', argument " "1"" of type '" "gum::Tensor< double > const *""'"); 
   }
-  arg1 = reinterpret_cast< gum::Potential< double > * >(argp1);
+  arg1 = reinterpret_cast< gum::Tensor< double > * >(argp1);
   ecode2 = SWIG_AsVal_double(swig_obj[1], &val2);
   if (!SWIG_IsOK(ecode2)) {
-    SWIG_exception_fail(SWIG_ArgError(ecode2), "in method '" "Potential___mul__" "', argument " "2"" of type '" "double""'");
+    SWIG_exception_fail(SWIG_ArgError(ecode2), "in method '" "Tensor___mul__" "', argument " "2"" of type '" "double""'");
   } 
   temp2 = static_cast< double >(val2);
   arg2 = &temp2;
   {
     try {
-      result = ((gum::Potential< double > const *)arg1)->operator *((double const &)*arg2);
+      result = ((gum::Tensor< double > const *)arg1)->operator *((double const &)*arg2);
     } catch (...) {
       SetPythonizeAgrumException();
       SWIG_fail;
     }
   }
-  resultobj = SWIG_NewPointerObj((new gum::Potential< double >(result)), SWIGTYPE_p_gum__PotentialT_double_t, SWIG_POINTER_OWN |  0 );
+  resultobj = SWIG_NewPointerObj((new gum::Tensor< double >(result)), SWIGTYPE_p_gum__TensorT_double_t, SWIG_POINTER_OWN |  0 );
   return resultobj;
 fail:
   if (PyErr_Occurred() && !PyErr_ExceptionMatches(PyExc_TypeError)) {
@@ -56956,27 +56956,27 @@ fail:
 }
 
 
-SWIGINTERN PyObject *_wrap_Potential___mul__(PyObject *self, PyObject *args) {
+SWIGINTERN PyObject *_wrap_Tensor___mul__(PyObject *self, PyObject *args) {
   Py_ssize_t argc;
   PyObject *argv[3] = {
     0
   };
   
-  if (!(argc = SWIG_Python_UnpackTuple(args, "Potential___mul__", 0, 2, argv))) SWIG_fail;
+  if (!(argc = SWIG_Python_UnpackTuple(args, "Tensor___mul__", 0, 2, argv))) SWIG_fail;
   --argc;
   if (argc == 2) {
     int _v = 0;
     {
-      int res = SWIG_ConvertPtr(argv[1], 0, SWIGTYPE_p_gum__PotentialT_double_t, SWIG_POINTER_NO_NULL | 0);
+      int res = SWIG_ConvertPtr(argv[1], 0, SWIGTYPE_p_gum__TensorT_double_t, SWIG_POINTER_NO_NULL | 0);
       _v = SWIG_CheckState(res);
     }
     if (!_v) goto check_1;
-    return _wrap_Potential___mul____SWIG_0(self, argc, argv);
+    return _wrap_Tensor___mul____SWIG_0(self, argc, argv);
   }
 check_1:
   
   if (argc == 2) {
-    PyObject *retobj = _wrap_Potential___mul____SWIG_1(self, argc, argv);
+    PyObject *retobj = _wrap_Tensor___mul____SWIG_1(self, argc, argv);
     if (!SWIG_Python_TypeErrorOccurred(retobj)) return retobj;
     SWIG_fail;
   }
@@ -56987,40 +56987,40 @@ fail:
 }
 
 
-SWIGINTERN PyObject *_wrap_Potential___truediv____SWIG_0(PyObject *self, Py_ssize_t nobjs, PyObject **swig_obj) {
+SWIGINTERN PyObject *_wrap_Tensor___truediv____SWIG_0(PyObject *self, Py_ssize_t nobjs, PyObject **swig_obj) {
   PyObject *resultobj = 0;
-  gum::Potential< double > *arg1 = 0 ;
-  gum::Potential< double > *arg2 = 0 ;
+  gum::Tensor< double > *arg1 = 0 ;
+  gum::Tensor< double > *arg2 = 0 ;
   void *argp1 = 0 ;
   int res1 = 0 ;
   void *argp2 = 0 ;
   int res2 = 0 ;
-  gum::Potential< double > result;
+  gum::Tensor< double > result;
   
   (void)self;
   if ((nobjs < 2) || (nobjs > 2)) SWIG_fail;
-  res1 = SWIG_ConvertPtr(swig_obj[0], &argp1,SWIGTYPE_p_gum__PotentialT_double_t, 0 |  0 );
+  res1 = SWIG_ConvertPtr(swig_obj[0], &argp1,SWIGTYPE_p_gum__TensorT_double_t, 0 |  0 );
   if (!SWIG_IsOK(res1)) {
-    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "Potential___truediv__" "', argument " "1"" of type '" "gum::Potential< double > const *""'"); 
+    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "Tensor___truediv__" "', argument " "1"" of type '" "gum::Tensor< double > const *""'"); 
   }
-  arg1 = reinterpret_cast< gum::Potential< double > * >(argp1);
-  res2 = SWIG_ConvertPtr(swig_obj[1], &argp2, SWIGTYPE_p_gum__PotentialT_double_t,  0  | 0);
+  arg1 = reinterpret_cast< gum::Tensor< double > * >(argp1);
+  res2 = SWIG_ConvertPtr(swig_obj[1], &argp2, SWIGTYPE_p_gum__TensorT_double_t,  0  | 0);
   if (!SWIG_IsOK(res2)) {
-    SWIG_exception_fail(SWIG_ArgError(res2), "in method '" "Potential___truediv__" "', argument " "2"" of type '" "gum::Potential< double > const &""'"); 
+    SWIG_exception_fail(SWIG_ArgError(res2), "in method '" "Tensor___truediv__" "', argument " "2"" of type '" "gum::Tensor< double > const &""'"); 
   }
   if (!argp2) {
-    SWIG_exception_fail(SWIG_NullReferenceError, "invalid null reference " "in method '" "Potential___truediv__" "', argument " "2"" of type '" "gum::Potential< double > const &""'"); 
+    SWIG_exception_fail(SWIG_NullReferenceError, "invalid null reference " "in method '" "Tensor___truediv__" "', argument " "2"" of type '" "gum::Tensor< double > const &""'"); 
   }
-  arg2 = reinterpret_cast< gum::Potential< double > * >(argp2);
+  arg2 = reinterpret_cast< gum::Tensor< double > * >(argp2);
   {
     try {
-      result = ((gum::Potential< double > const *)arg1)->operator /((gum::Potential< double > const &)*arg2);
+      result = ((gum::Tensor< double > const *)arg1)->operator /((gum::Tensor< double > const &)*arg2);
     } catch (...) {
       SetPythonizeAgrumException();
       SWIG_fail;
     }
   }
-  resultobj = SWIG_NewPointerObj((new gum::Potential< double >(result)), SWIGTYPE_p_gum__PotentialT_double_t, SWIG_POINTER_OWN |  0 );
+  resultobj = SWIG_NewPointerObj((new gum::Tensor< double >(result)), SWIGTYPE_p_gum__TensorT_double_t, SWIG_POINTER_OWN |  0 );
   return resultobj;
 fail:
   if (PyErr_Occurred() && !PyErr_ExceptionMatches(PyExc_TypeError)) {
@@ -57032,39 +57032,39 @@ fail:
 }
 
 
-SWIGINTERN PyObject *_wrap_Potential___truediv____SWIG_1(PyObject *self, Py_ssize_t nobjs, PyObject **swig_obj) {
+SWIGINTERN PyObject *_wrap_Tensor___truediv____SWIG_1(PyObject *self, Py_ssize_t nobjs, PyObject **swig_obj) {
   PyObject *resultobj = 0;
-  gum::Potential< double > *arg1 = 0 ;
+  gum::Tensor< double > *arg1 = 0 ;
   double *arg2 = 0 ;
   void *argp1 = 0 ;
   int res1 = 0 ;
   double temp2 ;
   double val2 ;
   int ecode2 = 0 ;
-  gum::Potential< double > result;
+  gum::Tensor< double > result;
   
   (void)self;
   if ((nobjs < 2) || (nobjs > 2)) SWIG_fail;
-  res1 = SWIG_ConvertPtr(swig_obj[0], &argp1,SWIGTYPE_p_gum__PotentialT_double_t, 0 |  0 );
+  res1 = SWIG_ConvertPtr(swig_obj[0], &argp1,SWIGTYPE_p_gum__TensorT_double_t, 0 |  0 );
   if (!SWIG_IsOK(res1)) {
-    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "Potential___truediv__" "', argument " "1"" of type '" "gum::Potential< double > const *""'"); 
+    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "Tensor___truediv__" "', argument " "1"" of type '" "gum::Tensor< double > const *""'"); 
   }
-  arg1 = reinterpret_cast< gum::Potential< double > * >(argp1);
+  arg1 = reinterpret_cast< gum::Tensor< double > * >(argp1);
   ecode2 = SWIG_AsVal_double(swig_obj[1], &val2);
   if (!SWIG_IsOK(ecode2)) {
-    SWIG_exception_fail(SWIG_ArgError(ecode2), "in method '" "Potential___truediv__" "', argument " "2"" of type '" "double""'");
+    SWIG_exception_fail(SWIG_ArgError(ecode2), "in method '" "Tensor___truediv__" "', argument " "2"" of type '" "double""'");
   } 
   temp2 = static_cast< double >(val2);
   arg2 = &temp2;
   {
     try {
-      result = ((gum::Potential< double > const *)arg1)->operator /((double const &)*arg2);
+      result = ((gum::Tensor< double > const *)arg1)->operator /((double const &)*arg2);
     } catch (...) {
       SetPythonizeAgrumException();
       SWIG_fail;
     }
   }
-  resultobj = SWIG_NewPointerObj((new gum::Potential< double >(result)), SWIGTYPE_p_gum__PotentialT_double_t, SWIG_POINTER_OWN |  0 );
+  resultobj = SWIG_NewPointerObj((new gum::Tensor< double >(result)), SWIGTYPE_p_gum__TensorT_double_t, SWIG_POINTER_OWN |  0 );
   return resultobj;
 fail:
   if (PyErr_Occurred() && !PyErr_ExceptionMatches(PyExc_TypeError)) {
@@ -57076,27 +57076,27 @@ fail:
 }
 
 
-SWIGINTERN PyObject *_wrap_Potential___truediv__(PyObject *self, PyObject *args) {
+SWIGINTERN PyObject *_wrap_Tensor___truediv__(PyObject *self, PyObject *args) {
   Py_ssize_t argc;
   PyObject *argv[3] = {
     0
   };
   
-  if (!(argc = SWIG_Python_UnpackTuple(args, "Potential___truediv__", 0, 2, argv))) SWIG_fail;
+  if (!(argc = SWIG_Python_UnpackTuple(args, "Tensor___truediv__", 0, 2, argv))) SWIG_fail;
   --argc;
   if (argc == 2) {
     int _v = 0;
     {
-      int res = SWIG_ConvertPtr(argv[1], 0, SWIGTYPE_p_gum__PotentialT_double_t, SWIG_POINTER_NO_NULL | 0);
+      int res = SWIG_ConvertPtr(argv[1], 0, SWIGTYPE_p_gum__TensorT_double_t, SWIG_POINTER_NO_NULL | 0);
       _v = SWIG_CheckState(res);
     }
     if (!_v) goto check_1;
-    return _wrap_Potential___truediv____SWIG_0(self, argc, argv);
+    return _wrap_Tensor___truediv____SWIG_0(self, argc, argv);
   }
 check_1:
   
   if (argc == 2) {
-    PyObject *retobj = _wrap_Potential___truediv____SWIG_1(self, argc, argv);
+    PyObject *retobj = _wrap_Tensor___truediv____SWIG_1(self, argc, argv);
     if (!SWIG_Python_TypeErrorOccurred(retobj)) return retobj;
     SWIG_fail;
   }
@@ -57107,461 +57107,461 @@ fail:
 }
 
 
-SWIGINTERN PyObject *_wrap_Potential___iadd____SWIG_0(PyObject *self, Py_ssize_t nobjs, PyObject **swig_obj) {
+SWIGINTERN PyObject *_wrap_Tensor___iadd____SWIG_0(PyObject *self, Py_ssize_t nobjs, PyObject **swig_obj) {
   PyObject *resultobj = 0;
-  gum::Potential< double > *arg1 = 0 ;
-  gum::Potential< double > *arg2 = 0 ;
+  gum::Tensor< double > *arg1 = 0 ;
+  gum::Tensor< double > *arg2 = 0 ;
   void *argp1 = 0 ;
   int res1 = 0 ;
   void *argp2 = 0 ;
   int res2 = 0 ;
-  gum::Potential< double > *result = 0 ;
+  gum::Tensor< double > *result = 0 ;
   
   (void)self;
   if ((nobjs < 2) || (nobjs > 2)) SWIG_fail;
-  res1 = SWIG_ConvertPtr(swig_obj[0], &argp1,SWIGTYPE_p_gum__PotentialT_double_t, SWIG_POINTER_DISOWN |  0 );
+  res1 = SWIG_ConvertPtr(swig_obj[0], &argp1,SWIGTYPE_p_gum__TensorT_double_t, SWIG_POINTER_DISOWN |  0 );
   if (!SWIG_IsOK(res1)) {
-    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "Potential___iadd__" "', argument " "1"" of type '" "gum::Potential< double > *""'"); 
+    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "Tensor___iadd__" "', argument " "1"" of type '" "gum::Tensor< double > *""'"); 
   }
-  arg1 = reinterpret_cast< gum::Potential< double > * >(argp1);
-  res2 = SWIG_ConvertPtr(swig_obj[1], &argp2, SWIGTYPE_p_gum__PotentialT_double_t,  0  | 0);
+  arg1 = reinterpret_cast< gum::Tensor< double > * >(argp1);
+  res2 = SWIG_ConvertPtr(swig_obj[1], &argp2, SWIGTYPE_p_gum__TensorT_double_t,  0  | 0);
   if (!SWIG_IsOK(res2)) {
-    SWIG_exception_fail(SWIG_ArgError(res2), "in method '" "Potential___iadd__" "', argument " "2"" of type '" "gum::Potential< double > const &""'"); 
+    SWIG_exception_fail(SWIG_ArgError(res2), "in method '" "Tensor___iadd__" "', argument " "2"" of type '" "gum::Tensor< double > const &""'"); 
   }
   if (!argp2) {
-    SWIG_exception_fail(SWIG_NullReferenceError, "invalid null reference " "in method '" "Potential___iadd__" "', argument " "2"" of type '" "gum::Potential< double > const &""'"); 
+    SWIG_exception_fail(SWIG_NullReferenceError, "invalid null reference " "in method '" "Tensor___iadd__" "', argument " "2"" of type '" "gum::Tensor< double > const &""'"); 
   }
-  arg2 = reinterpret_cast< gum::Potential< double > * >(argp2);
+  arg2 = reinterpret_cast< gum::Tensor< double > * >(argp2);
   {
     try {
-      result = (gum::Potential< double > *) &(arg1)->operator +=((gum::Potential< double > const &)*arg2);
+      result = (gum::Tensor< double > *) &(arg1)->operator +=((gum::Tensor< double > const &)*arg2);
     } catch (...) {
       SetPythonizeAgrumException();
       SWIG_fail;
     }
   }
-  resultobj = SWIG_NewPointerObj(SWIG_as_voidptr(result), SWIGTYPE_p_gum__PotentialT_double_t, SWIG_POINTER_OWN |  0 );
+  resultobj = SWIG_NewPointerObj(SWIG_as_voidptr(result), SWIGTYPE_p_gum__TensorT_double_t, SWIG_POINTER_OWN |  0 );
   return resultobj;
 fail:
   return NULL;
 }
 
 
-SWIGINTERN PyObject *_wrap_Potential___iadd____SWIG_1(PyObject *self, Py_ssize_t nobjs, PyObject **swig_obj) {
+SWIGINTERN PyObject *_wrap_Tensor___iadd____SWIG_1(PyObject *self, Py_ssize_t nobjs, PyObject **swig_obj) {
   PyObject *resultobj = 0;
-  gum::Potential< double > *arg1 = 0 ;
+  gum::Tensor< double > *arg1 = 0 ;
   double *arg2 = 0 ;
   void *argp1 = 0 ;
   int res1 = 0 ;
   double temp2 ;
   double val2 ;
   int ecode2 = 0 ;
-  gum::Potential< double > *result = 0 ;
+  gum::Tensor< double > *result = 0 ;
   
   (void)self;
   if ((nobjs < 2) || (nobjs > 2)) SWIG_fail;
-  res1 = SWIG_ConvertPtr(swig_obj[0], &argp1,SWIGTYPE_p_gum__PotentialT_double_t, SWIG_POINTER_DISOWN |  0 );
+  res1 = SWIG_ConvertPtr(swig_obj[0], &argp1,SWIGTYPE_p_gum__TensorT_double_t, SWIG_POINTER_DISOWN |  0 );
   if (!SWIG_IsOK(res1)) {
-    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "Potential___iadd__" "', argument " "1"" of type '" "gum::Potential< double > *""'"); 
+    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "Tensor___iadd__" "', argument " "1"" of type '" "gum::Tensor< double > *""'"); 
   }
-  arg1 = reinterpret_cast< gum::Potential< double > * >(argp1);
+  arg1 = reinterpret_cast< gum::Tensor< double > * >(argp1);
   ecode2 = SWIG_AsVal_double(swig_obj[1], &val2);
   if (!SWIG_IsOK(ecode2)) {
-    SWIG_exception_fail(SWIG_ArgError(ecode2), "in method '" "Potential___iadd__" "', argument " "2"" of type '" "double""'");
+    SWIG_exception_fail(SWIG_ArgError(ecode2), "in method '" "Tensor___iadd__" "', argument " "2"" of type '" "double""'");
   } 
   temp2 = static_cast< double >(val2);
   arg2 = &temp2;
   {
     try {
-      result = (gum::Potential< double > *) &(arg1)->operator +=((double const &)*arg2);
+      result = (gum::Tensor< double > *) &(arg1)->operator +=((double const &)*arg2);
     } catch (...) {
       SetPythonizeAgrumException();
       SWIG_fail;
     }
   }
-  resultobj = SWIG_NewPointerObj(SWIG_as_voidptr(result), SWIGTYPE_p_gum__PotentialT_double_t, SWIG_POINTER_OWN |  0 );
+  resultobj = SWIG_NewPointerObj(SWIG_as_voidptr(result), SWIGTYPE_p_gum__TensorT_double_t, SWIG_POINTER_OWN |  0 );
   return resultobj;
 fail:
   return NULL;
 }
 
 
-SWIGINTERN PyObject *_wrap_Potential___iadd__(PyObject *self, PyObject *args) {
+SWIGINTERN PyObject *_wrap_Tensor___iadd__(PyObject *self, PyObject *args) {
   Py_ssize_t argc;
   PyObject *argv[3] = {
     0
   };
   
-  if (!(argc = SWIG_Python_UnpackTuple(args, "Potential___iadd__", 0, 2, argv))) SWIG_fail;
+  if (!(argc = SWIG_Python_UnpackTuple(args, "Tensor___iadd__", 0, 2, argv))) SWIG_fail;
   --argc;
   if (argc == 2) {
     int _v = 0;
     {
-      int res = SWIG_ConvertPtr(argv[1], 0, SWIGTYPE_p_gum__PotentialT_double_t, SWIG_POINTER_NO_NULL | 0);
+      int res = SWIG_ConvertPtr(argv[1], 0, SWIGTYPE_p_gum__TensorT_double_t, SWIG_POINTER_NO_NULL | 0);
       _v = SWIG_CheckState(res);
     }
     if (!_v) goto check_1;
-    return _wrap_Potential___iadd____SWIG_0(self, argc, argv);
+    return _wrap_Tensor___iadd____SWIG_0(self, argc, argv);
   }
 check_1:
   
   if (argc == 2) {
-    PyObject *retobj = _wrap_Potential___iadd____SWIG_1(self, argc, argv);
+    PyObject *retobj = _wrap_Tensor___iadd____SWIG_1(self, argc, argv);
     if (!SWIG_Python_TypeErrorOccurred(retobj)) return retobj;
     SWIG_fail;
   }
   
 fail:
-  SWIG_Python_RaiseOrModifyTypeError("Wrong number or type of arguments for overloaded function 'Potential___iadd__'.\n"
+  SWIG_Python_RaiseOrModifyTypeError("Wrong number or type of arguments for overloaded function 'Tensor___iadd__'.\n"
     "  Possible C/C++ prototypes are:\n"
-    "    gum::Potential< double >::operator +=(gum::Potential< double > const &)\n"
-    "    gum::Potential< double >::operator +=(double const &)\n");
+    "    gum::Tensor< double >::operator +=(gum::Tensor< double > const &)\n"
+    "    gum::Tensor< double >::operator +=(double const &)\n");
   return 0;
 }
 
 
-SWIGINTERN PyObject *_wrap_Potential___imul____SWIG_0(PyObject *self, Py_ssize_t nobjs, PyObject **swig_obj) {
+SWIGINTERN PyObject *_wrap_Tensor___imul____SWIG_0(PyObject *self, Py_ssize_t nobjs, PyObject **swig_obj) {
   PyObject *resultobj = 0;
-  gum::Potential< double > *arg1 = 0 ;
-  gum::Potential< double > *arg2 = 0 ;
+  gum::Tensor< double > *arg1 = 0 ;
+  gum::Tensor< double > *arg2 = 0 ;
   void *argp1 = 0 ;
   int res1 = 0 ;
   void *argp2 = 0 ;
   int res2 = 0 ;
-  gum::Potential< double > *result = 0 ;
+  gum::Tensor< double > *result = 0 ;
   
   (void)self;
   if ((nobjs < 2) || (nobjs > 2)) SWIG_fail;
-  res1 = SWIG_ConvertPtr(swig_obj[0], &argp1,SWIGTYPE_p_gum__PotentialT_double_t, SWIG_POINTER_DISOWN |  0 );
+  res1 = SWIG_ConvertPtr(swig_obj[0], &argp1,SWIGTYPE_p_gum__TensorT_double_t, SWIG_POINTER_DISOWN |  0 );
   if (!SWIG_IsOK(res1)) {
-    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "Potential___imul__" "', argument " "1"" of type '" "gum::Potential< double > *""'"); 
+    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "Tensor___imul__" "', argument " "1"" of type '" "gum::Tensor< double > *""'"); 
   }
-  arg1 = reinterpret_cast< gum::Potential< double > * >(argp1);
-  res2 = SWIG_ConvertPtr(swig_obj[1], &argp2, SWIGTYPE_p_gum__PotentialT_double_t,  0  | 0);
+  arg1 = reinterpret_cast< gum::Tensor< double > * >(argp1);
+  res2 = SWIG_ConvertPtr(swig_obj[1], &argp2, SWIGTYPE_p_gum__TensorT_double_t,  0  | 0);
   if (!SWIG_IsOK(res2)) {
-    SWIG_exception_fail(SWIG_ArgError(res2), "in method '" "Potential___imul__" "', argument " "2"" of type '" "gum::Potential< double > const &""'"); 
+    SWIG_exception_fail(SWIG_ArgError(res2), "in method '" "Tensor___imul__" "', argument " "2"" of type '" "gum::Tensor< double > const &""'"); 
   }
   if (!argp2) {
-    SWIG_exception_fail(SWIG_NullReferenceError, "invalid null reference " "in method '" "Potential___imul__" "', argument " "2"" of type '" "gum::Potential< double > const &""'"); 
+    SWIG_exception_fail(SWIG_NullReferenceError, "invalid null reference " "in method '" "Tensor___imul__" "', argument " "2"" of type '" "gum::Tensor< double > const &""'"); 
   }
-  arg2 = reinterpret_cast< gum::Potential< double > * >(argp2);
+  arg2 = reinterpret_cast< gum::Tensor< double > * >(argp2);
   {
     try {
-      result = (gum::Potential< double > *) &(arg1)->operator *=((gum::Potential< double > const &)*arg2);
+      result = (gum::Tensor< double > *) &(arg1)->operator *=((gum::Tensor< double > const &)*arg2);
     } catch (...) {
       SetPythonizeAgrumException();
       SWIG_fail;
     }
   }
-  resultobj = SWIG_NewPointerObj(SWIG_as_voidptr(result), SWIGTYPE_p_gum__PotentialT_double_t, SWIG_POINTER_OWN |  0 );
+  resultobj = SWIG_NewPointerObj(SWIG_as_voidptr(result), SWIGTYPE_p_gum__TensorT_double_t, SWIG_POINTER_OWN |  0 );
   return resultobj;
 fail:
   return NULL;
 }
 
 
-SWIGINTERN PyObject *_wrap_Potential___imul____SWIG_1(PyObject *self, Py_ssize_t nobjs, PyObject **swig_obj) {
+SWIGINTERN PyObject *_wrap_Tensor___imul____SWIG_1(PyObject *self, Py_ssize_t nobjs, PyObject **swig_obj) {
   PyObject *resultobj = 0;
-  gum::Potential< double > *arg1 = 0 ;
+  gum::Tensor< double > *arg1 = 0 ;
   double *arg2 = 0 ;
   void *argp1 = 0 ;
   int res1 = 0 ;
   double temp2 ;
   double val2 ;
   int ecode2 = 0 ;
-  gum::Potential< double > *result = 0 ;
+  gum::Tensor< double > *result = 0 ;
   
   (void)self;
   if ((nobjs < 2) || (nobjs > 2)) SWIG_fail;
-  res1 = SWIG_ConvertPtr(swig_obj[0], &argp1,SWIGTYPE_p_gum__PotentialT_double_t, SWIG_POINTER_DISOWN |  0 );
+  res1 = SWIG_ConvertPtr(swig_obj[0], &argp1,SWIGTYPE_p_gum__TensorT_double_t, SWIG_POINTER_DISOWN |  0 );
   if (!SWIG_IsOK(res1)) {
-    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "Potential___imul__" "', argument " "1"" of type '" "gum::Potential< double > *""'"); 
+    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "Tensor___imul__" "', argument " "1"" of type '" "gum::Tensor< double > *""'"); 
   }
-  arg1 = reinterpret_cast< gum::Potential< double > * >(argp1);
+  arg1 = reinterpret_cast< gum::Tensor< double > * >(argp1);
   ecode2 = SWIG_AsVal_double(swig_obj[1], &val2);
   if (!SWIG_IsOK(ecode2)) {
-    SWIG_exception_fail(SWIG_ArgError(ecode2), "in method '" "Potential___imul__" "', argument " "2"" of type '" "double""'");
+    SWIG_exception_fail(SWIG_ArgError(ecode2), "in method '" "Tensor___imul__" "', argument " "2"" of type '" "double""'");
   } 
   temp2 = static_cast< double >(val2);
   arg2 = &temp2;
   {
     try {
-      result = (gum::Potential< double > *) &(arg1)->operator *=((double const &)*arg2);
+      result = (gum::Tensor< double > *) &(arg1)->operator *=((double const &)*arg2);
     } catch (...) {
       SetPythonizeAgrumException();
       SWIG_fail;
     }
   }
-  resultobj = SWIG_NewPointerObj(SWIG_as_voidptr(result), SWIGTYPE_p_gum__PotentialT_double_t, SWIG_POINTER_OWN |  0 );
+  resultobj = SWIG_NewPointerObj(SWIG_as_voidptr(result), SWIGTYPE_p_gum__TensorT_double_t, SWIG_POINTER_OWN |  0 );
   return resultobj;
 fail:
   return NULL;
 }
 
 
-SWIGINTERN PyObject *_wrap_Potential___imul__(PyObject *self, PyObject *args) {
+SWIGINTERN PyObject *_wrap_Tensor___imul__(PyObject *self, PyObject *args) {
   Py_ssize_t argc;
   PyObject *argv[3] = {
     0
   };
   
-  if (!(argc = SWIG_Python_UnpackTuple(args, "Potential___imul__", 0, 2, argv))) SWIG_fail;
+  if (!(argc = SWIG_Python_UnpackTuple(args, "Tensor___imul__", 0, 2, argv))) SWIG_fail;
   --argc;
   if (argc == 2) {
     int _v = 0;
     {
-      int res = SWIG_ConvertPtr(argv[1], 0, SWIGTYPE_p_gum__PotentialT_double_t, SWIG_POINTER_NO_NULL | 0);
+      int res = SWIG_ConvertPtr(argv[1], 0, SWIGTYPE_p_gum__TensorT_double_t, SWIG_POINTER_NO_NULL | 0);
       _v = SWIG_CheckState(res);
     }
     if (!_v) goto check_1;
-    return _wrap_Potential___imul____SWIG_0(self, argc, argv);
+    return _wrap_Tensor___imul____SWIG_0(self, argc, argv);
   }
 check_1:
   
   if (argc == 2) {
-    PyObject *retobj = _wrap_Potential___imul____SWIG_1(self, argc, argv);
+    PyObject *retobj = _wrap_Tensor___imul____SWIG_1(self, argc, argv);
     if (!SWIG_Python_TypeErrorOccurred(retobj)) return retobj;
     SWIG_fail;
   }
   
 fail:
-  SWIG_Python_RaiseOrModifyTypeError("Wrong number or type of arguments for overloaded function 'Potential___imul__'.\n"
+  SWIG_Python_RaiseOrModifyTypeError("Wrong number or type of arguments for overloaded function 'Tensor___imul__'.\n"
     "  Possible C/C++ prototypes are:\n"
-    "    gum::Potential< double >::operator *=(gum::Potential< double > const &)\n"
-    "    gum::Potential< double >::operator *=(double const &)\n");
+    "    gum::Tensor< double >::operator *=(gum::Tensor< double > const &)\n"
+    "    gum::Tensor< double >::operator *=(double const &)\n");
   return 0;
 }
 
 
-SWIGINTERN PyObject *_wrap_Potential___isub____SWIG_0(PyObject *self, Py_ssize_t nobjs, PyObject **swig_obj) {
+SWIGINTERN PyObject *_wrap_Tensor___isub____SWIG_0(PyObject *self, Py_ssize_t nobjs, PyObject **swig_obj) {
   PyObject *resultobj = 0;
-  gum::Potential< double > *arg1 = 0 ;
-  gum::Potential< double > *arg2 = 0 ;
+  gum::Tensor< double > *arg1 = 0 ;
+  gum::Tensor< double > *arg2 = 0 ;
   void *argp1 = 0 ;
   int res1 = 0 ;
   void *argp2 = 0 ;
   int res2 = 0 ;
-  gum::Potential< double > *result = 0 ;
+  gum::Tensor< double > *result = 0 ;
   
   (void)self;
   if ((nobjs < 2) || (nobjs > 2)) SWIG_fail;
-  res1 = SWIG_ConvertPtr(swig_obj[0], &argp1,SWIGTYPE_p_gum__PotentialT_double_t, SWIG_POINTER_DISOWN |  0 );
+  res1 = SWIG_ConvertPtr(swig_obj[0], &argp1,SWIGTYPE_p_gum__TensorT_double_t, SWIG_POINTER_DISOWN |  0 );
   if (!SWIG_IsOK(res1)) {
-    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "Potential___isub__" "', argument " "1"" of type '" "gum::Potential< double > *""'"); 
+    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "Tensor___isub__" "', argument " "1"" of type '" "gum::Tensor< double > *""'"); 
   }
-  arg1 = reinterpret_cast< gum::Potential< double > * >(argp1);
-  res2 = SWIG_ConvertPtr(swig_obj[1], &argp2, SWIGTYPE_p_gum__PotentialT_double_t,  0  | 0);
+  arg1 = reinterpret_cast< gum::Tensor< double > * >(argp1);
+  res2 = SWIG_ConvertPtr(swig_obj[1], &argp2, SWIGTYPE_p_gum__TensorT_double_t,  0  | 0);
   if (!SWIG_IsOK(res2)) {
-    SWIG_exception_fail(SWIG_ArgError(res2), "in method '" "Potential___isub__" "', argument " "2"" of type '" "gum::Potential< double > const &""'"); 
+    SWIG_exception_fail(SWIG_ArgError(res2), "in method '" "Tensor___isub__" "', argument " "2"" of type '" "gum::Tensor< double > const &""'"); 
   }
   if (!argp2) {
-    SWIG_exception_fail(SWIG_NullReferenceError, "invalid null reference " "in method '" "Potential___isub__" "', argument " "2"" of type '" "gum::Potential< double > const &""'"); 
+    SWIG_exception_fail(SWIG_NullReferenceError, "invalid null reference " "in method '" "Tensor___isub__" "', argument " "2"" of type '" "gum::Tensor< double > const &""'"); 
   }
-  arg2 = reinterpret_cast< gum::Potential< double > * >(argp2);
+  arg2 = reinterpret_cast< gum::Tensor< double > * >(argp2);
   {
     try {
-      result = (gum::Potential< double > *) &(arg1)->operator -=((gum::Potential< double > const &)*arg2);
+      result = (gum::Tensor< double > *) &(arg1)->operator -=((gum::Tensor< double > const &)*arg2);
     } catch (...) {
       SetPythonizeAgrumException();
       SWIG_fail;
     }
   }
-  resultobj = SWIG_NewPointerObj(SWIG_as_voidptr(result), SWIGTYPE_p_gum__PotentialT_double_t, SWIG_POINTER_OWN |  0 );
+  resultobj = SWIG_NewPointerObj(SWIG_as_voidptr(result), SWIGTYPE_p_gum__TensorT_double_t, SWIG_POINTER_OWN |  0 );
   return resultobj;
 fail:
   return NULL;
 }
 
 
-SWIGINTERN PyObject *_wrap_Potential___isub____SWIG_1(PyObject *self, Py_ssize_t nobjs, PyObject **swig_obj) {
+SWIGINTERN PyObject *_wrap_Tensor___isub____SWIG_1(PyObject *self, Py_ssize_t nobjs, PyObject **swig_obj) {
   PyObject *resultobj = 0;
-  gum::Potential< double > *arg1 = 0 ;
+  gum::Tensor< double > *arg1 = 0 ;
   double *arg2 = 0 ;
   void *argp1 = 0 ;
   int res1 = 0 ;
   double temp2 ;
   double val2 ;
   int ecode2 = 0 ;
-  gum::Potential< double > *result = 0 ;
+  gum::Tensor< double > *result = 0 ;
   
   (void)self;
   if ((nobjs < 2) || (nobjs > 2)) SWIG_fail;
-  res1 = SWIG_ConvertPtr(swig_obj[0], &argp1,SWIGTYPE_p_gum__PotentialT_double_t, SWIG_POINTER_DISOWN |  0 );
+  res1 = SWIG_ConvertPtr(swig_obj[0], &argp1,SWIGTYPE_p_gum__TensorT_double_t, SWIG_POINTER_DISOWN |  0 );
   if (!SWIG_IsOK(res1)) {
-    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "Potential___isub__" "', argument " "1"" of type '" "gum::Potential< double > *""'"); 
+    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "Tensor___isub__" "', argument " "1"" of type '" "gum::Tensor< double > *""'"); 
   }
-  arg1 = reinterpret_cast< gum::Potential< double > * >(argp1);
+  arg1 = reinterpret_cast< gum::Tensor< double > * >(argp1);
   ecode2 = SWIG_AsVal_double(swig_obj[1], &val2);
   if (!SWIG_IsOK(ecode2)) {
-    SWIG_exception_fail(SWIG_ArgError(ecode2), "in method '" "Potential___isub__" "', argument " "2"" of type '" "double""'");
+    SWIG_exception_fail(SWIG_ArgError(ecode2), "in method '" "Tensor___isub__" "', argument " "2"" of type '" "double""'");
   } 
   temp2 = static_cast< double >(val2);
   arg2 = &temp2;
   {
     try {
-      result = (gum::Potential< double > *) &(arg1)->operator -=((double const &)*arg2);
+      result = (gum::Tensor< double > *) &(arg1)->operator -=((double const &)*arg2);
     } catch (...) {
       SetPythonizeAgrumException();
       SWIG_fail;
     }
   }
-  resultobj = SWIG_NewPointerObj(SWIG_as_voidptr(result), SWIGTYPE_p_gum__PotentialT_double_t, SWIG_POINTER_OWN |  0 );
+  resultobj = SWIG_NewPointerObj(SWIG_as_voidptr(result), SWIGTYPE_p_gum__TensorT_double_t, SWIG_POINTER_OWN |  0 );
   return resultobj;
 fail:
   return NULL;
 }
 
 
-SWIGINTERN PyObject *_wrap_Potential___isub__(PyObject *self, PyObject *args) {
+SWIGINTERN PyObject *_wrap_Tensor___isub__(PyObject *self, PyObject *args) {
   Py_ssize_t argc;
   PyObject *argv[3] = {
     0
   };
   
-  if (!(argc = SWIG_Python_UnpackTuple(args, "Potential___isub__", 0, 2, argv))) SWIG_fail;
+  if (!(argc = SWIG_Python_UnpackTuple(args, "Tensor___isub__", 0, 2, argv))) SWIG_fail;
   --argc;
   if (argc == 2) {
     int _v = 0;
     {
-      int res = SWIG_ConvertPtr(argv[1], 0, SWIGTYPE_p_gum__PotentialT_double_t, SWIG_POINTER_NO_NULL | 0);
+      int res = SWIG_ConvertPtr(argv[1], 0, SWIGTYPE_p_gum__TensorT_double_t, SWIG_POINTER_NO_NULL | 0);
       _v = SWIG_CheckState(res);
     }
     if (!_v) goto check_1;
-    return _wrap_Potential___isub____SWIG_0(self, argc, argv);
+    return _wrap_Tensor___isub____SWIG_0(self, argc, argv);
   }
 check_1:
   
   if (argc == 2) {
-    PyObject *retobj = _wrap_Potential___isub____SWIG_1(self, argc, argv);
+    PyObject *retobj = _wrap_Tensor___isub____SWIG_1(self, argc, argv);
     if (!SWIG_Python_TypeErrorOccurred(retobj)) return retobj;
     SWIG_fail;
   }
   
 fail:
-  SWIG_Python_RaiseOrModifyTypeError("Wrong number or type of arguments for overloaded function 'Potential___isub__'.\n"
+  SWIG_Python_RaiseOrModifyTypeError("Wrong number or type of arguments for overloaded function 'Tensor___isub__'.\n"
     "  Possible C/C++ prototypes are:\n"
-    "    gum::Potential< double >::operator -=(gum::Potential< double > const &)\n"
-    "    gum::Potential< double >::operator -=(double const &)\n");
+    "    gum::Tensor< double >::operator -=(gum::Tensor< double > const &)\n"
+    "    gum::Tensor< double >::operator -=(double const &)\n");
   return 0;
 }
 
 
-SWIGINTERN PyObject *_wrap_Potential___itruediv____SWIG_0(PyObject *self, Py_ssize_t nobjs, PyObject **swig_obj) {
+SWIGINTERN PyObject *_wrap_Tensor___itruediv____SWIG_0(PyObject *self, Py_ssize_t nobjs, PyObject **swig_obj) {
   PyObject *resultobj = 0;
-  gum::Potential< double > *arg1 = 0 ;
-  gum::Potential< double > *arg2 = 0 ;
+  gum::Tensor< double > *arg1 = 0 ;
+  gum::Tensor< double > *arg2 = 0 ;
   void *argp1 = 0 ;
   int res1 = 0 ;
   void *argp2 = 0 ;
   int res2 = 0 ;
-  gum::Potential< double > *result = 0 ;
+  gum::Tensor< double > *result = 0 ;
   
   (void)self;
   if ((nobjs < 2) || (nobjs > 2)) SWIG_fail;
-  res1 = SWIG_ConvertPtr(swig_obj[0], &argp1,SWIGTYPE_p_gum__PotentialT_double_t, SWIG_POINTER_DISOWN |  0 );
+  res1 = SWIG_ConvertPtr(swig_obj[0], &argp1,SWIGTYPE_p_gum__TensorT_double_t, SWIG_POINTER_DISOWN |  0 );
   if (!SWIG_IsOK(res1)) {
-    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "Potential___itruediv__" "', argument " "1"" of type '" "gum::Potential< double > *""'"); 
+    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "Tensor___itruediv__" "', argument " "1"" of type '" "gum::Tensor< double > *""'"); 
   }
-  arg1 = reinterpret_cast< gum::Potential< double > * >(argp1);
-  res2 = SWIG_ConvertPtr(swig_obj[1], &argp2, SWIGTYPE_p_gum__PotentialT_double_t,  0  | 0);
+  arg1 = reinterpret_cast< gum::Tensor< double > * >(argp1);
+  res2 = SWIG_ConvertPtr(swig_obj[1], &argp2, SWIGTYPE_p_gum__TensorT_double_t,  0  | 0);
   if (!SWIG_IsOK(res2)) {
-    SWIG_exception_fail(SWIG_ArgError(res2), "in method '" "Potential___itruediv__" "', argument " "2"" of type '" "gum::Potential< double > const &""'"); 
+    SWIG_exception_fail(SWIG_ArgError(res2), "in method '" "Tensor___itruediv__" "', argument " "2"" of type '" "gum::Tensor< double > const &""'"); 
   }
   if (!argp2) {
-    SWIG_exception_fail(SWIG_NullReferenceError, "invalid null reference " "in method '" "Potential___itruediv__" "', argument " "2"" of type '" "gum::Potential< double > const &""'"); 
+    SWIG_exception_fail(SWIG_NullReferenceError, "invalid null reference " "in method '" "Tensor___itruediv__" "', argument " "2"" of type '" "gum::Tensor< double > const &""'"); 
   }
-  arg2 = reinterpret_cast< gum::Potential< double > * >(argp2);
+  arg2 = reinterpret_cast< gum::Tensor< double > * >(argp2);
   {
     try {
-      result = (gum::Potential< double > *) &(arg1)->operator /=((gum::Potential< double > const &)*arg2);
+      result = (gum::Tensor< double > *) &(arg1)->operator /=((gum::Tensor< double > const &)*arg2);
     } catch (...) {
       SetPythonizeAgrumException();
       SWIG_fail;
     }
   }
-  resultobj = SWIG_NewPointerObj(SWIG_as_voidptr(result), SWIGTYPE_p_gum__PotentialT_double_t, SWIG_POINTER_OWN |  0 );
+  resultobj = SWIG_NewPointerObj(SWIG_as_voidptr(result), SWIGTYPE_p_gum__TensorT_double_t, SWIG_POINTER_OWN |  0 );
   return resultobj;
 fail:
   return NULL;
 }
 
 
-SWIGINTERN PyObject *_wrap_Potential___itruediv____SWIG_1(PyObject *self, Py_ssize_t nobjs, PyObject **swig_obj) {
+SWIGINTERN PyObject *_wrap_Tensor___itruediv____SWIG_1(PyObject *self, Py_ssize_t nobjs, PyObject **swig_obj) {
   PyObject *resultobj = 0;
-  gum::Potential< double > *arg1 = 0 ;
+  gum::Tensor< double > *arg1 = 0 ;
   double *arg2 = 0 ;
   void *argp1 = 0 ;
   int res1 = 0 ;
   double temp2 ;
   double val2 ;
   int ecode2 = 0 ;
-  gum::Potential< double > *result = 0 ;
+  gum::Tensor< double > *result = 0 ;
   
   (void)self;
   if ((nobjs < 2) || (nobjs > 2)) SWIG_fail;
-  res1 = SWIG_ConvertPtr(swig_obj[0], &argp1,SWIGTYPE_p_gum__PotentialT_double_t, SWIG_POINTER_DISOWN |  0 );
+  res1 = SWIG_ConvertPtr(swig_obj[0], &argp1,SWIGTYPE_p_gum__TensorT_double_t, SWIG_POINTER_DISOWN |  0 );
   if (!SWIG_IsOK(res1)) {
-    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "Potential___itruediv__" "', argument " "1"" of type '" "gum::Potential< double > *""'"); 
+    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "Tensor___itruediv__" "', argument " "1"" of type '" "gum::Tensor< double > *""'"); 
   }
-  arg1 = reinterpret_cast< gum::Potential< double > * >(argp1);
+  arg1 = reinterpret_cast< gum::Tensor< double > * >(argp1);
   ecode2 = SWIG_AsVal_double(swig_obj[1], &val2);
   if (!SWIG_IsOK(ecode2)) {
-    SWIG_exception_fail(SWIG_ArgError(ecode2), "in method '" "Potential___itruediv__" "', argument " "2"" of type '" "double""'");
+    SWIG_exception_fail(SWIG_ArgError(ecode2), "in method '" "Tensor___itruediv__" "', argument " "2"" of type '" "double""'");
   } 
   temp2 = static_cast< double >(val2);
   arg2 = &temp2;
   {
     try {
-      result = (gum::Potential< double > *) &(arg1)->operator /=((double const &)*arg2);
+      result = (gum::Tensor< double > *) &(arg1)->operator /=((double const &)*arg2);
     } catch (...) {
       SetPythonizeAgrumException();
       SWIG_fail;
     }
   }
-  resultobj = SWIG_NewPointerObj(SWIG_as_voidptr(result), SWIGTYPE_p_gum__PotentialT_double_t, SWIG_POINTER_OWN |  0 );
+  resultobj = SWIG_NewPointerObj(SWIG_as_voidptr(result), SWIGTYPE_p_gum__TensorT_double_t, SWIG_POINTER_OWN |  0 );
   return resultobj;
 fail:
   return NULL;
 }
 
 
-SWIGINTERN PyObject *_wrap_Potential___itruediv__(PyObject *self, PyObject *args) {
+SWIGINTERN PyObject *_wrap_Tensor___itruediv__(PyObject *self, PyObject *args) {
   Py_ssize_t argc;
   PyObject *argv[3] = {
     0
   };
   
-  if (!(argc = SWIG_Python_UnpackTuple(args, "Potential___itruediv__", 0, 2, argv))) SWIG_fail;
+  if (!(argc = SWIG_Python_UnpackTuple(args, "Tensor___itruediv__", 0, 2, argv))) SWIG_fail;
   --argc;
   if (argc == 2) {
     int _v = 0;
     {
-      int res = SWIG_ConvertPtr(argv[1], 0, SWIGTYPE_p_gum__PotentialT_double_t, SWIG_POINTER_NO_NULL | 0);
+      int res = SWIG_ConvertPtr(argv[1], 0, SWIGTYPE_p_gum__TensorT_double_t, SWIG_POINTER_NO_NULL | 0);
       _v = SWIG_CheckState(res);
     }
     if (!_v) goto check_1;
-    return _wrap_Potential___itruediv____SWIG_0(self, argc, argv);
+    return _wrap_Tensor___itruediv____SWIG_0(self, argc, argv);
   }
 check_1:
   
   if (argc == 2) {
-    PyObject *retobj = _wrap_Potential___itruediv____SWIG_1(self, argc, argv);
+    PyObject *retobj = _wrap_Tensor___itruediv____SWIG_1(self, argc, argv);
     if (!SWIG_Python_TypeErrorOccurred(retobj)) return retobj;
     SWIG_fail;
   }
   
 fail:
-  SWIG_Python_RaiseOrModifyTypeError("Wrong number or type of arguments for overloaded function 'Potential___itruediv__'.\n"
+  SWIG_Python_RaiseOrModifyTypeError("Wrong number or type of arguments for overloaded function 'Tensor___itruediv__'.\n"
     "  Possible C/C++ prototypes are:\n"
-    "    gum::Potential< double >::operator /=(gum::Potential< double > const &)\n"
-    "    gum::Potential< double >::operator /=(double const &)\n");
+    "    gum::Tensor< double >::operator /=(gum::Tensor< double > const &)\n"
+    "    gum::Tensor< double >::operator /=(double const &)\n");
   return 0;
 }
 
 
-SWIGINTERN PyObject *_wrap_Potential_isEvidence(PyObject *self, PyObject *args) {
+SWIGINTERN PyObject *_wrap_Tensor_isEvidence(PyObject *self, PyObject *args) {
   PyObject *resultobj = 0;
-  gum::Potential< double > *arg1 = 0 ;
+  gum::Tensor< double > *arg1 = 0 ;
   void *argp1 = 0 ;
   int res1 = 0 ;
   PyObject *swig_obj[1] ;
@@ -57570,14 +57570,14 @@ SWIGINTERN PyObject *_wrap_Potential_isEvidence(PyObject *self, PyObject *args) 
   (void)self;
   if (!args) SWIG_fail;
   swig_obj[0] = args;
-  res1 = SWIG_ConvertPtr(swig_obj[0], &argp1,SWIGTYPE_p_gum__PotentialT_double_t, 0 |  0 );
+  res1 = SWIG_ConvertPtr(swig_obj[0], &argp1,SWIGTYPE_p_gum__TensorT_double_t, 0 |  0 );
   if (!SWIG_IsOK(res1)) {
-    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "Potential_isEvidence" "', argument " "1"" of type '" "gum::Potential< double > const *""'"); 
+    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "Tensor_isEvidence" "', argument " "1"" of type '" "gum::Tensor< double > const *""'"); 
   }
-  arg1 = reinterpret_cast< gum::Potential< double > * >(argp1);
+  arg1 = reinterpret_cast< gum::Tensor< double > * >(argp1);
   {
     try {
-      result = (bool)((gum::Potential< double > const *)arg1)->isEvidence();
+      result = (bool)((gum::Tensor< double > const *)arg1)->isEvidence();
     } catch (...) {
       SetPythonizeAgrumException();
       SWIG_fail;
@@ -57590,41 +57590,41 @@ fail:
 }
 
 
-SWIGINTERN PyObject *_wrap_Potential___or__(PyObject *self, PyObject *args) {
+SWIGINTERN PyObject *_wrap_Tensor___or__(PyObject *self, PyObject *args) {
   PyObject *resultobj = 0;
-  gum::Potential< double > *arg1 = 0 ;
-  gum::Potential< double > *arg2 = 0 ;
+  gum::Tensor< double > *arg1 = 0 ;
+  gum::Tensor< double > *arg2 = 0 ;
   void *argp1 = 0 ;
   int res1 = 0 ;
   void *argp2 = 0 ;
   int res2 = 0 ;
   PyObject *swig_obj[2] ;
-  gum::Potential< double > result;
+  gum::Tensor< double > result;
   
   (void)self;
-  if (!SWIG_Python_UnpackTuple(args, "Potential___or__", 2, 2, swig_obj)) SWIG_fail;
-  res1 = SWIG_ConvertPtr(swig_obj[0], &argp1,SWIGTYPE_p_gum__PotentialT_double_t, 0 |  0 );
+  if (!SWIG_Python_UnpackTuple(args, "Tensor___or__", 2, 2, swig_obj)) SWIG_fail;
+  res1 = SWIG_ConvertPtr(swig_obj[0], &argp1,SWIGTYPE_p_gum__TensorT_double_t, 0 |  0 );
   if (!SWIG_IsOK(res1)) {
-    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "Potential___or__" "', argument " "1"" of type '" "gum::Potential< double > const *""'"); 
+    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "Tensor___or__" "', argument " "1"" of type '" "gum::Tensor< double > const *""'"); 
   }
-  arg1 = reinterpret_cast< gum::Potential< double > * >(argp1);
-  res2 = SWIG_ConvertPtr(swig_obj[1], &argp2, SWIGTYPE_p_gum__PotentialT_double_t,  0  | 0);
+  arg1 = reinterpret_cast< gum::Tensor< double > * >(argp1);
+  res2 = SWIG_ConvertPtr(swig_obj[1], &argp2, SWIGTYPE_p_gum__TensorT_double_t,  0  | 0);
   if (!SWIG_IsOK(res2)) {
-    SWIG_exception_fail(SWIG_ArgError(res2), "in method '" "Potential___or__" "', argument " "2"" of type '" "gum::Potential< double > const &""'"); 
+    SWIG_exception_fail(SWIG_ArgError(res2), "in method '" "Tensor___or__" "', argument " "2"" of type '" "gum::Tensor< double > const &""'"); 
   }
   if (!argp2) {
-    SWIG_exception_fail(SWIG_NullReferenceError, "invalid null reference " "in method '" "Potential___or__" "', argument " "2"" of type '" "gum::Potential< double > const &""'"); 
+    SWIG_exception_fail(SWIG_NullReferenceError, "invalid null reference " "in method '" "Tensor___or__" "', argument " "2"" of type '" "gum::Tensor< double > const &""'"); 
   }
-  arg2 = reinterpret_cast< gum::Potential< double > * >(argp2);
+  arg2 = reinterpret_cast< gum::Tensor< double > * >(argp2);
   {
     try {
-      result = ((gum::Potential< double > const *)arg1)->operator |((gum::Potential< double > const &)*arg2);
+      result = ((gum::Tensor< double > const *)arg1)->operator |((gum::Tensor< double > const &)*arg2);
     } catch (...) {
       SetPythonizeAgrumException();
       SWIG_fail;
     }
   }
-  resultobj = SWIG_NewPointerObj((new gum::Potential< double >(result)), SWIGTYPE_p_gum__PotentialT_double_t, SWIG_POINTER_OWN |  0 );
+  resultobj = SWIG_NewPointerObj((new gum::Tensor< double >(result)), SWIGTYPE_p_gum__TensorT_double_t, SWIG_POINTER_OWN |  0 );
   return resultobj;
 fail:
   if (PyErr_Occurred() && !PyErr_ExceptionMatches(PyExc_TypeError)) {
@@ -57636,41 +57636,41 @@ fail:
 }
 
 
-SWIGINTERN PyObject *_wrap_Potential___and__(PyObject *self, PyObject *args) {
+SWIGINTERN PyObject *_wrap_Tensor___and__(PyObject *self, PyObject *args) {
   PyObject *resultobj = 0;
-  gum::Potential< double > *arg1 = 0 ;
-  gum::Potential< double > *arg2 = 0 ;
+  gum::Tensor< double > *arg1 = 0 ;
+  gum::Tensor< double > *arg2 = 0 ;
   void *argp1 = 0 ;
   int res1 = 0 ;
   void *argp2 = 0 ;
   int res2 = 0 ;
   PyObject *swig_obj[2] ;
-  gum::Potential< double > result;
+  gum::Tensor< double > result;
   
   (void)self;
-  if (!SWIG_Python_UnpackTuple(args, "Potential___and__", 2, 2, swig_obj)) SWIG_fail;
-  res1 = SWIG_ConvertPtr(swig_obj[0], &argp1,SWIGTYPE_p_gum__PotentialT_double_t, 0 |  0 );
+  if (!SWIG_Python_UnpackTuple(args, "Tensor___and__", 2, 2, swig_obj)) SWIG_fail;
+  res1 = SWIG_ConvertPtr(swig_obj[0], &argp1,SWIGTYPE_p_gum__TensorT_double_t, 0 |  0 );
   if (!SWIG_IsOK(res1)) {
-    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "Potential___and__" "', argument " "1"" of type '" "gum::Potential< double > const *""'"); 
+    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "Tensor___and__" "', argument " "1"" of type '" "gum::Tensor< double > const *""'"); 
   }
-  arg1 = reinterpret_cast< gum::Potential< double > * >(argp1);
-  res2 = SWIG_ConvertPtr(swig_obj[1], &argp2, SWIGTYPE_p_gum__PotentialT_double_t,  0  | 0);
+  arg1 = reinterpret_cast< gum::Tensor< double > * >(argp1);
+  res2 = SWIG_ConvertPtr(swig_obj[1], &argp2, SWIGTYPE_p_gum__TensorT_double_t,  0  | 0);
   if (!SWIG_IsOK(res2)) {
-    SWIG_exception_fail(SWIG_ArgError(res2), "in method '" "Potential___and__" "', argument " "2"" of type '" "gum::Potential< double > const &""'"); 
+    SWIG_exception_fail(SWIG_ArgError(res2), "in method '" "Tensor___and__" "', argument " "2"" of type '" "gum::Tensor< double > const &""'"); 
   }
   if (!argp2) {
-    SWIG_exception_fail(SWIG_NullReferenceError, "invalid null reference " "in method '" "Potential___and__" "', argument " "2"" of type '" "gum::Potential< double > const &""'"); 
+    SWIG_exception_fail(SWIG_NullReferenceError, "invalid null reference " "in method '" "Tensor___and__" "', argument " "2"" of type '" "gum::Tensor< double > const &""'"); 
   }
-  arg2 = reinterpret_cast< gum::Potential< double > * >(argp2);
+  arg2 = reinterpret_cast< gum::Tensor< double > * >(argp2);
   {
     try {
-      result = ((gum::Potential< double > const *)arg1)->operator &((gum::Potential< double > const &)*arg2);
+      result = ((gum::Tensor< double > const *)arg1)->operator &((gum::Tensor< double > const &)*arg2);
     } catch (...) {
       SetPythonizeAgrumException();
       SWIG_fail;
     }
   }
-  resultobj = SWIG_NewPointerObj((new gum::Potential< double >(result)), SWIGTYPE_p_gum__PotentialT_double_t, SWIG_POINTER_OWN |  0 );
+  resultobj = SWIG_NewPointerObj((new gum::Tensor< double >(result)), SWIGTYPE_p_gum__TensorT_double_t, SWIG_POINTER_OWN |  0 );
   return resultobj;
 fail:
   if (PyErr_Occurred() && !PyErr_ExceptionMatches(PyExc_TypeError)) {
@@ -57682,41 +57682,41 @@ fail:
 }
 
 
-SWIGINTERN PyObject *_wrap_Potential___invert__(PyObject *self, PyObject *args) {
+SWIGINTERN PyObject *_wrap_Tensor___invert__(PyObject *self, PyObject *args) {
   PyObject *resultobj = 0;
-  gum::Potential< double > *arg1 = 0 ;
+  gum::Tensor< double > *arg1 = 0 ;
   void *argp1 = 0 ;
   int res1 = 0 ;
   PyObject *swig_obj[1] ;
-  gum::Potential< double > result;
+  gum::Tensor< double > result;
   
   (void)self;
   if (!args) SWIG_fail;
   swig_obj[0] = args;
-  res1 = SWIG_ConvertPtr(swig_obj[0], &argp1,SWIGTYPE_p_gum__PotentialT_double_t, 0 |  0 );
+  res1 = SWIG_ConvertPtr(swig_obj[0], &argp1,SWIGTYPE_p_gum__TensorT_double_t, 0 |  0 );
   if (!SWIG_IsOK(res1)) {
-    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "Potential___invert__" "', argument " "1"" of type '" "gum::Potential< double > const *""'"); 
+    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "Tensor___invert__" "', argument " "1"" of type '" "gum::Tensor< double > const *""'"); 
   }
-  arg1 = reinterpret_cast< gum::Potential< double > * >(argp1);
+  arg1 = reinterpret_cast< gum::Tensor< double > * >(argp1);
   {
     try {
-      result = ((gum::Potential< double > const *)arg1)->operator ~();
+      result = ((gum::Tensor< double > const *)arg1)->operator ~();
     } catch (...) {
       SetPythonizeAgrumException();
       SWIG_fail;
     }
   }
-  resultobj = SWIG_NewPointerObj((new gum::Potential< double >(result)), SWIGTYPE_p_gum__PotentialT_double_t, SWIG_POINTER_OWN |  0 );
+  resultobj = SWIG_NewPointerObj((new gum::Tensor< double >(result)), SWIGTYPE_p_gum__TensorT_double_t, SWIG_POINTER_OWN |  0 );
   return resultobj;
 fail:
   return NULL;
 }
 
 
-SWIGINTERN PyObject *_wrap_Potential___eq____SWIG_0(PyObject *self, Py_ssize_t nobjs, PyObject **swig_obj) {
+SWIGINTERN PyObject *_wrap_Tensor___eq____SWIG_0(PyObject *self, Py_ssize_t nobjs, PyObject **swig_obj) {
   PyObject *resultobj = 0;
-  gum::Potential< double > *arg1 = 0 ;
-  gum::Potential< double > *arg2 = 0 ;
+  gum::Tensor< double > *arg1 = 0 ;
+  gum::Tensor< double > *arg2 = 0 ;
   void *argp1 = 0 ;
   int res1 = 0 ;
   void *argp2 = 0 ;
@@ -57725,22 +57725,22 @@ SWIGINTERN PyObject *_wrap_Potential___eq____SWIG_0(PyObject *self, Py_ssize_t n
   
   (void)self;
   if ((nobjs < 2) || (nobjs > 2)) SWIG_fail;
-  res1 = SWIG_ConvertPtr(swig_obj[0], &argp1,SWIGTYPE_p_gum__PotentialT_double_t, 0 |  0 );
+  res1 = SWIG_ConvertPtr(swig_obj[0], &argp1,SWIGTYPE_p_gum__TensorT_double_t, 0 |  0 );
   if (!SWIG_IsOK(res1)) {
-    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "Potential___eq__" "', argument " "1"" of type '" "gum::Potential< double > const *""'"); 
+    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "Tensor___eq__" "', argument " "1"" of type '" "gum::Tensor< double > const *""'"); 
   }
-  arg1 = reinterpret_cast< gum::Potential< double > * >(argp1);
-  res2 = SWIG_ConvertPtr(swig_obj[1], &argp2, SWIGTYPE_p_gum__PotentialT_double_t,  0  | 0);
+  arg1 = reinterpret_cast< gum::Tensor< double > * >(argp1);
+  res2 = SWIG_ConvertPtr(swig_obj[1], &argp2, SWIGTYPE_p_gum__TensorT_double_t,  0  | 0);
   if (!SWIG_IsOK(res2)) {
-    SWIG_exception_fail(SWIG_ArgError(res2), "in method '" "Potential___eq__" "', argument " "2"" of type '" "gum::Potential< double > const &""'"); 
+    SWIG_exception_fail(SWIG_ArgError(res2), "in method '" "Tensor___eq__" "', argument " "2"" of type '" "gum::Tensor< double > const &""'"); 
   }
   if (!argp2) {
-    SWIG_exception_fail(SWIG_NullReferenceError, "invalid null reference " "in method '" "Potential___eq__" "', argument " "2"" of type '" "gum::Potential< double > const &""'"); 
+    SWIG_exception_fail(SWIG_NullReferenceError, "invalid null reference " "in method '" "Tensor___eq__" "', argument " "2"" of type '" "gum::Tensor< double > const &""'"); 
   }
-  arg2 = reinterpret_cast< gum::Potential< double > * >(argp2);
+  arg2 = reinterpret_cast< gum::Tensor< double > * >(argp2);
   {
     try {
-      result = (bool)((gum::Potential< double > const *)arg1)->operator ==((gum::Potential< double > const &)*arg2);
+      result = (bool)((gum::Tensor< double > const *)arg1)->operator ==((gum::Tensor< double > const &)*arg2);
     } catch (...) {
       SetPythonizeAgrumException();
       SWIG_fail;
@@ -57758,7 +57758,7 @@ fail:
 }
 
 
-SWIGINTERN PyObject *_wrap_Potential_evEq(PyObject *self, PyObject *args) {
+SWIGINTERN PyObject *_wrap_Tensor_evEq(PyObject *self, PyObject *args) {
   PyObject *resultobj = 0;
   gum::DiscreteVariable *arg1 = 0 ;
   double arg2 ;
@@ -57767,39 +57767,39 @@ SWIGINTERN PyObject *_wrap_Potential_evEq(PyObject *self, PyObject *args) {
   double val2 ;
   int ecode2 = 0 ;
   PyObject *swig_obj[2] ;
-  gum::Potential< double > result;
+  gum::Tensor< double > result;
   
   (void)self;
-  if (!SWIG_Python_UnpackTuple(args, "Potential_evEq", 2, 2, swig_obj)) SWIG_fail;
+  if (!SWIG_Python_UnpackTuple(args, "Tensor_evEq", 2, 2, swig_obj)) SWIG_fail;
   res1 = SWIG_ConvertPtr(swig_obj[0], &argp1, SWIGTYPE_p_gum__DiscreteVariable,  0  | 0);
   if (!SWIG_IsOK(res1)) {
-    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "Potential_evEq" "', argument " "1"" of type '" "gum::DiscreteVariable const &""'"); 
+    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "Tensor_evEq" "', argument " "1"" of type '" "gum::DiscreteVariable const &""'"); 
   }
   if (!argp1) {
-    SWIG_exception_fail(SWIG_NullReferenceError, "invalid null reference " "in method '" "Potential_evEq" "', argument " "1"" of type '" "gum::DiscreteVariable const &""'"); 
+    SWIG_exception_fail(SWIG_NullReferenceError, "invalid null reference " "in method '" "Tensor_evEq" "', argument " "1"" of type '" "gum::DiscreteVariable const &""'"); 
   }
   arg1 = reinterpret_cast< gum::DiscreteVariable * >(argp1);
   ecode2 = SWIG_AsVal_double(swig_obj[1], &val2);
   if (!SWIG_IsOK(ecode2)) {
-    SWIG_exception_fail(SWIG_ArgError(ecode2), "in method '" "Potential_evEq" "', argument " "2"" of type '" "double""'");
+    SWIG_exception_fail(SWIG_ArgError(ecode2), "in method '" "Tensor_evEq" "', argument " "2"" of type '" "double""'");
   } 
   arg2 = static_cast< double >(val2);
   {
     try {
-      result = gum::Potential< double >::SWIGTEMPLATEDISAMBIGUATOR evEq((gum::DiscreteVariable const &)*arg1,arg2);
+      result = gum::Tensor< double >::SWIGTEMPLATEDISAMBIGUATOR evEq((gum::DiscreteVariable const &)*arg1,arg2);
     } catch (...) {
       SetPythonizeAgrumException();
       SWIG_fail;
     }
   }
-  resultobj = SWIG_NewPointerObj((new gum::Potential< double >(result)), SWIGTYPE_p_gum__PotentialT_double_t, SWIG_POINTER_OWN |  0 );
+  resultobj = SWIG_NewPointerObj((new gum::Tensor< double >(result)), SWIGTYPE_p_gum__TensorT_double_t, SWIG_POINTER_OWN |  0 );
   return resultobj;
 fail:
   return NULL;
 }
 
 
-SWIGINTERN PyObject *_wrap_Potential_evIn(PyObject *self, PyObject *args) {
+SWIGINTERN PyObject *_wrap_Tensor_evIn(PyObject *self, PyObject *args) {
   PyObject *resultobj = 0;
   gum::DiscreteVariable *arg1 = 0 ;
   double arg2 ;
@@ -57811,44 +57811,44 @@ SWIGINTERN PyObject *_wrap_Potential_evIn(PyObject *self, PyObject *args) {
   double val3 ;
   int ecode3 = 0 ;
   PyObject *swig_obj[3] ;
-  gum::Potential< double > result;
+  gum::Tensor< double > result;
   
   (void)self;
-  if (!SWIG_Python_UnpackTuple(args, "Potential_evIn", 3, 3, swig_obj)) SWIG_fail;
+  if (!SWIG_Python_UnpackTuple(args, "Tensor_evIn", 3, 3, swig_obj)) SWIG_fail;
   res1 = SWIG_ConvertPtr(swig_obj[0], &argp1, SWIGTYPE_p_gum__DiscreteVariable,  0  | 0);
   if (!SWIG_IsOK(res1)) {
-    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "Potential_evIn" "', argument " "1"" of type '" "gum::DiscreteVariable const &""'"); 
+    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "Tensor_evIn" "', argument " "1"" of type '" "gum::DiscreteVariable const &""'"); 
   }
   if (!argp1) {
-    SWIG_exception_fail(SWIG_NullReferenceError, "invalid null reference " "in method '" "Potential_evIn" "', argument " "1"" of type '" "gum::DiscreteVariable const &""'"); 
+    SWIG_exception_fail(SWIG_NullReferenceError, "invalid null reference " "in method '" "Tensor_evIn" "', argument " "1"" of type '" "gum::DiscreteVariable const &""'"); 
   }
   arg1 = reinterpret_cast< gum::DiscreteVariable * >(argp1);
   ecode2 = SWIG_AsVal_double(swig_obj[1], &val2);
   if (!SWIG_IsOK(ecode2)) {
-    SWIG_exception_fail(SWIG_ArgError(ecode2), "in method '" "Potential_evIn" "', argument " "2"" of type '" "double""'");
+    SWIG_exception_fail(SWIG_ArgError(ecode2), "in method '" "Tensor_evIn" "', argument " "2"" of type '" "double""'");
   } 
   arg2 = static_cast< double >(val2);
   ecode3 = SWIG_AsVal_double(swig_obj[2], &val3);
   if (!SWIG_IsOK(ecode3)) {
-    SWIG_exception_fail(SWIG_ArgError(ecode3), "in method '" "Potential_evIn" "', argument " "3"" of type '" "double""'");
+    SWIG_exception_fail(SWIG_ArgError(ecode3), "in method '" "Tensor_evIn" "', argument " "3"" of type '" "double""'");
   } 
   arg3 = static_cast< double >(val3);
   {
     try {
-      result = gum::Potential< double >::SWIGTEMPLATEDISAMBIGUATOR evIn((gum::DiscreteVariable const &)*arg1,arg2,arg3);
+      result = gum::Tensor< double >::SWIGTEMPLATEDISAMBIGUATOR evIn((gum::DiscreteVariable const &)*arg1,arg2,arg3);
     } catch (...) {
       SetPythonizeAgrumException();
       SWIG_fail;
     }
   }
-  resultobj = SWIG_NewPointerObj((new gum::Potential< double >(result)), SWIGTYPE_p_gum__PotentialT_double_t, SWIG_POINTER_OWN |  0 );
+  resultobj = SWIG_NewPointerObj((new gum::Tensor< double >(result)), SWIGTYPE_p_gum__TensorT_double_t, SWIG_POINTER_OWN |  0 );
   return resultobj;
 fail:
   return NULL;
 }
 
 
-SWIGINTERN PyObject *_wrap_Potential_evGt(PyObject *self, PyObject *args) {
+SWIGINTERN PyObject *_wrap_Tensor_evGt(PyObject *self, PyObject *args) {
   PyObject *resultobj = 0;
   gum::DiscreteVariable *arg1 = 0 ;
   double arg2 ;
@@ -57857,39 +57857,39 @@ SWIGINTERN PyObject *_wrap_Potential_evGt(PyObject *self, PyObject *args) {
   double val2 ;
   int ecode2 = 0 ;
   PyObject *swig_obj[2] ;
-  gum::Potential< double > result;
+  gum::Tensor< double > result;
   
   (void)self;
-  if (!SWIG_Python_UnpackTuple(args, "Potential_evGt", 2, 2, swig_obj)) SWIG_fail;
+  if (!SWIG_Python_UnpackTuple(args, "Tensor_evGt", 2, 2, swig_obj)) SWIG_fail;
   res1 = SWIG_ConvertPtr(swig_obj[0], &argp1, SWIGTYPE_p_gum__DiscreteVariable,  0  | 0);
   if (!SWIG_IsOK(res1)) {
-    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "Potential_evGt" "', argument " "1"" of type '" "gum::DiscreteVariable const &""'"); 
+    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "Tensor_evGt" "', argument " "1"" of type '" "gum::DiscreteVariable const &""'"); 
   }
   if (!argp1) {
-    SWIG_exception_fail(SWIG_NullReferenceError, "invalid null reference " "in method '" "Potential_evGt" "', argument " "1"" of type '" "gum::DiscreteVariable const &""'"); 
+    SWIG_exception_fail(SWIG_NullReferenceError, "invalid null reference " "in method '" "Tensor_evGt" "', argument " "1"" of type '" "gum::DiscreteVariable const &""'"); 
   }
   arg1 = reinterpret_cast< gum::DiscreteVariable * >(argp1);
   ecode2 = SWIG_AsVal_double(swig_obj[1], &val2);
   if (!SWIG_IsOK(ecode2)) {
-    SWIG_exception_fail(SWIG_ArgError(ecode2), "in method '" "Potential_evGt" "', argument " "2"" of type '" "double""'");
+    SWIG_exception_fail(SWIG_ArgError(ecode2), "in method '" "Tensor_evGt" "', argument " "2"" of type '" "double""'");
   } 
   arg2 = static_cast< double >(val2);
   {
     try {
-      result = gum::Potential< double >::SWIGTEMPLATEDISAMBIGUATOR evGt((gum::DiscreteVariable const &)*arg1,arg2);
+      result = gum::Tensor< double >::SWIGTEMPLATEDISAMBIGUATOR evGt((gum::DiscreteVariable const &)*arg1,arg2);
     } catch (...) {
       SetPythonizeAgrumException();
       SWIG_fail;
     }
   }
-  resultobj = SWIG_NewPointerObj((new gum::Potential< double >(result)), SWIGTYPE_p_gum__PotentialT_double_t, SWIG_POINTER_OWN |  0 );
+  resultobj = SWIG_NewPointerObj((new gum::Tensor< double >(result)), SWIGTYPE_p_gum__TensorT_double_t, SWIG_POINTER_OWN |  0 );
   return resultobj;
 fail:
   return NULL;
 }
 
 
-SWIGINTERN PyObject *_wrap_Potential_evLt(PyObject *self, PyObject *args) {
+SWIGINTERN PyObject *_wrap_Tensor_evLt(PyObject *self, PyObject *args) {
   PyObject *resultobj = 0;
   gum::DiscreteVariable *arg1 = 0 ;
   double arg2 ;
@@ -57898,41 +57898,41 @@ SWIGINTERN PyObject *_wrap_Potential_evLt(PyObject *self, PyObject *args) {
   double val2 ;
   int ecode2 = 0 ;
   PyObject *swig_obj[2] ;
-  gum::Potential< double > result;
+  gum::Tensor< double > result;
   
   (void)self;
-  if (!SWIG_Python_UnpackTuple(args, "Potential_evLt", 2, 2, swig_obj)) SWIG_fail;
+  if (!SWIG_Python_UnpackTuple(args, "Tensor_evLt", 2, 2, swig_obj)) SWIG_fail;
   res1 = SWIG_ConvertPtr(swig_obj[0], &argp1, SWIGTYPE_p_gum__DiscreteVariable,  0  | 0);
   if (!SWIG_IsOK(res1)) {
-    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "Potential_evLt" "', argument " "1"" of type '" "gum::DiscreteVariable const &""'"); 
+    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "Tensor_evLt" "', argument " "1"" of type '" "gum::DiscreteVariable const &""'"); 
   }
   if (!argp1) {
-    SWIG_exception_fail(SWIG_NullReferenceError, "invalid null reference " "in method '" "Potential_evLt" "', argument " "1"" of type '" "gum::DiscreteVariable const &""'"); 
+    SWIG_exception_fail(SWIG_NullReferenceError, "invalid null reference " "in method '" "Tensor_evLt" "', argument " "1"" of type '" "gum::DiscreteVariable const &""'"); 
   }
   arg1 = reinterpret_cast< gum::DiscreteVariable * >(argp1);
   ecode2 = SWIG_AsVal_double(swig_obj[1], &val2);
   if (!SWIG_IsOK(ecode2)) {
-    SWIG_exception_fail(SWIG_ArgError(ecode2), "in method '" "Potential_evLt" "', argument " "2"" of type '" "double""'");
+    SWIG_exception_fail(SWIG_ArgError(ecode2), "in method '" "Tensor_evLt" "', argument " "2"" of type '" "double""'");
   } 
   arg2 = static_cast< double >(val2);
   {
     try {
-      result = gum::Potential< double >::SWIGTEMPLATEDISAMBIGUATOR evLt((gum::DiscreteVariable const &)*arg1,arg2);
+      result = gum::Tensor< double >::SWIGTEMPLATEDISAMBIGUATOR evLt((gum::DiscreteVariable const &)*arg1,arg2);
     } catch (...) {
       SetPythonizeAgrumException();
       SWIG_fail;
     }
   }
-  resultobj = SWIG_NewPointerObj((new gum::Potential< double >(result)), SWIGTYPE_p_gum__PotentialT_double_t, SWIG_POINTER_OWN |  0 );
+  resultobj = SWIG_NewPointerObj((new gum::Tensor< double >(result)), SWIGTYPE_p_gum__TensorT_double_t, SWIG_POINTER_OWN |  0 );
   return resultobj;
 fail:
   return NULL;
 }
 
 
-SWIGINTERN PyObject *_wrap_Potential___repr__(PyObject *self, PyObject *args) {
+SWIGINTERN PyObject *_wrap_Tensor___repr__(PyObject *self, PyObject *args) {
   PyObject *resultobj = 0;
-  gum::Potential< double > *arg1 = 0 ;
+  gum::Tensor< double > *arg1 = 0 ;
   void *argp1 = 0 ;
   int res1 = 0 ;
   PyObject *swig_obj[1] ;
@@ -57941,14 +57941,14 @@ SWIGINTERN PyObject *_wrap_Potential___repr__(PyObject *self, PyObject *args) {
   (void)self;
   if (!args) SWIG_fail;
   swig_obj[0] = args;
-  res1 = SWIG_ConvertPtr(swig_obj[0], &argp1,SWIGTYPE_p_gum__PotentialT_double_t, 0 |  0 );
+  res1 = SWIG_ConvertPtr(swig_obj[0], &argp1,SWIGTYPE_p_gum__TensorT_double_t, 0 |  0 );
   if (!SWIG_IsOK(res1)) {
-    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "Potential___repr__" "', argument " "1"" of type '" "gum::Potential< double > const *""'"); 
+    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "Tensor___repr__" "', argument " "1"" of type '" "gum::Tensor< double > const *""'"); 
   }
-  arg1 = reinterpret_cast< gum::Potential< double > * >(argp1);
+  arg1 = reinterpret_cast< gum::Tensor< double > * >(argp1);
   {
     try {
-      result = gum_Potential_Sl_double_Sg____repr__((gum::Potential< double > const *)arg1);
+      result = gum_Tensor_Sl_double_Sg____repr__((gum::Tensor< double > const *)arg1);
     } catch (...) {
       SetPythonizeAgrumException();
       SWIG_fail;
@@ -57961,9 +57961,9 @@ fail:
 }
 
 
-SWIGINTERN PyObject *_wrap_Potential___str__(PyObject *self, PyObject *args) {
+SWIGINTERN PyObject *_wrap_Tensor___str__(PyObject *self, PyObject *args) {
   PyObject *resultobj = 0;
-  gum::Potential< double > *arg1 = 0 ;
+  gum::Tensor< double > *arg1 = 0 ;
   void *argp1 = 0 ;
   int res1 = 0 ;
   PyObject *swig_obj[1] ;
@@ -57972,14 +57972,14 @@ SWIGINTERN PyObject *_wrap_Potential___str__(PyObject *self, PyObject *args) {
   (void)self;
   if (!args) SWIG_fail;
   swig_obj[0] = args;
-  res1 = SWIG_ConvertPtr(swig_obj[0], &argp1,SWIGTYPE_p_gum__PotentialT_double_t, 0 |  0 );
+  res1 = SWIG_ConvertPtr(swig_obj[0], &argp1,SWIGTYPE_p_gum__TensorT_double_t, 0 |  0 );
   if (!SWIG_IsOK(res1)) {
-    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "Potential___str__" "', argument " "1"" of type '" "gum::Potential< double > const *""'"); 
+    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "Tensor___str__" "', argument " "1"" of type '" "gum::Tensor< double > const *""'"); 
   }
-  arg1 = reinterpret_cast< gum::Potential< double > * >(argp1);
+  arg1 = reinterpret_cast< gum::Tensor< double > * >(argp1);
   {
     try {
-      result = gum_Potential_Sl_double_Sg____str__((gum::Potential< double > const *)arg1);
+      result = gum_Tensor_Sl_double_Sg____str__((gum::Tensor< double > const *)arg1);
     } catch (...) {
       SetPythonizeAgrumException();
       SWIG_fail;
@@ -57992,9 +57992,9 @@ fail:
 }
 
 
-SWIGINTERN PyObject *_wrap_Potential_expectedValue__SWIG_1(PyObject *self, Py_ssize_t nobjs, PyObject **swig_obj) {
+SWIGINTERN PyObject *_wrap_Tensor_expectedValue__SWIG_1(PyObject *self, Py_ssize_t nobjs, PyObject **swig_obj) {
   PyObject *resultobj = 0;
-  gum::Potential< double > *arg1 = 0 ;
+  gum::Tensor< double > *arg1 = 0 ;
   PyObject *arg2 = 0 ;
   void *argp1 = 0 ;
   int res1 = 0 ;
@@ -58002,15 +58002,15 @@ SWIGINTERN PyObject *_wrap_Potential_expectedValue__SWIG_1(PyObject *self, Py_ss
   
   (void)self;
   if ((nobjs < 2) || (nobjs > 2)) SWIG_fail;
-  res1 = SWIG_ConvertPtr(swig_obj[0], &argp1,SWIGTYPE_p_gum__PotentialT_double_t, 0 |  0 );
+  res1 = SWIG_ConvertPtr(swig_obj[0], &argp1,SWIGTYPE_p_gum__TensorT_double_t, 0 |  0 );
   if (!SWIG_IsOK(res1)) {
-    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "Potential_expectedValue" "', argument " "1"" of type '" "gum::Potential< double > const *""'"); 
+    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "Tensor_expectedValue" "', argument " "1"" of type '" "gum::Tensor< double > const *""'"); 
   }
-  arg1 = reinterpret_cast< gum::Potential< double > * >(argp1);
+  arg1 = reinterpret_cast< gum::Tensor< double > * >(argp1);
   arg2 = swig_obj[1];
   {
     try {
-      result = (PyObject *)gum_Potential_Sl_double_Sg__expectedValue__SWIG_1((gum::Potential< double > const *)arg1,arg2);
+      result = (PyObject *)gum_Tensor_Sl_double_Sg__expectedValue__SWIG_1((gum::Tensor< double > const *)arg1,arg2);
     } catch (...) {
       SetPythonizeAgrumException();
       SWIG_fail;
@@ -58023,13 +58023,13 @@ fail:
 }
 
 
-SWIGINTERN PyObject *_wrap_Potential_expectedValue(PyObject *self, PyObject *args) {
+SWIGINTERN PyObject *_wrap_Tensor_expectedValue(PyObject *self, PyObject *args) {
   Py_ssize_t argc;
   PyObject *argv[3] = {
     0
   };
   
-  if (!(argc = SWIG_Python_UnpackTuple(args, "Potential_expectedValue", 0, 2, argv))) SWIG_fail;
+  if (!(argc = SWIG_Python_UnpackTuple(args, "Tensor_expectedValue", 0, 2, argv))) SWIG_fail;
   --argc;
   if (argc == 2) {
     int _v = 0;
@@ -58038,63 +58038,63 @@ SWIGINTERN PyObject *_wrap_Potential_expectedValue(PyObject *self, PyObject *arg
       _v = SWIG_CheckState(res);
     }
     if (!_v) goto check_1;
-    return _wrap_Potential_expectedValue__SWIG_0(self, argc, argv);
+    return _wrap_Tensor_expectedValue__SWIG_0(self, argc, argv);
   }
 check_1:
   
   if (argc == 2) {
-    PyObject *retobj = _wrap_Potential_expectedValue__SWIG_1(self, argc, argv);
+    PyObject *retobj = _wrap_Tensor_expectedValue__SWIG_1(self, argc, argv);
     if (!SWIG_Python_TypeErrorOccurred(retobj)) return retobj;
     SWIG_fail;
   }
   
 fail:
-  SWIG_Python_RaiseOrModifyTypeError("Wrong number or type of arguments for overloaded function 'Potential_expectedValue'.\n"
+  SWIG_Python_RaiseOrModifyTypeError("Wrong number or type of arguments for overloaded function 'Tensor_expectedValue'.\n"
     "  Possible C/C++ prototypes are:\n"
-    "    gum::Potential< double >::expectedValue(std::function< double (gum::Instantiation const &) >) const\n"
-    "    gum::Potential< double >::expectedValue(PyObject *) const\n");
+    "    gum::Tensor< double >::expectedValue(std::function< double (gum::Instantiation const &) >) const\n"
+    "    gum::Tensor< double >::expectedValue(PyObject *) const\n");
   return 0;
 }
 
 
-SWIGINTERN PyObject *_wrap_Potential_extract__SWIG_1(PyObject *self, Py_ssize_t nobjs, PyObject **swig_obj) {
+SWIGINTERN PyObject *_wrap_Tensor_extract__SWIG_1(PyObject *self, Py_ssize_t nobjs, PyObject **swig_obj) {
   PyObject *resultobj = 0;
-  gum::Potential< double > *arg1 = 0 ;
+  gum::Tensor< double > *arg1 = 0 ;
   PyObject *arg2 = 0 ;
   void *argp1 = 0 ;
   int res1 = 0 ;
-  gum::Potential< double > result;
+  gum::Tensor< double > result;
   
   (void)self;
   if ((nobjs < 2) || (nobjs > 2)) SWIG_fail;
-  res1 = SWIG_ConvertPtr(swig_obj[0], &argp1,SWIGTYPE_p_gum__PotentialT_double_t, 0 |  0 );
+  res1 = SWIG_ConvertPtr(swig_obj[0], &argp1,SWIGTYPE_p_gum__TensorT_double_t, 0 |  0 );
   if (!SWIG_IsOK(res1)) {
-    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "Potential_extract" "', argument " "1"" of type '" "gum::Potential< double > *""'"); 
+    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "Tensor_extract" "', argument " "1"" of type '" "gum::Tensor< double > *""'"); 
   }
-  arg1 = reinterpret_cast< gum::Potential< double > * >(argp1);
+  arg1 = reinterpret_cast< gum::Tensor< double > * >(argp1);
   arg2 = swig_obj[1];
   {
     try {
-      result = gum_Potential_Sl_double_Sg__extract__SWIG_1(arg1,arg2);
+      result = gum_Tensor_Sl_double_Sg__extract__SWIG_1(arg1,arg2);
     } catch (...) {
       SetPythonizeAgrumException();
       SWIG_fail;
     }
   }
-  resultobj = SWIG_NewPointerObj((new gum::Potential< double >(result)), SWIGTYPE_p_gum__PotentialT_double_t, SWIG_POINTER_OWN |  0 );
+  resultobj = SWIG_NewPointerObj((new gum::Tensor< double >(result)), SWIGTYPE_p_gum__TensorT_double_t, SWIG_POINTER_OWN |  0 );
   return resultobj;
 fail:
   return NULL;
 }
 
 
-SWIGINTERN PyObject *_wrap_Potential_extract(PyObject *self, PyObject *args) {
+SWIGINTERN PyObject *_wrap_Tensor_extract(PyObject *self, PyObject *args) {
   Py_ssize_t argc;
   PyObject *argv[3] = {
     0
   };
   
-  if (!(argc = SWIG_Python_UnpackTuple(args, "Potential_extract", 0, 2, argv))) SWIG_fail;
+  if (!(argc = SWIG_Python_UnpackTuple(args, "Tensor_extract", 0, 2, argv))) SWIG_fail;
   --argc;
   if (argc == 2) {
     int _v = 0;
@@ -58103,63 +58103,63 @@ SWIGINTERN PyObject *_wrap_Potential_extract(PyObject *self, PyObject *args) {
       _v = SWIG_CheckState(res);
     }
     if (!_v) goto check_1;
-    return _wrap_Potential_extract__SWIG_0(self, argc, argv);
+    return _wrap_Tensor_extract__SWIG_0(self, argc, argv);
   }
 check_1:
   
   if (argc == 2) {
-    PyObject *retobj = _wrap_Potential_extract__SWIG_1(self, argc, argv);
+    PyObject *retobj = _wrap_Tensor_extract__SWIG_1(self, argc, argv);
     if (!SWIG_Python_TypeErrorOccurred(retobj)) return retobj;
     SWIG_fail;
   }
   
 fail:
-  SWIG_Python_RaiseOrModifyTypeError("Wrong number or type of arguments for overloaded function 'Potential_extract'.\n"
+  SWIG_Python_RaiseOrModifyTypeError("Wrong number or type of arguments for overloaded function 'Tensor_extract'.\n"
     "  Possible C/C++ prototypes are:\n"
-    "    gum::Potential< double >::extract(gum::Instantiation const &) const\n"
-    "    gum::Potential< double >::extract(PyObject *)\n");
+    "    gum::Tensor< double >::extract(gum::Instantiation const &) const\n"
+    "    gum::Tensor< double >::extract(PyObject *)\n");
   return 0;
 }
 
 
-SWIGINTERN PyObject *_wrap_Potential_sumOut__SWIG_1(PyObject *self, Py_ssize_t nobjs, PyObject **swig_obj) {
+SWIGINTERN PyObject *_wrap_Tensor_sumOut__SWIG_1(PyObject *self, Py_ssize_t nobjs, PyObject **swig_obj) {
   PyObject *resultobj = 0;
-  gum::Potential< double > *arg1 = 0 ;
+  gum::Tensor< double > *arg1 = 0 ;
   PyObject *arg2 = 0 ;
   void *argp1 = 0 ;
   int res1 = 0 ;
-  gum::Potential< double > result;
+  gum::Tensor< double > result;
   
   (void)self;
   if ((nobjs < 2) || (nobjs > 2)) SWIG_fail;
-  res1 = SWIG_ConvertPtr(swig_obj[0], &argp1,SWIGTYPE_p_gum__PotentialT_double_t, 0 |  0 );
+  res1 = SWIG_ConvertPtr(swig_obj[0], &argp1,SWIGTYPE_p_gum__TensorT_double_t, 0 |  0 );
   if (!SWIG_IsOK(res1)) {
-    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "Potential_sumOut" "', argument " "1"" of type '" "gum::Potential< double > const *""'"); 
+    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "Tensor_sumOut" "', argument " "1"" of type '" "gum::Tensor< double > const *""'"); 
   }
-  arg1 = reinterpret_cast< gum::Potential< double > * >(argp1);
+  arg1 = reinterpret_cast< gum::Tensor< double > * >(argp1);
   arg2 = swig_obj[1];
   {
     try {
-      result = gum_Potential_Sl_double_Sg__sumOut__SWIG_1((gum::Potential< double > const *)arg1,arg2);
+      result = gum_Tensor_Sl_double_Sg__sumOut__SWIG_1((gum::Tensor< double > const *)arg1,arg2);
     } catch (...) {
       SetPythonizeAgrumException();
       SWIG_fail;
     }
   }
-  resultobj = SWIG_NewPointerObj((new gum::Potential< double >(result)), SWIGTYPE_p_gum__PotentialT_double_t, SWIG_POINTER_OWN |  0 );
+  resultobj = SWIG_NewPointerObj((new gum::Tensor< double >(result)), SWIGTYPE_p_gum__TensorT_double_t, SWIG_POINTER_OWN |  0 );
   return resultobj;
 fail:
   return NULL;
 }
 
 
-SWIGINTERN PyObject *_wrap_Potential_sumOut(PyObject *self, PyObject *args) {
+SWIGINTERN PyObject *_wrap_Tensor_sumOut(PyObject *self, PyObject *args) {
   Py_ssize_t argc;
   PyObject *argv[3] = {
     0
   };
   
-  if (!(argc = SWIG_Python_UnpackTuple(args, "Potential_sumOut", 0, 2, argv))) SWIG_fail;
+  if (!(argc = SWIG_Python_UnpackTuple(args, "Tensor_sumOut", 0, 2, argv))) SWIG_fail;
   --argc;
   if (argc == 2) {
     int _v = 0;
@@ -58168,63 +58168,63 @@ SWIGINTERN PyObject *_wrap_Potential_sumOut(PyObject *self, PyObject *args) {
       _v = SWIG_CheckState(res);
     }
     if (!_v) goto check_1;
-    return _wrap_Potential_sumOut__SWIG_0(self, argc, argv);
+    return _wrap_Tensor_sumOut__SWIG_0(self, argc, argv);
   }
 check_1:
   
   if (argc == 2) {
-    PyObject *retobj = _wrap_Potential_sumOut__SWIG_1(self, argc, argv);
+    PyObject *retobj = _wrap_Tensor_sumOut__SWIG_1(self, argc, argv);
     if (!SWIG_Python_TypeErrorOccurred(retobj)) return retobj;
     SWIG_fail;
   }
   
 fail:
-  SWIG_Python_RaiseOrModifyTypeError("Wrong number or type of arguments for overloaded function 'Potential_sumOut'.\n"
+  SWIG_Python_RaiseOrModifyTypeError("Wrong number or type of arguments for overloaded function 'Tensor_sumOut'.\n"
     "  Possible C/C++ prototypes are:\n"
-    "    gum::Potential< double >::sumOut(gum::VariableSet const &) const\n"
-    "    gum::Potential< double >::sumOut(PyObject *) const\n");
+    "    gum::Tensor< double >::sumOut(gum::VariableSet const &) const\n"
+    "    gum::Tensor< double >::sumOut(PyObject *) const\n");
   return 0;
 }
 
 
-SWIGINTERN PyObject *_wrap_Potential_prodOut__SWIG_1(PyObject *self, Py_ssize_t nobjs, PyObject **swig_obj) {
+SWIGINTERN PyObject *_wrap_Tensor_prodOut__SWIG_1(PyObject *self, Py_ssize_t nobjs, PyObject **swig_obj) {
   PyObject *resultobj = 0;
-  gum::Potential< double > *arg1 = 0 ;
+  gum::Tensor< double > *arg1 = 0 ;
   PyObject *arg2 = 0 ;
   void *argp1 = 0 ;
   int res1 = 0 ;
-  gum::Potential< double > result;
+  gum::Tensor< double > result;
   
   (void)self;
   if ((nobjs < 2) || (nobjs > 2)) SWIG_fail;
-  res1 = SWIG_ConvertPtr(swig_obj[0], &argp1,SWIGTYPE_p_gum__PotentialT_double_t, 0 |  0 );
+  res1 = SWIG_ConvertPtr(swig_obj[0], &argp1,SWIGTYPE_p_gum__TensorT_double_t, 0 |  0 );
   if (!SWIG_IsOK(res1)) {
-    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "Potential_prodOut" "', argument " "1"" of type '" "gum::Potential< double > const *""'"); 
+    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "Tensor_prodOut" "', argument " "1"" of type '" "gum::Tensor< double > const *""'"); 
   }
-  arg1 = reinterpret_cast< gum::Potential< double > * >(argp1);
+  arg1 = reinterpret_cast< gum::Tensor< double > * >(argp1);
   arg2 = swig_obj[1];
   {
     try {
-      result = gum_Potential_Sl_double_Sg__prodOut__SWIG_1((gum::Potential< double > const *)arg1,arg2);
+      result = gum_Tensor_Sl_double_Sg__prodOut__SWIG_1((gum::Tensor< double > const *)arg1,arg2);
     } catch (...) {
       SetPythonizeAgrumException();
       SWIG_fail;
     }
   }
-  resultobj = SWIG_NewPointerObj((new gum::Potential< double >(result)), SWIGTYPE_p_gum__PotentialT_double_t, SWIG_POINTER_OWN |  0 );
+  resultobj = SWIG_NewPointerObj((new gum::Tensor< double >(result)), SWIGTYPE_p_gum__TensorT_double_t, SWIG_POINTER_OWN |  0 );
   return resultobj;
 fail:
   return NULL;
 }
 
 
-SWIGINTERN PyObject *_wrap_Potential_prodOut(PyObject *self, PyObject *args) {
+SWIGINTERN PyObject *_wrap_Tensor_prodOut(PyObject *self, PyObject *args) {
   Py_ssize_t argc;
   PyObject *argv[3] = {
     0
   };
   
-  if (!(argc = SWIG_Python_UnpackTuple(args, "Potential_prodOut", 0, 2, argv))) SWIG_fail;
+  if (!(argc = SWIG_Python_UnpackTuple(args, "Tensor_prodOut", 0, 2, argv))) SWIG_fail;
   --argc;
   if (argc == 2) {
     int _v = 0;
@@ -58233,63 +58233,63 @@ SWIGINTERN PyObject *_wrap_Potential_prodOut(PyObject *self, PyObject *args) {
       _v = SWIG_CheckState(res);
     }
     if (!_v) goto check_1;
-    return _wrap_Potential_prodOut__SWIG_0(self, argc, argv);
+    return _wrap_Tensor_prodOut__SWIG_0(self, argc, argv);
   }
 check_1:
   
   if (argc == 2) {
-    PyObject *retobj = _wrap_Potential_prodOut__SWIG_1(self, argc, argv);
+    PyObject *retobj = _wrap_Tensor_prodOut__SWIG_1(self, argc, argv);
     if (!SWIG_Python_TypeErrorOccurred(retobj)) return retobj;
     SWIG_fail;
   }
   
 fail:
-  SWIG_Python_RaiseOrModifyTypeError("Wrong number or type of arguments for overloaded function 'Potential_prodOut'.\n"
+  SWIG_Python_RaiseOrModifyTypeError("Wrong number or type of arguments for overloaded function 'Tensor_prodOut'.\n"
     "  Possible C/C++ prototypes are:\n"
-    "    gum::Potential< double >::prodOut(gum::VariableSet const &) const\n"
-    "    gum::Potential< double >::prodOut(PyObject *) const\n");
+    "    gum::Tensor< double >::prodOut(gum::VariableSet const &) const\n"
+    "    gum::Tensor< double >::prodOut(PyObject *) const\n");
   return 0;
 }
 
 
-SWIGINTERN PyObject *_wrap_Potential_maxOut__SWIG_1(PyObject *self, Py_ssize_t nobjs, PyObject **swig_obj) {
+SWIGINTERN PyObject *_wrap_Tensor_maxOut__SWIG_1(PyObject *self, Py_ssize_t nobjs, PyObject **swig_obj) {
   PyObject *resultobj = 0;
-  gum::Potential< double > *arg1 = 0 ;
+  gum::Tensor< double > *arg1 = 0 ;
   PyObject *arg2 = 0 ;
   void *argp1 = 0 ;
   int res1 = 0 ;
-  gum::Potential< double > result;
+  gum::Tensor< double > result;
   
   (void)self;
   if ((nobjs < 2) || (nobjs > 2)) SWIG_fail;
-  res1 = SWIG_ConvertPtr(swig_obj[0], &argp1,SWIGTYPE_p_gum__PotentialT_double_t, 0 |  0 );
+  res1 = SWIG_ConvertPtr(swig_obj[0], &argp1,SWIGTYPE_p_gum__TensorT_double_t, 0 |  0 );
   if (!SWIG_IsOK(res1)) {
-    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "Potential_maxOut" "', argument " "1"" of type '" "gum::Potential< double > const *""'"); 
+    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "Tensor_maxOut" "', argument " "1"" of type '" "gum::Tensor< double > const *""'"); 
   }
-  arg1 = reinterpret_cast< gum::Potential< double > * >(argp1);
+  arg1 = reinterpret_cast< gum::Tensor< double > * >(argp1);
   arg2 = swig_obj[1];
   {
     try {
-      result = gum_Potential_Sl_double_Sg__maxOut__SWIG_1((gum::Potential< double > const *)arg1,arg2);
+      result = gum_Tensor_Sl_double_Sg__maxOut__SWIG_1((gum::Tensor< double > const *)arg1,arg2);
     } catch (...) {
       SetPythonizeAgrumException();
       SWIG_fail;
     }
   }
-  resultobj = SWIG_NewPointerObj((new gum::Potential< double >(result)), SWIGTYPE_p_gum__PotentialT_double_t, SWIG_POINTER_OWN |  0 );
+  resultobj = SWIG_NewPointerObj((new gum::Tensor< double >(result)), SWIGTYPE_p_gum__TensorT_double_t, SWIG_POINTER_OWN |  0 );
   return resultobj;
 fail:
   return NULL;
 }
 
 
-SWIGINTERN PyObject *_wrap_Potential_maxOut(PyObject *self, PyObject *args) {
+SWIGINTERN PyObject *_wrap_Tensor_maxOut(PyObject *self, PyObject *args) {
   Py_ssize_t argc;
   PyObject *argv[3] = {
     0
   };
   
-  if (!(argc = SWIG_Python_UnpackTuple(args, "Potential_maxOut", 0, 2, argv))) SWIG_fail;
+  if (!(argc = SWIG_Python_UnpackTuple(args, "Tensor_maxOut", 0, 2, argv))) SWIG_fail;
   --argc;
   if (argc == 2) {
     int _v = 0;
@@ -58298,63 +58298,63 @@ SWIGINTERN PyObject *_wrap_Potential_maxOut(PyObject *self, PyObject *args) {
       _v = SWIG_CheckState(res);
     }
     if (!_v) goto check_1;
-    return _wrap_Potential_maxOut__SWIG_0(self, argc, argv);
+    return _wrap_Tensor_maxOut__SWIG_0(self, argc, argv);
   }
 check_1:
   
   if (argc == 2) {
-    PyObject *retobj = _wrap_Potential_maxOut__SWIG_1(self, argc, argv);
+    PyObject *retobj = _wrap_Tensor_maxOut__SWIG_1(self, argc, argv);
     if (!SWIG_Python_TypeErrorOccurred(retobj)) return retobj;
     SWIG_fail;
   }
   
 fail:
-  SWIG_Python_RaiseOrModifyTypeError("Wrong number or type of arguments for overloaded function 'Potential_maxOut'.\n"
+  SWIG_Python_RaiseOrModifyTypeError("Wrong number or type of arguments for overloaded function 'Tensor_maxOut'.\n"
     "  Possible C/C++ prototypes are:\n"
-    "    gum::Potential< double >::maxOut(gum::VariableSet const &) const\n"
-    "    gum::Potential< double >::maxOut(PyObject *) const\n");
+    "    gum::Tensor< double >::maxOut(gum::VariableSet const &) const\n"
+    "    gum::Tensor< double >::maxOut(PyObject *) const\n");
   return 0;
 }
 
 
-SWIGINTERN PyObject *_wrap_Potential_minOut__SWIG_1(PyObject *self, Py_ssize_t nobjs, PyObject **swig_obj) {
+SWIGINTERN PyObject *_wrap_Tensor_minOut__SWIG_1(PyObject *self, Py_ssize_t nobjs, PyObject **swig_obj) {
   PyObject *resultobj = 0;
-  gum::Potential< double > *arg1 = 0 ;
+  gum::Tensor< double > *arg1 = 0 ;
   PyObject *arg2 = 0 ;
   void *argp1 = 0 ;
   int res1 = 0 ;
-  gum::Potential< double > result;
+  gum::Tensor< double > result;
   
   (void)self;
   if ((nobjs < 2) || (nobjs > 2)) SWIG_fail;
-  res1 = SWIG_ConvertPtr(swig_obj[0], &argp1,SWIGTYPE_p_gum__PotentialT_double_t, 0 |  0 );
+  res1 = SWIG_ConvertPtr(swig_obj[0], &argp1,SWIGTYPE_p_gum__TensorT_double_t, 0 |  0 );
   if (!SWIG_IsOK(res1)) {
-    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "Potential_minOut" "', argument " "1"" of type '" "gum::Potential< double > const *""'"); 
+    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "Tensor_minOut" "', argument " "1"" of type '" "gum::Tensor< double > const *""'"); 
   }
-  arg1 = reinterpret_cast< gum::Potential< double > * >(argp1);
+  arg1 = reinterpret_cast< gum::Tensor< double > * >(argp1);
   arg2 = swig_obj[1];
   {
     try {
-      result = gum_Potential_Sl_double_Sg__minOut__SWIG_1((gum::Potential< double > const *)arg1,arg2);
+      result = gum_Tensor_Sl_double_Sg__minOut__SWIG_1((gum::Tensor< double > const *)arg1,arg2);
     } catch (...) {
       SetPythonizeAgrumException();
       SWIG_fail;
     }
   }
-  resultobj = SWIG_NewPointerObj((new gum::Potential< double >(result)), SWIGTYPE_p_gum__PotentialT_double_t, SWIG_POINTER_OWN |  0 );
+  resultobj = SWIG_NewPointerObj((new gum::Tensor< double >(result)), SWIGTYPE_p_gum__TensorT_double_t, SWIG_POINTER_OWN |  0 );
   return resultobj;
 fail:
   return NULL;
 }
 
 
-SWIGINTERN PyObject *_wrap_Potential_minOut(PyObject *self, PyObject *args) {
+SWIGINTERN PyObject *_wrap_Tensor_minOut(PyObject *self, PyObject *args) {
   Py_ssize_t argc;
   PyObject *argv[3] = {
     0
   };
   
-  if (!(argc = SWIG_Python_UnpackTuple(args, "Potential_minOut", 0, 2, argv))) SWIG_fail;
+  if (!(argc = SWIG_Python_UnpackTuple(args, "Tensor_minOut", 0, 2, argv))) SWIG_fail;
   --argc;
   if (argc == 2) {
     int _v = 0;
@@ -58363,63 +58363,63 @@ SWIGINTERN PyObject *_wrap_Potential_minOut(PyObject *self, PyObject *args) {
       _v = SWIG_CheckState(res);
     }
     if (!_v) goto check_1;
-    return _wrap_Potential_minOut__SWIG_0(self, argc, argv);
+    return _wrap_Tensor_minOut__SWIG_0(self, argc, argv);
   }
 check_1:
   
   if (argc == 2) {
-    PyObject *retobj = _wrap_Potential_minOut__SWIG_1(self, argc, argv);
+    PyObject *retobj = _wrap_Tensor_minOut__SWIG_1(self, argc, argv);
     if (!SWIG_Python_TypeErrorOccurred(retobj)) return retobj;
     SWIG_fail;
   }
   
 fail:
-  SWIG_Python_RaiseOrModifyTypeError("Wrong number or type of arguments for overloaded function 'Potential_minOut'.\n"
+  SWIG_Python_RaiseOrModifyTypeError("Wrong number or type of arguments for overloaded function 'Tensor_minOut'.\n"
     "  Possible C/C++ prototypes are:\n"
-    "    gum::Potential< double >::minOut(gum::VariableSet const &) const\n"
-    "    gum::Potential< double >::minOut(PyObject *) const\n");
+    "    gum::Tensor< double >::minOut(gum::VariableSet const &) const\n"
+    "    gum::Tensor< double >::minOut(PyObject *) const\n");
   return 0;
 }
 
 
-SWIGINTERN PyObject *_wrap_Potential_sumIn__SWIG_1(PyObject *self, Py_ssize_t nobjs, PyObject **swig_obj) {
+SWIGINTERN PyObject *_wrap_Tensor_sumIn__SWIG_1(PyObject *self, Py_ssize_t nobjs, PyObject **swig_obj) {
   PyObject *resultobj = 0;
-  gum::Potential< double > *arg1 = 0 ;
+  gum::Tensor< double > *arg1 = 0 ;
   PyObject *arg2 = 0 ;
   void *argp1 = 0 ;
   int res1 = 0 ;
-  gum::Potential< double > result;
+  gum::Tensor< double > result;
   
   (void)self;
   if ((nobjs < 2) || (nobjs > 2)) SWIG_fail;
-  res1 = SWIG_ConvertPtr(swig_obj[0], &argp1,SWIGTYPE_p_gum__PotentialT_double_t, 0 |  0 );
+  res1 = SWIG_ConvertPtr(swig_obj[0], &argp1,SWIGTYPE_p_gum__TensorT_double_t, 0 |  0 );
   if (!SWIG_IsOK(res1)) {
-    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "Potential_sumIn" "', argument " "1"" of type '" "gum::Potential< double > const *""'"); 
+    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "Tensor_sumIn" "', argument " "1"" of type '" "gum::Tensor< double > const *""'"); 
   }
-  arg1 = reinterpret_cast< gum::Potential< double > * >(argp1);
+  arg1 = reinterpret_cast< gum::Tensor< double > * >(argp1);
   arg2 = swig_obj[1];
   {
     try {
-      result = gum_Potential_Sl_double_Sg__sumIn__SWIG_1((gum::Potential< double > const *)arg1,arg2);
+      result = gum_Tensor_Sl_double_Sg__sumIn__SWIG_1((gum::Tensor< double > const *)arg1,arg2);
     } catch (...) {
       SetPythonizeAgrumException();
       SWIG_fail;
     }
   }
-  resultobj = SWIG_NewPointerObj((new gum::Potential< double >(result)), SWIGTYPE_p_gum__PotentialT_double_t, SWIG_POINTER_OWN |  0 );
+  resultobj = SWIG_NewPointerObj((new gum::Tensor< double >(result)), SWIGTYPE_p_gum__TensorT_double_t, SWIG_POINTER_OWN |  0 );
   return resultobj;
 fail:
   return NULL;
 }
 
 
-SWIGINTERN PyObject *_wrap_Potential_sumIn(PyObject *self, PyObject *args) {
+SWIGINTERN PyObject *_wrap_Tensor_sumIn(PyObject *self, PyObject *args) {
   Py_ssize_t argc;
   PyObject *argv[3] = {
     0
   };
   
-  if (!(argc = SWIG_Python_UnpackTuple(args, "Potential_sumIn", 0, 2, argv))) SWIG_fail;
+  if (!(argc = SWIG_Python_UnpackTuple(args, "Tensor_sumIn", 0, 2, argv))) SWIG_fail;
   --argc;
   if (argc == 2) {
     int _v = 0;
@@ -58428,63 +58428,63 @@ SWIGINTERN PyObject *_wrap_Potential_sumIn(PyObject *self, PyObject *args) {
       _v = SWIG_CheckState(res);
     }
     if (!_v) goto check_1;
-    return _wrap_Potential_sumIn__SWIG_0(self, argc, argv);
+    return _wrap_Tensor_sumIn__SWIG_0(self, argc, argv);
   }
 check_1:
   
   if (argc == 2) {
-    PyObject *retobj = _wrap_Potential_sumIn__SWIG_1(self, argc, argv);
+    PyObject *retobj = _wrap_Tensor_sumIn__SWIG_1(self, argc, argv);
     if (!SWIG_Python_TypeErrorOccurred(retobj)) return retobj;
     SWIG_fail;
   }
   
 fail:
-  SWIG_Python_RaiseOrModifyTypeError("Wrong number or type of arguments for overloaded function 'Potential_sumIn'.\n"
+  SWIG_Python_RaiseOrModifyTypeError("Wrong number or type of arguments for overloaded function 'Tensor_sumIn'.\n"
     "  Possible C/C++ prototypes are:\n"
-    "    gum::Potential< double >::sumIn(gum::VariableSet const &) const\n"
-    "    gum::Potential< double >::sumIn(PyObject *) const\n");
+    "    gum::Tensor< double >::sumIn(gum::VariableSet const &) const\n"
+    "    gum::Tensor< double >::sumIn(PyObject *) const\n");
   return 0;
 }
 
 
-SWIGINTERN PyObject *_wrap_Potential_prodIn__SWIG_1(PyObject *self, Py_ssize_t nobjs, PyObject **swig_obj) {
+SWIGINTERN PyObject *_wrap_Tensor_prodIn__SWIG_1(PyObject *self, Py_ssize_t nobjs, PyObject **swig_obj) {
   PyObject *resultobj = 0;
-  gum::Potential< double > *arg1 = 0 ;
+  gum::Tensor< double > *arg1 = 0 ;
   PyObject *arg2 = 0 ;
   void *argp1 = 0 ;
   int res1 = 0 ;
-  gum::Potential< double > result;
+  gum::Tensor< double > result;
   
   (void)self;
   if ((nobjs < 2) || (nobjs > 2)) SWIG_fail;
-  res1 = SWIG_ConvertPtr(swig_obj[0], &argp1,SWIGTYPE_p_gum__PotentialT_double_t, 0 |  0 );
+  res1 = SWIG_ConvertPtr(swig_obj[0], &argp1,SWIGTYPE_p_gum__TensorT_double_t, 0 |  0 );
   if (!SWIG_IsOK(res1)) {
-    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "Potential_prodIn" "', argument " "1"" of type '" "gum::Potential< double > const *""'"); 
+    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "Tensor_prodIn" "', argument " "1"" of type '" "gum::Tensor< double > const *""'"); 
   }
-  arg1 = reinterpret_cast< gum::Potential< double > * >(argp1);
+  arg1 = reinterpret_cast< gum::Tensor< double > * >(argp1);
   arg2 = swig_obj[1];
   {
     try {
-      result = gum_Potential_Sl_double_Sg__prodIn__SWIG_1((gum::Potential< double > const *)arg1,arg2);
+      result = gum_Tensor_Sl_double_Sg__prodIn__SWIG_1((gum::Tensor< double > const *)arg1,arg2);
     } catch (...) {
       SetPythonizeAgrumException();
       SWIG_fail;
     }
   }
-  resultobj = SWIG_NewPointerObj((new gum::Potential< double >(result)), SWIGTYPE_p_gum__PotentialT_double_t, SWIG_POINTER_OWN |  0 );
+  resultobj = SWIG_NewPointerObj((new gum::Tensor< double >(result)), SWIGTYPE_p_gum__TensorT_double_t, SWIG_POINTER_OWN |  0 );
   return resultobj;
 fail:
   return NULL;
 }
 
 
-SWIGINTERN PyObject *_wrap_Potential_prodIn(PyObject *self, PyObject *args) {
+SWIGINTERN PyObject *_wrap_Tensor_prodIn(PyObject *self, PyObject *args) {
   Py_ssize_t argc;
   PyObject *argv[3] = {
     0
   };
   
-  if (!(argc = SWIG_Python_UnpackTuple(args, "Potential_prodIn", 0, 2, argv))) SWIG_fail;
+  if (!(argc = SWIG_Python_UnpackTuple(args, "Tensor_prodIn", 0, 2, argv))) SWIG_fail;
   --argc;
   if (argc == 2) {
     int _v = 0;
@@ -58493,63 +58493,63 @@ SWIGINTERN PyObject *_wrap_Potential_prodIn(PyObject *self, PyObject *args) {
       _v = SWIG_CheckState(res);
     }
     if (!_v) goto check_1;
-    return _wrap_Potential_prodIn__SWIG_0(self, argc, argv);
+    return _wrap_Tensor_prodIn__SWIG_0(self, argc, argv);
   }
 check_1:
   
   if (argc == 2) {
-    PyObject *retobj = _wrap_Potential_prodIn__SWIG_1(self, argc, argv);
+    PyObject *retobj = _wrap_Tensor_prodIn__SWIG_1(self, argc, argv);
     if (!SWIG_Python_TypeErrorOccurred(retobj)) return retobj;
     SWIG_fail;
   }
   
 fail:
-  SWIG_Python_RaiseOrModifyTypeError("Wrong number or type of arguments for overloaded function 'Potential_prodIn'.\n"
+  SWIG_Python_RaiseOrModifyTypeError("Wrong number or type of arguments for overloaded function 'Tensor_prodIn'.\n"
     "  Possible C/C++ prototypes are:\n"
-    "    gum::Potential< double >::prodIn(gum::VariableSet const &) const\n"
-    "    gum::Potential< double >::prodIn(PyObject *) const\n");
+    "    gum::Tensor< double >::prodIn(gum::VariableSet const &) const\n"
+    "    gum::Tensor< double >::prodIn(PyObject *) const\n");
   return 0;
 }
 
 
-SWIGINTERN PyObject *_wrap_Potential_maxIn__SWIG_1(PyObject *self, Py_ssize_t nobjs, PyObject **swig_obj) {
+SWIGINTERN PyObject *_wrap_Tensor_maxIn__SWIG_1(PyObject *self, Py_ssize_t nobjs, PyObject **swig_obj) {
   PyObject *resultobj = 0;
-  gum::Potential< double > *arg1 = 0 ;
+  gum::Tensor< double > *arg1 = 0 ;
   PyObject *arg2 = 0 ;
   void *argp1 = 0 ;
   int res1 = 0 ;
-  gum::Potential< double > result;
+  gum::Tensor< double > result;
   
   (void)self;
   if ((nobjs < 2) || (nobjs > 2)) SWIG_fail;
-  res1 = SWIG_ConvertPtr(swig_obj[0], &argp1,SWIGTYPE_p_gum__PotentialT_double_t, 0 |  0 );
+  res1 = SWIG_ConvertPtr(swig_obj[0], &argp1,SWIGTYPE_p_gum__TensorT_double_t, 0 |  0 );
   if (!SWIG_IsOK(res1)) {
-    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "Potential_maxIn" "', argument " "1"" of type '" "gum::Potential< double > const *""'"); 
+    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "Tensor_maxIn" "', argument " "1"" of type '" "gum::Tensor< double > const *""'"); 
   }
-  arg1 = reinterpret_cast< gum::Potential< double > * >(argp1);
+  arg1 = reinterpret_cast< gum::Tensor< double > * >(argp1);
   arg2 = swig_obj[1];
   {
     try {
-      result = gum_Potential_Sl_double_Sg__maxIn__SWIG_1((gum::Potential< double > const *)arg1,arg2);
+      result = gum_Tensor_Sl_double_Sg__maxIn__SWIG_1((gum::Tensor< double > const *)arg1,arg2);
     } catch (...) {
       SetPythonizeAgrumException();
       SWIG_fail;
     }
   }
-  resultobj = SWIG_NewPointerObj((new gum::Potential< double >(result)), SWIGTYPE_p_gum__PotentialT_double_t, SWIG_POINTER_OWN |  0 );
+  resultobj = SWIG_NewPointerObj((new gum::Tensor< double >(result)), SWIGTYPE_p_gum__TensorT_double_t, SWIG_POINTER_OWN |  0 );
   return resultobj;
 fail:
   return NULL;
 }
 
 
-SWIGINTERN PyObject *_wrap_Potential_maxIn(PyObject *self, PyObject *args) {
+SWIGINTERN PyObject *_wrap_Tensor_maxIn(PyObject *self, PyObject *args) {
   Py_ssize_t argc;
   PyObject *argv[3] = {
     0
   };
   
-  if (!(argc = SWIG_Python_UnpackTuple(args, "Potential_maxIn", 0, 2, argv))) SWIG_fail;
+  if (!(argc = SWIG_Python_UnpackTuple(args, "Tensor_maxIn", 0, 2, argv))) SWIG_fail;
   --argc;
   if (argc == 2) {
     int _v = 0;
@@ -58558,63 +58558,63 @@ SWIGINTERN PyObject *_wrap_Potential_maxIn(PyObject *self, PyObject *args) {
       _v = SWIG_CheckState(res);
     }
     if (!_v) goto check_1;
-    return _wrap_Potential_maxIn__SWIG_0(self, argc, argv);
+    return _wrap_Tensor_maxIn__SWIG_0(self, argc, argv);
   }
 check_1:
   
   if (argc == 2) {
-    PyObject *retobj = _wrap_Potential_maxIn__SWIG_1(self, argc, argv);
+    PyObject *retobj = _wrap_Tensor_maxIn__SWIG_1(self, argc, argv);
     if (!SWIG_Python_TypeErrorOccurred(retobj)) return retobj;
     SWIG_fail;
   }
   
 fail:
-  SWIG_Python_RaiseOrModifyTypeError("Wrong number or type of arguments for overloaded function 'Potential_maxIn'.\n"
+  SWIG_Python_RaiseOrModifyTypeError("Wrong number or type of arguments for overloaded function 'Tensor_maxIn'.\n"
     "  Possible C/C++ prototypes are:\n"
-    "    gum::Potential< double >::maxIn(gum::VariableSet const &) const\n"
-    "    gum::Potential< double >::maxIn(PyObject *) const\n");
+    "    gum::Tensor< double >::maxIn(gum::VariableSet const &) const\n"
+    "    gum::Tensor< double >::maxIn(PyObject *) const\n");
   return 0;
 }
 
 
-SWIGINTERN PyObject *_wrap_Potential_minIn__SWIG_1(PyObject *self, Py_ssize_t nobjs, PyObject **swig_obj) {
+SWIGINTERN PyObject *_wrap_Tensor_minIn__SWIG_1(PyObject *self, Py_ssize_t nobjs, PyObject **swig_obj) {
   PyObject *resultobj = 0;
-  gum::Potential< double > *arg1 = 0 ;
+  gum::Tensor< double > *arg1 = 0 ;
   PyObject *arg2 = 0 ;
   void *argp1 = 0 ;
   int res1 = 0 ;
-  gum::Potential< double > result;
+  gum::Tensor< double > result;
   
   (void)self;
   if ((nobjs < 2) || (nobjs > 2)) SWIG_fail;
-  res1 = SWIG_ConvertPtr(swig_obj[0], &argp1,SWIGTYPE_p_gum__PotentialT_double_t, 0 |  0 );
+  res1 = SWIG_ConvertPtr(swig_obj[0], &argp1,SWIGTYPE_p_gum__TensorT_double_t, 0 |  0 );
   if (!SWIG_IsOK(res1)) {
-    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "Potential_minIn" "', argument " "1"" of type '" "gum::Potential< double > const *""'"); 
+    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "Tensor_minIn" "', argument " "1"" of type '" "gum::Tensor< double > const *""'"); 
   }
-  arg1 = reinterpret_cast< gum::Potential< double > * >(argp1);
+  arg1 = reinterpret_cast< gum::Tensor< double > * >(argp1);
   arg2 = swig_obj[1];
   {
     try {
-      result = gum_Potential_Sl_double_Sg__minIn__SWIG_1((gum::Potential< double > const *)arg1,arg2);
+      result = gum_Tensor_Sl_double_Sg__minIn__SWIG_1((gum::Tensor< double > const *)arg1,arg2);
     } catch (...) {
       SetPythonizeAgrumException();
       SWIG_fail;
     }
   }
-  resultobj = SWIG_NewPointerObj((new gum::Potential< double >(result)), SWIGTYPE_p_gum__PotentialT_double_t, SWIG_POINTER_OWN |  0 );
+  resultobj = SWIG_NewPointerObj((new gum::Tensor< double >(result)), SWIGTYPE_p_gum__TensorT_double_t, SWIG_POINTER_OWN |  0 );
   return resultobj;
 fail:
   return NULL;
 }
 
 
-SWIGINTERN PyObject *_wrap_Potential_minIn(PyObject *self, PyObject *args) {
+SWIGINTERN PyObject *_wrap_Tensor_minIn(PyObject *self, PyObject *args) {
   Py_ssize_t argc;
   PyObject *argv[3] = {
     0
   };
   
-  if (!(argc = SWIG_Python_UnpackTuple(args, "Potential_minIn", 0, 2, argv))) SWIG_fail;
+  if (!(argc = SWIG_Python_UnpackTuple(args, "Tensor_minIn", 0, 2, argv))) SWIG_fail;
   --argc;
   if (argc == 2) {
     int _v = 0;
@@ -58623,28 +58623,28 @@ SWIGINTERN PyObject *_wrap_Potential_minIn(PyObject *self, PyObject *args) {
       _v = SWIG_CheckState(res);
     }
     if (!_v) goto check_1;
-    return _wrap_Potential_minIn__SWIG_0(self, argc, argv);
+    return _wrap_Tensor_minIn__SWIG_0(self, argc, argv);
   }
 check_1:
   
   if (argc == 2) {
-    PyObject *retobj = _wrap_Potential_minIn__SWIG_1(self, argc, argv);
+    PyObject *retobj = _wrap_Tensor_minIn__SWIG_1(self, argc, argv);
     if (!SWIG_Python_TypeErrorOccurred(retobj)) return retobj;
     SWIG_fail;
   }
   
 fail:
-  SWIG_Python_RaiseOrModifyTypeError("Wrong number or type of arguments for overloaded function 'Potential_minIn'.\n"
+  SWIG_Python_RaiseOrModifyTypeError("Wrong number or type of arguments for overloaded function 'Tensor_minIn'.\n"
     "  Possible C/C++ prototypes are:\n"
-    "    gum::Potential< double >::minIn(gum::VariableSet const &) const\n"
-    "    gum::Potential< double >::minIn(PyObject *) const\n");
+    "    gum::Tensor< double >::minIn(gum::VariableSet const &) const\n"
+    "    gum::Tensor< double >::minIn(PyObject *) const\n");
   return 0;
 }
 
 
-SWIGINTERN PyObject *_wrap_Potential_argmin(PyObject *self, PyObject *args) {
+SWIGINTERN PyObject *_wrap_Tensor_argmin(PyObject *self, PyObject *args) {
   PyObject *resultobj = 0;
-  gum::Potential< double > *arg1 = 0 ;
+  gum::Tensor< double > *arg1 = 0 ;
   void *argp1 = 0 ;
   int res1 = 0 ;
   PyObject *swig_obj[1] ;
@@ -58653,14 +58653,14 @@ SWIGINTERN PyObject *_wrap_Potential_argmin(PyObject *self, PyObject *args) {
   (void)self;
   if (!args) SWIG_fail;
   swig_obj[0] = args;
-  res1 = SWIG_ConvertPtr(swig_obj[0], &argp1,SWIGTYPE_p_gum__PotentialT_double_t, 0 |  0 );
+  res1 = SWIG_ConvertPtr(swig_obj[0], &argp1,SWIGTYPE_p_gum__TensorT_double_t, 0 |  0 );
   if (!SWIG_IsOK(res1)) {
-    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "Potential_argmin" "', argument " "1"" of type '" "gum::Potential< double > *""'"); 
+    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "Tensor_argmin" "', argument " "1"" of type '" "gum::Tensor< double > *""'"); 
   }
-  arg1 = reinterpret_cast< gum::Potential< double > * >(argp1);
+  arg1 = reinterpret_cast< gum::Tensor< double > * >(argp1);
   {
     try {
-      result = (PyObject *)gum_Potential_Sl_double_Sg__argmin(arg1);
+      result = (PyObject *)gum_Tensor_Sl_double_Sg__argmin(arg1);
     } catch (...) {
       SetPythonizeAgrumException();
       SWIG_fail;
@@ -58673,9 +58673,9 @@ fail:
 }
 
 
-SWIGINTERN PyObject *_wrap_Potential_argmax(PyObject *self, PyObject *args) {
+SWIGINTERN PyObject *_wrap_Tensor_argmax(PyObject *self, PyObject *args) {
   PyObject *resultobj = 0;
-  gum::Potential< double > *arg1 = 0 ;
+  gum::Tensor< double > *arg1 = 0 ;
   void *argp1 = 0 ;
   int res1 = 0 ;
   PyObject *swig_obj[1] ;
@@ -58684,14 +58684,14 @@ SWIGINTERN PyObject *_wrap_Potential_argmax(PyObject *self, PyObject *args) {
   (void)self;
   if (!args) SWIG_fail;
   swig_obj[0] = args;
-  res1 = SWIG_ConvertPtr(swig_obj[0], &argp1,SWIGTYPE_p_gum__PotentialT_double_t, 0 |  0 );
+  res1 = SWIG_ConvertPtr(swig_obj[0], &argp1,SWIGTYPE_p_gum__TensorT_double_t, 0 |  0 );
   if (!SWIG_IsOK(res1)) {
-    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "Potential_argmax" "', argument " "1"" of type '" "gum::Potential< double > *""'"); 
+    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "Tensor_argmax" "', argument " "1"" of type '" "gum::Tensor< double > *""'"); 
   }
-  arg1 = reinterpret_cast< gum::Potential< double > * >(argp1);
+  arg1 = reinterpret_cast< gum::Tensor< double > * >(argp1);
   {
     try {
-      result = (PyObject *)gum_Potential_Sl_double_Sg__argmax(arg1);
+      result = (PyObject *)gum_Tensor_Sl_double_Sg__argmax(arg1);
     } catch (...) {
       SetPythonizeAgrumException();
       SWIG_fail;
@@ -58704,10 +58704,10 @@ fail:
 }
 
 
-SWIGINTERN PyObject *_wrap_Potential___eq____SWIG_1(PyObject *self, Py_ssize_t nobjs, PyObject **swig_obj) {
+SWIGINTERN PyObject *_wrap_Tensor___eq____SWIG_1(PyObject *self, Py_ssize_t nobjs, PyObject **swig_obj) {
   PyObject *resultobj = 0;
-  gum::Potential< double > *arg1 = 0 ;
-  gum::Potential< double > *arg2 = 0 ;
+  gum::Tensor< double > *arg1 = 0 ;
+  gum::Tensor< double > *arg2 = 0 ;
   void *argp1 = 0 ;
   int res1 = 0 ;
   void *argp2 = 0 ;
@@ -58716,22 +58716,22 @@ SWIGINTERN PyObject *_wrap_Potential___eq____SWIG_1(PyObject *self, Py_ssize_t n
   
   (void)self;
   if ((nobjs < 2) || (nobjs > 2)) SWIG_fail;
-  res1 = SWIG_ConvertPtr(swig_obj[0], &argp1,SWIGTYPE_p_gum__PotentialT_double_t, 0 |  0 );
+  res1 = SWIG_ConvertPtr(swig_obj[0], &argp1,SWIGTYPE_p_gum__TensorT_double_t, 0 |  0 );
   if (!SWIG_IsOK(res1)) {
-    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "Potential___eq__" "', argument " "1"" of type '" "gum::Potential< double > *""'"); 
+    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "Tensor___eq__" "', argument " "1"" of type '" "gum::Tensor< double > *""'"); 
   }
-  arg1 = reinterpret_cast< gum::Potential< double > * >(argp1);
-  res2 = SWIG_ConvertPtr(swig_obj[1], &argp2, SWIGTYPE_p_gum__PotentialT_double_t,  0  | 0);
+  arg1 = reinterpret_cast< gum::Tensor< double > * >(argp1);
+  res2 = SWIG_ConvertPtr(swig_obj[1], &argp2, SWIGTYPE_p_gum__TensorT_double_t,  0  | 0);
   if (!SWIG_IsOK(res2)) {
-    SWIG_exception_fail(SWIG_ArgError(res2), "in method '" "Potential___eq__" "', argument " "2"" of type '" "gum::Potential< double > const &""'"); 
+    SWIG_exception_fail(SWIG_ArgError(res2), "in method '" "Tensor___eq__" "', argument " "2"" of type '" "gum::Tensor< double > const &""'"); 
   }
   if (!argp2) {
-    SWIG_exception_fail(SWIG_NullReferenceError, "invalid null reference " "in method '" "Potential___eq__" "', argument " "2"" of type '" "gum::Potential< double > const &""'"); 
+    SWIG_exception_fail(SWIG_NullReferenceError, "invalid null reference " "in method '" "Tensor___eq__" "', argument " "2"" of type '" "gum::Tensor< double > const &""'"); 
   }
-  arg2 = reinterpret_cast< gum::Potential< double > * >(argp2);
+  arg2 = reinterpret_cast< gum::Tensor< double > * >(argp2);
   {
     try {
-      result = (bool)gum_Potential_Sl_double_Sg____eq____SWIG_1(arg1,(gum::Potential< double > const &)*arg2);
+      result = (bool)gum_Tensor_Sl_double_Sg____eq____SWIG_1(arg1,(gum::Tensor< double > const &)*arg2);
     } catch (...) {
       SetPythonizeAgrumException();
       SWIG_fail;
@@ -58749,21 +58749,21 @@ fail:
 }
 
 
-SWIGINTERN PyObject *_wrap_Potential___eq__(PyObject *self, PyObject *args) {
+SWIGINTERN PyObject *_wrap_Tensor___eq__(PyObject *self, PyObject *args) {
   Py_ssize_t argc;
   PyObject *argv[3] = {
     0
   };
   
-  if (!(argc = SWIG_Python_UnpackTuple(args, "Potential___eq__", 0, 2, argv))) SWIG_fail;
+  if (!(argc = SWIG_Python_UnpackTuple(args, "Tensor___eq__", 0, 2, argv))) SWIG_fail;
   --argc;
   if (argc == 2) {
-    PyObject *retobj = _wrap_Potential___eq____SWIG_1(self, argc, argv);
+    PyObject *retobj = _wrap_Tensor___eq____SWIG_1(self, argc, argv);
     if (!SWIG_Python_TypeErrorOccurred(retobj)) return retobj;
     SWIG_fail;
   }
   if (argc == 2) {
-    PyObject *retobj = _wrap_Potential___eq____SWIG_0(self, argc, argv);
+    PyObject *retobj = _wrap_Tensor___eq____SWIG_0(self, argc, argv);
     if (!SWIG_Python_TypeErrorOccurred(retobj)) return retobj;
     SWIG_fail;
   }
@@ -58774,10 +58774,10 @@ fail:
 }
 
 
-SWIGINTERN PyObject *_wrap_Potential___ne__(PyObject *self, PyObject *args) {
+SWIGINTERN PyObject *_wrap_Tensor___ne__(PyObject *self, PyObject *args) {
   PyObject *resultobj = 0;
-  gum::Potential< double > *arg1 = 0 ;
-  gum::Potential< double > *arg2 = 0 ;
+  gum::Tensor< double > *arg1 = 0 ;
+  gum::Tensor< double > *arg2 = 0 ;
   void *argp1 = 0 ;
   int res1 = 0 ;
   void *argp2 = 0 ;
@@ -58786,23 +58786,23 @@ SWIGINTERN PyObject *_wrap_Potential___ne__(PyObject *self, PyObject *args) {
   bool result;
   
   (void)self;
-  if (!SWIG_Python_UnpackTuple(args, "Potential___ne__", 2, 2, swig_obj)) SWIG_fail;
-  res1 = SWIG_ConvertPtr(swig_obj[0], &argp1,SWIGTYPE_p_gum__PotentialT_double_t, 0 |  0 );
+  if (!SWIG_Python_UnpackTuple(args, "Tensor___ne__", 2, 2, swig_obj)) SWIG_fail;
+  res1 = SWIG_ConvertPtr(swig_obj[0], &argp1,SWIGTYPE_p_gum__TensorT_double_t, 0 |  0 );
   if (!SWIG_IsOK(res1)) {
-    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "Potential___ne__" "', argument " "1"" of type '" "gum::Potential< double > *""'"); 
+    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "Tensor___ne__" "', argument " "1"" of type '" "gum::Tensor< double > *""'"); 
   }
-  arg1 = reinterpret_cast< gum::Potential< double > * >(argp1);
-  res2 = SWIG_ConvertPtr(swig_obj[1], &argp2, SWIGTYPE_p_gum__PotentialT_double_t,  0  | 0);
+  arg1 = reinterpret_cast< gum::Tensor< double > * >(argp1);
+  res2 = SWIG_ConvertPtr(swig_obj[1], &argp2, SWIGTYPE_p_gum__TensorT_double_t,  0  | 0);
   if (!SWIG_IsOK(res2)) {
-    SWIG_exception_fail(SWIG_ArgError(res2), "in method '" "Potential___ne__" "', argument " "2"" of type '" "gum::Potential< double > const &""'"); 
+    SWIG_exception_fail(SWIG_ArgError(res2), "in method '" "Tensor___ne__" "', argument " "2"" of type '" "gum::Tensor< double > const &""'"); 
   }
   if (!argp2) {
-    SWIG_exception_fail(SWIG_NullReferenceError, "invalid null reference " "in method '" "Potential___ne__" "', argument " "2"" of type '" "gum::Potential< double > const &""'"); 
+    SWIG_exception_fail(SWIG_NullReferenceError, "invalid null reference " "in method '" "Tensor___ne__" "', argument " "2"" of type '" "gum::Tensor< double > const &""'"); 
   }
-  arg2 = reinterpret_cast< gum::Potential< double > * >(argp2);
+  arg2 = reinterpret_cast< gum::Tensor< double > * >(argp2);
   {
     try {
-      result = (bool)gum_Potential_Sl_double_Sg____ne__(arg1,(gum::Potential< double > const &)*arg2);
+      result = (bool)gum_Tensor_Sl_double_Sg____ne__(arg1,(gum::Tensor< double > const &)*arg2);
     } catch (...) {
       SetPythonizeAgrumException();
       SWIG_fail;
@@ -58820,9 +58820,9 @@ fail:
 }
 
 
-SWIGINTERN PyObject *_wrap_Potential_get(PyObject *self, PyObject *args) {
+SWIGINTERN PyObject *_wrap_Tensor_get(PyObject *self, PyObject *args) {
   PyObject *resultobj = 0;
-  gum::Potential< double > *arg1 = 0 ;
+  gum::Tensor< double > *arg1 = 0 ;
   gum::Instantiation *arg2 = 0 ;
   void *argp1 = 0 ;
   int res1 = 0 ;
@@ -58832,23 +58832,23 @@ SWIGINTERN PyObject *_wrap_Potential_get(PyObject *self, PyObject *args) {
   double result;
   
   (void)self;
-  if (!SWIG_Python_UnpackTuple(args, "Potential_get", 2, 2, swig_obj)) SWIG_fail;
-  res1 = SWIG_ConvertPtr(swig_obj[0], &argp1,SWIGTYPE_p_gum__PotentialT_double_t, 0 |  0 );
+  if (!SWIG_Python_UnpackTuple(args, "Tensor_get", 2, 2, swig_obj)) SWIG_fail;
+  res1 = SWIG_ConvertPtr(swig_obj[0], &argp1,SWIGTYPE_p_gum__TensorT_double_t, 0 |  0 );
   if (!SWIG_IsOK(res1)) {
-    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "Potential_get" "', argument " "1"" of type '" "gum::Potential< double > const *""'"); 
+    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "Tensor_get" "', argument " "1"" of type '" "gum::Tensor< double > const *""'"); 
   }
-  arg1 = reinterpret_cast< gum::Potential< double > * >(argp1);
+  arg1 = reinterpret_cast< gum::Tensor< double > * >(argp1);
   res2 = SWIG_ConvertPtr(swig_obj[1], &argp2, SWIGTYPE_p_gum__Instantiation,  0  | 0);
   if (!SWIG_IsOK(res2)) {
-    SWIG_exception_fail(SWIG_ArgError(res2), "in method '" "Potential_get" "', argument " "2"" of type '" "gum::Instantiation const &""'"); 
+    SWIG_exception_fail(SWIG_ArgError(res2), "in method '" "Tensor_get" "', argument " "2"" of type '" "gum::Instantiation const &""'"); 
   }
   if (!argp2) {
-    SWIG_exception_fail(SWIG_NullReferenceError, "invalid null reference " "in method '" "Potential_get" "', argument " "2"" of type '" "gum::Instantiation const &""'"); 
+    SWIG_exception_fail(SWIG_NullReferenceError, "invalid null reference " "in method '" "Tensor_get" "', argument " "2"" of type '" "gum::Instantiation const &""'"); 
   }
   arg2 = reinterpret_cast< gum::Instantiation * >(argp2);
   {
     try {
-      result = (double)gum_Potential_Sl_double_Sg__get((gum::Potential< double > const *)arg1,(gum::Instantiation const &)*arg2);
+      result = (double)gum_Tensor_Sl_double_Sg__get((gum::Tensor< double > const *)arg1,(gum::Instantiation const &)*arg2);
     } catch (...) {
       SetPythonizeAgrumException();
       SWIG_fail;
@@ -58861,9 +58861,9 @@ fail:
 }
 
 
-SWIGINTERN PyObject *_wrap_Potential_set(PyObject *self, PyObject *args) {
+SWIGINTERN PyObject *_wrap_Tensor_set(PyObject *self, PyObject *args) {
   PyObject *resultobj = 0;
-  gum::Potential< double > *arg1 = 0 ;
+  gum::Tensor< double > *arg1 = 0 ;
   gum::Instantiation *arg2 = 0 ;
   double *arg3 = 0 ;
   void *argp1 = 0 ;
@@ -58876,29 +58876,29 @@ SWIGINTERN PyObject *_wrap_Potential_set(PyObject *self, PyObject *args) {
   PyObject *swig_obj[3] ;
   
   (void)self;
-  if (!SWIG_Python_UnpackTuple(args, "Potential_set", 3, 3, swig_obj)) SWIG_fail;
-  res1 = SWIG_ConvertPtr(swig_obj[0], &argp1,SWIGTYPE_p_gum__PotentialT_double_t, 0 |  0 );
+  if (!SWIG_Python_UnpackTuple(args, "Tensor_set", 3, 3, swig_obj)) SWIG_fail;
+  res1 = SWIG_ConvertPtr(swig_obj[0], &argp1,SWIGTYPE_p_gum__TensorT_double_t, 0 |  0 );
   if (!SWIG_IsOK(res1)) {
-    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "Potential_set" "', argument " "1"" of type '" "gum::Potential< double > const *""'"); 
+    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "Tensor_set" "', argument " "1"" of type '" "gum::Tensor< double > const *""'"); 
   }
-  arg1 = reinterpret_cast< gum::Potential< double > * >(argp1);
+  arg1 = reinterpret_cast< gum::Tensor< double > * >(argp1);
   res2 = SWIG_ConvertPtr(swig_obj[1], &argp2, SWIGTYPE_p_gum__Instantiation,  0  | 0);
   if (!SWIG_IsOK(res2)) {
-    SWIG_exception_fail(SWIG_ArgError(res2), "in method '" "Potential_set" "', argument " "2"" of type '" "gum::Instantiation const &""'"); 
+    SWIG_exception_fail(SWIG_ArgError(res2), "in method '" "Tensor_set" "', argument " "2"" of type '" "gum::Instantiation const &""'"); 
   }
   if (!argp2) {
-    SWIG_exception_fail(SWIG_NullReferenceError, "invalid null reference " "in method '" "Potential_set" "', argument " "2"" of type '" "gum::Instantiation const &""'"); 
+    SWIG_exception_fail(SWIG_NullReferenceError, "invalid null reference " "in method '" "Tensor_set" "', argument " "2"" of type '" "gum::Instantiation const &""'"); 
   }
   arg2 = reinterpret_cast< gum::Instantiation * >(argp2);
   ecode3 = SWIG_AsVal_double(swig_obj[2], &val3);
   if (!SWIG_IsOK(ecode3)) {
-    SWIG_exception_fail(SWIG_ArgError(ecode3), "in method '" "Potential_set" "', argument " "3"" of type '" "double""'");
+    SWIG_exception_fail(SWIG_ArgError(ecode3), "in method '" "Tensor_set" "', argument " "3"" of type '" "double""'");
   } 
   temp3 = static_cast< double >(val3);
   arg3 = &temp3;
   {
     try {
-      gum_Potential_Sl_double_Sg__set((gum::Potential< double > const *)arg1,(gum::Instantiation const &)*arg2,(double const &)*arg3);
+      gum_Tensor_Sl_double_Sg__set((gum::Tensor< double > const *)arg1,(gum::Instantiation const &)*arg2,(double const &)*arg3);
     } catch (...) {
       SetPythonizeAgrumException();
       SWIG_fail;
@@ -58911,9 +58911,9 @@ fail:
 }
 
 
-SWIGINTERN PyObject *_wrap_Potential_empty(PyObject *self, PyObject *args) {
+SWIGINTERN PyObject *_wrap_Tensor_empty(PyObject *self, PyObject *args) {
   PyObject *resultobj = 0;
-  gum::Potential< double > *arg1 = 0 ;
+  gum::Tensor< double > *arg1 = 0 ;
   void *argp1 = 0 ;
   int res1 = 0 ;
   PyObject *swig_obj[1] ;
@@ -58922,14 +58922,14 @@ SWIGINTERN PyObject *_wrap_Potential_empty(PyObject *self, PyObject *args) {
   (void)self;
   if (!args) SWIG_fail;
   swig_obj[0] = args;
-  res1 = SWIG_ConvertPtr(swig_obj[0], &argp1,SWIGTYPE_p_gum__PotentialT_double_t, 0 |  0 );
+  res1 = SWIG_ConvertPtr(swig_obj[0], &argp1,SWIGTYPE_p_gum__TensorT_double_t, 0 |  0 );
   if (!SWIG_IsOK(res1)) {
-    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "Potential_empty" "', argument " "1"" of type '" "gum::Potential< double > const *""'"); 
+    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "Tensor_empty" "', argument " "1"" of type '" "gum::Tensor< double > const *""'"); 
   }
-  arg1 = reinterpret_cast< gum::Potential< double > * >(argp1);
+  arg1 = reinterpret_cast< gum::Tensor< double > * >(argp1);
   {
     try {
-      result = (bool)gum_Potential_Sl_double_Sg__empty((gum::Potential< double > const *)arg1);
+      result = (bool)gum_Tensor_Sl_double_Sg__empty((gum::Tensor< double > const *)arg1);
     } catch (...) {
       SetPythonizeAgrumException();
       SWIG_fail;
@@ -58942,9 +58942,9 @@ fail:
 }
 
 
-SWIGINTERN PyObject *_wrap_Potential_pos(PyObject *self, PyObject *args) {
+SWIGINTERN PyObject *_wrap_Tensor_pos(PyObject *self, PyObject *args) {
   PyObject *resultobj = 0;
-  gum::Potential< double > *arg1 = 0 ;
+  gum::Tensor< double > *arg1 = 0 ;
   gum::DiscreteVariable *arg2 = 0 ;
   void *argp1 = 0 ;
   int res1 = 0 ;
@@ -58954,23 +58954,23 @@ SWIGINTERN PyObject *_wrap_Potential_pos(PyObject *self, PyObject *args) {
   gum::Idx result;
   
   (void)self;
-  if (!SWIG_Python_UnpackTuple(args, "Potential_pos", 2, 2, swig_obj)) SWIG_fail;
-  res1 = SWIG_ConvertPtr(swig_obj[0], &argp1,SWIGTYPE_p_gum__PotentialT_double_t, 0 |  0 );
+  if (!SWIG_Python_UnpackTuple(args, "Tensor_pos", 2, 2, swig_obj)) SWIG_fail;
+  res1 = SWIG_ConvertPtr(swig_obj[0], &argp1,SWIGTYPE_p_gum__TensorT_double_t, 0 |  0 );
   if (!SWIG_IsOK(res1)) {
-    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "Potential_pos" "', argument " "1"" of type '" "gum::Potential< double > const *""'"); 
+    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "Tensor_pos" "', argument " "1"" of type '" "gum::Tensor< double > const *""'"); 
   }
-  arg1 = reinterpret_cast< gum::Potential< double > * >(argp1);
+  arg1 = reinterpret_cast< gum::Tensor< double > * >(argp1);
   res2 = SWIG_ConvertPtr(swig_obj[1], &argp2, SWIGTYPE_p_gum__DiscreteVariable,  0  | 0);
   if (!SWIG_IsOK(res2)) {
-    SWIG_exception_fail(SWIG_ArgError(res2), "in method '" "Potential_pos" "', argument " "2"" of type '" "gum::DiscreteVariable const &""'"); 
+    SWIG_exception_fail(SWIG_ArgError(res2), "in method '" "Tensor_pos" "', argument " "2"" of type '" "gum::DiscreteVariable const &""'"); 
   }
   if (!argp2) {
-    SWIG_exception_fail(SWIG_NullReferenceError, "invalid null reference " "in method '" "Potential_pos" "', argument " "2"" of type '" "gum::DiscreteVariable const &""'"); 
+    SWIG_exception_fail(SWIG_NullReferenceError, "invalid null reference " "in method '" "Tensor_pos" "', argument " "2"" of type '" "gum::DiscreteVariable const &""'"); 
   }
   arg2 = reinterpret_cast< gum::DiscreteVariable * >(argp2);
   {
     try {
-      result = gum_Potential_Sl_double_Sg__pos((gum::Potential< double > const *)arg1,(gum::DiscreteVariable const &)*arg2);
+      result = gum_Tensor_Sl_double_Sg__pos((gum::Tensor< double > const *)arg1,(gum::DiscreteVariable const &)*arg2);
     } catch (...) {
       SetPythonizeAgrumException();
       SWIG_fail;
@@ -58983,9 +58983,9 @@ fail:
 }
 
 
-SWIGINTERN PyObject *_wrap_Potential_contains(PyObject *self, PyObject *args) {
+SWIGINTERN PyObject *_wrap_Tensor_contains(PyObject *self, PyObject *args) {
   PyObject *resultobj = 0;
-  gum::Potential< double > *arg1 = 0 ;
+  gum::Tensor< double > *arg1 = 0 ;
   gum::DiscreteVariable *arg2 = 0 ;
   void *argp1 = 0 ;
   int res1 = 0 ;
@@ -58995,23 +58995,23 @@ SWIGINTERN PyObject *_wrap_Potential_contains(PyObject *self, PyObject *args) {
   bool result;
   
   (void)self;
-  if (!SWIG_Python_UnpackTuple(args, "Potential_contains", 2, 2, swig_obj)) SWIG_fail;
-  res1 = SWIG_ConvertPtr(swig_obj[0], &argp1,SWIGTYPE_p_gum__PotentialT_double_t, 0 |  0 );
+  if (!SWIG_Python_UnpackTuple(args, "Tensor_contains", 2, 2, swig_obj)) SWIG_fail;
+  res1 = SWIG_ConvertPtr(swig_obj[0], &argp1,SWIGTYPE_p_gum__TensorT_double_t, 0 |  0 );
   if (!SWIG_IsOK(res1)) {
-    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "Potential_contains" "', argument " "1"" of type '" "gum::Potential< double > const *""'"); 
+    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "Tensor_contains" "', argument " "1"" of type '" "gum::Tensor< double > const *""'"); 
   }
-  arg1 = reinterpret_cast< gum::Potential< double > * >(argp1);
+  arg1 = reinterpret_cast< gum::Tensor< double > * >(argp1);
   res2 = SWIG_ConvertPtr(swig_obj[1], &argp2, SWIGTYPE_p_gum__DiscreteVariable,  0  | 0);
   if (!SWIG_IsOK(res2)) {
-    SWIG_exception_fail(SWIG_ArgError(res2), "in method '" "Potential_contains" "', argument " "2"" of type '" "gum::DiscreteVariable const &""'"); 
+    SWIG_exception_fail(SWIG_ArgError(res2), "in method '" "Tensor_contains" "', argument " "2"" of type '" "gum::DiscreteVariable const &""'"); 
   }
   if (!argp2) {
-    SWIG_exception_fail(SWIG_NullReferenceError, "invalid null reference " "in method '" "Potential_contains" "', argument " "2"" of type '" "gum::DiscreteVariable const &""'"); 
+    SWIG_exception_fail(SWIG_NullReferenceError, "invalid null reference " "in method '" "Tensor_contains" "', argument " "2"" of type '" "gum::DiscreteVariable const &""'"); 
   }
   arg2 = reinterpret_cast< gum::DiscreteVariable * >(argp2);
   {
     try {
-      result = (bool)gum_Potential_Sl_double_Sg__contains((gum::Potential< double > const *)arg1,(gum::DiscreteVariable const &)*arg2);
+      result = (bool)gum_Tensor_Sl_double_Sg__contains((gum::Tensor< double > const *)arg1,(gum::DiscreteVariable const &)*arg2);
     } catch (...) {
       SetPythonizeAgrumException();
       SWIG_fail;
@@ -59024,23 +59024,23 @@ fail:
 }
 
 
-SWIGINTERN PyObject *_wrap_Potential_nbrDim__SWIG_0(PyObject *self, Py_ssize_t nobjs, PyObject **swig_obj) {
+SWIGINTERN PyObject *_wrap_Tensor_nbrDim__SWIG_0(PyObject *self, Py_ssize_t nobjs, PyObject **swig_obj) {
   PyObject *resultobj = 0;
-  gum::Potential< double > *arg1 = 0 ;
+  gum::Tensor< double > *arg1 = 0 ;
   void *argp1 = 0 ;
   int res1 = 0 ;
   gum::Idx result;
   
   (void)self;
   if ((nobjs < 1) || (nobjs > 1)) SWIG_fail;
-  res1 = SWIG_ConvertPtr(swig_obj[0], &argp1,SWIGTYPE_p_gum__PotentialT_double_t, 0 |  0 );
+  res1 = SWIG_ConvertPtr(swig_obj[0], &argp1,SWIGTYPE_p_gum__TensorT_double_t, 0 |  0 );
   if (!SWIG_IsOK(res1)) {
-    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "Potential_nbrDim" "', argument " "1"" of type '" "gum::Potential< double > const *""'"); 
+    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "Tensor_nbrDim" "', argument " "1"" of type '" "gum::Tensor< double > const *""'"); 
   }
-  arg1 = reinterpret_cast< gum::Potential< double > * >(argp1);
+  arg1 = reinterpret_cast< gum::Tensor< double > * >(argp1);
   {
     try {
-      result = gum_Potential_Sl_double_Sg__nbrDim__SWIG_0((gum::Potential< double > const *)arg1);
+      result = gum_Tensor_Sl_double_Sg__nbrDim__SWIG_0((gum::Tensor< double > const *)arg1);
     } catch (...) {
       SetPythonizeAgrumException();
       SWIG_fail;
@@ -59053,9 +59053,9 @@ fail:
 }
 
 
-SWIGINTERN PyObject *_wrap_Potential_variable__SWIG_0(PyObject *self, Py_ssize_t nobjs, PyObject **swig_obj) {
+SWIGINTERN PyObject *_wrap_Tensor_variable__SWIG_0(PyObject *self, Py_ssize_t nobjs, PyObject **swig_obj) {
   PyObject *resultobj = 0;
-  gum::Potential< double > *arg1 = 0 ;
+  gum::Tensor< double > *arg1 = 0 ;
   gum::Idx arg2 ;
   void *argp1 = 0 ;
   int res1 = 0 ;
@@ -59065,19 +59065,19 @@ SWIGINTERN PyObject *_wrap_Potential_variable__SWIG_0(PyObject *self, Py_ssize_t
   
   (void)self;
   if ((nobjs < 2) || (nobjs > 2)) SWIG_fail;
-  res1 = SWIG_ConvertPtr(swig_obj[0], &argp1,SWIGTYPE_p_gum__PotentialT_double_t, 0 |  0 );
+  res1 = SWIG_ConvertPtr(swig_obj[0], &argp1,SWIGTYPE_p_gum__TensorT_double_t, 0 |  0 );
   if (!SWIG_IsOK(res1)) {
-    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "Potential_variable" "', argument " "1"" of type '" "gum::Potential< double > const *""'"); 
+    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "Tensor_variable" "', argument " "1"" of type '" "gum::Tensor< double > const *""'"); 
   }
-  arg1 = reinterpret_cast< gum::Potential< double > * >(argp1);
+  arg1 = reinterpret_cast< gum::Tensor< double > * >(argp1);
   ecode2 = SWIG_AsVal_size_t(swig_obj[1], &val2);
   if (!SWIG_IsOK(ecode2)) {
-    SWIG_exception_fail(SWIG_ArgError(ecode2), "in method '" "Potential_variable" "', argument " "2"" of type '" "gum::Idx""'");
+    SWIG_exception_fail(SWIG_ArgError(ecode2), "in method '" "Tensor_variable" "', argument " "2"" of type '" "gum::Idx""'");
   } 
   arg2 = static_cast< gum::Idx >(val2);
   {
     try {
-      result = (gum::DiscreteVariable *) &gum_Potential_Sl_double_Sg__variable__SWIG_0((gum::Potential< double > const *)arg1,SWIG_STD_MOVE(arg2));
+      result = (gum::DiscreteVariable *) &gum_Tensor_Sl_double_Sg__variable__SWIG_0((gum::Tensor< double > const *)arg1,SWIG_STD_MOVE(arg2));
     } catch (...) {
       SetPythonizeAgrumException();
       SWIG_fail;
@@ -59090,9 +59090,9 @@ fail:
 }
 
 
-SWIGINTERN PyObject *_wrap_Potential_variable__SWIG_1(PyObject *self, Py_ssize_t nobjs, PyObject **swig_obj) {
+SWIGINTERN PyObject *_wrap_Tensor_variable__SWIG_1(PyObject *self, Py_ssize_t nobjs, PyObject **swig_obj) {
   PyObject *resultobj = 0;
-  gum::Potential< double > *arg1 = 0 ;
+  gum::Tensor< double > *arg1 = 0 ;
   std::string *arg2 = 0 ;
   void *argp1 = 0 ;
   int res1 = 0 ;
@@ -59101,25 +59101,25 @@ SWIGINTERN PyObject *_wrap_Potential_variable__SWIG_1(PyObject *self, Py_ssize_t
   
   (void)self;
   if ((nobjs < 2) || (nobjs > 2)) SWIG_fail;
-  res1 = SWIG_ConvertPtr(swig_obj[0], &argp1,SWIGTYPE_p_gum__PotentialT_double_t, 0 |  0 );
+  res1 = SWIG_ConvertPtr(swig_obj[0], &argp1,SWIGTYPE_p_gum__TensorT_double_t, 0 |  0 );
   if (!SWIG_IsOK(res1)) {
-    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "Potential_variable" "', argument " "1"" of type '" "gum::Potential< double > const *""'"); 
+    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "Tensor_variable" "', argument " "1"" of type '" "gum::Tensor< double > const *""'"); 
   }
-  arg1 = reinterpret_cast< gum::Potential< double > * >(argp1);
+  arg1 = reinterpret_cast< gum::Tensor< double > * >(argp1);
   {
     std::string *ptr = (std::string *)0;
     res2 = SWIG_AsPtr_std_string(swig_obj[1], &ptr);
     if (!SWIG_IsOK(res2)) {
-      SWIG_exception_fail(SWIG_ArgError(res2), "in method '" "Potential_variable" "', argument " "2"" of type '" "std::string const &""'"); 
+      SWIG_exception_fail(SWIG_ArgError(res2), "in method '" "Tensor_variable" "', argument " "2"" of type '" "std::string const &""'"); 
     }
     if (!ptr) {
-      SWIG_exception_fail(SWIG_NullReferenceError, "invalid null reference " "in method '" "Potential_variable" "', argument " "2"" of type '" "std::string const &""'"); 
+      SWIG_exception_fail(SWIG_NullReferenceError, "invalid null reference " "in method '" "Tensor_variable" "', argument " "2"" of type '" "std::string const &""'"); 
     }
     arg2 = ptr;
   }
   {
     try {
-      result = (gum::DiscreteVariable *) &gum_Potential_Sl_double_Sg__variable__SWIG_1((gum::Potential< double > const *)arg1,(std::string const &)*arg2);
+      result = (gum::DiscreteVariable *) &gum_Tensor_Sl_double_Sg__variable__SWIG_1((gum::Tensor< double > const *)arg1,(std::string const &)*arg2);
     } catch (...) {
       SetPythonizeAgrumException();
       SWIG_fail;
@@ -59134,13 +59134,13 @@ fail:
 }
 
 
-SWIGINTERN PyObject *_wrap_Potential_variable(PyObject *self, PyObject *args) {
+SWIGINTERN PyObject *_wrap_Tensor_variable(PyObject *self, PyObject *args) {
   Py_ssize_t argc;
   PyObject *argv[3] = {
     0
   };
   
-  if (!(argc = SWIG_Python_UnpackTuple(args, "Potential_variable", 0, 2, argv))) SWIG_fail;
+  if (!(argc = SWIG_Python_UnpackTuple(args, "Tensor_variable", 0, 2, argv))) SWIG_fail;
   --argc;
   if (argc == 2) {
     int _v = 0;
@@ -59151,28 +59151,28 @@ SWIGINTERN PyObject *_wrap_Potential_variable(PyObject *self, PyObject *args) {
       }
     }
     if (!_v) goto check_1;
-    return _wrap_Potential_variable__SWIG_0(self, argc, argv);
+    return _wrap_Tensor_variable__SWIG_0(self, argc, argv);
   }
 check_1:
   
   if (argc == 2) {
-    PyObject *retobj = _wrap_Potential_variable__SWIG_1(self, argc, argv);
+    PyObject *retobj = _wrap_Tensor_variable__SWIG_1(self, argc, argv);
     if (!SWIG_Python_TypeErrorOccurred(retobj)) return retobj;
     SWIG_fail;
   }
   
 fail:
-  SWIG_Python_RaiseOrModifyTypeError("Wrong number or type of arguments for overloaded function 'Potential_variable'.\n"
+  SWIG_Python_RaiseOrModifyTypeError("Wrong number or type of arguments for overloaded function 'Tensor_variable'.\n"
     "  Possible C/C++ prototypes are:\n"
-    "    gum::Potential< double >::variable(gum::Idx) const\n"
-    "    gum::Potential< double >::variable(std::string const &) const\n");
+    "    gum::Tensor< double >::variable(gum::Idx) const\n"
+    "    gum::Tensor< double >::variable(std::string const &) const\n");
   return 0;
 }
 
 
-SWIGINTERN PyObject *_wrap_Potential_remove(PyObject *self, PyObject *args) {
+SWIGINTERN PyObject *_wrap_Tensor_remove(PyObject *self, PyObject *args) {
   PyObject *resultobj = 0;
-  gum::Potential< double > *arg1 = 0 ;
+  gum::Tensor< double > *arg1 = 0 ;
   gum::DiscreteVariable *arg2 = 0 ;
   void *argp1 = 0 ;
   int res1 = 0 ;
@@ -59181,23 +59181,23 @@ SWIGINTERN PyObject *_wrap_Potential_remove(PyObject *self, PyObject *args) {
   PyObject *swig_obj[2] ;
   
   (void)self;
-  if (!SWIG_Python_UnpackTuple(args, "Potential_remove", 2, 2, swig_obj)) SWIG_fail;
-  res1 = SWIG_ConvertPtr(swig_obj[0], &argp1,SWIGTYPE_p_gum__PotentialT_double_t, 0 |  0 );
+  if (!SWIG_Python_UnpackTuple(args, "Tensor_remove", 2, 2, swig_obj)) SWIG_fail;
+  res1 = SWIG_ConvertPtr(swig_obj[0], &argp1,SWIGTYPE_p_gum__TensorT_double_t, 0 |  0 );
   if (!SWIG_IsOK(res1)) {
-    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "Potential_remove" "', argument " "1"" of type '" "gum::Potential< double > *""'"); 
+    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "Tensor_remove" "', argument " "1"" of type '" "gum::Tensor< double > *""'"); 
   }
-  arg1 = reinterpret_cast< gum::Potential< double > * >(argp1);
+  arg1 = reinterpret_cast< gum::Tensor< double > * >(argp1);
   res2 = SWIG_ConvertPtr(swig_obj[1], &argp2, SWIGTYPE_p_gum__DiscreteVariable,  0  | 0);
   if (!SWIG_IsOK(res2)) {
-    SWIG_exception_fail(SWIG_ArgError(res2), "in method '" "Potential_remove" "', argument " "2"" of type '" "gum::DiscreteVariable const &""'"); 
+    SWIG_exception_fail(SWIG_ArgError(res2), "in method '" "Tensor_remove" "', argument " "2"" of type '" "gum::DiscreteVariable const &""'"); 
   }
   if (!argp2) {
-    SWIG_exception_fail(SWIG_NullReferenceError, "invalid null reference " "in method '" "Potential_remove" "', argument " "2"" of type '" "gum::DiscreteVariable const &""'"); 
+    SWIG_exception_fail(SWIG_NullReferenceError, "invalid null reference " "in method '" "Tensor_remove" "', argument " "2"" of type '" "gum::DiscreteVariable const &""'"); 
   }
   arg2 = reinterpret_cast< gum::DiscreteVariable * >(argp2);
   {
     try {
-      gum_Potential_Sl_double_Sg__remove(arg1,(gum::DiscreteVariable const &)*arg2);
+      gum_Tensor_Sl_double_Sg__remove(arg1,(gum::DiscreteVariable const &)*arg2);
     } catch (...) {
       SetPythonizeAgrumException();
       SWIG_fail;
@@ -59210,9 +59210,9 @@ fail:
 }
 
 
-SWIGINTERN PyObject *_wrap_Potential_add(PyObject *self, PyObject *args) {
+SWIGINTERN PyObject *_wrap_Tensor_add(PyObject *self, PyObject *args) {
   PyObject *resultobj = 0;
-  gum::Potential< double > *arg1 = 0 ;
+  gum::Tensor< double > *arg1 = 0 ;
   gum::DiscreteVariable *arg2 = 0 ;
   void *argp1 = 0 ;
   int res1 = 0 ;
@@ -59221,23 +59221,23 @@ SWIGINTERN PyObject *_wrap_Potential_add(PyObject *self, PyObject *args) {
   PyObject *swig_obj[2] ;
   
   (void)self;
-  if (!SWIG_Python_UnpackTuple(args, "Potential_add", 2, 2, swig_obj)) SWIG_fail;
-  res1 = SWIG_ConvertPtr(swig_obj[0], &argp1,SWIGTYPE_p_gum__PotentialT_double_t, 0 |  0 );
+  if (!SWIG_Python_UnpackTuple(args, "Tensor_add", 2, 2, swig_obj)) SWIG_fail;
+  res1 = SWIG_ConvertPtr(swig_obj[0], &argp1,SWIGTYPE_p_gum__TensorT_double_t, 0 |  0 );
   if (!SWIG_IsOK(res1)) {
-    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "Potential_add" "', argument " "1"" of type '" "gum::Potential< double > *""'"); 
+    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "Tensor_add" "', argument " "1"" of type '" "gum::Tensor< double > *""'"); 
   }
-  arg1 = reinterpret_cast< gum::Potential< double > * >(argp1);
+  arg1 = reinterpret_cast< gum::Tensor< double > * >(argp1);
   res2 = SWIG_ConvertPtr(swig_obj[1], &argp2, SWIGTYPE_p_gum__DiscreteVariable,  0  | 0);
   if (!SWIG_IsOK(res2)) {
-    SWIG_exception_fail(SWIG_ArgError(res2), "in method '" "Potential_add" "', argument " "2"" of type '" "gum::DiscreteVariable const &""'"); 
+    SWIG_exception_fail(SWIG_ArgError(res2), "in method '" "Tensor_add" "', argument " "2"" of type '" "gum::DiscreteVariable const &""'"); 
   }
   if (!argp2) {
-    SWIG_exception_fail(SWIG_NullReferenceError, "invalid null reference " "in method '" "Potential_add" "', argument " "2"" of type '" "gum::DiscreteVariable const &""'"); 
+    SWIG_exception_fail(SWIG_NullReferenceError, "invalid null reference " "in method '" "Tensor_add" "', argument " "2"" of type '" "gum::DiscreteVariable const &""'"); 
   }
   arg2 = reinterpret_cast< gum::DiscreteVariable * >(argp2);
   {
     try {
-      gum_Potential_Sl_double_Sg__add(arg1,(gum::DiscreteVariable const &)*arg2);
+      gum_Tensor_Sl_double_Sg__add(arg1,(gum::DiscreteVariable const &)*arg2);
     } catch (...) {
       SetPythonizeAgrumException();
       SWIG_fail;
@@ -59250,9 +59250,9 @@ fail:
 }
 
 
-SWIGINTERN PyObject *_wrap_Potential_domainSize(PyObject *self, PyObject *args) {
+SWIGINTERN PyObject *_wrap_Tensor_domainSize(PyObject *self, PyObject *args) {
   PyObject *resultobj = 0;
-  gum::Potential< double > *arg1 = 0 ;
+  gum::Tensor< double > *arg1 = 0 ;
   void *argp1 = 0 ;
   int res1 = 0 ;
   PyObject *swig_obj[1] ;
@@ -59261,14 +59261,14 @@ SWIGINTERN PyObject *_wrap_Potential_domainSize(PyObject *self, PyObject *args) 
   (void)self;
   if (!args) SWIG_fail;
   swig_obj[0] = args;
-  res1 = SWIG_ConvertPtr(swig_obj[0], &argp1,SWIGTYPE_p_gum__PotentialT_double_t, 0 |  0 );
+  res1 = SWIG_ConvertPtr(swig_obj[0], &argp1,SWIGTYPE_p_gum__TensorT_double_t, 0 |  0 );
   if (!SWIG_IsOK(res1)) {
-    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "Potential_domainSize" "', argument " "1"" of type '" "gum::Potential< double > *""'"); 
+    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "Tensor_domainSize" "', argument " "1"" of type '" "gum::Tensor< double > *""'"); 
   }
-  arg1 = reinterpret_cast< gum::Potential< double > * >(argp1);
+  arg1 = reinterpret_cast< gum::Tensor< double > * >(argp1);
   {
     try {
-      result = gum_Potential_Sl_double_Sg__domainSize(arg1);
+      result = gum_Tensor_Sl_double_Sg__domainSize(arg1);
     } catch (...) {
       SetPythonizeAgrumException();
       SWIG_fail;
@@ -59281,23 +59281,23 @@ fail:
 }
 
 
-SWIGINTERN PyObject *_wrap_Potential_nbrDim__SWIG_1(PyObject *self, Py_ssize_t nobjs, PyObject **swig_obj) {
+SWIGINTERN PyObject *_wrap_Tensor_nbrDim__SWIG_1(PyObject *self, Py_ssize_t nobjs, PyObject **swig_obj) {
   PyObject *resultobj = 0;
-  gum::Potential< double > *arg1 = 0 ;
+  gum::Tensor< double > *arg1 = 0 ;
   void *argp1 = 0 ;
   int res1 = 0 ;
   gum::Size result;
   
   (void)self;
   if ((nobjs < 1) || (nobjs > 1)) SWIG_fail;
-  res1 = SWIG_ConvertPtr(swig_obj[0], &argp1,SWIGTYPE_p_gum__PotentialT_double_t, 0 |  0 );
+  res1 = SWIG_ConvertPtr(swig_obj[0], &argp1,SWIGTYPE_p_gum__TensorT_double_t, 0 |  0 );
   if (!SWIG_IsOK(res1)) {
-    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "Potential_nbrDim" "', argument " "1"" of type '" "gum::Potential< double > *""'"); 
+    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "Tensor_nbrDim" "', argument " "1"" of type '" "gum::Tensor< double > *""'"); 
   }
-  arg1 = reinterpret_cast< gum::Potential< double > * >(argp1);
+  arg1 = reinterpret_cast< gum::Tensor< double > * >(argp1);
   {
     try {
-      result = gum_Potential_Sl_double_Sg__nbrDim__SWIG_1(arg1);
+      result = gum_Tensor_Sl_double_Sg__nbrDim__SWIG_1(arg1);
     } catch (...) {
       SetPythonizeAgrumException();
       SWIG_fail;
@@ -59310,42 +59310,42 @@ fail:
 }
 
 
-SWIGINTERN PyObject *_wrap_Potential_nbrDim(PyObject *self, PyObject *args) {
+SWIGINTERN PyObject *_wrap_Tensor_nbrDim(PyObject *self, PyObject *args) {
   Py_ssize_t argc;
   PyObject *argv[2] = {
     0
   };
   
-  if (!(argc = SWIG_Python_UnpackTuple(args, "Potential_nbrDim", 0, 1, argv))) SWIG_fail;
+  if (!(argc = SWIG_Python_UnpackTuple(args, "Tensor_nbrDim", 0, 1, argv))) SWIG_fail;
   --argc;
   if (argc == 1) {
-    PyObject *retobj = _wrap_Potential_nbrDim__SWIG_1(self, argc, argv);
+    PyObject *retobj = _wrap_Tensor_nbrDim__SWIG_1(self, argc, argv);
     if (!SWIG_Python_TypeErrorOccurred(retobj)) return retobj;
     SWIG_fail;
   }
   if (argc == 1) {
-    PyObject *retobj = _wrap_Potential_nbrDim__SWIG_0(self, argc, argv);
+    PyObject *retobj = _wrap_Tensor_nbrDim__SWIG_0(self, argc, argv);
     if (!SWIG_Python_TypeErrorOccurred(retobj)) return retobj;
     SWIG_fail;
   }
   
 fail:
-  SWIG_Python_RaiseOrModifyTypeError("Wrong number or type of arguments for overloaded function 'Potential_nbrDim'.\n"
+  SWIG_Python_RaiseOrModifyTypeError("Wrong number or type of arguments for overloaded function 'Tensor_nbrDim'.\n"
     "  Possible C/C++ prototypes are:\n"
-    "    gum::Potential< double >::nbrDim() const\n"
-    "    gum::Potential< double >::nbrDim()\n");
+    "    gum::Tensor< double >::nbrDim() const\n"
+    "    gum::Tensor< double >::nbrDim()\n");
   return 0;
 }
 
 
-SWIGINTERN PyObject *Potential_swigregister(PyObject *SWIGUNUSEDPARM(self), PyObject *args) {
+SWIGINTERN PyObject *Tensor_swigregister(PyObject *SWIGUNUSEDPARM(self), PyObject *args) {
   PyObject *obj = NULL;
   if (!SWIG_Python_UnpackTuple(args, "swigregister", 1, 1, &obj)) return NULL;
-  SWIG_TypeNewClientData(SWIGTYPE_p_gum__PotentialT_double_t, SWIG_NewClientData(obj));
+  SWIG_TypeNewClientData(SWIGTYPE_p_gum__TensorT_double_t, SWIG_NewClientData(obj));
   return SWIG_Py_Void();
 }
 
-SWIGINTERN PyObject *Potential_swiginit(PyObject *SWIGUNUSEDPARM(self), PyObject *args) {
+SWIGINTERN PyObject *Tensor_swiginit(PyObject *SWIGUNUSEDPARM(self), PyObject *args) {
   return SWIG_Python_InitShadowInstance(args);
 }
 
@@ -63892,68 +63892,68 @@ static PyMethodDef SwigMethods[] = {
 	 { "MultiDimContainer_beginMultipleChanges", _wrap_MultiDimContainer_beginMultipleChanges, METH_O, NULL},
 	 { "MultiDimContainer_endMultipleChanges", _wrap_MultiDimContainer_endMultipleChanges, METH_VARARGS, NULL},
 	 { "MultiDimContainer_swigregister", MultiDimContainer_swigregister, METH_O, NULL},
-	 { "new_Potential", _wrap_new_Potential, METH_VARARGS, NULL},
-	 { "delete_Potential", _wrap_delete_Potential, METH_O, NULL},
-	 { "Potential_newFactory", _wrap_Potential_newFactory, METH_O, "\n"
+	 { "new_Tensor", _wrap_new_Tensor, METH_VARARGS, NULL},
+	 { "delete_Tensor", _wrap_delete_Tensor, METH_O, NULL},
+	 { "Tensor_newFactory", _wrap_Tensor_newFactory, METH_O, "\n"
 		"\n"
-		"Erase the Potential content and create a new empty one.\n"
-		"\n"
-		"Returns\n"
-		"-------\n"
-		"pyAgrum.Potential\n"
-		" a reference to the new Potential\n"
-		"\n"
-		""},
-	 { "Potential_random", _wrap_Potential_random, METH_O, NULL},
-	 { "Potential_randomDistribution", _wrap_Potential_randomDistribution, METH_O, NULL},
-	 { "Potential_randomCPT", _wrap_Potential_randomCPT, METH_O, NULL},
-	 { "Potential_noising", _wrap_Potential_noising, METH_VARARGS, NULL},
-	 { "Potential_isNonZeroMap", _wrap_Potential_isNonZeroMap, METH_O, "\n"
+		"Erase the Tensor content and create a new empty one.\n"
 		"\n"
 		"Returns\n"
 		"-------\n"
-		"pyAgrum.Potential\n"
-		"  a boolean-like potential using the predicate `isNonZero`.\n"
+		"pyAgrum.Tensor\n"
+		" a reference to the new Tensor\n"
 		"\n"
 		""},
-	 { "Potential_sum", _wrap_Potential_sum, METH_O, "\n"
+	 { "Tensor_random", _wrap_Tensor_random, METH_O, NULL},
+	 { "Tensor_randomDistribution", _wrap_Tensor_randomDistribution, METH_O, NULL},
+	 { "Tensor_randomCPT", _wrap_Tensor_randomCPT, METH_O, NULL},
+	 { "Tensor_noising", _wrap_Tensor_noising, METH_VARARGS, NULL},
+	 { "Tensor_isNonZeroMap", _wrap_Tensor_isNonZeroMap, METH_O, "\n"
+		"\n"
+		"Returns\n"
+		"-------\n"
+		"pyAgrum.Tensor\n"
+		"  a boolean-like tensor using the predicate `isNonZero`.\n"
+		"\n"
+		""},
+	 { "Tensor_sum", _wrap_Tensor_sum, METH_O, "\n"
 		"\n"
 		"Returns\n"
 		"-------\n"
 		"float :\n"
-		"  the sum of all elements in the Potential\n"
+		"  the sum of all elements in the Tensor\n"
 		"\n"
 		""},
-	 { "Potential_product", _wrap_Potential_product, METH_O, "\n"
+	 { "Tensor_product", _wrap_Tensor_product, METH_O, "\n"
 		"\n"
 		"Returns\n"
 		"-------\n"
 		"float\n"
-		"  the product of all elements in the Potential\n"
+		"  the product of all elements in the Tensor\n"
 		"\n"
 		""},
-	 { "Potential_max", _wrap_Potential_max, METH_O, "\n"
+	 { "Tensor_max", _wrap_Tensor_max, METH_O, "\n"
 		"\n"
 		"Returns\n"
 		"-------\n"
 		"float\n"
-		"  the maximum of all elements in the Potential\n"
+		"  the maximum of all elements in the Tensor\n"
 		"\n"
 		""},
-	 { "Potential_min", _wrap_Potential_min, METH_O, "\n"
+	 { "Tensor_min", _wrap_Tensor_min, METH_O, "\n"
 		"\n"
 		"Returns\n"
 		"-------\n"
 		"float\n"
-		"  the min of all elements in the Potential\n"
+		"  the min of all elements in the Tensor\n"
 		"\n"
 		""},
-	 { "Potential_maxNonOne", _wrap_Potential_maxNonOne, METH_O, "\n"
+	 { "Tensor_maxNonOne", _wrap_Tensor_maxNonOne, METH_O, "\n"
 		"\n"
 		"Returns\n"
 		"-------\n"
 		"float\n"
-		"  the maximum of non one elements in the Potential\n"
+		"  the maximum of non one elements in the Tensor\n"
 		"\n"
 		"Raises\n"
 		"------\n"
@@ -63961,12 +63961,12 @@ static PyMethodDef SwigMethods[] = {
 		"  If all value == 1.0\n"
 		"\n"
 		""},
-	 { "Potential_minNonZero", _wrap_Potential_minNonZero, METH_O, "\n"
+	 { "Tensor_minNonZero", _wrap_Tensor_minNonZero, METH_O, "\n"
 		"\n"
 		"Returns\n"
 		"-------\n"
 		"float\n"
-		"  the min of non zero elements in the Potential\n"
+		"  the min of non zero elements in the Tensor\n"
 		"\n"
 		"Raises\n"
 		"------\n"
@@ -63974,18 +63974,18 @@ static PyMethodDef SwigMethods[] = {
 		"  If all value == 0.0\n"
 		"\n"
 		""},
-	 { "Potential_findAll", _wrap_Potential_findAll, METH_VARARGS, NULL},
-	 { "Potential_entropy", _wrap_Potential_entropy, METH_O, "\n"
+	 { "Tensor_findAll", _wrap_Tensor_findAll, METH_VARARGS, NULL},
+	 { "Tensor_entropy", _wrap_Tensor_entropy, METH_O, "\n"
 		"\n"
 		"Returns\n"
 		"-------\n"
 		"float\n"
-		"  the entropy of the potential\n"
+		"  the entropy of the tensor\n"
 		"\n"
 		""},
-	 { "Potential_reorganize", _wrap_Potential_reorganize, METH_VARARGS, "\n"
+	 { "Tensor_reorganize", _wrap_Tensor_reorganize, METH_VARARGS, "\n"
 		"\n"
-		"Create a new Potential with another order.\n"
+		"Create a new Tensor with another order.\n"
 		"\n"
 		"Returns\n"
 		"-------\n"
@@ -63994,11 +63994,11 @@ static PyMethodDef SwigMethods[] = {
 		"\n"
 		"Returns\n"
 		"-------\n"
-		"pyAgrum.Potential\n"
-		"  a reference to the modified potential\n"
+		"pyAgrum.Tensor\n"
+		"  a reference to the modified tensor\n"
 		"\n"
 		""},
-	 { "Potential_putFirst", _wrap_Potential_putFirst, METH_VARARGS, "\n"
+	 { "Tensor_putFirst", _wrap_Tensor_putFirst, METH_VARARGS, "\n"
 		"\n"
 		"Parameters\n"
 		"----------\n"
@@ -64007,39 +64007,39 @@ static PyMethodDef SwigMethods[] = {
 		"\n"
 		"Returns\n"
 		"-------\n"
-		"pyAgrum.Potential\n"
-		"  a reference to the modified potential\n"
+		"pyAgrum.Tensor\n"
+		"  a reference to the modified tensor\n"
 		"\n"
 		"Raises\n"
 		"------\n"
 		"pyAgrum.InvalidArgument\n"
-		"  If the var is not in the potential\n"
+		"  If the var is not in the tensor\n"
 		"\n"
 		""},
-	 { "Potential_fillWith", _wrap_Potential_fillWith, METH_VARARGS, "\n"
+	 { "Tensor_fillWith", _wrap_Tensor_fillWith, METH_VARARGS, "\n"
 		"\n"
-		"Automatically fills the potential with v.\n"
+		"Automatically fills the tensor with v.\n"
 		"\n"
 		"Parameters\n"
 		"----------\n"
-		"v : number or list of values or pyAgrum.Potential\n"
-		"    a value or a list/pyAgrum.Potential containing the values to fill the Potential with.\n"
+		"v : number or list of values or pyAgrum.Tensor\n"
+		"    a value or a list/pyAgrum.Tensor containing the values to fill the Tensor with.\n"
 		"\n"
 		"mapping : list|tuple|dict\n"
 		"\n"
 		"Warning\n"
 		"-------\n"
-		"    - if `v` is a list, the size of the list must be the size of the potential\n"
+		"    - if `v` is a list, the size of the list must be the size of the tensor\n"
 		"\n"
-		"    - if `v` is a ref:pyAgrum.Potential, it must contain variables with exactly the same names and labels but not necessarily the same variables. If\n"
+		"    - if `v` is a ref:pyAgrum.Tensor, it must contain variables with exactly the same names and labels but not necessarily the same variables. If\n"
 		"\n"
-		"    - If the second argument `mapping` is given, `mapping` explains how to map the variables of the potential source to the variables of the potential destination.\n"
+		"    - If the second argument `mapping` is given, `mapping` explains how to map the variables of the tensor source to the variables of the tensor destination.\n"
 		"\n"
 		"    - If `mapping` is a sequence, the order follows the same order as `destination.names`. If `mapping` is a dict, the keys are the names in the destination and the values are the names in the source.\n"
 		"\n"
 		"Returns\n"
 		"-------\n"
-		"pyAgrum.Potential\n"
+		"pyAgrum.Tensor\n"
 		"      a reference to the modified potentia\n"
 		"\n"
 		"Raises\n"
@@ -64050,53 +64050,53 @@ static PyMethodDef SwigMethods[] = {
 		"  If anything wrong with the arguments.\n"
 		"\n"
 		""},
-	 { "Potential_abs", _wrap_Potential_abs, METH_O, "\n"
+	 { "Tensor_abs", _wrap_Tensor_abs, METH_O, "\n"
 		"\n"
 		"Apply abs on every element of the container\n"
 		"\n"
 		"Returns\n"
 		"-------\n"
-		"pyAgrum.Potential\n"
-		"    a reference to the modified potential.\n"
+		"pyAgrum.Tensor\n"
+		"    a reference to the modified tensor.\n"
 		"\n"
 		""},
-	 { "Potential_sq", _wrap_Potential_sq, METH_O, "\n"
+	 { "Tensor_sq", _wrap_Tensor_sq, METH_O, "\n"
 		"\n"
-		"Square all the values in the Potential\n"
+		"Square all the values in the Tensor\n"
 		"\n"
 		""},
-	 { "Potential_log2", _wrap_Potential_log2, METH_O, "\n"
+	 { "Tensor_log2", _wrap_Tensor_log2, METH_O, "\n"
 		"\n"
-		"log2 all the values in the Potential\n"
+		"log2 all the values in the Tensor\n"
 		"\n"
 		"Warning\n"
 		"-------\n"
-		"When the Potential contains 0 or negative values, no exception are raised but `-inf` or `nan` values are assigned.\n"
+		"When the Tensor contains 0 or negative values, no exception are raised but `-inf` or `nan` values are assigned.\n"
 		"\n"
 		""},
-	 { "Potential_sgn", _wrap_Potential_sgn, METH_O, NULL},
-	 { "Potential_new_abs", _wrap_Potential_new_abs, METH_O, NULL},
-	 { "Potential_new_sq", _wrap_Potential_new_sq, METH_O, NULL},
-	 { "Potential_new_log2", _wrap_Potential_new_log2, METH_O, NULL},
-	 { "Potential_new_sgn", _wrap_Potential_new_sgn, METH_O, NULL},
-	 { "Potential_normalize", _wrap_Potential_normalize, METH_O, "\n"
+	 { "Tensor_sgn", _wrap_Tensor_sgn, METH_O, NULL},
+	 { "Tensor_new_abs", _wrap_Tensor_new_abs, METH_O, NULL},
+	 { "Tensor_new_sq", _wrap_Tensor_new_sq, METH_O, NULL},
+	 { "Tensor_new_log2", _wrap_Tensor_new_log2, METH_O, NULL},
+	 { "Tensor_new_sgn", _wrap_Tensor_new_sgn, METH_O, NULL},
+	 { "Tensor_normalize", _wrap_Tensor_normalize, METH_O, "\n"
 		"\n"
-		"Normalize the Potential (do nothing if sum is 0)\n"
+		"Normalize the Tensor (do nothing if sum is 0)\n"
 		"\n"
 		"Returns\n"
 		"-------\n"
-		"pyAgrum.Potential\n"
-		"  a reference to the normalized Potential\n"
+		"pyAgrum.Tensor\n"
+		"  a reference to the normalized Tensor\n"
 		"\n"
 		""},
-	 { "Potential_KL", _wrap_Potential_KL, METH_VARARGS, "\n"
+	 { "Tensor_KL", _wrap_Tensor_KL, METH_VARARGS, "\n"
 		"\n"
-		"Check the compatibility and compute the Kullback-Leibler divergence between the potential and.\n"
+		"Check the compatibility and compute the Kullback-Leibler divergence between the tensor and.\n"
 		"\n"
 		"Parameters\n"
 		"----------\n"
-		"p : pyAgrum.Potential\n"
-		"  the potential from which we want to calculate the divergence.\n"
+		"p : pyAgrum.Tensor\n"
+		"  the tensor from which we want to calculate the divergence.\n"
 		"\n"
 		"Returns\n"
 		"-------\n"
@@ -64106,19 +64106,19 @@ static PyMethodDef SwigMethods[] = {
 		"Raises\n"
 		"------\n"
 		"  pyAgrum.InvalidArgument\n"
-		"    If p is not compatible with the potential (dimension, variables)\n"
+		"    If p is not compatible with the tensor (dimension, variables)\n"
 		"  pyAgrum.FatalError\n"
-		"    If a zero is found in p or the potential and not in the other.\n"
+		"    If a zero is found in p or the tensor and not in the other.\n"
 		"\n"
 		""},
-	 { "Potential_normalizeAsCPT", _wrap_Potential_normalizeAsCPT, METH_VARARGS, "\n"
+	 { "Tensor_normalizeAsCPT", _wrap_Tensor_normalizeAsCPT, METH_VARARGS, "\n"
 		"\n"
-		"Normalize the Potential as a CPT\n"
+		"Normalize the Tensor as a CPT\n"
 		"\n"
 		"Returns\n"
 		"-------\n"
-		"pyAgrum.Potential\n"
-		"  a reference to the normalized Potential\n"
+		"pyAgrum.Tensor\n"
+		"  a reference to the normalized Tensor\n"
 		"\n"
 		"Raises\n"
 		"------\n"
@@ -64126,9 +64126,9 @@ static PyMethodDef SwigMethods[] = {
 		"  If some distribution sums to 0\n"
 		"\n"
 		""},
-	 { "Potential_scale", _wrap_Potential_scale, METH_VARARGS, "\n"
+	 { "Tensor_scale", _wrap_Tensor_scale, METH_VARARGS, "\n"
 		"\n"
-		"Create a new potential multiplied by v.\n"
+		"Create a new tensor multiplied by v.\n"
 		"\n"
 		"Parameters\n"
 		"----------\n"
@@ -64137,12 +64137,12 @@ static PyMethodDef SwigMethods[] = {
 		"\n"
 		"Returns\n"
 		"-------\n"
-		"  a reference to the modified potential\n"
+		"  a reference to the modified tensor\n"
 		"\n"
 		""},
-	 { "Potential_translate", _wrap_Potential_translate, METH_VARARGS, "\n"
+	 { "Tensor_translate", _wrap_Tensor_translate, METH_VARARGS, "\n"
 		"\n"
-		"Create a new potential added with v.\n"
+		"Create a new tensor added with v.\n"
 		"\n"
 		"Parameters\n"
 		"----------\n"
@@ -64151,13 +64151,13 @@ static PyMethodDef SwigMethods[] = {
 		"\n"
 		"Returns\n"
 		"-------\n"
-		"  a reference to the modified potential\n"
+		"  a reference to the modified tensor\n"
 		"\n"
 		""},
-	 { "Potential_inverse", _wrap_Potential_inverse, METH_O, NULL},
-	 { "Potential_draw", _wrap_Potential_draw, METH_O, "\n"
+	 { "Tensor_inverse", _wrap_Tensor_inverse, METH_O, NULL},
+	 { "Tensor_draw", _wrap_Tensor_draw, METH_O, "\n"
 		"\n"
-		"draw a value using the potential as a probability table.\n"
+		"draw a value using the tensor as a probability table.\n"
 		"\n"
 		"Returns\n"
 		"-------\n"
@@ -64165,35 +64165,35 @@ static PyMethodDef SwigMethods[] = {
 		"  the index of the drawn value\n"
 		"\n"
 		""},
-	 { "Potential_memoryFootprint", _wrap_Potential_memoryFootprint, METH_O, "\n"
+	 { "Tensor_memoryFootprint", _wrap_Tensor_memoryFootprint, METH_O, "\n"
 		"\n"
-		"get the size (in byte) of the Potential representation in memory\n"
+		"get the size (in byte) of the Tensor representation in memory\n"
 		"\n"
 		"Returns\n"
 		"-------\n"
 		"int\n"
-		"  the size in byte of the representation of the Potential in memory.\n"
+		"  the size in byte of the representation of the Tensor in memory.\n"
 		"\n"
 		""},
-	 { "Potential___add__", _wrap_Potential___add__, METH_VARARGS, NULL},
-	 { "Potential___sub__", _wrap_Potential___sub__, METH_VARARGS, NULL},
-	 { "Potential___mul__", _wrap_Potential___mul__, METH_VARARGS, NULL},
-	 { "Potential___truediv__", _wrap_Potential___truediv__, METH_VARARGS, NULL},
-	 { "Potential___iadd__", _wrap_Potential___iadd__, METH_VARARGS, NULL},
-	 { "Potential___imul__", _wrap_Potential___imul__, METH_VARARGS, NULL},
-	 { "Potential___isub__", _wrap_Potential___isub__, METH_VARARGS, NULL},
-	 { "Potential___itruediv__", _wrap_Potential___itruediv__, METH_VARARGS, NULL},
-	 { "Potential_isEvidence", _wrap_Potential_isEvidence, METH_O, NULL},
-	 { "Potential___or__", _wrap_Potential___or__, METH_VARARGS, NULL},
-	 { "Potential___and__", _wrap_Potential___and__, METH_VARARGS, NULL},
-	 { "Potential___invert__", _wrap_Potential___invert__, METH_O, NULL},
-	 { "Potential_evEq", _wrap_Potential_evEq, METH_VARARGS, NULL},
-	 { "Potential_evIn", _wrap_Potential_evIn, METH_VARARGS, NULL},
-	 { "Potential_evGt", _wrap_Potential_evGt, METH_VARARGS, NULL},
-	 { "Potential_evLt", _wrap_Potential_evLt, METH_VARARGS, NULL},
-	 { "Potential___repr__", _wrap_Potential___repr__, METH_O, NULL},
-	 { "Potential___str__", _wrap_Potential___str__, METH_O, NULL},
-	 { "Potential_expectedValue", _wrap_Potential_expectedValue, METH_VARARGS, "\n"
+	 { "Tensor___add__", _wrap_Tensor___add__, METH_VARARGS, NULL},
+	 { "Tensor___sub__", _wrap_Tensor___sub__, METH_VARARGS, NULL},
+	 { "Tensor___mul__", _wrap_Tensor___mul__, METH_VARARGS, NULL},
+	 { "Tensor___truediv__", _wrap_Tensor___truediv__, METH_VARARGS, NULL},
+	 { "Tensor___iadd__", _wrap_Tensor___iadd__, METH_VARARGS, NULL},
+	 { "Tensor___imul__", _wrap_Tensor___imul__, METH_VARARGS, NULL},
+	 { "Tensor___isub__", _wrap_Tensor___isub__, METH_VARARGS, NULL},
+	 { "Tensor___itruediv__", _wrap_Tensor___itruediv__, METH_VARARGS, NULL},
+	 { "Tensor_isEvidence", _wrap_Tensor_isEvidence, METH_O, NULL},
+	 { "Tensor___or__", _wrap_Tensor___or__, METH_VARARGS, NULL},
+	 { "Tensor___and__", _wrap_Tensor___and__, METH_VARARGS, NULL},
+	 { "Tensor___invert__", _wrap_Tensor___invert__, METH_O, NULL},
+	 { "Tensor_evEq", _wrap_Tensor_evEq, METH_VARARGS, NULL},
+	 { "Tensor_evIn", _wrap_Tensor_evIn, METH_VARARGS, NULL},
+	 { "Tensor_evGt", _wrap_Tensor_evGt, METH_VARARGS, NULL},
+	 { "Tensor_evLt", _wrap_Tensor_evLt, METH_VARARGS, NULL},
+	 { "Tensor___repr__", _wrap_Tensor___repr__, METH_O, NULL},
+	 { "Tensor___str__", _wrap_Tensor___str__, METH_O, NULL},
+	 { "Tensor_expectedValue", _wrap_Tensor_expectedValue, METH_VARARGS, "\n"
 		"\n"
 		"Calculate the mathematical expected value of a (joint) random variable using the given function as an argument.\n"
 		"\n"
@@ -64204,7 +64204,7 @@ static PyMethodDef SwigMethods[] = {
 		"\n"
 		"Warnings\n"
 		"--------\n"
-		"The `pyAgrum.Potential` is assumed to contain a joint distribution.\n"
+		"The `pyAgrum.Tensor` is assumed to contain a joint distribution.\n"
 		"\n"
 		"Examples\n"
 		"--------\n"
@@ -64218,9 +64218,9 @@ static PyMethodDef SwigMethods[] = {
 		"    The mathematical expected value of the random variable calculated using the given function as an argument.\n"
 		"\n"
 		""},
-	 { "Potential_extract", _wrap_Potential_extract, METH_VARARGS, "\n"
+	 { "Tensor_extract", _wrap_Tensor_extract, METH_VARARGS, "\n"
 		"\n"
-		"create a new Potential extracted from self given a partial instantiation.\n"
+		"create a new Tensor extracted from self given a partial instantiation.\n"
 		"\n"
 		"Parameters\n"
 		"----------\n"
@@ -64231,17 +64231,17 @@ static PyMethodDef SwigMethods[] = {
 		"\n"
 		"Warning\n"
 		"--------\n"
-		"    if the dictionnary contains a key that is not the name of a variable in the `pyAgrum.Potential`,\n"
-		"    this key is just not used without notification. Then `pyAgrum.Potential.extract` concerns\n"
-		"    only the variables that  both are in the Potential and in the dictionnary.\n"
+		"    if the dictionnary contains a key that is not the name of a variable in the `pyAgrum.Tensor`,\n"
+		"    this key is just not used without notification. Then `pyAgrum.Tensor.extract` concerns\n"
+		"    only the variables that  both are in the Tensor and in the dictionnary.\n"
 		"\n"
 		"Returns\n"
 		"-------\n"
-		"pyAgrum.Potential\n"
-		"  the new Potential\n"
+		"pyAgrum.Tensor\n"
+		"  the new Tensor\n"
 		"\n"
 		""},
-	 { "Potential_sumOut", _wrap_Potential_sumOut, METH_VARARGS, "\n"
+	 { "Tensor_sumOut", _wrap_Tensor_sumOut, METH_VARARGS, "\n"
 		"\n"
 		"Projection using sum as operation.\n"
 		"\n"
@@ -64252,16 +64252,16 @@ static PyMethodDef SwigMethods[] = {
 		"\n"
 		"Returns\n"
 		"-------\n"
-		"pyAgrum.Potential\n"
-		"  the projected Potential\n"
+		"pyAgrum.Tensor\n"
+		"  the projected Tensor\n"
 		"\n"
 		"Raises\n"
 		"------\n"
 		"pyAgrum.InvalidArgument\n"
-		"  If varnames contains only one variable that does not exist in the Potential\n"
+		"  If varnames contains only one variable that does not exist in the Tensor\n"
 		"\n"
 		""},
-	 { "Potential_prodOut", _wrap_Potential_prodOut, METH_VARARGS, "\n"
+	 { "Tensor_prodOut", _wrap_Tensor_prodOut, METH_VARARGS, "\n"
 		"\n"
 		"Projection using multiplication as operation.\n"
 		"\n"
@@ -64272,16 +64272,16 @@ static PyMethodDef SwigMethods[] = {
 		"\n"
 		"Returns\n"
 		"-------\n"
-		"pyAgrum.Potential\n"
-		"  the projected Potential\n"
+		"pyAgrum.Tensor\n"
+		"  the projected Tensor\n"
 		"\n"
 		"Raises\n"
 		"------\n"
 		"pyAgrum.InvalidArgument\n"
-		"  If varnames contains only one variable that does not exist in the Potential\n"
+		"  If varnames contains only one variable that does not exist in the Tensor\n"
 		"\n"
 		""},
-	 { "Potential_maxOut", _wrap_Potential_maxOut, METH_VARARGS, "\n"
+	 { "Tensor_maxOut", _wrap_Tensor_maxOut, METH_VARARGS, "\n"
 		"\n"
 		"Projection using `max` as operation.\n"
 		"\n"
@@ -64292,16 +64292,16 @@ static PyMethodDef SwigMethods[] = {
 		"\n"
 		"Returns\n"
 		"-------\n"
-		"pyAgrum.Potential\n"
-		"  the projected Potential\n"
+		"pyAgrum.Tensor\n"
+		"  the projected Tensor\n"
 		"\n"
 		"Raises\n"
 		"------\n"
 		"pyAgrum.InvalidArgument\n"
-		"  If varnames contains only one variable that does not exist in the Potential\n"
+		"  If varnames contains only one variable that does not exist in the Tensor\n"
 		"\n"
 		""},
-	 { "Potential_minOut", _wrap_Potential_minOut, METH_VARARGS, "\n"
+	 { "Tensor_minOut", _wrap_Tensor_minOut, METH_VARARGS, "\n"
 		"\n"
 		"Projection using `min` as operation.\n"
 		"\n"
@@ -64312,15 +64312,15 @@ static PyMethodDef SwigMethods[] = {
 		"\n"
 		"Returns\n"
 		"-------\n"
-		"pyAgrum.Potential\n"
-		"  the projected Potential\n"
+		"pyAgrum.Tensor\n"
+		"  the projected Tensor\n"
 		"\n"
 		"Warnings\n"
 		"--------\n"
-		"InvalidArgument raised if varnames contains only one variable that does not exist in the Potential\n"
+		"InvalidArgument raised if varnames contains only one variable that does not exist in the Tensor\n"
 		"\n"
 		""},
-	 { "Potential_sumIn", _wrap_Potential_sumIn, METH_VARARGS, "\n"
+	 { "Tensor_sumIn", _wrap_Tensor_sumIn, METH_VARARGS, "\n"
 		"\n"
 		"Projection using sum as operation.\n"
 		"\n"
@@ -64331,11 +64331,11 @@ static PyMethodDef SwigMethods[] = {
 		"\n"
 		"Returns\n"
 		"-------\n"
-		"pyAgrum.Potential\n"
-		"  the projected Potential\n"
+		"pyAgrum.Tensor\n"
+		"  the projected Tensor\n"
 		"\n"
 		""},
-	 { "Potential_prodIn", _wrap_Potential_prodIn, METH_VARARGS, "\n"
+	 { "Tensor_prodIn", _wrap_Tensor_prodIn, METH_VARARGS, "\n"
 		"\n"
 		"Projection using multiplication as operation.\n"
 		"\n"
@@ -64346,11 +64346,11 @@ static PyMethodDef SwigMethods[] = {
 		"\n"
 		"Returns\n"
 		"-------\n"
-		"pyAgrum.Potential\n"
-		"  the projected Potential\n"
+		"pyAgrum.Tensor\n"
+		"  the projected Tensor\n"
 		"\n"
 		""},
-	 { "Potential_maxIn", _wrap_Potential_maxIn, METH_VARARGS, "\n"
+	 { "Tensor_maxIn", _wrap_Tensor_maxIn, METH_VARARGS, "\n"
 		"\n"
 		"Projection using `max` as operation.\n"
 		"\n"
@@ -64361,11 +64361,11 @@ static PyMethodDef SwigMethods[] = {
 		"\n"
 		"Returns\n"
 		"-------\n"
-		"pyAgrum.Potential\n"
-		"  the projected Potential\n"
+		"pyAgrum.Tensor\n"
+		"  the projected Tensor\n"
 		"\n"
 		""},
-	 { "Potential_minIn", _wrap_Potential_minIn, METH_VARARGS, "\n"
+	 { "Tensor_minIn", _wrap_Tensor_minIn, METH_VARARGS, "\n"
 		"\n"
 		"Projection using `min` as operation.\n"
 		"\n"
@@ -64376,29 +64376,29 @@ static PyMethodDef SwigMethods[] = {
 		"\n"
 		"Returns\n"
 		"-------\n"
-		"pyAgrum.Potential\n"
-		"  the projected Potential\n"
+		"pyAgrum.Tensor\n"
+		"  the projected Tensor\n"
 		"\n"
 		""},
-	 { "Potential_argmin", _wrap_Potential_argmin, METH_O, "\n"
+	 { "Tensor_argmin", _wrap_Tensor_argmin, METH_O, "\n"
 		"\n"
 		"Returns\n"
 		"-------\n"
 		"Tuple[Dict[str,int],float]\n"
-		"  the list of positions of the min and the min of all elements in the Potential\n"
+		"  the list of positions of the min and the min of all elements in the Tensor\n"
 		"\n"
 		""},
-	 { "Potential_argmax", _wrap_Potential_argmax, METH_O, "\n"
+	 { "Tensor_argmax", _wrap_Tensor_argmax, METH_O, "\n"
 		"\n"
 		"Returns\n"
 		"-------\n"
 		"Tuple[Dict[str,int],float]\n"
-		"  the list of positions of the max and the max of all elements in the Potential\n"
+		"  the list of positions of the max and the max of all elements in the Tensor\n"
 		"\n"
 		""},
-	 { "Potential___eq__", _wrap_Potential___eq__, METH_VARARGS, NULL},
-	 { "Potential___ne__", _wrap_Potential___ne__, METH_VARARGS, NULL},
-	 { "Potential_get", _wrap_Potential_get, METH_VARARGS, "\n"
+	 { "Tensor___eq__", _wrap_Tensor___eq__, METH_VARARGS, NULL},
+	 { "Tensor___ne__", _wrap_Tensor___ne__, METH_VARARGS, NULL},
+	 { "Tensor_get", _wrap_Tensor_get, METH_VARARGS, "\n"
 		"\n"
 		"Parameters\n"
 		"----------\n"
@@ -64408,10 +64408,10 @@ static PyMethodDef SwigMethods[] = {
 		"Returns\n"
 		"-------\n"
 		"float\n"
-		"  the value in the Potential at the position given by the instantiation\n"
+		"  the value in the Tensor at the position given by the instantiation\n"
 		"\n"
 		""},
-	 { "Potential_set", _wrap_Potential_set, METH_VARARGS, "\n"
+	 { "Tensor_set", _wrap_Tensor_set, METH_VARARGS, "\n"
 		"\n"
 		"Change the value pointed by i\n"
 		"\n"
@@ -64423,15 +64423,15 @@ static PyMethodDef SwigMethods[] = {
 		"  The new value of the Instantiation\n"
 		"\n"
 		""},
-	 { "Potential_empty", _wrap_Potential_empty, METH_O, "\n"
+	 { "Tensor_empty", _wrap_Tensor_empty, METH_O, "\n"
 		"\n"
 		"Returns\n"
 		"-------\n"
 		"bool\n"
-		"    Returns true if no variable is in the potential.\n"
+		"    Returns true if no variable is in the tensor.\n"
 		"\n"
 		""},
-	 { "Potential_pos", _wrap_Potential_pos, METH_VARARGS, "\n"
+	 { "Tensor_pos", _wrap_Tensor_pos, METH_VARARGS, "\n"
 		"\n"
 		"Parameters\n"
 		"----------\n"
@@ -64448,20 +64448,20 @@ static PyMethodDef SwigMethods[] = {
 		"  If v is not in this multidimensional matrix.\n"
 		"\n"
 		""},
-	 { "Potential_contains", _wrap_Potential_contains, METH_VARARGS, "\n"
+	 { "Tensor_contains", _wrap_Tensor_contains, METH_VARARGS, "\n"
 		"\n"
 		"Parameters\n"
 		"----------\n"
-		"v : pyAgrum.Potential\n"
+		"v : pyAgrum.Tensor\n"
 		"    a DiscreteVariable.\n"
 		"\n"
 		"Returns\n"
 		"-------\n"
 		"bool\n"
-		"    True if the var is in the potential\n"
+		"    True if the var is in the tensor\n"
 		"\n"
 		""},
-	 { "Potential_variable", _wrap_Potential_variable, METH_VARARGS, "\n"
+	 { "Tensor_variable", _wrap_Tensor_variable, METH_VARARGS, "\n"
 		"\n"
 		"Parameters\n"
 		"----------\n"
@@ -64478,7 +64478,7 @@ static PyMethodDef SwigMethods[] = {
 		"  If i does not reference a variable in this multidimensional matrix.\n"
 		"\n"
 		""},
-	 { "Potential_remove", _wrap_Potential_remove, METH_VARARGS, "\n"
+	 { "Tensor_remove", _wrap_Tensor_remove, METH_VARARGS, "\n"
 		"\n"
 		"Parameters\n"
 		"----------\n"
@@ -64487,17 +64487,17 @@ static PyMethodDef SwigMethods[] = {
 		"\n"
 		"Returns\n"
 		"-------\n"
-		"pyAgrum.Potential\n"
-		"  a reference to the modified potential\n"
+		"pyAgrum.Tensor\n"
+		"  a reference to the modified tensor\n"
 		"\n"
 		"Warnings\n"
 		"--------\n"
-		"IndexError raised if the var is not in the potential\n"
+		"IndexError raised if the var is not in the tensor\n"
 		"\n"
 		""},
-	 { "Potential_add", _wrap_Potential_add, METH_VARARGS, "\n"
+	 { "Tensor_add", _wrap_Tensor_add, METH_VARARGS, "\n"
 		"\n"
-		"Add a discrete variable to the potential.\n"
+		"Add a discrete variable to the tensor.\n"
 		"\n"
 		"Parameters\n"
 		"----------\n"
@@ -64507,18 +64507,18 @@ static PyMethodDef SwigMethods[] = {
 		"Raises\n"
 		"------\n"
 		"DuplicateElement\n"
-		"  If the variable is already in this Potential.\n"
+		"  If the variable is already in this Tensor.\n"
 		"InvalidArgument\n"
 		"  If the variable is empty.\n"
 		"\n"
 		"Returns\n"
 		"-------\n"
-		"pyAgrum.Potential\n"
-		"    a reference to the modified potential.\n"
+		"pyAgrum.Tensor\n"
+		"    a reference to the modified tensor.\n"
 		"\n"
 		""},
-	 { "Potential_domainSize", _wrap_Potential_domainSize, METH_O, NULL},
-	 { "Potential_nbrDim", _wrap_Potential_nbrDim, METH_VARARGS, "\n"
+	 { "Tensor_domainSize", _wrap_Tensor_domainSize, METH_O, NULL},
+	 { "Tensor_nbrDim", _wrap_Tensor_nbrDim, METH_VARARGS, "\n"
 		"\n"
 		"Returns\n"
 		"-------\n"
@@ -64526,8 +64526,8 @@ static PyMethodDef SwigMethods[] = {
 		"  the number of vars in the multidimensional container.\n"
 		"\n"
 		""},
-	 { "Potential_swigregister", Potential_swigregister, METH_O, NULL},
-	 { "Potential_swiginit", Potential_swiginit, METH_VARARGS, NULL},
+	 { "Tensor_swigregister", Tensor_swigregister, METH_O, NULL},
+	 { "Tensor_swiginit", Tensor_swiginit, METH_VARARGS, NULL},
 	 { "new_PairMPE", _wrap_new_PairMPE, METH_VARARGS, NULL},
 	 { "PairMPE_first_set", _wrap_PairMPE_first_set, METH_VARARGS, NULL},
 	 { "PairMPE_first_get", _wrap_PairMPE_first_get, METH_O, NULL},
@@ -64864,8 +64864,8 @@ static void *_p_gum__MultiDimImplementationT_double_tTo_p_gum__MultiDimAdressabl
 static void *_p_gum__MultiDimWithOffsetT_double_tTo_p_gum__MultiDimAdressable(void *x, int *SWIGUNUSEDPARM(newmemory)) {
     return (void *)((gum::MultiDimAdressable *) (gum::MultiDimContainer< double > *)(gum::MultiDimImplementation< double > *) ((gum::MultiDimWithOffset< double > *) x));
 }
-static void *_p_gum__PotentialT_double_tTo_p_gum__MultiDimAdressable(void *x, int *SWIGUNUSEDPARM(newmemory)) {
-    return (void *)((gum::MultiDimAdressable *) (gum::MultiDimContainer< double > *)(gum::MultiDimDecorator< double > *) ((gum::Potential< double > *) x));
+static void *_p_gum__TensorT_double_tTo_p_gum__MultiDimAdressable(void *x, int *SWIGUNUSEDPARM(newmemory)) {
+    return (void *)((gum::MultiDimAdressable *) (gum::MultiDimContainer< double > *)(gum::MultiDimDecorator< double > *) ((gum::Tensor< double > *) x));
 }
 static void *_p_gum__MultiDimArrayT_double_tTo_p_gum__MultiDimContainerT_double_t(void *x, int *SWIGUNUSEDPARM(newmemory)) {
     return (void *)((gum::MultiDimContainer< double > *) (gum::MultiDimImplementation< double > *)(gum::MultiDimWithOffset< double > *) ((gum::MultiDimArray< double > *) x));
@@ -64879,11 +64879,11 @@ static void *_p_gum__MultiDimImplementationT_double_tTo_p_gum__MultiDimContainer
 static void *_p_gum__MultiDimWithOffsetT_double_tTo_p_gum__MultiDimContainerT_double_t(void *x, int *SWIGUNUSEDPARM(newmemory)) {
     return (void *)((gum::MultiDimContainer< double > *) (gum::MultiDimImplementation< double > *) ((gum::MultiDimWithOffset< double > *) x));
 }
-static void *_p_gum__PotentialT_double_tTo_p_gum__MultiDimContainerT_double_t(void *x, int *SWIGUNUSEDPARM(newmemory)) {
-    return (void *)((gum::MultiDimContainer< double > *) (gum::MultiDimDecorator< double > *) ((gum::Potential< double > *) x));
+static void *_p_gum__TensorT_double_tTo_p_gum__MultiDimContainerT_double_t(void *x, int *SWIGUNUSEDPARM(newmemory)) {
+    return (void *)((gum::MultiDimContainer< double > *) (gum::MultiDimDecorator< double > *) ((gum::Tensor< double > *) x));
 }
-static void *_p_gum__PotentialT_double_tTo_p_gum__MultiDimDecoratorT_double_t(void *x, int *SWIGUNUSEDPARM(newmemory)) {
-    return (void *)((gum::MultiDimDecorator< double > *)  ((gum::Potential< double > *) x));
+static void *_p_gum__TensorT_double_tTo_p_gum__MultiDimDecoratorT_double_t(void *x, int *SWIGUNUSEDPARM(newmemory)) {
+    return (void *)((gum::MultiDimDecorator< double > *)  ((gum::Tensor< double > *) x));
 }
 static void *_p_gum__MultiDimArrayT_double_tTo_p_gum__MultiDimImplementationT_double_t(void *x, int *SWIGUNUSEDPARM(newmemory)) {
     return (void *)((gum::MultiDimImplementation< double > *) (gum::MultiDimWithOffset< double > *) ((gum::MultiDimArray< double > *) x));
@@ -64912,8 +64912,8 @@ static void *_p_gum__MultiDimImplementationT_double_tTo_p_gum__MultiDimInterface
 static void *_p_gum__MultiDimWithOffsetT_double_tTo_p_gum__MultiDimInterface(void *x, int *SWIGUNUSEDPARM(newmemory)) {
     return (void *)((gum::MultiDimInterface *) (gum::MultiDimAdressable *)(gum::MultiDimContainer< double > *)(gum::MultiDimImplementation< double > *) ((gum::MultiDimWithOffset< double > *) x));
 }
-static void *_p_gum__PotentialT_double_tTo_p_gum__MultiDimInterface(void *x, int *SWIGUNUSEDPARM(newmemory)) {
-    return (void *)((gum::MultiDimInterface *) (gum::MultiDimAdressable *)(gum::MultiDimContainer< double > *)(gum::MultiDimDecorator< double > *) ((gum::Potential< double > *) x));
+static void *_p_gum__TensorT_double_tTo_p_gum__MultiDimInterface(void *x, int *SWIGUNUSEDPARM(newmemory)) {
+    return (void *)((gum::MultiDimInterface *) (gum::MultiDimAdressable *)(gum::MultiDimContainer< double > *)(gum::MultiDimDecorator< double > *) ((gum::Tensor< double > *) x));
 }
 static void *_p_gum__MultiDimArrayT_double_tTo_p_gum__MultiDimWithOffsetT_double_t(void *x, int *SWIGUNUSEDPARM(newmemory)) {
     return (void *)((gum::MultiDimWithOffset< double > *)  ((gum::MultiDimArray< double > *) x));
@@ -65227,7 +65227,6 @@ static swig_type_info _swigt__p_gum__OutOfBounds = {"_p_gum__OutOfBounds", "gum:
 static swig_type_info _swigt__p_gum__PDAG = {"_p_gum__PDAG", "gum::PDAG *", 0, 0, (void*)0, 0};
 static swig_type_info _swigt__p_gum__PRMTypeError = {"_p_gum__PRMTypeError", "gum::PRMTypeError *", 0, 0, (void*)0, 0};
 static swig_type_info _swigt__p_gum__PossiblyIncompatibleScorePrior = {"_p_gum__PossiblyIncompatibleScorePrior", "gum::PossiblyIncompatibleScorePrior *", 0, 0, (void*)0, 0};
-static swig_type_info _swigt__p_gum__PotentialT_double_t = {"_p_gum__PotentialT_double_t", "gum::Potential< double > *", 0, 0, (void*)0, 0};
 static swig_type_info _swigt__p_gum__RangeVariable = {"_p_gum__RangeVariable", "gum::RangeVariable *", 0, 0, (void*)0, 0};
 static swig_type_info _swigt__p_gum__ScheduleMultiDimError = {"_p_gum__ScheduleMultiDimError", "gum::ScheduleMultiDimError *", 0, 0, (void*)0, 0};
 static swig_type_info _swigt__p_gum__ScheduleOperationError = {"_p_gum__ScheduleOperationError", "gum::ScheduleOperationError *", 0, 0, (void*)0, 0};
@@ -65243,6 +65242,7 @@ static swig_type_info _swigt__p_gum__SetT_std__size_t_t = {"_p_gum__SetT_std__si
 static swig_type_info _swigt__p_gum__SetT_std__size_t_t__const_iterator = {"_p_gum__SetT_std__size_t_t__const_iterator", "gum::NodeSetIterator *|gum::Set< std::size_t >::const_iterator *", 0, 0, (void*)0, 0};
 static swig_type_info _swigt__p_gum__SizeError = {"_p_gum__SizeError", "gum::SizeError *", 0, 0, (void*)0, 0};
 static swig_type_info _swigt__p_gum__SyntaxError = {"_p_gum__SyntaxError", "gum::SyntaxError *", 0, 0, (void*)0, 0};
+static swig_type_info _swigt__p_gum__TensorT_double_t = {"_p_gum__TensorT_double_t", "gum::Tensor< double > *", 0, 0, (void*)0, 0};
 static swig_type_info _swigt__p_gum__TypeError = {"_p_gum__TypeError", "gum::TypeError *", 0, 0, (void*)0, 0};
 static swig_type_info _swigt__p_gum__UGmodel = {"_p_gum__UGmodel", "gum::UGmodel *", 0, 0, (void*)0, 0};
 static swig_type_info _swigt__p_gum__UnavailableScheduleOperation = {"_p_gum__UnavailableScheduleOperation", "gum::UnavailableScheduleOperation *", 0, 0, (void*)0, 0};
@@ -65378,7 +65378,6 @@ static swig_type_info *swig_type_initial[] = {
   &_swigt__p_gum__PDAG,
   &_swigt__p_gum__PRMTypeError,
   &_swigt__p_gum__PossiblyIncompatibleScorePrior,
-  &_swigt__p_gum__PotentialT_double_t,
   &_swigt__p_gum__RangeVariable,
   &_swigt__p_gum__ScheduleMultiDimError,
   &_swigt__p_gum__ScheduleOperationError,
@@ -65394,6 +65393,7 @@ static swig_type_info *swig_type_initial[] = {
   &_swigt__p_gum__SetT_std__size_t_t__const_iterator,
   &_swigt__p_gum__SizeError,
   &_swigt__p_gum__SyntaxError,
+  &_swigt__p_gum__TensorT_double_t,
   &_swigt__p_gum__TypeError,
   &_swigt__p_gum__UGmodel,
   &_swigt__p_gum__UnavailableScheduleOperation,
@@ -65509,11 +65509,11 @@ static swig_cast_info _swigc__p_gum__MissingValueInDatabase[] = {  {&_swigt__p_g
 static swig_cast_info _swigc__p_gum__MissingVariableInDatabase[] = {  {&_swigt__p_gum__MissingVariableInDatabase, 0, 0, 0},{0, 0, 0, 0}};
 static swig_cast_info _swigc__p_gum__MixedGraph[] = {  {&_swigt__p_gum__MixedGraph, 0, 0, 0},  {&_swigt__p_gum__PDAG, _p_gum__PDAGTo_p_gum__MixedGraph, 0, 0},{0, 0, 0, 0}};
 static swig_cast_info _swigc__p_gum__MultiDimArrayT_double_t[] = {{&_swigt__p_gum__MultiDimArrayT_double_t, 0, 0, 0},{0, 0, 0, 0}};
-static swig_cast_info _swigc__p_gum__MultiDimAdressable[] = {  {&_swigt__p_gum__MultiDimAdressable, 0, 0, 0},  {&_swigt__p_gum__MultiDimArrayT_double_t, _p_gum__MultiDimArrayT_double_tTo_p_gum__MultiDimAdressable, 0, 0},  {&_swigt__p_gum__MultiDimContainerT_double_t, _p_gum__MultiDimContainerT_double_tTo_p_gum__MultiDimAdressable, 0, 0},  {&_swigt__p_gum__MultiDimDecoratorT_double_t, _p_gum__MultiDimDecoratorT_double_tTo_p_gum__MultiDimAdressable, 0, 0},  {&_swigt__p_gum__MultiDimImplementationT_double_t, _p_gum__MultiDimImplementationT_double_tTo_p_gum__MultiDimAdressable, 0, 0},  {&_swigt__p_gum__MultiDimWithOffsetT_double_t, _p_gum__MultiDimWithOffsetT_double_tTo_p_gum__MultiDimAdressable, 0, 0},  {&_swigt__p_gum__PotentialT_double_t, _p_gum__PotentialT_double_tTo_p_gum__MultiDimAdressable, 0, 0},{0, 0, 0, 0}};
-static swig_cast_info _swigc__p_gum__MultiDimContainerT_double_t[] = {  {&_swigt__p_gum__MultiDimContainerT_double_t, 0, 0, 0},  {&_swigt__p_gum__MultiDimArrayT_double_t, _p_gum__MultiDimArrayT_double_tTo_p_gum__MultiDimContainerT_double_t, 0, 0},  {&_swigt__p_gum__MultiDimDecoratorT_double_t, _p_gum__MultiDimDecoratorT_double_tTo_p_gum__MultiDimContainerT_double_t, 0, 0},  {&_swigt__p_gum__MultiDimImplementationT_double_t, _p_gum__MultiDimImplementationT_double_tTo_p_gum__MultiDimContainerT_double_t, 0, 0},  {&_swigt__p_gum__MultiDimWithOffsetT_double_t, _p_gum__MultiDimWithOffsetT_double_tTo_p_gum__MultiDimContainerT_double_t, 0, 0},  {&_swigt__p_gum__PotentialT_double_t, _p_gum__PotentialT_double_tTo_p_gum__MultiDimContainerT_double_t, 0, 0},{0, 0, 0, 0}};
-static swig_cast_info _swigc__p_gum__MultiDimDecoratorT_double_t[] = {  {&_swigt__p_gum__MultiDimDecoratorT_double_t, 0, 0, 0},  {&_swigt__p_gum__PotentialT_double_t, _p_gum__PotentialT_double_tTo_p_gum__MultiDimDecoratorT_double_t, 0, 0},{0, 0, 0, 0}};
+static swig_cast_info _swigc__p_gum__MultiDimAdressable[] = {  {&_swigt__p_gum__MultiDimAdressable, 0, 0, 0},  {&_swigt__p_gum__MultiDimArrayT_double_t, _p_gum__MultiDimArrayT_double_tTo_p_gum__MultiDimAdressable, 0, 0},  {&_swigt__p_gum__MultiDimContainerT_double_t, _p_gum__MultiDimContainerT_double_tTo_p_gum__MultiDimAdressable, 0, 0},  {&_swigt__p_gum__MultiDimDecoratorT_double_t, _p_gum__MultiDimDecoratorT_double_tTo_p_gum__MultiDimAdressable, 0, 0},  {&_swigt__p_gum__MultiDimImplementationT_double_t, _p_gum__MultiDimImplementationT_double_tTo_p_gum__MultiDimAdressable, 0, 0},  {&_swigt__p_gum__MultiDimWithOffsetT_double_t, _p_gum__MultiDimWithOffsetT_double_tTo_p_gum__MultiDimAdressable, 0, 0},  {&_swigt__p_gum__TensorT_double_t, _p_gum__TensorT_double_tTo_p_gum__MultiDimAdressable, 0, 0},{0, 0, 0, 0}};
+static swig_cast_info _swigc__p_gum__MultiDimContainerT_double_t[] = {  {&_swigt__p_gum__MultiDimContainerT_double_t, 0, 0, 0},  {&_swigt__p_gum__MultiDimArrayT_double_t, _p_gum__MultiDimArrayT_double_tTo_p_gum__MultiDimContainerT_double_t, 0, 0},  {&_swigt__p_gum__MultiDimDecoratorT_double_t, _p_gum__MultiDimDecoratorT_double_tTo_p_gum__MultiDimContainerT_double_t, 0, 0},  {&_swigt__p_gum__MultiDimImplementationT_double_t, _p_gum__MultiDimImplementationT_double_tTo_p_gum__MultiDimContainerT_double_t, 0, 0},  {&_swigt__p_gum__MultiDimWithOffsetT_double_t, _p_gum__MultiDimWithOffsetT_double_tTo_p_gum__MultiDimContainerT_double_t, 0, 0},  {&_swigt__p_gum__TensorT_double_t, _p_gum__TensorT_double_tTo_p_gum__MultiDimContainerT_double_t, 0, 0},{0, 0, 0, 0}};
+static swig_cast_info _swigc__p_gum__MultiDimDecoratorT_double_t[] = {  {&_swigt__p_gum__MultiDimDecoratorT_double_t, 0, 0, 0},  {&_swigt__p_gum__TensorT_double_t, _p_gum__TensorT_double_tTo_p_gum__MultiDimDecoratorT_double_t, 0, 0},{0, 0, 0, 0}};
 static swig_cast_info _swigc__p_gum__MultiDimImplementationT_double_t[] = {  {&_swigt__p_gum__MultiDimImplementationT_double_t, 0, 0, 0},  {&_swigt__p_gum__MultiDimArrayT_double_t, _p_gum__MultiDimArrayT_double_tTo_p_gum__MultiDimImplementationT_double_t, 0, 0},  {&_swigt__p_gum__MultiDimWithOffsetT_double_t, _p_gum__MultiDimWithOffsetT_double_tTo_p_gum__MultiDimImplementationT_double_t, 0, 0},{0, 0, 0, 0}};
-static swig_cast_info _swigc__p_gum__MultiDimInterface[] = {  {&_swigt__p_gum__MultiDimInterface, 0, 0, 0},  {&_swigt__p_gum__Instantiation, _p_gum__InstantiationTo_p_gum__MultiDimInterface, 0, 0},  {&_swigt__p_gum__MultiDimAdressable, _p_gum__MultiDimAdressableTo_p_gum__MultiDimInterface, 0, 0},  {&_swigt__p_gum__MultiDimArrayT_double_t, _p_gum__MultiDimArrayT_double_tTo_p_gum__MultiDimInterface, 0, 0},  {&_swigt__p_gum__MultiDimContainerT_double_t, _p_gum__MultiDimContainerT_double_tTo_p_gum__MultiDimInterface, 0, 0},  {&_swigt__p_gum__MultiDimDecoratorT_double_t, _p_gum__MultiDimDecoratorT_double_tTo_p_gum__MultiDimInterface, 0, 0},  {&_swigt__p_gum__MultiDimImplementationT_double_t, _p_gum__MultiDimImplementationT_double_tTo_p_gum__MultiDimInterface, 0, 0},  {&_swigt__p_gum__MultiDimWithOffsetT_double_t, _p_gum__MultiDimWithOffsetT_double_tTo_p_gum__MultiDimInterface, 0, 0},  {&_swigt__p_gum__PotentialT_double_t, _p_gum__PotentialT_double_tTo_p_gum__MultiDimInterface, 0, 0},{0, 0, 0, 0}};
+static swig_cast_info _swigc__p_gum__MultiDimInterface[] = {  {&_swigt__p_gum__MultiDimInterface, 0, 0, 0},  {&_swigt__p_gum__Instantiation, _p_gum__InstantiationTo_p_gum__MultiDimInterface, 0, 0},  {&_swigt__p_gum__MultiDimAdressable, _p_gum__MultiDimAdressableTo_p_gum__MultiDimInterface, 0, 0},  {&_swigt__p_gum__MultiDimArrayT_double_t, _p_gum__MultiDimArrayT_double_tTo_p_gum__MultiDimInterface, 0, 0},  {&_swigt__p_gum__MultiDimContainerT_double_t, _p_gum__MultiDimContainerT_double_tTo_p_gum__MultiDimInterface, 0, 0},  {&_swigt__p_gum__MultiDimDecoratorT_double_t, _p_gum__MultiDimDecoratorT_double_tTo_p_gum__MultiDimInterface, 0, 0},  {&_swigt__p_gum__MultiDimImplementationT_double_t, _p_gum__MultiDimImplementationT_double_tTo_p_gum__MultiDimInterface, 0, 0},  {&_swigt__p_gum__MultiDimWithOffsetT_double_t, _p_gum__MultiDimWithOffsetT_double_tTo_p_gum__MultiDimInterface, 0, 0},  {&_swigt__p_gum__TensorT_double_t, _p_gum__TensorT_double_tTo_p_gum__MultiDimInterface, 0, 0},{0, 0, 0, 0}};
 static swig_cast_info _swigc__p_gum__MultiDimWithOffsetT_double_t[] = {  {&_swigt__p_gum__MultiDimWithOffsetT_double_t, 0, 0, 0},  {&_swigt__p_gum__MultiDimArrayT_double_t, _p_gum__MultiDimArrayT_double_tTo_p_gum__MultiDimWithOffsetT_double_t, 0, 0},{0, 0, 0, 0}};
 static swig_cast_info _swigc__p_gum__NoChild[] = {  {&_swigt__p_gum__NoChild, 0, 0, 0},{0, 0, 0, 0}};
 static swig_cast_info _swigc__p_gum__NoNeighbour[] = {  {&_swigt__p_gum__NoNeighbour, 0, 0, 0},{0, 0, 0, 0}};
@@ -65529,7 +65529,6 @@ static swig_cast_info _swigc__p_gum__OutOfBounds[] = {  {&_swigt__p_gum__OutOfBo
 static swig_cast_info _swigc__p_gum__PDAG[] = {  {&_swigt__p_gum__PDAG, 0, 0, 0},{0, 0, 0, 0}};
 static swig_cast_info _swigc__p_gum__PRMTypeError[] = {  {&_swigt__p_gum__PRMTypeError, 0, 0, 0},{0, 0, 0, 0}};
 static swig_cast_info _swigc__p_gum__PossiblyIncompatibleScorePrior[] = {  {&_swigt__p_gum__PossiblyIncompatibleScorePrior, 0, 0, 0},{0, 0, 0, 0}};
-static swig_cast_info _swigc__p_gum__PotentialT_double_t[] = {  {&_swigt__p_gum__PotentialT_double_t, 0, 0, 0},{0, 0, 0, 0}};
 static swig_cast_info _swigc__p_gum__RangeVariable[] = {  {&_swigt__p_gum__RangeVariable, 0, 0, 0},{0, 0, 0, 0}};
 static swig_cast_info _swigc__p_gum__ScheduleMultiDimError[] = {  {&_swigt__p_gum__ScheduleMultiDimError, 0, 0, 0},  {&_swigt__p_gum__AbstractScheduleMultiDim, _p_gum__AbstractScheduleMultiDimTo_p_gum__ScheduleMultiDimError, 0, 0},  {&_swigt__p_gum__DuplicateScheduleMultiDim, _p_gum__DuplicateScheduleMultiDimTo_p_gum__ScheduleMultiDimError, 0, 0},  {&_swigt__p_gum__UnknownScheduleMultiDim, _p_gum__UnknownScheduleMultiDimTo_p_gum__ScheduleMultiDimError, 0, 0},{0, 0, 0, 0}};
 static swig_cast_info _swigc__p_gum__ScheduleOperationError[] = {  {&_swigt__p_gum__ScheduleOperationError, 0, 0, 0},  {&_swigt__p_gum__UnavailableScheduleOperation, _p_gum__UnavailableScheduleOperationTo_p_gum__ScheduleOperationError, 0, 0},  {&_swigt__p_gum__UnexecutedScheduleOperation, _p_gum__UnexecutedScheduleOperationTo_p_gum__ScheduleOperationError, 0, 0},  {&_swigt__p_gum__UnknownScheduleOperation, _p_gum__UnknownScheduleOperationTo_p_gum__ScheduleOperationError, 0, 0},{0, 0, 0, 0}};
@@ -65545,6 +65544,7 @@ static swig_cast_info _swigc__p_gum__SetT_std__size_t_t[] = {  {&_swigt__p_gum__
 static swig_cast_info _swigc__p_gum__SetT_std__size_t_t__const_iterator[] = {  {&_swigt__p_gum__SetT_std__size_t_t__const_iterator, 0, 0, 0},{0, 0, 0, 0}};
 static swig_cast_info _swigc__p_gum__SizeError[] = {  {&_swigt__p_gum__SizeError, 0, 0, 0},{0, 0, 0, 0}};
 static swig_cast_info _swigc__p_gum__SyntaxError[] = {  {&_swigt__p_gum__SyntaxError, 0, 0, 0},{0, 0, 0, 0}};
+static swig_cast_info _swigc__p_gum__TensorT_double_t[] = {  {&_swigt__p_gum__TensorT_double_t, 0, 0, 0},{0, 0, 0, 0}};
 static swig_cast_info _swigc__p_gum__TypeError[] = {  {&_swigt__p_gum__TypeError, 0, 0, 0},{0, 0, 0, 0}};
 static swig_cast_info _swigc__p_gum__UGmodel[] = {  {&_swigt__p_gum__UGmodel, 0, 0, 0},{0, 0, 0, 0}};
 static swig_cast_info _swigc__p_gum__UnavailableScheduleOperation[] = {  {&_swigt__p_gum__UnavailableScheduleOperation, 0, 0, 0},{0, 0, 0, 0}};
@@ -65680,7 +65680,6 @@ static swig_cast_info *swig_cast_initial[] = {
   _swigc__p_gum__PDAG,
   _swigc__p_gum__PRMTypeError,
   _swigc__p_gum__PossiblyIncompatibleScorePrior,
-  _swigc__p_gum__PotentialT_double_t,
   _swigc__p_gum__RangeVariable,
   _swigc__p_gum__ScheduleMultiDimError,
   _swigc__p_gum__ScheduleOperationError,
@@ -65696,6 +65695,7 @@ static swig_cast_info *swig_cast_initial[] = {
   _swigc__p_gum__SetT_std__size_t_t__const_iterator,
   _swigc__p_gum__SizeError,
   _swigc__p_gum__SyntaxError,
+  _swigc__p_gum__TensorT_double_t,
   _swigc__p_gum__TypeError,
   _swigc__p_gum__UGmodel,
   _swigc__p_gum__UnavailableScheduleOperation,

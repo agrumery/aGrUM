@@ -182,11 +182,11 @@ namespace gum {
 
   template < typename GUM_SCALAR >
   void InfluenceDiagram< GUM_SCALAR >::InfluenceDiagram::clear() {
-    // Removing previous potentials
+    // Removing previous tensors
     removeTables_();
     _variableMap_.clear();
     dag_.clear();
-    _potentialMap_.clear();
+    _tensorMap_.clear();
     _utilityMap_.clear();
   }
 
@@ -213,7 +213,7 @@ namespace gum {
       else   // decision node
         addDecisionNode(IDsource.variable(node), node);
     }
-    // we add arc in the same order of the potentials
+    // we add arc in the same order of the tensors
     for (auto node: IDsource.nodes()) {
       const auto& s = IDsource.variable(node).name();
       if (IDsource.isChanceNode(node)) {
@@ -223,13 +223,13 @@ namespace gum {
         for (Idx par = 1; par <= IDsource.parents(node).size(); par++)
           addArc(IDsource.utility(node).variable(par).name(), s);
       } else {   // decision node
-        // here the order does not depend on a Potential
+        // here the order does not depend on a Tensor
         for (NodeId par: IDsource.parents(node))
           addArc(par, node);
       }
     }
 
-    // Copying potentials
+    // Copying tensors
     for (auto node: IDsource.nodes()) {
       const auto& s = IDsource.variable(node).name();
       if (IDsource.isChanceNode(node)) {
@@ -319,15 +319,15 @@ namespace gum {
    * Returns the CPT of a chance variable.
    */
   template < typename GUM_SCALAR >
-  INLINE const Potential< GUM_SCALAR >& InfluenceDiagram< GUM_SCALAR >::cpt(NodeId varId) const {
-    return *(_potentialMap_[varId]);
+  INLINE const Tensor< GUM_SCALAR >& InfluenceDiagram< GUM_SCALAR >::cpt(NodeId varId) const {
+    return *(_tensorMap_[varId]);
   }
 
   /*
    * Returns the utility table of a utility node.
    */
   template < typename GUM_SCALAR >
-  INLINE const Potential< GUM_SCALAR >&
+  INLINE const Tensor< GUM_SCALAR >&
                InfluenceDiagram< GUM_SCALAR >::utility(NodeId varId) const {
     return *(_utilityMap_[varId]);
   }
@@ -357,7 +357,7 @@ namespace gum {
    */
   template < typename GUM_SCALAR >
   INLINE bool InfluenceDiagram< GUM_SCALAR >::isChanceNode(NodeId varId) const {
-    return _potentialMap_.exists(varId);
+    return _tensorMap_.exists(varId);
   }
 
   /*
@@ -373,7 +373,7 @@ namespace gum {
    */
   template < typename GUM_SCALAR >
   INLINE Size InfluenceDiagram< GUM_SCALAR >::chanceNodeSize() const {
-    return _potentialMap_.size();
+    return _tensorMap_.size();
   }
 
   /*
@@ -381,7 +381,7 @@ namespace gum {
    */
   template < typename GUM_SCALAR >
   INLINE Size InfluenceDiagram< GUM_SCALAR >::decisionNodeSize() const {
-    return (size() - _utilityMap_.size() - _potentialMap_.size());
+    return (size() - _utilityMap_.size() - _tensorMap_.size());
   }
 
   /*
@@ -491,9 +491,9 @@ namespace gum {
                                                     NodeId DesiredId) {
     NodeId proposedId = addNode_(var, DesiredId);
 
-    auto varcpt = new Potential< GUM_SCALAR >(aContent);
+    auto varcpt = new Tensor< GUM_SCALAR >(aContent);
     (*varcpt) << variable(proposedId);
-    _potentialMap_.insert(proposedId, varcpt);
+    _tensorMap_.insert(proposedId, varcpt);
 
     return proposedId;
   }
@@ -516,7 +516,7 @@ namespace gum {
 
     NodeId proposedId = addNode_(var, DesiredId);
 
-    auto varut = new Potential< GUM_SCALAR >(aContent);
+    auto varut = new Tensor< GUM_SCALAR >(aContent);
 
     (*varut) << variable(proposedId);
 
@@ -555,12 +555,12 @@ namespace gum {
     if (_variableMap_.exists(varId)) {
       // Reduce the variable child's CPT or Utility Table if necessary
       for (const auto chi: dag_.children(varId))
-        if (isChanceNode(chi)) _potentialMap_[chi]->erase(variable(varId));
+        if (isChanceNode(chi)) _tensorMap_[chi]->erase(variable(varId));
         else if (isUtilityNode(chi)) _utilityMap_[chi]->erase(variable(varId));
 
       if (isChanceNode(varId)) {
-        delete _potentialMap_[varId];
-        _potentialMap_.erase(varId);
+        delete _tensorMap_[varId];
+        _tensorMap_.erase(varId);
       } else if (isUtilityNode(varId)) {
         delete _utilityMap_[varId];
         _utilityMap_.erase(varId);
@@ -603,7 +603,7 @@ namespace gum {
 
     if (isChanceNode(head))
       // Add parent in the child's CPT
-      (*(_potentialMap_[head])) << variable(tail);
+      (*(_tensorMap_[head])) << variable(tail);
     else if (isUtilityNode(head)) {
       // Add parent in the child's UT
       (*(_utilityMap_[head])) << variable(tail);
@@ -624,7 +624,7 @@ namespace gum {
 
       if (isChanceNode(head))
         // Removes parent in the child's CPT
-        (*(_potentialMap_[head])) >> variable(tail);
+        (*(_tensorMap_[head])) >> variable(tail);
       else if (isUtilityNode(head))
         // Removes parent in the child's UT
         (*(_utilityMap_[head])) >> variable(tail);
@@ -886,7 +886,7 @@ namespace gum {
   template < typename GUM_SCALAR >
   void InfluenceDiagram< GUM_SCALAR >::beginTopologyTransformation() {
     for (const auto node: nodes())
-      if (isChanceNode(node)) _potentialMap_[node]->beginMultipleChanges();
+      if (isChanceNode(node)) _tensorMap_[node]->beginMultipleChanges();
       else if (this->isUtilityNode(node)) _utilityMap_[node]->beginMultipleChanges();
   }
 
@@ -894,7 +894,7 @@ namespace gum {
   template < typename GUM_SCALAR >
   void InfluenceDiagram< GUM_SCALAR >::endTopologyTransformation() {
     for (const auto node: nodes())
-      if (isChanceNode(node)) _potentialMap_[node]->endMultipleChanges();
+      if (isChanceNode(node)) _tensorMap_[node]->endMultipleChanges();
       else if (isUtilityNode(node)) _utilityMap_[node]->endMultipleChanges();
   }
 
@@ -924,8 +924,8 @@ namespace gum {
       }
     }
 
-    auto check_pot = [&](const gum::Potential< GUM_SCALAR >& p1,
-                         const gum::Potential< GUM_SCALAR >& p2) -> bool {
+    auto check_pot = [&](const gum::Tensor< GUM_SCALAR >& p1,
+                         const gum::Tensor< GUM_SCALAR >& p2) -> bool {
       if (p1.nbrDim() != p2.nbrDim()) { return false; }
 
       if (p1.domainSize() != p2.domainSize()) { return false; }

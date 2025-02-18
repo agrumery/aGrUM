@@ -105,18 +105,18 @@ namespace gum {
   }
 
   template < typename GUM_SCALAR >
-  const Potential< GUM_SCALAR >& SamplingInference< GUM_SCALAR >::currentPosterior(NodeId id) {
+  const Tensor< GUM_SCALAR >& SamplingInference< GUM_SCALAR >::currentPosterior(NodeId id) {
     return _estimator_.posterior(this->BN().variable(id));
   }
 
   template < typename GUM_SCALAR >
-  const Potential< GUM_SCALAR >&
+  const Tensor< GUM_SCALAR >&
       SamplingInference< GUM_SCALAR >::currentPosterior(const std::string& name) {
     return currentPosterior(this->BN().idFromName(name));
   }
 
   template < typename GUM_SCALAR >
-  const Potential< GUM_SCALAR >& SamplingInference< GUM_SCALAR >::posterior_(NodeId id) {
+  const Tensor< GUM_SCALAR >& SamplingInference< GUM_SCALAR >::posterior_(NodeId id) {
     return _estimator_.posterior(this->BN().variable(id));
   }
 
@@ -228,7 +228,7 @@ namespace gum {
   void SamplingInference< GUM_SCALAR >::updateOutdatedStructure_() {}
 
   template < typename GUM_SCALAR >
-  void SamplingInference< GUM_SCALAR >::updateOutdatedPotentials_() {}
+  void SamplingInference< GUM_SCALAR >::updateOutdatedTensors_() {}
 
   template < typename GUM_SCALAR >
   void SamplingInference< GUM_SCALAR >::onMarginalTargetAdded_(const NodeId id) {}

@@ -53,7 +53,7 @@
 #include <agrum/base/multidim/ICIModels/multiDimNoisyAND.h>
 #include <agrum/base/multidim/ICIModels/multiDimNoisyORCompound.h>
 #include <agrum/base/multidim/ICIModels/multiDimNoisyORNet.h>
-#include <agrum/base/multidim/potential.h>
+#include <agrum/base/multidim/tensor.h>
 #include <agrum/BN/generator/simpleCPTGenerator.h>
 #include <agrum/BN/IBayesNet.h>
 
@@ -442,25 +442,25 @@ namespace gum {
   }
 
   template < typename GUM_SCALAR >
-  Potential< GUM_SCALAR > IBayesNet< GUM_SCALAR >::evEq(const std::string& name,
+  Tensor< GUM_SCALAR > IBayesNet< GUM_SCALAR >::evEq(const std::string& name,
                                                         double             value) const {
-    return Potential< GUM_SCALAR >::evEq(variableFromName(name), value);
+    return Tensor< GUM_SCALAR >::evEq(variableFromName(name), value);
   }
 
   template < typename GUM_SCALAR >
-  Potential< GUM_SCALAR >
+  Tensor< GUM_SCALAR >
       IBayesNet< GUM_SCALAR >::evIn(const std::string& name, double val1, double val2) const {
-    return Potential< GUM_SCALAR >::evIn(variableFromName(name), val1, val2);
+    return Tensor< GUM_SCALAR >::evIn(variableFromName(name), val1, val2);
   }
 
   template < typename GUM_SCALAR >
-  Potential< GUM_SCALAR > IBayesNet< GUM_SCALAR >::evGt(const std::string& name, double val) const {
-    return Potential< GUM_SCALAR >::evGt(variableFromName(name), val);
+  Tensor< GUM_SCALAR > IBayesNet< GUM_SCALAR >::evGt(const std::string& name, double val) const {
+    return Tensor< GUM_SCALAR >::evGt(variableFromName(name), val);
   }
 
   template < typename GUM_SCALAR >
-  Potential< GUM_SCALAR > IBayesNet< GUM_SCALAR >::evLt(const std::string& name, double val) const {
-    return Potential< GUM_SCALAR >::evLt(variableFromName(name), val);
+  Tensor< GUM_SCALAR > IBayesNet< GUM_SCALAR >::evLt(const std::string& name, double val) const {
+    return Tensor< GUM_SCALAR >::evLt(variableFromName(name), val);
   }
 
 } /* namespace gum */

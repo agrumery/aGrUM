@@ -45,7 +45,7 @@
 #include <gumtest/AgrumTestSuite.h>
 #include <gumtest/utils.h>
 
-#include <agrum/base/multidim/potential.h>
+#include <agrum/base/multidim/tensor.h>
 #include <agrum/base/variables/discretizedVariable.h>
 #include <agrum/base/variables/labelizedVariable.h>
 #include <agrum/base/variables/rangeVariable.h>
@@ -79,9 +79,9 @@ namespace gum_tests {
 
       for (const auto n: bn.nodes()) {
         const std::string&              name   = bn.variable(n).name();
-        const gum::Potential< double >& postbn = iebn.posterior(name);
+        const gum::Tensor< double >& postbn = iebn.posterior(name);
 
-        gum::Potential< double > postmn;
+        gum::Tensor< double > postmn;
         postmn.add(bn.variable(n));
         postmn.fillWith(iemn.posterior(name));   // postmn using bn variable
 
@@ -100,9 +100,9 @@ namespace gum_tests {
 
       for (const auto n: bn.nodes()) {
         const std::string&              name   = bn.variable(n).name();
-        const gum::Potential< double >& postbn = iebn.posterior(name);
+        const gum::Tensor< double >& postbn = iebn.posterior(name);
 
-        gum::Potential< double > postmn;
+        gum::Tensor< double > postmn;
         postmn.add(bn.variable(n));
         postmn.fillWith(iemn.posterior(name));   // postmn using bn variable
 
@@ -123,9 +123,9 @@ namespace gum_tests {
 
       for (const auto n: bn.nodes()) {
         const std::string&              name   = bn.variable(n).name();
-        const gum::Potential< double >& postbn = iebn.posterior(name);
+        const gum::Tensor< double >& postbn = iebn.posterior(name);
 
-        gum::Potential< double > postmn;
+        gum::Tensor< double > postmn;
         postmn.add(bn.variable(n));
         postmn.fillWith(iemn.posterior(name));   // postmn using bn variable
 
@@ -146,9 +146,9 @@ namespace gum_tests {
 
       for (const auto n: bn.nodes()) {
         const std::string&              name   = bn.variable(n).name();
-        const gum::Potential< double >& postbn = iebn.posterior(name);
+        const gum::Tensor< double >& postbn = iebn.posterior(name);
 
-        gum::Potential< double > postmn;
+        gum::Tensor< double > postmn;
         postmn.add(bn.variable(n));
         postmn.fillWith(iemn.posterior(name));   // postmn using bn variable
 
@@ -169,9 +169,9 @@ namespace gum_tests {
 
       for (const auto n: bn.nodes()) {
         const std::string&              name   = bn.variable(n).name();
-        const gum::Potential< double >& postbn = iebn.posterior(name);
+        const gum::Tensor< double >& postbn = iebn.posterior(name);
 
-        gum::Potential< double > postmn;
+        gum::Tensor< double > postmn;
         postmn.add(bn.variable(n));
         postmn.fillWith(iemn.posterior(name));   // postmn using bn variable
 
@@ -196,24 +196,24 @@ namespace gum_tests {
       iemn.addEvidence("A", 0);
       iemn.addEvidence("D", 1);
       iemn.makeInference();
-      gum::Potential< double > Cwithout_evB(iemn.posterior("C"));
-      gum::Potential< double > Ewithout_evB(iemn.posterior("E"));
+      gum::Tensor< double > Cwithout_evB(iemn.posterior("C"));
+      gum::Tensor< double > Ewithout_evB(iemn.posterior("E"));
 
       iemn.eraseAllEvidence();
       iemn.addEvidence("A", 0);
       iemn.addEvidence("D", 1);
       iemn.addEvidence("B", 0);
       iemn.makeInference();
-      gum::Potential< double > Cwith_evB0(iemn.posterior("C"));
-      gum::Potential< double > Ewith_evB0(iemn.posterior("E"));
+      gum::Tensor< double > Cwith_evB0(iemn.posterior("C"));
+      gum::Tensor< double > Ewith_evB0(iemn.posterior("E"));
 
       iemn.eraseAllEvidence();
       iemn.addEvidence("A", 0);
       iemn.addEvidence("D", 1);
       iemn.addEvidence("B", 1);
       iemn.makeInference();
-      gum::Potential< double > Cwith_evB1(iemn.posterior("C"));
-      gum::Potential< double > Ewith_evB1(iemn.posterior("E"));
+      gum::Tensor< double > Cwith_evB1(iemn.posterior("C"));
+      gum::Tensor< double > Ewith_evB1(iemn.posterior("E"));
 
       TS_ASSERT_LESS_THAN(-(Cwithout_evB - Cwith_evB0).abs().max(), -1e-8)
       TS_ASSERT_LESS_THAN(-(Cwithout_evB - Cwith_evB1).abs().max(), -1e-8)
@@ -308,8 +308,8 @@ namespace gum_tests {
       }
     }
 
-    const gum::Potential< double > pAC(const gum::MarkovRandomField< double >& mn) {
-      gum::Potential< double > joint;
+    const gum::Tensor< double > pAC(const gum::MarkovRandomField< double >& mn) {
+      gum::Tensor< double > joint;
       for (auto& [nods, factor]: mn.factors()) {
         joint *= *factor;
       }
@@ -317,8 +317,8 @@ namespace gum_tests {
       return joint.sumOut({&mn.variable("B")});
     }
 
-    const gum::Potential< double > pAB(const gum::MarkovRandomField< double >& mn) {
-      gum::Potential< double > joint;
+    const gum::Tensor< double > pAB(const gum::MarkovRandomField< double >& mn) {
+      gum::Tensor< double > joint;
       for (auto& [nods, factor]: mn.factors()) {
         joint *= *factor;
       }
@@ -328,7 +328,7 @@ namespace gum_tests {
 
     GUM_ACTIVE_TEST(JointTargetFromExistingJoint) {
       // explicit jointtarget
-      // gum::Potential< double > p;
+      // gum::Tensor< double > p;
       {
         auto mn = gum::MarkovRandomField< double >::fastPrototype("A--B;B--C");
 
@@ -342,7 +342,7 @@ namespace gum_tests {
         ie.addJointTarget({0, 2});
         ie.makeInference();
         auto p = ie.jointPosterior({0, 2});
-        TS_GUM_POTENTIAL_DELTA(p, pAC(mn), TS_GUM_SMALL_ERROR)
+        TS_GUM_TENSOR_DELTA(p, pAC(mn), TS_GUM_SMALL_ERROR)
       }
       {
         auto mn = gum::MarkovRandomField< double >::fastPrototype("A--B;B--C");
@@ -351,7 +351,7 @@ namespace gum_tests {
 
         try {
           auto p = ie.jointPosterior({0, 2});
-          TS_GUM_POTENTIAL_DELTA(p, pAC(mn), TS_GUM_SMALL_ERROR)
+          TS_GUM_TENSOR_DELTA(p, pAC(mn), TS_GUM_SMALL_ERROR)
         } catch (gum::Exception& e) { GUM_SHOWERROR(e) }
       }
       // implicit jointtarget as factor
@@ -360,7 +360,7 @@ namespace gum_tests {
         gum::ShaferShenoyMRFInference< double > ie(&mn);
         ie.makeInference();
         auto p = ie.jointPosterior({0, 1});
-        TS_GUM_POTENTIAL_DELTA(p, pAB(mn), TS_GUM_SMALL_ERROR)
+        TS_GUM_TENSOR_DELTA(p, pAB(mn), TS_GUM_SMALL_ERROR)
       }
       {
         auto mn = gum::MarkovRandomField< double >::fastPrototype("A--B;B--C");
@@ -368,7 +368,7 @@ namespace gum_tests {
         ie.addJointTarget({0, 1});
         ie.makeInference();
         auto p = ie.jointPosterior({0, 1});
-        TS_GUM_POTENTIAL_DELTA(p, pAB(mn), TS_GUM_SMALL_ERROR)
+        TS_GUM_TENSOR_DELTA(p, pAB(mn), TS_GUM_SMALL_ERROR)
       }
       // implicit jointtarget as subset of clique in junction tree
       {
@@ -376,7 +376,7 @@ namespace gum_tests {
         gum::ShaferShenoyMRFInference< double > ie(&mn);
         ie.makeInference();
         auto p = ie.jointPosterior({0, 2});
-        TS_GUM_POTENTIAL_DELTA(p, pAC(mn), TS_GUM_SMALL_ERROR)
+        TS_GUM_TENSOR_DELTA(p, pAC(mn), TS_GUM_SMALL_ERROR)
       }
       {
         auto mn = gum::MarkovRandomField< double >::fastPrototype("A--B;B--C;A--C");
@@ -384,21 +384,21 @@ namespace gum_tests {
         ie.addJointTarget({0, 2});
         ie.makeInference();
         auto p = ie.jointPosterior({0, 2});
-        TS_GUM_POTENTIAL_DELTA(p, pAC(mn), TS_GUM_SMALL_ERROR)
+        TS_GUM_TENSOR_DELTA(p, pAC(mn), TS_GUM_SMALL_ERROR)
       }
     }
 
     GUM_ACTIVE_TEST(IrrelevantSoftEvidence) {
       auto mn = gum::MarkovRandomField< double >::fastPrototype("A--B--C;D--C--E");
-      gum::Potential< double > psoft;
-      gum::Potential< double > phard;
+      gum::Tensor< double > psoft;
+      gum::Tensor< double > phard;
 
-      auto hardevC = gum::Potential< double >();
+      auto hardevC = gum::Tensor< double >();
       hardevC.add(mn.variable("C"));
       hardevC.fillWith({0, 1});
 
       {
-        auto hardev = gum::Potential< double >();
+        auto hardev = gum::Tensor< double >();
         hardev.add(mn.variable("A"));
         hardev.fillWith({0, 1});
 
@@ -407,10 +407,10 @@ namespace gum_tests {
         ie.addEvidence(hardev);
         ie.addTarget("E");
         TS_GUM_ASSERT_THROWS_NOTHING(ie.makeInference());
-        phard = gum::Potential(ie.posterior("E"));
+        phard = gum::Tensor(ie.posterior("E"));
       }
       {
-        auto softev = gum::Potential< double >();
+        auto softev = gum::Tensor< double >();
         softev.add(mn.variable("A"));
         softev.fillWith({0.5, 1});
 
@@ -419,9 +419,9 @@ namespace gum_tests {
         ie.addEvidence(softev);
         ie.addTarget("E");
         TS_GUM_ASSERT_THROWS_NOTHING(ie.makeInference());
-        psoft = gum::Potential(ie.posterior("E"));
+        psoft = gum::Tensor(ie.posterior("E"));
       }
-      TS_GUM_POTENTIAL_DELTA(phard, psoft, TS_GUM_VERY_SMALL_ERROR)
+      TS_GUM_TENSOR_DELTA(phard, psoft, TS_GUM_VERY_SMALL_ERROR)
     }
   };
 }   // namespace gum_tests

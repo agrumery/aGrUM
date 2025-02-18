@@ -60,7 +60,7 @@ namespace gum {
      *
      * A PRMAttribute is defined by its name, its containing class, its type and
      * by a Conditional Probability Function (aka CPF but represented by a
-     * Potential).
+     * Tensor).
      *
      * An attribute in a PRM is the equivalent of a random variable in a
      * Bayesian network.
@@ -71,7 +71,7 @@ namespace gum {
      * Built-in copies (copy constructor and copy operator) are illegal due to
      * various problems raised by redondant information.
      *
-     * @see PRM PRMFactory Class PRMClassElement PRMType Potential
+     * @see PRM PRMFactory Class PRMClassElement PRMType Tensor
      * @ingroup prm_group
      */
     template < typename GUM_SCALAR >
@@ -111,7 +111,7 @@ namespace gum {
       virtual const PRMType& type() const = 0;
 
       /// See gum::PRMClassElement::cpf().
-      virtual const Potential< GUM_SCALAR >& cpf() const = 0;
+      virtual const Tensor< GUM_SCALAR >& cpf() const = 0;
 
       /// See gum::PRMClassElement::addParent_().
       virtual void addParent(const PRMClassElement< GUM_SCALAR >& elt) = 0;

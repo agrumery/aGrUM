@@ -54,7 +54,7 @@
 #include <agrum/base/multidim/aggregators/min.h>
 #include <agrum/base/multidim/aggregators/or.h>
 #include <agrum/base/multidim/aggregators/sum.h>
-#include <agrum/base/multidim/potential.h>
+#include <agrum/base/multidim/tensor.h>
 #include <agrum/base/variables/labelizedVariable.h>
 #include <agrum/base/variables/rangeVariable.h>
 #include <agrum/BN/BayesNet.h>
@@ -406,10 +406,10 @@ namespace gum_tests {
       }
     }
 
-    GUM_ACTIVE_TEST(PotentialMin) {
+    GUM_ACTIVE_TEST(TensorMin) {
       gum::RangeVariable a("a", "", 0, 3), b("b", "", 0, 3), c("c", "", 0, 3), d("d", "", 0, 3);
 
-      gum::Potential< int > p(new gum::aggregator::Min< int >());
+      gum::Tensor< int > p(new gum::aggregator::Min< int >());
       TS_GUM_ASSERT_THROWS_NOTHING(p << a << b << c << d)
 
       gum::Instantiation i(p);

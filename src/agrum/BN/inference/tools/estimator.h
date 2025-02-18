@@ -122,7 +122,7 @@ namespace gum {
      *
      * @throw NotFound if variable node is not in estimator.
      */
-    const Potential< GUM_SCALAR >& posterior(const DiscreteVariable& var);
+    const Tensor< GUM_SCALAR >& posterior(const DiscreteVariable& var);
 
     /// refresh the estimator state as empty
     /** this function remove all the statistics in order to restart the
@@ -172,7 +172,7 @@ namespace gum {
     private:
     /// the set of single posteriors computed during the last inference
     /** the posteriors are owned by LazyPropagation. */
-    HashTable< std::string, Potential< GUM_SCALAR >* > _target_posteriors_;
+    HashTable< std::string, Tensor< GUM_SCALAR >* > _target_posteriors_;
   };
 
 #ifndef GUM_NO_EXTERN_TEMPLATE_CLASS

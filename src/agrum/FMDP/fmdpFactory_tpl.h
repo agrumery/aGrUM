@@ -47,7 +47,7 @@
  */
 
 #include <agrum/base/multidim/implementations/multiDimImplementation.h>
-#include <agrum/base/multidim/potential.h>
+#include <agrum/base/multidim/tensor.h>
 #include <agrum/FMDP/fmdpFactory.h>
 
 // #define FMDP_VERBOSITY(x) {  if (isVerbose()) std::cerr << "[FMDP factory]

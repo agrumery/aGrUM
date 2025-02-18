@@ -120,7 +120,7 @@ namespace gum {
   void GibbsOperator< GUM_SCALAR >::_GibbsSample_(NodeId id, Instantiation* I) {
     gum::Instantiation Itop(*I);
     Itop.erase(samplingBn_.variable(id));
-    gum::Potential< GUM_SCALAR > p = samplingBn_.cpt(id).extract(Itop);
+    gum::Tensor< GUM_SCALAR > p = samplingBn_.cpt(id).extract(Itop);
     for (const auto nod: samplingBn_.children(id))
       p *= samplingBn_.cpt(nod).extract(Itop);
     GUM_ASSERT(p.nbrDim() == 1);

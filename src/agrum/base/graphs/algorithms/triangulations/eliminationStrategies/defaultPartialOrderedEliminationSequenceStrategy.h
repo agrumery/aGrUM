@@ -111,7 +111,7 @@ namespace gum {
     DefaultPartialOrderedEliminationSequenceStrategy(double theRatio     = GUM_QUASI_RATIO,
                                                      double theThreshold = GUM_WEIGHT_THRESHOLD);
 
-    /// constructor for a (potentially) non empty graph
+    /// constructor for a (tensorly) non empty graph
     /** @param graph the graph to be triangulated, i.e., the nodes of which will
      * be eliminated
      * @param dom_sizes thedomain sizes of the nodes/variables

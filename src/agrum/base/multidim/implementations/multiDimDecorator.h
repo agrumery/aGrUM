@@ -259,7 +259,7 @@ namespace gum {
     virtual void replace_(const DiscreteVariable* x, const DiscreteVariable* y);
 
     /**
-     * protected method to swap the implementation behind the Potential
+     * protected method to swap the implementation behind the Tensor
      * @warning unsafe method for slave Instantiations !
      */
     void swapContent_(MultiDimImplementation< GUM_SCALAR >* aContent) const;

@@ -116,7 +116,7 @@ namespace gum {
       str << bn.variable(node).domainSize() << " ";
     str << std::endl;
 
-    str << bn.size() << std::endl;   // number of potentials
+    str << bn.size() << std::endl;   // number of tensors
 
     for (auto node: bn.nodes()) {
       const auto& p = bn.cpt(node);

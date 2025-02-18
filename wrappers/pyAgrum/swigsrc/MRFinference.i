@@ -139,7 +139,7 @@ def setTargets(self, targets):
     PyObject* targets() {
       return PyAgrumHelper::PySetFromNodeSet(self->targets() );
     }
-    Potential<double> evidenceImpact(PyObject* target,PyObject *evs) {
+    Tensor<double> evidenceImpact(PyObject* target,PyObject *evs) {
       gum::NodeId itarget=PyAgrumHelper::nodeIdFromNameOrIndex(target,self->MRF().variableNodeMap());
       gum::NodeSet soe;
       PyAgrumHelper::populateNodeSetFromPySequenceOfIntOrString(soe,evs,self->MRF().variableNodeMap());
@@ -158,14 +158,14 @@ IMPROVE_MRF_INFERENCE_API(ShaferShenoyMRFInference<double>)
       PyAgrumHelper::populateNodeSetFromPySequenceOfIntOrString(sot,targets,self->MRF().variableNodeMap());
       return self->jointMutualInformation(sot);
     }
-    Potential<double> evidenceJointImpact(PyObject* targets,PyObject *evs) {
+    Tensor<double> evidenceJointImpact(PyObject* targets,PyObject *evs) {
       gum::NodeSet sot;
       gum::NodeSet soe;
       PyAgrumHelper::populateNodeSetFromPySequenceOfIntOrString(sot,targets,self->MRF().variableNodeMap());
       PyAgrumHelper::populateNodeSetFromPySequenceOfIntOrString(soe,evs,self->MRF().variableNodeMap());
       return self->evidenceJointImpact(sot,soe);
     }
-    Potential<double> jointPosterior(PyObject *targets) {
+    Tensor<double> jointPosterior(PyObject *targets) {
       if (! PyAnySet_Check(targets)) {
         GUM_ERROR(gum::InvalidArgument,"The argument must be a set")
       }

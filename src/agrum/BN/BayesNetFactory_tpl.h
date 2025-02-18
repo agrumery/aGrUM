@@ -287,9 +287,9 @@ namespace gum {
     }
   }
 
-  // @brief Defines the implementation to use for Potential.
+  // @brief Defines the implementation to use for Tensor.
   // @warning The implementation must be empty.
-  // @warning The pointer is always delegated to Potential! No copy of it
+  // @warning The pointer is always delegated to Tensor! No copy of it
   //          is made.
   // @todo When copy of a MultiDimImplementation is available use a copy
   //       behaviour for this method.
@@ -497,7 +497,7 @@ namespace gum {
   INLINE void BayesNetFactory< GUM_SCALAR >::_fillProbaWithValuesTable_(
       const std::vector< std::string >& variables,
       const std::vector< float >&       rawTable) {
-    const Potential< GUM_SCALAR >& table = _bn_->cpt(_varNameMap_[_stringBag_[0]]);
+    const Tensor< GUM_SCALAR >& table = _bn_->cpt(_varNameMap_[_stringBag_[0]]);
     Instantiation                  cptInst(table);
 
     List< const DiscreteVariable* > varList;
@@ -539,7 +539,7 @@ namespace gum {
   template < typename GUM_SCALAR >
   INLINE void BayesNetFactory< GUM_SCALAR >::_fillProbaWithValuesTable_(
       const std::vector< float >& rawTable) {
-    const Potential< GUM_SCALAR >& table = _bn_->cpt(_varNameMap_[_stringBag_[0]]);
+    const Tensor< GUM_SCALAR >& table = _bn_->cpt(_varNameMap_[_stringBag_[0]]);
 
     Instantiation cptInst(table);
 
@@ -804,7 +804,7 @@ namespace gum {
   INLINE void BayesNetFactory< GUM_SCALAR >::setVariableCPT(const std::string&  varName,
                                                             MultiDimAdressable* table,
                                                             bool                redefineParents) {
-    auto pot = dynamic_cast< Potential< GUM_SCALAR >* >(table);
+    auto pot = dynamic_cast< Tensor< GUM_SCALAR >* >(table);
 
     if (state() != factory_state::NONE) {
       _illegalStateError_("setVariableCPT");
@@ -825,7 +825,7 @@ namespace gum {
         }
 
         // CPT are created when a variable is added.
-        _bn_->_unsafeChangePotential_(varId, pot);
+        _bn_->_unsafeChangeTensor_(varId, pot);
       }
     }
   }
@@ -915,7 +915,7 @@ namespace gum {
   // respect to table.
   template < typename GUM_SCALAR >
   INLINE void BayesNetFactory< GUM_SCALAR >::_setCPTAndParents_(const DiscreteVariable&  var,
-                                                                Potential< GUM_SCALAR >* table) {
+                                                                Tensor< GUM_SCALAR >* table) {
     NodeId varId = _varNameMap_[var.name()];
     _bn_->dag_.eraseParents(varId);
 
@@ -927,7 +927,7 @@ namespace gum {
     }
 
     // CPT are created when a variable is added.
-    _bn_->_unsafeChangePotential_(varId, table);
+    _bn_->_unsafeChangeTensor_(varId, table);
   }
 
   // Reset the different parts used to constructed the BayesNet.

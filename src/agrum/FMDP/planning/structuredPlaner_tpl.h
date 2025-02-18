@@ -58,7 +58,7 @@
 // =========================================================================
 #include <agrum/base/multidim/implementations/multiDimFunctionGraph.h>
 #include <agrum/base/multidim/instantiation.h>
-#include <agrum/base/multidim/potential.h>
+#include <agrum/base/multidim/tensor.h>
 // =========================================================================
 #include <agrum/FMDP/planning/structuredPlaner.h>
 // =========================================================================

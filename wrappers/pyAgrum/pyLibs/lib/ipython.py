@@ -178,9 +178,9 @@ def showBN(bn, size=None, nodeColor=None, arcWidth=None, arcColor=None, cmap=Non
 
 def showProba(p, scale=1.0):
   """
-  Show a mono-dim Potential
+  Show a mono-dim Tensor
 
-  :param p: the mono-dim Potential
+  :param p: the mono-dim Tensor
   :return:
   """
   fig = proba2histo(p, scale)
@@ -272,7 +272,7 @@ def showInfluenceDiagram(diag, size=None):
   return showGraph(ID2dot(diag), size)
 
 
-def showPotential(p):
+def showTensor(p):
   print(p)
 
 
@@ -280,9 +280,9 @@ def show(model, size=None):
   """
   propose a (visual) representation of a model in ipython console
 
-  :param GraphicalModel model: the model to show (pyAgrum.BayesNet, pyAgrum.MarkovRandomField, pyAgrum.InfluenceDiagram or pyAgrum.Potential)
+  :param GraphicalModel model: the model to show (pyAgrum.BayesNet, pyAgrum.MarkovRandomField, pyAgrum.InfluenceDiagram or pyAgrum.Tensor)
 
-  :param int size: optional size for the graphical model (no effect for Potential)
+  :param int size: optional size for the graphical model (no effect for Tensor)
   """
   if isinstance(model, gum.BayesNet):
     showBN(model, size)
@@ -290,8 +290,8 @@ def show(model, size=None):
     showMN(model, size)
   elif isinstance(model, gum.InfluenceDiagram):
     showInfluenceDiagram(model, size)
-  elif isinstance(model, gum.Potential):
-    showPotential(model)
+  elif isinstance(model, gum.Tensor):
+    showTensor(model)
   else:
     raise gum.InvalidArgument(
       "Argument model should be a PGM (BayesNet, MarkovRandomField or Influence Diagram")

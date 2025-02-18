@@ -110,7 +110,7 @@ namespace gum {
 
     // now, parse the table and compute the projection. Start with the
     // neutral element
-    // TODO: change into Instantiation table_inst(table); when Potentials will support
+    // TODO: change into Instantiation table_inst(table); when Tensors will support
     // thread-safe creations of Instantiations
     Instantiation table_inst;
     for (const auto var: table->variablesSequence())

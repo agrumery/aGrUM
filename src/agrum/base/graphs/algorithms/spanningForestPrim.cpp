@@ -150,7 +150,7 @@ namespace gum {
   /// explore the neighborhood of a node belonging to the spanning tree
   void SpanningForestPrim::_exploreNode_(const NodeId id) {
     // add its neighbors  _edgesToExplore_ to indicate that they are
-    // potential next nodes to explore
+    // tensor next nodes to explore
     for (const auto node: _graph_.neighbours(id)) {
       if (!_spanning_tree_.existsNode(node)) {
         Edge edge(node, id);

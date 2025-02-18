@@ -113,7 +113,7 @@ namespace gum::learning {
     return PriorType::DirichletPriorType;
   }
 
-  /// indicates whether the prior is potentially informative
+  /// indicates whether the prior is tensorly informative
 
   template < typename GUM_SCALAR >
   INLINE bool DirichletPriorFromBN< GUM_SCALAR >::isInformative() const {
@@ -173,7 +173,7 @@ namespace gum::learning {
 
     LazyPropagation lazy(_prior_bn_);
 
-    Potential< GUM_SCALAR > p;
+    Tensor< GUM_SCALAR > p;
     if (joint.size() == 1) {
       const auto& target = *joint.begin();
       lazy.addTarget(target);

@@ -59,7 +59,7 @@
 #include <agrum/base/graphs/algorithms/triangulations/partialOrderedTriangulation.h>
 #include <agrum/base/multidim/implementations/multiDimBucket.h>
 #include <agrum/base/multidim/implementations/multiDimSparse.h>
-#include <agrum/ID/inference/tools/decisionPotential.h>
+#include <agrum/ID/inference/tools/decisionTensor.h>
 #include <agrum/ID/inference/tools/influenceDiagramInference.h>
 
 namespace gum {
@@ -76,8 +76,8 @@ namespace gum {
    */
   template < typename GUM_SCALAR >
   class ShaferShenoyLIMIDInference: public InfluenceDiagramInference< GUM_SCALAR > {
-    using PhiNodeProperty = NodeProperty< DecisionPotential< GUM_SCALAR > >;
-    using PsiArcProperty  = ArcProperty< DecisionPotential< GUM_SCALAR > >;
+    using PhiNodeProperty = NodeProperty< DecisionTensor< GUM_SCALAR > >;
+    using PsiArcProperty  = ArcProperty< DecisionTensor< GUM_SCALAR > >;
     using SetOfVars       = gum::VariableSet;
 
 
@@ -119,9 +119,9 @@ namespace gum {
     bool isSolvable() const;
 
 
-    gum::Potential< GUM_SCALAR > optimalDecision(NodeId decisionId) final;
+    gum::Tensor< GUM_SCALAR > optimalDecision(NodeId decisionId) final;
 
-    gum::Potential< GUM_SCALAR > optimalDecision(const std::string& decisionName) final {
+    gum::Tensor< GUM_SCALAR > optimalDecision(const std::string& decisionName) final {
       return optimalDecision(this->influenceDiagram().idFromName(decisionName));
     };
 
@@ -131,9 +131,9 @@ namespace gum {
      * @param node
      * @return the posterior probability
      */
-    virtual const Potential< GUM_SCALAR >& posterior(NodeId node) final;
+    virtual const Tensor< GUM_SCALAR >& posterior(NodeId node) final;
 
-    const Potential< GUM_SCALAR >& posterior(const std::string& name) final {
+    const Tensor< GUM_SCALAR >& posterior(const std::string& name) final {
       return posterior(this->influenceDiagram().idFromName(name));
     };
 
@@ -143,9 +143,9 @@ namespace gum {
      * @param node
      * @return the posterior utility of a node
      */
-    virtual const Potential< GUM_SCALAR >& posteriorUtility(NodeId node) final;
+    virtual const Tensor< GUM_SCALAR >& posteriorUtility(NodeId node) final;
 
-    virtual const Potential< GUM_SCALAR >& posteriorUtility(const std::string& name) final {
+    virtual const Tensor< GUM_SCALAR >& posteriorUtility(const std::string& name) final {
       return posteriorUtility(this->influenceDiagram().idFromName(name));
     };
 
@@ -176,7 +176,7 @@ namespace gum {
     void onEvidenceChanged_(NodeId id, bool hasChangedSoftHard) override;
     void onModelChanged_(const GraphicalModel* model) override;
     void updateOutdatedStructure_() override;
-    void updateOutdatedPotentials_() override;
+    void updateOutdatedTensors_() override;
     void makeInference_() override;
 
     /// Returns the set of non-requisite for node d
@@ -186,9 +186,9 @@ namespace gum {
     CliqueGraph                                     reducedJunctionTree_;
     NodeProperty< NodeId >                          node_to_clique_;
     EdgeProperty< SetOfVars >                       varsSeparator_;
-    NodeProperty< Potential< GUM_SCALAR > >         strategies_;
-    NodeProperty< DecisionPotential< GUM_SCALAR > > posteriors_;
-    NodeProperty< DecisionPotential< GUM_SCALAR > > unconditionalDecisions_;
+    NodeProperty< Tensor< GUM_SCALAR > >         strategies_;
+    NodeProperty< DecisionTensor< GUM_SCALAR > > posteriors_;
+    NodeProperty< DecisionTensor< GUM_SCALAR > > unconditionalDecisions_;
 
     void                   createReduced_();
     std::vector< NodeSet > reversePartialOrder_;
@@ -220,14 +220,14 @@ namespace gum {
                                    NodeId           toClique);
     void distributingMessage_(PhiNodeProperty& phi, PsiArcProperty& psi, NodeId rootClique);
     void computingPosteriors_(const PhiNodeProperty& phi, const PsiArcProperty& psi);
-    DecisionPotential< double > integrating_(const PhiNodeProperty& phi,
+    DecisionTensor< double > integrating_(const PhiNodeProperty& phi,
                                              const PsiArcProperty&  psi,
                                              NodeId                 clique,
                                              NodeId                 except) const;
-    DecisionPotential< double >
+    DecisionTensor< double >
          integrating_(const PhiNodeProperty& phi, const PsiArcProperty& psi, NodeId clique) const;
-    void binarizingMax_(const Potential< GUM_SCALAR >& decision,
-                        const Potential< GUM_SCALAR >& proba) const;
+    void binarizingMax_(const Tensor< GUM_SCALAR >& decision,
+                        const Tensor< GUM_SCALAR >& proba) const;
   };
 } /* namespace gum */
 

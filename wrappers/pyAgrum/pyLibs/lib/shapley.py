@@ -511,8 +511,8 @@ class ShapValues:
     if cmap is None:
       # Set Color Map
       ## Define the hex colors
-      color1 = gum.config["notebook", "potential_color_0"]
-      color2 = gum.config["notebook", "potential_color_1"]
+      color1 = gum.config["notebook", "tensor_color_0"]
+      color2 = gum.config["notebook", "tensor_color_1"]
 
       ## Create the custom colormap
       cmap = mcolors.LinearSegmentedColormap.from_list("", [color1, color2])

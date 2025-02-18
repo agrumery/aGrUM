@@ -174,9 +174,9 @@ namespace gum {
      * @return The variable's CPT.
      * @throw NotFound If no variable's id matches varId.
      */
-    virtual const Potential< GUM_SCALAR >& factor(const NodeSet& varIds) const final;
+    virtual const Tensor< GUM_SCALAR >& factor(const NodeSet& varIds) const final;
 
-    virtual const Potential< GUM_SCALAR >&
+    virtual const Tensor< GUM_SCALAR >&
         factor(const std::vector< std::string >& varnames) const final;
 
     /**
@@ -205,7 +205,7 @@ namespace gum {
      * Add a gum::DiscreteVariable, it's associated gum::NodeId
      *opera
      * The variable is added by copy to the gum::MarkovRandomField.
-     * The variable's gum::Potential implementation will be a
+     * The variable's gum::Tensor implementation will be a
      * gum::MultiDimArray.
      *
      * @param var The variable added by copy.
@@ -239,10 +239,10 @@ namespace gum {
      * @brief Add a variable to the gum::MarkovRandomField.
      *
      * Add a gum::DiscreteVariable, it's associated gum::NodeId and it's
-     * gum::Potential.
+     * gum::Tensor.
      *
      * The variable is added by copy to the gum::MarkovRandomField.
-     * The variable's gum::Potential implementation will be a
+     * The variable's gum::Tensor implementation will be a
      * gum::MultiDimArray.
      *
      * @param var The variable added by copy.
@@ -394,7 +394,7 @@ namespace gum {
      *
      * @return a const ref to the factor in the Markov random field
      */
-    const Potential< GUM_SCALAR >& addFactor(const std::vector< std::string >& varnames);
+    const Tensor< GUM_SCALAR >& addFactor(const std::vector< std::string >& varnames);
 
     /**
      * @brief Add a factor (a clique) to the gum::MarkovRandomField.
@@ -403,21 +403,21 @@ namespace gum {
      *
      * @return a const ref to the factor in the Markov random field
      *
-     * @warning in order to be deterministic, the Potential contains all the vars
+     * @warning in order to be deterministic, the Tensor contains all the vars
      * of the clique sorted by id.
      */
-    const Potential< GUM_SCALAR >& addFactor(const NodeSet& vars);
+    const Tensor< GUM_SCALAR >& addFactor(const NodeSet& vars);
 
     /**
      * @brief Add a factor (a clique) to the gum::MarkovRandomField using the order sequence as an
      * order for the factor.
      *
      * @param aContent The gum::MultiDimImplementation to use for this
-     *                 variable's gum::Potential implementation (will be copied).
+     *                 variable's gum::Tensor implementation (will be copied).
      *
      * @return a const ref to the factor in the Markov random field
      */
-    const Potential< GUM_SCALAR >& addFactor(const Potential< GUM_SCALAR >& factor);
+    const Tensor< GUM_SCALAR >& addFactor(const Tensor< GUM_SCALAR >& factor);
 
     /**
      * Removes a factor in the MRF, and update head's CTP.
@@ -446,10 +446,10 @@ namespace gum {
     private:
     bool _topologyTransformationInProgress_;
 
-    /// clear all potentials
+    /// clear all tensors
     void _clearFactors_();
 
-    /// copy of potentials from a MRF to another, using names of vars as ref.
+    /// copy of tensors from a MRF to another, using names of vars as ref.
     void _copyFactors_(const MarkovRandomField< GUM_SCALAR >& source);
 
     /// rebuild the graph after strucural changes in the factors
@@ -460,7 +460,7 @@ namespace gum {
     /// the factors
     FactorTable< GUM_SCALAR > _factors_;
 
-    Potential< GUM_SCALAR >& _addFactor_(const std::vector< NodeId >& ordered_nodes);
+    Tensor< GUM_SCALAR >& _addFactor_(const std::vector< NodeId >& ordered_nodes);
 
     void _eraseFactor_(const NodeSet& vars);
 

@@ -396,11 +396,11 @@ class PRMexplorer {
   }
 
   /**
-   * @return the potential of an attribute in a class
+   * @return the tensor of an attribute in a class
    * @param classname : the name of the class   *
    * @param attribute : the name of the attribute
    */
-  const gum::Potential< double >& cpf(std::string class_name, std::string attribute) {
+  const gum::Tensor< double >& cpf(std::string class_name, std::string attribute) {
     if (_prm_ == nullptr) { GUM_ERROR(gum::FatalError, "No loaded prm.") }
     return _prm_->getClass(class_name).get(attribute).cpf();
   }

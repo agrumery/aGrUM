@@ -66,7 +66,7 @@ namespace gum {
      * as used in the MIIC algorithm
      *
      * This class handles the computations and storage of the mutual information
-     * values used in MIIC and potential corrections.
+     * values used in MIIC and tensor corrections.
      *
      * @WARNING Due to the common use of this quantity, the scores return database
      * weight*CorrectedMutualInformation where the weight of the database is the generalisation of

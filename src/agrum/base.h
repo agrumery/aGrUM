@@ -88,7 +88,7 @@
 #include <agrum/base/multidim/implementations/multiDimReadOnly.h>
 #include <agrum/base/multidim/implementations/multiDimWithOffset.h>
 #include <agrum/base/multidim/instantiation.h>
-#include <agrum/base/multidim/potential.h>
+#include <agrum/base/multidim/tensor.h>
 #include <agrum/base/variables/allDiscreteVariables.h>
 #include <agrum/base/variables/discreteVariable.h>
 #include <agrum/base/variables/discretizedVariable.h>

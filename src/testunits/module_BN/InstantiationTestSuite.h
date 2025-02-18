@@ -211,7 +211,7 @@ namespace gum_tests {
       for (const auto node: bn->topologicalOrder())
         Order.add(bn->variable(node));
 
-      const gum::Potential< double >& pot = bn->cpt(i5);
+      const gum::Tensor< double >& pot = bn->cpt(i5);
 
       gum::Instantiation inst(pot);
       gum::Instantiation instcomp(inst);

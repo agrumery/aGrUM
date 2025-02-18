@@ -53,11 +53,11 @@
 #include <agrum/agrum.h>
 
 #include <agrum/base/graphicalModels/UGmodel.h>
-#include <agrum/base/multidim/potential.h>
+#include <agrum/base/multidim/tensor.h>
 
 namespace gum {
   template < typename GUM_SCALAR >
-  using FactorTable = HashTable< NodeSet, const Potential< GUM_SCALAR >* >;
+  using FactorTable = HashTable< NodeSet, const Tensor< GUM_SCALAR >* >;
 
   /**
    * @class IMarkovRandomField
@@ -112,7 +112,7 @@ namespace gum {
      *
      * @throw NotFound If no variable's id matches varId.
      */
-    virtual const Potential< GUM_SCALAR >& factor(const NodeSet& varIds) const = 0;
+    virtual const Tensor< GUM_SCALAR >& factor(const NodeSet& varIds) const = 0;
 
     /**
      * Returns the smallest factor that contains this variable

@@ -45,7 +45,7 @@
 #include <gumtest/AgrumTestSuite.h>
 #include <gumtest/utils.h>
 
-#include <agrum/base/multidim/potential.h>
+#include <agrum/base/multidim/tensor.h>
 #include <agrum/base/variables/discretizedVariable.h>
 #include <agrum/base/variables/labelizedVariable.h>
 #include <agrum/base/variables/rangeVariable.h>
@@ -173,10 +173,10 @@ namespace gum_tests {
       TS_ASSERT_EQUALS(mn.factor(s2).variable(0).name(), mn.variable(1).name())
     }
 
-    GUM_ACTIVE_TEST(InsertionFromPotential) {
+    GUM_ACTIVE_TEST(InsertionFromTensor) {
       gum::MarkovRandomField< double > mn;
       _fill(mn);
-      TS_ASSERT_THROWS(mn.addFactor(gum::Potential< double >()),
+      TS_ASSERT_THROWS(mn.addFactor(gum::Tensor< double >()),
                        const gum::InvalidArgument&)   // no empty factor
       TS_ASSERT_THROWS(mn.addFactor({"11", "31"}),
                        const gum::InvalidArgument&)   // already exists
@@ -184,7 +184,7 @@ namespace gum_tests {
       {
         gum::MarkovRandomField< double > mn1;
         _fill(mn1);
-        gum::Potential< double > pot;
+        gum::Tensor< double > pot;
         pot.add(mn1.variable("11"));
         pot.add(mn1.variable("21"));
         pot.randomDistribution();
@@ -194,7 +194,7 @@ namespace gum_tests {
       {
         gum::MarkovRandomField< double > mn1;
         _fill(mn1);
-        gum::Potential< double > pot;
+        gum::Tensor< double > pot;
         pot.add(mn1.variable("21"));
         pot.add(mn1.variable("11"));
         pot.randomDistribution();
@@ -295,7 +295,7 @@ namespace gum_tests {
       auto bn = gum::BayesNet< double >::fastPrototype("A->B->C<-D;C<-E->F<-G;F<-A");
       auto mn = gum::MarkovRandomField< double >::fromBN(bn);
 
-      gum::Potential< double > pbn;
+      gum::Tensor< double > pbn;
       pbn.fill(1);
       for (gum::NodeId nod: bn.nodes()) {
         TS_ASSERT_EQUALS(bn.variable(nod).toString(), mn.variable(nod).toString())
@@ -303,7 +303,7 @@ namespace gum_tests {
         pbn *= bn.cpt(nod);
       }
 
-      gum::Potential< double > pmn;
+      gum::Tensor< double > pmn;
       pmn.fill(1);
       for (const auto& key: mn.factors()) {
         TS_ASSERT_EQUALS(mn.factor(key.first), *key.second)
@@ -319,7 +319,7 @@ namespace gum_tests {
       s << 4 << 0 << 6 << 5;
       TS_GUM_ASSERT_THROWS_NOTHING(mn.factor(s))
 
-      gum::Potential< double > ppmn(pbn);
+      gum::Tensor< double > ppmn(pbn);
       ppmn.fillWith(pmn);   // copy of pmn using pbn's variables
       auto diff = (pbn - ppmn).new_abs();
       TS_ASSERT_EQUALS(pbn.domainSize(), diff.domainSize())

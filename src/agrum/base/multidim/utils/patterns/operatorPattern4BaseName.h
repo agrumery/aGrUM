@@ -227,7 +227,7 @@ namespace gum {
     // Instantiation t2_inst(t2);
     // Instantiation t1_inst(t1);
     // Instantiation t1_alone_begin_inst(t1);
-    // when Potentials will support thread-safe creations of Instantiations
+    // when Tensors will support thread-safe creations of Instantiations
     Instantiation t2_inst;
     Instantiation t1_inst;
     Instantiation t1_alone_begin_inst;

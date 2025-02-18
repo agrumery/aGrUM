@@ -272,7 +272,7 @@ namespace gum_tests {
     GUM_ACTIVE_TEST(Cpf) {
       // Arrange
       PRMSlotChain             slot("simple", *_booleanChain_);
-      gum::Potential< double > expected;
+      gum::Tensor< double > expected;
       expected << slot.type().variable();
       // Act
       auto& actual = slot.cpf();
@@ -290,7 +290,7 @@ namespace gum_tests {
       // Arrange
       PRMSlotChain             slot("simple", *_booleanChain_);
       const auto&              slot_const = slot;
-      gum::Potential< double > expected;
+      gum::Tensor< double > expected;
       expected << slot.type().variable();
       // Act
       const auto& actual = slot_const.cpf();

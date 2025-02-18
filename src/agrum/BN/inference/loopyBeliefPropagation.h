@@ -84,7 +84,7 @@ namespace gum {
 
     virtual void updateOutdatedStructure_();
 
-    virtual void updateOutdatedPotentials_() {};
+    virtual void updateOutdatedTensors_() {};
 
     virtual void onMarginalTargetAdded_(const NodeId id) {};
 
@@ -96,22 +96,22 @@ namespace gum {
 
     /// asks derived classes for the posterior of a given variable
     /** @param id The variable's id. */
-    virtual const Potential< GUM_SCALAR >& posterior_(NodeId id);
+    virtual const Tensor< GUM_SCALAR >& posterior_(NodeId id);
 
     virtual void makeInference_();
 
     // will be used in both directions :
     // for x->y, (x,y) and (y,x) will be in  _messages_
-    ArcProperty< Potential< GUM_SCALAR > >  _messages_;
-    NodeProperty< Potential< GUM_SCALAR > > _posteriors_;
+    ArcProperty< Tensor< GUM_SCALAR > >  _messages_;
+    NodeProperty< Tensor< GUM_SCALAR > > _posteriors_;
 
     void _initStats_();
 
     void                    _init_messages_();
-    Potential< GUM_SCALAR > _computeProdPi_(NodeId X);
-    Potential< GUM_SCALAR > _computeProdPi_(NodeId X, NodeId except);
-    Potential< GUM_SCALAR > _computeProdLambda_(NodeId X);
-    Potential< GUM_SCALAR > _computeProdLambda_(NodeId X, NodeId except);
+    Tensor< GUM_SCALAR > _computeProdPi_(NodeId X);
+    Tensor< GUM_SCALAR > _computeProdPi_(NodeId X, NodeId except);
+    Tensor< GUM_SCALAR > _computeProdLambda_(NodeId X);
+    Tensor< GUM_SCALAR > _computeProdLambda_(NodeId X, NodeId except);
 
     // return the max differential BNdistance for this node
     GUM_SCALAR _updateNodeMessage_(NodeId X);

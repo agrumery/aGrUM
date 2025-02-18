@@ -67,8 +67,8 @@ namespace gum {
   template < typename GUM_SCALAR >
   void SimpleCPTDisturber< GUM_SCALAR >::disturbReducCPT(NodeId                   node,
                                                          BayesNet< GUM_SCALAR >&  bayesNet,
-                                                         Potential< GUM_SCALAR >& src,
-                                                         Potential< GUM_SCALAR >& marg) {
+                                                         Tensor< GUM_SCALAR >& src,
+                                                         Tensor< GUM_SCALAR >& marg) {
     Instantiation i_src(src);
     Instantiation i_dest(bayesNet.cpt(node));
     Instantiation i_marg(marg);
@@ -91,7 +91,7 @@ namespace gum {
   template < typename GUM_SCALAR >
   void SimpleCPTDisturber< GUM_SCALAR >::disturbAugmCPT(NodeId                   node,
                                                         BayesNet< GUM_SCALAR >&  bayesNet,
-                                                        Potential< GUM_SCALAR >& src,
+                                                        Tensor< GUM_SCALAR >& src,
                                                         GUM_SCALAR               variation) {
     Instantiation i(bayesNet.cpt(node));
 

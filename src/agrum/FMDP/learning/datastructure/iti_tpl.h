@@ -158,8 +158,8 @@ namespace gum {
   void ITI< AttributeSelection, isScalar >::updateGraph() {
     std::vector< NodeId > filo;
     filo.push_back(this->root_);
-    HashTable< NodeId, gum::VariableSet* > potentialVars;
-    potentialVars.insert(this->root_, new gum::VariableSet(this->setOfVars_));
+    HashTable< NodeId, gum::VariableSet* > tensorVars;
+    tensorVars.insert(this->root_, new gum::VariableSet(this->setOfVars_));
 
 
     while (!filo.empty()) {
@@ -170,8 +170,8 @@ namespace gum {
       double           bestValue = _attributeSelectionThreshold_;
       gum::VariableSet bestVars;
 
-      for (auto varIter = potentialVars[currentNodeId]->cbeginSafe();
-           varIter != potentialVars[currentNodeId]->cendSafe();
+      for (auto varIter = tensorVars[currentNodeId]->cbeginSafe();
+           varIter != tensorVars[currentNodeId]->cendSafe();
            ++varIter)
         if (this->nodeId2Database_[currentNodeId]->isTestRelevant(*varIter)) {
           double varValue = this->nodeId2Database_[currentNodeId]->testValue(*varIter);
@@ -190,19 +190,19 @@ namespace gum {
       // The we move on the children if needed
       if (this->nodeVarMap_[currentNodeId] != this->value_) {
         for (Idx moda = 0; moda < this->nodeVarMap_[currentNodeId]->domainSize(); moda++) {
-          gum::VariableSet* itsPotentialVars = new gum::VariableSet(*potentialVars[currentNodeId]);
-          itsPotentialVars->erase(this->nodeVarMap_[currentNodeId]);
+          gum::VariableSet* itsTensorVars = new gum::VariableSet(*tensorVars[currentNodeId]);
+          itsTensorVars->erase(this->nodeVarMap_[currentNodeId]);
           NodeId sonId = this->nodeSonsMap_[currentNodeId][moda];
           if (_staleTable_[sonId]) {
             filo.push_back(sonId);
-            potentialVars.insert(sonId, itsPotentialVars);
+            tensorVars.insert(sonId, itsTensorVars);
           }
         }
       }
     }
 
-    for (HashTableIteratorSafe< NodeId, gum::VariableSet* > nodeIter = potentialVars.beginSafe();
-         nodeIter != potentialVars.endSafe();
+    for (HashTableIteratorSafe< NodeId, gum::VariableSet* > nodeIter = tensorVars.beginSafe();
+         nodeIter != tensorVars.endSafe();
          ++nodeIter)
       delete nodeIter.val();
   }

@@ -66,34 +66,34 @@ namespace gum {
    *
    * Here is a brief piece of code that should highlight the concept:
    * @code
-   * // some arbitrary potentials (to be initialized before going on)
-   * gum::Potential< float > pot1, pot2, pot3;
+   * // some arbitrary tensors (to be initialized before going on)
+   * gum::Tensor< float > pot1, pot2, pot3;
    *
    * // we wish to schedule ( pot1 + pot2 ) + pot3
-   * // so, first, create ScheduleMultiDims for wrapping these potentials
-   * gum::ScheduleMultiDim< gum::Potential< float > > f1 ( pot1 );
-   * gum::ScheduleMultiDim< gum::Potential< float > > f2 ( pot2 );
-   * gum::ScheduleMultiDim< gum::Potential< float > > f3 ( pot3 );
+   * // so, first, create ScheduleMultiDims for wrapping these tensors
+   * gum::ScheduleMultiDim< gum::Tensor< float > > f1 ( pot1 );
+   * gum::ScheduleMultiDim< gum::Tensor< float > > f2 ( pot2 );
+   * gum::ScheduleMultiDim< gum::Tensor< float > > f3 ( pot3 );
    *
    * // now schedule a combination (+) between f1 and f2
-   * gum::ScheduleCombination< gum::Potential< float >,
-   *                           gum::Potential< float >,
-   *                           gum::Potential< float > > comb1 ( &f1, &f2, add );
+   * gum::ScheduleCombination< gum::Tensor< float >,
+   *                           gum::Tensor< float >,
+   *                           gum::Tensor< float > > comb1 ( &f1, &f2, add );
    *
    * // get the result and schedule it with f3
-   * const ScheduleMultiDim< gum::Potential< float > >& result1 = comb1.result ();
-   * gum::ScheduleCombination< gum::Potential< float >,
-   *                           gum::Potential< float >,
-   *                           gum::Potential< float > > comb2 ( &result2, &f3, add );
+   * const ScheduleMultiDim< gum::Tensor< float > >& result1 = comb1.result ();
+   * gum::ScheduleCombination< gum::Tensor< float >,
+   *                           gum::Tensor< float >,
+   *                           gum::Tensor< float > > comb2 ( &result2, &f3, add );
    *
    * // get the resulting ScheduleMultiDim
-   * const ScheduleMultiDim<gum::Potential< float > >& result2 = comb2.result ();
+   * const ScheduleMultiDim<gum::Tensor< float > >& result2 = comb2.result ();
    *
    * // here, no addition has been performed yet. We just have a structure
    * // that indicates which operations we wish to do. So, for the moment,
-   * // result1 and result2 do not contain real Potentials.
+   * // result1 and result2 do not contain real Tensors.
    * // As such, they are called abstract and trying to get their "real"
-   * // Potential (using method multiDim()) would throw a NullElement exception.
+   * // Tensor (using method multiDim()) would throw a NullElement exception.
    * std::cout << result1.isAbstract ();
    * std::cout << result2.isAbstract ();
    * std::cout << ! f1.isAbstract ();
@@ -103,7 +103,7 @@ namespace gum {
    * std::cout << ! result1.isAbstract ();
    * comb2.execute ();
    *
-   * // here, we can display the content of the real Potential stored
+   * // here, we can display the content of the real Tensor stored
    * // into result2
    * std::cout << result2.multiDim ();
    * @endcode

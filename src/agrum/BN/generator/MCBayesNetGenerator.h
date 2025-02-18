@@ -305,7 +305,7 @@ namespace gum {
     /*
        bool                                          disturbing_;
     BayesNet< GUM_SCALAR >                        bayesNettemp_;
-    HashTable< NodeId, Potential< GUM_SCALAR >* > hashMarginal_;*/
+    HashTable< NodeId, Tensor< GUM_SCALAR >* > hashMarginal_;*/
 
     /**
      * The function that verify if graph is a polytree.

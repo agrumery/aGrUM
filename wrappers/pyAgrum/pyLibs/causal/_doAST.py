@@ -198,7 +198,7 @@ class ASTtree:
     """
     raise NotImplementedError
 
-  def eval(self, contextual_bn: "pyAgrum.BayesNet") -> "pyAgrum.Potential":
+  def eval(self, contextual_bn: "pyAgrum.BayesNet") -> "pyAgrum.Tensor":
     """
     Evaluation of a AST tree from inside a BN
 
@@ -209,8 +209,8 @@ class ASTtree:
 
     Returns
     -------
-    pyAgrum.Potential
-      the resulting Potential
+    pyAgrum.Tensor
+      the resulting Tensor
     """
     raise NotImplementedError
 
@@ -255,7 +255,7 @@ class ASTBinaryOp(ASTtree):
   def copy(self) -> "ASTtree":
     raise NotImplementedError
 
-  def eval(self, contextual_bn: "pyAgrum.BayesNet") -> "pyAgrum.Potential":
+  def eval(self, contextual_bn: "pyAgrum.BayesNet") -> "pyAgrum.Tensor":
     raise NotImplementedError
 
   @property
@@ -317,7 +317,7 @@ class ASTplus(ASTBinaryOp):
   def fastToLatex(self, nameOccur: Dict[str, int]) -> str:
     return self.op1.fastToLatex(nameOccur) + '+' + self.op2.fastToLatex(nameOccur)
 
-  def eval(self, contextual_bn: "pyAgrum.BayesNet") -> "pyAgrum.Potential":
+  def eval(self, contextual_bn: "pyAgrum.BayesNet") -> "pyAgrum.Tensor":
     if self._verbose:
       print("EVAL operation + ", flush=True)
     res = self.op1.eval(contextual_bn) + self.op2.eval(contextual_bn)
@@ -362,7 +362,7 @@ class ASTminus(ASTBinaryOp):
   def fastToLatex(self, nameOccur: Dict[str, int]) -> str:
     return self.op1.fastToLatex(nameOccur) + '-' + self.op2.fastToLatex(nameOccur)
 
-  def eval(self, contextual_bn: "pyAgrum.BayesNet") -> "pyAgrum.Potential":
+  def eval(self, contextual_bn: "pyAgrum.BayesNet") -> "pyAgrum.Tensor":
     if self._verbose:
       print("EVAL operation", flush=True)
     res = self.op1.eval(contextual_bn) - self.op2.eval(contextual_bn)
@@ -407,7 +407,7 @@ class ASTmult(ASTBinaryOp):
   def fastToLatex(self, nameOccur: Dict[str, int]) -> str:
     return self.op1.protectToLatex(nameOccur) + ' \\cdot ' + self.op2.protectToLatex(nameOccur)
 
-  def eval(self, contextual_bn: "pyAgrum.BayesNet") -> "pyAgrum.Potential":
+  def eval(self, contextual_bn: "pyAgrum.BayesNet") -> "pyAgrum.Tensor":
     if self._verbose:
       print("EVAL operation * in context", flush=True)
     res = self.op1.eval(contextual_bn) * self.op2.eval(contextual_bn)
@@ -452,7 +452,7 @@ class ASTdiv(ASTBinaryOp):
   def fastToLatex(self, nameOccur: Dict[str, int]) -> str:
     return " \\frac {" + self.op1.fastToLatex(nameOccur) + "}{" + self.op2.fastToLatex(nameOccur) + "}"
 
-  def eval(self, contextual_bn: "pyAgrum.BayesNet") -> "pyAgrum.Potential":
+  def eval(self, contextual_bn: "pyAgrum.BayesNet") -> "pyAgrum.Tensor":
     if self._verbose:
       print("EVAL operation / in context", flush=True)
     res = self.op1.eval(contextual_bn) / self.op2.eval(contextual_bn)
@@ -556,7 +556,7 @@ class ASTposteriorProba(ASTtree):
   def copy(self) -> "ASTtree":
     return ASTposteriorProba(self.bn, self.vars, self.knw)
 
-  def eval(self, contextual_bn: "pyAgrum.BayesNet") -> "pyAgrum.Potential":
+  def eval(self, contextual_bn: "pyAgrum.BayesNet") -> "pyAgrum.Tensor":
     if self._verbose:
       print(f"EVAL ${self.fastToLatex(defaultdict(int))} in context", flush=True)
     ie = pyAgrum.LazyPropagation(contextual_bn)
@@ -636,7 +636,7 @@ class ASTjointProba(ASTtree):
   def fastToLatex(self, nameOccur: Dict[str, int]) -> str:
     return "P\\left(" + ",".join(self._latexCorrect(self.varNames, nameOccur)) + "\\right)"
 
-  def eval(self, contextual_bn: "pyAgrum.BayesNet") -> "pyAgrum.Potential":
+  def eval(self, contextual_bn: "pyAgrum.BayesNet") -> "pyAgrum.Tensor":
     if self._verbose:
       print(f"EVAL ${self.fastToLatex(defaultdict(int))}$ in context", flush=True)
     ie = pyAgrum.LazyPropagation(contextual_bn)
@@ -728,7 +728,7 @@ class ASTsum(ASTtree):
 
     return res
 
-  def eval(self, contextual_bn: "pyAgrum.BayesNet") -> "pyAgrum.Potential":
+  def eval(self, contextual_bn: "pyAgrum.BayesNet") -> "pyAgrum.Tensor":
     if self._verbose:
       print(f"EVAL ${self.fastToLatex(defaultdict(int))}$", flush=True)
 
