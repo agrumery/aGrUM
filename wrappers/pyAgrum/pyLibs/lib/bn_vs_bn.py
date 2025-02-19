@@ -59,32 +59,40 @@ PURE_HAMMING = "hamming"
 
 class GraphicalBNComparator:
   """
-  BNGraphicalComparator allows to compare in multiple way 2 BNs...The smallest assumption is that the names of the variables are the same in the 2 BNs. But some comparisons will have also to check the type and domainSize of the variables. The bns have not exactly the  same role : _bn1 is rather the referent model for the comparison whereas _bn2 is the compared one to the referent model.
+  BNGraphicalComparator allows to compare in multiple way 2 BNs...
+  The smallest assumption is that the names of the variables are the same in
+  the 2 BNs. But some comparisons will have also to check the type and
+  domainSize of the variables.
+
+  The bns have not exactly the  same role : _bn1 is rather the referent model
+  for the comparison whereas _bn2 is the compared one to the referent model.
 
   Parameters
   ----------
-  name1 : str or pyAgrum.BayesNet
+  bn1 : str or pyAgrum.BayesNet
     a BN or a filename for reference
-  name2 : str or pyAgrum.BayesNet
+  bn2 : str or pyAgrum.BayesNet
     another BN or antoher filename for comparison
   """
 
-  def __init__(self, name1, name2, delta=1e-6):
+  def __init__(self, bn1: str | gum.BayesNet, bn2: str | gum.BayesNet, delta=1e-6):
     self.DELTA_ERROR = delta
-    if isinstance(name1, str):
-      self._bn1 = gum.loadBN(name1)
-      self._bn1.setProperty('name', '"' + os.path.basename(self._bn1.property('name') + '"'))
+    if isinstance(bn1, str):
+      self._bn1 = gum.loadBN(bn1)
+      self._bn1.setProperty(
+        'name', '"' + os.path.basename(self._bn1.property('name') + '"'))
     else:
-      self._bn1 = name1
+      self._bn1 = bn1
 
-    if isinstance(name2, str):
-      self._bn2 = gum.loadBN(name2)
-      self._bn2.setProperty('name', '"' + os.path.basename(self._bn2.property('name') + '"'))
+    if isinstance(bn2, str):
+      self._bn2 = gum.loadBN(bn2)
+      self._bn2.setProperty(
+        'name', '"' + os.path.basename(self._bn2.property('name') + '"'))
     else:
-      self._bn2 = name2
+      self._bn2 = bn2
 
-    s1 = set(self._bn1.names())
-    s2 = set(self._bn2.names())
+    s1: set[str] = set(self._bn1.names())
+    s2: set[str] = set(self._bn2.names())
 
     if s1 != s2:
       raise ValueError(
@@ -134,7 +142,6 @@ class GraphicalBNComparator:
     return "OK"
 
   def _compareTensors(self, pot1, pot2):
-
     """
     Compare 2 tensors one in each Bayesian network
 
@@ -443,13 +450,15 @@ def graphDiff(bnref, bncmp, noStyle=False):
   g = ggr.BN2dot(bnref)
   positions = gutils.dot_layout(g)
 
-  res = dot.Dot(graph_type='digraph', bgcolor="transparent", layout="fdp", splines=True)
+  res = dot.Dot(graph_type='digraph', bgcolor="transparent",
+                layout="fdp", splines=True)
   for i1 in bnref.nodes():
-    pos=positions[bnref.variable(i1).name()]
+    pos = positions[bnref.variable(i1).name()]
     if bnref.variable(i1).name() in bncmp.names():
       res.add_node(dot.Node(f'"{bnref.variable(i1).name()}"',
                             style="filled",
-                            fillcolor=gum.config["notebook", "graphdiff_correct_color"],
+                            fillcolor=gum.config["notebook",
+                            "graphdiff_correct_color"],
                             color=gutils.getBlackInTheme()
                             )
                    )
@@ -457,7 +466,8 @@ def graphDiff(bnref, bncmp, noStyle=False):
       if not noStyle:
         res.add_node(dot.Node(f'"{bnref.variable(i1).name()}"',
                               style="dashed",
-                              fillcolor=gum.config["notebook", "graphdiff_correct_color"],
+                              fillcolor=gum.config["notebook",
+                              "graphdiff_correct_color"],
                               color=gutils.getBlackInTheme()
                               )
                      )
@@ -466,7 +476,8 @@ def graphDiff(bnref, bncmp, noStyle=False):
       n1 = bncmp.variable(i1).name()
       n2 = bncmp.variable(i2).name()
       res.add_edge(dot.Edge(f'"{n1}"', f'"{n2}"',
-                            style=gum.config["notebook", "graphdiff_correct_style"],
+                            style=gum.config["notebook",
+                            "graphdiff_correct_style"],
                             color=gum.config["notebook", "graphdiff_correct_color"]))
 
   else:
@@ -477,23 +488,27 @@ def graphDiff(bnref, bncmp, noStyle=False):
       # a node is missing
       if not (n1 in bncmp.names() and n2 in bncmp.names()):
         res.add_edge(dot.Edge(f'"{n1}"', f'"{n2}"',
-                              style=gum.config["notebook", "graphdiff_missing_style"],
+                              style=gum.config["notebook",
+                              "graphdiff_missing_style"],
                               color=gum.config["notebook", "graphdiff_missing_color"]))
         continue
 
       if bncmp.existsArc(n1, n2):  # arc is OK in BN2
         res.add_edge(dot.Edge(f'"{n1}"', f'"{n2}"',
-                              style=gum.config["notebook", "graphdiff_correct_style"],
+                              style=gum.config["notebook",
+                              "graphdiff_correct_style"],
                               color=gum.config["notebook", "graphdiff_correct_color"]))
       elif bncmp.existsArc(n2, n1):  # arc is reversed in BN2
         res.add_edge(dot.Edge(f'"{n1}"', f'"{n2}"',
                               style="invis"))
         res.add_edge(dot.Edge(f'"{n2}"', f'"{n1}"',
-                              style=gum.config["notebook", "graphdiff_reversed_style"],
+                              style=gum.config["notebook",
+                              "graphdiff_reversed_style"],
                               color=gum.config["notebook", "graphdiff_reversed_color"]))
       else:  # arc is missing in BN2
         res.add_edge(dot.Edge(f'"{n1}"', f'"{n2}"',
-                              style=gum.config["notebook", "graphdiff_missing_style"],
+                              style=gum.config["notebook",
+                              "graphdiff_missing_style"],
                               color=gum.config["notebook", "graphdiff_missing_color"]))
 
     for (i1, i2) in bncmp.arcs():
@@ -501,7 +516,8 @@ def graphDiff(bnref, bncmp, noStyle=False):
       n2 = bncmp.variable(i2).name()
       if not bnref.existsArc(n1, n2) and not bnref.existsArc(n2, n1):  # arc only in BN2
         res.add_edge(dot.Edge(f'"{n1}"', f'"{n2}"',
-                              style=gum.config["notebook", "graphdiff_overflow_style"],
+                              style=gum.config["notebook",
+                              "graphdiff_overflow_style"],
                               color=gum.config["notebook", "graphdiff_overflow_color"]))
 
     gutils.apply_dot_layout(res, positions)
@@ -521,16 +537,20 @@ def graphDiffLegend():
   for i in "abcdefgh":
     res.add_node(dot.Node(i, style="invis"))
   res.add_edge(dot.Edge("a", "b", label="overflow",
-                        style=gum.config["notebook", "graphdiff_overflow_style"],
+                        style=gum.config["notebook",
+                        "graphdiff_overflow_style"],
                         color=gum.config["notebook", "graphdiff_overflow_color"]))
   res.add_edge(dot.Edge("c", "d", label="Missing",
-                        style=gum.config["notebook", "graphdiff_missing_style"],
+                        style=gum.config["notebook",
+                        "graphdiff_missing_style"],
                         color=gum.config["notebook", "graphdiff_missing_color"]))
   res.add_edge(dot.Edge("e", "f", label="reversed",
-                        style=gum.config["notebook", "graphdiff_reversed_style"],
+                        style=gum.config["notebook",
+                        "graphdiff_reversed_style"],
                         color=gum.config["notebook", "graphdiff_reversed_color"]))
   res.add_edge(dot.Edge("g", "h", label="Correct",
-                        style=gum.config["notebook", "graphdiff_correct_style"],
+                        style=gum.config["notebook",
+                        "graphdiff_correct_style"],
                         color=gum.config["notebook", "graphdiff_correct_color"]))
 
   return res
