@@ -111,8 +111,6 @@ def export(model, filename=None, **kwargs):
 
   gumcols.prepareDot(fig, **kwargs).write(filename, format=fmt_image)
 
-
-@gum.deprecated_arg("cmapNode", "cmap", "1.8.1")
 def prepareShowInference(model, engine=None, evs=None, targets=None, size=None,
                          nodeColor=None, factorColor=None, arcWidth=None,
                          arcColor=None, cmapNode=None, cmapArc=None, graph=None, view=None

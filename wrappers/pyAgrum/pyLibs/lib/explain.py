@@ -424,15 +424,6 @@ def _buildMB(model, x: int, k: int = 1):
   return nodes, arcs, depth
 
 
-def nestedMarkovBlankets(bn, x, k: int = 1, cmapNode=None):
-  """
-  deprecated : use generalizedMarkovBlanket instead
-  """
-  warnings.warn("nestedMarkovBlankets is deprecated since pyAgrum>1.13.2. Please use generalizedMarkovBlanket instead",
-                DeprecationWarning, stacklevel=2)
-  return generalizedMarkovBlanket(bn, x, k, cmapNode)
-
-
 def generalizedMarkovBlanket(bn, var: Union[int, str], k: int = 1, cmapNode=None):
   """
   Build a pydot.Dot representation of the nested Markov Blankets (of order k) of node x
@@ -494,17 +485,6 @@ def generalizedMarkovBlanket(bn, var: Union[int, str], k: int = 1, cmapNode=None
       mb.add_edge(edge)
 
   return mb
-
-
-def nestedMarkovBlanketsNames(bn, x, k: int = 1):
-  """
-  deprecated : use generalizedMarkovBlanket instead
-  """
-  warnings.warn(
-    "nestedMarkovBlanketsNames is deprecated since pyAgrum>1.13.2. Please use generalizedMarkovBlanketNames instead",
-    DeprecationWarning, stacklevel=2)
-  return generalizedMarkovBlanketNames(bn, x, k)
-
 
 def generalizedMarkovBlanketNames(bn, var: Union[int, str], depth: int = 1):
   """

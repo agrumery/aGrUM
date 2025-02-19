@@ -134,7 +134,7 @@ class BNCLassifierTestCase(pyAgrumTestCase):
 
     bnc2.fit(data=dftrain, targetName="Y")
 
-    self.assertDictEqual(_normalizeDiscretizerAudit(bnc.discretizer.audit(dftrain)),_normalizeDiscretizerAudit(bnc2.discretizer.audit(dftrain)))
+    self.assertDictEqual(_normalizeDiscretizerAudit(bnc.type_processor.audit(dftrain)), _normalizeDiscretizerAudit(bnc2.type_processor.audit(dftrain)))
     self.assertDictEqual(bnc.get_params(), bnc2.get_params())
     self.assertEqual(bnc.threshold, bnc2.threshold)
     self.assertEqual((bnc.predict_proba(dftest) - bnc2.predict_proba(dftest)).max(), 0)

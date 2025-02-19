@@ -39,14 +39,13 @@
 
 import unittest
 
-import numpy
 import pandas as pd
-from pyAgrum.lib.discretizer import Discretizer
+from pyAgrum.lib.discreteTypeProcessor import DiscreteTypeProcessor
 
 from .pyAgrumTestSuite import pyAgrumTestCase, addTests
 
 
-class DiscretizerTestCase(pyAgrumTestCase):
+class DiscreteTypeProcessorTestCase(pyAgrumTestCase):
 
   def testCreateVariableFromDf(self):
     X = pd.DataFrame.from_dict({
@@ -57,7 +56,7 @@ class DiscretizerTestCase(pyAgrumTestCase):
       'var5': [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 1]
     })
 
-    discretizer = Discretizer()
+    discretizer = DiscreteTypeProcessor()
     self.assertEqual(str(discretizer._createVariable('var1', X['var1'])),
                      "var1:Range([1,11])")
     self.assertEqual(str(discretizer._createVariable('var2', X['var2'])),
@@ -69,7 +68,7 @@ class DiscretizerTestCase(pyAgrumTestCase):
     self.assertEqual(str(discretizer._createVariable('var5', X['var5'])),
                      "var5:Range([1,13])")
 
-    discretizer = Discretizer(discretizationThreshold=13)
+    discretizer = DiscreteTypeProcessor(discretizationThreshold=13)
     self.assertEqual(str(discretizer._createVariable('var1', X['var1'])),
                      "var1:Range([1,11])")
     self.assertEqual(str(discretizer._createVariable('var2', X['var2'])),
@@ -81,7 +80,7 @@ class DiscretizerTestCase(pyAgrumTestCase):
     self.assertEqual(str(discretizer._createVariable('var5', X['var5'])),
                      "var5:Range([1,13])")
 
-    discretizer = Discretizer(discretizationThreshold=11)
+    discretizer = DiscreteTypeProcessor(discretizationThreshold=11)
     self.assertEqual(str(discretizer._createVariable('var1', X['var1'])),
                      "var1:Range([1,11])")
     self.assertEqual(str(discretizer._createVariable('var2', X['var2'])),
@@ -104,9 +103,9 @@ class DiscretizerTestCase(pyAgrumTestCase):
 
     tmpfilename = self.agrumSrcDir("testBooleanCSVLeBiannic.csv")
     X.to_csv(tmpfilename, index=False)
-    discretizer = Discretizer(defaultDiscretizationMethod='quantile',
-                              defaultNumberOfBins=7,
-                              discretizationThreshold=10)
+    discretizer = DiscreteTypeProcessor(defaultDiscretizationMethod='quantile',
+                                        defaultNumberOfBins=7,
+                                        discretizationThreshold=10)
     template = discretizer.discretizedTemplate(tmpfilename)
 
     self.assertEqual(template.toFast(),
@@ -114,4 +113,4 @@ class DiscretizerTestCase(pyAgrumTestCase):
 
 
 ts = unittest.TestSuite()
-addTests(ts, DiscretizerTestCase)
+addTests(ts, DiscreteTypeProcessorTestCase)

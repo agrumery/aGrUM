@@ -48,8 +48,8 @@ import warnings
 import sklearn
 
 import pyAgrum as gum
-from pyAgrum.lib.discretizer import Discretizer
-from pyAgrum.lib.discretizer import check_int
+from pyAgrum.lib.discreteTypeProcessor import DiscreteTypeProcessor
+from pyAgrum.lib.discreteTypeProcessor import check_int
 
 from ._utils import _ImplementPrior as IPrior
 from ._utils import _CalculateThreshold as CThreshold
@@ -72,7 +72,7 @@ class BNClassifier(sklearn.base.BaseEstimator, sklearn.base.ClassifierMixin):
 
    - a Bayesian network,
    - a database and a learning algorithm and parameters
-   - the use of Discretizer to discretize with different algorithms some variables.
+   - the use of DiscreteTypeProcessor to discretize with different algorithms some variables.
 
   The classifier can be used to predict the class of new data.
 
@@ -164,7 +164,6 @@ class BNClassifier(sklearn.base.BaseEstimator, sklearn.base.ClassifierMixin):
                 number of significant digits when computing probabilities
     """
 
-  @gum.deprecated_arg(newA="prior", oldA="apriori", version="1.1.2")
   def __init__(self, learningMethod="MIIC", prior=None, scoringType="BIC", constraints=None, priorWeight=1,
                possibleSkeleton=None, DirichletCsv=None, discretizationStrategy="quantile", discretizationNbBins=5,
                discretizationThreshold=25, usePR=False, beta=1, significant_digit=10):
@@ -285,9 +284,9 @@ class BNClassifier(sklearn.base.BaseEstimator, sklearn.base.ClassifierMixin):
     self.discretizationNbBins = discretizationNbBins
     self.discretizationStrategy = discretizationStrategy
     self.discretizationThreshold = discretizationThreshold
-    self.discretizer = Discretizer(defaultDiscretizationMethod=discretizationStrategy,
-                                   defaultNumberOfBins=discretizationNbBins,
-                                   discretizationThreshold=discretizationThreshold)
+    self.type_processor = DiscreteTypeProcessor(defaultDiscretizationMethod=discretizationStrategy,
+                                                defaultNumberOfBins=discretizationNbBins,
+                                                discretizationThreshold=discretizationThreshold)
 
     # boolean that tells us whether this classifier is obtained from an already trained model (using the function
     # fromTrainedModel) or not
@@ -353,7 +352,7 @@ class BNClassifier(sklearn.base.BaseEstimator, sklearn.base.ClassifierMixin):
 
     self.fromModel = False
     variableNames = None
-    self.discretizer.clear()
+    self.type_processor.clear()
 
     if isinstance(y, pandas.DataFrame):  # type(y) == pandas.DataFrame:
       self.target = y.columns.tolist()[0]
@@ -419,7 +418,7 @@ class BNClassifier(sklearn.base.BaseEstimator, sklearn.base.ClassifierMixin):
     self.bn.add(var)
 
     for i in range(d):
-      var = self.discretizer._createVariable(
+      var = self.type_processor._createVariable(
         variableNames[i], X[:, i], y, possibleValuesY)
       self.bn.add(var)
 
@@ -920,7 +919,7 @@ class BNClassifier(sklearn.base.BaseEstimator, sklearn.base.ClassifierMixin):
       "threshold": self.threshold,
       "variableNameIndexDictionary": self.variableNameIndexDictionary,
       "params": self.get_params(),
-      "discretizer": self.discretizer
+      "discretizer": self.type_processor
     }
 
   def __setstate__(self, state):

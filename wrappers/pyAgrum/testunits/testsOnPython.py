@@ -87,7 +87,7 @@ def runTests(local: bool, test_module, log) -> int:
   from tests import BNListenerTestSuite
   from tests import ConfigTestSuite
   if pandasFound:
-      from tests import DiscretizerTestSuite
+      from tests import DiscreteTypeProcessorTestSuite
   from tests import EssentialGraphTestSuite
   from tests import EvidenceTestSuite
   from tests import GraphTestSuite
@@ -150,7 +150,7 @@ def runTests(local: bool, test_module, log) -> int:
     tl.append(BNListenerTestSuite.ts)
     tl.append(ConfigTestSuite.ts)
     if pandasFound:
-        tl.append(DiscretizerTestSuite.ts)
+        tl.append(DiscreteTypeProcessorTestSuite.ts)
     tl.append(EssentialGraphTestSuite.ts)
     tl.append(EvidenceTestSuite.ts)
     tl.append(GraphTestSuite.ts)

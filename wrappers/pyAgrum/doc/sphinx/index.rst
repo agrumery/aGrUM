@@ -74,8 +74,8 @@ Reference manual
   :maxdepth: 2
   :titlesonly:
 
-  lib.discretizer
   lib.notebook
+  lib.discreteTypeProcessor
   lib.image
   lib.explain
   lib.dBN

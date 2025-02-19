@@ -434,15 +434,6 @@ def showBNDiff(bn1, bn2, size=None, noStyle=False):
 
   showGraph(graphDiff(bn1, bn2, noStyle), size)
 
-
-def showInformation(*args, **kwargs):
-  print(
-    "[pyAgrum] pyAgrum.lib.notebook.showInformation is deprecated since 0.20.2. Please use pyAgrum.lib.explain.showInfomation instead."
-  )
-  import pyAgrum.lib.explain as explain
-  explain.showInformation(*args, **kwargs)
-
-
 def getJunctionTreeMap(bn, size: str = None, scaleClique: float = None, scaleSep: float = None, lenEdge: float = None,
                        colorClique: str = None,
                        colorSep: str = None):
@@ -841,8 +832,6 @@ def getInfluenceDiagram(diag, size=None):
 
   return getGraph(ID2dot(diag), size)
 
-
-@gum.deprecated_arg("cmapNode", "cmap", "1.8.1")
 def showBN(bn, size=None, nodeColor=None, arcWidth=None, arcLabel=None, arcColor=None, cmapNode=None, cmapArc=None):
   """
   show a Bayesian network
@@ -880,7 +869,6 @@ def showBN(bn, size=None, nodeColor=None, arcWidth=None, arcLabel=None, arcColor
            cmapArc=cmapArc), size)
 
 
-@gum.deprecated_arg("cmapNode", "cmap", "1.8.1")
 def showCN(cn, size=None, nodeColor=None, arcWidth=None, arcLabel=None, arcColor=None, cmapNode=None, cmapArc=None):
   """
   show a credal network
@@ -972,7 +960,6 @@ def getMRF(mrf, view=None, size=None, nodeColor=None, factorColor=None, edgeWidt
   return getGraph(dottxt, size)
 
 
-@gum.deprecated_arg("cmapNode", "cmap", "1.8")
 def getBN(bn, size=None, nodeColor=None, arcWidth=None, arcLabel=None, arcColor=None, cmapNode=None, cmapArc=None):
   """
   get a HTML string for a Bayesian network

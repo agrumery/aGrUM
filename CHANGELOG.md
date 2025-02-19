@@ -1,21 +1,31 @@
 # aGrUM Changelog
 
-## Changelog for 2.0
+## Changelog for 2.0.0
+
+New double licence : MIT+LGPLV3
 
 * aGrUM
-  * Split library into agrumBASE/BN/CN/FMDP/ID/MRF sub-libraries
-
+  * Split library into BASE/BN/CN/FMDP/ID/MRF sub-libraries  
+  * Enhanced swig files (thanks to Julien Schueller!)
+  * Improved compilation time for the whole library
+  * removed obsolete deprecated, experimental code
+  * moved `gum::Potential` to `gum::Tensor`
+  
 * pyAgrum
   * Split module into pyAgrum.base/bn/cn/id/mrf sub-modules
-  
-  
+  * Fixed a bug for discretizer with a boolean variable in the database (thanks to Yann Le Biannic)
+  * Fixed a bug then calling `gum.BNLearner.learnEssentialGraph` with a score-based algorithm (thanks to Yann Le Biannic)
+  * Improved documentations
+  * pyAgrumizing types in swig-generated CPP files
+  * removed obsolete deprecated, experimental codes
+  * moved `pyAgrum.Potential` to `pyAgrum.Tensor`
+
 ## Changelog for 1.17.2
 
 * pyAgrum
   * Fixed some bugs in `pyAgrum.lib.shapley` (thanks Stefano Mariani !).
   * Changed last MN->MRF (`pyAgrum.{loadMRF|saveMRF|availableMRFExts}`).
   * Improved pickling of `pyAgrum.skbn.BNClassifier`.
-
 
 ## Changelog for 1.17.1
 

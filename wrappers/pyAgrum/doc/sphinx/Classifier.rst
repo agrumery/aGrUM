@@ -23,4 +23,3 @@ Notebooks on `scikit-learn compliant classifiers in pyAgrum <notebooks.html#baye
    :maxdepth: 3
 
    skbnClassifier
-   skbnDiscretizer
