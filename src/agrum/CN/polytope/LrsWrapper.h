@@ -51,13 +51,6 @@
 
 #include <agrum/agrum.h>
 
-
-#ifdef HAVE_UNISTD_H
-#  include <unistd.h>
-#else
-#  include <agrum/base/core/mvsc/unistd.h>
-#endif
-
 #include <chrono>
 #include <cstdio>
 #include <fcntl.h>
@@ -220,17 +213,6 @@ namespace gum {
       bool _hull_;
 
       bool _polytope_;
-
-      /// @}
-
-      /// @name cout redirection
-      /// @{
-
-      /** @brief The function that redirects standard cout to /dev/null. */
-      void _coutOff_() const;
-
-      /** @brief The function that restores standard cout. */
-      void _coutOn_() const;
 
       /// @}
 

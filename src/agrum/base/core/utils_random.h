@@ -75,15 +75,6 @@ namespace gum {
   Idx randomValue(const Size max = 2);
 
   /**
-   * @brief Returns a random Idx between 0 and max-1 included.
-   * @return Returns a random Idx between 0 and max-1 included using engine.
-   * By default, max=2
-   *
-   * @warning This should be used only for thread-safe purpose
-   */
-  Idx randomValue(std::mt19937& generator, const Size max = 2);
-
-  /**
    * @brief Returns a random double between 0 and 1 included (i.e. a proba).
    * @return Returns a random double between 0 and 1 included (i.e. a proba).
    */
@@ -116,7 +107,6 @@ namespace gum {
    * define a random_engine with correct seed
    */
   std::mt19937& randomGenerator();
-  // std::default_random_engine getRandomGenerator(unsigned int seed = 0);
 
   /// @}
 } /* namespace gum */

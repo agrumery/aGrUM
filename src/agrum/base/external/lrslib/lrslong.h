@@ -140,7 +140,6 @@ typedef unsigned  __int64 uint64_t;
 #ifndef OMIT_SIGNALS
 #include <signal.h>
 #include <stdlib.h> /* labs */
-#include <unistd.h>
 #define errcheck(s, e)       \
   if ((int64_t)(e) == -1L) { \
     perror(s);               \

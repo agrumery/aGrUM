@@ -46,13 +46,6 @@
 
 #include <agrum/PRM/o3prmr/O3prmrContext.h>
 
-
-#ifdef HAVE_DIRENT_H
-#include <dirent.h>
-#else
-#include <agrum/base/core/mvsc/dirent.h>
-#endif
-
 COMPILER o3prmr
 
 gum::prm::o3prmr::O3prmrContext<double> *context__;

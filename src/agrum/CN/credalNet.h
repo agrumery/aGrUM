@@ -52,11 +52,6 @@
 
 #include <agrum/agrum.h>
 
-#ifdef HAVE_UNISTD_H
-#  include <unistd.h>
-#else
-#endif
-
 // #include <sys/wait.h>
 #include <algorithm>
 #include <cstdlib>

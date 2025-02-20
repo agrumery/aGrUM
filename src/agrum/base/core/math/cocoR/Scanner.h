@@ -1,45 +1,8 @@
-/****************************************************************************
- *   This file is part of the aGrUM/pyAgrum library.                        *
- *                                                                          *
- *   Copyright (c) 2005-2025 by                                             *
- *       - Pierre-Henri WUILLEMIN(_at_LIP6)                                 *
- *       - Christophe GONZALES(_at_AMU)                                     *
- *   This file is part of the aGrUM/pyAgrum library.                        *
- *                                                                          *
- *   Copyright (c) 2005-2025 by                                             *
- *       - Pierre-Henri WUILLEMIN(_at_LIP6)                                 *
- *       - Christophe GONZALES(_at_AMU)                                     *
- *                                                                          *
- *   The aGrUM/pyAgrum library is free software; you can redistribute it    *
- *   and/or modify it under the terms of either :                           *
- *                                                                          *
- *    - the GNU Lesser General Public License as published by               *
- *      the Free Software Foundation, either version 3 of the License,      *
- *      or (at your option) any later version.                              *
- *    - the MIT license (MIT)                                               *
- *    - or both in dual license, as here                                    *
- *                                                                          *
- *   This aGrUM/pyAgrum library is distributed in the hope that it will be  *
- *   useful, but WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED,          *
- *   INCLUDING BUT NOT LIMITED TO THE WARRANTIES MERCHANTABILITY or FITNESS *
- *   FOR A PARTICULAR PURPOSE  AND NONINFRINGEMENT. IN NO EVENT SHALL THE   *
- *   AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER *
- *   LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE,        *
- *   ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR  *
- *   OTHER DEALINGS IN THE SOFTWARE.                                        *
- *                                                                          *
- *   See the GNU Lesser General Public License (LICENSE.LGPL) and the MIT   *
- *   licence (LICENSE.MIT) for more details.                                *
- *                                                                          *
- *   Contact  : info_at_agrum_dot_org                                       *
- *   homepage : http://agrum.gitlab.io                                      *
- *   gitlab   : https://gitlab.com/agrumery/agrum                           *
- *                                                                          *
- ****************************************************************************/
-
 /***************************************************************************
  *  aGrUM modified frames and atg files for cocoR
- ***************************************************************************/
+ *   Copyright (c) 2005-2024 by Pierre-Henri WUILLEMIN(@LIP6) and Christophe GONZALES(@AMU)
+ *   info_at_agrum_dot_org
+***************************************************************************/
 /*----------------------------------------------------------------------
 Compiler Generator Coco/R,
 Copyright (c) 1990, 2004 Hanspeter Moessenboeck, University of Linz
@@ -70,270 +33,243 @@ Coco/R itself) does not fall under the GNU General Public License.
 
 
 #if !defined(gum_formula_COCO_SCANNER_H__)
-#  define gum_formula_COCO_SCANNER_H__
+#define gum_formula_COCO_SCANNER_H__
 
-#  include <limits.h>
-#  include <locale.h>
-#  include <stdio.h>
-#  include <stdlib.h>
-#  include <string.h>
-#  include <wchar.h>
+#include <limits.h>
+#include <stdio.h>
+#include <stdlib.h>
+#include <string.h>
+#include <wchar.h>
+#include <locale.h>
 
-#  include <agrum/base/core/errorsContainer.h>
-#  include <agrum/base/core/signal/signaler1.h>
+#include <agrum/base/core/signal/signaler1.h>
+#include <agrum/base/core/errorsContainer.h>
 
 namespace gum {
-  namespace formula {
+namespace formula {
 
 
-    class Token {
+class Token {
+  public:
+    int kind;     // token kind
+    int pos;      // token position in bytes in the source text (starting at 0)
+    int charPos;  // token position in characters in the source text (starting at 0)
+    int col;      // token column (starting at 1)
+    int line;     // token line (starting at 1)
+    wchar_t* val; // token value
+    Token* next;  // ML 2005-03-11 Peek tokens are kept in linked list
+
+    Token();
+    ~Token();
+};
+
+class Buffer {
+// This Buffer supports the following cases:
+// 1) seekable stream (file)
+//    a) whole stream in buffer
+//    b) part of stream in buffer
+// 2) non seekable stream (network, console)
+  private:
+    unsigned char* buf; // input buffer
+    int bufCapacity;    // capacity of buf
+    int bufStart;       // position of first byte in buffer relative to input stream
+    int bufLen;         // length of buffer
+    int fileLen;        // length of input stream (may change if the stream is no file)
+    int bufPos;         // current position in buffer
+    FILE* stream;       // input stream (seekable)
+    bool isUserStream;  // was the stream opened by the user?
+
+    int ReadNextStreamChunk();
+    bool CanSeek();     // true if stream can be seeked otherwise false
+
+  public:
+    int GetPercent( void );
+
+    static const int EoF = COCO_WCHAR_MAX + 1;
+
+    Buffer( FILE* s, bool isUserStream );
+    Buffer( const unsigned char* buf, int len );
+    Buffer( Buffer* b );
+    virtual ~Buffer();
+
+    virtual void Close();
+    virtual int Read();
+    virtual int Peek();
+    virtual wchar_t* GetString( int beg, int end );
+    virtual int GetPos();
+    virtual void SetPos( int value );
+};
+
+class UTF8Buffer : public Buffer {
+  public:
+    UTF8Buffer( Buffer* b ) : Buffer( b ) {};
+    virtual int Read();
+};
+
+//-----------------------------------------------------------------------------------
+// StartStates  -- maps characters to start states of tokens
+//-----------------------------------------------------------------------------------
+class StartStates {
+  private:
+    class Elem {
       public:
-      int      kind;      // token kind
-      int      pos;       // token position in bytes in the source text (starting at 0)
-      int      charPos;   // token position in characters in the source text (starting at 0)
-      int      col;       // token column (starting at 1)
-      int      line;      // token line (starting at 1)
-      wchar_t* val;       // token value
-      Token*   next;      // ML 2005-03-11 Peek tokens are kept in linked list
-
-      Token();
-      ~Token();
-    };
-
-    class Buffer {
-      // This Buffer supports the following cases:
-      // 1) seekable stream (file)
-      //    a) whole stream in buffer
-      //    b) part of stream in buffer
-      // 2) non seekable stream (network, console)
-
-      private:
-      unsigned char* buf;            // input buffer
-      int            bufCapacity;    // capacity of buf
-      int            bufStart;       // position of first byte in buffer relative to input stream
-      int            bufLen;         // length of buffer
-      int            fileLen;        // length of input stream (may change if the stream is no file)
-      int            bufPos;         // current position in buffer
-      FILE*          stream;         // input stream (seekable)
-      bool           isUserStream;   // was the stream opened by the user?
-
-      int  ReadNextStreamChunk();
-      bool CanSeek();                // true if stream can be seeked otherwise false
-
-      public:
-      int GetPercent(void);
-
-      static const int EoF = COCO_WCHAR_MAX + 1;
-
-      Buffer(FILE* s, bool isUserStream);
-      Buffer(const unsigned char* buf, int len);
-      Buffer(Buffer* b);
-      virtual ~Buffer();
-
-      virtual void     Close();
-      virtual int      Read();
-      virtual int      Peek();
-      virtual wchar_t* GetString(int beg, int end);
-      virtual int      GetPos();
-      virtual void     SetPos(int value);
-    };
-
-    class UTF8Buffer: public Buffer {
-      public:
-      UTF8Buffer(Buffer* b) : Buffer(b) {};
-      virtual int Read();
-    };
-
-    //-----------------------------------------------------------------------------------
-    // StartStates  -- maps characters to start states of tokens
-    //-----------------------------------------------------------------------------------
-    class StartStates {
-      private:
-      class Elem {
-        public:
-        int   key, val;
+        int key, val;
         Elem* next;
-
-        Elem(int key, int val) {
-          this->key = key;
-          this->val = val;
-          next      = nullptr;
-        }
-      };
-
-      Elem** tab;
-
-      public:
-      StartStates() {
-        tab = new Elem*[128];
-        memset(tab, 0, 128 * sizeof(Elem*));
-      }
-
-      virtual ~StartStates() {
-        for (int i = 0; i < 128; ++i) {
-          Elem* e = tab[i];
-
-          while (e != nullptr) {
-            Elem* next = e->next;
-            delete e;
-            e = next;
-          }
-        }
-
-        delete[] tab;
-      }
-
-      void set(int key, int val) {
-        Elem* e = new Elem(key, val);
-        int   k = ((unsigned int)key) % 128;
-        e->next = tab[k];
-        tab[k]  = e;
-      }
-
-      int state(int key) {
-        Elem* e = tab[((unsigned int)key) % 128];
-
-        while (e != nullptr && e->key != key)
-          e = e->next;
-
-        return e == nullptr ? 0 : e->val;
-      }
+        Elem( int key, int val ) { this->key = key; this->val = val; next = nullptr; }
     };
 
-    //-------------------------------------------------------------------------------------------
-    // KeywordMap  -- maps strings to integers (identifiers to keyword kinds)
-    //-------------------------------------------------------------------------------------------
-    class KeywordMap {
-      private:
-      class Elem {
-        public:
+    Elem** tab;
+
+  public:
+    StartStates() { tab = new Elem*[128]; memset( tab, 0, 128 * sizeof( Elem* ) ); }
+    virtual ~StartStates() {
+      for ( int i = 0; i < 128; ++i ) {
+        Elem* e = tab[i];
+
+        while ( e != nullptr ) {
+          Elem* next = e->next;
+          delete e;
+          e = next;
+        }
+      }
+
+      delete [] tab;
+    }
+
+    void set( int key, int val ) {
+      Elem* e = new Elem( key, val );
+      int k = ( ( unsigned int ) key ) % 128;
+      e->next = tab[k]; tab[k] = e;
+    }
+
+    int state( int key ) {
+      Elem* e = tab[( ( unsigned int ) key ) % 128];
+
+      while ( e != nullptr && e->key != key ) e = e->next;
+
+      return e == nullptr ? 0 : e->val;
+    }
+};
+
+//-------------------------------------------------------------------------------------------
+// KeywordMap  -- maps strings to integers (identifiers to keyword kinds)
+//-------------------------------------------------------------------------------------------
+class KeywordMap {
+  private:
+    class Elem {
+      public:
         wchar_t* key;
-        int      val;
-        Elem*    next;
-
-        Elem(const wchar_t* key, int val) {
-          this->key = coco_string_create(key);
-          this->val = val;
-          next      = nullptr;
-        }
-
-        virtual ~Elem() { coco_string_delete(key); }
-      };
-
-      Elem** tab;
-
-      public:
-      KeywordMap() {
-        tab = new Elem*[128];
-        memset(tab, 0, 128 * sizeof(Elem*));
-      }
-
-      virtual ~KeywordMap() {
-        for (int i = 0; i < 128; ++i) {
-          Elem* e = tab[i];
-
-          while (e != nullptr) {
-            Elem* next = e->next;
-            delete e;
-            e = next;
-          }
-        }
-
-        delete[] tab;
-      }
-
-      void set(const wchar_t* key, int val) {
-        Elem* e = new Elem(key, val);
-        int   k = coco_string_hash(key) % 128;
-        e->next = tab[k];
-        tab[k]  = e;
-      }
-
-      int get(const wchar_t* key, int defaultVal) {
-        Elem* e = tab[coco_string_hash(key) % 128];
-
-        while (e != nullptr && !coco_string_equal(e->key, key))
-          e = e->next;
-
-        return e == nullptr ? defaultVal : e->val;
-      }
+        int val;
+        Elem* next;
+        Elem( const wchar_t* key, int val ) { this->key = coco_string_create( key ); this->val = val; next = nullptr; }
+        virtual ~Elem() { coco_string_delete( key ); }
     };
 
-    class Scanner {
-      private:
-      void*  firstHeap;
-      void*  heap;
-      void*  heapTop;
-      void** heapEnd;
+    Elem** tab;
 
-      std::wstring filenamne__;
-      bool         trace__;
+  public:
+    KeywordMap() { tab = new Elem*[128]; memset( tab, 0, 128 * sizeof( Elem* ) ); }
+    virtual ~KeywordMap() {
+      for ( int i = 0; i < 128; ++i ) {
+        Elem* e = tab[i];
 
-      unsigned char EOL;
-      int           eofSym;
-      int           noSym;
-      int           maxT;
-      // int charSetSize; // not used
-      StartStates start;
-      KeywordMap  keywords;
-      int         percent;
+        while ( e != nullptr ) {
+          Elem* next = e->next;
+          delete e;
+          e = next;
+        }
+      }
 
-      Token*   t;            // current token
-      wchar_t* tval;         // text of current token
-      int      tvalLength;   // length of text of current token
-      int      tlen;         // length of current token
+      delete [] tab;
+    }
 
-      Token* tokens;         // list of tokens already peeked (first token is a dummy)
-      Token* pt;             // current peek token
+    void set( const wchar_t* key, int val ) {
+      Elem* e = new Elem( key, val );
+      int k = coco_string_hash( key ) % 128;
+      e->next = tab[k]; tab[k] = e;
+    }
 
-      int ch;                // current input character
+    int get( const wchar_t* key, int defaultVal ) {
+      Elem* e = tab[coco_string_hash( key ) % 128];
 
-      int pos;               // byte position of current character
-      int charPos;           // position by unicode characters starting with 0
-      int line;              // line number of current character
-      int col;               // column number of current character
-      int oldEols;           // EOLs that appeared in a comment;
+      while ( e != nullptr && !coco_string_equal( e->key, key ) ) e = e->next;
 
-      void   CreateHeapBlock();
-      Token* CreateToken();
-      void   AppendVal(Token* t);
-      void   SetScannerBehindT();
+      return e == nullptr ? defaultVal : e->val;
+    }
+};
 
-      void Init();
-      void NextCh();
-      void AddCh();
+class Scanner {
+  private:
+    void* firstHeap;
+    void* heap;
+    void* heapTop;
+    void** heapEnd;
 
-      Token* NextToken();
+    std::wstring filenamne__;
+    bool trace__;
 
-      public:
-      Signaler1< int > onLoad;
+    unsigned char EOL;
+    int eofSym;
+    int noSym;
+    int maxT;
+    // int charSetSize; // not used
+    StartStates start;
+    KeywordMap keywords;
+    int percent;
 
-      Buffer* buffer;   // scanner buffer
+    Token* t;         // current token
+    wchar_t* tval;    // text of current token
+    int tvalLength;   // length of text of current token
+    int tlen;         // length of current token
 
-      Scanner(const unsigned char* buf,
-              int                  len,
-              std::string          filename = "anonymous buffer",
-              bool                 trace    = false);
-      Scanner(const char* fileName, bool trace = false);
-      Scanner(const wchar_t* fileName, bool trace = false);
-      Scanner(FILE* s, bool trace = false);
-      ~Scanner();
+    Token* tokens;    // list of tokens already peeked (first token is a dummy)
+    Token* pt;        // current peek token
 
-      void setTrace(bool b) { trace__ = b; }
+    int ch;           // current input character
+    
+    int pos;          // byte position of current character
+    int charPos;      // position by unicode characters starting with 0
+    int line;         // line number of current character
+    int col;          // column number of current character
+    int oldEols;      // EOLs that appeared in a comment;
 
-      void   Load(const wchar_t* fileName);
-      Token* Scan();
-      Token* Peek();
-      void   ResetPeek();
+    void CreateHeapBlock();
+    Token* CreateToken();
+    void AppendVal( Token* t );
+    void SetScannerBehindT();
 
-      const std::wstring& filename() const { return filenamne__; }
+    void Init();
+    void NextCh();
+    void AddCh();
+    
+    Token* NextToken();
 
-      Buffer* getBuffer() { return buffer; }
+  public:
+    Signaler1<int> onLoad;
 
-    };   // end Scanner
+    Buffer* buffer;   // scanner buffer
 
-  }   // namespace formula
-}   // namespace gum
+    Scanner( const unsigned char* buf, int len, std::string filename="anonymous buffer", bool trace=false );
+    Scanner( const char* fileName,bool trace=false );
+    Scanner( const wchar_t* fileName,bool trace=false );
+    Scanner( FILE* s,bool trace=false );
+    ~Scanner();
+
+    void setTrace( bool b ) { trace__=b;}
+
+    void Load( const wchar_t* fileName );
+    Token* Scan();
+    Token* Peek();
+    void ResetPeek();
+
+    const std::wstring& filename() const {return filenamne__;}
+    Buffer* getBuffer() {return buffer;}
+
+}; // end Scanner
+
+} // namespace
+} // namespace
 
 
-#endif   // !defined(COCO_SCANNER_H__)
+#endif // !defined(COCO_SCANNER_H__)
+

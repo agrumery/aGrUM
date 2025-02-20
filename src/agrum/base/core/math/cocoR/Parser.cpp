@@ -1,45 +1,8 @@
-/****************************************************************************
- *   This file is part of the aGrUM/pyAgrum library.                        *
- *                                                                          *
- *   Copyright (c) 2005-2025 by                                             *
- *       - Pierre-Henri WUILLEMIN(_at_LIP6)                                 *
- *       - Christophe GONZALES(_at_AMU)                                     *
- *   This file is part of the aGrUM/pyAgrum library.                        *
- *                                                                          *
- *   Copyright (c) 2005-2025 by                                             *
- *       - Pierre-Henri WUILLEMIN(_at_LIP6)                                 *
- *       - Christophe GONZALES(_at_AMU)                                     *
- *                                                                          *
- *   The aGrUM/pyAgrum library is free software; you can redistribute it    *
- *   and/or modify it under the terms of either :                           *
- *                                                                          *
- *    - the GNU Lesser General Public License as published by               *
- *      the Free Software Foundation, either version 3 of the License,      *
- *      or (at your option) any later version.                              *
- *    - the MIT license (MIT)                                               *
- *    - or both in dual license, as here                                    *
- *                                                                          *
- *   This aGrUM/pyAgrum library is distributed in the hope that it will be  *
- *   useful, but WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED,          *
- *   INCLUDING BUT NOT LIMITED TO THE WARRANTIES MERCHANTABILITY or FITNESS *
- *   FOR A PARTICULAR PURPOSE  AND NONINFRINGEMENT. IN NO EVENT SHALL THE   *
- *   AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER *
- *   LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE,        *
- *   ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR  *
- *   OTHER DEALINGS IN THE SOFTWARE.                                        *
- *                                                                          *
- *   See the GNU Lesser General Public License (LICENSE.LGPL) and the MIT   *
- *   licence (LICENSE.MIT) for more details.                                *
- *                                                                          *
- *   Contact  : info_at_agrum_dot_org                                       *
- *   homepage : http://agrum.gitlab.io                                      *
- *   gitlab   : https://gitlab.com/agrumery/agrum                           *
- *                                                                          *
- ****************************************************************************/
-
 /***************************************************************************
  *  aGrUM modified frames and atg files for cocoR
- ***************************************************************************/
+ *   Copyright (c) 2005-2024 by Pierre-Henri WUILLEMIN(@LIP6) and Christophe GONZALES(@AMU)
+ *   info_at_agrum_dot_org
+***************************************************************************/
 /*----------------------------------------------------------------------
 Compiler Generator Coco/R,
 Copyright (c) 1990, 2004 Hanspeter Moessenboeck, University of Linz
@@ -69,300 +32,307 @@ Coco/R itself) does not fall under the GNU General Public License.
 -----------------------------------------------------------------------*/
 
 
-#include "Parser.h"
-
 #include <iostream>
 #include <wchar.h>
 
+#include "Parser.h"
 #include "Scanner.h"
 
+
 namespace gum {
-  namespace formula {
+namespace formula {
 
 
-    void Parser::SynErr(int n) {
-      if (errDist >= minErrDist) SynErr(scanner->filename(), la->line, la->col, n);
+void Parser::SynErr( int n ) {
+  if ( errDist >= minErrDist ) SynErr( scanner->filename(),la->line, la->col, n );
 
-      errDist = 0;
+  errDist = 0;
+}
+
+
+const ErrorsContainer& Parser::errors( void ) const {
+  return errors__;
+}
+ErrorsContainer& Parser::errors( void ) {
+  return errors__;
+}
+
+void Parser::Get() {
+  for ( ;; ) {
+    t = la;
+    la = scanner->Scan();
+
+    if ( la->kind <= maxT ) { ++errDist; break; }
+
+    
+
+    if ( dummyToken != t ) {
+      dummyToken->kind = t->kind;
+      dummyToken->pos = t->pos;
+      dummyToken->col = t->col;
+      dummyToken->line = t->line;
+      dummyToken->next = nullptr;
+      coco_string_delete( dummyToken->val );
+      dummyToken->val = coco_string_create( t->val );
+      t = dummyToken;
     }
 
-    const ErrorsContainer& Parser::errors(void) const { return errors__; }
+    la = t;
+  }
+}
 
-    ErrorsContainer& Parser::errors(void) { return errors__; }
+void Parser::Expect( int n ) {
+  if ( la->kind==n ) Get(); else { SynErr( n ); }
+}
 
-    void Parser::Get() {
-      for (;;) {
-        t  = la;
-        la = scanner->Scan();
+void Parser::ExpectWeak( int n, int follow ) {
+  if ( la->kind == n ) Get();
+  else {
+    SynErr( n );
 
-        if (la->kind <= maxT) {
-          ++errDist;
-          break;
-        }
+    while ( !StartOf( follow ) ) Get();
+  }
+}
 
+bool Parser::WeakSeparator( int n, int syFol, int repFol ) {
+  if ( la->kind == n ) {Get(); return true;}
+  else if ( StartOf( repFol ) ) {return false;}
+  else {
+    SynErr( n );
 
-        if (dummyToken != t) {
-          dummyToken->kind = t->kind;
-          dummyToken->pos  = t->pos;
-          dummyToken->col  = t->col;
-          dummyToken->line = t->line;
-          dummyToken->next = nullptr;
-          coco_string_delete(dummyToken->val);
-          dummyToken->val = coco_string_create(t->val);
-          t               = dummyToken;
-        }
-
-        la = t;
-      }
-    }
-
-    void Parser::Expect(int n) {
-      if (la->kind == n) Get();
-      else { SynErr(n); }
-    }
-
-    void Parser::ExpectWeak(int n, int follow) {
-      if (la->kind == n) Get();
-      else {
-        SynErr(n);
-
-        while (!StartOf(follow))
-          Get();
-      }
-    }
-
-    bool Parser::WeakSeparator(int n, int syFol, int repFol) {
-      if (la->kind == n) {
-        Get();
-        return true;
-      } else if (StartOf(repFol)) {
-        return false;
-      } else {
-        SynErr(n);
-
-        while (!(StartOf(syFol) || StartOf(repFol) || StartOf(0))) {
-          Get();
-        }
-
-        return StartOf(syFol);
-      }
-    }
-
-    void Parser::EVAL() {
-      expression();
-      while (StartOf(1)) {
-        expression();
-      }
-      _formula_->_finalize_();
-    }
-
-    void Parser::expression() {
-      switch (la->kind) {
-        case _integer : {
-          Get();
-          _formula_->_push_number_((double)coco_atoi(t->val));
-          break;
-        }
-        case _float : {
-          Get();
-          _formula_->_push_number_((double)coco_atof(t->val));
-          break;
-        }
-        case _scifloat : {
-          Get();
-          _formula_->_push_number_((double)coco_atof(t->val));
-          break;
-        }
-        case _operator : {
-          Get();
-          _formula_->_push_operator_(narrow(t->val)[0]);
-          break;
-        }
-        case 7 /* "(" */ : {
-          Get();
-          _formula_->_push_leftParenthesis_();
-          break;
-        }
-        case 8 /* ")" */ : {
-          Get();
-          _formula_->_push_rightParenthesis_();
-          break;
-        }
-        case _ident : {
-          Get();
-          _formula_->_push_identifier_(narrow(t->val));
-          break;
-        }
-        case 9 /* "," */ : {
-          Get();
-          _formula_->_push_comma_();
-          break;
-        }
-        default : SynErr(11); break;
-      }
-    }
-
-    // If the user declared a method Init and a mehtod Destroy they should
-    // be called in the contructur and the destructor respctively.
-    //
-    // The following templates are used to recognize if the user declared
-    // the methods Init and Destroy.
-
-    template < typename T >
-    struct ParserInitExistsRecognizer {
-      template < typename U, void (U::*)() = &U::Init >
-      struct ExistsIfInitIsDefinedMarker {};
-
-      struct InitIsMissingType {
-        char dummy1;
-      };
-
-      struct InitExistsType {
-        char dummy1;
-        char dummy2;
-      };
-
-      // exists always
-      template < typename U >
-      static InitIsMissingType is_here(...);
-
-      // exist only if ExistsIfInitIsDefinedMarker is defined
-      template < typename U >
-      static InitExistsType is_here(ExistsIfInitIsDefinedMarker< U >*);
-
-      enum { InitExists = (sizeof(is_here< T >(nullptr)) == sizeof(InitExistsType)) };
-    };
-
-    template < typename T >
-    struct ParserDestroyExistsRecognizer {
-      template < typename U, void (U::*)() = &U::Destroy >
-      struct ExistsIfDestroyIsDefinedMarker {};
-
-      struct DestroyIsMissingType {
-        char dummy1;
-      };
-
-      struct DestroyExistsType {
-        char dummy1;
-        char dummy2;
-      };
-
-      // exists always
-      template < typename U >
-      static DestroyIsMissingType is_here(...);
-
-      // exist only if ExistsIfDestroyIsDefinedMarker is defined
-      template < typename U >
-      static DestroyExistsType is_here(ExistsIfDestroyIsDefinedMarker< U >*);
-
-      enum { DestroyExists = (sizeof(is_here< T >(nullptr)) == sizeof(DestroyExistsType)) };
-    };
-
-    // The folloing templates are used to call the Init and Destroy methods if they exist.
-
-    // Generic case of the ParserInitCaller, gets used if the Init method is missing
-    template < typename T, bool = ParserInitExistsRecognizer< T >::InitExists >
-    struct ParserInitCaller {
-      static void CallInit(T* t) {
-        // nothing to do
-      }
-    };
-
-    // True case of the ParserInitCaller, gets used if the Init method exists
-    template < typename T >
-    struct ParserInitCaller< T, true > {
-      static void CallInit(T* t) { t->Init(); }
-    };
-
-    // Generic case of the ParserDestroyCaller, gets used if the Destroy method is missing
-    template < typename T, bool = ParserDestroyExistsRecognizer< T >::DestroyExists >
-    struct ParserDestroyCaller {
-      static void CallDestroy(T* t) {
-        // nothing to do
-      }
-    };
-
-    // True case of the ParserDestroyCaller, gets used if the Destroy method exists
-    template < typename T >
-    struct ParserDestroyCaller< T, true > {
-      static void CallDestroy(T* t) { t->Destroy(); }
-    };
-
-    void Parser::Parse() {
-      t  = nullptr;
-      la = dummyToken = new Token();
-      la->val         = coco_string_create(L"Dummy Token");
+    while ( !( StartOf( syFol ) || StartOf( repFol ) || StartOf( 0 ) ) ) {
       Get();
-      EVAL();
     }
 
-    Parser::Parser(Scanner* scanner) {
-      maxT = 10;
+    return StartOf( syFol );
+  }
+}
 
-      ParserInitCaller< Parser >::CallInit(this);
-      dummyToken = nullptr;
-      t = la        = nullptr;
-      minErrDist    = 2;
-      errDist       = minErrDist;
-      this->scanner = scanner;
+void Parser::EVAL() {
+		expression();
+		while (StartOf(1)) {
+			expression();
+		}
+		_formula_->_finalize_(); 
+}
+
+void Parser::expression() {
+		switch (la->kind) {
+		case _integer: {
+			Get();
+			_formula_->_push_number_((double)coco_atoi(t->val)); 
+			break;
+		}
+		case _float: {
+			Get();
+			_formula_->_push_number_((double)coco_atof(t->val)); 
+			break;
+		}
+		case _scifloat: {
+			Get();
+			_formula_->_push_number_((double)coco_atof(t->val)); 
+			break;
+		}
+		case _operator: {
+			Get();
+			_formula_->_push_operator_(narrow(t->val)[0]); 
+			break;
+		}
+		case 7 /* "(" */: {
+			Get();
+			_formula_->_push_leftParenthesis_(); 
+			break;
+		}
+		case 8 /* ")" */: {
+			Get();
+			_formula_->_push_rightParenthesis_(); 
+			break;
+		}
+		case _ident: {
+			Get();
+			_formula_->_push_identifier_(narrow(t->val)); 
+			break;
+		}
+		case 9 /* "," */: {
+			Get();
+			_formula_->_push_comma_(); 
+			break;
+		}
+		default: SynErr(11); break;
+		}
+}
+
+
+
+// If the user declared a method Init and a mehtod Destroy they should
+// be called in the contructur and the destructor respctively.
+//
+// The following templates are used to recognize if the user declared
+// the methods Init and Destroy.
+
+template<typename T>
+struct ParserInitExistsRecognizer {
+  template<typename U, void ( U::* )() = &U::Init>
+  struct ExistsIfInitIsDefinedMarker {};
+
+  struct InitIsMissingType {
+    char dummy1;
+  };
+
+  struct InitExistsType {
+    char dummy1; char dummy2;
+  };
+
+  // exists always
+  template<typename U>
+  static InitIsMissingType is_here( ... );
+
+  // exist only if ExistsIfInitIsDefinedMarker is defined
+  template<typename U>
+  static InitExistsType is_here( ExistsIfInitIsDefinedMarker<U>* );
+
+  enum { InitExists = ( sizeof( is_here<T>( nullptr ) ) == sizeof( InitExistsType ) ) };
+};
+
+template<typename T>
+struct ParserDestroyExistsRecognizer {
+  template<typename U, void ( U::* )() = &U::Destroy>
+  struct ExistsIfDestroyIsDefinedMarker {};
+
+  struct DestroyIsMissingType {
+    char dummy1;
+  };
+
+  struct DestroyExistsType {
+    char dummy1; char dummy2;
+  };
+
+  // exists always
+  template<typename U>
+  static DestroyIsMissingType is_here( ... );
+
+  // exist only if ExistsIfDestroyIsDefinedMarker is defined
+  template<typename U>
+  static DestroyExistsType is_here( ExistsIfDestroyIsDefinedMarker<U>* );
+
+  enum { DestroyExists = ( sizeof( is_here<T>( nullptr ) ) == sizeof( DestroyExistsType ) ) };
+};
+
+// The folloing templates are used to call the Init and Destroy methods if they exist.
+
+// Generic case of the ParserInitCaller, gets used if the Init method is missing
+template<typename T, bool = ParserInitExistsRecognizer<T>::InitExists>
+struct ParserInitCaller {
+  static void CallInit( T* t ) {
+    // nothing to do
+  }
+};
+
+// True case of the ParserInitCaller, gets used if the Init method exists
+template<typename T>
+struct ParserInitCaller<T, true> {
+  static void CallInit( T* t ) {
+    t->Init();
+  }
+};
+
+// Generic case of the ParserDestroyCaller, gets used if the Destroy method is missing
+template<typename T, bool = ParserDestroyExistsRecognizer<T>::DestroyExists>
+struct ParserDestroyCaller {
+  static void CallDestroy( T* t ) {
+    // nothing to do
+  }
+};
+
+// True case of the ParserDestroyCaller, gets used if the Destroy method exists
+template<typename T>
+struct ParserDestroyCaller<T, true> {
+  static void CallDestroy( T* t ) {
+    t->Destroy();
+  }
+};
+void Parser::Parse() {
+  t = nullptr;
+  la = dummyToken = new Token();
+  la->val = coco_string_create( L"Dummy Token" );
+  Get();
+  	EVAL();
+
+}
+
+Parser::Parser( Scanner* scanner ) {
+  	maxT = 10;
+
+  ParserInitCaller<Parser>::CallInit( this );
+  dummyToken = nullptr;
+  t = la = nullptr;
+  minErrDist = 2;
+  errDist = minErrDist;
+  this->scanner = scanner;
+}
+
+bool Parser::StartOf( int s ) {
+  const bool T = true;
+  const bool x = false;
+
+  	static bool set[2][12] = {
+		{T,x,x,x, x,x,x,x, x,x,x,x},
+		{x,T,T,T, T,x,T,T, T,T,x,x}
+	};
+
+
+
+  return set[s][la->kind];
+}
+
+Parser::~Parser() {
+  ParserDestroyCaller<Parser>::CallDestroy( this );
+  delete dummyToken;
+}
+void Parser::SemErr( const wchar_t* msg ) {
+  if ( errDist >= minErrDist ) errors__.Error( scanner->filename(),t->line, t->col, msg );
+
+  errDist = 0;
+}
+
+void Parser::Warning( const wchar_t* msg ) {
+  errors__.Warning( scanner->filename(),t->line, t->col, msg );
+}
+
+void Parser::SynErr( const std::wstring& filename,int line, int col, int n ) {
+  wchar_t* s;
+
+  switch ( n ) {
+      			case 0: s = coco_string_create(L"EOF expected"); break;
+			case 1: s = coco_string_create(L"integer expected"); break;
+			case 2: s = coco_string_create(L"float expected"); break;
+			case 3: s = coco_string_create(L"scifloat expected"); break;
+			case 4: s = coco_string_create(L"operator expected"); break;
+			case 5: s = coco_string_create(L"eol expected"); break;
+			case 6: s = coco_string_create(L"ident expected"); break;
+			case 7: s = coco_string_create(L"\"(\" expected"); break;
+			case 8: s = coco_string_create(L"\")\" expected"); break;
+			case 9: s = coco_string_create(L"\",\" expected"); break;
+			case 10: s = coco_string_create(L"??? expected"); break;
+			case 11: s = coco_string_create(L"invalid expression"); break;
+
+
+    default: {
+      wchar_t format[20];
+      coco_swprintf( format, 20, L"error %d", n );
+      s = coco_string_create( format );
     }
+    break;
+  }
 
-    bool Parser::StartOf(int s) {
-      const bool T = true;
-      const bool x = false;
+  //wprintf(L"-- line %d col %d: %ls\n", line, col, s);
+  std::wstring ss=L"Syntax error : "+std::wstring( s );
+  errors__.Error( filename,line,col,ss.c_str() );
+  coco_string_delete( s );
+}
 
-      static bool set[2][12]
-          = {{T, x, x, x, x, x, x, x, x, x, x, x}, {x, T, T, T, T, x, T, T, T, T, x, x}};
-
-
-      return set[s][la->kind];
-    }
-
-    Parser::~Parser() {
-      ParserDestroyCaller< Parser >::CallDestroy(this);
-      delete dummyToken;
-    }
-
-    void Parser::SemErr(const wchar_t* msg) {
-      if (errDist >= minErrDist) errors__.Error(scanner->filename(), t->line, t->col, msg);
-
-      errDist = 0;
-    }
-
-    void Parser::Warning(const wchar_t* msg) {
-      errors__.Warning(scanner->filename(), t->line, t->col, msg);
-    }
-
-    void Parser::SynErr(const std::wstring& filename, int line, int col, int n) {
-      wchar_t* s;
-
-      switch (n) {
-        case 0 : s = coco_string_create(L"EOF expected"); break;
-        case 1 : s = coco_string_create(L"integer expected"); break;
-        case 2 : s = coco_string_create(L"float expected"); break;
-        case 3 : s = coco_string_create(L"scifloat expected"); break;
-        case 4 : s = coco_string_create(L"operator expected"); break;
-        case 5 : s = coco_string_create(L"eol expected"); break;
-        case 6 : s = coco_string_create(L"ident expected"); break;
-        case 7 : s = coco_string_create(L"\"(\" expected"); break;
-        case 8 : s = coco_string_create(L"\")\" expected"); break;
-        case 9 : s = coco_string_create(L"\",\" expected"); break;
-        case 10 : s = coco_string_create(L"??? expected"); break;
-        case 11 : s = coco_string_create(L"invalid expression"); break;
+} // namespace
+} // namespace
 
 
-        default : {
-          wchar_t format[20];
-          coco_swprintf(format, 20, L"error %d", n);
-          s = coco_string_create(format);
-        } break;
-      }
 
-      // wprintf(L"-- line %d col %d: %ls\n", line, col, s);
-      std::wstring ss = L"Syntax error : " + std::wstring(s);
-      errors__.Error(filename, line, col, ss.c_str());
-      coco_string_delete(s);
-    }
-
-  }   // namespace formula
-}   // namespace gum

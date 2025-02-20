@@ -47,22 +47,34 @@
  */
 #include <iterator>
 #include <regex>
+#include <iostream>
+#include <filesystem>
+#include <string>
+#include <chrono>
 
 #include <agrum/base/core/utils_string.h>
+#include <agrum/base/core/utils_random.h>
 
 namespace gum {
 
-  std::string getUniqueFileName() {
-#ifdef HAVE_MKSTEMP
-    char tmpFileName_[] = "fileXXXXXX";
-    int  fd             = mkstemp(tmpFileName_);
-    close(fd);
-#else   // mainly Windows
-    char tmpFileName_[] = "fileXXXXXX";
-    _mktemp_s(tmpFileName_, strlen(tmpFileName_));
-#endif
+  // get a unique file name using std::filesystem
 
-    return std::string(tmpFileName_);
+  std::string getUniqueFileName() {
+    // Get the temporary directory path
+    std::filesystem::path temp_dir = std::filesystem::temp_directory_path();
+
+    // Generate a unique file name using a timestamp and a random number
+    auto now = std::chrono::system_clock::now();
+    auto timestamp = std::chrono::duration_cast<std::chrono::milliseconds>(now.time_since_epoch()).count();
+
+    auto dis = gum::randomValue(1000);
+
+    std::string filename = "tempfile_" + std::to_string(timestamp) + "_" + std::to_string(dis) + ".tmp";
+
+    // Combine the directory path and the file name
+    std::filesystem::path temp_file_path = temp_dir / filename;
+
+    return temp_file_path.string();
   }
 
   bool endsWith(std::string const& value, std::string const& ending) {

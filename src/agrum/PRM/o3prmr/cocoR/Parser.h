@@ -43,13 +43,6 @@ Coco/R itself) does not fall under the GNU General Public License.
 
 #include <agrum/PRM/o3prmr/O3prmrContext.h>
 
-
-#ifdef HAVE_DIRENT_H
-#include <dirent.h>
-#else
-#include <agrum/base/core/mvsc/dirent.h>
-#endif
-
 #include <iostream>
 #include <string>
 #include <fstream>

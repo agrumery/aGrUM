@@ -56,12 +56,6 @@
 
 #include <agrum/agrum.h>
 
-#ifdef HAVE_DIRENT_H
-#  include <dirent.h>
-#else
-#endif
-
-
 #include <agrum/BN/generator/MCBayesNetGenerator.h>
 
 namespace gum {

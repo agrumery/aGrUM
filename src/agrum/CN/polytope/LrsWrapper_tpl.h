@@ -315,8 +315,6 @@ namespace gum {
 
       // not precise point probability, initialize lrs
 
-      //  _coutOff_();
-
       _initLrs_();
 
       /* We initiate reverse search from this dictionary       */
@@ -339,9 +337,6 @@ namespace gum {
                      && (_lrsOutput_[0])[1] == 0)
                         ? 1L
                         : 0L)) {
-              //  _coutOn_();
-              /*for ( decltype(Q->n) i = 0; i < Q->n; i++ )
-                pmp ("", output[i]);*/
               GUM_ERROR(FatalError,
                         "LRSWrapper< GUM_SCALAR >::H2V : asked for "
                         "Q-hull computation or not reading a vertex !");
@@ -364,8 +359,6 @@ namespace gum {
       }
 
       _freeLrs_();
-
-      //  _coutOn_();
     }
 
     template < typename GUM_SCALAR >
@@ -387,8 +380,6 @@ namespace gum {
                   "fillV has not been called with all "
                   "vertices, current state is still : "
                       << _setUpStateNames_[_state_]);
-
-      //  _coutOff_();
 
       _getVolume_ = true;
 
@@ -426,8 +417,6 @@ namespace gum {
       _volume_ = num * 1.0 / den;
 
       _freeLrs_();
-
-      //  _coutOn_();
     }
 
     template < typename GUM_SCALAR >
@@ -438,8 +427,6 @@ namespace gum {
                   "V-representation or fillV has not been called with all vertices, "
                   "current state is still : "
                       << _setUpStateNames_[static_cast< int >(_state_)]);
-
-      //  _coutOff_();
 
       _initLrs_();
 
@@ -501,8 +488,6 @@ namespace gum {
       _vertices_ = (unsigned int)_output_.size();
 
       _freeLrs_();
-
-      //  _coutOn_();
     }
 
     template < typename GUM_SCALAR >
@@ -607,14 +592,11 @@ namespace gum {
                   "is still : "
                       << _setUpStateNames_[static_cast< int >(_state_)]);
 
-      // __coutOff();
-
       std::string         name = "\n*LrsWrapper:";
       std::vector< char > chars(name.c_str(), name.c_str() + name.size() + 1u);
       // use &chars[0] as a char*
 
       if (!lrs_init(&chars[0])) {
-        //  _coutOn_();
         GUM_ERROR(FatalError, "LRSWrapper< GUM_SCALAR >:: _initLrs_ : failed lrs_init")
       }
 
@@ -624,7 +606,6 @@ namespace gum {
       _dat_ = lrs_alloc_dat(&chars[0]);
 
       if (_dat_ == nullptr) {
-        //  _coutOn_();
         GUM_ERROR(FatalError, "LRSWrapper< GUM_SCALAR >:: _initLrs_ : failed lrs_alloc_dat")
       }
 
@@ -640,7 +621,6 @@ namespace gum {
       _dic_ = lrs_alloc_dic(_dat_);
 
       if (_dic_ == nullptr) {
-        //  _coutOn_();
         GUM_ERROR(FatalError, "LRSWrapper< GUM_SCALAR >:: _initLrs_ : failed lrs_alloc_dic")
       }
 
@@ -648,7 +628,6 @@ namespace gum {
 
       /* Pivot to a starting dictionary */
       if (!lrs_getfirstbasis(&_dic_, _dat_, &_Lin_, 0L)) {
-        //  _coutOn_();
         GUM_ERROR(FatalError, "LRSWrapper< GUM_SCALAR >:: _initLrs_ : failed lrs_getfirstbasis");
       }
 
@@ -663,29 +642,12 @@ namespace gum {
         startcol++; /* col zero not treated as redundant   */
 
         if (!_dat_->restart) {
-          //  _coutOn_();
-
           for (decltype(_dat_->nredundcol) col = startcol; col < _dat_->nredundcol; col++)
             lrs_printoutput(_dat_, _Lin_[col]);
 
           GUM_ERROR(FatalError, "LRSWrapper< GUM_SCALAR >:: _initLrs_ : redundant columns !")
         }
       }
-      /*
-  if (  _dat_->nredundcol > 0 ) {
-     _coutOn_();
-
-            for ( decltype(  _dat_->nredundcol ) col = 0, end =
-   _dat_->nredundcol;
-          col < end;
-          col++ )
-      lrs_printoutput(  _dat_,  _Lin_[col] );
-
-    GUM_ERROR(
-        FatalError,
-        "LRSWrapper< GUM_SCALAR >:: _initLrs_ : redundant columns !" );
-  }
-  */
     }
 
     template < typename GUM_SCALAR >
@@ -712,34 +674,6 @@ namespace gum {
       std::vector< char > chars(name.c_str(), name.c_str() + name.size() + 1u);
 
       lrs_close(&chars[0]);
-
-      //  _coutOn_();
     }
-
-    template < typename GUM_SCALAR >
-    void LRSWrapper< GUM_SCALAR >::_coutOff_() const {
-      fflush(stdout);
-#ifdef _MSC_VER
-      freopen("NUL", "w", stdout);
-#else    // _MSC_VER
-      _oldCout_ = dup(1);
-
-      int new_cout = open("/dev/null", O_WRONLY);
-      dup2(new_cout, 1);
-      close(new_cout);
-#endif   // _MSC_VER
-    }
-
-    template < typename GUM_SCALAR >
-    void LRSWrapper< GUM_SCALAR >::_coutOn_() const {
-      fflush(stdout);
-#ifdef _MSC_VER
-      freopen("CON", "w", stdout);
-#else    // _MSC_VER
-      dup2(_oldCout_, 1);
-      close(_oldCout_);
-#endif   // _MSC_VER
-    }
-
   }   // namespace credal
 }   // namespace gum

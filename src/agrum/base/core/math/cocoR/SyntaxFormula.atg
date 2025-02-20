@@ -51,7 +51,6 @@
 #include <vector>
 
 #include <agrum/base/core/math/math_utils.h>
-#include <agrum/base/core/utils_dir.h>
 #include <agrum/base/core/math/formula.h>
 
 // =============================================================================

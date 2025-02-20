@@ -44,6 +44,7 @@
  *
  * @author Pierre-Henri WUILLEMIN(_at_LIP6), Ni NI, Lionel TORTI & Vincent RENAUDINEAU
  */
+#include <filesystem>
 
 #include <agrum/agrum.h>
 
@@ -105,7 +106,9 @@ namespace gum {
       /// Default are './' and one is calculate from request package if any.
       void O3prmrInterpreter::addPath(std::string path) {
         if (path.length() && path.back() != '/') { path = path + '/'; }
-        if (Directory::isDir(path)) {
+
+        std::filesystem::directory_entry dir(path);
+        if (dir.exists()) {
           m_paths.push_back(path);
         } else {
           GUM_ERROR(NotFound, "not a directory")
@@ -580,7 +583,9 @@ namespace gum {
             for (int i = 0; i < count; i++)
               root += "../";
 
-            import_abs_filename = Directory(root).absolutePath() + import_name;
+            import_abs_filename = std::filesystem::absolute(std::filesystem::path(root)
+                                                            / std::filesystem::path(import_name))
+                                      .string();
 
             if (m_verbose) {
               m_log << "# Search from package '" << package << "' => '" << import_abs_filename

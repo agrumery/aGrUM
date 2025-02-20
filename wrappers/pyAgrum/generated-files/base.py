@@ -1274,7 +1274,7 @@ def isOMP() -> bool:
 def dispatchRangeToThreads(beg: int, end: int, nb_threads: int) -> "std::vector< std::pair< int,int >,std::allocator< std::pair< int,int > > >":
     return _base.dispatchRangeToThreads(beg, end, nb_threads)
 
-def randomValue(*args) -> int:
+def randomValue(max: int=2) -> int:
     r"""
 
     Returns
@@ -1283,7 +1283,7 @@ def randomValue(*args) -> int:
       a value randomly drawn (0 or 1)
 
     """
-    return _base.randomValue(*args)
+    return _base.randomValue(max)
 
 def randomProba() -> float:
     r"""

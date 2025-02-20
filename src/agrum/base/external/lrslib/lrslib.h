@@ -63,7 +63,6 @@ typedef unsigned  __int64 uint64_t;
 
 #ifdef SIGNALS
 #include <signal.h>
-#include <unistd.h>
 #define errcheck(s, e)       \
   if ((int64_t)(e) == -1L) { \
     perror(s);               \

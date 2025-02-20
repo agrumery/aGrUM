@@ -28240,85 +28240,13 @@ fail:
 }
 
 
-SWIGINTERN PyObject *_wrap_randomValue__SWIG_2(PyObject *self, Py_ssize_t nobjs, PyObject **swig_obj) {
-  PyObject *resultobj = 0;
-  std::mt19937 *arg1 = 0 ;
-  gum::Size arg2 ;
-  void *argp1 = 0 ;
-  int res1 = 0 ;
-  size_t val2 ;
-  int ecode2 = 0 ;
-  gum::Idx result;
-  
-  (void)self;
-  if ((nobjs < 2) || (nobjs > 2)) SWIG_fail;
-  res1 = SWIG_ConvertPtr(swig_obj[0], &argp1, SWIGTYPE_p_std__mt19937,  0 );
-  if (!SWIG_IsOK(res1)) {
-    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "randomValue" "', argument " "1"" of type '" "std::mt19937 &""'"); 
-  }
-  if (!argp1) {
-    SWIG_exception_fail(SWIG_NullReferenceError, "invalid null reference " "in method '" "randomValue" "', argument " "1"" of type '" "std::mt19937 &""'"); 
-  }
-  arg1 = reinterpret_cast< std::mt19937 * >(argp1);
-  ecode2 = SWIG_AsVal_size_t(swig_obj[1], &val2);
-  if (!SWIG_IsOK(ecode2)) {
-    SWIG_exception_fail(SWIG_ArgError(ecode2), "in method '" "randomValue" "', argument " "2"" of type '" "gum::Size""'");
-  } 
-  arg2 = static_cast< gum::Size >(val2);
-  {
-    try {
-      result = gum::randomValue(*arg1,SWIG_STD_MOVE(arg2));
-    } catch (...) {
-      SetPythonizeAgrumException();
-      SWIG_fail;
-    }
-  }
-  resultobj = SWIG_From_size_t(static_cast< size_t >(result));
-  return resultobj;
-fail:
-  return NULL;
-}
-
-
-SWIGINTERN PyObject *_wrap_randomValue__SWIG_3(PyObject *self, Py_ssize_t nobjs, PyObject **swig_obj) {
-  PyObject *resultobj = 0;
-  std::mt19937 *arg1 = 0 ;
-  void *argp1 = 0 ;
-  int res1 = 0 ;
-  gum::Idx result;
-  
-  (void)self;
-  if ((nobjs < 1) || (nobjs > 1)) SWIG_fail;
-  res1 = SWIG_ConvertPtr(swig_obj[0], &argp1, SWIGTYPE_p_std__mt19937,  0 );
-  if (!SWIG_IsOK(res1)) {
-    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "randomValue" "', argument " "1"" of type '" "std::mt19937 &""'"); 
-  }
-  if (!argp1) {
-    SWIG_exception_fail(SWIG_NullReferenceError, "invalid null reference " "in method '" "randomValue" "', argument " "1"" of type '" "std::mt19937 &""'"); 
-  }
-  arg1 = reinterpret_cast< std::mt19937 * >(argp1);
-  {
-    try {
-      result = gum::randomValue(*arg1);
-    } catch (...) {
-      SetPythonizeAgrumException();
-      SWIG_fail;
-    }
-  }
-  resultobj = SWIG_From_size_t(static_cast< size_t >(result));
-  return resultobj;
-fail:
-  return NULL;
-}
-
-
 SWIGINTERN PyObject *_wrap_randomValue(PyObject *self, PyObject *args) {
   Py_ssize_t argc;
-  PyObject *argv[3] = {
+  PyObject *argv[2] = {
     0
   };
   
-  if (!(argc = SWIG_Python_UnpackTuple(args, "randomValue", 0, 2, argv))) SWIG_fail;
+  if (!(argc = SWIG_Python_UnpackTuple(args, "randomValue", 0, 1, argv))) SWIG_fail;
   --argc;
   if (argc == 0) {
     PyObject *retobj = _wrap_randomValue__SWIG_1(self, argc, argv);
@@ -28326,24 +28254,7 @@ SWIGINTERN PyObject *_wrap_randomValue(PyObject *self, PyObject *args) {
     SWIG_fail;
   }
   if (argc == 1) {
-    int _v = 0;
-    {
-      void *vptr = 0;
-      int res = SWIG_ConvertPtr(argv[0], &vptr, SWIGTYPE_p_std__mt19937, SWIG_POINTER_NO_NULL);
-      _v = SWIG_CheckState(res);
-    }
-    if (!_v) goto check_2;
-    return _wrap_randomValue__SWIG_3(self, argc, argv);
-  }
-check_2:
-  
-  if (argc == 1) {
     PyObject *retobj = _wrap_randomValue__SWIG_0(self, argc, argv);
-    if (!SWIG_Python_TypeErrorOccurred(retobj)) return retobj;
-    SWIG_fail;
-  }
-  if (argc == 2) {
-    PyObject *retobj = _wrap_randomValue__SWIG_2(self, argc, argv);
     if (!SWIG_Python_TypeErrorOccurred(retobj)) return retobj;
     SWIG_fail;
   }
@@ -28352,9 +28263,7 @@ fail:
   SWIG_Python_RaiseOrModifyTypeError("Wrong number or type of arguments for overloaded function 'randomValue'.\n"
     "  Possible C/C++ prototypes are:\n"
     "    gum::randomValue(gum::Size const)\n"
-    "    gum::randomValue()\n"
-    "    gum::randomValue(std::mt19937 &,gum::Size const)\n"
-    "    gum::randomValue(std::mt19937 &)\n");
+    "    gum::randomValue()\n");
   return 0;
 }
 

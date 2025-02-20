@@ -59,12 +59,6 @@ namespace gum {
   }
 
   INLINE
-  Idx randomValue(std::mt19937& generator, const Size max) {
-    std::uniform_int_distribution< Idx > uni_int(0, int(max) - 1);
-    return uni_int(generator);
-  }
-
-  INLINE
   double randomProba() {
     std::uniform_real_distribution uni_real(0.0, 1.0);
     return uni_real(_rand_namespace_::Generator_);

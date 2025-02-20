@@ -1579,21 +1579,8 @@ namespace gum {
       strcpy(args[1], sinefile.c_str());
       strcpy(args[2], extfile.c_str());
 
-      // standard cout to null (avoid lrs flooding)
-      int old_cout, new_cout;
-      fflush(stdout);
-      old_cout = dup(1);
-
-      new_cout = open("/dev/null", O_WRONLY);
-      dup2(new_cout, 1);
-      close(new_cout);
-
+      // it may need to redirect stdout to a file
       lrs_main(3, args);
-
-      // restore standard cout
-      fflush(stdout);
-      dup2(old_cout, 1);
-      close(old_cout);
 
       delete[] args[2];
       delete[] args[1];

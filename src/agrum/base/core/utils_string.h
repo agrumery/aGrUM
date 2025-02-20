@@ -56,10 +56,6 @@
 
 #include <agrum/agrum.h>
 
-#ifndef HAVE_MKSTEMP   // mainly windows
-#  include <io.h>
-#endif
-
 namespace gum {
   /// @ingroup utilities_group
   /// @{
