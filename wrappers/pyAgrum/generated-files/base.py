@@ -5243,7 +5243,7 @@ class Instantiation(object):
         """
         return _base.Instantiation_nbrDim(self)
 
-    def add(self, v: "DiscreteVariable") -> None:
+    def add(self, v: "pyAgrum.DiscreteVariable") -> None:
         r"""
 
         Adds a new variable in the Instantiation.
@@ -5303,7 +5303,7 @@ class Instantiation(object):
         """
         return _base.Instantiation_domainSize(self)
 
-    def pos(self, v: "DiscreteVariable") -> int:
+    def pos(self, v: "pyAgrum.DiscreteVariable") -> int:
         r"""
 
         Returns
@@ -5397,7 +5397,7 @@ class Instantiation(object):
         """
         return _base.Instantiation_chgVal(self, *args)
 
-    def setVals(self, i: "Instantiation") -> "pyAgrum.Instantiation":
+    def setVals(self, i: "pyAgrum.Instantiation") -> "pyAgrum.Instantiation":
         r"""
 
         Assign the values from i in the Instantiation.
@@ -5520,7 +5520,7 @@ class Instantiation(object):
         """
         return _base.Instantiation_dec(self)
 
-    def incIn(self, i: "Instantiation") -> None:
+    def incIn(self, i: "pyAgrum.Instantiation") -> None:
         r"""
 
         Operator ++ for the variables in i.
@@ -5533,7 +5533,7 @@ class Instantiation(object):
         """
         return _base.Instantiation_incIn(self, i)
 
-    def decIn(self, i: "Instantiation") -> None:
+    def decIn(self, i: "pyAgrum.Instantiation") -> None:
         r"""
 
         Operator -- for the variables in i.
@@ -5546,7 +5546,7 @@ class Instantiation(object):
         """
         return _base.Instantiation_decIn(self, i)
 
-    def incOut(self, i: "Instantiation") -> None:
+    def incOut(self, i: "pyAgrum.Instantiation") -> None:
         r"""
 
         Operator ++ for the variables not in i.
@@ -5559,7 +5559,7 @@ class Instantiation(object):
         """
         return _base.Instantiation_incOut(self, i)
 
-    def decOut(self, i: "Instantiation") -> None:
+    def decOut(self, i: "pyAgrum.Instantiation") -> None:
         r"""
 
         Operator -- for the variables not in i.
@@ -5572,7 +5572,7 @@ class Instantiation(object):
         """
         return _base.Instantiation_decOut(self, i)
 
-    def incNotVar(self, v: "DiscreteVariable") -> None:
+    def incNotVar(self, v: "pyAgrum.DiscreteVariable") -> None:
         r"""
 
         Operator ++ for vars which are not v.
@@ -5585,7 +5585,7 @@ class Instantiation(object):
         """
         return _base.Instantiation_incNotVar(self, v)
 
-    def decNotVar(self, v: "DiscreteVariable") -> None:
+    def decNotVar(self, v: "pyAgrum.DiscreteVariable") -> None:
         r"""
 
         Operator -- for vars which are not v.
@@ -5598,7 +5598,7 @@ class Instantiation(object):
         """
         return _base.Instantiation_decNotVar(self, v)
 
-    def incVar(self, v: "DiscreteVariable") -> None:
+    def incVar(self, v: "pyAgrum.DiscreteVariable") -> None:
         r"""
 
         Operator ++ for variable v only.
@@ -5616,7 +5616,7 @@ class Instantiation(object):
         """
         return _base.Instantiation_incVar(self, v)
 
-    def decVar(self, v: "DiscreteVariable") -> None:
+    def decVar(self, v: "pyAgrum.DiscreteVariable") -> None:
         r"""
 
         Operator -- for variable v only.
@@ -5650,7 +5650,7 @@ class Instantiation(object):
         """
         return _base.Instantiation_setLast(self)
 
-    def setFirstIn(self, i: "Instantiation") -> None:
+    def setFirstIn(self, i: "pyAgrum.Instantiation") -> None:
         r"""
 
         Assign the first values in the Instantiation for the variables in i.
@@ -5663,7 +5663,7 @@ class Instantiation(object):
         """
         return _base.Instantiation_setFirstIn(self, i)
 
-    def setLastIn(self, i: "Instantiation") -> None:
+    def setLastIn(self, i: "pyAgrum.Instantiation") -> None:
         r"""
 
         Assign the last values in the Instantiation for the variables in i.
@@ -5676,7 +5676,7 @@ class Instantiation(object):
         """
         return _base.Instantiation_setLastIn(self, i)
 
-    def setFirstOut(self, i: "Instantiation") -> None:
+    def setFirstOut(self, i: "pyAgrum.Instantiation") -> None:
         r"""
 
         Assign the first values in the Instantiation for the variables not in i.
@@ -5689,7 +5689,7 @@ class Instantiation(object):
         """
         return _base.Instantiation_setFirstOut(self, i)
 
-    def setLastOut(self, i: "Instantiation") -> None:
+    def setLastOut(self, i: "pyAgrum.Instantiation") -> None:
         r"""
 
         Assign the last values in the Instantiation for the variables not in i.
@@ -5702,7 +5702,7 @@ class Instantiation(object):
         """
         return _base.Instantiation_setLastOut(self, i)
 
-    def setFirstNotVar(self, v: "DiscreteVariable") -> None:
+    def setFirstNotVar(self, v: "pyAgrum.DiscreteVariable") -> None:
         r"""
 
         Assign the first values to variables different of v.
@@ -5715,7 +5715,7 @@ class Instantiation(object):
         """
         return _base.Instantiation_setFirstNotVar(self, v)
 
-    def setLastNotVar(self, v: "DiscreteVariable") -> None:
+    def setLastNotVar(self, v: "pyAgrum.DiscreteVariable") -> None:
         r"""
 
         Assign the last values to variables different of v.
@@ -5728,7 +5728,7 @@ class Instantiation(object):
         """
         return _base.Instantiation_setLastNotVar(self, v)
 
-    def setFirstVar(self, v: "DiscreteVariable") -> None:
+    def setFirstVar(self, v: "pyAgrum.DiscreteVariable") -> None:
         r"""
 
         Assign the first value in the Instantiation for var v.
@@ -5741,7 +5741,7 @@ class Instantiation(object):
         """
         return _base.Instantiation_setFirstVar(self, v)
 
-    def setLastVar(self, v: "DiscreteVariable") -> None:
+    def setLastVar(self, v: "pyAgrum.DiscreteVariable") -> None:
         r"""
 
         Assign the last value in the Instantiation for var v.
@@ -5754,7 +5754,7 @@ class Instantiation(object):
         """
         return _base.Instantiation_setLastVar(self, v)
 
-    def __eq__(self, other: "Instantiation") -> bool:
+    def __eq__(self, other: "pyAgrum.Instantiation") -> bool:
         return _base.Instantiation___eq__(self, other)
 
     def __iadd__(self, depl: int) -> "pyAgrum.Instantiation":
@@ -6089,7 +6089,7 @@ class GraphicalModel(object):
     def variable(self, id: int) -> "pyAgrum.DiscreteVariable":
         return _base.GraphicalModel_variable(self, id)
 
-    def nodeId(self, var: "DiscreteVariable") -> int:
+    def nodeId(self, var: "pyAgrum.DiscreteVariable") -> int:
         return _base.GraphicalModel_nodeId(self, var)
 
     def idFromName(self, name: str) -> int:
@@ -7220,10 +7220,10 @@ class MultiDimContainer(object):
     __repr__ = _swig_repr
     __swig_destroy__ = _base.delete_MultiDimContainer
 
-    def set(self, i: "Instantiation", value: float) -> None:
+    def set(self, i: "pyAgrum.Instantiation", value: float) -> None:
         return _base.MultiDimContainer_set(self, i, value)
 
-    def get(self, i: "Instantiation") -> float:
+    def get(self, i: "pyAgrum.Instantiation") -> float:
         return _base.MultiDimContainer_get(self, i)
 
     def fill(self, d: float) -> None:
@@ -7235,7 +7235,7 @@ class MultiDimContainer(object):
     def copyFrom(self, *args) -> None:
         return _base.MultiDimContainer_copyFrom(self, *args)
 
-    def extractFrom(self, src: "pyAgrum.Tensor", mask: "Instantiation") -> None:
+    def extractFrom(self, src: "pyAgrum.Tensor", mask: "pyAgrum.Instantiation") -> None:
         return _base.MultiDimContainer_extractFrom(self, src, mask)
 
     def content(self, *args) -> "pyAgrum.Tensor":
@@ -7780,19 +7780,19 @@ class Tensor(object):
         return _base.Tensor___invert__(self)
 
     @staticmethod
-    def evEq(v: "DiscreteVariable", val: float) -> "pyAgrum.Tensor":
+    def evEq(v: "pyAgrum.DiscreteVariable", val: float) -> "pyAgrum.Tensor":
         return _base.Tensor_evEq(v, val)
 
     @staticmethod
-    def evIn(v: "DiscreteVariable", val1: float, val2: float) -> "pyAgrum.Tensor":
+    def evIn(v: "pyAgrum.DiscreteVariable", val1: float, val2: float) -> "pyAgrum.Tensor":
         return _base.Tensor_evIn(v, val1, val2)
 
     @staticmethod
-    def evGt(v: "DiscreteVariable", val: float) -> "pyAgrum.Tensor":
+    def evGt(v: "pyAgrum.DiscreteVariable", val: float) -> "pyAgrum.Tensor":
         return _base.Tensor_evGt(v, val)
 
     @staticmethod
-    def evLt(v: "DiscreteVariable", val: float) -> "pyAgrum.Tensor":
+    def evLt(v: "pyAgrum.DiscreteVariable", val: float) -> "pyAgrum.Tensor":
         return _base.Tensor_evLt(v, val)
 
     def __repr__(self) -> str:
@@ -8523,7 +8523,7 @@ class Tensor(object):
         return tuple([self.variable(i).domainSize() for i in range(self.nbrDim())])
 
 
-    def get(self, i: "Instantiation") -> float:
+    def get(self, i: "pyAgrum.Instantiation") -> float:
         r"""
 
         Parameters
@@ -8539,7 +8539,7 @@ class Tensor(object):
         """
         return _base.Tensor_get(self, i)
 
-    def set(self, i: "Instantiation", value: float) -> None:
+    def set(self, i: "pyAgrum.Instantiation", value: float) -> None:
         r"""
 
         Change the value pointed by i
@@ -8565,7 +8565,7 @@ class Tensor(object):
         """
         return _base.Tensor_empty(self)
 
-    def pos(self, v: "DiscreteVariable") -> int:
+    def pos(self, v: "pyAgrum.DiscreteVariable") -> int:
         r"""
 
         Parameters
@@ -8585,7 +8585,7 @@ class Tensor(object):
         """
         return _base.Tensor_pos(self, v)
 
-    def contains(self, v: "DiscreteVariable") -> bool:
+    def contains(self, v: "pyAgrum.DiscreteVariable") -> bool:
         r"""
 
         Parameters
@@ -8621,7 +8621,7 @@ class Tensor(object):
         """
         return _base.Tensor_variable(self, *args)
 
-    def remove(self, var: "DiscreteVariable") -> None:
+    def remove(self, var: "pyAgrum.DiscreteVariable") -> None:
         r"""
 
         Parameters
@@ -8647,7 +8647,7 @@ class Tensor(object):
         return val
 
 
-    def add(self, v: "DiscreteVariable") -> None:
+    def add(self, v: "pyAgrum.DiscreteVariable") -> None:
         r"""
 
         Add a discrete variable to the tensor.

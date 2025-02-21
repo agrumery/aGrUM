@@ -363,7 +363,7 @@ class IMarkovRandomField(pyAgrum.base.UGmodel):
     def variable(self, id: int) -> "pyAgrum.DiscreteVariable":
         return _mrf.IMarkovRandomField_variable(self, id)
 
-    def nodeId(self, var: "DiscreteVariable") -> int:
+    def nodeId(self, var: "pyAgrum.DiscreteVariable") -> int:
         return _mrf.IMarkovRandomField_nodeId(self, var)
 
     def idFromName(self, name: str) -> int:
@@ -727,7 +727,7 @@ class MarkovRandomField(IMarkovRandomField):
         """
         return _mrf.MarkovRandomField_changeVariableLabel(self, *args)
 
-    def nodeId(self, var: "DiscreteVariable") -> int:
+    def nodeId(self, var: "pyAgrum.DiscreteVariable") -> int:
         return _mrf.MarkovRandomField_nodeId(self, var)
 
     def idFromName(self, name: str) -> int:
@@ -1924,7 +1924,7 @@ def about():
 
 import warnings
 
-def availableMNExts():
+def availableMRFExts():
   """ Give the list of all formats known by pyAgrum to save a Markov random field.
 
   Returns

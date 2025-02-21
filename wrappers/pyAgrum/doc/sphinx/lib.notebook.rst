@@ -18,8 +18,8 @@ Visualization of graphical models
 .. autofunction:: pyAgrum.lib.notebook.getBN
 .. autofunction:: pyAgrum.lib.notebook.showInfluenceDiagram
 .. autofunction:: pyAgrum.lib.notebook.getInfluenceDiagram
-.. autofunction:: pyAgrum.lib.notebook.showMN
-.. autofunction:: pyAgrum.lib.notebook.getMN
+.. autofunction:: pyAgrum.lib.notebook.showMRF
+.. autofunction:: pyAgrum.lib.notebook.getMRF
 .. autofunction:: pyAgrum.lib.notebook.showCN
 .. autofunction:: pyAgrum.lib.notebook.getCN
 .. autofunction:: pyAgrum.lib.notebook.showInference

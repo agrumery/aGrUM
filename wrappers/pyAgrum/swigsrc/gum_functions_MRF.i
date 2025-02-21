@@ -40,7 +40,7 @@
 %pythoncode %{
 import warnings
 
-def availableMNExts():
+def availableMRFExts():
   """ Give the list of all formats known by pyAgrum to save a Markov random field.
 
   Returns

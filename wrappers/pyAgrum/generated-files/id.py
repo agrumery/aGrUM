@@ -417,7 +417,7 @@ class InfluenceDiagram(pyAgrum.base.DAGmodel):
         """
         return _id.InfluenceDiagram_variable(self, *args)
 
-    def nodeId(self, var: "DiscreteVariable") -> int:
+    def nodeId(self, var: "pyAgrum.DiscreteVariable") -> int:
         r"""
 
         Parameters

@@ -1946,7 +1946,7 @@ class IBayesNet(pyAgrum.base.DAGmodel):
         """
         return _bn.IBayesNet_variable(self, id)
 
-    def nodeId(self, var: "DiscreteVariable") -> int:
+    def nodeId(self, var: "pyAgrum.DiscreteVariable") -> int:
         r"""
 
         Parameters
@@ -2015,7 +2015,7 @@ class IBayesNet(pyAgrum.base.DAGmodel):
         """
         return _bn.IBayesNet_variableFromName(self, name)
 
-    def jointProbability(self, i: "Instantiation") -> float:
+    def jointProbability(self, i: "pyAgrum.Instantiation") -> float:
         r"""
 
         Parameters
@@ -2035,7 +2035,7 @@ class IBayesNet(pyAgrum.base.DAGmodel):
         """
         return _bn.IBayesNet_jointProbability(self, i)
 
-    def log2JointProbability(self, i: "Instantiation") -> float:
+    def log2JointProbability(self, i: "pyAgrum.Instantiation") -> float:
         r"""
 
         Parameters
@@ -2729,7 +2729,7 @@ class BayesNet(IBayesNet):
         """
         return _bn.BayesNet_changeVariableLabel(self, *args)
 
-    def nodeId(self, var: "DiscreteVariable") -> int:
+    def nodeId(self, var: "pyAgrum.DiscreteVariable") -> int:
         r"""
 
         Parameters
@@ -3033,7 +3033,7 @@ class BayesNet(IBayesNet):
         """
         return _bn.BayesNet_addLogit(self, *args)
 
-    def addOR(self, var: "DiscreteVariable") -> int:
+    def addOR(self, var: "pyAgrum.DiscreteVariable") -> int:
         r"""
 
         Add a variable, it's associate node and an OR implementation.
@@ -3062,7 +3062,7 @@ class BayesNet(IBayesNet):
         """
         return _bn.BayesNet_addOR(self, var)
 
-    def addAND(self, var: "DiscreteVariable") -> int:
+    def addAND(self, var: "pyAgrum.DiscreteVariable") -> int:
         r"""
 
         Add a variable, it's associate node and an AND implementation.
@@ -3087,7 +3087,7 @@ class BayesNet(IBayesNet):
         """
         return _bn.BayesNet_addAND(self, var)
 
-    def addAMPLITUDE(self, var: "DiscreteVariable") -> int:
+    def addAMPLITUDE(self, var: "pyAgrum.DiscreteVariable") -> int:
         r"""
 
         Others aggregators
@@ -3105,7 +3105,7 @@ class BayesNet(IBayesNet):
         """
         return _bn.BayesNet_addAMPLITUDE(self, var)
 
-    def addCOUNT(self, var: "DiscreteVariable", value: int=1) -> int:
+    def addCOUNT(self, var: "pyAgrum.DiscreteVariable", value: int=1) -> int:
         r"""
 
         Others aggregators
@@ -3123,7 +3123,7 @@ class BayesNet(IBayesNet):
         """
         return _bn.BayesNet_addCOUNT(self, var, value)
 
-    def addEXISTS(self, var: "DiscreteVariable", value: int=1) -> int:
+    def addEXISTS(self, var: "pyAgrum.DiscreteVariable", value: int=1) -> int:
         r"""
 
         Others aggregators
@@ -3141,7 +3141,7 @@ class BayesNet(IBayesNet):
         """
         return _bn.BayesNet_addEXISTS(self, var, value)
 
-    def addFORALL(self, var: "DiscreteVariable", value: int=1) -> int:
+    def addFORALL(self, var: "pyAgrum.DiscreteVariable", value: int=1) -> int:
         r"""
 
         Others aggregators
@@ -3159,7 +3159,7 @@ class BayesNet(IBayesNet):
         """
         return _bn.BayesNet_addFORALL(self, var, value)
 
-    def addMAX(self, var: "DiscreteVariable") -> int:
+    def addMAX(self, var: "pyAgrum.DiscreteVariable") -> int:
         r"""
 
         Others aggregators
@@ -3177,7 +3177,7 @@ class BayesNet(IBayesNet):
         """
         return _bn.BayesNet_addMAX(self, var)
 
-    def addMEDIAN(self, var: "DiscreteVariable") -> int:
+    def addMEDIAN(self, var: "pyAgrum.DiscreteVariable") -> int:
         r"""
 
         Others aggregators
@@ -3195,7 +3195,7 @@ class BayesNet(IBayesNet):
         """
         return _bn.BayesNet_addMEDIAN(self, var)
 
-    def addMIN(self, var: "DiscreteVariable") -> int:
+    def addMIN(self, var: "pyAgrum.DiscreteVariable") -> int:
         r"""
 
         Others aggregators
@@ -3213,7 +3213,7 @@ class BayesNet(IBayesNet):
         """
         return _bn.BayesNet_addMIN(self, var)
 
-    def addSUM(self, var: "DiscreteVariable") -> int:
+    def addSUM(self, var: "pyAgrum.DiscreteVariable") -> int:
         r"""
 
         Others aggregators
@@ -4167,7 +4167,7 @@ class BayesNetFragment(IBayesNet, ):
         """
         return _bn.BayesNetFragment_variable(self, *args)
 
-    def nodeId(self, var: "DiscreteVariable") -> int:
+    def nodeId(self, var: "pyAgrum.DiscreteVariable") -> int:
         r"""
 
         Parameters
@@ -15291,13 +15291,13 @@ class BNLearner(object):
         return _bn.BNLearner_learnParameters(self, *args)
 
 
-    def setInitialDAG(self, dag: "DAG") -> "pyAgrum.BNLearner":
+    def setInitialDAG(self, dag: "pyAgrum.DAG") -> "pyAgrum.BNLearner":
         r"""
 
         Parameters
         ----------
         dag : pyAgrum.DAG
-        	an initial DAG structure
+        	an initial pyAgrum.DAG structure
 
         """
         return _bn.BNLearner_setInitialDAG(self, dag)

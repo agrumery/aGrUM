@@ -151,7 +151,7 @@ g : pyAgrum.UndiGraph
 Parameters
 ----------
 dag : pyAgrum.DAG
-	an initial DAG structure
+	an initial pyAgrum.DAG structure
 "
 
 %feature("docstring") gum::learning::BNLearner::useEM
@@ -415,7 +415,7 @@ tail : int | str
 "
 assign a set of forbidden arcs
 
-Parameters                          
+Parameters
 ----------
 arcs: Set[Tuple[int|str,int|str]]
 "
@@ -804,4 +804,3 @@ Parameters
 n : str | int
   the name of the id of the variable
 "
-

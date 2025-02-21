@@ -85551,7 +85551,7 @@ static PyMethodDef SwigMethods[] = {
 		"Parameters\n"
 		"----------\n"
 		"dag : pyAgrum.DAG\n"
-		"	an initial DAG structure\n"
+		"	an initial pyAgrum.DAG structure\n"
 		"\n"
 		""},
 	 { "BNLearner_useEM", _wrap_BNLearner_useEM, METH_VARARGS, "\n"

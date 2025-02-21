@@ -936,7 +936,7 @@ class CausalEffectEstimation:
             - If `str`, estimates the Conditional Average Causal Effect (CACE).
                 The string must be a valid pandas query.
             - If `None`, estimates the Average Causal Effect (ACE).
-            Default is `None`.
+                Default is `None`.
         estimation_params: dict of str to Any, optional
             Additional parameters for the estimation method.
             Keys are parameter names, and values are the corresponding
