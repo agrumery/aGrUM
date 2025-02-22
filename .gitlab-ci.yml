@@ -5,6 +5,7 @@ variables:
   LINUX_WHEELHOUSE: "wrappers/pyAgrum/wheelhouse/build_wheels_linux.sh"
   LINUX_NIGHTLY_WHEELHOUSE: "wrappers/pyAgrum/wheelhouse/build_nightly_wheels_linux.sh"
   OSX_BUILD: "wrappers/pyAgrum/wheelhouse/build_macos.sh"
+  OSX_ARM_BUILD: "wrappers/pyAgrum/wheelhouse/build_macos_arm.sh"
   OSX_WHEELHOUSE: "wrappers/pyAgrum/wheelhouse/build_wheels_macos.sh"
   WINDOWS_BUILD: "wrappers/pyAgrum/wheelhouse/build_windows.ps1"
   WINDOWS_WHEELHOUSE: "wrappers/pyAgrum/wheelhouse/build_wheels_windows.ps1"
@@ -64,6 +65,22 @@ stages:
     paths:
       - build/
 
+.macos_arm_build_template: &macos_arm_build_template
+  <<: *common_artifacts
+  <<: *build_template
+  only:
+    - tags
+    - web@agrumery/aGrUM
+    - master@agrumery/aGrUM
+    - merge_requests
+  tags:
+    - aarch
+    - osx
+  cache:
+    key: aarch
+    paths:
+      - build/
+
 .windows_build_template: &windows_build_template
   <<: *common_artifacts
   <<: *build_template
@@ -110,12 +127,6 @@ linux_pyagrum_py310:
   script:
     - bash $LINUX_BUILD pyAgrum
 
-# linux_pyagrum_py312:
-#   <<: *linux_build_template
-#   image: agrumery/ubuntu_py312
-#   script:
-#     - bash $LINUX_BUILD pyAgrum
-
 linux_pyagrum_py313:
   <<: *linux_build_template
   image: agrumery/ubuntu_py313
@@ -134,80 +145,34 @@ linux_pyagrum_py313:
 # Linux x86_64 / gcc
 ################################################################################
 
-build_wheel_linux_py310:
+build_wheel_linux:
   <<: *linux_wheel_template
   script:
     - bash $LINUX_WHEELHOUSE cp310-cp310
 
-# build_wheel_linux_py312:
-#   <<: *linux_wheel_template
-#   script:
-#     - bash $LINUX_WHEELHOUSE cp312-cp312
-
-# build_nightly_wheel_linux_py312:
-#   <<: *linux_wheel_template
-#   script:
-#     - bash $LINUX_NIGHTLY_WHEELHOUSE cp312-cp312
-
-build_wheel_linux_py313:
-  <<: *linux_wheel_template
-  script:
-    - bash $LINUX_WHEELHOUSE cp313-cp313
-
-build_nightly_wheel_linux_py310:
+build_nightly_wheel_linux:
   <<: *linux_wheel_template
   script:
     - bash $LINUX_NIGHTLY_WHEELHOUSE cp310-cp310
-
-build_nightly_wheel_linux_py313:
-  <<: *linux_wheel_template
-  script:
-    - bash $LINUX_NIGHTLY_WHEELHOUSE cp313-cp313
 
 ################################################################################
 # MacOS
 ################################################################################
 
-build_wheel_osx_py310:
+build_wheel_osx:
   <<: *macos_build_template
   script:
     - bash $OSX_WHEELHOUSE py310
-
-# build_wheel_osx_py312:
-#   <<: *macos_build_template
-#   script:
-#     - bash $OSX_WHEELHOUSE py312
-
-build_wheel_osx_py313:
-  <<: *macos_build_template
-  script:
-    - bash $OSX_WHEELHOUSE py313
 
 ################################################################################
 # Windows / MVSC
 ################################################################################
 
-build_wheel_windows_py310:
+build_wheel_windows:
   <<: *windows_build_template
   variables:
     PATH: $PATH_MVSC22_GUMWIN
     CONDA_ENV: "py310"
-  script:
-    - *windows_wheel_script
-
-# build_wheel_windows_py312:
-#   <<: *windows_build_template
-#   variables:
-#     PATH: $PATH_MVSC22_GUMWIN
-#     CONDA_ENV: "py312"
-#   script:
-#     - *windows_wheel_script
-
-build_wheel_windows_py313:
-  <<: *windows_build_template
-  variables:
-    PATH: $PATH_MVSC22_GUMWIN
-    CONDA_ENV: "py313"
   script:
     - *windows_wheel_script
 
@@ -219,31 +184,11 @@ build_wheel_windows_py313:
 # MacOS / clang
 ################################################################################
 
-# macos_agrum:
-#   <<: *macos_build_template
-#   variables:
-#     CC: "/usr/bin/clang"
-#     CXX: "/usr/bin/clang++"
-#     PYTHON_VERSION: "py312"
-#     TARGET: "aGrUM"
-#   script:
-#     - bash $OSX_BUILD $PYTHON_VERSION $TARGET
-
-# macos_pyagrum:
-#   <<: *macos_build_template
-#   variables:
-#     CC: "/usr/bin/clang"
-#     CXX: "/usr/bin/clang++"
-#     PYTHON_VERSION: "py312"
-#     TARGET: "pyAgrum"
-#   script:
-#     - bash $OSX_BUILD $PYTHON_VERSION $TARGET
-
 macos_agrum:
   <<: *macos_build_template
   variables:
-    CC: "/usr/bin/clang"
-    CXX: "/usr/bin/clang++"
+    CC: "/usr/local/opt/llvm/bin/clang"
+    CXX: "/usr/local/opt/llvm/bin/clang++"
     PYTHON_VERSION: "py313"
     TARGET: "aGrUM"
   script:
@@ -252,12 +197,36 @@ macos_agrum:
 macos_pyagrum:
   <<: *macos_build_template
   variables:
-    CC: "/usr/bin/clang"
-    CXX: "/usr/bin/clang++"
+    CC: "/usr/local/opt/llvm/bin/clang"
+    CXX: "/usr/local/opt/llvm/bin/clang++"
     PYTHON_VERSION: "py313"
     TARGET: "pyAgrum"
   script:
     - bash $OSX_BUILD $PYTHON_VERSION $TARGET
+
+################################################################################
+# MacOS / ARM
+################################################################################
+
+macos_arm_agrum:
+  <<: *macos_arm_build_template
+  variables:
+    CC: "/opt/homebrew/opt/llvm/bin/clang"
+    CXX: "/opt/homebrew/opt/llvm/bin/clang++"
+    PYTHON_VERSION: "py313"
+    TARGET: "aGrUM"
+  script:
+    - bash $OSX_ARM_BUILD $PYTHON_VERSION $TARGET
+
+macos_arm_pyagrum:
+  <<: *macos_arm_build_template
+  variables:
+    CC: "/opt/homebrew/opt/llvm/bin/clang"
+    CXX: "/opt/homebrew/opt/llvm/bin/clang++"
+    PYTHON_VERSION: "py313"
+    TARGET: "pyAgrum"
+  script:
+    - bash $OSX_ARM_BUILD $PYTHON_VERSION $TARGET
 
 ################################################################################
 # Windows / MVSC

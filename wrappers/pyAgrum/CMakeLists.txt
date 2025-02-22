@@ -6,7 +6,7 @@ if(PYTHON_TARGET)
   unset(Python_VERSION_MAJOR CACHE)
 endif()
 
-option(AGRUM_PYTHON_SABI "Use Python stable ABI" OFF)
+option(AGRUM_PYTHON_SABI "Use Python stable ABI" ON)
 
 if(AGRUM_PYTHON_SABI AND CMAKE_VERSION VERSION_GREATER_EQUAL 3.26)
   find_package(Python ${PYAGRUM_REQUIRED_PYTHON_VERSION} COMPONENTS Interpreter Development.SABIModule REQUIRED)
@@ -19,7 +19,11 @@ list(APPEND CMAKE_SWIG_FLAGS "-fastdispatch")
 add_definitions("-DSWIG_TYPE_TABLE=pyproba")
 
 # allows one to pass compile flags like -O1 to reduce memory usage
-set(SWIG_COMPILE_FLAGS "" CACHE STRING "C++ compiler flags used for wrapper code")
+if(AGRUM_PYTHON_SABI)
+  set(SWIG_COMPILE_FLAGS "-DPy_LIMITED_API=0x030A0000" CACHE STRING "C++ compiler flags used for wrapper code")
+else()
+  set(SWIG_COMPILE_FLAGS "" CACHE STRING "C++ compiler flags used for wrapper code")
+endif()
 
 if(WIN32)
   set(INSTALL_PYTHONDIR Lib/site-packages CACHE PATH "python site-dir")

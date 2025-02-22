@@ -13,8 +13,8 @@ fi
 CONDA_ENV=$1
 TARGET=$2
 
-echo "Initializing Conda..."
-. /Users/agrum/miniconda3/etc/profile.d/conda.sh
+echo "Sourcing .zshrc to set up the environment..."
+source /Users/agrum/.zshrc
 
 echo "Activating Conda environment: ${CONDA_ENV}"
 conda activate $CONDA_ENV
@@ -26,9 +26,9 @@ if [ "${TARGET}" == "aGrUM" ]; then
     echo "Building aGrUM..."
     python act --no-fun test release aGrUM -j halfexcept1 --compiler=clang
 elif [ "${TARGET}" == "pyAgrum" ]; then
-    echo "Building pyAgrum..." 
+    echo "Building pyAgrum..."
     python act --no-fun test release pyAgrum -j halfexcept1 -t quick --compiler=clang
-else 
+else
     echo "Invalid target type: ${TARGET}. Expected 'aGrUM' or 'pyAgrum'"
     exit 1
 fi

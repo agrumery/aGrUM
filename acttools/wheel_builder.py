@@ -100,9 +100,9 @@ def _go_wheel(current:dict[str,str], nightly=False):
   try:
     _prepare_wheel(current, tmp, nightly)
     notif("Finished building pyAgrum.")
-    install_dir, version = build_wheel(tmp, nightly)
+    install_dir, version = build_wheel(tmp, cfg.minimal_python_api, nightly)
     notif("Finished building wheel directory.")
-    zip_file = zip_wheel(tmp, install_dir, version, nightly)
+    zip_file = zip_wheel(tmp, install_dir, version, cfg.minimal_python_api, nightly)
     notif("Finished zipping wheel.")
     move(join(tmp, zip_file), join(current['destination'], zip_file))
     notif(f"Wheel moved to: {join(current['destination'], zip_file)}.")
@@ -170,7 +170,7 @@ def get_python_version(out):
         version))
   return version
 
-def build_wheel(tmp, nightly=False):
+def build_wheel(tmp, minimal_python_api, nightly=False):
   """Update the WHEEL file with the proper Python version, remove unnecessary
   files and generated the RECORD file. Returns the root of the wheel's
   directory."""
@@ -189,7 +189,7 @@ def build_wheel(tmp, nightly=False):
            join(install_dir,
                 f"pyAgrum_nightly-{version}.dev{datetime.today().strftime('%Y%m%d')}{commit_time}.dist-info"))
 
-  update_wheel_file(dist_info)
+  update_wheel_file(dist_info, minimal_python_api)
   clean_up(install_dir)
 
   if (nightly):
@@ -228,10 +228,10 @@ def get_pyAgrum_version(path):
   return ""
 
 
-def update_wheel_file(dist_info):
+def update_wheel_file(dist_info, minimal_python_api):
   """Adds proper tags using wheel's package implementation of PEP427."""
   path = join(dist_info, "WHEEL")
-  tags = get_tags()
+  tags = get_tags(minimal_python_api)
   act_version = cfg.act_version
   lines = []
   try:
@@ -245,10 +245,8 @@ def update_wheel_file(dist_info):
     critic(f"Could not update WHEEL file: {path}")
 
 
-def get_tags():
+def get_tags(minimal_python_api):
   """Get proper tags using wheel's package implementation of PEP427."""
-  impl = wheel_tags.interpreter_name() + wheel_tags.interpreter_version()
-  abi = pep.get_abi_tag()
   try:
     arch = pep.safer_name(pep.get_platform(None))
   except:
@@ -261,7 +259,7 @@ def get_tags():
     arch = 'manylinux2014_aarch64'
   if 'macosx' in arch:
     arch = arch.replace('.', '_')
-  tags = f'{impl}-{abi}-{arch}'
+  tags = f'{minimal_python_api}-abi3-{arch}'
   return tags
 
 def clean_up(install_dir):
@@ -334,13 +332,13 @@ def replace(file_path, pattern, subst):
   move(abs_path, file_path)
 
 
-def zip_wheel(tmp, install_dir, version, nightly=False):
+def zip_wheel(tmp, install_dir, version, minimal_python_api, nightly=False):
   """Zip all files in install_dir."""
   if (nightly):
     commit_time = os.popen('git log -1 --format="%at"').read().split('\n')[0]
-    zip_name = f"pyAgrum_nightly-{version}.dev{datetime.today().strftime('%Y%m%d')}{commit_time}-{ get_tags()}.whl"
+    zip_name = f"pyAgrum_nightly-{version}.dev{datetime.today().strftime('%Y%m%d')}{commit_time}-{get_tags(minimal_python_api)}.whl"
   else:
-    zip_name = f"pyAgrum-{version}-{get_tags()}.whl"
+    zip_name = f"pyAgrum-{version}-{get_tags(minimal_python_api)}.whl"
   zipf = zipfile.ZipFile(join(tmp, zip_name), 'w', zipfile.ZIP_DEFLATED)
   for root, dirs, files in walk(install_dir):
     for f in files:

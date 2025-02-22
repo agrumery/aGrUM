@@ -76,6 +76,8 @@ cfg.fixedSeedValue = "10"
 
 cfg.nbr_tests_for_stats = 100
 
+cfg.minimal_python_api = "cp310"
+
 # for message
 cfg.prefix_line = "-- "
 cfg.prefix_trace = "==> "
