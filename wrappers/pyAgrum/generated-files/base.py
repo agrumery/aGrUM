@@ -284,7 +284,7 @@ class Vector(object):
     def size(self) -> int:
         return _base.Vector_size(self)
 
-    def swap(self, v: "Vector") -> None:
+    def swap(self, v: "pyAgrum.Vector") -> None:
         return _base.Vector_swap(self, v)
 
     def begin(self) -> int:
@@ -6954,16 +6954,17 @@ class DiscretizedVariable(IDiscretizedVariable):
 
     DiscretizedVariable is a discrete random variable with a set of `ticks` defining intervals.
 
-    DiscretizedVariable(aName, aDesc ,ticks=None,is_empirical=False) -> pyAgrum.DiscretizedVariable
-        Parameters:
+    DiscretizedVariable(aName, aDesc ,ticks=None,is_empirical=False) -> pyAgrum.DiscretizedVariable Parameters:
+
             - **aName** (*str*) -- the name of the variable
             - **aDesc** (*str*) -- the description of the variable
-            - **ticks (*list[float]*) -- the list of ticks to add
+            - **ticks** (*list[float]*) -- the list of ticks to add
             - **is_empirical** (*bool) -- if False, raise an error if a value is out of bound.
 
 
     DiscretizedVariable(aDDRV) -> DiscretizedVariable
         Parameters:
+
             - **aDDRV** (*pyAgrum.DiscretizedVariable*) -- the pyAgrum.DiscretizedVariable that will be copied
 
     Examples
@@ -7229,7 +7230,7 @@ class MultiDimContainer(object):
     def fill(self, d: float) -> None:
         return _base.MultiDimContainer_fill(self, d)
 
-    def populate(self, v: "Vector") -> None:
+    def populate(self, v: "pyAgrum.Vector") -> None:
         return _base.MultiDimContainer_populate(self, v)
 
     def copyFrom(self, *args) -> None:

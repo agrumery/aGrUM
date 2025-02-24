@@ -15,6 +15,7 @@ Before introducing the algorithms, here are the following definitions :
     - :math:`M_{x|u}` is the number of time `X` goes to state `x`.
     - :math:`T_{x|u}` is the time spent in state `x`, conditioned by an instance of its parents `u`.
     - :math:`M_{xx'|y,u}` and :math:`T_{x|y,u}` are the same but with another conditioning variable `Y` in state `y`.
+
 Those can be stored in :class:`pyAgrum.Tensor`.
 
 Being conditioned by an instance means that the extracted data comes from time intervals where conditioning variables take specific values.
@@ -31,7 +32,7 @@ Learning the graph
 ------------------
 
 To learn the graph of a CTBN (ie the dependence between variables) we use the CTPC algorithm
-from A. Bregoli, M. Scutari, F. Stella, Constraint-Based Learning for Continuous-Time Bayesian Networks, arXiv:2007.03248, 2020.
+from :cite:t:`bregoli20a` (and using :cite:t:`nodelam2003learningctbn`).
 The independence test used is based on Fisher and chi2 tests to compare exponential distributions.
 
 .. autoclass:: pyAgrum.ctbn.Learner
@@ -50,3 +51,9 @@ The independence test used is based on Fisher and chi2 tests to compare exponent
     :members:
     :undoc-members:
     :show-inheritance:
+
+Bibliography for CTNB
+---------------------
+
+.. bibliography::
+    :filter: docname in docnames

@@ -254,7 +254,7 @@ class CredalNet(object):
         """
         return _cn.CredalNet_setCPT(self, *args)
 
-    def fillConstraints(self, id: int, lower: "Vector", upper: "Vector") -> None:
+    def fillConstraints(self, id: int, lower: "pyAgrum.Vector", upper: "pyAgrum.Vector") -> None:
         r"""
 
         Set the interval constraints of the credal sets of a given node (all instantiations)

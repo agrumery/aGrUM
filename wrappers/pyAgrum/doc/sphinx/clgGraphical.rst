@@ -1,5 +1,5 @@
-Graphical tools
-^^^^^^^^^^^^^^^
+Graphical tools for CLG
+^^^^^^^^^^^^^^^^^^^^^^^
 
 .. figure:: _static/clg.jpg
     :align: center

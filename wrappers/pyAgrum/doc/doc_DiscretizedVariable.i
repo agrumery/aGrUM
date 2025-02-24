@@ -41,16 +41,17 @@
 "
 DiscretizedVariable is a discrete random variable with a set of `ticks` defining intervals.
 
-DiscretizedVariable(aName, aDesc ,ticks=None,is_empirical=False) -> pyAgrum.DiscretizedVariable
-    Parameters:
+DiscretizedVariable(aName, aDesc ,ticks=None,is_empirical=False) -> pyAgrum.DiscretizedVariable Parameters:
+
         - **aName** (*str*) -- the name of the variable
         - **aDesc** (*str*) -- the description of the variable
-        - **ticks (*list[double]*) -- the list of ticks to add
+        - **ticks** (*list[double]*) -- the list of ticks to add
         - **is_empirical** (*bool*) -- if False, raise an error if a value is out of bound.
 
 
 DiscretizedVariable(aDDRV) -> DiscretizedVariable
     Parameters:
+
         - **aDDRV** (*pyAgrum.DiscretizedVariable*) -- the pyAgrum.DiscretizedVariable that will be copied
 
 Examples

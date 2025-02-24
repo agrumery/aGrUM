@@ -764,6 +764,7 @@ class CausalEffectEstimation:
         Uses the (original) Frontdoor Adjustment Formula to derive
         the plug-in estimator. Does not account for covariates.
         Inspired by Guo et al. (2023).
+
         :cite:t:`fulcher2020robust`,
         :cite:t:`guo2023targeted`.
 
@@ -772,8 +773,8 @@ class CausalEffectEstimation:
         learner: str or object, optional
             Estimator for outcome variable.
             If not provided, defaults to LinearRegression.
-        propensity_learner: str |or object, optional
-            Estimator for treatment proability.
+        propensity_learner: str or object, optional
+            Estimator for treatment probability.
             If not provided, defaults to LogisticRegression.
         """
 
@@ -931,12 +932,14 @@ class CausalEffectEstimation:
         ----------
         conditional: pd.DataFrame, str, or None, optional
             Specifies conditions for estimating causal effects.
+
             - If `pd.DataFrame`, estimates the Individual Causal Effect (ICE)
                 for each row.
             - If `str`, estimates the Conditional Average Causal Effect (CACE).
                 The string must be a valid pandas query.
             - If `None`, estimates the Average Causal Effect (ACE).
                 Default is `None`.
+
         estimation_params: dict of str to Any, optional
             Additional parameters for the estimation method.
             Keys are parameter names, and values are the corresponding
@@ -945,12 +948,12 @@ class CausalEffectEstimation:
         Returns
         -------
         float or np.ndarray
-            For the `return_ci` argument in `estimation_params`:
-            - If `return_ci` is `False`, returns the estimated causal effect
+            If `return_ci` is `False`, returns the estimated causal effect
                 as a float.
-            - If `return_ci` is `True`, returns a tuple containing:True
-            - The estimated causal effect (float)
-            - The lower and upper bounds of the confidence interval
+
+            If `return_ci` is `True`, returns a tuple containing:
+              - The estimated causal effect (float)
+              - The lower and upper bounds of the confidence interval
                 (tuple of floats)
 
         Raises

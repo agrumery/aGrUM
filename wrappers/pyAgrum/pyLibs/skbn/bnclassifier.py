@@ -70,7 +70,7 @@ class BNClassifier(sklearn.base.BaseEstimator, sklearn.base.ClassifierMixin):
   """
   Represents a (scikit-learn compliant) classifier which uses a BN to classify. A BNClassifier is build using
 
-   - a Bayesian network,
+   - a Bayesian network,                                                                    -
    - a database and a learning algorithm and parameters
    - the use of DiscreteTypeProcessor to discretize with different algorithms some variables.
 

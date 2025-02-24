@@ -180,6 +180,7 @@ def process_filters(src_filename: str, target_filename: str, is_python: bool, de
         ('"MultiDimContainer"', '"pyAgrum.Tensor"'),
         ('"Triangulation"', '"pyAgrum.Triangulation"'),
         ('"DAGmodel"', '"pyAgrum.DAGmodel"'),
+        ('"Vector"', '"pyAgrum.Vector"'),
 
         # type simplifications
         ("gum::VarType", "int"),

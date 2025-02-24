@@ -19,8 +19,8 @@ Obtaining and evaluating a CausalFormula is done using one these functions :
 
 .. autofunction:: pyAgrum.causal.identifyingIntervention
 
-Other functions
-^^^^^^^^^^^^^^^
+Other functions for causal inference
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
 .. autofunction:: pyAgrum.causal.backdoor_generator
 

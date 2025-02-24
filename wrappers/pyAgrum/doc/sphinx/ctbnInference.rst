@@ -1,16 +1,16 @@
-Inference
-^^^^^^^^^
+Inference in CTNB
+^^^^^^^^^^^^^^^^^
 
-Exact Inference
----------------
+Exact Inference in CTBN
+-----------------------
 
 Amalgamation is used to compute exact inference. It consists in merging all the CIMs of a CTBN into one CIM.
 Then we use the properties of markov process : :math:`P(X_t) = P(X_0)*exp(Q_Xt)` for enough time to notice convergence.
 
 .. autoclass:: pyAgrum.ctbn.SimpleInference
 
-Sampling Inference
-------------------
+Sampling Inference in CTBN
+--------------------------
 
 Sampling method used is Forward Sampling.
 

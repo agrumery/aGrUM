@@ -20,7 +20,7 @@ Properties :
 
 .. autoclass:: pyAgrum.ctbn.CTBN
 
-Other functions
----------------
+Other functions for CTBN model
+------------------------------
 
 .. autofunction:: pyAgrum.ctbn.randomCTBN

@@ -116,7 +116,7 @@
 
 @article{neal2020introduction,
   title={Introduction to causal inference: From a machine learning perspective. Course Lect},
-  author={Neal, B},
+  author={Neal, B.},
   journal={Notes},
   year={2020},
   url={https://www.bradyneal.com/Introduction_to_Causal_Inference-Dec17_2020-Neal.pdf}
@@ -128,4 +128,42 @@
   journal={arXiv preprint arXiv:2002.11631},
   year={2020},
   url={https://causalml.readthedocs.io/en/latest/}
+}
+
+@inproceedings{nodelam2003learningctbn,
+  author = {Nodelman, Uri and Shelton, Christian R. and Koller, Daphne},
+  title = {Learning continuous time bayesian networks},
+  year = {2002},
+  isbn = {0127056645},
+  publisher = {Morgan Kaufmann Publishers Inc.},
+  address = {San Francisco, CA, USA},
+  abstract = {Continuous time Bayesian networks (CTBN) describe structured stochastic processes with finitely many states that evolve nver continuous time. A CTBN is a directed (possibly cyclic) dependency graph over a set of variables, each of which represents a finite state continuous time Markov process whose transition model is a function of its parents. We address the problem of leaning parameters and structure of a CTBN from fully observed data. We define a conjugate prior for CTBNs and show how it can be used both for Bayesian parameter estimation and as the basis of a Bayesian score for structure learning. Because acyclicity is not a constraint in CTBNs, we can show that the structure leaning problem is significantly easier, both in theory and in practice, than structure leaning for dynamic Bayesian networks (DBNs). Furthermore, as CTBNs can tailor the parameters and dependency structure to the different time granularities of the evolution of different variables, they can provide a better fit to continuous-time processes than DBNs with a fixed time granularity.},
+  booktitle = {Proceedings of the Nineteenth Conference on Uncertainty in Artificial Intelligence},
+  pages = {451–458},
+  numpages = {8},
+  location = {Acapulco, Mexico},
+  series = {UAI'03}
+}
+
+
+@InProceedings{bregoli20a,
+  title = 	 {Constraing-Based Learning for Continous-Time Bayesian Networks},
+  author =       {Bregoli, Alessandro and Scutari, Marco and Stella, Fabio},
+  booktitle = 	 {Proceedings of the 10th International Conference on Probabilistic Graphical Models},
+  pages = 	 {41--52},
+  year = 	 {2020},
+  editor = 	 {Jaeger, Manfred and Nielsen, Thomas Dyhre},
+  volume = 	 {138},
+  series = 	 {Proceedings of Machine Learning Research},
+  month = 	 {23--25 Sep},
+  publisher =    {PMLR},
+  pdf = 	 {http://proceedings.mlr.press/v138/bregoli20a/bregoli20a.pdf},
+  url = 	 {https://proceedings.mlr.press/v138/bregoli20a.html},
+  abstract = 	 {Dynamic Bayesian networks have been well explored in the literature as discrete-time models; however, their continuous-time extensions have seen comparatively little attention.
+ In this paper, we propose the first constraint-based algorithm for learning the structure of continuous-time Bayesian networks.
+ We discuss the different statistical tests and the underlying hypotheses used by our proposal to establish conditional independence.
+ Finally, we validate its performance using synthetic data, and discuss its strengths and limitations.
+ We find that score-based is more accurate in learning networks with binary variables, while our
+ constraint-based approach is more accurate with variables assuming more than two values. However,
+ more experiments are needed for confirmation.}
 }

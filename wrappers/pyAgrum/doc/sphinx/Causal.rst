@@ -17,22 +17,24 @@ Causality is a set of pure python3 scripts based on pyAgrum's tools.
             pyAgrum.config["causal","latex_do_prefix"]="\hookrightarrow("
             pyAgrum.config["causal","latex_do_suffix"]=")"
 
-
-**Tutorials**
-
-* `Notebooks on causality in pyAgrum <notebooks.html#causal-bayesian-networks>`_.
-* Some `implemented examples <https://webia.lip6.fr/~phw/aGrUM/BookOfWhy/>`_ from the `book of Why <http://bayes.cs.ucla.edu/WHY/>`_ from Judea Pearl and Dana Mackenzie.
-
-**Reference**
+Causal models and inference
+^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
 .. toctree::
    :maxdepth: 2
 
    CausalModel
    CausalInference
-   CausalEffectEstimation 
-   
-**Miscellaneous**
+
+Tutorials on causality
+^^^^^^^^^^^^^^^^^^^^^^
+
+* `Notebooks on causality in pyAgrum <notebooks.html#causal-bayesian-networks>`_.
+* Some `implemented examples <https://webia.lip6.fr/~phw/aGrUM/BookOfWhy/>`_ from the `book of Why <http://bayes.cs.ucla.edu/WHY/>`_ from Judea Pearl and Dana Mackenzie.
+
+
+Tools for causality
+^^^^^^^^^^^^^^^^^^^
 
 .. toctree::
    :maxdepth: 2
@@ -40,11 +42,3 @@ Causality is a set of pure python3 scripts based on pyAgrum's tools.
    CausalExceptions
    CausalNotebook
    CausalAST
-
-
-Other functions
-^^^^^^^^^^^^^^^
-
-.. autofunction:: pyAgrum.causal.backdoor_generator
-
-.. autofunction:: pyAgrum.causal.frontdoor_generator

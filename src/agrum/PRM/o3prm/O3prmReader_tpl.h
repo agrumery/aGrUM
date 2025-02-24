@@ -233,7 +233,7 @@ namespace gum {
         auto path = class_path;
         if (path[path.size() - 1] != '/') { path.append("/"); }
         std::filesystem::directory_entry dir(path);
-        if (dir.exists()) {
+        if (! dir.exists()) {
           _errors_.addException("could not resolve class path", path);
         } else {
           _class_path_.push_back(std::move(path));

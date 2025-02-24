@@ -187,7 +187,6 @@ html_theme_options = {
   'canonical_url': '',
   'analytics_id': 'G-J6JL8NQP91',  # Provided by Google in your dashboard
   'logo_only': True,
-  'display_version': True,
   'prev_next_buttons_location': 'top',
   'style_external_links': False,
   #   'vcs_pageview_mode': '',
@@ -198,7 +197,7 @@ html_theme_options = {
   'navigation_depth': 4,
   'includehidden': True,
   'titles_only': False,
-  # 'gitlab_url': "https://gitlab.com/agrumery/aGrUM"
+  #'gitlab_url': "https://gitlab.com/agrumery/aGrUM"
 }
 
 # Theme options are theme-specific and customize the look and feel of a theme
