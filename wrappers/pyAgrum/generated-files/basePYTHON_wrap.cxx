@@ -6358,34 +6358,33 @@ SWIGINTERN std::string gum_DiscreteVariable___repr__(gum::DiscreteVariable const
   }
 SWIGINTERN std::string gum_DiscreteVariable___str__(gum::DiscreteVariable const *self){ return self->toString();}
 SWIGINTERN gum::LabelizedVariable gum_DiscreteVariable_asLabelizedVar(gum::DiscreteVariable *self){
-    gum::LabelizedVariable* p = dynamic_cast<gum::LabelizedVariable*>(self );
-    if (p==nullptr)
+    if (self->varType()!=gum::VarType::LABELIZED) {
       GUM_ERROR(gum::OperationNotAllowed,"impossible cast as gum.LabelizedVar for "<<*self);
-    return *p;
+    }
+    return *static_cast<gum::LabelizedVariable * >(self);
   }
 SWIGINTERN gum::RangeVariable gum_DiscreteVariable_asRangeVar(gum::DiscreteVariable *self){
     if (self->varType() != gum::VarType::RANGE)
       GUM_ERROR(gum::OperationNotAllowed,"impossible cast as gum.RangeVar for "<<*self);
-    gum::RangeVariable* p = static_cast<gum::RangeVariable*>(self);
-    return *p;
+    return *static_cast<gum::RangeVariable*>(self);
   }
 SWIGINTERN gum::IntegerVariable gum_DiscreteVariable_asIntegerVar(gum::DiscreteVariable *self){
-    gum::IntegerVariable* p = dynamic_cast<gum::IntegerVariable*>(self );
-    if (p==nullptr)
-      GUM_ERROR(gum::OperationNotAllowed,"impossible cast as gum.IntegerVar for "<<*self);
-    return *p;
+    if (self->varType()!=gum::VarType::INTEGER) {
+      GUM_ERROR(gum::OperationNotAllowed, "impossible cast as gum.IntegerVar for " << *self);
+    }
+    return *static_cast<gum::IntegerVariable*>(self );
   }
 SWIGINTERN gum::NumericalDiscreteVariable gum_DiscreteVariable_asNumericalDiscreteVar(gum::DiscreteVariable *self){
-    gum::NumericalDiscreteVariable* p = dynamic_cast<gum::NumericalDiscreteVariable *>(self);
-    if (p==nullptr)
-      GUM_ERROR(gum::OperationNotAllowed,"impossible cast as gum.NumericalDiscreteVar for "<<*self);
-    return *p;
+    if (self->varType()!=gum::VarType::NUMERICAL) {
+      GUM_ERROR(gum::OperationNotAllowed, "impossible cast as gum.NumericalDiscreteVar for " << *self);
+    }
+    return *static_cast<gum::NumericalDiscreteVariable *>(self);
   }
 SWIGINTERN gum::DiscretizedVariable< double > gum_DiscreteVariable_asDiscretizedVar(gum::DiscreteVariable *self){
-    gum::DiscretizedVariable<double>* p = dynamic_cast<gum::DiscretizedVariable<double> *>(self);
-    if (p==nullptr)
-      GUM_ERROR(gum::OperationNotAllowed,"impossible cast as gum.DiscretizedVar for "<<*self);
-    return *p;
+    if (self->varType()!=gum::VarType::DISCRETIZED) {
+      GUM_ERROR(gum::OperationNotAllowed, "impossible cast as gum.DiscretizedVar for " << *self);
+    }
+    return *static_cast<gum::DiscretizedVariable<double> *>(self);
   }
 SWIGINTERN std::string gum_LabelizedVariable___repr__(gum::LabelizedVariable const *self){
    std::stringstream s;
