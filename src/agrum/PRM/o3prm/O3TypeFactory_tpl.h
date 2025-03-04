@@ -112,7 +112,7 @@ namespace gum {
         }
         _build_ = true;
 
-        // checking deprecated declarations
+        // checking o3prm_deprecated declarations
         _checkDepreactedO3Types_();
 
         // building types

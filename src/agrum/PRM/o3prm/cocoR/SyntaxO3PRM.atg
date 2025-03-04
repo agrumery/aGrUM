@@ -593,24 +593,24 @@ TYPE_DECLARATION =
   .
 
 //________________________
-DISCRETE_TYPE_DECLARATION<bool& deprecated, LabelMap& labels> =
+DISCRETE_TYPE_DECLARATION<bool& o3prm_deprecated, LabelMap& labels> =
   (
     labels
     '(' TYPE_VALUE_LIST<labels> ')'
   |
     DEPRECATED_DISCRETE_TYPE_DECLERATION<labels>
-    (. deprecated = true; .)
+    (. o3prm_deprecated = true; .)
   )
   .
 
 //________________________
-EXTENDED_TYPE_DECLARATION<bool& deprecated, O3Label& super, LabelMap& labels> =
+EXTENDED_TYPE_DECLARATION<bool& o3prm_deprecated, O3Label& super, LabelMap& labels> =
   extends CHAIN<super>
   (
     '(' MAP<labels> ')'
   |
     DEPRECATED_EXTENDED_TYPE_DECLARATION<labels>
-    (. deprecated = true; .)
+    (. o3prm_deprecated = true; .)
   )
   .
 

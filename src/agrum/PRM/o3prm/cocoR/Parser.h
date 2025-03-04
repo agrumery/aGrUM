@@ -320,8 +320,8 @@ O3InterfaceElementList& elts);
 	void TYPE_DECLARATION();
 	void DEPRECATED_INT_DECLARATION();
 	void DEPRECATED_REAL_DECLARATION();
-	void DISCRETE_TYPE_DECLARATION(bool& deprecated, LabelMap& labels);
-	void EXTENDED_TYPE_DECLARATION(bool& deprecated, O3Label& super, LabelMap& labels);
+	void DISCRETE_TYPE_DECLARATION(bool& o3prm_deprecated, LabelMap& labels);
+	void EXTENDED_TYPE_DECLARATION(bool& o3prm_deprecated, O3Label& super, LabelMap& labels);
 	void DEPRECATED_DISCRETE_TYPE_DECLERATION(LabelMap& labels);
 	void MAP(LabelMap& labels );
 	void DEPRECATED_EXTENDED_TYPE_DECLARATION(LabelMap& labels);
@@ -355,4 +355,3 @@ O3InterfaceElementList& elts);
 
 
 #endif // !defined(COCO_PARSER_H__)
-
