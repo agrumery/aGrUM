@@ -246,51 +246,6 @@ namespace gum {
   // ##############################################################################
   // Entropy
   // ##############################################################################
-  template < typename GUM_SCALAR >
-  [[deprecated("Please directly use class gum::InformationTheory (since 1.7.1)")]] GUM_SCALAR
-      JointTargetedMRFInference< GUM_SCALAR >::I(const std::string& Xname,
-                                                 const std::string& Yname) {
-    InformationTheory it(*this,
-                         NodeSet{this->MRF().idFromName(Xname)},
-                         NodeSet{this->MRF().idFromName(Yname)});
-    return it.mutualInformationXY();
-  }
-
-  template < typename GUM_SCALAR >
-  [[deprecated("Please directly use class gum::InformationTheory (since 1.7.1)")]] GUM_SCALAR
-      JointTargetedMRFInference< GUM_SCALAR >::VI(const std::string& Xname,
-                                                  const std::string& Yname) {
-    InformationTheory it(*this,
-                         NodeSet{this->MRF().idFromName(Xname)},
-                         NodeSet{this->MRF().idFromName(Yname)});
-    return it.variationOfInformationXY();
-  }
-
-  /* Mutual information between X and Y
-   * @see http://en.wikipedia.org/wiki/Mutual_information
-   *
-   * @warning Due to limitation of @joint, may not be able to compute this value
-   * @throw OperationNotAllowed in these cases
-   */
-  template < typename GUM_SCALAR >
-  [[deprecated("Please directly use class gum::InformationTheory (since 1.7.1)")]] GUM_SCALAR
-      JointTargetedMRFInference< GUM_SCALAR >::I(NodeId X, NodeId Y) {
-    InformationTheory it(*this, NodeSet{X}, NodeSet{Y});
-    return it.mutualInformationXY();
-  }
-
-  /** Variation of information between X and Y
-   * @see http://en.wikipedia.org/wiki/Variation_of_information
-   *
-   * @warning Due to limitation of @joint, may not be able to compute this value
-   * @throw OperationNotAllowed in these cases
-   */
-  template < typename GUM_SCALAR >
-  [[deprecated("Please directly use class gum::InformationTheory (since 1.7.1)")]] INLINE GUM_SCALAR
-      JointTargetedMRFInference< GUM_SCALAR >::VI(NodeId X, NodeId Y) {
-    InformationTheory it(*this, NodeSet{X}, NodeSet{Y});
-    return it.variationOfInformationXY();
-  }
 
   template < typename GUM_SCALAR >
   Tensor< GUM_SCALAR >

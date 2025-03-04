@@ -224,42 +224,7 @@ namespace gum {
     // ############################################################################
     /// @{
 
-    /** Mutual information between X and Y
-     * @see http://en.wikipedia.org/wiki/Mutual_information
-     *
-     * @warning Due to limitation of @ref joint, may not be able to compute
-     * this value
-     * @throw OperationNotAllowed in these cases
-     */
-    GUM_SCALAR I(NodeId X, NodeId Y);
-
-    /** Mutual information between X and Y
-     * @see http://en.wikipedia.org/wiki/Mutual_information
-     *
-     * @warning Due to limitation of @ref joint, may not be able to compute
-     * this value
-     * @throw OperationNotAllowed in these cases
-     */
-    GUM_SCALAR I(const std::string& X, const std::string& Y);
-
-    /** Variation of information between X and Y
-     * @see http://en.wikipedia.org/wiki/Variation_of_information
-     *
-     * @warning Due to limitation of @ref joint, may not be able to compute
-     * this value
-     * @throw OperationNotAllowed in these cases
-     */
-    GUM_SCALAR VI(NodeId X, NodeId Y);
-    /** Variation of information between X and Y
-     * @see http://en.wikipedia.org/wiki/Variation_of_information
-     *
-     * @warning Due to limitation of @ref joint, may not be able to compute
-     * this value
-     * @throw OperationNotAllowed in these cases
-     */
-    GUM_SCALAR VI(const std::string& X, const std::string& Y);
-
-    /** Mutual information between targets
+       /** Mutual information between targets
      * @see https://en.wikipedia.org/wiki/Interaction_information
      * @param targets  the NodeSet of the targeted variables
      */

@@ -8460,42 +8460,6 @@ class Tensor(object):
         return self.topandas().to_clipboard()
 
     @property
-    def var_names(self):
-        """
-        Returns
-        -------
-        list
-            a list containing the name of each variables in the tensor
-
-        Warnings
-        --------
-            This methods is deprecated. Please use pyAgrum.Tensor.names and note the change in the order !
-
-            var_names return a list in the reverse order of the enumeration order of the variables.
-        """
-        import warnings
-        warnings.warn("\n** pyAgrum.Tensor.var_names is obsolete in pyAgrum>0.22.9. Please use pyAgrum.Tensor.names.\n")
-        return [n for n in reversed(self.names)]
-
-    @property
-    def var_dims(self):
-        """
-        Returns
-        -------
-        list
-            a list containing the dimensions of each variables in the tensor
-
-        Warnings
-        --------
-            This methods is deprecated. Please use pyAgrum.Tensor.shape and note the change in the order !
-
-            var_dims return a list in the reverse order of the enumeration order of the variables.
-        """
-        import warnings
-        warnings.warn("\n** pyAgrum.Tensor.var_dims is obsolete in pyAgrum>0.22.9. Please use pyAgrum.Tensor.shape.\n")
-        return [n for n in reversed(self.shape)]
-
-    @property
     def names(self):
         """
         Returns

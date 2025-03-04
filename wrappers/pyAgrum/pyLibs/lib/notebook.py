@@ -1002,7 +1002,6 @@ def getBN(bn, size=None, nodeColor=None, arcWidth=None, arcLabel=None, arcColor=
            cmapArc=cmapArc), size)
 
 
-@gum.deprecated_arg("cmapNode", "cmap", "1.8.1")
 def getCN(cn, size=None, nodeColor=None, arcWidth=None, arcLabel=None, arcColor=None, cmapNode=None, cmapArc=None):
   """
   get a HTML string for a credal network
@@ -1045,7 +1044,6 @@ def getCN(cn, size=None, nodeColor=None, arcWidth=None, arcLabel=None, arcColor=
            cmapArc=cmapArc), size)
 
 
-@gum.deprecated_arg("cmapNode", "cmap", "1.8.1")
 def showInference(model, **kwargs):
   """
   show pydot graph for an inference in a notebook
@@ -1091,7 +1089,6 @@ def showInference(model, **kwargs):
   showGraph(prepareShowInference(model, **kwargs), size)
 
 
-@gum.deprecated_arg("cmapNode", "cmap", "1.8.1")
 def getInference(model, **kwargs):
   """
   get a HTML string for an inference in a notebook
@@ -1653,8 +1650,6 @@ def getCliqueGraph(cg, size=None):
   else:
     return getDot(cg.toDot())
 
-
-@gum.deprecated_arg("cmapNode", "cmap", "1.8.1")
 def show(model, **kwargs):
   """
   propose a (visual) representation of a graphical model or a graph or a Tensor in a notebook

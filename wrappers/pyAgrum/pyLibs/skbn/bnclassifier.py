@@ -306,7 +306,6 @@ class BNClassifier(sklearn.base.BaseEstimator, sklearn.base.ClassifierMixin):
     # the index of the variable.
     self.variableNameIndexDictionary = None
 
-  @gum.deprecated_arg("data", "filename", "1.13.1")
   def fit(self, X=None, y=None, data=None, targetName=None):
     """
     Fits the model to the training data provided. The two possible uses of this function are `fit(X,y)` and `fit(data=...,
@@ -817,7 +816,6 @@ class BNClassifier(sklearn.base.BaseEstimator, sklearn.base.ClassifierMixin):
 
     return X, y
 
-  @gum.deprecated_arg("data", "filename", "1.13.1")
   def preparedData(self, X=None, y=None, data=None):
     """
     Given an X and a y (or a data source : filename or pandas.DataFrame), returns a pandas.Dataframe with the prepared (especially discretized) values of the base
@@ -953,7 +951,6 @@ class BNClassifier(sklearn.base.BaseEstimator, sklearn.base.ClassifierMixin):
     return self
 
 
-  @gum.deprecated_arg("data", "filename", "1.13.1")
   def showROC_PR(self, data, *, beta=1, save_fig=False, show_progress=False, bgcolor=None):
     """
     Use the `pyAgrum.lib.bn2roc` tools to create ROC and Precision-Recall curve
