@@ -110,7 +110,8 @@ def initParams():
                  'noSaveParams': False,
                  'correction': False,
                  'build_graph': False,
-                 'profiling': False}
+                 'profiling': False,
+                 'stable_abi_off': False}
 
   if cfg.os_platform == "Windows":
     cfg.default['compiler'] = "mvsc22"
@@ -272,6 +273,11 @@ def configureOptions(current: dict[str, str]):
                           help="act will add options for profiling",
                           action="store_true",
                           dest="profiling",
+                          default=False)
+  cfg.parser.add_argument("--stable_abi_off",
+                          help="build wheel without stable abi",
+                          action="store_true",
+                          dest="stable_abi_off",
                           default=False)
 
 

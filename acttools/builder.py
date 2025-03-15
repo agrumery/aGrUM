@@ -96,6 +96,11 @@ def getCmake(current: dict[str, str], target: str) -> str:
   else:
     line += " -DBUILD_PYTHON=ON"
 
+  if current["stable_abi_off"]:
+    line += " -DAGRUM_PYTHON_SABI=OFF"
+  else:
+    line += " -DAGRUM_PYTHON_SABI=ON"
+
   line += f' -DPython_EXECUTABLE="{current["python3target"]}"'
 
   if platform.system() == "Windows":

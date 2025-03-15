@@ -145,6 +145,11 @@ linux_pyagrum_py313:
 # Linux x86_64 / gcc
 ################################################################################
 
+build_wheel_linux_py310:
+  <<: *linux_wheel_template
+  script:
+    - bash $LINUX_WHEELHOUSE cp310-cp310 --stable_abi_off
+
 build_wheel_linux:
   <<: *linux_wheel_template
   script:
