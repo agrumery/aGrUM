@@ -804,3 +804,13 @@ Parameters
 n : str | int
   the name of the id of the variable
 "
+
+%feature("docstring") gum::learning::BNLearner::copyState
+"
+Copy the state of the given pyAgrum.BNLearner (as argument).
+
+Parameters
+----------
+pyAgrum.BNLearner
+    the learner whose state is copied.
+"

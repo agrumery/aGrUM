@@ -438,6 +438,33 @@ if len(args)>1:
       self.normalizeAsCPT()
       return self
 
+    def toVarsIn(self,p):
+      """
+      Create a copy of the Tensor with the same variables as in p.
+
+      Warning
+      -------
+      p is a pyAgrum's object that can refer to variables through a method `p.variable(name:str)`. For instance, a Potential, an Instantiation or a Graphical Model (Bayesian Network,...).
+
+      Examples
+      --------
+        >>> import pyAgrum as gum
+        >>> bn1=gum.fastBN('A[3]->B[3]<-C[3]')
+        >>> bn2=gum.fastBN('A[3]<-B[3]<-C[3]')
+        >>> # bn1.cpt('A')+bn2.cpt('A') # does not work since the vars 'A' in bn1 and bn2 are not the same.
+        >>> bn1.cpt('A').toVars(bn2)+bn2.cpt('A') # OK
+
+      Returns
+      -------
+        pyAgrum.Tensor
+            a copy of the Potential with the same variables as p.
+      """
+      res=pyAgrum.Tensor()
+      for i in self.names:
+        res.add(p.variable(i))
+      res.fillWith(self)
+      return res
+
     def variablesSequence(self):
         """
         Returns

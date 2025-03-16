@@ -54,7 +54,7 @@ def go():
   else:
     os.chdir(os.path.dirname("./" + __file__))
 
-  test_modules = {'', 'main', 'skbn', 'causal', 'clg', 'ctbn'}
+  test_modules = {'', 'main', 'skbn', 'causal', 'clg', 'ctbn', 'bnmixture'}
 
   mod = "release"  # release|debug|standAlone (test the installed version)
   testNotebooks = False

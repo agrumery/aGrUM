@@ -78,6 +78,7 @@
 %enddef
 
 SETPROP_THEN_RETURN_SELF(setNumberOfThreads);
+SETPROP_THEN_RETURN_SELF(copyState);
 
 %extend gum::learning::BNLearner< double > {
   PyObject *chi2(const std::string& var1,const std::string& var2,const std::vector<std::string>& knw={}) {

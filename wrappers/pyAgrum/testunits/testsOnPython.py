@@ -53,7 +53,7 @@ def runTests(local: bool, test_module, log) -> int:
     p = os.getcwd() + "\\" + sys.argv[1]
     sys.path.insert(1, p)  # to force to use local pyAgrum for the tests (and not installed one)
 
-  print(f"Modules : {test_module if test_module!='' else 'all'}")
+  print(f"Modules : {test_module if test_module != '' else 'all'}")
   import pyAgrum as gum
 
   try:
@@ -87,7 +87,7 @@ def runTests(local: bool, test_module, log) -> int:
   from tests import BNListenerTestSuite
   from tests import ConfigTestSuite
   if pandasFound:
-      from tests import DiscreteTypeProcessorTestSuite
+    from tests import DiscreteTypeProcessorTestSuite
   from tests import EssentialGraphTestSuite
   from tests import EvidenceTestSuite
   from tests import GraphTestSuite
@@ -114,11 +114,11 @@ def runTests(local: bool, test_module, log) -> int:
   from tests import VariablesTestSuite
 
   if pandasFound:
-      from tests import CausalASTTestSuite
-      from tests import CausalDSepTestSuite
-      from tests import CausalModelTestSuite
-      from tests import CausalNonRegressionTestSuite
-      from tests import CausalEffectEstimationTestSuite
+    from tests import CausalASTTestSuite
+    from tests import CausalDSepTestSuite
+    from tests import CausalModelTestSuite
+    from tests import CausalNonRegressionTestSuite
+    from tests import CausalEffectEstimationTestSuite
 
   from tests import WorkaroundTestSuite
 
@@ -129,12 +129,12 @@ def runTests(local: bool, test_module, log) -> int:
   from tests import CtbnLearnerTestSuite
 
   if pandasFound:
-      from tests import CLGLearningTestSuite
-      from tests import CLGSamplingTestSuite
-      from tests import CLGCanonicalFormTestSuite
-      from tests import CLGInferenceTestSuite
+    from tests import CLGLearningTestSuite
+    from tests import CLGSamplingTestSuite
+    from tests import CLGCanonicalFormTestSuite
+    from tests import CLGInferenceTestSuite
 
-  # from tests import MixtureModelTestSuite
+  from tests import MixtureModelTestSuite
 
   import time
 
@@ -150,7 +150,7 @@ def runTests(local: bool, test_module, log) -> int:
     tl.append(BNListenerTestSuite.ts)
     tl.append(ConfigTestSuite.ts)
     if pandasFound:
-        tl.append(DiscreteTypeProcessorTestSuite.ts)
+      tl.append(DiscreteTypeProcessorTestSuite.ts)
     tl.append(EssentialGraphTestSuite.ts)
     tl.append(EvidenceTestSuite.ts)
     tl.append(GraphTestSuite.ts)
@@ -174,11 +174,11 @@ def runTests(local: bool, test_module, log) -> int:
   if test_module in {"", "causal"}:
     log.info("testing 'causal'")
     if pandasFound:
-        tl.append(CausalASTTestSuite.ts)
-        tl.append(CausalDSepTestSuite.ts)
-        tl.append(CausalModelTestSuite.ts)
-        tl.append(CausalNonRegressionTestSuite.ts)
-        tl.append(CausalEffectEstimationTestSuite.ts)
+      tl.append(CausalASTTestSuite.ts)
+      tl.append(CausalDSepTestSuite.ts)
+      tl.append(CausalModelTestSuite.ts)
+      tl.append(CausalNonRegressionTestSuite.ts)
+      tl.append(CausalEffectEstimationTestSuite.ts)
     else:
       log.warning("Pandas or sklearn not found.")
 
@@ -207,6 +207,10 @@ def runTests(local: bool, test_module, log) -> int:
       tl.append(CLGInferenceTestSuite.ts)
     else:
       log.warning("Pandas or sklearn not found.")
+
+  if test_module in {"", "bnmixture"}:
+    log.info("testing 'bnmixture'")
+    tl.append(MixtureModelTestSuite.ts)
 
   tests = unittest.TestSuite(tl)
 

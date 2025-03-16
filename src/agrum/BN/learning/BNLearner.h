@@ -179,6 +179,13 @@ namespace gum {
       /// @return a representation of the state of the learner in the form vector<key,value,comment>
       std::vector< std::tuple< std::string, std::string, std::string > > state() const;
 
+
+      /** copy the states of the BNLearner
+
+      @warning except the database ! just the configurations of the learner
+      */
+      void copyState(const BNLearner< GUM_SCALAR >& learner);
+
       //=== === add return to certain methods in order to chain command
       BNLearner< GUM_SCALAR >& setInitialDAG(const DAG& dag) {
         IBNLearner::setInitialDAG(dag);

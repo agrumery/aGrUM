@@ -80,6 +80,7 @@ Reference manual
 
   ctbn
   clg
+  bnmixture
 
 .. toctree::
   :caption: 6- pyAgrum.lib modules
