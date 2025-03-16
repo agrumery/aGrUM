@@ -4,20 +4,17 @@
 #   Copyright (c) 2005-2025 by                                             #
 #       - Pierre-Henri WUILLEMIN(_at_LIP6)                                 #
 #       - Christophe GONZALES(_at_AMU)                                     #
-#   This file is part of the aGrUM/pyAgrum library.                        #
-#                                                                          #
-#   Copyright (c) 2005-2025 by                                             #
-#       - Pierre-Henri WUILLEMIN(_at_LIP6)                                 #
-#       - Christophe GONZALES(_at_AMU)                                     #
 #                                                                          #
 #   The aGrUM/pyAgrum library is free software; you can redistribute it    #
 #   and/or modify it under the terms of either :                           #
 #                                                                          #
 #    - the GNU Lesser General Public License as published by               #
 #      the Free Software Foundation, either version 3 of the License,      #
-#      or (at your option) any later version.                              #
-#    - the MIT license (MIT)                                               #
-#    - or both in dual license, as here                                    #
+#      or (at your option) any later version,                              #
+#    - the MIT license (MIT),                                              #
+#    - or both in dual license, as here.                                   #
+#                                                                          #
+#   (see https://agrum.gitlab.io/articles/dual-licenses-lgplv3mit.html)    #
 #                                                                          #
 #   This aGrUM/pyAgrum library is distributed in the hope that it will be  #
 #   useful, but WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED,          #
@@ -115,7 +112,7 @@ def _LGPL_MIT_atTop_CPP(filename: str, correction: bool) -> int:
     state = "before"  # before->inComment->after
     in_error = False
 
-    with open(filename, "r") as origin:
+    with open(filename, "r", encoding="UTF8") as origin:
         while line := origin.readline():
             if line.strip() == "":
                 if state == "before":
@@ -134,7 +131,7 @@ def _LGPL_MIT_atTop_CPP(filename: str, correction: bool) -> int:
                 elif not line.startswith("/**"):
                     if not in_error:
                         in_error = True
-                        notif(f"[{filename}] lines before the license.")
+                        notif(f"[{filename}] lines before the CPP license.")
                     before += line
                 else:
                     licence += line
@@ -153,7 +150,7 @@ def _LGPL_MIT_atTop_CPP(filename: str, correction: bool) -> int:
             err = 1
             res = f"[{filename:.<80}] missing up-to-date LGPL+MIT license"
             if correction:
-                with open(filename, "w") as dest:
+                with open(filename, "w", encoding="UTF8") as dest:
                     dest.write(before)
                     dest.write(_template_cpp_license)
                     dest.write(code)
@@ -182,7 +179,10 @@ def _LGPL_MIT_atTop_py(filename: str, correction: bool) -> int:
                 continue
 
             if state == "before":
-                if line[0] != "#":
+                if line.startswith("import"):
+                    state = "after"
+                    code += line
+                elif line[0] != "#":
                     if not in_error:
                         in_error = True
                         notif(f"[{filename}] lines before the license.")
@@ -296,20 +296,17 @@ def getTemplateLicense() -> tuple[str, str]:
   Copyright (c) 2005-{current_year} by
       - Pierre-Henri WUILLEMIN(_at_LIP6)
       - Christophe GONZALES(_at_AMU)
-  This file is part of the aGrUM/pyAgrum library.
-
-  Copyright (c) 2005-{current_year} by
-      - Pierre-Henri WUILLEMIN(_at_LIP6)
-      - Christophe GONZALES(_at_AMU)
 
   The aGrUM/pyAgrum library is free software; you can redistribute it
   and/or modify it under the terms of either :
 
    - the GNU Lesser General Public License as published by
      the Free Software Foundation, either version 3 of the License,
-     or (at your option) any later version.
-   - the MIT license (MIT)
-   - or both in dual license, as here
+     or (at your option) any later version,
+   - the MIT license (MIT),
+   - or both in dual license, as here.
+   
+  (see https://agrum.gitlab.io/articles/dual-licenses-lgplv3mit.html)
 
   This aGrUM/pyAgrum library is distributed in the hope that it will be
   useful, but WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED,

@@ -4,20 +4,17 @@
  *   Copyright (c) 2005-2025 by                                             *
  *       - Pierre-Henri WUILLEMIN(_at_LIP6)                                 *
  *       - Christophe GONZALES(_at_AMU)                                     *
- *   This file is part of the aGrUM/pyAgrum library.                        *
- *                                                                          *
- *   Copyright (c) 2005-2025 by                                             *
- *       - Pierre-Henri WUILLEMIN(_at_LIP6)                                 *
- *       - Christophe GONZALES(_at_AMU)                                     *
  *                                                                          *
  *   The aGrUM/pyAgrum library is free software; you can redistribute it    *
  *   and/or modify it under the terms of either :                           *
  *                                                                          *
  *    - the GNU Lesser General Public License as published by               *
  *      the Free Software Foundation, either version 3 of the License,      *
- *      or (at your option) any later version.                              *
- *    - the MIT license (MIT)                                               *
- *    - or both in dual license, as here                                    *
+ *      or (at your option) any later version,                              *
+ *    - the MIT license (MIT),                                              *
+ *    - or both in dual license, as here.                                   *
+ *                                                                          *
+ *   (see https://agrum.gitlab.io/articles/dual-licenses-lgplv3mit.html)    *
  *                                                                          *
  *   This aGrUM/pyAgrum library is distributed in the hope that it will be  *
  *   useful, but WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED,          *
@@ -36,6 +33,9 @@
  *   gitlab   : https://gitlab.com/agrumery/agrum                           *
  *                                                                          *
  ****************************************************************************/
+
+
+
 
 %feature("docstring") gum::GibbsSampling
 "
