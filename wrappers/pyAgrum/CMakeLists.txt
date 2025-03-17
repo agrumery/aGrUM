@@ -1,3 +1,39 @@
+############################################################################
+#   This file is part of the aGrUM/pyAgrum library.                        #
+#                                                                          #
+#   Copyright (c) 2005-2025 by                                             #
+#       - Pierre-Henri WUILLEMIN(_at_LIP6)                                 #
+#       - Christophe GONZALES(_at_AMU)                                     #
+#                                                                          #
+#   The aGrUM/pyAgrum library is free software; you can redistribute it    #
+#   and/or modify it under the terms of either :                           #
+#                                                                          #
+#    - the GNU Lesser General Public License as published by               #
+#      the Free Software Foundation, either version 3 of the License,      #
+#      or (at your option) any later version,                              #
+#    - the MIT license (MIT),                                              #
+#    - or both in dual license, as here.                                   #
+#                                                                          #
+#   (see https://agrum.gitlab.io/articles/dual-licenses-lgplv3mit.html)    #
+#                                                                          #
+#   This aGrUM/pyAgrum library is distributed in the hope that it will be  #
+#   useful, but WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED,          #
+#   INCLUDING BUT NOT LIMITED TO THE WARRANTIES MERCHANTABILITY or FITNESS #
+#   FOR A PARTICULAR PURPOSE  AND NONINFRINGEMENT. IN NO EVENT SHALL THE   #
+#   AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER #
+#   LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE,        #
+#   ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR  #
+#   OTHER DEALINGS IN THE SOFTWARE.                                        #
+#                                                                          #
+#   See the GNU Lesser General Public License (LICENSE.LGPL) and the MIT   #
+#   licence (LICENSE.MIT) for more details.                                #
+#                                                                          #
+#   Contact  : info_at_agrum_dot_org                                       #
+#   homepage : http://agrum.gitlab.io                                      #
+#   gitlab   : https://gitlab.com/agrumery/agrum                           #
+#                                                                          #
+############################################################################
+
 if(PYTHON_TARGET)
   set(Python_EXECUTABLE ${PYTHON_TARGET})
   unset(Python_INCLUDE_DIRS CACHE)
@@ -5,20 +41,15 @@ if(PYTHON_TARGET)
   unset(Python_VERSION CACHE)
   unset(Python_VERSION_MAJOR CACHE)
 endif()
-
 option(AGRUM_PYTHON_SABI "Use Python stable ABI" ON)
-
 if(AGRUM_PYTHON_SABI AND CMAKE_VERSION VERSION_GREATER_EQUAL 3.26)
   find_package(Python ${PYAGRUM_REQUIRED_PYTHON_VERSION} COMPONENTS Interpreter Development.SABIModule REQUIRED)
   add_library(Python::Module ALIAS Python::SABIModule)
 else()
   find_package(Python ${PYAGRUM_REQUIRED_PYTHON_VERSION} COMPONENTS Interpreter Development.Module REQUIRED)
 endif()
-
 list(APPEND CMAKE_SWIG_FLAGS "-fastdispatch")
 add_definitions("-DSWIG_TYPE_TABLE=pyproba")
-
-# allows one to pass compile flags like -O1 to reduce memory usage
 if(AGRUM_PYTHON_SABI)
   set(SWIG_COMPILE_FLAGS "-DPy_LIMITED_API=0x030A0000" CACHE STRING "C++ compiler flags used for wrapper code")
 else()
