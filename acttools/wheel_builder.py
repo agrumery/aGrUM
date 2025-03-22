@@ -45,20 +45,13 @@ import os
 import time
 
 from base64 import urlsafe_b64encode
-
 from shutil import move, rmtree
-
 from tempfile import mkdtemp, mkstemp
-
 from datetime import datetime
-
 from os.path import isfile, isdir, join, relpath
 from os import fdopen, remove, rename, listdir, walk
-
 from subprocess import check_call, CalledProcessError, PIPE, Popen, STDOUT
-
 from .utils import notif, warn, critic
-
 from .configuration import cfg
 
 FOUND_WHEEL = True
@@ -78,24 +71,15 @@ def wheel(current:dict[str,str]):
   else:
     critic("Please install package wheel to build wheels using act (pip install wheel).")
 
-
-def nightly_wheel(current:dict[str,str]):
-  """If the current Python version used differs from the one asked, fork into
-  the proper Python interpreter."""
-  if FOUND_WHEEL:
-    _go_wheel(current, True)
-  else:
-    critic("Please install package wheel to build wheels using act (pip install wheel).")
-
-
-def _go_wheel(current:dict[str,str], nightly=False):
+def _go_wheel(current:dict[str,str]):
   """Get a temporary directory to build the wheel and cal sequentially all steps
   to build the wheel."""
   print(cfg)
+  nightly = current.get("action") == "nightly_wheel"
   tmp = mkdtemp(prefix='act')
   notif(f'Building wheel in {tmp}')
   try:
-    _prepare_wheel(current, tmp, nightly)
+    _prepare_wheel(current, tmp)
     notif("Finished building pyAgrum.")
     install_dir, version = build_wheel(tmp, current['stable_abi_off'], cfg.minimal_python_api, nightly)
     notif("Finished building wheel directory.")
@@ -109,7 +93,7 @@ def _go_wheel(current:dict[str,str], nightly=False):
     rmtree(tmp, True)
 
 
-def _prepare_wheel(current:dict[str,str], tmp, nightly=False):
+def _prepare_wheel(current:dict[str,str], tmp):
   """Prepare step for building the wheel: builds and install pyAgrum in the temporary
   directory and check that this script was called with the same version of Python used
   to build pyAgrum."""
@@ -128,7 +112,7 @@ def safe_compiler_path(path):
   return path.replace('\\', '/')
 
 
-def install_pyAgrum(current:dict[str,str], tmp, nightly=False):
+def install_pyAgrum(current:dict[str,str], tmp):
   """Instals pyAgrum in tmp and return the Python version used to build it."""
   targets = 'install release pyAgrum'
   version = sys.version_info[0]
@@ -343,20 +327,12 @@ def zip_wheel(tmp, install_dir, version, stable_abi_off, minimal_python_api, nig
     zip_name = f"pyagrum_nightly-{version}.dev{datetime.today().strftime('%Y%m%d')}{commit_time}-{tags}.whl"
   else:
     zip_name = f"pyagrum-{version}-{tags}.whl"
-
-  zip_path = join(tmp, zip_name)
-  with zipfile.ZipFile(zip_path, 'w', zipfile.ZIP_DEFLATED) as zipf:
-    for root, dirs, files in os.walk(install_dir):
-      for f in files:
-        try:
-          full_path = join(root, f)
-          relative_path = relpath(full_path, install_dir)
-          
-          # Rename pyAgrum to pyagrum in the ZIP structure
-          relative_path = relative_path.replace("pyAgrum", "pyagrum")
-          
-          zipf.write(full_path, relative_path)
-        except Exception as e:
-          critic(f"Could not archive file: {full_path}. Error: {e}")
-
-    return zip_name
+  zipf = zipfile.ZipFile(join(tmp, zip_name), 'w', zipfile.ZIP_DEFLATED)
+  for root, dirs, files in walk(install_dir):
+    for f in files:
+      try:
+        zipf.write(join(install_dir, root, f),
+                   relpath(join(root, f), install_dir))
+      except:
+        critic("Could not archive file: {join(install_dir, root, f)}")
+  return zip_name
