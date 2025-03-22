@@ -5,13 +5,14 @@ Summary: Bayesian networks and other Probabilistic Graphical Models.
 Home-page: https://agrum.gitlab.io/
 Author: Pierre-Henri Wuillemin and Christophe Gonzales
 Author-email: info@agrum.org
-License: LGPLv3
+License-Expression: MIT AND LGPLv3
 Keywords: probabilities probabilistic-graphical-models inference diagnosis
 Project-URL: Bug Tracker, https://gitlab.com/agrumery/aGrUM/-/issues
 Project-URL: Documentation, https://pyagrum.readthedocs.io/
 Project-URL: Source Code, https://gitlab.com/agrumery/aGrUM
 Platform: any
 Classifier: Development Status :: 5 - Production/Stable
+Classifier: License :: OSI Approved :: MIT License
 Classifier: License :: OSI Approved :: GNU Lesser General Public License v3 (LGPLv3)
 Classifier: Operating System :: Microsoft :: Windows
 Classifier: Operating System :: MacOS :: MacOS X
@@ -109,7 +110,16 @@ LICENSE
 Copyright (C) 2005-2024 by Pierre-Henri WUILLEMIN et Christophe GONZALES
 {prenom.nom}_at_lip6.fr
 
-The aGrUM/pyAgrum library and all its derivatives are distributed under the LGPL3 license, see https://www.gnu.org/licenses/lgpl-3.0.en.html.
+The aGrUM/pyAgrum library and all its derivatives are distributed under the dual LGPLv3+MIT license, see LICENSE.LGPL and LICENSE.MIT.
+
+You can therefore integrate this library into your software solution but it will remain covered by either the LGPL v.3 license or the MIT license or, as aGrUM itself, by the dual LGPLv3+MIT license at your convenience.
+If you wish to integrate the aGrUM library into your product without being affected by this license, please contact us (info@agrum.org).
+
+This library depends on different third-party codes. See src/aGrUM/tools/externals for specific COPYING and explicit permission of
+the authors, if needed.
+
+If you use aGrUM/pyAgrum as a dependency of your own project, you are not contaminated by the GPL license of some of these third-party
+codes as long as you use only their aGrUM/pyAgrum interfaces and not their native interfaces.
 
 Authors
 =======
