@@ -35,9 +35,6 @@
  ****************************************************************************/
 
 
-
-
-
 /** @file
  * @brief Interface-like class for generating Bayesian networks.
  *

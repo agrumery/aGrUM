@@ -35,9 +35,6 @@
  ****************************************************************************/
 
 
-
-
-
 /** @file
  * @brief A class for comparing graphs based on their structures
  *

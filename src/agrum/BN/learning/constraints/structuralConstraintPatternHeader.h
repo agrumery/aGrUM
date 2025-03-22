@@ -35,9 +35,6 @@
  ****************************************************************************/
 
 
-
-
-
 // this file should be included at the end of all the StructuralConstraints
 // header files (see StructuralConstraintDAG to see how it should be included).
 

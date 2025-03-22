@@ -35,9 +35,6 @@
  ****************************************************************************/
 
 
-
-
-
 #include <gumtest/AgrumTestSuite.h>
 #include <gumtest/utils.h>
 
@@ -203,7 +200,7 @@ namespace gum_tests {
 
       for (const auto node: bn.nodes()) {
         const gum::Tensor< double >& cpt = bn.cpt(node);
-        gum::Instantiation              i(cpt), j;
+        gum::Instantiation           i(cpt), j;
         j.add(bn.variable(node));
 
         for (i.setFirstOut(j); !i.end(); i.incOut(j)) {

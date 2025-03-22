@@ -35,9 +35,6 @@
  ****************************************************************************/
 
 
-
-
-
 // floating point env
 #include <cfenv>
 #include <iostream>
@@ -2033,8 +2030,8 @@ namespace gum_tests {
 
       for (const auto& node: full.nodes()) {
         TS_GUM_TENSOR_DELTA(full.cpt(node),
-                               gum::Tensor(full.cpt(node)).fillWith(partial.cpt(node)),
-                               TS_GUM_SMALL_ERROR)
+                            gum::Tensor(full.cpt(node)).fillWith(partial.cpt(node)),
+                            TS_GUM_SMALL_ERROR)
       }
     }
 

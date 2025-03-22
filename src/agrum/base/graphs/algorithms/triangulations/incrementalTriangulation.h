@@ -35,9 +35,6 @@
  ****************************************************************************/
 
 
-
-
-
 /** @file
  * @brief Class for computing default triangulations of graphs
  *

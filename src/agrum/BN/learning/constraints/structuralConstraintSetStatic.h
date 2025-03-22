@@ -35,9 +35,6 @@
  ****************************************************************************/
 
 
-
-
-
 /** @file
  * @brief the "meta-programming" class for storing several structural
  *constraints

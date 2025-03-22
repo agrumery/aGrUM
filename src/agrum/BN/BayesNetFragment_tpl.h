@@ -35,9 +35,6 @@
  ****************************************************************************/
 
 
-
-
-
 /**
  * @file
  * @brief Template implementation of BN/BayesNetFragment.h classes.
@@ -218,8 +215,7 @@ namespace gum {
 
     if (&(pot.variable(0)) != &(variable(id))) {
       GUM_ERROR(OperationNotAllowed,
-                "The tensor is not a marginal for  _bn_.variable <" << variable(id).name()
-                                                                       << ">")
+                "The tensor is not a marginal for  _bn_.variable <" << variable(id).name() << ">")
     }
 
     const NodeSet& parents = _bn_.parents(id);
@@ -257,8 +253,7 @@ namespace gum {
   }
 
   template < typename GUM_SCALAR >
-  void BayesNetFragment< GUM_SCALAR >::installMarginal(NodeId                         id,
-                                                       const Tensor< GUM_SCALAR >& pot) {
+  void BayesNetFragment< GUM_SCALAR >::installMarginal(NodeId id, const Tensor< GUM_SCALAR >& pot) {
     if (!isInstalledNode(id)) {
       GUM_ERROR(NotFound, "The node " << id << " is not part of this fragment")
     }
@@ -270,7 +265,7 @@ namespace gum {
     if (&(pot.variable(0)) != &(_bn_.variable(id))) {
       GUM_ERROR(OperationNotAllowed,
                 "The tensor is not a marginal for  _bn_.variable <" << _bn_.variable(id).name()
-                                                                       << ">")
+                                                                    << ">")
     }
 
     installCPT_(id, pot);

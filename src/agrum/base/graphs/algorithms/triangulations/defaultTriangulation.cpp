@@ -35,9 +35,6 @@
  ****************************************************************************/
 
 
-
-
-
 /** @file
  * @brief source implementations for computing default triangulations of graphs
  *

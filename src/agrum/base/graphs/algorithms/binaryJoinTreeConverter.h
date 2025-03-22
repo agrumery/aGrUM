@@ -35,9 +35,6 @@
  ****************************************************************************/
 
 
-
-
-
 /** @file
  * @brief The base interface for converting a join tree into a binary join tree
  *

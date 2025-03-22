@@ -35,9 +35,6 @@
  ****************************************************************************/
 
 
-
-
-
 // this file should be included at the end of the StructuralConstraints inline
 // files (see StructuralConstraintDegree to see how it should be included).
 // This concerns only StructuralConstraints that derive from other

@@ -35,9 +35,6 @@
  ****************************************************************************/
 
 
-
-
-
 /**
  * @file
  * @brief Definition of class for BIF file output manipulation

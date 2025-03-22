@@ -35,9 +35,6 @@
  ****************************************************************************/
 
 
-
-
-
 /** @file
  * @brief Templates implementation of IDWriter.h classes.
  *

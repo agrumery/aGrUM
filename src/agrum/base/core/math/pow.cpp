@@ -35,9 +35,6 @@
  ****************************************************************************/
 
 
-
-
-
 /**
  * @file
  * @brief Outline implementation of pow functions with integers, faster than

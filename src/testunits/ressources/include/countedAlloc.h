@@ -94,6 +94,3 @@ namespace gum_tests {
  *   gitlab   : https://gitlab.com/agrumery/agrum                           *
  *                                                                          *
  ****************************************************************************/
-
-
-

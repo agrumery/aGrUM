@@ -35,9 +35,6 @@
  ****************************************************************************/
 
 
-
-
-
 /**
  * @file
  * @brief algorithm for approximated computation KL divergence between BNs using

@@ -35,9 +35,6 @@
  ****************************************************************************/
 
 
-
-
-
 /** @file
  * @brief Class for fast retrieval of simplicial and quasi/almost simplicial
  * nodes

@@ -35,9 +35,6 @@
  ****************************************************************************/
 
 
-
-
-
 /**
  * @file
  * @brief Implementation of pow functions with integers, faster than stl

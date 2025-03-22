@@ -35,9 +35,6 @@
  ****************************************************************************/
 
 
-
-
-
 /** @file
  * @brief Inline implementation of Base classes for oriented graphs
  *
@@ -68,7 +65,7 @@ namespace gum {
     if (this != &g) {
       DiGraph::clear();
       NodeGraphPart::operator=(g);
-      ArcGraphPart::operator=(g);
+      ArcGraphPart:: operator=(g);
     }
 
     return *this;

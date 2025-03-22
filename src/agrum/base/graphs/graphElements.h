@@ -35,9 +35,6 @@
  ****************************************************************************/
 
 
-
-
-
 /** @file
  * @brief some utils for topology : NodeId, Edge, Arc and consorts ...
  *

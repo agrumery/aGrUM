@@ -35,8 +35,6 @@
  ****************************************************************************/
 
 
-
-
 #ifndef DOXYGEN_SHOULD_SKIP_THIS
 
 #  include <agrum/base/graphicalModels/inference/scheduler/schedule.h>

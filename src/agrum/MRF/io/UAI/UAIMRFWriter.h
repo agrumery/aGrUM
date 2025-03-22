@@ -35,9 +35,6 @@
  ****************************************************************************/
 
 
-
-
-
 /**
  * @file
  * @brief Definition file for UAI exportation class
@@ -119,7 +116,7 @@ namespace gum {
     std::string _preambule_(const IMarkovRandomField< GUM_SCALAR >& MN);
 
     std::string _factorBloc_(const IMarkovRandomField< GUM_SCALAR >& MN,
-                             const Tensor< GUM_SCALAR >&          clikpot);
+                             const Tensor< GUM_SCALAR >&             clikpot);
   };
 
 

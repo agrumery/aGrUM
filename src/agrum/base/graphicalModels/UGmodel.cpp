@@ -35,9 +35,6 @@
  ****************************************************************************/
 
 
-
-
-
 #include <agrum/base/graphicalModels/UGmodel.h>
 
 #ifdef GUM_NO_INLINE

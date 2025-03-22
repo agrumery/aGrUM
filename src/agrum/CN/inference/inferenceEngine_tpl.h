@@ -35,9 +35,6 @@
  ****************************************************************************/
 
 
-
-
-
 /** @file
  * @brief Abstract class representing CredalNet inference engines
  * @author Matthieu HOURBRACQ and Pierre-Henri WUILLEMIN(_at_LIP6) and Christophe GONZALES(_at_AMU)
@@ -839,8 +836,7 @@ namespace gum {
               const Tensor< GUM_SCALAR >* tensor(&credalNet_->current_bn().cpt(node));
               const Tensor< GUM_SCALAR >* tensor2(&credalNet_->current_bn().cpt(elt.first));
 
-              if (tensor->domainSize() == tensor2->domainSize())
-                t0_[elt.first].push_back(node);
+              if (tensor->domainSize() == tensor2->domainSize()) t0_[elt.first].push_back(node);
               else t1_.insert(node, std::vector< NodeId >());
 
               found = true;

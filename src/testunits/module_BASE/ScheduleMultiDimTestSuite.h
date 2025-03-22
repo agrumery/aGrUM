@@ -35,9 +35,6 @@
  ****************************************************************************/
 
 
-
-
-
 #include <sstream>
 
 #include <gumtest/AgrumTestSuite.h>
@@ -291,7 +288,7 @@ namespace gum_tests {
       TS_ASSERT(pot2->min() == 42.42);
       delete pot2;
 
-      gum::Sequence< const gum::DiscreteVariable* >     seq;
+      gum::Sequence< const gum::DiscreteVariable* >  seq;
       gum::ScheduleMultiDim< gum::Tensor< double > > f3(seq, 0);
       TS_ASSERT(!f3.containsMultiDim());
       TS_ASSERT(f3.domainSize() == 1);

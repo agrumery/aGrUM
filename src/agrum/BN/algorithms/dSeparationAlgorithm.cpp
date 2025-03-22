@@ -35,9 +35,6 @@
  ****************************************************************************/
 
 
-
-
-
 /**
  * @file
  * @brief d-separation analysis (as described in Koller & Friedman 2009)

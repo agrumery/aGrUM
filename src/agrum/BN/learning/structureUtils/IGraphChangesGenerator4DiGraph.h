@@ -35,9 +35,6 @@
  ****************************************************************************/
 
 
-
-
-
 /** @file
  * @brief The base class for all GraphChangesGenerators for directed structures
  *

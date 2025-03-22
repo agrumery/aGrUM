@@ -35,9 +35,6 @@
  ****************************************************************************/
 
 
-
-
-
 /** @file
  * @brief the base class for all the scores used for learning (BIC, BDeu, etc)
  *
@@ -52,7 +49,6 @@
 
 #include <agrum/base/stattests/recordCounter.h>
 #include <agrum/base/stattests/scoringCache.h>
-
 #include <agrum/BN/learning/priors/prior.h>
 #include <agrum/BN/learning/structureUtils/graphChange.h>
 

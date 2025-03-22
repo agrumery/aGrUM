@@ -35,9 +35,6 @@
  ****************************************************************************/
 
 
-
-
-
 /** @file
  * @brief The class for computing the set of graph changes (over a subgraph)
  * transmitted to learning algorithms

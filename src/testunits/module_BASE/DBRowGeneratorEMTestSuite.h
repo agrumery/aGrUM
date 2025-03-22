@@ -35,9 +35,6 @@
  ****************************************************************************/
 
 
-
-
-
 #include <iostream>
 
 #include <gumtest/AgrumTestSuite.h>
@@ -185,7 +182,7 @@ namespace gum_tests {
 
       {
         gum::Tensor< double > proba = _infer_(bn, {std::size_t(1)}, input_row2);
-        gum::Instantiation       inst(proba);
+        gum::Instantiation    inst(proba);
 
         generator.setInputRow(input_row2);
         TS_ASSERT(generator.hasRows())
@@ -211,7 +208,7 @@ namespace gum_tests {
         TS_ASSERT_EQUALS(xcols[1], std::size_t(1))
 
         gum::Tensor< double > proba = _infer_(bn, {std::size_t(1)}, input_row3);
-        gum::Instantiation       inst(proba);
+        gum::Instantiation    inst(proba);
 
         generator.setInputRow(input_row3);
         TS_ASSERT(generator.hasRows())
@@ -237,7 +234,7 @@ namespace gum_tests {
         TS_ASSERT_EQUALS(xcols[1], std::size_t(1))
 
         gum::Tensor< double > proba = _infer_(bn, {std::size_t(1), std::size_t(0)}, input_row4);
-        gum::Instantiation       inst(proba);
+        gum::Instantiation    inst(proba);
 
         generator.setInputRow(input_row4);
         TS_ASSERT(generator.hasRows())
@@ -264,7 +261,7 @@ namespace gum_tests {
         TS_ASSERT_EQUALS(xcols[1], std::size_t(1))
 
         gum::Tensor< double > proba = _infer_(bn, {std::size_t(1), std::size_t(0)}, input_row5);
-        gum::Instantiation       inst(proba);
+        gum::Instantiation    inst(proba);
 
         generator.setInputRow(input_row5);
         TS_ASSERT(generator.hasRows())
@@ -286,7 +283,7 @@ namespace gum_tests {
 
       {
         gum::Tensor< double > proba = _infer_(bn, {std::size_t(1)}, input_row2);
-        gum::Instantiation       inst(proba);
+        gum::Instantiation    inst(proba);
 
         generator.setInputRow(input_row2);
         TS_ASSERT(generator.hasRows())
@@ -377,7 +374,7 @@ namespace gum_tests {
         TS_ASSERT_EQUALS(xcols[1], std::size_t(1))
 
         gum::Tensor< double > proba = _infer_(bn, {std::size_t(1)}, input_row2);
-        gum::Instantiation       inst(proba);
+        gum::Instantiation    inst(proba);
 
         generator2.setInputRow(input_row2);
         TS_ASSERT(generator2.hasRows())
@@ -403,7 +400,7 @@ namespace gum_tests {
         TS_ASSERT_EQUALS(xcols[1], std::size_t(1))
 
         gum::Tensor< double > proba = _infer_(bn, {std::size_t(1)}, input_row3);
-        gum::Instantiation       inst(proba);
+        gum::Instantiation    inst(proba);
 
         generator2.setInputRow(input_row3);
         TS_ASSERT(generator2.hasRows())
@@ -429,7 +426,7 @@ namespace gum_tests {
         TS_ASSERT_EQUALS(xcols[1], std::size_t(1))
 
         gum::Tensor< double > proba = _infer_(bn, {std::size_t(1), std::size_t(0)}, input_row4);
-        gum::Instantiation       inst(proba);
+        gum::Instantiation    inst(proba);
 
         generator2.setInputRow(input_row4);
         TS_ASSERT(generator2.hasRows())
@@ -456,7 +453,7 @@ namespace gum_tests {
         TS_ASSERT_EQUALS(xcols[1], std::size_t(1))
 
         gum::Tensor< double > proba = _infer_(bn, {std::size_t(1), std::size_t(0)}, input_row5);
-        gum::Instantiation       inst(proba);
+        gum::Instantiation    inst(proba);
 
         generator2.setInputRow(input_row5);
         TS_ASSERT(generator2.hasRows())
@@ -548,7 +545,7 @@ namespace gum_tests {
         TS_ASSERT_EQUALS(xcols[1], std::size_t(1))
 
         gum::Tensor< double > proba = _infer_(bn, {std::size_t(1)}, input_row2);
-        gum::Instantiation       inst(proba);
+        gum::Instantiation    inst(proba);
 
         generator3.setInputRow(input_row2);
         TS_ASSERT(generator3.hasRows())
@@ -574,7 +571,7 @@ namespace gum_tests {
         TS_ASSERT_EQUALS(xcols[1], std::size_t(1))
 
         gum::Tensor< double > proba = _infer_(bn, {std::size_t(1)}, input_row3);
-        gum::Instantiation       inst(proba);
+        gum::Instantiation    inst(proba);
 
         generator3.setInputRow(input_row3);
         TS_ASSERT(generator3.hasRows())
@@ -600,7 +597,7 @@ namespace gum_tests {
         TS_ASSERT_EQUALS(xcols[1], std::size_t(1))
 
         gum::Tensor< double > proba = _infer_(bn, {std::size_t(1), std::size_t(0)}, input_row4);
-        gum::Instantiation       inst(proba);
+        gum::Instantiation    inst(proba);
 
         generator3.setInputRow(input_row4);
         TS_ASSERT(generator3.hasRows())
@@ -627,7 +624,7 @@ namespace gum_tests {
         TS_ASSERT_EQUALS(xcols[1], std::size_t(1))
 
         gum::Tensor< double > proba = _infer_(bn, {std::size_t(1), std::size_t(0)}, input_row5);
-        gum::Instantiation       inst(proba);
+        gum::Instantiation    inst(proba);
 
         generator3.setInputRow(input_row5);
         TS_ASSERT(generator3.hasRows())
@@ -719,7 +716,7 @@ namespace gum_tests {
         TS_ASSERT_EQUALS(xcols[1], std::size_t(1))
 
         gum::Tensor< double > proba = _infer_(bn, {std::size_t(1)}, input_row2);
-        gum::Instantiation       inst(proba);
+        gum::Instantiation    inst(proba);
 
         generator4.setInputRow(input_row2);
         TS_ASSERT(generator4.hasRows())
@@ -745,7 +742,7 @@ namespace gum_tests {
         TS_ASSERT_EQUALS(xcols[1], std::size_t(1))
 
         gum::Tensor< double > proba = _infer_(bn, {std::size_t(1)}, input_row3);
-        gum::Instantiation       inst(proba);
+        gum::Instantiation    inst(proba);
 
         generator4.setInputRow(input_row3);
         TS_ASSERT(generator4.hasRows())
@@ -771,7 +768,7 @@ namespace gum_tests {
         TS_ASSERT_EQUALS(xcols[1], std::size_t(1))
 
         gum::Tensor< double > proba = _infer_(bn, {std::size_t(1), std::size_t(0)}, input_row4);
-        gum::Instantiation       inst(proba);
+        gum::Instantiation    inst(proba);
 
         generator4.setInputRow(input_row4);
         TS_ASSERT(generator4.hasRows())
@@ -798,7 +795,7 @@ namespace gum_tests {
         TS_ASSERT_EQUALS(xcols[1], std::size_t(1))
 
         gum::Tensor< double > proba = _infer_(bn, {std::size_t(1), std::size_t(0)}, input_row5);
-        gum::Instantiation       inst(proba);
+        gum::Instantiation    inst(proba);
 
         generator4.setInputRow(input_row5);
         TS_ASSERT(generator4.hasRows())
@@ -890,7 +887,7 @@ namespace gum_tests {
         TS_ASSERT_EQUALS(xcols[1], std::size_t(1))
 
         gum::Tensor< double > proba = _infer_(bn, {std::size_t(1)}, input_row2);
-        gum::Instantiation       inst(proba);
+        gum::Instantiation    inst(proba);
 
         generator5.setInputRow(input_row2);
         TS_ASSERT(generator5.hasRows())
@@ -916,7 +913,7 @@ namespace gum_tests {
         TS_ASSERT_EQUALS(xcols[1], std::size_t(1))
 
         gum::Tensor< double > proba = _infer_(bn, {std::size_t(1)}, input_row3);
-        gum::Instantiation       inst(proba);
+        gum::Instantiation    inst(proba);
 
         generator5.setInputRow(input_row3);
         TS_ASSERT(generator5.hasRows())
@@ -942,7 +939,7 @@ namespace gum_tests {
         TS_ASSERT_EQUALS(xcols[1], std::size_t(1))
 
         gum::Tensor< double > proba = _infer_(bn, {std::size_t(1), std::size_t(0)}, input_row4);
-        gum::Instantiation       inst(proba);
+        gum::Instantiation    inst(proba);
 
         generator5.setInputRow(input_row4);
         TS_ASSERT(generator5.hasRows())
@@ -969,7 +966,7 @@ namespace gum_tests {
         TS_ASSERT_EQUALS(xcols[1], std::size_t(1))
 
         gum::Tensor< double > proba = _infer_(bn, {std::size_t(1), std::size_t(0)}, input_row5);
-        gum::Instantiation       inst(proba);
+        gum::Instantiation    inst(proba);
 
         generator5.setInputRow(input_row5);
         TS_ASSERT(generator5.hasRows())
@@ -1061,7 +1058,7 @@ namespace gum_tests {
         TS_ASSERT_EQUALS(xcols[1], std::size_t(1))
 
         gum::Tensor< double > proba = _infer_(bn, {std::size_t(1)}, input_row2);
-        gum::Instantiation       inst(proba);
+        gum::Instantiation    inst(proba);
 
         generator6->setInputRow(input_row2);
         TS_ASSERT(generator6->hasRows())
@@ -1087,7 +1084,7 @@ namespace gum_tests {
         TS_ASSERT_EQUALS(xcols[1], std::size_t(1))
 
         gum::Tensor< double > proba = _infer_(bn, {std::size_t(1)}, input_row3);
-        gum::Instantiation       inst(proba);
+        gum::Instantiation    inst(proba);
 
         generator6->setInputRow(input_row3);
         TS_ASSERT(generator6->hasRows())
@@ -1113,7 +1110,7 @@ namespace gum_tests {
         TS_ASSERT_EQUALS(xcols[1], std::size_t(1))
 
         gum::Tensor< double > proba = _infer_(bn, {std::size_t(1), std::size_t(0)}, input_row4);
-        gum::Instantiation       inst(proba);
+        gum::Instantiation    inst(proba);
 
         generator6->setInputRow(input_row4);
         TS_ASSERT(generator6->hasRows())
@@ -1140,7 +1137,7 @@ namespace gum_tests {
         TS_ASSERT_EQUALS(xcols[1], std::size_t(1))
 
         gum::Tensor< double > proba = _infer_(bn, {std::size_t(1), std::size_t(0)}, input_row5);
-        gum::Instantiation       inst(proba);
+        gum::Instantiation    inst(proba);
 
         generator6->setInputRow(input_row5);
         TS_ASSERT(generator6->hasRows())
@@ -1233,7 +1230,7 @@ namespace gum_tests {
         TS_ASSERT_EQUALS(xcols[1], std::size_t(1))
 
         gum::Tensor< double > proba = _infer_(bn, {std::size_t(1)}, input_row2);
-        gum::Instantiation       inst(proba);
+        gum::Instantiation    inst(proba);
 
         generator7->setInputRow(input_row2);
         TS_ASSERT(generator7->hasRows())
@@ -1259,7 +1256,7 @@ namespace gum_tests {
         TS_ASSERT_EQUALS(xcols[1], std::size_t(1))
 
         gum::Tensor< double > proba = _infer_(bn, {std::size_t(1)}, input_row3);
-        gum::Instantiation       inst(proba);
+        gum::Instantiation    inst(proba);
 
         generator7->setInputRow(input_row3);
         TS_ASSERT(generator7->hasRows())
@@ -1285,7 +1282,7 @@ namespace gum_tests {
         TS_ASSERT_EQUALS(xcols[1], std::size_t(1))
 
         gum::Tensor< double > proba = _infer_(bn, {std::size_t(1), std::size_t(0)}, input_row4);
-        gum::Instantiation       inst(proba);
+        gum::Instantiation    inst(proba);
 
         generator7->setInputRow(input_row4);
         TS_ASSERT(generator7->hasRows())
@@ -1312,7 +1309,7 @@ namespace gum_tests {
         TS_ASSERT_EQUALS(xcols[1], std::size_t(1))
 
         gum::Tensor< double > proba = _infer_(bn, {std::size_t(1), std::size_t(0)}, input_row5);
-        gum::Instantiation       inst(proba);
+        gum::Instantiation    inst(proba);
 
         generator7->setInputRow(input_row5);
         TS_ASSERT(generator7->hasRows())
@@ -1406,7 +1403,7 @@ namespace gum_tests {
 
       {
         gum::Tensor< double > proba = _infer_(bn, {std::size_t(1)}, input_row2);
-        gum::Instantiation       inst(proba);
+        gum::Instantiation    inst(proba);
 
         generator8.setInputRow(input_row2);
         TS_ASSERT(generator8.hasRows())
@@ -1432,7 +1429,7 @@ namespace gum_tests {
         TS_ASSERT_EQUALS(xcols[1], std::size_t(1))
 
         gum::Tensor< double > proba = _infer_(bn, {std::size_t(1)}, input_row3);
-        gum::Instantiation       inst(proba);
+        gum::Instantiation    inst(proba);
 
         generator8.setInputRow(input_row3);
         TS_ASSERT(generator8.hasRows())
@@ -1458,7 +1455,7 @@ namespace gum_tests {
         TS_ASSERT_EQUALS(xcols[1], std::size_t(1))
 
         gum::Tensor< double > proba = _infer_(bn, {std::size_t(1), std::size_t(0)}, input_row4);
-        gum::Instantiation       inst(proba);
+        gum::Instantiation    inst(proba);
 
         generator8.setInputRow(input_row4);
         TS_ASSERT(generator8.hasRows())
@@ -1485,7 +1482,7 @@ namespace gum_tests {
         TS_ASSERT_EQUALS(xcols[1], std::size_t(1))
 
         gum::Tensor< double > proba = _infer_(bn, {std::size_t(1), std::size_t(0)}, input_row5);
-        gum::Instantiation       inst(proba);
+        gum::Instantiation    inst(proba);
 
         generator8.setInputRow(input_row5);
         TS_ASSERT(generator8.hasRows())
@@ -1507,7 +1504,7 @@ namespace gum_tests {
 
       {
         gum::Tensor< double > proba = _infer_(bn, {std::size_t(1)}, input_row2);
-        gum::Instantiation       inst(proba);
+        gum::Instantiation    inst(proba);
 
         generator8.setInputRow(input_row2);
         TS_ASSERT(generator8.hasRows())
@@ -1596,7 +1593,7 @@ namespace gum_tests {
 
       {
         gum::Tensor< double > proba = _infer_(bn, {std::size_t(1)}, input_row2);
-        gum::Instantiation       inst(proba);
+        gum::Instantiation    inst(proba);
 
         generator9.setInputRow(input_row2);
         TS_ASSERT(generator9.hasRows())
@@ -1622,7 +1619,7 @@ namespace gum_tests {
         TS_ASSERT_EQUALS(xcols[1], std::size_t(1))
 
         gum::Tensor< double > proba = _infer_(bn, {std::size_t(1)}, input_row3);
-        gum::Instantiation       inst(proba);
+        gum::Instantiation    inst(proba);
 
         generator9.setInputRow(input_row3);
         TS_ASSERT(generator9.hasRows())
@@ -1648,7 +1645,7 @@ namespace gum_tests {
         TS_ASSERT_EQUALS(xcols[1], std::size_t(1))
 
         gum::Tensor< double > proba = _infer_(bn, {std::size_t(1), std::size_t(0)}, input_row4);
-        gum::Instantiation       inst(proba);
+        gum::Instantiation    inst(proba);
 
         generator9.setInputRow(input_row4);
         TS_ASSERT(generator9.hasRows())
@@ -1675,7 +1672,7 @@ namespace gum_tests {
         TS_ASSERT_EQUALS(xcols[1], std::size_t(1))
 
         gum::Tensor< double > proba = _infer_(bn, {std::size_t(1), std::size_t(0)}, input_row5);
-        gum::Instantiation       inst(proba);
+        gum::Instantiation    inst(proba);
 
         generator9.setInputRow(input_row5);
         TS_ASSERT(generator9.hasRows())
@@ -1697,7 +1694,7 @@ namespace gum_tests {
 
       {
         gum::Tensor< double > proba = _infer_(bn, {std::size_t(1)}, input_row2);
-        gum::Instantiation       inst(proba);
+        gum::Instantiation    inst(proba);
 
         generator9.setInputRow(input_row2);
         TS_ASSERT(generator9.hasRows())

@@ -35,9 +35,6 @@
  ****************************************************************************/
 
 
-
-
-
 /** @file
  * @brief an operator to force a ScheduleMultiDim to be abstract
  *

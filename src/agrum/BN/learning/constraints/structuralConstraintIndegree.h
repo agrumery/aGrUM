@@ -35,9 +35,6 @@
  ****************************************************************************/
 
 
-
-
-
 /** @file
  * @brief the class for structural constraints limiting the number of parents
  * of nodes in a directed graph

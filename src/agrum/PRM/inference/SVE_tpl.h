@@ -35,9 +35,6 @@
  ****************************************************************************/
 
 
-
-
-
 /**
  * @file
  * @brief Inline implementation of SVE.
@@ -615,8 +612,7 @@ namespace gum {
     }
 
     template < typename GUM_SCALAR >
-    void SVE< GUM_SCALAR >::joint_(const std::vector< Chain >& queries,
-                                   Tensor< GUM_SCALAR >&    j) {
+    void SVE< GUM_SCALAR >::joint_(const std::vector< Chain >& queries, Tensor< GUM_SCALAR >& j) {
       GUM_ERROR(FatalError, "Not implemented.")
     }
 
@@ -660,7 +656,7 @@ namespace gum {
     template < typename GUM_SCALAR >
     INLINE Tensor< GUM_SCALAR >*
            SVE< GUM_SCALAR >::_getAggTensor_(const PRMInstance< GUM_SCALAR >*  i,
-                                             const PRMAggregate< GUM_SCALAR >* agg) {
+                                          const PRMAggregate< GUM_SCALAR >* agg) {
       return &(const_cast< Tensor< GUM_SCALAR >& >(i->get(agg->id()).cpf()));
     }
 

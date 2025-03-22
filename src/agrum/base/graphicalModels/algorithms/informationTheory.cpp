@@ -35,7 +35,4 @@
  ****************************************************************************/
 
 
-
-
-
 #include <agrum/base/graphicalModels/algorithms/informationTheory.h>

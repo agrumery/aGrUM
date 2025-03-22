@@ -35,9 +35,6 @@
  ****************************************************************************/
 
 
-
-
-
 /** @file
  * @brief Inline implementation of Base classes for directed acylic graphs
  *

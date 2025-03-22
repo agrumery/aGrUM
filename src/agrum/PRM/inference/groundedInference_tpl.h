@@ -35,9 +35,6 @@
  ****************************************************************************/
 
 
-
-
-
 /**
  * @file
  * @brief Inline implementation of GroundedInference.
@@ -74,7 +71,7 @@ namespace gum {
       bn_obs->add(_inf_->BN().variableFromName(var_name.str()));
       // Retrievin the PRM<GUM_SCALAR>'s evidence and copying it in bn_obs
       const Tensor< GUM_SCALAR >* prm_obs = this->evidence(chain.first)[chain.second->id()];
-      Instantiation                  i(*bn_obs), j(*prm_obs);
+      Instantiation               i(*bn_obs), j(*prm_obs);
 
       for (i.setFirst(), j.setFirst(); !i.end(); i.inc(), j.inc()) {
         bn_obs->set(i, prm_obs->get(j));
@@ -145,7 +142,7 @@ namespace gum {
     template < typename GUM_SCALAR >
     INLINE void GroundedInference< GUM_SCALAR >::posterior_(
         const typename PRMInference< GUM_SCALAR >::Chain& chain,
-        Tensor< GUM_SCALAR >&                          m) {
+        Tensor< GUM_SCALAR >&                             m) {
       if (_inf_ == 0) { GUM_ERROR(OperationNotAllowed, "no inference engine defined") }
 
       std::stringstream sBuff;
@@ -165,7 +162,7 @@ namespace gum {
     template < typename GUM_SCALAR >
     INLINE void GroundedInference< GUM_SCALAR >::joint_(
         const std::vector< typename PRMInference< GUM_SCALAR >::Chain >& queries,
-        Tensor< GUM_SCALAR >&                                         j) {
+        Tensor< GUM_SCALAR >&                                            j) {
       GUM_ERROR(FatalError, "not yet implemented")
     }
 

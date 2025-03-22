@@ -35,9 +35,6 @@
  ****************************************************************************/
 
 
-
-
-
 /**
  * @file
  * @brief Lrs wrapper
@@ -49,13 +46,13 @@
 #ifndef __LRSWrapper_WRAPPER__H__
 #define __LRSWrapper_WRAPPER__H__
 
-#include <agrum/agrum.h>
-
 #include <chrono>
 #include <cstdio>
 #include <fcntl.h>
 #include <fstream>
 #include <vector>
+
+#include <agrum/agrum.h>
 
 #include <agrum/base/core/math/rational.h>
 

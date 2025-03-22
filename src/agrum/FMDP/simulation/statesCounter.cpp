@@ -35,9 +35,6 @@
  ****************************************************************************/
 
 
-
-
-
 #include <agrum/FMDP/simulation/statesCounter.h>
 
 namespace gum {

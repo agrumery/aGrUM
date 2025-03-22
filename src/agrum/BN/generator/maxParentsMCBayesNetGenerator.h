@@ -35,9 +35,6 @@
  ****************************************************************************/
 
 
-
-
-
 /** @file
  * @brief Class for generating Bayesian networks using MC algorithm
  * cf. [Ide and Cozman, 2002]

@@ -35,9 +35,6 @@
  ****************************************************************************/
 
 
-
-
-
 /** @file
  * @brief Interface-like class for disturbing Conditional Probability Tables.
  *
@@ -88,10 +85,10 @@ namespace gum {
      * @param src copy of the CPT before reduction.
      * @param marg of the inference before reduction on the node varIdi.
      */
-    virtual void disturbReducCPT(NodeId                   node,
-                                 BayesNet< GUM_SCALAR >&  bayesNet,
-                                 Tensor< GUM_SCALAR >& src,
-                                 Tensor< GUM_SCALAR >& marg)
+    virtual void disturbReducCPT(NodeId                  node,
+                                 BayesNet< GUM_SCALAR >& bayesNet,
+                                 Tensor< GUM_SCALAR >&   src,
+                                 Tensor< GUM_SCALAR >&   marg)
         = 0;
 
     /**
@@ -101,10 +98,10 @@ namespace gum {
      * @param src copy of the CPT before augmentation.
      * @param variation degree of variation from the initial probability.
      */
-    virtual void disturbAugmCPT(NodeId                   node,
-                                BayesNet< GUM_SCALAR >&  bayesNet,
-                                Tensor< GUM_SCALAR >& src,
-                                GUM_SCALAR               variation)
+    virtual void disturbAugmCPT(NodeId                  node,
+                                BayesNet< GUM_SCALAR >& bayesNet,
+                                Tensor< GUM_SCALAR >&   src,
+                                GUM_SCALAR              variation)
         = 0;
   };
 

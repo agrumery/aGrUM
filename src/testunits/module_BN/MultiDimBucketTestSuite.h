@@ -35,9 +35,6 @@
  ****************************************************************************/
 
 
-
-
-
 #include <sstream>
 
 #include <gumtest/AgrumTestSuite.h>
@@ -55,8 +52,8 @@ namespace gum_tests {
 
   class [[maybe_unused]] MultiDimBucketTestSuite: public CxxTest::TestSuite {
     private:
-    std::vector< gum::LabelizedVariable* >*   _variables_;
-    std::vector< gum::Tensor< double >* >* _tensors_;
+    std::vector< gum::LabelizedVariable* >* _variables_;
+    std::vector< gum::Tensor< double >* >*  _tensors_;
 
     void _fillBucket_(gum::MultiDimBucket< double >* bucket) {
       for (size_t i = 0; i < 5; ++i) {
@@ -105,22 +102,19 @@ namespace gum_tests {
       // Creating a table of 2 elements
       _tensors_->at(0)->add(*(_variables_->at(0)));
 
-      cptGenerator.generateCPT(_tensors_->at(0)->pos(*(_variables_->at(0))),
-                               *(_tensors_->at(0)));
+      cptGenerator.generateCPT(_tensors_->at(0)->pos(*(_variables_->at(0))), *(_tensors_->at(0)));
 
       // Creating a table of 2 elements
       _tensors_->at(1)->add(*(_variables_->at(1)));
 
-      cptGenerator.generateCPT(_tensors_->at(1)->pos(*(_variables_->at(1))),
-                               *(_tensors_->at(1)));
+      cptGenerator.generateCPT(_tensors_->at(1)->pos(*(_variables_->at(1))), *(_tensors_->at(1)));
 
       // Creating a table of 2^4=16 elements
       for (size_t i = 2; i < 6; ++i) {
         _tensors_->at(2)->add(*(_variables_->at(i)));
       }
 
-      cptGenerator.generateCPT(_tensors_->at(2)->pos(*(_variables_->at(2))),
-                               *(_tensors_->at(2)));
+      cptGenerator.generateCPT(_tensors_->at(2)->pos(*(_variables_->at(2))), *(_tensors_->at(2)));
 
       // Creatinh a table of 2^4=16 elements
 
@@ -128,8 +122,7 @@ namespace gum_tests {
         _tensors_->at(3)->add(*(_variables_->at(i)));
       }
 
-      cptGenerator.generateCPT(_tensors_->at(3)->pos(*(_variables_->at(4))),
-                               *(_tensors_->at(3)));
+      cptGenerator.generateCPT(_tensors_->at(3)->pos(*(_variables_->at(4))), *(_tensors_->at(3)));
 
       // Creatinh a table of 2^4=16 elements
 
@@ -137,8 +130,7 @@ namespace gum_tests {
         _tensors_->at(4)->add(*(_variables_->at(i)));
       }
 
-      cptGenerator.generateCPT(_tensors_->at(4)->pos(*(_variables_->at(6))),
-                               *(_tensors_->at(4)));
+      cptGenerator.generateCPT(_tensors_->at(4)->pos(*(_variables_->at(6))), *(_tensors_->at(4)));
     }
 
     void tearDown() {
@@ -194,7 +186,7 @@ namespace gum_tests {
 
     GUM_ACTIVE_TEST(Computation) {
       gum::MultiDimBucket< double >* bucket = 0;
-      gum::Tensor< double >       product;
+      gum::Tensor< double >          product;
       TS_ASSERT_THROWS_NOTHING(bucket = new gum::MultiDimBucket< double >())
       if (bucket != 0) {
         TS_ASSERT_THROWS_NOTHING(_fillBucket_(bucket))
@@ -220,7 +212,7 @@ namespace gum_tests {
 
     GUM_ACTIVE_TEST(OnTheFly) {
       gum::MultiDimBucket< double >* bucket = 0;
-      gum::Tensor< double >       product;
+      gum::Tensor< double >          product;
       TS_ASSERT_THROWS_NOTHING(bucket = new gum::MultiDimBucket< double >(0))
 
       if (bucket != 0) {
@@ -249,7 +241,7 @@ namespace gum_tests {
 
     GUM_ACTIVE_TEST(InstantiationsWithBuffer) {
       gum::MultiDimBucket< double >* bucket = 0;
-      gum::Tensor< double >       product;
+      gum::Tensor< double >          product;
       TS_ASSERT_THROWS_NOTHING(bucket = new gum::MultiDimBucket< double >())
 
       if (bucket != 0) {
@@ -284,7 +276,7 @@ namespace gum_tests {
 
     GUM_ACTIVE_TEST(InstantiationsWithBufferAndAutoCompute) {
       gum::MultiDimBucket< double >* bucket = 0;
-      gum::Tensor< double >       product;
+      gum::Tensor< double >          product;
       TS_ASSERT_THROWS_NOTHING(bucket = new gum::MultiDimBucket< double >())
 
       if (bucket != 0) {
@@ -317,7 +309,7 @@ namespace gum_tests {
 
     GUM_ACTIVE_TEST(InstantiationsOnTheFly) {
       gum::MultiDimBucket< double >* bucket = 0;
-      gum::Tensor< double >       product;
+      gum::Tensor< double >          product;
       TS_ASSERT_THROWS_NOTHING(bucket = new gum::MultiDimBucket< double >(0))
 
       if (bucket != 0) {
@@ -352,7 +344,7 @@ namespace gum_tests {
 
     GUM_ACTIVE_TEST(BucketSizeChanges) {
       gum::MultiDimBucket< double >* bucket = 0;
-      gum::Tensor< double >       product;
+      gum::Tensor< double >          product;
       TS_ASSERT_THROWS_NOTHING(bucket = new gum::MultiDimBucket< double >(0))
 
       if (bucket != 0) {
@@ -459,7 +451,7 @@ namespace gum_tests {
       e_c->add(bn->variable(c));
       e_c->fillWith({1., 0.});
 
-      gum::Tensor< double >      clique_csr;
+      gum::Tensor< double >         clique_csr;
       gum::MultiDimBucket< double > bucket_csr;
       clique_csr.add(bn->variable(c));
       bucket_csr.add(bn->variable(c));
@@ -490,7 +482,7 @@ namespace gum_tests {
         }
       }
 
-      gum::Tensor< double >      sep_sr;
+      gum::Tensor< double >         sep_sr;
       gum::MultiDimBucket< double > bucket_sr;
       sep_sr.add(bn->variable(s));
       bucket_sr.add(bn->variable(s));
@@ -514,7 +506,7 @@ namespace gum_tests {
         }
       }
 
-      gum::Tensor< double >      clique_wsr;
+      gum::Tensor< double >         clique_wsr;
       gum::MultiDimBucket< double > bucket_wsr;
       clique_wsr.add(bn->variable(w));
       bucket_wsr.add(bn->variable(w));
@@ -537,7 +529,7 @@ namespace gum_tests {
         }
       }
 
-      gum::Tensor< double >      tmp;
+      gum::Tensor< double >         tmp;
       gum::MultiDimBucket< double > bucket_marg_w;
       tmp.add(bn->variable(w));
       bucket_marg_w.add(bn->variable(w));

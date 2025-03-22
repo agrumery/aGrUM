@@ -35,9 +35,6 @@
  ****************************************************************************/
 
 
-
-
-
 /**
  * @file
  * @brief Implementation for the AST of the O3PRM language.
@@ -783,8 +780,8 @@ namespace gum {
       O3RawCPT& O3RawCPT::operator=(const O3RawCPT& src) {
         if (this == &src) { return *this; }
         O3Attribute::operator=(src);
-        auto copy = new O3FormulaList(*(src._values_));
-        _values_  = std::unique_ptr< O3FormulaList >(copy);
+        auto         copy = new O3FormulaList(*(src._values_));
+        _values_          = std::unique_ptr< O3FormulaList >(copy);
         return *this;
       }
 

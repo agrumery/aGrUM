@@ -35,9 +35,6 @@
  ****************************************************************************/
 
 
-
-
-
 #include <iostream>
 #include <string>
 
@@ -298,8 +295,8 @@ namespace gum_tests {
       gum::SimpleCPTGenerator< double > cptGen;
 
       for (int i = 2; i < 100; ++i) {
-        gum::LabelizedVariable   aVar("aVar", "A discrete variable", i);
-        gum::Tensor< double > aPot;
+        gum::LabelizedVariable aVar("aVar", "A discrete variable", i);
+        gum::Tensor< double >  aPot;
         aPot.add(aVar);
         TS_GUM_ASSERT_THROWS_NOTHING(cptGen.generateCPT(aPot.pos(aVar), aPot))
 
@@ -340,8 +337,8 @@ namespace gum_tests {
       gum::SimpleCPTGenerator< double > cptGen;
 
       for (int i = 2; i < 100; ++i) {
-        gum::LabelizedVariable   aVar("aVar", "A discrete variable", i);
-        gum::Tensor< double > aPot;
+        gum::LabelizedVariable aVar("aVar", "A discrete variable", i);
+        gum::Tensor< double >  aPot;
         aPot.add(aVar);
         TS_GUM_ASSERT_THROWS_NOTHING(cptGen.generateCPT(aPot.pos(aVar), aPot))
 

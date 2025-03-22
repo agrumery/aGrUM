@@ -35,9 +35,6 @@
  ****************************************************************************/
 
 
-
-
-
 #include <agrum/base/variables/numericalDiscreteVariable.h>
 
 #include <agrum/base/core/math/math_utils.h>

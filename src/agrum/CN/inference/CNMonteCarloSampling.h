@@ -35,9 +35,6 @@
  ****************************************************************************/
 
 
-
-
-
 /**
  * @file
  * @brief Inference by basic sampling algorithm (pure random) of bnet in credal

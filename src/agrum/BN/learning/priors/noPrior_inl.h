@@ -35,9 +35,6 @@
  ****************************************************************************/
 
 
-
-
-
 /** @file
  * @brief the no a priorclass: corresponds to 0 weight-sample
  *

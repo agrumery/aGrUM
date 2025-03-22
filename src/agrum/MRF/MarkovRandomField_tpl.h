@@ -35,9 +35,6 @@
  ****************************************************************************/
 
 
-
-
-
 /**
  * @file
  * @brief Template implementation of BN/MarkovRandomField.h class.
@@ -194,8 +191,7 @@ namespace gum {
   }
 
   template < typename GUM_SCALAR >
-  const Tensor< GUM_SCALAR >&
-      MarkovRandomField< GUM_SCALAR >::factor(const NodeSet& varIds) const {
+  const Tensor< GUM_SCALAR >& MarkovRandomField< GUM_SCALAR >::factor(const NodeSet& varIds) const {
     return *_factors_[varIds];
   }
 

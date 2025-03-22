@@ -35,9 +35,6 @@
  ****************************************************************************/
 
 
-
-
-
 /** @file
  * @brief a binary combination operator class used for scheduling inferences
  *

@@ -35,9 +35,6 @@
  ****************************************************************************/
 
 
-
-
-
 /**
  * @file
  * @brief Inline implementation of StructuredBayesBall.
@@ -75,8 +72,8 @@ namespace gum {
 
         if (_inf_->hasEvidence(chain)) {
           const Tensor< GUM_SCALAR >* e = _inf_->evidence(i)[n];
-          Instantiation                  inst(e);
-          Size                           count = 0;
+          Instantiation               inst(e);
+          Size                        count = 0;
 
           for (inst.setFirst(); !inst.end(); inst.inc()) {
             if ((e->get(inst) == (GUM_SCALAR)1.0)) ++count;

@@ -35,9 +35,6 @@
  ****************************************************************************/
 
 
-
-
-
 #include <memory>
 #include <vector>
 
@@ -87,8 +84,8 @@ namespace gum_tests {
     public:
     // ============================================================================
     gum::Tensor< double > create_evidence(const gum::NodeId              node_id,
-                                             const std::vector< double >&   ev,
-                                             const gum::BayesNet< double >& bn) {
+                                          const std::vector< double >&   ev,
+                                          const gum::BayesNet< double >& bn) {
       gum::Tensor< double > proba;
       proba.add(bn.variable(node_id));
       proba.fillWith(ev);
@@ -98,7 +95,7 @@ namespace gum_tests {
 
     // ============================================================================
     gum::Tensor< double > posterior_joint(const gum::Tensor< double >&             joint,
-                                             gum::Set< const gum::Tensor< double >* > evidence) {
+                                          gum::Set< const gum::Tensor< double >* > evidence) {
       gum::Tensor< double > joint_pot(joint);
       for (const auto p: evidence)
         joint_pot *= (*p);
@@ -108,16 +105,16 @@ namespace gum_tests {
     }
 
     // ============================================================================
-    gum::Tensor< double > get_marginal(const gum::Tensor< double >& joint,
-                                          const gum::NodeId               target_id,
-                                          const gum::BayesNet< double >&  bn) {
+    gum::Tensor< double > get_marginal(const gum::Tensor< double >&   joint,
+                                       const gum::NodeId              target_id,
+                                       const gum::BayesNet< double >& bn) {
       return joint.sumIn({&bn.variable(target_id)}).normalize();
     }
 
     // ============================================================================
-    gum::Tensor< double > get_joint(const gum::Tensor< double > joint,
-                                       const gum::NodeSet&            target_ids,
-                                       const gum::BayesNet< double >& bn) {
+    gum::Tensor< double > get_joint(const gum::Tensor< double >    joint,
+                                    const gum::NodeSet&            target_ids,
+                                    const gum::BayesNet< double >& bn) {
       // get the set of variables to erase
       gum::VariableSet kept;
       for (const auto n: target_ids)
@@ -145,8 +142,8 @@ namespace gum_tests {
     // ============================================================================
     // ============================================================================
     GUM_ACTIVE_TEST(_prior) {
-      gum::BayesNet< double >  bn;
-      gum::Tensor< double > joint;
+      gum::BayesNet< double > bn;
+      gum::Tensor< double >   joint;
       defineVariables(bn, joint);
 
       gum::ShaferShenoyInference< double > inf(&bn);
@@ -167,8 +164,8 @@ namespace gum_tests {
     // ============================================================================
     // ============================================================================
     GUM_ACTIVE_TEST(_prior_with_targets) {
-      gum::BayesNet< double >  bn;
-      gum::Tensor< double > joint;
+      gum::BayesNet< double > bn;
+      gum::Tensor< double >   joint;
       defineVariables(bn, joint);
 
       gum::ShaferShenoyInference< double > inf(&bn);
@@ -194,8 +191,8 @@ namespace gum_tests {
     // ============================================================================
     // ============================================================================
     GUM_ACTIVE_TEST(_prior_with_targets_evidence) {
-      gum::BayesNet< double >  bn;
-      gum::Tensor< double > joint;
+      gum::BayesNet< double > bn;
+      gum::Tensor< double >   joint;
       defineVariables(bn, joint);
 
       gum::ShaferShenoyInference< double > inf(&bn);
@@ -209,7 +206,7 @@ namespace gum_tests {
       inf.addEvidence(ev3);
 
       const TestTensorSet evset{&ev1, &ev3};
-      auto                   posterior = posterior_joint(joint, evset);
+      auto                posterior = posterior_joint(joint, evset);
 
       TS_ASSERT_THROWS_NOTHING(inf.makeInference())
 
@@ -224,8 +221,8 @@ namespace gum_tests {
     // ============================================================================
     // ============================================================================
     GUM_ACTIVE_TEST(_prior_with_targets_outside_evidence) {
-      gum::BayesNet< double >  bn;
-      gum::Tensor< double > joint;
+      gum::BayesNet< double > bn;
+      gum::Tensor< double >   joint;
       defineVariables(bn, joint);
 
       gum::ShaferShenoyInference< double > inf(&bn);
@@ -241,7 +238,7 @@ namespace gum_tests {
       inf.addEvidence(ev7);
 
       const TestTensorSet evset{&ev0, &ev1, &ev7};
-      auto                   posterior = posterior_joint(joint, evset);
+      auto                posterior = posterior_joint(joint, evset);
 
       TS_ASSERT_THROWS_NOTHING(inf.makeInference())
 
@@ -256,8 +253,8 @@ namespace gum_tests {
     // ============================================================================
     // ============================================================================
     GUM_ACTIVE_TEST(_prior_with_targets_evidence_values_changed) {
-      gum::BayesNet< double >  bn;
-      gum::Tensor< double > joint;
+      gum::BayesNet< double > bn;
+      gum::Tensor< double >   joint;
       defineVariables(bn, joint);
 
       gum::ShaferShenoyInference< double > inf(&bn);
@@ -275,7 +272,7 @@ namespace gum_tests {
 
       {
         const TestTensorSet evset{&ev0, &ev1, &ev7};
-        auto                   posterior = posterior_joint(joint, evset);
+        auto                posterior = posterior_joint(joint, evset);
 
         TS_ASSERT_THROWS_NOTHING(inf.makeInference())
 
@@ -297,7 +294,7 @@ namespace gum_tests {
 
       {
         const TestTensorSet evset{&evp0, &evp1, &evp7};
-        auto                   posterior = posterior_joint(joint, evset);
+        auto                posterior = posterior_joint(joint, evset);
 
         TS_ASSERT_THROWS_NOTHING(inf.makeInference())
 
@@ -315,7 +312,7 @@ namespace gum_tests {
 
       {
         const TestTensorSet evset{&evp0, &evp1, &evpp7};
-        auto                   posterior = posterior_joint(joint, evset);
+        auto                posterior = posterior_joint(joint, evset);
 
         TS_ASSERT_THROWS_NOTHING(inf.makeInference())
 
@@ -332,7 +329,7 @@ namespace gum_tests {
       inf.chgEvidence(evp7);
       {
         const TestTensorSet evset{&ev0, &evp1, &evp7};
-        auto                   posterior = posterior_joint(joint, evset);
+        auto                posterior = posterior_joint(joint, evset);
 
         TS_ASSERT_THROWS_NOTHING(inf.makeInference())
 
@@ -347,7 +344,7 @@ namespace gum_tests {
       inf.eraseEvidence(0);
       {
         const TestTensorSet evset{&evp1, &evp7};
-        auto                   posterior = posterior_joint(joint, evset);
+        auto                posterior = posterior_joint(joint, evset);
 
         TS_ASSERT_THROWS_NOTHING(inf.makeInference())
 
@@ -366,7 +363,7 @@ namespace gum_tests {
 
       {
         const TestTensorSet evset{&evp1, &evp7};
-        auto                   posterior = posterior_joint(joint, evset);
+        auto                posterior = posterior_joint(joint, evset);
 
         TS_ASSERT_THROWS_NOTHING(inf.makeInference())
 
@@ -382,8 +379,8 @@ namespace gum_tests {
     // ============================================================================
     // ============================================================================
     GUM_ACTIVE_TEST(_prior_with_targets_hard_evidence_values_changed) {
-      gum::BayesNet< double >  bn;
-      gum::Tensor< double > joint;
+      gum::BayesNet< double > bn;
+      gum::Tensor< double >   joint;
       defineVariables(bn, joint);
 
       gum::ShaferShenoyInference< double > inf(&bn);
@@ -401,7 +398,7 @@ namespace gum_tests {
 
       {
         TestTensorSet evset{&ev0, &ev1, &ev7};
-        auto             posterior = posterior_joint(joint, evset);
+        auto          posterior = posterior_joint(joint, evset);
 
         TS_ASSERT_THROWS_NOTHING(inf.makeInference())
 
@@ -421,7 +418,7 @@ namespace gum_tests {
 
       {
         TestTensorSet evset{&evp0, &ev1, &evp7};
-        auto             posterior = posterior_joint(joint, evset);
+        auto          posterior = posterior_joint(joint, evset);
 
         TS_ASSERT_THROWS_NOTHING(inf.makeInference())
 
@@ -438,7 +435,7 @@ namespace gum_tests {
       inf.chgEvidence(evpp0);
       {
         TestTensorSet evset{&evpp0, &ev1, &evp7};
-        auto             posterior = posterior_joint(joint, evset);
+        auto          posterior = posterior_joint(joint, evset);
 
         TS_ASSERT_THROWS_NOTHING(inf.makeInference())
 
@@ -455,7 +452,7 @@ namespace gum_tests {
       inf.chgEvidence(evp7);
       {
         TestTensorSet evset{&ev0, &ev1, &evp7};
-        auto             posterior = posterior_joint(joint, evset);
+        auto          posterior = posterior_joint(joint, evset);
 
         TS_ASSERT_THROWS_NOTHING(inf.makeInference())
 
@@ -470,7 +467,7 @@ namespace gum_tests {
       inf.eraseEvidence(0);
       {
         TestTensorSet evset{&ev1, &evp7};
-        auto             posterior = posterior_joint(joint, evset);
+        auto          posterior = posterior_joint(joint, evset);
 
         TS_ASSERT_THROWS_NOTHING(inf.makeInference())
 
@@ -489,7 +486,7 @@ namespace gum_tests {
 
       {
         TestTensorSet evset{&ev1, &evp7};
-        auto             posterior = posterior_joint(joint, evset);
+        auto          posterior = posterior_joint(joint, evset);
 
         TS_ASSERT_THROWS_NOTHING(inf.makeInference())
 
@@ -505,8 +502,8 @@ namespace gum_tests {
     // ============================================================================
     // ============================================================================
     GUM_ACTIVE_TEST(_prior_with_targets_evidence_changed) {
-      gum::BayesNet< double >  bn;
-      gum::Tensor< double > joint;
+      gum::BayesNet< double > bn;
+      gum::Tensor< double >   joint;
       defineVariables(bn, joint);
 
       gum::ShaferShenoyInference< double > inf(&bn);
@@ -523,7 +520,7 @@ namespace gum_tests {
 
       {
         TestTensorSet evset{&ev0, &ev1, &ev7};
-        auto             posterior = posterior_joint(joint, evset);
+        auto          posterior = posterior_joint(joint, evset);
 
         TS_ASSERT_THROWS_NOTHING(inf.makeInference())
 
@@ -543,7 +540,7 @@ namespace gum_tests {
       inf.chgEvidence(evp7);
       {
         TestTensorSet evset{&ev1, &ev4, &evp7};
-        auto             posterior = posterior_joint(joint, evset);
+        auto          posterior = posterior_joint(joint, evset);
 
         TS_ASSERT_THROWS_NOTHING(inf.makeInference())
 
@@ -564,7 +561,7 @@ namespace gum_tests {
 
       {
         TestTensorSet evset{&evp0, &ev1, &evpp4, &evpp7};
-        auto             posterior = posterior_joint(joint, evset);
+        auto          posterior = posterior_joint(joint, evset);
 
         TS_ASSERT_THROWS_NOTHING(inf.makeInference())
         // get the marginals of A, D
@@ -577,8 +574,8 @@ namespace gum_tests {
     }
 
     GUM_ACTIVE_TEST(_implicit_joint_target) {
-      gum::BayesNet< double >  bn;
-      gum::Tensor< double > joint;
+      gum::BayesNet< double > bn;
+      gum::Tensor< double >   joint;
       defineVariables(bn, joint);
 
       gum::ShaferShenoyInference< double > inf(&bn);
@@ -593,10 +590,9 @@ namespace gum_tests {
       TS_ASSERT_THROWS(inf.jointPosterior(gum::NodeSet{bn.idFromName("F"), bn.idFromName("H")}),
                        gum::UndefinedElement&)
 
-      TS_GUM_TENSOR_DELTA(
-          inf.jointPosterior(gum::NodeSet{bn.idFromName("D"), bn.idFromName("C")}),
-          joint.sumIn({&bn.variable("D"), &bn.variable("C")}).normalize(),
-          TS_GUM_SMALL_ERROR)
+      TS_GUM_TENSOR_DELTA(inf.jointPosterior(gum::NodeSet{bn.idFromName("D"), bn.idFromName("C")}),
+                          joint.sumIn({&bn.variable("D"), &bn.variable("C")}).normalize(),
+                          TS_GUM_SMALL_ERROR)
     }
   };
 }   // namespace gum_tests

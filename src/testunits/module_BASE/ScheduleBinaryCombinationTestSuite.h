@@ -35,9 +35,6 @@
  ****************************************************************************/
 
 
-
-
-
 #include <sstream>
 
 #include <gumtest/AgrumTestSuite.h>
@@ -91,7 +88,7 @@ namespace gum_tests {
       const gum::ScheduleMultiDim< gum::Tensor< double > >& result1 = comb1.result();
       TS_ASSERT(result1.isAbstract());
 
-      const auto&                                              comb1const   = comb1;
+      const auto&                                           comb1const   = comb1;
       const gum::ScheduleMultiDim< gum::Tensor< double > >& result1const = comb1const.result();
       TS_ASSERT(result1const.isAbstract());
       TS_ASSERT(!comb1const.implyDeletion());
@@ -109,7 +106,7 @@ namespace gum_tests {
       gum::ScheduleBinaryCombination< gum::Tensor< double >,
                                       gum::Tensor< double >,
                                       gum::Tensor< double > >
-                                                               comb2(result1, f3, myadd);
+                                                            comb2(result1, f3, myadd);
       const gum::ScheduleMultiDim< gum::Tensor< double > >& result2 = comb2.result();
 
       TS_ASSERT(!comb2.implyDeletion());
@@ -284,7 +281,7 @@ namespace gum_tests {
       gum::ScheduleBinaryCombination< gum::Tensor< double >,
                                       gum::Tensor< double >,
                                       gum::Tensor< double > >
-                                                               comb1(f1, f2, myadd);
+                                                            comb1(f1, f2, myadd);
       const gum::ScheduleMultiDim< gum::Tensor< double > >& result1 = comb1.result();
       TS_ASSERT(result1.isAbstract())
 
@@ -349,12 +346,12 @@ namespace gum_tests {
 
     private:
     static gum::Tensor< double > myadd(const gum::Tensor< double >& f1,
-                                          const gum::Tensor< double >& f2) {
+                                       const gum::Tensor< double >& f2) {
       return f1 + f2;
     }
 
     static gum::Tensor< double > mymult(const gum::Tensor< double >& f1,
-                                           const gum::Tensor< double >& f2) {
+                                        const gum::Tensor< double >& f2) {
       return f1 * f2;
     }
   };

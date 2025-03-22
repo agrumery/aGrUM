@@ -35,8 +35,6 @@
  ****************************************************************************/
 
 
-
-
 #include <iostream>
 
 #include <gumtest/AgrumTestSuite.h>

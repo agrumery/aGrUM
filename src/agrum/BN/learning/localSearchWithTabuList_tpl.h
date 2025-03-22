@@ -35,9 +35,6 @@
  ****************************************************************************/
 
 
-
-
-
 /** @file
  * @brief The local search with tabu list learning algorithm (for directed
  *graphs)

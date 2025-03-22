@@ -35,9 +35,6 @@
  ****************************************************************************/
 
 
-
-
-
 /** @file
  * @brief The Prim algorithm for computing min cost spanning trees or forests
  *

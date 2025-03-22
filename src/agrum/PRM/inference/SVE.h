@@ -35,9 +35,6 @@
  ****************************************************************************/
 
 
-
-
-
 /**
  * @file
  * @brief Headers of SVE (Structured Variable Elimination).
@@ -201,7 +198,7 @@ namespace gum {
       std::vector< NodeId >& _getElimOrder_(const PRMClass< GUM_SCALAR >& c);
 
       Tensor< GUM_SCALAR >* _getAggTensor_(const PRMInstance< GUM_SCALAR >*  i,
-                                                 const PRMAggregate< GUM_SCALAR >* agg);
+                                           const PRMAggregate< GUM_SCALAR >* agg);
 
       void        _initLiftedNodes_(const PRMClass< GUM_SCALAR >& c);
       std::string _trim_(const std::string& s);

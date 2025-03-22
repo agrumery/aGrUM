@@ -35,9 +35,6 @@
  ****************************************************************************/
 
 
-
-
-
 /**
  * @file Template Implementations of the IMDDI datastructure learner
  * @brief

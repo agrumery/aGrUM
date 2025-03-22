@@ -35,9 +35,6 @@
  ****************************************************************************/
 
 
-
-
-
 /** @file
  * @brief A basic pack of learning algorithms that can easily be used
  *

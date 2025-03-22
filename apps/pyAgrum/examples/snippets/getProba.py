@@ -23,7 +23,7 @@
 How to access the parameters of a BN
 """
 
-import pyAgrum as gum
+import pyagrum as gum
 
 bn=gum.BayesNet()
 bn.loadBIF("../resources/bn.bif")

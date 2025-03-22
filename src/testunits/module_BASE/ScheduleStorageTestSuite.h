@@ -35,9 +35,6 @@
  ****************************************************************************/
 
 
-
-
-
 #include <sstream>
 
 #include <gumtest/AgrumTestSuite.h>
@@ -192,13 +189,13 @@ namespace gum_tests {
 
       store2bis.updateArgs({&f4});
       gum::ScheduleStorage< gum::Tensor< double >*, gum::Set > store3bis = store2bis;
-      store3bis                                                             = store2ter;
+      store3bis                                                          = store2ter;
       TS_ASSERT(store3bis.implyDeletion())
       TS_ASSERT_EQUALS(store3bis, store2ter)
       TS_ASSERT(store3bis != store2bis)
 
       gum::ScheduleStorage< gum::Tensor< double >*, gum::Set > store6 = store2bis;
-      store3bis                                                          = std::move(store2bis);
+      store3bis                                                       = std::move(store2bis);
       TS_ASSERT_EQUALS(store6, store3bis)
 
       gum::ScheduleStorage< gum::Tensor< double >*, gum::Set >* store7 = store6.clone();
@@ -227,7 +224,7 @@ namespace gum_tests {
 
     private:
     static gum::Tensor< double > myProjectMax(const gum::Tensor< double >& pot,
-                                                 const gum::VariableSet&         del_vars) {
+                                              const gum::VariableSet&      del_vars) {
       return gum::Tensor< double >(gum::projectMax(*(pot.content()), del_vars));
     }
   };

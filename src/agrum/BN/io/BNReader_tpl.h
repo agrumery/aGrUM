@@ -35,9 +35,6 @@
  ****************************************************************************/
 
 
-
-
-
 /** @file
  * @brief Templates implementation of bns/io/gumBNReader.h classes.
  *

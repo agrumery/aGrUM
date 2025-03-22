@@ -35,9 +35,6 @@
  ****************************************************************************/
 
 
-
-
-
 /** @file
  * @brief A class that, given a structure and a parameter estimator returns a
  * full Bayes net

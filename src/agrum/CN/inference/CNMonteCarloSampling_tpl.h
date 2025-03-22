@@ -35,9 +35,6 @@
  ****************************************************************************/
 
 
-
-
-
 #include <agrum/base/core/exceptions.h>
 #include <agrum/CN/inference/CNMonteCarloSampling.h>
 
@@ -135,8 +132,8 @@ namespace gum::credal {
 
       for (auto node: tDag) {
         const Tensor< GUM_SCALAR >& tensor(this->l_inferenceEngine_[tId]->posterior(node));
-        Instantiation                  ins(tensor);
-        std::vector< GUM_SCALAR >      vertex;
+        Instantiation               ins(tensor);
+        std::vector< GUM_SCALAR >   vertex;
 
         for (ins.setFirst(); !ins.end(); ++ins) {
           vertex.push_back(tensor[ins]);
@@ -246,7 +243,7 @@ namespace gum::credal {
       const auto& t1 = _infEs_::l_clusters_[this_thread][1];
 
       for (const auto& elt: t0) {
-        auto                     dSize = working_bn->variable(elt.first).domainSize();
+        auto                  dSize = working_bn->variable(elt.first).domainSize();
         Tensor< GUM_SCALAR >* tensor(
             const_cast< Tensor< GUM_SCALAR >* >(&working_bn->cpt(elt.first)));
         std::vector< GUM_SCALAR > var_cpt(tensor->domainSize());
@@ -277,7 +274,7 @@ namespace gum::credal {
       }
 
       for (const auto& elt: t1) {
-        auto                     dSize = working_bn->variable(elt.first).domainSize();
+        auto                  dSize = working_bn->variable(elt.first).domainSize();
         Tensor< GUM_SCALAR >* tensor(
             const_cast< Tensor< GUM_SCALAR >* >(&working_bn->cpt(elt.first)));
         std::vector< GUM_SCALAR > var_cpt(tensor->domainSize());
@@ -308,9 +305,8 @@ namespace gum::credal {
       if (_infEs_::storeBNOpt_) { this->l_optimalNet_[this_thread]->setCurrentSample(sample); }
     } else {
       for (auto node: working_bn->nodes()) {
-        auto                     dSize = working_bn->variable(node).domainSize();
-        Tensor< GUM_SCALAR >* tensor(
-            const_cast< Tensor< GUM_SCALAR >* >(&working_bn->cpt(node)));
+        auto                  dSize = working_bn->variable(node).domainSize();
+        Tensor< GUM_SCALAR >* tensor(const_cast< Tensor< GUM_SCALAR >* >(&working_bn->cpt(node)));
         std::vector< GUM_SCALAR > var_cpt(tensor->domainSize());
 
         auto pConfs = (*cpt)[node].size();

@@ -35,9 +35,6 @@
  ****************************************************************************/
 
 
-
-
-
 #include <sstream>
 
 #include <gumtest/AgrumTestSuite.h>
@@ -194,7 +191,7 @@ namespace gum_tests {
 
     private:
     static gum::Tensor< double > myProjectMax(const gum::Tensor< double >& pot,
-                                                 const gum::VariableSet&         del_vars) {
+                                              const gum::VariableSet&      del_vars) {
       return gum::Tensor< double >(gum::projectMax(*(pot.content()), del_vars));
     }
   };

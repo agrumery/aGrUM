@@ -35,9 +35,6 @@
  ****************************************************************************/
 
 
-
-
-
 // this file should be included at the end of the StructuralConstraints inline
 // files (see StructuralConstraintUndiGraph to see how it should be included).
 // This concerns only StructuralConstraints that do not derive from other

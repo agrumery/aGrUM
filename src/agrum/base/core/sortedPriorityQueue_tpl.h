@@ -35,9 +35,6 @@
  ****************************************************************************/
 
 
-
-
-
 #include <agrum/base/core/sortedPriorityQueue.h>
 
 #ifndef DOXYGEN_SHOULD_SKIP_THIS

@@ -35,9 +35,6 @@
  ****************************************************************************/
 
 
-
-
-
 /**
  * @file
  * @brief Utilities for manipulating strings.
@@ -45,15 +42,15 @@
  * @author Pierre-Henri WUILLEMIN(_at_LIP6) & Christophe GONZALES(_at_AMU)
  *
  */
+#include <chrono>
+#include <filesystem>
+#include <iostream>
 #include <iterator>
 #include <regex>
-#include <iostream>
-#include <filesystem>
 #include <string>
-#include <chrono>
 
-#include <agrum/base/core/utils_string.h>
 #include <agrum/base/core/utils_random.h>
+#include <agrum/base/core/utils_string.h>
 
 namespace gum {
 
@@ -65,11 +62,13 @@ namespace gum {
 
     // Generate a unique file name using a timestamp and a random number
     auto now = std::chrono::system_clock::now();
-    auto timestamp = std::chrono::duration_cast<std::chrono::milliseconds>(now.time_since_epoch()).count();
+    auto timestamp
+        = std::chrono::duration_cast< std::chrono::milliseconds >(now.time_since_epoch()).count();
 
     auto dis = gum::randomValue(1000);
 
-    std::string filename = "tempfile_" + std::to_string(timestamp) + "_" + std::to_string(dis) + ".tmp";
+    std::string filename
+        = "tempfile_" + std::to_string(timestamp) + "_" + std::to_string(dis) + ".tmp";
 
     // Combine the directory path and the file name
     std::filesystem::path temp_file_path = temp_dir / filename;

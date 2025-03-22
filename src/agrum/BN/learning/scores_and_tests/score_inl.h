@@ -35,9 +35,6 @@
  ****************************************************************************/
 
 
-
-
-
 /** @file
  * @brief the base class for all the scores used for learning (BIC, BDeu, etc)
  *

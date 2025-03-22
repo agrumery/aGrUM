@@ -35,9 +35,6 @@
  ****************************************************************************/
 
 
-
-
-
 #include <gumtest/AgrumTestSuite.h>
 #include <gumtest/utils.h>
 
@@ -95,7 +92,7 @@ namespace gum_tests {
       TS_GUM_ASSERT_THROWS_NOTHING(g_ve->setBNInference(ve))
       const gum::prm::PRMInstance< double >&  instance  = prm->getSystem("aSys").get("c1");
       const gum::prm::PRMAttribute< double >& attribute = instance.get("can_print");
-      gum::Tensor< double >                e;
+      gum::Tensor< double >                   e;
       e.add(attribute.type().variable());
       e.fill((double)0.0);
       gum::Instantiation inst(e);
@@ -123,7 +120,7 @@ namespace gum_tests {
         const gum::prm::PRMInstance< double >&  instance  = small->getSystem("microSys").get("c");
         const gum::prm::PRMAttribute< double >& attribute = instance.get("can_print");
         gum::prm::PRMInference< double >::Chain chain     = std::make_pair(&instance, &attribute);
-        gum::Tensor< double >                m;
+        gum::Tensor< double >                   m;
         TS_GUM_ASSERT_THROWS_NOTHING(g_ve->posterior(chain, m))
         gum::Instantiation i(m);
         i.setFirst();
@@ -135,7 +132,7 @@ namespace gum_tests {
         const gum::prm::PRMInstance< double >&  instance  = small->getSystem("microSys").get("p");
         const gum::prm::PRMAttribute< double >& attribute = instance.get("equipState");
         gum::prm::PRMInference< double >::Chain chain     = std::make_pair(&instance, &attribute);
-        gum::Tensor< double >                m;
+        gum::Tensor< double >                   m;
         TS_GUM_ASSERT_THROWS_NOTHING(g_ve->posterior(chain, m))
         gum::Instantiation i(m);
         i.setFirst();
@@ -147,7 +144,7 @@ namespace gum_tests {
         const gum::prm::PRMInstance< double >&  instance  = small->getSystem("microSys").get("pow");
         const gum::prm::PRMAttribute< double >& attribute = instance.get("powState");
         gum::prm::PRMInference< double >::Chain chain     = std::make_pair(&instance, &attribute);
-        gum::Tensor< double >                m;
+        gum::Tensor< double >                   m;
         TS_GUM_ASSERT_THROWS_NOTHING(g_ve->posterior(chain, m))
         gum::Instantiation i(m);
         i.setFirst();
@@ -189,7 +186,7 @@ namespace gum_tests {
         const gum::prm::PRMInstance< double >&  instance  = small->getSystem("microSys").get("p");
         const gum::prm::PRMAttribute< double >& attribute = instance.get("equipState");
         gum::prm::PRMInference< double >::Chain chain     = std::make_pair(&instance, &attribute);
-        gum::Tensor< double >                m;
+        gum::Tensor< double >                   m;
         TS_GUM_ASSERT_THROWS_NOTHING(sve->posterior(chain, m))
         gum::Instantiation i(m);
         i.setFirst();
@@ -201,7 +198,7 @@ namespace gum_tests {
         const gum::prm::PRMInstance< double >&  instance  = small->getSystem("microSys").get("pow");
         const gum::prm::PRMAttribute< double >& attribute = instance.get("powState");
         gum::prm::PRMInference< double >::Chain chain     = std::make_pair(&instance, &attribute);
-        gum::Tensor< double >                m;
+        gum::Tensor< double >                   m;
         TS_GUM_ASSERT_THROWS_NOTHING(sve->posterior(chain, m))
         gum::Instantiation i(m);
         i.setFirst();
@@ -220,7 +217,7 @@ namespace gum_tests {
         const gum::prm::PRMInstance< double >&  instance  = small->getSystem("microSys").get("c");
         const gum::prm::PRMAttribute< double >& attribute = instance.get("can_print");
         gum::prm::PRMInference< double >::Chain chain     = std::make_pair(&instance, &attribute);
-        gum::Tensor< double >                m;
+        gum::Tensor< double >                   m;
         TS_GUM_ASSERT_THROWS_NOTHING(sved->posterior(chain, m))
         gum::Instantiation i(m);
         i.setFirst();
@@ -232,7 +229,7 @@ namespace gum_tests {
         const gum::prm::PRMInstance< double >&  instance  = small->getSystem("microSys").get("p");
         const gum::prm::PRMAttribute< double >& attribute = instance.get("equipState");
         gum::prm::PRMInference< double >::Chain chain     = std::make_pair(&instance, &attribute);
-        gum::Tensor< double >                m;
+        gum::Tensor< double >                   m;
         TS_GUM_ASSERT_THROWS_NOTHING(sved->posterior(chain, m))
         gum::Instantiation i(m);
         i.setFirst();
@@ -244,7 +241,7 @@ namespace gum_tests {
         const gum::prm::PRMInstance< double >&  instance  = small->getSystem("microSys").get("pow");
         const gum::prm::PRMAttribute< double >& attribute = instance.get("powState");
         gum::prm::PRMInference< double >::Chain chain     = std::make_pair(&instance, &attribute);
-        gum::Tensor< double >                m;
+        gum::Tensor< double >                   m;
         TS_GUM_ASSERT_THROWS_NOTHING(sved->posterior(chain, m))
         gum::Instantiation i(m);
         i.setFirst();
@@ -263,7 +260,7 @@ namespace gum_tests {
         const gum::prm::PRMInstance< double >&  instance  = small->getSystem("microSys").get("c");
         const gum::prm::PRMAttribute< double >& attribute = instance.get("can_print");
         gum::prm::PRMInference< double >::Chain chain     = std::make_pair(&instance, &attribute);
-        gum::Tensor< double >                m;
+        gum::Tensor< double >                   m;
         TS_GUM_ASSERT_THROWS_NOTHING(inf->posterior(chain, m))
         gum::Instantiation i(m);
         i.setFirst();
@@ -275,7 +272,7 @@ namespace gum_tests {
         const gum::prm::PRMInstance< double >&  instance  = small->getSystem("microSys").get("p");
         const gum::prm::PRMAttribute< double >& attribute = instance.get("equipState");
         gum::prm::PRMInference< double >::Chain chain     = std::make_pair(&instance, &attribute);
-        gum::Tensor< double >                m;
+        gum::Tensor< double >                   m;
         TS_GUM_ASSERT_THROWS_NOTHING(inf->posterior(chain, m))
         gum::Instantiation i(m);
         i.setFirst();
@@ -287,7 +284,7 @@ namespace gum_tests {
         const gum::prm::PRMInstance< double >&  instance  = small->getSystem("microSys").get("pow");
         const gum::prm::PRMAttribute< double >& attribute = instance.get("powState");
         gum::prm::PRMInference< double >::Chain chain     = std::make_pair(&instance, &attribute);
-        gum::Tensor< double >                m;
+        gum::Tensor< double >                   m;
         TS_GUM_ASSERT_THROWS_NOTHING(inf->posterior(chain, m))
         gum::Instantiation i(m);
         i.setFirst();
@@ -394,7 +391,7 @@ namespace gum_tests {
         const gum::prm::PRMInstance< double >& instance
             = prm->getSystem("aSys").get("bw_printers[0]");
         const gum::prm::PRMAttribute< double >& attribute = instance.get("(t_degraded)equipState");
-        gum::Tensor< double >                e;
+        gum::Tensor< double >                   e;
         e.add(attribute.type().variable());
         e.fill((double)0.0);
         gum::Instantiation inst(e);
@@ -408,7 +405,7 @@ namespace gum_tests {
       {
         const gum::prm::PRMInstance< double >&  instance  = prm->getSystem("aSys").get("c1");
         const gum::prm::PRMAttribute< double >& attribute = instance.get("can_print");
-        gum::Tensor< double >                e;
+        gum::Tensor< double >                   e;
         e.add(attribute.type().variable());
         e.fill((double)0.0);
         gum::Instantiation inst(e);
@@ -424,7 +421,7 @@ namespace gum_tests {
         const gum::prm::PRMInstance< double >&  q_i     = prm->getSystem("aSys").get("pow");
         const gum::prm::PRMAttribute< double >& q_a     = q_i.get("state");
         gum::prm::PRMInference< double >::Chain q_chain = std::make_pair(&q_i, &q_a);
-        gum::Tensor< double >                m;
+        gum::Tensor< double >                   m;
         g_ve->posterior(q_chain, m);
         gum::Instantiation inst(m);
         inst.setFirst();
@@ -451,7 +448,7 @@ namespace gum_tests {
         const gum::prm::PRMInstance< double >&  q_i     = prm->getSystem("aSys").get("pow");
         const gum::prm::PRMAttribute< double >& q_a     = q_i.get("state");
         gum::prm::PRMInference< double >::Chain q_chain = std::make_pair(&q_i, &q_a);
-        gum::Tensor< double >                m;
+        gum::Tensor< double >                   m;
         g_ve->posterior(q_chain, m);
         gum::Instantiation inst(m);
         inst.setFirst();
@@ -471,7 +468,7 @@ namespace gum_tests {
         const gum::prm::PRMInstance< double >& instance
             = prm->getSystem("aSys").get("bw_printers[0]");
         const gum::prm::PRMAttribute< double >& attribute = instance.get("(t_degraded)equipState");
-        gum::Tensor< double >                e;
+        gum::Tensor< double >                   e;
         e.add(attribute.type().variable());
         e.fill((double)0.0);
         gum::Instantiation inst(e);
@@ -485,7 +482,7 @@ namespace gum_tests {
       {
         const gum::prm::PRMInstance< double >&  instance  = prm->getSystem("aSys").get("c1");
         const gum::prm::PRMAttribute< double >& attribute = instance.get("can_print");
-        gum::Tensor< double >                e;
+        gum::Tensor< double >                   e;
         e.add(attribute.type().variable());
         e.fill((double)0.0);
         gum::Instantiation inst(e);
@@ -501,7 +498,7 @@ namespace gum_tests {
         const gum::prm::PRMInstance< double >&  q_i     = prm->getSystem("aSys").get("pow");
         const gum::prm::PRMAttribute< double >& q_a     = q_i.get("state");
         gum::prm::PRMInference< double >::Chain q_chain = std::make_pair(&q_i, &q_a);
-        gum::Tensor< double >                m;
+        gum::Tensor< double >                   m;
         g_ve->posterior(q_chain, m);
         TS_ASSERT_EQUALS(m.nbrDim(), (gum::Size)1)
         gum::Instantiation inst(m);
@@ -529,7 +526,7 @@ namespace gum_tests {
         const gum::prm::PRMInstance< double >&  q_i     = prm->getSystem("aSys").get("pow");
         const gum::prm::PRMAttribute< double >& q_a     = q_i.get("state");
         gum::prm::PRMInference< double >::Chain q_chain = std::make_pair(&q_i, &q_a);
-        gum::Tensor< double >                m;
+        gum::Tensor< double >                   m;
         g_ve->posterior(q_chain, m);
         gum::Instantiation inst(m);
         inst.setFirst();
@@ -565,7 +562,7 @@ namespace gum_tests {
         const gum::prm::PRMInstance< double >& instance
             = prm->getSystem("aSys").get("bw_printers[0]");
         const gum::prm::PRMAttribute< double >& attribute = instance.get("(t_degraded)equipState");
-        gum::Tensor< double >                e;
+        gum::Tensor< double >                   e;
         e.add(attribute.type().variable());
         e.fill((double)0.0);
         gum::Instantiation inst(e);
@@ -579,7 +576,7 @@ namespace gum_tests {
       {
         const gum::prm::PRMInstance< double >&  instance  = prm->getSystem("aSys").get("c1");
         const gum::prm::PRMAttribute< double >& attribute = instance.get("can_print");
-        gum::Tensor< double >                e;
+        gum::Tensor< double >                   e;
         e.add(attribute.type().variable());
         e.fill((double)0.0);
         gum::Instantiation inst(e);
@@ -595,7 +592,7 @@ namespace gum_tests {
         const gum::prm::PRMInstance< double >&  q_i     = prm->getSystem("aSys").get("pow");
         const gum::prm::PRMAttribute< double >& q_a     = q_i.get("state");
         gum::prm::PRMInference< double >::Chain q_chain = std::make_pair(&q_i, &q_a);
-        gum::Tensor< double >                m;
+        gum::Tensor< double >                   m;
         TS_GUM_ASSERT_THROWS_NOTHING(g_ve->posterior(q_chain, m))
         gum::Instantiation inst(m);
         inst.setFirst();
@@ -622,7 +619,7 @@ namespace gum_tests {
         const gum::prm::PRMInstance< double >&  q_i     = prm->getSystem("aSys").get("pow");
         const gum::prm::PRMAttribute< double >& q_a     = q_i.get("state");
         gum::prm::PRMInference< double >::Chain q_chain = std::make_pair(&q_i, &q_a);
-        gum::Tensor< double >                m;
+        gum::Tensor< double >                   m;
         g_ve->posterior(q_chain, m);
         gum::Instantiation inst(m);
         inst.setFirst();

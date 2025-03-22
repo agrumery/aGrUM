@@ -35,9 +35,6 @@
  ****************************************************************************/
 
 
-
-
-
 #include <gumtest/AgrumTestSuite.h>
 
 #include <agrum/BN/algorithms/BayesBall.h>

@@ -35,9 +35,6 @@
  ****************************************************************************/
 
 
-
-
-
 /** @file
  * @brief the class for estimating parameters of CPTs using Maximum Likelihood
  *

@@ -35,9 +35,6 @@
  ****************************************************************************/
 
 
-
-
-
 /** @file
  * @brief the class for computing the log2 of the parametric complexity of
  * an r-ary multinomial variable

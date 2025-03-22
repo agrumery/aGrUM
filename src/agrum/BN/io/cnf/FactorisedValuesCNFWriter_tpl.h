@@ -35,9 +35,6 @@
  ****************************************************************************/
 
 
-
-
-
 #ifndef DOXYGEN_SHOULD_SKIP_THIS
 
 // to ease parsing in IDE
@@ -125,7 +122,7 @@ namespace gum {
       clause++;
       clausstr << str0.str();
       const Tensor< GUM_SCALAR >& cpt = bn.cpt(node);
-      Instantiation                  inst(cpt);
+      Instantiation               inst(cpt);
 
       for (inst.setFirst(); !inst.end(); ++inst) {
         if (this->fromExact(cpt[inst]) != 1.0) {
@@ -228,7 +225,7 @@ namespace gum {
       clause++;
       clausstr << str0.str();
       const Tensor< GUM_SCALAR >& cpt = bn.cpt(node);
-      Instantiation                  inst(cpt);
+      Instantiation               inst(cpt);
 
       for (inst.setFirst(); !inst.end(); ++inst) {
         if (this->fromExact(cpt[inst]) != 1.0) {

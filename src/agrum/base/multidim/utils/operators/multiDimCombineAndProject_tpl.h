@@ -35,9 +35,6 @@
  ****************************************************************************/
 
 
-
-
-
 /** @file
  * @brief A generic interface to combine and project efficiently MultiDim tables
  *

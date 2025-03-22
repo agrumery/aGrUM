@@ -35,9 +35,6 @@
  ****************************************************************************/
 
 
-
-
-
 /** @file
  * @brief The class for initializing DatabaseTables and RawDatabaseTables
  * from CSV files

@@ -35,9 +35,6 @@
  ****************************************************************************/
 
 
-
-
-
 /**
  * @file
  * @brief the type of algorithm to use to perform relevant reasoning in
@@ -60,10 +57,10 @@ namespace gum {
    * the computations.
    */
   enum class RelevantTensorsFinderType {
-    FIND_ALL,                    // do not perform d-separation analysis
-    DSEP_BAYESBALL_NODES,        // BayesBall requisite nodes -> tensors
-    DSEP_BAYESBALL_TENSORS,   // BayesBall requisite tensors (directly)
-    DSEP_KOLLER_FRIEDMAN_2009    // Koller & Friedman 2009 requisite tensors
+    FIND_ALL,                   // do not perform d-separation analysis
+    DSEP_BAYESBALL_NODES,       // BayesBall requisite nodes -> tensors
+    DSEP_BAYESBALL_TENSORS,     // BayesBall requisite tensors (directly)
+    DSEP_KOLLER_FRIEDMAN_2009   // Koller & Friedman 2009 requisite tensors
   };
 
 }   // namespace gum

@@ -1,14 +1,14 @@
 variables:
   LINUX_64_IMAGE: "agrumery/manylinux_2_28_x86_64"
-  BUILD_DOC: "wrappers/pyAgrum/wheelhouse/build_doc.sh"
-  LINUX_BUILD: "wrappers/pyAgrum/wheelhouse/build_linux.sh"
-  LINUX_WHEELHOUSE: "wrappers/pyAgrum/wheelhouse/build_wheels_linux.sh"
-  LINUX_NIGHTLY_WHEELHOUSE: "wrappers/pyAgrum/wheelhouse/build_nightly_wheels_linux.sh"
-  OSX_BUILD: "wrappers/pyAgrum/wheelhouse/build_macos.sh"
-  OSX_ARM_BUILD: "wrappers/pyAgrum/wheelhouse/build_macos_arm.sh"
-  OSX_WHEELHOUSE: "wrappers/pyAgrum/wheelhouse/build_wheels_macos.sh"
-  WINDOWS_BUILD: "wrappers/pyAgrum/wheelhouse/build_windows.ps1"
-  WINDOWS_WHEELHOUSE: "wrappers/pyAgrum/wheelhouse/build_wheels_windows.ps1"
+  BUILD_DOC: "wrappers/pyagrum/wheelhouse/build_doc.sh"
+  LINUX_BUILD: "wrappers/pyagrum/wheelhouse/build_linux.sh"
+  LINUX_WHEELHOUSE: "wrappers/pyagrum/wheelhouse/build_wheels_linux.sh"
+  LINUX_NIGHTLY_WHEELHOUSE: "wrappers/pyagrum/wheelhouse/build_nightly_wheels_linux.sh"
+  OSX_BUILD: "wrappers/pyagrum/wheelhouse/build_macos.sh"
+  OSX_ARM_BUILD: "wrappers/pyagrum/wheelhouse/build_macos_arm.sh"
+  OSX_WHEELHOUSE: "wrappers/pyagrum/wheelhouse/build_wheels_macos.sh"
+  WINDOWS_BUILD: "wrappers/pyagrum/wheelhouse/build_windows.ps1"
+  WINDOWS_WHEELHOUSE: "wrappers/pyagrum/wheelhouse/build_wheels_windows.ps1"
 
 stages:
   - build
@@ -247,7 +247,7 @@ windows_agrum_2019:
   script:
     - *windows_build_script
 
-windows_agrum_2022:  
+windows_agrum_2022:
   <<: *windows_build_template
   variables:
     PATH: $PATH_MVSC22_GUMWIN
@@ -257,7 +257,7 @@ windows_agrum_2022:
   script:
     - *windows_build_script
 
-# windows_pyagrum_2022:  
+# windows_pyagrum_2022:
 #   <<: *windows_build_template
 #   variables:
 #     PATH: $PATH_MVSC22_GUMWIN
@@ -267,7 +267,7 @@ windows_agrum_2022:
 #   script:
 #     - *windows_build_script
 
-windows_pyagrum_2022:  
+windows_pyagrum_2022:
   <<: *windows_build_template
   variables:
     PATH: $PATH_MVSC22_GUMWIN
@@ -281,7 +281,7 @@ windows_pyagrum_2022:
 # Windows / MINGW
 ################################################################################
 
-# windows_pyagrum_mingw:  
+# windows_pyagrum_mingw:
 #   <<: *windows_build_template
 #   variables:
 #     PATH: $PATH_MINGW_GUMWIN
@@ -291,7 +291,7 @@ windows_pyagrum_2022:
 #   script:
 #     - *windows_build_script
 
-windows_pyagrum_mingw:  
+windows_pyagrum_mingw:
   <<: *windows_build_template
   variables:
     PATH: $PATH_MINGW_GUMWIN

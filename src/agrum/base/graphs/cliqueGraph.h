@@ -35,9 +35,6 @@
  ****************************************************************************/
 
 
-
-
-
 /** @file
  * @brief Basic class for all graphs of cliques (join trees, etc)
  *

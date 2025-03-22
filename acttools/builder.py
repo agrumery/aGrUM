@@ -244,7 +244,7 @@ def getForMakeSystem(current: dict[str, str], target: str) -> str:
   line += " -j " + nbrJobs
 
   if target == "pyAgrum":
-    line += " -C wrappers/pyAgrum"
+    line += " -C wrappers/pyagrum"
 
   return line
 
@@ -277,9 +277,9 @@ def getPost(current: dict[str, str], target: str) -> tuple[str, bool]:
 
       if cfg.os_platform == "win32":
         line = r'copy /Y "wrappers\pyAgrum\Release\_pyAgrum.pyd" "wrappers\pyAgrum\." & ' + \
-            cfg.python + " ..\\..\\..\\wrappers\\pyAgrum\\testunits\\" + gumTest
+            cfg.python + " ..\\..\\..\\wrappers\\pyagrum\\testunits\\" + gumTest
       else:
-        line = f"{cfg.python} ../../../wrappers/pyAgrum/testunits/{gumTest}"
+        line = f"{cfg.python} ../../../wrappers/pyagrum/testunits/{gumTest}"
       line += " " + current['mode']
       return line, True
   return "", False

@@ -35,9 +35,6 @@
  ****************************************************************************/
 
 
-
-
-
 /** @file
  * @brief Templates implementation of FMDP/io/FMDPReader.h classes.
  *

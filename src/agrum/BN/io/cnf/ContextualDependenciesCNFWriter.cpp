@@ -35,9 +35,6 @@
  ****************************************************************************/
 
 
-
-
-
 #include <agrum/BN/io/cnf/ContextualDependenciesCNFWriter.h>
 
 

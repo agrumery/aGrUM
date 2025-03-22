@@ -35,9 +35,6 @@
  ****************************************************************************/
 
 
-
-
-
 /** @file
  * @brief Base class for DBRowGenerator classes that use a BN for computing
  * their outputs

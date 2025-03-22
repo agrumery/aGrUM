@@ -35,9 +35,6 @@
  ****************************************************************************/
 
 
-
-
-
 /**
  * @file
  * @brief Headers of ClassDependencyGraph<GUM_SCALAR>.

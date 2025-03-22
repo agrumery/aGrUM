@@ -35,9 +35,6 @@
  ****************************************************************************/
 
 
-
-
-
 /** @file
  * @brief The implementation of raw tabular databases stored in memory (RAM)
  *

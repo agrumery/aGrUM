@@ -35,9 +35,6 @@
  ****************************************************************************/
 
 
-
-
-
 #include <cstdlib>
 #include <iostream>
 #include <sstream>
@@ -66,13 +63,13 @@ namespace gum_tests {
 
     // the function used to combine two tables
     static gum::Tensor< double > addTensor(const gum::Tensor< double >& t1,
-                                                 const gum::Tensor< double >& t2) {
+                                           const gum::Tensor< double >& t2) {
       return t1 + t2;
     }
 
     // the function used to combine two tables
     static gum::Tensor< double > multTensor(const gum::Tensor< double >& t1,
-                                                  const gum::Tensor< double >& t2) {
+                                            const gum::Tensor< double >& t2) {
       return t1 * t2;
     }
 
@@ -200,7 +197,7 @@ namespace gum_tests {
 
     GUM_ACTIVE_TEST(Constants) {
       gum::Tensor< double > t1, t2;
-      gum::Instantiation       inst1(t1), inst2(t2);
+      gum::Instantiation    inst1(t1), inst2(t2);
       t1.set(inst1, 3.0);
       t2.set(inst2, 4.0);
 

@@ -35,9 +35,6 @@
  ****************************************************************************/
 
 
-
-
-
 /** @file
  * @brief the structural constraint indicating that some arcs shall never be
  * removed or reversed

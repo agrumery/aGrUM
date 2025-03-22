@@ -35,9 +35,6 @@
  ****************************************************************************/
 
 
-
-
-
 #ifndef AGRUM_TEST_SUITE_H
 #define AGRUM_TEST_SUITE_H
 
@@ -60,7 +57,7 @@
 
 #define TS_GUM_TENSOR_DELTA(p1, p2, delta) TS_ASSERT_LESS_THAN(((p1) - (p2)).abs().max(), delta)
 
-#define TS_GUM_TENSOR_SHOW_DELTA(p1, p2, delta)        \
+#define TS_GUM_TENSOR_SHOW_DELTA(p1, p2, delta)           \
   {                                                       \
     GUM_TRACE_NEWLINE GUM_TRACE_VAR(p1)                   \
     GUM_TRACE_VAR(p2)                                     \

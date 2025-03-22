@@ -35,9 +35,6 @@
  ****************************************************************************/
 
 
-
-
-
 #include <agrum/CN/inference/inferenceEngine.h>
 #include <agrum/CN/inference/multipleInferenceEngine.h>
 

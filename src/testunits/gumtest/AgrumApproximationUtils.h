@@ -85,6 +85,3 @@ bool compareInference(const std::string&                       file,
  *   gitlab   : https://gitlab.com/agrumery/agrum                           *
  *                                                                          *
  ****************************************************************************/
-
-
-

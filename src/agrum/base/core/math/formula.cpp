@@ -35,9 +35,6 @@
  ****************************************************************************/
 
 
-
-
-
 #include <agrum/base/core/math/formula.h>
 
 // Keep this here because of cyclic dependencies

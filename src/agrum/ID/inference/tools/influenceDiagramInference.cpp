@@ -35,7 +35,4 @@
  ****************************************************************************/
 
 
-
-
-
 #include <agrum/ID/inference/tools/influenceDiagramInference.h>

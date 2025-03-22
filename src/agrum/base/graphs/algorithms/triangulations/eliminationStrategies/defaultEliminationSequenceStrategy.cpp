@@ -35,9 +35,6 @@
  ****************************************************************************/
 
 
-
-
-
 /** @file
  * @brief An efficient unconstrained elimination sequence algorithm
  *

@@ -35,9 +35,6 @@
  ****************************************************************************/
 
 
-
-
-
 /** @file
  * @brief the class for computing K2 scores (actually their log2 value)
  *

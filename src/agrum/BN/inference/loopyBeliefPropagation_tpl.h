@@ -35,9 +35,6 @@
  ****************************************************************************/
 
 
-
-
-
 /**
  * @file
  * @brief Implementation of Loopy Belief Propagation in Bayesian networks.
@@ -117,7 +114,7 @@ namespace gum {
 
   template < typename GUM_SCALAR >
   Tensor< GUM_SCALAR > LoopyBeliefPropagation< GUM_SCALAR >::_computeProdPi_(NodeId X,
-                                                                                NodeId except) {
+                                                                             NodeId except) {
     const auto& varX      = this->BN().variable(X);
     const auto& varExcept = this->BN().variable(except);
     auto        piXexcept = this->BN().cpt(X);
@@ -146,7 +143,7 @@ namespace gum {
 
   template < typename GUM_SCALAR >
   Tensor< GUM_SCALAR > LoopyBeliefPropagation< GUM_SCALAR >::_computeProdLambda_(NodeId X,
-                                                                                    NodeId except) {
+                                                                                 NodeId except) {
     Tensor< GUM_SCALAR > lamXexcept;
     if (this->hasEvidence(X)) {   //
       lamXexcept = *this->evidence()[X];
@@ -243,8 +240,7 @@ namespace gum {
 
   /// Returns the probability of the variable.
   template < typename GUM_SCALAR >
-  INLINE const Tensor< GUM_SCALAR >&
-               LoopyBeliefPropagation< GUM_SCALAR >::posterior_(NodeId id) {
+  INLINE const Tensor< GUM_SCALAR >& LoopyBeliefPropagation< GUM_SCALAR >::posterior_(NodeId id) {
     auto p = _computeProdPi_(id) * _computeProdLambda_(id);
     p.normalize();
     _posteriors_.set(id, p);

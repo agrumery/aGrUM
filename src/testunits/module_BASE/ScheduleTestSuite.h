@@ -35,9 +35,6 @@
  ****************************************************************************/
 
 
-
-
-
 #include <sstream>
 
 #include <gumtest/AgrumTestSuite.h>
@@ -88,25 +85,25 @@ namespace gum_tests {
       gum::ScheduleBinaryCombination< gum::Tensor< double >,
                                       gum::Tensor< double >,
                                       gum::Tensor< double > >
-                                                               comb1(f1, f2, myadd);
+                                                            comb1(f1, f2, myadd);
       const gum::ScheduleMultiDim< gum::Tensor< double > >& result1 = comb1.result();
 
       gum::ScheduleBinaryCombination< gum::Tensor< double >,
                                       gum::Tensor< double >,
                                       gum::Tensor< double > >
-                                                               comb2(f2, f3, myadd);
+                                                            comb2(f2, f3, myadd);
       const gum::ScheduleMultiDim< gum::Tensor< double > >& result2 = comb2.result();
 
       gum::ScheduleBinaryCombination< gum::Tensor< double >,
                                       gum::Tensor< double >,
                                       gum::Tensor< double > >
-                                                               comb3(result2, f4, myadd);
+                                                            comb3(result2, f4, myadd);
       const gum::ScheduleMultiDim< gum::Tensor< double > >& result3 = comb3.result();
 
       gum::ScheduleBinaryCombination< gum::Tensor< double >,
                                       gum::Tensor< double >,
                                       gum::Tensor< double > >
-                                                               comb4(result1, result3, myadd);
+                                                            comb4(result1, result3, myadd);
       const gum::ScheduleMultiDim< gum::Tensor< double > >& result4 = comb4.result();
 
       gum::ScheduleDeletion< gum::Tensor< double > > del1(result1);
@@ -200,8 +197,7 @@ namespace gum_tests {
       const auto& xxcomb4
           = dynamic_cast< const gum::ScheduleBinaryCombination< gum::Tensor< double >,
                                                                 gum::Tensor< double >,
-                                                                gum::Tensor< double > >& >(
-              xcomb4);
+                                                                gum::Tensor< double > >& >(xcomb4);
       const gum::ScheduleMultiDim< gum::Tensor< double > >&      xres4 = xxcomb4.result();
       std::vector< gum::Tensor< double > >                       vect4;
       gum::ScheduleStorage< gum::Tensor< double >, std::vector > store4(xres4, vect4);
@@ -295,9 +291,8 @@ namespace gum_tests {
       TS_ASSERT(available_operations.contains(gum::NodeId(2)))
 
       comb2.execute();
-      const auto& op2_res
-          = dynamic_cast< const gum::ScheduleMultiDim< gum::Tensor< double > >& >(
-              *op2.results()[0]);
+      const auto& op2_res = dynamic_cast< const gum::ScheduleMultiDim< gum::Tensor< double > >& >(
+          *op2.results()[0]);
       TS_ASSERT(result2.hasSameVariables(op2_res))
       TS_ASSERT(result2.hasSameContent(op2_res))
       TS_ASSERT(!op2_res.isAbstract())
@@ -319,9 +314,8 @@ namespace gum_tests {
                        const gum::UnavailableScheduleOperation&)
 
       comb1.execute();
-      const auto& op1_res
-          = dynamic_cast< const gum::ScheduleMultiDim< gum::Tensor< double > >& >(
-              *op1.results()[0]);
+      const auto& op1_res = dynamic_cast< const gum::ScheduleMultiDim< gum::Tensor< double > >& >(
+          *op1.results()[0]);
       TS_ASSERT(result1.hasSameVariables(op1_res))
       TS_ASSERT(result1.hasSameContent(op1_res))
 
@@ -337,9 +331,8 @@ namespace gum_tests {
       TS_ASSERT(available_operations.contains(gum::NodeId(6)))
 
       comb3.execute();
-      const auto& op3_res
-          = dynamic_cast< const gum::ScheduleMultiDim< gum::Tensor< double > >& >(
-              *op3.results()[0]);
+      const auto& op3_res = dynamic_cast< const gum::ScheduleMultiDim< gum::Tensor< double > >& >(
+          *op3.results()[0]);
       TS_ASSERT(result3.hasSameVariables(op3_res))
       TS_ASSERT(result3.hasSameContent(op3_res))
 
@@ -364,9 +357,8 @@ namespace gum_tests {
       TS_ASSERT(available_operations.contains(gum::NodeId(8)))
 
       comb4.execute();
-      const auto& op6_res
-          = dynamic_cast< const gum::ScheduleMultiDim< gum::Tensor< double > >& >(
-              *op6.results()[0]);
+      const auto& op6_res = dynamic_cast< const gum::ScheduleMultiDim< gum::Tensor< double > >& >(
+          *op6.results()[0]);
       TS_ASSERT(result4.hasSameVariables(op6_res))
       TS_ASSERT(result4.hasSameContent(op6_res))
       TS_ASSERT(!result4.isAbstract())
@@ -408,14 +400,14 @@ namespace gum_tests {
       gum::ScheduleBinaryCombination< gum::Tensor< double >,
                                       gum::Tensor< double >,
                                       gum::Tensor< double > >
-                                                               comb(f1, f2, myadd);
+                                                            comb(f1, f2, myadd);
       const gum::ScheduleMultiDim< gum::Tensor< double > >& result1 = comb.result();
 
       gum::ScheduleDeletion< gum::Tensor< double > > del(result1);
 
       gum::VariableSet del_vars;
       del_vars << vars[2] << vars[1];
-      gum::ScheduleProjection< gum::Tensor< double > > myproj(result1, del_vars, myProjectSum);
+      gum::ScheduleProjection< gum::Tensor< double > >      myproj(result1, del_vars, myProjectSum);
       const gum::ScheduleMultiDim< gum::Tensor< double > >& result2 = myproj.result();
 
       std::vector< gum::Tensor< double > >                       vect;
@@ -524,12 +516,12 @@ namespace gum_tests {
 
     private:
     static gum::Tensor< double > myadd(const gum::Tensor< double >& f1,
-                                          const gum::Tensor< double >& f2) {
+                                       const gum::Tensor< double >& f2) {
       return f1 + f2;
     }
 
     static gum::Tensor< double > myProjectSum(const gum::Tensor< double >& pot,
-                                                 const gum::VariableSet&         del_vars) {
+                                              const gum::VariableSet&      del_vars) {
       return gum::Tensor< double >(gum::projectSum(*(pot.content()), del_vars));
     }
   };

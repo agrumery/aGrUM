@@ -35,9 +35,6 @@
  ****************************************************************************/
 
 
-
-
-
 /**
  * @file
  * @brief Implementation of the Class encapsulating computations of notions from Information Theory

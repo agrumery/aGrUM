@@ -35,9 +35,6 @@
  ****************************************************************************/
 
 
-
-
-
 /** @file
  * @brief implementation of the base class for all elimination sequence
  *algorithms

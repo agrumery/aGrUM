@@ -35,9 +35,6 @@
  ****************************************************************************/
 
 
-
-
-
 #ifndef GUM_CLASSELEMENT_TEST_SUITE_H
 #define GUM_CLASSELEMENT_TEST_SUITE_H
 

@@ -35,9 +35,6 @@
  ****************************************************************************/
 
 
-
-
-
 /**
  * @file
  * @brief Methods of the MultiDimFunctionGraph InternalNode class.

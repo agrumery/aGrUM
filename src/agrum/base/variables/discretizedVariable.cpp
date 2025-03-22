@@ -35,7 +35,4 @@
  ****************************************************************************/
 
 
-
-
-
 #include <agrum/base/variables/discretizedVariable.h>

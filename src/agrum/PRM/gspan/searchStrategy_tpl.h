@@ -35,9 +35,6 @@
  ****************************************************************************/
 
 
-
-
-
 /**
  * @file
  * @brief Inline implementation of the SearchStrategy class.
@@ -80,7 +77,7 @@ namespace gum {
       template < typename GUM_SCALAR >
       void StrictSearch< GUM_SCALAR >::_buildPatternGraph_(
           typename StrictSearch< GUM_SCALAR >::PData&   data,
-          Set< Tensor< GUM_SCALAR >* >&              pool,
+          Set< Tensor< GUM_SCALAR >* >&                 pool,
           const Sequence< PRMInstance< GUM_SCALAR >* >& match) {
         for (const auto inst: match) {
           for (const auto& elt: *inst) {
@@ -157,16 +154,16 @@ namespace gum {
       template < typename GUM_SCALAR >
       std::pair< Size, Size > StrictSearch< GUM_SCALAR >::_elimination_cost_(
           typename StrictSearch< GUM_SCALAR >::PData& data,
-          Set< Tensor< GUM_SCALAR >* >&            pool) {
+          Set< Tensor< GUM_SCALAR >* >&               pool) {
         List< NodeSet > partial_order;
 
         if (data.inners.size()) partial_order.insert(data.inners);
 
         if (data.outputs.size()) partial_order.insert(data.outputs);
 
-        PartialOrderedTriangulation     t(&(data.graph), &(data.mod), &partial_order);
-        const std::vector< NodeId >&    elim_order = t.eliminationOrder();
-        Size                            max(0), max_count(1);
+        PartialOrderedTriangulation  t(&(data.graph), &(data.mod), &partial_order);
+        const std::vector< NodeId >& elim_order = t.eliminationOrder();
+        Size                         max(0), max_count(1);
         Set< Tensor< GUM_SCALAR >* > trash;
         Tensor< GUM_SCALAR >*        pot = 0;
 
@@ -386,7 +383,7 @@ namespace gum {
       template < typename GUM_SCALAR >
       INLINE void StrictSearch< GUM_SCALAR >::_compute_costs_(const Pattern* p) {
         typename StrictSearch< GUM_SCALAR >::PData data;
-        Set< Tensor< GUM_SCALAR >* >            pool;
+        Set< Tensor< GUM_SCALAR >* >               pool;
         _buildPatternGraph_(data, pool, *(this->tree_->data(*p).iso_map.begin().val()));
         double inner = std::log(_elimination_cost_(data, pool).first);
         double outer = this->computeCost_(*p);

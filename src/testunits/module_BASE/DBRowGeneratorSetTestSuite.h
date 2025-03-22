@@ -35,9 +35,6 @@
  ****************************************************************************/
 
 
-
-
-
 #include <iostream>
 
 #include <gumtest/AgrumTestSuite.h>
@@ -497,7 +494,7 @@ namespace gum_tests {
       genset.setColumnsOfInterest(cols_of_interest2);
       {
         gum::Tensor< double > proba = _infer_(bn, {std::size_t(1)}, input_row2);
-        gum::Instantiation       inst(proba);
+        gum::Instantiation    inst(proba);
 
         genset.setInputRow(input_row2);
         TS_ASSERT(genset.hasRows())
@@ -523,7 +520,7 @@ namespace gum_tests {
         TS_ASSERT_EQUALS(xcols[1], std::size_t(1))
 
         gum::Tensor< double > proba = _infer_(bn, {std::size_t(1)}, input_row3);
-        gum::Instantiation       inst(proba);
+        gum::Instantiation    inst(proba);
 
         genset.setInputRow(input_row3);
         TS_ASSERT(genset.hasRows())
@@ -549,7 +546,7 @@ namespace gum_tests {
         TS_ASSERT_EQUALS(xcols[1], std::size_t(1))
 
         gum::Tensor< double > proba = _infer_(bn, {std::size_t(1), std::size_t(0)}, input_row4);
-        gum::Instantiation       inst(proba);
+        gum::Instantiation    inst(proba);
 
         genset.setInputRow(input_row4);
         TS_ASSERT(genset.hasRows())
@@ -576,7 +573,7 @@ namespace gum_tests {
         TS_ASSERT_EQUALS(xcols[1], std::size_t(1))
 
         gum::Tensor< double > proba = _infer_(bn, {std::size_t(1), std::size_t(0)}, input_row5);
-        gum::Instantiation       inst(proba);
+        gum::Instantiation    inst(proba);
 
         genset.setInputRow(input_row5);
         TS_ASSERT(genset.hasRows())
@@ -598,7 +595,7 @@ namespace gum_tests {
 
       {
         gum::Tensor< double > proba = _infer_(bn, {std::size_t(1)}, input_row2);
-        gum::Instantiation       inst(proba);
+        gum::Instantiation    inst(proba);
 
         genset.setInputRow(input_row2);
         TS_ASSERT(genset.hasRows())

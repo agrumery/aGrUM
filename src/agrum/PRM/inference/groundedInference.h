@@ -35,9 +35,6 @@
  ****************************************************************************/
 
 
-
-
-
 /**
  * @file
  * @brief Headers of GroundedInference.
@@ -125,14 +122,14 @@ namespace gum {
       /// @param m CPF filled with the marginal of elt. It is initialized
       ///          properly.
       virtual void posterior_(const typename PRMInference< GUM_SCALAR >::Chain& chain,
-                              Tensor< GUM_SCALAR >&                          m);
+                              Tensor< GUM_SCALAR >&                             m);
 
       /// @brief Generic method to compute the marginal of given element.
       /// @param queries Set of pairs of PRMInstance and PRMAttribute.
       /// @param j CPF filled with the joint probability of queries. It is
       ///          initialized properly.
       virtual void joint_(const std::vector< typename PRMInference< GUM_SCALAR >::Chain >& queries,
-                          Tensor< GUM_SCALAR >&                                         j);
+                          Tensor< GUM_SCALAR >&                                            j);
 
       /// @}
 

@@ -35,8 +35,6 @@
  ****************************************************************************/
 
 
-
-
 #include <agrum/BN/learning/constraints/structuralConstraintNoParentNodes.h>
 
 /** @file

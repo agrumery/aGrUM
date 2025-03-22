@@ -25,9 +25,9 @@ loadBN with listener
 
 import sys,os
 
-import pyAgrum as gum
+import pyagrum as gum
 
-from gumLib.pyAgrum_header import pyAgrum_header
+from gumLib.pyAgrum_header import pyagrum_header
 from gumLib.progress_bar import ProgressBar
 
 def module_help(exit_value=1):
@@ -36,22 +36,22 @@ def module_help(exit_value=1):
     """
     print os.path.basename(sys.argv[0]),"src.{"+gum.availableBNExts()+"}"
     sys.exit(exit_value)
-    
+
 def doLoadBN(s):
-    # you could simply do that 
+    # you could simply do that
     # bn=gum.loadBN("test")
     # but listeners are fun !!
-    
+
     title=os.path.basename(s)+" ("+'{0:,d}'.format(os.path.getsize(s)/1024).replace(',',' ')+" Ko)"
     progressbar=ProgressBar(title,0,100,mode='dynamic', char='-')
-    
+
     def local_update(pourcent):
         progressbar.update_amount(pourcent)
         progressbar.display()
         if pourcent==100: print
-    
+
     return gum.loadBN(s,local_update)
-    
+
 
 if __name__=="__main__":
     pyAgrum_header(2012)

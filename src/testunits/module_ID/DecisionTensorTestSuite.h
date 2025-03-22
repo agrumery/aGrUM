@@ -35,9 +35,6 @@
  ****************************************************************************/
 
 
-
-
-
 #include <cstdio>
 #include <fstream>
 #include <iostream>
@@ -62,9 +59,9 @@ namespace gum_tests {
 
       gum::DecisionTensor< double > d3(std::move(d2));
 
-      gum::LabelizedVariable   a("a", "first var", 2), b("b", "second var", 4);
-      gum::LabelizedVariable   c("c", "first var", 2), d("d", "second var", 4);
-      gum::Tensor< double > P1, U1;
+      gum::LabelizedVariable a("a", "first var", 2), b("b", "second var", 4);
+      gum::LabelizedVariable c("c", "first var", 2), d("d", "second var", 4);
+      gum::Tensor< double >  P1, U1;
       P1 << a << b;
       U1 << c << d;
 

@@ -35,9 +35,6 @@
  ****************************************************************************/
 
 
-
-
-
 /** @file
  * @brief Base Class for all elimination sequence algorithms that require only
  * the graph to be triangulated and the nodes' domain sizes to produce the node

@@ -35,9 +35,6 @@
  ****************************************************************************/
 
 
-
-
-
 /**
  * @file
  * @brief Template implementation of FMDP/planning/TreeOperatorStrategy.h

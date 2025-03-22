@@ -23,12 +23,12 @@
 How to use Instantiation to iterate in a cpt
 """
 
-import pyAgrum as gum
+import pyagrum as gum
 
 bn=gum.BayesNet()
 bn.loadBIF("../resources/bn.bif")
 
-p_a=bn.cpt(0) 
+p_a=bn.cpt(0)
 i=gum.Instantiation(p_a)
 i.setFirst()
 s=0.0;

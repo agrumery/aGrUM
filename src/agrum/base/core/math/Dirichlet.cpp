@@ -35,9 +35,6 @@
  ****************************************************************************/
 
 
-
-
-
 /** @file
  * @brief a class for sampling w.r.t. Dirichlet distributions
  *

@@ -35,9 +35,6 @@
  ****************************************************************************/
 
 
-
-
-
 /** @file
  * @brief A DBRowGenerator class that returns exactly the rows it gets in input
  *

@@ -35,9 +35,6 @@
  ****************************************************************************/
 
 
-
-
-
 #include <agrum/BN/learning/priors/bdeuPrior.h>
 /** @file
  * @brief the internal prior for the BDeu score (N' / (r_i * q_i)

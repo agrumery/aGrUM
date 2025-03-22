@@ -35,9 +35,6 @@
  ****************************************************************************/
 
 
-
-
-
 /** @file
  * @brief Source implementation of the class building the Markov Blanket from a
  * DAGmodel and a node (id or name)

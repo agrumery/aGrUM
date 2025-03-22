@@ -35,9 +35,6 @@
  ****************************************************************************/
 
 
-
-
-
 #include <iostream>
 #include <string>
 #include <vector>
@@ -247,8 +244,8 @@ namespace gum_tests {
 
       for (const auto& node: bn.nodes()) {
         TS_GUM_TENSOR_DELTA(lazy.posterior(node),
-                               joint.sumIn({&bn.variable(node)}),
-                               TS_GUM_SMALL_ERROR);
+                            joint.sumIn({&bn.variable(node)}),
+                            TS_GUM_SMALL_ERROR);
       }
       for (const auto& arc: bn.arcs()) {
         gum::InformationTheory< gum::LazyPropagation, double > it(lazy,
@@ -295,8 +292,8 @@ namespace gum_tests {
 
       for (const auto& node: bn.nodes()) {
         TS_GUM_TENSOR_DELTA(lazy.posterior(node),
-                               joint.sumIn({&bn.variable(node)}),
-                               TS_GUM_SMALL_ERROR);
+                            joint.sumIn({&bn.variable(node)}),
+                            TS_GUM_SMALL_ERROR);
       }
       for (const auto& node: bn.nodes()) {
         gum::InformationTheory< gum::LazyPropagation, double > it(lazy,
@@ -343,8 +340,8 @@ namespace gum_tests {
 
       for (const auto& node: bn.nodes()) {
         TS_GUM_TENSOR_DELTA(lazy.posterior(node),
-                               joint.sumIn({&bn.variable(node)}),
-                               TS_GUM_SMALL_ERROR);
+                            joint.sumIn({&bn.variable(node)}),
+                            TS_GUM_SMALL_ERROR);
       }
       for (const auto& node: bn.nodes()) {
         gum::InformationTheory< gum::LazyPropagation, double > it(lazy,

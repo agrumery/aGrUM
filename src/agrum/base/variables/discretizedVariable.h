@@ -35,9 +35,6 @@
  ****************************************************************************/
 
 
-
-
-
 #ifndef GUM_DISCRETIZED_VARIABLE_H
 #define GUM_DISCRETIZED_VARIABLE_H
 

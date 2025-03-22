@@ -35,7 +35,4 @@
  ****************************************************************************/
 
 
-
-
-
 #include <agrum/base/graphicalModels/inference/graphicalModelInference.h>

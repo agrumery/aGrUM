@@ -35,9 +35,6 @@
  ****************************************************************************/
 
 
-
-
-
 #ifndef GUM_EDGE_GRAPH_PART_H
 #define GUM_EDGE_GRAPH_PART_H
 

@@ -35,9 +35,6 @@
  ****************************************************************************/
 
 
-
-
-
 /** @file
  * @brief Inline implementation of the class building the essential Graph from a
  * DAGmodel

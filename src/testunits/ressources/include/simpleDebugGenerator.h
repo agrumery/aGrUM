@@ -35,8 +35,6 @@
  ****************************************************************************/
 
 
-
-
 /** @file
  * @brief A DBRowGenerator class that returns exactly k times the rows it gets
  * in input

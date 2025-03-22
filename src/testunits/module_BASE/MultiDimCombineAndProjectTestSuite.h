@@ -35,9 +35,6 @@
  ****************************************************************************/
 
 
-
-
-
 #include <cstdlib>
 #include <iostream>
 #include <sstream>
@@ -143,8 +140,7 @@ namespace gum_tests {
       projcomb2.setCombinationFunction(addPot);
       projcomb2.setProjectionFunction(myMax);
 
-      gum::MultiDimCombineAndProjectDefault< gum::Tensor< double > >* projcomb3
-          = projcomb.clone();
+      gum::MultiDimCombineAndProjectDefault< gum::Tensor< double > >* projcomb3 = projcomb.clone();
 
       delete projcomb3;
 
@@ -604,8 +600,7 @@ namespace gum_tests {
       projcomb2.setCombinationFunction(addPot);
       projcomb2.setProjectionFunction(myMax);
 
-      gum::MultiDimCombineAndProjectDefault< gum::Tensor< float > >* projcomb3
-          = projcomb.clone();
+      gum::MultiDimCombineAndProjectDefault< gum::Tensor< float > >* projcomb3 = projcomb.clone();
 
       delete projcomb3;
 
@@ -620,7 +615,7 @@ namespace gum_tests {
       gum::MultiDimCombineAndProjectDefault< gum::Tensor< float > > projcomb(multPot, mySum);
 
       gum::Tensor< float > t1, t2;
-      gum::Instantiation      inst1(t1), inst2(t2);
+      gum::Instantiation   inst1(t1), inst2(t2);
       t1.set(inst1, 3.0);
       t2.set(inst2, 4.0);
 
@@ -660,7 +655,7 @@ namespace gum_tests {
         t1.set(xinst1, t1[xinst1] * 2);
 
       gum::Tensor< float > t3;
-      gum::Instantiation      I2(t2), I3(t3);
+      gum::Instantiation   I2(t2), I3(t3);
       t2.set(I2, 3.0);
       t3.set(I3, 5.0);
 
@@ -778,23 +773,23 @@ namespace gum_tests {
 
     // the function used to combine two tables
     static gum::Tensor< double > addPot(const gum::Tensor< double >& t1,
-                                           const gum::Tensor< double >& t2) {
+                                        const gum::Tensor< double >& t2) {
       return t1 + t2;
     }
 
     // the function used to combine two tables
     static gum::Tensor< double > multPot(const gum::Tensor< double >& t1,
-                                            const gum::Tensor< double >& t2) {
+                                         const gum::Tensor< double >& t2) {
       return t1 * t2;
     }
 
     static gum::Tensor< double > mySum(const gum::Tensor< double >& table,
-                                          const gum::VariableSet&         del_vars) {
+                                       const gum::VariableSet&      del_vars) {
       return table.sumOut(del_vars);
     }
 
     static gum::Tensor< double > myMax(const gum::Tensor< double >& table,
-                                          const gum::VariableSet&         del_vars) {
+                                       const gum::VariableSet&      del_vars) {
       return table.maxOut(del_vars);
     }
 
@@ -807,23 +802,23 @@ namespace gum_tests {
 
     // the function used to combine two tables
     static gum::Tensor< float > addPot(const gum::Tensor< float >& t1,
-                                          const gum::Tensor< float >& t2) {
+                                       const gum::Tensor< float >& t2) {
       return t1 + t2;
     }
 
     // the function used to combine two tables
     static gum::Tensor< float > multPot(const gum::Tensor< float >& t1,
-                                           const gum::Tensor< float >& t2) {
+                                        const gum::Tensor< float >& t2) {
       return t1 * t2;
     }
 
     static gum::Tensor< float > mySum(const gum::Tensor< float >& table,
-                                         const gum::VariableSet&        del_vars) {
+                                      const gum::VariableSet&     del_vars) {
       return table.sumOut(del_vars);
     }
 
     static gum::Tensor< float > myMax(const gum::Tensor< float >& table,
-                                         const gum::VariableSet&        del_vars) {
+                                      const gum::VariableSet&     del_vars) {
       return table.maxOut(del_vars);
     }
   };

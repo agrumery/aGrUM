@@ -35,9 +35,6 @@
  ****************************************************************************/
 
 
-
-
-
 #include <iostream>
 #include <sstream>
 #include <string>
@@ -89,7 +86,7 @@ namespace gum_tests {
       gum::Size                nbrErr = reader.proceed();
       TS_ASSERT(nbrErr == gum::Size(0))
 
-      gum::Sequence< gum::NodeId >                nodes_seq;
+      gum::Sequence< gum::NodeId >             nodes_seq;
       gum::Set< const gum::Tensor< double >* > tensors;
 
       for (const auto node: bn.nodes()) {
@@ -120,13 +117,12 @@ namespace gum_tests {
       gum::Size                nbrErr = reader.proceed();
       TS_ASSERT(nbrErr == gum::Size(0))
 
-      gum::Sequence< gum::NodeId >                                         nodes_seq;
+      gum::Sequence< gum::NodeId >                                      nodes_seq;
       gum::Set< const gum::ScheduleMultiDim< gum::Tensor< double > >* > tensors;
 
       for (const auto node: bn.nodes()) {
         nodes_seq.insert(node);
-        auto sched
-            = new gum::ScheduleMultiDim< gum::Tensor< double > >(bn.cpt(node), false, node);
+        auto sched = new gum::ScheduleMultiDim< gum::Tensor< double > >(bn.cpt(node), false, node);
         tensors.insert(sched);
         // std::cout << node << " : " << bn.variable(node).name() << std::endl;
       }

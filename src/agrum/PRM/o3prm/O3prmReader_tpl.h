@@ -35,9 +35,6 @@
  ****************************************************************************/
 
 
-
-
-
 /**
  * @file
  * @brief Implementation for the O3prmReader class.
@@ -233,7 +230,7 @@ namespace gum {
         auto path = class_path;
         if (path[path.size() - 1] != '/') { path.append("/"); }
         std::filesystem::directory_entry dir(path);
-        if (! dir.exists()) {
+        if (!dir.exists()) {
           _errors_.addException("could not resolve class path", path);
         } else {
           _class_path_.push_back(std::move(path));
@@ -315,13 +312,14 @@ namespace gum {
           auto const lastSlashIndex = file.find_last_of('/');
 
           std::filesystem::directory_entry dir(file.substr(0, lastSlashIndex + 1));
-          if (! dir.exists()) {
+          if (!dir.exists()) {
             _errors_.addException("could not find file", file);
             return _errors_.count();
           }
 
-          auto const basename    = file.substr(lastSlashIndex + 1);
-          auto const absFilename = std::filesystem::absolute(dir.path() / std::filesystem::path(basename)).string();
+          auto const basename = file.substr(lastSlashIndex + 1);
+          auto const absFilename
+              = std::filesystem::absolute(dir.path() / std::filesystem::path(basename)).string();
 
           std::ifstream input(absFilename);
           if (input.is_open()) {

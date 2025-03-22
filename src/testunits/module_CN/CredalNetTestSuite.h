@@ -35,9 +35,6 @@
  ****************************************************************************/
 
 
-
-
-
 #include <cstdlib>   // rand
 #include <iostream>
 #include <string>

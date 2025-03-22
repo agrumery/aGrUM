@@ -35,9 +35,6 @@
  ****************************************************************************/
 
 
-
-
-
 /**
  * @file
  * @brief Inline implementation of PRMInference.
@@ -121,7 +118,7 @@ namespace gum {
     }
 
     template < typename GUM_SCALAR >
-    void PRMInference< GUM_SCALAR >::addEvidence(const Chain&                   chain,
+    void PRMInference< GUM_SCALAR >::addEvidence(const Chain&                chain,
                                                  const Tensor< GUM_SCALAR >& p) {
       if (chain.first->exists(chain.second->id())) {
         if ((p.nbrDim() != 1) || (!p.contains(chain.second->type().variable())))
@@ -232,13 +229,13 @@ namespace gum {
     template < typename GUM_SCALAR >
     INLINE void PRMInference< GUM_SCALAR >::posterior(
         const typename PRMInference< GUM_SCALAR >::Chain& chain,
-        Tensor< GUM_SCALAR >&                          m) {
+        Tensor< GUM_SCALAR >&                             m) {
       if (m.nbrDim() > 0) { GUM_ERROR(OperationNotAllowed, "the given Tensor is not empty.") }
 
       if (hasEvidence(chain)) {
         m.add(chain.second->type().variable());
         const Tensor< GUM_SCALAR >& e = *(evidence(chain.first)[chain.second->id()]);
-        Instantiation                  i(m), j(e);
+        Instantiation               i(m), j(e);
 
         for (i.setFirst(), j.setFirst(); !i.end(); i.inc(), j.inc())
           m.set(i, e.get(j));
@@ -258,7 +255,7 @@ namespace gum {
     template < typename GUM_SCALAR >
     INLINE void PRMInference< GUM_SCALAR >::joint(
         const std::vector< typename PRMInference< GUM_SCALAR >::Chain >& chains,
-        Tensor< GUM_SCALAR >&                                         j) {
+        Tensor< GUM_SCALAR >&                                            j) {
       if (j.nbrDim() > 0) { GUM_ERROR(OperationNotAllowed, "the given Tensor is not empty.") }
 
       for (auto chain = chains.begin(); chain != chains.end(); ++chain) {

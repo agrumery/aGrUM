@@ -35,9 +35,6 @@
  ****************************************************************************/
 
 
-
-
-
 #include <agrum/base/multidim/ICIModels/multiDimICIModel.h>
 
 #ifdef GUM_NO_INLINE

@@ -35,9 +35,6 @@
  ****************************************************************************/
 
 
-
-
-
 #include <agrum/CN/inference/CNLoopyPropagation.h>
 
 namespace gum::credal {

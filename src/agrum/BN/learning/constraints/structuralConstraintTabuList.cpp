@@ -35,9 +35,6 @@
  ****************************************************************************/
 
 
-
-
-
 /** @file
  * @brief the class imposing a N-sized tabu list as a structural constraints for
  * learning algorithms

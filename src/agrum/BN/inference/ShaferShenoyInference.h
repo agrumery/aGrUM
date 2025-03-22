@@ -35,9 +35,6 @@
  ****************************************************************************/
 
 
-
-
-
 /**
  * @file
  * @brief Implementation of Shafer-Shenoy's algorithm for inference
@@ -65,14 +62,14 @@ namespace gum {
   // the function used to combine two tables
   template < typename GUM_SCALAR >
   INLINE static Tensor< GUM_SCALAR > SSNewmultiTensor(const Tensor< GUM_SCALAR >& t1,
-                                                            const Tensor< GUM_SCALAR >& t2) {
+                                                      const Tensor< GUM_SCALAR >& t2) {
     return t1 * t2;
   }
 
   // the function used to combine two tables
   template < typename GUM_SCALAR >
   INLINE static Tensor< GUM_SCALAR > SSNewprojTensor(const Tensor< GUM_SCALAR >& t1,
-                                                           const gum::VariableSet& del_vars) {
+                                                     const gum::VariableSet&     del_vars) {
     return t1.sumOut(del_vars);
   }
 
@@ -248,7 +245,7 @@ namespace gum {
      * @param declared_target the joint target declared by the user that contains
      * set */
     const Tensor< GUM_SCALAR >& jointPosterior_(const NodeSet& wanted_target,
-                                                   const NodeSet& declared_target) final;
+                                                const NodeSet& declared_target) final;
 
     /// returns a fresh tensor equal to P(argument,evidence)
     Tensor< GUM_SCALAR >* unnormalizedJointPosterior_(NodeId id) final;
@@ -258,7 +255,7 @@ namespace gum {
 
 
     private:
-    using _TensorSet_        = Set< const Tensor< GUM_SCALAR >* >;
+    using _TensorSet_           = Set< const Tensor< GUM_SCALAR >* >;
     using _ScheduleMultiDimSet_ = Set< const IScheduleMultiDim* >;
 
     using _TensorSetIterator_ = SetIteratorSafe< const Tensor< GUM_SCALAR >* >;
@@ -279,12 +276,11 @@ namespace gum {
 
     /// the operator for performing the projections
     Tensor< GUM_SCALAR > (*_projection_op_)(const Tensor< GUM_SCALAR >&,
-                                               const gum::VariableSet&){SSNewprojTensor};
+                                            const gum::VariableSet&){SSNewprojTensor};
 
     /// the operator for performing the combinations
     Tensor< GUM_SCALAR > (*_combination_op_)(const Tensor< GUM_SCALAR >&,
-                                                const Tensor< GUM_SCALAR >&){
-        SSNewmultiTensor};
+                                             const Tensor< GUM_SCALAR >&){SSNewmultiTensor};
 
     /// the triangulation class creating the junction tree used for inference
     Triangulation* _triangulation_;
@@ -430,11 +426,11 @@ namespace gum {
 
     /// sets the operator for performing the projections
     void _setProjectionFunction_(Tensor< GUM_SCALAR > (*proj)(const Tensor< GUM_SCALAR >&,
-                                                                 const gum::VariableSet&));
+                                                              const gum::VariableSet&));
 
     /// sets the operator for performing the combinations
     void _setCombinationFunction_(Tensor< GUM_SCALAR > (*comb)(const Tensor< GUM_SCALAR >&,
-                                                                  const Tensor< GUM_SCALAR >&));
+                                                               const Tensor< GUM_SCALAR >&));
 
     /// invalidate all the messages sent from a given clique
     void _diffuseMessageInvalidations_(NodeId from_id, NodeId to_id, NodeSet& invalidated_cliques);
@@ -448,23 +444,22 @@ namespace gum {
     /** @brief update a set of tensors: the remaining are those to be
      * combined to produce a message on a separator */
     void _findRelevantTensorsWithdSeparation_(_ScheduleMultiDimSet_& pot_list,
-                                                 gum::VariableSet&      kept_vars);
+                                              gum::VariableSet&      kept_vars);
 
     /** @brief update a set of tensors: the remaining are those to be
      * combined to produce a message on a separator */
     void _findRelevantTensorsWithdSeparation2_(_ScheduleMultiDimSet_& pot_list,
-                                                  gum::VariableSet&      kept_vars);
+                                               gum::VariableSet&      kept_vars);
 
     /** @brief update a set of tensors: the remaining are those to be
      * combined to produce a message on a separator */
     void _findRelevantTensorsWithdSeparation3_(_ScheduleMultiDimSet_& pot_list,
-                                                  gum::VariableSet&      kept_vars);
+                                               gum::VariableSet&      kept_vars);
 
     /** @brief update a set of tensors: the remaining are those to be
      * combined
      * to produce a message on a separator */
-    void _findRelevantTensorsGetAll_(_ScheduleMultiDimSet_& pot_list,
-                                        gum::VariableSet&      kept_vars);
+    void _findRelevantTensorsGetAll_(_ScheduleMultiDimSet_& pot_list, gum::VariableSet& kept_vars);
 
     /** @brief update a set of tensors: the remaining are those to be
      * combined to produce a message on a separator */

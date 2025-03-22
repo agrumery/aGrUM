@@ -60,7 +60,7 @@ def callSphinx(current: dict[str, str]):
 
   notif("Sphinxing pyAgrum")
   safe_cd(current, "wrappers")
-  safe_cd(current, "pyAgrum")
+  safe_cd(current, "pyagrum")
   safe_cd(current, "doc")
   _callSphinx(current, 'make')
 

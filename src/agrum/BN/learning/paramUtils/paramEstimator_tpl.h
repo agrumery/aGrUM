@@ -35,9 +35,6 @@
  ****************************************************************************/
 
 
-
-
-
 /** @file
  * @brief the base class for estimating parameters of CPTs
  *
@@ -54,7 +51,7 @@ namespace gum {
     template < typename GUM_SCALAR >
     void ParamEstimator::_checkParameters_(const NodeId                 target_node,
                                            const std::vector< NodeId >& conditioning_nodes,
-                                           Tensor< GUM_SCALAR >&     pot) {
+                                           Tensor< GUM_SCALAR >&        pot) {
       // check that the nodes passed in arguments correspond to those of pot
       const Sequence< const DiscreteVariable* >& vars = pot.variablesSequence();
       if (vars.size() == 0) { GUM_ERROR(SizeError, "the tensor contains no variable") }
@@ -107,7 +104,7 @@ namespace gum {
     INLINE typename std::enable_if< !std::is_same< GUM_SCALAR, double >::value, void >::type
         ParamEstimator::_setParameters_(const NodeId                 target_node,
                                         const std::vector< NodeId >& conditioning_nodes,
-                                        Tensor< GUM_SCALAR >&     pot) {
+                                        Tensor< GUM_SCALAR >&        pot) {
       _checkParameters_(target_node, conditioning_nodes, pot);
 
       const std::vector< double > params(parameters(target_node, conditioning_nodes));
@@ -126,7 +123,7 @@ namespace gum {
     INLINE typename std::enable_if< std::is_same< GUM_SCALAR, double >::value, void >::type
         ParamEstimator::_setParameters_(const NodeId                 target_node,
                                         const std::vector< NodeId >& conditioning_nodes,
-                                        Tensor< GUM_SCALAR >&     pot) {
+                                        Tensor< GUM_SCALAR >&        pot) {
       _checkParameters_(target_node, conditioning_nodes, pot);
 
       const std::vector< double > params(parameters(target_node, conditioning_nodes));
@@ -137,7 +134,7 @@ namespace gum {
     template < typename GUM_SCALAR >
     INLINE void ParamEstimator::setParameters(const NodeId                 target_node,
                                               const std::vector< NodeId >& conditioning_nodes,
-                                              Tensor< GUM_SCALAR >&     pot) {
+                                              Tensor< GUM_SCALAR >&        pot) {
       _setParameters_(target_node, conditioning_nodes, pot);
     }
 

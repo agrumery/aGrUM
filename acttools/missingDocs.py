@@ -127,12 +127,12 @@ class PyAgrumDocCoverage:
   def _ignored_class(clas: str) -> bool:
     if gumPath not in sys.path:
       sys.path.insert(0, gumPath)
-    import pyAgrum as gum
+    import pyagrum as gum
 
     return clas in {cls.__name__ for cls in gum.GumException.__subclasses__()}
 
   def _traversal(self, entities: Iterable[str], container: str):
-    import pyAgrum as gum
+    import pyagrum as gum
     for entity in entities:
       if entity[0] != '_':
         complete_entity_name = container + "." + entity
@@ -149,7 +149,7 @@ class PyAgrumDocCoverage:
 
     if gumPath not in sys.path:
       sys.path.insert(0, gumPath)
-    import pyAgrum as gum
+    import pyagrum as gum
 
     self.nb_class = 0
     self.nb_meth = 0

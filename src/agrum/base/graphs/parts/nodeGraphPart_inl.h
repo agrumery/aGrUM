@@ -35,9 +35,6 @@
  ****************************************************************************/
 
 
-
-
-
 /** @file
  * @brief Inline implementation of the base node set class for graphs
  *
@@ -198,7 +195,7 @@ namespace gum {
     //  avoid self assignment
     if (&it != this) {
       NodeGraphPartIterator::operator=(it);
-      Listener::operator=(it);
+      Listener::             operator=(it);
       GUM_OP_CPY(NodeGraphPartIteratorSafe);
     }
 
@@ -211,7 +208,7 @@ namespace gum {
     //  avoid self assignment
     if (&it != this) {
       NodeGraphPartIterator::operator=(std::move(it));
-      Listener::operator=(std::move(it));
+      Listener::             operator=(std::move(it));
       GUM_OP_MOV(NodeGraphPartIteratorSafe);
     }
 

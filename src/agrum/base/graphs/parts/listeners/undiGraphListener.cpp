@@ -35,9 +35,6 @@
  ****************************************************************************/
 
 
-
-
-
 /** @file
  * @brief source file for virtual Base classes for non-oriented graphs listener
  *

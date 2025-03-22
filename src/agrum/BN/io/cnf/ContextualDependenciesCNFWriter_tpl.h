@@ -35,9 +35,6 @@
  ****************************************************************************/
 
 
-
-
-
 #ifndef DOXYGEN_SHOULD_SKIP_THIS
 
 // to ease parsing in IDE
@@ -112,7 +109,7 @@ namespace gum {
       numvar++;
       clausstr2 << str0.str();
       const Tensor< GUM_SCALAR >& cpt = bn.cpt(node);
-      Instantiation                  inst(cpt);
+      Instantiation               inst(cpt);
       inst.forgetMaster();
       inst.reorder(Order);
       cptparamval.insert(
@@ -345,7 +342,7 @@ namespace gum {
       numvar++;
       clausstr2 << str0.str();
       const Tensor< GUM_SCALAR >& cpt = bn.cpt(node);
-      Instantiation                  inst(cpt);
+      Instantiation               inst(cpt);
       inst.forgetMaster();
       inst.reorder(Order);
       cptparamval.insert(

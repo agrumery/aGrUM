@@ -35,9 +35,6 @@
  ****************************************************************************/
 
 
-
-
-
 /** @file
  * @brief The basic class for computing the set of undigraph changes allowed by
  * the user to be executed by the learning algorithms

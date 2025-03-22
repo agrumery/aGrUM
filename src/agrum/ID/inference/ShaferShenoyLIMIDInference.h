@@ -35,9 +35,6 @@
  ****************************************************************************/
 
 
-
-
-
 /**
  * @file
  * @brief Implementation of an influence diagram inference algorithm based upon
@@ -182,10 +179,10 @@ namespace gum {
     /// Returns the set of non-requisite for node d
     NodeSet nonRequisiteNodes_(NodeId d) const;
 
-    DAG                                             reduced_;
-    CliqueGraph                                     reducedJunctionTree_;
-    NodeProperty< NodeId >                          node_to_clique_;
-    EdgeProperty< SetOfVars >                       varsSeparator_;
+    DAG                                          reduced_;
+    CliqueGraph                                  reducedJunctionTree_;
+    NodeProperty< NodeId >                       node_to_clique_;
+    EdgeProperty< SetOfVars >                    varsSeparator_;
     NodeProperty< Tensor< GUM_SCALAR > >         strategies_;
     NodeProperty< DecisionTensor< GUM_SCALAR > > posteriors_;
     NodeProperty< DecisionTensor< GUM_SCALAR > > unconditionalDecisions_;
@@ -221,9 +218,9 @@ namespace gum {
     void distributingMessage_(PhiNodeProperty& phi, PsiArcProperty& psi, NodeId rootClique);
     void computingPosteriors_(const PhiNodeProperty& phi, const PsiArcProperty& psi);
     DecisionTensor< double > integrating_(const PhiNodeProperty& phi,
-                                             const PsiArcProperty&  psi,
-                                             NodeId                 clique,
-                                             NodeId                 except) const;
+                                          const PsiArcProperty&  psi,
+                                          NodeId                 clique,
+                                          NodeId                 except) const;
     DecisionTensor< double >
          integrating_(const PhiNodeProperty& phi, const PsiArcProperty& psi, NodeId clique) const;
     void binarizingMax_(const Tensor< GUM_SCALAR >& decision,

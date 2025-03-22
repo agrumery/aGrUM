@@ -35,9 +35,6 @@
  ****************************************************************************/
 
 
-
-
-
 /** @file
  * @brief An algorithms producing a junction given the elimination tree
  * produced by the triangulation algorithm

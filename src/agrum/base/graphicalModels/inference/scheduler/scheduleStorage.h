@@ -35,9 +35,6 @@
  ****************************************************************************/
 
 
-
-
-
 /** @file
  * @brief Class for storing multidimensional tables in scheduling inferences
  *

@@ -35,9 +35,6 @@
  ****************************************************************************/
 
 
-
-
-
 /**
  * @file
  * @brief Template implementation of bns/bayesNet.h classes.
@@ -442,8 +439,7 @@ namespace gum {
   }
 
   template < typename GUM_SCALAR >
-  Tensor< GUM_SCALAR > IBayesNet< GUM_SCALAR >::evEq(const std::string& name,
-                                                        double             value) const {
+  Tensor< GUM_SCALAR > IBayesNet< GUM_SCALAR >::evEq(const std::string& name, double value) const {
     return Tensor< GUM_SCALAR >::evEq(variableFromName(name), value);
   }
 

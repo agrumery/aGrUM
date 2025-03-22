@@ -1,4 +1,4 @@
-import pyAgrum as gum
+import pyagrum as gum
 
 #cn=gum.CredalNet("2Umin.bif","2Umax.bif")
 #cn.intervalToCredal(0)

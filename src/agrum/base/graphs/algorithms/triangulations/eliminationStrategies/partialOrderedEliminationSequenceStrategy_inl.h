@@ -35,9 +35,6 @@
  ****************************************************************************/
 
 
-
-
-
 /** @file
  * @brief Base class for all elimination sequence algorithm that impose a given
  * partial ordering on the nodes elimination sequence, that is, the set of all

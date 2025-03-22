@@ -35,9 +35,6 @@
  ****************************************************************************/
 
 
-
-
-
 /** @file
  * @brief The mecanism to compute the next available graph changes for directed
  * structure learning search algorithms.

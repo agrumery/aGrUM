@@ -35,9 +35,6 @@
  ****************************************************************************/
 
 
-
-
-
 /** @file
  * @brief the base class for structural constraints used by learning algorithms
  * that learn an undirected graph structure

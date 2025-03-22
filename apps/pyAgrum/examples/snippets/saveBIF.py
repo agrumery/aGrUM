@@ -22,8 +22,8 @@
 
 import sys
 
-import pyAgrum as gum
-from gumLib.pyAgrum_header import pyAgrum_header
+import pyagrum as gum
+from gumLib.pyAgrum_header import pyagrum_header
 
 pyAgrum_header(2011)
 

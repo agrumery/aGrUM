@@ -35,9 +35,6 @@
  ****************************************************************************/
 
 
-
-
-
 /**
  * @file
  * @brief Header of the Tensor class.
@@ -106,7 +103,7 @@ namespace gum {
      * @param src The MultiDimContainer to copy.
      */
     Tensor(MultiDimImplementation< GUM_SCALAR >*  aContent,
-              const MultiDimContainer< GUM_SCALAR >& src);
+           const MultiDimContainer< GUM_SCALAR >& src);
     /**
      * @brief Copy constructor & assignment
      */
@@ -301,8 +298,8 @@ namespace gum {
      *
      * @throw InvalidArgument if the Tensor is not compatible with this
      * */
-    const Tensor< GUM_SCALAR >& fillWith(const Tensor< GUM_SCALAR >&    src,
-                                            const std::vector< std::string >& mapSrc) const;
+    const Tensor< GUM_SCALAR >& fillWith(const Tensor< GUM_SCALAR >&       src,
+                                         const std::vector< std::string >& mapSrc) const;
 
     /**
      * @brief Automatically fills the tensor with the values in
@@ -444,7 +441,7 @@ namespace gum {
     Tensor< GUM_SCALAR >& operator/=(const GUM_SCALAR& v);
 
     // these operations are only defined for boolean-like Tensor (evidence/likelihood)
-    [[nodiscard]] bool      isEvidence() const;
+    [[nodiscard]] bool   isEvidence() const;
     Tensor< GUM_SCALAR > operator|(const Tensor< GUM_SCALAR >& p2) const;
     Tensor< GUM_SCALAR > operator&(const Tensor< GUM_SCALAR >& p2) const;
     Tensor< GUM_SCALAR > operator~() const;

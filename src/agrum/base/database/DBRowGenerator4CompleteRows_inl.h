@@ -35,9 +35,6 @@
  ****************************************************************************/
 
 
-
-
-
 /** @file
  * @brief A DBRowGenerator class that returns the rows that are complete
  * (fully observed) w.r.t. the nodes of interest

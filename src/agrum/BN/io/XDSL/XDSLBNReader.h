@@ -35,9 +35,6 @@
  ****************************************************************************/
 
 
-
-
-
 /**
 * @file
 * @brief classe for import of bayes net from a XML file written with BIF Format

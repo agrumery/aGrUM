@@ -35,9 +35,6 @@
  ****************************************************************************/
 
 
-
-
-
 /**
  * @file
  * @brief This file contains the abstract inference class definition for
@@ -217,14 +214,14 @@ namespace gum {
      * @return a Tensor
      */
     Tensor< GUM_SCALAR > evidenceJointImpact(const std::vector< std::string >& targets,
-                                                const std::vector< std::string >& evs);
+                                             const std::vector< std::string >& evs);
 
     // ############################################################################
     /// @name Information Theory related functions
     // ############################################################################
     /// @{
 
-       /** Mutual information between targets
+    /** Mutual information between targets
      * @see https://en.wikipedia.org/wiki/Interaction_information
      * @param targets  the NodeSet of the targeted variables
      */
@@ -276,7 +273,7 @@ namespace gum {
      * @param declared_target the joint target declared by the user that
      * contains set */
     virtual const Tensor< GUM_SCALAR >& jointPosterior_(const NodeSet& wanted_target,
-                                                           const NodeSet& declared_target)
+                                                        const NodeSet& declared_target)
         = 0;
 
     /** @brief returns a fresh unnormalized joint posterior of

@@ -35,9 +35,6 @@
  ****************************************************************************/
 
 
-
-
-
 /**
  * @file
  * @brief This file implements a Hybrid sampling class using LoopyBeliefPropagation

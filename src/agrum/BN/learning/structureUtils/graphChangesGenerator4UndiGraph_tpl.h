@@ -35,9 +35,6 @@
  ****************************************************************************/
 
 
-
-
-
 /** @file
  * @brief The basic class for computing the next graph changes possible in an
  * undirected structure learning algorithm

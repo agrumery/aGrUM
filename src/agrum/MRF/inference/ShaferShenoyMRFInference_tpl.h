@@ -35,9 +35,6 @@
  ****************************************************************************/
 
 
-
-
-
 /**
  * @file
  * @brief Implementation of Shafer-Shenoy's propagation for inference in
@@ -158,8 +155,7 @@ namespace gum {
   /// sets the operator for performing the combinations
   template < typename GUM_SCALAR >
   INLINE void ShaferShenoyMRFInference< GUM_SCALAR >::_setCombinationFunction_(
-      Tensor< GUM_SCALAR > (*comb)(const Tensor< GUM_SCALAR >&,
-                                      const Tensor< GUM_SCALAR >&)) {
+      Tensor< GUM_SCALAR > (*comb)(const Tensor< GUM_SCALAR >&, const Tensor< GUM_SCALAR >&)) {
     _combination_op_ = comb;
 
     // indicate that all messages need be reconstructed to take into account
@@ -619,7 +615,7 @@ namespace gum {
     // including hard evidence must be projected so that these nodes are
     // removed from the tensor
     const NodeProperty< const Tensor< GUM_SCALAR >* >& evidence      = this->evidence();
-    const NodeProperty< Idx >&                            hard_evidence = this->hardEvidence();
+    const NodeProperty< Idx >&                         hard_evidence = this->hardEvidence();
 
     for (const auto& factor: mn.factors()) {
       const auto& factor_nodes = factor.first;
@@ -659,7 +655,7 @@ namespace gum {
 
           // prepare the projection with a combine and project instance
           gum::VariableSet hard_variables;
-          _TensorSet_   marg_factor_set(1 + hard_nodes.size());
+          _TensorSet_      marg_factor_set(1 + hard_nodes.size());
           marg_factor_set.insert(&pot);
           for (const auto node: hard_nodes) {
             marg_factor_set.insert(evidence[node]);
@@ -710,8 +706,8 @@ namespace gum {
         } else {
           _TensorSet_ p_potset(potset.size());
           for (const auto pot: potset)
-            p_potset.insert(&(static_cast< const ScheduleMultiDim< Tensor< GUM_SCALAR > >* >(pot)
-                                  ->multiDim()));
+            p_potset.insert(
+                &(static_cast< const ScheduleMultiDim< Tensor< GUM_SCALAR > >* >(pot)->multiDim()));
 
           Tensor< GUM_SCALAR >* joint
               = const_cast< Tensor< GUM_SCALAR >* >(fast_combination.execute(p_potset));
@@ -733,7 +729,7 @@ namespace gum {
     // including hard evidence must be projected so that these nodes are
     // removed from the tensor
     const NodeProperty< const Tensor< GUM_SCALAR >* >& evidence      = this->evidence();
-    const NodeProperty< Idx >&                            hard_evidence = this->hardEvidence();
+    const NodeProperty< Idx >&                         hard_evidence = this->hardEvidence();
 
     for (const auto& factor: mn.factors()) {
       const auto& factor_nodes = factor.first;
@@ -871,7 +867,7 @@ namespace gum {
     const Arc arc(from_id, to_id);
     bool&     message_computed = _messages_computed_[arc];
     if (message_computed) {
-      message_computed            = false;
+      message_computed         = false;
       _separator_tensors_[arc] = nullptr;
       if (_arc_to_created_tensors_.exists(arc)) {
         delete _arc_to_created_tensors_[arc];
@@ -905,8 +901,8 @@ namespace gum {
     // fully new join tree would have been computed).
     // Note also that we know that the factors still contain some variable(s) after
     // the projection (else they should be constants)
-    const auto&                           mn = this->MRF();
-    NodeSet                               hard_nodes_changed(_hard_ev_nodes_.size());
+    const auto&                        mn = this->MRF();
+    NodeSet                            hard_nodes_changed(_hard_ev_nodes_.size());
     Set< const Tensor< GUM_SCALAR >* > hard_projected_factors_changed(mn.factors().size());
     for (const auto node: _hard_ev_nodes_) {
       if (_evidence_changes_.exists(node)) {
@@ -1038,7 +1034,7 @@ namespace gum {
       Schedule schedule;
       for (const auto pot: hard_projected_factors_changed) {
         _ScheduleMultiDimSet_ marg_pot_set;
-        const auto sched_pot = schedule.insertTable< Tensor< GUM_SCALAR > >(*pot, false);
+        const auto            sched_pot = schedule.insertTable< Tensor< GUM_SCALAR > >(*pot, false);
         marg_pot_set.insert(sched_pot);
         const auto&      variables = pot->variablesSequence();
         gum::VariableSet hard_variables(variables.size());
@@ -1066,8 +1062,7 @@ namespace gum {
                     "the projection of a tensor containing " << "hard evidence is empty!");
         }
         auto projected_pot = const_cast< ScheduleMultiDim< Tensor< GUM_SCALAR > >* >(
-            static_cast< const ScheduleMultiDim< Tensor< GUM_SCALAR > >* >(
-                *new_pot_list.begin()));
+            static_cast< const ScheduleMultiDim< Tensor< GUM_SCALAR > >* >(*new_pot_list.begin()));
         const_cast< ScheduleOperator* >(schedule.scheduleMultiDimCreator(projected_pot))
             ->makeResultsPersistent(true);
         _clique_tensors_[_factor_to_clique_[pot]].insert(projected_pot);
@@ -1155,9 +1150,8 @@ namespace gum {
           } else {
             _TensorSet_ p_potset(potset.size());
             for (const auto pot: potset)
-              p_potset.insert(
-                  &(static_cast< const ScheduleMultiDim< Tensor< GUM_SCALAR > >* >(pot)
-                        ->multiDim()));
+              p_potset.insert(&(
+                  static_cast< const ScheduleMultiDim< Tensor< GUM_SCALAR > >* >(pot)->multiDim()));
 
             Tensor< GUM_SCALAR >* joint
                 = const_cast< Tensor< GUM_SCALAR >* >(fast_combination.execute(p_potset));
@@ -1173,7 +1167,7 @@ namespace gum {
     const auto& hard_evidence = this->hardEvidence();
     for (auto& node_cst: _constants_) {
       const Tensor< GUM_SCALAR >& pot = *(node_cst.first);
-      Instantiation                  inst(pot);
+      Instantiation               inst(pot);
       for (const auto var: pot.variablesSequence()) {
         inst.chgVal(*var, hard_evidence[mn.nodeId(*var)]);
       }
@@ -1283,9 +1277,8 @@ namespace gum {
 
     // create a combine and project operator that will perform the
     // marginalization
-    MultiDimCombineAndProjectDefault< Tensor< GUM_SCALAR > > combine_and_project(
-        _combination_op_,
-        _projection_op_);
+    MultiDimCombineAndProjectDefault< Tensor< GUM_SCALAR > > combine_and_project(_combination_op_,
+                                                                                 _projection_op_);
     _ScheduleMultiDimSet_ new_pot_list = combine_and_project.schedule(schedule, pot_list, del_vars);
 
     // combine all the remaining tensors in order to create only one resulting tensor
@@ -1307,9 +1300,8 @@ namespace gum {
 
     // create a combine and project operator that will perform the
     // marginalization
-    MultiDimCombineAndProjectDefault< Tensor< GUM_SCALAR > > combine_and_project(
-        _combination_op_,
-        _projection_op_);
+    MultiDimCombineAndProjectDefault< Tensor< GUM_SCALAR > > combine_and_project(_combination_op_,
+                                                                                 _projection_op_);
     _TensorSet_ xnew_pot_list = combine_and_project.execute(xpot_list, del_vars);
 
     // combine all the remaining tensors in order to create only one resulting tensor
@@ -1388,7 +1380,7 @@ namespace gum {
     }
 
     _separator_tensors_[arc] = new_pot;
-    _messages_computed_[arc]    = true;
+    _messages_computed_[arc] = true;
   }
 
   // creates the message sent by clique from_id to clique to_id
@@ -1428,13 +1420,11 @@ namespace gum {
     // keep track of the newly created tensor
     const Arc arc(from_id, to_id);
     if (!pot_list.exists(new_pot)) {
-      if (!_arc_to_created_tensors_.exists(arc)) {
-        _arc_to_created_tensors_.insert(arc, new_pot);
-      }
+      if (!_arc_to_created_tensors_.exists(arc)) { _arc_to_created_tensors_.insert(arc, new_pot); }
     }
 
     _separator_tensors_[arc] = new_pot;
-    _messages_computed_[arc]    = true;
+    _messages_computed_[arc] = true;
   }
 
   // fired after a new Markov net has been assigned to the inference engine
@@ -1868,7 +1858,7 @@ namespace gum {
 
         // combine all the tensors of the nodes in set
         MultiDimCombinationDefault< Tensor< GUM_SCALAR > > fast_combination(_combination_op_);
-        const Tensor< GUM_SCALAR >* pot = fast_combination.execute(pot_list);
+        const Tensor< GUM_SCALAR >*                        pot = fast_combination.execute(pot_list);
 
         return const_cast< Tensor< GUM_SCALAR >* >(pot);
       }
@@ -2054,7 +2044,7 @@ namespace gum {
     GUM_SCALAR prob_ev = 1;
     for (const auto root: _roots_) {
       // get a node in the clique
-      NodeId                   node = *(_JT_->clique(root).begin());
+      NodeId                node = *(_JT_->clique(root).begin());
       Tensor< GUM_SCALAR >* tmp  = unnormalizedJointPosterior_(node);
       prob_ev *= tmp->sum();
       delete tmp;

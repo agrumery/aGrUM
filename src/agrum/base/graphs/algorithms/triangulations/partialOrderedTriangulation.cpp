@@ -35,9 +35,6 @@
  ****************************************************************************/
 
 
-
-
-
 /** @file
  * @brief class for graph triangulations for which we enforce a given partial
  * ordering on the nodes eliminations.

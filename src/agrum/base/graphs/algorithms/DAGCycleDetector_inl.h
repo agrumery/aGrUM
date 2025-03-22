@@ -35,9 +35,6 @@
  ****************************************************************************/
 
 
-
-
-
 /** @file
  * @brief A class for detecting directed cycles in DAGs when trying to apply
  * many changes to the graph

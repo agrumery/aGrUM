@@ -35,9 +35,6 @@
  ****************************************************************************/
 
 
-
-
-
 /** @file
  * @brief base class for graph triangulations without constraints on nodes
  * elimination ordering.

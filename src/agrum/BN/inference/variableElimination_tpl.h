@@ -35,9 +35,6 @@
  ****************************************************************************/
 
 
-
-
-
 /**
  * @file
  * @brief Implementation of Variable Elimination for inference in
@@ -65,7 +62,7 @@ namespace gum {
   template < typename GUM_SCALAR >
   INLINE VariableElimination< GUM_SCALAR >::VariableElimination(
       const IBayesNet< GUM_SCALAR >* BN,
-      RelevantTensorsFinderType   relevant_type,
+      RelevantTensorsFinderType      relevant_type,
       FindBarrenNodesType            barren_type) : JointTargetedInference< GUM_SCALAR >(BN) {
     // sets the relevant tensor and the barren nodes finding algorithm
     _findRelevantTensors_
@@ -129,14 +126,13 @@ namespace gum {
           break;
 
         case RelevantTensorsFinderType::FIND_ALL :
-          _findRelevantTensors_
-              = &VariableElimination< GUM_SCALAR >::_findRelevantTensorsGetAll_;
+          _findRelevantTensors_ = &VariableElimination< GUM_SCALAR >::_findRelevantTensorsGetAll_;
           break;
 
         default :
           GUM_ERROR(InvalidArgument,
                     "setRelevantTensorsFinderType for type " << (unsigned int)type
-                                                                << " is not implemented yet");
+                                                             << " is not implemented yet");
       }
 
       _find_relevant_tensor_type_ = type;
@@ -152,8 +148,8 @@ namespace gum {
 
   /// sets the operator for performing the combinations
   template < typename GUM_SCALAR >
-  INLINE void VariableElimination< GUM_SCALAR >::_setCombinationFunction_(Tensor< GUM_SCALAR > (
-      *comb)(const Tensor< GUM_SCALAR >&, const Tensor< GUM_SCALAR >&)) {
+  INLINE void VariableElimination< GUM_SCALAR >::_setCombinationFunction_(
+      Tensor< GUM_SCALAR > (*comb)(const Tensor< GUM_SCALAR >&, const Tensor< GUM_SCALAR >&)) {
     _combination_op_ = comb;
   }
 
@@ -509,10 +505,10 @@ namespace gum {
 
     // determine the set of tensors d-connected with the kept variables
     BayesBall::relevantTensors(bn,
-                                  kept_ids,
-                                  this->hardEvidenceNodes(),
-                                  this->softEvidenceNodes(),
-                                  pot_list);
+                               kept_ids,
+                               this->hardEvidenceNodes(),
+                               this->softEvidenceNodes(),
+                               pot_list);
   }
 
   // find the tensors d-connected to a set of variables
@@ -530,10 +526,10 @@ namespace gum {
     // determine the set of tensors d-connected with the kept variables
     dSeparationAlgorithm dsep;
     dsep.relevantTensors(bn,
-                            kept_ids,
-                            this->hardEvidenceNodes(),
-                            this->softEvidenceNodes(),
-                            pot_list);
+                         kept_ids,
+                         this->hardEvidenceNodes(),
+                         this->softEvidenceNodes(),
+                         pot_list);
   }
 
   // find the tensors d-connected to a set of variables
@@ -607,7 +603,7 @@ namespace gum {
     // if the tensor has only barren variables, simply remove them from the
     // set of tensors, else just project the tensor
     MultiDimProjection< Tensor< GUM_SCALAR > > projector(_projection_op_);
-    _ScheduleMultiDimSet_                         projected_pots;
+    _ScheduleMultiDimSet_                      projected_pots;
     for (const auto& elt: pot2barren_var) {
       // remove the current tensor from pot_list as, anyway, we will change it
       const IScheduleMultiDim* pot = elt.first;
@@ -631,7 +627,7 @@ namespace gum {
   // remove barren variables directly without schedules
   template < typename GUM_SCALAR >
   Set< const Tensor< GUM_SCALAR >* >
-      VariableElimination< GUM_SCALAR >::_removeBarrenVariables_(_TensorSet_&   pot_list,
+      VariableElimination< GUM_SCALAR >::_removeBarrenVariables_(_TensorSet_&      pot_list,
                                                                  gum::VariableSet& del_vars) {
     // remove from del_vars the variables that received some evidence:
     // only those that did not receive evidence can be barren variables
@@ -659,7 +655,7 @@ namespace gum {
     // each variable with only one tensor is a barren variable
     // assign to each tensor with barren nodes its set of barren variables
     HashTable< const Tensor< GUM_SCALAR >*, gum::VariableSet > pot2barren_var;
-    gum::VariableSet                                              empty_var_set;
+    gum::VariableSet                                           empty_var_set;
     for (const auto& elt: var2pots) {
       if (elt.second.size() == 1) {              // here we have a barren variable
         const Tensor< GUM_SCALAR >* pot = *(elt.second.begin());
@@ -748,7 +744,7 @@ namespace gum {
     const auto& hard_ev_nodes = this->hardEvidenceNodes();
     if (_graph_.exists(node) || hard_ev_nodes.contains(node)) {
       const Tensor< GUM_SCALAR >& cpt       = bn.cpt(node);
-      const auto&                    variables = cpt.variablesSequence();
+      const auto&                 variables = cpt.variablesSequence();
 
       // check if the parents of a hard evidence node do not belong to _graph_
       // and are not themselves hard evidence. In this case, discard the CPT as
@@ -828,7 +824,7 @@ namespace gum {
   std::pair< Set< const Tensor< GUM_SCALAR >* >, Set< const Tensor< GUM_SCALAR >* > >
       VariableElimination< GUM_SCALAR >::_NodeTensors_(NodeId node) {
     std::pair< _TensorSet_, _TensorSet_ > res;
-    const auto&                                 bn = this->BN();
+    const auto&                           bn = this->BN();
 
     // get the CPT's of the node
     // beware: all the tensors that are defined over some nodes
@@ -844,7 +840,7 @@ namespace gum {
     const auto& hard_ev_nodes = this->hardEvidenceNodes();
     if (_graph_.exists(node) || hard_ev_nodes.contains(node)) {
       const Tensor< GUM_SCALAR >& cpt       = bn.cpt(node);
-      const auto&                    variables = cpt.variablesSequence();
+      const auto&                 variables = cpt.variablesSequence();
 
       // check if the parents of a hard evidence node do not belong to _graph_
       // and are not themselves hard evidence. In this case, discard the CPT as
@@ -875,7 +871,7 @@ namespace gum {
         if (hard_nodes.size() != variables.size()) {
           // perform the projection with a combine and project instance
           gum::VariableSet hard_variables;
-          _TensorSet_   marg_cpt_set(1 + hard_nodes.size());
+          _TensorSet_      marg_cpt_set(1 + hard_nodes.size());
           marg_cpt_set.insert(&cpt);
 
           for (const auto xnode: hard_nodes) {
@@ -916,10 +912,10 @@ namespace gum {
   template < typename GUM_SCALAR >
   std::pair< Set< const Tensor< GUM_SCALAR >* >, Set< const Tensor< GUM_SCALAR >* > >
       VariableElimination< GUM_SCALAR >::_produceMessage_(
-          NodeId                                               from_id,
-          NodeId                                               to_id,
-          std::pair< Set< const Tensor< GUM_SCALAR >* >,
-                     Set< const Tensor< GUM_SCALAR >* > >&& incoming_messages) {
+          NodeId from_id,
+          NodeId to_id,
+          std::pair< Set< const Tensor< GUM_SCALAR >* >, Set< const Tensor< GUM_SCALAR >* > >&&
+              incoming_messages) {
     // get the messages sent by adjacent nodes to from_id
     std::pair< _TensorSet_, _TensorSet_ > pot_list(std::move(incoming_messages));
 
@@ -968,7 +964,7 @@ namespace gum {
 
       // return the new set of tensors
       return std::pair< _TensorSet_, _TensorSet_ >(std::move(new_pot_list),
-                                                         std::move(pot_list.second));
+                                                   std::move(pot_list.second));
     }
   }
 
@@ -1029,8 +1025,8 @@ namespace gum {
   template < typename GUM_SCALAR >
   Set< const Tensor< GUM_SCALAR >* > VariableElimination< GUM_SCALAR >::_marginalizeOut_(
       Set< const Tensor< GUM_SCALAR >* > pot_list,
-      gum::VariableSet&                     del_vars,
-      gum::VariableSet&                     kept_vars) {
+      gum::VariableSet&                  del_vars,
+      gum::VariableSet&                  kept_vars) {
     // if pot list is empty, do nothing. This may happen when there are many barren variables
     if (pot_list.empty()) { return _TensorSet_(); }
 
@@ -1053,9 +1049,8 @@ namespace gum {
     } else if (pot_list.size() > 1) {
       // create a combine and project operator that will perform the
       // marginalization
-      MultiDimCombineAndProjectDefault< Tensor< GUM_SCALAR > > combine_and_project(
-          _combination_op_,
-          _projection_op_);
+      MultiDimCombineAndProjectDefault< Tensor< GUM_SCALAR > > combine_and_project(_combination_op_,
+                                                                                   _projection_op_);
       new_pot_list = combine_and_project.execute(pot_list, del_vars);
     }
 
@@ -1106,9 +1101,8 @@ namespace gum {
     } else if (pot_list.size() > 1) {
       // create a combine and project operator that will perform the
       // marginalization
-      MultiDimCombineAndProjectDefault< Tensor< GUM_SCALAR > > combine_and_project(
-          _combination_op_,
-          _projection_op_);
+      MultiDimCombineAndProjectDefault< Tensor< GUM_SCALAR > > combine_and_project(_combination_op_,
+                                                                                   _projection_op_);
       new_pot_list = combine_and_project.schedule(schedule, pot_list, del_vars);
     }
 
@@ -1117,8 +1111,7 @@ namespace gum {
     // tensors were just temporary tensors
     for (auto pot: barren_projected_tensors) {
       if (!new_pot_list.exists(pot)) {
-        const auto sched_pot
-            = static_cast< const ScheduleMultiDim< Tensor< GUM_SCALAR > >* >(pot);
+        const auto sched_pot = static_cast< const ScheduleMultiDim< Tensor< GUM_SCALAR > >* >(pot);
         schedule.emplaceDeletion(*sched_pot);
       }
     }
@@ -1132,8 +1125,7 @@ namespace gum {
 
   /// returns a fresh tensor equal to P(1st arg,evidence)
   template < typename GUM_SCALAR >
-  Tensor< GUM_SCALAR >*
-      VariableElimination< GUM_SCALAR >::unnormalizedJointPosterior_(NodeId id) {
+  Tensor< GUM_SCALAR >* VariableElimination< GUM_SCALAR >::unnormalizedJointPosterior_(NodeId id) {
     // hard evidence do not belong to the join tree
     // # TODO: check for sets of inconsistent hard evidence
     if (this->hardEvidenceNodes().contains(id)) {
@@ -1165,13 +1157,11 @@ namespace gum {
 
   /// returns a fresh tensor equal to P(1st arg,evidence) without using schedules
   template < typename GUM_SCALAR >
-  Tensor< GUM_SCALAR >*
-      VariableElimination< GUM_SCALAR >::_unnormalizedJointPosterior_(NodeId id) {
+  Tensor< GUM_SCALAR >* VariableElimination< GUM_SCALAR >::_unnormalizedJointPosterior_(NodeId id) {
     const auto& bn = this->BN();
 
-    NodeId                                      clique_of_id = _node_to_clique_[id];
-    std::pair< _TensorSet_, _TensorSet_ > pot_list
-        = _collectMessage_(clique_of_id, clique_of_id);
+    NodeId                                clique_of_id = _node_to_clique_[id];
+    std::pair< _TensorSet_, _TensorSet_ > pot_list = _collectMessage_(clique_of_id, clique_of_id);
 
     // get the set of variables that need be removed from the tensors
     const NodeSet&   nodes = _JT_->clique(clique_of_id);
@@ -1258,7 +1248,7 @@ namespace gum {
     // pot_list now contains all the tensors to multiply and marginalize
     // => combine the messages
     _ScheduleMultiDimSet_ new_pot_list = _marginalizeOut_(schedule, pot_list, del_vars, kept_vars);
-    Tensor< GUM_SCALAR >*                     joint         = nullptr;
+    Tensor< GUM_SCALAR >* joint        = nullptr;
     ScheduleMultiDim< Tensor< GUM_SCALAR > >* resulting_pot = nullptr;
 
     if (new_pot_list.size() == 0) {
@@ -1270,8 +1260,7 @@ namespace gum {
       if (new_pot_list.size() == 1) {
         scheduler.execute(schedule);
         resulting_pot = const_cast< ScheduleMultiDim< Tensor< GUM_SCALAR > >* >(
-            static_cast< const ScheduleMultiDim< Tensor< GUM_SCALAR > >* >(
-                *new_pot_list.begin()));
+            static_cast< const ScheduleMultiDim< Tensor< GUM_SCALAR > >* >(*new_pot_list.begin()));
       } else {
         MultiDimCombinationDefault< Tensor< GUM_SCALAR > > fast_combination(_combination_op_);
         const IScheduleMultiDim* pot = fast_combination.schedule(schedule, new_pot_list);
@@ -1418,7 +1407,7 @@ namespace gum {
     } else {
       // combine all the tensors in new_pot_list with all the hard evidence
       // of the nodes in set
-      const auto&    evidence         = this->evidence();
+      const auto& evidence         = this->evidence();
       _TensorSet_ new_new_pot_list = new_pot_list;
       for (const auto node: hard_ev_nodes) {
         new_new_pot_list.insert(evidence[node]);
@@ -1481,7 +1470,7 @@ namespace gum {
     // => combine the messages
     _ScheduleMultiDimSet_ new_pot_list = _marginalizeOut_(schedule, pot_list, del_vars, kept_vars);
     ScheduleMultiDim< Tensor< GUM_SCALAR > >* resulting_pot = nullptr;
-    auto&                                        scheduler     = this->scheduler();
+    auto&                                     scheduler     = this->scheduler();
 
     if ((new_pot_list.size() == 1) && hard_ev_nodes.empty()) {
       scheduler.execute(schedule);

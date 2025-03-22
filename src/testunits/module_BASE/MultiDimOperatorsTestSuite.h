@@ -35,9 +35,6 @@
  ****************************************************************************/
 
 
-
-
-
 #include <cstdlib>
 #include <iostream>
 #include <sstream>
@@ -1098,7 +1095,7 @@ namespace gum_tests {
     // ==========================================================================
     // ==========================================================================
     gum::Tensor< double >* add_test_tensors(const gum::Tensor< double >& t1,
-                                                  const gum::Tensor< double >& t2) {
+                                            const gum::Tensor< double >& t2) {
       // creation of the resulting variable list
       gum::Sequence< const gum::DiscreteVariable* >        seq  = t1.variablesSequence();
       const gum::Sequence< const gum::DiscreteVariable* >& seq2 = t2.variablesSequence();
@@ -1130,7 +1127,7 @@ namespace gum_tests {
     // ==========================================================================
     // ==========================================================================
     gum::Tensor< double >* sub_test_tensors(const gum::Tensor< double >& t1,
-                                                  const gum::Tensor< double >& t2) {
+                                            const gum::Tensor< double >& t2) {
       // creation of the resulting variable list
       gum::Sequence< const gum::DiscreteVariable* >        seq  = t1.variablesSequence();
       const gum::Sequence< const gum::DiscreteVariable* >& seq2 = t2.variablesSequence();
@@ -1162,7 +1159,7 @@ namespace gum_tests {
     // ==========================================================================
     // ==========================================================================
     gum::Tensor< double >* mult_test_tensors(const gum::Tensor< double >& t1,
-                                                   const gum::Tensor< double >& t2) {
+                                             const gum::Tensor< double >& t2) {
       // creation of the resulting variable list
       gum::Sequence< const gum::DiscreteVariable* >        seq  = t1.variablesSequence();
       const gum::Sequence< const gum::DiscreteVariable* >& seq2 = t2.variablesSequence();
@@ -1194,7 +1191,7 @@ namespace gum_tests {
     // ==========================================================================
     // ==========================================================================
     gum::Tensor< double >* div_test_tensors(const gum::Tensor< double >& t1,
-                                                  const gum::Tensor< double >& t2) {
+                                            const gum::Tensor< double >& t2) {
       // creation of the resulting variable list
       gum::Sequence< const gum::DiscreteVariable* >        seq  = t1.variablesSequence();
       const gum::Sequence< const gum::DiscreteVariable* >& seq2 = t2.variablesSequence();

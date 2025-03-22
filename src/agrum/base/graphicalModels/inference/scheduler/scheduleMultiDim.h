@@ -35,9 +35,6 @@
  ****************************************************************************/
 
 
-
-
-
 /** @file
  * @brief a Wrapper for multi-dimensional tables used for scheduling inferences
  *

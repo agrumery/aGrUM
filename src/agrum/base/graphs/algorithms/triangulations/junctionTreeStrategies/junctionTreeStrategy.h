@@ -35,9 +35,6 @@
  ****************************************************************************/
 
 
-
-
-
 /** @file
  * @brief Base Class for all the algorithms producing a junction given a set
  * of cliques/subcliques resulting from a triangulation

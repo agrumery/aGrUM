@@ -24,7 +24,7 @@
 How to create a BN with pyAgrum
 """
 
-import pyAgrum as gum
+import pyagrum as gum
 
 bn=gum.BayesNet()
 

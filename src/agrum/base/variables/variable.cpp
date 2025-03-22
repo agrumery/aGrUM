@@ -35,9 +35,6 @@
  ****************************************************************************/
 
 
-
-
-
 #include <agrum/base/variables/variable.h>
 
 #ifdef GUM_NO_INLINE

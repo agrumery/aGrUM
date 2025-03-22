@@ -35,9 +35,6 @@
  ****************************************************************************/
 
 
-
-
-
 /** @file
  * @brief Source implementation of maxIducedWidthMCBayesNetGenerator
  *

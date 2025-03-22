@@ -35,7 +35,4 @@
  ****************************************************************************/
 
 
-
-
-
 #include <agrum/BN/inference/tools/jointTargetedInference.h>

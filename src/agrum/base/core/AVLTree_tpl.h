@@ -35,9 +35,6 @@
  ****************************************************************************/
 
 
-
-
-
 #include <functional>
 #include <sstream>
 #include <utility>

@@ -35,9 +35,6 @@
  ****************************************************************************/
 
 
-
-
-
 #include <sstream>
 
 #include <gumtest/AgrumTestSuite.h>
@@ -276,9 +273,9 @@ namespace gum_tests {
       auto                           bn = new gum::BayesNet< double >("asia");
       gum::BayesNetFactory< double > factory(bn);
       sys.groundedBN(factory);
-      auto                            id = bn->idFromName("asia.(boolean)visitToAsia");
-      std::vector< double >           values;
-      const auto&                     cpf = _asia_->get("visitToAsia").cpf();
+      auto                         id = bn->idFromName("asia.(boolean)visitToAsia");
+      std::vector< double >        values;
+      const auto&                  cpf = _asia_->get("visitToAsia").cpf();
       gum::Tensor< double > const* cpt = nullptr;
       // Act
       TS_ASSERT_THROWS_NOTHING(cpt = &(bn->cpt(id)))
@@ -300,9 +297,9 @@ namespace gum_tests {
       auto                           bn = new gum::BayesNet< double >("asia");
       gum::BayesNetFactory< double > factory(bn);
       sys.groundedBN(factory);
-      auto                            id = bn->idFromName("asia.(boolean)tuberculosis");
-      std::vector< double >           values;
-      const auto&                     cpf = _asia_->get("tuberculosis").cpf();
+      auto                         id = bn->idFromName("asia.(boolean)tuberculosis");
+      std::vector< double >        values;
+      const auto&                  cpf = _asia_->get("tuberculosis").cpf();
       gum::Tensor< double > const* cpt = nullptr;
       // Act
       TS_ASSERT_THROWS_NOTHING(cpt = &(bn->cpt(id)))
@@ -324,9 +321,9 @@ namespace gum_tests {
       auto                           bn = new gum::BayesNet< double >("asia");
       gum::BayesNetFactory< double > factory(bn);
       sys.groundedBN(factory);
-      auto                            id = bn->idFromName("asia.(boolean)smoking");
-      std::vector< double >           values;
-      const auto&                     cpf = _asia_->get("smoking").cpf();
+      auto                         id = bn->idFromName("asia.(boolean)smoking");
+      std::vector< double >        values;
+      const auto&                  cpf = _asia_->get("smoking").cpf();
       gum::Tensor< double > const* cpt = nullptr;
       // Act
       TS_ASSERT_THROWS_NOTHING(cpt = &(bn->cpt(id)))
@@ -348,9 +345,9 @@ namespace gum_tests {
       auto                           bn = new gum::BayesNet< double >("asia");
       gum::BayesNetFactory< double > factory(bn);
       sys.groundedBN(factory);
-      auto                            id = bn->idFromName("asia.(boolean)lungCancer");
-      std::vector< double >           values;
-      const auto&                     cpf = _asia_->get("lungCancer").cpf();
+      auto                         id = bn->idFromName("asia.(boolean)lungCancer");
+      std::vector< double >        values;
+      const auto&                  cpf = _asia_->get("lungCancer").cpf();
       gum::Tensor< double > const* cpt = nullptr;
       // Act
       TS_ASSERT_THROWS_NOTHING(cpt = &(bn->cpt(id)))
@@ -372,9 +369,9 @@ namespace gum_tests {
       auto                           bn = new gum::BayesNet< double >("asia");
       gum::BayesNetFactory< double > factory(bn);
       sys.groundedBN(factory);
-      auto                            id = bn->idFromName("asia.(boolean)bronchitis");
-      std::vector< double >           values;
-      const auto&                     cpf = _asia_->get("bronchitis").cpf();
+      auto                         id = bn->idFromName("asia.(boolean)bronchitis");
+      std::vector< double >        values;
+      const auto&                  cpf = _asia_->get("bronchitis").cpf();
       gum::Tensor< double > const* cpt = nullptr;
       // Act
       TS_ASSERT_THROWS_NOTHING(cpt = &(bn->cpt(id)))
@@ -396,9 +393,9 @@ namespace gum_tests {
       auto                           bn = new gum::BayesNet< double >("asia");
       gum::BayesNetFactory< double > factory(bn);
       sys.groundedBN(factory);
-      auto                            id = bn->idFromName("asia.(boolean)tubOrCancer");
-      std::vector< double >           values;
-      const auto&                     cpf = _asia_->get("tubOrCancer").cpf();
+      auto                         id = bn->idFromName("asia.(boolean)tubOrCancer");
+      std::vector< double >        values;
+      const auto&                  cpf = _asia_->get("tubOrCancer").cpf();
       gum::Tensor< double > const* cpt = nullptr;
       // Act
       TS_ASSERT_THROWS_NOTHING(cpt = &(bn->cpt(id)))
@@ -420,9 +417,9 @@ namespace gum_tests {
       auto                           bn = new gum::BayesNet< double >("asia");
       gum::BayesNetFactory< double > factory(bn);
       sys.groundedBN(factory);
-      auto                            id = bn->idFromName("asia.(boolean)positiveXRay");
-      std::vector< double >           values;
-      const auto&                     cpf = _asia_->get("positiveXRay").cpf();
+      auto                         id = bn->idFromName("asia.(boolean)positiveXRay");
+      std::vector< double >        values;
+      const auto&                  cpf = _asia_->get("positiveXRay").cpf();
       gum::Tensor< double > const* cpt = nullptr;
       // Act
       TS_ASSERT_THROWS_NOTHING(cpt = &(bn->cpt(id)))
@@ -444,9 +441,9 @@ namespace gum_tests {
       auto                           bn = new gum::BayesNet< double >("asia");
       gum::BayesNetFactory< double > factory(bn);
       sys.groundedBN(factory);
-      auto                            id = bn->idFromName("asia.(boolean)dyspnea");
-      std::vector< double >           values;
-      const auto&                     cpf = _asia_->get("dyspnea").cpf();
+      auto                         id = bn->idFromName("asia.(boolean)dyspnea");
+      std::vector< double >        values;
+      const auto&                  cpf = _asia_->get("dyspnea").cpf();
       gum::Tensor< double > const* cpt = nullptr;
       // Act
       TS_ASSERT_THROWS_NOTHING(cpt = &(bn->cpt(id)))

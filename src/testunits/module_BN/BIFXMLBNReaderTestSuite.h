@@ -35,9 +35,6 @@
  ****************************************************************************/
 
 
-
-
-
 #include <iostream>
 #include <string>
 
@@ -649,7 +646,7 @@ namespace gum_tests {
         TS_ASSERT_EQUALS(lvfailure.label(1), "FALSE")
 
         const gum::Tensor< double >& cpt = net->cpt(idMap["LVEDVOLUME"]);
-        gum::Instantiation              inst(cpt);
+        gum::Instantiation           inst(cpt);
 
         gum::Instantiation var_inst;
         var_inst << lvedvolume;

@@ -35,9 +35,6 @@
  ****************************************************************************/
 
 
-
-
-
 #include <agrum/BN/learning/priors/DirichletPriorFromDatabase.h>
 /** @file
  * @brief A dirichlet priori: computes its N'_ijk from a database

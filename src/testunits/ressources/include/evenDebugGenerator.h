@@ -35,8 +35,6 @@
  ****************************************************************************/
 
 
-
-
 /** @file
  * @brief A DBRowGenerator class that returns exactly k times the rows it gets
  * in input when there has been an even number of times method setInputDBRow

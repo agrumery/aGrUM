@@ -35,9 +35,6 @@
  ****************************************************************************/
 
 
-
-
-
 /** @file
  * @brief the base class for estimating parameters of CPTs
  *
@@ -206,7 +203,7 @@ namespace gum {
       template < typename GUM_SCALAR >
       void setParameters(const NodeId                 target_node,
                          const std::vector< NodeId >& conditioning_nodes,
-                         Tensor< GUM_SCALAR >&     pot);
+                         Tensor< GUM_SCALAR >&        pot);
 
       /// returns the mapping from ids to column positions in the database
       /** @warning An empty nodeId2Columns bijection means that the mapping is
@@ -255,7 +252,7 @@ namespace gum {
       template < typename GUM_SCALAR >
       void _checkParameters_(const NodeId                 target_node,
                              const std::vector< NodeId >& conditioning_nodes,
-                             Tensor< GUM_SCALAR >&     pot);
+                             Tensor< GUM_SCALAR >&        pot);
 
       // sets the CPT's parameters corresponding to a given Tensor
       // when the tensor belongs to a BayesNet<GUM_SCALAR> when
@@ -264,7 +261,7 @@ namespace gum {
       typename std::enable_if< !std::is_same< GUM_SCALAR, double >::value, void >::type
           _setParameters_(const NodeId                 target_node,
                           const std::vector< NodeId >& conditioning_nodes,
-                          Tensor< GUM_SCALAR >&     pot);
+                          Tensor< GUM_SCALAR >&        pot);
 
       // sets the CPT's parameters corresponding to a given Tensor
       // when the tensor belongs to a BayesNet<GUM_SCALAR> when
@@ -273,7 +270,7 @@ namespace gum {
       typename std::enable_if< std::is_same< GUM_SCALAR, double >::value, void >::type
           _setParameters_(const NodeId                 target_node,
                           const std::vector< NodeId >& conditioning_nodes,
-                          Tensor< GUM_SCALAR >&     pot);
+                          Tensor< GUM_SCALAR >&        pot);
 
 #endif /* DOXYGEN_SHOULD_SKIP_THIS */
     };

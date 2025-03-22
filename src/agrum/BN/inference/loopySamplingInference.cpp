@@ -35,9 +35,6 @@
  ****************************************************************************/
 
 
-
-
-
 #include <agrum/BN/inference/loopySamplingInference.h>
 
 #ifndef GUM_NO_EXTERN_TEMPLATE_CLASS

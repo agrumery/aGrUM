@@ -35,9 +35,6 @@
  ****************************************************************************/
 
 
-
-
-
 /** @file
  * @brief An Elimination sequence algorithm that imposes a given partial
  * ordering on the nodes elimination sequence

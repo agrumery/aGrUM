@@ -35,9 +35,6 @@
  ****************************************************************************/
 
 
-
-
-
 /** @file
  * @brief Base Class for all elimination sequence algorithms used by
  * triangulations

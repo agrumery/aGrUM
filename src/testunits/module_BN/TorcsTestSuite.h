@@ -35,9 +35,6 @@
  ****************************************************************************/
 
 
-
-
-
 #include <iostream>
 #include <string>
 
@@ -86,13 +83,10 @@ namespace gum_tests {
       bn->addArc(idMap[node3], idMap[node5]);
       bn->addArc(idMap[node4], idMap[node5]);
 
-      evidence = new gum::List< gum::Tensor< double >* >();
-      gum::Tensor< double >* e1
-          = new gum::Tensor< double >(new gum::MultiDimArray< double >());
-      gum::Tensor< double >* e2
-          = new gum::Tensor< double >(new gum::MultiDimArray< double >());
-      gum::Tensor< double >* e3
-          = new gum::Tensor< double >(new gum::MultiDimArray< double >());
+      evidence                  = new gum::List< gum::Tensor< double >* >();
+      gum::Tensor< double >* e1 = new gum::Tensor< double >(new gum::MultiDimArray< double >());
+      gum::Tensor< double >* e2 = new gum::Tensor< double >(new gum::MultiDimArray< double >());
+      gum::Tensor< double >* e3 = new gum::Tensor< double >(new gum::MultiDimArray< double >());
 
       try {
         (*e1) << bn->variable(idMap[node1]);

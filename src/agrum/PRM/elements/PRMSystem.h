@@ -35,9 +35,6 @@
  ****************************************************************************/
 
 
-
-
-
 /**
  * @file
  * @brief Headers of PRMSystem.
@@ -321,8 +318,8 @@ namespace gum {
       /// grounded.
       /// @param factory  The factory used to build the grounded IBayesNet.
       void _groundTensor_(const PRMInstance< GUM_SCALAR >&  instance,
-                             const PRMAttribute< GUM_SCALAR >& attr,
-                             BayesNetFactory< GUM_SCALAR >&    factory) const;
+                          const PRMAttribute< GUM_SCALAR >& attr,
+                          BayesNetFactory< GUM_SCALAR >&    factory) const;
 
       /// @brief Ground an aggregator with the given name in the grounded
       ///        IBayesNet.

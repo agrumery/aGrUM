@@ -35,9 +35,6 @@
  ****************************************************************************/
 
 
-
-
-
 /** @file
  * @brief A class used by learning caches to represent uniquely sets of variables
  *

@@ -35,9 +35,6 @@
  ****************************************************************************/
 
 
-
-
-
 /**
  * @file
  * @brief Header file of gum::Sequence, a class for storing (ordered) sequences

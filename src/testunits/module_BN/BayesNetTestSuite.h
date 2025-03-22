@@ -35,9 +35,6 @@
  ****************************************************************************/
 
 
-
-
-
 #include <iostream>
 #include <string>
 #include <vector>
@@ -266,8 +263,8 @@ namespace gum_tests {
 
         const gum::Tensor< double >& srcCPT = source.cpt(node);
         const gum::Tensor< double >& cpCPT  = copy.cpt(node);
-        gum::Instantiation              srcInst(srcCPT);
-        gum::Instantiation              cpInst(cpCPT);
+        gum::Instantiation           srcInst(srcCPT);
+        gum::Instantiation           cpInst(cpCPT);
 
         for (cpInst.setFirst(); !cpInst.end(); cpInst.inc()) {
           for (gum::Idx i = 0; i < cpInst.nbrDim(); i++) {

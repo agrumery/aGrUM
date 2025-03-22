@@ -35,9 +35,6 @@
  ****************************************************************************/
 
 
-
-
-
 #include <sstream>
 
 #include <gumtest/AgrumTestSuite.h>
@@ -68,14 +65,14 @@ namespace gum_tests {
       pot1 << *(vars[0]) << *(vars[2]) << *(vars[3]) << *(vars[4]);
       pot1.random();
       gum::ScheduleMultiDim< gum::Tensor< double > > f1(pot1, true);
-      gum::VariableSet                                  del_vars1;
+      gum::VariableSet                               del_vars1;
       del_vars1 << vars[0] << vars[3];
 
       gum::Tensor< double > pot2;
       pot2 << *(vars[1]) << *(vars[2]) << *(vars[3]) << *(vars[4]);
       pot2.random();
       gum::ScheduleMultiDim< gum::Tensor< double > > f2(pot2, true);
-      gum::VariableSet                                  del_vars2;
+      gum::VariableSet                               del_vars2;
       del_vars2 << vars[0] << vars[3] << vars[2];
 
       gum::ScheduleProjection< gum::Tensor< double > > myproj(f1, del_vars1, myProjectMax);
@@ -257,7 +254,7 @@ namespace gum_tests {
       pot1.random();
       gum::ScheduleMultiDim< gum::Tensor< double > > f1(pot1, false);
 
-      gum::VariableSet                                    del_vars1;
+      gum::VariableSet                                 del_vars1;
       gum::ScheduleProjection< gum::Tensor< double > > myproj1(f1, del_vars1, myProjectMax);
       TS_ASSERT(myproj1.result().domainSize() == 16)
       TS_ASSERT(myproj1.nbOperations() == 16.0)
@@ -274,9 +271,8 @@ namespace gum_tests {
       gum::ScheduleProjection< gum::Tensor< double > > myproj1b(f1, del_vars1, myProjectMax);
       TS_ASSERT(myproj1b.result().domainSize() == 1)
       TS_ASSERT(myproj1b.nbOperations() == 16.0)
-      mem_usage
-          = std::pair< double, double >(1.0 * sizeof(double) + sizeof(gum::Tensor< double >),
-                                        1.0 * sizeof(double) + sizeof(gum::Tensor< double >));
+      mem_usage = std::pair< double, double >(1.0 * sizeof(double) + sizeof(gum::Tensor< double >),
+                                              1.0 * sizeof(double) + sizeof(gum::Tensor< double >));
       TS_ASSERT(myproj1b.memoryUsage() == mem_usage)
       TS_ASSERT(myproj1b.result().isAbstract())
       myproj1b.execute();
@@ -295,15 +291,14 @@ namespace gum_tests {
       myproj2.execute();
       gum::Tensor< double > pot2 = myProjectMax(pot1, del_vars1);
       TS_ASSERT(pot2 == myproj2.result().multiDim())
-      gum::Sequence< const gum::IScheduleMultiDim* >    seq;
+      gum::Sequence< const gum::IScheduleMultiDim* > seq;
       gum::ScheduleMultiDim< gum::Tensor< double > > xpot2(pot2, false);
       seq << &xpot2;
       myproj2.updateArgs(seq);
       TS_ASSERT(myproj2.result().domainSize() == 8)
       TS_ASSERT(myproj2.nbOperations() == 8.0)
-      mem_usage
-          = std::pair< double, double >(8.0 * sizeof(double) + sizeof(gum::Tensor< double >),
-                                        8.0 * sizeof(double) + sizeof(gum::Tensor< double >));
+      mem_usage = std::pair< double, double >(8.0 * sizeof(double) + sizeof(gum::Tensor< double >),
+                                              8.0 * sizeof(double) + sizeof(gum::Tensor< double >));
       TS_ASSERT(myproj2.memoryUsage() == mem_usage)
       TS_ASSERT(myproj2.result().isAbstract())
       myproj2.execute();
@@ -330,9 +325,8 @@ namespace gum_tests {
       TS_ASSERT(!myproj2.result().isAbstract())
       TS_ASSERT(myproj2.result().multiDim() == pot4)
       TS_ASSERT(myproj2.result().domainSize() == 1)
-      mem_usage
-          = std::pair< double, double >(1.0 * sizeof(double) + sizeof(gum::Tensor< double >),
-                                        1.0 * sizeof(double) + sizeof(gum::Tensor< double >));
+      mem_usage = std::pair< double, double >(1.0 * sizeof(double) + sizeof(gum::Tensor< double >),
+                                              1.0 * sizeof(double) + sizeof(gum::Tensor< double >));
       TS_ASSERT(myproj2.nbOperations() == 1.0)
       TS_ASSERT(myproj2.memoryUsage() == mem_usage)
       myproj2.execute();
@@ -375,20 +369,20 @@ namespace gum_tests {
 
     private:
     static gum::Tensor< double > myProjectMax(const gum::Tensor< double >& pot,
-                                                 const gum::VariableSet&         del_vars) {
+                                              const gum::VariableSet&      del_vars) {
       return gum::Tensor< double >(gum::projectMax(*(pot.content()), del_vars));
     }
 
     static gum::Tensor< double > myProjectMin(const gum::Tensor< double >& pot,
-                                                 const gum::VariableSet&         del_vars) {
+                                              const gum::VariableSet&      del_vars) {
       return gum::Tensor< double >(gum::projectMin(*(pot.content()), del_vars));
     }
 
     // projection of a table over a set
     gum::Tensor< double > proj(const gum::Tensor< double >& table,
-                                  const gum::VariableSet&         del_vars,
-                                  float                           neutral_elt) {
-      gum::Tensor< double >                             result;
+                               const gum::VariableSet&      del_vars,
+                               float                        neutral_elt) {
+      gum::Tensor< double >                                result;
       const gum::Sequence< const gum::DiscreteVariable* >& vars = table.variablesSequence();
       result.beginMultipleChanges();
 

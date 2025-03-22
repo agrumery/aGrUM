@@ -35,7 +35,4 @@
  ****************************************************************************/
 
 
-
-
-
 #include <agrum/MRF/inference/tools/jointTargetedMRFInference.h>

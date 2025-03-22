@@ -35,9 +35,6 @@
  ****************************************************************************/
 
 
-
-
-
 /**
  * @file
  * @brief Implementations of the classes defined
@@ -53,7 +50,7 @@
 #  include <agrum/ID/inference/ShaferShenoyLIMIDInference.h>
 #  include <agrum/ID/inference/tools/decisionTensor.h>
 
-#  define GUM_SSLI_TRACE_ON(x)             // GUM_TRACE(x)
+#  define GUM_SSLI_TRACE_ON(x)          // GUM_TRACE(x)
 #  define GUM_SSLI_TENSOR_TRACE_ON(x)   // GUM_TRACE(x)
 
 namespace gum {
@@ -691,7 +688,7 @@ namespace gum {
 
       res.probPot
           = gum::DecisionTensor< GUM_SCALAR >::divideEvenZero(res.probPot,
-                                                                 psi[gum::Arc(node, from)].probPot);
+                                                              psi[gum::Arc(node, from)].probPot);
       res.utilPot = res.utilPot - psi[gum::Arc(node, from)].utilPot;
 
       phi.set(node, res);

@@ -35,9 +35,6 @@
  ****************************************************************************/
 
 
-
-
-
 /** @file
  * @brief An algorithm for converting a join tree into a binary join tree
  *

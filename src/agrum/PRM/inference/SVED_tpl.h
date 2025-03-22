@@ -35,9 +35,6 @@
  ****************************************************************************/
 
 
-
-
-
 /**
  * @file
  * @brief Inline implementation of SVED.
@@ -453,8 +450,7 @@ namespace gum {
     }
 
     template < typename GUM_SCALAR >
-    void SVED< GUM_SCALAR >::joint_(const std::vector< Chain >& queries,
-                                    Tensor< GUM_SCALAR >&    j) {
+    void SVED< GUM_SCALAR >::joint_(const std::vector< Chain >& queries, Tensor< GUM_SCALAR >& j) {
       GUM_ERROR(FatalError, "Not implemented.")
     }
 
@@ -528,7 +524,7 @@ namespace gum {
     template < typename GUM_SCALAR >
     INLINE Tensor< GUM_SCALAR >*
            SVED< GUM_SCALAR >::_getAggTensor_(const PRMInstance< GUM_SCALAR >*  i,
-                                              const PRMAggregate< GUM_SCALAR >* agg) {
+                                           const PRMAggregate< GUM_SCALAR >* agg) {
       return &(const_cast< Tensor< GUM_SCALAR >& >(i->get(agg->safeName()).cpf()));
     }
 

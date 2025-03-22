@@ -35,9 +35,6 @@
  ****************************************************************************/
 
 
-
-
-
 /** @file
  * @brief the structural constraint for forbidding parents for some nodes
  * during structure learning

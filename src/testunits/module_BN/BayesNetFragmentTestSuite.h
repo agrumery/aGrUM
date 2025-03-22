@@ -35,9 +35,6 @@
  ****************************************************************************/
 
 
-
-
-
 #include <iostream>
 
 #include <gumtest/AgrumTestSuite.h>
@@ -487,7 +484,7 @@ namespace gum_tests {
         inf_complete.addEvidence(ev);
         inf_complete.makeInference();
 
-        auto                            p  = inf_complete.posterior(bn.idFromName("v6"));
+        auto                         p  = inf_complete.posterior(bn.idFromName("v6"));
         const gum::Tensor< double >& p1 = inf_complete.posterior(bn.idFromName("v6"));
 
         // propagation in the fragment
@@ -593,8 +590,8 @@ namespace gum_tests {
             << bn.variable(bn.idFromName("v3"));
 
       const gum::Tensor< double >& pot2 = bn2.cpt(bn2.idFromName("v5"));
-      gum::Instantiation              I(pot2);
-      gum::Instantiation              J(newV5);
+      gum::Instantiation           I(pot2);
+      gum::Instantiation           J(newV5);
 
       for (I.setFirst(), J.setFirst(); !I.end(); ++I, ++J)
         newV5.set(J, pot2[I]);

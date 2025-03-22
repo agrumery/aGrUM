@@ -35,9 +35,6 @@
  ****************************************************************************/
 
 
-
-
-
 #include <iostream>
 #include <string>
 #include <vector>
@@ -78,7 +75,7 @@ namespace gum_tests {
       iemn.makeInference();
 
       for (const auto n: bn.nodes()) {
-        const std::string&              name   = bn.variable(n).name();
+        const std::string&           name   = bn.variable(n).name();
         const gum::Tensor< double >& postbn = iebn.posterior(name);
 
         gum::Tensor< double > postmn;
@@ -99,7 +96,7 @@ namespace gum_tests {
       iemn.makeInference();
 
       for (const auto n: bn.nodes()) {
-        const std::string&              name   = bn.variable(n).name();
+        const std::string&           name   = bn.variable(n).name();
         const gum::Tensor< double >& postbn = iebn.posterior(name);
 
         gum::Tensor< double > postmn;
@@ -122,7 +119,7 @@ namespace gum_tests {
       iemn.makeInference();
 
       for (const auto n: bn.nodes()) {
-        const std::string&              name   = bn.variable(n).name();
+        const std::string&           name   = bn.variable(n).name();
         const gum::Tensor< double >& postbn = iebn.posterior(name);
 
         gum::Tensor< double > postmn;
@@ -145,7 +142,7 @@ namespace gum_tests {
       iemn.makeInference();
 
       for (const auto n: bn.nodes()) {
-        const std::string&              name   = bn.variable(n).name();
+        const std::string&           name   = bn.variable(n).name();
         const gum::Tensor< double >& postbn = iebn.posterior(name);
 
         gum::Tensor< double > postmn;
@@ -168,7 +165,7 @@ namespace gum_tests {
       iemn.makeInference();
 
       for (const auto n: bn.nodes()) {
-        const std::string&              name   = bn.variable(n).name();
+        const std::string&           name   = bn.variable(n).name();
         const gum::Tensor< double >& postbn = iebn.posterior(name);
 
         gum::Tensor< double > postmn;
@@ -389,7 +386,7 @@ namespace gum_tests {
     }
 
     GUM_ACTIVE_TEST(IrrelevantSoftEvidence) {
-      auto mn = gum::MarkovRandomField< double >::fastPrototype("A--B--C;D--C--E");
+      auto                  mn = gum::MarkovRandomField< double >::fastPrototype("A--B--C;D--C--E");
       gum::Tensor< double > psoft;
       gum::Tensor< double > phard;
 

@@ -35,9 +35,6 @@
  ****************************************************************************/
 
 
-
-
-
 /** @file
  * @brief Inlined implementation for initializing DatabaseTables and
  * RawDatabaseTables from files or sql databases

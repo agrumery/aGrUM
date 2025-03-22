@@ -35,9 +35,6 @@
  ****************************************************************************/
 
 
-
-
-
 /**
  * @file
  * @brief Implementation of the Tensor class.
@@ -91,7 +88,7 @@ namespace gum {
   // complex copy constructor : we choose the implementation
   template < typename GUM_SCALAR >
   Tensor< GUM_SCALAR >::Tensor(MultiDimImplementation< GUM_SCALAR >*  aContent,
-                                     const MultiDimContainer< GUM_SCALAR >& src) :
+                               const MultiDimContainer< GUM_SCALAR >& src) :
       MultiDimDecorator< GUM_SCALAR >(aContent) {
     // for debugging purposes
     GUM_CONSTRUCTOR(Tensor)
@@ -250,8 +247,7 @@ namespace gum {
   }
 
   template < typename GUM_SCALAR >
-  INLINE const Tensor< GUM_SCALAR >&
-               Tensor< GUM_SCALAR >::fillWith(const GUM_SCALAR& val) const {
+  INLINE const Tensor< GUM_SCALAR >& Tensor< GUM_SCALAR >::fillWith(const GUM_SCALAR& val) const {
     this->fill(val);
     return *this;
   }
@@ -291,8 +287,8 @@ namespace gum {
 
   template < typename GUM_SCALAR >
   INLINE const Tensor< GUM_SCALAR >&
-               Tensor< GUM_SCALAR >::fillWith(const Tensor< GUM_SCALAR >&    src,
-                                        const std::vector< std::string >& mapSrc) const {
+               Tensor< GUM_SCALAR >::fillWith(const Tensor< GUM_SCALAR >&       src,
+                                     const std::vector< std::string >& mapSrc) const {
     if (src.nbrDim() != this->nbrDim()) {
       GUM_ERROR(InvalidArgument, "Tensor to copy has not the same size.")
     }
@@ -338,8 +334,7 @@ namespace gum {
   template < typename GUM_SCALAR >
   INLINE GUM_SCALAR Tensor< GUM_SCALAR >::KL(const Tensor< GUM_SCALAR >& p) const {
     if (this->nbrDim() != p.nbrDim())
-      GUM_ERROR(InvalidArgument,
-                "BNdistance between tensors with different numbers of dimensions")
+      GUM_ERROR(InvalidArgument, "BNdistance between tensors with different numbers of dimensions")
     for (const auto var: p.variablesSequence()) {
       if (!this->contains(*var))
         GUM_ERROR(InvalidArgument, "A variable in the argument does not belong to the tensor.")
@@ -393,8 +388,7 @@ namespace gum {
   }
 
   template < typename GUM_SCALAR >
-  INLINE const Tensor< GUM_SCALAR >&
-               Tensor< GUM_SCALAR >::normalizeAsCPT(const Idx& varId) const {
+  INLINE const Tensor< GUM_SCALAR >& Tensor< GUM_SCALAR >::normalizeAsCPT(const Idx& varId) const {
     if (static_cast< MultiDimContainer< GUM_SCALAR >* >(this->content_)->empty()) {
       if (this->empty_value_ != static_cast< GUM_SCALAR >(0)) {
         this->empty_value_ = static_cast< GUM_SCALAR >(1.0);
@@ -444,8 +438,7 @@ namespace gum {
   }
 
   template < typename GUM_SCALAR >
-  INLINE Tensor< GUM_SCALAR >
-         Tensor< GUM_SCALAR >::sumOut(const gum::VariableSet& del_vars) const {
+  INLINE Tensor< GUM_SCALAR > Tensor< GUM_SCALAR >::sumOut(const gum::VariableSet& del_vars) const {
     if (static_cast< MultiDimContainer< GUM_SCALAR >* >(this->content_)->empty()) {
       return Tensor< GUM_SCALAR >().fillWith(this->empty_value_);
     }
@@ -490,8 +483,7 @@ namespace gum {
   }
 
   template < typename GUM_SCALAR >
-  INLINE Tensor< GUM_SCALAR >
-         Tensor< GUM_SCALAR >::minOut(const gum::VariableSet& del_vars) const {
+  INLINE Tensor< GUM_SCALAR > Tensor< GUM_SCALAR >::minOut(const gum::VariableSet& del_vars) const {
     if (static_cast< MultiDimContainer< GUM_SCALAR >* >(this->content_)->empty()) {
       return Tensor< GUM_SCALAR >().fillWith(this->empty_value_);
     }
@@ -513,8 +505,7 @@ namespace gum {
   }
 
   template < typename GUM_SCALAR >
-  INLINE Tensor< GUM_SCALAR >
-         Tensor< GUM_SCALAR >::maxOut(const gum::VariableSet& del_vars) const {
+  INLINE Tensor< GUM_SCALAR > Tensor< GUM_SCALAR >::maxOut(const gum::VariableSet& del_vars) const {
     if (static_cast< MultiDimContainer< GUM_SCALAR >* >(this->content_)->empty()) {
       return Tensor< GUM_SCALAR >().fillWith(this->empty_value_);
     }
@@ -536,8 +527,7 @@ namespace gum {
   }
 
   template < typename GUM_SCALAR >
-  INLINE Tensor< GUM_SCALAR >
-         Tensor< GUM_SCALAR >::sumIn(const gum::VariableSet& kept_vars) const {
+  INLINE Tensor< GUM_SCALAR > Tensor< GUM_SCALAR >::sumIn(const gum::VariableSet& kept_vars) const {
     if (static_cast< MultiDimContainer< GUM_SCALAR >* >(this->content_)->empty()) {
       return Tensor< GUM_SCALAR >().fillWith(this->empty_value_);
     }
@@ -560,13 +550,11 @@ namespace gum {
     // TODO: remove this test when operations will be able to handle empty tensors
     if (kept_vars.empty()) { return Tensor< GUM_SCALAR >().fillWith(this->product()); }
 
-    return Tensor< GUM_SCALAR >(
-        gum::projectProduct(*this->content(), complementVars_(kept_vars)));
+    return Tensor< GUM_SCALAR >(gum::projectProduct(*this->content(), complementVars_(kept_vars)));
   }
 
   template < typename GUM_SCALAR >
-  INLINE Tensor< GUM_SCALAR >
-         Tensor< GUM_SCALAR >::minIn(const gum::VariableSet& kept_vars) const {
+  INLINE Tensor< GUM_SCALAR > Tensor< GUM_SCALAR >::minIn(const gum::VariableSet& kept_vars) const {
     if (static_cast< MultiDimContainer< GUM_SCALAR >* >(this->content_)->empty()) {
       return Tensor< GUM_SCALAR >().fillWith(this->empty_value_);
     }
@@ -579,8 +567,7 @@ namespace gum {
   }
 
   template < typename GUM_SCALAR >
-  INLINE Tensor< GUM_SCALAR >
-         Tensor< GUM_SCALAR >::maxIn(const gum::VariableSet& kept_vars) const {
+  INLINE Tensor< GUM_SCALAR > Tensor< GUM_SCALAR >::maxIn(const gum::VariableSet& kept_vars) const {
     if (static_cast< MultiDimContainer< GUM_SCALAR >* >(this->content_)->empty()) {
       return Tensor< GUM_SCALAR >().fillWith(this->empty_value_);
     }
@@ -613,8 +600,8 @@ namespace gum {
   }
 
   template < typename GUM_SCALAR >
-  Tensor< GUM_SCALAR > Tensor< GUM_SCALAR >::reorganize(
-      const std::vector< const DiscreteVariable* >& vars) const {
+  Tensor< GUM_SCALAR >
+      Tensor< GUM_SCALAR >::reorganize(const std::vector< const DiscreteVariable* >& vars) const {
     if (vars.size() != this->nbrDim())
       GUM_ERROR(InvalidArgument,
                 "The argument contains " << vars.size() << " variables instead of "
@@ -820,8 +807,7 @@ namespace gum {
 
   /// the function to be used to add two Tensors
   template < typename GUM_SCALAR >
-  Tensor< GUM_SCALAR >
-      Tensor< GUM_SCALAR >::operator+(const Tensor< GUM_SCALAR >& p2) const {
+  Tensor< GUM_SCALAR > Tensor< GUM_SCALAR >::operator+(const Tensor< GUM_SCALAR >& p2) const {
     if (p2.empty()) return Tensor< GUM_SCALAR >(*this).translate(p2.empty_value_);
     if (this->empty()) return Tensor< GUM_SCALAR >(p2).translate(this->empty_value_);
 
@@ -844,14 +830,13 @@ namespace gum {
 
   // max function between two evidence
   template < typename GUM_SCALAR >
-  Tensor< GUM_SCALAR >
-      Tensor< GUM_SCALAR >::operator|(const Tensor< GUM_SCALAR >& p2) const {
+  Tensor< GUM_SCALAR > Tensor< GUM_SCALAR >::operator|(const Tensor< GUM_SCALAR >& p2) const {
     if (!isEvidence() || !p2.isEvidence())
       GUM_ERROR(InvalidArgument, "The tensors are not evidences.")
     if (this->variable(0) != p2.variable(0))
       GUM_ERROR(InvalidArgument, "The evidence are not on the same variable.")
     Tensor< GUM_SCALAR > res(*this);
-    gum::Instantiation      I(res);
+    gum::Instantiation   I(res);
     for (I.setFirst(); !I.end(); ++I) {
       res.set(I, std::max(res.get(I), p2.get(I)));
     }
@@ -860,14 +845,13 @@ namespace gum {
 
   // min function between two evidence
   template < typename GUM_SCALAR >
-  Tensor< GUM_SCALAR >
-      Tensor< GUM_SCALAR >::operator&(const Tensor< GUM_SCALAR >& p2) const {
+  Tensor< GUM_SCALAR > Tensor< GUM_SCALAR >::operator&(const Tensor< GUM_SCALAR >& p2) const {
     if (!isEvidence() || !p2.isEvidence())
       GUM_ERROR(InvalidArgument, "The tensors are not evidences.")
     if (this->variable(0) != p2.variable(0))
       GUM_ERROR(InvalidArgument, "The evidence are not on the same variable.")
     Tensor< GUM_SCALAR > res(*this);
-    gum::Instantiation      I(res);
+    gum::Instantiation   I(res);
     for (I.setFirst(); !I.end(); ++I) {
       res.set(I, std::min(res.get(I), p2.get(I)));
     }
@@ -880,7 +864,7 @@ namespace gum {
     if (!isEvidence()) GUM_ERROR(InvalidArgument, "The tensor is not an evidence.")
 
     Tensor< GUM_SCALAR > res(*this);
-    gum::Instantiation      I(res);
+    gum::Instantiation   I(res);
     for (I.setFirst(); !I.end(); ++I) {
       res.set(I, 1 - res.get(I));
     }
@@ -889,8 +873,7 @@ namespace gum {
 
   /// the function to be used to subtract two Tensors
   template < typename GUM_SCALAR >
-  Tensor< GUM_SCALAR >
-      Tensor< GUM_SCALAR >::operator-(const Tensor< GUM_SCALAR >& p2) const {
+  Tensor< GUM_SCALAR > Tensor< GUM_SCALAR >::operator-(const Tensor< GUM_SCALAR >& p2) const {
     if (p2.empty()) return Tensor< GUM_SCALAR >(*this).translate(-p2.empty_value_);
     if (this->empty()) {
       auto p = Tensor< GUM_SCALAR >(p2);
@@ -908,8 +891,7 @@ namespace gum {
 
   /// the function to be used to multiply two Tensors
   template < typename GUM_SCALAR >
-  Tensor< GUM_SCALAR >
-      Tensor< GUM_SCALAR >::operator*(const Tensor< GUM_SCALAR >& p2) const {
+  Tensor< GUM_SCALAR > Tensor< GUM_SCALAR >::operator*(const Tensor< GUM_SCALAR >& p2) const {
     if (p2.empty()) return Tensor< GUM_SCALAR >(*this).scale(p2.empty_value_);
     if (this->empty()) return Tensor< GUM_SCALAR >(p2).scale(this->empty_value_);
 
@@ -924,8 +906,7 @@ namespace gum {
 
   /// the function to be used to divide two Tensors
   template < typename GUM_SCALAR >
-  Tensor< GUM_SCALAR >
-      Tensor< GUM_SCALAR >::operator/(const Tensor< GUM_SCALAR >& p2) const {
+  Tensor< GUM_SCALAR > Tensor< GUM_SCALAR >::operator/(const Tensor< GUM_SCALAR >& p2) const {
     if (p2.empty()) return Tensor< GUM_SCALAR >(*this).scale(1 / p2.empty_value_);
     if (this->empty()) {
       auto p = Tensor< GUM_SCALAR >(p2);

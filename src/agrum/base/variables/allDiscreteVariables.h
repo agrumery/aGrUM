@@ -35,9 +35,6 @@
  ****************************************************************************/
 
 
-
-
-
 #ifndef GUM_ALL_DISCRETE_VARIABLE_H
 #define GUM_ALL_DISCRETE_VARIABLE_H
 #include <memory>

@@ -35,9 +35,6 @@
  ****************************************************************************/
 
 
-
-
-
 #include <agrum/agrum.h>
 
 #include <agrum/MRF/inference/tools/evidenceMRFInference.h>

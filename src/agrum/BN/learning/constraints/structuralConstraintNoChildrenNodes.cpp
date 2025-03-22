@@ -35,9 +35,6 @@
  ****************************************************************************/
 
 
-
-
-
 /** @file
  * @brief the structural constraint for forbidding the creation of some arcs
  * during structure learning

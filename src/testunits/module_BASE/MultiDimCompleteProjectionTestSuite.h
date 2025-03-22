@@ -35,9 +35,6 @@
  ****************************************************************************/
 
 
-
-
-
 #include <cstdlib>
 #include <iostream>
 #include <sstream>
@@ -180,8 +177,7 @@ namespace gum_tests {
       return result;
     }
 
-    double* local_projmax(const gum::Tensor< double* >& table,
-                          gum::Instantiation&              instantiation) {
+    double* local_projmax(const gum::Tensor< double* >& table, gum::Instantiation& instantiation) {
       const gum::MultiDimArray< double* >& impl
           = dynamic_cast< const gum::MultiDimArray< double* >& >(*(table.content()));
       return local_projmax(impl, instantiation);

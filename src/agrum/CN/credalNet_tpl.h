@@ -35,9 +35,6 @@
  ****************************************************************************/
 
 
-
-
-
 #include <agrum/agrum.h>
 
 #include <agrum/CN/credalNet.h>
@@ -813,10 +810,10 @@ namespace gum {
           for (Size modality = 0; modality < var_dSize; modality++) {
             if (tensor_min->get(ins_min) > tensor_max->get(ins_max)) {
               GUM_ERROR(CPTError,
-                        "For variable " << _src_bn_.variable(node).name() << " (at " << ins_min
-                                        << "), the min is greater than the max : "
-                                        << tensor_min->get(ins_min) << ">"
-                                        << tensor_max->get(ins_max) << ".");
+                        "For variable "
+                            << _src_bn_.variable(node).name() << " (at " << ins_min
+                            << "), the min is greater than the max : " << tensor_min->get(ins_min)
+                            << ">" << tensor_max->get(ins_max) << ".");
             }
             lrsWrapper.fillH(tensor_min->get(ins_min), tensor_max->get(ins_max), modality);
             ++ins_min;
@@ -1067,7 +1064,7 @@ namespace gum {
 
         for (Size i = 0; i < bitsize; i++) {
           Tensor< GUM_SCALAR > const* tensor(&bin_bn->cpt(_var_bits_[var][i]));
-          Instantiation                  ins(tensor);
+          Instantiation               ins(tensor);
           ins.setFirst();
 
           auto entry_size = tensor->domainSize() / 2;

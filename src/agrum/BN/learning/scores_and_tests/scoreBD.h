@@ -35,9 +35,6 @@
  ****************************************************************************/
 
 
-
-
-
 /** @file
  * @brief the class for computing Bayesian Dirichlet (BD) log2 scores
  *

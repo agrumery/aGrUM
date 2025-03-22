@@ -35,9 +35,6 @@
  ****************************************************************************/
 
 
-
-
-
 /** @file
  * @brief source of basic clique graphs (join trees, etc)
  *

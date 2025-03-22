@@ -35,9 +35,6 @@
  ****************************************************************************/
 
 
-
-
-
 /**
  * @file
  * @brief Headers of StructuredInference.
@@ -122,11 +119,11 @@ namespace gum {
 
       /// See PRMInference::posterior_().
       virtual void posterior_(const typename PRMInference< GUM_SCALAR >::Chain& chain,
-                              Tensor< GUM_SCALAR >&                          m);
+                              Tensor< GUM_SCALAR >&                             m);
 
       /// See PRMInference::joint_().
       virtual void joint_(const std::vector< typename PRMInference< GUM_SCALAR >::Chain >& queries,
-                          Tensor< GUM_SCALAR >&                                         j);
+                          Tensor< GUM_SCALAR >&                                            j);
 
       /// @}
 
@@ -251,10 +248,10 @@ namespace gum {
         inline std::vector< NodeId >& elim_order() { return _elim_order_; }
 
         private:
-        std::vector< NodeId >           _elim_order_;
-        NodeSet                         _inners_;
-        NodeSet                         _aggregators_;
-        NodeSet                         _outputs_;
+        std::vector< NodeId >        _elim_order_;
+        NodeSet                      _inners_;
+        NodeSet                      _aggregators_;
+        NodeSet                      _outputs_;
         Set< Tensor< GUM_SCALAR >* > _trash_;
       };
 
@@ -310,7 +307,7 @@ namespace gum {
 
       void _removeNode_(typename StructuredInference::PData& data,
                         NodeId                               id,
-                        Set< Tensor< GUM_SCALAR >* >&     pool);
+                        Set< Tensor< GUM_SCALAR >* >&        pool);
 
       /// Add the reduced tensors of instances not in any used patterns.
       void _reduceAloneInstances_(RGData& data);
@@ -328,7 +325,7 @@ namespace gum {
       /// of
       /// data.pattern (aka data.match) is used.
       void _buildPatternGraph_(PData&                                        data,
-                               Set< Tensor< GUM_SCALAR >* >&              pool,
+                               Set< Tensor< GUM_SCALAR >* >&                 pool,
                                const Sequence< PRMInstance< GUM_SCALAR >* >& match);
 
       void _insertNodeInElimLists_(typename StructuredInference::PData&          data,
@@ -342,7 +339,7 @@ namespace gum {
                                   std::pair< Idx, std::string >        attr);
 
       void _removeBarrenNodes_(typename StructuredInference::PData& data,
-                               Set< Tensor< GUM_SCALAR >* >&     pool);
+                               Set< Tensor< GUM_SCALAR >* >&        pool);
 
       /// Add in data.queries() any queried variable in one of data.pattern
       /// matches.
@@ -352,20 +349,20 @@ namespace gum {
       /// call  _translatePotSet_().
       Set< Tensor< GUM_SCALAR >* >*
           _eliminateObservedNodes_(typename StructuredInference::PData&          data,
-                                   const Set< Tensor< GUM_SCALAR >* >&        pool,
+                                   const Set< Tensor< GUM_SCALAR >* >&           pool,
                                    const Sequence< PRMInstance< GUM_SCALAR >* >& match,
                                    const std::vector< NodeId >&                  elim_order);
 
       Set< Tensor< GUM_SCALAR >* >*
           _eliminateObservedNodesInSource_(typename StructuredInference::PData&          data,
-                                           const Set< Tensor< GUM_SCALAR >* >&        pool,
+                                           const Set< Tensor< GUM_SCALAR >* >&           pool,
                                            const Sequence< PRMInstance< GUM_SCALAR >* >& match,
                                            const std::vector< NodeId >& elim_order);
 
       /// Translate a given Tensor Set into one w.r.t. variables in match.
       Set< Tensor< GUM_SCALAR >* >*
           _translatePotSet_(typename StructuredInference::PData&          data,
-                            const Set< Tensor< GUM_SCALAR >* >&        pool,
+                            const Set< Tensor< GUM_SCALAR >* >&           pool,
                             const Sequence< PRMInstance< GUM_SCALAR >* >& match);
 
       /// Unreduce the match containing the query.

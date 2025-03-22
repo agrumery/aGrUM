@@ -35,9 +35,6 @@
  ****************************************************************************/
 
 
-
-
-
 #ifndef GUM_UTILS_PRM_H
 #define GUM_UTILS_PRM_H
 
@@ -87,11 +84,10 @@ namespace gum {
     template < typename GUM_SCALAR >
     Tensor< GUM_SCALAR >*
         copyTensor(const Bijection< const DiscreteVariable*, const DiscreteVariable* >& bij,
-                      const Tensor< GUM_SCALAR >&                                       source);
+                   const Tensor< GUM_SCALAR >&                                          source);
 
     template < typename GUM_SCALAR >
-    Tensor< GUM_SCALAR > multTensor(const Tensor< GUM_SCALAR >& t1,
-                                          const Tensor< GUM_SCALAR >& t2);
+    Tensor< GUM_SCALAR > multTensor(const Tensor< GUM_SCALAR >& t1, const Tensor< GUM_SCALAR >& t2);
     /**
      * @brief Proceeds with the elimination of var in pool.
      * @param var The variable eliminated from every tensors in pool.
@@ -100,14 +96,14 @@ namespace gum {
      *              delete later.
      */
     template < typename GUM_SCALAR >
-    void eliminateNode(const DiscreteVariable*          var,
+    void eliminateNode(const DiscreteVariable*       var,
                        Set< Tensor< GUM_SCALAR >* >& pool,
                        Set< Tensor< GUM_SCALAR >* >& trash);
 
     template < typename GUM_SCALAR >
     void eliminateNodes(const std::vector< const DiscreteVariable* >& elim_order,
-                        Set< Tensor< GUM_SCALAR >* >&              pool,
-                        Set< Tensor< GUM_SCALAR >* >&              trash);
+                        Set< Tensor< GUM_SCALAR >* >&                 pool,
+                        Set< Tensor< GUM_SCALAR >* >&                 trash);
 
     /**
      * @brief Returns the next value of an unique counter for PRM's node id.

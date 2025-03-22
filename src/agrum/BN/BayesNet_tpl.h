@@ -35,9 +35,6 @@
  ****************************************************************************/
 
 
-
-
-
 /**
  * @file
  * @brief Template implementation of BN/BayesNet.h class.
@@ -388,8 +385,8 @@ namespace gum {
     cpt_head       = std::move(new_cpt_head);
 
     Tensor< GUM_SCALAR > new_cpt_tail{(prod / cpt_head).putFirst(&variable(tail))};
-    auto&                   cpt_tail = const_cast< Tensor< GUM_SCALAR >& >(cpt(tail));
-    cpt_tail                         = std::move(new_cpt_tail);
+    auto&                cpt_tail = const_cast< Tensor< GUM_SCALAR >& >(cpt(tail));
+    cpt_tail                      = std::move(new_cpt_tail);
   }
 
   template < typename GUM_SCALAR >
@@ -617,8 +614,8 @@ namespace gum {
     for (Idx i = 0; i < cpt(id).nbrDim(); i++) {
       if (&cpt(id).variable(i) != &(newPot->variable(i))) {
         GUM_ERROR(OperationNotAllowed,
-                  "cannot exchange tensors because, for variable with id "
-                      << id << ", dimension " << i << " differs. ")
+                  "cannot exchange tensors because, for variable with id " << id << ", dimension "
+                                                                           << i << " differs. ")
       }
     }
 
@@ -632,8 +629,7 @@ namespace gum {
   }
 
   template < typename GUM_SCALAR >
-  void BayesNet< GUM_SCALAR >::changeTensor(const std::string&       name,
-                                               Tensor< GUM_SCALAR >* newPot) {
+  void BayesNet< GUM_SCALAR >::changeTensor(const std::string& name, Tensor< GUM_SCALAR >* newPot) {
     changeTensor(idFromName(name), newPot);
   }
 

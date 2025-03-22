@@ -35,9 +35,6 @@
  ****************************************************************************/
 
 
-
-
-
 /**
  * @file
  * @brief Source implementation of SimpleCPTDisturber.
@@ -92,10 +89,10 @@ namespace gum {
      * @param src copy of the CPT before reduction.
      * @param marg of the inference before reduction on the node varIdi.
      */
-    void disturbReducCPT(NodeId                   node,
-                         BayesNet< GUM_SCALAR >&  bayesNet,
-                         Tensor< GUM_SCALAR >& src,
-                         Tensor< GUM_SCALAR >& marg) override;
+    void disturbReducCPT(NodeId                  node,
+                         BayesNet< GUM_SCALAR >& bayesNet,
+                         Tensor< GUM_SCALAR >&   src,
+                         Tensor< GUM_SCALAR >&   marg) override;
 
     /**
      * Disturb a CPT using GUM_SCALAR when inserting a new parent new_parent.
@@ -104,10 +101,10 @@ namespace gum {
      * @param src copy of the CPT before augmentation.
      * @param variation degree of variation from the initial probability.
      */
-    void disturbAugmCPT(NodeId                   node,
-                        BayesNet< GUM_SCALAR >&  bayesNet,
-                        Tensor< GUM_SCALAR >& src,
-                        GUM_SCALAR               variation) override;
+    void disturbAugmCPT(NodeId                  node,
+                        BayesNet< GUM_SCALAR >& bayesNet,
+                        Tensor< GUM_SCALAR >&   src,
+                        GUM_SCALAR              variation) override;
   };
 
 #ifndef GUM_NO_EXTERN_TEMPLATE_CLASS

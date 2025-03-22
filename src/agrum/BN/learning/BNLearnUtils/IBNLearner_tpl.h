@@ -35,9 +35,6 @@
  ****************************************************************************/
 
 
-
-
-
 #include <algorithm>
 
 #include <agrum/BN/learning/BNLearnUtils/IBNLearner.h>

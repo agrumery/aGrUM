@@ -35,9 +35,6 @@
  ****************************************************************************/
 
 
-
-
-
 #include <ctime>
 #include <iostream>
 #include <string>
@@ -62,57 +59,58 @@
 #include <agrum/base/core/math/math_utils.h>
 
 namespace gum_tests {
-    class [[maybe_unused]] AggregatorDecompositionTestSuite : public CxxTest::TestSuite {
+  class [[maybe_unused]] AggregatorDecompositionTestSuite: public CxxTest::TestSuite {
     public:
-        GUM_ACTIVE_TEST(Decomposition) {
+    GUM_ACTIVE_TEST(Decomposition) {
+      gum::prm::PRM< double > prm;
 
-            gum::prm::PRM<double> prm;
+      gum::prm::o3prm::O3prmReader< double > reader(prm);
+      reader.readFile(GET_RESSOURCES_PATH("o3prm/watertanks.o3prm"));
 
-            gum::prm::o3prm::O3prmReader<double> reader(prm);
-            reader.readFile(GET_RESSOURCES_PATH("o3prm/watertanks.o3prm"));
+      if (reader.errors() > 0) { GUM_ERROR(gum::FatalError, "could not load ressource file"); }
 
-            if (reader.errors() > 0) { GUM_ERROR(gum::FatalError, "could not load ressource file"); }
+      reader.showElegantErrorsAndWarnings();
 
-            reader.showElegantErrorsAndWarnings();
+      gum::BayesNet< double > bn;
+      gum::BayesNet< double > bn2;
+      gum::NodeId             node = 0;
 
-            gum::BayesNet<double> bn;
-            gum::BayesNet<double> bn2;
-            gum::NodeId node = 0;
+      auto factory  = gum::BayesNetFactory< double >(&bn);
+      auto factory2 = gum::BayesNetFactory< double >(&bn2);
 
-            auto factory = gum::BayesNetFactory< double >(&bn);
-            auto factory2 = gum::BayesNetFactory< double >(&bn2);
+      TS_GUM_ASSERT_THROWS_NOTHING(prm.getSystem("aSys").groundedBN(factory))
+      TS_GUM_ASSERT_THROWS_NOTHING(prm.getSystem("aSys").groundedBN(factory2))
 
-            TS_GUM_ASSERT_THROWS_NOTHING(prm.getSystem("aSys").groundedBN(factory))
-            TS_GUM_ASSERT_THROWS_NOTHING(prm.getSystem("aSys").groundedBN(factory2))
+      gum::AggregatorDecomposition< double > aggregatorDecomposition;
+      TS_GUM_ASSERT_THROWS_NOTHING(aggregatorDecomposition.setMaximumArity(2))
+      TS_GUM_ASSERT_THROWS_NOTHING(bn = aggregatorDecomposition.getDecomposedAggregator(bn))
 
-            gum::AggregatorDecomposition<double> aggregatorDecomposition;
-            TS_GUM_ASSERT_THROWS_NOTHING(aggregatorDecomposition.setMaximumArity(2))
-            TS_GUM_ASSERT_THROWS_NOTHING(bn = aggregatorDecomposition.getDecomposedAggregator(bn))
+      try {
+        auto inf = gum::LazyPropagation< double >(&bn);
+        inf.makeInference();
 
-            try {
-                auto inf = gum::LazyPropagation< double >(&bn);
-                inf.makeInference();
+        auto inf2 = gum::LazyPropagation< double >(&bn2);
+        inf2.makeInference();
 
-                auto inf2 = gum::LazyPropagation< double >(&bn2);
-                inf2.makeInference();
+        node = bn.idFromName("city.(total_quantity)waterlevel");
 
-                node = bn.idFromName("city.(total_quantity)waterlevel");
+        gum::Instantiation inst(inf.posterior(node));
+        gum::Instantiation inst2(inf2.posterior(node));
 
-                gum::Instantiation inst(inf.posterior(node));
-                gum::Instantiation inst2(inf2.posterior(node));
+        inst.setFirst();
+        inst2.setFirst();
 
-                inst.setFirst();
-                inst2.setFirst();
-
-                while (!inst.end()) {
-                    TS_ASSERT_DELTA(abs(inf.posterior(node).get(inst) - inf2.posterior(node).get(inst2)), 0, TS_GUM_SMALL_ERROR);
-                    inst.inc();
-                    inst2.inc();
-                }
-            } catch (gum::Exception const &e) {
-                GUM_SHOWERROR(e);
-                TS_FAIL("An aGrUM's exception was thrown");
-            }
+        while (!inst.end()) {
+          TS_ASSERT_DELTA(abs(inf.posterior(node).get(inst) - inf2.posterior(node).get(inst2)),
+                          0,
+                          TS_GUM_SMALL_ERROR);
+          inst.inc();
+          inst2.inc();
         }
-    };
-} // namespace gum_tests
+      } catch (gum::Exception const& e) {
+        GUM_SHOWERROR(e);
+        TS_FAIL("An aGrUM's exception was thrown");
+      }
+    }
+  };
+}   // namespace gum_tests

@@ -35,9 +35,6 @@
  ****************************************************************************/
 
 
-
-
-
 /**
  * @file
  * @brief This file contains the abstract inference class definition for
@@ -227,7 +224,7 @@ namespace gum {
      * @return a Tensor
      */
     Tensor< GUM_SCALAR > evidenceImpact(const std::string&                target,
-                                           const std::vector< std::string >& evs);
+                                        const std::vector< std::string >& evs);
 
     protected:
     /// fired after a new marginal target is inserted

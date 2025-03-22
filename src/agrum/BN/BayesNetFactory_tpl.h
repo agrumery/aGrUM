@@ -35,9 +35,6 @@
  ****************************************************************************/
 
 
-
-
-
 /**
  * @file
  * @brief Implementation of the BayesNetFactory class.
@@ -498,7 +495,7 @@ namespace gum {
       const std::vector< std::string >& variables,
       const std::vector< float >&       rawTable) {
     const Tensor< GUM_SCALAR >& table = _bn_->cpt(_varNameMap_[_stringBag_[0]]);
-    Instantiation                  cptInst(table);
+    Instantiation               cptInst(table);
 
     List< const DiscreteVariable* > varList;
     table.fillWith(GUM_SCALAR(0.0));
@@ -914,8 +911,8 @@ namespace gum {
   // Sub method of setVariableCPT() which redefine the BayesNet's DAG with
   // respect to table.
   template < typename GUM_SCALAR >
-  INLINE void BayesNetFactory< GUM_SCALAR >::_setCPTAndParents_(const DiscreteVariable&  var,
-                                                                Tensor< GUM_SCALAR >* table) {
+  INLINE void BayesNetFactory< GUM_SCALAR >::_setCPTAndParents_(const DiscreteVariable& var,
+                                                                Tensor< GUM_SCALAR >*   table) {
     NodeId varId = _varNameMap_[var.name()];
     _bn_->dag_.eraseParents(varId);
 

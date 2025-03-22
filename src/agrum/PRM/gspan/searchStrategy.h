@@ -35,9 +35,6 @@
  ****************************************************************************/
 
 
-
-
-
 /**
  * @file
  * @brief Headers of the SearchStrategy class and child
@@ -251,7 +248,7 @@ namespace gum {
         std::string _str_(const PRMInstance< GUM_SCALAR >*  i,
                           const PRMSlotChain< GUM_SCALAR >& a) const;
         void        _buildPatternGraph_(typename StrictSearch< GUM_SCALAR >::PData&   data,
-                                        Set< Tensor< GUM_SCALAR >* >&              pool,
+                                        Set< Tensor< GUM_SCALAR >* >&                 pool,
                                         const Sequence< PRMInstance< GUM_SCALAR >* >& match);
         std::pair< Size, Size > _elimination_cost_(typename StrictSearch< GUM_SCALAR >::PData& data,
                                                    Set< Tensor< GUM_SCALAR >* >& pool);

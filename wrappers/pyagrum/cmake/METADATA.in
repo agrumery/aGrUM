@@ -1,0 +1,124 @@
+Metadata-Version: 1.2
+Name: pyAgrum
+Version: @PYAGRUM_VERSION@
+Summary: Bayesian networks and other Probabilistic Graphical Models.
+Home-page: https://agrum.gitlab.io/
+Author: Pierre-Henri Wuillemin and Christophe Gonzales
+Author-email: info@agrum.org
+License: LGPLv3
+Keywords: probabilities probabilistic-graphical-models inference diagnosis
+Project-URL: Bug Tracker, https://gitlab.com/agrumery/aGrUM/-/issues
+Project-URL: Documentation, https://pyagrum.readthedocs.io/
+Project-URL: Source Code, https://gitlab.com/agrumery/aGrUM
+Platform: any
+Classifier: Development Status :: 5 - Production/Stable
+Classifier: License :: OSI Approved :: GNU Lesser General Public License v3 (LGPLv3)
+Classifier: Operating System :: Microsoft :: Windows
+Classifier: Operating System :: MacOS :: MacOS X
+Classifier: Operating System :: POSIX :: Linux
+Classifier: Programming Language :: C++
+Classifier: Programming Language :: Python
+Classifier: Programming Language :: Python :: 3
+Classifier: Programming Language :: Python :: 3.10
+Classifier: Programming Language :: Python :: 3.11
+Classifier: Programming Language :: Python :: 3.12
+Classifier: Programming Language :: Python :: 3.13
+Classifier: Topic :: Scientific/Engineering :: Artificial Intelligence
+Classifier: Topic :: Scientific/Engineering :: Information Analysis
+Classifier: Topic :: Scientific/Engineering :: Mathematics
+Classifier: Topic :: Software Development :: Libraries
+Classifier: Topic :: Software Development :: Libraries :: Python Modules
+Classifier: Intended Audience :: Developers
+Classifier: Intended Audience :: Financial and Insurance Industry
+Classifier: Intended Audience :: Information Technology
+Classifier: Intended Audience :: Science/Research
+Requires-Dist: numpy
+Requires-Dist: matplotlib
+Requires-Dist: pydot
+
+
+pyAgrum
+=======
+
+``pyAgrum`` is a scientific C++ and Python library dedicated to Bayesian Networks and other Probabilistic Graphical Models. It provides a high-level interface to the part of aGrUM allowing to create, model, learn, use, calculate with and embed Bayesian Networks and other graphical models. Some specific (python and C++) codes are added in order to simplify and extend the ``aGrUM`` API.
+
+Example
+=======
+
+.. code:: python
+
+    import pyagrum as gum
+
+    # Creating BayesNet with 4 variables
+    bn=gum.BayesNet('WaterSprinkler')
+    print(bn)
+
+    # Adding nodes the long way
+    c=bn.add(gum.LabelizedVariable('c','cloudy ?',["Yes","No"]))
+    print(c)
+
+    # Adding nodes the short way
+    s, r, w = [ bn.add(name, 2) for name in "srw" ]
+    print (s,r,w)
+    print (bn)
+
+    # Addings arcs c -> s, c -> r, s -> w, r -> w
+    bn.addArc(c,s)
+    for link in [(c,r),(s,w),(r,w)]:
+    bn.addArc(*link)
+    print(bn)
+
+    # or, equivalenlty, creating the BN with 4 variables, and the arcs in one line
+    bn=gum.fastBN("w<-r<-c{Yes|No}->s->w")
+
+    # Filling CPTs
+    bn.cpt("c").fillWith([0.5,0.5])
+    bn.cpt("s")[0,:]=0.5 # equivalent to [0.5,0.5]
+    bn.cpt("s")[{"c":1}]=[0.9,0.1]
+    bn.cpt("w")[0,0,:] = [1, 0] # r=0,s=0
+    bn.cpt("w")[0,1,:] = [0.1, 0.9] # r=0,s=1
+    bn.cpt("w")[{"r":1,"s":0}] = [0.1, 0.9] # r=1,s=0
+    bn.cpt("w")[1,1,:] = [0.01, 0.99] # r=1,s=1
+    bn.cpt("r")[{"c":0}]=[0.8,0.2]
+    bn.cpt("r")[{"c":1}]=[0.2,0.8]
+
+    # Saving BN as a BIF file
+    gum.saveBN(bn,"WaterSprinkler.bif")
+
+    # Loading BN from a BIF file
+    bn2=gum.loadBN("WaterSprinkler.bif")
+
+    # Inference
+    ie=gum.LazyPropagation(bn)
+    ie.makeInference()
+    print (ie.posterior("w"))
+
+    # Adding hard evidence
+    ie.setEvidence({"s": 1, "c": 0})
+    ie.makeInference()
+    print(ie.posterior("w"))
+
+    # Adding soft and hard evidence
+    ie.setEvidence({"s": [0.5, 1], "c": 0})
+    ie.makeInference()
+    print(ie.posterior("w"))
+
+LICENSE
+=======
+
+Copyright (C) 2005-2024 by Pierre-Henri WUILLEMIN et Christophe GONZALES
+{prenom.nom}_at_lip6.fr
+
+The aGrUM/pyAgrum library and all its derivatives are distributed under the LGPL3 license, see https://www.gnu.org/licenses/lgpl-3.0.en.html.
+
+Authors
+=======
+
+-  Pierre-Henri Wuillemin
+-  Christophe Gonzales
+
+Maintainers
+===========
+
+- Lionel Torti
+- Gaspard Ducamp

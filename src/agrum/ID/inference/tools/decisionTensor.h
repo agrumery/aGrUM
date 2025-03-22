@@ -35,9 +35,6 @@
  ****************************************************************************/
 
 
-
-
-
 /**
  * @file
  * @brief This file contains abstract class definitions influence diagrams
@@ -154,9 +151,9 @@ namespace gum {
     }
 
     static Tensor< GUM_SCALAR > divideEvenZero(const Tensor< GUM_SCALAR >& p1,
-                                                  const Tensor< GUM_SCALAR >& p2) {
+                                               const Tensor< GUM_SCALAR >& p2) {
       Tensor< GUM_SCALAR > res(p1);
-      Instantiation           I(res);
+      Instantiation        I(res);
       for (I.setFirst(); !I.end(); I.inc()) {
         if (p2[I] != 0) res.set(I, res[I] / p2[I]);
       }
@@ -164,19 +161,19 @@ namespace gum {
     }
 
     static DecisionTensor< GUM_SCALAR > combination(const DecisionTensor< GUM_SCALAR >& dp1,
-                                                       const DecisionTensor< GUM_SCALAR >& dp2) {
+                                                    const DecisionTensor< GUM_SCALAR >& dp2) {
       return DecisionTensor< GUM_SCALAR >(dp1.probPot * dp2.probPot, dp1.utilPot + dp2.utilPot);
     }
 
-    static DecisionTensor< GUM_SCALAR >
-        marginalization(const DecisionTensor< GUM_SCALAR >& dp, const gum::VariableSet& onto) {
+    static DecisionTensor< GUM_SCALAR > marginalization(const DecisionTensor< GUM_SCALAR >& dp,
+                                                        const gum::VariableSet&             onto) {
       const auto pr = dp.probPot.sumIn(onto);
       return DecisionTensor(pr, divideEvenZero((dp.probPot * dp.utilPot).sumIn(onto), pr));
     }
 
     static DecisionTensor< GUM_SCALAR >
         marginalization(const DecisionTensor< GUM_SCALAR >& dp,
-                        const std::vector< std::string >&      ontonames) {
+                        const std::vector< std::string >&   ontonames) {
       gum::VariableSet onto;
       for (const auto& varname: ontonames) {
         onto.insert(dp.variable(varname));

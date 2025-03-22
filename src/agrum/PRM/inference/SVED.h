@@ -35,9 +35,6 @@
  ****************************************************************************/
 
 
-
-
-
 /**
  * @file
  * @brief Headers of SVED (Structured Value Elimination with d-seperation).
@@ -179,7 +176,7 @@ namespace gum {
       std::vector< NodeId >& _getElimOrder_(const PRMClass< GUM_SCALAR >& c);
 
       Tensor< GUM_SCALAR >* _getAggTensor_(const PRMInstance< GUM_SCALAR >*  i,
-                                                 const PRMAggregate< GUM_SCALAR >* agg);
+                                           const PRMAggregate< GUM_SCALAR >* agg);
 
       void _initLiftedNodes_(const PRMInstance< GUM_SCALAR >* i, BucketSet& trash);
 

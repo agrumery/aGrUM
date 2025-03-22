@@ -35,9 +35,6 @@
  ****************************************************************************/
 
 
-
-
-
 #include <gumtest/AgrumTestSuite.h>
 #include <gumtest/utils.h>
 
@@ -100,8 +97,8 @@ namespace gum_tests {
     }
 
     GUM_ACTIVE_TEST(DomainSizeChanges) {
-      gum::Tensor< double > p1(new gum::MultiDimArray< double >());
-      gum::LabelizedVariable   var1("var1", "first var", 2), var2("var2", "second var", 2),
+      gum::Tensor< double >  p1(new gum::MultiDimArray< double >());
+      gum::LabelizedVariable var1("var1", "first var", 2), var2("var2", "second var", 2),
           var3("var3", "third var", 2);
       p1 << var1 << var2 << var3;
 
@@ -110,8 +107,8 @@ namespace gum_tests {
     }
 
     GUM_ACTIVE_TEST(AddAnyNumber) {
-      gum::Tensor< double > proba(new gum::MultiDimArray< double >());
-      gum::LabelizedVariable   a("a", "first var", 2), b("b", "second var", 4),
+      gum::Tensor< double >  proba(new gum::MultiDimArray< double >());
+      gum::LabelizedVariable a("a", "first var", 2), b("b", "second var", 4),
           c("c", "third var", 5);
       proba << a << b << c;
 
@@ -122,8 +119,8 @@ namespace gum_tests {
     }
 
     GUM_ACTIVE_TEST(CopyProba) {
-      gum::Tensor< double > m(new gum::MultiDimArray< double >());
-      gum::LabelizedVariable   a("a", "first var", 2), b("b", "second var", 4),
+      gum::Tensor< double >  m(new gum::MultiDimArray< double >());
+      gum::LabelizedVariable a("a", "first var", 2), b("b", "second var", 4),
           c("c", "third var", 5);
 
       m << a << b << c;
@@ -260,17 +257,14 @@ namespace gum_tests {
           (gum::Tensor< int >() << b << c << a).fillWith({5, 18, 7, 24, 10, 24, 14, 32}))
 
       auto pB = p1 + p2;
-      TS_ASSERT_EQUALS(
-          pB,
-          (gum::Tensor< int >() << b << c << a).fillWith({6, 9, 8, 11, 7, 10, 9, 12}))
+      TS_ASSERT_EQUALS(pB,
+                       (gum::Tensor< int >() << b << c << a).fillWith({6, 9, 8, 11, 7, 10, 9, 12}))
 
       auto pC = p2 / p1;
-      TS_ASSERT_EQUALS(pC,
-                       (gum::Tensor< int >() << b << a << c).fillWith({5, 2, 2, 1, 7, 2, 3, 2}))
+      TS_ASSERT_EQUALS(pC, (gum::Tensor< int >() << b << a << c).fillWith({5, 2, 2, 1, 7, 2, 3, 2}))
 
       auto pD = p2 - p1;
-      TS_ASSERT_EQUALS(pD,
-                       (gum::Tensor< int >() << b << a << c).fillWith({4, 3, 3, 2, 6, 5, 5, 4}))
+      TS_ASSERT_EQUALS(pD, (gum::Tensor< int >() << b << a << c).fillWith({4, 3, 3, 2, 6, 5, 5, 4}))
 
       TS_ASSERT_EQUALS(
           ((p1 * p2) - (p2 / p1) + p1),
@@ -418,7 +412,7 @@ namespace gum_tests {
     }
 
     GUM_ACTIVE_TEST(EntropyTensor) {
-      auto                     a = gum::LabelizedVariable("a", "afoo", 2);
+      auto                  a = gum::LabelizedVariable("a", "afoo", 2);
       gum::Tensor< double > p;
       p.add(a);
       TS_ASSERT_EQUALS(p.fillWith({0, 1}).entropy(), 0.0)
@@ -662,9 +656,9 @@ namespace gum_tests {
 
     GUM_ACTIVE_TEST(EmptyTensor) {
       gum::Tensor< double > p;
-      gum::Instantiation       inst(p);
-      double                   a     = 0;
-      auto                     var_a = gum::LabelizedVariable("a", "afoo", 3);
+      gum::Instantiation    inst(p);
+      double                a     = 0;
+      auto                  var_a = gum::LabelizedVariable("a", "afoo", 3);
 
       TS_GUM_ASSERT_THROWS_NOTHING(a = p[inst];)
       TS_ASSERT_EQUALS(a, 1.0f)
@@ -878,7 +872,7 @@ namespace gum_tests {
 
     GUM_ACTIVE_TEST(LoopsForEmptyTensor) {
       gum::Tensor< double > p;
-      gum::Instantiation       inst(p);
+      gum::Instantiation    inst(p);
       p.fill(3);
 
       gum::Size cpt   = 0;
@@ -911,8 +905,8 @@ namespace gum_tests {
     }
 
     GUM_ACTIVE_TEST(KL) {
-      gum::LabelizedVariable   v("v", "v", 2), w("w", "w", 2);
-      gum::Tensor< double > p, q, r, s;
+      gum::LabelizedVariable v("v", "v", 2), w("w", "w", 2);
+      gum::Tensor< double >  p, q, r, s;
       p.add(v);
       p.fillWith({0.0f, 1.0f});
       q.add(v);
@@ -981,8 +975,8 @@ namespace gum_tests {
     }
 
     GUM_ACTIVE_TEST(VariableAccessor) {
-      gum::LabelizedVariable   v("v", "v", 2), w("w", "w", 3);
-      gum::Tensor< double > p;
+      gum::LabelizedVariable v("v", "v", 2), w("w", "w", 3);
+      gum::Tensor< double >  p;
       p.add(v);
       p.add(w);
 
@@ -1040,7 +1034,7 @@ namespace gum_tests {
       bad_p3.add(z);
       TS_ASSERT_THROWS(bad_p3.fillWith(p), const gum::InvalidArgument&)
 
-      gum::Tensor< int >  bad_p4;
+      gum::Tensor< int >     bad_p4;
       gum::LabelizedVariable badv("v", "v", 0);
       badv.addLabel("3").addLabel("1");
       bad_p4.add(w);
@@ -1050,12 +1044,12 @@ namespace gum_tests {
 
     GUM_ACTIVE_TEST(FillWithTensorAndMapMethod) {
       gum::LabelizedVariable v("v", "v", 2), w("w", "w", 3);
-      gum::Tensor< int >  p;
+      gum::Tensor< int >     p;
       p.add(v);
       p.add(w);
 
       gum::LabelizedVariable vv("vv", "vv", 2), ww("ww", "ww", 3);
-      gum::Tensor< int >  pp;
+      gum::Tensor< int >     pp;
       pp.add(ww);
       pp.add(vv);
 
@@ -1069,7 +1063,7 @@ namespace gum_tests {
 
     GUM_ACTIVE_TEST(ArgMaxMinFindAll) {
       gum::LabelizedVariable v("v", "v", 2), w("w", "w", 3);
-      gum::Tensor< int >  p;
+      gum::Tensor< int >     p;
       _testval_for_set_(p, 4, p.findAll(4), 0);
 
       p.add(v);
@@ -1124,7 +1118,7 @@ namespace gum_tests {
 
       {
         gum::DiscretizedVariable< int > v("v", "v");
-        gum::Tensor< double >        p;
+        gum::Tensor< double >           p;
         TS_ASSERT_EQUALS(v.domainSize(), (gum::Size)0)
         TS_ASSERT_THROWS(p.add(v), const gum::InvalidArgument&)
 
@@ -1144,8 +1138,8 @@ namespace gum_tests {
     }
 
     GUM_ACTIVE_TEST(RandomTensor) {
-      gum::LabelizedVariable   u("u", "u", 4), v("v", "v", 2), w("w", "w", 3);
-      gum::Tensor< double > p;
+      gum::LabelizedVariable u("u", "u", 4), v("v", "v", 2), w("w", "w", 3);
+      gum::Tensor< double >  p;
       p.add(u);
       p.add(v);
       p.add(w);
@@ -1194,10 +1188,10 @@ namespace gum_tests {
     }
 
     GUM_ACTIVE_TEST(Equalities) {
-      gum::LabelizedVariable   u("u", "u", 4);
-      gum::LabelizedVariable   v("v", "v", 2);
-      gum::LabelizedVariable   w("w", "w", 3);
-      gum::Tensor< double > p;
+      gum::LabelizedVariable u("u", "u", 4);
+      gum::LabelizedVariable v("v", "v", 2);
+      gum::LabelizedVariable w("w", "w", 3);
+      gum::Tensor< double >  p;
       p.add(u);
       p.add(v);
       p.add(w);
@@ -1225,10 +1219,10 @@ namespace gum_tests {
     }
 
     GUM_ACTIVE_TEST(ExpectedValue) {
-      gum::LabelizedVariable   u("u", "u", 4);
-      gum::LabelizedVariable   v("v", "v", 2);
-      gum::LabelizedVariable   w("w", "w", 3);
-      gum::Tensor< double > p;
+      gum::LabelizedVariable u("u", "u", 4);
+      gum::LabelizedVariable v("v", "v", 2);
+      gum::LabelizedVariable w("w", "w", 3);
+      gum::Tensor< double >  p;
       p.add(u);
       p.add(v);
       p.add(w);
@@ -1256,10 +1250,10 @@ namespace gum_tests {
     }
 
     GUM_ACTIVE_TEST(Inverse) {
-      gum::LabelizedVariable   u("u", "u", 4);
-      gum::LabelizedVariable   v("v", "v", 2);
-      gum::LabelizedVariable   w("w", "w", 3);
-      gum::Tensor< double > p;
+      gum::LabelizedVariable u("u", "u", 4);
+      gum::LabelizedVariable v("v", "v", 2);
+      gum::LabelizedVariable w("w", "w", 3);
+      gum::Tensor< double >  p;
       p.add(u);
       p.add(v);
       p.add(w);
@@ -1271,10 +1265,10 @@ namespace gum_tests {
     }
 
     GUM_ACTIVE_TEST(MinNegatif) {
-      gum::LabelizedVariable   u("u", "u", 4);
-      gum::LabelizedVariable   v("v", "v", 2);
-      gum::LabelizedVariable   w("w", "w", 3);
-      gum::Tensor< double > p;
+      gum::LabelizedVariable u("u", "u", 4);
+      gum::LabelizedVariable v("v", "v", 2);
+      gum::LabelizedVariable w("w", "w", 3);
+      gum::Tensor< double >  p;
       p.add(u);
       p.add(v);
       p.add(w);
@@ -1289,10 +1283,10 @@ namespace gum_tests {
     }
 
     GUM_ACTIVE_TEST(Sgn) {
-      gum::LabelizedVariable   u("u", "u", 4);
-      gum::LabelizedVariable   v("v", "v", 2);
-      gum::LabelizedVariable   w("w", "w", 3);
-      gum::Tensor< double > p;
+      gum::LabelizedVariable u("u", "u", 4);
+      gum::LabelizedVariable v("v", "v", 2);
+      gum::LabelizedVariable w("w", "w", 3);
+      gum::Tensor< double >  p;
       p.add(u);
       p.add(v);
       p.add(w);
@@ -1308,10 +1302,10 @@ namespace gum_tests {
     }
 
     GUM_ACTIVE_TEST(OperatorWithScalars) {
-      gum::LabelizedVariable   u("u", "u", 4);
-      gum::LabelizedVariable   v("v", "v", 2);
-      gum::LabelizedVariable   w("w", "w", 3);
-      gum::Tensor< double > p;
+      gum::LabelizedVariable u("u", "u", 4);
+      gum::LabelizedVariable v("v", "v", 2);
+      gum::LabelizedVariable w("w", "w", 3);
+      gum::Tensor< double >  p;
       p.add(u);
       p.add(v);
       p.add(w);
@@ -1368,7 +1362,7 @@ namespace gum_tests {
 
 
     private:
-    static void _testval_for_set_(const gum::Tensor< int >&          p,
+    static void _testval_for_set_(const gum::Tensor< int >&             p,
                                   int                                   val,
                                   const gum::Set< gum::Instantiation >& s,
                                   gum::Size                             expected_size) {

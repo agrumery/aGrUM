@@ -35,9 +35,6 @@
  ****************************************************************************/
 
 
-
-
-
 #include <agrum/base/graphicalModels/inference/scheduler/scheduledInference.h>
 
 namespace gum {

@@ -35,9 +35,6 @@
  ****************************************************************************/
 
 
-
-
-
 #include <iostream>
 #include <string>
 
@@ -316,8 +313,8 @@ namespace gum_tests {
         TS_ASSERT_EQUALS(lvfailure.label(0), "TRUE")
         TS_ASSERT_EQUALS(lvfailure.label(1), "FALSE")
         const gum::Tensor< double >& cpt = net->cpt(idMap["LVEDVOLUME"]);
-        gum::Instantiation              inst(cpt);
-        gum::Instantiation              var_inst;
+        gum::Instantiation           inst(cpt);
+        gum::Instantiation           var_inst;
         var_inst << lvedvolume;
         inst.chgVal(hypovolemia, 0);
         inst.chgVal(lvfailure, 0);

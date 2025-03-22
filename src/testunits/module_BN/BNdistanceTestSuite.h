@@ -35,9 +35,6 @@
  ****************************************************************************/
 
 
-
-
-
 #define TESTKL_MAX_ITER_GIBBS_KL 15
 #include <iostream>
 #include <string>

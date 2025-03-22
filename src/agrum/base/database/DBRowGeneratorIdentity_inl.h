@@ -35,9 +35,6 @@
  ****************************************************************************/
 
 
-
-
-
 /** @file
  * @brief A filtered row generator that returns exactly the rows it gets in
  *input

@@ -35,9 +35,6 @@
  ****************************************************************************/
 
 
-
-
-
 /** @file
  * @brief The basic class for computing the set of digraph changes allowed by
  * the user to be executed by the learning algorithms

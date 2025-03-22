@@ -35,9 +35,6 @@
  ****************************************************************************/
 
 
-
-
-
 /**
  * @file
  * @brief d-separation analysis (as described in Koller & Friedman 2009)
@@ -53,10 +50,10 @@ namespace gum {
   // query variables given evidence
   template < typename GUM_SCALAR, class TABLE >
   void dSeparationAlgorithm::relevantTensors(const IBayesNet< GUM_SCALAR >& bn,
-                                                const NodeSet&                 query,
-                                                const NodeSet&                 hardEvidence,
-                                                const NodeSet&                 softEvidence,
-                                                Set< const TABLE* >&           tensors) {
+                                             const NodeSet&                 query,
+                                             const NodeSet&                 hardEvidence,
+                                             const NodeSet&                 softEvidence,
+                                             Set< const TABLE* >&           tensors) {
     const DAG& dag = bn.dag();
 
     // mark the set of ancestors of the evidence

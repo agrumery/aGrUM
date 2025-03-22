@@ -35,9 +35,6 @@
  ****************************************************************************/
 
 
-
-
-
 /**
  * @file
  * @brief Implementation of the non pure virtual methods of class
@@ -93,8 +90,7 @@ namespace gum {
 
   // returns whether the inference object is in a OutdatedTensor state
   template < typename GUM_SCALAR >
-  INLINE bool
-      GraphicalModelInference< GUM_SCALAR >::isInferenceOutdatedTensors() const noexcept {
+  INLINE bool GraphicalModelInference< GUM_SCALAR >::isInferenceOutdatedTensors() const noexcept {
     return (_state_ == StateOfInference::OutdatedTensors);
   }
 
@@ -316,8 +312,7 @@ namespace gum {
     bool is_hard_evidence = _isHardEvidence_(pot, val);
 
     // insert the evidence
-    _evidence_.insert(id,
-                      new Tensor< GUM_SCALAR >(std::forward< Tensor< GUM_SCALAR > >(pot)));
+    _evidence_.insert(id, new Tensor< GUM_SCALAR >(std::forward< Tensor< GUM_SCALAR > >(pot)));
     if (is_hard_evidence) {   // pot is deterministic
       _hard_evidence_.insert(id, val);
       _hard_evidence_nodes_.insert(id);
@@ -330,8 +325,7 @@ namespace gum {
 
   // adds a new evidence on node id (might be soft or hard)
   template < typename GUM_SCALAR >
-  INLINE void
-      GraphicalModelInference< GUM_SCALAR >::addEvidence(const Tensor< GUM_SCALAR >& pot) {
+  INLINE void GraphicalModelInference< GUM_SCALAR >::addEvidence(const Tensor< GUM_SCALAR >& pot) {
     Tensor< GUM_SCALAR > new_pot(pot);
     addEvidence(std::move(new_pot));
   }
@@ -484,7 +478,7 @@ namespace gum {
 
     // modify the evidence already stored
     const Tensor< GUM_SCALAR >* localPot = _evidence_[id];
-    Instantiation                  I(pot);
+    Instantiation               I(pot);
     for (I.setFirst(); !I.end(); I.inc()) {
       localPot->set(I, pot[I]);
     }

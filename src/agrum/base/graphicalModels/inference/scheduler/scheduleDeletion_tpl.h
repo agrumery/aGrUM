@@ -35,9 +35,6 @@
  ****************************************************************************/
 
 
-
-
-
 /** @file
  * @brief a MultiDim Delete operator class used for scheduling inferences
  *

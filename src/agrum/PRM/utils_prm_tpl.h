@@ -35,9 +35,6 @@
  ****************************************************************************/
 
 
-
-
-
 #include <agrum/PRM/utils_prm.h>
 
 namespace gum {
@@ -46,9 +43,9 @@ namespace gum {
     template < typename GUM_SCALAR >
     Tensor< GUM_SCALAR >*
         copyTensor(const Bijection< const DiscreteVariable*, const DiscreteVariable* >& bij,
-                      const Tensor< GUM_SCALAR >&                                       source) {
+                   const Tensor< GUM_SCALAR >&                                          source) {
       const MultiDimImplementation< GUM_SCALAR >* impl = source.content();
-      Tensor< GUM_SCALAR >*                    p    = 0;
+      Tensor< GUM_SCALAR >*                       p    = 0;
 
       try {
         if (dynamic_cast< const MultiDimReadOnly< GUM_SCALAR >* >(impl)) {
@@ -113,12 +110,12 @@ namespace gum {
     // the function used to combine two tables
     template < typename GUM_SCALAR >
     Tensor< GUM_SCALAR > multTensor(const Tensor< GUM_SCALAR >& t1,
-                                          const Tensor< GUM_SCALAR >& t2) {
+                                    const Tensor< GUM_SCALAR >& t2) {
       return t1 * t2;
     }
 
     template < typename GUM_SCALAR >
-    void eliminateNode(const DiscreteVariable*          var,
+    void eliminateNode(const DiscreteVariable*       var,
                        Set< Tensor< GUM_SCALAR >* >& pool,
                        Set< Tensor< GUM_SCALAR >* >& trash) {
       Tensor< GUM_SCALAR >* pot = nullptr;
@@ -158,8 +155,8 @@ namespace gum {
 
     template < typename GUM_SCALAR >
     void eliminateNodes(const std::vector< const DiscreteVariable* >& elim_order,
-                        Set< Tensor< GUM_SCALAR >* >&              pool,
-                        Set< Tensor< GUM_SCALAR >* >&              trash) {
+                        Set< Tensor< GUM_SCALAR >* >&                 pool,
+                        Set< Tensor< GUM_SCALAR >* >&                 trash) {
       for (auto var: elim_order) {
         eliminateNode(var, pool, trash);
       }

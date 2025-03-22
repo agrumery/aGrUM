@@ -35,9 +35,6 @@
  ****************************************************************************/
 
 
-
-
-
 /**
  * @file
  * @brief Utility functions used for exploiting OpenMP/STL parallelism

@@ -1,0 +1,5 @@
+DESTDIR=$(shell python -c "import os;import pyagrum;print(os.path.dirname(pyagrum.__file__))")
+
+run:
+	swig -c++ -python -outdir $(DESTDIR) -py3 -I..\..\swig -I..\..\..\src -I..\..\..\build\Release -I.. pyagrum.i
+	cd sphinx && make -f Makefile.win html

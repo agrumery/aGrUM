@@ -28,7 +28,7 @@ http://www.cs.cmu.edu/afs/cs/project/jair/pub/volume10/jaakkola99a-html/node2.ht
 The real QMR-DT model is copyright, but we can create a random QMR-like model as follows.
 """
 
-import pyAgrum as gum
+import pyagrum as gum
 import random
 
 def create_qmr(nD,nF,density):
@@ -43,10 +43,10 @@ def create_qmr(nD,nF,density):
     bn=gum.BayesNet(name)
 
     lDis=[bn.add(gum.LabelizedVariable("D%4d"%i,"D%4d"%i,2)) for i in range(nD)]
-    
+
     # add noisyOR nodes with random leaks
     lFind=[bn.addNoisyOR(gum.LabelizedVariable("F%d"%i,"F%d"%i,2),random.uniform(0.1,0.9)) for i in range(nF)]
-        
+
     for node in lDis:
         prior=random.uniform(0.01,0.99)
         bn.cpt(node)[:]=[prior,1-prior]

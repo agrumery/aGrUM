@@ -35,9 +35,6 @@
  ****************************************************************************/
 
 
-
-
-
 /**
  * @file
  * @brief Template implementation of InfluenceDiagram/InfluenceDiagram.h classes.
@@ -327,8 +324,7 @@ namespace gum {
    * Returns the utility table of a utility node.
    */
   template < typename GUM_SCALAR >
-  INLINE const Tensor< GUM_SCALAR >&
-               InfluenceDiagram< GUM_SCALAR >::utility(NodeId varId) const {
+  INLINE const Tensor< GUM_SCALAR >& InfluenceDiagram< GUM_SCALAR >::utility(NodeId varId) const {
     return *(_utilityMap_[varId]);
   }
 
@@ -924,8 +920,8 @@ namespace gum {
       }
     }
 
-    auto check_pot = [&](const gum::Tensor< GUM_SCALAR >& p1,
-                         const gum::Tensor< GUM_SCALAR >& p2) -> bool {
+    auto check_pot
+        = [&](const gum::Tensor< GUM_SCALAR >& p1, const gum::Tensor< GUM_SCALAR >& p2) -> bool {
       if (p1.nbrDim() != p2.nbrDim()) { return false; }
 
       if (p1.domainSize() != p2.domainSize()) { return false; }

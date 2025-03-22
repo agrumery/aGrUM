@@ -35,9 +35,6 @@
  ****************************************************************************/
 
 
-
-
-
 /** @file
  * @brief The base class for initializing DatabaseTables and RawDatabaseTables
  * from files or sql databases

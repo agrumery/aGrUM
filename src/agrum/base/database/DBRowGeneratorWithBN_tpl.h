@@ -35,9 +35,6 @@
  ****************************************************************************/
 
 
-
-
-
 /** @file
  * @brief A DBRowGenerator class that returns incomplete rows as EM would do
  *

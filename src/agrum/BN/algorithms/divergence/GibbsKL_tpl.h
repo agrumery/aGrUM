@@ -35,9 +35,6 @@
  ****************************************************************************/
 
 
-
-
-
 /**
  * @file
  * @brief KL divergence between BNs -- implementation using Gibbs sampling

@@ -35,9 +35,6 @@
  ****************************************************************************/
 
 
-
-
-
 #include <cstdlib>
 #include <iostream>
 #include <sstream>
@@ -185,10 +182,10 @@ namespace gum_tests {
     // ==========================================================================
     template < typename T >
     gum::Tensor< T >* manual_instantiate(
-        const gum::Tensor< T >&                                      t_in,
+        const gum::Tensor< T >&                                         t_in,
         const gum::HashTable< const gum::DiscreteVariable*, gum::Idx >& inst_vars) {
       // construction of the output table
-      gum::Tensor< T >*                                 t_out = new gum::Tensor< T >;
+      gum::Tensor< T >*                                    t_out = new gum::Tensor< T >;
       gum::Instantiation                                   partial_inst;
       const gum::Sequence< const gum::DiscreteVariable* >& tin_vars = t_in.variablesSequence();
       t_out->beginMultipleChanges();
@@ -222,10 +219,10 @@ namespace gum_tests {
     // ==========================================================================
     template < typename T >
     gum::Tensor< T* >* manual_instantiate(
-        const gum::Tensor< T* >&                                     t_in,
+        const gum::Tensor< T* >&                                        t_in,
         const gum::HashTable< const gum::DiscreteVariable*, gum::Idx >& inst_vars) {
       // construction of the output table
-      gum::Tensor< T* >*                                t_out = new gum::Tensor< T* >;
+      gum::Tensor< T* >*                                   t_out = new gum::Tensor< T* >;
       gum::Instantiation                                   partial_inst;
       const gum::Sequence< const gum::DiscreteVariable* >& tin_vars = t_in.variablesSequence();
       t_out->beginMultipleChanges();
@@ -699,8 +696,7 @@ namespace gum_tests {
       inst_set.insert(vars[8], 3);
       inst_set.insert(vars[9], 2);
 
-      gum::Tensor< double >* t2
-          = new gum::Tensor< double >(partialInstantiation(t1, inst_set));
+      gum::Tensor< double >* t2 = new gum::Tensor< double >(partialInstantiation(t1, inst_set));
       gum::Tensor< double >* t3 = manual_instantiate(t1, inst_set);
 
       TS_ASSERT(*t2 == *t3)
@@ -756,8 +752,7 @@ namespace gum_tests {
       inst_set.insert(vars[8], 3);
       inst_set.insert(vars[9], 2);
 
-      gum::Tensor< double* >* t2
-          = new gum::Tensor< double* >(partialInstantiation(t1, inst_set));
+      gum::Tensor< double* >* t2 = new gum::Tensor< double* >(partialInstantiation(t1, inst_set));
       gum::Tensor< double* >* t3 = manual_instantiate(t1, inst_set);
 
       TS_ASSERT(equal(*t2, *t3))

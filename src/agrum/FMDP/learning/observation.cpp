@@ -35,9 +35,6 @@
  ****************************************************************************/
 
 
-
-
-
 #include <agrum/FMDP/learning/observation.h>
 
 namespace gum {

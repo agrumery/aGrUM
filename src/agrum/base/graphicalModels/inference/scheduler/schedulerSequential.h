@@ -35,9 +35,6 @@
  ****************************************************************************/
 
 
-
-
-
 /** @file
  * @brief a scheduler that executes any available operation (chosen arbitrarily)
  *

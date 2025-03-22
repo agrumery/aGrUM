@@ -35,9 +35,6 @@
  ****************************************************************************/
 
 
-
-
-
 #include <cstdlib>
 #include <iostream>
 #include <sstream>
@@ -139,12 +136,12 @@ namespace gum_tests {
     }
 
     static gum::Tensor< double > myMax(const gum::Tensor< double >& table,
-                                          const gum::VariableSet&         del_vars) {
+                                       const gum::VariableSet&      del_vars) {
       return table.maxOut(del_vars);
     }
 
     static gum::Tensor< double > mySum(const gum::Tensor< double >& table,
-                                          const gum::VariableSet&         del_vars) {
+                                       const gum::VariableSet&      del_vars) {
       return table.sumOut(del_vars);
     }
 
@@ -191,13 +188,13 @@ namespace gum_tests {
 
     // the function used to combine two tables
     static gum::Tensor< double >* addTensor(const gum::Tensor< double >& t1,
-                                                  const gum::Tensor< double >& t2) {
+                                            const gum::Tensor< double >& t2) {
       return new gum::Tensor< double >(t1 + t2);
     }
 
     // the function used to combine two tables
     static gum::Tensor< double >* multTensor(const gum::Tensor< double >& t1,
-                                                   const gum::Tensor< double >& t2) {
+                                             const gum::Tensor< double >& t2) {
       return new gum::Tensor< double >(t1 * t2);
     }
 
@@ -261,9 +258,9 @@ namespace gum_tests {
 
     // projection of a table over a set
     gum::Tensor< double >* proj(const gum::Tensor< double >& table,
-                                   const gum::VariableSet&         del_vars,
-                                   double                          neutral_elt) {
-      gum::Tensor< double >*                            result = new gum::Tensor< double >;
+                                const gum::VariableSet&      del_vars,
+                                double                       neutral_elt) {
+      gum::Tensor< double >*                               result = new gum::Tensor< double >;
       const gum::Sequence< const gum::DiscreteVariable* >& vars   = table.variablesSequence();
       result->beginMultipleChanges();
 
@@ -287,9 +284,9 @@ namespace gum_tests {
 
     // projection of a table over a set
     gum::Tensor< double* >* proj(const gum::Tensor< double* >& table,
-                                    const gum::VariableSet&          del_vars,
-                                    double                           neutral_elt) {
-      gum::Tensor< double* >*                           result = new gum::Tensor< double* >;
+                                 const gum::VariableSet&       del_vars,
+                                 double                        neutral_elt) {
+      gum::Tensor< double* >*                              result = new gum::Tensor< double* >;
       const gum::Sequence< const gum::DiscreteVariable* >& vars   = table.variablesSequence();
       result->beginMultipleChanges();
 
@@ -782,7 +779,7 @@ namespace gum_tests {
       delete t3;
 
       gum::Tensor< double >* t4 = new gum::Tensor< double >(t1.maxOut(proj_set));
-      t3                           = proj(t1, proj_set, 0.0f);
+      t3                        = proj(t1, proj_set, 0.0f);
       TS_ASSERT(*t4 == *t3)
 
       delete t4;
@@ -891,7 +888,7 @@ namespace gum_tests {
       pointerDelete(t3);
 
       gum::Tensor< double* >* t4 = new gum::Tensor< double* >(t1->maxOut(proj_set));
-      t3                            = proj(*t1, proj_set, 0.0f);
+      t3                         = proj(*t1, proj_set, 0.0f);
       TS_ASSERT(equal(*t4, *t3))
 
       pointerDelete(t4);
@@ -952,7 +949,7 @@ namespace gum_tests {
       }
       {
         gum::Tensor< double > t3;
-        auto                     t2 = t1.maxOut(proj_set);
+        auto                  t2 = t1.maxOut(proj_set);
         Proj.execute(t3, t1, proj_set);
         TS_ASSERT_EQUALS(t2, t3)
       }
@@ -1007,7 +1004,7 @@ namespace gum_tests {
       TS_ASSERT(mem_usage.first == 1.0 * sizeof(double) + sizeof(gum::Tensor< double >))
       TS_ASSERT(mem_usage.second == 1.0 * sizeof(double) + sizeof(gum::Tensor< double >))
       gum::ScheduleMultiDim< gum::Tensor< double > > t6multi(t6, false);
-      auto                                              xxx1 = Proj.operations(&t6multi, del_vars);
+      auto                                           xxx1 = Proj.operations(&t6multi, del_vars);
       delete xxx1.first;
 
       gum::Schedule schedule;
@@ -1058,19 +1055,19 @@ namespace gum_tests {
 
     GUM_ACTIVE_TEST(Constants) {
       gum::Tensor< double > t1;
-      gum::Instantiation       inst1(t1);
+      gum::Instantiation    inst1(t1);
       t1.set(inst1, 3.0);
 
       gum::Tensor< double > t2;
-      gum::Instantiation       inst2(t2);
+      gum::Instantiation    inst2(t2);
       t2.set(inst2, 4.0);
 
       gum::MultiDimProjection< gum::Tensor< double > > proj(mySum);
-      gum::VariableSet                                    del_vars;
+      gum::VariableSet                                 del_vars;
 
       {
         gum::Tensor< double >* t3 = proj.execute(t1, del_vars);
-        auto                      t2 = t1.sumOut(del_vars);
+        auto                   t2 = t1.sumOut(del_vars);
         TS_ASSERT_EQUALS(t2, *t3)
         TS_ASSERT_EQUALS(t1, *t3)
         gum::Instantiation inst(t3);
@@ -1091,7 +1088,7 @@ namespace gum_tests {
       del_vars.insert(vars[0]);
       {
         gum::Tensor< double >* t3 = proj.execute(t1, del_vars);
-        auto                      t2 = t1.maxOut(del_vars);
+        auto                   t2 = t1.maxOut(del_vars);
         TS_ASSERT_EQUALS(t2, *t3)
         TS_ASSERT_EQUALS(t1, *t3)
         gum::Instantiation inst(t3);
@@ -1102,7 +1099,7 @@ namespace gum_tests {
       del_vars.insert(vars[1]);
       {
         gum::Tensor< double >* t3 = proj.execute(t1, del_vars);
-        auto                      t2 = t1.maxOut(del_vars);
+        auto                   t2 = t1.maxOut(del_vars);
         TS_ASSERT_EQUALS(t2, *t3)
         TS_ASSERT_EQUALS(t1, *t3)
         gum::Instantiation inst(t3);
@@ -1120,7 +1117,7 @@ namespace gum_tests {
       del_vars.insert(vars[0]);
       {
         gum::Tensor< double >* t3 = proj.execute(t1, del_vars);
-        auto                      t2 = t1.sumOut(del_vars);
+        auto                   t2 = t1.sumOut(del_vars);
         TS_ASSERT_EQUALS(t2, *t3)
         TS_ASSERT_EQUALS(t3->variablesSequence().size(), gum::Size(0))
         gum::Instantiation inst3(t3);
@@ -1137,7 +1134,7 @@ namespace gum_tests {
       del_vars.insert(vars[1]);
       {
         gum::Tensor< double >* t3 = proj.execute(t1, del_vars);
-        auto                      t2 = t1.sumOut(del_vars);
+        auto                   t2 = t1.sumOut(del_vars);
         TS_ASSERT_EQUALS(t2, *t3)
         TS_ASSERT_EQUALS(t3->variablesSequence().size(), gum::Size(0))
         gum::Instantiation inst3(t3);

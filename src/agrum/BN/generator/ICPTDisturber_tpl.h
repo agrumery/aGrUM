@@ -35,9 +35,6 @@
  ****************************************************************************/
 
 
-
-
-
 /** @file
  * @brief Abstract class for disturbing Conditional Probability Tables.
  *

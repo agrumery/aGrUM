@@ -35,9 +35,6 @@
  ****************************************************************************/
 
 
-
-
-
 #include <iostream>
 
 #include <gumtest/AgrumTestSuite.h>
@@ -80,7 +77,7 @@ namespace gum_tests {
 
     std::vector< double > _getProba_(const gum::BayesNet< double >& bn, const gum::NodeId id) {
       const gum::Tensor< double >& pot = bn.cpt(id);
-      std::vector< double >           vect;
+      std::vector< double >        vect;
       for (gum::Instantiation inst(pot); !inst.end(); ++inst) {
         vect.push_back(pot.get(inst));
       }

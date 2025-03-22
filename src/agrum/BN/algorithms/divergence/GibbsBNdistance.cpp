@@ -35,9 +35,6 @@
  ****************************************************************************/
 
 
-
-
-
 #include <agrum/BN/algorithms/divergence/GibbsBNdistance.h>
 
 #include <agrum/base/core/math/math_utils.h>

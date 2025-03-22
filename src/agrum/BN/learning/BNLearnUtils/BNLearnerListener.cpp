@@ -35,9 +35,6 @@
  ****************************************************************************/
 
 
-
-
-
 /*
     <one line to give the program's name and a brief idea of what it does.>
     Copyright (c) 2012 -2024 Pierre-Henri WUILLEMIN(_@LIP6)

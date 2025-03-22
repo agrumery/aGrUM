@@ -35,9 +35,6 @@
  ****************************************************************************/
 
 
-
-
-
 /**
  * @file
  * @brief Implementation of the non pure virtual methods of class
@@ -260,7 +257,7 @@ namespace gum {
     this->eraseAllTargets();
     this->eraseAllEvidence();
 
-    Instantiation           iTarget;
+    Instantiation        iTarget;
     Tensor< GUM_SCALAR > res;
     for (const auto& target: targets) {
       res.add(this->MRF().variable(target));

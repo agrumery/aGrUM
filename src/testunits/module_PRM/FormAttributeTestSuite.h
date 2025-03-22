@@ -35,9 +35,6 @@
  ****************************************************************************/
 
 
-
-
-
 #include <gumtest/AgrumTestSuite.h>
 #include <gumtest/utils.h>
 
@@ -238,7 +235,7 @@ namespace gum_tests {
 
     GUM_ACTIVE_TEST(Cpf) {
       // Arrange
-      PRMAttribute             attr(*_class_, "attr", *_boolean_);
+      PRMAttribute          attr(*_class_, "attr", *_boolean_);
       gum::Tensor< double > expected;
       expected << attr.type().variable();
       // Act
@@ -255,8 +252,8 @@ namespace gum_tests {
 
     GUM_ACTIVE_TEST(CpfConst) {
       // Arrange
-      PRMAttribute             attr(*_class_, "attr", *_boolean_);
-      const auto&              attr_const = attr;
+      PRMAttribute          attr(*_class_, "attr", *_boolean_);
+      const auto&           attr_const = attr;
       gum::Tensor< double > expected;
       expected << attr.type().variable();
       // Act

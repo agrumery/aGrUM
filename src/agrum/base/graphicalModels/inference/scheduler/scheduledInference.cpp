@@ -35,9 +35,6 @@
  ****************************************************************************/
 
 
-
-
-
 #include <agrum/base/graphicalModels/inference/scheduler/scheduledInference.h>
 
 #ifdef GUM_NO_INLINE

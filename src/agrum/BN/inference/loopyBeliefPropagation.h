@@ -35,9 +35,6 @@
  ****************************************************************************/
 
 
-
-
-
 /**
  * @file
  * @brief This file contains gibbs sampling (for BNs) class definitions.
@@ -107,7 +104,7 @@ namespace gum {
 
     void _initStats_();
 
-    void                    _init_messages_();
+    void                 _init_messages_();
     Tensor< GUM_SCALAR > _computeProdPi_(NodeId X);
     Tensor< GUM_SCALAR > _computeProdPi_(NodeId X, NodeId except);
     Tensor< GUM_SCALAR > _computeProdLambda_(NodeId X);

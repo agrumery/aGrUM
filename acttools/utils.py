@@ -135,11 +135,11 @@ def recglob(path: str, mask: str) -> Iterator[str]:
 
 
 def srcPyAgrum() -> Iterator[str]:
-  for i in recglob("wrappers/pyAgrum/testunits", "*.py"):
+  for i in recglob("wrappers/pyagrum/testunits", "*.py"):
     yield i
-  for i in recglob("wrappers/pyAgrum/cmake", "*.py"):
+  for i in recglob("wrappers/pyagrum/cmake", "*.py"):
     yield i
-  for i in recglob("wrappers/pyAgrum/pyLibs", "*.py"):
+  for i in recglob("wrappers/pyagrum/pyLibs", "*.py"):
     yield i
   for i in recglob("acttools", "*.py"):
     yield i

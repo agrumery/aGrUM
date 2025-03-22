@@ -35,9 +35,6 @@
  ****************************************************************************/
 
 
-
-
-
 #ifndef __MULTIPLE_INFERENCE_ENGINES__H__
 #define __MULTIPLE_INFERENCE_ENGINES__H__
 

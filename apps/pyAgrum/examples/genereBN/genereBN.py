@@ -1,8 +1,8 @@
 #!/usr/bin/python
 # -*- coding: utf-8 -*-
 import datetime
-import pyAgrum as gum
-import pyAgrum.lib.bn2csv as bn2csv
+import pyagrum as gum
+import pyagrum.lib.bn2csv as bn2csv
 
 NBRNOEUDS=15
 NBRARCS=20

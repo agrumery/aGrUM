@@ -35,9 +35,6 @@
  ****************************************************************************/
 
 
-
-
-
 /** @file
  * @brief A wrapper that enables to store data in a way that prevents false
  * cacheline sharing.

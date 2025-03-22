@@ -35,9 +35,6 @@
  ****************************************************************************/
 
 
-
-
-
 #include <gumtest/AgrumTestSuite.h>
 #include <gumtest/utils.h>
 
@@ -271,7 +268,7 @@ namespace gum_tests {
 
     GUM_ACTIVE_TEST(Cpf) {
       // Arrange
-      PRMSlotChain             slot("simple", *_booleanChain_);
+      PRMSlotChain          slot("simple", *_booleanChain_);
       gum::Tensor< double > expected;
       expected << slot.type().variable();
       // Act
@@ -288,8 +285,8 @@ namespace gum_tests {
 
     GUM_ACTIVE_TEST(CpfConst) {
       // Arrange
-      PRMSlotChain             slot("simple", *_booleanChain_);
-      const auto&              slot_const = slot;
+      PRMSlotChain          slot("simple", *_booleanChain_);
+      const auto&           slot_const = slot;
       gum::Tensor< double > expected;
       expected << slot.type().variable();
       // Act

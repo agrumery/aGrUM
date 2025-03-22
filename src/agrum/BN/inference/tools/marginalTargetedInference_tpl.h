@@ -35,9 +35,6 @@
  ****************************************************************************/
 
 
-
-
-
 /**
  * @file
  * @brief Implementation of the generic class for the computation of
@@ -275,8 +272,8 @@ namespace gum {
   }
 
   template < typename GUM_SCALAR >
-  Tensor< GUM_SCALAR >
-      MarginalTargetedInference< GUM_SCALAR >::evidenceImpact(NodeId target, const NodeSet& evs) {
+  Tensor< GUM_SCALAR > MarginalTargetedInference< GUM_SCALAR >::evidenceImpact(NodeId target,
+                                                                               const NodeSet& evs) {
     const auto& vtarget = this->BN().variable(target);
 
     if (evs.contains(target)) {

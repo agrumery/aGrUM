@@ -35,9 +35,6 @@
  ****************************************************************************/
 
 
-
-
-
 /**
  * @file Template Implementations of the ITI datastructure learner
  * @brief
