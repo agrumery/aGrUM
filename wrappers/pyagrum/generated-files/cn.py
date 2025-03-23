@@ -1474,7 +1474,7 @@ class CNLoopyPropagation(object):
 # Register CNLoopyPropagation in _cn:
 _cn.CNLoopyPropagation_swigregister(CNLoopyPropagation)
 
-__version__ = '1.99.9.9'
+__version__ = '2.0.0'
 __license__ = __doc__
 __project_url__ = 'https://agrum.org'
 __project_name__ = 'pyAgrum'

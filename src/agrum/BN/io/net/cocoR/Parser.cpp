@@ -211,7 +211,7 @@ void Parser::Net() {
 			NODE();
 		}
 		while (la->kind == 16 /* "potential" */) {
-			TENSOR();
+			POTENTIAL();
 		}
 }
 
@@ -255,7 +255,7 @@ void Parser::NODE() {
 		TRY(factory().endVariableDeclaration()); 
 }
 
-void Parser::TENSOR() {
+void Parser::POTENTIAL() {
 		std::string variable;
 		std::vector<float> probas;
 		std::vector<std::string> var_seq;

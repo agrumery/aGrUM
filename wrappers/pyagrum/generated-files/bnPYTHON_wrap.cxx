@@ -5753,7 +5753,7 @@ SWIGINTERN std::string gum_BayesNet_Sl_double_Sg__loadBIF__SWIG_0(gum::BayesNet<
           reader.showElegantErrorsAndWarnings(stream);
           if (nbErr>0) {
               reader.showErrorCounts(stream);
-                   {                                                                                             std::ostringstream error_stream;                                                            error_stream << stream.str();                                                                        throw(gum::FatalError(gum::_createMsg_("/home/phw/Documents/gits/agrum/aGrUM-dev/wrappers/pyagrum/swigsrc//bayesnet.i", __FUNCTION__, 204, error_stream.str())));      }
+                   {                                                                                             std::ostringstream error_stream;                                                            error_stream << stream.str();                                                                        throw(gum::FatalError(gum::_createMsg_("/Users/phw/Documents/gits/agrum/aGrUM-dev/wrappers/pyagrum/swigsrc//bayesnet.i", __FUNCTION__, 204, error_stream.str())));      }
           } else {
               return stream.str();
           }
@@ -5782,7 +5782,7 @@ SWIGINTERN std::string gum_BayesNet_Sl_double_Sg__loadDSL__SWIG_0(gum::BayesNet<
           reader.showElegantErrorsAndWarnings(stream);
           if (nbErr>0) {
               reader.showErrorCounts(stream);
-                   {                                                                                             std::ostringstream error_stream;                                                            error_stream << stream.str();                                                                        throw(gum::FatalError(gum::_createMsg_("/home/phw/Documents/gits/agrum/aGrUM-dev/wrappers/pyagrum/swigsrc//bayesnet.i", __FUNCTION__, 236, error_stream.str())));      }
+                   {                                                                                             std::ostringstream error_stream;                                                            error_stream << stream.str();                                                                        throw(gum::FatalError(gum::_createMsg_("/Users/phw/Documents/gits/agrum/aGrUM-dev/wrappers/pyagrum/swigsrc//bayesnet.i", __FUNCTION__, 236, error_stream.str())));      }
           } else {
               return stream.str();
           }
@@ -5797,7 +5797,7 @@ SWIGINTERN std::string gum_BayesNet_Sl_double_Sg__loadXDSL__SWIG_0(gum::BayesNet
 
           int isOK=reader.proceed();// for BIFXML, proceed() returns 0 or 1
           if (isOK==1) {
-                   {                                                                                             std::ostringstream error_stream;                                                            error_stream << "Errors found in XML file";                                                                        throw(gum::FatalError(gum::_createMsg_("/home/phw/Documents/gits/agrum/aGrUM-dev/wrappers/pyagrum/swigsrc//bayesnet.i", __FUNCTION__, 253, error_stream.str())));      }
+                   {                                                                                             std::ostringstream error_stream;                                                            error_stream << "Errors found in XML file";                                                                        throw(gum::FatalError(gum::_createMsg_("/Users/phw/Documents/gits/agrum/aGrUM-dev/wrappers/pyagrum/swigsrc//bayesnet.i", __FUNCTION__, 253, error_stream.str())));      }
           } else {
               return "";
           }
@@ -5831,7 +5831,7 @@ SWIGINTERN std::string gum_BayesNet_Sl_double_Sg__loadNET__SWIG_0(gum::BayesNet<
           reader.showElegantErrorsAndWarnings(stream);
           if (nbErr>0) {
               reader.showErrorCounts(stream);
-                   {                                                                                             std::ostringstream error_stream;                                                            error_stream << stream.str();                                                                        throw(gum::FatalError(gum::_createMsg_("/home/phw/Documents/gits/agrum/aGrUM-dev/wrappers/pyagrum/swigsrc//bayesnet.i", __FUNCTION__, 291, error_stream.str())));      }
+                   {                                                                                             std::ostringstream error_stream;                                                            error_stream << stream.str();                                                                        throw(gum::FatalError(gum::_createMsg_("/Users/phw/Documents/gits/agrum/aGrUM-dev/wrappers/pyagrum/swigsrc//bayesnet.i", __FUNCTION__, 291, error_stream.str())));      }
           } else {
               return stream.str();
           }
@@ -5856,7 +5856,7 @@ SWIGINTERN std::string gum_BayesNet_Sl_double_Sg__loadO3PRM__SWIG_0(gum::BayesNe
           reader.showElegantErrorsAndWarnings(stream);
           if (nbErr>0) {
               reader.showErrorCounts(stream);
-                   {                                                                                             std::ostringstream error_stream;                                                            error_stream << stream.str();                                                                        throw(gum::FatalError(gum::_createMsg_("/home/phw/Documents/gits/agrum/aGrUM-dev/wrappers/pyagrum/swigsrc//bayesnet.i", __FUNCTION__, 319, error_stream.str())));      }
+                   {                                                                                             std::ostringstream error_stream;                                                            error_stream << stream.str();                                                                        throw(gum::FatalError(gum::_createMsg_("/Users/phw/Documents/gits/agrum/aGrUM-dev/wrappers/pyagrum/swigsrc//bayesnet.i", __FUNCTION__, 319, error_stream.str())));      }
           } else {
               return stream.str();
           }
@@ -5879,7 +5879,7 @@ SWIGINTERN std::string gum_BayesNet_Sl_double_Sg__loadBIFXML__SWIG_0(gum::BayesN
 
           int isOK=reader.proceed();// for BIFXML, proceed() returns 0 or 1
           if (isOK==1) {
-                   {                                                                                             std::ostringstream error_stream;                                                            error_stream << "Errors found in XML file";                                                                        throw(gum::FatalError(gum::_createMsg_("/home/phw/Documents/gits/agrum/aGrUM-dev/wrappers/pyagrum/swigsrc//bayesnet.i", __FUNCTION__, 345, error_stream.str())));      }
+                   {                                                                                             std::ostringstream error_stream;                                                            error_stream << "Errors found in XML file";                                                                        throw(gum::FatalError(gum::_createMsg_("/Users/phw/Documents/gits/agrum/aGrUM-dev/wrappers/pyagrum/swigsrc//bayesnet.i", __FUNCTION__, 345, error_stream.str())));      }
           } else {
               return "";
           }
@@ -5908,7 +5908,7 @@ SWIGINTERN std::string gum_BayesNet_Sl_double_Sg__loadUAI__SWIG_0(gum::BayesNet<
           reader.showElegantErrorsAndWarnings(stream);
           if (nbErr>0) {
               reader.showErrorCounts(stream);
-                   {                                                                                             std::ostringstream error_stream;                                                            error_stream << stream.str();                                                                        throw(gum::FatalError(gum::_createMsg_("/home/phw/Documents/gits/agrum/aGrUM-dev/wrappers/pyagrum/swigsrc//bayesnet.i", __FUNCTION__, 377, error_stream.str())));      }
+                   {                                                                                             std::ostringstream error_stream;                                                            error_stream << stream.str();                                                                        throw(gum::FatalError(gum::_createMsg_("/Users/phw/Documents/gits/agrum/aGrUM-dev/wrappers/pyagrum/swigsrc//bayesnet.i", __FUNCTION__, 377, error_stream.str())));      }
           } else {
               return stream.str();
           }
@@ -6386,7 +6386,7 @@ SWIGINTERN gum::Tensor< double > gum_LazyPropagation_Sl_double_Sg__evidenceJoint
     }
 SWIGINTERN gum::Tensor< double > gum_LazyPropagation_Sl_double_Sg__jointPosterior(gum::LazyPropagation< double > *self,PyObject *targets){
       if (! PyAnySet_Check(targets)) {
-             {                                                                                             std::ostringstream error_stream;                                                            error_stream << "The argument must be a set";                                                                        throw(gum::InvalidArgument(gum::_createMsg_("/home/phw/Documents/gits/agrum/aGrUM-dev/wrappers/pyagrum/swigsrc//inference.i", __FUNCTION__, 249, error_stream.str())));      }
+             {                                                                                             std::ostringstream error_stream;                                                            error_stream << "The argument must be a set";                                                                        throw(gum::InvalidArgument(gum::_createMsg_("/Users/phw/Documents/gits/agrum/aGrUM-dev/wrappers/pyagrum/swigsrc//inference.i", __FUNCTION__, 249, error_stream.str())));      }
       }
       gum::NodeSet nodeset;
       PyAgrumHelper::populateNodeSetFromPySequenceOfIntOrString(nodeset,targets,self->BN().variableNodeMap());
@@ -6394,7 +6394,7 @@ SWIGINTERN gum::Tensor< double > gum_LazyPropagation_Sl_double_Sg__jointPosterio
     }
 SWIGINTERN void gum_LazyPropagation_Sl_double_Sg__addJointTarget(gum::LazyPropagation< double > *self,PyObject *targets){
       if (! PyAnySet_Check(targets)) {
-             {                                                                                             std::ostringstream error_stream;                                                            error_stream << "The argument must be a set";                                                                        throw(gum::InvalidArgument(gum::_createMsg_("/home/phw/Documents/gits/agrum/aGrUM-dev/wrappers/pyagrum/swigsrc//inference.i", __FUNCTION__, 249, error_stream.str())));      }
+             {                                                                                             std::ostringstream error_stream;                                                            error_stream << "The argument must be a set";                                                                        throw(gum::InvalidArgument(gum::_createMsg_("/Users/phw/Documents/gits/agrum/aGrUM-dev/wrappers/pyagrum/swigsrc//inference.i", __FUNCTION__, 249, error_stream.str())));      }
       }
       gum::NodeSet nodeset;
       PyAgrumHelper::populateNodeSetFromPySequenceOfIntOrString(nodeset,targets,self->BN().variableNodeMap());
@@ -6403,7 +6403,7 @@ SWIGINTERN void gum_LazyPropagation_Sl_double_Sg__addJointTarget(gum::LazyPropag
     }
 SWIGINTERN void gum_LazyPropagation_Sl_double_Sg__eraseJointTarget(gum::LazyPropagation< double > *self,PyObject *targets){
       if (! PyAnySet_Check(targets)) {
-             {                                                                                             std::ostringstream error_stream;                                                            error_stream << "The argument must be a set";                                                                        throw(gum::InvalidArgument(gum::_createMsg_("/home/phw/Documents/gits/agrum/aGrUM-dev/wrappers/pyagrum/swigsrc//inference.i", __FUNCTION__, 249, error_stream.str())));      }
+             {                                                                                             std::ostringstream error_stream;                                                            error_stream << "The argument must be a set";                                                                        throw(gum::InvalidArgument(gum::_createMsg_("/Users/phw/Documents/gits/agrum/aGrUM-dev/wrappers/pyagrum/swigsrc//inference.i", __FUNCTION__, 249, error_stream.str())));      }
       }
       gum::NodeSet nodeset;
       PyAgrumHelper::populateNodeSetFromPySequenceOfIntOrString(nodeset,targets,self->BN().variableNodeMap());
@@ -6411,7 +6411,7 @@ SWIGINTERN void gum_LazyPropagation_Sl_double_Sg__eraseJointTarget(gum::LazyProp
     }
 SWIGINTERN bool gum_LazyPropagation_Sl_double_Sg__isJointTarget(gum::LazyPropagation< double > *self,PyObject *targets){
       if (! PyAnySet_Check(targets)) {
-             {                                                                                             std::ostringstream error_stream;                                                            error_stream << "The argument must be a set";                                                                        throw(gum::InvalidArgument(gum::_createMsg_("/home/phw/Documents/gits/agrum/aGrUM-dev/wrappers/pyagrum/swigsrc//inference.i", __FUNCTION__, 249, error_stream.str())));      }
+             {                                                                                             std::ostringstream error_stream;                                                            error_stream << "The argument must be a set";                                                                        throw(gum::InvalidArgument(gum::_createMsg_("/Users/phw/Documents/gits/agrum/aGrUM-dev/wrappers/pyagrum/swigsrc//inference.i", __FUNCTION__, 249, error_stream.str())));      }
       }
       gum::NodeSet nodeset;
       PyAgrumHelper::populateNodeSetFromPySequenceOfIntOrString(nodeset,targets,self->BN().variableNodeMap());
@@ -6614,7 +6614,7 @@ SWIGINTERN gum::Tensor< double > gum_ShaferShenoyInference_Sl_double_Sg__evidenc
     }
 SWIGINTERN gum::Tensor< double > gum_ShaferShenoyInference_Sl_double_Sg__jointPosterior(gum::ShaferShenoyInference< double > *self,PyObject *targets){
       if (! PyAnySet_Check(targets)) {
-             {                                                                                             std::ostringstream error_stream;                                                            error_stream << "The argument must be a set";                                                                        throw(gum::InvalidArgument(gum::_createMsg_("/home/phw/Documents/gits/agrum/aGrUM-dev/wrappers/pyagrum/swigsrc//inference.i", __FUNCTION__, 250, error_stream.str())));      }
+             {                                                                                             std::ostringstream error_stream;                                                            error_stream << "The argument must be a set";                                                                        throw(gum::InvalidArgument(gum::_createMsg_("/Users/phw/Documents/gits/agrum/aGrUM-dev/wrappers/pyagrum/swigsrc//inference.i", __FUNCTION__, 250, error_stream.str())));      }
       }
       gum::NodeSet nodeset;
       PyAgrumHelper::populateNodeSetFromPySequenceOfIntOrString(nodeset,targets,self->BN().variableNodeMap());
@@ -6622,7 +6622,7 @@ SWIGINTERN gum::Tensor< double > gum_ShaferShenoyInference_Sl_double_Sg__jointPo
     }
 SWIGINTERN void gum_ShaferShenoyInference_Sl_double_Sg__addJointTarget(gum::ShaferShenoyInference< double > *self,PyObject *targets){
       if (! PyAnySet_Check(targets)) {
-             {                                                                                             std::ostringstream error_stream;                                                            error_stream << "The argument must be a set";                                                                        throw(gum::InvalidArgument(gum::_createMsg_("/home/phw/Documents/gits/agrum/aGrUM-dev/wrappers/pyagrum/swigsrc//inference.i", __FUNCTION__, 250, error_stream.str())));      }
+             {                                                                                             std::ostringstream error_stream;                                                            error_stream << "The argument must be a set";                                                                        throw(gum::InvalidArgument(gum::_createMsg_("/Users/phw/Documents/gits/agrum/aGrUM-dev/wrappers/pyagrum/swigsrc//inference.i", __FUNCTION__, 250, error_stream.str())));      }
       }
       gum::NodeSet nodeset;
       PyAgrumHelper::populateNodeSetFromPySequenceOfIntOrString(nodeset,targets,self->BN().variableNodeMap());
@@ -6631,7 +6631,7 @@ SWIGINTERN void gum_ShaferShenoyInference_Sl_double_Sg__addJointTarget(gum::Shaf
     }
 SWIGINTERN void gum_ShaferShenoyInference_Sl_double_Sg__eraseJointTarget(gum::ShaferShenoyInference< double > *self,PyObject *targets){
       if (! PyAnySet_Check(targets)) {
-             {                                                                                             std::ostringstream error_stream;                                                            error_stream << "The argument must be a set";                                                                        throw(gum::InvalidArgument(gum::_createMsg_("/home/phw/Documents/gits/agrum/aGrUM-dev/wrappers/pyagrum/swigsrc//inference.i", __FUNCTION__, 250, error_stream.str())));      }
+             {                                                                                             std::ostringstream error_stream;                                                            error_stream << "The argument must be a set";                                                                        throw(gum::InvalidArgument(gum::_createMsg_("/Users/phw/Documents/gits/agrum/aGrUM-dev/wrappers/pyagrum/swigsrc//inference.i", __FUNCTION__, 250, error_stream.str())));      }
       }
       gum::NodeSet nodeset;
       PyAgrumHelper::populateNodeSetFromPySequenceOfIntOrString(nodeset,targets,self->BN().variableNodeMap());
@@ -6639,7 +6639,7 @@ SWIGINTERN void gum_ShaferShenoyInference_Sl_double_Sg__eraseJointTarget(gum::Sh
     }
 SWIGINTERN bool gum_ShaferShenoyInference_Sl_double_Sg__isJointTarget(gum::ShaferShenoyInference< double > *self,PyObject *targets){
       if (! PyAnySet_Check(targets)) {
-             {                                                                                             std::ostringstream error_stream;                                                            error_stream << "The argument must be a set";                                                                        throw(gum::InvalidArgument(gum::_createMsg_("/home/phw/Documents/gits/agrum/aGrUM-dev/wrappers/pyagrum/swigsrc//inference.i", __FUNCTION__, 250, error_stream.str())));      }
+             {                                                                                             std::ostringstream error_stream;                                                            error_stream << "The argument must be a set";                                                                        throw(gum::InvalidArgument(gum::_createMsg_("/Users/phw/Documents/gits/agrum/aGrUM-dev/wrappers/pyagrum/swigsrc//inference.i", __FUNCTION__, 250, error_stream.str())));      }
       }
       gum::NodeSet nodeset;
       PyAgrumHelper::populateNodeSetFromPySequenceOfIntOrString(nodeset,targets,self->BN().variableNodeMap());
@@ -6824,7 +6824,7 @@ SWIGINTERN gum::Tensor< double > gum_VariableElimination_Sl_double_Sg__evidenceJ
     }
 SWIGINTERN gum::Tensor< double > gum_VariableElimination_Sl_double_Sg__jointPosterior(gum::VariableElimination< double > *self,PyObject *targets){
       if (! PyAnySet_Check(targets)) {
-             {                                                                                             std::ostringstream error_stream;                                                            error_stream << "The argument must be a set";                                                                        throw(gum::InvalidArgument(gum::_createMsg_("/home/phw/Documents/gits/agrum/aGrUM-dev/wrappers/pyagrum/swigsrc//inference.i", __FUNCTION__, 251, error_stream.str())));      }
+             {                                                                                             std::ostringstream error_stream;                                                            error_stream << "The argument must be a set";                                                                        throw(gum::InvalidArgument(gum::_createMsg_("/Users/phw/Documents/gits/agrum/aGrUM-dev/wrappers/pyagrum/swigsrc//inference.i", __FUNCTION__, 251, error_stream.str())));      }
       }
       gum::NodeSet nodeset;
       PyAgrumHelper::populateNodeSetFromPySequenceOfIntOrString(nodeset,targets,self->BN().variableNodeMap());
@@ -6832,7 +6832,7 @@ SWIGINTERN gum::Tensor< double > gum_VariableElimination_Sl_double_Sg__jointPost
     }
 SWIGINTERN void gum_VariableElimination_Sl_double_Sg__addJointTarget(gum::VariableElimination< double > *self,PyObject *targets){
       if (! PyAnySet_Check(targets)) {
-             {                                                                                             std::ostringstream error_stream;                                                            error_stream << "The argument must be a set";                                                                        throw(gum::InvalidArgument(gum::_createMsg_("/home/phw/Documents/gits/agrum/aGrUM-dev/wrappers/pyagrum/swigsrc//inference.i", __FUNCTION__, 251, error_stream.str())));      }
+             {                                                                                             std::ostringstream error_stream;                                                            error_stream << "The argument must be a set";                                                                        throw(gum::InvalidArgument(gum::_createMsg_("/Users/phw/Documents/gits/agrum/aGrUM-dev/wrappers/pyagrum/swigsrc//inference.i", __FUNCTION__, 251, error_stream.str())));      }
       }
       gum::NodeSet nodeset;
       PyAgrumHelper::populateNodeSetFromPySequenceOfIntOrString(nodeset,targets,self->BN().variableNodeMap());
@@ -6841,7 +6841,7 @@ SWIGINTERN void gum_VariableElimination_Sl_double_Sg__addJointTarget(gum::Variab
     }
 SWIGINTERN void gum_VariableElimination_Sl_double_Sg__eraseJointTarget(gum::VariableElimination< double > *self,PyObject *targets){
       if (! PyAnySet_Check(targets)) {
-             {                                                                                             std::ostringstream error_stream;                                                            error_stream << "The argument must be a set";                                                                        throw(gum::InvalidArgument(gum::_createMsg_("/home/phw/Documents/gits/agrum/aGrUM-dev/wrappers/pyagrum/swigsrc//inference.i", __FUNCTION__, 251, error_stream.str())));      }
+             {                                                                                             std::ostringstream error_stream;                                                            error_stream << "The argument must be a set";                                                                        throw(gum::InvalidArgument(gum::_createMsg_("/Users/phw/Documents/gits/agrum/aGrUM-dev/wrappers/pyagrum/swigsrc//inference.i", __FUNCTION__, 251, error_stream.str())));      }
       }
       gum::NodeSet nodeset;
       PyAgrumHelper::populateNodeSetFromPySequenceOfIntOrString(nodeset,targets,self->BN().variableNodeMap());
@@ -6849,7 +6849,7 @@ SWIGINTERN void gum_VariableElimination_Sl_double_Sg__eraseJointTarget(gum::Vari
     }
 SWIGINTERN bool gum_VariableElimination_Sl_double_Sg__isJointTarget(gum::VariableElimination< double > *self,PyObject *targets){
       if (! PyAnySet_Check(targets)) {
-             {                                                                                             std::ostringstream error_stream;                                                            error_stream << "The argument must be a set";                                                                        throw(gum::InvalidArgument(gum::_createMsg_("/home/phw/Documents/gits/agrum/aGrUM-dev/wrappers/pyagrum/swigsrc//inference.i", __FUNCTION__, 251, error_stream.str())));      }
+             {                                                                                             std::ostringstream error_stream;                                                            error_stream << "The argument must be a set";                                                                        throw(gum::InvalidArgument(gum::_createMsg_("/Users/phw/Documents/gits/agrum/aGrUM-dev/wrappers/pyagrum/swigsrc//inference.i", __FUNCTION__, 251, error_stream.str())));      }
       }
       gum::NodeSet nodeset;
       PyAgrumHelper::populateNodeSetFromPySequenceOfIntOrString(nodeset,targets,self->BN().variableNodeMap());
@@ -8441,7 +8441,7 @@ SWIGINTERN double gum_learning_BNDatabaseGenerator_Sl_double_Sg__drawSamples__SW
       PyAgrumHelper::fillInstantiationFromPyObject(self->bn(), inst, arg);
       return self->drawSamples(nbSamples,inst);
     } else {
-           {                                                                                             std::ostringstream error_stream;                                                            error_stream << "arg is neither a dict or an pyagrum.Instantiation.";                                                                        throw(gum::InvalidArgument(gum::_createMsg_("/home/phw/Documents/gits/agrum/aGrUM-dev/wrappers/pyagrum/swigsrc//BNDatabaseGenerator.i", __FUNCTION__, 56, error_stream.str())));      };
+           {                                                                                             std::ostringstream error_stream;                                                            error_stream << "arg is neither a dict or an pyagrum.Instantiation.";                                                                        throw(gum::InvalidArgument(gum::_createMsg_("/Users/phw/Documents/gits/agrum/aGrUM-dev/wrappers/pyagrum/swigsrc//BNDatabaseGenerator.i", __FUNCTION__, 56, error_stream.str())));      };
     }
   }
 

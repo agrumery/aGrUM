@@ -8726,7 +8726,7 @@ def getMaxNumberOfThreads() -> int:
 def getNumberOfLogicalProcessors() -> int:
     return _base.getNumberOfLogicalProcessors()
 
-__version__ = '1.99.9.9'
+__version__ = '2.0.0'
 __license__ = __doc__
 __project_url__ = 'https://agrum.org'
 __project_name__ = 'pyAgrum'
