@@ -1,11 +1,11 @@
-Metadata-Version: 1.2
+Metadata-Version: 2.4
 Name: pyAgrum
 Version: @PYAGRUM_VERSION@
 Summary: Bayesian networks and other Probabilistic Graphical Models.
 Home-page: https://agrum.gitlab.io/
 Author: Pierre-Henri Wuillemin and Christophe Gonzales
 Author-email: info@agrum.org
-License-Expression: MIT AND LGPLv3
+License-Expression: LGPL-3.0-only OR MIT
 Keywords: probabilities probabilistic-graphical-models inference diagnosis
 Project-URL: Bug Tracker, https://gitlab.com/agrumery/aGrUM/-/issues
 Project-URL: Documentation, https://pyagrum.readthedocs.io/
@@ -33,6 +33,7 @@ Classifier: Intended Audience :: Developers
 Classifier: Intended Audience :: Financial and Insurance Industry
 Classifier: Intended Audience :: Information Technology
 Classifier: Intended Audience :: Science/Research
+Requires-Python: >=3.10
 Requires-Dist: numpy
 Requires-Dist: matplotlib
 Requires-Dist: pydot
