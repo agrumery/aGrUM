@@ -13,6 +13,12 @@ the C++ part of aGrUM allowing to create, manage and perform efficient computati
 with Bayesian networks  and others probabilistic graphical models : Markov random fields (MRF),
 influence diagrams (ID) and LIMIDs, credal networks (CN), dynamic BN (dBN), probabilistic relational models (PRM).
 
+.. important::
+  Since pyAgrum 2.0.0, the package name follows PEP8 rules and is now `pyagrum` (lowercase). 
+  Please use ``import pyagrum`` instead of ``import pyAgrum`` in your code.
+
+  See the `CHANGELOG <https://gitlab.com/agrumery/aGrUM/-/blob/master/CHANGELOG.md>`_  for more details.
+
 .. image::  _static/fastModelsWithPyAgrum.png
 
 The module is generated using the `SWIG <http://www.swig.org>`_ interface

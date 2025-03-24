@@ -15,7 +15,7 @@ pandas
 tqdm
 ################################
 ### Specific requirements for sphinx
-pyagrum
+pyAgrum
 sphinx
 IPython
 ipykernel
