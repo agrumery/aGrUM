@@ -35,21 +35,21 @@ We have reworked the internal structure of the code to make it more modular. Thi
   - Minor typos in aGrUM's testsuite.
   
 - pyAgrum
-  - Split module into `pyAgrum.base`/`bn`/`cn`/`id`/`mrf` sub-modules.
-  - Changed name of pyAgrum's package: from `pyAgrum` to `pyAgrum`.
+  - Changed name of pyAgrum's package: from `pyAgrum` to `pyagrum`.
+  - Split module into `pyagrum.base`/`bn`/`cn`/`id`/`mrf` sub-modules.
   - Alignd wheel naming with binary distribution format.
-  - Renamed `gum.lib.Discretizer` to `gum.lib.DiscreteTypeProcessor`.
-  - Fixed a bug for `pyAgrum.DiscreteTypeProcessor` with a boolean variable in the database (thanks to Yann Le Biannic).
-  - Fixed a bug then calling `gum.BNLearner.learnEssentialGraph` with a score-based algorithm (thanks to Yann Le Biannic).
+  - Renamed `pyagrum.lib.Discretizer` to `pyagrum.lib.DiscreteTypeProcessor`.
+  - Fixed a bug for `pyagrum.DiscreteTypeProcessor` with a boolean variable in the database (thanks to Yann Le Biannic).
+  - Fixed a bug then calling `pyagrum.BNLearner.learnEssentialGraph` with a score-based algorithm (thanks to Yann Le Biannic).
   - *pyAgrum-izing* types in `swig`-generated `cpp` files.
   - Removed obsolete deprecated, experimental codes.
-  - Moved `pyAgrum.Potential` to `pyAgrum.Tensor`.
+  - Moved `pyagrum.Potential` to `pyagrum.Tensor`.
   - Added glossary in readthedoc site.
   - Improved notebooks, docstrings and sphinx documentations.
   - Stable abi for wheel generation. Added possibility to turn off stable abi use.
-  - CIs for apple silicon.
+  - Update CIs for apple silicon.
   - Removed old deprecation.
-  - Added new experimental pyAgrum's model : Miture of Bayesian Networks (thanks to Rodrique Tavernier).
+  - Added new experimental pyAgrum's model : Mixture of Bayesian Networks (thanks to Rodrique Tavernier).
   - Licences are now included in the wheels.
 
 ## Changelog for 1.17.2
