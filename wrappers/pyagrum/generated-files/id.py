@@ -1636,7 +1636,7 @@ class ShaferShenoyLIMIDInference(object):
 # Register ShaferShenoyLIMIDInference in _id:
 _id.ShaferShenoyLIMIDInference_swigregister(ShaferShenoyLIMIDInference)
 
-__version__ = '2.0.0'
+__version__ = '2.0.1'
 __license__ = __doc__
 __project_url__ = 'https://agrum.org'
 __project_name__ = 'pyAgrum'
