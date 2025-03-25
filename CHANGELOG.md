@@ -1,5 +1,10 @@
 # aGrUM Changelog
 
+## Changelog for 2.0.1
+
+- pyAgrum
+  - Fixed python version for `readthedocs`.
+
 ## Changelog for 2.0.0
 
 This major update brings several important changes that align with our goals of improving usability, compliance, and consistency. Below are the three main motivations behind this significant upgrade:
