@@ -44,11 +44,13 @@ pyAgrum
 
 ``pyAgrum`` is a scientific C++ and Python library dedicated to Bayesian Networks and other Probabilistic Graphical Models. It provides a high-level interface to the part of aGrUM allowing to create, model, learn, use, calculate with and embed Bayesian Networks and other graphical models. Some specific (python and C++) codes are added in order to simplify and extend the ``aGrUM`` API.
 
-.. important::
-  Since pyAgrum 2.0.0, the package name follows PEP8 rules and is now ``pyagrum`` (lowercase). 
-  Please use ``import pyagrum`` instead of ``import pyAgrum`` in your code.
-  
-  See the `CHANGELOG <https://gitlab.com/agrumery/aGrUM/-/blob/master/CHANGELOG.md>`_  for more details.
+Important
+=========
+
+Since pyAgrum 2.0.0, the package name follows PEP8 rules and is now ``pyagrum`` (lowercase). 
+Please use ``import pyagrum`` instead of ``import pyAgrum`` in your code.
+
+See the `CHANGELOG <https://gitlab.com/agrumery/aGrUM/-/blob/master/CHANGELOG.md?ref_type=heads#changelog-for-200>`_  for more details.
 
 Example
 =======

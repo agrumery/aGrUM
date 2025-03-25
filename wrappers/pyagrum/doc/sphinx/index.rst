@@ -17,7 +17,7 @@ influence diagrams (ID) and LIMIDs, credal networks (CN), dynamic BN (dBN), prob
   Since pyAgrum 2.0.0, the package name follows PEP8 rules and is now `pyagrum` (lowercase). 
   Please use ``import pyagrum`` instead of ``import pyAgrum`` in your code.
 
-  See the `CHANGELOG <https://gitlab.com/agrumery/aGrUM/-/blob/master/CHANGELOG.md>`_  for more details.
+  See the `CHANGELOG <https://gitlab.com/agrumery/aGrUM/-/blob/master/CHANGELOG.md?ref_type=heads#changelog-for-200>`_  for more details.
 
 .. image::  _static/fastModelsWithPyAgrum.png
 

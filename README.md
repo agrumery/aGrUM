@@ -20,7 +20,7 @@
 Install **pyAgrum** via `pip` or `conda`:
 
 ```bash
-pip install pyAgrum
+pip install pyagrum
 ```
 
 ```bash
