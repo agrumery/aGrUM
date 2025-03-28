@@ -221,7 +221,7 @@ html_title = project + " " + release + " documentation"
 # The name of an image file (relative to this directory) to place at the top
 # of the sidebar.
 #
-html_logo = '_static/pyagrum.png'
+html_logo = '_static/pyAgrum.png'
 
 # The name of an image file (relative to this directory) to use as a favicon of
 # the gumDoc.  This file should be a Windows icon file (.ico) being 16x16 or 32x32
@@ -346,7 +346,7 @@ latex_documents = [
 # The name of an image file (relative to this directory) to place at the top of
 # the title page.
 #
-latex_logo = "_static/pyagrum.png"
+latex_logo = "_static/pyAgrum.png"
 
 # For "manual" documents, if this is true, then toplevel headings are parts,
 # not chapters.
