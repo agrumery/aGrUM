@@ -1900,7 +1900,7 @@ class ShaferShenoyMRFInference(object):
 # Register ShaferShenoyMRFInference in _mrf:
 _mrf.ShaferShenoyMRFInference_swigregister(ShaferShenoyMRFInference)
 
-__version__ = '2.0.1'
+__version__ = '2.0.1.9'
 __license__ = __doc__
 __project_url__ = 'https://agrum.org'
 __project_name__ = 'pyAgrum'

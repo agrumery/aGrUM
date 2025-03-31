@@ -65,7 +65,7 @@ def _gum_add_properties_while_getstate_(model):
     return
 
   if config.asBool["Pickle", "add_version"]:
-    model.setProperty("version", f"pyAgrum {__version__}")
+    model.setProperty("version", f"pyAgrum {pyagrum.__version__}")
   if config.asBool["Pickle", "add_date"]:
     from datetime import datetime
     model.setProperty("creation", model.propertyWithDefault("creation", datetime.now().strftime("%Y-%m-%d %H:%M:%S%z")))

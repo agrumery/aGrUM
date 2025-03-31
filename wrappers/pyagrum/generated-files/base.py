@@ -8726,7 +8726,7 @@ def getMaxNumberOfThreads() -> int:
 def getNumberOfLogicalProcessors() -> int:
     return _base.getNumberOfLogicalProcessors()
 
-__version__ = '2.0.1'
+__version__ = '2.0.1.9'
 __license__ = __doc__
 __project_url__ = 'https://agrum.org'
 __project_name__ = 'pyAgrum'
@@ -8775,7 +8775,7 @@ def _gum_add_properties_while_getstate_(model):
     return
 
   if config.asBool["Pickle", "add_version"]:
-    model.setProperty("version", f"pyAgrum {__version__}")
+    model.setProperty("version", f"pyAgrum {pyagrum.__version__}")
   if config.asBool["Pickle", "add_date"]:
     from datetime import datetime
     model.setProperty("creation", model.propertyWithDefault("creation", datetime.now().strftime("%Y-%m-%d %H:%M:%S%z")))

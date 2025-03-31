@@ -71,7 +71,7 @@ target_link_libraries(agrumBASE PRIVATE ${ODBC_LIBRARIES} ${GUM_COVERAGE_LINK_LI
 if (OPENMP_FOUND)
     target_link_libraries(agrumBASE PUBLIC OpenMP::OpenMP_CXX)
 endif ()
-if (BUILD_PYTHON OR BUILD_JAVA)
+if (BUILD_PYTHON)
     target_compile_definitions(agrumBASE PUBLIC GUM_FOR_SWIG)
 endif ()
 if (MSVC)

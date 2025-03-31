@@ -59,7 +59,6 @@ set(CMAKE_INSTALL_PREFIX ${BACKUP_CMAKE_INSTALL_PREFIX})
 # options
 option(BUILD_SHARED_LIBS "build shared|static libs" ON)
 option(BUILD_PYTHON "build python bindings" OFF)
-option(BUILD_JAVA "build java bindings (experimental)" OFF) ## Very experimental for now.
 option(USE_OPENMP "use openmp" ON)
 
 set(AGRUM_SOURCE_DIR ${CMAKE_CURRENT_SOURCE_DIR}/src)
