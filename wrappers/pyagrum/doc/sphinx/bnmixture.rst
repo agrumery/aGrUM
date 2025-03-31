@@ -20,7 +20,7 @@ Bootstrap can allow for more accuracy about the result when the database is limi
 
 **tutorials**
 
-* `Notebooks on Mixturess in pyAgrum <notebooks/46-Models_BNMixture.ipynb>`_.
+* `Notebooks on Mixturess in pyAgrum <notebooks/73-PyModels_BNMixture.html>`_.
 
 **Reference**
 
