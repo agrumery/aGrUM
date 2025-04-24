@@ -54008,37 +54008,6 @@ fail:
 }
 
 
-SWIGINTERN PyObject *_wrap_MultiDimContainer_newFactory(PyObject *self, PyObject *args) {
-  PyObject *resultobj = 0;
-  gum::MultiDimContainer< double > *arg1 = 0 ;
-  void *argp1 = 0 ;
-  int res1 = 0 ;
-  PyObject *swig_obj[1] ;
-  gum::MultiDimContainer< double > *result = 0 ;
-  
-  (void)self;
-  if (!args) SWIG_fail;
-  swig_obj[0] = args;
-  res1 = SWIG_ConvertPtr(swig_obj[0], &argp1,SWIGTYPE_p_gum__MultiDimContainerT_double_t, 0 |  0 );
-  if (!SWIG_IsOK(res1)) {
-    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "MultiDimContainer_newFactory" "', argument " "1"" of type '" "gum::MultiDimContainer< double > const *""'"); 
-  }
-  arg1 = reinterpret_cast< gum::MultiDimContainer< double > * >(argp1);
-  {
-    try {
-      result = (gum::MultiDimContainer< double > *)((gum::MultiDimContainer< double > const *)arg1)->newFactory();
-    } catch (...) {
-      SetPythonizeAgrumException();
-      SWIG_fail;
-    }
-  }
-  resultobj = SWIG_NewPointerObj(SWIG_as_voidptr(result), SWIGTYPE_p_gum__MultiDimContainerT_double_t, 0 |  0 );
-  return resultobj;
-fail:
-  return NULL;
-}
-
-
 SWIGINTERN PyObject *_wrap_MultiDimContainer_toString__SWIG_0(PyObject *self, Py_ssize_t nobjs, PyObject **swig_obj) {
   PyObject *resultobj = 0;
   gum::MultiDimContainer< double > *arg1 = 0 ;
@@ -54478,6 +54447,38 @@ fail:
 
 SWIGINTERN PyObject *_wrap_new_Tensor__SWIG_1(PyObject *self, Py_ssize_t nobjs, PyObject **swig_obj) {
   PyObject *resultobj = 0;
+  std::vector< gum::DiscreteVariable const *,std::allocator< gum::DiscreteVariable const * > > *arg1 = 0 ;
+  void *argp1 = 0 ;
+  int res1 = 0 ;
+  gum::Tensor< double > *result = 0 ;
+  
+  (void)self;
+  if ((nobjs < 1) || (nobjs > 1)) SWIG_fail;
+  res1 = SWIG_ConvertPtr(swig_obj[0], &argp1, SWIGTYPE_p_std__vectorT_gum__DiscreteVariable_const_p_std__allocatorT_gum__DiscreteVariable_const_p_t_t,  0  | 0);
+  if (!SWIG_IsOK(res1)) {
+    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "new_Tensor" "', argument " "1"" of type '" "std::vector< gum::DiscreteVariable const *,std::allocator< gum::DiscreteVariable const * > > const &""'"); 
+  }
+  if (!argp1) {
+    SWIG_exception_fail(SWIG_NullReferenceError, "invalid null reference " "in method '" "new_Tensor" "', argument " "1"" of type '" "std::vector< gum::DiscreteVariable const *,std::allocator< gum::DiscreteVariable const * > > const &""'"); 
+  }
+  arg1 = reinterpret_cast< std::vector< gum::DiscreteVariable const *,std::allocator< gum::DiscreteVariable const * > > * >(argp1);
+  {
+    try {
+      result = (gum::Tensor< double > *)new gum::Tensor< double >((std::vector< gum::DiscreteVariable const *,std::allocator< gum::DiscreteVariable const * > > const &)*arg1);
+    } catch (...) {
+      SetPythonizeAgrumException();
+      SWIG_fail;
+    }
+  }
+  resultobj = SWIG_NewPointerObj(SWIG_as_voidptr(result), SWIGTYPE_p_gum__TensorT_double_t, SWIG_POINTER_NEW |  0 );
+  return resultobj;
+fail:
+  return NULL;
+}
+
+
+SWIGINTERN PyObject *_wrap_new_Tensor__SWIG_2(PyObject *self, Py_ssize_t nobjs, PyObject **swig_obj) {
+  PyObject *resultobj = 0;
   gum::MultiDimImplementation< double > *arg1 = 0 ;
   void *argp1 = 0 ;
   int res1 = 0 ;
@@ -54505,7 +54506,7 @@ fail:
 }
 
 
-SWIGINTERN PyObject *_wrap_new_Tensor__SWIG_2(PyObject *self, Py_ssize_t nobjs, PyObject **swig_obj) {
+SWIGINTERN PyObject *_wrap_new_Tensor__SWIG_3(PyObject *self, Py_ssize_t nobjs, PyObject **swig_obj) {
   PyObject *resultobj = 0;
   gum::MultiDimImplementation< double > *arg1 = 0 ;
   gum::MultiDimContainer< double > *arg2 = 0 ;
@@ -54545,7 +54546,7 @@ fail:
 }
 
 
-SWIGINTERN PyObject *_wrap_new_Tensor__SWIG_3(PyObject *self, Py_ssize_t nobjs, PyObject **swig_obj) {
+SWIGINTERN PyObject *_wrap_new_Tensor__SWIG_4(PyObject *self, Py_ssize_t nobjs, PyObject **swig_obj) {
   PyObject *resultobj = 0;
   gum::Tensor< double > *arg1 = 0 ;
   void *argp1 = 0 ;
@@ -54577,7 +54578,7 @@ fail:
 }
 
 
-SWIGINTERN PyObject *_wrap_new_Tensor__SWIG_4(PyObject *self, Py_ssize_t nobjs, PyObject **swig_obj) {
+SWIGINTERN PyObject *_wrap_new_Tensor__SWIG_5(PyObject *self, Py_ssize_t nobjs, PyObject **swig_obj) {
   PyObject *resultobj = 0;
   gum::Tensor< double > *arg1 = 0 ;
   void *argp1 = 0 ;
@@ -54631,8 +54632,7 @@ SWIGINTERN PyObject *_wrap_new_Tensor(PyObject *self, PyObject *args) {
   if (argc == 1) {
     int _v = 0;
     {
-      void *vptr = 0;
-      int res = SWIG_ConvertPtr(argv[0], &vptr, SWIGTYPE_p_gum__MultiDimImplementationT_double_t, 0);
+      int res = SWIG_ConvertPtr(argv[0], 0, SWIGTYPE_p_std__vectorT_gum__DiscreteVariable_const_p_std__allocatorT_gum__DiscreteVariable_const_p_t_t, SWIG_POINTER_NO_NULL | 0);
       _v = SWIG_CheckState(res);
     }
     if (!_v) goto check_2;
@@ -54643,21 +54643,33 @@ check_2:
   if (argc == 1) {
     int _v = 0;
     {
-      int res = SWIG_ConvertPtr(argv[0], 0, SWIGTYPE_p_gum__TensorT_double_t, SWIG_POINTER_NO_NULL | 0);
+      void *vptr = 0;
+      int res = SWIG_ConvertPtr(argv[0], &vptr, SWIGTYPE_p_gum__MultiDimImplementationT_double_t, 0);
       _v = SWIG_CheckState(res);
     }
     if (!_v) goto check_3;
-    return _wrap_new_Tensor__SWIG_3(self, argc, argv);
+    return _wrap_new_Tensor__SWIG_2(self, argc, argv);
   }
 check_3:
   
   if (argc == 1) {
-    PyObject *retobj = _wrap_new_Tensor__SWIG_4(self, argc, argv);
+    int _v = 0;
+    {
+      int res = SWIG_ConvertPtr(argv[0], 0, SWIGTYPE_p_gum__TensorT_double_t, SWIG_POINTER_NO_NULL | 0);
+      _v = SWIG_CheckState(res);
+    }
+    if (!_v) goto check_4;
+    return _wrap_new_Tensor__SWIG_4(self, argc, argv);
+  }
+check_4:
+  
+  if (argc == 1) {
+    PyObject *retobj = _wrap_new_Tensor__SWIG_5(self, argc, argv);
     if (!SWIG_Python_TypeErrorOccurred(retobj)) return retobj;
     SWIG_fail;
   }
   if (argc == 2) {
-    PyObject *retobj = _wrap_new_Tensor__SWIG_2(self, argc, argv);
+    PyObject *retobj = _wrap_new_Tensor__SWIG_3(self, argc, argv);
     if (!SWIG_Python_TypeErrorOccurred(retobj)) return retobj;
     SWIG_fail;
   }
@@ -54666,6 +54678,7 @@ fail:
   SWIG_Python_RaiseOrModifyTypeError("Wrong number or type of arguments for overloaded function 'new_Tensor'.\n"
     "  Possible C/C++ prototypes are:\n"
     "    gum::Tensor< double >::Tensor()\n"
+    "    gum::Tensor< double >::Tensor(std::vector< gum::DiscreteVariable const *,std::allocator< gum::DiscreteVariable const * > > const &)\n"
     "    gum::Tensor< double >::Tensor(gum::MultiDimImplementation< double > *)\n"
     "    gum::Tensor< double >::Tensor(gum::MultiDimImplementation< double > *,gum::MultiDimContainer< double > const &)\n"
     "    gum::Tensor< double >::Tensor(gum::Tensor< double > const &)\n"
@@ -54698,37 +54711,6 @@ SWIGINTERN PyObject *_wrap_delete_Tensor(PyObject *self, PyObject *args) {
     }
   }
   resultobj = SWIG_Py_Void();
-  return resultobj;
-fail:
-  return NULL;
-}
-
-
-SWIGINTERN PyObject *_wrap_Tensor_newFactory(PyObject *self, PyObject *args) {
-  PyObject *resultobj = 0;
-  gum::Tensor< double > *arg1 = 0 ;
-  void *argp1 = 0 ;
-  int res1 = 0 ;
-  PyObject *swig_obj[1] ;
-  gum::Tensor< double > *result = 0 ;
-  
-  (void)self;
-  if (!args) SWIG_fail;
-  swig_obj[0] = args;
-  res1 = SWIG_ConvertPtr(swig_obj[0], &argp1,SWIGTYPE_p_gum__TensorT_double_t, 0 |  0 );
-  if (!SWIG_IsOK(res1)) {
-    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "Tensor_newFactory" "', argument " "1"" of type '" "gum::Tensor< double > const *""'"); 
-  }
-  arg1 = reinterpret_cast< gum::Tensor< double > * >(argp1);
-  {
-    try {
-      result = (gum::Tensor< double > *)((gum::Tensor< double > const *)arg1)->newFactory();
-    } catch (...) {
-      SetPythonizeAgrumException();
-      SWIG_fail;
-    }
-  }
-  resultobj = SWIG_NewPointerObj(SWIG_as_voidptr(result), SWIGTYPE_p_gum__TensorT_double_t, 0 |  0 );
   return resultobj;
 fail:
   return NULL;
@@ -63795,7 +63777,6 @@ static PyMethodDef SwigMethods[] = {
 	 { "MultiDimContainer_content", _wrap_MultiDimContainer_content, METH_VARARGS, NULL},
 	 { "MultiDimContainer_getMasterRef", _wrap_MultiDimContainer_getMasterRef, METH_VARARGS, NULL},
 	 { "MultiDimContainer_copy", _wrap_MultiDimContainer_copy, METH_VARARGS, NULL},
-	 { "MultiDimContainer_newFactory", _wrap_MultiDimContainer_newFactory, METH_O, NULL},
 	 { "MultiDimContainer_toString", _wrap_MultiDimContainer_toString, METH_VARARGS, NULL},
 	 { "MultiDimContainer___eq__", _wrap_MultiDimContainer___eq__, METH_VARARGS, NULL},
 	 { "MultiDimContainer___ne__", _wrap_MultiDimContainer___ne__, METH_VARARGS, NULL},
@@ -63806,16 +63787,6 @@ static PyMethodDef SwigMethods[] = {
 	 { "MultiDimContainer_swigregister", MultiDimContainer_swigregister, METH_O, NULL},
 	 { "new_Tensor", _wrap_new_Tensor, METH_VARARGS, NULL},
 	 { "delete_Tensor", _wrap_delete_Tensor, METH_O, NULL},
-	 { "Tensor_newFactory", _wrap_Tensor_newFactory, METH_O, "\n"
-		"\n"
-		"Erase the Tensor content and create a new empty one.\n"
-		"\n"
-		"Returns\n"
-		"-------\n"
-		"pyagrum.Tensor\n"
-		" a reference to the new Tensor\n"
-		"\n"
-		""},
 	 { "Tensor_random", _wrap_Tensor_random, METH_O, NULL},
 	 { "Tensor_randomDistribution", _wrap_Tensor_randomDistribution, METH_O, NULL},
 	 { "Tensor_randomCPT", _wrap_Tensor_randomCPT, METH_O, NULL},

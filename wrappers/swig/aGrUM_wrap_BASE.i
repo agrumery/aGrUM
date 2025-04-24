@@ -70,6 +70,9 @@ namespace std {
     %template ( Vector_string) vector<string>;
 }
 
+
+%ignore *::newFactory;
+
 /* CLASS EXTENSIONS */
 %extend gum::DiscreteVariable {
   gum::LabelizedVariable asLabelizedVar() {

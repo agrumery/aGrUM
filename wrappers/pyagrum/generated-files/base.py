@@ -7248,9 +7248,6 @@ class MultiDimContainer(object):
     def copy(self, src: "pyagrum.Tensor") -> None:
         return _base.MultiDimContainer_copy(self, src)
 
-    def newFactory(self) -> "pyagrum.Tensor":
-        return _base.MultiDimContainer_newFactory(self)
-
     def toString(self, *args) -> str:
         return _base.MultiDimContainer_toString(self, *args)
 
@@ -7284,33 +7281,34 @@ class Tensor(object):
 
     Tensor(src) -> Tensor
         Parameters:
-            - **src** (*pyagrum.Tensor*) -- the Tensor to copy
+            - **src** (* py:class:`pyagrum.Tensor` *) -- the Tensor to copy
+
+    Tensor(v1,v2, ...) -> Tensor
+        Parameters:
+            - v1,v2... (* `pyagrum.DiscreteVariable` *) -- the variables to be added to the tensor
 
     """
 
     thisown = property(lambda x: x.this.own(), lambda x, v: x.this.own(v), doc="The membership flag")
 
     def __init__(self, *args):
+
+        vars=[] # checking for python contructor with a list of variables
+        if all(isinstance(v, pyagrum.DiscreteVariable) for v in args):
+          vars=[x for x in args]
+          args=[]
+
+
         _base.Tensor_swiginit(self, _base.new_Tensor(*args))
 
         self._list_vars=list()
 
+        for v in vars:
+          self.add(v)
+
 
 
     __swig_destroy__ = _base.delete_Tensor
-
-    def newFactory(self) -> "pyagrum.Tensor":
-        r"""
-
-        Erase the Tensor content and create a new empty one.
-
-        Returns
-        -------
-        pyagrum.Tensor
-         a reference to the new Tensor
-
-        """
-        return _base.Tensor_newFactory(self)
 
     def random(self) -> "pyagrum.Tensor":
         return _base.Tensor_random(self)

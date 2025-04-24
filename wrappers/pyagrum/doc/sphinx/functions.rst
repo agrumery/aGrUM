@@ -6,6 +6,8 @@ Useful functions in pyAgrum
 
 .. autofunction:: pyagrum.getPosterior
 
+.. autofunction:: pyagrum.mutilateBN
+
 
 Input/Output for Bayesian networks
 ----------------------------------
