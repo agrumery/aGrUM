@@ -46,7 +46,11 @@ Tensor() -> Tensor
 
 Tensor(src) -> Tensor
     Parameters:
-        - **src** (*pyagrum.Tensor*) -- the Tensor to copy
+        - **src** (* pyagrum.Tensor *) -- the Tensor to copy
+
+Tensor(v1,v2, ...) -> Tensor
+    Parameters:
+        - v1,v2... (* pyagrum.DiscreteVariable *) -- the variables to be added to the tensor
 "
 
 %feature("docstring") gum::Tensor::KL
@@ -445,16 +449,6 @@ Returns
 -------
 int
   the number of vars in the multidimensional container.
-"
-
-%feature("docstring") gum::Tensor::newFactory
-"
-Erase the Tensor content and create a new empty one.
-
-Returns
--------
-pyagrum.Tensor
- a reference to the new Tensor
 "
 
 %feature("docstring") gum::Tensor::normalize

@@ -43,11 +43,20 @@
 %ignore gum::MultiDimDecorator;
 %ignore gum::MultiDimArray;
 
-
 /* keep tracks of variables to trick with  garbage collector */
+%pythonprepend gum::Tensor<double>::Tensor %{
+        vars=[] # checking for python contructor with a list of variables
+        if all(isinstance(v, pyagrum.DiscreteVariable) for v in args):
+          vars=[x for x in args]
+          args=[]
+%}
 %pythonappend gum::Tensor<double>::Tensor %{
         self._list_vars=list()
+
+        for v in vars:
+          self.add(v)
 %}
+
 %pythonappend gum::Tensor<double>::remove %{
         self._list_vars.remove(var)
 %}

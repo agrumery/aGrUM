@@ -93,6 +93,23 @@ class TestInsertions(TensorTestCase):
     with self.assertRaises(gum.DuplicateElement):
       p.add(other_a)  # with the same name
 
+  def testVariableInsertionInConstructor(self):
+    pot = gum.Tensor(self.var['c'])
+    self.assertFalse(pot.empty())
+    self.assertEqual(pot.nbrDim(), 1)
+
+    pot = gum.Tensor(self.var['c'],
+                     self.var['s'],
+                     self.var['r'])
+    self.assertEqual(pot.nbrDim(), 3)
+
+    a = gum.LabelizedVariable("a", "a", 2)
+    other_a = gum.LabelizedVariable("a", "a", 2)
+    with self.assertRaises(gum.DuplicateElement):
+      p = gum.Tensor(a, a)
+    with self.assertRaises(gum.DuplicateElement):
+      p = gum.Tensor(a, other_a)
+
   def testVariableDeletion(self):
     pot = gum.Tensor()
     pot.add(self.var['s'])
