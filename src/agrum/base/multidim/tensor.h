@@ -69,8 +69,15 @@ namespace gum {
    *
    * @tparam GUM_SCALAR The type of the scalar stored in this multidimensional
    * matrix.
+   *
+   * @warning  The Tensor class is not thread-safe. If you want to use it in a
+   * threaded context, you have to use a mutex to protect the access to the
+   * class.
+   *
+   * @warning The Tensor class does not contain its variables. It only contains
+   * (maybe dangling) pointers to the variables.
    */
-  template < typename GUM_SCALAR >
+  template <typename GUM_SCALAR>
   class Tensor final: public MultiDimDecorator< GUM_SCALAR > {
     public:
     // =========================================================================
@@ -85,6 +92,14 @@ namespace gum {
      * its implementation.
      */
     Tensor();
+
+    /**
+     * @brief Default constructor.
+     *
+     * Creates an empty null dimensional matrix with a MultiDimArray as
+     * its implementation and add the vars
+     */
+    Tensor(const std::vector< const DiscreteVariable* >& vars);
 
     /**
      * @brief Creates an tensor around aContent.
@@ -469,21 +484,14 @@ namespace gum {
   extern template class Tensor< double >;
 #endif
 
-  template < typename GUM_SCALAR >
-  inline Tensor< GUM_SCALAR > log2(const Tensor< GUM_SCALAR >& arg) {
-    return arg.new_log2();
-  }
+  template <typename GUM_SCALAR>
+  inline Tensor< GUM_SCALAR > log2(const Tensor< GUM_SCALAR >& arg) { return arg.new_log2(); }
 
-  template < typename GUM_SCALAR >
-  inline Tensor< GUM_SCALAR > abs(const Tensor< GUM_SCALAR >& arg) {
-    return arg.new_abs();
-  }
+  template <typename GUM_SCALAR>
+  inline Tensor< GUM_SCALAR > abs(const Tensor< GUM_SCALAR >& arg) { return arg.new_abs(); }
 
-  template < typename GUM_SCALAR >
-  inline Tensor< GUM_SCALAR > sq(const Tensor< GUM_SCALAR >& arg) {
-    return arg.new_sq();
-  }
-
+  template <typename GUM_SCALAR>
+  inline Tensor< GUM_SCALAR > sq(const Tensor< GUM_SCALAR >& arg) { return arg.new_sq(); }
 } /* namespace gum */
 
 #include <agrum/base/multidim/tensor_tpl.h>
