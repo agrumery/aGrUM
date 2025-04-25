@@ -1394,22 +1394,47 @@ namespace gum_tests {
     }
 
     GUM_ACTIVE_TEST(DeterministicTensor_CreatesTensorWithCorrectValue) {
-      gum::RangeVariable var("var", "Variable1", 0, 3);
-      double             value = 2.0;
+      gum::RangeVariable var("var", "Variable1", 1, 4);
+      const gum::Idx     value = 2;
 
       auto tensor = gum::Tensor< double >::deterministicTensor(var, value);
 
       TS_ASSERT_EQUALS(tensor.sum(), 1.0);
+
       TS_ASSERT_EQUALS(tensor.max(), 1.0);
+      const auto& [x,y] = tensor.argmax();
+      TS_ASSERT_EQUALS(x.size(), 1)
+      const auto& i = *x.begin();
+      TS_ASSERT_EQUALS(i.val(0), value);
+
+      TS_ASSERT_EQUALS(tensor.min(), 0.0);
+      TS_ASSERT_EQUALS(tensor.minNonZero(), 1.0);
+      TS_ASSERT_EQUALS(tensor.maxNonOne(), 0.0);
+    }
+
+    GUM_ACTIVE_TEST(DeterministicTensor_CreatesTensorWithCorrectLabel) {
+      const gum::RangeVariable var("var", "Variable1", 1, 4);
+      const std::string        label = "2";
+
+      const auto tensor = gum::Tensor< double >::deterministicTensor(var, label);
+
+      TS_ASSERT_EQUALS(tensor.sum(), 1.0);
+
+      TS_ASSERT_EQUALS(tensor.max(), 1.0);
+      const auto& [x,y] = tensor.argmax();
+      TS_ASSERT_EQUALS(x.size(), 1)
+      const auto& i = *x.begin();
+      TS_ASSERT_EQUALS(i.val(0), 1);
+
       TS_ASSERT_EQUALS(tensor.min(), 0.0);
       TS_ASSERT_EQUALS(tensor.minNonZero(), 1.0);
       TS_ASSERT_EQUALS(tensor.maxNonOne(), 0.0);
     }
 
     GUM_ACTIVE_TEST(UniformTensor_CreatesUniformTensor) {
-      gum::RangeVariable var("var", "Variable1", 0, 3);
+      const gum::RangeVariable var("var", "Variable1", 0, 3);
 
-      auto tensor = gum::Tensor< double >::uniformTensor(var);
+      const auto tensor = gum::Tensor< double >::uniformTensor(var);
 
       TS_ASSERT_EQUALS(tensor.sum(), 1.0);
       TS_ASSERT_EQUALS(tensor.max(), 0.25);

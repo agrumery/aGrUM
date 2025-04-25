@@ -189,6 +189,18 @@ class TestInsertions(TensorTestCase):
     self.assertEqual(pot.sum(), 35.0)
     self.assertEqual(pot2.sum(), 36.0)
 
+  def testDeterministicTensor(self):
+    v = gum.fastVariable("V[1,4]")
+    p = gum.Tensor.deterministicTensor(v, 2)
+    self.assertEqual(p.tolist(), [0, 0, 1, 0])
+    p = gum.Tensor.deterministicTensor(v, "2")
+    self.assertEqual(p.tolist(), [0, 1, 0, 0])
+
+  def testUniformTensor(self):
+    v = gum.fastVariable("V[1,4]")
+    p = gum.Tensor.uniformTensor(v)
+    self.assertEqual(p.tolist(), [0.25, 0.25, 0.25, 0.25])
+
 
 class TestIndexs(TensorTestCase):
   def testNumpyIndex(self):
