@@ -390,6 +390,18 @@ IMPROVE_CONCRETEBAYESNET_API(gum::BayesNetFragment);
     writer.write( name, *self );
   };
 
+  gum::BayesNet contextualize(PyObject* observations,PyObject* interventions) {
+    if (PyDict_Check(observations) && PyDict_Check(interventions)) {
+      gum::Instantiation instObservations;
+      gum::Instantiation instInterventions;
+      PyAgrumHelper::fillInstantiationFromPyObjectAndBN(self, instObservations, observations);
+      PyAgrumHelper::fillInstantiationFromPyObjectAndBN(self, instInterventions, interventions);
+      return self->contextualize(instObservations,instInterventions);
+    } else {
+      GUM_ERROR(gum::InvalidArgument,"arg is neither a dict or an pyagrum.Instantiation.");
+    }
+  };
+
   %pythoncode {
 def __getstate__(self):
     pyagrum.base._gum_add_properties_while_getstate_(self)

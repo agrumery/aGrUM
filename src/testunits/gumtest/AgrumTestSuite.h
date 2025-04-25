@@ -41,6 +41,7 @@
 #include <gumtest/utils.h>
 
 #include <agrum/agrum.h>
+#include <agrum/base/core/debug.h>
 
 #include <cxxtest/TestSuite.h>
 

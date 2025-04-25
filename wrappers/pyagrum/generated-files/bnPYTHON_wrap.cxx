@@ -5923,6 +5923,17 @@ SWIGINTERN void gum_BayesNet_Sl_double_Sg__saveUAI__SWIG_0(gum::BayesNet< double
     writer.setAllowModification(allowModificationWhenSaving);
     writer.write( name, *self );
   }
+SWIGINTERN gum::BayesNet< double > gum_BayesNet_Sl_double_Sg__contextualize__SWIG_1(gum::BayesNet< double > *self,PyObject *observations,PyObject *interventions){
+    if (PyDict_Check(observations) && PyDict_Check(interventions)) {
+      gum::Instantiation instObservations;
+      gum::Instantiation instInterventions;
+      PyAgrumHelper::fillInstantiationFromPyObjectAndBN(self, instObservations, observations);
+      PyAgrumHelper::fillInstantiationFromPyObjectAndBN(self, instInterventions, interventions);
+      return self->contextualize(instObservations,instInterventions);
+    } else {
+           {                                       std::ostringstream err_stream;        err_stream << "arg is neither a dict or an pyagrum.Instantiation.";                    throw(gum::InvalidArgument(err_stream.str()));      };
+    }
+  }
 SWIGINTERN std::string gum_BayesNet_Sl_double_Sg____repr__(gum::BayesNet< double > const *self){
    std::stringstream s;
    s<<"(pyagrum.BayesNet@"<<std::hex<<self<<") "<<self->toString();
@@ -8439,7 +8450,7 @@ SWIGINTERN PyObject *gum_learning_BNDatabaseGenerator_Sl_double_Sg__varOrder(gum
 SWIGINTERN double gum_learning_BNDatabaseGenerator_Sl_double_Sg__drawSamples__SWIG_3(gum::learning::BNDatabaseGenerator< double > *self,gum::Size nbSamples,PyObject *arg){
     if (PyDict_Check(arg)) {
       gum::Instantiation inst;
-      PyAgrumHelper::fillInstantiationFromPyObject(self->bn(), inst, arg);
+      PyAgrumHelper::fillInstantiationFromPyObjectAndBN(&self->bn(), inst, arg);
       return self->drawSamples(nbSamples,inst);
     } else {
            {                                       std::ostringstream err_stream;        err_stream << "arg is neither a dict or an pyagrum.Instantiation.";                    throw(gum::InvalidArgument(err_stream.str()));      };
@@ -20145,6 +20156,57 @@ fail:
 }
 
 
+SWIGINTERN PyObject *_wrap_BayesNet_contextualize__SWIG_0(PyObject *self, Py_ssize_t nobjs, PyObject **swig_obj) {
+  PyObject *resultobj = 0;
+  gum::BayesNet< double > *arg1 = 0 ;
+  gum::Instantiation *arg2 = 0 ;
+  gum::Instantiation *arg3 = 0 ;
+  void *argp1 = 0 ;
+  int res1 = 0 ;
+  void *argp2 = 0 ;
+  int res2 = 0 ;
+  void *argp3 = 0 ;
+  int res3 = 0 ;
+  gum::BayesNet< double > result;
+  
+  (void)self;
+  if ((nobjs < 3) || (nobjs > 3)) SWIG_fail;
+  res1 = SWIG_ConvertPtr(swig_obj[0], &argp1,SWIGTYPE_p_gum__BayesNetT_double_t, 0 |  0 );
+  if (!SWIG_IsOK(res1)) {
+    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "BayesNet_contextualize" "', argument " "1"" of type '" "gum::BayesNet< double > const *""'"); 
+  }
+  arg1 = reinterpret_cast< gum::BayesNet< double > * >(argp1);
+  res2 = SWIG_ConvertPtr(swig_obj[1], &argp2, SWIGTYPE_p_gum__Instantiation,  0  | 0);
+  if (!SWIG_IsOK(res2)) {
+    SWIG_exception_fail(SWIG_ArgError(res2), "in method '" "BayesNet_contextualize" "', argument " "2"" of type '" "gum::Instantiation const &""'"); 
+  }
+  if (!argp2) {
+    SWIG_exception_fail(SWIG_NullReferenceError, "invalid null reference " "in method '" "BayesNet_contextualize" "', argument " "2"" of type '" "gum::Instantiation const &""'"); 
+  }
+  arg2 = reinterpret_cast< gum::Instantiation * >(argp2);
+  res3 = SWIG_ConvertPtr(swig_obj[2], &argp3, SWIGTYPE_p_gum__Instantiation,  0  | 0);
+  if (!SWIG_IsOK(res3)) {
+    SWIG_exception_fail(SWIG_ArgError(res3), "in method '" "BayesNet_contextualize" "', argument " "3"" of type '" "gum::Instantiation const &""'"); 
+  }
+  if (!argp3) {
+    SWIG_exception_fail(SWIG_NullReferenceError, "invalid null reference " "in method '" "BayesNet_contextualize" "', argument " "3"" of type '" "gum::Instantiation const &""'"); 
+  }
+  arg3 = reinterpret_cast< gum::Instantiation * >(argp3);
+  {
+    try {
+      result = ((gum::BayesNet< double > const *)arg1)->contextualize((gum::Instantiation const &)*arg2,(gum::Instantiation const &)*arg3);
+    } catch (...) {
+      SetPythonizeAgrumException();
+      SWIG_fail;
+    }
+  }
+  resultobj = SWIG_NewPointerObj((new gum::BayesNet< double >(result)), SWIGTYPE_p_gum__BayesNetT_double_t, SWIG_POINTER_OWN |  0 );
+  return resultobj;
+fail:
+  return NULL;
+}
+
+
 SWIGINTERN PyObject *_wrap_BayesNet_dag(PyObject *self, PyObject *args) {
   PyObject *resultobj = 0;
   gum::BayesNet< double > *arg1 = 0 ;
@@ -22495,6 +22557,78 @@ fail:
     "  Possible C/C++ prototypes are:\n"
     "    gum::BayesNet< double >::saveUAI(std::string,bool)\n"
     "    gum::BayesNet< double >::saveUAI(std::string)\n");
+  return 0;
+}
+
+
+SWIGINTERN PyObject *_wrap_BayesNet_contextualize__SWIG_1(PyObject *self, Py_ssize_t nobjs, PyObject **swig_obj) {
+  PyObject *resultobj = 0;
+  gum::BayesNet< double > *arg1 = 0 ;
+  PyObject *arg2 = 0 ;
+  PyObject *arg3 = 0 ;
+  void *argp1 = 0 ;
+  int res1 = 0 ;
+  gum::BayesNet< double > result;
+  
+  (void)self;
+  if ((nobjs < 3) || (nobjs > 3)) SWIG_fail;
+  res1 = SWIG_ConvertPtr(swig_obj[0], &argp1,SWIGTYPE_p_gum__BayesNetT_double_t, 0 |  0 );
+  if (!SWIG_IsOK(res1)) {
+    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "BayesNet_contextualize" "', argument " "1"" of type '" "gum::BayesNet< double > *""'"); 
+  }
+  arg1 = reinterpret_cast< gum::BayesNet< double > * >(argp1);
+  arg2 = swig_obj[1];
+  arg3 = swig_obj[2];
+  {
+    try {
+      result = gum_BayesNet_Sl_double_Sg__contextualize__SWIG_1(arg1,arg2,arg3);
+    } catch (...) {
+      SetPythonizeAgrumException();
+      SWIG_fail;
+    }
+  }
+  resultobj = SWIG_NewPointerObj((new gum::BayesNet< double >(result)), SWIGTYPE_p_gum__BayesNetT_double_t, SWIG_POINTER_OWN |  0 );
+  return resultobj;
+fail:
+  return NULL;
+}
+
+
+SWIGINTERN PyObject *_wrap_BayesNet_contextualize(PyObject *self, PyObject *args) {
+  Py_ssize_t argc;
+  PyObject *argv[4] = {
+    0
+  };
+  
+  if (!(argc = SWIG_Python_UnpackTuple(args, "BayesNet_contextualize", 0, 3, argv))) SWIG_fail;
+  --argc;
+  if (argc == 3) {
+    int _v = 0;
+    {
+      int res = SWIG_ConvertPtr(argv[1], 0, SWIGTYPE_p_gum__Instantiation, SWIG_POINTER_NO_NULL | 0);
+      _v = SWIG_CheckState(res);
+    }
+    if (!_v) goto check_1;
+    {
+      int res = SWIG_ConvertPtr(argv[2], 0, SWIGTYPE_p_gum__Instantiation, SWIG_POINTER_NO_NULL | 0);
+      _v = SWIG_CheckState(res);
+    }
+    if (!_v) goto check_1;
+    return _wrap_BayesNet_contextualize__SWIG_0(self, argc, argv);
+  }
+check_1:
+  
+  if (argc == 3) {
+    PyObject *retobj = _wrap_BayesNet_contextualize__SWIG_1(self, argc, argv);
+    if (!SWIG_Python_TypeErrorOccurred(retobj)) return retobj;
+    SWIG_fail;
+  }
+  
+fail:
+  SWIG_Python_RaiseOrModifyTypeError("Wrong number or type of arguments for overloaded function 'BayesNet_contextualize'.\n"
+    "  Possible C/C++ prototypes are:\n"
+    "    gum::BayesNet< double >::contextualize(gum::Instantiation const &,gum::Instantiation const &) const\n"
+    "    gum::BayesNet< double >::contextualize(PyObject *,PyObject *)\n");
   return 0;
 }
 
@@ -77900,6 +78034,7 @@ static PyMethodDef SwigMethods[] = {
 		"        if true, syntax errors are corrected when saving the file. If false, they throw a FatalError.\n"
 		"\n"
 		""},
+	 { "BayesNet_contextualize", _wrap_BayesNet_contextualize, METH_VARARGS, NULL},
 	 { "BayesNet___repr__", _wrap_BayesNet___repr__, METH_O, NULL},
 	 { "BayesNet___str__", _wrap_BayesNet___str__, METH_O, NULL},
 	 { "BayesNet_swigregister", BayesNet_swigregister, METH_O, NULL},

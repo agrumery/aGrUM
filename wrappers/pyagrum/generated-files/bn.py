@@ -4004,6 +4004,9 @@ class BayesNet(IBayesNet):
         """
         return _bn.BayesNet_saveUAI(self, name, allowModificationWhenSaving)
 
+    def contextualize(self, *args) -> "pyagrum.BayesNet":
+        return _bn.BayesNet_contextualize(self, *args)
+
     def __getstate__(self):
         pyagrum.base._gum_add_properties_while_getstate_(self)
         state={"nodes":[self.variable(i).toFast() for i in self.nodes()],

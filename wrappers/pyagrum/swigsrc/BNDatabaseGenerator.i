@@ -50,7 +50,7 @@
 double drawSamples(Size nbSamples,PyObject *arg) {
     if (PyDict_Check(arg)) {
       gum::Instantiation inst;
-      PyAgrumHelper::fillInstantiationFromPyObject(self->bn(), inst, arg);
+      PyAgrumHelper::fillInstantiationFromPyObjectAndBN(&self->bn(), inst, arg);
       return self->drawSamples(nbSamples,inst);
     } else {
       GUM_ERROR(gum::InvalidArgument,"arg is neither a dict or an pyagrum.Instantiation.");

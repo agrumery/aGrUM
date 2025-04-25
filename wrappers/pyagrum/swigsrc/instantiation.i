@@ -60,7 +60,7 @@
   }
 
 
-  Instantiation& fromdict(PyObject* dict) {
+  void _cppfromdict(PyObject* dict) {
     if (!PyDict_Check(dict)) {
       GUM_ERROR(gum::InvalidArgument, "Argument is not a dictionary")
     }
@@ -95,11 +95,24 @@
         self->chgVal(*namesToVars[name], v);
       }
     }
-
-    return *self;
   }
 
 %pythoncode {
+  def fromdict(self, dict: object) -> None:
+    r"""
+
+    Change the values in an instantiation from a dictionary `{variable_name:value}` where value can be a position (int) or a label (string).
+
+    If a variable_name does not occur in the instantiation, nothing is done.
+
+    Warnings
+    --------
+        OutOfBounds raised if a value cannot be found.
+
+    """
+    _base.Instantiation__cppfromdict(self, dict)
+    return self
+
   def __setitem__(self,key,item):
     self.chgVal(key,item)
 

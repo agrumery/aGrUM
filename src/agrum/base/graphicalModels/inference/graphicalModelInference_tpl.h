@@ -190,17 +190,7 @@ namespace gum {
                 "node " << _model_->variable(id) << " has fewer possible values than " << val);
     }
 
-    // create the deterministic tensor
-    Tensor< GUM_SCALAR > pot;
-    pot.beginMultipleChanges();
-    pot << _model_->variable(id);
-    pot.endMultipleChanges(0.0);
-
-    Instantiation I(pot);
-    I.chgVal(_model_->variable(id), val);
-    pot.set(I, 1.0);
-
-    return pot;
+    return Tensor< GUM_SCALAR >::deterministicTensor(_model_->variable(id), val);
   }
 
   // checks wether a tensor corresponds to a hard evidence

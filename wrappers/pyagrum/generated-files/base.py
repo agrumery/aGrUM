@@ -5819,19 +5819,23 @@ class Instantiation(object):
         """
         return _base.Instantiation_todict(self, withLabels)
 
-    def fromdict(self, dict: object) -> "pyagrum.Instantiation":
-        r"""
+    def _cppfromdict(self, dict: object) -> None:
+        return _base.Instantiation__cppfromdict(self, dict)
 
-        Change the values in an instantiation from a dictionary `{variable_name:value}` where value can be a position (int) or a label (string).
+    def fromdict(self, dict: object) -> None:
+      r"""
 
-        If a variable_name does not occur in the instantiation, nothing is done.
+      Change the values in an instantiation from a dictionary `{variable_name:value}` where value can be a position (int) or a label (string).
 
-        Warnings
-        --------
-            OutOfBounds raised if a value cannot be found.
+      If a variable_name does not occur in the instantiation, nothing is done.
 
-        """
-        return _base.Instantiation_fromdict(self, dict)
+      Warnings
+      --------
+          OutOfBounds raised if a value cannot be found.
+
+      """
+      _base.Instantiation__cppfromdict(self, dict)
+      return self
 
     def __setitem__(self,key,item):
       self.chgVal(key,item)
@@ -7281,15 +7285,23 @@ class Tensor(object):
 
     Tensor(src) -> Tensor
         Parameters:
-            - **src** (* py:class:`pyagrum.Tensor` *) -- the Tensor to copy
+            - **src** (* pyagrum.Tensor *) -- the Tensor to copy
 
     Tensor(v1,v2, ...) -> Tensor
         Parameters:
-            - v1,v2... (* `pyagrum.DiscreteVariable` *) -- the variables to be added to the tensor
+            - v1,v2... (* pyagrum.DiscreteVariable *) -- the variables to be added to the tensor
 
     """
 
     thisown = property(lambda x: x.this.own(), lambda x, v: x.this.own(v), doc="The membership flag")
+
+    @staticmethod
+    def deterministicTensor(*args) -> "pyagrum.Tensor":
+        return _base.Tensor_deterministicTensor(*args)
+
+    @staticmethod
+    def uniformTensor(var: "pyagrum.DiscreteVariable") -> "pyagrum.Tensor":
+        return _base.Tensor_uniformTensor(var)
 
     def __init__(self, *args):
 

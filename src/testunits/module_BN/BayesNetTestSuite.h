@@ -77,7 +77,6 @@ namespace gum_tests {
         bn.addArc(idList[0], idList[3]);
         bn.addArc(idList[3], idList[4]);
         bn.addArc(idList[1], idList[4]);
-
       } catch (const gum::Exception& e) {
         std::cerr << std::endl << e.errorContent() << std::endl;
         throw;
@@ -94,13 +93,13 @@ namespace gum_tests {
 
         bn.cpt(idList[2]).fillWith({0.1f, 0.9f, 0.9f, 0.1f});
 
-        bn.cpt(idList[3]).fillWith(   // clang-format off
+        bn.cpt(idList[3]).fillWith( // clang-format off
             {0.4f, 0.6f,
              0.5f, 0.5f,
              0.5f, 0.5f,
              1.0f, 0.0f});                  // clang-format on
 
-        bn.cpt(idList[4]).fillWith(   // clang-format off
+        bn.cpt(idList[4]).fillWith( // clang-format off
             {0.3f, 0.6f, 0.1f,
              0.5f, 0.5f, 0.0f,
              0.5f, 0.5f, 0.0f,
@@ -109,7 +108,6 @@ namespace gum_tests {
              0.5f, 0.5f, 0.0f,
              0.5f, 0.5f, 0.0f,
              0.0f, 0.0f, 1.0f});   // clang-format on
-
       } catch (const gum::Exception& e) {
         std::cerr << std::endl << e.errorContent() << std::endl;
         throw;
@@ -202,10 +200,7 @@ namespace gum_tests {
           for (gum::Idx i = 0; i < srcVar.domainSize(); i++) {
             TS_ASSERT_EQUALS(srcVar.label(i), cpVar.label(i))
           }
-
-        } else {
-          TS_ASSERT(false)
-        }
+        } else { TS_ASSERT(false) }
 
         for (const auto parent: source.dag().parents(node)) {
           TS_ASSERT(copy->dag().existsArc(gum::Arc(parent, node)))
@@ -252,10 +247,7 @@ namespace gum_tests {
           for (gum::Idx i = 0; i < srcVar.domainSize(); i++) {
             TS_ASSERT_EQUALS(srcVar.label(i), cpVar.label(i))
           }
-
-        } else {
-          TS_ASSERT(false)
-        }
+        } else { TS_ASSERT(false) }
 
         for (const auto parent: source.dag().parents(node)) {
           TS_ASSERT(copy.dag().existsArc(gum::Arc(parent, node)))
@@ -280,13 +272,9 @@ namespace gum_tests {
         std::stringstream c_str;
         std::stringstream s_str;
 
-        for (const auto var: source.cpt(node).variablesSequence()) {
-          s_str << *var << ",";
-        }
+        for (const auto var: source.cpt(node).variablesSequence()) { s_str << *var << ","; }
 
-        for (const auto var: copy.cpt(node).variablesSequence()) {
-          c_str << *var << ",";
-        }
+        for (const auto var: copy.cpt(node).variablesSequence()) { c_str << *var << ","; }
 
         TS_ASSERT_EQUALS(c_str.str(), s_str.str())
       }
@@ -309,12 +297,7 @@ namespace gum_tests {
 
       for (gum::Idx i = 0; i < idList.size() - 1; i++) {
         for (gum::Idx j = i + 1; j < idList.size(); j++) {
-          if (idList[i] != idList[j]) {
-            TS_ASSERT(true)
-
-          } else {
-            TS_ASSERT(false)
-          }
+          if (idList[i] != idList[j]) { TS_ASSERT(true) } else { TS_ASSERT(false) }
         }
       }
 
@@ -417,9 +400,7 @@ namespace gum_tests {
 
       bn.erase(idList[0]);
 
-      for (const auto i: idList) {
-        bn.erase(i);
-      }
+      for (const auto i: idList) { bn.erase(i); }
 
       TS_ASSERT(bn.empty())
 
@@ -470,9 +451,7 @@ namespace gum_tests {
     GUM_ACTIVE_TEST(StringAccessors) {
       try {
         gum::BayesNet< double > bn;
-        for (const auto& x: {"A", "B", "C"}) {
-          bn.add(gum::LabelizedVariable(x, x, 2));
-        }
+        for (const auto& x: {"A", "B", "C"}) { bn.add(gum::LabelizedVariable(x, x, 2)); }
         for (const auto& [first, second]: {std::make_pair("A", "C"), std::make_pair("B", "C")}) {
           bn.addArc(first, second);
         }
@@ -516,9 +495,7 @@ namespace gum_tests {
       gum::BayesNet< double >  bn;
       gum::List< gum::NodeId > idList;
 
-      for (const auto node: bn.nodes()) {
-        TS_ASSERT(idList.exists(node))
-      }
+      for (const auto node: bn.nodes()) { TS_ASSERT(idList.exists(node)) }
     }
 
     GUM_ACTIVE_TEST(RandomlyFilled) {
@@ -785,9 +762,7 @@ namespace gum_tests {
       joint.reserve(2 * bn.dim());
       auto i = bn.completeInstantiation();
 
-      for (i.setFirst(); !i.end(); i.inc()) {
-        joint.push_back(bn.jointProbability(i));
-      }
+      for (i.setFirst(); !i.end(); i.inc()) { joint.push_back(bn.jointProbability(i)); }
 
       bn.reverseArc(0, 2);
       bn.reverseArc(gum::Arc(3, 4));
@@ -1046,17 +1021,17 @@ namespace gum_tests {
 
     GUM_ACTIVE_TEST(ClearBN) {
       const auto bn = gum::BayesNet< double >::fastPrototype("A->B->C<-D->E<-A<-G->F");
-      {   // by hand
+      {
+        // by hand
         auto bn_instance = gum::BayesNet< double >(bn);
         if (!bn_instance.empty()) {
           auto l = bn_instance.nodes();
-          for (const auto no: l) {
-            bn_instance.erase(no);
-          }
+          for (const auto no: l) { bn_instance.erase(no); }
         }
         TS_ASSERT(bn_instance.empty())
       }
-      {   // with clear method
+      {
+        // with clear method
         auto bn_instance = gum::BayesNet< double >(bn);
         bn_instance.clear();
         TS_ASSERT(bn_instance.empty())
@@ -1137,5 +1112,35 @@ namespace gum_tests {
       TS_ASSERT_DIFFERS(bn, bn2);
       TS_ASSERT_EQUALS(bn, bn3);
     }
+
+    GUM_ACTIVE_TEST(contextulizedBN) {
+      auto bn = gum::BayesNet< double >::fastPrototype("E<-A{chaud|froid}->B<-C<-D->A<-F;E<-D->B");
+      gum::Instantiation Iobs;
+      Iobs.add(bn.variable("A"));
+      Iobs.chgVal("A", "froid");
+      gum::Instantiation Iint;
+      Iint.add(bn.variable("C"));
+      Iint.chgVal("C", 1);
+
+      auto bn2 = bn.contextualize(Iobs, Iint);
+
+      TS_ASSERT_EQUALS(bn2.size(), gum::Size(6));
+      TS_ASSERT_EQUALS(bn2.sizeArcs(), gum::Size(4))
+    }
+
+    GUM_ACTIVE_TEST(contextulizedBN2) {
+      auto bn = gum::BayesNet< double >::fastPrototype("E<-A{chaud|froid}->B<-C<-D->A<-F;E<-D->B");
+      gum::Instantiation Iobs;
+      Iobs.add(bn.variable("D"));
+      Iobs.chgVal("D", 0);
+      gum::Instantiation Iint;
+      Iint.add(bn.variable("A"));
+      Iint.chgVal("A", 1);
+
+      auto bn2 = bn.contextualize(Iobs, Iint);
+
+      TS_ASSERT_EQUALS(bn2.size(), gum::Size(6));
+      TS_ASSERT_EQUALS(bn2.sizeArcs(), gum::Size(1));
+    }
   };
-}   // namespace gum_tests
+} // namespace gum_tests

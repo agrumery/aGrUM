@@ -52,8 +52,7 @@
 #include <agrum/BN/IBayesNet.h>
 
 namespace gum {
-
-  template < typename GUM_SCALAR >
+  template <typename GUM_SCALAR>
   class BayesNetFactory;
 
   /**
@@ -86,7 +85,7 @@ namespace gum {
    * You can print a BayesNet using
    * gum::operator<<(std::ostream&, const BayesNet<GUM_SCALAR>&).
    */
-  template < typename GUM_SCALAR >
+  template <typename GUM_SCALAR>
   class BayesNet: public IBayesNet< GUM_SCALAR > {
     friend class BayesNetFactory< GUM_SCALAR >;
 
@@ -176,9 +175,8 @@ namespace gum {
     /**
      * @brief Returns the CPT of a variable.
      */
-    const Tensor< GUM_SCALAR >& cpt(const std::string& name) const {
-      return cpt(idFromName(name));
-    };
+    const Tensor< GUM_SCALAR >& cpt(const std::string& name) const { return cpt(idFromName(name)); }
+    ;
 
     /**
      * @brief Returns a map between variables and nodes of this gum::BayesNet.
@@ -276,7 +274,7 @@ namespace gum {
      *                        gum::BayesNet.
      */
     NodeId
-        add(const DiscreteVariable& var, MultiDimImplementation< GUM_SCALAR >* aContent, NodeId id);
+      add(const DiscreteVariable& var, MultiDimImplementation< GUM_SCALAR >* aContent, NodeId id);
 
     /**
      * @brief clear the whole Bayes net     *
@@ -637,7 +635,7 @@ namespace gum {
      * @param head and
      * @param tail as std::string
      * @param causalWeight see gum::MultiDimICIModel
-     * @param NotFound if no node with sun names is found
+     * @throw NotFound if no node with sun names is found
      * @throw InvalidArc If arc.tail and/or arc.head are not in the BN.
      * @throw InvalidArc If variable in arc.head is not a NoisyOR variable.
      */
@@ -661,6 +659,20 @@ namespace gum {
     ///  _probaMap_[NodeId]
     void changeTensor(NodeId id, Tensor< GUM_SCALAR >* newPot);
     void changeTensor(const std::string& name, Tensor< GUM_SCALAR >* newPot);
+
+    /** create a contextual BN from this and a set of hard observations and hard interventions.
+     *
+     * @param observations the hard observations
+     * @param interventions the hard interventions
+     * @return a new BN with the same structure as this, but with the CPTs
+     *         modified to reflect the observations and interventions
+     * @warning The original BN is not modified. The returned BN is not a copy of the original BN, but
+     *          a new BN with copied variables and modified structure and CPTs.
+     *
+     * @throw ArgumentError if the observations and interventions are not mutually exclusive
+     */
+    BayesNet< GUM_SCALAR > contextualize(const gum::Instantiation& observations,
+                                         const gum::Instantiation& interventions) const;
 
     private:
     /// clear all tensors
@@ -689,14 +701,13 @@ namespace gum {
   };
 
   /// Prints map's DAG in output using the Graphviz-dot format.
-  template < typename GUM_SCALAR >
+  template <typename GUM_SCALAR>
   std::ostream& operator<<(std::ostream& output, const BayesNet< GUM_SCALAR >& bn);
 
 
 #ifndef GUM_NO_EXTERN_TEMPLATE_CLASS
   extern template class BayesNet< double >;
 #endif
-
 } /* namespace gum */
 
 #include <agrum/BN/BayesNet_tpl.h>

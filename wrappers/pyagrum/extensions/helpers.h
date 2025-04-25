@@ -28,7 +28,6 @@
 #include <agrum/base/graphs/graphElements.h>
 #include <agrum/base/graphs/parts/nodeGraphPart.h>
 #include <agrum/base/multidim/tensor.h>
-
 #include <agrum/BN/BayesNet.h>
 #include <agrum/BN/IBayesNet.h>
 
@@ -53,7 +52,7 @@ namespace PyAgrumHelper {
 
   // filling a Set of DiscreteVariable* from a list of string, in the context of a
   // tensor.
-  void fillDVSetFromPyObject(const gum::Tensor< double >*           pot,
+  void fillDVSetFromPyObject(const gum::Tensor< double >*              pot,
                              gum::Set< const gum::DiscreteVariable* >& s,
                              PyObject*                                 varnames) {
     gum::Set< std::string > names;
@@ -83,7 +82,7 @@ namespace PyAgrumHelper {
 
   // filling a vector of DiscreteVariable* from a list of string, in the context of
   // a tensor.
-  void fillDVVectorFromPyObject(const gum::Tensor< double >*              pot,
+  void fillDVVectorFromPyObject(const gum::Tensor< double >*                 pot,
                                 std::vector< const gum::DiscreteVariable* >& s,
                                 PyObject*                                    varnames) {
     if (PyList_Check(varnames)) {
@@ -108,9 +107,9 @@ namespace PyAgrumHelper {
   }
 
   // filling a DiscreteVariable* from a string, in the context of a tensor.
-  void fillDVFromPyObject(const gum::Tensor< double >* pot,
-                          const gum::DiscreteVariable*&   pvar,
-                          PyObject*                       varname) {
+  void fillDVFromPyObject(const gum::Tensor< double >*  pot,
+                          const gum::DiscreteVariable*& pvar,
+                          PyObject*                     varname) {
     const std::string name = stringFromPyObject(varname);
     if (name == "") { GUM_ERROR(gum::InvalidArgument, "Argument is not a string") }
 
@@ -169,8 +168,8 @@ namespace PyAgrumHelper {
   }
 
   void fillInstantiationFromPyObject(const gum::Tensor< double >* pot,
-                                     gum::Instantiation&             inst,
-                                     PyObject*                       dict) {
+                                     gum::Instantiation&          inst,
+                                     PyObject*                    dict) {
     if (!PyDict_Check(dict)) { GUM_ERROR(gum::InvalidArgument, "Argument is not a dictionary") }
 
     gum::HashTable< std::string, const gum::DiscreteVariable* > namesToVars;
@@ -211,9 +210,9 @@ namespace PyAgrumHelper {
 
   // filling a Instantiation from a dictionnary<string,int> and a BayesNet (to find variable and
   // labels)
-  void fillInstantiationFromPyObject(const gum::BayesNet< double >& map,
-                                     gum::Instantiation&            inst,
-                                     PyObject*                      dict) {
+  void fillInstantiationFromPyObjectAndBN(const gum::BayesNet< double >* map,
+                                          gum::Instantiation&            inst,
+                                          PyObject*                      dict) {
     if (!PyDict_Check(dict)) { GUM_ERROR(gum::InvalidArgument, "Argument is not a dictionary") }
 
     inst.clear();
@@ -224,7 +223,7 @@ namespace PyAgrumHelper {
       std::string name = stringFromPyObject(key);
       if (name == "") { GUM_ERROR(gum::InvalidArgument, "A key is not a string"); }
 
-      const auto& variable = map.variable(name);
+      const auto& variable = map->variable(name);
 
       std::string label = stringFromPyObject(value);
       gum::Idx    v;
@@ -358,8 +357,8 @@ namespace PyAgrumHelper {
 
     PyObject* pyval;
     for (auto node: nodevect) {
-      pyval=PyLong_FromUnsignedLong((unsigned long)node);
-      PyList_Append(q,pyval);
+      pyval = PyLong_FromUnsignedLong((unsigned long)node);
+      PyList_Append(q, pyval);
       Py_DecRef(pyval);
     }
 
@@ -371,7 +370,7 @@ namespace PyAgrumHelper {
 
     PyObject* pyval;
     for (auto node: nodeset) {
-      pyval=PyLong_FromUnsignedLong((unsigned long)node);
+      pyval = PyLong_FromUnsignedLong((unsigned long)node);
       PyList_Append(q, pyval);
       Py_DecRef(pyval);
     }
@@ -382,10 +381,10 @@ namespace PyAgrumHelper {
   PyObject* PyTupleFromNodeVect(const std::vector< gum::NodeId >& nodevect) {
     PyObject* q = PyTuple_New(nodevect.size());
 
-    int i = 0;
+    int       i = 0;
     PyObject* pyval;
     for (auto node: nodevect) {
-      pyval=PyLong_FromUnsignedLong((unsigned long)node);
+      pyval = PyLong_FromUnsignedLong((unsigned long)node);
       PyTuple_SET_ITEM(q, i, pyval);
       Py_DecRef(pyval);
       i++;
@@ -397,10 +396,10 @@ namespace PyAgrumHelper {
   PyObject* PyTupleFromNodeSet(const gum::NodeSet& nodeset) {
     PyObject* q = PyTuple_New(nodeset.size());
 
-    int i = 0;
+    int       i = 0;
     PyObject* pyval;
     for (auto node: nodeset) {
-      pyval=PyLong_FromUnsignedLong((unsigned long)node);
+      pyval = PyLong_FromUnsignedLong((unsigned long)node);
       PyTuple_SET_ITEM(q, i, pyval);
       Py_DecRef(pyval);
       i++;
@@ -414,7 +413,7 @@ namespace PyAgrumHelper {
 
     PyObject* pyval;
     for (auto node: nodeset) {
-      pyval=PyLong_FromUnsignedLong((unsigned long)node);
+      pyval = PyLong_FromUnsignedLong((unsigned long)node);
       PySet_Add(q, pyval);
       Py_DecRef(pyval);
     }
@@ -427,7 +426,7 @@ namespace PyAgrumHelper {
 
     PyObject* pyval;
     for (auto node: nodevect) {
-      pyval=PyLong_FromUnsignedLong((unsigned long)node);
+      pyval = PyLong_FromUnsignedLong((unsigned long)node);
       PySet_Add(q, pyval);
       Py_DecRef(pyval);
     }
@@ -440,8 +439,8 @@ namespace PyAgrumHelper {
 
     PyObject* pyval;
     for (auto node: nodeset) {
-      pyval=PyLong_FromUnsignedLong((unsigned long)node);
-      PySet_Add(q,pyval);
+      pyval = PyLong_FromUnsignedLong((unsigned long)node);
+      PySet_Add(q, pyval);
       Py_DecRef(pyval);
     }
 
@@ -453,7 +452,7 @@ namespace PyAgrumHelper {
 
     PyObject* pyval;
     for (const auto& arc: arcseq) {
-      pyval=Py_BuildValue("(i,i)", arc.tail(), arc.head());
+      pyval = Py_BuildValue("(i,i)", arc.tail(), arc.head());
       PyList_Append(q, pyval);
       Py_DecRef(pyval);
     }
@@ -487,7 +486,7 @@ namespace PyAgrumHelper {
     PyObject* q = PyList_New(0);
     PyObject* pyval;
     for (const auto& val: seq) {
-      pyval=PyLong_FromLong(val);
+      pyval = PyLong_FromLong(val);
       PyList_Append(q, pyval);
       Py_DecRef(pyval);
     }
@@ -498,7 +497,7 @@ namespace PyAgrumHelper {
     PyObject* q = PyList_New(0);
     PyObject* pyval;
     for (const auto& val: seq) {
-      pyval=PyFloat_FromDouble(val);
+      pyval = PyFloat_FromDouble(val);
       PyList_Append(q, pyval);
       Py_DecRef(pyval);
     }
@@ -510,7 +509,7 @@ namespace PyAgrumHelper {
 
     PyObject* pyval;
     for (const auto& arc: arcset) {
-      pyval=Py_BuildValue("(i,i)", arc.tail(), arc.head());
+      pyval = Py_BuildValue("(i,i)", arc.tail(), arc.head());
       PySet_Add(q, pyval);
       Py_DecRef(pyval);
     }
@@ -522,7 +521,7 @@ namespace PyAgrumHelper {
     PyObject* pyval;
 
     for (const auto& edg: edgeset) {
-      pyval=Py_BuildValue("(i,i)", edg.first(), edg.second());
+      pyval = Py_BuildValue("(i,i)", edg.first(), edg.second());
       PySet_Add(q, pyval);
       Py_DecRef(pyval);
     }
@@ -534,8 +533,8 @@ namespace PyAgrumHelper {
     PyObject* pyval;
 
     for (const auto& k: inst.variablesSequence()) {
-      pyval=PyLong_FromUnsignedLong((unsigned long)inst.val(*k));
-      PyDict_SetItemString(q,k->name().c_str(),pyval);
+      pyval = PyLong_FromUnsignedLong((unsigned long)inst.val(*k));
+      PyDict_SetItemString(q, k->name().c_str(), pyval);
       Py_DecRef(pyval);
     }
     return q;
@@ -545,11 +544,11 @@ namespace PyAgrumHelper {
     PyObject* q = PyDict_New();
     PyObject* pyval;
 
-    pyval=PyFloat_FromDouble(mv.first);
+    pyval = PyFloat_FromDouble(mv.first);
     PyDict_SetItemString(q, "mean", PyFloat_FromDouble(mv.first));
     Py_DecRef(pyval);
 
-    pyval=PyFloat_FromDouble(mv.second);
+    pyval = PyFloat_FromDouble(mv.second);
     PyDict_SetItemString(q, "variance", PyFloat_FromDouble(mv.second));
     Py_DecRef(pyval);
 
@@ -560,7 +559,7 @@ namespace PyAgrumHelper {
     PyObject* q = PyList_New(0);
     PyObject* pyval;
     for (const auto& inst: soi) {
-      pyval=PyDictFromInstantiation(inst);
+      pyval = PyDictFromInstantiation(inst);
       PyList_Append(q, pyval);
       Py_DecRef(pyval);
     }

@@ -6883,7 +6883,7 @@ SWIGINTERN bool gum_Instantiation_isMutable(gum::Instantiation *self){
 SWIGINTERN PyObject *gum_Instantiation_todict__SWIG_0(gum::Instantiation const *self,bool withLabels=false){
     return PyAgrumHelper::instantiationToDict(*self,withLabels);
   }
-SWIGINTERN gum::Instantiation &gum_Instantiation_fromdict(gum::Instantiation *self,PyObject *dict){
+SWIGINTERN void gum_Instantiation__cppfromdict(gum::Instantiation *self,PyObject *dict){
     if (!PyDict_Check(dict)) {
       GUM_ERROR(gum::InvalidArgument, "Argument is not a dictionary")
     }
@@ -6918,8 +6918,6 @@ SWIGINTERN gum::Instantiation &gum_Instantiation_fromdict(gum::Instantiation *se
         self->chgVal(*namesToVars[name], v);
       }
     }
-
-    return *self;
   }
 SWIGINTERN std::string gum_DiscretizedVariable_Sl_double_Sg____repr__(gum::DiscretizedVariable< double > const *self){
    std::stringstream s;
@@ -6960,11 +6958,7 @@ SWIGINTERN gum::Tensor< double > gum_Tensor_Sl_double_Sg__extract__SWIG_1(gum::T
       PyAgrumHelper::fillInstantiationFromPyObject(self, inst, arg);
       return self->extract(inst);
     } else {
-      //auto arg1 = reinterpret_cast< gum::Instantiation * >(arg);
-      //if (arg1==nullptr) {
-        GUM_ERROR(gum::InvalidArgument,"arg is neither a dict or an pyagrum.Instantiation.");
-      //}
-      //return self->extract(*arg1);
+      GUM_ERROR(gum::InvalidArgument,"arg is neither a dict or an pyagrum.Instantiation.");
     }
   }
 SWIGINTERN gum::Tensor< double > gum_Tensor_Sl_double_Sg__sumOut__SWIG_1(gum::Tensor< double > const *self,PyObject *varnames){
@@ -46635,32 +46629,31 @@ fail:
 }
 
 
-SWIGINTERN PyObject *_wrap_Instantiation_fromdict(PyObject *self, PyObject *args) {
+SWIGINTERN PyObject *_wrap_Instantiation__cppfromdict(PyObject *self, PyObject *args) {
   PyObject *resultobj = 0;
   gum::Instantiation *arg1 = 0 ;
   PyObject *arg2 = 0 ;
   void *argp1 = 0 ;
   int res1 = 0 ;
   PyObject *swig_obj[2] ;
-  gum::Instantiation *result = 0 ;
   
   (void)self;
-  if (!SWIG_Python_UnpackTuple(args, "Instantiation_fromdict", 2, 2, swig_obj)) SWIG_fail;
+  if (!SWIG_Python_UnpackTuple(args, "Instantiation__cppfromdict", 2, 2, swig_obj)) SWIG_fail;
   res1 = SWIG_ConvertPtr(swig_obj[0], &argp1,SWIGTYPE_p_gum__Instantiation, 0 |  0 );
   if (!SWIG_IsOK(res1)) {
-    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "Instantiation_fromdict" "', argument " "1"" of type '" "gum::Instantiation *""'"); 
+    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "Instantiation__cppfromdict" "', argument " "1"" of type '" "gum::Instantiation *""'"); 
   }
   arg1 = reinterpret_cast< gum::Instantiation * >(argp1);
   arg2 = swig_obj[1];
   {
     try {
-      result = (gum::Instantiation *) &gum_Instantiation_fromdict(arg1,arg2);
+      gum_Instantiation__cppfromdict(arg1,arg2);
     } catch (...) {
       SetPythonizeAgrumException();
       SWIG_fail;
     }
   }
-  resultobj = SWIG_NewPointerObj(SWIG_as_voidptr(result), SWIGTYPE_p_gum__Instantiation, 0 |  0 );
+  resultobj = SWIG_Py_Void();
   return resultobj;
 fail:
   return NULL;
@@ -54423,6 +54416,163 @@ SWIGINTERN PyObject *MultiDimContainer_swigregister(PyObject *SWIGUNUSEDPARM(sel
   SWIG_TypeNewClientData(SWIGTYPE_p_gum__MultiDimContainerT_double_t, SWIG_NewClientData(obj));
   return SWIG_Py_Void();
 }
+
+SWIGINTERN PyObject *_wrap_Tensor_deterministicTensor__SWIG_0(PyObject *self, Py_ssize_t nobjs, PyObject **swig_obj) {
+  PyObject *resultobj = 0;
+  gum::DiscreteVariable *arg1 = 0 ;
+  gum::Idx arg2 ;
+  void *argp1 = 0 ;
+  int res1 = 0 ;
+  size_t val2 ;
+  int ecode2 = 0 ;
+  gum::Tensor< double > result;
+  
+  (void)self;
+  if ((nobjs < 2) || (nobjs > 2)) SWIG_fail;
+  res1 = SWIG_ConvertPtr(swig_obj[0], &argp1, SWIGTYPE_p_gum__DiscreteVariable,  0  | 0);
+  if (!SWIG_IsOK(res1)) {
+    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "Tensor_deterministicTensor" "', argument " "1"" of type '" "gum::DiscreteVariable const &""'"); 
+  }
+  if (!argp1) {
+    SWIG_exception_fail(SWIG_NullReferenceError, "invalid null reference " "in method '" "Tensor_deterministicTensor" "', argument " "1"" of type '" "gum::DiscreteVariable const &""'"); 
+  }
+  arg1 = reinterpret_cast< gum::DiscreteVariable * >(argp1);
+  ecode2 = SWIG_AsVal_size_t(swig_obj[1], &val2);
+  if (!SWIG_IsOK(ecode2)) {
+    SWIG_exception_fail(SWIG_ArgError(ecode2), "in method '" "Tensor_deterministicTensor" "', argument " "2"" of type '" "gum::Idx""'");
+  } 
+  arg2 = static_cast< gum::Idx >(val2);
+  {
+    try {
+      result = gum::Tensor< double >::SWIGTEMPLATEDISAMBIGUATOR deterministicTensor((gum::DiscreteVariable const &)*arg1,SWIG_STD_MOVE(arg2));
+    } catch (...) {
+      SetPythonizeAgrumException();
+      SWIG_fail;
+    }
+  }
+  resultobj = SWIG_NewPointerObj((new gum::Tensor< double >(result)), SWIGTYPE_p_gum__TensorT_double_t, SWIG_POINTER_OWN |  0 );
+  return resultobj;
+fail:
+  return NULL;
+}
+
+
+SWIGINTERN PyObject *_wrap_Tensor_deterministicTensor__SWIG_1(PyObject *self, Py_ssize_t nobjs, PyObject **swig_obj) {
+  PyObject *resultobj = 0;
+  gum::DiscreteVariable *arg1 = 0 ;
+  std::string *arg2 = 0 ;
+  void *argp1 = 0 ;
+  int res1 = 0 ;
+  int res2 = SWIG_OLDOBJ ;
+  gum::Tensor< double > result;
+  
+  (void)self;
+  if ((nobjs < 2) || (nobjs > 2)) SWIG_fail;
+  res1 = SWIG_ConvertPtr(swig_obj[0], &argp1, SWIGTYPE_p_gum__DiscreteVariable,  0  | 0);
+  if (!SWIG_IsOK(res1)) {
+    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "Tensor_deterministicTensor" "', argument " "1"" of type '" "gum::DiscreteVariable const &""'"); 
+  }
+  if (!argp1) {
+    SWIG_exception_fail(SWIG_NullReferenceError, "invalid null reference " "in method '" "Tensor_deterministicTensor" "', argument " "1"" of type '" "gum::DiscreteVariable const &""'"); 
+  }
+  arg1 = reinterpret_cast< gum::DiscreteVariable * >(argp1);
+  {
+    std::string *ptr = (std::string *)0;
+    res2 = SWIG_AsPtr_std_string(swig_obj[1], &ptr);
+    if (!SWIG_IsOK(res2)) {
+      SWIG_exception_fail(SWIG_ArgError(res2), "in method '" "Tensor_deterministicTensor" "', argument " "2"" of type '" "std::string const &""'"); 
+    }
+    if (!ptr) {
+      SWIG_exception_fail(SWIG_NullReferenceError, "invalid null reference " "in method '" "Tensor_deterministicTensor" "', argument " "2"" of type '" "std::string const &""'"); 
+    }
+    arg2 = ptr;
+  }
+  {
+    try {
+      result = gum::Tensor< double >::SWIGTEMPLATEDISAMBIGUATOR deterministicTensor((gum::DiscreteVariable const &)*arg1,(std::string const &)*arg2);
+    } catch (...) {
+      SetPythonizeAgrumException();
+      SWIG_fail;
+    }
+  }
+  resultobj = SWIG_NewPointerObj((new gum::Tensor< double >(result)), SWIGTYPE_p_gum__TensorT_double_t, SWIG_POINTER_OWN |  0 );
+  if (SWIG_IsNewObj(res2)) delete arg2;
+  return resultobj;
+fail:
+  if (SWIG_IsNewObj(res2)) delete arg2;
+  return NULL;
+}
+
+
+SWIGINTERN PyObject *_wrap_Tensor_deterministicTensor(PyObject *self, PyObject *args) {
+  Py_ssize_t argc;
+  PyObject *argv[3] = {
+    0
+  };
+  
+  if (!(argc = SWIG_Python_UnpackTuple(args, "Tensor_deterministicTensor", 0, 2, argv))) SWIG_fail;
+  --argc;
+  if (argc == 2) {
+    int _v = 0;
+    {
+      {
+        int res = SWIG_AsVal_size_t(argv[1], NULL);
+        _v = SWIG_CheckState(res);
+      }
+    }
+    if (!_v) goto check_1;
+    return _wrap_Tensor_deterministicTensor__SWIG_0(self, argc, argv);
+  }
+check_1:
+  
+  if (argc == 2) {
+    PyObject *retobj = _wrap_Tensor_deterministicTensor__SWIG_1(self, argc, argv);
+    if (!SWIG_Python_TypeErrorOccurred(retobj)) return retobj;
+    SWIG_fail;
+  }
+  
+fail:
+  SWIG_Python_RaiseOrModifyTypeError("Wrong number or type of arguments for overloaded function 'Tensor_deterministicTensor'.\n"
+    "  Possible C/C++ prototypes are:\n"
+    "    gum::Tensor< double >::deterministicTensor(gum::DiscreteVariable const &,gum::Idx)\n"
+    "    gum::Tensor< double >::deterministicTensor(gum::DiscreteVariable const &,std::string const &)\n");
+  return 0;
+}
+
+
+SWIGINTERN PyObject *_wrap_Tensor_uniformTensor(PyObject *self, PyObject *args) {
+  PyObject *resultobj = 0;
+  gum::DiscreteVariable *arg1 = 0 ;
+  void *argp1 = 0 ;
+  int res1 = 0 ;
+  PyObject *swig_obj[1] ;
+  gum::Tensor< double > result;
+  
+  (void)self;
+  if (!args) SWIG_fail;
+  swig_obj[0] = args;
+  res1 = SWIG_ConvertPtr(swig_obj[0], &argp1, SWIGTYPE_p_gum__DiscreteVariable,  0  | 0);
+  if (!SWIG_IsOK(res1)) {
+    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "Tensor_uniformTensor" "', argument " "1"" of type '" "gum::DiscreteVariable const &""'"); 
+  }
+  if (!argp1) {
+    SWIG_exception_fail(SWIG_NullReferenceError, "invalid null reference " "in method '" "Tensor_uniformTensor" "', argument " "1"" of type '" "gum::DiscreteVariable const &""'"); 
+  }
+  arg1 = reinterpret_cast< gum::DiscreteVariable * >(argp1);
+  {
+    try {
+      result = gum::Tensor< double >::SWIGTEMPLATEDISAMBIGUATOR uniformTensor((gum::DiscreteVariable const &)*arg1);
+    } catch (...) {
+      SetPythonizeAgrumException();
+      SWIG_fail;
+    }
+  }
+  resultobj = SWIG_NewPointerObj((new gum::Tensor< double >(result)), SWIGTYPE_p_gum__TensorT_double_t, SWIG_POINTER_OWN |  0 );
+  return resultobj;
+fail:
+  return NULL;
+}
+
 
 SWIGINTERN PyObject *_wrap_new_Tensor__SWIG_0(PyObject *self, Py_ssize_t nobjs, PyObject **SWIGUNUSEDPARM(swig_obj)) {
   PyObject *resultobj = 0;
@@ -62828,17 +62978,7 @@ static PyMethodDef SwigMethods[] = {
 		"    The dictionary\n"
 		"\n"
 		""},
-	 { "Instantiation_fromdict", _wrap_Instantiation_fromdict, METH_VARARGS, "\n"
-		"\n"
-		"Change the values in an instantiation from a dictionary `{variable_name:value}` where value can be a position (int) or a label (string).\n"
-		"\n"
-		"If a variable_name does not occur in the instantiation, nothing is done.\n"
-		"\n"
-		"Warnings\n"
-		"--------\n"
-		"    OutOfBounds raised if a value cannot be found.\n"
-		"\n"
-		""},
+	 { "Instantiation__cppfromdict", _wrap_Instantiation__cppfromdict, METH_VARARGS, NULL},
 	 { "Instantiation_swigregister", Instantiation_swigregister, METH_O, NULL},
 	 { "Instantiation_swiginit", Instantiation_swiginit, METH_VARARGS, NULL},
 	 { "delete_GraphicalModel", _wrap_delete_GraphicalModel, METH_O, NULL},
@@ -63785,6 +63925,8 @@ static PyMethodDef SwigMethods[] = {
 	 { "MultiDimContainer_beginMultipleChanges", _wrap_MultiDimContainer_beginMultipleChanges, METH_O, NULL},
 	 { "MultiDimContainer_endMultipleChanges", _wrap_MultiDimContainer_endMultipleChanges, METH_VARARGS, NULL},
 	 { "MultiDimContainer_swigregister", MultiDimContainer_swigregister, METH_O, NULL},
+	 { "Tensor_deterministicTensor", _wrap_Tensor_deterministicTensor, METH_VARARGS, NULL},
+	 { "Tensor_uniformTensor", _wrap_Tensor_uniformTensor, METH_O, NULL},
 	 { "new_Tensor", _wrap_new_Tensor, METH_VARARGS, NULL},
 	 { "delete_Tensor", _wrap_delete_Tensor, METH_O, NULL},
 	 { "Tensor_random", _wrap_Tensor_random, METH_O, NULL},

@@ -37,7 +37,7 @@
 
 /**
  * @file
- * @brief Class representing Bayesian networks
+ * @brief Class representing the minimal interface for Bayesian network with no numerical data.
  *
  * @author Pierre-Henri WUILLEMIN(_at_LIP6) and Lionel TORTI
  *
@@ -53,25 +53,21 @@
 #include <agrum/base/multidim/tensor.h>
 
 namespace gum {
-
-  template < typename GUM_SCALAR >
+  template <typename GUM_SCALAR>
   class BayesNetFactory;
 
   /**
    * @class IBayesNet
    * @headerfile IBayesNet.h <agrum/BN/IBayesNet.h>
-   * @brief Class representing the minimal interface for Bayesian network.
+   * @brief Class representing the minimal interface for Bayesian network with no numerical data.
    * @ingroup bn_group
    *
    * This class is used as a base class for different versions of Bayesian
-   *Networks.
-   *No data (except the dag
-   * herited from DAGmodel are included in this class. Many algorithms
-   *(inference for
-   *instance) may use this
-   * class when a simple BN is needed.
+   * Networks. No data (except the dag herited from DAGmodel are included in this class.
+   *
+   * Many algorithms inference for instance) may use this class when a generic BN is needed.
    */
-  template < typename GUM_SCALAR >
+  template <typename GUM_SCALAR>
   class IBayesNet: public DAGmodel {
     public:
     // ===========================================================================
@@ -300,9 +296,8 @@ namespace gum {
 
 
   /// Prints map's DAG in output using the Graphviz-dot format.
-  template < typename GUM_SCALAR >
+  template <typename GUM_SCALAR>
   std::ostream& operator<<(std::ostream& output, const IBayesNet< GUM_SCALAR >& bn);
-
 } /* namespace gum */
 
 #include <agrum/BN/IBayesNet_tpl.h>
