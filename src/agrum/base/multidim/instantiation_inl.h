@@ -45,12 +45,12 @@
 #include <agrum/base/multidim/implementations/multiDimAdressable.h>
 
 namespace gum {
-
   // indicates whether a given variable belongs to the Instantiation
   INLINE bool Instantiation::contains(const DiscreteVariable& v) const { return _vars_.exists(&v); }
 
   INLINE bool Instantiation::contains(const std::string& name) const {
-    return contains(variable(name));
+    for (const auto& v: _vars_) { if (v->name() == name) return true; }
+    return false;
   }
 
   // indicates whether a given variable belongs to the Instantiation
@@ -70,7 +70,7 @@ namespace gum {
       // check that the variable does belong to the instantiation and that the
       // new
       // value is possible.
-      Idx varPos = _vars_.pos(&v);   // throws NotFound if v doesn't belong to this
+      Idx varPos = _vars_.pos(&v); // throws NotFound if v doesn't belong to this
 
       if (newVal >= v.domainSize()) { GUM_ERROR(OutOfBounds, "") }
 
@@ -200,9 +200,7 @@ namespace gum {
 
   // returns the variable with name in the tuple
   INLINE const DiscreteVariable& Instantiation::variable(const std::string& name) const {
-    for (const auto& v: _vars_) {
-      if (v->name() == name) return *v;
-    }
+    for (const auto& v: _vars_) { if (v->name() == name) return *v; }
 
     GUM_ERROR(NotFound, "'" << name << "' can not be found in the instantiation.")
   }
@@ -320,7 +318,7 @@ namespace gum {
     _overflow_ = false;
     Size s     = nbrDim();
 
-    for (Idx p = 0; p < s; ++p)
+    for (Idx p  = 0; p < s; ++p)
       _vals_[p] = 0;
 
     _masterFirstNotification_();
@@ -331,7 +329,7 @@ namespace gum {
     _overflow_ = false;
     Size s     = nbrDim();
 
-    for (Idx p = 0; p < s; ++p)
+    for (Idx p  = 0; p < s; ++p)
       _vals_[p] = _vars_[p]->domainSize() - 1;
 
     _masterLastNotification_();
@@ -642,9 +640,7 @@ namespace gum {
     if (p + 1 == v.domainSize()) {
       _chgVal_(cpt, 0);
       _overflow_ = true;
-    } else {
-      _chgVal_(cpt, p + 1);
-    }
+    } else { _chgVal_(cpt, p + 1); }
   }
 
   // operator -- for variable v only
@@ -660,9 +656,7 @@ namespace gum {
     if (p == 0) {
       _chgVal_(cpt, v.domainSize() - 1);
       _overflow_ = true;
-    } else {
-      _chgVal_(cpt, p - 1);
-    }
+    } else { _chgVal_(cpt, p - 1); }
   }
 
   // assign the first value in the Instantiation for var v.
@@ -705,6 +699,7 @@ namespace gum {
 
   // reordering
   INLINE
+
   void Instantiation::reorder(const Sequence< const DiscreteVariable* >& original) {
     if (_master_ != nullptr) {
       GUM_ERROR(OperationNotAllowed, "Reordering impossible in slave instantiation")
@@ -714,6 +709,7 @@ namespace gum {
   }
 
   INLINE
+
   void Instantiation::_reorder_(const Sequence< const DiscreteVariable* >& original) {
     Idx max      = original.size();
     Idx position = 0;
@@ -722,8 +718,8 @@ namespace gum {
 
       if (contains(pv)) {
         auto p = pos(*pv);
-        GUM_ASSERT(p >= position);   // this var should not be
-                                     // already placed.
+        GUM_ASSERT(p >= position); // this var should not be
+        // already placed.
         _swap_(position, p);
         position++;
       }
@@ -765,7 +761,7 @@ namespace gum {
   INLINE Size HashFunc< Instantiation >::castToSize(const Instantiation& key) {
     Size h = Size(0);
     for (const DiscreteVariable* k:
-         key.variablesSequence())   // k are unique only by address (not by name)
+         key.variablesSequence()) // k are unique only by address (not by name)
       h += HashFunc< const DiscreteVariable* >::castToSize(k) * Size(key.val(*k));
 
     return h;
