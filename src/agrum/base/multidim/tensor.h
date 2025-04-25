@@ -80,6 +80,11 @@ namespace gum {
   template <typename GUM_SCALAR>
   class Tensor final: public MultiDimDecorator< GUM_SCALAR > {
     public:
+    static Tensor< GUM_SCALAR > deterministicTensor(const DiscreteVariable& var,
+                                                    Idx                     value);
+    static Tensor< GUM_SCALAR > deterministicTensor(const DiscreteVariable& var,
+                                                    const std::string&      label);
+    static Tensor< GUM_SCALAR > uniformTensor(const DiscreteVariable& var);
     // =========================================================================
     /// @name Constructors, Destructors and Copy
     // =========================================================================

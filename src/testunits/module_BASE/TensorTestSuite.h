@@ -1393,6 +1393,29 @@ namespace gum_tests {
       }
     }
 
+    GUM_ACTIVE_TEST(DeterministicTensor_CreatesTensorWithCorrectValue) {
+      gum::RangeVariable var("var", "Variable1", 0, 3);
+      double             value = 2.0;
+
+      auto tensor = gum::Tensor< double >::deterministicTensor(var, value);
+
+      TS_ASSERT_EQUALS(tensor.sum(), 1.0);
+      TS_ASSERT_EQUALS(tensor.max(), 1.0);
+      TS_ASSERT_EQUALS(tensor.min(), 0.0);
+      TS_ASSERT_EQUALS(tensor.minNonZero(), 1.0);
+      TS_ASSERT_EQUALS(tensor.maxNonOne(), 0.0);
+    }
+
+    GUM_ACTIVE_TEST(UniformTensor_CreatesUniformTensor) {
+      gum::RangeVariable var("var", "Variable1", 0, 3);
+
+      auto tensor = gum::Tensor< double >::uniformTensor(var);
+
+      TS_ASSERT_EQUALS(tensor.sum(), 1.0);
+      TS_ASSERT_EQUALS(tensor.max(), 0.25);
+      TS_ASSERT_EQUALS(tensor.min(), 0.25);
+    }
+
     private:
     static void _testval_for_set_(const gum::Tensor< int >&             p,
                                   int                                   val,

@@ -138,11 +138,7 @@ if len(args)>1:
       PyAgrumHelper::fillInstantiationFromPyObject(self, inst, arg);
       return self->extract(inst);
     } else {
-      //auto arg1 = reinterpret_cast< gum::Instantiation * >(arg);
-      //if (arg1==nullptr) {
-        GUM_ERROR(gum::InvalidArgument,"arg is neither a dict or an pyagrum.Instantiation.");
-      //}
-      //return self->extract(*arg1);
+      GUM_ERROR(gum::InvalidArgument,"arg is neither a dict or an pyagrum.Instantiation.");
     }
   }
 

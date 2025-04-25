@@ -1125,4 +1125,39 @@ namespace gum {
   Size Tensor< GUM_SCALAR >::memoryFootprint() const {
     return this->content()->realSize() * sizeof(GUM_SCALAR);
   }
+
+  template <typename GUM_SCALAR>
+  Tensor< GUM_SCALAR > Tensor< GUM_SCALAR >::deterministicTensor(const DiscreteVariable& var,
+                                                                 Idx                     value) {
+    Tensor< GUM_SCALAR > pot;
+
+    pot.beginMultipleChanges();
+    pot << var;
+    pot.endMultipleChanges(GUM_SCALAR(0.0));
+
+    Instantiation I(pot);
+    I.chgVal(var, value);
+    pot.set(I, GUM_SCALAR(1.0));
+
+    return pot;
+  }
+
+  template <typename GUM_SCALAR>
+  Tensor< GUM_SCALAR > Tensor< GUM_SCALAR >::deterministicTensor(const DiscreteVariable& var,
+                                                                 const std::string&      value) {
+    return Tensor< GUM_SCALAR >::deterministicTensor(var, var.index(value));
+  }
+
+  template <typename GUM_SCALAR>
+  Tensor< GUM_SCALAR > Tensor< GUM_SCALAR >::uniformTensor(const DiscreteVariable& var) {
+    Tensor< GUM_SCALAR > pot;
+
+    pot.beginMultipleChanges();
+    pot << var;
+    pot.endMultipleChanges(GUM_SCALAR(1.0));
+
+    pot.normalize();
+
+    return pot;
+  }
 } /* namespace gum */
