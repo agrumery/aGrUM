@@ -1694,6 +1694,15 @@ def show(model, **kwargs):
       "Argument model should be a PGM (BayesNet, MarkovRandomField, Influence Diagram or Tensor or ..."
     )
 
+def inspectBN(bn):
+  """
+  inspect a BN (graph and CPTs) in a notebook (using flow)
+  Parameters
+  ----------
+  bn
+  """
+  flow.row(bn,*[bn.cpt(c) for c in sorted(bn.names())])
+
 
 def _update_config_notebooks():
   # hook to control some parameters for notebook when config changes
