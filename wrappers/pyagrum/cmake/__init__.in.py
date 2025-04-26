@@ -111,3 +111,6 @@ from .common import __version__, __license__, __project_url__, __project_name__,
 
 # deprecated
 from .base import Potential
+
+# workaround for operators registration for windows (2025/04/26)
+Tensor()
