@@ -36,17 +36,18 @@
 
 
 #include <gumtest/AgrumTestSuite.h>
+#include <agrum/base/core/timer.h>
 #include <gumtest/utils.h>
 
 #include <agrum/config.h>
 
 #include <agrum/base/core/timer.h>
+#include <agrum/BN/BayesNet.h>
 #include <agrum/BN/generator/MCBayesNetGenerator.h>
 
 #include <agrum/base/core/utils_random.h>
 
 namespace gum_tests {
-
   // a test to see if GUM_RANDOMSEED is working
   class [[maybe_unused]] RandomProfilerTestSuite: public CxxTest::TestSuite {
     public:
@@ -56,9 +57,9 @@ namespace gum_tests {
       TS_ASSERT_EQUALS(GUM_RANDOMSEED, 0);
 
       gum::initRandom(20);
-      auto x1 = gum::randomProba();
-      auto x2 = gum::randomProba();
-      auto x3 = gum::randomProba();
+      const auto x1 = gum::randomProba();
+      const auto x2 = gum::randomProba();
+      const auto x3 = gum::randomProba();
 
       gum::initRandom(0);
       // can falsely fail in rare occasion
@@ -75,9 +76,9 @@ namespace gum_tests {
 
     GUM_ACTIVE_TEST(RandomSeeForStructure) {
       try {
-        auto n_nodes  = 100;
-        auto n_arcs   = 150;
-        auto n_modmax = 3;
+        const auto n_nodes  = 100;
+        const auto n_arcs   = 150;
+        const auto n_modmax = 3;
 
         gum::MCBayesNetGenerator< double > gen(n_nodes, n_arcs, n_modmax);
         gum::BayesNet< double >            bn;
@@ -85,22 +86,54 @@ namespace gum_tests {
         gum::initRandom(20);
         gen.generateBN(bn);
       } catch (gum::Exception& e) { GUM_SHOWERROR(e) }
-      /*
-            auto s1 = bn.toDot();
+    }
 
-            gum::initRandom(0);
-            gen.generateBN(bn);
-            auto s2 = bn.toDot();
+    GUM_ACTIVE_TEST(BugSeed) {
+      gum::initRandom(0);
+      const auto x0 = gum::randomProba();
+      gum::initRandom(10);
+      const auto x10 = gum::randomProba();
+      gum::initRandom(42);
+      const auto x42 = gum::randomProba();
 
-            gum::initRandom(20);
-            gen.generateBN(bn);
-            auto s3 = bn.toDot();
+      gum::initRandom(0);
+      TS_ASSERT_DIFFERS(x0, gum::randomProba()) // may fail but highly improbable
+      gum::initRandom(10);
+      TS_ASSERT_EQUALS(x10, gum::randomProba())
+      gum::initRandom(42);
+      TS_ASSERT_EQUALS(x42, gum::randomProba())
+      gum::initRandom(GUM_RANDOMSEED);
+    }
 
-            TS_ASSERT_EQUALS(s1, s1);
-            TS_ASSERT_DIFFERS(s1, s2);
-            TS_ASSERT_EQUALS(s1, s3);
+    GUM_ACTIVE_TEST(BugSeed2) {
+      gum::initRandom(0);
+      const auto bn0 = gum::BayesNet< double >::fastPrototype("A->B<-C");
+      const auto q0  = bn0.cpt("B") + bn0.cpt("C") + bn0.cpt("A");
+      gum::initRandom(10);
+      const auto bn10 = gum::BayesNet< double >::fastPrototype("A->B<-C");
+      const auto q10  = bn10.cpt("B") + bn10.cpt("C") + bn10.cpt("A");
+      gum::initRandom(42);
+      const auto bn42 = gum::BayesNet< double >::fastPrototype("A->B<-C");
+      const auto q42  = bn42.cpt("B") + bn42.cpt("C") + bn42.cpt("A");
 
-            gum::initRandom(GUM_RANDOMSEED);*/
+      gum::Timer t;
+      t.reset();
+      double second = 0.5;
+      while (t.step() <= second);
+
+      gum::initRandom(0);
+      const auto bn0b = gum::BayesNet< double >::fastPrototype("A->B<-C");
+      const auto q0b  = bn0b.cpt("B") + bn0b.cpt("C") + bn0b.cpt("A");
+      TS_ASSERT_DIFFERS(q0.sum(), q0b.sum()) // may fail but highly improbable
+      gum::initRandom(10);
+      const auto bn10b = gum::BayesNet< double >::fastPrototype("A->B<-C");
+      const auto q10b  = bn10b.cpt("B") + bn10b.cpt("C") + bn10b.cpt("A");
+      TS_ASSERT_EQUALS(q10.sum(), q10b.sum())
+      gum::initRandom(42);
+      const auto bn42b = gum::BayesNet< double >::fastPrototype("A->B<-C");
+      const auto q42b  = bn42b.cpt("B") + bn42b.cpt("C") + bn42b.cpt("A");
+      TS_ASSERT_EQUALS(q42.sum(), q42b.sum())
+      gum::initRandom(GUM_RANDOMSEED);
     }
   };
-}   // namespace gum_tests
+} // namespace gum_tests

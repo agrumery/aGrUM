@@ -45,72 +45,73 @@ pyAgrum includes :
   * a `website <http://agrum.org>`_.
 """
 
-# selection of imports extracted from dir(.pyAgrum)
+# selection of imports extracted from dir(.pyagrum)
 
-from .base import log2
-from .base import statsObj
-from .base import fastGraph
-from .base import config
-from .base import DiscretizedVariable, LabelizedVariable, RangeVariable, DiscreteVariable, IntegerVariable, \
+# submodule BASE
+from .pyagrum import log2
+from .pyagrum import statsObj
+from .pyagrum import fastGraph
+from .pyagrum import config
+from .pyagrum import DiscretizedVariable, LabelizedVariable, RangeVariable, DiscreteVariable, IntegerVariable, \
     NumericalDiscreteVariable
-from .base import Tensor, Instantiation, Tensor
-from .base import Arc, Edge, DiGraph, UndiGraph, MixedGraph, DAG, PDAG, CliqueGraph
-from .base import JunctionTreeGenerator
-from .base import MeekRules
-from .base import ApproximationScheme
-from .base import fastVariable
-from .base import initRandom, randomProba, randomDistribution, randomGeneratorSeed, randomValue
-from .base import isOMP, getNumberOfThreads, getMaxNumberOfThreads, getNumberOfLogicalProcessors, setNumberOfThreads
-from .base import VarType_DISCRETIZED, VarType_LABELIZED, VarType_RANGE, VarType_INTEGER, VarType_NUMERICAL
-from .base import DefaultInLabel, DuplicateElement, DuplicateLabel, GumException, FatalError, FormatNotFound, \
+from .pyagrum import Tensor, Instantiation, Tensor
+from .pyagrum import Arc, Edge, DiGraph, UndiGraph, MixedGraph, DAG, PDAG, CliqueGraph
+from .pyagrum import JunctionTreeGenerator
+from .pyagrum import MeekRules
+from .pyagrum import ApproximationScheme
+from .pyagrum import fastVariable
+from .pyagrum import initRandom, randomProba, randomDistribution, randomGeneratorSeed, randomValue
+from .pyagrum import isOMP, getNumberOfThreads, getMaxNumberOfThreads, getNumberOfLogicalProcessors, setNumberOfThreads
+from .pyagrum import VarType_DISCRETIZED, VarType_LABELIZED, VarType_RANGE, VarType_INTEGER, VarType_NUMERICAL
+from .pyagrum import DefaultInLabel, DuplicateElement, DuplicateLabel, GumException, FatalError, FormatNotFound, \
     GraphError, IOError, InvalidArc, InvalidArgument, InvalidArgumentsNumber, InvalidDirectedCycle, InvalidEdge, \
     InvalidNode, DatabaseError, MissingValueInDatabase, MissingVariableInDatabase, NoChild, NoNeighbour, NoParent, \
     NotFound, NullElement, OperationNotAllowed, OutOfBounds, ArgumentError, SizeError, SyntaxError, UndefinedElement, \
     UndefinedIteratorKey, UndefinedIteratorValue, UnknownLabelInDatabase, CPTError
 
-from .bn import fastBN
-from .bn import availableBNExts, loadBN, saveBN
-from .bn import randomBN, generateSample
-from .bn import mutilateBN
-from .bn import BayesNet, BayesNetFragment, EssentialGraph, MarkovBlanket
-from .bn import ExactBNdistance, GibbsBNdistance, StructuralComparator
-from .bn import LazyPropagation, ShaferShenoyInference, VariableElimination
-from .bn import LoopyBeliefPropagation, GibbsSampling, MonteCarloSampling, ImportanceSampling, WeightedSampling
-from .bn import LoopyImportanceSampling, LoopyGibbsSampling, LoopyWeightedSampling, LoopyMonteCarloSampling
-from .bn import PythonApproximationListener, PythonBNListener, PythonLoadListener, PythonDatabaseGeneratorListener
-from .bn import BNGenerator
-from .bn import BNDatabaseGenerator, InformationTheory
-from .bn import BNLearner
-from .bn import PRMexplorer
+# submodule BN
+from .pyagrum import fastBN
+from .pyagrum import availableBNExts, loadBN, saveBN
+from .pyagrum import randomBN, generateSample
+from .pyagrum import mutilateBN
+from .pyagrum import BayesNet, BayesNetFragment, EssentialGraph, MarkovBlanket
+from .pyagrum import ExactBNdistance, GibbsBNdistance, StructuralComparator
+from .pyagrum import LazyPropagation, ShaferShenoyInference, VariableElimination
+from .pyagrum import LoopyBeliefPropagation, GibbsSampling, MonteCarloSampling, ImportanceSampling, WeightedSampling
+from .pyagrum import LoopyImportanceSampling, LoopyGibbsSampling, LoopyWeightedSampling, LoopyMonteCarloSampling
+from .pyagrum import PythonApproximationListener, PythonBNListener, PythonLoadListener, PythonDatabaseGeneratorListener
+from .pyagrum import BNGenerator
+from .pyagrum import BNDatabaseGenerator, InformationTheory
+from .pyagrum import BNLearner
+from .pyagrum import PRMexplorer
 
 import sys
-
+# sublodule MRF
 try:
-    from .mrf import getPosterior
-    from .mrf import availableMRFExts, loadMRF, saveMRF
-    from .mrf import fastMRF
-    from .mrf import MarkovRandomField, ShaferShenoyMRFInference
+    from .pyagrum import getPosterior
+    from .pyagrum import availableMRFExts, loadMRF, saveMRF
+    from .pyagrum import fastMRF
+    from .pyagrum import MarkovRandomField, ShaferShenoyMRFInference
 except ImportError:
-    sys.stderr.write("Could not load pyagrum.mrf")
+    sys.stderr.write("Could not load Markov Random Field submodule")
 
+# submodule CN
 try:
-    from .cn import CredalNet, CNMonteCarloSampling, CNLoopyPropagation
+    from .pyagrum import CredalNet, CNMonteCarloSampling, CNLoopyPropagation
 except ImportError:
-    sys.stderr.write("Could not load pyagrum.cn")
+    sys.stderr.write("Could not load Credal Net submodule")
 
+# submodule ID
 try:
-    from .id import IDGenerator
-    from .id import availableIDExts, loadID, saveID
-    from .id import fastID
-    from .id import InfluenceDiagram, ShaferShenoyLIMIDInference
+    from .pyagrum import IDGenerator
+    from .pyagrum import availableIDExts, loadID, saveID
+    from .pyagrum import fastID
+    from .pyagrum import InfluenceDiagram, ShaferShenoyLIMIDInference
 except ImportError:
-    sys.stderr.write("Could not load pyagrum.id")
+    sys.stderr.write("Could not load Influence Diagram submodule")
 
 from .deprecated import *
 from .common import __version__, __license__, __project_url__, __project_name__, __project_description__, __project__, about
 
 # deprecated
-from .base import Potential
-
-# workaround for operators registration for windows (2025/04/26)
-Tensor()
+from .pyagrum import Potential

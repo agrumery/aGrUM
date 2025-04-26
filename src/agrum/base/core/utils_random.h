@@ -58,7 +58,7 @@
 
 namespace gum {
   namespace _rand_namespace_ {
-    extern std::mt19937 Generator_;
+    std::mt19937& generator();
   }
 
   /// @ingroup utilities_group

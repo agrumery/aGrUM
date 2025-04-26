@@ -51,8 +51,4 @@
 #  include <agrum/base/core/utils_random_inl.h>
 #endif   // GUM_NO_INLINE
 
-namespace gum {
-  namespace _rand_namespace_ {
-    std::mt19937 Generator_;
-  }
-} /* namespace gum */
+namespace gum {} /* namespace gum */

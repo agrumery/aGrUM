@@ -185,14 +185,14 @@ def pseudoCount(self,vars):
     -------
     a Tensor containing this pseudo-counts
     """
-    p=pyagrum.base.Tensor()
+    p=pyagrum.Tensor()
     lv=list()
     for i in vars:
         if type(i) is str:
             name=i
         else:
             name=self.nameFromId(i)
-        p.add(pyagrum.base.RangeVariable(name,name,0,self.domainSize(i)-1))
+        p.add(pyagrum.RangeVariable(name,name,0,self.domainSize(i)-1))
         lv.append(name)
     p.fillWith(self.rawPseudoCount(lv))
     return p
@@ -213,7 +213,7 @@ def fitParameters(self,bn,take_into_account_score=True):
   if set(self.names())!=bn.names():
     raise Exception("Not the same variable names in the database and in the BN")
 
-  from pyagrum.base import DAG
+  from pyagrum import DAG
   d=DAG()
   for n in bn.names():
     d.addNodeWithId(self.idFromName(n))

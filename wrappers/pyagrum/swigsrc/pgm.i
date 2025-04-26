@@ -41,7 +41,7 @@
 
 
 %pythonappend gum::DAGmodel::dag %{
-  from pyagrum.base import DAG
+  from pyagrum import DAG
   val = DAG(val) # copying the DAG
 %}
 

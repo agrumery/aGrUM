@@ -189,8 +189,8 @@ def getPosterior(model, *, target, evs=None):
   -------
     posterior (pyagrum.Tensor or other)
   """
-  if isinstance(model, pyagrum.bn.BayesNet):
-    inf = pyagrum.bn.VariableElimination(model)
+  if isinstance(model, pyagrum.BayesNet):
+    inf = pyagrum.VariableElimination(model)
   elif isinstance(model, MarkovRandomField):
     inf = ShaferShenoyMRFInference(model)
   else:
@@ -201,5 +201,5 @@ def getPosterior(model, *, target, evs=None):
   inf.addTarget(target)
   inf.makeInference()
   # creating a new Tensor from posterior(will disappear with ie)
-  return pyagrum.base.Tensor(inf.posterior(target))
+  return pyagrum.Tensor(inf.posterior(target))
 %}

@@ -146,24 +146,22 @@ macro(gum_add_python_module MODULENAME)
   # for additionnal rule such test pyAgrum
   add_custom_command(TARGET ${_PYAGRUMLIB} POST_BUILD COMMAND ${CMAKE_COMMAND} -E copy "${GENERATED_PYTHON}/${MODULENAME_LOWER}.py" "${CMAKE_CURRENT_BINARY_DIR}/.")
 
-  # need to copy pure Python modules once
-  if("${MODULENAME}" MATCHES "BASE")
-    add_custom_command(TARGET ${_PYAGRUMLIB} POST_BUILD COMMAND ${CMAKE_COMMAND} -E copy_directory "${CMAKE_CURRENT_SOURCE_DIR}/pyLibs" "${CMAKE_CURRENT_BINARY_DIR}")
-    add_custom_command(TARGET ${_PYAGRUMLIB} POST_BUILD COMMAND ${CMAKE_COMMAND} -E copy_directory "${CMAKE_CURRENT_SOURCE_DIR}/pyLibs/causal" "${CMAKE_CURRENT_BINARY_DIR}/causal")
-    add_custom_command(TARGET ${_PYAGRUMLIB} POST_BUILD COMMAND ${CMAKE_COMMAND} -E copy_directory "${CMAKE_CURRENT_SOURCE_DIR}/pyLibs/causal/causalEffectEstimation" "${CMAKE_CURRENT_BINARY_DIR}/causal/causalEffectEstimation")
-    add_custom_command(TARGET ${_PYAGRUMLIB} POST_BUILD COMMAND ${CMAKE_COMMAND} -E copy_directory "${CMAKE_CURRENT_SOURCE_DIR}/pyLibs/skbn" "${CMAKE_CURRENT_BINARY_DIR}/skbn")
-    add_custom_command(TARGET ${_PYAGRUMLIB} POST_BUILD COMMAND ${CMAKE_COMMAND} -E copy_directory "${CMAKE_CURRENT_SOURCE_DIR}/pyLibs/clg" "${CMAKE_CURRENT_BINARY_DIR}/clg")
-    add_custom_command(TARGET ${_PYAGRUMLIB} POST_BUILD COMMAND ${CMAKE_COMMAND} -E copy_directory "${CMAKE_CURRENT_SOURCE_DIR}/pyLibs/ctbn" "${CMAKE_CURRENT_BINARY_DIR}/ctbn")
-  endif()
+  add_custom_command(TARGET ${_PYAGRUMLIB} POST_BUILD COMMAND ${CMAKE_COMMAND} -E copy_directory "${CMAKE_CURRENT_SOURCE_DIR}/pyLibs" "${CMAKE_CURRENT_BINARY_DIR}")
+  add_custom_command(TARGET ${_PYAGRUMLIB} POST_BUILD COMMAND ${CMAKE_COMMAND} -E copy_directory "${CMAKE_CURRENT_SOURCE_DIR}/pyLibs/causal" "${CMAKE_CURRENT_BINARY_DIR}/causal")
+  add_custom_command(TARGET ${_PYAGRUMLIB} POST_BUILD COMMAND ${CMAKE_COMMAND} -E copy_directory "${CMAKE_CURRENT_SOURCE_DIR}/pyLibs/causal/causalEffectEstimation" "${CMAKE_CURRENT_BINARY_DIR}/causal/causalEffectEstimation")
+  add_custom_command(TARGET ${_PYAGRUMLIB} POST_BUILD COMMAND ${CMAKE_COMMAND} -E copy_directory "${CMAKE_CURRENT_SOURCE_DIR}/pyLibs/skbn" "${CMAKE_CURRENT_BINARY_DIR}/skbn")
+  add_custom_command(TARGET ${_PYAGRUMLIB} POST_BUILD COMMAND ${CMAKE_COMMAND} -E copy_directory "${CMAKE_CURRENT_SOURCE_DIR}/pyLibs/clg" "${CMAKE_CURRENT_BINARY_DIR}/clg")
+  add_custom_command(TARGET ${_PYAGRUMLIB} POST_BUILD COMMAND ${CMAKE_COMMAND} -E copy_directory "${CMAKE_CURRENT_SOURCE_DIR}/pyLibs/ctbn" "${CMAKE_CURRENT_BINARY_DIR}/ctbn")
+  
 endmacro()
 
-foreach(MODULE ${LIST_OF_MODULES})
-  if(MODULE MATCHES "FMDP")
-    continue()
-  endif()
-
-  gum_add_python_module(${MODULE})
-endforeach()
+#foreach(MODULE ${LIST_OF_MODULES})
+#  if(MODULE MATCHES "FMDP")
+#    continue()
+#
+#  gum_add_python_module(${MODULE})
+#endforeach()
+gum_add_python_module(pyagrum)
 
 # updating generated cat requirements.txt from pyagrum/requirements.txt and pyAgrum/optional_requirements.txt
 set(PYAGRUM_REQUIREMENTS_LIST

@@ -205,7 +205,7 @@ def getForMsBuildSystem(current: dict[str, str], target: str):
       if target == "aGrUM":
         line = cfg.msbuild + ' agrum.sln /t:gumTest /p:Configuration="Release"'
       elif target == "pyAgrum":
-        line = cfg.msbuild + ' agrum.sln /t:_base;_bn;_cn;_id;_mrf /p:Configuration="Release"'
+        line = cfg.msbuild + ' agrum.sln /t:_pyagrum /p:Configuration="Release"'
       else:  # if target!= "pyAgrum":
         critic(f"Action '{current['action']}' not treated for target '{target}' for now in compiler strange world.")
     elif current["action"] == "install":
@@ -277,7 +277,7 @@ def getPost(current: dict[str, str], target: str) -> tuple[str, bool]:
 
       if cfg.os_platform == "win32":
         line = r'copy /Y "wrappers\pyAgrum\Release\_pyAgrum.pyd" "wrappers\pyAgrum\." & ' + \
-            cfg.python + " ..\\..\\..\\wrappers\\pyagrum\\testunits\\" + gumTest
+               cfg.python + " ..\\..\\..\\wrappers\\pyagrum\\testunits\\" + gumTest
       else:
         line = f"{cfg.python} ../../../wrappers/pyagrum/testunits/{gumTest}"
       line += " " + current['mode']

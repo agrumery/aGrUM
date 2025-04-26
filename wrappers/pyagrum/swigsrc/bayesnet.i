@@ -404,7 +404,7 @@ IMPROVE_CONCRETEBAYESNET_API(gum::BayesNetFragment);
 
   %pythoncode {
 def __getstate__(self):
-    pyagrum.base._gum_add_properties_while_getstate_(self)
+    _gum_add_properties_while_getstate_(self)
     state={"nodes":[self.variable(i).toFast() for i in self.nodes()],
            "parents":{self.variable(i).name():list(self.cpt(i).names)[1:] for i in self.nodes()},
            "cpt":{self.variable(i).name():self.cpt(i)[:].flatten().tolist() for i in self.nodes()},

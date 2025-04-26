@@ -99,6 +99,7 @@ def runTests(local: bool, test_module, log) -> int:
   from tests import MarkovBlanketTestSuite
   from tests import MarkovRandomFieldTestSuite
   from tests import PicklerTestSuite
+  from tests import RandomGeneratorTestSuite
   from tests import TensorTestSuite
   from tests import PRMexplorerTestSuite
   from tests import SamplingTestSuite
@@ -162,6 +163,7 @@ def runTests(local: bool, test_module, log) -> int:
     tl.append(MarkovBlanketTestSuite.ts)
     tl.append(MarkovRandomFieldTestSuite.ts)
     tl.append(PicklerTestSuite.ts)
+    tl.append(RandomGeneratorTestSuite.ts)
     tl.append(TensorTestSuite.ts)
     tl.append(PRMexplorerTestSuite.ts)
     tl.append(SamplingTestSuite.ts)

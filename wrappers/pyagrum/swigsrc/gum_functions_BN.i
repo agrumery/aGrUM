@@ -155,7 +155,7 @@ def saveBN(bn, filename, allowModificationWhenSaving=None):
       pkl suffix is used to save a BN using pickle. In this case, options are ignored.
   """
   if allowModificationWhenSaving is None:
-    allowModificationWhenSaving = pyagrum.base.config.asBool["BN", "allow_modification_when_saving"]
+    allowModificationWhenSaving = pyagrum.config.asBool["BN", "allow_modification_when_saving"]
 
   extension = filename.split('.')[-1].upper()
 

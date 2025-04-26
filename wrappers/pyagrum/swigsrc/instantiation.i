@@ -110,7 +110,7 @@
         OutOfBounds raised if a value cannot be found.
 
     """
-    _base.Instantiation__cppfromdict(self, dict)
+    self._cppfromdict(dict)
     return self
 
   def __setitem__(self,key,item):
