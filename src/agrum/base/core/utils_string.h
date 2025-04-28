@@ -140,6 +140,13 @@ namespace gum {
   void trim(std::string& s);
 
   /**
+   * @brief trim from both ends (copying)
+   * @param s A string
+   * @return the new string trimmed from start
+   */
+  std::string trim_copy(const std::string& s);
+
+  /**
    * @brief remove all newlines in a string
    * @param s A string
    * @return the new string with no newline

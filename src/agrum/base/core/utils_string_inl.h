@@ -48,20 +48,22 @@
 #include <agrum/base/core/utils_string.h>
 
 namespace gum {
-
   INLINE
+
   std::string toLower(std::string str) {
     std::transform(str.begin(), str.end(), str.begin(), ::tolower);
     return str;
   }
 
   INLINE
+
   void ltrim(std::string& s) {
     s.erase(s.begin(),
             std::find_if(s.begin(), s.end(), [](unsigned char ch) { return !std::isspace(ch); }));
   }
 
   INLINE
+
   void rtrim(std::string& s) {
     s.erase(std::find_if(s.rbegin(), s.rend(), [](unsigned char ch) { return !std::isspace(ch); })
                 .base(),
@@ -69,12 +71,14 @@ namespace gum {
   }
 
   INLINE
+
   void trim(std::string& s) {
     ltrim(s);
     rtrim(s);
   }
 
   INLINE
+
   std::string remove_newline(const std::string& s) {
     std::string res{s};
     std::erase(res, '\n');
@@ -87,4 +91,12 @@ namespace gum {
 
   INLINE
   bool isNumerical(const std::string& val) { return isNumericalWithResult(val, nullptr); }
+
+  INLINE
+
+  std::string trim_copy(const std::string& s) {
+    std::string res{s};
+    trim(res);
+    return res;
+  }
 } /* namespace gum */
