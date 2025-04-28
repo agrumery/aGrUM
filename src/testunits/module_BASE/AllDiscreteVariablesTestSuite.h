@@ -45,7 +45,6 @@
 #include <agrum/base/variables/allDiscreteVariables.h>
 
 namespace gum_tests {
-
   class [[maybe_unused]] AllVariablesTestSuite: public CxxTest::TestSuite {
     public:
     GUM_ACTIVE_TEST(CreationRange) {
@@ -74,6 +73,20 @@ namespace gum_tests {
         {
           auto a = FASTVARDBL("A6[-7,-3]", 4);
           TS_ASSERT_EQUALS(a->toString(), "A6:Range([-7,-3])");
+        }
+        {
+          auto a = FASTVARDBL("A7{0|1|2|3}", 4);
+          TS_ASSERT_EQUALS(a->toString(), "A7:Range([0,3])");
+          TS_ASSERT_EQUALS(a->toFast(), "A7[4]");
+        }
+        {
+          auto a = FASTVARDBL("A8{1|2|3}", 4);
+          TS_ASSERT_EQUALS(a->toString(), "A8:Range([1,3])");
+        }
+        {
+          auto a = FASTVARDBL("A9{0|1}", 4);
+          TS_ASSERT_EQUALS(a->toString(), "A9:Range([0,1])");
+          TS_ASSERT_EQUALS(a->toFast(), "A9[2]");
         }
 
         TS_ASSERT_THROWS(auto a = FASTVARDBL("A7[7,3]", 4), const gum::InvalidArgument&);

@@ -87,13 +87,16 @@ namespace gum {
         const auto& s_args
             = var_description.substr(posBrack + 1, var_description.size() - posBrack - 2);
         const auto& args = split(s_args, ",");
-        if (args.empty()) {              // n[]
+        if (args.empty()) {
+          // n[]
           GUM_ERROR(InvalidArgument, "Empty range for variable " << var_description)
-        } else if (args.size() == 1) {   // n[4] or n[0:5.5:10]
+        } else if (args.size() == 1) {
+          // n[4] or n[0:5.5:10]
 
           const auto& labels = split(args[0], ":");
 
-          if (labels.size() == 3) {   // b{1.1:3.31:5}
+          if (labels.size() == 3) {
+            // b{1.1:3.31:5}
             const double fmin = std::stod(labels[0]);
             const double fmax = std::stod(labels[1]);
             const int    nbr  = std::stoi(labels[2]);
@@ -107,7 +110,8 @@ namespace gum {
               current += step;
             }
             ds = ticks.size();
-          } else {   // n[4]
+          } else {
+            // n[4]
             int n = std::stoi(args[0]);
             if (n < 2)
               if (default_domain != "[1]")
@@ -116,7 +120,8 @@ namespace gum {
             range_min = 0;
             range_max = long(ds) - 1;
           }
-        } else if (args.size() == 2) {   // n[5,10]
+        } else if (args.size() == 2) {
+          // n[5,10]
           range_min = std::stol(args[0]);
           range_max = std::stol(args[1]);
 
@@ -129,7 +134,8 @@ namespace gum {
                           << var_description << ": max==min not allowed if default_domain_size>1")
 
           ds = static_cast< Size >(1 + range_max - range_min);
-        } else {   // n[3.14,5,10,12]
+        } else {
+          // n[3.14,5,10,12]
           for (const auto& tick: args) {
             ticks.push_back(static_cast< GUM_SCALAR >(std::strtod(tick.c_str(), nullptr)));
           }
@@ -143,7 +149,8 @@ namespace gum {
         name   = var_description.substr(0, posBrack);
         labels = split(var_description.substr(posBrack + 1, var_description.size() - posBrack - 2),
                        ":");
-        if (labels.size() == 3) {   // b{1.1:3.31:5}
+        if (labels.size() == 3) {
+          // b{1.1:3.31:5}
           const auto fmin = std::stod(labels[0]);
           const auto fmax = std::stod(labels[1]);
           const int  nbr  = std::stoi(labels[2]);
@@ -152,8 +159,8 @@ namespace gum {
           if (nbr <= 1) { GUM_ERROR(InvalidArgument, "nbr<=1 in " << var_description) }
           const double step = double((fmax - fmin) / (nbr - 1));
 
-          if ((trunc(step) == step) && (trunc(fmin) == fmin)
-              && (trunc(fmax) == fmax)) {   // b{1:6:5} => IntegerVariable
+          if ((trunc(step) == step) && (trunc(fmin) == fmin) && (trunc(fmax) == fmax)) {
+            // b{1:6:5} => IntegerVariable
             labels.clear();
             numerical_values.clear();
             int v = int(fmin);
@@ -162,7 +169,8 @@ namespace gum {
               v += int(step);
             }
             ds = labels.size();
-          } else {   // b{1.3:6.3:5} => NumericalDiscreteVariable
+          } else {
+            // b{1.3:6.3:5} => NumericalDiscreteVariable
             labels.clear();
             numerical_values.clear();
             ds       = nbr;
@@ -205,7 +213,8 @@ namespace gum {
       if (std::all_of(labels.cbegin(), labels.cend(), isInteger)) {
         for (const auto& label: labels)
           values.push_back(std::stoi(label));
-        if (values.size() > 2) {   // there can be an enumeration of consecutive integers
+        if (values.size() >= 2) {
+          // there can be an enumeration of consecutive integers
           std::sort(values.begin(), values.end());
           range_min     = values[0];
           auto v        = range_min;

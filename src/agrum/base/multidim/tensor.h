@@ -77,11 +77,10 @@ namespace gum {
    * @warning The Tensor class does not contain its variables. It only contains
    * (maybe dangling) pointers to the variables.
    */
-  template <typename GUM_SCALAR>
+  template < typename GUM_SCALAR >
   class Tensor final: public MultiDimDecorator< GUM_SCALAR > {
     public:
-    static Tensor< GUM_SCALAR > deterministicTensor(const DiscreteVariable& var,
-                                                    Idx                     value);
+    static Tensor< GUM_SCALAR > deterministicTensor(const DiscreteVariable& var, Idx value);
     static Tensor< GUM_SCALAR > deterministicTensor(const DiscreteVariable& var,
                                                     const std::string&      label);
     static Tensor< GUM_SCALAR > uniformTensor(const DiscreteVariable& var);
@@ -489,14 +488,20 @@ namespace gum {
   extern template class Tensor< double >;
 #endif
 
-  template <typename GUM_SCALAR>
-  inline Tensor< GUM_SCALAR > log2(const Tensor< GUM_SCALAR >& arg) { return arg.new_log2(); }
+  template < typename GUM_SCALAR >
+  inline Tensor< GUM_SCALAR > log2(const Tensor< GUM_SCALAR >& arg) {
+    return arg.new_log2();
+  }
 
-  template <typename GUM_SCALAR>
-  inline Tensor< GUM_SCALAR > abs(const Tensor< GUM_SCALAR >& arg) { return arg.new_abs(); }
+  template < typename GUM_SCALAR >
+  inline Tensor< GUM_SCALAR > abs(const Tensor< GUM_SCALAR >& arg) {
+    return arg.new_abs();
+  }
 
-  template <typename GUM_SCALAR>
-  inline Tensor< GUM_SCALAR > sq(const Tensor< GUM_SCALAR >& arg) { return arg.new_sq(); }
+  template < typename GUM_SCALAR >
+  inline Tensor< GUM_SCALAR > sq(const Tensor< GUM_SCALAR >& arg) {
+    return arg.new_sq();
+  }
 } /* namespace gum */
 
 #include <agrum/base/multidim/tensor_tpl.h>
