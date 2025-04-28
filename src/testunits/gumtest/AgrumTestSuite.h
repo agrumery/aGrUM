@@ -41,6 +41,7 @@
 #include <gumtest/utils.h>
 
 #include <agrum/agrum.h>
+
 #include <agrum/base/core/debug.h>
 
 #include <cxxtest/TestSuite.h>
@@ -57,6 +58,8 @@
       })
 
 #define TS_GUM_TENSOR_DELTA(p1, p2, delta) TS_ASSERT_LESS_THAN(((p1) - (p2)).abs().max(), delta)
+#define TS_GUM_TENSOR_DELTA_WITH_TRANSLATION(p1, p2, delta) \
+  TS_GUM_TENSOR_DELTA((p1), (gum::Tensor(p1).fillWith(p2)), delta)
 
 #define TS_GUM_TENSOR_SHOW_DELTA(p1, p2, delta)           \
   {                                                       \

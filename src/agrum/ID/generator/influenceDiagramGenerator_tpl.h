@@ -47,7 +47,6 @@
 #include <agrum/base/core/utils_random.h>
 
 namespace gum {
-
   // Default constructor.
   // Use the SimpleCPTGenerator for generating the IDs CPT.
   template < typename GUM_SCALAR >
@@ -133,13 +132,15 @@ namespace gum {
       auto d = (GUM_SCALAR)randomProba();
 
       if (d < cnd)
-        map.insert(i,
-                   influenceDiagram->addChanceNode(LabelizedVariable(strBuff.str(), "", nb_mod)));
+        map.insert(
+            i,
+            influenceDiagram->addChanceNode(RangeVariable(strBuff.str(), "", 0, nb_mod - 1)));
       else if (d < (cnd + und))
-        map.insert(i, influenceDiagram->addUtilityNode(LabelizedVariable(strBuff.str(), "", 1)));
+        map.insert(i, influenceDiagram->addUtilityNode(RangeVariable(strBuff.str(), "", 0, 0)));
       else
-        map.insert(i,
-                   influenceDiagram->addDecisionNode(LabelizedVariable(strBuff.str(), "", nb_mod)));
+        map.insert(
+            i,
+            influenceDiagram->addDecisionNode(RangeVariable(strBuff.str(), "", 0, nb_mod - 1)));
 
       strBuff.str("");
     }
@@ -192,5 +193,4 @@ namespace gum {
         }
     }
   }
-
 } /* namespace gum */

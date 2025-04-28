@@ -52,7 +52,7 @@
 #include <agrum/BN/IBayesNet.h>
 
 namespace gum {
-  template <typename GUM_SCALAR>
+  template < typename GUM_SCALAR >
   class BayesNetFactory;
 
   /**
@@ -85,7 +85,7 @@ namespace gum {
    * You can print a BayesNet using
    * gum::operator<<(std::ostream&, const BayesNet<GUM_SCALAR>&).
    */
-  template <typename GUM_SCALAR>
+  template < typename GUM_SCALAR >
   class BayesNet: public IBayesNet< GUM_SCALAR > {
     friend class BayesNetFactory< GUM_SCALAR >;
 
@@ -175,8 +175,9 @@ namespace gum {
     /**
      * @brief Returns the CPT of a variable.
      */
-    const Tensor< GUM_SCALAR >& cpt(const std::string& name) const { return cpt(idFromName(name)); }
-    ;
+    const Tensor< GUM_SCALAR >& cpt(const std::string& name) const {
+      return cpt(idFromName(name));
+    };
 
     /**
      * @brief Returns a map between variables and nodes of this gum::BayesNet.
@@ -274,7 +275,7 @@ namespace gum {
      *                        gum::BayesNet.
      */
     NodeId
-      add(const DiscreteVariable& var, MultiDimImplementation< GUM_SCALAR >* aContent, NodeId id);
+        add(const DiscreteVariable& var, MultiDimImplementation< GUM_SCALAR >* aContent, NodeId id);
 
     /**
      * @brief clear the whole Bayes net     *
@@ -666,8 +667,8 @@ namespace gum {
      * @param interventions the hard interventions
      * @return a new BN with the same structure as this, but with the CPTs
      *         modified to reflect the observations and interventions
-     * @warning The original BN is not modified. The returned BN is not a copy of the original BN, but
-     *          a new BN with copied variables and modified structure and CPTs.
+     * @warning The original BN is not modified. The returned BN is not a copy of the original BN,
+     * but a new BN with copied variables and modified structure and CPTs.
      *
      * @throw ArgumentError if the observations and interventions are not mutually exclusive
      */
@@ -701,7 +702,7 @@ namespace gum {
   };
 
   /// Prints map's DAG in output using the Graphviz-dot format.
-  template <typename GUM_SCALAR>
+  template < typename GUM_SCALAR >
   std::ostream& operator<<(std::ostream& output, const BayesNet< GUM_SCALAR >& bn);
 
 
