@@ -40,7 +40,6 @@
 #  include <agrum/ID/io/BIFXML/BIFXMLIDWriter.h>
 
 namespace gum {
-
   /*
    * Default constructor.
    */
@@ -125,27 +124,7 @@ namespace gum {
     str << "<?xml version=\"1.0\" ?>" << std::endl;
 
     // Document type definition of BIF 0.3
-    /*str << "<!-- DTD for the XMLBIF 0.3 format -->" << std::endl;
-    str << "<!DOCTYPE BIF [" << std::endl;
-    str << "\t<!ELEMENT BIF ( NETWORK )*>" << std::endl;
-    str << "\t\t<!ATTLIST BIF VERSION CDATA #REQUIRED>" << std::endl;
-    str << "\t<!ELEMENT NETWORK ( NAME, ( PROPERTY | VARIABLE | DEFINITION )*
-    )>" <<
-    std::endl;
-    str << "\t<!ELEMENT NAME (#PCDATA)>" << std::endl;
-    str << "\t<!ELEMENT VARIABLE ( NAME, ( OUTCOME |  PROPERTY )* ) >" <<
-    std::endl;
-    str << "\t\t<!ATTLIST VARIABLE TYPE (nature|decision|utility) \"nature\">"
-    <<
-    std::endl;
-    str << "\t<!ELEMENT OUTCOME (#PCDATA)>" << std::endl;
-    str << "\t<!ELEMENT DEFINITION ( FOR | GIVEN | TABLE | PROPERTY )* >" <<
-    std::endl;
-    str << "\t<!ELEMENT FOR (#PCDATA)>" << std::endl;
-    str << "\t<!ELEMENT GIVEN (#PCDATA)>" << std::endl;
-    str << "\t<!ELEMENT TABLE (#PCDATA)>" << std::endl;
-    str << "\t<!ELEMENT PROPERTY (#PCDATA)>" << std::endl;
-    str << "]>" << std::endl;*/
+    /* https://www.cs.cmu.edu/afs/cs/user/fgcozman/www/Research/InterchangeFormat/ */
 
     // BIF version Tag
     str << std::endl << "<BIF VERSION=\"0.3\">" << std::endl;
@@ -164,6 +143,9 @@ namespace gum {
                                                                   int                     varType) {
     //<VARIABLE TYPE="nature|decision|utility">
     //<NAME>name</NAME>
+    //<PROPERTY>description = ...</PROPERTY>
+    //<PROPERTY>fast = A[4,5]</PROPERTY>PROPERTY>
+    // <!- OUTCOMES are not used but are kept for compatibility->
     //<OUTCOME>outcome1</OUTCOME>
     //<OUTCOME>outcome2</OUTCOME>
     //<PROPERTY>property</PROPERTY>
@@ -188,9 +170,13 @@ namespace gum {
 
     // Name and description
     str << "\t<NAME>" << var.name() << "</NAME>" << std::endl;
-    str << "\t<PROPERTY>" << var.description() << "</PROPERTY>" << std::endl;
+    str << "\t<PROPERTY>description = " << var.description() << "</PROPERTY>" << std::endl;
+    str << "\t<PROPERTY>fast = " << var.toFast() << "</PROPERTY>" << std::endl;
 
     // Outcomes
+    str << "<!- OUTCOME are not used in pyAgrum BIFXML (see fast property) but are kept for "
+           "compatibility->"
+        << std::endl;
     for (Idx i = 0; i < var.domainSize(); i++)
       str << "\t<OUTCOME>" << var.label(i) << "</OUTCOME>" << std::endl;
 
@@ -227,7 +213,8 @@ namespace gum {
       str << "-->\n";
 
       // Conditional Parents for decision node
-      if (infdiag.isDecisionNode(varNodeId)) {   // finding the parents in the graph
+      if (infdiag.isDecisionNode(varNodeId)) {
+        // finding the parents in the graph
         List< std::string > parentList;
 
         for (const auto par: infdiag.parents(varNodeId))
@@ -286,7 +273,6 @@ namespace gum {
 
     return str.str();
   }
-
 } /* namespace gum */
 
 #endif   // DOXYGEN_SHOULD_SKIP_THIS

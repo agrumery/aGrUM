@@ -63,22 +63,21 @@
 //          U2
 
 namespace gum_tests {
-
   class [[maybe_unused]] BIFXMLIDWriterTestSuite: public CxxTest::TestSuite {
     private:
     void fillTopo(gum::InfluenceDiagram< double >& infDiag, gum::List< gum::NodeId >& idList) {
       try {
-        idList.insert(infDiag.addDecisionNode(*decisionVar1));   // 0
-        idList.insert(infDiag.addDecisionNode(*decisionVar2));   // 1
-        idList.insert(infDiag.addDecisionNode(*decisionVar3));   // 2
-        idList.insert(infDiag.addDecisionNode(*decisionVar4));   // 3
-        idList.insert(infDiag.addChanceNode(*chanceVar1));       // 4
-        idList.insert(infDiag.addChanceNode(*chanceVar2));       // 5
-        idList.insert(infDiag.addChanceNode(*chanceVar3));       // 6
-        idList.insert(infDiag.addChanceNode(*chanceVar4));       // 7
-        idList.insert(infDiag.addChanceNode(*chanceVar5));       // 8
-        idList.insert(infDiag.addUtilityNode(*utilityVar1));     // 9
-        idList.insert(infDiag.addUtilityNode(*utilityVar2));     // 10
+        idList.insert(infDiag.addDecisionNode(*decisionVar1)); // 0
+        idList.insert(infDiag.addDecisionNode(*decisionVar2)); // 1
+        idList.insert(infDiag.addDecisionNode(*decisionVar3)); // 2
+        idList.insert(infDiag.addDecisionNode(*decisionVar4)); // 3
+        idList.insert(infDiag.addChanceNode(*chanceVar1)); // 4
+        idList.insert(infDiag.addChanceNode(*chanceVar2)); // 5
+        idList.insert(infDiag.addChanceNode(*chanceVar3)); // 6
+        idList.insert(infDiag.addChanceNode(*chanceVar4)); // 7
+        idList.insert(infDiag.addChanceNode(*chanceVar5)); // 8
+        idList.insert(infDiag.addUtilityNode(*utilityVar1)); // 9
+        idList.insert(infDiag.addUtilityNode(*utilityVar2)); // 10
 
         infDiag.addArc(idList[0], idList[4]);
         infDiag.addArc(idList[4], idList[9]);
@@ -92,7 +91,6 @@ namespace gum_tests {
         infDiag.addArc(idList[7], idList[8]);
         infDiag.addArc(idList[8], idList[10]);
         infDiag.addArc(idList[3], idList[10]);
-
       } catch (gum::Exception& e) {
         std::cerr << std::endl << e.errorContent() << std::endl;
         throw;
@@ -204,6 +202,7 @@ namespace gum_tests {
         gum::InfluenceDiagram< double > net2;
         gum::BIFXMLIDReader< double >   reader(&net2, file);
         reader.proceed();
+
         for (const auto n: net->nodes()) {
           if (net->isChanceNode(n)) {
             const std::string&    name = net->variable(n).name();
@@ -222,5 +221,30 @@ namespace gum_tests {
         delete net;
       }
     }
+
+
+    GUM_ACTIVE_TEST(GenerationReadWrite2) {
+      auto net = gum::InfluenceDiagram< double >::fastPrototype(
+          "A[5]->B+[0,10,5]->C{0|1|20|300}->D{0.5|1.99|2|3.14}");
+
+      gum::BIFXMLIDWriter< double > writer;
+      std::string                   file = GET_RESSOURCES_PATH("outputs/random.xml");
+      writer.write(file, net);
+
+      gum::InfluenceDiagram< double > net2;
+      gum::BIFXMLIDReader< double >   reader(&net2, file);
+      reader.proceed();
+
+      for (const auto n: net.nodes()) {
+        const std::string& name = net.variable(n).name();
+        TS_ASSERT_EQUALS(net.variable(name).toFast(), net2.variable(name).toFast());
+        if (net.isChanceNode(n)) {
+          TS_GUM_TENSOR_DELTA_WITH_TRANSLATION(net.cpt(name), net2.cpt(name), 0.0001);
+        }
+        if (net.isUtilityNode(n)) {
+          TS_GUM_TENSOR_DELTA_WITH_TRANSLATION(net.utility(name), net2.utility(name), 0.0001);
+        }
+      }
+    }
   };
-}   // namespace gum_tests
+} // namespace gum_tests

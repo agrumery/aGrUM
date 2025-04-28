@@ -40,7 +40,6 @@
 #  include <agrum/BN/io/BIFXML/BIFXMLBNWriter.h>
 
 namespace gum {
-
   /*
    * Default constructor.
    */
@@ -161,6 +160,9 @@ namespace gum {
   INLINE std::string BIFXMLBNWriter< GUM_SCALAR >::_variableBloc_(const DiscreteVariable& var) {
     //<VARIABLE TYPE="nature|decision|utility">
     //<NAME>name</NAME>
+    //<PROPERTY>description = ...</PROPERTY>
+    //<PROPERTY>fast = A[4,5]</PROPERTY>
+    // <!- OUTCOMES are not used but are kept for compatibility->
     //<OUTCOME>outcome1</OUTCOME>
     //<OUTCOME>outcome2</OUTCOME>
     //<PROPERTY>property</PROPERTY>
@@ -173,9 +175,13 @@ namespace gum {
 
     // Name and description
     str << "\t<NAME>" << var.name() << "</NAME>" << std::endl;
-    str << "\t<PROPERTY>" << var.description() << "</PROPERTY>" << std::endl;
+    str << "\t<PROPERTY>description = " << var.description() << "</PROPERTY>" << std::endl;
+    str << "\t<PROPERTY>fast = " << var.toFast() << "</PROPERTY>" << std::endl;
 
     // Outcomes
+    str << "<!- OUTCOME are not used in pyAgrum BIFXML (see fast property) but are kept for "
+           "compatibility->"
+        << std::endl;
     for (Idx i = 0; i < var.domainSize(); i++)
       str << "\t<OUTCOME>" << var.label(i) << "</OUTCOME>" << std::endl;
 
@@ -250,7 +256,6 @@ namespace gum {
 
     return str.str();
   }
-
 } /* namespace gum */
 
 #endif   // DOXYGEN_SHOULD_SKIP_THIS

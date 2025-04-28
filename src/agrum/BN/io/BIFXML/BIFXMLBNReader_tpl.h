@@ -38,6 +38,8 @@
 #ifndef DOXYGEN_SHOULD_SKIP_THIS
 #  include <agrum/BN/io/BIFXML/BIFXMLBNReader.h>
 
+#  include <agrum/base/core/utils_string.h>
+
 namespace gum {
   /*
    * Constructor
@@ -114,7 +116,6 @@ namespace gum {
 
   template < typename GUM_SCALAR >
   void BIFXMLBNReader< GUM_SCALAR >::_parsingVariables_(ticpp::Element* parentNetwork) {
-    // Counting the number of variable for the signal
     int                               nbVar = 0;
     ticpp::Iterator< ticpp::Element > varIte("VARIABLE");
 
@@ -131,24 +132,54 @@ namespace gum {
       ticpp::Element* varNameElement = currentVar->FirstChildElement("NAME");
       std::string     varName        = varNameElement->GetTextOrDefault("");
 
-      // Getting variable description
-      ticpp::Element* varDescrElement = currentVar->FirstChildElement("PROPERTY");
-      std::string     varDescription  = varDescrElement->GetTextOrDefault("");
+      std::string description = "";
+      std::string fast        = "";
+      // Getting variable description and/or fast syntax
+      ticpp::Iterator< ticpp::Element > varPropertiesIte("PROPERTY");
+      for (varPropertiesIte = varPropertiesIte.begin(currentVar);
+           varPropertiesIte != varPropertiesIte.end();
+           ++varPropertiesIte) {
+        const auto pair = gum::split(varPropertiesIte->GetTextOrDefault(""), "=");
+        if (pair.size() == 2) {
+          const auto property = gum::toLower(gum::trim_copy(pair[0]));
+          const auto value    = gum::trim_copy(pair[1]);
+          // check for descritpion and fast
+          if (property == "description") {
+            description = value;
+          } else if (property == "fast") {
+            fast = value;
+          }
+        }
+      }
 
-      // Instanciation de la variable
-      auto newVar = new LabelizedVariable(varName, varDescription, 0);
+      if (fast == "") {
+        // if no fast syntax, we create a variable with the default}
+        // Instanciation de la variable
+        auto newVar = new LabelizedVariable(varName, description, 0);
 
-      // Getting variable outcomes
-      ticpp::Iterator< ticpp::Element > varOutComesIte("OUTCOME");
+        // Getting variable outcomes
+        ticpp::Iterator< ticpp::Element > varOutComesIte("OUTCOME");
 
-      for (varOutComesIte = varOutComesIte.begin(currentVar);
-           varOutComesIte != varOutComesIte.end();
-           ++varOutComesIte)
-        newVar->addLabel(varOutComesIte->GetTextOrDefault(""));
+        for (varOutComesIte = varOutComesIte.begin(currentVar);
+             varOutComesIte != varOutComesIte.end();
+             ++varOutComesIte)
+          newVar->addLabel(varOutComesIte->GetTextOrDefault(""));
 
-      // Add the variable to the bn and then delete newVar (add makes a copy)
-      _bn_->add(*newVar);
-      delete (newVar);
+        // Add the variable to the bn and then delete newVar (add makes a copy)
+        _bn_->add(*newVar);
+        delete newVar;
+      } else {
+        auto newVar = gum::fastVariable(fast, 2);
+        newVar->setDescription(description);
+        // we could check if varName is OK
+        if (newVar->name() != varName) {
+          GUM_ERROR(IOError,
+                    "Variable name (" << varName << ") and fast syntax (" << fast
+                                      << ") are not compatible. Please check the syntax.")
+        }
+        // Add the variable to the bn and then delete newVar (add makes a copy)
+        _bn_->add(*newVar);
+      }
 
       // Emitting progress.
       std::string status   = "Network found. Now proceedind variables instanciation...";
@@ -159,6 +190,8 @@ namespace gum {
   }
 
   template < typename GUM_SCALAR >
+
+
   void BIFXMLBNReader< GUM_SCALAR >::_fillingBN_(ticpp::Element* parentNetwork) {
     // Counting the number of variable for the signal
     int                               nbDef = 0;
@@ -217,7 +250,6 @@ namespace gum {
       nbIte++;
     }
   }
-
 } /* namespace gum */
 
 #endif   // DOXYGEN_SHOULD_SKIP_THIS
