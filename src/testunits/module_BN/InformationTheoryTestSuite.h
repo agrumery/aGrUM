@@ -52,7 +52,6 @@
 #include "testunits/gumtest/utils.h"
 
 namespace gum_tests {
-
   class [[maybe_unused]] InformationTheoryTestSuite: public CxxTest::TestSuite {
     public:
     GUM_ACTIVE_TEST(Constructor1) {
@@ -88,7 +87,7 @@ namespace gum_tests {
       const auto bn = gum::BayesNet< double >::fastPrototype("C->A->B");
       bn.cpt("C").fillWith({0.5, 0.5});
       bn.cpt("A").fillWith(
-          {0.8, 0.2, 0.2, 0.8});   // so that bn|ev={"C"=0} is the same as the last test
+          {0.8, 0.2, 0.2, 0.8}); // so that bn|ev={"C"=0} is the same as the last test
       bn.cpt("B").fillWith({0.1, 0.9, 0.3, 0.7});
 
       gum::LazyPropagation ie(&bn);
@@ -120,7 +119,7 @@ namespace gum_tests {
       const auto bn = gum::BayesNet< double >::fastPrototype("C->A->B");
       bn.cpt("C").fillWith({0.5, 0.5});
       bn.cpt("A").fillWith(
-          {0.8, 0.2, 0.2, 0.8});   // so that bn|ev={"C"=0} is the same as the last test
+          {0.8, 0.2, 0.2, 0.8}); // so that bn|ev={"C"=0} is the same as the last test
       bn.cpt("B").fillWith({0.1, 0.9, 0.3, 0.7});
 
       gum::ShaferShenoyInference ie(&bn);
@@ -243,20 +242,19 @@ namespace gum_tests {
       gum::LazyPropagation lazy(&bn);
 
       for (const auto& node: bn.nodes()) {
-        TS_GUM_TENSOR_DELTA(lazy.posterior(node),
-                            joint.sumIn({&bn.variable(node)}),
-                            TS_GUM_SMALL_ERROR);
+        TS_GUM_TENSOR_ALMOST_EQUALS_SAMEVARS(lazy.posterior(node),
+                                             joint.sumIn({&bn.variable(node)}))
       }
       for (const auto& arc: bn.arcs()) {
         gum::InformationTheory< gum::LazyPropagation, double > it(lazy,
-                                                                  gum::NodeSet{arc.first()},
-                                                                  gum::NodeSet{arc.second()});
+          gum::NodeSet{arc.first()},
+          gum::NodeSet{arc.second()});
         TS_GUM_ASSERT_QUASI_EQUALS(mi(arc.first(), arc.second()), it.mutualInformationXY())
       }
       for (const auto& node: bn.nodes()) {
         gum::InformationTheory< gum::LazyPropagation, double > it(lazy,
-                                                                  gum::NodeSet{node},
-                                                                  gum::NodeSet{});
+          gum::NodeSet{node},
+          gum::NodeSet{});
         TS_GUM_ASSERT_QUASI_EQUALS(h(node), it.entropyX())
       }
     }
@@ -291,20 +289,19 @@ namespace gum_tests {
       lazy.addEvidence(evc);
 
       for (const auto& node: bn.nodes()) {
-        TS_GUM_TENSOR_DELTA(lazy.posterior(node),
-                            joint.sumIn({&bn.variable(node)}),
-                            TS_GUM_SMALL_ERROR);
+        TS_GUM_TENSOR_ALMOST_EQUALS_SAMEVARS(lazy.posterior(node),
+                                             joint.sumIn({&bn.variable(node)}))
       }
       for (const auto& node: bn.nodes()) {
         gum::InformationTheory< gum::LazyPropagation, double > it(lazy,
-                                                                  gum::NodeSet{node},
-                                                                  gum::NodeSet{});
+          gum::NodeSet{node},
+          gum::NodeSet{});
         TS_GUM_ASSERT_QUASI_EQUALS(h(node), it.entropyX())
       }
       for (const auto& arc: bn.arcs()) {
         gum::InformationTheory< gum::LazyPropagation, double > it(lazy,
-                                                                  gum::NodeSet{arc.first()},
-                                                                  gum::NodeSet{arc.second()});
+          gum::NodeSet{arc.first()},
+          gum::NodeSet{arc.second()});
         TS_GUM_ASSERT_QUASI_EQUALS(mi(arc.first(), arc.second()), it.mutualInformationXY())
       }
     }
@@ -339,26 +336,25 @@ namespace gum_tests {
       lazy.addEvidence(evc);
 
       for (const auto& node: bn.nodes()) {
-        TS_GUM_TENSOR_DELTA(lazy.posterior(node),
-                            joint.sumIn({&bn.variable(node)}),
-                            TS_GUM_SMALL_ERROR);
+        TS_GUM_TENSOR_ALMOST_EQUALS_SAMEVARS(lazy.posterior(node),
+                                             joint.sumIn({&bn.variable(node)}))
       }
       for (const auto& node: bn.nodes()) {
         gum::InformationTheory< gum::LazyPropagation, double > it(lazy,
-                                                                  gum::NodeSet{node},
-                                                                  gum::NodeSet{});
+          gum::NodeSet{node},
+          gum::NodeSet{});
         TS_GUM_ASSERT_QUASI_EQUALS(h(node), it.entropyX())
       }
       for (const auto& arc: bn.arcs()) {
         gum::InformationTheory< gum::LazyPropagation, double > it(lazy,
-                                                                  gum::NodeSet{arc.first()},
-                                                                  gum::NodeSet{arc.second()});
+          gum::NodeSet{arc.first()},
+          gum::NodeSet{arc.second()});
         TS_GUM_ASSERT_QUASI_EQUALS(mi(arc.first(), arc.second()), it.mutualInformationXY())
       }
     }
 
     private:
-    template < class IT >
+    template <class IT>
     static void check_this_information_theoryXY(IT& it) {
       // H(X|Y)=H(X,Y)-H(Y)
       TS_GUM_ASSERT_QUASI_EQUALS(it.entropyXgivenY(), it.entropyXY() - it.entropyY())
@@ -384,7 +380,7 @@ namespace gum_tests {
                                  2 * it.entropyXY() - it.entropyXgivenY() - it.entropyYgivenX())
     }
 
-    template < class IT >
+    template <class IT>
     static void check_this_information_theoryXYZ(IT& it) {
       // H(X|Y);Z=H(X,Y|Z)-H(Y|Z)
       TS_GUM_ASSERT_QUASI_EQUALS(it.entropyXgivenYZ(), it.entropyXYgivenZ() - it.entropyYgivenZ())
@@ -394,4 +390,4 @@ namespace gum_tests {
                                  it.entropyXgivenZ() + it.entropyYgivenZ() - it.entropyXYgivenZ())
     }
   };
-}   // namespace gum_tests
+} // namespace gum_tests

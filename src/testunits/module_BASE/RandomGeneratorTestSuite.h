@@ -49,7 +49,7 @@
 
 namespace gum_tests {
   // a test to see if GUM_RANDOMSEED is working
-  class [[maybe_unused]] RandomProfilerTestSuite: public CxxTest::TestSuite {
+  class [[maybe_unused]] RandomGeneratorTestSuite: public CxxTest::TestSuite {
     public:
     GUM_ACTIVE_TEST(RandomSeed) {
       TS_ASSERT((GUM_RANDOMSEED == 0) || (GUM_RANDOMSEED == 10))
@@ -108,13 +108,10 @@ namespace gum_tests {
     GUM_ACTIVE_TEST(BugSeed2) {
       gum::initRandom(0);
       const auto bn0 = gum::BayesNet< double >::fastPrototype("A->B<-C");
-      const auto q0  = bn0.cpt("B") + bn0.cpt("C") + bn0.cpt("A");
       gum::initRandom(10);
       const auto bn10 = gum::BayesNet< double >::fastPrototype("A->B<-C");
-      const auto q10  = bn10.cpt("B") + bn10.cpt("C") + bn10.cpt("A");
       gum::initRandom(42);
       const auto bn42 = gum::BayesNet< double >::fastPrototype("A->B<-C");
-      const auto q42  = bn42.cpt("B") + bn42.cpt("C") + bn42.cpt("A");
 
       gum::Timer t;
       t.reset();
@@ -123,16 +120,24 @@ namespace gum_tests {
 
       gum::initRandom(0);
       const auto bn0b = gum::BayesNet< double >::fastPrototype("A->B<-C");
-      const auto q0b  = bn0b.cpt("B") + bn0b.cpt("C") + bn0b.cpt("A");
-      TS_ASSERT_DIFFERS(q0.sum(), q0b.sum()) // may fail but highly improbable
       gum::initRandom(10);
       const auto bn10b = gum::BayesNet< double >::fastPrototype("A->B<-C");
-      const auto q10b  = bn10b.cpt("B") + bn10b.cpt("C") + bn10b.cpt("A");
-      TS_ASSERT_EQUALS(q10.sum(), q10b.sum())
       gum::initRandom(42);
       const auto bn42b = gum::BayesNet< double >::fastPrototype("A->B<-C");
       const auto q42b  = bn42b.cpt("B") + bn42b.cpt("C") + bn42b.cpt("A");
-      TS_ASSERT_EQUALS(q42.sum(), q42b.sum())
+
+      for (const auto i: bn0.nodes())
+      // may fail but highly improbable
+        TS_GUM_TENSOR_DIFFERS(bn0.cpt(i), bn0b.cpt(bn0.variable(i).name()))
+
+      for (const auto i: bn10.nodes())
+        TS_GUM_TENSOR_ALMOST_EQUALS(bn10.cpt(i),
+                                  bn10b.cpt(bn10.variable(i).name()))
+
+      for (const auto i: bn42.nodes())
+        TS_GUM_TENSOR_ALMOST_EQUALS(bn42.cpt(i),
+                                  bn42b.cpt(bn42.variable(i).name()))
+
       gum::initRandom(GUM_RANDOMSEED);
     }
   };

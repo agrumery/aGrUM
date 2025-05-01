@@ -2029,7 +2029,7 @@ namespace gum_tests {
       }
 
       for (const auto& node: full.nodes()) {
-        TS_GUM_TENSOR_DELTA(full.cpt(node),
+        TS_GUM_TENSOR_ALMOST_EQUALS_SAMEVARS(full.cpt(node),
                             gum::Tensor(full.cpt(node)).fillWith(partial.cpt(node)),
                             TS_GUM_SMALL_ERROR)
       }

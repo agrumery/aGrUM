@@ -80,7 +80,7 @@ namespace gum_tests {
 
         gum::Tensor< double > postmn;
         postmn.add(bn.variable(n));
-        postmn.fillWith(iemn.posterior(name));   // postmn using bn variable
+        postmn.fillWith(iemn.posterior(name)); // postmn using bn variable
 
         TS_ASSERT_LESS_THAN((postbn - postmn).abs().max(), 1e-7)
       }
@@ -101,7 +101,7 @@ namespace gum_tests {
 
         gum::Tensor< double > postmn;
         postmn.add(bn.variable(n));
-        postmn.fillWith(iemn.posterior(name));   // postmn using bn variable
+        postmn.fillWith(iemn.posterior(name)); // postmn using bn variable
 
         TS_ASSERT_LESS_THAN((postbn - postmn).abs().max(), 1e-7)
       }
@@ -124,7 +124,7 @@ namespace gum_tests {
 
         gum::Tensor< double > postmn;
         postmn.add(bn.variable(n));
-        postmn.fillWith(iemn.posterior(name));   // postmn using bn variable
+        postmn.fillWith(iemn.posterior(name)); // postmn using bn variable
 
         TS_ASSERT_LESS_THAN((postbn - postmn).abs().max(), 1e-7)
       }
@@ -147,7 +147,7 @@ namespace gum_tests {
 
         gum::Tensor< double > postmn;
         postmn.add(bn.variable(n));
-        postmn.fillWith(iemn.posterior(name));   // postmn using bn variable
+        postmn.fillWith(iemn.posterior(name)); // postmn using bn variable
 
         TS_ASSERT_LESS_THAN((postbn - postmn).abs().max(), 1e-8)
       }
@@ -170,7 +170,7 @@ namespace gum_tests {
 
         gum::Tensor< double > postmn;
         postmn.add(bn.variable(n));
-        postmn.fillWith(iemn.posterior(name));   // postmn using bn variable
+        postmn.fillWith(iemn.posterior(name)); // postmn using bn variable
 
         TS_ASSERT_LESS_THAN((postbn - postmn).abs().max(), 1e-8)
       }
@@ -182,9 +182,7 @@ namespace gum_tests {
       iemn.addEvidence("B", 1);
       iemn.makeInference();
 
-      for (const auto n: mn.nodes()) {
-        TS_ASSERT_DELTA(iemn.posterior(n).sum(), 1.0, 1e-8)
-      }
+      for (const auto n: mn.nodes()) { TS_ASSERT_DELTA(iemn.posterior(n).sum(), 1.0, 1e-8) }
     }
 
     GUM_ACTIVE_TEST(SeparationInInference) {
@@ -227,9 +225,7 @@ namespace gum_tests {
       iemn.addEvidence("B", 1);
       iemn.makeInference();
 
-      for (const auto n: mn.nodes()) {
-        TS_ASSERT_DELTA(iemn.posterior(n).sum(), 1.0, 1e-8)
-      }
+      for (const auto n: mn.nodes()) { TS_ASSERT_DELTA(iemn.posterior(n).sum(), 1.0, 1e-8) }
     }
 
     GUM_ACTIVE_TEST(IncrementalInference) {
@@ -307,18 +303,14 @@ namespace gum_tests {
 
     const gum::Tensor< double > pAC(const gum::MarkovRandomField< double >& mn) {
       gum::Tensor< double > joint;
-      for (auto& [nods, factor]: mn.factors()) {
-        joint *= *factor;
-      }
+      for (auto& [nods, factor]: mn.factors()) { joint *= *factor; }
       joint.normalize();
       return joint.sumOut({&mn.variable("B")});
     }
 
     const gum::Tensor< double > pAB(const gum::MarkovRandomField< double >& mn) {
       gum::Tensor< double > joint;
-      for (auto& [nods, factor]: mn.factors()) {
-        joint *= *factor;
-      }
+      for (auto& [nods, factor]: mn.factors()) { joint *= *factor; }
       joint.normalize();
       return joint.sumOut({&mn.variable("C")});
     }
@@ -339,7 +331,7 @@ namespace gum_tests {
         ie.addJointTarget({0, 2});
         ie.makeInference();
         auto p = ie.jointPosterior({0, 2});
-        TS_GUM_TENSOR_DELTA(p, pAC(mn), TS_GUM_SMALL_ERROR)
+        TS_GUM_TENSOR_ALMOST_EQUALS(p, pAC(mn))
       }
       {
         auto mn = gum::MarkovRandomField< double >::fastPrototype("A--B;B--C");
@@ -348,7 +340,7 @@ namespace gum_tests {
 
         try {
           auto p = ie.jointPosterior({0, 2});
-          TS_GUM_TENSOR_DELTA(p, pAC(mn), TS_GUM_SMALL_ERROR)
+          TS_GUM_TENSOR_ALMOST_EQUALS(p, pAC(mn))
         } catch (gum::Exception& e) { GUM_SHOWERROR(e) }
       }
       // implicit jointtarget as factor
@@ -357,7 +349,7 @@ namespace gum_tests {
         gum::ShaferShenoyMRFInference< double > ie(&mn);
         ie.makeInference();
         auto p = ie.jointPosterior({0, 1});
-        TS_GUM_TENSOR_DELTA(p, pAB(mn), TS_GUM_SMALL_ERROR)
+        TS_GUM_TENSOR_ALMOST_EQUALS(p, pAB(mn))
       }
       {
         auto mn = gum::MarkovRandomField< double >::fastPrototype("A--B;B--C");
@@ -365,7 +357,7 @@ namespace gum_tests {
         ie.addJointTarget({0, 1});
         ie.makeInference();
         auto p = ie.jointPosterior({0, 1});
-        TS_GUM_TENSOR_DELTA(p, pAB(mn), TS_GUM_SMALL_ERROR)
+        TS_GUM_TENSOR_ALMOST_EQUALS(p, pAB(mn))
       }
       // implicit jointtarget as subset of clique in junction tree
       {
@@ -373,7 +365,7 @@ namespace gum_tests {
         gum::ShaferShenoyMRFInference< double > ie(&mn);
         ie.makeInference();
         auto p = ie.jointPosterior({0, 2});
-        TS_GUM_TENSOR_DELTA(p, pAC(mn), TS_GUM_SMALL_ERROR)
+        TS_GUM_TENSOR_ALMOST_EQUALS(p, pAC(mn))
       }
       {
         auto mn = gum::MarkovRandomField< double >::fastPrototype("A--B;B--C;A--C");
@@ -381,7 +373,7 @@ namespace gum_tests {
         ie.addJointTarget({0, 2});
         ie.makeInference();
         auto p = ie.jointPosterior({0, 2});
-        TS_GUM_TENSOR_DELTA(p, pAC(mn), TS_GUM_SMALL_ERROR)
+        TS_GUM_TENSOR_ALMOST_EQUALS(p, pAC(mn))
       }
     }
 
@@ -418,7 +410,7 @@ namespace gum_tests {
         TS_GUM_ASSERT_THROWS_NOTHING(ie.makeInference());
         psoft = gum::Tensor(ie.posterior("E"));
       }
-      TS_GUM_TENSOR_DELTA(phard, psoft, TS_GUM_VERY_SMALL_ERROR)
+      TS_GUM_TENSOR_ALMOST_EQUALS_SAMEVARS(phard, psoft)
     }
   };
-}   // namespace gum_tests
+} // namespace gum_tests

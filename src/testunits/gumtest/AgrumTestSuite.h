@@ -57,9 +57,16 @@
         TS_FAIL("gum::Exception thrown");         \
       })
 
-#define TS_GUM_TENSOR_DELTA(p1, p2, delta) TS_ASSERT_LESS_THAN(((p1) - (p2)).abs().max(), delta)
-#define TS_GUM_TENSOR_DELTA_WITH_TRANSLATION(p1, p2, delta) \
-  TS_GUM_TENSOR_DELTA((p1), (gum::Tensor(p1).fillWith(p2)), delta)
+#define TS_GUM_TENSOR_ALMOST_EQUALS_SAMEVARS_DELTA(p1, p2, delta) TS_ASSERT_LESS_THAN(((p1) - (p2)).abs().max(), delta)
+#define TS_GUM_TENSOR_ALMOST_EQUALS_SAMEVARS(p1, p2) TS_ASSERT_LESS_THAN(((p1) - (p2)).abs().max(), TS_GUM_SMALL_ERROR)
+#define TS_GUM_TENSOR_ALMOST_EQUALS_DELTA(p1, p2, delta) \
+  TS_GUM_TENSOR_ALMOST_EQUALS_SAMEVARS_DELTA((p1), (gum::Tensor(p1).fillWith(p2)), delta)
+#define TS_GUM_TENSOR_ALMOST_EQUALS(p1, p2)  TS_GUM_TENSOR_ALMOST_EQUALS_DELTA(p1, p2, TS_GUM_SMALL_ERROR)
+#define TS_GUM_TENSOR_QUASI_EQUALS(p1, p2)   TS_GUM_TENSOR_ALMOST_EQUALS_DELTA(p1, p2, TS_GUM_VERY_SMALL_ERROR)
+
+#define TS_GUM_TENSOR_DIFFERS_SAMEVARS(p1, p2) TS_ASSERT(((p1) - (p2)).abs().max()>TS_GUM_VERY_SMALL_ERROR)
+#define TS_GUM_TENSOR_DIFFERS(p1, p2) TS_GUM_TENSOR_DIFFERS_SAMEVARS((p1), (gum::Tensor(p1).fillWith(p2)))
+
 
 #define TS_GUM_TENSOR_SHOW_DELTA(p1, p2, delta)           \
   {                                                       \

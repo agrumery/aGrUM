@@ -238,11 +238,9 @@ namespace gum_tests {
       for (const auto n: net.nodes()) {
         const std::string& name = net.variable(n).name();
         TS_ASSERT_EQUALS(net.variable(name).toFast(), net2.variable(name).toFast());
-        if (net.isChanceNode(n)) {
-          TS_GUM_TENSOR_DELTA_WITH_TRANSLATION(net.cpt(name), net2.cpt(name), 0.0001);
-        }
+        if (net.isChanceNode(n)) { TS_GUM_TENSOR_ALMOST_EQUALS(net.cpt(name), net2.cpt(name)) }
         if (net.isUtilityNode(n)) {
-          TS_GUM_TENSOR_DELTA_WITH_TRANSLATION(net.utility(name), net2.utility(name), 0.0001);
+          TS_GUM_TENSOR_ALMOST_EQUALS(net.utility(name), net2.utility(name))
         }
       }
     }
