@@ -1,5 +1,30 @@
 # aGrUM Changelog
 
+## Changelog for 2.1.0
+
+- aGrUM
+  - Added a new constructor for `gum::Tensor` with a list of variables to automatically add.
+  - Enhanced BIFXML reader/writer to support fast syntax (both for Bayesian Network and for Influence Diagram).
+  - Added deterministic and uniform tensor creation methods in `Tensor` class.
+  - Added `BayesNet.contextualize` method for structurally handling observations and interventions.
+  - Improved code for `BayesNet::operator==`.
+  - `gum::influenceDiagramGenerator` now creates `gum::RangeVariable` instead of `gum::LabelizedVariable`.
+  - Improved readability of range parsing in `allDiscreteVariables_tpl.h`.
+  - Fixed a bug in `gum::Instantiation::contains(std::string)`.
+  - Added `gum::trim_copy` method.
+
+- pyAgrum
+  - De-modularized pyagrum to resolve weird bugs.
+  - Enhanced BIFXML reader/writer to support fast syntax (both for Bayesian Network and for Influence Diagram).
+  - Added a new constructor for `pyAgrum.Tensor` with a list of variables to automatically add.
+  - Added deterministic and uniform tensor creation methods in `Tensor` class.
+  - Added `BayesNet.contextualize` method for structurally handling observations and interventions.
+  - `gum::influenceDiagramGenerator` now creates `gum::RangeVariable` instead of `gum::LabelizedVariable`.
+  - Added `pyagrum.lib.notebook.inspectBN` function to visualize a (small) Bayesian Network and its CPTs in a notebook.
+  - Simplified some pyagrum's error messages.
+  - Removed useless methods `newFactory`.
+  - Fixed typos in RTD's documentation and added `pyAgrum.mutilateBN` in the documentation.
+
 ## Changelog for 2.0.1
 
 - pyAgrum
