@@ -28416,7 +28416,7 @@ class ShaferShenoyLIMIDInference(object):
 # Register ShaferShenoyLIMIDInference in _pyagrum:
 _pyagrum.ShaferShenoyLIMIDInference_swigregister(ShaferShenoyLIMIDInference)
 
-__version__ = '2.1.0'
+__version__ = '2.1.0.9'
 __license__ = __doc__
 __project_url__ = 'https://agrum.org'
 __project_name__ = 'pyAgrum'
@@ -30259,7 +30259,7 @@ def getPosterior(model, *, target, evs=None):
   return pyagrum.Tensor(inf.posterior(target))
 
 
-__version__ = '2.1.0'
+__version__ = '2.1.0.9'
 __license__ = __doc__
 __project_url__ = 'https://agrum.org'
 __project_name__ = 'pyAgrum'
