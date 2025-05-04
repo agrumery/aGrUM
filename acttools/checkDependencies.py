@@ -238,15 +238,16 @@ def remove_redundant_dependencies(target, includes):
     print(res, file=f)
 
 
-def check_gum_dependencies(graph=True, correction=False):
+def check_gum_dependencies(graph:bool=True, details:bool=True, correction:bool=False):
   deps = _get_dependencies()
   nb_non_opt = {k: len(v) for k, v in deps.items()}
 
   nb_arcs = sum([len(c) for c in deps.values()])
 
-  notif("AGrUM headers dependencies")
-  notif(f"  + Nbr of headers : {len(deps)}")
-  notif(f"  + Nbr of dependencies : {nb_arcs}")
+  if correction or details:
+    notif("AGrUM headers dependencies")
+    notif(f"  + Nbr of headers : {len(deps)}")
+    notif(f"  + Nbr of dependencies : {nb_arcs}")
 
   if graph:
     notif("  + drawing headers map in [agrum-map.pdf]")
@@ -258,7 +259,8 @@ def check_gum_dependencies(graph=True, correction=False):
   _simplify_dependencies(ancestors, deps)
 
   nb_opt_arcs = sum([len(c) for c in deps.values()])
-  notif(f"  + Nbr of dependencies optimized : {nb_opt_arcs}")
+  if correction or details:
+    notif(f"  + Nbr of dependencies optimized : {nb_opt_arcs}")
 
   if correction:
     notif("Correction in progress")

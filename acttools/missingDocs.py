@@ -34,11 +34,13 @@
 #                                                                          #
 ############################################################################
 
+import os
+from os.path import join, dirname
+import sys
+
 from typing import Iterable
 import types
 import inspect
-import sys
-from os.path import join, dirname
 
 from .utils import notif
 
@@ -46,177 +48,225 @@ gumPath = join(dirname(sys.argv[0]), "build/pyAgrum/release/wrappers")
 
 
 def _prefix(name: str) -> str:
-  return " " * (4 * (name.count(".") - 1)) + "- "
+    return " " * (4 * (name.count(".") - 1)) + "- "
 
 
 class PyAgrumDocCoverage:
-  def __init__(self, verbose: bool):
-    self._verbose = verbose
-    self.nb_class = 0
-    self.nb_meth = 0
-    self.nb_func = 0
+    def __init__(self, verbose: bool):
+        self._verbose = verbose
+        self.nb_class = 0
+        self.nb_meth = 0
+        self.nb_func = 0
 
-    self.undoc_class = []
-    self.undoc_func = []
-    self.undoc_meth = []
+        self.undoc_class = []
+        self.undoc_func = []
+        self.undoc_meth = []
 
-    self.partial_doc_class = []
-    self.partial_doc_func = []
-    self.partial_doc_meth = []
+        self.partial_doc_class = []
+        self.partial_doc_func = []
+        self.partial_doc_meth = []
 
-  @staticmethod
-  def _is_not_valid(msg: str) -> bool:
-    # deprecated does not follow the rules of validity for documentation
-    if msg.strip().startswith("Deprecated"):
-      return False
+        # preparecp the log file for missing documentations
+        self.nodocfile = "nodoc.log"
+        self.nodocfilebefore = "nodoc.before.log"
+        if os.path.exists(self.nodocfile):
+            if os.path.exists(self.nodocfilebefore):
+                os.remove(self.nodocfilebefore)
+            os.rename(self.nodocfile, self.nodocfilebefore)
+        with open(self.nodocfile, "w") as f:
+           # add the date to logfile
+            from datetime import datetime
+            f.write(datetime.now().strftime("%Y-%m-%d %H:%M:%S") + "\n")
 
-    # msg les than 3 lines are not valid
-    if msg.count("\n") < 3:
-      return True
+    def lognodoc(self, msg: str):
+        with open(self.nodocfile, "a") as f:
+            f.write(msg + "\n")
 
-    if "'PyObject *'" in msg:
-      return True
+    def notif_and_log(self, msg: str = "") -> None:
+        notif(msg)
+        self.lognodoc(msg)
 
-    return False
+    @staticmethod
+    def _is_not_valid(msg: str) -> bool:
+        # deprecated does not follow the rules of validity for documentation
+        if msg.strip().startswith("Deprecated"):
+            return False
 
-  def _check_function_oc(self, name: str, func: str):
-    res = "check"
-    is_meth = name.count(".") > 1
+        # msg les than 3 lines are not valid
+        if msg.count("\n") < 3:
+            return True
 
-    if is_meth:
-      self.nb_meth += 1
-    else:
-      self.nb_func += 1
+        if "'PyObject *'" in msg:
+            return True
 
-    if not hasattr(func, "__doc__") or func.__doc__ is None:
-      if is_meth:
-        self.undoc_meth.append(name)
-      else:
-        self.undoc_func.append(name)
-      res = "no doc"
-    else:
+        return False
 
-      if self._is_not_valid(func.__doc__):
+    def _check_function_oc(self, name: str, func: str):
+        res = "check"
+        is_meth = name.count(".") > 1
+
+        skipped = {"gum.Potential", }
+        if name in skipped:
+            if self._verbose:
+                notif(_prefix(name) + name + " : skipped")
+            return
+
         if is_meth:
-          self.partial_doc_meth.append(name)
+            self.nb_meth += 1
         else:
-          self.partial_doc_func.append(name)
+            self.nb_func += 1
 
-        res = "partial"
+        if not hasattr(func, "__doc__") or func.__doc__ is None:
+            if is_meth:
+                self.undoc_meth.append(name)
+            else:
+                self.undoc_func.append(name)
+            res = "no doc"
+        else:
 
-    if self._verbose:
-      notif(_prefix(name) + name + " : " + res)
+            if self._is_not_valid(func.__doc__):
+                if is_meth:
+                    self.partial_doc_meth.append(name)
+                else:
+                    self.partial_doc_func.append(name)
 
-  def _check_class_doc(self, name: str, clas: str):
-    res = "check"
+                res = "partial"
 
-    self.nb_class += 1
+        if res != "check":
+            self.lognodoc(name + " : " + res)
+        if self._verbose:
+            notif(_prefix(name) + name + " : " + res)
 
-    if not hasattr(clas, "__doc__") or clas.__doc__ is None:
-      self.undoc_class.append(name)
-      res = "no doc"
-    else:
-      if self._is_not_valid(clas.__doc__):
-        self.partial_doc_class.append(name)
-        res = "partial"
+    def _check_class_doc(self, name: str, clas: str):
+        res = "check"
+        self.nb_class += 1
 
-    if self._verbose:
-      notif(_prefix(name) + name + " : " + res)
+        if not hasattr(clas, "__doc__") or clas.__doc__ is None:
+            self.undoc_class.append(name)
+            res = "no doc"
+        else:
+            if self._is_not_valid(clas.__doc__):
+                self.partial_doc_class.append(name)
+                res = "partial"
 
-  @staticmethod
-  def _ignored_class(clas: str) -> bool:
-    if gumPath not in sys.path:
-      sys.path.insert(0, gumPath)
-    import pyagrum as gum
+        if res != "check":
+            self.lognodoc(name + " : " + res)
+        if self._verbose:
+            notif(_prefix(name) + name + " : " + res)
 
-    return clas in {cls.__name__ for cls in gum.GumException.__subclasses__()}
+    @staticmethod
+    def _ignored_class(clas: str) -> bool:
+        if gumPath not in sys.path:
+            sys.path.insert(0, gumPath)
+        import pyagrum as gum
 
-  def _traversal(self, entities: Iterable[str], container: str):
-    import pyagrum as gum
-    for entity in entities:
-      if entity[0] != '_':
-        complete_entity_name = container + "." + entity
-        instance_entity = eval(complete_entity_name)
-        if type(instance_entity) is types.FunctionType:
-          self._check_function_oc(complete_entity_name, instance_entity)
-        elif inspect.isclass(instance_entity):
-          if not self._ignored_class(instance_entity.__name__):
-            self._check_class_doc(complete_entity_name, instance_entity.__name__)
-            self._traversal(dir(instance_entity), complete_entity_name)
+        return clas in {cls.__name__ for cls in gum.GumException.__subclasses__()}
 
-  def check_missing_doc(self):
-    DELIM: str = "\n    + "
+    def _traversal(self, entities: Iterable[str], container: str):
+        import pyagrum as gum
+        for entity in entities:
+            if entity[0] != '_':
+                complete_entity_name = container + "." + entity
+                instance_entity = eval(complete_entity_name)
+                if type(instance_entity) is types.FunctionType:
+                    self._check_function_oc(
+                        complete_entity_name, instance_entity)
+                elif inspect.isclass(instance_entity):
+                    if not self._ignored_class(instance_entity.__name__):
+                        self._check_class_doc(
+                            complete_entity_name, instance_entity.__name__)
+                        self._traversal(dir(instance_entity),
+                                        complete_entity_name)
 
-    if gumPath not in sys.path:
-      sys.path.insert(0, gumPath)
-    import pyagrum as gum
+    def check_missing_doc(self):
+        DELIM: str = "\n    + "
 
-    self.nb_class = 0
-    self.nb_meth = 0
-    self.nb_func = 0
+        if gumPath not in sys.path:
+            sys.path.insert(0, gumPath)
+        import pyagrum as gum
 
-    self.undoc_class = []
-    self.undoc_func = []
-    self.undoc_meth = []
+        self.nb_class = 0
+        self.nb_meth = 0
+        self.nb_func = 0
 
-    self.partial_doc_class = []
-    self.partial_doc_func = []
-    self.partial_doc_meth = []
+        self.undoc_class = []
+        self.undoc_func = []
+        self.undoc_meth = []
 
-    self._traversal(dir(gum), "gum")
+        self.partial_doc_class = []
+        self.partial_doc_func = []
+        self.partial_doc_meth = []
 
-    pc = 1.0 - (len(self.undoc_class) + len(self.partial_doc_class)) / (1.0 * self.nb_class)
-    pm = 1.0 - (len(self.undoc_meth) + len(self.partial_doc_meth)) / (1.0 * self.nb_meth)
-    pf = 1.0 - (len(self.undoc_func) + len(self.partial_doc_func)) / (1.0 * self.nb_func)
+        self._traversal(dir(gum), "gum")
 
-    tc = self.nb_class - (len(self.undoc_class) + len(self.partial_doc_class))
-    tm = self.nb_meth - (len(self.undoc_meth) + len(self.partial_doc_meth))
-    tf = self.nb_func - (len(self.undoc_func) + len(self.partial_doc_func))
+        pc = 1.0 - (len(self.undoc_class) +
+                    len(self.partial_doc_class)) / (1.0 * self.nb_class)
+        pm = 1.0 - (len(self.undoc_meth) +
+                    len(self.partial_doc_meth)) / (1.0 * self.nb_meth)
+        pf = 1.0 - (len(self.undoc_func) +
+                    len(self.partial_doc_func)) / (1.0 * self.nb_func)
 
-    notif(f'Documentation in pyAgrum {gum.__version__}')
+        tc = self.nb_class - (len(self.undoc_class) +
+                              len(self.partial_doc_class))
+        tm = self.nb_meth - (len(self.undoc_meth) + len(self.partial_doc_meth))
+        tf = self.nb_func - (len(self.undoc_func) + len(self.partial_doc_func))
 
-    notif(f"  Classes   : coverage={(pc * 100.0):6.2f}% [({tc}/{self.nb_class})]")
-    if self._verbose:
-      notif("---------")
-      notif("  - nbr of classes : " + str(self.nb_class))
-      notif("  - nbr of partially documented classes : " + str(len(self.partial_doc_class)))
-      notif(DELIM.join([""] + self.partial_doc_class))
-      notif()
-      notif("  - nbr of undocumented classes : " + str(len(self.undoc_class)))
-      notif(DELIM.join([""] + self.undoc_class))
+        self.lognodoc("\n\n"+"="*50)
+        self.notif_and_log(f'Documentation in pyAgrum {gum.__version__}')
 
-    notif(f"  Methods   : coverage={(pm * 100.0):6.2f}% [({tm}/{self.nb_meth})]")
-    if self._verbose:
-      notif("---------")
-      notif("  - nbr of methods: " + str(self.nb_meth))
-      notif("  - nbr of partially documented methods : " + str(len(self.partial_doc_meth)))
-      notif(DELIM.join([""] + self.partial_doc_meth))
-      notif()
-      notif("  - nbr of undocumented methods : " + str(len(self.undoc_meth)))
-      notif(DELIM.join([""] + self.undoc_meth))
+        self.notif_and_log(
+            f"  Classes   : coverage={(pc * 100.0):6.2f}% [({tc}/{self.nb_class})]")
+        if self._verbose:
+            self.notif_and_log("---------")
+            self.notif_and_log("  - nbr of classes : " + str(self.nb_class))
+            self.notif_and_log(
+                "  - nbr of partially documented classes : " + str(len(self.partial_doc_class)))
+            self.notif_and_log(DELIM.join([""] + self.partial_doc_class))
+            self.notif_and_log()
+            self.notif_and_log(
+                "  - nbr of undocumented classes : " + str(len(self.undoc_class)))
+            self.notif_and_log(DELIM.join([""] + self.undoc_class))
 
-    notif(f"  Functions : coverage={(pf * 100.0):6.2f}% [({tf}/{self.nb_func})]")
-    if self._verbose:
-      notif("-----------")
-      notif("  - nbr of functions: " + str(self.nb_func))
-      notif("  - nbr of partially documented functions : " + str(len(self.partial_doc_func)))
-      notif(DELIM.join([""] + self.partial_doc_func))
-      notif()
-      notif("  - nbr of undocumented functions : " + str(len(self.undoc_func)))
-      notif(DELIM.join([""] + self.undoc_func))
+        self.notif_and_log(
+            f"  Methods   : coverage={(pm * 100.0):6.2f}% [({tm}/{self.nb_meth})]")
+        if self._verbose:
+            self.notif_and_log("---------")
+            self.notif_and_log("  - nbr of methods: " + str(self.nb_meth))
+            self.notif_and_log(
+                "  - nbr of partially documented methods : " + str(len(self.partial_doc_meth)))
+            self.notif_and_log(DELIM.join([""] + self.partial_doc_meth))
+            self.notif_and_log()
+            self.notif_and_log(
+                "  - nbr of undocumented methods : " + str(len(self.undoc_meth)))
+            self.notif_and_log(DELIM.join([""] + self.undoc_meth))
 
-    return (len(self.undoc_class) +
-            len(self.partial_doc_class) +
-            len(self.undoc_meth) +
-            len(self.partial_doc_meth) +
-            len(self.undoc_func) +
-            len(self.partial_doc_func))
+        self.notif_and_log(
+            f"  Functions : coverage={(pf * 100.0):6.2f}% [({tf}/{self.nb_func})]")
+        if self._verbose:
+            self.notif_and_log("-----------")
+            self.notif_and_log("  - nbr of functions: " + str(self.nb_func))
+            self.notif_and_log(
+                "  - nbr of partially documented functions : " + str(len(self.partial_doc_func)))
+            self.notif_and_log(DELIM.join([""] + self.partial_doc_func))
+            self.notif_and_log()
+            self.notif_and_log(
+                "  - nbr of undocumented functions : " + str(len(self.undoc_func)))
+            self.notif_and_log(DELIM.join([""] + self.undoc_func))
+        self.lognodoc("="*50)
+
+        return (len(self.undoc_class) +
+                len(self.partial_doc_class) +
+                len(self.undoc_meth) +
+                len(self.partial_doc_meth) +
+                len(self.undoc_func) +
+                len(self.partial_doc_func))
 
 
 def missingDocs(show_funct: bool = False):
-  return PyAgrumDocCoverage(verbose=show_funct).check_missing_doc()
+    return PyAgrumDocCoverage(verbose=show_funct).check_missing_doc()
 
 
 if __name__ == "__main__":
-  # execute only if run as a script
-  notif(f"\nNbr of documentation errors: {missingDocs(show_funct=True)}")
+    # execute only if run as a script
+    self.notif_and_log(
+        f"\nNbr of documentation errors: {missingDocs(show_funct=True)}")

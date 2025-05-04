@@ -876,3 +876,117 @@ Returns
 int
   the size in byte of the representation (of the parameters) of the BayesNet
 "
+
+
+%feature("docstring") gum::IBayesNet::evEq
+"
+This method is used to set an observation on a quasi-continuous variables (:class:`pyagrum
+.DiscretizedVariable` with a large number of ticks)  that the variable is equal to a given value.
+
+Note
+----
+  - see also :meth:`Tensor.evEq`
+  - see also :meth:`BayesNet.evGt`, :meth:`BayesNet.evLt`, :meth:`BayesNet.evIn`
+
+Examples
+--------
+>>> import pyagrum as gum
+>>> bn = gum.fastBN('A[0:10:20]'') # DiscretizedVariable from 0 to 10 in 20 steps
+>>> print(bn.evEqu('A',5)
+  A                                                                                                                                                                                                    |
+[0;0.5[  |[0.5;1[  |[1;1.5[  |[1.5;2[  |[2;2.5[  |[2.5;3[  |[3;3.5[  |[3.5;4[  |[4;4.5[  |[4.5;5[  |[5;5.5[  |[5.5;6[  |[6;6.5[  |[6.5;7[  |[7;7.5[  |[7.5;8[  |[8;8.5[  |[8.5;9[  |[9;9.5[  |[9.5;10] |
+---------|---------|---------|---------|---------|---------|---------|---------|---------|---------|---------|---------|---------|---------|---------|---------|---------|---------|---------|---------|
+ 0.0000  | 0.0000  | 0.0000  | 0.0000  | 0.0000  | 0.0000  | 0.0000  | 0.0000  | 0.0000  | 0.0000  | 1.0000  | 0.0000  | 0.0000  | 0.0000  | 0.0000  | 0.0000  | 0.0000  | 0.0000  | 0.0000  | 0.0000  |
+
+Parameters
+----------
+var : Union[int,str]
+  the current name or the id of the variable
+value: float
+
+Returns
+-------
+pyAgrum.Tensor
+  The representation of the evidence as a :class:`~pyagrum.Tensor`.
+"
+
+%feature("docstring") gum::IBayesNet::evGt
+"
+This method is used to set an obvervation on a quasi-continuous variables (:class:`pyagrum
+.DiscretizedVariable` with a large number of ticks) that the variable greater than a given value.
+
+Note
+----
+  - see also :meth:`Tensor.evGt`
+  - see also :meth:`BayesNet.evEq`, :meth:`BayesNet.evLt`, :meth:`BayesNet.evIn`
+
+Examples
+--------
+>>> import pyagrum as gum
+>>> bn = gum.fastBN('A[0:10:20]'') # DiscretizedVariable from 0 to 10 in 20 steps
+>>> print(bn.eGt('A',5)
+  A                                                                                                                                                                                                    |
+[0;0.5[  |[0.5;1[  |[1;1.5[  |[1.5;2[  |[2;2.5[  |[2.5;3[  |[3;3.5[  |[3.5;4[  |[4;4.5[  |[4.5;5[  |[5;5.5[  |[5.5;6[  |[6;6.5[  |[6.5;7[  |[7;7.5[  |[7.5;8[  |[8;8.5[  |[8.5;9[  |[9;9.5[  |[9.5;10] |
+---------|---------|---------|---------|---------|---------|---------|---------|---------|---------|---------|---------|---------|---------|---------|---------|---------|---------|---------|---------|
+ 0.0000  | 0.0000  | 0.0000  | 0.0000  | 0.0000  | 0.0000  | 0.0000  | 0.0000  | 0.0000  | 0.0000  | 1.0000  | 1.0000  | 1.0000  | 1.0000  | 1.0000  | 1.0000  | 1.0000  | 1.0000  | 1.0000  | 1.0000  |
+
+Parameters
+----------
+var : Union[int,str]
+  the current name or the id of the variable
+value: float
+
+Returns
+-------
+pyAgrum.Tensor
+  The representation of the evidence as a :class:`~pyagrum.Tensor`.
+"
+
+
+%feature("docstring") gum::IBayesNet::evLt
+"
+This method is used to set an obvervation on a quasi-continuous variables (:class:`pyagrum
+.DiscretizedVariable` with a large number of ticks) that the variable is less than a given value.
+
+Note
+----
+  - see also :meth:`Tensor.evLt`
+  - see also :meth:`BayesNet.evEq`, :meth:`BayesNet.evGt`, :meth:`BayesNet.evIn`
+
+Parameters
+----------
+var : Union[int,str]
+  the current name or the id of the variable
+value: float
+
+Returns
+-------
+pyAgrum.Tensor
+  The representation of the evidence as a :class:`~pyagrum.Tensor`.
+"
+
+
+%feature("docstring") gum::IBayesNet::evIn
+"
+This method is used to set an obvervation on a quasi-continuous variables (:class:`pyagrum
+.DiscretizedVariable` with a large number of ticks) that the variable is less than a given value.
+
+Note
+----
+  - see also :meth:`Tensor.evIn`
+  - see also :meth:`BayesNet.evEq`, :meth:`BayesNet.evGt`, :meth:`BayesNet.evLt`
+
+Parameters
+----------
+var : Union[int,str]
+  the current name or the id of the variable
+valueMin: float
+  the minimum value
+valueMax: float
+  the maximum value
+
+Returns
+-------
+pyagrum.Tensor
+  The representation of the evidence as a :class:`~pyagrum.Tensor`.
+"

@@ -676,3 +676,118 @@ Returns
 int
   the size in byte of the representation of the Tensor in memory.
 "
+
+
+%feature("docstring") gum::Tensor::evEq
+"
+This static method generates a Tensor representing an observation where a quasi-continuous variable
+(a :class:`pyagrum.DiscretizedVariable` with many ticks) takes a specific given value.
+
+Note
+----
+  - see also :meth:`BayesNet.evEq`
+  - see also :meth:`Tensor.evGt`, :meth:`Tensor.evLt`, :meth:`Tensor.evIn`
+
+Examples
+--------
+>>> A=gum.fastVariable('A[0:10:20]')
+>>> p=gum.Tensor.evEq(A,5)
+>>> p
+(pyagrum.Tensor@000001D7FAB06AD0)
+  A                                                                                                                                                                                                    |
+[0;0.5[  |[0.5;1[  |[1;1.5[  |[1.5;2[  |[2;2.5[  |[2.5;3[  |[3;3.5[  |[3.5;4[  |[4;4.5[  |[4.5;5[  |[5;5.5[  |[5.5;6[  |[6;6.5[  |[6.5;7[  |[7;7.5[  |[7.5;8[  |[8;8.5[  |[8.5;9[  |[9;9.5[  |[9.5;10] |
+---------|---------|---------|---------|---------|---------|---------|---------|---------|---------|---------|---------|---------|---------|---------|---------|---------|---------|---------|---------|
+ 0.0000  | 0.0000  | 0.0000  | 0.0000  | 0.0000  | 0.0000  | 0.0000  | 0.0000  | 0.0000  | 0.0000  | 1.0000  | 0.0000  | 0.0000  | 0.0000  | 0.0000  | 0.0000  | 0.0000  | 0.0000  | 0.0000  | 0.0000  |
+
+Parameters
+----------
+var : pyagrum.DiscretizedVariable
+  the variable to use
+value: float
+
+Returns
+-------
+pyagrum.Tensor
+  The representation of the evidence as a :class:`~pyagrum.Tensor`.
+"
+
+%feature("docstring") gum::Tensor::evGt
+"
+This static method generates a Tensor representing an observation where a quasi-continuous variable
+(a :class:`pyagrum.DiscretizedVariable` with many ticks) takes a value greater than the parameter.
+
+Note
+----
+  - see also :meth:`BayesNet.evGt`
+  - see also :meth:`Tensor.evEq`, :meth:`Tensor.evLt`, :meth:`Tensor.evIn`
+
+Examples
+--------
+>>> A=gum.fastVariable('A[0:10:20]')
+>>> p=gum.Tensor.evGt(A,5)
+>>> p
+(pyagrum.Tensor@000001D7FAB06AD0)
+  A                                                                                                                                                                                                    |
+[0;0.5[  |[0.5;1[  |[1;1.5[  |[1.5;2[  |[2;2.5[  |[2.5;3[  |[3;3.5[  |[3.5;4[  |[4;4.5[  |[4.5;5[  |[5;5.5[  |[5.5;6[  |[6;6.5[  |[6.5;7[  |[7;7.5[  |[7.5;8[  |[8;8.5[  |[8.5;9[  |[9;9.5[  |[9.5;10] |
+---------|---------|---------|---------|---------|---------|---------|---------|---------|---------|---------|---------|---------|---------|---------|---------|---------|---------|---------|---------|
+ 0.0000  | 0.0000  | 0.0000  | 0.0000  | 0.0000  | 0.0000  | 0.0000  | 0.0000  | 0.0000  | 0.0000  | 1.0000  | 1.0000  | 1.0000  | 1.0000  | 1.0000  | 1.0000  | 1.0000  | 1.0000  | 1.0000  | 1.0000  |
+
+Parameters
+----------
+var : pyagrum.DiscretizedVariable
+  the variable to use
+value: float
+
+Returns
+-------
+pyagrum.Tensor
+  The representation of the evidence as a :class:`~pyagrum.Tensor`.
+"
+
+%feature("docstring") gum::Tensor::evLt
+"
+This static method generates a Tensor representing an observation where a quasi-continuous variable
+(a :class:`pyagrum.DiscretizedVariable` with many ticks) takes a value less than the parameter.
+
+Note
+----
+  - see also :meth:`BayesNet.evLt`
+  - see also :meth:`Tensor.evEq`, :meth:`Tensor.evGt`, :meth:`Tensor.evIn`
+
+Parameters
+----------
+var : pyagrum.DiscretizedVariable
+  the variable to use
+value: float
+
+Returns
+-------
+pyagrum.Tensor
+  The representation of the evidence as a :class:`~pyagrum.Tensor`.
+"
+
+
+%feature("docstring") gum::Tensor::evIn
+"
+This static method generates a Tensor representing an observation where a quasi-continuous variable
+(a :class:`pyagrum.DiscretizedVariable` with many ticks) takes a value between the 2 paramerts (min,max)
+
+Note
+----
+  - see also :meth:`BayesNet.evIn`
+  - see also :meth:`Tensor.evEq`, :meth:`Tensor.evLt`, :meth:`Tensor.evGt`
+
+Parameters
+----------
+var : pyagrum.DiscretizedVariable
+  the variable to use
+valueMin: float
+  the minimum value
+valueMax: float
+  the maximum value
+
+Returns
+-------
+pyAgrum.Te nsor
+  The representation of the evidence as a :class:`~pyagrum.Tensor`.
+"

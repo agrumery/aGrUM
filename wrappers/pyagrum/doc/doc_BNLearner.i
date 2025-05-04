@@ -358,6 +358,47 @@ pyagrum.DAG
 "
 
 
+%feature("docstring") gum::learning::BNLearner::addNoChildrenNode
+"
+Add the constraint that this node cannot have any children.
+
+Parameters
+----------
+node : int | str
+  a variable's id or name
+"
+
+%feature("docstring") gum::learning::BNLearner::eraseNoChildrenNode
+"
+Remove the constraint that this node cannot have any children.
+
+Parameters
+----------
+node : int | str
+  a variable's id or name
+"
+
+
+%feature("docstring") gum::learning::BNLearner::addNoParentNode
+"
+Add the constraint that this node cannot have any parent.
+
+Parameters
+----------
+node : int | str
+  a variable's id or name
+"
+
+%feature("docstring") gum::learning::BNLearner::eraseNoParentNode
+"
+Remove the constraint that this node cannot have any parent.
+
+Parameters
+----------
+node : int | str
+  a variable's id or name
+"
+
 %feature("docstring") gum::learning::BNLearner::erasePossibleEdge
 "
 Allow the 2 arcs to be added if necessary.
@@ -813,4 +854,24 @@ Parameters
 ----------
 pyagrum.BNLearner
     the learner whose state is copied.
+"
+
+%feature("docstring") gum::learning::BNLearner::isConstraintBased
+"
+Return wether the current learning method is constraint-based or not.
+
+Returns
+-------
+bool
+    True if the current learning method is constraint-based.
+"
+
+%feature("docstring") gum::learning::BNLearner::isScoreBased
+"
+Return wether the current learning method is score-based or not.
+
+Returns
+-------
+bool
+    True if the current learning method is score-based.
 "

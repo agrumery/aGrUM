@@ -59,6 +59,7 @@ Reference manual
   :maxdepth: 2
 
   BNModel
+  BNinput-output
   BNInference
   BNLearning
   BNTools

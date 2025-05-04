@@ -48,88 +48,89 @@ from .guideline import guideline
 
 
 def isSpecialAction(current: dict[str, str]) -> bool:
-  if current["oneByOne"]:
-    return True
-  if current["stats"]:
-    return True
-  if current["action"] == 'doc' and current["target"] == 'pyAgrum':
-    return True
+    if current["oneByOne"]:
+        return True
+    if current["stats"]:
+        return True
+    if current["action"] == 'doc' and current["target"] == 'pyAgrum':
+        return True
 
-  return current["action"] in set(cfg.specialActions)
+    return current["action"] in set(cfg.specialActions)
 
 
 def specialActions(current: dict[str, str]) -> bool:
-  if current["action"] == "clean":
-    if not current["dry_run"]:
-      cleanAll()
-    print("")
-    return True
+    if current["action"] == "clean":
+        if not current["dry_run"]:
+            cleanAll()
+        print("")
+        return True
 
-  if current["action"] == "show":
-    # action=show is the only action still performed even if dry_run=True
-    showAct2Config(current)
-    print("")
-    return True
+    if current["action"] == "show":
+        # action=show is the only action still performed even if dry_run=True
+        showAct2Config(current)
+        print("")
+        return True
 
-  if current["action"] == "guideline":
-    # trace(current,"Special action [guideline]")
-    nbrError = guideline(current, current['correction'])
-    notif("-----------------------------")
-    if nbrError > 0:
-      if not current['correction']:
-        critic(f"{nbrError} Guideline error(s) found.\n\n" +
-               "Please consider using [act guideline --correction] in order to correct some of these errors.",
-               None, nbrError)
-      else:
-        critic(f"{nbrError} Guideline error(s) found.", None, nbrError)
-    else:
-      notif("No guideline error found.")
+    if current["action"] == "guideline":
+        # trace(current,"Special action [guideline]")
+        nbrError = guideline(current, details=cfg.verbosity,
+                             correction=current['correction'])
+        notif("-----------------------------")
+        if nbrError > 0:
+            if not current['correction']:
+                critic(f"{nbrError} Guideline error(s) found.\n\n" +
+                       "Please consider using [act guideline --correction] in order to correct some of these errors.",
+                       None, nbrError)
+            else:
+                critic(f"{nbrError} Guideline error(s) found.", None, nbrError)
+        else:
+            notif("No guideline error found.")
 
-    print("")
-    return True
+        print("")
+        return True
 
-  if current["action"] in {"wheel", "nightly_wheel"}:
-    wheel(current)
-    return True
+    if current["action"] in {"wheel", "nightly_wheel"}:
+        wheel(current)
+        return True
 
-  if current["oneByOne"]:
-    trace(current, "Special action [oneByOne]")
-    checkAgrumMemoryLeaks(current)
-    return True
+    if current["oneByOne"]:
+        trace(current, "Special action [oneByOne]")
+        checkAgrumMemoryLeaks(current)
+        return True
 
-  if current["stats"]:
-    profileAgrum(current)
-    return True
+    if current["stats"]:
+        profileAgrum(current)
+        return True
 
-  if current["action"] == 'doc' and 'pyAgrum' in current["targets"]:
-    callSphinx(current)
-    return True
+    if current["action"] == 'doc' and 'pyAgrum' in current["targets"]:
+        callSphinx(current)
+        return True
 
-  return False
+    return False
 
 
 def cleanAll():
-  print(f"{cfg.C_WARNING}cleaning all{cfg.C_END} ...", end="")
-  sys.stdout.flush()
-  if os.path.isdir("build"):
-    shutil.rmtree("build")
-    print(f"{cfg.C_VALUE}done{cfg.C_END}")
-  else:
-    print(f"{cfg.C_VALUE}nothing to do{cfg.C_END}")
+    print(f"{cfg.C_WARNING}cleaning all{cfg.C_END} ...", end="")
+    sys.stdout.flush()
+    if os.path.isdir("build"):
+        shutil.rmtree("build")
+        print(f"{cfg.C_VALUE}done{cfg.C_END}")
+    else:
+        print(f"{cfg.C_VALUE}nothing to do{cfg.C_END}")
 
 
 def showAct2Config(current: dict[str, str]):
-  def aff_key(key: str):
-    notif(f"[{key}] => {current[key]}")
+    def aff_key(key: str):
+        notif(f"[{key}] => {current[key]}")
 
-  for k in cfg.mains:
-    aff_key(k)
-  print("")
+    for k in cfg.mains:
+        aff_key(k)
+    print("")
 
-  for k in current.keys():
-    if k not in cfg.mains and k not in cfg.non_persistent:
-      aff_key(k)
-  print("")
+    for k in current.keys():
+        if k not in cfg.mains and k not in cfg.non_persistent:
+            aff_key(k)
+    print("")
 
-  for k in cfg.non_persistent:
-    aff_key(k)
+    for k in cfg.non_persistent:
+        aff_key(k)

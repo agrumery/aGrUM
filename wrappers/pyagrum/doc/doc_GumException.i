@@ -60,3 +60,11 @@ Returns
 str
 	the error call stack
 "
+
+%feature("docstring") gum::Exception::what
+"
+Returns
+-------
+str
+	the error message
+"

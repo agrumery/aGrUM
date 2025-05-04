@@ -33,7 +33,7 @@
 #   gitlab   : https://gitlab.com/agrumery/agrum                           #
 #                                                                          #
 ############################################################################
-import time
+
 import unittest
 
 import pyagrum as gum
