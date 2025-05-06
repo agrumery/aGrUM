@@ -41,28 +41,28 @@ from .utils import notif, safe_cd
 
 
 def _callSphinx(current: dict[str, str], cmd: str):
-  if not current['dry_run']:
+  if not current["dry_run"]:
     proc = Popen(cmd, shell=True, stdout=PIPE, stderr=STDOUT)
     out = proc.stdout.readlines()
     for line in out:
       try:
-        print(line.decode('utf-8'), end="")
+        print(line.decode("utf-8"), end="")
       except ValueError:
         print(str(line), end="")
   else:
-    notif('[' + cmd + ']')
+    notif("[" + cmd + "]")
 
 
 def callSphinx(current: dict[str, str]):
-  if current['build'] != 'doc-only':
+  if current["build"] != "doc-only":
     notif("Compiling pyAgrum")
-    _callSphinx(current, f'{cfg.python} act lib pyAgrum release --no-fun')
+    _callSphinx(current, f"{cfg.python} act lib pyAgrum release --no-fun")
 
   notif("Sphinxing pyAgrum")
   safe_cd(current, "wrappers")
   safe_cd(current, "pyagrum")
   safe_cd(current, "doc")
-  _callSphinx(current, 'make')
+  _callSphinx(current, "make")
 
   safe_cd(current, "..")
   safe_cd(current, "..")

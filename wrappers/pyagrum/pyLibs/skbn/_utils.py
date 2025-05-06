@@ -38,15 +38,15 @@ from typing import Any
 
 import pandas
 import sklearn
-import numpy
 import pandas as pd
 
 import pyagrum
 import pyagrum.lib.bn2roc as bn2roc
 
 
-def _CalculateThreshold(bn: pyagrum.BayesNet, targetName: str, csvfilename: str, usePR: bool, beta: float,
-                        significant_digits: int):
+def _CalculateThreshold(
+  bn: pyagrum.BayesNet, targetName: str, csvfilename: str, usePR: bool, beta: float, significant_digits: int
+):
   """
   The Bayesian network gives us the probability of the target knowing the values of the other variables.
   The value above which the probability needs to be for the input to be classified as that class is called the threshold.
@@ -76,17 +76,31 @@ def _CalculateThreshold(bn: pyagrum.BayesNet, targetName: str, csvfilename: str,
   target = bn.variableFromName(targetName)
 
   if usePR:
-    _, _, _, threshold = bn2roc.showROC_PR(bn, csvfilename, targetName,
-                                           target.labels()[1], beta=beta,
-                                           show_fig=False, show_ROC=False, show_PR=False,
-                                           significant_digits=significant_digits,
-                                           show_progress=False)
+    _, _, _, threshold = bn2roc.showROC_PR(
+      bn,
+      csvfilename,
+      targetName,
+      target.labels()[1],
+      beta=beta,
+      show_fig=False,
+      show_ROC=False,
+      show_PR=False,
+      significant_digits=significant_digits,
+      show_progress=False,
+    )
   else:
-    _, threshold, _, _ = bn2roc.showROC_PR(bn, csvfilename, targetName,
-                                           target.labels()[1], beta=beta,
-                                           show_fig=False, show_ROC=False, show_PR=False,
-                                           significant_digits=significant_digits,
-                                           show_progress=False)
+    _, threshold, _, _ = bn2roc.showROC_PR(
+      bn,
+      csvfilename,
+      targetName,
+      target.labels()[1],
+      beta=beta,
+      show_fig=False,
+      show_ROC=False,
+      show_PR=False,
+      significant_digits=significant_digits,
+      show_progress=False,
+    )
 
   return threshold
 
@@ -98,7 +112,7 @@ def _ImplementScore(scoringType: str, learner: pyagrum.BNLearner):
   Parameters
   ----------
       scoringType: str
-          A string designating the type of scoring we want to use. Since scoring is used
+          A string designating the scoring we want to use. Since scoring is used
           while constructing the network and not when learning its Parameters,
           the scoring will be ignored if using a learning algorithm
           with a fixed network structure such as Chow-Liu, TAN or NaiveBayes.
@@ -113,24 +127,26 @@ def _ImplementScore(scoringType: str, learner: pyagrum.BNLearner):
   """
   if scoringType is None:
     return
-  elif scoringType == 'AIC':
+  elif scoringType == "AIC":
     learner.useScoreAIC()
-  elif scoringType == 'BD':
+  elif scoringType == "BD":
     learner.useScoreBD()
-  elif scoringType == 'BDeu':  # default
+  elif scoringType == "BDeu":  # default
     learner.useScoreBDeu()
-  elif scoringType == 'BIC':
+  elif scoringType == "BIC":
     learner.useScoreBIC()
-  elif scoringType == 'K2':
+  elif scoringType == "K2":
     learner.useScoreK2()
-  elif scoringType == 'Log2':
+  elif scoringType == "Log2":
     learner.useScoreLog2Likelihood()
   else:
-    raise ValueError("Invalid scoringType! Possible values are : \
-                          AIC , BD , BDeu, BIC , K2 and Log2")
+    raise ValueError(
+      "Invalid scoringType! Possible values are : \
+                          AIC , BD , BDeu, BIC , K2 and Log2"
+    )
 
 
-def _ImplementPrior(prior: str, learner: pyagrum.BNLearner, priorWeight: float, DirichletCsv: str):
+def _ImplementPrior(prior: str, learner: pyagrum.BNLearner, priorWeight: float, DirichletSrc: str):
   """
   Tells the Bayesian network which prior to use
 
@@ -144,26 +160,24 @@ def _ImplementPrior(prior: str, learner: pyagrum.BNLearner, priorWeight: float, 
           learner object from pyagrum to apply the score
       priorWeight: float
           The weight used for the prior.
-      DirichletCsv: str
+      DirichletSrc: str
           the file name of the csv file we want to use for the dirichlet prior.
           Will be ignored if prior is not set to Dirichlet.
   """
-  if prior == 'Smoothing':
+  if prior == "Smoothing":
     learner.useSmoothingPrior(priorWeight)
-  elif prior == 'Dirichlet':
-    if DirichletCsv is None:
-      raise ValueError(
-        "Must specify file for dirichlet prior as a parameter to the classifier if using a dirichlet prior. DirichletCsv cannot be set to none if prior is set to Dirichlet")
-    learner.useDirichletPrior(DirichletCsv, priorWeight)
-  elif prior == 'BDeu':
+  elif prior == "Dirichlet":
+    if DirichletSrc is None:
+      raise ValueError("A source (csv or model) must be specified for dirichlet prior")
+    learner.useDirichletPrior(DirichletSrc, priorWeight)
+  elif prior == "BDeu":
     learner.useBDeuPrior(priorWeight)
-  elif prior == 'NoPrior':
+  elif prior == "NoPrior":
     learner.useNoPrior()
   elif prior is None:  # default : (small) Laplace's adjustment
     learner.useSmoothingPrior(0.01)
   else:
-    raise ValueError(
-      "Invalid prior! Possible values are : Smoothing , Dirichlet , BDeu and NoPrior")
+    raise ValueError("Invalid prior! Possible values are : Smoothing , Dirichlet , BDeu and NoPrior")
 
 
 def _ImplementConstraints(constraints: dict[str, Any], learner: pyagrum.BNLearner):
@@ -175,32 +189,35 @@ def _ImplementConstraints(constraints: dict[str, Any], learner: pyagrum.BNLearne
   ----------
       constraints: dict()
           A dictionary designating the constraints that we want to put on the structure of the Bayesian network.
-          Ignored if using a learning algorithm where the structure is fixed such as TAN or NaiveBayes.
-          the keys of the dictionary should be the strings "PossibleEdges" , "MandatoryArcs" and  "ForbiddenArcs".
-          The format of the values should be a tuple of strings (tail,head) which designates the string arc from tail to head.
-          For example if we put the value ("x0"."y") in MandatoryArcs the network will surely have an arc going from x0 to y.
-          Note: PossibleEdge between nodes x and y allows for either (x,y) or (y,x) (or none of them) to be added to the Bayesian network, while the others are not symmetric.
+          Ignored if using a learning algorithm where the structure is fixed, such as TAN or NaiveBayes.
+          The keys of the dictionary should be the strings "PossibleEdges", "MandatoryArcs" and "ForbiddenArcs".
+          The format of the values should be a tuple of strings (tail,head) which designates the string arc from tail to
+          head. For example, if we put the value ("x0"."y") in MandatoryArcs, the network will surely have an arc
+          going from x0 to y.
+          Note: PossibleEdge between nodes x and y allows for either (x,y) or (y,x) (or none of them) to be added to
+          the Bayesian network, while the others are not symmetric.
       learner:
           learner object from pyagrum to apply the score
   """
   if constraints is None:  # default
     return
   if type(constraints) is not dict:
-    raise ValueError(
-      "Invalid syntax for constraints. Constraints should be passed as a dictionary")
+    raise ValueError("Invalid syntax for constraints. Constraints should be passed as a dictionary")
   for key in constraints:
-    if key == 'MandatoryArcs':
-      for (tail, head) in constraints[key]:
+    if key == "MandatoryArcs":
+      for tail, head in constraints[key]:
         learner.addMandatoryArc(tail, head)
-    elif key == 'ForbiddenArcs':
-      for (tail, head) in constraints[key]:
+    elif key == "ForbiddenArcs":
+      for tail, head in constraints[key]:
         learner.addForbiddenArc(tail, head)
-    elif key == 'PossibleEdges':
-      for (tail, head) in constraints[key]:
+    elif key == "PossibleEdges":
+      for tail, head in constraints[key]:
         learner.addPossibleEdge(tail, head)
     else:
-      raise ValueError("Invalid syntax: the only keys in the constraints dictionary should be \
-                             MandatoryArcs, PossibleEdges and ForbiddenArcs")
+      raise ValueError(
+        "Invalid syntax: the only keys in the constraints dictionary should be \
+                             MandatoryArcs, PossibleEdges and ForbiddenArcs"
+      )
 
 
 def _DFNames(X: pandas.DataFrame):
@@ -267,8 +284,7 @@ def _createCSVfromNDArrays(X, y, target: str, variableNameIndexDictionary: dict[
   # verifies if the shape of
   X, y = sklearn.utils.check_X_y(X, y, dtype=None, accept_sparse=True)
   y = pd.DataFrame(y, columns=[target])
-  variableList = [k for k, v in sorted(
-    variableNameIndexDictionary.items(), key=(lambda item: item[1]), reverse=False)]
+  variableList = [k for k, v in sorted(variableNameIndexDictionary.items(), key=(lambda item: item[1]), reverse=False)]
   X = pd.DataFrame(X, columns=variableList)
 
   # We construct the list of variable names.

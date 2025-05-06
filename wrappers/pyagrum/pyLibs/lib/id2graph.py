@@ -105,12 +105,15 @@ def ID2dot(diag, size=None):
   res += "\n"
   for node in diag.nodes():
     for chi in diag.children(node):
-      res += '  "' + diag.variable(node).name() + '"->"' + \
-             diag.variable(chi).name() + '"'
+      res += '  "' + diag.variable(node).name() + '"->"' + diag.variable(chi).name() + '"'
       if diag.isDecisionNode(chi):
-        res += f' [style="{gum.config["influenceDiagram", "decision_arc_style"]}", color = "{gumcols.getBlackInTheme()}"]'
+        res += (
+          f' [style="{gum.config["influenceDiagram", "decision_arc_style"]}", color = "{gumcols.getBlackInTheme()}"]'
+        )
       elif diag.isUtilityNode(chi):
-        res += f' [style="{gum.config["influenceDiagram", "utility_arc_style"]}", color = "{gumcols.getBlackInTheme()}"]'
+        res += (
+          f' [style="{gum.config["influenceDiagram", "utility_arc_style"]}", color = "{gumcols.getBlackInTheme()}"]'
+        )
       else:
         res += f' [color = "{gumcols.getBlackInTheme()}"]'
       res += ";\n"
@@ -163,25 +166,24 @@ def LIMIDinference2dot(diag, size, engine, evs, targets):
 
   temp_dir = mkdtemp("", "tmp", None)  # with TemporaryDirectory() as temp_dir:
 
-  dotstr = "digraph structs {\n  fontcolor=\"" + \
-           gumcols.getBlackInTheme() + "\";bgcolor=\"transparent\";"
+  dotstr = 'digraph structs {\n  fontcolor="' + gumcols.getBlackInTheme() + '";bgcolor="transparent";'
 
   fontname, fontsize = gumcols.fontFromMatplotlib()
   dotstr += f'node[fontname="{fontname}",fontsize="{fontsize}"];'
 
-  fmt = '.' + gum.config["influenceDiagram", "utility_visible_digits"] + 'f'
+  fmt = "." + gum.config["influenceDiagram", "utility_visible_digits"] + "f"
   if gum.config.asBool["influenceDiagram", "utility_show_loss"]:
-    titut = f'mEL {-meu["mean"]:{fmt}}'
+    titut = f"mEL {-meu['mean']:{fmt}}"
   else:
-    titut = f'MEU {meu["mean"]:{fmt}}'
+    titut = f"MEU {meu['mean']:{fmt}}"
   if gum.config.asBool["influenceDiagram", "utility_show_stdev"]:
-    titut += f' (stdev={math.sqrt(meu["variance"]):{fmt}})'
+    titut += f" (stdev={math.sqrt(meu['variance']):{fmt}})"
 
   slabel = f'label="{titut}'
 
   if gum.config.asBool["notebook", "show_inference_time"]:
     slabel += f"\nInference in {1000 * (stopTime - startTime):6.2f}ms"
-  dotstr += slabel + "\";\n"
+  dotstr += slabel + '";\n'
 
   for nid in diag.nodes():
     name = diag.variable(nid).name()
@@ -201,18 +203,16 @@ def LIMIDinference2dot(diag, size, engine, evs, targets):
       shape = gum.config["influenceDiagram", "utility_shape"]
 
     # 'hard' colour for evidence (?)
-    if nid in ie.hardEvidenceNodes()|ie.softEvidenceNodes():
+    if nid in ie.hardEvidenceNodes() | ie.softEvidenceNodes():
       bgcolor = gum.config["notebook", "evidence_bgcolor"]
       fgcolor = gum.config["notebook", "evidence_fgcolor"]
 
-    styleattribute = 'style=filled, height=0,margin=0.1'
+    styleattribute = "style=filled, height=0,margin=0.1"
     colorattribute = f'fillcolor="{bgcolor}", fontcolor="{fgcolor}", color="#000000"'
 
     if not diag.isUtilityNode(nid):
       if len(targets) == 0 or name in targets or nid in targets:
-        filename = temp_dir + \
-                   hashlib.md5(name.encode()).hexdigest() + "." + \
-                   gum.config["notebook", "graph_format"]
+        filename = temp_dir + hashlib.md5(name.encode()).hexdigest() + "." + gum.config["notebook", "graph_format"]
         saveFigProba(ie.posterior(name), filename, bgcolor=bgcolor, util=ie.posteriorUtility(nid), txtcolor=fgcolor)
         dotstr += f' "{name}" [shape=rectangle,image="{filename}",label="", {colorattribute}];\n'
       else:
@@ -225,10 +225,10 @@ def LIMIDinference2dot(diag, size, engine, evs, targets):
       else:
         coef = 1
 
-      fmt = f'.{gum.config.asInt["influenceDiagram", "utility_visible_digits"]}f'
-      labut = f'{name} : {coef * mv["mean"]:{fmt}}'
+      fmt = f".{gum.config.asInt['influenceDiagram', 'utility_visible_digits']}f"
+      labut = f"{name} : {coef * mv['mean']:{fmt}}"
       if gum.config.asBool["influenceDiagram", "utility_show_stdev"]:
-        labut += f' ({math.sqrt(mv["variance"]):{fmt}})'
+        labut += f" ({math.sqrt(mv['variance']):{fmt}})"
 
       dotstr += f' "{name}" [label="{labut}",{colorattribute},{styleattribute},shape={shape}]'
 
@@ -236,8 +236,7 @@ def LIMIDinference2dot(diag, size, engine, evs, targets):
   dotstr += "\n"
   for node in diag.nodes():
     for chi in diag.children(node):
-      dotstr += '  "' + diag.variable(node).name() + '"->"' + \
-                diag.variable(chi).name() + '"'
+      dotstr += '  "' + diag.variable(node).name() + '"->"' + diag.variable(chi).name() + '"'
       if diag.isDecisionNode(chi):
         dotstr += f' [style="{gum.config["influenceDiagram", "decision_arc_style"]}"]'
       elif diag.isUtilityNode(chi):

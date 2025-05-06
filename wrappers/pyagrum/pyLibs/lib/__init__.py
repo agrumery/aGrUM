@@ -37,5 +37,6 @@
 """
 pyagrum.lib is a set of python tools for pyagrum.
 """
+
 __author__ = "Pierre-Henri Wuillemin"
 __copyright__ = "(c) 2016-2024 PARIS"

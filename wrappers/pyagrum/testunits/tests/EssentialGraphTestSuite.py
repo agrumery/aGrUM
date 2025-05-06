@@ -48,8 +48,7 @@ class TestEssentialGraph(pyAgrumTestCase):
     self.assertEqual(eg.size(), 3)
     self.assertEqual(eg.sizeArcs(), 0)
     self.assertEqual(eg.sizeEdges(), 2)
-    self.assertEqual(len(eg.nodes()) , eg.size())
-
+    self.assertEqual(len(eg.nodes()), eg.size())
 
   def testVstructure(self):
     bn = gum.fastBN("a->b;c->b")
@@ -102,6 +101,7 @@ class TestEssentialGraph(pyAgrumTestCase):
     self.assertEqual(eg.nameFromId(2), "U")
     self.assertEqual(eg.nameFromId(3), "Y")
     self.assertEqual(eg.nameFromId(4), "W")
+
 
 ts = unittest.TestSuite()
 addTests(ts, TestEssentialGraph)

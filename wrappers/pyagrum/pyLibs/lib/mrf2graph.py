@@ -39,10 +39,8 @@ The purpose of this module is to provide tools for mapping Markov random field (
 be displayed/saved as image.
 """
 
-
 import time
 import hashlib
-import warnings
 
 import matplotlib.pyplot as plt
 import pydot as dot
@@ -53,9 +51,17 @@ import pyagrum.lib._colors as gumcols
 from .proba_histogram import saveFigProba
 
 
-def MRF2UGdot(mrf, size="4", nodeColor=None, edgeWidth=None, edgeLabel=None, edgeColor=None, cmapNode=None,
-              cmapEdge=None,
-              showMsg=None):
+def MRF2UGdot(
+  mrf,
+  size="4",
+  nodeColor=None,
+  edgeWidth=None,
+  edgeLabel=None,
+  edgeColor=None,
+  cmapNode=None,
+  cmapEdge=None,
+  showMsg=None,
+):
   """
   Create a pydot representation of the Markov random field as an undirected graph
 
@@ -99,7 +105,7 @@ def MRF2UGdot(mrf, size="4", nodeColor=None, edgeWidth=None, edgeLabel=None, edg
     minedges = min(edgeWidth.values())
     maxedges = max(edgeWidth.values())
 
-  graph = dot.Dot(graph_type='graph', bgcolor="transparent")
+  graph = dot.Dot(graph_type="graph", bgcolor="transparent")
 
   for n in mrf.names():
     if nodeColor is None or n not in nodeColor:
@@ -111,11 +117,9 @@ def MRF2UGdot(mrf, size="4", nodeColor=None, edgeWidth=None, edgeLabel=None, edg
       fgcol = gumcols.proba2fgcolor(nodeColor[n], cmapNode)
       res = f" : {nodeColor[n] if showMsg is None else showMsg[n]:2.5f}"
 
-    node = dot.Node('"' + n + '"', style="filled",
-                    fillcolor=bgcol,
-                    fontcolor=fgcol,
-                    tooltip=f'"({mrf.idFromName(n)}) {n}{res}"'
-                    )
+    node = dot.Node(
+      '"' + n + '"', style="filled", fillcolor=bgcol, fontcolor=fgcol, tooltip=f'"({mrf.idFromName(n)}) {n}{res}"'
+    )
     graph.add_node(node)
 
   for a in mrf.edges():
@@ -136,12 +140,15 @@ def MRF2UGdot(mrf, size="4", nodeColor=None, edgeWidth=None, edgeLabel=None, edg
     if edgeLabel is not None and a in edgeLabel:
       lb = edgeLabel[a]
 
-    edge = dot.Edge('"' + mrf.variable(a[0]).name() + '"',
-                    '"' + mrf.variable(a[1]).name() + '"',
-                    label=lb, fontsize="10",
-                    penwidth=pw, color=col,
-                    tooltip=av
-                    )
+    edge = dot.Edge(
+      '"' + mrf.variable(a[0]).name() + '"',
+      '"' + mrf.variable(a[1]).name() + '"',
+      label=lb,
+      fontsize="10",
+      penwidth=pw,
+      color=col,
+      tooltip=av,
+    )
     graph.add_edge(edge)
 
   if size is None:
@@ -177,7 +184,7 @@ def MRF2FactorGraphdot(mrf, size=None, nodeColor=None, factorColor=None, cmapNod
   if cmapNode is None:
     cmapNode = plt.get_cmap(gum.config["notebook", "default_node_cmap"])
 
-  graph = dot.Dot(graph_type='graph', bgcolor="transparent", layout=gum.config["factorgraph","graph_layout"])
+  graph = dot.Dot(graph_type="graph", bgcolor="transparent", layout=gum.config["factorgraph", "graph_layout"])
 
   for n in mrf.names():
     if nodeColor is None or n not in nodeColor:
@@ -189,14 +196,17 @@ def MRF2FactorGraphdot(mrf, size=None, nodeColor=None, factorColor=None, cmapNod
       fgcol = gumcols.proba2fgcolor(nodeColor[n], cmapNode)
       res = f" : {nodeColor[n] if showMsg is None else showMsg[n]:2.5f}"
 
-    node = dot.Node('"' + n + '"',
-                    style="filled",
-                    fillcolor=bgcol,
-                    fontcolor=fgcol,
-                    shape="rectangle",
-                    margin=0.04, width=0, height=0,
-                    tooltip=f'"({mrf.idFromName(n)}) {n}{res}"'
-                    )
+    node = dot.Node(
+      '"' + n + '"',
+      style="filled",
+      fillcolor=bgcol,
+      fontcolor=fgcol,
+      shape="rectangle",
+      margin=0.04,
+      width=0,
+      height=0,
+      tooltip=f'"({mrf.idFromName(n)}) {n}{res}"',
+    )
     graph.add_node(node)
 
   def factorname(factor):
@@ -207,22 +217,17 @@ def MRF2FactorGraphdot(mrf, size=None, nodeColor=None, factorColor=None, cmapNod
       bgcol = gum.config["factorgraph", "default_factor_bgcolor"]
     else:
       bgcol = gumcols.proba2bgcolor(factorColor(f), cmapNode)
-    node = dot.Node(factorname(f),
-                    style="filled",
-                    fillcolor=bgcol,
-                    shape="point",
-                    width=0.1,
-                    height=0.1
-                    )
+    node = dot.Node(factorname(f), style="filled", fillcolor=bgcol, shape="point", width=0.1, height=0.1)
     graph.add_node(node)
 
   for f in mrf.factors():
     for n in f:
-      edge = dot.Edge(factorname(f),
-                      '"' + mrf.variable(n).name() + '"',
-                      color=gumcols.getBlackInTheme(),
-                      len=gum.config["factorgraph", "edge_length"]
-                      )
+      edge = dot.Edge(
+        factorname(f),
+        '"' + mrf.variable(n).name() + '"',
+        color=gumcols.getBlackInTheme(),
+        len=gum.config["factorgraph", "edge_length"],
+      )
       graph.add_edge(edge)
 
   if size is None:
@@ -230,10 +235,21 @@ def MRF2FactorGraphdot(mrf, size=None, nodeColor=None, factorColor=None, cmapNod
   graph.set_size(size)
   return graph
 
-def MRFinference2UGdot(mrf, size=None, engine=None, evs=None, targets=None, nodeColor=None, factorColor=None,
-                       arcWidth=None, arcColor=None,
-                       cmapNode=None, cmapArc=None, view=None
-                       ):
+
+def MRFinference2UGdot(
+  mrf,
+  size=None,
+  engine=None,
+  evs=None,
+  targets=None,
+  nodeColor=None,
+  factorColor=None,
+  arcWidth=None,
+  arcColor=None,
+  cmapNode=None,
+  cmapArc=None,
+  view=None,
+):
   """
   create a pydot representation of an inference in a MRF as an UG
 
@@ -279,10 +295,10 @@ def MRFinference2UGdot(mrf, size=None, engine=None, evs=None, targets=None, node
   stopTime = time.time()
 
   from tempfile import mkdtemp
+
   temp_dir = mkdtemp("", "tmp", None)  # with TemporaryDirectory() as temp_dir:
 
-  dotstr = "graph structs {\n  fontcolor=\"" + \
-           gumcols.getBlackInTheme() + "\";bgcolor=\"transparent\";"
+  dotstr = 'graph structs {\n  fontcolor="' + gumcols.getBlackInTheme() + '";bgcolor="transparent";'
 
   if gum.config.asBool["notebook", "show_inference_time"]:
     dotstr += f'  label="Inference in {1000 * (stopTime - startTime):6.2f}ms";\n'
@@ -305,16 +321,14 @@ def MRFinference2UGdot(mrf, size=None, engine=None, evs=None, targets=None, node
       fgcol = gumcols.proba2fgcolor(nodeColor[name], cmapNode)
 
     # 'hard' colour for evidence (?)
-    if nid in ie.hardEvidenceNodes()|ie.softEvidenceNodes():
+    if nid in ie.hardEvidenceNodes() | ie.softEvidenceNodes():
       bgcol = gum.config["notebook", "evidence_bgcolor"]
       fgcol = gum.config["notebook", "evidence_fgcolor"]
 
     colorattribute = f'fillcolor="{bgcol}", fontcolor="{fgcol}", color="#000000"'
 
     if len(targets) == 0 or name in targets or nid in targets:
-      filename = temp_dir + \
-                 hashlib.md5(name.encode()).hexdigest() + "." + \
-                 gum.config["notebook", "graph_format"]
+      filename = temp_dir + hashlib.md5(name.encode()).hexdigest() + "." + gum.config["notebook", "graph_format"]
       saveFigProba(ie.posterior(name), filename, bgcolor=bgcol)
       dotstr += f' "{name}" [shape=rectangle,image="{filename}",label="", {colorattribute}];\n'
     else:
@@ -335,7 +349,7 @@ def MRFinference2UGdot(mrf, size=None, engine=None, evs=None, targets=None, node
       col = gumcols.proba2color(arcColor[a], cmapArc)
 
     dotstr += f' "{mrf.variable(n).name()}"--"{mrf.variable(j).name()}" [penwidth="{pw}",tooltip="{av}",color="{col}"];'
-  dotstr += '}'
+  dotstr += "}"
 
   g = dot.graph_from_dot_data(dotstr)[0]
 
@@ -346,10 +360,10 @@ def MRFinference2UGdot(mrf, size=None, engine=None, evs=None, targets=None, node
 
   return g
 
-def MRFinference2FactorGraphdot(mrf, size=None, engine=None, evs=None, targets=None,
-                                nodeColor=None, factorColor=None,
-                                cmapNode=None
-                                ):
+
+def MRFinference2FactorGraphdot(
+  mrf, size=None, engine=None, evs=None, targets=None, nodeColor=None, factorColor=None, cmapNode=None
+):
   """
   create a pydot representation of an inference in a MRF as an factor graph
 
@@ -380,9 +394,10 @@ def MRFinference2FactorGraphdot(mrf, size=None, engine=None, evs=None, targets=N
   stopTime = time.time()
 
   from tempfile import mkdtemp
+
   temp_dir = mkdtemp("", "tmp", None)  # with TemporaryDirectory() as temp_dir:
   dotstr = f'''graph{{ 
-    layout="{gum.config["factorgraph","graph_layout"]}";
+    layout="{gum.config["factorgraph", "graph_layout"]}";
     fontcolor="{gumcols.getBlackInTheme()}";
     bgcolor="transparent";
   '''
@@ -390,9 +405,14 @@ def MRFinference2FactorGraphdot(mrf, size=None, engine=None, evs=None, targets=N
   if gum.config.asBool["notebook", "show_inference_time"]:
     dotstr += f'  label="Inference in {1000 * (stopTime - startTime):6.2f}ms";\n'
 
-  dotstr += '  node [fillcolor="' + gum.config["notebook", 'default_node_bgcolor'] + \
-            '", style=filled,color="' + \
-            gum.config["notebook", "default_node_fgcolor"] + '"];' + "\n"
+  dotstr += (
+    '  node [fillcolor="'
+    + gum.config["notebook", "default_node_bgcolor"]
+    + '", style=filled,color="'
+    + gum.config["notebook", "default_node_fgcolor"]
+    + '"];'
+    + "\n"
+  )
   dotstr += '  edge [color="' + gumcols.getBlackInTheme() + '"];' + "\n"
 
   for nid in mrf.nodes():
@@ -409,15 +429,13 @@ def MRFinference2FactorGraphdot(mrf, size=None, engine=None, evs=None, targets=N
       fgcol = gumcols.proba2fgcolor(nodeColor[name], cmapNode)
 
     # 'hard' colour for evidence (?)
-    if nid in ie.hardEvidenceNodes()|ie.softEvidenceNodes():
+    if nid in ie.hardEvidenceNodes() | ie.softEvidenceNodes():
       bgcol = gum.config["notebook", "evidence_bgcolor"]
       fgcol = gum.config["notebook", "evidence_fgcolor"]
 
     colorattribute = f'fillcolor="{bgcol}", fontcolor="{fgcol}", color="#000000"'
     if len(targets) == 0 or name in targets or nid in targets:
-      filename = temp_dir + \
-                 hashlib.md5(name.encode()).hexdigest() + "." + \
-                 gum.config["notebook", "graph_format"]
+      filename = temp_dir + hashlib.md5(name.encode()).hexdigest() + "." + gum.config["notebook", "graph_format"]
       saveFigProba(ie.posterior(name), filename, bgcolor=bgcol)
       dotstr += f' "{name}" [shape=rectangle,image="{filename}",label="", {colorattribute}];\n'
     else:
@@ -431,13 +449,13 @@ def MRFinference2FactorGraphdot(mrf, size=None, engine=None, evs=None, targets=N
       bgcol = gum.config["factorgraph", "default_factor_bgcolor"]
     else:
       bgcol = gumcols.proba2bgcolor(factorColor(f), cmapNode)
-    dotstr += f'  {factorname(f)} [style=filled,fillcolor={bgcol},shape=point,width=0.1,height=0.1];\n'
+    dotstr += f"  {factorname(f)} [style=filled,fillcolor={bgcol},shape=point,width=0.1,height=0.1];\n"
 
   for f in mrf.factors():
     col = gumcols.getBlackInTheme()
     for n in f:
       dotstr += f' {factorname(f)}->"{mrf.variable(n).name()}" [tooltip="{f}:{n}",color="{col}",fillcolor="{bgcol}",len="{gum.config["factorgraph", "edge_length_inference"]}"];\n'
-  dotstr += '}'
+  dotstr += "}"
 
   g = dot.graph_from_dot_data(dotstr)[0]
 

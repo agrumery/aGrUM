@@ -65,9 +65,7 @@ class CausalModel:
       By default, the arcs between variables affected by a common latent variable will be removed but this can be avoided by setting ``keepArcs`` to ``True``
   """
 
-  def __init__(self, bn: "pyagrum.BayesNet",
-               latentVarsDescriptor: LatentDescriptorList = None,
-               keepArcs: bool = False):
+  def __init__(self, bn: "pyagrum.BayesNet", latentVarsDescriptor: LatentDescriptorList = None, keepArcs: bool = False):
     self.__observationalBN = bn
     self.__latentVarsDescriptor = latentVarsDescriptor
     self.__keepArcs = keepArcs
@@ -89,8 +87,7 @@ class CausalModel:
     # latent variables and arcs from latent variables
     self.__lat: NodeSet = set()
 
-    self.__names = {nId: self.__causalBN.variable(
-      nId).name() for nId in self.__causalBN.nodes()}
+    self.__names = {nId: self.__causalBN.variable(nId).name() for nId in self.__causalBN.nodes()}
 
     for n, ls in latentVarsDescriptor:
       self.addLatentVariable(n, ls, keepArcs)
@@ -101,9 +98,7 @@ class CausalModel:
 
     :return: the copy
     """
-    return CausalModel(pyagrum.BayesNet(self.__observationalBN),
-                       self.__latentVarsDescriptor,
-                       self.__keepArcs)
+    return CausalModel(pyagrum.BayesNet(self.__observationalBN), self.__latentVarsDescriptor, self.__keepArcs)
 
   def addLatentVariable(self, name: str, lchild: Tuple[str, str], keepArcs: bool = False) -> None:
     """
@@ -124,8 +119,7 @@ class CausalModel:
     self.__names[id_latent] = name
 
     for item in lchild:
-      j = self.__observationalBN.idFromName(
-        item) if isinstance(item, str) else item
+      j = self.__observationalBN.idFromName(item) if isinstance(item, str) else item
       self.addCausalArc(id_latent, j)
 
     if not keepArcs:
@@ -145,16 +139,16 @@ class CausalModel:
     res = "digraph {"
 
     # latent variables
-    if pyagrum.config.asBool['causal', 'show_latent_names']:
+    if pyagrum.config.asBool["causal", "show_latent_names"]:
       shap = "ellipse"
     else:
       shap = "point"
 
     for n in self.nodes():
       if n in self.latentVariablesIds():
-        res +=f'''
-    "{self.names()[n]}" [fillcolor="{pyagrum.config['causal', 'default_node_bgcolor']}",
-          fontcolor="{pyagrum.config['causal', 'default_node_fgcolor']}",
+        res += f'''
+    "{self.names()[n]}" [fillcolor="{pyagrum.config["causal", "default_node_bgcolor"]}",
+          fontcolor="{pyagrum.config["causal", "default_node_fgcolor"]}",
           style=filled,shape={shap}];
           
       '''
@@ -162,9 +156,9 @@ class CausalModel:
     # not latent variables
     for n in self.nodes():
       if n not in self.latentVariablesIds():
-        res +=f'''
-    "{self.names()[n]}" [fillcolor="{pyagrum.config['causal', 'default_node_bgcolor']}",
-          fontcolor="{pyagrum.config['causal', 'default_node_fgcolor']}",
+        res += f'''
+    "{self.names()[n]}" [fillcolor="{pyagrum.config["causal", "default_node_bgcolor"]}",
+          fontcolor="{pyagrum.config["causal", "default_node_fgcolor"]}",
           style=filled,shape="ellipse"];
           
       '''
@@ -174,8 +168,8 @@ class CausalModel:
       if a in self.latentVariablesIds() or b in self.latentVariablesIds():
         res += ' [style="dashed"];'
       else:
-        black_color = pyagrum.config['notebook', 'default_arc_color']
-        res += ' [color="' + black_color + ':' + black_color + '"];'
+        black_color = pyagrum.config["notebook", "default_arc_color"]
+        res += ' [color="' + black_color + ":" + black_color + '"];'
       res += "\n"
 
     res += "\n};"
@@ -195,7 +189,7 @@ class CausalModel:
     """
     return self.__observationalBN
 
-  def connectedComponents(self) -> Dict[int,NodeSet]:
+  def connectedComponents(self) -> Dict[int, NodeSet]:
     """
     Return a map of connected components and their nodes.
 
@@ -334,8 +328,9 @@ class CausalModel:
     """
     return self.__causalBN.arcs()
 
-  def backDoor(self, cause: Union[NodeId, str], effect: Union[NodeId, str], withNames: bool = True) -> Union[
-    None, NameSet, NodeSet]:
+  def backDoor(
+    self, cause: Union[NodeId, str], effect: Union[NodeId, str], withNames: bool = True
+  ) -> Union[None, NameSet, NodeSet]:
     """
     Check if a backdoor exists between `cause` and `effect`
 
@@ -364,8 +359,9 @@ class CausalModel:
 
     return None
 
-  def frontDoor(self, cause: Union[NodeId, str], effect: Union[NodeId, str], withNames: bool = True) -> Union[
-    None, NameSet, NodeSet]:
+  def frontDoor(
+    self, cause: Union[NodeId, str], effect: Union[NodeId, str], withNames: bool = True
+  ) -> Union[None, NameSet, NodeSet]:
     """
     Check if a frontdoor exists between cause and effet
 
@@ -431,7 +427,6 @@ def inducedCausalSubModel(cm: CausalModel, sns: NodeSet = None) -> CausalModel:
   for latentVar in lats:
     inters = cm.children(latentVar) & nodes
     if len(inters) > 0:
-      latentVarsDescriptor.append((names[latentVar],
-                                   list(inters)))
+      latentVarsDescriptor.append((names[latentVar], list(inters)))
 
   return CausalModel(bn, latentVarsDescriptor, True)

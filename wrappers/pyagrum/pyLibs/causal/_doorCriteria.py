@@ -38,12 +38,12 @@
 This files define some routines for front and back door
 """
 
-from typing import Iterator, Optional
+from typing import Optional
 import itertools as it
 
 import pyagrum
 
-from pyagrum.causal._types import NameSet, NodeId, NodeSet, NodeList
+from pyagrum.causal._types import NameSet, NodeId, NodeSet
 from pyagrum.causal._dSeparation import isParent, dSep_reduce, descendants, isDSep_parents
 
 # pylint: disable=unused-import
@@ -335,10 +335,10 @@ def frontdoor_generator(bn: "pyagrum.BayesNet", x: NodeId, y: NodeId, not_fd: No
   nodiPath = False
   if possible is None:
     nodiPath = True
-    possible=None
-    for _,cc in bn.connectedComponents().items():
+    possible = None
+    for _, cc in bn.connectedComponents().items():
       if x in cc and y in cc:
-        possible=cc
+        possible = cc
     if possible is None:
       return
     possible -= {x, y}

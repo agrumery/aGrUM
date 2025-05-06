@@ -37,6 +37,7 @@
 """
 configuration tool for pyAgrum
 """
+
 from configparser import ConfigParser
 import os
 
@@ -51,20 +52,20 @@ class GumSingleton(type):
 
 
 class PyAgrumConfiguration(metaclass=GumSingleton):
-  """ PyAgrumConfiguration is a the pyAgrum configuration singleton.  The configuration is build
+  """PyAgrumConfiguration is a the pyAgrum configuration singleton.  The configuration is build
   as a classical ConfigParser with read-only structure. Then a value is adressable using a double key: ``[section,key]``.
 
   See `this notebook <https://lip6.fr/Pierre-Henri.Wuillemin/aGrUM/docs/last/notebooks/configForPyAgrum.ipynb.html>`_.
 
   Examples
   --------
-    >>> gum.config['dynamicBN','default_graph_size']=10
-    >>> gum.config['dynamicBN','default_graph_size']
+    >>> gum.config["dynamicBN", "default_graph_size"] = 10
+    >>> gum.config["dynamicBN", "default_graph_size"]
     "10"
   """
 
   def _check_int(self, s):
-    if s[0] in ('-', '+'):
+    if s[0] in ("-", "+"):
       return s[1:].isdigit()
     return s.isdigit()
 
@@ -148,8 +149,8 @@ class PyAgrumConfiguration(metaclass=GumSingleton):
 
     Examples
     --------
-      >>> gum.config['dynamicBN','default_graph_size']=10
-      >>> gum.config['dynamicBN','default_graph_size']
+      >>> gum.config["dynamicBN", "default_graph_size"] = 10
+      >>> gum.config["dynamicBN", "default_graph_size"]
       "10"
 
     Arguments:
@@ -172,12 +173,12 @@ class PyAgrumConfiguration(metaclass=GumSingleton):
       raise SyntaxError(f"Section '{section}' unknown in pyAgrum configuration.")
 
   def get(self, section, option):
-    """ Give the value associated to section.option. Preferably use ``__getitem__`` and ``__setitem__``.
+    """Give the value associated to section.option. Preferably use ``__getitem__`` and ``__setitem__``.
 
     Examples
     --------
-      >>> gum.config['dynamicBN','default_graph_size']=10
-      >>> gum.config['dynamicBN','default_graph_size']
+      >>> gum.config["dynamicBN", "default_graph_size"] = 10
+      >>> gum.config["dynamicBN", "default_graph_size"]
       "10"
 
     Arguments:
@@ -194,21 +195,29 @@ class PyAgrumConfiguration(metaclass=GumSingleton):
     c = ConfigParser()
     c.read_string(self.__defaults)
 
-    def aff_sec(section): return "[" + section + "]\n" + "\n".join(
-      [f"  {key} = {mine[section][key]}" for key in mine[section].keys() if
-       mine.get(section, key) != c.get(section, key)])
+    def aff_sec(section):
+      return (
+        "["
+        + section
+        + "]\n"
+        + "\n".join(
+          [
+            f"  {key} = {mine[section][key]}"
+            for key in mine[section].keys()
+            if mine.get(section, key) != c.get(section, key)
+          ]
+        )
+      )
 
     return "\n".join([sec for sec in [aff_sec(section) for section in mine.sections()] if "=" in sec])
 
   def save(self):
-    """Save the diff with the defaults in ``pyagrum.ini`` in the current directory
-    """
+    """Save the diff with the defaults in ``pyagrum.ini`` in the current directory"""
     with open("pyagrum.ini", "w") as configfile:
       print(self.__diff(), file=configfile)
 
   def reset(self):
-    """ back to defaults
-    """
+    """back to defaults"""
     self.__parser.read_string(self.__defaults)
     self.run_hooks()
 
@@ -240,7 +249,7 @@ class PyAgrumConfiguration(metaclass=GumSingleton):
       raise FileNotFoundError("No file 'pyagrum.ini' in current directory.")
 
   def grep(self, search):
-    """ grep in the configuration any section or properties matching the argument. If a section match the argume, all the section is displayed.
+    """grep in the configuration any section or properties matching the argument. If a section match the argume, all the section is displayed.
 
     Arguments:
         search {str} -- the string to find
@@ -248,22 +257,27 @@ class PyAgrumConfiguration(metaclass=GumSingleton):
     mine = self.__parser
     lowsearch = search.lower()
 
-    def aff_sec(section, all): return "[" + section + "]\n" + "\n".join(
-      [f"  {key} = {mine[section][key]}" for key in mine[section].keys() if all or lowsearch in key])
+    def aff_sec(section, all):
+      return (
+        "["
+        + section
+        + "]\n"
+        + "\n".join([f"  {key} = {mine[section][key]}" for key in mine[section].keys() if all or lowsearch in key])
+      )
 
-    print("\n".join([sec for sec in [aff_sec(section, lowsearch in section)
-                                     for section in mine.sections()] if "=" in sec]))
+    print(
+      "\n".join([sec for sec in [aff_sec(section, lowsearch in section) for section in mine.sections()] if "=" in sec])
+    )
 
   def diff(self):
-    """ print the diff between actual configuration and the defaults. This is what is saved in the file ``pyagrum.ini`` by the method `PyAgrumConfiguration.save()`
-    """
+    """print the diff between actual configuration and the defaults. This is what is saved in the file ``pyagrum.ini`` by the method `PyAgrumConfiguration.save()`"""
     print(self.__diff())
 
   def __str__(self):
     mine = self.__parser
 
-    def aff_sec(section): return "[" + section + "]\n" + "\n".join(
-      [f"  {key} = {mine[section][key]}" for key in mine[section].keys()])
+    def aff_sec(section):
+      return "[" + section + "]\n" + "\n".join([f"  {key} = {mine[section][key]}" for key in mine[section].keys()])
 
     return "\n".join([aff_sec(section) for section in mine.sections()])
 

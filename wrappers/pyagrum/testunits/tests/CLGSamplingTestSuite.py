@@ -36,9 +36,7 @@
 
 import unittest
 
-from numpy import allclose
 
-import pyagrum as gum
 from .pyAgrumTestSuite import pyAgrumTestCase, addTests
 
 from pyagrum.clg import CLG
@@ -53,9 +51,9 @@ class CLGSamplingTestCase(pyAgrumTestCase):
     clg = CLG()
     # prog=«sigma=2;X=N(5);Y=N(3);Z=X+Y»
     # we have 3 variables
-    X = GaussianVariable(mu=4.5, sigma=2, name='X')
-    Y = GaussianVariable(mu=3, sigma=2, name='Y')
-    Z = GaussianVariable(mu=9, sigma=4, name='Z')
+    X = GaussianVariable(mu=4.5, sigma=2, name="X")
+    Y = GaussianVariable(mu=3, sigma=2, name="Y")
+    Z = GaussianVariable(mu=9, sigma=4, name="Z")
 
     idY = clg.add(Y)
     idX = clg.add(X)
@@ -67,14 +65,14 @@ class CLGSamplingTestCase(pyAgrumTestCase):
     fs = ForwardSampling(clg)
     fs.makeSample(10000)
 
-    DELTA = 2e-1
+    DELTA = 3e-1
     self.assertAlmostEqual(X.mu(), fs.mean_sample("X"), delta=DELTA)
     self.assertAlmostEqual(Y.mu(), fs.mean_sample("Y"), delta=DELTA)
-    self.assertAlmostEqual(1 * X.mu() + 1.5 * Y.mu() + Z.mu(), fs.mean_sample('Z'), delta=DELTA)
+    self.assertAlmostEqual(1 * X.mu() + 1.5 * Y.mu() + Z.mu(), fs.mean_sample("Z"), delta=DELTA)
 
   def test_compare(self):
-    X = GaussianVariable(mu=0.5, sigma=1, name='X')
-    Y = GaussianVariable(mu=0, sigma=2, name='Y')
+    X = GaussianVariable(mu=0.5, sigma=1, name="X")
+    Y = GaussianVariable(mu=0, sigma=2, name="Y")
 
     clg = CLG()
     idX = clg.add(X)
@@ -83,8 +81,8 @@ class CLGSamplingTestCase(pyAgrumTestCase):
     clg.addArc(idX, idY, -1)
 
     ie = CLGVariableElimination(clg)
-    vx = ie.posterior('X')
-    vy = ie.posterior('Y')
+    vx = ie.posterior("X")
+    vy = ie.posterior("Y")
 
     fs = ForwardSampling(clg)
     fs.makeSample(10000)

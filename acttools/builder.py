@@ -101,10 +101,10 @@ def getCmake(current: dict[str, str], target: str) -> str:
   line += f' -DPython_EXECUTABLE="{current["python3target"]}"'
 
   if platform.system() == "Windows":
-    if current["compiler"] in ['clang', 'gcc']:
+    if current["compiler"] in ["clang", "gcc"]:
       critic(f"{current['compiler']} forbidden : clang or gcc only configured for linux system.")
   else:
-    if current["compiler"] not in ['clang', 'gcc']:
+    if current["compiler"] not in ["clang", "gcc"]:
       critic(f"{current['compiler']} forbidden : clang or gcc only for linux system.")
 
   if current["compiler"] == "mvsc22":
@@ -126,19 +126,19 @@ def getCmake(current: dict[str, str], target: str) -> str:
   elif current["compiler"] == "mingw64":
     line += ' -G "MinGW Makefiles"'
   elif current["compiler"] == "clang":
-    if current['clangpath'] != "":
-      clangp = os.path.join(current['clangpath'], "clang")
+    if current["clangpath"] != "":
+      clangp = os.path.join(current["clangpath"], "clang")
     else:
       clangp = "clang"
-    line += f' -DCMAKE_C_COMPILER={clangp} -DCMAKE_CXX_COMPILER={clangp}++'
+    line += f" -DCMAKE_C_COMPILER={clangp} -DCMAKE_CXX_COMPILER={clangp}++"
   else:  # gcc
-    if current['gccpath'] != "":
-      gccp = os.path.join(current['gccpath'], "g")
+    if current["gccpath"] != "":
+      gccp = os.path.join(current["gccpath"], "g")
     else:
       gccp = "g"
-    line += f' -DCMAKE_C_COMPILER={gccp}cc -DCMAKE_CXX_COMPILER={gccp}++'
+    line += f" -DCMAKE_C_COMPILER={gccp}cc -DCMAKE_CXX_COMPILER={gccp}++"
 
-  if current["threads"] == 'omp':
+  if current["threads"] == "omp":
     line += " -DCMAKE_GUM_THREADS=omp"
   else:
     line += " -DCMAKE_GUM_THREADS=stl"
@@ -199,7 +199,7 @@ def getForMsBuildSystem(current: dict[str, str], target: str):
   if cfg.msbuild is None:
     critic("MsBuild not found")
   else:
-    nbrJobs = getNbrOfJobs(current['jobs'])
+    nbrJobs = getNbrOfJobs(current["jobs"])
     notif("Compilation using [" + nbrJobs + "] jobs.")
     if current["action"] == "test":
       if target == "aGrUM":
@@ -214,22 +214,21 @@ def getForMsBuildSystem(current: dict[str, str], target: str):
       line = cfg.msbuild + ' INSTALL.vcxproj /p:Configuration="Release"'
     else:
       critic(f"Action '{current['action']}' not treated for target '{target}' for now in compiler weird world.")
-    line += ' /p:BuildInParallel=true /maxcpucount:' + nbrJobs
+    line += " /p:BuildInParallel=true /maxcpucount:" + nbrJobs
   return line
 
 
 def getForMakeSystem(current: dict[str, str], target: str) -> str:
   line = cfg.make
 
-  nbrJobs = str(getNbrOfJobs(current['jobs']))
+  nbrJobs = str(getNbrOfJobs(current["jobs"]))
   notif("Compilation using  [" + nbrJobs + "] jobs.")
 
   if current["action"] == "test":
     if target == "aGrUM":
       line += " gumTest"
     elif target != "pyAgrum":
-      critic("Action '" + current["action"] +
-             "' not treated for target '" + target + "'.")
+      critic("Action '" + current["action"] + "' not treated for target '" + target + "'.")
   elif current["action"] == "install":
     line += " install"
   elif current["action"] == "uninstall":
@@ -268,19 +267,23 @@ def getPost(current: dict[str, str], target: str) -> tuple[str, bool]:
     elif target == "pyAgrum":
       gumTest = ""
       # quick_specifictest
-      if current['tests'].startswith('quick'):
-        gumTest = "gumTest.py " + current['tests']
-      elif current['tests'] == 'all':  # all is with NOTEBOOKStest
+      if current["tests"].startswith("quick"):
+        gumTest = "gumTest.py " + current["tests"]
+      elif current["tests"] == "all":  # all is with NOTEBOOKStest
         gumTest = "gumTest.py all"
       else:
         critic(f"Only [-t all] or [-t quick] for testing pyAgrum (instead of [{current['tests']}])")
 
       if cfg.os_platform == "win32":
-        line = r'copy /Y "wrappers\pyAgrum\Release\_pyAgrum.pyd" "wrappers\pyAgrum\." & ' + \
-               cfg.python + " ..\\..\\..\\wrappers\\pyagrum\\testunits\\" + gumTest
+        line = (
+          r'copy /Y "wrappers\pyAgrum\Release\_pyAgrum.pyd" "wrappers\pyAgrum\." & '
+          + cfg.python
+          + " ..\\..\\..\\wrappers\\pyagrum\\testunits\\"
+          + gumTest
+        )
       else:
         line = f"{cfg.python} ../../../wrappers/pyagrum/testunits/{gumTest}"
-      line += " " + current['mode']
+      line += " " + current["mode"]
       return line, True
   return "", False
 
@@ -293,7 +296,7 @@ def buildPost(current: dict[str, str], target: str):
 
 def execFromLine(current: dict[str, str], line: str, checkRC: bool = True):
   trace(current, line)
-  if not current['dry_run']:
+  if not current["dry_run"]:
     rc = execCde(line, current)
     if checkRC and rc > 0:
       critic(f"Received error {rc}", rc=rc)

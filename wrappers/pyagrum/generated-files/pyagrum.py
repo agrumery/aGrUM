@@ -665,6 +665,14 @@ class GumException(Exception):
     __swig_destroy__ = _pyagrum.delete_GumException
 
     def what(self) -> str:
+        r"""
+
+        Returns
+        -------
+        str
+        	the error message
+
+        """
         return _pyagrum.GumException_what(self)
 
     def errorContent(self) -> str:
@@ -7795,18 +7803,131 @@ class Tensor(object):
 
     @staticmethod
     def evEq(v: "pyagrum.DiscreteVariable", val: float) -> "pyagrum.Tensor":
+        r"""
+
+        This static method generates a Tensor representing an observation where a quasi-continuous variable
+        (a :class:`pyagrum.DiscretizedVariable` with many ticks) takes a specific given value.
+
+        Note
+        ----
+          - see also :meth:`BayesNet.evEq`
+          - see also :meth:`Tensor.evGt`, :meth:`Tensor.evLt`, :meth:`Tensor.evIn`
+
+        Examples
+        --------
+        >>> A=pyagrum.fastVariable('A[0:10:20]')
+        >>> p=pyagrum.Tensor.evEq(A,5)
+        >>> p
+        (pyagrum.Tensor@000001D7FAB06AD0)
+          A                                                                                                                                                                                                    |
+        [0;0.5[  |[0.5;1[  |[1;1.5[  |[1.5;2[  |[2;2.5[  |[2.5;3[  |[3;3.5[  |[3.5;4[  |[4;4.5[  |[4.5;5[  |[5;5.5[  |[5.5;6[  |[6;6.5[  |[6.5;7[  |[7;7.5[  |[7.5;8[  |[8;8.5[  |[8.5;9[  |[9;9.5[  |[9.5;10] |
+        ---------|---------|---------|---------|---------|---------|---------|---------|---------|---------|---------|---------|---------|---------|---------|---------|---------|---------|---------|---------|
+         0.0000  | 0.0000  | 0.0000  | 0.0000  | 0.0000  | 0.0000  | 0.0000  | 0.0000  | 0.0000  | 0.0000  | 1.0000  | 0.0000  | 0.0000  | 0.0000  | 0.0000  | 0.0000  | 0.0000  | 0.0000  | 0.0000  | 0.0000  |
+
+        Parameters
+        ----------
+        var : pyagrum.DiscretizedVariable
+          the variable to use
+        value: float
+
+        Returns
+        -------
+        pyagrum.Tensor
+          The representation of the evidence as a :class:`~pyagrum.Tensor`.
+
+        """
         return _pyagrum.Tensor_evEq(v, val)
 
     @staticmethod
     def evIn(v: "pyagrum.DiscreteVariable", val1: float, val2: float) -> "pyagrum.Tensor":
+        r"""
+
+        This static method generates a Tensor representing an observation where a quasi-continuous variable
+        (a :class:`pyagrum.DiscretizedVariable` with many ticks) takes a value between the 2 paramerts (min,max)
+
+        Note
+        ----
+          - see also :meth:`BayesNet.evIn`
+          - see also :meth:`Tensor.evEq`, :meth:`Tensor.evLt`, :meth:`Tensor.evGt`
+
+        Parameters
+        ----------
+        var : pyagrum.DiscretizedVariable
+          the variable to use
+        valueMin: float
+          the minimum value
+        valueMax: float
+          the maximum value
+
+        Returns
+        -------
+        pyAgrum.Te nsor
+          The representation of the evidence as a :class:`~pyagrum.Tensor`.
+
+        """
         return _pyagrum.Tensor_evIn(v, val1, val2)
 
     @staticmethod
     def evGt(v: "pyagrum.DiscreteVariable", val: float) -> "pyagrum.Tensor":
+        r"""
+
+        This static method generates a Tensor representing an observation where a quasi-continuous variable
+        (a :class:`pyagrum.DiscretizedVariable` with many ticks) takes a value greater than the parameter.
+
+        Note
+        ----
+          - see also :meth:`BayesNet.evGt`
+          - see also :meth:`Tensor.evEq`, :meth:`Tensor.evLt`, :meth:`Tensor.evIn`
+
+        Examples
+        --------
+        >>> A=pyagrum.fastVariable('A[0:10:20]')
+        >>> p=pyagrum.Tensor.evGt(A,5)
+        >>> p
+        (pyagrum.Tensor@000001D7FAB06AD0)
+          A                                                                                                                                                                                                    |
+        [0;0.5[  |[0.5;1[  |[1;1.5[  |[1.5;2[  |[2;2.5[  |[2.5;3[  |[3;3.5[  |[3.5;4[  |[4;4.5[  |[4.5;5[  |[5;5.5[  |[5.5;6[  |[6;6.5[  |[6.5;7[  |[7;7.5[  |[7.5;8[  |[8;8.5[  |[8.5;9[  |[9;9.5[  |[9.5;10] |
+        ---------|---------|---------|---------|---------|---------|---------|---------|---------|---------|---------|---------|---------|---------|---------|---------|---------|---------|---------|---------|
+         0.0000  | 0.0000  | 0.0000  | 0.0000  | 0.0000  | 0.0000  | 0.0000  | 0.0000  | 0.0000  | 0.0000  | 1.0000  | 1.0000  | 1.0000  | 1.0000  | 1.0000  | 1.0000  | 1.0000  | 1.0000  | 1.0000  | 1.0000  |
+
+        Parameters
+        ----------
+        var : pyagrum.DiscretizedVariable
+          the variable to use
+        value: float
+
+        Returns
+        -------
+        pyagrum.Tensor
+          The representation of the evidence as a :class:`~pyagrum.Tensor`.
+
+        """
         return _pyagrum.Tensor_evGt(v, val)
 
     @staticmethod
     def evLt(v: "pyagrum.DiscreteVariable", val: float) -> "pyagrum.Tensor":
+        r"""
+
+        This static method generates a Tensor representing an observation where a quasi-continuous variable
+        (a :class:`pyagrum.DiscretizedVariable` with many ticks) takes a value less than the parameter.
+
+        Note
+        ----
+          - see also :meth:`BayesNet.evLt`
+          - see also :meth:`Tensor.evEq`, :meth:`Tensor.evGt`, :meth:`Tensor.evIn`
+
+        Parameters
+        ----------
+        var : pyagrum.DiscretizedVariable
+          the variable to use
+        value: float
+
+        Returns
+        -------
+        pyagrum.Tensor
+          The representation of the evidence as a :class:`~pyagrum.Tensor`.
+
+        """
         return _pyagrum.Tensor_evLt(v, val)
 
     def __repr__(self) -> str:
@@ -10902,15 +11023,126 @@ class IBayesNet(DAGmodel):
         return _pyagrum.IBayesNet_toDot(self)
 
     def evEq(self, name: str, value: float) -> "pyagrum.Tensor":
+        r"""
+
+        This method is used to set an observation on a quasi-continuous variables (:class:`pyagrum
+        .DiscretizedVariable` with a large number of ticks)  that the variable is equal to a given value.
+
+        Note
+        ----
+          - see also :meth:`Tensor.evEq`
+          - see also :meth:`BayesNet.evGt`, :meth:`BayesNet.evLt`, :meth:`BayesNet.evIn`
+
+        Examples
+        --------
+        >>> import pyagrum as gum
+        >>> bn = pyagrum.fastBN('A[0:10:20]'') # DiscretizedVariable from 0 to 10 in 20 steps
+        >>> print(bn.evEqu('A',5)
+          A                                                                                                                                                                                                    |
+        [0;0.5[  |[0.5;1[  |[1;1.5[  |[1.5;2[  |[2;2.5[  |[2.5;3[  |[3;3.5[  |[3.5;4[  |[4;4.5[  |[4.5;5[  |[5;5.5[  |[5.5;6[  |[6;6.5[  |[6.5;7[  |[7;7.5[  |[7.5;8[  |[8;8.5[  |[8.5;9[  |[9;9.5[  |[9.5;10] |
+        ---------|---------|---------|---------|---------|---------|---------|---------|---------|---------|---------|---------|---------|---------|---------|---------|---------|---------|---------|---------|
+         0.0000  | 0.0000  | 0.0000  | 0.0000  | 0.0000  | 0.0000  | 0.0000  | 0.0000  | 0.0000  | 0.0000  | 1.0000  | 0.0000  | 0.0000  | 0.0000  | 0.0000  | 0.0000  | 0.0000  | 0.0000  | 0.0000  | 0.0000  |
+
+        Parameters
+        ----------
+        var : Union[int,str]
+          the current name or the id of the variable
+        value: float
+
+        Returns
+        -------
+        pyAgrum.Tensor
+          The representation of the evidence as a :class:`~pyagrum.Tensor`.
+
+        """
         return _pyagrum.IBayesNet_evEq(self, name, value)
 
     def evIn(self, name: str, val1: float, val2: float) -> "pyagrum.Tensor":
+        r"""
+
+        This method is used to set an obvervation on a quasi-continuous variables (:class:`pyagrum
+        .DiscretizedVariable` with a large number of ticks) that the variable is less than a given value.
+
+        Note
+        ----
+          - see also :meth:`Tensor.evIn`
+          - see also :meth:`BayesNet.evEq`, :meth:`BayesNet.evGt`, :meth:`BayesNet.evLt`
+
+        Parameters
+        ----------
+        var : Union[int,str]
+          the current name or the id of the variable
+        valueMin: float
+          the minimum value
+        valueMax: float
+          the maximum value
+
+        Returns
+        -------
+        pyagrum.Tensor
+          The representation of the evidence as a :class:`~pyagrum.Tensor`.
+
+        """
         return _pyagrum.IBayesNet_evIn(self, name, val1, val2)
 
     def evLt(self, name: str, value: float) -> "pyagrum.Tensor":
+        r"""
+
+        This method is used to set an obvervation on a quasi-continuous variables (:class:`pyagrum
+        .DiscretizedVariable` with a large number of ticks) that the variable is less than a given value.
+
+        Note
+        ----
+          - see also :meth:`Tensor.evLt`
+          - see also :meth:`BayesNet.evEq`, :meth:`BayesNet.evGt`, :meth:`BayesNet.evIn`
+
+        Parameters
+        ----------
+        var : Union[int,str]
+          the current name or the id of the variable
+        value: float
+
+        Returns
+        -------
+        pyAgrum.Tensor
+          The representation of the evidence as a :class:`~pyagrum.Tensor`.
+
+        """
         return _pyagrum.IBayesNet_evLt(self, name, value)
 
     def evGt(self, name: str, value: float) -> "pyagrum.Tensor":
+        r"""
+
+        This method is used to set an obvervation on a quasi-continuous variables (:class:`pyagrum
+        .DiscretizedVariable` with a large number of ticks) that the variable greater than a given value.
+
+        Note
+        ----
+          - see also :meth:`Tensor.evGt`
+          - see also :meth:`BayesNet.evEq`, :meth:`BayesNet.evLt`, :meth:`BayesNet.evIn`
+
+        Examples
+        --------
+        >>> import pyagrum as gum
+        >>> bn = pyagrum.fastBN('A[0:10:20]'') # DiscretizedVariable from 0 to 10 in 20 steps
+        >>> print(bn.eGt('A',5)
+          A                                                                                                                                                                                                    |
+        [0;0.5[  |[0.5;1[  |[1;1.5[  |[1.5;2[  |[2;2.5[  |[2.5;3[  |[3;3.5[  |[3.5;4[  |[4;4.5[  |[4.5;5[  |[5;5.5[  |[5.5;6[  |[6;6.5[  |[6.5;7[  |[7;7.5[  |[7.5;8[  |[8;8.5[  |[8.5;9[  |[9;9.5[  |[9.5;10] |
+        ---------|---------|---------|---------|---------|---------|---------|---------|---------|---------|---------|---------|---------|---------|---------|---------|---------|---------|---------|---------|
+         0.0000  | 0.0000  | 0.0000  | 0.0000  | 0.0000  | 0.0000  | 0.0000  | 0.0000  | 0.0000  | 0.0000  | 1.0000  | 1.0000  | 1.0000  | 1.0000  | 1.0000  | 1.0000  | 1.0000  | 1.0000  | 1.0000  | 1.0000  |
+
+        Parameters
+        ----------
+        var : Union[int,str]
+          the current name or the id of the variable
+        value: float
+
+        Returns
+        -------
+        pyAgrum.Tensor
+          The representation of the evidence as a :class:`~pyagrum.Tensor`.
+
+        """
         return _pyagrum.IBayesNet_evGt(self, name, value)
 
     def memoryFootprint(self) -> int:
@@ -24376,21 +24608,81 @@ class BNLearner(object):
         return _pyagrum.BNLearner_setPossibleSkeleton(self, skeleton)
 
     def addNoParentNode(self, *args) -> "pyagrum.BNLearner":
+        r"""
+
+        Add the constraint that this node cannot have any parent.
+
+        Parameters
+        ----------
+        node : int str
+          a variable's id or name
+
+        """
         return _pyagrum.BNLearner_addNoParentNode(self, *args)
 
     def eraseNoParentNode(self, *args) -> "pyagrum.BNLearner":
+        r"""
+
+        Remove the constraint that this node cannot have any parent.
+
+        Parameters
+        ----------
+        node : int str
+          a variable's id or name
+
+        """
         return _pyagrum.BNLearner_eraseNoParentNode(self, *args)
 
     def addNoChildrenNode(self, *args) -> "pyagrum.BNLearner":
+        r"""
+
+        Add the constraint that this node cannot have any children.
+
+        Parameters
+        ----------
+        node : int str
+          a variable's id or name
+
+        """
         return _pyagrum.BNLearner_addNoChildrenNode(self, *args)
 
     def eraseNoChildrenNode(self, *args) -> "pyagrum.BNLearner":
+        r"""
+
+        Remove the constraint that this node cannot have any children.
+
+        Parameters
+        ----------
+        node : int str
+          a variable's id or name
+
+        """
         return _pyagrum.BNLearner_eraseNoChildrenNode(self, *args)
 
     def isConstraintBased(self) -> bool:
+        r"""
+
+        Return wether the current learning method is constraint-based or not.
+
+        Returns
+        -------
+        bool
+            True if the current learning method is constraint-based.
+
+        """
         return _pyagrum.BNLearner_isConstraintBased(self)
 
     def isScoreBased(self) -> bool:
+        r"""
+
+        Return wether the current learning method is score-based or not.
+
+        Returns
+        -------
+        bool
+            True if the current learning method is score-based.
+
+        """
         return _pyagrum.BNLearner_isScoreBased(self)
 
     def __repr__(self) -> str:
@@ -28415,7 +28707,6 @@ class ShaferShenoyLIMIDInference(object):
 
 # Register ShaferShenoyLIMIDInference in _pyagrum:
 _pyagrum.ShaferShenoyLIMIDInference_swigregister(ShaferShenoyLIMIDInference)
-
 __version__ = '2.1.0.9'
 __license__ = __doc__
 __project_url__ = 'https://agrum.org'
@@ -28436,6 +28727,42 @@ def about():
     There is ABSOLUTELY NO WARRANTY; not even for MERCHANTABILITY or
     FITNESS FOR A PARTICULAR PURPOSE.  For details, see 'pyagrum.warranty'.
     """)
+############################################################################
+#   This file is part of the aGrUM/pyAgrum library.                        #
+#                                                                          #
+#   Copyright (c) 2005-2025 by                                             #
+#       - Pierre-Henri WUILLEMIN(_at_LIP6)                                 #
+#       - Christophe GONZALES(_at_AMU)                                     #
+#                                                                          #
+#   The aGrUM/pyAgrum library is free software; you can redistribute it    #
+#   and/or modify it under the terms of either :                           #
+#                                                                          #
+#    - the GNU Lesser General Public License as published by               #
+#      the Free Software Foundation, either version 3 of the License,      #
+#      or (at your option) any later version,                              #
+#    - the MIT license (MIT),                                              #
+#    - or both in dual license, as here.                                   #
+#                                                                          #
+#   (see https://agrum.gitlab.io/articles/dual-licenses-lgplv3mit.html)    #
+#                                                                          #
+#   This aGrUM/pyAgrum library is distributed in the hope that it will be  #
+#   useful, but WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED,          #
+#   INCLUDING BUT NOT LIMITED TO THE WARRANTIES MERCHANTABILITY or FITNESS #
+#   FOR A PARTICULAR PURPOSE  AND NONINFRINGEMENT. IN NO EVENT SHALL THE   #
+#   AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER #
+#   LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE,        #
+#   ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR  #
+#   OTHER DEALINGS IN THE SOFTWARE.                                        #
+#                                                                          #
+#   See the GNU Lesser General Public License (LICENSE.LGPL) and the MIT   #
+#   licence (LICENSE.MIT) for more details.                                #
+#                                                                          #
+#   Contact  : info_at_agrum_dot_org                                       #
+#   homepage : http://agrum.gitlab.io                                      #
+#   gitlab   : https://gitlab.com/agrumery/agrum                           #
+#                                                                          #
+############################################################################
+
 
 
 import os.path as ospath
@@ -30258,7 +30585,6 @@ def getPosterior(model, *, target, evs=None):
 # creating a new Tensor from posterior(will disappear with ie)
   return pyagrum.Tensor(inf.posterior(target))
 
-
 __version__ = '2.1.0.9'
 __license__ = __doc__
 __project_url__ = 'https://agrum.org'
@@ -30279,5 +30605,41 @@ def about():
     There is ABSOLUTELY NO WARRANTY; not even for MERCHANTABILITY or
     FITNESS FOR A PARTICULAR PURPOSE.  For details, see 'pyagrum.warranty'.
     """)
+############################################################################
+#   This file is part of the aGrUM/pyAgrum library.                        #
+#                                                                          #
+#   Copyright (c) 2005-2025 by                                             #
+#       - Pierre-Henri WUILLEMIN(_at_LIP6)                                 #
+#       - Christophe GONZALES(_at_AMU)                                     #
+#                                                                          #
+#   The aGrUM/pyAgrum library is free software; you can redistribute it    #
+#   and/or modify it under the terms of either :                           #
+#                                                                          #
+#    - the GNU Lesser General Public License as published by               #
+#      the Free Software Foundation, either version 3 of the License,      #
+#      or (at your option) any later version,                              #
+#    - the MIT license (MIT),                                              #
+#    - or both in dual license, as here.                                   #
+#                                                                          #
+#   (see https://agrum.gitlab.io/articles/dual-licenses-lgplv3mit.html)    #
+#                                                                          #
+#   This aGrUM/pyAgrum library is distributed in the hope that it will be  #
+#   useful, but WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED,          #
+#   INCLUDING BUT NOT LIMITED TO THE WARRANTIES MERCHANTABILITY or FITNESS #
+#   FOR A PARTICULAR PURPOSE  AND NONINFRINGEMENT. IN NO EVENT SHALL THE   #
+#   AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER #
+#   LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE,        #
+#   ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR  #
+#   OTHER DEALINGS IN THE SOFTWARE.                                        #
+#                                                                          #
+#   See the GNU Lesser General Public License (LICENSE.LGPL) and the MIT   #
+#   licence (LICENSE.MIT) for more details.                                #
+#                                                                          #
+#   Contact  : info_at_agrum_dot_org                                       #
+#   homepage : http://agrum.gitlab.io                                      #
+#   gitlab   : https://gitlab.com/agrumery/agrum                           #
+#                                                                          #
+############################################################################
+
 
 

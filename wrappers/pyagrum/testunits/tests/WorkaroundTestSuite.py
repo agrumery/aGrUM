@@ -48,10 +48,10 @@ class WorkaroundTestCase(pyAgrumTestCase):
 
   def testExtraNodeBecauseDotParser(self):
     # pydot (and pydot) creates an extra-node with newline as content.
-    g = dot.graph_from_dot_data('''graph G {
+    g = dot.graph_from_dot_data("""graph G {
   A;B;
   A--B;
-}''')[0]
+}""")[0]
 
     # g should have 2 nodes if no bug while parsing but 3 with the bug.
     # workaround : cf. pyagrum.lib.notebook.py:255 and everywhere using dot.graph_from_dot_data

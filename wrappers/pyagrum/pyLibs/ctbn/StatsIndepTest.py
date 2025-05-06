@@ -309,8 +309,7 @@ class FChi2Test(IndepTest):
     # Fail to reject the hypothesis
     return FAIL_TO_REJECT
 
-  def nullStateToStateTransitionHypothesisChi2(self, X: str, Y: str,
-                                               _: List[str]):
+  def nullStateToStateTransitionHypothesisChi2(self, X: str, Y: str, _: List[str]):
     """
     Decides if the null state to state transition hypothesis is rejected using chi2-test.
 
@@ -344,8 +343,7 @@ class FChi2Test(IndepTest):
     for i in chiSqValue.loopIn():
       if chiSqValue.get(i) > max_chi2:
         logging.debug(i)
-        logging.debug("\tRejecting the hypothesis: %s is NOT independent to %s given the conditioning set.", X,
-                      Y)
+        logging.debug("\tRejecting the hypothesis: %s is NOT independent to %s given the conditioning set.", X, Y)
         # X is NOT independent of Y
         return False
 

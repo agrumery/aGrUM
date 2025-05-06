@@ -65,6 +65,7 @@ class CTBN:
   _name2id : Dict[str, NodeId]
       Dict containing the nodeId associated to a variable's name.
   """
+
   _graph: pyagrum.DiGraph
   _cim: Dict[NodeId, CIM]
   _id2var: Dict[NodeId, pyagrum.DiscreteVariable]
@@ -503,8 +504,9 @@ class CTBN:
 
     # Checks if all arcs from current CTBN are in the other one
     for arc in arcs1:
-      if not ctbn._graph.existsArc(ctbn._name2id[self._id2var[arc[0]].name()],
-                                   ctbn._name2id[self._id2var[arc[1]].name()]):
+      if not ctbn._graph.existsArc(
+        ctbn._name2id[self._id2var[arc[0]].name()], ctbn._name2id[self._id2var[arc[1]].name()]
+      ):
         print(self._id2var[arc[0]].name(), self._id2var[arc[1]].name())
         print("arc non present dans le ctbn en parametres")
         return False
@@ -547,11 +549,12 @@ class CTBN:
     return diff
 
   def __getstate__(self):
-    state = {"nodes": [self.variable(i).toFast() for i in self.nodes()],
-             # 0 and 1 is the node itself (#i and #j)
-             "parents": {self.variable(i).name(): list(self.CIM(i).varNames)[2:] for i in self.nodes()},
-             "cim": {self.variable(i).name(): self.CIM(i)._pot[:].flatten().tolist() for i in self.nodes()},
-             }
+    state = {
+      "nodes": [self.variable(i).toFast() for i in self.nodes()],
+      # 0 and 1 is the node itself (#i and #j)
+      "parents": {self.variable(i).name(): list(self.CIM(i).varNames)[2:] for i in self.nodes()},
+      "cim": {self.variable(i).name(): self.CIM(i)._pot[:].flatten().tolist() for i in self.nodes()},
+    }
     return state
 
   def __setstate__(self, state):

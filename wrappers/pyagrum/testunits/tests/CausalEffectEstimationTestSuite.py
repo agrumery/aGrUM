@@ -35,51 +35,45 @@
 ############################################################################
 
 import unittest
-from typing import Set, List
 
 import pyagrum as gum
 from .pyAgrumTestSuite import pyAgrumTestCase, addTests
 import pyagrum.causal as csl
 
-from pyagrum.causal.causalEffectEstimation._utils import (
-  RCTError,
-  BackdoorError,
-  FrontdoorError,
-  IVError
-)
+from pyagrum.causal.causalEffectEstimation._utils import RCTError, BackdoorError, FrontdoorError, IVError
 
-import logging
 
 import pandas as pd
 import numpy as np
 
 from scipy.stats import norm, logistic
 
+
 def _getDiscretizedVariable(name, tick_start, tick_end, num_intervals):
-    variable = gum.DiscretizedVariable(name, name)
-    ticks = np.linspace(tick_start, tick_end, num_intervals+1)
-    for i in ticks:
-        variable.addTick(i)
-    variable.setEmpirical(True)
-    return variable
+  variable = gum.DiscretizedVariable(name, name)
+  ticks = np.linspace(tick_start, tick_end, num_intervals + 1)
+  for i in ticks:
+    variable.addTick(i)
+  variable.setEmpirical(True)
+  return variable
+
 
 _n = int(1e6)
 _delta = 1e-1
 
-class TestCausalEffectEstimation(pyAgrumTestCase):
 
+class TestCausalEffectEstimation(pyAgrumTestCase):
   # Adjustment + Estimation testing
 
   def test_trivial_case(self):
-
     T = np.random.binomial(1, 0.5, _n)
-    Y = np.random.normal(2*T, 1, _n)
+    Y = np.random.normal(2 * T, 1, _n)
     df = pd.DataFrame({"T": T, "Y": Y})
 
     bn = gum.BayesNet()
     bn.beginTopologyTransformation()
-    bn.add(_getDiscretizedVariable("Y", -4,6, 20))
-    bn.add(gum.IntegerVariable("T", "T", [0,1]))
+    bn.add(_getDiscretizedVariable("Y", -4, 6, 20))
+    bn.add(gum.IntegerVariable("T", "T", [0, 1]))
     bn.addArc("T", "Y")
     bn.cpt("T").fillWith([0.5, 0.5])
     bn.cpt("Y").fillFromDistribution(norm, loc="2*T", scale=1)
@@ -114,17 +108,16 @@ class TestCausalEffectEstimation(pyAgrumTestCase):
     self.assertRaises(RCTError, cee.fitTSLS)
 
   def test_RCT_case(self):
-
     X = np.random.normal(1, 1, _n)
     T = np.random.binomial(1, 0.3, _n)
-    Y = np.random.normal(X+2*T, 1, _n)
-    df = pd.DataFrame({"X": X, "T": T, "Y":Y})
+    Y = np.random.normal(X + 2 * T, 1, _n)
+    df = pd.DataFrame({"X": X, "T": T, "Y": Y})
 
     bn = gum.BayesNet()
     bn.beginTopologyTransformation()
-    bn.add(_getDiscretizedVariable("X", -4,6, 20))
-    bn.add(_getDiscretizedVariable("Y", -4,6, 20))
-    bn.add(gum.IntegerVariable("T", "T", [0,1]))
+    bn.add(_getDiscretizedVariable("X", -4, 6, 20))
+    bn.add(_getDiscretizedVariable("Y", -4, 6, 20))
+    bn.add(gum.IntegerVariable("T", "T", [0, 1]))
     bn.addArc("X", "Y")
     bn.addArc("T", "Y")
     bn.cpt("X").fillFromDistribution(norm, loc=1, scale=1)
@@ -175,17 +168,16 @@ class TestCausalEffectEstimation(pyAgrumTestCase):
     self.assertRaises(RCTError, cee.fitTSLS)
 
   def test_backdoor_case(self):
-
     X = np.random.normal(1, 1, _n)
-    T = np.random.binomial(1, np.power(1+np.exp(-X), -1))
-    Y = np.random.normal(X+2*T, 1, _n)
+    T = np.random.binomial(1, np.power(1 + np.exp(-X), -1))
+    Y = np.random.normal(X + 2 * T, 1, _n)
     df = pd.DataFrame({"X": X, "T": T, "Y": Y}, index=np.arange(0, _n))
 
     bn = gum.BayesNet()
     bn.beginTopologyTransformation()
-    bn.add(_getDiscretizedVariable("X", -4,6, 20))
-    bn.add(_getDiscretizedVariable("Y", -4,6, 20))
-    bn.add(gum.IntegerVariable("T", "T", [0,1]))
+    bn.add(_getDiscretizedVariable("X", -4, 6, 20))
+    bn.add(_getDiscretizedVariable("Y", -4, 6, 20))
+    bn.add(gum.IntegerVariable("T", "T", [0, 1]))
     bn.addArc("X", "T")
     bn.addArc("X", "Y")
     bn.addArc("T", "Y")
@@ -235,19 +227,18 @@ class TestCausalEffectEstimation(pyAgrumTestCase):
     self.assertRaises(BackdoorError, cee.fitTSLS)
 
   def test_simple_frontdoor_case(self):
-
     U = np.random.normal(1, 1, _n)
-    T = np.random.binomial(1, np.power(1+np.exp(-U), -1))
+    T = np.random.binomial(1, np.power(1 + np.exp(-U), -1))
     M = np.random.normal(T, 1, _n)
-    Y = np.random.normal(U + 2*M, 1, _n)
+    Y = np.random.normal(U + 2 * M, 1, _n)
     df = pd.DataFrame({"M": M, "T": T, "Y": Y}, index=np.arange(0, _n))
 
     bn = gum.BayesNet()
     bn.beginTopologyTransformation()
-    bn.add(_getDiscretizedVariable("M", -4,6, 10))
-    bn.add(_getDiscretizedVariable("Y", -4,6, 100))
-    bn.add(gum.IntegerVariable("T", "T", [0,1]))
-    bn.add(_getDiscretizedVariable("U", -4,6, 3))
+    bn.add(_getDiscretizedVariable("M", -4, 6, 10))
+    bn.add(_getDiscretizedVariable("Y", -4, 6, 100))
+    bn.add(gum.IntegerVariable("T", "T", [0, 1]))
+    bn.add(_getDiscretizedVariable("U", -4, 6, 3))
     bn.addArc("U", "T")
     bn.addArc("U", "Y")
     bn.addArc("T", "M")
@@ -298,25 +289,24 @@ class TestCausalEffectEstimation(pyAgrumTestCase):
     self.assertRaises(FrontdoorError, cee.fitTSLS)
 
   def test_conditional_frontdoor_case(self):
-
     U = np.random.normal(1, 1, _n)
     X1 = np.random.normal(1, 1, _n)
     X2 = np.random.normal(1, 1, _n)
     X3 = np.random.normal(1, 1, _n)
-    T = np.random.binomial(1, np.power(1+np.exp(-(U + X1 - 5*X3)), -1))
-    M = np.random.normal(T + 2*X1 - X2, 1, _n)
-    Y = np.random.normal(U + 2*M + 3*X2 + X3, 1, _n)
-    df = pd.DataFrame({"U": U, "X1": X1, "X2": X2, "X3": X3, "M": M, "T": T, "Y":Y}, index=np.arange(0,_n))
+    T = np.random.binomial(1, np.power(1 + np.exp(-(U + X1 - 5 * X3)), -1))
+    M = np.random.normal(T + 2 * X1 - X2, 1, _n)
+    Y = np.random.normal(U + 2 * M + 3 * X2 + X3, 1, _n)
+    df = pd.DataFrame({"U": U, "X1": X1, "X2": X2, "X3": X3, "M": M, "T": T, "Y": Y}, index=np.arange(0, _n))
 
     bn = gum.BayesNet()
     bn.beginTopologyTransformation()
-    bn.add(_getDiscretizedVariable("X1", -4,6, 3))
-    bn.add(_getDiscretizedVariable("X2", -4,6, 3))
-    bn.add(_getDiscretizedVariable("X3", -4,6, 3))
-    bn.add(_getDiscretizedVariable("M", -4,6, 10))
-    bn.add(_getDiscretizedVariable("Y", -4,6, 100))
-    bn.add(gum.IntegerVariable("T", "T", [0,1]))
-    bn.add(_getDiscretizedVariable("U", -4,6, 3))
+    bn.add(_getDiscretizedVariable("X1", -4, 6, 3))
+    bn.add(_getDiscretizedVariable("X2", -4, 6, 3))
+    bn.add(_getDiscretizedVariable("X3", -4, 6, 3))
+    bn.add(_getDiscretizedVariable("M", -4, 6, 10))
+    bn.add(_getDiscretizedVariable("Y", -4, 6, 100))
+    bn.add(gum.IntegerVariable("T", "T", [0, 1]))
+    bn.add(_getDiscretizedVariable("U", -4, 6, 3))
     bn.addArc("U", "T")
     bn.addArc("U", "Y")
     bn.addArc("X1", "T")
@@ -335,7 +325,7 @@ class TestCausalEffectEstimation(pyAgrumTestCase):
     bn.cpt("M").fillFromDistribution(norm, loc="T + 2*X1 - X2", scale=1)
     bn.cpt("Y").fillFromDistribution(norm, loc="U + 2*M + 3*X2 + X3", scale=1)
     ie = gum.LazyPropagation(bn)
-    cpt_T = ie.evidenceImpact("T",["X1", "X3"])
+    cpt_T = ie.evidenceImpact("T", ["X1", "X3"])
     cpt_Y = ie.evidenceImpact("Y", ["T", "M", "X2", "X3"])
     ie = None
     bn.eraseArc("U", "T")
@@ -374,19 +364,18 @@ class TestCausalEffectEstimation(pyAgrumTestCase):
     self.assertRaises(FrontdoorError, cee.fitTSLS)
 
   def test_simple_IV_case(self):
-
     U = np.random.normal(1, 1, _n)
     W = np.random.binomial(1, 0.3, _n)
-    T = np.random.binomial(1, np.power(1+np.exp(- (U - 2*W)), -1))
-    Y = np.random.normal(U + 2*T, 1, _n)
-    df = pd.DataFrame({"W": W, "T": T, "Y":Y}, index=np.arange(0,_n))
+    T = np.random.binomial(1, np.power(1 + np.exp(-(U - 2 * W)), -1))
+    Y = np.random.normal(U + 2 * T, 1, _n)
+    df = pd.DataFrame({"W": W, "T": T, "Y": Y}, index=np.arange(0, _n))
 
     bn = gum.BayesNet()
     bn.beginTopologyTransformation()
-    bn.add(gum.IntegerVariable("W", "W", [0,1]))
-    bn.add(_getDiscretizedVariable("Y", -4,6, 100))
-    bn.add(gum.IntegerVariable("T", "T", [0,1]))
-    bn.add(_getDiscretizedVariable("U", -4,6, 3))
+    bn.add(gum.IntegerVariable("W", "W", [0, 1]))
+    bn.add(_getDiscretizedVariable("Y", -4, 6, 100))
+    bn.add(gum.IntegerVariable("T", "T", [0, 1]))
+    bn.add(_getDiscretizedVariable("U", -4, 6, 3))
     bn.addArc("U", "T")
     bn.addArc("U", "Y")
     bn.addArc("W", "T")
@@ -396,7 +385,7 @@ class TestCausalEffectEstimation(pyAgrumTestCase):
     bn.cpt("T").fillFromDistribution(logistic, loc="U - 2*W", scale=1)
     bn.cpt("Y").fillFromDistribution(norm, loc="U + 2*T", scale=1)
     ie = gum.LazyPropagation(bn)
-    cpt_T = ie.evidenceImpact("T",["W"])
+    cpt_T = ie.evidenceImpact("T", ["W"])
     cpt_Y = ie.evidenceImpact("Y", ["T"])
     ie = None
     bn.eraseArc("U", "T")
@@ -440,25 +429,24 @@ class TestCausalEffectEstimation(pyAgrumTestCase):
     self.assertRaises(ValueError, cee.fitNormalizedWaldIPW)
 
   def test_conditional_IV_case(self):
-
     U = np.random.normal(1, 1, _n)
     X1 = np.random.normal(1, 1, _n)
     X2 = np.random.normal(1, 1, _n)
     X3 = np.random.normal(1, 1, _n)
-    W = np.random.binomial(1, np.power(1+np.exp(-(5 - 4*X1 + X3)), -1))
-    T = np.random.binomial(1, np.power(1+np.exp(-(U - 2*W + 3*X1 + X2)), -1))
-    Y = np.random.normal(U + 2*T - 4*X3, 1, _n)
-    df = pd.DataFrame({"W": W, "X1": X1, "X2": X2, "X3": X3, "T": T, "Y":Y}, index=np.arange(0,_n))
+    W = np.random.binomial(1, np.power(1 + np.exp(-(5 - 4 * X1 + X3)), -1))
+    T = np.random.binomial(1, np.power(1 + np.exp(-(U - 2 * W + 3 * X1 + X2)), -1))
+    Y = np.random.normal(U + 2 * T - 4 * X3, 1, _n)
+    df = pd.DataFrame({"W": W, "X1": X1, "X2": X2, "X3": X3, "T": T, "Y": Y}, index=np.arange(0, _n))
 
     bn = gum.BayesNet()
     bn.beginTopologyTransformation()
-    bn.add(gum.IntegerVariable("W", "W", [0,1]))
-    bn.add(_getDiscretizedVariable("Y", -4,6, 100))
-    bn.add(gum.IntegerVariable("T", "T", [0,1]))
-    bn.add(_getDiscretizedVariable("X1", -4,6, 3))
-    bn.add(_getDiscretizedVariable("X2", -4,6, 3))
-    bn.add(_getDiscretizedVariable("X3", -4,6, 3))
-    bn.add(_getDiscretizedVariable("U", -4,6, 3))
+    bn.add(gum.IntegerVariable("W", "W", [0, 1]))
+    bn.add(_getDiscretizedVariable("Y", -4, 6, 100))
+    bn.add(gum.IntegerVariable("T", "T", [0, 1]))
+    bn.add(_getDiscretizedVariable("X1", -4, 6, 3))
+    bn.add(_getDiscretizedVariable("X2", -4, 6, 3))
+    bn.add(_getDiscretizedVariable("X3", -4, 6, 3))
+    bn.add(_getDiscretizedVariable("U", -4, 6, 3))
     bn.addArc("U", "T")
     bn.addArc("U", "Y")
     bn.addArc("W", "T")
@@ -518,6 +506,7 @@ class TestCausalEffectEstimation(pyAgrumTestCase):
     self.assertRaises(IVError, cee.fitGeneralizedPlugIn)
 
     self.assertRaises(ValueError, cee.fitWald)
+
 
 ts = unittest.TestSuite()
 addTests(ts, TestCausalEffectEstimation)

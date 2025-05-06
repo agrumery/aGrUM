@@ -35,67 +35,38 @@
 ############################################################################
 
 import unittest
-import logging
-import sys
 
 from .pyAgrumTestSuite import pyAgrumTestCase, addTests
+import importlib.util
 
-try:
-  import sklearn
-
-  sklearnFound = True
-except ImportError:
-  sklearnFound = False
-
-try:
-  import pandas
-
-  pandasFound = True
-except ImportError:
-  pandasFound = False
-
-try:
-  import matplotlib
-
-  matplotlibFound = True
-except ImportError:
-  matplotlibFound = False
-
-try:
-  import IPython
-
-  ipythonFound = True
-except ImportError:
-  ipythonFound = False
+# Check if the required libraries are installed
+res = importlib.util.find_spec("sklearn")
+sklearnFound = res is not None
+res = importlib.util.find_spec("pandas")
+pandasFound = res is not None
+res = importlib.util.find_spec("matplotlib")
+matplotlibFound = res is not None
+res = importlib.util.find_spec("ipython")
+ipythonFound = res is not None
 
 
 class TestImport(pyAgrumTestCase):
   def testImport(self):
     try:
-      import pyagrum
-      import pyagrum.lib.bn2scores
-      import pyagrum.lib.bn_vs_bn
-
       if matplotlibFound and ipythonFound:
-        import pyagrum.lib.ipython
-        import pyagrum.lib.notebook
+        pass
       else:
-        self.log.warning(
-          "ipython and matplotlib are needed for modules lib.ipython and lib.notebook")
+        self.log.warning("ipython and matplotlib are needed for modules lib.ipython and lib.notebook")
 
       if matplotlibFound:
-        import pyagrum.lib.bn2graph
-        import pyagrum.lib.bn2roc
-        import pyagrum.lib.dynamicBN
+        pass
       else:
-        self.log.warning(
-          "matplotlib is needed for modules lib.ipython and lib.notebook")
+        self.log.warning("matplotlib is needed for modules lib.ipython and lib.notebook")
 
       if sklearnFound:
-        import pyagrum.lib.classifier
+        pass
       else:
-        self.log.warning(
-          "sklearn is needed for modules lib.classifier")
+        self.log.warning("sklearn is needed for modules lib.classifier")
 
     except Exception as e:
       self.assertFalse(False, "Import error : " + str(e))

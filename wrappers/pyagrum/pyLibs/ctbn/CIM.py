@@ -61,6 +61,7 @@ class CIM:
   pot : pyagrum.Tensor | None
       Defines the new CIM using existing tensor.
   """
+
   DELIMITER = "#"
   _pot: pyagrum.Tensor
 
@@ -435,10 +436,8 @@ class CIM:
       return CIM(pyagrum.Tensor(cimX._pot))
 
     # Names of the non-parent variables from the CIM
-    sX = {self.varRadical(v) for v in cimX.variablesSequence()
-          if not self.isParent(v)}
-    sY = {self.varRadical(v) for v in cimY.variablesSequence()
-          if not self.isParent(v)}
+    sX = {self.varRadical(v) for v in cimX.variablesSequence() if not self.isParent(v)}
+    sY = {self.varRadical(v) for v in cimY.variablesSequence() if not self.isParent(v)}
 
     amal = CIM()
 

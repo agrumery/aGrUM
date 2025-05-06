@@ -37,6 +37,7 @@
 """
 This file defines functions for dSeparation crtieria
 """
+
 from typing import Set
 
 import pyagrum
@@ -255,7 +256,7 @@ def _isDSep_tech2_parents(bn: "pyagrum.BayesNet", sx: NodeSet, sy: NodeSet, zset
     G.addNodeWithId(i)
 
   for b in G.nodes():
-    for a in (set(bn.parents(b)) - sx):
+    for a in set(bn.parents(b)) - sx:
       G.addEdge(a, b)
 
   for nod in G.nodes():
@@ -322,7 +323,7 @@ def _isDSep_tech2_children(bn: "pyagrum.BayesNet", sx: NodeSet, sy: NodeSet, zse
 
 
 def _is_descendant(bn: "pyagrum.BayesNet", x: NodeId, y: NodeId, marked: NodeSet = None) -> bool:
-  """ Asserts whether or not ``x`` is a descendant of ``y`` in ``bn``"""
+  """Asserts whether or not ``x`` is a descendant of ``y`` in ``bn``"""
 
   if marked is None:
     marked = set()
@@ -358,7 +359,7 @@ def _is_ascendant(bn: "pyagrum.BayesNet", x: NodeId, y: NodeId, marquage: Set[in
 
 
 def descendants(bn: "pyagrum.BayesNet", x: NodeId, marked: NodeSet = None, ensdesc: NodeSet = None) -> NodeSet:
-  """ Returns a set composed by all the descendents of ``x`` in ``bn`` """
+  """Returns a set composed by all the descendents of ``x`` in ``bn``"""
   if marked is None:
     marked = set()
   if ensdesc is None:
@@ -486,9 +487,9 @@ def dSep_reduce(g: "pyagrum.BayesNet", interest: NodeSet = None) -> "pyagrum.DAG
   return reduced_g
 
 
-def _blocked(bn: "pyagrum.BayesNet", pht: bool, x: NodeSet, y: NodeSet, setz: NodeSet,
-             marquage0: Set[int],
-             marquage1: Set[int]) -> bool:
+def _blocked(
+  bn: "pyagrum.BayesNet", pht: bool, x: NodeSet, y: NodeSet, setz: NodeSet, marquage0: Set[int], marquage1: Set[int]
+) -> bool:
   """
   internal method to check if a path is blocked
   """
@@ -524,7 +525,7 @@ def _blocked(bn: "pyagrum.BayesNet", pht: bool, x: NodeSet, y: NodeSet, setz: No
 
 
 def _isDSep_tech1_parents(bn: "pyagrum.BayesNet", x: NodeId, sy: NodeSet, zset: NodeSet, reduced: bool = False) -> bool:
-  """ Test of d-separation of ``x`` and ``y`` given ``Z``, considering only the paths with an arc coming into ``x``
+  """Test of d-separation of ``x`` and ``y`` given ``Z``, considering only the paths with an arc coming into ``x``
   using the usual paths method"""
 
   if not reduced and len(bn.nodes()) > 170:
@@ -539,7 +540,7 @@ def _isDSep_tech1_parents(bn: "pyagrum.BayesNet", x: NodeId, sy: NodeSet, zset: 
 
 
 def _isDSep_tech1_children(bn: "pyagrum.BayesNet", x: NodeId, sy: NodeSet, setz: NodeSet, reduced=False) -> bool:
-  """ Test of d-separation of ``x`` and ``y`` given ``Z``, considering only the paths with an arc coming from ``x``
+  """Test of d-separation of ``x`` and ``y`` given ``Z``, considering only the paths with an arc coming from ``x``
   using the usual paths method"""
 
   if not reduced and len(bn.nodes()) > 170:
@@ -554,7 +555,7 @@ def _isDSep_tech1_children(bn: "pyagrum.BayesNet", x: NodeId, sy: NodeSet, setz:
 
 
 def isDSep_tech1(bn: "pyagrum.BayesNet", sx: NodeSet, sy: NodeSet, setz: NodeSet, reduced=False) -> bool:
-  """ Test of d-separation for ``x`` and ``y``, given ``Z`` using the usual paths method """
+  """Test of d-separation for ``x`` and ``y``, given ``Z`` using the usual paths method"""
 
   if len(sx) > len(sy):
     sx, sy = sy, sx

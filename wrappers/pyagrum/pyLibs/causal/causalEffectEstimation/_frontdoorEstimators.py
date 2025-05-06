@@ -43,406 +43,350 @@ from sklearn.base import clone
 
 from ._learners import learnerFromString
 
+
 class SimplePlugIn:
+  """
+  Uses the (original) Frontdoor Adjustment Formula to derive
+  the plug-in estimator. Does not account for covariates.
+  Based on Guo et al. (2023).
+  (see https://www.jstor.org/stable/2337329).
+  """
+
+  def __init__(self, learner: str | Any | None = None, propensity_learner: str | Any | None = None) -> None:
     """
-    Uses the (original) Frontdoor Adjustment Formula to derive
-    the plug-in estimator. Does not account for covariates.
-    Based on Guo et al. (2023).
-    (see https://www.jstor.org/stable/2337329).
+    Initialize the Frontdoor Adjustment estimator.
+
+    Parameters
+    ----------
+    learner: str or object, optional
+        Estimator for outcome variable.
+        If not provided, defaults to LinearRegression.
+    propensity_learner: str |or object, optional
+        Estimator for treatment proability.
+        If not provided, defaults to LogisticRegression.
     """
 
-    def __init__(
-            self,
-            learner: str | Any | None = None,
-            propensity_learner: str | Any | None = None
-        ) -> None:
-        """
-        Initialize the Frontdoor Adjustment estimator.
+    if learner is None:
+      self.learner = learnerFromString("LinearRegression")
+    elif isinstance(learner, str):
+      self.learner = learnerFromString(learner)
+    else:
+      self.learner = clone(learner)
 
-        Parameters
-        ----------
-        learner: str or object, optional
-            Estimator for outcome variable.
-            If not provided, defaults to LinearRegression.
-        propensity_learner: str |or object, optional
-            Estimator for treatment proability.
-            If not provided, defaults to LogisticRegression.
-        """
+    if propensity_learner is None:
+      self.propensity_learner = learnerFromString("LogisticRegression")
+    elif isinstance(propensity_learner, str):
+      self.propensity_learner = learnerFromString(propensity_learner)
+    else:
+      self.propensity_learner = clone(propensity_learner)
 
-        if learner is None:
-            self.learner = learnerFromString("LinearRegression")
-        elif isinstance(learner, str):
-            self.learner = learnerFromString(learner)
-        else:
-            self.learner = clone(learner)
+    self.treatment_probability = None
 
-        if propensity_learner is None:
-            self.propensity_learner = learnerFromString("LogisticRegression")
-        elif isinstance(propensity_learner, str):
-            self.propensity_learner = learnerFromString(propensity_learner)
-        else:
-            self.propensity_learner = clone(propensity_learner)
+  def fit(
+    self,
+    X: np.matrix | np.ndarray | pd.DataFrame,
+    treatment: np.ndarray | pd.Series,
+    y: np.ndarray | pd.Series,
+    M: np.matrix | np.ndarray | pd.DataFrame,
+  ) -> None:
+    """
+    Fit the inference model.
 
-        self.treatment_probability = None
+    Parameters
+    ----------
+    X: np.matrix or np.ndarray or pd.DataFrame
+        The matrix of covariates.
+    treatment: np.ndarray or pd.Series
+        The treatment assignment vector.
+    y: np.ndarray or pd.Series,
+        The outcome vector.
+    M: np.matrix or np.ndarray or pd.DataFrame
+        The mediator matrix.
+    """
 
-    def fit(
-            self,
-            X: np.matrix | np.ndarray | pd.DataFrame,
-            treatment: np.ndarray | pd.Series,
-            y: np.ndarray | pd.Series,
-            M: np.matrix | np.ndarray | pd.DataFrame,
-        ) -> None:
-        """
-        Fit the inference model.
+    self.learner.fit(X=pd.concat([pd.DataFrame(M), pd.DataFrame(treatment)], axis=1), y=y)
 
-        Parameters
-        ----------
-        X: np.matrix or np.ndarray or pd.DataFrame
-            The matrix of covariates.
-        treatment: np.ndarray or pd.Series
-            The treatment assignment vector.
-        y: np.ndarray or pd.Series,
-            The outcome vector.
-        M: np.matrix or np.ndarray or pd.DataFrame
-            The mediator matrix.
-        """
+    self.propensity_learner.fit(X=pd.DataFrame(M), y=treatment)
 
-        self.learner.fit(
-            X=pd.concat(
-                [pd.DataFrame(M), pd.DataFrame(treatment)],
-                axis=1
-            ),
-            y=y
-        )
+    self.treatment_probability = treatment.sum() / treatment.count()
 
-        self.propensity_learner.fit(
-            X=pd.DataFrame(M),
-            y=treatment
-        )
+  def predict(
+    self,
+    X: np.matrix | np.ndarray | pd.DataFrame,
+    treatment: np.ndarray | pd.Series,
+    y: np.ndarray | pd.Series,
+    M: np.matrix | np.ndarray | pd.DataFrame,
+  ) -> np.ndarray:
+    """
+    Predict the Idividual Causal Effect (ICE),
+    also referd to as the Individual Treatment Effect (ITE).
 
-        self.treatment_probability = treatment.sum() / treatment.count()
+    Parameters
+    ----------
+    X: np.matrix or np.ndarray or pd.DataFrame
+        The matrix of covariates.
+    treatment: np.ndarray or pd.Series
+        The treatment assignment vector.
+    y: np.ndarray or pd.Series,
+        The outcome vector.
+    M: np.matrix or np.ndarray or pd.DataFrame
+        The mediator matrix.
 
-    def predict(
-            self,
-            X: np.matrix | np.ndarray | pd.DataFrame,
-            treatment: np.ndarray | pd.Series,
-            y: np.ndarray | pd.Series,
-            M: np.matrix | np.ndarray | pd.DataFrame,
-        )-> np.ndarray:
-        """
-        Predict the Idividual Causal Effect (ICE),
-        also referd to as the Individual Treatment Effect (ITE).
+    Returns
+    -------
+    np.ndarray
+        An array containing the predicted ICE.
+    """
 
-        Parameters
-        ----------
-        X: np.matrix or np.ndarray or pd.DataFrame
-            The matrix of covariates.
-        treatment: np.ndarray or pd.Series
-            The treatment assignment vector.
-        y: np.ndarray or pd.Series,
-            The outcome vector.
-        M: np.matrix or np.ndarray or pd.DataFrame
-            The mediator matrix.
+    M_control = pd.concat(
+      [
+        pd.DataFrame(M),
+        pd.DataFrame({self.learner.feature_names_in_[-1]: np.zeros(len(M))}, index=pd.DataFrame(M).index),
+      ],
+      axis=1,
+    )
 
-        Returns
-        -------
-        np.ndarray
-            An array containing the predicted ICE.
-        """
+    M_treatment = pd.concat(
+      [
+        pd.DataFrame(M),
+        pd.DataFrame({self.learner.feature_names_in_[-1]: np.ones(len(M))}, index=pd.DataFrame(M).index),
+      ],
+      axis=1,
+    )
 
-        M_control = pd.concat(
-            [
-                pd.DataFrame(M),
-                pd.DataFrame(
-                    {
-                        self.learner.feature_names_in_[-1]: \
-                            np.zeros(len(M))
-                    },
-                    index=pd.DataFrame(M).index
-                )
-            ], axis=1
-        )
+    mu0 = self.learner.predict(X=M_control)
+    mu1 = self.learner.predict(X=M_treatment)
 
-        M_treatment = pd.concat(
-            [
-                pd.DataFrame(M),
-                pd.DataFrame(
-                    {
-                        self.learner.feature_names_in_[-1]: \
-                            np.ones(len(M))
-                    },
-                    index=pd.DataFrame(M).index
-                )
-            ], axis=1
-        )
+    e = self.propensity_learner.predict_proba(X=M)[:, 1]
+    p = self.treatment_probability
 
-        mu0 = self.learner.predict(X=M_control)
-        mu1 = self.learner.predict(X=M_treatment)
+    return (e / p - (1 - e) / (1 - p)) * (mu1 * p + mu0 * (1 - p))
 
-        e = self.propensity_learner.predict_proba(X=M)[:,1]
-        p = self.treatment_probability
+  def estimate_ate(
+    self,
+    X: np.matrix | np.ndarray | pd.DataFrame,
+    treatment: np.ndarray | pd.Series,
+    y: np.ndarray | pd.Series,
+    M: np.matrix | np.ndarray | pd.DataFrame,
+    pretrain: bool = True,
+  ) -> float:
+    """
+    Predicts the Average Causal Effect (ACE),
+    also refered to as the Average Treatment Effect (ATE).
+    (The term ATE is used in the method name for compatibility purposes.)
 
-        return (e/p - (1-e)/(1-p)) * (mu1*p + mu0*(1-p))
+    Parameters
+    ----------
+    X: np.matrix or np.ndarray or pd.DataFrame
+        The matrix of covariates.
+    treatment: np.ndarray or pd.Series
+        The treatment assignment vector.
+    y: np.ndarray or pd.Series,
+        The outcome vector.
+    M: np.matrix or np.ndarray or pd.DataFrame
+        The mediator matrix.
 
-    def estimate_ate(
-            self,
-            X: np.matrix | np.ndarray | pd.DataFrame,
-            treatment: np.ndarray | pd.Series,
-            y: np.ndarray | pd.Series,
-            M: np.matrix | np.ndarray | pd.DataFrame,
-            pretrain: bool = True
-        ) -> float:
-        """
-        Predicts the Average Causal Effect (ACE),
-        also refered to as the Average Treatment Effect (ATE).
-        (The term ATE is used in the method name for compatibility purposes.)
+    Returns
+    -------
+    float
+        The value of the ACE.
+    """
 
-        Parameters
-        ----------
-        X: np.matrix or np.ndarray or pd.DataFrame
-            The matrix of covariates.
-        treatment: np.ndarray or pd.Series
-            The treatment assignment vector.
-        y: np.ndarray or pd.Series,
-            The outcome vector.
-        M: np.matrix or np.ndarray or pd.DataFrame
-            The mediator matrix.
+    return self.predict(X, treatment, y, M).mean()
 
-        Returns
-        -------
-        float
-            The value of the ACE.
-        """
-
-        return self.predict(X, treatment, y, M).mean()
 
 class GeneralizedPlugIn:
+  """
+  Basic implementation of the second plug-in TMLE estimator.
+  Must provide covariates.
+  Based on Guo et al. (2023).
+  (see https://arxiv.org/abs/2312.10234).
+  """
+
+  def __init__(
+    self,
+    learner: str | Any | None = None,
+    conditional_outcome_learner: str | Any | None = None,
+    propensity_score_learner: str | Any | None = None,
+    pseudo_control_outcome_learner: str | Any | None = None,
+    pseudo_treatment_outcome_learner: str | Any | None = None,
+  ) -> None:
     """
-    Basic implementation of the second plug-in TMLE estimator.
-    Must provide covariates.
-    Based on Guo et al. (2023).
-    (see https://arxiv.org/abs/2312.10234).
+    Initialize the Frontdoor Adjustment estimator.
+
+    Parameters
+    ----------
+    learner: str or Any, optional
+        Estimator for outcome variable.
+        If not provided, defaults to LinearRegression.
+    propensity_learner: str or Any, optional
+        Estimator for treatment proability.
+        If not provided, defaults to LogisticRegression.
     """
 
-    def __init__(
-            self,
-            learner: str | Any | None = None,
-            conditional_outcome_learner: str | Any | None = None,
-            propensity_score_learner: str | Any | None = None,
-            pseudo_control_outcome_learner: str | Any | None = None,
-            pseudo_treatment_outcome_learner: str | Any | None = None
-        ) -> None:
-        """
-        Initialize the Frontdoor Adjustment estimator.
+    if learner is None:
+      self.conditional_outcome_learner = learnerFromString("LinearRegression")
+      self.pseudo_outcome_learner = learnerFromString("LinearRegression")
+      self.propensity_score_learner = learnerFromString("LogisticRegression")
+    elif isinstance(learner, str):
+      self.conditional_outcome_learner = learnerFromString(learner)
+      self.pseudo_outcome_learner = learnerFromString(learner)
+      self.propensity_score_learner = learnerFromString(learner)
+    else:
+      self.conditional_outcome_learner = clone(learner)
+      self.pseudo_outcome_learner = clone(learner)
+      self.propensity_score_learner = clone(learner)
 
-        Parameters
-        ----------
-        learner: str or Any, optional
-            Estimator for outcome variable.
-            If not provided, defaults to LinearRegression.
-        propensity_learner: str or Any, optional
-            Estimator for treatment proability.
-            If not provided, defaults to LogisticRegression.
-        """
+    if conditional_outcome_learner is None:
+      self.conditional_outcome_learner = learnerFromString("LinearRegression")
+    elif isinstance(conditional_outcome_learner, str):
+      self.conditional_outcome_learner = learnerFromString(conditional_outcome_learner)
+    else:
+      self.conditional_outcome_learner = clone(conditional_outcome_learner)
 
-        if learner is None:
-            self.conditional_outcome_learner = learnerFromString(
-                "LinearRegression")
-            self.pseudo_outcome_learner = learnerFromString(
-                "LinearRegression")
-            self.propensity_score_learner = learnerFromString(
-                "LogisticRegression")
-        elif isinstance(learner, str):
-            self.conditional_outcome_learner = learnerFromString(learner)
-            self.pseudo_outcome_learner = learnerFromString(learner)
-            self.propensity_score_learner = learnerFromString(learner)
-        else:
-            self.conditional_outcome_learner = clone(learner)
-            self.pseudo_outcome_learner = clone(learner)
-            self.propensity_score_learner = clone(learner)
+    if pseudo_control_outcome_learner is None:
+      self.pseudo_control_outcome_learner = learnerFromString("LinearRegression")
+    elif isinstance(pseudo_control_outcome_learner, str):
+      self.pseudo_control_outcome_learner = learnerFromString(pseudo_control_outcome_learner)
+    else:
+      self.pseudo_control_outcome_learner = clone(pseudo_control_outcome_learner)
 
-        if conditional_outcome_learner is None:
-            self.conditional_outcome_learner = learnerFromString(
-                "LinearRegression")
-        elif isinstance(conditional_outcome_learner, str):
-            self.conditional_outcome_learner = learnerFromString(
-                conditional_outcome_learner)
-        else:
-            self.conditional_outcome_learner = clone(
-                conditional_outcome_learner)
+    if pseudo_treatment_outcome_learner is None:
+      self.pseudo_treatment_outcome_learner = learnerFromString("LinearRegression")
+    elif isinstance(pseudo_treatment_outcome_learner, str):
+      self.pseudo_treatment_outcome_learner = learnerFromString(pseudo_treatment_outcome_learner)
+    else:
+      self.pseudo_treatment_outcome_learner = clone(pseudo_treatment_outcome_learner)
 
-        if pseudo_control_outcome_learner is None:
-            self.pseudo_control_outcome_learner = learnerFromString(
-                "LinearRegression")
-        elif isinstance(pseudo_control_outcome_learner, str):
-            self.pseudo_control_outcome_learner = learnerFromString(
-                pseudo_control_outcome_learner)
-        else:
-            self.pseudo_control_outcome_learner = clone(
-                pseudo_control_outcome_learner)
+    if propensity_score_learner is None:
+      self.propensity_score_learner = learnerFromString("LogisticRegression")
+    elif isinstance(propensity_score_learner, str):
+      self.propensity_score_learner = learnerFromString(propensity_score_learner)
+    else:
+      self.propensity_score_learner = clone(propensity_score_learner)
 
-        if pseudo_treatment_outcome_learner is None:
-            self.pseudo_treatment_outcome_learner = learnerFromString(
-                "LinearRegression")
-        elif isinstance(pseudo_treatment_outcome_learner, str):
-            self.pseudo_treatment_outcome_learner = learnerFromString(
-                pseudo_treatment_outcome_learner)
-        else:
-            self.pseudo_treatment_outcome_learner = clone(
-                pseudo_treatment_outcome_learner)
+  def fit(
+    self,
+    X: np.matrix | np.ndarray | pd.DataFrame,
+    treatment: np.ndarray | pd.Series,
+    y: np.ndarray | pd.Series,
+    M: np.matrix | np.ndarray | pd.DataFrame,
+  ) -> None:
+    """
+    Fit the inference model.
 
-        if propensity_score_learner is None:
-            self.propensity_score_learner = learnerFromString(
-                "LogisticRegression")
-        elif isinstance(propensity_score_learner, str):
-            self.propensity_score_learner = learnerFromString(
-                propensity_score_learner)
-        else:
-            self.propensity_score_learner = clone(
-                propensity_score_learner)
+    Parameters
+    ----------
+    X: np.matrix or np.ndarray or pd.DataFrame
+        The matrix of covariates.
+    treatment: np.ndarray or pd.Series
+        The treatment assignment vector.
+    y: np.ndarray or pd.Series,
+        The outcome vector.
+    M: np.matrix or np.ndarray or pd.DataFrame
+        The mediator matrix.
+    """
 
-    def fit(
-            self,
-            X: np.matrix | np.ndarray | pd.DataFrame,
-            treatment: np.ndarray | pd.Series,
-            y: np.ndarray | pd.Series,
-            M: np.matrix | np.ndarray | pd.DataFrame,
-        ) -> None:
-        """
-        Fit the inference model.
+    self.conditional_outcome_learner.fit(
+      X=pd.concat([pd.DataFrame(M), pd.DataFrame(X), pd.DataFrame(treatment)], axis=1), y=y
+    )
 
-        Parameters
-        ----------
-        X: np.matrix or np.ndarray or pd.DataFrame
-            The matrix of covariates.
-        treatment: np.ndarray or pd.Series
-            The treatment assignment vector.
-        y: np.ndarray or pd.Series,
-            The outcome vector.
-        M: np.matrix or np.ndarray or pd.DataFrame
-            The mediator matrix.
-        """
+    self.propensity_score_learner.fit(X=pd.DataFrame(X), y=treatment)
 
-        self.conditional_outcome_learner.fit(
-            X=pd.concat(
-                [pd.DataFrame(M), pd.DataFrame(X), pd.DataFrame(treatment)],
-                axis=1
-            ),
-            y=y
-        )
+  def predict(
+    self,
+    X: np.matrix | np.ndarray | pd.DataFrame,
+    treatment: np.ndarray | pd.Series,
+    y: np.ndarray | pd.Series,
+    M: np.matrix | np.ndarray | pd.DataFrame,
+  ) -> np.ndarray:
+    """
+    Predict the Idividual Causal Effect (ICE),
+    also referd to as the Individual Treatment Effect (ITE).
 
-        self.propensity_score_learner.fit(
-            X=pd.DataFrame(X),
-            y=treatment
-        )
+    Parameters
+    ----------
+    X: np.matrix or np.ndarray or pd.DataFrame
+        The matrix of covariates.
+    treatment: np.ndarray or pd.Series
+        The treatment assignment vector.
+    y: np.ndarray or pd.Series,
+        The outcome vector.
+    M: np.matrix or np.ndarray or pd.DataFrame
+        The mediator matrix.
 
-    def predict(
-            self,
-            X: np.matrix | np.ndarray | pd.DataFrame,
-            treatment: np.ndarray | pd.Series,
-            y: np.ndarray | pd.Series,
-            M: np.matrix | np.ndarray | pd.DataFrame,
-        )-> np.ndarray:
-        """
-        Predict the Idividual Causal Effect (ICE),
-        also referd to as the Individual Treatment Effect (ITE).
+    Returns
+    -------
+    np.ndarray
+        An array containing the predicted ICE.
+    """
 
-        Parameters
-        ----------
-        X: np.matrix or np.ndarray or pd.DataFrame
-            The matrix of covariates.
-        treatment: np.ndarray or pd.Series
-            The treatment assignment vector.
-        y: np.ndarray or pd.Series,
-            The outcome vector.
-        M: np.matrix or np.ndarray or pd.DataFrame
-            The mediator matrix.
+    def xi(m, x):
+      mu = self.conditional_outcome_learner.predict
+      pi = self.propensity_score_learner.predict_proba
 
-        Returns
-        -------
-        np.ndarray
-            An array containing the predicted ICE.
-        """
+      MX_control = pd.concat(
+        [
+          pd.DataFrame(m),
+          pd.DataFrame(x),
+          pd.DataFrame(
+            {self.conditional_outcome_learner.feature_names_in_[-1]: np.zeros(len(m))}, index=pd.DataFrame(m).index
+          ),
+        ],
+        axis=1,
+      )
 
-        def xi(m, x):
+      MX_treatment = pd.concat(
+        [
+          pd.DataFrame(m),
+          pd.DataFrame(x),
+          pd.DataFrame(
+            {self.conditional_outcome_learner.feature_names_in_[-1]: np.ones(len(m))}, index=pd.DataFrame(m).index
+          ),
+        ],
+        axis=1,
+      )
+      return mu(MX_control) * pi(x)[:, 0] + mu(MX_treatment) * pi(x)[:, 1]
 
-            mu = self.conditional_outcome_learner.predict
-            pi = self.propensity_score_learner.predict_proba
+    MX_control_empirical = pd.concat([pd.DataFrame(M), pd.DataFrame(X)], axis=1)
 
-            MX_control = pd.concat(
-                [
-                    pd.DataFrame(m),
-                    pd.DataFrame(x),
-                    pd.DataFrame(
-                        {self.conditional_outcome_learner.feature_names_in_[-1]:
-                        np.zeros(len(m))},
-                        index=pd.DataFrame(m).index
-                    )
-                ], axis=1
-            )
+    self.pseudo_control_outcome_learner.fit(X=X[treatment == 0], y=xi(M[treatment == 0], X[treatment == 0]))
 
-            MX_treatment = pd.concat(
-                [
-                    pd.DataFrame(m),
-                    pd.DataFrame(x),
-                    pd.DataFrame(
-                        {self.conditional_outcome_learner.feature_names_in_[-1]:
-                        np.ones(len(m))},
-                        index=pd.DataFrame(m).index
-                    )
-                ], axis=1
-            )
-            return mu(MX_control)*pi(x)[:,0] + mu(MX_treatment)*pi(x)[:,1]
+    self.pseudo_treatment_outcome_learner.fit(X=X[treatment == 1], y=xi(M[treatment == 1], X[treatment == 1]))
 
+    gamma0 = self.pseudo_control_outcome_learner.predict(X)
+    gamma1 = self.pseudo_treatment_outcome_learner.predict(X)
 
-        MX_control_empirical = pd.concat(
-            [pd.DataFrame(M), pd.DataFrame(X)],
-            axis=1
-        )
+    return gamma1 - gamma0
 
-        self.pseudo_control_outcome_learner.fit(
-            X=X[treatment == 0],
-            y=xi(M[treatment == 0], X[treatment == 0])
-        )
+  def estimate_ate(
+    self,
+    X: np.matrix | np.ndarray | pd.DataFrame,
+    treatment: np.ndarray | pd.Series,
+    y: np.ndarray | pd.Series,
+    M: np.matrix | np.ndarray | pd.DataFrame,
+    pretrain: bool = True,
+  ) -> float:
+    """
+    Predicts the Average Causal Effect (ACE),
+    also refered to as the Average Treatment Effect (ATE).
+    (The term ATE is used in the method name for compatibility purposes.)
 
-        self.pseudo_treatment_outcome_learner.fit(
-            X=X[treatment == 1],
-            y=xi(M[treatment == 1], X[treatment == 1])
-        )
+    Parameters
+    ----------
+    X: np.matrix or np.ndarray or pd.DataFrame
+        The matrix of covariates.
+    treatment: np.ndarray or pd.Series
+        The treatment assignment vector.
+    y: np.ndarray or pd.Series,
+        The outcome vector.
+    M: np.matrix or np.ndarray or pd.DataFrame
+        The mediator matrix.
 
-        gamma0 = self.pseudo_control_outcome_learner.predict(X)
-        gamma1 = self.pseudo_treatment_outcome_learner.predict(X)
+    Returns
+    -------
+    float
+        The value of the ACE.
+    """
 
-        return gamma1 - gamma0
-
-    def estimate_ate(
-            self,
-            X: np.matrix | np.ndarray | pd.DataFrame,
-            treatment: np.ndarray | pd.Series,
-            y: np.ndarray | pd.Series,
-            M: np.matrix | np.ndarray | pd.DataFrame,
-            pretrain: bool = True
-        ) -> float:
-        """
-        Predicts the Average Causal Effect (ACE),
-        also refered to as the Average Treatment Effect (ATE).
-        (The term ATE is used in the method name for compatibility purposes.)
-
-        Parameters
-        ----------
-        X: np.matrix or np.ndarray or pd.DataFrame
-            The matrix of covariates.
-        treatment: np.ndarray or pd.Series
-            The treatment assignment vector.
-        y: np.ndarray or pd.Series,
-            The outcome vector.
-        M: np.matrix or np.ndarray or pd.DataFrame
-            The mediator matrix.
-
-        Returns
-        -------
-        float
-            The value of the ACE.
-        """
-
-        return self.predict(X, treatment, y, M).mean()
+    return self.predict(X, treatment, y, M).mean()

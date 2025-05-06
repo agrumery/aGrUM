@@ -41,11 +41,10 @@ from .pyAgrumTestSuite import pyAgrumTestCase, addTests
 
 
 class AggregatorsForBNTestCase(pyAgrumTestCase):
-
   def testAnd(self):
     bn = gum.BayesNet()
-    c1, c2 = [bn.add(gum.LabelizedVariable(item, item, 2)) for item in ['C1', 'C2']]
-    a = bn.addAND(gum.LabelizedVariable('a', 'a', 2))
+    c1, c2 = [bn.add(gum.LabelizedVariable(item, item, 2)) for item in ["C1", "C2"]]
+    a = bn.addAND(gum.LabelizedVariable("a", "a", 2))
     bn.addArc(c1, a)
     bn.addArc(c2, a)
 
@@ -64,8 +63,8 @@ class AggregatorsForBNTestCase(pyAgrumTestCase):
 
   def testOr(self):
     bn = gum.BayesNet()
-    c1, c2 = [bn.add(gum.LabelizedVariable(item, item, 2)) for item in ['C1', 'C2']]
-    a = bn.addOR(gum.LabelizedVariable('a', 'a', 2))
+    c1, c2 = [bn.add(gum.LabelizedVariable(item, item, 2)) for item in ["C1", "C2"]]
+    a = bn.addOR(gum.LabelizedVariable("a", "a", 2))
     bn.addArc(c1, a)
     bn.addArc(c2, a)
 
@@ -85,10 +84,10 @@ class AggregatorsForBNTestCase(pyAgrumTestCase):
   def testZeroParent(self):
     bn = gum.BayesNet()
 
-    a = bn.addOR(gum.LabelizedVariable('a', 'a', 2))
+    a = bn.addOR(gum.LabelizedVariable("a", "a", 2))
     self.assertEqual(bn.cpt(a).tolist(), [1.0, 0.0])
 
-    b = bn.addAND(gum.LabelizedVariable('b', 'b', 2))
+    b = bn.addAND(gum.LabelizedVariable("b", "b", 2))
     self.assertEqual(bn.cpt(b).tolist(), [0.0, 1.0])
 
 

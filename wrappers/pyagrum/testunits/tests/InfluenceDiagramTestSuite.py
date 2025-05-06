@@ -36,7 +36,6 @@
 
 import unittest
 
-import numpy
 import pyagrum as gum
 from .pyAgrumTestSuite import pyAgrumTestCase, addTests
 
@@ -129,85 +128,84 @@ class InfluenceDiagramTestCase(pyAgrumTestCase):
 
     tst_id.cpt("c").fillWith([0.5, 0.5])
 
-    tst_id.cpt("c1")[{'c': 0}] = [1, 0]
-    tst_id.cpt("c1")[{'c': 1}] = [0, 1]
+    tst_id.cpt("c1")[{"c": 0}] = [1, 0]
+    tst_id.cpt("c1")[{"c": 1}] = [0, 1]
 
-    tst_id.utility("u")[{'c': 0, 'd': 0}] = [10]
-    tst_id.utility("u")[{'c': 0, 'd': 1}] = [21]
-    tst_id.utility("u")[{'c': 1, 'd': 0}] = [100]
-    tst_id.utility("u")[{'c': 1, 'd': 1}] = [200]
+    tst_id.utility("u")[{"c": 0, "d": 0}] = [10]
+    tst_id.utility("u")[{"c": 0, "d": 1}] = [21]
+    tst_id.utility("u")[{"c": 1, "d": 0}] = [100]
+    tst_id.utility("u")[{"c": 1, "d": 1}] = [200]
 
     ie = gum.ShaferShenoyLIMIDInference(tst_id)
     ie.makeInference()
     self.assertEqual(ie.optimalDecision("d"), gum.Tensor().add(tst_id.variableFromName("d")).fillWith([0, 1]))
-    self.assertEqual(ie.MEU()['mean'], 110.5)
+    self.assertEqual(ie.MEU()["mean"], 110.5)
 
   def testBugInferenceWithEvidence(self):
     tst_id = gum.fastID("c1<-c->$u<-*d")
 
     tst_id.cpt("c").fillWith([0.5, 0.5])
 
-    tst_id.cpt("c1")[{'c': 0}] = [1, 0]
-    tst_id.cpt("c1")[{'c': 1}] = [0, 1]
+    tst_id.cpt("c1")[{"c": 0}] = [1, 0]
+    tst_id.cpt("c1")[{"c": 1}] = [0, 1]
 
-    tst_id.utility("u")[{'c': 0, 'd': 0}] = [10]
-    tst_id.utility("u")[{'c': 0, 'd': 1}] = [21]
-    tst_id.utility("u")[{'c': 1, 'd': 0}] = [100]
-    tst_id.utility("u")[{'c': 1, 'd': 1}] = [200]
-
-    ie = gum.ShaferShenoyLIMIDInference(tst_id)
-    ie.setEvidence({'c': 0})
-    ie.makeInference()
-    self.assertEqual(ie.optimalDecision("d"), gum.Tensor().add(tst_id.variableFromName("d")).fillWith([0, 1]))
-    self.assertEqual(ie.MEU()['mean'], 21)
+    tst_id.utility("u")[{"c": 0, "d": 0}] = [10]
+    tst_id.utility("u")[{"c": 0, "d": 1}] = [21]
+    tst_id.utility("u")[{"c": 1, "d": 0}] = [100]
+    tst_id.utility("u")[{"c": 1, "d": 1}] = [200]
 
     ie = gum.ShaferShenoyLIMIDInference(tst_id)
-    ie.setEvidence({'c': 1})
+    ie.setEvidence({"c": 0})
     ie.makeInference()
     self.assertEqual(ie.optimalDecision("d"), gum.Tensor().add(tst_id.variableFromName("d")).fillWith([0, 1]))
-    self.assertEqual(ie.MEU()['mean'], 200)
+    self.assertEqual(ie.MEU()["mean"], 21)
+
+    ie = gum.ShaferShenoyLIMIDInference(tst_id)
+    ie.setEvidence({"c": 1})
+    ie.makeInference()
+    self.assertEqual(ie.optimalDecision("d"), gum.Tensor().add(tst_id.variableFromName("d")).fillWith([0, 1]))
+    self.assertEqual(ie.MEU()["mean"], 200)
 
   def testBugInferenceWithEvidenceWithSemiFastSyntax(self):
     tst_id = gum.InfluenceDiagram()
     tst_id.addVariables(["c1", "c", "$u", "*d"])
-    tst_id.addArcs([("c", "c1"),
-                    ("c", "u"),
-                    ("d", "u")])
+    tst_id.addArcs([("c", "c1"), ("c", "u"), ("d", "u")])
 
     tst_id.cpt("c").fillWith([0.5, 0.5])
 
-    tst_id.cpt("c1")[{'c': 0}] = [1, 0]
-    tst_id.cpt("c1")[{'c': 1}] = [0, 1]
+    tst_id.cpt("c1")[{"c": 0}] = [1, 0]
+    tst_id.cpt("c1")[{"c": 1}] = [0, 1]
 
-    tst_id.utility("u")[{'c': 0, 'd': 0}] = [10]
-    tst_id.utility("u")[{'c': 0, 'd': 1}] = [21]
-    tst_id.utility("u")[{'c': 1, 'd': 0}] = [100]
-    tst_id.utility("u")[{'c': 1, 'd': 1}] = [200]
-
-    ie = gum.ShaferShenoyLIMIDInference(tst_id)
-    ie.setEvidence({'c': 0})
-    ie.makeInference()
-    self.assertEqual(ie.optimalDecision("d"), gum.Tensor().add(tst_id.variableFromName("d")).fillWith([0, 1]))
-    self.assertEqual(ie.MEU()['mean'], 21)
+    tst_id.utility("u")[{"c": 0, "d": 0}] = [10]
+    tst_id.utility("u")[{"c": 0, "d": 1}] = [21]
+    tst_id.utility("u")[{"c": 1, "d": 0}] = [100]
+    tst_id.utility("u")[{"c": 1, "d": 1}] = [200]
 
     ie = gum.ShaferShenoyLIMIDInference(tst_id)
-    ie.setEvidence({'c': 1})
+    ie.setEvidence({"c": 0})
     ie.makeInference()
     self.assertEqual(ie.optimalDecision("d"), gum.Tensor().add(tst_id.variableFromName("d")).fillWith([0, 1]))
-    self.assertEqual(ie.MEU()['mean'], 200)
+    self.assertEqual(ie.MEU()["mean"], 21)
+
+    ie = gum.ShaferShenoyLIMIDInference(tst_id)
+    ie.setEvidence({"c": 1})
+    ie.makeInference()
+    self.assertEqual(ie.optimalDecision("d"), gum.Tensor().add(tst_id.variableFromName("d")).fillWith([0, 1]))
+    self.assertEqual(ie.MEU()["mean"], 200)
 
   def testToFast(self):
-    model=gum.fastID("*A->B->$C<-*D->E;F[3]->$G;*H->I{a|b|c};X")
-    model2=gum.fastID(model.toFast())
-    self.assertEqual(model.names(),model2.names())
-    for _,n in model:
-      self.assertEqual(model.isChanceNode(n),model2.isChanceNode(n))
-      self.assertEqual(model.isUtilityNode(n),model2.isUtilityNode(n))
-      self.assertEqual(model.isDecisionNode(n),model2.isDecisionNode(n))
-      self.assertEqual(model.variable(n).toFast(),
-                       model2.variable(n).toFast())
-      self.assertEqual({model.variable(i).name() for i in model.parents(n)},
-                       {model2.variable(i).name() for i in model2.parents(n)})
+    model = gum.fastID("*A->B->$C<-*D->E;F[3]->$G;*H->I{a|b|c};X")
+    model2 = gum.fastID(model.toFast())
+    self.assertEqual(model.names(), model2.names())
+    for _, n in model:
+      self.assertEqual(model.isChanceNode(n), model2.isChanceNode(n))
+      self.assertEqual(model.isUtilityNode(n), model2.isUtilityNode(n))
+      self.assertEqual(model.isDecisionNode(n), model2.isDecisionNode(n))
+      self.assertEqual(model.variable(n).toFast(), model2.variable(n).toFast())
+      self.assertEqual(
+        {model.variable(i).name() for i in model.parents(n)}, {model2.variable(i).name() for i in model2.parents(n)}
+      )
+
 
 ts = unittest.TestSuite()
 addTests(ts, InfluenceDiagramTestCase)

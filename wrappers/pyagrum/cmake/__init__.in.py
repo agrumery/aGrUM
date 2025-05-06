@@ -52,8 +52,14 @@ from .pyagrum import log2
 from .pyagrum import statsObj
 from .pyagrum import fastGraph
 from .pyagrum import config
-from .pyagrum import DiscretizedVariable, LabelizedVariable, RangeVariable, DiscreteVariable, IntegerVariable, \
-    NumericalDiscreteVariable
+from .pyagrum import (
+    DiscretizedVariable,
+    LabelizedVariable,
+    RangeVariable,
+    DiscreteVariable,
+    IntegerVariable,
+    NumericalDiscreteVariable,
+)
 from .pyagrum import Tensor, Instantiation, Tensor
 from .pyagrum import Arc, Edge, DiGraph, UndiGraph, MixedGraph, DAG, PDAG, CliqueGraph
 from .pyagrum import JunctionTreeGenerator
@@ -63,11 +69,40 @@ from .pyagrum import fastVariable
 from .pyagrum import initRandom, randomProba, randomDistribution, randomGeneratorSeed, randomValue
 from .pyagrum import isOMP, getNumberOfThreads, getMaxNumberOfThreads, getNumberOfLogicalProcessors, setNumberOfThreads
 from .pyagrum import VarType_DISCRETIZED, VarType_LABELIZED, VarType_RANGE, VarType_INTEGER, VarType_NUMERICAL
-from .pyagrum import DefaultInLabel, DuplicateElement, DuplicateLabel, GumException, FatalError, FormatNotFound, \
-    GraphError, IOError, InvalidArc, InvalidArgument, InvalidArgumentsNumber, InvalidDirectedCycle, InvalidEdge, \
-    InvalidNode, DatabaseError, MissingValueInDatabase, MissingVariableInDatabase, NoChild, NoNeighbour, NoParent, \
-    NotFound, NullElement, OperationNotAllowed, OutOfBounds, ArgumentError, SizeError, SyntaxError, UndefinedElement, \
-    UndefinedIteratorKey, UndefinedIteratorValue, UnknownLabelInDatabase, CPTError
+from .pyagrum import (
+    DefaultInLabel,
+    DuplicateElement,
+    DuplicateLabel,
+    GumException,
+    FatalError,
+    FormatNotFound,
+    GraphError,
+    IOError,
+    InvalidArc,
+    InvalidArgument,
+    InvalidArgumentsNumber,
+    InvalidDirectedCycle,
+    InvalidEdge,
+    InvalidNode,
+    DatabaseError,
+    MissingValueInDatabase,
+    MissingVariableInDatabase,
+    NoChild,
+    NoNeighbour,
+    NoParent,
+    NotFound,
+    NullElement,
+    OperationNotAllowed,
+    OutOfBounds,
+    ArgumentError,
+    SizeError,
+    SyntaxError,
+    UndefinedElement,
+    UndefinedIteratorKey,
+    UndefinedIteratorValue,
+    UnknownLabelInDatabase,
+    CPTError,
+)
 
 # submodule BN
 from .pyagrum import fastBN
@@ -86,6 +121,7 @@ from .pyagrum import BNLearner
 from .pyagrum import PRMexplorer
 
 import sys
+
 # sublodule MRF
 try:
     from .pyagrum import getPosterior
@@ -110,8 +146,16 @@ try:
 except ImportError:
     sys.stderr.write("Could not load Influence Diagram submodule")
 
-from .deprecated import *
-from .common import __version__, __license__, __project_url__, __project_name__, __project_description__, __project__, about
+from .common import (
+    __version__,
+    __license__,
+    __project_url__,
+    __project_name__,
+    __project_description__,
+    __project__,
+    about,
+)
 
 # deprecated
+from .deprecated import deprecated_arg
 from .pyagrum import Potential

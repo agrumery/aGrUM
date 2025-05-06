@@ -46,7 +46,7 @@ from .utils import notif, safe_cd
 
 
 def simple_stats(n, s, s2) -> tuple[float, float, float]:
-  v = (s2 / n - pow(s / n, 2))
+  v = s2 / n - pow(s / n, 2)
   if n == 1:
     sig = sqrt(v)
     halfA = 0
@@ -58,11 +58,11 @@ def simple_stats(n, s, s2) -> tuple[float, float, float]:
 
 def profileAgrum(current: dict[str, Any]):
   dic = {k: current[k] for k in current.keys()}
-  dic['stats'] = False
-  dic['fixed_seed'] = True
-  dic['no-fun'] = True
+  dic["stats"] = False
+  dic["fixed_seed"] = True
+  dic["no-fun"] = True
 
-  target = "+".join(current['targets'])
+  target = "+".join(current["targets"])
   safe_cd(current, "build")
   safe_cd(current, "agrum")
   safe_cd(current, current["mode"])
@@ -71,7 +71,7 @@ def profileAgrum(current: dict[str, Any]):
   cm = getCmake(dic, target)
   proc = Popen(cm, shell=True, stdout=PIPE, stderr=STDOUT)
   out = proc.stdout.readlines()
-  if current['verbose']:
+  if current["verbose"]:
     for line in out:
       print(line, end="")
 
@@ -79,7 +79,7 @@ def profileAgrum(current: dict[str, Any]):
   ma = getMake(dic, target)
   proc = Popen(ma, shell=True, stdout=PIPE, stderr=STDOUT)
   out = proc.stdout.readlines()
-  if current['verbose']:
+  if current["verbose"]:
     for line in out:
       print(line, end="")
 
@@ -89,8 +89,8 @@ def profileAgrum(current: dict[str, Any]):
   sdt = 0
   sdt2 = 0
 
-  dmin = float('inf')
-  dmax = float('-inf')
+  dmin = float("inf")
+  dmax = float("-inf")
 
   mean = halfA = 0
 
@@ -122,13 +122,15 @@ def profileAgrum(current: dict[str, Any]):
     mean, stdev, halfA = simple_stats(i + 1, sdt, sdt2)
     t = localtime()
     notif(
-      f"{t.tm_hour:02d}:{t.tm_min:02d}:{t.tm_sec:02d} #[{i + 1:02d}] | {dt:7.3f}s ({stdev:3.3f}) | [{mean:8.3f} ± {halfA:3.3f}]s |")
+      f"{t.tm_hour:02d}:{t.tm_min:02d}:{t.tm_sec:02d} #[{i + 1:02d}] | {dt:7.3f}s ({stdev:3.3f}) | [{mean:8.3f} ± {halfA:3.3f}]s |"
+    )
 
   notif(barre)
   notif("  time   #it |    XP (stdev)    | confid. interval  |")
   notif(barre)
   notif(
-    f"=> Conclusion on {cfg.nbr_tests_for_stats} iteration(s) : {dmin:8.3f} <-- [{mean:8.3f} ± {halfA:3.3f}] --> {dmax:8.3f}")
+    f"=> Conclusion on {cfg.nbr_tests_for_stats} iteration(s) : {dmin:8.3f} <-- [{mean:8.3f} ± {halfA:3.3f}] --> {dmax:8.3f}"
+  )
 
   safe_cd(current, "..")
   safe_cd(current, "..")

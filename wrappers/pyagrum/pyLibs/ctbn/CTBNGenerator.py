@@ -37,7 +37,6 @@
 from typing import Tuple
 import pyagrum
 import random
-import logging
 
 from pyagrum.ctbn import CIM
 from pyagrum.ctbn import CTBN

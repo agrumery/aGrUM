@@ -39,4 +39,4 @@ __copyright__ = "(c) 2019-2024 PARIS"
 
 from ._CausalEffectEstimation import CausalEffectEstimation
 
-__all__ = ['CausalEffectEstimation']
+__all__ = ["CausalEffectEstimation"]

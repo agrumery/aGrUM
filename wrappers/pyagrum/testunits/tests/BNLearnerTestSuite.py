@@ -43,8 +43,7 @@ from .pyAgrumTestSuite import pyAgrumTestCase, addTests
 
 class BNLearnerCSVTestCase(pyAgrumTestCase):
   def testHillClimbing(self):
-    learner = gum.BNLearner(self.agrumSrcDir(
-      'asia.csv'))
+    learner = gum.BNLearner(self.agrumSrcDir("asia.csv"))
     learner.useGreedyHillClimbing()
     bn = learner.learnBN()
     self.assertEqual(bn.size(), 8)
@@ -53,19 +52,20 @@ class BNLearnerCSVTestCase(pyAgrumTestCase):
       gum.BNLearner("shouldNotExist.csv")
 
   def testHillClimbingAccurate(self):
-    reference = gum.loadBN(self.agrumSrcDir(
-      'asia2.bif'), verbose=False)
+    reference = gum.loadBN(self.agrumSrcDir("asia2.bif"), verbose=False)
 
-    learner = gum.BNLearner(self.agrumSrcDir('asia.csv'), reference)
+    learner = gum.BNLearner(self.agrumSrcDir("asia.csv"), reference)
 
-    witness = ['smoking?',
-               'lung_cancer?',
-               'bronchitis?',
-               'visit_to_Asia?',
-               'tuberculosis?',
-               'tuberculos_or_cancer?',
-               'dyspnoea?',
-               'positive_XraY?']
+    witness = [
+      "smoking?",
+      "lung_cancer?",
+      "bronchitis?",
+      "visit_to_Asia?",
+      "tuberculosis?",
+      "tuberculos_or_cancer?",
+      "dyspnoea?",
+      "positive_XraY?",
+    ]
     for n in witness:
       self.assertTrue(n in learner.names())
     for n in learner.names():
@@ -76,45 +76,41 @@ class BNLearnerCSVTestCase(pyAgrumTestCase):
 
     f = gum.ExactBNdistance(bn, reference)
     res = f.compute()
-    self.assertAlmostEqual(res['klPQ'], 0.5, delta=0.5)
+    self.assertAlmostEqual(res["klPQ"], 0.5, delta=0.5)
 
   def testLocalSearchWithTabu(self):
     with self.assertRaises(gum.IOError):
       gum.BNLearner("shouldNotExist.csv")
 
   def testLocalSearchWithTabuAccurate(self):
-    reference = gum.loadBN(self.agrumSrcDir('asia2.bif'), verbose=False)
-    learner = gum.BNLearner(self.agrumSrcDir('asia.csv'), reference)
+    reference = gum.loadBN(self.agrumSrcDir("asia2.bif"), verbose=False)
+    learner = gum.BNLearner(self.agrumSrcDir("asia.csv"), reference)
     learner.useLocalSearchWithTabuList()
     bn = learner.learnBN()
     f = gum.ExactBNdistance(bn, reference)
     res = f.compute()
-    self.assertAlmostEqual(res['klPQ'], 0.5, delta=0.5)
+    self.assertAlmostEqual(res["klPQ"], 0.5, delta=0.5)
 
   def testParameterLearning(self):
-    bn = gum.loadBN(self.agrumSrcDir(
-      'asia_bool.bif'), verbose=False)
+    bn = gum.loadBN(self.agrumSrcDir("asia_bool.bif"), verbose=False)
 
-    learner = gum.BNLearner(self.agrumSrcDir(
-      'asia3.csv'), bn)
+    learner = gum.BNLearner(self.agrumSrcDir("asia3.csv"), bn)
     learner.useScoreLog2Likelihood()
     learner.useSmoothingPrior(1.0)
 
     bn2 = learner.learnParameters(bn)
     for i in range(bn.size()):
       # self.assertEqual(str(bn2.variable(i)), str(bn.variable(bn.idFromName(bn2.variable(i).name()))))
-      self.assertEqual(set(bn2.variable(i).labels()), set(
-        bn.variable(bn.idFromName(bn2.variable(i).name())).labels()))
+      self.assertEqual(set(bn2.variable(i).labels()), set(bn.variable(bn.idFromName(bn2.variable(i).name())).labels()))
 
-    bn = gum.loadBN(self.agrumSrcDir(
-      'asia_bool.bif'), verbose=False)
+    bn = gum.loadBN(self.agrumSrcDir("asia_bool.bif"), verbose=False)
     # there is a beurk modality in asia3-faulty.csv
     with self.assertRaises(gum.UnknownLabelInDatabase):
-      gum.BNLearner(self.agrumSrcDir('asia3-faulty.csv'), bn)
+      gum.BNLearner(self.agrumSrcDir("asia3-faulty.csv"), bn)
 
   def testDBNTonda(self):
     dbn = gum.BayesNet()
-    for (name, nbr) in [
+    for name, nbr in [
       ("bf_0", 4),
       ("bf_t", 4),
       ("c_0", 5),
@@ -124,7 +120,7 @@ class BNLearnerCSVTestCase(pyAgrumTestCase):
       ("tf_0", 5),
       ("tf_t", 5),
       ("wl_0", 4),
-      ("wl_t", 4)
+      ("wl_t", 4),
     ]:
       dbn.add(gum.LabelizedVariable(name, name, nbr))
 
@@ -135,7 +131,7 @@ class BNLearnerCSVTestCase(pyAgrumTestCase):
     dbn.addArc(dbn.idFromName("h_0"), dbn.idFromName("h_t"))
     dbn.addArc(dbn.idFromName("wl_0"), dbn.idFromName("wl_t"))
 
-    csvfile = self.agrumSrcDir('DBN_Tonda.csv')
+    csvfile = self.agrumSrcDir("DBN_Tonda.csv")
     l1 = gum.BNLearner(csvfile, dbn)
     l1.useScoreLog2Likelihood()
     l1.useSmoothingPrior()
@@ -159,8 +155,7 @@ class BNLearnerCSVTestCase(pyAgrumTestCase):
       I2.inc()
 
   def testMiic(self):
-    learner = gum.BNLearner(self.agrumSrcDir(
-      'asia.csv'))
+    learner = gum.BNLearner(self.agrumSrcDir("asia.csv"))
     learner.useMIIC()
     learner.useNMLCorrection()
     learner.addForbiddenArc(4, 1)
@@ -173,15 +168,9 @@ class BNLearnerCSVTestCase(pyAgrumTestCase):
 
     self.assertNotEqual(len(learner.names()), 0)
 
-    try:
-      learner.learnPDAG()
-    except:
-      self.fail("Exception has been raised and should not")
+    learner.learnPDAG()
 
-    try:
-      bn = learner.learnBN()
-    except:
-      self.fail("Exception has been raised and should not")
+    bn = learner.learnBN()
     self.assertFalse(bn.dag().existsArc(4, 1))
     self.assertTrue(bn.dag().existsArc(7, 5))
 
@@ -190,30 +179,19 @@ class BNLearnerCSVTestCase(pyAgrumTestCase):
     self.assertEqual(len(learner.latentVariables()), 2)
 
   def test_setSliceOrder_with_names(self):
-    learner = gum.BNLearner(self.agrumSrcDir(
-      'asia3.csv'))
-    learner.setSliceOrder([["smoking?", "lung_cancer?"],
-                           ["bronchitis?", "visit_to_Asia?"],
-                           ["tuberculosis?"]])
+    learner = gum.BNLearner(self.agrumSrcDir("asia3.csv"))
+    learner.setSliceOrder([["smoking?", "lung_cancer?"], ["bronchitis?", "visit_to_Asia?"], ["tuberculosis?"]])
 
-    learner = gum.BNLearner(self.agrumSrcDir(
-      'asia3.csv'))
-    learner.setSliceOrder([[0, "lung_cancer?"],
-                           [2, "visit_to_Asia?"],
-                           ["tuberculosis?"]])
+    learner = gum.BNLearner(self.agrumSrcDir("asia3.csv"))
+    learner.setSliceOrder([[0, "lung_cancer?"], [2, "visit_to_Asia?"], ["tuberculosis?"]])
 
-    learner = gum.BNLearner(self.agrumSrcDir(
-      'asia3.csv'))
+    learner = gum.BNLearner(self.agrumSrcDir("asia3.csv"))
 
     with self.assertRaises(gum.DuplicateElement):
-      learner.setSliceOrder([["smoking?", "lung_cancer?"],
-                             [0, "visit_to_Asia?"],
-                             ["tuberculosis?"]])
+      learner.setSliceOrder([["smoking?", "lung_cancer?"], [0, "visit_to_Asia?"], ["tuberculosis?"]])
 
     with self.assertRaises(gum.MissingVariableInDatabase):
-      learner.setSliceOrder([["smoking?", "lung_cancer?"],
-                             ["bronchitis?", "CRUCRU?"],
-                             ["tuberculosis?"]])
+      learner.setSliceOrder([["smoking?", "lung_cancer?"], ["bronchitis?", "CRUCRU?"], ["tuberculosis?"]])
 
   def test_dirichlet(self):
     bn = gum.fastBN("A->B<-C->D->E<-B")
@@ -232,12 +210,10 @@ class BNLearnerCSVTestCase(pyAgrumTestCase):
     self.assertEqual(bn3.size(), 5)
 
   def test_EM(self):
-    learner = gum.BNLearner(self.agrumSrcDir(
-      'EM.csv'), ["#"])
+    learner = gum.BNLearner(self.agrumSrcDir("EM.csv"), ["#"])
     self.assertFalse(learner.hasMissingValues())
 
-    learner = gum.BNLearner(self.agrumSrcDir(
-      'EM.csv'), ["?"])
+    learner = gum.BNLearner(self.agrumSrcDir("EM.csv"), ["?"])
     self.assertTrue(learner.hasMissingValues())
 
     dag = gum.DAG()
@@ -256,8 +232,7 @@ class BNLearnerCSVTestCase(pyAgrumTestCase):
     learner.learnParameters(dag, False)
 
   def test_chi2(self):
-    learner = gum.BNLearner(self.agrumSrcDir(
-      'asia3.csv'))
+    learner = gum.BNLearner(self.agrumSrcDir("asia3.csv"))
 
     stat, pvalue = learner.chi2("smoking?", "lung_cancer?")
     self.assertAlmostEqual(stat, 36.2256, delta=1e-4)
@@ -271,13 +246,11 @@ class BNLearnerCSVTestCase(pyAgrumTestCase):
     self.assertAlmostEqual(stat, 0.6297, delta=1e-4)
     self.assertAlmostEqual(pvalue, 0.4274, delta=1e-4)
 
-    stat, pvalue = learner.chi2("lung_cancer?", "tuberculosis?", [
-      "tuberculos_or_cancer?"])
+    stat, pvalue = learner.chi2("lung_cancer?", "tuberculosis?", ["tuberculos_or_cancer?"])
     self.assertAlmostEqual(stat, 58.0, delta=1e-4)
     self.assertAlmostEqual(pvalue, 0.0, delta=1e-4)
 
-    learner2 = gum.BNLearner(self.agrumSrcDir(
-      'chi2.csv'))
+    learner2 = gum.BNLearner(self.agrumSrcDir("chi2.csv"))
 
     stat, pvalue = learner2.chi2("A", "C")
     self.assertAlmostEqual(stat, 0.0007, delta=1e-3)
@@ -300,8 +273,7 @@ class BNLearnerCSVTestCase(pyAgrumTestCase):
     self.assertAlmostEqual(pvalue, 0.0005, delta=1e-4)
 
   def test_loglikelihood(self):
-    learner = gum.BNLearner(self.agrumSrcDir(
-      'chi2.csv'))
+    learner = gum.BNLearner(self.agrumSrcDir("chi2.csv"))
     self.assertEqual(learner.nbRows(), 500)
     self.assertEqual(learner.nbCols(), 4)
 
@@ -327,36 +299,40 @@ class BNLearnerCSVTestCase(pyAgrumTestCase):
 
   def testPossibleEdge(self):
     # possible edges are not relevant
-    learner = gum.BNLearner(self.agrumSrcDir('asia3.csv'))
+    learner = gum.BNLearner(self.agrumSrcDir("asia3.csv"))
     learner.addPossibleEdge("visit_to_Asia?", "lung_cancer?")
     learner.addPossibleEdge("visit_to_Asia?", "smoking?")
     bn = learner.learnBN()
     self.assertEqual(bn.sizeArcs(), 0)
 
     # possible edges are relevant
-    learner = gum.BNLearner(self.agrumSrcDir('asia3.csv'))
+    learner = gum.BNLearner(self.agrumSrcDir("asia3.csv"))
     learner.addPossibleEdge("smoking?", "bronchitis?")
     learner.addPossibleEdge("tuberculos_or_cancer?", "positive_XraY?")
-    possiblearcs = {(bn.idFromName("bronchitis?"), bn.idFromName("smoking?")),
-                    (bn.idFromName("smoking?"), bn.idFromName("bronchitis?")),
-                    (bn.idFromName("tuberculos_or_cancer?"), bn.idFromName("positive_XraY?")),
-                    (bn.idFromName("positive_XraY?"), bn.idFromName("tuberculos_or_cancer?"))}
+    possiblearcs = {
+      (bn.idFromName("bronchitis?"), bn.idFromName("smoking?")),
+      (bn.idFromName("smoking?"), bn.idFromName("bronchitis?")),
+      (bn.idFromName("tuberculos_or_cancer?"), bn.idFromName("positive_XraY?")),
+      (bn.idFromName("positive_XraY?"), bn.idFromName("tuberculos_or_cancer?")),
+    }
     bn = learner.learnBN()
     self.assertEqual(bn.sizeArcs(), 2)
     self.assertTrue(possiblearcs.issuperset(bn.arcs()))
 
     # mixed with a forbidden arc
-    learner = gum.BNLearner(self.agrumSrcDir('asia3.csv'))
+    learner = gum.BNLearner(self.agrumSrcDir("asia3.csv"))
     learner.addPossibleEdge("smoking?", "lung_cancer?")
     learner.addPossibleEdge("tuberculos_or_cancer?", "positive_XraY?")
     learner.addForbiddenArc("smoking?", "bronchitis?")
 
-    possiblearcs = {(bn.idFromName("lung_cancer?"), bn.idFromName("smoking?")),
-                    (bn.idFromName("smoking?"), bn.idFromName("lung_cancer?")),
-                    (bn.idFromName("tuberculos_or_cancer?"), bn.idFromName("positive_XraY?")),
-                    (bn.idFromName("positive_XraY?"), bn.idFromName("tuberculos_or_cancer?")),
-                    (bn.idFromName("bronchitis?"), bn.idFromName("smoking?")),
-                    (bn.idFromName("smoking?"), bn.idFromName("bronchitis?"))}
+    possiblearcs = {
+      (bn.idFromName("lung_cancer?"), bn.idFromName("smoking?")),
+      (bn.idFromName("smoking?"), bn.idFromName("lung_cancer?")),
+      (bn.idFromName("tuberculos_or_cancer?"), bn.idFromName("positive_XraY?")),
+      (bn.idFromName("positive_XraY?"), bn.idFromName("tuberculos_or_cancer?")),
+      (bn.idFromName("bronchitis?"), bn.idFromName("smoking?")),
+      (bn.idFromName("smoking?"), bn.idFromName("bronchitis?")),
+    }
 
     forbiddenarcs = {(bn.idFromName("smoking?"), bn.idFromName("bronchitis?"))}
 
@@ -366,17 +342,18 @@ class BNLearnerCSVTestCase(pyAgrumTestCase):
     self.assertTrue(forbiddenarcs.isdisjoint(bn.arcs()))
 
     # mixed with a mandatory arc
-    learner = gum.BNLearner(self.agrumSrcDir(
-      'asia3.csv'))
+    learner = gum.BNLearner(self.agrumSrcDir("asia3.csv"))
     learner.addPossibleEdge("smoking?", "lung_cancer?")
     learner.addPossibleEdge("bronchitis?", "smoking?")
     learner.addMandatoryArc("visit_to_Asia?", "bronchitis?")
 
-    testedarcs = {(bn.idFromName("lung_cancer?"), bn.idFromName("smoking?")),
-                  (bn.idFromName("smoking?"), bn.idFromName("lung_cancer?")),
-                  (bn.idFromName("bronchitis?"), bn.idFromName("smoking?")),
-                  (bn.idFromName("smoking?"), bn.idFromName("bronchitis?")),
-                  (bn.idFromName("visit_to_Asia?"), bn.idFromName("bronchitis?"))}
+    testedarcs = {
+      (bn.idFromName("lung_cancer?"), bn.idFromName("smoking?")),
+      (bn.idFromName("smoking?"), bn.idFromName("lung_cancer?")),
+      (bn.idFromName("bronchitis?"), bn.idFromName("smoking?")),
+      (bn.idFromName("smoking?"), bn.idFromName("bronchitis?")),
+      (bn.idFromName("visit_to_Asia?"), bn.idFromName("bronchitis?")),
+    }
 
     forcedarcs = {(bn.idFromName("visit_to_Asia?"), bn.idFromName("bronchitis?"))}
 
@@ -388,8 +365,7 @@ class BNLearnerCSVTestCase(pyAgrumTestCase):
 
   def testPossibleEdgeWithTabuList(self):
     # possible edges are not relevant
-    learner = gum.BNLearner(self.agrumSrcDir(
-      'asia3.csv'))
+    learner = gum.BNLearner(self.agrumSrcDir("asia3.csv"))
     learner.useLocalSearchWithTabuList()
     learner.addPossibleEdge("visit_to_Asia?", "lung_cancer?")
     learner.addPossibleEdge("visit_to_Asia?", "smoking?")
@@ -398,32 +374,34 @@ class BNLearnerCSVTestCase(pyAgrumTestCase):
     self.assertEqual(bn.sizeArcs(), 0)
 
     # possible edges are relevant
-    learner = gum.BNLearner(self.agrumSrcDir(
-      'asia3.csv'))
+    learner = gum.BNLearner(self.agrumSrcDir("asia3.csv"))
     learner.useLocalSearchWithTabuList()
     learner.addPossibleEdge("smoking?", "lung_cancer?")
     learner.addPossibleEdge("bronchitis?", "smoking?")
-    possiblearcs = {(bn.idFromName("lung_cancer?"), bn.idFromName("smoking?")),
-                    (bn.idFromName("smoking?"), bn.idFromName("lung_cancer?")),
-                    (bn.idFromName("bronchitis?"), bn.idFromName("smoking?")),
-                    (bn.idFromName("smoking?"), bn.idFromName("bronchitis?"))}
+    possiblearcs = {
+      (bn.idFromName("lung_cancer?"), bn.idFromName("smoking?")),
+      (bn.idFromName("smoking?"), bn.idFromName("lung_cancer?")),
+      (bn.idFromName("bronchitis?"), bn.idFromName("smoking?")),
+      (bn.idFromName("smoking?"), bn.idFromName("bronchitis?")),
+    }
 
     bn = learner.learnBN()
     self.assertEqual(bn.sizeArcs(), 2)
     self.assertTrue(possiblearcs.issuperset(bn.arcs()))
 
     # mixed with a forbidden arc
-    learner = gum.BNLearner(self.agrumSrcDir(
-      'asia3.csv'))
+    learner = gum.BNLearner(self.agrumSrcDir("asia3.csv"))
     learner.useLocalSearchWithTabuList()
     learner.addPossibleEdge("smoking?", "lung_cancer?")
     learner.addPossibleEdge("bronchitis?", "smoking?")
     learner.addForbiddenArc("smoking?", "bronchitis?")
 
-    possiblearcs = {(bn.idFromName("lung_cancer?"), bn.idFromName("smoking?")),
-                    (bn.idFromName("smoking?"), bn.idFromName("lung_cancer?")),
-                    (bn.idFromName("bronchitis?"), bn.idFromName("smoking?")),
-                    (bn.idFromName("smoking?"), bn.idFromName("bronchitis?"))}
+    possiblearcs = {
+      (bn.idFromName("lung_cancer?"), bn.idFromName("smoking?")),
+      (bn.idFromName("smoking?"), bn.idFromName("lung_cancer?")),
+      (bn.idFromName("bronchitis?"), bn.idFromName("smoking?")),
+      (bn.idFromName("smoking?"), bn.idFromName("bronchitis?")),
+    }
 
     forbiddenarcs = {(bn.idFromName("smoking?"), bn.idFromName("bronchitis?"))}
     bn = learner.learnBN()
@@ -432,18 +410,19 @@ class BNLearnerCSVTestCase(pyAgrumTestCase):
     self.assertTrue(forbiddenarcs.isdisjoint(bn.arcs()))
 
     # mixed with a mandatory arc
-    learner = gum.BNLearner(self.agrumSrcDir(
-      'asia3.csv'))
+    learner = gum.BNLearner(self.agrumSrcDir("asia3.csv"))
     learner.useLocalSearchWithTabuList()
     learner.addPossibleEdge("smoking?", "lung_cancer?")
     learner.addPossibleEdge("bronchitis?", "smoking?")
     learner.addMandatoryArc("visit_to_Asia?", "bronchitis?")
 
-    testedarcs = {(bn.idFromName("lung_cancer?"), bn.idFromName("smoking?")),
-                  (bn.idFromName("smoking?"), bn.idFromName("lung_cancer?")),
-                  (bn.idFromName("bronchitis?"), bn.idFromName("smoking?")),
-                  (bn.idFromName("smoking?"), bn.idFromName("bronchitis?")),
-                  (bn.idFromName("visit_to_Asia?"), bn.idFromName("bronchitis?"))}
+    testedarcs = {
+      (bn.idFromName("lung_cancer?"), bn.idFromName("smoking?")),
+      (bn.idFromName("smoking?"), bn.idFromName("lung_cancer?")),
+      (bn.idFromName("bronchitis?"), bn.idFromName("smoking?")),
+      (bn.idFromName("smoking?"), bn.idFromName("bronchitis?")),
+      (bn.idFromName("visit_to_Asia?"), bn.idFromName("bronchitis?")),
+    }
 
     bn = learner.learnBN()
     self.assertEqual(bn.sizeArcs(), 3)
@@ -451,8 +430,7 @@ class BNLearnerCSVTestCase(pyAgrumTestCase):
 
   def testPossibleEdgeWithGHC(self):
     # possible edges are not relevant
-    learner = gum.BNLearner(self.agrumSrcDir(
-      'asia3.csv'))
+    learner = gum.BNLearner(self.agrumSrcDir("asia3.csv"))
     learner.useGreedyHillClimbing()
     learner.addPossibleEdge("visit_to_Asia?", "lung_cancer?")
     learner.addPossibleEdge("visit_to_Asia?", "smoking?")
@@ -461,32 +439,34 @@ class BNLearnerCSVTestCase(pyAgrumTestCase):
     self.assertEqual(bn.sizeArcs(), 0)
 
     # possible edges are relevant
-    learner = gum.BNLearner(self.agrumSrcDir(
-      'asia3.csv'))
+    learner = gum.BNLearner(self.agrumSrcDir("asia3.csv"))
     learner.useGreedyHillClimbing()
     learner.addPossibleEdge("smoking?", "lung_cancer?")
     learner.addPossibleEdge("bronchitis?", "smoking?")
-    possiblearcs = {(bn.idFromName("lung_cancer?"), bn.idFromName("smoking?")),
-                    (bn.idFromName("smoking?"), bn.idFromName("lung_cancer?")),
-                    (bn.idFromName("bronchitis?"), bn.idFromName("smoking?")),
-                    (bn.idFromName("smoking?"), bn.idFromName("bronchitis?"))}
+    possiblearcs = {
+      (bn.idFromName("lung_cancer?"), bn.idFromName("smoking?")),
+      (bn.idFromName("smoking?"), bn.idFromName("lung_cancer?")),
+      (bn.idFromName("bronchitis?"), bn.idFromName("smoking?")),
+      (bn.idFromName("smoking?"), bn.idFromName("bronchitis?")),
+    }
 
     bn = learner.learnBN()
     self.assertEqual(bn.sizeArcs(), 2)
     self.assertTrue(possiblearcs.issuperset(bn.arcs()))
 
     # mixed with a forbidden arc
-    learner = gum.BNLearner(self.agrumSrcDir(
-      'asia3.csv'))
+    learner = gum.BNLearner(self.agrumSrcDir("asia3.csv"))
     learner.useGreedyHillClimbing()
     learner.addPossibleEdge("smoking?", "lung_cancer?")
     learner.addPossibleEdge("bronchitis?", "smoking?")
     learner.addForbiddenArc("smoking?", "bronchitis?")
 
-    possiblearcs = {(bn.idFromName("lung_cancer?"), bn.idFromName("smoking?")),
-                    (bn.idFromName("smoking?"), bn.idFromName("lung_cancer?")),
-                    (bn.idFromName("bronchitis?"), bn.idFromName("smoking?")),
-                    (bn.idFromName("smoking?"), bn.idFromName("bronchitis?"))}
+    possiblearcs = {
+      (bn.idFromName("lung_cancer?"), bn.idFromName("smoking?")),
+      (bn.idFromName("smoking?"), bn.idFromName("lung_cancer?")),
+      (bn.idFromName("bronchitis?"), bn.idFromName("smoking?")),
+      (bn.idFromName("smoking?"), bn.idFromName("bronchitis?")),
+    }
 
     forbiddenarcs = {(bn.idFromName("smoking?"), bn.idFromName("bronchitis?"))}
     bn = learner.learnBN()
@@ -495,73 +475,65 @@ class BNLearnerCSVTestCase(pyAgrumTestCase):
     self.assertTrue(forbiddenarcs.isdisjoint(bn.arcs()))
 
     # mixed with a mandatory arc
-    learner = gum.BNLearner(self.agrumSrcDir(
-      'asia3.csv'))
+    learner = gum.BNLearner(self.agrumSrcDir("asia3.csv"))
     learner.useGreedyHillClimbing()
     learner.addPossibleEdge("smoking?", "lung_cancer?")
     learner.addPossibleEdge("bronchitis?", "smoking?")
     learner.addMandatoryArc("visit_to_Asia?", "bronchitis?")
 
-    testedarcs = {(bn.idFromName("lung_cancer?"), bn.idFromName("smoking?")),
-                  (bn.idFromName("smoking?"), bn.idFromName("lung_cancer?")),
-                  (bn.idFromName("bronchitis?"), bn.idFromName("smoking?")),
-                  (bn.idFromName("smoking?"), bn.idFromName("bronchitis?")),
-                  (bn.idFromName("visit_to_Asia?"), bn.idFromName("bronchitis?"))}
+    testedarcs = {
+      (bn.idFromName("lung_cancer?"), bn.idFromName("smoking?")),
+      (bn.idFromName("smoking?"), bn.idFromName("lung_cancer?")),
+      (bn.idFromName("bronchitis?"), bn.idFromName("smoking?")),
+      (bn.idFromName("smoking?"), bn.idFromName("bronchitis?")),
+      (bn.idFromName("visit_to_Asia?"), bn.idFromName("bronchitis?")),
+    }
 
     bn = learner.learnBN()
     self.assertEqual(bn.sizeArcs(), 3)
     self.assertTrue(testedarcs.issuperset(bn.arcs()))
 
   def testHybridLearning(self):
-    learner = gum.BNLearner(self.agrumSrcDir(
-      'data1.csv'))
+    learner = gum.BNLearner(self.agrumSrcDir("data1.csv"))
     learner.useMIIC()
     eg = learner.learnEssentialGraph()
     skel = eg.skeleton()
 
-    learner = gum.BNLearner(self.agrumSrcDir(
-      'data1.csv'))
+    learner = gum.BNLearner(self.agrumSrcDir("data1.csv"))
     learner.setPossibleSkeleton(skel)
     bn = learner.learnBN()
 
     self.assertEqual(bn.sizeArcs(), 4)
     self.assertEqual(bn.parents(bn.idFromName("V")), {bn.idFromName("A")})
-    self.assertEqual(bn.parents(bn.idFromName("Y")), {
-      bn.idFromName("X"), bn.idFromName("V")})
+    self.assertEqual(bn.parents(bn.idFromName("Y")), {bn.idFromName("X"), bn.idFromName("V")})
     self.assertEqual(bn.parents(bn.idFromName("Z")), {bn.idFromName("Y")})
 
   def testHybridLearning2(self):
-    learner = gum.BNLearner(self.agrumSrcDir(
-      'data1.csv'))
+    learner = gum.BNLearner(self.agrumSrcDir("data1.csv"))
     learner.useGreedyHillClimbing()
     eg = learner.learnEssentialGraph()
     skel = eg.skeleton()
 
-    learner = gum.BNLearner(self.agrumSrcDir(
-      'data1.csv'))
+    learner = gum.BNLearner(self.agrumSrcDir("data1.csv"))
     learner.setPossibleSkeleton(skel)
     bn = learner.learnBN()
 
     self.assertEqual(bn.sizeArcs(), 4)
     self.assertEqual(bn.parents(bn.idFromName("V")), {bn.idFromName("A")})
-    self.assertEqual(bn.parents(bn.idFromName("Y")), {
-      bn.idFromName("X"), bn.idFromName("V")})
+    self.assertEqual(bn.parents(bn.idFromName("Y")), {bn.idFromName("X"), bn.idFromName("V")})
     self.assertEqual(bn.parents(bn.idFromName("Z")), {bn.idFromName("Y")})
 
-    learner = gum.BNLearner(self.agrumSrcDir(
-      'data1.csv'))
+    learner = gum.BNLearner(self.agrumSrcDir("data1.csv"))
     learner.setPossibleEdges(skel.edges())
     bn = learner.learnBN()
 
     self.assertEqual(bn.sizeArcs(), 4)
     self.assertEqual(bn.parents(bn.idFromName("V")), {bn.idFromName("A")})
-    self.assertEqual(bn.parents(bn.idFromName("Y")), {
-      bn.idFromName("X"), bn.idFromName("V")})
+    self.assertEqual(bn.parents(bn.idFromName("Y")), {bn.idFromName("X"), bn.idFromName("V")})
     self.assertEqual(bn.parents(bn.idFromName("Z")), {bn.idFromName("Y")})
 
-
   def test_RecordWeight(self):
-    filename = self.agrumSrcDir('dataW.csv')
+    filename = self.agrumSrcDir("dataW.csv")
     bn = gum.fastBN("X->Y")
     with open(filename, "w") as src:
       src.write("""X,Y
@@ -621,13 +593,11 @@ class BNLearnerCSVTestCase(pyAgrumTestCase):
     learner.setRecordWeight(2, 4.0)
 
     bn2 = learner.learnParameters(bn.dag())
-    self.assertTrue(np.array_equal(
-      bn1.cpt("X").toarray(), bn2.cpt("X").toarray()))
-    self.assertTrue(np.array_equal(
-      bn1.cpt("Y").toarray(), bn2.cpt("Y").toarray()))
+    self.assertTrue(np.array_equal(bn1.cpt("X").toarray(), bn2.cpt("X").toarray()))
+    self.assertTrue(np.array_equal(bn1.cpt("Y").toarray(), bn2.cpt("Y").toarray()))
 
   def testPseudoCount(self):
-    filename = self.agrumSrcDir('dataW.csv')
+    filename = self.agrumSrcDir("dataW.csv")
     with open(filename, "w") as src:
       src.write("""X,Y,Z
 0,1,2
@@ -649,32 +619,24 @@ class BNLearnerCSVTestCase(pyAgrumTestCase):
     learner.useSmoothingPrior(0.1)
 
     self.assertEqual(learner.rawPseudoCount(["X"]), (5.1, 2.1))
-    self.assertEqual(learner.rawPseudoCount(
-      ["X", "Z"]), (1.1, 0.1, 2.1, 1.1, 2.1, 1.1))
-    self.assertEqual(learner.rawPseudoCount(
-      ["Y", "Z"]), (0.1, 1.1, 0.1, 3.1, 2.1, 1.1))
+    self.assertEqual(learner.rawPseudoCount(["X", "Z"]), (1.1, 0.1, 2.1, 1.1, 2.1, 1.1))
+    self.assertEqual(learner.rawPseudoCount(["Y", "Z"]), (0.1, 1.1, 0.1, 3.1, 2.1, 1.1))
 
     learner = gum.BNLearner(filename)
     self.assertEqual(learner.pseudoCount(["X"]).tolist(), [5, 2])
-    self.assertEqual(learner.pseudoCount(
-      ["X", "Z"]).tolist(), [[1, 0], [2, 1], [2, 1]])
-    self.assertEqual(learner.pseudoCount(
-      ["Y", "Z"]).tolist(), [[0, 1], [0, 3], [2, 1]])
-    self.assertEqual(learner.pseudoCount(
-      ["Z", "Y"]).tolist(), [[0, 0, 2], [1, 3, 1]])
+    self.assertEqual(learner.pseudoCount(["X", "Z"]).tolist(), [[1, 0], [2, 1], [2, 1]])
+    self.assertEqual(learner.pseudoCount(["Y", "Z"]).tolist(), [[0, 1], [0, 3], [2, 1]])
+    self.assertEqual(learner.pseudoCount(["Z", "Y"]).tolist(), [[0, 0, 2], [1, 3, 1]])
 
     learner.useSmoothingPrior(0.1)
 
     self.assertEqual(learner.pseudoCount(["X"]).tolist(), [5.1, 2.1])
-    self.assertEqual(learner.pseudoCount(["X", "Z"]).tolist(), [
-      [1.1, 0.1], [2.1, 1.1], [2.1, 1.1]])
-    self.assertEqual(learner.pseudoCount(["Y", "Z"]).tolist(), [
-      [0.1, 1.1], [0.1, 3.1], [2.1, 1.1]])
-    self.assertEqual(learner.pseudoCount(["Z", "Y"]).tolist(), [
-      [0.1, 0.1, 2.1], [1.1, 3.1, 1.1]])
+    self.assertEqual(learner.pseudoCount(["X", "Z"]).tolist(), [[1.1, 0.1], [2.1, 1.1], [2.1, 1.1]])
+    self.assertEqual(learner.pseudoCount(["Y", "Z"]).tolist(), [[0.1, 1.1], [0.1, 3.1], [2.1, 1.1]])
+    self.assertEqual(learner.pseudoCount(["Z", "Y"]).tolist(), [[0.1, 0.1, 2.1], [1.1, 3.1, 1.1]])
 
   def test_dbWithGuil(self):
-    filename = self.agrumSrcDir('csv_quoted.csv')
+    filename = self.agrumSrcDir("csv_quoted.csv")
     with open(filename, "w") as src:
       src.write("""X,Y,Z
 0,1,2
@@ -693,7 +655,7 @@ class BNLearnerCSVTestCase(pyAgrumTestCase):
       learner.learnBN()
 
   def test_mutualInfo(self):
-    learner = gum.BNLearner(self.agrumSrcDir('asia3.csv'))
+    learner = gum.BNLearner(self.agrumSrcDir("asia3.csv"))
 
     self.assertAlmostEqual(learner.mutualInformation("lung_cancer?", "smoking?"), 0.0332346154587978, delta=1e-6)
 
@@ -707,8 +669,9 @@ class BNLearnerCSVTestCase(pyAgrumTestCase):
     self.assertAlmostEqual(learner.mutualInformation("lung_cancer?", "smoking?"), 0.0332346154587978, delta=1e-6)
 
     learner.useNoCorrection()
-    self.assertAlmostEqual(learner.correctedMutualInformation("lung_cancer?", "smoking?"), 0.0332346154587978,
-                           delta=1e-6)
+    self.assertAlmostEqual(
+      learner.correctedMutualInformation("lung_cancer?", "smoking?"), 0.0332346154587978, delta=1e-6
+    )
 
     learner.useMDLCorrection()
     self.assertAlmostEqual(learner.correctedMutualInformation("lung_cancer?", "smoking?"), 0.0279523, delta=1e-6)
@@ -717,35 +680,41 @@ class BNLearnerCSVTestCase(pyAgrumTestCase):
     self.assertAlmostEqual(learner.correctedMutualInformation("lung_cancer?", "smoking?"), 0.0292368, delta=1e-6)
 
   def test_conditionalMutualInfo(self):
-    learner = gum.BNLearner(self.agrumSrcDir('asia3.csv'))
+    learner = gum.BNLearner(self.agrumSrcDir("asia3.csv"))
 
-    self.assertAlmostEqual(learner.mutualInformation("bronchitis?", "lung_cancer?", ["smoking?"]), 0.00159046091867418,
-                           delta=1e-6)
-
-    learner.useNoCorrection()
-    self.assertAlmostEqual(learner.mutualInformation("bronchitis?", "lung_cancer?", ["smoking?"]), 0.00159046091867418,
-                           delta=1e-6)
-
-    learner.useMDLCorrection()
-    self.assertAlmostEqual(learner.mutualInformation("bronchitis?", "lung_cancer?", ["smoking?"]), 0.00159046091867418,
-                           delta=1e-6)
-
-    learner.useNMLCorrection()
-    self.assertAlmostEqual(learner.mutualInformation("bronchitis?", "lung_cancer?", ["smoking?"]), 0.00159046091867418,
-                           delta=1e-6)
+    self.assertAlmostEqual(
+      learner.mutualInformation("bronchitis?", "lung_cancer?", ["smoking?"]), 0.00159046091867418, delta=1e-6
+    )
 
     learner.useNoCorrection()
-    self.assertAlmostEqual(learner.correctedMutualInformation("bronchitis?", "lung_cancer?", ["smoking?"]),
-                           0.00159046091867418,
-                           delta=1e-6)
+    self.assertAlmostEqual(
+      learner.mutualInformation("bronchitis?", "lung_cancer?", ["smoking?"]), 0.00159046091867418, delta=1e-6
+    )
 
     learner.useMDLCorrection()
-    self.assertAlmostEqual(learner.correctedMutualInformation("bronchitis?", "lung_cancer?", ["smoking?"]), -0.00897408,
-                           delta=1e-6)
+    self.assertAlmostEqual(
+      learner.mutualInformation("bronchitis?", "lung_cancer?", ["smoking?"]), 0.00159046091867418, delta=1e-6
+    )
 
     learner.useNMLCorrection()
-    self.assertAlmostEqual(learner.correctedMutualInformation("bronchitis?", "lung_cancer?", ["smoking?"]), -0.00486096,
-                           delta=1e-6)
+    self.assertAlmostEqual(
+      learner.mutualInformation("bronchitis?", "lung_cancer?", ["smoking?"]), 0.00159046091867418, delta=1e-6
+    )
+
+    learner.useNoCorrection()
+    self.assertAlmostEqual(
+      learner.correctedMutualInformation("bronchitis?", "lung_cancer?", ["smoking?"]), 0.00159046091867418, delta=1e-6
+    )
+
+    learner.useMDLCorrection()
+    self.assertAlmostEqual(
+      learner.correctedMutualInformation("bronchitis?", "lung_cancer?", ["smoking?"]), -0.00897408, delta=1e-6
+    )
+
+    learner.useNMLCorrection()
+    self.assertAlmostEqual(
+      learner.correctedMutualInformation("bronchitis?", "lung_cancer?", ["smoking?"]), -0.00486096, delta=1e-6
+    )
 
 
 ts = unittest.TestSuite()

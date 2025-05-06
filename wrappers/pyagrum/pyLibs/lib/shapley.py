@@ -55,27 +55,24 @@ import matplotlib.colors as mcolors
 import pyagrum as gum
 
 _cdict = {
-  'red': ((0.0, 0.1, 0.3),
-          (1.0, 0.6, 1.0)),
-  'green': ((0.0, 0.0, 0.0),
-            (1.0, 0.6, 0.8)),
-  'blue': ((0.0, 0.0, 0.0),
-           (1.0, 1, 0.8))
+  "red": ((0.0, 0.1, 0.3), (1.0, 0.6, 1.0)),
+  "green": ((0.0, 0.0, 0.0), (1.0, 0.6, 0.8)),
+  "blue": ((0.0, 0.0, 0.0), (1.0, 1, 0.8)),
 }
-_INFOcmap = mpl.colors.LinearSegmentedColormap('my_colormap', _cdict, 256)
+_INFOcmap = mpl.colors.LinearSegmentedColormap("my_colormap", _cdict, 256)
 
 
 class ShapValues:
   """
-  The ShapValue class implements the calculation of Shap values in Bayesian networks.
+    The ShapValue class implements the calculation of Shap values in Bayesian networks.
 
-  The main implementation is based on Conditional Shap values [3]_, but the Interventional calculation method proposed in [2]_ is also present. In addition, a new causal method, based on [1]_, is implemented which is well suited for Bayesian networks.
+    The main implementation is based on Conditional Shap values [3]_, but the Interventional calculation method proposed in [2]_ is also present. In addition, a new causal method, based on [1]_, is implemented which is well suited for Bayesian networks.
 
-.. [1] Heskes, T., Sijben, E., Bucur, I., & Claassen, T. (2020). Causal Shapley Values: Exploiting Causal Knowledge. 34th Conference on Neural Information Processing Systems. Vancouver, Canada.
+  .. [1] Heskes, T., Sijben, E., Bucur, I., & Claassen, T. (2020). Causal Shapley Values: Exploiting Causal Knowledge. 34th Conference on Neural Information Processing Systems. Vancouver, Canada.
 
-.. [2] Janzing, D., Minorics, L., & Blöbaum, P. (2019). Feature relevance quantification in explainable AI: A causality problem. arXiv: Machine Learning. Retrieved 6 24, 2021, from https://arxiv.org/abs/1910.13413
+  .. [2] Janzing, D., Minorics, L., & Blöbaum, P. (2019). Feature relevance quantification in explainable AI: A causality problem. arXiv: Machine Learning. Retrieved 6 24, 2021, from https://arxiv.org/abs/1910.13413
 
-.. [3] Lundberg, S. M., & Su-In, L. (2017). A Unified Approach to Interpreting Model. 31st Conference on Neural Information Processing Systems. Long Beach, CA, USA.
+  .. [3] Lundberg, S. M., & Su-In, L. (2017). A Unified Approach to Interpreting Model. 31st Conference on Neural Information Processing Systems. Long Beach, CA, USA.
   """
 
   @staticmethod
@@ -133,8 +130,10 @@ class ShapValues:
 
   def _get_all_coal_compress(self):
     ### Return : all coalitions with the feature
-    return (list(itertools.compress(self.feats_names, mask)) for mask in
-            itertools.product(*[[0, 1]] * (len(self.feats_names))))
+    return (
+      list(itertools.compress(self.feats_names, mask))
+      for mask in itertools.product(*[[0, 1]] * (len(self.feats_names)))
+    )
 
   ################################## PREDICTION ##################################
   def _filtrage(self, df, conditions):
@@ -159,25 +158,25 @@ class ShapValues:
   ##### Prediction fonctions ####
 
   def _pred_markov_blanket(self, df, ie, markov_blanket):
-    unique = df.groupby(markov_blanket).agg(freq=(self.target, 'count')).reset_index()
+    unique = df.groupby(markov_blanket).agg(freq=(self.target, "count")).reset_index()
     result = 0
     for i in range(len(unique)):
       for name in markov_blanket:
         ie.chgEvidence(name, str(unique[name].iloc[i]))
       ie.makeInference()
       predicted = ie.posterior(self.target).toarray()[1]
-      result = result + self._logit(predicted) * unique['freq'].iloc[i] / len(df)
+      result = result + self._logit(predicted) * unique["freq"].iloc[i] / len(df)
     return result
 
   def _pred_markov_blanket_logit(self, df, ie, markov_blanket):
-    unique = df.groupby(markov_blanket).agg(freq=('Y', 'count')).reset_index()
+    unique = df.groupby(markov_blanket).agg(freq=("Y", "count")).reset_index()
     result = 0
     for i in range(len(unique)):
       for name in markov_blanket:
         ie.chgEvidence(name, str(unique[name].iloc[i]))
       ie.makeInference()
       predicted = ie.posterior(self.target).toarray()[1]
-      result = result + predicted * unique['freq'].iloc[i] / len(df)
+      result = result + predicted * unique["freq"].iloc[i] / len(df)
     return self._logit(result)
 
   def _evidenceImpact(self, condi, ie):
@@ -202,7 +201,7 @@ class ShapValues:
 
   def _compute_SHAP_i(self, S_U_i, S, v, size_S):
     size_all_features = len(self.bn.nodes()) - 1
-    diff = v[f'{S_U_i}'] - v[f'{S}']
+    diff = v[f"{S_U_i}"] - v[f"{S}"]
     return diff / self._invcoeff_shap(size_S, size_all_features)
 
   def _invcoeff_shap(self, S_size, len_features):
@@ -236,19 +235,19 @@ class ShapValues:
 
     ie = self._init_Inference()
 
-    v = train.groupby(self.feats_names).agg(freq=(self.feats_names[0], 'count')).reset_index()
+    v = train.groupby(self.feats_names).agg(freq=(self.feats_names[0], "count")).reset_index()
 
     convert = self._get_list_names_order()
 
     for i in range(len(v)):
-      v['Baseline'] = self._evidenceImpact({}, ie)
+      v["Baseline"] = self._evidenceImpact({}, ie)
       for coal in self._get_all_coal_compress():
         S = list(coal)
         condi = {}
         for var in S:
           condi[var] = v.loc[i, var]
         col_arr_name = self._coal_encoding(convert, coal)
-        v.loc[i, f'{col_arr_name}'] = self._evidenceImpact(condi, ie)
+        v.loc[i, f"{col_arr_name}"] = self._evidenceImpact(condi, ie)
     df = pd.DataFrame()
     for feat in self.feats_names:
       list_i_last = self.feats_names.copy()
@@ -304,11 +303,10 @@ class ShapValues:
 
   ################################## Function to Compute MARGINAL SHAP Value ##################################
   def _marginal(self, df, size_sample_df):
-
     ie = self._init_Inference()
     convert = self._get_list_names_order()
     test = df[:size_sample_df]
-    v = df.groupby(self.feats_names).agg(freq=(self.feats_names[0], 'count')).reset_index()
+    v = df.groupby(self.feats_names).agg(freq=(self.feats_names[0], "count")).reset_index()
     df = pd.DataFrame()
 
     for i in range(len(v)):
@@ -317,7 +315,7 @@ class ShapValues:
         for var in coal:
           intervention[var] = v.loc[i, var]
         col_arr_name = self._coal_encoding(convert, coal)
-        v.loc[i, f'{col_arr_name}'] = np.mean(self._logit(self._predict_marginal(intervention, ie)))
+        v.loc[i, f"{col_arr_name}"] = np.mean(self._logit(self._predict_marginal(intervention, ie)))
 
     for feat in self.feats_names:
       list_i_last = self.feats_names.copy()
@@ -386,13 +384,13 @@ class ShapValues:
     return ie
 
   def _causal(self, train):
-    v = train.groupby(self.feats_names).agg(freq=(self.feats_names[0], 'count')).reset_index()
+    v = train.groupby(self.feats_names).agg(freq=(self.feats_names[0], "count")).reset_index()
     ie = self._init_Inference()
 
     convert = self._get_list_names_order()
     df = pd.DataFrame()
 
-    v['Baseline'] = self._evidenceImpact({}, ie)
+    v["Baseline"] = self._evidenceImpact({}, ie)
 
     for coal in self._get_all_coal_compress():
       for i in range(len(v)):
@@ -405,7 +403,7 @@ class ShapValues:
             bn_temp.eraseArc(parent, bn_temp.idFromName(var))
           ie = self._mutilation_Inference(bn_temp, self.feats_names, self.target)
         col_arr_name = self._coal_encoding(convert, coal)
-        v.loc[i, f'{col_arr_name}'] = self._evidenceImpact(condi, ie)
+        v.loc[i, f"{col_arr_name}"] = self._evidenceImpact(condi, ie)
     for feat in self.feats_names:
       list_i_last = self.feats_names.copy()
       index_i = list_i_last.index(feat)
@@ -469,7 +467,7 @@ class ShapValues:
       ax1 = fig.add_subplot(1, 2, 1)
       ax2 = fig.add_subplot(1, 2, 2)
     if plot:
-      shap_dict = results.to_dict(orient='list')
+      shap_dict = results.to_dict(orient="list")
       sorted_dict = dict(sorted(shap_dict.items(), key=lambda x: sum(abs(i) for i in x[1]) / len(x[1])))
       data = np.array([sorted_dict[key] for key in sorted_dict])
       features = sorted_dict.keys()
@@ -500,7 +498,7 @@ class ShapValues:
     max_value = np.max(data, axis=(0, 1))
     bin_size = (max_value - min_value) / N
     if bin_size == 0:
-        bin_size = 1
+      bin_size = 1
     horiz_shift = K * bin_size
 
     if ax is None:
@@ -554,43 +552,43 @@ class ShapValues:
     cax = divider.append_axes("right", size="5%", pad=0.1)
 
     cbar = plt.colorbar(sc, cax=cax, aspect=80)
-    cbar.set_label('Data Point Value')
+    cbar.set_label("Data Point Value")
 
     ## Add text above and below the colorbar
-    cax.text(0.5, 1.025, 'High', transform=cax.transAxes, ha='center', va='center', fontsize=10)
-    cax.text(0.5, -0.025, 'Low', transform=cax.transAxes, ha='center', va='center', fontsize=10)
+    cax.text(0.5, 1.025, "High", transform=cax.transAxes, ha="center", va="center", fontsize=10)
+    cax.text(0.5, -0.025, "Low", transform=cax.transAxes, ha="center", va="center", fontsize=10)
 
     ## Add x-axis tick labels
     ax.set_yticks([i + 1 for i in range(len(features))])
     ax.set_yticklabels(features)
 
     ## Set axis labels and title
-    ax.set_ylabel('Features')
-    ax.set_xlabel('Impact on output')
-    ax.set_title('Shapley value (impact on model output)')
+    ax.set_ylabel("Features")
+    ax.set_xlabel("Impact on output")
+    ax.set_title("Shapley value (impact on model output)")
 
     # Show plot
     return ax.get_figure()
 
   @staticmethod
   def _plot_importance(results, percentage=False, ax=None):
-    series = pd.DataFrame(abs(results).mean(), columns=['value'])
-    series['feat'] = series.index
+    series = pd.DataFrame(abs(results).mean(), columns=["value"])
+    series["feat"] = series.index
 
     if ax is None:
       _, ax = plt.subplots()
 
     if percentage:
-      series['value'] = series['value'].div(series['value'].sum(axis=0)).multiply(100)
-      series = series.sort_values('value', ascending=True)
-      ax.barh(series.feat, series.value, align='center')
-      ax.set_xlabel('Mean(|SHAP value|)')
-      ax.set_title('Feature Importance in %')
+      series["value"] = series["value"].div(series["value"].sum(axis=0)).multiply(100)
+      series = series.sort_values("value", ascending=True)
+      ax.barh(series.feat, series.value, align="center")
+      ax.set_xlabel("Mean(|SHAP value|)")
+      ax.set_title("Feature Importance in %")
     else:
-      series = series.sort_values('value', ascending=True)
-      ax.barh(series.feat, series.value, align='center')
-      ax.set_xlabel('Mean(|SHAP value|)')
-      ax.set_title('Feature Importance')
+      series = series.sort_values("value", ascending=True)
+      ax.barh(series.feat, series.value, align="center")
+      ax.set_xlabel("Mean(|SHAP value|)")
+      ax.set_title("Feature Importance")
 
     return ax.get_figure()
 
@@ -606,7 +604,7 @@ class ShapValues:
     values = list(res.values())
     for xe, ye in zip(names, values):
       ax.scatter(ye, [xe] * len(ye))
-    ax.set_title('Shapley value (impact on model output)')
+    ax.set_title("Shapley value (impact on model output)")
     return ax.get_figure()
 
   @staticmethod
@@ -614,9 +612,9 @@ class ShapValues:
     data = []
     pos = []
     label = []
-    series = pd.DataFrame(abs(results).mean(), columns=['value'])
-    series = series.sort_values('value', ascending=True)
-    series['feat'] = series.index
+    series = pd.DataFrame(abs(results).mean(), columns=["value"])
+    series = series.sort_values("value", ascending=True)
+    series["feat"] = series.index
     for i, col in enumerate(series.feat):
       data.append(results[col].to_numpy())
       pos.append(i)
@@ -626,11 +624,11 @@ class ShapValues:
     ax.violinplot(data, pos, vert=False)
     ax.set_yticks(pos)
     ax.set_yticklabels(label)
-    ax.set_title('Shapley value (impact on model output)')
+    ax.set_title("Shapley value (impact on model output)")
     return ax.get_figure()
 
 
-def getShapValues(bn,shaps, cmap='plasma'):
+def getShapValues(bn, shaps, cmap="plasma"):
   """
   Just a wrapper around BN2dot to easily show the Shap values
 
@@ -648,14 +646,12 @@ def getShapValues(bn,shaps, cmap='plasma'):
     a pydot.graph
   """
   from pyagrum.lib.bn2graph import BN2dot
+
   norm_color = {}
   raw = list(shaps.values())
   norm = [float(i) / sum(raw) for i in raw]
   for i, feat in enumerate(list(shaps.keys())):
     norm_color[feat] = norm[i]
   cm = plt.get_cmap(cmap)
-  g = BN2dot(bn,
-             nodeColor=norm_color,
-             cmapNode=cm
-             )
+  g = BN2dot(bn, nodeColor=norm_color, cmapNode=cm)
   return g

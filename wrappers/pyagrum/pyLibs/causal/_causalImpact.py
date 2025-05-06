@@ -37,6 +37,7 @@
 """
 This file gives an API for causal inference
 """
+
 from typing import Union, Optional, Dict, Tuple, Set
 
 import pyagrum
@@ -55,12 +56,13 @@ from pyagrum.causal._doCalculus import doCalculusWithObservation, doCalculus, ge
 import pyagrum.causal  # for annotations
 
 
-def causalImpact(cm: CausalModel,
-                 on: Union[str, NameSet],
-                 doing: Union[str, NameSet],
-                 knowing: Optional[NameSet] = None,
-                 values: Optional[Dict[str, int]] = None) -> Tuple[
-  'pyagrum.causal.CausalFormula', 'pyagrum.Tensor', str]:
+def causalImpact(
+  cm: CausalModel,
+  on: Union[str, NameSet],
+  doing: Union[str, NameSet],
+  knowing: Optional[NameSet] = None,
+  values: Optional[Dict[str, int]] = None,
+) -> Tuple["pyagrum.causal.CausalFormula", "pyagrum.Tensor", str]:
   """
   Determines the causal impact of interventions.
 
@@ -104,8 +106,7 @@ def causalImpact(cm: CausalModel,
   if len(sk) == 0:
     sk = set()
 
-  total = {cm.observationalBN().variable(cm.observationalBN().idFromName(i)).name()
-           for i in son | sdoing | sk}
+  total = {cm.observationalBN().variable(cm.observationalBN().idFromName(i)).name() for i in son | sdoing | sk}
 
   if values is not None:
     for k in values.keys():
@@ -122,8 +123,7 @@ def causalImpact(cm: CausalModel,
     potfinal = tensor
   else:
     sv = set(tensor.names)
-    extract_values = {k: _getLabelIdx(cm.observationalBN(), k, v)
-                      for k, v in values.items() if k in sv}
+    extract_values = {k: _getLabelIdx(cm.observationalBN(), k, v) for k, v in values.items() if k in sv}
     potfinal = tensor.extract(extract_values)
 
   # doCalculous can change doing and knowing
@@ -134,10 +134,9 @@ def causalImpact(cm: CausalModel,
   return formula, potfinal, explanation
 
 
-def _causalImpact(cm: CausalModel, on: Union[str, NameSet],
-                  doing: Union[str, NameSet],
-                  knowing: Union[str, NameSet]) \
-   -> Tuple['pyagrum.causal.CausalFormula', 'pyagrum.Tensor', str]:
+def _causalImpact(
+  cm: CausalModel, on: Union[str, NameSet], doing: Union[str, NameSet], knowing: Union[str, NameSet]
+) -> Tuple["pyagrum.causal.CausalFormula", "pyagrum.Tensor", str]:
   """
   Determines the causal impact of interventions.
 
@@ -182,32 +181,26 @@ def _causalImpact(cm: CausalModel, on: Union[str, NameSet],
   if isDSep(cm, set(iDo), set(iY), sK | cm.latentVariablesIds()):
     explain = "No causal effect of X on Y, because they are d-separated "
     explain += "(conditioning on the observed variables if any)."
-    ar = CausalFormula(cm, ASTposteriorProba(
-      cm.causalBN(), set(nY), set(nK)), on, doing, knowing)
+    ar = CausalFormula(cm, ASTposteriorProba(cm.causalBN(), set(nY), set(nK)), on, doing, knowing)
     adj = ar.eval()
     return ar, adj.reorganize([v for v in nY + nDo + nK if v in adj.names]), explain
 
   # Front or Back door
   if len(iDo) == 1 and len(nY) == 1 and len(nK) == 0:
-
     # for bd in backdoor_generator(cm, iDo[0], iY[0], cm.latentVariablesIds()):
     bd = cm.backDoor(iDo[0], iY[0], withNames=False)
     if bd is not None:
-      ar = CausalFormula(cm, getBackDoorTree(
-        cm, nDo[0], nY[0], bd), on, doing, knowing)
+      ar = CausalFormula(cm, getBackDoorTree(cm, nDo[0], nY[0], bd), on, doing, knowing)
       adj = ar.eval()
-      explain = "backdoor " + \
-                str([cm.causalBN().variable(i).name() for i in bd]) + " found."
+      explain = "backdoor " + str([cm.causalBN().variable(i).name() for i in bd]) + " found."
       return ar, adj.reorganize([v for v in nY + nDo + nK if v in adj.names]), explain
 
     # for fd in frontdoor_generator(cm, iDo[0], iY[0], cm.latentVariablesIds()):
     fd = cm.frontDoor(iDo[0], iY[0], withNames=False)
     if fd is not None:
-      ar = CausalFormula(cm, getFrontDoorTree(
-        cm, nDo[0], nY[0], fd), on, doing, knowing)
+      ar = CausalFormula(cm, getFrontDoorTree(cm, nDo[0], nY[0], fd), on, doing, knowing)
       adj = ar.eval()
-      explain = "frontdoor " + \
-                str([cm.causalBN().variable(i).name() for i in fd]) + " found."
+      explain = "frontdoor " + str([cm.causalBN().variable(i).name() for i in fd]) + " found."
       return ar, adj.reorganize([v for v in nY + nDo + nK if v in adj.names]), explain
 
   # Go for do-calculus
@@ -235,8 +228,9 @@ def _causalImpact(cm: CausalModel, on: Union[str, NameSet],
   return ar, adj, explain
 
 
-def counterfactualModel(cm: CausalModel, profile: Union[Dict[str, int], type(None)],
-                        whatif: Union[str, Set[str]]) -> CausalModel:
+def counterfactualModel(
+  cm: CausalModel, profile: Union[Dict[str, int], type(None)], whatif: Union[str, Set[str]]
+) -> CausalModel:
   """
   Determines the estimation of the twin model following the three steps algorithm from "The Book Of Why" (Pearl 2018) chapter 8 page 253.
 
@@ -302,9 +296,13 @@ def counterfactualModel(cm: CausalModel, profile: Union[Dict[str, int], type(Non
   return twincm
 
 
-def counterfactual(cm: CausalModel, profile: Union[Dict[str, int], type(None)], on: Union[str, Set[str]],
-                   whatif: Union[str, Set[str]],
-                   values: Union[Dict[str, int], type(None)] = None) -> "pyagrum.Tensor":
+def counterfactual(
+  cm: CausalModel,
+  profile: Union[Dict[str, int], type(None)],
+  on: Union[str, Set[str]],
+  whatif: Union[str, Set[str]],
+  values: Union[Dict[str, int], type(None)] = None,
+) -> "pyagrum.Tensor":
   """
   Determines the estimation of a counterfactual query following the the three steps algorithm from "The Book Of Why"
   (Pearl 2018) chapter 8 page 253.
@@ -343,8 +341,7 @@ def counterfactual(cm: CausalModel, profile: Union[Dict[str, int], type(None)], 
   twincm = counterfactualModel(cm, profile, whatif)
 
   # Step 3 : operate the intervention in the causal model based on bn
-  _, adj, _ = causalImpact(
-    twincm, on=on, doing=whatif, values=values)
+  _, adj, _ = causalImpact(twincm, on=on, doing=whatif, values=values)
   # cslnb.showCausalImpact(cm,on = on,whatif=whatif,values=values)
 
   # adj is using variables from twincm. We copy it in a Tensor using variables of cm

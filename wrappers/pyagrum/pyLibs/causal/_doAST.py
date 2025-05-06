@@ -303,7 +303,7 @@ class ASTplus(ASTBinaryOp):
     op2: ASTtree
       right operand
     """
-    super().__init__('+', op1, op2)
+    super().__init__("+", op1, op2)
 
   def copy(self) -> "ASTtree":
     return ASTplus(self.op1.copy(), self.op2.copy())
@@ -312,7 +312,7 @@ class ASTplus(ASTBinaryOp):
     return f"\\left({self.fastToLatex(nameOccur)}\\right)"
 
   def fastToLatex(self, nameOccur: Dict[str, int]) -> str:
-    return self.op1.fastToLatex(nameOccur) + '+' + self.op2.fastToLatex(nameOccur)
+    return self.op1.fastToLatex(nameOccur) + "+" + self.op2.fastToLatex(nameOccur)
 
   def eval(self, contextual_bn: "pyagrum.BayesNet") -> "pyagrum.Tensor":
     if self._verbose:
@@ -348,7 +348,7 @@ class ASTminus(ASTBinaryOp):
     op2: ASTtree
       right operand
     """
-    super().__init__('-', op1, op2)
+    super().__init__("-", op1, op2)
 
   def copy(self) -> "ASTtree":
     return ASTminus(self.op1.copy(), self.op2.copy())
@@ -357,7 +357,7 @@ class ASTminus(ASTBinaryOp):
     return "\\left(" + self.fastToLatex(nameOccur) + "\\right)"
 
   def fastToLatex(self, nameOccur: Dict[str, int]) -> str:
-    return self.op1.fastToLatex(nameOccur) + '-' + self.op2.fastToLatex(nameOccur)
+    return self.op1.fastToLatex(nameOccur) + "-" + self.op2.fastToLatex(nameOccur)
 
   def eval(self, contextual_bn: "pyagrum.BayesNet") -> "pyagrum.Tensor":
     if self._verbose:
@@ -393,7 +393,7 @@ class ASTmult(ASTBinaryOp):
     op2: ASTtree
       right operand
     """
-    super().__init__('*', op1, op2)
+    super().__init__("*", op1, op2)
 
   def copy(self) -> "ASTtree":
     return ASTmult(self.op1.copy(), self.op2.copy())
@@ -402,7 +402,7 @@ class ASTmult(ASTBinaryOp):
     return self.fastToLatex(nameOccur)
 
   def fastToLatex(self, nameOccur: Dict[str, int]) -> str:
-    return self.op1.protectToLatex(nameOccur) + ' \\cdot ' + self.op2.protectToLatex(nameOccur)
+    return self.op1.protectToLatex(nameOccur) + " \\cdot " + self.op2.protectToLatex(nameOccur)
 
   def eval(self, contextual_bn: "pyagrum.BayesNet") -> "pyagrum.Tensor":
     if self._verbose:
@@ -530,10 +530,10 @@ class ASTposteriorProba(ASTtree):
 
   def __str__(self, prefix: str = "") -> str:
     s = "P("
-    s += ','.join(sorted(self.vars))
+    s += ",".join(sorted(self.vars))
     if self.knw is not None:
       s += "|"
-      s += ','.join(sorted(self.knw))
+      s += ",".join(sorted(self.knw))
     s += ")"
     return f"{prefix}{s}"
 
@@ -703,7 +703,7 @@ class ASTsum(ASTtree):
     while a.type == "_sum_":
       l.append(a.var)
       a = a.term
-    return f'{prefix}sum on {",".join(sorted(l))} for\n{a.__str__(prefix + self._continueNextLine)}'
+    return f"{prefix}sum on {','.join(sorted(l))} for\n{a.__str__(prefix + self._continueNextLine)}"
 
   def copy(self) -> "ASTtree":
     return ASTsum(self.var, self.term.copy())

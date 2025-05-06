@@ -45,8 +45,7 @@ import pyagrum as gum
 
 
 def lines_count(filename):
-  """ count lines in a file
-  """
+  """count lines in a file"""
   with open(filename) as f:
     count = sum(1 for _ in f)
 
@@ -133,7 +132,7 @@ def computeScores(bn_name, csv_name, visible=False, dialect=None):
   num_ligne = 1
   likelihood = 0.0
 
-  with open(csv_name, 'r') as csvfile:
+  with open(csv_name, "r") as csvfile:
     batchReader = csv.reader(csvfile, dialect)
 
     titre = next(batchReader)
@@ -149,7 +148,8 @@ def computeScores(bn_name, csv_name, visible=False, dialect=None):
       # tqdm is optional
       # pylint: disable=import-outside-toplevel
       from tqdm import tqdm
-      pbar = tqdm(total=nbr_lines, desc=csv_name, bar_format='{desc}: {percentage:3.0f}%|{bar}|')
+
+      pbar = tqdm(total=nbr_lines, desc=csv_name, bar_format="{desc}: {percentage:3.0f}%|{bar}|")
 
     for data in batchReader:
       num_ligne += 1
@@ -160,7 +160,8 @@ def computeScores(bn_name, csv_name, visible=False, dialect=None):
           inst.chgVal(name, _getIdLabel(inst, name, data[positions[i]]))
         except gum.OutOfBounds:
           print(
-            f"Out of bounds for ({i},{positions[i]}) : unknown id or label '{data[positions[i]]}' for the variable {inst.variable(i)}")
+            f"Out of bounds for ({i},{positions[i]}) : unknown id or label '{data[positions[i]]}' for the variable {inst.variable(i)}"
+          )
 
       p = bn.jointProbability(inst)
       if p == 0.0:
@@ -182,8 +183,10 @@ def computeScores(bn_name, csv_name, visible=False, dialect=None):
     bic = likelihood - dim * math.log(nbr_lines, 2)
     mdl = likelihood - nbr_arcs * math.log(nbr_lines, 2) - 32 * dim  # 32=nbr bits for a params
 
-  return ((nbr_lines - nbr_insignificant) * 100.0 / nbr_lines,
-          {'likelihood': likelihood, 'aic': aic, 'aicc': aicc, 'bic': bic, 'mdl': mdl})
+  return (
+    (nbr_lines - nbr_insignificant) * 100.0 / nbr_lines,
+    {"likelihood": likelihood, "aic": aic, "aicc": aicc, "bic": bic, "mdl": mdl},
+  )
 
 
 def _getIdLabel(inst, i, label):

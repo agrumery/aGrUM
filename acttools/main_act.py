@@ -87,7 +87,7 @@ def main():
 
   #
   # from now, current contains the specification
-  if current['verbose']:
+  if current["verbose"]:
     print()
     notif("Invocation :")
     print(getInvocation(current))

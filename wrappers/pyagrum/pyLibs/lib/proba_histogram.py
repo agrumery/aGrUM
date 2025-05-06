@@ -38,12 +38,13 @@ import math
 import numpy as np
 
 import matplotlib.pyplot as plt
-from matplotlib.ticker import (MultipleLocator, AutoMinorLocator)
+from matplotlib.ticker import AutoMinorLocator
 
 import pyagrum as gum
 
-LEFT_ARROW = u"\u2190"
-RIGHT_ARROW = u"\u2192"
+LEFT_ARROW = "\u2190"
+RIGHT_ARROW = "\u2192"
+
 
 def _stats(pot):
   mu = 0.0
@@ -104,13 +105,13 @@ def __limits(p):
     ma += 1
 
   res = range(mi, ma + 1)
-  lres = la[mi:ma + 1]
-  #if nzmin not in [-1, 0, None]:
-  if mi>1:
+  lres = la[mi : ma + 1]
+  # if nzmin not in [-1, 0, None]:
+  if mi > 1:
     lres[0] = LEFT_ARROW + var.label(mi)
-  #if nzmax not in [-1, var.domainSize()-1, None]:
-  if ma<var.domainSize()-2:
-    lres[-1] = var.label(ma+1) + RIGHT_ARROW
+  # if nzmax not in [-1, var.domainSize()-1, None]:
+  if ma < var.domainSize() - 2:
+    lres[-1] = var.label(ma + 1) + RIGHT_ARROW
 
   return res, [v[i] for i in res], lres
 
@@ -135,7 +136,7 @@ def _getProbaLine(p, scale=1.0, txtcolor="black"):
   """
 
   var = p.variable(0)
-  if gum.config['notebook', 'histogram_mode'] == "compact":
+  if gum.config["notebook", "histogram_mode"] == "compact":
     ra, v, lv = __limits(p)
   else:
     lv = [var.label(int(i)) for i in np.arange(var.domainSize())]
@@ -143,13 +144,13 @@ def _getProbaLine(p, scale=1.0, txtcolor="black"):
     ra = range(var.domainSize())
 
   if var.domainSize() > 15:
-    nbr_step=15
-    max_step=var.domainSize()-1
+    nbr_step = 15
+    max_step = var.domainSize() - 1
     while True:
-      if nbr_step==2 or max_step%nbr_step==0:
+      if nbr_step == 2 or max_step % nbr_step == 0:
         step = max_step // nbr_step
         break
-      nbr_step-=1
+      nbr_step -= 1
   else:
     step = 1
 
@@ -159,8 +160,8 @@ def _getProbaLine(p, scale=1.0, txtcolor="black"):
 
   ax = fig.add_subplot(111)
   ax.set_xticks(ra[::step])
-  ax.set_xticklabels(lv[::step], rotation='vertical')
-  ax.fill_between(ra, v, color=gum.config['notebook', 'histogram_color'])
+  ax.set_xticklabels(lv[::step], rotation="vertical")
+  ax.fill_between(ra, v, color=gum.config["notebook", "histogram_color"])
 
   ax.set_ylim(bottom=0, top=1.05 * p.max())
   ax.set_title(_getTitleHisto(p, True), color=txtcolor)
@@ -169,7 +170,7 @@ def _getProbaLine(p, scale=1.0, txtcolor="black"):
   ax.get_yaxis().grid(True)
   ax.margins(0)
 
-  ax.set_facecolor('w')
+  ax.set_facecolor("w")
   return fig
 
 
@@ -192,7 +193,7 @@ def _getProbaV(p, scale=1.0, util=None, txtcolor="black"):
     a matplotlib histogram for a Tensor p.
 
   """
-  if gum.config['notebook', 'histogram_mode'] == "compact":
+  if gum.config["notebook", "histogram_mode"] == "compact":
     ra, v, lv = __limits(p)
   else:
     var = p.variable(0)
@@ -200,8 +201,7 @@ def _getProbaV(p, scale=1.0, util=None, txtcolor="black"):
       lu = util.toarray()
       coef = -1 if gum.config.asBool["influenceDiagram", "utility_show_loss"] else 1
       fmt = f".{gum.config.asInt['influenceDiagram', 'utility_visible_digits']}f"
-      lv = [f"{var.label(int(i))} [{coef * lu[i]:{fmt}}]"
-            for i in np.arange(var.domainSize())]
+      lv = [f"{var.label(int(i))} [{coef * lu[i]:{fmt}}]" for i in np.arange(var.domainSize())]
     else:
       lv = [var.label(int(i)) for i in np.arange(var.domainSize())]
     v = p.tolist()
@@ -213,12 +213,10 @@ def _getProbaV(p, scale=1.0, util=None, txtcolor="black"):
 
   ax = fig.add_subplot(111)
 
-  bars = ax.bar(ra, v,
-                align='center',
-                color=gum.config['notebook', 'histogram_color'])
+  bars = ax.bar(ra, v, align="center", color=gum.config["notebook", "histogram_color"])
   ma = p.max()
 
-  if gum.config.asBool['notebook', 'histogram_use_percent']:
+  if gum.config.asBool["notebook", "histogram_use_percent"]:
     perc = 100
     suffix = "%"
   else:
@@ -227,17 +225,17 @@ def _getProbaV(p, scale=1.0, util=None, txtcolor="black"):
   for b in bars:
     if b.get_height() != 0:
       txt = f"{b.get_height() * perc:.{gum.config.asInt['notebook', 'histogram_vertical_visible_digits']}f}{suffix}"
-      ax.text(b.get_x() + 0.5, ma, txt, ha='center', va='top', rotation='vertical',alpha=0.7)
+      ax.text(b.get_x() + 0.5, ma, txt, ha="center", va="top", rotation="vertical", alpha=0.7)
 
   ax.set_ylim(bottom=0, top=p.max())
   ax.set_yticklabels([])
   ax.set_xticks(ra)
-  ax.set_xticklabels(lv, rotation='vertical', color=txtcolor)
+  ax.set_xticklabels(lv, rotation="vertical", color=txtcolor)
   # even if utility, now we do show the mean/sigma of the distribution.
   ax.set_title(_getTitleHisto(p, True), color=txtcolor)
   ax.get_yaxis().grid(True)
   ax.margins(0)
-  ax.set_facecolor('w')
+  ax.set_facecolor("w")
 
   return fig
 
@@ -268,7 +266,7 @@ def _getProbaH(p, scale=1.0, util=None, txtcolor="black"):
 
   if util is not None:
     lu = util.toarray()
-    fmt = f'.{gum.config.asInt["influenceDiagram", "utility_visible_digits"]}f'
+    fmt = f".{gum.config.asInt['influenceDiagram', 'utility_visible_digits']}f"
 
     if gum.config.asBool["influenceDiagram", "utility_show_loss"]:
       vx = [f"{var.label(int(i))} [{-lu[i] if lu[i] != 0 else 0:{fmt}}]" for i in ra_reverse]
@@ -282,15 +280,13 @@ def _getProbaH(p, scale=1.0, util=None, txtcolor="black"):
   fig.set_figwidth(scale * 2)
 
   ax = fig.add_subplot(111)
-  ax.set_facecolor('white')
+  ax.set_facecolor("white")
 
   vals = p.tolist()
   vals.reverse()
-  bars = ax.barh(ra, vals,
-                 align='center',
-                 color=gum.config['notebook', 'histogram_color'])
+  bars = ax.barh(ra, vals, align="center", color=gum.config["notebook", "histogram_color"])
 
-  if gum.config.asBool['notebook', 'histogram_use_percent']:
+  if gum.config.asBool["notebook", "histogram_use_percent"]:
     perc = 100
     suffix = "%"
   else:
@@ -299,7 +295,7 @@ def _getProbaH(p, scale=1.0, util=None, txtcolor="black"):
   for b in bars:
     if b.get_width() != 0:
       txt = f"{b.get_width() * perc:.{gum.config.asInt['notebook', 'histogram_horizontal_visible_digits']}f}{suffix}"
-      ax.text(1, b.get_y(), txt, ha='right', va='bottom',alpha=0.7)
+      ax.text(1, b.get_y(), txt, ha="right", va="bottom", alpha=0.7)
 
   ax.set_xlim(0, 1)
   ax.set_yticks(np.arange(var.domainSize()))
@@ -322,13 +318,13 @@ def _getHistoForDiscretized(p, scale=1, txtcolor="Black"):
 
   lim1 = 0
   lim2 = len(vals) - 1
-  if gum.config['notebook', 'histogram_mode'] == "compact":
-    while vals[lim1] <= gum.config.asFloat['notebook', 'histogram_epsilon']:
+  if gum.config["notebook", "histogram_mode"] == "compact":
+    while vals[lim1] <= gum.config.asFloat["notebook", "histogram_epsilon"]:
       lim1 += 1
     if lim1 > 0:
       lim1 -= 1
 
-    while vals[lim2] <= gum.config.asFloat['notebook', 'histogram_epsilon']:
+    while vals[lim2] <= gum.config.asFloat["notebook", "histogram_epsilon"]:
       lim2 -= 1
     if lim2 < len(vals) - 1:
       lim2 += 1
@@ -336,26 +332,34 @@ def _getHistoForDiscretized(p, scale=1, txtcolor="Black"):
       lim2 -= 1
 
   fig = plt.figure()
-  fw=scale * max(10, (lim2 - lim1)) / 8
+  fw = scale * max(10, (lim2 - lim1)) / 8
   fig.set_figwidth(fw)
   fig.set_figheight(scale)
 
   ax = fig.add_subplot(111)
-  ax.set_facecolor('white')
+  ax.set_facecolor("white")
   delta = 0.025 * (vx[lim2 + 1] - vx[lim1])
   ax.set_xlim(vx[lim1] - delta, vx[lim2 + 1] + delta)
   ax.set_xticks([vx[lim1], (vx[lim2 + 1] + vx[lim1]) / 2, vx[lim2 + 1]])
-  ax.set_xticklabels([f"{vx[lim1]:.2f}", f"{(vx[lim2 + 1] + vx[lim1]) / 2:.2f}", f"{vx[lim2 + 1]:.2f}"],
-                     color=txtcolor, rotation='vertical' if fw<1.3 else 'horizontal')
+  ax.set_xticklabels(
+    [f"{vx[lim1]:.2f}", f"{(vx[lim2 + 1] + vx[lim1]) / 2:.2f}", f"{vx[lim2 + 1]:.2f}"],
+    color=txtcolor,
+    rotation="vertical" if fw < 1.3 else "horizontal",
+  )
   ax.xaxis.set_minor_locator(AutoMinorLocator())
   ax.tick_params(which="minor", length=4)
   ax.set_ylim(bottom=0, top=1.05 * max(vals))
   ax.get_xaxis().grid(True, which="both", zorder=0)
 
-  bars = ax.bar(vx[lim1:1 + lim2], height=vals[lim1:1 + lim2], width=widths[lim1:1 + lim2],
-                align='edge',
-                color=gum.config['notebook', 'histogram_color'],
-                edgecolor=gum.config['notebook', 'histogram_edge_color'], zorder=33)
+  _ = ax.bar(
+    vx[lim1 : 1 + lim2],
+    height=vals[lim1 : 1 + lim2],
+    width=widths[lim1 : 1 + lim2],
+    align="edge",
+    color=gum.config["notebook", "histogram_color"],
+    edgecolor=gum.config["notebook", "histogram_edge_color"],
+    zorder=33,
+  )
 
   # Even if utility, now we do show the mean/sigma of the distribution.
   ax.set_title(_getTitleHisto(p, True), color=txtcolor)
@@ -384,26 +388,26 @@ def proba2histo(p, scale=None, util=None, txtcolor="Black"):
   matplotlib.Figure
     a matplotlib histogram for a Tensor p.
   """
-  #if util is not None:
+  # if util is not None:
   #  if scale is None:
   #    scale = 1.0
   #  return _getProbaH(p, scale, util=util, txtcolor=txtcolor)
 
-  isev = p.min()==0.0 and p.max()==1.0 and p.sum()==1.0
+  isev = p.min() == 0.0 and p.max() == 1.0 and p.sum() == 1.0
 
   if p.variable(0).varType() == gum.VarType_DISCRETIZED:
-    if gum.config['notebook', 'histogram_discretized_visualisation'] == "histogram":
+    if gum.config["notebook", "histogram_discretized_visualisation"] == "histogram":
       if scale is None:
-        scale=gum.config.asFloat['notebook', 'histogram_discretized_scale']
+        scale = gum.config.asFloat["notebook", "histogram_discretized_scale"]
       return _getHistoForDiscretized(p, scale, txtcolor)
 
   if scale is None:
     scale = 1.0
 
-  if p.variable(0).domainSize() > int(gum.config['notebook', 'histogram_line_threshold']) and not(isev):
+  if p.variable(0).domainSize() > int(gum.config["notebook", "histogram_line_threshold"]) and not (isev):
     return _getProbaLine(p, scale, txtcolor=txtcolor)
 
-  if p.variable(0).domainSize() > int(gum.config['notebook', 'histogram_horizontal_threshold']):
+  if p.variable(0).domainSize() > int(gum.config["notebook", "histogram_horizontal_threshold"]):
     return _getProbaV(p, scale, txtcolor=txtcolor)
 
   return _getProbaH(p, scale, util=util, txtcolor=txtcolor)
@@ -433,8 +437,15 @@ def saveFigProba(p, filename, util=None, bgcolor=None, txtcolor="Black"):
   else:
     fc = bgcolor
 
-  fig.savefig(filename, bbox_inches='tight', transparent=False, facecolor=fc,
-              pad_inches=0.05, dpi=fig.dpi, format=gum.config["notebook", "graph_format"])
+  fig.savefig(
+    filename,
+    bbox_inches="tight",
+    transparent=False,
+    facecolor=fc,
+    pad_inches=0.05,
+    dpi=fig.dpi,
+    format=gum.config["notebook", "graph_format"],
+  )
   plt.close(fig)
 
 
@@ -467,20 +478,16 @@ def probaMinMaxH(pmin, pmax, scale=1.0, txtcolor="black"):
   fig.set_figwidth(scale * 2)
 
   ax = fig.add_subplot(111)
-  ax.set_facecolor('white')
+  ax.set_facecolor("white")
 
   vmin = pmin.tolist()
   vmin.reverse()
   vmax = pmax.tolist()
   vmax.reverse()
-  barsmax = ax.barh(ra, vmax,
-                    align='center',
-                    color="#BBFFAA")
-  barsmin = ax.barh(ra, vmin,
-                    align='center',
-                    color=gum.config['notebook', 'histogram_color'])
+  barsmax = ax.barh(ra, vmax, align="center", color="#BBFFAA")
+  barsmin = ax.barh(ra, vmin, align="center", color=gum.config["notebook", "histogram_color"])
 
-  if gum.config.asBool['notebook', 'histogram_use_percent']:
+  if gum.config.asBool["notebook", "histogram_use_percent"]:
     perc = 100
     suffix = "%"
   else:
@@ -489,10 +496,10 @@ def probaMinMaxH(pmin, pmax, scale=1.0, txtcolor="black"):
 
   for b in barsmax:
     txt = f"{b.get_width() * perc:.{gum.config.asInt['notebook', 'histogram_horizontal_visible_digits']}f}{suffix}"
-    ax.text(1, b.get_y(), txt, ha='right', va='bottom')
+    ax.text(1, b.get_y(), txt, ha="right", va="bottom")
   for b in barsmin:
     txt = f"{b.get_width() * perc:.{gum.config.asInt['notebook', 'histogram_horizontal_visible_digits']}f}{suffix}"
-    ax.text(0, b.get_y(), txt, ha='left', va='bottom')
+    ax.text(0, b.get_y(), txt, ha="left", va="bottom")
 
   ax.set_xlim(0, 1)
   ax.set_yticks(np.arange(var.domainSize()))
@@ -529,6 +536,13 @@ def saveFigProbaMinMax(pmin, pmax, filename, bgcolor=None, txtcolor="Black"):
   else:
     fc = bgcolor
 
-  fig.savefig(filename, bbox_inches='tight', transparent=False, facecolor=fc,
-              pad_inches=0.05, dpi=fig.dpi, format=gum.config["notebook", "graph_format"])
+  fig.savefig(
+    filename,
+    bbox_inches="tight",
+    transparent=False,
+    facecolor=fc,
+    pad_inches=0.05,
+    dpi=fig.dpi,
+    format=gum.config["notebook", "graph_format"],
+  )
   plt.close(fig)

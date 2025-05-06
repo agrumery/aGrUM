@@ -1,5 +1,5 @@
-from typing import Dict, Optional, Union, List, Set
-from tempfile import mkdtemp, TemporaryDirectory
+from typing import Dict, List, Set
+from tempfile import TemporaryDirectory
 from zipfile import ZipFile
 
 ############################################################################
@@ -39,7 +39,6 @@ from zipfile import ZipFile
 ############################################################################
 
 import os
-import logging
 import pyagrum
 import shutil
 
@@ -51,7 +50,7 @@ class IMixture:
   _refName: str
 
   def __init__(self):
-    raise NotImplemented("class IMixture is not supposed to be initialized !")
+    raise NotImplementedError("class IMixture is not supposed to be initialized !")
 
   def __repr__(self):
     nameref = self._refBN.property("name")
@@ -178,7 +177,8 @@ class IMixture:
     if bn.names() != self._refBN.names():
       raise pyagrum.InvalidArgument("variables names are different from the reference BN variables")
     if set([bn.variable(name) for name in bn.names()]) != set(
-       [self._refBN.variable(name) for name in self._refBN.names()]):
+      [self._refBN.variable(name) for name in self._refBN.names()]
+    ):
       raise pyagrum.InvalidArgument("variables are different from those in the reference BN")
 
     if name in self._bns and bn == self._bns[name]:
@@ -338,7 +338,7 @@ class IMixture:
       for name in self.names():
         file_name = f"{temp_dir}/{name}.bif"
         self.BN(name).saveBIF(file_name)
-      shutil.make_archive(fname, 'zip', temp_dir)
+      shutil.make_archive(fname, "zip", temp_dir)
 
 
 class BNMixture(IMixture):
@@ -379,16 +379,16 @@ class BNMixture(IMixture):
     """
     with TemporaryDirectory("", "tmp", None) as temp_dir:
       # temp_dir = mkdtemp("", "tmp", None)
-      with ZipFile(filename, 'r') as zf:
+      with ZipFile(filename, "r") as zf:
         zf.extractall(temp_dir)
       weights = {}
-      with open(f"{temp_dir}/weights.txt", 'r') as wf:
+      with open(f"{temp_dir}/weights.txt", "r") as wf:
         for line in wf:
-          name, w = line.split(':')
+          name, w = line.split(":")
           weights[name] = float(w)
       bnm = BNMixture()
       for path in os.listdir(temp_dir):
-        name, _ = path.split('.')
+        name, _ = path.split(".")
         if name in weights:
           bni = pyagrum.BayesNet()
           bni.loadBIF(f"{temp_dir}/{path}")
@@ -433,18 +433,18 @@ class BootstrapMixture(IMixture):
         The stored BootstrapMixture.
     """
     with TemporaryDirectory("", "tmp", None) as temp_dir:
-      with ZipFile(filename, 'r') as zf:
+      with ZipFile(filename, "r") as zf:
         zf.extractall(temp_dir)
       weights = {}
-      with open(f"{temp_dir}/weights.txt", 'r') as wf:
+      with open(f"{temp_dir}/weights.txt", "r") as wf:
         for line in wf:
-          name, w = line.split(':')
+          name, w = line.split(":")
           weights[name] = float(w)
       bn_dict = {}
       refBN = None
       for path in os.listdir(temp_dir):
-        name, form = path.split('.')
-        if form != 'bif':
+        name, form = path.split(".")
+        if form != "bif":
           continue
         bni = pyagrum.BayesNet()
         bni.loadBIF(f"{temp_dir}/{path}")

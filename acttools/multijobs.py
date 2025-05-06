@@ -48,7 +48,7 @@ try:
 except ImportError:
   from queue import Queue, Empty  # python 3.x
 
-ON_POSIX = 'posix' in sys.builtin_module_names
+ON_POSIX = "posix" in sys.builtin_module_names
 
 
 def prettifying_errors(line: str) -> str:
@@ -83,7 +83,7 @@ def prettifying(line: str) -> str:
   if line == "":
     return ""
 
-  for eop in ['done', 'works', 'Success', 'found']:
+  for eop in ["done", "works", "Success", "found"]:
     leop = len(eop)
     try:
       if line[-leop:] == eop:
@@ -102,7 +102,7 @@ def prettifying(line: str) -> str:
     return res.rstrip()
 
   def remove_dirs(path: str) -> str:
-    return path[:path.rfind(" ")]
+    return path[: path.rfind(" ")]
 
   # prettifying (compacting) path
   if line[0] == "/":  # we keep message beginning with full path
@@ -139,7 +139,7 @@ def prettifying(line: str) -> str:
 
   s = line.split(" ... ")
   if len(s) == 2:
-    ss = s[0].split('(')
+    ss = s[0].split("(")
     if len(ss) == 2:
       return f"{res}{cfg.C_WARNING}{ss[0]}{cfg.C_VALUE}({ss[1]}{cfg.C_END} ... {s[1]}"
 
@@ -173,8 +173,8 @@ def threaded_execution(cde):
   p = Popen(cde, shell=True, bufsize=1, stdout=PIPE, stderr=PIPE)
 
   inp = Queue()
-  sout = io.open(p.stdout.fileno(), 'rb', closefd=False)
-  serr = io.open(p.stderr.fileno(), 'rb', closefd=False)
+  sout = io.open(p.stdout.fileno(), "rb", closefd=False)
+  serr = io.open(p.stderr.fileno(), "rb", closefd=False)
 
   def Pump(stream, category):
     queue = Queue()
@@ -209,22 +209,22 @@ def threaded_execution(cde):
       th.daemon = True
       th.start()
 
-  Pump(sout, 'stdout')
-  Pump(serr, 'stderr')
+  Pump(sout, "stdout")
+  Pump(serr, "stderr")
 
   waiter = "|/-\\"
   w_pos = 0
 
   def readerLoop(lastline: str) -> str:
     chan, lines = inp.get(True, timeout=0.1)
-    if chan == 'stdout' and lines is not None:
+    if chan == "stdout" and lines is not None:
       try:
-        lines = (lines.decode('utf-8')).split("\n")
+        lines = (lines.decode("utf-8")).split("\n")
       except UnicodeDecodeError:
         try:
           lines = lines.split("\n")
         except:
-          print('ERRROR')
+          print("ERRROR")
           print(lines)
 
       for i in range(len(lines) - 1):
@@ -233,9 +233,9 @@ def threaded_execution(cde):
       lastline = lines[-1]
       print(prettifying(lastline).rstrip(), end="")
       sys.stdout.flush()
-    elif chan == 'stderr' and lines is not None:
+    elif chan == "stderr" and lines is not None:
       lastline = ""
-      lines = lines.decode('utf-8').split("\n")
+      lines = lines.decode("utf-8").split("\n")
       for line in lines:
         if line != "":
           if line[0] == "/":

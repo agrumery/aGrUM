@@ -56,10 +56,12 @@ class PythonBNListenerTestCase(pyAgrumTestCase):
 
 class TestMessagesSetting(PythonBNListenerTestCase):
   def testMessagesInsertion(self):
-    self.bn.addStructureListener(whenNodeAdded=lambda i, s: self.bufferize("ajout d'un noeud %s (%d)\n" % (s, i)),
-                                 whenArcAdded=lambda i, j: self.bufferize("ajout d'un arc (%d->%d)\n" % (i, j)),
-                                 whenNodeDeleted=lambda i: self.bufferize("suppression du noeud %d\n" % i),
-                                 whenArcDeleted=lambda i, j: self.bufferize("suppression de l'arc (%d->%d)\n" % (i, j)))
+    self.bn.addStructureListener(
+      whenNodeAdded=lambda i, s: self.bufferize("ajout d'un noeud %s (%d)\n" % (s, i)),
+      whenArcAdded=lambda i, j: self.bufferize("ajout d'un arc (%d->%d)\n" % (i, j)),
+      whenNodeDeleted=lambda i: self.bufferize("suppression du noeud %d\n" % i),
+      whenArcDeleted=lambda i, j: self.bufferize("suppression de l'arc (%d->%d)\n" % (i, j)),
+    )
 
   def testMessagesChange(self):
     self.bn.addStructureListener(whenNodeAdded=lambda i, s: self.bufferize("ajout d'un noeud %s (%d)\n" % (s, i)))
@@ -68,10 +70,12 @@ class TestMessagesSetting(PythonBNListenerTestCase):
 
 class TestListeners(PythonBNListenerTestCase):
   def test1Listener(self):
-    self.bn.addStructureListener(whenNodeAdded=lambda i, s: self.bufferize("Noeud++ %s (%d)\n" % (s, i)),
-                                 whenArcAdded=lambda i, j: self.bufferize("Arc++ (%d->%d)\n" % (i, j)),
-                                 whenNodeDeleted=lambda i: self.bufferize("Noeud-- %d\n" % i),
-                                 whenArcDeleted=lambda i, j: self.bufferize("Arc-- (%d->%d)\n" % (i, j)))
+    self.bn.addStructureListener(
+      whenNodeAdded=lambda i, s: self.bufferize("Noeud++ %s (%d)\n" % (s, i)),
+      whenArcAdded=lambda i, j: self.bufferize("Arc++ (%d->%d)\n" % (i, j)),
+      whenNodeDeleted=lambda i: self.bufferize("Noeud-- %d\n" % i),
+      whenArcDeleted=lambda i, j: self.bufferize("Arc-- (%d->%d)\n" % (i, j)),
+    )
 
     a = self.bn.add(self.var1)
     self.assertEqual(self.buffer0, "Noeud++ a (%d)\n" % a)
@@ -89,8 +93,7 @@ class TestListeners(PythonBNListenerTestCase):
 
     self.buffer1 = ""
     self.bn.erase(b)
-    self.assertEqual(self.buffer1,
-                     "Arc-- (%d->%d)\nArc-- (%d->%d)\nNoeud-- %d\n" % (a, b, b, c, b))
+    self.assertEqual(self.buffer1, "Arc-- (%d->%d)\nArc-- (%d->%d)\nNoeud-- %d\n" % (a, b, b, c, b))
 
   def test2Listeners(self):
     self.bn.addStructureListener(whenNodeAdded=lambda i, s: self.bufferize("Node++ %s (%d)\n" % (s, i)))

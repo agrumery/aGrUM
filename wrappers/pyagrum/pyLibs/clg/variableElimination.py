@@ -37,6 +37,7 @@
 """
 This module implements the inference algorithms for CLG.
 """
+
 import math
 
 import numpy as np
@@ -44,8 +45,8 @@ from pyagrum import JunctionTreeGenerator
 from .canonicalForm import CanonicalForm
 from .GaussianVariable import GaussianVariable
 
-class CLGVariableElimination:
 
+class CLGVariableElimination:
   def __init__(self, clg):
     self._clg = clg
     self._evidence = {}
@@ -150,18 +151,14 @@ class CLGVariableElimination:
       else:
         elimination_order_kept.append(var)
 
-    cf_list = self._sum_product_ve(elimination_order_removed,
-                                   list(self._cf_dict.values()),
-                                   self._evidence)
+    cf_list = self._sum_product_ve(elimination_order_removed, list(self._cf_dict.values()), self._evidence)
     posterior = np.prod(cf_list)
     if normalized:
-      normalization_cf = self._sum_product_ve(elimination_order_kept,
-                                              cf_list,
-                                              {})
+      normalization_cf = self._sum_product_ve(elimination_order_kept, cf_list, {})
       posterior = posterior / np.prod(normalization_cf)
     return posterior
 
-  def posterior(self, variable:str)->GaussianVariable:
+  def posterior(self, variable: str) -> GaussianVariable:
     """
     Returns the posterior density as a Gaussian variable.
 
@@ -176,12 +173,12 @@ class CLGVariableElimination:
       The posterior Gaussian variable.
     """
     if variable in self._evidence:
-      return GaussianVariable(variable,self._evidence[variable],0)
+      return GaussianVariable(variable, self._evidence[variable], 0)
 
     posterior_cf = self.canonicalPosterior([variable])
-    _,t_mu,t_var= posterior_cf.toGaussian()
+    _, t_mu, t_var = posterior_cf.toGaussian()
 
-    return GaussianVariable(variable,t_mu[0][0],math.sqrt(t_var[0][0]))
+    return GaussianVariable(variable, t_mu[0][0], math.sqrt(t_var[0][0]))
 
   def _constructCanonicalForms(self):
     """
@@ -222,12 +219,11 @@ class CLGVariableElimination:
     """
 
     # Converting from dict[str, float] to dict[NodeId, float]
-    evidence = {self._clg._name2id[name]: evidence[name]
-                for name in evidence.keys()}
+    evidence = {self._clg._name2id[name]: evidence[name] for name in evidence.keys()}
 
     # Reducing the canonical forms containing observed variables
     if len(evidence) != 0:
-      for (i, cf) in enumerate(cf_list):
+      for i, cf in enumerate(cf_list):
         cf_list[i] = cf.reduce(evidence)
 
     if len(elimination_order) != 0:
@@ -254,7 +250,7 @@ class CLGVariableElimination:
     """
     contain_var_cfs = []  # CF containing the variable
     id_to_remove = []
-    for (i, cf) in enumerate(cf_list):
+    for i, cf in enumerate(cf_list):
       if variable in cf:
         contain_var_cfs.append(cf)
         id_to_remove.append(i)

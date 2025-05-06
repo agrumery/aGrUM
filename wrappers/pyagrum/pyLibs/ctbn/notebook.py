@@ -37,7 +37,7 @@
 """
 This file defines some helpers for handling CTBNs in notebooks
 """
-from typing import Union, Optional, Dict, Tuple
+
 from tempfile import mkdtemp
 import matplotlib.pyplot as plt
 import IPython
@@ -51,6 +51,7 @@ import pyagrum.lib.notebook as gnb
 import pydot as dot
 
 from pyagrum.ctbn import CTBN
+from pyagrum.ctbn import ForwardSamplingInference
 
 
 def getCtbnGraph(ctbn: CTBN, size=None):
@@ -70,7 +71,7 @@ def getCtbnGraph(ctbn: CTBN, size=None):
       The dot representation.
   """
   if size is None:
-    size = gum.config['ctbn', 'default_graph_size']
+    size = gum.config["ctbn", "default_graph_size"]
   return gnb.getDot(ctbn.toDot(), size)
 
 
@@ -87,7 +88,7 @@ def showCtbnGraph(ctbn: CTBN, size=None):
   """
 
   if size is None:
-    size = gum.config['ctbn', 'default_graph_size']
+    size = gum.config["ctbn", "default_graph_size"]
   gnb.showDot(ctbn.toDot(), size)
 
 
@@ -121,9 +122,9 @@ def showCIMs(ctbn: CTBN, size=None):
   IPython.display.display(html)
 
 
-def CTBNinference2dot(ctbn, engine, size=None, targets=None, nodeColor=None, arcWidth=None, arcColor=None,
-                      cmapNode=None, cmapArc=None
-                      ):
+def CTBNinference2dot(
+  ctbn, engine, size=None, targets=None, nodeColor=None, arcWidth=None, arcColor=None, cmapNode=None, cmapArc=None
+):
   """
   create a pydot representation of an inference in a CTBN
 
@@ -170,7 +171,7 @@ def CTBNinference2dot(ctbn, engine, size=None, targets=None, nodeColor=None, arc
 
   startTime = time.time()
   if engine is None:
-    ie = gum.LazyPropagation(bn)
+    ie = ForwardSamplingInference(ctbn)
   else:
     ie = engine
 
@@ -179,11 +180,10 @@ def CTBNinference2dot(ctbn, engine, size=None, targets=None, nodeColor=None, arc
 
   temp_dir = mkdtemp("", "tmp", None)  # with TemporaryDirectory() as temp_dir:
 
-  dotstr = "digraph structs {\n  fontcolor=\"" + \
-           gumcols.getBlackInTheme() + "\";bgcolor=\"transparent\";"
+  dotstr = 'digraph structs {\n  fontcolor="' + gumcols.getBlackInTheme() + '";bgcolor="transparent";'
 
   if gum.config.asBool["notebook", "show_inference_time"]:
-    dotstr += f"  label=\"Inference in {1000 * (stopTime - startTime):6.2f}ms\";\n"
+    dotstr += f'  label="Inference in {1000 * (stopTime - startTime):6.2f}ms";\n'
 
   fontname, fontsize = gumcols.fontFromMatplotlib()
   dotstr += f'  node [fillcolor="{gum.config["notebook", "default_node_bgcolor"]}", style=filled,color="{gum.config["notebook", "default_node_fgcolor"]}",fontname="{fontname}",fontsize="{fontsize}"];\n'
@@ -201,8 +201,8 @@ def CTBNinference2dot(ctbn, engine, size=None, targets=None, nodeColor=None, arc
       bgcol = gum.config["notebook", "figure_facecolor"]
 
     if nodeColor is not None and (name in nodeColor or nid in nodeColor):
-        bgcol = gumcols.proba2bgcolor(nodeColor[name], cmapNode)
-        fgcol = gumcols.proba2fgcolor(nodeColor[name], cmapNode)
+      bgcol = gumcols.proba2bgcolor(nodeColor[name], cmapNode)
+      fgcol = gumcols.proba2fgcolor(nodeColor[name], cmapNode)
 
     # 'hard' colour for evidence (?)
     # if name in evs or nid in evs:
@@ -210,9 +210,7 @@ def CTBNinference2dot(ctbn, engine, size=None, targets=None, nodeColor=None, arc
     #   fgcol = gum.config["notebook", "evidence_fgcolor"]
     colorattribute = f'fillcolor="{bgcol}", fontcolor="{fgcol}", color="#000000"'
     if len(targets) == 0 or name in targets or nid in targets:
-      filename = temp_dir + \
-                 hashlib.md5(name.encode()).hexdigest() + "." + \
-                 gum.config["notebook", "graph_format"]
+      filename = temp_dir + hashlib.md5(name.encode()).hexdigest() + "." + gum.config["notebook", "graph_format"]
       proba_histogram.saveFigProba(ie.posterior(name), filename, bgcolor=bgcol)
       dotstr += f' "{name}" [shape=rectangle,image="{filename}",label="", {colorattribute}];\n'
     else:
@@ -232,9 +230,11 @@ def CTBNinference2dot(ctbn, engine, size=None, targets=None, nodeColor=None, arc
     if arcColor is not None and a in arcColor:
       col = gumcols.proba2color(arcColor[a], cmapArc)
 
-    dotstr += f' "{ctbn.variable(n).name()}"->"{ctbn.variable(j).name()}" [penwidth="{pw}",tooltip="{av}",color="{col}"];'
+    dotstr += (
+      f' "{ctbn.variable(n).name()}"->"{ctbn.variable(j).name()}" [penwidth="{pw}",tooltip="{av}",color="{col}"];'
+    )
 
-  dotstr += '}'
+  dotstr += "}"
 
   g = dot.graph_from_dot_data(dotstr)[0]
 
@@ -248,7 +248,7 @@ def CTBNinference2dot(ctbn, engine, size=None, targets=None, nodeColor=None, arc
 
 def getCtbnInference(ctbn: CTBN, engine, targets=None, size=None):
   if size is None:
-    size = gum.config['ctbn', 'default_graph_size']
+    size = gum.config["ctbn", "default_graph_size"]
 
   return gnb.getGraph(CTBNinference2dot(ctbn, engine, targets=targets, size=size))
 

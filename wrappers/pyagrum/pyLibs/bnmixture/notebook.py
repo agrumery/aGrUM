@@ -49,7 +49,6 @@ import matplotlib as mpl
 import pyagrum.bnmixture as BNM
 import numpy as np
 
-from pyagrum.lib import proba_histogram
 from tempfile import mkdtemp
 from matplotlib.colors import LinearSegmentedColormap
 from matplotlib.backends.backend_agg import FigureCanvasAgg as fc
@@ -83,32 +82,39 @@ def _compareBN(dotref: dot.Dot, bncmp: dot.Dot) -> dot.Dot:
   g = dotref
 
   # loading positions
-  positions = {l[1]: f"{l[2]},{l[3]}!"
-               for l in csv.reader(g.create(format="plain")
-                                   .decode("utf8")
-                                   .split("\n")
-                                   , delimiter=' ', quotechar='"')
-               if len(l) > 3 and l[0] == "node"}
+  positions = {
+    l[1]: f"{l[2]},{l[3]}!"
+    for l in csv.reader(g.create(format="plain").decode("utf8").split("\n"), delimiter=" ", quotechar='"')
+    if len(l) > 3 and l[0] == "node"
+  }
 
-  res = dot.Dot(graph_type='digraph', bgcolor="transparent", layout="fdp", splines=True)
+  res = dot.Dot(graph_type="digraph", bgcolor="transparent", layout="fdp", splines=True)
 
   # adding nodes
   for i1 in bncmp.nodes():
-    res.add_node(dot.Node(f'"{bncmp.variable(i1).name()}"',
-                          style="filled",
-                          fillcolor=gum.config["bnmixture", "default_node_bgcolor"],
-                          fontcolor=gum.config["bnmixture", "default_node_fgcolor"],
-                          pos=positions[bncmp.variable(i1).name()]
-                          ))
+    res.add_node(
+      dot.Node(
+        f'"{bncmp.variable(i1).name()}"',
+        style="filled",
+        fillcolor=gum.config["bnmixture", "default_node_bgcolor"],
+        fontcolor=gum.config["bnmixture", "default_node_fgcolor"],
+        pos=positions[bncmp.variable(i1).name()],
+      )
+    )
 
   # adding arcs
-  for (i1, i2) in bncmp.arcs():
+  for i1, i2 in bncmp.arcs():
     n1 = bncmp.variable(i1).name()
     n2 = bncmp.variable(i2).name()
-    res.add_edge(dot.Edge(f'"{n1}"', f'"{n2}"',
-                          style=gum.config["bnmixture", "default_arc_style"],
-                          color=gum.config["bnmixture", "default_arc_color"],
-                          constraint="false"))
+    res.add_edge(
+      dot.Edge(
+        f'"{n1}"',
+        f'"{n2}"',
+        style=gum.config["bnmixture", "default_arc_style"],
+        color=gum.config["bnmixture", "default_arc_color"],
+        constraint="false",
+      )
+    )
 
   return res
 
@@ -134,12 +140,11 @@ def _compareBNinf(bnref: gum.BayesNet, refdot: dot.Dot, cmpDot: dot.Dot, scale=1
   # positions are scaled
   x_scale = 80 * scale * 1.5  # 50 * scale * 2
   y_scale = 60 * scale * 1.3  # 50 * scale * 1.5
-  positions = {l[1]: f"{str(float(l[2]) * x_scale)},{str(float(l[3]) * y_scale)}!"
-               for l in csv.reader(refdot.create(format="plain")
-                                   .decode("utf8")
-                                   .split("\n")
-                                   , delimiter=' ', quotechar='"')
-               if len(l) > 3 and l[0] == "node"}
+  positions = {
+    l[1]: f"{str(float(l[2]) * x_scale)},{str(float(l[3]) * y_scale)}!"
+    for l in csv.reader(refdot.create(format="plain").decode("utf8").split("\n"), delimiter=" ", quotechar='"')
+    if len(l) > 3 and l[0] == "node"
+  }
 
   # modifying positions
   for node in cmpDot.get_nodes():
@@ -167,7 +172,7 @@ def getMixtureGraph(bnm: BNM.IMixture, size=None, ref=False):
   """
   gnb.flow.clear()
   if size is None:
-    size = gum.config['bnmixture', 'default_graph_size']
+    size = gum.config["bnmixture", "default_graph_size"]
 
   dotref = gnb.BN2dot(bnm._refBN, size=size)
   if ref:
@@ -197,9 +202,19 @@ def showMixtureGraph(bnm: BNM.IMixture, size=None, ref=False):
   IPython.display.display(html)
 
 
-def BNMixtureInference2dot(bnm: BNM.BNMixture, engine=None, size=None, evs=None, targets=None, nodeColor=None,
-                           arcWidth=None, arcColor=None,
-                           cmapNode=None, cmapArc=None, dag=None):
+def BNMixtureInference2dot(
+  bnm: BNM.BNMixture,
+  engine=None,
+  size=None,
+  evs=None,
+  targets=None,
+  nodeColor=None,
+  arcWidth=None,
+  arcColor=None,
+  cmapNode=None,
+  cmapArc=None,
+  dag=None,
+):
   """
 
   Creates a HTML representation of the inference graph of a BNM.BNMixture (average of all posteriors in the BNMixture).
@@ -259,10 +274,10 @@ def BNMixtureInference2dot(bnm: BNM.BNMixture, engine=None, size=None, evs=None,
 
   temp_dir = mkdtemp("", "tmp", None)  # with TemporaryDirectory() as temp_dir:
 
-  dotstr = "digraph structs {\n  fontcolor=\"" + gumcols.getBlackInTheme() + "\";bgcolor=\"transparent\";"
+  dotstr = 'digraph structs {\n  fontcolor="' + gumcols.getBlackInTheme() + '";bgcolor="transparent";'
 
   if gum.config.asBool["notebook", "show_inference_time"]:
-    dotstr += f"  label=\"Inference in {1000 * (stopTime - startTime):6.2f}ms\";\n"
+    dotstr += f'  label="Inference in {1000 * (stopTime - startTime):6.2f}ms";\n'
 
   fontname, fontsize = gumcols.fontFromMatplotlib()
   dotstr += f'  node [fillcolor="{gum.config["notebook", "default_node_bgcolor"]}", style=filled,color="{gum.config["notebook", "default_node_fgcolor"]}",fontname="{fontname}",fontsize="{fontsize}"];\n'
@@ -290,11 +305,9 @@ def BNMixtureInference2dot(bnm: BNM.BNMixture, engine=None, size=None, evs=None,
 
     colorattribute = f'fillcolor="{bgcol}", fontcolor="{fgcol}", color="#000000"'
     if len(targets) == 0 or name in targets or nid in targets:
-      filename = temp_dir + \
-                 hashlib.md5(name.encode()).hexdigest() + "." + \
-                 gum.config["notebook", "graph_format"]
+      filename = temp_dir + hashlib.md5(name.encode()).hexdigest() + "." + gum.config["notebook", "graph_format"]
       # proba_histogram.saveFigProba(ie.posterior(name), filename, bgcolor=bgcol)
-      saveFigProba(ie, name, filename, bgcolor=bgcol, scale=float(gum.config['bnmixture', 'default_histo_scale']))
+      saveFigProba(ie, name, filename, bgcolor=bgcol, scale=float(gum.config["bnmixture", "default_histo_scale"]))
       dotstr += f' "{name}" [shape=rectangle,image="{filename}",label="", {colorattribute}];\n'
     else:
       dotstr += f' "{name}" [{colorattribute}]'
@@ -315,7 +328,7 @@ def BNMixtureInference2dot(bnm: BNM.BNMixture, engine=None, size=None, evs=None,
 
     dotstr += f' "{bnm._refBN.variable(n).name()}"->"{bnm._refBN.variable(j).name()}" [penwidth="{pw}",tooltip="{av}",color="{col}"];'
 
-  dotstr += '}'
+  dotstr += "}"
 
   g = dot.graph_from_dot_data(dotstr)[0]
 
@@ -330,9 +343,21 @@ def BNMixtureInference2dot(bnm: BNM.BNMixture, engine=None, size=None, evs=None,
   return g
 
 
-def BootstrapInference2dot(bnm: BNM.BootstrapMixture, size=None, engine=None, evs=None, targets=None, nodeColor=None,
-                           arcWidth=None, arcColor=None,
-                           cmapNode=None, cmapArc=None, dag=None, quantiles=False, show_mu_sigma=False):
+def BootstrapInference2dot(
+  bnm: BNM.BootstrapMixture,
+  size=None,
+  engine=None,
+  evs=None,
+  targets=None,
+  nodeColor=None,
+  arcWidth=None,
+  arcColor=None,
+  cmapNode=None,
+  cmapArc=None,
+  dag=None,
+  quantiles=False,
+  show_mu_sigma=False,
+):
   """
   create a pydot representation of an inference in a BootstrapMixture (reference BN's posterior is used, while other BNs are used to compute stats).
 
@@ -396,18 +421,18 @@ def BootstrapInference2dot(bnm: BNM.BootstrapMixture, size=None, engine=None, ev
 
   temp_dir = mkdtemp("", "tmp", None)  # with TemporaryDirectory() as temp_dir:
 
-  dotstr = "digraph structs {\n  fontcolor=\"" + gumcols.getBlackInTheme() + "\";bgcolor=\"transparent\";"
+  dotstr = 'digraph structs {\n  fontcolor="' + gumcols.getBlackInTheme() + '";bgcolor="transparent";'
 
   lab = ""
   if gum.config.asBool["notebook", "show_inference_time"]:
     lab += f"Inference in {1000 * (stopTime - startTime):6.2f}ms"
 
   if quantiles:
-    q1 = float(gum.config['bnmixture', 'left_quantile']) * 100
-    q2 = float(gum.config['bnmixture', 'right_quantile']) * 100
+    q1 = float(gum.config["bnmixture", "left_quantile"]) * 100
+    q2 = float(gum.config["bnmixture", "right_quantile"]) * 100
     title = f"\nquantiles=[{q1:.1f}%, {q2:.1f}%]"
     lab += f"\n{title}"
-  dotstr += f"  label=\"{lab}\";\n"
+  dotstr += f'  label="{lab}";\n'
 
   fontname, fontsize = gumcols.fontFromMatplotlib()
   dotstr += f'  node [fillcolor="{gum.config["notebook", "default_node_bgcolor"]}", style=filled,color="{gum.config["notebook", "default_node_fgcolor"]}",fontname="{fontname}",fontsize="{fontsize}"];\n'
@@ -435,11 +460,16 @@ def BootstrapInference2dot(bnm: BNM.BootstrapMixture, size=None, engine=None, ev
 
     colorattribute = f'fillcolor="{bgcol}", fontcolor="{fgcol}", color="#000000"'
     if len(targets) == 0 or name in targets or nid in targets:
-      filename = temp_dir + \
-                 hashlib.md5(name.encode()).hexdigest() + "." + \
-                 gum.config["notebook", "graph_format"]
-      saveFigProba(ie, name, filename, bgcolor=bgcol, quantiles=quantiles,
-                   scale=float(gum.config['bnmixture', 'default_boot_histo_scale']), show_mu_sigma=show_mu_sigma)
+      filename = temp_dir + hashlib.md5(name.encode()).hexdigest() + "." + gum.config["notebook", "graph_format"]
+      saveFigProba(
+        ie,
+        name,
+        filename,
+        bgcolor=bgcol,
+        quantiles=quantiles,
+        scale=float(gum.config["bnmixture", "default_boot_histo_scale"]),
+        show_mu_sigma=show_mu_sigma,
+      )
       dotstr += f' "{name}" [shape=rectangle,image="{filename}",label="", {colorattribute}];\n'
     else:
       dotstr += f' "{name}" [{colorattribute}]'
@@ -460,7 +490,7 @@ def BootstrapInference2dot(bnm: BNM.BootstrapMixture, size=None, engine=None, ev
 
     dotstr += f' "{bnm.variable(n).name()}"->"{bnm.variable(j).name()}" [penwidth="{pw}",tooltip="{av}",color="{col}"];'
 
-  dotstr += '}'
+  dotstr += "}"
 
   g = dot.graph_from_dot_data(dotstr)[0]
 
@@ -475,9 +505,19 @@ def BootstrapInference2dot(bnm: BNM.BootstrapMixture, size=None, engine=None, ev
   return g
 
 
-def showBNMixtureInference(bnm: BNM.BNMixture, engine=None, size=None, evs=None, targets=None, nodeColor=None,
-                           arcWidth=None, arcColor=None,
-                           cmapNode=None, cmapArc=None, dag=None):
+def showBNMixtureInference(
+  bnm: BNM.BNMixture,
+  engine=None,
+  size=None,
+  evs=None,
+  targets=None,
+  nodeColor=None,
+  arcWidth=None,
+  arcColor=None,
+  cmapNode=None,
+  cmapArc=None,
+  dag=None,
+):
   """
   Displays a HTML representation of the inference graph of a BNM.BNMixture (average of all posteriors in the BNMixture).
 
@@ -506,17 +546,38 @@ def showBNMixtureInference(bnm: BNM.BNMixture, engine=None, size=None, evs=None,
   dag : pyagrum.DAG
       only shows nodes that have their id in the dag.
   """
-  html = BNMixtureInference2dot(bnm, engine=engine, size=size, evs=evs, targets=targets, nodeColor=nodeColor,
-                                arcWidth=arcWidth,
-                                arcColor=arcColor, cmapNode=cmapNode, cmapArc=cmapArc)
+  html = BNMixtureInference2dot(
+    bnm,
+    engine=engine,
+    size=size,
+    evs=evs,
+    targets=targets,
+    nodeColor=nodeColor,
+    arcWidth=arcWidth,
+    arcColor=arcColor,
+    cmapNode=cmapNode,
+    cmapArc=cmapArc,
+  )
   refdot = gnb.BN2dot(bnm._refBN)
-  _compareBNinf(bnm._refBN, refdot, html, scale=float(gum.config['bnmixture', 'default_histo_scale']))
+  _compareBNinf(bnm._refBN, refdot, html, scale=float(gum.config["bnmixture", "default_histo_scale"]))
   IPython.display.display(html)
 
 
-def showBootstrapMixtureInference(bnm: BNM.BootstrapMixture, engine=None, size=None, evs=None, targets=None,
-                                  nodeColor=None, arcWidth=None, arcColor=None,
-                                  cmapNode=None, cmapArc=None, dag=None, quantiles=False, show_mu_sigma=False):
+def showBootstrapMixtureInference(
+  bnm: BNM.BootstrapMixture,
+  engine=None,
+  size=None,
+  evs=None,
+  targets=None,
+  nodeColor=None,
+  arcWidth=None,
+  arcColor=None,
+  cmapNode=None,
+  cmapArc=None,
+  dag=None,
+  quantiles=False,
+  show_mu_sigma=False,
+):
   """
   Displays a HTML representation of the inference graph of a BNM.BNMixture (average of all posteriors in the BNMixture).
 
@@ -547,11 +608,22 @@ def showBootstrapMixtureInference(bnm: BNM.BootstrapMixture, engine=None, size=N
   quantiles : bool
       if True, shows quantiles on tensors. Quantiles default values can be set using pyagrum.config.
   """
-  html = BootstrapInference2dot(bnm, engine=engine, size=size, evs=evs, targets=targets, nodeColor=nodeColor,
-                                arcWidth=arcWidth, arcColor=arcColor, cmapNode=cmapNode, cmapArc=cmapArc,
-                                quantiles=quantiles, show_mu_sigma=show_mu_sigma)
+  html = BootstrapInference2dot(
+    bnm,
+    engine=engine,
+    size=size,
+    evs=evs,
+    targets=targets,
+    nodeColor=nodeColor,
+    arcWidth=arcWidth,
+    arcColor=arcColor,
+    cmapNode=cmapNode,
+    cmapArc=cmapArc,
+    quantiles=quantiles,
+    show_mu_sigma=show_mu_sigma,
+  )
   refdot = gnb.BN2dot(bnm._refBN)
-  _compareBNinf(bnm._refBN, refdot, html, scale=float(gum.config['bnmixture', 'default_boot_histo_scale']))
+  _compareBNinf(bnm._refBN, refdot, html, scale=float(gum.config["bnmixture", "default_boot_histo_scale"]))
   IPython.display.display(html)
 
 
@@ -560,7 +632,7 @@ def _normalizedArcsWeight(bnm: BNM.IMixture):
   Counts arcs in the BNs of the mixture. The value of an arc is the weight of the BN containing it.
   Result is normalized.
   """
-  countArcs = {nod1: {nod2: 0. for nod2 in bnm._refBN.names() if nod2 != nod1} for nod1 in bnm._refBN.names()}
+  countArcs = {nod1: {nod2: 0.0 for nod2 in bnm._refBN.names() if nod2 != nod1} for nod1 in bnm._refBN.names()}
   sum_weight = sum(bnm._weights.values())
 
   mi = 1
@@ -592,31 +664,40 @@ def _compareArcs2dot(bnm: BNM.IMixture, size=None, refStruct=False):
   """
   countArcs, mi, ma = _normalizedArcsWeight(bnm)
   g = gnb.BN2dot(bnm._refBN, size=size)
-  positions = {l[1]: f"{str(float(l[2]) * 2)},{str(float(l[3]) * 2)}!"
-               for l in csv.reader(g.create(format="plain")
-                                   .decode("utf8")
-                                   .split("\n")
-                                   , delimiter=' ', quotechar='"')
-               if len(l) > 3 and l[0] == "node"}
+  positions = {
+    l[1]: f"{str(float(l[2]) * 2)},{str(float(l[3]) * 2)}!"
+    for l in csv.reader(g.create(format="plain").decode("utf8").split("\n"), delimiter=" ", quotechar='"')
+    if len(l) > 3 and l[0] == "node"
+  }
 
   if refStruct:
-    res = dot.Dot(graph_type='digraph', bgcolor="transparent", layout=gum.config["bnmixture", "default_layout"],
-                  splines=True)
+    res = dot.Dot(
+      graph_type="digraph", bgcolor="transparent", layout=gum.config["bnmixture", "default_layout"], splines=True
+    )
   else:
-    res = dot.Dot(graph_type='digraph', bgcolor="transparent", layout=gum.config["bnmixture", "default_layout"],
-                  splines=True, overlap_scaling=gum.config["bnmixture", "default_overlap"], sep=3)
+    res = dot.Dot(
+      graph_type="digraph",
+      bgcolor="transparent",
+      layout=gum.config["bnmixture", "default_layout"],
+      splines=True,
+      overlap_scaling=gum.config["bnmixture", "default_overlap"],
+      sep=3,
+    )
 
   for vname in bnm._refBN.names():
     if refStruct:
       pos = positions[vname]
     else:
-      pos = ''
-    res.add_node(dot.Node(f'"{vname}"',
-                          style="filled",
-                          fillcolor=gum.config["bnmixture", "default_node_bgcolor"],
-                          fontcolor=gum.config["bnmixture", "default_node_fgcolor"],
-                          pos=pos
-                          ))
+      pos = ""
+    res.add_node(
+      dot.Node(
+        f'"{vname}"',
+        style="filled",
+        fillcolor=gum.config["bnmixture", "default_node_bgcolor"],
+        fontcolor=gum.config["bnmixture", "default_node_fgcolor"],
+        pos=pos,
+      )
+    )
 
   for n1 in bnm._refBN.names():
     for n2 in bnm._refBN.names():
@@ -629,15 +710,21 @@ def _compareArcs2dot(bnm: BNM.IMixture, size=None, refStruct=False):
 
       # print(f"({n1}, {n2}) {countArcs[n1][n2]}")
       col = gumcols.proba2color(min(countArcs[n1][n2], 0.99), _cmap1)
-      res.add_edge(dot.Edge(f'"{n1}"', f'"{n2}"',
-                            style=style,
-                            color=col,
-                            penwidth=ceil(countArcs[n1][n2] * 6),
-                            arrowhead=gum.config["bnmixture", "default_arrow_type"],
-                            arrowsize=gum.config["bnmixture", "default_head_size"] * ceil(countArcs[n1][n2] * 6),
-                            constraint="false"))
+      res.add_edge(
+        dot.Edge(
+          f'"{n1}"',
+          f'"{n2}"',
+          style=style,
+          color=col,
+          penwidth=ceil(countArcs[n1][n2] * 6),
+          arrowhead=gum.config["bnmixture", "default_arrow_type"],
+          arrowsize=gum.config["bnmixture", "default_head_size"] * ceil(countArcs[n1][n2] * 6),
+          constraint="false",
+        )
+      )
 
   return res, mi, ma
+
 
 def getComparison(bnm, size=None, refStruct=False):
   """
@@ -655,6 +742,7 @@ def getComparison(bnm, size=None, refStruct=False):
   """
   gr, _, _ = _compareArcs2dot(bnm, size=size, refStruct=refStruct)
   return gr
+
 
 def showComparison(bnm, size=None, refStruct=False):
   """
@@ -676,8 +764,9 @@ def getArcsComparison(bnm, size=None, refStruct=False):
   """
   gr, mi, ma = _compareArcs2dot(bnm, size=size, refStruct=refStruct)
   gsvg = IPython.display.SVG(gr.create_svg(encoding="utf-8"))
-  width = int(gsvg.data.split("width=")[1].split('"')[1].split("pt")[0]) / mpl.pyplot.rcParams[
-    'figure.dpi']  # pixel in inches
+  width = (
+    int(gsvg.data.split("width=")[1].split('"')[1].split("pt")[0]) / mpl.pyplot.rcParams["figure.dpi"]
+  )  # pixel in inches
   if width < 5:
     width = 5
 
@@ -686,15 +775,12 @@ def getArcsComparison(bnm, size=None, refStruct=False):
   canvas = fc(fig)
   ax1 = fig.add_axes([0.05, 0.80, 0.9, 0.15])
   norm = mpl.colors.Normalize()
-  cb1 = mpl.colorbar.ColorbarBase(ax1, cmap=_cmap1,
-                                  norm=norm,
-                                  orientation='horizontal'
-                                  )
-  cb1.set_label('Confidence')
-  cb1.ax.text(0.1, -3, f"min {mi:.4f}", ha='left', va='top', color=gumcols.proba2bgcolor(max(mi, 0.01), _cmap1))
-  cb1.ax.text(0.9, -3, f"max {ma:.4f}", ha='right', va='top', color=gumcols.proba2bgcolor(min(ma, .99), _cmap1))
-  cb1.ax.text(mi, 1, "|", ha='center', va='top', color="red")
-  cb1.ax.text(ma, 1, "|", ha='center', va='top', color="red")
+  cb1 = mpl.colorbar.ColorbarBase(ax1, cmap=_cmap1, norm=norm, orientation="horizontal")
+  cb1.set_label("Confidence")
+  cb1.ax.text(0.1, -3, f"min {mi:.4f}", ha="left", va="top", color=gumcols.proba2bgcolor(max(mi, 0.01), _cmap1))
+  cb1.ax.text(0.9, -3, f"max {ma:.4f}", ha="right", va="top", color=gumcols.proba2bgcolor(min(ma, 0.99), _cmap1))
+  cb1.ax.text(mi, 1, "|", ha="center", va="top", color="red")
+  cb1.ax.text(ma, 1, "|", ha="center", va="top", color="red")
   png = IPython.core.pylabtools.print_figure(canvas.figure, "png")  # from IPython.core.pylabtools
   png_legend = f"<img style='vertical-align:middle' src='data:image/png;base64,{encodebytes(png).decode('ascii')}'>"
 
@@ -712,15 +798,27 @@ def showArcsComparison(bnm, size=None, refStruct=False):
 
 
 def arcsCompLegend():
-  res = dot.Dot(graph_type='digraph', bgcolor="transparent", rankdir="LR")
+  res = dot.Dot(graph_type="digraph", bgcolor="transparent", rankdir="LR")
   for i in "abcd":
     res.add_node(dot.Node(i, style="invis"))
-  res.add_edge(dot.Edge("a", "b", label="Present in reference",
-                        style=gum.config["bnmixture", "correct_arc_style"],
-                        color=gum.config["bnmixture", "correct_arc_color"]))
-  res.add_edge(dot.Edge("c", "d", label="Absent from reference",
-                        style=gum.config["bnmixture", "incorrect_arc_style"],
-                        color=gum.config["bnmixture", "correct_arc_color"]))
+  res.add_edge(
+    dot.Edge(
+      "a",
+      "b",
+      label="Present in reference",
+      style=gum.config["bnmixture", "correct_arc_style"],
+      color=gum.config["bnmixture", "correct_arc_color"],
+    )
+  )
+  res.add_edge(
+    dot.Edge(
+      "c",
+      "d",
+      label="Absent from reference",
+      style=gum.config["bnmixture", "incorrect_arc_style"],
+      color=gum.config["bnmixture", "correct_arc_color"],
+    )
+  )
 
   return res
 
@@ -818,9 +916,9 @@ def _getProbaH(ie, var_name, scale=1.0, txtcolor="black", quantiles=False, show_
   fig.set_figwidth(scale * 2)
 
   ax = fig.add_subplot(111)
-  ax.set_facecolor('white')
+  ax.set_facecolor("white")
 
-  if gum.config.asBool['notebook', 'histogram_use_percent']:
+  if gum.config.asBool["notebook", "histogram_use_percent"]:
     perc = 100
     suffix = "%"
   else:
@@ -836,35 +934,41 @@ def _getProbaH(ie, var_name, scale=1.0, txtcolor="black", quantiles=False, show_
     vmean = avrg.tolist()
     vmean.reverse()
     error = [(abs(mean - mi), abs(ma - mean)) for mi, ma, mean in zip(vmin, vmax, vmean)]
-    barmean = ax.barh(ra, vmean,
-                      align='center',
-                      height=float(gum.config['bnmixture', 'default_bar_height']),
-                      color=gum.config['notebook', 'histogram_color'],
-                      xerr=error,
-                      capsize=float(gum.config['bnmixture', 'default_bar_capsize']) * scale)
+    barmean = ax.barh(
+      ra,
+      vmean,
+      align="center",
+      height=float(gum.config["bnmixture", "default_bar_height"]),
+      color=gum.config["notebook", "histogram_color"],
+      xerr=error,
+      capsize=float(gum.config["bnmixture", "default_bar_capsize"]) * scale,
+    )
 
     for b in barmean:
       txt = f"{b.get_width() * perc:.{gum.config.asInt['notebook', 'histogram_horizontal_visible_digits']}f}{suffix}"
       # ax.text(0.5, b.get_y(), txt, ha='center', va='bottom')
       if b.get_width() >= 0.2 * (2 / scale):
-        ax.text(b.get_width(), b.get_y(), txt, ha='right', va='bottom', fontsize=10, color='white')
+        ax.text(b.get_width(), b.get_y(), txt, ha="right", va="bottom", fontsize=10, color="white")
       else:
-        ax.text(b.get_width(), b.get_y(), txt, ha='left', va='bottom', fontsize=10)
+        ax.text(b.get_width(), b.get_y(), txt, ha="left", va="bottom", fontsize=10)
 
   else:
     vmean = avrg.tolist()
     vmean.reverse()
-    barmean = ax.barh(ra, vmean,
-                      align='center',
-                      height=float(gum.config['bnmixture', 'default_bar_height']),
-                      color=gum.config['notebook', 'histogram_color'])
+    barmean = ax.barh(
+      ra,
+      vmean,
+      align="center",
+      height=float(gum.config["bnmixture", "default_bar_height"]),
+      color=gum.config["notebook", "histogram_color"],
+    )
 
     for b in barmean:
       txt = f"{b.get_width() * perc:.{gum.config.asInt['notebook', 'histogram_horizontal_visible_digits']}f}{suffix}"
       if b.get_width() >= 0.2 * (2 / scale):
-        ax.text(b.get_width(), b.get_y(), txt, ha='right', va='bottom', fontsize=10, color='white')
+        ax.text(b.get_width(), b.get_y(), txt, ha="right", va="bottom", fontsize=10, color="white")
       else:
-        ax.text(b.get_width(), b.get_y(), txt, ha='left', va='bottom', fontsize=10)
+        ax.text(b.get_width(), b.get_y(), txt, ha="left", va="bottom", fontsize=10)
 
   ax.set_xlim(0, 1)
   ax.set_yticks(np.arange(var.domainSize()))
@@ -906,8 +1010,9 @@ def proba2histo(ie, var_name, scale=1.0, txtcolor="Black", quantiles=False, show
   return _getProbaH(ie, var_name, scale=scale, txtcolor=txtcolor, quantiles=quantiles, show_mu_sigma=show_mu_sigma)
 
 
-def saveFigProba(ie, var_name, filename, bgcolor=None, txtcolor="Black", quantiles=False, scale=1.0,
-                 show_mu_sigma=False):
+def saveFigProba(
+  ie, var_name, filename, bgcolor=None, txtcolor="Black", quantiles=False, scale=1.0, show_mu_sigma=False
+):
   """
   Saves a figure which is the representation of a histogram for a posterior.
 
@@ -937,6 +1042,13 @@ def saveFigProba(ie, var_name, filename, bgcolor=None, txtcolor="Black", quantil
   else:
     fc = bgcolor
 
-  fig.savefig(filename, bbox_inches='tight', transparent=False, facecolor=fc,
-              pad_inches=0.05, dpi=fig.dpi, format=gum.config["notebook", "graph_format"])
+  fig.savefig(
+    filename,
+    bbox_inches="tight",
+    transparent=False,
+    facecolor=fc,
+    pad_inches=0.05,
+    dpi=fig.dpi,
+    format=gum.config["notebook", "graph_format"],
+  )
   plt.close(fig)

@@ -44,7 +44,6 @@ class TestEvidence(pyAgrumTestCase):
   def tesIsEvidence(self):
     bn = gum.fastBN("A[10]->B;C")
     p1 = gum.Tensor(bn.cpt("A"))
-    p2 = gum.Tensor(bn.cpt("A"))
 
     self.assertTrue(bn.cpt("A").isEvidence())
     self.assertFalse(bn.cpt("B").isEvidence())
@@ -86,9 +85,10 @@ class TestEvidence(pyAgrumTestCase):
     self.assertEqual(gpot.evEq(vE, 4.0).tolist(), [0.0, 1.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0])
 
     self.assertEqual(gpot.evIn(vA, 4.0, 6.0).tolist(), [0.0, 0.0, 0.0, 0.0, 1.0, 1.0, 1.0, 0.0, 0.0, 0.0])
-    self.assertEqual((gpot.evEq(vA, 4.0) | gpot.evEq(vA, 6)).tolist(), [0.0, 0.0, 0.0, 0.0, 1.0, 0.0, 1.0, 0.0, 0.0, 0.0])
+    self.assertEqual(
+      (gpot.evEq(vA, 4.0) | gpot.evEq(vA, 6)).tolist(), [0.0, 0.0, 0.0, 0.0, 1.0, 0.0, 1.0, 0.0, 0.0, 0.0]
+    )
     self.assertEqual((~gpot.evIn(vA, 4.0, 6.0)).tolist(), [1.0, 1.0, 1.0, 1.0, 0.0, 0.0, 0.0, 1.0, 1.0, 1.0])
-
 
     self.assertEqual(gpot.evLt(vA, 4.0).tolist(), [1.0, 1.0, 1.0, 1.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0])
     self.assertEqual(gpot.evLt(vA, 0.0).tolist(), [1.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0])
@@ -97,7 +97,8 @@ class TestEvidence(pyAgrumTestCase):
     self.assertEqual(gpot.evLt(vC, 7.0).tolist(), [1.0, 1.0, 1.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0])
     self.assertEqual(gpot.evLt(vC, 1.0).tolist(), [1.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0])
     self.assertEqual(gpot.evGt(vC, 7.0).tolist(), [0.0, 0.0, 0.0, 0.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0])
-    self.assertEqual(gpot.evGt(vC, 20.0).tolist(),[0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 1.0])
+    self.assertEqual(gpot.evGt(vC, 20.0).tolist(), [0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 1.0])
+
 
 ts = unittest.TestSuite()
 addTests(ts, TestEvidence)

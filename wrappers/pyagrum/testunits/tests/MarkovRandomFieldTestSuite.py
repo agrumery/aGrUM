@@ -36,7 +36,6 @@
 
 import unittest
 
-import numpy
 import pyagrum as gum
 from .pyAgrumTestSuite import pyAgrumTestCase, addTests
 
@@ -46,10 +45,8 @@ class MarkovRandomFieldTestCase(pyAgrumTestCase):
     for i in [11, 21, 31, 41]:
       mrf.add(str(i), 3)
     mrf.add(str(51), 7)
-    mrf.addFactor({"11", "31"}).fillWith(
-      [0.0, 0.1, 0.2, 0.3, 0.4, 0.5, 0.6, 0.7, 0.8])
-    mrf.addFactor({"11", "41"}).fillWith(
-      [0.2, 0.3, 0.4, 0.5, 0.6, 0.7, 0.8, 0.9, 1.0])
+    mrf.addFactor({"11", "31"}).fillWith([0.0, 0.1, 0.2, 0.3, 0.4, 0.5, 0.6, 0.7, 0.8])
+    mrf.addFactor({"11", "41"}).fillWith([0.2, 0.3, 0.4, 0.5, 0.6, 0.7, 0.8, 0.9, 1.0])
     mrf.addFactor({"31", "51"}).fillWith(0.97)
     mrf.addFactor({"21", "41", "51"}).fillWith(0.03)
 
@@ -60,8 +57,7 @@ class MarkovRandomFieldTestCase(pyAgrumTestCase):
     self.assertEqual(mrf.size(), 5)
     self.assertEqual(mrf.sizeEdges(), 6)
     self.assertEqual(mrf.dim(), (3 * 3 + 3 * 3 + 3 * 7 + 3 * 3 * 7))
-    self.assertEqual(mrf.__str__(),
-                     "MRF{nodes: 5, edges: 6, domainSize: 567, dim: 102}")
+    self.assertEqual(mrf.__str__(), "MRF{nodes: 5, edges: 6, domainSize: 567, dim: 102}")
     self.assertEqual(mrf.neighbours("41"), {0, 1, 4})
     self.assertEqual(mrf.neighbours(3), {0, 1, 4})
 
@@ -80,8 +76,7 @@ class MarkovRandomFieldTestCase(pyAgrumTestCase):
     mrf = gum.MarkovRandomField()
     self._fill(mrf)
     mn2 = gum.MarkovRandomField(mrf)
-    self.assertEqual(
-      mn2.__str__(), "MRF{nodes: 5, edges: 6, domainSize: 567, dim: 102}")
+    self.assertEqual(mn2.__str__(), "MRF{nodes: 5, edges: 6, domainSize: 567, dim: 102}")
 
     for n in mrf.nodes():
       self.assertEqual(mrf.variable(n).name(), mn2.variable(n).name())
@@ -92,8 +87,7 @@ class MarkovRandomFieldTestCase(pyAgrumTestCase):
     mn2 = gum.MarkovRandomField()
     self._fill(mrf)
     mn2 = mrf
-    self.assertEqual(mn2.__str__(),
-                     "MRF{nodes: 5, edges: 6, domainSize: 567, dim: 102}")
+    self.assertEqual(mn2.__str__(), "MRF{nodes: 5, edges: 6, domainSize: 567, dim: 102}")
     for n in mrf.nodes():
       self.assertEqual(mrf.variable(n).name(), mn2.variable(n).name())
       self.assertEqual(mrf.neighbours(n), mn2.neighbours(n))
@@ -166,8 +160,7 @@ class MarkovRandomFieldTestCase(pyAgrumTestCase):
     self.assertEqual(mrf.size(), 5)
     self.assertEqual(mrf.sizeEdges(), 5)
     self.assertEqual(mrf.dim(), (3 * 3 + 3 * 3 + 3 * 3 * 7))
-    self.assertEqual(mrf.__str__(),
-                     "MRF{nodes: 5, edges: 5, domainSize: 567, dim: 81}")
+    self.assertEqual(mrf.__str__(), "MRF{nodes: 5, edges: 5, domainSize: 567, dim: 81}")
 
   def testEraseFactorWithNames(self):
     mrf = gum.MarkovRandomField()
@@ -179,8 +172,7 @@ class MarkovRandomFieldTestCase(pyAgrumTestCase):
     self.assertEqual(mrf.size(), 5)
     self.assertEqual(mrf.sizeEdges(), 5)
     self.assertEqual(mrf.dim(), (3 * 3 + 3 * 3 + 3 * 3 * 7))
-    self.assertEqual(mrf.__str__(),
-                     "MRF{nodes: 5, edges: 5, domainSize: 567, dim: 81}")
+    self.assertEqual(mrf.__str__(), "MRF{nodes: 5, edges: 5, domainSize: 567, dim: 81}")
 
   def testErase(self):
     mrf = gum.MarkovRandomField()
@@ -191,8 +183,7 @@ class MarkovRandomFieldTestCase(pyAgrumTestCase):
     self.assertEqual(mrf.size(), 4)
     self.assertEqual(mrf.sizeEdges(), 3)
     self.assertEqual(mrf.dim(), (3 * 3 + 3 * 7 + 3 * 7))
-    self.assertEqual(mrf.__str__(),
-                     "MRF{nodes: 4, edges: 3, domainSize: 189, dim: 51}")
+    self.assertEqual(mrf.__str__(), "MRF{nodes: 4, edges: 3, domainSize: 189, dim: 51}")
 
   def testEraseWithNames(self):
     mrf = gum.MarkovRandomField()
@@ -203,13 +194,12 @@ class MarkovRandomFieldTestCase(pyAgrumTestCase):
     self.assertEqual(mrf.size(), 4)
     self.assertEqual(mrf.sizeEdges(), 3)
     self.assertEqual(mrf.dim(), (3 * 3 + 3 * 7 + 3 * 7))
-    self.assertEqual(mrf.__str__(),
-                     "MRF{nodes: 4, edges: 3, domainSize: 189, dim: 51}")
+    self.assertEqual(mrf.__str__(), "MRF{nodes: 4, edges: 3, domainSize: 189, dim: 51}")
 
   def testToDot(self):
     mrf = gum.fastMRF("A--B--C;B--D;C--E;D--E--F")
-    s1 = mrf.toDot()
-    s2 = mrf.toDotAsFactorGraph()
+    _ = mrf.toDot()
+    _ = mrf.toDotAsFactorGraph()
 
   def testFromBN(self):
     bn = gum.fastBN("A->B->C<-D;C<-E->F<-G;F<-A")
@@ -253,10 +243,8 @@ class MarkovRandomFieldTestCase(pyAgrumTestCase):
     self.assertEqual(mrf.minimalCondSet({0, 6}, {1, 2, 3, 4, 5}), {1, 2, 4, 5})
     self.assertEqual(mrf.minimalCondSet(3, {0, 4, 5, 6}), {0, 4})
 
-    self.assertEqual(mrf.minimalCondSet(
-      "A", {"B", "C", "D", "E", "F", "G"}), {1, 2})
-    self.assertEqual(mrf.minimalCondSet(
-      {"A", "G"}, {"B", "C", "D", "E", "F"}), {1, 2, 4, 5})
+    self.assertEqual(mrf.minimalCondSet("A", {"B", "C", "D", "E", "F", "G"}), {1, 2})
+    self.assertEqual(mrf.minimalCondSet({"A", "G"}, {"B", "C", "D", "E", "F"}), {1, 2, 4, 5})
     self.assertEqual(mrf.minimalCondSet("D", {"A", "E", "F", "G"}), {0, 4})
 
   def testIndependence(self):
@@ -283,13 +271,15 @@ class MarkovRandomFieldTestCase(pyAgrumTestCase):
 
     # V2 could not be the first
     mrf.addFactor({"V2", "V3"})
-    self.assertEqual({mrf.factor({"V3", "V2"}).variable(0).name(), mrf.factor({"V2", "V3"}).variable(1).name()},
-                      {"V2", "V3"})
+    self.assertEqual(
+      {mrf.factor({"V3", "V2"}).variable(0).name(), mrf.factor({"V2", "V3"}).variable(1).name()}, {"V2", "V3"}
+    )
 
     # V2 could not be the first
     mrf.addFactor({"V2", "V0"})
-    self.assertEqual({mrf.factor({"V2", "V0"}).variable(0).name(), mrf.factor({"V0", "V2"}).variable(1).name()},
-                      {"V2", "V0"})
+    self.assertEqual(
+      {mrf.factor({"V2", "V0"}).variable(0).name(), mrf.factor({"V0", "V2"}).variable(1).name()}, {"V2", "V0"}
+    )
 
   def testOrderInsertionWithId(self):
     mrf = gum.fastMRF("V0;V1;V2;V3")
@@ -313,14 +303,15 @@ class MarkovRandomFieldTestCase(pyAgrumTestCase):
     self.assertEqual(mrf.factor({2, 0}).variable(0).name(), mrf.variable(0).name())
 
   def testToFast(self):
-    model=gum.fastMRF("A--B--C--D--E;F--G[3];H--I{a|b|c}--A--B;X")
-    model2=gum.fastMRF(model.toFast())
-    self.assertEqual(model.names(),model2.names())
-    for _,n in model:
-      self.assertEqual(model.variable(n).toFast(),
-                       model2.variable(n).toFast())
-      self.assertEqual({model.variable(i).name() for i in model.neighbours(n)},
-                       {model2.variable(i).name() for i in model2.neighbours(n)})
+    model = gum.fastMRF("A--B--C--D--E;F--G[3];H--I{a|b|c}--A--B;X")
+    model2 = gum.fastMRF(model.toFast())
+    self.assertEqual(model.names(), model2.names())
+    for _, n in model:
+      self.assertEqual(model.variable(n).toFast(), model2.variable(n).toFast())
+      self.assertEqual(
+        {model.variable(i).name() for i in model.neighbours(n)},
+        {model2.variable(i).name() for i in model2.neighbours(n)},
+      )
 
 
 ts = unittest.TestSuite()

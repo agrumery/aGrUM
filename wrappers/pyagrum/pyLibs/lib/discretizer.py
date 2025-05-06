@@ -37,9 +37,11 @@
 """
 This module contains the deprecated Discretizer class. See the new DiscreteTypeProcessor class.
 """
+
 import warnings
 
-def Discretizer(*args,**kwargs):
+
+def Discretizer(*args, **kwargs):
   """
   Warnings
   ------
@@ -48,4 +50,5 @@ def Discretizer(*args,**kwargs):
   """
   warnings.warn("Discretizer is deprecated since pyAgrum>=2.0.0. Use DiscreteTypeProcessor instead", DeprecationWarning)
   from .discreteTypeProcessor import DiscreteTypeProcessor
-  return DiscreteTypeProcessor(*args,**kwargs)
+
+  return DiscreteTypeProcessor(*args, **kwargs)

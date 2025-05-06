@@ -69,21 +69,20 @@ import IPython.core.pylabtools
 import IPython.display
 
 import pyagrum as gum
-from pyagrum.lib.bn2graph import BN2dot, BNinference2dot
-from pyagrum.lib.cn2graph import CN2dot, CNinference2dot
-from pyagrum.lib.id2graph import ID2dot, LIMIDinference2dot
-from pyagrum.lib.mrf2graph import MRF2UGdot, MRFinference2UGdot
-from pyagrum.lib.mrf2graph import MRF2FactorGraphdot, MRFinference2FactorGraphdot
-from pyagrum.lib.bn_vs_bn import GraphicalBNComparator, graphDiff
+from pyagrum.lib.bn2graph import BN2dot
+from pyagrum.lib.cn2graph import CN2dot
+from pyagrum.lib.id2graph import ID2dot
+from pyagrum.lib.mrf2graph import MRF2UGdot
+from pyagrum.lib.mrf2graph import MRF2FactorGraphdot
+from pyagrum.lib.bn_vs_bn import graphDiff
 from pyagrum.lib.proba_histogram import proba2histo, probaMinMaxH
 from pyagrum.lib.image import prepareShowInference, prepareLinksForSVG
 
-import pyagrum.lib.utils as gutils
 import pyagrum.lib._colors as gumcols
 
 
 class FlowLayout(object):
-  """"
+  """ "
   A class / object to display plots in a horizontal / flow layout below a cell
 
   based on : https://stackoverflow.com/questions/21754976/ipython-notebook-arrange-plots-horizontally
@@ -159,7 +158,9 @@ class FlowLayout(object):
 
     # encode the bytes as string using base 64
     sB64Img = base64.b64encode(Bio.getvalue()).decode()
-    self.sHtml += f'<div class="floating-box"><img src="data:image/png;base64,{sB64Img}\n">{self._getCaption(cap)}</div>'
+    self.sHtml += (
+      f'<div class="floating-box"><img src="data:image/png;base64,{sB64Img}\n">{self._getCaption(cap)}</div>'
+    )
     plt.close()
     return self
 
@@ -167,7 +168,7 @@ class FlowLayout(object):
     """
     add a breakline (a new row)
     """
-    self.sHtml += '<br/>'
+    self.sHtml += "<br/>"
     return self
 
   def html(self):
@@ -245,9 +246,7 @@ def configuration():
   for name in packages:
     res += "<tr><td>%s</td><td>%s</td></tr>" % (name, packages[name])
 
-  res += "</table><div align='right'><small>%s</small></div>" % time.strftime(
-    '%a %b %d %H:%M:%S %Y %Z'
-  )
+  res += "</table><div align='right'><small>%s</small></div>" % time.strftime("%a %b %d %H:%M:%S %Y %Z")
 
   IPython.display.display(IPython.display.HTML(res))
 
@@ -278,8 +277,7 @@ def _reprGraph(gr, size, asString, graph_format=None):
     graph_format = gum.config["notebook", "graph_format"]
 
   if graph_format == "svg":
-    gsvg = IPython.display.SVG(prepareLinksForSVG(
-      gr.create_svg(encoding="utf-8").decode('utf-8')))
+    gsvg = IPython.display.SVG(prepareLinksForSVG(gr.create_svg(encoding="utf-8").decode("utf-8")))
     if asString:
       return gsvg.data
     else:
@@ -431,9 +429,16 @@ def showBNDiff(bn1, bn2, size=None, noStyle=False):
 
   showGraph(graphDiff(bn1, bn2, noStyle), size)
 
-def getJunctionTreeMap(bn, size: str = None, scaleClique: float = None, scaleSep: float = None, lenEdge: float = None,
-                       colorClique: str = None,
-                       colorSep: str = None):
+
+def getJunctionTreeMap(
+  bn,
+  size: str = None,
+  scaleClique: float = None,
+  scaleSep: float = None,
+  lenEdge: float = None,
+  colorClique: str = None,
+  colorSep: str = None,
+):
   """
   Return a representation of the map of the junction tree of a Bayesian network
 
@@ -460,9 +465,15 @@ def getJunctionTreeMap(bn, size: str = None, scaleClique: float = None, scaleSep
   return getGraph(jt.map(scaleClique, scaleSep, lenEdge, colorClique, colorSep), size)
 
 
-def showJunctionTreeMap(bn, size: str = None, scaleClique: float = None, scaleSep: float = None, lenEdge: float = None,
-                        colorClique: str = None,
-                        colorSep: str = None):
+def showJunctionTreeMap(
+  bn,
+  size: str = None,
+  scaleClique: float = None,
+  scaleSep: float = None,
+  lenEdge: float = None,
+  colorClique: str = None,
+  colorSep: str = None,
+):
   """
   Show the map of the junction tree of a Bayesian network
 
@@ -560,7 +571,7 @@ def showProba(p, scale=None):
   scale: float
     the zoom factor
   """
-  fig = proba2histo(p, scale)
+  _ = proba2histo(p, scale)
   set_matplotlib_formats(gum.config["notebook", "graph_format"])
   plt.show()
 
@@ -568,7 +579,7 @@ def showProba(p, scale=None):
 def _getMatplotFig(fig):
   bio = io.BytesIO()  # bytes buffer for the plot
   # .canvas.print_png(bio)  # make a png of the plot in the buffer
-  fig.savefig(bio, format='png', bbox_inches='tight')
+  fig.savefig(bio, format="png", bbox_inches="tight")
 
   # encode the bytes as string using base 64
   sB64Img = base64.b64encode(bio.getvalue()).decode()
@@ -594,7 +605,7 @@ def getProba(p, scale=None) -> str:
     the HTML representation of the marginal
   """
   set_matplotlib_formats(gum.config["notebook", "graph_format"])
-  #return _getMatplotFig(proba2histo(p, scale))
+  # return _getMatplotFig(proba2histo(p, scale))
   fig = proba2histo(p, scale)
   plt.close()
   return _getMatplotFig(fig)
@@ -613,7 +624,7 @@ def showProbaMinMax(pmin, pmax, scale=1.0):
   scale: float
     the zoom factor
   """
-  fig = probaMinMaxH(pmin, pmax, scale)
+  _ = probaMinMaxH(pmin, pmax, scale)
   set_matplotlib_formats(gum.config["notebook", "graph_format"])
   plt.show()
 
@@ -691,24 +702,20 @@ def animApproximationScheme(apsc, scale=np.log10):
   """
   f = plt.gcf()
 
-  h = gum.PythonApproximationListener(
-    apsc._asIApproximationSchemeConfiguration()
-  )
+  h = gum.PythonApproximationListener(apsc._asIApproximationSchemeConfiguration())
   apsc.setVerbosity(True)
   apsc.listener = h
 
   def stopper(x):
     IPython.display.clear_output(True)
-    plt.title(
-      f"{x} \n Time : {apsc.currentTime()}s | Iterations : {apsc.nbrIterations()} | Epsilon : {apsc.epsilon()}"
-    )
+    plt.title(f"{x} \n Time : {apsc.currentTime()}s | Iterations : {apsc.nbrIterations()} | Epsilon : {apsc.epsilon()}")
 
   def progresser(x, y, z):
     if len(apsc.history()) < 10:
       plt.xlim(1, 10)
     else:
       plt.xlim(1, len(apsc.history()))
-    plt.plot(scale(apsc.history()), 'g')
+    plt.plot(scale(apsc.history()), "g")
     IPython.display.clear_output(True)
     IPython.display.display(f)
 
@@ -732,15 +739,21 @@ def showApproximationScheme(apsc, scale=np.log10):
       plt.xlim(1, 10)
     else:
       plt.xlim(1, len(apsc.history()))
-    plt.title(
-      f"Time : {apsc.currentTime()}s | Iterations : {apsc.nbrIterations()} | Epsilon : {apsc.epsilon()}"
-    )
-    plt.plot(scale(apsc.history()), 'g')
+    plt.title(f"Time : {apsc.currentTime()}s | Iterations : {apsc.nbrIterations()} | Epsilon : {apsc.epsilon()}")
+    plt.plot(scale(apsc.history()), "g")
 
 
-def showMRF(mrf, view=None, size=None, nodeColor=None, factorColor=None, edgeWidth=None, edgeColor=None, cmapNode=None,
-            cmapEdge=None
-            ):
+def showMRF(
+  mrf,
+  view=None,
+  size=None,
+  nodeColor=None,
+  factorColor=None,
+  edgeWidth=None,
+  edgeColor=None,
+  cmapNode=None,
+  cmapEdge=None,
+):
   """
   show a Markov random field
 
@@ -779,8 +792,9 @@ def showMRF(mrf, view=None, size=None, nodeColor=None, factorColor=None, edgeWid
     cmapEdge = cmapNode
 
   if view == "graph":
-    dottxt = MRF2UGdot(mrf, size, nodeColor=nodeColor, edgeWidth=edgeWidth,
-                       edgeColor=edgeColor, cmapNode=cmapNode, cmapEdge=cmapEdge)
+    dottxt = MRF2UGdot(
+      mrf, size, nodeColor=nodeColor, edgeWidth=edgeWidth, edgeColor=edgeColor, cmapNode=cmapNode, cmapEdge=cmapEdge
+    )
   else:
     dottxt = MRF2FactorGraphdot(mrf, size, nodeColor=nodeColor, factorColor=factorColor, cmapNode=cmapNode)
 
@@ -829,6 +843,7 @@ def getInfluenceDiagram(diag, size=None):
 
   return getGraph(ID2dot(diag), size)
 
+
 def showBN(bn, size=None, nodeColor=None, arcWidth=None, arcLabel=None, arcColor=None, cmapNode=None, cmapArc=None):
   """
   show a Bayesian network
@@ -861,9 +876,18 @@ def showBN(bn, size=None, nodeColor=None, arcWidth=None, arcLabel=None, arcColor
     cmapArc = cmapNode
 
   return showGraph(
-    BN2dot(bn, size=size, nodeColor=nodeColor, arcWidth=arcWidth, arcLabel=arcLabel, arcColor=arcColor,
-           cmapNode=cmapNode,
-           cmapArc=cmapArc), size)
+    BN2dot(
+      bn,
+      size=size,
+      nodeColor=nodeColor,
+      arcWidth=arcWidth,
+      arcLabel=arcLabel,
+      arcColor=arcColor,
+      cmapNode=cmapNode,
+      cmapArc=cmapArc,
+    ),
+    size,
+  )
 
 
 def showCN(cn, size=None, nodeColor=None, arcWidth=None, arcLabel=None, arcColor=None, cmapNode=None, cmapArc=None):
@@ -902,14 +926,31 @@ def showCN(cn, size=None, nodeColor=None, arcWidth=None, arcLabel=None, arcColor
     cmapArc = cmapNode
 
   return showGraph(
-    CN2dot(cn, size=size, nodeColor=nodeColor, arcWidth=arcWidth, arcLabel=arcLabel, arcColor=arcColor,
-           cmapNode=cmapNode,
-           cmapArc=cmapArc), size)
+    CN2dot(
+      cn,
+      size=size,
+      nodeColor=nodeColor,
+      arcWidth=arcWidth,
+      arcLabel=arcLabel,
+      arcColor=arcColor,
+      cmapNode=cmapNode,
+      cmapArc=cmapArc,
+    ),
+    size,
+  )
 
 
-
-def getMRF(mrf, view=None, size=None, nodeColor=None, factorColor=None, edgeWidth=None, edgeColor=None, cmapNode=None,
-           cmapEdge=None):
+def getMRF(
+  mrf,
+  view=None,
+  size=None,
+  nodeColor=None,
+  factorColor=None,
+  edgeWidth=None,
+  edgeColor=None,
+  cmapNode=None,
+  cmapEdge=None,
+):
   """
   get an HTML string for a Markov random field
 
@@ -948,9 +989,7 @@ def getMRF(mrf, view=None, size=None, nodeColor=None, factorColor=None, edgeWidt
     view = gum.config["notebook", "default_markovrandomfield_view"]
 
   if view == "graph":
-    dottxt = MRF2UGdot(mrf, size, nodeColor, edgeWidth,
-                       edgeColor, cmapNode, cmapEdge
-                       )
+    dottxt = MRF2UGdot(mrf, size, nodeColor, edgeWidth, edgeColor, cmapNode, cmapEdge)
   else:
     dottxt = MRF2FactorGraphdot(mrf, size, nodeColor, factorColor, cmapNode=cmapNode)
 
@@ -994,9 +1033,18 @@ def getBN(bn, size=None, nodeColor=None, arcWidth=None, arcLabel=None, arcColor=
     cmapArc = cmapNode
 
   return getGraph(
-    BN2dot(bn, size=size, nodeColor=nodeColor, arcWidth=arcWidth, arcLabel=arcLabel, arcColor=arcColor,
-           cmapNode=cmapNode,
-           cmapArc=cmapArc), size)
+    BN2dot(
+      bn,
+      size=size,
+      nodeColor=nodeColor,
+      arcWidth=arcWidth,
+      arcLabel=arcLabel,
+      arcColor=arcColor,
+      cmapNode=cmapNode,
+      cmapArc=cmapArc,
+    ),
+    size,
+  )
 
 
 def getCN(cn, size=None, nodeColor=None, arcWidth=None, arcLabel=None, arcColor=None, cmapNode=None, cmapArc=None):
@@ -1036,9 +1084,18 @@ def getCN(cn, size=None, nodeColor=None, arcWidth=None, arcLabel=None, arcColor=
     cmapArc = cmapNode
 
   return getGraph(
-    CN2dot(cn, size=size, nodeColor=nodeColor, arcWidth=arcWidth, arcLabel=arcLabel, arcColor=arcColor,
-           cmapNode=cmapNode,
-           cmapArc=cmapArc), size)
+    CN2dot(
+      cn,
+      size=size,
+      nodeColor=nodeColor,
+      arcWidth=arcWidth,
+      arcLabel=arcLabel,
+      arcColor=arcColor,
+      cmapNode=cmapNode,
+      cmapArc=cmapArc,
+    ),
+    size,
+  )
 
 
 def showInference(model, **kwargs):
@@ -1079,7 +1136,7 @@ def showInference(model, **kwargs):
     the desired representation of the inference
   """
   if "size" in kwargs:
-    size = kwargs['size']
+    size = kwargs["size"]
   else:
     size = gum.config["notebook", "default_graph_inference_size"]
 
@@ -1124,7 +1181,7 @@ def getInference(model, **kwargs):
     the desired representation of the inference
   """
   if "size" in kwargs:
-    size = kwargs['size']
+    size = kwargs["size"]
   else:
     size = gum.config["notebook", "default_graph_inference_size"]
 
@@ -1157,25 +1214,23 @@ def _reprTensor(pot, digits=None, withColors=None, varnames=None, asString=False
   """
   from fractions import Fraction
 
-  r0, g0, b0 = gumcols.hex2rgb(gum.config['notebook', 'tensor_color_0'])
-  r1, g1, b1 = gumcols.hex2rgb(gum.config['notebook', 'tensor_color_1'])
+  r0, g0, b0 = gumcols.hex2rgb(gum.config["notebook", "tensor_color_0"])
+  r1, g1, b1 = gumcols.hex2rgb(gum.config["notebook", "tensor_color_1"])
 
   if digits is None:
-    digits = gum.config.asInt['notebook', 'tensor_visible_digits']
+    digits = gum.config.asInt["notebook", "tensor_visible_digits"]
 
   if withColors is None:
     withColors = gum.config.asBool["notebook", "tensor_with_colors"]
 
-  with_fraction = gum.config['notebook', 'tensor_with_fraction'] == "True"
+  with_fraction = gum.config["notebook", "tensor_with_fraction"] == "True"
   if with_fraction:
-    fraction_limit = int(gum.config['notebook', 'tensor_fraction_limit'])
-    fraction_round_error = float(
-      gum.config['notebook', 'tensor_fraction_round_error'])
-    fraction_with_latex = gum.config['notebook',
-    'tensor_fraction_with_latex'] == "True"
+    fraction_limit = int(gum.config["notebook", "tensor_fraction_limit"])
+    fraction_round_error = float(gum.config["notebook", "tensor_fraction_round_error"])
+    fraction_with_latex = gum.config["notebook", "tensor_fraction_with_latex"] == "True"
 
   def _rgb(r, g, b):
-    return '#%02x%02x%02x' % (r, g, b)
+    return "#%02x%02x%02x" % (r, g, b)
 
   def _mkCell(val):
     s = "<td style='"
@@ -1212,30 +1267,24 @@ def _reprTensor(pot, digits=None, withColors=None, varnames=None, asString=False
   html = list()
   html.append('<table style="border:1px solid black;border-collapse: collapse;">')
   if pot.empty():
-    html.append(
-      "<tr><th>&nbsp;</th></tr>"
-    )
+    html.append("<tr><th>&nbsp;</th></tr>")
     html.append("<tr>" + _mkCell(pot.get(gum.Instantiation())) + "</tr>")
   else:
     if varnames is not None and len(varnames) != pot.nbrDim():
-      raise ValueError(
-        f"varnames contains {len(varnames)} value(s) instead of the needed {pot.nbrDim()} value(s)."
-      )
+      raise ValueError(f"varnames contains {len(varnames)} value(s) instead of the needed {pot.nbrDim()} value(s).")
 
     nparents = pot.nbrDim() - 1
     var = pot.variable(0)
-    varname = var.name() if varnames == None else varnames[0]
+    varname = var.name() if varnames is None else varnames[0]
 
     # first line
     if nparents > 0:
       html.append(f"""<tr><th colspan='{nparents}'></th>
       <th colspan='{var.domainSize()}' style='border:1px solid black;color:black;background-color:#808080;'><center>{varname}</center>
-      </th></tr>"""
-                  )
+      </th></tr>""")
     else:
       html.append(f"""<tr style='border:1px solid black;color:black;background-color:#808080'>
-      <th colspan='{var.domainSize()}'><center>{varname}</center></th></tr>"""
-                  )
+      <th colspan='{var.domainSize()}'><center>{varname}</center></th></tr>""")
 
     # second line
     s = "<tr>"
@@ -1255,7 +1304,7 @@ def _reprTensor(pot, digits=None, withColors=None, varnames=None, asString=False
     for label in var.labels():
       s += f"""<th style='border:1px solid black;border-bottom-style: double;color:black;background-color:#BBBBBB'>
       <center>{label}</center></th>"""
-    s += '</tr>'
+    s += "</tr>"
 
     html.append(s)
 
@@ -1337,6 +1386,7 @@ def showPotential(pot, digits=None, withColors=None, varnames=None):
   warnings.warn("showPotential is deprecated since pyAgrum 2.0.0. Use showTensor instead", DeprecationWarning)
   showTensor(pot, digits, withColors, varnames)
 
+
 def showTensor(pot, digits=None, withColors=None, varnames=None):
   """
   show a gum.Tensor as a HTML table.
@@ -1366,6 +1416,7 @@ def showTensor(pot, digits=None, withColors=None, varnames=None):
 def getPotential(pot, digits=None, withColors=None, varnames=None):
   warnings.warn("getPotential is deprecated since pyAgrum 2.0.0. Use getTensor instead", DeprecationWarning)
   return getTensor(pot, digits, withColors, varnames)
+
 
 def getTensor(pot, digits=None, withColors=None, varnames=None):
   """
@@ -1424,31 +1475,30 @@ def getSideBySide(*args, **kwargs):
   str
     a string representing the table
   """
-  vals = {'captions', 'valign', 'ncols'}
+  vals = {"captions", "valign", "ncols"}
   if not set(kwargs.keys()).issubset(vals):
-    raise TypeError(
-      f"sideBySide() got unexpected keyword argument(s) : '{set(kwargs.keys()).difference(vals)}'")
+    raise TypeError(f"sideBySide() got unexpected keyword argument(s) : '{set(kwargs.keys()).difference(vals)}'")
 
-  if 'captions' in kwargs:
-    captions = kwargs['captions']
+  if "captions" in kwargs:
+    captions = kwargs["captions"]
   else:
     captions = None
 
-  if 'valign' in kwargs and kwargs['valign'] in ['top', 'middle', 'bottom']:
+  if "valign" in kwargs and kwargs["valign"] in ["top", "middle", "bottom"]:
     v_align = f"vertical-align:{kwargs['valign']};"
   else:
     v_align = "vertical-align:middle;"
 
   ncols = None
-  if 'ncols' in kwargs:
-    ncols = int(kwargs['ncols'])
+  if "ncols" in kwargs:
+    ncols = int(kwargs["ncols"])
     if ncols < 1:
       ncols = 1
 
   def reprHTML(s):
     if isinstance(s, str):
       return s
-    elif hasattr(s, '_repr_html_'):
+    elif hasattr(s, "_repr_html_"):
       return s._repr_html_()
     else:
       return str(s)
@@ -1458,11 +1508,11 @@ def getSideBySide(*args, **kwargs):
     s += f'<td style="border-top:hidden;border-bottom:hidden;{v_align}"><div align="center" style="{v_align}">'
     s += reprHTML(args[i])
     if captions is not None:
-      s += f'<br><small><i>{captions[i]}</i></small>'
-    s += '</div></td>'
+      s += f"<br><small><i>{captions[i]}</i></small>"
+    s += "</div></td>"
     if ncols is not None and (i + 1) % ncols == 0:
-      s += '</tr><tr>'
-  s += '</tr></table>'
+      s += "</tr><tr>"
+  s += "</tr></table>"
   return s
 
 
@@ -1503,15 +1553,11 @@ def getInferenceEngine(ie, inferenceCaption):
   t = '<div align="left"><ul>'
   if ie.nbrHardEvidence() > 0:
     t += "<li><b>hard evidence</b><br/>"
-    t += ", ".join([ie.BN().variable(n).name()
-                    for n in ie.hardEvidenceNodes()]
-                   )
+    t += ", ".join([ie.BN().variable(n).name() for n in ie.hardEvidenceNodes()])
     t += "</li>"
   if ie.nbrSoftEvidence() > 0:
     t += "<li><b>soft evidence</b><br/>"
-    t += ", ".join([ie.BN().variable(n).name()
-                    for n in ie.softEvidenceNodes()]
-                   )
+    t += ", ".join([ie.BN().variable(n).name() for n in ie.softEvidenceNodes()])
     t += "</li>"
   if ie.nbrTargets() > 0:
     t += "<li><b>target(s)</b><br/>"
@@ -1521,16 +1567,11 @@ def getInferenceEngine(ie, inferenceCaption):
       t += ", ".join([ie.BN().variable(n).name() for n in ie.targets()])
     t += "</li>"
 
-  if hasattr(ie, 'nbrJointTargets') and ie.nbrJointTargets() > 0:
+  if hasattr(ie, "nbrJointTargets") and ie.nbrJointTargets() > 0:
     t += "<li><b>Joint target(s)</b><br/>"
-    t += ", ".join(['['
-                    + (", ".join([ie.BN().variable(n).name()
-                                  for n in ns]
-                                 ))
-                    + ']' for ns in ie.jointTargets()]
-                   )
+    t += ", ".join(["[" + (", ".join([ie.BN().variable(n).name() for n in ns])) + "]" for ns in ie.jointTargets()])
     t += "</li>"
-  t += '</ul></div>'
+  t += "</ul></div>"
   return getSideBySide(getBN(ie.BN()), t, captions=[inferenceCaption, "Evidence and targets"])
 
 
@@ -1552,23 +1593,21 @@ def getJT(jt, size=None):
 
   """
   if gum.config.asBool["notebook", "junctiontree_with_names"]:
+
     def cliqlabels(c):
-      labels = ",".join(
-        sorted([model.variable(n).name() for n in jt.clique(c)])
-      )
+      labels = ",".join(sorted([model.variable(n).name() for n in jt.clique(c)]))
       return f"({c}):{labels}"
 
     def cliqnames(c):
       return "-".join(sorted([model.variable(n).name() for n in jt.clique(c)]))
 
     def seplabels(c1, c2):
-      return ",".join(
-        sorted([model.variable(n).name() for n in jt.separator(c1, c2)])
-      )
+      return ",".join(sorted([model.variable(n).name() for n in jt.separator(c1, c2)]))
 
     def sepnames(c1, c2):
-      return cliqnames(c1) + '+' + cliqnames(c2)
+      return cliqnames(c1) + "+" + cliqnames(c2)
   else:
+
     def cliqlabels(c):
       ids = ",".join([str(n) for n in sorted(jt.clique(c))])
       return f"({c}):{ids}"
@@ -1577,52 +1616,43 @@ def getJT(jt, size=None):
       return "-".join([str(n) for n in sorted(jt.clique(c))])
 
     def seplabels(c1, c2):
-      return ",".join(
-        [str(n) for n in sorted(jt.separator(c1, c2))]
-      )
+      return ",".join([str(n) for n in sorted(jt.separator(c1, c2))])
 
     def sepnames(c1, c2):
-      return cliqnames(c1) + '^' + cliqnames(c2)
+      return cliqnames(c1) + "^" + cliqnames(c2)
 
   model = jt._engine._model
-  name = model.propertyWithDefault(
-    "name", str(type(model)).split(".")[-1][:-2]
-  )
-  graph = dot.Dot(graph_type='graph', graph_name=name, bgcolor="transparent")
+  name = model.propertyWithDefault("name", str(type(model)).split(".")[-1][:-2])
+  graph = dot.Dot(graph_type="graph", graph_name=name, bgcolor="transparent")
   for c in jt.nodes():
-    graph.add_node(dot.Node('"' + cliqnames(c) + '"',
-                            label='"' + cliqlabels(c) + '"',
-                            style="filled",
-                            fillcolor=gum.config["notebook",
-                            "junctiontree_clique_bgcolor"],
-                            fontcolor=gum.config["notebook",
-                            "junctiontree_clique_fgcolor"],
-                            fontsize=gum.config["notebook",
-                            "junctiontree_clique_fontsize"]
-                            )
-                   )
+    graph.add_node(
+      dot.Node(
+        '"' + cliqnames(c) + '"',
+        label='"' + cliqlabels(c) + '"',
+        style="filled",
+        fillcolor=gum.config["notebook", "junctiontree_clique_bgcolor"],
+        fontcolor=gum.config["notebook", "junctiontree_clique_fgcolor"],
+        fontsize=gum.config["notebook", "junctiontree_clique_fontsize"],
+      )
+    )
   for c1, c2 in jt.edges():
-    graph.add_node(dot.Node('"' + sepnames(c1, c2) + '"',
-                            label='"' + seplabels(c1, c2) + '"',
-                            style="filled",
-                            shape="box", width="0", height="0", margin="0.02",
-                            fillcolor=gum.config["notebook",
-                            "junctiontree_separator_bgcolor"],
-                            fontcolor=gum.config["notebook",
-                            "junctiontree_separator_fgcolor"],
-                            fontsize=gum.config["notebook",
-                            "junctiontree_separator_fontsize"]
-                            )
-                   )
+    graph.add_node(
+      dot.Node(
+        '"' + sepnames(c1, c2) + '"',
+        label='"' + seplabels(c1, c2) + '"',
+        style="filled",
+        shape="box",
+        width="0",
+        height="0",
+        margin="0.02",
+        fillcolor=gum.config["notebook", "junctiontree_separator_bgcolor"],
+        fontcolor=gum.config["notebook", "junctiontree_separator_fgcolor"],
+        fontsize=gum.config["notebook", "junctiontree_separator_fontsize"],
+      )
+    )
   for c1, c2 in jt.edges():
-    graph.add_edge(dot.Edge('"' + cliqnames(c1) +
-                            '"', '"' + sepnames(c1, c2) + '"'
-                            )
-                   )
-    graph.add_edge(dot.Edge('"' + sepnames(c1, c2) +
-                            '"', '"' + cliqnames(c2) + '"'
-                            )
-                   )
+    graph.add_edge(dot.Edge('"' + cliqnames(c1) + '"', '"' + sepnames(c1, c2) + '"'))
+    graph.add_edge(dot.Edge('"' + sepnames(c1, c2) + '"', '"' + cliqnames(c2) + '"'))
 
   graph.set_size(gum.config["notebook", "junctiontree_graph_size"])
 
@@ -1646,6 +1676,7 @@ def getCliqueGraph(cg, size=None):
     return getDot(getJT(cg), size)
   else:
     return getDot(cg.toDot())
+
 
 def show(model, **kwargs):
   """
@@ -1694,6 +1725,7 @@ def show(model, **kwargs):
       "Argument model should be a PGM (BayesNet, MarkovRandomField, Influence Diagram or Tensor or ..."
     )
 
+
 def inspectBN(bn):
   """
   inspect a BN (graph and CPTs) in a notebook (using flow)
@@ -1701,28 +1733,34 @@ def inspectBN(bn):
   ----------
   bn
   """
-  flow.row(bn,*[bn.cpt(c) for c in sorted(bn.names())])
+  flow.row(bn, *[bn.cpt(c) for c in sorted(bn.names())])
 
 
 def _update_config_notebooks():
   # hook to control some parameters for notebook when config changes
-  mpl.rcParams['figure.facecolor'] = gum.config["notebook", "figure_facecolor"]
+  mpl.rcParams["figure.facecolor"] = gum.config["notebook", "figure_facecolor"]
   set_matplotlib_formats(gum.config["notebook", "graph_format"])
 
 
 # check if an instance of ipython exists
 try:
   get_ipython
-except NameError as e:
+except NameError:
   import warnings
 
   warnings.warn("""
   ** pyagrum.lib.notebook has to be imported from an IPython's instance (mainly notebook).
-  """
-                )
+  """)
 else:
-  def map(self, scaleClique: float = None, scaleSep: float = None, lenEdge: float = None, colorClique: str = None,
-          colorSep: str = None) -> dot.Dot:
+
+  def map(
+    self,
+    scaleClique: float = None,
+    scaleSep: float = None,
+    lenEdge: float = None,
+    colorClique: str = None,
+    colorSep: str = None,
+  ) -> dot.Dot:
     """
     show the map of the junction tree.
 
@@ -1740,8 +1778,7 @@ else:
       color for the separator nodes
     """
     if scaleClique is None:
-      scaleClique = float(
-        gum.config["notebook", "junctiontree_map_cliquescale"])
+      scaleClique = float(gum.config["notebook", "junctiontree_map_cliquescale"])
     if scaleSep is None:
       scaleSep = float(gum.config["notebook", "junctiontree_map_sepscale"])
     if lenEdge is None:
@@ -1751,7 +1788,6 @@ else:
     if colorSep is None:
       colorSep = gum.config["notebook", "junctiontree_separator_bgcolor"]
     return _from_dotstring(self.__map_str__(scaleClique, scaleSep, lenEdge, colorClique, colorSep))
-
 
   setattr(gum.CliqueGraph, "map", map)
 
@@ -1769,9 +1805,7 @@ else:
   gum.CliqueGraph._repr_html_ = lambda self: getCliqueGraph(self)
 
   gum.Tensor._repr_html_ = lambda self: getTensor(self)
-  gum.LazyPropagation._repr_html_ = lambda self: getInferenceEngine(
-    self, "Lazy Propagation on this BN"
-  )
+  gum.LazyPropagation._repr_html_ = lambda self: getInferenceEngine(self, "Lazy Propagation on this BN")
 
   gum.UndiGraph._repr_html_ = lambda self: getDot(self.toDot())
   gum.DiGraph._repr_html_ = lambda self: getDot(self.toDot())

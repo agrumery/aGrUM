@@ -35,77 +35,65 @@
 ############################################################################
 
 from typing import Any
-
 from ._utils import MisspecifiedLearnerError
 
-found_sklearn = True
-found_xgboost = True
+def learnerFromString(learner_string: str) -> Any:
+  """
+  Retrieve a scikit-learn learner based on a string specification.
 
-try:
-    import sklearn.linear_model
-    import sklearn.tree
-    import sklearn.ensemble
-    import sklearn.svm
-    import sklearn.neighbors
-except ImportError as sklearn_import_error:
-    found_sklearn = False
+  Parameters
+  ----------
+  learner_string: str
+      The string specifying a supported scikit-learn model.
 
-try:
-    import xgboost
-except ImportError as xgboost_import_error:
-    found_xgboost = False
-
-def learnerFromString(learner_string: Any) -> Any:
-    """
-    Retrieve a scikit-learn learner based on a string specification.
-
-    Parameters
-    ----------
-    learner_string: str
-        The string specifying a supported scikit-learn model.
-
-    Returns
-    -------
-    sklearn.base.BaseEstimator
-        An instance of a scikit-learn estimator corresponding to the
-        specified string. This object will be used as the learner.
-    """
-
-    try:
-        match learner_string:
-            case "LinearRegression":
-                return sklearn.linear_model.LinearRegression()
-            case "LogisticRegression":
-                return sklearn.linear_model.LogisticRegression()
-            case "Ridge":
-                return sklearn.linear_model.Ridge()
-            case "Lasso":
-                return sklearn.linear_model.Lasso()
-            case "PoissonRegressor":
-                return sklearn.linear_model.PoissonRegressor()
-            case "HuberRegressor":
-                return sklearn.linear_model.HuberRegressor()
-            case "DecisionTreeRegressor":
-                return sklearn.tree.DecisionTreeRegressor()
-            case "RandomForestRegressor":
-                return sklearn.ensemble.RandomForestRegressor()
-            case "GradientBoostingRegressor":
-                return sklearn.ensemble.GradientBoostingRegressor()
-            case "AdaBoostRegressor":
-                return sklearn.ensemble.AdaBoostRegressor()
-            case "SVR":
-                return sklearn.svm.SVR()
-            case "KNeighborsRegressor":
-                return sklearn.neighbors.KNeighborsRegressor()
-            case "XGBRegressor":
-                return xgboost.XGBRegressor()
-            case "XGBClassifier":
-                return xgboost.XGBClassifier()
-            case _:
-                raise MisspecifiedLearnerError(learner_string)
-
-    except NameError as error:
-        if error.name == "sklearn" and not found_sklearn:
-            raise sklearn_import_error
-        if error.name == "xgboost" and not found_xgboost:
-            raise xgboost_import_error
+  Returns
+  -------
+  sklearn.base.BaseEstimator
+      An instance of a scikit-learn estimator corresponding to the
+      specified string. This object will be used as the learner.
+  """
+  match learner_string:
+    case "LinearRegression":
+      import sklearn.linear_model
+      return sklearn.linear_model.LinearRegression()
+    case "LogisticRegression":
+      import sklearn.linear_model
+      return sklearn.linear_model.LogisticRegression()
+    case "Ridge":
+      import sklearn.linear_model
+      return sklearn.linear_model.Ridge()
+    case "Lasso":
+      import sklearn.linear_model
+      return sklearn.linear_model.Lasso()
+    case "PoissonRegressor":
+      import sklearn.linear_model
+      return sklearn.linear_model.PoissonRegressor()
+    case "HuberRegressor":
+      import sklearn.linear_model
+      return sklearn.linear_model.HuberRegressor()
+    case "DecisionTreeRegressor":
+      import sklearn.linear_model
+      return sklearn.tree.DecisionTreeRegressor()
+    case "RandomForestRegressor":
+      import sklearn.ensemble
+      return sklearn.ensemble.RandomForestRegressor()
+    case "GradientBoostingRegressor":
+      import sklearn.ensemble
+      return sklearn.ensemble.GradientBoostingRegressor()
+    case "AdaBoostRegressor":
+      import sklearn.ensemble
+      return sklearn.ensemble.AdaBoostRegressor()
+    case "SVR":
+      import sklearn.svm
+      return sklearn.svm.SVR()
+    case "KNeighborsRegressor":
+      import sklearn.neighbors
+      return sklearn.neighbors.KNeighborsRegressor()
+    case "XGBRegressor":
+      import xgboost
+      return xgboost.XGBRegressor()
+    case "XGBClassifier":
+      import xgboost
+      return xgboost.XGBClassifier()
+    case _:
+      raise MisspecifiedLearnerError(learner_string)

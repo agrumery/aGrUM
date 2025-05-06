@@ -6,6 +6,9 @@ PyAgrum supports several formats for saving and loading graphical models, but no
 Supported Formats
 -----------------
 
+.. warning::
+   Only **Pickle** and **BIFXML** formats guarantee complete preservation of all graphical model features
+   Other formats may lose some of this information during serialization.
 
 .. _bifxml-format:
 
@@ -55,15 +58,6 @@ The following formats are supported but may not preserve all model features:
 
 - **Net** (`.net`): Standard format for Bayesian networks but may lose some metadata
 - **DSL** (`.dsl`): GeNIe format with some limitations
-- **UAI** (`.uai`): Format for Bayesian networks and Markov networks with limitations
-- **BIF** (`.bif`): Format for Bayesian networks and Markov networks with limitations
-- etc. (see gum.availableBNExts() for a complete list).
-.. warning::
-   Only **Pickle** and **BIFXML** formats guarantee complete preservation of all graphical model features, including:
-   
-   - All node attributes and metadata
-   - Complex probability distributions
-   - Learning parameters
-   - All types of graphical models (BNs, MNs, IDs, etc.)
-   
-   Other formats may lose some of this information during serialization.
+- **UAI** (`.uai`): Very Simple Format for Bayesian networks and Markov networks with limitations
+- **BIF** (`.bif`): Format for Bayesian networks with limitations
+- etc. (see :function:`pyagrm.availableBNExts()` for a complete list).

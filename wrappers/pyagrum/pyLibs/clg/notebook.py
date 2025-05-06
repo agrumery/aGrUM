@@ -95,7 +95,7 @@ def CLG2dot(clg, *, size=None, nodeColor=None, arcWidth=None, arcColor=None, cma
     minarcs = min(arcWidth.values())
     maxarcs = max(arcWidth.values())
 
-  dotobj = dot.Dot(graph_type='digraph', bgcolor="transparent")
+  dotobj = dot.Dot(graph_type="digraph", bgcolor="transparent")
 
   for n in clg.names():
     if nodeColor is None or n not in nodeColor:
@@ -106,13 +106,15 @@ def CLG2dot(clg, *, size=None, nodeColor=None, arcWidth=None, arcColor=None, cma
       bgcol = gumcols.proba2bgcolor(nodeColor[n], cmapNode)
       fgcol = gumcols.proba2fgcolor(nodeColor[n], cmapNode)
       res = f" : {nodeColor[n] if showMsg is None else showMsg[n]:2.5f}"
-    node = dot.Node('"' + n + '"', style="filled",
-                    fillcolor=bgcol,
-                    fontcolor=fgcol,
-                    tooltip=f'"({clg.idFromName(n)}) {n}{res}"',
-                    label=f"{{{n}|{{&mu;={clg.variable(n).mu():.3f}|&sigma;={clg.variable(n).sigma():.3f}}}}}",
-                    shape="Mrecord"
-                    )
+    node = dot.Node(
+      '"' + n + '"',
+      style="filled",
+      fillcolor=bgcol,
+      fontcolor=fgcol,
+      tooltip=f'"({clg.idFromName(n)}) {n}{res}"',
+      label=f"{{{n}|{{&mu;={clg.variable(n).mu():.3f}|&sigma;={clg.variable(n).sigma():.3f}}}}}",
+      shape="Mrecord",
+    )
     dotobj.add_node(node)
 
   for a in clg.arcs():
@@ -146,11 +148,15 @@ def CLG2dot(clg, *, size=None, nodeColor=None, arcWidth=None, arcColor=None, cma
       else:
         lb = ""
 
-    edge = dot.Edge('"' + clg.variable(a[0]).name() + '"', '"' + clg.variable(a[1]).name() + '"',
-                    label=lb, fontsize="15",
-                    penwidth=pw, color=col,
-                    tooltip=f"{a} : {av}"
-                    )
+    edge = dot.Edge(
+      '"' + clg.variable(a[0]).name() + '"',
+      '"' + clg.variable(a[1]).name() + '"',
+      label=lb,
+      fontsize="15",
+      penwidth=pw,
+      color=col,
+      tooltip=f"{a} : {av}",
+    )
     dotobj.add_edge(edge)
 
   if size is None:
@@ -163,8 +169,9 @@ def CLG2dot(clg, *, size=None, nodeColor=None, arcWidth=None, arcColor=None, cma
   return dotobj
 
 
-def CLGInference2dot(clg, *, evs=None, size=None, nodeColor=None, arcWidth=None, arcColor=None, cmapNode=None,
-                     cmapArc=None, showMsg=None):
+def CLGInference2dot(
+  clg, *, evs=None, size=None, nodeColor=None, arcWidth=None, arcColor=None, cmapNode=None, cmapArc=None, showMsg=None
+):
   """
   create a pydot representation of the CLG
 
@@ -211,7 +218,7 @@ def CLGInference2dot(clg, *, evs=None, size=None, nodeColor=None, arcWidth=None,
     minarcs = min(arcWidth.values())
     maxarcs = max(arcWidth.values())
 
-  dotobj = dot.Dot(graph_type='digraph', bgcolor="transparent")
+  dotobj = dot.Dot(graph_type="digraph", bgcolor="transparent")
 
   for n in clg.names():
     if n in evs:
@@ -228,13 +235,15 @@ def CLGInference2dot(clg, *, evs=None, size=None, nodeColor=None, arcWidth=None,
         fgcol = gumcols.proba2fgcolor(nodeColor[n], cmapNode)
         res = f" : {nodeColor[n] if showMsg is None else showMsg[n]:2.5f}"
     v = ie.posterior(n)
-    node = dot.Node('"' + n + '"', style="filled",
-                    fillcolor=bgcol,
-                    fontcolor=fgcol,
-                    tooltip=f'"({clg.idFromName(n)}) {n}{res}"',
-                    label=f"{{{n}|{{&mu;={v.mu():.3f}|&sigma;={v.sigma():.3f}}}}}",
-                    shape="Mrecord"
-                    )
+    node = dot.Node(
+      '"' + n + '"',
+      style="filled",
+      fillcolor=bgcol,
+      fontcolor=fgcol,
+      tooltip=f'"({clg.idFromName(n)}) {n}{res}"',
+      label=f"{{{n}|{{&mu;={v.mu():.3f}|&sigma;={v.sigma():.3f}}}}}",
+      shape="Mrecord",
+    )
     dotobj.add_node(node)
 
   for a in clg.arcs():
@@ -259,10 +268,13 @@ def CLGInference2dot(clg, *, evs=None, size=None, nodeColor=None, arcWidth=None,
       else:
         col = gumcols.getBlackInTheme()
 
-    edge = dot.Edge('"' + clg.variable(a[0]).name() + '"', '"' + clg.variable(a[1]).name() + '"',
-                    penwidth=pw, color=col,
-                    tooltip=f"{a} : {av}"
-                    )
+    edge = dot.Edge(
+      '"' + clg.variable(a[0]).name() + '"',
+      '"' + clg.variable(a[1]).name() + '"',
+      penwidth=pw,
+      color=col,
+      tooltip=f"{a} : {av}",
+    )
     dotobj.add_edge(edge)
 
   if size is None:
@@ -275,8 +287,9 @@ def CLGInference2dot(clg, *, evs=None, size=None, nodeColor=None, arcWidth=None,
   return dotobj
 
 
-def getInference(clg, *, evs=None, size=None, nodeColor=None, arcWidth=None, arcColor=None, cmapNode=None, cmapArc=None,
-                 showMsg=None):
+def getInference(
+  clg, *, evs=None, size=None, nodeColor=None, arcWidth=None, arcColor=None, cmapNode=None, cmapArc=None, showMsg=None
+):
   """
   return a pydot representation of the CLG
 
@@ -306,12 +319,22 @@ def getInference(clg, *, evs=None, size=None, nodeColor=None, arcWidth=None, arc
   pydot.Dot
     The desired representation of the Conditional Linear Gaussian.
   """
-  return CLGInference2dot(clg, evs=evs, size=size, nodeColor=nodeColor, arcWidth=arcWidth, arcColor=arcColor,
-                          cmapNode=cmapNode, cmapArc=cmapArc, showMsg=showMsg)
+  return CLGInference2dot(
+    clg,
+    evs=evs,
+    size=size,
+    nodeColor=nodeColor,
+    arcWidth=arcWidth,
+    arcColor=arcColor,
+    cmapNode=cmapNode,
+    cmapArc=cmapArc,
+    showMsg=showMsg,
+  )
 
 
-def showInference(clg, *, evs=None, size=None, nodeColor=None, arcWidth=None, arcColor=None, cmapNode=None,
-                  cmapArc=None, showMsg=None):
+def showInference(
+  clg, *, evs=None, size=None, nodeColor=None, arcWidth=None, arcColor=None, cmapNode=None, cmapArc=None, showMsg=None
+):
   """
   display a pydot representation of the CLG
 
@@ -336,12 +359,24 @@ def showInference(clg, *, evs=None, size=None, nodeColor=None, arcWidth=None, ar
   showMsg: dict
     A nodeMap of values to be shown as tooltip.
   """
-  gnb.showDot(CLGInference2dot(clg, evs=evs, size=size, nodeColor=nodeColor, arcWidth=arcWidth, arcColor=arcColor,
-                               cmapNode=cmapNode, cmapArc=cmapArc, showMsg=showMsg))
+  gnb.showDot(
+    CLGInference2dot(
+      clg,
+      evs=evs,
+      size=size,
+      nodeColor=nodeColor,
+      arcWidth=arcWidth,
+      arcColor=arcColor,
+      cmapNode=cmapNode,
+      cmapArc=cmapArc,
+      showMsg=showMsg,
+    )
+  )
 
 
-def exportCLG(clg, filename, *, size=None, nodeColor=None, arcWidth=None, arcColor=None, cmapNode=None, cmapArc=None,
-              showMsg=None):
+def exportCLG(
+  clg, filename, *, size=None, nodeColor=None, arcWidth=None, arcColor=None, cmapNode=None, cmapArc=None, showMsg=None
+):
   """
   Export the clg as a picture.
 
@@ -366,14 +401,32 @@ def exportCLG(clg, filename, *, size=None, nodeColor=None, arcWidth=None, arcCol
   showMsg: dict
     A nodeMap of values to be shown as tooltip.
   """
-  clgdot = CLG2dot(clg, size=size, nodeColor=nodeColor, arcWidth=arcWidth, arcColor=arcColor, cmapNode=cmapNode,
-                   cmapArc=cmapArc, showMsg=showMsg)
+  clgdot = CLG2dot(
+    clg,
+    size=size,
+    nodeColor=nodeColor,
+    arcWidth=arcWidth,
+    arcColor=arcColor,
+    cmapNode=cmapNode,
+    cmapArc=cmapArc,
+    showMsg=showMsg,
+  )
   gimg.export(clgdot, filename)
 
 
-def exportInference(clg, filename: str, *, evs=None, size=None, nodeColor=None, arcWidth=None, arcColor=None,
-                    cmapNode=None, cmapArc=None,
-                    showMsg=None):
+def exportInference(
+  clg,
+  filename: str,
+  *,
+  evs=None,
+  size=None,
+  nodeColor=None,
+  arcWidth=None,
+  arcColor=None,
+  cmapNode=None,
+  cmapArc=None,
+  showMsg=None,
+):
   """
   export a representation of a CLG inference as a picture
 
@@ -405,8 +458,17 @@ def exportInference(clg, filename: str, *, evs=None, size=None, nodeColor=None, 
   pydot.Dot
     The desired representation of the Conditional Linear Gaussian.
   """
-  clgdot = CLGInference2dot(clg, evs=evs, size=size, nodeColor=nodeColor, arcWidth=arcWidth, arcColor=arcColor,
-                            cmapNode=cmapNode, cmapArc=cmapArc, showMsg=showMsg)
+  clgdot = CLGInference2dot(
+    clg,
+    evs=evs,
+    size=size,
+    nodeColor=nodeColor,
+    arcWidth=arcWidth,
+    arcColor=arcColor,
+    cmapNode=cmapNode,
+    cmapArc=cmapArc,
+    showMsg=showMsg,
+  )
   gimg.export(clgdot, filename)
 
 

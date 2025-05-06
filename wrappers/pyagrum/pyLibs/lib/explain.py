@@ -38,8 +38,6 @@
 tools for BN qualitative analysis and explainability
 """
 
-import math
-from typing import Dict
 import itertools
 import warnings
 from typing import Union
@@ -55,36 +53,34 @@ from pyagrum.lib.bn2graph import BN2dot
 import pyagrum.lib._colors as gumcols
 
 # importing ShapValues in the name space of explain
+# ruff: noqa: F401
 from pyagrum.lib.shapley import ShapValues
 
 _cdict = {
-  'red': ((0.0, 0.1, 0.3),
-          (1.0, 0.6, 1.0)),
-  'green': ((0.0, 0.0, 0.0),
-            (1.0, 0.6, 0.8)),
-  'blue': ((0.0, 0.0, 0.0),
-           (1.0, 1, 0.8))
+  "red": ((0.0, 0.1, 0.3), (1.0, 0.6, 1.0)),
+  "green": ((0.0, 0.0, 0.0), (1.0, 0.6, 0.8)),
+  "blue": ((0.0, 0.0, 0.0), (1.0, 1, 0.8)),
 }
-_INFOcmap = mpl.colors.LinearSegmentedColormap('my_colormap', _cdict, 256)
+_INFOcmap = mpl.colors.LinearSegmentedColormap("my_colormap", _cdict, 256)
 
 
 def _independenceListForPairs(bn, target=None):
   """
-    returns a list of triples `(i,j,k)` for each non arc `(i,j)` such that `i` is independent of `j` given `k`.
+  returns a list of triples `(i,j,k)` for each non arc `(i,j)` such that `i` is independent of `j` given `k`.
 
-    Parameters
-    ----------
-    bn: gum.BayesNet
-      the Bayesian Network
+  Parameters
+  ----------
+  bn: gum.BayesNet
+    the Bayesian Network
 
-    target: (optional) str or int
-      the name or id of the target variable. If a target is given, only the independence given a subset of the markov blanket of the target are tested.
+  target: (optional) str or int
+    the name or id of the target variable. If a target is given, only the independence given a subset of the markov blanket of the target are tested.
 
-    Returns
-    -------
-    List[(str,str,List[str])]
-      A list of independence found in the structure of BN.
-    """
+  Returns
+  -------
+  List[(str,str,List[str])]
+    A list of independence found in the structure of BN.
+  """
 
   def powerset(iterable):
     xs = list(iterable)
@@ -117,29 +113,29 @@ def _independenceListForPairs(bn, target=None):
 
 def independenceListForPairs(bn, filename, target=None, plot=True, alphabetic=False):
   """
-    get the p-values of the chi2 test of a (as simple as possible) independence proposition for every non arc.
+  get the p-values of the chi2 test of a (as simple as possible) independence proposition for every non arc.
 
-    Parameters
-    ----------
-    bn : gum.BayesNet
-      the Bayesian network
+  Parameters
+  ----------
+  bn : gum.BayesNet
+    the Bayesian network
 
-    filename : str
-      the name of the csv database
+  filename : str
+    the name of the csv database
 
-    alphabetic : bool
-      if True, the list is alphabetically sorted else it is sorted by the p-value
+  alphabetic : bool
+    if True, the list is alphabetically sorted else it is sorted by the p-value
 
-    target: (optional) str or int
-      the name or id of the target variable
+  target: (optional) str or int
+    the name or id of the target variable
 
-    plot : bool
-      if True, plot the result
+  plot : bool
+    if True, plot the result
 
-    Returns
-    -------
-      the list
-    """
+  Returns
+  -------
+    the list
+  """
 
   learner = gum.BNLearner(filename, bn)
   vals = {}
@@ -164,7 +160,7 @@ def independenceListForPairs(bn, filename, target=None, plot=True, alphabetic=Fa
     ax = fig.add_subplot(1, 1, 1)
     ax.plot([plotvals[k] for k in sortedkeys], sortedkeys, "o")
     ax.grid(True)
-    ax.vlines(x=0.05, ymin=-0.5, ymax=len(vals) - 0.5, colors='purple')
+    ax.vlines(x=0.05, ymin=-0.5, ymax=len(vals) - 0.5, colors="purple")
     ax.add_patch(mpl.patches.Rectangle((0, -0.5), 0.05, len(vals), color="yellow"))
 
   return vals
@@ -172,8 +168,8 @@ def independenceListForPairs(bn, filename, target=None, plot=True, alphabetic=Fa
 
 def _normalizeVals(vals, hilightExtrema=False):
   """
-    normalisation if vals is not a proba (max>1)
-    """
+  normalisation if vals is not a proba (max>1)
+  """
   ma = float(max(vals.values()))
   mi = float(min(vals.values()))
   if ma == mi:
@@ -241,8 +237,15 @@ def getInformationGraph(bn, evs=None, size=None, cmap=_INFOcmap, withMinMax=Fals
       v = 0
     arcvals[(x, y)] = v
 
-  gr = BN2dot(bn, size, nodeColor=_normalizeVals(nodevals, hilightExtrema=False), arcWidth=arcvals, cmapNode=cmap,
-              cmapArc=cmap, showMsg=nodevals)
+  gr = BN2dot(
+    bn,
+    size,
+    nodeColor=_normalizeVals(nodevals, hilightExtrema=False),
+    arcWidth=arcvals,
+    cmapNode=cmap,
+    cmapArc=cmap,
+    showMsg=nodevals,
+  )
 
   if withMinMax:
     mi_node = min(nodevals.values())
@@ -293,8 +296,9 @@ def _reprInformation(bn, evs=None, size=None, cmap=_INFOcmap, asString=False):
   # dynamic member makes pylink unhappy
   # pylint: disable=no-member
   gsvg = IPython.display.SVG(gr.create_svg(encoding="utf-8"))
-  width = int(gsvg.data.split("width=")[1].split('"')[1].split("pt")[0]) / mpl.pyplot.rcParams[
-    'figure.dpi']  # pixel in inches
+  width = (
+    int(gsvg.data.split("width=")[1].split('"')[1].split("pt")[0]) / mpl.pyplot.rcParams["figure.dpi"]
+  )  # pixel in inches
   if width < 5:
     width = 5
 
@@ -303,13 +307,10 @@ def _reprInformation(bn, evs=None, size=None, cmap=_INFOcmap, asString=False):
   canvas = fc(fig)
   ax1 = fig.add_axes([0.05, 0.80, 0.9, 0.15])
   norm = mpl.colors.Normalize(vmin=mi, vmax=ma)
-  cb1 = mpl.colorbar.ColorbarBase(ax1, cmap=cmap,
-                                  norm=norm,
-                                  orientation='horizontal'
-                                  )
-  cb1.set_label('Entropy')
-  cb1.ax.text(mi, -2, f"{mi:.4f}", ha='left', va='top', color=gumcols.proba2bgcolor(0.01, cmap))
-  cb1.ax.text(ma, -2, f"{ma:.4f}", ha='right', va='top', color=gumcols.proba2bgcolor(0.99, cmap))
+  cb1 = mpl.colorbar.ColorbarBase(ax1, cmap=cmap, norm=norm, orientation="horizontal")
+  cb1.set_label("Entropy")
+  cb1.ax.text(mi, -2, f"{mi:.4f}", ha="left", va="top", color=gumcols.proba2bgcolor(0.01, cmap))
+  cb1.ax.text(ma, -2, f"{ma:.4f}", ha="right", va="top", color=gumcols.proba2bgcolor(0.99, cmap))
   png = IPython.core.pylabtools.print_figure(canvas.figure, "png")  # from IPython.core.pylabtools
   png_legend = f"<img style='vertical-align:middle' src='data:image/png;base64,{encodebytes(png).decode('ascii')}'>"
 
@@ -374,6 +375,7 @@ def showInformation(bn, evs=None, size=None, cmap=_INFOcmap):
 
 
 ########################## MB(k) #####################################
+
 
 def _buildMB(model, x: int, k: int = 1):
   """
@@ -446,10 +448,11 @@ def generalizedMarkovBlanket(bn, var: Union[int, str], k: int = 1, cmapNode=None
   if cmapNode is None:
     cmapNode = plt.get_cmap("inferno")  # gum.config["notebook", "default_arc_cmap"])
 
-  maxcols = max(8,
-                k)  # It is assumed that k<=8. If not, every thing is fine except that the colorscale will change in order to accept more colors.
+  maxcols = max(
+    8, k
+  )  # It is assumed that k<=8. If not, every thing is fine except that the colorscale will change in order to accept more colors.
 
-  mb = dot.Dot(f'MB({var},{k}', graph_type='digraph', bgcolor='transparent')
+  mb = dot.Dot(f"MB({var},{k}", graph_type="digraph", bgcolor="transparent")
 
   if isinstance(var, str):
     nx = bn.idFromName(var)
@@ -459,7 +462,7 @@ def generalizedMarkovBlanket(bn, var: Union[int, str], k: int = 1, cmapNode=None
   names = dict()
 
   for n in nodes:
-    protected_name = f"\"{bn.variable(n).name()}\""
+    protected_name = f'"{bn.variable(n).name()}"'
     pnode = dot.Node(protected_name, style="filled")
     if n == var:
       bgcol = "#99FF99"
@@ -475,12 +478,13 @@ def generalizedMarkovBlanket(bn, var: Union[int, str], k: int = 1, cmapNode=None
     for u in bn.parents(n).intersection(nodes):
       edge = dot.Edge(names[u], names[n])
       if (u, n) in arcs:
-        edge.set_color('black')
+        edge.set_color("black")
       else:
-        edge.set_color('#DDDDDD')
+        edge.set_color("#DDDDDD")
       mb.add_edge(edge)
 
   return mb
+
 
 def generalizedMarkovBlanketNames(bn, var: Union[int, str], depth: int = 1):
   """
@@ -508,7 +512,7 @@ def generalizedMarkovBlanketNames(bn, var: Union[int, str], depth: int = 1):
   return {bn.variable(node).name(): depth - visited[node] for node in nodes}
 
 
-def showShapValues(bn,shaps,cmap='plasma')->None:
+def showShapValues(bn, shaps, cmap="plasma") -> None:
   """
   Show the Shap values in the DAG of the BN
 
@@ -517,12 +521,12 @@ def showShapValues(bn,shaps,cmap='plasma')->None:
   bn : pyagrum.BayesNet
     The Bayesian network
   shaps: dict[str,float]
-    The (Shap) values associates to each variable
+    The (Shap) values to each variable
   cmap: Matplotlib.ColorMap
-    The colormap used for colouring the nodes
+    The colormap used for coloring the nodes
   """
   import pyagrum.lib.shapley as shapley
   import pyagrum.lib.notebook as gnb
 
-  g = shapley.getShapValues(bn,shaps,cmap)
+  g = shapley.getShapValues(bn, shaps, cmap)
   gnb.showGraph(g)

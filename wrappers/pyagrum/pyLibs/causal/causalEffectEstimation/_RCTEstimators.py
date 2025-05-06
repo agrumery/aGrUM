@@ -37,97 +37,92 @@
 import pandas as pd
 import numpy as np
 
-from typing import Any
-
-from sklearn.base import clone
-
-from ._learners import learnerFromString
 
 class DM:
+  """
+  A simple Differnce in Means (DM) estimator which computes the
+  Average Causal Effect (ACE) under the ignorability assumption,
+  in Randomized Controlled Trials (RCT).
+  """
+
+  def __init__(self) -> None:
     """
-    A simple Differnce in Means (DM) estimator which computes the
-    Average Causal Effect (ACE) under the ignorability assumption,
-    in Randomized Controlled Trials (RCT).
+    Initialize an DM estimator.
     """
 
-    def __init__(self) -> None:
-        """
-        Initialize an DM estimator.
-        """
+  def fit(
+    self,
+    X: np.matrix | np.ndarray | pd.DataFrame,
+    treatment: np.ndarray | pd.Series,
+    y: np.ndarray | pd.Series,
+  ) -> None:
+    """
+    Fit the inference model.
 
-    def fit(
-            self,
-            X: np.matrix | np.ndarray | pd.DataFrame,
-            treatment: np.ndarray | pd.Series,
-            y: np.ndarray | pd.Series,
-        ) -> None:
-        """
-        Fit the inference model.
+    Parameters
+    ----------
+    X: np.matrix or np.ndarray or pd.DataFrame
+        The covariate matrix.
+    treatment: np.ndarray or pd.Series
+        The treatment assignment vector.
+    y: np.ndarray or pd.Series,
+        The outcome vector.
+    """
 
-        Parameters
-        ----------
-        X: np.matrix or np.ndarray or pd.DataFrame
-            The covariate matrix.
-        treatment: np.ndarray or pd.Series
-            The treatment assignment vector.
-        y: np.ndarray or pd.Series,
-            The outcome vector.
-        """
+  def predict(
+    self,
+    X: np.matrix | np.ndarray | pd.DataFrame,
+    treatment: np.ndarray | pd.Series = None,
+    y: np.ndarray | pd.Series = None,
+  ) -> np.ndarray:
+    """
+    Predict the Average Causal Effect (ACE).
 
-    def predict(
-            self,
-            X: np.matrix | np.ndarray | pd.DataFrame,
-            treatment: np.ndarray | pd.Series = None,
-            y: np.ndarray | pd.Series = None,
-        )-> np.ndarray:
-        """
-        Predict the Average Causal Effect (ACE).
+    Note: This is a placeholder function for the API.
 
-        Note: This is a placeholder function for the API.
+    Parameters
+    ----------
+    X: np.matrix or np.ndarray or pd.DataFrame
+        The covariate matrix.
+    treatment: np.ndarray or pd.Series, optional
+        The vector of treatment assignments.
+    y: np.ndarray or pd.Series, optional
+        The vector of outcomes.
 
-        Parameters
-        ----------
-        X: np.matrix or np.ndarray or pd.DataFrame
-            The covariate matrix.
-        treatment: np.ndarray or pd.Series, optional
-            The vector of treatment assignments.
-        y: np.ndarray or pd.Series, optional
-            The vector of outcomes.
+    Returns
+    -------
+    np.ndarray
+        An array containing the predicted ACE.
+    """
 
-        Returns
-        -------
-        np.ndarray
-            An array containing the predicted ACE.
-        """
+    return [y[treatment == 1].mean() - y[treatment == 0].mean()] * len(y)
 
-        return [y[treatment == 1].mean() - y[treatment == 0].mean()] * len(y)
+  def estimate_ate(
+    self,
+    X: np.matrix | np.ndarray | pd.DataFrame = None,
+    treatment: np.ndarray | pd.Series = None,
+    y: np.ndarray | pd.Series = None,
+    w: np.matrix | np.ndarray | pd.DataFrame = None,
+    pretrain: bool = True,
+  ) -> float:
+    """
+    Predicts the Average Causal Effect (ACE).
+    (The term "Average Treatment Effect" (ATE) is used in
+    the method name for compatibility purposes.)
 
-    def estimate_ate(
-            self,
-            X: np.matrix | np.ndarray | pd.DataFrame = None,
-            treatment: np.ndarray | pd.Series = None,
-            y: np.ndarray | pd.Series = None,
-            w: np.matrix | np.ndarray | pd.DataFrame = None,
-            pretrain: bool = True
-        ) -> float:
-        """
-        Predicts the Average Causal Effect (ACE).
-        (The term "Average Treatment Effect" (ATE) is used in
-        the method name for compatibility purposes.)
+    Parameters
+    ----------
+    X: np.matrix or np.ndarray or pd.DataFrame
+        The covariate matrix.
+    treatment: np.ndarray or pd.Series, optional
+        The vector of treatment assignments.
+    y: np.ndarray or pd.Series, optional
+        The vector of outcomes.
 
-        Parameters
-        ----------
-        X: np.matrix or np.ndarray or pd.DataFrame
-            The covariate matrix.
-        treatment: np.ndarray or pd.Series, optional
-            The vector of treatment assignments.
-        y: np.ndarray or pd.Series, optional
-            The vector of outcomes.
+    Returns
+    -------
+    float
+        The value of the ACE.
+    """
 
-        Returns
-        -------
-        float
-            The value of the ACE.
-        """
-
-        return y[treatment == 1].mean() - y[treatment == 0].mean()
+    return y[treatment == 1].mean() - y[treatment == 0].mean()

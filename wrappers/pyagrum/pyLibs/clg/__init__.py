@@ -34,25 +34,26 @@
 #                                                                          #
 ############################################################################
 
-"""
-
-"""
+""" """
 
 __author__ = "Pierre-Henri Wuillemin, Zhe Huang"
 __copyright__ = "(c) 2022-2023 PARIS"
 
 from .canonicalForm import CanonicalForm
-from .CLG import CLG,randomCLG
+from .CLG import CLG, randomCLG
 from .forwardSampling import ForwardSampling
 from .GaussianVariable import GaussianVariable
 from .variableElimination import CLGVariableElimination
 from .learning import CLGLearner
 from .SEM import SEM
 
-__all__ = ['CanonicalForm',
-           'CLG', 'randomCLG',
-           'ForwardSampling',
-           'GaussianVariable',
-           'CLGVariableElimination',
-           'CLGLearner',
-           'SEM']
+__all__ = [
+  "CanonicalForm",
+  "CLG",
+  "randomCLG",
+  "ForwardSampling",
+  "GaussianVariable",
+  "CLGVariableElimination",
+  "CLGLearner",
+  "SEM",
+]

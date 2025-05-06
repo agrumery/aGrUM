@@ -1,4 +1,4 @@
-from typing import Optional, List, Tuple
+from typing import Tuple
 from numpy import quantile, array
 
 ############################################################################
@@ -151,7 +151,7 @@ class BNMixtureInference(IMixtureInference):
 
     ret = pyagrum.Tensor()
     for bn_name in posts:
-        ret += posts[bn_name].toVarsIn(self._bnm) * self._bnm.weight(bn_name)
+      ret += posts[bn_name].toVarsIn(self._bnm) * self._bnm.weight(bn_name)
 
     return ret.normalize()
 
@@ -230,8 +230,8 @@ class BootstrapMixtureInference(IMixtureInference):
     """
     if self._bnm.size() == 0:
       raise pyagrum.SizeError("The mixture doesn't contain any BN, can't compute quantiles")
-    q1 = float(pyagrum.config['bnmixture', 'left_quantile'])
-    q2 = float(pyagrum.config['bnmixture', 'right_quantile'])
+    q1 = float(pyagrum.config["bnmixture", "left_quantile"])
+    q2 = float(pyagrum.config["bnmixture", "right_quantile"])
     var = self._bnm.variable(name)
 
     # init tensors to return

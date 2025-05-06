@@ -69,9 +69,14 @@ class CausalFormula:
     the observation variable(s)
   """
 
-  def __init__(self, cm: "pyagrum.causal.CausalModel", root: ASTtree, on: Union[str, NameSet],
-               doing: Union[str, NameSet],
-               knowing: Optional[NameSet] = None):
+  def __init__(
+    self,
+    cm: "pyagrum.causal.CausalModel",
+    root: ASTtree,
+    on: Union[str, NameSet],
+    doing: Union[str, NameSet],
+    knowing: Optional[NameSet] = None,
+  ):
     """
     Parameters
     ----------
@@ -156,8 +161,7 @@ class CausalFormula:
         return v
 
       bn = self.cm.observationalBN()
-      label = bn.variable(self.cm.idFromName(v)).label(
-        _getLabelIdx(bn, v, values[v]))
+      label = bn.variable(self.cm.idFromName(v)).label(_getLabelIdx(bn, v, values[v]))
       return v + "=" + label
 
     # adding values when necessary

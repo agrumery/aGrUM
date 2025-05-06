@@ -37,14 +37,14 @@
 """
 This file defines the types for the causal package
 """
+
 from typing import NewType
 from typing import Set, List, Tuple, Union
 
 # pylint: disable=unused-import
-import pyagrum as gum
 import pyagrum.causal  # for annotations
 
-DirectedModel = Union['pyagrum.BayesNet', 'pyagrum.DAG', 'pyagrum.causal.CausalModel']
+DirectedModel = Union["pyagrum.BayesNet", "pyagrum.DAG", "pyagrum.causal.CausalModel"]
 
 NodeId = NewType("NodeId", int)
 NodeList = List[NodeId]

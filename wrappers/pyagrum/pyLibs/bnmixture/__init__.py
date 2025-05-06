@@ -34,9 +34,7 @@
 #                                                                          #
 ############################################################################
 
-"""
-
-"""
+""" """
 
 __author__ = "Pierre-Henri Wuillemin, Rodolphe Tavernier"
 __copyright__ = "(c) 2022-2023 PARIS"
@@ -45,6 +43,14 @@ from .BNMixture import BNMixture, BootstrapMixture, IMixture
 from .BNMInference import BNMixtureInference, BootstrapMixtureInference, IMixtureInference
 from .BNMLearning import BNMLearner, BNMBootstrapLearner, IMixtureLearner
 
-__all__ = ['BNMixture', 'BootstrapMixture', 'IMixture',
-           'BNMixtureInference', 'BootstrapMixtureInference', 'IMixtureInference',
-           'BNMLearner', 'BNMBootstrapLearner', 'IMixtureLearner']
+__all__ = [
+  "BNMixture",
+  "BootstrapMixture",
+  "IMixture",
+  "BNMixtureInference",
+  "BootstrapMixtureInference",
+  "IMixtureInference",
+  "BNMLearner",
+  "BNMBootstrapLearner",
+  "IMixtureLearner",
+]

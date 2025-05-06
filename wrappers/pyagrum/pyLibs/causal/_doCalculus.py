@@ -37,6 +37,7 @@
 """
 This file computes the causal impact of intervention in a causal model
 """
+
 import itertools as it
 from typing import List, Set, Optional, Union
 
@@ -54,8 +55,9 @@ from pyagrum.causal._CausalFormula import CausalFormula
 import pyagrum.causal  # for annotations
 
 
-def doCalculusWithObservation(cm: CausalModel, on: Set[str], doing: NameSet,
-                              knowing: Optional[NameSet] = None) -> CausalFormula:
+def doCalculusWithObservation(
+  cm: CausalModel, on: Set[str], doing: NameSet, knowing: Optional[NameSet] = None
+) -> CausalFormula:
   """
   Compute the CausalFormula for an impact analysis given the causal model, the observed variables and the
   variable on  which there will be intervention.
@@ -156,7 +158,6 @@ def _topological_sort(cm: CausalModel) -> List[int]:
         rem.add(i)
 
     for r in rem:
-
       for c in cm.children(r):
         dc[c] -= 1
       del dc[r]
@@ -281,7 +282,7 @@ def identifyingIntervention(cm: CausalModel, Y: NameSet, X: NameSet, P: ASTtree 
     prb = []
     to = _topological_sort(cm)
     for v in S:
-      vpi = to[:to.index(cm.idFromName(v))]
+      vpi = to[: to.index(cm.idFromName(v))]
       nvpi = {cm.names()[i] for i in vpi}
 
       if len(nvpi) == 0:
@@ -308,7 +309,7 @@ def identifyingIntervention(cm: CausalModel, Y: NameSet, X: NameSet, P: ASTtree 
       top = _topological_sort(cm)
 
       for v in spr:
-        vpi = top[:top.index(cm.idFromName(v))]
+        vpi = top[: top.index(cm.idFromName(v))]
         nvpi = {cm.names()[i] for i in vpi}
 
         if len(nvpi) == 0:
@@ -333,10 +334,7 @@ def getBackDoorTree(cm: CausalModel, x: str, y: str, zset: NodeSet) -> ASTtree:
   :return: the ASTtree for the backoor criteria
   """
   zp = [cm.names()[i] for i in zset]
-  return ASTsum(zp,
-                ASTmult(ASTposteriorProba(cm.causalBN(), {y}, set([x] + zp)),
-                        ASTjointProba(zp))
-                )
+  return ASTsum(zp, ASTmult(ASTposteriorProba(cm.causalBN(), {y}, set([x] + zp)), ASTjointProba(zp)))
 
 
 def getFrontDoorTree(cm: CausalModel, x: str, y: str, zset: NodeSet) -> ASTtree:
@@ -350,10 +348,10 @@ def getFrontDoorTree(cm: CausalModel, x: str, y: str, zset: NodeSet) -> ASTtree:
   :return: the ASTtree for the frontdoot critreroia
   """
   zp = [cm.names()[i] for i in zset]
-  return ASTsum(zp, ASTmult(ASTposteriorProba(cm.causalBN(), set(zp), {x}),
-                            ASTsum([x],
-                                   ASTmult(ASTposteriorProba(cm.causalBN(), {y}, set([x] + zp)),
-                                           ASTjointProba([x]))
-                                   )
-                            )
-                )
+  return ASTsum(
+    zp,
+    ASTmult(
+      ASTposteriorProba(cm.causalBN(), set(zp), {x}),
+      ASTsum([x], ASTmult(ASTposteriorProba(cm.causalBN(), {y}, set([x] + zp)), ASTjointProba([x]))),
+    ),
+  )

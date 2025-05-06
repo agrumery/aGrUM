@@ -37,9 +37,9 @@
 """
 Deprecated for older pyAgrum
 """
+
 import warnings
 import functools
-
 
 
 def deprecated_arg(newA: str, oldA: str, version: str):
@@ -70,13 +70,19 @@ def deprecated_arg(newA: str, oldA: str, version: str):
           warnings.warn(
             f"""
 ** pyAgrum : argument '{oldA}' is deprecated since '{version}', '{newA}' is used instead.
-""", DeprecationWarning, stacklevel=2)
+""",
+            DeprecationWarning,
+            stacklevel=2,
+          )
           kwargs.pop(oldA)
         else:
           warnings.warn(
             f"""
 ** pyAgrum : argument '{oldA}' is deprecated since '{version}', please use '{newA}' is instead.
-""", DeprecationWarning, stacklevel=2)
+""",
+            DeprecationWarning,
+            stacklevel=2,
+          )
           kwargs[newA] = kwargs.pop(oldA)
       return f(*args, **kwargs)
 

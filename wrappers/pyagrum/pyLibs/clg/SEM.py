@@ -201,7 +201,7 @@ class SEM:
     """
 
     canonic_form = []
-    for line in re.split('\n+', sem):
+    for line in re.split("\n+", sem):
       line = line.strip()
       if line == "":
         continue
@@ -285,7 +285,7 @@ class SEM:
     filename : str
       The name of the file containing the SEM of CLG.
     """
-    with open(filename, 'w') as file:
+    with open(filename, "w") as file:
       file.write(SEM.tosem(clg))
 
   @staticmethod
@@ -302,7 +302,7 @@ class SEM:
     -------
     the loaded CLG
     """
-    with open(filename, 'r') as file:
+    with open(filename, "r") as file:
       sem = file.read()
 
     return SEM.toclg(sem)

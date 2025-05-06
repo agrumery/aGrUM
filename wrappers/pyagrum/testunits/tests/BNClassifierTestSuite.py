@@ -45,17 +45,20 @@ from .pyAgrumTestSuite import pyAgrumTestCase, addTests
 
 import pyagrum.skbn as skbn
 
+
 def _normalizeDiscretizerAudit(discretizer_audit):
-    """Convert NumPy arrays in a dictionary to lists for reliable comparison."""
-    return {k: {kk: (vv.tolist() if isinstance(vv, np.ndarray) else vv)
-                for kk, vv in v.items()}
-            for k, v in discretizer_audit.items()}
+  """Convert NumPy arrays in a dictionary to lists for reliable comparison."""
+  return {
+    k: {kk: (vv.tolist() if isinstance(vv, np.ndarray) else vv) for kk, vv in v.items()}
+    for k, v in discretizer_audit.items()
+  }
+
 
 class BNCLassifierTestCase(pyAgrumTestCase):
   def testFitFromCsv(self):
-    csvfile = self.agrumSrcDir('miniasia.csv')
+    csvfile = self.agrumSrcDir("miniasia.csv")
 
-    asia_target_column = 'lung_cancer'
+    asia_target_column = "lung_cancer"
 
     classif1 = skbn.BNClassifier()
     classif1.fit(data=csvfile, targetName=asia_target_column)
@@ -67,16 +70,16 @@ class BNCLassifierTestCase(pyAgrumTestCase):
     self.assertGreater(classif1.MarkovBlanket.size(), 0)
 
   def testClassifierFromDf(self):
-    csvfile = self.agrumSrcDir('miniasia.csv')
+    csvfile = self.agrumSrcDir("miniasia.csv")
 
     df_asia = pd.read_csv(csvfile)
-    asia_target_column = 'lung_cancer'
+    asia_target_column = "lung_cancer"
 
     x_train_asia = df_asia[:9000].drop(asia_target_column, axis=1)
     y_train_asia = df_asia[:9000][asia_target_column]
 
     x_test_asia = df_asia[-1000:].drop(asia_target_column, axis=1)
-    y_test_asia = df_asia[-1000:][asia_target_column]
+    _ = df_asia[-1000:][asia_target_column]
 
     classif2 = skbn.BNClassifier()
     classif2.fit(x_train_asia, y_train_asia)
@@ -131,13 +134,17 @@ class BNCLassifierTestCase(pyAgrumTestCase):
 
     bnc2.fit(data=dftrain, targetName="Y")
 
-    self.assertDictEqual(_normalizeDiscretizerAudit(bnc.type_processor.audit(dftrain)), _normalizeDiscretizerAudit(bnc2.type_processor.audit(dftrain)))
+    self.assertDictEqual(
+      _normalizeDiscretizerAudit(bnc.type_processor.audit(dftrain)),
+      _normalizeDiscretizerAudit(bnc2.type_processor.audit(dftrain)),
+    )
     self.assertDictEqual(bnc.get_params(), bnc2.get_params())
     self.assertEqual(bnc.threshold, bnc2.threshold)
     self.assertEqual((bnc.predict_proba(dftest) - bnc2.predict_proba(dftest)).max(), 0)
     self.assertEqual((bnc.predict_proba(dftest) - bnc2.predict_proba(dftest)).min(), 0)
 
     self.assertTrue(all(bnc.predict(dftest) == bnc2.predict(dftest)))
+
 
 ts = unittest.TestSuite()
 addTests(ts, BNCLassifierTestCase)

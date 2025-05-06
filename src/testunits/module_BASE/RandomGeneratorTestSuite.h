@@ -36,7 +36,6 @@
 
 
 #include <gumtest/AgrumTestSuite.h>
-#include <agrum/base/core/timer.h>
 #include <gumtest/utils.h>
 
 #include <agrum/config.h>
@@ -97,7 +96,7 @@ namespace gum_tests {
       const auto x42 = gum::randomProba();
 
       gum::initRandom(0);
-      TS_ASSERT_DIFFERS(x0, gum::randomProba()) // may fail but highly improbable
+      TS_ASSERT_DIFFERS(x0, gum::randomProba())   // may fail but highly improbable
       gum::initRandom(10);
       TS_ASSERT_EQUALS(x10, gum::randomProba())
       gum::initRandom(42);
@@ -116,7 +115,8 @@ namespace gum_tests {
       gum::Timer t;
       t.reset();
       double second = 0.5;
-      while (t.step() <= second);
+      while (t.step() <= second)
+        ;
 
       gum::initRandom(0);
       const auto bn0b = gum::BayesNet< double >::fastPrototype("A->B<-C");
@@ -127,18 +127,16 @@ namespace gum_tests {
       const auto q42b  = bn42b.cpt("B") + bn42b.cpt("C") + bn42b.cpt("A");
 
       for (const auto i: bn0.nodes())
-      // may fail but highly improbable
+        // may fail but highly improbable
         TS_GUM_TENSOR_DIFFERS(bn0.cpt(i), bn0b.cpt(bn0.variable(i).name()))
 
       for (const auto i: bn10.nodes())
-        TS_GUM_TENSOR_ALMOST_EQUALS(bn10.cpt(i),
-                                  bn10b.cpt(bn10.variable(i).name()))
+        TS_GUM_TENSOR_ALMOST_EQUALS(bn10.cpt(i), bn10b.cpt(bn10.variable(i).name()))
 
       for (const auto i: bn42.nodes())
-        TS_GUM_TENSOR_ALMOST_EQUALS(bn42.cpt(i),
-                                  bn42b.cpt(bn42.variable(i).name()))
+        TS_GUM_TENSOR_ALMOST_EQUALS(bn42.cpt(i), bn42b.cpt(bn42.variable(i).name()))
 
       gum::initRandom(GUM_RANDOMSEED);
     }
   };
-} // namespace gum_tests
+}   // namespace gum_tests

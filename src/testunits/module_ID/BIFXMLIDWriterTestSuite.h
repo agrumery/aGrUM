@@ -67,17 +67,17 @@ namespace gum_tests {
     private:
     void fillTopo(gum::InfluenceDiagram< double >& infDiag, gum::List< gum::NodeId >& idList) {
       try {
-        idList.insert(infDiag.addDecisionNode(*decisionVar1)); // 0
-        idList.insert(infDiag.addDecisionNode(*decisionVar2)); // 1
-        idList.insert(infDiag.addDecisionNode(*decisionVar3)); // 2
-        idList.insert(infDiag.addDecisionNode(*decisionVar4)); // 3
-        idList.insert(infDiag.addChanceNode(*chanceVar1)); // 4
-        idList.insert(infDiag.addChanceNode(*chanceVar2)); // 5
-        idList.insert(infDiag.addChanceNode(*chanceVar3)); // 6
-        idList.insert(infDiag.addChanceNode(*chanceVar4)); // 7
-        idList.insert(infDiag.addChanceNode(*chanceVar5)); // 8
-        idList.insert(infDiag.addUtilityNode(*utilityVar1)); // 9
-        idList.insert(infDiag.addUtilityNode(*utilityVar2)); // 10
+        idList.insert(infDiag.addDecisionNode(*decisionVar1));   // 0
+        idList.insert(infDiag.addDecisionNode(*decisionVar2));   // 1
+        idList.insert(infDiag.addDecisionNode(*decisionVar3));   // 2
+        idList.insert(infDiag.addDecisionNode(*decisionVar4));   // 3
+        idList.insert(infDiag.addChanceNode(*chanceVar1));       // 4
+        idList.insert(infDiag.addChanceNode(*chanceVar2));       // 5
+        idList.insert(infDiag.addChanceNode(*chanceVar3));       // 6
+        idList.insert(infDiag.addChanceNode(*chanceVar4));       // 7
+        idList.insert(infDiag.addChanceNode(*chanceVar5));       // 8
+        idList.insert(infDiag.addUtilityNode(*utilityVar1));     // 9
+        idList.insert(infDiag.addUtilityNode(*utilityVar2));     // 10
 
         infDiag.addArc(idList[0], idList[4]);
         infDiag.addArc(idList[4], idList[9]);
@@ -222,7 +222,6 @@ namespace gum_tests {
       }
     }
 
-
     GUM_ACTIVE_TEST(GenerationReadWrite2) {
       auto net = gum::InfluenceDiagram< double >::fastPrototype(
           "A[5]->B+[0,10,5]->C{0|1|20|300}->D{0.5|1.99|2|3.14}");
@@ -245,4 +244,4 @@ namespace gum_tests {
       }
     }
   };
-} // namespace gum_tests
+}   // namespace gum_tests

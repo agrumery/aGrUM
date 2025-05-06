@@ -38,6 +38,7 @@
 Using Rademacher Average to guarantee FWER (Family Wise Error Rate) in the independency test for Local Causal Discovery problem or for PC algorithm.
 (see "Bounding the Family-Wise Error Rate in Local Causal Discover using Rademacher Averages", Dario Simionato, Fabio Vandin, 2022)
 """
+
 import warnings
 
 import pandas as pd
@@ -56,6 +57,7 @@ class CLGLearner:
   Using Rademacher Average to guarantee FWER(Family Wise Error Rate) in independency test.
   (see "Bounding the Family-Wise Error Rate in Local Causal Discover using Rademacher Averages", Dario Simionato, Fabio Vandin, 2022)
   """
+
   _model: CLG
   id2samples: Dict[NodeId, List]
   _df: pd.DataFrame
@@ -365,7 +367,8 @@ class CLGLearner:
           # Check if Xi and Xj are conditionally independent given S
           if self.test_indep(Xi, Xj, set(S)):
             # Delete edge Xi − Xj from C
-            if verbose: warnings.warn("{0} and {1} are conditionally independent given {2}".format(Xi, Xj, S))
+            if verbose:
+              warnings.warn("{0} and {1} are conditionally independent given {2}".format(Xi, Xj, S))
             C[Xi].remove(Xj)
             C[Xj].remove(Xi)
             # Let sepset(Xi,Xj) = sepset(Xj,Xi) = S
@@ -481,9 +484,11 @@ class CLGLearner:
           if Xj in C[Xk]:  # Xj - Xk
             for Xi in self._V - {Xk, Xj}:
               if (Xj in C[Xi] and Xi not in C[Xj]) and (
-                 Xi not in C[Xk] and Xk not in C[Xi]):  # Xi -> Xj - Xk such that Xi and Xk are not adjacent
+                Xi not in C[Xk] and Xk not in C[Xi]
+              ):  # Xi -> Xj - Xk such that Xi and Xk are not adjacent
                 # Orient Xj -> Xk
-                if verbose: warnings.warn('Rule 1 applied:{0}->{1}'.format(Xj, Xk))
+                if verbose:
+                  warnings.warn("Rule 1 applied:{0}->{1}".format(Xj, Xk))
                 C[Xk].remove(Xj)
                 new_oriented = True
                 break
@@ -499,7 +504,8 @@ class CLGLearner:
             for Xk in C[Xi] - {Xj}:
               if (Xi not in C[Xk]) and (Xj in C[Xk] and Xk not in C[Xj]):  # Xi -> Xk -> Xj
                 # Orient Xi -> Xj
-                if verbose: warnings.warn('Rule 2 applied:{0}->{1}'.format(Xi, Xj))
+                if verbose:
+                  warnings.warn("Rule 2 applied:{0}->{1}".format(Xi, Xj))
                 C[Xj].remove(Xi)
                 new_oriented = True
                 break
@@ -516,7 +522,8 @@ class CLGLearner:
               if Xi in C[Xk] and Xi in C[Xl]:  # Xi - Xk and Xi - Xl
                 if (Xj in C[Xk] and Xk not in C[Xj]) and (Xj in C[Xl] and Xl not in C[Xj]):  # Xk -> Xj and Xl -> Xj
                   # Orient Xi -> Xj
-                  if verbose: warnings.warn('Rule 3 applied:{0}->{1}'.format(Xi, Xj))
+                  if verbose:
+                    warnings.warn("Rule 3 applied:{0}->{1}".format(Xi, Xj))
                   C[Xj].remove(Xi)
                   new_oriented = True
                   break
@@ -556,7 +563,8 @@ class CLGLearner:
         if Xi in C[Xj]:  # Xi - Xj
           if np.std(self.id2samples[Xi]) <= np.std(self.id2samples[Xj]):
             # Orient Xi -> Xj
-            if verbose: warnings.warn('Rule 0 applied:{0}->{1}'.format(Xi, Xj))
+            if verbose:
+              warnings.warn("Rule 0 applied:{0}->{1}".format(Xi, Xj))
             C[Xj].remove(Xi)
             new_oriented = True
             # We only apply Rule 0 once
@@ -583,36 +591,44 @@ class CLGLearner:
       A directed graph DAG representing the causal structure.
     """
     # Step 1: Apply Adjacency_search() to obtain a skeleton C and a set of sepsets
-    if verbose: warnings.warn("Step 1: Apply Adjacency_search() to obtain a skeleton C and a set of sepsets")
+    if verbose:
+      warnings.warn("Step 1: Apply Adjacency_search() to obtain a skeleton C and a set of sepsets")
     C, sepset = self.Adjacency_search(order, verbose)
 
     # Step 2: Find the v-structures
-    if verbose: warnings.warn("Step 2: Find the v-structures")
+    if verbose:
+      warnings.warn("Step 2: Find the v-structures")
     for Xk in self._V:
       for Xi, Xj in itertools.combinations(C[Xk], 2):
         if (Xi, Xj) in sepset and Xk not in sepset[(Xi, Xj)]:
           if Xi not in C[Xj] and Xj not in C[Xi]:
             # Orient Xi -> Xk <- Xj
             if (Xi in C[Xk] and Xk in C[Xi]) and (Xj in C[Xk] and Xk in C[Xj]):
-              if verbose: warnings.warn('V-structure found:{0}->{1}<-{2}'.format(Xi, Xk, Xj))
+              if verbose:
+                warnings.warn("V-structure found:{0}->{1}<-{2}".format(Xi, Xk, Xj))
               C[Xk].remove(Xi)
               C[Xk].remove(Xj)
             elif (Xi in C[Xk] and Xk in C[Xi]) and (Xj not in C[Xk] and Xk in C[Xj]):
-              if verbose: warnings.warn('V-structure found:{0}->{1}<-{2}'.format(Xi, Xk, Xj))
+              if verbose:
+                warnings.warn("V-structure found:{0}->{1}<-{2}".format(Xi, Xk, Xj))
               C[Xk].remove(Xi)
             elif (Xi not in C[Xk] and Xk in C[Xi]) and (Xj in C[Xk] and Xk in C[Xj]):
-              if verbose: warnings.warn('V-structure found:{0}->{1}<-{2}'.format(Xi, Xk, Xj))
+              if verbose:
+                warnings.warn("V-structure found:{0}->{1}<-{2}".format(Xi, Xk, Xj))
               C[Xk].remove(Xj)
 
     # Repeat the following steps until no more edges can be oriented by Step 4
     while True:
       # Step 3: Orient as many of the remaining undirected edges as possible by repeatedly application of the following three rules
-      if verbose: warnings.warn(
-        "Step 3: Orient as many of the remaining undirected edges as possible by repeatedly application of the three rules")
+      if verbose:
+        warnings.warn(
+          "Step 3: Orient as many of the remaining undirected edges as possible by repeatedly application of the three rules"
+        )
       C = self.three_rules(C, verbose)
 
       # Step 4: Orient the remaining undirected edge by comparing variances of two nodes
-      if verbose: warnings.warn("Step 4: Orient one remaining undirected edge by comparing variances of the two nodes")
+      if verbose:
+        warnings.warn("Step 4: Orient one remaining undirected edge by comparing variances of the two nodes")
       C, new_oriented = self.Step4(C, verbose)
 
       # Stop if no more edges can be oriented by Step 4
@@ -721,8 +737,11 @@ class CLGLearner:
 
     # Add the nodes to the CLG model
     for node in self._model.nodes():
-      learned_clg.add(GaussianVariable(name=self._model.variable(node).name(), mu=float(f"{id2mu[node]:.3f}"),
-                                       sigma=float(f"{id2sigma[node]:.3f}")))
+      learned_clg.add(
+        GaussianVariable(
+          name=self._model.variable(node).name(), mu=float(f"{id2mu[node]:.3f}"), sigma=float(f"{id2sigma[node]:.3f}")
+        )
+      )
     # Add the arcs to the CLG model
     for arc in arc2coef.keys():
       learned_clg.addArc(arc[0], arc[1], float(f"{arc2coef[arc]:.2f}"))

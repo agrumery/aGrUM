@@ -35,9 +35,8 @@
 ############################################################################
 
 import csv
-import logging
 from concurrent.futures import ProcessPoolExecutor
-from typing import Dict, Tuple, List
+from typing import Dict, Tuple
 from numpy.random import default_rng, choice
 from scipy.linalg import expm
 
@@ -165,8 +164,7 @@ class ForwardSamplingInference(CTBNInference):
     self.trajectory = list()
     self.idtraj = 0
     super().__init__(ctbn)
-    self._posteriors = {nod: pyagrum.Tensor().add(self._model.variable(nod))
-                        for nod in self._model.names()}
+    self._posteriors = {nod: pyagrum.Tensor().add(self._model.variable(nod)) for nod in self._model.names()}
 
   def makeSample(self, posteriors: Dict[str, pyagrum.Tensor], timeHorizon: float = 5000, burnIn: int = 100) -> int:
     """
@@ -363,8 +361,10 @@ class ForwardSamplingInference(CTBNInference):
     burnIn : int
         Number of runs before starting the sampling (to ensure ergodicity).
     """
-    posteriorsList = [{nod: pyagrum.Tensor().add(self._model.variable(nod))
-                       for nod in self._model.names()} for _ in range(nbTrajectories)]
+    posteriorsList = [
+      {nod: pyagrum.Tensor().add(self._model.variable(nod)) for nod in self._model.names()}
+      for _ in range(nbTrajectories)
+    ]
 
     def runMakeSample(task: int):
       res = self.makeSample(posteriorsList[task], timeHorizon, burnIn)
@@ -394,8 +394,10 @@ class ForwardSamplingInference(CTBNInference):
     burnIn : int
         Number of runs before starting the sampling (to ensure ergodicity).
     """
-    posteriorsList = [{nod: pyagrum.Tensor().add(self._model.variable(nod))
-                       for nod in self._model.names()} for _ in range(nbTrajectories)]
+    posteriorsList = [
+      {nod: pyagrum.Tensor().add(self._model.variable(nod)) for nod in self._model.names()}
+      for _ in range(nbTrajectories)
+    ]
 
     for i in range(nbTrajectories):
       self.makeSample(posteriorsList[i], timeHorizon, burnIn)
@@ -443,11 +445,11 @@ class ForwardSamplingInference(CTBNInference):
       self.makeInference(timeHorizon=timeHorizon, burnIn=burnIn)
       data[i] = self.trajectory
 
-    with open(filename, 'w', newline='') as csvfile:
-      fieldnames = ['IdSample', 'time', 'var', 'state']
+    with open(filename, "w", newline="") as csvfile:
+      fieldnames = ["IdSample", "time", "var", "state"]
       writer = csv.DictWriter(csvfile, fieldnames=fieldnames)
 
       writer.writeheader()
       for i in range(len(data)):
         for tr in data[i]:
-          writer.writerow({'IdSample': str(i), 'time': str(tr[0]), 'var': tr[1], 'state': tr[2]})
+          writer.writerow({"IdSample": str(i), "time": str(tr[0]), "var": tr[1], "state": tr[2]})

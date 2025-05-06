@@ -44,7 +44,6 @@ import pyagrum.ctbn as ct
 
 class TestCtbnTrajectory(pyAgrumTestCase):
   def testTrajectory1(self):
-
     ctbn = ct.CTBN()
     A = gum.LabelizedVariable("A", "A", ["a", "b"])
     B = gum.LabelizedVariable("B", "B", ["x", "y"])
@@ -56,16 +55,11 @@ class TestCtbnTrajectory(pyAgrumTestCase):
     ctbn.addArc("A", "B")
     ctbn.addArc("B", "C")
 
-    ctbn.CIM("A")[:] = [[-4, 4],
-                        [2, -2]]
-    ctbn.CIM("B")[{"A": "a"}] = [[-5, 5],
-                                 [4, -4]]
-    ctbn.CIM("B")[{"A": "b"}] = [[-1, 1],
-                                 [1, -1]]
-    ctbn.CIM("C")[{"B": "x"}] = [[-5, 5],
-                                 [4, -4]]
-    ctbn.CIM("C")[{"B": "y"}] = [[-1, 1],
-                                 [1, -1]]
+    ctbn.CIM("A")[:] = [[-4, 4], [2, -2]]
+    ctbn.CIM("B")[{"A": "a"}] = [[-5, 5], [4, -4]]
+    ctbn.CIM("B")[{"A": "b"}] = [[-1, 1], [1, -1]]
+    ctbn.CIM("C")[{"B": "x"}] = [[-5, 5], [4, -4]]
+    ctbn.CIM("C")[{"B": "y"}] = [[-1, 1], [1, -1]]
 
     cimA = ctbn.CIM("A").asTensor()
     cimB = ctbn.CIM("B").asTensor()
@@ -73,9 +67,9 @@ class TestCtbnTrajectory(pyAgrumTestCase):
 
     ie = ct.ForwardSamplingInference(ctbn)
 
-    ie.writeTrajectoryCSV(self.agrumSrcDir('trajectory_traj_1.csv'), n=1, timeHorizon=400, burnIn=100)
+    ie.writeTrajectoryCSV(self.agrumSrcDir("trajectory_traj_1.csv"), n=1, timeHorizon=400, burnIn=100)
 
-    traj = ct.Trajectory(self.agrumSrcDir('trajectory_traj_1.csv'))
+    traj = ct.Trajectory(self.agrumSrcDir("trajectory_traj_1.csv"))
     traj.computeAllCIMs()
 
     # checks if CIMs are correctly learned (using _pot to avoid the copy)
@@ -89,13 +83,13 @@ class TestCtbnTrajectory(pyAgrumTestCase):
     I2.setFirst()
     I3.setFirst()
     while not I1.end():
-      self.assertAlmostEqual(cimA.get(I1), newCimA.get(I1), delta=.5)
+      self.assertAlmostEqual(cimA.get(I1), newCimA.get(I1), delta=0.5)
       I1.inc()
     while not I2.end():
-      self.assertAlmostEqual(cimB.get(I2), newCimB.get(I2), delta=.5)
+      self.assertAlmostEqual(cimB.get(I2), newCimB.get(I2), delta=0.5)
       I2.inc()
     while not I3.end():
-      self.assertAlmostEqual(cimC.get(I3), newCimC.get(I3), delta=.5)
+      self.assertAlmostEqual(cimC.get(I3), newCimC.get(I3), delta=0.5)
       I3.inc()
 
   def testTrajectory2(self):
@@ -103,14 +97,12 @@ class TestCtbnTrajectory(pyAgrumTestCase):
     ctbn = ct.CTBN()
     A = gum.LabelizedVariable("A", "A", ["a0", "a1", "a2"])
     ctbn.add(A)
-    ctbn.CIM("A")[:] = [[-6, 3, 3],
-                        [3, -6, 3],
-                        [3, 3, -6]]
+    ctbn.CIM("A")[:] = [[-6, 3, 3], [3, -6, 3], [3, 3, -6]]
 
     # make sample using forward sampling
     ie = ct.ForwardSamplingInference(ctbn)
-    ie.writeTrajectoryCSV(self.agrumSrcDir('trajectory_traj_2.csv'), n=1, timeHorizon=400, burnIn=100)
-    traj = ct.Trajectory(self.agrumSrcDir('trajectory_traj_2.csv'))
+    ie.writeTrajectoryCSV(self.agrumSrcDir("trajectory_traj_2.csv"), n=1, timeHorizon=400, burnIn=100)
+    traj = ct.Trajectory(self.agrumSrcDir("trajectory_traj_2.csv"))
 
     # check number of transitions
     time, count = traj.computeStats("A", [])
@@ -139,19 +131,15 @@ class TestCtbnTrajectory(pyAgrumTestCase):
     ctbn.add(B)
     ctbn.addArc("cloudy?", "rain?")
     ctbn.addArc("rain?", "cloudy?")
-    ctbn.CIM("cloudy?")[{"rain?": "0"}] = [[-.1, .1],
-                                           [1, -1]]
-    ctbn.CIM("cloudy?")[{"rain?": "1"}] = [[-.1, .1],
-                                           [1, -1]]
+    ctbn.CIM("cloudy?")[{"rain?": "0"}] = [[-0.1, 0.1], [1, -1]]
+    ctbn.CIM("cloudy?")[{"rain?": "1"}] = [[-0.1, 0.1], [1, -1]]
 
-    ctbn.CIM("rain?")[{"cloudy?": "0"}] = [[-0.5, 0.5],
-                                           [1000, -1000]]
-    ctbn.CIM("rain?")[{"cloudy?": "1"}] = [[-2, 2],
-                                           [2, -2]]
+    ctbn.CIM("rain?")[{"cloudy?": "0"}] = [[-0.5, 0.5], [1000, -1000]]
+    ctbn.CIM("rain?")[{"cloudy?": "1"}] = [[-2, 2], [2, -2]]
 
     ie = ct.ForwardSamplingInference(ctbn)
-    ie.writeTrajectoryCSV(self.agrumSrcDir('trajectory_traj_3.csv'), n=1, timeHorizon=400, burnIn=100)
-    traj = ct.Trajectory(self.agrumSrcDir('trajectory_traj_3.csv'))
+    ie.writeTrajectoryCSV(self.agrumSrcDir("trajectory_traj_3.csv"), n=1, timeHorizon=400, burnIn=100)
+    traj = ct.Trajectory(self.agrumSrcDir("trajectory_traj_3.csv"))
 
     time, count = traj.computeStats("rain?", ["cloudy?"])
     timeCloudy = time.sumIn(["cloudy?"])

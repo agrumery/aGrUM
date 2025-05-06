@@ -35,15 +35,11 @@
 ############################################################################
 
 from itertools import combinations
-from typing import List, Set
-import logging
 
 import pyagrum
 
 from pyagrum.ctbn import CTBN
 from pyagrum.ctbn import Trajectory
-from pyagrum.ctbn import IndepTest
-from pyagrum.ctbn.constants import INFINITY
 
 """
 This file contains the learning algorithm of a CTBN (i.e of its CIMs and dependency graph). 
@@ -111,7 +107,8 @@ class Learner:
 
     for var in newVariableList:
       newGraph.addNodeWithId(
-        newCtbn.add(var))  # makes the link between the variable and its corresponding node in the DiGraph
+        newCtbn.add(var)
+      )  # makes the link between the variable and its corresponding node in the DiGraph
 
     # List[int] : list of the indexes of all the nodes
     variableIdList = newGraph.nodes()
@@ -124,7 +121,6 @@ class Learner:
           newGraph.addArc(id1, id2)  # arc from var1 to var2
 
     for Xi in variableIdList:  # (2.)
-
       # List[int] : "U" in the Continuous-time PC Algorithm (2.1)
       parentsIdList = list(newGraph.parents(Xi))
       length = len(parentsIdList)
@@ -132,9 +128,7 @@ class Learner:
       parents_done = {id: False for id in parentsIdList}
 
       for b in range(length):  # +1  # (2.2)
-
         for Xj in parentsIdList:  # (2.2.1 / 2.2.2)
-
           if parents_done[Xj]:
             continue
 
@@ -155,7 +149,7 @@ class Learner:
               parents_done[Xj] = True
               break
 
-          parentsIdList = [var for var in parents_done.keys() if parents_done[var] == False]
+          parentsIdList = [var for var in parents_done.keys() if not parents_done[var]]
 
     for arc in newGraph.arcs():
       newCtbn.addArc(arc[0], arc[1])

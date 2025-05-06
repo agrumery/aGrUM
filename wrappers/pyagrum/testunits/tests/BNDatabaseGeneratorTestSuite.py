@@ -43,23 +43,23 @@ from .pyAgrumTestSuite import pyAgrumTestCase, addTests
 class GenerateCSVTestCase(pyAgrumTestCase):
   def testSimpleUse(self):
     bn = gum.fastBN("A->B->C;A->D->C;D->E;")
-    gum.generateSample(bn, 30, self.agrumSrcDir('genere.csv'))
+    gum.generateSample(bn, 30, self.agrumSrcDir("genere.csv"))
 
 
 class BNDatabaseGeneratorTestCase(pyAgrumTestCase):
   def testConstructor(self):
     bn = gum.fastBN("A->B->C;A->D->C;D->E;")
-    dbgen = gum.BNDatabaseGenerator(bn)
+    _ = gum.BNDatabaseGenerator(bn)
 
   def testSetVarOrder(self):
-    bn = gum.loadBN(self.agrumSrcDir('survey.bif'))
+    bn = gum.loadBN(self.agrumSrcDir("survey.bif"))
     dbgen = gum.BNDatabaseGenerator(bn)
 
-    dbgen.setVarOrderFromCSV(self.agrumSrcDir('survey1.csv'))
-    self.assertEqual(dbgen.varOrderNames(), ('E', 'A', 'O', 'T', 'R', 'S'))
+    dbgen.setVarOrderFromCSV(self.agrumSrcDir("survey1.csv"))
+    self.assertEqual(dbgen.varOrderNames(), ("E", "A", "O", "T", "R", "S"))
 
     dbgen.setVarOrder(["A", "E", "O", "R", "S", "T"])
-    self.assertEqual(dbgen.varOrderNames(), ('A', 'E', 'O', 'R', 'S', 'T'))
+    self.assertEqual(dbgen.varOrderNames(), ("A", "E", "O", "R", "S", "T"))
 
     with self.assertRaises(gum.FatalError):
       dbgen.setVarOrder(["A", "E", "O", "R", "A", "S", "T"])

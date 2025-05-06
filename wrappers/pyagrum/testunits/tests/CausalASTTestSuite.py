@@ -52,10 +52,10 @@ class TestASTmethod(pyAgrumTestCase):
     nod2 = ast.ASTposteriorProba(bn, {"A"}, {"C"})
     self.assertEqual(nod2.__str__(), "P(A|C)")
 
-    su = ast.ASTsum(['A'], nod)
+    su = ast.ASTsum(["A"], nod)
     self.assertEqual(su.__str__(), "sum on A for\n| P(A,C|B)")
 
-    su2 = ast.ASTsum(['A', 'C'], nod)
+    su2 = ast.ASTsum(["A", "C"], nod)
     self.assertEqual(su2.__str__(), "sum on A,C for\n| P(A,C|B)")
 
     op = ast.ASTdiv(nod, nod2)
@@ -64,21 +64,27 @@ class TestASTmethod(pyAgrumTestCase):
     op2 = ast.ASTplus(nod, nod2)
     self.assertEqual(op2.__str__(), "+\n| P(A,C|B)\n| P(A|C)")
 
-    self.assertEqual(ast.ASTmult(op, op2).__str__(), """*
+    self.assertEqual(
+      ast.ASTmult(op, op2).__str__(),
+      """*
 | /
 | | P(A,C|B)
 | | P(A|C)
 | +
 | | P(A,C|B)
-| | P(A|C)""")
+| | P(A|C)""",
+    )
 
-    self.assertEqual(ast.ASTminus(op2, op).__str__(), """-
+    self.assertEqual(
+      ast.ASTminus(op2, op).__str__(),
+      """-
 | +
 | | P(A,C|B)
 | | P(A|C)
 | /
 | | P(A,C|B)
-| | P(A|C)""")
+| | P(A|C)""",
+    )
 
     self.assertEqual(ast.ASTjointProba(["A"]).__str__(), "joint P(A)")
     self.assertEqual(ast.ASTjointProba(["A", "C"]).__str__(), "joint P(A,C)")
@@ -89,10 +95,14 @@ class TestASTFromNotebooks(pyAgrumTestCase):
     m = gum.fastBN("z2->x->z1->y;z2->z1;z2->z3->y")
 
     m.cpt("z2")[:] = [0.5, 0.5]
-    m.cpt("x")[:] = [[0.4, 0.6],  # z2=0
-                     [0.4, 0.6]]  # z2=1
-    m.cpt("z3")[:] = [[0.3, 0.7],  # z2=0
-                      [0.3, 0.7]]  # z2=1
+    m.cpt("x")[:] = [
+      [0.4, 0.6],  # z2=0
+      [0.4, 0.6],
+    ]  # z2=1
+    m.cpt("z3")[:] = [
+      [0.3, 0.7],  # z2=0
+      [0.3, 0.7],
+    ]  # z2=1
     m.cpt("z1")[{"z2": 0, "x": 0}] = [0.2, 0.8]
     m.cpt("z1")[{"z2": 0, "x": 1}] = [0.25, 0.75]
     m.cpt("z1")[{"z2": 1, "x": 0}] = [0.1, 0.9]

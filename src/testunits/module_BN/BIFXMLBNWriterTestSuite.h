@@ -87,9 +87,8 @@ namespace gum_tests {
       for (auto v: reload.nodes()) {
         TS_ASSERT_EQUALS(reload.variable(v).toFast(),
                          bn.variable(reload.variable(v).name()).toFast())
-        TS_GUM_TENSOR_ALMOST_EQUALS(reload.cpt(v),
-                                    bn.cpt(reload.variable(v).name()))
+        TS_GUM_TENSOR_ALMOST_EQUALS(reload.cpt(v), bn.cpt(reload.variable(v).name()))
       }
     }
   };
-} // namespace gum_tests
+}   // namespace gum_tests

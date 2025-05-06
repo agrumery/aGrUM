@@ -80,7 +80,7 @@ namespace gum_tests {
 
         gum::Tensor< double > postmn;
         postmn.add(bn.variable(n));
-        postmn.fillWith(iemn.posterior(name)); // postmn using bn variable
+        postmn.fillWith(iemn.posterior(name));   // postmn using bn variable
 
         TS_ASSERT_LESS_THAN((postbn - postmn).abs().max(), 1e-7)
       }
@@ -101,7 +101,7 @@ namespace gum_tests {
 
         gum::Tensor< double > postmn;
         postmn.add(bn.variable(n));
-        postmn.fillWith(iemn.posterior(name)); // postmn using bn variable
+        postmn.fillWith(iemn.posterior(name));   // postmn using bn variable
 
         TS_ASSERT_LESS_THAN((postbn - postmn).abs().max(), 1e-7)
       }
@@ -124,7 +124,7 @@ namespace gum_tests {
 
         gum::Tensor< double > postmn;
         postmn.add(bn.variable(n));
-        postmn.fillWith(iemn.posterior(name)); // postmn using bn variable
+        postmn.fillWith(iemn.posterior(name));   // postmn using bn variable
 
         TS_ASSERT_LESS_THAN((postbn - postmn).abs().max(), 1e-7)
       }
@@ -147,7 +147,7 @@ namespace gum_tests {
 
         gum::Tensor< double > postmn;
         postmn.add(bn.variable(n));
-        postmn.fillWith(iemn.posterior(name)); // postmn using bn variable
+        postmn.fillWith(iemn.posterior(name));   // postmn using bn variable
 
         TS_ASSERT_LESS_THAN((postbn - postmn).abs().max(), 1e-8)
       }
@@ -170,7 +170,7 @@ namespace gum_tests {
 
         gum::Tensor< double > postmn;
         postmn.add(bn.variable(n));
-        postmn.fillWith(iemn.posterior(name)); // postmn using bn variable
+        postmn.fillWith(iemn.posterior(name));   // postmn using bn variable
 
         TS_ASSERT_LESS_THAN((postbn - postmn).abs().max(), 1e-8)
       }
@@ -182,7 +182,9 @@ namespace gum_tests {
       iemn.addEvidence("B", 1);
       iemn.makeInference();
 
-      for (const auto n: mn.nodes()) { TS_ASSERT_DELTA(iemn.posterior(n).sum(), 1.0, 1e-8) }
+      for (const auto n: mn.nodes()) {
+        TS_ASSERT_DELTA(iemn.posterior(n).sum(), 1.0, 1e-8)
+      }
     }
 
     GUM_ACTIVE_TEST(SeparationInInference) {
@@ -225,7 +227,9 @@ namespace gum_tests {
       iemn.addEvidence("B", 1);
       iemn.makeInference();
 
-      for (const auto n: mn.nodes()) { TS_ASSERT_DELTA(iemn.posterior(n).sum(), 1.0, 1e-8) }
+      for (const auto n: mn.nodes()) {
+        TS_ASSERT_DELTA(iemn.posterior(n).sum(), 1.0, 1e-8)
+      }
     }
 
     GUM_ACTIVE_TEST(IncrementalInference) {
@@ -303,14 +307,18 @@ namespace gum_tests {
 
     const gum::Tensor< double > pAC(const gum::MarkovRandomField< double >& mn) {
       gum::Tensor< double > joint;
-      for (auto& [nods, factor]: mn.factors()) { joint *= *factor; }
+      for (auto& [nods, factor]: mn.factors()) {
+        joint *= *factor;
+      }
       joint.normalize();
       return joint.sumOut({&mn.variable("B")});
     }
 
     const gum::Tensor< double > pAB(const gum::MarkovRandomField< double >& mn) {
       gum::Tensor< double > joint;
-      for (auto& [nods, factor]: mn.factors()) { joint *= *factor; }
+      for (auto& [nods, factor]: mn.factors()) {
+        joint *= *factor;
+      }
       joint.normalize();
       return joint.sumOut({&mn.variable("C")});
     }
@@ -413,4 +421,4 @@ namespace gum_tests {
       TS_GUM_TENSOR_ALMOST_EQUALS_SAMEVARS(phard, psoft)
     }
   };
-} // namespace gum_tests
+}   // namespace gum_tests

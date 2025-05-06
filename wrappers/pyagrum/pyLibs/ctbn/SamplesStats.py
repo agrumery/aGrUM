@@ -34,17 +34,14 @@
 #                                                                          #
 ############################################################################
 
-from typing import Dict, Tuple, List, Union
+from typing import Dict, Tuple, List
 
-import time
-import logging
 import csv
 import math
 import matplotlib.pyplot as plt
 import pyagrum
 
 from pyagrum.ctbn import CIM
-from pyagrum.ctbn.constants import INFINITY
 from pyagrum.ctbn import CTBN
 
 """
@@ -69,10 +66,10 @@ def readTrajectoryCSV(filename: str) -> Dict[int, List[Tuple[float, str, str]]]:
       The trajectories, a trajectory for every index.
   """
   data = dict()
-  with open(filename, newline='') as csvfile:
+  with open(filename, newline="") as csvfile:
     reader = csv.DictReader(csvfile)
     for row in reader:
-      IdSample, time, var, state = (row['IdSample'], row['time'], row['var'], row['state'])
+      IdSample, time, var, state = (row["IdSample"], row["time"], row["var"], row["state"])
       IdSample = int(IdSample)
       if IdSample not in data.keys():
         data[IdSample] = list()
@@ -80,9 +77,9 @@ def readTrajectoryCSV(filename: str) -> Dict[int, List[Tuple[float, str, str]]]:
   return data
 
 
-def plotTrajectory(v: pyagrum.DiscreteVariable, traj: List[Tuple[float, str, str]],
-                   timeHorizon: float = None,
-                   plotname: str = None):
+def plotTrajectory(
+  v: pyagrum.DiscreteVariable, traj: List[Tuple[float, str, str]], timeHorizon: float = None, plotname: str = None
+):
   """
   Plot a variable's trajectory using matplotlib.pyplot.
 
@@ -131,8 +128,13 @@ def plotTrajectory(v: pyagrum.DiscreteVariable, traj: List[Tuple[float, str, str
   plt.show()
 
 
-def plotFollowVar(v: pyagrum.DiscreteVariable, trajectories: Dict[int, List[Tuple[float, str, str]]],
-                  timeHorizon: float = None, N: int = None, plotname: str = None):
+def plotFollowVar(
+  v: pyagrum.DiscreteVariable,
+  trajectories: Dict[int, List[Tuple[float, str, str]]],
+  timeHorizon: float = None,
+  N: int = None,
+  plotname: str = None,
+):
   """
   Plot the evolution (the proportions of the states the variable transition into) of a variable over time.
 
@@ -222,8 +224,8 @@ def CTBNFromData(data: Dict[int, List[Tuple[float, str, str]]]) -> CTBN:
   CTBN
       The resulting CTBN.
   """
-  names: Set[str] = set()
-  labels: Dict[str, Set[str]] = dict()
+  names: set[str] = set()
+  labels: dict[str, set[str]] = dict()
 
   for i in range(len(data.keys())):
     for t, var, state in data[i]:
@@ -465,10 +467,12 @@ class Trajectory:
     for var in self.ctbn.variables():
       T, M = self.computeStats(var.name(), self.ctbn.parentNames(var.name()))
       self.ctbn.CIM(var.name())._pot = pyagrum.Tensor(
-        computeCIMFromStats(var.name(), M.putFirst(CIM.varJ(var.name())), T))
+        computeCIMFromStats(var.name(), M.putFirst(CIM.varJ(var.name())), T)
+      )
 
-  def setStatsForTests(self, X: str, Y: str, inst_u: Dict[str, str], Txu: pyagrum.Tensor, Txyu: pyagrum.Tensor,
-                       Mxyu: pyagrum.Tensor):
+  def setStatsForTests(
+    self, X: str, Y: str, inst_u: Dict[str, str], Txu: pyagrum.Tensor, Txyu: pyagrum.Tensor, Mxyu: pyagrum.Tensor
+  ):
     """
     Fills the tensors given. They are used for independence testing.
 
@@ -562,8 +566,7 @@ class Trajectory:
         elif time < self.timeHorizon and var in inst_u.keys():
           u_values[var] = findNextValue(var, traj, l)
 
-  def computeStatsForTests(self, X: str, Y: str, U: List[str]) -> Tuple[
-    pyagrum.Tensor, pyagrum.Tensor, pyagrum.Tensor]:
+  def computeStatsForTests(self, X: str, Y: str, U: List[str]) -> Tuple[pyagrum.Tensor, pyagrum.Tensor, pyagrum.Tensor]:
     """
     Computes time spent and number of transitions values of ``X`` when conditioned by ``Y`` and ``U`` and
     returns them as ``pyagrum.Tensor``. Used for independence testing.

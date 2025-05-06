@@ -38,32 +38,29 @@
 collection of utilities for pyagrum.lib
 """
 
-from typing import Dict, Tuple
+from typing import Dict
 import csv
 import pydot as dot
 
 import pyagrum as gum
+from collections import namedtuple
 
 
 def setDarkTheme():
-  """ change the color for arcs and text in graphs to be more visible in dark theme
-  """
+  """change the color for arcs and text in graphs to be more visible in dark theme"""
   gum.config["notebook", "default_arc_color"] = "#AAAAAA"
 
 
 def setLightTheme():
-  """ change the color for arcs and text in graphs to be more visible in light theme
-  """
+  """change the color for arcs and text in graphs to be more visible in light theme"""
   gum.config["notebook", "default_arc_color"] = "#4A4A4A"
 
 
 def getBlackInTheme():
-  """ return the color used for arc and text in graphs
-  """
+  """return the color used for arc and text in graphs"""
   return gum.config["notebook", "default_arc_color"]
 
 
-from collections import namedtuple
 
 DotPoint = namedtuple("DotPoint", ["x", "y"])
 
@@ -82,13 +79,11 @@ def dot_layout(g: dot.Dot) -> Dict[str, DotPoint]:
   Dict[str,Tuple[float, float]]
      the layout i.e. the position of each node, identified by their name.
   """
-  return {l[1]: DotPoint(float(l[2]), float(l[3]))
-          for l in csv.reader(g.create(format="plain")
-                              .decode("utf8")
-                              .split("\n")
-                              , delimiter=' '
-                              , quotechar='"')
-          if len(l) > 3 and l[0] == "node"}
+  return {
+    l[1]: DotPoint(float(l[2]), float(l[3]))
+    for l in csv.reader(g.create(format="plain").decode("utf8").split("\n"), delimiter=" ", quotechar='"')
+    if len(l) > 3 and l[0] == "node"
+  }
 
 
 def apply_dot_layout(g: dot.Dot, layout: Dict[str, DotPoint]):
@@ -108,7 +103,7 @@ def apply_dot_layout(g: dot.Dot, layout: Dict[str, DotPoint]):
     name = n.get_name()
     if name in {"edge", "node"}:  # default attributes for all following nodes or edges
       continue
-    if name[0] == "\"":
+    if name[0] == '"':
       pos = layout[name[1:-1]]
     else:
       pos = layout[name]

@@ -51,8 +51,9 @@ class _const:
     # we do not show the colors
     d: dict[str, Any] = self.__dict__
     l: list[str] = [
-      f"{self.C_MSG}{k}{self.C_END} : {self.C_VALUE}{d[k] if not k.startswith('C_') else '(escape sequence)'}{self.C_END}" for
-      k in sorted(d.keys())]
+      f"{self.C_MSG}{k}{self.C_END} : {self.C_VALUE}{d[k] if not k.startswith('C_') else '(escape sequence)'}{self.C_END}"
+      for k in sorted(d.keys())
+    ]
     return "\n".join(l)
 
 

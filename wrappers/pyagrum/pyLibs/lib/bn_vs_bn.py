@@ -46,8 +46,7 @@ import pydot as dot
 
 import pyagrum as gum
 import pyagrum.lib.bn2graph as ggr
-import  pyagrum.lib.utils as gutils
-import pyagrum.lib._colors as gcols
+import pyagrum.lib.utils as gutils
 
 
 STRUCTURAL_HAMMING = "structural hamming"
@@ -76,15 +75,13 @@ class GraphicalBNComparator:
     self.DELTA_ERROR = delta
     if isinstance(bn1, str):
       self._bn1 = gum.loadBN(bn1)
-      self._bn1.setProperty(
-        'name', '"' + os.path.basename(self._bn1.property('name') + '"'))
+      self._bn1.setProperty("name", '"' + os.path.basename(self._bn1.property("name") + '"'))
     else:
       self._bn1 = bn1
 
     if isinstance(bn2, str):
       self._bn2 = gum.loadBN(bn2)
-      self._bn2.setProperty(
-        'name', '"' + os.path.basename(self._bn2.property('name') + '"'))
+      self._bn2.setProperty("name", '"' + os.path.basename(self._bn2.property("name") + '"'))
     else:
       self._bn2 = bn2
 
@@ -93,8 +90,8 @@ class GraphicalBNComparator:
 
     if s1 != s2:
       raise ValueError(
-        "The 2 BNs are not comparable! There are names not present in the 2 BNs : " + str(
-          s1.symmetric_difference(s2)))
+        "The 2 BNs are not comparable! There are names not present in the 2 BNs : " + str(s1.symmetric_difference(s2))
+      )
 
   def _compareBNVariables(self):
     """
@@ -133,8 +130,11 @@ class GraphicalBNComparator:
       p1 = self._parents_name(self._bn1, id1)
       p2 = self._parents_name(self._bn2, id2)
       if p1 != p2:
-        return self._bn1.variable(id1).name() + " has different parents in the two bns whose names are in " + str(
-          p1.symmetric_difference(p2))
+        return (
+          self._bn1.variable(id1).name()
+          + " has different parents in the two bns whose names are in "
+          + str(p1.symmetric_difference(p2))
+        )
 
     return "OK"
 
@@ -209,7 +209,7 @@ class GraphicalBNComparator:
     return ret
 
   def dotDiff(self):
-    """ Return a pydot graph that compares the arcs of _bn1 (reference) with those of self._bn2.
+    """Return a pydot graph that compares the arcs of _bn1 (reference) with those of self._bn2.
     full black line: the arc is common for both
     full red line: the arc is common but inverted in _bn2
     dotted black line: the arc is added in _bn2
@@ -249,23 +249,21 @@ class GraphicalBNComparator:
 
     # Loop on pairs of variables
     for head, tail in combinations(listVariables, 2):
-
       idHead_1 = self._bn1.idFromName(head)
       idTail_1 = self._bn1.idFromName(tail)
 
       idHead_2 = self._bn2.idFromName(head)
       idTail_2 = self._bn2.idFromName(tail)
 
-      if (self._bn1.dag().existsArc(idHead_1, idTail_1) or
-         self._bn1.dag().existsArc(idTail_1, idHead_1)):  # Check edge node1-node2
-        if (self._bn2.dag().existsArc(idHead_2, idTail_2) or
-           self._bn2.dag().existsArc(idTail_2, idHead_2)):  # if edge:
+      if self._bn1.dag().existsArc(idHead_1, idTail_1) or self._bn1.dag().existsArc(
+        idTail_1, idHead_1
+      ):  # Check edge node1-node2
+        if self._bn2.dag().existsArc(idHead_2, idTail_2) or self._bn2.dag().existsArc(idTail_2, idHead_2):  # if edge:
           count["tp"] += 1
         else:  # If no edge:
           count["fn"] += 1
       else:  # Check if no edge
-        if (self._bn2.dag().existsArc(idHead_2, idTail_2) or
-           self._bn2.dag().existsArc(idTail_2, idHead_2)):  # If edge
+        if self._bn2.dag().existsArc(idHead_2, idTail_2) or self._bn2.dag().existsArc(idTail_2, idHead_2):  # If edge
           count["fp"] += 1
         else:  # If no arc
           count["tn"] += 1
@@ -287,11 +285,11 @@ class GraphicalBNComparator:
       Fscore = 0.0
 
     return {
-      'count': count,
-      'recall': recall,
-      'precision': precision,
-      'fscore': Fscore,
-      'dist2opt': math.sqrt((1 - precision) ** 2 + (1 - recall) ** 2)
+      "count": count,
+      "recall": recall,
+      "precision": precision,
+      "fscore": Fscore,
+      "dist2opt": math.sqrt((1 - precision) ** 2 + (1 - recall) ** 2),
     }
 
   def scores(self):
@@ -352,11 +350,11 @@ class GraphicalBNComparator:
       Fscore = 0.0
 
     return {
-      'count': count,
-      'recall': recall,
-      'precision': precision,
-      'fscore': Fscore,
-      'dist2opt': math.sqrt((1 - precision) ** 2 + (1 - recall) ** 2)
+      "count": count,
+      "recall": recall,
+      "precision": precision,
+      "fscore": Fscore,
+      "dist2opt": math.sqrt((1 - precision) ** 2 + (1 - recall) ** 2),
     }
 
   def hamming(self):
@@ -389,35 +387,42 @@ class GraphicalBNComparator:
       if cpdag1.existsArc(idHead_1, idTail_1):  # Check arcs head->tail
         if cpdag2.existsArc(idTail_2, idHead_2) or cpdag2.existsEdge(idTail_2, idHead_2):
           hamming_dico[STRUCTURAL_HAMMING] += 1
-        elif not cpdag2.existsArc(idTail_2, idHead_2) and not cpdag2.existsArc(idHead_2,
-                                                                               idTail_2) and not cpdag2.existsEdge(
-          idTail_2, idHead_2):
-
+        elif (
+          not cpdag2.existsArc(idTail_2, idHead_2)
+          and not cpdag2.existsArc(idHead_2, idTail_2)
+          and not cpdag2.existsEdge(idTail_2, idHead_2)
+        ):
           hamming_dico[STRUCTURAL_HAMMING] += 1
           hamming_dico[PURE_HAMMING] += 1
 
       elif cpdag1.existsArc(idTail_1, idHead_1):  # Check arcs tail->head
         if cpdag2.existsArc(idHead_2, idTail_2) or cpdag2.existsEdge(idTail_2, idHead_2):
           hamming_dico[STRUCTURAL_HAMMING] += 1
-        elif not cpdag2.existsArc(idTail_2, idHead_2) and \
-           not cpdag2.existsArc(idHead_2, idTail_2) and \
-           not cpdag2.existsEdge(idTail_2, idHead_2):
+        elif (
+          not cpdag2.existsArc(idTail_2, idHead_2)
+          and not cpdag2.existsArc(idHead_2, idTail_2)
+          and not cpdag2.existsEdge(idTail_2, idHead_2)
+        ):
           hamming_dico[STRUCTURAL_HAMMING] += 1
           hamming_dico[PURE_HAMMING] += 1
 
       elif cpdag1.existsEdge(idTail_1, idHead_1):  # Check edge
         if cpdag2.existsArc(idHead_2, idTail_2) or cpdag2.existsArc(idTail_2, idHead_2):
           hamming_dico[STRUCTURAL_HAMMING] += 1
-        elif not cpdag2.existsArc(idTail_2, idHead_2) and \
-           not cpdag2.existsArc(idHead_2, idTail_2) and \
-           not cpdag2.existsEdge(idTail_2, idHead_2):
+        elif (
+          not cpdag2.existsArc(idTail_2, idHead_2)
+          and not cpdag2.existsArc(idHead_2, idTail_2)
+          and not cpdag2.existsEdge(idTail_2, idHead_2)
+        ):
           hamming_dico[STRUCTURAL_HAMMING] += 1
           hamming_dico[PURE_HAMMING] += 1
           # check no edge or arc on the ref graph, and yes on the other graph
 
-      elif cpdag2.existsArc(idHead_2, idTail_2) or \
-         cpdag2.existsEdge(idHead_2, idTail_2) or \
-         cpdag2.existsArc(idTail_2, idHead_2):
+      elif (
+        cpdag2.existsArc(idHead_2, idTail_2)
+        or cpdag2.existsEdge(idHead_2, idTail_2)
+        or cpdag2.existsArc(idTail_2, idHead_2)
+      ):
         hamming_dico[STRUCTURAL_HAMMING] += 1
         hamming_dico[PURE_HAMMING] += 1
 
@@ -425,7 +430,7 @@ class GraphicalBNComparator:
 
 
 def graphDiff(bnref, bncmp, noStyle=False):
-  """ Return a pydot graph that compares the arcs of bnref to bncmp.
+  """Return a pydot graph that compares the arcs of bnref to bncmp.
   graphDiff allows bncmp to have less nodes than bnref. (this is not the case in GraphicalBNComparator.dotDiff())
 
   if noStyle is False use 4 styles (fixed in pyagrum.config) :
@@ -447,75 +452,98 @@ def graphDiff(bnref, bncmp, noStyle=False):
   g = ggr.BN2dot(bnref)
   positions = gutils.dot_layout(g)
 
-  res = dot.Dot(graph_type='digraph', bgcolor="transparent",
-                layout="fdp", splines=True)
+  res = dot.Dot(graph_type="digraph", bgcolor="transparent", layout="fdp", splines=True)
   for i1 in bnref.nodes():
-    pos = positions[bnref.variable(i1).name()]
     if bnref.variable(i1).name() in bncmp.names():
-      res.add_node(dot.Node(f'"{bnref.variable(i1).name()}"',
-                            style="filled",
-                            fillcolor=gum.config["notebook",
-                            "graphdiff_correct_color"],
-                            color=gutils.getBlackInTheme()
-                            )
-                   )
+      res.add_node(
+        dot.Node(
+          f'"{bnref.variable(i1).name()}"',
+          style="filled",
+          fillcolor=gum.config["notebook", "graphdiff_correct_color"],
+          color=gutils.getBlackInTheme(),
+        )
+      )
     else:
       if not noStyle:
-        res.add_node(dot.Node(f'"{bnref.variable(i1).name()}"',
-                              style="dashed",
-                              fillcolor=gum.config["notebook",
-                              "graphdiff_correct_color"],
-                              color=gutils.getBlackInTheme()
-                              )
-                     )
+        res.add_node(
+          dot.Node(
+            f'"{bnref.variable(i1).name()}"',
+            style="dashed",
+            fillcolor=gum.config["notebook", "graphdiff_correct_color"],
+            color=gutils.getBlackInTheme(),
+          )
+        )
   if noStyle:
-    for (i1, i2) in bncmp.arcs():
+    for i1, i2 in bncmp.arcs():
       n1 = bncmp.variable(i1).name()
       n2 = bncmp.variable(i2).name()
-      res.add_edge(dot.Edge(f'"{n1}"', f'"{n2}"',
-                            style=gum.config["notebook",
-                            "graphdiff_correct_style"],
-                            color=gum.config["notebook", "graphdiff_correct_color"]))
+      res.add_edge(
+        dot.Edge(
+          f'"{n1}"',
+          f'"{n2}"',
+          style=gum.config["notebook", "graphdiff_correct_style"],
+          color=gum.config["notebook", "graphdiff_correct_color"],
+        )
+      )
 
   else:
-    for (i1, i2) in bnref.arcs():
+    for i1, i2 in bnref.arcs():
       n1 = bnref.variable(i1).name()
       n2 = bnref.variable(i2).name()
 
       # a node is missing
       if not (n1 in bncmp.names() and n2 in bncmp.names()):
-        res.add_edge(dot.Edge(f'"{n1}"', f'"{n2}"',
-                              style=gum.config["notebook",
-                              "graphdiff_missing_style"],
-                              color=gum.config["notebook", "graphdiff_missing_color"]))
+        res.add_edge(
+          dot.Edge(
+            f'"{n1}"',
+            f'"{n2}"',
+            style=gum.config["notebook", "graphdiff_missing_style"],
+            color=gum.config["notebook", "graphdiff_missing_color"],
+          )
+        )
         continue
 
       if bncmp.existsArc(n1, n2):  # arc is OK in BN2
-        res.add_edge(dot.Edge(f'"{n1}"', f'"{n2}"',
-                              style=gum.config["notebook",
-                              "graphdiff_correct_style"],
-                              color=gum.config["notebook", "graphdiff_correct_color"]))
+        res.add_edge(
+          dot.Edge(
+            f'"{n1}"',
+            f'"{n2}"',
+            style=gum.config["notebook", "graphdiff_correct_style"],
+            color=gum.config["notebook", "graphdiff_correct_color"],
+          )
+        )
       elif bncmp.existsArc(n2, n1):  # arc is reversed in BN2
-        res.add_edge(dot.Edge(f'"{n1}"', f'"{n2}"',
-                              style="invis"))
-        res.add_edge(dot.Edge(f'"{n2}"', f'"{n1}"',
-                              style=gum.config["notebook",
-                              "graphdiff_reversed_style"],
-                              color=gum.config["notebook", "graphdiff_reversed_color"]))
+        res.add_edge(dot.Edge(f'"{n1}"', f'"{n2}"', style="invis"))
+        res.add_edge(
+          dot.Edge(
+            f'"{n2}"',
+            f'"{n1}"',
+            style=gum.config["notebook", "graphdiff_reversed_style"],
+            color=gum.config["notebook", "graphdiff_reversed_color"],
+          )
+        )
       else:  # arc is missing in BN2
-        res.add_edge(dot.Edge(f'"{n1}"', f'"{n2}"',
-                              style=gum.config["notebook",
-                              "graphdiff_missing_style"],
-                              color=gum.config["notebook", "graphdiff_missing_color"]))
+        res.add_edge(
+          dot.Edge(
+            f'"{n1}"',
+            f'"{n2}"',
+            style=gum.config["notebook", "graphdiff_missing_style"],
+            color=gum.config["notebook", "graphdiff_missing_color"],
+          )
+        )
 
-    for (i1, i2) in bncmp.arcs():
+    for i1, i2 in bncmp.arcs():
       n1 = bncmp.variable(i1).name()
       n2 = bncmp.variable(i2).name()
       if not bnref.existsArc(n1, n2) and not bnref.existsArc(n2, n1):  # arc only in BN2
-        res.add_edge(dot.Edge(f'"{n1}"', f'"{n2}"',
-                              style=gum.config["notebook",
-                              "graphdiff_overflow_style"],
-                              color=gum.config["notebook", "graphdiff_overflow_color"]))
+        res.add_edge(
+          dot.Edge(
+            f'"{n1}"',
+            f'"{n2}"',
+            style=gum.config["notebook", "graphdiff_overflow_style"],
+            color=gum.config["notebook", "graphdiff_overflow_color"],
+          )
+        )
 
     gutils.apply_dot_layout(res, positions)
 
@@ -530,24 +558,44 @@ def graphDiffLegend():
   except ImportError:
     return None
 
-  res = dot.Dot(graph_type='digraph', bgcolor="transparent", rankdir="LR")
+  res = dot.Dot(graph_type="digraph", bgcolor="transparent", rankdir="LR")
   for i in "abcdefgh":
     res.add_node(dot.Node(i, style="invis"))
-  res.add_edge(dot.Edge("a", "b", label="overflow",
-                        style=gum.config["notebook",
-                        "graphdiff_overflow_style"],
-                        color=gum.config["notebook", "graphdiff_overflow_color"]))
-  res.add_edge(dot.Edge("c", "d", label="Missing",
-                        style=gum.config["notebook",
-                        "graphdiff_missing_style"],
-                        color=gum.config["notebook", "graphdiff_missing_color"]))
-  res.add_edge(dot.Edge("e", "f", label="reversed",
-                        style=gum.config["notebook",
-                        "graphdiff_reversed_style"],
-                        color=gum.config["notebook", "graphdiff_reversed_color"]))
-  res.add_edge(dot.Edge("g", "h", label="Correct",
-                        style=gum.config["notebook",
-                        "graphdiff_correct_style"],
-                        color=gum.config["notebook", "graphdiff_correct_color"]))
+  res.add_edge(
+    dot.Edge(
+      "a",
+      "b",
+      label="overflow",
+      style=gum.config["notebook", "graphdiff_overflow_style"],
+      color=gum.config["notebook", "graphdiff_overflow_color"],
+    )
+  )
+  res.add_edge(
+    dot.Edge(
+      "c",
+      "d",
+      label="Missing",
+      style=gum.config["notebook", "graphdiff_missing_style"],
+      color=gum.config["notebook", "graphdiff_missing_color"],
+    )
+  )
+  res.add_edge(
+    dot.Edge(
+      "e",
+      "f",
+      label="reversed",
+      style=gum.config["notebook", "graphdiff_reversed_style"],
+      color=gum.config["notebook", "graphdiff_reversed_color"],
+    )
+  )
+  res.add_edge(
+    dot.Edge(
+      "g",
+      "h",
+      label="Correct",
+      style=gum.config["notebook", "graphdiff_correct_style"],
+      color=gum.config["notebook", "graphdiff_correct_color"],
+    )
+  )
 
   return res

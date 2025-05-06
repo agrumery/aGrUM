@@ -45,9 +45,6 @@ class GaussianVariable:
     self._sigma = sigma
     self._name = name
 
-  def __str__(self):
-    return self._name
-
   def __repr__(self):
     return str(self)
 
@@ -106,5 +103,5 @@ class GaussianVariable:
     """
     self._sigma = sigma
 
-  def __str__(self)->str:
+  def __str__(self) -> str:
     return f"{self._name}:{self._mu}[{self._sigma}]"

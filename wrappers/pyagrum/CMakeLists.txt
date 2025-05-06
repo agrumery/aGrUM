@@ -152,7 +152,7 @@ macro(gum_add_python_module MODULENAME)
   add_custom_command(TARGET ${_PYAGRUMLIB} POST_BUILD COMMAND ${CMAKE_COMMAND} -E copy_directory "${CMAKE_CURRENT_SOURCE_DIR}/pyLibs/skbn" "${CMAKE_CURRENT_BINARY_DIR}/skbn")
   add_custom_command(TARGET ${_PYAGRUMLIB} POST_BUILD COMMAND ${CMAKE_COMMAND} -E copy_directory "${CMAKE_CURRENT_SOURCE_DIR}/pyLibs/clg" "${CMAKE_CURRENT_BINARY_DIR}/clg")
   add_custom_command(TARGET ${_PYAGRUMLIB} POST_BUILD COMMAND ${CMAKE_COMMAND} -E copy_directory "${CMAKE_CURRENT_SOURCE_DIR}/pyLibs/ctbn" "${CMAKE_CURRENT_BINARY_DIR}/ctbn")
-  
+
 endmacro()
 
 #foreach(MODULE ${LIST_OF_MODULES})
@@ -209,7 +209,7 @@ set(PYAGRUM_DISTDIR "pyagrum-${PYAGRUM_VERSION}.dist-info")
 
 configure_file("${CMAKE_CURRENT_SOURCE_DIR}/cmake/__init__.in.py" "${CMAKE_CURRENT_BINARY_DIR}/__init__.py")
 configure_file("${CMAKE_CURRENT_SOURCE_DIR}/cmake/deprecated.in.py" "${CMAKE_CURRENT_BINARY_DIR}/deprecated.py")
-configure_file("${CMAKE_CURRENT_SOURCE_DIR}/cmake/common.py.in" "${CMAKE_CURRENT_BINARY_DIR}/common.py")
+configure_file("${CMAKE_CURRENT_SOURCE_DIR}/cmake/common.in.py" "${CMAKE_CURRENT_BINARY_DIR}/common.py")
 configure_file("${CMAKE_CURRENT_SOURCE_DIR}/cmake/METADATA.in" "${CMAKE_CURRENT_BINARY_DIR}/METADATA")
 configure_file("${CMAKE_CURRENT_SOURCE_DIR}/cmake/WHEEL.in" "${CMAKE_CURRENT_BINARY_DIR}/WHEEL")
 configure_file("${CMAKE_CURRENT_SOURCE_DIR}/../../LICENSE" "${CMAKE_CURRENT_BINARY_DIR}/LICENSE")

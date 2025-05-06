@@ -41,6 +41,7 @@ Particularly, the DiscreteTypeProcessor class is used to discretize some continu
 The discretization is done using the following methods: 'quantile', 'uniform', 'kmeans', 'NML', 'CAIM' and 'MDLP'.
 Some methods need specialized treatment of arguments for classification (y separated from X).
 """
+
 import math
 
 import numpy
@@ -49,7 +50,6 @@ import scipy
 import sklearn
 import sklearn.preprocessing as skp
 
-import warnings
 from typing import Any
 
 import pyagrum as gum
@@ -65,7 +65,7 @@ def check_int(v: Any) -> bool:
     return True
 
   if isinstance(v, str):
-    if v[0] in ('-', '+'):
+    if v[0] in ("-", "+"):
       return v[1:].isdigit()
     return v.isdigit()
   return False
@@ -94,7 +94,7 @@ def check_float(v: Any) -> bool:
     return False
 
 
-class DiscreteTypeProcessor():
+class DiscreteTypeProcessor:
   """
   Represents a tool to process the type of the variables in a database in order to obtain  a way to learn a pyAgrum's discrete Graphical Model.
   Particularly, the DiscreteTypeProcessor class is used to discretize some continuous variables in a database.
@@ -125,7 +125,7 @@ class DiscreteTypeProcessor():
 
   """
 
-  def __init__(self, defaultDiscretizationMethod='quantile', defaultNumberOfBins=10, discretizationThreshold=25):
+  def __init__(self, defaultDiscretizationMethod="quantile", defaultNumberOfBins=10, discretizationThreshold=25):
     """
     Initializes the DiscreteTypeProcessor object.
 
@@ -167,7 +167,7 @@ class DiscreteTypeProcessor():
     ----------
       clearDiscretizationParameters: bool
         if True, this method also clears the parameters the user has set for each variable and resets them to the default.
-   """
+    """
     self.numberOfContinuous = 0
     self.totalNumberOfBins = 0
     if clearDiscretizationParameters:
@@ -200,8 +200,8 @@ class DiscreteTypeProcessor():
           - 'NoDiscretization': this parameter is a superset of the values for the variable found in the database.
     """
     if variableName in self.discretizationParametersDictionary:
-      oldParamDiscretizationMethod = self.discretizationParametersDictionary[variableName]['param']
-      oldMethod = self.discretizationParametersDictionary[variableName]['method']
+      oldParamDiscretizationMethod = self.discretizationParametersDictionary[variableName]["param"]
+      oldMethod = self.discretizationParametersDictionary[variableName]["method"]
     else:
       oldParamDiscretizationMethod = self.defaultParamDiscretizationMethod
       oldMethod = self.defaultMethod
@@ -209,37 +209,41 @@ class DiscreteTypeProcessor():
     if method is None:
       method = oldMethod
 
-    if parameters is None and method not in {'NoDiscretization', 'expert'}:
+    if parameters is None and method not in {"NoDiscretization", "expert"}:
       parameters = oldParamDiscretizationMethod
 
-    if method not in {'kmeans', 'uniform', 'quantile', 'NML', 'MDLP', 'CAIM', 'NoDiscretization', 'expert'}:
+    if method not in {"kmeans", "uniform", "quantile", "NML", "MDLP", "CAIM", "NoDiscretization", "expert"}:
       raise ValueError(
         "This discretization method is not recognized! Possible values are kmeans, uniform, quantile, NML, "
-        "CAIM, MDLP, NoDiscretization or expert. You have entered " + str(method))
+        "CAIM, MDLP, NoDiscretization or expert. You have entered " + str(method)
+      )
 
-    if parameters == 'elbowMethod':
+    if parameters == "elbowMethod":
       if method == "NML":
         raise ValueError(
-          "The elbow Method cannot be used as the number of bins for the algorithm NML. Please select an integer value")
-    elif method not in {'NoDiscretization', 'expert'}:
+          "The elbow Method cannot be used as the number of bins for the algorithm NML. Please select an integer value"
+        )
+    elif method not in {"NoDiscretization", "expert"}:
       try:
-        paramDiscretizationMethod = int(parameters)
-      except:
+        _ = int(parameters)
+      except ValueError:
         raise ValueError(
-          "The possible values for paramDiscretizationMethod are any integer or the string 'elbowMethod'. You have entered: " + str(
-            parameters))
+          "The possible values for paramDiscretizationMethod are any integer or the string 'elbowMethod'. You have entered: "
+          + str(parameters)
+        )
     else:
       if parameters is not None and not isinstance(parameters, list):
         raise ValueError(
-          f"For a NotDiscretized/expert method, the parameter has to be None or a list of values but not '{parameters}'.")
+          f"For a NotDiscretized/expert method, the parameter has to be None or a list of values but not '{parameters}'."
+        )
 
     if variableName is None:
       self.defaultMethod = method
       self.defaultParamDiscretizationMethod = parameters
     else:
       self.discretizationParametersDictionary[variableName] = {}
-      self.discretizationParametersDictionary[variableName]['method'] = method
-      self.discretizationParametersDictionary[variableName]['param'] = parameters
+      self.discretizationParametersDictionary[variableName]["method"] = method
+      self.discretizationParametersDictionary[variableName]["param"] = parameters
 
   def audit(self, X, y=None):
     """
@@ -258,7 +262,7 @@ class DiscreteTypeProcessor():
     -------
       Dict
         for each variable, the proposition of audit
-     """
+    """
     if isinstance(X, str):
       Xp = pandas.read_csv(X)
     elif hasattr(X, "to_pandas"):  # for instance, polars dataframe
@@ -292,13 +296,13 @@ class DiscreteTypeProcessor():
     -------
       Dict
         for each variable, the proposition of audit
-     """
+    """
 
     auditDict = {}
 
     if isinstance(X, pandas.DataFrame):
       variableNames = X.columns.tolist()
-    elif type(X) == pandas.core.series.Series:
+    elif type(X) is pandas.core.series.Series:
       variableNames = [X.name]
     else:
       variableNames = None
@@ -323,28 +327,28 @@ class DiscreteTypeProcessor():
       variable = variableNames[i]
       auditDict[variable] = {}
       try:
-        sklearn.utils.check_array(X[:, i], dtype='float', ensure_2d=False)
+        sklearn.utils.check_array(X[:, i], dtype="float", ensure_2d=False)
         isNumeric = True
       except ValueError:
         isNumeric = False
       if variable in self.discretizationParametersDictionary.keys():
         auditDict[variable] = self.discretizationParametersDictionary[variable]
-        if self.discretizationParametersDictionary[variable]['method'] != "NoDiscretization" and not isNumeric:
+        if self.discretizationParametersDictionary[variable]["method"] != "NoDiscretization" and not isNumeric:
           raise ValueError("The variable " + variable + " is not numeric and cannot be discretized!")
       else:
         if len(possibleValues[i]) > self.discretizationThreshold and isNumeric:
-          auditDict[variable]['method'] = self.defaultMethod
-          auditDict[variable]['nbBins'] = self.defaultParamDiscretizationMethod
+          auditDict[variable]["method"] = self.defaultMethod
+          auditDict[variable]["nbBins"] = self.defaultParamDiscretizationMethod
         else:
-          auditDict[variable]['method'] = 'NoDiscretization'
-          auditDict[variable]['values'] = possibleValues[i]
+          auditDict[variable]["method"] = "NoDiscretization"
+          auditDict[variable]["values"] = possibleValues[i]
 
-      if auditDict[variable]['method'] == "NoDiscretization":
-        auditDict[variable]['type'] = 'Discrete'
+      if auditDict[variable]["method"] == "NoDiscretization":
+        auditDict[variable]["type"] = "Discrete"
       else:
-        auditDict[variable]['type'] = 'Continuous'
-        auditDict[variable]['minInData'] = min(possibleValues[i])
-        auditDict[variable]['maxInData'] = max(possibleValues[i])
+        auditDict[variable]["type"] = "Continuous"
+        auditDict[variable]["minInData"] = min(possibleValues[i])
+        auditDict[variable]["maxInData"] = max(possibleValues[i])
 
     return auditDict
 
@@ -368,7 +372,7 @@ class DiscreteTypeProcessor():
           the edges of the bins the algorithm has chosen.
     """
 
-    if discretizationStrategy not in {'kmeans', 'quantile', 'uniform'}:
+    if discretizationStrategy not in {"kmeans", "quantile", "uniform"}:
       raise ValueError("cannot use elbow method with this type of discretization")
     variationArray = numpy.zeros(14)
     Xsorted = X[X.argsort(axis=None)]
@@ -399,9 +403,9 @@ class DiscreteTypeProcessor():
     # we linearly transform the coordinates of every point in our curve
     transformedCoordinates = numpy.zeros((2, 14))
     for i in range(14):
-      transformedCoordinates[:, i] = numpy.matmul(coordinateChangeMatrix,
-                                                  numpy.array([[i], [variationArray[i] - variationArray[0]]])).reshape(
-        2)
+      transformedCoordinates[:, i] = numpy.matmul(
+        coordinateChangeMatrix, numpy.array([[i], [variationArray[i] - variationArray[0]]])
+      ).reshape(2)
 
     # we search for the minimum in our newly obtained curve
     minkIndex = 0
@@ -409,8 +413,9 @@ class DiscreteTypeProcessor():
       if transformedCoordinates[1][minkIndex] > transformedCoordinates[1][k]:
         minkIndex = k
     # when we have found the minimum, we apply the inverse linear transformation to recover the optimal value of k
-    minimumVector = numpy.matmul(numpy.linalg.inv(coordinateChangeMatrix),
-                                 transformedCoordinates[:, minkIndex].reshape(2, 1))
+    minimumVector = numpy.matmul(
+      numpy.linalg.inv(coordinateChangeMatrix), transformedCoordinates[:, minkIndex].reshape(2, 1)
+    )
 
     # we return the list of bin edges found using said optimal number of k
     return binEdgeMatrix[int(round(minimumVector[0]))]
@@ -459,7 +464,8 @@ class DiscreteTypeProcessor():
     probabilityClass0 = Class0ByLargeInterval[0] / totalCountByLargeInterval[0]
     probabilityClass1 = Class1ByLargeInterval[0] / totalCountByLargeInterval[0]
     shannonEntropyByLargeInterval = [
-      (-1) * (probabilityClass0 * math.log2(probabilityClass0) + probabilityClass1 * math.log2(probabilityClass1))]
+      (-1) * (probabilityClass0 * math.log2(probabilityClass0) + probabilityClass1 * math.log2(probabilityClass1))
+    ]
 
     continueDividingInterval = [True]
 
@@ -467,78 +473,102 @@ class DiscreteTypeProcessor():
     minimalValues = {}
 
     while any(continueDividingInterval):
-      minimalValues['classInformationEntropy'] = math.inf
-      for param in {'boundaryIndex', 'leftSubintervalClass0', 'leftSubintervalClass1', 'leftSubintervalShannonEntropy',
-                    'rightSubintervalClass0', 'rightSubintervalClass1', 'rightSubintervalShannonEntropy'}:
+      minimalValues["classInformationEntropy"] = math.inf
+      for param in {
+        "boundaryIndex",
+        "leftSubintervalClass0",
+        "leftSubintervalClass1",
+        "leftSubintervalShannonEntropy",
+        "rightSubintervalClass0",
+        "rightSubintervalClass1",
+        "rightSubintervalShannonEntropy",
+      }:
         (currentValues[param], minimalValues[param]) = (0, 0)
 
       position = 0
-      while currentValues['boundaryIndex'] < len(B):
-
+      while currentValues["boundaryIndex"] < len(B):
         while not continueDividingInterval[position]:
           position = position + 1
-          currentValues['boundaryIndex'] = binEdgesIndex[position - 1] + 1
+          currentValues["boundaryIndex"] = binEdgesIndex[position - 1] + 1
 
-        if position < len(binEdgesIndex) and currentValues['boundaryIndex'] == binEdgesIndex[position]:
+        if position < len(binEdgesIndex) and currentValues["boundaryIndex"] == binEdgesIndex[position]:
           # this function decides whether to accept the cut point in this interval and updates the relevant lists if
           # the value is accepted.
-          self._divideIntervalMDLP(minimalValues, shannonEntropyByLargeInterval, Class0ByLargeInterval,
-                                   Class1ByLargeInterval, continueDividingInterval, totalCountByLargeInterval, position,
-                                   binEdgesIndex)
+          self._divideIntervalMDLP(
+            minimalValues,
+            shannonEntropyByLargeInterval,
+            Class0ByLargeInterval,
+            Class1ByLargeInterval,
+            continueDividingInterval,
+            totalCountByLargeInterval,
+            position,
+            binEdgesIndex,
+          )
           position += 1
           while position < len(continueDividingInterval) and not continueDividingInterval[position]:
             position += 1
           if position == len(continueDividingInterval):
             break
           else:
-            currentValues['boundaryIndex'] = binEdgesIndex[position - 1] + 1
-          (currentValues['leftSubintervalClass0'], currentValues['leftSubintervalClass1']) = (0, 0)
-          minimalValues['classInformationEntropy'] = math.inf
+            currentValues["boundaryIndex"] = binEdgesIndex[position - 1] + 1
+          (currentValues["leftSubintervalClass0"], currentValues["leftSubintervalClass1"]) = (0, 0)
+          minimalValues["classInformationEntropy"] = math.inf
           continue
 
-        currentValues['leftSubintervalClass0'] += nbElementsByIntervalClass0[currentValues['boundaryIndex']]
-        currentValues['leftSubintervalClass1'] += nbElementsByIntervalClass1[currentValues['boundaryIndex']]
+        currentValues["leftSubintervalClass0"] += nbElementsByIntervalClass0[currentValues["boundaryIndex"]]
+        currentValues["leftSubintervalClass1"] += nbElementsByIntervalClass1[currentValues["boundaryIndex"]]
 
-        totalCountLeftInterval = currentValues['leftSubintervalClass0'] + currentValues['leftSubintervalClass1']
+        totalCountLeftInterval = currentValues["leftSubintervalClass0"] + currentValues["leftSubintervalClass1"]
 
-        probabilityClass0 = currentValues['leftSubintervalClass0'] / totalCountLeftInterval
-        probabilityClass1 = currentValues['leftSubintervalClass1'] / totalCountLeftInterval
-        currentValues['leftSubintervalShannonEntropy'] = 0
+        probabilityClass0 = currentValues["leftSubintervalClass0"] / totalCountLeftInterval
+        probabilityClass1 = currentValues["leftSubintervalClass1"] / totalCountLeftInterval
+        currentValues["leftSubintervalShannonEntropy"] = 0
         if probabilityClass0 > 0:
-          currentValues['leftSubintervalShannonEntropy'] += (-1) * probabilityClass0 * math.log2(probabilityClass0)
+          currentValues["leftSubintervalShannonEntropy"] += (-1) * probabilityClass0 * math.log2(probabilityClass0)
         if probabilityClass1 > 0:
-          currentValues['leftSubintervalShannonEntropy'] += (-1) * probabilityClass1 * math.log2(probabilityClass1)
+          currentValues["leftSubintervalShannonEntropy"] += (-1) * probabilityClass1 * math.log2(probabilityClass1)
 
         classInformationEntropy = (totalCountLeftInterval / totalCountByLargeInterval[position]) * currentValues[
-          'leftSubintervalShannonEntropy']
+          "leftSubintervalShannonEntropy"
+        ]
 
-        currentValues['rightSubintervalClass0'] = Class0ByLargeInterval[position] - currentValues[
-          'leftSubintervalClass0']
-        currentValues['rightSubintervalClass1'] = Class1ByLargeInterval[position] - currentValues[
-          'leftSubintervalClass1']
-        NRightInterval = currentValues['rightSubintervalClass0'] + currentValues['rightSubintervalClass1']
+        currentValues["rightSubintervalClass0"] = (
+          Class0ByLargeInterval[position] - currentValues["leftSubintervalClass0"]
+        )
+        currentValues["rightSubintervalClass1"] = (
+          Class1ByLargeInterval[position] - currentValues["leftSubintervalClass1"]
+        )
+        NRightInterval = currentValues["rightSubintervalClass0"] + currentValues["rightSubintervalClass1"]
 
-        probabilityClass0 = currentValues['rightSubintervalClass0'] / NRightInterval
-        probabilityClass1 = currentValues['rightSubintervalClass1'] / NRightInterval
-        currentValues['rightSubintervalShannonEntropy'] = 0
+        probabilityClass0 = currentValues["rightSubintervalClass0"] / NRightInterval
+        probabilityClass1 = currentValues["rightSubintervalClass1"] / NRightInterval
+        currentValues["rightSubintervalShannonEntropy"] = 0
         if probabilityClass0 > 0:
-          currentValues['rightSubintervalShannonEntropy'] += (-1) * probabilityClass0 * math.log2(probabilityClass0)
+          currentValues["rightSubintervalShannonEntropy"] += (-1) * probabilityClass0 * math.log2(probabilityClass0)
         if probabilityClass1 > 0:
-          currentValues['rightSubintervalShannonEntropy'] += (-1) * probabilityClass1 * math.log2(probabilityClass1)
+          currentValues["rightSubintervalShannonEntropy"] += (-1) * probabilityClass1 * math.log2(probabilityClass1)
 
         classInformationEntropy += (NRightInterval / totalCountByLargeInterval[position]) * currentValues[
-          'rightSubintervalShannonEntropy']
+          "rightSubintervalShannonEntropy"
+        ]
 
-        if classInformationEntropy < minimalValues['classInformationEntropy']:
+        if classInformationEntropy < minimalValues["classInformationEntropy"]:
           minimalValues = currentValues.copy()
-          minimalValues['classInformationEntropy'] = classInformationEntropy
+          minimalValues["classInformationEntropy"] = classInformationEntropy
 
-        currentValues['boundaryIndex'] += 1
+        currentValues["boundaryIndex"] += 1
 
       if continueDividingInterval[-1]:
-        self._divideIntervalMDLP(minimalValues, shannonEntropyByLargeInterval, Class0ByLargeInterval,
-                                 Class1ByLargeInterval, continueDividingInterval, totalCountByLargeInterval, position,
-                                 binEdgesIndex)
+        self._divideIntervalMDLP(
+          minimalValues,
+          shannonEntropyByLargeInterval,
+          Class0ByLargeInterval,
+          Class1ByLargeInterval,
+          continueDividingInterval,
+          totalCountByLargeInterval,
+          position,
+          binEdgesIndex,
+        )
     binEdges = [xAndY[0][0]]
     for index in binEdgesIndex:
       binEdges.append(B[index])
@@ -603,14 +633,15 @@ class DiscreteTypeProcessor():
 
       for boundaryIndex in range(len(B)):
         if position < len(binEdgesIndex) and boundaryIndex == binEdgesIndex[position]:
-
           position += 1
           if Class0ByLargeInterval[position] > Class1ByLargeInterval[position]:
             oldCaim = globalCAIM * len(Class0ByLargeInterval) - math.pow(Class0ByLargeInterval[position], 2) / (
-               Class0ByLargeInterval[position] + Class1ByLargeInterval[position])
+              Class0ByLargeInterval[position] + Class1ByLargeInterval[position]
+            )
           else:
             oldCaim = globalCAIM * len(Class0ByLargeInterval) - math.pow(Class1ByLargeInterval[position], 2) / (
-               Class0ByLargeInterval[position] + Class1ByLargeInterval[position])
+              Class0ByLargeInterval[position] + Class1ByLargeInterval[position]
+            )
           currentSumClass0 = 0
           currentSumClass1 = 0
           continue
@@ -653,10 +684,12 @@ class DiscreteTypeProcessor():
         k = k + 1
         if Class0ByLargeInterval[0] > Class1ByLargeInterval[0]:
           oldCaim = globalCAIM * len(Class0ByLargeInterval) - math.pow(Class0ByLargeInterval[0], 2) / (
-             Class0ByLargeInterval[0] + Class1ByLargeInterval[0])
+            Class0ByLargeInterval[0] + Class1ByLargeInterval[0]
+          )
         else:
           oldCaim = globalCAIM * len(Class0ByLargeInterval) - math.pow(Class1ByLargeInterval[0], 2) / (
-             Class0ByLargeInterval[0] + Class1ByLargeInterval[0])
+            Class0ByLargeInterval[0] + Class1ByLargeInterval[0]
+          )
 
       else:
         break
@@ -734,16 +767,15 @@ class DiscreteTypeProcessor():
     Bvalues = [Bkminus1[-1]]
     minimumeprime = 0
     while k <= kMax:
-
       for e in range(k, E):
-
         minimum = math.inf
         minimumeprime = 0
         for eprime in range(k - 1, e):
           if binCount[e] > binCount[eprime]:
             temp = Bkminus1[eprime] - (binCount[e] - binCount[eprime]) * (
-               math.log(2 * epsilon * (binCount[e] - binCount[eprime])) - math.log(
-              n * (candidateCutPoints[e] - candidateCutPoints[eprime])))
+              math.log(2 * epsilon * (binCount[e] - binCount[eprime]))
+              - math.log(n * (candidateCutPoints[e] - candidateCutPoints[eprime]))
+            )
           else:
             temp = Bkminus1[eprime]
           temp = temp + math.log(Rk[e] / Rkminus1[eprime])
@@ -766,7 +798,7 @@ class DiscreteTypeProcessor():
       if Bvalues[k] < minimum:
         minimum = Bvalues[k]
         minimumIndex = k
-    cutpoints = sorted(set(cutpoints[:minimumIndex + 1]))
+    cutpoints = sorted(set(cutpoints[: minimumIndex + 1]))
     cutpoints.append(candidateCutPoints[-1])
 
     return cutpoints
@@ -795,7 +827,7 @@ class DiscreteTypeProcessor():
       X, y = sklearn.utils.check_X_y(X, y, dtype=None, accept_sparse=True, ensure_2d=False)
     X = sklearn.utils.check_array(X, dtype=None, ensure_2d=False)
     try:
-      Xtransformed = sklearn.utils.check_array(X, dtype='float', ensure_2d=False)
+      Xtransformed = sklearn.utils.check_array(X, dtype="float", ensure_2d=False)
       isNumeric = True
     except ValueError:
       Xtransformed = X
@@ -804,19 +836,24 @@ class DiscreteTypeProcessor():
     foundValuesX = set(numpy.unique(X))
     n = len(X)
 
-    if variableName not in self.discretizationParametersDictionary:  # The user has not manually set the discretization parameters for this variable
-      if isNumeric and 1 <= self.discretizationThreshold < len(foundValuesX) or (
-         self.discretizationThreshold < 1 and len(foundValuesX) / len(X) > self.discretizationThreshold):
+    if (
+      variableName not in self.discretizationParametersDictionary
+    ):  # The user has not manually set the discretization parameters for this variable
+      if (
+        isNumeric
+        and 1 <= self.discretizationThreshold < len(foundValuesX)
+        or (self.discretizationThreshold < 1 and len(foundValuesX) / len(X) > self.discretizationThreshold)
+      ):
         self.discretizationParametersDictionary[variableName] = {}
-        self.discretizationParametersDictionary[variableName]['method'] = self.defaultMethod
-        self.discretizationParametersDictionary[variableName]['param'] = self.defaultParamDiscretizationMethod
+        self.discretizationParametersDictionary[variableName]["method"] = self.defaultMethod
+        self.discretizationParametersDictionary[variableName]["param"] = self.defaultParamDiscretizationMethod
       else:
         self.discretizationParametersDictionary[variableName] = {}
-        self.discretizationParametersDictionary[variableName]['method'] = "NoDiscretization"
+        self.discretizationParametersDictionary[variableName]["method"] = "NoDiscretization"
       usingDefaultParameters = True
     else:  # The user has manually set the discretization parameters for this variable
       usingDefaultParameters = False
-      if self.discretizationParametersDictionary[variableName]['method'] != "NoDiscretization" and not isNumeric:
+      if self.discretizationParametersDictionary[variableName]["method"] != "NoDiscretization" and not isNumeric:
         raise ValueError("The variable " + variableName + " is not numeric and cannot be discretized!")
 
     if self.discretizationParametersDictionary[variableName]["method"] == "NoDiscretization":
@@ -833,7 +870,8 @@ class DiscreteTypeProcessor():
         # foundValuesX must be in possibleValuesX
         if not foundValuesX.issubset(possibleValuesX):
           raise ValueError(
-            f"The values passed in possibleValues ({possibleValuesX}) do not match database values ({foundValuesX})")
+            f"The values passed in possibleValues ({possibleValuesX}) do not match database values ({foundValuesX})"
+          )
 
       for value in possibleValuesX:
         if check_int(value):
@@ -864,46 +902,61 @@ class DiscreteTypeProcessor():
           var = gum.LabelizedVariable(variableName, variableName, [str(v) for v in possibleValuesX])
     else:
       self.numberOfContinuous += 1
-      if self.discretizationParametersDictionary[variableName]['method'] == "expert":
-        binEdges = self.discretizationParametersDictionary[variableName]['param']
-      elif self.discretizationParametersDictionary[variableName]['method'] == "CAIM":
+      if self.discretizationParametersDictionary[variableName]["method"] == "expert":
+        binEdges = self.discretizationParametersDictionary[variableName]["param"]
+      elif self.discretizationParametersDictionary[variableName]["method"] == "CAIM":
         if y is None:
           raise ValueError(
             "The CAIM discretization method requires a list of the associated classes for each data vector since it "
-            "is a supervised discretization method. You should pass it as y.")
+            "is a supervised discretization method. You should pass it as y."
+          )
         if possibleValuesY is None:
           possibleValuesY = numpy.unique(y)
-        binEdges = self._discretizationCAIM(Xtransformed.reshape(n, 1), y.reshape(n, 1), numpy.unique(Xtransformed),
-                                            possibleValuesY)
-      elif self.discretizationParametersDictionary[variableName]['method'] == "MDLP":
+        binEdges = self._discretizationCAIM(
+          Xtransformed.reshape(n, 1), y.reshape(n, 1), numpy.unique(Xtransformed), possibleValuesY
+        )
+      elif self.discretizationParametersDictionary[variableName]["method"] == "MDLP":
         if y is None:
           raise ValueError(
             "The MDLP discretization method requires a list of the associated classes for each data vector since it "
-            "is a supervised discretization method. You should pass it as y.")
+            "is a supervised discretization method. You should pass it as y."
+          )
         if possibleValuesY is None:
           possibleValuesY = numpy.unique(y)
-        binEdges = self._discretizationMDLP(Xtransformed.reshape(n, 1), y.reshape(n, 1), numpy.unique(Xtransformed),
-                                            possibleValuesY)
-      elif self.discretizationParametersDictionary[variableName]['method'] == "NML":
-        binEdges = self._discretizationNML(Xtransformed.flatten(), numpy.unique(Xtransformed),
-                                           kMax=self.discretizationParametersDictionary[variableName]["param"])
+        binEdges = self._discretizationMDLP(
+          Xtransformed.reshape(n, 1), y.reshape(n, 1), numpy.unique(Xtransformed), possibleValuesY
+        )
+      elif self.discretizationParametersDictionary[variableName]["method"] == "NML":
+        binEdges = self._discretizationNML(
+          Xtransformed.flatten(),
+          numpy.unique(Xtransformed),
+          kMax=self.discretizationParametersDictionary[variableName]["param"],
+        )
       else:
-        if self.discretizationParametersDictionary[variableName]['param'] == 'elbowMethod':
+        if self.discretizationParametersDictionary[variableName]["param"] == "elbowMethod":
           binEdges = self._discretizationElbowMethodRotation(
-            self.discretizationParametersDictionary[variableName]['method'], Xtransformed.flatten())
+            self.discretizationParametersDictionary[variableName]["method"], Xtransformed.flatten()
+          )
         else:
-          discre = skp.KBinsDiscretizer(self.discretizationParametersDictionary[variableName]['param'],
-                                        strategy=self.discretizationParametersDictionary[variableName]['method'],
-                                        subsample=None)
+          discre = skp.KBinsDiscretizer(
+            self.discretizationParametersDictionary[variableName]["param"],
+            strategy=self.discretizationParametersDictionary[variableName]["method"],
+            subsample=None,
+          )
           discre.fit(X.reshape(-1, 1))
           binEdges = discre.bin_edges_[0].tolist()
 
       if len(binEdges) == 2:
-        raise ValueError("Due to an error the discretization method " + str(
-          self.discretizationParametersDictionary[variableName]['method']) + " using " + str(
-          self.discretizationParametersDictionary[variableName]['param']) + " bins for the variable " + str(
-          variableName) + "gave only 1 bin. Try increasing the number of bins used by this variable using "
-                          "setDiscretizationParameters to avoid this error")
+        raise ValueError(
+          "Due to an error the discretization method "
+          + str(self.discretizationParametersDictionary[variableName]["method"])
+          + " using "
+          + str(self.discretizationParametersDictionary[variableName]["param"])
+          + " bins for the variable "
+          + str(variableName)
+          + "gave only 1 bin. Try increasing the number of bins used by this variable using "
+          "setDiscretizationParameters to avoid this error"
+        )
 
       self.totalNumberOfBins += len(binEdges) - 1
       var = gum.DiscretizedVariable(variableName, variableName, binEdges)
@@ -915,49 +968,62 @@ class DiscreteTypeProcessor():
     return var
 
   @staticmethod
-  def _divideIntervalMDLP(minimalValues, shannonEntropyByLargeInterval, Class0ByLargeInterval,
-                          Class1ByLargeInterval, continueDividingInterval, totalCountByLargeInterval, position,
-                          binEdgesIndex):
+  def _divideIntervalMDLP(
+    minimalValues,
+    shannonEntropyByLargeInterval,
+    Class0ByLargeInterval,
+    Class1ByLargeInterval,
+    continueDividingInterval,
+    totalCountByLargeInterval,
+    position,
+    binEdgesIndex,
+  ):
     shannonEntropy = shannonEntropyByLargeInterval[position]
 
-    gain = shannonEntropy - minimalValues['classInformationEntropy']
+    gain = shannonEntropy - minimalValues["classInformationEntropy"]
 
     # all the 2's here should be replaced by the number of classes present in the interval. However we know that if
     # the number of classes in the interval is equal to 1, then the shannon entropy will be 0 so the product of the 2
     # will be 0.
     deltaS = math.log2(7) - (
-       2 * shannonEntropy - 2 * minimalValues['leftSubintervalShannonEntropy']
-       - 2 * minimalValues['rightSubintervalShannonEntropy'])
+      2 * shannonEntropy
+      - 2 * minimalValues["leftSubintervalShannonEntropy"]
+      - 2 * minimalValues["rightSubintervalShannonEntropy"]
+    )
 
-    if gain > (math.log2(totalCountByLargeInterval[position] - 1) + deltaS) / totalCountByLargeInterval[
-      position] or len(Class0ByLargeInterval) == 1:
-      binEdgesIndex.insert(position, minimalValues['boundaryIndex'])
+    if (
+      gain > (math.log2(totalCountByLargeInterval[position] - 1) + deltaS) / totalCountByLargeInterval[position]
+      or len(Class0ByLargeInterval) == 1
+    ):
+      binEdgesIndex.insert(position, minimalValues["boundaryIndex"])
 
-      Class0ByLargeInterval.insert(position + 1, minimalValues['rightSubintervalClass0'])
-      Class1ByLargeInterval.insert(position + 1, minimalValues['rightSubintervalClass1'])
+      Class0ByLargeInterval.insert(position + 1, minimalValues["rightSubintervalClass0"])
+      Class1ByLargeInterval.insert(position + 1, minimalValues["rightSubintervalClass1"])
       continueDividingInterval.insert(position + 1, True)
-      totalCountByLargeInterval.insert(position + 1, minimalValues['rightSubintervalClass0'] + minimalValues[
-        'rightSubintervalClass1'])
-      shannonEntropyByLargeInterval.insert(position + 1, minimalValues['rightSubintervalShannonEntropy'])
+      totalCountByLargeInterval.insert(
+        position + 1, minimalValues["rightSubintervalClass0"] + minimalValues["rightSubintervalClass1"]
+      )
+      shannonEntropyByLargeInterval.insert(position + 1, minimalValues["rightSubintervalShannonEntropy"])
 
-      Class0ByLargeInterval[position] = minimalValues['leftSubintervalClass0']
-      Class1ByLargeInterval[position] = minimalValues['leftSubintervalClass1']
-      totalCountByLargeInterval[position] = minimalValues['leftSubintervalClass0'] + minimalValues[
-        'leftSubintervalClass1']
-      shannonEntropyByLargeInterval[position] = minimalValues['leftSubintervalShannonEntropy']
+      Class0ByLargeInterval[position] = minimalValues["leftSubintervalClass0"]
+      Class1ByLargeInterval[position] = minimalValues["leftSubintervalClass1"]
+      totalCountByLargeInterval[position] = (
+        minimalValues["leftSubintervalClass0"] + minimalValues["leftSubintervalClass1"]
+      )
+      shannonEntropyByLargeInterval[position] = minimalValues["leftSubintervalShannonEntropy"]
 
       # if the class information entropy is 0, then we have perfectly cut the interval so that a class only appears
       # on one side, so we do not need to cut any further.
-      if minimalValues['leftSubintervalShannonEntropy'] == 0:
+      if minimalValues["leftSubintervalShannonEntropy"] == 0:
         continueDividingInterval[position] = False
-      if minimalValues['rightSubintervalShannonEntropy'] == 0:
+      if minimalValues["rightSubintervalShannonEntropy"] == 0:
         continueDividingInterval[position + 1] = False
 
         # if there are no tensor boundary points left in this interval, we can't divide it any further
-      if position > 0 and minimalValues['boundaryIndex'] - 1 == binEdgesIndex[position - 1]:
+      if position > 0 and minimalValues["boundaryIndex"] - 1 == binEdgesIndex[position - 1]:
         continueDividingInterval[position] = False
 
-      if minimalValues['boundaryIndex'] == 0:
+      if minimalValues["boundaryIndex"] == 0:
         continueDividingInterval[position] = False
 
       if position < len(binEdgesIndex) - 1 and binEdgesIndex[position] + 1 == binEdgesIndex[position + 1]:
@@ -991,8 +1057,10 @@ class DiscreteTypeProcessor():
 
     Example
     -------
-    >>> discretizer=DiscreteTypeProcessor(defaultDiscretizationMethod='uniform',defaultParamDiscretizationMethod=7,discretizationThreshold=10)
-    >>> learner=gum.BNLearner(data,discretizer.discretizedTemplate(data))
+    >>> discretizer = DiscreteTypeProcessor(
+    ...   defaultDiscretizationMethod="uniform", defaultParamDiscretizationMethod=7, discretizationThreshold=10
+    ... )
+    >>> learner = gum.BNLearner(data, discretizer.discretizedTemplate(data))
     """
     if template is None:
       template = gum.BayesNet()

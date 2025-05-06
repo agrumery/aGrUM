@@ -38,6 +38,7 @@
 Created on Thu Jun 11 14:08:14 2020
 
 """
+
 import numpy
 import math
 import warnings
@@ -104,7 +105,7 @@ def _fitTAN(X, y, bn, learner, variableList, target):
   d = X.shape[1]
 
   # If there is only one input column, TAN works exactly the same as NaiveBayes
-  if (d < 2):
+  if d < 2:
     _fitNaiveBayes(X, y, bn, learner, variableList, target, None)
     return
 
@@ -125,8 +126,10 @@ def _fitTAN(X, y, bn, learner, variableList, target):
           for xiIndex in range(len(probabilityList[yIndex][xjIndex])):
             if probabilityList[yIndex][xjIndex][xiIndex] > 0:
               temp = temp + probabilityList[yIndex][xjIndex][xiIndex] * math.log(
-                probabilityList[yIndex][xjIndex][xiIndex] * probabilityY[yIndex] / (
-                   probabilityXi[yIndex][xiIndex] * probabilityXj[yIndex][xjIndex]))
+                probabilityList[yIndex][xjIndex][xiIndex]
+                * probabilityY[yIndex]
+                / (probabilityXi[yIndex][xiIndex] * probabilityXj[yIndex][xjIndex])
+              )
       mutualInformation[(i, j)] = temp
   # if the mutual information between two variables is bigger than this threshold, we add an edge between them
   threshold = 0
@@ -145,7 +148,7 @@ def _fitTAN(X, y, bn, learner, variableList, target):
     undirectedGraph.addEdge(i, j)
 
     # if the edge causes a cycle, we delete the edge and pass on to the following pair of variables
-    if (undirectedGraph.hasUndirectedCycle()):
+    if undirectedGraph.hasUndirectedCycle():
       undirectedGraph.eraseEdge(i, j)
     # dict(int:set(int)): each key is a node from every connected part of the graph. The set associated is a set of all nodes that are part of the same connected part of the graph
   connectedParts = undirectedGraph.connectedComponents()
@@ -164,7 +167,8 @@ def _fitTAN(X, y, bn, learner, variableList, target):
         for xIndex in range(len(probabilityList[yIndex])):
           if probabilityList[yIndex][xIndex] > 0:
             mutual = mutual + probabilityList[yIndex][xIndex] * math.log(
-              probabilityList[yIndex][xIndex] / (probabilityY[yIndex] * probabilityX[xIndex]))
+              probabilityList[yIndex][xIndex] / (probabilityY[yIndex] * probabilityX[xIndex])
+            )
       if mutual > maxMutualInformation:
         maxMutualInformation = mutual
         root = x0
@@ -208,7 +212,7 @@ def _fitChowLiu(X, y, bn, learner, variableList, target):
   # we calculate the mutual information of all pairs of variables
   for i in range(d):
     undirectedGraph.addNodeWithId(i)
-    if (i > 0):
+    if i > 0:
       probabilityXi = learner.pseudoCount([variableList[i - 1]]).normalize().tolist()
     for j in range(i):
       if j > 0:
@@ -222,18 +226,18 @@ def _fitChowLiu(X, y, bn, learner, variableList, target):
         for xiIndex in range(len(probabilityList[xjIndex])):
           if probabilityList[xjIndex][xiIndex] > 0:
             mutual = mutual + probabilityList[xjIndex][xiIndex] * math.log(
-              probabilityList[xjIndex][xiIndex] / (probabilityXi[xiIndex] * probabilityXj[xjIndex]))
+              probabilityList[xjIndex][xiIndex] / (probabilityXi[xiIndex] * probabilityXj[xjIndex])
+            )
       mutualInformation[(i, j)] = mutual
   # sorting the dictionary of mutualInformation in descending order by the values associated
   mutualInformation = {k: v for k, v in sorted(mutualInformation.items(), key=(lambda item: item[1]), reverse=True)}
 
-  for (i, j) in mutualInformation:
-
+  for i, j in mutualInformation:
     # if the mutual information between xi and xj we add an edge between the two nodes
     undirectedGraph.addEdge(i, j)
 
     # if the edge causes a cycle, we delete the edge and pass on to the following pair of variables
-    if (undirectedGraph.hasUndirectedCycle()):
+    if undirectedGraph.hasUndirectedCycle():
       undirectedGraph.eraseEdge(i, j)
 
   ListOfNodes = [0]

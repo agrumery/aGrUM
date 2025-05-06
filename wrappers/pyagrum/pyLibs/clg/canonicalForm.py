@@ -60,10 +60,7 @@ class CanonicalForm:
     self._sort()
 
   def __str__(self):
-    return "scope = {0}, K = {1}, h = {2}, g = {3}".format(self._scope,
-                                                           self._K.tolist(),
-                                                           self._h.tolist(),
-                                                           self._g)
+    return "scope = {0}, K = {1}, h = {2}, g = {3}".format(self._scope, self._K.tolist(), self._h.tolist(), self._g)
 
   def __repr__(self):
     return str(self)
@@ -110,7 +107,7 @@ class CanonicalForm:
     The formulas are given in "Propagation of Probabilities, Means, and
     Variances in Mixed Graphical Association Models, S. Lauritzen (1992)".
     """
-    gamma = sigma ** 2  # The variance
+    gamma = sigma**2  # The variance
     if len(parents) == 0:  # Unconditional case (no parents)
       scope = [variable]
       h = [mu / gamma]
@@ -122,7 +119,7 @@ class CanonicalForm:
       h = mu / gamma * np.insert(-B, 0, 1, axis=0)
       K = 1 / gamma * np.block([[1, -B.T], [-B, np.dot(B, B.T)]])
 
-    g = - (mu ** 2 / gamma + np.log(2 * np.pi * gamma)) / 2
+    g = -(mu**2 / gamma + np.log(2 * np.pi * gamma)) / 2
 
     cf = cls(scope, K, h, g)
     # Canonical form should always be sorted when created !
@@ -234,33 +231,19 @@ class CanonicalForm:
       for position in positions:
         # Avoid using insert when not necessary
         if position < fv_new_position:
-          augmented_K = np.concatenate((np.zeros((len(augmented_K), 1)),
-                                        augmented_K),
-                                       axis=1)
-          augmented_K = np.concatenate((np.zeros((1, len(augmented_K) + 1)),
-                                        augmented_K),
-                                       axis=0)
+          augmented_K = np.concatenate((np.zeros((len(augmented_K), 1)), augmented_K), axis=1)
+          augmented_K = np.concatenate((np.zeros((1, len(augmented_K) + 1)), augmented_K), axis=0)
           augmented_h = np.concatenate(([[0]], augmented_h), axis=0)
         elif position < len(augmented_K):
           # Adding a new column of zeros at position in K
-          augmented_K = np.insert(augmented_K,
-                                  [position],
-                                  np.zeros((len(augmented_K), 1)),
-                                  axis=1)
+          augmented_K = np.insert(augmented_K, [position], np.zeros((len(augmented_K), 1)), axis=1)
           # Adding a new row of zeros at position in K
-          augmented_K = np.insert(augmented_K,
-                                  [position],
-                                  np.zeros((1, len(augmented_K) + 1)),
-                                  axis=0)
+          augmented_K = np.insert(augmented_K, [position], np.zeros((1, len(augmented_K) + 1)), axis=0)
           # Adding a new zero at position in h
           augmented_h = np.insert(augmented_h, position, 0, axis=0)
         else:
-          augmented_K = np.concatenate((augmented_K,
-                                        np.zeros((len(augmented_K), 1))),
-                                       axis=1)
-          augmented_K = np.concatenate((augmented_K,
-                                        np.zeros((1, len(augmented_K) + 1))),
-                                       axis=0)
+          augmented_K = np.concatenate((augmented_K, np.zeros((len(augmented_K), 1))), axis=1)
+          augmented_K = np.concatenate((augmented_K, np.zeros((1, len(augmented_K) + 1))), axis=0)
           augmented_h = np.concatenate((augmented_h, [[0]]), axis=0)
 
     return CanonicalForm(new_scope, augmented_K, augmented_h, self._g)
@@ -322,10 +305,12 @@ class CanonicalForm:
 
   def __eq__(self, other):
     if isinstance(other, CanonicalForm):
-      return (self._scope == other._scope and
-              np.allclose(self._K, other._K, 1e-7) and
-              np.allclose(self._h, other._h, 1e-7) and
-              np.allclose(self._g, other._g, 1e-7))
+      return (
+        self._scope == other._scope
+        and np.allclose(self._K, other._K, 1e-7)
+        and np.allclose(self._h, other._h, 1e-7)
+        and np.allclose(self._g, other._g, 1e-7)
+      )
 
     return False
 
@@ -347,8 +332,7 @@ class CanonicalForm:
       return self
 
     if not all(variable in self._scope for variable in variables):
-      raise ValueError("All the variables to marginalize are not in the "
-                       "scope of the canonical form")
+      raise ValueError("All the variables to marginalize are not in the scope of the canonical form")
 
     new_scope = list(set(self._scope) - set(variables))
     variables.sort()
@@ -367,8 +351,9 @@ class CanonicalForm:
 
     K = K_xx - np.dot(np.dot(K_xy, inv(K_yy)), K_yx)
     h = h_x - np.dot(np.dot(K_xy, inv(K_yy)), h_y)
-    g = self._g + 0.5 * (len(variables) * np.log(2 * np.pi) - np.log(det(K_yy)) + \
-                         np.dot(np.dot(np.transpose(h_y), inv(K_yy)), h_y))
+    g = self._g + 0.5 * (
+      len(variables) * np.log(2 * np.pi) - np.log(det(K_yy)) + np.dot(np.dot(np.transpose(h_y), inv(K_yy)), h_y)
+    )
 
     return CanonicalForm(new_scope, K, h, g[0][0])
 
@@ -414,7 +399,6 @@ class CanonicalForm:
 
     h = h_x - np.dot(K_xy, values)
 
-    g = self._g + np.dot(np.transpose(h_y), values) \
-        - 0.5 * np.dot(np.dot(np.transpose(values), K_yy), values)
+    g = self._g + np.dot(np.transpose(h_y), values) - 0.5 * np.dot(np.dot(np.transpose(values), K_yy), values)
 
     return CanonicalForm(new_scope, K_xx, h, g[0][0])

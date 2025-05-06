@@ -46,7 +46,7 @@ class RandomGeneratorTestCase(pyAgrumTestCase):
     bn1 = gum.fastBN("A->B->C")
     gum.initRandom(0)
     bn2 = gum.fastBN("A->B->C")
-    self.assertNotEqual(bn1.cpt("B").min(), bn2.cpt("B").min()) # may fail but highly unlikely
+    self.assertNotEqual(bn1.cpt("B").min(), bn2.cpt("B").min())  # may fail but highly unlikely
     gum.initRandom(0)
 
   def testInitSeed1(self):
@@ -64,6 +64,7 @@ class RandomGeneratorTestCase(pyAgrumTestCase):
     bn2 = gum.fastBN("A->B->C")
     self.assertEqual(bn1.cpt("B").min(), bn2.cpt("B").min())
     gum.initRandom(0)
+
 
 ts = unittest.TestSuite()
 addTests(ts, RandomGeneratorTestCase)

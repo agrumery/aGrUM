@@ -39,12 +39,10 @@ This module implements the forward sampling algorithm for CLG
 """
 
 import numpy as np
-from typing import Dict, List
 
 import pandas as pd
 
 from .CLG import CLG
-from .constants import NodeId
 
 
 class ForwardSampling:
@@ -197,4 +195,4 @@ class ForwardSampling:
     sample_name : str
       Name of the new csv file.
     """
-    self.topandas().to_csv(sample_name, index=False, sep=',')
+    self.topandas().to_csv(sample_name, index=False, sep=",")

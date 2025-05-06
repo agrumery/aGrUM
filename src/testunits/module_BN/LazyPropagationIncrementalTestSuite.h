@@ -70,7 +70,9 @@ namespace gum_tests {
       bn = gum::BayesNet< double >::fastPrototype(
           "A->B[3]->C->D[3];C->E[2];D->F[3];C<-G[4]->H[3]->E");
 
-      for (const auto node: bn.nodes()) { joint *= bn.cpt(node); }
+      for (const auto node: bn.nodes()) {
+        joint *= bn.cpt(node);
+      }
     }
 
     public:
@@ -123,7 +125,9 @@ namespace gum_tests {
         if ((p1[i1] == 0) && (std::fabs(p2[i2]) > TS_GUM_SMALL_ERROR)) return false;
         if (p1[i1] > p2[i2]) {
           if (std::fabs((p1[i1] - p2[i2]) / p1[i1]) > TS_GUM_SMALL_ERROR) return false;
-        } else { if (std::fabs((p1[i1] - p2[i2]) / p1[i2]) > TS_GUM_SMALL_ERROR) return false; }
+        } else {
+          if (std::fabs((p1[i1] - p2[i2]) / p1[i2]) > TS_GUM_SMALL_ERROR) return false;
+        }
       }
 
       return true;
@@ -187,8 +191,8 @@ namespace gum_tests {
 
       gum::LazyPropagation< double > inf(&bn);
       inf.eraseAllTargets();
-      inf.addTarget(bn.idFromName("A")); // A
-      inf.addTarget(bn.idFromName("F")); // F
+      inf.addTarget(bn.idFromName("A"));   // A
+      inf.addTarget(bn.idFromName("F"));   // F
 
       auto ev1 = create_evidence(bn.idFromName("B"), {0, 0, 1}, bn);
       inf.addEvidence(bn.idFromName("B"), 2);
@@ -217,8 +221,8 @@ namespace gum_tests {
 
       gum::LazyPropagation< double > inf(&bn);
       inf.eraseAllTargets();
-      inf.addTarget(bn.idFromName("A")); // A
-      inf.addTarget(bn.idFromName("D")); // D
+      inf.addTarget(bn.idFromName("A"));   // A
+      inf.addTarget(bn.idFromName("D"));   // D
 
       auto ev0 = create_evidence(0, {0.3, 0.7}, bn);
       inf.addEvidence(ev0);
@@ -249,8 +253,8 @@ namespace gum_tests {
 
       gum::LazyPropagation< double > inf(&bn);
       inf.eraseAllTargets();
-      inf.addTarget(bn.idFromName("A")); // A
-      inf.addTarget(bn.idFromName("D")); // D
+      inf.addTarget(bn.idFromName("A"));   // A
+      inf.addTarget(bn.idFromName("D"));   // D
 
       auto ev0 = create_evidence(0, {0.3, 0.7}, bn);
       inf.addEvidence(ev0);
@@ -375,8 +379,8 @@ namespace gum_tests {
 
       gum::LazyPropagation< double > inf(&bn);
       inf.eraseAllTargets();
-      inf.addTarget(bn.idFromName("A")); // A
-      inf.addTarget(bn.idFromName("D")); // D
+      inf.addTarget(bn.idFromName("A"));   // A
+      inf.addTarget(bn.idFromName("D"));   // D
 
       auto ev0 = create_evidence(0, {0.3, 0.7}, bn);
       inf.addEvidence(ev0);
@@ -498,8 +502,8 @@ namespace gum_tests {
 
       gum::LazyPropagation< double > inf(&bn);
       inf.eraseAllTargets();
-      inf.addTarget(bn.idFromName("A")); // A
-      inf.addTarget(bn.idFromName("D")); // D
+      inf.addTarget(bn.idFromName("A"));   // A
+      inf.addTarget(bn.idFromName("D"));   // D
 
       auto ev0 = create_evidence(0, {0.3, 1.7}, bn);
       inf.addEvidence(ev0);
@@ -570,8 +574,8 @@ namespace gum_tests {
 
       gum::LazyPropagation< double > inf(&bn);
       inf.eraseAllTargets();
-      inf.addTarget(bn.idFromName("A")); // A
-      inf.addTarget(bn.idFromName("D")); // D
+      inf.addTarget(bn.idFromName("A"));   // A
+      inf.addTarget(bn.idFromName("D"));   // D
       inf.makeInference();
 
       TS_GUM_ASSERT_THROWS_NOTHING(
@@ -585,4 +589,4 @@ namespace gum_tests {
           joint.sumIn({&bn.variable("D"), &bn.variable("C")}).normalize())
     }
   };
-} // namespace gum_tests
+}   // namespace gum_tests

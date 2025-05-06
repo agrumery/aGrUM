@@ -57,22 +57,22 @@ def parseModulesTxt() -> dict[str, str]:
 
 
 def check_modules(current: dict[str, str]):
-  setM = setifyString(current['modules'])
+  setM = setifyString(current["modules"])
 
-  if 'pyAgrum' in current['targets']:
-    notif('Forcing the compilation of all modules for wrappers')
-    cde = 'ALL'
-  elif 'ALL' in setM or 'all' in setM:
-    cde = 'ALL'
+  if "pyAgrum" in current["targets"]:
+    notif("Forcing the compilation of all modules for wrappers")
+    cde = "ALL"
+  elif "ALL" in setM or "all" in setM:
+    cde = "ALL"
   else:
     if not setM.issubset(set(cfg.modules)):
-      cde = 'LIST'
+      cde = "LIST"
     else:
-      cde = '+'.join(setM)
+      cde = "+".join(setM)
 
-  if cde == 'ALL':
-    current['modules'] = '+'.join(sorted(cfg.modules))
-  elif cde == 'LIST':
+  if cde == "ALL":
+    current["modules"] = "+".join(sorted(cfg.modules))
+  elif cde == "LIST":
     print("Modules must be one of the following:")
     print("    - ALL")
     for x in sorted(cfg.modules):
@@ -82,4 +82,4 @@ def check_modules(current: dict[str, str]):
       print(f"    - {x} (unknown module)")
     sys.exit(1)
   else:
-    current['modules'] = cde
+    current["modules"] = cde

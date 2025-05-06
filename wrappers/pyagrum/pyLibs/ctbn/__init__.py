@@ -34,9 +34,7 @@
 #                                                                          #
 ############################################################################
 
-"""
-
-"""
+""" """
 
 __author__ = "Pierre-Henri Wuillemin, Rodolphe Tavernier"
 __copyright__ = "(c) 2022-2023 PARIS"
@@ -45,16 +43,33 @@ from .CIM import CIM
 from .CTBN import CTBN
 from .CTBNGenerator import randomCTBN
 from .CTBNInference import CTBNInference, SimpleInference, ForwardSamplingInference
-from .SamplesStats import readTrajectoryCSV, CTBNFromData, computeCIMFromStats, Trajectory, Stats, plotTrajectory, \
-  plotFollowVar
+from .SamplesStats import (
+  readTrajectoryCSV,
+  CTBNFromData,
+  computeCIMFromStats,
+  Trajectory,
+  Stats,
+  plotTrajectory,
+  plotFollowVar,
+)
 from .StatsIndepTest import IndepTest, FChi2Test
 from .CTBNLearner import Learner
 
-__all__ = ['CIM',
-           'CTBN',
-           'randomCTBN',
-           'CTBNInference', 'SimpleInference', 'ForwardSamplingInference',
-           'readTrajectoryCSV', 'CTBNFromData', 'computeCIMFromStats', 'Trajectory', 'Stats', 'plotTrajectory',
-           'plotFollowVar',
-           'IndepTest', 'FChi2Test',
-           'Learner']
+__all__ = [
+  "CIM",
+  "CTBN",
+  "randomCTBN",
+  "CTBNInference",
+  "SimpleInference",
+  "ForwardSamplingInference",
+  "readTrajectoryCSV",
+  "CTBNFromData",
+  "computeCIMFromStats",
+  "Trajectory",
+  "Stats",
+  "plotTrajectory",
+  "plotFollowVar",
+  "IndepTest",
+  "FChi2Test",
+  "Learner",
+]

@@ -40,8 +40,6 @@ from numpy.random import dirichlet
 import pyagrum
 import pyagrum.bnmixture as BNM
 
-from typing import List, Optional
-
 
 class IMixtureLearner:
   def __init__(self):
@@ -78,64 +76,64 @@ class IMixtureLearner:
     if len(kargs) == 0 and self._ref_learner is not None:
       learner.copyState(self._ref_learner)
     else:
-      zemethod = kargs.get('algorithm', 'Greedy Hill Climbing')
-      if zemethod == 'Greedy Hill Climbing':
+      zemethod = kargs.get("algorithm", "Greedy Hill Climbing")
+      if zemethod == "Greedy Hill Climbing":
         learner.useGreedyHillClimbing()
-      elif zemethod == 'MIIC':
+      elif zemethod == "MIIC":
         learner.useMIIC()
-      elif zemethod == 'K2':
-        if kargs.get('order', None) is None:
+      elif zemethod == "K2":
+        if kargs.get("order", None) is None:
           raise pyagrum.ArgumentError("Tried to use K2 without an order")
-        learner.useK2(kargs['order'])
-      elif zemethod == 'Local Search with Tabu List':
-        learner.useLocalSearchWithTabuList(kargs.get('tabu_size', 100), kargs.get('nb_decrease', 2))
+        learner.useK2(kargs["order"])
+      elif zemethod == "Local Search with Tabu List":
+        learner.useLocalSearchWithTabuList(kargs.get("tabu_size", 100), kargs.get("nb_decrease", 2))
       else:
         raise pyagrum.ArgumentError(f"could not find the algorithm {kargs['algorithm']}")
 
-      zescore = kargs.get('score', 'BDeu')
-      if zescore == 'K2':
+      zescore = kargs.get("score", "BDeu")
+      if zescore == "K2":
         learner.useScoreK2()
-      elif zescore == 'AIC':
+      elif zescore == "AIC":
         learner.useScoreAIC()
-      elif zescore == 'BIC':
+      elif zescore == "BIC":
         learner.useScoreBIC()
-      elif zescore == 'BD':
+      elif zescore == "BD":
         learner.useScoreBD()
-      elif zescore == 'BDeu':
+      elif zescore == "BDeu":
         learner.useScoreBDeu()
-      elif zescore == 'Log2Likelihood':
+      elif zescore == "Log2Likelihood":
         learner.useScoreLog2Likelihood()
       else:
         raise pyagrum.ArgumentError(f"could not find a suitable score : {kargs['score']}")
 
-      zecorrec = kargs.get('correction', 'MDL')
-      if zecorrec == 'MDL':
+      zecorrec = kargs.get("correction", "MDL")
+      if zecorrec == "MDL":
         learner.useMDLCorrection()
-      elif zecorrec == 'NML':
+      elif zecorrec == "NML":
         learner.useNMLCorrection()
-      elif zecorrec == 'No correction':
+      elif zecorrec == "No correction":
         learner.useNoCorrection()
       else:
         raise pyagrum.ArgumentError(f"could not find a suitable correction : {kargs['correction']}")
 
-      zeprior = kargs.get('prior', '-')
-      if zeprior == '-':
+      zeprior = kargs.get("prior", "-")
+      if zeprior == "-":
         learner.useNoPrior()
-      elif zeprior == 'Dirichlet':
-        if kargs.get('source', None) is None:
+      elif zeprior == "Dirichlet":
+        if kargs.get("source", None) is None:
           raise pyagrum.ArgumentError("could not find source for dirichlet prior")
-        if kargs.get('prior_weight', None) is not None:
-          learner.useDirichletPrior(kargs['source'], kargs['prior_weight'])
+        if kargs.get("prior_weight", None) is not None:
+          learner.useDirichletPrior(kargs["source"], kargs["prior_weight"])
         else:
-          learner.useDirichletPrior(kargs['source'])
-      elif zeprior == 'BDEU':
-        if kargs.get('prior_weight', None) is not None:
-          learner.useBDeuPrior(kargs['prior_weight'])
+          learner.useDirichletPrior(kargs["source"])
+      elif zeprior == "BDEU":
+        if kargs.get("prior_weight", None) is not None:
+          learner.useBDeuPrior(kargs["prior_weight"])
         else:
           learner.useBDeuPrior()
-      elif zeprior == 'Smoothing':
-        if kargs.get('prior_weight', None) is not None:
-          learner.useSmoothingPrior(kargs['prior_weight'])
+      elif zeprior == "Smoothing":
+        if kargs.get("prior_weight", None) is not None:
+          learner.useSmoothingPrior(kargs["prior_weight"])
         else:
           learner.useSmoothingPrior()
 
@@ -170,7 +168,8 @@ class BNMLearner(IMixtureLearner):
   def __init__(self, weights, source, template=None, states=None):
     if len(source) != len(weights):
       raise pyagrum.ArgumentError(
-        f"weights and source don't have the same dimensions : weights({len(weights)}) and source({len(source)})")
+        f"weights and source don't have the same dimensions : weights({len(weights)}) and source({len(source)})"
+      )
     self._data = source.copy()
     self._weights = weights.copy()
     self._template = template
@@ -217,7 +216,8 @@ class BNMLearner(IMixtureLearner):
 
     # adding others BNs
     for i in range(len(self._data)):
-      if i == index: continue
+      if i == index:
+        continue
 
       # loading data
       if isinstance(self._data[i], str):
@@ -291,7 +291,7 @@ class BNMBootstrapLearner(IMixtureLearner):
 
     for i in range(self._iter):
       # updating learner
-      weights_samples = dirichlet([1/n]*n, self._iter)*n
+      weights_samples = dirichlet([1 / n] * n, self._iter) * n
       for j in range(n):
         learner.setRecordWeight(j, weights_samples[i][j])
 

@@ -36,7 +36,6 @@
 
 import unittest
 
-import pyagrum as gum
 from .pyAgrumTestSuite import pyAgrumTestCase, addTests
 
 from pyagrum.clg.CLG import CLG
@@ -46,13 +45,13 @@ from pyagrum.clg.learning import CLGLearner
 
 class CLGLearningTestCase(pyAgrumTestCase):
   def test_TestIndep(self):
-    # clg is a CLG model      
+    # clg is a CLG model
     clg = CLG()
     # 4 variables
-    A = GaussianVariable(mu=4.5, sigma=0.1, name='A')
-    B = GaussianVariable(mu=3, sigma=0.1, name='B')
-    C = GaussianVariable(mu=9, sigma=0.2, name='C')
-    D = GaussianVariable(mu=9, sigma=0.2, name='D')
+    A = GaussianVariable(mu=4.5, sigma=0.1, name="A")
+    B = GaussianVariable(mu=3, sigma=0.1, name="B")
+    C = GaussianVariable(mu=9, sigma=0.2, name="C")
+    D = GaussianVariable(mu=9, sigma=0.2, name="D")
     idA = clg.add(A)
     idB = clg.add(B)
     idC = clg.add(C)
@@ -76,10 +75,10 @@ class CLGLearningTestCase(pyAgrumTestCase):
     # clg is a CLG model
     clg = CLG()
     # 4 variables
-    A = GaussianVariable(mu=4.5, sigma=0.1, name='A')
-    B = GaussianVariable(mu=3, sigma=0.1, name='B')
-    C = GaussianVariable(mu=9, sigma=0.2, name='C')
-    D = GaussianVariable(mu=9, sigma=0.2, name='D')
+    A = GaussianVariable(mu=4.5, sigma=0.1, name="A")
+    B = GaussianVariable(mu=3, sigma=0.1, name="B")
+    C = GaussianVariable(mu=9, sigma=0.2, name="C")
+    D = GaussianVariable(mu=9, sigma=0.2, name="D")
     idA = clg.add(A)
     idB = clg.add(B)
     idC = clg.add(C)
@@ -102,12 +101,12 @@ class CLGLearningTestCase(pyAgrumTestCase):
     # clg is a CLG model
     clg = CLG()
     # 6 variables
-    A = GaussianVariable(mu=4.5, sigma=0.3, name='A')
-    B = GaussianVariable(mu=3, sigma=0.3, name='B')
-    C = GaussianVariable(mu=9, sigma=0.6, name='C')
-    D = GaussianVariable(mu=9, sigma=0.7, name='D')
-    E = GaussianVariable(mu=9, sigma=0.9, name='E')
-    F = GaussianVariable(mu=7, sigma=0.5, name='F')
+    A = GaussianVariable(mu=4.5, sigma=0.3, name="A")
+    B = GaussianVariable(mu=3, sigma=0.3, name="B")
+    C = GaussianVariable(mu=9, sigma=0.6, name="C")
+    D = GaussianVariable(mu=9, sigma=0.7, name="D")
+    E = GaussianVariable(mu=9, sigma=0.9, name="E")
+    F = GaussianVariable(mu=7, sigma=0.5, name="F")
     idA = clg.add(A)
     idB = clg.add(B)
     idC = clg.add(C)
@@ -134,10 +133,10 @@ class CLGLearningTestCase(pyAgrumTestCase):
     # clg is a CLG model
     clg = CLG()
     # 4 variables
-    A = GaussianVariable(mu=4.5, sigma=0.1, name='A')
-    B = GaussianVariable(mu=3, sigma=0.1, name='B')
-    C = GaussianVariable(mu=9, sigma=0.2, name='C')
-    D = GaussianVariable(mu=9, sigma=0.2, name='D')
+    A = GaussianVariable(mu=4.5, sigma=0.1, name="A")
+    B = GaussianVariable(mu=3, sigma=0.1, name="B")
+    C = GaussianVariable(mu=9, sigma=0.2, name="C")
+    D = GaussianVariable(mu=9, sigma=0.2, name="D")
     idA = clg.add(A)
     idB = clg.add(B)
     idC = clg.add(C)

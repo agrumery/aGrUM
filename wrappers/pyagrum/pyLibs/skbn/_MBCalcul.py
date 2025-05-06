@@ -53,7 +53,7 @@ def compileMarkovBlanket(bn, target):
       MarkovBlanket: pyagrum.BayesNet
           Markov Blanket from bn
   """
-  mb = gum.BayesNet('MarkovBlanket')
+  mb = gum.BayesNet("MarkovBlanket")
 
   # add target to Markov Blanket
   mb.add(bn.variable(target))
@@ -69,7 +69,7 @@ def compileMarkovBlanket(bn, target):
     parents_child = listIdtoName(bn, list(bn.parents(c)))
 
     # if c is not already in Markov Blanket
-    if (c not in mb.names()):
+    if c not in mb.names():
       # add c in Markov Blanket
       mb.add(bn.variable(c))
 
@@ -79,8 +79,8 @@ def compileMarkovBlanket(bn, target):
     # add c's parents in Markov Blanket
     for pc in parents_child:
       # if pc is a target's parent
-      if (pc in mb.names()):
-        if (pc != target):
+      if pc in mb.names():
+        if pc != target:
           mb.addArc(pc, c)
         continue
 
@@ -98,7 +98,7 @@ def compileMarkovBlanket(bn, target):
 
   for p in parents:
     # if p is not already in Markov Blanket
-    if (p in mb.names()):
+    if p in mb.names():
       # create arc between target and his parent p
       mb.addArc(p, target)
       continue
@@ -176,8 +176,7 @@ def _calcul_most_probable_for_nary_class(row, local_inst, dictName, MarkovBlanke
       Tuple[int,proba]:
           the value and the probability of the most probable class
   """
-  p = _calcul_proba_for_nary_class(
-    row, local_inst, dictName, MarkovBlanket, target)
+  p = _calcul_proba_for_nary_class(row, local_inst, dictName, MarkovBlanket, target)
   return p.argmax(), p.max()
 
 
@@ -231,7 +230,7 @@ def _calcul_proba_for_binary_class(row, label1, labels, Inst, dictName, MarkovBl
     tmp = 0.0
     for label0 in labels:
       Inst.chgVal(target, str(label0))
-      tmp += (MarkovBlanket.cpt(n).get(Inst))
+      tmp += MarkovBlanket.cpt(n).get(Inst)
     res2 = res2 * tmp
 
   # normalize to have probabilities

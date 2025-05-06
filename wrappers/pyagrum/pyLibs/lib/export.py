@@ -39,9 +39,8 @@ Tools for exporting graphical models and inference as other formats.
 
 For each function `pyagrum.lib.export.to...(model,filename)`, it is assumed that the filename is complete (including the correct suffix).
 """
-import sys
 
-import pyagrum as gum
+import sys
 
 
 def toGML(model, filename: str = None):
@@ -63,7 +62,7 @@ def toGML(model, filename: str = None):
       print("  node", file=gmlfile)
       print("  [", file=gmlfile)
       print(f"    id X{i}", file=gmlfile)
-      print(f"    label \"{model.variable(i).name()}\"", file=gmlfile)
+      print(f'    label "{model.variable(i).name()}"', file=gmlfile)
       print("  ]", file=gmlfile)
     print("", file=gmlfile)
     for i, j in model.arcs():

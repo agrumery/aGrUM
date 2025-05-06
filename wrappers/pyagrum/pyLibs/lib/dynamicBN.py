@@ -70,7 +70,7 @@ def _splitName(name):
       return name, noTimeCluster
     i -= 1
 
-  return name[:i + 1], name[i + 1:]
+  return name[: i + 1], name[i + 1 :]
 
 
 def _isInFirstTimeSlice(name):
@@ -145,11 +145,11 @@ def is2TBN(bn):
     return False, "Some variables are not correctly suffixed."
 
   domainSizes = dict()
-  for name, radical in ts['t']:
+  for name, radical in ts["t"]:
     domainSizes[radical] = bn.variable(name).domainSize()
 
   res = ""
-  for name, radical in ts['0']:
+  for name, radical in ts["0"]:
     if radical in domainSizes:
       if domainSizes[radical] != bn.variable(name).domainSize():
         res = f"\n - for variables {name}/{radical}t"
@@ -170,11 +170,11 @@ def _TimeSlicesToDot(dbn):
     a 2TBN or an unrolled BN
   """
   timeslices = getTimeSlicesRange(dbn)
-  kts = sorted(timeslices.keys(), key=lambda x: -1 if x == noTimeCluster else 1e8 if x == 't' else int(x))
+  kts = sorted(timeslices.keys(), key=lambda x: -1 if x == noTimeCluster else 1e8 if x == "t" else int(x))
 
   # dynamic member makes pylink unhappy
   # pylint: disable=no-member
-  g = dot.Dot(graph_type='digraph')
+  g = dot.Dot(graph_type="digraph")
   g.set_rankdir("LR")
   g.set_splines("ortho")
   g.set_node_defaults(color="#000000", fillcolor="white", style="filled")
@@ -185,13 +185,12 @@ def _TimeSlicesToDot(dbn):
       g.add_subgraph(cluster)
     else:
       cluster = g  # small trick to add in graph variable in no timeslice
-    for (n, label) in sorted(timeslices[k]):
+    for n, label in sorted(timeslices[k]):
       cluster.add_node(dot.Node('"' + n + '"', label='"' + label + '"'))
 
   g.set_edge_defaults(color="blue", constraint="False")
   for tail, head in dbn.arcs():
-    g.add_edge(dot.Edge('"' + dbn.variable(tail).name() + '"',
-                        '"' + dbn.variable(head).name() + '"'))
+    g.add_edge(dot.Edge('"' + dbn.variable(tail).name() + '"', '"' + dbn.variable(head).name() + '"'))
 
   g.set_edge_defaults(style="invis", constraint="True")
   for x in timeslices["0"]:
@@ -222,6 +221,7 @@ def showTimeSlices(dbn, size=None):
   # jupyter notebooks is optional
   # pylint: disable=import-outside-toplevel
   from pyagrum.lib.notebook import showGraph
+
   if size is None:
     size = gum.config["dynamicBN", "default_graph_size"]
 
@@ -242,6 +242,7 @@ def getTimeSlices(dbn, size=None):
   # jupyter notebooks is optional
   # pylint: disable=import-outside-toplevel
   from pyagrum.lib.notebook import getGraph
+
   if size is None:
     size = gum.config["dynamicBN", "default_graph_size"]
 
@@ -282,10 +283,7 @@ def unroll2TBN(dbn, nbr):
       for ts in range(1, nbr):
         # create a clone of the variable in the new bn
         nid = bn.add(dbn.variable(dbn_id))
-        bn.changeVariableName(nid, realNameFrom2TBNname(
-          name, ts
-        )
-                              )  # create the true name
+        bn.changeVariableName(nid, realNameFrom2TBNname(name, ts))  # create the true name
 
   # add parents
   # the main pb : to have the same order for parents w.r.t the order in 2TBN
@@ -365,16 +363,13 @@ def plotFollowUnrolled(lovars, dbn, T, evs, vars_title=None):
     else:
       raise TypeError("Incorrect format of the plots title dictionary")
 
-    plt.xlabel('time')
+    plt.xlabel("time")
 
     stack = ax.stackplot(x, lpots)
 
-    proxy_rects = [Rectangle((0, 0), 1, 1, fc=pc.get_facecolor()[0])
-                   for pc in stack]
+    proxy_rects = [Rectangle((0, 0), 1, 1, fc=pc.get_facecolor()[0]) for pc in stack]
     labels = [v0.label(i) for i in range(v0.domainSize())]
-    plt.legend(proxy_rects, labels, loc='center left',
-               bbox_to_anchor=(1, 0.5), ncol=1, fancybox=True, shadow=True
-               )
+    plt.legend(proxy_rects, labels, loc="center left", bbox_to_anchor=(1, 0.5), ncol=1, fancybox=True, shadow=True)
 
     plt.show()
 

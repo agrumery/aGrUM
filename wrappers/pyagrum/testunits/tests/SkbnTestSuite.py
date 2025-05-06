@@ -45,12 +45,15 @@ from sklearn import datasets
 
 class SkbnTestCase(pyAgrumTestCase):
   def test_no_discretization(self):
-    X = pd.DataFrame([[1, 1.5, "A", True],
-                      [2, 2.6, "B", False],
-                      [3, 3.14, "B", True],
-                      [1, 0.5, "A", False],
-                      [1, 0.15, "A", True],
-                      ])
+    X = pd.DataFrame(
+      [
+        [1, 1.5, "A", True],
+        [2, 2.6, "B", False],
+        [3, 3.14, "B", True],
+        [1, 0.5, "A", False],
+        [1, 0.15, "A", True],
+      ]
+    )
     y = [3, 2, 3, 1, 2]
 
     classifier = skbn.BNClassifier()
@@ -65,12 +68,15 @@ class SkbnTestCase(pyAgrumTestCase):
       res = classifier.preparedData(X, y)
 
   def test_with_discretization(self):
-    X = pd.DataFrame([[1, 1.5, "A", True],
-                      [2, 2.6, "B", False],
-                      [3, 3.14, "B", True],
-                      [1, 0.5, "A", False],
-                      [1, 0.15, "A", True],
-                      ])
+    X = pd.DataFrame(
+      [
+        [1, 1.5, "A", True],
+        [2, 2.6, "B", False],
+        [3, 3.14, "B", True],
+        [1, 0.5, "A", False],
+        [1, 0.15, "A", True],
+      ]
+    )
     y = [3, 2, 3, 1, 2]
     classifier = skbn.BNClassifier(discretizationThreshold=3, discretizationNbBins=3)
     classifier.fit(X, y)
@@ -78,13 +84,16 @@ class SkbnTestCase(pyAgrumTestCase):
     self.assertEqual(res["X1"][1], "[2.23333;3.14)")
     self.assertEqual(str(res["X3"][3]), "False")
 
-    X = pd.DataFrame([[1, 0, "A", True],
-                      [1, 4, "B", False],
-                      [2, 3.11, "B", True],
-                      [2, 0.5, "A", False],
-                      [3, 0.15, "A", True],
-                      [3, 203, "A", True],
-                      ])
+    X = pd.DataFrame(
+      [
+        [1, 0, "A", True],
+        [1, 4, "B", False],
+        [2, 3.11, "B", True],
+        [2, 0.5, "A", False],
+        [3, 0.15, "A", True],
+        [3, 203, "A", True],
+      ]
+    )
     y = [3, 2, 3, 1, 2, 1]
     res = classifier.preparedData(X, y)
     self.assertEqual(res["X1"][0], "(0.15;0.833333[")

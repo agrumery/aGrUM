@@ -52,14 +52,10 @@ class TestCtbnLearner(pyAgrumTestCase):
     ctbn.add(B)
     ctbn.addArc("cloudy?", "rain?")
     ctbn.addArc("rain?", "cloudy?")
-    ctbn.CIM("cloudy?")[{"rain?": "0"}] = [[-.1, .1],
-                                           [1, -1]]
-    ctbn.CIM("cloudy?")[{"rain?": "1"}] = [[-.1, .1],
-                                           [1, -1]]
-    ctbn.CIM("rain?")[{"cloudy?": "0"}] = [[-0.5, 0.5],
-                                           [1000, -1000]]
-    ctbn.CIM("rain?")[{"cloudy?": "1"}] = [[-2, 2],
-                                           [2, -2]]
+    ctbn.CIM("cloudy?")[{"rain?": "0"}] = [[-0.1, 0.1], [1, -1]]
+    ctbn.CIM("cloudy?")[{"rain?": "1"}] = [[-0.1, 0.1], [1, -1]]
+    ctbn.CIM("rain?")[{"cloudy?": "0"}] = [[-0.5, 0.5], [1000, -1000]]
+    ctbn.CIM("rain?")[{"cloudy?": "1"}] = [[-2, 2], [2, -2]]
 
     ie = ct.ForwardSamplingInference(ctbn)
 
@@ -67,11 +63,12 @@ class TestCtbnLearner(pyAgrumTestCase):
     nbrep = 2
     minRep = 1
     for i in range(nbrep):
-      ie.writeTrajectoryCSV(self.agrumSrcDir('trajectory_learn_1.csv'), n=1, timeHorizon=100, burnIn=500)
-      learner = ct.Learner(self.agrumSrcDir('trajectory_learn_1.csv'))
+      ie.writeTrajectoryCSV(self.agrumSrcDir("trajectory_learn_1.csv"), n=1, timeHorizon=100, burnIn=500)
+      learner = ct.Learner(self.agrumSrcDir("trajectory_learn_1.csv"))
       ctbnLearned = learner.learnCTBN(template=ctbn)
       if set([(ctbn.name(n), ctbn.name(m)) for n, m in ctbn.arcs()]) == set(
-         [(ctbnLearned.name(n), ctbnLearned.name(m)) for n, m in ctbnLearned.arcs()]):
+        [(ctbnLearned.name(n), ctbnLearned.name(m)) for n, m in ctbnLearned.arcs()]
+      ):
         countRep += 1
 
     self.assertGreaterEqual(countRep, minRep)
@@ -89,16 +86,11 @@ class TestCtbnLearner(pyAgrumTestCase):
     ctbn.addArc("A", "B")
     ctbn.addArc("B", "C")
 
-    ctbn.CIM("A")[:] = [[-4, 4],
-                        [2, -2]]
-    ctbn.CIM("B")[{"A": "a"}] = [[-5, 5],
-                                 [4, -4]]
-    ctbn.CIM("B")[{"A": "b"}] = [[-1, 1],
-                                 [1, -1]]
-    ctbn.CIM("C")[{"B": "x"}] = [[-5, 5],
-                                 [4, -4]]
-    ctbn.CIM("C")[{"B": "y"}] = [[-1, 1],
-                                 [1, -1]]
+    ctbn.CIM("A")[:] = [[-4, 4], [2, -2]]
+    ctbn.CIM("B")[{"A": "a"}] = [[-5, 5], [4, -4]]
+    ctbn.CIM("B")[{"A": "b"}] = [[-1, 1], [1, -1]]
+    ctbn.CIM("C")[{"B": "x"}] = [[-5, 5], [4, -4]]
+    ctbn.CIM("C")[{"B": "y"}] = [[-1, 1], [1, -1]]
 
     # make sample
     ie = ct.ForwardSamplingInference(ctbn)
@@ -107,11 +99,12 @@ class TestCtbnLearner(pyAgrumTestCase):
     nbrep = 2
     minRep = 1
     for i in range(nbrep):
-      ie.writeTrajectoryCSV(self.agrumSrcDir('trajectory_learn_2.csv'), n=1, timeHorizon=100, burnIn=500)
-      learner = ct.Learner(self.agrumSrcDir('trajectory_learn_2.csv'))
+      ie.writeTrajectoryCSV(self.agrumSrcDir("trajectory_learn_2.csv"), n=1, timeHorizon=100, burnIn=500)
+      learner = ct.Learner(self.agrumSrcDir("trajectory_learn_2.csv"))
       ctbnLearned = learner.learnCTBN(template=ctbn)
       if set([(ctbn.name(n), ctbn.name(m)) for n, m in ctbn.arcs()]) == set(
-         [(ctbnLearned.name(n), ctbnLearned.name(m)) for n, m in ctbnLearned.arcs()]):
+        [(ctbnLearned.name(n), ctbnLearned.name(m)) for n, m in ctbnLearned.arcs()]
+      ):
         countRep += 1
 
     self.assertGreaterEqual(countRep, minRep)
@@ -127,8 +120,8 @@ class TestCtbnLearner(pyAgrumTestCase):
     nbrep = 2
     minRep = 1
     for i in range(nbrep):
-      ie.writeTrajectoryCSV(self.agrumSrcDir('trajectory_learn_3.csv'), timeHorizon=10, burnIn=1)
-      learner = ct.Learner(self.agrumSrcDir('trajectory_learn_3.csv'))
+      ie.writeTrajectoryCSV(self.agrumSrcDir("trajectory_learn_3.csv"), timeHorizon=10, burnIn=1)
+      learner = ct.Learner(self.agrumSrcDir("trajectory_learn_3.csv"))
       ctbnLearned = learner.learnCTBN()
       if len(ctbn.variables()) == len(ctbnLearned.variables()):
         countRep1 += 1

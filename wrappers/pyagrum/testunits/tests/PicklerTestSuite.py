@@ -35,7 +35,6 @@
 ############################################################################
 
 import unittest
-import pickle
 
 import pyagrum as gum
 from .pyAgrumTestSuite import pyAgrumTestCase, addTests

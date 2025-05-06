@@ -110,7 +110,7 @@ class TestCtbnModel(pyAgrumTestCase):
     n = 10
     parMax = 3
     modal = 3
-    valueRange = (.5, 1.5)
+    valueRange = (0.5, 1.5)
 
     ctbn2 = ct.randomCTBN(valueRange, n, parMax, modal)
     v = ctbn2.variable(0)

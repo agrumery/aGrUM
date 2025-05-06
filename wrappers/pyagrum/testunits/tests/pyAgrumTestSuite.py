@@ -54,14 +54,14 @@ def addTests(ts, cl):
     the test class t odd
   """
   for met, _ in inspect.getmembers(cl):
-    if met[0:4] == 'test':
+    if met[0:4] == "test":
       ts.addTest(cl(met))
 
 
 class pyAgrumTestCase(unittest.TestCase):
   def __init__(self, *args, **kwargs):
     super(pyAgrumTestCase, self).__init__(*args, **kwargs)
-    self.log = logging.getLogger('gumTestLog')
+    self.log = logging.getLogger("gumTestLog")
     self.nbLoopForApproximatedTest = 10
 
   @staticmethod

@@ -47,7 +47,7 @@ class TestInformationTheory(pyAgrumTestCase):
     entropy1 = bn.cpt("A").expectedValue(lambda x: -math.log2(bn.cpt("A")[x]))
 
     ie = gum.LazyPropagation(bn)
-    it = gum.InformationTheory(ie, ['A'], ['B'])
+    it = gum.InformationTheory(ie, ["A"], ["B"])
     entropy2 = it.entropyX()
 
     self.assertAlmostEquals(entropy1, entropy2, delta=1e-6)
@@ -57,8 +57,12 @@ class TestInformationTheory(pyAgrumTestCase):
     qA = (mrf.factor(["A", "B", "C"]) * mrf.factor(["C", "D"])).normalize().sumIn("A")
     entropy1 = qA.expectedValue(lambda x: -math.log2(qA[x]))
 
-    ie = gum.LazyPropagation(bn)
-    it = gum.InformationTheory(ie, ['A'], ['B'])
+    ie = gum.ShaferShenoyMRFInference(mrf)
+    it = gum.InformationTheory(ie, ["A"], ["B"])
     entropy2 = it.entropyX()
 
     self.assertAlmostEquals(entropy1, entropy2, delta=1e-6)
+
+
+ts = unittest.TestSuite()
+addTests(ts, TestInformationTheory)

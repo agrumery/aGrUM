@@ -141,14 +141,10 @@ class TestCtbnCIM(pyAgrumTestCase):
     cimY.add(B)
     cimY.add(X)
 
-    cimX[{"A": "a0", "Y": "y0"}] = [[-1, 1],
-                                    [2, -2]]
-    cimX[{"A": "a0", "Y": "y1"}] = [[-5, 5],
-                                    [6, -6]]
-    cimY[{"B": "b1", "X": "x0"}] = [[-3, 3],
-                                    [4, -4]]
-    cimY[{"B": "b1", "X": "x1"}] = [[-7, 7],
-                                    [8, -8]]
+    cimX[{"A": "a0", "Y": "y0"}] = [[-1, 1], [2, -2]]
+    cimX[{"A": "a0", "Y": "y1"}] = [[-5, 5], [6, -6]]
+    cimY[{"B": "b1", "X": "x0"}] = [[-3, 3], [4, -4]]
+    cimY[{"B": "b1", "X": "x1"}] = [[-7, 7], [8, -8]]
 
     self.assertEqual(1, cimA.nbrDim())
     self.assertEqual(1, cimB.nbrDim())

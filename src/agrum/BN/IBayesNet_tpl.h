@@ -57,32 +57,36 @@
 namespace gum {
   //                                  IBayesNet
 
-  template <typename GUM_SCALAR>
-  INLINE IBayesNet< GUM_SCALAR >::IBayesNet() : DAGmodel() { GUM_CONSTRUCTOR(IBayesNet) }
+  template < typename GUM_SCALAR >
+  INLINE IBayesNet< GUM_SCALAR >::IBayesNet() : DAGmodel() {
+    GUM_CONSTRUCTOR(IBayesNet)
+  }
 
-  template <typename GUM_SCALAR>
+  template < typename GUM_SCALAR >
   INLINE IBayesNet< GUM_SCALAR >::IBayesNet(std::string name) : DAGmodel() {
     GUM_CONSTRUCTOR(IBayesNet)
     this->setProperty("name", name);
   }
 
-  template <typename GUM_SCALAR>
+  template < typename GUM_SCALAR >
   IBayesNet< GUM_SCALAR >::IBayesNet(const IBayesNet< GUM_SCALAR >& source) : DAGmodel(source) {
     GUM_CONS_CPY(IBayesNet)
   }
 
-  template <typename GUM_SCALAR>
+  template < typename GUM_SCALAR >
   IBayesNet< GUM_SCALAR >&
-  IBayesNet< GUM_SCALAR >::operator=(const IBayesNet< GUM_SCALAR >& source) {
+      IBayesNet< GUM_SCALAR >::operator=(const IBayesNet< GUM_SCALAR >& source) {
     if (this != &source) { DAGmodel::operator=(source); }
 
     return *this;
   }
 
-  template <typename GUM_SCALAR>
-  IBayesNet< GUM_SCALAR >::~IBayesNet() { GUM_DESTRUCTOR(IBayesNet) }
+  template < typename GUM_SCALAR >
+  IBayesNet< GUM_SCALAR >::~IBayesNet() {
+    GUM_DESTRUCTOR(IBayesNet)
+  }
 
-  template <typename GUM_SCALAR>
+  template < typename GUM_SCALAR >
   Size IBayesNet< GUM_SCALAR >::dim() const {
     Size dim = 0;
 
@@ -98,7 +102,7 @@ namespace gum {
     return dim;
   }
 
-  template <typename GUM_SCALAR>
+  template < typename GUM_SCALAR >
   Size IBayesNet< GUM_SCALAR >::maxVarDomainSize() const {
     Size res = 0;
     for (auto node: nodes()) {
@@ -108,7 +112,7 @@ namespace gum {
     return res;
   }
 
-  template <typename GUM_SCALAR>
+  template < typename GUM_SCALAR >
   GUM_SCALAR IBayesNet< GUM_SCALAR >::minParam() const {
     GUM_SCALAR res = 1.0;
     for (auto node: nodes()) {
@@ -118,7 +122,7 @@ namespace gum {
     return res;
   }
 
-  template <typename GUM_SCALAR>
+  template < typename GUM_SCALAR >
   GUM_SCALAR IBayesNet< GUM_SCALAR >::maxParam() const {
     GUM_SCALAR res = 1.0;
     for (auto node: nodes()) {
@@ -128,7 +132,7 @@ namespace gum {
     return res;
   }
 
-  template <typename GUM_SCALAR>
+  template < typename GUM_SCALAR >
   GUM_SCALAR IBayesNet< GUM_SCALAR >::minNonZeroParam() const {
     GUM_SCALAR res = 1.0;
     for (auto node: nodes()) {
@@ -138,7 +142,7 @@ namespace gum {
     return res;
   }
 
-  template <typename GUM_SCALAR>
+  template < typename GUM_SCALAR >
   GUM_SCALAR IBayesNet< GUM_SCALAR >::maxNonOneParam() const {
     GUM_SCALAR res = 0.0;
     for (auto node: nodes()) {
@@ -148,7 +152,7 @@ namespace gum {
     return res;
   }
 
-  template <typename GUM_SCALAR>
+  template < typename GUM_SCALAR >
   INLINE Size IBayesNet< GUM_SCALAR >::memoryFootprint() const {
     Size usedMem = 0;
 
@@ -157,7 +161,7 @@ namespace gum {
     return usedMem;
   }
 
-  template <typename GUM_SCALAR>
+  template < typename GUM_SCALAR >
   INLINE std::string IBayesNet< GUM_SCALAR >::toString() const {
     std::stringstream s;
     s << "BN{nodes: " << size() << ", arcs: " << dag().sizeArcs() << ", ";
@@ -166,14 +170,16 @@ namespace gum {
     return s.str();
   }
 
-  template <typename GUM_SCALAR>
+  template < typename GUM_SCALAR >
   std::string IBayesNet< GUM_SCALAR >::toDot() const {
     std::stringstream output;
     output << "digraph \"";
 
     std::string bn_name;
 
-    try { bn_name = this->property("name"); } catch (NotFound const&) { bn_name = "no_name"; }
+    try {
+      bn_name = this->property("name");
+    } catch (NotFound const&) { bn_name = "no_name"; }
 
     output << bn_name << "\" {" << std::endl;
     output << "  graph [bgcolor=transparent,label=\"" << bn_name << "\"];" << std::endl;
@@ -181,7 +187,7 @@ namespace gum {
 
     for (auto node: nodes())
       output << "\"" << variable(node).name() << "\" [comment=\"" << node << ":"
-          << variable(node).toStringWithDescription() << "\"];" << std::endl;
+             << variable(node).toStringWithDescription() << "\"];" << std::endl;
 
     output << std::endl;
 
@@ -191,7 +197,7 @@ namespace gum {
       if (children(node).size() > 0) {
         for (auto child: children(node)) {
           output << tab << "\"" << variable(node).name() << "\" -> " << "\""
-              << variable(child).name() << "\";" << std::endl;
+                 << variable(child).name() << "\";" << std::endl;
         }
       } else if (parents(node).size() == 0) {
         output << tab << "\"" << variable(node).name() << "\";" << std::endl;
@@ -206,7 +212,7 @@ namespace gum {
   /// Compute a parameter of the joint probability for the BN (given an
   /// instantiation
   /// of the vars)
-  template <typename GUM_SCALAR>
+  template < typename GUM_SCALAR >
   GUM_SCALAR IBayesNet< GUM_SCALAR >::jointProbability(const Instantiation& i) const {
     auto value = (GUM_SCALAR)1.0;
 
@@ -224,7 +230,7 @@ namespace gum {
   /// Compute a parameter of the joint probability for the BN (given an
   /// instantiation
   /// of the vars)
-  template <typename GUM_SCALAR>
+  template < typename GUM_SCALAR >
   GUM_SCALAR IBayesNet< GUM_SCALAR >::log2JointProbability(const Instantiation& i) const {
     auto value = (GUM_SCALAR)0.0;
 
@@ -241,7 +247,7 @@ namespace gum {
     return value;
   }
 
-  template <typename GUM_SCALAR>
+  template < typename GUM_SCALAR >
   bool IBayesNet< GUM_SCALAR >::operator==(const IBayesNet& from) const {
     if (size() != from.size()) { return false; }
 
@@ -288,13 +294,13 @@ namespace gum {
     return true;
   }
 
-  template <typename GUM_SCALAR>
+  template < typename GUM_SCALAR >
   bool IBayesNet< GUM_SCALAR >::operator!=(const IBayesNet& from) const {
     return !this->operator==(from);
   }
 
   // visit the nodes and add some of node from soids in minimal
-  template <typename GUM_SCALAR>
+  template < typename GUM_SCALAR >
   void IBayesNet< GUM_SCALAR >::_minimalCondSetVisitUp_(NodeId         node,
                                                         const NodeSet& soids,
                                                         NodeSet&       minimal,
@@ -303,7 +309,9 @@ namespace gum {
     if (alreadyVisitedUp.contains(node)) return;
     alreadyVisitedUp << node;
 
-    if (soids.contains(node)) { minimal << node; } else {
+    if (soids.contains(node)) {
+      minimal << node;
+    } else {
       for (auto fath: dag_.parents(node))
         _minimalCondSetVisitUp_(fath, soids, minimal, alreadyVisitedUp, alreadyVisitedDn);
       for (auto chil: dag_.children(node))
@@ -312,7 +320,7 @@ namespace gum {
   }
 
   // visit the nodes and add some of node from soids in minimal
-  template <typename GUM_SCALAR>
+  template < typename GUM_SCALAR >
   void IBayesNet< GUM_SCALAR >::_minimalCondSetVisitDn_(NodeId         node,
                                                         const NodeSet& soids,
                                                         NodeSet&       minimal,
@@ -331,7 +339,7 @@ namespace gum {
     }
   }
 
-  template <typename GUM_SCALAR>
+  template < typename GUM_SCALAR >
   NodeSet IBayesNet< GUM_SCALAR >::minimalCondSet(NodeId target, const NodeSet& soids) const {
     if (soids.contains(target)) return NodeSet({target});
 
@@ -348,21 +356,23 @@ namespace gum {
     return res;
   }
 
-  template <typename GUM_SCALAR>
+  template < typename GUM_SCALAR >
   NodeSet IBayesNet< GUM_SCALAR >::minimalCondSet(const NodeSet& targets,
                                                   const NodeSet& soids) const {
     NodeSet res;
-    for (auto node: targets) { res += minimalCondSet(node, soids); }
+    for (auto node: targets) {
+      res += minimalCondSet(node, soids);
+    }
     return res;
   }
 
-  template <typename GUM_SCALAR>
+  template < typename GUM_SCALAR >
   INLINE std::ostream& operator<<(std::ostream& output, const IBayesNet< GUM_SCALAR >& bn) {
     output << bn.toString();
     return output;
   }
 
-  template <typename GUM_SCALAR>
+  template < typename GUM_SCALAR >
   std::vector< std::string > IBayesNet< GUM_SCALAR >::check() const {
     std::vector< std::string > comments;
 
@@ -426,23 +436,23 @@ namespace gum {
     return comments;
   }
 
-  template <typename GUM_SCALAR>
+  template < typename GUM_SCALAR >
   Tensor< GUM_SCALAR > IBayesNet< GUM_SCALAR >::evEq(const std::string& name, double value) const {
     return Tensor< GUM_SCALAR >::evEq(variableFromName(name), value);
   }
 
-  template <typename GUM_SCALAR>
+  template < typename GUM_SCALAR >
   Tensor< GUM_SCALAR >
-    IBayesNet< GUM_SCALAR >::evIn(const std::string& name, double val1, double val2) const {
+      IBayesNet< GUM_SCALAR >::evIn(const std::string& name, double val1, double val2) const {
     return Tensor< GUM_SCALAR >::evIn(variableFromName(name), val1, val2);
   }
 
-  template <typename GUM_SCALAR>
+  template < typename GUM_SCALAR >
   Tensor< GUM_SCALAR > IBayesNet< GUM_SCALAR >::evGt(const std::string& name, double val) const {
     return Tensor< GUM_SCALAR >::evGt(variableFromName(name), val);
   }
 
-  template <typename GUM_SCALAR>
+  template < typename GUM_SCALAR >
   Tensor< GUM_SCALAR > IBayesNet< GUM_SCALAR >::evLt(const std::string& name, double val) const {
     return Tensor< GUM_SCALAR >::evLt(variableFromName(name), val);
   }

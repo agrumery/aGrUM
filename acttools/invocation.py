@@ -56,7 +56,7 @@ def getCommand(name: str, c_warning: str) -> str:
 
 
 def showInvocation(current: dict[str, str], forced: bool = False):
-  if forced or not current['no_fun']:
+  if forced or not current["no_fun"]:
     invocation = getInvocation(current, True)
     print(f"{cfg.C_WARNING}invocation{cfg.C_END} : {invocation}")
     print("")
@@ -66,18 +66,18 @@ def getInvocation(current: dict[str, str], colored: bool = False) -> str:
   if colored:
     c_warning, c_error, c_value, c_end = cfg.C_WARNING, cfg.C_ERROR, cfg.C_VALUE, cfg.C_END
   else:
-    c_warning = c_error = c_value = c_end = ''
+    c_warning = c_error = c_value = c_end = ""
 
   invocation = "act "
 
-  invocation += getCommand(current['action'], c_warning)
+  invocation += getCommand(current["action"], c_warning)
 
-  if current['action'] not in cfg.specialActions:
-    invocation += getCommand("+".join(current['targets']), c_warning)
-    invocation += getCommand(current['mode'], c_warning)
+  if current["action"] not in cfg.specialActions:
+    invocation += getCommand("+".join(current["targets"]), c_warning)
+    invocation += getCommand(current["mode"], c_warning)
 
   for opt in current.keys():
-    if opt not in ['action', 'mode', 'targets']:
+    if opt not in ["action", "mode", "targets"]:
       if opt not in cfg.non_persistent:
         if opt not in cfg.swapOptions.keys():
           if opt in current.keys():

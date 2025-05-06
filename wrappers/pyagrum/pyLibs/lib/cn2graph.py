@@ -52,8 +52,9 @@ import pyagrum.lib._colors as gumcols
 from pyagrum.lib.proba_histogram import saveFigProbaMinMax
 
 
-def CN2dot(cn, size=None, nodeColor=None, arcWidth=None, arcLabel=None, arcColor=None, cmapNode=None, cmapArc=None,
-           showMsg=None):
+def CN2dot(
+  cn, size=None, nodeColor=None, arcWidth=None, arcLabel=None, arcColor=None, cmapNode=None, cmapArc=None, showMsg=None
+):
   """
   create a pydot representation of the Credal Network
 
@@ -98,7 +99,7 @@ def CN2dot(cn, size=None, nodeColor=None, arcWidth=None, arcLabel=None, arcColor
     minarcs = min(arcWidth.values())
     maxarcs = max(arcWidth.values())
 
-  graph = dot.Dot(graph_type='digraph', bgcolor="transparent")
+  graph = dot.Dot(graph_type="digraph", bgcolor="transparent")
 
   for n in bn.names():
     if nodeColor is None or n not in nodeColor:
@@ -110,14 +111,16 @@ def CN2dot(cn, size=None, nodeColor=None, arcWidth=None, arcLabel=None, arcColor
       fgcol = gumcols.proba2fgcolor(nodeColor[n], cmapNode)
       res = f" : {nodeColor[n] if showMsg is None else showMsg[n]:2.5f}"
 
-    node = dot.Node('"' + n + '"', style="filled",
-                    shape="polygon",
-                    sides="7",
-                    peripheries="1",
-                    fillcolor=bgcol,
-                    fontcolor=fgcol,
-                    tooltip=f'"({bn.idFromName(n)}) {n}{res}"'
-                    )
+    node = dot.Node(
+      '"' + n + '"',
+      style="filled",
+      shape="polygon",
+      sides="7",
+      peripheries="1",
+      fillcolor=bgcol,
+      fontcolor=fgcol,
+      tooltip=f'"({bn.idFromName(n)}) {n}{res}"',
+    )
     graph.add_node(node)
 
   for a in bn.arcs():
@@ -138,11 +141,15 @@ def CN2dot(cn, size=None, nodeColor=None, arcWidth=None, arcLabel=None, arcColor
     if arcLabel is not None and a in arcLabel:
       lb = arcLabel[a]
 
-    edge = dot.Edge('"' + bn.variable(a[0]).name() + '"', '"' + bn.variable(a[1]).name() + '"',
-                    label=lb, fontsize="10",
-                    penwidth=pw, color=col,
-                    tooltip=av
-                    )
+    edge = dot.Edge(
+      '"' + bn.variable(a[0]).name() + '"',
+      '"' + bn.variable(a[1]).name() + '"',
+      label=lb,
+      fontsize="10",
+      penwidth=pw,
+      color=col,
+      tooltip=av,
+    )
     graph.add_edge(edge)
 
   if size is None:
@@ -154,9 +161,19 @@ def CN2dot(cn, size=None, nodeColor=None, arcWidth=None, arcLabel=None, arcColor
   return graph
 
 
-def CNinference2dot(cn, size=None, engine=None, evs=None, targets=None, nodeColor=None, arcWidth=None, arcColor=None,
-                    cmapNode=None, cmapArc=None, dag=None
-                    ):
+def CNinference2dot(
+  cn,
+  size=None,
+  engine=None,
+  evs=None,
+  targets=None,
+  nodeColor=None,
+  arcWidth=None,
+  arcColor=None,
+  cmapNode=None,
+  cmapArc=None,
+  dag=None,
+):
   """
   create a pydot representation of an inference in a BN
 
@@ -213,18 +230,17 @@ def CNinference2dot(cn, size=None, engine=None, evs=None, targets=None, nodeColo
     ie = gum.CNMonteCarloSampling(cn)
   else:
     ie = engine
-  if len(evs)>0:
+  if len(evs) > 0:
     ie.setEvidence(evs)
   ie.makeInference()
   stopTime = time.time()
 
   temp_dir = mkdtemp("", "tmp", None)  # with TemporaryDirectory() as temp_dir:
 
-  dotstr = "digraph structs {\n  fontcolor=\"" + \
-           gumcols.getBlackInTheme() + "\";bgcolor=\"transparent\";"
+  dotstr = 'digraph structs {\n  fontcolor="' + gumcols.getBlackInTheme() + '";bgcolor="transparent";'
 
   if gum.config.asBool["notebook", "show_inference_time"]:
-    dotstr += f"  label=\"Inference in {1000 * (stopTime - startTime):6.2f}ms\";\n"
+    dotstr += f'  label="Inference in {1000 * (stopTime - startTime):6.2f}ms";\n'
 
   fontname, fontsize = gumcols.fontFromMatplotlib()
   dotstr += f'  node [fillcolor="{gum.config["notebook", "default_node_bgcolor"]}", style=filled,color="{gum.config["notebook", "default_node_fgcolor"]}",fontname="{fontname}",fontsize="{fontsize}"];\n'
@@ -245,15 +261,13 @@ def CNinference2dot(cn, size=None, engine=None, evs=None, targets=None, nodeColo
       fgcol = gumcols.proba2fgcolor(nodeColor[name], cmapNode)
 
     # 'hard' colour for evidence (?)
-    #if nid in ie.hardEvidenceNodes()|ie.softEvidenceNodes():
+    # if nid in ie.hardEvidenceNodes()|ie.softEvidenceNodes():
     #  bgcol = gum.config["notebook", "evidence_bgcolor"]
     #  fgcol = gum.config["notebook", "evidence_fgcolor"]
 
     colorattribute = f'fillcolor="{bgcol}", fontcolor="{fgcol}", color="#000000"'
     if len(targets) == 0 or name in targets or nid in targets:
-      filename = temp_dir + \
-                 hashlib.md5(name.encode()).hexdigest() + "." + \
-                 gum.config["notebook", "graph_format"]
+      filename = temp_dir + hashlib.md5(name.encode()).hexdigest() + "." + gum.config["notebook", "graph_format"]
       saveFigProbaMinMax(ie.marginalMin(name), ie.marginalMax(name), filename, bgcolor=bgcol)
       dotstr += f' "{name}" [shape=rectangle,image="{filename}",label="", {colorattribute}];\n'
     else:
@@ -275,7 +289,7 @@ def CNinference2dot(cn, size=None, engine=None, evs=None, targets=None, nodeColo
 
     dotstr += f' "{bn.variable(n).name()}"->"{bn.variable(j).name()}" [penwidth="{pw}",tooltip="{av}",color="{col}"];'
 
-  dotstr += '}'
+  dotstr += "}"
 
   g = dot.graph_from_dot_data(dotstr)[0]
 

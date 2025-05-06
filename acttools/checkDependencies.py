@@ -44,9 +44,7 @@ from .utils import warn, notif, notif_oneline
 def _header_filter(split_filename: Sequence[str]) -> bool:
   filename = split_filename[-1]
   # exceptions
-  exceptions = {"agrum.h",
-                "base.h", "bn.h", "cn.h", "id.h", "mrf.h",
-                "structuralConstraintPatternHeader.h"}
+  exceptions = {"agrum.h", "base.h", "bn.h", "cn.h", "id.h", "mrf.h", "structuralConstraintPatternHeader.h"}
   if filename in exceptions:
     return False
 
@@ -79,8 +77,8 @@ def _gum_scan(file: Path) -> list[str]:
 
 def _get_dependencies() -> dict[str, list[str]]:
   deps = {}
-  p = Path('src/agrum')
-  for file in p.glob('**/*.h'):
+  p = Path("src/agrum")
+  for file in p.glob("**/*.h"):
     if _header_filter(file.parts):
       key = "/".join(file.parts[2:])
       deps[key] = _gum_scan(file)
@@ -130,7 +128,6 @@ def draw_gum_dependencies(deps: dict[str, list[str]]):
     "tools/graphs": ("blues9", "#99AADD"),
     "tools/multidim": ("blues9", "#AAAAEE"),
     "tools/stattests": ("blues9", "#AABBFF"),
-
     "BN": ("set38", 4),
     "PRM": ("set38", 2),
     "MRF": ("set38", 3),
@@ -138,10 +135,9 @@ def draw_gum_dependencies(deps: dict[str, list[str]]):
     "learning": ("set38", 6),
     "FMDP": ("set38", 7),
     "ID": ("set38", 8),
-
     "tools/external": ("greys9", 3),
     "legend": ("greys9", 1),
-    "legend_tools": ("greys9", 2)
+    "legend_tools": ("greys9", 2),
   }
 
   def _get_node(name, label: Optional[str] = None, th: Optional[str] = None):
@@ -238,7 +234,7 @@ def remove_redundant_dependencies(target, includes):
     print(res, file=f)
 
 
-def check_gum_dependencies(graph:bool=True, details:bool=True, correction:bool=False):
+def check_gum_dependencies(graph: bool = True, details: bool = True, correction: bool = False):
   deps = _get_dependencies()
   nb_non_opt = {k: len(v) for k, v in deps.items()}
 

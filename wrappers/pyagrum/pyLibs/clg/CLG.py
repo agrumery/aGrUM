@@ -76,9 +76,11 @@ class CLG:
       self.addArc(parent, child, coef)
 
   def __str__(self):
-    return (f"CLG{{nodes: {len(self.nodes())}, "
-            f"arcs: {len(self.arcs())}, "
-            f"parameters: {len(self.arcs()) + 2 * len(self.nodes())}}}")
+    return (
+      f"CLG{{nodes: {len(self.nodes())}, "
+      f"arcs: {len(self.arcs())}, "
+      f"parameters: {len(self.arcs()) + 2 * len(self.nodes())}}}"
+    )
 
   def __repr__(self):
     return str(self)
@@ -554,9 +556,6 @@ class CLG:
 
     return log_likelihood
 
-
-    return clg
-
   def CompareStructure(self, clg_to_compare):
     """
     We use the f-score to compare the causal structure of the two CLGs.
@@ -576,7 +575,7 @@ class CLG:
     bn = gum.BayesNet()
     # add variables
     for name in self.names():
-      new_variable = gum.LabelizedVariable(name, 'a labelized variable', 2)
+      new_variable = gum.LabelizedVariable(name, "a labelized variable", 2)
       bn.add(new_variable)
     # add arcs
     for arc in self.arcs():
@@ -586,7 +585,7 @@ class CLG:
     bn_to_compare = gum.BayesNet()
     # add variables
     for name in clg_to_compare.names():
-      new_variable = gum.LabelizedVariable(name, 'a labelized variable', 2)
+      new_variable = gum.LabelizedVariable(name, "a labelized variable", 2)
       bn_to_compare.add(new_variable)
     # add arcs and edges
     for arc in clg_to_compare.arcs():
@@ -595,7 +594,8 @@ class CLG:
     # We use the f-score to compare graphs of the two created BNs
     cmp = gcm.GraphicalBNComparator(bn, bn_to_compare)
 
-    return cmp.scores()['fscore']
+    return cmp.scores()["fscore"]
+
 
 def randomCLG(nb_variables, names, MuMax=5, MuMin=-5, SigmaMax=10, SigmaMin=1, ArcCoefMax=10, ArcCoefMin=5):
   """
@@ -629,7 +629,7 @@ def randomCLG(nb_variables, names, MuMax=5, MuMin=-5, SigmaMax=10, SigmaMin=1, A
   bn = gum.randomBN(names=names, n=nb_variables)
 
   # Order names by their NodeIds
-  ordered_names = [''] * nb_variables
+  ordered_names = [""] * nb_variables
   for name in bn.names():
     ordered_names[bn.idFromName(name)] = name
 
@@ -637,13 +637,18 @@ def randomCLG(nb_variables, names, MuMax=5, MuMin=-5, SigmaMax=10, SigmaMin=1, A
   clg = CLG()
   # Add variables
   for name in ordered_names:
-    new_variable = GaussianVariable(name=name, mu=random.uniform(MuMin, MuMax),
-                                    sigma=random.uniform(SigmaMin, SigmaMax))
+    new_variable = GaussianVariable(
+      name=name, mu=random.uniform(MuMin, MuMax), sigma=random.uniform(SigmaMin, SigmaMax)
+    )
     clg.add(new_variable)
   # Add arcs
   for arc in bn.arcs():
-    clg.addArc(val1=arc[0], val2=arc[1],
-               coef=random.uniform(-1 * ArcCoefMax, -1 * ArcCoefMin) if random.random() < 0.5 else random.uniform(
-                 ArcCoefMin, ArcCoefMax))
+    clg.addArc(
+      val1=arc[0],
+      val2=arc[1],
+      coef=random.uniform(-1 * ArcCoefMax, -1 * ArcCoefMin)
+      if random.random() < 0.5
+      else random.uniform(ArcCoefMin, ArcCoefMax),
+    )
 
   return clg

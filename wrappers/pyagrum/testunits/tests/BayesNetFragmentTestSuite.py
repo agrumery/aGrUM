@@ -36,7 +36,6 @@
 
 import unittest
 
-import numpy
 import math
 import pyagrum as gum
 from .pyAgrumTestSuite import pyAgrumTestCase, addTests
@@ -56,7 +55,7 @@ class BayesNetFragmentTestCase(pyAgrumTestCase):
   def testCreation(self):
     bn = self.fill()
     frag = gum.BayesNetFragment(bn)
-    frag2 = gum.BayesNetFragment(frag)
+    _ = gum.BayesNetFragment(frag)
 
   def testInstallNodes(self):
     bn = self.fill()
@@ -122,18 +121,16 @@ class BayesNetFragmentTestCase(pyAgrumTestCase):
     self.assertEqual(frag.dag().sizeArcs(), 2)
     self.assertEqual(frag.size(), 3)
     self.assertEqual(frag.dim(), (2 * (3 - 1)) + (2 * (2 - 1)) + (2 - 1))
-    self.assertAlmostEqual(
-      pow(10, frag.log10DomainSize()), 2 * 2 * 3, delta=1e-5)
+    self.assertAlmostEqual(pow(10, frag.log10DomainSize()), 2 * 2 * 3, delta=1e-5)
 
     I = frag.completeInstantiation()
     I.setFirst()
     self.assertEqual(I.__str__(), "<v1:0|v3:0|v6:0>")
 
     while not I.end():
-      p = bn.cpt("v1").get(I) * bn.cpt("v3").get(I) * bn.cpt('v6').get(I)
+      p = bn.cpt("v1").get(I) * bn.cpt("v3").get(I) * bn.cpt("v6").get(I)
       self.assertAlmostEqual(frag.jointProbability(I), p, 1e-5)
-      self.assertAlmostEqual(frag.log2JointProbability(I),
-                             math.log(p, 2), delta=1e-5)
+      self.assertAlmostEqual(frag.log2JointProbability(I), math.log(p, 2), delta=1e-5)
       I.inc()
 
   def testRelevantReasonning(self):
@@ -143,7 +140,6 @@ class BayesNetFragmentTestCase(pyAgrumTestCase):
     inf_complete = gum.LazyPropagation(bn)
     inf_complete.setEvidence({"v3": 1})
     inf_complete.makeInference()
-    p = inf_complete.posterior("v6")
 
     frag = gum.BayesNetFragment(bn)
     frag.installAscendants("v6")
@@ -155,8 +151,7 @@ class BayesNetFragmentTestCase(pyAgrumTestCase):
     inf_frag = gum.LazyPropagation(frag)
     inf_frag.makeInference()
 
-    for x1, x2 in zip(inf_complete.posterior("v6").tolist(),
-                      inf_frag.posterior("v6").tolist()):
+    for x1, x2 in zip(inf_complete.posterior("v6").tolist(), inf_frag.posterior("v6").tolist()):
       self.assertAlmostEqual(x1, x2, delta=1e-5)
 
   def testInstallCPTs(self):
@@ -172,9 +167,9 @@ class BayesNetFragmentTestCase(pyAgrumTestCase):
     frag.installNode("v5")
     # 1->3->6 et 3->5 but 5 does not have all this parents (2,3 et 4)
     with self.assertRaises(gum.NotFound):
-      v = frag.variable("v4").name()
+      _ = frag.variable("v4").name()
     with self.assertRaises(gum.NotFound):
-      v = frag.variable(bn.idFromName("v2")).name()
+      _ = frag.variable(bn.idFromName("v2")).name()
     self.assertEqual(frag.size(), 4)
     self.assertEqual(frag.sizeArcs(), 3)
     self.assertTrue(not frag.checkConsistency())
@@ -209,8 +204,7 @@ class BayesNetFragmentTestCase(pyAgrumTestCase):
     self.assertEqual(frag.size(), 5)
     self.assertEqual(frag.sizeArcs(), 4)
 
-    newV5bis = gum.Tensor().add(frag.variable("v5")).add(
-      frag.variable("v2")).add(frag.variable("v3"))
+    newV5bis = gum.Tensor().add(frag.variable("v5")).add(frag.variable("v2")).add(frag.variable("v3"))
     frag.installCPT("v5", newV5bis)
     self.assertTrue(frag.checkConsistency())
     self.assertEqual(frag.size(), 5)
@@ -226,8 +220,7 @@ class BayesNetFragmentTestCase(pyAgrumTestCase):
     self.assertEqual(frag.size(), 6)
     self.assertEqual(frag.sizeArcs(), 7)
 
-    newV5 = gum.Tensor().add(frag.variable("v5")).add(
-      frag.variable("v2")).add(frag.variable("v3"))
+    newV5 = gum.Tensor().add(frag.variable("v5")).add(frag.variable("v2")).add(frag.variable("v3"))
     newV5.fillWith(bn2.cpt("v5"))
     frag.installCPT("v5", newV5)
     self.assertTrue(frag.checkConsistency())
@@ -241,8 +234,7 @@ class BayesNetFragmentTestCase(pyAgrumTestCase):
 
     for n in frag.names():
       for x1, x2 in zip(ie2.posterior(n).tolist(), ie.posterior(n).tolist()):
-        self.assertAlmostEqual(
-          x1, x2, delta=1e-5, msg="For variable '{}'".format(n))
+        self.assertAlmostEqual(x1, x2, delta=1e-5, msg="For variable '{}'".format(n))
 
   def testCopyToBN(self):
     bn = gum.fastBN("A->B->C->D;E<-C<-F")

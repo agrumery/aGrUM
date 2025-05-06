@@ -131,14 +131,13 @@ def _computeAUC(points):
   # computes the integral from 0 to 1
   somme = 0
   for i in range(1, len(points)):
-    somme += (points[i][0] - points[i - 1][0]) * \
-             (points[i - 1][1] + points[i][1])
+    somme += (points[i][0] - points[i - 1][0]) * (points[i - 1][1] + points[i][1])
 
   return somme / 2
 
 
 def _computeFbeta(points, ind, beta=1):
-  return (1 + beta ** 2) * points[ind][1] * points[ind][0] / ((beta ** 2 * points[ind][1]) + points[ind][0])
+  return (1 + beta**2) * points[ind][1] * points[ind][0] / ((beta**2 * points[ind][1]) + points[ind][0])
 
 
 def _computePoints(bn, datasrc, target, label, *, beta=1, show_progress=True, with_labels=True, significant_digits=10):
@@ -190,8 +189,8 @@ def _computePoints(bn, datasrc, target, label, *, beta=1, show_progress=True, wi
     # pylint: disable=import-outside-toplevel
     filename = _getFilename(datasrc)
     from tqdm import tqdm
-    pbar = tqdm(total=_lines_count(datasrc) - 1, desc=filename,
-                bar_format='{desc}: {percentage:3.0f}%|{bar}|')
+
+    pbar = tqdm(total=_lines_count(datasrc) - 1, desc=filename, bar_format="{desc}: {percentage:3.0f}%|{bar}|")
 
   Classifier.fromTrainedModel(bn, target, idLabel)
   # as a Binary classifier, y will be a list of True (good classification) and False (bad one)
@@ -267,7 +266,7 @@ def _computeROC_PR(values, totalP, totalN, beta):
         threshopt_ROC = (cur_threshold + old_threshold) / 2
 
       if prec + tpr > 0:
-        f = (1 + beta ** 2) * prec * tpr / ((beta ** 2 * prec) + tpr)
+        f = (1 + beta**2) * prec * tpr / ((beta**2 * prec) + tpr)
 
         if f > fmax_PR:
           fmax_PR = f
@@ -297,9 +296,19 @@ def _computeROC_PR(values, totalP, totalN, beta):
   fbeta_ROC = _computeFbeta(pointsPR, ind_ROC, beta)
   fbeta_PR = _computeFbeta(pointsPR, ind_PR, beta)
 
-  return (pointsROC, ind_ROC, threshopt_ROC, AUC_ROC, fbeta_ROC,
-          pointsPR, ind_PR, threshopt_PR, AUC_PR, fbeta_PR,
-          thresholds)
+  return (
+    pointsROC,
+    ind_ROC,
+    threshopt_ROC,
+    AUC_ROC,
+    fbeta_ROC,
+    pointsPR,
+    ind_PR,
+    threshopt_PR,
+    AUC_PR,
+    fbeta_PR,
+    thresholds,
+  )
 
 
 def getROCpoints(bn, datasrc, target, label, with_labels=True, significant_digits=10):
@@ -329,6 +338,7 @@ def getROCpoints(bn, datasrc, target, label, with_labels=True, significant_digit
   if type(datasrc) is not str:
     if hasattr(datasrc, "to_csv") or hasattr(datasrc, "write_csv"):
       import tempfile
+
       csvfile = tempfile.NamedTemporaryFile(delete=False)
       tmpfilename = csvfile.name
       csvfilename = tmpfilename + CSV_TMP_SUFFIX
@@ -345,11 +355,22 @@ def getROCpoints(bn, datasrc, target, label, with_labels=True, significant_digit
     else:
       raise TypeError("first argument must be a string or a DataFrame")
 
-  (res, totalP, totalN) = _computePoints(bn, datasrc, target,
-                                         label, show_progress=False, with_labels=with_labels,
-                                         significant_digits=significant_digits)
-  (pointsROC, ind_ROC, thresholdROC, AUC_ROC, fbeta_ROC, pointsPR, ind_PR,
-   thresholdPR, AUC_PR, fbeta_PR, thresholds) = _computeROC_PR(res, totalP, totalN, beta=1)
+  (res, totalP, totalN) = _computePoints(
+    bn, datasrc, target, label, show_progress=False, with_labels=with_labels, significant_digits=significant_digits
+  )
+  (
+    pointsROC,
+    ind_ROC,
+    thresholdROC,
+    AUC_ROC,
+    fbeta_ROC,
+    pointsPR,
+    ind_PR,
+    thresholdPR,
+    AUC_PR,
+    fbeta_PR,
+    thresholds,
+  ) = _computeROC_PR(res, totalP, totalN, beta=1)
 
   return pointsROC
 
@@ -381,6 +402,7 @@ def getPRpoints(bn, datasrc, target, label, with_labels=True, significant_digits
   if type(datasrc) is not str:
     if hasattr(datasrc, "to_csv") or hasattr(datasrc, "write_csv"):
       import tempfile
+
       csvfile = tempfile.NamedTemporaryFile(delete=False)
       tmpfilename = csvfile.name
       csvfilename = tmpfilename + CSV_TMP_SUFFIX
@@ -398,11 +420,28 @@ def getPRpoints(bn, datasrc, target, label, with_labels=True, significant_digits
       raise TypeError("first argument must be a string or a DataFrame")
 
   show_progress = False
-  (res, totalP, totalN) = _computePoints(bn, datasrc, target,
-                                         label, show_progress=show_progress, with_labels=with_labels,
-                                         significant_digits=significant_digits)
-  (pointsROC, ind_ROC, thresholdROC, AUC_ROC, fbeta_ROC, pointsPR, ind_PR,
-   thresholdPR, AUC_PR, fbeta_PR, thresholds) = _computeROC_PR(res, totalP, totalN, beta=1)
+  (res, totalP, totalN) = _computePoints(
+    bn,
+    datasrc,
+    target,
+    label,
+    show_progress=show_progress,
+    with_labels=with_labels,
+    significant_digits=significant_digits,
+  )
+  (
+    pointsROC,
+    ind_ROC,
+    thresholdROC,
+    AUC_ROC,
+    fbeta_ROC,
+    pointsPR,
+    ind_PR,
+    thresholdPR,
+    AUC_PR,
+    fbeta_PR,
+    thresholds,
+  ) = _computeROC_PR(res, totalP, totalN, beta=1)
 
   return pointsPR
 
@@ -445,53 +484,62 @@ def _getPoint(threshold: float, thresholds: List[float], points: List[Tuple[floa
     return (points[ind][0] + points[ind + 1][0]) / 2, (points[ind][1] + points[ind + 1][1]) / 2
 
 
-def _basicDraw(ax, points, thresholds, fbeta, beta, AUC, main_color, secondary_color,
-               last_color="black", thresholds_to_show=None, align_threshold="left"):
-  ax.grid(color='#aaaaaa', linestyle='-', linewidth=1, alpha=0.5)
+def _basicDraw(
+  ax,
+  points,
+  thresholds,
+  fbeta,
+  beta,
+  AUC,
+  main_color,
+  secondary_color,
+  last_color="black",
+  thresholds_to_show=None,
+  align_threshold="left",
+):
+  ax.grid(color="#aaaaaa", linestyle="-", linewidth=1, alpha=0.5)
 
-  ax.plot([x[0] for x in points], [y[1] for y in points], '-',
-          linewidth=3, color=gum.config["ROC", "draw_color"], zorder=3
-          )
-  ax.fill_between([x[0] for x in points],
-                  [y[1] for y in points], 0, color=gum.config["ROC", "fill_color"]
-                  )
+  ax.plot(
+    [x[0] for x in points], [y[1] for y in points], "-", linewidth=3, color=gum.config["ROC", "draw_color"], zorder=3
+  )
+  ax.fill_between([x[0] for x in points], [y[1] for y in points], 0, color=gum.config["ROC", "fill_color"])
 
   ax.set_ylim((-0.01, 1.01))
   ax.set_xlim((-0.01, 1.01))
-  ax.set_xticks(pylab.arange(0, 1.1, .1))
-  ax.set_yticks(pylab.arange(0, 1.1, .1))
+  ax.set_xticks(pylab.arange(0, 1.1, 0.1))
+  ax.set_yticks(pylab.arange(0, 1.1, 0.1))
   ax.grid(True)
 
   axs = pylab.gca()
-  r = pylab.Rectangle((0, 0), 1, 1, edgecolor='#444444',
-                      facecolor='none', zorder=1
-                      )
+  r = pylab.Rectangle((0, 0), 1, 1, edgecolor="#444444", facecolor="none", zorder=1)
   axs.add_patch(r)
   for spine in axs.spines.values():
     spine.set_visible(False)
 
   if len(points) < 10:
     for i in range(1, len(points) - 1):
-      ax.plot(points[i][0], points[i][1], 'o', color="#55DD55", zorder=6)
+      ax.plot(points[i][0], points[i][1], "o", color="#55DD55", zorder=6)
 
   def _show_point_from_thresh(thresh, col, shape):
-    fontsize = 10 if shape == 'o' else 7
+    fontsize = 10 if shape == "o" else 7
     inc_threshold = 0.01 if align_threshold == "left" else -0.01
     point = _getPoint(thresh, thresholds, points)
     ax.plot(point[0], point[1], shape, color=col, zorder=6)
-    ax.text(point[0] + inc_threshold, point[1] - 0.01,
-            f'{thresh:.4f}',
-            {'color': col, 'fontsize': fontsize},
-            horizontalalignment=align_threshold,
-            verticalalignment='top',
-            rotation=0,
-            clip_on=False)
+    ax.text(
+      point[0] + inc_threshold,
+      point[1] - 0.01,
+      f"{thresh:.4f}",
+      {"color": col, "fontsize": fontsize},
+      horizontalalignment=align_threshold,
+      verticalalignment="top",
+      rotation=0,
+      clip_on=False,
+    )
 
   if thresholds_to_show is not None:
     _show_point_from_thresh(thresholds_to_show[0], main_color, shape="o")
     if len(thresholds_to_show) > 1:
-      _show_point_from_thresh(
-        thresholds_to_show[1], secondary_color, shape=".")
+      _show_point_from_thresh(thresholds_to_show[1], secondary_color, shape=".")
       if len(thresholds_to_show) > 2:
         for i in range(2, len(thresholds_to_show)):
           _show_point_from_thresh(thresholds_to_show[i], last_color, shape=".")
@@ -504,25 +552,45 @@ def _basicDraw(ax, points, thresholds, fbeta, beta, AUC, main_color, secondary_c
     AUC_halign = "left"
 
   if beta == 1:
-    ax.text(AUC_x, 0.0, f'AUC={AUC:.4f}\nF1={fbeta:.4f}', {'color': main_color, 'fontsize': 18},
-            horizontalalignment=AUC_halign,
-            verticalalignment='bottom',
-            fontsize=18)
+    ax.text(
+      AUC_x,
+      0.0,
+      f"AUC={AUC:.4f}\nF1={fbeta:.4f}",
+      {"color": main_color, "fontsize": 18},
+      horizontalalignment=AUC_halign,
+      verticalalignment="bottom",
+      fontsize=18,
+    )
   else:
-    ax.text(AUC_x, 0.0, f'AUC={AUC:.4f}\nF-{beta:g}={fbeta:.4f}', {'color': main_color, 'fontsize': 18},
-            horizontalalignment=AUC_halign,
-            verticalalignment='bottom',
-            fontsize=18)
+    ax.text(
+      AUC_x,
+      0.0,
+      f"AUC={AUC:.4f}\nF-{beta:g}={fbeta:.4f}",
+      {"color": main_color, "fontsize": 18},
+      horizontalalignment=AUC_halign,
+      verticalalignment="bottom",
+      fontsize=18,
+    )
 
 
 def _drawROC(points, zeTitle, fbeta_ROC, beta, AUC_ROC, thresholds, thresholds_to_show, ax=None):
   ax = ax or pylab.gca()
 
-  _basicDraw(ax, points, thresholds, fbeta=fbeta_ROC, beta=beta, AUC=AUC_ROC, main_color='#DD5555',
-             secondary_color='#120af7', thresholds_to_show=thresholds_to_show, align_threshold="left")
-  ax.plot([0.0, 1.0], [0.0, 1.0], '-', color="#AAAAAA")
-  ax.set_xlabel('False positive rate')
-  ax.set_ylabel('True positive rate')
+  _basicDraw(
+    ax,
+    points,
+    thresholds,
+    fbeta=fbeta_ROC,
+    beta=beta,
+    AUC=AUC_ROC,
+    main_color="#DD5555",
+    secondary_color="#120af7",
+    thresholds_to_show=thresholds_to_show,
+    align_threshold="left",
+  )
+  ax.plot([0.0, 1.0], [0.0, 1.0], "-", color="#AAAAAA")
+  ax.set_xlabel("False positive rate")
+  ax.set_ylabel("True positive rate")
 
   ax.set_title(zeTitle)
 
@@ -530,18 +598,41 @@ def _drawROC(points, zeTitle, fbeta_ROC, beta, AUC_ROC, thresholds, thresholds_t
 def _drawPR(points, zeTitle, fbeta_PR, beta, AUC_PR, thresholds, thresholds_to_show, rate, ax=None):
   ax = ax or pylab.gca()
 
-  _basicDraw(ax, points, thresholds, fbeta=fbeta_PR, beta=beta, AUC=AUC_PR, main_color='#120af7',
-             secondary_color='#DD5555',
-             thresholds_to_show=thresholds_to_show, align_threshold="right")
-  ax.plot([0.0, 1.0], [rate, rate], '-', color="#AAAAAA")
-  ax.set_xlabel('Recall')
-  ax.set_ylabel('Precision')
+  _basicDraw(
+    ax,
+    points,
+    thresholds,
+    fbeta=fbeta_PR,
+    beta=beta,
+    AUC=AUC_PR,
+    main_color="#120af7",
+    secondary_color="#DD5555",
+    thresholds_to_show=thresholds_to_show,
+    align_threshold="right",
+  )
+  ax.plot([0.0, 1.0], [rate, rate], "-", color="#AAAAAA")
+  ax.set_xlabel("Recall")
+  ax.set_ylabel("Precision")
 
   ax.set_title(zeTitle)
 
 
-def showROC_PR(bn, datasrc, target, label, *, beta=1, show_progress=True, show_fig=True, save_fig=False,
-               with_labels=True, show_ROC=True, show_PR=True, significant_digits=10, bgcolor=None):
+def showROC_PR(
+  bn,
+  datasrc,
+  target,
+  label,
+  *,
+  beta=1,
+  show_progress=True,
+  show_fig=True,
+  save_fig=False,
+  with_labels=True,
+  show_ROC=True,
+  show_PR=True,
+  significant_digits=10,
+  bgcolor=None,
+):
   """
   Compute the ROC curve and save the result in the folder of the csv file.
 
@@ -583,6 +674,7 @@ def showROC_PR(bn, datasrc, target, label, *, beta=1, show_progress=True, show_f
   if type(datasrc) is not str:
     if hasattr(datasrc, "to_csv") or hasattr(datasrc, "write_csv"):
       import tempfile
+
       csvfile = tempfile.NamedTemporaryFile(delete=False)
       tmpfilename = csvfile.name
       csvfilename = tmpfilename + CSV_TMP_SUFFIX
@@ -592,9 +684,20 @@ def showROC_PR(bn, datasrc, target, label, *, beta=1, show_progress=True, show_f
       else:
         datasrc.write_csv(csvfilename, na_rep="?", index=False)
 
-      showROC_PR(bn, csvfilename, target, label, beta=beta, show_progress=show_progress, show_fig=show_fig,
-                 save_fig=save_fig, with_labels=with_labels, show_ROC=show_ROC, show_PR=show_PR,
-                 significant_digits=significant_digits)
+      showROC_PR(
+        bn,
+        csvfilename,
+        target,
+        label,
+        beta=beta,
+        show_progress=show_progress,
+        show_fig=show_fig,
+        save_fig=save_fig,
+        with_labels=with_labels,
+        show_ROC=show_ROC,
+        show_PR=show_PR,
+        significant_digits=significant_digits,
+      )
 
       os.remove(csvfilename)
       return
@@ -606,11 +709,29 @@ def showROC_PR(bn, datasrc, target, label, *, beta=1, show_progress=True, show_f
     gum.config["notebook", "figure_facecolor"] = bgcolor
 
   filename = _getFilename(datasrc)
-  (res, totalP, totalN) = _computePoints(bn, datasrc, target,
-                                         label, beta=beta, show_progress=show_progress, with_labels=with_labels,
-                                         significant_digits=significant_digits)
-  (pointsROC, ind_ROC, thresholdROC, AUC_ROC, fbeta_ROC, pointsPR, ind_PR,
-   thresholdPR, AUC_PR, fbeta_PR, thresholds) = _computeROC_PR(res, totalP, totalN, beta)
+  (res, totalP, totalN) = _computePoints(
+    bn,
+    datasrc,
+    target,
+    label,
+    beta=beta,
+    show_progress=show_progress,
+    with_labels=with_labels,
+    significant_digits=significant_digits,
+  )
+  (
+    pointsROC,
+    ind_ROC,
+    thresholdROC,
+    AUC_ROC,
+    fbeta_ROC,
+    pointsPR,
+    ind_PR,
+    thresholdPR,
+    AUC_PR,
+    fbeta_PR,
+    thresholds,
+  ) = _computeROC_PR(res, totalP, totalN, beta)
   try:
     shortname = os.path.basename(bn.property("name"))
   except gum.NotFound:
@@ -626,24 +747,55 @@ def showROC_PR(bn, datasrc, target, label, *, beta=1, show_progress=True, show_f
     pylab.gcf().subplots_adjust(wspace=0.1)
 
     ax1 = fig.add_subplot(1, 2, 1)
-    _drawROC(points=pointsROC, zeTitle="ROC", fbeta_ROC=fbeta_ROC, beta=beta, AUC_ROC=AUC_ROC, thresholds=thresholds,
-             thresholds_to_show=[thresholdROC, thresholdPR],
-             ax=ax1)
+    _drawROC(
+      points=pointsROC,
+      zeTitle="ROC",
+      fbeta_ROC=fbeta_ROC,
+      beta=beta,
+      AUC_ROC=AUC_ROC,
+      thresholds=thresholds,
+      thresholds_to_show=[thresholdROC, thresholdPR],
+      ax=ax1,
+    )
 
     ax2 = fig.add_subplot(1, 2, 2)
     ax2.yaxis.tick_right()
     ax2.yaxis.set_label_position("right")
-    _drawPR(points=pointsPR, zeTitle="Precision-Recall", fbeta_PR=fbeta_PR, beta=beta, AUC_PR=AUC_PR,
-            thresholds=thresholds, thresholds_to_show=[thresholdPR, thresholdROC], rate=rate, ax=ax2)
+    _drawPR(
+      points=pointsPR,
+      zeTitle="Precision-Recall",
+      fbeta_PR=fbeta_PR,
+      beta=beta,
+      AUC_PR=AUC_PR,
+      thresholds=thresholds,
+      thresholds_to_show=[thresholdPR, thresholdROC],
+      rate=rate,
+      ax=ax2,
+    )
   elif show_ROC:
     figname = f"{filename}-ROC_{shortname}-{target}-{label}.png"
 
-    _drawROC(points=pointsROC, zeTitle=title, fbeta_ROC=fbeta_ROC, beta=beta, AUC_ROC=AUC_ROC, thresholds=thresholds,
-             thresholds_to_show=[thresholdROC])
+    _drawROC(
+      points=pointsROC,
+      zeTitle=title,
+      fbeta_ROC=fbeta_ROC,
+      beta=beta,
+      AUC_ROC=AUC_ROC,
+      thresholds=thresholds,
+      thresholds_to_show=[thresholdROC],
+    )
   elif show_PR:
     figname = f"{filename}-PR_{shortname}-{target}-{label}.png"
-    _drawPR(points=pointsPR, zeTitle=title, fbeta_PR=fbeta_PR, beta=beta, AUC_PR=AUC_PR, thresholds=thresholds,
-            thresholds_to_show=[thresholdPR], rate=rate)
+    _drawPR(
+      points=pointsPR,
+      zeTitle=title,
+      fbeta_PR=fbeta_PR,
+      beta=beta,
+      AUC_PR=AUC_PR,
+      thresholds=thresholds,
+      thresholds_to_show=[thresholdPR],
+      rate=rate,
+    )
 
   if save_fig:
     pylab.savefig(figname, dpi=300, transparent=(bgcolor is None))
@@ -657,8 +809,9 @@ def showROC_PR(bn, datasrc, target, label, *, beta=1, show_progress=True, show_f
   return AUC_ROC, thresholdROC, AUC_PR, thresholdPR
 
 
-def showROC(bn, datasrc, target, label, show_progress=True, show_fig=True, save_fig=False, with_labels=True,
-            significant_digits=10):
+def showROC(
+  bn, datasrc, target, label, show_progress=True, show_fig=True, save_fig=False, with_labels=True, significant_digits=10
+):
   """
   Compute the ROC curve and save the result in the folder of the csv file.
 
@@ -684,12 +837,34 @@ def showROC(bn, datasrc, target, label, show_progress=True, show_fig=True, save_
     number of significant digits when computing probabilities
   """
 
-  return showROC_PR(bn, datasrc, target, label, show_progress=show_progress, show_fig=show_fig, save_fig=save_fig,
-                    with_labels=with_labels, show_ROC=True, show_PR=False, significant_digits=significant_digits)
+  return showROC_PR(
+    bn,
+    datasrc,
+    target,
+    label,
+    show_progress=show_progress,
+    show_fig=show_fig,
+    save_fig=save_fig,
+    with_labels=with_labels,
+    show_ROC=True,
+    show_PR=False,
+    significant_digits=significant_digits,
+  )
 
 
-def showPR(bn, datasrc, target, label, *, beta=1, show_progress=True, show_fig=True, save_fig=False,
-           with_labels=True, significant_digits=10):
+def showPR(
+  bn,
+  datasrc,
+  target,
+  label,
+  *,
+  beta=1,
+  show_progress=True,
+  show_fig=True,
+  save_fig=False,
+  with_labels=True,
+  significant_digits=10,
+):
   """
   Compute the ROC curve and save the result in the folder of the csv file.
 
@@ -715,8 +890,20 @@ def showPR(bn, datasrc, target, label, *, beta=1, show_progress=True, show_fig=T
     number of significant digits when computing probabilities
   """
 
-  return showROC_PR(bn, datasrc, target, label, beta=beta, show_progress=show_progress, show_fig=show_fig, save_fig=save_fig,
-                    with_labels=with_labels, show_ROC=False, show_PR=True, significant_digits=significant_digits)
+  return showROC_PR(
+    bn,
+    datasrc,
+    target,
+    label,
+    beta=beta,
+    show_progress=show_progress,
+    show_fig=show_fig,
+    save_fig=save_fig,
+    with_labels=with_labels,
+    show_ROC=False,
+    show_PR=True,
+    significant_digits=significant_digits,
+  )
 
 
 def animROC(bn, datasrc, target="Y", label="1"):
@@ -773,7 +960,7 @@ def animROC(bn, datasrc, target="Y", label="1"):
   # widgets.interact(interactive_view, rate=(0,100,1))
   interactive_plot = widgets.interactive(interactive_view, rate=(0, 100, 1))
   output = interactive_plot.children[-1]
-  output.layout.height = '250px'
+  output.layout.height = "250px"
   return interactive_plot
 
 
@@ -831,5 +1018,5 @@ def animPR(bn, datasrc, target="Y", label="1"):
   # widgets.interact(interactive_view, rate=(0,100,1))
   interactive_plot = widgets.interactive(interactive_view, rate=(0, 100, 1))
   output = interactive_plot.children[-1]
-  output.layout.height = '250px'
+  output.layout.height = "250px"
   return interactive_plot

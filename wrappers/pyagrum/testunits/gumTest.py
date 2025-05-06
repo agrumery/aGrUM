@@ -44,14 +44,14 @@ import logging
 
 def go():
   cwd = os.getcwd()
-  FORMAT = '[pyAgrum] %(asctime)s | %(levelname)s | %(filename)s:%(lineno)d | %(funcName)s | %(message)s'
+  FORMAT = "[pyAgrum] %(asctime)s | %(levelname)s | %(filename)s:%(lineno)d | %(funcName)s | %(message)s"
 
   if os.path.isabs(__file__):
     os.chdir(os.path.dirname(__file__))
   else:
     os.chdir(os.path.dirname("./" + __file__))
 
-  test_modules = {'', 'main', 'skbn', 'causal', 'clg', 'ctbn', 'bnmixture'}
+  test_modules = {"", "main", "skbn", "causal", "clg", "ctbn", "bnmixture"}
 
   mod = "release"  # release|debug|standAlone (test the installed version)
   testNotebooks = False
@@ -60,8 +60,8 @@ def go():
     if cde in ["debug", "release"]:
       mod = cde
     elif cde == "all":
-      testNotebooks = (cde == "all")
-    elif cde[:5] == 'quick':
+      testNotebooks = cde == "all"
+    elif cde[:5] == "quick":
       test_module = cde[6:]
       if test_module not in test_modules:
         print(f"[-t quick_module] but module '{test_module}' not in {test_modules}")
@@ -75,7 +75,7 @@ def go():
 
   log = logging.getLogger("gumTestLog")
   log.setLevel(logging.DEBUG)  # better to have too much log than not enough
-  fh = logging.FileHandler(logfilename, mode='w', encoding=None, delay=False)
+  fh = logging.FileHandler(logfilename, mode="w", encoding=None, delay=False)
   fh.setFormatter(logging.Formatter(FORMAT))
   log.addHandler(fh)
   log.propagate = False
@@ -129,7 +129,7 @@ def go():
   with open(logfilename, "r") as logfile:
     for f in logfile.readlines():
       if "[pyAgrum]" in f:
-        print(f, end='')
+        print(f, end="")
   print("-" * 70)
 
   print("\n\n\nErrors : " + str(total_errs))

@@ -45,11 +45,7 @@ from .utils import critic
 
 
 def cmdline(command: str) -> str:
-  process = Popen(
-    args=command,
-    stdout=PIPE,
-    shell=True
-  )
+  process = Popen(args=command, stdout=PIPE, shell=True)
   return process.communicate()[0].decode()
 
 
@@ -57,7 +53,7 @@ def cmdline(command: str) -> str:
 # find make, python3
 def is_tool(prog: str, longpath=False) -> Optional[str]:
   progw = prog + ".exe"
-  for dirname in os.environ['PATH'].split(os.pathsep):
+  for dirname in os.environ["PATH"].split(os.pathsep):
     if os.path.exists(os.path.join(dirname, prog)):
       return prog if not longpath else '"' + os.path.join(dirname, prog) + '"'
     if os.path.exists(os.path.join(dirname, progw)):
@@ -65,17 +61,16 @@ def is_tool(prog: str, longpath=False) -> Optional[str]:
   return None
 
 
-def check_tools() -> tuple[str, str, str, str, str]:
+def check_tools() -> tuple[str, str, str, str, str, str]:
   exe_py = f'"{sys.executable}"'
 
-  version, subversion, _ = cmdline(
-    exe_py + ' -c "import platform;print(platform.python_version())"').split(".")
+  version, subversion, _ = cmdline(exe_py + ' -c "import platform;print(platform.python_version())"').split(".")
 
   if version == "2":
-    critic('python2 is not supported anymore. Please use pyAgrum 0.21.x.')
+    critic("python2 is not supported anymore. Please use pyAgrum 0.21.x.")
   else:
     if int(subversion) < 9:
-      critic('python<3.9 is not supported anymore.')
+      critic("python<3.9 is not supported anymore.")
   cfg.python_version = f"{version}.{subversion}"
 
   exe_cmake = is_tool("cmake")
@@ -94,11 +89,13 @@ def check_tools() -> tuple[str, str, str, str, str]:
   if is_tool("clang-format"):
     exe_clangformat = "clang-format"
   if exe_clangformat is None:
-    for version in ['', '-13.0', '-12.0', '-11.0']:
+    for version in ["", "-13.0", "-12.0", "-11.0"]:
       if is_tool(f"clang-format{version}"):
         exe_clangformat = f"clang-format{version}"
         break
 
   exe_msbuild = is_tool("msbuild")
 
-  return exe_py, exe_cmake, exe_make, exe_clangformat, exe_msbuild
+  exe_ruff = is_tool("ruff")
+
+  return exe_py, exe_cmake, exe_make, exe_clangformat, exe_msbuild, exe_ruff
