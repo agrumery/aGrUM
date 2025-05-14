@@ -41,236 +41,232 @@ import sys
 from sys import platform as os_platform
 
 if __name__ == "__main__":
-    print(
-        "[pyAgrum] Please use 'act test pyAgrum release -t [module]|quick|quick_[module]|all'."
-    )
-    sys.exit(0)
+  print("[pyAgrum] Please use 'act test pyAgrum release -t [module]|quick|quick_[module]|all'.")
+  sys.exit(0)
 
 
 def runTests(local: bool, test_module, log) -> int:
-    if len(sys.argv) > 1:
-        log.info("[pyAgrum] Adding local pyAgrum's path")
-        p = os.getcwd() + "\\" + sys.argv[1]
-        sys.path.insert(
-            1, p
-        )  # to force to use local pyAgrum for the tests (and not installed one)
+  if len(sys.argv) > 1:
+    log.info("[pyAgrum] Adding local pyAgrum's path")
+    p = os.getcwd() + "\\" + sys.argv[1]
+    sys.path.insert(1, p)  # to force to use local pyAgrum for the tests (and not installed one)
 
-    print(f"Modules : {test_module if test_module != '' else 'all'}")
-    import pyagrum as gum
+  print(f"Modules : {test_module if test_module != '' else 'all'}")
+  import pyagrum as gum
 
-    res = find_spec("sklearn")
-    sklearnFound = res is not None
+  res = find_spec("sklearn")
+  sklearnFound = res is not None
 
-    res = find_spec("pandas")
-    pandasFound = res is not None
+  res = find_spec("pandas")
+  pandasFound = res is not None
 
-    import unittest
+  import unittest
 
-    from tests import AggregatorsForBNTestSuite
-    from tests import AllIncrementalInferenceTestSuite
-    from tests import BayesNetTestSuite
-    from tests import BayesNetFragmentTestSuite
+  from tests import AggregatorsForBNTestSuite
+  from tests import AllIncrementalInferenceTestSuite
+  from tests import BayesNetTestSuite
+  from tests import BayesNetFragmentTestSuite
 
-    if pandasFound and sklearnFound:
-        from tests import BNClassifierTestSuite
+  if pandasFound and sklearnFound:
+    from tests import BNClassifierTestSuite
+  else:
+    log.warning("[pyAgrum] pyagrum.lib.classifier needs pandas and scikit-learn")
+
+  from tests import BNDatabaseGeneratorTestSuite
+  from tests import BNLearnerTestSuite
+  from tests import BNListenerTestSuite
+  from tests import ConfigTestSuite
+
+  if pandasFound:
+    from tests import DiscreteTypeProcessorTestSuite
+  from tests import EssentialGraphTestSuite
+  from tests import EvidenceTestSuite
+  from tests import GraphTestSuite
+  from tests import ICIModelsForBNTestSuite
+  from tests import ImportTestSuite
+  from tests import InfluenceDiagramTestSuite
+  from tests import InstantiationTestSuite
+  from tests import JTInferenceTestSuite
+  from tests import JunctionTreeTestSuite
+  from tests import LazyPropagationTestSuite
+  from tests import LoopyBeliefPropagationTestSuite
+  from tests import MarkovBlanketTestSuite
+  from tests import MarkovRandomFieldTestSuite
+  from tests import PicklerTestSuite
+  from tests import RandomGeneratorTestSuite
+  from tests import TensorTestSuite
+  from tests import PRMexplorerTestSuite
+  from tests import SamplingTestSuite
+
+  if pandasFound and sklearnFound:
+    from tests import SkbnTestSuite
+  else:
+    log.warning("[pyAgrum] pyagrum.lib.classifier needs pandas and scikit-learn")
+
+  from tests import VariablesTestSuite
+
+  if pandasFound:
+    from tests import CausalASTTestSuite
+    from tests import CausalDSepTestSuite
+    from tests import CausalModelTestSuite
+    from tests import CausalNonRegressionTestSuite
+    from tests import CausalEffectEstimationTestSuite
+
+  from tests import WorkaroundTestSuite
+
+  from tests import CtbnCimTestSuite
+  from tests import CtbnModelTestSuite
+  from tests import CtbnTrajectoryTestSuite
+  from tests import CtbnIndependenceTestSuite
+  from tests import CtbnLearnerTestSuite
+
+  if pandasFound:
+    from tests import CLGLearningTestSuite
+    from tests import CLGSamplingTestSuite
+    from tests import CLGCanonicalFormTestSuite
+    from tests import CLGInferenceTestSuite
+
+  from tests import MixtureModelTestSuite
+
+  import time
+
+  tl = list()
+  if test_module in {"", "main"}:
+    log.info("testing 'main'")
+    tl.append(AggregatorsForBNTestSuite.ts)
+    tl.append(AllIncrementalInferenceTestSuite.ts)
+    tl.append(BayesNetTestSuite.ts)
+    tl.append(BayesNetFragmentTestSuite.ts)
+    tl.append(BNDatabaseGeneratorTestSuite.ts)
+    tl.append(BNLearnerTestSuite.ts)
+    tl.append(BNListenerTestSuite.ts)
+    tl.append(ConfigTestSuite.ts)
+    if pandasFound:
+      tl.append(DiscreteTypeProcessorTestSuite.ts)
+    tl.append(EssentialGraphTestSuite.ts)
+    tl.append(EvidenceTestSuite.ts)
+    tl.append(GraphTestSuite.ts)
+    tl.append(ICIModelsForBNTestSuite.ts)
+    tl.append(ImportTestSuite.ts)
+    tl.append(InfluenceDiagramTestSuite.ts)
+    tl.append(InstantiationTestSuite.ts)
+    tl.append(JTInferenceTestSuite.ts)
+    tl.append(JunctionTreeTestSuite.ts)
+    tl.append(LazyPropagationTestSuite.ts)
+    tl.append(LoopyBeliefPropagationTestSuite.ts)
+    tl.append(MarkovBlanketTestSuite.ts)
+    tl.append(MarkovRandomFieldTestSuite.ts)
+    tl.append(PicklerTestSuite.ts)
+    tl.append(RandomGeneratorTestSuite.ts)
+    tl.append(TensorTestSuite.ts)
+    tl.append(PRMexplorerTestSuite.ts)
+    tl.append(SamplingTestSuite.ts)
+    tl.append(VariablesTestSuite.ts)
+    tl.append(WorkaroundTestSuite.ts)
+
+  if test_module in {"", "causal"}:
+    log.info("testing 'causal'")
+    if pandasFound:
+      tl.append(CausalASTTestSuite.ts)
+      tl.append(CausalDSepTestSuite.ts)
+      tl.append(CausalModelTestSuite.ts)
+      tl.append(CausalNonRegressionTestSuite.ts)
+      tl.append(CausalEffectEstimationTestSuite.ts)
     else:
-        log.warning("[pyAgrum] pyagrum.lib.classifier needs pandas and scikit-learn")
+      log.warning("Pandas or sklearn not found.")
 
-    from tests import BNDatabaseGeneratorTestSuite
-    from tests import BNLearnerTestSuite
-    from tests import BNListenerTestSuite
-    from tests import ConfigTestSuite
-
-    if pandasFound:
-        from tests import DiscreteTypeProcessorTestSuite
-    from tests import EssentialGraphTestSuite
-    from tests import EvidenceTestSuite
-    from tests import GraphTestSuite
-    from tests import ICIModelsForBNTestSuite
-    from tests import ImportTestSuite
-    from tests import InfluenceDiagramTestSuite
-    from tests import InstantiationTestSuite
-    from tests import JTInferenceTestSuite
-    from tests import JunctionTreeTestSuite
-    from tests import LazyPropagationTestSuite
-    from tests import LoopyBeliefPropagationTestSuite
-    from tests import MarkovBlanketTestSuite
-    from tests import MarkovRandomFieldTestSuite
-    from tests import PicklerTestSuite
-    from tests import RandomGeneratorTestSuite
-    from tests import TensorTestSuite
-    from tests import PRMexplorerTestSuite
-    from tests import SamplingTestSuite
-
+  if test_module in {"", "skbn"}:
+    log.info("testing 'skbn'")
     if pandasFound and sklearnFound:
-        from tests import SkbnTestSuite
+      tl.append(BNClassifierTestSuite.ts)
+      tl.append(SkbnTestSuite.ts)
     else:
-        log.warning("[pyAgrum] pyagrum.lib.classifier needs pandas and scikit-learn")
+      log.warning("Pandas or sklearn not found.")
 
-    from tests import VariablesTestSuite
+  if test_module in {"", "ctbn"}:
+    log.info("testing 'ctbn'")
+    tl.append(CtbnCimTestSuite.ts)
+    tl.append(CtbnModelTestSuite.ts)
+    tl.append(CtbnTrajectoryTestSuite.ts)
+    tl.append(CtbnIndependenceTestSuite.ts)
+    tl.append(CtbnLearnerTestSuite.ts)
 
+  if test_module in {"", "clg"}:
+    log.info("testing 'clg'")
     if pandasFound:
-        from tests import CausalASTTestSuite
-        from tests import CausalDSepTestSuite
-        from tests import CausalModelTestSuite
-        from tests import CausalNonRegressionTestSuite
-        from tests import CausalEffectEstimationTestSuite
+      tl.append(CLGLearningTestSuite.ts)
+      tl.append(CLGSamplingTestSuite.ts)
+      tl.append(CLGCanonicalFormTestSuite.ts)
+      tl.append(CLGInferenceTestSuite.ts)
+    else:
+      log.warning("Pandas or sklearn not found.")
 
-    from tests import WorkaroundTestSuite
+  if test_module in {"", "bnmixture"}:
+    log.info("testing 'bnmixture'")
+    tl.append(MixtureModelTestSuite.ts)
 
-    from tests import CtbnCimTestSuite
-    from tests import CtbnModelTestSuite
-    from tests import CtbnTrajectoryTestSuite
-    from tests import CtbnIndependenceTestSuite
-    from tests import CtbnLearnerTestSuite
+  tests = unittest.TestSuite(tl)
 
-    if pandasFound:
-        from tests import CLGLearningTestSuite
-        from tests import CLGSamplingTestSuite
-        from tests import CLGCanonicalFormTestSuite
-        from tests import CLGInferenceTestSuite
-
-    from tests import MixtureModelTestSuite
-
-    import time
-
-    tl = list()
-    if test_module in {"", "main"}:
-        log.info("testing 'main'")
-        tl.append(AggregatorsForBNTestSuite.ts)
-        tl.append(AllIncrementalInferenceTestSuite.ts)
-        tl.append(BayesNetTestSuite.ts)
-        tl.append(BayesNetFragmentTestSuite.ts)
-        tl.append(BNDatabaseGeneratorTestSuite.ts)
-        tl.append(BNLearnerTestSuite.ts)
-        tl.append(BNListenerTestSuite.ts)
-        tl.append(ConfigTestSuite.ts)
-        if pandasFound:
-            tl.append(DiscreteTypeProcessorTestSuite.ts)
-        tl.append(EssentialGraphTestSuite.ts)
-        tl.append(EvidenceTestSuite.ts)
-        tl.append(GraphTestSuite.ts)
-        tl.append(ICIModelsForBNTestSuite.ts)
-        tl.append(ImportTestSuite.ts)
-        tl.append(InfluenceDiagramTestSuite.ts)
-        tl.append(InstantiationTestSuite.ts)
-        tl.append(JTInferenceTestSuite.ts)
-        tl.append(JunctionTreeTestSuite.ts)
-        tl.append(LazyPropagationTestSuite.ts)
-        tl.append(LoopyBeliefPropagationTestSuite.ts)
-        tl.append(MarkovBlanketTestSuite.ts)
-        tl.append(MarkovRandomFieldTestSuite.ts)
-        tl.append(PicklerTestSuite.ts)
-        tl.append(RandomGeneratorTestSuite.ts)
-        tl.append(TensorTestSuite.ts)
-        tl.append(PRMexplorerTestSuite.ts)
-        tl.append(SamplingTestSuite.ts)
-        tl.append(VariablesTestSuite.ts)
-        tl.append(WorkaroundTestSuite.ts)
-
-    if test_module in {"", "causal"}:
-        log.info("testing 'causal'")
-        if pandasFound:
-            tl.append(CausalASTTestSuite.ts)
-            tl.append(CausalDSepTestSuite.ts)
-            tl.append(CausalModelTestSuite.ts)
-            tl.append(CausalNonRegressionTestSuite.ts)
-            tl.append(CausalEffectEstimationTestSuite.ts)
-        else:
-            log.warning("Pandas or sklearn not found.")
-
-    if test_module in {"", "skbn"}:
-        log.info("testing 'skbn'")
-        if pandasFound and sklearnFound:
-            tl.append(BNClassifierTestSuite.ts)
-            tl.append(SkbnTestSuite.ts)
-        else:
-            log.warning("Pandas or sklearn not found.")
-
-    if test_module in {"", "ctbn"}:
-        log.info("testing 'ctbn'")
-        tl.append(CtbnCimTestSuite.ts)
-        tl.append(CtbnModelTestSuite.ts)
-        tl.append(CtbnTrajectoryTestSuite.ts)
-        tl.append(CtbnIndependenceTestSuite.ts)
-        tl.append(CtbnLearnerTestSuite.ts)
-
-    if test_module in {"", "clg"}:
-        log.info("testing 'clg'")
-        if pandasFound:
-            tl.append(CLGLearningTestSuite.ts)
-            tl.append(CLGSamplingTestSuite.ts)
-            tl.append(CLGCanonicalFormTestSuite.ts)
-            tl.append(CLGInferenceTestSuite.ts)
-        else:
-            log.warning("Pandas or sklearn not found.")
-
-    if test_module in {"", "bnmixture"}:
-        log.info("testing 'bnmixture'")
-        tl.append(MixtureModelTestSuite.ts)
-
-    tests = unittest.TestSuite(tl)
-
-    print(
-        """
+  print(
+    """
   ========================
   PyAgrum Test Unit Module 
   ========================
   
   using python unittest
   """,
-        end="\n",
-        file=sys.stdout,
-    )
+    end="\n",
+    file=sys.stdout,
+  )
 
-    print(
-        "pyAgrum on Python {0} - {1}".format(platform.python_version(), os_platform),
-        end="\n",
-        file=sys.stdout,
-    )
-    print("pyAgrum path : {}".format(gum.__file__), end="\n", file=sys.stdout)
-    print("", end="\n", file=sys.stdout)
+  print(
+    "pyAgrum on Python {0} - {1}".format(platform.python_version(), os_platform),
+    end="\n",
+    file=sys.stdout,
+  )
+  print("pyAgrum path : {}".format(gum.__file__), end="\n", file=sys.stdout)
+  print("", end="\n", file=sys.stdout)
 
-    runner = unittest.TextTestRunner(stream=sys.stdout, verbosity=2)
+  runner = unittest.TextTestRunner(stream=sys.stdout, verbosity=2)
 
-    result = runner._makeResult()
+  result = runner._makeResult()
 
-    startTime = time.time()
-    tests(result)
-    duration = time.time() - startTime
+  startTime = time.time()
+  tests(result)
+  duration = time.time() - startTime
 
-    result.printErrors()
-    runner.stream.writeln(result.separator2)
+  result.printErrors()
+  runner.stream.writeln(result.separator2)
 
-    failed, errored = map(len, (result.failures, result.errors))
-    errs = failed + errored
+  failed, errored = map(len, (result.failures, result.errors))
+  errs = failed + errored
 
-    runner = None
+  runner = None
 
-    import gc
+  import gc
 
-    gc.collect()
-    gum.statsObj()  # reporting on objects in debug mode
+  gc.collect()
+  gum.statsObj()  # reporting on objects in debug mode
 
-    print("## Profiling : %5.0f ms ##" % (1000.0 * duration), end="\n", file=sys.stdout)
-    print("Failed %d of %d tests" % (errs, result.testsRun), end="\n", file=sys.stdout)
-    print(
-        "Success rate: %d%%" % (((result.testsRun - errs) * 100) / result.testsRun),
-        end="\n",
-        file=sys.stdout,
-    )
-    print("", end="\n", file=sys.stdout)
-    print(
-        "pyAgrum on Python {0} - {1}".format(platform.python_version(), os_platform),
-        end="\n",
-        file=sys.stdout,
-    )
-    print(
-        "pyAgrum on Python {0} - {1}".format(platform.python_version(), os_platform),
-        end="\n",
-        file=sys.stdout,
-    )
-    print("pyAgrum path : {}".format(gum.__file__), end="\n", file=sys.stdout)
-    print("", end="\n", file=sys.stdout)
+  print("## Profiling : %5.0f ms ##" % (1000.0 * duration), end="\n", file=sys.stdout)
+  print("Failed %d of %d tests" % (errs, result.testsRun), end="\n", file=sys.stdout)
+  print(
+    "Success rate: %d%%" % (((result.testsRun - errs) * 100) / result.testsRun),
+    end="\n",
+    file=sys.stdout,
+  )
+  print("", end="\n", file=sys.stdout)
+  print(
+    "pyAgrum on Python {0} - {1}".format(platform.python_version(), os_platform),
+    end="\n",
+    file=sys.stdout,
+  )
+  print(
+    "pyAgrum on Python {0} - {1}".format(platform.python_version(), os_platform),
+    end="\n",
+    file=sys.stdout,
+  )
+  print("pyAgrum path : {}".format(gum.__file__), end="\n", file=sys.stdout)
+  print("", end="\n", file=sys.stdout)
 
-    return errs
+  return errs

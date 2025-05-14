@@ -61,7 +61,6 @@ def getBlackInTheme():
   return gum.config["notebook", "default_arc_color"]
 
 
-
 DotPoint = namedtuple("DotPoint", ["x", "y"])
 
 

@@ -1,5 +1,11 @@
 # aGrUM Changelog
 
+## Changelog for 2.1.1
+
+- pyAgrum 
+  - working on documentation (improved coverage and BN input/ouput mainly)
+  - now using `ruff` for formatting (and linting) python files (also in `act guideline`)
+  
 ## Changelog for 2.1.0
 
 - aGrUM

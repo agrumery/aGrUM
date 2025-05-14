@@ -37,6 +37,7 @@
 from typing import Any
 from ._utils import MisspecifiedLearnerError
 
+
 def learnerFromString(learner_string: str) -> Any:
   """
   Retrieve a scikit-learn learner based on a string specification.
@@ -55,45 +56,59 @@ def learnerFromString(learner_string: str) -> Any:
   match learner_string:
     case "LinearRegression":
       import sklearn.linear_model
+
       return sklearn.linear_model.LinearRegression()
     case "LogisticRegression":
       import sklearn.linear_model
+
       return sklearn.linear_model.LogisticRegression()
     case "Ridge":
       import sklearn.linear_model
+
       return sklearn.linear_model.Ridge()
     case "Lasso":
       import sklearn.linear_model
+
       return sklearn.linear_model.Lasso()
     case "PoissonRegressor":
       import sklearn.linear_model
+
       return sklearn.linear_model.PoissonRegressor()
     case "HuberRegressor":
       import sklearn.linear_model
+
       return sklearn.linear_model.HuberRegressor()
     case "DecisionTreeRegressor":
       import sklearn.linear_model
+
       return sklearn.tree.DecisionTreeRegressor()
     case "RandomForestRegressor":
       import sklearn.ensemble
+
       return sklearn.ensemble.RandomForestRegressor()
     case "GradientBoostingRegressor":
       import sklearn.ensemble
+
       return sklearn.ensemble.GradientBoostingRegressor()
     case "AdaBoostRegressor":
       import sklearn.ensemble
+
       return sklearn.ensemble.AdaBoostRegressor()
     case "SVR":
       import sklearn.svm
+
       return sklearn.svm.SVR()
     case "KNeighborsRegressor":
       import sklearn.neighbors
+
       return sklearn.neighbors.KNeighborsRegressor()
     case "XGBRegressor":
       import xgboost
+
       return xgboost.XGBRegressor()
     case "XGBClassifier":
       import xgboost
+
       return xgboost.XGBClassifier()
     case _:
       raise MisspecifiedLearnerError(learner_string)

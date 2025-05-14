@@ -1,4 +1,4 @@
 # update pyAgrum when changes are made
 set(AGRUM_VERSION_MAJOR "2")
 set(AGRUM_VERSION_MINOR "1")
-set(AGRUM_VERSION_PATCH "0.9")
+set(AGRUM_VERSION_PATCH "1")
