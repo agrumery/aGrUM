@@ -174,7 +174,7 @@ class DiscreteTypeProcessor:
       self.discretizationParametersDictionary = {}
 
   @gum.deprecated_arg(newA="parameters", oldA="paramDiscretizationMethod", version="2.0.0")
-  def setDiscretizationParameters(self, variableName=None, method=None, parameters=None):
+  def setDiscretizationParameters(self, variableName: str, method: str, parameters: Any):
     """
     Sets the discretization parameters for a variable. If variableName is None, sets the default parameters.
 
@@ -199,42 +199,35 @@ class DiscreteTypeProcessor:
           any exception but  are nevertheless accepted (as belonging to the smallest or biggest interval).
           - 'NoDiscretization': this parameter is a superset of the values for the variable found in the database.
     """
-    if variableName in self.discretizationParametersDictionary:
-      oldParamDiscretizationMethod = self.discretizationParametersDictionary[variableName]["param"]
-      oldMethod = self.discretizationParametersDictionary[variableName]["method"]
-    else:
-      oldParamDiscretizationMethod = self.defaultParamDiscretizationMethod
-      oldMethod = self.defaultMethod
-
-    if method is None:
-      method = oldMethod
-
-    if parameters is None and method not in {"NoDiscretization", "expert"}:
-      parameters = oldParamDiscretizationMethod
-
-    if method not in {"kmeans", "uniform", "quantile", "NML", "MDLP", "CAIM", "NoDiscretization", "expert"}:
-      raise ValueError(
-        "This discretization method is not recognized! Possible values are kmeans, uniform, quantile, NML, "
-        "CAIM, MDLP, NoDiscretization or expert. You have entered " + str(method)
-      )
-
-    if parameters == "elbowMethod":
-      if method == "NML":
+    match method:
+      case "quantile" | "NML":
+        if type(parameters) is not int:
+          raise ValueError(
+            "The parameter for the quantile/NML method must be an integer. You have entered: " + str(parameters)
+          )
+      case "kmeans" | "uniform":
+        if type(parameters) is not int and str(parameters) != "elbowMethod":
+          raise ValueError(
+            "The parameter for the kmeans/uniform method must be an integer or the string 'elbowMethod'. You have entered: "
+            + str(parameters)
+          )
+      case "expert":
+        if not (isinstance(parameters, list) and all(map(check_float, parameters))):
+          raise ValueError(
+            "The parameter for the expert method must be a list of float. You have entered: " + str(parameters)
+          )
+      case "NoDiscretization":
+        if not (isinstance(parameters, str)):
+          raise ValueError(
+            "The parameter for the NoDiscretization method must be a string (fastVar syntax). You have entered: "
+            + str(parameters)
+          )
+      case "CAIM" | "MDLP":
+        pass
+      case _:
         raise ValueError(
-          "The elbow Method cannot be used as the number of bins for the algorithm NML. Please select an integer value"
-        )
-    elif method not in {"NoDiscretization", "expert"}:
-      try:
-        _ = int(parameters)
-      except ValueError:
-        raise ValueError(
-          "The possible values for paramDiscretizationMethod are any integer or the string 'elbowMethod'. You have entered: "
-          + str(parameters)
-        )
-    else:
-      if parameters is not None and not isinstance(parameters, list):
-        raise ValueError(
-          f"For a NotDiscretized/expert method, the parameter has to be None or a list of values but not '{parameters}'."
+          "This discretization method is not recognized! Possible values are kmeans, uniform, quantile, NML, "
+          "CAIM, MDLP, NoDiscretization or expert. You have entered " + str(method)
         )
 
     if variableName is None:
@@ -854,52 +847,44 @@ class DiscreteTypeProcessor:
     else:  # The user has manually set the discretization parameters for this variable
       usingDefaultParameters = False
       if self.discretizationParametersDictionary[variableName]["method"] != "NoDiscretization" and not isNumeric:
-        raise ValueError("The variable " + variableName + " is not numeric and cannot be discretized!")
+        raise ValueError(f"The variable {variableName} is not numeric and cannot be discretized!")
 
     if self.discretizationParametersDictionary[variableName]["method"] == "NoDiscretization":
       is_int_var = True
-      min_v = max_v = None
 
-      possibleValuesX = None
+      varSyntax = ""
       if "param" in self.discretizationParametersDictionary[variableName]:
-        possibleValuesX = self.discretizationParametersDictionary[variableName]["param"]
+        varSyntax = self.discretizationParametersDictionary[variableName]["param"]
 
-      if possibleValuesX is None:
-        possibleValuesX = sorted(foundValuesX)
-      else:
-        # foundValuesX must be in possibleValuesX
-        if not foundValuesX.issubset(possibleValuesX):
+      if varSyntax != "":
+        var = gum.fastVariable(variableName + varSyntax)
+        possibleValuesX = set(var.labels())
+        f = {str(x) for x in foundValuesX}
+        if not f.issubset(possibleValuesX):
           raise ValueError(
-            f"The values passed in possibleValues ({possibleValuesX}) do not match database values ({foundValuesX})"
+            f"The values passed in possibleValues ({sorted(possibleValuesX)}) do not match database values ("
+            f"{sorted(f)})"
           )
+        return var
 
-      for value in possibleValuesX:
-        if check_int(value):
-          v = int(value)
-          if min_v is None or min_v > v:
-            min_v = v
-          if max_v is None or max_v < v:
-            max_v = v
-        else:
-          is_int_var = False
-          break
-
+      possibleValuesX = sorted(foundValuesX)
+      is_int_var = all(map(check_int, possibleValuesX))
       if is_int_var:
-        if len(possibleValuesX) == max_v - min_v + 1:  # no hole in the list of int
-          var = gum.RangeVariable(variableName, variableName, min_v, max_v)
-        else:
-          var = gum.IntegerVariable(variableName, variableName, [int(v) for v in possibleValuesX])
-      else:
-        is_float_var = True
-        for value in possibleValuesX:
-          if not check_float(value):
-            is_float_var = False
-            break
+        possibleValuesX = [int(x) for x in possibleValuesX]
+        max_v = int(possibleValuesX[-1])  # sorted
+        min_v = int(possibleValuesX[0])
 
-        if is_float_var:
-          var = gum.NumericalDiscreteVariable(variableName, variableName, [float(v) for v in possibleValuesX])
+        if len(possibleValuesX) == max_v - min_v + 1:  # no hole in the list of int
+          return gum.RangeVariable(variableName, variableName, min_v, max_v)
         else:
-          var = gum.LabelizedVariable(variableName, variableName, [str(v) for v in possibleValuesX])
+          return gum.IntegerVariable(variableName, variableName, possibleValuesX)
+
+      is_float_var = all(map(check_float, possibleValuesX))
+      if is_float_var:
+        possibleValuesX = [float(x) for x in possibleValuesX]
+        return gum.NumericalDiscreteVariable(variableName, variableName, possibleValuesX)
+      else:
+        return gum.LabelizedVariable(variableName, variableName, [str(v) for v in possibleValuesX])
     else:
       self.numberOfContinuous += 1
       if self.discretizationParametersDictionary[variableName]["method"] == "expert":

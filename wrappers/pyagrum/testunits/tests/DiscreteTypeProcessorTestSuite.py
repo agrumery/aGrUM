@@ -113,6 +113,65 @@ class DiscreteTypeProcessorTestCase(pyAgrumTestCase):
 
     self.assertEqual(template.toFast(), "var1{False|True};var2{True};var3{False};var4{False|True};var5{True}")
 
+  def testCreateVariableFromExpert(self):
+    X = pd.DataFrame.from_dict(
+      {
+        "var1": [1, 3, 5, 6, 1, 3, 5, 6, 1, 3, 5, 6, 1, 3],
+        "var2": [1.11, 2.213, 3.33, 4.23, 5.42, 6.6, 7.5, 8.9, 9.19, 10.11, 11.12, 12.21, 13.3, 14.5],
+      }
+    )
+    discretizer = DiscreteTypeProcessor()
+    template = discretizer.discretizedTemplate(X)
+    self.assertEqual(
+      template.toFast(), "var1{1|3|5|6};var2{1.11|2.213|3.33|4.23|5.42|6.6|7.5|8.9|9.19|10.11|11.12|12.21|13.3|14.5}"
+    )
+
+    discretizer = DiscreteTypeProcessor()
+    discretizer.setDiscretizationParameters("var2", "expert", [0, 5, 10, 15])
+    template = discretizer.discretizedTemplate(X)
+    self.assertEqual(template.toFast(), "var1{1|3|5|6};var2+[0,5,10,15]")
+
+    discretizer = DiscreteTypeProcessor()
+    discretizer.setDiscretizationParameters("var1", "NoDiscretization", "{1|2|3|5|6|7}")
+    discretizer.setDiscretizationParameters("var2", "expert", [0, 5, 10, 15])
+    template = discretizer.discretizedTemplate(X)
+    self.assertEqual(template.toFast(), "var1{1|2|3|5|6|7};var2+[0,5,10,15]")
+
+    with self.assertRaises(ValueError):
+      discretizer = DiscreteTypeProcessor()
+      discretizer.setDiscretizationParameters("var1", "NoDiscretization", "{1|3|5|7}")
+      discretizer.setDiscretizationParameters("var2", "expert", [0, 5, 10, 15])
+      template = discretizer.discretizedTemplate(X)
+      self.assertEqual(template.toFast(), "var1{1|2|3|5|6|7};var2+[0,5,10,15]")
+
+  def testCreateVariableFromExpert2(self):
+    X = pd.DataFrame.from_dict(
+      {
+        "var1": [1, 3, 5, 6, 1, 2, 5, 6, 1, 3, 4, 6, 1, 3],
+        "var2": ["A", "B", "C", "D", "E", "B", "G", "B", "B", "B", "B", "B", "A", "A"],
+      }
+    )
+    discretizer = DiscreteTypeProcessor()
+    template = discretizer.discretizedTemplate(X)
+    self.assertEqual(template.toFast(), "var1[1,6];var2{A|B|C|D|E|G}")
+
+    discretizer = DiscreteTypeProcessor()
+    discretizer.setDiscretizationParameters("var1", "NoDiscretization", "[0,6]")
+    template = discretizer.discretizedTemplate(X)
+    self.assertEqual(template.toFast(), "var1[7];var2{A|B|C|D|E|G}")
+
+    with self.assertRaises(ValueError):
+      discretizer = DiscreteTypeProcessor()
+      discretizer.setDiscretizationParameters("var1", "NoDiscretization", "[3,5]")
+      template = discretizer.discretizedTemplate(X)
+      self.assertEqual(template.toFast(), "var1{1|2|3|5|6|7};var2+[0,5,10,15]")
+
+    with self.assertRaises(ValueError):
+      discretizer = DiscreteTypeProcessor()
+      discretizer.setDiscretizationParameters("var2", "expert", [0, 5, 10, 15])
+      template = discretizer.discretizedTemplate(X)
+      self.assertEqual(template.toFast(), "var1{1|2|3|5|6|7};var2+[0,5,10,15]")
+
 
 ts = unittest.TestSuite()
 addTests(ts, DiscreteTypeProcessorTestCase)
