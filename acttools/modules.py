@@ -60,6 +60,8 @@ def check_modules(current: dict[str, str]):
   setM = setifyString(current["modules"])
 
   if "pyAgrum" in current["targets"]:
+    if current["action"] == "test":  # module for testing pyAgrum is special and tested in builder.py
+      return
     notif("Forcing the compilation of all modules for wrappers")
     cde = "ALL"
   elif "ALL" in setM or "all" in setM:

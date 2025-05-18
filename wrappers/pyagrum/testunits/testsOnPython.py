@@ -41,17 +41,24 @@ import sys
 from sys import platform as os_platform
 
 if __name__ == "__main__":
-  print("[pyAgrum] Please use 'act test pyAgrum release -t [module]|quick|quick_[module]|all'.")
+  print(
+    "[pyAgrum] Please use 'act test pyAgrum release {installed|local} -m [module]|quick|quick_[module]|all' -t "
+    "testsuite"
+  )
   sys.exit(0)
 
 
-def runTests(local: bool, test_module, log) -> int:
-  if len(sys.argv) > 1:
+def runTests(local: bool, test_module: str, test_suite: str, log) -> int:
+  if local:
     log.info("[pyAgrum] Adding local pyAgrum's path")
     p = os.getcwd() + "\\" + sys.argv[1]
     sys.path.insert(1, p)  # to force to use local pyAgrum for the tests (and not installed one)
 
-  print(f"Modules : {test_module if test_module != '' else 'all'}")
+  if test_suite != "":
+    print(f"Test Suite : {test_suite}")
+  else:
+    print(f"Modules : {test_module if test_module != '' else 'all'}")
+
   import pyagrum as gum
 
   res = find_spec("sklearn")
@@ -131,79 +138,82 @@ def runTests(local: bool, test_module, log) -> int:
   import time
 
   tl = list()
-  if test_module in {"", "main"}:
-    log.info("testing 'main'")
-    tl.append(AggregatorsForBNTestSuite.ts)
-    tl.append(AllIncrementalInferenceTestSuite.ts)
-    tl.append(BayesNetTestSuite.ts)
-    tl.append(BayesNetFragmentTestSuite.ts)
-    tl.append(BNDatabaseGeneratorTestSuite.ts)
-    tl.append(BNLearnerTestSuite.ts)
-    tl.append(BNListenerTestSuite.ts)
-    tl.append(ConfigTestSuite.ts)
-    if pandasFound:
-      tl.append(DiscreteTypeProcessorTestSuite.ts)
-    tl.append(EssentialGraphTestSuite.ts)
-    tl.append(EvidenceTestSuite.ts)
-    tl.append(GraphTestSuite.ts)
-    tl.append(ICIModelsForBNTestSuite.ts)
-    tl.append(ImportTestSuite.ts)
-    tl.append(InfluenceDiagramTestSuite.ts)
-    tl.append(InstantiationTestSuite.ts)
-    tl.append(JTInferenceTestSuite.ts)
-    tl.append(JunctionTreeTestSuite.ts)
-    tl.append(LazyPropagationTestSuite.ts)
-    tl.append(LoopyBeliefPropagationTestSuite.ts)
-    tl.append(MarkovBlanketTestSuite.ts)
-    tl.append(MarkovRandomFieldTestSuite.ts)
-    tl.append(PicklerTestSuite.ts)
-    tl.append(RandomGeneratorTestSuite.ts)
-    tl.append(TensorTestSuite.ts)
-    tl.append(PRMexplorerTestSuite.ts)
-    tl.append(SamplingTestSuite.ts)
-    tl.append(VariablesTestSuite.ts)
-    tl.append(WorkaroundTestSuite.ts)
+  if test_suite != "":
+    tl.append(eval(test_suite + "TestSuite.ts"))
+  else:
+    if test_module in {"", "main"}:
+      log.info("testing 'main'")
+      tl.append(AggregatorsForBNTestSuite.ts)
+      tl.append(AllIncrementalInferenceTestSuite.ts)
+      tl.append(BayesNetTestSuite.ts)
+      tl.append(BayesNetFragmentTestSuite.ts)
+      tl.append(BNDatabaseGeneratorTestSuite.ts)
+      tl.append(BNLearnerTestSuite.ts)
+      tl.append(BNListenerTestSuite.ts)
+      tl.append(ConfigTestSuite.ts)
+      if pandasFound:
+        tl.append(DiscreteTypeProcessorTestSuite.ts)
+      tl.append(EssentialGraphTestSuite.ts)
+      tl.append(EvidenceTestSuite.ts)
+      tl.append(GraphTestSuite.ts)
+      tl.append(ICIModelsForBNTestSuite.ts)
+      tl.append(ImportTestSuite.ts)
+      tl.append(InfluenceDiagramTestSuite.ts)
+      tl.append(InstantiationTestSuite.ts)
+      tl.append(JTInferenceTestSuite.ts)
+      tl.append(JunctionTreeTestSuite.ts)
+      tl.append(LazyPropagationTestSuite.ts)
+      tl.append(LoopyBeliefPropagationTestSuite.ts)
+      tl.append(MarkovBlanketTestSuite.ts)
+      tl.append(MarkovRandomFieldTestSuite.ts)
+      tl.append(PicklerTestSuite.ts)
+      tl.append(RandomGeneratorTestSuite.ts)
+      tl.append(TensorTestSuite.ts)
+      tl.append(PRMexplorerTestSuite.ts)
+      tl.append(SamplingTestSuite.ts)
+      tl.append(VariablesTestSuite.ts)
+      tl.append(WorkaroundTestSuite.ts)
 
-  if test_module in {"", "causal"}:
-    log.info("testing 'causal'")
-    if pandasFound:
-      tl.append(CausalASTTestSuite.ts)
-      tl.append(CausalDSepTestSuite.ts)
-      tl.append(CausalModelTestSuite.ts)
-      tl.append(CausalNonRegressionTestSuite.ts)
-      tl.append(CausalEffectEstimationTestSuite.ts)
-    else:
-      log.warning("Pandas or sklearn not found.")
+    if test_module in {"", "causal"}:
+      log.info("testing 'causal'")
+      if pandasFound:
+        tl.append(CausalASTTestSuite.ts)
+        tl.append(CausalDSepTestSuite.ts)
+        tl.append(CausalModelTestSuite.ts)
+        tl.append(CausalNonRegressionTestSuite.ts)
+        tl.append(CausalEffectEstimationTestSuite.ts)
+      else:
+        log.warning("Pandas or sklearn not found.")
 
-  if test_module in {"", "skbn"}:
-    log.info("testing 'skbn'")
-    if pandasFound and sklearnFound:
-      tl.append(BNClassifierTestSuite.ts)
-      tl.append(SkbnTestSuite.ts)
-    else:
-      log.warning("Pandas or sklearn not found.")
+    if test_module in {"", "skbn"}:
+      log.info("testing 'skbn'")
+      if pandasFound and sklearnFound:
+        tl.append(BNClassifierTestSuite.ts)
+        tl.append(SkbnTestSuite.ts)
+      else:
+        log.warning("Pandas or sklearn not found.")
 
-  if test_module in {"", "ctbn"}:
-    log.info("testing 'ctbn'")
-    tl.append(CtbnCimTestSuite.ts)
-    tl.append(CtbnModelTestSuite.ts)
-    tl.append(CtbnTrajectoryTestSuite.ts)
-    tl.append(CtbnIndependenceTestSuite.ts)
-    tl.append(CtbnLearnerTestSuite.ts)
+    if test_module in {"", "ctbn"}:
+      log.info("testing 'ctbn'")
+      tl.append(CtbnCimTestSuite.ts)
+      tl.append(CtbnModelTestSuite.ts)
+      tl.append(CtbnTrajectoryTestSuite.ts)
+      tl.append(CtbnIndependenceTestSuite.ts)
+      tl.append(CtbnLearnerTestSuite.ts)
 
-  if test_module in {"", "clg"}:
-    log.info("testing 'clg'")
-    if pandasFound:
-      tl.append(CLGLearningTestSuite.ts)
-      tl.append(CLGSamplingTestSuite.ts)
-      tl.append(CLGCanonicalFormTestSuite.ts)
-      tl.append(CLGInferenceTestSuite.ts)
-    else:
-      log.warning("Pandas or sklearn not found.")
+    if test_module in {"", "clg"}:
+      log.info("testing 'clg'")
+      if pandasFound:
+        tl.append(CLGLearningTestSuite.ts)
+        tl.append(CLGSamplingTestSuite.ts)
+        tl.append(CLGCanonicalFormTestSuite.ts)
+        tl.append(CLGInferenceTestSuite.ts)
+      else:
+        log.warning("Pandas or sklearn not found.")
 
-  if test_module in {"", "bnmixture"}:
-    log.info("testing 'bnmixture'")
-    tl.append(MixtureModelTestSuite.ts)
+    if test_module in {"", "bnmixture"}:
+      log.info("testing 'bnmixture'")
+      tl.append(MixtureModelTestSuite.ts)
 
   tests = unittest.TestSuite(tl)
 

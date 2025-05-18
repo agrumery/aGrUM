@@ -4,9 +4,9 @@ target-version = "py310"
 line-length = 120
 indent-width = 2
 
-# Include notebooks in formatting/linting
 extend-include = ["*.ipynb"]
 
+[format]
 exclude = [
   "**/testunits/generateTestExec.py",
   '**/apps/*',
@@ -14,9 +14,8 @@ exclude = [
   '**/generated-files/*',
   "**/Untitled*.ipynb",
   "wrappers/pyagrum/cmake/*",
-] # Skip certain notebooks
+] # Skip certain files
 
-[format]
 quote-style = "double"
 indent-style = "space"
 docstring-code-format = true

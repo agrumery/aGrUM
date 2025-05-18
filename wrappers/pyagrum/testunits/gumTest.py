@@ -53,19 +53,42 @@ def go():
 
   test_modules = {"", "main", "skbn", "causal", "clg", "ctbn", "bnmixture"}
 
-  mod = "release"  # release|debug|standAlone (test the installed version)
+  mod = "release"  # release|debug
+  islocal = True  # installed|local : test the installed version
   testNotebooks = False
   test_module = ""  # all modules
+  test_suite = ""  # if test_suite!="" => only this test suite
+
+  parseM = 0
+  parseT = 0
+
   for cde in sys.argv:
-    if cde in ["debug", "release"]:
-      mod = cde
-    elif cde == "all":
-      testNotebooks = cde == "all"
-    elif cde[:5] == "quick":
-      test_module = cde[6:]
-      if test_module not in test_modules:
-        print(f"[-t quick_module] but module '{test_module}' not in {test_modules}")
-        sys.exit(1)
+    match cde:
+      case "debug" | "release":
+        mod = cde
+      case "installed" | "local":
+        islocal = cde == "installed"
+      case "-m":
+        parseM = 1
+        continue
+      case "-t":
+        parseT = 1
+        continue
+      case "all":
+        if parseM == 1:
+          testNotebooks = True
+          parseM = 0
+      case _:
+        if parseM == 1:
+          parseM = 0
+          if cde.startswith("quick"):
+            test_module = cde[6:]
+            if test_module not in test_modules:
+              print(f"[-m quick_module] but module '{test_module}' not in {test_modules}")
+              sys.exit(1)
+        elif parseT == 1:
+          parseT = 0
+          test_suite = cde
 
   logfilename = "/pyAgrumTests.log"
   if mod != "standAlone":
@@ -103,7 +126,7 @@ def go():
 
   import testsOnPython
 
-  total_errs += testsOnPython.runTests(local=len(sys.argv) > 1, test_module=test_module, log=log)
+  total_errs += testsOnPython.runTests(local=islocal, test_module=test_module, test_suite=test_suite, log=log)
 
   if testNotebooks:
     log.info("Tests on notebooks")

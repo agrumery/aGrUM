@@ -93,11 +93,11 @@ def _checkRuffFormat(details: bool, correction: bool) -> int:
     warn("No correct [ruff] tool has been found.")
   else:
     exceptions = {
-      f"{os.sep}apps{os.sep}",
-      f"{os.sep}notebooks-archives{os.sep}",
-      f"{os.sep}generated-files{os.sep}",
+      "/apps/",
+      "/notebooks-archives/",
+      "/generated-files/",
       "Untitled*.ipynb",
-      f"wrappers{os.sep}pyagrum{os.sep}cmake{os.sep}",
+      "wrappers/pyagrum/cmake",
     }
     with open(os.devnull, "w") as blackhole:
       for src in srcPyIpynbAgrum():
@@ -110,9 +110,9 @@ def _checkRuffFormat(details: bool, correction: bool) -> int:
           if correction:
             line = cfg.ruff + " format " + src
             call(line, shell=True, stderr=blackhole, stdout=blackhole)
-            notif(f"Incorrect format [{src:80}] : [(✓)]")
+            notif(f"[{src.split('/')[-1]}] : [(✓)]")
           else:
-            notif(f"err [{src}]")
+            notif(f"[{src}] : Failed")
         else:
           notif_oneline(f"[{src.split('/')[-1]}] OK")
 

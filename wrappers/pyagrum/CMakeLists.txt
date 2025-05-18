@@ -235,7 +235,7 @@ install(FILES ${GUMCTBN_FILES} DESTINATION ${INSTALL_PYTHONDIR}/pyagrum/ctbn)
 install(FILES ${GUMSKBN_FILES} DESTINATION ${INSTALL_PYTHONDIR}/pyagrum/skbn)
 install(FILES ${GUMBNMIXTURE_FILES} DESTINATION ${INSTALL_PYTHONDIR}/pyagrum/bnmixture)
 
-add_test(NAME python_quick COMMAND ${Python_EXECUTABLE} ${CMAKE_CURRENT_SOURCE_DIR}/testunits/gumTest.py quick)
+add_test(NAME python_quick COMMAND ${Python_EXECUTABLE} ${CMAKE_CURRENT_SOURCE_DIR}/testunits/gumTest.py -m quick -t all)
 set_tests_properties(python_quick PROPERTIES ENVIRONMENT "PYTHONPATH=${CMAKE_CURRENT_BINARY_DIR}/..")
 
 # # show all cmake variables
