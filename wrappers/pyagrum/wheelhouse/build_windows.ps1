@@ -43,7 +43,7 @@ if ($TARGET -eq "aGrUM") {
         }
         python act test release pyAgrum
     } else {
-        python act --no-fun test release pyAgrum --no-fun --compiler=$COMPILER -d build -j except1 -t quick
+        python act --no-fun test release pyAgrum --no-fun --compiler=$COMPILER -d build -j except1  -m quick -t all
     }
 }
 Check-LastCommand
