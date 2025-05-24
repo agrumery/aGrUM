@@ -12,7 +12,7 @@ Supported Formats
 
 .. _bifxml-format:
 
-BIFXML (Recommended for Complete Preservation)
+BIFXML (Recommended for complete preservation)
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 The BIFXML format is the recommended way to save and load graphical models as it preserves all features and attributes of the model. This format is particularly useful for interoperability with other Bayesian network tools.
@@ -29,7 +29,7 @@ Example usage::
 
 .. _pickle-format:
 
-Pickle (Alternative for Complete Preservation)
+Pickle (Alternative for complete preservation)
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 The Python ``pickle`` format 
@@ -51,8 +51,8 @@ Example usage::
     gum.saveBN(bn, "model.pkl")
     bn2 = gum.loadBN("model.pkl")
 
-Other Supported Formats (With Limitations)
------------------------------------------
+Other Supported Formats
+-----------------------
 
 The following formats are supported but may not preserve all model features:
 
@@ -60,4 +60,4 @@ The following formats are supported but may not preserve all model features:
 - **DSL** (`.dsl`): GeNIe format with some limitations
 - **UAI** (`.uai`): Very Simple Format for Bayesian networks and Markov networks with limitations
 - **BIF** (`.bif`): Format for Bayesian networks with limitations
-- etc. (see :function:`pyagrm.availableBNExts()` for a complete list).
+- etc. (see :function:`pyagrum.availableBNExts()` for a complete list).

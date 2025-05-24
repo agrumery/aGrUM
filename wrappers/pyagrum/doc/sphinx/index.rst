@@ -67,9 +67,9 @@ Reference manual
 
 .. toctree::
   :caption: 3- Causality
+  :maxdepth: 2
 
   Causal
-  CausalEffectEstimation
 
 
 .. toctree::

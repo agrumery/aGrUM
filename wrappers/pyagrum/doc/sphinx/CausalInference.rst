@@ -1,15 +1,5 @@
-Causal Formula
-^^^^^^^^^^^^^^
-`CausalFormula` is the class that represents a causal query in a causal model. Mainly it consits in
-
-- a reference to the CausalModel
-- Three sets of variables name that represent the 3 sets of variable in the query P(set1 | doing(set2),knowing(set3)).
-- the AST for compute the query.
-
-.. autoclass:: pyagrum.causal.CausalFormula
-
-Causal Inference
-^^^^^^^^^^^^^^^^
+Causal Inference (a.k.a. do-calculus)
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
 Obtaining and evaluating a CausalFormula is done using one these functions :
 
@@ -21,6 +11,14 @@ Obtaining and evaluating a CausalFormula is done using one these functions :
 
 Other functions for causal inference
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+`CausalFormula` is the class that represents a causal query within a causal model. It mainly consists of:
+
+- a reference to the associated :class:`pyagrum.CausalModel`,
+- three sets of variable names representing the groups in the query $P(set1 | do(set2), know(set3))$,
+- and an abstract syntax tree (AST) used to compute or display the query.
+
+.. autoclass:: pyagrum.causal.CausalFormula
 
 .. autofunction:: pyagrum.causal.backdoor_generator
 

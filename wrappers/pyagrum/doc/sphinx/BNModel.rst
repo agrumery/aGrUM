@@ -1,5 +1,5 @@
 Model for Bayesian Network
---------------------------
+=========================
 
 .. figure:: _static/BayesNet.png
     :align: center
@@ -21,9 +21,12 @@ large ones.
 Moreover, inference algorithms can also use this graph to speed up
 the computations. Finally, the Bayesian networks can be learnt from data.
 
-**Tutorial**
+Tutorial
+--------
 
 * `Tutorials on Bayesian network <notebooks.html#tutorials-on-pyagrum>`_
 
+Class BayesNet
+--------------
+
 .. autoclass:: pyagrum.BayesNet
-    :exclude-members: setProperty, property, propertyWithDefault
