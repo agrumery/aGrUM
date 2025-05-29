@@ -505,10 +505,60 @@ namespace gum {
       epsilonEM_ = learner.epsilonEM_;
 
       setMaxIndegree(learner.constraintIndegree_.maxIndegree());
-      setForbiddenArcs(learner.constraintForbiddenArcs_.arcs());
-      setMandatoryArcs(learner.constraintMandatoryArcs_.arcs());
-      setPossibleEdges(learner.constraintPossibleEdges_.edges());
-      setSliceOrder(learner.constraintSliceOrder_.sliceOrder());
+      for (const auto src: learner.constraintNoParentNodes_.nodes()) {
+        try {
+          const auto dst = idFromName(learner.nameFromId(src));
+          addNoParentNode(dst);
+        } catch (const MissingVariableInDatabase&) {
+          // nothing to do
+        }
+      }
+      for (const auto src: learner.constraintNoChildrenNodes_.nodes()) {
+        try {
+          const auto dst = idFromName(learner.nameFromId(src));
+          addNoChildrenNode(dst);
+        } catch (const MissingVariableInDatabase&) {
+          // nothing to do
+        }
+      }
+      for (const auto& arc: learner.constraintForbiddenArcs_.arcs()) {
+        try {
+          const auto src = idFromName(learner.nameFromId(arc.tail()));
+          const auto dst = idFromName(learner.nameFromId(arc.head()));
+          addForbiddenArc(src, dst);
+        } catch (const MissingVariableInDatabase&) {
+          // nothing to do
+        }
+      }
+      for (const auto& arc: learner.constraintMandatoryArcs_.arcs()) {
+        try {
+          const auto src = idFromName(learner.nameFromId(arc.tail()));
+          const auto dst = idFromName(learner.nameFromId(arc.head()));
+          addMandatoryArc(src, dst);
+        } catch (const MissingVariableInDatabase&) {
+          // nothing to do
+        }
+      }
+      for (const auto& edge: learner.constraintPossibleEdges_.edges()) {
+        try {
+          const auto src = idFromName(learner.nameFromId(edge.first()));
+          const auto dst = idFromName(learner.nameFromId(edge.second()));
+          addPossibleEdge(src, dst);
+        } catch (const MissingVariableInDatabase&) {
+          // nothing to do
+        }
+      }
+      if (! learner.constraintSliceOrder_.sliceOrder().empty()) {
+        NodeProperty< NodeId > slice_order;
+        for (const auto& p: learner.constraintSliceOrder_.sliceOrder()) {
+          try {
+            slice_order.insert(idFromName(learner.nameFromId(p.first)), p.second);
+          } catch (const MissingVariableInDatabase&) {
+            // nothing to do
+          }
+        }
+        setSliceOrder(slice_order);
+      }
     }
 
     template < typename GUM_SCALAR >

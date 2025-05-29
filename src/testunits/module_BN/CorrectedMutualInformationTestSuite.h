@@ -45,7 +45,7 @@
 #include <agrum/base/database/DBRowGeneratorParser.h>
 #include <agrum/base/database/DBTranslator4LabelizedVariable.h>
 #include <agrum/base/database/DBTranslatorSet.h>
-#include <agrum/base/stattests/correctedMutualInformation.h>
+#include <agrum/BN/learning/correctedMutualInformation.h>
 #include <agrum/BN/learning/priors/noPrior.h>
 
 namespace gum_tests {
