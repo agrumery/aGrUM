@@ -186,8 +186,8 @@ FOREACH(reqdir ${PYAGRUM_REQUIREMENTS_LIST})
   FILE(APPEND ${reqdir}/requirements.txt "################################\n")
   FILE(APPEND ${reqdir}/requirements.txt "${PYAGRUM_SPECIFIC_REQ_CONTENT}\n")
 ENDFOREACH()
-
 # REQUIREMENTS files updated
+
 file(GLOB GUMPY_FILES "${CMAKE_CURRENT_SOURCE_DIR}/pyLibs/*.py")
 file(GLOB GUMPY_CONFIG_FILES "${CMAKE_CURRENT_SOURCE_DIR}/pyLibs/*.ini")
 file(GLOB GUMLIB_FILES "${CMAKE_CURRENT_SOURCE_DIR}/pyLibs/lib/*.py")

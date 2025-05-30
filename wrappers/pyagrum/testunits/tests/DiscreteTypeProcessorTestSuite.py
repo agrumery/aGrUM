@@ -144,6 +144,13 @@ class DiscreteTypeProcessorTestCase(pyAgrumTestCase):
       template = discretizer.discretizedTemplate(X)
       self.assertEqual(template.toFast(), "var1{1|2|3|5|6|7};var2+[0,5,10,15]")
 
+    with self.assertRaises(ValueError):
+      discretizer = DiscreteTypeProcessor()
+      discretizer.setDiscretizationParameters("var1", "NoDiscretization", None)
+      discretizer.setDiscretizationParameters("var2", "expert", [0, 5, 10, 15])
+      template = discretizer.discretizedTemplate(X)
+      self.assertEqual(template.toFast(), "var1{1|2|3|5|6|7};var2+[0,5,10,15]")
+
   def testCreateVariableFromExpert2(self):
     X = pd.DataFrame.from_dict(
       {

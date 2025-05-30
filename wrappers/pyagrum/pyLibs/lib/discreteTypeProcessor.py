@@ -174,7 +174,7 @@ class DiscreteTypeProcessor:
       self.discretizationParametersDictionary = {}
 
   @gum.deprecated_arg(newA="parameters", oldA="paramDiscretizationMethod", version="2.0.0")
-  def setDiscretizationParameters(self, variableName: str, method: str, parameters: Any):
+  def setDiscretizationParameters(self, variableName: str, method: str, parameters: Any = None):
     """
     Sets the discretization parameters for a variable. If variableName is None, sets the default parameters.
 
@@ -197,8 +197,11 @@ class DiscreteTypeProcessor:
           - 'expert': this parameter is the set of ticks proposed by the expert. The discretized variable will set the flag
           'empirical' which means that if the values found in the data are not in the proposed intervals, they did not raise
           any exception but  are nevertheless accepted (as belonging to the smallest or biggest interval).
-          - 'NoDiscretization': this parameter is a superset of the values for the variable found in the database.
+          - 'NoDiscretization': this parameter is a superset of the values for the variable found in the database (or None).
     """
+    if parameters is None:
+      parameters = self.defaultParamDiscretizationMethod
+
     match method:
       case "quantile" | "NML":
         if type(parameters) is not int:
@@ -217,9 +220,10 @@ class DiscreteTypeProcessor:
             "The parameter for the expert method must be a list of float. You have entered: " + str(parameters)
           )
       case "NoDiscretization":
-        if not (isinstance(parameters, str)):
+        if parameters is not None and not (isinstance(parameters, str)):
           raise ValueError(
-            "The parameter for the NoDiscretization method must be a string (fastVar syntax). You have entered: "
+            "The parameter for the NoDiscretization method must be a string (fastVar syntax) or None. You have "
+            "entered: "
             + str(parameters)
           )
       case "CAIM" | "MDLP":
@@ -855,6 +859,8 @@ class DiscreteTypeProcessor:
       varSyntax = ""
       if "param" in self.discretizationParametersDictionary[variableName]:
         varSyntax = self.discretizationParametersDictionary[variableName]["param"]
+        if varSyntax is None:
+          varSyntax = ""
 
       if varSyntax != "":
         var = gum.fastVariable(variableName + varSyntax)

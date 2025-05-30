@@ -266,17 +266,18 @@ def getPost(current: dict[str, str], target: str) -> tuple[str, bool]:
       return line, True
     elif target == "pyAgrum":
       gumTest = "gumTest.py " + current["mode"]
-      # quick_specifictest
-      if current["modules"].startswith("quick"):
-        gumTest += " -m " + current["modules"]
-      elif current["modules"] == "all":  # all is with NOTEBOOKStest
-        gumTest += " -m all"
-      else:
-        critic(f"Only [-m all] or [-m quick+...] for testing pyAgrum (instead of [{current['modules']}])")
 
       # specific test
       if current["tests"] not in {"", "all"}:
-        gumTest += " -t " + current["tests"]
+        gumTest += " -m quick -t " + current["tests"]
+      else:
+        # quick_specifictest
+        if current["modules"].startswith("quick"):
+          gumTest += " -m " + current["modules"]
+        elif current["modules"] == "all":  # all is with NOTEBOOKStest
+          gumTest += " -m all"
+        else:
+          critic(f"Only [-m all] or [-m quick+...] for testing pyAgrum (instead of [{current['modules']}])")
 
       if cfg.os_platform == "win32":
         line = (
