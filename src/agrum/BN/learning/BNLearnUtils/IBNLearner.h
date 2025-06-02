@@ -114,6 +114,9 @@ namespace gum::learning {
     /// an enumeration to select easily the learning algorithm to use
     enum class AlgoType { K2, GREEDY_HILL_CLIMBING, LOCAL_SEARCH_WITH_TABU_LIST, MIIC };
 
+    /// the default noise amount added to CPTs during EM's initialization (see method useEM())
+    static constexpr double default_EM_noise {0.1};
+
     /// a helper to easily read databases
     class Database {
       public:
@@ -613,11 +616,81 @@ namespace gum::learning {
      */
     Size nbRows() const;
 
-    /** use The EM algorithm to learn paramters
-     *
-     * if epsilon=0, EM is not used
+    /**
+     * use The EM algorithm to learn parameters
+     * @param epsilon sets the approximation stopping criterion: EM stops
+     * whenever the absolute value of the relative difference between two
+     * consecutive log-likelihoods drops below epsilon. Note that epsilon=0
+     * is considered as a directive to not use EM. However, if you wish to
+     * forbid the use of EM, prefer executing Method forbidEM() rather than
+     * useEM(0) as it is more unequivocal.
+     * @param noise When EM starts, it initializes all the CPTs of the Bayes
+     * net. EM adds a noise to these CPTs by mixing their values with some
+     * random noise. The formula used is, up to some normalizing constant:
+     * new_cpt = (1-noise) * cpt + noise * random_cpt(). Of course, noise must
+     * belong to interval [0,1].
+     * @warning if epsilon=0, EM is not used
+     * @throws OutOfBounds is raised if epsilon is strictly negative or if
+     * noise does not belong to interval [0,1].
      */
-    void useEM(const double epsilon);
+    void useEM(const double epsilon,
+               const double noise = default_EM_noise);
+
+    /**
+     * @brief use The EM algorithm to learn parameters with the rate stopping criterion
+     * @param epsilon epsilon sets the approximation stopping criterion: EM stops
+     * whenever the absolute value of the relative difference between two
+     * consecutive log-likelihoods drops below epsilon. Note that, for using EM,
+     * epsilon should be strictly positive.
+     * @param noise When EM starts, it initializes all the CPTs of the Bayes
+     * net. EM adds a noise to these CPTs by mixing their values with some
+     * random noise. The formula used is, up to some normalizing constant:
+     * new_cpt = (1-noise) * cpt + noise * random_cpt(). Of course, noise must
+     * belong to interval [0,1].
+     * @throws OutOfBounds is raised if epsilon is not strictly positive or if
+     * noise does not belong to interval [0,1].
+     */
+    void useEMWithRateCriterion(const double epsilon,
+                                const double noise = default_EM_noise);
+
+    /**
+     * @brief use The EM algorithm to learn parameters with the diff stopping criterion
+     * @param epsilon epsilon sets the approximation stopping criterion: EM stops
+     * whenever the difference between two consecutive log-likelihoods drops below
+     * epsilon. Note that, for using EM, epsilon should be strictly positive.
+     * @param noise When EM starts, it initializes all the CPTs of the Bayes
+     * net. EM adds a noise to these CPTs by mixing their values with some
+     * random noise. The formula used is, up to some normalizing constant:
+     * new_cpt = (1-noise) * cpt + noise * random_cpt(). Of course, noise must
+     * belong to interval [0,1].
+     * @throws OutOfBounds is raised if epsilon is not strictly positive or if
+     * noise does not belong to interval [0,1].
+     */
+    void useEMWithDiffCriterion(const double epsilon,
+                                const double noise = default_EM_noise);
+
+    /// prevent using the EM algorithm for parameter learning
+    void forbidEM();
+
+    /// indicates whether we use EM for parameter learning
+    bool isUsingEM() const;
+
+    /**
+     * @brief returns the EM parameter learning approximation scheme if EM is enabled
+     * @return returns the EM parameter learning approximation scheme if EM is enabled,
+     * else if raises a NotFound exception. The scheme can then be subsequently used
+     * to fine-tune the EM algorithm, e.g., by setting its max time or max number of
+     * iterations.
+     * @throw NotFound is raised if EM() is called while the EM algorithm has not been
+     * enabled by useEM(), useEMWithDiffCriterion() or useEMWithRateCriterion().
+     */
+    EMApproximationScheme& EM();
+
+    /// returns the state of the last EM algorithm executed
+    ApproximationSchemeSTATE EMState() const;
+
+    /// returns the state of the EM algorithm
+    std::string EMStateMessage() const;
 
     /// returns true if the learner's database has missing values
     bool hasMissingValues() const;
@@ -650,7 +723,7 @@ namespace gum::learning {
     /// @}
 
     // ##########################################################################
-    /// @name a priorselection / parameterization
+    /// @name a prior selection / parameterization
     // ##########################################################################
     /// @{
 
@@ -871,8 +944,11 @@ namespace gum::learning {
     /// the type of the parameter estimator
     ParamEstimatorType paramEstimatorType_{ParamEstimatorType::ML};
 
-    /// epsilon for EM. if espilon=0.0 : no EM
-    double epsilonEM_{0.0};
+    /// a Boolean indicating whether we should use EM for parameter learning or not
+    bool useEM_ {false};
+
+    /// the noise factor (in (0,1)) used by EM for perturbing the CPT during init
+    double noiseEM_{0.1};
 
     /// the selected correction for miic
     CorrectedMutualInformation* mutualInfo_{nullptr};
@@ -1036,7 +1112,6 @@ namespace gum::learning {
       algoK2_.approximationScheme().setEpsilon(eps);
       greedyHillClimbing_.setEpsilon(eps);
       localSearchWithTabuList_.setEpsilon(eps);
-      Dag2BN_.setEpsilon(eps);
     };
 
     /// Get the value of epsilon
@@ -1050,7 +1125,6 @@ namespace gum::learning {
       algoK2_.approximationScheme().disableEpsilon();
       greedyHillClimbing_.disableEpsilon();
       localSearchWithTabuList_.disableEpsilon();
-      Dag2BN_.disableEpsilon();
     };
 
     /// Enable stopping criterion on epsilon
@@ -1058,7 +1132,6 @@ namespace gum::learning {
       algoK2_.approximationScheme().enableEpsilon();
       greedyHillClimbing_.enableEpsilon();
       localSearchWithTabuList_.enableEpsilon();
-      Dag2BN_.enableEpsilon();
     };
 
     /// @return true if stopping criterion on epsilon is enabled, false
@@ -1079,7 +1152,6 @@ namespace gum::learning {
       algoK2_.approximationScheme().setMinEpsilonRate(rate);
       greedyHillClimbing_.setMinEpsilonRate(rate);
       localSearchWithTabuList_.setMinEpsilonRate(rate);
-      Dag2BN_.setMinEpsilonRate(rate);
     };
 
     /// Get the value of the minimal epsilon rate
@@ -1093,7 +1165,6 @@ namespace gum::learning {
       algoK2_.approximationScheme().disableMinEpsilonRate();
       greedyHillClimbing_.disableMinEpsilonRate();
       localSearchWithTabuList_.disableMinEpsilonRate();
-      Dag2BN_.disableMinEpsilonRate();
     };
 
     /// Enable stopping criterion on epsilon rate
@@ -1101,7 +1172,6 @@ namespace gum::learning {
       algoK2_.approximationScheme().enableMinEpsilonRate();
       greedyHillClimbing_.enableMinEpsilonRate();
       localSearchWithTabuList_.enableMinEpsilonRate();
-      Dag2BN_.enableMinEpsilonRate();
     };
 
     /// @return true if stopping criterion on epsilon rate is enabled, false
@@ -1122,7 +1192,6 @@ namespace gum::learning {
       algoK2_.approximationScheme().setMaxIter(max);
       greedyHillClimbing_.setMaxIter(max);
       localSearchWithTabuList_.setMaxIter(max);
-      Dag2BN_.setMaxIter(max);
     };
 
     /// @return the criterion on number of iterations
@@ -1136,7 +1205,6 @@ namespace gum::learning {
       algoK2_.approximationScheme().disableMaxIter();
       greedyHillClimbing_.disableMaxIter();
       localSearchWithTabuList_.disableMaxIter();
-      Dag2BN_.disableMaxIter();
     };
 
     /// Enable stopping criterion on max iterations
@@ -1144,7 +1212,6 @@ namespace gum::learning {
       algoK2_.approximationScheme().enableMaxIter();
       greedyHillClimbing_.enableMaxIter();
       localSearchWithTabuList_.enableMaxIter();
-      Dag2BN_.enableMaxIter();
     };
 
     /// @return true if stopping criterion on max iterations is enabled, false
@@ -1166,7 +1233,6 @@ namespace gum::learning {
       algoK2_.approximationScheme().setMaxTime(timeout);
       greedyHillClimbing_.setMaxTime(timeout);
       localSearchWithTabuList_.setMaxTime(timeout);
-      Dag2BN_.setMaxTime(timeout);
     }
 
     /// returns the timeout (in seconds)
@@ -1186,14 +1252,12 @@ namespace gum::learning {
       algoK2_.approximationScheme().disableMaxTime();
       greedyHillClimbing_.disableMaxTime();
       localSearchWithTabuList_.disableMaxTime();
-      Dag2BN_.disableMaxTime();
     };
 
     void enableMaxTime() override {
       algoK2_.approximationScheme().enableMaxTime();
       greedyHillClimbing_.enableMaxTime();
       localSearchWithTabuList_.enableMaxTime();
-      Dag2BN_.enableMaxTime();
     };
 
     /// @return true if stopping criterion on timeout is enabled, false
@@ -1212,7 +1276,6 @@ namespace gum::learning {
       algoK2_.approximationScheme().setPeriodSize(p);
       greedyHillClimbing_.setPeriodSize(p);
       localSearchWithTabuList_.setPeriodSize(p);
-      Dag2BN_.setPeriodSize(p);
     };
 
     Size periodSize() const override {
@@ -1228,7 +1291,6 @@ namespace gum::learning {
       algoK2_.approximationScheme().setVerbosity(v);
       greedyHillClimbing_.setVerbosity(v);
       localSearchWithTabuList_.setVerbosity(v);
-      Dag2BN_.setVerbosity(v);
     };
 
     bool verbosity() const override {
@@ -1259,6 +1321,145 @@ namespace gum::learning {
     }
 
     /// @}
+
+
+    /// @name EM approximation scheme for parameter learning
+    /// @{
+
+    /**
+     * @brief sets the stopping criterion of EM as being the minimal difference between two
+     * consecutive log-likelihoods
+     * @param eps the log-likelihood difference below which EM stops its iterations
+     * @warning setting this stopping criterion disables the min rate criterion (if it was enabled)
+     * @throw OutOfBounds if eps <= 0
+     */
+    void setEMEpsilon(double eps) { Dag2BN_.setEpsilon(eps); }
+
+    /// Get the value of EM's min diff epsilon
+    /**
+     * @brief Get the value of EM's min diff epsilon
+     * @warning Note that this value is not taken into account unless the min diff criterion is enabled
+     */
+    double EMEpsilon() const { return Dag2BN_.epsilon(); }
+
+    /// Disable the min log-likelihood diff stopping criterion for EM
+    void disableEMEpsilon() { Dag2BN_.disableEpsilon(); }
+
+    /**
+     * @brief Enable the log-likelihood min diff stopping criterion in EM
+     * @warning setting this stopping criterion disables the min rate criterion (if it was enabled)
+     */
+    void enableEMEpsilon() { Dag2BN_.enableEpsilon(); }
+
+    /// return true if EM's stopping criterion is the log-likelihood min diff
+    bool isEnabledEMEpsilon() const { return Dag2BN_.isEnabledEpsilon(); }
+
+    /**
+     * @brief sets the stopping criterion of EM as being the minimal log-likelihood's evolution rate
+     * @param rate the log-likelihood evolution rate below which EM stops its iterations
+     * @warning setting this stopping criterion disables the min diff criterion (if it was enabled)
+     * @throw OutOfBounds if rate<=0
+     */
+    void setEMMinEpsilonRate(double rate) { Dag2BN_.setMinEpsilonRate(rate); }
+
+    /**
+     * @brief Get the value of the minimal log-likelihood evolution rate of EM
+     * @warning Note that this value is not taken into account unless the min rate criterion is enabled
+     */
+    double EMMinEpsilonRate() const { return Dag2BN_.minEpsilonRate(); }
+
+    /// Disable the log-likelihood evolution rate stopping criterion
+    void disableEMMinEpsilonRate() { Dag2BN_.disableMinEpsilonRate(); }
+
+    /**
+     * @brief Enable the log-likelihood evolution rate stopping criterion
+     * @warning setting this stopping criterion disables the min diff criterion (if it was enabled)
+     */
+    void enableEMMinEpsilonRate() { Dag2BN_.enableMinEpsilonRate(); }
+
+    /// @return true if EM's stopping criterion is the log-likelihood evolution rate
+    bool isEnabledEMMinEpsilonRate() const { return Dag2BN_.isEnabledMinEpsilonRate(); }
+
+    /**
+     * @brief add a max iteration stopping criterion
+     * @param max the max number of iterations that EM is allowed to perform
+     * @throw OutOfBounds if max<=1
+     */
+    void setEMMaxIter(Size max) { Dag2BN_.setMaxIter(max); }
+
+    /**
+     * @brief return the max number of iterations criterion
+     * @warning Note that this value is not taken into account unless the max iter criterion is enabled
+     */
+    Size EMMaxIter() const { return Dag2BN_.maxIter(); }
+
+    /// Disable stopping criterion on max iterations
+    void disableEMMaxIter() { Dag2BN_.disableMaxIter(); }
+
+    /// Enable stopping criterion on max iterations
+    void enableEMMaxIter() { Dag2BN_.enableMaxIter(); }
+
+    /// @return true if stopping criterion on max iterations is enabled, false
+    /// otherwise
+    bool isEnabledEMMaxIter() const { return Dag2BN_.isEnabledMaxIter(); }
+
+    /**
+     * @brief add a stopping criterion on timeout
+     * @param timeout the timeout in milliseconds
+     * @throw OutOfBounds if timeout<=0.0
+     */
+    void setEMMaxTime(double timeout) { Dag2BN_.setMaxTime(timeout); }
+
+    /**
+     * @@brief returns EM's timeout (in milliseconds)
+     * @warning Note that this value is not taken into account unless the max time criterion is enabled
+     */
+    double EMMaxTime() const { return Dag2BN_.maxTime(); }
+
+    /// get the current running time in second (double)
+    double EMCurrentTime() const { return Dag2BN_.currentTime(); }
+
+    /// Disable EM's timeout stopping criterion
+    void disableEMMaxTime() { Dag2BN_.disableMaxTime(); }
+
+    void enableEMMaxTime() { Dag2BN_.enableMaxTime();
+      greedyHillClimbing_.enableMaxTime();
+      localSearchWithTabuList_.enableMaxTime();
+    };
+
+    /// @return true if stopping criterion on timeout is enabled, false otherwise
+    bool isEnabledEMMaxTime() const { return Dag2BN_.isEnabledMaxTime(); }
+
+    /**
+     * @brief how many samples between 2 stoppings isEnabled
+     * @throw OutOfBounds if p<1
+     */
+    void setEMPeriodSize(Size p) { Dag2BN_.setPeriodSize(p); }
+
+    Size EMPeriodSize() const { return Dag2BN_.periodSize(); }
+
+    /// sets or unsets EM's verbosity
+    void setEMVerbosity(bool v) { Dag2BN_.setVerbosity(v); }
+
+    /// returns the EM's verbosity status
+    bool EMVerbosity() const { return Dag2BN_.verbosity(); }
+
+    /// get the current state of EM
+    ApproximationSchemeSTATE EMStateApproximationScheme() const {
+      return Dag2BN_.stateApproximationScheme();
+    }
+
+    /// returns the number of iterations performed by the last EM execution
+    Size nbrEMIterations() const { return Dag2BN_.nbrIterations(); }
+
+    /**
+     * @brief returns the history of the last EM execution
+     * @warning to activate the history recording, EM's verbosity must be set to true
+     */
+    const std::vector< double >& EMHistory() const { return Dag2BN_.history(); }
+
+    /// @}
+
   };
 
   /* namespace learning */

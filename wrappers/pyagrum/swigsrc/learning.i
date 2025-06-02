@@ -35,8 +35,6 @@
  ****************************************************************************/
 
 
-
-
 %ignore *::useK2(const gum::Sequence< gum::NodeId >& order);
 %ignore *::useK2(const std::vector< gum::NodeId >& order);
 %ignore *::setForbiddenArcs;
@@ -48,8 +46,13 @@
 %ignore *::setMandatoryArcs;
 %ignore *::addMandatoryArc(const gum::Arc& arc);
 %ignore *::eraseMandatoryArc(const gum::Arc& arc);
-%ignore *::learnParameters(const gum::DAG& dag);
+%ignore gum::learning::BNLearner::EMState() const;
 %ignore gum::learning::BNLearner::state() const;
+%ignore gum::learning::BNLearner::EM();
+
+%pythoncode {
+    import warnings
+};
 
 %pythonprepend gum::learning::BNLearner<double>::BNLearner %{
   if type(args[0]) is not str:
@@ -85,9 +88,19 @@ SETPROP_THEN_RETURN_SELF(copyState);
     std::pair<double,double> res=$self->chi2(var1,var2,knw);
     return Py_BuildValue("(dd)",res.first,res.second);
   }
+
   PyObject *G2(const std::string& var1,const std::string& var2,const std::vector<std::string>& knw={}) {
     std::pair<double,double> res=$self->G2(var1,var2,knw);
     return Py_BuildValue("(dd)",res.first,res.second);
+  }
+
+  PyObject *EMState() {
+    return Py_BuildValue("s", $self->EMStateMessage().c_str());
+  }
+
+  bool _EM_warning() const {
+    return $self->isUsingEM() &&
+      ($self->EMState() == gum::learning::BNLearner< double >::ApproximationSchemeSTATE::Stopped);
   }
 
   gum::learning::BNLearner< double >& setSliceOrder(PyObject * l) {
@@ -199,7 +212,18 @@ def pseudoCount(self,vars):
 
 def fitParameters(self,bn,take_into_account_score=True):
   """
-  fitParameters directly populates the CPTs of the argument using the database and the structure of the BN.
+  fitParameters directly populates the CPTs of the Bayes Net (bn) passed in argument using the
+  database and the structure of bn.
+
+  When the database contains missing values and a method among useEM(), useEMWithRateCriterion()
+  and useEMWithDiffCriterion(), has been executed, the CPTs are learnt using the EM algorithm.
+  This one first initializes the CPTs and, then, iterates sequences
+  of expectations/maximizations in order to converge toward a most likely CPT. The aforementioned
+  initialization is performed as follows: when a CPT contains only zeroes, the BNLearner estimates
+  it from the database without taking into account the missing values, else it uses the
+  CPT as is. Then, in both cases, the CPT is randomly perturbed using the following formula:
+  new_CPT = (1-alpha) * CPT + alpha * random_CPT. Parameter alpha is called a noise factor and
+  can be controlled using Method useEM().
 
   Parameters
   ----------
@@ -207,19 +231,18 @@ def fitParameters(self,bn,take_into_account_score=True):
     a BN which will directly have its parameters learned inplace.
 
   take_into_account_score : bool
-	The dag passed in argument may have been learnt from a structure learning. In this case, if the score used to learn the structure has an implicit prior (like K2 which has a 1-smoothing prior), it is important to also take into account this implicit prior for parameter learning. By default (`take_into_account_score=True`), we will learn parameters by taking into account the prior specified by methods usePriorXXX () + the implicit prior of the score (if any). If `take_into_account_score=False`, we just take into account the prior specified by `usePriorXXX()`.
+    The dag passed in argument may have been learnt from a structure learning. In this case,
+    if the score used to learn the structure has an implicit prior (like K2 which has a 1-smoothing prior),
+    it is important to also take into account this implicit prior for parameter learning. By default
+    (`take_into_account_score=True`), we will learn parameters by taking into account the prior specified
+    by methods usePriorXXX () + the implicit prior of the score (if any). If `take_into_account_score=False`,
+    we just take into account the prior specified by `usePriorXXX()`.
 
   """
   if set(self.names())!=bn.names():
     raise Exception("Not the same variable names in the database and in the BN")
 
-  from pyagrum import DAG
-  d=DAG()
-  for n in bn.names():
-    d.addNodeWithId(self.idFromName(n))
-  for i1,i2 in bn.arcs():
-    d.addArc(self.idFromName(bn.variable(i1).name()),self.idFromName(bn.variable(i2).name()))
-  tmp=self.learnParameters(d,take_into_account_score)
+  tmp=self.learnParameters(bn,take_into_account_score)
   for n in tmp.names():
     bn.cpt(n).fillWith(tmp.cpt(n))
   return self
@@ -246,13 +269,10 @@ def learnEssentialGraph(self):
 
   return ge
   }
-};
+}
 
 
-%pythonprepend gum::learning::BNLearner<double>::learnParameters %{
-if type(args[0])==pyagrum.BayesNet:
-    res=pyagrum.BayesNet(args[0])
-    self.fitParameters(res)
-    return res
-
+%pythonappend gum::learning::BNLearner<double>::learnParameters %{
+  if self._EM_warning():
+      warnings.warn("\nthe learnParameters's EM algorithm has completed prematurely due to a likelihood divergence\n", UserWarning)
 %}

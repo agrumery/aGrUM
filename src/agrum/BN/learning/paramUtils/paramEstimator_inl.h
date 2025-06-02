@@ -101,6 +101,12 @@ namespace gum {
       return parameters(target_node, empty_nodevect_);
     }
 
+    /// returns the CPT's parameters of a given target node + its log-likelihood
+    INLINE std::pair< std::vector< double >, double >
+        ParamEstimator::parametersAndLogLikelihood(const NodeId target_node) {
+      return parametersAndLogLikelihood(target_node, empty_nodevect_);
+    }
+
     /// returns the mapping from ids to column positions in the database
     INLINE const Bijection< NodeId, std::size_t >& ParamEstimator::nodeId2Columns() const {
       return counter_.nodeId2Columns();

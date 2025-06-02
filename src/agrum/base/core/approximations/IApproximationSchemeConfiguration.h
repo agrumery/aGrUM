@@ -37,8 +37,8 @@
 
 /**
  * @file
- * @brief This file contains getters and setters defintion for
- * ApproximationSchem settings
+ * @brief This file contains getters and setters definition for
+ * ApproximationScheme settings
  *
  * @see ApproximationScheme
  *

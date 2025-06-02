@@ -37,9 +37,6 @@
 
 #include <iostream>
 
-#include <gumtest/AgrumTestSuite.h>
-#include <gumtest/utils.h>
-
 #include <agrum/base/database/DBRowGenerator4CompleteRows.h>
 #include <agrum/base/database/DBRowGeneratorEM.h>
 #include <agrum/base/database/DBTranslator4LabelizedVariable.h>
@@ -48,6 +45,9 @@
 #include <agrum/BN/learning/paramUtils/paramEstimatorML.h>
 #include <agrum/BN/learning/priors/noPrior.h>
 #include <agrum/BN/learning/priors/smoothingPrior.h>
+
+#include <testunits/gumtest/AgrumTestSuite.h>
+#include <testunits/gumtest/utils.h>
 
 namespace gum_tests {
 
@@ -192,7 +192,7 @@ namespace gum_tests {
       bn.cpt("C").fillWith({0.3, 0.7});
       bn.cpt("D").fillWith({0.3, 0.7});
 
-      // bugfix for parallel exceution of VariableElimination
+      // bugfix for parallel execution of VariableElimination
       {
         const gum::DAG& dag = bn.dag();
         for (const auto node: dag) {
@@ -228,14 +228,32 @@ namespace gum_tests {
       dag.addArc(gum::NodeId(2), gum::NodeId(1));
       dag.addArc(gum::NodeId(3), gum::NodeId(2));
 
-      learner.setEpsilon(1e-3);
+      learner.setMinEpsilonRate(1e-3);
+      learner.setNoise(0.15);
       bool ok;
       for (int i = 0; i < 10; i++) {
         ok         = true;
-        auto bn1   = learner.createBN(param_estimator_id, param_estimator_EM, dag);
+        auto bn1   = learner.createBNwithEM(param_estimator_id, param_estimator_EM, dag);
         auto margB = (bn1.cpt("D") * bn1.cpt("C") * bn1.cpt("B"))
                          .sumIn(gum::VariableSet({&bn1.variableFromName("B")}));
         if ((bn1.cpt("D").max() < 0.8) && (bn1.cpt("D").max() > 0.6) && (margB.max() > 0.5)
+            && (margB.max() < 0.6))
+          break;
+        ok = false;
+      }
+      TS_ASSERT(ok)
+
+      gum::BayesNet< double > xbn  = bn;
+      auto&                   cpt0 = xbn.cpt(0);
+      cpt0.fillWith(std::vector(cpt0.domainSize(), 0.0));
+      auto& cpt2 = xbn.cpt(2);
+      cpt2.fillWith(std::vector(cpt2.domainSize(), 0.0));
+      for (int i = 0; i < 5; i++) {
+        ok         = true;
+        auto bn2   = learner.createBNwithEM(param_estimator_id, param_estimator_EM, xbn);
+        auto margB = (bn2.cpt("D") * bn2.cpt("C") * bn2.cpt("B"))
+                         .sumIn(gum::VariableSet({&bn2.variableFromName("B")}));
+        if ((bn2.cpt("D").max() < 0.8) && (bn2.cpt("D").max() > 0.6) && (margB.max() > 0.5)
             && (margB.max() < 0.6))
           break;
         ok = false;

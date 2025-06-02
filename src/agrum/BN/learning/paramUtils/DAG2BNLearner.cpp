@@ -56,15 +56,20 @@ namespace gum {
   namespace learning {
 
     /// default constructor
-    DAG2BNLearner::DAG2BNLearner() { GUM_CONSTRUCTOR(DAG2BNLearner); }
+    DAG2BNLearner::DAG2BNLearner() :
+        EMApproximationScheme() { GUM_CONSTRUCTOR(DAG2BNLearner); }
 
     /// copy constructor
-    DAG2BNLearner::DAG2BNLearner(const DAG2BNLearner& from) : ApproximationScheme(from) {
+    DAG2BNLearner::DAG2BNLearner(const DAG2BNLearner& from) :
+        EMApproximationScheme(from), noiseEM_(from.noiseEM_),
+        max_nb_dec_likelihood_iter_(from.max_nb_dec_likelihood_iter_) {
       GUM_CONS_CPY(DAG2BNLearner);
     }
 
     /// move constructor
-    DAG2BNLearner::DAG2BNLearner(DAG2BNLearner&& from) : ApproximationScheme(std::move(from)) {
+    DAG2BNLearner::DAG2BNLearner(DAG2BNLearner&& from) :
+        EMApproximationScheme(std::move(from)), noiseEM_(from.noiseEM_),
+        max_nb_dec_likelihood_iter_(from.max_nb_dec_likelihood_iter_) {
       GUM_CONS_MOV(DAG2BNLearner);
     }
 
@@ -76,13 +81,15 @@ namespace gum {
 
     /// copy operator
     DAG2BNLearner& DAG2BNLearner::operator=(const DAG2BNLearner& from) {
-      ApproximationScheme::operator=(from);
+      EMApproximationScheme::operator=(from);
+      noiseEM_ = from.noiseEM_;
       return *this;
     }
 
     /// move operator
     DAG2BNLearner& DAG2BNLearner::operator=(DAG2BNLearner&& from) {
-      ApproximationScheme::operator=(std::move(from));
+      EMApproximationScheme::operator=(std::move(from));
+      noiseEM_ = from.noiseEM_;
       return *this;
     }
 

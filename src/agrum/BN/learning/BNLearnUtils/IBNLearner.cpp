@@ -199,14 +199,16 @@ namespace gum::learning {
   IBNLearner::IBNLearner(const std::string&                filename,
                          const std::vector< std::string >& missing_symbols,
                          const bool                        induceTypes) :
-      inducedTypes_(induceTypes), scoreDatabase_(filename, missing_symbols, induceTypes),
+      inducedTypes_(induceTypes),
+      scoreDatabase_(filename, missing_symbols, induceTypes),
       filename_(filename) {
     noPrior_ = new NoPrior(scoreDatabase_.databaseTable());
 
     GUM_CONSTRUCTOR(IBNLearner)
   }
 
-  IBNLearner::IBNLearner(const DatabaseTable& db) : scoreDatabase_(db) {
+  IBNLearner::IBNLearner(const DatabaseTable& db) :
+  scoreDatabase_(db) {
     noPrior_ = new NoPrior(scoreDatabase_.databaseTable());
     GUM_CONSTRUCTOR(IBNLearner)
   }
@@ -214,8 +216,9 @@ namespace gum::learning {
   IBNLearner::IBNLearner(const IBNLearner& from) :
       IApproximationSchemeConfiguration(from), ThreadNumberManager(from),
       inducedTypes_(from.inducedTypes_), scoreType_(from.scoreType_),
-      paramEstimatorType_(from.paramEstimatorType_), epsilonEM_(from.epsilonEM_),
-      priorType_(from.priorType_), priorWeight_(from.priorWeight_),
+      paramEstimatorType_(from.paramEstimatorType_),
+      useEM_(from.useEM_),
+      noiseEM_(from.noiseEM_), priorType_(from.priorType_), priorWeight_(from.priorWeight_),
       constraintSliceOrder_(from.constraintSliceOrder_),
       constraintIndegree_(from.constraintIndegree_), constraintTabuList_(from.constraintTabuList_),
       constraintForbiddenArcs_(from.constraintForbiddenArcs_),
@@ -224,7 +227,7 @@ namespace gum::learning {
       constraintNoChildrenNodes_(from.constraintNoChildrenNodes_),
       selectedAlgo_(from.selectedAlgo_), algoK2_(from.algoK2_),
       algoSimpleMiic_(from.algoSimpleMiic_), algoMiic_(from.algoMiic_), kmodeMiic_(from.kmodeMiic_),
-      greedyHillClimbing_(from.greedyHillClimbing_),
+      Dag2BN_(from.Dag2BN_), greedyHillClimbing_(from.greedyHillClimbing_),
       localSearchWithTabuList_(from.localSearchWithTabuList_), scoreDatabase_(from.scoreDatabase_),
       ranges_(from.ranges_), priorDbname_(from.priorDbname_), initialDag_(from.initialDag_),
       filename_(from.filename_), nbDecreasingChanges_(from.nbDecreasingChanges_) {
@@ -236,8 +239,9 @@ namespace gum::learning {
   IBNLearner::IBNLearner(IBNLearner&& from) :
       ThreadNumberManager(std::move(from)), inducedTypes_(from.inducedTypes_),
       scoreType_(from.scoreType_), paramEstimatorType_(from.paramEstimatorType_),
-      epsilonEM_(from.epsilonEM_), priorType_(from.priorType_), priorWeight_(from.priorWeight_),
-      constraintSliceOrder_(std::move(from.constraintSliceOrder_)),
+      useEM_(from.useEM_),
+      noiseEM_(from.noiseEM_), priorType_(from.priorType_),
+      priorWeight_(from.priorWeight_), constraintSliceOrder_(std::move(from.constraintSliceOrder_)),
       constraintIndegree_(std::move(from.constraintIndegree_)),
       constraintTabuList_(std::move(from.constraintTabuList_)),
       constraintForbiddenArcs_(std::move(from.constraintForbiddenArcs_)),
@@ -246,7 +250,8 @@ namespace gum::learning {
       constraintNoChildrenNodes_(std::move(from.constraintNoChildrenNodes_)),
       selectedAlgo_(from.selectedAlgo_), algoK2_(std::move(from.algoK2_)),
       algoSimpleMiic_(std::move(from.algoSimpleMiic_)), algoMiic_(std::move(from.algoMiic_)),
-      kmodeMiic_(from.kmodeMiic_), greedyHillClimbing_(std::move(from.greedyHillClimbing_)),
+      kmodeMiic_(from.kmodeMiic_), Dag2BN_(std::move(from.Dag2BN_)),
+      greedyHillClimbing_(std::move(from.greedyHillClimbing_)),
       localSearchWithTabuList_(std::move(from.localSearchWithTabuList_)),
       scoreDatabase_(std::move(from.scoreDatabase_)), ranges_(std::move(from.ranges_)),
       priorDbname_(std::move(from.priorDbname_)), initialDag_(std::move(from.initialDag_)),
@@ -296,7 +301,8 @@ namespace gum::learning {
       ThreadNumberManager::operator=(from);
       scoreType_                 = from.scoreType_;
       paramEstimatorType_        = from.paramEstimatorType_;
-      epsilonEM_                 = from.epsilonEM_;
+      useEM_                     = from.useEM_;
+      noiseEM_                   = from.noiseEM_;
       priorType_                 = from.priorType_;
       priorWeight_               = from.priorWeight_;
       constraintSliceOrder_      = from.constraintSliceOrder_;
@@ -311,6 +317,7 @@ namespace gum::learning {
       algoSimpleMiic_            = from.algoSimpleMiic_;
       algoMiic_                  = from.algoMiic_;
       kmodeMiic_                 = from.kmodeMiic_;
+      Dag2BN_                    = from.Dag2BN_;
       greedyHillClimbing_        = from.greedyHillClimbing_;
       localSearchWithTabuList_   = from.localSearchWithTabuList_;
       scoreDatabase_             = from.scoreDatabase_;
@@ -350,7 +357,8 @@ namespace gum::learning {
       ThreadNumberManager::operator=(std::move(from));
       scoreType_                 = from.scoreType_;
       paramEstimatorType_        = from.paramEstimatorType_;
-      epsilonEM_                 = from.epsilonEM_;
+      useEM_                     = from.useEM_;
+      noiseEM_                   = from.noiseEM_;
       priorType_                 = from.priorType_;
       priorWeight_               = from.priorWeight_;
       constraintSliceOrder_      = std::move(from.constraintSliceOrder_);
@@ -365,6 +373,7 @@ namespace gum::learning {
       algoSimpleMiic_            = std::move(from.algoSimpleMiic_);
       algoMiic_                  = std::move(from.algoMiic_);
       kmodeMiic_                 = from.kmodeMiic_;
+      Dag2BN_                    = std::move(from.Dag2BN_);
       greedyHillClimbing_        = std::move(from.greedyHillClimbing_);
       localSearchWithTabuList_   = std::move(from.localSearchWithTabuList_);
       scoreDatabase_             = std::move(from.scoreDatabase_);

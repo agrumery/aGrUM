@@ -186,6 +186,10 @@ namespace gum {
       /// returns the CPT's parameters corresponding to a given target node
       std::vector< double > parameters(const NodeId target_node);
 
+      /// returns the parameters of a CPT as well as its log-likelihood
+      std::pair< std::vector< double >, double >
+          parametersAndLogLikelihood(const NodeId target_node);
+
       /// returns the CPT's parameters corresponding to a given nodeset
       /** The vector contains the parameters of an n-dimensional CPT. The
        * distribution of the dimensions of the CPT within the vector is as
@@ -196,14 +200,43 @@ namespace gum {
                                                const std::vector< NodeId >& conditioning_nodes)
           = 0;
 
-      /// sets the CPT's parameters corresponding to a given Tensor
-      /** The tensor is assumed to be a conditional probability, the first
+      /**
+       * @brief returns the parameters of a CPT as well as its log-likelihood
+       *
+       * The vector contains the parameters of an n-dimensional CPT. The
+       * distribution of the dimensions of the CPT within the vector is as
+       * follows:
+       * first, there is the target node, then the conditioning nodes (in the
+       * order in which they were specified).
+       * @param target_node the node on the left side of the CPT's conditioning bar
+       * @param conditioning_nodes  thes nodes on the right side of the conditioning bar
+       * @return a pair containing i) the vector of parameters and ii) the log-likelihood
+       */
+      virtual std::pair< std::vector< double >, double >
+          parametersAndLogLikelihood(const NodeId                 target_node,
+                                     const std::vector< NodeId >& conditioning_nodes) = 0;
+
+      /**
+       * @brief sets a CPT's parameters and, possibly, return its log-likelihhod
+       *
+       * The tensor (CPT) is assumed to be a conditional probability, the first
        * variable of its variablesSequence() being the target variable, the
-       * other ones being on the right side of the conditioning bar. */
+       * other ones being on the right side of the conditioning bar.
+       * @param target_node the node on the left side of the CPT's conditioning bar
+       * @param conditioning_nodes the set of nodes on the right side of the
+       * conditioning bar
+       * @param pot the tensor (CPT) that is filled
+       * @param compute_log_likelihood a Boolean indicating whether we wish to
+       * compute the log-likelihood or not. Computing it is needed by the EM
+       * algorithm
+       * @return a double which corresponds to the log-likelihood (w.r.t. the CPT)
+       * if compute_log_likelihood=true, else the method returns 0
+       */
       template < typename GUM_SCALAR >
-      void setParameters(const NodeId                 target_node,
-                         const std::vector< NodeId >& conditioning_nodes,
-                         Tensor< GUM_SCALAR >&        pot);
+      double setParameters(const NodeId                 target_node,
+                           const std::vector< NodeId >& conditioning_nodes,
+                           Tensor< GUM_SCALAR >&        pot,
+                           const bool                   compute_log_likelihood = false);
 
       /// returns the mapping from ids to column positions in the database
       /** @warning An empty nodeId2Columns bijection means that the mapping is
@@ -258,19 +291,23 @@ namespace gum {
       // when the tensor belongs to a BayesNet<GUM_SCALAR> when
       // GUM_SCALAR is different from a double
       template < typename GUM_SCALAR >
-      typename std::enable_if< !std::is_same< GUM_SCALAR, double >::value, void >::type
+      typename std::enable_if< !std::is_same< GUM_SCALAR, double >::value, double >::type
           _setParameters_(const NodeId                 target_node,
                           const std::vector< NodeId >& conditioning_nodes,
-                          Tensor< GUM_SCALAR >&        pot);
+                          Tensor< GUM_SCALAR >&        pot,
+                          const bool                   compute_log_likelihood);
 
       // sets the CPT's parameters corresponding to a given Tensor
       // when the tensor belongs to a BayesNet<GUM_SCALAR> when
       // GUM_SCALAR is equal to double (the code is optimized for doubles)
       template < typename GUM_SCALAR >
-      typename std::enable_if< std::is_same< GUM_SCALAR, double >::value, void >::type
+      typename std::enable_if< std::is_same< GUM_SCALAR, double >::value, double >::type
           _setParameters_(const NodeId                 target_node,
                           const std::vector< NodeId >& conditioning_nodes,
-                          Tensor< GUM_SCALAR >&        pot);
+                          Tensor< GUM_SCALAR >&        pot,
+                          const bool                   compute_log_likelihood);
+
+      friend class DAG2BNLearner;
 
 #endif /* DOXYGEN_SHOULD_SKIP_THIS */
     };

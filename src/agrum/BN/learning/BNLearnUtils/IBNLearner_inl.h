@@ -248,8 +248,80 @@ namespace gum::learning {
     localSearchWithTabuList_.setMaxNbDecreasingChanges(nb_decrease);
   }
 
-  /// use The EM algorithm to learn paramters
-  INLINE void IBNLearner::useEM(const double epsilon) { epsilonEM_ = epsilon; }
+  /// use The EM algorithm to learn parameters
+  INLINE void IBNLearner::useEM(const double epsilon,
+                                const double noise) {
+    if (epsilon < 0.0)
+      GUM_ERROR(OutOfBounds,
+                "EM's min log-likelihood evolution rate must be non-negative");
+    if ((noise < 0.0) || (noise > 1.0))
+      GUM_ERROR(OutOfBounds,
+                "EM's noise must belong to interval [0,1]");
+    if (epsilon > 0) {
+      useEM_ = true;
+      Dag2BN_.setMinEpsilonRate(epsilon);
+      Dag2BN_.setNoise(noise);
+      noiseEM_ = noise;
+    } else {
+      useEM_ = false; // epsilon == 0
+    }
+  }
+
+  /// use The EM algorithm to learn parameters with the rate stopping criterion
+  INLINE void IBNLearner::useEMWithRateCriterion(const double epsilon,
+                                                 const double noise) {
+    if (epsilon <= 0.0)
+      GUM_ERROR(OutOfBounds,
+                "EM's min log-likelihood evolution rate must be positive");
+    useEM(epsilon, noise);
+  }
+
+  /// use The EM algorithm to learn parameters with the diff stoppîng criterion
+  INLINE void IBNLearner::useEMWithDiffCriterion(const double epsilon,
+                                                 const double noise) {
+    if (epsilon <= 0.0)
+      GUM_ERROR(OutOfBounds,
+                "EM's min log-likelihood differences must be positive");
+    if ((noise < 0.0) || (noise > 1.0))
+      GUM_ERROR(OutOfBounds,
+                "EM's noise must belong to interval [0,1]");
+      useEM_ = true;
+      Dag2BN_.setEpsilon(epsilon);
+      Dag2BN_.setNoise(noise);
+      noiseEM_ = noise;
+  }
+
+  /// forbid to use EM
+  INLINE void IBNLearner::forbidEM() {
+    useEM_ = false;
+  }
+
+  /// indicates whether we use EM for parameter learning
+  INLINE bool IBNLearner::isUsingEM() const { return useEM_; }
+
+  /// returns the EM parameter learning approximation scheme
+  INLINE EMApproximationScheme& IBNLearner::EM() {
+    if (useEM_)
+      return Dag2BN_;
+    else
+      GUM_ERROR(NotFound, "EM is currently forbidden. Please enable it with useEM()")
+  }
+
+  /// returns the state of the last EM algorithm executed
+  INLINE IApproximationSchemeConfiguration::ApproximationSchemeSTATE IBNLearner::EMState() const {
+    if (useEM_)
+      return Dag2BN_.stateApproximationScheme();
+    else
+      return IApproximationSchemeConfiguration::ApproximationSchemeSTATE::Undefined;
+  }
+
+  /// returns the state of the EM algorithm
+  INLINE std::string IBNLearner::EMStateMessage() const {
+    if (useEM_)
+      return Dag2BN_.messageApproximationScheme();
+    else
+      return "EM is currently forbidden. Please enable it with useEM()";
+  }
 
   INLINE bool IBNLearner::hasMissingValues() const {
     return scoreDatabase_.databaseTable().hasMissingValues();

@@ -101,13 +101,22 @@ namespace gum {
 
     /// sets the CPT's parameters corresponding to a given nodeset
     template < typename GUM_SCALAR >
-    INLINE typename std::enable_if< !std::is_same< GUM_SCALAR, double >::value, void >::type
+    INLINE typename std::enable_if< !std::is_same< GUM_SCALAR, double >::value, double >::type
         ParamEstimator::_setParameters_(const NodeId                 target_node,
                                         const std::vector< NodeId >& conditioning_nodes,
-                                        Tensor< GUM_SCALAR >&        pot) {
+                                        Tensor< GUM_SCALAR >&        pot,
+                                        const bool                   compute_log_likelihood) {
       _checkParameters_(target_node, conditioning_nodes, pot);
 
-      const std::vector< double > params(parameters(target_node, conditioning_nodes));
+      std::vector< double > params;
+      double log_likelihood = 0.0;
+      if (compute_log_likelihood) {
+        const auto xparams = parametersAndLogLikelihood(target_node, conditioning_nodes);
+        params             = std::move(xparams).first;
+        log_likelihood     = xparams.second;
+      } else {
+        params = parameters(target_node, conditioning_nodes);
+      }
 
       // transform the vector of double into a vector of GUM_SCALAR
       const std::size_t         size = params.size();
@@ -116,26 +125,39 @@ namespace gum {
         xparams[i] = GUM_SCALAR(params[i]);
 
       pot.fillWith(xparams);
+      return log_likelihood;
     }
 
     /// sets the CPT's parameters corresponding to a given nodeset
     template < typename GUM_SCALAR >
-    INLINE typename std::enable_if< std::is_same< GUM_SCALAR, double >::value, void >::type
+    INLINE typename std::enable_if< std::is_same< GUM_SCALAR, double >::value, double >::type
         ParamEstimator::_setParameters_(const NodeId                 target_node,
                                         const std::vector< NodeId >& conditioning_nodes,
-                                        Tensor< GUM_SCALAR >&        pot) {
+                                        Tensor< GUM_SCALAR >&        pot,
+                                        const bool                   compute_log_likelihood) {
       _checkParameters_(target_node, conditioning_nodes, pot);
 
-      const std::vector< double > params(parameters(target_node, conditioning_nodes));
+      std::vector< double > params;
+      double log_likelihood = 0.0;
+      if (compute_log_likelihood) {
+        const auto xparams = parametersAndLogLikelihood(target_node, conditioning_nodes);
+        params             = std::move(xparams).first;
+        log_likelihood     = xparams.second;
+      } else {
+        params = parameters(target_node, conditioning_nodes);
+      }
+
       pot.fillWith(params);
+      return log_likelihood;
     }
 
     /// sets the CPT's parameters corresponding to a given nodeset
     template < typename GUM_SCALAR >
-    INLINE void ParamEstimator::setParameters(const NodeId                 target_node,
-                                              const std::vector< NodeId >& conditioning_nodes,
-                                              Tensor< GUM_SCALAR >&        pot) {
-      _setParameters_(target_node, conditioning_nodes, pot);
+    INLINE double ParamEstimator::setParameters(const NodeId                 target_node,
+                                                const std::vector< NodeId >& conditioning_nodes,
+                                                Tensor< GUM_SCALAR >&        pot,
+                                                const bool                   compute_log_likelihood) {
+      return _setParameters_(target_node, conditioning_nodes, pot, compute_log_likelihood);
     }
 
     /// assign a new Bayes net to all the counter's generators depending on a BN

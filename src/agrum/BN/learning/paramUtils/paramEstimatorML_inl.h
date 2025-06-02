@@ -81,6 +81,20 @@ namespace gum {
     /// virtual copy constructor
     INLINE ParamEstimatorML* ParamEstimatorML::clone() const { return new ParamEstimatorML(*this); }
 
+    /// computes the parameters of a CPT
+    INLINE std::vector< double >
+        ParamEstimatorML::parameters(const NodeId                 target_node,
+                                     const std::vector< NodeId >& conditioning_nodes) {
+      return _parametersAndLogLikelihood_(target_node, conditioning_nodes, false).first;
+    }
+
+    /// computes the parameters of a CPT as well as its log-likelihood
+    INLINE std::pair< std::vector< double >, double >
+        ParamEstimatorML::parametersAndLogLikelihood(const NodeId                 target_node,
+                                                     const std::vector< NodeId >& conditioning_nodes) {
+      return _parametersAndLogLikelihood_(target_node, conditioning_nodes, true);
+    }
+
   } /* namespace learning */
 
 } /* namespace gum */

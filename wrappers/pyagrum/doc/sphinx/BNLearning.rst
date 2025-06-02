@@ -1,5 +1,5 @@
 Learning
-=======
+========
 pyAgrum provides a complete framework for learning Bayesian networks from data. It includes various algorithms for structure learning, parameter learning, and model evaluation. The library supports both score-based and constraint-based approaches, allowing users to choose the method that best fits their needs.
 
 pyAgrum brings together all Bayesian network learning processes in a single, easy-to-use class: :class:`pyagrum.BNLearner`. This class provides direct access to complete learning algorithms and their parameters (such as priors, scores, constraints, etc.), and also offers low-level functions that facilitate the development of new learning algorithms (for example, computing chi² or conditional likelihood on the dataset).

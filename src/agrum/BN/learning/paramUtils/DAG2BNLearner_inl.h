@@ -51,7 +51,15 @@ namespace gum {
   namespace learning {
 
     /// returns the approximation policy of the learning algorithm
-    INLINE ApproximationScheme& DAG2BNLearner::approximationScheme() { return *this; }
+    INLINE EMApproximationScheme& DAG2BNLearner::approximationScheme() { return *this; }
+
+    /// sets the noise factor for perturbing the CPTs during EM's initialization
+    INLINE DAG2BNLearner& DAG2BNLearner::setNoise(const double noise) {
+      if ((noise < 0.0) || (noise > 1.0))
+        GUM_ERROR(OutOfBounds, "EM's noise must belong to interval [0,1]");
+      noiseEM_ = noise;
+      return *this;
+    }
 
   } /* namespace learning */
 

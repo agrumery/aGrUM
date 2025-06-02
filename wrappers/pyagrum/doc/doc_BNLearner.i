@@ -97,7 +97,8 @@ Dict[str,Any]
 
 %feature("docstring") gum::learning::BNLearner::learnParameters
 "
-Create a new BN copying its structure from the argument (dag or BN) and learning its parameters from the database w.r.t the BNLearner's state (priors, etc.).
+Create a new BN copying its structure from the argument (dag or BN) and learning its parameters
+from the database w.r.t the BNLearner's state (priors, etc.).
 
 Warnings
 --------
@@ -156,13 +157,34 @@ dag : pyagrum.DAG
 
 %feature("docstring") gum::learning::BNLearner::useEM
 "
-Indicates if we use EM for parameter learning.
+Sets whether we use EM for parameter learning or not.
 
 Parameters
 ----------
 epsilon : float
-	if epsilon=0.0 then EM is not used.
-	if epsilon>0 then EM is used and stops when the sum of the cumulative squared error on parameters is less than epsilon.
+	if epsilon=0.0 then EM is not used. But if you wish to forbid the use of EM, prefer
+        executing Method forbidEM() rather than useEM(0) as it is more unequivocal.
+
+	if epsilon>0 then EM is used and stops whenever the relative difference between two
+        consecutive log-likelihoods drops below epsilon.
+
+noise: float (optional, default = 0.1)
+        During EM's initialization, the CPTs are randomly perturbed using the following formula:
+        new_CPT = (1-noise) * CPT + noise * random_CPT. Parameter noise must belong to interval [0,1].
+
+        By default, noise is equal to 0.1.
+
+Returns
+-------
+pyagrum.EMApproximationScheme
+        the EM approximation scheme. As an approximation scheme, it enables to fine-tune the EM's
+        stopping criterion (taking into account the number of iterations or a timeout), the
+        verbosity of the EM's learning (useful for getting its history), etc.
+
+Raises
+------
+pyagrum.OutOfBounds
+        if epsilon is strictly negative or if noise does not belong to interval [0,1].
 "
 
 %feature("docstring") gum::learning::BNLearner::useMIIC

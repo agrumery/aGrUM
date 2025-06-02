@@ -36,6 +36,7 @@
 
 import unittest
 import numpy as np
+import itertools
 
 import pyagrum as gum
 from .pyAgrumTestSuite import pyAgrumTestCase, addTests
@@ -102,6 +103,10 @@ class BNLearnerCSVTestCase(pyAgrumTestCase):
     for i in range(bn.size()):
       # self.assertEqual(str(bn2.variable(i)), str(bn.variable(bn.idFromName(bn2.variable(i).name()))))
       self.assertEqual(set(bn2.variable(i).labels()), set(bn.variable(bn.idFromName(bn2.variable(i).name())).labels()))
+
+    bn3 = learner.learnParameters(bn.dag())
+    for i in range(bn.size()):
+      self.assertListsAlmostEqual(bn3.cpt(i).tolist(), bn2.cpt(i).tolist(), delta=0.01)
 
     bn = gum.loadBN(self.agrumSrcDir("asia_bool.bif"), verbose=False)
     # there is a beurk modality in asia3-faulty.csv
@@ -227,9 +232,96 @@ class BNLearnerCSVTestCase(pyAgrumTestCase):
     with self.assertRaises(gum.MissingValueInDatabase):
       learner.learnParameters(dag)
 
-    learner.useEM(1e-3)
+    # EM with log-likelihood's evolution rate stopping criterion
+    learner.useEM(1e-3, 0.15) \
+           .setEMMaxIter(10) \
+           .setEMMaxTime(200) \
+           .disableEMMaxIter() \
+           .disableEMMaxTime()
     learner.useSmoothingPrior()
+
+    self.assertEqual(learner.EMMinEpsilonRate(), 1e-3)
+    self.assertEqual(learner.isEnabledEMMinEpsilonRate(), true)
+    self.assertEqual(learner.isEnabledEMEpsilon(), false)
+    self.assertEqual(learner.isEnabledEMMaxIter(), false)
+    self.assertEqual(learner.isEnabledEMMaxTime(), false)
+    self.assertEqual(learner.EMMaxIter(), 10)
+    self.assertEqual(learner.EMMaxTime(), 200)
+
+    bn1 = learner.learnParameters(dag, False)
+
+    # relaunch EM with the output of the previous EM to initialize the CPTs
+    learner.useEM(1e-3, 0.002)
+    bn2 = learner.learnParameters(bn1, False)
+
+    # check that bn1 and bn2 are more or less the same
+    for i in range(bn1.size()):
+      if bn1.cpt(i).nbrDim() > 1:
+        cpt1 = np.array(bn1.cpt(i).tolist())
+        cpt1.shape = (bn1.cpt(i).domainSize(),)
+        cpt2 = np.array(bn2.cpt(i).tolist())
+        cpt2.shape = (bn2.cpt(i).domainSize(),)
+      else:
+        cpt1 = bn1.cpt(i)
+        cpt2 = bn2.cpt(i)
+
+      self.assertListsAlmostEqual(cpt1.tolist(), cpt2.tolist(), delta=0.1)
+
+    # relaunch EM with diff stopping criterion
+    learner.useEMWithDiffCriterion(0.1, 0.0)
+    bn3 = learner.learnParameters(bn2, False)
+
+    learner.fitParameters(bn1, False)
+    for i in range(bn1.size()):
+      if bn1.cpt(i).nbrDim() > 1:
+        cpt1 = np.array(bn1.cpt(i).tolist())
+        cpt1.shape = (bn1.cpt(i).domainSize(),)
+        cpt2 = np.array(bn2.cpt(i).tolist())
+        cpt2.shape = (bn2.cpt(i).domainSize(),)
+      else:
+        cpt1 = bn1.cpt(i)
+        cpt2 = bn2.cpt(i)
+
+      self.assertListsAlmostEqual(cpt1.tolist(), cpt2.tolist(), delta=0.1)
+
+    learner.useEMWithRateCriterion(1e-4, 0.15).setMaxIter(2)
     learner.learnParameters(dag, False)
+    self.assertEqual(learner.EMState(), "stopped with max iteration=2")
+
+    learner.forbidEM()
+    self.assertEqual(learner.EMState(), "EM is currently forbidden. Please enable it with useEM()")
+
+
+  def test_EM2(self):
+    learner = gum.BNLearner(self.agrumSrcDir("EM2.csv"), ["?"])
+    self.assertTrue(learner.hasMissingValues())
+    learner.useSmoothingPrior()
+
+    dag = gum.DAG()
+    dag.addNodeWithId(0)
+    dag.addNodeWithId(1)
+    dag.addArc(0, 1)
+
+    for i in range(10):
+      learner.useEM(1e-3, 0.9).setVerbosity(True)
+      learner.setEMMinEpsilonRate(1e-2)
+      bn1 = learner.learnParameters(dag)
+      delta = learner.EMHistory()[-1]
+
+      learner.useEM(1e-3, 0)
+      bn2 = learner.learnParameters(bn1)
+      for i in range(bn1.size()):
+        if bn1.cpt(i).nbrDim() > 1:
+          cpt1 = np.array(bn1.cpt(i).tolist())
+          cpt1.shape = (bn1.cpt(i).domainSize(),)
+          cpt2 = np.array(bn2.cpt(i).tolist())
+          cpt2.shape = (bn2.cpt(i).domainSize(),)
+        else:
+          cpt1 = bn1.cpt(i)
+          cpt2 = bn2.cpt(i)
+
+        self.assertListsAlmostEqual(cpt1.tolist(), cpt2.tolist(), delta=delta * 1.3)
+
 
   def test_chi2(self):
     learner = gum.BNLearner(self.agrumSrcDir("asia3.csv"))

@@ -164,7 +164,30 @@ namespace gum {
       virtual std::vector< double > parameters(const NodeId                 target_node,
                                                const std::vector< NodeId >& conditioning_nodes);
 
+      /**
+       * @brief returns the parameters of a CPT as well as its log-likelihood
+       *
+       * The vector contains the parameters of an n-dimensional CPT. The
+       * distribution of the dimensions of the CPT within the vector is as
+       * follows:
+       * first, there is the target node, then the conditioning nodes (in the
+       * order in which they were specified).
+       * @param target_node the node on the left side of the CPT's conditioning bar
+       * @param conditioning_nodes  thes nodes on the right side of the conditioning bar
+       * @return a pair containing i) the vector of parameters and ii) the log-likelihood
+       */
+      virtual std::pair< std::vector< double >, double >
+          parametersAndLogLikelihood(const NodeId                 target_node,
+                                     const std::vector< NodeId >& conditioning_nodes);
+
       /// @}
+
+      private:
+
+      std::pair< std::vector< double >, double >
+          _parametersAndLogLikelihood_(const NodeId                 target_node,
+                                       const std::vector< NodeId >& conditioning_nodes,
+                                       const bool                   compute_log_likelihood);
     };
 
   } /* namespace learning */
