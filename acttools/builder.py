@@ -98,6 +98,11 @@ def getCmake(current: dict[str, str], target: str) -> str:
   else:
     line += " -DAGRUM_PYTHON_SABI=ON"
 
+  if current["no_gil"]:
+    line += " -DAGRUM_PYTHON_NOGIL=ON"
+  else:
+    line += " -DAGRUM_PYTHON_NOGIL=OFF"
+
   line += f' -DPython_EXECUTABLE="{current["python3target"]}"'
 
   if platform.system() == "Windows":
@@ -105,7 +110,7 @@ def getCmake(current: dict[str, str], target: str) -> str:
       critic(f"{current['compiler']} forbidden : clang or gcc only configured for linux system.")
   else:
     if current["compiler"] not in ["clang", "gcc"]:
-      critic(f"{current['compiler']} forbidden : clang or gcc only for linux system.")
+      critic(f"{current['compiler']} forbidden : only clang or gcc for linux system.")
 
   if current["compiler"] == "mvsc22":
     line += ' -G "Visual Studio 17 2022" -A x64'

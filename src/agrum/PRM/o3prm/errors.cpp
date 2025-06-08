@@ -602,7 +602,7 @@ namespace gum {
       void O3PRM_DEPRECATED_TYPE_WARNING(const O3Label& val, ErrorsContainer& errors) {
         const auto&       pos = val.position();
         std::stringstream msg;
-        msg << "Warning : " << val.label() << " is declared using a o3prm_deprecated syntax.";
+        msg << "Warning : " << val.label() << " is declared using a deprecated syntax.";
         errors.addWarning(msg.str(), pos.file(), pos.line(), pos.column());
       }
 

@@ -43,141 +43,305 @@ from .pyAgrumTestSuite import pyAgrumTestCase, addTests
 
 
 class DiscreteTypeProcessorTestCase(pyAgrumTestCase):
-  def testCreateVariableFromDf(self):
-    X = pd.DataFrame.from_dict(
-      {
-        "var1": [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 1, 2, 3],
-        "var2": ["a", "b", "c", "d", "e", "f", "g", "h", "i", "j", "k", "l", "m", "n"],
-        "var3": [1, 2, 5, 1, 2, 5, 1, 2, 5, 1, 2, 5, 1, 2],
-        "var4": [1.11, 2.213, 3.33, 4.23, 5.42, 6.6, 7.5, 8.9, 9.19, 10.11, 11.12, 12.21, 13.3, 14.5],
-        "var5": [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 1],
-      }
-    )
+    def testCreateVariableFromDf(self):
+        X = pd.DataFrame.from_dict(
+            {
+                "var1": [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 1, 2, 3],
+                "var2": [
+                    "a",
+                    "b",
+                    "c",
+                    "d",
+                    "e",
+                    "f",
+                    "g",
+                    "h",
+                    "i",
+                    "j",
+                    "k",
+                    "l",
+                    "m",
+                    "n",
+                ],
+                "var3": [1, 2, 5, 1, 2, 5, 1, 2, 5, 1, 2, 5, 1, 2],
+                "var4": [
+                    1.11,
+                    2.213,
+                    3.33,
+                    4.23,
+                    5.42,
+                    6.6,
+                    7.5,
+                    8.9,
+                    9.19,
+                    10.11,
+                    11.12,
+                    12.21,
+                    13.3,
+                    14.5,
+                ],
+                "var5": [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 1],
+            }
+        )
 
-    discretizer = DiscreteTypeProcessor()
-    self.assertEqual(str(discretizer._createVariable("var1", X["var1"])), "var1:Range([1,11])")
-    self.assertEqual(
-      str(discretizer._createVariable("var2", X["var2"])), "var2:Labelized({a|b|c|d|e|f|g|h|i|j|k|l|m|n})"
-    )
-    self.assertEqual(str(discretizer._createVariable("var3", X["var3"])), "var3:Integer({1|2|5})")
-    self.assertEqual(
-      str(discretizer._createVariable("var4", X["var4"])),
-      "var4:NumericalDiscrete({1.11|2.213|3.33|4.23|5.42|6.6|7.5|8.9|9.19|10.11|11.12|12.21|13.3|14.5})",
-    )
-    self.assertEqual(str(discretizer._createVariable("var5", X["var5"])), "var5:Range([1,13])")
+        discretizer = DiscreteTypeProcessor()
+        self.assertEqual(
+            str(discretizer._createVariable("var1", X["var1"])), "var1:Range([1,11])"
+        )
+        self.assertEqual(
+            str(discretizer._createVariable("var2", X["var2"])),
+            "var2:Labelized({a|b|c|d|e|f|g|h|i|j|k|l|m|n})",
+        )
+        self.assertEqual(
+            str(discretizer._createVariable("var3", X["var3"])), "var3:Integer({1|2|5})"
+        )
+        self.assertEqual(
+            str(discretizer._createVariable("var4", X["var4"])),
+            "var4:NumericalDiscrete({1.11|2.213|3.33|4.23|5.42|6.6|7.5|8.9|9.19|10.11|11.12|12.21|13.3|14.5})",
+        )
+        self.assertEqual(
+            str(discretizer._createVariable("var5", X["var5"])), "var5:Range([1,13])"
+        )
 
-    discretizer = DiscreteTypeProcessor(discretizationThreshold=13)
-    self.assertEqual(str(discretizer._createVariable("var1", X["var1"])), "var1:Range([1,11])")
-    self.assertEqual(
-      str(discretizer._createVariable("var2", X["var2"])), "var2:Labelized({a|b|c|d|e|f|g|h|i|j|k|l|m|n})"
-    )
-    self.assertEqual(str(discretizer._createVariable("var3", X["var3"])), "var3:Integer({1|2|5})")
-    self.assertEqual(
-      str(discretizer._createVariable("var4", X["var4"])),
-      "var4:Discretized(<(1.11;2.5481[,[2.5481;3.87[,[3.87;5.301[,[5.301;6.78[,[6.78;8.2[,[8.2;9.132[,[9.132;10.211[,[10.211;11.556[,[11.556;12.973[,[12.973;14.5)>)",
-    )
-    self.assertEqual(str(discretizer._createVariable("var5", X["var5"])), "var5:Range([1,13])")
+        discretizer = DiscreteTypeProcessor(discretizationThreshold=13)
+        self.assertEqual(
+            str(discretizer._createVariable("var1", X["var1"])), "var1:Range([1,11])"
+        )
+        self.assertEqual(
+            str(discretizer._createVariable("var2", X["var2"])),
+            "var2:Labelized({a|b|c|d|e|f|g|h|i|j|k|l|m|n})",
+        )
+        self.assertEqual(
+            str(discretizer._createVariable("var3", X["var3"])), "var3:Integer({1|2|5})"
+        )
+        self.assertEqual(
+            str(discretizer._createVariable("var4", X["var4"])),
+            "var4:Discretized(<(1.11;2.213[,[2.213;3.33[,[3.33;5.42[,[5.42;6.6[,[6.6;8.2[,[8.2;9.19[,[9.19;10.11[,[10.11;12.21[,[12.21;13.3[,[13.3;14.5)>)",
+        )
+        self.assertEqual(
+            str(discretizer._createVariable("var5", X["var5"])), "var5:Range([1,13])"
+        )
 
-    discretizer = DiscreteTypeProcessor(discretizationThreshold=11)
-    self.assertEqual(str(discretizer._createVariable("var1", X["var1"])), "var1:Range([1,11])")
-    self.assertEqual(
-      str(discretizer._createVariable("var2", X["var2"])), "var2:Labelized({a|b|c|d|e|f|g|h|i|j|k|l|m|n})"
-    )
-    self.assertEqual(str(discretizer._createVariable("var3", X["var3"])), "var3:Integer({1|2|5})")
-    self.assertEqual(
-      str(discretizer._createVariable("var4", X["var4"])),
-      "var4:Discretized(<(1.11;2.5481[,[2.5481;3.87[,[3.87;5.301[,[5.301;6.78[,[6.78;8.2[,[8.2;9.132[,[9.132;10.211[,[10.211;11.556[,[11.556;12.973[,[12.973;14.5)>)",
-    )
-    self.assertEqual(
-      str(discretizer._createVariable("var5", X["var5"])),
-      "var5:Discretized(<(1;1.3[,[1.3;2.6[,[2.6;3.9[,[3.9;5.2[,[5.2;6.5[,[6.5;7.8[,[7.8;9.1[,[9.1;10.4[,[10.4;11.7[,[11.7;13)>)",
-    )
+        discretizer = DiscreteTypeProcessor(discretizationThreshold=11)
+        self.assertEqual(
+            str(discretizer._createVariable("var1", X["var1"])), "var1:Range([1,11])"
+        )
+        self.assertEqual(
+            str(discretizer._createVariable("var2", X["var2"])),
+            "var2:Labelized({a|b|c|d|e|f|g|h|i|j|k|l|m|n})",
+        )
+        self.assertEqual(
+            str(discretizer._createVariable("var3", X["var3"])), "var3:Integer({1|2|5})"
+        )
+        self.assertEqual(
+            str(discretizer._createVariable("var4", X["var4"])),
+            "var4:Discretized(<(1.11;2.213[,[2.213;3.33[,[3.33;5.42[,[5.42;6.6[,[6.6;8.2[,[8.2;9.19[,[9.19;10.11[,[10.11;12.21[,[12.21;13.3[,[13.3;14.5)>)",
+        )
+        self.assertEqual(
+            str(discretizer._createVariable("var5", X["var5"])),
+            "var5:Discretized(<(1;2[,[2;4[,[4;5[,[5;6.5[,[6.5;8[,[8;9[,[9;11[,[11;12[,[12;13)>)",
+        )
 
-  def testBooleanCSVLeBiannic(self):
-    X = pd.DataFrame.from_dict(
-      {
-        "var1": [True, False, True, False, True, False, True, False, True, False, True, False, True, False],
-        "var2": [True, True, True, True, True, True, True, True, True, True, True, True, True, True],
-        "var3": [False, False, False, False, False, False, False, False, False, False, False, False, False, False],
-        "var4": [True, False, True, False, True, False, True, False, True, False, True, False, True, False],
-        "var5": [True, True, True, True, True, True, True, True, True, True, True, True, True, True],
-      }
-    )
+    def testBooleanCSVLeBiannic(self):
+        X = pd.DataFrame.from_dict(
+            {
+                "var1": [
+                    True,
+                    False,
+                    True,
+                    False,
+                    True,
+                    False,
+                    True,
+                    False,
+                    True,
+                    False,
+                    True,
+                    False,
+                    True,
+                    False,
+                ],
+                "var2": [
+                    True,
+                    True,
+                    True,
+                    True,
+                    True,
+                    True,
+                    True,
+                    True,
+                    True,
+                    True,
+                    True,
+                    True,
+                    True,
+                    True,
+                ],
+                "var3": [
+                    False,
+                    False,
+                    False,
+                    False,
+                    False,
+                    False,
+                    False,
+                    False,
+                    False,
+                    False,
+                    False,
+                    False,
+                    False,
+                    False,
+                ],
+                "var4": [
+                    True,
+                    False,
+                    True,
+                    False,
+                    True,
+                    False,
+                    True,
+                    False,
+                    True,
+                    False,
+                    True,
+                    False,
+                    True,
+                    False,
+                ],
+                "var5": [
+                    True,
+                    True,
+                    True,
+                    True,
+                    True,
+                    True,
+                    True,
+                    True,
+                    True,
+                    True,
+                    True,
+                    True,
+                    True,
+                    True,
+                ],
+            }
+        )
 
-    tmpfilename = self.agrumSrcDir("testBooleanCSVLeBiannic.csv")
-    X.to_csv(tmpfilename, index=False)
-    discretizer = DiscreteTypeProcessor(
-      defaultDiscretizationMethod="quantile", defaultNumberOfBins=7, discretizationThreshold=10
-    )
-    template = discretizer.discretizedTemplate(tmpfilename)
+        tmpfilename = self.agrumSrcDir("testBooleanCSVLeBiannic.csv")
+        X.to_csv(tmpfilename, index=False)
+        discretizer = DiscreteTypeProcessor(
+            defaultDiscretizationMethod="quantile",
+            defaultNumberOfBins=7,
+            discretizationThreshold=10,
+        )
+        template = discretizer.discretizedTemplate(tmpfilename)
 
-    self.assertEqual(template.toFast(), "var1{False|True};var2{True};var3{False};var4{False|True};var5{True}")
+        self.assertEqual(
+            template.toFast(),
+            "var1{False|True};var2{True};var3{False};var4{False|True};var5{True}",
+        )
 
-  def testCreateVariableFromExpert(self):
-    X = pd.DataFrame.from_dict(
-      {
-        "var1": [1, 3, 5, 6, 1, 3, 5, 6, 1, 3, 5, 6, 1, 3],
-        "var2": [1.11, 2.213, 3.33, 4.23, 5.42, 6.6, 7.5, 8.9, 9.19, 10.11, 11.12, 12.21, 13.3, 14.5],
-      }
-    )
-    discretizer = DiscreteTypeProcessor()
-    template = discretizer.discretizedTemplate(X)
-    self.assertEqual(
-      template.toFast(), "var1{1|3|5|6};var2{1.11|2.213|3.33|4.23|5.42|6.6|7.5|8.9|9.19|10.11|11.12|12.21|13.3|14.5}"
-    )
+    def testCreateVariableFromExpert(self):
+        X = pd.DataFrame.from_dict(
+            {
+                "var1": [1, 3, 5, 6, 1, 3, 5, 6, 1, 3, 5, 6, 1, 3],
+                "var2": [
+                    1.11,
+                    2.213,
+                    3.33,
+                    4.23,
+                    5.42,
+                    6.6,
+                    7.5,
+                    8.9,
+                    9.19,
+                    10.11,
+                    11.12,
+                    12.21,
+                    13.3,
+                    14.5,
+                ],
+            }
+        )
+        discretizer = DiscreteTypeProcessor()
+        template = discretizer.discretizedTemplate(X)
+        self.assertEqual(
+            template.toFast(),
+            "var1{1|3|5|6};var2{1.11|2.213|3.33|4.23|5.42|6.6|7.5|8.9|9.19|10.11|11.12|12.21|13.3|14.5}",
+        )
 
-    discretizer = DiscreteTypeProcessor()
-    discretizer.setDiscretizationParameters("var2", "expert", [0, 5, 10, 15])
-    template = discretizer.discretizedTemplate(X)
-    self.assertEqual(template.toFast(), "var1{1|3|5|6};var2+[0,5,10,15]")
+        discretizer = DiscreteTypeProcessor()
+        discretizer.setDiscretizationParameters("var2", "expert", [0, 5, 10, 15])
+        template = discretizer.discretizedTemplate(X)
+        self.assertEqual(template.toFast(), "var1{1|3|5|6};var2+[0,5,10,15]")
 
-    discretizer = DiscreteTypeProcessor()
-    discretizer.setDiscretizationParameters("var1", "NoDiscretization", "{1|2|3|5|6|7}")
-    discretizer.setDiscretizationParameters("var2", "expert", [0, 5, 10, 15])
-    template = discretizer.discretizedTemplate(X)
-    self.assertEqual(template.toFast(), "var1{1|2|3|5|6|7};var2+[0,5,10,15]")
+        discretizer = DiscreteTypeProcessor()
+        discretizer.setDiscretizationParameters(
+            "var1", "NoDiscretization", "{1|2|3|5|6|7}"
+        )
+        discretizer.setDiscretizationParameters("var2", "expert", [0, 5, 10, 15])
+        template = discretizer.discretizedTemplate(X)
+        self.assertEqual(template.toFast(), "var1{1|2|3|5|6|7};var2+[0,5,10,15]")
 
-    with self.assertRaises(ValueError):
-      discretizer = DiscreteTypeProcessor()
-      discretizer.setDiscretizationParameters("var1", "NoDiscretization", "{1|3|5|7}")
-      discretizer.setDiscretizationParameters("var2", "expert", [0, 5, 10, 15])
-      template = discretizer.discretizedTemplate(X)
-      self.assertEqual(template.toFast(), "var1{1|2|3|5|6|7};var2+[0,5,10,15]")
+        with self.assertRaises(ValueError):
+            discretizer = DiscreteTypeProcessor()
+            discretizer.setDiscretizationParameters(
+                "var1", "NoDiscretization", "{1|3|5|7}"
+            )
+            discretizer.setDiscretizationParameters("var2", "expert", [0, 5, 10, 15])
+            template = discretizer.discretizedTemplate(X)
+            self.assertEqual(template.toFast(), "var1{1|2|3|5|6|7};var2+[0,5,10,15]")
 
-    with self.assertRaises(ValueError):
-      discretizer = DiscreteTypeProcessor()
-      discretizer.setDiscretizationParameters("var1", "NoDiscretization", None)
-      discretizer.setDiscretizationParameters("var2", "expert", [0, 5, 10, 15])
-      template = discretizer.discretizedTemplate(X)
-      self.assertEqual(template.toFast(), "var1{1|2|3|5|6|7};var2+[0,5,10,15]")
+        with self.assertRaises(ValueError):
+            discretizer = DiscreteTypeProcessor()
+            discretizer.setDiscretizationParameters("var1", "NoDiscretization", None)
+            discretizer.setDiscretizationParameters("var2", "expert", [0, 5, 10, 15])
+            template = discretizer.discretizedTemplate(X)
+            self.assertEqual(template.toFast(), "var1{1|2|3|5|6|7};var2+[0,5,10,15]")
 
-  def testCreateVariableFromExpert2(self):
-    X = pd.DataFrame.from_dict(
-      {
-        "var1": [1, 3, 5, 6, 1, 2, 5, 6, 1, 3, 4, 6, 1, 3],
-        "var2": ["A", "B", "C", "D", "E", "B", "G", "B", "B", "B", "B", "B", "A", "A"],
-      }
-    )
-    discretizer = DiscreteTypeProcessor()
-    template = discretizer.discretizedTemplate(X)
-    self.assertEqual(template.toFast(), "var1[1,6];var2{A|B|C|D|E|G}")
+    def testCreateVariableFromExpert2(self):
+        X = pd.DataFrame.from_dict(
+            {
+                "var1": [1, 3, 5, 6, 1, 2, 5, 6, 1, 3, 4, 6, 1, 3],
+                "var2": [
+                    "A",
+                    "B",
+                    "C",
+                    "D",
+                    "E",
+                    "B",
+                    "G",
+                    "B",
+                    "B",
+                    "B",
+                    "B",
+                    "B",
+                    "A",
+                    "A",
+                ],
+            }
+        )
+        discretizer = DiscreteTypeProcessor()
+        template = discretizer.discretizedTemplate(X)
+        self.assertEqual(template.toFast(), "var1[1,6];var2{A|B|C|D|E|G}")
 
-    discretizer = DiscreteTypeProcessor()
-    discretizer.setDiscretizationParameters("var1", "NoDiscretization", "[0,6]")
-    template = discretizer.discretizedTemplate(X)
-    self.assertEqual(template.toFast(), "var1[7];var2{A|B|C|D|E|G}")
+        discretizer = DiscreteTypeProcessor()
+        discretizer.setDiscretizationParameters("var1", "NoDiscretization", "[0,6]")
+        template = discretizer.discretizedTemplate(X)
+        self.assertEqual(template.toFast(), "var1[7];var2{A|B|C|D|E|G}")
 
-    with self.assertRaises(ValueError):
-      discretizer = DiscreteTypeProcessor()
-      discretizer.setDiscretizationParameters("var1", "NoDiscretization", "[3,5]")
-      template = discretizer.discretizedTemplate(X)
-      self.assertEqual(template.toFast(), "var1{1|2|3|5|6|7};var2+[0,5,10,15]")
+        with self.assertRaises(ValueError):
+            discretizer = DiscreteTypeProcessor()
+            discretizer.setDiscretizationParameters("var1", "NoDiscretization", "[3,5]")
+            template = discretizer.discretizedTemplate(X)
+            self.assertEqual(template.toFast(), "var1{1|2|3|5|6|7};var2+[0,5,10,15]")
 
-    with self.assertRaises(ValueError):
-      discretizer = DiscreteTypeProcessor()
-      discretizer.setDiscretizationParameters("var2", "expert", [0, 5, 10, 15])
-      template = discretizer.discretizedTemplate(X)
-      self.assertEqual(template.toFast(), "var1{1|2|3|5|6|7};var2+[0,5,10,15]")
+        with self.assertRaises(ValueError):
+            discretizer = DiscreteTypeProcessor()
+            discretizer.setDiscretizationParameters("var2", "expert", [0, 5, 10, 15])
+            template = discretizer.discretizedTemplate(X)
+            self.assertEqual(template.toFast(), "var1{1|2|3|5|6|7};var2+[0,5,10,15]")
 
 
 ts = unittest.TestSuite()

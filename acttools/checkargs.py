@@ -126,17 +126,22 @@ def checkCurrent(current: dict[str, str], options: dict[str, str], args: list[st
 
 
 def checkConsistency(current: dict[str, str]):
+  if current["no_gil"] and not current["stable_abi_off"]:
+    critic("Options [no_gil] needs [stable_abi_off] (for now)")
+
   has_notif = False
 
   # helper
-  def check_aGrumTest(option, current):
-    if current[option]:
-      prefix = f"Option [{option}] acts only"
-      if current["targets"] != {"aGrUM"}:
-        has_notif = True
-        notif(prefix + " on target [aGrUM].")
-      if current["action"] != "test":
-        critic(f"{prefix} on action [test] (not on [{current['action']}]).")
+
+
+def check_aGrumTest(option, current):
+  if current[option]:
+    prefix = f"Option [{option}] acts only"
+    if current["targets"] != {"aGrUM"}:
+      has_notif = True
+      notif(prefix + " on target [aGrUM].")
+    if current["action"] != "test":
+      critic(f"{prefix} on action [test] (not on [{current['action']}]).")
 
   # end of helper
 
@@ -162,7 +167,7 @@ def checkConsistency(current: dict[str, str]):
     current["coverage"] = False
 
   if current["action"] == "package":
-    critic("Action [package] is not implemented yed")
+    critic("Action [package] is not implemented yet")
 
   if has_notif:
     print("")
