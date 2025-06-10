@@ -131,20 +131,21 @@ def checkConsistency(current: dict[str, str]):
 
   has_notif = False
 
-  # helper
-
-
-def check_aGrumTest(option, current):
-  if current[option]:
-    prefix = f"Option [{option}] acts only"
-    if current["targets"] != {"aGrUM"}:
-      has_notif = True
-      notif(prefix + " on target [aGrUM].")
-    if current["action"] != "test":
-      critic(f"{prefix} on action [test] (not on [{current['action']}]).")
+  # helper inside checkConsistency
+  def check_aGrumTest(option, current):
+    if current[option]:
+      prefix = f"Option [{option}] acts only"
+      if current["targets"] != {"aGrUM"}:
+        has_notif = True
+        notif(prefix + " on target [aGrUM].")
+      if current["action"] != "test":
+        critic(f"{prefix} on action [test] (not on [{current['action']}]).")
 
   # end of helper
 
+  print("=" * 40)
+  print("152 : Go For It")
+  print("=" * 40)
   # test for only one target
   if current["action"] == "test":
     # check -t and -m

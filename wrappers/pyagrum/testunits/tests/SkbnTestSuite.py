@@ -44,88 +44,84 @@ from sklearn import datasets
 
 
 class SkbnTestCase(pyAgrumTestCase):
-    def test_no_discretization(self):
-        X = pd.DataFrame(
-            [
-                [1, 1.5, "A", True],
-                [2, 2.6, "B", False],
-                [3, 3.14, "B", True],
-                [1, 0.5, "A", False],
-                [1, 0.15, "A", True],
-            ]
-        )
-        y = [3, 2, 3, 1, 2]
+  def test_no_discretization(self):
+    X = pd.DataFrame(
+      [
+        [1, 1.5, "A", True],
+        [2, 2.6, "B", False],
+        [3, 3.14, "B", True],
+        [1, 0.5, "A", False],
+        [1, 0.15, "A", True],
+      ]
+    )
+    y = [3, 2, 3, 1, 2]
 
-        classifier = skbn.BNClassifier()
-        classifier.fit(X, y)
-        res = classifier.preparedData(X, y)
-        self.assertEqual(str(res["X1"][1]), "2.6")
-        self.assertEqual(str(res["X3"][3]), "False")
+    classifier = skbn.BNClassifier()
+    classifier.fit(X, y)
+    res = classifier.preparedData(X, y)
+    self.assertEqual(str(res["X1"][1]), "2.6")
+    self.assertEqual(str(res["X3"][3]), "False")
 
-        X = pd.DataFrame([[1, 0, "A", True]])
-        y = [3]
-        with self.assertRaises(gum.NotFound):
-            res = classifier.preparedData(X, y)
+    X = pd.DataFrame([[1, 0, "A", True]])
+    y = [3]
+    with self.assertRaises(gum.NotFound):
+      res = classifier.preparedData(X, y)
 
-    def test_with_discretization(self):
-        X = pd.DataFrame(
-            [
-                [1, 1.5, "A", True],
-                [2, 2.6, "B", False],
-                [3, 3.14, "B", True],
-                [1, 0.5, "A", False],
-                [1, 0.15, "A", True],
-            ]
-        )
-        y = [3, 2, 3, 1, 2]
-        classifier = skbn.BNClassifier(
-            discretizationThreshold=3, discretizationNbBins=3
-        )
-        classifier.fit(X, y)
-        res = classifier.preparedData(X, y)
-        self.assertEqual(res["X1"][1], "[2.6;3.14)")
-        self.assertEqual(str(res["X3"][3]), "False")
+  def test_with_discretization(self):
+    X = pd.DataFrame(
+      [
+        [1, 1.5, "A", True],
+        [2, 2.6, "B", False],
+        [3, 3.14, "B", True],
+        [1, 0.5, "A", False],
+        [1, 0.15, "A", True],
+      ]
+    )
+    y = [3, 2, 3, 1, 2]
+    classifier = skbn.BNClassifier(discretizationThreshold=3, discretizationNbBins=3)
+    classifier.fit(X, y)
+    res = classifier.preparedData(X, y)
+    self.assertEqual(res["X1"][1], "[2.6;3.14)")
+    self.assertEqual(str(res["X3"][3]), "False")
 
-        X = pd.DataFrame(
-            [
-                [1, 0, "A", True],
-                [1, 4, "B", False],
-                [2, 3.11, "B", True],
-                [2, 0.5, "A", False],
-                [3, 0.15, "A", True],
-                [3, 203, "A", True],
-            ]
-        )
-        y = [3, 2, 3, 1, 2, 1]
-        res = classifier.preparedData(X, y)
-        self.assertEqual(res["X1"][0], "(0.15;0.5[")
-        self.assertEqual(str(res["X3"][2]), "True")
+    X = pd.DataFrame(
+      [
+        [1, 0, "A", True],
+        [1, 4, "B", False],
+        [2, 3.11, "B", True],
+        [2, 0.5, "A", False],
+        [3, 0.15, "A", True],
+        [3, 203, "A", True],
+      ]
+    )
+    y = [3, 2, 3, 1, 2, 1]
+    res = classifier.preparedData(X, y)
+    self.assertEqual(res["X1"][0], "(0.15;0.5[")
+    self.assertEqual(str(res["X3"][2]), "True")
 
-    def test_with_nparray(self):
-        iris = datasets.load_iris()
-        X = iris.data[:, 0:2]  # we only take the first two features for visualization
-        y = iris.target
-        classifier = skbn.BNClassifier(
-            discretizationThreshold=3, discretizationNbBins=3
-        )
-        classifier.fit(X, y)
-        res = classifier.preparedData(X, y)
-        # X0 and X1 are discretized so the labels should start with '[' but the rest is random (chosen by load_iris)...
-        self.assertEqual(res["x0"][149][0], "[")
-        self.assertEqual(res["x1"][149][0], "[")
+  def test_with_nparray(self):
+    iris = datasets.load_iris()
+    X = iris.data[:, 0:2]  # we only take the first two features for visualization
+    y = iris.target
+    classifier = skbn.BNClassifier(discretizationThreshold=3, discretizationNbBins=3)
+    classifier.fit(X, y)
+    res = classifier.preparedData(X, y)
+    # X0 and X1 are discretized so the labels should start with '[' but the rest is random (chosen by load_iris)...
+    self.assertEqual(res["x0"][149][0], "[")
+    self.assertEqual(res["x1"][149][0], "[")
 
-    def test_with_file(self):
-        classifier = skbn.BNClassifier()
-        classifier.fit(data=self.agrumSrcDir("miniasia.csv"), targetName="dyspnoea")
-        res = classifier.preparedData(data=self.agrumSrcDir("miniasia.csv"))
-        self.assertEqual(str(res["lung_cancer"][0]), "0")
+  def test_with_file(self):
+    classifier = skbn.BNClassifier()
+    classifier.fit(data=self.agrumSrcDir("miniasia.csv"), targetName="dyspnoea")
+    res = classifier.preparedData(data=self.agrumSrcDir("miniasia.csv"))
+    self.assertEqual(str(res["lung_cancer"][0]), "0")
 
-    def test_with_df(self):
-        classifier = skbn.BNClassifier()
-        df = pd.read_csv(self.agrumSrcDir("miniasia.csv"))
-        classifier.fit(data=df, targetName="dyspnoea")
-        res = classifier.preparedData(data=df)
-        self.assertEqual(str(res["lung_cancer"][0]), "0")
+  def test_with_df(self):
+    classifier = skbn.BNClassifier()
+    df = pd.read_csv(self.agrumSrcDir("miniasia.csv"))
+    classifier.fit(data=df, targetName="dyspnoea")
+    res = classifier.preparedData(data=df)
+    self.assertEqual(str(res["lung_cancer"][0]), "0")
 
 
 ts = unittest.TestSuite()

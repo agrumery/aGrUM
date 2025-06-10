@@ -1392,7 +1392,7 @@ namespace gum_tests {
 
       TS_ASSERT_EQUALS(tensor.max(), 1.0);
       const auto& [x, y] = tensor.argmax();
-      TS_ASSERT_EQUALS(x.size(), 1)
+      TS_ASSERT_EQUALS(x.size(), gum::Size(1))
       const auto& i = *x.begin();
       TS_ASSERT_EQUALS(i.val(0), value);
 
@@ -1411,9 +1411,9 @@ namespace gum_tests {
 
       TS_ASSERT_EQUALS(tensor.max(), 1.0);
       const auto& [x, y] = tensor.argmax();
-      TS_ASSERT_EQUALS(x.size(), 1)
+      TS_ASSERT_EQUALS(x.size(), gum::Size(1))
       const auto& i = *x.begin();
-      TS_ASSERT_EQUALS(i.val(0), 1);
+      TS_ASSERT_EQUALS(i.val(0), gum::Idx(1));
 
       TS_ASSERT_EQUALS(tensor.min(), 0.0);
       TS_ASSERT_EQUALS(tensor.minNonZero(), 1.0);

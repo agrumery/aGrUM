@@ -548,7 +548,7 @@ namespace gum {
           // nothing to do
         }
       }
-      if (! learner.constraintSliceOrder_.sliceOrder().empty()) {
+      if (!learner.constraintSliceOrder_.sliceOrder().empty()) {
         NodeProperty< NodeId > slice_order;
         for (const auto& p: learner.constraintSliceOrder_.sliceOrder()) {
           try {
