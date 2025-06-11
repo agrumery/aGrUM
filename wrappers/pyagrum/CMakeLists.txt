@@ -57,9 +57,9 @@ else()
 endif()
 
 if(WIN32)
-  set(INSTALL_PYTHONDIR Lib/site-packages CACHE PATH "python site-dir")
+  set(INSTALL_PYTHONDIR Lib/site-packages CACHE STRING "python site-dir")
 else()
-  set(INSTALL_PYTHONDIR ${CMAKE_INSTALL_LIBDIR}/python${Python_VERSION_MAJOR}.${Python_VERSION_MINOR}/site-packages CACHE PATH "python site-dir")
+  set(INSTALL_PYTHONDIR ${CMAKE_INSTALL_LIBDIR}/python${Python_VERSION_MAJOR}.${Python_VERSION_MINOR}/site-packages CACHE STRING "python site-dir")
 endif()
 
 message(STATUS "================================")
