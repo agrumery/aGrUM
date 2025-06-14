@@ -788,6 +788,48 @@ valueMax: float
 
 Returns
 -------
-pyAgrum.Te nsor
+pyAgrum.Tensor
   The representation of the evidence as a :class:`~pyagrum.Tensor`.
+"
+
+%feature("docstring") gum::Tensor::deterministicTensor
+"
+This static method generates a Tensor representing a deterministic function of a :class:`pyagrum.DiscreteVariable`) such as a hard evidence.
+
+Parameters
+----------
+var : pyagrum.DiscreteVariable
+  the variable to use
+value: int | str
+  the indice or the label of the value for the variable
+
+Returns
+-------
+pyagrum.Tensor
+  The representation of the deterministic function as a :class:`pyagrum.Tensor`.
+"
+
+%feature("docstring") gum::Tensor::findAll
+"
+Find all the position of a value in the Tensor.
+
+Parameters
+----------
+v : float
+  the value to find
+
+Returns
+-------
+list[dict[str,int]]
+  a list of all the instantiations (as python dictionary) where the value is found
+"
+
+%feature("docstring") gum::Tensor::domainSize
+"
+Compute the size of the domain of the Tensor, i.e., the product of the domain sizes of the variables in the Tensor.
+
+Returns
+-------
+int
+  the size of the domain of the Tensor (the number of values it can take) 
 "

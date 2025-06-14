@@ -117,3 +117,37 @@ Raises
   pyagrum.InvalidNode
     If n1 or n2 does not belong to the graph nodes.
 "
+
+
+%feature("docstring") gum::PDAG::cSeparation
+"
+Check if the sets of nodes X and Y are c-separated (by the set of nodes Z if given) in the PDAG.
+
+Parameters
+----------
+X : int | sequence of int
+  a sequence of node ids (int) or a single node id (int)
+Y : int | sequence of int
+  a sequence of node ids (int) or a single node id (int)
+Z : int | sequence of int (optional)
+  a sequence of node ids (int) or a single node id (int)
+Returns
+-------
+bool
+  True if X and Y are c-separated (by Z if given), False otherwise.
+"
+
+
+%feature("docstring") gum::PDAG::moralizedAncestralGraph
+"
+Compute the moralized ancestral graph of the nodes from the DAG.
+
+Parameters
+----------
+nodes : int | sequence of int
+  a sequence of node ids (int) or a single node id (int)
+Returns
+------- 
+gum::UndiGraph
+  the moralized ancestral graph of the nodes from the DAG.
+"

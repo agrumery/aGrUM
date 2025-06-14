@@ -143,9 +143,6 @@ def checkConsistency(current: dict[str, str]):
 
   # end of helper
 
-  print("=" * 40)
-  print("152 : Go For It")
-  print("=" * 40)
   # test for only one target
   if current["action"] == "test":
     # check -t and -m

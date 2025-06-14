@@ -262,3 +262,41 @@ Returns
 gum.DiscretizedVar
   the variable as a gum.DiscretizedVar
 "
+
+%feature("docstring") gum::DiscreteVariable::closestIndex
+"
+For numerical discrete variables (all except :class:`gum.LabelizedVariable`), this method returns the index of the closest value to a given float value in the variable's domain.
+
+Parameters
+----------
+value : float
+  the value for which we want to find the closest index
+Returns
+-------
+int
+  the index of the closest value to `value` in the variable's domain
+
+Raises
+------
+gum.InvalidArgument
+  if the variable is not numerical discrete (i.e., if it is a :class:`gum.LabelizedVariable`).
+"
+
+%feature("docstring") gum::DiscreteVariable::closestLabel
+"
+For numerical discrete variables (all except :class:`gum.LabelizedVariable`), this method returns the label of the closest value to a given float value in the variable's domain.
+
+Parameters
+----------
+value : float
+  the value for which we want to find the closest index
+Returns
+-------
+str
+  the label of the closest value to `value` in the variable's domain
+
+Raises
+------
+gum.InvalidArgument
+  if the variable is not numerical discrete (i.e., if it is a :class:`gum.LabelizedVariable`).
+"
