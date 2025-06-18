@@ -2,3 +2,4 @@ matplotlib
 matplotlib-inline
 pydot
 numpy
+scikit-learn>=1.7

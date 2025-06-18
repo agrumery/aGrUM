@@ -5,12 +5,12 @@ matplotlib
 matplotlib-inline
 pydot
 numpy
+scikit-learn>=1.7
 #### optional requirements #####
 nbformat
 nbconvert
 jupyter
 scipy
-scikit-learn
 pandas
 tqdm
 ################################
