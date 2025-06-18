@@ -16,3 +16,10 @@ The class provides functionality to update evidence with new observations, check
 The core functionality of the Inference class is to calculate the posterior density of specified variables given current evidence in the CLG model. The posterior density is returned as a canonical form.
 
 .. autoclass:: pyagrum.clg.CLGVariableElimination
+
+
+Tool for approximated inference in Continuous Linear Gaussian)
+--------------------------------------------------------------
+The Forward Sampling algorithm is a tool for approximated inference in Continuous Linear Gaussian (CLG) models. It allows for sampling from the joint distribution of the model, which can be useful for generating synthetic data or for approximating posterior distributions when exact inference is computationally expensive.
+
+.. autoclass:: pyagrum.clg.ForwardSampling
