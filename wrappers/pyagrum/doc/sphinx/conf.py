@@ -23,6 +23,8 @@
 
 import pyagrum
 
+# The master toctree document.
+master_doc = "index"
 # General information about the project.
 project = "pyagrum "
 copyright = "2018-2024, aGrUM/pyAgrum Team <info_at_agrum_dot_org> (pyAgrum re" + pyagrum.__version__ + ")"
@@ -67,6 +69,7 @@ extensions = [
   "sphinx_gallery.load_style",
   "sphinx_search.extension",
   "IPython.sphinxext.ipython_console_highlighting",
+  "sphinx_markdown_builder",
   # 'sphinx.ext.todo',
   # 'sphinx.ext.viewcode',
   # 'sphinx.ext.coverage'
@@ -107,8 +110,6 @@ source_suffix = ".rst"
 #
 # source_encoding = 'utf-8-sig'
 
-# The master toctree document.
-master_doc = "index"
 
 html_css_files = [
   "custom.css",
@@ -334,7 +335,13 @@ latex_elements = {
 # (source start file, target name, title,
 #  author, documentclass [howto, manual, or own class]).
 latex_documents = [
-  (master_doc, "pyagrum.tex", "pyAgrum Documentation", "Pierre-Henri Wuillemin (Sphinx)", "manual"),
+  (
+    master_doc,
+    "pyagrum.tex",
+    "pyAgrum Documentation",
+    "Pierre-Henri Wuillemin (Sphinx)",
+    "manual",
+  ),
 ]
 
 # The name of an image file (relative to this directory) to place at the top of

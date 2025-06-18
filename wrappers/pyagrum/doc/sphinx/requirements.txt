@@ -28,3 +28,5 @@ sphinx-gallery
 readthedocs-sphinx-search>0.1.1
 sphinxcontrib-jsmath>1.0.0
 sphinxcontrib-bibtex
+sphinx_markdown_builder
+

@@ -27,7 +27,7 @@ if [ "${TARGET}" == "aGrUM" ]; then
     python act --no-fun test release aGrUM -j halfexcept1 --compiler=clang
 elif [ "${TARGET}" == "pyAgrum" ]; then
     echo "Building pyagrum..."
-    python act --no-fun test release pyAgrum -j halfexcept1  -m quick -t all--compiler=clang
+    python act --no-fun test release pyAgrum -j halfexcept1  -m quick -t all --compiler=clang
 else
     echo "Invalid target type: ${TARGET}. Expected 'aGrUM' or 'pyAgrum'"
     exit 1

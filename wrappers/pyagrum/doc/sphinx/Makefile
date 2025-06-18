@@ -12,17 +12,25 @@ ifneq ($(UNAME), $(WINKEYWORD))
   SPHINXBUILD   = python3 `which sphinx-build`
 endif
 
-# You can set these variables from the command line.
-SPHINXOPTS    = -c . -a -E -w sphinx_warnings.txt
-
-PAPER         =
-BUILDDIR      = ../../../../build/pyAgrum/release/wrappers/pyagrum/docs
-AGRUMBUILDDIR = "{agrum}/build/pyAgrum/release/wrappers/pyagrum/docs"
-
 # Internal variables.
 PAPEROPT_a4     = -D latex_paper_size=a4
 PAPEROPT_letter = -D latex_paper_size=letter
-ALLSPHINXOPTS   = -d $(BUILDDIR)/doctrees $(PAPEROPT_$(PAPER)) $(SPHINXOPTS) .
+
+PAPER         =
+BUILDDIR      = ../../../../build/pyAgrum/release/wrappers/pyagrum/docs
+SITEDIR      = ./WebVersion
+
+# You can set these variables from the command line.
+DEFAULTOPTS   = -j auto -c . -a -E -w sphinx_warnings.txt .
+
+SPHINXOPTS     = -t RTDVersion $(DEFAULTOPTS) 
+SITEOPTS       = -t WebVersion $(DEFAULTOPTS) 
+
+ALLSPHINXOPTS   =  $(PAPEROPT_$(PAPER)) $(SPHINXOPTS) 
+
+
+AGRUMBUILDDIR = "{agrum}/build/pyAgrum/release/wrappers/pyagrum/docs"
+
 # the i18n builder cannot share the environment and doctrees with the others
 I18NSPHINXOPTS  = $(PAPEROPT_$(PAPER)) $(SPHINXOPTS) .
 
@@ -31,6 +39,7 @@ help:
 	@echo "SPHINX Makefile for '$(UNAME)' using '$(SPHINXBUILD)'"
 	@echo "Please use \`make <target>' where <target> is one of"
 	@echo "  html       to make standalone HTML files"
+	@echo "  site       to make standalone markdown files for web site"
 	@echo "  dirhtml    to make HTML files named index.html in directories"
 	@echo "  singlehtml to make a single large HTML file"
 	@echo "  pickle     to make pickle files"
@@ -60,12 +69,26 @@ help:
 .PHONY: clean
 clean:
 	rm -rf $(BUILDDIR)/*
+	rm -rf $(SITEDIR)/*
+
+
+.PHONY: site
+site:
+	$(SPHINXBUILD) -M markdown $(SITEOPTS) $(SITEDIR)
+	@echo
+	@echo "Build finished. The HTML pages for the site are in $(SITEDIR)."
 
 .PHONY: html
 html:
 	$(SPHINXBUILD) -b html $(ALLSPHINXOPTS) $(BUILDDIR)/html
 	@echo
 	@echo "Build finished. The HTML pages are in $(AGRUMBUILDDIR)/html."
+
+.PHONY: md
+md:
+	$(SPHINXBUILD) -M markdown $(ALLSPHINXOPTS) $(BUILDDIR)/md
+	@echo
+	@echo "Build finished. The markdown pages are in $(AGRUMBUILDDIR)/mdls ."
 
 .PHONY: dirhtml
 dirhtml:

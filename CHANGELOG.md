@@ -1,5 +1,20 @@
 # aGrUM Changelog
 
+## Changelog for 2.2.0
+
+- aGrUM
+  - improved cmake files and act (for python tests mainly)
+  - update wheels 
+  - enhanced `gum::BNLearner::copyState` to more correctly handle constraints.
+  
+- pyAgrum
+  - improved documentations coverage
+  - improved API for `pyagrum.lib.DiscreteTypeProcessor`
+  - used quantile_method='averaged_inverted_cdf' when quantile method is used for discretization. (sklearn >=1.7 needed).
+  - new (experimental) option for building pyAgrum :--no-gil.
+  - new target for sphinx : markdown for website
+
+
 ## Changelog for 2.1.1
 
 - pyAgrum 

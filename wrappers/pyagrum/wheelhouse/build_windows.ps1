@@ -35,7 +35,7 @@ if ($TARGET -eq "aGrUM") {
 } else {
 
     if ($COMPILER -eq "mingw64") {
-        python act install release pyAgrum --compiler=mingw64 -d build -j except1 -t quick
+        python act install release pyAgrum --compiler=mingw64 -d build -j except1 -m quick -t all
         $files = @("libgcc_s_seh-1", "libgomp-1", "libssp-0", "libstdc++-6", "libwinpthread-1")
 
         foreach ($file in $files) {

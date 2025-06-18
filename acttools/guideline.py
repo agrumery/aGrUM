@@ -164,7 +164,7 @@ def _LGPL_MIT_atTop_CPP(filename: str, details: bool, correction: bool) -> int:
         continue
 
       if state == "before":
-        if line.startswith("%feature"):
+        if line.startswith("%feature") or line.startswith("/*!"):
           state = "after"
           code += line
         elif not line.startswith("/**"):
@@ -195,7 +195,7 @@ def _LGPL_MIT_atTop_CPP(filename: str, details: bool, correction: bool) -> int:
           dest.write(_template_cpp_license)
           dest.write(code)
         res = f"{res} [(✓)]"
-      if detail or correction:
+      if details or correction:
         notif(res)
 
   return err

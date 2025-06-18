@@ -278,7 +278,7 @@ int
 
 Raises
 ------
-gum.InvalidArgument
+gum.NotImplementedYet
   if the variable is not numerical discrete (i.e., if it is a :class:`gum.LabelizedVariable`).
 "
 

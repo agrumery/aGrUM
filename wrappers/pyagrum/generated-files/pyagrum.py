@@ -1505,9 +1505,47 @@ class DiscreteVariable(Variable):
         return _pyagrum.DiscreteVariable_isEmpirical(self)
 
     def closestIndex(self, val: float) -> int:
+        r"""
+
+        For numerical discrete variables (all except :class:`pyagrum.LabelizedVariable`), this method returns the index of the closest value to a given float value in the variable's domain.
+
+        Parameters
+        ----------
+        value : float
+          the value for which we want to find the closest index
+        Returns
+        -------
+        int
+          the index of the closest value to `value` in the variable's domain
+
+        Raises
+        ------
+        pyagrum.InvalidArgument
+          if the variable is not numerical discrete (i.e., if it is a :class:`pyagrum.LabelizedVariable`).
+
+        """
         return _pyagrum.DiscreteVariable_closestIndex(self, val)
 
     def closestLabel(self, val: float) -> str:
+        r"""
+
+        For numerical discrete variables (all except :class:`pyagrum.LabelizedVariable`), this method returns the label of the closest value to a given float value in the variable's domain.
+
+        Parameters
+        ----------
+        value : float
+          the value for which we want to find the closest index
+        Returns
+        -------
+        str
+          the label of the closest value to `value` in the variable's domain
+
+        Raises
+        ------
+        pyagrum.InvalidArgument
+          if the variable is not numerical discrete (i.e., if it is a :class:`pyagrum.LabelizedVariable`).
+
+        """
         return _pyagrum.DiscreteVariable_closestLabel(self, val)
 
     def varType(self) -> int:
@@ -1983,6 +2021,25 @@ class LabelizedVariable(DiscreteVariable):
         return _pyagrum.LabelizedVariable_numerical(self, index)
 
     def closestIndex(self, val: float) -> int:
+        r"""
+
+        For numerical discrete variables (all except :class:`pyagrum.LabelizedVariable`), this method returns the index of the closest value to a given float value in the variable's domain.
+
+        Parameters
+        ----------
+        value : float
+          the value for which we want to find the closest index
+        Returns
+        -------
+        int
+          the index of the closest value to `value` in the variable's domain
+
+        Raises
+        ------
+        pyagrum.InvalidArgument
+          if the variable is not numerical discrete (i.e., if it is a :class:`pyagrum.LabelizedVariable`).
+
+        """
         return _pyagrum.LabelizedVariable_closestIndex(self, val)
 
     def domainSize(self) -> int:
@@ -2257,6 +2314,25 @@ class RangeVariable(DiscreteVariable):
         return _pyagrum.RangeVariable_index(self, arg2)
 
     def closestIndex(self, val: float) -> int:
+        r"""
+
+        For numerical discrete variables (all except :class:`pyagrum.LabelizedVariable`), this method returns the index of the closest value to a given float value in the variable's domain.
+
+        Parameters
+        ----------
+        value : float
+          the value for which we want to find the closest index
+        Returns
+        -------
+        int
+          the index of the closest value to `value` in the variable's domain
+
+        Raises
+        ------
+        pyagrum.InvalidArgument
+          if the variable is not numerical discrete (i.e., if it is a :class:`pyagrum.LabelizedVariable`).
+
+        """
         return _pyagrum.RangeVariable_closestIndex(self, val)
 
     def domain(self) -> str:
@@ -2387,6 +2463,25 @@ class IntegerVariable(DiscreteVariable):
         return _pyagrum.IntegerVariable_index(self, label)
 
     def closestIndex(self, val: float) -> int:
+        r"""
+
+        For numerical discrete variables (all except :class:`pyagrum.LabelizedVariable`), this method returns the index of the closest value to a given float value in the variable's domain.
+
+        Parameters
+        ----------
+        value : float
+          the value for which we want to find the closest index
+        Returns
+        -------
+        int
+          the index of the closest value to `value` in the variable's domain
+
+        Raises
+        ------
+        pyagrum.InvalidArgument
+          if the variable is not numerical discrete (i.e., if it is a :class:`pyagrum.LabelizedVariable`).
+
+        """
         return _pyagrum.IntegerVariable_closestIndex(self, val)
 
     def label(self, index: int) -> str:
@@ -2533,6 +2628,25 @@ class IntegerVariable(DiscreteVariable):
         return _pyagrum.IntegerVariable_eraseValues(self)
 
     def closestLabel(self, val: float) -> str:
+        r"""
+
+        For numerical discrete variables (all except :class:`pyagrum.LabelizedVariable`), this method returns the label of the closest value to a given float value in the variable's domain.
+
+        Parameters
+        ----------
+        value : float
+          the value for which we want to find the closest index
+        Returns
+        -------
+        str
+          the label of the closest value to `value` in the variable's domain
+
+        Raises
+        ------
+        pyagrum.InvalidArgument
+          if the variable is not numerical discrete (i.e., if it is a :class:`pyagrum.LabelizedVariable`).
+
+        """
         return _pyagrum.IntegerVariable_closestLabel(self, val)
 
     def __repr__(self) -> str:
@@ -2652,6 +2766,25 @@ class NumericalDiscreteVariable(DiscreteVariable):
         return _pyagrum.NumericalDiscreteVariable_index(self, label)
 
     def closestIndex(self, val: float) -> int:
+        r"""
+
+        For numerical discrete variables (all except :class:`pyagrum.LabelizedVariable`), this method returns the index of the closest value to a given float value in the variable's domain.
+
+        Parameters
+        ----------
+        value : float
+          the value for which we want to find the closest index
+        Returns
+        -------
+        int
+          the index of the closest value to `value` in the variable's domain
+
+        Raises
+        ------
+        pyagrum.InvalidArgument
+          if the variable is not numerical discrete (i.e., if it is a :class:`pyagrum.LabelizedVariable`).
+
+        """
         return _pyagrum.NumericalDiscreteVariable_closestIndex(self, val)
 
     def label(self, index: int) -> str:
@@ -2798,6 +2931,25 @@ class NumericalDiscreteVariable(DiscreteVariable):
         return _pyagrum.NumericalDiscreteVariable_eraseValues(self)
 
     def closestLabel(self, val: float) -> str:
+        r"""
+
+        For numerical discrete variables (all except :class:`pyagrum.LabelizedVariable`), this method returns the label of the closest value to a given float value in the variable's domain.
+
+        Parameters
+        ----------
+        value : float
+          the value for which we want to find the closest index
+        Returns
+        -------
+        str
+          the label of the closest value to `value` in the variable's domain
+
+        Raises
+        ------
+        pyagrum.InvalidArgument
+          if the variable is not numerical discrete (i.e., if it is a :class:`pyagrum.LabelizedVariable`).
+
+        """
         return _pyagrum.NumericalDiscreteVariable_closestLabel(self, val)
 
     def __repr__(self) -> str:
@@ -3923,9 +4075,41 @@ class DAG(DiGraph):
         return _pyagrum.DAG___str__(self)
 
     def dSeparation(self, *args) -> bool:
+        r"""
+
+        Check if the sets of nodes X and Y are d-separated (by the set of nodes Z if given) in the DAG.
+
+        Parameters
+        ----------
+        X : int sequence of int
+          a sequence of node ids (int) or a single node id (int)
+        Y : int sequence of int
+          a sequence of node ids (int) or a single node id (int)
+        Z : int sequence of int (optional)
+          a sequence of node ids (int) or a single node id (int)
+        Returns
+        -------
+        bool
+          True if X and Y are d-separated (by Z if given), False otherwise.
+
+        """
         return _pyagrum.DAG_dSeparation(self, *args)
 
     def moralizedAncestralGraph(self, *args) -> "pyagrum.UndiGraph":
+        r"""
+
+        Compute the moralized ancestral graph of the nodes from the DAG.
+
+        Parameters
+        ----------
+        nodes : int sequence of int
+          a sequence of node ids (int) or a single node id (int)
+        Returns
+        ------- 
+        "pyagrum.UndiGraph"
+          the moralized ancestral graph of the nodes from the DAG.
+
+        """
         return _pyagrum.DAG_moralizedAncestralGraph(self, *args)
 
     def addNodes(self, n: int) -> object:
@@ -4631,9 +4815,41 @@ class PDAG(MixedGraph):
         return _pyagrum.PDAG___str__(self)
 
     def cSeparation(self, *args) -> bool:
+        r"""
+
+        Check if the sets of nodes X and Y are c-separated (by the set of nodes Z if given) in the PDAG.
+
+        Parameters
+        ----------
+        X : int sequence of int
+          a sequence of node ids (int) or a single node id (int)
+        Y : int sequence of int
+          a sequence of node ids (int) or a single node id (int)
+        Z : int sequence of int (optional)
+          a sequence of node ids (int) or a single node id (int)
+        Returns
+        -------
+        bool
+          True if X and Y are c-separated (by Z if given), False otherwise.
+
+        """
         return _pyagrum.PDAG_cSeparation(self, *args)
 
     def moralizedAncestralGraph(self, *args) -> "pyagrum.UndiGraph":
+        r"""
+
+        Compute the moralized ancestral graph of the nodes from the DAG.
+
+        Parameters
+        ----------
+        nodes : int sequence of int
+          a sequence of node ids (int) or a single node id (int)
+        Returns
+        ------- 
+        "pyagrum.UndiGraph"
+          the moralized ancestral graph of the nodes from the DAG.
+
+        """
         return _pyagrum.PDAG_moralizedAncestralGraph(self, *args)
 
     def addNodes(self, n: int) -> object:
@@ -7215,6 +7431,25 @@ class DiscretizedVariable(IDiscretizedVariable):
         return _pyagrum.DiscretizedVariable_ticks(self)
 
     def closestIndex(self, val: float) -> int:
+        r"""
+
+        For numerical discrete variables (all except :class:`pyagrum.LabelizedVariable`), this method returns the index of the closest value to a given float value in the variable's domain.
+
+        Parameters
+        ----------
+        value : float
+          the value for which we want to find the closest index
+        Returns
+        -------
+        int
+          the index of the closest value to `value` in the variable's domain
+
+        Raises
+        ------
+        pyagrum.InvalidArgument
+          if the variable is not numerical discrete (i.e., if it is a :class:`pyagrum.LabelizedVariable`).
+
+        """
         return _pyagrum.DiscretizedVariable_closestIndex(self, val)
 
     def toFast(self) -> str:
@@ -7308,6 +7543,23 @@ class Tensor(object):
 
     @staticmethod
     def deterministicTensor(*args) -> "pyagrum.Tensor":
+        r"""
+
+        This static method generates a Tensor representing a deterministic function of a :class:`pyagrum.DiscreteVariable`) such as a hard evidence.
+
+        Parameters
+        ----------
+        var : pyagrum.DiscreteVariable
+          the variable to use
+        value: int str
+          the indice or the label of the value for the variable
+
+        Returns
+        -------
+        pyagrum.Tensor
+          The representation of the deterministic function as a :class:`pyagrum.Tensor`.
+
+        """
         return _pyagrum.Tensor_deterministicTensor(*args)
 
     @staticmethod
@@ -7433,6 +7685,21 @@ class Tensor(object):
         return _pyagrum.Tensor_minNonZero(self)
 
     def findAll(self, v: float) -> List[Dict[str,int]]:
+        r"""
+
+        Find all the position of a value in the Tensor.
+
+        Parameters
+        ----------
+        v : float
+          the value to find
+
+        Returns
+        -------
+        list[dict[str,int]]
+          a list of all the instantiations (as python dictionary) where the value is found
+
+        """
         return _pyagrum.Tensor_findAll(self, v)
 
     def entropy(self) -> float:
@@ -7861,7 +8128,7 @@ class Tensor(object):
 
         Returns
         -------
-        pyAgrum.Te nsor
+        pyAgrum.Tensor
           The representation of the evidence as a :class:`~pyagrum.Tensor`.
 
         """
@@ -8806,6 +9073,16 @@ class Tensor(object):
 
 
     def domainSize(self) -> int:
+        r"""
+
+        Compute the size of the domain of the Tensor, i.e., the product of the domain sizes of the variables in the Tensor.
+
+        Returns
+        -------
+        int
+          the size of the domain of the Tensor (the number of values it can take) 
+
+        """
         return _pyagrum.Tensor_domainSize(self)
 
     def nbrDim(self, *args) -> int:

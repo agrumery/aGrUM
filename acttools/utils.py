@@ -172,6 +172,8 @@ def srcAgrum() -> Iterator[str]:
     yield i
   for i in recglob("src/", "*.cpp"):
     yield i
+  for i in recglob("src/docs", "*.dox"):
+    yield i
   for i in recglob("src/testunits", "*TestSuite.h"):
     yield i
 

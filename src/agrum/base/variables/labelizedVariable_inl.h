@@ -154,7 +154,7 @@ namespace gum {
 
   ///  returns the closest index of the value
   INLINE Idx LabelizedVariable::closestIndex(double val) const {
-      GUM_ERROR(InvalidArgument, "closestIndex has no meaning for LabelizedVariable")}
+      GUM_ERROR(NotImplementedYet, "closestIndex has no meaning for LabelizedVariable")}
 
   INLINE Idx LabelizedVariable::index(const std::string& aLabel) const {
     try {

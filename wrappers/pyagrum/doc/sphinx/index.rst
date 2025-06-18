@@ -34,12 +34,12 @@ pyAgrum contains :
   * a `gitlab repository <https://gitlab.com/agrumery/aGrUM>`_.
   * and a `website <http://agrum.org>`_.
 
-
-.. toctree::
-  :caption: Tutorials and notebooks
-  :name: Notebooks
-  :titlesonly:
-  :maxdepth: 1
+.. only: RTDVersion
+  .. toctree::
+    :caption: Tutorials and notebooks
+    :name: Notebooks
+    :titlesonly:
+    :maxdepth: 1
 
   notebooks
 
