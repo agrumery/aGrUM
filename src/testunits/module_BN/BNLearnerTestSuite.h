@@ -1229,11 +1229,75 @@ namespace gum_tests {
 
       TS_ASSERT_THROWS(learner.learnParameters(dag), const gum::MissingValueInDatabase&)
 
-      learner.useEM(1e-3);
-      learner.useSmoothingPrior();
+      // EM with log-likelihood's evolution rate stopping criterion
+      learner.useEM(1e-3, 0.15)
+             .setEMMaxIter(10)
+             .setEMMaxTime(200)
+             .disableEMMaxIter()
+             .disableEMMaxTime()
+             .useSmoothingPrior();
+      TS_GUM_ASSERT_EQUALS(learner.EMMinEpsilonRate(), 1e-3)
+      TS_GUM_ASSERT_EQUALS(learner.isEnabledEMMinEpsilonRate(), true)
+      TS_GUM_ASSERT_EQUALS(learner.isEnabledEMEpsilon(), false)
+      TS_GUM_ASSERT_EQUALS(learner.isEnabledEMMaxIter(), false)
+      TS_GUM_ASSERT_EQUALS(learner.isEnabledEMMaxTime(), false)
+      TS_GUM_ASSERT_EQUALS(learner.EMMaxIter(), 10)
+      TS_GUM_ASSERT_EQUALS(learner.EMMaxTime(), 200)
 
       TS_GUM_ASSERT_THROWS_NOTHING(learner.learnParameters(dag, false))
-      TS_GUM_ASSERT_THROWS_NOTHING(learner.nbrIterations())
+      TS_GUM_ASSERT_THROWS_NOTHING(learner.EM().nbrIterations())
+      TS_GUM_ASSERT_THROWS_NOTHING(learner.nbrEMIterations())
+
+      const auto bn1 = learner.learnParameters(dag, false);
+
+      // relaunch EM with the output of the previous EM to initialize the CPTs
+      learner.useEMWithRateCriterion(1e-3, 0.002);
+      const auto bn2 = learner.learnParameters(bn1, false);
+
+      // check that bn1 and bn2 are more or less the same
+      for (auto i : bn1.nodes()) {
+        const auto pot1 = bn1.cpt(i);
+        const auto pot2 = bn2.cpt(i);
+        TS_GUM_TENSOR_ALMOST_EQUALS_DELTA(pot1, pot2, 1e-2)
+      }
+
+      // relaunch EM with diff stopping criterion
+      learner.useEMWithDiffCriterion(0.05, 0.0);
+      const auto bn3 = learner.learnParameters(bn2, false);
+
+      for (auto i : bn1.nodes()) {
+        const auto pot1 = bn1.cpt(i);
+        const auto pot3 = bn3.cpt(i);
+        TS_GUM_TENSOR_ALMOST_EQUALS_DELTA(pot1, pot3, 1e-2)
+      }
+
+      TS_GUM_ASSERT_THROWS_NOTHING(learner.EM())
+      learner.forbidEM();
+      TS_ASSERT_THROWS(learner.EM(), const gum::NotFound&)
+    }
+
+    GUM_INACTIVE_TEST(_EM2) {
+      gum::learning::BNLearner< double > learner(GET_RESSOURCES_PATH("csv/EM.csv"),
+                                                 std::vector< std::string >{"?"});
+
+      TS_ASSERT(learner.hasMissingValues())
+
+      gum::BayesNet< double > bn;
+      const auto&             names = learner.database().variableNames();
+      for (auto i = std::size_t(0); i < learner.database().nbVariables(); ++i) {
+        bn.add(gum::LabelizedVariable(names[i]));
+      }
+      bn.addArc(gum::NodeId(1), gum::NodeId(0));
+      bn.addArc(gum::NodeId(2), gum::NodeId(1));
+      bn.addArc(gum::NodeId(3), gum::NodeId(2));
+
+      learner.useEM(1e-3);
+      learner.setMaxIter(10);
+      learner.useSmoothingPrior();
+
+      TS_GUM_ASSERT_THROWS_NOTHING(learner.learnParameters(bn))
+      TS_GUM_ASSERT_THROWS_NOTHING(learner.learnParameters(bn, false))
+      TS_GUM_ASSERT_THROWS_NOTHING(learner.nbrEMIterations())
     }
 
     GUM_INACTIVE_TEST(_chi2) {

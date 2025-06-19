@@ -343,8 +343,6 @@ namespace gum {
         return *this;
       }
 
-      using IBNLearner::EMEpsilon;
-
       /**
        * @brief sets the stopping criterion of EM as being the minimal log-likelihood's evolution rate
        * @param rate the log-likelihood evolution rate below which EM stops its iterations
@@ -370,8 +368,6 @@ namespace gum {
         IBNLearner::enableEMMinEpsilonRate();
         return *this;
       }
-
-      using IBNLearner::EMMinEpsilonRate;
 
       /**
        * @brief add a max iteration stopping criterion
@@ -426,11 +422,29 @@ namespace gum {
         return *this;
       }
 
+      // for pyagrum support
+      using IBNLearner::EMPeriodSize;
+
       /// sets or unsets EM's verbosity
       BNLearner< GUM_SCALAR >& setEMVerbosity(bool v) {
         IBNLearner::setEMVerbosity(v);
         return *this;
       }
+
+      // for pyagrum support
+      using IBNLearner::EMEpsilon;
+      using IBNLearner::isEnabledEMEpsilon;
+      using IBNLearner::EMMinEpsilonRate;
+      using IBNLearner::isEnabledEMMinEpsilonRate;
+      using IBNLearner::EMMaxIter;
+      using IBNLearner::isEnabledEMMaxIter;
+      using IBNLearner::EMMaxTime;
+      using IBNLearner::isEnabledEMMaxTime;
+      using IBNLearner::EMVerbosity;
+      using IBNLearner::EMStateApproximationScheme;
+      using IBNLearner::nbrEMIterations;
+      using IBNLearner::EMHistory;
+
 
       BNLearner< GUM_SCALAR >& useScoreAIC() {
         IBNLearner::useScoreAIC();

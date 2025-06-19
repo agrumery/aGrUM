@@ -1422,10 +1422,7 @@ namespace gum::learning {
     /// Disable EM's timeout stopping criterion
     void disableEMMaxTime() { Dag2BN_.disableMaxTime(); }
 
-    void enableEMMaxTime() { Dag2BN_.enableMaxTime();
-      greedyHillClimbing_.enableMaxTime();
-      localSearchWithTabuList_.enableMaxTime();
-    };
+    void enableEMMaxTime() { Dag2BN_.enableMaxTime(); };
 
     /// @return true if stopping criterion on timeout is enabled, false otherwise
     bool isEnabledEMMaxTime() const { return Dag2BN_.isEnabledMaxTime(); }
