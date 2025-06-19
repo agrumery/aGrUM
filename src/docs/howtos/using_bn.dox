@@ -120,7 +120,8 @@
  * auto dyspnea = bn.add( var );
  * \endcode
  *
- * Use the gum::BayesNet::addArc( gum::NodeId, gum::NodeId ) to add arcs between node in the Bayesian
+ * Use the gum::BayesNet::addArc( gum::NodeId, gum::NodeId ) to add arcs between node in the
+ Bayesian
  * Network.
  *
  * \code{.cpp}
@@ -140,7 +141,8 @@
  *
  * \code{.cpp}
  * bn.addArc( visitToAsia, hasTuberculosis ); // using NodeIds from above
- * bn.addArc( bn.idFromName("Visit to Asia"), bn.idFromName("Has Tuberculosis")); // explicitly get the NodeId from the name
+ * bn.addArc( bn.idFromName("Visit to Asia"), bn.idFromName("Has Tuberculosis")); // explicitly get
+ the NodeId from the name
  * bn.addArc( "Visit to Asia","Has Tuberculosis"); // directly using the names
  * \endcode
  *
@@ -412,7 +414,8 @@
  * filling CPT from some source (file, database, another CPT, ...).
  *
  * Two methods can be used to define raw CPT:
- *  - gum::BayesNetFactory::rawConditionalTable(const std::vector<std::string>&, const std::vector<float>&).
+ *  - gum::BayesNetFactory::rawConditionalTable(const std::vector<std::string>&, const
+ std::vector<float>&).
  *  - gum::BayesNetFactory::rawConditionalTable(const std::vector<float>&).
  *
  * Defining the conditional probability table for the root node "Visit To Asia"
@@ -578,4 +581,3 @@
  *  - gum::NetWriter.
  *
  */
-

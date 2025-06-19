@@ -47,7 +47,8 @@
 
 class A {
  public:
-  gum::Signaler2<int,char> onF; // Note that onF is public and will send an int and a char then 'Signaler2' is used.
+  gum::Signaler2<int,char> onF; // Note that onF is public and will send an int and a char then
+'Signaler2' is used.
 
  void f(int i,char ch) {
     //do something

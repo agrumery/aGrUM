@@ -278,8 +278,8 @@ def getPost(current: dict[str, str], target: str) -> tuple[str, bool]:
       else:
         # quick_specifictest
         if current["modules"].startswith("quick"):
-          gumTest += " -m " + current["modules"]
-        elif current["modules"] == "all":  # all is with NOTEBOOKStest
+          gumTest += " -m " + current["modules"].lower()
+        elif current["modules"].lower() == "all":  # all is with NOTEBOOKStest
           gumTest += " -m all"
         else:
           critic(f"Only [-m all] or [-m quick+...] for testing pyAgrum (instead of [{current['modules']}])")

@@ -203,4 +203,4 @@
  *
  * if ( mark[n2] ==0 ) GUM_ERROR( gum::NotFound,"no path found" );
  * @endcode
-*/
+ */

@@ -72,9 +72,10 @@ def check_modules(current: dict[str, str]):
     else:
       cde = "+".join(setM)
 
-  if cde == "ALL":
-    current["modules"] = "+".join(sorted(cfg.modules))
-  elif cde == "LIST":
+  # if cde == "ALL":
+  #  current["modules"] = "+".join(sorted(cfg.modules))
+  # el
+  if cde == "LIST":
     print("Modules must be one of the following:")
     print("    - ALL")
     for x in sorted(cfg.modules):

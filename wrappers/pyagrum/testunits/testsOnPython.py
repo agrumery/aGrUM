@@ -42,8 +42,8 @@ from sys import platform as os_platform
 
 if __name__ == "__main__":
   print(
-    "[pyAgrum] Please use 'act test pyAgrum release {installed|local} -m [module]|quick|quick_[module]|all' -t "
-    "testsuite"
+    "[pyAgrum] Please use 'act test pyAgrum release {installed|local} -m [module]|quick|quick_[module]|all' -t {all|test_suite_name}'",
+    end="\n",
   )
   sys.exit(0)
 
@@ -51,7 +51,7 @@ if __name__ == "__main__":
 def runTests(local: bool, test_module: str, test_suite: str, log) -> int:
   if local:
     log.info("[pyAgrum] Adding local pyAgrum's path")
-    p = os.getcwd() + "\\" + sys.argv[1]
+    p = os.getcwd()
     sys.path.insert(1, p)  # to force to use local pyAgrum for the tests (and not installed one)
 
   if test_suite != "":

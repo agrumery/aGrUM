@@ -141,7 +141,7 @@
  *
  * // check for iterator's safety
  * for (HashTable<int,string>::iterator_safe iter = table1.beginSafe ();
-     *       iter != table1.endSafe (); ++iter )
+ *       iter != table1.endSafe (); ++iter )
  *   table1.eraseByVal ( *iter );
  * @endcode
  *

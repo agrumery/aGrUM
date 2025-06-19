@@ -144,6 +144,4 @@
  *    if more than one gum::prm::Instance is assigned to a
  *    gum::prm::ReferenceSlot which is not an array a gum::OutOfBounds will
  *    be raised.
-*/
-
-
+ */
