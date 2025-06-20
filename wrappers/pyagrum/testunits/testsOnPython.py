@@ -86,6 +86,7 @@ def runTests(local: bool, test_module: str, test_suite: str, log) -> int:
   from tests import BNDatabaseGeneratorTestSuite
   from tests import BNLearnerTestSuite
   from tests import BNListenerTestSuite
+  from tests import ConditionalTest
   from tests import ConfigTestSuite
 
   if pandasFound:
@@ -108,6 +109,7 @@ def runTests(local: bool, test_module: str, test_suite: str, log) -> int:
   from tests import TensorTestSuite
   from tests import PRMexplorerTestSuite
   from tests import SamplingTestSuite
+  from tests import ShapleyTest
 
   if pandasFound and sklearnFound:
     from tests import SkbnTestSuite
@@ -155,6 +157,7 @@ def runTests(local: bool, test_module: str, test_suite: str, log) -> int:
       tl.append(BNLearnerTestSuite.ts)
       tl.append(BNListenerTestSuite.ts)
       tl.append(ConfigTestSuite.ts)
+      tl.append(ConditionalTest.ts)
       if pandasFound:
         tl.append(DiscreteTypeProcessorTestSuite.ts)
       tl.append(EssentialGraphTestSuite.ts)
@@ -175,6 +178,7 @@ def runTests(local: bool, test_module: str, test_suite: str, log) -> int:
       tl.append(TensorTestSuite.ts)
       tl.append(PRMexplorerTestSuite.ts)
       tl.append(SamplingTestSuite.ts)
+      tl.append(ShapleyTest.ts)
       tl.append(VariablesTestSuite.ts)
       tl.append(WorkaroundTestSuite.ts)
 
