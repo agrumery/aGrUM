@@ -241,10 +241,10 @@ class BNLearnerCSVTestCase(pyAgrumTestCase):
     learner.useSmoothingPrior()
 
     self.assertEqual(learner.EMMinEpsilonRate(), 1e-3)
-    self.assertEqual(learner.isEnabledEMMinEpsilonRate(), true)
-    self.assertEqual(learner.isEnabledEMEpsilon(), false)
-    self.assertEqual(learner.isEnabledEMMaxIter(), false)
-    self.assertEqual(learner.isEnabledEMMaxTime(), false)
+    self.assertEqual(learner.isEnabledEMMinEpsilonRate(), True)
+    self.assertEqual(learner.isEnabledEMEpsilon(), False)
+    self.assertEqual(learner.isEnabledEMMaxIter(), False)
+    self.assertEqual(learner.isEnabledEMMaxTime(), False)
     self.assertEqual(learner.EMMaxIter(), 10)
     self.assertEqual(learner.EMMaxTime(), 200)
 
@@ -268,7 +268,7 @@ class BNLearnerCSVTestCase(pyAgrumTestCase):
       self.assertListsAlmostEqual(cpt1.tolist(), cpt2.tolist(), delta=0.1)
 
     # relaunch EM with diff stopping criterion
-    learner.useEMWithDiffCriterion(0.1, 0.0)
+    learner.useEMWithDiffCriterion(0.05, 0.0)
     bn3 = learner.learnParameters(bn2, False)
 
     learner.fitParameters(bn1, False)
@@ -284,8 +284,9 @@ class BNLearnerCSVTestCase(pyAgrumTestCase):
 
       self.assertListsAlmostEqual(cpt1.tolist(), cpt2.tolist(), delta=0.1)
 
-    learner.useEMWithRateCriterion(1e-4, 0.15).setMaxIter(2)
+    learner.useEMWithRateCriterion(1e-4, 0.35).setEMMaxIter(2)
     learner.learnParameters(dag, False)
+    print(learner.nbrEMIterations())
     self.assertEqual(learner.EMState(), "stopped with max iteration=2")
 
     learner.forbidEM()
@@ -303,7 +304,7 @@ class BNLearnerCSVTestCase(pyAgrumTestCase):
     dag.addArc(0, 1)
 
     for i in range(10):
-      learner.useEM(1e-3, 0.9).setVerbosity(True)
+      learner.useEM(1e-3, 0.9).setEMVerbosity(True)
       learner.setEMMinEpsilonRate(1e-2)
       bn1 = learner.learnParameters(dag)
       delta = learner.EMHistory()[-1]
