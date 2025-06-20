@@ -83,7 +83,6 @@ pyagrum.BayesNet
 "
 
 
-
 %feature("docstring") gum::learning::BNLearner::state
 "
 Returns a dictionary containing the current state of the BNLearner.
@@ -149,24 +148,31 @@ g : pyagrum.UndiGraph
 
 %feature("docstring") gum::learning::BNLearner::setInitialDAG
 "
+Sets the initial structure (DAG) used by the structure learning algorithm.
+
 Parameters
 ----------
 dag : pyagrum.DAG
 	an initial pyagrum.DAG structure
 "
 
+
 %feature("docstring") gum::learning::BNLearner::useEM
 "
-Sets whether we use EM for parameter learning or not.
+Sets whether we use EM for parameter learning or not, depending on the value of epsilon.
+
+When EM is used, its stopping criterion is a threashold on the log-likelihood evolution rate.
+If you wish to be more specific on which stopping criterion to use, you may prefer exploiting
+methods useEMWithRateCriterion() or useEMWithDiffCriterion().
 
 Parameters
 ----------
 epsilon : float
-	if epsilon=0.0 then EM is not used. But if you wish to forbid the use of EM, prefer
-        executing Method forbidEM() rather than useEM(0) as it is more unequivocal.
-
 	if epsilon>0 then EM is used and stops whenever the relative difference between two
-        consecutive log-likelihoods drops below epsilon.
+    consecutive log-likelihoods (log-likelihood evolution rate) drops below epsilon.
+
+	if epsilon=0.0 then EM is not used. But if you wish to forbid the use of EM, prefer
+    executing Method forbidEM() rather than useEM(0) as it is more unequivocal.
 
 noise: float (optional, default = 0.1)
         During EM's initialization, the CPTs are randomly perturbed using the following formula:
@@ -176,16 +182,74 @@ noise: float (optional, default = 0.1)
 
 Returns
 -------
-pyagrum.EMApproximationScheme
-        the EM approximation scheme. As an approximation scheme, it enables to fine-tune the EM's
-        stopping criterion (taking into account the number of iterations or a timeout), the
-        verbosity of the EM's learning (useful for getting its history), etc.
+pyagrum.BNLearner
+        the BNLearner itself, so that we can chain useXXX() methods.
 
 Raises
 ------
 pyagrum.OutOfBounds
         if epsilon is strictly negative or if noise does not belong to interval [0,1].
 "
+
+
+%feature("docstring") gum::learning::BNLearner::useEMWithRateCriterion
+"
+Enforce that EM with the log-likelihood min evolution rate criterion will be used for
+parameter learning if the dataset contains missing values.
+
+Parameters
+----------
+epsilon : float
+     epsilon sets the approximation stopping criterion: EM stops whenever the absolute
+     value of the relative difference between two consecutive log-likelihoods drops below
+     epsilon. Note that epsilon should be strictly positive.
+
+noise: float (optional, default = 0.1)
+        During EM's initialization, the CPTs are randomly perturbed using the following formula:
+        new_CPT = (1-noise) * CPT + noise * random_CPT. Parameter noise must belong to interval [0,1].
+
+        By default, noise is equal to 0.1.
+
+Returns
+-------
+pyagrum.BNLearner
+        the BNLearner itself, so that we can chain useXXX() methods.
+
+Raises
+------
+pyagrum.OutOfBounds
+        if epsilon is not strictly positive or if noise does not belong to interval [0,1].
+"
+
+
+%feature("docstring") gum::learning::BNLearner::useEMWithDiffCriterion
+"
+Enforce that EM with the log-likelihood min difference criterion will be used for
+parameter learning if the dataset contains missing values.
+
+Parameters
+----------
+epsilon : float
+     epsilon sets the approximation stopping criterion: EM stops whenever the
+     difference between two consecutive log-likelihoods drops below
+     epsilon. Note that epsilon should be strictly positive.
+
+noise: float (optional, default = 0.1)
+        During EM's initialization, the CPTs are randomly perturbed using the following formula:
+        new_CPT = (1-noise) * CPT + noise * random_CPT. Parameter noise must belong to interval [0,1].
+
+        By default, noise is equal to 0.1.
+
+Returns
+-------
+pyagrum.BNLearner
+        the BNLearner itself, so that we can chain useXXX() methods.
+
+Raises
+------
+pyagrum.OutOfBounds
+        if epsilon is not strictly positive or if noise does not belong to interval [0,1]..
+
 
 %feature("docstring") gum::learning::BNLearner::useMIIC
 "
