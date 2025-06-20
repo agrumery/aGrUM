@@ -18,7 +18,7 @@ python3 act clean
 # Check the target type
 if [ "${TARGET}" == "aGrUM" ]; then
     echo "Building aGrUM..."
-    python3 act --no-fun test release aGrUM -j halfexcept1
+    python3 act --no-fun test release aGrUM -j halfexcept1 -t all -m all
 elif [ "${TARGET}" == "pyAgrum" ]; then
     echo "Building pyagrum..."
     pip3 install -r wrappers/pyagrum/testunits/requirements.txt

@@ -24,7 +24,7 @@ python act clean
 
 if [ "${TARGET}" == "aGrUM" ]; then
     echo "Building aGrUM..."
-    python act --no-fun test release aGrUM -j halfexcept1 --compiler=clang
+    python act --no-fun test release aGrUM -j halfexcept1 -t all -m all --compiler=clang
 elif [ "${TARGET}" == "pyAgrum" ]; then
     echo "Building pyagrum..."
     python act --no-fun test release pyAgrum -j halfexcept1  -m quick -t all --compiler=clang
