@@ -53,7 +53,6 @@
 #include <agrum/agrum.h>
 
 #include <agrum/BN/learning/BNLearnUtils/IBNLearner.h>
-#include <agrum/BN/learning/paramUtils/EMApproximationScheme.h>
 #include <agrum/BN/learning/priors/DirichletPriorFromBN.h>
 
 namespace gum {
@@ -154,10 +153,9 @@ namespace gum {
        * @throw MissingVariableInDatabase if a variable of the BN is not found
        * in the database.
        * @throw MissingValueInDatabase if the database contains some missing
-       * values and EM is not used for the learning
-       * @throw OperationNotAllowed if EM is used but neither the min log-likelihood
-       * difference nor the min log-likelihood evolution rate have been
-       * selected as stopping criteria
+       * values and EM is not used for the learning.
+       * @throw OperationNotAllowed if EM is used but no EM stopping criterion
+       * has been selected.
        * @warning if method useEM() has been executed, then the learning is
        * performed using EM, else this is a standard (e.g. ML/MAP) learning
        */
@@ -182,9 +180,8 @@ namespace gum {
        * usePriorXXX ()
        * @throw MissingVariableInDatabase if a variable of the BN is not found
        * in the database.
-       * @throw OperationNotAllowed if EM is used but neither the min log-likelihood
-       * difference nor the min log-likelihood evolution rate have been
-       * selected as stopping criteria
+       * @throw OperationNotAllowed if EM is used but no EM stopping criterion
+       * has been selected.
        * @warning if method useEM() has been executed, then the learning is
        * performed using EM, else this is a standard (e.g. ML/MAP) learning
        * @warning the EM algorithm initializes the parameters of the CPTs using
@@ -430,21 +427,6 @@ namespace gum {
         IBNLearner::setEMVerbosity(v);
         return *this;
       }
-
-      // for pyagrum support
-      using IBNLearner::EMEpsilon;
-      using IBNLearner::isEnabledEMEpsilon;
-      using IBNLearner::EMMinEpsilonRate;
-      using IBNLearner::isEnabledEMMinEpsilonRate;
-      using IBNLearner::EMMaxIter;
-      using IBNLearner::isEnabledEMMaxIter;
-      using IBNLearner::EMMaxTime;
-      using IBNLearner::isEnabledEMMaxTime;
-      using IBNLearner::EMVerbosity;
-      using IBNLearner::EMStateApproximationScheme;
-      using IBNLearner::nbrEMIterations;
-      using IBNLearner::EMHistory;
-
 
       BNLearner< GUM_SCALAR >& useScoreAIC() {
         IBNLearner::useScoreAIC();

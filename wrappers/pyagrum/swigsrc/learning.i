@@ -49,6 +49,8 @@
 %ignore gum::learning::BNLearner::EMState() const;
 %ignore gum::learning::BNLearner::state() const;
 %ignore gum::learning::BNLearner::EM();
+%ignore gum::learning::DAG2BNLearner::approximationScheme();
+
 
 %pythoncode {
     import warnings
@@ -211,34 +213,6 @@ def pseudoCount(self,vars):
     return p
 
 def fitParameters(self,bn,take_into_account_score=True):
-  """
-  fitParameters directly populates the CPTs of the Bayes Net (bn) passed in argument using the
-  database and the structure of bn.
-
-  When the database contains missing values and a method among useEM(), useEMWithRateCriterion()
-  and useEMWithDiffCriterion(), has been executed, the CPTs are learnt using the EM algorithm.
-  This one first initializes the CPTs and, then, iterates sequences
-  of expectations/maximizations in order to converge toward a most likely CPT. The aforementioned
-  initialization is performed as follows: when a CPT contains only zeroes, the BNLearner estimates
-  it from the database without taking into account the missing values, else it uses the
-  CPT as is. Then, in both cases, the CPT is randomly perturbed using the following formula:
-  new_CPT = (1-alpha) * CPT + alpha * random_CPT. Parameter alpha is called a noise factor and
-  can be controlled using Method useEM().
-
-  Parameters
-  ----------
-  bn : pyagrum.BayesNet
-    a BN which will directly have its parameters learned inplace.
-
-  take_into_account_score : bool
-    The dag passed in argument may have been learnt from a structure learning. In this case,
-    if the score used to learn the structure has an implicit prior (like K2 which has a 1-smoothing prior),
-    it is important to also take into account this implicit prior for parameter learning. By default
-    (`take_into_account_score=True`), we will learn parameters by taking into account the prior specified
-    by methods usePriorXXX () + the implicit prior of the score (if any). If `take_into_account_score=False`,
-    we just take into account the prior specified by `usePriorXXX()`.
-
-  """
   if set(self.names())!=bn.names():
     raise Exception("Not the same variable names in the database and in the BN")
 
