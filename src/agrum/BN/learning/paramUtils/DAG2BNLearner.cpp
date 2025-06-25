@@ -56,8 +56,7 @@ namespace gum {
   namespace learning {
 
     /// default constructor
-    DAG2BNLearner::DAG2BNLearner() :
-        EMApproximationScheme() { GUM_CONSTRUCTOR(DAG2BNLearner); }
+    DAG2BNLearner::DAG2BNLearner() : EMApproximationScheme() { GUM_CONSTRUCTOR(DAG2BNLearner); }
 
     /// copy constructor
     DAG2BNLearner::DAG2BNLearner(const DAG2BNLearner& from) :

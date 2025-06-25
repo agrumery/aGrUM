@@ -706,7 +706,7 @@ the database contains missing values.
 "
 
 
-%feature("docstring") gum::learning::BNLearner::setEMEpsilon
+%feature("docstring") gum::learning::BNLearner::EMsetEpsilon
 "
 Enforces that the minimal difference between two consecutive log-likelihoods
 is chosen as a stopping criterion of the EM parameter learning algorithm and
@@ -729,7 +729,7 @@ pyagrum.OutOfBounds
 "
 
 
-%feature("docstring") gum::learning::BNLearner::disableEMEpsilon
+%feature("docstring") gum::learning::BNLearner::EMdisableEpsilon
 "
 Disables the minimal difference between two consecutive log-likelihoods as a
 stopping criterion for the EM parameter learning algorithm.
@@ -741,7 +741,7 @@ pyagrum.BNLearner
 "
 
 
-%feature("docstring") gum::learning::BNLearner::enableEMEpsilon
+%feature("docstring") gum::learning::BNLearner::EMenableEpsilon
 "
 Enforces that the minimal difference between two consecutive log-likelihoods is
 a stopping criterion for the EM parameter learning algorithm.
@@ -770,14 +770,14 @@ float
 "
 
 
-%feature("docstring") gum::learning::IBNLearner::isEnabledEMEpsilon
+%feature("docstring") gum::learning::IBNLearner::EMisEnabledEpsilon
 "
 Returns a Boolean indicating whether the minimal difference between two consecutive
 log-likelihoods is a stopping criterion for the EM parameter learning algorithm.
 "
 
 
-%feature("docstring") gum::learning::BNLearner::setEMMinEpsilonRate
+%feature("docstring") gum::learning::BNLearner::EMsetMinEpsilonRate
 "
 Enforces that the minimal log-likelihood's evolution rate is considered by the EM
 parameter learning algorithm as a stopping criterion.
@@ -804,7 +804,7 @@ Setting this stopping criterion disables the min log-likelihod difference criter
 "
 
 
-%feature("docstring") gum::learning::BNLearner::disableEMMinEpsilonRate
+%feature("docstring") gum::learning::BNLearner::EMdisableMinEpsilonRate
 "
 Disables the minimal log-likelihood's evolution rate as an EM parameter learning
 stopping criterion.
@@ -816,7 +816,7 @@ pyagrum.BNLearner
 "
 
 
-%feature("docstring") gum::learning::BNLearner::enableEMMinEpsilonRate
+%feature("docstring") gum::learning::BNLearner::EMenableMinEpsilonRate
 "
 Enables the minimal log-likelihood's evolution rate as an EM parameter learning
 stopping criterion.
@@ -844,14 +844,14 @@ float
 "
 
 
-%feature("docstring") gum::learning::IBNLearner::isEnabledEMMinEpsilonRate
+%feature("docstring") gum::learning::IBNLearner::EMisEnabledMinEpsilonRate
 "
 Returns a Boolean indicating whether the minimal log-likelihood's evolution rate is
 considered as a stopping criterion by the EM parameter learning algorithm.
 "
 
 
-%feature("docstring") gum::learning::BNLearner::setEMMaxIter
+%feature("docstring") gum::learning::BNLearner::EMsetMaxIter
 "
 Enforces a limit on the number of expectation/maximization steps performed by EM.
 
@@ -872,7 +872,7 @@ pyagrum.OutOfBounds
 "
 
 
-%feature("docstring") gum::learning::BNLearner::disableEMMaxIter
+%feature("docstring") gum::learning::BNLearner::EMdisableMaxIter
 "
 Do not limit EM to perform a maximal number of iterations.
 
@@ -883,10 +883,10 @@ pyagrum.BNLearner
 "
 
 
-%feature("docstring") gum::learning::BNLearner::enableEMMaxIter
+%feature("docstring") gum::learning::BNLearner::EMenableMaxIter
 "
 Enables a limit on the number of iterations performed by EM. This number is
-equal to the last number specified with Method `setEMMaxIter()`.
+equal to the last number specified with Method `EMsetMaxIter()`.
 See Method `EMMaxIter()` to get its current value.
 
 Returns
@@ -908,14 +908,14 @@ float
 "
 
 
-%feature("docstring") gum::learning::IBNLearner::isEnabledEMMaxIter
+%feature("docstring") gum::learning::IBNLearner::EMisEnabledMaxIter
 "
 Returns a Boolean indicating whether the max number of iterations is used
 by EM as a stopping criterion.
 "
 
 
-%feature("docstring") gum::learning::BNLearner::setEMMaxTime
+%feature("docstring") gum::learning::BNLearner::EMsetMaxTime
 "
 Adds a constraint on the time that EM is allowed to run for learning
 parameters.
@@ -937,7 +937,7 @@ pyagrum.OutOfBounds
 "
 
 
-%feature("docstring") gum::learning::BNLearner::disableEMMaxTime
+%feature("docstring") gum::learning::BNLearner::EMdisableMaxTime
 "
 Allow EM to learn parameters for an infinite amount of time.
 
@@ -948,7 +948,7 @@ pyagrum.BNLearner
 "
 
 
-%feature("docstring") gum::learning::BNLearner::enableEMMaxTime
+%feature("docstring") gum::learning::BNLearner::EMenableMaxTime
 "
 Forbid EM to run more than a given amount of time.
 
@@ -971,14 +971,14 @@ float
 "
 
 
-%feature("docstring") gum::learning::IBNLearner::isEnabledEMMaxTime
+%feature("docstring") gum::learning::IBNLearner::EMisEnabledMaxTime
 "
 Returns a Boolean indicating whether the max time criterion is used as
 an EM stopping criterion.
 "
 
 
-%feature("docstring") gum::learning::BNLearner::setEMVerbosity
+%feature("docstring") gum::learning::BNLearner::EMsetVerbosity
 "
 Sets or unsets the verbosity of the EM parameter learning algorithm.
 
@@ -1030,7 +1030,7 @@ str
 "
 
 
-%feature("docstring") gum::learning::IBNLearner::EMStateApproximationScheme
+%feature("docstring") gum::learning::BNLearner::EMStateApproximationScheme
 "
 Returns an int representing the state of the EM algorithm.
 
@@ -1045,7 +1045,7 @@ The possible states are:
 "
 
 
-%feature("docstring") gum::learning::IBNLearner::nbrEMIterations
+%feature("docstring") gum::learning::IBNLearner::EMnbrIterations
 "
 Returns the number of iterations performed by the EM parameter learning algorithm.
 "
@@ -1064,7 +1064,7 @@ List[float]
 Warnings
 --------
 Recording log-likelihoods is enabled only when EM is executed in verbose
-mode. See method `setEMVerbosity()`.
+mode. See method `EMsetVerbosity()`.
 "
 
 
@@ -1562,4 +1562,3 @@ Parameters
 pyagrum.BNLearner
     the learner whose state is copied.
 "
-

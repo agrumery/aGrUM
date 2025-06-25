@@ -112,17 +112,19 @@ ADD_APPROXIMATIONSCHEME_API(gum::learning::IBNLearner,gum::learning::BNLearner<d
 
   using gum::learning::IBNLearner::isUsingEM;
   using gum::learning::IBNLearner::EMEpsilon;
-  using gum::learning::IBNLearner::isEnabledEMEpsilon;
+  using gum::learning::IBNLearner::EMisEnabledEpsilon;
   using gum::learning::IBNLearner::EMMinEpsilonRate;
-  using gum::learning::IBNLearner::isEnabledEMMinEpsilonRate;
+  using gum::learning::IBNLearner::EMisEnabledMinEpsilonRate;
   using gum::learning::IBNLearner::EMMaxIter;
-  using gum::learning::IBNLearner::isEnabledEMMaxIter;
+  using gum::learning::IBNLearner::EMisEnabledMaxIter;
   using gum::learning::IBNLearner::EMMaxTime;
-  using gum::learning::IBNLearner::isEnabledEMMaxTime;
+  using gum::learning::IBNLearner::EMisEnabledMaxTime;
   using gum::learning::IBNLearner::EMVerbosity;
-  using gum::learning::IBNLearner::EMStateApproximationScheme;
-  using gum::learning::IBNLearner::nbrEMIterations;
+  using gum::learning::IBNLearner::EMnbrIterations;
   using gum::learning::IBNLearner::EMHistory;
+  using gum::learning::IBNLearner::EMStateApproximationScheme;
+  using gum::learning::IBNLearner::EMStateMessage;
+  using gum::learning::IBNLearner::EMnbrIterations;
 
   using gum::learning::IBNLearner::setNumberOfThreads;
 

@@ -82,8 +82,6 @@
 #include <agrum/BN/learning/scores_and_tests/scoreK2.h>
 
 namespace gum::learning {
-
-
   class BNLearnerListener;
 
   /** @class IBNLearner
@@ -115,7 +113,7 @@ namespace gum::learning {
     enum class AlgoType { K2, GREEDY_HILL_CLIMBING, LOCAL_SEARCH_WITH_TABU_LIST, MIIC };
 
     /// the default noise amount added to CPTs during EM's initialization (see method useEM())
-    static constexpr double default_EM_noise {0.1};
+    static constexpr double default_EM_noise{0.1};
 
     /// a helper to easily read databases
     class Database {
@@ -633,8 +631,7 @@ namespace gum::learning {
      * @throws OutOfBounds is raised if epsilon is strictly negative or if
      * noise does not belong to interval [0,1].
      */
-    void useEM(const double epsilon,
-               const double noise = default_EM_noise);
+    void useEM(const double epsilon, const double noise = default_EM_noise);
 
     /**
      * @brief use The EM algorithm to learn parameters with the rate stopping criterion
@@ -650,8 +647,7 @@ namespace gum::learning {
      * @throws OutOfBounds is raised if epsilon is not strictly positive or if
      * noise does not belong to interval [0,1].
      */
-    void useEMWithRateCriterion(const double epsilon,
-                                const double noise = default_EM_noise);
+    void useEMWithRateCriterion(const double epsilon, const double noise = default_EM_noise);
 
     /**
      * @brief use The EM algorithm to learn parameters with the diff stopping criterion
@@ -666,8 +662,7 @@ namespace gum::learning {
      * @throws OutOfBounds is raised if epsilon is not strictly positive or if
      * noise does not belong to interval [0,1].
      */
-    void useEMWithDiffCriterion(const double epsilon,
-                                const double noise = default_EM_noise);
+    void useEMWithDiffCriterion(const double epsilon, const double noise = default_EM_noise);
 
     /// prevent using the EM algorithm for parameter learning
     void forbidEM();
@@ -945,7 +940,7 @@ namespace gum::learning {
     ParamEstimatorType paramEstimatorType_{ParamEstimatorType::ML};
 
     /// a Boolean indicating whether we should use EM for parameter learning or not
-    bool useEM_ {false};
+    bool useEM_{false};
 
     /// the noise factor (in (0,1)) used by EM for perturbing the CPT during init
     double noiseEM_{0.1};
@@ -1006,7 +1001,7 @@ namespace gum::learning {
         CorrectedMutualInformation::KModeTypes::MDL};
 
     /// the parametric EM
-    DAG2BNLearner Dag2BN_;
+    DAG2BNLearner dag2BN_;
 
     /// the greedy hill climbing algorithm
     GreedyHillClimbing greedyHillClimbing_;
@@ -1069,7 +1064,6 @@ namespace gum::learning {
 
     /// create the Corrected Mutual Information instance for Miic
     void createCorrectedMutualInformation_();
-
 
     public:
     // ##########################################################################
@@ -1333,26 +1327,27 @@ namespace gum::learning {
      * @warning setting this stopping criterion disables the min rate criterion (if it was enabled)
      * @throw OutOfBounds if eps <= 0
      */
-    void setEMEpsilon(double eps) { Dag2BN_.setEpsilon(eps); }
+    void EMsetEpsilon(double eps) { dag2BN_.setEpsilon(eps); }
 
     /// Get the value of EM's min diff epsilon
     /**
      * @brief Get the value of EM's min diff epsilon
-     * @warning Note that this value is not taken into account unless the min diff criterion is enabled
+     * @warning Note that this value is not taken into account unless the min diff criterion is
+     * enabled
      */
-    double EMEpsilon() const { return Dag2BN_.epsilon(); }
+    double EMEpsilon() const { return dag2BN_.epsilon(); }
 
     /// Disable the min log-likelihood diff stopping criterion for EM
-    void disableEMEpsilon() { Dag2BN_.disableEpsilon(); }
+    void EMdisableEpsilon() { dag2BN_.disableEpsilon(); }
 
     /**
      * @brief Enable the log-likelihood min diff stopping criterion in EM
      * @warning setting this stopping criterion disables the min rate criterion (if it was enabled)
      */
-    void enableEMEpsilon() { Dag2BN_.enableEpsilon(); }
+    void EMenableEpsilon() { dag2BN_.enableEpsilon(); }
 
     /// return true if EM's stopping criterion is the log-likelihood min diff
-    bool isEnabledEMEpsilon() const { return Dag2BN_.isEnabledEpsilon(); }
+    bool EMisEnabledEpsilon() const { return dag2BN_.isEnabledEpsilon(); }
 
     /**
      * @brief sets the stopping criterion of EM as being the minimal log-likelihood's evolution rate
@@ -1360,107 +1355,108 @@ namespace gum::learning {
      * @warning setting this stopping criterion disables the min diff criterion (if it was enabled)
      * @throw OutOfBounds if rate<=0
      */
-    void setEMMinEpsilonRate(double rate) { Dag2BN_.setMinEpsilonRate(rate); }
+    void EMsetMinEpsilonRate(double rate) { dag2BN_.setMinEpsilonRate(rate); }
 
     /**
      * @brief Get the value of the minimal log-likelihood evolution rate of EM
-     * @warning Note that this value is not taken into account unless the min rate criterion is enabled
+     * @warning Note that this value is not taken into account unless the min rate criterion is
+     * enabled
      */
-    double EMMinEpsilonRate() const { return Dag2BN_.minEpsilonRate(); }
+    double EMMinEpsilonRate() const { return dag2BN_.minEpsilonRate(); }
 
     /// Disable the log-likelihood evolution rate stopping criterion
-    void disableEMMinEpsilonRate() { Dag2BN_.disableMinEpsilonRate(); }
+    void EMdisableMinEpsilonRate() { dag2BN_.disableMinEpsilonRate(); }
 
     /**
      * @brief Enable the log-likelihood evolution rate stopping criterion
      * @warning setting this stopping criterion disables the min diff criterion (if it was enabled)
      */
-    void enableEMMinEpsilonRate() { Dag2BN_.enableMinEpsilonRate(); }
+    void EMenableMinEpsilonRate() { dag2BN_.enableMinEpsilonRate(); }
 
     /// @return true if EM's stopping criterion is the log-likelihood evolution rate
-    bool isEnabledEMMinEpsilonRate() const { return Dag2BN_.isEnabledMinEpsilonRate(); }
+    bool EMisEnabledMinEpsilonRate() const { return dag2BN_.isEnabledMinEpsilonRate(); }
 
     /**
      * @brief add a max iteration stopping criterion
      * @param max the max number of iterations that EM is allowed to perform
      * @throw OutOfBounds if max<=1
      */
-    void setEMMaxIter(Size max) { Dag2BN_.setMaxIter(max); }
+    void EMsetMaxIter(Size max) { dag2BN_.setMaxIter(max); }
 
     /**
      * @brief return the max number of iterations criterion
-     * @warning Note that this value is not taken into account unless the max iter criterion is enabled
+     * @warning Note that this value is not taken into account unless the max iter criterion is
+     * enabled
      */
-    Size EMMaxIter() const { return Dag2BN_.maxIter(); }
+    Size EMMaxIter() const { return dag2BN_.maxIter(); }
 
     /// Disable stopping criterion on max iterations
-    void disableEMMaxIter() { Dag2BN_.disableMaxIter(); }
+    void EMdisableMaxIter() { dag2BN_.disableMaxIter(); }
 
     /// Enable stopping criterion on max iterations
-    void enableEMMaxIter() { Dag2BN_.enableMaxIter(); }
+    void EMenableMaxIter() { dag2BN_.enableMaxIter(); }
 
     /// @return true if stopping criterion on max iterations is enabled, false
     /// otherwise
-    bool isEnabledEMMaxIter() const { return Dag2BN_.isEnabledMaxIter(); }
+    bool EMisEnabledMaxIter() const { return dag2BN_.isEnabledMaxIter(); }
 
     /**
      * @brief add a stopping criterion on timeout
      * @param timeout the timeout in milliseconds
      * @throw OutOfBounds if timeout<=0.0
      */
-    void setEMMaxTime(double timeout) { Dag2BN_.setMaxTime(timeout); }
+    void EMsetMaxTime(double timeout) { dag2BN_.setMaxTime(timeout); }
 
     /**
      * @@brief returns EM's timeout (in milliseconds)
-     * @warning Note that this value is not taken into account unless the max time criterion is enabled
+     * @warning Note that this value is not taken into account unless the max time criterion is
+     * enabled
      */
-    double EMMaxTime() const { return Dag2BN_.maxTime(); }
+    double EMMaxTime() const { return dag2BN_.maxTime(); }
 
     /// get the current running time in second (double)
-    double EMCurrentTime() const { return Dag2BN_.currentTime(); }
+    double EMCurrentTime() const { return dag2BN_.currentTime(); }
 
     /// Disable EM's timeout stopping criterion
-    void disableEMMaxTime() { Dag2BN_.disableMaxTime(); }
+    void EMdisableMaxTime() { dag2BN_.disableMaxTime(); }
 
-    void enableEMMaxTime() { Dag2BN_.enableMaxTime(); };
+    void EMenableMaxTime() { dag2BN_.enableMaxTime(); };
 
     /// @return true if stopping criterion on timeout is enabled, false otherwise
-    bool isEnabledEMMaxTime() const { return Dag2BN_.isEnabledMaxTime(); }
+    bool EMisEnabledMaxTime() const { return dag2BN_.isEnabledMaxTime(); }
 
     /**
      * @brief how many samples between 2 stoppings isEnabled
      * @throw OutOfBounds if p<1
      */
-    void setEMPeriodSize(Size p) { Dag2BN_.setPeriodSize(p); }
+    void EMsetPeriodSize(Size p) { dag2BN_.setPeriodSize(p); }
 
-    Size EMPeriodSize() const { return Dag2BN_.periodSize(); }
+    Size EMPeriodSize() const { return dag2BN_.periodSize(); }
 
     /// sets or unsets EM's verbosity
-    void setEMVerbosity(bool v) { Dag2BN_.setVerbosity(v); }
+    void EMsetVerbosity(bool v) { dag2BN_.setVerbosity(v); }
 
     /// returns the EM's verbosity status
-    bool EMVerbosity() const { return Dag2BN_.verbosity(); }
+    bool EMVerbosity() const { return dag2BN_.verbosity(); }
 
     /// get the current state of EM
     ApproximationSchemeSTATE EMStateApproximationScheme() const {
-      return Dag2BN_.stateApproximationScheme();
+      return dag2BN_.stateApproximationScheme();
     }
 
     /// returns the number of iterations performed by the last EM execution
-    Size nbrEMIterations() const { return Dag2BN_.nbrIterations(); }
+    Size EMnbrIterations() const { return dag2BN_.nbrIterations(); }
 
     /**
      * @brief returns the history of the last EM execution
      * @warning to activate the history recording, EM's verbosity must be set to true
      */
-    const std::vector< double >& EMHistory() const { return Dag2BN_.history(); }
+    const std::vector< double >& EMHistory() const { return dag2BN_.history(); }
 
     /// @}
-
   };
 
   /* namespace learning */
-
 }   // namespace gum::learning
 
 /// include the inlined functions if necessary

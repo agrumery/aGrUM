@@ -128,7 +128,7 @@ namespace gum {
       std::unique_ptr< ParamEstimator > param_estimator(
           createParamEstimator_(scoreDatabase_.parser(), true));
 
-      return Dag2BN_.createBN< GUM_SCALAR >(*(param_estimator.get()), learnDag_());
+      return dag2BN_.createBN< GUM_SCALAR >(*(param_estimator.get()), learnDag_());
     }
 
     // check that the database contains the nodes of the dag, else raise an exception
@@ -193,7 +193,7 @@ namespace gum {
       std::unique_ptr< ParamEstimator > param_estimator(
           createParamEstimator_(parser, takeIntoAccountScore));
 
-      return Dag2BN_.createBN< GUM_SCALAR >(*(param_estimator.get()), dag);
+      return dag2BN_.createBN< GUM_SCALAR >(*(param_estimator.get()), dag);
     }
 
     // initialize the parameter learning by EM
@@ -207,9 +207,9 @@ namespace gum {
       // create the prior
       createPrior_();
 
-      // propagate the messages of DAG2BN_ to the BNLearner so that the objects that listen
-      // to the BNLearner can be informed of the progress of the EM's execution by Dag2BN_
-      // BNLearnerListener listener(this, Dag2BN_);
+      // propagate the messages of dag2BN_ to the BNLearner so that the objects that listen
+      // to the BNLearner can be informed of the progress of the EM's execution by dag2BN_
+      // BNLearnerListener listener(this, dag2BN_);
 
       // get the column types
       const auto&       database = scoreDatabase_.databaseTable();
@@ -251,7 +251,7 @@ namespace gum {
       auto estimators = _initializeEMParameterLearning_(dag, takeIntoAccountScore);
 
       // perform the EM algorithm
-      return Dag2BN_.createBNwithEM< GUM_SCALAR >(*(estimators.first.get()),
+      return dag2BN_.createBNwithEM< GUM_SCALAR >(*(estimators.first.get()),
                                                   *(estimators.second.get()),
                                                   dag);
     }
@@ -267,7 +267,7 @@ namespace gum {
       // get a pair containing the bootstrap and the EM estimators
       auto estimators = _initializeEMParameterLearning_(bn.dag(), takeIntoAccountScore);
 
-      return Dag2BN_.createBNwithEM< GUM_SCALAR >(*(estimators.first.get()),
+      return dag2BN_.createBNwithEM< GUM_SCALAR >(*(estimators.first.get()),
                                                   *(estimators.second.get()),
                                                   bn);
     }
@@ -459,24 +459,24 @@ namespace gum {
         std::stringstream s;
         s << "[";
         bool first = true;
-        if (Dag2BN_.isEnabledMinEpsilonRate()) {
-          s << "MinRate: " << Dag2BN_.minEpsilonRate();
+        if (dag2BN_.isEnabledMinEpsilonRate()) {
+          s << "MinRate: " << dag2BN_.minEpsilonRate();
           first = false;
         }
-        if (Dag2BN_.isEnabledEpsilon()) {
+        if (dag2BN_.isEnabledEpsilon()) {
           if (!first) s << ", ";
           first = false;
-          s << "MinDiff: " << Dag2BN_.epsilon();
+          s << "MinDiff: " << dag2BN_.epsilon();
         }
-        if (Dag2BN_.isEnabledMaxIter()) {
+        if (dag2BN_.isEnabledMaxIter()) {
           if (!first) s << ", ";
           first = false;
-          s << "MaxIter: " << Dag2BN_.maxIter();
+          s << "MaxIter: " << dag2BN_.maxIter();
         }
-        if (Dag2BN_.isEnabledMaxTime()) {
+        if (dag2BN_.isEnabledMaxTime()) {
           if (!first) s << ", ";
           first = false;
-          s << "MaxTime: " << Dag2BN_.maxTime();
+          s << "MaxTime: " << dag2BN_.maxTime();
         }
         s << "]";
         vals.emplace_back("EM stopping criteria", s.str(), comment);
@@ -601,9 +601,9 @@ namespace gum {
         case BNLearnerPriorType::SMOOTHING : useSmoothingPrior(learner.priorWeight_); break;
       }
 
-      useEM_ = learner.useEM_;
+      useEM_   = learner.useEM_;
       noiseEM_ = learner.noiseEM_;
-      Dag2BN_ = learner.Dag2BN_;
+      dag2BN_  = learner.dag2BN_;
 
       setMaxIndegree(learner.constraintIndegree_.maxIndegree());
       for (const auto src: learner.constraintNoParentNodes_.nodes()) {

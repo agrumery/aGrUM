@@ -214,7 +214,8 @@ namespace gum {
        */
       virtual std::pair< std::vector< double >, double >
           parametersAndLogLikelihood(const NodeId                 target_node,
-                                     const std::vector< NodeId >& conditioning_nodes) = 0;
+                                     const std::vector< NodeId >& conditioning_nodes)
+          = 0;
 
       /**
        * @brief sets a CPT's parameters and, possibly, return its log-likelihhod

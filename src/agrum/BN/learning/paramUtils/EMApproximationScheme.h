@@ -61,9 +61,8 @@ namespace gum {
      * @brief A class for parameterizing EM's parameter learning approximations
      * @ingroup learning_param_utils
      */
-    class EMApproximationScheme : public ApproximationScheme {
+    class EMApproximationScheme: public ApproximationScheme {
       public:
-
       /**
        * @brief initializes the EM parameter learning approximation with the min rate criterion
        * @param verbosity if set to true, EM will keep track of its history
@@ -79,7 +78,8 @@ namespace gum {
        * @brief sets the stopping criterion of EM as being the minimal difference between two
        * consecutive log-likelihoods
        * @param eps the log-likelihood difference below which EM stops its iterations
-       * @warning setting this stopping criterion disables the min rate criterion (if it was enabled)
+       * @warning setting this stopping criterion disables the min rate criterion (if it was
+       * enabled)
        * @throw OutOfBounds Raised if eps <= 0
        */
       void setEpsilon(double eps) override {
@@ -93,17 +93,18 @@ namespace gum {
        * @brief sets the stopping criterion of EM as being the minimal difference between two
        * consecutive log-likelihoods
        * @param eps the log-likelihood difference below which EM stops its iterations
-       * @warning setting this stopping criterion disables the min rate criterion (if it was enabled)
+       * @warning setting this stopping criterion disables the min rate criterion (if it was
+       * enabled)
        * @throw OutOfBounds Raised if eps <= 0
        */
-      void setMinDiffEpsilon(double eps) {
-        setEpsilon(eps);
-      }
+      void setMinDiffEpsilon(double eps) { setEpsilon(eps); }
 
       /**
-       * @brief sets the stopping criterion of EM as being the minimal log-likelihood's evolution rate
+       * @brief sets the stopping criterion of EM as being the minimal log-likelihood's evolution
+       * rate
        * @param rate the log-likelihood evolution rate below which EM stops its iterations
-       * @warning setting this stopping criterion disables the min diff criterion (if it was enabled)
+       * @warning setting this stopping criterion disables the min diff criterion (if it was
+       * enabled)
        * @throw OutOfBounds if rate<0
        */
       void setMinEpsilonRate(double rate) override {
@@ -114,8 +115,8 @@ namespace gum {
       }
     };
 
-  } // namespace learning
+  }   // namespace learning
 
-} // namespace gum
+}   // namespace gum
 
 #endif   // GUM_LEARNING_EM_APPROX_SCHEME_H

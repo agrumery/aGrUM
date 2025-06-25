@@ -96,34 +96,34 @@ Class BNLearner
     :widths: 10 10 10
     :header-rows: 0
 
-    * - `disableEMEpsilon <#pyagrum.BNLearner.disableEMEpsilon>`_
-      - `disableEMMaxIter <#pyagrum.BNLearner.disableEMMaxIter>`_
-      - `disableEMMaxTime <#pyagrum.BNLearner.disableEMMaxTime>`_
-    * - `disableEMMinEpsilonRate <#pyagrum.BNLearner.disableEMMinEpsilonRate>`_
+    * - `EMdisableEpsilon <#pyagrum.BNLearner.EMdisableEpsilon>`_
+      - `EMdisableMaxIter <#pyagrum.BNLearner.EMdisableMaxIter>`_
+      - `EMdisableMaxTime <#pyagrum.BNLearner.EMdisableMaxTime>`_
+    * - `EMdisableMinEpsilonRate <#pyagrum.BNLearner.EMdisableMinEpsilonRate>`_
       - `EMEpsilon <#pyagrum.BNLearner.EMEpsilon>`_
       - `EMHistory <#pyagrum.BNLearner.EMHistory>`_
     * - `EMMaxIter <#pyagrum.BNLearner.EMMaxIter>`_
       - `EMMaxTime <#pyagrum.BNLearner.EMMaxTime>`_
       - `EMMinEpsilonRate <#pyagrum.BNLearner.EMMinEpsilonRate>`_
     * - `EMState <#pyagrum.BNLearner.EMState>`_
-      - `EMStateApproximationScheme <#pyagrum.BNLearner.EMStateApproximationScheme>`_
+      - `EMStateAsInt <#pyagrum.BNLearner.EMStateAsInt>`_
       - `EMVerbosity <#pyagrum.BNLearner.EMVerbosity>`_
-    * - `enableEMEpsilon <#pyagrum.BNLearner.enableEMEpsilon>`_
-      - `enableEMMaxIter <#pyagrum.BNLearner.enableEMMaxIter>`_
-      - `enableEMMaxTime <#pyagrum.BNLearner.enableEMMaxTime>`_
-    * - `enableEMMinEpsilonRate <#pyagrum.BNLearner.enableEMMinEpsilonRate>`_
+    * - `EMenableEpsilon <#pyagrum.BNLearner.EMenableEpsilon>`_
+      - `EMenableMaxIter <#pyagrum.BNLearner.EMenableMaxIter>`_
+      - `EMenableMaxTime <#pyagrum.BNLearner.EMenableMaxTime>`_
+    * - `EMenableMinEpsilonRate <#pyagrum.BNLearner.EMenableMinEpsilonRate>`_
       - `forbidEM <#pyagrum.BNLearner.forbidEM>`_
-      - `isEnabledEMEpsilon <#pyagrum.BNLearner.isEnabledEMEpsilon>`_
-    * - `isEnabledEMMaxIter <#pyagrum.BNLearner.isEnabledEMMaxIter>`_
-      - `isEnabledEMMaxTime <#pyagrum.BNLearner.isEnabledEMMaxTime>`_
-      - `isEnabledEMMinEpsilonRate <#pyagrum.BNLearner.isEnabledEMMinEpsilonRate>`_
+      - `EMisEnabledEpsilon <#pyagrum.BNLearner.EMisEnabledEpsilon>`_
+    * - `EMisEnabledMaxIter <#pyagrum.BNLearner.EMisEnabledMaxIter>`_
+      - `EMisEnabledMaxTime <#pyagrum.BNLearner.EMisEnabledMaxTime>`_
+      - `EMisEnabledMinEpsilonRate <#pyagrum.BNLearner.EMisEnabledMinEpsilonRate>`_
     * - `isUsingEM <#pyagrum.BNLearner.isUsingEM>`_
-      - `nbrEMIterations <#pyagrum.BNLearner.nbrEMIterations>`_
-      - `setEMEpsilon <#pyagrum.BNLearner.setEMEpsilon>`_
-    * - `setEMMaxIter <#pyagrum.BNLearner.setEMMaxIter>`_
-      - `setEMMaxTime <#pyagrum.BNLearner.setEMMaxTime>`_
-      - `setEMMinEpsilonRate <#pyagrum.BNLearner.setEMMinEpsilonRate>`_
-    * - `setEMVerbosity <#pyagrum.BNLearner.setEMVerbosity>`_
+      - `EMnbrIterations <#pyagrum.BNLearner.EMnbrIterations>`_
+      - `EMsetEpsilon <#pyagrum.BNLearner.EMsetEpsilon>`_
+    * - `EMsetMaxIter <#pyagrum.BNLearner.EMsetMaxIter>`_
+      - `EMsetMaxTime <#pyagrum.BNLearner.EMsetMaxTime>`_
+      - `EMsetMinEpsilonRate <#pyagrum.BNLearner.EMsetMinEpsilonRate>`_
+    * - `EMsetVerbosity <#pyagrum.BNLearner.EMsetVerbosity>`_
       - `useEM <#pyagrum.BNLearner.useEM>`_
       - `useEMWithDiffCriterion <#pyagrum.BNLearner.useEMWithDiffCriterion>`_
     * - `useEMWithRateCriterion <#pyagrum.BNLearner.useEMWithRateCriterion>`_

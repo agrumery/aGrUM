@@ -39,6 +39,7 @@ import os
 import sys
 from datetime import datetime
 
+from .configuration import cfg
 from .utils import notif, setifyString, CrossPlatformRelPath, critic
 
 
@@ -49,8 +50,8 @@ def checkTests(current: dict[str, str]):
     current["modules"] = "BASE+BN"
     cde = "all"
 
-  alltests = allTests(setifyString(current["modules"]))
-
+  alltests = allTests(setifyString("+".join(cfg.modules)))
+  writeTestList(alltests)
   if cde == "all" or cde == "quick":
     return alltests
   elif cde == "list":

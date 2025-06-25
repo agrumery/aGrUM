@@ -109,7 +109,7 @@ namespace gum {
       _checkParameters_(target_node, conditioning_nodes, pot);
 
       std::vector< double > params;
-      double log_likelihood = 0.0;
+      double                log_likelihood = 0.0;
       if (compute_log_likelihood) {
         const auto xparams = parametersAndLogLikelihood(target_node, conditioning_nodes);
         params             = std::move(xparams).first;
@@ -138,7 +138,7 @@ namespace gum {
       _checkParameters_(target_node, conditioning_nodes, pot);
 
       std::vector< double > params;
-      double log_likelihood = 0.0;
+      double                log_likelihood = 0.0;
       if (compute_log_likelihood) {
         const auto xparams = parametersAndLogLikelihood(target_node, conditioning_nodes);
         params             = std::move(xparams).first;
@@ -156,7 +156,7 @@ namespace gum {
     INLINE double ParamEstimator::setParameters(const NodeId                 target_node,
                                                 const std::vector< NodeId >& conditioning_nodes,
                                                 Tensor< GUM_SCALAR >&        pot,
-                                                const bool                   compute_log_likelihood) {
+                                                const bool compute_log_likelihood) {
       return _setParameters_(target_node, conditioning_nodes, pot, compute_log_likelihood);
     }
 

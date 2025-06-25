@@ -183,7 +183,6 @@ namespace gum {
       /// @}
 
       private:
-
       std::pair< std::vector< double >, double >
           _parametersAndLogLikelihood_(const NodeId                 target_node,
                                        const std::vector< NodeId >& conditioning_nodes,

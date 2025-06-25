@@ -46,10 +46,10 @@
 %ignore *::setMandatoryArcs;
 %ignore *::addMandatoryArc(const gum::Arc& arc);
 %ignore *::eraseMandatoryArc(const gum::Arc& arc);
-%ignore gum::learning::BNLearner::EMState() const;
 %ignore gum::learning::BNLearner::state() const;
 %ignore gum::learning::BNLearner::EM();
 %ignore gum::learning::DAG2BNLearner::approximationScheme();
+
 
 
 %pythoncode {
@@ -96,13 +96,9 @@ SETPROP_THEN_RETURN_SELF(copyState);
     return Py_BuildValue("(dd)",res.first,res.second);
   }
 
-  PyObject *EMState() {
-    return Py_BuildValue("s", $self->EMStateMessage().c_str());
-  }
-
   bool _EM_warning() const {
     return $self->isUsingEM() &&
-      ($self->EMState() == gum::learning::BNLearner< double >::ApproximationSchemeSTATE::Stopped);
+      ($self->EMStateApproximationScheme() == gum::learning::BNLearner< double >::ApproximationSchemeSTATE::Stopped);
   }
 
   gum::learning::BNLearner< double >& setSliceOrder(PyObject * l) {

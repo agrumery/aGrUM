@@ -71,11 +71,10 @@ namespace gum {
     }
 
     /// returns the CPT's parameters corresponding to a given set of nodes
-    std::pair< std::vector< double >, double >
-        ParamEstimatorML::_parametersAndLogLikelihood_(
-            const NodeId                 target_node,
-            const std::vector< NodeId >& conditioning_nodes,
-            const bool                   compute_log_likelihood) {
+    std::pair< std::vector< double >, double > ParamEstimatorML::_parametersAndLogLikelihood_(
+        const NodeId                 target_node,
+        const std::vector< NodeId >& conditioning_nodes,
+        const bool                   compute_log_likelihood) {
       // create an idset that contains all the nodes in the following order:
       // first, the target node, then all the conditioning nodes
       IdCondSet idset(target_node, conditioning_nodes, true);
@@ -84,13 +83,12 @@ namespace gum {
       // score internal priors
       this->counter_.clear();   // for EM estimations, we need to disable caches
       const std::vector< double >& original_N_ijk = this->counter_.counts(idset, true);
-      std::vector< double > N_ijk = original_N_ijk;
-      const bool            informative_external_prior = this->external_prior_->isInformative();
+      std::vector< double >        N_ijk          = original_N_ijk;
+      const bool informative_external_prior       = this->external_prior_->isInformative();
       const bool informative_score_internal_prior = this->score_internal_prior_->isInformative();
 
       // add the priors pseudocounts
-      if (informative_external_prior)
-        this->external_prior_->addJointPseudoCount(idset, N_ijk);
+      if (informative_external_prior) this->external_prior_->addJointPseudoCount(idset, N_ijk);
       if (informative_score_internal_prior)
         this->score_internal_prior_->addJointPseudoCount(idset, N_ijk);
       double log_likelihood = 0.0;
@@ -174,9 +172,7 @@ namespace gum {
           for (std::size_t j = std::size_t(0), k = std::size_t(0); j < conditioning_domsize; ++j) {
             for (std::size_t i = std::size_t(0); i < target_domsize; ++i, ++k) {
               N_ijk[k] /= N_ij[j];
-              if (original_N_ijk[k]) {
-                log_likelihood += original_N_ijk[k] * std::log(N_ijk[k]);
-              }
+              if (original_N_ijk[k]) { log_likelihood += original_N_ijk[k] * std::log(N_ijk[k]); }
             }
           }
         } else {
@@ -198,9 +194,7 @@ namespace gum {
           if (compute_log_likelihood) {
             for (std::size_t k = std::size_t(0), end = N_ijk.size(); k < end; ++k) {
               N_ijk[k] /= sum;
-              if (original_N_ijk[k]) {
-                log_likelihood += original_N_ijk[k] * std::log(N_ijk[k]);
-              }
+              if (original_N_ijk[k]) { log_likelihood += original_N_ijk[k] * std::log(N_ijk[k]); }
             }
           } else {
             for (double& n_ijk: N_ijk)

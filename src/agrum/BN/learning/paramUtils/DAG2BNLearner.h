@@ -50,7 +50,6 @@
 
 #include <agrum/agrum.h>
 
-#include <agrum/base/core/approximations/approximationSchemeListener.h>
 #include <agrum/BN/learning/paramUtils/EMApproximationScheme.h>
 #include <agrum/BN/learning/paramUtils/paramEstimator.h>
 
@@ -66,7 +65,6 @@ namespace gum {
      */
     class DAG2BNLearner: public EMApproximationScheme {
       public:
-
       // ##########################################################################
       /// @name Constructors / Destructors
       // ##########################################################################
@@ -207,7 +205,7 @@ namespace gum {
        * corresponding log-likelihood as well. In this case, this log-likelihood
        * is stored into attribute log_likelihood_EM_
        */
-      double log_likelihood_EM_ {0.0};
+      double log_likelihood_EM_{0.0};
 
       /**
        * It may be the case that EM is stuck into decreasing the log-likelihood
@@ -218,7 +216,7 @@ namespace gum {
        * log-likelihood, we limit the number of consecutive times the
        * log-likelihood is allowed to be increased.
        */
-      unsigned int max_nb_dec_likelihood_iter_ {3};
+      unsigned int max_nb_dec_likelihood_iter_{3};
 
       /// copy a tensor into another whose variables' sequence differs
       /** The variables of both tensor should be the same, only their
@@ -240,9 +238,8 @@ namespace gum {
        * are learnt from the estimator
        */
       template < typename GUM_SCALAR = double >
-      BayesNet< GUM_SCALAR > _createBN_(ParamEstimator& estimator,
-                                        const DAG&      dag,
-                                        const bool      compute_log_likelihood);
+      BayesNet< GUM_SCALAR >
+          _createBN_(ParamEstimator& estimator, const DAG& dag, const bool compute_log_likelihood);
       /**
        * @brief performs the loops of the EM algorithm
        * @param EM_estimator the ParamEstimator used to estimate the values of the CPTs
@@ -256,7 +253,6 @@ namespace gum {
       BayesNet< GUM_SCALAR > _performEM_(ParamEstimator&          bootstrap_estimator,
                                          ParamEstimator&          EM_estimator,
                                          BayesNet< GUM_SCALAR >&& bn);
-
 
 
 #endif /* DOXYGEN_SHOULD_SKIP_THIS */

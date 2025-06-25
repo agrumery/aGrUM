@@ -103,7 +103,7 @@ namespace gum {
 
     /// returns the CPT's parameters of a given target node + its log-likelihood
     INLINE std::pair< std::vector< double >, double >
-        ParamEstimator::parametersAndLogLikelihood(const NodeId target_node) {
+           ParamEstimator::parametersAndLogLikelihood(const NodeId target_node) {
       return parametersAndLogLikelihood(target_node, empty_nodevect_);
     }
 

@@ -56,9 +56,7 @@
 #include <agrum/BN/learning/priors/DirichletPriorFromBN.h>
 
 namespace gum {
-
   namespace learning {
-
     class BNLearnerListener;
 
     /** @class BNLearner
@@ -238,7 +236,7 @@ namespace gum {
 
       /**
        * @brief use The EM algorithm to learn parameters
-       * 
+       *
        * This is essentially an alias for Method useEMWithRateCriterion().
        * @param epsilon sets the approximation stopping criterion: EM stops
        * whenever the absolute value of the relative difference between two
@@ -256,8 +254,7 @@ namespace gum {
        * @throws OutOfBounds is raised if epsilon is strictly negative or if
        * noise does not belong to interval [0,1].
        */
-      BNLearner< GUM_SCALAR >& useEM(const double epsilon,
-                                   const double noise = default_EM_noise) {
+      BNLearner< GUM_SCALAR >& useEM(const double epsilon, const double noise = default_EM_noise) {
         IBNLearner::useEM(epsilon, noise);
         return *this;
       }
@@ -279,9 +276,8 @@ namespace gum {
        * @throws OutOfBounds is raised if epsilon is not strictly positive or if
        * noise does not belong to interval [0,1].
        */
-      BNLearner< GUM_SCALAR >&
-          useEMWithRateCriterion(const double epsilon,
-                                 const double noise = default_EM_noise) {
+      BNLearner< GUM_SCALAR >& useEMWithRateCriterion(const double epsilon,
+                                                      const double noise = default_EM_noise) {
         IBNLearner::useEMWithRateCriterion(epsilon, noise);
         return *this;
       }
@@ -300,9 +296,8 @@ namespace gum {
        * @throws OutOfBounds is raised if epsilon is not strictly positive or if
        * noise does not belong to interval [0,1].
        */
-      BNLearner< GUM_SCALAR >&
-          useEMWithDiffCriterion(const double epsilon,
-                                 const double noise = default_EM_noise) {
+      BNLearner< GUM_SCALAR >& useEMWithDiffCriterion(const double epsilon,
+                                                      const double noise = default_EM_noise) {
         IBNLearner::useEMWithDiffCriterion(epsilon, noise);
         return *this;
       }
@@ -317,52 +312,57 @@ namespace gum {
        * @brief sets the stopping criterion of EM as being the minimal difference between two
        * consecutive log-likelihoods
        * @param eps the log-likelihood difference below which EM stops its iterations
-       * @warning setting this stopping criterion disables the min rate criterion (if it was enabled)
+       * @warning setting this stopping criterion disables the min rate criterion (if it was
+       * enabled)
        * @throw OutOfBounds if eps <= 0
        */
-      BNLearner< GUM_SCALAR >& setEMEpsilon(double eps) {
-        IBNLearner::setEMEpsilon(eps);
+      BNLearner< GUM_SCALAR >& EMsetEpsilon(const double eps) {
+        IBNLearner::EMsetEpsilon(eps);
         return *this;
       }
 
       /// Disable the min log-likelihood diff stopping criterion
-      BNLearner< GUM_SCALAR >& disableEMEpsilon() {
-        IBNLearner::disableEMEpsilon();
+      BNLearner< GUM_SCALAR >& EMdisableEpsilon() {
+        IBNLearner::EMdisableEpsilon();
         return *this;
       }
 
       /**
        * @brief Enable the log-likelihood min diff stopping criterion in EM
-       * @warning setting this stopping criterion disables the min rate criterion (if it was enabled)
+       * @warning setting this stopping criterion disables the min rate criterion (if it was
+       * enabled)
        */
-      BNLearner< GUM_SCALAR >& enableEMEpsilon() {
-        IBNLearner::enableEMEpsilon();
+      BNLearner< GUM_SCALAR >& EMenableEpsilon() {
+        IBNLearner::EMenableEpsilon();
         return *this;
       }
 
       /**
-       * @brief sets the stopping criterion of EM as being the minimal log-likelihood's evolution rate
+       * @brief sets the stopping criterion of EM as being the minimal log-likelihood's evolution
+       * rate
        * @param rate the log-likelihood evolution rate below which EM stops its iterations
-       * @warning setting this stopping criterion disables the min diff criterion (if it was enabled)
+       * @warning setting this stopping criterion disables the min diff criterion (if it was
+       * enabled)
        * @throw OutOfBounds if rate<=0
        */
-      BNLearner< GUM_SCALAR >& setEMMinEpsilonRate(double rate) {
-        IBNLearner::setEMMinEpsilonRate(rate);
+      BNLearner< GUM_SCALAR >& EMsetMinEpsilonRate(const double rate) {
+        IBNLearner::EMsetMinEpsilonRate(rate);
         return *this;
       }
 
       /// Disable the log-likelihood evolution rate stopping criterion
-      BNLearner< GUM_SCALAR >& disableEMMinEpsilonRate() {
-        IBNLearner::disableEMMinEpsilonRate();
+      BNLearner< GUM_SCALAR >& EMdisableMinEpsilonRate() {
+        IBNLearner::EMdisableMinEpsilonRate();
         return *this;
       }
 
       /**
        * @brief Enable the log-likelihood evolution rate stopping criterion
-       * @warning setting this stopping criterion disables the min diff criterion (if it was enabled)
+       * @warning setting this stopping criterion disables the min diff criterion (if it was
+       * enabled)
        */
-      BNLearner< GUM_SCALAR >& enableEMMinEpsilonRate() {
-        IBNLearner::enableEMMinEpsilonRate();
+      BNLearner< GUM_SCALAR >& EMenableMinEpsilonRate() {
+        IBNLearner::EMenableMinEpsilonRate();
         return *this;
       }
 
@@ -371,20 +371,20 @@ namespace gum {
        * @param max the max number of iterations that EM is allowed to perform
        * @throw OutOfBounds if max<=1
        */
-      BNLearner< GUM_SCALAR >& setEMMaxIter(Size max) {
-        IBNLearner::setEMMaxIter(max);
+      BNLearner< GUM_SCALAR >& EMsetMaxIter(const Size max) {
+        IBNLearner::EMsetMaxIter(max);
         return *this;
       }
 
       /// Disable stopping criterion on max iterations
-      BNLearner< GUM_SCALAR >& disableEMMaxIter() {
-        IBNLearner::disableEMMaxIter();
+      BNLearner< GUM_SCALAR >& EMdisableMaxIter() {
+        IBNLearner::EMdisableMaxIter();
         return *this;
       }
 
       /// Enable stopping criterion on max iterations
-      BNLearner< GUM_SCALAR >& enableEMMaxIter() {
-        IBNLearner::enableEMMaxIter();
+      BNLearner< GUM_SCALAR >& EMenableMaxIter() {
+        IBNLearner::EMenableMaxIter();
         return *this;
       }
 
@@ -393,29 +393,29 @@ namespace gum {
        * @param timeout the timeout in milliseconds
        * @throw OutOfBounds if timeout<=0.0
        */
-      BNLearner< GUM_SCALAR >& setEMMaxTime(double timeout) {
-        IBNLearner::setEMMaxTime(timeout);
+      BNLearner< GUM_SCALAR >& EMsetMaxTime(const double timeout) {
+        IBNLearner::EMsetMaxTime(timeout);
         return *this;
       }
 
       /// Disable EM's timeout stopping criterion
-      BNLearner< GUM_SCALAR >& disableEMMaxTime() {
-        IBNLearner::disableEMMaxTime();
+      BNLearner< GUM_SCALAR >& EMdisableMaxTime() {
+        IBNLearner::EMdisableMaxTime();
         return *this;
       }
 
       /// enable EM's timeout stopping criterion
-      BNLearner< GUM_SCALAR >& enableEMMaxTime() {
-        IBNLearner::enableEMMaxTime();
+      BNLearner< GUM_SCALAR >& EMenableMaxTime() {
+        IBNLearner::EMenableMaxTime();
         return *this;
       };
 
       /**
-     * @brief how many samples between 2 stoppings isEnabled
-     * @throw OutOfBounds if p<1
+       * @brief how many samples between 2 stoppings isEnabled
+       * @throw OutOfBounds if p<1
        */
-      BNLearner< GUM_SCALAR >& setEMPeriodSize(Size p) {
-        IBNLearner::setEMPeriodSize(p);
+      BNLearner< GUM_SCALAR >& EMsetPeriodSize(const Size p) {
+        IBNLearner::EMsetPeriodSize(p);
         return *this;
       }
 
@@ -423,8 +423,8 @@ namespace gum {
       using IBNLearner::EMPeriodSize;
 
       /// sets or unsets EM's verbosity
-      BNLearner< GUM_SCALAR >& setEMVerbosity(bool v) {
-        IBNLearner::setEMVerbosity(v);
+      BNLearner< GUM_SCALAR >& EMsetVerbosity(const bool v) {
+        IBNLearner::EMsetVerbosity(v);
         return *this;
       }
 
@@ -818,7 +818,6 @@ namespace gum {
     template < typename GUM_SCALAR >
     std::ostream& operator<<(std::ostream& output, const BNLearner< GUM_SCALAR >& learner);
   } /* namespace learning */
-
 } /* namespace gum */
 
 /// always include templated methods

@@ -114,8 +114,8 @@ namespace gum {
           conditioning_ids[i - 1] = varmap.get(*(vars[i]));
         }
 
-        log_likelihood_EM_ +=
-          estimator.setParameters(id, conditioning_ids, pot, compute_log_likelihood);
+        log_likelihood_EM_
+            += estimator.setParameters(id, conditioning_ids, pot, compute_log_likelihood);
       }
 
       return bn;
@@ -173,7 +173,7 @@ namespace gum {
         if (all_zeroed) {
           // get the conditioning variables: they are all the variables except
           // the first one in pot
-          const auto& vars = pot.variablesSequence();
+          const auto&           vars = pot.variablesSequence();
           std::vector< NodeId > conditioning_ids(vars.size() - 1);
           for (auto i = std::size_t(1); i < vars.size(); ++i) {
             conditioning_ids[i - 1] = varmap.get(*(vars[i]));
@@ -186,7 +186,6 @@ namespace gum {
 
       return _performEM_(bootstrap_estimator, EM_estimator, std::move(bn));
     }
-
 
     /// create a BN with EM: initialized by the parameters of a BN
     template < typename GUM_SCALAR >
@@ -204,11 +203,11 @@ namespace gum {
         return bn_copy;
       }
 
-      if (!this->isEnabledMinEpsilonRate() && !this->isEnabledEpsilon() &&
-          !this->isEnabledMaxIter() && !this->isEnabledMaxTime()) {
+      if (!this->isEnabledMinEpsilonRate() && !this->isEnabledEpsilon() && !this->isEnabledMaxIter()
+          && !this->isEnabledMaxTime()) {
         GUM_ERROR(OperationNotAllowed,
-                  "EM cannot be executed because no stopping criterion among " <<
-                  "{min rate, min diff, max iter, max time} has been selected")
+                  "EM cannot be executed because no stopping criterion among "
+                      << "{min rate, min diff, max iter, max time} has been selected")
       }
 
       // as bn will be modified, be sure that the DAG is kept unchanged
@@ -226,14 +225,14 @@ namespace gum {
       initApproximationScheme();
 
       // compute the initial value of the log-likelihood
-      log_likelihood_EM_ = 0.0;
+      log_likelihood_EM_            = 0.0;
       const VariableNodeMap& varmap = bn.variableNodeMap();
       EM_estimator.counter_.clear();   // for EM estimations, we need to disable caches
       for (const auto& node: bn.nodes()) {
         // get node's CPT and its conditioning variables: they are all the
         // variables except the first one in pot
-        const auto& pot = const_cast< Tensor< GUM_SCALAR >& >(bn.cpt(node));
-        const auto& vars = pot.variablesSequence();
+        const auto&           pot  = const_cast< Tensor< GUM_SCALAR >& >(bn.cpt(node));
+        const auto&           vars = pot.variablesSequence();
         std::vector< NodeId > conditioning_ids(vars.size() - 1);
         for (auto i = std::size_t(1); i < vars.size(); ++i) {
           conditioning_ids[i - 1] = varmap.get(*(vars[i]));
@@ -256,9 +255,9 @@ namespace gum {
       // EM and producing worst and worst Bayes nets, we stop the iterations
       // early and we return the best Bayes net found so far.
       BayesNet< GUM_SCALAR > best_bn;
-      bool must_return_best_bn = false;
-      unsigned int nb_dec_likelihood_iter = 0;
-      double delta = 0;
+      bool                   must_return_best_bn    = false;
+      unsigned int           nb_dec_likelihood_iter = 0;
+      double                 delta                  = 0;
 
       do {
         // bugfix for parallel execution of VariableElimination
@@ -275,14 +274,14 @@ namespace gum {
         if (log_likelihood_EM_ >= current_log_likelihood) {
           // here, we increased the log-likelihood, it is fine
           nb_dec_likelihood_iter = 0;
-          must_return_best_bn = false;
+          must_return_best_bn    = false;
         } else {
           // here, we decreased the log-likelihood, so we should keep track of the
           // best Bayes net found so far. If we decreased too many times the
           // log-likelihood, we should even stop EM
           ++nb_dec_likelihood_iter;
           if (nb_dec_likelihood_iter == 1) {
-            best_bn = bn; // bn is the Bayes net computed at the previous step
+            best_bn             = bn;   // bn is the Bayes net computed at the previous step
             must_return_best_bn = true;
           }
           if (nb_dec_likelihood_iter > max_nb_dec_likelihood_iter_) {
@@ -292,11 +291,12 @@ namespace gum {
         }
 
         // compute the difference in log-likelihood
-        delta = log_likelihood_EM_ - current_log_likelihood;
+        delta                  = log_likelihood_EM_ - current_log_likelihood;
         current_log_likelihood = log_likelihood_EM_;
 
         bn = std::move(new_bn);
-      } while (continueApproximationScheme(this->isEnabledMinEpsilonRate() ? -log_likelihood_EM_ : delta));
+      } while (continueApproximationScheme(this->isEnabledMinEpsilonRate() ? -log_likelihood_EM_
+                                                                           : delta));
 
       stopApproximationScheme();   // just to be sure of the approximationScheme
                                    // has been notified of the end of loop
