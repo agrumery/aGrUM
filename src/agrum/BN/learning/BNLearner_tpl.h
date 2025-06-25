@@ -455,7 +455,7 @@ namespace gum {
       if (useEM_) {
         comment = "";
         if (!hasMissingValues()) comment = "But no missing values in this database";
-        vals.emplace_back("EM", "True", "");
+        vals.emplace_back("use EM", "True", "");
         std::stringstream s;
         s << "[";
         bool first = true;
@@ -465,14 +465,17 @@ namespace gum {
         }
         if (Dag2BN_.isEnabledEpsilon()) {
           if (!first) s << ", ";
+          first = false;
           s << "MinDiff: " << Dag2BN_.epsilon();
         }
         if (Dag2BN_.isEnabledMaxIter()) {
           if (!first) s << ", ";
+          first = false;
           s << "MaxIter: " << Dag2BN_.maxIter();
         }
         if (Dag2BN_.isEnabledMaxTime()) {
           if (!first) s << ", ";
+          first = false;
           s << "MaxTime: " << Dag2BN_.maxTime();
         }
         s << "]";
