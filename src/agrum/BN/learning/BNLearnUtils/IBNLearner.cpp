@@ -63,8 +63,6 @@
 #endif /* GUM_NO_INLINE */
 
 namespace gum::learning {
-
-
   IBNLearner::Database::Database(const DatabaseTable& db) : _database_(db) {
     // get the variables names
     const auto&       var_names = _database_.variableNames();
@@ -606,7 +604,8 @@ namespace gum::learning {
 
     if (possible_edges.empty()) {
       for (const NodeId i: mgraph.nodes()) {
-        for (NodeId j = 0; j < i; ++j) {   // contiguous nodeIds !
+        for (NodeId j = 0; j < i; ++j) {
+          // contiguous nodeIds !
           mgraph.addEdge(j, i);
         }
       }
@@ -1101,6 +1100,13 @@ namespace gum::learning {
   }
 
   std::vector< double > IBNLearner::rawPseudoCount(const std::vector< NodeId >& vars) {
+    if (this->hasMissingValues()) {
+      GUM_ERROR(MissingValueInDatabase,
+                "BNLearner cannot compute pseudo-counts with missing values in the database")
+    }
+    if (vars.empty()) {
+      GUM_ERROR(OutOfBounds, "BNLearner::rawPseudoCount called with an empty vector of variables")
+    }
     Tensor< double > res;
 
     createPrior_();
@@ -1125,5 +1131,4 @@ namespace gum::learning {
     score.setRanges(new_ranges);
     ranges_ = score.ranges();
   }
-
 }   // namespace gum::learning

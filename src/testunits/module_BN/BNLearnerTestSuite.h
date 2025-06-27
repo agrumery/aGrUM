@@ -927,15 +927,26 @@ namespace gum_tests {
     }
 
     GUM_ACTIVE_TEST(_asia_with_missing_values) {
-      int nb = 0;
-      try {
-        gum::learning::BNLearner< double > learner(GET_RESSOURCES_PATH("csv/asia3-faulty.csv"),
-                                                   std::vector< std::string >{"BEURK"});
-        learner.useK2(std::vector< gum::NodeId >{1, 5, 2, 6, 0, 3, 4, 7});
-        learner.learnBN();
-      } catch (gum::MissingValueInDatabase&) { nb = 1; }
+      TS_ASSERT_THROWS(
+          {
+            gum::learning::BNLearner< double > learner(GET_RESSOURCES_PATH("csv/asia3-faulty.csv"),
+                                                       std::vector< std::string >{"BEURK"});
+            learner.useK2(std::vector< gum::NodeId >{1, 5, 2, 6, 0, 3, 4, 7});
+            learner.learnBN();
+          },
+          gum::MissingValueInDatabase&)
 
-      TS_ASSERT_EQUALS(nb, 1)
+      TS_ASSERT_THROWS(
+          {
+            gum::learning::BNLearner< double > learner(GET_RESSOURCES_PATH("csv/asia3-faulty.csv"),
+                                                       std::vector< std::string >{"BEURK"});
+            [[maybe_unused]] auto              n = learner.rawPseudoCount({
+                "smoking",
+                "lung_cancer",
+                "bronchitis",
+            });
+          },
+          gum::MissingValueInDatabase&)
     }
 
     GUM_ACTIVE_TEST(_BugDoumenc) {
@@ -1642,6 +1653,11 @@ namespace gum_tests {
                        std::vector< double >({2, 1, 1, 1, 0, 2}))
       TS_ASSERT_EQUALS(learner.rawPseudoCount(std::vector< std::string >({"Z", "X"})),
                        std::vector< double >({2, 1, 0, 1, 1, 2}))
+
+
+      TS_ASSERT_THROWS(
+          { [[maybe_unused]] auto n = learner.rawPseudoCount(std::vector< gum::NodeId >({})); },
+          gum::OutOfBounds&)
     }
 
     GUM_ACTIVE_TEST(NonRegressionZeroCount) {
