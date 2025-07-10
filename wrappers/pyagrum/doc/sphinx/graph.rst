@@ -9,40 +9,21 @@ For all types of graphs, nodes are int. If a graph of objects is needed (like :p
 Edges and Arcs
 --------------
 
-Arc
-^^^
-
 .. autoclass:: pyagrum.Arc
-
-
-Edge
-^^^^
 
 .. autoclass:: pyagrum.Edge
 
 Directed Graphs
 ---------------
 
-Digraph
-^^^^^^^
-
 .. autoclass:: pyagrum.DiGraph
-
-Directed Acyclic Graph
-^^^^^^^^^^^^^^^^^^^^^^
 
 .. autoclass:: pyagrum.DAG
 
 Undirected Graphs
 -----------------
 
-UndiGraph
-^^^^^^^^^
-
 .. autoclass:: pyagrum.UndiGraph
-
-Clique Graph
-^^^^^^^^^^^^
 
 .. autoclass:: pyagrum.CliqueGraph
 

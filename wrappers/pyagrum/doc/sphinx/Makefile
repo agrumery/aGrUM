@@ -17,50 +17,29 @@ PAPEROPT_a4     = -D latex_paper_size=a4
 PAPEROPT_letter = -D latex_paper_size=letter
 
 PAPER         =
-BUILDDIR      = ../../../../build/pyAgrum/release/wrappers/pyagrum/docs
-SITEDIR      = ./WebVersion
+RTDDIR      = ../../../../build/pyAgrum/release/wrappers/pyagrum/docs
+SITEDIR      = Web
 
 # You can set these variables from the command line.
-DEFAULTOPTS   = -j auto -c . -a -E -w sphinx_warnings.txt .
+DEFAULTOPTS   = -a -E -w sphinx_warnings.txt 
 
-SPHINXOPTS     = -t RTDVersion $(DEFAULTOPTS) 
-SITEOPTS       = -t WebVersion $(DEFAULTOPTS) 
+RTDOPTS     = -j auto $(DEFAULTOPTS) -c . 
+SITEOPTS       = $(DEFAULTOPTS) -c $(SITEDIR) $(SITEDIR)
 
-ALLSPHINXOPTS   =  $(PAPEROPT_$(PAPER)) $(SPHINXOPTS) 
+ALLRTDOPTS   =  $(PAPEROPT_$(PAPER)) $(RTDOPTS) 
 
 
-AGRUMBUILDDIR = "{agrum}/build/pyAgrum/release/wrappers/pyagrum/docs"
+AGRUMRTDDIR = "{agrum}/build/pyAgrum/release/wrappers/pyagrum/docs"
 
 # the i18n builder cannot share the environment and doctrees with the others
-I18NSPHINXOPTS  = $(PAPEROPT_$(PAPER)) $(SPHINXOPTS) .
+I18NRTDOPTS  = $(PAPEROPT_$(PAPER)) $(RTDOPTS) .
 
 .PHONY: help
 help:
 	@echo "SPHINX Makefile for '$(UNAME)' using '$(SPHINXBUILD)'"
 	@echo "Please use \`make <target>' where <target> is one of"
-	@echo "  html       to make standalone HTML files"
+	@echo "  rtd       to make standalone HTML files for the ReadTheDocs site"
 	@echo "  site       to make standalone markdown files for web site"
-	@echo "  dirhtml    to make HTML files named index.html in directories"
-	@echo "  singlehtml to make a single large HTML file"
-	@echo "  pickle     to make pickle files"
-	@echo "  json       to make JSON files"
-	@echo "  htmlhelp   to make HTML files and a HTML help project"
-	@echo "  qthelp     to make HTML files and a qthelp project"
-	@echo "  applehelp  to make an Apple Help Book"
-	@echo "  devhelp    to make HTML files and a Devhelp project"
-	@echo "  epub       to make an epub"
-	@echo "  epub3      to make an epub3"
-	@echo "  latex      to make LaTeX files, you can set PAPER=a4 or PAPER=letter"
-	@echo "  latexpdf   to make LaTeX files and run them through pdflatex"
-	@echo "  latexpdfja to make LaTeX files and run them through platex/dvipdfmx"
-	@echo "  text       to make text files"
-	@echo "  man        to make manual pages"
-	@echo "  texinfo    to make Texinfo files"
-	@echo "  info       to make Texinfo files and run them through makeinfo"
-	@echo "  gettext    to make PO message catalogs"
-	@echo "  changes    to make an overview of all changed/added/deprecated items"
-	@echo "  xml        to make Docutils-native XML files"
-	@echo "  pseudoxml  to make pseudoxml-XML files for display purposes"
 	@echo "  linkcheck  to check all external links for integrity"
 	@echo "  doctest    to run all doctests embedded in the documentation (if enabled)"
 	@echo "  coverage   to run coverage check of the documentation (if enabled)"
@@ -68,194 +47,190 @@ help:
 
 .PHONY: clean
 clean:
-	rm -rf $(BUILDDIR)/*
-	rm -rf $(SITEDIR)/*
+	rm -rf $(RTDDIR)/*
+	rm -rf $(SITEDIR)
+	rm -rf $(SITEDIR).zip
 
+
+.PHONY: html rtd
+rtd: html
+
+html: clean
+	$(SPHINXBUILD) -b html $(ALLRTDOPTS) . $(RTDDIR)
+	@echo
+	@echo "Build finished. The HTML pages are in $(AGRUMRTDDIR)/html."
 
 .PHONY: site
-site:
-	$(SPHINXBUILD) -M markdown $(SITEOPTS) $(SITEDIR)
-	@echo
-	@echo "Build finished. The HTML pages for the site are in $(SITEDIR)."
-
-.PHONY: html
-html:
-	$(SPHINXBUILD) -b html $(ALLSPHINXOPTS) $(BUILDDIR)/html
-	@echo
-	@echo "Build finished. The HTML pages are in $(AGRUMBUILDDIR)/html."
-
-.PHONY: md
-md:
-	$(SPHINXBUILD) -M markdown $(ALLSPHINXOPTS) $(BUILDDIR)/md
-	@echo
-	@echo "Build finished. The markdown pages are in $(AGRUMBUILDDIR)/mdls ."
-
+site: clean
+	@echo "Building the site in $(SITEDIR)..."
+	python3 webbuild.py $(SITEDIR)
+	
 .PHONY: dirhtml
 dirhtml:
-	$(SPHINXBUILD) -b dirhtml $(ALLSPHINXOPTS) $(BUILDDIR)/dirhtml
+	$(SPHINXBUILD) -b dirhtml $(ALLRTDOPTS) $(RTDDIR)/dirhtml
 	@echo
-	@echo "Build finished. The HTML pages are in $(AGRUMBUILDDIR)/dirhtml."
+	@echo "Build finished. The HTML pages are in $(AGRUMRTDDIR)/dirhtml."
 
 .PHONY: singlehtml
 singlehtml:
-	$(SPHINXBUILD) -b singlehtml $(ALLSPHINXOPTS) $(BUILDDIR)/singlehtml
+	$(SPHINXBUILD) -b singlehtml $(ALLRTDOPTS) $(RTDDIR)/singlehtml
 	@echo
-	@echo "Build finished. The HTML page is in $(BUILDDIR)/singlehtml."
+	@echo "Build finished. The HTML page is in $(RTDDIR)/singlehtml."
 
 .PHONY: pickle
 pickle:
-	$(SPHINXBUILD) -b pickle $(ALLSPHINXOPTS) $(BUILDDIR)/pickle
+	$(SPHINXBUILD) -b pickle $(ALLRTDOPTS) $(RTDDIR)/pickle
 	@echo
 	@echo "Build finished; now you can process the pickle files."
 
 .PHONY: json
 json:
-	$(SPHINXBUILD) -b json $(ALLSPHINXOPTS) $(BUILDDIR)/json
+	$(SPHINXBUILD) -b json $(ALLRTDOPTS) $(RTDDIR)/json
 	@echo
 	@echo "Build finished; now you can process the JSON files."
 
 .PHONY: htmlhelp
 htmlhelp:
-	$(SPHINXBUILD) -b htmlhelp $(ALLSPHINXOPTS) $(BUILDDIR)/htmlhelp
+	$(SPHINXBUILD) -b htmlhelp $(ALLRTDOPTS) $(RTDDIR)/htmlhelp
 	@echo
 	@echo "Build finished; now you can run HTML Help Workshop with the" \
-	      ".hhp project file in $(BUILDDIR)/htmlhelp."
+	      ".hhp project file in $(RTDDIR)/htmlhelp."
 
 .PHONY: qthelp
 qthelp:
-	$(SPHINXBUILD) -b qthelp $(ALLSPHINXOPTS) $(BUILDDIR)/qthelp
+	$(SPHINXBUILD) -b qthelp $(ALLRTDOPTS) $(RTDDIR)/qthelp
 	@echo
 	@echo "Build finished; now you can run "qcollectiongenerator" with the" \
-	      ".qhcp project file in $(BUILDDIR)/qthelp, like this:"
-	@echo "# qcollectiongenerator $(BUILDDIR)/qthelp/pyagrum.qhcp"
+	      ".qhcp project file in $(RTDDIR)/qthelp, like this:"
+	@echo "# qcollectiongenerator $(RTDDIR)/qthelp/pyagrum.qhcp"
 	@echo "To view the help file:"
-	@echo "# assistant -collectionFile $(BUILDDIR)/qthelp/pyagrum.qhc"
+	@echo "# assistant -collectionFile $(RTDDIR)/qthelp/pyagrum.qhc"
 
 .PHONY: applehelp
 applehelp:
-	$(SPHINXBUILD) -b applehelp $(ALLSPHINXOPTS) $(BUILDDIR)/applehelp
+	$(SPHINXBUILD) -b applehelp $(ALLRTDOPTS) $(RTDDIR)/applehelp
 	@echo
-	@echo "Build finished. The help book is in $(BUILDDIR)/applehelp."
+	@echo "Build finished. The help book is in $(RTDDIR)/applehelp."
 	@echo "N.B. You won't be able to view it unless you put it in" \
 	      "~/Library/Documentation/Help or install it in your application" \
 	      "bundle."
 
 .PHONY: devhelp
 devhelp:
-	$(SPHINXBUILD) -b devhelp $(ALLSPHINXOPTS) $(BUILDDIR)/devhelp
+	$(SPHINXBUILD) -b devhelp $(ALLRTDOPTS) $(RTDDIR)/devhelp
 	@echo
 	@echo "Build finished."
 	@echo "To view the help file:"
 	@echo "# mkdir -p $$HOME/.local/share/devhelp/pyAgrum"
-	@echo "# ln -s $(BUILDDIR)/devhelp $$HOME/.local/share/devhelp/pyAgrum"
+	@echo "# ln -s $(RTDDIR)/devhelp $$HOME/.local/share/devhelp/pyAgrum"
 	@echo "# devhelp"
 
 .PHONY: epub
 epub:
-	$(SPHINXBUILD) -b epub $(ALLSPHINXOPTS) $(BUILDDIR)/epub
+	$(SPHINXBUILD) -b epub $(ALLRTDOPTS) $(RTDDIR)/epub
 	@echo
-	@echo "Build finished. The epub file is in $(BUILDDIR)/epub."
+	@echo "Build finished. The epub file is in $(RTDDIR)/epub."
 
 .PHONY: epub3
 epub3:
-	$(SPHINXBUILD) -b epub3 $(ALLSPHINXOPTS) $(BUILDDIR)/epub3
+	$(SPHINXBUILD) -b epub3 $(ALLRTDOPTS) $(RTDDIR)/epub3
 	@echo
-	@echo "Build finished. The epub3 file is in $(BUILDDIR)/epub3."
+	@echo "Build finished. The epub3 file is in $(RTDDIR)/epub3."
 
 .PHONY: latex
 latex:
-	$(SPHINXBUILD) -b latex $(ALLSPHINXOPTS) $(BUILDDIR)/latex
+	$(SPHINXBUILD) -b latex $(ALLRTDOPTS) $(RTDDIR)/latex
 	@echo
-	@echo "Build finished; the LaTeX files are in $(AGRUMBUILDDIR)/latex."
+	@echo "Build finished; the LaTeX files are in $(AGRUMRTDDIR)/latex."
 	@echo "Run \`make' in that directory to run these through (pdf)latex" \
 	      "(use \`make latexpdf' here to do that automatically)."
 
 .PHONY: latexpdf
 latexpdf:
-	$(SPHINXBUILD) -b latex $(ALLSPHINXOPTS) $(BUILDDIR)/latex
+	$(SPHINXBUILD) -b latex $(ALLRTDOPTS) $(RTDDIR)/latex
 	@echo "Running LaTeX files through pdflatex..."
-	$(MAKE) -C $(BUILDDIR)/latex all-pdf
-	@echo "pdflatex finished; the PDF files are in $(AGRUMBUILDDIR)/latex."
+	$(MAKE) -C $(RTDDIR)/latex all-pdf
+	@echo "pdflatex finished; the PDF files are in $(AGRUMRTDDIR)/latex."
 
 .PHONY: latexpdfja
 latexpdfja:
-	$(SPHINXBUILD) -b latex $(ALLSPHINXOPTS) $(BUILDDIR)/latex
+	$(SPHINXBUILD) -b latex $(ALLRTDOPTS) $(RTDDIR)/latex
 	@echo "Running LaTeX files through platex and dvipdfmx..."
-	$(MAKE) -C $(BUILDDIR)/latex all-pdf-ja
-	@echo "pdflatex finished; the PDF files are in $(AGRUMBUILDDIR)/latex."
+	$(MAKE) -C $(RTDDIR)/latex all-pdf-ja
+	@echo "pdflatex finished; the PDF files are in $(AGRUMRTDDIR)/latex."
 
 .PHONY: text
 text:
-	$(SPHINXBUILD) -b text $(ALLSPHINXOPTS) $(BUILDDIR)/text
+	$(SPHINXBUILD) -b text $(ALLRTDOPTS) $(RTDDIR)/text
 	@echo
-	@echo "Build finished. The text files are in $(AGRUMBUILDDIR)/text."
+	@echo "Build finished. The text files are in $(AGRUMRTDDIR)/text."
 
 .PHONY: man
 man:
-	$(SPHINXBUILD) -b man $(ALLSPHINXOPTS) $(BUILDDIR)/man
+	$(SPHINXBUILD) -b man $(ALLRTDOPTS) $(RTDDIR)/man
 	@echo
-	@echo "Build finished. The manual pages are in $(AGRUMBUILDDIR)/man."
+	@echo "Build finished. The manual pages are in $(AGRUMRTDDIR)/man."
 
 .PHONY: texinfo
 texinfo:
-	$(SPHINXBUILD) -b texinfo $(ALLSPHINXOPTS) $(BUILDDIR)/texinfo
+	$(SPHINXBUILD) -b texinfo $(ALLRTDOPTS) $(RTDDIR)/texinfo
 	@echo
-	@echo "Build finished. The Texinfo files are in $(AGRUMBUILDDIR)/texinfo."
+	@echo "Build finished. The Texinfo files are in $(AGRUMRTDDIR)/texinfo."
 	@echo "Run \`make' in that directory to run these through makeinfo" \
 	      "(use \`make info' here to do that automatically)."
 
 .PHONY: info
 info:
-	$(SPHINXBUILD) -b texinfo $(ALLSPHINXOPTS) $(BUILDDIR)/texinfo
+	$(SPHINXBUILD) -b texinfo $(ALLRTDOPTS) $(RTDDIR)/texinfo
 	@echo "Running Texinfo files through makeinfo..."
-	make -C $(BUILDDIR)/texinfo info
-	@echo "makeinfo finished; the Info files are in $(AGRUMBUILDDIR)/texinfo."
+	make -C $(RTDDIR)/texinfo info
+	@echo "makeinfo finished; the Info files are in $(AGRUMRTDDIR)/texinfo."
 
 .PHONY: gettext
 gettext:
-	$(SPHINXBUILD) -b gettext $(I18NSPHINXOPTS) $(BUILDDIR)/locale
+	$(SPHINXBUILD) -b gettext $(I18NRTDOPTS) $(RTDDIR)/locale
 	@echo
-	@echo "Build finished. The message catalogs are in $(AGRUMBUILDDIR)/locale."
+	@echo "Build finished. The message catalogs are in $(AGRUMRTDDIR)/locale."
 
 .PHONY: changes
 changes:
-	$(SPHINXBUILD) -b changes $(ALLSPHINXOPTS) $(BUILDDIR)/changes
+	$(SPHINXBUILD) -b changes $(ALLRTDOPTS) $(RTDDIR)/changes
 	@echo
-	@echo "The overview file is in $(BUILDDIR)/changes."
+	@echo "The overview file is in $(RTDDIR)/changes."
 
 .PHONY: linkcheck
 linkcheck:
-	$(SPHINXBUILD) -b linkcheck $(ALLSPHINXOPTS) $(BUILDDIR)/linkcheck
+	$(SPHINXBUILD) -b linkcheck $(ALLRTDOPTS) $(RTDDIR)/linkcheck
 	@echo
 	@echo "Link check complete; look for any errors in the above output " \
-	      "or in $(BUILDDIR)/linkcheck/output.txt."
+	      "or in $(RTDDIR)/linkcheck/output.txt."
 
 .PHONY: doctest
 doctest:
-	$(SPHINXBUILD) -b doctest $(ALLSPHINXOPTS) $(BUILDDIR)/doctest
+	$(SPHINXBUILD) -b doctest $(ALLRTDOPTS) $(RTDDIR)/doctest
 	@echo "Testing of doctests in the sources finished, look at the " \
-	      "results in $(BUILDDIR)/doctest/output.txt."
+	      "results in $(RTDDIR)/doctest/output.txt."
 
 .PHONY: coverage
 coverage:
-	$(SPHINXBUILD) -b coverage $(ALLSPHINXOPTS) $(BUILDDIR)/coverage
+	$(SPHINXBUILD) -b coverage $(ALLRTDOPTS) $(RTDDIR)/coverage
 	@echo "Testing of coverage in the sources finished, look at the " \
-	      "results in $(BUILDDIR)/coverage/python.txt."
+	      "results in $(RTDDIR)/coverage/python.txt."
 
 .PHONY: xml
 xml:
-	$(SPHINXBUILD) -b xml $(ALLSPHINXOPTS) $(BUILDDIR)/xml
+	$(SPHINXBUILD) -b xml $(ALLRTDOPTS) $(RTDDIR)/xml
 	@echo
-	@echo "Build finished. The XML files are in $(AGRUMBUILDDIR)/xml."
+	@echo "Build finished. The XML files are in $(AGRUMRTDDIR)/xml."
 
 .PHONY: pseudoxml
 pseudoxml:
-	$(SPHINXBUILD) -b pseudoxml $(ALLSPHINXOPTS) $(BUILDDIR)/pseudoxml
+	$(SPHINXBUILD) -b pseudoxml $(ALLRTDOPTS) $(RTDDIR)/pseudoxml
 	@echo
-	@echo "Build finished. The pseudo-XML files are in $(AGRUMBUILDDIR)/pseudoxml."
+	@echo "Build finished. The pseudo-XML files are in $(AGRUMRTDDIR)/pseudoxml."
 
 .PHONY: dummy
 dummy:
-	$(SPHINXBUILD) -b dummy $(ALLSPHINXOPTS) $(BUILDDIR)/dummy
+	$(SPHINXBUILD) -b dummy $(ALLRTDOPTS) $(RTDDIR)/dummy
 	@echo
 	@echo "Build finished. Dummy builder generates no files."

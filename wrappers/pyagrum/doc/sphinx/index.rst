@@ -14,7 +14,7 @@ with Bayesian networks  and others probabilistic graphical models : Markov rando
 influence diagrams (ID) and LIMIDs, credal networks (CN), dynamic BN (dBN), probabilistic relational models (PRM).
 
 .. important::
-  Since pyAgrum 2.0.0, the package name follows PEP8 rules and is now `pyagrum` (lowercase). 
+  Since pyAgrum 2.0.0, the package name follows PEP8 rules and is now `pyagrum` (lowercase).
   Please use ``import pyagrum`` instead of ``import pyAgrum`` in your code.
 
   See the `CHANGELOG <https://gitlab.com/agrumery/aGrUM/-/blob/master/CHANGELOG.md?ref_type=heads#changelog-for-200>`_  for more details.
@@ -29,22 +29,24 @@ pyAgrum aims to allow to easily use (as well as to prototype new algorithms on)
 Bayesian network and other graphical models.
 
 pyAgrum contains :
+
   * :ref:`tutorials as jupyter notebooks <Notebooks>`.
   * a :ref:`comprehensive API documentation <Reference manual>`.
   * a `gitlab repository <https://gitlab.com/agrumery/aGrUM>`_.
   * and a `website <http://agrum.org>`_.
 
-.. only: RTDVersion
-  .. toctree::
-    :caption: Tutorials and notebooks
-    :name: Notebooks
-    :titlesonly:
-    :maxdepth: 1
+<!-- SKIP WEBSITE -->
+.. toctree::
+  :caption: Tutorials and notebooks
+  :name: Notebooks
+  :titlesonly:
+  :maxdepth: 1
 
   notebooks
 
 Reference manual
 ================
+<!-- END SKIP WEBSITE -->
 
 .. toctree::
   :caption: 1- Fundamental components
@@ -58,10 +60,10 @@ Reference manual
   :caption: 2- Bayesian networks
   :maxdepth: 2
 
+  BNLearning
   BNModel
   BNinput-output
   BNInference
-  BNLearning
   BNTools
   Classifier
 
@@ -70,6 +72,9 @@ Reference manual
   :maxdepth: 2
 
   Causal
+  CausalModel
+  CausalInference
+  CausalEffectEstimation
 
 
 .. toctree::
@@ -99,7 +104,7 @@ Reference manual
   lib.image
   lib.explain
   lib.dBN
-  pyagrum.lib
+  pyAgrum.lib
 
 .. toctree::
   :caption: 7- pyAgrum's tools
@@ -113,7 +118,7 @@ Reference manual
   exceptions
 
 .. toctree::
-  :caption: 6- Customizing pyAgrum
+  :caption: 8- Customizing pyAgrum
   :maxdepth: 1
   :titlesonly:
 
@@ -121,7 +126,7 @@ Reference manual
 
 
 .. toctree::
-  :caption: Appendices
+  :caption: 9- Appendices
   :maxdepth: 1
 
   bibliography

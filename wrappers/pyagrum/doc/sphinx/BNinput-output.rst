@@ -19,11 +19,11 @@ The BIFXML format is the recommended way to save and load graphical models as it
 
 Example usage::
 
-    import pyAgrum as gum
-    
+    import pyagrum as gum
+
     # Save to BIFXML
     gum.saveBN(bn, "model.bifxml")
-    
+
     # Load from BIFXML
     bn = gum.loadBN("model.bifxml")
 
@@ -32,17 +32,17 @@ Example usage::
 Pickle (Alternative for complete preservation)
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-The Python ``pickle`` format 
+The Python ``pickle`` format
 
 Example usage::
 
-    import pyAgrum as gum
+    import pyagrum as gum
     import pickle
-    
+
     # Save model
     with open('model.pkl', 'wb') as f:
         pickle.dump(bn, f)
-    
+
     # Load model
     with open('model.pkl', 'rb') as f:
         bn2 = pickle.load(f)
