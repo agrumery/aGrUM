@@ -54,7 +54,7 @@ from .configuration import cfg
 FOUND_WHEEL = True
 
 try:
-  import wheel.bdist_wheel as pep
+  import setuptools.command.bdist_wheel as pep
   from wheel.vendored.packaging import tags as wheel_tags
 except ImportError:
   FOUND_WHEEL = False
@@ -66,7 +66,7 @@ def wheel(current: dict[str, str]):
   if FOUND_WHEEL:
     _go_wheel(current)
   else:
-    critic("Please install package wheel to build wheels using act (pip install wheel).")
+    critic("Please install wheel and setuptools (>= v70.1) to build wheels using act (pip install wheel/pip install setuptools).")
 
 
 def _go_wheel(current: dict[str, str]):
