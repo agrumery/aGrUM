@@ -8,8 +8,9 @@ Bayesian Network Mixture
 
 A Mixture of BNs is a list of BNs, each one having its own weight. There are 2 types of mixtures yet.
 Both inherit a mother :class:`pyagrum.bnmixture.IMixture`, most functions are the same, the main difference is the purpose :
-    - BNMixture : Used with known BNs or databases to compare different instances of the same model. Inference and learning are the same as for BN, but for many BNs at once.
-    - BootstrapMixture : Used with one BN or database which becomes the reference BN. All the other BNs added are bootstrap-generated (bootstrap is a method of resampling used to get estimators when the database is limited). When learning BNs, default weight is 1.
+
+  - BNMixture : Used with known BNs or databases to compare different instances of the same model. Inference and learning are the same as for BN, but for many BNs at once.
+  - BootstrapMixture : Used with one BN or database which becomes the reference BN. All the other BNs added are bootstrap-generated (bootstrap is a method of resampling used to get estimators when the database is limited). When learning BNs, default weight is 1.
 
 
 **Bootstrap sampling**

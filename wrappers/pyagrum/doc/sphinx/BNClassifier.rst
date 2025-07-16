@@ -1,11 +1,11 @@
-Classifier
-==========
+Classifier with Bayesian Networks
+=================================
 
 Probabilistic classification in pyAgrum aims to propose a scikit-learn-like (binary and multi-class) classifier class that can be used in the same codes as scikit-learn classifiers. Moreover, even if the classifier wraps a full Bayesian network, skbn optimally encodes the classifier using the smallest set of needed features following the d-separation criterion (Markov Blanket).
 
 .. figure:: _static/classifiers.png
     :align: center
-    :alt: Causality in pyAgrum
+    :alt: Classifier in pyAgrum
 
     An  `example from scikit-learn <https://scikit-learn.org/stable/auto_examples/classification/plot_classifier_comparison.html>`_ where a last column with a BNClassifier has been added flawlessly (see `this notebooks <notebooks.html#bayesian-networks-as-scikit-learn-compliant-classifiers>`_).
 

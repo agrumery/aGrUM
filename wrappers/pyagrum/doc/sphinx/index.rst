@@ -60,12 +60,12 @@ Reference manual
   :caption: 2- Bayesian networks
   :maxdepth: 2
 
-  BNLearning
   BNModel
   BNinput-output
   BNInference
+  BNLearning
+  BNClassifier
   BNTools
-  Classifier
 
 .. toctree::
   :caption: 3- Causality

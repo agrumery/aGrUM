@@ -19,7 +19,7 @@ The causality module consists of pure Python 3 scripts built on top of pyAgrum's
 .. note::
     In the figure above, `pyagrum.causal` module can use a LaTeX special arrow (:math:`\hookrightarrow`) to compactly represent an intervention. By default, it uses the classical "do" notation. You can change this behavior to anything you want by using the following configuration keys:
 
-    .. code::
+    .. code-block:: python
 
             pyagrum.config["causal","latex_do_prefix"]="\hookrightarrow("
             pyagrum.config["causal","latex_do_suffix"]=")"
@@ -37,7 +37,7 @@ Causel Effect estimation
 ^^^^^^^^^^^^^^^^^^^^^^^^
 
 .. toctree::
-   :maxdepth: 1
+  :maxdepth: 1
 
   CausalEffectEstimation
 
