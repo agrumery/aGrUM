@@ -127,7 +127,8 @@ def _simplify_dependencies(ancestors: dict[str, dict[str, int]], deps: dict[str,
 
 def draw_gum_dependencies(deps: dict[str, list[str]]):
   import pydot as pdp
-  asize=0.5
+
+  asize = 0.5
 
   colors = {
     "base/core": ("blues9", "#6677AA"),

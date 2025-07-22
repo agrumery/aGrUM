@@ -74,10 +74,20 @@ class ActBuilder:
   def run(self):
     raise NotImplementedError()
 
-  def execFromLine(self, cmd: str, silent: bool = False, checkRC: bool = True) -> int:
+  def execFromLine(
+    self,
+    cmd: str,
+    *,
+    silent: bool = False,
+    checkRC: bool = True,
+    bufferized: bool = True,
+  ) -> int:
     if self.current["dry_run"]:
       notif(cmd)
       return 0
+    if not bufferized:
+      process = Popen(cmd, shell=True)
+      return process.wait()
 
     process = Popen(cmd, shell=True, stdout=PIPE, stderr=STDOUT)
 
@@ -181,9 +191,9 @@ class ActBuilder:
     else:
       notif("┏─────────┳──────────────┓")
       if tc > MINTIME:
-        notif(f"┃ cmake   ┃ ⏱️ {tc:9.2f}s ┃")
+        notif(f"┃ cmake   ┃ ⏱️ {tc:8.2f}s ┃")
       if tm > MINTIME:
-        notif(f"┃ make    ┃ ⏱️ {tm:9.2f}s ┃")
+        notif(f"┃ make    ┃ ⏱️ {tm:8.2f}s ┃")
       if tp > MINTIME:
-        notif(f"┃ post    ┃ ⏱️ {tp:9.2f}s ┃")
+        notif(f"┃ post    ┃ ⏱️ {tp:8.2f}s ┃")
       notif("┗─────────┻──────────────┛")

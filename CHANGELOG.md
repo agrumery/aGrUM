@@ -3,17 +3,22 @@
 ## Changelog for 2.2.0
 
 - aGrUM
-  - improved cmake files and act (for python tests mainly)
-  - update wheels 
-  - enhanced `gum::BNLearner::copyState` to more correctly handle constraints.
+  - (internal) Improved cmake files and act
+  - Enhanced `gum::BNLearner::copyState` to more correctly handle constraints.
+  - Enhanced `gum::BNLearner`'s EM algorithm to enable user-based initialization.
+  - Enhanced `gum::BNLearner`'s EM algorithm to provide more flexible stopping criteria.
+  - Added first version of `CITATION.cff` file.
   
 - pyAgrum
-  - improved documentations coverage
-  - improved API for `pyagrum.lib.DiscreteTypeProcessor`
-  - used quantile_method='averaged_inverted_cdf' when quantile method is used for discretization. (sklearn >=1.7 needed).
-  - new (experimental) option for building pyAgrum :--no-gil.
-  - new target for sphinx : markdown for website
-
+  - Improved documentations coverage
+  - Update wheels
+  - Improved API for `pyagrum.lib.DiscreteTypeProcessor`
+  - Used quantile_method='averaged_inverted_cdf' when quantile method is used for discretization. (sklearn >=1.7 needed).
+  - New (experimental) option for building pyAgrum :--no-gil.
+  - New target for sphinx : markdown for website (new target `site` for sphinx Makefile).
+  - Enhanced `pyagrum.BNLearner`'s EM algorithm to enable user-based initialization.
+  - Enhanced `pyagrum.BNLearner`'s EM algorithm to provide more flexible stopping criteria.
+  - Improved documentaiton. Especially BNLearner and EM's documentation and tutorial.
 
 ## Changelog for 2.1.1
 

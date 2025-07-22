@@ -151,10 +151,10 @@ def chgIndexForWeb(site_dir: str):
   with open(index_path, "r") as f:
     skip = False
     for line in f:
-      if line.startswith("<!-- SKIP"):
+      if line.startswith(".. SKIP WEBSITE"):
         skip = True
         continue
-      if line.startswith("<!-- END SKIP"):
+      if line.startswith(".. END SKIP WEBSITE"):
         skip = False
         continue
       if not skip:

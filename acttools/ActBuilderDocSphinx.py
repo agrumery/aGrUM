@@ -64,7 +64,7 @@ class ActBuilderDocSphinx(ActBuilder):
     safe_cd(self.current, "wrappers")
     safe_cd(self.current, "pyagrum")
     safe_cd(self.current, "doc")
-    self.execFromLine("make html")
+    self.execFromLine("make")
     safe_cd(self.current, "..")
     safe_cd(self.current, "..")
     safe_cd(self.current, "..")

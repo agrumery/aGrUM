@@ -270,7 +270,7 @@ class ActBuilderPyAgrum(ActBuilder):
     t2 = time.time()
     self.run_start(prefix + "post")
     post_cde = self.build_post()
-    err = err or 0 < self.execFromLine(post_cde, checkRC=False)
+    err = err or 0 < self.execFromLine(post_cde, checkRC=False, bufferized=False)
     t3 = time.time()
 
     gc = t1 - t0

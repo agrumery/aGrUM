@@ -35,7 +35,7 @@ pyAgrum contains :
   * a `gitlab repository <https://gitlab.com/agrumery/aGrUM>`_.
   * and a `website <http://agrum.org>`_.
 
-<!-- SKIP WEBSITE -->
+.. SKIP WEBSITE
 .. toctree::
   :caption: Tutorials and notebooks
   :name: Notebooks
@@ -46,7 +46,7 @@ pyAgrum contains :
 
 Reference manual
 ================
-<!-- END SKIP WEBSITE -->
+.. END SKIP WEBSITE
 
 .. toctree::
   :caption: 1- Fundamental components
