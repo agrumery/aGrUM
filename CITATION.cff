@@ -1,0 +1,72 @@
+# This CITATION.cff file was generated with cffinit.
+# Visit https://bit.ly/cffinit to generate yours today!
+
+cff-version: 1.2.0
+title: "pyAgrum/aGrUM"
+message: >-
+  If you use this software, please cite it using the
+  metadata from this file.
+type: software
+authors:
+  - given-names: Pierre-Henri
+    family-names: WUILLEMIN
+    email: pierre-henri.wuillemin@lip6.fr
+    affiliation: Sorbonne Université / CNRS
+    orcid: 'https://orcid.org/0000-0003-3691-4886'
+  - given-names: Christophe
+    family-names: GONZALES
+    email: christophe.gonzales@lis-lab.fr
+    affiliation: AMU / CNRS
+    orcid: 'https://orcid.org/0009-0006-1633-5405'
+identifiers:
+  - type: url
+    value: 'https://hal.archives-ouvertes.fr/hal-03135721'
+    description: >-
+      aGrUM/pyAgrum : a Toolbox to Build Models and
+      Algorithms for Probabilistic Graphical Models in
+      Python
+  - type: url
+    value: 'https://hal.archives-ouvertes.fr/hal-01509651'
+    description: 'aGrUM: a Graphical Universal Model framework'
+repository-code: 'https://gitlab.com/agrumery/aGrUM'
+url: 'https://agrum.gitlab.io/'
+repository: 'https://github.com/agrumery/aGrUM'
+abstract: >-
+  aGrUM is a C++ library for graphical models. It is
+  designed for easily building applications using graphical
+  models such as Bayesian networks, influence diagrams,
+  decision trees, GAI networks or Markov decision processes.
+
+
+  pyAgrum is a Python wrapper for the C++ aGrUM library
+  (using SWIG interface generator). It provides a high-level
+  interface to the part of aGrUM allowing to create, model,
+  learn, use, calculate with and embed Bayesian Networks and
+  other graphical models. Some specific (python and C++)
+  codes are added in order to simplify and extend the aGrUM
+  API.
+keywords:
+  - Bayesian networks
+  - Probabilistic Graphical Models
+  - Causality
+  - Statistical learning
+  - Decision Making
+  - Artificial Intelligence
+  - Machine Learning
+  - C++
+  - Python
+license: 
+  - LGPL-3.0
+  - MIT
+preferred-citation :
+  type: conference-paper
+  authors:
+    - given-names: Pierre-Henri
+      family-names: WUILLEMIN
+    - given-names: Christophe
+      family-names: GONZALES
+  title: 'aGrUM/pyAgrum : a Toolbox to Build Models and Algorithms for Probabilistic Graphical Models in Python'
+  year: 2020
+  conference: 
+    name: 10th International Conference on Probabilistic Graphical Models
+  url: https://hal.archives-ouvertes.fr/hal-03135721
