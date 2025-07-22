@@ -34,27 +34,42 @@
 #                                                                          #
 ############################################################################
 
-import sys
-from typing import Any
+from .utils import *
+
+from .ActBuilder import ActBuilder
 
 
-class _const:
-  class ConstError(TypeError):
-    pass
+class ActBuilderDocSphinx(ActBuilder):
+  def __init__(self, current: dict[str, str | bool]):
+    super().__init__(current)
 
-  def __setattr__(self, name, value):
-    if name in self.__dict__:
-      raise self.ConstError("Can't rebind const(%s)" % name)
-    self.__dict__[name] = value
+  def check_consistency(self):
+    return True
 
-  def __str__(self) -> str:
-    # we do not show the colors
-    d: dict[str, Any] = self.__dict__
-    l: list[str] = [
-      f"{self.C_MSG}{k}{self.C_END} : {self.C_VALUE}{d[k] if not k.startswith('C_') else '(escape sequence)'}{self.C_END}"
-      for k in sorted(d.keys())
-    ]
-    return "\n".join(l)
+  def build(self) -> bool:
+    self.run_start()
+    if self.current["build"] != "doc-only":
+      self.run_start("Compiling pyAgrum")
+      buildcurrent = self.current.copy()
+      buildcurrent["action"] = "lib"
+      buildcurrent["taret"] = "pyAgrum"
+      buildcurrent["mode"] = "Release"
+      from .ActBuilderPyAgrum import ActBuilderPyAgrum
 
+      b = ActBuilderPyAgrum(buildcurrent)
+      b.build()
+      self.run_done("Compiling pyAgrum")
 
-sys.modules[__name__] = _const()
+    self.run_start("Sphinxing pyAgrum")
+    safe_cd(self.current, "wrappers")
+    safe_cd(self.current, "pyagrum")
+    safe_cd(self.current, "doc")
+    self.execFromLine("make html")
+    safe_cd(self.current, "..")
+    safe_cd(self.current, "..")
+    safe_cd(self.current, "..")
+    self.run_done("Sphinxing pyAgrum")
+
+    self.run_done()
+
+    return True

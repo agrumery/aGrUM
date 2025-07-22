@@ -34,36 +34,64 @@
 #                                                                          #
 ############################################################################
 
-from subprocess import PIPE, Popen, STDOUT
+import time
+import platform
 
-from .configuration import cfg
-from .utils import notif, safe_cd
+from .utils import *
 
-
-def _callSphinx(current: dict[str, str], cmd: str):
-  if not current["dry_run"]:
-    proc = Popen(cmd, shell=True, stdout=PIPE, stderr=STDOUT)
-    out = proc.stdout.readlines()
-    for line in out:
-      try:
-        print(line.decode("utf-8"), end="")
-      except ValueError:
-        print(str(line), end="")
-  else:
-    notif("[" + cmd + "]")
+from .ActBuilderAgrum import ActBuilderAgrum
 
 
-def callSphinx(current: dict[str, str]):
-  if current["build"] != "doc-only":
-    notif("Compiling pyAgrum")
-    _callSphinx(current, f"{cfg.python} act lib pyAgrum release --no-fun")
+class ActBuilderDocDoxygen(ActBuilderAgrum):
+  def __init__(self, current: dict[str, str | bool]):
+    super().__init__(current)
 
-  notif("Sphinxing pyAgrum")
-  safe_cd(current, "wrappers")
-  safe_cd(current, "pyagrum")
-  safe_cd(current, "doc")
-  _callSphinx(current, "make")
+  def check_consistency(self):
+    self.check_compiler_and_maker()
+    if platform.system() == "Windows" and self.current["compiler"] != "mingw64":
+      error("No doxygen support on windows with this compiler")
+      return False
 
-  safe_cd(current, "..")
-  safe_cd(current, "..")
-  safe_cd(current, "..")
+    if self.current["mode"].lower() != "release":
+      warn("Doxygen is only supported in release mode. The documentation will then be built in release mode.")
+      self.current["mode"] = "Release"
+
+    return True
+
+  def build(self) -> bool:
+    self.modules = set(cfg.modules.keys())
+
+    prefix = "build ⮕ " + self.current["mode"] + " ⮕ "
+    self.run_start(prefix)
+
+    err = False
+    gc = gm = gb = 0
+    t0 = time.time()
+
+    safe_cd(self.current, "build")
+    safe_cd(self.current, "aGrUM")
+    safe_cd(cfg.buildPath[self.current["mode"]])
+
+    self.run_start(prefix + "cmake")
+    cmake_cde = self.build_cmake()
+    err = err or 0 < self.execFromLine(cmake_cde, checkRC=False)
+
+    t1 = time.time()
+    self.run_start(prefix + "make")
+    make_cde = self.build_make()
+    err = err or 0 < self.execFromLine(make_cde, checkRC=False)
+    t2 = time.time()
+
+    gc = t1 - t0
+    gm = t2 - t1
+    safe_cd(self.current, "..")
+    safe_cd(self.current, "..")
+    safe_cd(self.current, "..")
+
+    self.conclude(gc, gm)
+    if not err:
+      self.run_done(prefix)
+    else:
+      self.run_failed(prefix)
+
+    return not err

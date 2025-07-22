@@ -176,18 +176,21 @@ class TestCtbnIndependence(pyAgrumTestCase):
     countRep1 = 0
     countRep2 = 0
     countRep3 = 0
-    nbRep = 2
+    nbRep = 3
     minRep = 1
     for i in range(nbRep):
       ie.writeTrajectoryCSV(self.agrumSrcDir("trajectory_indep_4.csv"), n=1, timeHorizon=150, burnIn=500)
       traj = ct.Trajectory(self.agrumSrcDir("trajectory_indep_4.csv"), ctbn=ctbn)
       test = ct.FChi2Test(traj)
-      if test.testIndep("X", "Z", []):
-        countRep1 += 1
-      if not test.testIndep("Y", "X", []):
-        countRep2 += 1
-      if not test.testIndep("Y", "Z", []):
-        countRep3 += 1
+      if countRep1 < minRep:
+        if test.testIndep("X", "Z", []):
+          countRep1 += 1
+      if countRep2 < minRep:
+        if not test.testIndep("Y", "X", []):
+          countRep2 += 1
+      if countRep3 < minRep:
+        if not test.testIndep("Y", "Z", []):
+          countRep3 += 1
 
     self.assertGreaterEqual(countRep1, minRep)
     self.assertGreaterEqual(countRep2, minRep)

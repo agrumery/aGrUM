@@ -237,7 +237,7 @@ This release is mainly about documentation.
   - `gum.BNLearner.learnEssentialGraph` for all learning algorithm.
   - Better wrapped of `pyAgrum.BNLearner.setPossibleEdges()`.
 
-## Changelog for 1.13
+## Changelog for 1.13.0
 
 - Internal
   - New servers for (linux and windows) CI !
@@ -1420,6 +1420,10 @@ Mainly bugfixes and internal improvements.
 - act
   - new command guideline for a few easy checks
 - many bug fixes
+
+## Changelog for 0.12.1
+
+  Minor bug fixes and improvements
 
 ## Changelog for 0.12.0
 

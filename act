@@ -21,17 +21,14 @@
 import sys
 import traceback
 
-from acttools.main_act import main
-from acttools.utils import notif
+from acttools.main import main
 
 if __name__ == "__main__":
-  try:
-    tc, tm, tp = main()
-    if tc + tm + tp != 0:
-      notif(f"Time spent in cmake : [{tc:0.3f}]s , make : [{tm:0.3f}]s and post : [{tp:0.3f}]s ")
-  except KeyboardInterrupt:
-    print("\n Shutdown requested...exiting \n")
-    sys.exit(1)
-  except Exception:
-    traceback.print_exc(file=sys.stdout)
-    sys.exit(1)
+    try:
+        sys.exit(main())
+    except KeyboardInterrupt:
+        print("\n Shutdown requested...exiting \n")
+        sys.exit(500)
+    except Exception:
+        traceback.print_exc(file=sys.stdout)
+        sys.exit(600)

@@ -18,7 +18,6 @@ BIFXML (Recommended for complete preservation)
 The BIFXML format is the recommended way to save and load graphical models as it preserves all features and attributes of the model. This format is particularly useful for interoperability with other Bayesian network tools.
 
 .. code-block:: python
-
     import pyagrum as gum
 
     # Save to BIFXML
@@ -35,7 +34,6 @@ Pickle (Alternative for complete preservation)
 The Python ``pickle`` format
 
 .. code-block:: python
-
     import pyagrum as gum
     import pickle
 

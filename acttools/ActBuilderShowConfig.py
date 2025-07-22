@@ -34,90 +34,37 @@
 #                                                                          #
 ############################################################################
 
-import time
-import platform
-
-from . import *
-from .utils import notif
+from .configuration import cfg
+from .ActBuilder import ActBuilder, notif
 
 
-def main():
-  #
-  # options management
-  initParams()
-  # persistent values of current are used as default for options
-  current = getCurrent()
-  configureOptions(current)
+class ActBuilderShowConfig(ActBuilder):
+  def __init__(self, current: dict[str, str | bool]):
+    super().__init__(current)
 
-  (options, args) = parseCommandLine()
-  mvscForced = False
-  if platform.system() == "Windows" and options.compiler.startswith("mvsc"):
-    options.static_lib = True
-    options.no_fun = True
-    mvscForced = True
+  def check_consistency(self):
+    return True
 
-  mingwForced = False
-  if platform.system() == "Windows" and options.compiler == "mingw64":
-    options.no_fun = True
-    mingwForced = True
+  def build(self):
+    def aff_key(key: str):
+      notif(f"[{key}] => {self.current[key]}")
 
-  pyAgrumForced = False
-  if "pyAgrum" in args:
-    options.static_lib = True
-    pyAgrumForced = True
+    self.run_start()
 
-  # colors, fun & verbosity partly controlled by options (--no-fun, ...)
-  configureOutputs(options)
+    notif("")
+    for k in cfg.mains:
+      aff_key(k)
+    notif("")
 
-  about()
+    for k in self.current.keys():
+      if k not in cfg.mains and k not in cfg.non_persistent:
+        aff_key(k)
+    print("")
 
-  if mvscForced:
-    notif("Options [static] and [no-fun] forced by option [mvsc*]")
+    for k in cfg.non_persistent:
+      aff_key(k)
+    notif("")
 
-  if mingwForced:
-    notif("Options [no-fun] forced by option [mingw64]")
+    self.run_done()
 
-  if pyAgrumForced:
-    notif("Options [static] forced by target [pyAgrum]")
-
-  configureTools()
-
-  # check current consistency and update it if necessary
-  checkCurrent(current, options, args)
-
-  #
-  # from now, current contains the specification
-  if current["verbose"]:
-    print()
-    notif("Invocation :")
-    print(getInvocation(current))
-    print()
-
-  # looking at special commands (clean/show/etc.)
-  gc = gm = gb = 0
-  if not specialActions(current):
-    # creating "classical" compilation from cmake/make/postprocess
-
-    for target in current["targets"]:
-      safe_cd(current, "build")
-      safe_cd(current, target)
-      safe_cd(current, current["mode"])
-
-      t0 = time.time()
-      if options.build == "all":
-        buildCmake(current, target)
-      t1 = time.time()
-      if options.build != "no-make":
-        buildMake(current, target)
-      t2 = time.time()
-      buildPost(current, target)
-      t3 = time.time()
-      gc += t1 - t0
-      gm += t2 - t1
-      gb += t3 - t2
-
-      safe_cd(current, "..")
-      safe_cd(current, "..")
-      safe_cd(current, "..")
-
-  return gc, gm, gb
+    return True

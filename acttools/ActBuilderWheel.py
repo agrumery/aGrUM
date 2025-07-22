@@ -47,9 +47,11 @@ from tempfile import mkdtemp, mkstemp
 from datetime import datetime
 from os.path import join, relpath
 from os import fdopen, remove, rename, listdir, walk
-from subprocess import CalledProcessError, PIPE, Popen, STDOUT
-from .utils import notif, warn, critic
+from subprocess import CalledProcessError
+from .utils import warn, critic
 from .configuration import cfg
+
+from .ActBuilderPyAgrum import ActBuilderPyAgrum
 
 FOUND_WHEEL = True
 
@@ -60,92 +62,29 @@ except ImportError:
   FOUND_WHEEL = False
 
 
-def wheel(current: dict[str, str]):
-  """If the current Python version used differs from the one asked, fork into
-  the proper Python interpreter."""
-  if FOUND_WHEEL:
-    _go_wheel(current)
-  else:
-    critic("Please install wheel and setuptools (>= v70.1) to build wheels using act (pip install wheel/pip install setuptools).")
+from .utils import *
 
-
-def _go_wheel(current: dict[str, str]):
-  """Get a temporary directory to build the wheel and cal sequentially all steps
-  to build the wheel."""
-  print(cfg)
-  nightly = current.get("action") == "nightly_wheel"
-  tmp = mkdtemp(prefix="act")
-  notif(f"Building wheel in {tmp}")
-  try:
-    _prepare_wheel(current, tmp)
-    notif("Finished building pyAgrum.")
-    install_dir, version = build_wheel(tmp, current["stable_abi_off"], cfg.minimal_python_api, nightly)
-    notif("Finished building wheel directory.")
-    zip_file = zip_wheel(tmp, install_dir, version, current["stable_abi_off"], cfg.minimal_python_api, nightly)
-    notif("Finished zipping wheel.")
-    move(join(tmp, zip_file), join(current["destination"], zip_file))
-    notif(f"Wheel moved to: {join(current['destination'], zip_file)}.")
-  except CalledProcessError as err:
-    critic("Failed building pyAgrum", rc=err.returncode)
-  finally:
-    rmtree(tmp, True)
-
-
-def _prepare_wheel(current: dict[str, str], tmp):
-  """Prepare step for building the wheel: builds and install pyAgrum in the temporary
-  directory and check that this script was called with the same version of Python used
-  to build pyAgrum."""
-  version = sys.version_info
-  this_version = f"{version[0]}.{version[1]}.{version[2]}"
-  gum_version = install_pyAgrum(current, tmp)
-  if gum_version.count(".") == 1:
-    this_version = f"{version[0]}.{version[1]}"
-  if this_version != gum_version:
-    warn("You MUST build wheel with the same Python version used to build pyAgrum.")
-    warn(f"Python version used to build the wheel: {this_version}")
-    critic(f"Python version used to build pyAgrum:   {gum_version}")
+from .ActBuilder import ActBuilder
 
 
 def safe_compiler_path(path):
   return path.replace("\\", "/")
 
 
-def install_pyAgrum(current: dict[str, str], tmp):
+def install_pyAgrum(current: dict[str, str | bool], tmp):
   """Instals pyAgrum in tmp and return the Python version used to build it."""
-  targets = "install release pyAgrum"
-  version = sys.version_info[0]
-  options = f'--no-fun --withoutSQL -m all -d "{safe_compiler_path(tmp)}"'
-  if platform.system() == "Windows":
-    cmd = "python"
-    options = f"{options} --compiler={current['compiler']}"
+  c = current.copy()
+  c["destination"] = tmp
+  c["action"] = "install"
+
+  instbuilder = ActBuilderPyAgrum(c)
+  if instbuilder.check_consistency():
+    if not instbuilder.build():
+      error("pyAgrum's installation failed 😭                        ")
+      sys.exit(1)
   else:
-    cmd = sys.executable
-  cmd = f"{cmd} act {targets} {options}"
-  proc = Popen(cmd, shell=True, stdout=PIPE, stderr=STDOUT)
-  out = proc.stdout.readlines()
-  return get_python_version(out)
-
-
-def get_python_version(out):
-  """Retrieves the Python version from act's output when building pyAgrum."""
-  version = None
-  for line in out:
-    m = ""
-    encoding = sys.stdout.encoding if sys.stdout.encoding else "utf-8"
-    try:
-      m = re.match(r"^-- python version : ([23]\.[0-9]+(\.[0-9]+)*).*$", line.decode(encoding))
-    except UnicodeDecodeError:
-      # Windows may use latin-1 without saying it
-      m = re.match(r"^-- python version : ([23]\.[0-9]+(\.[0-9]+)*).*$", line.decode("latin-1"))
-    if m:
-      version = m.group(1)
-  if version == None:
-    major = sys.version_info[0]
-    minor = sys.version_info[1]
-    micro = sys.version_info[2]
-    version = "{0}.{1}.{2}".format(major, minor, micro)
-    notif("Could not find Python version, opting for current Python version: {0})".format(version))
-  return version
+    error("pyAgrum's installation failed due to consistency checks 😭")
+    sys.exit(1)
 
 
 def build_wheel(tmp, stable_abi_off, minimal_python_api, nightly=False):
@@ -180,7 +119,7 @@ def build_wheel(tmp, stable_abi_off, minimal_python_api, nightly=False):
 
 
 def get_base_dir(tmp):
-  """Find the proper directory where pyAgrum is installed (normaly
+  """Find the proper directory where pyAgrum is installed (normally
   tmp/lib/pythonX.Y/sites-packages where X.Y is the Python version used to
   build pyAgrum)."""
   if platform.system() == "Windows":
@@ -327,11 +266,68 @@ def zip_wheel(tmp, install_dir, version, stable_abi_off, minimal_python_api, nig
     zip_name = f"pyagrum_nightly-{version}.dev{datetime.today().strftime('%Y%m%d')}{commit_time}-{tags}.whl"
   else:
     zip_name = f"pyagrum-{version}-{tags}.whl"
+
   zipf = zipfile.ZipFile(join(tmp, zip_name), "w", zipfile.ZIP_DEFLATED)
   for root, dirs, files in walk(install_dir):
     for f in files:
       try:
         zipf.write(join(install_dir, root, f), relpath(join(root, f), install_dir))
-      except:
-        critic("Could not archive file: {join(install_dir, root, f)}")
+      except Exception as e:
+        if isinstance(e, zipfile.BadZipFile):
+          critic(f"Bad zip file: {join(install_dir, root, f)}")
+        elif "Permission denied" in str(e):
+          critic(f"Permission denied for file: {join(install_dir, root, f)}")
+        else:
+          critic(f"Could not archive file: {join(install_dir, root, f)} : {e}")
+
   return zip_name
+
+
+class ActBuilderWheel(ActBuilder):
+  def __init__(self, current: dict[str, str | bool]):
+    super().__init__(current)
+
+  def check_consistency(self):
+    if not FOUND_WHEEL:
+      error("You need to install the [wheel] package to use this command. Please run '[pip install wheel]'.")
+      return False
+
+    version = sys.version_info
+    gum_py_version = cfg.python_version
+    if gum_py_version.count(".") == 1:
+      this_py_version = f"{version[0]}.{version[1]}"
+    else:
+      this_py_version = f"{version[0]}.{version[1]}.{version[2]}"
+    if this_py_version != gum_py_version:
+      warn(f"Python version used to build the wheel: {this_py_version}")
+      warn(f"Python version used to build pyAgrum  : {gum_py_version}")
+      error("You MUST build wheel with the same Python version used to build pyAgrum.")
+      return False
+    return True
+
+  def build(self) -> bool:
+    self.run_start()
+    nightly = self.current.get("action") == "nightly_wheel"
+
+    tmp = mkdtemp(prefix="act")
+    self.run_start(f"Building wheel in {tmp}")
+
+    try:
+      self.run_start("Building pyAgrum")
+      install_pyAgrum(self.current, tmp)
+      self.run_done("Finished building pyAgrum.")
+
+      install_dir, version = build_wheel(tmp, self.current["stable_abi_off"], cfg.minimal_python_api, nightly)
+      self.run_done("Finished building wheel directory.")
+      zip_file = zip_wheel(tmp, install_dir, version, self.current["stable_abi_off"], cfg.minimal_python_api, nightly)
+      self.run_done("Finished zipping wheel.")
+      move(join(tmp, zip_file), join(self.current["destination"], zip_file))
+      self.run_done(f"Wheel moved to: {join(self.current['destination'], zip_file)}.")
+    except CalledProcessError as err:
+      critic("Failed building pyAgrum", rc=err.returncode)
+    finally:
+      rmtree(tmp, True)
+
+    self.run_done()
+
+    return True

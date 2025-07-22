@@ -40,45 +40,66 @@ from os.path import isdir
 import glob
 from typing import Optional, Iterator
 
+try:
+  from icecream import ic
+
+  ic.configureOutput(includeContext=True, contextAbsPath=True)
+  ic.configureOutput(prefix="🍋 🐞 ➤  ")
+except ImportError:
+  ic = lambda *a: None if not a else a[0] if len(a) == 1 else a
+
+
 from .configuration import cfg
 
 
 def about():
-  print(
+  printutf8(
     f"{cfg.C_END}{cfg.C_WARNING}aGrUM{cfg.C_END}"
-    + f"compilation tool {cfg.C_VALUE}{cfg.act_version}{cfg.C_END}"
-    + f"for {cfg.C_WARNING}aGrUM/pyAgrum{cfg.C_VALUE}{cfg.gum_version}{cfg.C_END}"
+    + f" compilation tool {cfg.C_VALUE}{cfg.act_version}{cfg.C_END}"
+    + f" for {cfg.C_WARNING}aGrUM/pyAgrum {cfg.C_VALUE}{cfg.gum_version}{cfg.C_END}"
   )
-  print(f"(c) 2010-2024 {cfg.C_MSG}aGrUM Team{cfg.C_END}")
-  print("")
+  printutf8(f"(c) 2010-2025 {cfg.C_MSG}aGrUM Team{cfg.C_END}", end="\n\n")
 
 
 def setifyString(s: str) -> set[str]:
   # special case for accepting agrum instead of 'aGrUM'
-  return set(
-    map(
-      lambda x: "aGrUM" if x.lower() == "agrum" else "pyAgrum" if x.lower() == "pyagrum" else x,
-      # filter to setify "a++b+c" into set(['a','b','c'])
-      filter(None, s.split("+")),
-    )
-  )
+  return {
+    "aGrUM" if x.lower() == "agrum" else "pyAgrum" if x.lower() == "pyagrum" else x
+    for x in s.split("+")
+    if x.strip() != ""
+  }
 
 
-def safe_cd(current: dict[str, str], folder: str):
-  trace(current, "cd " + folder)
-  if not current["dry_run"]:
-    if folder != "..":
-      if not os.path.exists(folder):
-        os.mkdir(folder)
-    os.chdir(folder)
+def safe_cd(current: dict[str, str | bool], folder: str):
+  if folder != ".." and not os.path.exists(folder):
+    os.mkdir(folder)
+    if current["dry_run"]:
+      notif(f"  (mkdir {folder})")
+  notif(f"cd {folder}")
+  os.chdir(folder)
+
+
+def printutf8(s: str, end="\n"):
+  """
+  Print a string in utf-8 encoding, handling potential encoding issues.
+  """
+  try:
+    print(s, end=end)
+  except UnicodeEncodeError:
+    try:
+      print(s.encode("utf-8"), end=end)
+    except UnicodeEncodeError:
+      try:
+        print(s.encode("utf-8", "replace"), end=end)
+      except UnicodeEncodeError:
+        print(s.encode("utf-8", "ignore"), end=end)
 
 
 def colFormat(v: str, col: str) -> str:
-  # s=str(v) # why should I need to stringify v ? If yes, warning with encoding : sometimes encode('utf-8') is needed
-  return col + v.replace("[", cfg.C_VALUE).replace("]", col)
+  return f"{col}{v.replace('[', cfg.C_VALUE).replace(']', col)}"  # .encode("utf-8")}"
 
 
-def trace(current: dict[str, str], cde: str):
+def trace(current: dict[str, str | bool], cde: str):
   if current["dry_run"] or current["verbose"]:
     notif(cde, cfg.prefix_trace)
 
@@ -87,31 +108,28 @@ def notif_oneline(s: str, pref: Optional[str] = None):
   if pref is None:
     pref = cfg.prefix_line
 
-  print(
-    pref + colFormat("** act Notification : " + s, cfg.C_MSG) + cfg.C_END,
-    end="                                       \r",
-  )
+  printutf8(f"{pref}{colFormat(s, cfg.C_MSG)}{cfg.C_END}", end="                                       \r")
 
 
 def notif(s: str = "", pref: Optional[str] = None):
   if pref is None:
     pref = cfg.prefix_line
 
-  print(pref + colFormat("** act Notification : " + s, cfg.C_MSG) + cfg.C_END)
+  printutf8(f"{pref}{colFormat(s, cfg.C_MSG)}{cfg.C_END}")
 
 
 def warn(s: str, pref: Optional[str] = None):
   if pref is None:
     pref = cfg.prefix_line
 
-  print(pref + colFormat("** act Warning      : " + s, cfg.C_WARNING) + cfg.C_END)
+  printutf8(f"{pref}⚠️  {colFormat(s, cfg.C_WARNING)}{cfg.C_END}")
 
 
 def error(s: str, pref: Optional[str] = None):
   if pref is None:
     pref = cfg.prefix_line
 
-  print(pref + colFormat("** act Error        : " + s, cfg.C_ERROR) + cfg.C_END)
+  printutf8(f"{pref}💥 {colFormat(s, cfg.C_ERROR)}{cfg.C_END}")
 
 
 def critic(s: str, pref: Optional[str] = None, rc: int = 1):
@@ -119,13 +137,13 @@ def critic(s: str, pref: Optional[str] = None, rc: int = 1):
     pref = cfg.prefix_line
 
   error(s, pref)
-  print(pref + colFormat("Stopped.", cfg.C_MSG) + cfg.C_END + "\n")
+  printutf8(f"{pref}[colFormat('Stopped.', cfg.C_MSG)]{cfg.C_END}", end="\n\n")
 
   sys.exit(rc)
 
 
-def CrossPlatformRelPath(x: str, y: str) -> str:
-  return os.path.relpath(x, "src/testunits").replace("\\", "/")
+def cross_platform_rel_path(x: str, y: str) -> str:
+  return os.path.relpath(x, y).replace("\\", "/")
 
 
 def recglob(path: str, mask: str) -> Iterator[str]:

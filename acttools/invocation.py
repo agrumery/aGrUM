@@ -36,33 +36,41 @@
 
 from typing import Any
 
+
 from .configuration import cfg
+from .utils import *
 
 
-def _getParam(name: str, c_error: str, c_end: str) -> str:
-  return f"{c_end}--{c_error}{name}"
+def get_invocation(current: dict[str, str | bool], colored: bool = False) -> str:
+  """
+  Generate the command line invocation string based on the current configuration.
 
+  Parameters
+  ----------
+  current: dict[str, str | bool]
+      The current configuration dictionary containing action, target, mode, and other options.
+  colored: bool, optional
+      If True, the output will include color codes for better visibility in terminal.
+      Defaults to False.
 
-def getParam(name: str, c_error: str, c_end: str) -> str:
-  return f"{_getParam(name, c_error, c_end)} "
+  Returns
+  -------
+    str
+      A formatted string representing the command line invocation.
+  """
 
+  def _get_param_name(name: str, c_error: str, c_end: str) -> str:
+    return f"{c_end}--{c_error}{name}"
 
-def getValParam(name: str, val: Any, c_value: str, c_error: str, c_end: str):
-  return f"{_getParam(name, c_error, c_end)} {c_end}={c_value}{val} "
+  def _get_param(name: str, c_error: str, c_end: str) -> str:
+    return f"{_get_param_name(name, c_error, c_end)} "
 
+  def _get_val_param(name: str, val: Any, c_value: str, c_error: str, c_end: str):
+    return f"{_get_param_name(name, c_error, c_end)}{c_end}={c_value}{val} "
 
-def getCommand(name: str, c_warning: str) -> str:
-  return f"{c_warning}{name} "
+  def _(name: str, c_warning: str) -> str:
+    return f"{c_warning}{name} "
 
-
-def showInvocation(current: dict[str, str], forced: bool = False):
-  if forced or not current["no_fun"]:
-    invocation = getInvocation(current, True)
-    print(f"{cfg.C_WARNING}invocation{cfg.C_END} : {invocation}")
-    print("")
-
-
-def getInvocation(current: dict[str, str], colored: bool = False) -> str:
   if colored:
     c_warning, c_error, c_value, c_end = cfg.C_WARNING, cfg.C_ERROR, cfg.C_VALUE, cfg.C_END
   else:
@@ -70,25 +78,27 @@ def getInvocation(current: dict[str, str], colored: bool = False) -> str:
 
   invocation = "act "
 
-  invocation += getCommand(current["action"], c_warning)
+  invocation += _(current["action"], c_warning)
 
   if current["action"] not in cfg.specialActions:
-    invocation += getCommand("+".join(current["targets"]), c_warning)
-    invocation += getCommand(current["mode"], c_warning)
+    invocation += _(current["target"], c_warning)
+    invocation += _(current["mode"], c_warning)
 
   for opt in current.keys():
-    if opt not in ["action", "mode", "targets"]:
-      if opt not in cfg.non_persistent:
-        if opt not in cfg.swapOptions.keys():
-          if opt in current.keys():
-            invocation += getValParam(opt, current[opt], c_value, c_error, c_end)
+    if opt not in ["action", "mode", "target"]:
+      if opt not in cfg.non_persistent and opt not in cfg.swapOptions.keys() and opt in current.keys():
+        invocation += _get_val_param(opt, current[opt], c_value, c_error, c_end)
 
   for opt in cfg.swapOptions.keys():
-    invocation += getParam(cfg.swapOptions[opt][current[opt]], c_error, c_end)
+    invocation += _get_param(cfg.swapOptions[opt][current[opt]], c_error, c_end)
 
   for opt in cfg.non_persistent:
     if current[opt]:
-      invocation += getParam(opt, c_error, c_end)
+      invocation += _get_param(opt, c_error, c_end)
 
   invocation += c_end
   return invocation
+
+
+def show_invocation(current: dict[str, str | bool]):
+  printutf8(f"\n{cfg.C_WARNING}{get_invocation(current, True)}{cfg.C_END}\n\n")
