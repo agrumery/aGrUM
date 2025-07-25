@@ -62,11 +62,11 @@ preferred-citation :
   type: conference-paper
   authors:    
     - given-names: Gaspard
-      family-names: DUCAMP
-    - given-names: Pierre-Henri
-      family-names: WUILLEMIN
+      family-names: Ducamp
     - given-names: Christophe
-      family-names: GONZALES
+      family-names: Gonzales
+    - given-names: Pierre-Henri
+      family-names: Wuillemin
   title: 'aGrUM/pyAgrum : a Toolbox to Build Models and Algorithms for Probabilistic Graphical Models in Python'
   year: 2020
   conference: 

@@ -70,7 +70,7 @@ class ActBuilderDocDoxygen(ActBuilderAgrum):
 
     safe_cd(self.current, "build")
     safe_cd(self.current, "aGrUM")
-    safe_cd(cfg.buildPath[self.current["mode"]])
+    safe_cd(self.current, cfg.buildPath[self.current["mode"]])
 
     self.run_start(prefix + "cmake")
     cmake_cde = self.build_cmake()
