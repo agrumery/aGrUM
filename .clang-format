@@ -1,6 +1,6 @@
 #
 # aGrUM clang-format specification (version clang-format-17.06)
-# Pierre-Henri Wuillemin - 2016-2024
+# Pierre-Henri Wuillemin - 2016-2025
 #
 BasedOnStyle: LLVM
 Language: Cpp

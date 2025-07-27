@@ -25,8 +25,12 @@
 #   ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR  #
 #   OTHER DEALINGS IN THE SOFTWARE.                                        #
 #                                                                          #
-#   See the GNU Lesser General Public License (LICENSE.LGPL) and the MIT   #
-#   licence (LICENSE.MIT) for more details.                                #
+#   See LICENCES for more details.                                         #
+#                                                                          #
+#   SPDX-FileCopyrightText: Copyright 2005-2025                            #
+#       - Pierre-Henri WUILLEMIN(_at_LIP6)                                 #
+#       - Christophe GONZALES(_at_AMU)                                     #
+#   SPDX-License-Identifier: LGPL-3.0-or-later OR MIT                      #
 #                                                                          #
 #   Contact  : info_at_agrum_dot_org                                       #
 #   homepage : http://agrum.gitlab.io                                      #
@@ -289,12 +293,16 @@ def guideline(current: dict[str, str | bool], details: bool, correction: bool) -
   nbrError += _aff_errors(_check_cpp_file_exists(details, correction), "missing cpp file")
   notif("  [(2) check for ]LGPL+MIT[ license]")
   nbrError += _aff_errors(_check_LGPL_MIT_license_CPP(details, correction), "missing LGPL+MIT cpp licence")
-  nbrError += _aff_errors(_check_LGPL_MIT_license_py(details, correction), "missing LGPL+MIT python licence")
+  nbrError += _aff_errors(
+    _check_LGPL_MIT_license_py(details, correction),
+    "missing LGPL+MIT python licence",
+  )
   notif("  [(3) check for missing documentation in pyAgrum]")
   nbrError += _aff_errors(_check_missing_docs(details), "missing documentation")
   notif("  [(4) check for deps]")
   nbrError += _aff_errors(
-    check_gum_dependencies(graph=current["build_graph"], details=details, correction=correction), "redundant dependency"
+    check_gum_dependencies(graph=current["build_graph"], details=details, correction=correction),
+    "redundant dependency",
   )
   notif("  [(5) check for cpp format]")
   nbrError += _aff_errors(_check_clang_format(details, correction), "format")
@@ -439,7 +447,7 @@ def _LGPL_MIT_atTop_py(filename: str, details: bool, correction: bool) -> int:
         if line.startswith("import"):
           state = "after"
           code += line
-        elif line[0] != "#":
+        elif line[0] != "#" or line.startswith("#!"):
           if not in_error:
             in_error = True
             if details:
@@ -517,7 +525,13 @@ def _LGPL_MIT_atTop_cmake(filename: str, details: bool, correction: bool) -> int
 def _check_LGPL_MIT_license_CPP(details: bool, correction: bool) -> int:
   nbrError = 0
 
-  exceptions = [f"{os.sep}mvsc{os.sep}", f"{os.sep}external{os.sep}", f"{os.sep}cxxtest{os.sep}", "Parser", "Scanner"]
+  exceptions = [
+    f"{os.sep}mvsc{os.sep}",
+    f"{os.sep}external{os.sep}",
+    f"{os.sep}cxxtest{os.sep}",
+    "Parser",
+    "Scanner",
+  ]
   for gum_file in srcAgrum():
     if any(subs in gum_file for subs in exceptions):
       if details:
@@ -634,9 +648,13 @@ def get_template_license() -> tuple[str, str]:
   ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR
   OTHER DEALINGS IN THE SOFTWARE.
 
-  See the GNU Lesser General Public License (LICENSE.LGPL) and the MIT
-  licence (LICENSE.MIT) for more details.
+  See LICENCES for more details.
 
+  SPDX-FileCopyrightText: Copyright 2005-{current_year}
+      - Pierre-Henri WUILLEMIN(_at_LIP6)
+      - Christophe GONZALES(_at_AMU)
+  SPDX-License-Identifier: LGPL-3.0-or-later OR MIT
+  
   Contact  : info_at_agrum_dot_org
   homepage : http://agrum.gitlab.io
   gitlab   : https://gitlab.com/agrumery/agrum

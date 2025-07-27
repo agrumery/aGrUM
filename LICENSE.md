@@ -1,4 +1,6 @@
-The aGrUM/pyAgrum library and all its derivatives are distributed under the dual LGPLv3+MIT license, see LICENSE.LGPL and LICENSE.MIT.
+The aGrUM/pyAgrum library and all its derivatives are distributed under the dual LGPLv3+MIT license, see LICENSES.
+
+`SPDX-License-Identifier: LGPL-3.0-or-later OR MIT`
 
 You can therefore integrate this library into your software solution but it will remain covered by either the LGPL v.3 license or the MIT license or, as aGrUM itself, by the dual LGPLv3+MIT license at your convenience.
 If you wish to integrate the aGrUM library into your product without being affected by this license, please contact us (info@agrum.org).

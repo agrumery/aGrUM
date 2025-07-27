@@ -47,8 +47,6 @@ docdebug:
 	$(ACT) doc debug aGrUM
 	cat build/aGrUM/debug/warning.txt
 
-clang-format:
-	$(ACT) autoindent
 
 gource:
 	#gource --key  -s 0.05  -1200x800 --highlight-users --dir-colour AAAAAA --hide filenames,mouse -o - | ffmpeg -y -r 20 -f image2pipe -vcodec ppm -i - -vcodec libvpx -b 20000K agrum.webm
