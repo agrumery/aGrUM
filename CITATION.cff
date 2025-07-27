@@ -60,7 +60,9 @@ license:
   - MIT
 preferred-citation :
   type: conference-paper
-  authors:
+  authors:    
+    - given-names: Gaspard
+      family-names: DUCAMP
     - given-names: Pierre-Henri
       family-names: WUILLEMIN
     - given-names: Christophe
