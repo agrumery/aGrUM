@@ -29542,7 +29542,7 @@ class ShaferShenoyLIMIDInference(object):
 
 # Register ShaferShenoyLIMIDInference in _pyagrum:
 _pyagrum.ShaferShenoyLIMIDInference_swigregister(ShaferShenoyLIMIDInference)
-__version__ = '2.2.0'
+__version__ = '2.2.0.9'
 __license__ = __doc__
 __project_url__ = 'https://agrum.org'
 __project_name__ = 'pyAgrum'
@@ -29589,8 +29589,12 @@ def about():
 #   ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR  #
 #   OTHER DEALINGS IN THE SOFTWARE.                                        #
 #                                                                          #
-#   See the GNU Lesser General Public License (LICENSE.LGPL) and the MIT   #
-#   licence (LICENSE.MIT) for more details.                                #
+#   See LICENCES for more details.                                         #
+#                                                                          #
+#   SPDX-FileCopyrightText: Copyright 2005-2025                            #
+#       - Pierre-Henri WUILLEMIN(_at_LIP6)                                 #
+#       - Christophe GONZALES(_at_AMU)                                     #
+#   SPDX-License-Identifier: LGPL-3.0-or-later OR MIT                      #
 #                                                                          #
 #   Contact  : info_at_agrum_dot_org                                       #
 #   homepage : http://agrum.gitlab.io                                      #
@@ -31420,7 +31424,7 @@ def getPosterior(model, *, target, evs=None):
 # creating a new Tensor from posterior(will disappear with ie)
   return pyagrum.Tensor(inf.posterior(target))
 
-__version__ = '2.2.0'
+__version__ = '2.2.0.9'
 __license__ = __doc__
 __project_url__ = 'https://agrum.org'
 __project_name__ = 'pyAgrum'
@@ -31467,8 +31471,12 @@ def about():
 #   ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR  #
 #   OTHER DEALINGS IN THE SOFTWARE.                                        #
 #                                                                          #
-#   See the GNU Lesser General Public License (LICENSE.LGPL) and the MIT   #
-#   licence (LICENSE.MIT) for more details.                                #
+#   See LICENCES for more details.                                         #
+#                                                                          #
+#   SPDX-FileCopyrightText: Copyright 2005-2025                            #
+#       - Pierre-Henri WUILLEMIN(_at_LIP6)                                 #
+#       - Christophe GONZALES(_at_AMU)                                     #
+#   SPDX-License-Identifier: LGPL-3.0-or-later OR MIT                      #
 #                                                                          #
 #   Contact  : info_at_agrum_dot_org                                       #
 #   homepage : http://agrum.gitlab.io                                      #

@@ -11,7 +11,7 @@ set(CPACK_PACKAGE_INSTALL_DIRECTORY "${CMAKE_CURRENT_BINARY_DIR}/packages")
 set(CPACK_PACKAGE_CONTACT "pierre-henri.wuillemin@lip6.fr")
 set(CPACK_DEBIAN_PACKAGE_MAINTAINER "pierre-henri.wuillemin@lip6.fr")
 
-set(CPACK_RPM_PACKAGE_LICENSE "gpl")
+set(CPACK_RPM_PACKAGE_LICENSE "LGPL-3.0-or-later OR MIT")
 
 if ("${CMAKE_SYSTEM_NAME}" STREQUAL "Windows")
     SET(CPACK_GENERATOR "ZIP")
