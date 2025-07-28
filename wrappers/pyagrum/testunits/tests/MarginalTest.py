@@ -34,15 +34,13 @@
 #                                                                          #
 ############################################################################
 
-# Les imports
+# Imports
 import unittest
 from .pyAgrumTestSuite import pyAgrumTestCase, addTests
 
 import pyagrum as gum
-from pyagrum.explain._ConditionalShapValues import ConditionalShapValues
 import pandas as pd
-import numpy as np
-import itertools
+from pyagrum.explain._MarginalShapValues import MarginalShapValues
 
 # Load the data
 data = pd.read_csv('tests/resources/iris.csv')
@@ -51,30 +49,12 @@ data['PetalWidthCm'] = pd.cut(data['PetalWidthCm'], 5, right=True, labels=[0, 1,
 data['SepalLengthCm'] = pd.cut(data['SepalLengthCm'], 5, right=True, labels=[0, 1, 2, 3, 4], include_lowest=False)
 data['SepalWidthCm'] = pd.cut(data['SepalWidthCm'], 5, right=True, labels=[0, 1, 2, 3, 4], include_lowest=False)
 
-# Create the Bayesian Network and the ConditionalShapValues instance
+# Create the Bayesian Network and the MarginalShapValues instance
 learner = gum.BNLearner(data)
 bn = learner.learnBN()
-explainer = ConditionalShapValues(bn, 5)
+explainer = MarginalShapValues(bn, 5, (data.head(10), True))
 
-class ConditionalShapValuesTest(pyAgrumTestCase) :
-    def test_logit(self):
-        # Test the logit function
-        assert np.all( explainer._logit(np.array([0, 0.5, 1.])) == np.array( [-np.inf, 0., np.inf] ) )
-
-    def test_identity(self):
-        # Test the identity function
-        assert explainer._identity(0.5) == 0.5, "Identity of 0.5 should be 0.5"
-        assert explainer._identity(1) == 1, "Identity of 1 should be 1"
-        assert explainer._identity(0) == 0, "Identity of 0 should be 0"
-
-    def test_coalitions(self):
-        # Test the coalitions function
-        assert explainer._coalitions([]) == [], "Coalitions of an empty set should be an empty list"
-        assert explainer._coalitions([0]) == [[0]],  "Coalitions of [0] should be [0]"
-        assert explainer._coalitions([1]) == [[1]],  "Coalitions of [1] should be [1]"
-        assert explainer._coalitions([0, 1]) == [[0], [1], [0, 1]], "Coalitions of [0, 1] should be [[0], [1], [0, 1]]"
-        assert explainer._coalitions([0, 1, 2]) == [[0], [1], [2], [0, 1], [0, 2], [1, 2], [0, 1, 2]], "Coalitions of [0, 1, 2] should be [[0], [1], [2], [0, 1], [0, 2], [1, 2], [0, 1, 2]]"
-
+class MarginalTest(pyAgrumTestCase) :
     def test__shap_1dim(self) :
         instance_0 = {'SepalLengthCm': 1, 'SepalWidthCm': 3, 'PetalLengthCm': 0, 'PetalWidthCm': 0}
         instance_1 = {'SepalLengthCm': 0, 'SepalWidthCm': 2, 'PetalLengthCm': 0, 'PetalWidthCm': 0}
@@ -112,18 +92,14 @@ class ConditionalShapValuesTest(pyAgrumTestCase) :
         explainer.ie.updateEvidence(instance_4)
         x = explainer.func( explainer.ie.posterior(explainer.target)[1] ).round(5)
         assert x == round(posterior4, 5), f'{x} ?= {round(posterior4, 5)}'
-
-    def test_globalShap(self):
-        # Test the global_shap function
-        combinations = np.array(list(itertools.product([1], range(5), range(5), range(5), range(5), range(1)))).astype(int)
-        df = pd.DataFrame(combinations, columns=['Id', 'SepalLengthCm', 'SepalWidthCm', 'PetalLengthCm', 'PetalWidthCm', 'Species'])   
-        expl = explainer.compute((df, False))
-        assert round(expl.importances[1]['Id'], 5) == 0.
-        assert round(expl.importances[1]['SepalLengthCm'], 5) == 0.62684
-        assert round(expl.importances[1]['SepalWidthCm'], 5) == 2.11577
-        assert round(expl.importances[1]['PetalLengthCm'], 5) == 3.68744
-        assert round(expl.importances[1]['PetalWidthCm'], 5) == 3.38405
+    
+    def test__shap_ndim(self) :
+        expl = explainer.compute((data.head(5), True)).importances[1]
+        assert round(expl['Id'], 5) == 0.
+        assert round(expl['SepalLengthCm'], 5) == 0.
+        assert round(expl['SepalWidthCm'], 5) == 3.52691
+        assert round(expl['PetalLengthCm'], 5) == 0.
+        assert round(expl['PetalWidthCm'], 5) == 0.
 
 ts = unittest.TestSuite()
-addTests(ts, ConditionalShapValuesTest)
-
+addTests(ts, MarginalTest)

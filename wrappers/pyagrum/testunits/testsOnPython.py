@@ -86,8 +86,14 @@ def runTests(local: bool, test_module: str, test_suite: str, log) -> int:
   from tests import BNDatabaseGeneratorTestSuite
   from tests import BNLearnerTestSuite
   from tests import BNListenerTestSuite
-  from tests import ConditionalTest
+
+  if pandasFound:
+    #NOTE: [Rayane Nasri] Est ce qu'on a besoin aussi de vérifier si numpy est présent ?
+    from tests import CausalTest
+    from tests import ConditionalTest
   from tests import ConfigTestSuite
+  if pandasFound:
+    from tests import CustomShapleyCacheTest
 
   if pandasFound:
     from tests import DiscreteTypeProcessorTestSuite
@@ -102,6 +108,9 @@ def runTests(local: bool, test_module: str, test_suite: str, log) -> int:
   from tests import JunctionTreeTestSuite
   from tests import LazyPropagationTestSuite
   from tests import LoopyBeliefPropagationTestSuite
+  
+  if pandasFound:
+    from tests import MarginalTest
   from tests import MarkovBlanketTestSuite
   from tests import MarkovRandomFieldTestSuite
   from tests import PicklerTestSuite
@@ -109,7 +118,6 @@ def runTests(local: bool, test_module: str, test_suite: str, log) -> int:
   from tests import TensorTestSuite
   from tests import PRMexplorerTestSuite
   from tests import SamplingTestSuite
-  from tests import ShapleyTest
 
   if pandasFound and sklearnFound:
     from tests import SkbnTestSuite
@@ -157,7 +165,6 @@ def runTests(local: bool, test_module: str, test_suite: str, log) -> int:
       tl.append(BNLearnerTestSuite.ts)
       tl.append(BNListenerTestSuite.ts)
       tl.append(ConfigTestSuite.ts)
-      tl.append(ConditionalTest.ts)
       if pandasFound:
         tl.append(DiscreteTypeProcessorTestSuite.ts)
       tl.append(EssentialGraphTestSuite.ts)
@@ -178,7 +185,6 @@ def runTests(local: bool, test_module: str, test_suite: str, log) -> int:
       tl.append(TensorTestSuite.ts)
       tl.append(PRMexplorerTestSuite.ts)
       tl.append(SamplingTestSuite.ts)
-      tl.append(ShapleyTest.ts)
       tl.append(VariablesTestSuite.ts)
       tl.append(WorkaroundTestSuite.ts)
 
@@ -222,6 +228,13 @@ def runTests(local: bool, test_module: str, test_suite: str, log) -> int:
     if test_module in {"", "bnmixture"}:
       log.info("testing 'bnmixture'")
       tl.append(MixtureModelTestSuite.ts)
+
+    if test_module in {"", "explain"}:
+      log.info("testing 'explain'")
+      tl.append(CausalTest.ts)
+      tl.append(ConditionalTest.ts)
+      tl.append(CustomShapleyCacheTest.ts)
+      tl.append(MarginalTest.ts)
 
   tests = unittest.TestSuite(tl)
 

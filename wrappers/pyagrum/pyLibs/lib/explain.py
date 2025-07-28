@@ -41,9 +41,13 @@
 """
 tools for BN qualitative analysis and explainability
 """
-
-import itertools
 import warnings
+warnings.simplefilter('always')
+warnings.warn(
+    "The module 'pyagrum.lib.explain' has been deprecated since version 2.2.0. "
+    "Please use the 'pyagrum.explain' module instead."
+  )
+import itertools
 from typing import Union
 
 import pylab
@@ -58,7 +62,7 @@ import pyagrum.lib._colors as gumcols
 
 # importing ShapValues in the name space of explain
 # ruff: noqa: F401
-from pyagrum.lib.shapley import ShapValues
+from pyagrum.explain.shapley import ShapValues
 
 _cdict = {
   "red": ((0.0, 0.1, 0.3), (1.0, 0.6, 1.0)),

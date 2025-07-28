@@ -34,47 +34,54 @@
 #                                                                          #
 ############################################################################
 
-# Les imports
+# Imports
 import unittest
 from .pyAgrumTestSuite import pyAgrumTestCase, addTests
-
 import pyagrum as gum
-from pyagrum.explain._ConditionalShapValues import ConditionalShapValues
-import pandas as pd
 import numpy as np
-import itertools
+import pandas as pd
+from pyagrum.explain._CausalShapValues import CausalShapValues
 
 # Load the data
 data = pd.read_csv('tests/resources/iris.csv')
+data.drop(columns='Id', inplace=True)
 data['PetalLengthCm'] = pd.cut(data['PetalLengthCm'], 5, right=True, labels=[0, 1, 2, 3, 4], include_lowest=False)
 data['PetalWidthCm'] = pd.cut(data['PetalWidthCm'], 5, right=True, labels=[0, 1, 2, 3, 4], include_lowest=False)
 data['SepalLengthCm'] = pd.cut(data['SepalLengthCm'], 5, right=True, labels=[0, 1, 2, 3, 4], include_lowest=False)
 data['SepalWidthCm'] = pd.cut(data['SepalWidthCm'], 5, right=True, labels=[0, 1, 2, 3, 4], include_lowest=False)
 
-# Create the Bayesian Network and the ConditionalShapValues instance
+# Create the Bayesian Network and the CausalShapValues instance
 learner = gum.BNLearner(data)
 bn = learner.learnBN()
-explainer = ConditionalShapValues(bn, 5)
+explainer = CausalShapValues(bn, 4, (data.head(10), True))
 
-class ConditionalShapValuesTest(pyAgrumTestCase) :
-    def test_logit(self):
-        # Test the logit function
-        assert np.all( explainer._logit(np.array([0, 0.5, 1.])) == np.array( [-np.inf, 0., np.inf] ) )
+class CausalTest(pyAgrumTestCase) :
 
-    def test_identity(self):
-        # Test the identity function
-        assert explainer._identity(0.5) == 0.5, "Identity of 0.5 should be 0.5"
-        assert explainer._identity(1) == 1, "Identity of 1 should be 1"
-        assert explainer._identity(0) == 0, "Identity of 0 should be 0"
+    def test_doCalculus(self) :
+        bn1 = gum.fastBN("A->B")
+        bn2 = gum.fastBN("B->A<-C")
+        bn3 = gum.fastBN("B->A<-C; A->D->E<-F")
+        doNet1 = explainer._doCalculus(bn1, [bn1.idFromName('A')])
+        doNet2 = explainer._doCalculus(bn2, [bn2.idFromName('A')])
+        doNet3 = explainer._doCalculus(bn3, [bn3.idFromName('A'), bn3.idFromName('E')])
 
-    def test_coalitions(self):
-        # Test the coalitions function
-        assert explainer._coalitions([]) == [], "Coalitions of an empty set should be an empty list"
-        assert explainer._coalitions([0]) == [[0]],  "Coalitions of [0] should be [0]"
-        assert explainer._coalitions([1]) == [[1]],  "Coalitions of [1] should be [1]"
-        assert explainer._coalitions([0, 1]) == [[0], [1], [0, 1]], "Coalitions of [0, 1] should be [[0], [1], [0, 1]]"
-        assert explainer._coalitions([0, 1, 2]) == [[0], [1], [2], [0, 1], [0, 2], [1, 2], [0, 1, 2]], "Coalitions of [0, 1, 2] should be [[0], [1], [2], [0, 1], [0, 2], [1, 2], [0, 1, 2]]"
-
+        assert doNet1.sizeArcs() == 1
+        assert doNet2.sizeArcs() == 0
+        assert doNet3.sizeArcs() == 1
+    
+    def test_chgCpt(self) :
+        bn = gum.fastBN("X0->X1->X2<-X3")
+        explainer._chgCpt(bn, [0, 3], [0, 1])
+        assert bn.cpt(0).sum() == 1.
+        assert bn.cpt(0)[0] == 1.
+        assert bn.cpt(3).sum() == 1.
+        assert bn.cpt(3)[1] == 1.
+    
+    def test_extract(self) :
+        assert np.all(explainer._extract([0, 1], [2, 3], [1, 3]) == np.array([[1, 3, 0, 0, 0]]))
+        assert np.all(explainer._extract([0, 1], [2, 3], [0, 2]) == np.array([[0, 2, 0, 0, 0]]))
+        assert len(explainer._extract([2, 3], [0, 0], [1, 0])) == 0
+    
     def test__shap_1dim(self) :
         instance_0 = {'SepalLengthCm': 1, 'SepalWidthCm': 3, 'PetalLengthCm': 0, 'PetalWidthCm': 0}
         instance_1 = {'SepalLengthCm': 0, 'SepalWidthCm': 2, 'PetalLengthCm': 0, 'PetalWidthCm': 0}
@@ -112,18 +119,13 @@ class ConditionalShapValuesTest(pyAgrumTestCase) :
         explainer.ie.updateEvidence(instance_4)
         x = explainer.func( explainer.ie.posterior(explainer.target)[1] ).round(5)
         assert x == round(posterior4, 5), f'{x} ?= {round(posterior4, 5)}'
-
-    def test_globalShap(self):
-        # Test the global_shap function
-        combinations = np.array(list(itertools.product([1], range(5), range(5), range(5), range(5), range(1)))).astype(int)
-        df = pd.DataFrame(combinations, columns=['Id', 'SepalLengthCm', 'SepalWidthCm', 'PetalLengthCm', 'PetalWidthCm', 'Species'])   
-        expl = explainer.compute((df, False))
-        assert round(expl.importances[1]['Id'], 5) == 0.
-        assert round(expl.importances[1]['SepalLengthCm'], 5) == 0.62684
-        assert round(expl.importances[1]['SepalWidthCm'], 5) == 2.11577
-        assert round(expl.importances[1]['PetalLengthCm'], 5) == 3.68744
-        assert round(expl.importances[1]['PetalWidthCm'], 5) == 3.38405
-
+    
+    def test_shap_ndim(self) :
+        expl = explainer.compute((data.head(10), True)).importances[1]
+        assert round(expl['SepalLengthCm'], 5) == 3.83845
+        assert round(expl['SepalWidthCm'], 5) == 4.54750
+        assert round(expl['PetalLengthCm'], 5) == 3.14068
+        assert round(expl['PetalWidthCm'], 5) == 3.15554
+    
 ts = unittest.TestSuite()
-addTests(ts, ConditionalShapValuesTest)
-
+addTests(ts, CausalTest)
