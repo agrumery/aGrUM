@@ -3,8 +3,6 @@ import pyagrum as gum
 from pyagrum.explain._Explanation import Explanation
 
 import numpy as np
-import pandas as pd
-import random
 
 import matplotlib.pyplot as plt
 import matplotlib.cm as cm
@@ -18,7 +16,32 @@ def beeswarm(
     ax=None,
     sort=True
     ) :
-    # Check parameters ...
+
+    """
+    Plots a beeswarm plot of the Shapley values for a given target class.
+    Parameters:
+    ----------
+    explanation : Explanation
+        The explanation object containing the Shapley values.
+    y : int
+        The target class for which to plot the Shapley values.
+    max_display : int, optional
+        The maximum number of features to display in the beeswarm plot (default is 20).
+    color_bar : bool, optional
+        If True, adds a color bar to the plot (default is True).
+    ax : plt.Axes, optional
+        The matplotlib Axes object to plot on (default is None, which creates a new figure).
+    sort : bool, optional
+        If True, sorts the features by their importance before plotting (default is True).
+
+    Raises:
+    ------
+    TypeError
+        If `explanation` is not an Explanation object, if `y` is not an integer or if the explanation is not global (i.e., does not contain lists of contributions for each feature).
+    IndexError
+        If `y` is out of bounds for the explanation keys.
+    """
+    # Check parameters
     if not isinstance(explanation, Explanation) :
         raise TypeError("`explanation` must be an Explanation object but got {}".format(type(explanation)))
     if not isinstance(y, int) :
@@ -33,9 +56,11 @@ def beeswarm(
     values = np.array([contributions[k] for k in feature_names]).T
     features = explanation.data
 
-    # Set the style and create the figure
+    # Create the figure and axis if not provided
     if ax == None :
         _, ax = plt.subplots(figsize=(6, 4))
+    
+    # Prepare the y-axis positions
     y_positions = np.arange( min(max_display, len(feature_names)), 0, -1 )
 
     # Plot the beeswarm

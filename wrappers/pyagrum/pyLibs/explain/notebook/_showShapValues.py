@@ -11,11 +11,21 @@ def showShapValues(bn: gum.BayesNet, expl: Explanation | dict, cmap="plasma", y=
     Parameters
     ----------
     bn : pyagrum.BayesNet
-    The Bayesian network
+        The Bayesian network
     expl: Explanation | dict[str,float]
-    The Shap values to each variable
-    cmap: Matplotlib.ColorMap
-    The colormap used for coloring the nodes
+        The Shap values to each variable
+    cmap: str
+        Name of the Matplotlib colormap used for coloring the nodes.
+    y: int
+        The target class for which the Shap values are computed (default is 1).
+        y is ignored if `expl` is a dict.
+    
+    Raises
+    ------
+    TypeError
+        If bn is not a gum.BayesNet, if expl is neither an Explanation nor a dict, or if expl is an Explanation and y is not an integer.
+    IndexError
+        If expl is an Explanation and y is outside the valid class range.
     """
 
     if not isinstance(bn, gum.BayesNet) :

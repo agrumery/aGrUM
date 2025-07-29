@@ -13,21 +13,24 @@ import warnings
 
 class ShapleyValues(ABC) :
     """
+    The ShapleyValues class is an abstract base class for computing Shapley values in a Bayesian Network.
     """
     
     def __init__(self, bn, target, logit) :
         """
-        params:
+        Parameters:
         ------
-        :bn -> The Bayesian Network.
-        :target -> The node id of the target.
-        :logit -> If True, applies the logit transformation to the probabilities.
+        bn : pyagrum.BayesNet
+            The Bayesian Network.
+        target : int | str
+            The node id (or node name) of the target.
+        logit : bool 
+            If True, applies the logit transformation to the probabilities.
 
         Raises:
         ------
-        :TypeError -> If bn is not a gum.BayesNet instance.
-        :ValueError -> If target is not a valid node id in the Bayesian Network.
-        :UserWarning -> If logit is not a boolean, a warning is issued.
+        TypeError : If bn is not a gum.BayesNet or target is not an integer or string.
+        ValueError : If target is not a valid node id in the Bayesian Network.
         """
 
         if not isinstance(bn, gum.BayesNet) :
@@ -57,6 +60,7 @@ class ShapleyValues(ABC) :
         self.func = self._logit if logit else self._identity # Function to apply to the probabilities.
 
     def _logit(self, p):
+        # Applies the logit transformation to the probabilities.
         p = np.asarray(p)  # Guarantee p is a numpy array.
         with np.errstate(divide='ignore', invalid='ignore'):
             result = np.log(p / (1 - p))
@@ -65,9 +69,11 @@ class ShapleyValues(ABC) :
         return result
 
     def _identity(self, x):
+        # Returns the input as is (identity function).
         return x
     
     def _labelToPos_row(self, x: np.ndarray, elements: list[int])-> np.ndarray:
+        # Converts labels to positions for a single instance.
         y = np.empty(shape=x.shape, dtype=int)
         for i in elements :
             try :
@@ -78,6 +84,7 @@ class ShapleyValues(ABC) :
         return y
 
     def _labelToPos_df(self, x: np.ndarray, elements: list[int])-> np.ndarray :
+        # Converts labels to positions for multiple instances.
         y = np.empty(shape=x.shape, dtype=int) # Initialisation
         posLabelVect = np.vectorize(lambda i, j: self.bn.variable(j).posLabel(i))
         for j in elements :
@@ -89,6 +96,7 @@ class ShapleyValues(ABC) :
         return y
     
     def _coalitions(self, elements_for_coalitions) :
+        # Generates all possible coalitions from the given elements.
         all_coalitions = []
         for r in range(1, len(elements_for_coalitions) + 1):
             for combo in combinations(elements_for_coalitions, r):
@@ -96,6 +104,7 @@ class ShapleyValues(ABC) :
         return all_coalitions
     
     def _invcoeff_shap(self, m, s) :
+        # Computes the inverse coefficient for the Shapley value formula.
         return (m - s) * math.comb(m, s)
     
     @abstractmethod
@@ -114,21 +123,22 @@ class ShapleyValues(ABC) :
         """
         Computes the Shapley values for the target node based on the provided data.
 
-        params:
-        ------
-        :data -> A tuple containing a pandas DataFrame, Series or a dictionary and a boolean indicating whether
-                data are provided with labels. If None, a random sample of size N is generated.
-        :N -> The number of samples to generate if data is None.
+        Parameters:
+        ----------
+        data : tuple | None
+            A tuple containing a pandas DataFrame, Series or a dictionary and a boolean indicating whether data are provided with labels. If None, a random sample of size N is generated.
+        N : int
+            The number of samples to generate if data is None.
 
-        returns:
+        Returns:
         -------
-        :Explanation -> An Explanation object containing the Shapley values and importances for the target node.
+        Explanation
+            An Explanation object containing the Shapley values and importances for the target node.
 
-        raises:
+        Raises:
         ------
-        :TypeError -> If the first element of data is not a pd.DataFrame, pd.Series or dict, or if N is not an integer when data is None.
-        :ValueError -> If N is less than 2 when data is None.
-        :UserWarning -> If the second element of data is not a boolean.
+        TypeError : If the first element of data is not a pd.DataFrame, pd.Series or dict, or if N is not an integer when data is None.
+        ValueError : If N is less than 2 when data is None.
         """
         if data is None :
             if not isinstance(N, int) :

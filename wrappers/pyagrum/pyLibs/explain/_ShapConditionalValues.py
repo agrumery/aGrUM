@@ -10,17 +10,19 @@ class ConditionalShapValues(ShapleyValues) :
     """
     def __init__(self, bn, target, logit=True) :
         """
-        params:
+        Parameters:
         ------
-        :bn -> The Bayesian Network.
-        :target -> The node id of the target.
-        :logit -> If True, applies the logit transformation to the probabilities.
+        bn : pyagrum.BayesNet
+            The Bayesian Network.
+        target : int | str
+            The node id (or node name) of the target.
+        logit : bool 
+            If True, applies the logit transformation to the probabilities.
 
-        raises:
+        Raises:
         ------
-        :TypeError -> If bn is not a gum.BayesNet instance.
-        :ValueError -> If target is not a valid node id in the Bayesian Network.
-        :UserWarning -> If logit is not a boolean, a warning is issued.
+        TypeError : If bn is not a gum.BayesNet or target is not an integer or string.
+        ValueError : If target is not a valid node id in the Bayesian Network.
         """
         super().__init__(bn, target, logit) # Initializes the ShapleyValues class.
         self.baseline = self.func( self.ie.posterior(self.target).toarray() ) # Sets the baseline probability.

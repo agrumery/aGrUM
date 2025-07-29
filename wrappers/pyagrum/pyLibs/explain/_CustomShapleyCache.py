@@ -9,9 +9,10 @@ class CustomShapleyCache:
 
     @staticmethod
     def generate_keys(bn, target, feat, nodes) :
-        minimal = bn.minimalCondSet(target, nodes)
-        key1 = tuple(nodes)
-        key2 = tuple(n for n in nodes if n != feat)
+        minimal = bn.minimalCondSet(target, nodes) # Calculates the minimal conditional set for the target node given the nodes.
+        key1 = tuple(nodes) # Key1 represents the coalition.
+        key2 = tuple(n for n in nodes if n != feat) # Key2 represents the coalition without the feature which is being evaluated.
+        # Key3 is the coalition without ONE ! node which is not in the minimal conditional set.
         diff = next((n for n in nodes if n not in minimal), None)
         if diff is not None:
             key3 = tuple(n for n in nodes if n != diff)
@@ -29,26 +30,22 @@ class CustomShapleyCache:
             self._cache[tuple_len] = {}
             self._current_k_index = tuple_len
 
-        # Si l'entrée n'existe pas déjà, on augmente la taille
+        # If it is the first time we add an entry of this length, we initialize the cache for this length.
         if (int_key, tuple_key) not in self._cache[tuple_len]:
             self._current_size += 1
         self._cache[tuple_len][(int_key, tuple_key)] = value
 
-        # Vérifier si la capacité est dépassée et déclencher la purge
+        # Check if we need to purge the cache
         if self._current_size > self._max_capacity:
             self._perform_purge()
 
     def _perform_purge(self):
-        """
-        Effectue la purge des entrées obsolètes si l'indice k a été avancé.
-        """
-        if self._current_k_index < 2: # Pas de longueur k-2 possible si k est trop petit
+        if self._current_k_index < 2: 
             return
 
         str_len_to_purge = self._current_k_index - 2
 
-        # Purger toutes les longueurs de chaîne <= str_len_to_purge
-        # On itère sur une copie des clés pour pouvoir modifier le dictionnaire pendant l'itération
+        # Purge all entries with length <= str_len_to_purge
         for length in list(self._cache.keys()):
             if length <= str_len_to_purge:
                 self._current_size -= len(self._cache[length])

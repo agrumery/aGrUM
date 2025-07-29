@@ -14,10 +14,26 @@ def bar(
     y : int = None,
     ax : plt.Axes = None
     ) -> plt.axis :
+    """
+    Plots a horizontal bar chart of the mean absolute SHAP values for each feature in the explanation.
+
+    Parameters:
+    ----------
+    explanation : Explanation
+        The explanation object containing the SHAP values.
+    y : int, optional
+        The target class for which to plot the SHAP values (default is None, which plots multi-bar for all classes).
+    ax : plt.Axes, optional
+        The matplotlib Axes object to plot on (default is None, which creates a new figure).
+
+    Raises :
+    ------
+    TypeError : If `explanation` is not an Explanation object or if `y` is not an integer or None.
+    IndexError : If `y` is an integer but out of bounds for the explanation keys.
+    """
 
     if not isinstance(explanation, Explanation) :
         raise TypeError("`explanation` must be an Explanation object but got {}".format(type(explanation)))
-    # Create a dataframe with the feature names and the mean of the absolute SHAP values
     if not isinstance(y, int) and not (y is None) :
         raise TypeError(f"`y` must be either a positive integer or None, but got {type(y)}")
     if isinstance(y, int) :

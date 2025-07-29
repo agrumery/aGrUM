@@ -9,7 +9,24 @@ from matplotlib.patches import Polygon
 
 def waterfall(explanation: Explanation,
               y: int,
-              ax: plt.axis= None) :
+              ax= None) :
+    """
+    Plots a waterfall chart of the SHAP values for a specific target class in the explanation.
+
+    Parameters:
+    ----------
+    explanation : Explanation
+        The explanation object containing the SHAP values.
+    y : int
+        The target class for which to plot the SHAP values.
+    ax : matplotlib.Axes, optional
+        The matplotlib Axes object to plot on (default is None, which creates a new figure).
+
+    Raises :
+    ------
+    TypeError : If `explanation` is not an Explanation object or if `y` is not an integer.
+    IndexError : If `y` is an integer but out of bounds for the explanation keys.
+    """
     if not isinstance(explanation, Explanation) :
         raise TypeError("`explanation` must be an Explanation object but got {}".format(type(explanation)))
     if isinstance(y, int) :

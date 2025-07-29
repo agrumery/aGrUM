@@ -34,24 +34,40 @@
 #                                                                          #
 ############################################################################
 
-# TODO: The documentation of the package
 """
-__Documentation__
+This module provides classes for explaining predictions and other computations made by the bayesian networks.
 """
 
 __author__ = "Pierre-Henri Wuillemin"
 __copyright__ = "(c) 2019-2025 PARIS"
 
-from ._ConditionalShapValues import ConditionalShapValues
-from ._MarginalShapValues import MarginalShapValues
-from ._CausalShapValues import CausalShapValues
+# Shapley Values
+from ._ShapConditionalValues import ConditionalShapValues
+from ._ShapMarginalValues import MarginalShapValues
+from ._ShapCausalValues import CausalShapValues
 from ._Explanation import Explanation
+
+# Independence List For Pairs
+from ._explIndependenceListForPairs import independenceListForPairs
+
+# Generalized Markov Blanket
+from ._explGeneralizedMarkovBlanket import generalizedMarkovBlanket
+
+# Entropy and Mutual Information
+from ._explInformationGraph import getInformationGraph, getInformation, showInformation
+
+
 
 __all__ = [
     "ConditionalShapValues",
     "MarginalShapValues",
     "CausalShapValues",
-    "Explanation"
+    "Explanation",
+    "independenceListForPairs",
+    "generalizedMarkovBlanket",
+    "getInformationGraph",
+    "getInformation",
+    "showInformation"
 ]
 
 
