@@ -40,7 +40,7 @@ from .pyAgrumTestSuite import pyAgrumTestCase, addTests
 
 import pyagrum as gum
 import pandas as pd
-from pyagrum.explain._MarginalShapValues import MarginalShapValues
+from pyagrum.explain import MarginalShapValues
 
 # Load the data
 data = pd.read_csv('tests/resources/iris.csv')

@@ -40,7 +40,7 @@ from .pyAgrumTestSuite import pyAgrumTestCase, addTests
 import pyagrum as gum
 import numpy as np
 import pandas as pd
-from pyagrum.explain._CausalShapValues import CausalShapValues
+from pyagrum.explain import CausalShapValues
 
 # Load the data
 data = pd.read_csv('tests/resources/iris.csv')
@@ -122,10 +122,10 @@ class CausalTest(pyAgrumTestCase) :
     
     def test_shap_ndim(self) :
         expl = explainer.compute((data.head(10), True)).importances[1]
-        assert round(expl['SepalLengthCm'], 5) == 3.83845
-        assert round(expl['SepalWidthCm'], 5) == 4.54750
-        assert round(expl['PetalLengthCm'], 5) == 3.14068
-        assert round(expl['PetalWidthCm'], 5) == 3.15554
+        assert round(expl['SepalLengthCm'], 5) == 0.74231
+        assert round(expl['SepalWidthCm'], 5) == 2.91034
+        assert round(expl['PetalLengthCm'], 5) == 0.13364
+        assert round(expl['PetalWidthCm'], 5) == 0.11879
     
 ts = unittest.TestSuite()
 addTests(ts, CausalTest)

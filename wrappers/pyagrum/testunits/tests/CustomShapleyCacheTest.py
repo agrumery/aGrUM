@@ -1,5 +1,4 @@
 # Imports
-#FIXME: Je ne dois plus dépendre de pandas
 import pyagrum as gum
 import pandas as pd
 import unittest

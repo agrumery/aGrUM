@@ -39,7 +39,7 @@ import unittest
 from .pyAgrumTestSuite import pyAgrumTestCase, addTests
 
 import pyagrum as gum
-from pyagrum.explain._ConditionalShapValues import ConditionalShapValues
+from pyagrum.explain import ConditionalShapValues
 import pandas as pd
 import numpy as np
 import itertools
