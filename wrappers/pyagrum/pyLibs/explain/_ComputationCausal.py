@@ -34,11 +34,4 @@ class CausalComputation() :
         doLazy.updateEvidence(evidces)
         return doLazy.evidenceProbability() * count
 
-    @staticmethod
-    def _extract(data: np.ndarray, tau: list[int], alpha: np.ndarray)-> np.ndarray :
-        # Extracts the data given the values in alpha for the nodes in tau.
-        mask = np.all(data[:, tau] == alpha, axis=1)
-        idx = np.nonzero(mask)[0]
-        return idx
-
 

@@ -47,6 +47,11 @@ from ._ShapMarginalValues import MarginalShapValues
 from ._ShapCausalValues import CausalShapValues
 from ._Explanation import Explanation
 
+# Shall Values
+from ._ShallConditionalValues import ConditionalShallValues
+from ._ShallMarginalValues import MarginalShallValues
+from ._ShallCausalValues import CausalShallValues
+
 # Independence List For Pairs
 from ._explIndependenceListForPairs import independenceListForPairs
 
@@ -56,12 +61,13 @@ from ._explGeneralizedMarkovBlanket import generalizedMarkovBlanket
 # Entropy and Mutual Information
 from ._explInformationGraph import getInformationGraph, getInformation, showInformation
 
-
-
 __all__ = [
     "ConditionalShapValues",
     "MarginalShapValues",
     "CausalShapValues",
+    "ConditionalShallValues",
+    "MarginalShallValues",
+    "CausalShallValues",
     "Explanation",
     "independenceListForPairs",
     "generalizedMarkovBlanket",

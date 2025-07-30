@@ -1,0 +1,132 @@
+# Imports
+import pyagrum as gum
+from pyagrum.explain._ShallValues import ShallValues
+from pyagrum.explain._CustomShapleyCache import CustomShapleyCache
+from pyagrum.explain._ComputationCausal import CausalComputation
+from pyagrum.explain._FIFOCache import FIFOCache
+# Calculus
+import numpy as np
+import pandas as pd
+# GL
+import warnings
+
+# TODO : expliquer que pour SHALL  causales il est impossible de calculer les probabilites empirique 'true to the data'.
+# Il faut calculer des probabilités selon 'true to the model'
+class CausalShallValues(ShallValues, CausalComputation) :
+    def __init__(self, bn:gum.BayesNet, background: tuple | None, sample_size:int=1000, log:bool=True) :
+        super().__init__(bn, background, sample_size, log)
+        self.baseline = self._value( data=self._data,
+                                     counts=self.counts,
+                                     elements=self.vars_ids,
+                                     sigma=self.vars_ids,
+                                     cache=FIFOCache(100),
+                                     func1=self._joint,
+                                     params1={},
+                                     func2=self._weight,
+                                     params2= {'doLazy': gum.LazyPropagation(self.bn)} )        
+    
+    def _coalition_contribution(self, posterior_prob_with, posterior_prob_without, m, s) :
+        return (posterior_prob_with - posterior_prob_without) / self._invcoeff_shap(m, s)
+    
+    def _shall_1dim(self, x):
+        contributions = np.zeros(self.M) # M : number of nodes in BN
+
+        # Caches
+        custom_cache = CustomShapleyCache(5000)
+        fifo_cache = FIFOCache(1000)
+        # Sets the baseline probability in the cache.
+        custom_cache.set(0, (), self.baseline)
+        # Compute the coalitions
+        coalitions = self._coalitions(self.vars_ids)
+
+        for tau in coalitions :
+            # self.ie.eraseAllEvidence()
+            doNet = self._doCalculus(self.bn, tau) # new BN
+            sigma = self._outOfCoalition(tau, self.vars_ids)      # all nodes \ tau
+
+            doInst = gum.Instantiation()
+            for var in doNet.ids(self.feat_names):
+                doInst.add(doNet.variable(var))
+
+            # Instanciation of tau
+            alpha = x[tau]                         # extract columns in tau
+            if sigma != [] :
+                self._chgCpt(doNet, tau, alpha)    
+                doLazy = gum.LazyPropagation(doNet)
+                doLazy.addTarget(tau[0]) # see if target should be added for optimization
+                idx = self._extract(self._data, tau, alpha)
+                # Compute the value for this coalition.
+                joint_with = self._value(data=self._data[idx],
+                                                    counts=self.counts[idx],
+                                                    elements=self.vars_ids,
+                                                    sigma=sigma,
+                                                    cache=fifo_cache,
+                                                    func1=self._joint,
+                                                    params1={},
+                                                    func2=self._weight,
+                                                    params2={'doLazy': doLazy})
+            else :
+                self.inst.fromdict({self.feat_names[key]: int(val) for key, val in zip(tau, alpha)})
+                joint = self.bn.jointProbability(self.inst)         
+                joint_with = self.func(joint)
+
+            custom_cache.set(0, tuple(tau), joint_with)
+            # Contribution of each feature
+            for t in tau :
+                key = tuple((f for f in tau if f != t))
+                joint_without = custom_cache.get(0, key)
+                contributions[t] += self._coalition_contribution(joint_with,
+                                                                    joint_without,
+                                                                    len(self.vars_ids),
+                                                                    len(tau) - 1)
+        return contributions
+
+    def _shall_ndim(self, x) :
+        # Initialisation
+        contributions = np.zeros((self.M, len(x)))
+
+        # Caches
+        custom_cache = CustomShapleyCache(5000)
+        fifo_cache = FIFOCache(1000)
+        # Sets the baseline probability in the cache.
+        custom_cache.set(0, (), self.baseline)
+        # Compute the coalitions
+        coalitions = self._coalitions(self.vars_ids)
+
+        for tau in coalitions :
+            doNet = self._doCalculus(self.bn, tau)
+            sigma = self._outOfCoalition(tau, self.vars_ids)
+
+            for i in range(len(x)) :
+                alpha = x[i, tau]
+                if sigma != [] :
+                    # Instanciation of tau
+                    self._chgCpt(doNet, tau, alpha) # BN knowing alpha
+                    doLazy = gum.LazyPropagation(doNet)
+                    idx = self._extract(self._data, tau, alpha)
+                    # Compute the value for this coalition.
+                    joint_with = self._value(data=self._data[idx],
+                                                    counts=self.counts[idx],
+                                                    elements=self.vars_ids,
+                                                    sigma=sigma,
+                                                    cache=fifo_cache,
+                                                    func1=self._joint,
+                                                    params1={},
+                                                    func2=self._weight,
+                                                    params2={'doLazy': doLazy})
+
+                else :
+                    self.inst.fromdict({self.feat_names[key]: int(val) for key, val in zip(tau, alpha)})
+                    joint = self.bn.jointProbability(self.inst)         
+                    joint_with = self.func(joint)
+
+                custom_cache.set(i, tuple(tau), joint_with)
+                # Contribution of each feature
+                for t in tau :
+                    key = tuple((f for f in tau if f != t))
+                    joint_without = custom_cache.get(i, key) if len(key) > 0 else custom_cache.get(0, ())
+                    contributions[t, i] += self._coalition_contribution(joint_with,
+                                                                        joint_without,
+                                                                        len(self.vars_ids),
+                                                                        len(tau) - 1)
+        return contributions
