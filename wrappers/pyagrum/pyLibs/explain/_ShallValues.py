@@ -200,6 +200,7 @@ class ShallValues(Explainer):
                                       x[self.vars_ids],
                                       self.baseline,
                                       self.func.__name__,
+                                      "SHALL"
                                       )
         else:
             values = {
@@ -219,5 +220,6 @@ class ShallValues(Explainer):
                                       y[:, self.vars_ids],
                                       self.baseline,
                                       self.func.__name__,
+                                      "SHALL"
                                       )
         return explanation

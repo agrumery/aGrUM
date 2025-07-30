@@ -8,7 +8,8 @@ class Explanation(MutableMapping) :
                  feature_names,
                  data, 
                  baseline, 
-                 func
+                 func,
+                 values_type
             ) -> None :
         
         self._values = values
@@ -17,6 +18,7 @@ class Explanation(MutableMapping) :
         self.data = data
         self.baseline = baseline
         self.func = func
+        self.values_type = values_type
 
     def __getitem__(self, key):
         return self._values[key]

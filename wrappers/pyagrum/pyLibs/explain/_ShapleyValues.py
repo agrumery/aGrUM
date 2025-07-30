@@ -233,7 +233,8 @@ class ShapleyValues(Explainer) :
                                     list(self.feat_names[sorted(elements)]),
                                     x[sorted(elements)],
                                     self.baseline,
-                                    self.func.__name__) 
+                                    self.func.__name__,
+                                    "SHAP") 
         else :
             values = {
                 z : {
@@ -255,7 +256,8 @@ class ShapleyValues(Explainer) :
                                     list(self.feat_names[sorted(elements)]),
                                     y[:, sorted(elements)],
                                     self.baseline,
-                                    self.func.__name__)    
+                                    self.func.__name__,
+                                    "SHAP")    
         return explanation        
         
 
