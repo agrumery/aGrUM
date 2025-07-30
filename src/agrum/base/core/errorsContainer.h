@@ -57,16 +57,15 @@
 #include <agrum/base/core/cocoR/common.h>
 
 namespace gum {
-
   /**
-   * @class ParseError
+   * @class _ParseError
    * @headerfile errorsContainer.h <agrum/base/core/errorsContainer.h>
    * @brief This class is used to represent parsing errors for the different
    * parser implemented in aGrUM.
    * @ingroup basicstruct_group
    *
    */
-  class ParseError {
+  class _ParseError {
     public:
     // ============================================================================
     /// @name Class constructors and destructors
@@ -115,7 +114,7 @@ namespace gum {
      * @brief Copy constructor.
      * @param cont The gum::ParseError to copy.
      */
-    ParseError(const ParseError& cont);
+    _ParseError(const _ParseError& cont);
 
     /// @}
     // ============================================================================
@@ -128,7 +127,7 @@ namespace gum {
      * @param cont The gum::ParseError to copy.
      * @return Returns this gum::ParseError.
      */
-    ParseError operator=(const ParseError& cont);
+    _ParseError operator=(const _ParseError& cont);
 
     /// @}
     // ============================================================================
@@ -136,23 +135,23 @@ namespace gum {
     // ============================================================================
     /// @{
 
-    /// If false, this gum::ParseError is a warning.
+    /// If false, this gum::_ParseError is a warning.
     bool is_error;
 
-    /// The line of this gum::ParseError.
+    /// The line of this gum::_ParseError.
     Idx line;
 
-    /// The column of this gum::ParseError, default is 0.
+    /// The column of this gum::_ParseError, default is 0.
     Idx column;
 
-    /// The gum::ParseError message.
+    /// The gum::_ParseError message.
     std::string msg;
 
-    /// The file of this gum::ParseError, default is "".
+    /// The file of this gum::_ParseError, default is "".
     std::string filename;
 
-    /// The code of this gum::ParseError, default is "".
-    mutable std::string code;   // default ""
+    /// The code of this gum::_ParseError, default is "".
+    mutable std::string code; // default ""
 
     /**
      * @brief Return a std::string representation of this gum::ParseError.
@@ -178,8 +177,8 @@ namespace gum {
    * @ingroup basicstruct_group
    */
   class ErrorsContainer {
-    /// The list of gum::ParseError contained in this gum::ErrorsContainer.
-    mutable std::vector< ParseError > errors;
+    /// The list of gum::_ParseError contained in this gum::ErrorsContainer.
+    mutable std::vector< _ParseError > errors;
 
     public:
     /// Number of errors detected.
@@ -214,7 +213,7 @@ namespace gum {
      * @brief Add an error object to the container.
      * @param error The gum::ParseError to add.
      */
-    void add(ParseError error);
+    void _add(_ParseError error);
 
     /**
      * @brief Returns the i-th error.
@@ -222,14 +221,14 @@ namespace gum {
      * @return Returns the i-th error.
      * @throw OutOfBounds Raised if there is less than i errors.
      */
-    ParseError error(Idx i) const;
+    _ParseError error(Idx i) const;
 
     /**
      * @brief Returns the last added error.
      * @return Returns the last added error.
      * @throw OutOfBounds Raised if is no error to return.
      */
-    ParseError last() const;
+    _ParseError last() const;
 
     /**
      * @brief Adds an error.
@@ -352,10 +351,8 @@ namespace gum {
     ErrorsContainer operator+=(const ErrorsContainer& cont);
 
     /// @}
-
-  };   // ErrorsContainer
-
-}   // namespace gum
+  }; // ErrorsContainer
+} // namespace gum
 
 /// include the inlined functions if necessary
 #ifndef GUM_NO_INLINE

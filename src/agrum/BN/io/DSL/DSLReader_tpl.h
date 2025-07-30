@@ -72,12 +72,10 @@ namespace gum {
 
     if (!_ioerror_) {
       // this could lead to memory leak !!
-      if (_parser_) delete (_parser_);
-
-      if (_scanner_) delete (_scanner_);
+      delete (_parser_);
+      delete (_scanner_);
     }
-
-    if (_factory_) delete (_factory_);
+    delete (_factory_);
   }
 
   template < GUM_Numeric GUM_SCALAR >
@@ -181,6 +179,6 @@ namespace gum {
   }
 
   /// @}
-}   // namespace gum
+} // namespace gum
 
 #endif   // DOXYGEN_SHOULD_SKIP_THIS

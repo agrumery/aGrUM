@@ -144,7 +144,7 @@ namespace gum {
         /// # of warnings
         Size warnings() const;
         /// throw a string error if i >= count
-        ParseError error(Idx i) const;
+        _ParseError error(Idx i) const;
         /// send on std::cerr the list of errors
         void showElegantErrors(std::ostream& o = std::cerr) const;
         /// send on std::cerr the list of errors or warnings

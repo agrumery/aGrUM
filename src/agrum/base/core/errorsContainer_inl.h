@@ -51,10 +51,9 @@
 #include <agrum/base/core/errorsContainer.h>
 
 namespace gum {
-
   INLINE
   void ErrorsContainer::Error(const std::wstring& filename, Idx line, Idx col, const wchar_t* msg) {
-    add(ParseError(true, narrow(std::wstring(msg)), narrow(filename), line, col));
+    _add(_ParseError(true, narrow(std::wstring(msg)), narrow(filename), line, col));
   }
 
   INLINE
@@ -62,16 +61,16 @@ namespace gum {
                                 Idx                 line,
                                 Idx                 col,
                                 const wchar_t*      msg) {
-    add(ParseError(false, narrow(std::wstring(msg)), narrow(filename), line, col));
+    _add(_ParseError(false, narrow(std::wstring(msg)), narrow(filename), line, col));
   }
 
   INLINE
   void ErrorsContainer::Exception(const std::wstring& filename, const wchar_t* msg) {
-    add(ParseError(true, "Exception : " + narrow(std::wstring(msg)), narrow(filename), 0, 0));
+    _add(_ParseError(true, "Exception : " + narrow(std::wstring(msg)), narrow(filename), 0, 0));
   }
 
   INLINE
-  void ErrorsContainer::add(ParseError error) {
+  void ErrorsContainer::_add(_ParseError error) {
     errors.push_back(error);
 
     if (error.is_error) error_count++;
@@ -107,5 +106,4 @@ namespace gum {
     o << "Errors : " << error_count << std::endl;
     o << "Warnings : " << warning_count << std::endl;
   }
-
-}   // namespace gum
+} // namespace gum

@@ -47,7 +47,8 @@
 #include <gumtest/utils.h>
 
 #include <agrum/base/external/json/json.hpp>
-#include <agrum/BN/bayesNet.h>
+#include <agrum/BN/BayesNet.h>
+#include <agrum/BN/io/GUM/BNGumReader.h>
 
 using json = nlohmann::json;
 
@@ -142,13 +143,15 @@ namespace gum_tests {
       0.3152219272008065,
       0.6331727847141403
     ]
-  },
-  "properties": {
-    "creation": "2025-07-29 09:31:09",
-    "lastModification": "2025-07-29 09:31:09",
-    "version": "aGrUM 2.2.0"
   }
 })"};
+
+    /*,
+      "properties": {
+        "creation": "2025-07-29 09:31:09",
+        "lastModification": "2025-07-29 09:31:09",
+        "version": "aGrUM 2.2.0"
+      }*/
 
     public:
     GUM_ACTIVE_TEST(FirstTest) {
@@ -189,15 +192,6 @@ namespace gum_tests {
       TS_ASSERT_EQUALS(k["C"][0], 0.018974912112612926);
     }
 
-    GUM_ACTIVE_TEST(getProperties) {
-      const auto  ref = json::parse(jsondemo);
-      const auto& k   = ref["properties"];
-      TS_ASSERT_EQUALS(k.size(), 3u);
-      TS_ASSERT_EQUALS(k["creation"], "2025-07-29 09:31:09");
-      TS_ASSERT_EQUALS(k["lastModification"], "2025-07-29 09:31:09");
-      TS_ASSERT_EQUALS(k["version"], "aGrUM 2.2.0");
-    }
-
     GUM_ACTIVE_TEST(testExistence) {
       const auto ref = json::parse(jsondemo);
       TS_ASSERT(ref.contains("nodes"));
@@ -210,16 +204,12 @@ namespace gum_tests {
       const auto              ref = json::parse(jsondemo);
       gum::BayesNet< double > bn;
       // iterate on nodes in json
-      for (const auto& node: ref["nodes"]) {
-        const auto n = bn.add(node.get< std::string >());
-        std::cout << "Adding node: " << bn.variable(n) << std::endl;
-      }
+      for (const auto& node: ref["nodes"]) { const auto n = bn.add(node.get< std::string >()); }
       // iterate on parents in json
       for (const auto& parent: ref["parents"].items()) {
         const auto& nodeName = parent.key();
         for (const auto& p: parent.value()) {
           const auto& pName = p.get< std::string >();
-          std::cout << "Adding parent: " << pName << " to node: " << nodeName << std::endl;
           bn.addArc(pName, nodeName);
         }
       }
@@ -227,9 +217,29 @@ namespace gum_tests {
       for (const auto& cpt: ref["cpt"].items()) {
         const auto& nodeName = cpt.key();
         const auto& values   = cpt.value();
-        std::cout << "Setting cpt for node: " << nodeName << std::endl;
         bn.cpt(nodeName).fillWith(values.get< std::vector< double > >());
       }
+
+      const std::string       filename = GET_RESSOURCES_PATH("jsonGum/minimal.gum");
+      gum::BayesNet< double > bn2;
+
+      auto reader = gum::BNGumReader< double >(&bn2, filename);
+
+      TS_ASSERT_EQUALS(reader.proceed(), 0u);
+      TS_ASSERT_EQUALS(bn2.size(), 3u);
+      TS_ASSERT_EQUALS(bn2.variable(0).toFast(), "A{yes|maybe|no}");
+      TS_ASSERT_EQUALS(bn2.variable(1).toFast(), "B[3,7]");
+      TS_ASSERT_EQUALS(bn2.variable(2).toFast(), "C[1.3,1.6,1.9,2.2,2.5]");
+      TS_ASSERT_EQUALS(bn2.parents(0).size(), 0u);
+      TS_ASSERT_EQUALS(bn2.parents(1).size(), 2u);
+      TS_ASSERT_EQUALS(bn2.parents(2).size(), 0u);
+      TS_ASSERT(bn2.existsArc("A", "B"));
+      TS_ASSERT(bn2.existsArc("C", "B"));
+
+      TS_ASSERT_EQUALS(bn2, bn);
+
+      TS_ASSERT_EQUALS(bn.properties().size(), 0u);
+      TS_ASSERT_EQUALS(bn2.properties().size(), 3u);
     }
   };
 }
