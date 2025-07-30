@@ -1,5 +1,6 @@
 # Imports
 from pyagrum.explain._ShapleyValues import ShapleyValues
+from pyagrum.explain._ComputationMarginal import MarginalComputation
 from pyagrum.explain._CustomShapleyCache import CustomShapleyCache
 from pyagrum.explain._FIFOCache import FIFOCache
 # Calculations
@@ -10,7 +11,7 @@ import pyagrum as gum
 # GL
 import warnings
 
-class MarginalShapValues(ShapleyValues) :
+class MarginalShapValues(ShapleyValues, MarginalComputation) :
     """
     The MarginalShapValues class computes the Marginal Shapley values for a given target node in a Bayesian Network.
     """
@@ -66,30 +67,15 @@ class MarginalShapValues(ShapleyValues) :
         self._N = int(np.sum(self.counts))
         if self._N == 0 :
             raise ValueError("Background data can't be empty.")
-        self.baseline = self._value(self._data,
-                                    [i for i in range(self._data.shape[1]) if i != self.target],
-                                    {})
-    
-    def _markov_blanket(self) :
-        # Retrieves the Markov blanket of the target node.
-        mb = gum.MarkovBlanket(self.bn, self.target).nodes()
-        mb.remove(self.target)
-        return sorted(list(mb))
-
-    def _value(self, interv: np.array, elements: list[int], markovImpact: FIFOCache) :
-        # Computes v = E[f(x_s)]
-        val = np.zeros( self.bn.variable(self.target).domainSize(), dtype=float )
-        for i in range(len(interv)) :
-            posterior = markovImpact.get(tuple(interv[i, elements]), None)
-            if posterior is None :
-               evidces = {key: int(interv[i, key]) for key in elements}
-               self.ie.updateEvidence(evidces)
-               posterior = self.ie.posterior(self.target).toarray()
-               markovImpact[tuple(interv[i, elements])] = posterior
-            val += posterior * self.counts[i]
-
-        self.ie.eraseAllEvidence()
-        return self.func( val / self._N )
+        self.baseline = self.func( self._value( data=self._data,
+                                                counts=self.counts,
+                                                elements=[i for i in range(self.M) if i != self.target],
+                                                sigma=[],
+                                                cache=FIFOCache(100),
+                                                func1=self._posterior,
+                                                params1={},
+                                                func2=self._weight,
+                                                params2={}) )
     
     def _coalition_contribution(self,
                                  k, 
@@ -105,11 +91,19 @@ class MarginalShapValues(ShapleyValues) :
         if k == 0 :
             interv = self._data.copy()
             interv[:, nodes_id] = nodes_vals
-            cache.set(ex, key1, self._value(interv, elements, markovImpact))
+            cache.set(ex, key1, self.func( self._value( data=interv,
+                                                        counts=self.counts,
+                                                        elements=elements,
+                                                        sigma=[],
+                                                        cache=markovImpact,
+                                                        func1=self._posterior,
+                                                        params1={},
+                                                        func2=self._weight,
+                                                        params2={} ) ))
 
         posterior_prob_with = cache.get(ex, key1)
         posterior_prob_without = cache.get(ex, key2) if len( key1 ) > 1 else cache.get(-1, ())
-        return (posterior_prob_with - posterior_prob_without) / self._invcoeff_shap(len(elements), len(nodes_id) - 1)
+        return self._shap_term(posterior_prob_with, posterior_prob_without, len(elements), len(nodes_id) - 1)
     
     def _shap_1dim(self, x, elements):
         contributions = np.zeros( (self.M, self.bn.variable(self.target).domainSize()) ) # Initializes contributions array.

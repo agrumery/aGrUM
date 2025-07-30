@@ -17,7 +17,7 @@ data['SepalWidthCm'] = pd.cut(data['SepalWidthCm'], 5, right=True, labels=[0, 1,
 learner = gum.BNLearner(data)
 bn = learner.learnBN()
 
-class CustomShapleyCacheTest(pyAgrumTestCase) :
+class ShapCustomCache(pyAgrumTestCase) :
     def test_generate_keys(self):
         nodes = [0, 1, 2]
         target = 5
@@ -57,4 +57,4 @@ class CustomShapleyCacheTest(pyAgrumTestCase) :
             pass
 
 ts = unittest.TestSuite()
-addTests(ts, CustomShapleyCacheTest)
+addTests(ts, ShapCustomCache)

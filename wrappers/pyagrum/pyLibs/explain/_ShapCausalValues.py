@@ -1,6 +1,7 @@
 # Imports
 import pyagrum as gum
 from pyagrum.explain._ShapleyValues import ShapleyValues
+from pyagrum.explain._ComputationCausal import CausalComputation
 from pyagrum.explain._CustomShapleyCache import CustomShapleyCache
 from pyagrum.explain._FIFOCache import FIFOCache
 # Calculus
@@ -9,7 +10,7 @@ import pandas as pd
 # GL
 import warnings
 
-class CausalShapValues(ShapleyValues) :
+class CausalShapValues(ShapleyValues, CausalComputation) :
     """
     The CausalShapValues class computes the Causal Shapley values for a given target node in a Bayesian Network.
     """
@@ -34,7 +35,6 @@ class CausalShapValues(ShapleyValues) :
         ValueError : If target is not a valid node id in the Bayesian Network or if sample_size is not a positive integer.
         """
         super().__init__(bn, target, logit)
-        self._mb = self._markov_blanket()
         # Processing background data
         if background is None :
             if not isinstance(sample_size, int) :
@@ -58,71 +58,19 @@ class CausalShapValues(ShapleyValues) :
             data = data.reindex(columns=self.feat_names).to_numpy()
             if with_labels :
                 data = self._labelToPos_df(data, [i for i in range(self.M) if i != self.target])
-        self._data = data
+        self._data, self.counts = np.unique(data, return_counts=True, axis=0)
         self._N = len(self._data)
         # Calculating the baseline
-        self.baseline = self._value(self._data, [i for i in range(self.M) if i != self.target], gum.LazyPropagation(self.bn), self._mb, FIFOCache(1000))
-    
-    def _markov_blanket(self) :
-        # Retrieves the Markov blanket of the target node.
-        mb = gum.MarkovBlanket(self.bn, self.target).nodes()
-        mb.remove(self.target)
-        return sorted(list(mb))
-    
-    def _outOfCoalition(self, tau: list[int])-> list[int] :
-        # Returns the intersection of the Markov blanket and the complement of the coalition tau.
-        return [i for i in self._mb if i not in tau]
-
-    def _doCalculus(self, bn: gum.BayesNet, tau: list[int])-> gum.BayesNet :
-        # Creates a new Bayesian Network by removing incoming arcs to the nodes in tau.
-        doNetTemplate = gum.BayesNet(bn)
-        for i in tau :
-            parents = doNetTemplate.parents(i)
-            for j in parents :
-                doNetTemplate.eraseArc(j, i)
-        return doNetTemplate
-
-    def _chgCpt(self, doNetTemplate: gum.BayesNet, tau: list[int], alpha: list[int])-> None :
-        # Changes the conditional probability tables (CPTs) of the nodes in tau to reflect the values in alpha.
-        for i, j in zip(tau, alpha) :
-            doNetTemplate.cpt(i).fillWith(0.)
-            doNetTemplate.cpt(i)[int(j)] = 1.
-    
-    def _extract(self, tau: list[int], sigma: list[int], alpha: np.ndarray)-> np.ndarray :
-        # Extracts the background data for the nodes in sigma given the values in alpha for the nodes in tau.
-        idx = [i for i in range(self._N) if np.all(self._data[i, tau] == alpha)]
-        subData = self._data[idx]
-        _, udx = np.unique(subData[:, sigma], return_index=True, axis=0)
-        return subData[udx]
-    
-    def _getProbability(self, doLazy: gum.LazyPropagation, sigma: list[int], beta: np.ndarray)-> np.ndarray :
-        # Returns the probability that nodes in sigma take the values in beta.
-        evidces = {key: int(val) for key, val in zip(sigma, beta)}
-        doLazy.updateEvidence(evidces)
-        return doLazy.evidenceProbability()
-    
-    def _value(self, interv: np.ndarray, elements: list[int], doLazy: gum.LazyPropagation, sigma: list[int], markovImpact: FIFOCache)-> np.ndarray :
-        # Computes v = E[f(X) | do(X_S = x_s)]
-        norm = 0.
-        val = np.zeros(self.bn.variable(self.target).domainSize())
-        for i in range(len(interv)) :
-            posterior = markovImpact.get(tuple(interv[i, elements]), None)
-            if posterior is None :
-               evidces = {key: int(interv[i, key]) for key in elements}
-               self.ie.updateEvidence(evidces)
-               posterior = self.ie.posterior(self.target).toarray()
-               markovImpact[tuple(interv[i, elements])] = posterior
-            p = self._getProbability(doLazy, sigma, interv[i, sigma])
-            norm += p
-            val += posterior * p
-
-        self.ie.eraseAllEvidence()
-        return self.func(val / norm) if norm != 0. else val
-    
-    def _coalition_contribution(self, posterior_prob_with, posterior_prob_without, m, s) :
-        # Computes the contribution of a coalition to the Shapley value.
-        return (posterior_prob_with - posterior_prob_without) / self._invcoeff_shap(m, s)
-        
+        self.baseline = self.func( self._value( data=self._data,
+                                                counts=self.counts,
+                                                elements=[i for i in range(self.M) if i != self.target],
+                                                sigma=self._mb,
+                                                cache=FIFOCache(100),
+                                                func1=self._posterior,
+                                                params1={},
+                                                func2=self._weight,
+                                                params2= {'doLazy': gum.LazyPropagation(self.bn)} ) )
+            
     def _shap_1dim(self, x, elements):
         # Computes the Shapley values for a 1-dimensional input x (local explanation).
         contributions = np.zeros( (self.M, self.bn.variable(self.target).domainSize()) ) # Initializes contributions array.
@@ -134,29 +82,31 @@ class CausalShapValues(ShapleyValues) :
         for tau in coalitions :
             self.ie.eraseAllEvidence() # Clears all evidence from the inference engine.
             doNet = self._doCalculus(self.bn, tau) # Creates a new Bayesian Network to perform do-calculus.
-            sigma = self._outOfCoalition(tau) # Extracts the nodes outside the coalition tau which are in the Markov blanket.
+            sigma = self._outOfCoalition(tau, range(self.M)) # Extracts the nodes outside the coalition tau.
             alpha = x[tau] # Instanciation of tau
-            if sigma != [] :
-                self._chgCpt(doNet, tau, alpha) # Changes the conditional probability tables to perform do-calculus.
-                doLazy = gum.LazyPropagation(doNet) # Creates a lazy propagation inference engine to compute partial join probabilities.
-                doLazy.addTarget(self.target)   
-                background_data = self._extract(tau, sigma, alpha)
-                posterior_with = self._value(background_data, elements, doLazy, sigma, markovImpact)
-            else :
-                # If sigma is empty, v = P(Y | X_tau = alpha)
-                evidces = {key: int(val) for key, val in zip(tau, alpha)}
-                self.ie.updateEvidence(evidces)
-                posterior_with = self.func( self.ie.posterior(self.target).toarray() )
-
+            self._chgCpt(doNet, tau, alpha) # Changes the conditional probability tables to perform do-calculus.
+            doLazy = gum.LazyPropagation(doNet) # Creates a lazy propagation inference engine to compute partial join probabilities.
+            doLazy.addTarget(self.target)   
+            idx = self._extract(self._data, tau, alpha)
+            posterior_with = self.func( self._value(data=self._data[idx],
+                                                    counts=self.counts[idx],
+                                                    elements=elements,
+                                                    sigma=sigma,
+                                                    cache=markovImpact,
+                                                    func1=self._posterior,
+                                                    params1={},
+                                                    func2=self._weight,
+                                                    params2={'doLazy': doLazy}) )
+                
             cache.set(0, tuple(tau), posterior_with)
             # Contribution of each feature
             for t in tau :
                 key = tuple((f for f in tau if f != t))
                 posterior_without = cache.get(0, key)
-                contributions[t] += self._coalition_contribution(posterior_with,
-                                                                    posterior_without,
-                                                                    len(elements),
-                                                                    len(tau) - 1)
+                contributions[t] += self._shap_term(posterior_with,
+                                                    posterior_without,
+                                                    len(elements),
+                                                    len(tau) - 1)
         return contributions
 
     def _shap_ndim(self, x, elements) :
@@ -169,29 +119,30 @@ class CausalShapValues(ShapleyValues) :
         for tau in coalitions :
             self.ie.eraseAllEvidence() # Clears all evidence from the inference engine.
             doNet = self._doCalculus(self.bn, tau) # Creates a new Bayesian Network to perform do-calculus.
-            sigma = self._outOfCoalition(tau) # Extracts the nodes outside the coalition tau which are in the Markov blanket.
+            sigma = self._outOfCoalition(tau, range(self.M)) # Extracts the nodes outside the coalition tau.
 
             for i in range(len(x)) : # Iterates over each example in x
                 alpha = x[i, tau] # Instanciation of tau
-                if sigma != [] :
-                    self._chgCpt(doNet, tau, alpha) # Changes the conditional probability tables to perform do-calculus.
-                    doLazy = gum.LazyPropagation(doNet) # Creates a lazy propagation inference engine to compute partial join probabilities.
-                    doLazy.addTarget(self.target)
-                    background_data = self._extract(tau, sigma, alpha)
-                    posterior_with = self._value(background_data, elements, doLazy, sigma, markovImpact) # Compute the value for this coalition.
-
-                else :
-                    # If sigma is empty, v = P(Y | X_tau = alpha)
-                    evidces = {key: int(val) for key, val in zip(tau, alpha)}
-                    self.ie.updateEvidence(evidces)
-                    posterior_with = self.func( self.ie.posterior(self.target).toarray() )
+                self._chgCpt(doNet, tau, alpha) # Changes the conditional probability tables to perform do-calculus.
+                doLazy = gum.LazyPropagation(doNet) # Creates a lazy propagation inference engine to compute partial join probabilities.
+                doLazy.addTarget(self.target)
+                idx = self._extract(self._data, tau, alpha)
+                posterior_with = self.func( self._value(data=self._data[idx],
+                                                        counts=self.counts[idx],
+                                                        elements=elements,
+                                                        sigma=sigma,
+                                                        cache=markovImpact,
+                                                        func1=self._posterior,
+                                                        params1={},
+                                                        func2=self._weight,
+                                                        params2={'doLazy': doLazy}) )
 
                 cache.set(i, tuple(tau), posterior_with)
                 # Contribution of each feature
                 for t in tau :
                     key = tuple((f for f in tau if f != t))
                     posterior_without = cache.get(i, key) if len(key) > 0 else cache.get(0, ())
-                    contributions[t, i] += self._coalition_contribution(posterior_with,
+                    contributions[t, i] += self._shap_term(posterior_with,
                                                                         posterior_without,
                                                                         len(elements),
                                                                         len(tau) - 1)

@@ -45,7 +45,7 @@ class ConditionalShapValues(ShapleyValues) :
                     cache.set(ex, key1, cache.get(-1, ''))
         posterior_prob_with = cache.get(ex, key1)
         posterior_prob_without = cache.get(ex, key2) if len( key1 ) > 1 else cache.get(-1, '')
-        return (posterior_prob_with - posterior_prob_without) / self._invcoeff_shap(_M, len(nodes_id) - 1)
+        return self._shap_term(posterior_prob_with, posterior_prob_without, _M, len(nodes_id) - 1)
 
     def _shap_1dim(self, x, elements)-> np.ndarray :
         contributions = np.zeros( (self.M, self.bn.variable(self.target).domainSize()) ) # Initializes contributions array.

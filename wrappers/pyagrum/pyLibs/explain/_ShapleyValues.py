@@ -1,17 +1,16 @@
 # Imports
-from abc import ABC, abstractmethod
+from pyagrum.explain._Explainer import Explainer 
+from abc import abstractmethod
 from pyagrum.explain._Explanation import Explanation
 # Calculations
 import pandas as pd
 import numpy as np
-import math
-from itertools import combinations
 # aGrUM
 import pyagrum as gum
 # GL
 import warnings
 
-class ShapleyValues(ABC) :
+class ShapleyValues(Explainer) :
     """
     The ShapleyValues class is an abstract base class for computing Shapley values in a Bayesian Network.
     """
@@ -32,9 +31,7 @@ class ShapleyValues(ABC) :
         TypeError : If bn is not a gum.BayesNet or target is not an integer or string.
         ValueError : If target is not a valid node id in the Bayesian Network.
         """
-
-        if not isinstance(bn, gum.BayesNet) :
-            raise TypeError("bn must be a gum.BayesNet instance, but got {}".format(type(bn)))
+        super().__init__(bn)
         if isinstance(target, str) :
             if target not in bn.names() :
                 raise ValueError("Target node name '{}' not found in the Bayesian Network.".format(target))
@@ -48,65 +45,24 @@ class ShapleyValues(ABC) :
             warnings.warn("logit should be a boolean, unexpected calculation may occur.", UserWarning)
 
         # Class attributes.
-        self.bn = bn
-        self.M = len( bn.nodes() ) # Total number of nodes in the Bayesian Network.
         self.target = target # ID of the target node.
-        self.feat_names = np.empty(self.M, dtype=object) # Array to store feature names by their node ID.
-        for name in self.bn.names() :
-            self.feat_names[self.bn.idFromName(name)] = name
         self.target_name = self.feat_names[self.target]
+        self._mb = self._markov_blanket()
         self.ie = gum.LazyPropagation(self.bn) # Inference engine for the Bayesian Network.
         self.ie.addTarget(self.target) # Setting the target for inference.
         self.func = self._logit if logit else self._identity # Function to apply to the probabilities.
 
-    def _logit(self, p):
-        # Applies the logit transformation to the probabilities.
-        p = np.asarray(p)  # Guarantee p is a numpy array.
-        with np.errstate(divide='ignore', invalid='ignore'):
-            result = np.log(p / (1 - p))
-        result = np.where(p == 0, -np.inf, result)
-        result = np.where(p == 1,  np.inf, result)
-        return result
-
-    def _identity(self, x):
-        # Returns the input as is (identity function).
-        return x
+    def _markov_blanket(self) :
+        # Retrieves the Markov blanket of the target node.
+        mb = gum.MarkovBlanket(self.bn, self.target).nodes()
+        mb.remove(self.target)
+        return sorted(list(mb))
     
-    def _labelToPos_row(self, x: np.ndarray, elements: list[int])-> np.ndarray:
-        # Converts labels to positions for a single instance.
-        y = np.empty(shape=x.shape, dtype=int)
-        for i in elements :
-            try :
-                val = self.bn.variable(i).posLabel(x[i])
-            except :
-                val = int(x[i])
-            y[i] = val
-        return y
-
-    def _labelToPos_df(self, x: np.ndarray, elements: list[int])-> np.ndarray :
-        # Converts labels to positions for multiple instances.
-        y = np.empty(shape=x.shape, dtype=int) # Initialisation
-        posLabelVect = np.vectorize(lambda i, j: self.bn.variable(j).posLabel(i))
-        for j in elements :
-            try :
-                self.bn.variable(j).posLabel(x[0, j])
-                y[:, j] = posLabelVect(x[:, j], j)
-            except NotImplementedError :
-                y[:, j] = x[:, j].astype(int)
-        return y
-    
-    def _coalitions(self, elements_for_coalitions) :
-        # Generates all possible coalitions from the given elements.
-        all_coalitions = []
-        for r in range(1, len(elements_for_coalitions) + 1):
-            for combo in combinations(elements_for_coalitions, r):
-                all_coalitions.append(list(combo))
-        return all_coalitions
-    
-    def _invcoeff_shap(self, m, s) :
-        # Computes the inverse coefficient for the Shapley value formula.
-        return (m - s) * math.comb(m, s)
-    
+    def _posterior(self, evidces: dict[int, int]) :
+        # Returns the posterior probability of the target given the evidence.
+        self.ie.updateEvidence(evidces)
+        return (self.ie.posterior(self.target).toarray())
+        
     @abstractmethod
     def _shap_1dim(self, x, elements) :
         # Computes the Shapley values for a single instance.

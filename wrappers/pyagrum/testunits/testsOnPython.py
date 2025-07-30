@@ -87,18 +87,15 @@ def runTests(local: bool, test_module: str, test_suite: str, log) -> int:
   from tests import BNLearnerTestSuite
   from tests import BNListenerTestSuite
 
-  if pandasFound:
-    #NOTE: [Rayane Nasri] Est ce qu'on a besoin aussi de vérifier si numpy est présent ?
-    from tests import CausalTest
-    from tests import ConditionalTest
   from tests import ConfigTestSuite
-  if pandasFound:
-    from tests import CustomShapleyCacheTest
 
   if pandasFound:
     from tests import DiscreteTypeProcessorTestSuite
   from tests import EssentialGraphTestSuite
   from tests import EvidenceTestSuite
+
+  if pandasFound :
+    from tests import ExplainCausalTest
   from tests import GraphTestSuite
   from tests import ICIModelsForBNTestSuite
   from tests import ImportTestSuite
@@ -109,8 +106,6 @@ def runTests(local: bool, test_module: str, test_suite: str, log) -> int:
   from tests import LazyPropagationTestSuite
   from tests import LoopyBeliefPropagationTestSuite
   
-  if pandasFound:
-    from tests import MarginalTest
   from tests import MarkovBlanketTestSuite
   from tests import MarkovRandomFieldTestSuite
   from tests import PicklerTestSuite
@@ -118,6 +113,12 @@ def runTests(local: bool, test_module: str, test_suite: str, log) -> int:
   from tests import TensorTestSuite
   from tests import PRMexplorerTestSuite
   from tests import SamplingTestSuite
+
+  if pandasFound :
+    from tests import ShapCausalTest
+    from tests import ShapConditionalTest
+    from tests import ShapCustomCacheTest
+    from tests import ShapMarginalTest
 
   if pandasFound and sklearnFound:
     from tests import SkbnTestSuite
@@ -231,10 +232,11 @@ def runTests(local: bool, test_module: str, test_suite: str, log) -> int:
 
     if test_module in {"", "explain"}:
       log.info("testing 'explain'")
-      tl.append(CausalTest.ts)
-      tl.append(ConditionalTest.ts)
-      tl.append(CustomShapleyCacheTest.ts)
-      tl.append(MarginalTest.ts)
+      tl.append(ExplainCausalTest.ts)
+      tl.append(ShapCausalTest.ts)
+      tl.append(ShapConditionalTest.ts)
+      tl.append(ShapCustomCacheTest.ts)
+      tl.append(ShapMarginalTest.ts)
 
   tests = unittest.TestSuite(tl)
 

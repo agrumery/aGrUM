@@ -9,10 +9,12 @@ class CustomShapleyCache:
 
     @staticmethod
     def generate_keys(bn, target, feat, nodes) :
-        minimal = bn.minimalCondSet(target, nodes) # Calculates the minimal conditional set for the target node given the nodes.
         key1 = tuple(nodes) # Key1 represents the coalition.
         key2 = tuple(n for n in nodes if n != feat) # Key2 represents the coalition without the feature which is being evaluated.
+        if target is None : # For SHALL Values
+            return key1, key2, None
         # Key3 is the coalition without ONE ! node which is not in the minimal conditional set.
+        minimal = bn.minimalCondSet(target, nodes) # Calculates the minimal conditional set for the target node given the nodes.
         diff = next((n for n in nodes if n not in minimal), None)
         if diff is not None:
             key3 = tuple(n for n in nodes if n != diff)
