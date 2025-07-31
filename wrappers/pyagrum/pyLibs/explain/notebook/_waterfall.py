@@ -23,7 +23,8 @@ def waterfall(explanation: Explanation,
     explanation : Explanation
         The explanation object containing the SHAP/SHALL values.
     y : int
-        The target class for which to plot the SHAP values.
+        If the values type of the explanation is SHALL, then y is ignored.
+        Else it is the class for which to plot the SHAP values.
     ax : matplotlib.Axes, optional
         The matplotlib Axes object to plot on (default is None, which creates a new figure).
     real_values : Dict, optional

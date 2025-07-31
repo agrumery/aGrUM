@@ -10,7 +10,7 @@ from matplotlib import colors
 
 def beeswarm(
     explanation: Explanation,
-    y: int,
+    y: int = 1,
     max_display: int = 20,
     color_bar: bool = True,
     ax= None,
@@ -24,7 +24,8 @@ def beeswarm(
     explanation : Explanation
         The explanation object containing the SHAP/SHALL values.
     y : int
-        The target class for which to plot the SHAP/SHALL values.
+        If the values type of the explanation is SHALL, then y is ignored.
+        Else it is the class for which to plot the SHAP values.
     max_display : int, optional
         The maximum number of features to display in the beeswarm plot (default is 20).
     color_bar : bool, optional

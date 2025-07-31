@@ -1,7 +1,7 @@
 # Imports
 from abc import ABC, abstractmethod
 import pyagrum as gum
-from ._FIFOCache import FIFOCache
+from pyagrum.explain._FIFOCache import FIFOCache
 # Calculations
 import numpy as np
 import math
@@ -44,8 +44,8 @@ class Explainer(ABC):
         p = np.asarray(p)  # Guarantee p is a numpy array.
         with np.errstate(divide='ignore', invalid='ignore'):
             result = np.log(p / (1 - p))
-        result = np.where(p == 0, -np.inf, result)
-        result = np.where(p == 1,  np.inf, result)
+        result = np.where(p == 0, 0., result)
+        result = np.where(p == 1,  0., result)
         return result
 
     @staticmethod

@@ -14,16 +14,16 @@ def bar(
     y : int = None,
     ax : plt.Axes = None
     ) -> plt.axis :
-    # TODO : Documentation adaptée à SHALL
     """
     Plots a horizontal bar chart of the mean absolute SHAP/SHALL values for each feature in the explanation.
 
     Parameters:
     ----------
     explanation : Explanation
-        The explanation object containing the SHAP values.
+        The explanation object containing the SHAP/SHALL values.
     y : int, optional
-        The target class for which to plot the SHAP values (default is None, which plots multi-bar for all classes).
+        If the values type of the explanation is SHALL, then y is ignored.
+        Else it is the class for which to plot the SHAP values (default is None, which plots multi-bar for all classes).
     ax : plt.Axes, optional
         The matplotlib Axes object to plot on (default is None, which creates a new figure).
 
