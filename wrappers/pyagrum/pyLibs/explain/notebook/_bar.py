@@ -97,5 +97,5 @@ def bar(
     ax.spines['bottom'].set_visible(False)
     ax.spines['left'].set_visible(False)
     ax.spines['right'].set_visible(False)
-    ax.set_facecolor('white')
+    ax.figure.set_facecolor('white')
 

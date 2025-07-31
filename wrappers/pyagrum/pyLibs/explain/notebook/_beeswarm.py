@@ -11,10 +11,10 @@ from matplotlib import colors
 def beeswarm(
     explanation: Explanation,
     y: int,
-    max_display=20,
-    color_bar=True,
-    ax=None,
-    sort=True
+    max_display: int = 20,
+    color_bar: bool = True,
+    ax= None,
+    sort: bool = True
     ) :
 
     """
@@ -67,7 +67,7 @@ def beeswarm(
 
     # Create the figure and axis if not provided
     if ax == None :
-        fig, ax = plt.subplots()
+        _, ax = plt.subplots()
     
     # Prepare the y-axis positions
     y_positions = np.arange( min(max_display, len(feature_names)), 0, -1 )
@@ -136,4 +136,4 @@ def beeswarm(
     ax.spines['bottom'].set_visible(False)
     ax.spines['left'].set_visible(False)
     ax.spines['right'].set_visible(False)
-    ax.set_facecolor('white')
+    ax.figure.set_facecolor('white')

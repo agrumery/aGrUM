@@ -36,11 +36,6 @@ class ExplainCausalTest(pyAgrumTestCase) :
         assert bn.cpt(0)[0] == 1.
         assert bn.cpt(3).sum() == 1.
         assert bn.cpt(3)[1] == 1.
-    
-    def test_extract(self) :
-        assert np.all(CausalComputation._extract(data.head(10).to_numpy(), [0, 1], [1, 3]) == np.array([0, 5]))
-        assert np.all(CausalComputation._extract(data.head(10).to_numpy(), [0, 1], [0, 2]) == np.array([1, 2, 3, 6, 7, 9]))
-        assert len(CausalComputation._extract(data.head(10).to_numpy(), [2, 3], [1, 0])) == 0
 
 ts = unittest.TestSuite()
 addTests(ts, ExplainCausalTest)

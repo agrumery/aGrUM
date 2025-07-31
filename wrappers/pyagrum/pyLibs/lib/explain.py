@@ -49,4 +49,7 @@ warnings.warn(
     "Please use the 'pyagrum.explain' module instead."
   )
 
-from pyagrum.explain import *
+from pyagrum.explain.shapley import ShapValues
+from pyagrum.explain.notebook import showShapValues
+from pyagrum.explain import independenceListForPairs
+from pyagrum.explain import showInformation

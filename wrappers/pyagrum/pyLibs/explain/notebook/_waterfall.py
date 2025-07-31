@@ -13,7 +13,7 @@ _FMT:Callable[[str], str] = lambda func: ".2e" if func == "_identity" else ".2f"
 
 def waterfall(explanation: Explanation,
               y: int,
-              ax : plt.Axes = None,
+              ax= None,
               real_values: Dict = None) :
     """
     Plots a waterfall chart of the SHAP/SHALL values.
@@ -59,8 +59,10 @@ def waterfall(explanation: Explanation,
     # Tri des SHAP values par importance décroissante
     features = [feature for feature in sorted(values.keys(), key=lambda x: abs(values.get(x)), reverse=True)]
     y_positions = np.arange(len(values) * 0.25, 0, -0.25)
-    if ax is None :
-        fig, ax = plt.subplots()
+    
+    # Create the figure and axis if not provided
+    if ax == None :
+        _, ax = plt.subplots()
 
     # Ligne de base :
     ax.plot([baseline, baseline], [y_positions[-1] - 0.25, y_positions[0] + 0.25], linestyle='--', color='gray')
@@ -106,7 +108,7 @@ def waterfall(explanation: Explanation,
     y_tickslabels = []
 
     for feature in features:
-        feat_shap_value = explanation[feature]
+        feat_shap_value = values[feature]
         if real_values is not None:
             value = real_values[feature]
             if isinstance(real_values[feature], float):
@@ -126,7 +128,7 @@ def waterfall(explanation: Explanation,
     ax.spines['bottom'].set_visible(False)
     ax.spines['left'].set_visible(False)
     ax.spines['right'].set_visible(False)
-    ax.set_facecolor('white')
+    ax.figure.set_facecolor('White')
 
     plt.ylim(min(y_positions) - 1, max(y_positions) + 1)
     delta = max_x - min_x 
