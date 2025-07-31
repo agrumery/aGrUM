@@ -82,7 +82,7 @@ Instantiation
 .. autoclass:: pyagrum.Instantiation
 
 Tensor
----------
+------
 
 .. autoclass:: pyagrum.Tensor
 		:exclude-members: populate

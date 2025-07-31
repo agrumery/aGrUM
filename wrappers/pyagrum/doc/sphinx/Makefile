@@ -62,7 +62,9 @@ html: clean
 
 .PHONY: site
 site: clean
-	@echo "Building the site in $(SITEDIR)..."
+	@echo "Building the HTML site in $(SITEDIR)/html ..."
+	$(SPHINXBUILD) -b html $(ALLRTDOPTS) . $(SITEDIR)/RTD
+	@echo "Building the site in $(SITEDIR) ..."
 	python3 webbuild.py $(SITEDIR)
 	
 .PHONY: dirhtml

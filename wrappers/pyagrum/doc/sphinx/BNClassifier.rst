@@ -13,10 +13,6 @@ The module proposes to wrap the pyAgrum's learning algorithms and some others (n
 
 skbn is a set of pure python3 scripts based on pyAgrum's tools.
 
-**Tutorials**
-
-Notebooks on `scikit-learn compliant classifiers in pyAgrum <notebooks.html#bayesian-networks-as-scikit-learn-compliant-classifiers>`_,
-
 **Reference**
 
 .. toctree::

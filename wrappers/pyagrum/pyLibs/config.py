@@ -63,6 +63,7 @@ class PyAgrumConfiguration(metaclass=GumSingleton):
 
   Examples
   --------
+    >>> import pyagrum as gum
     >>> gum.config["dynamicBN", "default_graph_size"] = 10
     >>> gum.config["dynamicBN", "default_graph_size"]
     "10"

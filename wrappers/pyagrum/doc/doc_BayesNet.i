@@ -537,19 +537,20 @@ Create a Bayesian network with a dot-like syntax which specifies:
     - the structure 'a->b->c;b->d<-e;'.
     - the type of the variables with different syntax:
 
-      - by default, a variable is a pyagrum.RangeVariable using the default domain size ([2])
-      - with 'a[10]', the variable is a pyagrum.RangeVariable using 10 as domain size (from 0 to 9)
-      - with 'a[3,7]', the variable is a pyagrum.RangeVariable using a domainSize from 3 to 7
-      - with 'a[1,3.14,5,6.2]', the variable is a pyagrum.DiscretizedVariable using the given ticks (at least 3 values)
-      - with 'a{top|middle|bottom}', the variable is a pyagrum.LabelizedVariable using the given labels.
-      - with 'a{-1|5|0|3}', the variable is a pyagrum.IntegerVariable using the sorted given values.
-      - with 'a{-0.5|5.01|0|3.1415}', the variable is a pyagrum.NumericalDiscreteVariable using the sorted given values.
+      - by default, a variable is a binary `pyagrum.RangeVariable` using the default domain size ([2])
+      - with 'a[10]', the variable is a `pyagrum.RangeVariable` using 10 as domain size (from 0 to 9)
+      - with 'a[3,7]', the variable is a `pyagrum.RangeVariable` using a domainSize from 3 to 7
+      - with 'a[1,3.14,5,6.2]', the variable is a `pyagrum.DiscretizedVariable` using the given ticks (at least 3 values)
+      - with 'a[0.0:3.14:10]', the variable is a `pyagrum.DiscretizedVariable` of 10 intervals of same width from 0 to 3.14 (including both)
+      - with 'a{top|middle|bottom}', the variable is a `pyagrum.LabelizedVariable` using the given labels.
+      - with 'a{-1|5|0|3}', the variable is a `pyagrum.IntegerVariable` using the sorted given values.
+      - with 'a{-0.5|5.01|0|3.1415}', the variable is a `pyagrum.NumericalDiscreteVariable` using the sorted given values.
 
 Note
 ----
   - If the dot-like string contains such a specification more than once for a variable, the first specification will be used.
   - the CPTs are randomly generated.
-  - see also pyagrum.fastBN.
+  - see also the function pyagrum.fastBN.
 
 Examples
 --------

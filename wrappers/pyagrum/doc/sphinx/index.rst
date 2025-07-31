@@ -131,4 +131,8 @@ Reference manual
 
   bibliography
   glossary
+.. SKIP WEBSITE
+
   alpha_index
+
+.. END SKIP WEBSITE

@@ -41,13 +41,6 @@ Causel Effect estimation
 
   CausalEffectEstimation
 
-Tutorials on causality
-======================
-
-* `Notebooks on causality in pyAgrum <notebooks.html#causal-bayesian-networks>`_.
-* Some `implemented examples <https://webia.lip6.fr/~phw/aGrUM/BookOfWhy/>`_ from the `book of Why <http://bayes.cs.ucla.edu/WHY/>`_ from Judea Pearl and Dana Mackenzie.
-
-
 Tools for causality
 ===================
 

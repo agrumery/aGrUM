@@ -2,11 +2,11 @@ import sys
 import os
 import re
 import glob
-import pickle
 import subprocess
 from datetime import datetime
 import json
 from pathlib import Path
+import shutil
 
 
 def notif(message: str) -> None:
@@ -46,18 +46,62 @@ def parse_notebooks_rst(filepath: str) -> dict[str, list[str]]:
 
   # Catch last section if file does not end with newline
   if current_section and notebook_patterns:
-    sections[current_section] = notebook_patterns
+    sections[current_section] = sorted(notebook_patterns)
 
   return sections
 
 
-def retrieveNotebooksSections(rst_path: str, pickle_path: str):
+def parse_thumbnails_html(filepath: str) -> dict[str, str]:
+  """Parse the HTML file to extract notebook names and their corresponding thumbnail paths."""
+  start = False
+  key = None
+  value = None
+  res = dict()
+
+  with open(filepath, "r") as file:
+    for line in file:
+      if '<div class="nbsphinx-gallery">' in line:
+        start = True
+        continue
+      if "<footer>" in line:
+        break
+      if not start:
+        continue
+      if key is None:
+        if "reference internal" in line and "notebooks/" in line:
+          key = line.split("notebooks/")[1].split(".html")[0]
+        continue
+      else:
+        if "noLogo.png" in line:
+          value = "_static/noLogo.png"
+        elif "nbsphinx-broken-thumbnail" in line:
+          value = "_static/nbsphinx-broken-thumbnail.svg"
+        else:
+          value = "_images/" + line.split("_images/")[1].split('"></div')[0]
+        res[key] = value
+        key = None
+        value = None
+
+  return res
+
+
+def retrieveNotebooksSections(rst_path: str, json_path: str):
   notif(f"Parsing {rst_path} for notebook sections...")
   sections_dict = parse_notebooks_rst(rst_path)
   notif(f"Found {len(sections_dict)} sections.")
-  with open(pickle_path, "wb") as f:
-    pickle.dump(sections_dict, f)
-  notif(f"Sections saved to {pickle_path}")
+
+  with open(json_path, "w") as fp:
+    json.dump(sections_dict, fp, indent=2)
+  notif(f"Sections saved to {json_path}")
+
+
+def retrieveThumbnails(RTD_path: str, json_path=str):
+  res = parse_thumbnails_html(RTD_path)
+  notif(f"Found {len(res)} thumbnails.")
+
+  with open(json_path, "w") as fp:
+    json.dump(res, fp, indent=2)
+  notif(f"thunmbnails saved to {json_path}")
 
 
 def parse_changelog() -> dict[str, str]:
@@ -113,7 +157,14 @@ def getTagVersion(datadir: str):
 def prepareSphinx(site_dir: str):
   # copy every file and folder in the current directory to the site_dir
   for item in os.listdir("."):
-    if item not in {site_dir, "webbuild.py", "notebooks", "Makefile", "notebooks.rst"}:
+    if item not in {
+      site_dir,
+      "webbuild.py",
+      "Makefile",
+      "notebooks",
+      "Makefile",
+      "notebooks.rst",
+    }:
       src_path = os.path.join(".", item)
       dest_path = os.path.join(site_dir, item)
       if os.path.isdir(src_path):
@@ -203,14 +254,20 @@ if __name__ == "__main__":
   site_dir = sys.argv[1]
   notif(f"Building site in {site_dir}...")
   # Ensure the site directory exists
-  if not os.path.exists(site_dir):
-    os.makedirs(site_dir)
-    os.makedirs(os.path.join(site_dir, "data"), exist_ok=True)
-    os.makedirs(os.path.join(site_dir, "notebooks"), exist_ok=True)
-    os.makedirs(os.path.join(site_dir, "html"), exist_ok=True)
+  os.makedirs(site_dir, exist_ok=True)
+  os.makedirs(os.path.join(site_dir, "data"), exist_ok=True)
+  os.makedirs(os.path.join(site_dir, "notebooks"), exist_ok=True)
+  os.makedirs(os.path.join(site_dir, "html"), exist_ok=True)
 
-  retrieveNotebooksSections(rst_path="notebooks.rst", pickle_path=f"{site_dir}/data/notebooks_sections.pkl")
+  retrieveNotebooksSections(rst_path="notebooks.rst", json_path=f"{site_dir}/data/notebooks_sections.json")
+  retrieveThumbnails(
+    RTD_path=os.path.join(site_dir, "RTD/notebooks.html"), json_path=f"{site_dir}/data/thumbnails.json"
+  )
   getTagVersion(os.path.join(site_dir, "data"))
+
+  notif("Cleaning RTD directory...")
+  shutil.rmtree(os.path.join(site_dir, "RTD"))
+
   prepareSphinx(site_dir)
   chgIndexForWeb(site_dir)
   goSphinx(site_dir)
