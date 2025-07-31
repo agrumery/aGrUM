@@ -97,4 +97,5 @@ def bar(
     ax.spines['bottom'].set_visible(False)
     ax.spines['left'].set_visible(False)
     ax.spines['right'].set_visible(False)
-    fig.patch.set_facecolor('White')
+    ax.set_facecolor('white')
+
