@@ -119,6 +119,10 @@ def runTests(local: bool, test_module: str, test_suite: str, log) -> int:
     from tests import ShapConditionalTest
     from tests import ShapCustomCacheTest
     from tests import ShapMarginalTest
+    from tests import ShallCausalTest
+    from tests import ShallConditionalTest
+    from tests import ShallMarginalTest
+
 
   if pandasFound and sklearnFound:
     from tests import SkbnTestSuite
@@ -237,6 +241,9 @@ def runTests(local: bool, test_module: str, test_suite: str, log) -> int:
       tl.append(ShapConditionalTest.ts)
       tl.append(ShapCustomCacheTest.ts)
       tl.append(ShapMarginalTest.ts)
+      tl.append(ShallCausalTest.ts)
+      tl.append(ShallConditionalTest.ts)
+      tl.append(ShallMarginalTest.ts)
 
   tests = unittest.TestSuite(tl)
 
