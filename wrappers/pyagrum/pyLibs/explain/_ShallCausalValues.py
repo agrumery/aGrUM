@@ -1,19 +1,47 @@
-# Imports
 import pyagrum as gum
 from pyagrum.explain._ShallValues import ShallValues
 from pyagrum.explain._CustomShapleyCache import CustomShapleyCache
 from pyagrum.explain._ComputationCausal import CausalComputation
 from pyagrum.explain._FIFOCache import FIFOCache
-# Calculus
-import numpy as np
-import pandas as pd
-# GL
-import warnings
 
-# TODO : expliquer que pour SHALL  causales il est impossible de calculer les probabilites empirique 'true to the data'.
-# Il faut calculer des probabilités selon 'true to the model'
+import numpy as np
+
 class CausalShallValues(ShallValues, CausalComputation) :
+    """
+    The CausalShallValues class computes the Causal Shall values in a Bayesian Network.
+    """
+     
     def __init__(self, bn:gum.BayesNet, background: tuple | None, sample_size:int=1000, log:bool=True) :
+        """
+        Note 1 : All rows in the background data that contain NaN values in columns corresponding to variables in the Bayesian Network will be dropped.
+        Note 2 : In comparison to Marginal and Conditional Shall values it is impossible to calculate empirical probabilities 'true to the data'.
+        We are forced to calculate probabilités 'true to the model'.
+        
+
+        Parameters:
+        ------
+         bn : pyagrum.BayesNet
+            The Bayesian Network.
+        background : tuple[pandas.DataFrame, bool] | None
+            A tuple containing a pandas DataFrame and a boolean indicating whether the DataFrame includes labels or positional values.
+        sample_size : int
+            The size of the background sample to generate if `background` is None.
+        log : bool 
+            If True, applies a logarithmic transformation to the probabilities.
+
+        Raises
+        ------
+        TypeError : If bn is not a gum.BayesNet instance, background is not a tuple.
+        ValueError : If background data does not contain all variables present in the Bayesian Network or if
+            background data is empty after rows with NaNs were dropped.
+
+        Raises:
+        ------
+        TypeError : If bn is not a gum.BayesNet instance, background is not a tuple.
+        ValueError : If background data does not contain all variables present in the Bayesian Network or if
+            background data is empty after rows with NaNs were dropped.
+        """
+
         super().__init__(bn, background, sample_size, log)
         self.baseline = self._value( data=self._data,
                                      counts=self.counts,
@@ -103,6 +131,7 @@ class CausalShallValues(ShallValues, CausalComputation) :
                     # Instanciation of tau
                     self._chgCpt(doNet, tau, alpha) # BN knowing alpha
                     doLazy = gum.LazyPropagation(doNet)
+                    doLazy.addTarget(tau[0])  # just to speed up the calculation
                     idx = self._extract(self._data, tau, alpha)
                     # Compute the value for this coalition.
                     joint_with = self._value(data=self._data[idx],

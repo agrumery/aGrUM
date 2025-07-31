@@ -1,39 +1,41 @@
-# Imports
 from abc import abstractmethod
+
+import pyagrum as gum
 from pyagrum.explain._Explainer import Explainer
 from pyagrum.explain._Explanation import Explanation
-from pyagrum.explain._FIFOCache import FIFOCache
 
-# Calculations
 import pandas as pd
 import numpy as np
-
-# aGrUM
-import pyagrum as gum
-# GL
 import warnings
 
 
 class ShallValues(Explainer):
     """
-    Adaptation of SHAP values into SHALL values.
+    The ShallValues class is an abstract base class for computing Shall values in a Bayesian Network.
     """
 
     def __init__(self, bn: gum.BayesNet, background: tuple | None, sample_size:int=1000, log:bool=True):
         """
-        params:
-        ------
-        :bn -> The Bayesian Network.
-        :background -> If None then sample of size 'sample_size' would be generated from the Bayesian Network. Otherwise, should be 
-            a tuple of a dataframe and a boolean = True if there are strings in a dataframe and False otherwise.
-        :logit -> If True, applies the logit transformation to the probabilities.
+        Note: All rows in the background data that contain NaN values in columns corresponding to variables in the Bayesian Network will be dropped.
 
-        Raises:
+        Parameters
+        ----------
+        bn : pyagrum.BayesNet
+            The Bayesian Network.
+        background : tuple[pandas.DataFrame, bool] | None
+            A tuple containing a pandas DataFrame and a boolean indicating whether the DataFrame includes labels or positional values.
+        sample_size : int
+            The size of the background sample to generate if `background` is None.
+        log : bool 
+            If True, applies a logarithmic transformation to the probabilities.
+
+        Raises
         ------
-        :TypeError -> If bn is not a gum.BayesNet instance.
-        :ValueError -> If target is not a valid node id in the Bayesian Network.
-        :UserWarning -> If logit is not a boolean, a warning is issued.s
+        TypeError : If bn is not a gum.BayesNet instance, background is not a tuple.
+        ValueError : If background data does not contain all variables present in the Bayesian Network or if
+            background data is empty after rows with NaNs were dropped.
         """
+
         super().__init__(bn)       
         self.vars_ids = sorted(bn.ids(self.feat_names))
 
@@ -75,6 +77,7 @@ class ShallValues(Explainer):
         for var in self.bn.ids(self.feat_names):
             self.inst.add(self.bn.variable(var))
 
+    # Note: We use BayesNet.jointProbability instead of lazyPropagation.evidenceProbability because joint probability is much faster.
     def _joint(self, row_values):
         self.inst.fromdict(row_values)
         return self.func(self.bn.jointProbability(self.inst))
@@ -92,6 +95,32 @@ class ShallValues(Explainer):
         raise NotImplementedError("This method should be implemented in subclasses.")
 
     def compute(self, data:tuple | None, N:int=100):
+        """
+        Computes the SHALL values for all rows in the provided data.
+
+        Note 1: Since this is a partial explanation, all rows in `data` must contain all variables present in the initialized Bayesian Network.
+        Note 2: All rows containing NaN values in columns corresponding to variables in the Bayesian Network will be dropped.
+
+        Parameters
+        ----------
+        data : tuple | None
+            A tuple containing either a pandas DataFrame, Series, or dictionary, and a boolean indicating whether labels are provided.
+            If None, a random sample of size N is generated.
+        N : int
+            The number of samples to generate if data is None.
+
+        Returns
+        -------
+        Explanation
+            An Explanation object containing the SHALL values and variable importances for each row in the data, after rows with NaN values have been dropped.
+
+        Raises
+        ------
+        TypeError : If the first element of data is not a pd.DataFrame, pd.Series or dict, or if N is not an integer when data is None.
+        ValueError : If N is less than 2 when data is None, or if the provided data does not contain all variables present in the initialized Bayesian Network.
+        """
+
+        # Note : elements (like in ShapValues are no longer needed since partial explanation is impossible)
         if data is None :
             if not isinstance(N, int) :
                 raise TypeError("Since df is None, N must be an integer, but got {}".format(type(N)))
@@ -110,13 +139,12 @@ class ShallValues(Explainer):
                 warnings.warn(f'The second element of `data` should be a boolean, but got {type(with_labels)}. Unexpected calculations may occur.')
             dtype = object if with_labels else int
 
-            if isinstance(df, pd.Series): # OK 
+            if isinstance(df, pd.Series): 
                 # Here we are sure that df is a single instance (a Series).
-                s = df.dropna()
-                if np.setdiff1d(self.feat_names, s.index):
+                if np.setdiff1d(self.feat_names, df.index).size != 0:
                     raise ValueError("For SHALL values, you must provide all variables used in the Bayesian Network; passing only a subset is not allowed.")
 
-                x = s.reindex(self.feat_names).to_numpy()
+                x = df.reindex(self.feat_names).dropna().to_numpy()
                 if x.size == 0:
                         raise ValueError("DataFrame is empty")
 
@@ -124,20 +152,20 @@ class ShallValues(Explainer):
                 contributions = self._shall_1dim(y)
 
             elif isinstance(df, pd.DataFrame) :
-                df_clean = df.dropna(axis=0)
-                if np.setdiff1d(self.feat_names, df.columns):
+                if np.setdiff1d(self.feat_names, df.columns).size != 0:
                     raise ValueError("For SHALL values, you must provide all variables used in the Bayesian Network; passing only a subset is not allowed.")
-                
+
+                df_clean = df.dropna(axis=0, subset=self.feat_names)
                 if len(df_clean) == 1 :
                     # Here we are sure that df is a single instance (a DataFrame with one row).
-                    x = df_clean.reindex(columns=self.feat_names).dropna(axis=0).to_numpy()
+                    x = df_clean.reindex(columns=self.feat_names).to_numpy()[0]
                     if x.size == 0:
                         raise ValueError("DataFrame is empty")
-                    y = self._labelToPos_df(x, self.vars_ids) if with_labels else x
+                    y = self._labelToPos_row(x, self.vars_ids) if with_labels else x
                     contributions = self._shall_1dim(y)
             
                 else :                
-                    x = df_clean.reindex(columns=self.feat_names).dropna(axis=0).to_numpy()
+                    x = df.reindex(columns=self.feat_names).to_numpy()
                     if x.size == 0:
                         raise ValueError("DataFrame is empty")
                     y = self._labelToPos_df(x, self.vars_ids) if with_labels else x
@@ -146,7 +174,7 @@ class ShallValues(Explainer):
                     contributions = self._shall_ndim(y)
 
             elif isinstance(df, dict) :    
-                if np.setdiff1d(self.feat_names, df.keys()):
+                if len(set(self.feat_names) - set(df.keys())) != 0:
                     raise ValueError("For SHALL values, you must provide all variables used in the Bayesian Network; passing only a subset is not allowed.")
                                
                 try :

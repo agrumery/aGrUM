@@ -1,36 +1,43 @@
-# Imports
+import pyagrum as gum
+
 from pyagrum.explain._ShallValues import ShallValues
 from pyagrum.explain._CustomShapleyCache import CustomShapleyCache
 from pyagrum.explain._FIFOCache import FIFOCache
 from pyagrum.explain._ComputationConditional import ConditionalComputation
-# Calculations
+
 import numpy as np
-import pandas as pd
-
-import pyagrum as gum
-
-import warnings
     
 class ConditionalShallValues(ShallValues, ConditionalComputation) :
     """
-    The ConditionalShapValues class computes the conditional Shapley values for a given target node in a Bayesian Network.
+    The ConditionalShallValues class computes the conditional Shall values in a Bayesian Network.
     """
 
     def __init__(self, bn:gum.BayesNet, background:tuple|None, sample_size:int=1000, log:bool=True) :
         """
+        Note: All rows in the background data that contain NaN values in columns corresponding to variables in the Bayesian Network will be dropped.
 
-        Rows that contain nan values will be dropped.
-        params:
+        Parameters:
         ------
-        :bn -> The Bayesian Network.
-        :target -> The node id of the target.
-        :logit -> If True, applies the logit transformation to the probabilities.
+         bn : pyagrum.BayesNet
+            The Bayesian Network.
+        background : tuple[pandas.DataFrame, bool] | None
+            A tuple containing a pandas DataFrame and a boolean indicating whether the DataFrame includes labels or positional values.
+        sample_size : int
+            The size of the background sample to generate if `background` is None.
+        log : bool 
+            If True, applies a logarithmic transformation to the probabilities.
 
-        raises:
+        Raises
         ------
-        :TypeError -> If bn is not a gum.BayesNet instance.
-        :ValueError -> If target is not a valid node id in the Bayesian Network.
-        :UserWarning -> If logit is not a boolean, a warning is issued.
+        TypeError : If bn is not a gum.BayesNet instance, background is not a tuple.
+        ValueError : If background data does not contain all variables present in the Bayesian Network or if
+            background data is empty after rows with NaNs were dropped.
+
+        Raises:
+        ------
+        TypeError : If bn is not a gum.BayesNet instance, background is not a tuple.
+        ValueError : If background data does not contain all variables present in the Bayesian Network or if
+            background data is empty after rows with NaNs were dropped.
         """
 
         super().__init__(bn, background, sample_size, log) # Initializes the ShapleyValues class.
