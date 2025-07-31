@@ -1,22 +1,25 @@
 # Les imports
 import pyagrum as gum
 from pyagrum.explain._Explanation import Explanation
-
+from typing import Callable
 import numpy as np
 
 import matplotlib.pyplot as plt
 from matplotlib.patches import Polygon
 
+_POSTERIOR: Callable[[int, str], str] = lambda y, func : f'logit($p(y={y} \\mid x)$)' if func == '_logit' else f'$p(y={y} \\mid x)$'
+_JOIN: Callable[[str], str] = lambda func : f'log($p(x \\mid \\theta)$)' if func == '_log' else f'$p(x \\mid \\theta)$'
+
 def waterfall(explanation: Explanation,
               y: int,
               ax= None) :
     """
-    Plots a waterfall chart of the SHAP values for a specific target class in the explanation.
+    Plots a waterfall chart of the SHAP/SHALL values.
 
     Parameters:
     ----------
     explanation : Explanation
-        The explanation object containing the SHAP values.
+        The explanation object containing the SHAP/SHALL values.
     y : int
         The target class for which to plot the SHAP values.
     ax : matplotlib.Axes, optional
@@ -29,39 +32,47 @@ def waterfall(explanation: Explanation,
     """
     if not isinstance(explanation, Explanation) :
         raise TypeError("`explanation` must be an Explanation object but got {}".format(type(explanation)))
-    if isinstance(y, int) :
-        if y < min(explanation.keys()) or y > max(explanation.keys()) :
-            raise IndexError(f"Target index y={y} is out of bounds; expected 0 <= y < {max(explanation.keys()) + 1}.")
-    else :
-        raise TypeError("`y`must be an integer but got {}".format(y))
-    
-    shap_values= explanation[y]
-    arrow_width_base= 0.08 * np.max( np.abs(np.array(list(shap_values.values()))) )
+    if explanation.values_type == 'SHAP':
+        if isinstance(y, int) :
+            if y < min(explanation.keys()) or y > max(explanation.keys()) :
+                raise IndexError(f"Target index y={y} is out of bounds; expected 0 <= y < {max(explanation.keys()) + 1}.")
+        else :
+            raise TypeError("`y`must be an integer but got {}".format(y))
+        values= explanation[y]
+        baseline= explanation.baseline[y]
+    elif explanation.values_type == 'SHALL':
+        values= explanation._values
+        baseline= explanation.baseline
+    else:
+        raise ValueError(f"Wrong values type, expected SHAP/SHALL but got {explanation.values_type}")
+
+    # Computing arrow width
+    arrow_width_base= 0.08 * np.max( np.abs(np.array(list(values.values()))) )
 
     # Tri des SHAP values par importance décroissante
-    features = [feature for feature in sorted(shap_values.keys(), key=lambda x: abs(shap_values.get(x)), reverse=True)]
-    y_positions = np.arange(len(shap_values) * 0.25, 0, -0.25)
+    features = [feature for feature in sorted(values.keys(), key=lambda x: abs(values.get(x)), reverse=True)]
+    y_positions = np.arange(len(values) * 0.25, 0, -0.25)
     if ax is None :
-        _, ax = plt.subplots(figsize=(5, 5))
+        fig, ax = plt.subplots()
 
     # Ligne de base :
-    ax.plot([explanation.baseline[y], explanation.baseline[y]], [y_positions[-1] - 0.25, y_positions[0] + 0.25], linestyle='--', color='gray')
-    if explanation.func == "_logit" :
-        ax.text(explanation.baseline[y], y_positions[0] + 0.5, f'logit($p(y = {y} \\mid \\emptyset) =$) {explanation.baseline[y]:.2f}', ha='center', va='bottom', color='gray')
-    else :
-        ax.text(explanation.baseline[y], y_positions[0] + 0.5, f'$p(y = {y} \\mid \\emptyset) =$ {explanation.baseline[y]:.2f}', ha='center', va='bottom', color='gray')
+    ax.plot([baseline, baseline], [y_positions[-1] - 0.25, y_positions[0] + 0.25], linestyle='--', color='gray')
+    if explanation.values_type == 'SHAP':
+        ax.text(baseline, y_positions[0] + 0.5, f'E({_POSTERIOR(y, explanation.func)}) = {baseline:.2f}', ha='center', va='bottom', color='gray')
+    else:
+        ax.text(baseline, y_positions[0] + 0.5, f'E({_JOIN(explanation.func)}) = {baseline:.2f}', ha='center', va='bottom', color='gray')
 
     # Lignes de shapes-values
-    current_x = min_x = max_x = explanation.baseline[y]
+    current_x = min_x = max_x = baseline
 
     for i, feature in enumerate(features) :
-        delta = shap_values[feature]
+        delta = values[feature]
         x_start = current_x
         x_end = current_x + delta
         z = y_positions[i]
         height = 0.2
         arrow_width = min(0.4 * abs(delta), arrow_width_base)
-        facecolor, edgecolor, alpha = (gum.config["notebook", "tensor_color_0"], '#D98383', -1) if shap_values[feature] > 0 else (gum.config["notebook", "tensor_color_1"], '#82D882', 1)
+        facecolor, edgecolor, alpha = (gum.config["notebook", "tensor_color_0"], '#D98383', -1) if values[feature] > 0 else (gum.config["notebook", "tensor_color_1"], '#82D882', 1)
 
         # Dessin du polygon
         polygon = Polygon([
@@ -81,28 +92,25 @@ def waterfall(explanation: Explanation,
     # Ligne de sortie du modèle
     ax.plot([current_x, current_x], [y_positions[-1] - 0.25, y_positions[0] + 0.25], linestyle='--', color='Black')
     if explanation.func == "_logit" :
-        ax.text(current_x, y_positions[-1] - 0.5, f'logit($p(y = {y} \\mid x)) =$ {current_x:.2f}', ha='center', va='bottom', color='Black')
+        ax.text(current_x, y_positions[-1] - 0.5, f'{_POSTERIOR(y, explanation.func)} = {current_x:.2f}', ha='center', va='bottom', color='Black')
     else :
-        ax.text(current_x, y_positions[-1] - 0.5, f'$p(y = {y} \\mid x) =$ {current_x:.2f}', ha='center', va='bottom', color='Black')
+        ax.text(current_x, y_positions[-1] - 0.5, f'{_JOIN(explanation.func)} = {current_x:.2f}', ha='center', va='bottom', color='Black')
 
     y_tickslabels = []
     for feature in features :
-        y_tickslabels.append(f"{feature} = {explanation.data[explanation.feature_names.index(feature)]} $[{shap_values[feature]:.2f}]$")
+        y_tickslabels.append(f"{feature} = {explanation.data[explanation.feature_names.index(feature)]} $[{values[feature]:.2f}]$")
     ax.set_yticks(y_positions)
     ax.set_yticklabels(y_tickslabels)
 
+    # Setting the style
     ax.grid(axis='x', linestyle=':', alpha=0.5)
     ax.grid(axis='y', alpha=0.5)
-
-    # Removing spines
     ax.spines['top'].set_visible(False)
     ax.spines['bottom'].set_visible(False)
     ax.spines['left'].set_visible(False)
     ax.spines['right'].set_visible(False)
+    fig.patch.set_facecolor('White')
 
     plt.ylim(min(y_positions) - 1, max(y_positions) + 1)
-
     delta = max_x - min_x 
     plt.xlim(min_x - 0.05 * delta, max_x + 0.05 * delta)
-
-    plt.show()

@@ -14,8 +14,9 @@ def bar(
     y : int = None,
     ax : plt.Axes = None
     ) -> plt.axis :
+    # TODO : Documentation adaptée à SHALL
     """
-    Plots a horizontal bar chart of the mean absolute SHAP values for each feature in the explanation.
+    Plots a horizontal bar chart of the mean absolute SHAP/SHALL values for each feature in the explanation.
 
     Parameters:
     ----------
@@ -34,18 +35,27 @@ def bar(
 
     if not isinstance(explanation, Explanation) :
         raise TypeError("`explanation` must be an Explanation object but got {}".format(type(explanation)))
-    if not isinstance(y, int) and not (y is None) :
-        raise TypeError(f"`y` must be either a positive integer or None, but got {type(y)}")
-    if isinstance(y, int) :
-        if y < min(explanation.keys()) or y > max(explanation.keys()) :
-            raise IndexError(f"Target index y={y} is out of bounds; expected 0 <= y < {max(explanation.keys()) + 1}.")
+    
+    # Determine if The explanation object is a SHALL or SHAP explanation
+    if explanation.values_type == 'SHAP' :
+        if not isinstance(y, int) and not (y is None) :
+            raise TypeError(f"`y` must be either a positive integer or None, but got {type(y)}")        
+        if isinstance(y, int) :
+            if y < min(explanation.keys()) or y > max(explanation.keys()) :
+                raise IndexError(f"Target index y={y} is out of bounds; expected 0 <= y < {max(explanation.keys()) + 1}.")
+    elif explanation.values_type == 'SHALL' :
+        # We force y to be an integer, so we can use the same code after for both explanations
+        y = 0
+    else :
+        raise ValueError(f"Wrong values type, expected SHAP/SHALL but got {explanation.values_type}")
     
     if ax is None:
-        _, ax = plt.subplots(figsize=(6, 4))
+        fig, ax = plt.subplots(figsize=(6, 4))
 
     if y is not None :
-        columns = [col for col in sorted(explanation.importances[y].keys(), key=explanation.importances[y].get)]
-        values = [explanation.importances[y][feat] for feat in columns]
+        importances = explanation.importances[y] if explanation.values_type == 'SHAP' else explanation.importances
+        columns = [col for col in sorted(importances.keys(), key=importances.get)]
+        values = [importances[feat] for feat in columns]
         ax.barh(columns, 
                 values, 
                 color=gum.config["notebook", "tensor_color_0"],
@@ -75,15 +85,16 @@ def bar(
         ax.legend(loc='lower right', handles=legend_elements, title="Classes")
         
     ax.set_title('Feature Importance', fontsize=16)
-    ax.set_xlabel('mean(|SHAP value|)', fontsize=12)
+    ax.set_xlabel(f'mean(|{explanation.values_type} value|)', fontsize=12)
     ax.set_ylabel('Features', fontsize=12)
     ax.tick_params(axis='x', labelsize=10)
     ax.tick_params(axis='y', labelsize=10)
-    ax.grid(axis='x', linestyle=':', alpha=0.6)
-    ax.grid(axis='y', linestyle=':', alpha=0.3)
 
     # Removing spines
+    ax.grid(axis='x', linestyle=':', alpha=0.6)
+    ax.grid(axis='y', linestyle=':', alpha=0.3)
     ax.spines['top'].set_visible(False)
     ax.spines['bottom'].set_visible(False)
     ax.spines['left'].set_visible(False)
     ax.spines['right'].set_visible(False)
+    fig.patch.set_facecolor('White')

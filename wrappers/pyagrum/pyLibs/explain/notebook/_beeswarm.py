@@ -22,9 +22,9 @@ def beeswarm(
     Parameters:
     ----------
     explanation : Explanation
-        The explanation object containing the Shapley values.
+        The explanation object containing the SHAP/SHALL values.
     y : int
-        The target class for which to plot the Shapley values.
+        The target class for which to plot the SHAP/SHALL values.
     max_display : int, optional
         The maximum number of features to display in the beeswarm plot (default is 20).
     color_bar : bool, optional
@@ -44,12 +44,21 @@ def beeswarm(
     # Check parameters
     if not isinstance(explanation, Explanation) :
         raise TypeError("`explanation` must be an Explanation object but got {}".format(type(explanation)))
-    if not isinstance(y, int) :
-        raise TypeError("`y` must be an integer but got {}".format(type(y)))
-    if y < min(explanation.keys()) or y > max(explanation.keys()) :
-        raise IndexError(f"Target index y={y} is out of bounds; expected 0 <= y < {max(explanation.keys()) + 1}.")
     
-    contributions = explanation[y]
+    # Determine if The explanation object is a SHALL or SHAP explanation
+    if explanation.values_type == 'SHAP' :
+        if not isinstance(y, int) :
+            raise TypeError("`y` must be an integer but got {}".format(type(y)))
+        if y < min(explanation.keys()) or y > max(explanation.keys()) :
+            raise IndexError(f"Target index y={y} is out of bounds; expected 0 <= y < {max(explanation.keys()) + 1}.")
+        contributions = explanation[y]
+        importances = explanation.importances[y]
+    elif explanation.values_type == 'SHALL' :
+        contributions = explanation
+        importances = explanation.importances
+    else :
+        raise ValueError(f"Wrong values type, expected SHAP/SHALL but got {explanation.values_type}")
+
     feature_names = explanation.feature_names
     if not isinstance(list(contributions.values())[0], list) :
         raise TypeError("For beeswarm plot, explanation must be global.")
@@ -58,7 +67,7 @@ def beeswarm(
 
     # Create the figure and axis if not provided
     if ax == None :
-        _, ax = plt.subplots(figsize=(6, 4))
+        fig, ax = plt.subplots()
     
     # Prepare the y-axis positions
     y_positions = np.arange( min(max_display, len(feature_names)), 0, -1 )
@@ -70,7 +79,7 @@ def beeswarm(
     cmap = colors.LinearSegmentedColormap.from_list("custom_red_green", [color1, color2])
 
     if sort :
-        indices = [feature_names.index(feat) for feat in sorted(explanation.importances[y], key=explanation.importances[y].get, reverse=True)]
+        indices = [feature_names.index(feat) for feat in sorted(importances, key=importances.get, reverse=True)]
     else :
         indices = np.arange(min(max_display, values.shape[1]))
         
@@ -106,11 +115,6 @@ def beeswarm(
 
     ax.set_yticks(y_positions)
     ax.set_yticklabels([feature_names[i] for i in indices])
-    ax.grid(axis='x', linestyle=':', alpha=0.5)
-    ax.grid(axis='y', linestyle=':', alpha=0.5)
-    ax.spines['top'].set_visible(False)
-    ax.spines['right'].set_visible(False)
-
     if color_bar:
         norm = colors.Normalize(vmin=0., vmax=1.)
         sm = cm.ScalarMappable(cmap=cmap, norm=norm)
@@ -123,10 +127,13 @@ def beeswarm(
     ax.set_ylim(y_positions[-1] - 0.5, y_positions[0] + 0.5)
     ax.set_xlabel("Impact on model Output", fontsize=12)
     ax.set_ylabel("Features", fontsize=12)
-    ax.set_title("Shapley value (Impact on model Output)", fontsize=16)
+    ax.set_title(f"{explanation.values_type} value (Impact on model Output)", fontsize=16)
 
-    # Removing spines
+    # Setting the style
+    ax.grid(axis='x', linestyle=':', alpha=0.5)
+    ax.grid(axis='y', linestyle=':', alpha=0.5)
     ax.spines['top'].set_visible(False)
     ax.spines['bottom'].set_visible(False)
     ax.spines['left'].set_visible(False)
     ax.spines['right'].set_visible(False)
+    fig.patch.set_facecolor('White')
