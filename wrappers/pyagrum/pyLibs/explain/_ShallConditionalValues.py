@@ -15,7 +15,8 @@ class ConditionalShallValues(ShallValues, ConditionalComputation) :
 
     def __init__(self, bn:gum.BayesNet, background:tuple|None, sample_size:int=1000, log:bool=True) :
         """
-        Note: All rows in the background data that contain NaN values in columns corresponding to variables in the Bayesian Network will be dropped.
+        Note 1 : All rows in the background data that contain NaN values in columns corresponding to variables in the Bayesian Network will be dropped.
+        Note 2 : For small databases SHALL values can be incorrect.
 
         Parameters:
         ------
@@ -58,7 +59,7 @@ class ConditionalShallValues(ShallValues, ConditionalComputation) :
         # key1 : nodes_id, key2 : nodes id without feature
         if k == 0 :
             idx = self._extract(self._data, nodes_id, nodes_vals)
-            warn(f"Extracted database is empty ({self.feat_names[nodes_id]} = {nodes_vals}). Conditional SHALL values may be incorrect. ")
+            # warn(f"Extracted database is empty ({self.feat_names[nodes_id]} = {nodes_vals}). Conditional SHALL values may be incorrect. ")
             cache.set(ex, key1, self._value(data=self._data[idx],
                                                     counts=self.counts[idx],
                                                     elements=self.vars_ids,
