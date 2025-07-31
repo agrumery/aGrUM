@@ -1,7 +1,7 @@
 # Imports
 from abc import ABC, abstractmethod
 import pyagrum as gum
-from pyagrum.explain._FIFOCache import FIFOCache
+from ._FIFOCache import FIFOCache
 # Calculations
 import numpy as np
 import math
@@ -67,7 +67,7 @@ class Explainer(ABC):
     def _labelToPos_df(self, x: np.ndarray, elements: list[int])-> np.ndarray :
         # Converts labels to positions for multiple instances.
         y = np.empty(shape=x.shape, dtype=int) # Initialisation
-        posLabelVect = np.vectorize(lambda i, j: self.bn.variable(j).posLabel(i))
+        posLabelVect = np.vectorize(lambda i, j: self.bn.variable(int(j)).posLabel(i))
         for j in elements :
             try :
                 self.bn.variable(j).posLabel(x[0, j])
@@ -101,8 +101,7 @@ class Explainer(ABC):
     def _shap_term(prob_with, prob_without, m, s) :
         return (prob_with - prob_without) / Explainer._invcoeff_shap(m, s)
     
-    @staticmethod
-    def _value(data: np.ndarray, counts: list[int], elements: list[int], sigma: list[int], cache: FIFOCache, **kwargs)-> float | np.ndarray :
+    def _value(self, data: np.ndarray, counts: list[int], elements: list[int], sigma: list[int], cache: FIFOCache, **kwargs) -> float | np.ndarray :
         # -- #
         length : int = len(data)
         func1 : Callable = kwargs['func1']
@@ -114,8 +113,8 @@ class Explainer(ABC):
         val = 0.
         norm = 0.
         for i in range(length) :
-            evidces1 = {key: int(data[i, key]) for key in elements}
-            evidces2 = {key: int(data[i, key]) for key in sigma}
+            evidces1 = {self.feat_names[key]: int(data[i, key]) for key in elements}
+            evidces2 = {self.feat_names[key]: int(data[i, key]) for key in sigma}
             term1 = cache.get(tuple(data[i, elements]), None)
             if term1 is None :
                 term1 = func1(evidces1, **params1)
@@ -132,7 +131,3 @@ class Explainer(ABC):
         # Computes the Shapley values for the target node based on the provided data.
         # This method must be implemented in subclasses
         raise NotImplementedError("This method must be implemented in subclasses.")
-    
-
-    
-
