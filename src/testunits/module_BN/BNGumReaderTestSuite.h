@@ -46,9 +46,10 @@
 #include <gumtest/AgrumTestSuite.h>
 #include <gumtest/utils.h>
 
-#include <agrum/base/external/json/json.hpp>
 #include <agrum/BN/BayesNet.h>
 #include <agrum/BN/io/GUM/BNGumReader.h>
+
+#include <agrum/base/external/json/json.hpp>
 
 using json = nlohmann::json;
 
@@ -197,14 +198,16 @@ namespace gum_tests {
       TS_ASSERT(ref.contains("nodes"));
       TS_ASSERT(ref.contains("parents"));
       TS_ASSERT(ref.contains("cpt"));
-      TS_ASSERT(! ref.contains("utility"));
+      TS_ASSERT(!ref.contains("utility"));
     }
 
     GUM_ACTIVE_TEST(BuildingBayesNetFromJson) {
       const auto              ref = json::parse(jsondemo);
       gum::BayesNet< double > bn;
       // iterate on nodes in json
-      for (const auto& node: ref["nodes"]) { const auto n = bn.add(node.get< std::string >()); }
+      for (const auto& node: ref["nodes"]) {
+        const auto n = bn.add(node.get< std::string >());
+      }
       // iterate on parents in json
       for (const auto& parent: ref["parents"].items()) {
         const auto& nodeName = parent.key();
@@ -242,4 +245,4 @@ namespace gum_tests {
       TS_ASSERT_EQUALS(bn2.properties().size(), 3u);
     }
   };
-}
+}   // namespace gum_tests

@@ -41,8 +41,8 @@
 
 #ifndef GUMREADER_H
 #define GUMREADER_H
-#include <agrum/BN/io/BNReader.h>
 #include <agrum/base/core/errorsContainer.h>
+#include <agrum/BN/io/BNReader.h>
 
 namespace gum {
   /**
@@ -53,7 +53,7 @@ namespace gum {
    *
    * This class is used to read a Bayesian network from a GUM file format.
    */
-  template <typename GUM_SCALAR>
+  template < typename GUM_SCALAR >
   class BNGumReader: public BNReader< GUM_SCALAR >, ErrorsContainer {
     public:
     /**

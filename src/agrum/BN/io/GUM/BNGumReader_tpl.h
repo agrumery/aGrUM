@@ -49,20 +49,21 @@
 using json = nlohmann::json;
 
 namespace gum {
-  template <typename GUM_SCALAR>
-  BNGumReader<
-    GUM_SCALAR >::BNGumReader(BayesNet< GUM_SCALAR >* bn,
-                              const std::string& filename) : BNReader< GUM_SCALAR >(bn, filename) {
+  template < typename GUM_SCALAR >
+  BNGumReader< GUM_SCALAR >::BNGumReader(BayesNet< GUM_SCALAR >* bn, const std::string& filename) :
+      BNReader< GUM_SCALAR >(bn, filename) {
     GUM_CONSTRUCTOR(BNGumReader)
     _bn_         = bn;
     _streamName_ = filename;
     _parseDone_  = false;
   }
 
-  template <typename GUM_SCALAR>
-  BNGumReader< GUM_SCALAR >::~BNGumReader() { GUM_DESTRUCTOR(BNGumReader) }
+  template < typename GUM_SCALAR >
+  BNGumReader< GUM_SCALAR >::~BNGumReader() {
+    GUM_DESTRUCTOR(BNGumReader)
+  }
 
-  template <typename GUM_SCALAR>
+  template < typename GUM_SCALAR >
   Size BNGumReader< GUM_SCALAR >::proceed() {
     if (_parseDone_) {
       // if the parse is already done, we do not proceed
@@ -86,9 +87,7 @@ namespace gum {
     }
     auto& bn = *_bn_;
     // check the json content
-    if (!content.contains("nodes") ||
-        !content.contains("parents") ||
-        !content.contains("cpt")) {
+    if (!content.contains("nodes") || !content.contains("parents") || !content.contains("cpt")) {
       addError("Invalid GUM file format: missing 'nodes', 'parents' or 'cpt' sections",
                _streamName_,
                0,
@@ -97,7 +96,9 @@ namespace gum {
     }
 
     // iterate on nodes in json
-    for (const auto& node: content["nodes"]) { bn.add(node.get< std::string >()); }
+    for (const auto& node: content["nodes"]) {
+      bn.add(node.get< std::string >());
+    }
     // iterate on parents in json
     for (const auto& parent: content["parents"].items()) {
       const auto& nodeName = parent.key();
@@ -121,4 +122,4 @@ namespace gum {
     _parseDone_ = true;
     return nberrors;
   }
-}
+}   // namespace gum
