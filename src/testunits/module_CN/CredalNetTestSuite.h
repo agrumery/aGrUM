@@ -69,10 +69,6 @@
 namespace gum_tests {
 
   struct CredalNetTestSuite {
-    private:
-
-    protected:
-
     public:
     gum::credal::CredalNet< double >* cn;
 

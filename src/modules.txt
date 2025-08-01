@@ -9,6 +9,7 @@ list(APPEND MODULES "MRF") # Markov Random Fields
 list(APPEND MODULES "CN") # Credal Networks
 list(APPEND MODULES "FMDP") # Factored Markov Decision Process
 list(APPEND MODULES "ID") # Influence Diagram
+list(APPEND MODULES "CM") # Causal Model
 
 # list of required modules
 set(BASE_DEPS)
@@ -17,6 +18,7 @@ set(MRF_DEPS "BN")
 set(CN_DEPS "BN")
 set(FMDP_DEPS "BASE")
 set(ID_DEPS "BN")
+set(CM_DEPS "BN")
 
 # list of all folders by module
 set(BASE_DIRS "base")
@@ -25,3 +27,4 @@ set(MRF_DIRS "MRF")
 set(CN_DIRS "CN")
 set(FMDP_DIRS "FMDP")
 set(ID_DIRS "ID")
+set(CM_DIRS "CM")
