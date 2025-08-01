@@ -53,7 +53,7 @@
 using json = nlohmann::json;
 
 namespace gum_tests {
-  class [[maybe_unused]] GumJsonTestSuite: public CxxTest::TestSuite {
+  class [[maybe_unused]] BNGumReaderTestSuite: public CxxTest::TestSuite {
     const std::string jsondemo{R"(
 {
   "nodes": [

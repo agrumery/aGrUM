@@ -1,7 +1,7 @@
 /****************************************************************************
  *   This file is part of the aGrUM/pyAgrum library.                        *
  *                                                                          *
- *   Copyright (c) 2005-2026 by                                             *
+ *   Copyright (c) 2005-2025 by                                             *
  *       - Pierre-Henri WUILLEMIN(_at_LIP6)                                 *
  *       - Christophe GONZALES(_at_AMU)                                     *
  *                                                                          *
@@ -27,7 +27,7 @@
  *                                                                          *
  *   See LICENCES for more details.                                         *
  *                                                                          *
- *   SPDX-FileCopyrightText: Copyright 2005-2026                            *
+ *   SPDX-FileCopyrightText: Copyright 2005-2025                            *
  *       - Pierre-Henri WUILLEMIN(_at_LIP6)                                 *
  *       - Christophe GONZALES(_at_AMU)                                     *
  *   SPDX-License-Identifier: LGPL-3.0-or-later OR MIT                      *
@@ -38,75 +38,22 @@
  *                                                                          *
  ****************************************************************************/
 
-#include <agrum/base/graphicalModels/graphicalModel.h>
 
-#include <chrono>
-#include <format>
+#include <gumtest/AgrumTestSuite.h>
+#include <gumtest/utils.h>
 
-#ifdef GUM_NO_INLINE
-#  include <agrum/base/graphicalModels/graphicalModel_inl.h>
-#endif /* GUM_NO_INLINE */
+#include <agrum/BN/BayesNet.h>
+#include <agrum/BN/io/GUM/BNGumWriter.h>
 
-namespace gum {
-  GraphicalModel::GraphicalModel() { GUM_CONSTRUCTOR(GraphicalModel) }
+namespace gum_tests {
+  class [[maybe_unused]] BNGumReaderTestSuite: public CxxTest::TestSuite {
+    GUM_ACTIVE_TEST(FirstTest) {
+      auto bn   = gum::BayesNet< double >::fastPrototype("A->B->C");
+      auto path = GET_RESSOURCES_PATH("outputs/test.gum");
 
-  GraphicalModel::GraphicalModel(const GraphicalModel& from) {
-    GUM_CONS_CPY(GraphicalModel)
-    _propertiesMap_ = from._propertiesMap_;
-  }
+      gum::BNGumWriter< double > writer;
 
-  GraphicalModel::GraphicalModel(GraphicalModel&& from) { GUM_CONS_MOV(GraphicalModel); }
-
-  GraphicalModel::~GraphicalModel() { GUM_DESTRUCTOR(GraphicalModel); }
-
-  GraphicalModel& GraphicalModel::operator=(const GraphicalModel& source) {
-    if (this != &source) {
-      _propertiesMap_ = source._propertiesMap_;
-      GUM_OP_CPY(GraphicalModel);
+      writer.write(path, bn);
     }
-    return *this;
-  }
-
-  GraphicalModel& GraphicalModel::operator=(GraphicalModel&& source) {
-    if (this != &source) {
-      _propertiesMap_ = std::move(source._propertiesMap_);
-      GUM_OP_MOV(GraphicalModel);
-    }
-    return *this;
-  }
-
-  void GraphicalModel::updateMetaTags() {
-    auto const time = std::chrono::current_zone()->to_local(std::chrono::system_clock::now());
-    auto const currentdate = std::format("{:%Y-%m-%d %H:%M:%S}", time);
-
-    if (!_propertiesMap_.exists("version")) {
-#ifdef SWIG
-      _propertiesMap_["version"] = "pyAgrum " GUM_VERSION;
-#else
-      _propertiesMap_["version"] = "aGrUM " GUM_VERSION;
-#endif // SWIG
-    }
-
-    if (!_propertiesMap_.exists("creation")) { _propertiesMap_["creation"] = currentdate; }
-    _propertiesMap_["lastModification"] = currentdate;
-  }
-
-  NodeSet GraphicalModel::nodeset(const std::vector< std::string >& names) const {
-    NodeSet res;
-    for (const auto& name: names) { res.insert(idFromName(name)); }
-    return res;
-  }
-
-  void
-    GraphicalModel::spaceCplxToStream(std::stringstream& s, double dSize, int dim, Size usedMem) {
-    if (dSize > 6) s << "domainSize: 10^" << dSize;
-    else s << "domainSize: " << std::round(std::pow(10.0, dSize));
-
-    s << ", dim: " << dim << ", mem: ";
-
-    if (const Size go = usedMem / (1024 * 1024 * 1024); go > 0) s << go << "Go ";
-    if (const Size mo = (usedMem / (1024 * 1024)) % 1024; mo > 0) s << mo << "Mo ";
-    if (const Size ko = (usedMem / 1024) % 1024; ko > 0) s << ko << "Ko ";
-    s << usedMem % 1024 << "o";
-  }
-} // namespace gum
+  };
+}
