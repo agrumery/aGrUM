@@ -95,7 +95,9 @@ endif ()
 ## TARGET library
 add_library(${LIBAGRUM} INTERFACE)
 foreach (OPTION ${LIST_OF_MODULES})
-    target_link_libraries(${LIBAGRUM} INTERFACE agrum${OPTION})
+    if (BUILD_${OPTION} OR BUILD_ALL)
+        target_link_libraries(${LIBAGRUM} INTERFACE agrum${OPTION})
+    endif()
 endforeach()
 
 # Add targets to the build-tree export set

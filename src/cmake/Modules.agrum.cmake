@@ -4,6 +4,7 @@ option(BUILD_ALL "" OFF)
 #creating all options
 foreach (OPTION ${MODULES})
     option(BUILD_${OPTION} "build module ${OPTION}" OFF)
+    message(STATUS "  (+) defining  BUILD_${OPTION}")
 endforeach ()
 
 ############### DEPENDENCIES BETWEEN OPTIONS ################
@@ -77,7 +78,7 @@ endif ()
 if (BUILD_ALL)
     message(STATUS "** aGrUM Notification: Building all")
 else ()
-    message(STATUS "** aGrUM Notification: Building specific modules")
+    message(STATUS "** aGrUM Notification: Building specific module(s)")
 endif ()
 
 #this macro has to be executed when recolt of module file lists is finished (after CocoR targets for instance)
@@ -85,7 +86,7 @@ macro(buildFileListsWithModules)
     message(STATUS "** aGrUM Notification: Generating files lists")
     foreach (OPTION ${MODULES})
         if (BUILD_${OPTION} OR BUILD_ALL)
-            message(STATUS "** aGrUM Notification:      (+) adding ${OPTION}")
+            message(STATUS "** aGrUM Notification:      (+) adding target for ${OPTION}")
 
             add_library (agrum${OPTION} ${AGRUM_${OPTION}_SOURCES} ${AGRUM_${OPTION}_C_SOURCES} ${AGRUM_${OPTION}_INCLUDES} ${AGRUM_BASE_INCLUDES})
 

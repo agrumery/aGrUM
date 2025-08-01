@@ -34,12 +34,14 @@ install(EXPORT ${LIBAGRUM}-targets
         COMPONENT Development)
 
 foreach (OPTION ${LIST_OF_MODULES})
-        install(TARGETS agrum${OPTION}
-                EXPORT agrum${OPTION}-targets
-                RUNTIME DESTINATION ${CMAKE_INSTALL_BINDIR}
-                LIBRARY DESTINATION ${CMAKE_INSTALL_LIBDIR}
-                ARCHIVE DESTINATION ${CMAKE_INSTALL_LIBDIR})
-        install(EXPORT agrum${OPTION}-targets
-                DESTINATION ${CMAKE_INSTALL_LIBDIR}/cmake/aGrUM
-                COMPONENT Development)
+        if (BUILD_${OPTION} OR BUILD_ALL)
+          install(TARGETS agrum${OPTION}
+                  EXPORT agrum${OPTION}-targets
+                  RUNTIME DESTINATION ${CMAKE_INSTALL_BINDIR}
+                  LIBRARY DESTINATION ${CMAKE_INSTALL_LIBDIR}
+                  ARCHIVE DESTINATION ${CMAKE_INSTALL_LIBDIR})
+          install(EXPORT agrum${OPTION}-targets
+                  DESTINATION ${CMAKE_INSTALL_LIBDIR}/cmake/aGrUM
+                  COMPONENT Development)
+        endif()
 endforeach()
