@@ -85,7 +85,7 @@ namespace gum {
                                              const std::string&      filename,
                                              const std::string&      entityName,
                                              const std::string&      classpath) :
-    BNReader< GUM_SCALAR >(bn, filename) {
+      BNReader< GUM_SCALAR >(bn, filename) {
     GUM_CONSTRUCTOR(O3prmBNReader);
     _bn_         = bn;
     _filename_   = filename;
@@ -112,10 +112,11 @@ namespace gum {
 
     if (errors() == 0) {
       std::string instanceName = "";
-      if (prm->isSystem(_entityName_)) { _generateBN_(prm->getSystem(_entityName_)); } else if (prm
-        ->isClass(_entityName_)) {
+      if (prm->isSystem(_entityName_)) {
+        _generateBN_(prm->getSystem(_entityName_));
+      } else if (prm->isClass(_entityName_)) {
         _errors_.addWarning("No system '" + _entityName_
-                            + "' found but class found. Generating unnamed instance.",
+                                + "' found but class found. Generating unnamed instance.",
                             _filename_,
                             0,
                             0);
@@ -124,7 +125,7 @@ namespace gum {
         auto i = new gum::prm::PRMInstance< GUM_SCALAR >(instanceName, prm->getClass(_entityName_));
         s.add(i);
         _generateBN_(s);
-        instanceName += "."; // to be removed in  _getVariableName_
+        instanceName += ".";   // to be removed in  _getVariableName_
       } else if (prm->classes().size() == 1) {
         const std::string& entityName = (*prm->classes().begin())->name();
         ParseError warn(false,
@@ -142,13 +143,13 @@ namespace gum {
         // force the name of the BN to be the name of the class instead of the name
         // of the file
         _bn_->setProperty("name", entityName);
-        instanceName += "."; // to be removed in  _getVariableName_
+        instanceName += ".";   // to be removed in  _getVariableName_
       } else {
-        _errors_.addError(
-            "Neither system nor class '" + _entityName_ + "' and more than one class.",
-            _filename_,
-            0,
-            0);
+        _errors_.addError("Neither system nor class '" + _entityName_
+                              + "' and more than one class.",
+                          _filename_,
+                          0,
+                          0);
       }
 
       // renaming variables in th BN
@@ -171,11 +172,15 @@ namespace gum {
           std::string newName = newNameRadical;
           // forcing newName to be unique
           int num = 0;
-          while (names.contains(newName)) { newName = newNameRadical + std::to_string(++num); }
+          while (names.contains(newName)) {
+            newName = newNameRadical + std::to_string(++num);
+          }
 
           names.insert(newName);
           _bn_->changeVariableName(node, newName);
-        } else { _errors_.addError("Name " + nn + " cannot be simplified.", _filename_, 0, 0); }
+        } else {
+          _errors_.addError("Name " + nn + " cannot be simplified.", _filename_, 0, 0);
+        }
       }
     }
 
@@ -191,4 +196,4 @@ namespace gum {
     system.groundedBN(factory);
     _bn_->setProperty("name", _entityName_);
   }
-} // namespace gum
+}   // namespace gum

@@ -49,8 +49,8 @@
  *
  * @author Lionel TORTI and Pierre-Henri WUILLEMIN(_at_LIP6)
  */
-#ifndef GUM_BN_WRITER_H
-#define GUM_BN_WRITER_H
+#ifndef BN_WRITER_H
+#define BN_WRITER_H
 
 #include <filesystem>
 #include <iostream>
@@ -63,7 +63,6 @@
 #include <string_view>
 
 namespace gum {
-
   /* =========================================================================*/
   /* ===                              WRITERS === */
   /* =========================================================================*/
@@ -102,11 +101,11 @@ namespace gum {
      * (conditioned by the value of _allowModification_
      *
      * @param output The output stream.
-     * @param bn The Bayesian network written in output.
+     * @param bn The Bayesian network written in output (not const since updateMetaData).
      * @throws IOError Raised if an I/O error occurs.
      * @throws SyntaxError Raised if syntactical errors in the BN
      */
-    void write(std::ostream& output, const IBayesNet< GUM_SCALAR >& bn);
+    void write(std::ostream& output, IBayesNet< GUM_SCALAR >& bn);
 
     /**
      * Writes a Bayesian network in the file referenced by filePath.
@@ -174,4 +173,4 @@ namespace gum {
 
 #include <agrum/BN/io/BNWriter_tpl.h>
 
-#endif   // GUM_BN_WRITER_H
+#endif   // BN_WRITER_H

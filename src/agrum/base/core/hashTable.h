@@ -66,7 +66,6 @@
 #include <string_view>
 
 namespace gum {
-
 #ifndef DOXYGEN_SHOULD_SKIP_THIS
 
   // the templates used by this file
@@ -233,7 +232,7 @@ namespace gum {
     /**
      * Class constructor.
      */
-    HashTableBucket() {}
+    HashTableBucket() = default;
 
     /**
      * Copy constructor.
@@ -259,13 +258,13 @@ namespace gum {
      * Constructor.
      * @param p The pair to store.
      */
-    HashTableBucket(const std::pair< const Key, Val >& p) : pair(p) {}
+    explicit HashTableBucket(const std::pair< const Key, Val >& p) : pair(p) {}
 
     /**
      * Constructor.
      * @param p The pair to store.
      */
-    HashTableBucket(std::pair< const Key, Val >&& p) : pair(std::move(p)) {}
+    explicit HashTableBucket(std::pair< const Key, Val >&& p) : pair(std::move(p)) {}
 
     /**
      * The emplace constructor.
@@ -712,7 +711,8 @@ namespace gum {
      * @brief Move constructor.
      * @param from The gum::HashTable to move.
      */
-    HashTable(HashTable< Key, Val >&& from);
+    HashTable(HashTable< Key, Val >&& from) noexcept;
+    ;
 
     /**
      * @brief Class destructor.
@@ -909,7 +909,7 @@ namespace gum {
      * @param from The gum::HashTable to move.
      * @return Returns this gum::HashTable.
      */
-    HashTable< Key, Val >& operator=(HashTable< Key, Val >&& from);
+    HashTable< Key, Val >& operator=(HashTable< Key, Val >&& from) noexcept;
 
     /**
      * @brief Returns a reference on the value the key of which is passed in
@@ -956,19 +956,6 @@ namespace gum {
      */
     bool operator==(const HashTable< Key, Val >& from) const;
 
-    ///
-    /**
-     * @brief Checks whether two hashtables contain different sets of elements.
-     *
-     * Two hashtables are considered different if they contain different pairs
-     * (key,val). Two pairs are different if their keys have different hashed
-     * values, or if they are different in the sense of !=, or if their val's
-     * are different in the sense of !=.
-     *
-     * @param from The gum::HashTable to test for inequality.
-     * @return True if this and from are not equal.
-     */
-    bool operator!=(const HashTable< Key, Val >& from) const;
 
     /// @}
     // ============================================================================
@@ -1695,7 +1682,7 @@ namespace gum {
      * hashtable.
      * @param tab A gum::HashTable to iterate over.
      */
-    HashTableConstIteratorSafe(const HashTable< Key, Val >& tab);
+    explicit HashTableConstIteratorSafe(const HashTable< Key, Val >& tab);
 
     ///
     /**
@@ -1727,7 +1714,7 @@ namespace gum {
      * @brief Move constructor.
      * @param from The gum::HashTableConstIteratorSafe to move.
      */
-    HashTableConstIteratorSafe(HashTableConstIteratorSafe< Key, Val >&& from);
+    HashTableConstIteratorSafe(HashTableConstIteratorSafe< Key, Val >&& from) noexcept;
 
     /**
      * @brief Destructor.
@@ -1829,13 +1816,6 @@ namespace gum {
      * @return Returns a new gum::HashTableConstIteratorSafe.
      */
     HashTableConstIteratorSafe< Key, Val > operator+(Size i) const;
-
-    /**
-     * @brief Checks whether two iterators are not equal.
-     * @param from from The iterator to test for inequality.
-     * @return Returns true if from and this iterator are inequal.
-     */
-    bool operator!=(const HashTableConstIteratorSafe< Key, Val >& from) const noexcept;
 
     /**
      * @brief Checks whether two iterators are equal.
@@ -1994,7 +1974,7 @@ namespace gum {
      * @brief Constructor for an iterator pointing to the first element of a
      * hashtable.
      */
-    HashTableIteratorSafe(const HashTable< Key, Val >& tab);
+    explicit HashTableIteratorSafe(const HashTable< Key, Val >& tab);
 
     /**
      * @brief Constructor for an iterator pointing to the nth element of a
@@ -2115,14 +2095,6 @@ namespace gum {
     HashTableIteratorSafe< Key, Val > operator+(Size i) const;
 
     /**
-     * @brief Checks whether two iterators are pointing toward different
-     * elements.
-     * @param from The gum::HashTableIteratorSafe to test for inequality.
-     * @return Returns true if this and from are not equal.
-     */
-    bool operator!=(const HashTableIteratorSafe< Key, Val >& from) const noexcept;
-
-    /**
      * @brief Checks whether two iterators are pointing toward equal
      * elements.
      * @param from The gum::HashTableIteratorSafe to test for equality.
@@ -2239,7 +2211,7 @@ namespace gum {
      * hashtable.
      * @param tab The gum::HashTable to iterate over.
      */
-    HashTableConstIterator(const HashTable< Key, Val >& tab) noexcept;
+    explicit HashTableConstIterator(const HashTable< Key, Val >& tab) noexcept;
 
     /**
      * @brief Constructor for an iterator pointing to the nth element of a
@@ -2363,14 +2335,6 @@ namespace gum {
      * hashtable.
      */
     HashTableConstIterator< Key, Val > operator+(Size i) const noexcept;
-
-    /**
-     * @brief Checks whether two iterators are pointing toward different
-     * elements.
-     * @param from The gum::HashTableConstIterator to test for inequality.
-     * @return Returns true if this and from are not equal.
-     */
-    bool operator!=(const HashTableConstIterator< Key, Val >& from) const noexcept;
 
     /**
      * @brief Checks whether two iterators are pointing toward equal
@@ -2522,7 +2486,7 @@ namespace gum {
      * hashtable.
      * @param tab The gum::HashTable to iterate over.
      */
-    HashTableIterator(const HashTable< Key, Val >& tab) noexcept;
+    explicit HashTableIterator(const HashTable< Key, Val >& tab) noexcept;
 
     ///
     /**
@@ -2632,14 +2596,6 @@ namespace gum {
     HashTableIterator< Key, Val > operator+(Size i) const noexcept;
 
     /**
-     * @brief Checks whether two iterators are pointing toward different
-     * elements.
-     * @param from The gum::HashTableIterator to test for inequality.
-     * @return Returns true if this and from are not equal.
-     */
-    bool operator!=(const HashTableIterator< Key, Val >& from) const noexcept;
-
-    /**
      * @brief Checks whether two iterators are pointing toward equal
      * elements.
      * @param from The gum::HashTableIterator to test for equality.
@@ -2692,7 +2648,6 @@ namespace gum {
   inline constexpr void* const _HashTable_end_safe_  = (void* const)&_static_HashTable_end_safe_;
   inline constexpr void* const _HashTable_cend_safe_ = (void* const)&_static_HashTable_cend_safe_;
 #endif   // DOXYGEN_SHOULD_SKIP_THIS
-
 }   // namespace gum
 
 

@@ -540,7 +540,8 @@ namespace gum {
               if (oneNet) min = GUM_SCALAR(min * 1.0 / den);
 
               max = GUM_SCALAR(min + epsilon);
-            } else {   // if ( ( vertex[modality] == 0 && keepZeroes ) || (
+            } else {
+              // if ( ( vertex[modality] == 0 && keepZeroes ) || (
               // vertex[modality] > 0 && nbm <= 1 ) || ( vertex[modality] == 0
               // && nbm <= 1 ) ) {
               min = vertex[modality];
@@ -556,9 +557,7 @@ namespace gum {
             ++ins_min;
             ++ins_max;
           }   // end of : for each modality
-
         }   // end of : for each entry
-
       }   // end of : for each variable
 
       _epsilonMin_ = epsi_min;
@@ -611,9 +610,7 @@ namespace gum {
               ++ins;
             }
           }
-
         }   // end of : for each entry
-
       }   // end of : for each variable
     }
 
@@ -678,9 +675,7 @@ namespace gum {
             ++ins_min;
             ++ins_max;
           }   // end of : for each modality
-
         }   // end of : for each entry
-
       }   // end of : for each variable
 
       _epsilonMin_ = GUM_SCALAR(s);
@@ -776,7 +771,6 @@ namespace gum {
         }
 
         _credalNet_src_cpt_.insert(node, var_cpt);
-
       }   // end of : for each variable (node)
 
       // get precise/credal/vacuous status of each variable
@@ -830,7 +824,6 @@ namespace gum {
         }
 
         _credalNet_src_cpt_.insert(node, var_cpt);
-
       }   // end of : for each variable (node)
 
       // get precise/credal/vacuous status of each variable
@@ -905,7 +898,6 @@ namespace gum {
               std::cout << err.what() << std::endl;
               throw;
             }
-
           }   // end of : is interval
 
           if (entry == 0 && vertices.size() >= 2) {
@@ -915,13 +907,11 @@ namespace gum {
           }
 
           var_cpt[entry] = vertices;
-
         }   // end of : for each entry
 
         _credalNet_src_cpt_.insert(node, var_cpt);
         // std::cout <<  _src_bn_.variable(node_idIt).name() << std::endl;
         // std::cout << var_cpt << std::endl;
-
       }   // end of : for each variable (node)
 
       // get precise/credal/vacuous status of each variable
@@ -1018,7 +1008,6 @@ namespace gum {
           }   // end of : for each bit
 
           _var_bits_.insert(node, bits);
-
         }   // end of : if variable is not binary
         else {
           const std::string bit_name = current_bn->variable(node).name();
@@ -1027,7 +1016,6 @@ namespace gum {
 
           _var_bits_.insert(node, std::vector< NodeId >(1, iD));
         }
-
       }   // end of : for each original variable
 
       for (auto node: current_bn->nodes()) {
@@ -1049,7 +1037,6 @@ namespace gum {
         for (Size bit_c = 1; bit_c < bitsize; bit_c++)
           for (Size bit_p = 0; bit_p < bit_c; bit_p++)
             bin_bn->addArc(_var_bits_[node][bit_p], _var_bits_[node][bit_c]);
-
       }   // end of : for each original variable
 
       bin_bn->endTopologyTransformation();
@@ -1125,7 +1112,6 @@ namespace gum {
               }
 
               pvar_cpt.push_back(distri);
-
             }   // end of old distris
 
             // get min/max approx, 2 vertices
@@ -1153,13 +1139,10 @@ namespace gum {
             old_conf++;
 
             if (old_conf == (*credalNet_current_cpt)[var].size()) old_conf = 0;
-
           }   // end of new parent conf
 
           credalNet_bin_cpt->insert(_var_bits_[var][i], var_cpt);
-
         }   // end of bit i
-
       }   // end of old variable
 
       bin_bn->beginTopologyTransformation();
@@ -1223,7 +1206,7 @@ namespace gum {
       this->_current_nodeType_ = bin_nodeType;
 
       _sort_varType_();   // will fill  _bin_nodeType_ except for NodeType::Indic
-                          // variables
+      // variables
 
       computeBinaryCPTMinMax();
     }
@@ -1726,7 +1709,6 @@ namespace gum {
         if (!is_redund) v_rep.push_back(vertex);
 
         vertex.clear();
-
       }   // end of : file
 
       v_file.close();
@@ -1790,7 +1772,6 @@ namespace gum {
                  probability != elem.cend();
                  ++probability)
               if (*probability == false) vacuous = false;
-
           }   // end of : if vertices == dSize
           else
             vacuous = false;
@@ -1799,14 +1780,11 @@ namespace gum {
             _current_nodeType_->insert(node, NodeType::Credal);
             break;
           }
-
         }   // end of : for each parents entry
 
         if (vacuous) _current_nodeType_->insert(node, NodeType::Vacuous);
         else if (precise) _current_nodeType_->insert(node, NodeType::Precise);
-
       }   // end of : for each variable
     }
-
   }   // namespace credal
 }   // namespace gum

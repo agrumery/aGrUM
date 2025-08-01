@@ -84,7 +84,6 @@ typedef unsigned __int64 uint64_t;
 
 namespace gum {
   namespace credal {
-
     /**
      * @class CredalNet
      * @headerfile credalNet.h <agrum/CN/credalNet.h>
@@ -705,14 +704,12 @@ namespace gum {
        */
       void _H2Vlrs_(const std::vector< std::vector< GUM_SCALAR > >& h_rep,
                     std::vector< std::vector< GUM_SCALAR > >&       v_rep) const;
-
     };   // CredalNet
 
 
 #ifndef GUM_NO_EXTERN_TEMPLATE_CLASS
     extern template class CredalNet< double >;
 #endif
-
   }   // namespace credal
 }   // namespace gum
 

@@ -55,7 +55,6 @@
 #include <agrum/base/multidim/instantiation.h>
 
 namespace gum {
-
   /**
    * @class GraphicalModel
    * @headerfile GraphicalModel.h <agrum/base/graphicalModels/GraphicalModel.h>
@@ -113,6 +112,12 @@ namespace gum {
      * List of all the properties
      */
     std::vector< std::string > properties() const;
+
+    /**
+     * update the meta data of this Graphical Model (version, creation date, last modification date)
+     * This method is called by the writers ONLY before writing the model to a file.
+     */
+    void updateMetaData();
 
     /// @}
     /// @name Variable manipulation methods.

@@ -71,7 +71,7 @@
 extern "C" {
 #include <agrum/base/external/lrslib/lrslib.h>
 }
-#undef one // conflict between lrs and json
+#undef one   // conflict between lrs and json
 
 /* *** from lrs, we need to know BASE to read multiple precision integers *** */
 #ifdef B32

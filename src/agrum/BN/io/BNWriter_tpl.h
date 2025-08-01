@@ -51,7 +51,6 @@
 #  include <regex>
 
 namespace gum {
-
   /* =========================================================================*/
   /* ===                           GUM_BN_WRITER === */
   /* =========================================================================*/
@@ -84,6 +83,7 @@ namespace gum {
   template < GUM_Numeric GUM_SCALAR >
   void BNWriter< GUM_SCALAR >::write(std::string_view filePath, const IBayesNet< GUM_SCALAR >& bn) {
     _syntacticalCheck(bn);
+    bn.updateMetaData();
     _doWrite(filePath, bn);
   }
 

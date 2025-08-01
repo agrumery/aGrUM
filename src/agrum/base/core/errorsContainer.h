@@ -151,7 +151,7 @@ namespace gum {
     std::string filename;
 
     /// The code of this gum::_ParseError, default is "".
-    mutable std::string code; // default ""
+    mutable std::string code;   // default ""
 
     /**
      * @brief Return a std::string representation of this gum::ParseError.
@@ -351,8 +351,8 @@ namespace gum {
     ErrorsContainer operator+=(const ErrorsContainer& cont);
 
     /// @}
-  }; // ErrorsContainer
-} // namespace gum
+  };   // ErrorsContainer
+}   // namespace gum
 
 /// include the inlined functions if necessary
 #ifndef GUM_NO_INLINE

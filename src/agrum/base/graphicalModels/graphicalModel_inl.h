@@ -56,7 +56,6 @@
 #include <agrum/base/core/math/math_utils.h>
 
 namespace gum {
-
   INLINE
   const std::string& GraphicalModel::property(std::string_view name) const {
     auto p = _properties_().tryGet(name);
@@ -118,9 +117,11 @@ namespace gum {
   std::vector< std::string > GraphicalModel::names(const std::vector< NodeId >& ids) const {
     std::vector< std::string > res;
     const VariableNodeMap&     v = variableNodeMap();
-    std::transform(ids.cbegin(), ids.cend(), std::back_inserter(res), [v](NodeId n) {
+
+    std::ranges::transform(ids, std::back_inserter(res), [&v](const NodeId n) {
       return v[n].name();
     });
+
     return res;
   }
 
@@ -164,5 +165,4 @@ namespace gum {
     }
     return s;
   }
-
 } /* namespace gum */

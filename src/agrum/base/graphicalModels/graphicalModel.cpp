@@ -38,10 +38,10 @@
  *                                                                          *
  ****************************************************************************/
 
-#include <agrum/base/graphicalModels/graphicalModel.h>
-
 #include <chrono>
 #include <format>
+
+#include <agrum/base/graphicalModels/graphicalModel.h>
 
 #ifdef GUM_NO_INLINE
 #  include <agrum/base/graphicalModels/graphicalModel_inl.h>
@@ -75,30 +75,34 @@ namespace gum {
     return *this;
   }
 
-  void GraphicalModel::updateMetaTags() {
+  void GraphicalModel::updateMetaData() {
     auto const time = std::chrono::current_zone()->to_local(std::chrono::system_clock::now());
     auto const currentdate = std::format("{:%Y-%m-%d %H:%M:%S}", time);
 
     if (!_propertiesMap_.exists("version")) {
 #ifdef SWIG
-      _propertiesMap_["version"] = "pyAgrum " GUM_VERSION;
+      _propertiesMap_.insert("version", "pyAgrum " GUM_VERSION);
 #else
-      _propertiesMap_["version"] = "aGrUM " GUM_VERSION;
-#endif // SWIG
+      _propertiesMap_.insert("version", "aGrUM " GUM_VERSION);
+#endif   // SWIG
     }
 
-    if (!_propertiesMap_.exists("creation")) { _propertiesMap_["creation"] = currentdate; }
-    _propertiesMap_["lastModification"] = currentdate;
+    if (!_propertiesMap_.exists("creation")) { _propertiesMap_.insert("creation", currentdate); }
+    if (_propertiesMap_.exists("lastModification"))
+      _propertiesMap_["lastModification"] = currentdate;
+    else _propertiesMap_.insert("lastModification", currentdate);
   }
 
   NodeSet GraphicalModel::nodeset(const std::vector< std::string >& names) const {
     NodeSet res;
-    for (const auto& name: names) { res.insert(idFromName(name)); }
+    for (const auto& name: names) {
+      res.insert(idFromName(name));
+    }
     return res;
   }
 
   void
-    GraphicalModel::spaceCplxToStream(std::stringstream& s, double dSize, int dim, Size usedMem) {
+      GraphicalModel::spaceCplxToStream(std::stringstream& s, double dSize, int dim, Size usedMem) {
     if (dSize > 6) s << "domainSize: 10^" << dSize;
     else s << "domainSize: " << std::round(std::pow(10.0, dSize));
 
@@ -109,4 +113,4 @@ namespace gum {
     if (const Size ko = (usedMem / 1024) % 1024; ko > 0) s << ko << "Ko ";
     s << usedMem % 1024 << "o";
   }
-} // namespace gum
+}   // namespace gum

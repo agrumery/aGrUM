@@ -55,8 +55,6 @@
 #include <agrum/base/core/hashTable.h>
 
 namespace gum {
-
-
   // ===========================================================================
   // ===     IMPLEMENTATION OF THE CHAINED LISTS USED IN THE HASH TABLES     ===
   // ===========================================================================
@@ -142,7 +140,7 @@ namespace gum {
   }
 
   template < typename Key, typename Val >
-  INLINE HashTableList< Key, Val >::HashTableList() noexcept {}
+  INLINE HashTableList< Key, Val >::HashTableList() noexcept = default;
 
   template < typename Key, typename Val >
   INLINE HashTableList< Key, Val >::HashTableList(const HashTableList< Key, Val >& from) {
@@ -352,7 +350,7 @@ namespace gum {
   }
 
   template < typename Key, typename Val >
-  HashTable< Key, Val >::HashTable(HashTable< Key, Val >&& table) :
+  HashTable< Key, Val >::HashTable(HashTable< Key, Val >&& table) noexcept :
       _nodes_(std::move(table._nodes_)), _size_{table._size_}, _nb_elements_{table._nb_elements_},
       _hash_func_{table._hash_func_}, _resize_policy_{table._resize_policy_},
       _key_uniqueness_policy_{table._key_uniqueness_policy_}, _begin_index_{table._begin_index_},
@@ -429,7 +427,7 @@ namespace gum {
   }
 
   template < typename Key, typename Val >
-  HashTable< Key, Val >& HashTable< Key, Val >::operator=(HashTable< Key, Val >&& table) {
+  HashTable< Key, Val >& HashTable< Key, Val >::operator=(HashTable< Key, Val >&& table) noexcept {
     // avoid self assignment
     if (this != &table) {
       // for debugging purposes
@@ -1017,11 +1015,6 @@ namespace gum {
   }
 
   template < typename Key, typename Val >
-  INLINE bool HashTable< Key, Val >::operator!=(const HashTable< Key, Val >& from) const {
-    return !operator==(from);
-  }
-
-  template < typename Key, typename Val >
   std::ostream& operator<<(std::ostream& stream, const HashTableList< Key, Val >& list) {
     bool deja = false;
     stream << "[";
@@ -1141,8 +1134,9 @@ namespace gum {
         _bucket_ = _table_->_nodes_[_index_]._end_list_;
       } else {
         // find the element we shall point to from the start of the hashtable
-        for (Size i = _table_->_size_ - Size(1);; --i) {   // no test on i since
-                                                           //  _nb_elements_ != 0
+        for (Size i = _table_->_size_ - Size(1);; --i) {
+          // no test on i since
+          //  _nb_elements_ != 0
           if (_table_->_nodes_[i]._nb_elements_) {
             _index_                = i;
             _bucket_               = _table_->_nodes_[_index_]._end_list_;
@@ -1169,7 +1163,8 @@ namespace gum {
       // from the end of the hashtable
       if (ind_elt < (_table_->_nb_elements_ >> 1)) {
         // find the element we shall point to from the start of the hashtable
-        for (i = _table_->_size_ - 1;; --i) {   // no test on i since
+        for (i = _table_->_size_ - 1;; --i) {
+          // no test on i since
           // ind_elt < table_-> _nb_elements_
           if (_table_->_nodes_[i]._nb_elements_) {
             if (ind_elt >= _table_->_nodes_[i]._nb_elements_)
@@ -1239,7 +1234,7 @@ namespace gum {
 
   template < typename Key, typename Val >
   INLINE HashTableConstIteratorSafe< Key, Val >::HashTableConstIteratorSafe(
-      HashTableConstIteratorSafe< Key, Val >&& from) :
+      HashTableConstIteratorSafe< Key, Val >&& from) noexcept :
       _table_{from._table_}, _index_{from._index_}, _bucket_{from._bucket_},
       _next_bucket_{from._next_bucket_} {
     GUM_CONS_MOV(HashTableConstIteratorSafe);
@@ -1498,12 +1493,6 @@ namespace gum {
   }
 
   template < typename Key, typename Val >
-  INLINE bool HashTableConstIteratorSafe< Key, Val >::operator!=(
-      const HashTableConstIteratorSafe< Key, Val >& from) const noexcept {
-    return ((_bucket_ != from._bucket_) || (_index_ != from._index_));
-  }
-
-  template < typename Key, typename Val >
   INLINE bool HashTableConstIteratorSafe< Key, Val >::operator==(
       const HashTableConstIteratorSafe< Key, Val >& from) const noexcept {
     return ((_bucket_ == from._bucket_) && (_index_ == from._index_));
@@ -1628,12 +1617,6 @@ namespace gum {
   }
 
   template < typename Key, typename Val >
-  INLINE bool HashTableIteratorSafe< Key, Val >::operator!=(
-      const HashTableIteratorSafe< Key, Val >& from) const noexcept {
-    return HashTableConstIteratorSafe< Key, Val >::operator!=(from);
-  }
-
-  template < typename Key, typename Val >
   INLINE bool HashTableIteratorSafe< Key, Val >::operator==(
       const HashTableIteratorSafe< Key, Val >& from) const noexcept {
     return HashTableConstIteratorSafe< Key, Val >::operator==(from);
@@ -1673,7 +1656,8 @@ namespace gum {
         _bucket_ = _table_->_nodes_[_index_]._end_list_;
       } else {
         // find the element we shall point to from the start of the hashtable
-        for (Size i = _table_->_size_ - Size(1);; --i) {   // no test on i since
+        for (Size i = _table_->_size_ - Size(1);; --i) {
+          // no test on i since
           //  _nb_elements_ != 0
           if (_table_->_nodes_[i]._nb_elements_) {
             _index_                = i;
@@ -1701,7 +1685,8 @@ namespace gum {
       // from the end of the hashtable
       if (ind_elt < (_table_->_nb_elements_ >> 1)) {
         // find the element we shall point to from the start of the hashtable
-        for (i = _table_->_size_ - 1;; --i) {   // no test on i since
+        for (i = _table_->_size_ - 1;; --i) {
+          // no test on i since
           // ind_elt < table_-> _nb_elements_
           if (_table_->_nodes_[i]._nb_elements_) {
             if (ind_elt >= _table_->_nodes_[i]._nb_elements_)
@@ -1894,12 +1879,6 @@ namespace gum {
   }
 
   template < typename Key, typename Val >
-  INLINE bool HashTableConstIterator< Key, Val >::operator!=(
-      const HashTableConstIterator< Key, Val >& from) const noexcept {
-    return (_bucket_ != from._bucket_);
-  }
-
-  template < typename Key, typename Val >
   INLINE bool HashTableConstIterator< Key, Val >::operator==(
       const HashTableConstIterator< Key, Val >& from) const noexcept {
     return (_bucket_ == from._bucket_);
@@ -2007,12 +1986,6 @@ namespace gum {
   }
 
   template < typename Key, typename Val >
-  INLINE bool HashTableIterator< Key, Val >::operator!=(
-      const HashTableIterator< Key, Val >& from) const noexcept {
-    return HashTableConstIterator< Key, Val >::operator!=(from);
-  }
-
-  template < typename Key, typename Val >
   INLINE bool HashTableIterator< Key, Val >::operator==(
       const HashTableIterator< Key, Val >& from) const noexcept {
     return HashTableConstIterator< Key, Val >::operator==(from);
@@ -2029,5 +2002,4 @@ namespace gum {
       HashTableIterator< Key, Val >::operator*() const {
     return HashTableConstIterator< Key, Val >::operator*();
   }
-
 } /* namespace gum */

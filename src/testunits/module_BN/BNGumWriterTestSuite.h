@@ -46,14 +46,15 @@
 #include <agrum/BN/io/GUM/BNGumWriter.h>
 
 namespace gum_tests {
-  class [[maybe_unused]] BNGumReaderTestSuite: public CxxTest::TestSuite {
-    GUM_ACTIVE_TEST(FirstTest) {
-      auto bn   = gum::BayesNet< double >::fastPrototype("A->B->C");
-      auto path = GET_RESSOURCES_PATH("outputs/test.gum");
+  class [[maybe_unused]] BNGumWriterTestSuite: public CxxTest::TestSuite {
+    public:
+    GUM_ACTIVE_TEST(SimpleTestForWriter) {
+      auto       bn   = gum::BayesNet< double >::fastPrototype("A->B->C");
+      const auto path = GET_RESSOURCES_PATH("outputs/test.gum");
 
       gum::BNGumWriter< double > writer;
 
       writer.write(path, bn);
     }
   };
-}
+}   // namespace gum_tests
