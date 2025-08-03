@@ -48,7 +48,7 @@
 // ==============================================================================
 #include <utils.h>
 
-#include <gumtest/AgrumTestSuite.h>
+#include <testunits/gumtest/AgrumTestSuite.h>
 // ==============================================================================
 #include <agrum/FMDP/fmdp.h>
 #include <agrum/FMDP/io/dat/fmdpDatReader.h>

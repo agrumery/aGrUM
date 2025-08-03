@@ -120,7 +120,7 @@ namespace gum {
       }
     }
     bn.generateCPTs();
-    bn.setProperty("name", "fastPrototype");
+    bn.setProperty("name", "anonymousBN");
     return bn;
   }
 

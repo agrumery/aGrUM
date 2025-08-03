@@ -43,8 +43,8 @@
 
 #include <string>
 
-#include <gumtest/AgrumTestSuite.h>
-#include <gumtest/utils.h>
+#include <testunits/gumtest/AgrumTestSuite.h>
+#include <testunits/gumtest/utils.h>
 
 #include <agrum/base/core/exceptions.h>
 #include <agrum/PRM/elements/PRMClass.h>

@@ -44,8 +44,8 @@
 #include <iostream>
 #include <sstream>
 
-#include <gumtest/AgrumTestSuite.h>
-#include <gumtest/utils.h>
+#include <testunits/gumtest/AgrumTestSuite.h>
+#include <testunits/gumtest/utils.h>
 
 #include <agrum/base/database/DBTranslator4LabelizedVariable.h>
 #include <agrum/base/database/DBTranslatorSet.h>

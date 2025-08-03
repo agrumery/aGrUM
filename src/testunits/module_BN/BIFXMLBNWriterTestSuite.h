@@ -43,9 +43,10 @@
 
 #include <iostream>
 #include <string>
+#include <sys/stat.h>
 
-#include <gumtest/AgrumTestSuite.h>
-#include <gumtest/utils.h>
+#include <testunits/gumtest/AgrumTestSuite.h>
+#include <testunits/gumtest/utils.h>
 
 #include <agrum/base/variables/labelizedVariable.h>
 #include <agrum/BN/BayesNet.h>

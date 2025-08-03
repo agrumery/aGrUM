@@ -106,7 +106,7 @@ namespace gum {
       mn.addFactor(cliq);
     }
     mn.generateFactors();
-    mn.setProperty("name", "fastPrototype");
+    mn.setProperty("name", "anonymousMRF");
     return mn;
   }
 

@@ -43,8 +43,8 @@
 
 #include <fstream>
 
-#include <gumtest/AgrumTestSuite.h>
-#include <gumtest/utils.h>
+#include <testunits/gumtest/AgrumTestSuite.h>
+#include <testunits/gumtest/utils.h>
 
 #include <agrum/PRM/generator/clusteredLayerGenerator.h>
 #include <agrum/PRM/generator/layerGenerator.h>

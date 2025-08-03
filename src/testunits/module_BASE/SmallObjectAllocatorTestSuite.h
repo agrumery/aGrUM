@@ -45,7 +45,7 @@
 #include <iostream>
 #include <string>
 
-#include <gumtest/AgrumTestSuite.h>
+#include <testunits/gumtest/AgrumTestSuite.h>
 
 #include <agrum/base/core/smallobjectallocator/fixedAllocator.h>
 #include <agrum/base/core/smallobjectallocator/smallObjectAllocator.h>

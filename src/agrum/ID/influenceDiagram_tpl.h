@@ -134,7 +134,7 @@ namespace gum {
       else if (infdiag.isUtilityNode(n)) { infdiag.utility(n).random().scale(50).translate(-10); }
     }
 
-    infdiag.setProperty("name", "fastPrototype");
+    infdiag.setProperty("name", "anonymousID");
     return infdiag;
   }
 

@@ -38,23 +38,91 @@
  *                                                                          *
  ****************************************************************************/
 
+/**
+ * @file
+ * @brief Definition of classe for GUM (json) file output manipulation
+ *
+ * This class servers to write the content of a Bayesian network in
+ * the gum (json) format.
+ *
+ * @author Pierre-Henri WUILLEMIN(_at_LIP6)
+ */
 
-#include <gumtest/AgrumTestSuite.h>
-#include <gumtest/utils.h>
+#ifndef GUM_BN_WRITER_H
+#define GUM_BN_WRITER_H
 
-#include <agrum/BN/BayesNet.h>
-#include <agrum/BN/io/GUM/BNGumWriter.h>
+#include <fstream>
+#include <iostream>
+#include <sstream>
+#include <string>
 
-namespace gum_tests {
-  class [[maybe_unused]] BNGumWriterTestSuite: public CxxTest::TestSuite {
+#include <agrum/agrum.h>
+
+#include <agrum/BN/io/BNWriter.h>
+
+namespace gum {
+  /**
+   * @class GumBNWriter
+   * @headerfile GumBNWriter.h <agrum/BN/io/GUM/GumBNWriter.h>
+   * @brief Writes a IBayesNet in the GUM json format.
+   * @ingroup bn_io
+   *
+   * This class to write the content of a Bayesian network in
+   * the GUM json format.
+   *
+   */
+  template < typename GUM_SCALAR >
+  class GumBNWriter: public BNWriter< GUM_SCALAR > {
     public:
-    GUM_ACTIVE_TEST(SimpleTestForWriter) {
-      auto       bn   = gum::BayesNet< double >::fastPrototype("A->B->C");
-      const auto path = GET_RESSOURCES_PATH("outputs/test.gum");
+    // ==========================================================================
+    /// @name Constructor & destructor
+    // ==========================================================================
+    /// @{
 
-      gum::BNGumWriter< double > writer;
+    /**
+     * Default constructor.
+     */
+    GumBNWriter();
 
-      writer.write(path, bn);
-    }
+    /**
+     * Destructor.
+     */
+    ~GumBNWriter() override;
+
+    GumBNWriter(const GumBNWriter&)                = delete;
+    GumBNWriter(GumBNWriter&&) noexcept            = delete;
+    GumBNWriter& operator=(const GumBNWriter&)     = delete;
+    GumBNWriter& operator=(GumBNWriter&&) noexcept = delete;
+
+    /// @}
+
+    protected:
+    /**
+     * Writes a Bayesian network in the output stream using the BN format.
+     *
+     * @param output The output stream.
+     * @param bn The Bayesian network writen in output.
+     * @throws IOError Raised if and I/O error occurs.
+     */
+    void _doWrite(std::ostream& output, const IBayesNet< GUM_SCALAR >& bn) final;
+
+    /**
+     * Writes a Bayesian network in the referenced file using the BN format.
+     * If the files doesn't exists, it is created.
+     *
+     * @param filePath The path to the file used to write the Bayesian network.
+     * @param bn The Bayesian network writed in the file.
+     * @throws IOError Raised if and I/O error occurs.
+     */
+    void _doWrite(const std::string& filePath, const IBayesNet< GUM_SCALAR >& bn) final;
   };
-}   // namespace gum_tests
+
+
+#ifndef GUM_NO_EXTERN_TEMPLATE_CLASS
+  extern template class GumBNWriter< double >;
+#endif
+} /* namespace gum */
+
+#include <agrum/BN/io/GUM/GumBNWriter_tpl.h>
+
+#endif /* GUM_BN_WRITER_H */

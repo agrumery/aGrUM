@@ -46,8 +46,8 @@
 #include <string>
 #include <vector>
 
-#include <gumtest/AgrumTestSuite.h>
-#include <gumtest/utils.h>
+#include <testunits/gumtest/AgrumTestSuite.h>
+#include <testunits/gumtest/utils.h>
 
 #include <agrum/BN/algorithms/divergence/exactBNdistance.h>
 #include <agrum/BN/algorithms/divergence/GibbsBNdistance.h>

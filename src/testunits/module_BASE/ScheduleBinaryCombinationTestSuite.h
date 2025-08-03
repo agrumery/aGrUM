@@ -43,8 +43,8 @@
 
 #include <sstream>
 
-#include <gumtest/AgrumTestSuite.h>
-#include <gumtest/utils.h>
+#include <testunits/gumtest/AgrumTestSuite.h>
+#include <testunits/gumtest/utils.h>
 
 #include <agrum/base/graphicalModels/inference/scheduler/scheduleBinaryCombination.h>
 #include <agrum/base/multidim/tensor.h>

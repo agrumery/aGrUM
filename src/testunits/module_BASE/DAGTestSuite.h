@@ -43,8 +43,8 @@
 
 #include <iostream>
 
-#include <gumtest/AgrumTestSuite.h>
-#include <gumtest/utils.h>
+#include <testunits/gumtest/AgrumTestSuite.h>
+#include <testunits/gumtest/utils.h>
 
 #include <agrum/base/graphs/DAG.h>
 #include <agrum/base/graphs/algorithms/generic/minimalConditioningSet.h>

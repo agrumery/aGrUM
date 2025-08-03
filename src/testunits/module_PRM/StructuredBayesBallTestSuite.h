@@ -41,7 +41,7 @@
 #pragma once
 
 
-#include <gumtest/AgrumTestSuite.h>
+#include <testunits/gumtest/AgrumTestSuite.h>
 
 #include <agrum/BN/algorithms/BayesBall.h>
 #include <agrum/BN/inference/variableElimination.h>

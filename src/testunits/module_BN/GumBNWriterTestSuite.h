@@ -39,9 +39,82 @@
  ****************************************************************************/
 
 
-#include <agrum/BN/io/GUM/BNGumWriter.h>
+#include <testunits/gumtest/AgrumTestSuite.h>
+#include <testunits/gumtest/utils.h>
 
+#include <agrum/BN/BayesNet.h>
+#include <agrum/BN/io/GUM/GumBNReader.h>
+#include <agrum/BN/io/GUM/GumBNWriter.h>
 
-#ifndef GUM_NO_EXTERN_TEMPLATE_CLASS
-template class gum::BNGumWriter< double >;
-#endif
+namespace gum_tests {
+  class [[maybe_unused]] BNGumWriterTestSuite: public CxxTest::TestSuite {
+    public:
+    GUM_ACTIVE_TEST(SimpleTestForWriter) {
+      auto bn = gum::BayesNet< double >::fastPrototype("A{Yes|Maybe|No}->B[1,5,10,100]->C<-A");
+      const auto path = GET_RESSOURCES_PATH("outputs/test.jgum");
+      try {
+        gum::GumBNWriter< double > writer;
+        writer.write(path, bn);
+      } catch (const std::exception& e) {
+        TS_FAIL("GumBNWriter constructor failed: " + std::string(e.what()));
+      }
+
+      gum::BayesNet< double > bn2;
+      auto                    reader = gum::GumBNReader< double >(&bn2, path);
+      TS_ASSERT_EQUALS(reader.proceed(), 0u);
+      TS_ASSERT_EQUALS(bn2, bn);
+    }
+
+    GUM_ACTIVE_TEST(CheckMetaData) {
+      auto bn = gum::BayesNet< double >::fastPrototype("A{Yes|Maybe|No}->B[1,5,10,100]->C<-A");
+      const auto path = GET_RESSOURCES_PATH("outputs/test.jgum");
+      try {
+        gum::GumBNWriter< double > writer;
+        writer.write(path, bn);
+      } catch (const std::exception& e) {
+        TS_FAIL("GumBNWriter constructor failed: " + std::string(e.what()));
+      }
+      {
+        gum::BayesNet< double > bn2;
+        auto                    reader = gum::GumBNReader< double >(&bn2, path);
+        TS_ASSERT_EQUALS(reader.proceed(), 0u);
+        TS_ASSERT_EQUALS(bn2, bn);
+
+        TS_ASSERT(bn2.existsProperty("software"));
+        TS_ASSERT_EQUALS(bn2.property("software"), "aGrUM " GUM_VERSION);
+        TS_ASSERT(bn2.existsProperty("creation"));
+        TS_ASSERT(bn2.existsProperty("lastModification"));
+        TS_ASSERT_EQUALS(
+            bn2.property("creation"),
+            bn2.property("lastModification"));   // should be the same as we just created it
+      }
+
+      // sleep one second
+      std::this_thread::sleep_for(std::chrono::seconds(2));
+      {
+        try {
+          gum::GumBNWriter< double > writer;
+          writer.write(path, bn);
+        } catch (const std::exception& e) {
+          TS_FAIL("GumBNWriter constructor failed: " + std::string(e.what()));
+        }
+
+        gum::BayesNet< double > bn2;
+        auto                    reader = gum::GumBNReader< double >(&bn2, path);
+        TS_ASSERT_EQUALS(reader.proceed(), 0u);
+        TS_ASSERT_EQUALS(bn2, bn);
+
+        TS_ASSERT(bn2.existsProperty("software"));
+        TS_ASSERT_EQUALS(bn2.property("software"), "aGrUM " GUM_VERSION);
+        TS_ASSERT(bn2.existsProperty("creation"));
+        TS_ASSERT(bn2.existsProperty("lastModification"));
+        TS_ASSERT_DIFFERS(
+            bn2.property("creation"),
+            bn2.property("lastModification"));   // should be different due to the sleep(2seconds)
+      }
+    }
+    GUM_ACTIVE_TEST(WithBigFiles) {
+
+    }
+  };
+}   // namespace gum_tests

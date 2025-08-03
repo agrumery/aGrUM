@@ -45,7 +45,7 @@
 #include <limits>
 #include <string>
 
-#include <gumtest/AgrumTestSuite.h>
+#include <testunits/gumtest/AgrumTestSuite.h>
 
 #undef GUM_CURRENT_SUITE
 #undef GUM_CURRENT_MODULE

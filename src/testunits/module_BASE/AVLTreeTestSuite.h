@@ -44,8 +44,8 @@
 #include <algorithm>
 #include <string>
 
-#include <gumtest/AgrumTestSuite.h>
-#include <gumtest/utils.h>
+#include <testunits/gumtest/AgrumTestSuite.h>
+#include <testunits/gumtest/utils.h>
 
 #include <agrum/base/core/AVLTree.h>
 #include <agrum/base/core/heap.h>

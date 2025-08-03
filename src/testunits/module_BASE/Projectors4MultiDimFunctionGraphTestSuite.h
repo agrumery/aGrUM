@@ -46,7 +46,7 @@
 // ==========================================================================
 #include <utils.h>
 
-#include <gumtest/AgrumTestSuite.h>
+#include <testunits/gumtest/AgrumTestSuite.h>
 // ==========================================================================
 #include <agrum/base/core/timer.h>
 

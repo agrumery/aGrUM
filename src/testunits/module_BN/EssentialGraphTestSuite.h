@@ -45,8 +45,8 @@
 #include <string>
 #include <vector>
 
-#include <gumtest/AgrumTestSuite.h>
-#include <gumtest/utils.h>
+#include <testunits/gumtest/AgrumTestSuite.h>
+#include <testunits/gumtest/utils.h>
 
 #include <agrum/BN/algorithms/essentialGraph.h>
 #include <agrum/BN/BayesNet.h>

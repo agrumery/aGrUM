@@ -43,11 +43,11 @@
 #include <sstream>
 #include <string>
 
-#include <gumtest/AgrumTestSuite.h>
-#include <gumtest/utils.h>
+#include <testunits/gumtest/AgrumTestSuite.h>
+#include <testunits/gumtest/utils.h>
 
 #include <agrum/BN/BayesNet.h>
-#include <agrum/BN/io/GUM/BNGumReader.h>
+#include <agrum/BN/io/GUM/GumBNReader.h>
 
 #include <agrum/base/external/json/json.hpp>
 
@@ -226,7 +226,7 @@ namespace gum_tests {
       const std::string       filename = GET_RESSOURCES_PATH("jsonGum/minimal.gum");
       gum::BayesNet< double > bn2;
 
-      auto reader = gum::BNGumReader< double >(&bn2, filename);
+      auto reader = gum::GumBNReader< double >(&bn2, filename);
 
       TS_ASSERT_EQUALS(reader.proceed(), 0u);
       TS_ASSERT_EQUALS(bn2.size(), 3u);
@@ -243,6 +243,7 @@ namespace gum_tests {
 
       TS_ASSERT_EQUALS(bn.properties().size(), 0u);
       TS_ASSERT_EQUALS(bn2.properties().size(), 3u);
+
     }
   };
 }   // namespace gum_tests

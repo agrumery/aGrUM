@@ -48,7 +48,7 @@
 #include <sstream>
 #include <vector>
 // =========================================================================
-#include <gumtest/AgrumTestSuite.h>
+#include <testunits/gumtest/AgrumTestSuite.h>
 
 #include "utils.h"
 // =========================================================================

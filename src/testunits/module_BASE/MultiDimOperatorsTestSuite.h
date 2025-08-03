@@ -46,8 +46,8 @@
 #include <sstream>
 #include <string>
 
-#include <gumtest/AgrumTestSuite.h>
-#include <gumtest/utils.h>
+#include <testunits/gumtest/AgrumTestSuite.h>
+#include <testunits/gumtest/utils.h>
 
 #include <agrum/base/core/sequence.h>
 #include <agrum/base/multidim/tensor.h>

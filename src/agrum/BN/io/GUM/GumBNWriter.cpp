@@ -39,53 +39,9 @@
  ****************************************************************************/
 
 
-#ifndef GUMREADER_H
-#define GUMREADER_H
-#include <agrum/base/core/errorsContainer.h>
-#include <agrum/BN/io/BNReader.h>
-
-namespace gum {
-  /**
-   * @class BNGumReader
-   * @headerfile BNGumReader.h <agrum/BN/io/GUM/BNGumReader.h>
-   * @ingroup bn_io
-   * @brief Class for reading a Bayesian network from a GUM (json) file.
-   *
-   * This class is used to read a Bayesian network from a GUM file format.
-   */
-  template < typename GUM_SCALAR >
-  class BNGumReader: public BNReader< GUM_SCALAR >, ErrorsContainer {
-    public:
-    /**
-     * Constructor
-     * A reader is defined for reading a defined file. Hence the 2 args of the
-     * constructor.
-     * Note that the BN has to be built outside the reader. There is no
-     * delegation to create/destroy the BN from inside the reader.
-     */
-    BNGumReader(BayesNet< GUM_SCALAR >* bn, const std::string& filename);
-
-    /**
-     * Default destructor.
-     */
-    ~BNGumReader() override;
-
-    /// parse.
-    /// @return the number of detected errors
-    Size proceed() final;
-
-    protected:
-    BayesNet< GUM_SCALAR >* _bn_;
-    std::string             _streamName_;
-    bool                    _parseDone_;
-  };
+#include <agrum/BN/io/GUM/GumBNWriter.h>
 
 
 #ifndef GUM_NO_EXTERN_TEMPLATE_CLASS
-  extern template class BNGumReader< double >;
+template class gum::GumBNWriter< double >;
 #endif
-} /* namespace gum */
-
-#include <agrum/BN/io/GUM/BNGumReader_tpl.h>
-
-#endif   // GUM_BN_READER_H

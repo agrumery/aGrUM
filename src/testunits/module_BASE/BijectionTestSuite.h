@@ -44,8 +44,8 @@
 #include <iostream>
 #include <string>
 
-#include <gumtest/AgrumTestSuite.h>
-#include <gumtest/utils.h>
+#include <testunits/gumtest/AgrumTestSuite.h>
+#include <testunits/gumtest/utils.h>
 
 #include <agrum/base/core/bijection.h>
 #include <agrum/base/graphs/graphElements.h>

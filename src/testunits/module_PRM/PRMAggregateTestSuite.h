@@ -41,8 +41,8 @@
 #pragma once
 
 
-#include <gumtest/AgrumTestSuite.h>
-#include <gumtest/utils.h>
+#include <testunits/gumtest/AgrumTestSuite.h>
+#include <testunits/gumtest/utils.h>
 
 #include <agrum/base/multidim/aggregators/and.h>
 #include <agrum/base/multidim/aggregators/count.h>

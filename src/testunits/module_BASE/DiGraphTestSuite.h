@@ -43,7 +43,7 @@
 
 #include <iostream>
 
-#include <gumtest/AgrumTestSuite.h>
+#include <testunits/gumtest/AgrumTestSuite.h>
 
 #include <agrum/base/graphs/diGraph.h>
 #include <agrum/base/graphs/graphElements.h>

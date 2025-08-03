@@ -39,9 +39,9 @@
  ****************************************************************************/
 
 
-#include <agrum/BN/io/GUM/BNGumReader.h>
+#include <agrum/BN/io/GUM/GumBNReader.h>
 
 
 #ifndef GUM_NO_EXTERN_TEMPLATE_CLASS
-template class gum::BNGumReader< double >;
+template class gum::GumBNReader< double >;
 #endif

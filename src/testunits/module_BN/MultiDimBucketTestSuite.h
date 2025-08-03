@@ -43,8 +43,8 @@
 
 #include <sstream>
 
-#include <gumtest/AgrumTestSuite.h>
-#include <gumtest/utils.h>
+#include <testunits/gumtest/AgrumTestSuite.h>
+#include <testunits/gumtest/utils.h>
 
 #include <agrum/base/multidim/implementations/multiDimBucket.h>
 #include <agrum/base/multidim/instantiation.h>

@@ -50,7 +50,7 @@
 // =============================================================================
 #include <utils.h>
 
-#include <gumtest/AgrumTestSuite.h>
+#include <testunits/gumtest/AgrumTestSuite.h>
 // =============================================================================
 #include <agrum/base/multidim/implementations/multiDimFunctionGraph.h>
 #include <agrum/base/multidim/implementations/multiDimFunctionGraphGenerator.h>
