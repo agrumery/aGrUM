@@ -50,16 +50,20 @@ using ordered_json = nlohmann::ordered_json;
 
 namespace gum {
   // Default constructor.
-  template < typename GUM_SCALAR >
-  INLINE GumBNWriter< GUM_SCALAR >::GumBNWriter() {
+  template <typename GUM_SCALAR>
+  INLINE GumBNWriter< GUM_SCALAR >::GumBNWriter(bool binary, int indent) :
+    BNWriter< GUM_SCALAR >() {
+    _indent_ = indent;
+    _binary_ = binary;
+    if (_indent_ < -1) {
+      _indent_ = -1; // no indentation
+    }
     GUM_CONSTRUCTOR(GumBNWriter);
   }
 
   // Default destructor.
-  template < typename GUM_SCALAR >
-  INLINE GumBNWriter< GUM_SCALAR >::~GumBNWriter() {
-    GUM_DESTRUCTOR(GumBNWriter);
-  }
+  template <typename GUM_SCALAR>
+  INLINE GumBNWriter< GUM_SCALAR >::~GumBNWriter() { GUM_DESTRUCTOR(GumBNWriter); }
 
   //
   // Writes a Bayesian network in the output stream using the BN format.
@@ -67,19 +71,17 @@ namespace gum {
   // @param ouput The output stream.
   // @param bn The Bayesian network writen in output.
   // @throws Raised if an I/O error occurs.
-  template < typename GUM_SCALAR >
+  template <typename GUM_SCALAR>
   INLINE void GumBNWriter< GUM_SCALAR >::_doWrite(std::ostream&                  output,
                                                   const IBayesNet< GUM_SCALAR >& bn) {
     if (!output.good()) GUM_ERROR(IOError, "Input/Output error : stream not writable.");
 
     ordered_json content;
-    content["type"]             = "BN";
+    content["type"]           = "BN";
     content["GumJsonVersion"] = "1.0";
 
     // add variables
-    for (const auto& node: bn.nodes()) {
-      content["nodes"].push_back(bn.variable(node).toFast());
-    }
+    for (const auto& node: bn.nodes()) { content["nodes"].push_back(bn.variable(node).toFast()); }
     // add parents
     for (const auto& node: bn.nodes()) {
       ordered_json parentList;
@@ -95,17 +97,20 @@ namespace gum {
       json          cptValues;
       const auto&   cpt = bn.cpt(node);
       Instantiation I(cpt);
-      for (I.setFirst(); !I.end(); ++I) {
-        cptValues.push_back(cpt[I]);
-      }
+      for (I.setFirst(); !I.end(); ++I) { cptValues.push_back(cpt[I]); }
       content["cpt"][bn.variable(node).name()] = cptValues;
     }
     // add properties
-    for (const auto& prop: bn.properties()) {
-      content["properties"][prop] = bn.property(prop);
-    }
+    for (const auto& prop: bn.properties()) { content["properties"][prop] = bn.property(prop); }
+
     // write the content in the output stream
-    output << content.dump(2);   // pretty print with 2 spaces indentation
+    if (_binary_) {
+      // binary mode
+      _writeVector_(output, json::to_msgpack(content));
+    } else {
+      // text mode
+      output << content.dump(_indent_); // pretty print with 2 spaces indentation
+    }
 
     if (output.fail()) {
       GUM_ERROR(IOError, "Writing in the ostream failed. Check if the stream is writable.")
@@ -119,7 +124,7 @@ namespace gum {
   // @param filePath The path to the file used to write the Bayesian network.
   // @param bn The Bayesian network writed in the file.
   // @throws Raised if an I/O error occurs.
-  template < typename GUM_SCALAR >
+  template <typename GUM_SCALAR>
   INLINE void GumBNWriter< GUM_SCALAR >::_doWrite(const std::string&             filePath,
                                                   const IBayesNet< GUM_SCALAR >& bn) {
     std::ofstream output(filePath.c_str(), std::ios_base::trunc);
@@ -129,5 +134,13 @@ namespace gum {
     output.close();
     if (output.fail()) { GUM_ERROR(IOError, "Writing in the ostream failed.") }
   }
-}   // namespace gum
+
+  template <typename GUM_SCALAR>
+  INLINE void GumBNWriter< GUM_SCALAR >::_writeVector_(std::ostream&                 os,
+                                                       const std::vector< uint8_t >& vec) {
+    uint64_t size = vec.size();
+    os.write(reinterpret_cast< const char* >(&size), sizeof(size));
+    os.write(reinterpret_cast< const char* >(vec.data()), size);
+  }
+} // namespace gum
 #endif   // DOXYGEN_SHOULD_SKIP_THIS

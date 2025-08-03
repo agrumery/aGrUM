@@ -62,8 +62,12 @@ namespace gum {
      * constructor.
      * Note that the BN has to be built outside the reader. There is no
      * delegation to create/destroy the BN from inside the reader.
+     *
+     * @param bn The BayesNet to fill with the read data.
+     * @param filename The name of the file to read.
+     * @param binary If true, the input is in binary format, otherwise in text format
      */
-    GumBNReader(BayesNet< GUM_SCALAR >* bn, const std::string& filename);
+    GumBNReader(BayesNet< GUM_SCALAR >* bn, const std::string& filename, bool binary = false);
 
     /**
      * Default destructor.
@@ -74,10 +78,13 @@ namespace gum {
     /// @return the number of detected errors
     Size proceed() final;
 
-    protected:
+    private:
+    static std::vector< uint8_t > _readVector_(std::istream& is);
+
     BayesNet< GUM_SCALAR >* _bn_;
     std::string             _streamName_;
     bool                    _parseDone_;
+    bool _binary_;   ///< If true, the input is in binary format, otherwise in text format.
   };
 
 

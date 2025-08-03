@@ -125,6 +125,8 @@ namespace gum {
     GUM_NODISCARD bool isModificationAllowed() const;
     void               setAllowModification(bool am);
 
+    std::string toString(const IBayesNet< GUM_SCALAR >& bn);
+
     protected:
     /**
      * Writes a Bayesian network in the output stream.

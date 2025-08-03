@@ -51,10 +51,14 @@
 #ifndef GUM_BN_WRITER_H
 #define GUM_BN_WRITER_H
 
+#include <cstdint>
 #include <fstream>
 #include <iostream>
+#include <istream>
+#include <ostream>
 #include <sstream>
 #include <string>
+#include <vector>
 
 #include <agrum/agrum.h>
 
@@ -81,8 +85,14 @@ namespace gum {
 
     /**
      * Default constructor.
+     *
+     * JGUM format is a json format. In binary mode, the output use the BJData format.
+     *
+     * @param binary If true, the output will be in binary format, otherwise in text format.
+     * @param indent The indentation level for the output in text format. If -1, the format is as
+     * compact as possible.
      */
-    GumBNWriter();
+    GumBNWriter(bool binary = false, int indent = -1);
 
     /**
      * Destructor.
@@ -115,6 +125,12 @@ namespace gum {
      * @throws IOError Raised if and I/O error occurs.
      */
     void _doWrite(const std::string& filePath, const IBayesNet< GUM_SCALAR >& bn) final;
+
+    private:
+    static void _writeVector_(std::ostream& os, const std::vector< uint8_t >& vec);
+
+    bool _binary_;   ///< If true, the output will be in binary format, otherwise in text format.
+    int  _indent_;   ///< The indentation level for the output.
   };
 
 

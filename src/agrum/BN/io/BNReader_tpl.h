@@ -48,10 +48,11 @@
  */
 #ifndef DOXYGEN_SHOULD_SKIP_THIS
 
+
 namespace gum {
 
   /* =========================================================================*/
-  /* ===                           GUM_BN_WRITER === */
+  /* ===                           GUM_BN_READER                          === */
   /* =========================================================================*/
   template < GUM_Numeric GUM_SCALAR >
   INLINE BNReader< GUM_SCALAR >::BNReader(BayesNet< GUM_SCALAR >* bn, std::string_view filename) {
