@@ -109,9 +109,14 @@ namespace gum {
     void setProperty(std::string_view name, std::string_view value);
 
     /**
-     * List of all the properties
+     * List of all the names of property in the Graphical model
      */
     std::vector< std::string > properties() const;
+
+    /**
+     * check wether a property exists in this GraphicalModel
+     */
+    bool existsProperty(const std::string& name) const;
 
     /**
      * update the meta data of this Graphical Model (version, creation date, last modification date)

@@ -165,4 +165,9 @@ namespace gum {
     }
     return s;
   }
+
+  INLINE
+  bool GraphicalModel::existsProperty(const std::string& name) const {
+    return _propertiesMap_.exists(name);
+  }
 } /* namespace gum */

@@ -76,14 +76,15 @@ namespace gum {
   }
 
   void GraphicalModel::updateMetaData() {
-    auto const time = std::chrono::current_zone()->to_local(std::chrono::system_clock::now());
-    auto const currentdate = std::format("{:%Y-%m-%d %H:%M:%S}", time);
+    auto const time
+        = std::chrono::time_point_cast< std::chrono::milliseconds >(std::chrono::system_clock::now());
+    auto const currentdate = std::format("{:%Y-%m-%d %T}", time);
 
-    if (!_propertiesMap_.exists("version")) {
+    if (!_propertiesMap_.exists("software")) {
 #ifdef SWIG
-      _propertiesMap_.insert("version", "pyAgrum " GUM_VERSION);
+      _propertiesMap_.insert("software", "pyAgrum " GUM_VERSION);
 #else
-      _propertiesMap_.insert("version", "aGrUM " GUM_VERSION);
+      _propertiesMap_.insert("software", "aGrUM " GUM_VERSION);
 #endif   // SWIG
     }
 
