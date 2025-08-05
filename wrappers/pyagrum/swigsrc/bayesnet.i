@@ -192,6 +192,26 @@ IMPROVE_CONCRETEBAYESNET_API(gum::BayesNet);
 IMPROVE_CONCRETEBAYESNET_API(gum::BayesNetFragment);
 
 %extend gum::BayesNet {
+  void loadGUM(std::string name, PyObject *l=nullptr,bool binary=false) {
+      try {
+          gum::GumBNReader<GUM_SCALAR> reader(self,name,binary);
+
+          auto nbErr=reader.proceed();
+          reader.showElegantErrorsAndWarnings(stream);
+          if (nbErr>0) {
+              reader.showErrorCounts(stream);
+              GUM_ERROR(gum::FatalError,stream.str())
+          }
+      } catch (gum::IOError& e) {
+        throw(e);
+      }
+  }
+
+  void saveGUM(std::string name, bool binary=false,int indent=2) {
+    gum::GumBNWriter<GUM_SCALAR> writer(binary,indent);
+    writer.write( name, *self );
+  }
+
   std::string loadBIF(std::string name, PyObject *l=nullptr)
   {
       std::stringstream stream;

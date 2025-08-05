@@ -53,7 +53,7 @@
 namespace gum_tests {
   class [[maybe_unused]] GumBNWriterTestSuite: public CxxTest::TestSuite {
     public:
-    GUM_INACTIVE_TEST(SimpleTestForWriter) {
+    GUM_ACTIVE_TEST(SimpleTestForWriter) {
       _simpleTextFroWriter_(false);
       _simpleTextFroWriter_(true);
     }
@@ -61,8 +61,9 @@ namespace gum_tests {
     private:
     void _simpleTextFroWriter_(bool isbinary) {
       auto bn = gum::BayesNet< double >::fastPrototype("A{Yes|Maybe|No}->B[1,5,10,100]->C<-A");
-      const auto path = isbinary ? GET_RESSOURCES_PATH("outputs/test.bgum")
-                                 : GET_RESSOURCES_PATH("outputs/test.jgum");
+      const auto path = isbinary
+                          ? GET_RESSOURCES_PATH("outputs/test.bgum")
+                          : GET_RESSOURCES_PATH("outputs/test.jgum");
 
       try {
         gum::GumBNWriter< double > writer(isbinary);
@@ -78,7 +79,7 @@ namespace gum_tests {
     }
 
     public:
-    GUM_INACTIVE_TEST(CheckMetaData) {
+    GUM_ACTIVE_TEST(CheckMetaData) {
       _CheckMetaData_(false);
       _CheckMetaData_(true);
     }
@@ -86,8 +87,9 @@ namespace gum_tests {
     private:
     void _CheckMetaData_(bool isbinary) {
       auto bn = gum::BayesNet< double >::fastPrototype("A{Yes|Maybe|No}->B[1,5,10,100]->C<-A");
-      const auto path = isbinary ? GET_RESSOURCES_PATH("outputs/test.bgum")
-                                 : GET_RESSOURCES_PATH("outputs/test.jgum");
+      const auto path = isbinary
+                          ? GET_RESSOURCES_PATH("outputs/test.bgum")
+                          : GET_RESSOURCES_PATH("outputs/test.jgum");
       try {
         gum::GumBNWriter< double > writer(isbinary, 2);
         writer.write(path, bn);
@@ -106,7 +108,7 @@ namespace gum_tests {
         TS_ASSERT(bn2.existsProperty("lastModification"));
         TS_ASSERT_EQUALS(
             bn2.property("creation"),
-            bn2.property("lastModification"));   // should be the same as we just created it
+            bn2.property("lastModification")); // should be the same as we just created it
       }
 
       // sleep one second
@@ -114,7 +116,7 @@ namespace gum_tests {
       {
         try {
           gum::GumBNWriter< double > writer(isbinary, 2);
-          writer.write(path, bn);   // overwrite the file
+          writer.write(path, bn); // overwrite the file
         } catch (const std::exception& e) {
           TS_FAIL("GumBNWriter constructor failed: " + std::string(e.what()));
         }
@@ -130,12 +132,12 @@ namespace gum_tests {
         TS_ASSERT(bn2.existsProperty("lastModification"));
         TS_ASSERT_DIFFERS(
             bn2.property("creation"),
-            bn2.property("lastModification"));   // should be different due to the sleep(2seconds)
+            bn2.property("lastModification")); // should be different due to the sleep(2seconds)
       }
     }
 
     public:
-    GUM_INACTIVE_TEST(WithBigFiles) {
+    GUM_ACTIVE_TEST(WithBigFiles) {
       _WithBigFiles_(false, -1);
       _WithBigFiles_(false, 2);
       _WithBigFiles_(true);
@@ -145,9 +147,11 @@ namespace gum_tests {
     void _WithBigFiles_(bool isbinary, int indent = 0) {
       const auto src    = GET_RESSOURCES_PATH("bifxml/Diabetes.bifxml");
       const auto dstxml = GET_RESSOURCES_PATH("outputs/Diabetes.bifxml");
-      const auto dst    = isbinary ? GET_RESSOURCES_PATH("outputs/Diabetes.bgum")
-                                   : ((indent < 0) ? GET_RESSOURCES_PATH("outputs/Diabetes_comp.jgum")
-                                                   : GET_RESSOURCES_PATH("outputs/Diabetes.jgum"));
+      const auto dst    = isbinary
+                            ? GET_RESSOURCES_PATH("outputs/Diabetes.bgum")
+                            : ((indent < 0)
+                                 ? GET_RESSOURCES_PATH("outputs/Diabetes_comp.jgum")
+                                 : GET_RESSOURCES_PATH("outputs/Diabetes.jgum"));
 
       gum::BayesNet< double > bn;
 
@@ -168,9 +172,9 @@ namespace gum_tests {
     GUM_ACTIVE_TEST(toString) {
       auto bn = gum::BayesNet< double >::fastPrototype("A{Yes|Maybe|No}->B[1,5,10,100]->C<-A");
       gum::GumBNWriter< double > writer(false, 2);
-      std::string                str = writer.toString(bn);     ;
+      std::string str = writer.toString(bn);;
 
-      std::string tempFileName = std::tmpnam(nullptr);
+      std::string   tempFileName = std::tmpnam(nullptr);
       std::ofstream tempFile(tempFileName.c_str(), std::ios_base::trunc);
       tempFile << str;
       tempFile.close();
@@ -181,4 +185,4 @@ namespace gum_tests {
       TS_ASSERT_EQUALS(bn2, bn);
     }
   };
-}   // namespace gum_tests
+} // namespace gum_tests

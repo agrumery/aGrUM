@@ -52,7 +52,7 @@ def availableBNExts():
 
   :return: a string which lists all suffixes for supported BN file formats.
   """
-  return "bif|dsl|net|bifxml|o3prm|uai|xdsl|pkl"
+  return "bif|dsl|net|bifxml|o3prm|uai|xdsl|pkl|jgum|bgum"
 
 
 def loadBN(filename, listeners=None, verbose=False, **opts):
@@ -134,7 +134,8 @@ def loadBN(filename, listeners=None, verbose=False, **opts):
     [-1] + " unknown. Please use among " + availableBNExts())
 
   if verbose:
-    warnings.warn(warns)
+    if len(warns) > 0:
+      warnings.warn(warns)
 
   _gum_set_name_property(bn, filename)
   return bn
@@ -159,7 +160,7 @@ def saveBN(bn, filename, allowModificationWhenSaving=None):
       pkl suffix is used to save a BN using pickle. In this case, options are ignored.
   """
   if allowModificationWhenSaving is None:
-    allowModificationWhenSaving = pyagrum.config.asBool["BN", "allow_modification_when_saving"]
+    allowModificationWhenSaving = pyagrum.config.asBool["core", "allow_modification_when_saving"]
 
   extension = filename.split('.')[-1].upper()
 
