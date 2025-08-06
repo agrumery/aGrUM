@@ -78,6 +78,11 @@ namespace gum {
     /// @return the number of detected errors
     Size proceed() final;
 
+    void showElegantErrorsAndWarnings(std::ostream& stream = std::cerr) const;
+
+    void showErrorCounts(std::ostream& stream = std::cerr) const;
+
+
     private:
     static std::vector< uint8_t > _readVector_(std::istream& is);
 

@@ -207,7 +207,7 @@ we aim to facilitate future enhancements and possible contributions from the com
     - Update CIs for apple silicon.
     - Removed old deprecation.
     - Added new experimental pyAgrum's model : Mixture of Bayesian Networks (thanks to Rodrique Tavernier).
-    - Licences are now included in the wheels.
+    - Licenses are now included in the wheels.
 
 # Older changelogs
 

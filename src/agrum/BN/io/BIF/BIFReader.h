@@ -166,27 +166,27 @@ namespace gum {
     /// publishing Errors API
 
     /// # of errors
-    Size errors();
+    Size errors() const;
     /// # of errors
-    Size warnings();
+    Size warnings() const;
 
     /// line of ith error or warning
-    Idx errLine(Idx i);
+    Idx errLine(Idx i) const;
     /// col of ith error or warning
-    Idx errCol(Idx i);
+    Idx errCol(Idx i) const;
     /// type of ith error or warning
-    bool errIsError(Idx i);
+    bool errIsError(Idx i) const;
     /// message of ith error or warning
-    std::string errMsg(Idx i);
+    std::string errMsg(Idx i) const;
 
     /// send on std::cerr the list of errors
-    void showElegantErrors(std::ostream& o = std::cerr);
+    void showElegantErrors(std::ostream& o = std::cerr) const;
 
     /// send on std::cerr the list of errors or warnings
-    void showElegantErrorsAndWarnings(std::ostream& o = std::cerr);
+    void showElegantErrorsAndWarnings(std::ostream& o = std::cerr) const;
 
     /// send on std::cerr the number of errors and the number of warnings
-    void showErrorCounts(std::ostream& o = std::cerr);
+    void showErrorCounts(std::ostream& o = std::cerr) const;
     /// @}
 
     private:
@@ -208,8 +208,7 @@ namespace gum {
 #ifndef GUM_NO_EXTERN_TEMPLATE_CLASS
   extern template class BIFReader< double >;
 #endif
-
-}   // namespace gum
+} // namespace gum
 
 #include <agrum/BN/io/BIF/BIFReader_tpl.h>
 

@@ -193,6 +193,7 @@ IMPROVE_CONCRETEBAYESNET_API(gum::BayesNetFragment);
 
 %extend gum::BayesNet {
   void loadGUM(std::string name, PyObject *l=nullptr,bool binary=false) {
+      std::stringstream stream;
       try {
           gum::GumBNReader<GUM_SCALAR> reader(self,name,binary);
 

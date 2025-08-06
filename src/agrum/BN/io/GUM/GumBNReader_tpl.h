@@ -49,9 +49,9 @@
 using json = nlohmann::json;
 
 namespace gum {
-  template <typename GUM_SCALAR>
+  template < typename GUM_SCALAR >
   GumBNReader< GUM_SCALAR >::GumBNReader(BayesNet< GUM_SCALAR >* bn,
-                                         const std::string& filename,
+                                         const std::string&      filename,
                                          bool binary) : BNReader< GUM_SCALAR >(bn, filename) {
     GUM_CONSTRUCTOR(GumBNReader)
     _bn_         = bn;
@@ -60,10 +60,12 @@ namespace gum {
     _binary_     = binary;
   }
 
-  template <typename GUM_SCALAR>
-  GumBNReader< GUM_SCALAR >::~GumBNReader() { GUM_DESTRUCTOR(GumBNReader) }
+  template < typename GUM_SCALAR >
+  GumBNReader< GUM_SCALAR >::~GumBNReader() {
+    GUM_DESTRUCTOR(GumBNReader)
+  }
 
-  template <typename GUM_SCALAR>
+  template < typename GUM_SCALAR >
   Size GumBNReader< GUM_SCALAR >::proceed() {
     if (_parseDone_) {
       // if the parse is already done, we do not proceed
@@ -87,16 +89,14 @@ namespace gum {
       return nberrors;
     }
 
-    if (content.contains("type"))
-      if (content["type"].get< std::string >() != "BN") {
-        addError(
-            "Invalid GUM file format: expected 'BN' type, got '" + content["type"].get<
-              std::string >() + "'",
-            _streamName_,
-            0,
-            0);
-        return ++nberrors;
-      }
+    if (content.contains("type") && content["type"].get< std::string >() != "BN") {
+      addError("Invalid GUM file format: expected 'BN' type, got '"
+                   + content["type"].get< std::string >() + "'",
+               _streamName_,
+               0,
+               0);
+      return ++nberrors;
+    }
 
     auto& bn = *_bn_;
     // check the json content
@@ -109,7 +109,9 @@ namespace gum {
     }
 
     // iterate on nodes in json
-    for (const auto& node: content["nodes"]) { bn.add(node.get< std::string >()); }
+    for (const auto& node: content["nodes"]) {
+      bn.add(node.get< std::string >());
+    }
     // iterate on parents in json
     for (const auto& parent: content["parents"].items()) {
       const auto& nodeName = parent.key();
@@ -135,7 +137,7 @@ namespace gum {
   }
 
   // Lecture
-  template <typename GUM_SCALAR>
+  template < typename GUM_SCALAR >
   INLINE std::vector< uint8_t > GumBNReader< GUM_SCALAR >::_readVector_(std::istream& is) {
     uint64_t size = 0;
     is.read(reinterpret_cast< char* >(&size), sizeof(size));
@@ -143,4 +145,16 @@ namespace gum {
     is.read(reinterpret_cast< char* >(vec.data()), size);
     return vec;
   }
-} // namespace gum
+
+  template < typename GUM_SCALAR >
+  void GumBNReader< GUM_SCALAR >::showElegantErrorsAndWarnings(std::ostream& stream) const {
+    if (_parseDone_) elegantErrorsAndWarnings(stream);
+    else { GUM_ERROR(OperationNotAllowed, "File not parsed yet") }
+  }
+
+  template < typename GUM_SCALAR >
+  INLINE void GumBNReader< GUM_SCALAR >::showErrorCounts(std::ostream& stream) const {
+    if (_parseDone_) syntheticResults(stream);
+    else { GUM_ERROR(OperationNotAllowed, "File not parsed yet") }
+  }
+}   // namespace gum
