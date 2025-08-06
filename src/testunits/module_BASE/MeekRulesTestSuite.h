@@ -81,9 +81,7 @@ namespace gum_tests {
     static void testcritereMinParents1() {
       gum::MixedGraph graph;
       gum::MixedGraph graph2;
-      for (unsigned int i = 0; i < 7; ++i) {
-        graph.addNodeWithId(i);
-      }
+      for (unsigned int i = 0; i < 7; ++i) { graph.addNodeWithId(i); }
       graph.addArc(0, 3);
       graph.addArc(1, 3);
       graph.addArc(2, 3);

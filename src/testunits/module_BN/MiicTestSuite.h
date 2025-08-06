@@ -70,7 +70,6 @@
 #define GUM_CURRENT_MODULE BN
 
 namespace gum_tests {
-
   class SimpleListenerForMiic: public gum::Listener {
     public:
     SimpleListenerForMiic() {};
@@ -82,7 +81,7 @@ namespace gum_tests {
                                     std::string explain) {
       static int s = 0;
       std::cout << std::setfill('0') << std::setw(5) << ++s << " : " << action << " | " << explain
-                << std::endl;
+          << std::endl;
     };
   };
 
@@ -99,7 +98,7 @@ namespace gum_tests {
       static int s = 0;
       if (x == filter || y == filter) {
         std::cout << std::setfill('0') << std::setw(5) << ++s << " : " << action << " | " << explain
-                  << std::endl;
+            << std::endl;
       }
     };
   };
@@ -114,9 +113,7 @@ namespace gum_tests {
 
       gum::learning::DBTranslatorSet                translator_set;
       gum::learning::DBTranslator4LabelizedVariable translator;
-      for (std::size_t i = 0; i < nb_vars; ++i) {
-        translator_set.insertTranslator(translator, i);
-      }
+      for (std::size_t i = 0; i < nb_vars; ++i) { translator_set.insertTranslator(translator, i); }
 
       gum::learning::DatabaseTable database(translator_set);
       database.setVariableNames(initializer.variableNames());
@@ -136,9 +133,7 @@ namespace gum_tests {
       gum::MixedGraph graph;
       for (gum::Size i = 0; i < modalities.size(); ++i) {
         graph.addNodeWithId(i);
-        for (gum::Size j = 0; j < i; ++j) {
-          graph.addEdge(j, i);
-        }
+        for (gum::Size j = 0; j < i; ++j) { graph.addEdge(j, i); }
       }
 
       try {
@@ -166,9 +161,7 @@ namespace gum_tests {
 
       gum::learning::DBTranslatorSet                translator_set;
       gum::learning::DBTranslator4LabelizedVariable translator;
-      for (std::size_t i = 0; i < nb_vars; ++i) {
-        translator_set.insertTranslator(translator, i);
-      }
+      for (std::size_t i = 0; i < nb_vars; ++i) { translator_set.insertTranslator(translator, i); }
 
       gum::learning::DatabaseTable database(translator_set);
       database.setVariableNames(initializer.variableNames());
@@ -193,9 +186,7 @@ namespace gum_tests {
       gum::MixedGraph graph;
       for (gum::Size i = 0; i < modalities.size(); ++i) {
         graph.addNodeWithId(i);
-        for (gum::Size j = 0; j < i; ++j) {
-          graph.addEdge(j, i);
-        }
+        for (gum::Size j = 0; j < i; ++j) { graph.addEdge(j, i); }
       }
       try {
         auto mg = search.learnMixedStructure(cI, graph);
@@ -223,13 +214,9 @@ namespace gum_tests {
 
       gum::learning::DBTranslatorSet translator_set;
       gum::LabelizedVariable         xvar("var", "", 0);
-      for (int i = 0; i < 10; ++i) {
-        xvar.addLabel(std::to_string(i));
-      }
+      for (int i = 0; i < 10; ++i) { xvar.addLabel(std::to_string(i)); }
       gum::learning::DBTranslator4LabelizedVariable translator(xvar, true);
-      for (std::size_t i = 0; i < nb_vars; ++i) {
-        translator_set.insertTranslator(translator, i);
-      }
+      for (std::size_t i = 0; i < nb_vars; ++i) { translator_set.insertTranslator(translator, i); }
 
       gum::learning::DatabaseTable database(translator_set);
       database.setVariableNames(initializer.variableNames());
@@ -249,9 +236,7 @@ namespace gum_tests {
 
       for (gum::Size i = 0; i < modalities.size(); ++i) {
         graph.addNodeWithId(i);
-        for (gum::Size j = 0; j < i; ++j) {
-          graph.addEdge(j, i);
-        }
+        for (gum::Size j = 0; j < i; ++j) { graph.addEdge(j, i); }
       }
 
       try {
@@ -277,9 +262,7 @@ namespace gum_tests {
 
       gum::learning::DBTranslatorSet                translator_set;
       gum::learning::DBTranslator4LabelizedVariable translator;
-      for (std::size_t i = 0; i < nb_vars; ++i) {
-        translator_set.insertTranslator(translator, i);
-      }
+      for (std::size_t i = 0; i < nb_vars; ++i) { translator_set.insertTranslator(translator, i); }
 
       gum::learning::DatabaseTable database(translator_set);
       database.setVariableNames(initializer.variableNames());
@@ -304,9 +287,7 @@ namespace gum_tests {
       gum::MixedGraph graph;
       for (gum::Size i = 0; i < modalities.size(); ++i) {
         graph.addNodeWithId(i);
-        for (gum::Size j = 0; j < i; ++j) {
-          graph.addEdge(j, i);
-        }
+        for (gum::Size j = 0; j < i; ++j) { graph.addEdge(j, i); }
       }
 
       try {
@@ -332,9 +313,7 @@ namespace gum_tests {
 
       gum::learning::DBTranslatorSet                translator_set;
       gum::learning::DBTranslator4LabelizedVariable translator;
-      for (std::size_t i = 0; i < nb_vars; ++i) {
-        translator_set.insertTranslator(translator, i);
-      }
+      for (std::size_t i = 0; i < nb_vars; ++i) { translator_set.insertTranslator(translator, i); }
 
       gum::learning::DatabaseTable database(translator_set);
       database.setVariableNames(initializer.variableNames());
@@ -359,9 +338,7 @@ namespace gum_tests {
       gum::MixedGraph graph;
       for (gum::Size i = 0; i < modalities.size(); ++i) {
         graph.addNodeWithId(i);
-        for (gum::Size j = 0; j < i; ++j) {
-          graph.addEdge(j, i);
-        }
+        for (gum::Size j = 0; j < i; ++j) { graph.addEdge(j, i); }
       }
       try {
         auto mg = search.learnMixedStructure(cI, graph);
@@ -386,9 +363,7 @@ namespace gum_tests {
 
       gum::learning::DBTranslatorSet                translator_set;
       gum::learning::DBTranslator4LabelizedVariable translator;
-      for (std::size_t i = 0; i < nb_vars; ++i) {
-        translator_set.insertTranslator(translator, i);
-      }
+      for (std::size_t i = 0; i < nb_vars; ++i) { translator_set.insertTranslator(translator, i); }
 
       gum::learning::DatabaseTable database(translator_set);
       database.setVariableNames(initializer.variableNames());
@@ -411,9 +386,7 @@ namespace gum_tests {
       for (gum::Size i = 0; i < modalities.size(); ++i) {
         forbidGraph.addNodeWithId(i);
         graph.addNodeWithId(i);
-        for (gum::Size j = 0; j < i; ++j) {
-          graph.addEdge(j, i);
-        }
+        for (gum::Size j = 0; j < i; ++j) { graph.addEdge(j, i); }
       }
 
       // GUM_TRACE_VAR((gum::Edge(0,1) == gum::Edge(1,0)))
@@ -443,9 +416,7 @@ namespace gum_tests {
 
       gum::learning::DBTranslatorSet                translator_set;
       gum::learning::DBTranslator4LabelizedVariable translator;
-      for (std::size_t i = 0; i < nb_vars; ++i) {
-        translator_set.insertTranslator(translator, i);
-      }
+      for (std::size_t i = 0; i < nb_vars; ++i) { translator_set.insertTranslator(translator, i); }
 
       gum::learning::DatabaseTable database(translator_set);
       database.setVariableNames(initializer.variableNames());
@@ -468,9 +439,7 @@ namespace gum_tests {
       for (gum::Size i = 0; i < modalities.size(); ++i) {
         mandaGraph.addNodeWithId(i);
         graph.addNodeWithId(i);
-        for (gum::Size j = 0; j < i; ++j) {
-          graph.addEdge(j, i);
-        }
+        for (gum::Size j = 0; j < i; ++j) { graph.addEdge(j, i); }
       }
 
       // adding constraints
@@ -496,9 +465,7 @@ namespace gum_tests {
       xvar.addLabel("2");
       xvar.addLabel("3");
       gum::learning::DBTranslator4LabelizedVariable translator(xvar, true);
-      for (std::size_t i = 0; i < nb_vars; ++i) {
-        translator_set.insertTranslator(translator, i);
-      }
+      for (std::size_t i = 0; i < nb_vars; ++i) { translator_set.insertTranslator(translator, i); }
 
       gum::learning::DatabaseTable database(translator_set);
       database.setVariableNames(initializer.variableNames());
@@ -519,9 +486,7 @@ namespace gum_tests {
       gum::MixedGraph graph, g;
       for (gum::Size i = 0; i < modalities.size(); ++i) {
         graph.addNodeWithId(i);
-        for (gum::Size j = 0; j < i; ++j) {
-          graph.addEdge(j, i);
-        }
+        for (gum::Size j = 0; j < i; ++j) { graph.addEdge(j, i); }
       }
 
       // adding constraints
@@ -551,14 +516,10 @@ namespace gum_tests {
 
       gum::learning::DBTranslatorSet translator_set;
       gum::LabelizedVariable         xvar("var", "", 0);
-      for (int i = 0; i < 10; ++i) {
-        xvar.addLabel(std::to_string(i));
-      }
+      for (int i = 0; i < 10; ++i) { xvar.addLabel(std::to_string(i)); }
 
       gum::learning::DBTranslator4LabelizedVariable translator(xvar, true);
-      for (std::size_t i = 0; i < nb_vars; ++i) {
-        translator_set.insertTranslator(translator, i);
-      }
+      for (std::size_t i = 0; i < nb_vars; ++i) { translator_set.insertTranslator(translator, i); }
 
       gum::learning::DatabaseTable database(translator_set);
       database.setVariableNames(initializer.variableNames());
@@ -588,9 +549,7 @@ namespace gum_tests {
       gum::MixedGraph graph, g;
       for (gum::Size i = 0; i < modalities.size(); ++i) {
         graph.addNodeWithId(i);
-        for (gum::Size j = 0; j < i; ++j) {
-          graph.addEdge(j, i);
-        }
+        for (gum::Size j = 0; j < i; ++j) { graph.addEdge(j, i); }
       }
       auto mg   = search.learnMixedStructure(cI, graph);
       auto pdag = search.learnPDAG(cI, graph);
@@ -610,14 +569,10 @@ namespace gum_tests {
 
       gum::learning::DBTranslatorSet translator_set;
       gum::LabelizedVariable         xvar("var", "", 0);
-      for (int i = 0; i < 10; ++i) {
-        xvar.addLabel(std::to_string(i));
-      }
+      for (int i = 0; i < 10; ++i) { xvar.addLabel(std::to_string(i)); }
 
       gum::learning::DBTranslator4LabelizedVariable translator(xvar, true);
-      for (std::size_t i = 0; i < nb_vars; ++i) {
-        translator_set.insertTranslator(translator, i);
-      }
+      for (std::size_t i = 0; i < nb_vars; ++i) { translator_set.insertTranslator(translator, i); }
 
       gum::learning::DatabaseTable database(translator_set);
       database.setVariableNames(initializer.variableNames());
@@ -647,9 +602,7 @@ namespace gum_tests {
       gum::MixedGraph graph;
       for (gum::Size i = 0; i < modalities.size(); ++i) {
         graph.addNodeWithId(i);
-        for (gum::Size j = 0; j < i; ++j) {
-          graph.addEdge(j, i);
-        }
+        for (gum::Size j = 0; j < i; ++j) { graph.addEdge(j, i); }
       }
       auto mg   = search.learnMixedStructure(cI, graph);
       auto pdag = search.learnPDAG(cI, graph);
@@ -662,9 +615,7 @@ namespace gum_tests {
 
       gum::learning::DBTranslatorSet                translator_set;
       gum::learning::DBTranslator4LabelizedVariable translator;
-      for (std::size_t i = 0; i < nb_vars; ++i) {
-        translator_set.insertTranslator(translator, i);
-      }
+      for (std::size_t i = 0; i < nb_vars; ++i) { translator_set.insertTranslator(translator, i); }
 
       gum::learning::DatabaseTable database(translator_set);
       database.setVariableNames(initializer.variableNames());
@@ -683,13 +634,11 @@ namespace gum_tests {
       gum::MixedGraph graph;
       for (gum::Size i = 0; i < modalities.size(); ++i) {
         graph.addNodeWithId(i);
-        for (gum::Size j = 0; j < i; ++j) {
-          graph.addEdge(j, i);
-        }
+        for (gum::Size j = 0; j < i; ++j) { graph.addEdge(j, i); }
       }
-      try {
-        auto mg = search.learnMixedStructure(cI, graph);
-      } catch (gum::Exception& e) { GUM_SHOWERROR(e) }
+      try { auto mg = search.learnMixedStructure(cI, graph); } catch (gum::Exception& e) {
+        GUM_SHOWERROR(e)
+      }
 
       try {
         auto pdag = search.learnPDAG(cI, graph);

@@ -54,7 +54,7 @@
 using json = nlohmann::json;
 
 namespace gum_tests {
-  class [[maybe_unused]] BNGumReaderTestSuite: public CxxTest::TestSuite {
+  GUM_TESTSUITE(BNGumReader) {
     const std::string jsondemo{R"(
 {
   "nodes": [
@@ -154,7 +154,8 @@ namespace gum_tests {
         "version": "aGrUM 2.2.0"
       }*/
 
-    public:
+    public
+    :
     GUM_ACTIVE_TEST(FirstTest) {
       const auto ref = json::parse(jsondemo);
       const auto k   = json::parse(ref.dump());
@@ -205,9 +206,7 @@ namespace gum_tests {
       const auto              ref = json::parse(jsondemo);
       gum::BayesNet< double > bn;
       // iterate on nodes in json
-      for (const auto& node: ref["nodes"]) {
-        const auto n = bn.add(node.get< std::string >());
-      }
+      for (const auto& node: ref["nodes"]) { const auto n = bn.add(node.get< std::string >()); }
       // iterate on parents in json
       for (const auto& parent: ref["parents"].items()) {
         const auto& nodeName = parent.key();
@@ -243,7 +242,6 @@ namespace gum_tests {
 
       TS_ASSERT_EQUALS(bn.properties().size(), 0u);
       TS_ASSERT_EQUALS(bn2.properties().size(), 3u);
-
     }
   };
-}   // namespace gum_tests
+} // namespace gum_tests

@@ -51,14 +51,16 @@
 #include <testunits/gumtest/utils.h>
 
 namespace gum_tests {
-  class [[maybe_unused]] GumBNWriterTestSuite: public CxxTest::TestSuite {
-    public:
+  GUM_TESTSUITE(GumBNWriter) {
+    public
+    :
     GUM_ACTIVE_TEST(SimpleTestForWriter) {
       _simpleTextFroWriter_(false);
       _simpleTextFroWriter_(true);
     }
 
-    private:
+    private
+    :
     void _simpleTextFroWriter_(bool isbinary) {
       auto bn = gum::BayesNet< double >::fastPrototype("A{Yes|Maybe|No}->B[1,5,10,100]->C<-A");
       const auto path = isbinary
@@ -78,13 +80,15 @@ namespace gum_tests {
       TS_ASSERT_EQUALS(bn2, bn);
     }
 
-    public:
+    public
+    :
     GUM_ACTIVE_TEST(CheckMetaData) {
       _CheckMetaData_(false);
       _CheckMetaData_(true);
     }
 
-    private:
+    private
+    :
     void _CheckMetaData_(bool isbinary) {
       auto bn = gum::BayesNet< double >::fastPrototype("A{Yes|Maybe|No}->B[1,5,10,100]->C<-A");
       const auto path = isbinary
@@ -136,14 +140,16 @@ namespace gum_tests {
       }
     }
 
-    public:
+    public
+    :
     GUM_ACTIVE_TEST(WithBigFiles) {
       _WithBigFiles_(false, -1);
       _WithBigFiles_(false, 2);
       _WithBigFiles_(true);
     }
 
-    private:
+    private
+    :
     void _WithBigFiles_(bool isbinary, int indent = 0) {
       const auto src    = GET_RESSOURCES_PATH("bifxml/Diabetes.bifxml");
       const auto dstxml = GET_RESSOURCES_PATH("outputs/Diabetes.bifxml");
@@ -168,7 +174,8 @@ namespace gum_tests {
       TS_ASSERT_EQUALS(bn2, bn);
     }
 
-    public:
+    public
+    :
     GUM_ACTIVE_TEST(toString) {
       auto bn = gum::BayesNet< double >::fastPrototype("A{Yes|Maybe|No}->B[1,5,10,100]->C<-A");
       gum::GumBNWriter< double > writer(false, 2);

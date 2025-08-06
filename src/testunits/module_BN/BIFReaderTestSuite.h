@@ -126,7 +126,7 @@ namespace gum_tests {
 
         for (const auto node: net->nodes())
           if (net->variable(node).name() == "n1") node_1 = node;
-          else node_2 = node;
+          else node_2                                    = node;
 
         const gum::DiscreteVariable& var_1 = net->variable(node_1);
 
@@ -179,7 +179,7 @@ namespace gum_tests {
 
         for (const auto node: net->nodes())
           if (net->variable(node).name() == "n1") node_1 = node;
-          else node_2 = node;
+          else node_2                                    = node;
 
         const gum::DiscreteVariable& var_1 = net->variable(node_1);
 

@@ -397,9 +397,7 @@ namespace gum_tests {
       CHECK_EQ(arclist.size(), graph.sizeArcs());
       gum::Size arcCount = graph.sizeArcs();
 
-      for (const auto& arc: arclist) {
-        graph.eraseArc(arc);
-      }
+      for (const auto& arc: arclist) { graph.eraseArc(arc); }
 
       CHECK(graph.emptyArcs());
 
@@ -414,9 +412,7 @@ namespace gum_tests {
       CHECK_EQ(edgelist.size(), graph.sizeEdges());
       gum::Size edgeCount = graph.sizeEdges();
 
-      for (const auto& edge: edgelist) {
-        graph.eraseEdge(edge);
-      }
+      for (const auto& edge: edgelist) { graph.eraseEdge(edge); }
 
       CHECK(graph.emptyEdges());
 
