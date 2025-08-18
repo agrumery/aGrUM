@@ -45,18 +45,96 @@
 
 namespace gum_tests {
 
-  class [[maybe_unused]] CausalModelTestSuite: public CxxTest::TestSuite {
-    public:
-    GUM_ACTIVE_TEST(CausalModelCreation) {
+  class CausalModelTestSuite : public CxxTest::TestSuite {
+  public:
+
+    GUM_ACTIVE_TEST(SimpleBN) {
       auto bn = gum::BayesNet<double>::fastPrototype("A[2]->B[3]");
+      gum::CausalModel<double> cm(bn);
 
-
-      gum::CausalModel cm(bn);
-      TS_ASSERT_EQUALS(cm.observedBayesNet().size(), 0u);// Ca va planter: il y a 2 nodes dans le BN :-)
-      GUM_CHECKPOINT;
-
-      GUM_TRACE("CausalModel created with no nodes or arcs");
-      GUM_TRACE_VAR(cm.causalDAG());
+      // BN has 2 variables
+      TS_ASSERT_EQUALS(cm.observedBayesNet().size(), 2u);
+      TS_ASSERT(cm.existsArc("A","B"));
+      TS_ASSERT(!cm.existsArc("B","A"));
     }
+
+    GUM_ACTIVE_TEST(LatentFromNames) {
+      auto bn = gum::BayesNet<double>::fastPrototype("Smoking->Cancer");
+      gum::LatentDescriptorList descs;
+      descs.pushBack(gum::LatentDescriptor(
+        gum::LatentDescriptorNames("Genotype", {"Smoking","Cancer"})));
+
+      gum::CausalModel<double> cm(bn, descs);
+
+      TS_ASSERT(cm.latentVariablesNames().contains("Genotype"));
+      TS_ASSERT(cm.existsArc("Genotype","Smoking"));
+      TS_ASSERT(cm.existsArc("Genotype","Cancer"));
+    }
+
+    GUM_ACTIVE_TEST(LatentFromIds) {
+      auto bn = gum::BayesNet<double>::fastPrototype("X->Y");
+      gum::List<gum::NodeId> childIds;
+      childIds.pushBack(bn.idFromName("X"));
+      childIds.pushBack(bn.idFromName("Y"));
+
+      gum::CausalModel<double> cm(bn);
+      cm.addLatentVariable("Hidden", childIds);
+
+      TS_ASSERT(cm.latentVariablesNames().contains("Hidden"));
+      TS_ASSERT(cm.existsArc("Hidden","X"));
+      TS_ASSERT(cm.existsArc("Hidden","Y"));
+    }
+
+    GUM_ACTIVE_TEST(ToDotSmoke) {
+      // Smoke network: Smoking -> Tar -> Cancer; Smoking -> Cancer
+      auto bn = gum::BayesNet<double>::fastPrototype("Smoking->Tar->Cancer;Smoking->Cancer");
+      gum::LatentDescriptorList descs;
+      descs.pushBack(gum::LatentDescriptor(
+        gum::LatentDescriptorNames("Genotype", {"Smoking","Cancer"})));
+
+      gum::CausalModel<double> cm(bn, descs);
+
+      auto dot = cm.toDot();
+      GUM_TRACE_VAR(std::string("\n") + dot);
+
+      TS_ASSERT(dot.find("Smoking")  != std::string::npos);
+      TS_ASSERT(dot.find("Cancer")   != std::string::npos);
+      TS_ASSERT(dot.find("Tar")      != std::string::npos);
+      TS_ASSERT(dot.find("Genotype") != std::string::npos);
+
+      // Expected arcs
+      TS_ASSERT(dot.find("\"Smoking\"->\"Tar\"")    != std::string::npos);
+      TS_ASSERT(dot.find("\"Tar\"->\"Cancer\"")     != std::string::npos);
+      TS_ASSERT(dot.find("\"Genotype\"->\"Smoking\"") != std::string::npos);
+      TS_ASSERT(dot.find("\"Genotype\"->\"Cancer\"")  != std::string::npos);
+
+      // Because keepArcs=false by default, the direct Smoking->Cancer must be gone
+      TS_ASSERT(dot.find("\"Smoking\"->\"Cancer\"") == std::string::npos);
+    }
+
+    GUM_ACTIVE_TEST(ToDotSimpson) {
+      // Simpson network: Gender->Drug->Patient;Gender->Patient
+      auto bn = gum::BayesNet<double>::fastPrototype("Gender->Drug->Patient;Gender->Patient");
+
+      gum::CausalModel<double> cm(bn);
+      auto dot = cm.toDot();
+
+      GUM_TRACE_VAR(std::string("\n") + dot);
+      std::cerr << "\n" << dot << std::endl;
+
+      // Nodes
+      TS_ASSERT(dot.find("Gender")  != std::string::npos);
+      TS_ASSERT(dot.find("Drug")    != std::string::npos);
+      TS_ASSERT(dot.find("Patient") != std::string::npos);
+
+      // Expected arcs
+      TS_ASSERT(dot.find("\"Gender\"->\"Drug\"")    != std::string::npos);
+      TS_ASSERT(dot.find("\"Gender\"->\"Patient\"") != std::string::npos);
+      TS_ASSERT(dot.find("\"Drug\"->\"Patient\"")   != std::string::npos);
+    }
+
   };
+
+
+
 }
