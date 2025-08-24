@@ -87,7 +87,7 @@ namespace gum {
    * @brief Returns true if value ends with ending.
    * @return Returns true if value ends with ending.
    */
-  bool endsWith(std::string const& value, std::string const& ending);
+  bool endsWith(const std::string_view& value, const std::string_view& ending);
 
   /**
    * @brief Split str using the delimiter

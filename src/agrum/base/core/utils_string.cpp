@@ -52,6 +52,7 @@
 #include <iterator>
 #include <regex>
 #include <string>
+#include <charconv>
 
 #include <agrum/base/core/utils_random.h>
 #include <agrum/base/core/utils_string.h>
@@ -88,6 +89,8 @@ namespace gum {
   std::vector< std::string > split(std::string_view str, std::string_view delim) {
     std::vector< std::string > tokens;
     size_t                     prev = 0, pos = 0;
+    const auto                 lenstr   = str.length();
+    const auto                 lendelim = delim.length();
     do {
       pos = str.find(delim, prev);
       if (pos == std::string::npos) pos = str.length();
@@ -98,11 +101,15 @@ namespace gum {
     return tokens;
   }
 
-  /** not usable for gcc 4.8
-  std::vector<std::string> split( const std::string& orig,
-                                const std::string& delimiter ) {
+  std::string replace(const std::string_view& s,
+                      const std::string_view& val,
+                      const std::string_view& new_val) {
+    const auto lens   = s.length();
+    const auto lenval = val.length();
+    if (lens < lenval || lenval == 0) return std::string{s};
 
-  std::regex rgx( delimiter );
+    std::string res;
+    res.reserve(lens);
 
   std::sregex_token_iterator first{begin( orig ), end( orig ), rgx, -1}, last;
 
@@ -118,7 +125,8 @@ namespace gum {
       retVal = sBuff.str();
       pos    = retVal.find(val);
     }
-    return retVal;
+    res += s.substr(start_pos);
+    return res;
   }
 
   bool isIntegerWithResult(std::string_view val, int* res) {
@@ -133,7 +141,44 @@ namespace gum {
       const char* p = (val[0] == '+') ? 1 + s.c_str() : s.c_str();
       *res          = std::stoi(p);
     }
+    return has_digit;
+  }
 
+  bool isNumerical(const std::string_view& val) {
+    if (val.empty()) return false;
+    if (val == "inf" || val == "+inf" || val == "-inf") return true;
+
+    int  dot_count  = 0;
+    int  first_char = 0;
+    bool has_digit  = false;
+    for (unsigned char c: val) {
+      if (first_char == 0) {
+        first_char = 1;
+        if (c == '+' || c == '-') { continue; }
+      }
+      if (c == '.') {
+        dot_count++;
+        if (dot_count > 1) return false;
+        continue;
+      }
+      if (c=='e' || c=='E') {
+        if (!has_digit) return false; // need at least one digit before e
+        dot_count=1; // no right to dot anymore
+        first_char=0; // allow + or - after e
+        has_digit=false; // need at least one digit after e
+        continue;
+      }
+      if (!std::isdigit(c)) return false;
+      else has_digit = true;
+    }
+    return has_digit;
+  }
+
+  bool isIntegerWithResult(const std::string_view& val, int* res) {
+    if (!isInteger(val)) return false;
+    size_t pos = 0;
+    if (val[0] == '+') pos = 1;
+    std::from_chars(val.data() + pos, val.data() + val.size(), *res);
     return true;
   }
 

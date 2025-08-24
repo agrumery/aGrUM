@@ -712,7 +712,6 @@ namespace gum {
      * @param from The gum::HashTable to move.
      */
     HashTable(HashTable< Key, Val >&& from) noexcept;
-    ;
 
     /**
      * @brief Class destructor.

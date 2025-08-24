@@ -160,7 +160,7 @@ namespace gum {
 
           if (fmax <= fmin) { GUM_ERROR(InvalidArgument, "last<=first in " << var_description) }
           if (nbr <= 1) { GUM_ERROR(InvalidArgument, "nbr<=1 in " << var_description) }
-          const double step = double((fmax - fmin) / (nbr - 1));
+          const auto step = double((fmax - fmin) / (nbr - 1));
 
           if ((trunc(step) == step) && (trunc(fmin) == fmin) && (trunc(fmax) == fmax)) {
             // b{1:6:5} => IntegerVariable
