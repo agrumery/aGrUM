@@ -88,7 +88,7 @@ protected:
 
   static std::string _latexCorrect(const std::string& srcName,
                                    HashTable<std::string,int>& nameOccur);
-  static List<std::string> _latexCorrect(const Set<std::string>& srcNames,
+  static std::vector<std::string> _latexCorrect(const Set<std::string>& srcNames,
                                                 HashTable<std::string,int>& nameOccur);
 };
 
@@ -246,7 +246,7 @@ public:
   ASTsum(const std::string& var, std::unique_ptr<ASTtree<GUM_SCALAR>> term);
 
   // multi-variable overload: recursively builds Σ over vars[0], vars[1], ...
-  ASTsum(const List<std::string>& vars,
+  ASTsum(const std::vector<std::string>& vars,
          std::unique_ptr<ASTtree<GUM_SCALAR>> term);
 
   [[nodiscard]] const ASTtree<GUM_SCALAR>& term() const { return *_term; }
@@ -269,7 +269,7 @@ private:
 // ================================================================
 template <typename GUM_SCALAR>
 [[nodiscard]] std::unique_ptr<ASTtree<GUM_SCALAR>>
-productOfTrees(List<std::unique_ptr<ASTtree<GUM_SCALAR>>>&& lterms);
+productOfTrees(std::vector<std::unique_ptr<ASTtree<GUM_SCALAR>>>&& lterms);
 
 
 // ================================================================
@@ -285,7 +285,7 @@ productOfTrees(List<std::unique_ptr<ASTtree<GUM_SCALAR>>>&& lterms);
   extern template class ASTjointProba<double>;
   extern template class ASTsum<double>;
   extern template std::unique_ptr<ASTtree<double>>
-  productOfTrees<double>(List<std::unique_ptr<ASTtree<double>>>&&);
+  productOfTrees<double>(std::vector<std::unique_ptr<ASTtree<double>>>&&);
 #endif
 
 } // namespace gum

@@ -66,19 +66,14 @@ std::string ASTtree<GUM_SCALAR>::toLatex(HashTable<std::string,int> nameOccur) c
 template <typename GUM_SCALAR>
 std::string ASTtree<GUM_SCALAR>::_latexCorrect(const std::string& srcName,
                                                HashTable<std::string,int>& nameOccur) {
-  int count = 0;
-  try {
-    count = nameOccur[srcName];  // if missing, throws NotFound
-  } catch (gum::NotFound&) {
-    count = 0;
-  }
+  int count = nameOccur.getWithDefault(srcName,0);
   const int nbr = (count > 1) ? (count - 1) : 0;
   // append nbr primes
   return srcName + std::string(static_cast<size_t>(nbr), '\'');
 }
 
 template <typename GUM_SCALAR>
-List<std::string>
+std::vector<std::string>
 ASTtree<GUM_SCALAR>::_latexCorrect(const Set<std::string>& srcNames,
                                    HashTable<std::string,int>& nameOccur) {
   // Transform each name using the single-name overload, then sort.
@@ -87,11 +82,7 @@ ASTtree<GUM_SCALAR>::_latexCorrect(const Set<std::string>& srcNames,
     out.push_back(_latexCorrect(n, nameOccur));
   }
   std::sort(out.begin(), out.end());
-  List<std::string> out_list;
-  for (const auto& n : out) {
-      out_list.pushBack(n);
-      }
-  return out_list;
+  return out;
 }
 
 // ================================================================
@@ -378,12 +369,9 @@ ASTposteriorProba<GUM_SCALAR>::eval(const BayesNet<GUM_SCALAR>& contextual_bn) c
     ie.makeInference();
     p = ie.jointPosterior(set_vars);
   } else {
-    NodeSet unionSet = set_vars;
-    for (auto id : set_knw) unionSet.insert(id);
-    ie.addJointTarget(unionSet);
-    ie.addJointTarget(set_knw);
+    ie.addJointTarget(set_vars);
     ie.makeInference();
-    p = ie.jointPosterior(unionSet) / ie.jointPosterior(set_knw);
+    p = ie.evidenceJointImpact(set_vars, set_knw);
   }
 
 
@@ -479,7 +467,7 @@ ASTsum<GUM_SCALAR>::ASTsum(const std::string& var,
   : ASTtree<GUM_SCALAR>("_sum_"), _var(var), _term(std::move(term)) {}
 
 template <typename GUM_SCALAR>
-ASTsum<GUM_SCALAR>::ASTsum(const List<std::string>& vars,
+ASTsum<GUM_SCALAR>::ASTsum(const std::vector<std::string>& vars,
                            std::unique_ptr<ASTtree<GUM_SCALAR>> term)
   : ASTtree<GUM_SCALAR>("_sum_") {
   if (vars.empty()) {
@@ -489,8 +477,7 @@ ASTsum<GUM_SCALAR>::ASTsum(const List<std::string>& vars,
   _var = vars.front();
 
   if (vars.size() > 1) {
-    List<std::string> tail = vars;
-    tail.popFront();
+    std::vector<std::string> tail(vars.begin() + 1, vars.end());
     _term = std::make_unique<ASTsum<GUM_SCALAR>>(tail, std::move(term));
   } else {
     _term = std::move(term);
@@ -514,27 +501,23 @@ template <typename GUM_SCALAR>
 std::string ASTsum<GUM_SCALAR>::fastToLatex(HashTable<std::string,int>& nameOccur) const {
 
   // Flatten chained sums: collect all summed variables along the _term chain.
-  List<std::string> vars;
+  std::vector<std::string> vars;
   const ASTtree<GUM_SCALAR>* a = this;
   while (auto s = dynamic_cast<const ASTsum<GUM_SCALAR>*>(a)) {
     if (!nameOccur.exists(s->_var)) nameOccur.insert(s->_var, 0);
     nameOccur[s->_var] += 1;
-    vars.pushBack(s->_var);
+    vars.push_back(s->_var);
     a = &s->term(); // move down the chain
   }
 
   // Build corrected (prime-adjusted) names, then sort.
-  std::vector<std::string> corrected;
-  for (const auto& v : vars) {
-    corrected.push_back(ASTtree<GUM_SCALAR>::_latexCorrect(v, nameOccur));
-  }
-  std::sort(corrected.begin(), corrected.end());
+  std::sort(vars.begin(), vars.end());
 
   // Join corrected names with commas
   std::stringstream names;
-  for (size_t i = 0; i < corrected.size(); ++i) {
+  for (size_t i = 0; i < vars.size(); ++i) {
     if (i) names << ",";
-    names << corrected[i];
+    names << vars[i];
   }
 
   // Inner formula is the first non-sum node's latex with current nameOccur
@@ -572,7 +555,7 @@ ASTsum<GUM_SCALAR>::eval(const BayesNet<GUM_SCALAR>& contextual_bn) const {
 // ================================================================
 template <typename GUM_SCALAR>
 std::unique_ptr<ASTtree<GUM_SCALAR>>
-productOfTrees(List<std::unique_ptr<ASTtree<GUM_SCALAR>>>&& lterms) {
+productOfTrees(std::vector<std::unique_ptr<ASTtree<GUM_SCALAR>>>&& lterms) {
   if (lterms.empty()) {
     GUM_ERROR(InvalidArgument, "productOfTrees requires at least one term");
   }

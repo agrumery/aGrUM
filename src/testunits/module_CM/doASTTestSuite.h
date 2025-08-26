@@ -87,7 +87,7 @@ namespace gum_tests {
 
       // sum on A,C (accept flat or nested formatting)
       auto n2 = std::make_unique<gum::ASTposteriorProba<double>>(bn, sAC, sB);
-      gum::List<std::string> twoVars; twoVars.pushBack("A"); twoVars.pushBack("C");
+      std::vector<std::string> twoVars; twoVars.push_back("A"); twoVars.push_back("C");
       gum::ASTsum<double> su2(twoVars, std::move(n2));
       const std::string flat   = "sum on A,C for\n| P(A,C|B)";
       const std::string nested = "sum on A for\n| sum on C for\n| | P(A,C|B)";
@@ -315,9 +315,9 @@ namespace gum_tests {
       gum::Set<std::string> varY; varY.insert("Y");
       gum::Set<std::string> condX; condX.insert("X");
 
-      gum::List<std::unique_ptr<gum::ASTtree<double>>> terms;
-      terms.pushBack(std::make_unique<gum::ASTposteriorProba<double>>(bn, varY, condX));
-      terms.pushBack(std::make_unique<gum::ASTposteriorProba<double>>(bn, varY, condX));
+      std::vector<std::unique_ptr<gum::ASTtree<double>>> terms;
+      terms.push_back(std::make_unique<gum::ASTposteriorProba<double>>(bn, varY, condX));
+      terms.push_back(std::make_unique<gum::ASTposteriorProba<double>>(bn, varY, condX));
 
       auto tree = gum::productOfTrees<double>(std::move(terms));
       auto got  = tree->eval(bn);
@@ -334,8 +334,8 @@ namespace gum_tests {
         auto bn = gum::BayesNet<double>::fastPrototype("A->B");
 
         gum::Set<std::string> empty, B; B.insert("B");
-        TS_ASSERT_THROWS( (gum::ASTposteriorProba<double>(bn, empty, B)), gum::InvalidArgument );
-        TS_ASSERT_THROWS( (gum::ASTjointProba<double>(empty)), gum::InvalidArgument );
+        TS_ASSERT_THROWS( (gum::ASTposteriorProba<double>(bn, empty, B)), const gum::InvalidArgument& );
+        TS_ASSERT_THROWS( (gum::ASTjointProba<double>(empty)), const gum::InvalidArgument& );
         }
 
         // 9) Copy() deep-copy equivalence
@@ -360,15 +360,15 @@ namespace gum_tests {
         gum::Set<std::string> A; A.insert("A");
 
         // single term -> identity
-        gum::List<std::unique_ptr<gum::ASTtree<double>>> one;
-        one.pushBack(std::make_unique<gum::ASTposteriorProba<double>>(bn, B, A));
+        std::vector<std::unique_ptr<gum::ASTtree<double>>> one;
+        one.push_back(std::make_unique<gum::ASTposteriorProba<double>>(bn, B, A));
         auto single = gum::productOfTrees<double>(std::move(one));
         auto ref    = gum::ASTposteriorProba<double>(bn, B, A).eval(bn);
         TS_GUM_TENSOR_ALMOST_EQUALS(single->eval(bn), ref);
 
         // empty -> throws
-        gum::List<std::unique_ptr<gum::ASTtree<double>>> empty;
-        TS_ASSERT_THROWS( (gum::productOfTrees<double>(std::move(empty))), gum::InvalidArgument );
+        std::vector<std::unique_ptr<gum::ASTtree<double>>> empty;
+        TS_ASSERT_THROWS( (void)(gum::productOfTrees<double>(std::move(empty))), const gum::InvalidArgument& );
     }
 
     // 11) Scope composition: P(A|C) * P(C) == P(A,C)
@@ -405,7 +405,7 @@ namespace gum_tests {
         auto got_nested = nested->eval(bn);
 
         auto term2 = std::make_unique<gum::ASTposteriorProba<double>>(bn, vars, knw);
-        gum::List<std::string> AC; AC.pushBack("A"); AC.pushBack("C");
+        std::vector<std::string> AC; AC.push_back("A"); AC.push_back("C");
         gum::ASTsum<double> flat(AC, std::move(term2));
         auto got_flat = flat.eval(bn);
 
@@ -453,14 +453,14 @@ namespace gum_tests {
         // sum over A :  \sum_{A}{ P(A,C | B) }
         {
             auto n1 = std::make_unique<gum::ASTposteriorProba<double>>(bn, sAC, sB);
-            gum::ASTsum<double> su("A", std::move(n1));
+            auto su = gum::ASTsum<double>("A", std::move(n1));
             TS_ASSERT_EQUALS(su.toLatex(), "\\sum_{A}{P\\left(A,C\\mid B\\right)}");
         }
 
         // sum over A,C (flattened):  \sum_{A,C}{ P(A,C | B) }
         {
             auto n2 = std::make_unique<gum::ASTposteriorProba<double>>(bn, sAC, sB);
-            gum::List<std::string> twoVars; twoVars.pushBack("A"); twoVars.pushBack("C");
+            std::vector<std::string> twoVars; twoVars.push_back("A"); twoVars.push_back("C");
             gum::ASTsum<double> su2(twoVars, std::move(n2));
             TS_ASSERT_EQUALS(su2.toLatex(), "\\sum_{A,C}{P\\left(A,C\\mid B\\right)}");
         }

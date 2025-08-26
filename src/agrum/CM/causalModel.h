@@ -43,27 +43,13 @@
 #include <string>
 #include <variant>
 
-#include <agrum/base/core/bijection.h>
-#include <agrum/base/core/hashTable.h>
-#include <agrum/base/core/list.h>
-#include <agrum/base/core/set.h>
-
 #include <agrum/BN/BayesNet.h>
-#include <agrum/base/graphs/DAG.h>
 
 namespace gum {
 
-
-  /// LatentDescriptorNames = (latentName, (child1, child2, ...))
-  using LatentDescriptorNames = std::pair<std::string, List<std::string>>;
-
   /// LatentDescriptorIds = (latentName, (child1Id, child2Id, ...))
-  using LatentDescriptorIds = std::pair<std::string, List<NodeId>>;
-
-
-  /// Unified descriptor: either names or ids
-  using LatentDescriptor = std::variant<LatentDescriptorNames, LatentDescriptorIds>;
-  using LatentDescriptorList = List<LatentDescriptor>;
+  using LatentDescriptorIds = std::pair<std::string, std::vector<NodeId>>;
+  using LatentDescriptorVector = std::vector<LatentDescriptorIds>;
 
 
   /// CausalModel is a class representing a causal model, which is a directed acyclic graph (DAG)
@@ -83,14 +69,11 @@ namespace gum {
     /// Set of latent variable names
     Set<std::string> _latentNames_;
 
-    /// List of names
+    /// Set of names
     Set<std::string> _names_;
 
-    /// Bookkeeping: name -> nodeId
-    HashTable<std::string, NodeId> _idFromName_;
-
-    // Bookkeeping: nodeId -> name
-    HashTable<NodeId, std::string> _nameFromId_;
+    /// Bookkeeping: name <-> nodeId
+    Bijection<NodeId, std::string> _id2name_;
 
 
    public:
@@ -102,12 +85,11 @@ namespace gum {
         : _observedBN_(observedBN),
           _causalDAG_(observedBN.dag()),
           _names_(BN2names(observedBN)),
-          _idFromName_(BN2idFromName(observedBN)),
-          _nameFromId_(BN2nameFromId(observedBN)) {}
+          _id2name_(id2nameFromBN(observedBN)) {}
 
-    /// constructor with LatentDescriptorList
+    /// constructor with LatentDescriptorVector
     explicit CausalModel(const BayesNet<GUM_SCALAR>& observedBN,
-                    const LatentDescriptorList& latentVarsDescriptor,
+                    const LatentDescriptorVector& latentVarsDescriptor,
                     bool keepArcs = false);
 
 
@@ -127,10 +109,10 @@ namespace gum {
     CausalModel& operator=(CausalModel&& other) noexcept = default;
 
     /// Add a latent variable with its children using names
-    void addLatentVariable(const std::string& latentName, const List<std::string>& childrenOfLatent, bool keepArcs = false);
+    void addLatentVariable(const std::string& latentName, const std::vector<std::string>& childrenOfLatent, bool keepArcs = false);
 
     /// Add a latent variable with its children using NodeIds
-    void addLatentVariable(const std::string& latentName, const List<NodeId>& childrenOfLatent, bool keepArcs = false);
+    void addLatentVariable(const std::string& latentName, const std::vector<NodeId>& childrenOfLatent, bool keepArcs = false);
 
     /// Add a causal arc x->y using NodeId
     void addCausalArc(NodeId x, NodeId y);
@@ -151,7 +133,10 @@ namespace gum {
     bool existsArc(const std::string& x, const std::string& y) const;
 
     /// Returns friendly display of the causal DAG in DOT format
-    std::string toDot() const;
+    std::string toDot(const bool   SHOW_LATENT_NAMES = false,
+                     const char* NODE_BG  = "#404040",
+                     const char* NODE_FG = "white",
+                     const char* EDGE_COL = "#4A4A4A") const;
 
     /// Returns the underlying BayesNet representing the observed part of the model
     const BayesNet<GUM_SCALAR>& observedBayesNet() const {
@@ -171,10 +156,10 @@ namespace gum {
     /// Returns the variable name for a given node id (observed or latent).
     const std::string& nameFromId(NodeId id) const;
 
-    /// Returns the list of latent variable Ids
+    /// Returns the NodeSet of latent variable Ids
     const NodeSet& latentVariablesIds() const;
 
-    /// Returns the list of latent variable names
+    /// Returns the Set of latent variable names
     const Set<std::string>& latentVariablesNames() const;
 
     /// connected components from a graph/graphical models
@@ -184,10 +169,8 @@ namespace gum {
     static Set<std::string> BN2names(const BayesNet<GUM_SCALAR>& bn);
 
     /// Static function to compute _idFromName_ mapping
-    static HashTable<std::string, NodeId> BN2idFromName(const BayesNet<GUM_SCALAR>& bn);
+    static Bijection<NodeId, std::string> id2nameFromBN(const BayesNet<GUM_SCALAR>& bn);
 
-    /// Static function to compute _nameFromId_ mapping
-    static HashTable<NodeId, std::string> BN2nameFromId(const BayesNet<GUM_SCALAR>& bn);
 
 
   };

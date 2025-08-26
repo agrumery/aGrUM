@@ -54,6 +54,6 @@ template class gum::ASTjointProba<double>;
 template class gum::ASTsum<double>;
 
 template std::unique_ptr<gum::ASTtree<double>>
-gum::productOfTrees<double>(gum::List<std::unique_ptr<gum::ASTtree<double>>>&&);
+gum::productOfTrees<double>(std::vector<std::unique_ptr<gum::ASTtree<double>>>&&);
 
 #endif

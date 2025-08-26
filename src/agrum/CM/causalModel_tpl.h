@@ -55,19 +55,16 @@ namespace gum {
 
 template <typename GUM_SCALAR>
 CausalModel<GUM_SCALAR>::CausalModel(const BayesNet<GUM_SCALAR>& observedBN,
-                                     const LatentDescriptorList& latentVarsDescriptor,
+                                     const LatentDescriptorVector& latentVarsDescriptor,
                                      bool keepArcs)
   : _observedBN_(observedBN),
     _causalDAG_(observedBN.dag()),
     _names_(BN2names(observedBN)),
-    _idFromName_(BN2idFromName(observedBN)),
-    _nameFromId_(BN2nameFromId(observedBN)) {
+    _id2name_(id2nameFromBN(observedBN)) {
 
   // add each latent (children given as names)
   for (const auto& desc : latentVarsDescriptor) {
-    std::visit([&](const auto& d){
-      addLatentVariable(d.first, d.second, keepArcs); // picks the right overload
-    }, desc);
+      addLatentVariable(desc.first, desc.second, keepArcs);
   }
 }
 
@@ -78,22 +75,23 @@ CausalModel<GUM_SCALAR>::CausalModel(const BayesNet<GUM_SCALAR>& observedBN,
 
 template <typename GUM_SCALAR>
 void CausalModel<GUM_SCALAR>::addLatentVariable(const std::string& latentName,
-                                                const List<std::string>& childrenOfLatent,
+                                                const std::vector<std::string>& childrenOfLatent,
                                                 bool keepArcs) {
-  List<NodeId> childIds;
+  std::vector<NodeId> childIds;
+  childIds.reserve(childrenOfLatent.size());
   for (const auto& nm : childrenOfLatent) {
-    childIds.pushBack(idFromName(nm));
+    childIds.push_back(idFromName(nm));
   }
   addLatentVariable(latentName, childIds, keepArcs);
 }
 
 template <typename GUM_SCALAR>
 void CausalModel<GUM_SCALAR>::addLatentVariable(const std::string& latentName,
-                                                const List<NodeId>& childrenOfLatent,
+                                                const std::vector<NodeId>& childrenOfLatent,
                                                 bool keepArcs) {
   // must have at least 2 children
   if (childrenOfLatent.size() < 2) {
-    GUM_ERROR(InvalidArgument, "A latent variable must affect at least 2 children.")
+    GUM_ERROR(InvalidArgument, "A latent variable must affect at least 2 children.");
   }
 
   // create a fresh node id for the latent in the causal DAG
@@ -103,8 +101,7 @@ void CausalModel<GUM_SCALAR>::addLatentVariable(const std::string& latentName,
   _latentIds_.insert(id_latent);
   _latentNames_.insert(latentName);
   _names_.insert(latentName);
-  _idFromName_.insert(latentName, id_latent);
-  _nameFromId_.insert(id_latent, latentName);
+  _id2name_.insert(id_latent, latentName);
 
   // add arcs latent -> each child
   for (const auto& cid : childrenOfLatent) {
@@ -198,23 +195,24 @@ const Set<std::string>& CausalModel<GUM_SCALAR>::latentVariablesNames() const {
 // ===============================
 // DOT export
 // ===============================
-
 template <typename GUM_SCALAR>
-std::string CausalModel<GUM_SCALAR>::toDot() const {
-  // Hard-coded style from the shown pyagrum config
-  constexpr bool   SHOW_LATENT_NAMES = false;      // causal.show_latent_names
-  constexpr const char* NODE_BG  = "#404040";      // causal.default_node_bgcolor
-  constexpr const char* NODE_FG  = "white";        // causal.default_node_fgcolor
-  constexpr const char* EDGE_COL = "#4A4A4A";      // notebook.default_arc_color
+std::string CausalModel<GUM_SCALAR>::toDot(const bool SHOW_LATENT_NAMES,
+                                           const char* NODE_BG,
+                                           const char* NODE_FG,
+                                           const char* EDGE_COL) const {
+  //   SHOW_LATENT_NAMES => causal.show_latent_names
+  //   NODE_BG           => causal.default_node_bgcolor
+  //   NODE_FG           => causal.default_node_fgcolor
+  //   EDGE_COL          => notebook.default_arc_color
 
   std::stringstream out;
   out << "digraph {\n";
 
   // First, latent nodes
   for (const auto n : _causalDAG_.nodes()) {
-    if (_latentIds_.contains(n)) {
+    if (latentVariablesIds().contains(n)) {
       std::string label;
-      try { label = _nameFromId_[n]; } catch (gum::NotFound&) { label = "L" + std::to_string(n); }
+      try { label = nameFromId(n); } catch (gum::NotFound&) { label = "L" + std::to_string(n); }
       out << "  \"" << label << "\" "
           << "[fillcolor=\"" << NODE_BG << "\", "
           <<  "fontcolor=\"" << NODE_FG << "\", "
@@ -224,9 +222,9 @@ std::string CausalModel<GUM_SCALAR>::toDot() const {
 
   // Then, observed nodes
   for (const auto n : _causalDAG_.nodes()) {
-    if (!_latentIds_.contains(n)) {
+    if (!latentVariablesIds().contains(n)) {
       std::string label;
-      try { label = _nameFromId_[n]; } catch (gum::NotFound&) { label = "L" + std::to_string(n); }
+      try { label = nameFromId(n); } catch (gum::NotFound&) { label = "L" + std::to_string(n); }
       out << "  \"" << label << "\" "
           << "[fillcolor=\"" << NODE_BG << "\", "
           <<  "fontcolor=\"" << NODE_FG << "\", "
@@ -238,10 +236,10 @@ std::string CausalModel<GUM_SCALAR>::toDot() const {
   for (const auto tail : _causalDAG_.nodes()) {
     for (const auto head : _causalDAG_.children(tail)) {
       std::string lt, lh;
-      try { lt = _nameFromId_[tail]; } catch (gum::NotFound&) { lt = "L" + std::to_string(tail); }
-      try { lh = _nameFromId_[head]; } catch (gum::NotFound&) { lh = "L" + std::to_string(head); }
+      try { lt = nameFromId(tail); } catch (gum::NotFound&) { lt = "L" + std::to_string(tail); }
+      try { lh = nameFromId(head); } catch (gum::NotFound&) { lh = "L" + std::to_string(head); }
 
-      const bool dashed = _latentIds_.contains(tail) || _latentIds_.contains(head);
+      const bool dashed = latentVariablesIds().contains(tail) || latentVariablesIds().contains(head);
 
       out << "  \"" << lt << "\"->\"" << lh << "\" ";
       if (dashed) {
@@ -270,7 +268,7 @@ template <typename GUM_SCALAR>
 const NodeId
 CausalModel<GUM_SCALAR>::idFromName(const std::string& name) const {
   try {
-    return _idFromName_[name]; // HashTable throws NotFound if missing
+    return _id2name_.first(name); // throws NotFound if missing
   } catch (NotFound&) {
     GUM_ERROR(NotFound, "Unknown variable name: " << name);
   }
@@ -281,7 +279,7 @@ template <typename GUM_SCALAR>
 const std::string&
 CausalModel<GUM_SCALAR>::nameFromId(NodeId id) const {
   try {
-    return _nameFromId_[id]; // HashTable throws NotFound if missing
+    return _id2name_.second(id); // throws NotFound if missing
   } catch (NotFound&) {
     GUM_ERROR(NotFound, "Unknown variable id: " << id);
   }
@@ -300,21 +298,11 @@ Set<std::string> CausalModel<GUM_SCALAR>::BN2names(const BayesNet<GUM_SCALAR>& b
   return names;
 }
 
-template <typename GUM_SCALAR>
-HashTable<std::string, NodeId>
-CausalModel<GUM_SCALAR>::BN2idFromName(const BayesNet<GUM_SCALAR>& bn) {
-  HashTable<std::string, NodeId> mapping;
-  for (const auto node : bn.nodes()) {
-    mapping.insert(bn.variable(node).name(), node);
-  }
-  return mapping;
-}
-
 
 template <typename GUM_SCALAR>
-HashTable<NodeId, std::string>
-CausalModel<GUM_SCALAR>::BN2nameFromId(const BayesNet<GUM_SCALAR>& bn) {
-  HashTable<NodeId, std::string> mapping;
+Bijection<NodeId, std::string>
+CausalModel<GUM_SCALAR>::id2nameFromBN(const BayesNet<GUM_SCALAR>& bn) {
+  Bijection<NodeId, std::string> mapping;
   for (const auto node : bn.nodes()) {
     mapping.insert(node, bn.variable(node).name());
   }

@@ -58,24 +58,12 @@ namespace gum_tests {
       TS_ASSERT(!cm.existsArc("B","A"));
     }
 
-    GUM_ACTIVE_TEST(LatentFromNames) {
-      auto bn = gum::BayesNet<double>::fastPrototype("Smoking->Cancer");
-      gum::LatentDescriptorList descs;
-      descs.pushBack(gum::LatentDescriptor(
-        gum::LatentDescriptorNames("Genotype", {"Smoking","Cancer"})));
-
-      gum::CausalModel<double> cm(bn, descs);
-
-      TS_ASSERT(cm.latentVariablesNames().contains("Genotype"));
-      TS_ASSERT(cm.existsArc("Genotype","Smoking"));
-      TS_ASSERT(cm.existsArc("Genotype","Cancer"));
-    }
 
     GUM_ACTIVE_TEST(LatentFromIds) {
       auto bn = gum::BayesNet<double>::fastPrototype("X->Y");
-      gum::List<gum::NodeId> childIds;
-      childIds.pushBack(bn.idFromName("X"));
-      childIds.pushBack(bn.idFromName("Y"));
+      std::vector<gum::NodeId> childIds;
+      childIds.push_back(bn.idFromName("X"));
+      childIds.push_back(bn.idFromName("Y"));
 
       gum::CausalModel<double> cm(bn);
       cm.addLatentVariable("Hidden", childIds);
@@ -88,14 +76,15 @@ namespace gum_tests {
     GUM_ACTIVE_TEST(ToDotSmoke) {
       // Smoke network: Smoking -> Tar -> Cancer; Smoking -> Cancer
       auto bn = gum::BayesNet<double>::fastPrototype("Smoking->Tar->Cancer;Smoking->Cancer");
-      gum::LatentDescriptorList descs;
-      descs.pushBack(gum::LatentDescriptor(
-        gum::LatentDescriptorNames("Genotype", {"Smoking","Cancer"})));
+      gum::LatentDescriptorVector descs;
+      auto id_smoking = bn.idFromName("Smoking");
+      auto id_cancer  = bn.idFromName("Cancer");
+      descs.push_back(gum::LatentDescriptorIds("Genotype", {id_smoking,id_cancer}));
 
       gum::CausalModel<double> cm(bn, descs);
 
       auto dot = cm.toDot();
-      GUM_TRACE_VAR(std::string("\n") + dot);
+      //  GUM_TRACE_VAR(std::string("\n") + dot); // uncomment to see the dot output
 
       TS_ASSERT(dot.find("Smoking")  != std::string::npos);
       TS_ASSERT(dot.find("Cancer")   != std::string::npos);
@@ -119,8 +108,7 @@ namespace gum_tests {
       gum::CausalModel<double> cm(bn);
       auto dot = cm.toDot();
 
-      GUM_TRACE_VAR(std::string("\n") + dot);
-      std::cerr << "\n" << dot << std::endl;
+      //   GUM_TRACE_VAR(std::string("\n") + dot); // uncomment to see the dot output
 
       // Nodes
       TS_ASSERT(dot.find("Gender")  != std::string::npos);
