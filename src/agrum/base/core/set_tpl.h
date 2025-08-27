@@ -588,6 +588,15 @@ namespace gum {
     // Hence, for speedup, we do not update the end iterator
   }
 
+  template < typename Key >
+  Key Set< Key >::popFirst() {
+    if (this->empty()) { GUM_ERROR(NotFound, "Cannot popFirst from an empty set"); }
+
+    auto key = *this->begin();
+    this->erase(key);
+    return key;
+  }
+
   // erases an element from the set
   template < typename Key >
   INLINE void Set< Key >::erase(const SetIteratorSafe< Key >& iter) {

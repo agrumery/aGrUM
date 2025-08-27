@@ -328,6 +328,13 @@ namespace gum {
     void erase(const Key& k);
 
     /**
+     * @brief Removes and returns an arbitrary element from the set.
+     * @exception NotFound Raised if the set is empty.
+     * @returns The removed element.
+     */
+    Key popFirst();
+
+    /**
      * @brief Erases an element from the set.
      * @param k The iterator pointing to the element to remove.
      * @warning if the set does not contain the element, nothing is done.  In
