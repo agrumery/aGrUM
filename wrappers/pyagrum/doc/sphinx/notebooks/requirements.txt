@@ -13,6 +13,10 @@ jupyter
 scipy
 pandas
 tqdm
+xgboost
+cairosvg
+seaborn
+playwright
 ################################
 ### Specific requirements for notebooks
 cairosvg

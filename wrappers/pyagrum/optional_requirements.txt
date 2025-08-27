@@ -4,3 +4,7 @@ jupyter
 scipy
 pandas
 tqdm
+xgboost
+cairosvg
+seaborn
+playwright
