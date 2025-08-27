@@ -63,15 +63,6 @@ namespace gum {
     /// The underlying DAG representing the causal structure of the model
     DAG _causalDAG_;
 
-    /// Set of latent variable IDs
-    NodeSet _latentIds_;
-
-    /// Set of latent variable names
-    Set<std::string> _latentNames_;
-
-    /// Set of names
-    Set<std::string> _names_;
-
     /// Bookkeeping: name <-> nodeId
     Bijection<NodeId, std::string> _id2name_;
 
@@ -83,9 +74,7 @@ namespace gum {
     /// constructor with no latent variables
     explicit CausalModel(const BayesNet<GUM_SCALAR>& observedBN)
         : _observedBN_(observedBN),
-          _causalDAG_(observedBN.dag()),
-          _names_(BN2names(observedBN)),
-          _id2name_(id2nameFromBN(observedBN)) {}
+          _causalDAG_(observedBN.dag()) {}
 
     /// constructor with LatentDescriptorVector
     explicit CausalModel(const BayesNet<GUM_SCALAR>& observedBN,
@@ -134,9 +123,9 @@ namespace gum {
 
     /// Returns friendly display of the causal DAG in DOT format
     std::string toDot(const bool   SHOW_LATENT_NAMES = false,
-                     const char* NODE_BG  = "#404040",
-                     const char* NODE_FG = "white",
-                     const char* EDGE_COL = "#4A4A4A") const;
+                      const char* NODE_BG  = "#404040",
+                      const char* NODE_FG = "white",
+                      const char* EDGE_COL = "#4A4A4A") const;
 
     /// Returns the underlying BayesNet representing the observed part of the model
     const BayesNet<GUM_SCALAR>& observedBayesNet() const {
@@ -148,30 +137,22 @@ namespace gum {
     }
 
     /// Returns the set of all variable names in the causal model (observed + latent).
-    const Set<std::string>& names() const;
+    Set<std::string> names() const;
 
     /// Returns the node id for a given variable name (observed or latent).
-    const NodeId idFromName(const std::string& name) const;
+    NodeId idFromName(const std::string& name) const;
 
     /// Returns the variable name for a given node id (observed or latent).
-    const std::string& nameFromId(NodeId id) const;
+    std::string nameFromId(NodeId id) const;
 
     /// Returns the NodeSet of latent variable Ids
-    const NodeSet& latentVariablesIds() const;
+    NodeSet latentVariablesIds() const;
 
     /// Returns the Set of latent variable names
-    const Set<std::string>& latentVariablesNames() const;
+    Set<std::string> latentVariablesNames() const;
 
     /// connected components from a graph/graphical models
     // HashTable<Size, NodeSet> connectedComponents() const;
-
-    /// Static function to compute list of names in a BN
-    static Set<std::string> BN2names(const BayesNet<GUM_SCALAR>& bn);
-
-    /// Static function to compute _idFromName_ mapping
-    static Bijection<NodeId, std::string> id2nameFromBN(const BayesNet<GUM_SCALAR>& bn);
-
-
 
   };
 

@@ -58,9 +58,7 @@ CausalModel<GUM_SCALAR>::CausalModel(const BayesNet<GUM_SCALAR>& observedBN,
                                      const LatentDescriptorVector& latentVarsDescriptor,
                                      bool keepArcs)
   : _observedBN_(observedBN),
-    _causalDAG_(observedBN.dag()),
-    _names_(BN2names(observedBN)),
-    _id2name_(id2nameFromBN(observedBN)) {
+    _causalDAG_(observedBN.dag()) {
 
   // add each latent (children given as names)
   for (const auto& desc : latentVarsDescriptor) {
@@ -98,9 +96,6 @@ void CausalModel<GUM_SCALAR>::addLatentVariable(const std::string& latentName,
   const NodeId id_latent = _causalDAG_.addNode();
 
   // record bookkeeping
-  _latentIds_.insert(id_latent);
-  _latentNames_.insert(latentName);
-  _names_.insert(latentName);
   _id2name_.insert(id_latent, latentName);
 
   // add arcs latent -> each child
@@ -172,13 +167,21 @@ bool CausalModel<GUM_SCALAR>::existsArc(const std::string& x, const std::string&
 // ===============================
 
 template <typename GUM_SCALAR>
-const NodeSet& CausalModel<GUM_SCALAR>::latentVariablesIds() const {
-  return _latentIds_;
+NodeSet CausalModel<GUM_SCALAR>::latentVariablesIds() const {
+  NodeSet latentIds;
+  for (auto it = _id2name_.begin(); it != _id2name_.end(); ++it) {
+       latentIds.insert(it.first());
+ }
+  return latentIds;
 }
 
 template <typename GUM_SCALAR>
-const Set<std::string>& CausalModel<GUM_SCALAR>::latentVariablesNames() const {
-  return _latentNames_;
+Set<std::string> CausalModel<GUM_SCALAR>::latentVariablesNames() const {
+  Set<std::string> latentNames;
+  for (auto it = _id2name_.begin(); it != _id2name_.end(); ++it) {
+      latentNames.insert(it.second());
+  }
+  return latentNames;
 }
 
 // ===============================
@@ -261,52 +264,40 @@ std::string CausalModel<GUM_SCALAR>::toDot(const bool SHOW_LATENT_NAMES,
 // ===============================
 
 template <typename GUM_SCALAR>
-const Set<std::string>&
-CausalModel<GUM_SCALAR>::names() const { return _names_; }
+Set<std::string>
+CausalModel<GUM_SCALAR>::names() const {
+    Set<std::string> names;
+    for (const auto n : _observedBN_.nodes()) {
+        names.insert(_observedBN_.variable(n).name());
+    }
+    // latent names (from bijection)
+    for (auto it = _id2name_.begin(); it != _id2name_.end(); ++it) {
+        names.insert(it.second());
+    }
+    return names;
+
+}
 
 template <typename GUM_SCALAR>
-const NodeId
-CausalModel<GUM_SCALAR>::idFromName(const std::string& name) const {
-  try {
-    return _id2name_.first(name); // throws NotFound if missing
-  } catch (NotFound&) {
-    GUM_ERROR(NotFound, "Unknown variable name: " << name);
+NodeId CausalModel<GUM_SCALAR>::idFromName(const std::string& name) const {
+  if (_id2name_.existsSecond(name)) {
+    return _id2name_.first(name);
+  }
+  else {
+   return _observedBN_.idFromName(name);
   }
 }
 
 // implement const std::string& nameFromId(NodeId id) const;
 template <typename GUM_SCALAR>
-const std::string&
-CausalModel<GUM_SCALAR>::nameFromId(NodeId id) const {
-  try {
-    return _id2name_.second(id); // throws NotFound if missing
-  } catch (NotFound&) {
-    GUM_ERROR(NotFound, "Unknown variable id: " << id);
-  }
+std::string CausalModel<GUM_SCALAR>::nameFromId(NodeId id) const {
+    if (_id2name_.existsFirst(id)) {
+        return _id2name_.second(id);
+    }
+    else {
+        return _observedBN_.variable(id).name();
+    }
 }
 
-// ===============================
-// Static utilities
-// ===============================
-
-template <typename GUM_SCALAR>
-Set<std::string> CausalModel<GUM_SCALAR>::BN2names(const BayesNet<GUM_SCALAR>& bn) {
-  Set<std::string> names;
-  for (const auto node : bn.nodes()) {
-    names.insert(bn.variable(node).name());
-  }
-  return names;
-}
-
-
-template <typename GUM_SCALAR>
-Bijection<NodeId, std::string>
-CausalModel<GUM_SCALAR>::id2nameFromBN(const BayesNet<GUM_SCALAR>& bn) {
-  Bijection<NodeId, std::string> mapping;
-  for (const auto node : bn.nodes()) {
-    mapping.insert(node, bn.variable(node).name());
-  }
-  return mapping;
-}
 
 } // namespace gum
