@@ -1,0 +1,299 @@
+/****************************************************************************
+ *   This file is part of the aGrUM/pyAgrum library.                        *
+ *                                                                          *
+ *   Copyright (c) 2005-2025 by                                             *
+ *       - Pierre-Henri WUILLEMIN(_at_LIP6)                                 *
+ *       - Christophe GONZALES(_at_AMU)                                     *
+ *                                                                          *
+ *   The aGrUM/pyAgrum library is free software; you can redistribute it    *
+ *   and/or modify it under the terms of either :                           *
+ *                                                                          *
+ *    - the GNU Lesser General Public License as published by               *
+ *      the Free Software Foundation, either version 3 of the License,      *
+ *      or (at your option) any later version,                              *
+ *    - the MIT license (MIT),                                              *
+ *    - or both in dual license, as here.                                   *
+ *                                                                          *
+ *   (see https://agrum.gitlab.io/articles/dual-licenses-lgplv3mit.html)    *
+ *                                                                          *
+ *   This aGrUM/pyAgrum library is distributed in the hope that it will be  *
+ *   useful, but WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED,          *
+ *   INCLUDING BUT NOT LIMITED TO THE WARRANTIES MERCHANTABILITY or FITNESS *
+ *   FOR A PARTICULAR PURPOSE  AND NONINFRINGEMENT. IN NO EVENT SHALL THE   *
+ *   AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER *
+ *   LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE,        *
+ *   ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR  *
+ *   OTHER DEALINGS IN THE SOFTWARE.                                        *
+ *                                                                          *
+ *   See LICENCES for more details.                                         *
+ *                                                                          *
+ *   SPDX-FileCopyrightText: Copyright 2005-2025                            *
+ *       - Pierre-Henri WUILLEMIN(_at_LIP6)                                 *
+ *       - Christophe GONZALES(_at_AMU)                                     *
+ *   SPDX-License-Identifier: LGPL-3.0-or-later OR MIT                      *
+ *                                                                          *
+ *   Contact  : info_at_agrum_dot_org                                       *
+ *   homepage : http://agrum.gitlab.io                                      *
+ *   gitlab   : https://gitlab.com/agrumery/agrum                           *
+ *                                                                          *
+ ****************************************************************************/
+/**
+ * @file
+ * @brief d-separation utilities implementation
+ */
+
+ /****************************************************************************
+ *   aGrUM/pyAgrum — DSeparation implementation                              *
+ ****************************************************************************/
+
+#include <agrum/CM/dSeparation.h>
+#include <agrum/BN/algorithms/barrenNodesFinder.h>
+
+#include <queue>
+#include <unordered_set>
+#include <algorithm>
+
+
+namespace gum {
+
+// --------------------------- small helpers -------------------------------
+
+namespace {
+  // set union: C = A ∪ B
+  inline void _unionInto(NodeSet& C, const NodeSet& A) {
+    for (const auto n : A) C.insert(n);
+  }
+
+  inline NodeSet _unionSets(const NodeSet& A, const NodeSet& B) {
+    NodeSet C = A;
+    _unionInto(C, B);
+    return C;
+  }
+
+  inline NodeSet _union3(const NodeSet& A, const NodeSet& B, const NodeSet& C) {
+    NodeSet U = A; _unionInto(U, B); _unionInto(U, C); return U;
+  }
+
+  // Intersect a set with the nodes currently present in an UndiGraph
+  inline NodeSet _filterToGraphNodes(const UndiGraph& ug, const NodeSet& S) {
+    NodeSet out;
+    for (const auto n : S) if (ug.existsNode(n)) out.insert(n);
+    return out;
+  }
+
+  // Gather all parents of nodes in X
+  inline NodeSet _parentsOfX(const DAG& dag, const NodeSet& X) {
+    NodeSet P;
+    for (const auto x : X) {
+      for (const auto p : dag.parents(x)) P.insert(p);
+    }
+    return P;
+  }
+
+  // Gather all children of nodes in X
+  inline NodeSet _childrenOfX(const DAG& dag, const NodeSet& X) {
+    NodeSet C;
+    for (const auto x : X) {
+      for (const auto c : dag.children(x)) C.insert(c);
+    }
+    return C;
+  }
+
+  // Remove every node of Z from the undirected graph
+  inline void _eraseAll(UndiGraph& ug, const NodeSet& Z) {
+    for (const auto z : Z) if (ug.existsNode(z)) ug.eraseNode(z);
+  }
+
+  static inline void removeConditioningNodes(UndiGraph& ug, const gum::NodeSet& Z) {
+  _eraseAll(ug, Z);
+}
+}
+
+// ==========================================================================
+// Core public API
+// ==========================================================================
+
+/**
+ * Pyagrum counterpart: isDSep  (delegates to isDSep_tech2)
+ */
+bool DSeparation::isDSeparated(const DAG& dag,
+                               const NodeSet& X,
+                               const NodeSet& Y,
+                               const NodeSet& Z) {
+  // delegate directly to aGrUM's built-in d-separation
+  return dag.dSeparation(X, Y, Z);
+}
+
+/**
+ * Pyagrum counterpart: isDSep_parents / _isDSep_tech2_parents
+ */
+// DSeparation.cpp
+bool DSeparation::isBackdoorSeparated(const DAG& dag,
+                                      const NodeSet& X,
+                                      const NodeSet& Y,
+                                      const NodeSet& Z) {
+  // Build G_{\underline X}: remove all outgoing arcs from X
+  DAG g = dag;
+
+  for (auto x : X) {
+    // collect children first, then erase (avoid iterator invalidation)
+    std::vector<NodeId> ch;
+    ch.reserve(g.children(x).size());
+    for (auto c : g.children(x)) ch.push_back(c);
+
+    for (auto c : ch) {
+      if (g.existsArc(x, c)) g.eraseArc(gum::Arc(x, c));
+    }
+  }
+
+  // Now test standard d-separation in G_{\underline X}
+  return g.dSeparation(X, Y, Z);
+}
+
+
+/**
+ * Pyagrum counterpart: _isDSep_tech2_children
+ */
+bool DSeparation::isForwardSeparated(const DAG& dag,
+                                     const NodeSet& X,
+                                     const NodeSet& Y,
+                                     const NodeSet& Z) {
+
+    // 1) Moralize only on Anc(Y ∪ Z)
+    NodeSet interest = Y;
+    for (auto z : Z) interest.insert(z);
+    UndiGraph ug = dag.moralizedAncestralGraph(interest);
+
+    // Ensure nodes in X exist in ug (without adding X—parent edges)
+    for (auto x : X)
+    if (!ug.existsNode(x)) ug.addNodeWithId(x);
+
+    // 2) Add edges X—c for children c of X that are already in ug
+    for (auto x : X) {
+      for (auto c : dag.children(x)) {
+          if (ug.existsNode(c) && !ug.existsEdge(x, c)) ug.addEdge(x, c);
+      }
+    }
+
+    // 3) Remove conditioning nodes Z
+    removeConditioningNodes(ug, Z);
+
+    // 4) Return true iff there is no undirected path between X and Y
+    return !anyUndirectedConnection(ug, X, Y);
+
+}
+
+// ==========================================================================
+// Optional reduction for speed
+// ==========================================================================
+
+/**
+ * Pyagrum counterpart: dSep_reduce (uses _barren_nodes)
+ *
+ */
+DAG DSeparation::reduceForDSeparation(const DAG& dag,
+                                      const NodeSet& X,
+                                      const NodeSet& Y,
+                                      const NodeSet& Z) {
+  // Targets = X ∪ Y
+  NodeSet targets = X;
+  for (auto y : Y) targets.insert(y);
+
+  // Configure finder
+  gum::BarrenNodesFinder finder(&dag);
+  finder.setTargets(&targets);   // nodes we care about reaching
+  finder.setEvidence(&Z);        // observed nodes
+
+  // Compute barren nodes and remove them from a copy
+  NodeSet barren = finder.barrenNodes();
+  DAG reduced = dag;
+  for (auto n : barren)
+    if (reduced.existsNode(n)) reduced.eraseNode(n);
+
+  return reduced;
+}
+
+
+/**
+ * Pyagrum counterpart: _barren_nodes
+ *
+ * Implementation note:
+ *  Conservative stand-in: nodes outside Anc(X∪Y∪Z) are "barren" for our purpose.
+ *  If BarrenNodesFinder::barrenNodes() is available, you can implement this
+ *  as a thin wrapper around it.
+ */
+DSeparation::NodeSet
+DSeparation::findBarrenNodes(const DAG& dag,
+                             const NodeSet& evidenceZ,
+                             const NodeSet& targetsXY) {
+  gum::BarrenNodesFinder finder(&dag);
+  finder.setTargets(&targetsXY);
+  finder.setEvidence(&evidenceZ);
+  return finder.barrenNodes();
+}
+
+
+// ==========================================================================
+// Minimal structural helpers
+// ==========================================================================
+
+/**
+ * Pyagrum counterpart: _is_ascendant
+ */
+bool DSeparation::isAncestorOf(const DAG& dag, NodeId x, NodeId y) {
+  for (const auto a : dag.ancestors(y)) if (a == x) return true;
+  return false;
+}
+
+/**
+ * Pyagrum counterpart: _is_descendant
+ */
+bool DSeparation::isDescendantOf(const DAG& dag, NodeId x, NodeId y) {
+  for (const auto d : dag.descendants(y)) if (d == x) return true;
+  return false;
+}
+
+// ==========================================================================
+// Internal helper
+// ==========================================================================
+
+/**
+ * Pyagrum counterpart: _is_path_x_y
+ */
+bool DSeparation::anyUndirectedConnection(const UndiGraph& ug,
+                                          const NodeSet& A,
+                                          const NodeSet& B) {
+  // Put all targets in a hash-set for O(1) hit-testing
+  std::unordered_set<NodeId> target;
+  target.reserve(B.size());
+  for (const auto b : B) target.insert(b);
+
+  // BFS from each start node in A (skipping duplicates via 'visited')
+  NodeSet globalVisited;
+  std::queue<NodeId> q;
+
+  for (const auto s : A) {
+    if (!ug.existsNode(s)) continue;
+    if (globalVisited.exists(s)) continue;
+
+    q = std::queue<NodeId>();
+    q.push(s);
+    globalVisited.insert(s);
+
+    while (!q.empty()) {
+      NodeId u = q.front(); q.pop();
+      if (target.find(u) != target.end()) return true;
+
+      for (const auto v : ug.neighbours(u)) {
+        if (!globalVisited.exists(v)) {
+          globalVisited.insert(v);
+          q.push(v);
+        }
+      }
+    }
+  }
+
+  return false;
+}
+
+} // namespace gum
