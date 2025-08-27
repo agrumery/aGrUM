@@ -58,7 +58,7 @@ namespace gum {
   class CausalModel {
     private:
     /// The underlying BayesNet representing the observed part of the model
-    BayesNet<GUM_SCALAR> _observedBN_;
+    BayesNet<GUM_SCALAR> _observationalBN_;
 
     /// The underlying DAG representing the causal structure of the model
     DAG _causalDAG_;
@@ -72,12 +72,12 @@ namespace gum {
     CausalModel() = delete;
 
     /// constructor with no latent variables
-    explicit CausalModel(const BayesNet<GUM_SCALAR>& observedBN)
-        : _observedBN_(observedBN),
-          _causalDAG_(observedBN.dag()) {}
+    explicit CausalModel(const BayesNet<GUM_SCALAR>& observationalBN)
+        : _observationalBN_(observationalBN),
+          _causalDAG_(observationalBN.dag()) {}
 
     /// constructor with LatentDescriptorVector
-    explicit CausalModel(const BayesNet<GUM_SCALAR>& observedBN,
+    explicit CausalModel(const BayesNet<GUM_SCALAR>& observationalBN,
                     const LatentDescriptorVector& latentVarsDescriptor,
                     bool keepArcs = false);
 
@@ -121,6 +121,10 @@ namespace gum {
     /// Check if a causal arc x->y exists using variable names
     bool existsArc(const std::string& x, const std::string& y) const;
 
+    /// Create an causal model induced by a subset of nodes.
+    CausalModel<GUM_SCALAR>
+    inducedCausalSubModel(const CausalModel<GUM_SCALAR>& cm, NodeSet subset) const;
+
     /// Returns friendly display of the causal DAG in DOT format
     std::string toDot(const bool   SHOW_LATENT_NAMES = false,
                       const char* NODE_BG  = "#404040",
@@ -128,8 +132,8 @@ namespace gum {
                       const char* EDGE_COL = "#4A4A4A") const;
 
     /// Returns the underlying BayesNet representing the observed part of the model
-    const BayesNet<GUM_SCALAR>& observedBayesNet() const {
-      return _observedBN_;
+    const BayesNet<GUM_SCALAR>& observationalBN() const {
+      return _observationalBN_;
     }
     /// Returns the underlying DAG representing the causal structure of the model
     const DAG& causalDAG() const {
@@ -151,8 +155,20 @@ namespace gum {
     /// Returns the Set of latent variable names
     Set<std::string> latentVariablesNames() const;
 
-    /// connected components from a graph/graphical models
-    // HashTable<Size, NodeSet> connectedComponents() const;
+    /// Parents of a node (by NodeId) in the causal DAG (including latents)
+    NodeSet parents(NodeId x) const;
+
+    /// Parents of a node (by name) in the causal DAG (including latents)
+    NodeSet parents(const std::string& name) const;
+
+    /// Children of a node (by NodeId) in the causal DAG (including latents)
+    NodeSet children(NodeId x) const;
+
+    /// Children of a node (by name) in the causal DAG (including latents)
+    NodeSet children(const std::string& name) const;
+
+    /// connected components of the causal DAG (observed + latent)
+    HashTable<NodeId, NodeSet> connectedComponents() const;
 
   };
 

@@ -53,7 +53,7 @@ namespace gum_tests {
       gum::CausalModel<double> cm(bn);
 
       // BN has 2 variables
-      TS_ASSERT_EQUALS(cm.observedBayesNet().size(), 2u);
+      TS_ASSERT_EQUALS(cm.observationalBN().size(), 2u);
       TS_ASSERT(cm.existsArc("A","B"));
       TS_ASSERT(!cm.existsArc("B","A"));
     }
@@ -121,8 +121,141 @@ namespace gum_tests {
       TS_ASSERT(dot.find("\"Drug\"->\"Patient\"")   != std::string::npos);
     }
 
+
+    GUM_ACTIVE_TEST(InducedCausalSubModel_DropsSingletonLatent) {
+      // Base BN: X->Y->Z and W->Z (W will be excluded in subsets)
+      auto bn = gum::BayesNet<double>::fastPrototype("X->Y->Z;W->Z");
+      gum::CausalModel<double> cm(bn);
+
+      // Create latent U with TWO children (valid): confounds X and Z
+      std::vector<gum::NodeId> childIds{ bn.idFromName("X"), bn.idFromName("Z") };
+      cm.addLatentVariable("U", childIds);  // OK: |children| = 2
+
+      // Case A: subset {X, Y, Z} → U kept (still has 2 children)
+      {
+        gum::NodeSet subsetA;
+        subsetA.insert(bn.idFromName("X"));
+        subsetA.insert(bn.idFromName("Y"));
+        subsetA.insert(bn.idFromName("Z"));
+
+        auto subA = cm.inducedCausalSubModel(cm, subsetA);
+
+        TS_ASSERT_EQUALS(subA.observationalBN().size(), 3u);
+        TS_ASSERT(subA.existsArc("X", "Y"));
+        TS_ASSERT(subA.existsArc("Y", "Z"));
+        TS_ASSERT(!subA.existsArc("X", "Z")); // removed by latent surgery
+
+        // U exists and still has 2 children
+        TS_ASSERT(subA.latentVariablesNames().contains("U"));
+        TS_ASSERT(subA.existsArc("U", "X"));
+        TS_ASSERT(subA.existsArc("U", "Z"));
+      }
+
+      // Case B: subset {Y, Z} → U would have a single child (Z) ⇒ must DISAPPEAR
+      {
+        gum::NodeSet subsetB;
+        subsetB.insert(bn.idFromName("Y"));
+        subsetB.insert(bn.idFromName("Z"));
+
+        auto subB = cm.inducedCausalSubModel(cm, subsetB);
+
+        TS_ASSERT_EQUALS(subB.observationalBN().size(), 2u);
+        TS_ASSERT(subB.existsArc("Y", "Z"));  // observed arc preserved
+
+        // U must be absent; do NOT call existsArc("U", ...)
+        TS_ASSERT(!subB.latentVariablesNames().contains("U"));
+      }
+
+      // Case C: subset {Y} → U also disappears (no children kept)
+      {
+        gum::NodeSet subsetC;
+        subsetC.insert(bn.idFromName("Y"));
+
+        auto subC = cm.inducedCausalSubModel(cm, subsetC);
+
+        TS_ASSERT_EQUALS(subC.observationalBN().size(), 1u);
+        // U must be absent; do NOT call existsArc("U", ...)
+        TS_ASSERT(!subC.latentVariablesNames().contains("U"));
+      }
+    }
+
+
+
+    GUM_ACTIVE_TEST(ParentsChildrenAndConnectedComponents) {
+      // Two disjoint observed components: A->B   and   C->D
+      auto bn = gum::BayesNet<double>::fastPrototype("A->B;C->D");
+      gum::CausalModel<double> cm(bn);
+
+      // --- parents / children (by name)
+      {
+        auto pB = cm.parents("B");
+        TS_ASSERT_EQUALS(pB.size(), 1u);
+        TS_ASSERT(pB.contains(cm.idFromName("A")));
+
+        auto cA = cm.children("A");
+        TS_ASSERT_EQUALS(cA.size(), 1u);
+        TS_ASSERT(cA.contains(cm.idFromName("B")));
+
+        auto pC = cm.parents("C");
+        TS_ASSERT_EQUALS(pC.size(), 0u);
+
+        auto cD = cm.children("D");
+        TS_ASSERT_EQUALS(cD.size(), 0u);
+      }
+
+      // --- same via NodeId overloads (should match)
+      {
+        auto idB = bn.idFromName("B");
+        auto idA = bn.idFromName("A");
+        auto idC = bn.idFromName("C");
+        auto idD = bn.idFromName("D");
+
+        auto pB = cm.parents(idB);
+        TS_ASSERT_EQUALS(pB.size(), 1u);
+        TS_ASSERT(pB.contains(idA));
+
+        auto cA = cm.children(idA);
+        TS_ASSERT_EQUALS(cA.size(), 1u);
+        TS_ASSERT(cA.contains(idB));
+
+        TS_ASSERT_EQUALS(cm.parents(idC).size(), 0u);
+        TS_ASSERT_EQUALS(cm.children(idD).size(), 0u);
+      }
+
+      // --- connected components: initially 2 ( {A,B} and {C,D} )
+      {
+        auto comps = cm.connectedComponents();
+        TS_ASSERT_EQUALS(comps.size(), 2u);
+      }
+
+      // Add latent U that confounds B and C -> bridges the two components
+      {
+        std::vector<gum::NodeId> childIds{ bn.idFromName("B"), bn.idFromName("C") };
+        cm.addLatentVariable("U", childIds /*keepArcs default = false*/);
+
+        // Parents now reflect the latent
+        auto pB = cm.parents("B");
+        TS_ASSERT_EQUALS(pB.size(), 2u);              // {A, U}
+        TS_ASSERT(pB.contains(cm.idFromName("A")));
+        TS_ASSERT(pB.contains(cm.idFromName("U")));
+
+        auto pC = cm.parents("C");
+        TS_ASSERT_EQUALS(pC.size(), 1u);              // {U}
+        TS_ASSERT(pC.contains(cm.idFromName("U")));
+
+        auto cU = cm.children("U");
+        TS_ASSERT_EQUALS(cU.size(), 2u);              // {B, C}
+        TS_ASSERT(cU.contains(cm.idFromName("B")));
+        TS_ASSERT(cU.contains(cm.idFromName("C")));
+
+        // Components collapse to 1 due to the latent bridge
+        auto comps2 = cm.connectedComponents();
+        TS_ASSERT_EQUALS(comps2.size(), 1u);
+      }
+    }
+
+
   };
 
 
-
-}
+}  // namespace gum_tests
