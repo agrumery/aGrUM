@@ -95,9 +95,14 @@ namespace gum {
 
       already.insert(node);
       auto par = parents(node);
-      for (const auto nei: neighbours(node)) {
+      auto cc  = neighbours(node);
+      while (!cc.empty()) {
+        const auto nei = cc.popFirst();
+        if (already.contains(nei)) continue;
+
         already.insert(nei);
         par += parents(nei);
+        cc += neighbours(nei) - already;
       }
 
       for (auto it1 = par.begin(); it1 != par.end(); ++it1) {

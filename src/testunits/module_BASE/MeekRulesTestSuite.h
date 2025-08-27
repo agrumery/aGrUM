@@ -56,14 +56,11 @@ namespace gum_tests {
       for (unsigned int i = 0; i < 6; ++i) {
         pdag.addNodeWithId(i);
       }
-      pdag.addArc(0, 1);
-      pdag.addArc(1, 2);
-
-      pdag.addEdge(2, 3);
-      pdag.addEdge(3, 5);
-      pdag.addEdge(5, 4);
-      pdag.addEdge(2, 1);
-      pdag.addEdge(4, 1);
+      TS_GUM_ASSERT_THROWS_NOTHING(pdag.addArc(0, 1))
+      TS_GUM_ASSERT_THROWS_NOTHING(pdag.addArc(1, 2))
+      TS_GUM_ASSERT_THROWS_NOTHING(pdag.addEdge(2, 3))
+      TS_GUM_ASSERT_THROWS_NOTHING(pdag.addEdge(3, 5))
+      TS_GUM_ASSERT_THROWS_NOTHING(pdag.addEdge(5, 4))
 
       gum::MeekRules mr;
 

@@ -145,12 +145,18 @@ namespace gum_tests {
       buildPDAG(graph);
 
       TS_ASSERT_THROWS(graph.addArc(id4, id1), const gum::InvalidDirectedCycle&)
-      // TS_ASSERT_THROWS(graph.addArc(id8, id1), const gum::InvalidPartiallyDirectedCycle&)
-      // TS_ASSERT_THROWS(graph.addEdge(id0, id4), const gum::InvalidPartiallyDirectedCycle&)
+      TS_ASSERT_THROWS(graph.addArc(id8, id1), const gum::InvalidPartiallyDirectedCycle&)
+      TS_ASSERT_THROWS(graph.addEdge(id0, id4), const gum::InvalidPartiallyDirectedCycle&)
+      TS_ASSERT_THROWS(graph.addEdge(id8, id1), const gum::InvalidPartiallyDirectedCycle&)
 
-      TS_GUM_ASSERT_THROWS_NOTHING(graph.addEdge(id8, id1))
-      TS_GUM_ASSERT_THROWS_NOTHING(graph.addEdge(id0, id4))
+      TS_GUM_ASSERT_THROWS_NOTHING(graph.addEdge(id8, id4))
+      TS_GUM_ASSERT_THROWS_NOTHING(graph.addEdge(id0, id7))
       TS_GUM_ASSERT_THROWS_NOTHING(graph.addEdge(id3, id6))
+
+      auto id9 = graph.addNode();
+      TS_GUM_ASSERT_THROWS_NOTHING(graph.addEdge(id8, id9))
+      TS_ASSERT_THROWS(graph.addArc(id8, id1), const gum::InvalidPartiallyDirectedCycle&)
+      TS_ASSERT_THROWS(graph.addEdge(id8, id1), const gum::InvalidPartiallyDirectedCycle&)
 
       TS_ASSERT_THROWS(graph.addArc(1000, id1), const gum::InvalidNode&)
       TS_ASSERT_THROWS(graph.addArc(id1, 1000), const gum::InvalidNode&)
@@ -600,5 +606,56 @@ namespace gum_tests {
         TS_ASSERT(p.cSeparation(1, 3, gum::NodeSet({0})))
       }
     }
+
+    GUM_ACTIVE_TEST(MoralGraphFromLouisDerumaux) {
+      gum::PDAG graph;
+      buildPDAG(graph);
+      gum::UndiGraph moral = graph.moralGraph();
+      TS_ASSERT(moral.existsEdge(id0, id7))
+    }
+
+    GUM_ACTIVE_TEST(cSeparationBugFromLouisDerumaux) {
+      auto p = gum::PDAG();
+
+      const auto a  = p.addNode();
+      const auto b  = p.addNode();
+      const auto c  = p.addNode();
+      const auto d  = p.addNode();
+      const auto e  = p.addNode();
+      const auto f  = p.addNode();
+      const auto g  = p.addNode();
+      const auto h  = p.addNode();
+      const auto i  = p.addNode();
+      const auto j  = p.addNode();
+      const auto k  = p.addNode();
+      const auto z1 = p.addNode();
+      const auto z2 = p.addNode();
+      const auto y  = p.addNode();
+
+      p.addEdge(a, b);
+      p.addEdge(a, c);
+      p.addEdge(b, d);
+      p.addArc(y, z2);
+      p.addArc(c, e);
+      p.addArc(d, f);
+      p.addArc(d, g);
+      p.addEdge(z2, z1);
+      p.addEdge(z1, e);
+      p.addEdge(e, f);
+      p.addEdge(g, h);
+      p.addArc(e, j);
+      p.addArc(f, k);
+      p.addArc(g, k);
+      p.addEdge(i, j);
+
+      const auto m = p.moralizedAncestralGraph({c, e, f, h});
+
+      TS_ASSERT(m.existsEdge(c, d))
+      TS_ASSERT(m.existsEdge(y, c))
+      TS_ASSERT(m.existsEdge(y, d))
+
+      TS_ASSERT(!p.cSeparation(e, h, {f, c}))
+    }
   };
+
 }   // namespace gum_tests

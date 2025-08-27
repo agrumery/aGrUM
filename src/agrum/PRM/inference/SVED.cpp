@@ -48,13 +48,11 @@
 
 #include <agrum/PRM/inference/SVED.h>
 
-namespace gum {
-  namespace prm {
+namespace gum::prm {
 
 
 #ifndef GUM_NO_EXTERN_TEMPLATE_CLASS
-    template class SVED< double >;
+  template class SVED< double >;
 #endif
 
-  } /* namespace prm */
-} /* namespace gum */
+}   // namespace gum::prm
