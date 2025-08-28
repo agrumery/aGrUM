@@ -166,7 +166,7 @@ macro(gum_add_python_module MODULENAME)
   add_custom_command(TARGET ${_PYAGRUMLIB} POST_BUILD COMMAND ${CMAKE_COMMAND} -E copy_directory "${CMAKE_CURRENT_SOURCE_DIR}/pyLibs/skbn" "${CMAKE_CURRENT_BINARY_DIR}/skbn")
   add_custom_command(TARGET ${_PYAGRUMLIB} POST_BUILD COMMAND ${CMAKE_COMMAND} -E copy_directory "${CMAKE_CURRENT_SOURCE_DIR}/pyLibs/clg" "${CMAKE_CURRENT_BINARY_DIR}/clg")
   add_custom_command(TARGET ${_PYAGRUMLIB} POST_BUILD COMMAND ${CMAKE_COMMAND} -E copy_directory "${CMAKE_CURRENT_SOURCE_DIR}/pyLibs/ctbn" "${CMAKE_CURRENT_BINARY_DIR}/ctbn")
-  add_custom_command(TARGET ${_PYAGRUMLIB} POST_BUILD COMMAND ${CMAKE_COMMAND} -E copy_directory "${CMAKE_CURRENT_SOURCE_DIR}/pyLibs/explain" "${CMAKE_CURRENT_BINARY_DIR}/explain")
+  add_custom_command(TARGET ${_PYAGRUMLIB} POST_BUILD COMMAND ${CMAKE_COMMAND} -E copy_directory "${CMAKE_CURRENT_SOURCE_DIR}/pyLibs/explain" "${CMAKE_CURRENT_BINARY_DIR}/explain") # including notebook
 
 endmacro()
 
@@ -213,6 +213,7 @@ file(GLOB GUMCLG_FILES "${CMAKE_CURRENT_SOURCE_DIR}/pyLibs/clg/*.py")
 file(GLOB GUMCTBN_FILES "${CMAKE_CURRENT_SOURCE_DIR}/pyLibs/ctbn/*.py")
 file(GLOB GUMBNMIXTURE_FILES "${CMAKE_CURRENT_SOURCE_DIR}/pyLibs/bnmixture/*.py")
 file(GLOB GUMEXPLAIN_FILES "${CMAKE_CURRENT_SOURCE_DIR}/pyLibs/explain/*.py")
+file(GLOB GUMEXPLAINNOTEBOOKS_FILES "${CMAKE_CURRENT_SOURCE_DIR}/pyLibs/explain/notebook/*.py")
 
 # include("${CMAKE_CURRENT_SOURCE_DIR}/../../VERSION.txt")
 set(PYAGRUM_VERSION "${AGRUM_VERSION_MAJOR}.${AGRUM_VERSION_MINOR}.${AGRUM_VERSION_PATCH}")
@@ -251,6 +252,7 @@ install(FILES ${GUMCTBN_FILES} DESTINATION ${INSTALL_PYTHONDIR}/pyagrum/ctbn)
 install(FILES ${GUMSKBN_FILES} DESTINATION ${INSTALL_PYTHONDIR}/pyagrum/skbn)
 install(FILES ${GUMBNMIXTURE_FILES} DESTINATION ${INSTALL_PYTHONDIR}/pyagrum/bnmixture)
 install(FILES ${GUMEXPLAIN_FILES} DESTINATION ${INSTALL_PYTHONDIR}/pyagrum/explain)
+install(FILES ${GUMEXPLAINNOTEBOOKS_FILES} DESTINATION ${INSTALL_PYTHONDIR}/pyagrum/explain/notebook)
 
 add_test(NAME python_quick COMMAND ${Python_EXECUTABLE} ${CMAKE_CURRENT_SOURCE_DIR}/testunits/gumTest.py -m quick -t all)
 set_tests_properties(python_quick PROPERTIES ENVIRONMENT "PYTHONPATH=${CMAKE_CURRENT_BINARY_DIR}/..")

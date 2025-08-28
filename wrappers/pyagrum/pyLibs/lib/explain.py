@@ -43,7 +43,6 @@ tools for BN qualitative analysis and explainability
 """
 
 import warnings
-warnings.simplefilter('always')
 warnings.warn(
     "The module 'pyagrum.lib.explain' has been deprecated since version 2.2.1. "
     "Please use the 'pyagrum.explain' module instead."

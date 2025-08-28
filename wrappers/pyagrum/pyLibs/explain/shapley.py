@@ -7,7 +7,7 @@ import matplotlib.pyplot as plt
 from pyagrum.explain.notebook import *
 # GL
 import warnings
-    
+
 class ShapValues :
     """
     Class to compute Shapley values for a target variable in a Bayesian network.
@@ -25,7 +25,7 @@ class ShapValues :
             A tuple containing a pandas DataFrame and a boolean indicating whether the DataFrame contains labels or positions.
         sample_size : int
             The size of the background sample to generate if `background` is None.
-        logit : bool 
+        logit : bool
             If True, applies the logit transformation to the probabilities.
 
         Raises:
@@ -71,12 +71,13 @@ class ShapValues :
 
             plt.tight_layout()
             plt.show()
-    
-    def conditional(self, 
-                    df, 
-                    y=1, 
-                    plot=False, 
-                    plot_importance=False) :
+
+    def conditional(self,
+                    df,
+                    y:int=1,
+                    plot:bool=False,
+                    plot_importance:bool=False,
+                    percentage:bool=False) :
         """
         Computes the conditional Shapley values for each variable.
 
@@ -90,7 +91,7 @@ class ShapValues :
             If True, plots the waterfall or beeswarm plot depending on the number of rows in df (default is False).
         plot_importance : bool, optional
             If True, plots the bar chart of feature importance (default is False).
-        
+
         Returns:
         -------
         Dict[str, float]
@@ -100,9 +101,9 @@ class ShapValues :
         explanation = explainer.compute((df, True))
         self._plot(explanation, y, plot, plot_importance)
         return explanation.importances[y]
-        
-    
-    def marginal(self, 
+
+
+    def marginal(self,
                  df,
                  y=1,
                  sample_size=200,
@@ -124,7 +125,7 @@ class ShapValues :
             If True, plots the waterfall or beeswarm plot depending on the number of rows in df (default is False).
         plot_importance : bool, optional
             If True, plots the bar chart of feature importance (default is False).
-        
+
         Returns:
         -------
         Dict[str, float]
@@ -135,7 +136,7 @@ class ShapValues :
         self._plot(explanation, y, plot, plot_importance)
         return explanation.importances[y]
 
-    def causal(self, 
+    def causal(self,
                  df,
                  y=1,
                  sample_size=200,
@@ -157,7 +158,7 @@ class ShapValues :
             If True, plots the waterfall or beeswarm plot depending on the number of rows in df (default is False).
         plot_importance : bool, optional
             If True, plots the bar chart of feature importance (default is False).
-        
+
         Returns:
         -------
         Dict[str, float]
