@@ -1,148 +1,191 @@
-# Imports
+############################################################################
+#   This file is part of the aGrUM/pyAgrum library.                        #
+#                                                                          #
+#   Copyright (c) 2005-2025 by                                             #
+#       - Pierre-Henri WUILLEMIN(_at_LIP6)                                 #
+#       - Christophe GONZALES(_at_AMU)                                     #
+#                                                                          #
+#   The aGrUM/pyAgrum library is free software; you can redistribute it    #
+#   and/or modify it under the terms of either :                           #
+#                                                                          #
+#    - the GNU Lesser General Public License as published by               #
+#      the Free Software Foundation, either version 3 of the License,      #
+#      or (at your option) any later version,                              #
+#    - the MIT license (MIT),                                              #
+#    - or both in dual license, as here.                                   #
+#                                                                          #
+#   (see https://agrum.gitlab.io/articles/dual-licenses-lgplv3mit.html)    #
+#                                                                          #
+#   This aGrUM/pyAgrum library is distributed in the hope that it will be  #
+#   useful, but WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED,          #
+#   INCLUDING BUT NOT LIMITED TO THE WARRANTIES MERCHANTABILITY or FITNESS #
+#   FOR A PARTICULAR PURPOSE  AND NONINFRINGEMENT. IN NO EVENT SHALL THE   #
+#   AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER #
+#   LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE,        #
+#   ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR  #
+#   OTHER DEALINGS IN THE SOFTWARE.                                        #
+#                                                                          #
+#   See LICENCES for more details.                                         #
+#                                                                          #
+#   SPDX-FileCopyrightText: Copyright 2005-2025                            #
+#       - Pierre-Henri WUILLEMIN(_at_LIP6)                                 #
+#       - Christophe GONZALES(_at_AMU)                                     #
+#   SPDX-License-Identifier: LGPL-3.0-or-later OR MIT                      #
+#                                                                          #
+#   Contact  : info_at_agrum_dot_org                                       #
+#   homepage : http://agrum.gitlab.io                                      #
+#   gitlab   : https://gitlab.com/agrumery/agrum                           #
+#                                                                          #
+############################################################################
+
 from pyagrum.explain._ShapleyValues import ShapleyValues
 from pyagrum.explain._ComputationMarginal import MarginalComputation
 from pyagrum.explain._CustomShapleyCache import CustomShapleyCache
 from pyagrum.explain._FIFOCache import FIFOCache
+
 # Calculations
 import pandas as pd
 import numpy as np
+
 # aGrUM
 import pyagrum as gum
+
 # GL
 import warnings
 
-class MarginalShapValues(ShapleyValues, MarginalComputation) :
+
+class MarginalShapValues(ShapleyValues, MarginalComputation):
+  """
+  The MarginalShapValues class computes the Marginal Shapley values for a given target node in a Bayesian Network.
+  """
+
+  def __init__(self, bn: gum.BayesNet, target: int, background: tuple | None, sample_size=1000, logit=True):
     """
-    The MarginalShapValues class computes the Marginal Shapley values for a given target node in a Bayesian Network.
+    Parameters:
+    ------
+    bn : pyagrum.BayesNet
+        The Bayesian Network.
+    target : int | str
+        The node id (or node name) of the target.
+    background : Tuple(pandas.DataFrame, bool) | None
+        A tuple containing a pandas DataFrame and a boolean indicating whether the DataFrame contains labels or positions.
+    sample_size : int
+        The size of the background sample to generate if `background` is None.
+    logit : bool
+        If True, applies the logit transformation to the probabilities.
+
+    Raises:
+    ------
+    TypeError : If bn is not a gum.BayesNet instance, background is not a tuple or target is not an integer or string.
+    ValueError : If target is not a valid node id in the Bayesian Network or if sample_size is not a positive integer.
     """
+    super().__init__(bn, target, logit)
+    self._mb = self._markov_blanket()
+    # Processing background data
+    if background is None:
+      if not isinstance(sample_size, int):
+        raise TypeError("When `data`=None, `sample_size` must be an integer, but got {}".format(type(sample_size)))
+      else:
+        if sample_size < 1:
+          raise ValueError("`sample_size` must be greater than 1, but got {}".format(sample_size))
+        elif sample_size < 10:
+          warnings.warn("The sample size is small, which may lead to biased Shapley values.")
+      data = gum.generateSample(self.bn, sample_size, with_labels=False)[0].reindex(columns=self.feat_names).to_numpy()
+    else:
+      if not isinstance(background, tuple):
+        raise TypeError(f"`background` must be a tuple (pd.DataFrame, bool).")
+      data, with_labels = background
+      if not isinstance(with_labels, bool):
+        warnings.warn(
+          f"The second element of `background` should be a boolean, but got {type(with_labels)}. Unexpected calculations may occur."
+        )
+      if not isinstance(data, pd.DataFrame):
+        raise TypeError("The first element of `background` must be a pandas DataFrame, but got {}".format(type(data)))
+      if data.shape[0] < 2:
+        warnings.warn("You are giving a single row as a background data, which will lead to biased Shapley values.")
+      if data.shape[1] != self.M:
+        raise ValueError(
+          "The number of columns in the background data must match the number of variables in the Bayesian network. Although values outside the Markov blanket, including the target, are unused, they are required for indexing purposes."
+        )
+      data = data.reindex(columns=self.feat_names).to_numpy()
+      if with_labels:
+        data = self._labelToPos_df(data, [i for i in range(self.M) if i != self.target])
+    self._data, self.counts = np.unique(data, axis=0, return_counts=True)
+    self._N = int(np.sum(self.counts))
+    if self._N == 0:
+      raise ValueError("Background data can't be empty.")
+    self.baseline = self.func(
+      self._value(
+        data=self._data,
+        counts=self.counts,
+        elements=[i for i in range(self.M) if i != self.target],
+        sigma=[],
+        cache=FIFOCache(100),
+        func1=self._posterior,
+        params1={},
+        func2=self._weight,
+        params2={},
+      )
+    )
 
-    def __init__(self, bn: gum.BayesNet, target: int, background: tuple | None, sample_size=1000, logit=True) :
-        """
-        Parameters:
-        ------
-        bn : pyagrum.BayesNet
-            The Bayesian Network.
-        target : int | str
-            The node id (or node name) of the target.
-        background : Tuple(pandas.DataFrame, bool) | None
-            A tuple containing a pandas DataFrame and a boolean indicating whether the DataFrame contains labels or positions.
-        sample_size : int
-            The size of the background sample to generate if `background` is None.
-        logit : bool 
-            If True, applies the logit transformation to the probabilities.
+  def _coalition_contribution(self, k, ex, elements, feature, markovImpact, nodes_id, nodes_vals, cache):
+    # Computes the contribution of a coalition to the Shapley value.
+    key1, key2, _ = cache.generate_keys(self.bn, self.target, feature, nodes_id)
+    if k == 0:
+      interv = self._data.copy()
+      interv[:, nodes_id] = nodes_vals
+      cache.set(
+        ex,
+        key1,
+        self.func(
+          self._value(
+            data=interv,
+            counts=self.counts,
+            elements=elements,
+            sigma=[],
+            cache=markovImpact,
+            func1=self._posterior,
+            params1={},
+            func2=self._weight,
+            params2={},
+          )
+        ),
+      )
 
-        Raises:
-        ------
-        TypeError : If bn is not a gum.BayesNet instance, background is not a tuple or target is not an integer or string.
-        ValueError : If target is not a valid node id in the Bayesian Network or if sample_size is not a positive integer.
-        """
-        super().__init__(bn, target, logit)
-        self._mb = self._markov_blanket()
-        # Processing background data 
-        if background is None :
-            if not isinstance(sample_size, int) :
-                raise TypeError("When `data`=None, `sample_size` must be an integer, but got {}".format(type(sample_size)))
-            else :
-                if sample_size < 1 :
-                    raise ValueError("`sample_size` must be greater than 1, but got {}".format(sample_size))
-                elif sample_size < 10 :
-                    warnings.warn("The sample size is small, which may lead to biased Shapley values.")
-            data = gum.generateSample(self.bn, sample_size, with_labels=False)[0].reindex(columns=self.feat_names).to_numpy()
-        else :
-            if not isinstance(background, tuple) :
-                raise TypeError(f'`background` must be a tuple (pd.DataFrame, bool).')
-            data, with_labels = background
-            if not isinstance(with_labels, bool) :
-                warnings.warn(f'The second element of `background` should be a boolean, but got {type(with_labels)}. Unexpected calculations may occur.')
-            if not isinstance(data, pd.DataFrame) :
-                raise TypeError("The first element of `background` must be a pandas DataFrame, but got {}".format(type(data)))
-            if data.shape[0] < 2 :
-                warnings.warn("You are giving a single row as a background data, which will lead to biased Shapley values.")
-            if data.shape[1] != self.M :
-                raise ValueError("The number of columns in the background data must match the number of variables in the Bayesian network. Although values outside the Markov blanket, including the target, are unused, they are required for indexing purposes.")
-            data = data.reindex(columns=self.feat_names).to_numpy()
-            if with_labels :
-                data = self._labelToPos_df(data, [i for i in range(self.M) if i != self.target])
-        self._data, self.counts = np.unique(data, axis=0, return_counts=True)
-        self._N = int(np.sum(self.counts))
-        if self._N == 0 :
-            raise ValueError("Background data can't be empty.")
-        self.baseline = self.func( self._value( data=self._data,
-                                                counts=self.counts,
-                                                elements=[i for i in range(self.M) if i != self.target],
-                                                sigma=[],
-                                                cache=FIFOCache(100),
-                                                func1=self._posterior,
-                                                params1={},
-                                                func2=self._weight,
-                                                params2={}) )
-    
-    def _coalition_contribution(self,
-                                 k, 
-                                 ex,
-                                 elements, 
-                                 feature,
-                                 markovImpact,
-                                 nodes_id, 
-                                 nodes_vals, 
-                                 cache) :
-        # Computes the contribution of a coalition to the Shapley value.
-        key1, key2, _ = cache.generate_keys(self.bn, self.target, feature, nodes_id)
-        if k == 0 :
-            interv = self._data.copy()
-            interv[:, nodes_id] = nodes_vals
-            cache.set(ex, key1, self.func( self._value( data=interv,
-                                                        counts=self.counts,
-                                                        elements=elements,
-                                                        sigma=[],
-                                                        cache=markovImpact,
-                                                        func1=self._posterior,
-                                                        params1={},
-                                                        func2=self._weight,
-                                                        params2={} ) ))
+    posterior_prob_with = cache.get(ex, key1)
+    posterior_prob_without = cache.get(ex, key2) if len(key1) > 1 else cache.get(-1, ())
+    return self._shap_term(posterior_prob_with, posterior_prob_without, len(elements), len(nodes_id) - 1)
 
-        posterior_prob_with = cache.get(ex, key1)
-        posterior_prob_without = cache.get(ex, key2) if len( key1 ) > 1 else cache.get(-1, ())
-        return self._shap_term(posterior_prob_with, posterior_prob_without, len(elements), len(nodes_id) - 1)
-    
-    def _shap_1dim(self, x, elements):
-        contributions = np.zeros( (self.M, self.bn.variable(self.target).domainSize()) ) # Initializes contributions array.
-        self.ie.eraseAllEvidence() # Clears all evidence from the inference engine.
-        markovImpact = FIFOCache(2000) 
-        cache = CustomShapleyCache(5000) # Initializes the custom cache.
-        cache.set( -1, (), self.baseline) # Sets the baseline probability in the cache.
-        coalitions = self._coalitions(elements)
-        for nodes_id in coalitions :
-            nodes_vals = x[nodes_id] # Gets the values of the nodes in the coalition.
-            for k, feature in enumerate(nodes_id) :
-                # Accumulates the contribution for each feature.
-                contributions[feature] += self._coalition_contribution(k,
-                                                                       0,
-                                                                       elements,
-                                                                       int(feature),
-                                                                       markovImpact,
-                                                                       nodes_id,
-                                                                       nodes_vals,
-                                                                       cache)
-        return contributions
+  def _shap_1dim(self, x, elements):
+    contributions = np.zeros((self.M, self.bn.variable(self.target).domainSize()))  # Initializes contributions array.
+    self.ie.eraseAllEvidence()  # Clears all evidence from the inference engine.
+    markovImpact = FIFOCache(2000)
+    cache = CustomShapleyCache(5000)  # Initializes the custom cache.
+    cache.set(-1, (), self.baseline)  # Sets the baseline probability in the cache.
+    coalitions = self._coalitions(elements)
+    for nodes_id in coalitions:
+      nodes_vals = x[nodes_id]  # Gets the values of the nodes in the coalition.
+      for k, feature in enumerate(nodes_id):
+        # Accumulates the contribution for each feature.
+        contributions[feature] += self._coalition_contribution(
+          k, 0, elements, int(feature), markovImpact, nodes_id, nodes_vals, cache
+        )
+    return contributions
 
-    def _shap_ndim(self, x, elements) :
-        # Result initialisation.
-        contributions = np.zeros((self.M, len(x), self.bn.variable(self.target).domainSize())) # Initializes contributions array.
-        self.ie.eraseAllEvidence() # Clears all evidence from the inference engine.
-        markovImpact = FIFOCache(2000)
-        cache = CustomShapleyCache(5000) # Initializes the custom cache.
-        cache.set( -1, (), self.baseline ) # Sets the baseline probability in the cache.
-        coalitions = self._coalitions(elements) # Generates coalitions.
-        for nodes_id in coalitions :
-            for ex, nodes_values in enumerate(x[:, nodes_id]) :
-                for k, feature in enumerate(nodes_id) :
-                    contributions[feature, ex] += self._coalition_contribution(k, 
-                                                                               ex,
-                                                                               elements,
-                                                                               int(feature),
-                                                                               markovImpact, 
-                                                                               nodes_id, 
-                                                                               nodes_values, 
-                                                                               cache)
-        return contributions
+  def _shap_ndim(self, x, elements):
+    # Result initialisation.
+    contributions = np.zeros(
+      (self.M, len(x), self.bn.variable(self.target).domainSize())
+    )  # Initializes contributions array.
+    self.ie.eraseAllEvidence()  # Clears all evidence from the inference engine.
+    markovImpact = FIFOCache(2000)
+    cache = CustomShapleyCache(5000)  # Initializes the custom cache.
+    cache.set(-1, (), self.baseline)  # Sets the baseline probability in the cache.
+    coalitions = self._coalitions(elements)  # Generates coalitions.
+    for nodes_id in coalitions:
+      for ex, nodes_values in enumerate(x[:, nodes_id]):
+        for k, feature in enumerate(nodes_id):
+          contributions[feature, ex] += self._coalition_contribution(
+            k, ex, elements, int(feature), markovImpact, nodes_id, nodes_values, cache
+          )
+    return contributions

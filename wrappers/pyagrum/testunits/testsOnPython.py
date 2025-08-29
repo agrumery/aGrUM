@@ -94,7 +94,7 @@ def runTests(local: bool, test_module: str, test_suite: str, log) -> int:
   from tests import EssentialGraphTestSuite
   from tests import EvidenceTestSuite
 
-  if pandasFound :
+  if pandasFound:
     from tests import ExplainCausalTest
   from tests import GraphTestSuite
   from tests import ICIModelsForBNTestSuite
@@ -105,7 +105,7 @@ def runTests(local: bool, test_module: str, test_suite: str, log) -> int:
   from tests import JunctionTreeTestSuite
   from tests import LazyPropagationTestSuite
   from tests import LoopyBeliefPropagationTestSuite
-  
+
   from tests import MarkovBlanketTestSuite
   from tests import MarkovRandomFieldTestSuite
   from tests import PicklerTestSuite
@@ -114,7 +114,7 @@ def runTests(local: bool, test_module: str, test_suite: str, log) -> int:
   from tests import PRMexplorerTestSuite
   from tests import SamplingTestSuite
 
-  if pandasFound :
+  if pandasFound:
     from tests import ShapCausalTest
     from tests import ShapConditionalTest
     from tests import ShapCustomCacheTest
@@ -122,7 +122,6 @@ def runTests(local: bool, test_module: str, test_suite: str, log) -> int:
     from tests import ShallCausalTest
     from tests import ShallConditionalTest
     from tests import ShallMarginalTest
-
 
   if pandasFound and sklearnFound:
     from tests import SkbnTestSuite

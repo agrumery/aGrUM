@@ -43,12 +43,15 @@ tools for BN qualitative analysis and explainability
 """
 
 import warnings
-warnings.warn(
-    "The module 'pyagrum.lib.explain' has been deprecated since version 2.2.1. "
-    "Please use the 'pyagrum.explain' module instead."
-  )
 
-from pyagrum.explain.shapley import ShapValues
-from pyagrum.explain.notebook import showShapValues
-from pyagrum.explain import independenceListForPairs
-from pyagrum.explain import showInformation
+warnings.warn(
+  "The module 'pyagrum.lib.explain' has been deprecated since version 2.2.2. "
+  "Please use the 'pyagrum.explain' module instead." ,
+  DeprecationWarning,
+  stacklevel=2
+)
+
+from pyagrum.explain.shapley import ShapValues  # noqa: E402
+from pyagrum.explain.notebook import showShapValues  # noqa: E402
+from pyagrum.explain import independenceListForPairs  # noqa: E402
+from pyagrum.explain import showInformation,getInformation,getInformationGraph  # noqa: E402
