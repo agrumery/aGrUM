@@ -36,7 +36,26 @@
  *   homepage : http://agrum.gitlab.io                                      *
  *   gitlab   : https://gitlab.com/agrumery/agrum                           *
  *                                                                          *
- ****************************************************************************/
+ ****************************************************************************//**
+ * @file
+ * @brief CausalModel: a thin wrapper around an observational BayesNet with an
+ *        explicit causal DAG (including optional latent variables).
+ *
+ * This header defines a templated CausalModel that:
+ *  - stores the **observational** Bayesian network (observed variables only),
+ *  - maintains a companion **causal DAG** that may include **latent** nodes,
+ *  - offers convenience methods to add latent confounders, manage causal arcs,
+ *    and query structure (parents/children, names/ids, components),
+ *  - provides a DOT exporter for visualization.
+ *
+ * ### Key ideas
+ * - The observational BN encodes factorization/CPDs over observed variables.
+ * - The causal DAG encodes the structural/causal graph over both observed and
+ *   (optionally) latent variables. Edges here represent causal relationships.
+ * - Latent variables can be introduced as parents of multiple observed children
+ *   to model unobserved confounding.
+ */
+
 #ifndef GUM_CAUSAL_MODEL_H
 #define GUM_CAUSAL_MODEL_H
 
@@ -48,39 +67,70 @@
 namespace gum {
 
   /// LatentDescriptorIds = (latentName, (child1Id, child2Id, ...))
+  /**
+   * @brief Compact descriptor for a single latent variable and its observed children.
+   *
+   * The first element is the **name** of the latent to create; the second element is
+   * the list of **NodeId**s of observed children the latent points to in the causal DAG.
+   */
   using LatentDescriptorIds = std::pair<std::string, std::vector<NodeId>>;
+
+  /// Collection of latent descriptors (see LatentDescriptorIds).
   using LatentDescriptorVector = std::vector<LatentDescriptorIds>;
 
-
-  /// CausalModel is a class representing a causal model, which is a directed acyclic graph (DAG)
-  /// where nodes represent variables and edges represent causal relationships.
+  /**
+   * @class CausalModel
+   * @brief A causal model pairing an observational BayesNet with a causal DAG.
+   *
+   * The class is **DAG-centric** for causality: all causal-structure queries and edits
+   * happen on `_causalDAG_`, which may include latent variables that do not appear
+   * in `_observationalBN_`. Name/Id bookkeeping is handled so you can work with either.
+   *
+   * ### Invariants / expectations
+   * - `_observationalBN_` corresponds to the observed part (no latents).
+   * - `_causalDAG_` contains all observed variables and any added latent variables.
+   * - When adding a latent with children, the latent becomes a parent of all listed children
+   *   in the **causal DAG**. The `keepArcs` flag controls whether existing arcs between
+   *   those children are preserved or may be adjusted (implementation dependent).
+   */
   template <typename GUM_SCALAR>
   class CausalModel {
     private:
-    /// The underlying BayesNet representing the observed part of the model
+    /// The underlying BayesNet representing the observed part of the model.
     BayesNet<GUM_SCALAR> _observationalBN_;
 
-    /// The underlying DAG representing the causal structure of the model
+    /// The underlying DAG representing the causal structure (observed + latent).
     DAG _causalDAG_;
 
-    /// Bookkeeping: name <-> nodeId
+    /// Bidirectional mapping between node ids and variable names (observed + latent).
     Bijection<NodeId, std::string> _id2name_;
 
-
    public:
-    /// Default constructor
+    /// Default constructor disabled: a causal model must be built from a BN.
     CausalModel() = delete;
 
-    /// constructor with no latent variables
+    /**
+     * @brief Construct a causal model with no latent variables.
+     * @param observationalBN the observed Bayesian network
+     *
+     * Initializes the causal DAG as the BN's DAG (observed-only).
+     */
     explicit CausalModel(const BayesNet<GUM_SCALAR>& observationalBN)
         : _observationalBN_(observationalBN),
           _causalDAG_(observationalBN.dag()) {}
 
-    /// constructor with LatentDescriptorVector
+    /**
+     * @brief Construct a causal model and add a list of latent confounders.
+     * @param observationalBN the observed Bayesian network
+     * @param latentVarsDescriptor list of (latentName, childrenIds) descriptors
+     * @param keepArcs whether to preserve existing arcs among the latent's children
+     *
+     * Each latent is created and added as a parent of the provided children in the
+     * **causal DAG**. The observed BN remains unchanged.
+     */
     explicit CausalModel(const BayesNet<GUM_SCALAR>& observationalBN,
                     const LatentDescriptorVector& latentVarsDescriptor,
                     bool keepArcs = false);
-
 
     /// Copy constructor
     CausalModel(const CausalModel& other) = default;
@@ -91,83 +141,112 @@ namespace gum {
     /// Destructor
     ~CausalModel() = default;
 
-    /// Assignment operator
+    /// Copy assignment
     CausalModel& operator=(const CausalModel& other) = default;
 
-    /// Move assignment operator
+    /// Move assignment
     CausalModel& operator=(CausalModel&& other) noexcept = default;
 
-    /// Add a latent variable with its children using names
+    /**
+     * @brief Add a latent variable by **names** of its observed children.
+     * @param latentName new latent variable name
+     * @param childrenOfLatent names of observed children
+     * @param keepArcs preserve existing arcs among the children if true
+     *
+     * A new latent node is inserted into the causal DAG and connected as a parent
+     * of each listed child. The observed BN is not modified.
+     */
     void addLatentVariable(const std::string& latentName, const std::vector<std::string>& childrenOfLatent, bool keepArcs = false);
 
-    /// Add a latent variable with its children using NodeIds
+    /**
+     * @brief Add a latent variable by **NodeId**s of its observed children.
+     * @param latentName new latent variable name
+     * @param childrenOfLatent node ids of observed children
+     * @param keepArcs preserve existing arcs among the children if true
+     */
     void addLatentVariable(const std::string& latentName, const std::vector<NodeId>& childrenOfLatent, bool keepArcs = false);
 
-    /// Add a causal arc x->y using NodeId
+    /// @brief Add a causal arc x → y (by ids) in the causal DAG.
     void addCausalArc(NodeId x, NodeId y);
 
-    /// Add causal arc x->y using variable names
+    /// @brief Add a causal arc x → y (by variable names) in the causal DAG.
     void addCausalArc(const std::string& x, const std::string& y);
 
-    /// Remove a causal arc x->y using NodeId
+    /// @brief Remove a causal arc x → y (by ids) from the causal DAG.
     void eraseCausalArc(NodeId x, NodeId y);
 
-    /// Remove a causal arc x->y using variable names
+    /// @brief Remove a causal arc x → y (by variable names) from the causal DAG.
     void eraseCausalArc(const std::string& x, const std::string& y);
 
-    /// Check if a causal arc x->y exists using NodeId
+    /// @brief Whether a causal arc x → y exists (by ids) in the causal DAG.
     bool existsArc(NodeId x, NodeId y) const;
 
-    /// Check if a causal arc x->y exists using variable names
+    /// @brief Whether a causal arc x → y exists (by names) in the causal DAG.
     bool existsArc(const std::string& x, const std::string& y) const;
 
-    /// Create an causal model induced by a subset of nodes.
+    /**
+     * @brief Induced causal submodel on a subset of nodes.
+     * @param cm a source causal model
+     * @param subset node set to keep (observed + latent)
+     * @return A new CausalModel induced by the subset (both BN/DAG restricted appropriately).
+     */
     CausalModel<GUM_SCALAR>
     inducedCausalSubModel(const CausalModel<GUM_SCALAR>& cm, NodeSet subset) const;
 
-    /// Returns friendly display of the causal DAG in DOT format
+    /**
+     * @brief DOT representation of the causal DAG (observed + latent).
+     * @param SHOW_LATENT_NAMES  If true, display latent names explicitly.
+     * @param NODE_BG            Node background color (hex code like "#404040" or Graphviz color name like "lightgray").
+     * @param NODE_FG            Node label/text color (hex code or Graphviz color name).
+     * @param EDGE_COL           Edge color (hex code or Graphviz color name).
+     * @return A string containing a Graphviz/DOT graph.
+     */
     std::string toDot(const bool   SHOW_LATENT_NAMES = false,
                       const char* NODE_BG  = "#404040",
                       const char* NODE_FG = "white",
                       const char* EDGE_COL = "#4A4A4A") const;
 
-    /// Returns the underlying BayesNet representing the observed part of the model
+    /// @brief Observational BN (observed variables only).
     const BayesNet<GUM_SCALAR>& observationalBN() const {
       return _observationalBN_;
     }
-    /// Returns the underlying DAG representing the causal structure of the model
+
+    /// @brief Causal DAG (observed + latent variables).
     const DAG& causalDAG() const {
       return _causalDAG_;
     }
 
-    /// Returns the set of all variable names in the causal model (observed + latent).
+    /// @brief All variable names appearing in the causal model (observed + latent).
     Set<std::string> names() const;
 
-    /// Returns the node id for a given variable name (observed or latent).
+    /// @brief Node id from variable name (observed or latent).
     NodeId idFromName(const std::string& name) const;
 
-    /// Returns the variable name for a given node id (observed or latent).
+    /// @brief Variable name from node id (observed or latent).
     std::string nameFromId(NodeId id) const;
 
-    /// Returns the NodeSet of latent variable Ids
+    /// @brief Node ids of all latent variables.
     NodeSet latentVariablesIds() const;
 
-    /// Returns the Set of latent variable names
+    /// @brief Names of all latent variables.
     Set<std::string> latentVariablesNames() const;
 
-    /// Parents of a node (by NodeId) in the causal DAG (including latents)
+    /// @brief Parents of a node (by id) in the causal DAG (including latents).
     NodeSet parents(NodeId x) const;
 
-    /// Parents of a node (by name) in the causal DAG (including latents)
+    /// @brief Parents of a node (by name) in the causal DAG (including latents).
     NodeSet parents(const std::string& name) const;
 
-    /// Children of a node (by NodeId) in the causal DAG (including latents)
+    /// @brief Children of a node (by id) in the causal DAG (including latents).
     NodeSet children(NodeId x) const;
 
-    /// Children of a node (by name) in the causal DAG (including latents)
+    /// @brief Children of a node (by name) in the causal DAG (including latents).
     NodeSet children(const std::string& name) const;
 
-    /// connected components of the causal DAG (observed + latent)
+    /**
+     * @brief Weakly connected components of the causal DAG.
+     * @return A table mapping a representative NodeId to the NodeSet of nodes in its component.
+     */
     HashTable<NodeId, NodeSet> connectedComponents() const;
 
   };

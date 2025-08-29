@@ -52,13 +52,24 @@
 namespace gum {
 
 /**
+ * @class DSeparation
  * @brief Consolidated d-separation utilities (DAG-centric).
  *
- * Uses aGrUM-provided algorithms wherever possible:
- *  - General d-sep: DAG::dSeparation / DAG::moralizedAncestralGraph.  (Pyagrum: isDSep / isDSep_tech2)
- *  - Pruning: BarrenNodesFinder.                                      (Pyagrum: dSep_reduce / _barren_nodes)
- * The “parents/children only” restricted variants are built on top of the
- * moralized ancestral graph to mirror Pyagrum’s _isDSep_tech2_parents/_children.
+ * High-level helpers to test (conditional) independence in directed acyclic
+ * graphs (DAGs) using the d-separation criterion. Wherever possible,
+ * this class delegates to aGrUM-provided primitives and mirrors pyAgrum
+ * semantics.
+ *
+ * **C++ ↔ pyAgrum correspondence**
+ *  - `isDSeparated`              ⇨ `isDSep` / `isDSep_tech2`
+ *  - `isBackdoorSeparated`       ⇨ `isDSep_parents` / `_isDSep_tech2_parents`
+ *  - `isForwardSeparated`        ⇨ `_isDSep_tech2_children`
+ *  - `reduceForDSeparation`      ⇨ `dSep_reduce` (uses `_barren_nodes`)
+ *  - `findBarrenNodes`           ⇨ `_barren_nodes`
+ *  - `isAncestorOf`              ⇨ `_is_ascendant`
+ *  - `isDescendantOf`            ⇨ `_is_descendant`
+ *  - `anyUndirectedConnection`   ⇨ `_is_path_x_y` (internal helper)
+ *
  */
 class DSeparation {
 public:
@@ -70,13 +81,18 @@ public:
   // =======================================================================
 
   /**
-   * @brief Test X ⟂ Y | Z (general d-separation).
-   * Pyagrum counterpart: isDSep  (delegates to isDSep_tech2)
+   * @brief Test \( X \perp\!\!\!\perp Y \mid Z \) (general d-separation).
    *
-   * Implementation note:
-   *  Calls DAG::dSeparation(X,Y,Z), which builds the moralized
-   *  ancestral graph of X∪Y∪Z, removes Z, and checks undirected connectivity.
-   *  (See DAG::moralizedAncestralGraph / DAG::dSeparation.)
+   * Delegates to `DAG::dSeparation`, which:
+   *  1. Builds the moralized ancestral graph of \(X \cup Y \cup Z\).
+   *  2. Removes nodes in \(Z\).
+   *  3. Checks undirected connectivity between \(X\) and \(Y\).
+   *
+   * @param dag The causal DAG.
+   * @param X Set of source nodes.
+   * @param Y Set of target nodes.
+   * @param Z Conditioning set.
+   * @return `true` iff \(X\) is d-separated from \(Y\) given \(Z\) in `dag`.
    */
   static bool isDSeparated(const DAG& dag,
                            const NodeSet& X,
@@ -84,16 +100,21 @@ public:
                            const NodeSet& Z);
 
   /**
-   * @brief Backdoor-style restriction: only paths ENTERING X (incoming into X).
-   * Pyagrum counterpart: isDSep_parents / _isDSep_tech2_parents
+   * @brief Backdoor-style restriction: only paths whose first edge points *into* X.
    *
-   * Semantics:
-   *  Z blocks all paths from Y to X whose first edge points into X.
+   * Semantics: tests whether Z blocks all paths from Y to X that enter X via an
+   * incoming edge (the “backdoor graph” \(G_{\underline{X}}\)).
    *
    * Implementation:
-   *   1) Make a copy of dag -> g.
-   *   2) For each x ∈ X, erase every arc x -> child in g (build G_{underline X}).
-   *   3) Return g.dSeparation(X, Y, Z).
+   *  1. Copy `dag` to `g`.
+   *  2. For each \(x \in X\), erase every outgoing arc \(x \to c\) in `g`.
+   *  3. Return `g.dSeparation(X, Y, Z)`.
+   *
+   * @param dag The causal DAG.
+   * @param X Set of “treatment” nodes (incoming-edge focus).
+   * @param Y Set of outcome nodes.
+   * @param Z Conditioning set.
+   * @return `true` iff Z d-separates X and Y in the backdoor graph \(G_{\underline{X}}\).
    */
   static bool isBackdoorSeparated(const DAG& dag,
                                   const NodeSet& X,
@@ -101,21 +122,26 @@ public:
                                   const NodeSet& Z);
 
   /**
-   * @brief Forward-style restriction: only paths LEAVING X (outgoing from X).
-   * Pyagrum counterpart: _isDSep_tech2_children
+   * @brief Forward-style restriction: only paths whose first edge *leaves* X.
    *
-   * Semantics:
-   *  Z blocks all directed paths starting from X via an outgoing edge.
+   * Semantics: tests whether Z blocks all paths starting from X via an
+   * outgoing edge (children-first restriction used in frontdoor checks).
    *
-   * Implementation (matches pyAgrum):
-   *   1) Let interest = Anc(Y ∪ Z). Build the moralized ancestral graph:
-   *        UndiGraph ug = dag.moralizedAncestralGraph(interest);
-   *   2) Ensure each x ∈ X exists as a node in ug (add if missing), but do NOT
-   *      add X—parent edges.
-   *   3) For each x ∈ X, add undirected edges X—c for every child c of x that is
-   *      already present in ug.
-   *   4) Remove all nodes in Z from ug (call _eraseAll(ug, Z)).
-   *   5) Return true iff there is NO undirected path between any node in X and any node in Y.
+   * Outline:
+   *  1. Let `interest = Anc(Y ∪ Z)`. Build the moralized ancestral graph:
+   *     `UndiGraph ug = dag.moralizedAncestralGraph(interest)`.
+   *  2. Ensure each \(x \in X\) exists in `ug` (add isolated node if missing),
+   *     but do **not** add \(x\)–parent links.
+   *  3. For each \(x \in X\), add an undirected edge \(x\)—\(c\) for every child
+   *     \(c\) of \(x\) present in `ug`.
+   *  4. Remove all nodes in \(Z\) from `ug`.
+   *  5. Return `true` iff there is **no** undirected path between any node in X and any node in Y.
+   *
+   * @param dag The causal DAG.
+   * @param X Set of start nodes (outgoing-edge focus).
+   * @param Y Set of target nodes.
+   * @param Z Conditioning set.
+   * @return `true` iff Z blocks all forward/children paths from X to Y.
    */
   static bool isForwardSeparated(const DAG& dag,
                                  const NodeSet& X,
@@ -127,13 +153,16 @@ public:
   // =======================================================================
 
   /**
-   * @brief Barren-node pruning relative to interest set (X ∪ Y ∪ Z).
-   * Pyagrum counterpart: dSep_reduce (uses _barren_nodes)
+   * @brief Barren-node pruning relative to the interest set \(X \cup Y \cup Z\).
    *
-   * Implementation note:
-   *  Uses BarrenNodesFinder with evidence=Z and targets=X∪Y,
-   *  removes the returned barren nodes from a copy of the DAG.  (No separate
-   *  “filaires/linear-chain” step is exposed; see omissions below.)
+   * Uses `BarrenNodesFinder` with `evidence = Z` and `targets = X ∪ Y` to
+   * compute barren nodes, then removes them from a copy of `dag`.
+   *
+   * @param dag The causal DAG to prune.
+   * @param X Source nodes of interest.
+   * @param Y Target nodes of interest.
+   * @param Z Evidence/conditioning set.
+   * @return A reduced DAG with barren nodes removed (safe for d-sep queries).
    */
   static DAG reduceForDSeparation(const DAG& dag,
                                   const NodeSet& X,
@@ -141,11 +170,14 @@ public:
                                   const NodeSet& Z);
 
   /**
-   * @brief Return barren nodes given evidence and targets.
-   * Pyagrum counterpart: _barren_nodes
+   * @brief Compute barren nodes given evidence and targets.
    *
-   * Implementation note:
-   *  Thin wrapper over BarrenNodesFinder::barrenNodes().
+   * Thin wrapper over `BarrenNodesFinder::barrenNodes()`.
+   *
+   * @param dag The causal DAG.
+   * @param evidenceZ Evidence/conditioning set Z.
+   * @param targetsXY Union of target nodes (typically \(X \cup Y\)).
+   * @return Set of barren nodes that can be pruned without affecting d-sep.
    */
   static NodeSet findBarrenNodes(const DAG& dag,
                                  const NodeSet& evidenceZ,
@@ -156,16 +188,22 @@ public:
   // =======================================================================
 
   /**
-   * @brief x is ancestor of y ?
-   * Pyagrum counterpart: _is_ascendant
-   * (Delegates to DAG::ancestors(y).)
+   * @brief Is x an ancestor of y?
+   *
+   * @param dag The causal DAG.
+   * @param x Candidate ancestor.
+   * @param y Candidate descendant.
+   * @return `true` iff \(x \in \mathrm{Anc}(y)\).
    */
   static bool isAncestorOf(const DAG& dag, NodeId x, NodeId y);
 
   /**
-   * @brief x is descendant of y ?
-   * Pyagrum counterpart: _is_descendant
-   * (Delegates to DAG::descendants(y).)
+   * @brief Is x a descendant of y?
+   *
+   * @param dag The causal DAG.
+   * @param x Candidate descendant.
+   * @param y Candidate ancestor.
+   * @return `true` iff \(x \in \mathrm{Desc}(y)\).
    */
   static bool isDescendantOf(const DAG& dag, NodeId x, NodeId y);
 
@@ -175,12 +213,13 @@ private:
   // =======================================================================
 
   /**
-   * @brief Return true iff any node in A is undirected-connected to any node in B.
-   * Pyagrum counterpart: _is_path_x_y
+   * @brief Check if any node in A is undirected-connected to any node in B.
    *
-   * Implementation note:
-   *  Uses UndiGraph connected components (nodes2ConnectedComponent)
-   *  or hasUndirectedPath under the hood.
+   * @param ug An undirected graph (usually a moralized ancestral graph).
+   * @param A First node set.
+   * @param B Second node set.
+   * @return `true` iff there exists an undirected path between some `a ∈ A`
+   *         and some `b ∈ B` in `ug`.
    */
   static bool anyUndirectedConnection(const UndiGraph& ug,
                                       const NodeSet& A,
