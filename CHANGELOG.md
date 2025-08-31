@@ -1,5 +1,14 @@
 # aGrUM Changelog
 
+## Changelog for 2.3.0
+
+- pyAgrum
+    - Introduced the new `pyagrum.explain` submodule for explainability in Bayesian Networks.
+    - Improved SHAP value computation performance in `pyagrum.explain` (thanks to Rayane Nasri).
+    - Added support for SHAP values on partial subsets of features in `pyagrum.explain` (thanks to Rayane Nasri).
+    - Introduced the concept of SHALL values for explaining log-likelihood in Bayesian Networks in `pyagrum.explain` (thanks to Ekaterina Bogush and Amélie Chu).
+
+
 ## Changelog for 2.2.1
 
 - aGrUM
