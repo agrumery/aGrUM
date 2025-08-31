@@ -7,4 +7,7 @@ c = get_config()
 c.IPKernelApp.pylab = "inline"
 c.NotebookApp.terminals_enabled = False
 c.NotebookApp.websocket_compression_options = {}
-c.NotebookApp.notebook_dir = "wrappers/pyAgrum/doc/sphinx/notebooks"
+
+# jupyter>3
+# c.NotebookApp.notebook_dir = "wrappers/pyAgrum/doc/sphinx/notebooks"
+c.ServerApp.root_dir = "wrappers/pyAgrum/doc/sphinx/notebooks"
