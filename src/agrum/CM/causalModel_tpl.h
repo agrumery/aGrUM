@@ -45,6 +45,7 @@
 
 #include <sstream>
 
+#include <agrum/CM/doorCriteria.h>
 #include <agrum/CM/causalModel.h>
 
 namespace gum {
@@ -312,6 +313,46 @@ template <typename GUM_SCALAR>
 NodeSet CausalModel<GUM_SCALAR>::children(const std::string& name) const {
   return children(idFromName(name));
 }
+
+
+/* =======================================================================
+ * Backdoor / Frontdoor conveniences (IDs only)
+ * ======================================================================= */
+
+template <typename GUM_SCALAR>
+NodeSet CausalModel<GUM_SCALAR>::backDoor(NodeId cause, NodeId effect) const {
+  // Preconditions: cause/effect must be observed (non-latent).
+  const NodeSet lat = latentVariablesIds();
+  if (lat.contains(cause) || lat.contains(effect)) {
+    GUM_ERROR(InvalidArgument, "CausalModel::backDoor: 'cause' and 'effect' must be observed (non-latent).");
+  }
+
+  DoorCriteria dc(_causalDAG_);
+  DoorCriteria::EnumerationOptions opts;
+  opts.excluded_nodes = lat; // never allow latents in adjustment sets
+
+  const auto candidates = dc.enumerateBackdoorSets(cause, effect, opts);
+  if (candidates.empty()) return NodeSet{};
+  return candidates.front(); // first valid set
+}
+
+template <typename GUM_SCALAR>
+NodeSet CausalModel<GUM_SCALAR>::frontDoor(NodeId cause, NodeId effect) const {
+  // Preconditions: cause/effect must be observed (non-latent).
+  const NodeSet lat = latentVariablesIds();
+  if (lat.contains(cause) || lat.contains(effect)) {
+    GUM_ERROR(InvalidArgument, "CausalModel::frontDoor: 'cause' and 'effect' must be observed (non-latent).");
+  }
+
+  DoorCriteria dc(_causalDAG_);
+  DoorCriteria::EnumerationOptions opts;
+  opts.excluded_nodes = lat; // never allow latents in adjustment sets
+
+  const auto candidates = dc.enumerateFrontdoorSets(cause, effect, opts);
+  if (candidates.empty()) return NodeSet{};
+  return candidates.front(); // first valid set
+}
+
 
 // ===============================
 // DOT export

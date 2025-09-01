@@ -184,6 +184,47 @@ namespace gum {
     /// @brief Whether a causal arc x → y exists (by names) in the causal DAG.
     bool existsArc(const std::string& x, const std::string& y) const;
 
+    // ======================================================================
+    // Door-criteria conveniences
+    // ======================================================================
+
+    /**
+     * @brief Find a backdoor adjustment set \(Z\) between `cause` and `effect`
+     *        (IDs only).
+     *
+     * Enumerates admissible backdoor sets in the current causal DAG
+     * (excluding latent variables) and returns the **first** valid one found.
+     * If none exists, returns an **empty** set.
+     *
+     * Preconditions:
+     *  - `cause` and `effect` must be **observed** variables of the model.
+     *
+     * @param cause  NodeId of the cause \(X\).
+     * @param effect NodeId of the effect \(Y\).
+     * @return NodeSet The backdoor adjustment set \(Z\) as NodeIds,
+     *                 or an empty set if none exists.
+     */
+    NodeSet backDoor(NodeId cause, NodeId effect) const;
+
+    /**
+     * @brief Find a frontdoor adjustment set \(Z\) between `cause` and `effect`
+     *        (IDs only).
+     *
+     * Enumerates admissible frontdoor sets in the current causal DAG
+     * (excluding latent variables) and returns the **first** valid one found.
+     * If none exists, returns an **empty** set.
+     *
+     * Preconditions:
+     *  - `cause` and `effect` must be **observed** variables of the model.
+     *
+     * @param cause  NodeId of the cause \(X\).
+     * @param effect NodeId of the effect \(Y\).
+     * @return NodeSet The frontdoor adjustment set \(Z\) as NodeIds,
+     *                 or an empty set if none exists.
+     */
+    NodeSet frontDoor(NodeId cause, NodeId effect) const;
+
+
     /**
      * @brief Induced causal submodel on a subset of nodes.
      * @param cm a source causal model
@@ -202,9 +243,9 @@ namespace gum {
      * @return A string containing a Graphviz/DOT graph.
      */
     std::string toDot(const bool   SHOW_LATENT_NAMES = false,
-                      const char* NODE_BG  = "#404040",
-                      const char* NODE_FG = "white",
-                      const char* EDGE_COL = "#4A4A4A") const;
+                      const char*  NODE_BG           = "#404040",
+                      const char*  NODE_FG           = "white",
+                      const char*  EDGE_COL          = "#4A4A4A") const;
 
     /// @brief Observational BN (observed variables only).
     const BayesNet<GUM_SCALAR>& observationalBN() const {

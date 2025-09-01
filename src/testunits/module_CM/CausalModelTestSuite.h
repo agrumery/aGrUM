@@ -254,6 +254,84 @@ namespace gum_tests {
       }
     }
 
+    // X <- Z -> Y (observed confounder), X -> Y present:
+    // backdoor should return {Z} (non-empty, observed-only).
+    GUM_ACTIVE_TEST(BackdoorWithObservedConfounder) {
+      auto bn = gum::BayesNet<double>::fastPrototype("Z->X;Z->Y;X->Y");
+      gum::CausalModel<double> cm(bn);
+
+      const auto X = bn.idFromName("X");
+      const auto Y = bn.idFromName("Y");
+      const auto Z = bn.idFromName("Z");
+
+      gum::NodeSet bd = cm.backDoor(X, Y);
+      TS_ASSERT(!bd.empty());
+      TS_ASSERT_EQUALS(bd.size(), 1u);
+      TS_ASSERT(bd.contains(Z));
+
+      // Returned set must not contain latents.
+      for (auto n : bd) TS_ASSERT(!cm.latentVariablesIds().contains(n));
+    }
+
+    // Only latent confounding U -> {X, Y}, no observed Z:
+    // backdoor should find no observed adjustment set => empty.
+    GUM_ACTIVE_TEST(BackdoorWithLatentOnly_NoObservedSet) {
+      auto bn = gum::BayesNet<double>::fastPrototype("X->Y");
+      gum::CausalModel<double> cm(bn);
+
+      std::vector<gum::NodeId> kids{bn.idFromName("X"), bn.idFromName("Y")};
+      cm.addLatentVariable("U", kids);
+
+      gum::NodeSet bd = cm.backDoor(bn.idFromName("X"), bn.idFromName("Y"));
+      TS_ASSERT(bd.empty());
+    }
+
+    // Classic frontdoor with latent confounding:
+    // U -> {X, Y}, X -> Z -> Y, no direct X->Y.
+    // frontdoor should return {Z}.
+    GUM_ACTIVE_TEST(FrontdoorClassicWithLatent_ReturnsMediator) {
+      auto bn = gum::BayesNet<double>::fastPrototype("X->Z;Z->Y");
+      gum::CausalModel<double> cm(bn);
+
+      std::vector<gum::NodeId> kids{bn.idFromName("X"), bn.idFromName("Y")};
+      cm.addLatentVariable("U", kids);
+
+      const auto X = bn.idFromName("X");
+      const auto Y = bn.idFromName("Y");
+      const auto Z = bn.idFromName("Z");
+
+      gum::NodeSet fd = cm.frontDoor(X, Y);
+      TS_ASSERT(!fd.empty());
+      TS_ASSERT_EQUALS(fd.size(), 1u);
+      TS_ASSERT(fd.contains(Z));
+
+      for (auto n : fd) TS_ASSERT(!cm.latentVariablesIds().contains(n));
+    }
+
+    // If X -> Y is present, our frontdoor enumerator short-circuits (no frontdoor set).
+    GUM_ACTIVE_TEST(FrontdoorFailsWithDirectEdge) {
+      auto bn = gum::BayesNet<double>::fastPrototype("X->Y;X->Z;Z->Y");
+      gum::CausalModel<double> cm(bn);
+
+      gum::NodeSet fd = cm.frontDoor(bn.idFromName("X"), bn.idFromName("Y"));
+      TS_ASSERT(fd.empty());
+    }
+
+    // Passing a latent as cause/effect must raise (guard in CausalModel).
+    GUM_ACTIVE_TEST(ThrowsWhenCauseOrEffectIsLatent) {
+      auto bn = gum::BayesNet<double>::fastPrototype("X->Z;Z->Y");
+      gum::CausalModel<double> cm(bn);
+
+      std::vector<gum::NodeId> kids{bn.idFromName("X"), bn.idFromName("Y")};
+      cm.addLatentVariable("U", kids);
+
+      const auto U = cm.idFromName("U");
+      const auto X = bn.idFromName("X");
+      const auto Y = bn.idFromName("Y");
+
+      TS_ASSERT_THROWS(cm.backDoor(U, Y), const gum::InvalidArgument&);
+      TS_ASSERT_THROWS(cm.frontDoor(X, U), const gum::InvalidArgument&);
+    }
 
   };
 
