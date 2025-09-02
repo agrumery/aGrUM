@@ -42,31 +42,35 @@ import unittest
 from .pyAgrumTestSuite import pyAgrumTestCase, addTests
 
 import pyagrum as gum
-from pyagrum.explain import MarginalShallValues
+from pyagrum.explain import CausalShallValues
 
 import pandas as pd
 
-# Load the data
-data = pd.read_csv("tests/resources/iris.csv", index_col="Id").drop(columns=["Species"])
 
-data["PetalLengthCm"] = pd.cut(data["PetalLengthCm"], 5, right=True, labels=[0, 1, 2, 3, 4], include_lowest=False)
-data["PetalWidthCm"] = pd.cut(data["PetalWidthCm"], 5, right=True, labels=[0, 1, 2, 3, 4], include_lowest=False)
-data["SepalLengthCm"] = pd.cut(data["SepalLengthCm"], 5, right=True, labels=[0, 1, 2, 3, 4], include_lowest=False)
-data["SepalWidthCm"] = pd.cut(data["SepalWidthCm"], 5, right=True, labels=[0, 1, 2, 3, 4], include_lowest=False)
+class ShallMarginalTestCase(pyAgrumTestCase):
+  @staticmethod
+  def create_data():
+    # Load the data
+    data = pd.read_csv("tests/resources/iris.csv", index_col="Id").drop(columns=["Species"])
 
-learner = gum.BNLearner(data)
-bn = learner.learnBN()
+    data["PetalLengthCm"] = pd.cut(data["PetalLengthCm"], 5, right=True, labels=[0, 1, 2, 3, 4], include_lowest=False)
+    data["PetalWidthCm"] = pd.cut(data["PetalWidthCm"], 5, right=True, labels=[0, 1, 2, 3, 4], include_lowest=False)
+    data["SepalLengthCm"] = pd.cut(data["SepalLengthCm"], 5, right=True, labels=[0, 1, 2, 3, 4], include_lowest=False)
+    data["SepalWidthCm"] = pd.cut(data["SepalWidthCm"], 5, right=True, labels=[0, 1, 2, 3, 4], include_lowest=False)
 
-explainer = MarginalShallValues(bn, background=(data, True), log=True)
+    learner = gum.BNLearner(data)
+    bn = learner.learnBN()
 
-inst = gum.Instantiation()
-for var in bn.ids(data.columns):
-  inst.add(bn.variable(var))
+    explainer = CausalShallValues(bn, background=(data, True), log=True)
 
+    inst = gum.Instantiation()
+    for var in bn.ids(data.columns):
+      inst.add(bn.variable(var))
 
-class ShallMarginalTest(pyAgrumTestCase):
+    return bn, data, inst, explainer
+
   def test__shap_1dim(self):
-    explainer = MarginalShallValues(bn, background=(data, True), log=True)
+    bn, data, inst, explainer = ShallMarginalTestCase.create_data()
 
     instance_0 = {"SepalLengthCm": 1, "SepalWidthCm": 3, "PetalLengthCm": 0, "PetalWidthCm": 0}
     instance_1 = {"SepalLengthCm": 0, "SepalWidthCm": 2, "PetalLengthCm": 0, "PetalWidthCm": 0}
@@ -81,25 +85,25 @@ class ShallMarginalTest(pyAgrumTestCase):
     joint4 = sum(list(explainer.compute((instance_4, False)).values())) + explainer.baseline
 
     inst.fromdict(instance_0)
-    x = round(explainer.func(bn.jointProbability(inst)), 5)
-    assert x == round(joint0, 5), f"{x} ?= {round(joint0, 5)}, {joint0}"
+    x = explainer.func(bn.jointProbability(inst))
+    self.assertAlmostEqual(x, joint0, 5), f"{x} ?= {round(joint0, 5)}, {joint0}"
 
     inst.fromdict(instance_1)
-    x = round(explainer.func(bn.jointProbability(inst)), 5)
-    assert x == round(joint1, 5), f"{x} ?= {round(joint1, 5)}, {joint1}"
+    x = explainer.func(bn.jointProbability(inst))
+    self.assertAlmostEqual(x, joint1, 5)
 
     inst.fromdict(instance_2)
-    x = round(explainer.func(bn.jointProbability(inst)), 5)
-    assert x == round(joint2, 5), f"{x} ?= {round(joint2, 5)}, {joint2}"
+    x = explainer.func(bn.jointProbability(inst))
+    self.assertAlmostEqual(x, joint2, 5)
 
     inst.fromdict(instance_3)
-    x = round(explainer.func(bn.jointProbability(inst)), 5)
-    assert x == round(joint3, 5), f"{x} ?= {round(joint3, 5)}, {joint3}"
+    x = explainer.func(bn.jointProbability(inst))
+    self.assertAlmostEqual(x, joint3, 5)
 
     inst.fromdict(instance_4)
-    x = round(explainer.func(bn.jointProbability(inst)), 5)
-    assert x == round(joint4, 5), f"{x} ?= {round(joint4, 5)}, {joint4}"
+    x = explainer.func(bn.jointProbability(inst))
+    self.assertAlmostEqual(x, joint4, 5)
 
 
 ts = unittest.TestSuite()
-addTests(ts, ShallMarginalTest)
+addTests(ts, ShallMarginalTestCase)

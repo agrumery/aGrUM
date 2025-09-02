@@ -38,68 +38,54 @@
 #                                                                          #
 ############################################################################
 
+import pyagrum as gum
+import pandas as pd
 import unittest
 from .pyAgrumTestSuite import pyAgrumTestCase, addTests
 
-import pyagrum as gum
-from pyagrum.explain import CausalShallValues
-
-import pandas as pd
-
-# Load the data
-data = pd.read_csv("tests/resources/iris.csv", index_col="Id").drop(columns=["Species"])
-
-data["PetalLengthCm"] = pd.cut(data["PetalLengthCm"], 5, right=True, labels=[0, 1, 2, 3, 4], include_lowest=False)
-data["PetalWidthCm"] = pd.cut(data["PetalWidthCm"], 5, right=True, labels=[0, 1, 2, 3, 4], include_lowest=False)
-data["SepalLengthCm"] = pd.cut(data["SepalLengthCm"], 5, right=True, labels=[0, 1, 2, 3, 4], include_lowest=False)
-data["SepalWidthCm"] = pd.cut(data["SepalWidthCm"], 5, right=True, labels=[0, 1, 2, 3, 4], include_lowest=False)
-
-learner = gum.BNLearner(data)
-bn = learner.learnBN()
-
-explainer = CausalShallValues(bn, background=(data, True), log=True)
-
-inst = gum.Instantiation()
-for var in bn.ids(data.columns):
-  inst.add(bn.variable(var))
+from pyagrum.explain._CustomShapleyCache import CustomShapleyCache
 
 
-class ShallMarginalTest(pyAgrumTestCase):
-  def test__shap_1dim(self):
-    explainer = CausalShallValues(bn, background=(data, True), log=True)
+class ShapCustomCacheTestCase(pyAgrumTestCase):
+  def test_generate_keys(self):
+    bn = gum.fastBN(
+      "Id;SepalLengthCm;SepalWidthCm;PetalLengthCm;PetalWidthCm;Species;PetalLengthCm->SepalLengthCm;Species->PetalLengthCm;PetalWidthCm->Species;Species->SepalWidthCm;Id"
+    )
+    nodes = [0, 1, 2]
+    target = 5
+    feat = 2
+    key1, key2, key3 = CustomShapleyCache.generate_keys(bn, target, feat, nodes)
+    self.assertEqual(key1, (0, 1, 2))
+    self.assertEqual(key2, (0, 1))
+    self.assertEqual(key3, (1, 2))
 
-    instance_0 = {"SepalLengthCm": 1, "SepalWidthCm": 3, "PetalLengthCm": 0, "PetalWidthCm": 0}
-    instance_1 = {"SepalLengthCm": 0, "SepalWidthCm": 2, "PetalLengthCm": 0, "PetalWidthCm": 0}
-    instance_2 = {"SepalLengthCm": 1, "SepalWidthCm": 3, "PetalLengthCm": 0, "PetalWidthCm": 0}
-    instance_3 = {"SepalLengthCm": 1, "SepalWidthCm": 3, "PetalLengthCm": 0, "PetalWidthCm": 0}
-    instance_4 = {"SepalLengthCm": 4, "SepalWidthCm": 3, "PetalLengthCm": 4, "PetalWidthCm": 3}
+    nodes = [0, 1, 2, 3, 4]
+    key1, key2, key3 = CustomShapleyCache.generate_keys(bn, target, feat, nodes)
+    self.assertEqual(key1, (0, 1, 2, 3, 4))
+    self.assertEqual(key2, (0, 1, 3, 4))
+    self.assertEqual(key3, (1, 2, 3, 4))
 
-    joint0 = sum(list(explainer.compute((instance_0, False)).values())) + explainer.baseline
-    joint1 = sum(list(explainer.compute((instance_1, False)).values())) + explainer.baseline
-    joint2 = sum(list(explainer.compute((instance_2, False)).values())) + explainer.baseline
-    joint3 = sum(list(explainer.compute((instance_3, False)).values())) + explainer.baseline
-    joint4 = sum(list(explainer.compute((instance_4, False)).values())) + explainer.baseline
+    nodes = [1, 2]
+    key1, key2, key3 = CustomShapleyCache.generate_keys(bn, target, feat, nodes)
+    self.assertEqual(key1, (1, 2))
+    self.assertEqual(key2, (1,))
+    self.assertEqual(key3, (1, 2))
 
-    inst.fromdict(instance_0)
-    x = round(explainer.func(bn.jointProbability(inst)), 5)
-    assert x == round(joint0, 5), f"{x} ?= {round(joint0, 5)}, {joint0}"
+  def test_cache_operations(self):
+    cache = CustomShapleyCache(max_capacity=3)
+    cache.set(1, (0, 1), 10)
+    self.assertEqual(cache.get(1, (0, 1)), 10)
+    cache.set(2, (0, 1), 20)
+    self.assertEqual(cache.get(2, (0, 1)), 20)
+    cache.set(2, (0, 1, 2), 30)
+    self.assertEqual(cache.get(2, (0, 1, 2)), 30)
+    cache.set(3, (0, 1, 2, 3), 40)
+    self.assertEqual(cache.get(3, (0, 1, 2, 3)), 40)
+    self.assertEqual(cache._current_size, 2)
 
-    inst.fromdict(instance_1)
-    x = round(explainer.func(bn.jointProbability(inst)), 5)
-    assert x == round(joint1, 5), f"{x} ?= {round(joint1, 5)}, {joint1}"
-
-    inst.fromdict(instance_2)
-    x = round(explainer.func(bn.jointProbability(inst)), 5)
-    assert x == round(joint2, 5), f"{x} ?= {round(joint2, 5)}, {joint2}"
-
-    inst.fromdict(instance_3)
-    x = round(explainer.func(bn.jointProbability(inst)), 5)
-    assert x == round(joint3, 5), f"{x} ?= {round(joint3, 5)}, {joint3}"
-
-    inst.fromdict(instance_4)
-    x = round(explainer.func(bn.jointProbability(inst)), 5)
-    assert x == round(joint4, 5), f"{x} ?= {round(joint4, 5)}, {joint4}"
+    with self.assertRaises(KeyError):
+      cache.get(1, (0, 1))
 
 
 ts = unittest.TestSuite()
-addTests(ts, ShallMarginalTest)
+addTests(ts, ShapCustomCacheTestCase)

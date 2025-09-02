@@ -42,24 +42,19 @@ import unittest
 from .pyAgrumTestSuite import pyAgrumTestCase, addTests
 
 import pyagrum as gum
+from pyagrum.explain import ConditionalShapValues
 import pandas as pd
-from pyagrum.explain import MarginalShapValues
-
-# Load the data
-data = pd.read_csv("tests/resources/iris.csv")
-data["PetalLengthCm"] = pd.cut(data["PetalLengthCm"], 5, right=True, labels=[0, 1, 2, 3, 4], include_lowest=False)
-data["PetalWidthCm"] = pd.cut(data["PetalWidthCm"], 5, right=True, labels=[0, 1, 2, 3, 4], include_lowest=False)
-data["SepalLengthCm"] = pd.cut(data["SepalLengthCm"], 5, right=True, labels=[0, 1, 2, 3, 4], include_lowest=False)
-data["SepalWidthCm"] = pd.cut(data["SepalWidthCm"], 5, right=True, labels=[0, 1, 2, 3, 4], include_lowest=False)
-
-# Create the Bayesian Network and the MarginalShapValues instance
-learner = gum.BNLearner(data)
-bn = learner.learnBN()
-explainer = MarginalShapValues(bn, 5, (data.head(10), True))
+import numpy as np
+import itertools
 
 
-class ShapMarginalTest(pyAgrumTestCase):
+class ShapConditionalTestCase(pyAgrumTestCase):
   def test__shap_1dim(self):
+    bn = gum.fastBN(
+      "Id[1,150];SepalLengthCm[5];SepalWidthCm[5];PetalLengthCm[5];PetalWidthCm[5];Species{Iris-setosa|Iris-versicolor|Iris-virginica};PetalLengthCm->SepalLengthCm;Species->PetalLengthCm;PetalWidthCm->Species;Species->SepalWidthCm;Id"
+    )
+    explainer = ConditionalShapValues(bn, 5)
+
     instance_0 = {"SepalLengthCm": 1, "SepalWidthCm": 3, "PetalLengthCm": 0, "PetalWidthCm": 0}
     instance_1 = {"SepalLengthCm": 0, "SepalWidthCm": 2, "PetalLengthCm": 0, "PetalWidthCm": 0}
     instance_2 = {"SepalLengthCm": 0, "SepalWidthCm": 3, "PetalLengthCm": 0, "PetalWidthCm": 0}
@@ -75,35 +70,52 @@ class ShapMarginalTest(pyAgrumTestCase):
     explainer.ie.eraseAllEvidence()
 
     explainer.ie.updateEvidence(instance_0)
-    x = explainer.func(explainer.ie.posterior(explainer.target)[1]).round(5)
-    assert x == round(posterior0, 5), f"{x} ?= {round(posterior0, 5)}"
+    x = explainer.func(explainer.ie.posterior(explainer.target)[1])
+    self.assertAlmostEqual(x, posterior0, 5)
 
     explainer.ie.updateEvidence(instance_1)
-    x = explainer.func(explainer.ie.posterior(explainer.target)[1]).round(5)
-    assert x == round(posterior1, 5), f"{x} ?= {round(posterior1, 5)}"
+    x = explainer.func(explainer.ie.posterior(explainer.target)[1])
+    self.assertAlmostEqual(x, posterior1, 5)
 
     explainer.ie.updateEvidence(instance_2)
-    x = explainer.func(explainer.ie.posterior(explainer.target)[1]).round(5)
-    assert x == round(posterior2, 5), f"{x} ?= {round(posterior2, 5)}"
+    x = explainer.func(explainer.ie.posterior(explainer.target)[1])
+    self.assertAlmostEqual(x, posterior2, 5)
 
     explainer.ie.eraseAllEvidence()
     explainer.ie.updateEvidence(instance_3)
-    x = explainer.func(explainer.ie.posterior(explainer.target)[1]).round(5)
-    assert x == round(posterior3, 5), f"{x} ?= {round(posterior3, 5)}"
+    x = explainer.func(explainer.ie.posterior(explainer.target)[1])
+    self.assertAlmostEqual(x, posterior3, 5)
 
     explainer.ie.eraseAllEvidence()
     explainer.ie.updateEvidence(instance_4)
-    x = explainer.func(explainer.ie.posterior(explainer.target)[1]).round(5)
-    assert x == round(posterior4, 5), f"{x} ?= {round(posterior4, 5)}"
+    x = explainer.func(explainer.ie.posterior(explainer.target)[1])
+    self.assertAlmostEqual(x, posterior4, 5)
 
-  def test__shap_ndim(self):
-    expl = explainer.compute((data.head(5), True)).importances[1]
-    assert round(expl["Id"], 5) == 0.0
-    assert round(expl["SepalLengthCm"], 5) == 0.0
-    assert round(expl["SepalWidthCm"], 5) == 3.52691
-    assert round(expl["PetalLengthCm"], 5) == 0.0
-    assert round(expl["PetalWidthCm"], 5) == 0.0
+  def test_globalShap(self):
+    # Load the data
+    data = pd.read_csv("tests/resources/iris.csv")
+    data["PetalLengthCm"] = pd.cut(data["PetalLengthCm"], 5, right=True, labels=[0, 1, 2, 3, 4], include_lowest=False)
+    data["PetalWidthCm"] = pd.cut(data["PetalWidthCm"], 5, right=True, labels=[0, 1, 2, 3, 4], include_lowest=False)
+    data["SepalLengthCm"] = pd.cut(data["SepalLengthCm"], 5, right=True, labels=[0, 1, 2, 3, 4], include_lowest=False)
+    data["SepalWidthCm"] = pd.cut(data["SepalWidthCm"], 5, right=True, labels=[0, 1, 2, 3, 4], include_lowest=False)
+
+    # Create the Bayesian Network and the ConditionalShapValues instance
+    learner = gum.BNLearner(data)
+    bn = learner.learnBN()
+    explainer = ConditionalShapValues(bn, 5)
+
+    # Test the global_shap function
+    combinations = np.array(list(itertools.product([1], range(5), range(5), range(5), range(5), range(1)))).astype(int)
+    df = pd.DataFrame(
+      combinations, columns=["Id", "SepalLengthCm", "SepalWidthCm", "PetalLengthCm", "PetalWidthCm", "Species"]
+    )
+    expl = explainer.compute((df, False))
+    self.assertAlmostEqual(expl.importances[1]["Id"], 0.0, 5)
+    self.assertAlmostEqual(expl.importances[1]["SepalLengthCm"], 0.62684, 5)
+    self.assertAlmostEqual(expl.importances[1]["SepalWidthCm"], 2.11577, 5)
+    self.assertAlmostEqual(expl.importances[1]["PetalLengthCm"], 3.68744, 5)
+    self.assertAlmostEqual(expl.importances[1]["PetalWidthCm"], 3.38405, 5)
 
 
 ts = unittest.TestSuite()
-addTests(ts, ShapMarginalTest)
+addTests(ts, ShapConditionalTestCase)

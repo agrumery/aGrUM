@@ -115,13 +115,13 @@ def runTests(local: bool, test_module: str, test_suite: str, log) -> int:
   from tests import SamplingTestSuite
 
   if pandasFound:
-    from tests import ShapCausalTest
-    from tests import ShapConditionalTest
-    from tests import ShapCustomCacheTest
-    from tests import ShapMarginalTest
-    from tests import ShallCausalTest
-    from tests import ShallConditionalTest
-    from tests import ShallMarginalTest
+    from tests import ShapCausalTestSuite
+    from tests import ShapConditionalTestSuite
+    from tests import ShapCustomCacheTestSuite
+    from tests import ShapMarginalTestSuite
+    from tests import ShallCausalTestSuite
+    from tests import ShallConditionalTestSuite
+    from tests import ShallMarginalTestSuite
 
   if pandasFound and sklearnFound:
     from tests import SkbnTestSuite
@@ -236,13 +236,13 @@ def runTests(local: bool, test_module: str, test_suite: str, log) -> int:
     if test_module in {"", "explain"}:
       log.info("testing 'explain'")
       tl.append(ExplainCausalTest.ts)
-      tl.append(ShapCausalTest.ts)
-      tl.append(ShapConditionalTest.ts)
-      tl.append(ShapCustomCacheTest.ts)
-      tl.append(ShapMarginalTest.ts)
-      tl.append(ShallCausalTest.ts)
-      tl.append(ShallConditionalTest.ts)
-      tl.append(ShallMarginalTest.ts)
+      tl.append(ShapCausalTestSuite.ts)
+      tl.append(ShapConditionalTestSuite.ts)
+      tl.append(ShapCustomCacheTestSuite.ts)
+      tl.append(ShapMarginalTestSuite.ts)
+      tl.append(ShallCausalTestSuite.ts)
+      tl.append(ShallConditionalTestSuite.ts)
+      tl.append(ShallMarginalTestSuite.ts)
 
   tests = unittest.TestSuite(tl)
 

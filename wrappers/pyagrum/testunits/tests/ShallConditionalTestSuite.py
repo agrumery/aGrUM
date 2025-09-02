@@ -38,64 +38,72 @@
 #                                                                          #
 ############################################################################
 
-import pyagrum as gum
-import pandas as pd
 import unittest
 from .pyAgrumTestSuite import pyAgrumTestCase, addTests
 
-from pyagrum.explain._CustomShapleyCache import CustomShapleyCache
+import pyagrum as gum
+from pyagrum.explain import ConditionalShallValues
 
-# Load the data
-data = pd.read_csv("tests/resources/iris.csv")
-data["PetalLengthCm"] = pd.cut(data["PetalLengthCm"], 5, right=True, labels=[0, 1, 2, 3, 4], include_lowest=False)
-data["PetalWidthCm"] = pd.cut(data["PetalWidthCm"], 5, right=True, labels=[0, 1, 2, 3, 4], include_lowest=False)
-data["SepalLengthCm"] = pd.cut(data["SepalLengthCm"], 5, right=True, labels=[0, 1, 2, 3, 4], include_lowest=False)
-data["SepalWidthCm"] = pd.cut(data["SepalWidthCm"], 5, right=True, labels=[0, 1, 2, 3, 4], include_lowest=False)
-
-# Create the Bayesian Network and the ConditionalShapValues instance
-learner = gum.BNLearner(data)
-bn = learner.learnBN()
+import pandas as pd
 
 
-class ShapCustomCache(pyAgrumTestCase):
-  def test_generate_keys(self):
-    nodes = [0, 1, 2]
-    target = 5
-    feat = 2
-    key1, key2, key3 = CustomShapleyCache.generate_keys(bn, target, feat, nodes)
-    assert key1 == (0, 1, 2)
-    assert key2 == (0, 1)
-    assert key3 == (1, 2)
+class ShallConditionalTest(pyAgrumTestCase):
+  @staticmethod
+  def create_data():
+    # Load the data
+    data = pd.read_csv("tests/resources/iris.csv", index_col="Id").drop(columns=["Species"])
 
-    nodes = [0, 1, 2, 3, 4]
-    key1, key2, key3 = CustomShapleyCache.generate_keys(bn, target, feat, nodes)
-    assert key1 == (0, 1, 2, 3, 4)
-    assert key2 == (0, 1, 3, 4)
-    assert key3 == (1, 2, 3, 4)
+    data["PetalLengthCm"] = pd.cut(data["PetalLengthCm"], 5, right=True, labels=[0, 1, 2, 3, 4], include_lowest=False)
+    data["PetalWidthCm"] = pd.cut(data["PetalWidthCm"], 5, right=True, labels=[0, 1, 2, 3, 4], include_lowest=False)
+    data["SepalLengthCm"] = pd.cut(data["SepalLengthCm"], 5, right=True, labels=[0, 1, 2, 3, 4], include_lowest=False)
+    data["SepalWidthCm"] = pd.cut(data["SepalWidthCm"], 5, right=True, labels=[0, 1, 2, 3, 4], include_lowest=False)
 
-    nodes = [1, 2]
-    key1, key2, key3 = CustomShapleyCache.generate_keys(bn, target, feat, nodes)
-    assert key1 == (1, 2)
-    assert key2 == (1,)
-    assert key3 == (1, 2)
+    learner = gum.BNLearner(data)
+    bn = learner.learnBN()
 
-  def test_cache_operations(self):
-    cache = CustomShapleyCache(max_capacity=3)
-    cache.set(1, (0, 1), 10)
-    assert cache.get(1, (0, 1)) == 10
-    cache.set(2, (0, 1), 20)
-    assert cache.get(2, (0, 1)) == 20
-    cache.set(2, (0, 1, 2), 30) == 30
-    assert cache.get(2, (0, 1, 2)) == 30
-    cache.set(3, (0, 1, 2, 3), 40)
-    assert cache.get(3, (0, 1, 2, 3)) == 40
-    assert cache._current_size == 2
-    try:  # Should be purged due to capacity limit
-      cache.get(1, (0, 1))
-      assert False
-    except KeyError:
-      pass
+    explainer = ConditionalShallValues(bn, background=(data.head(150), True), log=True)
+
+    inst = gum.Instantiation()
+    for var in bn.ids(data.columns):
+      inst.add(bn.variable(var))
+
+    return bn, data, inst, explainer
+
+  def test__shap_1dim(self):
+    bn, data, inst, explainer = ShallConditionalTest.create_data()
+
+    instance_0 = {"SepalLengthCm": 1, "SepalWidthCm": 3, "PetalLengthCm": 0, "PetalWidthCm": 0}
+    instance_1 = {"SepalLengthCm": 0, "SepalWidthCm": 2, "PetalLengthCm": 0, "PetalWidthCm": 0}
+    instance_2 = {"SepalLengthCm": 1, "SepalWidthCm": 3, "PetalLengthCm": 0, "PetalWidthCm": 0}
+    instance_3 = {"SepalLengthCm": 1, "SepalWidthCm": 3, "PetalLengthCm": 0, "PetalWidthCm": 0}
+    instance_4 = {"SepalLengthCm": 4, "SepalWidthCm": 3, "PetalLengthCm": 4, "PetalWidthCm": 3}
+
+    joint0 = sum(list(explainer.compute((instance_0, False)).values())) + explainer.baseline
+    joint1 = sum(list(explainer.compute((instance_1, False)).values())) + explainer.baseline
+    joint2 = sum(list(explainer.compute((instance_2, False)).values())) + explainer.baseline
+    joint3 = sum(list(explainer.compute((instance_3, False)).values())) + explainer.baseline
+    joint4 = sum(list(explainer.compute((instance_4, False)).values())) + explainer.baseline
+
+    inst.fromdict(instance_0)
+    x = explainer.func(bn.jointProbability(inst))
+    self.assertAlmostEqual(x, joint0, 5)
+
+    inst.fromdict(instance_1)
+    x = explainer.func(bn.jointProbability(inst))
+    self.assertAlmostEqual(x, joint1, 5)
+
+    inst.fromdict(instance_2)
+    x = explainer.func(bn.jointProbability(inst))
+    self.assertAlmostEqual(x, joint2, 5)
+
+    inst.fromdict(instance_3)
+    x = explainer.func(bn.jointProbability(inst))
+    self.assertAlmostEqual(x, joint3, 5)
+
+    inst.fromdict(instance_4)
+    x = explainer.func(bn.jointProbability(inst))
+    self.assertAlmostEqual(x, joint4, 5)
 
 
 ts = unittest.TestSuite()
-addTests(ts, ShapCustomCache)
+addTests(ts, ShallConditionalTest)

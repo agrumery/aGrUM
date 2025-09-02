@@ -23,7 +23,7 @@ docstring-code-format = true
 [lint]
 #extend-select = ["E501"]
 # Avoid trying to fix flake8-bugbear (`B`) violations.
-unfixable = ["B","F401"]]
+unfixable = ["B","F401"]
 
 
 # E741 : ambiguous variable name (e.g. "l", "O", "I").
