@@ -198,6 +198,34 @@ namespace gum {
     /** check if nodes X and nodes  Y are independent given Z (in the sense of
      * d-separation)*/
     bool dSeparation(const NodeSet& X, const NodeSet& Y, const NodeSet& Z) const;
+
+    /***
+     * @return the minimal subset of soids that conditions the target
+     *
+     * i.e. P(target| soids)=P(target|@return)
+     */
+    NodeSet minimalCondSet(NodeId target, const NodeSet& soids) const;
+
+
+    /***
+     * @return the minimal subset of soids that conditions the targets
+     *
+     * i.e. P(targets| soids)=P(targets|@return)
+     */
+    NodeSet minimalCondSet(const NodeSet& targets, const NodeSet& soids) const;
+
+    private:
+    void _minimalCondSetVisitUp_(NodeId         node,
+                                 const NodeSet& soids,
+                                 NodeSet&       minimal,
+                                 NodeSet&       alreadyVisitedUp,
+                                 NodeSet&       alreadyVisitedDn) const;
+    void _minimalCondSetVisitDn_(NodeId         node,
+                                 const NodeSet& soids,
+                                 NodeSet&       minimal,
+                                 NodeSet&       alreadyVisitedUp,
+                                 NodeSet&       alreadyVisitedDn) const;
+
   };
 
 } /* namespace gum */

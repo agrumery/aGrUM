@@ -141,4 +141,24 @@ namespace gum {
   INLINE bool DAGmodel::isIndependent(const NodeSet& X, const NodeSet& Y, const NodeSet& Z) const {
     return dag().dSeparation(X, Y, Z);
   }
+
+  INLINE NodeSet DAGmodel::minimalCondSet(NodeId target, const NodeSet& soids) const {
+    return dag_.minimalCondSet(target, soids);
+  }
+
+  INLINE NodeSet DAGmodel::minimalCondSet(const NodeSet& targets, const NodeSet& soids) const {
+    return dag_.minimalCondSet(targets, soids);
+  }
+
+  INLINE NodeSet DAGmodel::minimalCondSet(const std::string& target,
+                                          const std::vector<std::string>& soids) const {
+    return dag_.minimalCondSet(idFromName(target), nodeset(soids));
+  }
+
+  INLINE NodeSet DAGmodel::minimalCondSet(const std::vector<std::string>& targets,
+                                          const std::vector<std::string>& soids) const {
+    return dag_.minimalCondSet(nodeset(targets), nodeset(soids));
+  }
+
+
 } /* namespace gum */

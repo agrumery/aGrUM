@@ -228,6 +228,38 @@ namespace gum {
     /// the same
     bool hasSameStructure(const DAGmodel& other);
 
+    /***
+     * @return the minimal subset of soids that conditions the target
+     *
+     * i.e. P(target| soids)=P(target|@return)
+     */
+    NodeSet minimalCondSet(NodeId target, const NodeSet& soids) const;
+
+
+    /***
+     * @return the minimal subset of soids that conditions the targets
+     *
+     * i.e. P(targets| soids)=P(targets|@return)
+     */
+    NodeSet minimalCondSet(const NodeSet& targets, const NodeSet& soids) const;
+
+
+    /***
+     * @return the minimal subset of soids that conditions the target
+     *
+     * i.e. P(target| soids)=P(target|@return)
+     */
+    NodeSet minimalCondSet(const std::string& target, const std::vector<std::string>& soids) const;
+
+
+    /***
+     * @return the minimal subset of soids that conditions the targets
+     *
+     * i.e. P(targets| soids)=P(targets|@return)
+     */
+    NodeSet minimalCondSet(const std::vector<std::string>& targets, const std::vector<std::string>& soids) const;
+
+
     protected:
     /**
      * Private copy operator.
