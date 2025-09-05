@@ -48,6 +48,8 @@
 #include <agrum/BN/BayesNet.h>
 #include <agrum/BN/inference/lazyPropagation.h>
 
+#include <agrum/CM/doAST.h>
+
 namespace gum {
 
 // ================================================================
@@ -231,34 +233,21 @@ template <typename GUM_SCALAR>
 ASTposteriorProba<GUM_SCALAR>::ASTposteriorProba(const BayesNet<GUM_SCALAR>& bn,
                                                  const Set<std::string>& vars,
                                                  const Set<std::string>& knw)
-  : ASTtree<GUM_SCALAR>("_posterior_"), _vars(vars) {
+  : ASTposteriorProba(vars, _compute_knw_from_bn(bn, vars, knw)) {}
 
-  // validate that vars is not empty
-  if (vars.empty()) {
-      GUM_ERROR(InvalidArgument, "ASTposteriorProba: vars must not be empty");
-  }
-
-  // Compute minimal conditioning set using BN (ids → names), then store names only.
-  NodeSet varIds, knwIds;
-
-  for (const auto& v : vars) varIds.insert(bn.idFromName(v));
-  for (const auto& k : knw)  knwIds.insert(bn.idFromName(k));
-
-  const auto minK = bn.minimalCondSet(varIds, knwIds);
-  for (auto nid : minK) _knw.insert(bn.variable(nid).name());
-}
+template <typename GUM_SCALAR>
+ASTposteriorProba<GUM_SCALAR>::ASTposteriorProba(const DAG& dag,
+                                                 const Bijection< NodeId, std::string >& id2name,
+                                                 const Set<std::string>& vars,
+                                                 const Set<std::string>& knw)
+  : ASTposteriorProba(vars, _compute_knw_from_dag(dag, id2name, vars, knw)) {}
 
 template <typename GUM_SCALAR>
 ASTposteriorProba<GUM_SCALAR>::ASTposteriorProba(const Set<std::string>& vars,
                                                  const Set<std::string>& knw)
   : ASTtree<GUM_SCALAR>("_posterior_"), _vars(vars), _knw(knw) {
-
-  // validate that vars is not empty
-  if (vars.empty()) {
-      GUM_ERROR(InvalidArgument, "ASTposteriorProba: vars must not be empty");
+    _ensure_nonempty(vars);
   }
-
-}
 
 template <typename GUM_SCALAR>
 std::string ASTposteriorProba<GUM_SCALAR>::toString(const std::string& prefix) const {
@@ -378,6 +367,39 @@ ASTposteriorProba<GUM_SCALAR>::eval(const BayesNet<GUM_SCALAR>& contextual_bn) c
   return p;
 }
 
+template <typename GUM_SCALAR>
+INLINE void ASTposteriorProba<GUM_SCALAR>::_ensure_nonempty(const Set<std::string>& vars) {
+    if (vars.empty()) {
+      GUM_ERROR(InvalidArgument, "ASTposteriorProba: vars must not be empty");
+    }
+}
+
+template <typename GUM_SCALAR>
+Set<std::string> ASTposteriorProba<GUM_SCALAR>::_compute_knw_from_bn(const BayesNet<GUM_SCALAR>& bn,
+                                                                     const Set<std::string>& vars,
+                                                                     const Set<std::string>& knw) {
+  NodeSet varIds, knwIds;
+  for (const auto& v : vars) varIds.insert(bn.idFromName(v));
+  for (const auto& k : knw)  knwIds.insert(bn.idFromName(k));
+  Set<std::string> out;
+  const auto minK = bn.minimalCondSet(varIds, knwIds);
+  for (auto nid : minK) out.insert(bn.variable(nid).name());
+  return out;
+}
+
+template <typename GUM_SCALAR>
+Set<std::string> ASTposteriorProba<GUM_SCALAR>::_compute_knw_from_dag(const DAG& dag,
+                                                                      const Bijection<NodeId, std::string>& id2name,
+                                                                      const Set<std::string>& vars,
+                                                                      const Set<std::string>& knw) {
+  NodeSet varIds, knwIds;
+  for (const auto& v : vars) varIds.insert(id2name.first(v));
+  for (const auto& k : knw)  knwIds.insert(id2name.first(k));
+  Set<std::string> out;
+  const auto minK = dag.minimalCondSet(varIds, knwIds);
+  for (auto nid : minK) out.insert(id2name.second(nid));
+  return out;
+}
 
 // ================================================================
 // ASTjointProba :  P(vars) in observational BN

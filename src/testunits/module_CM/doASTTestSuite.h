@@ -62,6 +62,15 @@ namespace gum_tests {
 
   class DoASTTestSuite : public CxxTest::TestSuite {
   public:
+
+    const gum::Bijection<gum::NodeId, std::string> id2name_fromBN(const gum::BayesNet<double>& bn) {
+      gum::Bijection<gum::NodeId, std::string> id2name;
+      for (const auto node: bn.nodes()){
+        id2name.insert(node, bn.variable(node).name());
+      }
+      return id2name;
+    }
+
     // -------------------------------------------------------------------
     // Reproduce the pyAgrum __str__ tests
     // -------------------------------------------------------------------
@@ -80,8 +89,14 @@ namespace gum_tests {
       gum::ASTposteriorProba<double> nod2(bn, sA, sC);
       TS_ASSERT_EQUALS(nod2.toString(), "P(A|C)");
 
+      gum::ASTposteriorProba<double> nod3(bn.dag(), id2name_fromBN(bn), sAC, sB);
+      TS_ASSERT_EQUALS(nod3.toString(), "P(A,C|B)");
+
+      gum::ASTposteriorProba<double> nod4(bn.dag(), id2name_fromBN(bn), sA, sC);
+      TS_ASSERT_EQUALS(nod4.toString(), "P(A|C)");
       // sum on A
       auto n1 = std::make_unique<gum::ASTposteriorProba<double>>(bn, sAC, sB);
+
       gum::ASTsum<double> su("A", std::move(n1));
       TS_ASSERT_EQUALS(su.toString(), "sum on A for\n| P(A,C|B)");
 
@@ -162,6 +177,9 @@ namespace gum_tests {
       knw.insert("x"); knw.insert("z1"); knw.insert("z2"); knw.insert("z3");
       gum::ASTposteriorProba<double> nod(m, y, knw);
       TS_ASSERT_EQUALS(nod.toString(), "P(y|z1,z3)");
+
+      gum::ASTposteriorProba<double> nod2(m.dag(), id2name_fromBN(m), y, knw);
+      TS_ASSERT_EQUALS(nod2.toString(), "P(y|z1,z3)");
     }
 
     // -------------------------------------------------------------------
@@ -181,6 +199,9 @@ namespace gum_tests {
 
       auto ref = bn.cpt(bn.idFromName("B"));
       TS_GUM_TENSOR_ALMOST_EQUALS(got, ref);
+
+      gum::ASTposteriorProba<double> node2(bn.dag(), id2name_fromBN(bn), varB, condA);
+      auto got2 = node2.eval(bn);
     }
 
     // 2) Posterior without conditioning: P(C)
@@ -200,6 +221,10 @@ namespace gum_tests {
       auto ref = ie.posterior(bn.idFromName("C"));
 
       TS_GUM_TENSOR_ALMOST_EQUALS(got, ref);
+
+      gum::ASTposteriorProba<double> node2(bn.dag(), id2name_fromBN(bn), varC, empty);
+      auto got2 = node2.eval(bn);
+      TS_GUM_TENSOR_ALMOST_EQUALS(got2, ref);
     }
 
     // 3) Posterior with conditioning: P(C | B) = P(C,B) / P(B)
@@ -220,6 +245,10 @@ namespace gum_tests {
       auto ref = ie.jointPosterior(cb) / ie.jointPosterior(bset);
 
       TS_GUM_TENSOR_ALMOST_EQUALS(got, ref);
+
+      gum::ASTposteriorProba<double> node2(bn.dag(), id2name_fromBN(bn), varC, condB);
+      auto got2 = node2.eval(bn);
+      TS_GUM_TENSOR_ALMOST_EQUALS(got2, ref);
     }
 
     // 4) Joint: single and pair
@@ -390,6 +419,12 @@ namespace gum_tests {
         auto ref = ie.jointPosterior(AC);
 
         TS_GUM_TENSOR_ALMOST_EQUALS(got, ref);
+
+        auto t3 = std::make_unique<gum::ASTposteriorProba<double>>(bn.dag(), id2name_fromBN(bn), A, C);   // P(A|C)
+        auto t4 = std::make_unique<gum::ASTposteriorProba<double>>(bn.dag(), id2name_fromBN(bn), C, none); // P(C)
+        gum::ASTmult<double> prod2(std::move(t3), std::move(t4));
+        auto got2 = prod2.eval(bn);
+        TS_GUM_TENSOR_ALMOST_EQUALS(got2, ref);
     }
 
     // 12) Sum flattening equivalence: Σ_A Σ_C == Σ_{A,C}
@@ -522,12 +557,15 @@ namespace gum_tests {
     }
 
     GUM_ACTIVE_TEST(Latex_ConditionalSimplification) {
-    auto m = gum::BayesNet<double>::fastPrototype("z2->x->z1->y;z2->z1;z2->z3->y");
-    gum::Set<std::string> y, knw;
-    y.insert("y");
-    knw.insert("x"); knw.insert("z1"); knw.insert("z2"); knw.insert("z3");
-    gum::ASTposteriorProba<double> nod(m, y, knw);
-    TS_ASSERT_EQUALS(nod.toLatex(), "P\\left(y\\mid z1,z3\\right)");
+      auto m = gum::BayesNet<double>::fastPrototype("z2->x->z1->y;z2->z1;z2->z3->y");
+      gum::Set<std::string> y, knw;
+      y.insert("y");
+      knw.insert("x"); knw.insert("z1"); knw.insert("z2"); knw.insert("z3");
+      gum::ASTposteriorProba<double> nod(m, y, knw);
+      TS_ASSERT_EQUALS(nod.toLatex(), "P\\left(y\\mid z1,z3\\right)");
+
+      gum::ASTposteriorProba<double> nod2(m, y, knw);
+      TS_ASSERT_EQUALS(nod2.toLatex(), "P\\left(y\\mid z1,z3\\right)");
     }
 
 

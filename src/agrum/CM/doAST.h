@@ -303,6 +303,12 @@ public:
                              const Set<std::string>& vars,
                              const Set<std::string>& knw);
 
+  /// Constructor for \( \mathbb{P}_{bn}(\mathrm{vars}\mid\mathrm{knw}) \); `knw` will be minimalized using `dag`.
+  explicit ASTposteriorProba(const DAG& bn,
+                             const Bijection< NodeId, std::string >& id2name,
+                             const Set<std::string>& vars,
+                             const Set<std::string>& knw);
+
   /// Constructor for \( \mathbb{P}_{bn}(\mathrm{vars}\mid\mathrm{knw}) \) with already minimalized `knw`.
   explicit ASTposteriorProba(const Set<std::string>& vars,
                              const Set<std::string>& knw);
@@ -328,6 +334,18 @@ public:
 private:
   Set<std::string> _vars;  //!< names of conditioned variables
   Set<std::string> _knw;   //!< names of conditioning variables (already minimalized)
+
+
+  static void _ensure_nonempty(const Set<std::string>& vars);
+
+  static Set<std::string> _compute_knw_from_bn(const BayesNet<GUM_SCALAR>& bn,
+                                               const Set<std::string>& vars,
+                                               const Set<std::string>& knw);
+
+  static Set<std::string> _compute_knw_from_dag(const DAG& dag,
+                                                const Bijection<NodeId, std::string>& id2name,
+                                                const Set<std::string>& vars,
+                                                const Set<std::string>& knw);
 };
 
 
