@@ -91,7 +91,7 @@ namespace gum_tests {
     // -------------------------------------------------------------------
     // General d-separation checks
     // -------------------------------------------------------------------
-    void test_general_dsep_basic_paths() {
+    GUM_ACTIVE_TEST( test_general_dsep_basic_paths ) {
       auto bn  = makeRefBN();
       auto& dg = bn.dag();
 
@@ -120,7 +120,7 @@ namespace gum_tests {
     // -------------------------------------------------------------------
     // Restricted variants: backdoor / forward
     // -------------------------------------------------------------------
-    void test_backdoor_forward_simple_chain() {
+    GUM_ACTIVE_TEST( test_backdoor_forward_simple_chain ) {
       // A -> B -> C
       auto bn  = BN::fastPrototype("A->B->C");
       auto& dg = bn.dag();
@@ -138,7 +138,7 @@ namespace gum_tests {
       TS_ASSERT(  gum::DSeparation::isForwardSeparated(dg, A, C, ns(bn, {"B"})) );
     }
 
-    void test_backdoor_examples_from_pyagrum_suite() {
+    GUM_ACTIVE_TEST( test_backdoor_examples_from_pyagrum_suite ) {
       using BN = gum::BayesNet<double>;
       using NodeSet = gum::NodeSet;
 
@@ -210,7 +210,7 @@ namespace gum_tests {
     // -------------------------------------------------------------------
     // Reduction & barren nodes
     // -------------------------------------------------------------------
-    void test_barren_nodes_and_reduction() {
+    GUM_ACTIVE_TEST( test_barren_nodes_and_reduction ) {
       using BN = gum::BayesNet<double>;
       auto bn  = BN::fastPrototype("A->B->C; X->Y; U->V; C->W; T");
       auto& dg = bn.dag();
@@ -259,7 +259,7 @@ namespace gum_tests {
     // -------------------------------------------------------------------
     // Cross-check: general d-sep agrees with DAG::dSeparation
     // -------------------------------------------------------------------
-    void test_agreement_with_DAG_API() {
+    GUM_ACTIVE_TEST( test_agreement_with_DAG_API ) {
       auto bn  = makeRefBN();
       const auto& dag = bn.dag();
 
@@ -273,6 +273,23 @@ namespace gum_tests {
       TS_ASSERT_EQUALS( gum::DSeparation::isDSeparated(dag, A, B, C),
                         dag.dSeparation(A, B, C) );
     }
+
+    GUM_ACTIVE_TEST( test_dsep_confounder_conditioning_blocks ) {
+      // Confounding only (no direct X->Y path): U->X, U->Y
+      auto bn  = BN::fastPrototype("U->X;U->Y");
+      const auto& dag = bn.dag();
+
+      auto X = ns(bn, {"X"});
+      auto Y = ns(bn, {"Y"});
+      auto U = ns(bn, {"U"});
+
+      // Without conditioning: NOT d-separated (path X <- U -> Y is open)
+      TS_ASSERT(!gum::DSeparation::isDSeparated(dag, X, Y, NodeSet{}));
+
+      // Conditioning on the confounder blocks that backdoor path
+      TS_ASSERT(gum::DSeparation::isDSeparated(dag, X, Y, U));
+    }
+
   };
 
 } // namespace gum_tests

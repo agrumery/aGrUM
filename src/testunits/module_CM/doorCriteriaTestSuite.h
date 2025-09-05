@@ -460,6 +460,250 @@ namespace gum_tests {
       TS_ASSERT_EQUALS(vs, vs_sorted);
     }
 
+    GUM_ACTIVE_TEST(Backdoor_Rejects_X_or_Y_in_Z) {
+      // Graph with confounding and a direct edge.
+      auto bn  = gum::BayesNet<double>::fastPrototype("U->X->Y;U->Y");
+      const auto& dag = bn.dag();
+
+      gum::DoorCriteria dc(dag);
+      const auto idX = bn.idFromName("X");
+      const auto idY = bn.idFromName("Y");
+      const auto idU = bn.idFromName("U");
+
+      // Z that contains X is invalid
+      gum::NodeSet ZX; ZX.insert(idX);
+      TS_ASSERT(!dc.satisfiesBackdoorCriterion(idX, idY, ZX));
+
+      // Z that contains Y is invalid
+      gum::NodeSet ZY; ZY.insert(idY);
+          TS_ASSERT(!dc.satisfiesBackdoorCriterion(idX, idY, ZY));
+
+      // Control: {U} is valid
+      gum::NodeSet ZU; ZU.insert(idU);
+      TS_ASSERT(dc.satisfiesBackdoorCriterion(idX, idY, ZU));
+      }
+
+    GUM_ACTIVE_TEST(Frontdoor_Rejects_X_or_Y_in_Z) {
+      // Canonical frontdoor structure.
+      auto bn  = gum::BayesNet<double>::fastPrototype("U->X;U->Y;X->Z->Y");
+      const auto& dag = bn.dag();
+      gum::DoorCriteria dc(dag);
+
+      const auto idX = bn.idFromName("X");
+      const auto idY = bn.idFromName("Y");
+      const auto idZ = bn.idFromName("Z");
+
+      // Z that contains X or Y should be rejected for frontdoor.
+      gum::NodeSet ZX; ZX.insert(idX);
+      gum::NodeSet ZY; ZY.insert(idY);
+      TS_ASSERT(!dc.satisfiesFrontdoorCriterion(idX, idY, ZX));
+      TS_ASSERT(!dc.satisfiesFrontdoorCriterion(idX, idY, ZY));
+
+      // Control: {Z} is valid.
+      gum::NodeSet ZZ; ZZ.insert(idZ);
+      TS_ASSERT(dc.satisfiesFrontdoorCriterion(idX, idY, ZZ));
+    }
+
+    GUM_ACTIVE_TEST(Frontdoor_Fails_With_Direct_XY_Edge) {
+      // Add a direct edge X->Y : FD-1 ("intercept all directed paths") should fail for {Z}.
+      auto bn  = gum::BayesNet<double>::fastPrototype("U->X;U->Y;X->Z->Y;X->Y");
+      const auto& dag = bn.dag();
+      gum::DoorCriteria dc(dag);
+
+      const auto idX = bn.idFromName("X");
+      const auto idY = bn.idFromName("Y");
+      const auto idZ = bn.idFromName("Z");
+
+      gum::NodeSet ZZ; ZZ.insert(idZ);
+      TS_ASSERT(!dc.satisfiesFrontdoorCriterion(idX, idY, ZZ));
+
+      // Enumeration should be empty in this case.
+      auto fds = dc.enumerateFrontdoorSets(idX, idY);
+      TS_ASSERT_EQUALS(fds.size(), 0u);
+    }
+
+    GUM_ACTIVE_TEST(Frontdoor_Enumeration_MinimalVsSupersets_Z3Hub) {
+      // X->Z1->Z3 and X->Z2->Z3, with Z3->Y; U->X, U->Y (confounding).
+      // All directed X->Y paths pass through Z3, so {Z3} is inclusion-minimal.
+      // {Z1,Z2} also intercepts all directed paths (each singleton fails), and is also inclusion-minimal.
+      auto bn  = gum::BayesNet<double>::fastPrototype("U->X;U->Y;X->Z1->Z3;X->Z2->Z3;Z3->Y");
+
+      const auto& dag = bn.dag();
+      gum::DoorCriteria dc(dag);
+
+      const auto idX  = bn.idFromName("X");
+      const auto idY  = bn.idFromName("Y");
+      const auto idZ1 = bn.idFromName("Z1");
+      const auto idZ2 = bn.idFromName("Z2");
+      const auto idZ3 = bn.idFromName("Z3");
+
+      gum::NodeSet Z1;   Z1.insert(idZ1);
+      gum::NodeSet Z2;   Z2.insert(idZ2);
+      gum::NodeSet Z12;  Z12.insert(idZ1); Z12.insert(idZ2);
+      gum::NodeSet Z3;   Z3.insert(idZ3);
+
+      // Predicate checks (criterion itself)
+      TS_ASSERT(!dc.satisfiesFrontdoorCriterion(idX, idY, Z1));
+      TS_ASSERT(!dc.satisfiesFrontdoorCriterion(idX, idY, Z2));
+      TS_ASSERT( dc.satisfiesFrontdoorCriterion(idX, idY, Z3));
+      TS_ASSERT( dc.satisfiesFrontdoorCriterion(idX, idY, Z12)); // inclusion-minimal but larger than {Z3}
+
+      // ---------- Minimal enumeration (only_minimal=true) ----------
+      {
+        auto fds_min = dc.enumerateFrontdoorSets(idX, idY); // default: only_minimal=true
+        TS_ASSERT(!fds_min.empty());
+
+        // Presence: both {Z3} and {Z1,Z2} should appear (both are inclusion-minimal)
+        auto contains_min = [&](const gum::NodeSet& target) {
+          return std::any_of(fds_min.begin(), fds_min.end(),
+                             [&](const gum::NodeSet& S) { return S == target; });
+        };
+        TS_ASSERT(contains_min(Z3));
+        TS_ASSERT(contains_min(Z12));
+
+        // Inclusion-minimality: no set is a proper subset of another
+        auto isProperSubset = [](const gum::NodeSet& A, const gum::NodeSet& B)->bool {
+          if (A.size() >= B.size()) return false;
+          for (auto n : A) if (!B.contains(n)) return false;
+          return true;
+        };
+        for (size_t i = 0; i < fds_min.size(); ++i) {
+          for (size_t j = 0; j < fds_min.size(); ++j) if (i != j) {
+            TS_ASSERT(!isProperSubset(fds_min[i], fds_min[j]));
+          }
+        }
+      }
+
+      // ---------- Non-minimal enumeration (only_minimal=false) ----------
+      {
+        gum::DoorCriteria::EnumerationOptions opts_all;
+        opts_all.only_minimal = false;
+        auto fds_all = dc.enumerateFrontdoorSets(idX, idY, opts_all);
+
+        // Must include at least the two minimal solutions
+        auto contains_all = [&](const gum::NodeSet& target) {
+          return std::any_of(fds_all.begin(), fds_all.end(),
+                             [&](const gum::NodeSet& S) { return S == target; });
+        };
+        TS_ASSERT(contains_all(Z3));
+        TS_ASSERT(contains_all(Z12));
+
+        // Dedup + deterministic order (same style as your backdoor test)
+        auto toVec = [](const gum::NodeSet& s) {
+          std::vector<gum::NodeId> v; for (auto n : s) v.push_back(n);
+          std::sort(v.begin(), v.end());
+          return v;
+        };
+        std::vector<std::vector<gum::NodeId>> vs;
+        for (const auto& s : fds_all) vs.push_back(toVec(s));
+        auto vs_sorted = vs;
+        std::sort(vs_sorted.begin(), vs_sorted.end());
+        vs_sorted.erase(std::unique(vs_sorted.begin(), vs_sorted.end()), vs_sorted.end());
+        TS_ASSERT_EQUALS(vs, vs_sorted);
+      }
+    }
+
+
+    GUM_ACTIVE_TEST(Frontdoor_Enumeration_Excludes_XY) {
+      using BN = gum::BayesNet<double>;
+
+      // Canonical frontdoor: U->X; U->Y; X->Z->Y
+      auto bn  = BN::fastPrototype("U->X;U->Y;X->Z->Y");
+      const auto& dag = bn.dag();
+      gum::DoorCriteria dc(dag);
+
+      const auto idX = bn.idFromName("X");
+      const auto idY = bn.idFromName("Y");
+      const auto idZ = bn.idFromName("Z");
+
+      // --- Predicate sanity: Z must be disjoint from {X,Y}
+      gum::NodeSet ZX; ZX.insert(idX);
+      gum::NodeSet ZY; ZY.insert(idY);
+      gum::NodeSet ZZ; ZZ.insert(idZ);
+
+      TS_ASSERT(!dc.satisfiesFrontdoorCriterion(idX, idY, ZX));
+      TS_ASSERT(!dc.satisfiesFrontdoorCriterion(idX, idY, ZY));
+      TS_ASSERT( dc.satisfiesFrontdoorCriterion(idX, idY, ZZ));
+
+      // --- Enumeration (minimal) must return exactly {Z}
+      auto fds_min = dc.enumerateFrontdoorSets(idX, idY); // only_minimal=true (default)
+      TS_ASSERT_EQUALS(fds_min.size(), 1u);
+      TS_ASSERT(fds_min[0] == ZZ);
+
+      // --- Enumeration (non-minimal) must NEVER include X or Y
+      gum::DoorCriteria::EnumerationOptions opts_all;
+      opts_all.only_minimal = false;
+      auto fds_all = dc.enumerateFrontdoorSets(idX, idY, opts_all);
+
+      // Positive control: {Z} still present
+      auto contains = [&](const gum::NodeSet& target) {
+        return std::any_of(fds_all.begin(), fds_all.end(),
+                           [&](const gum::NodeSet& S) { return S == target; });
+      };
+      TS_ASSERT(contains(ZZ));
+
+      // Negative controls: sets that include X or Y must be absent
+      gum::NodeSet ZXZ; ZXZ.insert(idX); ZXZ.insert(idZ);
+      gum::NodeSet ZYZ; ZYZ.insert(idY); ZYZ.insert(idZ);
+      TS_ASSERT(!contains(ZX));
+      TS_ASSERT(!contains(ZY));
+      TS_ASSERT(!contains(ZXZ));
+      TS_ASSERT(!contains(ZYZ));
+
+      // Generic guard: none of the enumerated sets contains X or Y
+      for (const auto& S : fds_all) {
+        TS_ASSERT(!S.contains(idX));
+        TS_ASSERT(!S.contains(idY));
+      }
+    }
+
+    GUM_ACTIVE_TEST(Frontdoor_NoDirectedPath_EnumeratesSingletons) {
+      using BN = gum::BayesNet<double>;
+
+      // No directed path X→Y; they are in the same weakly connected component:
+      //   X → A ← B → Y
+      auto bn  = BN::fastPrototype("X->A;B->A;B->Y");
+      const auto& dag = bn.dag();
+      gum::DoorCriteria dc(dag);
+
+      const auto idX = bn.idFromName("X");
+      const auto idY = bn.idFromName("Y");
+      const auto idA = bn.idFromName("A");
+      const auto idB = bn.idFromName("B");
+
+      // Sanity: truly no directed path X→Y (unblocked by ∅).
+      gum::NodeSet none;
+      TS_ASSERT(!dc.existsUnblockedDirectedPath(idX, idY, none));
+
+      // Minimal enumeration (default): should return exactly {B}.
+      auto fds_min = dc.enumerateFrontdoorSets(idX, idY);
+      TS_ASSERT_EQUALS(fds_min.size(), 1u);
+      gum::NodeSet ZB; ZB.insert(idB);
+      TS_ASSERT(fds_min[0] == ZB);
+
+      // Non-minimal mode still must not introduce A, X, or Y.
+      gum::DoorCriteria::EnumerationOptions opts_all;
+      opts_all.only_minimal = false;
+      auto fds_all = dc.enumerateFrontdoorSets(idX, idY, opts_all);
+      TS_ASSERT_EQUALS(fds_all.size(), 1u);
+      TS_ASSERT(fds_all[0] == ZB);
+
+      // Guard: A is pruned by FD-3 (A ← B → Y is a backdoor from A to Y).
+      gum::NodeSet ZA; ZA.insert(idA);
+      auto contains = [&](const gum::NodeSet& target) {
+        return std::any_of(fds_all.begin(), fds_all.end(),
+                           [&](const gum::NodeSet& S) { return S == target; });
+      };
+      TS_ASSERT(!contains(ZA));
+
+      // Guard: no set should ever contain X or Y.
+      for (const auto& S : fds_all) {
+        TS_ASSERT(!S.contains(idX));
+        TS_ASSERT(!S.contains(idY));
+      }
+    }
+
+
   };
 
 } // namespace gum_tests
