@@ -45,7 +45,9 @@
 
 #include <sstream>
 
+#include <agrum/CM/doAST.h>
 #include <agrum/CM/doorCriteria.h>
+
 #include <agrum/CM/causalModel.h>
 
 namespace gum {
@@ -354,6 +356,127 @@ NodeSet CausalModel<GUM_SCALAR>::frontDoor(NodeId cause, NodeId effect) const {
 }
 
 
+/* =======================================================================
+ * AST builders: backdoor / frontdoor
+ * ======================================================================= */
+
+template <typename GUM_SCALAR>
+std::unique_ptr<ASTtree<GUM_SCALAR>>
+CausalModel<GUM_SCALAR>::getBackDoorTree(NodeId cause,
+                                         NodeId effect,
+                                         const NodeSet& zset) const {
+  // Preconditions: cause/effect must be observed (non-latent), Z must not contain latents.
+  const NodeSet lat = latentVariablesIds();
+  if (lat.contains(cause) || lat.contains(effect)) {
+    GUM_ERROR(InvalidArgument, "getBackDoorTree: 'cause' and 'effect' must be observed (non-latent).");
+  }
+  for (auto z : zset) {
+    if (lat.contains(z)) {
+      GUM_ERROR(InvalidArgument, "getBackDoorTree: zset contains a latent variable.");
+    }
+  }
+
+  // ids → names
+  const auto&        bn    = _observationalBN_;
+  const std::string  xName = nameFromId(cause);
+  const std::string  yName = nameFromId(effect);
+
+  Set<std::string>        zNames;
+  std::vector<std::string> zOrder;
+  zOrder.reserve(zset.size());
+  for (auto z : zset) {
+    const std::string zn = nameFromId(z);
+    zNames.insert(zn);
+    zOrder.push_back(zn);
+  }
+  std::sort(zOrder.begin(), zOrder.end());
+
+  // Build P(y | x, z)
+  Set<std::string> lhsY;    lhsY.insert(yName);
+  Set<std::string> knwYXZ;  knwYXZ.insert(xName);
+  for (const auto& zn : zNames) knwYXZ.insert(zn);
+  auto Pyxz = std::make_unique<ASTposteriorProba<GUM_SCALAR>>(bn, lhsY, knwYXZ);
+
+  if (zNames.empty()) {
+    // No adjustment: returns P(y | x)
+    return Pyxz;
+  }
+
+  // Build P(z)
+  auto Pz = std::make_unique<ASTjointProba<GUM_SCALAR>>(zNames);
+
+  // Product P(y|x,z) · P(z), then sum over Z in sorted order
+  std::vector<std::unique_ptr<ASTtree<GUM_SCALAR>>> terms;
+  terms.emplace_back(std::move(Pyxz));
+  terms.emplace_back(std::move(Pz));
+  auto prod = productOfTrees<GUM_SCALAR>(std::move(terms));
+
+  return std::make_unique<ASTsum<GUM_SCALAR>>(zOrder, std::move(prod));
+}
+
+template <typename GUM_SCALAR>
+std::unique_ptr<ASTtree<GUM_SCALAR>>
+CausalModel<GUM_SCALAR>::getFrontDoorTree(NodeId cause,
+                                          NodeId effect,
+                                          const NodeSet& zset) const {
+  // --- Preconditions ---
+  const NodeSet lat = latentVariablesIds();
+  if (lat.contains(cause) || lat.contains(effect)) {
+    GUM_ERROR(InvalidArgument, "getFrontDoorTree: 'cause' and 'effect' must be observed (non-latent).");
+  }
+  if (zset.empty()) {
+    GUM_ERROR(InvalidArgument, "getFrontDoorTree: zset must be non-empty for frontdoor.");
+  }
+  if (zset.contains(cause) || zset.contains(effect)) {
+    GUM_ERROR(InvalidArgument, "getFrontDoorTree: zset must be disjoint from {cause,effect}.");
+  }
+  for (auto z : zset) {
+    if (lat.contains(z)) {
+      GUM_ERROR(InvalidArgument, "getFrontDoorTree: zset contains a latent variable.");
+    }
+  }
+
+  // --- DAG + bijection (observed only) ---
+  const DAG& dag = this->causalDAG();                 // adjust if your accessor is named differently
+  auto id2nm     = this->id2name(/*includeLatentVariables=*/false);
+
+  // --- ids → names ---
+  const std::string xName = nameFromId(cause);
+  const std::string yName = nameFromId(effect);
+
+  Set<std::string>         zNames;
+  std::vector<std::string> zOrder;
+  zOrder.reserve(zset.size());
+  for (auto z : zset) {
+    const auto zn = nameFromId(z);
+    zNames.insert(zn);
+    zOrder.push_back(zn);
+  }
+  std::sort(zOrder.begin(), zOrder.end()); // deterministic summation/printing
+
+  // --- Build P(Z | X) using DAG ctor ---
+  Set<std::string> condX; condX.insert(xName);
+  auto Pz_given_x = std::make_unique<ASTposteriorProba<GUM_SCALAR>>(dag, id2nm, zNames, condX);
+
+  // --- Build sum_x P(Y | X, Z) * P(X) ---
+  Set<std::string> ySet; ySet.insert(yName);
+
+  Set<std::string> condXZ = zNames; // copy Z
+  condXZ.insert(xName);
+  auto Py_given_xz = std::make_unique<ASTposteriorProba<GUM_SCALAR>>(dag, id2nm, ySet, condXZ);
+
+  Set<std::string> xSet; xSet.insert(xName);
+  auto Px = std::make_unique<ASTjointProba<GUM_SCALAR>>(xSet);
+
+  auto inner_prod = std::make_unique<ASTmult<GUM_SCALAR>>(std::move(Py_given_xz), std::move(Px));
+  auto inner_sum  = std::make_unique<ASTsum<GUM_SCALAR>>(std::vector<std::string>{xName}, std::move(inner_prod));
+
+  // --- P(Z|X) * (sum_x ...) then sum over Z ---
+  auto outer_prod = std::make_unique<ASTmult<GUM_SCALAR>>(std::move(Pz_given_x), std::move(inner_sum));
+  return std::make_unique<ASTsum<GUM_SCALAR>>(zOrder, std::move(outer_prod));
+}
+
+
 // ===============================
 // DOT export
 // ===============================
@@ -447,7 +570,6 @@ NodeId CausalModel<GUM_SCALAR>::idFromName(const std::string& name) const {
   }
 }
 
-// implement const std::string& nameFromId(NodeId id) const;
 template <typename GUM_SCALAR>
 std::string CausalModel<GUM_SCALAR>::nameFromId(NodeId id) const {
     if (_id2name_.existsFirst(id)) {
@@ -458,5 +580,24 @@ std::string CausalModel<GUM_SCALAR>::nameFromId(NodeId id) const {
     }
 }
 
+template <typename GUM_SCALAR>
+Bijection<NodeId, std::string> CausalModel<GUM_SCALAR>::id2name(bool includeLatentVariables) const {
+    Bijection<NodeId, std::string> result;
+
+    // Add observed variables
+    for (const auto n : _observationalBN_.nodes()) {
+        result.insert(n, _observationalBN_.variable(n).name());
+    }
+
+    // Add latent variables if requested
+    if (includeLatentVariables) {
+        for (auto iter = _id2name_.beginSafe(); iter != _id2name_.endSafe(); ++iter) {
+            result.insert(iter.first(), iter.second());
+        }
+
+    }
+
+    return result;
+}
 
 } // namespace gum

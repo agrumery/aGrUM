@@ -59,12 +59,16 @@
 #ifndef GUM_CAUSAL_MODEL_H
 #define GUM_CAUSAL_MODEL_H
 
+#include <memory>
 #include <string>
 #include <variant>
 
 #include <agrum/BN/BayesNet.h>
 
 namespace gum {
+
+  // forward declaration:
+  template <typename GUM_SCALAR> class ASTtree;
 
   /// LatentDescriptorIds = (latentName, (child1Id, child2Id, ...))
   /**
@@ -224,6 +228,62 @@ namespace gum {
      */
     NodeSet frontDoor(NodeId cause, NodeId effect) const;
 
+    /* inside class CausalModel (public:), e.g. after the Door-criteria methods */
+
+    // ======================================================================
+    // Formula builders (AST)
+    // ======================================================================
+
+    /**
+     * @brief Build the backdoor-adjustment AST for a given \(Z\) between `cause` and `effect`.
+     *
+     * Encodes:
+     * \f[
+     *   \sum_{Z}\; \mathbb{P}(y \mid x, z)\; \mathbb{P}(z)
+     * \f]
+     * where \(x=\) `cause`, \(y=\) `effect`, and \(Z=\) `zset` (all **observed**).
+     *
+     * Notes
+     * - If `zset` is **empty**, the returned AST reduces to \(\mathbb{P}(y \mid x)\).
+     * - This function does **not** check that `zset` satisfies the backdoor criterion;
+     *   it only builds the corresponding formula.
+     *
+     * @param cause  NodeId of \(x\) (must be observed).
+     * @param effect NodeId of \(y\) (must be observed).
+     * @param zset   NodeIds of \(Z\) (must be observed; latents are forbidden).
+     * @return Owned AST representing the backdoor formula.
+     * @throw InvalidArgument if `cause`/`effect` are latent, or `zset` contains a latent.
+     * @throw NotFound if any NodeId does not belong to the model.
+     */
+    std::unique_ptr<ASTtree<GUM_SCALAR>>
+    getBackDoorTree(NodeId cause, NodeId effect, const NodeSet& zset) const;
+
+    /**
+     * @brief Build the frontdoor-adjustment AST for a given mediator set \(Z\)
+     *        between `cause` and `effect`.
+     *
+     * Encodes:
+     * \f[
+     *   \sum_{Z}\; \mathbb{P}(z \mid x)\;\; \sum_{x}\; \mathbb{P}(y \mid x, z)\; \mathbb{P}(x)
+     * \f]
+     * where \(x=\) `cause`, \(y=\) `effect`, and \(Z=\) `zset` (all **observed**).
+     *
+     * Notes
+     * - This function does **not** check that `zset` satisfies the frontdoor criterion;
+     *   it only builds the corresponding formula.
+     * - `zset` must be **non-empty** for a meaningful frontdoor adjustment.
+     *
+     * @param cause  NodeId of \(x\) (must be observed).
+     * @param effect NodeId of \(y\) (must be observed).
+     * @param zset   NodeIds of mediator set \(Z\) (observed; latents are forbidden).
+     * @return Owned AST representing the frontdoor formula.
+     * @throw InvalidArgument if `cause`/`effect` are latent, or `zset` contains a latent,
+     *                        or `zset` is empty.
+     * @throw NotFound if any NodeId does not belong to the model.
+     */
+    std::unique_ptr<ASTtree<GUM_SCALAR>>
+    getFrontDoorTree(NodeId cause, NodeId effect, const NodeSet& zset) const;
+
 
     /**
      * @brief Induced causal submodel on a subset of nodes.
@@ -265,6 +325,9 @@ namespace gum {
 
     /// @brief Variable name from node id (observed or latent).
     std::string nameFromId(NodeId id) const;
+
+    /// @brief Bidirectional mapping between node ids and variable names
+    Bijection<NodeId, std::string> id2name(bool includeLatentVariable=false) const;
 
     /// @brief Node ids of all latent variables.
     NodeSet latentVariablesIds() const;
