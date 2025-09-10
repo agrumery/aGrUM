@@ -53,11 +53,11 @@
 #include <vector>
 
 #include <agrum/agrum.h>
-#include <agrum/BN/BayesNet.h>
+#include <agrum/BN/IBayesNet.h>
 
 namespace gum {
 
-template <typename GUM_SCALAR> class BayesNet;
+template <typename GUM_SCALAR> class IBayesNet;
 template <typename GUM_SCALAR> class Tensor;
 
 // ================================================================
@@ -72,7 +72,7 @@ template <typename GUM_SCALAR> class Tensor;
  *  - pretty-printed (string / LaTeX),
  *  - structurally copied,
  *  - evaluated into a numeric `Tensor<GUM_SCALAR>` w.r.t. a contextual
- *    `BayesNet<GUM_SCALAR>`.
+ *    `IBayesNet<GUM_SCALAR>`.
  *
  * ### Ownership & semantics
  * - Nodes are move-enabled and non-copyable to avoid expensive deep copies.
@@ -136,7 +136,7 @@ public:
    * @param contextual_bn Bayesian network providing CPTs and variable domains
    * @return resulting factor/tensor
    */
-  virtual Tensor<GUM_SCALAR> eval(const BayesNet<GUM_SCALAR>& contextual_bn) const = 0;
+  virtual Tensor<GUM_SCALAR> eval(const IBayesNet<GUM_SCALAR>& contextual_bn) const = 0;
 
 protected:
   /// Prefix used to draw tree branches in `toString`.
@@ -210,7 +210,7 @@ public:
   std::string protectToLatex(HashTable<std::string,int>& nameOccur) const override;
   std::string fastToLatex(HashTable<std::string,int>& nameOccur) const override;
   std::unique_ptr<ASTtree<GUM_SCALAR>> copy() const override;
-  Tensor<GUM_SCALAR> eval(const BayesNet<GUM_SCALAR>& contextual_bn) const override;
+  Tensor<GUM_SCALAR> eval(const IBayesNet<GUM_SCALAR>& contextual_bn) const override;
 };
 
 
@@ -233,7 +233,7 @@ public:
   std::string protectToLatex(HashTable<std::string,int>& nameOccur) const override;
   std::string fastToLatex(HashTable<std::string,int>& nameOccur) const override;
   std::unique_ptr<ASTtree<GUM_SCALAR>> copy() const override;
-  Tensor<GUM_SCALAR> eval(const BayesNet<GUM_SCALAR>& contextual_bn) const override;
+  Tensor<GUM_SCALAR> eval(const IBayesNet<GUM_SCALAR>& contextual_bn) const override;
 };
 
 
@@ -254,7 +254,7 @@ public:
   std::string protectToLatex(HashTable<std::string,int>& nameOccur) const override;
   std::string fastToLatex(HashTable<std::string,int>& nameOccur) const override;
   std::unique_ptr<ASTtree<GUM_SCALAR>> copy() const override;
-  Tensor<GUM_SCALAR> eval(const BayesNet<GUM_SCALAR>& contextual_bn) const override;
+  Tensor<GUM_SCALAR> eval(const IBayesNet<GUM_SCALAR>& contextual_bn) const override;
 };
 
 
@@ -275,7 +275,7 @@ public:
   std::string protectToLatex(HashTable<std::string,int>& nameOccur) const override;
   std::string fastToLatex(HashTable<std::string,int>& nameOccur) const override;
   std::unique_ptr<ASTtree<GUM_SCALAR>> copy() const override;
-  Tensor<GUM_SCALAR> eval(const BayesNet<GUM_SCALAR>& contextual_bn) const override;
+  Tensor<GUM_SCALAR> eval(const IBayesNet<GUM_SCALAR>& contextual_bn) const override;
 };
 
 
@@ -329,7 +329,7 @@ public:
   /// @copydoc ASTtree::copy
   std::unique_ptr<ASTtree<GUM_SCALAR>> copy() const override;
   /// @copydoc ASTtree::eval
-  Tensor<GUM_SCALAR> eval(const BayesNet<GUM_SCALAR>& contextual_bn) const override;
+  Tensor<GUM_SCALAR> eval(const IBayesNet<GUM_SCALAR>& contextual_bn) const override;
 
 private:
   Set<std::string> _vars;  //!< names of conditioned variables
@@ -377,7 +377,7 @@ public:
   /// @copydoc ASTtree::copy
   std::unique_ptr<ASTtree<GUM_SCALAR>> copy() const override;
   /// @copydoc ASTtree::eval
-  Tensor<GUM_SCALAR> eval(const BayesNet<GUM_SCALAR>& contextual_bn) const override;
+  Tensor<GUM_SCALAR> eval(const IBayesNet<GUM_SCALAR>& contextual_bn) const override;
 
 private:
   Set<std::string> _varNames;
@@ -420,7 +420,7 @@ public:
   /// @copydoc ASTtree::copy
   std::unique_ptr<ASTtree<GUM_SCALAR>> copy() const override;
   /// @copydoc ASTtree::eval
-  Tensor<GUM_SCALAR> eval(const BayesNet<GUM_SCALAR>& contextual_bn) const override;
+  Tensor<GUM_SCALAR> eval(const IBayesNet<GUM_SCALAR>& contextual_bn) const override;
 
 private:
   std::string _var;                         //!< variable to eliminate

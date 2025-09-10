@@ -45,7 +45,7 @@
 #include <algorithm>
 #include <sstream>
 
-#include <agrum/BN/BayesNet.h>
+#include <agrum/BN/IBayesNet.h>
 #include <agrum/BN/inference/lazyPropagation.h>
 
 #include <agrum/CM/doAST.h>
@@ -131,7 +131,7 @@ std::unique_ptr<ASTtree<GUM_SCALAR>> ASTplus<GUM_SCALAR>::copy() const {
 }
 
 template <typename GUM_SCALAR>
-Tensor<GUM_SCALAR> ASTplus<GUM_SCALAR>::eval(const BayesNet<GUM_SCALAR>& bn) const {
+Tensor<GUM_SCALAR> ASTplus<GUM_SCALAR>::eval(const IBayesNet<GUM_SCALAR>& bn) const {
   return this->_op1->eval(bn) + this->_op2->eval(bn);
 }
 
@@ -161,7 +161,7 @@ std::unique_ptr<ASTtree<GUM_SCALAR>> ASTminus<GUM_SCALAR>::copy() const {
 }
 
 template <typename GUM_SCALAR>
-Tensor<GUM_SCALAR> ASTminus<GUM_SCALAR>::eval(const BayesNet<GUM_SCALAR>& bn) const {
+Tensor<GUM_SCALAR> ASTminus<GUM_SCALAR>::eval(const IBayesNet<GUM_SCALAR>& bn) const {
   return this->_op1->eval(bn) - this->_op2->eval(bn);
 }
 
@@ -191,7 +191,7 @@ std::unique_ptr<ASTtree<GUM_SCALAR>> ASTmult<GUM_SCALAR>::copy() const {
 }
 
 template <typename GUM_SCALAR>
-Tensor<GUM_SCALAR> ASTmult<GUM_SCALAR>::eval(const BayesNet<GUM_SCALAR>& bn) const {
+Tensor<GUM_SCALAR> ASTmult<GUM_SCALAR>::eval(const IBayesNet<GUM_SCALAR>& bn) const {
   return this->_op1->eval(bn) * this->_op2->eval(bn);
 }
 
@@ -221,7 +221,7 @@ std::unique_ptr<ASTtree<GUM_SCALAR>> ASTdiv<GUM_SCALAR>::copy() const {
 }
 
 template <typename GUM_SCALAR>
-Tensor<GUM_SCALAR> ASTdiv<GUM_SCALAR>::eval(const BayesNet<GUM_SCALAR>& bn) const {
+Tensor<GUM_SCALAR> ASTdiv<GUM_SCALAR>::eval(const IBayesNet<GUM_SCALAR>& bn) const {
   return this->_op1->eval(bn) / this->_op2->eval(bn);
 }
 
@@ -329,7 +329,7 @@ std::unique_ptr<ASTtree<GUM_SCALAR>> ASTposteriorProba<GUM_SCALAR>::copy() const
 
 template <typename GUM_SCALAR>
 Tensor<GUM_SCALAR>
-ASTposteriorProba<GUM_SCALAR>::eval(const BayesNet<GUM_SCALAR>& contextual_bn) const {
+ASTposteriorProba<GUM_SCALAR>::eval(const IBayesNet<GUM_SCALAR>& contextual_bn) const {
 
   // Build NodeSets from names
   NodeSet set_vars, set_knw;
@@ -461,7 +461,7 @@ std::unique_ptr<ASTtree<GUM_SCALAR>> ASTjointProba<GUM_SCALAR>::copy() const {
 
 template <typename GUM_SCALAR>
 Tensor<GUM_SCALAR>
-ASTjointProba<GUM_SCALAR>::eval(const BayesNet<GUM_SCALAR>& contextual_bn) const {
+ASTjointProba<GUM_SCALAR>::eval(const IBayesNet<GUM_SCALAR>& contextual_bn) const {
   NodeSet ids;
   for (const auto& v : _varNames) ids.insert(contextual_bn.idFromName(v));
 
@@ -563,7 +563,7 @@ std::unique_ptr<ASTtree<GUM_SCALAR>> ASTsum<GUM_SCALAR>::copy() const {
 
 template <typename GUM_SCALAR>
 Tensor<GUM_SCALAR>
-ASTsum<GUM_SCALAR>::eval(const BayesNet<GUM_SCALAR>& contextual_bn) const {
+ASTsum<GUM_SCALAR>::eval(const IBayesNet<GUM_SCALAR>& contextual_bn) const {
   auto base = _term->eval(contextual_bn);
 
   const auto& dv = contextual_bn.variable(contextual_bn.idFromName(_var));
