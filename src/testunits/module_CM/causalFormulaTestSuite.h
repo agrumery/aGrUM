@@ -56,6 +56,128 @@ namespace gum_tests {
     using NameSet = gum::Set<std::string>;
     using NodeSet = gum::NodeSet;
 
+    /**
+    * Tests P(Y) = sum_X P(X,Y)
+    * This verifies that a basic marginalization formula evaluates correctly,
+    * matching the result from a standard inference engine.
+    */
+    GUM_ACTIVE_TEST(test_observational_marginal) {
+      // Setup: A simple X -> Y model
+      auto bn = gum::BayesNet<double>::fastPrototype("X{0|1}->Y{0|1}");
+      bn.cpt(bn.idFromName("X")).fillWith({0.2, 0.8});
+      bn.cpt(bn.idFromName("Y")).fillWith({0.9, 0.1, 0.4, 0.6});
+      gum::CausalModel<double> cm(bn);
+
+      // AST for sum_X P(X,Y)
+      // The leaf node represents the full joint distribution P(X,Y)
+      auto leaf = std::make_unique<gum::ASTjointProba<double>>(NameSet{"X", "Y"});
+      // The sum node marginalizes out X
+      auto ast = std::make_unique<gum::ASTsum<double>>("X", std::move(leaf));
+
+      // Create the CausalFormula object for P(Y)
+      gum::CausalFormula<double> cf(cm, std::move(ast), NameSet{"Y"}, NameSet{});
+
+      // Test LaTeX generation
+      TS_ASSERT_EQUALS(cf.latexQuery(), "P\\left(Y\\right)");
+      TS_ASSERT_EQUALS(cf.toLatex(), "P\\left(Y\\right) = \\sum_{X}{P\\left(X,Y\\right)}");
+
+      // Test evaluation
+      auto result_pot = cf.eval();
+
+      // Calculate expected result using standard inference
+      gum::LazyPropagation<double> lp(&bn);
+      lp.makeInference();
+      auto expected_pot = lp.posterior(bn.idFromName("Y"));
+
+      TS_GUM_TENSOR_ALMOST_EQUALS(result_pot, expected_pot);
+    }
+
+    /**
+    * Tests P(Y|X) = P(X,Y) / sum_Y P(X,Y)
+    */
+    GUM_ACTIVE_TEST(test_observational_conditional) {
+      // Setup: A simple X -> Y model
+      auto bn = gum::BayesNet<double>::fastPrototype("X{0|1}->Y{0|1}");
+      bn.cpt(bn.idFromName("X")).fillWith({0.2, 0.8});
+      bn.cpt(bn.idFromName("Y")).fillWith({0.9, 0.1, 0.4, 0.6});
+      gum::CausalModel<double> cm(bn);
+
+      // AST for P(X,Y) / sum_Y P(X,Y)
+      // Numerator is the joint P(X,Y)
+      auto ast_numerator = std::make_unique<gum::ASTjointProba<double>>(NameSet{"X", "Y"});
+      // Denominator is sum_Y P(X,Y), which is P(X)
+      auto ast_denominator_leaf = std::make_unique<gum::ASTjointProba<double>>(NameSet{"X", "Y"});
+      auto ast_denominator = std::make_unique<gum::ASTsum<double>>("Y", std::move(ast_denominator_leaf));
+
+      auto ast = std::make_unique<gum::ASTdiv<double>>(std::move(ast_numerator), std::move(ast_denominator));
+
+      // Create the CausalFormula object for P(Y|X)
+      gum::CausalFormula<double> cf(cm, std::move(ast), {"Y"}, {"X"});
+
+      // Test LaTeX
+      TS_ASSERT_EQUALS(cf.latexQuery(), "P\\left(Y \\mid do(X)\\right)");
+      TS_ASSERT_EQUALS(cf.toLatex(), "P\\left(Y \\mid do(X)\\right) =  \\frac {P\\left(X,Y\\right)}{\\sum_{Y}{P\\left(X,Y\'\\right)}}");
+
+      // Test evaluation
+      auto result_pot = cf.eval();
+      // The expected result for P(Y|X) is simply the CPT of Y
+      auto& expected_pot = bn.cpt(bn.idFromName("Y"));
+
+      TS_GUM_TENSOR_ALMOST_EQUALS(result_pot, expected_pot);
+    }
+
+    /**
+    * Tests P(Y|do(X)) = sum_Z P(Y|X,Z) * P(Z)
+    */
+    GUM_ACTIVE_TEST(test_interventional_backdoor) {
+      // Setup: A model requiring backdoor adjustment
+      auto bn = gum::BayesNet<double>::fastPrototype("Z->X;Z->Y;X->Y");
+      bn.cpt(bn.idFromName("Z")).fillWith({0.6, 0.4});
+      bn.cpt(bn.idFromName("X")).fillWith({0.8, 0.2, 0.3, 0.7});
+      bn.cpt(bn.idFromName("Y")).fillWith({0.9, 0.1, 0.8, 0.2, 0.7, 0.3, 0.6, 0.4});
+      gum::CausalModel<double> cm(bn);
+
+      // AST for sum_Z P(Y|X,Z) * P(Z)
+      auto ast_p_y_given_xz = std::make_unique<gum::ASTposteriorProba<double>>(NameSet{"Y"}, NameSet{"X", "Z"});
+      auto ast_p_z = std::make_unique<gum::ASTjointProba<double>>(NameSet{"Z"});
+      auto ast_product = std::make_unique<gum::ASTmult<double>>(std::move(ast_p_y_given_xz), std::move(ast_p_z));
+      auto ast = std::make_unique<gum::ASTsum<double>>("Z", std::move(ast_product));
+
+      // Create CausalFormula for P(Y | do(X))
+      gum::CausalFormula<double> cf(cm, std::move(ast), {"Y"}, NameSet{}, {"X"});
+
+      // Test LaTeX
+      TS_ASSERT_EQUALS(cf.latexQuery(), "P\\left(Y \\mid X\\right)");
+      TS_ASSERT_EQUALS(cf.toLatex(), "P\\left(Y \\mid X\\right) = \\sum_{Z}{P\\left(Y\\mid X,Z\\right) \\cdot P\\left(Z\\right)}");
+
+      // Test evaluation
+      auto result_pot = cf.eval();
+
+      // Calculate expected result dynamically
+      auto& P_Y_given_XZ = bn.cpt(bn.idFromName("Y"));
+      auto& P_Z = bn.cpt(bn.idFromName("Z"));
+      gum::VariableSet z_var_set;
+      z_var_set.insert(&bn.variable(cm.idFromName("Z")));
+      auto expected_pot = (P_Y_given_XZ * P_Z).sumOut(z_var_set);
+
+      TS_GUM_TENSOR_ALMOST_EQUALS(result_pot, expected_pot);
+    }
+
+    /**
+    * Tests that the CausalFormula constructor throws an exception for unknown variables.
+    */
+    GUM_ACTIVE_TEST(test_error_handling_unknown_variable) {
+      auto bn = gum::BayesNet<double>::fastPrototype("X->Y");
+      gum::CausalModel<double> cm(bn);
+      auto ast = std::make_unique<gum::ASTjointProba<double>>(NameSet{"X"});
+
+      // Should throw because "W" is not in the model.
+      // The check happens when CausalFormula validates its variable sets.
+      TS_ASSERT_THROWS(
+        gum::CausalFormula<double>(cm, std::move(ast), {"Y"}, {"W"}),
+        const gum::NotFound&
+      );
+    }
 
     GUM_ACTIVE_TEST(LatexQueryRendering) {
       auto bn = gum::BayesNet<double>::fastPrototype("X->Y<-Z; W->X");

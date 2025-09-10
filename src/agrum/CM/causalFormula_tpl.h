@@ -60,8 +60,10 @@ CausalFormula<GUM_SCALAR>::CausalFormula(const CausalModel<GUM_SCALAR>& cm,
       _root(std::move(root)),
       _on(on),
       _doing(doing),
-      _knowing(knowing)
-{}
+      _knowing(knowing){
+
+  _ensureVariablesExist();
+}
 
 template<typename GUM_SCALAR>
 Tensor<GUM_SCALAR> CausalFormula<GUM_SCALAR>::eval() const {
@@ -127,6 +129,24 @@ std::string CausalFormula<GUM_SCALAR>::latexQuery() const {
 
     ss << "\\right)";
     return ss.str();
+}
+
+template<typename GUM_SCALAR>
+void CausalFormula<GUM_SCALAR>::_ensureVariablesExist() const {
+  // Collect all variable names from the member sets.
+  NameSet all_vars = _on;
+  for (const auto& var_name : _knowing) {
+      all_vars.insert(var_name);
+  }
+  for (const auto& var_name : _doing) {
+      all_vars.insert(var_name);
+  }
+
+  // Check each name against the causal model.
+  // The idFromName() method will throw gum::NotFound if a name is invalid.
+  for (const auto& var_name : all_vars) {
+      _cm.idFromName(var_name);
+  }
 }
 
 template<typename GUM_SCALAR>

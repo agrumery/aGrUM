@@ -120,6 +120,13 @@ public:
   void setKnowing(const NameSet& newKnowing) { _knowing = newKnowing; }
 
 private:
+  /**
+   * @brief Verifies that all variable names (_on, _knowing, _doing)
+   * exist in the causal model.
+   * @throw gum::NotFound if any variable name is not found.
+   */
+  void _ensureVariablesExist() const;
+
   const CausalModel<GUM_SCALAR>& _cm;
   std::unique_ptr<ASTtree<GUM_SCALAR>> _root;
   NameSet _on;
