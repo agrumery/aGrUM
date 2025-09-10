@@ -230,7 +230,7 @@ Tensor<GUM_SCALAR> ASTdiv<GUM_SCALAR>::eval(const BayesNet<GUM_SCALAR>& bn) cons
 // ASTposteriorProba   :  P_bn(vars | knw_min)
 // ================================================================
 template <typename GUM_SCALAR>
-ASTposteriorProba<GUM_SCALAR>::ASTposteriorProba(const BayesNet<GUM_SCALAR>& bn,
+ASTposteriorProba<GUM_SCALAR>::ASTposteriorProba(const DAGmodel& bn,
                                                  const Set<std::string>& vars,
                                                  const Set<std::string>& knw)
   : ASTposteriorProba(vars, _compute_knw_from_bn(bn, vars, knw)) {}
@@ -375,7 +375,7 @@ INLINE void ASTposteriorProba<GUM_SCALAR>::_ensure_nonempty(const Set<std::strin
 }
 
 template <typename GUM_SCALAR>
-Set<std::string> ASTposteriorProba<GUM_SCALAR>::_compute_knw_from_bn(const BayesNet<GUM_SCALAR>& bn,
+Set<std::string> ASTposteriorProba<GUM_SCALAR>::_compute_knw_from_bn(const DAGmodel& bn,
                                                                      const Set<std::string>& vars,
                                                                      const Set<std::string>& knw) {
   NodeSet varIds, knwIds;

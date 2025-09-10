@@ -94,13 +94,13 @@ public:
   ASTtree& operator=(ASTtree&&) noexcept = default;
 
   /// @return the runtime type tag (human-readable)
-  [[nodiscard]] const std::string& type() const noexcept { return _type; }
+  const std::string& type() const noexcept { return _type; }
 
   /**
    * @brief Human-readable multi-line rendering (for debugging / logs).
    * @param prefix indentation prefix propagated to children
    */
-  [[nodiscard]] virtual std::string toString(const std::string& prefix = "") const = 0;
+  virtual std::string toString(const std::string& prefix = "") const = 0;
 
   /**
    * @brief LaTeX rendering with full name protection.
@@ -126,10 +126,10 @@ public:
    * @brief Convenience wrapper using an empty occurrence table.
    * @return LaTeX string for the whole sub-tree.
    */
-  [[nodiscard]] std::string toLatex(HashTable<std::string,int> nameOccur = HashTable<std::string,int>()) const;
+  std::string toLatex(HashTable<std::string,int> nameOccur = HashTable<std::string,int>()) const;
 
   /// @brief Deep clone of the sub-tree.
-  [[nodiscard]] virtual std::unique_ptr<ASTtree<GUM_SCALAR>> copy() const = 0;
+  virtual std::unique_ptr<ASTtree<GUM_SCALAR>> copy() const = 0;
 
   /**
    * @brief Evaluate the expression against a contextual BN.
@@ -179,12 +179,12 @@ public:
   ASTBinaryOp& operator=(ASTBinaryOp&&) noexcept = default;
 
   /// @return left operand
-  [[nodiscard]] const ASTtree<GUM_SCALAR>& op1() const { return *_op1; }
+  const ASTtree<GUM_SCALAR>& op1() const { return *_op1; }
   /// @return right operand
-  [[nodiscard]] const ASTtree<GUM_SCALAR>& op2() const { return *_op2; }
+  const ASTtree<GUM_SCALAR>& op2() const { return *_op2; }
 
   /// @copydoc ASTtree::toString
-  [[nodiscard]] std::string toString(const std::string& prefix = "") const override;
+  std::string toString(const std::string& prefix = "") const override;
 
 protected:
   std::unique_ptr<ASTtree<GUM_SCALAR>> _op1, _op2;
@@ -299,7 +299,7 @@ template <typename GUM_SCALAR>
 class ASTposteriorProba : public ASTtree<GUM_SCALAR> {
 public:
   /// Constructor for \( \mathbb{P}_{bn}(\mathrm{vars}\mid\mathrm{knw}) \); `knw` will be minimalized using `bn`.
-  explicit ASTposteriorProba(const BayesNet<GUM_SCALAR>& bn,
+  explicit ASTposteriorProba(const DAGmodel& bn,
                              const Set<std::string>& vars,
                              const Set<std::string>& knw);
 
@@ -338,7 +338,7 @@ private:
 
   static void _ensure_nonempty(const Set<std::string>& vars);
 
-  static Set<std::string> _compute_knw_from_bn(const BayesNet<GUM_SCALAR>& bn,
+  static Set<std::string> _compute_knw_from_bn(const DAGmodel& bn,
                                                const Set<std::string>& vars,
                                                const Set<std::string>& knw);
 
@@ -365,17 +365,17 @@ public:
   explicit ASTjointProba(const Set<std::string>& varNames);
 
   /// @return variable names in the joint
-  [[nodiscard]] const Set<std::string>& varNames() const noexcept { return _varNames; }
+  const Set<std::string>& varNames() const noexcept { return _varNames; }
 
   /// @copydoc ASTtree::toString
-  [[nodiscard]] std::string toString(const std::string& prefix = "") const override;
+  std::string toString(const std::string& prefix = "") const override;
   /// @copydoc ASTtree::protectToLatex
   std::string protectToLatex(HashTable<std::string,int>& nameOccur) const override;
   /// @copydoc ASTtree::fastToLatex
   std::string fastToLatex(HashTable<std::string,int>& nameOccur) const override;
 
   /// @copydoc ASTtree::copy
-  [[nodiscard]] std::unique_ptr<ASTtree<GUM_SCALAR>> copy() const override;
+  std::unique_ptr<ASTtree<GUM_SCALAR>> copy() const override;
   /// @copydoc ASTtree::eval
   Tensor<GUM_SCALAR> eval(const BayesNet<GUM_SCALAR>& contextual_bn) const override;
 
@@ -408,17 +408,17 @@ public:
          std::unique_ptr<ASTtree<GUM_SCALAR>> term);
 
   /// @return the subterm being summed over
-  [[nodiscard]] const ASTtree<GUM_SCALAR>& term() const { return *_term; }
+  const ASTtree<GUM_SCALAR>& term() const { return *_term; }
 
   /// @copydoc ASTtree::toString
-  [[nodiscard]] std::string toString(const std::string& prefix = "") const override;
+  std::string toString(const std::string& prefix = "") const override;
   /// @copydoc ASTtree::protectToLatex
   std::string protectToLatex(HashTable<std::string,int>& nameOccur) const override;
   /// @copydoc ASTtree::fastToLatex
   std::string fastToLatex(HashTable<std::string,int>& nameOccur) const override;
 
   /// @copydoc ASTtree::copy
-  [[nodiscard]] std::unique_ptr<ASTtree<GUM_SCALAR>> copy() const override;
+  std::unique_ptr<ASTtree<GUM_SCALAR>> copy() const override;
   /// @copydoc ASTtree::eval
   Tensor<GUM_SCALAR> eval(const BayesNet<GUM_SCALAR>& contextual_bn) const override;
 
@@ -441,7 +441,7 @@ private:
  * @return product AST
  */
 template <typename GUM_SCALAR>
-[[nodiscard]] std::unique_ptr<ASTtree<GUM_SCALAR>>
+std::unique_ptr<ASTtree<GUM_SCALAR>>
 productOfTrees(std::vector<std::unique_ptr<ASTtree<GUM_SCALAR>>>&& lterms);
 
 
