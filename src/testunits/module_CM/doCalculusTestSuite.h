@@ -189,6 +189,81 @@ namespace gum_tests {
       TS_ASSERT_THROWS(dc.getFrontDoorTree(X, U, Zset), const gum::InvalidArgument&);
     }
 
+    // 1) IDC promotion smoke: Z→X→Y, query P(Y | do(X), Z).
+    // We only require: builds and evaluates (no structure parity).
+    GUM_ACTIVE_TEST(IDC_Promotion_Reduces_Smoke) {
+      auto bn = gum::BayesNet<double>::fastPrototype("Z->X;X->Y");
+      bn.generateCPTs();
+      gum::CausalModel<double> cm(bn);
+      gum::DoCalculus<double>  dc(cm);
+
+      auto ast = dc.doCalculusWithObservation(
+          std::vector<std::string>{"Y"},   // on
+          std::vector<std::string>{"X"},   // doing
+          std::vector<std::string>{"Z"});  // knowing
+
+      TS_ASSERT(ast != nullptr);
+      TS_ASSERT_THROWS_NOTHING({ (void)ast->eval(bn); });
+    }
+
+    // 2) IDC promotion on a collider: X→Y←W, query P(Y | do(X), W).
+    // Again: builds and evaluates (no parity).
+    GUM_ACTIVE_TEST(IDC_Promotion_OnCollider_Smoke) {
+      auto bn = gum::BayesNet<double>::fastPrototype("X->Y;W->Y");
+      bn.generateCPTs();
+      gum::CausalModel<double> cm(bn);
+      gum::DoCalculus<double>  dc(cm);
+
+      auto ast = dc.doCalculusWithObservation(
+          std::vector<std::string>{"Y"},
+          std::vector<std::string>{"X"},
+          std::vector<std::string>{"W"});
+
+      TS_ASSERT(ast != nullptr);
+      TS_ASSERT_THROWS_NOTHING({ (void)ast->eval(bn); });
+    }
+
+
+    // ID should restrict to ancestors of Y under do(X).
+    // We check structurally that the AST does not mention a detached node name.
+    GUM_ACTIVE_TEST(ID_AncestorRestriction_AST_DoesNotMention_Irrelevant) {
+      // W only points to Z, not to Y nor X; irrelevant for P(Y|do(X)).
+      auto bn = gum::BayesNet<double>::fastPrototype("W->Z;X->Y;Z");
+      bn.generateCPTs();
+      gum::CausalModel<double> cm(bn);
+      gum::DoCalculus<double>  dc(cm);
+
+      auto ast = dc.doCalculus(
+          std::vector<std::string>{"Y"},
+          std::vector<std::string>{"X"});
+
+      TS_ASSERT(ast != nullptr);
+      auto s = ast->toString();
+      // Heuristic structural check: expression shouldn’t include "W".
+      TS_ASSERT(s.find("W") == std::string::npos);
+    }
+
+    // ======================================================================
+    // Optional: multi c-component product path smoke test
+    // G: A->B, C->D (two independent c-components), query P(B,D | do(A,C)).
+    // Just assert we build something (no throw). Structure may vary.
+    // ======================================================================
+    GUM_ACTIVE_TEST(ID_MultiComponent_Product_Smoke) {
+      auto bn = gum::BayesNet<double>::fastPrototype("A->B;C->D");
+      bn.generateCPTs();
+      gum::CausalModel<double> cm(bn);
+      gum::DoCalculus<double>  dc(cm);
+
+      TS_ASSERT_THROWS_NOTHING({
+        auto ast = dc.doCalculus(
+            std::vector<std::string>{"B","D"},
+            std::vector<std::string>{"A","C"});
+        TS_ASSERT(ast != nullptr);
+        (void)ast->toString(); // ensure it’s buildable/printable
+      });
+    }
+
+
   };
 
 

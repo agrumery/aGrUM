@@ -253,7 +253,7 @@ CausalModel<GUM_SCALAR>::inducedCausalSubModel(const CausalModel<GUM_SCALAR>& cm
   // add variables
   for (auto n : nodes) {
     const auto& var = cm.observationalBN().variable(n);
-    const NodeId nn = bn.add(var);         // C++ API doesn't accept "add(var, id)"
+    const NodeId nn = bn.add(var, n);  // API accepts "add(var, id)"
     idmap.insert(n, nn);
   }
 

@@ -76,19 +76,38 @@ public:
   using NameSet = Set<std::string>;
 
   /**
-   * @brief Constructs a CausalFormula object.
+   * @brief Constructs a CausalFormula object (variables given by names).
    *
    * @param cm The causal model against which the formula was identified.
-   * @param root The identified formula as an Abstract Syntax Tree (ownership is moved).
-   * @param on The set of outcome variables (the "Y" in P(Y|...)).
-   * @param doing The set of intervention variables (the "do(X)").
-   * @param knowing The set of conditioning variables (optional evidence).
+   * @param root The identified formula as an Abstract Syntax Tree (ownership moved).
+   * @param on The set of outcome variable names (the "Y" in P(Y|...)).
+   * @param doing The set of intervention variable names (the "do(X)")).
+   * @param knowing The set of conditioning variable names (optional evidence).
+   * @param explanation A human-readable explanation of the identification method used (optional).
    */
   CausalFormula(const CausalModel<GUM_SCALAR>& cm,
                 std::unique_ptr<ASTtree<GUM_SCALAR>> root,
                 const NameSet& on,
                 const NameSet& doing,
-                const NameSet& knowing = NameSet{});
+                const NameSet& knowing = NameSet{},
+                const std::string& explanation = "");
+
+  /**
+   * @brief Constructs a CausalFormula object (variables given by node ids).
+   *
+   * @param cm The causal model against which the formula was identified.
+   * @param root The identified formula as an Abstract Syntax Tree (ownership moved).
+   * @param on The set of outcome variable ids (the "Y" in P(Y|...)).
+   * @param doing The set of intervention variable ids (the "do(X)")).
+   * @param knowing The set of conditioning variable ids (optional evidence).
+   * @param explanation A human-readable explanation of the identification method used (optional).
+   */
+  CausalFormula(const CausalModel<GUM_SCALAR>& cm,
+                std::unique_ptr<ASTtree<GUM_SCALAR>> root,
+                const NodeSet& on,
+                const NodeSet& doing,
+                const NodeSet& knowing = NodeSet{},
+                const std::string& explanation = "");
 
   /// @brief Evaluates the formula's AST to compute the resulting probability distribution.
   Tensor<GUM_SCALAR> eval() const;
@@ -108,30 +127,66 @@ public:
   /// @brief Creates a deep copy of the CausalFormula (including its AST).
   std::unique_ptr<CausalFormula<GUM_SCALAR>> copy() const;
 
+   /**
+   * @brief Whether the causal effect has been identified.
+   *
+   * Returns true iff this formula has a valid AST (i.e., identification
+   * succeeded and evaluation is possible). When this returns false,
+   * calling root() or eval() will throw.
+   *
+   * @return true if an identification AST exists, false otherwise.
+   */
+  bool isIdentified() const noexcept;
+
+  /**
+   * @brief Access the root AST node of the identified formula.
+   *
+   * Use this to inspect the symbolic structure of the identified effect.
+   * @warning This raises an exception if the effect is not identified.
+   *
+   * @throws gum::OperationNotAllowed if no AST is available (i.e., the effect
+   *         is not identifiable with the current methods).
+   * @return const ASTtree<GUM_SCALAR>& reference to the AST root.
+   */
+  const ASTtree<GUM_SCALAR>& root() const;
+
+
   // --- Accessors ---
   const CausalModel<GUM_SCALAR>& cm() const { return _cm; }
-  const ASTtree<GUM_SCALAR>& root() const { return *_root; }
-  const NameSet& on() const { return _on; }
-  const NameSet& doing() const { return _doing; }
-  const NameSet& knowing() const { return _knowing; }
+  const NodeSet& on() const { return _on; }
+  const NodeSet& doing() const { return _doing; }
+  const NodeSet& knowing() const { return _knowing; }
+  const std::string& explanation() const { return _explanation; }
 
-  // --- Mutators (used by identification algorithms) ---
-  void setDoing(const NameSet& newDoing) { _doing = newDoing; }
-  void setKnowing(const NameSet& newKnowing) { _knowing = newKnowing; }
+  /// Convenience: return names corresponding to stored node ids (sorted).
+  std::vector<std::string> onNames() const;
+  std::vector<std::string> doingNames() const;
+  std::vector<std::string> knowingNames() const;
+
 
 private:
+  /// @brief Convert a set of names to a set of node ids (validates existence).
+  static NodeSet _toNodeSetFromNames_(const CausalModel<GUM_SCALAR>& cm,
+                                      const NameSet& names);
+
   /**
-   * @brief Verifies that all variable names (_on, _knowing, _doing)
-   * exist in the causal model.
-   * @throw gum::NotFound if any variable name is not found.
+   * @brief Verifies that all variables (_on, _knowing, _doing) exist in the BN.
+   * @throw gum::NotFound if any variable id is not found.
    */
   void _ensureVariablesExist() const;
 
+  /**
+   * @brief Verifies that all variables (_on, _knowing, _doing) have no intersection.
+   * @throw gum::OperationNotAllowed if any variable appears in two roles.
+   */
+  void _ensureNoVariablesOverlap() const;
+
   const CausalModel<GUM_SCALAR>& _cm;
   std::unique_ptr<ASTtree<GUM_SCALAR>> _root;
-  NameSet _on;
-  NameSet _doing;
-  NameSet _knowing;
+  const NodeSet _on;
+  const NodeSet _doing;
+  const NodeSet _knowing;
+  const std::string _explanation;
 };
 
 #ifndef GUM_NO_EXTERN_TEMPLATE_CLASS

@@ -1,0 +1,226 @@
+/****************************************************************************
+ *   This file is part of the aGrUM/pyAgrum library.                        *
+ *                                                                          *
+ *   Copyright (c) 2005-2025 by                                             *
+ *       - Pierre-Henri WUILLEMIN(_at_LIP6)                                 *
+ *       - Christophe GONZALES(_at_AMU)                                     *
+ *                                                                          *
+ *   The aGrUM/pyAgrum library is free software; you can redistribute it    *
+ *   and/or modify it under the terms of either :                           *
+ *                                                                          *
+ *    - the GNU Lesser General Public License as published by               *
+ *      the Free Software Foundation, either version 3 of the License,      *
+ *      or (at your option) any later version,                              *
+ *    - the MIT license (MIT),                                              *
+ *    - or both in dual license, as here.                                   *
+ *                                                                          *
+ *   (see https://agrum.gitlab.io/articles/dual-licenses-lgplv3mit.html)    *
+ *                                                                          *
+ *   This aGrUM/pyAgrum library is distributed in the hope that it will be  *
+ *   useful, but WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED,          *
+ *   INCLUDING BUT NOT LIMITED TO THE WARRANTIES MERCHANTABILITY or FITNESS *
+ *   FOR A PARTICULAR PURPOSE  AND NONINFRINGEMENT. IN NO EVENT SHALL THE   *
+ *   AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER *
+ *   LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE,        *
+ *   ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR  *
+ *   OTHER DEALINGS IN THE SOFTWARE.                                        *
+ *                                                                          *
+ *   See LICENCES for more details.                                         *
+ *                                                                          *
+ *   SPDX-FileCopyrightText: Copyright 2005-2025                            *
+ *       - Pierre-Henri WUILLEMIN(_at_LIP6)                                 *
+ *       - Christophe GONZALES(_at_AMU)                                     *
+ *   SPDX-License-Identifier: LGPL-3.0-or-later OR MIT                      *
+ *                                                                          *
+ *   Contact  : info_at_agrum_dot_org                                       *
+ *   homepage : http://agrum.gitlab.io                                      *
+ *   gitlab   : https://gitlab.com/agrumery/agrum                           *
+ *                                                                          *
+ ****************************************************************************/
+#include <gumtest/AgrumTestSuite.h>
+#include <gumtest/utils.h>
+
+#include <string>
+#include <vector>
+
+#include <agrum/agrum.h>
+#include <agrum/BN/BayesNet.h>
+#include <agrum/CM/causalModel.h>
+#include <agrum/CM/causalImpact.h>
+#include <agrum/CM/causalFormula.h>
+#include <agrum/base/multidim/tensor.h>
+
+
+namespace gum_tests {
+
+class CausalImpactTestSuite : public CxxTest::TestSuite {
+  using StrSet = gum::Set<std::string>;
+
+  static StrSet names(std::initializer_list<const char*> il) {
+    StrSet s; for (auto* p : il) s.insert(std::string(p)); return s;
+  }
+
+  static gum::VariableSet vset(const gum::BayesNet<double>& bn,
+                               std::initializer_list<const char*> il) {
+    gum::VariableSet vs;
+    for (auto* p : il) vs.insert(&bn.variableFromName(p)); // expects pointers
+    return vs;
+  }
+
+public:
+  // A) Null effect via d-separation: X -> Z -> Y with knowing={Z}
+  // Expected: P(Y | do(X), Z) == P(Y | Z) == bn.cpt("Y")
+  GUM_ACTIVE_TEST(test_NullEffect_DSeparation) {
+    auto bn = gum::BayesNet<double>::fastPrototype("X->Z->Y");
+    bn.generateCPTs();
+    gum::CausalModel<double> cm(bn);
+
+    gum::CausalImpact<double> ci(
+      cm, names({"Y"}), names({"X"}), names({"Z"}),
+      gum::HashTable<std::string,std::string>()); // avoid {} warning
+
+    TS_ASSERT_THROWS_NOTHING({
+      auto got = ci.result.eval();
+      auto exp = bn.cpt("Y"); // P(Y|Z)
+      TS_GUM_TENSOR_ALMOST_EQUALS(got, exp);
+    });
+  }
+
+  // B) Backdoor with observed confounder:
+  // BN: Gender -> Drug -> Patient ; Gender -> Patient
+  // Expected: sum_G P(Patient | Drug, G) P(G) == (cpt(Patient) * cpt(Gender)).sumOut(Gender)
+  GUM_ACTIVE_TEST(test_Backdoor_WithObservedConfounder) {
+    auto bn = gum::BayesNet<double>::fastPrototype(
+      "Gender{M|F}->Drug{No|Yes}->Patient{No|Yes};Gender{M|F}->Patient{No|Yes}");
+    bn.generateCPTs();
+    gum::CausalModel<double> cm(bn);
+
+    gum::CausalImpact<double> ci(
+      cm, names({"Patient"}), names({"Drug"}), StrSet{},
+      gum::HashTable<std::string,std::string>());
+
+    TS_ASSERT_THROWS_NOTHING({
+      auto got = ci.result.eval();
+      auto exp = (bn.cpt("Patient") * bn.cpt("Gender")).sumOut(vset(bn, {"Gender"}));
+      TS_GUM_TENSOR_ALMOST_EQUALS(got, exp);
+    });
+  }
+
+  // C) Frontdoor (canonical): X->Z->Y, with latent U between X and Y
+  // Expected: sum_z P(z|x) P(y|z) == (cpt("Z") * cpt("Y")).sumOut(Z)
+  GUM_ACTIVE_TEST(test_Frontdoor_SimpleLatent) {
+    auto bn = gum::BayesNet<double>::fastPrototype("X->Z->Y");
+    bn.generateCPTs();
+
+    // Latent descriptor must use NodeIds
+    gum::LatentDescriptorVector lat;
+    lat.emplace_back("U", std::vector<gum::NodeId>{bn.idFromName("X"), bn.idFromName("Y")});
+
+    gum::CausalModel<double> cm(bn, lat, /*keepArcs=*/false);
+
+    gum::CausalImpact<double> ci(
+      cm, names({"Y"}), names({"X"}), StrSet{},
+      gum::HashTable<std::string,std::string>());
+
+    TS_ASSERT_THROWS_NOTHING({
+      auto got = ci.result.eval(); // P(Y|do(X))
+      auto exp = (bn.cpt("Z") * bn.cpt("Y")).sumOut(vset(bn, {"Z"}));
+      TS_GUM_TENSOR_ALMOST_EQUALS(got, exp);
+    });
+  }
+
+  // D) “Trivial” backdoor: X -> Y  (backdoor set is ∅)
+  // Expected: P(Y|do(X)) == P(Y|X) == cpt("Y")
+  GUM_ACTIVE_TEST(test_Backdoor_Trivial_XtoY) {
+    auto bn = gum::BayesNet<double>::fastPrototype("X->Y");
+    bn.generateCPTs();
+    gum::CausalModel<double> cm(bn);
+
+    gum::CausalImpact<double> ci(
+      cm, names({"Y"}), names({"X"}), StrSet{},
+      gum::HashTable<std::string,std::string>());
+
+    TS_ASSERT_THROWS_NOTHING({
+      auto got = ci.result.eval();
+      auto exp = bn.cpt("Y"); // P(Y|X)
+      TS_GUM_TENSOR_ALMOST_EQUALS(got, exp);
+    });
+
+  }
+
+  // E) Hedge / unidentifiable:
+  // BN: X->Y; U ; latent Z -> {X,Y,U}, keepArcs=true
+  // Expected: evaluation throws (null AST / hedge)
+  GUM_ACTIVE_TEST(test_WHY19_Hedge_Unidentifiable) {
+    auto bn = gum::BayesNet<double>::fastPrototype("X->Y;U");
+    bn.generateCPTs();
+
+    gum::LatentDescriptorVector lat;
+    lat.emplace_back("Z", std::vector<gum::NodeId>{
+      bn.idFromName("X"), bn.idFromName("Y"), bn.idFromName("U")});
+
+    gum::CausalModel<double> cm(bn, lat, /*keepArcs=*/true);
+
+    gum::CausalImpact<double> ci(
+      cm, names({"Y"}), names({"X"}), StrSet{},
+      gum::HashTable<std::string,std::string>());
+
+    TS_ASSERT_THROWS_ANYTHING({
+      (void)ci.result.eval();  // should fail
+    });
+  }
+
+  // F) Pairwise overlaps among on/doing/knowing must throw at construction
+  GUM_ACTIVE_TEST(test_PairwiseOverlapsThrow) {
+    auto bn = gum::BayesNet<double>::fastPrototype("A->B");
+    bn.generateCPTs();
+    gum::CausalModel<double> cm(bn);
+
+    TS_ASSERT_THROWS_ANYTHING(
+      (gum::CausalImpact<double>(cm, names({"B"}), names({"B"}), StrSet{},
+                                 gum::HashTable<std::string,std::string>())));
+    TS_ASSERT_THROWS_ANYTHING(
+      (gum::CausalImpact<double>(cm, names({"B"}), names({"A"}), names({"B"}),
+                                 gum::HashTable<std::string,std::string>())));
+    TS_ASSERT_THROWS_ANYTHING(
+      (gum::CausalImpact<double>(cm, names({"B"}), names({"A"}), names({"A"}),
+                                 gum::HashTable<std::string,std::string>())));
+  }
+
+  // G) Accented variable names are fine
+  GUM_ACTIVE_TEST(test_AccentsInVariables) {
+    auto bn = gum::BayesNet<double>::fastPrototype("héhé->hoho");
+    bn.generateCPTs();
+    gum::CausalModel<double> cm(bn);
+
+    gum::CausalImpact<double> ci(
+      cm, names({"hoho"}), names({"héhé"}), StrSet{},
+      gum::HashTable<std::string,std::string>());
+
+    TS_ASSERT_THROWS_NOTHING({ (void)ci.result.eval(); });
+  }
+
+  // H) Complex “From R”-style model: should not raise during eval
+  // TODO :Make active test when ID algorithm is implemented
+  GUM_ACTIVE_TEST(test_FromR_NoRaise) {
+    auto m = gum::BayesNet<double>::fastPrototype("z2->x->z1->y;z2->z1;z2->z3->y");
+    m.generateCPTs();
+
+    gum::CausalModel<double> cm(
+      m,
+      {{"X-Z2", {m.idFromName("x"), m.idFromName("z2")}},
+       {"X-Z3", {m.idFromName("x"), m.idFromName("z3")}},
+       {"X-Y",  {m.idFromName("x"), m.idFromName("y")}},
+       {"Y-Z2", {m.idFromName("y"), m.idFromName("z2")}}},
+      /*keepArcs=*/true);
+
+    TS_ASSERT_THROWS_NOTHING({
+      gum::CausalImpact<double> ci(
+        cm, names({"y","z2","z1","z3"}), names({"x"}), StrSet{},
+        gum::HashTable<std::string,std::string>());
+    //   (void)ci.result.eval();
+    });
+  }
+};
+
+} // namespace gum_tests
