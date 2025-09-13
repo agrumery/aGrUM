@@ -59,46 +59,6 @@ namespace gum {
 // --------------------------- small helpers -------------------------------
 
 namespace {
-  // set union: C = A ∪ B
-  inline void _unionInto(NodeSet& C, const NodeSet& A) {
-    for (const auto n : A) C.insert(n);
-  }
-
-  inline NodeSet _unionSets(const NodeSet& A, const NodeSet& B) {
-    NodeSet C = A;
-    _unionInto(C, B);
-    return C;
-  }
-
-  inline NodeSet _union3(const NodeSet& A, const NodeSet& B, const NodeSet& C) {
-    NodeSet U = A; _unionInto(U, B); _unionInto(U, C); return U;
-  }
-
-  // Intersect a set with the nodes currently present in an UndiGraph
-  inline NodeSet _filterToGraphNodes(const UndiGraph& ug, const NodeSet& S) {
-    NodeSet out;
-    for (const auto n : S) if (ug.existsNode(n)) out.insert(n);
-    return out;
-  }
-
-  // Gather all parents of nodes in X
-  inline NodeSet _parentsOfX(const DAG& dag, const NodeSet& X) {
-    NodeSet P;
-    for (const auto x : X) {
-      for (const auto p : dag.parents(x)) P.insert(p);
-    }
-    return P;
-  }
-
-  // Gather all children of nodes in X
-  inline NodeSet _childrenOfX(const DAG& dag, const NodeSet& X) {
-    NodeSet C;
-    for (const auto x : X) {
-      for (const auto c : dag.children(x)) C.insert(c);
-    }
-    return C;
-  }
-
   // Remove every node of Z from the undirected graph
   inline void _eraseAll(UndiGraph& ug, const NodeSet& Z) {
     for (const auto z : Z) if (ug.existsNode(z)) ug.eraseNode(z);

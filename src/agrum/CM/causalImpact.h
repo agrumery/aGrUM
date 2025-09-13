@@ -78,14 +78,14 @@ public:
                const NameSet&                 on,
                const NameSet&                 doing,
                const NameSet&                 knowing = NameSet{},
-               const HashTable<VariableName, VariableValueName>& /*values*/ = {});
+               const HashTable<VariableName, VariableValueName>& /*values*/ = HashTable<VariableName, VariableValueName>());
 
   // IDs interface
   CausalImpact(const CausalModel<GUM_SCALAR>&            cm,
                const NodeSet&                            on,
                const NodeSet&                            doing,
                const NodeSet&                            knowing = NodeSet{},
-               const HashTable<NodeId, VariableValueId>& /*values*/ = {});
+               const HashTable<NodeId, VariableValueId>& /*values*/ = HashTable<NodeId, VariableValueId>());
 
 private:
   // helpers
