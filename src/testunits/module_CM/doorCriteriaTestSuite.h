@@ -86,6 +86,11 @@ namespace gum_tests {
       expected.emplace_back(); // push an empty NodeSet
 
       TS_ASSERT_EQUALS(sets, expected);
+
+      // Test stopAtFirst returns only the first and is valid
+      auto sets_first = dc.enumerateBackdoorSets(idA, idC, opts, true);
+      TS_ASSERT_EQUALS(sets_first.size(), 1u);
+      TS_ASSERT(dc.satisfiesBackdoorCriterion(idA, idC, sets_first[0]));
     }
 
     GUM_ACTIVE_TEST(Backdoor_SingleConfounderMinimal) {
@@ -112,6 +117,11 @@ namespace gum_tests {
       expected.push_back(Z_ok);  // [{U}]
 
       TS_ASSERT_EQUALS(sets, expected);
+
+      // Test stopAtFirst returns only the first and is valid
+      auto sets_first = dc.enumerateBackdoorSets(idX, idY, true);
+      TS_ASSERT_EQUALS(sets_first.size(), 1u);
+      TS_ASSERT(dc.satisfiesBackdoorCriterion(idX, idY, sets_first[0]));
     }
 
 
@@ -166,6 +176,11 @@ namespace gum_tests {
       gum::DoorCriteria::NodeSetVec fds_expected;
       fds_expected.push_back(Z);
       TS_ASSERT_EQUALS(fds, fds_expected);
+
+      // Test stopAtFirst returns only the first and is valid
+      auto fds_first = dc.enumerateFrontdoorSets(idX, idY, true);
+      TS_ASSERT_EQUALS(fds_first.size(), 1u);
+      TS_ASSERT(dc.satisfiesFrontdoorCriterion(idX, idY, fds_first[0]));
     }
 
     GUM_ACTIVE_TEST(Frontdoor_FailsWhenZDoesNotInterceptAllDirectedPaths) {

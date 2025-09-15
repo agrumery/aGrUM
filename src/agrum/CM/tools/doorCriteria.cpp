@@ -116,8 +116,9 @@ bool DoorCriteria::satisfiesFrontdoorCriterion(NodeId X, NodeId Y, const NodeSet
 
 
 
+
 DoorCriteria::NodeSetVec
-DoorCriteria::enumerateBackdoorSets(NodeId X, NodeId Y, const EnumerationOptions& opts) const {
+DoorCriteria::enumerateBackdoorSets(NodeId X, NodeId Y, const EnumerationOptions& opts, bool stopAtFirst) const {
   NodeSetVec out;
 
   // Theoretical variant: if X has no parents, {} is a valid backdoor set.
@@ -179,6 +180,7 @@ DoorCriteria::enumerateBackdoorSets(NodeId X, NodeId Y, const EnumerationOptions
         } else {
           out.push_back(Z); // keep non-minimal supersets too (e.g., {U,W})
         }
+        if (stopAtFirst) return out;
       }
 
     } while (std::prev_permutation(pick.begin(), pick.end()));
@@ -197,13 +199,20 @@ DoorCriteria::enumerateBackdoorSets(NodeId X, NodeId Y, const EnumerationOptions
 
 
 DoorCriteria::NodeSetVec
-DoorCriteria::enumerateBackdoorSets(NodeId X, NodeId Y) const {
+DoorCriteria::enumerateBackdoorSets(NodeId X, NodeId Y, bool stopAtFirst) const {
   EnumerationOptions opts;
-  return enumerateBackdoorSets(X, Y, opts);
+  return enumerateBackdoorSets(X, Y, opts, stopAtFirst);
 }
 
+// Backward compatibility: default stopAtFirst = false
 DoorCriteria::NodeSetVec
-DoorCriteria::enumerateFrontdoorSets(NodeId X, NodeId Y, const EnumerationOptions& opts) const {
+DoorCriteria::enumerateBackdoorSets(NodeId X, NodeId Y) const {
+  return enumerateBackdoorSets(X, Y, false);
+}
+
+
+DoorCriteria::NodeSetVec
+DoorCriteria::enumerateFrontdoorSets(NodeId X, NodeId Y, const EnumerationOptions& opts, bool stopAtFirst) const {
   NodeSetVec out;
 
   // pyagrum early exit: if X is a parent of Y, yield nothing
@@ -264,7 +273,10 @@ DoorCriteria::enumerateFrontdoorSets(NodeId X, NodeId Y, const EnumerationOption
 
   if (noDiPath) {
     // pyagrum: yield each singleton
-    for (auto n : cand) { NodeSet Z; Z.insert(n); out.push_back(Z); }
+    for (auto n : cand) {
+      NodeSet Z; Z.insert(n); out.push_back(Z);
+      if (stopAtFirst) return out;
+    }
   } else {
     const std::size_t N    = cand.size();
     const std::size_t Kmax = (opts.max_cardinality == 0) ? N : std::min(opts.max_cardinality, N);
@@ -276,7 +288,10 @@ DoorCriteria::enumerateFrontdoorSets(NodeId X, NodeId Y, const EnumerationOption
         for (std::size_t i = 0; i < N; ++i) if (pick[i]) Z.insert(cand[i]);
         // (FD-1): must block all directed X->Y paths
         if (!existsUnblockedDirectedPath(X, Y, Z)) {
-          if (!opts.only_minimal || _isMinimalFrontdoorAdjustment(X, Y, Z)) out.push_back(Z);
+          if (!opts.only_minimal || _isMinimalFrontdoorAdjustment(X, Y, Z)) {
+            out.push_back(Z);
+            if (stopAtFirst) return out;
+          }
         }
       } while (std::prev_permutation(pick.begin(), pick.end()));
     }
@@ -292,9 +307,15 @@ DoorCriteria::enumerateFrontdoorSets(NodeId X, NodeId Y, const EnumerationOption
 
 
 DoorCriteria::NodeSetVec
-DoorCriteria::enumerateFrontdoorSets(NodeId X, NodeId Y) const {
+DoorCriteria::enumerateFrontdoorSets(NodeId X, NodeId Y, bool stopAtFirst) const {
   EnumerationOptions opts;
-  return enumerateFrontdoorSets(X, Y, opts);
+  return enumerateFrontdoorSets(X, Y, opts, stopAtFirst);
+}
+
+// Backward compatibility: default stopAtFirst = false
+DoorCriteria::NodeSetVec
+DoorCriteria::enumerateFrontdoorSets(NodeId X, NodeId Y) const {
+  return enumerateFrontdoorSets(X, Y, false);
 }
 
 /* ============================== Utilities =============================== */

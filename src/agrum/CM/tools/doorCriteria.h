@@ -120,16 +120,28 @@ public:
    * @param opts Enumeration options (excluded nodes, maximal size, minimality).
    * @return Vector of valid backdoor adjustment sets.
    */
-  NodeSetVec enumerateBackdoorSets(NodeId X, NodeId Y,
-                                   const EnumerationOptions& opts) const;
-
   /**
-   * @brief Enumerate valid backdoor adjustment sets with default options.
+   * @brief Enumerate valid backdoor adjustment sets, with option to stop at first found.
    *
    * @param X Cause variable.
    * @param Y Effect variable.
-   * @return Vector of valid backdoor adjustment sets.
+   * @param opts Enumeration options (excluded nodes, maximal size, minimality).
+   * @param stopAtFirst If true, return only the first found set and stop computation early.
+   * @return Vector of valid backdoor adjustment sets (at most one if stopAtFirst is true).
    */
+  NodeSetVec enumerateBackdoorSets(NodeId X, NodeId Y,
+                                   const EnumerationOptions& opts,
+                                   bool stopAtFirst = false) const;
+
+  /**
+   * @brief Enumerate valid backdoor adjustment sets with default options, with option to stop at first found.
+   *
+   * @param X Cause variable.
+   * @param Y Effect variable.
+   * @param stopAtFirst If true, return only the first found set and stop computation early.
+   * @return Vector of valid backdoor adjustment sets (at most one if stopAtFirst is true).
+   */
+  NodeSetVec enumerateBackdoorSets(NodeId X, NodeId Y, bool stopAtFirst) const;
   NodeSetVec enumerateBackdoorSets(NodeId X, NodeId Y) const;
 
   /* ------------------------- Frontdoor -------------------------- */
@@ -145,23 +157,27 @@ public:
   bool satisfiesFrontdoorCriterion(NodeId X, NodeId Y, const NodeSet& Z) const;
 
   /**
-   * @brief Enumerate valid frontdoor adjustment sets.
+   * @brief Enumerate valid frontdoor adjustment sets, with option to stop at first found.
    *
    * @param X Cause variable.
    * @param Y Effect variable.
    * @param opts Enumeration options (excluded nodes, maximal size, minimality).
-   * @return Vector of valid frontdoor adjustment sets.
+   * @param stopAtFirst If true, return only the first found set and stop computation early.
+   * @return Vector of valid frontdoor adjustment sets (at most one if stopAtFirst is true).
    */
   NodeSetVec enumerateFrontdoorSets(NodeId X, NodeId Y,
-                                    const EnumerationOptions& opts) const;
+                                    const EnumerationOptions& opts,
+                                    bool stopAtFirst = false) const;
 
   /**
-   * @brief Enumerate valid frontdoor adjustment sets with default options.
+   * @brief Enumerate valid frontdoor adjustment sets with default options, with option to stop at first found.
    *
    * @param X Cause variable.
    * @param Y Effect variable.
-   * @return Vector of valid frontdoor adjustment sets.
+   * @param stopAtFirst If true, return only the first found set and stop computation early.
+   * @return Vector of valid frontdoor adjustment sets (at most one if stopAtFirst is true).
    */
+  NodeSetVec enumerateFrontdoorSets(NodeId X, NodeId Y, bool stopAtFirst) const;
   NodeSetVec enumerateFrontdoorSets(NodeId X, NodeId Y) const;
 
   /* -------------------------- Utilities ------------------------- */
