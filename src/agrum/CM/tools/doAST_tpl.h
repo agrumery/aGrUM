@@ -48,7 +48,7 @@
 #include <agrum/BN/IBayesNet.h>
 #include <agrum/BN/inference/lazyPropagation.h>
 
-#include <agrum/CM/doAST.h>
+#include <agrum/CM/tools/doAST.h>
 
 namespace gum {
 

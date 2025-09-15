@@ -53,7 +53,7 @@
 #include <agrum/base/graphs/DAG.h>
 #include <agrum/base/graphs/undiGraph.h>
 
-#include <agrum/CM/dSeparation.h>
+#include <agrum/CM/tools/separation.h>
 
 namespace gum_tests {
 
@@ -99,22 +99,22 @@ namespace gum_tests {
       auto E = ns(bn, {"E"}); auto F = ns(bn, {"F"}); auto G = ns(bn, {"G"});
 
       // A -> C -> E -> F -> G  (unblocked)
-      TS_ASSERT( !gum::DSeparation::isDSeparated(dg, A, G, NodeSet{}) );
+      TS_ASSERT( !gum::Separation::isDSeparated(dg, A, G, NodeSet{}) );
 
       // Conditioning on F blocks all paths A->...->G
-      TS_ASSERT( gum::DSeparation::isDSeparated(dg, A, G, F) );
+      TS_ASSERT( gum::Separation::isDSeparated(dg, A, G, F) );
 
       // A ⟂ B (collider at C) without conditioning
-      TS_ASSERT( gum::DSeparation::isDSeparated(dg, A, B, NodeSet{}) );
+      TS_ASSERT( gum::Separation::isDSeparated(dg, A, B, NodeSet{}) );
 
       // Conditioning on the collider C opens A—C—B
-      TS_ASSERT( !gum::DSeparation::isDSeparated(dg, A, B, C) );
+      TS_ASSERT( !gum::Separation::isDSeparated(dg, A, B, C) );
 
       // Conditioning downstream of collider (E) also opens via descendant
-      TS_ASSERT( !gum::DSeparation::isDSeparated(dg, A, B, E) );
+      TS_ASSERT( !gum::Separation::isDSeparated(dg, A, B, E) );
 
       // Conditioning on F breaks path to G again (C is already in Z)
-      TS_ASSERT( gum::DSeparation::isDSeparated(dg, A, G, ns(bn, {"C","F"})) );
+      TS_ASSERT( gum::Separation::isDSeparated(dg, A, G, ns(bn, {"C","F"})) );
     }
 
     // -------------------------------------------------------------------
@@ -128,14 +128,14 @@ namespace gum_tests {
       auto A = ns(bn, {"A"}); auto C = ns(bn, {"C"});
 
       // From A (cause) to C (effect): there are NO backdoor paths into A
-      TS_ASSERT( gum::DSeparation::isBackdoorSeparated(dg, A, C, NodeSet{}) );
+      TS_ASSERT( gum::Separation::isBackdoorSeparated(dg, A, C, NodeSet{}) );
 
       // From C (cause) to A (effect): backdoor path C<-B<-A exists (unblocked)
-      TS_ASSERT( !gum::DSeparation::isBackdoorSeparated(dg, C, A, NodeSet{}) );
+      TS_ASSERT( !gum::Separation::isBackdoorSeparated(dg, C, A, NodeSet{}) );
 
       // Forward restriction: from A to C, forward paths exist unless we condition on B
-      TS_ASSERT( !gum::DSeparation::isForwardSeparated(dg, A, C, NodeSet{}) );
-      TS_ASSERT(  gum::DSeparation::isForwardSeparated(dg, A, C, ns(bn, {"B"})) );
+      TS_ASSERT( !gum::Separation::isForwardSeparated(dg, A, C, NodeSet{}) );
+      TS_ASSERT(  gum::Separation::isForwardSeparated(dg, A, C, ns(bn, {"B"})) );
     }
 
     GUM_ACTIVE_TEST( test_backdoor_examples_from_pyagrum_suite ) {
@@ -155,7 +155,7 @@ namespace gum_tests {
         const auto& dag = bn.dag();
         auto Xs = mkNS(bn, {X});
         auto Ys = mkNS(bn, {Y});
-        TS_ASSERT(gum::DSeparation::isBackdoorSeparated(dag, Xs, Ys, NodeSet{}));
+        TS_ASSERT(gum::Separation::isBackdoorSeparated(dag, Xs, Ys, NodeSet{}));
       };
 
       // hasBackDoor(graph, X, Y)    -> NOT backdoor separated with Z = ∅
@@ -164,7 +164,7 @@ namespace gum_tests {
         const auto& dag = bn.dag();
         auto Xs = mkNS(bn, {X});
         auto Ys = mkNS(bn, {Y});
-        TS_ASSERT(!gum::DSeparation::isBackdoorSeparated(dag, Xs, Ys, NodeSet{}));
+        TS_ASSERT(!gum::Separation::isBackdoorSeparated(dag, Xs, Ys, NodeSet{}));
       };
 
       // hasAllBackDoors(expectedSets, graph, X, Y) -> every Z in expectedSets backdoor-separates X and Y
@@ -179,7 +179,7 @@ namespace gum_tests {
         for (const auto& znames : sets) {
           NodeSet Z;
           for (auto n : znames) Z.insert(bn.idFromName(n));
-          TS_ASSERT(gum::DSeparation::isBackdoorSeparated(dag, Xs, Ys, Z));
+          TS_ASSERT(gum::Separation::isBackdoorSeparated(dag, Xs, Ys, Z));
         }
       };
 
@@ -230,7 +230,7 @@ namespace gum_tests {
       gum::NodeSet evidence; // empty
 
       // X->Y, U->V, T, and W (descendant of C) are barren w.r.t. {A,C}
-      auto barren = gum::DSeparation::findBarrenNodes(dg, evidence, targets);
+      auto barren = gum::Separation::findBarrenNodes(dg, evidence, targets);
       TS_ASSERT( barren.exists(idX) );
       TS_ASSERT( barren.exists(idY) );
       TS_ASSERT( barren.exists(idU) );
@@ -241,7 +241,7 @@ namespace gum_tests {
       // Reduction should keep {A,B,C} and remove {X,Y,U,V,W,T}
       gum::NodeSet Xset; Xset.insert(idA);
       gum::NodeSet Yset; Yset.insert(idC);
-      auto reduced = gum::DSeparation::reduceForDSeparation(dg, Xset, Yset, evidence);
+      auto reduced = gum::Separation::reduceForDSeparation(dg, Xset, Yset, evidence);
 
       TS_ASSERT(  reduced.existsNode(idA) );
       TS_ASSERT(  reduced.existsNode(idB) );
@@ -267,10 +267,10 @@ namespace gum_tests {
       auto B = ns(bn, {"B"});
       auto C = ns(bn, {"C"});
 
-      TS_ASSERT_EQUALS( gum::DSeparation::isDSeparated(dag, A, B, gum::NodeSet{}),
+      TS_ASSERT_EQUALS( gum::Separation::isDSeparated(dag, A, B, gum::NodeSet{}),
                         dag.dSeparation(A, B, gum::NodeSet{}) );
 
-      TS_ASSERT_EQUALS( gum::DSeparation::isDSeparated(dag, A, B, C),
+      TS_ASSERT_EQUALS( gum::Separation::isDSeparated(dag, A, B, C),
                         dag.dSeparation(A, B, C) );
     }
 
@@ -284,10 +284,10 @@ namespace gum_tests {
       auto U = ns(bn, {"U"});
 
       // Without conditioning: NOT d-separated (path X <- U -> Y is open)
-      TS_ASSERT(!gum::DSeparation::isDSeparated(dag, X, Y, NodeSet{}));
+      TS_ASSERT(!gum::Separation::isDSeparated(dag, X, Y, NodeSet{}));
 
       // Conditioning on the confounder blocks that backdoor path
-      TS_ASSERT(gum::DSeparation::isDSeparated(dag, X, Y, U));
+      TS_ASSERT(gum::Separation::isDSeparated(dag, X, Y, U));
     }
 
   };

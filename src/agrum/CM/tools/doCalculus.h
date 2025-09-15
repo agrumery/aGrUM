@@ -52,9 +52,9 @@
 #include <string>
 #include <vector>
 
-#include <agrum/base/graphs/DAG.h>   // NodeId, NodeSet
-#include <agrum/CM/causalModel.h>    // CausalModel<GUM_SCALAR>
-#include <agrum/CM/doAST.h>          // ASTtree<GUM_SCALAR> and nodes
+#include <agrum/base/graphs/DAG.h>
+#include <agrum/CM/causalModel.h>
+#include <agrum/CM/tools/doAST.h>
 
 namespace gum {
 
@@ -168,6 +168,6 @@ private:
 
 } // namespace gum
 
-#include <agrum/CM/doCalculus_tpl.h>
+#include <agrum/CM/tools/doCalculus_tpl.h>
 
 #endif // GUM_DO_CALCULUS_H

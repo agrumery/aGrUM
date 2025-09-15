@@ -37,28 +37,20 @@
  *   gitlab   : https://gitlab.com/agrumery/agrum                           *
  *                                                                          *
  ****************************************************************************/
-#ifndef GUM_HEDGE_EXCEPTION_H
-#define GUM_HEDGE_EXCEPTION_H
-
-#include <agrum/base/core/exceptions.h>
-
-namespace gum {
-
 /**
- * @brief Raised when a "hedge" (witness of non-identifiability) is detected
- *        in do-calculus / ID computations.
+ * @file
+ * @brief Do-calculus utilities and AST builders bound to a single CausalModel.
  *
- * Usage:
- *   throw gum::HedgeException("Effect not identifiable: hedge found.");
- *   // or, if you use the macro helper:
- *   // GUM_ERROR(HedgeException, "Effect not identifiable: hedge found.");
+ * This class mirrors the layout of pyAgrum's `_doCalculus.py`: it provides
+ * helpers to construct adjustment formulas (backdoor/frontdoor) as ASTs and
+ * the public entry points for general identification à la Shpitser–Pearl.
  */
-class HedgeException : public Exception {
- public:
-  using Exception::Exception;          // inherit all base constructors
-  ~HedgeException() noexcept override = default;
-};
 
-}  // namespace gum
+#include <agrum/CM/tools/doCalculus.h>
 
-#endif  // GUM_HEDGE_EXCEPTION_H
+
+#ifndef GUM_NO_EXTERN_TEMPLATE_CLASS
+
+template class gum::DoCalculus<double>;
+
+#endif

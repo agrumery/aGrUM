@@ -43,10 +43,10 @@
  */
 
  /****************************************************************************
- *   aGrUM/pyAgrum — DSeparation implementation                              *
+ *   aGrUM/pyAgrum — Separation implementation                              *
  ****************************************************************************/
 
-#include <agrum/CM/dSeparation.h>
+#include <agrum/CM/tools/separation.h>
 #include <agrum/BN/algorithms/barrenNodesFinder.h>
 
 #include <queue>
@@ -76,7 +76,7 @@ namespace {
 /**
  * Pyagrum counterpart: isDSep  (delegates to isDSep_tech2)
  */
-bool DSeparation::isDSeparated(const DAG& dag,
+bool Separation::isDSeparated(const DAG& dag,
                                const NodeSet& X,
                                const NodeSet& Y,
                                const NodeSet& Z) {
@@ -87,8 +87,7 @@ bool DSeparation::isDSeparated(const DAG& dag,
 /**
  * Pyagrum counterpart: isDSep_parents / _isDSep_tech2_parents
  */
-// DSeparation.cpp
-bool DSeparation::isBackdoorSeparated(const DAG& dag,
+bool Separation::isBackdoorSeparated(const DAG& dag,
                                       const NodeSet& X,
                                       const NodeSet& Y,
                                       const NodeSet& Z) {
@@ -114,7 +113,7 @@ bool DSeparation::isBackdoorSeparated(const DAG& dag,
 /**
  * Pyagrum counterpart: _isDSep_tech2_children
  */
-bool DSeparation::isForwardSeparated(const DAG& dag,
+bool Separation::isForwardSeparated(const DAG& dag,
                                      const NodeSet& X,
                                      const NodeSet& Y,
                                      const NodeSet& Z) {
@@ -151,7 +150,7 @@ bool DSeparation::isForwardSeparated(const DAG& dag,
  * Pyagrum counterpart: dSep_reduce (uses _barren_nodes)
  *
  */
-DAG DSeparation::reduceForDSeparation(const DAG& dag,
+DAG Separation::reduceForDSeparation(const DAG& dag,
                                       const NodeSet& X,
                                       const NodeSet& Y,
                                       const NodeSet& Z) {
@@ -182,8 +181,8 @@ DAG DSeparation::reduceForDSeparation(const DAG& dag,
  *  If BarrenNodesFinder::barrenNodes() is available, you can implement this
  *  as a thin wrapper around it.
  */
-DSeparation::NodeSet
-DSeparation::findBarrenNodes(const DAG& dag,
+Separation::NodeSet
+Separation::findBarrenNodes(const DAG& dag,
                              const NodeSet& evidenceZ,
                              const NodeSet& targetsXY) {
   gum::BarrenNodesFinder finder(&dag);
@@ -200,7 +199,7 @@ DSeparation::findBarrenNodes(const DAG& dag,
 /**
  * Pyagrum counterpart: _is_ascendant
  */
-bool DSeparation::isAncestorOf(const DAG& dag, NodeId x, NodeId y) {
+bool Separation::isAncestorOf(const DAG& dag, NodeId x, NodeId y) {
   for (const auto a : dag.ancestors(y)) if (a == x) return true;
   return false;
 }
@@ -208,7 +207,7 @@ bool DSeparation::isAncestorOf(const DAG& dag, NodeId x, NodeId y) {
 /**
  * Pyagrum counterpart: _is_descendant
  */
-bool DSeparation::isDescendantOf(const DAG& dag, NodeId x, NodeId y) {
+bool Separation::isDescendantOf(const DAG& dag, NodeId x, NodeId y) {
   for (const auto d : dag.descendants(y)) if (d == x) return true;
   return false;
 }
@@ -220,7 +219,7 @@ bool DSeparation::isDescendantOf(const DAG& dag, NodeId x, NodeId y) {
 /**
  * Pyagrum counterpart: _is_path_x_y
  */
-bool DSeparation::anyUndirectedConnection(const UndiGraph& ug,
+bool Separation::anyUndirectedConnection(const UndiGraph& ug,
                                           const NodeSet& A,
                                           const NodeSet& B) {
   // Put all targets in a hash-set for O(1) hit-testing

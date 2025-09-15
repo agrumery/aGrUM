@@ -43,8 +43,8 @@
  *        used in do-Calculus.
  */
 
-#ifndef GUM_DO_AST_H
-#define GUM_DO_AST_H
+#ifndef DO_AST_H
+#define DO_AST_H
 
 #include <string>
 #include <memory>
@@ -86,11 +86,11 @@ class ASTtree {
 public:
   /// Construct an AST node with a descriptive `type` string (used in dumps).
   explicit ASTtree(const std::string& type);
-  virtual ~ASTtree() = default;
+  virtual ~ASTtree() { GUM_DESTRUCTOR(ASTtree) };
 
   ASTtree(const ASTtree&) = delete;
   ASTtree& operator=(const ASTtree&) = delete;
-  ASTtree(ASTtree&&) noexcept = default;
+  ASTtree(ASTtree&&) noexcept { GUM_CONS_MOV(ASTtree) };
   ASTtree& operator=(ASTtree&&) noexcept = default;
 
   /// @return the runtime type tag (human-readable)
@@ -463,6 +463,6 @@ productOfTrees(std::vector<std::unique_ptr<ASTtree<GUM_SCALAR>>>&& lterms);
 
 } // namespace gum
 
-#include <agrum/CM/doAST_tpl.h>
+#include <agrum/CM/tools/doAST_tpl.h>
 
-#endif // GUM_DO_AST_H
+#endif // DO_AST_H

@@ -46,11 +46,11 @@
 #include <gumtest/utils.h>
 
 #include <agrum/BN/BayesNet.h>
-#include <agrum/CM/dSeparation.h>
+#include <agrum/CM/tools/separation.h>
 #include <agrum/base/graphs/DAG.h>
 
 
-#include <agrum/CM/doorCriteria.h>
+#include <agrum/CM/tools/doorCriteria.h>
 
 namespace gum_tests {
 

@@ -135,13 +135,13 @@ namespace gum {
                     bool keepArcs = false);
 
     /// Copy constructor
-    CausalModel(const CausalModel& other) = default;
+    CausalModel(const CausalModel& other){ GUM_CONS_CPY(CausalModel)};
 
     /// Move constructor
-    CausalModel(CausalModel&& other) noexcept = default;
+    CausalModel(CausalModel&& other) noexcept { GUM_CONS_MOV(CausalModel) };
 
     /// Destructor
-    ~CausalModel() = default;
+    ~CausalModel() { GUM_DESTRUCTOR(CausalModel) };
 
     /// Copy assignment
     CausalModel& operator=(const CausalModel& other) = default;
@@ -157,6 +157,14 @@ namespace gum {
      *
      * A new latent node is inserted into the causal DAG and connected as a parent
      * of each listed child. The observed BN is not modified.
+     *
+     * @warning When `keepArcs == false` and the latent has children
+     *          \f$\{X_1,\ldots,X_n\}\f$, any existing arcs \f$X_i \rightarrow X_j\f$
+     *          **among those children** may be removed from the causal DAG.
+     *          To preserve some child→child arcs while dropping others, consider
+     *          creating separate latents: one with `keepArcs = true` for the subset
+     *          to preserve, and another with `keepArcs = false` for the subset to drop.
+     *          A finer-grained edit API may be added later.
      */
     void addLatentVariable(const std::string& latentName, const std::vector<std::string>& childrenOfLatent, bool keepArcs = false);
 
@@ -164,21 +172,20 @@ namespace gum {
      * @brief Add a latent variable by **NodeId**s of its observed children.
      * @param latentName new latent variable name
      * @param childrenOfLatent node ids of observed children
-     * @param keepArcs preserve existing arcs among the children if true
+     * @param keepArcs preserve existing arcs among the children if true.
+     *
+     * A new latent node is inserted into the causal DAG and connected as a parent
+     * of each listed child. The observed BN is not modified.
+     *
+     * @warning When `keepArcs == false` and the latent has children
+     *          \f$\{X_1,\ldots,X_n\}\f$, any existing arcs \f$X_i \rightarrow X_j\f$
+     *          **among those children** may be removed from the causal DAG.
+     *          To preserve some child→child arcs while dropping others, consider
+     *          creating separate latents: one with `keepArcs = true` for the subset
+     *          to preserve, and another with `keepArcs = false` for the subset to drop.
+     *          A finer-grained edit API may be added later.
      */
     void addLatentVariable(const std::string& latentName, const std::vector<NodeId>& childrenOfLatent, bool keepArcs = false);
-
-    /// @brief Add a causal arc x → y (by ids) in the causal DAG.
-    void addCausalArc(NodeId x, NodeId y);
-
-    /// @brief Add a causal arc x → y (by variable names) in the causal DAG.
-    void addCausalArc(const std::string& x, const std::string& y);
-
-    /// @brief Remove a causal arc x → y (by ids) from the causal DAG.
-    void eraseCausalArc(NodeId x, NodeId y);
-
-    /// @brief Remove a causal arc x → y (by variable names) from the causal DAG.
-    void eraseCausalArc(const std::string& x, const std::string& y);
 
     /// @brief Whether a causal arc x → y exists (by ids) in the causal DAG.
     bool existsArc(NodeId x, NodeId y) const;

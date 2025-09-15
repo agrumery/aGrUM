@@ -42,12 +42,12 @@
  * @brief Door criteria (backdoor/frontdoor) utilities bound to a single DAG.
  */
 
-#include <agrum/CM/doorCriteria.h>
+#include <agrum/CM/tools/doorCriteria.h>
 
 #include <algorithm>
 #include <vector>
 
-#include <agrum/CM/dSeparation.h>
+#include <agrum/CM/tools/separation.h>
 
 namespace gum {
 
@@ -86,7 +86,7 @@ bool DoorCriteria::satisfiesBackdoorCriterion(NodeId X, NodeId Y, const NodeSet&
   // Backdoor blocking condition in G_{underline X}
   NodeSet Xs; Xs.insert(X);
   NodeSet Ys; Ys.insert(Y);
-  return DSeparation::isBackdoorSeparated(_dag, Xs, Ys, Z);
+  return Separation::isBackdoorSeparated(_dag, Xs, Ys, Z);
 }
 
 bool DoorCriteria::satisfiesFrontdoorCriterion(NodeId X, NodeId Y, const NodeSet& Z) const {
@@ -103,13 +103,13 @@ bool DoorCriteria::satisfiesFrontdoorCriterion(NodeId X, NodeId Y, const NodeSet
   NodeSet Xset; Xset.insert(X);
   NodeSet Yset; Yset.insert(Y);
   // interest = X ∪ Y ∪ Z  -> pass Xset, Yset, Z as-is
-  DAG reduced = DSeparation::reduceForDSeparation(_dag, Xset, Yset, Z);
+  DAG reduced = Separation::reduceForDSeparation(_dag, Xset, Yset, Z);
 
   NodeSet condX; condX.insert(X);
   for (auto z : Z) {
     NodeSet Zs; Zs.insert(z);
     // backdoor_path(reduced, z, y, {x}) == !isBackdoorSeparated(reduced, {z}, {y}, {x})
-    if (!DSeparation::isBackdoorSeparated(reduced, Zs, Yset, condX)) return false;
+    if (!Separation::isBackdoorSeparated(reduced, Zs, Yset, condX)) return false;
   }
   return true;
 }
@@ -130,7 +130,7 @@ DoorCriteria::enumerateBackdoorSets(NodeId X, NodeId Y, const EnumerationOptions
   NodeSet Xset; Xset.insert(X);
   NodeSet Yset; Yset.insert(Y);
   NodeSet Zempty;
-  DAG G = DSeparation::reduceForDSeparation(_dag, Xset, Yset, Zempty);
+  DAG G = Separation::reduceForDSeparation(_dag, Xset, Yset, Zempty);
 
   // Candidate pool = nodes(G) \ (Desc(X) ∪ {X,Y} ∪ opts.exclude)
   NodeSet descX = _dag.descendants(X); // Python uses descendants(bn, cause)
@@ -172,7 +172,7 @@ DoorCriteria::enumerateBackdoorSets(NodeId X, NodeId Y, const EnumerationOptions
         if (!worth) continue;
       }
 
-      if (DSeparation::isBackdoorSeparated(G, Xs, Ys, Z)) {
+      if (Separation::isBackdoorSeparated(G, Xs, Ys, Z)) {
         if (opts.only_minimal) {
           chosen.push_back(Z);
           out.push_back(Z);
@@ -246,13 +246,13 @@ DoorCriteria::enumerateFrontdoorSets(NodeId X, NodeId Y, const EnumerationOption
   NodeSet Yset = possible; Yset.insert(Y);
   NodeSet Zempty;
 
-  DAG g = DSeparation::reduceForDSeparation(_dag, Xset, Yset, Zempty);
+  DAG g = Separation::reduceForDSeparation(_dag, Xset, Yset, Zempty);
 
   NodeSet impossible;
   NodeSet condX; condX.insert(X);
   for (auto z : possible) {
     NodeSet Zs; Zs.insert(z);
-    if (!DSeparation::isBackdoorSeparated(g, Zs, NodeSet{Y}, condX)) {
+    if (!Separation::isBackdoorSeparated(g, Zs, NodeSet{Y}, condX)) {
       impossible.insert(z);
     }
   }
@@ -375,7 +375,7 @@ NodeSet DoorCriteria::backdoorReach(NodeId a) const {
 bool DoorCriteria::hasBackdoorPath(NodeId X, NodeId Y, const NodeSet& Z) const {
   NodeSet Xs; Xs.insert(X);
   NodeSet Ys; Ys.insert(Y);
-  return !DSeparation::isBackdoorSeparated(_dag, Xs, Ys, Z);
+  return !Separation::isBackdoorSeparated(_dag, Xs, Ys, Z);
 }
 
 /* ============================= Minimality =============================== */

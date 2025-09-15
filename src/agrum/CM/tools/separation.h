@@ -52,7 +52,7 @@
 namespace gum {
 
 /**
- * @class DSeparation
+ * @class Separation
  * @brief Consolidated d-separation utilities (DAG-centric).
  *
  * High-level helpers to test (conditional) independence in directed acyclic
@@ -71,7 +71,7 @@ namespace gum {
  *  - `anyUndirectedConnection`   ⇨ `_is_path_x_y` (internal helper)
  *
  */
-class DSeparation {
+class Separation {
 public:
   using NodeId  = gum::NodeId;
   using NodeSet = gum::NodeSet;

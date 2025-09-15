@@ -45,7 +45,7 @@
 
 #include <sstream>
 
-#include <agrum/CM/doorCriteria.h>
+#include <agrum/CM/tools/doorCriteria.h>
 #include <agrum/CM/causalModel.h>
 
 namespace gum {
@@ -121,35 +121,6 @@ void CausalModel<GUM_SCALAR>::addLatentVariable(const std::string& latentName,
   }
 }
 
-// ===============================
-// Arc editing
-// ===============================
-
-template <typename GUM_SCALAR>
-void CausalModel<GUM_SCALAR>::addCausalArc(NodeId x, NodeId y) {
-  _causalDAG_.addArc(x, y);
-}
-
-template <typename GUM_SCALAR>
-void CausalModel<GUM_SCALAR>::addCausalArc(const std::string& x, const std::string& y) {
-  // names are resolved in the observed BN (same as pyAgrum)
-  const NodeId ix = idFromName(x);
-  const NodeId iy = idFromName(y);
-  addCausalArc(ix, iy);
-}
-
-template <typename GUM_SCALAR>
-void CausalModel<GUM_SCALAR>::eraseCausalArc(NodeId x, NodeId y) {
-  const Arc a(x, y);
-  if (_causalDAG_.existsArc(a)) _causalDAG_.eraseArc(a);
-}
-
-template <typename GUM_SCALAR>
-void CausalModel<GUM_SCALAR>::eraseCausalArc(const std::string& x, const std::string& y) {
-  const NodeId ix = idFromName(x);
-  const NodeId iy = idFromName(y);
-  eraseCausalArc(ix, iy);
-}
 
 template <typename GUM_SCALAR>
 bool CausalModel<GUM_SCALAR>::existsArc(NodeId x, NodeId y) const {

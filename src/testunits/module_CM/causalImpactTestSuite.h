@@ -47,7 +47,7 @@
 #include <agrum/BN/BayesNet.h>
 #include <agrum/CM/causalModel.h>
 #include <agrum/CM/causalImpact.h>
-#include <agrum/CM/causalFormula.h>
+#include <agrum/CM/tools/causalFormula.h>
 #include <agrum/base/multidim/tensor.h>
 
 
@@ -80,7 +80,7 @@ public:
       gum::HashTable<std::string,std::string>()); // avoid {} warning
 
     TS_ASSERT_THROWS_NOTHING({
-      auto got = ci.result.eval();
+      auto got = ci.eval();
       auto exp = bn.cpt("Y"); // P(Y|Z)
       TS_GUM_TENSOR_ALMOST_EQUALS(got, exp);
     });
@@ -100,7 +100,7 @@ public:
       gum::HashTable<std::string,std::string>());
 
     TS_ASSERT_THROWS_NOTHING({
-      auto got = ci.result.eval();
+      auto got = ci.eval();
       auto exp = (bn.cpt("Patient") * bn.cpt("Gender")).sumOut(vset(bn, {"Gender"}));
       TS_GUM_TENSOR_ALMOST_EQUALS(got, exp);
     });
@@ -123,7 +123,7 @@ public:
       gum::HashTable<std::string,std::string>());
 
     TS_ASSERT_THROWS_NOTHING({
-      auto got = ci.result.eval(); // P(Y|do(X))
+      auto got = ci.eval(); // P(Y|do(X))
       auto exp = (bn.cpt("Z") * bn.cpt("Y")).sumOut(vset(bn, {"Z"}));
       TS_GUM_TENSOR_ALMOST_EQUALS(got, exp);
     });
@@ -141,7 +141,7 @@ public:
       gum::HashTable<std::string,std::string>());
 
     TS_ASSERT_THROWS_NOTHING({
-      auto got = ci.result.eval();
+      auto got = ci.eval();
       auto exp = bn.cpt("Y"); // P(Y|X)
       TS_GUM_TENSOR_ALMOST_EQUALS(got, exp);
     });
@@ -166,7 +166,7 @@ public:
       gum::HashTable<std::string,std::string>());
 
     TS_ASSERT_THROWS_ANYTHING({
-      (void)ci.result.eval();  // should fail
+      (void)ci.eval();  // should fail
     });
   }
 
@@ -197,7 +197,7 @@ public:
       cm, names({"hoho"}), names({"héhé"}), StrSet{},
       gum::HashTable<std::string,std::string>());
 
-    TS_ASSERT_THROWS_NOTHING({ (void)ci.result.eval(); });
+  TS_ASSERT_THROWS_NOTHING({ (void)ci.eval(); });
   }
 
   // H) Complex “From R”-style model: should not raise during eval

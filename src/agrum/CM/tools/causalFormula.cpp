@@ -39,18 +39,11 @@
  ****************************************************************************/
 /**
  * @file
- * @brief Do-calculus utilities and AST builders bound to a single CausalModel.
- *
- * This class mirrors the layout of pyAgrum's `_doCalculus.py`: it provides
- * helpers to construct adjustment formulas (backdoor/frontdoor) as ASTs and
- * the public entry points for general identification à la Shpitser–Pearl.
+ * @brief Represents an identified causal formula and its query context.
  */
 
-#include <agrum/CM/doCalculus.h>
+ #include <agrum/CM/tools/causalFormula.h>
 
-
-#ifndef GUM_NO_EXTERN_TEMPLATE_CLASS
-
-template class gum::DoCalculus<double>;
-
+ #ifndef GUM_NO_EXTERN_TEMPLATE_CLASS
+template class gum::CausalFormula< double >;
 #endif

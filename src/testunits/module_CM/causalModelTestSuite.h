@@ -41,7 +41,7 @@
 #include <gumtest/AgrumTestSuite.h>
 #include <gumtest/utils.h>
 
-#include <agrum/CM/doAST.h>
+#include <agrum/CM/tools/doAST.h>
 
 #include <agrum/CM/causalModel.h>
 

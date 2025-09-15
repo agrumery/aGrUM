@@ -37,13 +37,28 @@
  *   gitlab   : https://gitlab.com/agrumery/agrum                           *
  *                                                                          *
  ****************************************************************************/
+#ifndef GUM_HEDGE_EXCEPTION_H
+#define GUM_HEDGE_EXCEPTION_H
+
+#include <agrum/base/core/exceptions.h>
+
+namespace gum {
+
 /**
- * @file
- * @brief Represents an identified causal formula and its query context.
+ * @brief Raised when a "hedge" (witness of non-identifiability) is detected
+ *        in do-calculus / ID computations.
+ *
+ * Usage:
+ *   throw gum::HedgeException("Effect not identifiable: hedge found.");
+ *   // or, if you use the macro helper:
+ *   // GUM_ERROR(HedgeException, "Effect not identifiable: hedge found.");
  */
+class HedgeException : public Exception {
+ public:
+  using Exception::Exception;          // inherit all base constructors
+  ~HedgeException() noexcept override { GUM_DESTRUCTOR(HedgeException) };
+};
 
- #include <agrum/CM/causalFormula.h>
+}  // namespace gum
 
- #ifndef GUM_NO_EXTERN_TEMPLATE_CLASS
-template class gum::CausalFormula< double >;
-#endif
+#endif  // GUM_HEDGE_EXCEPTION_H

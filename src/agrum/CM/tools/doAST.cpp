@@ -39,7 +39,7 @@
  ****************************************************************************/
 
 
-#include <agrum/CM/doAST.h>
+#include <agrum/CM/tools/doAST.h>
 
 
 #ifndef GUM_NO_EXTERN_TEMPLATE_CLASS

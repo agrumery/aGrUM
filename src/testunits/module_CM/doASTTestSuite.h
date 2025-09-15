@@ -56,7 +56,7 @@
 #include <agrum/BN/BayesNet.h>
 #include <agrum/BN/inference/lazyPropagation.h>
 
-#include <agrum/CM/doAST.h>
+#include <agrum/CM/tools/doAST.h>
 
 namespace gum_tests {
 

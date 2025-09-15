@@ -45,12 +45,12 @@
 #include <memory>
 
 #include <agrum/CM/causalModel.h>
-#include <agrum/CM/dSeparation.h>
-#include <agrum/CM/doCalculus.h>
-#include <agrum/CM/doorCriteria.h>
-#include <agrum/CM/doAST.h>
-#include <agrum/CM/causalFormula.h>
-#include <agrum/CM/hedgeException.h>
+#include <agrum/CM/tools/separation.h>
+#include <agrum/CM/tools/doCalculus.h>
+#include <agrum/CM/tools/doorCriteria.h>
+#include <agrum/CM/tools/doAST.h>
+#include <agrum/CM/tools/causalFormula.h>
+#include <agrum/CM/tools/hedgeException.h>
 
 namespace gum {
 
@@ -72,6 +72,57 @@ public:
   /// Identified symbolic formula. If not identifiable, its AST may be nullptr and
   /// its explanation string (6th ctor arg) will say so.
   CausalFormula<GUM_SCALAR> result;
+
+  // --- Forwarded accessors for wrapping ---
+  /// @brief Evaluates the formula's AST to compute the resulting probability distribution.
+  Tensor<GUM_SCALAR> eval() const { return result.eval(); }
+
+  /// @brief Generates a string representation of the formula's AST.
+  std::string toString() const { return result.toString(); }
+
+  /// @brief Generates a full LaTeX equation: Query = Formula.
+  std::string toLatex() const { return result.toLatex(); }
+
+  /**
+   * @brief Generates a LaTeX representation of the original query, e.g., P(Y | do(X), Z).
+   * @note This version does not yet support specific variable values.
+   */
+  std::string latexQuery() const { return result.latexQuery(); }
+
+  /**
+   * @brief Whether the causal effect has been identified.
+   *
+   * Returns true iff this formula has a valid AST (i.e., identification
+   * succeeded and evaluation is possible). When this returns false,
+   * calling root() or eval() will throw.
+   *
+   * @return true if an identification AST exists, false otherwise.
+   */
+  bool isIdentified() const noexcept { return result.isIdentified(); }
+
+  /**
+   * @brief Access the root AST node of the identified formula.
+   *
+   * Use this to inspect the symbolic structure of the identified effect.
+   * @warning This raises an exception if the effect is not identified.
+   *
+   * @throws gum::OperationNotAllowed if no AST is available (i.e., the effect
+   *         is not identifiable with the current methods).
+   * @return const ASTtree<GUM_SCALAR>& reference to the AST root.
+   */
+  const ASTtree<GUM_SCALAR>& root() const { return result.root(); }
+
+  // --- Accessors ---
+  const CausalModel<GUM_SCALAR>& cm() const { return result.cm(); }
+  const NodeSet& on() const { return result.on(); }
+  const NodeSet& doing() const { return result.doing(); }
+  const NodeSet& knowing() const { return result.knowing(); }
+  const std::string& explanation() const { return result.explanation(); }
+
+  /// Convenience: return names corresponding to stored node ids (sorted).
+  std::vector<std::string> onNames() const { return result.onNames(); }
+  std::vector<std::string> doingNames() const { return result.doingNames(); }
+  std::vector<std::string> knowingNames() const { return result.knowingNames(); }
 
   // Names interface
   CausalImpact(const CausalModel<GUM_SCALAR>& cm,

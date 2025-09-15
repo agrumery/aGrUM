@@ -38,6 +38,8 @@
  *                                                                          *
  ****************************************************************************/
 
+#include <agrum/CM/causalImpact.h>
+
 namespace gum {
 
 // ---------- helpers ----------
@@ -101,7 +103,7 @@ CausalImpact<GUM_SCALAR>::_buildFromNames_(const CausalModel<GUM_SCALAR>& cm,
 
   NodeSet cond = i_knowing;
 
-  if (DSeparation::isDSeparated(cm.causalDAG(), i_doing, i_on, cond)) {
+  if (Separation::isDSeparated(cm.causalDAG(), i_doing, i_on, cond)) {
     // P(Y | K) in the observational BN
     auto ast = std::make_unique<ASTposteriorProba<GUM_SCALAR>>(cm.observationalBN(), on, knowing);
     return CausalFormula<GUM_SCALAR>(cm, std::move(ast), on, doing, knowing,
@@ -118,7 +120,7 @@ CausalImpact<GUM_SCALAR>::_buildFromNames_(const CausalModel<GUM_SCALAR>& cm,
     // --- Backdoor (Z may be empty; validate in G_{\underline X}) ---
     {
       NodeSet Z = cm.backDoor(Xid, Yid);  // can be ∅
-      if (DSeparation::isBackdoorSeparated(cm.causalDAG(),
+      if (Separation::isBackdoorSeparated(cm.causalDAG(),
                                            NodeSet{Xid}, NodeSet{Yid}, Z)) {
         DoCalculus<GUM_SCALAR> dc(cm);
         auto ast = dc.getBackDoorTree(Xid, Yid, Z);

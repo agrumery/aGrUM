@@ -41,9 +41,9 @@
 #include <gumtest/AgrumTestSuite.h>
 #include <gumtest/utils.h>
 
-#include <agrum/CM/doAST.h>
+#include <agrum/CM/tools/doAST.h>
 #include <agrum/CM/causalModel.h>
-#include <agrum/CM/doCalculus.h>
+#include <agrum/CM/tools/doCalculus.h>
 
 namespace gum_tests {
 

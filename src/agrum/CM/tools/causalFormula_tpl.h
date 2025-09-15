@@ -46,7 +46,7 @@
 #include <algorithm>
 #include <vector>
 
-#include <agrum/CM/causalFormula.h>
+#include <agrum/CM/tools/causalFormula.h>
 
 namespace gum {
 

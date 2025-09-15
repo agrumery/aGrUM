@@ -50,7 +50,7 @@
 #include <vector>
 
 #include <agrum/CM/causalModel.h>
-#include <agrum/CM/doAST.h>
+#include <agrum/CM/tools/doAST.h>
 
 namespace gum {
 
@@ -195,6 +195,6 @@ extern template class CausalFormula<double>;
 
 } // namespace gum
 
-#include <agrum/CM/causalFormula_tpl.h>
+#include <agrum/CM/tools/causalFormula_tpl.h>
 
 #endif // GUM_CAUSAL_FORMULA_H

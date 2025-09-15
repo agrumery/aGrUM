@@ -53,9 +53,10 @@
 #include <queue>
 #include <sstream>
 
-#include <agrum/CM/doCalculus.h>
-#include <agrum/CM/dSeparation.h>
-#include <agrum/CM/hedgeException.h>
+#include <agrum/CM/tools/doCalculus.h>
+#include <agrum/CM/tools/causalFormula.h>
+#include <agrum/CM/tools/hedgeException.h>
+#include <agrum/CM/tools/separation.h>
 
 namespace gum {
 
@@ -442,7 +443,7 @@ DoCalculus<GUM_SCALAR>::doCalculusWithObservation(const NodeSet& on,
     for (auto z : knowing) {
       NodeSet Zi; Zi.insert(z);
       NodeSet Kminus = knowing - Zi;
-      if (DSeparation::isDSeparated(gmod, Zi, on, doing + Kminus)) {
+      if (Separation::isDSeparated(gmod, Zi, on, doing + Kminus)) {
         // recurse with z moved to doing
         NodeSet doing2   = doing + Zi;
         NodeSet knowing2 = Kminus;
