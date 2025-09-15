@@ -69,21 +69,27 @@ bool CausalImpact<GUM_SCALAR>::_disjoint_(const NameSet& a, const NameSet& b, co
 
 // ---------- ctors (initializer-list builds) ----------
 
+
 template <typename GUM_SCALAR>
 CausalImpact<GUM_SCALAR>::CausalImpact(const CausalModel<GUM_SCALAR>& cm,
                                        const NameSet&                 on,
                                        const NameSet&                 doing,
                                        const NameSet&                 knowing,
-                                       const HashTable<VariableName, VariableValueName>&)
-  : result(_buildFromNames_(cm, on, doing, knowing)) {}
+                                       const HashTable<VariableName, VariableValueName>&,
+                                       bool directDoCalculus)
+  : result(_buildFromNames_(cm, on, doing, knowing, directDoCalculus)),
+    directDoCalculus_{directDoCalculus} {}
+
 
 template <typename GUM_SCALAR>
 CausalImpact<GUM_SCALAR>::CausalImpact(const CausalModel<GUM_SCALAR>& cm,
                                        const NodeSet&                 on,
                                        const NodeSet&                 doing,
                                        const NodeSet&                 knowing,
-                                       const HashTable<NodeId, VariableValueId>&)
-  : result(_buildFromIds_(cm, on, doing, knowing)) {}
+                                       const HashTable<NodeId, VariableValueId>&,
+                                       bool directDoCalculus)
+  : result(_buildFromIds_(cm, on, doing, knowing, directDoCalculus)),
+    directDoCalculus_{directDoCalculus} {}
 
 // ---------- builders ----------
 
@@ -92,7 +98,8 @@ CausalFormula<GUM_SCALAR>
 CausalImpact<GUM_SCALAR>::_buildFromNames_(const CausalModel<GUM_SCALAR>& cm,
                                            const NameSet&                 on,
                                            const NameSet&                 doing,
-                                           const NameSet&                 knowing) {
+                                           const NameSet&                 knowing,
+                                           bool directDoCalculus) {
   if (!_disjoint_(on, doing, knowing)) {
     GUM_ERROR(InvalidArgument, "The 3 parts of the query (on, doing, knowing) must be pairwise disjoint.");
   }
@@ -103,44 +110,44 @@ CausalImpact<GUM_SCALAR>::_buildFromNames_(const CausalModel<GUM_SCALAR>& cm,
 
   NodeSet cond = i_knowing;
 
-  if (Separation::isDSeparated(cm.causalDAG(), i_doing, i_on, cond)) {
-    // P(Y | K) in the observational BN
-    auto ast = std::make_unique<ASTposteriorProba<GUM_SCALAR>>(cm.observationalBN(), on, knowing);
-    return CausalFormula<GUM_SCALAR>(cm, std::move(ast), on, doing, knowing,
-                                     "No causal effect (d-separated).");
-  }
-
-  // single-X, single-Y, empty-K: try BACKDOOR then FRONTDOOR
-  if (doing.size() == 1 && on.size() == 1 && knowing.empty()) {
-    const auto& Xname = *doing.begin();
-    const auto& Yname = *on.begin();
-    const auto  Xid   = cm.idFromName(Xname);
-    const auto  Yid   = cm.idFromName(Yname);
-
-    // --- Backdoor (Z may be empty; validate in G_{\underline X}) ---
-    {
-      NodeSet Z = cm.backDoor(Xid, Yid);  // can be ∅
-      if (Separation::isBackdoorSeparated(cm.causalDAG(),
-                                           NodeSet{Xid}, NodeSet{Yid}, Z)) {
-        DoCalculus<GUM_SCALAR> dc(cm);
-        auto ast = dc.getBackDoorTree(Xid, Yid, Z);
-        return CausalFormula<GUM_SCALAR>(cm, std::move(ast), on, doing, knowing,
-                                         "Identified via backdoor (adjustment).");
-      }
+  if (!directDoCalculus) {
+    if (Separation::isDSeparated(cm.causalDAG(), i_doing, i_on, cond)) {
+      // P(Y | K) in the observational BN
+      auto ast = std::make_unique<ASTposteriorProba<GUM_SCALAR>>(cm.observationalBN(), on, knowing);
+      return CausalFormula<GUM_SCALAR>(cm, std::move(ast), on, doing, knowing,
+                                       "No causal effect (d-separated).");
     }
 
-    // --- Frontdoor (no trivial FD; require non-empty mediator set) ---
-    {
-      NodeSet Z = cm.frontDoor(Xid, Yid);
-      if (!Z.empty()) {
-        DoCalculus<GUM_SCALAR> dc(cm);
-        auto ast = dc.getFrontDoorTree(Xid, Yid, Z);
-        return CausalFormula<GUM_SCALAR>(cm, std::move(ast), on, doing, knowing,
-                                         "Identified via frontdoor (mediator adjustment).");
+    // single-X, single-Y, empty-K: try BACKDOOR then FRONTDOOR
+    if (doing.size() == 1 && on.size() == 1 && knowing.empty()) {
+      const auto& Xname = *doing.begin();
+      const auto& Yname = *on.begin();
+      const auto  Xid   = cm.idFromName(Xname);
+      const auto  Yid   = cm.idFromName(Yname);
+
+      // --- Backdoor (Z may be empty; validate in G_{\underline X}) ---
+      {
+        NodeSet Z = cm.backDoor(Xid, Yid);  // can be ∅
+        if (Separation::isBackdoorSeparated(cm.causalDAG(), NodeSet{Xid}, NodeSet{Yid}, Z)) {
+          DoCalculus<GUM_SCALAR> dc(cm);
+          auto ast = dc.getBackDoorTree(Xid, Yid, Z);
+          return CausalFormula<GUM_SCALAR>(cm, std::move(ast), on, doing, knowing,
+                                           "Identified via backdoor (adjustment).");
+        }
+      }
+
+      // --- Frontdoor (no trivial FD; require non-empty mediator set) ---
+      {
+        NodeSet Z = cm.frontDoor(Xid, Yid);
+        if (!Z.empty()) {
+          DoCalculus<GUM_SCALAR> dc(cm);
+          auto ast = dc.getFrontDoorTree(Xid, Yid, Z);
+          return CausalFormula<GUM_SCALAR>(cm, std::move(ast), on, doing, knowing,
+                                           "Identified via frontdoor (mediator adjustment).");
+        }
       }
     }
   }
-
 
   // general do-calculus (when available in your DoCalculus)
   try {
@@ -167,12 +174,13 @@ CausalFormula<GUM_SCALAR>
 CausalImpact<GUM_SCALAR>::_buildFromIds_(const CausalModel<GUM_SCALAR>& cm,
                                          const NodeSet&                 on,
                                          const NodeSet&                 doing,
-                                         const NodeSet&                 knowing) {
+                                         const NodeSet&                 knowing,
+                                         bool directDoCalculus) {
   // Reuse the names path to share logic/explanations
   const auto onN      = _idsToNames_(cm, on);
   const auto doingN   = _idsToNames_(cm, doing);
   const auto knowingN = _idsToNames_(cm, knowing);
-  return _buildFromNames_(cm, onN, doingN, knowingN);
+  return _buildFromNames_(cm, onN, doingN, knowingN, directDoCalculus);
 }
 
 } // namespace gum

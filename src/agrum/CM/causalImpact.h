@@ -73,6 +73,9 @@ public:
   /// its explanation string (6th ctor arg) will say so.
   CausalFormula<GUM_SCALAR> result;
 
+  /// If true, skip backdoor/frontdoor and use do-calculus directly
+  bool directDoCalculus_ = false;
+
   // --- Forwarded accessors for wrapping ---
   /// @brief Evaluates the formula's AST to compute the resulting probability distribution.
   Tensor<GUM_SCALAR> eval() const { return result.eval(); }
@@ -124,19 +127,22 @@ public:
   std::vector<std::string> doingNames() const { return result.doingNames(); }
   std::vector<std::string> knowingNames() const { return result.knowingNames(); }
 
+
   // Names interface
   CausalImpact(const CausalModel<GUM_SCALAR>& cm,
                const NameSet&                 on,
                const NameSet&                 doing,
                const NameSet&                 knowing = NameSet{},
-               const HashTable<VariableName, VariableValueName>& /*values*/ = HashTable<VariableName, VariableValueName>());
+               const HashTable<VariableName, VariableValueName>& /*values*/ = HashTable<VariableName, VariableValueName>(),
+               bool directDoCalculus = false);
 
   // IDs interface
   CausalImpact(const CausalModel<GUM_SCALAR>&            cm,
                const NodeSet&                            on,
                const NodeSet&                            doing,
                const NodeSet&                            knowing = NodeSet{},
-               const HashTable<NodeId, VariableValueId>& /*values*/ = HashTable<NodeId, VariableValueId>());
+               const HashTable<NodeId, VariableValueId>& /*values*/ = HashTable<NodeId, VariableValueId>(),
+               bool directDoCalculus = false);
 
 private:
   // helpers
@@ -149,13 +155,15 @@ private:
   _buildFromNames_(const CausalModel<GUM_SCALAR>& cm,
                    const NameSet&                 on,
                    const NameSet&                 doing,
-                   const NameSet&                 knowing);
+                   const NameSet&                 knowing,
+                   bool directDoCalculus);
 
   static CausalFormula<GUM_SCALAR>
   _buildFromIds_(const CausalModel<GUM_SCALAR>& cm,
                  const NodeSet&                 on,
                  const NodeSet&                 doing,
-                 const NodeSet&                 knowing);
+                 const NodeSet&                 knowing,
+                 bool directDoCalculus);
 };
 
 #ifndef GUM_NO_EXTERN_TEMPLATE_CLASS
