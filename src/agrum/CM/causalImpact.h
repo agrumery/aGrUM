@@ -69,10 +69,6 @@ using VariableValueId   = Idx;
 template <typename GUM_SCALAR>
 class CausalImpact {
 public:
-  /// Identified symbolic formula. If not identifiable, its AST may be nullptr and
-  /// its explanation string (6th ctor arg) will say so.
-  CausalFormula<GUM_SCALAR> result;
-
   /// If true, skip backdoor/frontdoor and use do-calculus directly
   bool directDoCalculus_ = false;
 
@@ -116,6 +112,11 @@ public:
   const ASTtree<GUM_SCALAR>& root() const { return result.root(); }
 
   // --- Accessors ---
+  /**
+   * @brief Access the underlying CausalFormula result.
+   * @return const reference to the identified CausalFormula.
+   */
+  const CausalFormula<GUM_SCALAR>& getResult() const { return result; }
   const CausalModel<GUM_SCALAR>& cm() const { return result.cm(); }
   const NodeSet& on() const { return result.on(); }
   const NodeSet& doing() const { return result.doing(); }
@@ -167,6 +168,10 @@ public:
                bool directDoCalculus = false);
 
 private:
+  /// Identified symbolic formula. If not identifiable, its AST may be nullptr and
+  /// its explanation string (6th ctor arg) will say so.
+  CausalFormula<GUM_SCALAR> result;
+
   // helpers
   static NameSet _idsToNames_(const CausalModel<GUM_SCALAR>& cm, const NodeSet& ids);
   static NodeSet _namesToIds_(const CausalModel<GUM_SCALAR>& cm, const NameSet& names);
