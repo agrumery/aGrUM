@@ -129,6 +129,17 @@ public:
 
 
   // Names interface
+  /**
+   * @brief Constructs a CausalImpact object using variable names.
+   *
+   * @param cm The causal model to use for identification.
+   * @param on The set of variable names representing the outcome(s) of interest.
+   * @param doing The set of variable names representing the intervention(s) (do-variables).
+   * @param knowing The set of variable names representing observed covariates (optional).
+   * @param values A hashtable mapping variable names to their specific values (optional).
+   * @param directDoCalculus If true, bypasses Backdoor and Frontdoor and directly uses the ID algorithm for identification.
+   * @warning Setting directDoCalculus = true is NOT advisable. This will bypass the Backdoor and Frontdoor criteria and use the ID algorithm directly.
+   */
   CausalImpact(const CausalModel<GUM_SCALAR>& cm,
                const NameSet&                 on,
                const NameSet&                 doing,
@@ -137,6 +148,17 @@ public:
                bool directDoCalculus = false);
 
   // IDs interface
+  /**
+   * @brief Constructs a CausalImpact object using node IDs.
+   *
+   * @param cm The causal model to use for identification.
+   * @param on The set of node IDs representing the outcome(s) of interest.
+   * @param doing The set of node IDs representing the intervention(s) (do-variables).
+   * @param knowing The set of node IDs representing observed covariates (optional).
+   * @param values A hashtable mapping node IDs to their specific values (optional).
+   * @param directDoCalculus If true, bypasses Backdoor and Frontdoor and directly uses the ID algorithm for identification.
+   * @warning Setting directDoCalculus = true is NOT advisable. This will bypass the Backdoor and Frontdoor criteria and use the ID algorithm directly.
+   */
   CausalImpact(const CausalModel<GUM_SCALAR>&            cm,
                const NodeSet&                            on,
                const NodeSet&                            doing,

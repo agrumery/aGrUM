@@ -57,13 +57,13 @@ namespace gum {
 template <typename GUM_SCALAR>
 CausalModel<GUM_SCALAR>::CausalModel(const BayesNet<GUM_SCALAR>& observationalBN,
                                      const LatentDescriptorVector& latentVarsDescriptor,
-                                     bool keepArcs)
+                                     bool assumeNonSpurious)
   : _observationalBN_(observationalBN),
     _causalDAG_(observationalBN.dag()) {
 
   // add each latent (children given as names)
   for (const auto& desc : latentVarsDescriptor) {
-      addLatentVariable(desc.first, desc.second, keepArcs);
+    addLatentVariable(desc.first, desc.second, assumeNonSpurious);
   }
 }
 
@@ -75,19 +75,19 @@ CausalModel<GUM_SCALAR>::CausalModel(const BayesNet<GUM_SCALAR>& observationalBN
 template <typename GUM_SCALAR>
 void CausalModel<GUM_SCALAR>::addLatentVariable(const std::string& latentName,
                                                 const std::vector<std::string>& childrenOfLatent,
-                                                bool keepArcs) {
+                                                bool assumeNonSpurious) {
   std::vector<NodeId> childIds;
   childIds.reserve(childrenOfLatent.size());
   for (const auto& nm : childrenOfLatent) {
     childIds.push_back(idFromName(nm));
   }
-  addLatentVariable(latentName, childIds, keepArcs);
+  addLatentVariable(latentName, childIds, assumeNonSpurious);
 }
 
 template <typename GUM_SCALAR>
 void CausalModel<GUM_SCALAR>::addLatentVariable(const std::string& latentName,
                                                 const std::vector<NodeId>& childrenOfLatent,
-                                                bool keepArcs) {
+                                                bool assumeNonSpurious) {
   // must have at least 2 children
   if (childrenOfLatent.size() < 2) {
     GUM_ERROR(InvalidArgument, "A latent variable must affect at least 2 children.");
@@ -105,8 +105,8 @@ void CausalModel<GUM_SCALAR>::addLatentVariable(const std::string& latentName,
     _causalDAG_.addArc(id_latent, cid);
   }
 
-  // remove any direct causal arc among children unless keepArcs=true
-  if (!keepArcs) {
+  // remove any direct causal arc among children unless assumeNonSpurious=true
+  if (!assumeNonSpurious) {
     for (auto i = childrenOfLatent.begin(); i != childrenOfLatent.end(); ++i) {
       auto j = i; ++j;
       for (auto jj = j; jj != childrenOfLatent.end(); ++jj) {
@@ -154,6 +154,54 @@ Set<std::string> CausalModel<GUM_SCALAR>::latentVariablesNames() const {
       latentNames.insert(it.second());
   }
   return latentNames;
+}
+
+// ===============================
+// Spurious arc management
+// ===============================
+
+template <typename GUM_SCALAR>
+void CausalModel<GUM_SCALAR>::assumeSpurious(NodeId x, NodeId y) {
+  // Validate arc in observationalBN
+  if (!_observationalBN_.dag().existsArc(Arc(x, y))) {
+    GUM_ERROR(InvalidArgument, "Arc(" + std::to_string(x) + "," + std::to_string(y) + ") not present in observationalBN");
+  }
+  // Remove arc from causalDAG if present
+  if (_causalDAG_.existsArc(Arc(x, y))) {
+    _causalDAG_.eraseArc(Arc(x, y));
+  }
+}
+
+template <typename GUM_SCALAR>
+void CausalModel<GUM_SCALAR>::assumeSpurious(const std::string& x, const std::string& y) {
+  assumeSpurious(idFromName(x), idFromName(y));
+}
+
+template <typename GUM_SCALAR>
+void CausalModel<GUM_SCALAR>::assumeNonSpurious(NodeId x, NodeId y) {
+  // Validate arc in observationalBN
+  if (!_observationalBN_.dag().existsArc(Arc(x, y))) {
+    GUM_ERROR(InvalidArgument, "Arc(" + std::to_string(x) + "," + std::to_string(y) + ") not present in observationalBN");
+  }
+  // Add arc to causalDAG if absent
+  if (!_causalDAG_.existsArc(Arc(x, y))) {
+    _causalDAG_.addArc(x, y);
+  }
+}
+
+template <typename GUM_SCALAR>
+void CausalModel<GUM_SCALAR>::assumeNonSpurious(const std::string& x, const std::string& y) {
+  assumeNonSpurious(idFromName(x), idFromName(y));
+}
+
+template <typename GUM_SCALAR>
+bool CausalModel<GUM_SCALAR>::isAssumedSpurious(NodeId x, NodeId y) const {
+  return _observationalBN_.dag().existsArc(Arc(x, y)) && !_causalDAG_.existsArc(Arc(x, y));
+}
+
+template <typename GUM_SCALAR>
+bool CausalModel<GUM_SCALAR>::isAssumedSpurious(const std::string& x, const std::string& y) const {
+  return isAssumedSpurious(idFromName(x), idFromName(y));
 }
 
 // ===============================
@@ -255,8 +303,8 @@ CausalModel<GUM_SCALAR>::inducedCausalSubModel(const CausalModel<GUM_SCALAR>& cm
   }
 
 
-  // keepArcs=true : pyagrum uses True here (do not remove arcs among children)
-  return CausalModel<GUM_SCALAR>(bn, latentDesc, /*keepArcs=*/true);
+  // assumeNonSpurious=true : pyagrum uses True here (do not remove arcs among children)
+  return CausalModel<GUM_SCALAR>(bn, latentDesc, /*assumeNonSpurious=*/true);
 }
 
 

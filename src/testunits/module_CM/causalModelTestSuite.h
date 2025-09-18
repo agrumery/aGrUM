@@ -99,7 +99,7 @@ namespace gum_tests {
       TS_ASSERT(dot.find("\"Genotype\"->\"Smoking\"") != std::string::npos);
       TS_ASSERT(dot.find("\"Genotype\"->\"Cancer\"")  != std::string::npos);
 
-      // Because keepArcs=false by default, the direct Smoking->Cancer must be gone
+      // Because assumeNonSpurious=false by default, the direct Smoking->Cancer must be gone
       TS_ASSERT(dot.find("\"Smoking\"->\"Cancer\"") == std::string::npos);
     }
 
@@ -233,7 +233,7 @@ namespace gum_tests {
       // Add latent U that confounds B and C -> bridges the two components
       {
         std::vector<gum::NodeId> childIds{ bn.idFromName("B"), bn.idFromName("C") };
-        cm.addLatentVariable("U", childIds /*keepArcs default = false*/);
+        cm.addLatentVariable("U", childIds /*assumeNonSpurious default = false*/);
 
         // Parents now reflect the latent
         auto pB = cm.parents("B");
@@ -333,6 +333,46 @@ namespace gum_tests {
 
       TS_ASSERT_THROWS(cm.backDoor(U, Y), const gum::InvalidArgument&);
       TS_ASSERT_THROWS(cm.frontDoor(X, U), const gum::InvalidArgument&);
+    }
+
+      // ...existing tests...
+    GUM_ACTIVE_TEST(SpuriousArcFunctions) {
+      auto bn = gum::BayesNet<double>::fastPrototype("A->B;B->C;A->C");
+      gum::CausalModel<double> cm(bn);
+
+      // Initially, all arcs present in both observationalBN and causalDAG
+      TS_ASSERT(cm.existsArc("A", "B"));
+      TS_ASSERT(cm.existsArc("B", "C"));
+      TS_ASSERT(cm.existsArc("A", "C"));
+
+      // Mark A->B as spurious (by name)
+      cm.assumeSpurious("A", "B");
+      TS_ASSERT(!cm.existsArc("A", "B"));
+      TS_ASSERT(cm.isAssumedSpurious("A", "B"));
+
+      // Mark B->C as spurious (by NodeId)
+      auto idB = bn.idFromName("B");
+      auto idC = bn.idFromName("C");
+      cm.assumeSpurious(idB, idC);
+      TS_ASSERT(!cm.existsArc(idB, idC));
+      TS_ASSERT(cm.isAssumedSpurious(idB, idC));
+
+      // Mark C->A as non-spurious (should be present already)
+      cm.assumeNonSpurious("A", "C");
+      TS_ASSERT(cm.existsArc("A", "C"));
+      TS_ASSERT(!cm.isAssumedSpurious("A", "C"));
+
+      // Remove C->A, then re-add as non-spurious
+      cm.assumeSpurious("A", "C");
+      TS_ASSERT(!cm.existsArc("A", "C"));
+      TS_ASSERT(cm.isAssumedSpurious("A", "C"));
+      cm.assumeNonSpurious("A", "C");
+      TS_ASSERT(cm.existsArc("A", "C"));
+      TS_ASSERT(!cm.isAssumedSpurious("A", "C"));
+
+      // Throws if arc not present in observationalBN
+      TS_ASSERT_THROWS(cm.assumeSpurious("B", "A"), const gum::InvalidArgument&);
+      TS_ASSERT_THROWS(cm.assumeNonSpurious("B", "A"), const gum::InvalidArgument&);
     }
 
   };

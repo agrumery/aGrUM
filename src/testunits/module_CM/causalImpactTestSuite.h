@@ -150,7 +150,7 @@ public:
     gum::LatentDescriptorVector lat;
     lat.emplace_back("U", std::vector<gum::NodeId>{bn.idFromName("X"), bn.idFromName("Y")});
 
-    gum::CausalModel<double> cm(bn, lat, /*keepArcs=*/false);
+  gum::CausalModel<double> cm(bn, lat, /*assumeNonSpurious=*/false);
 
     gum::CausalImpact<double> ci(
       cm, names({"Y"}), names({"X"}), StrSet{},
@@ -202,7 +202,7 @@ public:
   }
 
   // E) Hedge / unidentifiable:
-  // BN: X->Y; U ; latent Z -> {X,Y,U}, keepArcs=true
+  // BN: X->Y; U ; latent Z -> {X,Y,U}, assumeNonSpurious=true
   // Expected: evaluation throws (null AST / hedge)
   GUM_ACTIVE_TEST(test_WHY19_Hedge_Unidentifiable) {
   // Repeat with directDoCalculus: force do-calculus path, should throw as above
@@ -213,7 +213,7 @@ public:
     lat.emplace_back("Z", std::vector<gum::NodeId>{
       bn.idFromName("X"), bn.idFromName("Y"), bn.idFromName("U")});
 
-    gum::CausalModel<double> cm(bn, lat, /*keepArcs=*/true);
+  gum::CausalModel<double> cm(bn, lat, /*assumeNonSpurious=*/true);
 
     gum::CausalImpact<double> ci(
       cm, names({"Y"}), names({"X"}), StrSet{},
@@ -292,7 +292,7 @@ public:
        {"X-Z3", {m.idFromName("x"), m.idFromName("z3")}},
        {"X-Y",  {m.idFromName("x"), m.idFromName("y")}},
        {"Y-Z2", {m.idFromName("y"), m.idFromName("z2")}}},
-      /*keepArcs=*/true);
+        /*assumeNonSpurious=*/true);
 
     TS_ASSERT_THROWS_NOTHING({
       gum::CausalImpact<double> ci(
@@ -413,7 +413,7 @@ public:
                      std::vector<gum::NodeId>{bn.idFromName("Smoking"),
                                               bn.idFromName("Cancer")});
 
-    gum::CausalModel<double> cm(bn, lat, /*keepArcs=*/false);
+    gum::CausalModel<double> cm(bn, lat, /*assumeNonSpurious=*/false);
 
     gum::CausalImpact<double> ci(
       cm, names({"Cancer"}), names({"Smoking"}), StrSet{},
@@ -438,7 +438,7 @@ public:
   }
 
   // M) Tobacco #4: Unidentifiable hedge (latent confounder + direct edge kept)
-  // Graph: Smoking -> Cancer and latent U -> {Smoking, Cancer}, keepArcs=true
+  // Graph: Smoking -> Cancer and latent U -> {Smoking, Cancer}, assumeNonSpurious=true
   // Expected: Identification fails => eval() throws
   GUM_ACTIVE_TEST(test_Tobacco_Unidentifiable_Hedge) {
   // Repeat with directDoCalculus: force do-calculus path, should throw as above
@@ -450,7 +450,7 @@ public:
                      std::vector<gum::NodeId>{bn.idFromName("Smoking"),
                                               bn.idFromName("Cancer")});
 
-    gum::CausalModel<double> cm(bn, lat, /*keepArcs=*/true);
+  gum::CausalModel<double> cm(bn, lat, /*assumeNonSpurious=*/true);
 
     gum::CausalImpact<double> ci(
       cm, names({"Cancer"}), names({"Smoking"}), StrSet{},

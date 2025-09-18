@@ -92,7 +92,7 @@ namespace gum {
    * - `_observationalBN_` corresponds to the observed part (no latents).
    * - `_causalDAG_` contains all observed variables and any added latent variables.
    * - When adding a latent with children, the latent becomes a parent of all listed children
-   *   in the **causal DAG**. The `keepArcs` flag controls whether existing arcs between
+   *   in the **causal DAG**. The `assumeNonSpurious` flag controls whether existing arcs between
    *   those children are preserved or may be adjusted (implementation dependent).
    */
   template <typename GUM_SCALAR>
@@ -125,17 +125,17 @@ namespace gum {
      * @brief Construct a causal model and add a list of latent confounders.
      * @param observationalBN the observed Bayesian network
      * @param latentVarsDescriptor list of (latentName, childrenIds) descriptors
-     * @param keepArcs whether to preserve existing arcs among the latent's children
+     * @param assumeNonSpurious whether to preserve existing arcs among the latent's children
      *
      * Each latent is created and added as a parent of the provided children in the
      * **causal DAG**. The observed BN remains unchanged.
      */
     explicit CausalModel(const BayesNet<GUM_SCALAR>& observationalBN,
                     const LatentDescriptorVector& latentVarsDescriptor,
-                    bool keepArcs = false);
+                    bool assumeNonSpurious = false);
 
     /// Copy constructor
-    CausalModel(const CausalModel& other){ GUM_CONS_CPY(CausalModel)};
+    CausalModel(const CausalModel& other){ GUM_CONS_CPY(CausalModel) };
 
     /// Move constructor
     CausalModel(CausalModel&& other) noexcept { GUM_CONS_MOV(CausalModel) };
@@ -153,45 +153,65 @@ namespace gum {
      * @brief Add a latent variable by **names** of its observed children.
      * @param latentName new latent variable name
      * @param childrenOfLatent names of observed children
-     * @param keepArcs preserve existing arcs among the children if true
+     * @param assumeNonSpurious preserve existing arcs among the children if true
      *
      * A new latent node is inserted into the causal DAG and connected as a parent
      * of each listed child. The observed BN is not modified.
      *
-     * @warning When `keepArcs == false` and the latent has children
+     * @warning When `assumeNonSpurious == false` and the latent has children
      *          \f$\{X_1,\ldots,X_n\}\f$, any existing arcs \f$X_i \rightarrow X_j\f$
      *          **among those children** may be removed from the causal DAG.
      *          To preserve some child→child arcs while dropping others, consider
-     *          creating separate latents: one with `keepArcs = true` for the subset
-     *          to preserve, and another with `keepArcs = false` for the subset to drop.
+     *          creating separate latents: one with `assumeNonSpurious = true` for the subset
+     *          to preserve, and another with `assumeNonSpurious = false` for the subset to drop.
      *          A finer-grained edit API may be added later.
      */
-    void addLatentVariable(const std::string& latentName, const std::vector<std::string>& childrenOfLatent, bool keepArcs = false);
+    void addLatentVariable(const std::string& latentName, const std::vector<std::string>& childrenOfLatent, bool assumeNonSpurious = false);
 
     /**
      * @brief Add a latent variable by **NodeId**s of its observed children.
      * @param latentName new latent variable name
      * @param childrenOfLatent node ids of observed children
-     * @param keepArcs preserve existing arcs among the children if true.
+     * @param assumeNonSpurious preserve existing arcs among the children if true.
      *
      * A new latent node is inserted into the causal DAG and connected as a parent
      * of each listed child. The observed BN is not modified.
      *
-     * @warning When `keepArcs == false` and the latent has children
+     * @warning When `assumeNonSpurious == false` and the latent has children
      *          \f$\{X_1,\ldots,X_n\}\f$, any existing arcs \f$X_i \rightarrow X_j\f$
      *          **among those children** may be removed from the causal DAG.
      *          To preserve some child→child arcs while dropping others, consider
-     *          creating separate latents: one with `keepArcs = true` for the subset
-     *          to preserve, and another with `keepArcs = false` for the subset to drop.
+     *          creating separate latents: one with `assumeNonSpurious = true` for the subset
+     *          to preserve, and another with `assumeNonSpurious = false` for the subset to drop.
      *          A finer-grained edit API may be added later.
      */
-    void addLatentVariable(const std::string& latentName, const std::vector<NodeId>& childrenOfLatent, bool keepArcs = false);
+    void addLatentVariable(const std::string& latentName, const std::vector<NodeId>& childrenOfLatent, bool assumeNonSpurious = false);
 
     /// @brief Whether a causal arc x → y exists (by ids) in the causal DAG.
     bool existsArc(NodeId x, NodeId y) const;
 
     /// @brief Whether a causal arc x → y exists (by names) in the causal DAG.
     bool existsArc(const std::string& x, const std::string& y) const;
+
+    /**
+     * @brief Mark an arc as spurious: present in observationalBN, removed from causalDAG.
+     * Throws if arc is not present in observationalBN.
+     */
+    void assumeSpurious(NodeId x, NodeId y);
+    void assumeSpurious(const std::string& x, const std::string& y);
+
+    /**
+     * @brief Mark an arc as non-spurious: present in observationalBN, added to causalDAG.
+     * Throws if arc is not present in observationalBN.
+     */
+    void assumeNonSpurious(NodeId x, NodeId y);
+    void assumeNonSpurious(const std::string& x, const std::string& y);
+
+    /**
+     * @brief Returns true if arc is present in observationalBN and absent in causalDAG.
+     */
+    bool isAssumedSpurious(NodeId x, NodeId y) const;
+    bool isAssumedSpurious(const std::string& x, const std::string& y) const;
 
     // ======================================================================
     // Door-criteria conveniences
