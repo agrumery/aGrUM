@@ -501,6 +501,22 @@ public:
     });
   }
 
+  // Custom do-operator prefix/suffix test (must be last)
+  GUM_ACTIVE_TEST(test_CustomDoOperatorLatex) {
+    auto bn = gum::BayesNet<double>::fastPrototype("X->Y");
+    bn.generateCPTs();
+    gum::CausalModel<double> cm(bn);
+    gum::CausalImpact<double> ci(
+      cm, names({"Y"}), names({"X"}), StrSet{},
+      gum::HashTable<std::string,std::string>());
+    std::string latex = ci.latexQuery("DO<", ">");
+    TS_ASSERT_DIFFERS(latex.find("DO<"), std::string::npos);
+    TS_ASSERT_DIFFERS(latex.find(">"), std::string::npos);
+    std::string latex2 = ci.toLatex("DO<", ">");
+    TS_ASSERT_DIFFERS(latex2.find("DO<"), std::string::npos);
+    TS_ASSERT_DIFFERS(latex2.find(">"), std::string::npos);
+  }
+
 
 
 

@@ -276,6 +276,20 @@ namespace gum_tests {
         TS_GUM_TENSOR_ALMOST_EQUALS(original.eval(), clone->eval());
     }
 
+    // Custom do-operator prefix/suffix test (must be last)
+    GUM_ACTIVE_TEST(test_CustomDoOperatorLatex) {
+      auto bn = gum::BayesNet<double>::fastPrototype("X->Y");
+      gum::CausalModel<double> cm(bn);
+      auto dummyAST = std::make_unique<gum::ASTjointProba<double>>(NameSet{"Y"});
+      gum::CausalFormula<double> cf(cm, std::move(dummyAST), NameSet{"Y"}, NameSet{"X"});
+      std::string latex = cf.latexQuery("DO<", ">");
+      TS_ASSERT_DIFFERS(latex.find("DO<"), std::string::npos);
+      TS_ASSERT_DIFFERS(latex.find(">"), std::string::npos);
+      std::string latex2 = cf.toLatex("DO<", ">");
+      TS_ASSERT_DIFFERS(latex2.find("DO<"), std::string::npos);
+      TS_ASSERT_DIFFERS(latex2.find(">"), std::string::npos);
+    }
+
   };
 
 } // namespace gum_tests

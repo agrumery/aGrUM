@@ -154,7 +154,7 @@ std::string CausalFormula<GUM_SCALAR>::toString() const {
 }
 
 template <typename GUM_SCALAR>
-std::string CausalFormula<GUM_SCALAR>::toLatex() const {
+std::string CausalFormula<GUM_SCALAR>::toLatex(const std::string& doOperatorPrefix, const std::string& doOperatorSuffix) const {
   // Track variable name occurrences for prime management in AST LaTeX
   HashTable<std::string, int> nameOccur;
 
@@ -170,11 +170,11 @@ std::string CausalFormula<GUM_SCALAR>::toLatex() const {
   addNames(_doing);
   addNames(_knowing);
 
-  return latexQuery() + " = " + _root->toLatex(nameOccur);
+  return latexQuery(doOperatorPrefix, doOperatorSuffix) + " = " + _root->toLatex(nameOccur);
 }
 
 template <typename GUM_SCALAR>
-std::string CausalFormula<GUM_SCALAR>::latexQuery() const {
+std::string CausalFormula<GUM_SCALAR>::latexQuery(const std::string& doOperatorPrefix, const std::string& doOperatorSuffix) const {
   const auto& bn = _cm.observationalBN();
 
   auto namesSorted = [&](const NodeSet& S) {
@@ -201,9 +201,9 @@ std::string CausalFormula<GUM_SCALAR>::latexQuery() const {
     ss << " \\mid ";
 
     if (!doingNames.empty()) {
-      ss << "do(" << doingNames.front();
+      ss << doOperatorPrefix << doingNames.front();
       for (size_t i = 1; i < doingNames.size(); ++i) ss << "," << doingNames[i];
-      ss << ")";
+      ss << doOperatorSuffix;
     }
 
     if (!knowingNames.empty()) {

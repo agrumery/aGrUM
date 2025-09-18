@@ -84,13 +84,13 @@ public:
   std::string toString() const { return result.toString(); }
 
   /// @brief Generates a full LaTeX equation: Query = Formula.
-  std::string toLatex() const { return result.toLatex(); }
+  std::string toLatex(const std::string& doOperatorPrefix = "do(", const std::string& doOperatorSuffix = ")") const { return result.toLatex(doOperatorPrefix, doOperatorSuffix); }
 
   /**
    * @brief Generates a LaTeX representation of the original query, e.g., P(Y | do(X), Z).
    * @note This version does not yet support specific variable values.
    */
-  std::string latexQuery() const { return result.latexQuery(); }
+  std::string latexQuery(const std::string& doOperatorPrefix = "do(", const std::string& doOperatorSuffix = ")") const { return result.latexQuery(doOperatorPrefix, doOperatorSuffix); }
 
   /**
    * @brief Whether the causal effect has been identified.

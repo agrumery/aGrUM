@@ -116,13 +116,13 @@ public:
   std::string toString() const;
 
   /// @brief Generates a full LaTeX equation: Query = Formula.
-  std::string toLatex() const;
+  std::string toLatex(const std::string& doOperatorPrefix = "do(", const std::string& doOperatorSuffix = ")") const;
 
   /**
    * @brief Generates a LaTeX representation of the original query, e.g., P(Y | do(X), Z).
    * @note This version does not yet support specific variable values.
    */
-  std::string latexQuery() const;
+  std::string latexQuery(const std::string& doOperatorPrefix = "do(", const std::string& doOperatorSuffix = ")") const;
 
   /// @brief Creates a deep copy of the CausalFormula (including its AST).
   std::unique_ptr<CausalFormula<GUM_SCALAR>> copy() const;
