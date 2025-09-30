@@ -35,8 +35,10 @@ if ($TARGET -eq "aGrUM") {
 } else {
 
     if ($COMPILER -eq "mingw64") {
+        # Updating compiler path here because I'm annoyed of dealing with paths
+        $env:PATH = "C:\msys64\ucrt64\bin;" + $env:PATH
         python act install release pyAgrum --compiler=mingw64 -d build -j except1 -m quick -t all
-        $files = @("libgcc_s_seh-1", "libgomp-1", "libssp-0", "libstdc++-6", "libwinpthread-1")
+        $files = @("libgcc_s_seh-1", "libgomp-1", "libstdc++-6", "libwinpthread-1")
 
         foreach ($file in $files) {
             Copy-Item -Path "C:\msys64\mingw64\bin\$file.dll" -Destination "$PWD\build\pyagrum\release\wrappers\pyAgrum" -Force
