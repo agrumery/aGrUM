@@ -295,7 +295,7 @@ windows_pyagrum_mingw:
   <<: *windows_build_template
   variables:
     PATH: $PATH_MINGW_GUMWIN
-    CONDA_ENV: "py313"
+    CONDA_ENV: "py313-mingw"
     TARGET: "pyAgrum"
     COMPILER: "mingw64"
   script:

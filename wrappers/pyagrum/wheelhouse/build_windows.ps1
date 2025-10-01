@@ -41,7 +41,7 @@ if ($TARGET -eq "aGrUM") {
         $files = @("libgcc_s_seh-1", "libgomp-1", "libstdc++-6", "libwinpthread-1")
 
         foreach ($file in $files) {
-            Copy-Item -Path "C:\msys64\mingw64\bin\$file.dll" -Destination "$PWD\build\pyagrum\release\wrappers\pyAgrum" -Force
+            Copy-Item -Path "C:\msys64\ucrt64\bin\$file.dll" -Destination "$PWD\build\pyagrum\release\wrappers\pyAgrum" -Force
         }
         python act test release pyAgrum
     } else {
