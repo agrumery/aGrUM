@@ -37,7 +37,9 @@
  *   gitlab   : https://gitlab.com/agrumery/agrum                           *
  *                                                                          *
  ****************************************************************************/
-namespace gum {
+#include <agrum/CM/counterfactual.h>
+
+ namespace gum {
 
 // ============================== CONSTRUCTORS ===============================
 
@@ -279,4 +281,66 @@ Counterfactual<GUM_SCALAR>::_idAssignToNameAssign_(const CausalModel<GUM_SCALAR>
   return out;
 }
 
-} // namespace gum
+
+
+// ============================================================================
+// Standalone helpers (Python-parity)
+// ============================================================================
+
+template <typename GUM_SCALAR>
+Tensor<GUM_SCALAR> counterfactual(const CausalModel<GUM_SCALAR>& cm,
+                                  const NameSet& on,
+                                  const NameSet& whatif,
+                                  const HashTable<std::string, std::string>& profile,
+                                  const HashTable<std::string, std::string>& values) {
+  // Use the class implementation and return the adapted tensor.
+  Counterfactual<GUM_SCALAR> cf(cm, on, whatif, profile, values);
+  return cf.value();
+}
+
+template <typename GUM_SCALAR>
+CausalModel<GUM_SCALAR> counterfactualModel(
+    const CausalModel<GUM_SCALAR>& cm,
+    const HashTable<std::string, std::string>& profile,
+    const NameSet& whatif) {
+  const auto& origBN = cm.observationalBN();
+
+  // Clone model (copy semantics)
+  CausalModel<GUM_SCALAR> twincm(origBN);
+
+  // what-if ids
+  NodeSet whatifIds;
+  for (const auto& w : whatif) whatifIds.insert(cm.idFromName(w));
+
+  // idiosyncratic = parentless \ (whatif ∪ latent)
+  NodeSet idiosyncratic;
+  for (auto nid : origBN.nodes())
+    if (origBN.parents(nid).size() == 0) idiosyncratic.insert(nid);
+  for (auto id : whatifIds) idiosyncratic.erase(id);
+  for (auto id : cm.latentVariablesIds()) idiosyncratic.erase(id);
+
+  // Posteriors in the original BN
+  LazyPropagation<GUM_SCALAR> ie(&origBN);
+  if (!profile.empty()) {
+    for (const auto& kv : profile) {
+      const NodeId nid = cm.idFromName(kv.first);
+      const auto&  var = origBN.variable(nid);
+      const VariableValueId valId = var.index(kv.second);
+      ie.addEvidence(nid, valId);
+    }
+  }
+  ie.makeInference();
+
+  // Update priors in the twin with posteriors
+  auto& twinBN = twincm.observationalBN();
+  for (auto f : idiosyncratic) {
+    const auto& name = origBN.variable(f).name();
+    const NodeId twinId = twinBN.idFromName(name);
+    const Tensor<GUM_SCALAR> post = ie.posterior(f);
+    twinBN.cpt(twinId).fillWith(post);
+  }
+
+  return twincm;
+}
+
+}  // namespace gum

@@ -181,8 +181,73 @@ public:
     gum::NameSet on_set; on_set.insert("salary");
     gum::NameSet whatif_set; whatif_set.insert("education");
 
-  gum::Counterfactual<double> cf(cm, on_set, whatif_set, profile);
+    gum::Counterfactual<double> cf(cm, on_set, whatif_set, profile);
     TS_ASSERT_THROWS_NOTHING({ (void)cf.value(); })
+  }
+
+  // -------------------------------------------------------------------------
+  // Free-function parity with Python API
+  // -------------------------------------------------------------------------
+  GUM_ACTIVE_TEST(test_FreeCounterfactual_FromBIFXML_Names) {
+    auto bn = loadBNFromBIFXML();
+    gum::CausalModel<double> cm(bn);
+
+    gum::HashTable<std::string,std::string> profile;
+    profile.insert("experience","8");
+    profile.insert("education","low");
+    profile.insert("salary","86");
+
+    gum::HashTable<std::string,std::string> values;
+    values.insert("education","medium");
+
+    gum::NameSet on_names; on_names.insert("salary");
+    gum::NameSet whatif;   whatif.insert("education");
+
+    // Free function
+    auto got_free = gum::counterfactual<double>(cm, on_names, whatif, profile, values);
+
+    // Class parity
+    gum::Counterfactual<double> cls(cm, on_names, whatif, profile, values);
+    auto got_cls = cls.value();
+
+    // Numerically identical
+    TS_GUM_TENSOR_ALMOST_EQUALS(got_free, got_cls);
+
+    // Spot check: mass at salary=81 is 1
+    auto I = instFor(got_free, { {"salary","81"} });
+    TS_ASSERT_DELTA(got_free.get(I), 1.0, 1e-12);
+  }
+
+  GUM_ACTIVE_TEST(test_FreeCounterfactualModel_roundtrip) {
+    auto bn = loadBNFromBIFXML();
+    gum::CausalModel<double> cm(bn);
+
+    gum::HashTable<std::string,std::string> profile;
+    profile.insert("experience","8");
+    profile.insert("education","low");
+    profile.insert("salary","86");
+
+    gum::HashTable<std::string,std::string> values;
+    values.insert("education","medium");
+
+    gum::NameSet on_names; on_names.insert("salary");
+    gum::NameSet whatif;   whatif.insert("education");
+
+    // Build twin with the free function
+    auto twincm = gum::counterfactualModel<double>(cm, profile, whatif);
+
+    // Compute effect on the twin with existing causalImpact free fn
+    auto [_, adj, __] = gum::causalImpact<double>(twincm, on_names, whatif, gum::NameSet{}, values);
+
+    // Adapt to the original BN variables (same pattern as class)
+    gum::Tensor<double> adapted;
+    for (const auto& v : adj.variablesSequence())
+      adapted.add(cm.observationalBN().variableFromName(v->name()));
+    adapted.fillWith(adj);
+
+    // Should match the free counterfactual helper
+    auto got_free = gum::counterfactual<double>(cm, on_names, whatif, profile, values);
+    TS_GUM_TENSOR_ALMOST_EQUALS(adapted, got_free);
   }
 };
 

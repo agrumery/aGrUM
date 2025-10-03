@@ -38,9 +38,24 @@
  *                                                                          *
  ****************************************************************************/
 
-
- #include <agrum/CM/counterfactual.h>
+#include <agrum/CM/counterfactual.h>
 
 #ifndef GUM_NO_EXTERN_TEMPLATE_CLASS
-template class gum::Counterfactual< double >;
+namespace gum {
+
+template class Counterfactual< double >;
+
+template Tensor<double>
+counterfactual<double>(const CausalModel<double>&,
+					   const NameSet&,
+					   const NameSet&,
+					   const HashTable<std::string, std::string>&,
+					   const HashTable<std::string, std::string>&);
+
+template CausalModel<double>
+counterfactualModel<double>(const CausalModel<double>&,
+							const HashTable<std::string, std::string>&,
+							const NameSet&);
+
+}  // namespace gum
 #endif

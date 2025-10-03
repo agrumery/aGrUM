@@ -223,10 +223,60 @@ private:
   Tensor<GUM_SCALAR>             _adaptedValue;
 
   std::unique_ptr< CausalImpact<GUM_SCALAR> > _ci;
+
 };
+
+// ============================================================================
+// Standalone helpers (Python-parity)
+// ============================================================================
+
+/**
+ * \brief Compute a counterfactual distribution using the high-level API.
+ *
+ * Mirrors the Python function `counterfactual(cm, profile, on, whatif, values)`.
+ * Internally constructs a Counterfactual<GUM_SCALAR> instance and returns
+ * its evaluated tensor adapted to variables from \p cm.
+ *
+ * @tparam GUM_SCALAR numeric scalar type (e.g., double)
+ * @param cm       Causal model (original, observational world)
+ * @param on       Names of variables of interest (can be a singleton)
+ * @param whatif   Intervention targets (do-variables) by name
+ * @param profile  Optional evidence on original world (name -> label)
+ * @param values   Optional intervention values (name -> label). If empty,
+ *                 the result spans all values of the \p whatif variables.
+ * @return Tensor<GUM_SCALAR> probability distribution over \p on
+ *         (variables are those of \p cm).
+ */
+template <typename GUM_SCALAR>
+Tensor<GUM_SCALAR> counterfactual(
+  const CausalModel<GUM_SCALAR>& cm,
+  const NameSet& on,
+  const NameSet& whatif,
+  const HashTable<std::string, std::string>& profile = HashTable<std::string,std::string>(),
+  const HashTable<std::string, std::string>& values  = HashTable<std::string,std::string>());
+
+/**
+ * \brief Build the twin causal model.
+ *
+ * Mirrors the Python function `counterfactualModel(cm, profile, whatif)`.
+ * It computes posteriors of idiosyncratic nodes in the original BN given
+ * \p profile and replaces their priors in a cloned model.
+ *
+ * @tparam GUM_SCALAR numeric scalar type (e.g., double)
+ * @param cm       Original causal model
+ * @param profile  Optional evidence on the original BN (name -> label)
+ * @param whatif   Intervention targets (do-variables) by name
+ * @return CausalModel<GUM_SCALAR> the twin causal model
+ */
+template <typename GUM_SCALAR>
+CausalModel<GUM_SCALAR> counterfactualModel(
+  const CausalModel<GUM_SCALAR>& cm,
+  const HashTable<std::string, std::string>& profile,
+  const NameSet& whatif);
 
 }  // namespace gum
 
 #include <agrum/CM/counterfactual_tpl.h>
 
 #endif  // GUM_COUNTERFACTUAL_H
+
