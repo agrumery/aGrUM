@@ -75,7 +75,6 @@ CausalImpact<GUM_SCALAR>::CausalImpact(const CausalModel<GUM_SCALAR>& cm,
                                        const NameSet&                 on,
                                        const NameSet&                 doing,
                                        const NameSet&                 knowing,
-                                       const HashTable<VariableName, VariableValueName>&,
                                        bool directDoCalculus)
   : directDoCalculus_{directDoCalculus},
     result(_buildFromNames_(cm, on, doing, knowing, directDoCalculus)) {}
@@ -85,7 +84,6 @@ CausalImpact<GUM_SCALAR>::CausalImpact(const CausalModel<GUM_SCALAR>& cm,
                                        const NodeSet&                 on,
                                        const NodeSet&                 doing,
                                        const NodeSet&                 knowing,
-                                       const HashTable<NodeId, VariableValueId>&,
                                        bool directDoCalculus)
   : directDoCalculus_{directDoCalculus},
     result(_buildFromIds_(cm, on, doing, knowing, directDoCalculus)) {}
@@ -213,7 +211,7 @@ causalImpact(const CausalModel<GUM_SCALAR>& cm,
              const NameSet& knowing,
              const HashTable<VariableName, VariableValueName>& values) {
   // Delegate to the dedicated class.
-  CausalImpact<GUM_SCALAR> ci(cm, on, doing, knowing, values);
+  CausalImpact<GUM_SCALAR> ci(cm, on, doing, knowing);
 
   // Numeric value: empty tensor if not identifiable
   Tensor<GUM_SCALAR> numeric;

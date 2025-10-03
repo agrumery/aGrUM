@@ -92,7 +92,6 @@ public:
         if (!s.empty()) s += ", ";
         s += bn.variable(nid).name();
       }
-      GUM_TRACE(std::string("[TEST] BN vars: ") + s);
     }
     // quick sanity:
     TS_ASSERT_THROWS_NOTHING(bn.idFromName("Us"));
@@ -102,28 +101,23 @@ public:
     TS_ASSERT_THROWS_NOTHING({ (void)bn.size(); })
 
     gum::CausalModel<double> cm(bn);
-    GUM_TRACE("--2-- Constructed CM from BN");
 
     gum::HashTable<std::string,std::string> profile;
     profile.insert("experience","8");
     profile.insert("education","low");
     profile.insert("salary","86");
 
-    GUM_TRACE("--3-- Profile set");
-
     gum::HashTable<std::string,std::string> values;
     values.insert("education","medium");
-
-    GUM_TRACE("--4-- Values set");
 
     auto on_names = gum::Set<std::string>(); on_names.insert("salary");
     auto whatif_names = gum::Set<std::string>(); whatif_names.insert("education");
 
 
-    gum::Counterfactual<double> cf(cm, /*on*/on_names,
-                                      /*whatif*/whatif_names,
-                                      /*profile*/profile,
-                                      /*values*/values);
+  gum::Counterfactual<double> cf(cm, /*on*/on_names,
+                    /*whatif*/whatif_names,
+                    /*profile*/profile,
+                    /*values*/values);
 
     // exercise print() and getResult().toString() (should not throw)
     TS_ASSERT_THROWS_NOTHING({
@@ -164,7 +158,7 @@ public:
     gum::NodeSet onIds;     onIds.insert(idSal);
     gum::NodeSet whatIfIds; whatIfIds.insert(idEdu);
 
-    gum::Counterfactual<double> cf(cm, onIds, whatIfIds, profileIds, valuesIds);
+  gum::Counterfactual<double> cf(cm, onIds, whatIfIds, profileIds, valuesIds);
 
     TS_ASSERT_THROWS_NOTHING({
       std::ostringstream oss; cf.print(oss); (void)cf.getResult().toString();
@@ -187,7 +181,7 @@ public:
     gum::NameSet on_set; on_set.insert("salary");
     gum::NameSet whatif_set; whatif_set.insert("education");
 
-    gum::Counterfactual<double> cf(cm, on_set, whatif_set, profile, values);
+  gum::Counterfactual<double> cf(cm, on_set, whatif_set, profile);
     TS_ASSERT_THROWS_NOTHING({ (void)cf.value(); })
   }
 };

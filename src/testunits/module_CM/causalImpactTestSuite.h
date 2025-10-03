@@ -97,8 +97,7 @@ public:
     gum::CausalModel<double> cm(bn);
 
     gum::CausalImpact<double> ci(
-      cm, names({"Y"}), names({"X"}), names({"Z"}),
-      gum::HashTable<std::string,std::string>());
+      cm, names({"Y"}), names({"X"}), names({"Z"}));
 
     TS_ASSERT_THROWS_NOTHING({
       auto got = ci.eval();
@@ -108,8 +107,7 @@ public:
 
     // Repeat with directDoCalculus: force do-calculus path, should match above
     gum::CausalImpact<double> ci_dc(
-      cm, names({"Y"}), names({"X"}), names({"Z"}),
-      gum::HashTable<std::string,std::string>(), true);
+      cm, names({"Y"}), names({"X"}), names({"Z"}), true);
     TS_ASSERT_THROWS_NOTHING({
       auto got = ci_dc.eval();
       auto exp = bn.cpt("Y");
@@ -128,8 +126,7 @@ public:
     gum::CausalModel<double> cm(bn);
 
     gum::CausalImpact<double> ci(
-      cm, names({"Patient"}), names({"Drug"}), StrSet{},
-      gum::HashTable<std::string,std::string>());
+      cm, names({"Patient"}), names({"Drug"}), StrSet{});
 
     TS_ASSERT_THROWS_NOTHING({
       auto got = ci.eval();
@@ -138,8 +135,7 @@ public:
     });
 
     gum::CausalImpact<double> ci_dc(
-      cm, names({"Patient"}), names({"Drug"}), StrSet{},
-      gum::HashTable<std::string,std::string>(), true);
+      cm, names({"Patient"}), names({"Drug"}), StrSet{}, true);
     TS_ASSERT_THROWS_NOTHING({
       auto got = ci_dc.eval();
       auto exp = (bn.cpt("Patient") * bn.cpt("Gender")).sumOut(vset(bn, {"Gender"}));
@@ -161,8 +157,7 @@ public:
   gum::CausalModel<double> cm(bn, lat, /*assumeNonSpurious=*/false);
 
     gum::CausalImpact<double> ci(
-      cm, names({"Y"}), names({"X"}), StrSet{},
-      gum::HashTable<std::string,std::string>());
+      cm, names({"Y"}), names({"X"}), StrSet{});
 
     TS_ASSERT_THROWS_NOTHING({
       auto got = ci.eval();
@@ -171,8 +166,7 @@ public:
     });
 
     gum::CausalImpact<double> ci_dc(
-      cm, names({"Y"}), names({"X"}), StrSet{},
-      gum::HashTable<std::string,std::string>(), true);
+      cm, names({"Y"}), names({"X"}), StrSet{}, true);
     TS_ASSERT_THROWS_NOTHING({
       auto got = ci_dc.eval();
       auto exp = (bn.cpt("Z") * bn.cpt("Y")).sumOut(vset(bn, {"Z"}));
@@ -189,8 +183,7 @@ public:
     gum::CausalModel<double> cm(bn);
 
     gum::CausalImpact<double> ci(
-      cm, names({"Y"}), names({"X"}), StrSet{},
-      gum::HashTable<std::string,std::string>());
+      cm, names({"Y"}), names({"X"}), StrSet{}, true);
 
     TS_ASSERT_THROWS_NOTHING({
       auto got = ci.eval();
@@ -199,8 +192,7 @@ public:
     });
 
     gum::CausalImpact<double> ci_dc(
-      cm, names({"Y"}), names({"X"}), StrSet{},
-      gum::HashTable<std::string,std::string>(), true);
+      cm, names({"Y"}), names({"X"}), StrSet{}, true);
     TS_ASSERT_THROWS_NOTHING({
       auto got = ci_dc.eval();
       auto exp = bn.cpt("Y");
@@ -224,16 +216,14 @@ public:
   gum::CausalModel<double> cm(bn, lat, /*assumeNonSpurious=*/true);
 
     gum::CausalImpact<double> ci(
-      cm, names({"Y"}), names({"X"}), StrSet{},
-      gum::HashTable<std::string,std::string>());
+      cm, names({"Y"}), names({"X"}), StrSet{});
 
     TS_ASSERT_THROWS_ANYTHING({
       (void)ci.eval();
     });
 
     gum::CausalImpact<double> ci_dc(
-      cm, names({"Y"}), names({"X"}), StrSet{},
-      gum::HashTable<std::string,std::string>(), true);
+      cm, names({"Y"}), names({"X"}), StrSet{}, true);
     TS_ASSERT_THROWS_ANYTHING({
       (void)ci_dc.eval();
     });
@@ -247,25 +237,19 @@ public:
     gum::CausalModel<double> cm(bn);
 
     TS_ASSERT_THROWS_ANYTHING(
-      (gum::CausalImpact<double>(cm, names({"B"}), names({"B"}), StrSet{},
-                                 gum::HashTable<std::string,std::string>())));
+  (gum::CausalImpact<double>(cm, names({"B"}), names({"B"}), StrSet{})));
     TS_ASSERT_THROWS_ANYTHING(
-      (gum::CausalImpact<double>(cm, names({"B"}), names({"A"}), names({"B"}),
-                                 gum::HashTable<std::string,std::string>())));
+  (gum::CausalImpact<double>(cm, names({"B"}), names({"A"}), names({"B"}))));
     TS_ASSERT_THROWS_ANYTHING(
-      (gum::CausalImpact<double>(cm, names({"B"}), names({"A"}), names({"A"}),
-                                 gum::HashTable<std::string,std::string>())));
+  (gum::CausalImpact<double>(cm, names({"B"}), names({"A"}), names({"A"}))));
 
     // Repeat with directDoCalculus
     TS_ASSERT_THROWS_ANYTHING(
-      (gum::CausalImpact<double>(cm, names({"B"}), names({"B"}), StrSet{},
-                                 gum::HashTable<std::string,std::string>(), true)));
+  (gum::CausalImpact<double>(cm, names({"B"}), names({"B"}), StrSet{}, true)));
     TS_ASSERT_THROWS_ANYTHING(
-      (gum::CausalImpact<double>(cm, names({"B"}), names({"A"}), names({"B"}),
-                                 gum::HashTable<std::string,std::string>(), true)));
+  (gum::CausalImpact<double>(cm, names({"B"}), names({"A"}), names({"B"}), true)));
     TS_ASSERT_THROWS_ANYTHING(
-      (gum::CausalImpact<double>(cm, names({"B"}), names({"A"}), names({"A"}),
-                                 gum::HashTable<std::string,std::string>(), true)));
+  (gum::CausalImpact<double>(cm, names({"B"}), names({"A"}), names({"A"}), true)));
   }
 
   // G) Accented variable names are fine
@@ -276,14 +260,12 @@ public:
     gum::CausalModel<double> cm(bn);
 
     gum::CausalImpact<double> ci(
-      cm, names({"hoho"}), names({"héhé"}), StrSet{},
-      gum::HashTable<std::string,std::string>());
+      cm, names({"hoho"}), names({"héhé"}), StrSet{});
 
     TS_ASSERT_THROWS_NOTHING({ (void)ci.eval(); });
 
     gum::CausalImpact<double> ci_dc(
-      cm, names({"hoho"}), names({"héhé"}), StrSet{},
-      gum::HashTable<std::string,std::string>(), true);
+      cm, names({"hoho"}), names({"héhé"}), StrSet{}, true);
     TS_ASSERT_THROWS_NOTHING({ (void)ci_dc.eval(); });
   }
 
@@ -304,13 +286,11 @@ public:
 
     TS_ASSERT_THROWS_NOTHING({
       gum::CausalImpact<double> ci(
-        cm, names({"y","z2","z1","z3"}), names({"x"}), StrSet{},
-        gum::HashTable<std::string,std::string>());
+        cm, names({"y","z2","z1","z3"}), names({"x"}), StrSet{});
     });
     TS_ASSERT_THROWS_NOTHING({
       gum::CausalImpact<double> ci_dc(
-        cm, names({"y","z2","z1","z3"}), names({"x"}), StrSet{},
-        gum::HashTable<std::string,std::string>(), true);
+        cm, names({"y","z2","z1","z3"}), names({"x"}), StrSet{}, true);
     });
   }
   // I) Simpson's paradox: explicit CPTs, check interventional via backdoor
@@ -350,8 +330,7 @@ public:
     gum::CausalModel<double> cm(bn);
 
     gum::CausalImpact<double> ci(
-      cm, names({"Patient"}), names({"Drug"}), StrSet{},
-      gum::HashTable<std::string,std::string>());
+      cm, names({"Patient"}), names({"Drug"}), StrSet{});
 
     auto got = ci.eval();
     auto exp = (bn.cpt(bn.idFromName("Patient")) * bn.cpt(bn.idFromName("Gender")))
@@ -367,8 +346,7 @@ public:
         0.60, 1e-10);
 
     gum::CausalImpact<double> ci_dc(
-      cm, names({"Patient"}), names({"Drug"}), StrSet{},
-      gum::HashTable<std::string,std::string>(), true);
+      cm, names({"Patient"}), names({"Drug"}), StrSet{}, true);
     auto got_dc = ci_dc.eval();
     TS_GUM_TENSOR_ALMOST_EQUALS(got_dc, exp);
     TS_ASSERT_DELTA(
@@ -389,8 +367,7 @@ public:
     gum::CausalModel<double> cm(bn);
 
     gum::CausalImpact<double> ci(
-      cm, names({"Cancer"}), names({"Smoking"}), StrSet{},
-      gum::HashTable<std::string,std::string>());
+      cm, names({"Cancer"}), names({"Smoking"}), StrSet{});
 
     TS_ASSERT_THROWS_NOTHING({
       auto got = ci.eval();
@@ -399,8 +376,7 @@ public:
     });
 
     gum::CausalImpact<double> ci_dc(
-      cm, names({"Cancer"}), names({"Smoking"}), StrSet{},
-      gum::HashTable<std::string,std::string>(), true);
+      cm, names({"Cancer"}), names({"Smoking"}), StrSet{}, true);
     TS_ASSERT_THROWS_NOTHING({
       auto got = ci_dc.eval();
       auto exp = bn.cpt(bn.idFromName("Cancer"));
@@ -424,8 +400,7 @@ public:
     gum::CausalModel<double> cm(bn, lat, /*assumeNonSpurious=*/false);
 
     gum::CausalImpact<double> ci(
-      cm, names({"Cancer"}), names({"Smoking"}), StrSet{},
-      gum::HashTable<std::string,std::string>());
+      cm, names({"Cancer"}), names({"Smoking"}), StrSet{});
 
     TS_ASSERT_THROWS_NOTHING({
       auto got = ci.eval();
@@ -435,8 +410,7 @@ public:
     });
 
     gum::CausalImpact<double> ci_dc(
-      cm, names({"Cancer"}), names({"Smoking"}), StrSet{},
-      gum::HashTable<std::string,std::string>(), true);
+      cm, names({"Cancer"}), names({"Smoking"}), StrSet{}, true);
     TS_ASSERT_THROWS_NOTHING({
       auto got = ci_dc.eval();
       auto exp = (bn.cpt(bn.idFromName("Tar")) * bn.cpt(bn.idFromName("Cancer")))
@@ -461,14 +435,12 @@ public:
   gum::CausalModel<double> cm(bn, lat, /*assumeNonSpurious=*/true);
 
     gum::CausalImpact<double> ci(
-      cm, names({"Cancer"}), names({"Smoking"}), StrSet{},
-      gum::HashTable<std::string,std::string>());
+      cm, names({"Cancer"}), names({"Smoking"}), StrSet{});
 
     TS_ASSERT_THROWS_ANYTHING({ (void)ci.eval(); });
 
     gum::CausalImpact<double> ci_dc(
-      cm, names({"Cancer"}), names({"Smoking"}), StrSet{},
-      gum::HashTable<std::string,std::string>(), true);
+      cm, names({"Cancer"}), names({"Smoking"}), StrSet{}, true);
     TS_ASSERT_THROWS_ANYTHING({ (void)ci_dc.eval(); });
   }
 
@@ -482,8 +454,7 @@ public:
     gum::CausalModel<double> cm(bn);
 
     gum::CausalImpact<double> ci(
-      cm, names({"y"}), names({"x"}), StrSet{},
-      gum::HashTable<std::string,std::string>());
+      cm, names({"y"}), names({"x"}), StrSet{});
 
     TS_ASSERT_THROWS_NOTHING({
       auto got = ci.eval();
@@ -496,8 +467,7 @@ public:
     });
 
     gum::CausalImpact<double> ci_dc(
-      cm, names({"y"}), names({"x"}), StrSet{},
-      gum::HashTable<std::string,std::string>(), true);
+      cm, names({"y"}), names({"x"}), StrSet{}, true);
     TS_ASSERT_THROWS_NOTHING({
       auto got = ci_dc.eval();
       auto p_y_given_z  = bn.cpt(bn.idFromName("y"));
@@ -515,8 +485,7 @@ public:
     bn.generateCPTs();
     gum::CausalModel<double> cm(bn);
     gum::CausalImpact<double> ci(
-      cm, names({"Y"}), names({"X"}), StrSet{},
-      gum::HashTable<std::string,std::string>());
+      cm, names({"Y"}), names({"X"}), StrSet{});
     std::string latex = ci.latexQuery("DO<", ">");
     TS_ASSERT_DIFFERS(latex.find("DO<"), std::string::npos);
     TS_ASSERT_DIFFERS(latex.find(">"), std::string::npos);
@@ -566,7 +535,7 @@ public:
 
 
     // Class (for cross-check)
-    gum::CausalImpact<double> cls(cm, on, doing, know, values);
+    gum::CausalImpact<double> cls(cm, on, doing, know);
     const auto& cls_formula = cls.getResult();
     const auto  cls_tensor  = cls.eval();  // by value (small)
 

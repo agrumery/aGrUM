@@ -153,7 +153,6 @@ public:
    * @param on The set of variable names representing the outcome(s) of interest.
    * @param doing The set of variable names representing the intervention(s) (do-variables).
    * @param knowing The set of variable names representing observed covariates (optional).
-   * @param values A hashtable mapping variable names to their specific values (optional).
    * @param directDoCalculus If true, bypasses Backdoor and Frontdoor and directly uses the ID algorithm for identification.
    * @warning Setting directDoCalculus = true is NOT advisable. This will bypass the Backdoor and Frontdoor criteria and use the ID algorithm directly.
    */
@@ -161,7 +160,6 @@ public:
                const NameSet&                 on,
                const NameSet&                 doing,
                const NameSet&                 knowing = NameSet{},
-               const HashTable<VariableName, VariableValueName>& /*values*/ = HashTable<VariableName, VariableValueName>(),
                bool directDoCalculus = false);
 
   /**
@@ -171,7 +169,6 @@ public:
    * @param on The set of node IDs representing the outcome(s) of interest.
    * @param doing The set of node IDs representing the intervention(s) (do-variables).
    * @param knowing The set of node IDs representing observed covariates (optional).
-   * @param values A hashtable mapping node IDs to their specific values (optional).
    * @param directDoCalculus If true, bypasses Backdoor and Frontdoor and directly uses the ID algorithm for identification.
    * @warning Setting directDoCalculus = true is NOT advisable. This will bypass the Backdoor and Frontdoor criteria and use the ID algorithm directly.
    */
@@ -179,7 +176,6 @@ public:
                const NodeSet&                            on,
                const NodeSet&                            doing,
                const NodeSet&                            knowing = NodeSet{},
-               const HashTable<NodeId, VariableValueId>& /*values*/ = HashTable<NodeId, VariableValueId>(),
                bool directDoCalculus = false);
 
 private:

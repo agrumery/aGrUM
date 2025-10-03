@@ -173,7 +173,7 @@ template <typename GUM_SCALAR>
 void Counterfactual<GUM_SCALAR>::run() {
   // Build symbolic effect on the twin
   _ci = std::make_unique< CausalImpact<GUM_SCALAR> >(
-           _twin, _on, _whatif, NameSet{}, _values);
+           _twin, _on, _whatif, NameSet{});
 
   // Numeric evaluation on the twin
   Tensor<GUM_SCALAR> adj = _ci->eval();
