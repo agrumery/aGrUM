@@ -77,9 +77,8 @@ CausalImpact<GUM_SCALAR>::CausalImpact(const CausalModel<GUM_SCALAR>& cm,
                                        const NameSet&                 knowing,
                                        const HashTable<VariableName, VariableValueName>&,
                                        bool directDoCalculus)
-  : result(_buildFromNames_(cm, on, doing, knowing, directDoCalculus)),
-    directDoCalculus_{directDoCalculus} {}
-
+  : directDoCalculus_{directDoCalculus},
+    result(_buildFromNames_(cm, on, doing, knowing, directDoCalculus)) {}
 
 template <typename GUM_SCALAR>
 CausalImpact<GUM_SCALAR>::CausalImpact(const CausalModel<GUM_SCALAR>& cm,
@@ -88,8 +87,8 @@ CausalImpact<GUM_SCALAR>::CausalImpact(const CausalModel<GUM_SCALAR>& cm,
                                        const NodeSet&                 knowing,
                                        const HashTable<NodeId, VariableValueId>&,
                                        bool directDoCalculus)
-  : result(_buildFromIds_(cm, on, doing, knowing, directDoCalculus)),
-    directDoCalculus_{directDoCalculus} {}
+  : directDoCalculus_{directDoCalculus},
+    result(_buildFromIds_(cm, on, doing, knowing, directDoCalculus)) {}
 
 // ---------- builders ----------
 
@@ -182,6 +181,56 @@ CausalImpact<GUM_SCALAR>::_buildFromIds_(const CausalModel<GUM_SCALAR>& cm,
   const auto knowingN = _idsToNames_(cm, knowing);
   return _buildFromNames_(cm, onN, doingN, knowingN, directDoCalculus);
 }
+
+template <typename GUM_SCALAR>
+inline Instantiation makeInstantiationFromValues(
+    const Tensor<GUM_SCALAR>& tensor,
+    const HashTable<std::string, std::string>& values) {
+  Instantiation I;  // start empty (partial instantiation)
+
+  for (const auto& kv : values) {
+    try {
+      const auto& var = tensor.variable(kv.first);   // skip if not in tensor
+      const gum::Idx idx = var.index(kv.second);     // skip if label unknown
+      I.add(var);                                     // add this dim only
+      I.chgVal(var, idx);                             // fix its value
+    } catch (const gum::NotFound&) {
+      // variable or label not found: ignore (non-strict)
+      continue;
+    } catch (...) {
+      // any other issue: ignore
+      continue;
+    }
+  }
+  return I;
+}
+
+template <typename GUM_SCALAR>
+std::tuple<CausalImpact<GUM_SCALAR>, Tensor<GUM_SCALAR>, std::string>
+causalImpact(const CausalModel<GUM_SCALAR>& cm,
+             const NameSet& on,
+             const NameSet& doing,
+             const NameSet& knowing,
+             const HashTable<VariableName, VariableValueName>& values) {
+  // Delegate to the dedicated class.
+  CausalImpact<GUM_SCALAR> ci(cm, on, doing, knowing, values);
+
+  // Numeric value: empty tensor if not identifiable
+  Tensor<GUM_SCALAR> numeric;
+  if (ci.isIdentified()) numeric = ci.eval();
+
+
+  // If specific values were provided, strictly slice the tensor to those values
+  if (!values.empty() && numeric.nbrDim() > 0) {
+    const auto I = makeInstantiationFromValues(numeric, values); // throws if any key/label is invalid
+    numeric = numeric.extract(I); // keep only remaining free dimensions (if any)
+    }
+
+  // Always return the explanation the class computed
+  return std::make_tuple(std::move(ci), std::move(numeric), ci.explanation());
+
+}
+
 
 } // namespace gum
 

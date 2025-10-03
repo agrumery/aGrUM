@@ -80,46 +80,47 @@ Counterfactual<GUM_SCALAR>::counterFactualModel(const CausalModel<GUM_SCALAR>& c
                                                 const HashTable<VarName, ValName>& profile,
                                                 const NameSet& whatif) {
   const auto& origBN = cm.observationalBN();
+  CausalModel<GUM_SCALAR> twincm(origBN);  // copy (serves as clone)
 
   // 1) idiosyncratic = parentless \ (whatif ∪ latent)
   NodeSet whatifIds;
-  for (const auto& w : whatif) whatifIds.insert(cm.idFromName(w));
-
+  for (const auto& w : whatif) {
+    whatifIds.insert(cm.idFromName(w));
+  }
   NodeSet idiosyncratic;
   for (auto nid : origBN.nodes()) {
-    if (origBN.parents(nid).size() == 0) idiosyncratic.insert(nid);
+    if (origBN.parents(nid).size() == 0) {
+      idiosyncratic.insert(nid);
+    }
   }
-  for (auto id : whatifIds)               idiosyncratic.erase(id);
-  for (auto id : cm.latentVariablesIds()) idiosyncratic.erase(id);
+  for (auto id : whatifIds) {
+    idiosyncratic.erase(id);
+  }
+  for (auto id : cm.latentVariablesIds()) {
+    idiosyncratic.erase(id);
+  }
 
   // 2) posterior(idiosyncratic | profile) in ORIGINAL BN
-  CausalModel<GUM_SCALAR> twincm(cm);  // copy (serves as clone)
-  {
-    gum::LazyPropagation<GUM_SCALAR> ie(&origBN); // pointer API
-
-    if (!profile.empty()) {
-      for (const auto& kv : profile) {
-        const auto& varName = kv.first;
-        const auto& valName = kv.second;
-
-        const NodeId nid   = cm.idFromName(varName);
-        const auto&  var   = origBN.variable(nid);       // by id, REFERENCE
-        const VariableValueId valId = var.index(valName);
-
-        ie.addEvidence(nid, valId);
-      }
-    }
-
-    ie.makeInference();
-
-    // 3) Replace priors in the twin with posteriors from the original
-    auto& twinBN = twincm.observationalBN();
-    for (auto f : idiosyncratic) {
-      const Tensor<GUM_SCALAR> post = ie.posterior(f); // tensor over single var f
-      twinBN.cpt(f).fillWith(post);
+  gum::LazyPropagation<GUM_SCALAR> ie(&origBN);
+  if (!profile.empty()) {
+    for (const auto& kv : profile) {
+      const auto& varName = kv.first;
+      const auto& valName = kv.second;
+      const NodeId nid   = cm.idFromName(varName);
+      const auto&  var   = origBN.variable(nid);
+      const VariableValueId valId = var.index(valName);
+      ie.addEvidence(nid, valId);
     }
   }
-
+  ie.makeInference();
+  // 3) Replace priors in the twin with posteriors from the original
+  auto& twinBN = twincm.observationalBN();
+  for (auto f : idiosyncratic) {
+    const auto& name = origBN.variable(f).name();
+    auto twinId = twinBN.idFromName(name);
+    const Tensor<GUM_SCALAR> post = ie.posterior(f);
+    twinBN.cpt(twinId).fillWith(post);
+  }
   return twincm;
 }
 
@@ -129,20 +130,24 @@ Counterfactual<GUM_SCALAR>::counterFactualModel(const CausalModel<GUM_SCALAR>& c
                                                 const HashTable<NodeId, VariableValueId>& profileIds,
                                                 const NodeSet& whatifIds) {
   const auto& origBN = cm.observationalBN();
-
   // 1) idiosyncratic = parentless \ (whatif ∪ latent)
   NodeSet idiosyncratic;
   for (auto nid : origBN.nodes()) {
-    if (origBN.parents(nid).size() == 0) idiosyncratic.insert(nid);
+    if (origBN.parents(nid).size() == 0) {
+      idiosyncratic.insert(nid);
+    }
   }
-  for (auto id : whatifIds)               idiosyncratic.erase(id);
-  for (auto id : cm.latentVariablesIds()) idiosyncratic.erase(id);
+  for (auto id : whatifIds) {
+    idiosyncratic.erase(id);
+  }
+  for (auto id : cm.latentVariablesIds()) {
+    idiosyncratic.erase(id);
+  }
 
   // 2) posterior(idiosyncratic | profile) in ORIGINAL BN
-  CausalModel<GUM_SCALAR> twincm(cm);
+  CausalModel<GUM_SCALAR> twincm(origBN);
   {
     gum::LazyPropagation<GUM_SCALAR> ie(&origBN);
-
     if (!profileIds.empty()) {
       for (const auto& kv : profileIds) {
         const NodeId nid            = kv.first;
@@ -150,16 +155,15 @@ Counterfactual<GUM_SCALAR>::counterFactualModel(const CausalModel<GUM_SCALAR>& c
         ie.addEvidence(nid, valId);
       }
     }
-
     ie.makeInference();
-
     auto& twinBN = twincm.observationalBN();
     for (auto f : idiosyncratic) {
+      const auto& name = origBN.variable(f).name();
+      const NodeId twinId = twinBN.idFromName(name);
       const Tensor<GUM_SCALAR> post = ie.posterior(f);
-      twinBN.cpt(f).fillWith(post);
+      twinBN.cpt(twinId).fillWith(post);
     }
   }
-
   return twincm;
 }
 
@@ -167,16 +171,23 @@ Counterfactual<GUM_SCALAR>::counterFactualModel(const CausalModel<GUM_SCALAR>& c
 
 template <typename GUM_SCALAR>
 void Counterfactual<GUM_SCALAR>::run() {
-  // (cm, on, doing, knowing=NameSet{}, values=HashTable, directDoCalculus=false)
+  // Build symbolic effect on the twin
   _ci = std::make_unique< CausalImpact<GUM_SCALAR> >(
            _twin, _on, _whatif, NameSet{}, _values);
 
-  // Numeric evaluation on the TWIN vars
-  const Tensor<GUM_SCALAR> adj = _ci->eval();
+  // Numeric evaluation on the twin
+  Tensor<GUM_SCALAR> adj = _ci->eval();
+
+  // Slice by specified intervention values (partial instantiation, safe if some names are absent)
+  if (!_values.empty() && adj.nbrDim() > 0) {
+    auto I = makeInstantiationFromValues(adj, _values); // keeps only vars present in `adj`
+    if (I.nbrDim() > 0) adj = adj.extract(I);
+  }
 
   // Adapt tensor to ORIGINAL model variables
   _adaptedValue = _adaptToOriginalVariables_(adj, _cm);
 }
+
 
 // =============================== ADAPTATION ================================
 

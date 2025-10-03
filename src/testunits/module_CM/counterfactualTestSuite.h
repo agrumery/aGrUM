@@ -37,21 +37,23 @@
  *   gitlab   : https://gitlab.com/agrumery/agrum                           *
  *                                                                          *
  ****************************************************************************/
+
+#include <fstream>
+#include <iostream>
+#include <string>
+#include <sstream>
+#include <vector>
+#include <cmath>
+
 #include <gumtest/AgrumTestSuite.h>
 #include <gumtest/utils.h>
 
-#include <string>
-#include <vector>
-#include <sstream>
-#include <cmath>
-
 #include <agrum/agrum.h>
+#include <agrum/base/multidim/tensor.h>
 #include <agrum/BN/BayesNet.h>
+#include <agrum/BN/io/BIFXML/BIFXMLBNReader.h>
 #include <agrum/CM/causalModel.h>
 #include <agrum/CM/counterfactual.h>
-#include <agrum/CM/causalImpact.h>
-#include <agrum/CM/tools/causalFormula.h>
-#include <agrum/base/multidim/tensor.h>
 
 namespace gum_tests {
 
@@ -65,151 +67,84 @@ class CounterfactualTestSuite : public CxxTest::TestSuite {
   // Build an Instantiation slaved to tensor `t`, and set values by name/label.
   static gum::Instantiation instFor(const gum::Tensor<double>& t,
                                     std::initializer_list<std::pair<const char*, const char*>> assigns) {
-    gum::Instantiation I(const_cast<gum::Tensor<double>&>(t)); // ok: ctor takes (MultiDimAdressable&)
+    gum::Instantiation I(const_cast<gum::Tensor<double>&>(t)); // ctor takes (MultiDimAdressable&)
     for (const auto& p : assigns) I.chgVal(std::string(p.first), std::string(p.second));
     return I;
   }
 
-  // Deterministic CPT filler: set P(child = targetLabel(parents) | parents) = 1
-  template <class TargetFn>
-  static void fillDetCPT(gum::BayesNet<double>& bn,
-                         const std::string& childName,
-                         const std::vector<std::string>& parentNames,
-                         TargetFn targetLabel) {
-    auto& cpt = bn.cpt(bn.idFromName(childName));
-    const auto& child = bn.variableFromName(childName);
-
-    gum::Instantiation i(cpt); // over child + parents in CPT order
-    for (i.setFirst(); !i.end(); i.inc()) {
-      // parent labels from current instantiation line
-      std::vector<std::string> parLabels;
-      parLabels.reserve(parentNames.size());
-      for (const auto& pname : parentNames) {
-        const auto& pv = i.variable(pname);
-        parLabels.emplace_back(pv.label(i.val(pv)));
-      }
-
-      // compute the unique child label for this parent config
-      const std::string wanted_label = targetLabel(parLabels);
-
-      // one-hot the whole line
-      for (gum::Idx childId = 0; childId < child.domainSize(); ++childId) {
-        i.chgVal(child, childId);
-        cpt.set(i, 0.0);
-      }
-      const gum::Idx wanted = child.index(wanted_label);
-      i.chgVal(child, wanted);
-      cpt.set(i, 1.0);
-    }
+  // Load BN from resources/bifxml/edex.bifxml, returning by value (no unique_ptr).
+  static gum::BayesNet<double> loadBNFromBIFXML() {
+    std::string file = GET_RESSOURCES_PATH("bifxml/edex.bifxml");
+    gum::BayesNet<double> net;
+    gum::BIFXMLBNReader<double> reader(&net, file);
+    TS_GUM_ASSERT_THROWS_NOTHING(reader.proceed())
+    return net; // NRVO / move
   }
 
 public:
-  // Reproduces the Python test you gave (names-based API).
-  GUM_INACTIVE_TEST(test_Counterfactual_ReproducePython_Names) {
-    // DAG via fastPrototype
-    auto bn = gum::BayesNet<double>::fastPrototype(
-      "Ux[-2,10]->experience[0,20]<-education{low|medium|high}->salary[65,150]<-Us[0,25];experience->salary"
-    );
+  // Reproduces the Python test (names-based API) using the BIFXML file.
+  GUM_ACTIVE_TEST(test_Counterfactual_FromBIFXML_Names) {
+    auto bn = loadBNFromBIFXML();
+    // --- BEGIN TRACE BLOCK ---
+    {
+      std::string s;
+      for (auto nid : bn.nodes()) {
+        if (!s.empty()) s += ", ";
+        s += bn.variable(nid).name();
+      }
+      GUM_TRACE(std::string("[TEST] BN vars: ") + s);
+    }
+    // quick sanity:
+    TS_ASSERT_THROWS_NOTHING(bn.idFromName("Us"));
+    // --- END TRACE BLOCK ---
 
-    // Priors
-    bn.cpt("Us").fillWith(1).normalize();
-    bn.cpt("Ux").fillWith(1).normalize();
-    bn.cpt("education").fillWith({0.4, 0.4, 0.2}); // low, medium, high
-
-    // experience = 10 - 4*education + Ux (clamp [0,20])
-    fillDetCPT(bn, "experience", {"education","Ux"},
-      [&](const std::vector<std::string>& pars)->std::string {
-        const std::string& eduLabel = pars[0];
-        const std::string& uxLabel  = pars[1];
-        int edu = (eduLabel=="low")?0: (eduLabel=="medium")?1:2;
-        int ux  = std::stoi(uxLabel);
-        int val = 10 - 4*edu + ux;
-        if (val < 0) val = 0; if (val > 20) val = 20;
-        return std::to_string(val);
-      });
-
-    // salary = round(65 + 2.5*experience + 5*education + Us) (clamp [65,150])
-    fillDetCPT(bn, "salary", {"education","experience","Us"},
-      [&](const std::vector<std::string>& pars)->std::string {
-        const std::string& eduLabel = pars[0];
-        const std::string& exLabel  = pars[1];
-        const std::string& usLabel  = pars[2];
-        int edu = (eduLabel=="low")?0: (eduLabel=="medium")?1:2;
-        int ex  = std::stoi(exLabel);
-        int us  = std::stoi(usLabel);
-        double s = 65.0 + 2.5*ex + 5.0*edu + us;
-        int sval = static_cast<int>(std::llround(s));
-        if (sval < 65) sval = 65; if (sval > 150) sval = 150;
-        return std::to_string(sval);
-      });
+    // quick sanity: CPTs exist & normalize shouldn't throw if called
+    TS_ASSERT_THROWS_NOTHING({ (void)bn.size(); })
 
     gum::CausalModel<double> cm(bn);
+    GUM_TRACE("--2-- Constructed CM from BN");
 
     gum::HashTable<std::string,std::string> profile;
     profile.insert("experience","8");
     profile.insert("education","low");
     profile.insert("salary","86");
 
+    GUM_TRACE("--3-- Profile set");
+
     gum::HashTable<std::string,std::string> values;
     values.insert("education","medium");
 
-    gum::Counterfactual<double> cf(cm, /*on*/names({"salary"}),
-                                      /*whatif*/names({"education"}),
+    GUM_TRACE("--4-- Values set");
+
+    auto on_names = gum::Set<std::string>(); on_names.insert("salary");
+    auto whatif_names = gum::Set<std::string>(); whatif_names.insert("education");
+
+
+    gum::Counterfactual<double> cf(cm, /*on*/on_names,
+                                      /*whatif*/whatif_names,
                                       /*profile*/profile,
                                       /*values*/values);
 
     // exercise print() and getResult().toString() (should not throw)
     TS_ASSERT_THROWS_NOTHING({
-      std::ostringstream oss;
-      cf.print(oss);
-      (void)cf.getResult().toString();
-    });
+      std::ostringstream oss; cf.print(oss); (void)cf.getResult().toString();
+    })
 
-    // Evaluate & assert: mass 1 at salary=81
     const auto& got = cf.value();
     auto I = instFor(got, { {"salary","81"} });
-    double p81 = got.get(I);
-    TS_ASSERT_DELTA(p81, 1.0, 1e-12);
+    TS_ASSERT_DELTA(got.get(I), 1.0, 1e-12);
 
-    // a couple of neighbors should be ~0
     auto I0 = instFor(got, { {"salary","80"} });
     TS_ASSERT_LESS_THAN(std::abs(got.get(I0)), 1e-12);
     auto I2 = instFor(got, { {"salary","82"} });
     TS_ASSERT_LESS_THAN(std::abs(got.get(I2)), 1e-12);
   }
 
-  // Same scenario, but using the NodeSet / ID-based overloads
-  GUM_INACTIVE_TEST(test_Counterfactual_ID_Overload) {
-    auto bn = gum::BayesNet<double>::fastPrototype(
-      "Ux[-2,10]->experience[0,20]<-education{low|medium|high}->salary[65,150]<-Us[0,25];experience->salary"
-    );
-
-    bn.cpt("Us").fillWith(1).normalize();
-    bn.cpt("Ux").fillWith(1).normalize();
-    bn.cpt("education").fillWith({0.4, 0.4, 0.2});
-
-    fillDetCPT(bn, "experience", {"education","Ux"},
-      [&](const std::vector<std::string>& pars)->std::string {
-        int edu = (pars[0]=="low")?0: (pars[0]=="medium")?1:2;
-        int ux  = std::stoi(pars[1]);
-        int val = 10 - 4*edu + ux;
-        if (val < 0) val = 0; if (val > 20) val = 20;
-        return std::to_string(val);
-      });
-
-    fillDetCPT(bn, "salary", {"education","experience","Us"},
-      [&](const std::vector<std::string>& pars)->std::string {
-        int edu = (pars[0]=="low")?0: (pars[0]=="medium")?1:2;
-        int ex  = std::stoi(pars[1]);
-        int us  = std::stoi(pars[2]);
-        int sval = static_cast<int>(std::llround(65.0 + 2.5*ex + 5.0*edu + us));
-        if (sval < 65) sval = 65; if (sval > 150) sval = 150;
-        return std::to_string(sval);
-      });
-
+  // Same scenario, using the NodeSet / ID-based overloads, from the same BIFXML.
+  GUM_ACTIVE_TEST(test_Counterfactual_FromBIFXML_IDs) {
+    auto bn = loadBNFromBIFXML();
     gum::CausalModel<double> cm(bn);
 
-    // IDs & value IDs
     gum::NodeId idEdu = bn.idFromName("education");
     gum::NodeId idExp = bn.idFromName("experience");
     gum::NodeId idSal = bn.idFromName("salary");
@@ -231,36 +166,29 @@ public:
 
     gum::Counterfactual<double> cf(cm, onIds, whatIfIds, profileIds, valuesIds);
 
-    // print & result access should not throw
     TS_ASSERT_THROWS_NOTHING({
-      std::ostringstream oss;
-      cf.print(oss);
-      (void)cf.getResult().toString();
-    });
+      std::ostringstream oss; cf.print(oss); (void)cf.getResult().toString();
+    })
 
     const auto& got = cf.value();
     auto I = instFor(got, { {"salary","81"} });
     TS_ASSERT_DELTA(got.get(I), 1.0, 1e-12);
   }
 
-  // Light smoke: empty profile & simple BN; ensures ctor+eval do not throw.
-  GUM_INACTIVE_TEST(test_Counterfactual_Smoke_NoProfile) {
-    auto bn = gum::BayesNet<double>::fastPrototype("X{a|b}->Y{u|v}");
-    bn.generateCPTs();
+  // Light smoke: ensures ctor+eval do not throw on empty profile using same file.
+  GUM_ACTIVE_TEST(test_Counterfactual_FromBIFXML_Smoke_NoProfile) {
+    auto bn = loadBNFromBIFXML();
     gum::CausalModel<double> cm(bn);
 
     gum::HashTable<std::string,std::string> profile; // empty
     gum::HashTable<std::string,std::string> values;  // do(X=a)
-    values.insert("X","a");
+    values.insert("education","low");
 
-    auto Y_set = gum::NameSet();
-    Y_set.insert("Y");
+    gum::NameSet on_set; on_set.insert("salary");
+    gum::NameSet whatif_set; whatif_set.insert("education");
 
-    auto X_set = gum::NameSet();
-    X_set.insert("X");
-
-    gum::Counterfactual<double> cf(cm, Y_set, X_set, profile, values);
-
+    gum::Counterfactual<double> cf(cm, on_set, whatif_set, profile, values);
+    TS_ASSERT_THROWS_NOTHING({ (void)cf.value(); })
   }
 };
 

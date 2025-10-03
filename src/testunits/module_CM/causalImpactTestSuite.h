@@ -67,6 +67,14 @@ class CausalImpactTestSuite : public CxxTest::TestSuite {
     return vs;
   }
 
+  // Instantiation slaved to a tensor; set values by name/label.
+  static gum::Instantiation instFor(const gum::Tensor<double>& t,
+                                    std::initializer_list<std::pair<const char*, const char*>> assigns) {
+    gum::Instantiation I(const_cast<gum::Tensor<double>&>(t)); // register as slave (non-const API)
+    for (const auto& kv : assigns) I.chgVal(std::string(kv.first), std::string(kv.second));
+    return I;
+  }
+
   // Build an Instantiation slaved to tensor `t`, and set values using var-name/label pairs.
   // Example use:
   //   auto inst = _inst(got, { {"Patient","Healed"}, {"Drug","With"} });
@@ -518,6 +526,110 @@ public:
   }
 
 
+// ---------------------------------------------------------------------------
+  // Test 1: Compare free function vs class on a deterministic chain X->Y (Y=X)
+  // do(X=a) => P(Y=a)=1 and the whole tensor equals the class' evaluation.
+  // ---------------------------------------------------------------------------
+  GUM_ACTIVE_TEST(test_causalImpact_FreeFn_matches_Class_on_deterministic_chain) {
+    // BN: X{a|b} -> Y{a|b}
+    auto bn = gum::BayesNet<double>::fastPrototype("X{a|b}->Y{a|b}");
+    bn.cpt("X").fillWith({0.5, 0.5}); // prior on X
+
+    // Make Y deterministically copy X (no helper; direct CPT fill)
+    {
+      auto& cptY     = bn.cpt(bn.idFromName("Y"));
+      const auto& Y  = bn.variableFromName("Y");
+      const auto& X  = bn.variableFromName("X");
+      gum::Instantiation i(cptY); // over (Y,X) in CPT order
+      for (i.setFirst(); !i.end(); i.inc()) {
+        // Current parent assignment:
+        const gum::Idx x = i.val(X);
+        // One-hot Y on the same index as X
+        for (gum::Idx y = 0; y < Y.domainSize(); ++y) {
+          i.chgVal(Y, y);
+          cptY.set(i, (y == x) ? 1.0 : 0.0);
+        }
+      }
+    }
+
+    gum::CausalModel<double> cm(bn);
+
+    // do(X=a)
+    gum::HashTable<std::string,std::string> values; values.insert("X","a");
+    // values.insert("Y","a");  // FIXME if a complete instance is given, it would throw.
+    const gum::NameSet on     = names({"Y"});
+    const gum::NameSet doing  = names({"X"});
+    const gum::NameSet know;  // empty
+
+    // Free function
+    auto [ff_formula, ff_tensor, ff_expl] = gum::causalImpact<double>(cm, on, doing, know, values);
+
+
+    // Class (for cross-check)
+    gum::CausalImpact<double> cls(cm, on, doing, know, values);
+    const auto& cls_formula = cls.getResult();
+    const auto  cls_tensor  = cls.eval();  // by value (small)
+
+
+
+    // Both should be identifiable -> non-empty tensors
+    TS_ASSERT_DIFFERS(ff_tensor.nbrDim(), gum::Idx(0));
+    TS_ASSERT_DIFFERS(cls_tensor.nbrDim(), gum::Idx(0));
+
+    // creatng partial cls_tensor
+    gum::Instantiation J;                    // start empty → partial instantiation
+    const auto& Xv = cls_tensor.variable("X");
+    const auto  xa = Xv.index("a");          // label -> index
+    J.add(Xv);                               // add just X
+    J.chgVal(Xv, xa);                        // set X = "a"
+    // auto cls_tensor_partial = cls_tensor.extract(J);      // slice → dims now match free-fn result
+
+
+    // The numeric results should match
+    TS_GUM_TENSOR_ALMOST_EQUALS(ff_tensor, cls_tensor.extract(J));
+
+    // Spot check: P(Y=a | do X=a) = 1; P(Y=b | do X=a) = 0
+    {
+      auto Ia = instFor(ff_tensor, { {"Y","a"} });
+      auto Ib = instFor(ff_tensor, { {"Y","b"} });
+      TS_ASSERT_DELTA(ff_tensor.get(Ia), 1.0, 1e-12);
+      TS_ASSERT_LESS_THAN(std::abs(ff_tensor.get(Ib)), 1e-12);
+    }
+
+    // Exercise explanation and result printing (should not throw and not be empty)
+    TS_ASSERT(!ff_expl.empty());
+    TS_ASSERT(!ff_formula.toString().empty());
+    TS_ASSERT(!cls_formula.toString().empty());
+  }
+
+  // ---------------------------------------------------------------------------
+  // Test 2: No causal effect — independent roots X and Y.
+  // do(X) must not change P(Y).
+  // ---------------------------------------------------------------------------
+  GUM_ACTIVE_TEST(test_causalImpact_FreeFn_no_effect_independent_roots) {
+    // BN: X{a|b}; Y{u|v} (no edges)
+    auto bn = gum::BayesNet<double>::fastPrototype("X{a|b};Y{u|v}");
+    bn.cpt("X").fillWith({0.3, 0.7});
+    bn.cpt("Y").fillWith({0.2, 0.8});
+
+    gum::CausalModel<double> cm(bn);
+
+    gum::HashTable<std::string,std::string> values; values.insert("X","a");
+    const gum::NameSet on    = names({"Y"});
+    const gum::NameSet doing = names({"X"});
+    const gum::NameSet know; // empty
+
+    auto [formula, tensor, expl] = gum::causalImpact<double>(cm, on, doing, know, values);
+
+    // Identified => tensor not empty
+    TS_ASSERT_DIFFERS(tensor.nbrDim(), gum::Idx(0));
+
+    // P(Y=u)=0.2, P(Y=v)=0.8 unchanged by do(X=a)
+    auto Iu = instFor(tensor, { {"Y","u"} });
+    auto Iv = instFor(tensor, { {"Y","v"} });
+    TS_ASSERT_DELTA(tensor.get(Iu), 0.2, 1e-12);
+    TS_ASSERT_DELTA(tensor.get(Iv), 0.8, 1e-12);
+  }
 
 
 

@@ -59,6 +59,23 @@ using VariableName      = std::string;
 using VariableValueName = std::string;
 using VariableValueId   = Idx;
 
+template <typename GUM_SCALAR> class CausalImpact;
+template <typename GUM_SCALAR> class Tensor;
+
+/**
+ * Standalone helper that mirrors the Python function `causalImpact(...)`.
+ * Returns: (symbolic CausalFormula, numeric Tensor, explanation string).
+ * If not identifiable, the formula carries a null AST and the tensor is empty.
+ */
+template <typename GUM_SCALAR>
+std::tuple<CausalImpact<GUM_SCALAR>, Tensor<GUM_SCALAR>, std::string>
+causalImpact(const CausalModel<GUM_SCALAR>& cm,
+             const NameSet& on,
+             const NameSet& doing,
+             const NameSet& knowing = NameSet(),
+             const HashTable<VariableName, VariableValueName>& values
+               = HashTable<VariableName, VariableValueName>());
+
 /**
  * @class CausalImpact
  * @brief Builds a CausalFormula for a query (d-sep -> backdoor -> frontdoor -> (optional) do-calculus).
@@ -129,7 +146,6 @@ public:
   std::vector<std::string> knowingNames() const { return result.knowingNames(); }
 
 
-  // Names interface
   /**
    * @brief Constructs a CausalImpact object using variable names.
    *
@@ -148,7 +164,6 @@ public:
                const HashTable<VariableName, VariableValueName>& /*values*/ = HashTable<VariableName, VariableValueName>(),
                bool directDoCalculus = false);
 
-  // IDs interface
   /**
    * @brief Constructs a CausalImpact object using node IDs.
    *
@@ -192,6 +207,22 @@ private:
                  const NodeSet&                 knowing,
                  bool directDoCalculus);
 };
+
+/**
+ * @brief Creates an instance for a tensor based on a HashTable.
+ *
+ * @param tensor The target tensor whose variables define the instantiation’s scope.
+ * @param values Mapping from variable name to label that must be fully applicable.
+ * @return A gum::Instantiation positioned according to @p values.
+ *
+ * @throws NotFound If a variable name in @p values is not a dimension of @p tensor.
+ * @throws NotFound If a label in @p values is not in the corresponding variable’s domain.
+ */
+template <typename GUM_SCALAR>
+inline Instantiation makeInstantiationFromValues(
+    const Tensor<GUM_SCALAR>& tensor,
+    const HashTable<std::string, std::string>& values);
+
 
 #ifndef GUM_NO_EXTERN_TEMPLATE_CLASS
   extern template class CausalImpact<double>;

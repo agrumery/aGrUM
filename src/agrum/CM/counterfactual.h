@@ -126,6 +126,6 @@ private:
 
 }  // namespace gum
 
-#include "counterfactual_tpl.h"
+#include <agrum/CM/counterfactual_tpl.h>
 
 #endif  // GUM_COUNTERFACTUAL_H
