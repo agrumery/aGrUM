@@ -46,6 +46,7 @@
 
 #include <agrum/CM/causalImpact.h>
 
+
 namespace gum {
 
 using NameSet           = Set<std::string>;
@@ -53,6 +54,56 @@ using VariableName      = std::string;
 using VariableValueName = std::string;
 using VariableValueId   = Idx;
 
+/**
+ * @class Counterfactual
+ * @brief Computes a counterfactual distribution by building a twin model, then
+ *        evaluating a causal effect on that twin and adapting the result back
+ *        to the original model’s variables.
+ *
+ * High-level workflow:
+ *  1. Build the **twin** causal model with ::counterFactualModel:
+ *     - Start from the observational BN.
+ *     - Identify *idiosyncratic* variables (parentless nodes) and remove any
+ *       that are in `whatif` or latent.
+ *     - Run inference on the original BN with the optional `profile` evidence
+ *       and replace the priors of idiosyncratic variables in the twin by their
+ *       posteriors from the original BN.
+ *  2. On the twin model, construct a `CausalImpact` for the query
+ *     P(on | do(whatif), …) and **evaluate** it numerically.
+ *  3. If `values` is provided, **slice** the numeric tensor using only the
+ *     assignments present in the result (safe partial instantiation).
+ *  4. **Adapt** the evaluated tensor back to the original model by rebuilding a
+ *     tensor with the same variable names (and order) as produced by the twin
+ *     evaluation, but bound to the original BN’s variables.
+ *
+ * Constructors:
+ *  - Names API:
+ *      Counterfactual(cm, on, whatif, profile, values)
+ *    where `on` and `whatif` are sets of variable names; `profile` and `values`
+ *    are name→label assignments. `profile` is used as observational evidence
+ *    when computing posteriors for the idiosyncratic roots; `values` gives the
+ *    specific do-assignments when evaluating the effect and for optional
+ *    numeric slicing.
+ *  - IDs API:
+ *      Counterfactual(cm, onIds, whatifIds, profileIds, valuesIds)
+ *    same semantics, using node/value identifiers.
+ *
+ * Results:
+ *  - `value()` returns the numeric tensor adapted to the original model’s
+ *    variables (order mirrors the twin evaluation’s variable sequence).
+ *  - `getResult()` exposes the symbolic `CausalFormula` produced on the twin
+ *    model (variable names match those of the original BN).
+ *
+ * Notes:
+ *  - `profile` and `values` can be empty.
+ *  - `values` is **not** required to build the formula; it is used for the twin
+ *    evaluation and optional numeric slicing.
+ *  - Exceptions from evidence insertion, inference, CPT replacement and tensor
+ *    building may propagate (e.g., unknown variable/label names, inconsistent
+ *    domains).
+ *
+ * @tparam GUM_SCALAR Numeric type used in potentials (e.g., double).
+ */
 template <typename GUM_SCALAR>
 class Counterfactual {
 public:
@@ -60,6 +111,23 @@ public:
   using ValName = VariableValueName;
 
   // ---------- Names-based constructor ----------
+  /**
+   * @brief Construct a counterfactual query using variable **names**.
+   *
+   * Builds a twin model from @p cm using @p profile as observational evidence
+   * to update idiosyncratic roots, then evaluates the causal effect
+   * P(on | do(whatif), …). If @p values is provided, the evaluated tensor is
+   * optionally sliced by these assignments (only for variables present in the
+   * result), and finally adapted to the original BN’s variables.
+   *
+   * @param cm       Source causal model (provides the observational BN).
+   * @param on       Set of variable names to query in the effect.
+   * @param whatif   Set of variable names intervened by do(·).
+   * @param profile  Name→label evidence used when computing posteriors in the
+   *                 original BN for idiosyncratic roots. May be empty.
+   * @param values   Name→label assignments for the intervention values to use
+   *                 during numeric evaluation and optional slicing. May be empty.
+   */
   Counterfactual(const CausalModel<GUM_SCALAR>& cm,
                  const NameSet& on                               = NameSet(),
                  const NameSet& whatif                           = NameSet(),
@@ -67,6 +135,20 @@ public:
                  const HashTable<VarName, ValName>& values       = HashTable<VarName, ValName>());
 
   // ---------- IDs-based constructor (NodeSet overload) ----------
+    /**
+     * @brief Construct a counterfactual query using **IDs** (nodes/value IDs).
+     *
+     * Same semantics as the names-based constructor, but using node identifiers
+     * and value identifiers directly.
+     *
+     * @param cm         Source causal model.
+     * @param onIds      Node IDs to query in the effect.
+     * @param whatifIds  Node IDs to intervene on via do(·).
+     * @param profileIds NodeId→ValueId evidence for posterior update of
+     *                   idiosyncratic roots. May be empty.
+     * @param valuesIds  NodeId→ValueId assignments for the intervention values
+     *                   during numeric evaluation and optional slicing. May be empty.
+     */
   Counterfactual(const CausalModel<GUM_SCALAR>& cm,
                  const NodeSet& onIds,
                  const NodeSet& whatifIds,
@@ -90,7 +172,26 @@ public:
   // ---------- Accessors ----------
   const CausalModel<GUM_SCALAR>&       originalModel()  const { return _cm; }
   const CausalModel<GUM_SCALAR>&       twinModel()      const { return _twin; }
+    /**
+     * @brief Symbolic result produced on the twin model.
+     *
+     * Exposes the `CausalFormula` computed by the internal `CausalImpact` built
+     * over the twin model. Variable names follow those of the original BN.
+     *
+     * @return const CausalFormula<GUM_SCALAR>& The causal formula.
+     */
   const CausalFormula<GUM_SCALAR>&     getResult()      const { return _ciResult(); }
+    /**
+     * @brief Numeric result adapted to the original model’s variables.
+     *
+     * The tensor’s variable sequence mirrors that of the evaluated effect on the
+     * twin, but each variable object belongs to the original BN (so downstream
+     * code may use original variable references).
+     *
+     * @return const Tensor<GUM_SCALAR>& The adapted numeric tensor. It may be
+     *         empty (nbrDim()==0) if the effect is not identifiable or if
+     *         evaluation failed.
+     */
   const Tensor<GUM_SCALAR>&            value()          const { return _adaptedValue; }
 
   const NameSet&                       on()             const { return _on; }
