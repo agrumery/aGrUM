@@ -41,10 +41,10 @@
 
 /**
  * @file
- * @brief Definition of classe for BN file output manipulation
+ * @brief Definition of class for BN file output manipulation
  *
- * This class servers to write the content of a Bayesian network in
- * the BN format.
+ * This class to write the content of a Bayesian network in
+ * the NET format.
  *
  * @author Lionel TORTI and Pierre-Henri WUILLEMIN(_at_LIP6)
  */
@@ -52,9 +52,6 @@
 #ifndef GUM_NET_WRITER_H
 #define GUM_NET_WRITER_H
 
-#include <fstream>
-#include <iostream>
-#include <sstream>
 #include <string>
 
 #include <agrum/agrum.h>
@@ -112,17 +109,17 @@ namespace gum {
 
     /**
      * Writes a Bayesian network in the referenced file using the BN format.
-     * If the files doesn't exists, it is created.
+     * If the files do not exist, it is created.
      *
      * @param filePath The path to the file used to write the Bayesian network.
-     * @param bn The Bayesian network writed in the file.
+     * @param bn The Bayesian network written in the file.
      * @throws IOError Raised if and I/O error occurs.
      */
     void _doWrite(const std::string& filePath, const IBayesNet< GUM_SCALAR >& bn) final;
 
     private:
     // Returns the header of the BN file.
-    std::string _header_(const IBayesNet< GUM_SCALAR >& bn);
+    static std::string _header_(const IBayesNet< GUM_SCALAR >& bn);
 
     // Returns a bloc defining a variable in the BN format.
     std::string _variableBloc_(const DiscreteVariable& var);

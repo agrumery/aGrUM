@@ -979,7 +979,6 @@ namespace gum {
       auto bin_nodeType = new NodeProperty< NodeType >();
 
       const BayesNet< GUM_SCALAR >* current_bn;
-      // const NodeProperty< nodeType > * _current_nodeType_;
       const NodeProperty< std::vector< std::vector< std::vector< GUM_SCALAR > > > >*
           credalNet_current_cpt;
 
@@ -990,11 +989,6 @@ namespace gum {
         credalNet_current_cpt = &this->_credalNet_src_cpt_;
       else credalNet_current_cpt = this->_credalNet_current_cpt_;
 
-      /*if ( this-> _current_nodeType_ == nullptr )
-         _current_nodeType_ = & this-> _nodeType_;
-      else
-         _current_nodeType_ = this-> _current_nodeType_;*/
-
       if (!_var_bits_.empty()) _var_bits_.clear();
 
       bin_bn->beginTopologyTransformation();
@@ -1003,9 +997,10 @@ namespace gum {
         auto var_dSize = current_bn->variable(node).domainSize();
 
         if (var_dSize != 2) {
-          unsigned long b, c;
-          superiorPow((unsigned long)var_dSize, b, c);
-          Size nb_bits{Size(b)};
+          unsigned long b;
+          unsigned long c;
+          superiorPow(static_cast< unsigned long >(var_dSize), b, c);
+          Size nb_bits{b};
 
           std::string           bit_name;
           std::vector< NodeId > bits(nb_bits);
@@ -1026,9 +1021,9 @@ namespace gum {
 
         }   // end of : if variable is not binary
         else {
-          std::string       bit_name = current_bn->variable(node).name();
+          const std::string bit_name = current_bn->variable(node).name();
           LabelizedVariable var_bit(bit_name, "node " + bit_name, 2);
-          NodeId            iD = bin_bn->add(var_bit);
+          const NodeId      iD = bin_bn->add(var_bit);
 
           _var_bits_.insert(node, std::vector< NodeId >(1, iD));
         }
@@ -1036,20 +1031,20 @@ namespace gum {
       }   // end of : for each original variable
 
       for (auto node: current_bn->nodes()) {
-        NodeSet parents = current_bn->parents(node);
-
-        if (!parents.empty()) {
+        if (NodeSet parents = current_bn->parents(node); !parents.empty()) {
           for (auto par: current_bn->parents(node)) {
-            for (Size parent_bit = 0, spbits = Size(_var_bits_[par].size()); parent_bit < spbits;
+            for (Size parent_bit = 0, spbits = static_cast< Size >(_var_bits_[par].size());
+                 parent_bit < spbits;
                  parent_bit++)
-              for (Size var_bit = 0, mbits = Size(_var_bits_[node].size()); var_bit < mbits;
+              for (Size var_bit = 0, mbits = static_cast< Size >(_var_bits_[node].size());
+                   var_bit < mbits;
                    var_bit++)
                 bin_bn->addArc(_var_bits_[par][parent_bit], _var_bits_[node][var_bit]);
           }
         }
 
         // arcs with one's bits
-        auto bitsize = _var_bits_[node].size();
+        const auto bitsize = _var_bits_[node].size();
 
         for (Size bit_c = 1; bit_c < bitsize; bit_c++)
           for (Size bit_p = 0; bit_p < bit_c; bit_p++)
@@ -1061,10 +1056,10 @@ namespace gum {
 
       // binarization of cpts
 
-      auto varsize = current_bn->size();
+      const auto varsize = current_bn->size();
 
       for (Size var = 0; var < varsize; var++) {
-        auto bitsize = _var_bits_[var].size();
+        const auto bitsize = _var_bits_[var].size();
 
         for (Size i = 0; i < bitsize; i++) {
           Tensor< GUM_SCALAR > const* tensor(&bin_bn->cpt(_var_bits_[var][i]));
@@ -1091,7 +1086,7 @@ namespace gum {
                 auto bit_pos = ins.pos(bin_bn->variable(_var_bits_[var][preced]));
                 auto val     = ins.val(bit_pos);
 
-                Size pas = Size(int2Pow((unsigned long)preced));
+                Size pas = Size(int2Pow(preced));
                 Size elem;
 
                 if (val == 0) elem = 0;
@@ -1105,7 +1100,7 @@ namespace gum {
                 }
               }
 
-              Size pas = Size(int2Pow((unsigned long)i));
+              Size pas = Size(int2Pow(i));
 
               std::vector< GUM_SCALAR > distri(2, 0);
               int                       pos = 1;
@@ -1137,7 +1132,7 @@ namespace gum {
             std::vector< std::vector< GUM_SCALAR > > vertices(2, std::vector< GUM_SCALAR >(2, 1));
             vertices[1][1] = 0;
 
-            auto new_verticessize = pvar_cpt.size();
+            const auto new_verticessize = pvar_cpt.size();
 
             for (Size v = 0; v < new_verticessize; v++) {
               if (pvar_cpt[v][1] < vertices[0][1]) vertices[0][1] = pvar_cpt[v][1];
@@ -1170,7 +1165,7 @@ namespace gum {
       bin_bn->beginTopologyTransformation();
 
       /* indicatrices variables */
-      auto old_varsize = _var_bits_.size();
+      const auto old_varsize = _var_bits_.size();
 
       for (Size i = 0; i < old_varsize; i++) {
         auto bitsize = _var_bits_[i].size();

@@ -42,9 +42,6 @@
 #ifndef GUM_DISCRETIZED_VARIABLE_H
 #define GUM_DISCRETIZED_VARIABLE_H
 
-#include <iostream>
-#include <limits>
-#include <sstream>
 #include <vector>
 
 #include <agrum/agrum.h>
@@ -62,7 +59,7 @@ namespace gum {
    * plus_infinity or minus_infinity.
    *
    * operator [] has a T_TICKS argument.
-   * @warning DiscretizedVariable is a template but it is assumed that there is
+   * @warning DiscretizedVariable is a template, but it is assumed that there is
    * a complete order on T_TICKS.
    * @warning Note that, if T_TICKS allows it, you may use
    * -std::numeric_limits<T_TICKS>::infinity() and
@@ -88,7 +85,7 @@ namespace gum {
     void copy_(const DiscretizedVariable< T_TICKS >& aDRV);
 
     /**
-     * seach the class of target (internally use dichotomy_)
+     * search the class of target (internally use dichotomy_)
      * @param target
      * @return the class of target
      */
@@ -128,7 +125,7 @@ namespace gum {
     /**
      * Destructor.
      */
-    ~DiscretizedVariable() final;
+    ~DiscretizedVariable() override final;
 
     /// @}
 
@@ -136,7 +133,6 @@ namespace gum {
     DiscretizedVariable< T_TICKS >* clone() const override;
 
     /// returns the type of variable
-
     VarType varType() const override;
 
     /**
@@ -183,7 +179,7 @@ namespace gum {
     Idx index(const std::string& label) const override;
     /// from the T+TICKS to its index in var.
     /// @throws NotFound
-    Idx index(const T_TICKS tick) const;
+    Idx index(const T_TICKS tick) const override;
 
     /**
      *
@@ -194,7 +190,7 @@ namespace gum {
     std::string domain() const override;
 
     /// string represent the type of the variable
-    std::string stype() const final { return "Discretized"; };
+    std::string stype() const override final { return "Discretized"; };
 
     /// from the index to the tick.
     /// @throws NotFound

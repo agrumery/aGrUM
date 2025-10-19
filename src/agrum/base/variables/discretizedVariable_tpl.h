@@ -37,7 +37,7 @@
  *   gitlab   : https://gitlab.com/agrumery/agrum                           *
  *                                                                          *
  ****************************************************************************/
-
+#pragma once
 
 #ifndef DOXYGEN_SHOULD_SKIP_THIS
 #  include <limits>
@@ -59,13 +59,13 @@ namespace gum {
 
   template < typename T_TICKS >
   INLINE Idx DiscretizedVariable< T_TICKS >::pos_(const T_TICKS& target) const {
-    if (target < _ticks_[0]) return Idx(0);
-    if (target > _ticks_[_ticks_.size() - 1]) return Idx(_ticks_.size() - 2);
+    if (target < _ticks_[0]) return static_cast< Idx >(0);
+    if (target > _ticks_[_ticks_.size() - 1]) return static_cast< Idx >(_ticks_.size() - 2);
     // now target is in the range [T1,Tn]
     const Idx res = std::lower_bound(_ticks_.begin(), _ticks_.end(), target) - _ticks_.begin();
-    if (res + 1 >= _ticks_.size()) return Idx(_ticks_.size() - 2);
+    if (res + 1 >= _ticks_.size()) return static_cast< Idx >(_ticks_.size() - 2);
     if (_ticks_[res] == target) return res;
-    // res>0 because target>=_ticks_[0]
+    // here res>0 because target>=_ticks_[0]
     return res - 1;
   }
 
@@ -163,35 +163,35 @@ namespace gum {
   INLINE std::string DiscretizedVariable< T_TICKS >::label(Idx i) const {
     std::stringstream ss;
 
-    if (i >= _ticks_.size() - 1) { GUM_ERROR(OutOfBounds, "inexisting label index") }
+    if (i >= _ticks_.size() - 1) { GUM_ERROR(OutOfBounds, "Unexisting label index") }
 
-    if ((i == 0) && (_is_empirical)) ss << "(";
+    if ((i == 0) && _is_empirical) ss << "(";
     else ss << "[";
 
-    ss << _ticks_[i] << ";" << _ticks_[i + 1];
+    ss << std::format("{};{}", _ticks_[i], _ticks_[i + 1]);
 
-    if (i == _ticks_.size() - 2)
+    if (i == _ticks_.size() - 2) {
       if (_is_empirical) ss << ")";
       else ss << "]";
-    else ss << "[";
+    } else ss << "[";
 
     return ss.str();
   }
 
-  /**  get a numerical representation of he indice-the value.
+  /**  get a numerical representation of he index-the value.
    *
-   * @param indice the index of the label we wish to return
+   * @param index the index of the label we wish to return
    * @throw OutOfBound if indice is not compatible
    */
   template < typename T_TICKS >
-  INLINE double DiscretizedVariable< T_TICKS >::numerical(Idx indice) const {
-    if (indice >= _ticks_.size() - 1) {
-      GUM_ERROR(OutOfBounds, "Inexisting label index (" << indice << ") for " << *this << ".")
+  INLINE double DiscretizedVariable< T_TICKS >::numerical(Idx index) const {
+    if (index >= _ticks_.size() - 1) {
+      GUM_ERROR(OutOfBounds, "Unexisting label index (" << index << ") for " << *this << ".")
     }
-    const auto& a = double(_ticks_[indice]);
-    const auto& b = double(_ticks_[indice + 1]);
+    const auto& a = static_cast< double >(_ticks_[index]);
+    const auto& b = static_cast< double >(_ticks_[index + 1]);
 
-    return double((b + a) / 2.0);
+    return (b + a) / 2.0;
   }
 
   /**  get a numerical representation of he indice-the value.
@@ -202,10 +202,10 @@ namespace gum {
   template < typename T_TICKS >
   INLINE double DiscretizedVariable< T_TICKS >::draw(Idx indice) const {
     if (indice >= _ticks_.size() - 1) {
-      GUM_ERROR(OutOfBounds, "Inexisting label index (" << indice << ") for " << *this << ".")
+      GUM_ERROR(OutOfBounds, "Unexisting label index (" << indice << ") for " << *this << ".")
     }
-    const auto& a = double(_ticks_[indice]);
-    const auto& b = double(_ticks_[indice + 1]);
+    const auto& a = static_cast< double >(_ticks_[indice]);
+    const auto& b = static_cast< double >(_ticks_[indice + 1]);
 
     auto p = gum::randomProba() * (b - a) + a;
     if (indice < _ticks_.size() - 2) {   // p can not be b. We iterate 3 times before returning the
@@ -235,8 +235,7 @@ namespace gum {
                                                 << *this)
       }
 
-      const auto size = _ticks_.size();
-      if (target > _ticks_[size - 1]) {
+      if (const auto size = _ticks_.size(); target > _ticks_[size - 1]) {
         if (target - _ticks_[size - 1] < 1e-10) return size - 2;
         if (_is_empirical) return size - 2;
         else
@@ -251,16 +250,18 @@ namespace gum {
     // second check if label contains an interval '[t1;t2]'
     std::istringstream ii(label);
     T_TICKS            t2;
-    char               c1, c2, c3;
+    char               c1;
+    char               c2;
+    char               c3;
     if (!(ii >> c1 >> target >> c2 >> t2 >> c3)) {
       GUM_ERROR(NotFound, "Bad label : " << label << " for " << *this)
     }
 
     // check if a char is in a string
     const std::string s1{"[]()"};
-    const std::string s2{",;"};
-    if ((s1.find(c1) == std::string::npos) || (s1.find(c3) == std::string::npos)
-        || (s2.find(c2) == std::string::npos)) {
+    if (const std::string s2{",;"}; s1.find(c1) == std::string::npos
+                                    || (s1.find(c3) == std::string::npos)
+                                    || (s2.find(c2) == std::string::npos)) {
       GUM_ERROR(NotFound, "Bad syntax for interval : " << label << " for " << *this)
     }
 
@@ -285,7 +286,7 @@ namespace gum {
   INLINE Idx DiscretizedVariable< T_TICKS >::closestIndex(double val) const {
     if (val <= _ticks_[0]) { return 0; }
     if (val >= _ticks_[_ticks_.size() - 1]) { return _ticks_.size() - 2; }
-    return pos_((T_TICKS)val);
+    return pos_(static_cast< T_TICKS >(val));
   }
 
   /**
@@ -294,7 +295,7 @@ namespace gum {
    */
   template < typename T_TICKS >
   INLINE Size DiscretizedVariable< T_TICKS >::domainSize() const {
-    return (_ticks_.size() < 2) ? Size(0) : Size(_ticks_.size() - 1);
+    return (_ticks_.size() < 2) ? static_cast< Size >(0) : static_cast< Size >(_ticks_.size() - 1);
   }
 
   template < typename T_TICKS >
@@ -339,8 +340,8 @@ namespace gum {
   INLINE std::vector< double > DiscretizedVariable< T_TICKS >::ticksAsDoubles() const {
     const std::size_t     size = _ticks_.size();
     std::vector< double > ticks(size);
-    for (auto i = std::size_t(0); i < size; ++i)
-      ticks[i] = (double)_ticks_[i];
+    for (auto i = static_cast< std::size_t >(0); i < size; ++i)
+      ticks[i] = static_cast< double >(_ticks_[i]);
     return ticks;
   }
 
@@ -354,7 +355,7 @@ namespace gum {
     for (const auto& t: _ticks_) {
       if (!first) s << ",";
       else first = false;
-      s << t;
+      s << std::format("{}", t);
     }
     s << "]";
     return s.str();

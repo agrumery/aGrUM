@@ -115,7 +115,8 @@ namespace gum {
       str << "potential (" << cpt.variable(0).name() << ") {" << std::endl << tab << "data = ( ";
 
       for (inst.setFirst(); !inst.end(); ++inst) {
-        str << " " << cpt[inst];
+        str << std::format(" {}", cpt[inst]);
+        ;
       }
 
       str << ");";
@@ -126,7 +127,7 @@ namespace gum {
       for (Idx i = 1; i < varsSeq.size(); i++)
         conds.add(*varsSeq[varsSeq.size() - i]);
 
-      str << "potential ( " << (varsSeq[(Idx)0])->name() << " | ";
+      str << "potential ( " << (varsSeq[static_cast< Idx >(0)])->name() << " | ";
       for (Idx i = 1; i < varsSeq.size(); i++)
         str << varsSeq[i]->name() << "   ";
       str << ") {" << std::endl << tab << "data = \n";
@@ -142,7 +143,7 @@ namespace gum {
 
         inst.setVals(conds);
         for (inst.setFirstVar(*varsSeq[0]); !inst.end(); inst.incVar(*varsSeq[0]))
-          str << tab << cpt[inst];
+          str << std::format(" {}{}", tab, cpt[inst]);
 
         comment = tab + "% ";
         for (Idx i = 0; i < conds.nbrDim(); i++) {

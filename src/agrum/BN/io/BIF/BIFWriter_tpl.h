@@ -123,7 +123,7 @@ namespace gum {
       str << tab << "table";
 
       for (inst.setFirst(); !inst.end(); ++inst) {
-        str << " " << cpt[inst];
+        str << std::format(" {}", cpt[inst]);
       }
 
       str << ";" << std::endl << "}" << std::endl;
@@ -145,7 +145,7 @@ namespace gum {
         // Writing the probabilities of the variable
 
         for (inst.setFirstOut(condVars); !inst.end(); inst.incOut(condVars)) {
-          str << " " << cpt[inst];
+          str << std::format(" {}", cpt[inst]);
         }
 
         str << ";" << std::endl;

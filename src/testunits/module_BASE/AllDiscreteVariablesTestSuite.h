@@ -358,5 +358,12 @@ namespace gum_tests {
       TS_ASSERT_EQUALS(FASTVARDBL("A[1,2,3,4,5,6]")->closestIndex(6.0), 4u)
       TS_ASSERT_EQUALS(FASTVARDBL("A[1,2,3,4,5,6]")->closestIndex(9.9), 4u)
     }
+
+    GUM_ACTIVE_TEST(RegressionTestFromChristopheEveland) {
+      auto var = FASTVARDBL("A[0.0, 100.000001, 100.000002, 200.0]");
+      TS_ASSERT_EQUALS(var->toString(),
+                       "A:Discretized(<[0;100.000001[,[100.000001;100.000002[,[100.000002;200]>)");
+      TS_ASSERT_EQUALS(var->toFast(), "A[0,100.000001,100.000002,200]");
+    }
   };
 }   // namespace gum_tests
