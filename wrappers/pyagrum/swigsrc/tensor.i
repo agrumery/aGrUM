@@ -117,24 +117,25 @@ if len(args)>1:
 
 %extend gum::Tensor<double> {
   PyObject *expectedValue(PyObject* pyfunc) const {
-    if (!PyCallable_Check(pyfunc)) { PyErr_SetString(PyExc_TypeError, "Need a callable object!"); }
-    double res=self->expectedValue([&](const gum::Instantiation& i) -> double {
+    if (!PyCallable_Check(pyfunc)) { PyErr_SetString(PyExc_TypeError, "Need a callable object!");return NULL; }
+
+    PyObject* args=PyTuple_New(1);
+    double res=self->expectedValue([args,pyfunc](const gum::Instantiation& i) -> double {
       double val;
       PyObject* arg=PyAgrumHelper::instantiationToDict(i,false);
-      PyObject* args=PyTuple_New(1);
       PyTuple_SetItem(args,0,arg);
-      PyObject* res=PyObject_Call(pyfunc,args,NULL);
-      Py_DecRef(args);
-      Py_DecRef(arg);
-
-      if (res==NULL) {
+      PyObject* pyres=PyObject_Call(pyfunc,args,NULL);
+      //314 Py_DecRef(arg);                                                                                                        *
+      if (pyres==NULL) {
         val=0;
       } else {
-        val=PyFloat_AsDouble(res);
-        Py_DecRef(res);
+        val=PyFloat_AsDouble(pyres);
+        Py_DecRef(pyres);
       }
       return val;
       });
+
+    Py_DecRef(args);
     return PyFloat_FromDouble(res);
   }
 

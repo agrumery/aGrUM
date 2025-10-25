@@ -1,5 +1,6 @@
 variables:
   LINUX_64_IMAGE: "agrumery/manylinux_2_28_x86_64"
+  LINUX_AARCH_IMAGE: "agrumery/manylinux_2_28_aarch64"
   BUILD_DOC: "wrappers/pyagrum/wheelhouse/build_doc.sh"
   LINUX_BUILD: "wrappers/pyagrum/wheelhouse/build_linux.sh"
   LINUX_WHEELHOUSE: "wrappers/pyagrum/wheelhouse/build_wheels_linux.sh"
@@ -30,13 +31,19 @@ stages:
   stage: build
   retry: 1
 
-.linux_build_template: &linux_build_template
+.linux_x86_64_build_template: &linux_x86_64_build_template
   <<: *build_template
   tags:
     - docker
     - gumlin
 
-.linux_wheel_template: &linux_wheel_template
+.linux_aarch64_build_template: &linux_aarch64_build_template
+  <<: *build_template
+  tags:
+    - docker
+    - aarch
+
+.linux_x86_64_wheel_template: &linux_x86_64_wheel_template
   <<: *common_artifacts
   <<: *build_template
   only:
@@ -48,6 +55,19 @@ stages:
   tags:
     - docker
     - gumlin
+
+.linux_aarch64_wheel_template: &linux_aarch64_wheel_template
+  <<: *common_artifacts
+  <<: *build_template
+  only:
+    - tags
+    - master@agrumery/aGrUM
+    - web@agrumery/aGrUM
+    - merge_requests
+  image: $LINUX_AARCH_IMAGE
+  tags:
+    - docker
+    - aarch
 
 .macos_build_template: &macos_build_template
   <<: *common_artifacts
@@ -112,51 +132,92 @@ stages:
 ################################################################################
 
 ################################################################################
-# Linux / gcc
+# Linux x86_64 / gcc
 ################################################################################
 
-linux_agrum:
-  <<: *linux_build_template
-  image: agrumery/ubuntu_py313
+linux_agrum_x86_64:
+  <<: *linux_x86_64_build_template
+  image: $LINUX_64_IMAGE
   script:
-    - bash $LINUX_BUILD aGrUM
+    - bash $LINUX_BUILD aGrUM cp310-cp310
 
-linux_pyagrum_py310:
-  <<: *linux_build_template
-  image: agrumery/ubuntu_py310
+linux_pyagrum_x86_64_py310:
+  <<: *linux_x86_64_build_template
+  image: $LINUX_64_IMAGE
   script:
-    - bash $LINUX_BUILD pyAgrum
+    - bash $LINUX_BUILD pyAgrum cp310-cp310
 
-linux_pyagrum_py313:
-  <<: *linux_build_template
-  image: agrumery/ubuntu_py313
+linux_pyagrum_x86_64_py314:
+  <<: *linux_x86_64_build_template
+  image: $LINUX_64_IMAGE
   script:
-    - bash $LINUX_BUILD pyAgrum
+    - bash $LINUX_BUILD pyAgrum cp314-cp314
+
+################################################################################
+# Linux aarch64 / gcc
+################################################################################
+
+linux_agrum_aarch64:
+  <<: *linux_aarch64_build_template
+  image: $LINUX_AARCH_IMAGE
+  script:
+    - bash $LINUX_BUILD aGrUM cp310-cp310
+
+linux_pyagrum_aarch64_py310:
+  <<: *linux_aarch64_build_template
+  image: $LINUX_AARCH_IMAGE
+  script:
+    - bash $LINUX_BUILD pyAgrum cp310-cp310
+
+linux_pyagrum_aarch64_py314:
+  <<: *linux_aarch64_build_template
+  image: $LINUX_AARCH_IMAGE
+  script:
+    - bash $LINUX_BUILD pyAgrum cp314-cp314
 
 ################################################################################
 #                        ON MERGE, MASTER AND TAGS                             #
 ################################################################################
 
 ################################################################################
-#                                 WHEELS                                       #
+#                            WHEELS (NO TEST)                                  #
 ################################################################################
 
 ################################################################################
 # Linux x86_64 / gcc
 ################################################################################
 
-build_wheel_linux_py310:
-  <<: *linux_wheel_template
+linux_x86_64_wheel_py310_sabi_off:
+  <<: *linux_x86_64_wheel_template
   script:
     - bash $LINUX_WHEELHOUSE cp310-cp310 --stable_abi_off
 
-build_wheel_linux:
-  <<: *linux_wheel_template
+linux_x86_64_wheel_py310:
+  <<: *linux_x86_64_wheel_template
   script:
     - bash $LINUX_WHEELHOUSE cp310-cp310
 
-build_nightly_wheel_linux:
-  <<: *linux_wheel_template
+linux_x86_64_nightly_wheel_py310:
+  <<: *linux_x86_64_wheel_template
+  script:
+    - bash $LINUX_NIGHTLY_WHEELHOUSE cp310-cp310
+
+################################################################################
+# Linux aarch64 / gcc
+################################################################################
+
+linux_aarch64_wheel_py310_sabi_off:
+  <<: *linux_aarch64_wheel_template
+  script:
+    - bash $LINUX_WHEELHOUSE cp310-cp310 --stable_abi_off
+
+linux_aarch64_wheel_py310:
+  <<: *linux_aarch64_wheel_template
+  script:
+    - bash $LINUX_WHEELHOUSE cp310-cp310
+
+linux_aarch64_nightly_wheel_py310:
+  <<: *linux_aarch64_wheel_template
   script:
     - bash $LINUX_NIGHTLY_WHEELHOUSE cp310-cp310
 
@@ -164,7 +225,16 @@ build_nightly_wheel_linux:
 # MacOS
 ################################################################################
 
-build_wheel_osx:
+osx_wheel_py310:
+  <<: *macos_build_template
+  script:
+    - bash $OSX_WHEELHOUSE py310
+
+################################################################################
+# MacOS / ARM
+################################################################################
+
+osx_arm_wheel_py310:
   <<: *macos_build_template
   script:
     - bash $OSX_WHEELHOUSE py310
@@ -173,7 +243,7 @@ build_wheel_osx:
 # Windows / MVSC
 ################################################################################
 
-build_wheel_windows:
+windows_wheel_py310:
   <<: *windows_build_template
   variables:
     PATH: $PATH_MVSC22_GUMWIN
@@ -192,19 +262,25 @@ build_wheel_windows:
 macos_agrum:
   <<: *macos_build_template
   variables:
-    CC: "/usr/local/opt/llvm/bin/clang"
-    CXX: "/usr/local/opt/llvm/bin/clang++"
-    PYTHON_VERSION: "py313"
+    # CC: "/usr/local/opt/llvm/bin/clang"
+    # CXX: "/usr/local/opt/llvm/bin/clang++"
+    PYTHON_VERSION: "py310"
     TARGET: "aGrUM"
   script:
     - bash $OSX_BUILD $PYTHON_VERSION $TARGET
 
-macos_pyagrum:
+macos_pyagrum_py310:
   <<: *macos_build_template
   variables:
-    CC: "/usr/local/opt/llvm/bin/clang"
-    CXX: "/usr/local/opt/llvm/bin/clang++"
-    PYTHON_VERSION: "py313"
+    PYTHON_VERSION: "py310"
+    TARGET: "pyAgrum"
+  script:
+    - bash $OSX_BUILD $PYTHON_VERSION $TARGET
+
+macos_pyagrum_py314:
+  <<: *macos_build_template
+  variables:
+    PYTHON_VERSION: "py314"
     TARGET: "pyAgrum"
   script:
     - bash $OSX_BUILD $PYTHON_VERSION $TARGET
@@ -216,19 +292,23 @@ macos_pyagrum:
 macos_arm_agrum:
   <<: *macos_arm_build_template
   variables:
-    CC: "/opt/homebrew/opt/llvm/bin/clang"
-    CXX: "/opt/homebrew/opt/llvm/bin/clang++"
-    PYTHON_VERSION: "py313"
+    PYTHON_VERSION: "py314"
     TARGET: "aGrUM"
   script:
     - bash $OSX_ARM_BUILD $PYTHON_VERSION $TARGET
 
-macos_arm_pyagrum:
+macos_arm_pyagrum_py310:
   <<: *macos_arm_build_template
   variables:
-    CC: "/opt/homebrew/opt/llvm/bin/clang"
-    CXX: "/opt/homebrew/opt/llvm/bin/clang++"
-    PYTHON_VERSION: "py313"
+    PYTHON_VERSION: "py310"
+    TARGET: "pyAgrum"
+  script:
+    - bash $OSX_ARM_BUILD $PYTHON_VERSION $TARGET
+
+macos_arm_pyagrum_py314:
+  <<: *macos_arm_build_template
+  variables:
+    PYTHON_VERSION: "py314"
     TARGET: "pyAgrum"
   script:
     - bash $OSX_ARM_BUILD $PYTHON_VERSION $TARGET
@@ -257,21 +337,21 @@ windows_agrum_2022:
   script:
     - *windows_build_script
 
-# windows_pyagrum_2022:
-#   <<: *windows_build_template
-#   variables:
-#     PATH: $PATH_MVSC22_GUMWIN
-#     CONDA_ENV: "py312"
-#     TARGET: "pyAgrum"
-#     COMPILER: "mvsc22"
-#   script:
-#     - *windows_build_script
-
-windows_pyagrum_2022:
+windows_pyagrum_2022_py310:
   <<: *windows_build_template
   variables:
     PATH: $PATH_MVSC22_GUMWIN
-    CONDA_ENV: "py313"
+    CONDA_ENV: "py310"
+    TARGET: "pyAgrum"
+    COMPILER: "mvsc22"
+  script:
+    - *windows_build_script
+
+windows_pyagrum_2022_py314:
+  <<: *windows_build_template
+  variables:
+    PATH: $PATH_MVSC22_GUMWIN
+    CONDA_ENV: "py314"
     TARGET: "pyAgrum"
     COMPILER: "mvsc22"
   script:
@@ -281,21 +361,11 @@ windows_pyagrum_2022:
 # Windows / MINGW
 ################################################################################
 
-# windows_pyagrum_mingw:
-#   <<: *windows_build_template
-#   variables:
-#     PATH: $PATH_MINGW_GUMWIN
-#     CONDA_ENV: "py312"
-#     TARGET: "pyAgrum"
-#     COMPILER: "mingw64"
-#   script:
-#     - *windows_build_script
-
-windows_pyagrum_mingw:
+windows_pyagrum_mingw_py314:
   <<: *windows_build_template
   variables:
     PATH: $PATH_MINGW_GUMWIN
-    CONDA_ENV: "py313-mingw"
+    CONDA_ENV: "py314-mingw"
     TARGET: "pyAgrum"
     COMPILER: "mingw64"
   script:
@@ -327,7 +397,7 @@ linux_build:
 ################################################################################
 
 build_doc:
-  <<: *linux_wheel_template
+  <<: *linux_x86_64_wheel_template
   image: agrumery/ubuntu_py310
   script:
     - bash $BUILD_DOC

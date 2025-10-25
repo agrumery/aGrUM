@@ -31,7 +31,7 @@ Write-Host "Building $TARGET..."
 Set-Location $CI_PROJECT_DIR
 python act clean
 if ($TARGET -eq "aGrUM") {
-    python act --no-fun --compiler=$COMPILER -d build -j except1 test release aGrUM
+    python act --compiler=$COMPILER -d build -j except1 test release aGrUM
 } else {
 
     if ($COMPILER -eq "mingw64") {
@@ -43,9 +43,10 @@ if ($TARGET -eq "aGrUM") {
         foreach ($file in $files) {
             Copy-Item -Path "C:\msys64\ucrt64\bin\$file.dll" -Destination "$PWD\build\pyagrum\release\wrappers\pyAgrum" -Force
         }
-        python act test release pyAgrum
+        python act test
     } else {
-        python act --no-fun test release pyAgrum --no-fun --compiler=$COMPILER -d build -j except1  -m quick -t all
+        python act install release pyAgrum --compiler=$COMPILER -d build -j except1  -m quick -t all
+        python act test
     }
 }
 Check-LastCommand
