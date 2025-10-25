@@ -37,6 +37,7 @@
  *   gitlab   : https://gitlab.com/agrumery/agrum                           *
  *                                                                          *
  ****************************************************************************/
+#pragma once
 
 
 #include <iostream>
@@ -50,7 +51,7 @@
 
 namespace gum_tests {
 
-  class [[maybe_unused]] SimpleCPTGeneratorTestSuite: public CxxTest::TestSuite {
+  class GUM_TEST_SUITE(SimpleCPTGenerator) {
     public:
     // Binary variables
     gum::LabelizedVariable* binVar1;
@@ -167,14 +168,15 @@ namespace gum_tests {
       TS_GUM_ASSERT_THROWS_NOTHING(aCPTGen.generateCPT(rootPot1F->pos(*binVar1), *rootPot1F))
 
       gum::Instantiation inst(*rootPot1F);
-      double             sum = (float)0;
+      double             sum = static_cast< float >(0);
 
       for (inst.setFirst(); !inst.end(); inst.inc()) {
-        TS_ASSERT(((*rootPot1F)[inst] >= (float)0) && ((*rootPot1F)[inst] <= (float)1))
+        TS_ASSERT(((*rootPot1F)[inst] >= static_cast< float >(0))
+                  && ((*rootPot1F)[inst] <= static_cast< float >(1)))
         sum += (*rootPot1F)[inst];
       }
 
-      TS_ASSERT_DELTA(sum, (float)1, 0.0001)
+      TS_ASSERT_DELTA(sum, static_cast< float >(1), 0.0001)
     }
 
     GUM_ACTIVE_TEST(RootVariablesDouble) {
@@ -182,14 +184,15 @@ namespace gum_tests {
       TS_GUM_ASSERT_THROWS_NOTHING(aCPTGen.generateCPT(rootPot1F->pos(*binVar1), *rootPot1D))
 
       gum::Instantiation inst(*rootPot1D);
-      double             sum = (double)0;
+      double             sum = static_cast< double >(0);
 
       for (inst.setFirst(); !inst.end(); inst.inc()) {
-        TS_ASSERT(((*rootPot1D)[inst] >= (double)0) && ((*rootPot1D)[inst] <= (double)1))
+        TS_ASSERT(((*rootPot1D)[inst] >= static_cast< double >(0))
+                  && ((*rootPot1D)[inst] <= static_cast< double >(1)))
         sum += (*rootPot1D)[inst];
       }
 
-      TS_ASSERT_DELTA(sum, (double)1, 0.0001)
+      TS_ASSERT_DELTA(sum, static_cast< double >(1), 0.0001)
     }
 
     // Testing with one parent - float version
@@ -207,14 +210,15 @@ namespace gum_tests {
       // for (int i = 0; i < 80; ++i) std::cout << "#";
 
       for (inst.setFirstOut(instVar1); !inst.end(); inst.incOut(instVar1)) {
-        double sum = (double)0;
+        double sum = static_cast< double >(0);
 
         for (inst.setFirstIn(instVar1); !inst.end(); inst.incIn(instVar1)) {
-          TS_ASSERT(((*pot1F)[inst] >= (float)0) && ((*pot1F)[inst] <= (float)1))
+          TS_ASSERT(((*pot1F)[inst] >= static_cast< float >(0))
+                    && ((*pot1F)[inst] <= static_cast< float >(1)))
           sum += (*pot1F)[inst];
         }
 
-        TS_ASSERT_DELTA(sum, (float)1, 0.0001)
+        TS_ASSERT_DELTA(sum, static_cast< float >(1), 0.0001)
 
         inst.unsetEnd();
       }
@@ -235,14 +239,15 @@ namespace gum_tests {
       // for (int i = 0; i < 80; ++i) std::cout << "#";
 
       for (inst.setFirstOut(instVar1); !inst.end(); inst.incOut(instVar1)) {
-        double sum = (double)0;
+        double sum = static_cast< double >(0);
 
         for (inst.setFirstIn(instVar1); !inst.end(); inst.incIn(instVar1)) {
-          TS_ASSERT(((*pot2F)[inst] >= (float)0) && ((*pot2F)[inst] <= (float)1))
+          TS_ASSERT(((*pot2F)[inst] >= static_cast< float >(0))
+                    && ((*pot2F)[inst] <= static_cast< float >(1)))
           sum += (*pot2F)[inst];
         }
 
-        TS_ASSERT_DELTA(sum, (float)1, 0.0001)
+        TS_ASSERT_DELTA(sum, static_cast< float >(1), 0.0001)
 
         inst.unsetEnd();
       }
@@ -258,14 +263,14 @@ namespace gum_tests {
       instVar1.add(*binVar1);
 
       for (inst.setFirstOut(instVar1); !inst.end(); inst.incOut(instVar1)) {
-        double sum = (double)0;
+        double sum = static_cast< double >(0);
 
         for (inst.setFirstIn(instVar1); !inst.end(); inst.incIn(instVar1)) {
           TS_ASSERT(((*pot1D)[inst] >= 0) && ((*pot1D)[inst] <= 1))
           sum += (*pot1D)[inst];
         }
 
-        TS_ASSERT_DELTA(sum, (double)1, 0.0001)
+        TS_ASSERT_DELTA(sum, static_cast< double >(1), 0.0001)
 
         inst.unsetEnd();
       }
@@ -281,14 +286,14 @@ namespace gum_tests {
       instVar1.add(*binVar4);
 
       for (inst.setFirstOut(instVar1); !inst.end(); inst.incOut(instVar1)) {
-        double sum = (double)0;
+        double sum = static_cast< double >(0);
 
         for (inst.setFirstIn(instVar1); !inst.end(); inst.incIn(instVar1)) {
           TS_ASSERT(((*pot2D)[inst] >= 0) && ((*pot2D)[inst] <= 1))
           sum += (*pot2D)[inst];
         }
 
-        TS_ASSERT_DELTA(sum, (double)1, 0.0001)
+        TS_ASSERT_DELTA(sum, static_cast< double >(1), 0.0001)
 
         inst.unsetEnd();
       }
@@ -305,13 +310,13 @@ namespace gum_tests {
         TS_GUM_ASSERT_THROWS_NOTHING(cptGen.generateCPT(aPot.pos(aVar), aPot))
 
         gum::Instantiation inst(aPot);
-        double             sum = (double)0;
+        double             sum = static_cast< double >(0);
 
         for (inst.setFirst(); !inst.end(); inst.inc()) {
           sum += aPot[inst];
         }
 
-        TS_ASSERT_DELTA(sum, (float)1, 0.0001)
+        TS_ASSERT_DELTA(sum, static_cast< float >(1), 0.0001)
       }
     }
 
@@ -324,13 +329,13 @@ namespace gum_tests {
       gum::Instantiation inst(*pot3F);
 
       for (inst.setFirstOut(instVar3); !inst.end(); inst.incOut(instVar3)) {
-        double sum = (double)0;
+        double sum = static_cast< double >(0);
 
         for (inst.setFirstIn(instVar3); !inst.end(); inst.incIn(instVar3)) {
           sum += (*pot3F)[inst];
         }
 
-        TS_ASSERT_DELTA((double)1, sum, 0.0001)
+        TS_ASSERT_DELTA(static_cast< double >(1), sum, 0.0001)
 
         inst.unsetEnd();
       }
@@ -347,13 +352,13 @@ namespace gum_tests {
         TS_GUM_ASSERT_THROWS_NOTHING(cptGen.generateCPT(aPot.pos(aVar), aPot))
 
         gum::Instantiation inst(aPot);
-        double             sum = (double)0;
+        double             sum = static_cast< double >(0);
 
         for (inst.setFirst(); !inst.end(); inst.inc()) {
           sum += aPot[inst];
         }
 
-        TS_ASSERT_DELTA(sum, (double)1, 0.0001)
+        TS_ASSERT_DELTA(sum, static_cast< double >(1), 0.0001)
       }
     }
 
@@ -367,13 +372,13 @@ namespace gum_tests {
       gum::Instantiation inst(*pot3D);
 
       for (inst.setFirstOut(instVar3); !inst.end(); inst.incOut(instVar3)) {
-        double sum = (double)0;
+        double sum = static_cast< double >(0);
 
         for (inst.setFirstIn(instVar3); !inst.end(); inst.incIn(instVar3)) {
           sum += (*pot3D)[inst];
         }
 
-        TS_ASSERT_DELTA((double)1, sum, 0.0001)
+        TS_ASSERT_DELTA(static_cast< double >(1), sum, 0.0001)
 
         inst.unsetEnd();
       }

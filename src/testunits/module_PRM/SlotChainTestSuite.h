@@ -37,6 +37,7 @@
  *   gitlab   : https://gitlab.com/agrumery/agrum                           *
  *                                                                          *
  ****************************************************************************/
+#pragma once
 
 
 #include <gumtest/AgrumTestSuite.h>
@@ -56,7 +57,7 @@
  */
 namespace gum_tests {
 
-  class [[maybe_unused]] SlotChainTestSuite: public CxxTest::TestSuite {
+  class GUM_TEST_SUITE(SlotChain) {
     private:
     using PRMSlotChain = gum::prm::PRMSlotChain< double >;
 

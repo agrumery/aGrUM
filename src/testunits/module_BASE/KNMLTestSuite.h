@@ -37,6 +37,7 @@
  *   gitlab   : https://gitlab.com/agrumery/agrum                           *
  *                                                                          *
  ****************************************************************************/
+#pragma once
 
 
 #include <iostream>
@@ -54,7 +55,7 @@
 
 namespace gum_tests {
 
-  class [[maybe_unused]] KNMLTestSuite: public CxxTest::TestSuite {
+  class GUM_TEST_SUITE(KNML) {
     public:
     GUM_ACTIVE_TEST(1) {
       gum::learning::DBInitializerFromCSV initializer(GET_RESSOURCES_PATH("csv/asia.csv"));
@@ -96,7 +97,7 @@ namespace gum_tests {
                           - score.score(6, 7, std::vector< gum::NodeId >{1, 4}),
                       0.0,
                       1e-2);
-    }
+    }   // namespace gum_tests
   };
 
 } /* namespace gum_tests */

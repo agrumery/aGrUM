@@ -120,7 +120,7 @@ namespace gum {
   // clang-format on
 
   template < class TABLE >
-  class MultiDimCombinationDefault: public MultiDimCombination< TABLE > {
+  class MultiDimCombinationDefault final: public MultiDimCombination< TABLE > {
     public:
     // ========================================================================
     /// @name Constructors / Destructors

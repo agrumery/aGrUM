@@ -47,16 +47,19 @@ import matplotlib.pyplot as plt
 from matplotlib.patches import Polygon
 
 
-def _POSTERIOR(y: int, func: str) -> str: return f"logit($p(y={y} \\mid x)$)" if func == "_logit" else f"$p(y={y} \\mid x)$"
+def _POSTERIOR(y: int, func: str) -> str:
+  return f"logit($p(y={y} \\mid x)$)" if func == "_logit" else f"$p(y={y} \\mid x)$"
 
 
-def _JOIN(func: str) -> str: return "log($p(x \\mid \\theta)$)" if func == "_log" else "$p(x \\mid \\theta)$"
+def _JOIN(func: str) -> str:
+  return "log($p(x \\mid \\theta)$)" if func == "_log" else "$p(x \\mid \\theta)$"
 
 
-def _FMT(func: str) -> str: return ".2e" if func == "_identity" else ".2f"
+def _FMT(func: str) -> str:
+  return ".2e" if func == "_identity" else ".2f"
 
 
-def waterfall(explanation: Explanation, y: int=1, ax=None, real_values: Dict = None):
+def waterfall(explanation: Explanation, y: int = 1, ax=None, real_values: Dict = None):
   """
   Plots a waterfall chart of the SHAP/SHALL values.
 

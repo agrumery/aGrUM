@@ -86,7 +86,7 @@ namespace gum {
     // ###################################################################
     /// @{
 
-    public:
+
     // ==========================================================================
     /// Initializes the learner
     // ==========================================================================
@@ -105,12 +105,11 @@ namespace gum {
     // ###################################################################
     /// @{
 
-    public:
+
     virtual void checkState(const Instantiation& newState, Idx actionId) = 0;
 
-    void setOptimalStrategy(
-        const MultiDimFunctionGraph< ActionSet, SetTerminalNodePolicy >* optPol) {
-      optPol_ = const_cast< MultiDimFunctionGraph< ActionSet, SetTerminalNodePolicy >* >(optPol);
+    void setOptimalStrategy(MultiDimFunctionGraph< ActionSet, SetTerminalNodePolicy >* optPol) {
+      optPol_ = optPol;
     }
 
     virtual ActionSet stateOptimalPolicy(const Instantiation& curState) {
@@ -119,7 +118,7 @@ namespace gum {
 
     protected:
     ///
-    const MultiDimFunctionGraph< ActionSet, SetTerminalNodePolicy >* optPol_;
+    const MultiDimFunctionGraph< ActionSet, SetTerminalNodePolicy >* optPol_{nullptr};
 
     ///
     ActionSet allActions_;

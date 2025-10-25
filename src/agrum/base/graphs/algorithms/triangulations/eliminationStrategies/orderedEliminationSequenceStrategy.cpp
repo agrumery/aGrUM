@@ -53,7 +53,7 @@
 
 #ifdef GUM_NO_INLINE
 #  include <agrum/base/graphs/algorithms/triangulations/eliminationStrategies/orderedEliminationSequenceStrategy_inl.h>
-#endif   // GUM_NOINLINE
+#endif   // GU%_NO_INLINE
 
 namespace gum {
 

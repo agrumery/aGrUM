@@ -37,6 +37,7 @@
  *   gitlab   : https://gitlab.com/agrumery/agrum                           *
  *                                                                          *
  ****************************************************************************/
+#pragma once
 
 
 #include <gumtest/AgrumTestSuite.h>
@@ -46,7 +47,7 @@
 
 namespace gum_tests {
 
-  class [[maybe_unused]] binTreeNodeTestSuite: public CxxTest::TestSuite {
+  class GUM_TEST_SUITE(binTreeNode) {
     public:
     GUM_ACTIVE_TEST(Constructors) {
       gum::BinTreeNode< int >* node = 0;
@@ -63,7 +64,7 @@ namespace gum_tests {
       gum::BinTreeNode< int > node4(1);
       node4 = node2;
       TS_ASSERT_EQUALS(*node2, *node4)
-    }
+    }   // namespace gum_tests
 
     GUM_ACTIVE_TEST(InsertChildren) {
       gum::BinTreeNode< int > node(0);

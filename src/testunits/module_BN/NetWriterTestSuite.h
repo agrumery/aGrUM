@@ -37,6 +37,7 @@
  *   gitlab   : https://gitlab.com/agrumery/agrum                           *
  *                                                                          *
  ****************************************************************************/
+#pragma once
 
 
 #include <iostream>
@@ -60,7 +61,7 @@
 
 namespace gum_tests {
 
-  class [[maybe_unused]] NetWriterTestSuite: public CxxTest::TestSuite {
+  class GUM_TEST_SUITE(NetWriter) {
     public:
     gum::BayesNet< double >* bn;
     gum::NodeId              i1, i2, i3, i4, i5;
@@ -119,10 +120,10 @@ namespace gum_tests {
       TS_GUM_ASSERT_THROWS_NOTHING(nbrErr = reader.proceed())
       reader.showElegantErrors();
 
-      TS_ASSERT_EQUALS(nbrErr, (gum::Size)0)
-      TS_ASSERT_EQUALS(reader.warnings(), (gum::Size)0)
+      TS_ASSERT_EQUALS(nbrErr, static_cast< gum::Size >(0))
+      TS_ASSERT_EQUALS(reader.warnings(), static_cast< gum::Size >(0))
       // 0 warnings : no properties
-      TS_ASSERT_EQUALS(reader.errors(), (gum::Size)0)
+      TS_ASSERT_EQUALS(reader.errors(), static_cast< gum::Size >(0))
 
       TS_ASSERT_DIFFERS(net, nullptr)
 

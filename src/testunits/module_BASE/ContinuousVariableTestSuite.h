@@ -37,6 +37,7 @@
  *   gitlab   : https://gitlab.com/agrumery/agrum                           *
  *                                                                          *
  ****************************************************************************/
+#pragma once
 
 
 #include <iostream>
@@ -51,7 +52,7 @@
 
 namespace gum_tests {
 
-  class [[maybe_unused]] ContinuousVariableTestSuite: public CxxTest::TestSuite {
+  class GUM_TEST_SUITE(ContinuousVariable) {
     public:
     GUM_ACTIVE_TEST(_constructors) {
       gum::ContinuousVariable<> var1("x1", "");
@@ -94,7 +95,7 @@ namespace gum_tests {
       var4 = std::move(var5);
       TS_ASSERT_EQUALS(var4.lowerBound(), -10.0)
       TS_ASSERT_EQUALS(var4.upperBound(), 10.0)
-    }
+    }   // namespace gum_tests
 
     GUM_ACTIVE_TEST(_methods) {
       gum::ContinuousVariable<> var1("x1", "");

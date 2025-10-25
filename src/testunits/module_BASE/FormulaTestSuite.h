@@ -37,6 +37,7 @@
  *   gitlab   : https://gitlab.com/agrumery/agrum                           *
  *                                                                          *
  ****************************************************************************/
+#pragma once
 
 
 #include <iostream>
@@ -49,15 +50,14 @@
 
 namespace gum_tests {
 
-  class [[maybe_unused]] MultiDimFormulaTestSuite: public CxxTest::TestSuite {
+  class GUM_TEST_SUITE(MultiDimFormula) {
     public:
     void setUp() {}
 
     void tearDown() {}
 
     GUM_ACTIVE_TEST(ConstantInt) {
-      try {
-        // Arrange
+      try {   // Arrange
         std::string  eq       = "1";
         double       expected = 1;
         gum::Formula formula(eq);
@@ -65,7 +65,11 @@ namespace gum_tests {
         TS_GUM_ASSERT_THROWS_NOTHING(formula.result())
         // Assert
         TS_ASSERT_DELTA(formula.result(), expected, 1e-6)
-      } catch (gum::Exception&) { TS_ASSERT(false) }
+      }   // namespace gum_tests
+
+      catch (gum::Exception&) {
+        TS_ASSERT(false)
+      }
     }
 
     GUM_ACTIVE_TEST(ConstantFloat) {

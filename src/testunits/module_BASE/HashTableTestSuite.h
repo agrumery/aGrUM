@@ -37,6 +37,7 @@
  *   gitlab   : https://gitlab.com/agrumery/agrum                           *
  *                                                                          *
  ****************************************************************************/
+#pragma once
 
 
 #include <iostream>
@@ -50,7 +51,7 @@
 
 namespace gum_tests {
 
-  class [[maybe_unused]] HashTableTestSuite: public CxxTest::TestSuite {
+  class GUM_TEST_SUITE(HashTable) {
     public:
     GUM_ACTIVE_TEST(Constructor) {
       gum::HashTable< int, int >* table = nullptr;
@@ -76,8 +77,8 @@ namespace gum_tests {
       TS_ASSERT_EQUALS(t5, t2)
       t5.clear();
       t5 = std::move(t2);
-      TS_ASSERT_EQUALS(t5.size(), (gum::Size)1)
-    }
+      TS_ASSERT_EQUALS(t5.size(), static_cast< gum::Size >(1))
+    }   // namespace gum_tests
 
     GUM_ACTIVE_TEST(Moves) {
       gum::HashTable< int, int > t1{std::pair< int, int >(3, 4), std::pair< int, int >(5, 6)};
@@ -92,7 +93,7 @@ namespace gum_tests {
       t3                            = std::move(t2);
       t2                            = std::move(t1);
 
-      TS_ASSERT_EQUALS(t2.size(), (gum::Size)2)
+      TS_ASSERT_EQUALS(t2.size(), static_cast< gum::Size >(2))
       TS_ASSERT(t2.exists(5))
     }
 
@@ -159,9 +160,9 @@ namespace gum_tests {
     GUM_ACTIVE_TEST(size) {
       gum::HashTable< int, std::string > table;
 
-      TS_ASSERT_EQUALS(table.size(), (gum::Size)0)
+      TS_ASSERT_EQUALS(table.size(), static_cast< gum::Size >(0))
       fill(table);
-      TS_ASSERT_EQUALS(table.size(), (gum::Size)6)
+      TS_ASSERT_EQUALS(table.size(), static_cast< gum::Size >(6))
     }
 
     GUM_ACTIVE_TEST(Erase) {
@@ -169,52 +170,52 @@ namespace gum_tests {
       fill(table);
 
       TS_GUM_ASSERT_THROWS_NOTHING(table.erase(4))
-      TS_ASSERT_EQUALS(table.size(), (gum::Size)5)
+      TS_ASSERT_EQUALS(table.size(), static_cast< gum::Size >(5))
       TS_GUM_ASSERT_THROWS_NOTHING(table.erase(6))
-      TS_ASSERT_EQUALS(table.size(), (gum::Size)4)
+      TS_ASSERT_EQUALS(table.size(), static_cast< gum::Size >(4))
       TS_GUM_ASSERT_THROWS_NOTHING(table.erase(1))
-      TS_ASSERT_EQUALS(table.size(), (gum::Size)3)
+      TS_ASSERT_EQUALS(table.size(), static_cast< gum::Size >(3))
       TS_GUM_ASSERT_THROWS_NOTHING(table.erase(3))
-      TS_ASSERT_EQUALS(table.size(), (gum::Size)2)
+      TS_ASSERT_EQUALS(table.size(), static_cast< gum::Size >(2))
       TS_GUM_ASSERT_THROWS_NOTHING(table.erase(5))
-      TS_ASSERT_EQUALS(table.size(), (gum::Size)1)
+      TS_ASSERT_EQUALS(table.size(), static_cast< gum::Size >(1))
 
       TS_GUM_ASSERT_THROWS_NOTHING(table.erase(4))
       TS_GUM_ASSERT_THROWS_NOTHING(table.erase(-23))
       TS_GUM_ASSERT_THROWS_NOTHING(table.erase(10000))
       TS_GUM_ASSERT_THROWS_NOTHING(table.erase(42))
 
-      TS_ASSERT_EQUALS(table.size(), (gum::Size)1)
+      TS_ASSERT_EQUALS(table.size(), static_cast< gum::Size >(1))
     }
 
     GUM_ACTIVE_TEST(EraseIterator) {
       gum::HashTable< int, std::string > table(4);
       fill(table);
-      TS_ASSERT_EQUALS(table.size(), (gum::Size)6)
+      TS_ASSERT_EQUALS(table.size(), static_cast< gum::Size >(6))
 
       gum::HashTable< int, std::string >::iterator_safe iter
           = table.beginSafe();   // safe iterator needed here
 
       TS_GUM_ASSERT_THROWS_NOTHING(table.erase(iter))
-      TS_ASSERT_EQUALS(table.size(), (gum::Size)5)
+      TS_ASSERT_EQUALS(table.size(), static_cast< gum::Size >(5))
 
       ++iter;
       ++iter;
 
       TS_GUM_ASSERT_THROWS_NOTHING(table.erase(iter))
-      TS_ASSERT_EQUALS(table.size(), (gum::Size)4)
+      TS_ASSERT_EQUALS(table.size(), static_cast< gum::Size >(4))
 
       iter = table.beginSafe();   // safe iterator needed here
       TS_GUM_ASSERT_THROWS_NOTHING(table.erase(iter))
-      TS_ASSERT_EQUALS(table.size(), (gum::Size)3)
+      TS_ASSERT_EQUALS(table.size(), static_cast< gum::Size >(3))
 
       iter = table.endSafe();
       TS_GUM_ASSERT_THROWS_NOTHING(table.erase(iter))
-      TS_ASSERT_EQUALS(table.size(), (gum::Size)3)
+      TS_ASSERT_EQUALS(table.size(), static_cast< gum::Size >(3))
 
       iter = table.endSafe();
       TS_GUM_ASSERT_THROWS_NOTHING(table.erase(iter))
-      TS_ASSERT_EQUALS(table.size(), (gum::Size)3)
+      TS_ASSERT_EQUALS(table.size(), static_cast< gum::Size >(3))
     }
 
     GUM_ACTIVE_TEST(EraseByVal) {
@@ -222,22 +223,22 @@ namespace gum_tests {
       fill(table);
 
       TS_GUM_ASSERT_THROWS_NOTHING(table.eraseByVal("a"))
-      TS_ASSERT_EQUALS(table.size(), (gum::Size)5)
+      TS_ASSERT_EQUALS(table.size(), static_cast< gum::Size >(5))
       TS_GUM_ASSERT_THROWS_NOTHING(table.eraseByVal("d"))
-      TS_ASSERT_EQUALS(table.size(), (gum::Size)4)
+      TS_ASSERT_EQUALS(table.size(), static_cast< gum::Size >(4))
       TS_GUM_ASSERT_THROWS_NOTHING(table.eraseByVal("e"))
-      TS_ASSERT_EQUALS(table.size(), (gum::Size)3)
+      TS_ASSERT_EQUALS(table.size(), static_cast< gum::Size >(3))
       TS_GUM_ASSERT_THROWS_NOTHING(table.eraseByVal("b"))
-      TS_ASSERT_EQUALS(table.size(), (gum::Size)2)
+      TS_ASSERT_EQUALS(table.size(), static_cast< gum::Size >(2))
       TS_GUM_ASSERT_THROWS_NOTHING(table.eraseByVal("f"))
-      TS_ASSERT_EQUALS(table.size(), (gum::Size)1)
+      TS_ASSERT_EQUALS(table.size(), static_cast< gum::Size >(1))
 
       TS_GUM_ASSERT_THROWS_NOTHING(table.eraseByVal("f"))
       TS_GUM_ASSERT_THROWS_NOTHING(table.eraseByVal("foo"))
       TS_GUM_ASSERT_THROWS_NOTHING(table.eraseByVal("bar"))
       TS_GUM_ASSERT_THROWS_NOTHING(table.eraseByVal("42"))
 
-      TS_ASSERT_EQUALS(table.size(), (gum::Size)1)
+      TS_ASSERT_EQUALS(table.size(), static_cast< gum::Size >(1))
     }
 
     GUM_ACTIVE_TEST(EraseAllVal) {
@@ -256,27 +257,27 @@ namespace gum_tests {
       TS_GUM_ASSERT_THROWS_NOTHING(table.insert(10, "foo"))
       TS_GUM_ASSERT_THROWS_NOTHING(table.insert(11, "bar"))
 
-      TS_ASSERT_EQUALS(table.size(), (gum::Size)11)
+      TS_ASSERT_EQUALS(table.size(), static_cast< gum::Size >(11))
 
       TS_GUM_ASSERT_THROWS_NOTHING(table.eraseAllVal("Space, the final frontiere"))
 
-      TS_ASSERT_EQUALS(table.size(), (gum::Size)2)
+      TS_ASSERT_EQUALS(table.size(), static_cast< gum::Size >(2))
 
       TS_GUM_ASSERT_THROWS_NOTHING(table.eraseAllVal("Space, the final frontiere"))
-      TS_ASSERT_EQUALS(table.size(), (gum::Size)2)
+      TS_ASSERT_EQUALS(table.size(), static_cast< gum::Size >(2))
     }
 
     GUM_ACTIVE_TEST(Clear) {
       gum::HashTable< int, std::string > table;
 
-      TS_ASSERT_EQUALS(table.size(), (gum::Size)0)
+      TS_ASSERT_EQUALS(table.size(), static_cast< gum::Size >(0))
       TS_GUM_ASSERT_THROWS_NOTHING(table.clear())
-      TS_ASSERT_EQUALS(table.size(), (gum::Size)0)
+      TS_ASSERT_EQUALS(table.size(), static_cast< gum::Size >(0))
 
       fill(table);
-      TS_ASSERT_EQUALS(table.size(), (gum::Size)6)
+      TS_ASSERT_EQUALS(table.size(), static_cast< gum::Size >(6))
       TS_GUM_ASSERT_THROWS_NOTHING(table.clear())
-      TS_ASSERT_EQUALS(table.size(), (gum::Size)0)
+      TS_ASSERT_EQUALS(table.size(), static_cast< gum::Size >(0))
     }
 
     GUM_ACTIVE_TEST(IsEmpty) {
@@ -461,17 +462,17 @@ namespace gum_tests {
 
       TS_GUM_ASSERT_THROWS_NOTHING(t2.setResizePolicy(false))
 
-      TS_ASSERT_EQUALS(t1.capacity(), (gum::Size)4)
-      TS_ASSERT_EQUALS(t2.capacity(), (gum::Size)4)
+      TS_ASSERT_EQUALS(t1.capacity(), static_cast< gum::Size >(4))
+      TS_ASSERT_EQUALS(t2.capacity(), static_cast< gum::Size >(4))
 
       for (int i = 0; i < 10000; i++) {
         TS_GUM_ASSERT_THROWS_NOTHING(t1.insert(i, i))
         TS_GUM_ASSERT_THROWS_NOTHING(t2.insert(i, i))
       }
 
-      TS_ASSERT_DIFFERS(t1.capacity(), (gum::Size)4)
+      TS_ASSERT_DIFFERS(t1.capacity(), static_cast< gum::Size >(4))
 
-      TS_ASSERT_EQUALS(t2.capacity(), (gum::Size)4)
+      TS_ASSERT_EQUALS(t2.capacity(), static_cast< gum::Size >(4))
     }
 
     GUM_ACTIVE_TEST(Map) {
@@ -644,7 +645,7 @@ namespace gum_tests {
       gum::HashTable< unsigned int, std::string > table{std::make_pair(3U, "a"),
                                                         std::make_pair(2U, "b")};
 
-      TS_ASSERT_EQUALS(table.size(), (gum::Size)(gum::Size)2)
+      TS_ASSERT_EQUALS(table.size(), (gum::Size) static_cast< gum::Size >(2))
       TS_ASSERT_EQUALS(table.exists(3U), true)
       TS_ASSERT_EQUALS(table.exists(2U), true)
     }

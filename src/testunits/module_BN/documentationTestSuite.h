@@ -37,6 +37,7 @@
  *   gitlab   : https://gitlab.com/agrumery/agrum                           *
  *                                                                          *
  ****************************************************************************/
+#pragma once
 
 
 #include <iostream>
@@ -55,7 +56,7 @@
 #include <agrum/BN/io/BIF/BIFWriter.h>
 
 namespace gum_tests {
-  class [[maybe_unused]] DocumentationTestSuite: public CxxTest::TestSuite {
+  class GUM_TEST_SUITE(Documentation) {
     public:
     GUM_ACTIVE_TEST(BayesNet) {
       try {
@@ -138,7 +139,11 @@ namespace gum_tests {
             0.10f,
             0.90f    // tubOrCancer == False, hasBronchitis == False
         });
-      } catch (gum::Exception& e) { TS_FAIL(e.errorContent()); }
+      }   // namespace gum_tests
+
+      catch (gum::Exception& e) {
+        TS_FAIL(e.errorContent());
+      }
     }
 
     GUM_ACTIVE_TEST(BayesNetFactory) {
@@ -342,7 +347,7 @@ namespace gum_tests {
         gum::LazyPropagation< double > inference(&asia);
         auto                           id       = asia.idFromName("Has Lung Cancer");
         const auto&                    marginal = inference.posterior("Has Lung Cancer");
-        TS_ASSERT_EQUALS(marginal.domainSize(), (gum::Size)2)
+        TS_ASSERT_EQUALS(marginal.domainSize(), static_cast< gum::Size >(2))
 
 
         // We can add some evidence
@@ -352,7 +357,7 @@ namespace gum_tests {
         const auto& updated_marginal = inference.posterior(id);
 
         // To prevent warning for unused variable
-        TS_ASSERT_EQUALS(updated_marginal.domainSize(), (gum::Size)2)
+        TS_ASSERT_EQUALS(updated_marginal.domainSize(), static_cast< gum::Size >(2))
       } catch (gum::Exception& e) { TS_FAIL(e.errorContent()); }
     }
 

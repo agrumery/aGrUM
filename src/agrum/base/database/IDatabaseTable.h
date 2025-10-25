@@ -690,7 +690,7 @@ namespace gum {
        *
        * @ingroup learning_database
        */
-      class HandlerSafe: public Handler {
+      class HandlerSafe final: public Handler {
         public:
         /// Types for STL compliance.
         /// @{

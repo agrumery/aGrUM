@@ -37,6 +37,7 @@
  *   gitlab   : https://gitlab.com/agrumery/agrum                           *
  *                                                                          *
  ****************************************************************************/
+#pragma once
 
 
 #include <iostream>
@@ -59,7 +60,7 @@
 
 namespace gum_tests {
 
-  class [[maybe_unused]] UAIBNReaderTestSuite: public CxxTest::TestSuite {
+  class GUM_TEST_SUITE(UAIBNReader) {
     public:
     GUM_ACTIVE_TEST(Constuctor) {
       std::string             file = GET_RESSOURCES_PATH("uai/BNUAIReader_file1.uai");
@@ -68,7 +69,7 @@ namespace gum_tests {
       gum::UAIBNReader< double >* reader = 0;
       TS_GUM_ASSERT_THROWS_NOTHING(reader = new gum::UAIBNReader< double >(&net, file))
       TS_GUM_ASSERT_THROWS_NOTHING(delete reader)
-    }
+    }   // namespace gum_tests
 
     GUM_ACTIVE_TEST(Read_file1) {
       std::string              file = GET_RESSOURCES_PATH("uai/BNUAIReader_file1.uai");
@@ -92,13 +93,13 @@ namespace gum_tests {
 
       gum::Size nbErr = 0;
       TS_GUM_ASSERT_THROWS_NOTHING(nbErr = reader.proceed())
-      TS_ASSERT_EQUALS(nbErr, (gum::Size)0)
+      TS_ASSERT_EQUALS(nbErr, static_cast< gum::Size >(0))
 
       TS_ASSERT_DIFFERS(net, nullptr)
 
       if (net != nullptr) {
         TS_ASSERT(!net->empty())
-        TS_ASSERT_EQUALS(net->size(), (gum::Size)5)
+        TS_ASSERT_EQUALS(net->size(), static_cast< gum::Size >(5))
 
         gum::NodeId node_1 = 0, node_2 = 0;
         node_1 = net->idFromName("0");
@@ -107,10 +108,10 @@ namespace gum_tests {
         const gum::DiscreteVariable& var_1 = net->variable(node_1);
 
         TS_ASSERT_EQUALS(var_1.name(), "0")
-        TS_ASSERT_EQUALS(var_1.domainSize(), (gum::Size)2)
+        TS_ASSERT_EQUALS(var_1.domainSize(), static_cast< gum::Size >(2))
 
         const gum::Tensor< double >& proba_1 = net->cpt(node_1);
-        TS_ASSERT_EQUALS(proba_1.domainSize(), (gum::Size)2)
+        TS_ASSERT_EQUALS(proba_1.domainSize(), static_cast< gum::Size >(2))
 
         gum::Instantiation inst_1(proba_1);
         inst_1.setFirst();
@@ -120,10 +121,10 @@ namespace gum_tests {
 
         const gum::DiscreteVariable& var_2 = net->variable(node_2);
         TS_ASSERT_EQUALS(var_2.name(), "1")
-        TS_ASSERT_EQUALS(var_2.domainSize(), (gum::Size)2)
+        TS_ASSERT_EQUALS(var_2.domainSize(), static_cast< gum::Size >(2))
 
         const gum::Tensor< double >& proba_2 = net->cpt(node_2);
-        TS_ASSERT_EQUALS(proba_2.domainSize(), (gum::Size)2)
+        TS_ASSERT_EQUALS(proba_2.domainSize(), static_cast< gum::Size >(2))
 
         gum::Instantiation inst_2(proba_2);
         inst_2.setFirst();
@@ -142,16 +143,16 @@ namespace gum_tests {
 
       gum::Size nbErr = false;
       TS_GUM_ASSERT_THROWS_NOTHING(nbErr = reader.proceed())
-      TS_ASSERT_EQUALS(nbErr, (gum::Size)0)
+      TS_ASSERT_EQUALS(nbErr, static_cast< gum::Size >(0))
 
       TS_ASSERT_DIFFERS(net, nullptr)
 
       if (net != nullptr) {
-        TS_ASSERT_EQUALS(net->size(), (gum::Size)5)
+        TS_ASSERT_EQUALS(net->size(), static_cast< gum::Size >(5))
 
         const gum::Tensor< double >& proba = net->cpt(net->idFromName("2"));
 
-        TS_ASSERT_EQUALS(proba.domainSize(), (gum::Size)8)
+        TS_ASSERT_EQUALS(proba.domainSize(), static_cast< gum::Size >(8))
 
         delete (net);
       }
@@ -164,7 +165,7 @@ namespace gum_tests {
 
       gum::Size nbErr = 0;
       TS_GUM_ASSERT_THROWS_NOTHING(nbErr = reader.proceed())
-      TS_ASSERT_EQUALS(nbErr, (gum::Size)0)
+      TS_ASSERT_EQUALS(nbErr, static_cast< gum::Size >(0))
       TS_ASSERT_DIFFERS(net, nullptr)
 
       if (net != nullptr) {
@@ -177,7 +178,7 @@ namespace gum_tests {
 
         TS_ASSERT_EQUALS(var_1.name(), "4")
 
-        TS_ASSERT_EQUALS(var_1.domainSize(), (gum::Size)2)
+        TS_ASSERT_EQUALS(var_1.domainSize(), static_cast< gum::Size >(2))
 
         TS_ASSERT_EQUALS(var_1.label(0), "0")
 
@@ -185,7 +186,7 @@ namespace gum_tests {
 
         const gum::Tensor< double >& proba_1 = net->cpt(idMap["4"]);
 
-        TS_ASSERT_EQUALS(proba_1.domainSize(), (gum::Size)2)
+        TS_ASSERT_EQUALS(proba_1.domainSize(), static_cast< gum::Size >(2))
 
         gum::Instantiation inst_1(proba_1);
 
@@ -201,7 +202,7 @@ namespace gum_tests {
 
         TS_ASSERT_EQUALS(var_2.name(), "2")
 
-        TS_ASSERT_EQUALS(var_2.domainSize(), (gum::Size)2)
+        TS_ASSERT_EQUALS(var_2.domainSize(), static_cast< gum::Size >(2))
 
         TS_ASSERT_EQUALS(var_2.label(0), "0")
 
@@ -209,7 +210,7 @@ namespace gum_tests {
 
         const gum::Tensor< double >& proba_2 = net->cpt(idMap["2"]);
 
-        TS_ASSERT_EQUALS(proba_2.domainSize(), (gum::Size)2)
+        TS_ASSERT_EQUALS(proba_2.domainSize(), static_cast< gum::Size >(2))
 
         gum::Instantiation inst_2(proba_2);
 
@@ -225,7 +226,7 @@ namespace gum_tests {
 
         TS_ASSERT_EQUALS(var_3.name(), "0")
 
-        TS_ASSERT_EQUALS(var_3.domainSize(), (gum::Size)2)
+        TS_ASSERT_EQUALS(var_3.domainSize(), static_cast< gum::Size >(2))
 
         TS_ASSERT_EQUALS(var_3.label(0), "0")
 
@@ -235,7 +236,7 @@ namespace gum_tests {
 
         const gum::Tensor< double >& proba_3 = net->cpt(idMap["0"]);
 
-        TS_ASSERT_EQUALS(proba_3.domainSize(), (gum::Size)4)
+        TS_ASSERT_EQUALS(proba_3.domainSize(), static_cast< gum::Size >(4))
 
         gum::Instantiation inst_3(proba_3);
 
@@ -263,7 +264,7 @@ namespace gum_tests {
 
         TS_ASSERT_EQUALS(var_4.name(), "3")
 
-        TS_ASSERT_EQUALS(var_4.domainSize(), (gum::Size)2)
+        TS_ASSERT_EQUALS(var_4.domainSize(), static_cast< gum::Size >(2))
 
         TS_ASSERT_EQUALS(var_4.label(0), "0")
 
@@ -275,7 +276,7 @@ namespace gum_tests {
 
         const gum::Tensor< double >& proba_4 = net->cpt(idMap["3"]);
 
-        TS_ASSERT_EQUALS(proba_4.domainSize(), (gum::Size)8)
+        TS_ASSERT_EQUALS(proba_4.domainSize(), static_cast< gum::Size >(8))
 
         gum::Instantiation inst_4(proba_4);
 
@@ -331,7 +332,7 @@ namespace gum_tests {
 
         TS_ASSERT_EQUALS(var_5.name(), "1")
 
-        TS_ASSERT_EQUALS(var_5.domainSize(), (gum::Size)3)
+        TS_ASSERT_EQUALS(var_5.domainSize(), static_cast< gum::Size >(3))
 
         TS_ASSERT_EQUALS(var_5.label(0), "0")
 
@@ -345,7 +346,7 @@ namespace gum_tests {
 
         const gum::Tensor< double >& proba_5 = net->cpt(idMap["1"]);
 
-        TS_ASSERT_EQUALS(proba_5.domainSize(), (gum::Size)12)
+        TS_ASSERT_EQUALS(proba_5.domainSize(), static_cast< gum::Size >(12))
 
         gum::Instantiation inst_5(proba_5);
 
@@ -417,7 +418,7 @@ namespace gum_tests {
 
         TS_ASSERT_EQUALS(var_6.name(), "5")
 
-        TS_ASSERT_EQUALS(var_6.domainSize(), (gum::Size)2)
+        TS_ASSERT_EQUALS(var_6.domainSize(), static_cast< gum::Size >(2))
 
         TS_ASSERT_EQUALS(var_6.label(0), "0")
 
@@ -429,7 +430,7 @@ namespace gum_tests {
 
         const gum::Tensor< double >& proba_6 = net->cpt(idMap["5"]);
 
-        TS_ASSERT_EQUALS(proba_6.domainSize(), (gum::Size)12)
+        TS_ASSERT_EQUALS(proba_6.domainSize(), static_cast< gum::Size >(12))
 
         gum::Instantiation inst_6(proba_6);
 
@@ -504,7 +505,7 @@ namespace gum_tests {
 
       gum::Size nbErr = 0;
       TS_GUM_ASSERT_THROWS_NOTHING(nbErr = reader.proceed())
-      TS_ASSERT_EQUALS(nbErr, (gum::Size)0)
+      TS_ASSERT_EQUALS(nbErr, static_cast< gum::Size >(0))
     }
 
     GUM_ACTIVE_TEST(AsiaRead) {
@@ -514,7 +515,7 @@ namespace gum_tests {
 
       gum::Size nbErr = 0;
       TS_GUM_ASSERT_THROWS_NOTHING(nbErr = reader.proceed())
-      TS_ASSERT_EQUALS(nbErr, (gum::Size)0)
+      TS_ASSERT_EQUALS(nbErr, static_cast< gum::Size >(0))
     }
   };
 }   // namespace gum_tests

@@ -73,8 +73,8 @@ namespace gum {
     template < LIST_DECL_CLASSES >
     class MAKE_NAME(BasicSignaler) : public ISignaler {
       protected:
-      using ConnectorList     = List< MAKE_NAME(IConnector) < LIST_CLASSES >* > ;
-      using ConnectorIterator = ListConstIteratorSafe< MAKE_NAME(IConnector) < LIST_CLASSES >* > ;
+      using ConnectorList     = List< MAKE_NAME(IConnector) < LIST_CLASSES >* >;
+      using ConnectorIterator = ListConstIteratorSafe< MAKE_NAME(IConnector) < LIST_CLASSES >* >;
 
       MAKE_NAME(BasicSignaler)() {
         GUM_CONSTRUCTOR(MAKE_NAME(BasicSignaler));

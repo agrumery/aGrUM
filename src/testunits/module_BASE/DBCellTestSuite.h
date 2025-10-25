@@ -37,6 +37,7 @@
  *   gitlab   : https://gitlab.com/agrumery/agrum                           *
  *                                                                          *
  ****************************************************************************/
+#pragma once
 
 
 #include <iostream>
@@ -48,7 +49,7 @@
 
 namespace gum_tests {
 
-  class [[maybe_unused]] DBCellTestSuite: public CxxTest::TestSuite {
+  class GUM_TEST_SUITE(DBCell) {
     public:
     GUM_ACTIVE_TEST(_cell1) {
       const std::vector< std::string > miss{"N/A", "???"};
@@ -170,7 +171,7 @@ namespace gum_tests {
       TS_ASSERT_THROWS(cell4.integer(), const gum::TypeError&)
       TS_ASSERT_THROWS(cell4.string(), const gum::TypeError&)
       TS_ASSERT_THROWS(cell4.real(), const gum::TypeError&)
-    }
+    }   // namespace gum_tests
   };
 
 }   // namespace gum_tests

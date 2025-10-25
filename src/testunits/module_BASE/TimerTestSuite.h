@@ -37,6 +37,7 @@
  *   gitlab   : https://gitlab.com/agrumery/agrum                           *
  *                                                                          *
  ****************************************************************************/
+#pragma once
 
 
 #include <gumtest/AgrumTestSuite.h>
@@ -46,7 +47,7 @@
 
 namespace gum_tests {
 
-  class [[maybe_unused]] TimerTestSuite: public CxxTest::TestSuite {
+  class GUM_TEST_SUITE(Timer) {
     public:
     GUM_ACTIVE_TEST(Constructors) {
       TS_GUM_ASSERT_THROWS_NOTHING(gum::Timer t1)
@@ -71,7 +72,7 @@ namespace gum_tests {
 
         delete t2;
         delete t4;
-      }
+      }   // namespace gum_tests
     }
 
     GUM_ACTIVE_TEST(Trivial) {

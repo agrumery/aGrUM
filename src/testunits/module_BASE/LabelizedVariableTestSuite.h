@@ -37,6 +37,7 @@
  *   gitlab   : https://gitlab.com/agrumery/agrum                           *
  *                                                                          *
  ****************************************************************************/
+#pragma once
 
 
 #include <iostream>
@@ -50,7 +51,7 @@
 
 namespace gum_tests {
 
-  class [[maybe_unused]] LabelizedVariableTestSuite: public CxxTest::TestSuite {
+  class GUM_TEST_SUITE(LabelizedVariable) {
     public:
     GUM_ACTIVE_TEST(Copy) {
       gum::LabelizedVariable var1("var1", "this is var1", 2);
@@ -63,17 +64,17 @@ namespace gum_tests {
       TS_ASSERT_EQUALS(var4, var2)
       TS_ASSERT_EQUALS(var1, var3)
       TS_ASSERT_DIFFERS(var4, var1)
-    }
+    }   // namespace gum_tests
 
     GUM_ACTIVE_TEST(Labels) {
       gum::LabelizedVariable var1("var1", "this is var1", 0);
-      TS_ASSERT_EQUALS(var1.domainSize(), (gum::Size)0)
+      TS_ASSERT_EQUALS(var1.domainSize(), static_cast< gum::Size >(0))
       TS_ASSERT(var1.empty())
       var1.addLabel("4").addLabel("3").addLabel("2").addLabel("1");
 
-      TS_ASSERT_EQUALS(var1.domainSize(), (gum::Size)4)
+      TS_ASSERT_EQUALS(var1.domainSize(), static_cast< gum::Size >(4))
       TS_ASSERT_EQUALS(var1.label(1), "3")
-      TS_ASSERT_EQUALS(var1["3"], (gum::Idx)1)
+      TS_ASSERT_EQUALS(var1["3"], static_cast< gum::Idx >(1))
 
       TS_ASSERT_THROWS(var1.addLabel("3"), const gum::DuplicateElement&)
 

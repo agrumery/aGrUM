@@ -37,6 +37,7 @@
  *   gitlab   : https://gitlab.com/agrumery/agrum                           *
  *                                                                          *
  ****************************************************************************/
+#pragma once
 
 
 #include <iostream>
@@ -67,7 +68,7 @@
 //          U2
 
 namespace gum_tests {
-  class [[maybe_unused]] BIFXMLIDWriterTestSuite: public CxxTest::TestSuite {
+  class GUM_TEST_SUITE(BIFXMLIDWriter) {
     private:
     void fillTopo(gum::InfluenceDiagram< double >& infDiag, gum::List< gum::NodeId >& idList) {
       try {

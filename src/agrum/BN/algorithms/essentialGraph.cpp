@@ -50,7 +50,7 @@
 
 #ifdef GUM_NO_INLINE
 #  include <agrum/BN/algorithms/essentialGraph_inl.h>
-#endif   // GUM_NOINLINE
+#endif   // GU%_NO_INLINE
 
 namespace gum {
   EssentialGraph::EssentialGraph(const DAGmodel& m) : _dagmodel_(&m) { _buildEssentialGraph_(); }

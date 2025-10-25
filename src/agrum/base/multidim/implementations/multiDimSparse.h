@@ -69,7 +69,7 @@ namespace gum {
    * table.
    */
   template < typename GUM_SCALAR >
-  class MultiDimSparse: public MultiDimWithOffset< GUM_SCALAR > {
+  class MultiDimSparse final: public MultiDimWithOffset< GUM_SCALAR > {
     public:
     // =========================================================================
     /// @name Constructors / Destructors

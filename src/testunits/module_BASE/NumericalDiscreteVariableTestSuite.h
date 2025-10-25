@@ -37,6 +37,7 @@
  *   gitlab   : https://gitlab.com/agrumery/agrum                           *
  *                                                                          *
  ****************************************************************************/
+#pragma once
 
 
 #include <iostream>
@@ -50,39 +51,39 @@
 
 namespace gum_tests {
 
-  class [[maybe_unused]] NumericalDiscreteVariableTestSuite: public CxxTest::TestSuite {
+  class GUM_TEST_SUITE(NumericalDiscreteVariable) {
     public:
     GUM_ACTIVE_TEST(All) {
       gum::NumericalDiscreteVariable var1("var1", "this is var1");
       gum::NumericalDiscreteVariable var2("var2", "this is var2", {1.0, 9.45, 7.0});
 
-      TS_ASSERT_EQUALS(var1.domainSize(), (gum::Size)0)
+      TS_ASSERT_EQUALS(var1.domainSize(), static_cast< gum::Size >(0))
       const auto& vect1 = var1.numericalDomain();
-      TS_ASSERT_EQUALS(vect1.size(), (gum::Size)(gum::Size)0)
-      TS_ASSERT_EQUALS(var2.domainSize(), (gum::Size)3)
+      TS_ASSERT_EQUALS(vect1.size(), (gum::Size) static_cast< gum::Size >(0))
+      TS_ASSERT_EQUALS(var2.domainSize(), static_cast< gum::Size >(3))
       const auto& vect2 = var2.numericalDomain();
       TS_ASSERT_EQUALS(vect2[0], 1.0)
       TS_ASSERT_EQUALS(vect2[1], 7.0)
       TS_ASSERT_EQUALS(vect2[2], 9.45)
 
       gum::NumericalDiscreteVariable var3(var2);
-      TS_ASSERT_EQUALS(var3.domainSize(), (gum::Size)3)
+      TS_ASSERT_EQUALS(var3.domainSize(), static_cast< gum::Size >(3))
       const auto& vect3 = var3.numericalDomain();
       TS_ASSERT_EQUALS(vect3[0], 1.0)
       TS_ASSERT_EQUALS(vect3[1], 7.0)
       TS_ASSERT_EQUALS(vect3[2], 9.45)
 
       gum::NumericalDiscreteVariable var4(std::move(var3));
-      TS_ASSERT_EQUALS(var4.domainSize(), (gum::Size)3)
+      TS_ASSERT_EQUALS(var4.domainSize(), static_cast< gum::Size >(3))
       const auto& vect4 = var4.numericalDomain();
       TS_ASSERT_EQUALS(vect4[0], 1.0)
       TS_ASSERT_EQUALS(vect4[1], 7.0)
       TS_ASSERT_EQUALS(vect4[2], 9.45)
       TS_ASSERT(vect3.empty())
-      TS_ASSERT_EQUALS(var3.domainSize(), (gum::Size)0)
+      TS_ASSERT_EQUALS(var3.domainSize(), static_cast< gum::Size >(0))
 
       gum::NumericalDiscreteVariable* var5 = var4.clone();
-      TS_ASSERT_EQUALS(var5->domainSize(), (gum::Size)3)
+      TS_ASSERT_EQUALS(var5->domainSize(), static_cast< gum::Size >(3))
       const auto& vect5 = var5->numericalDomain();
       TS_ASSERT_EQUALS(vect5[0], 1.0)
       TS_ASSERT_EQUALS(vect5[1], 7.0)
@@ -90,9 +91,9 @@ namespace gum_tests {
 
       gum::NumericalDiscreteVariable var6("var6", "", {-2, -1, 4.25, 8});
       gum::NumericalDiscreteVariable var7 = var2;
-      TS_ASSERT_EQUALS(var7.domainSize(), (gum::Size)3)
+      TS_ASSERT_EQUALS(var7.domainSize(), static_cast< gum::Size >(3))
       var7 = var6;
-      TS_ASSERT_EQUALS(var7.domainSize(), (gum::Size)4)
+      TS_ASSERT_EQUALS(var7.domainSize(), static_cast< gum::Size >(4))
       const auto& vect7 = var7.numericalDomain();
       TS_ASSERT_EQUALS(vect7[0], -2)
       TS_ASSERT_EQUALS(vect7[1], -1)
@@ -104,7 +105,7 @@ namespace gum_tests {
       TS_ASSERT_EQUALS(vect3[1], -1)
       TS_ASSERT_EQUALS(vect3[2], 4.25)
       TS_ASSERT_EQUALS(vect3[3], 8)
-      TS_ASSERT_EQUALS(var7.domainSize(), (gum::Size)0)
+      TS_ASSERT_EQUALS(var7.domainSize(), static_cast< gum::Size >(0))
 
       TS_ASSERT_DIFFERS(var7, var6)
       TS_ASSERT_EQUALS(var3, var6)
@@ -135,19 +136,19 @@ namespace gum_tests {
       TS_ASSERT_EQUALS(var1.domain(), "{}")
 
       var1.addValue(4.25);
-      TS_ASSERT_EQUALS(vect1.size(), (gum::Size)1)
+      TS_ASSERT_EQUALS(vect1.size(), static_cast< gum::Size >(1))
       TS_ASSERT_EQUALS(vect1[0], 4.25)
       var1.addValue(8);
-      TS_ASSERT_EQUALS(vect1.size(), (gum::Size)2)
+      TS_ASSERT_EQUALS(vect1.size(), static_cast< gum::Size >(2))
       TS_ASSERT_EQUALS(vect1[0], 4.25)
       TS_ASSERT_EQUALS(vect1[1], 8)
       var1.addValue(6);
-      TS_ASSERT_EQUALS(vect1.size(), (gum::Size)3)
+      TS_ASSERT_EQUALS(vect1.size(), static_cast< gum::Size >(3))
       TS_ASSERT_EQUALS(vect1[0], 4.25)
       TS_ASSERT_EQUALS(vect1[1], 6)
       TS_ASSERT_EQUALS(vect1[2], 8)
       var1.addValue(2);
-      TS_ASSERT_EQUALS(vect1.size(), (gum::Size)4)
+      TS_ASSERT_EQUALS(vect1.size(), static_cast< gum::Size >(4))
       TS_ASSERT_EQUALS(vect1[0], 2)
       TS_ASSERT_EQUALS(vect1[1], 4.25)
       TS_ASSERT_EQUALS(vect1[2], 6)
@@ -158,42 +159,42 @@ namespace gum_tests {
       TS_ASSERT_THROWS(var1.addValue(8), const gum::DuplicateElement&)
 
       var1.changeValue(6, 7);
-      TS_ASSERT_EQUALS(vect1.size(), (gum::Size)4)
+      TS_ASSERT_EQUALS(vect1.size(), static_cast< gum::Size >(4))
       TS_ASSERT_EQUALS(vect1[0], 2)
       TS_ASSERT_EQUALS(vect1[1], 4.25)
       TS_ASSERT_EQUALS(vect1[2], 7)
       TS_ASSERT_EQUALS(vect1[3], 8)
 
       var1.changeValue(7, 3);
-      TS_ASSERT_EQUALS(vect1.size(), (gum::Size)4)
+      TS_ASSERT_EQUALS(vect1.size(), static_cast< gum::Size >(4))
       TS_ASSERT_EQUALS(vect1[0], 2)
       TS_ASSERT_EQUALS(vect1[1], 3)
       TS_ASSERT_EQUALS(vect1[2], 4.25)
       TS_ASSERT_EQUALS(vect1[3], 8)
 
       var1.changeValue(3, 0);
-      TS_ASSERT_EQUALS(vect1.size(), (gum::Size)4)
+      TS_ASSERT_EQUALS(vect1.size(), static_cast< gum::Size >(4))
       TS_ASSERT_EQUALS(vect1[0], 0)
       TS_ASSERT_EQUALS(vect1[1], 2)
       TS_ASSERT_EQUALS(vect1[2], 4.25)
       TS_ASSERT_EQUALS(vect1[3], 8)
 
       var1.changeValue(0, 10);
-      TS_ASSERT_EQUALS(vect1.size(), (gum::Size)4)
+      TS_ASSERT_EQUALS(vect1.size(), static_cast< gum::Size >(4))
       TS_ASSERT_EQUALS(vect1[0], 2)
       TS_ASSERT_EQUALS(vect1[1], 4.25)
       TS_ASSERT_EQUALS(vect1[2], 8)
       TS_ASSERT_EQUALS(vect1[3], 10)
 
       var1.changeValue(4.25, 12.25);
-      TS_ASSERT_EQUALS(vect1.size(), (gum::Size)4)
+      TS_ASSERT_EQUALS(vect1.size(), static_cast< gum::Size >(4))
       TS_ASSERT_EQUALS(vect1[0], 2)
       TS_ASSERT_EQUALS(vect1[1], 8)
       TS_ASSERT_EQUALS(vect1[2], 10)
       TS_ASSERT_EQUALS(vect1[3], 12.25)
 
       TS_ASSERT_THROWS(var1.changeValue(12.25, 10), const gum::DuplicateElement&)
-      TS_ASSERT_EQUALS(vect1.size(), (gum::Size)4)
+      TS_ASSERT_EQUALS(vect1.size(), static_cast< gum::Size >(4))
       TS_ASSERT_EQUALS(vect1[0], 2)
       TS_ASSERT_EQUALS(vect1[1], 8)
       TS_ASSERT_EQUALS(vect1[2], 10)
@@ -202,34 +203,34 @@ namespace gum_tests {
       TS_ASSERT_THROWS_NOTHING(var1.changeValue(22, 10))
 
       var1.eraseValue(8);
-      TS_ASSERT_EQUALS(vect1.size(), (gum::Size)3)
+      TS_ASSERT_EQUALS(vect1.size(), static_cast< gum::Size >(3))
       TS_ASSERT_EQUALS(vect1[0], 2)
       TS_ASSERT_EQUALS(vect1[1], 10)
       TS_ASSERT_EQUALS(vect1[2], 12.25)
 
       TS_GUM_ASSERT_THROWS_NOTHING(var1.eraseValue(22))
       var1.eraseValue(2);
-      TS_ASSERT_EQUALS(vect1.size(), (gum::Size)2)
+      TS_ASSERT_EQUALS(vect1.size(), static_cast< gum::Size >(2))
       TS_ASSERT_EQUALS(vect1[0], 10)
       TS_ASSERT_EQUALS(vect1[1], 12.25)
       var1.eraseValue(12.25);
-      TS_ASSERT_EQUALS(vect1.size(), (gum::Size)1)
+      TS_ASSERT_EQUALS(vect1.size(), static_cast< gum::Size >(1))
       TS_ASSERT_EQUALS(vect1[0], 10)
 
-      TS_ASSERT_EQUALS(var6.domainSize(), (gum::Size)4)
+      TS_ASSERT_EQUALS(var6.domainSize(), static_cast< gum::Size >(4))
       var6.eraseValues();
-      TS_ASSERT_EQUALS(var6.domainSize(), (gum::Size)0)
+      TS_ASSERT_EQUALS(var6.domainSize(), static_cast< gum::Size >(0))
 
       delete var5;
-    }
+    }   // namespace gum_tests
 
     GUM_ACTIVE_TEST(SecondConstructor) {
       {
         gum::NumericalDiscreteVariable var("var", "this is var2", 0.0, 2.5, gum::Size(6));
 
-        TS_ASSERT_EQUALS(var.domainSize(), (gum::Size)6)
+        TS_ASSERT_EQUALS(var.domainSize(), static_cast< gum::Size >(6))
         const auto& vect = var.numericalDomain();
-        TS_ASSERT_EQUALS(vect.size(), (gum::Size)(gum::Size)6)
+        TS_ASSERT_EQUALS(vect.size(), (gum::Size) static_cast< gum::Size >(6))
         TS_ASSERT_EQUALS(vect[0], 0.0)
         TS_ASSERT_EQUALS(vect[1], 0.5)
         TS_ASSERT_EQUALS(vect[2], 1.0)
@@ -240,9 +241,9 @@ namespace gum_tests {
       {
         gum::NumericalDiscreteVariable var("var", "this is var2", 0.0, 2.5, gum::Size(7));
 
-        TS_ASSERT_EQUALS(var.domainSize(), (gum::Size)7)
+        TS_ASSERT_EQUALS(var.domainSize(), static_cast< gum::Size >(7))
         const auto& vect = var.numericalDomain();
-        TS_ASSERT_EQUALS(vect.size(), (gum::Size)(gum::Size)7)
+        TS_ASSERT_EQUALS(vect.size(), (gum::Size) static_cast< gum::Size >(7))
         TS_ASSERT_EQUALS(vect[0], 0.0)
         TS_ASSERT_EQUALS(vect[1], 0.4167)
         TS_ASSERT_EQUALS(vect[2], 0.8333)

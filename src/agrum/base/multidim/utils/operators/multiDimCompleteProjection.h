@@ -65,7 +65,7 @@ namespace gum {
   // clang-format on
 
   template < typename GUM_SCALAR, template < typename > class TABLE >
-  class MultiDimCompleteProjection {
+  class MultiDimCompleteProjection final {
     public:
     // ========================================================================
     /// @name Constructors / Destructors

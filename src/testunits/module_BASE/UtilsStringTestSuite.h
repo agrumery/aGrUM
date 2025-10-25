@@ -37,6 +37,7 @@
  *   gitlab   : https://gitlab.com/agrumery/agrum                           *
  *                                                                          *
  ****************************************************************************/
+#pragma once
 
 
 #include <gumtest/AgrumTestSuite.h>
@@ -46,7 +47,7 @@
 
 namespace gum_tests {
 
-  class [[maybe_unused]] UtilsStringTestSuite: public CxxTest::TestSuite {
+  class GUM_TEST_SUITE(UtilsString) {
     public:
     GUM_ACTIVE_TEST(IsInteger) {
       TS_ASSERT(gum::isInteger("12"))
@@ -102,7 +103,7 @@ namespace gum_tests {
       TS_ASSERT(gum::isIntegerWithResult("-12", &res))
       TS_ASSERT_EQUALS(res, -12)
       TS_ASSERT(!gum::isIntegerWithResult("1-2", &res))
-    }
+    }   // namespace gum_tests
 
     GUM_ACTIVE_TEST(isNumericalWithResWithResult) {
       double res;

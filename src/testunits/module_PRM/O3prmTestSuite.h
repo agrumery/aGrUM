@@ -37,6 +37,7 @@
  *   gitlab   : https://gitlab.com/agrumery/agrum                           *
  *                                                                          *
  ****************************************************************************/
+#pragma once
 
 
 #include <iostream>
@@ -53,7 +54,7 @@
 
 namespace gum_tests {
 
-  class [[maybe_unused]] O3prmTestSuite: public CxxTest::TestSuite {
+  class GUM_TEST_SUITE(O3prm) {
     public:
     void setUp() {
       // std::cerr << std::endl;
@@ -65,17 +66,23 @@ namespace gum_tests {
       try {
         gum::prm::o3prm::O3prmReader< double > reader;
         TS_GUM_ASSERT_THROWS_NOTHING(reader.readFile(GET_RESSOURCES_PATH("o3prm/types.o3prm")))
-        TS_ASSERT_EQUALS(reader.warnings(), (gum::Size)0)
-        TS_ASSERT_EQUALS(reader.errors(), (gum::Size)0)
+        TS_ASSERT_EQUALS(reader.warnings(), static_cast< gum::Size >(0))
+        TS_ASSERT_EQUALS(reader.errors(), static_cast< gum::Size >(0))
         reader.showElegantErrorsAndWarnings(std::cout);
         gum::prm::PRM< double >* prm = reader.prm();
-        TS_ASSERT_EQUALS(prm->type("t_state").variable().domainSize(), (gum::Size)2)
-        TS_ASSERT_EQUALS(prm->type("t_ink").variable().domainSize(), (gum::Size)2)
-        TS_ASSERT_EQUALS(prm->type("t_degraded").variable().domainSize(), (gum::Size)3)
-        TS_ASSERT_EQUALS(prm->type("t_bw_p").variable().domainSize(), (gum::Size)4)
-        TS_ASSERT_EQUALS(prm->type("t_color_p").variable().domainSize(), (gum::Size)5)
+        TS_ASSERT_EQUALS(prm->type("t_state").variable().domainSize(), static_cast< gum::Size >(2))
+        TS_ASSERT_EQUALS(prm->type("t_ink").variable().domainSize(), static_cast< gum::Size >(2))
+        TS_ASSERT_EQUALS(prm->type("t_degraded").variable().domainSize(),
+                         static_cast< gum::Size >(3))
+        TS_ASSERT_EQUALS(prm->type("t_bw_p").variable().domainSize(), static_cast< gum::Size >(4))
+        TS_ASSERT_EQUALS(prm->type("t_color_p").variable().domainSize(),
+                         static_cast< gum::Size >(5))
         delete prm;
-      } catch (gum::Exception&) { TS_ASSERT(false) }
+      }   // namespace gum_tests
+
+      catch (gum::Exception&) {
+        TS_ASSERT(false)
+      }
     }
 
     GUM_ACTIVE_TEST(SubTypes) {
@@ -102,7 +109,7 @@ namespace gum_tests {
         TS_ASSERT(prm->type("t_color_p").isSubTypeOf(prm->type("boolean")))
         TS_ASSERT(prm->type("t_color_p").isSubTypeOf(prm->type("t_state")))
         TS_ASSERT(prm->type("t_color_p").isSubTypeOf(prm->type("t_degraded")))
-        TS_ASSERT_EQUALS(prm->types().size(), (gum::Size)7)
+        TS_ASSERT_EQUALS(prm->types().size(), static_cast< gum::Size >(7))
         delete prm;
       } catch (gum::Exception&) { TS_ASSERT(false) }
     }
@@ -111,11 +118,11 @@ namespace gum_tests {
       try {
         gum::prm::o3prm::O3prmReader< double > reader;
         TS_GUM_ASSERT_THROWS_NOTHING(reader.readFile(GET_RESSOURCES_PATH("o3prm/printers.o3prm")))
-        TS_ASSERT_EQUALS(reader.warnings(), (gum::Size)0)
-        TS_ASSERT_EQUALS(reader.errors(), (gum::Size)0)
+        TS_ASSERT_EQUALS(reader.warnings(), static_cast< gum::Size >(0))
+        TS_ASSERT_EQUALS(reader.errors(), static_cast< gum::Size >(0))
         reader.showElegantErrorsAndWarnings();
         gum::prm::PRM< double >* prm = reader.prm();
-        TS_ASSERT_EQUALS(prm->classes().size(), (gum::Size)5)
+        TS_ASSERT_EQUALS(prm->classes().size(), static_cast< gum::Size >(5))
         TS_GUM_ASSERT_THROWS_NOTHING(prm->getClass("PowerSupply"))
         TS_GUM_ASSERT_THROWS_NOTHING(prm->getClass("Room"))
         TS_GUM_ASSERT_THROWS_NOTHING(prm->getClass("Equipment"))
@@ -132,10 +139,10 @@ namespace gum_tests {
         gum::prm::PRM< double >* prm = reader.prm();
         TS_GUM_ASSERT_THROWS_NOTHING(prm->getClass("PowerSupply"))
         gum::prm::PRMClass< double >& c = prm->getClass("PowerSupply");
-        TS_ASSERT_EQUALS(c.attributes().size(), (gum::Size)1)
-        TS_ASSERT_EQUALS(c.referenceSlots().size(), (gum::Size)0)
-        TS_ASSERT_EQUALS(c.aggregates().size(), (gum::Size)0)
-        TS_ASSERT_EQUALS(c.slotChains().size(), (gum::Size)0)
+        TS_ASSERT_EQUALS(c.attributes().size(), static_cast< gum::Size >(1))
+        TS_ASSERT_EQUALS(c.referenceSlots().size(), static_cast< gum::Size >(0))
+        TS_ASSERT_EQUALS(c.aggregates().size(), static_cast< gum::Size >(0))
+        TS_ASSERT_EQUALS(c.slotChains().size(), static_cast< gum::Size >(0))
         delete prm;
       } catch (gum::Exception&) { TS_ASSERT(false) }
     }
@@ -147,10 +154,10 @@ namespace gum_tests {
         gum::prm::PRM< double >* prm = reader.prm();
         TS_GUM_ASSERT_THROWS_NOTHING(prm->getClass("Room"))
         gum::prm::PRMClass< double >& c = prm->getClass("Room");
-        TS_ASSERT_EQUALS(c.attributes().size(), (gum::Size)0)
-        TS_ASSERT_EQUALS(c.referenceSlots().size(), (gum::Size)1)
-        TS_ASSERT_EQUALS(c.aggregates().size(), (gum::Size)0)
-        TS_ASSERT_EQUALS(c.slotChains().size(), (gum::Size)0)
+        TS_ASSERT_EQUALS(c.attributes().size(), static_cast< gum::Size >(0))
+        TS_ASSERT_EQUALS(c.referenceSlots().size(), static_cast< gum::Size >(1))
+        TS_ASSERT_EQUALS(c.aggregates().size(), static_cast< gum::Size >(0))
+        TS_ASSERT_EQUALS(c.slotChains().size(), static_cast< gum::Size >(0))
         delete prm;
       } catch (gum::Exception&) { TS_ASSERT(false) }
     }
@@ -162,10 +169,10 @@ namespace gum_tests {
         gum::prm::PRM< double >* prm = reader.prm();
         TS_GUM_ASSERT_THROWS_NOTHING(prm->getClass("Equipment"))
         gum::prm::PRMClass< double >& c = prm->getClass("Equipment");
-        TS_ASSERT_EQUALS(c.attributes().size(), (gum::Size)1)
-        TS_ASSERT_EQUALS(c.referenceSlots().size(), (gum::Size)1)
-        TS_ASSERT_EQUALS(c.aggregates().size(), (gum::Size)0)
-        TS_ASSERT_EQUALS(c.slotChains().size(), (gum::Size)1)
+        TS_ASSERT_EQUALS(c.attributes().size(), static_cast< gum::Size >(1))
+        TS_ASSERT_EQUALS(c.referenceSlots().size(), static_cast< gum::Size >(1))
+        TS_ASSERT_EQUALS(c.aggregates().size(), static_cast< gum::Size >(0))
+        TS_ASSERT_EQUALS(c.slotChains().size(), static_cast< gum::Size >(1))
         delete prm;
       } catch (gum::Exception&) { TS_ASSERT(false) }
     }
@@ -177,10 +184,10 @@ namespace gum_tests {
         gum::prm::PRM< double >* prm = reader.prm();
         TS_GUM_ASSERT_THROWS_NOTHING(prm->getClass("Printer"))
         gum::prm::PRMClass< double >& c = prm->getClass("Printer");
-        TS_ASSERT_EQUALS(c.attributes().size(), (gum::Size)3)
-        TS_ASSERT_EQUALS(c.referenceSlots().size(), (gum::Size)1)
-        TS_ASSERT_EQUALS(c.aggregates().size(), (gum::Size)0)
-        TS_ASSERT_EQUALS(c.slotChains().size(), (gum::Size)1)
+        TS_ASSERT_EQUALS(c.attributes().size(), static_cast< gum::Size >(3))
+        TS_ASSERT_EQUALS(c.referenceSlots().size(), static_cast< gum::Size >(1))
+        TS_ASSERT_EQUALS(c.aggregates().size(), static_cast< gum::Size >(0))
+        TS_ASSERT_EQUALS(c.slotChains().size(), static_cast< gum::Size >(1))
         delete prm;
       } catch (gum::Exception&) { TS_ASSERT(false) }
     }
@@ -192,10 +199,10 @@ namespace gum_tests {
         gum::prm::PRM< double >* prm = reader.prm();
         TS_GUM_ASSERT_THROWS_NOTHING(prm->getClass("Computer"))
         gum::prm::PRMClass< double >& c = prm->getClass("Computer");
-        TS_ASSERT_EQUALS(c.attributes().size(), (gum::Size)2)
-        TS_ASSERT_EQUALS(c.referenceSlots().size(), (gum::Size)2)
-        TS_ASSERT_EQUALS(c.aggregates().size(), (gum::Size)1)
-        TS_ASSERT_EQUALS(c.slotChains().size(), (gum::Size)2)
+        TS_ASSERT_EQUALS(c.attributes().size(), static_cast< gum::Size >(2))
+        TS_ASSERT_EQUALS(c.referenceSlots().size(), static_cast< gum::Size >(2))
+        TS_ASSERT_EQUALS(c.aggregates().size(), static_cast< gum::Size >(1))
+        TS_ASSERT_EQUALS(c.slotChains().size(), static_cast< gum::Size >(2))
         delete prm;
       } catch (gum::Exception&) { TS_ASSERT(false) }
     }
@@ -207,19 +214,19 @@ namespace gum_tests {
         std::string file    = GET_RESSOURCES_PATH("o3prm/complexprinters.o3prm");
         std::string package = "fr.lip6.printers";
         TS_GUM_ASSERT_THROWS_NOTHING(reader.readFile(file, package))
-        TS_ASSERT_EQUALS(reader.warnings(), (gum::Size)0)
-        TS_ASSERT_EQUALS(reader.errors(), (gum::Size)0)
+        TS_ASSERT_EQUALS(reader.warnings(), static_cast< gum::Size >(0))
+        TS_ASSERT_EQUALS(reader.errors(), static_cast< gum::Size >(0))
         reader.showElegantErrorsAndWarnings();
         gum::prm::PRM< double >* prm = 0;
         TS_GUM_ASSERT_THROWS_NOTHING(prm = reader.prm())
         if (prm) {
-          TS_ASSERT_EQUALS(prm->classes().size(), (gum::Size)7)
+          TS_ASSERT_EQUALS(prm->classes().size(), static_cast< gum::Size >(7))
           TS_GUM_ASSERT_THROWS_NOTHING(prm->getClass("fr.lip6.printers.PowerSupply"))
           TS_GUM_ASSERT_THROWS_NOTHING(prm->getClass("fr.lip6.printers.Room"))
           TS_GUM_ASSERT_THROWS_NOTHING(prm->getClass("fr.lip6.printers.BWPrinter"))
           TS_GUM_ASSERT_THROWS_NOTHING(prm->getClass("fr.lip6.printers.ColorPrinter"))
           TS_GUM_ASSERT_THROWS_NOTHING(prm->getClass("fr.lip6.printers.Computer"))
-          TS_ASSERT_EQUALS(prm->interfaces().size(), (gum::Size)2)
+          TS_ASSERT_EQUALS(prm->interfaces().size(), static_cast< gum::Size >(2))
           TS_GUM_ASSERT_THROWS_NOTHING(prm->getInterface("fr.lip6.printers.Equipment"))
           TS_GUM_ASSERT_THROWS_NOTHING(prm->getInterface("fr.lip6.printers.Printer"))
           delete prm;
@@ -393,8 +400,8 @@ namespace gum_tests {
         gum::prm::PRM< double >* prm = reader.prm();
         // Classes
         gum::prm::PRMClass< double >& PowerSupply = prm->getClass("fr.lip6.printers.PowerSupply");
-        TS_ASSERT_EQUALS(PowerSupply.attributes().size(), (gum::Size)2)
-        TS_ASSERT_EQUALS(PowerSupply.containerDag().sizeArcs(), (gum::Size)1)
+        TS_ASSERT_EQUALS(PowerSupply.attributes().size(), static_cast< gum::Size >(2))
+        TS_ASSERT_EQUALS(PowerSupply.containerDag().sizeArcs(), static_cast< gum::Size >(1))
         TS_GUM_ASSERT_THROWS_NOTHING(PowerSupply["(boolean)state"])
         TS_GUM_ASSERT_THROWS_NOTHING(PowerSupply["state"])
         TS_ASSERT(PowerSupply["state"].type().isSubTypeOf(PowerSupply["(boolean)state"].type()))
@@ -406,9 +413,9 @@ namespace gum_tests {
         TS_GUM_ASSERT_THROWS_NOTHING(n3 = PowerSupply["(fr.lip6.printers.t_state)state"].id())
         TS_ASSERT_EQUALS(n2, n3)
         TS_ASSERT(PowerSupply.containerDag().existsArc(n2, n1))
-        TS_ASSERT_EQUALS(PowerSupply.referenceSlots().size(), (gum::Size)0)
-        TS_ASSERT_EQUALS(PowerSupply.aggregates().size(), (gum::Size)0)
-        TS_ASSERT_EQUALS(PowerSupply.slotChains().size(), (gum::Size)0)
+        TS_ASSERT_EQUALS(PowerSupply.referenceSlots().size(), static_cast< gum::Size >(0))
+        TS_ASSERT_EQUALS(PowerSupply.aggregates().size(), static_cast< gum::Size >(0))
+        TS_ASSERT_EQUALS(PowerSupply.slotChains().size(), static_cast< gum::Size >(0))
         // Testing interfaces for the state attribute and its cast descendant
         TS_ASSERT(!PowerSupply.isOutputNode(PowerSupply["(boolean)state"]))
         TS_ASSERT(!PowerSupply.isInputNode(PowerSupply["(boolean)state"]))
@@ -432,10 +439,10 @@ namespace gum_tests {
         TS_GUM_ASSERT_THROWS_NOTHING(reader.readFile(file, package))
         gum::prm::PRM< double >*      prm  = reader.prm();
         gum::prm::PRMClass< double >& Room = prm->getClass("fr.lip6.printers.Room");
-        TS_ASSERT_EQUALS(Room.attributes().size(), (gum::Size)0)
-        TS_ASSERT_EQUALS(Room.referenceSlots().size(), (gum::Size)1)
-        TS_ASSERT_EQUALS(Room.aggregates().size(), (gum::Size)0)
-        TS_ASSERT_EQUALS(Room.slotChains().size(), (gum::Size)0)
+        TS_ASSERT_EQUALS(Room.attributes().size(), static_cast< gum::Size >(0))
+        TS_ASSERT_EQUALS(Room.referenceSlots().size(), static_cast< gum::Size >(1))
+        TS_ASSERT_EQUALS(Room.aggregates().size(), static_cast< gum::Size >(0))
+        TS_ASSERT_EQUALS(Room.slotChains().size(), static_cast< gum::Size >(0))
         delete prm;
       } catch (gum::Exception&) { TS_ASSERT(false) }
     }
@@ -450,8 +457,8 @@ namespace gum_tests {
         gum::prm::PRM< double >*          prm = reader.prm();
         gum::prm::PRMInterface< double >& Equipment
             = prm->getInterface("fr.lip6.printers.Equipment");
-        TS_ASSERT_EQUALS(Equipment.referenceSlots().size(), (gum::Size)1)
-        TS_ASSERT_EQUALS(Equipment.attributes().size(), (gum::Size)3)
+        TS_ASSERT_EQUALS(Equipment.referenceSlots().size(), static_cast< gum::Size >(1))
+        TS_ASSERT_EQUALS(Equipment.attributes().size(), static_cast< gum::Size >(3))
         TS_GUM_ASSERT_THROWS_NOTHING(Equipment["equipState"])
         TS_ASSERT_EQUALS(Equipment["equipState"].type().name(), "fr.lip6.printers.t_degraded")
         TS_GUM_ASSERT_THROWS_NOTHING(Equipment["(fr.lip6.printers.t_state)equipState"])
@@ -494,8 +501,8 @@ namespace gum_tests {
         gum::prm::PRM< double >* prm = reader.prm();
         TS_GUM_ASSERT_THROWS_NOTHING(prm->getInterface("fr.lip6.printers.Printer"))
         gum::prm::PRMInterface< double >& Printer = prm->getInterface("fr.lip6.printers.Printer");
-        TS_ASSERT_EQUALS(Printer.referenceSlots().size(), (gum::Size)1)
-        TS_ASSERT_EQUALS(Printer.attributes().size(), (gum::Size)5)
+        TS_ASSERT_EQUALS(Printer.referenceSlots().size(), static_cast< gum::Size >(1))
+        TS_ASSERT_EQUALS(Printer.attributes().size(), static_cast< gum::Size >(5))
         TS_GUM_ASSERT_THROWS_NOTHING(Printer["room"])
         TS_GUM_ASSERT_THROWS_NOTHING(Printer["equipState"])
         TS_GUM_ASSERT_THROWS_NOTHING(Printer["hasPaper"])
@@ -556,10 +563,10 @@ namespace gum_tests {
     //         prm->getClass( "fr.lip6.printers.BWPrinter" ) );
     //     gum::prm::Class<double>& BWPrinter =
     //         prm->getClass( "fr.lip6.printers.BWPrinter" );
-    //     TS_ASSERT_EQUALS( BWPrinter.referenceSlots().size(), (gum::Size)1 )
-    //     TS_ASSERT_EQUALS( BWPrinter.attributes().size(), (gum::Size)9 )
-    //     TS_ASSERT_EQUALS( BWPrinter.slotChains().size(), (gum::Size)1 )
-    //     TS_ASSERT_EQUALS( BWPrinter.aggregates().size(), (gum::Size)0 )
+    //     TS_ASSERT_EQUALS( BWPrinter.referenceSlots().size(), static_cast<gum::Size>(1) )
+    //     TS_ASSERT_EQUALS( BWPrinter.attributes().size(), static_cast<gum::Size>(9) )
+    //     TS_ASSERT_EQUALS( BWPrinter.slotChains().size(), static_cast<gum::Size>(1) )
+    //     TS_ASSERT_EQUALS( BWPrinter.aggregates().size(), static_cast<gum::Size>(0) )
     //     TS_GUM_ASSERT_THROWS_NOTHING( BWPrinter["room"] )
     //     TS_GUM_ASSERT_THROWS_NOTHING( BWPrinter["(boolean)equipState"] )
     //     TS_GUM_ASSERT_THROWS_NOTHING(
@@ -674,11 +681,11 @@ namespace gum_tests {
     //        prm->getClass( "fr.lip6.printers.ColorPrinter" ) );
     //    gum::prm::Class<double>& ColorPrinter =
     //        prm->getClass( "fr.lip6.printers.ColorPrinter" );
-    //    TS_ASSERT_EQUALS( ColorPrinter.referenceSlots().size(), (gum::Size)1
+    //    TS_ASSERT_EQUALS( ColorPrinter.referenceSlots().size(), static_cast<gum::Size>(1)
     //    );
-    //    TS_ASSERT_EQUALS( ColorPrinter.attributes().size(), (gum::Size)19 )
-    //    TS_ASSERT_EQUALS( ColorPrinter.aggregates().size(), (gum::Size)0 )
-    //    TS_ASSERT_EQUALS( ColorPrinter.slotChains().size(), (gum::Size)1 )
+    //    TS_ASSERT_EQUALS( ColorPrinter.attributes().size(), static_cast<gum::Size>(19) )
+    //    TS_ASSERT_EQUALS( ColorPrinter.aggregates().size(), static_cast<gum::Size>(0) )
+    //    TS_ASSERT_EQUALS( ColorPrinter.slotChains().size(), static_cast<gum::Size>(1) )
     //    TS_GUM_ASSERT_THROWS_NOTHING( ColorPrinter["room"] )
     //    TS_GUM_ASSERT_THROWS_NOTHING( ColorPrinter["(boolean)equipState"] )
     //    TS_GUM_ASSERT_THROWS_NOTHING(
@@ -924,10 +931,10 @@ namespace gum_tests {
         TS_GUM_ASSERT_THROWS_NOTHING(reader.readFile(file, package))
         gum::prm::PRM< double >*      prm      = reader.prm();
         gum::prm::PRMClass< double >& Computer = prm->getClass("fr.lip6.printers.Computer");
-        TS_ASSERT_EQUALS(Computer.attributes().size(), (gum::Size)4)
-        TS_ASSERT_EQUALS(Computer.referenceSlots().size(), (gum::Size)2)
-        TS_ASSERT_EQUALS(Computer.aggregates().size(), (gum::Size)4)
-        TS_ASSERT_EQUALS(Computer.slotChains().size(), (gum::Size)2)
+        TS_ASSERT_EQUALS(Computer.attributes().size(), static_cast< gum::Size >(4))
+        TS_ASSERT_EQUALS(Computer.referenceSlots().size(), static_cast< gum::Size >(2))
+        TS_ASSERT_EQUALS(Computer.aggregates().size(), static_cast< gum::Size >(4))
+        TS_ASSERT_EQUALS(Computer.slotChains().size(), static_cast< gum::Size >(2))
         TS_GUM_ASSERT_THROWS_NOTHING(Computer["(boolean)functional_printer"])
         TS_GUM_ASSERT_THROWS_NOTHING(Computer["functional_printer"])
         TS_GUM_ASSERT_THROWS_NOTHING(Computer["(boolean)degraded_printer"])
@@ -955,10 +962,10 @@ namespace gum_tests {
         TS_GUM_ASSERT_THROWS_NOTHING(reader.readFile(file, package))
         gum::prm::PRM< double >*      prm          = reader.prm();
         gum::prm::PRMClass< double >& SafeComputer = prm->getClass("fr.lip6.printers.SafeComputer");
-        TS_ASSERT_EQUALS(SafeComputer.attributes().size(), (gum::Size)4)
-        TS_ASSERT_EQUALS(SafeComputer.referenceSlots().size(), (gum::Size)2)
-        TS_ASSERT_EQUALS(SafeComputer.aggregates().size(), (gum::Size)3)
-        TS_ASSERT_EQUALS(SafeComputer.slotChains().size(), (gum::Size)3)
+        TS_ASSERT_EQUALS(SafeComputer.attributes().size(), static_cast< gum::Size >(4))
+        TS_ASSERT_EQUALS(SafeComputer.referenceSlots().size(), static_cast< gum::Size >(2))
+        TS_ASSERT_EQUALS(SafeComputer.aggregates().size(), static_cast< gum::Size >(3))
+        TS_ASSERT_EQUALS(SafeComputer.slotChains().size(), static_cast< gum::Size >(3))
         TS_GUM_ASSERT_THROWS_NOTHING(SafeComputer["(boolean)functional_printer"])
         TS_GUM_ASSERT_THROWS_NOTHING(SafeComputer["functional_printer"])
         TS_GUM_ASSERT_THROWS_NOTHING(SafeComputer["(boolean)degraded_printer"])
@@ -988,7 +995,7 @@ namespace gum_tests {
         TS_GUM_ASSERT_THROWS_NOTHING(reader.readFile(file, package))
         gum::prm::PRM< double >*      prm          = reader.prm();
         gum::prm::PRMClass< double >& SafeComputer = prm->getClass("fr.lip6.printers.SafeComputer");
-        TS_ASSERT_EQUALS(SafeComputer.attributes().size(), (gum::Size)4)
+        TS_ASSERT_EQUALS(SafeComputer.attributes().size(), static_cast< gum::Size >(4))
         TS_ASSERT(SafeComputer.exists("can_print"))
         const auto& cpf = SafeComputer.get("can_print").cpf();
         auto        set = gum::VariableSet();
@@ -998,7 +1005,7 @@ namespace gum_tests {
         for (auto var: cpf.variablesSequence()) {
           if (set.contains(var)) { set.erase(var); }
         }
-        TS_ASSERT_EQUALS(set.size(), (gum::Size)0)
+        TS_ASSERT_EQUALS(set.size(), static_cast< gum::Size >(0))
         delete prm;
       } catch (gum::Exception&) { TS_ASSERT(false) }
     }
@@ -1012,7 +1019,7 @@ namespace gum_tests {
         TS_GUM_ASSERT_THROWS_NOTHING(reader.readFile(file, package))
         gum::prm::PRM< double >*      prm          = reader.prm();
         gum::prm::PRMClass< double >& SafeComputer = prm->getClass("fr.lip6.printers.Computer");
-        TS_ASSERT_EQUALS(SafeComputer.attributes().size(), (gum::Size)4)
+        TS_ASSERT_EQUALS(SafeComputer.attributes().size(), static_cast< gum::Size >(4))
         TS_ASSERT(SafeComputer.exists("equipState"))
         const auto& cpf = SafeComputer.get("equipState").cpf();
         auto        set = gum::VariableSet();
@@ -1021,7 +1028,7 @@ namespace gum_tests {
         for (auto var: cpf.variablesSequence()) {
           if (set.contains(var)) { set.erase(var); }
         }
-        TS_ASSERT_EQUALS(set.size(), (gum::Size)0)
+        TS_ASSERT_EQUALS(set.size(), static_cast< gum::Size >(0))
         delete prm;
       } catch (gum::Exception&) { TS_ASSERT(false) }
     }
@@ -1035,7 +1042,7 @@ namespace gum_tests {
         TS_GUM_ASSERT_THROWS_NOTHING(reader.readFile(file, package))
         gum::prm::PRM< double >*      prm          = reader.prm();
         gum::prm::PRMClass< double >& SafeComputer = prm->getClass("fr.lip6.printers.SafeComputer");
-        TS_ASSERT_EQUALS(SafeComputer.attributes().size(), (gum::Size)4)
+        TS_ASSERT_EQUALS(SafeComputer.attributes().size(), static_cast< gum::Size >(4))
         TS_ASSERT(SafeComputer.exists("equipState"))
         const auto& cpf = SafeComputer.get("equipState").cpf();
         auto        set = gum::VariableSet();
@@ -1045,7 +1052,7 @@ namespace gum_tests {
         for (auto var: cpf.variablesSequence()) {
           if (set.contains(var)) { set.erase(var); }
         }
-        TS_ASSERT_EQUALS(set.size(), (gum::Size)0)
+        TS_ASSERT_EQUALS(set.size(), static_cast< gum::Size >(0))
         delete prm;
       } catch (gum::Exception&) { TS_ASSERT(false) }
     }
@@ -1055,8 +1062,8 @@ namespace gum_tests {
         gum::prm::o3prm::O3prmReader< double > reader;
         TS_GUM_ASSERT_THROWS_NOTHING(
             reader.readFile(GET_RESSOURCES_PATH("o3prm/printers_systems.o3prm")));
-        TS_ASSERT_EQUALS(reader.warnings(), (gum::Size)0)
-        TS_ASSERT_EQUALS(reader.errors(), (gum::Size)0)
+        TS_ASSERT_EQUALS(reader.warnings(), static_cast< gum::Size >(0))
+        TS_ASSERT_EQUALS(reader.errors(), static_cast< gum::Size >(0))
         reader.showElegantErrorsAndWarnings();
         gum::prm::PRM< double >* prm = 0;
         TS_GUM_ASSERT_THROWS_NOTHING(prm = reader.prm())
@@ -1070,8 +1077,8 @@ namespace gum_tests {
         gum::prm::o3prm::O3prmReader< double > reader;
         TS_GUM_ASSERT_THROWS_NOTHING(
             reader.readFile(GET_RESSOURCES_PATH("o3prm/complexprinters_system.o3prm")));
-        TS_ASSERT_EQUALS(reader.warnings(), (gum::Size)0)
-        TS_ASSERT_EQUALS(reader.errors(), (gum::Size)0)
+        TS_ASSERT_EQUALS(reader.warnings(), static_cast< gum::Size >(0))
+        TS_ASSERT_EQUALS(reader.errors(), static_cast< gum::Size >(0))
 
         if (reader.errors()) { reader.showElegantErrorsAndWarnings(); }
 
@@ -1091,11 +1098,11 @@ namespace gum_tests {
           std::cout << e.errorContent();
           std::cout << e.errorCallStack();
         }
-        TS_ASSERT_EQUALS(sys->get(Power).size(), (gum::Size)1)
-        TS_ASSERT_EQUALS(sys->get(Room).size(), (gum::Size)1)
-        TS_ASSERT_EQUALS(sys->get(BWPrinter).size(), (gum::Size)10)
-        TS_ASSERT_EQUALS(sys->get(ColorPrinter).size(), (gum::Size)2)
-        TS_ASSERT_EQUALS(sys->get(Computer).size(), (gum::Size)2)
+        TS_ASSERT_EQUALS(sys->get(Power).size(), static_cast< gum::Size >(1))
+        TS_ASSERT_EQUALS(sys->get(Room).size(), static_cast< gum::Size >(1))
+        TS_ASSERT_EQUALS(sys->get(BWPrinter).size(), static_cast< gum::Size >(10))
+        TS_ASSERT_EQUALS(sys->get(ColorPrinter).size(), static_cast< gum::Size >(2))
+        TS_ASSERT_EQUALS(sys->get(Computer).size(), static_cast< gum::Size >(2))
         int count = 0;
 
         for (auto iter = sys->begin(); iter != sys->end(); ++iter) {
@@ -1112,8 +1119,8 @@ namespace gum_tests {
       try {
         gum::prm::o3prm::O3prmReader< double > reader;
         TS_GUM_ASSERT_THROWS_NOTHING(reader.readFile(GET_RESSOURCES_PATH("o3prm/inference.o3prm")))
-        TS_ASSERT_EQUALS(reader.warnings(), (gum::Size)0)
-        TS_ASSERT_EQUALS(reader.errors(), (gum::Size)0)
+        TS_ASSERT_EQUALS(reader.warnings(), static_cast< gum::Size >(0))
+        TS_ASSERT_EQUALS(reader.errors(), static_cast< gum::Size >(0))
         gum::prm::PRM< double >* prm = nullptr;
         TS_GUM_ASSERT_THROWS_NOTHING(prm = reader.prm())
         gum::prm::PRMSystem< double >* sys = nullptr;
@@ -1151,8 +1158,8 @@ namespace gum_tests {
         TS_GUM_ASSERT_THROWS_NOTHING(
             reader.readFile(GET_RESSOURCES_PATH("o3prmr/systems/MySystem.o3prm"),
                             "systems.MySystem"));
-        TS_ASSERT_EQUALS(reader.warnings(), (gum::Size)0)
-        TS_ASSERT_EQUALS(reader.errors(), (gum::Size)0)
+        TS_ASSERT_EQUALS(reader.warnings(), static_cast< gum::Size >(0))
+        TS_ASSERT_EQUALS(reader.errors(), static_cast< gum::Size >(0))
         reader.showElegantErrorsAndWarnings();
 
         gum::prm::PRM< double >* prm = nullptr;
@@ -1161,12 +1168,12 @@ namespace gum_tests {
         gum::Size class_count = prm->classes().size();
         class_count += prm->interfaces().size();
         TS_ASSERT_EQUALS(class_count,
-                         (gum::Size)11);   // Don't forget param subclasses !
+                         static_cast< gum::Size >(11));   // Don't forget param subclasses !
 
-        TS_ASSERT_EQUALS(prm->systems().size(), (gum::Size)1)
+        TS_ASSERT_EQUALS(prm->systems().size(), static_cast< gum::Size >(1))
         gum::prm::PRMSystem< double >* sys = nullptr;
         TS_GUM_ASSERT_THROWS_NOTHING(sys = &(prm->getSystem("systems.MySystem.MySystem")))
-        TS_ASSERT_EQUALS(sys->size(), (gum::Size)16)
+        TS_ASSERT_EQUALS(sys->size(), static_cast< gum::Size >(16))
 
         // Checking that all class DAG are generated
         for (auto c: prm->classes()) {
@@ -1233,9 +1240,9 @@ namespace gum_tests {
         TS_GUM_ASSERT_THROWS_NOTHING(reader.readFile(file, package))
         gum::prm::PRM< double >*      prm        = reader.prm();
         gum::prm::PRMClass< double >& ParamClass = prm->getClass("fr.lip6.printers.ParamClass");
-        TS_ASSERT_EQUALS(ParamClass.attributes().size(), (gum::Size)9)
-        TS_ASSERT_EQUALS(ParamClass.referenceSlots().size(), (gum::Size)1)
-        TS_ASSERT_EQUALS(ParamClass.slotChains().size(), (gum::Size)1)
+        TS_ASSERT_EQUALS(ParamClass.attributes().size(), static_cast< gum::Size >(9))
+        TS_ASSERT_EQUALS(ParamClass.referenceSlots().size(), static_cast< gum::Size >(1))
+        TS_ASSERT_EQUALS(ParamClass.slotChains().size(), static_cast< gum::Size >(1))
         TS_GUM_ASSERT_THROWS_NOTHING(ParamClass["lambda"])
         TS_GUM_ASSERT_THROWS_NOTHING(ParamClass["t"])
         TS_GUM_ASSERT_THROWS_NOTHING(ParamClass["room"])
@@ -1357,8 +1364,8 @@ namespace gum_tests {
         // Act
         TS_ASSERT_THROWS_NOTHING(asia = &(prm->getClass("Asia")))
         // Assert
-        TS_ASSERT_EQUALS(asia->attributes().size(), (gum::Size)8)
-        TS_ASSERT_EQUALS(asia->containerDag().sizeArcs(), (gum::Size)8)
+        TS_ASSERT_EQUALS(asia->attributes().size(), static_cast< gum::Size >(8))
+        TS_ASSERT_EQUALS(asia->containerDag().sizeArcs(), static_cast< gum::Size >(8))
         delete prm;
       } catch (gum::Exception&) { TS_ASSERT(false) }
     }
@@ -1381,8 +1388,8 @@ namespace gum_tests {
         // Act
         TS_ASSERT_THROWS_NOTHING(sys.groundedBN(factory))
         // Assert
-        TS_ASSERT_EQUALS(bn->size(), (gum::Size)8)
-        TS_ASSERT_EQUALS(bn->sizeArcs(), (gum::Size)8)
+        TS_ASSERT_EQUALS(bn->size(), static_cast< gum::Size >(8))
+        TS_ASSERT_EQUALS(bn->sizeArcs(), static_cast< gum::Size >(8))
         delete prm;
         delete bn;
       } catch (gum::Exception&) { TS_ASSERT(false) }
@@ -1400,8 +1407,8 @@ namespace gum_tests {
         // Act
         TS_ASSERT_THROWS_NOTHING(asia = &(prm->getClass("VisitAsia")))
         // Assert
-        TS_ASSERT_EQUALS(asia->attributes().size(), (gum::Size)2)
-        TS_ASSERT_EQUALS(asia->containerDag().sizeArcs(), (gum::Size)1)
+        TS_ASSERT_EQUALS(asia->attributes().size(), static_cast< gum::Size >(2))
+        TS_ASSERT_EQUALS(asia->containerDag().sizeArcs(), static_cast< gum::Size >(1))
         delete prm;
       } catch (gum::Exception&) { TS_ASSERT(false) }
     }
@@ -1418,9 +1425,9 @@ namespace gum_tests {
         // Act
         TS_ASSERT_THROWS_NOTHING(asia = &(prm->getClass("Asia")))
         // Assert
-        TS_ASSERT_EQUALS(asia->attributes().size(), (gum::Size)6)
-        TS_ASSERT_EQUALS(asia->referenceSlots().size(), (gum::Size)1)
-        TS_ASSERT_EQUALS(asia->containerDag().sizeArcs(), (gum::Size)7)
+        TS_ASSERT_EQUALS(asia->attributes().size(), static_cast< gum::Size >(6))
+        TS_ASSERT_EQUALS(asia->referenceSlots().size(), static_cast< gum::Size >(1))
+        TS_ASSERT_EQUALS(asia->containerDag().sizeArcs(), static_cast< gum::Size >(7))
         delete prm;
       } catch (gum::Exception&) { TS_ASSERT(false) }
     }
@@ -1440,8 +1447,8 @@ namespace gum_tests {
         // Act
         TS_ASSERT_THROWS_NOTHING(sys.groundedBN(factory))
         // Assert
-        TS_ASSERT_EQUALS(bn->size(), (gum::Size)8)
-        TS_ASSERT_EQUALS(bn->sizeArcs(), (gum::Size)8)
+        TS_ASSERT_EQUALS(bn->size(), static_cast< gum::Size >(8))
+        TS_ASSERT_EQUALS(bn->sizeArcs(), static_cast< gum::Size >(8))
         delete prm;
         delete bn;
       } catch (gum::Exception&) { TS_ASSERT(false) }
@@ -1454,7 +1461,7 @@ namespace gum_tests {
       std::string                            package = "";
       // Act & Assert
       TS_ASSERT_THROWS_NOTHING(reader.readFile(file, package))
-      TS_ASSERT_DIFFERS(reader.errors(), (gum::Size)0)
+      TS_ASSERT_DIFFERS(reader.errors(), static_cast< gum::Size >(0))
       if (reader.prm()) { delete reader.prm(); }
     }
 
@@ -1465,7 +1472,7 @@ namespace gum_tests {
       std::string package = "";
       // Act & Assert
       TS_ASSERT_THROWS_NOTHING(reader.readFile(file, package))
-      TS_ASSERT_DIFFERS(reader.errors(), (gum::Size)0)
+      TS_ASSERT_DIFFERS(reader.errors(), static_cast< gum::Size >(0))
       if (reader.prm()) { delete reader.prm(); }
     }
 
@@ -1478,7 +1485,7 @@ namespace gum_tests {
         // Act
         TS_ASSERT_THROWS_NOTHING(reader.readFile(file, package))
         // Assert
-        TS_ASSERT_EQUALS(reader.errors(), (gum::Size)1)
+        TS_ASSERT_EQUALS(reader.errors(), static_cast< gum::Size >(1))
         TS_ASSERT_DIFFERS(reader.prm(), nullptr)
         delete reader.prm();
       } catch (gum::Exception&) { TS_ASSERT(false) }
@@ -1493,7 +1500,7 @@ namespace gum_tests {
         // Act
         TS_ASSERT_THROWS_NOTHING(reader.readFile(file, package))
         // Assert
-        TS_ASSERT_EQUALS(reader.errors(), (gum::Size)0)
+        TS_ASSERT_EQUALS(reader.errors(), static_cast< gum::Size >(0))
         if (reader.errors()) { reader.showElegantErrorsAndWarnings(); }
         TS_ASSERT_DIFFERS(reader.prm(), nullptr)
         delete reader.prm();
@@ -1509,7 +1516,7 @@ namespace gum_tests {
         // Act
         TS_ASSERT_THROWS_NOTHING(reader.readFile(file, package))
         // Assert
-        TS_ASSERT_EQUALS(reader.errors(), (gum::Size)0)
+        TS_ASSERT_EQUALS(reader.errors(), static_cast< gum::Size >(0))
         if (reader.errors()) { reader.showElegantErrorsAndWarnings(); }
         TS_ASSERT_DIFFERS(reader.prm(), nullptr)
         delete reader.prm();
@@ -1525,7 +1532,7 @@ namespace gum_tests {
         // Act
         TS_ASSERT_THROWS_NOTHING(reader.readFile(file, package))
         // Assert
-        TS_ASSERT_EQUALS(reader.errors(), (gum::Size)0)
+        TS_ASSERT_EQUALS(reader.errors(), static_cast< gum::Size >(0))
         if (reader.errors()) { reader.showElegantErrorsAndWarnings(); }
         TS_ASSERT_DIFFERS(reader.prm(), nullptr)
 
@@ -1557,7 +1564,7 @@ namespace gum_tests {
         // Act
         TS_ASSERT_THROWS_NOTHING(reader.readFile(file, package))
         // Assert
-        TS_ASSERT_EQUALS(reader.errors(), (gum::Size)0)
+        TS_ASSERT_EQUALS(reader.errors(), static_cast< gum::Size >(0))
         if (reader.errors()) { reader.showElegantErrorsAndWarnings(); }
 
         TS_ASSERT_DIFFERS(reader.prm(), nullptr)
@@ -1597,7 +1604,7 @@ namespace gum_tests {
         // Act
         TS_ASSERT_THROWS_NOTHING(reader.readFile(file, package))
         // Assert
-        TS_ASSERT_EQUALS(reader.errors(), (gum::Size)0)
+        TS_ASSERT_EQUALS(reader.errors(), static_cast< gum::Size >(0))
         if (reader.errors()) { reader.showElegantErrorsAndWarnings(); }
 
         TS_ASSERT_DIFFERS(reader.prm(), nullptr)
@@ -1632,7 +1639,7 @@ namespace gum_tests {
         // Act
         TS_ASSERT_THROWS_NOTHING(reader.readFile(file, package))
         // Assert
-        TS_ASSERT_EQUALS(reader.errors(), (gum::Size)0)
+        TS_ASSERT_EQUALS(reader.errors(), static_cast< gum::Size >(0))
         if (reader.errors()) { reader.showElegantErrorsAndWarnings(); }
 
         TS_ASSERT_DIFFERS(reader.prm(), nullptr)

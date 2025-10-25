@@ -319,9 +319,9 @@ namespace gum {
       return rep;
     }
 
-    NodeId* rmaxsons = static_cast< NodeId* >(
+    auto rmaxsons = static_cast< NodeId* >(
         SOA_ALLOCATE(sizeof(NodeId) * visited->nodeVar(currentNodeId)->domainSize()));
-    NodeId* bqsons = static_cast< NodeId* >(
+    auto bqsons = static_cast< NodeId* >(
         SOA_ALLOCATE(sizeof(NodeId) * visited->nodeVar(currentNodeId)->domainSize()));
 
     for (Idx moda = 0; moda < visited->nodeVar(currentNodeId)->domainSize(); ++moda) {

@@ -37,6 +37,7 @@
  *   gitlab   : https://gitlab.com/agrumery/agrum                           *
  *                                                                          *
  ****************************************************************************/
+#pragma once
 
 
 #include <iostream>
@@ -53,7 +54,7 @@
 
 namespace gum_tests {
 
-  class [[maybe_unused]] InfluenceDiagramGeneratorTestSuite: public CxxTest::TestSuite {
+  class GUM_TEST_SUITE(InfluenceDiagramGenerator) {
     public:
     void setUp() {}
 
@@ -64,7 +65,7 @@ namespace gum_tests {
 
       TS_GUM_ASSERT_THROWS_NOTHING(gen = new gum::InfluenceDiagramGenerator< double >())
       TS_GUM_ASSERT_THROWS_NOTHING(delete gen)
-    }
+    }   // namespace gum_tests
 
     GUM_ACTIVE_TEST(CreationDeletion_2) {
       gum::InfluenceDiagramGenerator< double >* gen = nullptr;

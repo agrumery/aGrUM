@@ -37,6 +37,7 @@
  *   gitlab   : https://gitlab.com/agrumery/agrum                           *
  *                                                                          *
  ****************************************************************************/
+#pragma once
 
 
 #include <gumtest/AgrumTestSuite.h>
@@ -50,7 +51,7 @@
 
 namespace gum_tests {
 
-  class [[maybe_unused]] SetInstTestSuite: public CxxTest::TestSuite {
+  class GUM_TEST_SUITE(SetInst) {
     void setUp() {}
 
     void tearDown() {}
@@ -59,12 +60,12 @@ namespace gum_tests {
     GUM_ACTIVE_TEST(Creation) {
       gum::Instantiation in;
       gum::SetInst       i;
-      TS_ASSERT_EQUALS(i.nbrDim(), (gum::Size)0)
+      TS_ASSERT_EQUALS(i.nbrDim(), static_cast< gum::Size >(0))
       gum::LabelizedVariable a("a", "first var", 2), b("b", "second var", 4),
           c("c", "third var", 5);
       in << a << c << b;
       TS_GUM_ASSERT_THROWS_NOTHING(gum::SetInst i2(in))
-    }
+    }   // namespace gum_tests
 
     GUM_ACTIVE_TEST(InsertSupprVariables) {
       gum::LabelizedVariable a("a", "first var", 2), b("b", "second var", 4),
@@ -73,12 +74,12 @@ namespace gum_tests {
 
       TS_GUM_ASSERT_THROWS_NOTHING(i << a << b << c)
       TS_ASSERT_THROWS(i << a, const gum::DuplicateElement&)
-      TS_ASSERT_EQUALS(i.nbrDim(), (gum::Size)3)
+      TS_ASSERT_EQUALS(i.nbrDim(), static_cast< gum::Size >(3))
       TS_ASSERT_EQUALS(i.domainSize(), (gum::Size)(2 * 4 * 5))
 
       TS_ASSERT(i.contains(a))
 
-      TS_ASSERT_EQUALS(i.pos(b), (gum::Size)1)
+      TS_ASSERT_EQUALS(i.pos(b), static_cast< gum::Size >(1))
       TS_ASSERT_EQUALS(&(i.variable(1)), &b)
 
       i.chgVal(a, 1).chgVal(b, 2).chgVal(c, 4);
@@ -86,7 +87,7 @@ namespace gum_tests {
 
       TS_GUM_ASSERT_THROWS_NOTHING(i >> b)
       TS_ASSERT_THROWS(i >> b, const gum::NotFound&)
-      TS_ASSERT_EQUALS(i.nbrDim(), (gum::Size)2)
+      TS_ASSERT_EQUALS(i.nbrDim(), static_cast< gum::Size >(2))
       TS_ASSERT_EQUALS(i.domainSize(), (gum::Size)(2 * 5))
 
       TS_ASSERT_EQUALS(i.toString(), "<a:10|c:10000>")

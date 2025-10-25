@@ -37,6 +37,7 @@
  *   gitlab   : https://gitlab.com/agrumery/agrum                           *
  *                                                                          *
  ****************************************************************************/
+#pragma once
 
 
 #include <algorithm>
@@ -61,7 +62,7 @@
 
 namespace gum_tests {
 
-  class [[maybe_unused]] BIFWriterTestSuite: public CxxTest::TestSuite {
+  class GUM_TEST_SUITE(BIFWriter) {
     private:
     // Builds a BN to test the inference
     void fill(gum::BayesNet< double >& bn) {

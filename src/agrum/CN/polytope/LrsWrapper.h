@@ -117,7 +117,6 @@ namespace gum {
      */
     template < typename GUM_SCALAR >
     class LRSWrapper {
-      private:
       /** @brief Shortcut for dynamic matrix using vectors. */
       using matrix = typename std::vector< std::vector< GUM_SCALAR > >;
 

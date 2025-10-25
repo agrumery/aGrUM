@@ -37,6 +37,7 @@
  *   gitlab   : https://gitlab.com/agrumery/agrum                           *
  *                                                                          *
  ****************************************************************************/
+#pragma once
 
 
 #include <sstream>
@@ -62,7 +63,7 @@
 
 namespace gum_tests {
 
-  class [[maybe_unused]] MultiDimAggregratorsTestSuite: public CxxTest::TestSuite {
+  class GUM_TEST_SUITE(MultiDimAggregrators) {
     private:
     float _is_min_(gum::Idx a, gum::Idx b, gum::Idx c, gum::Idx d) {
       gum::Idx tmp = b;
@@ -71,8 +72,8 @@ namespace gum_tests {
 
       if (tmp > d) tmp = d;
 
-      return (tmp == a) ? (float)1 : (float)0;
-    }
+      return (tmp == a) ? static_cast< float >(1) : static_cast< float >(0);
+    }   // namespace gum_tests
 
     float _is_max_(gum::Idx a, gum::Idx b, gum::Idx c, gum::Idx d) {
       gum::Idx tmp;
@@ -82,7 +83,7 @@ namespace gum_tests {
 
       if (tmp < d) tmp = d;
 
-      return (tmp == a) ? (float)1 : (float)0;
+      return (tmp == a) ? static_cast< float >(1) : static_cast< float >(0);
     }
 
     float _is_median3_(gum::Idx a, gum::Idx b, gum::Idx c, gum::Idx d) {
@@ -110,7 +111,7 @@ namespace gum_tests {
         }
       }
 
-      return (tmp == a) ? (float)1 : (float)0;
+      return (tmp == a) ? static_cast< float >(1) : static_cast< float >(0);
     }
 
     float _is_median4_(gum::Idx a, gum::Idx b, gum::Idx c, gum::Idx d, gum::Idx e) {
@@ -158,7 +159,7 @@ namespace gum_tests {
 
       // the order is now ll<=m1<=m2<=hh
       tmp = (m2 + m1) / 2;
-      return (tmp == a) ? (float)1 : (float)0;
+      return (tmp == a) ? static_cast< float >(1) : static_cast< float >(0);
     }
 
     float _is_amplitude_(gum::Idx a, gum::Idx b, gum::Idx c, gum::Idx d, gum::Idx e) {
@@ -201,62 +202,70 @@ namespace gum_tests {
 
       // the order is now ll<=(m1<=m2)<=hh
       tmp = hh - ll;
-      return (tmp == a) ? (float)1 : (float)0;
+      return (tmp == a) ? static_cast< float >(1) : static_cast< float >(0);
     }
 
     float _is_count_2_(gum::Idx a, gum::Idx b, gum::Idx c, gum::Idx d) {
       gum::Idx tmp;
-      tmp = (gum::Idx)0;
+      tmp = static_cast< gum::Idx >(0);
 
-      if (b == (gum::Idx)2) tmp++;
+      if (b == static_cast< gum::Idx >(2)) tmp++;
 
-      if (c == (gum::Idx)2) tmp++;
+      if (c == static_cast< gum::Idx >(2)) tmp++;
 
-      if (d == (gum::Idx)2) tmp++;
+      if (d == static_cast< gum::Idx >(2)) tmp++;
 
-      return (tmp == a) ? (float)1 : (float)0;
+      return (tmp == a) ? static_cast< float >(1) : static_cast< float >(0);
     }
 
     float _is_forall_2_(gum::Idx a, gum::Idx b, gum::Idx c, gum::Idx d) {
       gum::Idx tmp;
 
-      tmp = ((b == (gum::Idx)2) && (c == (gum::Idx)2) && (d == (gum::Idx)2)) ? (gum::Idx)1
-                                                                             : (gum::Idx)0;
+      tmp = ((b == static_cast< gum::Idx >(2)) && (c == static_cast< gum::Idx >(2))
+             && (d == static_cast< gum::Idx >(2)))
+              ? static_cast< gum::Idx >(1)
+              : static_cast< gum::Idx >(0);
 
-      return (tmp == a) ? (float)1 : (float)0;
+      return (tmp == a) ? static_cast< float >(1) : static_cast< float >(0);
     }
 
     float _is_exists_2_(gum::Idx a, gum::Idx b, gum::Idx c, gum::Idx d) {
       gum::Idx tmp;
 
-      tmp = ((b == (gum::Idx)2) || (c == (gum::Idx)2) || (d == (gum::Idx)2)) ? (gum::Idx)1
-                                                                             : (gum::Idx)0;
+      tmp = ((b == static_cast< gum::Idx >(2)) || (c == static_cast< gum::Idx >(2))
+             || (d == static_cast< gum::Idx >(2)))
+              ? static_cast< gum::Idx >(1)
+              : static_cast< gum::Idx >(0);
 
-      return (tmp == a) ? (float)1 : (float)0;
+      return (tmp == a) ? static_cast< float >(1) : static_cast< float >(0);
     }
 
     float _is_or_(gum::Idx a, gum::Idx b, gum::Idx c, gum::Idx d) {
       gum::Idx tmp;
 
-      tmp = ((b == (gum::Idx)1) || (c == (gum::Idx)1) || (d == (gum::Idx)1)) ? (gum::Idx)1
-                                                                             : (gum::Idx)0;
+      tmp = ((b == static_cast< gum::Idx >(1)) || (c == static_cast< gum::Idx >(1))
+             || (d == static_cast< gum::Idx >(1)))
+              ? static_cast< gum::Idx >(1)
+              : static_cast< gum::Idx >(0);
 
-      return (tmp == a) ? (float)1 : (float)0;
+      return (tmp == a) ? static_cast< float >(1) : static_cast< float >(0);
     }
 
     float _is_and_(gum::Idx a, gum::Idx b, gum::Idx c, gum::Idx d) {
       gum::Idx tmp;
 
-      tmp = ((b == (gum::Idx)1) && (c == (gum::Idx)1) && (d == (gum::Idx)1)) ? (gum::Idx)1
-                                                                             : (gum::Idx)0;
+      tmp = ((b == static_cast< gum::Idx >(1)) && (c == static_cast< gum::Idx >(1))
+             && (d == static_cast< gum::Idx >(1)))
+              ? static_cast< gum::Idx >(1)
+              : static_cast< gum::Idx >(0);
 
-      return (tmp == a) ? (float)1 : (float)0;
+      return (tmp == a) ? static_cast< float >(1) : static_cast< float >(0);
     }
 
     float _is_sum_(gum::Idx a, gum::Idx b, gum::Idx c, gum::Idx d, gum::Idx maxA) {
       gum::Idx tmp = b + c + d;
       if (tmp > maxA) { tmp = maxA; }
-      return (tmp == a) ? (float)1 : (float)0;
+      return (tmp == a) ? static_cast< float >(1) : static_cast< float >(0);
     }
 
     public:
@@ -290,7 +299,7 @@ namespace gum_tests {
 
     GUM_ACTIVE_TEST(CreationCount) {
       gum::RangeVariable a("a", "", 0, 3), b("b", "", 0, 3), c("c", "", 0, 3), d("d", "", 0, 3);
-      gum::aggregator::Count< double > p((gum::Idx)2);
+      gum::aggregator::Count< double > p(static_cast< gum::Idx >(2));
       TS_GUM_ASSERT_THROWS_NOTHING(p << a << b << c << d)
       TS_ASSERT_EQUALS(p.toString(),
                        "a:Range([0,3])=count[2](b:Range([0,3]),c:Range([0,3]),d:Range([0,3]))");
@@ -304,7 +313,7 @@ namespace gum_tests {
 
     GUM_ACTIVE_TEST(CreationForall) {
       gum::RangeVariable a("a", "", 0, 3), b("b", "", 0, 3), c("c", "", 0, 3), d("d", "", 0, 3);
-      gum::aggregator::Forall< double > p((gum::Idx)2);
+      gum::aggregator::Forall< double > p(static_cast< gum::Idx >(2));
       TS_GUM_ASSERT_THROWS_NOTHING(p << a << b << c << d)
       TS_ASSERT_EQUALS(p.toString(),
                        "a:Range([0,3])=forall[2](b:Range([0,3]),c:Range([0,3]),d:Range([0,3]))");
@@ -318,7 +327,7 @@ namespace gum_tests {
 
     GUM_ACTIVE_TEST(CreationExists) {
       gum::RangeVariable a("a", "", 0, 3), b("b", "", 0, 3), c("c", "", 0, 3), d("d", "", 0, 3);
-      gum::aggregator::Exists< double > p((gum::Idx)2);
+      gum::aggregator::Exists< double > p(static_cast< gum::Idx >(2));
       TS_GUM_ASSERT_THROWS_NOTHING(p << a << b << c << d)
       TS_ASSERT_EQUALS(p.toString(),
                        "a:Range([0,3])=exists[2](b:Range([0,3]),c:Range([0,3]),d:Range([0,3]))");
@@ -440,7 +449,9 @@ namespace gum_tests {
         gum::Instantiation i(p);
 
         for (i.setFirst(); !i.end(); ++i) {
-          TS_ASSERT_EQUALS(p[i], _is_sum_(i.val(a), i.val(b), i.val(c), i.val(d), (gum::Idx)8))
+          TS_ASSERT_EQUALS(
+              p[i],
+              _is_sum_(i.val(a), i.val(b), i.val(c), i.val(d), static_cast< gum::Idx >(8)))
         }
       } catch (gum::Exception& e) { GUM_SHOWERROR(e); }
     }

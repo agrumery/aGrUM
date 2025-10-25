@@ -51,5 +51,4 @@ class FIFOCache(OrderedDict):
       del self[key]  # pour mettre à jour l'ordre
     elif len(self) >= self.maxlen:
       self.popitem(last=False)  # retire le plus ancien
-    super().__setitem__(key, value)  
-
+    super().__setitem__(key, value)

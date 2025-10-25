@@ -37,7 +37,7 @@
  *   gitlab   : https://gitlab.com/agrumery/agrum                           *
  *                                                                          *
  ****************************************************************************/
-
+#pragma once
 
 /** @file
  * @brief A class that, given a structure and a parameter estimator returns a

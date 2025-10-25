@@ -37,6 +37,7 @@
  *   gitlab   : https://gitlab.com/agrumery/agrum                           *
  *                                                                          *
  ****************************************************************************/
+#pragma once
 
 
 #include <string>
@@ -47,7 +48,7 @@
 #include <agrum/base/core/sequence.h>
 
 namespace gum_tests {
-  class [[maybe_unused]] SequenceTestSuite: public CxxTest::TestSuite {
+  class GUM_TEST_SUITE(Sequence) {
     private:
     void fill(gum::Sequence< int >& seq) { seq << 1 << 3 << 5 << 2 << 4; }
 
@@ -65,29 +66,29 @@ namespace gum_tests {
       TS_GUM_ASSERT_THROWS_NOTHING(seq << 2)
       TS_GUM_ASSERT_THROWS_NOTHING(seq << 4)
 
-      TS_ASSERT_EQUALS(seq.size(), (gum::Size)5)
+      TS_ASSERT_EQUALS(seq.size(), static_cast< gum::Size >(5))
 
       TS_ASSERT(!seq.empty())
 
       gum::Sequence< int > seq2{1, 2, 3};
-      TS_ASSERT_EQUALS(seq2.size(), (gum::Size)3)
+      TS_ASSERT_EQUALS(seq2.size(), static_cast< gum::Size >(3))
 
       gum::Sequence< int > seq3(seq2);
       TS_ASSERT_EQUALS(seq3, seq2)
 
       gum::Sequence< int > seq4(std::move(seq2));
-      TS_ASSERT_EQUALS(seq4.size(), (gum::Size)3)
+      TS_ASSERT_EQUALS(seq4.size(), static_cast< gum::Size >(3))
 
       gum::Sequence< int > seq5{2, 4};
       gum::Sequence< int > seq6(seq5);
       TS_ASSERT_EQUALS(seq5, seq6)
 
       seq5 = seq;
-      TS_ASSERT_EQUALS(seq5.size(), (gum::Size)5)
+      TS_ASSERT_EQUALS(seq5.size(), static_cast< gum::Size >(5))
       seq6 = seq;
-      TS_ASSERT_EQUALS(seq6.size(), (gum::Size)5)
+      TS_ASSERT_EQUALS(seq6.size(), static_cast< gum::Size >(5))
       seq6 = std::move(seq3);
-      TS_ASSERT_EQUALS(seq6.size(), (gum::Size)3)
+      TS_ASSERT_EQUALS(seq6.size(), static_cast< gum::Size >(3))
     }
 
     GUM_ACTIVE_TEST(Constructor2) {
@@ -110,29 +111,29 @@ namespace gum_tests {
       TS_GUM_ASSERT_THROWS_NOTHING(seq << p[1])
       TS_GUM_ASSERT_THROWS_NOTHING(seq << p[3])
 
-      TS_ASSERT_EQUALS(seq.size(), (gum::Size)5)
+      TS_ASSERT_EQUALS(seq.size(), static_cast< gum::Size >(5))
 
       TS_ASSERT(!seq.empty())
 
       gum::Sequence< std::string > seq2{p[0], p[1], p[2]};
-      TS_ASSERT_EQUALS(seq2.size(), (gum::Size)3)
+      TS_ASSERT_EQUALS(seq2.size(), static_cast< gum::Size >(3))
 
       gum::Sequence< std::string > seq3(seq2);
       TS_ASSERT_EQUALS(seq3, seq2)
 
       gum::Sequence< std::string > seq4(std::move(seq2));
-      TS_ASSERT_EQUALS(seq4.size(), (gum::Size)3)
+      TS_ASSERT_EQUALS(seq4.size(), static_cast< gum::Size >(3))
 
       gum::Sequence< std::string > seq5{p[1], p[3]};
       gum::Sequence< std::string > seq6(seq5);
       TS_ASSERT_EQUALS(seq5, seq6)
 
       seq5 = seq;
-      TS_ASSERT_EQUALS(seq5.size(), (gum::Size)5)
+      TS_ASSERT_EQUALS(seq5.size(), static_cast< gum::Size >(5))
       seq6 = seq;
-      TS_ASSERT_EQUALS(seq6.size(), (gum::Size)5)
+      TS_ASSERT_EQUALS(seq6.size(), static_cast< gum::Size >(5))
       seq6 = std::move(seq3);
-      TS_ASSERT_EQUALS(seq6.size(), (gum::Size)3)
+      TS_ASSERT_EQUALS(seq6.size(), static_cast< gum::Size >(3))
     }
 
     GUM_ACTIVE_TEST(Moves) {
@@ -144,7 +145,7 @@ namespace gum_tests {
       seq3                      = std::move(seq2);
       seq2                      = std::move(seq1);
 
-      TS_ASSERT_EQUALS(seq2.size(), (gum::Size)3)
+      TS_ASSERT_EQUALS(seq2.size(), static_cast< gum::Size >(3))
       TS_ASSERT_EQUALS(seq2.atPos(1), 2)
     }
 
@@ -235,7 +236,7 @@ namespace gum_tests {
       TS_ASSERT_EQUALS(seq.toString(), "[0:aaaa - 1:b - 2:cc - 3:ddd]")
 
       TS_ASSERT_EQUALS(seq[1], "b")
-      TS_ASSERT_EQUALS(seq.pos("ddd"), (gum::Idx)3)
+      TS_ASSERT_EQUALS(seq.pos("ddd"), static_cast< gum::Idx >(3))
 
       TS_ASSERT(seq.exists("b"))
       TS_ASSERT(!seq.exists("bb"))
@@ -277,7 +278,7 @@ namespace gum_tests {
 
       seq.clear();
       TS_ASSERT(seq.empty())
-      TS_ASSERT_EQUALS(seq.size(), (gum::Size)0)
+      TS_ASSERT_EQUALS(seq.size(), static_cast< gum::Size >(0))
       TS_ASSERT_EQUALS(seq.toString(), "[]")
     }
 
@@ -502,21 +503,21 @@ namespace gum_tests {
       gum::Sequence< int > seq;
 
       seq.insert(1);
-      TS_ASSERT_EQUALS(seq.size(), (gum::Size)1)
+      TS_ASSERT_EQUALS(seq.size(), static_cast< gum::Size >(1))
       int x = 2;
       seq.insert(x);
-      TS_ASSERT_EQUALS(seq.size(), (gum::Size)2)
+      TS_ASSERT_EQUALS(seq.size(), static_cast< gum::Size >(2))
 
       seq.clear();
       seq << 1;
-      TS_ASSERT_EQUALS(seq.size(), (gum::Size)1)
+      TS_ASSERT_EQUALS(seq.size(), static_cast< gum::Size >(1))
       seq << x;
-      TS_ASSERT_EQUALS(seq.size(), (gum::Size)2)
+      TS_ASSERT_EQUALS(seq.size(), static_cast< gum::Size >(2))
 
       seq.erase(1);
-      TS_ASSERT_EQUALS(seq.size(), (gum::Size)1)
+      TS_ASSERT_EQUALS(seq.size(), static_cast< gum::Size >(1))
       seq.erase(seq.beginSafe());   // safe iterator needed here
-      TS_ASSERT_EQUALS(seq.size(), (gum::Size)0)
+      TS_ASSERT_EQUALS(seq.size(), static_cast< gum::Size >(0))
     }
 
     GUM_ACTIVE_TEST(Insert2) {
@@ -524,20 +525,20 @@ namespace gum_tests {
       std::string                  x = "1";
 
       seq.insert(x);
-      TS_ASSERT_EQUALS(seq.size(), (gum::Size)1)
+      TS_ASSERT_EQUALS(seq.size(), static_cast< gum::Size >(1))
       seq.insert("2");
-      TS_ASSERT_EQUALS(seq.size(), (gum::Size)2)
+      TS_ASSERT_EQUALS(seq.size(), static_cast< gum::Size >(2))
 
       seq.clear();
       seq << x;
-      TS_ASSERT_EQUALS(seq.size(), (gum::Size)1)
+      TS_ASSERT_EQUALS(seq.size(), static_cast< gum::Size >(1))
       seq << "2";
-      TS_ASSERT_EQUALS(seq.size(), (gum::Size)2)
+      TS_ASSERT_EQUALS(seq.size(), static_cast< gum::Size >(2))
 
       seq.erase(x);
-      TS_ASSERT_EQUALS(seq.size(), (gum::Size)1)
+      TS_ASSERT_EQUALS(seq.size(), static_cast< gum::Size >(1))
       seq.erase(seq.beginSafe());   // safe iterator needed here
-      TS_ASSERT_EQUALS(seq.size(), (gum::Size)0)
+      TS_ASSERT_EQUALS(seq.size(), static_cast< gum::Size >(0))
     }
 
     GUM_ACTIVE_TEST(Emplace1) {
@@ -545,14 +546,14 @@ namespace gum_tests {
       std::pair< int, int >                  x(2, 3);
 
       seq.emplace(2, 3);
-      TS_ASSERT_EQUALS(seq.size(), (gum::Size)1)
+      TS_ASSERT_EQUALS(seq.size(), static_cast< gum::Size >(1))
       seq.emplace(5, 7);
-      TS_ASSERT_EQUALS(seq.size(), (gum::Size)2)
+      TS_ASSERT_EQUALS(seq.size(), static_cast< gum::Size >(2))
 
       seq.erase(x);
-      TS_ASSERT_EQUALS(seq.size(), (gum::Size)1)
+      TS_ASSERT_EQUALS(seq.size(), static_cast< gum::Size >(1))
       seq.erase(seq.beginSafe());   // safe iterator needed here
-      TS_ASSERT_EQUALS(seq.size(), (gum::Size)0)
+      TS_ASSERT_EQUALS(seq.size(), static_cast< gum::Size >(0))
     }
 
     GUM_ACTIVE_TEST(Emplace2) {
@@ -560,14 +561,14 @@ namespace gum_tests {
       int                  x = 2;
 
       seq.emplace(2);
-      TS_ASSERT_EQUALS(seq.size(), (gum::Size)1)
+      TS_ASSERT_EQUALS(seq.size(), static_cast< gum::Size >(1))
       seq.emplace(5);
-      TS_ASSERT_EQUALS(seq.size(), (gum::Size)2)
+      TS_ASSERT_EQUALS(seq.size(), static_cast< gum::Size >(2))
 
       seq.erase(x);
-      TS_ASSERT_EQUALS(seq.size(), (gum::Size)1)
+      TS_ASSERT_EQUALS(seq.size(), static_cast< gum::Size >(1))
       seq.erase(seq.beginSafe());   // safe iterator needed here
-      TS_ASSERT_EQUALS(seq.size(), (gum::Size)0)
+      TS_ASSERT_EQUALS(seq.size(), static_cast< gum::Size >(0))
     }
 
     GUM_ACTIVE_TEST(NewIterOp1) {
@@ -661,7 +662,7 @@ namespace gum_tests {
         n += *it;
       }
 
-      TS_ASSERT_EQUALS(n, (gum::Size)42531)
+      TS_ASSERT_EQUALS(n, static_cast< gum::Size >(42531))
       n = 0;
 
       for (auto it = seq.rbegin(); it != seq.rend(); --it) {
@@ -669,7 +670,7 @@ namespace gum_tests {
         n += *it;
       }
 
-      TS_ASSERT_EQUALS(n, (gum::Size)42531)
+      TS_ASSERT_EQUALS(n, static_cast< gum::Size >(42531))
       n = 0;
 
       for (auto it = seq.beginSafe(); it != seq.endSafe(); ++it) {   // safe iterator needed here
@@ -677,7 +678,7 @@ namespace gum_tests {
         n += *it;
       }
 
-      TS_ASSERT_EQUALS(n, (gum::Size)13524)
+      TS_ASSERT_EQUALS(n, static_cast< gum::Size >(13524))
       n = 0;
 
       for (auto it = seq.begin(); it != seq.end(); ++it) {
@@ -685,7 +686,7 @@ namespace gum_tests {
         n += *it;
       }
 
-      TS_ASSERT_EQUALS(n, (gum::Size)13524)
+      TS_ASSERT_EQUALS(n, static_cast< gum::Size >(13524))
       n = 0;
 
       for (const auto i: seq) {
@@ -693,7 +694,7 @@ namespace gum_tests {
         n += i;
       }
 
-      TS_ASSERT_EQUALS(n, (gum::Size)13524)
+      TS_ASSERT_EQUALS(n, static_cast< gum::Size >(13524))
 
       gum::Sequence< gum::Idx > seq2;
       TS_ASSERT_THROWS(seq2.front(), const gum::NotFound&)

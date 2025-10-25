@@ -37,6 +37,7 @@
  *   gitlab   : https://gitlab.com/agrumery/agrum                           *
  *                                                                          *
  ****************************************************************************/
+#pragma once
 
 
 // ==========================================================================
@@ -60,8 +61,7 @@
 
 namespace gum_tests {
 
-  class [[maybe_unused]] MultiDimProjectors4FunctionGraphTestSuite: public CxxTest::TestSuite {
-    private:
+  class GUM_TEST_SUITE(MultiDimProjectors4FunctionGraph) {
     // ************************************************************************************************
     /// Génération fixe d'une liste de variable
     // ************************************************************************************************
@@ -74,7 +74,7 @@ namespace gum_tests {
       ret->insert(new gum::LabelizedVariable("D", "", 4));
 
       return ret;
-    }
+    }   // namespace gum_tests
 
     // ************************************************************************************************
     /// Génération aléatoire d'une liste de 10 variables

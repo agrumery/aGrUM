@@ -37,6 +37,7 @@
  *   gitlab   : https://gitlab.com/agrumery/agrum                           *
  *                                                                          *
  ****************************************************************************/
+#pragma once
 
 
 #include <iostream>
@@ -50,7 +51,7 @@
 
 namespace gum_tests {
 
-  class [[maybe_unused]] SetTestSuite: public CxxTest::TestSuite {
+  class GUM_TEST_SUITE(Set) {
     public:
     GUM_ACTIVE_TEST(Constructor) {
       gum::Set< int >* set = nullptr;
@@ -70,19 +71,19 @@ namespace gum_tests {
       set = new gum::Set< int >{1, 2, 3};
       gum::Set< int > set4(std::move(*set));
       delete set;
-      TS_ASSERT_EQUALS(set4.size(), (gum::Size)3)
+      TS_ASSERT_EQUALS(set4.size(), static_cast< gum::Size >(3))
 
       set4.clear();
       set4 = set2;
-      TS_ASSERT_EQUALS(set4.size(), (gum::Size)3)
+      TS_ASSERT_EQUALS(set4.size(), static_cast< gum::Size >(3))
       set4.clear();
-      TS_ASSERT_EQUALS(set4.size(), (gum::Size)0)
+      TS_ASSERT_EQUALS(set4.size(), static_cast< gum::Size >(0))
       set4 = set3;
       TS_ASSERT_EQUALS(set4, set3)
       set4.clear();
       set4 = std::move(set2);
-      TS_ASSERT_EQUALS(set4.size(), (gum::Size)3)
-    }
+      TS_ASSERT_EQUALS(set4.size(), static_cast< gum::Size >(3))
+    }   // namespace gum_tests
 
     GUM_ACTIVE_TEST(Moves) {
       gum::Set< int > set1{1, 2, 3};
@@ -95,7 +96,7 @@ namespace gum_tests {
       set3                 = std::move(set2);
       set2                 = std::move(set1);
 
-      TS_ASSERT_EQUALS(set2.size(), (gum::Size)3)
+      TS_ASSERT_EQUALS(set2.size(), static_cast< gum::Size >(3))
     }
 
     GUM_ACTIVE_TEST(Insert) {
@@ -164,9 +165,9 @@ namespace gum_tests {
     GUM_ACTIVE_TEST(Size) {
       gum::Set< int > set;
 
-      TS_ASSERT_EQUALS(set.size(), (gum::Size)0)
+      TS_ASSERT_EQUALS(set.size(), static_cast< gum::Size >(0))
       fill(set);
-      TS_ASSERT_EQUALS(set.size(), (gum::Size)6)
+      TS_ASSERT_EQUALS(set.size(), static_cast< gum::Size >(6))
     }
 
     GUM_ACTIVE_TEST(Erase) {
@@ -174,22 +175,22 @@ namespace gum_tests {
       fill(set);
 
       TS_GUM_ASSERT_THROWS_NOTHING(set.erase(4))
-      TS_ASSERT_EQUALS(set.size(), (gum::Size)5)
+      TS_ASSERT_EQUALS(set.size(), static_cast< gum::Size >(5))
       TS_GUM_ASSERT_THROWS_NOTHING(set.erase(6))
-      TS_ASSERT_EQUALS(set.size(), (gum::Size)4)
+      TS_ASSERT_EQUALS(set.size(), static_cast< gum::Size >(4))
       TS_GUM_ASSERT_THROWS_NOTHING(set.erase(1))
-      TS_ASSERT_EQUALS(set.size(), (gum::Size)3)
+      TS_ASSERT_EQUALS(set.size(), static_cast< gum::Size >(3))
       TS_GUM_ASSERT_THROWS_NOTHING(set.erase(3))
-      TS_ASSERT_EQUALS(set.size(), (gum::Size)2)
+      TS_ASSERT_EQUALS(set.size(), static_cast< gum::Size >(2))
       TS_GUM_ASSERT_THROWS_NOTHING(set.erase(5))
-      TS_ASSERT_EQUALS(set.size(), (gum::Size)1)
+      TS_ASSERT_EQUALS(set.size(), static_cast< gum::Size >(1))
 
       TS_GUM_ASSERT_THROWS_NOTHING(set.erase(4))
       TS_GUM_ASSERT_THROWS_NOTHING(set.erase(-23))
       TS_GUM_ASSERT_THROWS_NOTHING(set.erase(10000))
       TS_GUM_ASSERT_THROWS_NOTHING(set.erase(42))
 
-      TS_ASSERT_EQUALS(set.size(), (gum::Size)1)
+      TS_ASSERT_EQUALS(set.size(), static_cast< gum::Size >(1))
 
       gum::Set< int > set2;
       fill(set2);
@@ -232,44 +233,44 @@ namespace gum_tests {
     GUM_ACTIVE_TEST(EraseIterator) {
       gum::Set< int > set;
       fill(set);
-      TS_ASSERT_EQUALS(set.size(), (gum::Size)6)
+      TS_ASSERT_EQUALS(set.size(), static_cast< gum::Size >(6))
 
       auto iter = set.beginSafe();   // safe iterator needed here
       TS_GUM_ASSERT_THROWS_NOTHING(set.erase(iter))
-      TS_ASSERT_EQUALS(set.size(), (gum::Size)5)
+      TS_ASSERT_EQUALS(set.size(), static_cast< gum::Size >(5))
 
       ++iter;
       ++iter;
       TS_GUM_ASSERT_THROWS_NOTHING(set.erase(iter))
-      TS_ASSERT_EQUALS(set.size(), (gum::Size)4)
+      TS_ASSERT_EQUALS(set.size(), static_cast< gum::Size >(4))
 
       iter = set.begin();
       TS_GUM_ASSERT_THROWS_NOTHING(set.erase(iter))
-      TS_ASSERT_EQUALS(set.size(), (gum::Size)3)
+      TS_ASSERT_EQUALS(set.size(), static_cast< gum::Size >(3))
 
       iter = set.end();
       TS_GUM_ASSERT_THROWS_NOTHING(set.erase(iter))
-      TS_ASSERT_EQUALS(set.size(), (gum::Size)3)
+      TS_ASSERT_EQUALS(set.size(), static_cast< gum::Size >(3))
 
       gum::Set< int > set2;
       fill(set2);
-      TS_ASSERT_EQUALS(set2.size(), (gum::Size)6)
+      TS_ASSERT_EQUALS(set2.size(), static_cast< gum::Size >(6))
       iter = set2.beginSafe();   // safe iterator needed here
       TS_GUM_ASSERT_THROWS_NOTHING(set2.erase(iter))
-      TS_ASSERT_EQUALS(set2.size(), (gum::Size)5)
+      TS_ASSERT_EQUALS(set2.size(), static_cast< gum::Size >(5))
     }
 
     GUM_ACTIVE_TEST(Clear) {
       gum::Set< int > set;
 
-      TS_ASSERT_EQUALS(set.size(), (gum::Size)0)
+      TS_ASSERT_EQUALS(set.size(), static_cast< gum::Size >(0))
       TS_GUM_ASSERT_THROWS_NOTHING(set.clear())
-      TS_ASSERT_EQUALS(set.size(), (gum::Size)0)
+      TS_ASSERT_EQUALS(set.size(), static_cast< gum::Size >(0))
 
       fill(set);
-      TS_ASSERT_EQUALS(set.size(), (gum::Size)6)
+      TS_ASSERT_EQUALS(set.size(), static_cast< gum::Size >(6))
       TS_GUM_ASSERT_THROWS_NOTHING(set.clear())
-      TS_ASSERT_EQUALS(set.size(), (gum::Size)0)
+      TS_ASSERT_EQUALS(set.size(), static_cast< gum::Size >(0))
     }
 
     GUM_ACTIVE_TEST(IsEmpty) {

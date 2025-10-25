@@ -37,6 +37,7 @@
  *   gitlab   : https://gitlab.com/agrumery/agrum                           *
  *                                                                          *
  ****************************************************************************/
+#pragma once
 
 
 #include <iostream>
@@ -48,7 +49,7 @@
 
 namespace gum_tests {
 
-  class [[maybe_unused]] DBTranslator4DiscretizedVariableTestSuite: public CxxTest::TestSuite {
+  class GUM_TEST_SUITE(DBTranslator4DiscretizedVariable) {
     public:
     GUM_ACTIVE_TEST(_trans1) {
       gum::DiscretizedVariable< int > var("X1", "");
@@ -82,7 +83,7 @@ namespace gum_tests {
       try {
         const gum::DiscretizedVariable< int >& xvar_discr
             = dynamic_cast< const gum::DiscretizedVariable< int >& >(tr_var);
-        TS_ASSERT_EQUALS(xvar_discr.domainSize(), (gum::Size)(gum::Size)2)
+        TS_ASSERT_EQUALS(xvar_discr.domainSize(), (gum::Size) static_cast< gum::Size >(2))
         TS_ASSERT_EQUALS(xvar_discr.label(0), "[1;3[")
         TS_ASSERT_EQUALS(xvar_discr.label(1), "[3;10]")
       } catch (std::bad_cast&) { good_discr = 0; }
@@ -130,11 +131,11 @@ namespace gum_tests {
                     gum::learning::DBTranslatedValue{std::numeric_limits< std::size_t >::max()})
                 == "?");
 
-      TS_ASSERT_EQUALS(translator3.domainSize(), (gum::Size)2)
+      TS_ASSERT_EQUALS(translator3.domainSize(), static_cast< gum::Size >(2))
 
       TS_ASSERT_THROWS(gum::learning::DBTranslator4DiscretizedVariable translator4(var, missing, 1),
                        const gum::SizeError&)
-    }
+    }   // namespace gum_tests
 
     GUM_ACTIVE_TEST(_trans2) {
       {

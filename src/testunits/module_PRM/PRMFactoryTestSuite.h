@@ -37,6 +37,7 @@
  *   gitlab   : https://gitlab.com/agrumery/agrum                           *
  *                                                                          *
  ****************************************************************************/
+#pragma once
 
 
 #include <gumtest/AgrumTestSuite.h>
@@ -47,12 +48,12 @@
 #include <agrum/PRM/PRMFactory.h>
 
 namespace gum_tests {
-  class [[maybe_unused]] PRMFactoryTestSuite: public CxxTest::TestSuite {
+  class GUM_TEST_SUITE(PRMFactory) {
     public:
     GUM_ACTIVE_TEST(Init) {
       gum::prm::PRMFactory< double > f;
       delete f.prm();
-    }
+    }   // namespace gum_tests
 
     GUM_ACTIVE_TEST(AddParameter) {
       try {
@@ -64,7 +65,7 @@ namespace gum_tests {
         f.endClass();
 
         const auto& c = prm->getClass("MyClass");
-        TS_ASSERT_EQUALS((gum::Size)1, c.parameters().size())
+        TS_ASSERT_EQUALS(static_cast< gum::Size >(1), c.parameters().size())
         const auto& elt = c.get("lambda");
         TS_ASSERT(gum::prm::PRMClassElement< double >::isParameter(elt))
         const auto& lambda = static_cast< const gum::prm::PRMParameter< double >& >(elt);
@@ -91,20 +92,20 @@ namespace gum_tests {
         f.addParameter("real", "lambda", 0.001);
         f.endClass();
 
-        TS_ASSERT_EQUALS(prm->classes().size(), (gum::Size)1)
+        TS_ASSERT_EQUALS(prm->classes().size(), static_cast< gum::Size >(1))
 
         f.startSystem("MySystem");
         f.addInstance("MyClass", "i");
         f.endSystem();
 
-        TS_ASSERT_EQUALS(prm->classes().size(), (gum::Size)2)
+        TS_ASSERT_EQUALS(prm->classes().size(), static_cast< gum::Size >(2))
 
         const auto& super_c = prm->getClass("MyClass");
         const auto& c       = prm->getClass("MyClass<lambda=0.001>");
 
         TS_ASSERT(c.isSubTypeOf(super_c))
 
-        TS_ASSERT_EQUALS((gum::Size)1, c.parameters().size())
+        TS_ASSERT_EQUALS(static_cast< gum::Size >(1), c.parameters().size())
         const auto& elt = c.get("lambda");
         TS_ASSERT(gum::prm::PRMClassElement< double >::isParameter(elt))
         const auto& lambda = static_cast< const gum::prm::PRMParameter< double >& >(elt);
@@ -171,7 +172,7 @@ namespace gum_tests {
         f.addInstance("MyClass", "j");
         f.addInstance("MyClass", "k", params);
 
-        TS_ASSERT_EQUALS(prm->classes().size(), (gum::Size)3)
+        TS_ASSERT_EQUALS(prm->classes().size(), static_cast< gum::Size >(3))
 
         f.endSystem();
         const auto& s = prm->getSystem("MySystem");

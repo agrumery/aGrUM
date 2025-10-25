@@ -37,6 +37,7 @@
  *   gitlab   : https://gitlab.com/agrumery/agrum                           *
  *                                                                          *
  ****************************************************************************/
+#pragma once
 
 
 #include <iostream>
@@ -95,7 +96,7 @@ namespace gum_tests {
     std::string getMess() { return _mess_; }
   };
 
-  class [[maybe_unused]] GreedyHillClimbingTestSuite: public CxxTest::TestSuite {
+  class GUM_TEST_SUITE(GreedyHillClimbing) {
     private:
     double _score_(gum::learning::ScoreBIC& score, const gum::NodeId& node, const gum::DAG& dag) {
       std::vector< gum::NodeId > cond_set;
@@ -103,7 +104,7 @@ namespace gum_tests {
         cond_set.push_back(par);
       }
       return score.score(node, cond_set);
-    }
+    }   // namespace gum_tests
 
     bool _applyNextChange_(gum::learning::ScoreBIC& score,
                            std::vector< double >&   current_scores,
@@ -259,7 +260,7 @@ namespace gum_tests {
       search.approximationScheme().setEpsilon(1000);
 
       gum::DAG dag = search.learnStructure(selector);
-      TS_ASSERT_EQUALS(dag.arcs().size(), (gum::Size)11)
+      TS_ASSERT_EQUALS(dag.arcs().size(), static_cast< gum::Size >(11))
 
       // gum::BayesNet<double> bn =
       // search.learnBN<double> ( selector, estimator,
@@ -328,7 +329,7 @@ namespace gum_tests {
       search.approximationScheme().setEpsilon(1000);
 
       gum::DAG dag = search.learnStructure(selector);
-      TS_ASSERT_EQUALS(dag.arcs().size(), (gum::Size)11)
+      TS_ASSERT_EQUALS(dag.arcs().size(), static_cast< gum::Size >(11))
 
       gum::BayesNet< double > bn = search.learnBN< double >(selector, estimator);
 

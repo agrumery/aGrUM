@@ -264,7 +264,6 @@ namespace gum {
      * @return the size in bytes
      */
     Size memoryFootprint() const;
-
   };
 
 

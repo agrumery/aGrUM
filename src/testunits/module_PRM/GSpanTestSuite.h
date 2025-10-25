@@ -37,6 +37,7 @@
  *   gitlab   : https://gitlab.com/agrumery/agrum                           *
  *                                                                          *
  ****************************************************************************/
+#pragma once
 
 
 #include <gumtest/AgrumTestSuite.h>
@@ -47,8 +48,7 @@
 
 namespace gum_tests {
 
-  class [[maybe_unused]] GSpanTestSuite: public CxxTest::TestSuite {
-    private:
+  class GUM_TEST_SUITE(GSpan) {
     gum::prm::o3prm::O3prmReader< double >*    _driver_;
     std::string                                _dot_dir_;
     gum::prm::gspan::InterfaceGraph< double >* _ig_;
@@ -85,7 +85,8 @@ namespace gum_tests {
     GUM_ACTIVE_TEST(InterfaceGraph) {
       try {
         _local_setUp();
-        TS_ASSERT_EQUALS(_ig_->graph().size(), (gum::Size)1 + 5 * 2 + 4 * 3 + 4 * 3 + 5 + 3 + 4)
+        TS_ASSERT_EQUALS(_ig_->graph().size(),
+                         static_cast< gum::Size >(1) + 5 * 2 + 4 * 3 + 4 * 3 + 5 + 3 + 4)
         TS_ASSERT_EQUALS(_ig_->graph().sizeEdges(),
                          (gum::Size)(5 * 2 + 3 * 4 + 4 * 3) + 5 + 3 * 3 + 4 * 2);
         _local_tearDown();

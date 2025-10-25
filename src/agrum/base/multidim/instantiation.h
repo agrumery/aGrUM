@@ -99,7 +99,7 @@ namespace gum {
    * @see operator<<(std::ostream&, const Instantiation&).
    */
 
-  class Instantiation: public MultiDimInterface {
+  class Instantiation final: public MultiDimInterface {
     public:
     // =========================================================================
     /// @name Constructors / Destructors

@@ -37,6 +37,7 @@
  *   gitlab   : https://gitlab.com/agrumery/agrum                           *
  *                                                                          *
  ****************************************************************************/
+#pragma once
 
 
 #define TESTKL_MAX_ITER_GIBBS_KL 15
@@ -62,7 +63,7 @@
 
 namespace gum_tests {
 
-  class [[maybe_unused]] BNdistanceTestSuite: public CxxTest::TestSuite {
+  class GUM_TEST_SUITE(BNdistance) {
     public:
     GUM_ACTIVE_TEST(Constructor) {
       gum::BayesNet< double > net1;
@@ -91,7 +92,7 @@ namespace gum_tests {
                        const gum::OperationNotAllowed&)
       TS_ASSERT_THROWS(gum::ExactBNdistance< double > kl(net2, net3),
                        const gum::OperationNotAllowed&)
-    }
+    }   // namespace gum_tests
 
     GUM_ACTIVE_TEST(ComparableBNsForAnyDiscreteVariables) {
       {
@@ -196,13 +197,13 @@ namespace gum_tests {
       {
         gum::ExactBNdistance< double > gkl(kl);
         TS_GUM_ASSERT_THROWS_NOTHING(vkl = gkl.klPQ())
-        TS_ASSERT_DIFFERS(vkl, (float)0.0)
+        TS_ASSERT_DIFFERS(vkl, static_cast< float >(0.0))
       }
       {
         gum::GibbsBNdistance< double > gkl(kl);
         gkl.setMaxIter(40);
         TS_GUM_ASSERT_THROWS_NOTHING(vkl = gkl.klPQ())
-        TS_ASSERT_DIFFERS(vkl, (float)0.0)
+        TS_ASSERT_DIFFERS(vkl, static_cast< float >(0.0))
         TS_ASSERT_THROWS(gkl.history(), const gum::OperationNotAllowed&)
       }
 
@@ -210,7 +211,7 @@ namespace gum_tests {
         gum::GibbsBNdistance< double > gkl(kl);
         gkl.setMaxIter(40);
         TS_GUM_ASSERT_THROWS_NOTHING(vkl = gkl.klPQ())
-        TS_ASSERT_DIFFERS(vkl, (float)0.0)
+        TS_ASSERT_DIFFERS(vkl, static_cast< float >(0.0))
         TS_ASSERT_THROWS(gkl.history(), const gum::OperationNotAllowed&)
       }
     }
@@ -234,8 +235,8 @@ namespace gum_tests {
       TS_GUM_ASSERT_THROWS_NOTHING(kl.klPQ())
       TS_ASSERT_DELTA(kl.klPQ(), 0.241864114, 1e-7)
       TS_ASSERT_DELTA(kl.klQP(), 0.399826689, 1e-7)
-      TS_ASSERT_EQUALS(kl.errorPQ(), (gum::Size)0)
-      TS_ASSERT_EQUALS(kl.errorQP(), (gum::Size)0)
+      TS_ASSERT_EQUALS(kl.errorPQ(), static_cast< gum::Size >(0))
+      TS_ASSERT_EQUALS(kl.errorQP(), static_cast< gum::Size >(0))
       TS_ASSERT_DELTA(kl.hellinger(), 0.321089688, 1e-7)
       TS_ASSERT_DELTA(kl.jsd(), 0.0696153, 1e-7)
       TS_ASSERT_DELTA(kl.bhattacharya(), 0.0529255, 1e-7)
@@ -269,8 +270,8 @@ namespace gum_tests {
         kl.setMinEpsilonRate(TS_GUM_SMALL_ERROR);
         if (fabs(kl.klPQ() - 0.241864114) >= 1e-1) continue;         // next try
         if (fabs(kl.klQP() - 0.399826689) >= 1e-1) continue;         // next try
-        if (kl.errorPQ() != (gum::Size)0) continue;                  // next try
-        if (kl.errorQP() != (gum::Size)0) continue;                  // next try
+        if (kl.errorPQ() != static_cast< gum::Size >(0)) continue;   // next try
+        if (kl.errorQP() != static_cast< gum::Size >(0)) continue;   // next try
         if (fabs(kl.hellinger() - 0.321089688) >= 1e-1) continue;    // next try
         if (fabs(kl.jsd() - 0.0696153) >= 1e-1) continue;            // next try
         if (fabs(kl.bhattacharya() - 0.0529255) >= 1e-1) continue;   // next try

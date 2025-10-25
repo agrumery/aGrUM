@@ -37,6 +37,7 @@
  *   gitlab   : https://gitlab.com/agrumery/agrum                           *
  *                                                                          *
  ****************************************************************************/
+#pragma once
 
 
 // =========================================================================
@@ -62,7 +63,7 @@
 
 namespace gum_tests {
 
-  class [[maybe_unused]] MultiDimFunctionGraphTestSuite: public CxxTest::TestSuite {
+  class GUM_TEST_SUITE(MultiDimFunctionGraph) {
     private:
     void _fillFactory_(gum::MultiDimFunctionGraph< double >* factory,
                        gum::List< gum::NodeId >*             idList) {
@@ -559,11 +560,11 @@ namespace gum_tests {
         // Test nbrDim(), domainSize(), realSize()
         // *********************************************************************
 
-        TS_ASSERT_EQUALS(functionGraph->nbrDim(), (gum::Idx)8)
+        TS_ASSERT_EQUALS(functionGraph->nbrDim(), static_cast< gum::Idx >(8))
 
-        TS_ASSERT_EQUALS(functionGraph->domainSize(), (gum::Size)256)
+        TS_ASSERT_EQUALS(functionGraph->domainSize(), static_cast< gum::Size >(256))
 
-        TS_ASSERT_EQUALS(functionGraph->realSize(), (gum::Size)15);   // 19)
+        TS_ASSERT_EQUALS(functionGraph->realSize(), static_cast< gum::Size >(15));   // 19)
 
         TS_GUM_ASSERT_THROWS_NOTHING(functionGraph->compressionRate())
 

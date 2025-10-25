@@ -37,6 +37,7 @@
  *   gitlab   : https://gitlab.com/agrumery/agrum                           *
  *                                                                          *
  ****************************************************************************/
+#pragma once
 
 
 /** @file
@@ -69,7 +70,7 @@ namespace gum {
     if (this != &g) {
       DiGraph::clear();
       NodeGraphPart::operator=(g);
-      ArcGraphPart:: operator=(g);
+      ArcGraphPart::operator=(g);
     }
 
     return *this;

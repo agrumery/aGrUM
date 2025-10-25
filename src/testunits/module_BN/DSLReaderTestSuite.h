@@ -37,6 +37,7 @@
  *   gitlab   : https://gitlab.com/agrumery/agrum                           *
  *                                                                          *
  ****************************************************************************/
+#pragma once
 
 
 #include <iostream>
@@ -60,7 +61,7 @@
 //          5_/             2 -> 4
 //                          2 -> 5
 namespace gum_tests {
-  class [[maybe_unused]] DSLReaderTestSuite: public CxxTest::TestSuite {
+  class GUM_TEST_SUITE(DSLReader) {
     public:
     GUM_ACTIVE_TEST(Constuctor) {
       std::string             file = GET_RESSOURCES_PATH("DSL/DSLReader_file1.txt");
@@ -69,7 +70,7 @@ namespace gum_tests {
       gum::DSLReader< double >* reader = 0;
       TS_GUM_ASSERT_THROWS_NOTHING(reader = new gum::DSLReader< double >(&net, file))
       TS_GUM_ASSERT_THROWS_NOTHING(delete reader)
-    }
+    }   // namespace gum_tests
 
     GUM_ACTIVE_TEST(Read_file1) {
       std::string              file = GET_RESSOURCES_PATH("DSL/DSLReader_file1.txt");
@@ -78,12 +79,12 @@ namespace gum_tests {
 
       reader.trace(false);
 
-      gum::Size nbrErr = (gum::Size)0;
+      gum::Size nbrErr = static_cast< gum::Size >(0);
       TS_GUM_ASSERT_THROWS_NOTHING(nbrErr = reader.proceed())
-      TS_ASSERT_EQUALS(nbrErr, (gum::Size)0)
-      TS_ASSERT_EQUALS(reader.warnings(), (gum::Size)0)
+      TS_ASSERT_EQUALS(nbrErr, static_cast< gum::Size >(0))
+      TS_ASSERT_EQUALS(reader.warnings(), static_cast< gum::Size >(0))
       // 0 warnings : no properties
-      TS_ASSERT_EQUALS(reader.errors(), (gum::Size)0)
+      TS_ASSERT_EQUALS(reader.errors(), static_cast< gum::Size >(0))
       TS_ASSERT_DIFFERS(net, nullptr)
 
       if (net != nullptr) {
@@ -96,17 +97,17 @@ namespace gum_tests {
       std::string              file = GET_RESSOURCES_PATH("DSL/DSLReader_file2.txt");
       gum::BayesNet< double >* net  = new gum::BayesNet< double >();
       gum::DSLReader< double > reader(net, file);
-      gum::Size                nbrErr = (gum::Size)0;
+      gum::Size                nbrErr = static_cast< gum::Size >(0);
       TS_GUM_ASSERT_THROWS_NOTHING(nbrErr = reader.proceed())
-      TS_ASSERT_EQUALS(nbrErr, (gum::Size)0)
-      TS_ASSERT_EQUALS(reader.warnings(), (gum::Size)0)
+      TS_ASSERT_EQUALS(nbrErr, static_cast< gum::Size >(0))
+      TS_ASSERT_EQUALS(reader.warnings(), static_cast< gum::Size >(0))
       // 0 warnings : no properties
-      TS_ASSERT_EQUALS(reader.errors(), (gum::Size)0)
+      TS_ASSERT_EQUALS(reader.errors(), static_cast< gum::Size >(0))
 
       TS_ASSERT_DIFFERS(net, nullptr)
 
       if (net != nullptr) {
-        TS_ASSERT_EQUALS(net->size(), (gum::Size)2)
+        TS_ASSERT_EQUALS(net->size(), static_cast< gum::Size >(2))
         gum::NodeId node_1 = 0, node_2 = 0;
 
         for (const auto node: net->nodes())
@@ -116,9 +117,9 @@ namespace gum_tests {
         const gum::DiscreteVariable& var_1 = net->variable(node_1);
 
         TS_ASSERT_EQUALS(var_1.name(), "n1")
-        TS_ASSERT_EQUALS(var_1.domainSize(), (gum::Size)2)
+        TS_ASSERT_EQUALS(var_1.domainSize(), static_cast< gum::Size >(2))
         const gum::Tensor< double >& proba_1 = net->cpt(node_1);
-        TS_ASSERT_EQUALS(proba_1.domainSize(), (gum::Size)2)
+        TS_ASSERT_EQUALS(proba_1.domainSize(), static_cast< gum::Size >(2))
         gum::Instantiation inst_1(proba_1);
         inst_1.setFirst();
         TS_ASSERT(std::abs((proba_1[inst_1] - 0.2f)) < 0.001f)
@@ -127,9 +128,9 @@ namespace gum_tests {
 
         const gum::DiscreteVariable& var_2 = net->variable(node_2);
         TS_ASSERT_EQUALS(var_2.name(), "n2")
-        TS_ASSERT_EQUALS(var_2.domainSize(), (gum::Size)2)
+        TS_ASSERT_EQUALS(var_2.domainSize(), static_cast< gum::Size >(2))
         const gum::Tensor< double >& proba_2 = net->cpt(node_2);
-        TS_ASSERT_EQUALS(proba_2.domainSize(), (gum::Size)2)
+        TS_ASSERT_EQUALS(proba_2.domainSize(), static_cast< gum::Size >(2))
         gum::Instantiation inst_2(proba_2);
         inst_2.setFirst();
         TS_ASSERT(std::abs((proba_2[inst_2] - 0.3f)) < 0.001f)
@@ -145,16 +146,16 @@ namespace gum_tests {
       gum::BayesNet< double >* net  = new gum::BayesNet< double >();
       gum::DSLReader< double > reader(net, file);
 
-      gum::Size nbrErr = (gum::Size)0;
+      gum::Size nbrErr = static_cast< gum::Size >(0);
       TS_GUM_ASSERT_THROWS_NOTHING(nbrErr = reader.proceed())
-      TS_ASSERT_EQUALS(nbrErr, (gum::Size)0)
-      TS_ASSERT_EQUALS(reader.warnings(), (gum::Size)0)
-      TS_ASSERT_EQUALS(reader.errors(), (gum::Size)0)
+      TS_ASSERT_EQUALS(nbrErr, static_cast< gum::Size >(0))
+      TS_ASSERT_EQUALS(reader.warnings(), static_cast< gum::Size >(0))
+      TS_ASSERT_EQUALS(reader.errors(), static_cast< gum::Size >(0))
 
       TS_ASSERT_DIFFERS(net, nullptr)
 
       if (net != nullptr) {
-        TS_ASSERT_EQUALS(net->size(), (gum::Size)2)
+        TS_ASSERT_EQUALS(net->size(), static_cast< gum::Size >(2))
         gum::NodeId node_1 = 0, node_2 = 0;
 
         for (const auto node: net->nodes())
@@ -164,9 +165,9 @@ namespace gum_tests {
         const gum::DiscreteVariable& var_1 = net->variable(node_1);
 
         TS_ASSERT_EQUALS(var_1.name(), "n1")
-        TS_ASSERT_EQUALS(var_1.domainSize(), (gum::Size)2)
+        TS_ASSERT_EQUALS(var_1.domainSize(), static_cast< gum::Size >(2))
         const gum::Tensor< double >& proba_1 = net->cpt(node_1);
-        TS_ASSERT_EQUALS(proba_1.domainSize(), (gum::Size)2)
+        TS_ASSERT_EQUALS(proba_1.domainSize(), static_cast< gum::Size >(2))
         gum::Instantiation inst_1(proba_1);
         inst_1.setFirst();
         TS_ASSERT(std::abs((proba_1[inst_1] - 0.2)) < 0.001)
@@ -175,9 +176,9 @@ namespace gum_tests {
 
         const gum::DiscreteVariable& var_2 = net->variable(node_2);
         TS_ASSERT_EQUALS(var_2.name(), "n2")
-        TS_ASSERT_EQUALS(var_2.domainSize(), (gum::Size)2)
+        TS_ASSERT_EQUALS(var_2.domainSize(), static_cast< gum::Size >(2))
         const gum::Tensor< double >& proba_2 = net->cpt(node_2);
-        TS_ASSERT_EQUALS(proba_2.domainSize(), (gum::Size)2)
+        TS_ASSERT_EQUALS(proba_2.domainSize(), static_cast< gum::Size >(2))
         gum::Instantiation inst_2(proba_2);
         inst_2.setFirst();
         TS_ASSERT(std::abs((proba_2[inst_2] - 0.3)) < 0.001)
@@ -192,13 +193,13 @@ namespace gum_tests {
       std::string              file = GET_RESSOURCES_PATH("DSL/DSLReader_file3.txt");
       gum::BayesNet< double >* net  = new gum::BayesNet< double >();
       gum::DSLReader< double > reader(net, file);
-      gum::Size                nbrErr = (gum::Size)0;
+      gum::Size                nbrErr = static_cast< gum::Size >(0);
       TS_GUM_ASSERT_THROWS_NOTHING(nbrErr = reader.proceed())
-      TS_ASSERT_EQUALS(nbrErr, (gum::Size)0)
-      TS_ASSERT_EQUALS(reader.warnings(), (gum::Size)0)
+      TS_ASSERT_EQUALS(nbrErr, static_cast< gum::Size >(0))
+      TS_ASSERT_EQUALS(reader.warnings(), static_cast< gum::Size >(0))
       // 0 warnings : no properties
-      TS_ASSERT_EQUALS(reader.errors(), (gum::Size)0)
-      TS_ASSERT_EQUALS(net->size(), (gum::Size)6)
+      TS_ASSERT_EQUALS(reader.errors(), static_cast< gum::Size >(0))
+      TS_ASSERT_EQUALS(net->size(), static_cast< gum::Size >(6))
       TS_ASSERT_DIFFERS(net, nullptr)
       gum::DSLWriter< double > writer;
       std::string              file2 = GET_RESSOURCES_PATH("outputs/DSLWriter_TestFile3.txt");
@@ -211,14 +212,14 @@ namespace gum_tests {
       std::string              file = GET_RESSOURCES_PATH("DSL/Ling.dsl");
       gum::BayesNet< double >* net  = new gum::BayesNet< double >();
       gum::DSLReader< double > reader(net, file);
-      gum::Size                nbrErr = (gum::Size)0;
+      gum::Size                nbrErr = static_cast< gum::Size >(0);
       reader.trace(true);
       TS_GUM_ASSERT_THROWS_NOTHING(nbrErr = reader.proceed())
-      TS_ASSERT_EQUALS(nbrErr, (gum::Size)0)
-      TS_ASSERT_EQUALS(reader.warnings(), (gum::Size)0)
+      TS_ASSERT_EQUALS(nbrErr, static_cast< gum::Size >(0))
+      TS_ASSERT_EQUALS(reader.warnings(), static_cast< gum::Size >(0))
       // 0 warnings : no properties
-      TS_ASSERT_EQUALS(reader.errors(), (gum::Size)0)
-      TS_ASSERT_EQUALS(net->size(), (gum::Size)13)
+      TS_ASSERT_EQUALS(reader.errors(), static_cast< gum::Size >(0))
+      TS_ASSERT_EQUALS(net->size(), static_cast< gum::Size >(13))
       TS_ASSERT_DIFFERS(net, nullptr)
       gum::DSLWriter< double > writer;
       std::string              file2 = GET_RESSOURCES_PATH("outputs/DSLWriter_Ling.txt");
@@ -232,11 +233,11 @@ namespace gum_tests {
       gum::BayesNet< double >* net  = new gum::BayesNet< double >();
       gum::DSLReader< double > reader(net, file);
 
-      gum::Size nbrErr = (gum::Size)0;
+      gum::Size nbrErr = static_cast< gum::Size >(0);
       TS_GUM_ASSERT_THROWS_NOTHING(nbrErr = reader.proceed())
-      TS_ASSERT_EQUALS(nbrErr, (gum::Size)0)
-      TS_ASSERT_EQUALS(reader.warnings(), (gum::Size)0)
-      TS_ASSERT_EQUALS(reader.errors(), (gum::Size)0)
+      TS_ASSERT_EQUALS(nbrErr, static_cast< gum::Size >(0))
+      TS_ASSERT_EQUALS(reader.warnings(), static_cast< gum::Size >(0))
+      TS_ASSERT_EQUALS(reader.errors(), static_cast< gum::Size >(0))
 
       gum::HashTable< std::string, gum::NodeId > idMap;
 
@@ -250,12 +251,12 @@ namespace gum_tests {
 
       if (idMap.exists("HISTORY") && idMap.exists("LVFAILURE")) {
         const gum::DiscreteVariable& history = net->variable(idMap["HISTORY"]);
-        TS_ASSERT_EQUALS(history.domainSize(), (gum::Size)2)
+        TS_ASSERT_EQUALS(history.domainSize(), static_cast< gum::Size >(2))
         TS_ASSERT_EQUALS(history.label(0), "TRUE")
         TS_ASSERT_EQUALS(history.label(1), "FALSE")
         TS_ASSERT(net->dag().existsArc(idMap["LVFAILURE"], idMap["HISTORY"]))
         const gum::Tensor< double >& historyCPT = net->cpt(idMap["HISTORY"]);
-        TS_ASSERT_EQUALS(historyCPT.domainSize(), (gum::Size)4)
+        TS_ASSERT_EQUALS(historyCPT.domainSize(), static_cast< gum::Size >(4))
         TS_ASSERT(historyCPT.contains(net->variable(idMap["HISTORY"])))
         TS_ASSERT(historyCPT.contains(net->variable(idMap["LVFAILURE"])))
         gum::Instantiation historyInst(historyCPT);
@@ -284,12 +285,12 @@ namespace gum_tests {
 
       if (idMap.exists("ERRLOWOUTPUT") && idMap.exists("HRBP")) {
         const gum::DiscreteVariable& errlowoutput = net->variable(idMap["ERRLOWOUTPUT"]);
-        TS_ASSERT_EQUALS(errlowoutput.domainSize(), (gum::Size)2)
+        TS_ASSERT_EQUALS(errlowoutput.domainSize(), static_cast< gum::Size >(2))
         TS_ASSERT_EQUALS(errlowoutput.label(0), "TRUE")
         TS_ASSERT_EQUALS(errlowoutput.label(1), "FALSE")
         TS_ASSERT(net->dag().existsArc(idMap["ERRLOWOUTPUT"], idMap["HRBP"]))
         const gum::Tensor< double >& errlowoutputCPT = net->cpt(idMap["ERRLOWOUTPUT"]);
-        TS_ASSERT_EQUALS(errlowoutputCPT.domainSize(), (gum::Size)2)
+        TS_ASSERT_EQUALS(errlowoutputCPT.domainSize(), static_cast< gum::Size >(2))
         TS_ASSERT(errlowoutputCPT.contains(errlowoutput))
         gum::Instantiation errlowoutputInst(errlowoutputCPT);
         errlowoutputInst.chgVal(errlowoutput, 0);
@@ -374,11 +375,11 @@ namespace gum_tests {
       std::string              file = GET_RESSOURCES_PATH("DSL/Barley.dsl");
       gum::BayesNet< double >* net  = new gum::BayesNet< double >();
       gum::DSLReader< double > reader(net, file);
-      gum::Size                nbrErr = (gum::Size)0;
+      gum::Size                nbrErr = static_cast< gum::Size >(0);
       TS_GUM_ASSERT_THROWS_NOTHING(nbrErr = reader.proceed())
-      TS_ASSERT_EQUALS(nbrErr, (gum::Size)0)
-      TS_ASSERT_EQUALS(reader.warnings(), (gum::Size)0)
-      TS_ASSERT_EQUALS(reader.errors(), (gum::Size)0)
+      TS_ASSERT_EQUALS(nbrErr, static_cast< gum::Size >(0))
+      TS_ASSERT_EQUALS(reader.warnings(), static_cast< gum::Size >(0))
+      TS_ASSERT_EQUALS(reader.errors(), static_cast< gum::Size >(0))
 
       if (net) delete net;
     }
@@ -387,11 +388,11 @@ namespace gum_tests {
       std::string              file = GET_RESSOURCES_PATH("DSL/carpo.dsl");
       gum::BayesNet< double >* net  = new gum::BayesNet< double >();
       gum::DSLReader< double > reader(net, file);
-      gum::Size                nbrErr = (gum::Size)0;
+      gum::Size                nbrErr = static_cast< gum::Size >(0);
       TS_GUM_ASSERT_THROWS_NOTHING(nbrErr = reader.proceed())
-      TS_ASSERT_EQUALS(nbrErr, (gum::Size)0)
-      TS_ASSERT_EQUALS(reader.warnings(), (gum::Size)0)
-      TS_ASSERT_EQUALS(reader.errors(), (gum::Size)0)
+      TS_ASSERT_EQUALS(nbrErr, static_cast< gum::Size >(0))
+      TS_ASSERT_EQUALS(reader.warnings(), static_cast< gum::Size >(0))
+      TS_ASSERT_EQUALS(reader.errors(), static_cast< gum::Size >(0))
 
       if (net) delete net;
     }
@@ -400,11 +401,11 @@ namespace gum_tests {
       std::string              file = GET_RESSOURCES_PATH("DSL/Diabetes.dsl");
       gum::BayesNet< double >* net  = new gum::BayesNet< double >();
       gum::DSLReader< double > reader(net, file);
-      gum::Size                nbrErr = (gum::Size)0;
+      gum::Size                nbrErr = static_cast< gum::Size >(0);
       TS_GUM_ASSERT_THROWS_NOTHING(nbrErr = reader.proceed())
-      TS_ASSERT_EQUALS(nbrErr, (gum::Size)0)
-      TS_ASSERT_EQUALS(reader.warnings(), (gum::Size)0)
-      TS_ASSERT_EQUALS(reader.errors(), (gum::Size)0)
+      TS_ASSERT_EQUALS(nbrErr, static_cast< gum::Size >(0))
+      TS_ASSERT_EQUALS(reader.warnings(), static_cast< gum::Size >(0))
+      TS_ASSERT_EQUALS(reader.errors(), static_cast< gum::Size >(0))
 
       if (net) delete net;
     }
@@ -413,11 +414,11 @@ namespace gum_tests {
       std::string              file = GET_RESSOURCES_PATH("DSL/hailfinder.dsl");
       gum::BayesNet< double >* net  = new gum::BayesNet< double >();
       gum::DSLReader< double > reader(net, file);
-      gum::Size                nbrErr = (gum::Size)0;
+      gum::Size                nbrErr = static_cast< gum::Size >(0);
       TS_GUM_ASSERT_THROWS_NOTHING(nbrErr = reader.proceed())
-      TS_ASSERT_EQUALS(nbrErr, (gum::Size)0)
-      TS_ASSERT_EQUALS(reader.warnings(), (gum::Size)0)
-      TS_ASSERT_EQUALS(reader.errors(), (gum::Size)0)
+      TS_ASSERT_EQUALS(nbrErr, static_cast< gum::Size >(0))
+      TS_ASSERT_EQUALS(reader.warnings(), static_cast< gum::Size >(0))
+      TS_ASSERT_EQUALS(reader.errors(), static_cast< gum::Size >(0))
 
       if (net) delete net;
     }
@@ -426,11 +427,11 @@ namespace gum_tests {
       std::string              file = GET_RESSOURCES_PATH("DSL/insurance.dsl");
       gum::BayesNet< double >* net  = new gum::BayesNet< double >();
       gum::DSLReader< double > reader(net, file);
-      gum::Size                nbrErr = (gum::Size)0;
+      gum::Size                nbrErr = static_cast< gum::Size >(0);
       TS_GUM_ASSERT_THROWS_NOTHING(nbrErr = reader.proceed())
-      TS_ASSERT_EQUALS(nbrErr, (gum::Size)0)
-      TS_ASSERT_EQUALS(reader.warnings(), (gum::Size)0)
-      TS_ASSERT_EQUALS(reader.errors(), (gum::Size)0)
+      TS_ASSERT_EQUALS(nbrErr, static_cast< gum::Size >(0))
+      TS_ASSERT_EQUALS(reader.warnings(), static_cast< gum::Size >(0))
+      TS_ASSERT_EQUALS(reader.errors(), static_cast< gum::Size >(0))
 
       if (net) delete net;
     }
@@ -439,11 +440,11 @@ namespace gum_tests {
       std::string              file = GET_RESSOURCES_PATH("DSL/Link.dsl");
       gum::BayesNet< double >* net  = new gum::BayesNet< double >();
       gum::DSLReader< double > reader(net, file);
-      gum::Size                nbrErr = (gum::Size)0;
+      gum::Size                nbrErr = static_cast< gum::Size >(0);
       TS_GUM_ASSERT_THROWS_NOTHING(nbrErr = reader.proceed())
-      TS_ASSERT_EQUALS(nbrErr, (gum::Size)0)
-      TS_ASSERT_EQUALS(reader.warnings(), (gum::Size)0)
-      TS_ASSERT_EQUALS(reader.errors(), (gum::Size)0)
+      TS_ASSERT_EQUALS(nbrErr, static_cast< gum::Size >(0))
+      TS_ASSERT_EQUALS(reader.warnings(), static_cast< gum::Size >(0))
+      TS_ASSERT_EQUALS(reader.errors(), static_cast< gum::Size >(0))
 
       if (net) delete net;
     }
@@ -455,11 +456,11 @@ namespace gum_tests {
       std::string              file = GET_RESSOURCES_PATH("DSL/Mildew.dsl");
       gum::BayesNet< double >* net  = new gum::BayesNet< double >();
       gum::DSLReader< double > reader(net, file);
-      gum::Size                nbrErr = (gum::Size)0;
+      gum::Size                nbrErr = static_cast< gum::Size >(0);
       TS_GUM_ASSERT_THROWS_NOTHING(nbrErr = reader.proceed())
-      TS_ASSERT_EQUALS(nbrErr, (gum::Size)0)
-      TS_ASSERT_EQUALS(reader.warnings(), (gum::Size)0)
-      TS_ASSERT_EQUALS(reader.errors(), (gum::Size)0)
+      TS_ASSERT_EQUALS(nbrErr, static_cast< gum::Size >(0))
+      TS_ASSERT_EQUALS(reader.warnings(), static_cast< gum::Size >(0))
+      TS_ASSERT_EQUALS(reader.errors(), static_cast< gum::Size >(0))
 
       if (net) delete net;
     }
@@ -468,11 +469,11 @@ namespace gum_tests {
       std::string              file = GET_RESSOURCES_PATH("DSL/Munin1.dsl");
       gum::BayesNet< double >* net  = new gum::BayesNet< double >();
       gum::DSLReader< double > reader(net, file);
-      gum::Size                nbrErr = (gum::Size)0;
+      gum::Size                nbrErr = static_cast< gum::Size >(0);
       TS_GUM_ASSERT_THROWS_NOTHING(nbrErr = reader.proceed())
-      TS_ASSERT_EQUALS(nbrErr, (gum::Size)0)
-      TS_ASSERT_EQUALS(reader.warnings(), (gum::Size)0)
-      TS_ASSERT_EQUALS(reader.errors(), (gum::Size)0)
+      TS_ASSERT_EQUALS(nbrErr, static_cast< gum::Size >(0))
+      TS_ASSERT_EQUALS(reader.warnings(), static_cast< gum::Size >(0))
+      TS_ASSERT_EQUALS(reader.errors(), static_cast< gum::Size >(0))
 
       if (net) delete net;
     }
@@ -481,11 +482,11 @@ namespace gum_tests {
       std::string              file = GET_RESSOURCES_PATH("DSL/Pigs.dsl");
       gum::BayesNet< double >* net  = new gum::BayesNet< double >();
       gum::DSLReader< double > reader(net, file);
-      gum::Size                nbrErr = (gum::Size)0;
+      gum::Size                nbrErr = static_cast< gum::Size >(0);
       TS_GUM_ASSERT_THROWS_NOTHING(nbrErr = reader.proceed())
-      TS_ASSERT_EQUALS(nbrErr, (gum::Size)0)
-      TS_ASSERT_EQUALS(reader.warnings(), (gum::Size)0)
-      TS_ASSERT_EQUALS(reader.errors(), (gum::Size)0)
+      TS_ASSERT_EQUALS(nbrErr, static_cast< gum::Size >(0))
+      TS_ASSERT_EQUALS(reader.warnings(), static_cast< gum::Size >(0))
+      TS_ASSERT_EQUALS(reader.errors(), static_cast< gum::Size >(0))
 
       if (net) delete net;
     }
@@ -494,11 +495,11 @@ namespace gum_tests {
       std::string              file = GET_RESSOURCES_PATH("DSL/Water.dsl");
       gum::BayesNet< double >* net  = new gum::BayesNet< double >();
       gum::DSLReader< double > reader(net, file);
-      gum::Size                nbrErr = (gum::Size)0;
+      gum::Size                nbrErr = static_cast< gum::Size >(0);
       TS_GUM_ASSERT_THROWS_NOTHING(nbrErr = reader.proceed())
-      TS_ASSERT_EQUALS(nbrErr, (gum::Size)0)
-      TS_ASSERT_EQUALS(reader.warnings(), (gum::Size)0)
-      TS_ASSERT_EQUALS(reader.errors(), (gum::Size)0)
+      TS_ASSERT_EQUALS(nbrErr, static_cast< gum::Size >(0))
+      TS_ASSERT_EQUALS(reader.warnings(), static_cast< gum::Size >(0))
+      TS_ASSERT_EQUALS(reader.errors(), static_cast< gum::Size >(0))
 
       if (net) delete net;
     }

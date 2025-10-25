@@ -37,6 +37,7 @@
  *   gitlab   : https://gitlab.com/agrumery/agrum                           *
  *                                                                          *
  ****************************************************************************/
+#pragma once
 
 
 #include <iostream>
@@ -50,10 +51,9 @@
 
 namespace gum_tests {
 
-  class [[maybe_unused]] DirichletPriorFromDatabaseTestSuite: public CxxTest::TestSuite {
+  class GUM_TEST_SUITE(DirichletPriorFromDatabase) {
     public:
-    GUM_ACTIVE_TEST(1) {
-      // create the translator set
+    GUM_ACTIVE_TEST(1) {   // create the translator set
       gum::LabelizedVariable var("X1", "", 0);
       var.addLabel("0");
       var.addLabel("1");
@@ -429,7 +429,7 @@ namespace gum_tests {
       TS_ASSERT_EQUALS(vect[2], 1001.0)
 
       delete prior4;
-    }
+    }   // namespace gum_tests
 
     GUM_ACTIVE_TEST(2) {
       // create the translator set

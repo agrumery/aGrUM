@@ -37,6 +37,7 @@
  *   gitlab   : https://gitlab.com/agrumery/agrum                           *
  *                                                                          *
  ****************************************************************************/
+#pragma once
 
 
 #include <algorithm>
@@ -50,7 +51,7 @@
 
 namespace gum_tests {
 
-  class [[maybe_unused]] SharedAVLTreeTestSuite: public CxxTest::TestSuite {
+  class GUM_TEST_SUITE(SharedAVLTree) {
     public:
     GUM_ACTIVE_TEST(_int) {
       gum::SharedAVLTree< int > tree1;

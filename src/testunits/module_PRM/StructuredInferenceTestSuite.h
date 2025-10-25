@@ -37,6 +37,7 @@
  *   gitlab   : https://gitlab.com/agrumery/agrum                           *
  *                                                                          *
  ****************************************************************************/
+#pragma once
 
 
 #include <gumtest/AgrumTestSuite.h>
@@ -51,7 +52,7 @@
 
 namespace gum_tests {
 
-  class [[maybe_unused]] StructuredInferenceTestSuite: public CxxTest::TestSuite {
+  class GUM_TEST_SUITE(StructuredInference) {
     public:
     void setUp() {}
 
@@ -67,8 +68,12 @@ namespace gum_tests {
           v[lvl].o              = 20;
           v[lvl].inner_density  = 0.2f;
           v[lvl].outter_density = 0.05f;
-        }
-      } catch (gum::Exception&) { TS_ASSERT(false) }
+        }   // namespace gum_tests
+      }
+
+      catch (gum::Exception&) {
+        TS_ASSERT(false)
+      }
     }
 
     void generateLayer2(gum::Size                                                     nb_class,

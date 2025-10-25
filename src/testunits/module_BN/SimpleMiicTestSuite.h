@@ -37,6 +37,7 @@
  *   gitlab   : https://gitlab.com/agrumery/agrum                           *
  *                                                                          *
  ****************************************************************************/
+#pragma once
 
 
 #include <iostream>
@@ -79,7 +80,7 @@ namespace gum_tests {
 
   class FilterListenerForSimpleMiic: public gum::Listener {
     public:
-    gum::Size filter;
+    gum::Size filter{0};
     FilterListenerForSimpleMiic() {};
 
     void whenStructuralModification(const void* src,
@@ -95,7 +96,7 @@ namespace gum_tests {
     };
   };
 
-  class SimpleMiicTestSuite: public CxxTest::TestSuite {
+  class GUM_TEST_SUITE(SimpleMiic) {
     public:
     GUM_ACTIVE_TEST(_latent_var_) {
       gum::learning::DBInitializerFromCSV initializer(
@@ -175,10 +176,10 @@ namespace gum_tests {
       }
 
       graph = search.learnMixedStructure(cI, graph);
-      // TS_ASSERT_EQUALS(graph.arcs().size(), (gum::Size)5)
-      // TS_ASSERT_EQUALS(graph.edges().size(), (gum::Size)3)
+      // TS_ASSERT_EQUALS(graph.arcs().size(), static_cast<gum::Size>(5))
+      // TS_ASSERT_EQUALS(graph.edges().size(), static_cast<gum::Size>(3))
       std::vector< gum::Arc > latents = search.latentVariables();
-      TS_ASSERT_EQUALS(latents.size(), (gum::Size)0)
+      TS_ASSERT_EQUALS(latents.size(), static_cast< gum::Size >(0))
       gum::DAG dag = search.learnStructure(cI, graph);
     }
 
@@ -228,10 +229,10 @@ namespace gum_tests {
       }
 
       graph = search.learnMixedStructure(cI, graph);
-      TS_ASSERT_EQUALS(graph.arcs().size(), (gum::Size)5)
-      TS_ASSERT_EQUALS(graph.edges().size(), (gum::Size)3)
+      TS_ASSERT_EQUALS(graph.arcs().size(), static_cast< gum::Size >(5))
+      TS_ASSERT_EQUALS(graph.edges().size(), static_cast< gum::Size >(3))
       std::vector< gum::Arc > latents = search.latentVariables();
-      TS_ASSERT_EQUALS(latents.size(), (gum::Size)0)
+      TS_ASSERT_EQUALS(latents.size(), static_cast< gum::Size >(0))
       TS_ASSERT(graph.existsArc(4, 3))
       TS_ASSERT(graph.existsEdge(5, 7))
     }
@@ -271,13 +272,13 @@ namespace gum_tests {
         }
       }
       gum::MixedGraph g = search.learnMixedStructure(cI, graph);
-      TS_ASSERT_EQUALS(g.arcs().size(), (gum::Size)0)
-      TS_ASSERT_EQUALS(g.edges().size(), (gum::Size)9)
+      TS_ASSERT_EQUALS(g.arcs().size(), static_cast<gum::Size>(0))
+      TS_ASSERT_EQUALS(g.edges().size(), static_cast<gum::Size>(9))
 
       gum::DAG                dag = search.learnStructure(cI, graph);
       std::vector< gum::Arc > latents = search.latentVariables();
-      TS_ASSERT_EQUALS(dag.arcs().size(), (gum::Size)9)
-      TS_ASSERT_EQUALS(latents.size(), (gum::Size)0)
+      TS_ASSERT_EQUALS(dag.arcs().size(), static_cast<gum::Size>(9))
+      TS_ASSERT_EQUALS(latents.size(), static_cast<gum::Size>(0))
       */
     }
   };

@@ -74,7 +74,7 @@ namespace gum {
      * in.close();
      * @endcode
      */
-    class CSVParser {
+    class CSVParser final {
       public:
       // ##########################################################################
       /// @name Constructors / Destructors

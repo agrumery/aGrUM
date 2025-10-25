@@ -74,7 +74,7 @@ namespace gum {
    * @tparam Table The class of multidimensional table to use.
    */
   template < typename GUM_SCALAR, template < typename > class TABLE >
-  class MultiDimPartialInstantiation {
+  class MultiDimPartialInstantiation final {
     public:
     // =========================================================================
     /// @name Constructors, Destructors and Copy

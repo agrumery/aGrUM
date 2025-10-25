@@ -37,6 +37,7 @@
  *   gitlab   : https://gitlab.com/agrumery/agrum                           *
  *                                                                          *
  ****************************************************************************/
+#pragma once
 
 
 #include <iostream>
@@ -60,13 +61,13 @@
 //                          2 -> 5
 
 namespace gum_tests {
-  class [[maybe_unused]] BIFXMLBNWriterTestSuite: public CxxTest::TestSuite {
+  class GUM_TEST_SUITE(BIFXMLBNWriter) {
     public:
     GUM_ACTIVE_TEST(Constuctor) {
       gum::BIFXMLBNWriter< double >* writer = nullptr;
       TS_GUM_ASSERT_THROWS_NOTHING(writer = new gum::BIFXMLBNWriter< double >())
       delete writer;
-    }
+    }   // namespace gum_tests
 
     GUM_ACTIVE_TEST(Writer_ostream) {
       gum::BIFXMLBNWriter< double > writer;

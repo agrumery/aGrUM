@@ -37,6 +37,7 @@
  *   gitlab   : https://gitlab.com/agrumery/agrum                           *
  *                                                                          *
  ****************************************************************************/
+#pragma once
 
 
 #include <iostream>
@@ -59,7 +60,7 @@
 
 namespace gum_tests {
 
-  class [[maybe_unused]] UAIMRFReaderTestSuite: public CxxTest::TestSuite {
+  class GUM_TEST_SUITE(UAIMRFReader) {
     public:
     GUM_ACTIVE_TEST(Constructor) {
       std::string                      file = GET_RESSOURCES_PATH("uai/markov_example.uai");
@@ -68,7 +69,7 @@ namespace gum_tests {
       gum::UAIMRFReader< double >* reader = nullptr;
       TS_GUM_ASSERT_THROWS_NOTHING(reader = new gum::UAIMRFReader< double >(&net, file))
       TS_GUM_ASSERT_THROWS_NOTHING(delete reader)
-    }
+    }   // namespace gum_tests
 
     GUM_ACTIVE_TEST(Read_file1) {
       std::string                       file = GET_RESSOURCES_PATH("uai/markov_example.uai");
@@ -92,13 +93,13 @@ namespace gum_tests {
 
       gum::Size nbErr = 0;
       TS_GUM_ASSERT_THROWS_NOTHING(nbErr = reader.proceed())
-      TS_ASSERT_EQUALS(nbErr, (gum::Size)0)
+      TS_ASSERT_EQUALS(nbErr, static_cast< gum::Size >(0))
 
       TS_ASSERT_DIFFERS(net, nullptr)
 
       if (net != nullptr) {
         TS_ASSERT(!net->empty())
-        TS_ASSERT_EQUALS(net->size(), (gum::Size)3)
+        TS_ASSERT_EQUALS(net->size(), static_cast< gum::Size >(3))
 
         gum::NodeId node_0 = 0, node_1 = 0, node_2 = 0;
         node_0 = net->idFromName("0");
@@ -107,17 +108,17 @@ namespace gum_tests {
 
         const gum::DiscreteVariable& var_0 = net->variable(node_0);
         TS_ASSERT_EQUALS(var_0.name(), "0")
-        TS_ASSERT_EQUALS(var_0.domainSize(), (gum::Size)2)
+        TS_ASSERT_EQUALS(var_0.domainSize(), static_cast< gum::Size >(2))
 
         const gum::DiscreteVariable& var_2 = net->variable(node_2);
         TS_ASSERT_EQUALS(var_2.name(), "2")
-        TS_ASSERT_EQUALS(var_2.domainSize(), (gum::Size)3)
+        TS_ASSERT_EQUALS(var_2.domainSize(), static_cast< gum::Size >(3))
 
-        TS_ASSERT_EQUALS(net->factors().size(), (gum::Size)2)
+        TS_ASSERT_EQUALS(net->factors().size(), static_cast< gum::Size >(2))
 
         const auto& factor_01 = net->factor({node_0, node_1});
-        TS_ASSERT_EQUALS(factor_01.domainSize(), (gum::Size)4)
-        TS_ASSERT_EQUALS(factor_01.nbrDim(), (gum::Size)2)
+        TS_ASSERT_EQUALS(factor_01.domainSize(), static_cast< gum::Size >(4))
+        TS_ASSERT_EQUALS(factor_01.nbrDim(), static_cast< gum::Size >(2))
 
         gum::Instantiation inst_01(factor_01);
         inst_01.setFirst();
@@ -126,8 +127,8 @@ namespace gum_tests {
         TS_ASSERT_DELTA(factor_01[inst_01], 0.08, 0.001)
 
         const auto& factor_12 = net->factor({node_2, node_1});
-        TS_ASSERT_EQUALS(factor_12.domainSize(), (gum::Size)6)
-        TS_ASSERT_EQUALS(factor_12.nbrDim(), (gum::Size)2)
+        TS_ASSERT_EQUALS(factor_12.domainSize(), static_cast< gum::Size >(6))
+        TS_ASSERT_EQUALS(factor_12.nbrDim(), static_cast< gum::Size >(2))
 
         gum::Instantiation inst_12(factor_12);
         inst_12.setFirst();
@@ -146,19 +147,19 @@ namespace gum_tests {
 
       gum::Size nbErr = 0;
       TS_GUM_ASSERT_THROWS_NOTHING(nbErr = reader.proceed())
-      TS_ASSERT_EQUALS(nbErr, (gum::Size)0)
+      TS_ASSERT_EQUALS(nbErr, static_cast< gum::Size >(0))
 
       TS_ASSERT(!net.empty())
-      TS_ASSERT_EQUALS(net.size(), (gum::Size)3)
+      TS_ASSERT_EQUALS(net.size(), static_cast< gum::Size >(3))
 
       net = gum::MarkovRandomField< double >::fastPrototype("A--B");
       gum::UAIMRFReader< double > reader2(&net, file);
 
       TS_GUM_ASSERT_THROWS_NOTHING(nbErr = reader2.proceed())
-      TS_ASSERT_EQUALS(nbErr, (gum::Size)0)
+      TS_ASSERT_EQUALS(nbErr, static_cast< gum::Size >(0))
 
       TS_ASSERT(!net.empty())
-      TS_ASSERT_EQUALS(net.size(), (gum::Size)3)
+      TS_ASSERT_EQUALS(net.size(), static_cast< gum::Size >(3))
     }
   };
 }   // namespace gum_tests

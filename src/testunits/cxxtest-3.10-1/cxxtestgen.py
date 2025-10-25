@@ -291,17 +291,26 @@ unusedsuite_re = re.compile(
 )
 generatedSuite_re = re.compile(r"\bCXXTEST_SUITE\s*\(\s*(\w*)\s*\)")
 
+macroSuite_re = re.compile(r"\bclass\s+GUM_TEST_SUITE\s*\(\s*(\w+)\s*\)\s*")
+
 
 def scanLineForSuiteStart(fileName, lineNo, line):
   """Check if current line starts a new test suite"""
+  m = macroSuite_re.search(line)
+  if m:
+    startSuite(m.group(1)+"TestSuite", fileName, lineNo, 0)
+    return
+
   m = unusedsuite_re.search(line)
   if m:
     startSuite(m.group(1), fileName, lineNo, 0)
     return
+
   m = suite_re.search(line)
   if m:
     startSuite(m.group(1), fileName, lineNo, 0)
     return
+
   m = generatedSuite_re.search(line)
   if m:
     sys.stdout.write("%s:%s: Warning: Inline test suites are deprecated.\n" % (fileName, lineNo))

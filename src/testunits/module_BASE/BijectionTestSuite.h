@@ -37,6 +37,7 @@
  *   gitlab   : https://gitlab.com/agrumery/agrum                           *
  *                                                                          *
  ****************************************************************************/
+#pragma once
 
 
 #include <iostream>
@@ -51,7 +52,7 @@
 
 namespace gum_tests {
 
-  class [[maybe_unused]] BijectionTestSuite: public CxxTest::TestSuite {
+  class GUM_TEST_SUITE(Bijection) {
     public:
     GUM_ACTIVE_TEST(_constructors1) {
       gum::Bijection< int, int > bijection;
@@ -65,11 +66,11 @@ namespace gum_tests {
       TS_ASSERT_THROWS(bijection.insert(7, 6), const gum::DuplicateElement&)
 
       gum::Bijection< int, int > bijection2(bijection);
-      TS_ASSERT_EQUALS(bijection2.size(), (gum::Size)(gum::Size)3)
+      TS_ASSERT_EQUALS(bijection2.size(), (gum::Size) static_cast< gum::Size >(3))
 
       gum::Bijection< int, int > bij_bis(bijection);
       bij_bis.insert(8, 10);
-      TS_ASSERT_EQUALS(bij_bis.size(), (gum::Size)(gum::Size)4)
+      TS_ASSERT_EQUALS(bij_bis.size(), (gum::Size) static_cast< gum::Size >(4))
 
       gum::Bijection< int, int >* bijection3 = new gum::Bijection< int, int >;
       bijection3->insert(1, 2);
@@ -84,23 +85,23 @@ namespace gum_tests {
       TS_ASSERT_EQUALS(bijection4.second(3), 3)
 
       gum::Bijection< int, int > bij_ter(std::move(bij_bis));
-      TS_ASSERT_EQUALS(bij_ter.size(), (gum::Size)(gum::Size)4)
+      TS_ASSERT_EQUALS(bij_ter.size(), (gum::Size) static_cast< gum::Size >(4))
 
       gum::Bijection< int, int > bij5{std::pair< int, int >(3, 4), std::pair< int, int >(5, 6)};
-      TS_ASSERT_EQUALS(bij5.size(), (gum::Size)(gum::Size)2)
+      TS_ASSERT_EQUALS(bij5.size(), (gum::Size) static_cast< gum::Size >(2))
 
       bij5 = bijection;
-      TS_ASSERT_EQUALS(bij5.size(), (gum::Size)(gum::Size)3)
+      TS_ASSERT_EQUALS(bij5.size(), (gum::Size) static_cast< gum::Size >(3))
       TS_ASSERT(bij5.existsFirst(5))
       TS_ASSERT(bij5.existsFirst(3))
 
       bij5 = bij_ter;
-      TS_ASSERT_EQUALS(bij5.size(), (gum::Size)(gum::Size)4)
+      TS_ASSERT_EQUALS(bij5.size(), (gum::Size) static_cast< gum::Size >(4))
       TS_ASSERT(bij5.existsFirst(8))
 
       bij5 = std::move(bijection);
-      TS_ASSERT_EQUALS(bij5.size(), (gum::Size)3)
-    }
+      TS_ASSERT_EQUALS(bij5.size(), static_cast< gum::Size >(3))
+    }   // namespace gum_tests
 
     GUM_ACTIVE_TEST(_constructors2) {
       gum::Bijection< std::string, std::string > bijection;
@@ -114,11 +115,11 @@ namespace gum_tests {
       TS_ASSERT_THROWS(bijection.insert("e", "bc"), const gum::DuplicateElement&)
 
       gum::Bijection< std::string, std::string > bijection2(bijection);
-      TS_ASSERT_EQUALS(bijection2.size(), (gum::Size)3)
+      TS_ASSERT_EQUALS(bijection2.size(), static_cast< gum::Size >(3))
 
       gum::Bijection< std::string, std::string > bij_bis(bijection);
       bij_bis.insert("d", "bd");
-      TS_ASSERT_EQUALS(bij_bis.size(), (gum::Size)4)
+      TS_ASSERT_EQUALS(bij_bis.size(), static_cast< gum::Size >(4))
 
       gum::Bijection< std::string, std::string >* bijection3
           = new gum::Bijection< std::string, std::string >;
@@ -134,24 +135,24 @@ namespace gum_tests {
       TS_ASSERT_EQUALS(bijection4.second("b"), "a")
 
       gum::Bijection< std::string, std::string > bij_ter(std::move(bij_bis));
-      TS_ASSERT_EQUALS(bij_ter.size(), (gum::Size)4)
+      TS_ASSERT_EQUALS(bij_ter.size(), static_cast< gum::Size >(4))
 
       gum::Bijection< std::string, std::string > bij5{
           std::pair< std::string, std::string >("3", "4"),
           std::pair< std::string, std::string >("5", "6")};
-      TS_ASSERT_EQUALS(bij5.size(), (gum::Size)2)
+      TS_ASSERT_EQUALS(bij5.size(), static_cast< gum::Size >(2))
 
       bij5 = bijection;
-      TS_ASSERT_EQUALS(bij5.size(), (gum::Size)3)
+      TS_ASSERT_EQUALS(bij5.size(), static_cast< gum::Size >(3))
       TS_ASSERT(bij5.existsFirst("a"))
       TS_ASSERT(bij5.existsFirst("c"))
 
       bij5 = bij_ter;
-      TS_ASSERT_EQUALS(bij5.size(), (gum::Size)4)
+      TS_ASSERT_EQUALS(bij5.size(), static_cast< gum::Size >(4))
       TS_ASSERT(bij5.existsFirst("d"))
 
       bij5 = std::move(bijection);
-      TS_ASSERT_EQUALS(bij5.size(), (gum::Size)3)
+      TS_ASSERT_EQUALS(bij5.size(), static_cast< gum::Size >(3))
     }
 
     GUM_ACTIVE_TEST(Moves) {
@@ -173,7 +174,7 @@ namespace gum_tests {
       bij3 = std::move(bij2);
       bij2 = std::move(bij1);
 
-      TS_ASSERT_EQUALS(bij2.size(), (gum::Size)3)
+      TS_ASSERT_EQUALS(bij2.size(), static_cast< gum::Size >(3))
       TS_ASSERT_EQUALS(bij2.second(3), 4)
     }
 
@@ -197,7 +198,7 @@ namespace gum_tests {
       TS_ASSERT(bijection.existsSecond(2))
       TS_ASSERT(bijection.existsSecond(4))
       TS_ASSERT(bijection.existsSecond(6))
-      TS_ASSERT_EQUALS(bijection.size(), (gum::Size)3)
+      TS_ASSERT_EQUALS(bijection.size(), static_cast< gum::Size >(3))
       TS_GUM_ASSERT_THROWS_NOTHING(bijection.eraseFirst(1))
       TS_ASSERT(!bijection.existsSecond(2))
       TS_GUM_ASSERT_THROWS_NOTHING(bijection.eraseFirst(3))
@@ -234,7 +235,7 @@ namespace gum_tests {
       TS_ASSERT(bijection.existsSecond("2"))
       TS_ASSERT(bijection.existsSecond("4"))
       TS_ASSERT(bijection.existsSecond("6"))
-      TS_ASSERT_EQUALS(bijection.size(), (gum::Size)3)
+      TS_ASSERT_EQUALS(bijection.size(), static_cast< gum::Size >(3))
       TS_GUM_ASSERT_THROWS_NOTHING(bijection.eraseFirst("1"))
       TS_ASSERT(!bijection.existsSecond("2"))
       TS_GUM_ASSERT_THROWS_NOTHING(bijection.eraseFirst("3"))
@@ -294,11 +295,11 @@ namespace gum_tests {
 
       bijection.resize(2);
 
-      TS_ASSERT_DIFFERS(bijection.capacity(), (gum::Size)2)
+      TS_ASSERT_DIFFERS(bijection.capacity(), static_cast< gum::Size >(2))
     }
 
     GUM_ACTIVE_TEST(Resize2) {
-      gum::Bijection< int, int > bijection((gum::Size)2);
+      gum::Bijection< int, int > bijection(static_cast< gum::Size >(2));
 
       TS_GUM_ASSERT_THROWS_NOTHING(bijection.insert(1, 2))
       TS_GUM_ASSERT_THROWS_NOTHING(bijection.insert(3, 4))
@@ -311,7 +312,7 @@ namespace gum_tests {
 
       bijection.resize(2);
 
-      TS_ASSERT_DIFFERS(bijection.capacity(), (gum::Size)2)
+      TS_ASSERT_DIFFERS(bijection.capacity(), static_cast< gum::Size >(2))
     }
 
     GUM_ACTIVE_TEST(Iterators1) {
@@ -333,7 +334,7 @@ namespace gum_tests {
 
       for (auto iter = bijection.begin(); iter != bijection.end(); ++iter, ++nb) {}
 
-      TS_ASSERT_EQUALS(nb, (gum::Size)(gum::Size)8)
+      TS_ASSERT_EQUALS(nb, (gum::Size) static_cast< gum::Size >(8))
 
       bijection.eraseFirst(1);
       bijection.eraseFirst(5);
@@ -344,14 +345,14 @@ namespace gum_tests {
 
       for (; iter1 != iter2; ++iter1, ++nb) {}
 
-      TS_ASSERT_EQUALS(nb, (gum::Size)(gum::Size)4)
+      TS_ASSERT_EQUALS(nb, (gum::Size) static_cast< gum::Size >(4))
 
       nb        = 0;
       auto iter = iter2;
 
       for (iter = bijection.begin(); iter != iter2; ++iter, ++nb) {}
 
-      TS_ASSERT_EQUALS(nb, (gum::Size)(gum::Size)4)
+      TS_ASSERT_EQUALS(nb, (gum::Size) static_cast< gum::Size >(4))
 
       iter = bijection.begin();
       nb   = iter.first();
@@ -378,7 +379,7 @@ namespace gum_tests {
       for (gum::Bijection< int, int >::iterator iter = bijection.begin(); iter != bijection.end();
            ++iter, ++nb) {}
 
-      TS_ASSERT_EQUALS(nb, (gum::Size)(gum::Size)8)
+      TS_ASSERT_EQUALS(nb, (gum::Size) static_cast< gum::Size >(8))
 
       bijection.eraseFirst(1);
       bijection.eraseFirst(5);
@@ -389,14 +390,14 @@ namespace gum_tests {
 
       for (; iter1 != iter2; ++iter1, ++nb) {}
 
-      TS_ASSERT_EQUALS(nb, (gum::Size)(gum::Size)4)
+      TS_ASSERT_EQUALS(nb, (gum::Size) static_cast< gum::Size >(4))
 
       nb                                        = 0;
       gum::Bijection< int, int >::iterator iter = iter2;
 
       for (iter = bijection.begin(); iter != iter2; ++iter, ++nb) {}
 
-      TS_ASSERT_EQUALS(nb, (gum::Size)(gum::Size)4)
+      TS_ASSERT_EQUALS(nb, (gum::Size) static_cast< gum::Size >(4))
 
       iter = bijection.begin();
       nb   = iter.first();
@@ -422,7 +423,7 @@ namespace gum_tests {
 
       for (auto iter = bijection.begin(); iter != bijection.end(); ++iter, ++nb) {}
 
-      TS_ASSERT_EQUALS(nb, (gum::Size)(gum::Size)8)
+      TS_ASSERT_EQUALS(nb, (gum::Size) static_cast< gum::Size >(8))
 
       bijection.eraseFirst("1");
       bijection.eraseFirst("5");
@@ -433,14 +434,14 @@ namespace gum_tests {
 
       for (; iter1 != iter2; ++iter1, ++nb) {}
 
-      TS_ASSERT_EQUALS(nb, (gum::Size)(gum::Size)4)
+      TS_ASSERT_EQUALS(nb, (gum::Size) static_cast< gum::Size >(4))
 
       nb        = 0;
       auto iter = iter2;
 
       for (iter = bijection.begin(); iter != iter2; ++iter, ++nb) {}
 
-      TS_ASSERT_EQUALS(nb, (gum::Size)(gum::Size)4)
+      TS_ASSERT_EQUALS(nb, (gum::Size) static_cast< gum::Size >(4))
 
       iter            = bijection.begin();
       std::string str = iter.first();
@@ -468,7 +469,7 @@ namespace gum_tests {
            iter != bijection.end();
            ++iter, ++nb) {}
 
-      TS_ASSERT_EQUALS(nb, (gum::Size)(gum::Size)8)
+      TS_ASSERT_EQUALS(nb, (gum::Size) static_cast< gum::Size >(8))
 
       bijection.eraseFirst("1");
       bijection.eraseFirst("5");
@@ -479,14 +480,14 @@ namespace gum_tests {
 
       for (; iter1 != iter2; ++iter1, ++nb) {}
 
-      TS_ASSERT_EQUALS(nb, (gum::Size)(gum::Size)4)
+      TS_ASSERT_EQUALS(nb, (gum::Size) static_cast< gum::Size >(4))
 
       nb                                                        = 0;
       gum::Bijection< std::string, std::string >::iterator iter = iter2;
 
       for (iter = bijection.begin(); iter != iter2; ++iter, ++nb) {}
 
-      TS_ASSERT_EQUALS(nb, (gum::Size)(gum::Size)4)
+      TS_ASSERT_EQUALS(nb, (gum::Size) static_cast< gum::Size >(4))
 
       iter            = bijection.begin();
       std::string str = iter.first();
@@ -505,7 +506,7 @@ namespace gum_tests {
       TS_ASSERT_THROWS(bijection.insert((int*)7, (int*)6), const gum::DuplicateElement&)
 
       gum::Bijection< int*, int* > bijection2 = bijection;
-      TS_ASSERT_EQUALS(bijection2.size(), (gum::Size)3)
+      TS_ASSERT_EQUALS(bijection2.size(), static_cast< gum::Size >(3))
 
       gum::Bijection< int*, int* >* bijection3 = new gum::Bijection< int*, int* >;
       bijection3->insert((int*)1, (int*)2);
@@ -539,7 +540,7 @@ namespace gum_tests {
       TS_ASSERT(bijection.existsSecond((int*)2))
       TS_ASSERT(bijection.existsSecond((int*)4))
       TS_ASSERT(bijection.existsSecond((int*)6))
-      TS_ASSERT_EQUALS(bijection.size(), (gum::Size)3)
+      TS_ASSERT_EQUALS(bijection.size(), static_cast< gum::Size >(3))
       TS_GUM_ASSERT_THROWS_NOTHING(bijection.eraseFirst((int*)1))
       TS_ASSERT(!bijection.existsSecond((int*)2))
       TS_GUM_ASSERT_THROWS_NOTHING(bijection.eraseFirst((int*)3))
@@ -583,7 +584,7 @@ namespace gum_tests {
 
       bijection.resize(2);
 
-      TS_ASSERT_DIFFERS(bijection.capacity(), (gum::Size)2)
+      TS_ASSERT_DIFFERS(bijection.capacity(), static_cast< gum::Size >(2))
     }
 
     GUM_ACTIVE_TEST(IteratorsStar) {
@@ -605,7 +606,7 @@ namespace gum_tests {
 
       for (auto iter = bijection.begin(); iter != bijection.end(); ++iter, ++nb) {}
 
-      TS_ASSERT_EQUALS(nb, (gum::Size)(gum::Size)8)
+      TS_ASSERT_EQUALS(nb, (gum::Size) static_cast< gum::Size >(8))
 
       bijection.eraseFirst((int*)1);
       bijection.eraseFirst((int*)5);
@@ -616,14 +617,14 @@ namespace gum_tests {
 
       for (; iter1 != iter2; ++iter1, ++nb) {}
 
-      TS_ASSERT_EQUALS(nb, (gum::Size)4)
+      TS_ASSERT_EQUALS(nb, static_cast< gum::Size >(4))
 
       nb        = 0;
       auto iter = iter2;
 
       for (iter = bijection.begin(); iter != iter2; ++iter, ++nb) {}
 
-      TS_ASSERT_EQUALS(nb, (gum::Size)4)
+      TS_ASSERT_EQUALS(nb, static_cast< gum::Size >(4))
 
       iter = bijection.begin();
       iter.first();

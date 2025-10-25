@@ -37,6 +37,7 @@
  *   gitlab   : https://gitlab.com/agrumery/agrum                           *
  *                                                                          *
  ****************************************************************************/
+#pragma once
 
 
 /**
@@ -47,14 +48,14 @@
  */
 
 #ifndef CAST_UNICODE_H
-#define CAST_UNICODE_H
+#  define CAST_UNICODE_H
 
-#include <iostream>
-#include <locale>
-#include <sstream>
-#include <string>
+#  include <iostream>
+#  include <locale>
+#  include <sstream>
+#  include <string>
 
-#include <agrum/base/core/cast_unicode.h>
+#  include <agrum/base/core/cast_unicode.h>
 
 INLINE std::wstring widen(const std::string& str) {
   std::wostringstream          wstm;

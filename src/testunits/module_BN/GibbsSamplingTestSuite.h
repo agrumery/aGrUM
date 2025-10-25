@@ -37,6 +37,7 @@
  *   gitlab   : https://gitlab.com/agrumery/agrum                           *
  *                                                                          *
  ****************************************************************************/
+#pragma once
 
 
 #include <iostream>
@@ -84,7 +85,7 @@ namespace gum_tests {
     std::string getMess() { return __mess; }
   };
 
-  class [[maybe_unused]] GibbsSamplingTestSuite: public CxxTest::TestSuite {
+  class GUM_TEST_SUITE(GibbsSampling) {
     public:
     GUM_ACTIVE_TEST(GibbsSimpleBN) {
       auto bn = gum::BayesNet< double >::fastPrototype("a->b->c->f;d->b->e->f;e->g");
@@ -104,7 +105,7 @@ namespace gum_tests {
         GUM_SHOWERROR(e);
         TS_ASSERT(false)
       }
-    }
+    }   // namespace gum_tests
 
     GUM_ACTIVE_TEST(GibbsApproxBinaryTreeWithoutEvidence) {
       auto bn = gum::BayesNet< double >::fastPrototype("a->d->f;b->d->g;b->e->h;c->e;i->j->h");
@@ -366,9 +367,9 @@ namespace gum_tests {
     GUM_ACTIVE_TEST(GibbsApproxAsia) {
       gum::BayesNet< double >  bn;
       gum::BIFReader< double > reader(&bn, GET_RESSOURCES_PATH("bif/asia.bif"));
-      gum::Size                nbrErr = (gum::Size)0;
+      gum::Size                nbrErr = static_cast< gum::Size >(0);
       TS_GUM_ASSERT_THROWS_NOTHING(nbrErr = reader.proceed())
-      TS_ASSERT_EQUALS(nbrErr, (gum::Size)0)
+      TS_ASSERT_EQUALS(nbrErr, static_cast< gum::Size >(0))
 
       try {
         gum::LazyPropagation< double > lazy(&bn);
@@ -390,9 +391,9 @@ namespace gum_tests {
     GUM_ACTIVE_TEST(GibbsApproxInfListener) {
       gum::BayesNet< double >  bn;
       gum::BIFReader< double > reader(&bn, GET_RESSOURCES_PATH("bif/alarm.bif"));
-      gum::Size                nbrErr = (gum::Size)0;
+      gum::Size                nbrErr = static_cast< gum::Size >(0);
       TS_GUM_ASSERT_THROWS_NOTHING(nbrErr = reader.proceed())
-      TS_ASSERT_EQUALS(nbrErr, (gum::Size)0)
+      TS_ASSERT_EQUALS(nbrErr, static_cast< gum::Size >(0))
 
       gum::GibbsSampling< double > inf(&bn);
       aSimpleGibbsApproxListener   agsl(inf);

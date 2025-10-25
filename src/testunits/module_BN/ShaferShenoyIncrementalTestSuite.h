@@ -37,6 +37,7 @@
  *   gitlab   : https://gitlab.com/agrumery/agrum                           *
  *                                                                          *
  ****************************************************************************/
+#pragma once
 
 
 #include <memory>
@@ -70,7 +71,7 @@
 */
 
 namespace gum_tests {
-  class [[maybe_unused]] ShaferShenoyIncrementalTestSuite: public CxxTest::TestSuite {
+  class GUM_TEST_SUITE(ShaferShenoyIncremental) {
     using TestTensorSet = gum::Set< const gum::Tensor< double >* >;
 
     static void defineVariables(gum::BayesNet< double >& bn, gum::Tensor< double >& joint) {

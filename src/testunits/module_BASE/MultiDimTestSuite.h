@@ -37,6 +37,7 @@
  *   gitlab   : https://gitlab.com/agrumery/agrum                           *
  *                                                                          *
  ****************************************************************************/
+#pragma once
 
 
 #include <sstream>
@@ -50,25 +51,25 @@
 
 namespace gum_tests {
 
-  class [[maybe_unused]] MultidimTestSuite: public CxxTest::TestSuite {
+  class GUM_TEST_SUITE(Multidim) {
     public:
     GUM_ACTIVE_TEST(Creation) {
       gum::MultiDimArray< double > m;
-      TS_ASSERT_EQUALS(m.nbrDim(), (gum::Size)0)
-      TS_ASSERT_EQUALS(m.domainSize(), (gum::Size)1)
+      TS_ASSERT_EQUALS(m.nbrDim(), static_cast< gum::Size >(0))
+      TS_ASSERT_EQUALS(m.domainSize(), static_cast< gum::Size >(1))
 
       gum::LabelizedVariable a("a", "", 4), b("b", "", 5);
       m << a;
-      TS_ASSERT_EQUALS(m.nbrDim(), (gum::Size)1)
-      TS_ASSERT_EQUALS(m.domainSize(), (gum::Size)4)
+      TS_ASSERT_EQUALS(m.nbrDim(), static_cast< gum::Size >(1))
+      TS_ASSERT_EQUALS(m.domainSize(), static_cast< gum::Size >(4))
       m << b;
-      TS_ASSERT_EQUALS(m.nbrDim(), (gum::Size)2)
-      TS_ASSERT_EQUALS(m.domainSize(), (gum::Size)20)
+      TS_ASSERT_EQUALS(m.nbrDim(), static_cast< gum::Size >(2))
+      TS_ASSERT_EQUALS(m.domainSize(), static_cast< gum::Size >(20))
 
       gum::MultiDimArray< double > mm = m;
-      TS_ASSERT_EQUALS(mm.nbrDim(), (gum::Size)2)
-      TS_ASSERT_EQUALS(mm.domainSize(), (gum::Size)20)
-    }
+      TS_ASSERT_EQUALS(mm.nbrDim(), static_cast< gum::Size >(2))
+      TS_ASSERT_EQUALS(mm.domainSize(), static_cast< gum::Size >(20))
+    }   // namespace gum_tests
 
     GUM_ACTIVE_TEST(MemoryCrash) {
       gum::MultiDimArray< double > m;

@@ -37,6 +37,7 @@
  *   gitlab   : https://gitlab.com/agrumery/agrum                           *
  *                                                                          *
  ****************************************************************************/
+#pragma once
 
 
 #include <iostream>
@@ -82,7 +83,7 @@ namespace gum_tests {
     std::string getMess() { return __mess; }
   };
 
-  class [[maybe_unused]] MonteCarloSamplingTestSuite: public CxxTest::TestSuite {
+  class GUM_TEST_SUITE(MonteCarloSampling) {
     public:
     GUM_ACTIVE_TEST(MCbasic) {
       auto bn = gum::BayesNet< double >::fastPrototype("a->h->c");
@@ -103,7 +104,7 @@ namespace gum_tests {
         GUM_SHOWERROR(e);
         TS_ASSERT(false)
       }
-    }
+    }   // namespace gum_tests
 
     GUM_ACTIVE_TEST(MCBinaryTreeWithoutEvidence) {
       auto bn = gum::BayesNet< double >::fastPrototype("a->d->f;b->d->g;b->e->h;c->e;i->j->h");
@@ -368,9 +369,9 @@ namespace gum_tests {
     GUM_ACTIVE_TEST(MCAsia) {
       gum::BayesNet< double >  bn;
       gum::BIFReader< double > reader(&bn, GET_RESSOURCES_PATH("bif/asia.bif"));
-      gum::Size                nbrErr = (gum::Size)0;
+      gum::Size                nbrErr = static_cast< gum::Size >(0);
       TS_GUM_ASSERT_THROWS_NOTHING(nbrErr = reader.proceed())
-      TS_ASSERT_EQUALS(nbrErr, (gum::Size)0)
+      TS_ASSERT_EQUALS(nbrErr, static_cast< gum::Size >(0))
 
       try {
         gum::LazyPropagation< double > lazy(&bn);
@@ -392,9 +393,9 @@ namespace gum_tests {
     GUM_ACTIVE_TEST(MCAlarm) {
       gum::BayesNet< double >  bn;
       gum::BIFReader< double > reader(&bn, GET_RESSOURCES_PATH("bif/alarm.bif"));
-      gum::Size                nbrErr = (gum::Size)0;
+      gum::Size                nbrErr = static_cast< gum::Size >(0);
       TS_GUM_ASSERT_THROWS_NOTHING(nbrErr = reader.proceed())
-      TS_ASSERT_EQUALS(nbrErr, (gum::Size)0)
+      TS_ASSERT_EQUALS(nbrErr, static_cast< gum::Size >(0))
 
       try {
         gum::LazyPropagation< double > lazy(&bn);
@@ -416,9 +417,9 @@ namespace gum_tests {
     GUM_ACTIVE_TEST(MCInfListener) {
       gum::BayesNet< double >  bn;
       gum::BIFReader< double > reader(&bn, GET_RESSOURCES_PATH("bif/alarm.bif"));
-      gum::Size                nbrErr = (gum::Size)0;
+      gum::Size                nbrErr = static_cast< gum::Size >(0);
       TS_GUM_ASSERT_THROWS_NOTHING(nbrErr = reader.proceed())
-      TS_ASSERT_EQUALS(nbrErr, (gum::Size)0)
+      TS_ASSERT_EQUALS(nbrErr, static_cast< gum::Size >(0))
 
       gum::MonteCarloSampling< double > inf(&bn);
       aSimpleMCListener                 agsl(inf);
@@ -442,9 +443,9 @@ namespace gum_tests {
     GUM_ACTIVE_TEST(Constructor) {
       gum::BayesNet< double >  bn;
       gum::BIFReader< double > reader(&bn, GET_RESSOURCES_PATH("bif/alarm.bif"));
-      gum::Size                nbrErr = (gum::Size)0;
+      gum::Size                nbrErr = static_cast< gum::Size >(0);
       TS_GUM_ASSERT_THROWS_NOTHING(nbrErr = reader.proceed())
-      TS_ASSERT_EQUALS(nbrErr, (gum::Size)0)
+      TS_ASSERT_EQUALS(nbrErr, static_cast< gum::Size >(0))
       try {
         gum::MonteCarloSampling< double > inf(&bn);
         inf.setEpsilon(EPSILON_FOR_MONTECARLO);

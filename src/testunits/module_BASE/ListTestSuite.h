@@ -37,6 +37,7 @@
  *   gitlab   : https://gitlab.com/agrumery/agrum                           *
  *                                                                          *
  ****************************************************************************/
+#pragma once
 
 
 #include <algorithm>
@@ -51,17 +52,17 @@
 
 namespace gum_tests {
 
-  class [[maybe_unused]] ListTestSuite: public CxxTest::TestSuite {
+  class GUM_TEST_SUITE(List) {
     public:
     GUM_ACTIVE_TEST(PrivateMethods){TS_GUM_ASSERT_THROWS_NOTHING(initializeList(7))
                                         TS_GUM_ASSERT_THROWS_NOTHING(initializeList(-7))}
 
     GUM_ACTIVE_TEST(Constructor) {
       gum::List< int > liste1{1, 2, 3, 4};
-      TS_ASSERT_EQUALS(liste1.size(), (gum::Size)4)
+      TS_ASSERT_EQUALS(liste1.size(), static_cast< gum::Size >(4))
       TS_ASSERT_EQUALS(liste1.front(), 1)
       TS_ASSERT_EQUALS(liste1.back(), 4)
-    }
+    }   // namespace gum_tests
 
     GUM_ACTIVE_TEST(Moves) {
       gum::List< int > liste1{1, 2, 3, 4};
@@ -72,7 +73,7 @@ namespace gum_tests {
       liste3                  = std::move(liste2);
       liste2                  = std::move(liste1);
 
-      TS_ASSERT_EQUALS(liste2.size(), (gum::Size)4)
+      TS_ASSERT_EQUALS(liste2.size(), static_cast< gum::Size >(4))
       TS_ASSERT_EQUALS(liste2.front(), 1)
       TS_ASSERT_EQUALS(liste2.back(), 4)
     }
@@ -80,30 +81,30 @@ namespace gum_tests {
     GUM_ACTIVE_TEST(Push) {
       gum::List< int > liste1;
       liste1.pushFront(3);
-      TS_ASSERT_EQUALS(liste1.size(), (gum::Size)1)
+      TS_ASSERT_EQUALS(liste1.size(), static_cast< gum::Size >(1))
 
       liste1.pushBack(4);
       liste1.pushBack(5);
-      TS_ASSERT_EQUALS(liste1.size(), (gum::Size)3)
+      TS_ASSERT_EQUALS(liste1.size(), static_cast< gum::Size >(3))
 
       int x = 4;
       liste1.pushFront(x);
       liste1.push_front(x);
       liste1.push_front(5);
-      TS_ASSERT_EQUALS(liste1.size(), (gum::Size)6)
+      TS_ASSERT_EQUALS(liste1.size(), static_cast< gum::Size >(6))
       TS_ASSERT_EQUALS(liste1.front(), 5)
 
       liste1.pushBack(x);
       liste1.push_back(x);
       liste1.push_back(5);
-      TS_ASSERT_EQUALS(liste1.size(), (gum::Size)9)
+      TS_ASSERT_EQUALS(liste1.size(), static_cast< gum::Size >(9))
       TS_ASSERT_EQUALS(liste1.back(), 5)
 
       liste1.emplaceFront(4);
       liste1.emplaceBack(4);
       liste1.emplaceFront(x);
       liste1.emplaceBack(x);
-      TS_ASSERT_EQUALS(liste1.size(), (gum::Size)13)
+      TS_ASSERT_EQUALS(liste1.size(), static_cast< gum::Size >(13))
     }
 
     GUM_ACTIVE_TEST(Copy) {
@@ -126,7 +127,7 @@ namespace gum_tests {
       liste3 = liste4;
 
       TS_ASSERT_EQUALS(liste2.size(), liste1.size())
-      TS_ASSERT_EQUALS(liste3.size(), (gum::Size)0)
+      TS_ASSERT_EQUALS(liste3.size(), static_cast< gum::Size >(0))
     }
 
     GUM_ACTIVE_TEST(Move) {
@@ -137,11 +138,11 @@ namespace gum_tests {
 
       gum::List< int > liste2(std::move(liste1));
       gum::List< int > liste3;
-      TS_ASSERT_EQUALS(liste2.size(), (gum::Size)3)
-      TS_ASSERT_EQUALS(liste1.size(), (gum::Size)0)
+      TS_ASSERT_EQUALS(liste2.size(), static_cast< gum::Size >(3))
+      TS_ASSERT_EQUALS(liste1.size(), static_cast< gum::Size >(0))
       liste3 = std::move(liste2);
-      TS_ASSERT_EQUALS(liste3.size(), (gum::Size)3)
-      TS_ASSERT_EQUALS(liste2.size(), (gum::Size)0)
+      TS_ASSERT_EQUALS(liste3.size(), static_cast< gum::Size >(3))
+      TS_ASSERT_EQUALS(liste2.size(), static_cast< gum::Size >(0))
       TS_ASSERT_EQUALS(liste3.front(), 5)
     }
 
@@ -149,7 +150,7 @@ namespace gum_tests {
       gum::List< int > list = initializeList(6);
       list.insert(7);
 
-      TS_ASSERT_EQUALS(list.size(), (gum::Size)7)
+      TS_ASSERT_EQUALS(list.size(), static_cast< gum::Size >(7))
     }
 
     GUM_ACTIVE_TEST(Front) {
@@ -168,7 +169,7 @@ namespace gum_tests {
 
     GUM_ACTIVE_TEST(size) {
       gum::List< int > list = initializeList(7);
-      TS_ASSERT_EQUALS(list.size(), (gum::Size)7)
+      TS_ASSERT_EQUALS(list.size(), static_cast< gum::Size >(7))
     }
 
     GUM_ACTIVE_TEST(Exists) {
@@ -225,7 +226,7 @@ namespace gum_tests {
       TS_GUM_ASSERT_THROWS_NOTHING(list.eraseByVal(20))
       list.pushBack(3);
       list.eraseByVal(3);
-      TS_ASSERT_EQUALS(list.size(), (gum::Size)7)
+      TS_ASSERT_EQUALS(list.size(), static_cast< gum::Size >(7))
     }
 
     GUM_ACTIVE_TEST(EraseAllVal) {
@@ -240,7 +241,7 @@ namespace gum_tests {
 
       list.eraseAllVal(42);
 
-      TS_ASSERT_EQUALS(list.size(), (gum::Size)2)
+      TS_ASSERT_EQUALS(list.size(), static_cast< gum::Size >(2))
     }
 
     GUM_ACTIVE_TEST(Erase) {
@@ -251,15 +252,15 @@ namespace gum_tests {
 
       list.erase(2);
 
-      TS_ASSERT_EQUALS(list.size(), (gum::Size)6)
+      TS_ASSERT_EQUALS(list.size(), static_cast< gum::Size >(6))
 
       list.erase(2);
 
-      TS_ASSERT_EQUALS(list.size(), (gum::Size)5)
+      TS_ASSERT_EQUALS(list.size(), static_cast< gum::Size >(5))
 
       list.erase(20);
 
-      TS_ASSERT_EQUALS(list.size(), (gum::Size)5)
+      TS_ASSERT_EQUALS(list.size(), static_cast< gum::Size >(5))
     }
 
     GUM_ACTIVE_TEST(EraseIterator) {
@@ -272,74 +273,74 @@ namespace gum_tests {
 
       list.erase(iter);
 
-      TS_ASSERT_EQUALS(list.size(), (gum::Size)5)
+      TS_ASSERT_EQUALS(list.size(), static_cast< gum::Size >(5))
 
       list.erase(iter);
 
-      TS_ASSERT_EQUALS(list.size(), (gum::Size)5)
+      TS_ASSERT_EQUALS(list.size(), static_cast< gum::Size >(5))
 
       ++iter;
 
       list.erase(iter);
 
-      TS_ASSERT_EQUALS(list.size(), (gum::Size)4)
+      TS_ASSERT_EQUALS(list.size(), static_cast< gum::Size >(4))
 
       iter = list.endSafe();   // safe iterator needed here
 
       list.erase(iter);
 
-      TS_ASSERT_EQUALS(list.size(), (gum::Size)4)
+      TS_ASSERT_EQUALS(list.size(), static_cast< gum::Size >(4))
 
       iter = list.rendSafe();   // safe iterator needed here
 
       list.erase(iter);
 
-      TS_ASSERT_EQUALS(list.size(), (gum::Size)4)
+      TS_ASSERT_EQUALS(list.size(), static_cast< gum::Size >(4))
 
       iter = list.rbeginSafe();   // safe iterator needed here
 
       list.erase(iter);
 
-      TS_ASSERT_EQUALS(list.size(), (gum::Size)3)
+      TS_ASSERT_EQUALS(list.size(), static_cast< gum::Size >(3))
 
       iter = list.beginSafe();   // safe iterator needed here
 
       list.erase(++iter);
 
-      TS_ASSERT_EQUALS(list.size(), (gum::Size)2)
+      TS_ASSERT_EQUALS(list.size(), static_cast< gum::Size >(2))
 
       iter = list.rbeginSafe();   // safe iterator needed here
 
       list.erase(--iter);
 
-      TS_ASSERT_EQUALS(list.size(), (gum::Size)1)
+      TS_ASSERT_EQUALS(list.size(), static_cast< gum::Size >(1))
     }
 
     GUM_ACTIVE_TEST(IteratorStep) {
       gum::List< int > list{1, 2, 3, 4, 5, 6};
       auto             iter = list.beginSafe();   // safe iterator needed here
       list.erase(iter);
-      TS_ASSERT_EQUALS(list.size(), (gum::Size)5)
+      TS_ASSERT_EQUALS(list.size(), static_cast< gum::Size >(5))
 
       iter = list.rbeginSafe();   // safe iterator needed here
       list.erase(iter);
-      TS_ASSERT_EQUALS(list.size(), (gum::Size)4)
+      TS_ASSERT_EQUALS(list.size(), static_cast< gum::Size >(4))
 
       auto iter2 = list.cbeginSafe();   // safe iterator needed here
       list.erase(iter2);
-      TS_ASSERT_EQUALS(list.size(), (gum::Size)3)
+      TS_ASSERT_EQUALS(list.size(), static_cast< gum::Size >(3))
 
       iter2 = list.crbeginSafe();   // safe iterator needed here
       list.erase(iter2);
-      TS_ASSERT_EQUALS(list.size(), (gum::Size)2)
+      TS_ASSERT_EQUALS(list.size(), static_cast< gum::Size >(2))
 
       iter2 = list.beginSafe();   // safe iterator needed here
       list.erase(iter2);
-      TS_ASSERT_EQUALS(list.size(), (gum::Size)1)
+      TS_ASSERT_EQUALS(list.size(), static_cast< gum::Size >(1))
 
       iter2 = list.crbeginSafe();   // safe iterator needed here
       list.erase(iter2);
-      TS_ASSERT_EQUALS(list.size(), (gum::Size)0)
+      TS_ASSERT_EQUALS(list.size(), static_cast< gum::Size >(0))
     }
 
     GUM_ACTIVE_TEST(IteratorStep2) {

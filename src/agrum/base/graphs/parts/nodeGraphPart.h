@@ -438,8 +438,7 @@ namespace gum {
     const node_iterator& end() const noexcept;
 
     virtual   /// a function to display the set of nodes
-        std::string
-        toString() const;
+        std::string toString() const;
 
     /// a method to create a HashTable with key:NodeId and value:VAL
     /** VAL are computed from the nodes using for all node x, VAL f(x).
@@ -536,7 +535,7 @@ namespace gum {
 
 #ifndef GUM_NO_INLINE
 #  include <agrum/base/graphs/parts/nodeGraphPart_inl.h>
-#endif   // GUM_NOINLINE
+#endif   // GU%_NO_INLINE
 
 #include <agrum/base/graphs/parts/nodeGraphPart_tpl.h>
 

@@ -221,7 +221,7 @@ namespace gum {
     UndiGraph moralizedAncestralGraph(const NodeSet& nodes) const;
 
     /** @brief returns true if a mixed edge/directed arc path from node1 to node2 in the
-     * arc/edge set exists. Really mean that we need at least one arc in the path (undirected path
+     * arc/edge set exists with at least one arc in the path (undirected path
      * are not OK).
      *
      * @param node1 the id from which the path begins
@@ -253,6 +253,6 @@ namespace gum {
 
 #ifndef GUM_NO_INLINE
 #  include <agrum/base/graphs/PDAG_inl.h>
-#endif   // GUM_NOINLINE
+#endif   // GU%_NO_INLINE
 
 #endif   /* GUM_MAG_H */

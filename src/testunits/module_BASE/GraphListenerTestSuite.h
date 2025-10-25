@@ -37,6 +37,7 @@
  *   gitlab   : https://gitlab.com/agrumery/agrum                           *
  *                                                                          *
  ****************************************************************************/
+#pragma once
 
 
 #include <iostream>
@@ -62,7 +63,7 @@
 
 namespace gum_tests {
 
-  class [[maybe_unused]] GraphListenerTestSuite: public CxxTest::TestSuite {
+  class GUM_TEST_SUITE(GraphListener) {
     class CountListener: public gum::Listener {
       private:
       int  _nbrNode_, _nbrArcs_, _nbrEdges_;

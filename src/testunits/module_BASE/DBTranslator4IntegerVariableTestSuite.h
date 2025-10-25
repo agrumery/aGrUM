@@ -37,6 +37,7 @@
  *   gitlab   : https://gitlab.com/agrumery/agrum                           *
  *                                                                          *
  ****************************************************************************/
+#pragma once
 
 
 #include <iostream>
@@ -48,7 +49,7 @@
 
 namespace gum_tests {
 
-  class [[maybe_unused]] DBTranslator4IntegerVariableTestSuite: public CxxTest::TestSuite {
+  class GUM_TEST_SUITE(DBTranslator4IntegerVariable) {
     public:
     GUM_ACTIVE_TEST(_trans1) {
       gum::IntegerVariable var("X1", "");
@@ -79,7 +80,7 @@ namespace gum_tests {
       try {
         const gum::IntegerVariable& xvar_discr
             = dynamic_cast< const gum::IntegerVariable& >(tr_var);
-        TS_ASSERT_EQUALS(xvar_discr.domainSize(), (gum::Size)4)
+        TS_ASSERT_EQUALS(xvar_discr.domainSize(), static_cast< gum::Size >(4))
         TS_ASSERT_EQUALS(xvar_discr.label(0), "1")
         TS_ASSERT_EQUALS(xvar_discr.label(1), "3")
         TS_ASSERT_EQUALS(xvar_discr.label(2), "10")
@@ -127,19 +128,19 @@ namespace gum_tests {
                            std::numeric_limits< std::size_t >::max()}),
                        "?");
 
-      TS_ASSERT_EQUALS(translator3.domainSize(), (gum::Size)4)
+      TS_ASSERT_EQUALS(translator3.domainSize(), static_cast< gum::Size >(4))
 
       TS_ASSERT_THROWS(gum::learning::DBTranslator4IntegerVariable translator4(var, missing, 1),
                        const gum::SizeError&)
 
       TS_ASSERT_EQUALS(translator3.variable()->toString(), "X1:Integer({1|3|10|12})")
-      TS_ASSERT_EQUALS(translator3.domainSize(), (gum::Size)4)
+      TS_ASSERT_EQUALS(translator3.domainSize(), static_cast< gum::Size >(4))
       TS_ASSERT(!translator3.hasEditableDictionary())
       translator3.setEditableDictionaryMode(true);
       TS_ASSERT(!translator3.hasEditableDictionary())
       TS_ASSERT(!translator3.needsReordering())
       TS_ASSERT(translator3.reorder().empty())
-    }
+    }   // namespace gum_tests
 
     GUM_ACTIVE_TEST(_trans2) {
       {

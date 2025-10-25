@@ -37,6 +37,7 @@
  *   gitlab   : https://gitlab.com/agrumery/agrum                           *
  *                                                                          *
  ****************************************************************************/
+#pragma once
 
 
 #include <iostream>
@@ -48,7 +49,7 @@
 
 namespace gum_tests {
 
-  class [[maybe_unused]] DBTranslator4RangeVariableTestSuite: public CxxTest::TestSuite {
+  class GUM_TEST_SUITE(DBTranslator4RangeVariable) {
     public:
     GUM_ACTIVE_TEST(_trans1) {
       gum::learning::DBTranslator4RangeVariable translator;
@@ -128,7 +129,7 @@ namespace gum_tests {
           gum::learning::DBTranslatedValue{std::numeric_limits< std::size_t >::max()})));
       TS_ASSERT_EQUALS(translator2.needsReordering(), false)
       const auto new_order = translator2.reorder();
-      TS_ASSERT_EQUALS(new_order.size(), (gum::Size)0)
+      TS_ASSERT_EQUALS(new_order.size(), static_cast< gum::Size >(0))
 
       gum::RangeVariable                        var("X2", "", 2, 3);
       gum::learning::DBTranslator4RangeVariable translator3(var, missing, true);
@@ -181,7 +182,7 @@ namespace gum_tests {
                        "4");
       TS_ASSERT_THROWS(translator4.translateBack(gum::learning::DBTranslatedValue{std::size_t{3}}),
                        const gum::UnknownLabelInDatabase&)
-    }
+    }   // namespace gum_tests
 
     GUM_ACTIVE_TEST(_trans2) {
       gum::learning::DBTranslator4RangeVariable translator;
@@ -257,7 +258,7 @@ namespace gum_tests {
           gum::learning::DBTranslatedValue{std::numeric_limits< std::size_t >::max()})));
       TS_ASSERT_EQUALS(translator2.needsReordering(), false)
       const auto new_order = translator2.reorder();
-      TS_ASSERT_EQUALS(new_order.size(), (gum::Size)0)
+      TS_ASSERT_EQUALS(new_order.size(), static_cast< gum::Size >(0))
 
       gum::RangeVariable                        var("X2", "", 2, 3);
       gum::learning::DBTranslator4RangeVariable translator3(var, missing, true);
@@ -793,7 +794,7 @@ namespace gum_tests {
 
       gum::learning::DBTranslator4RangeVariable translator(var, missing, true);
       TS_ASSERT_EQUALS(translator.needsReordering(), false)
-      TS_ASSERT_EQUALS(translator.domainSize(), (gum::Size)3)
+      TS_ASSERT_EQUALS(translator.domainSize(), static_cast< gum::Size >(3))
 
       TS_ASSERT_EQUALS((translator << "7").discr_val, (std::size_t)5)
       TS_ASSERT_EQUALS((translator >> gum::learning::DBTranslatedValue{std::size_t{5}}), "7")

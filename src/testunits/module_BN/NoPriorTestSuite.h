@@ -37,6 +37,7 @@
  *   gitlab   : https://gitlab.com/agrumery/agrum                           *
  *                                                                          *
  ****************************************************************************/
+#pragma once
 
 
 #include <iostream>
@@ -50,10 +51,9 @@
 
 namespace gum_tests {
 
-  class [[maybe_unused]] NoPriorTestSuite: public CxxTest::TestSuite {
+  class GUM_TEST_SUITE(NoPrior) {
     public:
-    GUM_ACTIVE_TEST(1) {
-      // create the translator set
+    GUM_ACTIVE_TEST(1) {   // create the translator set
       gum::LabelizedVariable var1("X1", "", 0);
       var1.addLabel("0");
       var1.addLabel("1");
@@ -327,7 +327,7 @@ namespace gum_tests {
       for (const auto val: vect) {
         TS_ASSERT_EQUALS(val, 1.0)
       }
-    }
+    }   // namespace gum_tests
 
     GUM_ACTIVE_TEST(2) {
       // create the translator set

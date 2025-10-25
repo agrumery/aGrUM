@@ -179,7 +179,7 @@ namespace gum {
     Idx index(const std::string& label) const override;
     /// from the T+TICKS to its index in var.
     /// @throws NotFound
-    Idx index(const T_TICKS tick) const override;
+    Idx index(const T_TICKS tick) const;
 
     /**
      *

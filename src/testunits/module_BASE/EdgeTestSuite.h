@@ -37,6 +37,7 @@
  *   gitlab   : https://gitlab.com/agrumery/agrum                           *
  *                                                                          *
  ****************************************************************************/
+#pragma once
 
 
 #include <gumtest/AgrumTestSuite.h>
@@ -46,7 +47,7 @@
 
 namespace gum_tests {
 
-  class [[maybe_unused]] EdgeTestSuite: public CxxTest::TestSuite {
+  class GUM_TEST_SUITE(Edge) {
     public:
     GUM_ACTIVE_TEST(Constructor1){TS_GUM_ASSERT_THROWS_NOTHING(gum::Edge edge1(1, 2))
                                       TS_GUM_ASSERT_THROWS_NOTHING(gum::Edge edge1(1, 1))}
@@ -54,7 +55,7 @@ namespace gum_tests {
     GUM_ACTIVE_TEST(Constructor2) {
       gum::Edge edge1(1, 2);
       TS_GUM_ASSERT_THROWS_NOTHING(gum::Edge copy(edge1))
-    }
+    }   // namespace gum_tests
 
     GUM_ACTIVE_TEST(Equality) {
       gum::Edge edge1(1, 2);

@@ -37,6 +37,7 @@
  *   gitlab   : https://gitlab.com/agrumery/agrum                           *
  *                                                                          *
  ****************************************************************************/
+#pragma once
 
 
 #include <iostream>
@@ -87,7 +88,7 @@ namespace gum_tests {
 
 #define MAX_ITER 10
 
-  class [[maybe_unused]] LoopyBeliefPropagationTestSuite: public CxxTest::TestSuite {
+  class GUM_TEST_SUITE(LoopyBeliefPropagation) {
     public:
     GUM_ACTIVE_TEST(LBPBinaryTreeWithoutEvidence) {
       for (int i = 0; i < MAX_ITER; i++) {
@@ -106,7 +107,7 @@ namespace gum_tests {
           GUM_SHOWERROR(e);
           TS_ASSERT(false)
         }
-      }
+      }   // namespace gum_tests
     }
 
     GUM_ACTIVE_TEST(LBPBinaryTreeWithEvidenceOnRoot) {
@@ -524,9 +525,9 @@ namespace gum_tests {
     GUM_ACTIVE_TEST(LBPAsia) {
       gum::BayesNet< double >  bn;
       gum::BIFReader< double > reader(&bn, GET_RESSOURCES_PATH("bif/asia.bif"));
-      gum::Size                nbrErr = (gum::Size)0;
+      gum::Size                nbrErr = static_cast< gum::Size >(0);
       TS_GUM_ASSERT_THROWS_NOTHING(nbrErr = reader.proceed())
-      TS_ASSERT_EQUALS(nbrErr, (gum::Size)0)
+      TS_ASSERT_EQUALS(nbrErr, static_cast< gum::Size >(0))
 
       for (int i = 0; i < MAX_ITER; i++) {
         try {
@@ -547,9 +548,9 @@ namespace gum_tests {
     GUM_ACTIVE_TEST(LBPAlarm) {
       gum::BayesNet< double >  bn;
       gum::BIFReader< double > reader(&bn, GET_RESSOURCES_PATH("bif/alarm.bif"));
-      gum::Size                nbrErr = (gum::Size)0;
+      gum::Size                nbrErr = static_cast< gum::Size >(0);
       TS_GUM_ASSERT_THROWS_NOTHING(nbrErr = reader.proceed())
-      TS_ASSERT_EQUALS(nbrErr, (gum::Size)0)
+      TS_ASSERT_EQUALS(nbrErr, static_cast< gum::Size >(0))
 
       for (int i = 0; i < MAX_ITER; i++) {
         try {
@@ -572,9 +573,9 @@ namespace gum_tests {
     GUM_ACTIVE_TEST(LBPInfListener) {
       gum::BayesNet< double >  bn;
       gum::BIFReader< double > reader(&bn, GET_RESSOURCES_PATH("bif/alarm.bif"));
-      gum::Size                nbrErr = (gum::Size)0;
+      gum::Size                nbrErr = static_cast< gum::Size >(0);
       TS_GUM_ASSERT_THROWS_NOTHING(nbrErr = reader.proceed())
-      TS_ASSERT_EQUALS(nbrErr, (gum::Size)0)
+      TS_ASSERT_EQUALS(nbrErr, static_cast< gum::Size >(0))
 
       gum::LoopyBeliefPropagation< double > inf(&bn);
       aSimpleLBPListener                    agsl(inf);

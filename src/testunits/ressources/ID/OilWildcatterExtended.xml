@@ -10,11 +10,11 @@
       <OUTCOME>Yes</OUTCOME>
       <OUTCOME>No</OUTCOME>
     </VARIABLE>
+  </NETWORK>
+</BIF>
 
-    <!--
-// ~->[DNET-1]->~
+<!-- ~->[DNET-1]->~-File created by Norsys using Netica 1.06b on Mar 29, 1998 at 05:45:30.
 
-   // File created by Norsys using Netica 1.06b on Mar 29, 1998 at 05:45:30.
 
    bnet Oil_Wildcatter_Extended {
    comment = "A decision network based on the 'Oil Wildcatter' influence \

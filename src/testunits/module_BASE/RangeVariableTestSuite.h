@@ -37,6 +37,7 @@
  *   gitlab   : https://gitlab.com/agrumery/agrum                           *
  *                                                                          *
  ****************************************************************************/
+#pragma once
 
 
 #include <iostream>
@@ -50,7 +51,7 @@
 
 namespace gum_tests {
 
-  class [[maybe_unused]] RangeVariableTestSuite: public CxxTest::TestSuite {
+  class GUM_TEST_SUITE(RangeVariable) {
     public:
     GUM_ACTIVE_TEST(Copy) {
       gum::RangeVariable var1("var1", "this is var1");
@@ -63,11 +64,11 @@ namespace gum_tests {
       TS_ASSERT_EQUALS(var4.minVal(), var2.minVal())
       TS_ASSERT_EQUALS(var1.maxVal(), var3.maxVal())
       TS_ASSERT_DIFFERS(var4.minVal(), var1.minVal())
-    }
+    }   // namespace gum_tests
 
     GUM_ACTIVE_TEST(Labels) {
       gum::RangeVariable var1("var1", "this is var1");
-      TS_ASSERT_EQUALS(var1.domainSize(), (gum::Size)2)
+      TS_ASSERT_EQUALS(var1.domainSize(), static_cast< gum::Size >(2))
       TS_ASSERT(!var1.empty())
 
       var1.setMinVal(1);
@@ -76,7 +77,7 @@ namespace gum_tests {
 
       var1.setMaxVal(9);
       TS_ASSERT(!var1.empty())
-      TS_ASSERT_EQUALS(var1.domainSize(), (gum::Size)9)
+      TS_ASSERT_EQUALS(var1.domainSize(), static_cast< gum::Size >(9))
       TS_ASSERT(var1.belongs(3L))
       TS_ASSERT(!var1.belongs(0L))
       TS_ASSERT(!var1.belongs(10L))
@@ -84,12 +85,12 @@ namespace gum_tests {
       var1.setMinVal(3);
 
       TS_ASSERT_EQUALS(var1.label(1), "4")
-      TS_ASSERT_EQUALS(var1["4"], (gum::Idx)1)
+      TS_ASSERT_EQUALS(var1["4"], static_cast< gum::Idx >(1))
 
       gum::DiscreteVariable& v = var1;
 
       TS_ASSERT_EQUALS(v.label(1), "4")
-      TS_ASSERT_EQUALS(v["4"], (gum::Idx)1)
+      TS_ASSERT_EQUALS(v["4"], static_cast< gum::Idx >(1))
 
       std::stringstream s;
       s << v;
@@ -99,7 +100,7 @@ namespace gum_tests {
 
     GUM_ACTIVE_TEST(Numerical) {
       gum::RangeVariable var1("var1", "this is var1", 10, 20);
-      TS_ASSERT_EQUALS(var1.domainSize(), (gum::Size)11)
+      TS_ASSERT_EQUALS(var1.domainSize(), static_cast< gum::Size >(11))
 
       for (gum::Idx i = 0; i < var1.domainSize(); i++) {
         TS_ASSERT_EQUALS(var1.numerical(i), var1.minVal() + i)

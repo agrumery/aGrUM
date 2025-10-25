@@ -37,6 +37,7 @@
  *   gitlab   : https://gitlab.com/agrumery/agrum                           *
  *                                                                          *
  ****************************************************************************/
+#pragma once
 
 
 #include <iostream>
@@ -51,7 +52,7 @@
 
 namespace gum_tests {
 
-  class [[maybe_unused]] DirichletPriorFromBNTestSuite: public CxxTest::TestSuite {
+  class GUM_TEST_SUITE(DirichletPriorFromBN) {
     private:
     void _test_prior_(gum::learning::DirichletPriorFromBN< double >& prior) {
       prior.setWeight(100.0);
@@ -187,7 +188,7 @@ namespace gum_tests {
       TS_GUM_ASSERT_ALMOST_EQUALS(vect[6], 1.0 + (100.0 * 1.0 / 3.0 * 0.5))
       TS_GUM_ASSERT_ALMOST_EQUALS(vect[7], 1.0 + (100.0 * 1.0 / 3.0 * 0.5))
       TS_GUM_ASSERT_ALMOST_EQUALS(vect[8], 1.0 + (100.0 * 1.0 / 3.0 * 0.5))
-    }
+    }   // namespace gum_tests
 
     public:
     GUM_ACTIVE_TEST(1) {

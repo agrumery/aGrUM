@@ -37,6 +37,7 @@
  *   gitlab   : https://gitlab.com/agrumery/agrum                           *
  *                                                                          *
  ****************************************************************************/
+#pragma once
 
 
 #include <gumtest/AgrumTestSuite.h>
@@ -56,7 +57,7 @@
 
 namespace gum_tests {
 
-  class [[maybe_unused]] PRMInferenceTestSuite: public CxxTest::TestSuite {
+  class GUM_TEST_SUITE(PRMInference) {
     private:
     gum::prm::PRM< double >* prm;
     gum::prm::PRM< double >* small;
@@ -98,10 +99,10 @@ namespace gum_tests {
       const gum::prm::PRMAttribute< double >& attribute = instance.get("can_print");
       gum::Tensor< double >                   e;
       e.add(attribute.type().variable());
-      e.fill((double)0.0);
+      e.fill(static_cast< double >(0.0));
       gum::Instantiation inst(e);
       inst.setFirst();
-      e.set(inst, (double)1.0);
+      e.set(inst, static_cast< double >(1.0));
       gum::prm::PRMInference< double >::Chain chain = std::make_pair(&instance, &attribute);
       TS_GUM_ASSERT_THROWS_NOTHING(g_ve->addEvidence(chain, e))
       TS_ASSERT(g_ve->hasEvidence(chain))
@@ -397,10 +398,10 @@ namespace gum_tests {
         const gum::prm::PRMAttribute< double >& attribute = instance.get("(t_degraded)equipState");
         gum::Tensor< double >                   e;
         e.add(attribute.type().variable());
-        e.fill((double)0.0);
+        e.fill(static_cast< double >(0.0));
         gum::Instantiation inst(e);
         inst.setFirst();
-        e.set(inst, (double)1.0);
+        e.set(inst, static_cast< double >(1.0));
         gum::prm::PRMInference< double >::Chain chain = std::make_pair(&instance, &attribute);
         TS_GUM_ASSERT_THROWS_NOTHING(g_ve->addEvidence(chain, e))
         TS_ASSERT(g_ve->hasEvidence(chain))
@@ -411,10 +412,10 @@ namespace gum_tests {
         const gum::prm::PRMAttribute< double >& attribute = instance.get("can_print");
         gum::Tensor< double >                   e;
         e.add(attribute.type().variable());
-        e.fill((double)0.0);
+        e.fill(static_cast< double >(0.0));
         gum::Instantiation inst(e);
         inst.setFirst();
-        e.set(inst, (double)1.0);
+        e.set(inst, static_cast< double >(1.0));
         gum::prm::PRMInference< double >::Chain chain = std::make_pair(&instance, &attribute);
         TS_GUM_ASSERT_THROWS_NOTHING(g_ve->addEvidence(chain, e))
         TS_ASSERT(g_ve->hasEvidence(chain))
@@ -474,10 +475,10 @@ namespace gum_tests {
         const gum::prm::PRMAttribute< double >& attribute = instance.get("(t_degraded)equipState");
         gum::Tensor< double >                   e;
         e.add(attribute.type().variable());
-        e.fill((double)0.0);
+        e.fill(static_cast< double >(0.0));
         gum::Instantiation inst(e);
         inst.setFirst();
-        e.set(inst, (double)1.0);
+        e.set(inst, static_cast< double >(1.0));
         gum::prm::PRMInference< double >::Chain chain = std::make_pair(&instance, &attribute);
         TS_GUM_ASSERT_THROWS_NOTHING(g_ve->addEvidence(chain, e))
         TS_ASSERT(g_ve->hasEvidence(chain))
@@ -488,10 +489,10 @@ namespace gum_tests {
         const gum::prm::PRMAttribute< double >& attribute = instance.get("can_print");
         gum::Tensor< double >                   e;
         e.add(attribute.type().variable());
-        e.fill((double)0.0);
+        e.fill(static_cast< double >(0.0));
         gum::Instantiation inst(e);
         inst.setFirst();
-        e.set(inst, (double)1.0);
+        e.set(inst, static_cast< double >(1.0));
         gum::prm::PRMInference< double >::Chain chain = std::make_pair(&instance, &attribute);
         TS_GUM_ASSERT_THROWS_NOTHING(g_ve->addEvidence(chain, e))
         TS_ASSERT(g_ve->hasEvidence(chain))
@@ -504,7 +505,7 @@ namespace gum_tests {
         gum::prm::PRMInference< double >::Chain q_chain = std::make_pair(&q_i, &q_a);
         gum::Tensor< double >                   m;
         g_ve->posterior(q_chain, m);
-        TS_ASSERT_EQUALS(m.nbrDim(), (gum::Size)1)
+        TS_ASSERT_EQUALS(m.nbrDim(), static_cast< gum::Size >(1))
         gum::Instantiation inst(m);
         inst.setFirst();
         TS_ASSERT_DELTA(m.get(inst), 1.0, 1e-6)
@@ -568,10 +569,10 @@ namespace gum_tests {
         const gum::prm::PRMAttribute< double >& attribute = instance.get("(t_degraded)equipState");
         gum::Tensor< double >                   e;
         e.add(attribute.type().variable());
-        e.fill((double)0.0);
+        e.fill(static_cast< double >(0.0));
         gum::Instantiation inst(e);
         inst.setFirst();
-        e.set(inst, (double)1.0);
+        e.set(inst, static_cast< double >(1.0));
         gum::prm::PRMInference< double >::Chain chain = std::make_pair(&instance, &attribute);
         TS_GUM_ASSERT_THROWS_NOTHING(g_ve->addEvidence(chain, e))
         TS_ASSERT(g_ve->hasEvidence(chain))
@@ -582,10 +583,10 @@ namespace gum_tests {
         const gum::prm::PRMAttribute< double >& attribute = instance.get("can_print");
         gum::Tensor< double >                   e;
         e.add(attribute.type().variable());
-        e.fill((double)0.0);
+        e.fill(static_cast< double >(0.0));
         gum::Instantiation inst(e);
         inst.setFirst();
-        e.set(inst, (double)1.0);
+        e.set(inst, static_cast< double >(1.0));
         gum::prm::PRMInference< double >::Chain chain = std::make_pair(&instance, &attribute);
         TS_GUM_ASSERT_THROWS_NOTHING(g_ve->addEvidence(chain, e))
         TS_ASSERT(g_ve->hasEvidence(chain))

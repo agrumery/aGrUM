@@ -37,7 +37,7 @@
  *   gitlab   : https://gitlab.com/agrumery/agrum                           *
  *                                                                          *
  ****************************************************************************/
-
+#pragma once
 
 /** @file
  * @brief Base class for all elimination sequence algorithm that impose a given

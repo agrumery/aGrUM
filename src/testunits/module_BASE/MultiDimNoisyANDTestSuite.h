@@ -37,6 +37,7 @@
  *   gitlab   : https://gitlab.com/agrumery/agrum                           *
  *                                                                          *
  ****************************************************************************/
+#pragma once
 
 
 #include <sstream>
@@ -52,7 +53,7 @@
 
 namespace gum_tests {
 
-  class [[maybe_unused]] MultiDimNoisyANDTestSuite: public CxxTest::TestSuite {
+  class GUM_TEST_SUITE(MultiDimNoisyAND) {
     public:
     GUM_ACTIVE_TEST(CreationNoisyOr) {
       gum::LabelizedVariable          a("a", "", 2), b("b", "", 2), c("c", "", 2), d("d", "", 2);
@@ -75,18 +76,18 @@ namespace gum_tests {
           p.toString(),
           "a:Labelized({0|1})=noisyAND([0.2], b:Labelized({0|1})[0.4], c:Labelized({0|1})"
           "[1], d:Labelized({0|1})[0.7])");
-      TS_ASSERT_EQUALS(p.realSize(), (gum::Size)4)
+      TS_ASSERT_EQUALS(p.realSize(), static_cast< gum::Size >(4))
 
       gum::MultiDimNoisyAND< double > q(p);
       TS_ASSERT_EQUALS(
           q.toString(),
           "a:Labelized({0|1})=noisyAND([0.2], b:Labelized({0|1})[0.4], c:Labelized({0|1})"
           "[1], d:Labelized({0|1})[0.7])");
-      TS_ASSERT_EQUALS(p.realSize(), (gum::Size)4)
+      TS_ASSERT_EQUALS(p.realSize(), static_cast< gum::Size >(4))
 
       // trying a noisyAND with 0 as external weight (not allowed)
       TS_ASSERT_THROWS(gum::MultiDimNoisyAND< double > qq(0.0f), const gum::InvalidArgument&)
-    }
+    }   // namespace gum_tests
 
     GUM_ACTIVE_TEST(CompatibleWithHardAND) {
       gum::LabelizedVariable cold("Cold", "", 2);

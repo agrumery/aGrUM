@@ -37,6 +37,7 @@
  *   gitlab   : https://gitlab.com/agrumery/agrum                           *
  *                                                                          *
  ****************************************************************************/
+#pragma once
 
 
 #include <gumtest/AgrumTestSuite.h>
@@ -46,13 +47,13 @@
 
 namespace gum_tests {
 
-  class [[maybe_unused]] binSearchTreeTestSuite: public CxxTest::TestSuite {
+  class GUM_TEST_SUITE(binSearchTree) {
     public:
     GUM_ACTIVE_TEST(Constructors) {
       gum::BinSearchTree< int >* tree = 0;
 
       TS_GUM_ASSERT_THROWS_NOTHING(tree = new gum::BinSearchTree< int >)
-      TS_ASSERT_EQUALS(tree->size(), (gum::Size)0)
+      TS_ASSERT_EQUALS(tree->size(), static_cast< gum::Size >(0))
 
       TS_GUM_ASSERT_THROWS_NOTHING(gum::BinSearchTree< int > tree2(*tree))
       gum::BinSearchTree< int > tree3;
@@ -62,9 +63,9 @@ namespace gum_tests {
       tree->insert(3);
       tree->insert(4);
 
-      TS_ASSERT_EQUALS(tree->size(), (gum::Size)2)
+      TS_ASSERT_EQUALS(tree->size(), static_cast< gum::Size >(2))
       tree3 = *tree;
-      TS_ASSERT_EQUALS(tree3.size(), (gum::Size)2)
+      TS_ASSERT_EQUALS(tree3.size(), static_cast< gum::Size >(2))
 
       tree->insert(1);
       tree->insert(4);
@@ -72,7 +73,7 @@ namespace gum_tests {
       tree->erase(3);
 
       delete tree;
-    }
+    }   // namespace gum_tests
 
     GUM_ACTIVE_TEST(Values) {
       gum::BinSearchTree< int > tree;
@@ -99,7 +100,7 @@ namespace gum_tests {
       TS_ASSERT_THROWS_ANYTHING(tree.rootValue();)
       TS_ASSERT_THROWS_ANYTHING(tree.minValue();)
       TS_ASSERT_THROWS_ANYTHING(tree.maxValue();)
-      TS_ASSERT_EQUALS(tree.size(), (gum::Size)0)
+      TS_ASSERT_EQUALS(tree.size(), static_cast< gum::Size >(0))
       TS_ASSERT_EQUALS(tree.empty(), true)
     }
 
@@ -113,25 +114,25 @@ namespace gum_tests {
       tree.insert(5);
       tree.insert(5);
 
-      TS_ASSERT_EQUALS(tree.size(), (gum::Size)7)
+      TS_ASSERT_EQUALS(tree.size(), static_cast< gum::Size >(7))
 
       tree.erase(5);
       tree.erase(5);
       tree.erase(5);
 
-      TS_ASSERT_EQUALS(tree.size(), (gum::Size)4)
+      TS_ASSERT_EQUALS(tree.size(), static_cast< gum::Size >(4))
       TS_ASSERT_THROWS(tree.erase(5), const gum::NotFound&)
-      TS_ASSERT_EQUALS(tree.size(), (gum::Size)4)
+      TS_ASSERT_EQUALS(tree.size(), static_cast< gum::Size >(4))
       TS_ASSERT_THROWS(tree.erase(9), const gum::NotFound&)
-      TS_ASSERT_EQUALS(tree.size(), (gum::Size)4)
+      TS_ASSERT_EQUALS(tree.size(), static_cast< gum::Size >(4))
       tree.erase(1);
-      TS_ASSERT_EQUALS(tree.size(), (gum::Size)3)
+      TS_ASSERT_EQUALS(tree.size(), static_cast< gum::Size >(3))
       tree.erase(7);
-      TS_ASSERT_EQUALS(tree.size(), (gum::Size)2)
+      TS_ASSERT_EQUALS(tree.size(), static_cast< gum::Size >(2))
       tree.erase(4);
-      TS_ASSERT_EQUALS(tree.size(), (gum::Size)1)
+      TS_ASSERT_EQUALS(tree.size(), static_cast< gum::Size >(1))
       tree.erase(3);
-      TS_ASSERT_EQUALS(tree.size(), (gum::Size)0)
+      TS_ASSERT_EQUALS(tree.size(), static_cast< gum::Size >(0))
       TS_ASSERT_EQUALS(tree.empty(), true)
     }
 
@@ -146,7 +147,7 @@ namespace gum_tests {
       TS_ASSERT_EQUALS(tree.uniquenessPolicy(), false)
 
       tree.insert(5);
-      TS_ASSERT_EQUALS(tree.size(), (gum::Size)6)
+      TS_ASSERT_EQUALS(tree.size(), static_cast< gum::Size >(6))
 
       tree.setUniquenessPolicy(true);
       TS_ASSERT_THROWS_ANYTHING(tree.insert(5);)
@@ -214,30 +215,30 @@ namespace gum_tests {
       tree.insert(5);
       tree.insert(5);
 
-      TS_ASSERT_EQUALS(tree.size(), (gum::Size)7)
+      TS_ASSERT_EQUALS(tree.size(), static_cast< gum::Size >(7))
 
       gum::BinSearchTree< int >::iterator iter = tree.begin();
 
       tree.erase(iter);
-      TS_ASSERT_EQUALS(tree.size(), (gum::Size)6)
+      TS_ASSERT_EQUALS(tree.size(), static_cast< gum::Size >(6))
 
       iter = tree.rbegin();
       tree.erase(iter);
-      TS_ASSERT_EQUALS(tree.size(), (gum::Size)5)
+      TS_ASSERT_EQUALS(tree.size(), static_cast< gum::Size >(5))
 
       iter = tree.begin();
       ++iter;
       ++iter;
       tree.erase(iter);
-      TS_ASSERT_EQUALS(tree.size(), (gum::Size)4)
+      TS_ASSERT_EQUALS(tree.size(), static_cast< gum::Size >(4))
 
       iter = tree.end();
       tree.erase(iter);
-      TS_ASSERT_EQUALS(tree.size(), (gum::Size)4)
+      TS_ASSERT_EQUALS(tree.size(), static_cast< gum::Size >(4))
 
       iter = tree.rend();
       tree.erase(iter);
-      TS_ASSERT_EQUALS(tree.size(), (gum::Size)4)
+      TS_ASSERT_EQUALS(tree.size(), static_cast< gum::Size >(4))
     }
   };
 }   // namespace gum_tests

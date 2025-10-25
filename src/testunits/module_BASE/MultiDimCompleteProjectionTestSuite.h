@@ -37,6 +37,7 @@
  *   gitlab   : https://gitlab.com/agrumery/agrum                           *
  *                                                                          *
  ****************************************************************************/
+#pragma once
 
 
 #include <cstdlib>
@@ -56,7 +57,7 @@
 
 namespace gum_tests {
 
-  class [[maybe_unused]] MultiDimCompleteProjectionTestSuite: public CxxTest::TestSuite {
+  class GUM_TEST_SUITE(MultiDimCompleteProjection) {
     private:
     // ==========================================================================
     /// initialize randomly a table
@@ -66,7 +67,7 @@ namespace gum_tests {
 
       for (i.setFirst(); !i.end(); ++i)
         t->set(i, rand() * 100000.0f / float(RAND_MAX));
-    }
+    }   // namespace gum_tests
 
     // ==========================================================================
     /// initialize randomly a table

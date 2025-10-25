@@ -37,6 +37,7 @@
  *   gitlab   : https://gitlab.com/agrumery/agrum                           *
  *                                                                          *
  ****************************************************************************/
+#pragma once
 
 
 #include <gumtest/AgrumTestSuite.h>
@@ -50,7 +51,7 @@
 
 namespace gum_tests {
 
-  class [[maybe_unused]] InstantiationTestSuite: public CxxTest::TestSuite {
+  class GUM_TEST_SUITE(Instantiation) {
     gum::BayesNet< double >* bn;
     gum::NodeId              i1, i2, i3, i4, i5;
 
@@ -81,7 +82,7 @@ namespace gum_tests {
     public:
     GUM_ACTIVE_TEST(Creation) {
       gum::Instantiation i;
-      TS_ASSERT_EQUALS(i.nbrDim(), (gum::Size)0)
+      TS_ASSERT_EQUALS(i.nbrDim(), static_cast< gum::Size >(0))
     }
 
     GUM_ACTIVE_TEST(InsertSupprVariables) {
@@ -91,12 +92,12 @@ namespace gum_tests {
 
       TS_GUM_ASSERT_THROWS_NOTHING(i << a << b << c)
       TS_ASSERT_THROWS(i << a, const gum::DuplicateElement&)
-      TS_ASSERT_EQUALS(i.nbrDim(), (gum::Size)3)
+      TS_ASSERT_EQUALS(i.nbrDim(), static_cast< gum::Size >(3))
       TS_ASSERT_EQUALS(i.domainSize(), (gum::Size)(2 * 4 * 5))
 
       TS_ASSERT(i.contains(a))
 
-      TS_ASSERT_EQUALS(i.pos(b), (gum::Size)1)
+      TS_ASSERT_EQUALS(i.pos(b), static_cast< gum::Size >(1))
       TS_ASSERT_EQUALS(&(i.variable(1)), &b)
 
       i.chgVal(a, 1).chgVal(b, 2).chgVal(c, 4);
@@ -104,7 +105,7 @@ namespace gum_tests {
 
       TS_GUM_ASSERT_THROWS_NOTHING(i >> b)
       TS_ASSERT_THROWS(i >> b, const gum::NotFound&)
-      TS_ASSERT_EQUALS(i.nbrDim(), (gum::Size)2)
+      TS_ASSERT_EQUALS(i.nbrDim(), static_cast< gum::Size >(2))
       TS_ASSERT_EQUALS(i.domainSize(), (gum::Size)(2 * 5))
 
       TS_ASSERT_EQUALS(i.toString(), "<a:1|c:4>")
@@ -135,7 +136,7 @@ namespace gum_tests {
       for (nb = 0, i.setFirstVar(b); !i.end(); i.incVar(b))
         nb++;
 
-      TS_ASSERT_EQUALS(nb, (gum::Size)4)
+      TS_ASSERT_EQUALS(nb, static_cast< gum::Size >(4))
 
       for (nb = 0, i.setFirstIn(j); !i.end(); i.incIn(j))
         nb++;
@@ -145,7 +146,7 @@ namespace gum_tests {
       for (nb = 0, i.setFirstOut(j); !i.end(); i.incOut(j))
         nb++;
 
-      TS_ASSERT_EQUALS(nb, (gum::Size)2)
+      TS_ASSERT_EQUALS(nb, static_cast< gum::Size >(2))
     }
 
     GUM_ACTIVE_TEST(Decrementations) {
@@ -170,7 +171,7 @@ namespace gum_tests {
       for (nb = 0, i.setLastVar(b); !i.rend(); i.decVar(b))
         nb++;
 
-      TS_ASSERT_EQUALS(nb, (gum::Size)4)
+      TS_ASSERT_EQUALS(nb, static_cast< gum::Size >(4))
 
       for (nb = 0, i.setLastIn(j); !i.rend(); i.decIn(j))
         nb++;
@@ -180,7 +181,7 @@ namespace gum_tests {
       for (nb = 0, i.setLastOut(j); !i.rend(); i.decOut(j))
         nb++;
 
-      TS_ASSERT_EQUALS(nb, (gum::Size)2)
+      TS_ASSERT_EQUALS(nb, static_cast< gum::Size >(2))
     }
 
     GUM_ACTIVE_TEST(Reordering) {

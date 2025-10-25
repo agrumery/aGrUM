@@ -37,6 +37,7 @@
  *   gitlab   : https://gitlab.com/agrumery/agrum                           *
  *                                                                          *
  ****************************************************************************/
+#pragma once
 
 
 #include <gumtest/AgrumTestSuite.h>
@@ -58,7 +59,7 @@
 
 namespace gum_tests {
 
-  class [[maybe_unused]] PRMTestSuite: public CxxTest::TestSuite {
+  class GUM_TEST_SUITE(PRM) {
     private:
     gum::prm::PRM< double >* prm;
     gum::prm::PRM< double >* small;
@@ -155,10 +156,10 @@ namespace gum_tests {
         size_t                            pos      = var.find_first_of('.');
         gum::prm::PRMInstance< double >&  instance = sys.get(var.substr(0, pos));
         gum::prm::PRMAttribute< double >& attr     = instance.get(var.substr(pos + 1));
-        TS_ASSERT_DIFFERS(bn.cpt(node).nbrDim(), (gum::Size)0)
+        TS_ASSERT_DIFFERS(bn.cpt(node).nbrDim(), static_cast< gum::Size >(0))
 
         if (gum::prm::PRMClassElement< double >::isAggregate(instance.type().get(attr.id()))) {
-          TS_ASSERT_DIFFERS(attr.cpf().nbrDim(), (gum::Size)1)
+          TS_ASSERT_DIFFERS(attr.cpf().nbrDim(), static_cast< gum::Size >(1))
         }
       }
 

@@ -638,7 +638,7 @@ namespace gum {
 
   GUM_MAKE_ERROR(UnknownLabelInDatabase, LearningError, "Unknown label found in database")
 
-  class SyntaxError: public IOError {
+  class SyntaxError final: public IOError {
     protected:
     Size        noLine_;
     Size        noCol_;

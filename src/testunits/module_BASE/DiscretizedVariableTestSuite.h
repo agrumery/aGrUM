@@ -37,6 +37,7 @@
  *   gitlab   : https://gitlab.com/agrumery/agrum                           *
  *                                                                          *
  ****************************************************************************/
+#pragma once
 
 
 #include <iostream>
@@ -51,7 +52,7 @@
 
 namespace gum_tests {
 
-  class [[maybe_unused]] DiscretizedVariableTestSuite: public CxxTest::TestSuite {
+  class GUM_TEST_SUITE(DiscretizedVariable) {
     public:
     GUM_ACTIVE_TEST(Creation){
         TS_GUM_ASSERT_THROWS_NOTHING(gum::DiscretizedVariable< int > v("var", "a var"))}
@@ -70,7 +71,7 @@ namespace gum_tests {
 
       const gum::DiscretizedVariable< int >& w = v;
       w.setDescription("Lol");   // change description does not change a variable
-    }
+    }   // namespace gum_tests
 
     GUM_ACTIVE_TEST(ConstructorWithTicks) {
       gum::DiscretizedVariable< double > d("d", "Discretized variable", {3.1, 2.0, 4.0});
@@ -126,19 +127,19 @@ namespace gum_tests {
     GUM_ACTIVE_TEST(AddTicks) {
       gum::DiscretizedVariable< int > v("var", "a var");
 
-      TS_ASSERT_THROWS(v.tick((gum::Idx)1), const gum::OutOfBounds&)
+      TS_ASSERT_THROWS(v.tick(static_cast< gum::Idx >(1)), const gum::OutOfBounds&)
 
       TS_ASSERT(v.empty())
-      TS_ASSERT_EQUALS(v.domainSize(), (gum::Idx)0)
+      TS_ASSERT_EQUALS(v.domainSize(), static_cast< gum::Idx >(0))
       v.addTick(1);
       TS_ASSERT(v.empty())
-      TS_ASSERT_EQUALS(v.domainSize(), (gum::Idx)0)
+      TS_ASSERT_EQUALS(v.domainSize(), static_cast< gum::Idx >(0))
       v.addTick(3);
       TS_ASSERT(v.empty())
-      TS_ASSERT_EQUALS(v.domainSize(), (gum::Idx)1)
+      TS_ASSERT_EQUALS(v.domainSize(), static_cast< gum::Idx >(1))
       v.addTick(2);
       TS_ASSERT(!v.empty())
-      TS_ASSERT_EQUALS(v.domainSize(), (gum::Idx)2)
+      TS_ASSERT_EQUALS(v.domainSize(), static_cast< gum::Idx >(2))
 
       TS_ASSERT_THROWS(v.addTick(2), const gum::DefaultInLabel&)
 
@@ -147,11 +148,11 @@ namespace gum_tests {
       TS_ASSERT_EQUALS(s.str(), "var:Discretized(<[1;2[,[2;3]>)")
       TS_ASSERT_EQUALS(v.toString(), "var:Discretized(<[1;2[,[2;3]>)")
 
-      TS_ASSERT_EQUALS(v.tick((gum::Idx)0), 1)
-      TS_ASSERT_EQUALS(v.tick((gum::Idx)1), 2)
-      TS_ASSERT_EQUALS(v.tick((gum::Idx)2), 3)
+      TS_ASSERT_EQUALS(v.tick(static_cast< gum::Idx >(0)), 1)
+      TS_ASSERT_EQUALS(v.tick(static_cast< gum::Idx >(1)), 2)
+      TS_ASSERT_EQUALS(v.tick(static_cast< gum::Idx >(2)), 3)
 
-      TS_ASSERT_THROWS(v.tick((gum::Idx)3), const gum::OutOfBounds&)
+      TS_ASSERT_THROWS(v.tick(static_cast< gum::Idx >(3)), const gum::OutOfBounds&)
     }
 
     GUM_ACTIVE_TEST(NormalLimits) {
@@ -160,30 +161,30 @@ namespace gum_tests {
 
       TS_ASSERT_EQUALS(v.toString(), "var:Discretized(<[1;3[,[3;5[,[5;7]>)")
 
-      gum::Size vv = (gum::Size)0;
+      gum::Size vv = static_cast< gum::Size >(0);
 
       TS_ASSERT_THROWS(v["0"], const gum::OutOfBounds&)
 
       TS_GUM_ASSERT_THROWS_NOTHING(vv = v["1"])
-      TS_ASSERT_EQUALS(vv, (gum::Size)0)
+      TS_ASSERT_EQUALS(vv, static_cast< gum::Size >(0))
 
       TS_GUM_ASSERT_THROWS_NOTHING(vv = v["2"])
-      TS_ASSERT_EQUALS(vv, (gum::Size)0)
+      TS_ASSERT_EQUALS(vv, static_cast< gum::Size >(0))
 
       TS_GUM_ASSERT_THROWS_NOTHING(vv = v["3"])
-      TS_ASSERT_EQUALS(vv, (gum::Size)1)
+      TS_ASSERT_EQUALS(vv, static_cast< gum::Size >(1))
 
       TS_GUM_ASSERT_THROWS_NOTHING(vv = v["4"])
-      TS_ASSERT_EQUALS(vv, (gum::Size)1)
+      TS_ASSERT_EQUALS(vv, static_cast< gum::Size >(1))
 
       TS_GUM_ASSERT_THROWS_NOTHING(vv = v["5"])
-      TS_ASSERT_EQUALS(vv, (gum::Size)2)
+      TS_ASSERT_EQUALS(vv, static_cast< gum::Size >(2))
 
       TS_GUM_ASSERT_THROWS_NOTHING(vv = v["6"])
-      TS_ASSERT_EQUALS(vv, (gum::Size)2)
+      TS_ASSERT_EQUALS(vv, static_cast< gum::Size >(2))
 
       TS_GUM_ASSERT_THROWS_NOTHING(vv = v["7"])
-      TS_ASSERT_EQUALS(vv, (gum::Size)2)
+      TS_ASSERT_EQUALS(vv, static_cast< gum::Size >(2))
 
       TS_ASSERT_THROWS(v["8"], const gum::OutOfBounds&)
     }
@@ -196,34 +197,34 @@ namespace gum_tests {
 
       TS_ASSERT_EQUALS(v.toString(), "var:Discretized(<(1;3[,[3;5[,[5;7)>)")
 
-      gum::Size vv = (gum::Size)0;
+      gum::Size vv = static_cast< gum::Size >(0);
 
       TS_GUM_ASSERT_THROWS_NOTHING(vv = v["0"])
-      TS_ASSERT_EQUALS(vv, (gum::Size)0)
+      TS_ASSERT_EQUALS(vv, static_cast< gum::Size >(0))
 
       TS_GUM_ASSERT_THROWS_NOTHING(vv = v["1"])
-      TS_ASSERT_EQUALS(vv, (gum::Size)0)
+      TS_ASSERT_EQUALS(vv, static_cast< gum::Size >(0))
 
       TS_GUM_ASSERT_THROWS_NOTHING(vv = v["2"])
-      TS_ASSERT_EQUALS(vv, (gum::Size)0)
+      TS_ASSERT_EQUALS(vv, static_cast< gum::Size >(0))
 
       TS_GUM_ASSERT_THROWS_NOTHING(vv = v["3"])
-      TS_ASSERT_EQUALS(vv, (gum::Size)1)
+      TS_ASSERT_EQUALS(vv, static_cast< gum::Size >(1))
 
       TS_GUM_ASSERT_THROWS_NOTHING(vv = v["4"])
-      TS_ASSERT_EQUALS(vv, (gum::Size)1)
+      TS_ASSERT_EQUALS(vv, static_cast< gum::Size >(1))
 
       TS_GUM_ASSERT_THROWS_NOTHING(vv = v["5"])
-      TS_ASSERT_EQUALS(vv, (gum::Size)2)
+      TS_ASSERT_EQUALS(vv, static_cast< gum::Size >(2))
 
       TS_GUM_ASSERT_THROWS_NOTHING(vv = v["6"])
-      TS_ASSERT_EQUALS(vv, (gum::Size)2)
+      TS_ASSERT_EQUALS(vv, static_cast< gum::Size >(2))
 
       TS_GUM_ASSERT_THROWS_NOTHING(vv = v["7"])
-      TS_ASSERT_EQUALS(vv, (gum::Size)2)
+      TS_ASSERT_EQUALS(vv, static_cast< gum::Size >(2))
 
       TS_GUM_ASSERT_THROWS_NOTHING(vv = v["8"])
-      TS_ASSERT_EQUALS(vv, (gum::Size)2)
+      TS_ASSERT_EQUALS(vv, static_cast< gum::Size >(2))
     }
 
     GUM_ACTIVE_TEST(NormalLimitsWithEmpiricalInConstructor) {
@@ -234,34 +235,34 @@ namespace gum_tests {
 
       TS_ASSERT_EQUALS(v.toString(), "var:Discretized(<(1;3[,[3;5[,[5;7)>)")
 
-      gum::Size vv = (gum::Size)0;
+      gum::Size vv = static_cast< gum::Size >(0);
 
       TS_GUM_ASSERT_THROWS_NOTHING(vv = v["0"])
-      TS_ASSERT_EQUALS(vv, (gum::Size)0)
+      TS_ASSERT_EQUALS(vv, static_cast< gum::Size >(0))
 
       TS_GUM_ASSERT_THROWS_NOTHING(vv = v["1"])
-      TS_ASSERT_EQUALS(vv, (gum::Size)0)
+      TS_ASSERT_EQUALS(vv, static_cast< gum::Size >(0))
 
       TS_GUM_ASSERT_THROWS_NOTHING(vv = v["2"])
-      TS_ASSERT_EQUALS(vv, (gum::Size)0)
+      TS_ASSERT_EQUALS(vv, static_cast< gum::Size >(0))
 
       TS_GUM_ASSERT_THROWS_NOTHING(vv = v["3"])
-      TS_ASSERT_EQUALS(vv, (gum::Size)1)
+      TS_ASSERT_EQUALS(vv, static_cast< gum::Size >(1))
 
       TS_GUM_ASSERT_THROWS_NOTHING(vv = v["4"])
-      TS_ASSERT_EQUALS(vv, (gum::Size)1)
+      TS_ASSERT_EQUALS(vv, static_cast< gum::Size >(1))
 
       TS_GUM_ASSERT_THROWS_NOTHING(vv = v["5"])
-      TS_ASSERT_EQUALS(vv, (gum::Size)2)
+      TS_ASSERT_EQUALS(vv, static_cast< gum::Size >(2))
 
       TS_GUM_ASSERT_THROWS_NOTHING(vv = v["6"])
-      TS_ASSERT_EQUALS(vv, (gum::Size)2)
+      TS_ASSERT_EQUALS(vv, static_cast< gum::Size >(2))
 
       TS_GUM_ASSERT_THROWS_NOTHING(vv = v["7"])
-      TS_ASSERT_EQUALS(vv, (gum::Size)2)
+      TS_ASSERT_EQUALS(vv, static_cast< gum::Size >(2))
 
       TS_GUM_ASSERT_THROWS_NOTHING(vv = v["8"])
-      TS_ASSERT_EQUALS(vv, (gum::Size)2)
+      TS_ASSERT_EQUALS(vv, static_cast< gum::Size >(2))
     }
 
     GUM_ACTIVE_TEST(NormalLimitsWithNoEmpiricalInConstructor) {
@@ -271,30 +272,30 @@ namespace gum_tests {
 
       TS_ASSERT_EQUALS(v.toString(), "var:Discretized(<[1;3[,[3;5[,[5;7]>)")
 
-      auto vv = (gum::Size)0;
+      auto vv = static_cast< gum::Size >(0);
 
       TS_ASSERT_THROWS(vv = v["0"], gum::OutOfBounds&)
 
       TS_GUM_ASSERT_THROWS_NOTHING(vv = v["1"])
-      TS_ASSERT_EQUALS(vv, (gum::Size)0)
+      TS_ASSERT_EQUALS(vv, static_cast< gum::Size >(0))
 
       TS_GUM_ASSERT_THROWS_NOTHING(vv = v["2"])
-      TS_ASSERT_EQUALS(vv, (gum::Size)0)
+      TS_ASSERT_EQUALS(vv, static_cast< gum::Size >(0))
 
       TS_GUM_ASSERT_THROWS_NOTHING(vv = v["3"])
-      TS_ASSERT_EQUALS(vv, (gum::Size)1)
+      TS_ASSERT_EQUALS(vv, static_cast< gum::Size >(1))
 
       TS_GUM_ASSERT_THROWS_NOTHING(vv = v["4"])
-      TS_ASSERT_EQUALS(vv, (gum::Size)1)
+      TS_ASSERT_EQUALS(vv, static_cast< gum::Size >(1))
 
       TS_GUM_ASSERT_THROWS_NOTHING(vv = v["5"])
-      TS_ASSERT_EQUALS(vv, (gum::Size)2)
+      TS_ASSERT_EQUALS(vv, static_cast< gum::Size >(2))
 
       TS_GUM_ASSERT_THROWS_NOTHING(vv = v["6"])
-      TS_ASSERT_EQUALS(vv, (gum::Size)2)
+      TS_ASSERT_EQUALS(vv, static_cast< gum::Size >(2))
 
       TS_GUM_ASSERT_THROWS_NOTHING(vv = v["7"])
-      TS_ASSERT_EQUALS(vv, (gum::Size)2)
+      TS_ASSERT_EQUALS(vv, static_cast< gum::Size >(2))
 
       TS_ASSERT_THROWS(vv = v["8"], gum::OutOfBounds&)
     }
@@ -309,7 +310,7 @@ namespace gum_tests {
                   if ((i + j + k + l + m + n == 21) && (i * j * k * l * m * n == 720)) {
                     gum::DiscretizedVariable< int > d("d", "Discretized variable");
                     d.addTick(i).addTick(j).addTick(k).addTick(l).addTick(m).addTick(n);
-                    TS_ASSERT_EQUALS(d.domainSize(), (gum::Size)5)
+                    TS_ASSERT_EQUALS(d.domainSize(), static_cast< gum::Size >(5))
                     TS_ASSERT_EQUALS(d.toString(),
                                      "d:Discretized(<[1;2[,[2;3[,[3;4[,[4;5[,[5;6]>)");
                     int s = 1;
@@ -366,8 +367,8 @@ namespace gum_tests {
       TS_ASSERT_EQUALS(copy.domainSize(), 2u)
       TS_ASSERT_EQUALS(copy.toString(), "angle:Discretized(<[0;90[,[90;180]>)")
       TS_ASSERT(!copy.empty())
-      TS_ASSERT_EQUALS(copy["[0,90["], (gum::Size)0)
-      TS_ASSERT_EQUALS(copy.index("[0,90["), (gum::Size)0)
+      TS_ASSERT_EQUALS(copy["[0,90["], static_cast< gum::Size >(0))
+      TS_ASSERT_EQUALS(copy.index("[0,90["), static_cast< gum::Size >(0))
     }
 
     GUM_ACTIVE_TEST(CopyEmptyVariableWithoutZeros) {

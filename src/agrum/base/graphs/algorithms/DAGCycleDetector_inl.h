@@ -37,7 +37,7 @@
  *   gitlab   : https://gitlab.com/agrumery/agrum                           *
  *                                                                          *
  ****************************************************************************/
-
+#pragma once
 
 /** @file
  * @brief A class for detecting directed cycles in DAGs when trying to apply

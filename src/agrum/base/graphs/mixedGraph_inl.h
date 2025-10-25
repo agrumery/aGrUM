@@ -37,7 +37,7 @@
  *   gitlab   : https://gitlab.com/agrumery/agrum                           *
  *                                                                          *
  ****************************************************************************/
-
+#pragma once
 
 /** @file
  * @brief Inline implementation of Base classes for mixed graphs
@@ -59,7 +59,7 @@ namespace gum {
       // fill the new graph
       NodeGraphPart::operator=(g);
       EdgeGraphPart::operator=(g);
-      ArcGraphPart:: operator=(g);
+      ArcGraphPart::operator=(g);
     }
 
     return *this;

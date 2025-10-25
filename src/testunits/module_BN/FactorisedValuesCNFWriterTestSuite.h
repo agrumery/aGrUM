@@ -37,6 +37,7 @@
  *   gitlab   : https://gitlab.com/agrumery/agrum                           *
  *                                                                          *
  ****************************************************************************/
+#pragma once
 
 
 #include <iostream>
@@ -60,7 +61,7 @@
 
 namespace gum_tests {
 
-  class [[maybe_unused]] FactorisedValuesCNFWriterTestSuite: public CxxTest::TestSuite {
+  class GUM_TEST_SUITE(FactorisedValuesCNFWriter) {
     public:
     gum::BayesNet< double >* bn;
     gum::NodeId              i1, i2, i3, i4, i5;

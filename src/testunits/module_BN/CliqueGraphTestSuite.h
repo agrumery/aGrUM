@@ -37,6 +37,7 @@
  *   gitlab   : https://gitlab.com/agrumery/agrum                           *
  *                                                                          *
  ****************************************************************************/
+#pragma once
 
 
 #include <iostream>
@@ -65,7 +66,7 @@
 
 namespace gum_tests {
 
-  class [[maybe_unused]] CliqueGraphTestSuite: public CxxTest::TestSuite {
+  class GUM_TEST_SUITE(CliqueGraph) {
     private:
     void fillSets(gum::NodeSet& A,
                   gum::NodeSet& B,
@@ -142,7 +143,7 @@ namespace gum_tests {
 
       TS_GUM_ASSERT_THROWS_NOTHING(fillG1(graph))
 
-      TS_ASSERT_EQUALS(graph.size(), (gum::Size)4)
+      TS_ASSERT_EQUALS(graph.size(), static_cast< gum::Size >(4))
 
       TS_ASSERT_EQUALS(graph.clique(1), A)
       TS_ASSERT_EQUALS(graph.clique(2), B)
@@ -161,7 +162,7 @@ namespace gum_tests {
       gum::CliqueGraph graph;
       TS_GUM_ASSERT_THROWS_NOTHING(fillG2(graph))
 
-      TS_ASSERT_EQUALS(graph.size(), (gum::Size)4)
+      TS_ASSERT_EQUALS(graph.size(), static_cast< gum::Size >(4))
 
       TS_ASSERT_EQUALS(graph.clique(1), A)
       TS_ASSERT_EQUALS(graph.clique(2), B)
@@ -182,7 +183,7 @@ namespace gum_tests {
       gum::CliqueGraph graph;
       TS_GUM_ASSERT_THROWS_NOTHING(fillG3(graph))
 
-      TS_ASSERT_EQUALS(graph.size(), (gum::Size)4)
+      TS_ASSERT_EQUALS(graph.size(), static_cast< gum::Size >(4))
 
       TS_ASSERT(graph.existsEdge(1, 2))
       TS_ASSERT(graph.existsEdge(2, 4))
@@ -290,9 +291,9 @@ namespace gum_tests {
       fillG2(g2);
       fillG3(g3);
 
-      TS_ASSERT_EQUALS(g1.sizeEdges(), (gum::Size)3)
-      TS_ASSERT_EQUALS(g2.sizeEdges(), (gum::Size)5)
-      TS_ASSERT_EQUALS(g3.sizeEdges(), (gum::Size)3)
+      TS_ASSERT_EQUALS(g1.sizeEdges(), static_cast< gum::Size >(3))
+      TS_ASSERT_EQUALS(g2.sizeEdges(), static_cast< gum::Size >(5))
+      TS_ASSERT_EQUALS(g3.sizeEdges(), static_cast< gum::Size >(3))
     }
 
     GUM_ACTIVE_TEST(ClearNodes) {
@@ -302,16 +303,16 @@ namespace gum_tests {
       fillG3(g3);
 
       TS_GUM_ASSERT_THROWS_NOTHING(g1.clear())
-      TS_ASSERT_EQUALS(g1.size(), (gum::Size)0)
-      TS_ASSERT_EQUALS(g1.sizeEdges(), (gum::Size)0)
+      TS_ASSERT_EQUALS(g1.size(), static_cast< gum::Size >(0))
+      TS_ASSERT_EQUALS(g1.sizeEdges(), static_cast< gum::Size >(0))
 
       TS_GUM_ASSERT_THROWS_NOTHING(g2.clear())
-      TS_ASSERT_EQUALS(g2.size(), (gum::Size)0)
-      TS_ASSERT_EQUALS(g2.sizeEdges(), (gum::Size)0)
+      TS_ASSERT_EQUALS(g2.size(), static_cast< gum::Size >(0))
+      TS_ASSERT_EQUALS(g2.sizeEdges(), static_cast< gum::Size >(0))
 
       TS_GUM_ASSERT_THROWS_NOTHING(g3.clear())
-      TS_ASSERT_EQUALS(g3.size(), (gum::Size)0)
-      TS_ASSERT_EQUALS(g3.sizeEdges(), (gum::Size)0)
+      TS_ASSERT_EQUALS(g3.size(), static_cast< gum::Size >(0))
+      TS_ASSERT_EQUALS(g3.sizeEdges(), static_cast< gum::Size >(0))
     }
 
     GUM_ACTIVE_TEST(ClearEdges) {
@@ -323,17 +324,17 @@ namespace gum_tests {
       gum::Size nodeG1Count = g1.size();
       TS_GUM_ASSERT_THROWS_NOTHING(g1.clearEdges())
       TS_ASSERT_EQUALS(g1.size(), nodeG1Count)
-      TS_ASSERT_EQUALS(g1.sizeEdges(), (gum::Size)0)
+      TS_ASSERT_EQUALS(g1.sizeEdges(), static_cast< gum::Size >(0))
 
       gum::Size nodeG2Count = g2.size();
       TS_GUM_ASSERT_THROWS_NOTHING(g2.clearEdges())
       TS_ASSERT_EQUALS(g2.size(), nodeG2Count)
-      TS_ASSERT_EQUALS(g2.sizeEdges(), (gum::Size)0)
+      TS_ASSERT_EQUALS(g2.sizeEdges(), static_cast< gum::Size >(0))
 
       gum::Size nodeG3Count = g3.size();
       TS_GUM_ASSERT_THROWS_NOTHING(g3.clearEdges())
       TS_ASSERT_EQUALS(g3.size(), nodeG3Count)
-      TS_ASSERT_EQUALS(g3.sizeEdges(), (gum::Size)0)
+      TS_ASSERT_EQUALS(g3.sizeEdges(), static_cast< gum::Size >(0))
     }
 
     GUM_ACTIVE_TEST(EraseNode) {
@@ -386,16 +387,16 @@ namespace gum_tests {
       gum::NodeSet separator;
 
       TS_GUM_ASSERT_THROWS_NOTHING(separator = g1.separator(1, 2))
-      TS_ASSERT_EQUALS(separator.size(), (gum::Size)1)
+      TS_ASSERT_EQUALS(separator.size(), static_cast< gum::Size >(1))
       TS_ASSERT(separator.contains(2))
 
       TS_GUM_ASSERT_THROWS_NOTHING(separator = g1.separator(2, 3))
-      TS_ASSERT_EQUALS(separator.size(), (gum::Size)2)
+      TS_ASSERT_EQUALS(separator.size(), static_cast< gum::Size >(2))
       TS_ASSERT(separator.contains(3))
       TS_ASSERT(separator.contains(4))
 
       TS_GUM_ASSERT_THROWS_NOTHING(separator = g1.separator(2, 4))
-      TS_ASSERT_EQUALS(separator.size(), (gum::Size)2)
+      TS_ASSERT_EQUALS(separator.size(), static_cast< gum::Size >(2))
       TS_ASSERT(separator.contains(2))
       TS_ASSERT(separator.contains(4))
     }
@@ -407,20 +408,20 @@ namespace gum_tests {
       gum::NodeSet separator;
 
       TS_GUM_ASSERT_THROWS_NOTHING(separator = g2.separator(1, 2))
-      TS_ASSERT_EQUALS(separator.size(), (gum::Size)1)
+      TS_ASSERT_EQUALS(separator.size(), static_cast< gum::Size >(1))
       TS_ASSERT(separator.contains(2))
 
       separator.clear();
 
       TS_GUM_ASSERT_THROWS_NOTHING(separator = g2.separator(2, 3))
-      TS_ASSERT_EQUALS(separator.size(), (gum::Size)2)
+      TS_ASSERT_EQUALS(separator.size(), static_cast< gum::Size >(2))
       TS_ASSERT(separator.contains(3))
       TS_ASSERT(separator.contains(4))
 
       separator.clear();
 
       TS_GUM_ASSERT_THROWS_NOTHING(separator = g2.separator(2, 4))
-      TS_ASSERT_EQUALS(separator.size(), (gum::Size)2)
+      TS_ASSERT_EQUALS(separator.size(), static_cast< gum::Size >(2))
       TS_ASSERT(separator.contains(2))
       TS_ASSERT(separator.contains(4))
 
@@ -431,7 +432,7 @@ namespace gum_tests {
       separator.clear();
 
       TS_GUM_ASSERT_THROWS_NOTHING(separator = g2.separator(3, 4))
-      TS_ASSERT_EQUALS(separator.size(), (gum::Size)1)
+      TS_ASSERT_EQUALS(separator.size(), static_cast< gum::Size >(1))
       TS_ASSERT(separator.contains(4))
     }
 
@@ -442,20 +443,20 @@ namespace gum_tests {
       gum::NodeSet separator;
 
       TS_GUM_ASSERT_THROWS_NOTHING(separator = g3.separator(1, 2))
-      TS_ASSERT_EQUALS(separator.size(), (gum::Size)1)
+      TS_ASSERT_EQUALS(separator.size(), static_cast< gum::Size >(1))
       TS_ASSERT(separator.contains(2))
 
       separator.clear();
 
       TS_GUM_ASSERT_THROWS_NOTHING(separator = g3.separator(2, 3))
-      TS_ASSERT_EQUALS(separator.size(), (gum::Size)2)
+      TS_ASSERT_EQUALS(separator.size(), static_cast< gum::Size >(2))
       TS_ASSERT(separator.contains(3))
       TS_ASSERT(separator.contains(4))
 
       separator.clear();
 
       TS_GUM_ASSERT_THROWS_NOTHING(separator = g3.separator(2, 4))
-      TS_ASSERT_EQUALS(separator.size(), (gum::Size)2)
+      TS_ASSERT_EQUALS(separator.size(), static_cast< gum::Size >(2))
       TS_ASSERT(separator.contains(2))
       TS_ASSERT(separator.contains(4))
     }
@@ -505,7 +506,7 @@ namespace gum_tests {
       TS_GUM_ASSERT_THROWS_NOTHING(graph.clique(1))
       const gum::NodeSet& clique = graph.clique(1);
 
-      TS_ASSERT_EQUALS(clique.size(), (gum::Size)2)
+      TS_ASSERT_EQUALS(clique.size(), static_cast< gum::Size >(2))
       TS_ASSERT(clique.contains(1))
       TS_ASSERT(clique.contains(2))
 
@@ -523,7 +524,7 @@ namespace gum_tests {
 
       TS_ASSERT_THROWS_ANYTHING(graph.clique(1))
 
-      TS_ASSERT_EQUALS(clique.size(), (gum::Size)2)
+      TS_ASSERT_EQUALS(clique.size(), static_cast< gum::Size >(2))
       TS_ASSERT(clique.contains(1))
       TS_ASSERT(clique.contains(2))
 
@@ -577,7 +578,7 @@ namespace gum_tests {
       clique << 2 << 3 << 4 << 5;
 
       TS_GUM_ASSERT_THROWS_NOTHING(graph.setClique(2, clique))
-      TS_ASSERT_EQUALS(graph.clique(2).size(), (gum::Size)4)
+      TS_ASSERT_EQUALS(graph.clique(2).size(), static_cast< gum::Size >(4))
       TS_ASSERT(graph.hasRunningIntersection())
     }
 
@@ -601,7 +602,7 @@ namespace gum_tests {
 
       TS_GUM_ASSERT_THROWS_NOTHING(graph.addToClique(2, 5))
       // check a new separator ??
-      TS_ASSERT_EQUALS(graph.clique(2).size(), (gum::Size)4)
+      TS_ASSERT_EQUALS(graph.clique(2).size(), static_cast< gum::Size >(4))
 
       TS_ASSERT(graph.hasRunningIntersection())
     }
@@ -615,7 +616,7 @@ namespace gum_tests {
       gum::NodeSet result;
 
       TS_GUM_ASSERT_THROWS_NOTHING(graph.addToClique(2, 5))
-      TS_ASSERT_EQUALS(graph.clique(2).size(), (gum::Size)4)
+      TS_ASSERT_EQUALS(graph.clique(2).size(), static_cast< gum::Size >(4))
 
       TS_ASSERT(graph.hasRunningIntersection())
     }
@@ -672,7 +673,7 @@ namespace gum_tests {
         TS_GUM_ASSERT_THROWS_NOTHING(vec = graph.undirectedPath(1, 4))
 
         /** Now can only have 3 nodes in the path. */
-        TS_ASSERT_EQUALS(vec.size(), (gum::Size)3)
+        TS_ASSERT_EQUALS(vec.size(), static_cast< gum::Size >(3))
 
         graph.eraseEdge(gum::Edge(2, 3));
 

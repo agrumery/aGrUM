@@ -63,7 +63,7 @@ namespace gum {
   // clang-format on
 
   template < class TABLE >
-  class MultiDimCombineAndProjectDefault: public MultiDimCombineAndProject< TABLE > {
+  class MultiDimCombineAndProjectDefault final: public MultiDimCombineAndProject< TABLE > {
     public:
     using value_type = typename MultiDimCombineAndProject< TABLE >::value_type;
 

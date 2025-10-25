@@ -106,8 +106,6 @@ namespace gum {
     double f_score() const;
     /// @}
 
-    protected:
-
     private:
     /// Confusion matrix
     /*    __________________________________________________

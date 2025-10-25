@@ -37,6 +37,7 @@
  *   gitlab   : https://gitlab.com/agrumery/agrum                           *
  *                                                                          *
  ****************************************************************************/
+#pragma once
 
 
 #include <iostream>
@@ -54,7 +55,7 @@
 
 namespace gum_tests {
 
-  class [[maybe_unused]] TorcsTestSuite: public CxxTest::TestSuite {
+  class GUM_TEST_SUITE(Torcs) {
     public:
     gum::BayesNet< double >* bn;
 
@@ -94,26 +95,26 @@ namespace gum_tests {
 
       try {
         (*e1) << bn->variable(idMap[node1]);
-        e1->fill((float)0);
+        e1->fill(static_cast< float >(0));
         gum::Instantiation inst1(*e1);
         inst1.chgVal(bn->variable(idMap[node1]), 4);
-        e1->set(inst1, (float)1);
+        e1->set(inst1, static_cast< float >(1));
       } catch (gum::Exception& e) { GUM_SHOWERROR(e); }
 
       try {
         (*e2) << bn->variable(idMap[node2]);
-        e2->fill((float)0);
+        e2->fill(static_cast< float >(0));
         gum::Instantiation inst2(*e2);
         inst2.chgVal(bn->variable(idMap[node2]), 4);
-        e2->set(inst2, (float)1);
+        e2->set(inst2, static_cast< float >(1));
       } catch (gum::Exception& e) { GUM_SHOWERROR(e); }
 
       try {
         (*e3) << bn->variable(idMap[node3]);
-        e3->fill((float)0);
+        e3->fill(static_cast< float >(0));
         gum::Instantiation inst3(*e3);
         inst3.chgVal(bn->variable(idMap[node3]), 4);
-        e3->set(inst3, (float)1);
+        e3->set(inst3, static_cast< float >(1));
       } catch (gum::Exception& e) { GUM_SHOWERROR(e); }
 
       try {

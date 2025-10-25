@@ -201,7 +201,7 @@ namespace gum {
 
 #ifndef GUM_NO_INLINE
 #  include <agrum/base/graphs/algorithms/triangulations/eliminationStrategies/partialOrderedEliminationSequenceStrategy_inl.h>
-#endif   // GUM_NOINLINE
+#endif   // GU%_NO_INLINE
 
 
 #endif   /* GUM_PARTIAL_ORDERED_ELIMINATION_SEQUENCE_STRATEGY_H */

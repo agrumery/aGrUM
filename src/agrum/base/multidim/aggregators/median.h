@@ -76,7 +76,7 @@ namespace gum {
      * (arbitrarilly by excess) the value 2.
      */
     template < typename GUM_SCALAR >
-    class Median: public MultiDimAggregator< GUM_SCALAR > {
+    class Median final: public MultiDimAggregator< GUM_SCALAR > {
       public:
       Median();
       Median(const Median< GUM_SCALAR >& from);

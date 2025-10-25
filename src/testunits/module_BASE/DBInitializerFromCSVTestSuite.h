@@ -37,6 +37,7 @@
  *   gitlab   : https://gitlab.com/agrumery/agrum                           *
  *                                                                          *
  ****************************************************************************/
+#pragma once
 
 
 #include <algorithm>
@@ -55,7 +56,7 @@
 
 namespace gum_tests {
 
-  class [[maybe_unused]] DBInitializerFromCSVTestSuite: public CxxTest::TestSuite {
+  class GUM_TEST_SUITE(DBInitializerFromCSV) {
     public:
     GUM_ACTIVE_TEST(_init1) {
       gum::learning::DBInitializerFromCSV initializer(GET_RESSOURCES_PATH("csv/asia.csv"));
@@ -83,7 +84,8 @@ namespace gum_tests {
       database2.insertTranslator(translator, 3);
       database2.insertTranslator(translator, 4);
       database2.setVariableNames(initializer2.variableNames(), true);
-      TS_ASSERT_EQUALS(database2.variableNames().size(), (gum::Size)3)
+
+      TS_ASSERT_EQUALS(database2.variableNames().size(), static_cast< gum::Size >(3))
       {
         const auto ignored_vect = database2.ignoredColumns();
         TS_ASSERT_EQUALS(ignored_vect.size(), (std::size_t)3)
@@ -118,6 +120,7 @@ namespace gum_tests {
       }
       const std::vector< std::string > names{"x1", "x3", "x4", "x6", "x7"};
       database3.setVariableNames(names, false);
+
       TS_ASSERT_EQUALS(database3.variableNames().size(), std::size_t(5))
 
       {
@@ -154,7 +157,7 @@ namespace gum_tests {
       database4.insertTranslator(translator, 3);
       database4.insertTranslator(translator, 4);
       database4.setVariableNames(initializer4.variableNames(), true);
-      TS_ASSERT_EQUALS(database4.variableNames().size(), (gum::Size)3)
+      TS_ASSERT_EQUALS(database4.variableNames().size(), static_cast< gum::Size >(3))
       initializer4.fillDatabase(database4);
       TS_ASSERT_EQUALS(database4.size(), std::size_t(10000))
 
@@ -164,7 +167,7 @@ namespace gum_tests {
       database5.insertTranslator(translator, 3);
       database5.insertTranslator(translator, 4);
       database5.setVariableNames(initializer5.variableNames(), true);
-      TS_ASSERT_EQUALS(database5.variableNames().size(), (gum::Size)3)
+      TS_ASSERT_EQUALS(database5.variableNames().size(), static_cast< gum::Size >(3))
       initializer5.fillDatabase(database5);
       TS_ASSERT_EQUALS(database5.size(), std::size_t(10000))
 
@@ -174,7 +177,7 @@ namespace gum_tests {
       database6.insertTranslator(translator, 3);
       database6.insertTranslator(translator, 4);
       database6.setVariableNames(initializer6->variableNames(), true);
-      TS_ASSERT_EQUALS(database6.variableNames().size(), (gum::Size)3)
+      TS_ASSERT_EQUALS(database6.variableNames().size(), static_cast< gum::Size >(3))
       initializer6->fillDatabase(database6);
       TS_ASSERT_EQUALS(database6.size(), std::size_t(10000))
 
@@ -186,7 +189,7 @@ namespace gum_tests {
       database7.insertTranslator(translator, 3);
       database7.insertTranslator(translator, 4);
       database7.setVariableNames(initializer7->variableNames(), true);
-      TS_ASSERT_EQUALS(database7.variableNames().size(), (gum::Size)3)
+      TS_ASSERT_EQUALS(database7.variableNames().size(), static_cast< gum::Size >(3))
       initializer7->fillDatabase(database7);
       TS_ASSERT_EQUALS(database7.size(), std::size_t(10000))
 
@@ -198,7 +201,7 @@ namespace gum_tests {
       database8.insertTranslator(translator, 3);
       database8.insertTranslator(translator, 4);
       database8.setVariableNames(initializer.variableNames(), true);
-      TS_ASSERT_EQUALS(database8.variableNames().size(), (gum::Size)3)
+      TS_ASSERT_EQUALS(database8.variableNames().size(), static_cast< gum::Size >(3))
       initializer.fillDatabase(database8);
       TS_ASSERT_EQUALS(database8.size(), std::size_t(10000))
 
@@ -208,10 +211,10 @@ namespace gum_tests {
       database9.insertTranslator(translator, 3);
       database9.insertTranslator(translator, 4);
       database9.setVariableNames(initializer.variableNames(), true);
-      TS_ASSERT_EQUALS(database9.variableNames().size(), (gum::Size)3)
+      TS_ASSERT_EQUALS(database9.variableNames().size(), static_cast< gum::Size >(3))
       initializer.fillDatabase(database9);
       TS_ASSERT_EQUALS(database9.size(), std::size_t(10000))
-    }
+    }   // namespace gum_tests
   };
 
 } /* namespace gum_tests */

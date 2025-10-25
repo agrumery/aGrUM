@@ -37,6 +37,7 @@
  *   gitlab   : https://gitlab.com/agrumery/agrum                           *
  *                                                                          *
  ****************************************************************************/
+#pragma once
 
 
 #include <cstdlib>
@@ -50,7 +51,7 @@
 
 namespace gum_tests {
 
-  class [[maybe_unused]] SpanningForesPrimTestSuite: public CxxTest::TestSuite {
+  class GUM_TEST_SUITE(SpanningForesPrim) {
     public:
     GUM_ACTIVE_TEST(1) {
       gum::UndiGraph g;
@@ -120,6 +121,6 @@ namespace gum_tests {
       gum::SpanningForestPrim prim3(&g, &cost);
       const gum::EdgeSet&     edges3 = prim3.edgesInSpanningForest();
       TS_ASSERT_EQUALS(edges3.size(), 9U)
-    }
+    }   // namespace gum_tests
   };
 }   // namespace gum_tests

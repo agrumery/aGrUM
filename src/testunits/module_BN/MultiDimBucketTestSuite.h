@@ -37,6 +37,7 @@
  *   gitlab   : https://gitlab.com/agrumery/agrum                           *
  *                                                                          *
  ****************************************************************************/
+#pragma once
 
 
 #include <sstream>
@@ -54,7 +55,7 @@
 
 namespace gum_tests {
 
-  class [[maybe_unused]] MultiDimBucketTestSuite: public CxxTest::TestSuite {
+  class GUM_TEST_SUITE(MultiDimBucket) {
     private:
     std::vector< gum::LabelizedVariable* >* _variables_;
     std::vector< gum::Tensor< double >* >*  _tensors_;
@@ -173,15 +174,15 @@ namespace gum_tests {
 
         TS_ASSERT(!bucket->isBucketEmpty())
 
-        TS_ASSERT_EQUALS(bucket->bucketSize(), (gum::Size)5)
+        TS_ASSERT_EQUALS(bucket->bucketSize(), static_cast< gum::Size >(5))
         TS_ASSERT_THROWS_NOTHING(bucket->erase(_tensors_->at(4)))
-        TS_ASSERT_EQUALS(bucket->bucketSize(), (gum::Size)4)
+        TS_ASSERT_EQUALS(bucket->bucketSize(), static_cast< gum::Size >(4))
 
         for (size_t i = 5; i > 0; --i) {
           TS_ASSERT_THROWS_NOTHING(bucket->erase(_tensors_->at(i - 1)))
         }
 
-        TS_ASSERT_EQUALS(bucket->bucketSize(), (gum::Size)0)
+        TS_ASSERT_EQUALS(bucket->bucketSize(), static_cast< gum::Size >(0))
 
         TS_ASSERT(bucket->isBucketEmpty())
         delete bucket;
@@ -208,7 +209,7 @@ namespace gum_tests {
         TS_ASSERT_EQUALS(bucket->nbrDim(), product.nbrDim())
 
         for (inst.setFirst(); !inst.end(); inst.inc()) {
-          TS_ASSERT_DELTA(bucket->get(inst), product.get(inst), (double)0.01)
+          TS_ASSERT_DELTA(bucket->get(inst), product.get(inst), static_cast< double >(0.01))
         }
         delete bucket;
       }
@@ -233,10 +234,10 @@ namespace gum_tests {
         gum::Instantiation inst(product);
         TS_ASSERT_EQUALS(bucket->domainSize(), product.domainSize())
         TS_ASSERT_EQUALS(bucket->nbrDim(), product.nbrDim())
-        TS_ASSERT_EQUALS(bucket->realSize(), (gum::Size)0)
+        TS_ASSERT_EQUALS(bucket->realSize(), static_cast< gum::Size >(0))
 
         for (inst.setFirst(); !inst.end(); inst.inc()) {
-          TS_ASSERT_DELTA(bucket->get(inst), product.get(inst), (double)0.01)
+          TS_ASSERT_DELTA(bucket->get(inst), product.get(inst), static_cast< double >(0.01))
         }
 
         delete bucket;
@@ -268,7 +269,7 @@ namespace gum_tests {
           TS_ASSERT(inst->isMaster(bucket->getMasterRef()))
 
           for (inst->setFirst(); !inst->end(); inst->inc()) {
-            TS_ASSERT_DELTA(bucket->get(*inst), product.get(*inst), (double)0.01)
+            TS_ASSERT_DELTA(bucket->get(*inst), product.get(*inst), static_cast< double >(0.01))
           }
 
           delete inst;
@@ -301,7 +302,7 @@ namespace gum_tests {
           TS_ASSERT(inst->isMaster(bucket->getMasterRef()))
 
           for (inst->setFirst(); !inst->end(); inst->inc()) {
-            TS_ASSERT_DELTA(bucket->get(*inst), product.get(*inst), (double)0.01)
+            TS_ASSERT_DELTA(bucket->get(*inst), product.get(*inst), static_cast< double >(0.01))
           }
 
           delete inst;
@@ -336,7 +337,7 @@ namespace gum_tests {
           TS_ASSERT(inst->isMaster(bucket->getMasterRef()))
 
           for (inst->setFirst(); !inst->end(); inst->inc()) {
-            TS_ASSERT_DELTA(bucket->get(*inst), product.get(*inst), (double)0.01)
+            TS_ASSERT_DELTA(bucket->get(*inst), product.get(*inst), static_cast< double >(0.01))
           }
 
           delete inst;
@@ -366,7 +367,7 @@ namespace gum_tests {
         TS_ASSERT(!bucket->bucketChanged())
         TS_GUM_ASSERT_THROWS_NOTHING(_makeProduct_(product))
 
-        TS_ASSERT_EQUALS(bucket->realSize(), (gum::Size)0)
+        TS_ASSERT_EQUALS(bucket->realSize(), static_cast< gum::Size >(0))
 
         gum::Instantiation* inst = 0;
         TS_GUM_ASSERT_THROWS_NOTHING(inst = new gum::Instantiation(*bucket))
@@ -377,14 +378,14 @@ namespace gum_tests {
           TS_ASSERT(inst->isMaster(bucket->getMasterRef()))
 
           for (inst->setFirst(); !inst->end(); inst->inc()) {
-            TS_ASSERT_DELTA(bucket->get(*inst), product.get(*inst), (double)0.01)
+            TS_ASSERT_DELTA(bucket->get(*inst), product.get(*inst), static_cast< double >(0.01))
             TS_ASSERT(!bucket->bucketChanged())
           }
 
-          TS_GUM_ASSERT_THROWS_NOTHING(bucket->setBufferSize((gum::Size)65536))
+          TS_GUM_ASSERT_THROWS_NOTHING(bucket->setBufferSize(static_cast< gum::Size >(65536)))
 
           TS_ASSERT(bucket->bucketChanged())
-          TS_ASSERT(bucket->realSize() > (gum::Size)0)
+          TS_ASSERT(bucket->realSize() > static_cast< gum::Size >(0))
           TS_ASSERT(bucket->bucketChanged())
           TS_GUM_ASSERT_THROWS_NOTHING(bucket->compute())
           TS_ASSERT(!bucket->bucketChanged())
@@ -393,7 +394,7 @@ namespace gum_tests {
           TS_ASSERT(inst->isMaster(bucket))
 
           for (inst->setFirst(); !inst->end(); inst->inc()) {
-            TS_ASSERT_DELTA(bucket->get(*inst), product.get(*inst), (double)0.01)
+            TS_ASSERT_DELTA(bucket->get(*inst), product.get(*inst), static_cast< double >(0.01))
           }
 
           delete inst;
@@ -409,7 +410,7 @@ namespace gum_tests {
 
       if (bucket != 0) {
         TS_ASSERT_THROWS_NOTHING(_fillBucket_(bucket))
-        TS_ASSERT_EQUALS(bucket->allVariables().size(), (gum::Size)10)
+        TS_ASSERT_EQUALS(bucket->allVariables().size(), static_cast< gum::Size >(10))
         gum::Size inBucket  = 0;
         gum::Size outBucket = 0;
 
@@ -424,7 +425,7 @@ namespace gum_tests {
 
         TS_ASSERT_EQUALS(inBucket, bucket->nbrDim())
 
-        TS_ASSERT_EQUALS(inBucket + outBucket, (gum::Size)10)
+        TS_ASSERT_EQUALS(inBucket + outBucket, static_cast< gum::Size >(10))
         delete bucket;
       }
     }
@@ -463,7 +464,7 @@ namespace gum_tests {
       bucket_csr.add(bn->variable(s));
       clique_csr.add(bn->variable(s));
       bucket_csr.add(bn->variable(r));
-      clique_csr.fill((double)1);
+      clique_csr.fill(static_cast< double >(1));
       bucket_csr.add(bn->cpt(c));
       clique_csr = gum::Tensor< double >(clique_csr * bn->cpt(c));
       bucket_csr.add(bn->cpt(s));
@@ -518,7 +519,7 @@ namespace gum_tests {
       bucket_wsr.add(bn->variable(s));
       clique_wsr.add(bn->variable(r));
       bucket_wsr.add(bn->variable(r));
-      clique_wsr.fill((double)1);
+      clique_wsr.fill(static_cast< double >(1));
       bucket_wsr.add(bn->cpt(w));
       clique_wsr = gum::Tensor< double >(clique_wsr * bn->cpt(w));
 
@@ -541,7 +542,7 @@ namespace gum_tests {
       bucket_marg_w.add(bucket_wsr);
       tmp.add(bn->variable(r));
       bucket_marg_w.add(bucket_sr);
-      tmp.fill((double)1);
+      tmp.fill(static_cast< double >(1));
       tmp = gum::Tensor< double >(tmp * clique_wsr);
       tmp = gum::Tensor< double >(tmp * sep_sr);
       gum::Tensor< double > marg_w;

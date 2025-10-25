@@ -37,6 +37,7 @@
  *   gitlab   : https://gitlab.com/agrumery/agrum                           *
  *                                                                          *
  ****************************************************************************/
+#pragma once
 
 
 #include <iostream>
@@ -50,7 +51,7 @@
 
 namespace gum_tests {
 
-  class [[maybe_unused]] GammaLog2TestSuite: public CxxTest::TestSuite {
+  class GUM_TEST_SUITE(GammaLog2) {
     public:
     GUM_ACTIVE_TEST(1) {
       gum::GammaLog2 f;
@@ -67,7 +68,7 @@ namespace gum_tests {
           }
         }
       }
-    }
+    }   // namespace gum_tests
   };
 
 }   // namespace gum_tests

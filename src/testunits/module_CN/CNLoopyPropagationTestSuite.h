@@ -37,6 +37,7 @@
  *   gitlab   : https://gitlab.com/agrumery/agrum                           *
  *                                                                          *
  ****************************************************************************/
+#pragma once
 
 
 #include <iostream>
@@ -84,7 +85,7 @@ namespace gum_tests {
   };   // end of : class l2uListener
 
   ////////////////////////////////////////////////////////////////
-  class [[maybe_unused]] CNLooopyPropagationTestSuite: public CxxTest::TestSuite {
+  class GUM_TEST_SUITE(CNLooopyPropagation) {
     private:
 
     protected:

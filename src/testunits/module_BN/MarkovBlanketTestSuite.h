@@ -37,6 +37,7 @@
  *   gitlab   : https://gitlab.com/agrumery/agrum                           *
  *                                                                          *
  ****************************************************************************/
+#pragma once
 
 
 #include <iostream>
@@ -50,7 +51,7 @@
 #include <agrum/BN/BayesNet.h>
 
 namespace gum_tests {
-  class [[maybe_unused]] MarkovBlanketTestSuite: public CxxTest::TestSuite {
+  class GUM_TEST_SUITE(MarkovBlanket) {
     public:
     GUM_ACTIVE_TEST(Chain) {
       auto bn = gum::BayesNet< float >::fastPrototype("a->b->c");
@@ -92,7 +93,7 @@ namespace gum_tests {
         TS_ASSERT_EQUALS(mb.size(), 2u)
         TS_ASSERT_EQUALS(mb.sizeArcs(), 1u)
       }
-    }
+    }   // namespace gum_tests
 
     GUM_ACTIVE_TEST(MarkovBlanketStructure) {
       const auto bn = gum::BayesNet< float >::fastPrototype("a->b->c->d->e;f->d->g;h->i->g");
@@ -131,9 +132,9 @@ namespace gum_tests {
       const auto bn
           = gum::BayesNet< float >::fastPrototype("Z<-A->B->C->D->E<-Y;X->G<-F<-C<-I<-H->W");
       TS_ASSERT_THROWS(gum::MarkovBlanket(bn, "C", 0).size(), const gum::InvalidArgument&)
-      TS_ASSERT_EQUALS(gum::MarkovBlanket(bn, "C", 1).size(), (gum::Size)5)
-      TS_ASSERT_EQUALS(gum::MarkovBlanket(bn, "C", 2).size(), (gum::Size)11)
-      TS_ASSERT_EQUALS(gum::MarkovBlanket(bn, "C", 3).size(), (gum::Size)13)
+      TS_ASSERT_EQUALS(gum::MarkovBlanket(bn, "C", 1).size(), static_cast< gum::Size >(5))
+      TS_ASSERT_EQUALS(gum::MarkovBlanket(bn, "C", 2).size(), static_cast< gum::Size >(11))
+      TS_ASSERT_EQUALS(gum::MarkovBlanket(bn, "C", 3).size(), static_cast< gum::Size >(13))
     }
   };
 

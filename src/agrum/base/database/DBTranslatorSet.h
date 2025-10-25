@@ -127,7 +127,7 @@ namespace gum {
      * set.translateSafe ( row2, 3 ); // raises gum::UndefinedElement
      * @endcode
      */
-    class DBTranslatorSet {
+    class DBTranslatorSet final {
       public:
       // ##########################################################################
       /// @name Constructors / Destructors

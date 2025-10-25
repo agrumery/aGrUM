@@ -40,6 +40,7 @@
 
 from collections.abc import MutableMapping
 
+
 class Explanation(MutableMapping):
   def __init__(self, values, importances, feature_names, data, baseline, func, values_type) -> None:
     self._values = values
@@ -49,7 +50,6 @@ class Explanation(MutableMapping):
     self.baseline = baseline
     self.func = func
     self.values_type = values_type
-
 
   def __getitem__(self, key):
     return self._values[key]

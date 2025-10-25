@@ -37,6 +37,7 @@
  *   gitlab   : https://gitlab.com/agrumery/agrum                           *
  *                                                                          *
  ****************************************************************************/
+#pragma once
 
 
 #include <gumtest/AgrumTestSuite.h>
@@ -52,7 +53,7 @@
 #include <agrum/base/variables/rangeVariable.h>
 
 namespace gum_tests {
-  class [[maybe_unused]] TensorTestSuite: public CxxTest::TestSuite {
+  class GUM_TEST_SUITE(Tensor) {
     public:
     void setUp() {}
 
@@ -67,7 +68,7 @@ namespace gum_tests {
       TS_GUM_ASSERT_THROWS_NOTHING(p << a << b << c)
       TS_ASSERT_THROWS(p << a << a, const gum::DuplicateElement&)
       TS_ASSERT_THROWS(p << a << other_a, const gum::DuplicateElement&)
-    }
+    }   // namespace gum_tests
 
     GUM_ACTIVE_TEST(CreationWithVars) {
       gum::LabelizedVariable a("a", "first var", 2);
@@ -94,7 +95,7 @@ namespace gum_tests {
       try {
         gum::Instantiation i(&p);
 
-        p.fill((double)0);
+        p.fill(static_cast< double >(0));
 
         int cpt = 1;
         for (i.setFirst(); !i.end(); ++i)
@@ -689,7 +690,7 @@ namespace gum_tests {
       TS_GUM_ASSERT_THROWS_NOTHING(a = p[inst];)
       TS_ASSERT_EQUALS(a, 1.0f)
 
-      TS_GUM_ASSERT_THROWS_NOTHING(p.set(inst, a + (double)3.0f);)
+      TS_GUM_ASSERT_THROWS_NOTHING(p.set(inst, a + static_cast< double >(3.0f));)
       TS_ASSERT_EQUALS(p[inst], 4.0f)
 
       TS_GUM_ASSERT_THROWS_NOTHING(p.populate({1.0f}))
@@ -710,7 +711,7 @@ namespace gum_tests {
       TS_ASSERT_EQUALS(p.get(gum::Instantiation()), 33.0f)
 
 
-      TS_GUM_ASSERT_THROWS_NOTHING(p.set(inst, (double)3.0f);)
+      TS_GUM_ASSERT_THROWS_NOTHING(p.set(inst, static_cast< double >(3.0f));)
       TS_ASSERT_EQUALS(p.sum(), 3.0f)
       TS_ASSERT_EQUALS(p.product(), 3.0f)
       TS_ASSERT_EQUALS(p.max(), 3.0f)
@@ -718,10 +719,10 @@ namespace gum_tests {
       TS_ASSERT_EQUALS(p.minNonZero(), 3.0f)
       TS_ASSERT_EQUALS(p.maxNonOne(), 3.0f)
 
-      TS_GUM_ASSERT_THROWS_NOTHING(p.set(inst, (double)0.0f);)
+      TS_GUM_ASSERT_THROWS_NOTHING(p.set(inst, static_cast< double >(0.0f));)
       TS_ASSERT_EQUALS(p.minNonZero(), 0)
 
-      TS_GUM_ASSERT_THROWS_NOTHING(p.set(inst, (double)1.0f);)
+      TS_GUM_ASSERT_THROWS_NOTHING(p.set(inst, static_cast< double >(1.0f));)
       TS_ASSERT_EQUALS(p.maxNonOne(), 1.0f)
 
       TS_GUM_ASSERT_THROWS_NOTHING(p.fill(2.0f);)
@@ -907,7 +908,7 @@ namespace gum_tests {
         cpt++;
         total += p[inst];
       }
-      TS_ASSERT_EQUALS(cpt, (gum::Size)1)
+      TS_ASSERT_EQUALS(cpt, static_cast< gum::Size >(1))
       TS_ASSERT_EQUALS(total, 3)
 
       cpt   = 0;
@@ -916,7 +917,7 @@ namespace gum_tests {
         cpt++;
         total += p[inst];
       }
-      TS_ASSERT_EQUALS(cpt, (gum::Size)1)
+      TS_ASSERT_EQUALS(cpt, static_cast< gum::Size >(1))
       TS_ASSERT_EQUALS(total, 3)
     }
 
@@ -1028,8 +1029,8 @@ namespace gum_tests {
       pp.add(ww);
       pp.add(vv);
 
-      TS_ASSERT_EQUALS(p.domainSize(), (gum::Size)6)
-      TS_ASSERT(pp.domainSize() == (gum::Size)6)
+      TS_ASSERT_EQUALS(p.domainSize(), static_cast< gum::Size >(6))
+      TS_ASSERT(pp.domainSize() == static_cast< gum::Size >(6))
 
       p.fillWith({1, 2, 3, 4, 5, 6});
       pp.fillWith(p);
@@ -1079,8 +1080,8 @@ namespace gum_tests {
       pp.add(ww);
       pp.add(vv);
 
-      TS_ASSERT_EQUALS(p.domainSize(), (gum::Size)6)
-      TS_ASSERT_EQUALS(pp.domainSize(), (gum::Size)6)
+      TS_ASSERT_EQUALS(p.domainSize(), static_cast< gum::Size >(6))
+      TS_ASSERT_EQUALS(pp.domainSize(), static_cast< gum::Size >(6))
 
       p.fillWith({1, 2, 3, 4, 5, 6});
       TS_GUM_ASSERT_THROWS_NOTHING(pp.fillWith(p, {"w", "v"}))
@@ -1111,16 +1112,16 @@ namespace gum_tests {
         gum::LabelizedVariable v("v", "v", 0);
 
         gum::Tensor< double > p;
-        TS_ASSERT_EQUALS(v.domainSize(), (gum::Size)0)
+        TS_ASSERT_EQUALS(v.domainSize(), static_cast< gum::Size >(0))
         TS_ASSERT_THROWS(p.add(v), const gum::InvalidArgument&)
 
         v.addLabel("first");
-        TS_ASSERT_EQUALS(v.domainSize(), (gum::Size)1)
+        TS_ASSERT_EQUALS(v.domainSize(), static_cast< gum::Size >(1))
         TS_GUM_ASSERT_THROWS_NOTHING(p.add(v))
 
         p = gum::Tensor< double >();
         v.addLabel("second");
-        TS_ASSERT_EQUALS(v.domainSize(), (gum::Size)2)
+        TS_ASSERT_EQUALS(v.domainSize(), static_cast< gum::Size >(2))
         TS_GUM_ASSERT_THROWS_NOTHING(p.add(v))
       }
 
@@ -1129,36 +1130,36 @@ namespace gum_tests {
         v.setMinVal(1);
         v.setMaxVal(0);
         gum::Tensor< double > p;
-        TS_ASSERT_EQUALS(v.domainSize(), (gum::Size)0)
+        TS_ASSERT_EQUALS(v.domainSize(), static_cast< gum::Size >(0))
         TS_ASSERT_THROWS(p.add(v), const gum::InvalidArgument&)
 
         v.setMaxVal(1);
-        TS_ASSERT_EQUALS(v.domainSize(), (gum::Size)1)
+        TS_ASSERT_EQUALS(v.domainSize(), static_cast< gum::Size >(1))
         TS_GUM_ASSERT_THROWS_NOTHING(p.add(v))
 
         p = gum::Tensor< double >();
         v.setMaxVal(2);
-        TS_ASSERT_EQUALS(v.domainSize(), (gum::Size)2)
+        TS_ASSERT_EQUALS(v.domainSize(), static_cast< gum::Size >(2))
         TS_GUM_ASSERT_THROWS_NOTHING(p.add(v))
       }
 
       {
         gum::DiscretizedVariable< int > v("v", "v");
         gum::Tensor< double >           p;
-        TS_ASSERT_EQUALS(v.domainSize(), (gum::Size)0)
+        TS_ASSERT_EQUALS(v.domainSize(), static_cast< gum::Size >(0))
         TS_ASSERT_THROWS(p.add(v), const gum::InvalidArgument&)
 
         v.addTick(1);
-        TS_ASSERT_EQUALS(v.domainSize(), (gum::Size)0)
+        TS_ASSERT_EQUALS(v.domainSize(), static_cast< gum::Size >(0))
         TS_ASSERT_THROWS(p.add(v), const gum::InvalidArgument&)
 
         v.addTick(2);
-        TS_ASSERT_EQUALS(v.domainSize(), (gum::Size)1)
+        TS_ASSERT_EQUALS(v.domainSize(), static_cast< gum::Size >(1))
         TS_GUM_ASSERT_THROWS_NOTHING(p.add(v))
 
         p = gum::Tensor< double >();
         v.addTick(3);
-        TS_ASSERT_EQUALS(v.domainSize(), (gum::Size)2)
+        TS_ASSERT_EQUALS(v.domainSize(), static_cast< gum::Size >(2))
         TS_GUM_ASSERT_THROWS_NOTHING(p.add(v))
       }
     }

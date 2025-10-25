@@ -37,6 +37,7 @@
  *   gitlab   : https://gitlab.com/agrumery/agrum                           *
  *                                                                          *
  ****************************************************************************/
+#pragma once
 
 
 #include <iostream>
@@ -47,7 +48,7 @@
 
 namespace gum_tests {
 
-  class [[maybe_unused]] CPlusPlusTestSuite: public CxxTest::TestSuite {
+  class GUM_TEST_SUITE(CPlusPlus) {
     public:
     GUM_ACTIVE_TEST(_CPP17_binding_array) {
       int arry[3]    = {3, 4, 5};
@@ -55,7 +56,7 @@ namespace gum_tests {
       TS_ASSERT_EQUALS(a, 3);
       TS_ASSERT_EQUALS(b, 4);
       TS_ASSERT_EQUALS(c, 5);
-    }
+    }   // namespace gum_tests
 
     GUM_ACTIVE_TEST(_CPP17_autobinding) {
       std::tuple tplex(1, 'a', 3.14);

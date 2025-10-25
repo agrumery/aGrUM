@@ -88,7 +88,6 @@ namespace gum {
     // ###################################################################
     /// @{
 
-    public:
     // ==========================================================================
     /// Initializes the learner
     // ==========================================================================
@@ -102,7 +101,6 @@ namespace gum {
     // ###################################################################
     /// @{
 
-    public:
     // ==========================================================================
     /**
      * Starts a new planning
@@ -115,17 +113,16 @@ namespace gum {
     // ==========================================================================
     /// Returns optimalPolicy computed so far current size
     // ==========================================================================
-    virtual const MultiDimFunctionGraph< ActionSet, SetTerminalNodePolicy >* optimalPolicy() = 0;
+    virtual MultiDimFunctionGraph< ActionSet, SetTerminalNodePolicy >* optimalPolicy() = 0;
 
     /// @}
 
 
     // ###################################################################
-    /// @name Miscelleanous methods
+    /// @name Miscellaneous methods
     // ###################################################################
     /// @{
 
-    public:
     // ==========================================================================
     /// Returns vFunction computed so far current size
     // ==========================================================================
@@ -144,4 +141,4 @@ namespace gum {
     /// @}
   };
 }   // namespace gum
-#endif   // GUM_SDYNA_LEARNING_STRATEGY_H
+#endif   // GUM_SDYNA_PLANNING_STRATEGY_H

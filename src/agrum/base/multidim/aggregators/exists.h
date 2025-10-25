@@ -70,7 +70,7 @@ namespace gum {
      * aggregator variable since only 0 and 1 indexes are adressed...
      */
     template < typename GUM_SCALAR >
-    class Exists: public MultiDimAggregator< GUM_SCALAR > {
+    class Exists final: public MultiDimAggregator< GUM_SCALAR > {
       public:
       Exists(Idx value);
       Exists(const Exists< GUM_SCALAR >& from);

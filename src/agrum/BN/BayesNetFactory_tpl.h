@@ -37,6 +37,7 @@
  *   gitlab   : https://gitlab.com/agrumery/agrum                           *
  *                                                                          *
  ****************************************************************************/
+#pragma once
 
 
 /**
@@ -328,7 +329,7 @@ namespace gum {
 
       // if the current variable is a LabelizedVariable
       if (_stringBag_[2] == "L") {
-        auto l = new LabelizedVariable(_stringBag_[0], (_bar_flag_) ? _stringBag_[1] : "", 0);
+        const auto l = new LabelizedVariable(_stringBag_[0], (_bar_flag_) ? _stringBag_[1] : "", 0);
 
         for (size_t i = 3; i < _stringBag_.size(); ++i) {
           l->addLabel(_stringBag_[i]);
@@ -343,14 +344,14 @@ namespace gum {
           domain.push_back(std::stoi(_stringBag_[i]));
         }
 
-        IntegerVariable* v
+        const auto v
             = new IntegerVariable(_stringBag_[0], _bar_flag_ ? _stringBag_[1] : "", domain);
         var = v;
       } else if (_stringBag_[2] == "R") {
-        RangeVariable* r = new RangeVariable(_stringBag_[0],
-                                             _bar_flag_ ? _stringBag_[1] : "",
-                                             std::stol(_stringBag_[3]),
-                                             std::stol(_stringBag_[4]));
+        const auto r = new RangeVariable(_stringBag_[0],
+                                         _bar_flag_ ? _stringBag_[1] : "",
+                                         std::stol(_stringBag_[3]),
+                                         std::stol(_stringBag_[4]));
 
         var = r;
         // if the current variable is a DiscretizedVariable
@@ -363,6 +364,10 @@ namespace gum {
         }
 
         var = d;
+      }
+
+      if (var == nullptr) {
+        GUM_ERROR(OperationNotAllowed, "Unknown variable type for variable " + _stringBag_[0])
       }
 
       if (_impl_ != 0) {
@@ -522,7 +527,7 @@ namespace gum {
         cptInst.chgVal(*(varList[i]), modCounter[i]);
       }
 
-      table.set(cptInst, (GUM_SCALAR)rawTable[j]);
+      table.set(cptInst, static_cast< GUM_SCALAR >(rawTable[j]));
       if (!_increment_(modCounter, varList)) { break; }   // too many values (just not read)
     }
   }
@@ -551,7 +556,9 @@ namespace gum {
 
     for (cptInst.setFirstVar(first); !cptInst.end(); cptInst.incVar(first)) {
       for (cptInst.setFirstNotVar(first); !cptInst.end(); cptInst.incNotVar(first))
-        table.set(cptInst, (j < rawTable.size()) ? (GUM_SCALAR)rawTable[j++] : (GUM_SCALAR)0);
+        table.set(cptInst,
+                  (j < rawTable.size()) ? static_cast< GUM_SCALAR >(rawTable[j++])
+                                        : static_cast< GUM_SCALAR >(0));
 
       cptInst.unsetEnd();
     }
@@ -706,8 +713,8 @@ namespace gum {
         for (inst.setFirstIn(inst_default); !inst.end(); inst.incIn(inst_default)) {
           (_bn_->cpt(varId))
               .set(inst,
-                   inst.val(var) < values.size() ? (GUM_SCALAR)values[inst.val(var)]
-                                                 : (GUM_SCALAR)0);
+                   inst.val(var) < values.size() ? static_cast< GUM_SCALAR >(values[inst.val(var)])
+                                                 : static_cast< GUM_SCALAR >(0));
         }
       } else {
         Instantiation inst(_bn_->cpt(_varNameMap_[var.name()]));
@@ -720,8 +727,9 @@ namespace gum {
           for (inst.setFirstOut(var_inst); !inst.end(); inst.incOut(var_inst)) {
             (_bn_->cpt(varId))
                 .set(inst,
-                     inst.val(var) < values.size() ? (GUM_SCALAR)values[inst.val(var)]
-                                                   : (GUM_SCALAR)0);
+                     inst.val(var) < values.size()
+                         ? static_cast< GUM_SCALAR >(values[inst.val(var)])
+                         : static_cast< GUM_SCALAR >(0));
           }
         }
       }

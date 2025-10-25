@@ -37,6 +37,7 @@
  *   gitlab   : https://gitlab.com/agrumery/agrum                           *
  *                                                                          *
  ****************************************************************************/
+#pragma once
 
 
 #include <iostream>
@@ -54,7 +55,7 @@
 
 namespace gum_tests {
 
-  class [[maybe_unused]] DBTranslatorSetTestSuite: public CxxTest::TestSuite {
+  class GUM_TEST_SUITE(DBTranslatorSet) {
     public:
     GUM_ACTIVE_TEST(_trans1) {
       gum::learning::DBTranslatorSet set;
@@ -133,13 +134,13 @@ namespace gum_tests {
       TS_ASSERT_EQUALS(set.size(), (std::size_t)3)
 
       gum::LabelizedVariable var = dynamic_cast< const gum::LabelizedVariable& >(set.variable(0));
-      TS_ASSERT_EQUALS(var.domainSize(), (gum::Size)2)
+      TS_ASSERT_EQUALS(var.domainSize(), static_cast< gum::Size >(2))
       TS_ASSERT_EQUALS(var.label(0), "toto")
       TS_ASSERT_EQUALS(var.label(1), "titi")
 
       gum::LabelizedVariable varb
           = dynamic_cast< const gum::LabelizedVariable& >(set.variableSafe(0));
-      TS_ASSERT_EQUALS(varb.domainSize(), (gum::Size)2)
+      TS_ASSERT_EQUALS(varb.domainSize(), static_cast< gum::Size >(2))
       TS_ASSERT_EQUALS(varb.label(0), "toto")
       TS_ASSERT_EQUALS(varb.label(1), "titi")
 
@@ -168,7 +169,7 @@ namespace gum_tests {
 
       set.clear();
       TS_ASSERT_EQUALS(set.nbTranslators(), (std::size_t)0)
-    }
+    }   // namespace gum_tests
 
     GUM_ACTIVE_TEST(_trans2) {
       {

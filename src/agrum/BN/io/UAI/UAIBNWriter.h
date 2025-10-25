@@ -71,7 +71,7 @@ namespace gum {
    * cf. http://www.cs.huji.ac.il/project/PASCAL/fileFormat.php
    */
   template < typename GUM_SCALAR >
-  class UAIBNWriter: public BNWriter< GUM_SCALAR > {
+  class UAIBNWriter final: public BNWriter< GUM_SCALAR > {
     public:
     // ==========================================================================
     /// @name Constructor & destructor

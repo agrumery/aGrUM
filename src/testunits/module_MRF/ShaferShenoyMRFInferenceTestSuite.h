@@ -37,6 +37,7 @@
  *   gitlab   : https://gitlab.com/agrumery/agrum                           *
  *                                                                          *
  ****************************************************************************/
+#pragma once
 
 
 #include <iostream>
@@ -56,12 +57,12 @@
 #include <agrum/MRF/MarkovRandomField.h>
 
 namespace gum_tests {
-  class [[maybe_unused]] ShaferShenoyMRFTestSuite: public CxxTest::TestSuite {
+  class GUM_TEST_SUITE(ShaferShenoyMRF) {
     public:
     GUM_ACTIVE_TEST(Constructor) {
       auto mn = gum::MarkovRandomField< double >::fastPrototype("A--B--C;C--D;C--E--F");
       gum::ShaferShenoyMRFInference< double > ie(&mn);
-    }
+    }   // namespace gum_tests
 
     GUM_ACTIVE_TEST(SimpleInference) {
       auto mn = gum::MarkovRandomField< double >::fastPrototype("A--B--C;C--D;C--E--F");

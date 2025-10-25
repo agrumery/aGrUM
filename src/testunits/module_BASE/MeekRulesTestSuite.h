@@ -37,6 +37,7 @@
  *   gitlab   : https://gitlab.com/agrumery/agrum                           *
  *                                                                          *
  ****************************************************************************/
+#pragma once
 
 
 #include <iostream>
@@ -49,7 +50,7 @@
 
 namespace gum_tests {
 
-  class MeekRulesTestSuite: public CxxTest::TestSuite {
+  class GUM_TEST_SUITE(MeekRules) {
     public:
     GUM_ACTIVE_TEST(test_cycle_PDAG) {
       gum::PDAG pdag;

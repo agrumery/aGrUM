@@ -106,7 +106,7 @@ namespace gum {
   // clang-format on
 
   template < class TABLE >
-  class MultiDimProjection {
+  class MultiDimProjection final {
 #ifndef DOXYGEN_SHOULD_SKIP_THIS
     // class to get the types of the TABLE's values using metaprogramming
     template < typename T >

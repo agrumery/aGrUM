@@ -37,6 +37,7 @@
  *   gitlab   : https://gitlab.com/agrumery/agrum                           *
  *                                                                          *
  ****************************************************************************/
+#pragma once
 
 
 #include <iostream>
@@ -68,7 +69,7 @@
 
 namespace gum_tests {
 
-  class [[maybe_unused]] K2TestSuite: public CxxTest::TestSuite {
+  class GUM_TEST_SUITE(K2) {
     public:
     GUM_ACTIVE_TEST(_k2_asia) {
       gum::learning::DBInitializerFromCSV initializer(GET_RESSOURCES_PATH("csv/asia.csv"));
@@ -113,10 +114,10 @@ namespace gum_tests {
         gum::BayesNet< double > bn = k2.learnBN< double >(selector, estimator);
 
         gum::BayesNet< double > bn2 = k2.learnBN< double >(selector, estimator);
-        TS_ASSERT_EQUALS(bn.dag().arcs().size(), (gum::Size)8)
-        TS_ASSERT_EQUALS(bn2.dag().arcs().size(), (gum::Size)8)
+        TS_ASSERT_EQUALS(bn.dag().arcs().size(), static_cast< gum::Size >(8))
+        TS_ASSERT_EQUALS(bn2.dag().arcs().size(), static_cast< gum::Size >(8))
       } catch (gum::Exception& e) { GUM_SHOWERROR(e); }
-    }
+    }   // namespace gum_tests
 
     //@beforeMerging why is this code commented ?
     /*
@@ -124,10 +125,10 @@ namespace gum_tests {
       gum::learning::DatabaseFromCSV database ( GET_RESSOURCES_PATH( "asia.csv"
     ) );
     gum::learning::DBRowTranslatorSet<gum::learning::CellTranslatorCompactIntId>
-translators;
+    translators;
       translators.insertTranslator ( 0, 8 );
 
-gum::learning::FilteredRowGeneratorSet<gum::learning::RowGeneratorIdentity>
+    gum::learning::FilteredRowGeneratorSet<gum::learning::RowGeneratorIdentity>
         generators;
       generators.insertGenerator ();
     );
@@ -189,7 +190,7 @@ gum::learning::FilteredRowGeneratorSet<gum::learning::RowGeneratorIdentity>
     ) );
 
       gum::learning::DBRowTranslatorSet<gum::learning::CellTranslatorCompactIntId>
-translators;
+    translators;
       translators.insertTranslator ( 0, 8 );
 
       gum::learning::FilteredRowGeneratorSet<gum::learning::RowGeneratorIdentity>
@@ -230,7 +231,7 @@ translators;
     ) );
 
       gum::learning::DBRowTranslatorSet<gum::learning::CellTranslatorCompactIntId>
-translators;
+    translators;
       translators.insertTranslator ( 0, 8 );
 
       gum::learning::FilteredRowGeneratorSet<gum::learning::RowGeneratorIdentity>
@@ -282,7 +283,7 @@ translators;
     ) );
 
       gum::learning::DBRowTranslatorSet<gum::learning::CellTranslatorCompactIntId>
-translators;
+    translators;
       translators.insertTranslator ( 0, 37 );
 
       gum::learning::FilteredRowGeneratorSet<gum::learning::RowGeneratorIdentity>

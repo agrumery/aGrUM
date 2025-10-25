@@ -37,6 +37,7 @@
  *   gitlab   : https://gitlab.com/agrumery/agrum                           *
  *                                                                          *
  ****************************************************************************/
+#pragma once
 
 
 #include <cstdlib>
@@ -57,7 +58,7 @@
 
 namespace gum_tests {
 
-  class [[maybe_unused]] MultiDimCombineAndProjectTestSuite: public CxxTest::TestSuite {
+  class GUM_TEST_SUITE(MultiDimCombineAndProject) {
     public:
     GUM_ACTIVE_TEST(Double) {
       gum::IScheduleMultiDim::resetIdGenerator();
@@ -102,7 +103,7 @@ namespace gum_tests {
       TS_ASSERT_EQUALS(yyy.second, 36 * sizeof(double) + 3 * sizeof(gum::Tensor< double >))
 
       TS_ASSERT_EQUALS(nb_ops, 421)   // combinations + projections + deletions
-      TS_ASSERT_EQUALS(res.size(), (gum::Size)3)
+      TS_ASSERT_EQUALS(res.size(), static_cast< gum::Size >(3))
 
       gum::Set< const gum::Tensor< double >* >::const_iterator iter = res.begin();
       const gum::Tensor< double >*                             res1 = *iter;
@@ -194,7 +195,7 @@ namespace gum_tests {
 
       for (gum::Idx i = 0; i < vars.size(); ++i)
         delete vars[i];
-    }
+    }   // namespace gum_tests
 
     GUM_ACTIVE_TEST(Schedules) {
       gum::IScheduleMultiDim::resetIdGenerator();
@@ -561,7 +562,7 @@ namespace gum_tests {
       TS_ASSERT_EQUALS(yyy.second, 36 * sizeof(float) + 3 * sizeof(gum::Tensor< float >))
 
       TS_ASSERT_EQUALS(nb_ops, 421)
-      TS_ASSERT_EQUALS(res.size(), (gum::Size)3)
+      TS_ASSERT_EQUALS(res.size(), static_cast< gum::Size >(3))
 
       gum::Set< const gum::Tensor< float >* >::const_iterator iter = res.begin();
       const gum::Tensor< float >*                             res1 = *iter;
@@ -668,7 +669,7 @@ namespace gum_tests {
 
       {
         gum::Set< const gum::Tensor< float >* > res = projcomb.execute(to_comb, del_vars);
-        TS_ASSERT_EQUALS(res.size(), (gum::Size)3)
+        TS_ASSERT_EQUALS(res.size(), static_cast< gum::Size >(3))
 
         int   nb_empty = 0;
         float prod     = 1;
@@ -688,7 +689,7 @@ namespace gum_tests {
       del_vars << vars[2];
       {
         gum::Set< const gum::Tensor< float >* > res = projcomb.execute(to_comb, del_vars);
-        TS_ASSERT_EQUALS(res.size(), (gum::Size)3)
+        TS_ASSERT_EQUALS(res.size(), static_cast< gum::Size >(3))
 
         int   nb_empty = 0;
         float prod     = 1;
@@ -716,7 +717,7 @@ namespace gum_tests {
       {
         gum::Set< const gum::Tensor< float >* > res = projcomb.execute(to_comb, del_vars);
 
-        TS_ASSERT_EQUALS(res.size(), (gum::Size)3)
+        TS_ASSERT_EQUALS(res.size(), static_cast< gum::Size >(3))
 
         int   nb_empty = 0;
         float prod     = 1;
@@ -742,7 +743,7 @@ namespace gum_tests {
       {
         gum::Set< const gum::Tensor< float >* > res = projcomb.execute(to_comb, del_vars);
 
-        TS_ASSERT_EQUALS(res.size(), (gum::Size)2)
+        TS_ASSERT_EQUALS(res.size(), static_cast< gum::Size >(2))
 
         auto t4 = t1 * t2;
 

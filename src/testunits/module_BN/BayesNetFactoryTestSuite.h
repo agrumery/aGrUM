@@ -37,6 +37,7 @@
  *   gitlab   : https://gitlab.com/agrumery/agrum                           *
  *                                                                          *
  ****************************************************************************/
+#pragma once
 
 
 #include <iostream>
@@ -61,9 +62,9 @@
 
 namespace gum_tests {
 
-  class [[maybe_unused]] BayesNetFactoryTestSuite: public CxxTest::TestSuite {
+  class GUM_TEST_SUITE(BayesNetFactory) {
     private:
-    gum::BayesNet< double >* __bn_d;
+    gum::BayesNet< double >* __bn_d{nullptr};
     // gum::BayesNet<float>*   __bn_f;
 
     public:
@@ -221,37 +222,37 @@ namespace gum_tests {
 
       // defining cpt
       std::vector< float > cpt_1;
-      cpt_1.push_back((float)0.2);   // 1 : true
-      cpt_1.push_back((float)0.8);   // 1 : false
+      cpt_1.push_back(static_cast< float >(0.2));   // 1 : true
+      cpt_1.push_back(static_cast< float >(0.8));   // 1 : false
       TS_GUM_ASSERT_THROWS_NOTHING(factory->startRawProbabilityDeclaration("1"))
       TS_GUM_ASSERT_THROWS_NOTHING(factory->rawConditionalTable(cpt_1))
       TS_GUM_ASSERT_THROWS_NOTHING(factory->endRawProbabilityDeclaration())
 
       std::vector< float > cpt_2;
-      cpt_2.push_back((float)0.2);   // 2 : true
-      cpt_2.push_back((float)0.8);   // 2 : false
+      cpt_2.push_back(static_cast< float >(0.2));   // 2 : true
+      cpt_2.push_back(static_cast< float >(0.8));   // 2 : false
       TS_GUM_ASSERT_THROWS_NOTHING(factory->startRawProbabilityDeclaration("2"))
       TS_GUM_ASSERT_THROWS_NOTHING(factory->rawConditionalTable(cpt_2))
       TS_GUM_ASSERT_THROWS_NOTHING(factory->endRawProbabilityDeclaration())
 
       std::vector< float > cpt_3;
-      cpt_3.push_back((float)0.2);   // 3 : true  given 1 : true
-      cpt_3.push_back((float)0.5);   // 3 : true  given 1 : false
-      cpt_3.push_back((float)0.8);   // 3 : false given 1 : true
-      cpt_3.push_back((float)0.5);   // 3 : false given 1 : false
+      cpt_3.push_back(static_cast< float >(0.2));   // 3 : true  given 1 : true
+      cpt_3.push_back(static_cast< float >(0.5));   // 3 : true  given 1 : false
+      cpt_3.push_back(static_cast< float >(0.8));   // 3 : false given 1 : true
+      cpt_3.push_back(static_cast< float >(0.5));   // 3 : false given 1 : false
       TS_GUM_ASSERT_THROWS_NOTHING(factory->startRawProbabilityDeclaration("3"))
       TS_GUM_ASSERT_THROWS_NOTHING(factory->rawConditionalTable(cpt_3))
       TS_GUM_ASSERT_THROWS_NOTHING(factory->endRawProbabilityDeclaration())
 
       std::vector< float > cpt_4;
-      cpt_4.push_back((float)0.2);     // 4 : true  given 1 : true,  2 : true
-      cpt_4.push_back((float)0.5);     // 4 : true  given 1 : true,  2 : false
-      cpt_4.push_back((float)0.65);    // 4 : true  given 1 : false, 2 : true
-      cpt_4.push_back((float)0.001);   // 4 : true  given 1 : false, 2 : false
-      cpt_4.push_back((float)0.8);     // 4 : false given 1 : true,  2 : true
-      cpt_4.push_back((float)0.5);     // 4 : false given 1 : true,  2 : false
-      cpt_4.push_back((float)0.35);    // 4 : false given 1 : false, 2 : true
-      cpt_4.push_back((float)0.999);   // 4 : false given 1 : false, 2 : false
+      cpt_4.push_back(static_cast< float >(0.2));     // 4 : true  given 1 : true,  2 : true
+      cpt_4.push_back(static_cast< float >(0.5));     // 4 : true  given 1 : true,  2 : false
+      cpt_4.push_back(static_cast< float >(0.65));    // 4 : true  given 1 : false, 2 : true
+      cpt_4.push_back(static_cast< float >(0.001));   // 4 : true  given 1 : false, 2 : false
+      cpt_4.push_back(static_cast< float >(0.8));     // 4 : false given 1 : true,  2 : true
+      cpt_4.push_back(static_cast< float >(0.5));     // 4 : false given 1 : true,  2 : false
+      cpt_4.push_back(static_cast< float >(0.35));    // 4 : false given 1 : false, 2 : true
+      cpt_4.push_back(static_cast< float >(0.999));   // 4 : false given 1 : false, 2 : false
       TS_GUM_ASSERT_THROWS_NOTHING(factory->startRawProbabilityDeclaration("4"))
       TS_GUM_ASSERT_THROWS_NOTHING(factory->rawConditionalTable(cpt_4))
       TS_GUM_ASSERT_THROWS_NOTHING(factory->endRawProbabilityDeclaration())
@@ -259,16 +260,16 @@ namespace gum_tests {
       std::vector< float > values_5;
       TS_GUM_ASSERT_THROWS_NOTHING(factory->startFactorizedProbabilityDeclaration("5"))
       TS_GUM_ASSERT_THROWS_NOTHING(factory->startFactorizedEntry())
-      values_5.push_back((float)0.5);   // 5 : true  given *
-      values_5.push_back((float)0.5);   // 5 : false given *
+      values_5.push_back(static_cast< float >(0.5));   // 5 : true  given *
+      values_5.push_back(static_cast< float >(0.5));   // 5 : false given *
       TS_GUM_ASSERT_THROWS_NOTHING(factory->setVariableValues(values_5))
       values_5.clear();
       TS_GUM_ASSERT_THROWS_NOTHING(factory->endFactorizedEntry())
       TS_GUM_ASSERT_THROWS_NOTHING(factory->startFactorizedEntry())
       TS_GUM_ASSERT_THROWS_NOTHING(factory->setParentModality("2", "true"))
       TS_GUM_ASSERT_THROWS_NOTHING(factory->setParentModality("4", "true"))
-      values_5.push_back((float)1);   // 5 : true  given 2 : true, 4 : true
-      values_5.push_back((float)0);   // 5 : false given 2 : true, 4 : true
+      values_5.push_back(static_cast< float >(1));   // 5 : true  given 2 : true, 4 : true
+      values_5.push_back(static_cast< float >(0));   // 5 : false given 2 : true, 4 : true
       TS_GUM_ASSERT_THROWS_NOTHING(factory->setVariableValues(values_5))
       values_5.clear();
       TS_GUM_ASSERT_THROWS_NOTHING(factory->endFactorizedEntry())
@@ -276,8 +277,10 @@ namespace gum_tests {
       TS_GUM_ASSERT_THROWS_NOTHING(factory->setParentModality("2", "false"))
       TS_GUM_ASSERT_THROWS_NOTHING(factory->setParentModality("3", "false"))
       TS_GUM_ASSERT_THROWS_NOTHING(factory->setParentModality("4", "true"))
-      values_5.push_back((float)0);   // 5 : true  given 2 : false, 3 : false, 4 : true
-      values_5.push_back((float)1);   // 5 : false given 2 : false, 3 : false, 4 : true
+      values_5.push_back(
+          static_cast< float >(0));   // 5 : true  given 2 : false, 3 : false, 4 : true
+      values_5.push_back(
+          static_cast< float >(1));   // 5 : false given 2 : false, 3 : false, 4 : true
       TS_GUM_ASSERT_THROWS_NOTHING(factory->setVariableValues(values_5))
       values_5.clear();
       TS_GUM_ASSERT_THROWS_NOTHING(factory->endFactorizedEntry())
@@ -490,13 +493,13 @@ namespace gum_tests {
       inst_5.chgVal(var_4, 0);
 
       for (iter.setFirstOut(inst_5); !iter.end(); iter.incOut(inst_5)) {
-        cpt_5->set(iter, (double)1);
+        cpt_5->set(iter, static_cast< double >(1));
       }
 
       inst_5.chgVal(var_5, 1);
 
       for (iter.setFirstOut(inst_5); !iter.end(); iter.incOut(inst_5)) {
-        cpt_5->set(iter, (double)0);
+        cpt_5->set(iter, static_cast< double >(0));
       }
 
       iter.chgVal(var_5, 0);
@@ -504,9 +507,9 @@ namespace gum_tests {
       iter.chgVal(var_2, 1);
       iter.chgVal(var_3, 1);
       iter.chgVal(var_4, 0);
-      cpt_5->set(iter, (double)0);
+      cpt_5->set(iter, static_cast< double >(0));
       iter.chgVal(var_5, 1);
-      cpt_5->set(iter, (double)1);
+      cpt_5->set(iter, static_cast< double >(1));
       TS_GUM_ASSERT_THROWS_NOTHING(factory->setVariableCPT("5", cpt_5, true))
 
       TS_GUM_ASSERT_THROWS_NOTHING(delete factory)

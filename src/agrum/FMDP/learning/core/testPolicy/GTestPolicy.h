@@ -71,7 +71,7 @@ namespace gum {
    * @ingroup fmdp_group
    */
   template < typename GUM_SCALAR >
-  class GTestPolicy: public ITestPolicy< GUM_SCALAR > {
+  class GTestPolicy final: public ITestPolicy< GUM_SCALAR > {
     public:
     // ############################################################################
     /// @name Constructor/Destrcutor

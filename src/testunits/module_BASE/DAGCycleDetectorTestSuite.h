@@ -37,6 +37,7 @@
  *   gitlab   : https://gitlab.com/agrumery/agrum                           *
  *                                                                          *
  ****************************************************************************/
+#pragma once
 
 
 #include <chrono>
@@ -51,7 +52,7 @@
 
 namespace gum_tests {
 
-  class [[maybe_unused]] DAGCycleDetectorTestSuite: public CxxTest::TestSuite {
+  class GUM_TEST_SUITE(DAGCycleDetector) {
     gum::DAG _createDAG_(gum::Size nb_nodes, gum::Size nb_arcs) {
       gum::DAG dag;
       for (gum::Idx i = 0; i < nb_nodes; ++i) {
@@ -70,7 +71,7 @@ namespace gum_tests {
       }
 
       return dag;
-    }
+    }   // namespace gum_tests
 
     void _createChanges_(const gum::DAG&                               g,
                          std::vector< gum::DAGCycleDetector::Change >& changes,
@@ -333,7 +334,7 @@ namespace gum_tests {
 
         for (gum::Idx j = 0; j < 30; ++j) {
           _createChanges_(g, changes, del_add_changes, 1);
-          TS_ASSERT_EQUALS(changes.size(), (gum::Size)1)
+          TS_ASSERT_EQUALS(changes.size(), static_cast< gum::Size >(1))
           if (detector1.hasCycleFromModifications(changes)) {
             --j;
             continue;
@@ -381,7 +382,7 @@ namespace gum_tests {
 
         for (gum::Idx j = 0; j < 30; ++j) {
           _createChanges_(g, changes, del_add_changes, 1);
-          TS_ASSERT_EQUALS(changes.size(), (gum::Size)1)
+          TS_ASSERT_EQUALS(changes.size(), static_cast< gum::Size >(1))
 
           for (auto& chgt: changes) {
             switch (chgt.type()) {

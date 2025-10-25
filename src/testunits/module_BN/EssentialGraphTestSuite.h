@@ -37,6 +37,7 @@
  *   gitlab   : https://gitlab.com/agrumery/agrum                           *
  *                                                                          *
  ****************************************************************************/
+#pragma once
 
 
 #include <iostream>
@@ -50,7 +51,7 @@
 #include <agrum/BN/BayesNet.h>
 
 namespace gum_tests {
-  class [[maybe_unused]] EssentialGraphTestSuite: public CxxTest::TestSuite {
+  class GUM_TEST_SUITE(EssentialGraph) {
     public:
     GUM_ACTIVE_TEST(Chain) {
       auto bn = gum::BayesNet< float >::fastPrototype("a->b->c");
@@ -59,7 +60,7 @@ namespace gum_tests {
       TS_ASSERT_EQUALS(eg.size(), 3u)
       TS_ASSERT_EQUALS(eg.sizeArcs(), 0u)
       TS_ASSERT_EQUALS(eg.sizeEdges(), 2u)
-    }
+    }   // namespace gum_tests
 
     GUM_ACTIVE_TEST(Vstructure) {
       auto bn = gum::BayesNet< float >::fastPrototype("a->b;c->b");

@@ -37,6 +37,7 @@
  *   gitlab   : https://gitlab.com/agrumery/agrum                           *
  *                                                                          *
  ****************************************************************************/
+#pragma once
 
 
 #include <iostream>
@@ -53,14 +54,13 @@
 
 namespace gum_tests {
 
-  class [[maybe_unused]] DeprecatedO3TypeTestSuite: public CxxTest::TestSuite {
+  class GUM_TEST_SUITE(DeprecatedO3Type) {
     public:
     void setUp() {}
 
     void tearDown() {}
 
-    GUM_ACTIVE_TEST(SimpleType) {
-      // Arrange
+    GUM_ACTIVE_TEST(SimpleType) {   // Arrange
       std::stringstream input;
       input << "type t_state OK, NOK;";
       std::stringstream       output;
@@ -74,13 +74,13 @@ namespace gum_tests {
       std::stringstream msg;
       msg << "|1 col 6| Warning : t_state is declared using a deprecated syntax.";
       TS_ASSERT_EQUALS(line, msg.str())
-      TS_ASSERT_EQUALS(prm.types().size(), (gum::Size)2)
+      TS_ASSERT_EQUALS(prm.types().size(), static_cast< gum::Size >(2))
       TS_ASSERT(prm.isType("t_state"))
       auto state = prm.type("t_state");
-      TS_ASSERT_EQUALS(state.variable().domainSize(), (gum::Size)2)
+      TS_ASSERT_EQUALS(state.variable().domainSize(), static_cast< gum::Size >(2))
       TS_ASSERT_EQUALS(state.variable().label(0), "OK")
       TS_ASSERT_EQUALS(state.variable().label(1), "NOK")
-    }
+    }   // namespace gum_tests
 
     GUM_ACTIVE_TEST(SimpleTypeError1) {
       // Arrange
@@ -97,7 +97,7 @@ namespace gum_tests {
       std::stringstream msg;
       msg << "|1 col 1| Error : invalid declaration";
       TS_ASSERT_EQUALS(line, msg.str())
-      TS_ASSERT_EQUALS(prm.types().size(), (gum::Size)1)
+      TS_ASSERT_EQUALS(prm.types().size(), static_cast< gum::Size >(1))
       TS_ASSERT(!prm.isType("t_state"))
     }
 
@@ -114,7 +114,7 @@ namespace gum_tests {
       std::stringstream msg;
       msg << "|1 col 21| Error : semicolon expected" << std::endl;
       TS_ASSERT_EQUALS(output.str(), msg.str())
-      TS_ASSERT_EQUALS(prm.types().size(), (gum::Size)1)
+      TS_ASSERT_EQUALS(prm.types().size(), static_cast< gum::Size >(1))
       TS_ASSERT(!prm.isType("t_state"))
     }
 
@@ -131,7 +131,7 @@ namespace gum_tests {
       std::stringstream msg;
       msg << "|2 col 1| Error : semicolon expected" << std::endl;
       TS_ASSERT_EQUALS(output.str(), msg.str())
-      TS_ASSERT_EQUALS(prm.types().size(), (gum::Size)1)
+      TS_ASSERT_EQUALS(prm.types().size(), static_cast< gum::Size >(1))
       TS_ASSERT(!prm.isType("t_state"))
       TS_ASSERT(!prm.isType("t_ink"))
     }
@@ -149,7 +149,7 @@ namespace gum_tests {
       std::stringstream msg;
       msg << "|1 col 16| Error : comma expected" << std::endl;
       TS_ASSERT_EQUALS(output.str(), msg.str())
-      TS_ASSERT_EQUALS(prm.types().size(), (gum::Size)1)
+      TS_ASSERT_EQUALS(prm.types().size(), static_cast< gum::Size >(1))
       TS_ASSERT(!prm.isType("t_state"))
     }
 
@@ -166,7 +166,7 @@ namespace gum_tests {
       std::stringstream msg;
       msg << "|1 col 17| Error : invalid declaration" << std::endl;
       TS_ASSERT_EQUALS(output.str(), msg.str())
-      TS_ASSERT_EQUALS(prm.types().size(), (gum::Size)1)
+      TS_ASSERT_EQUALS(prm.types().size(), static_cast< gum::Size >(1))
       TS_ASSERT(!prm.isType("t_state"))
     }
 
@@ -183,7 +183,7 @@ namespace gum_tests {
       std::stringstream msg;
       msg << "|1 col 6| Error : label expected" << std::endl;
       TS_ASSERT_EQUALS(output.str(), msg.str())
-      TS_ASSERT_EQUALS(prm.types().size(), (gum::Size)1)
+      TS_ASSERT_EQUALS(prm.types().size(), static_cast< gum::Size >(1))
       TS_ASSERT(!prm.isType("t_state"))
     }
 
@@ -200,7 +200,7 @@ namespace gum_tests {
       std::stringstream msg;
       msg << "|1 col 14| Error : invalid declaration" << std::endl;
       TS_ASSERT_EQUALS(output.str(), msg.str())
-      TS_ASSERT_EQUALS(prm.types().size(), (gum::Size)1)
+      TS_ASSERT_EQUALS(prm.types().size(), static_cast< gum::Size >(1))
       TS_ASSERT(!prm.isType("t_state"))
     }
 
@@ -217,7 +217,7 @@ namespace gum_tests {
       std::stringstream msg;
       msg << "|1 col 18| Error : invalid declaration" << std::endl;
       TS_ASSERT_EQUALS(output.str(), msg.str())
-      TS_ASSERT_EQUALS(prm.types().size(), (gum::Size)1)
+      TS_ASSERT_EQUALS(prm.types().size(), static_cast< gum::Size >(1))
       TS_ASSERT(!prm.isType("t_state"))
     }
 
@@ -236,7 +236,7 @@ namespace gum_tests {
       msg << "|2 col 6| Warning : t_state is declared using a deprecated syntax." << std::endl;
       msg << "|2 col 6| Error : Type t_state exists already" << std::endl;
       TS_ASSERT_EQUALS(output.str(), msg.str())
-      TS_ASSERT_EQUALS(prm.types().size(), (gum::Size)1)
+      TS_ASSERT_EQUALS(prm.types().size(), static_cast< gum::Size >(1))
       TS_ASSERT(!prm.isType("t_state"))
     }
 
@@ -255,15 +255,15 @@ namespace gum_tests {
       std::stringstream msg;
       msg << "|1 col 6| Warning : t_state is declared using a deprecated syntax." << std::endl;
       TS_ASSERT_EQUALS(output.str(), msg.str())
-      TS_ASSERT_EQUALS(prm.types().size(), (gum::Size)2)
+      TS_ASSERT_EQUALS(prm.types().size(), static_cast< gum::Size >(2))
       TS_ASSERT(prm.isType("t_state"))
       const auto& boolean = prm.type("boolean");
       const auto& state   = prm.type("t_state");
       TS_ASSERT(state.isSubTypeOf(boolean))
       const auto& map = state.label_map();
-      TS_ASSERT_EQUALS(map.size(), (gum::Size)2)
-      TS_ASSERT_EQUALS(map[0], (gum::Size)1)
-      TS_ASSERT_EQUALS(map[1], (gum::Size)0)
+      TS_ASSERT_EQUALS(map.size(), static_cast< gum::Size >(2))
+      TS_ASSERT_EQUALS(map[0], static_cast< gum::Size >(1))
+      TS_ASSERT_EQUALS(map[1], static_cast< gum::Size >(0))
     }
 
     GUM_ACTIVE_TEST(ExtendedTypeError1) {
@@ -278,7 +278,7 @@ namespace gum_tests {
       // Act
       TS_GUM_ASSERT_THROWS_NOTHING(factory.parseStream(input, output))
       // Assert
-      TS_ASSERT_EQUALS(prm.types().size(), (gum::Size)1)
+      TS_ASSERT_EQUALS(prm.types().size(), static_cast< gum::Size >(1))
       TS_ASSERT(!prm.isType("t_state"))
       auto line = std::string();
       std::getline(output, line);
@@ -299,7 +299,7 @@ namespace gum_tests {
       // Act
       TS_GUM_ASSERT_THROWS_NOTHING(factory.parseStream(input, output))
       // Assert
-      TS_ASSERT_EQUALS(prm.types().size(), (gum::Size)1)
+      TS_ASSERT_EQUALS(prm.types().size(), static_cast< gum::Size >(1))
       TS_ASSERT(!prm.isType("t_state"))
       std::stringstream msg;
       msg << "|1 col 6| Warning : t_state is declared using a deprecated syntax." << std::endl;
@@ -319,7 +319,7 @@ namespace gum_tests {
       // Act
       TS_GUM_ASSERT_THROWS_NOTHING(factory.parseStream(input, output))
       // Assert
-      TS_ASSERT_EQUALS(prm.types().size(), (gum::Size)1)
+      TS_ASSERT_EQUALS(prm.types().size(), static_cast< gum::Size >(1))
       TS_ASSERT(!prm.isType("t_state"))
       std::stringstream msg;
       msg << "|1 col 6| Warning : t_state is declared using a deprecated syntax." << std::endl;
@@ -343,7 +343,7 @@ namespace gum_tests {
       // Act
       TS_GUM_ASSERT_THROWS_NOTHING(factory.parseStream(input, output))
       // Assert
-      TS_ASSERT_EQUALS(prm.types().size(), (gum::Size)3)
+      TS_ASSERT_EQUALS(prm.types().size(), static_cast< gum::Size >(3))
       TS_ASSERT(prm.isType("t_state"))
       TS_ASSERT(prm.isType("t_degraded"))
       std::stringstream msg;
@@ -367,10 +367,10 @@ namespace gum_tests {
       std::stringstream msg;
       msg << "|1 col 11| Warning : t_power is declared using a deprecated syntax." << std::endl;
       TS_ASSERT_EQUALS(output.str(), msg.str())
-      TS_ASSERT_EQUALS(prm.types().size(), (gum::Size)2)
+      TS_ASSERT_EQUALS(prm.types().size(), static_cast< gum::Size >(2))
       TS_ASSERT(prm.isType("t_power"))
       auto power = prm.type("t_power");
-      TS_ASSERT_EQUALS(power.variable().domainSize(), (gum::Size)10)
+      TS_ASSERT_EQUALS(power.variable().domainSize(), static_cast< gum::Size >(10))
       TS_ASSERT_EQUALS(power.variable().label(0), "0")
       TS_ASSERT_EQUALS(power.variable().label(1), "1")
       TS_ASSERT_EQUALS(power.variable().label(2), "2")
@@ -399,10 +399,10 @@ namespace gum_tests {
                "syntax."
             << std::endl;
         TS_ASSERT_EQUALS(output.str(), msg.str())
-        TS_ASSERT_EQUALS(prm.types().size(), (gum::Size)2)
+        TS_ASSERT_EQUALS(prm.types().size(), static_cast< gum::Size >(2))
         TS_ASSERT(prm.isType("t_power"))
         auto power = prm.type("t_power");
-        TS_ASSERT_EQUALS(power.variable().domainSize(), (gum::Size)19)
+        TS_ASSERT_EQUALS(power.variable().domainSize(), static_cast< gum::Size >(19))
         TS_ASSERT_EQUALS(power.variable().label(0), "-9")
         TS_ASSERT_EQUALS(power.variable().label(1), "-8")
         TS_ASSERT_EQUALS(power.variable().label(2), "-7")
@@ -434,7 +434,7 @@ namespace gum_tests {
       // Act
       TS_GUM_ASSERT_THROWS_NOTHING(factory.parseStream(input, output))
       // Assert
-      TS_ASSERT_EQUALS(prm.types().size(), (gum::Size)1)
+      TS_ASSERT_EQUALS(prm.types().size(), static_cast< gum::Size >(1))
       TS_ASSERT(!prm.isType("t_power"))
       auto line = std::string();
       std::getline(output, line);
@@ -453,7 +453,7 @@ namespace gum_tests {
       // Act
       TS_GUM_ASSERT_THROWS_NOTHING(factory.parseStream(input, output))
       // Assert
-      TS_ASSERT_EQUALS(prm.types().size(), (gum::Size)1)
+      TS_ASSERT_EQUALS(prm.types().size(), static_cast< gum::Size >(1))
       TS_ASSERT(!prm.isType("t_power"))
       auto line = std::string();
       std::getline(output, line);
@@ -472,7 +472,7 @@ namespace gum_tests {
       // Act
       TS_GUM_ASSERT_THROWS_NOTHING(factory.parseStream(input, output))
       // Assert
-      TS_ASSERT_EQUALS(prm.types().size(), (gum::Size)1)
+      TS_ASSERT_EQUALS(prm.types().size(), static_cast< gum::Size >(1))
       TS_ASSERT(!prm.isType("t_power"))
       auto line = std::string();
       std::getline(output, line);
@@ -491,7 +491,7 @@ namespace gum_tests {
       // Act
       TS_GUM_ASSERT_THROWS_NOTHING(factory.parseStream(input, output))
       // Assert
-      TS_ASSERT_EQUALS(prm.types().size(), (gum::Size)1)
+      TS_ASSERT_EQUALS(prm.types().size(), static_cast< gum::Size >(1))
       TS_ASSERT(!prm.isType("t_power"))
       auto line = std::string();
       std::getline(output, line);
@@ -510,7 +510,7 @@ namespace gum_tests {
       // Act
       TS_GUM_ASSERT_THROWS_NOTHING(factory.parseStream(input, output))
       // Assert
-      TS_ASSERT_EQUALS(prm.types().size(), (gum::Size)1)
+      TS_ASSERT_EQUALS(prm.types().size(), static_cast< gum::Size >(1))
       TS_ASSERT(!prm.isType("t_power"))
       auto line = std::string();
       std::getline(output, line);
@@ -529,7 +529,7 @@ namespace gum_tests {
       // Act
       TS_GUM_ASSERT_THROWS_NOTHING(factory.parseStream(input, output))
       // Assert
-      TS_ASSERT_EQUALS(prm.types().size(), (gum::Size)1)
+      TS_ASSERT_EQUALS(prm.types().size(), static_cast< gum::Size >(1))
       TS_ASSERT(!prm.isType("t_power"))
       auto line = std::string();
       std::getline(output, line);
@@ -548,7 +548,7 @@ namespace gum_tests {
       // Act
       TS_GUM_ASSERT_THROWS_NOTHING(factory.parseStream(input, output))
       // Assert
-      TS_ASSERT_EQUALS(prm.types().size(), (gum::Size)1)
+      TS_ASSERT_EQUALS(prm.types().size(), static_cast< gum::Size >(1))
       TS_ASSERT(!prm.isType("t_power"))
       auto line = std::string();
       std::getline(output, line);
@@ -567,7 +567,7 @@ namespace gum_tests {
       // Act
       TS_GUM_ASSERT_THROWS_NOTHING(factory.parseStream(input, output))
       // Assert
-      TS_ASSERT_EQUALS(prm.types().size(), (gum::Size)1)
+      TS_ASSERT_EQUALS(prm.types().size(), static_cast< gum::Size >(1))
       TS_ASSERT(!prm.isType("t_power"))
       auto line = std::string();
       std::getline(output, line);
@@ -586,7 +586,7 @@ namespace gum_tests {
       // Act
       TS_GUM_ASSERT_THROWS_NOTHING(factory.parseStream(input, output))
       // Assert
-      TS_ASSERT_EQUALS(prm.types().size(), (gum::Size)1)
+      TS_ASSERT_EQUALS(prm.types().size(), static_cast< gum::Size >(1))
       TS_ASSERT(!prm.isType("t_power"))
       auto line = std::string();
       std::getline(output, line);
@@ -605,7 +605,7 @@ namespace gum_tests {
       // Act
       TS_GUM_ASSERT_THROWS_NOTHING(factory.parseStream(input, output))
       // Assert
-      TS_ASSERT_EQUALS(prm.types().size(), (gum::Size)1)
+      TS_ASSERT_EQUALS(prm.types().size(), static_cast< gum::Size >(1))
       TS_ASSERT(!prm.isType("t_power"))
       auto line = std::string();
       std::getline(output, line);
@@ -629,7 +629,7 @@ namespace gum_tests {
              "syntax."
           << std::endl;
       TS_ASSERT_EQUALS(output.str(), msg.str())
-      TS_ASSERT_EQUALS(prm.types().size(), (gum::Size)2)
+      TS_ASSERT_EQUALS(prm.types().size(), static_cast< gum::Size >(2))
       TS_ASSERT(!prm.isType("t_state"))
       TS_ASSERT(prm.isType("fr.agrum.t_state"))
     }
@@ -658,7 +658,7 @@ namespace gum_tests {
              "syntax."
           << std::endl;
       TS_ASSERT_EQUALS(output.str(), msg.str())
-      TS_ASSERT_EQUALS(prm.types().size(), (gum::Size)3)
+      TS_ASSERT_EQUALS(prm.types().size(), static_cast< gum::Size >(3))
       TS_ASSERT(!prm.isType("t_state"))
       TS_ASSERT(prm.isType("fr.agrum.t_state"))
       TS_ASSERT(!prm.isType("t_degraded"))
@@ -678,10 +678,10 @@ namespace gum_tests {
       std::stringstream msg;
       msg << "|1 col 18| Warning : angle is declared using a deprecated syntax." << std::endl;
       TS_ASSERT_EQUALS(output.str(), msg.str())
-      TS_ASSERT_EQUALS(prm.types().size(), (gum::Size)2)
+      TS_ASSERT_EQUALS(prm.types().size(), static_cast< gum::Size >(2))
       TS_ASSERT(prm.isType("angle"))
       const auto& angle = prm.type("angle");
-      TS_ASSERT_EQUALS(angle.variable().labels().size(), (gum::Size)2)
+      TS_ASSERT_EQUALS(angle.variable().labels().size(), static_cast< gum::Size >(2))
       TS_ASSERT_EQUALS(angle.variable().labels().at(0), "[0;90[")
       TS_ASSERT_EQUALS(angle.variable().labels().at(1), "[90;180]")
     }
@@ -699,10 +699,10 @@ namespace gum_tests {
       std::stringstream msg;
       msg << "|1 col 23| Warning : angle is declared using a deprecated syntax." << std::endl;
       TS_ASSERT_EQUALS(output.str(), msg.str())
-      TS_ASSERT_EQUALS(prm.types().size(), (gum::Size)2)
+      TS_ASSERT_EQUALS(prm.types().size(), static_cast< gum::Size >(2))
       TS_ASSERT(prm.isType("angle"))
       const auto& angle = prm.type("angle");
-      TS_ASSERT_EQUALS(angle.variable().labels().size(), (gum::Size)3)
+      TS_ASSERT_EQUALS(angle.variable().labels().size(), static_cast< gum::Size >(3))
       TS_ASSERT_EQUALS(angle.variable().labels().at(0), "[0;90[")
       TS_ASSERT_EQUALS(angle.variable().labels().at(1), "[90;180[")
       TS_ASSERT_EQUALS(angle.variable().labels().at(2), "[180;360]")

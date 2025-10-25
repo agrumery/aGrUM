@@ -77,7 +77,7 @@ namespace gum {
 
   template < typename GUM_SCALAR >
 
-  class MultiDimNoisyORCompound: public MultiDimICIModel< GUM_SCALAR > {
+  class MultiDimNoisyORCompound final: public MultiDimICIModel< GUM_SCALAR > {
     public:
     // ============================================================================
     /// @name Constructors / Destructors

@@ -37,6 +37,7 @@
  *   gitlab   : https://gitlab.com/agrumery/agrum                           *
  *                                                                          *
  ****************************************************************************/
+#pragma once
 
 
 #include <cstdlib>   // rand
@@ -61,7 +62,7 @@
 
 namespace gum_tests {
 
-  class [[maybe_unused]] CredalNetTestSuite: public CxxTest::TestSuite {
+  class GUM_TEST_SUITE(CredalNet) {
     private:
 
     protected:

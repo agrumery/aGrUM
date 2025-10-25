@@ -37,6 +37,7 @@
  *   gitlab   : https://gitlab.com/agrumery/agrum                           *
  *                                                                          *
  ****************************************************************************/
+#pragma once
 
 
 #include <cstdlib>
@@ -51,7 +52,7 @@
 
 namespace gum_tests {
 
-  class [[maybe_unused]] IncrementalTriangulationTestSuite: public CxxTest::TestSuite {
+  class GUM_TEST_SUITE(IncrementalTriangulation) {
     public:
     GUM_ACTIVE_TEST(1) {
       gum::DefaultTriangulation     tr;
@@ -134,7 +135,7 @@ namespace gum_tests {
       triang.updateTriangulation();
       triang.updateTriangulation();
       TS_ASSERT_EQUALS(triang._check_(), true)
-    }
+    }   // namespace gum_tests
 
     GUM_ACTIVE_TEST(PaperError) {
       // check whether Incremental triangulations fix a bug in the paper by

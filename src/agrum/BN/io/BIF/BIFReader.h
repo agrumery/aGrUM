@@ -140,7 +140,7 @@ namespace gum {
    * @author Pierre-Henri WUILLEMIN(_at_LIP6)
    */
   template < typename GUM_SCALAR >
-  class BIFReader: public BNReader< GUM_SCALAR > {
+  class BIFReader final: public BNReader< GUM_SCALAR > {
     public:
     BIFReader(BayesNet< GUM_SCALAR >* bn, const std::string& filename);
 
@@ -160,7 +160,7 @@ namespace gum {
     /// parse.
     /// @return the number of detected errors
     /// @throws IOError if file not exists
-    Size proceed() final;
+    Size proceed();
 
     /// @{
     /// publishing Errors API

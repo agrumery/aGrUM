@@ -37,6 +37,7 @@
  *   gitlab   : https://gitlab.com/agrumery/agrum                           *
  *                                                                          *
  ****************************************************************************/
+#pragma once
 
 
 #include <sstream>
@@ -52,7 +53,7 @@
 
 namespace gum_tests {
 
-  class [[maybe_unused]] MultiDimLogitTestSuite: public CxxTest::TestSuite {
+  class GUM_TEST_SUITE(MultiDimLogit) {
     public:
     GUM_ACTIVE_TEST(CreationLogit) {
       gum::LabelizedVariable       a("a", "", 2), b("b", "", 2), c("c", "", 2), d("d", "", 2);
@@ -74,20 +75,20 @@ namespace gum_tests {
           p.toString(),
           "a:Labelized({0|1})=logit(0.2 +0.4*b:Labelized({0|1}) +0.7*d:Labelized({0|1}))");
 
-      TS_ASSERT_EQUALS(p.nbrDim(), (gum::Size)4)
-      TS_ASSERT_EQUALS(p.realSize(), (gum::Size)4)
+      TS_ASSERT_EQUALS(p.nbrDim(), static_cast< gum::Size >(4))
+      TS_ASSERT_EQUALS(p.realSize(), static_cast< gum::Size >(4))
 
       gum::MultiDimLogit< double > q(p);
       TS_ASSERT_EQUALS(
           q.toString(),
           "a:Labelized({0|1})=logit(0.2 +0.4*b:Labelized({0|1}) +0.7*d:Labelized({0|1}))");
-      TS_ASSERT_EQUALS(p.realSize(), (gum::Size)4)
+      TS_ASSERT_EQUALS(p.realSize(), static_cast< gum::Size >(4))
 
       TS_GUM_ASSERT_THROWS_NOTHING(q.causalWeight(c, -1.3f))
       TS_ASSERT_EQUALS(q.toString(),
                        "a:Labelized({0|1})=logit(0.2 +0.4*b:Labelized({0|1}) "
                        "-1.3*c:Labelized({0|1}) +0.7*d:Labelized({0|1}))");
-    }
+    }   // namespace gum_tests
 
     GUM_ACTIVE_TEST(ComputationInLogit) {
       // from "Pratique de la Régression Logique" / Ricco Rakotomalala / p33

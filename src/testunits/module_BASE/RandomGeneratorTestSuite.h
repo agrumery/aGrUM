@@ -37,6 +37,7 @@
  *   gitlab   : https://gitlab.com/agrumery/agrum                           *
  *                                                                          *
  ****************************************************************************/
+#pragma once
 
 
 #include <gumtest/AgrumTestSuite.h>
@@ -52,7 +53,7 @@
 
 namespace gum_tests {
   // a test to see if GUM_RANDOMSEED is working
-  class [[maybe_unused]] RandomGeneratorTestSuite: public CxxTest::TestSuite {
+  class GUM_TEST_SUITE(RandomGenerator) {
     public:
     GUM_ACTIVE_TEST(RandomSeed) {
       TS_ASSERT((GUM_RANDOMSEED == 0) || (GUM_RANDOMSEED == 10))
@@ -75,7 +76,7 @@ namespace gum_tests {
       TS_GUM_ASSERT_ALMOST_EQUALS(gum::randomProba(), x3)
 
       gum::initRandom(GUM_RANDOMSEED);
-    }
+    }   // namespace gum_tests
 
     GUM_ACTIVE_TEST(RandomSeeForStructure) {
       try {

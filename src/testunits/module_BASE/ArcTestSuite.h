@@ -37,6 +37,7 @@
  *   gitlab   : https://gitlab.com/agrumery/agrum                           *
  *                                                                          *
  ****************************************************************************/
+#pragma once
 
 
 #include <gumtest/AgrumTestSuite.h>
@@ -46,7 +47,7 @@
 
 namespace gum_tests {
 
-  class [[maybe_unused]] ArcTestSuite: public CxxTest::TestSuite {
+  class GUM_TEST_SUITE(Arc) {
     public:
     GUM_ACTIVE_TEST(Constructor1){TS_GUM_ASSERT_THROWS_NOTHING(gum::Arc arc1(1, 2))
                                       TS_GUM_ASSERT_THROWS_NOTHING(gum::Arc arc1(1, 1))}
@@ -54,7 +55,7 @@ namespace gum_tests {
     GUM_ACTIVE_TEST(Constructor2) {
       gum::Arc arc1(1, 2);
       TS_GUM_ASSERT_THROWS_NOTHING(gum::Arc copy(arc1))
-    }
+    }   // namespace gum_tests
 
     GUM_ACTIVE_TEST(Equality) {
       gum::Arc arc1(1, 2);
@@ -93,14 +94,14 @@ namespace gum_tests {
       TS_GUM_ASSERT_THROWS_NOTHING(n = copy.first())
       TS_GUM_ASSERT_THROWS_NOTHING(n = copy.second())
 
-      TS_ASSERT_EQUALS(n = arc2.first(), (gum::NodeId)2)
-      TS_ASSERT_EQUALS(n = arc2.second(), (gum::NodeId)1)
+      TS_ASSERT_EQUALS(n = arc2.first(), static_cast< gum::NodeId >(2))
+      TS_ASSERT_EQUALS(n = arc2.second(), static_cast< gum::NodeId >(1))
 
-      TS_GUM_ASSERT_THROWS_NOTHING(n = arc3.other((gum::NodeId)3))
-      TS_GUM_ASSERT_THROWS_NOTHING(n = arc3.other((gum::NodeId)4))
+      TS_GUM_ASSERT_THROWS_NOTHING(n = arc3.other(3))
+      TS_GUM_ASSERT_THROWS_NOTHING(n = arc3.other(4))
 
-      TS_ASSERT_EQUALS(n = arc3.other((gum::NodeId)3), (gum::NodeId)4)
-      TS_ASSERT_EQUALS(n = arc3.other((gum::NodeId)4), (gum::NodeId)3)
+      TS_ASSERT_EQUALS(n = arc3.other((gum::NodeId)3), static_cast< gum::NodeId >(4))
+      TS_ASSERT_EQUALS(n = arc3.other((gum::NodeId)4), static_cast< gum::NodeId >(3))
 
       TS_ASSERT_THROWS_ANYTHING(n = copy.other((gum::NodeId)42))
     }
@@ -108,8 +109,8 @@ namespace gum_tests {
     GUM_ACTIVE_TEST(Getters2) {
       gum::Arc arc1(1, 2);
 
-      TS_ASSERT_EQUALS(arc1.tail(), (gum::NodeId)1)
-      TS_ASSERT_EQUALS(arc1.head(), (gum::NodeId)2)
+      TS_ASSERT_EQUALS(arc1.tail(), static_cast< gum::NodeId >(1))
+      TS_ASSERT_EQUALS(arc1.head(), static_cast< gum::NodeId >(2))
     }
 
     GUM_ACTIVE_TEST(Hash) {

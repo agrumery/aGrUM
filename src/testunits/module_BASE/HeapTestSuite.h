@@ -37,6 +37,7 @@
  *   gitlab   : https://gitlab.com/agrumery/agrum                           *
  *                                                                          *
  ****************************************************************************/
+#pragma once
 
 
 #include <gumtest/AgrumTestSuite.h>
@@ -47,7 +48,7 @@
 
 namespace gum_tests {
 
-  class [[maybe_unused]] HeapTestSuite: public CxxTest::TestSuite {
+  class GUM_TEST_SUITE(Heap) {
     public:
     GUM_ACTIVE_TEST(Constructor) {
       gum::Heap< int > heap1;
@@ -68,14 +69,14 @@ namespace gum_tests {
       heap1.eraseTop();
       TS_ASSERT_EQUALS(heap1.top(), 10)
 
-      TS_ASSERT_EQUALS(heap1.size(), (gum::Size)4)
+      TS_ASSERT_EQUALS(heap1.size(), static_cast< gum::Size >(4))
       TS_ASSERT_EQUALS(heap1.empty(), false)
       TS_ASSERT_EQUALS(heap1.contains(8), false)
       TS_ASSERT_EQUALS(heap1.contains(23), true)
       TS_ASSERT_EQUALS(heap1.contains(10), true)
 
       heap1.erase(10);
-      TS_ASSERT_EQUALS(heap1.size(), (gum::Size)3)
+      TS_ASSERT_EQUALS(heap1.size(), static_cast< gum::Size >(3))
       TS_GUM_ASSERT_THROWS_NOTHING(heap1.erase(150))
 
       heap1.eraseByPos(0);
@@ -101,14 +102,14 @@ namespace gum_tests {
       heap1.eraseTop();
       TS_ASSERT_EQUALS(heap1.top(), 10)
 
-      TS_ASSERT_EQUALS(heap1.size(), (gum::Size)4)
+      TS_ASSERT_EQUALS(heap1.size(), static_cast< gum::Size >(4))
       TS_ASSERT_EQUALS(heap1.empty(), false)
       TS_ASSERT_EQUALS(heap1.contains(23), false)
       TS_ASSERT_EQUALS(heap1.contains(2), true)
       TS_ASSERT_EQUALS(heap1.contains(8), true)
 
       heap1.erase(10);
-      TS_ASSERT_EQUALS(heap1.size(), (gum::Size)3)
+      TS_ASSERT_EQUALS(heap1.size(), static_cast< gum::Size >(3))
       TS_GUM_ASSERT_THROWS_NOTHING(heap1.erase(150))
 
       heap1.eraseByPos(0);
@@ -123,7 +124,7 @@ namespace gum_tests {
       gum::Heap< int, std::greater< int > > heap4 = std::move(heap3);
       heap3                                       = std::move(heap2);
       heap2                                       = std::move(heap1);
-      TS_ASSERT_EQUALS(heap2.size(), (gum::Size)4)
+      TS_ASSERT_EQUALS(heap2.size(), static_cast< gum::Size >(4))
       TS_ASSERT_EQUALS(heap2.top(), 5)
     }
 
@@ -163,11 +164,11 @@ namespace gum_tests {
       heap1.eraseByPos(0);
       TS_ASSERT_EQUALS(heap1.top(), 8)
       TS_GUM_ASSERT_THROWS_NOTHING(heap1.eraseByPos(150))
-      TS_ASSERT_EQUALS(heap1.size(), (gum::Size)6)
+      TS_ASSERT_EQUALS(heap1.size(), static_cast< gum::Size >(6))
       heap1.eraseByPos(4);
-      TS_ASSERT_EQUALS(heap1.size(), (gum::Size)5)
+      TS_ASSERT_EQUALS(heap1.size(), static_cast< gum::Size >(5))
       heap1.eraseByPos(4);
-      TS_ASSERT_EQUALS(heap1.size(), (gum::Size)4)
+      TS_ASSERT_EQUALS(heap1.size(), static_cast< gum::Size >(4))
       TS_ASSERT_EQUALS(heap1.contains(24), false)
     }
 
@@ -214,7 +215,7 @@ namespace gum_tests {
       heap1.eraseTop();
       TS_ASSERT_EQUALS(heap1.top(), s2)
 
-      TS_ASSERT_EQUALS(heap1.size(), (gum::Size)4)
+      TS_ASSERT_EQUALS(heap1.size(), static_cast< gum::Size >(4))
       TS_ASSERT_EQUALS(heap1.empty(), false)
       TS_ASSERT_EQUALS(heap1.contains(s1), false)
       TS_ASSERT_EQUALS(heap1.contains(s4), true)
@@ -222,7 +223,7 @@ namespace gum_tests {
 
       gum::Set< int > s6;
       heap1.erase(s2);
-      TS_ASSERT_EQUALS(heap1.size(), (gum::Size)3)
+      TS_ASSERT_EQUALS(heap1.size(), static_cast< gum::Size >(3))
       TS_GUM_ASSERT_THROWS_NOTHING(heap1.erase(s6))
 
       heap1.eraseByPos(0);

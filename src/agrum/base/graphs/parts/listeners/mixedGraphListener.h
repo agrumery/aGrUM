@@ -145,6 +145,6 @@ namespace gum {
 
 #ifndef GUM_NO_INLINE
 #  include <agrum/base/graphs/parts/listeners/mixedGraphListener_inl.h>
-#endif   // GUM_NOINLINE
+#endif   // GU%_NO_INLINE
 
 #endif   // GUM_MIXEDGRAPH_LISTENER_H

@@ -1,3 +1,4 @@
+import random
 filename = "testXYbase.csv"
 
 with open(filename, "w") as file:
@@ -28,7 +29,6 @@ with open(filename, "w") as file:
   for i in range(20):
     file.write("G2,KO3\n")
 
-import random
 
 with open(filename, "r") as source:
   data = [(random.random(), line) for line in source]

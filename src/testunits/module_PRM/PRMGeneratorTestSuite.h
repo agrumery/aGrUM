@@ -37,6 +37,7 @@
  *   gitlab   : https://gitlab.com/agrumery/agrum                           *
  *                                                                          *
  ****************************************************************************/
+#pragma once
 
 
 #include <fstream>
@@ -49,7 +50,7 @@
 
 namespace gum_tests {
 
-  class [[maybe_unused]] PRMGeneratorTestSuite: public CxxTest::TestSuite {
+  class GUM_TEST_SUITE(PRMGenerator) {
     private:
 
     public:
@@ -63,7 +64,7 @@ namespace gum_tests {
       gum::prm::LayerGenerator< double >* gen = nullptr;
       TS_GUM_ASSERT_THROWS_NOTHING(gen = new gum::prm::LayerGenerator< double >())
       TS_GUM_ASSERT_THROWS_NOTHING(delete gen)
-    }
+    }   // namespace gum_tests
 
     void generateLayerLayer(std::vector< gum::prm::LayerGenerator< double >::LayerData >& v,
                             size_t layer_count) {
@@ -90,17 +91,17 @@ namespace gum_tests {
       TS_GUM_ASSERT_THROWS_NOTHING(prm = gen->generate())
       // testing interfaces
       const gum::Set< gum::prm::PRMInterface< double >* >& i_set = prm->interfaces();
-      TS_ASSERT_EQUALS(i_set.size(), (gum::Size)10)
+      TS_ASSERT_EQUALS(i_set.size(), static_cast< gum::Size >(10))
 
       for (auto iter = i_set.begin(); iter != i_set.end(); ++iter) {
         const gum::prm::PRMInterface< double >& i = **iter;
 
         if (i.referenceSlots().size()) {
-          TS_ASSERT_EQUALS(i.referenceSlots().size(), (gum::Size)1)
-          TS_ASSERT_EQUALS(i.attributes().size(), (gum::Size)32)
+          TS_ASSERT_EQUALS(i.referenceSlots().size(), static_cast< gum::Size >(1))
+          TS_ASSERT_EQUALS(i.attributes().size(), static_cast< gum::Size >(32))
         } else {
-          TS_ASSERT_EQUALS(i.referenceSlots().size(), (gum::Size)0)
-          TS_ASSERT_EQUALS(i.attributes().size(), (gum::Size)30)
+          TS_ASSERT_EQUALS(i.referenceSlots().size(), static_cast< gum::Size >(0))
+          TS_ASSERT_EQUALS(i.attributes().size(), static_cast< gum::Size >(30))
         }
 
         gum::Size                                            six  = 0;
@@ -110,7 +111,7 @@ namespace gum_tests {
         for (gum::Set< gum::prm::PRMAttribute< double >* >::const_iterator a = attr.begin();
              a != attr.end();
              ++a) {
-          if ((**a).type()->domainSize() == (gum::Size)6) {
+          if ((**a).type()->domainSize() == static_cast< gum::Size >(6)) {
             ++six;
           } else if ((**a).type()->domainSize() == 2) {
             ++two;
@@ -119,9 +120,9 @@ namespace gum_tests {
           }
         }
 
-        TS_ASSERT_EQUALS(six, (gum::Size)30)
+        TS_ASSERT_EQUALS(six, static_cast< gum::Size >(30))
 
-        if (i.referenceSlots().size()) { TS_ASSERT_EQUALS(two, (gum::Size)2); }
+        if (i.referenceSlots().size()) { TS_ASSERT_EQUALS(two, static_cast< gum::Size >(2)); }
       }
 
       // testing classes
@@ -130,7 +131,7 @@ namespace gum_tests {
       for (gum::Set< gum::prm::PRMClass< double >* >::const_iterator c = c_set.begin();
            c != c_set.end();
            ++c) {
-        TS_ASSERT_EQUALS((**c).attributes().size(), (gum::Size)30)
+        TS_ASSERT_EQUALS((**c).attributes().size(), static_cast< gum::Size >(30))
 
         for (gum::Set< gum::prm::PRMAttribute< double >* >::const_iterator a
              = (**c).attributes().begin();
@@ -142,7 +143,7 @@ namespace gum_tests {
 
       // testing instances
       const gum::prm::PRMSystem< double >& sys = **(prm->systems().begin());
-      TS_ASSERT_EQUALS(sys.size(), (gum::Size)100)
+      TS_ASSERT_EQUALS(sys.size(), static_cast< gum::Size >(100))
 
       if (prm) delete prm;
 
@@ -162,7 +163,7 @@ namespace gum_tests {
       TS_GUM_ASSERT_THROWS_NOTHING(prm = gen->generate())
       // testing interfaces
       const gum::Set< gum::prm::PRMInterface< double >* >& i_set = prm->interfaces();
-      TS_ASSERT_EQUALS(i_set.size(), (gum::Size)10)
+      TS_ASSERT_EQUALS(i_set.size(), static_cast< gum::Size >(10))
 
       for (gum::Set< gum::prm::PRMInterface< double >* >::const_iterator iter = i_set.begin();
            iter != i_set.end();
@@ -170,11 +171,11 @@ namespace gum_tests {
         const gum::prm::PRMInterface< double >& i = **iter;
 
         if (i.referenceSlots().size()) {
-          TS_ASSERT_EQUALS(i.referenceSlots().size(), (gum::Size)1)
-          TS_ASSERT_EQUALS(i.attributes().size(), (gum::Size)32)
+          TS_ASSERT_EQUALS(i.referenceSlots().size(), static_cast< gum::Size >(1))
+          TS_ASSERT_EQUALS(i.attributes().size(), static_cast< gum::Size >(32))
         } else {
-          TS_ASSERT_EQUALS(i.referenceSlots().size(), (gum::Size)0)
-          TS_ASSERT_EQUALS(i.attributes().size(), (gum::Size)30)
+          TS_ASSERT_EQUALS(i.referenceSlots().size(), static_cast< gum::Size >(0))
+          TS_ASSERT_EQUALS(i.attributes().size(), static_cast< gum::Size >(30))
         }
 
         gum::Size                                            six  = 0;
@@ -184,7 +185,7 @@ namespace gum_tests {
         for (gum::Set< gum::prm::PRMAttribute< double >* >::const_iterator a = attr.begin();
              a != attr.end();
              ++a) {
-          if ((**a).type()->domainSize() == (gum::Size)6) {
+          if ((**a).type()->domainSize() == static_cast< gum::Size >(6)) {
             ++six;
           } else if ((**a).type()->domainSize() == 2) {
             ++two;
@@ -193,9 +194,9 @@ namespace gum_tests {
           }
         }
 
-        TS_ASSERT_EQUALS(six, (gum::Size)30)
+        TS_ASSERT_EQUALS(six, static_cast< gum::Size >(30))
 
-        if (i.referenceSlots().size()) { TS_ASSERT_EQUALS(two, (gum::Size)2); }
+        if (i.referenceSlots().size()) { TS_ASSERT_EQUALS(two, static_cast< gum::Size >(2)); }
       }
 
       // testing classes
@@ -204,7 +205,7 @@ namespace gum_tests {
       for (gum::Set< gum::prm::PRMClass< double >* >::const_iterator c = c_set.begin();
            c != c_set.end();
            ++c) {
-        TS_ASSERT_EQUALS((**c).attributes().size(), (gum::Size)30)
+        TS_ASSERT_EQUALS((**c).attributes().size(), static_cast< gum::Size >(30))
 
         for (gum::Set< gum::prm::PRMAttribute< double >* >::const_iterator a
              = (**c).attributes().begin();
@@ -216,7 +217,7 @@ namespace gum_tests {
 
       // testing instances
       const gum::prm::PRMSystem< double >& sys = **(prm->systems().begin());
-      TS_ASSERT(sys.size() > (gum::Size)100)
+      TS_ASSERT(sys.size() > static_cast< gum::Size >(100))
 
       if (prm) delete prm;
 

@@ -37,6 +37,7 @@
  *   gitlab   : https://gitlab.com/agrumery/agrum                           *
  *                                                                          *
  ****************************************************************************/
+#pragma once
 
 
 #include <sstream>
@@ -51,12 +52,12 @@
 
 namespace gum_tests {
 
-  class [[maybe_unused]] CrossMultiDimTestSuite: public CxxTest::TestSuite {
+  class GUM_TEST_SUITE(CrossMultiDim) {
     public:
     GUM_ACTIVE_TEST(ComparaisonMin) {
       gum::RangeVariable a("a", "", 0, 3), b("b", "", 0, 3), c("c", "", 0, 3), d("d", "", 0, 3);
       gum::MultiDimArray< double >   full;
-      gum::MultiDimSparse< double >  sparse((float)0);
+      gum::MultiDimSparse< double >  sparse(static_cast< float >(0));
       gum::aggregator::Min< double > agg;
       agg << a << b << c << d;
       full << a << b << c << d;
@@ -89,11 +90,12 @@ namespace gum_tests {
         TS_ASSERT_EQUALS(sparse[k], full[k])
       }
 
-      TS_ASSERT_EQUALS(agg.compressionRate(), (float)1.0);   // 100% de compression
+      TS_ASSERT_EQUALS(agg.compressionRate(), static_cast< float >(1.0));   // 100% de compression
 
-      TS_ASSERT_EQUALS(sparse.compressionRate(),
-                       (float)0.75);   // deterministic as a sparse : 75% parameters are 0...
-      TS_ASSERT_EQUALS(full.compressionRate(), (float)0);   // 0% de compression...
-    }
+      TS_ASSERT_EQUALS(
+          sparse.compressionRate(),
+          static_cast< float >(0.75));   // deterministic as a sparse : 75% parameters are 0...
+      TS_ASSERT_EQUALS(full.compressionRate(), static_cast< float >(0));   // 0% de compression...
+    }   // namespace gum_tests
   };
 }   // namespace gum_tests

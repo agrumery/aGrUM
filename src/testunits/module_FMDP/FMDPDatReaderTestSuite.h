@@ -37,6 +37,7 @@
  *   gitlab   : https://gitlab.com/agrumery/agrum                           *
  *                                                                          *
  ****************************************************************************/
+#pragma once
 
 
 // =====================================================================
@@ -59,7 +60,7 @@
 
 namespace gum_tests {
 
-  class [[maybe_unused]] FMDPDatReaderTestSuite: public CxxTest::TestSuite {
+  class GUM_TEST_SUITE(FMDPDatReader) {
     private:
     std::string _file_;
 
@@ -68,12 +69,12 @@ namespace gum_tests {
       gum::FMDPDatReader< double > reader(&fmdp, _file_);
 
       reader.trace(false);
-      auto nbrErr = (gum::Size)0;
+      auto nbrErr = static_cast< gum::Size >(0);
       TS_GUM_ASSERT_THROWS_NOTHING(nbrErr = reader.proceed())
 
-      TS_ASSERT_EQUALS(nbrErr, (gum::Size)0)
-      TS_ASSERT_EQUALS(reader.warnings(), (gum::Size)0)
-      TS_ASSERT_EQUALS(reader.errors(), (gum::Size)0)
+      TS_ASSERT_EQUALS(nbrErr, static_cast< gum::Size >(0))
+      TS_ASSERT_EQUALS(reader.warnings(), static_cast< gum::Size >(0))
+      TS_ASSERT_EQUALS(reader.errors(), static_cast< gum::Size >(0))
       reader.showElegantErrorsAndWarnings();
 
 

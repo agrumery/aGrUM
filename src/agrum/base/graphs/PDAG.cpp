@@ -49,7 +49,7 @@
 
 #ifdef GUM_NO_INLINE
 #  include <agrum/base/graphs/PDAG_inl.h>
-#endif   // GUM_NOINLINE
+#endif   // GUM_NO_INLINE
 
 namespace gum {
 

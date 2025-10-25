@@ -37,6 +37,7 @@
  *   gitlab   : https://gitlab.com/agrumery/agrum                           *
  *                                                                          *
  ****************************************************************************/
+#pragma once
 
 
 #include <iostream>
@@ -53,7 +54,7 @@
 
 namespace gum_tests {
 
-  class [[maybe_unused]] ScoreBDeuTestSuite: public CxxTest::TestSuite {
+  class GUM_TEST_SUITE(ScoreBDeu) {
     private:
     gum::GammaLog2 _gammalog2_;
     bool           _gum_destructor_increased_{false};

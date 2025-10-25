@@ -37,6 +37,7 @@
  *   gitlab   : https://gitlab.com/agrumery/agrum                           *
  *                                                                          *
  ****************************************************************************/
+#pragma once
 
 
 #include <algorithm>
@@ -50,7 +51,7 @@
 
 namespace gum_tests {
 
-  class [[maybe_unused]] AVLTreeTestSuite: public CxxTest::TestSuite {
+  class GUM_TEST_SUITE(AVLTree) {
     public:
     GUM_ACTIVE_TEST(_int) {
       gum::AVLTree< int > tree1;
@@ -106,7 +107,7 @@ namespace gum_tests {
       gum::AVLTree< int > tree4;
       for (int i = 0; i < 100; ++i)
         tree4.insert(i);
-      i = (int)tree4.size() - 1;
+      i = static_cast< int >(tree4.size()) - 1;
       for (auto iter = tree4.rbegin(); iter != tree4.rend(); ++iter, --i) {
         TS_GUM_ASSERT_EQUALS(*iter, i)
       }
@@ -267,9 +268,9 @@ namespace gum_tests {
       }
 
       gum::AVLTree< std::pair< int, int >, Mycmp > tree4;
-      for (int i = 0; i < 100; ++i)
-        tree4.emplace(i, i + 5);
-      i = (int)tree4.size() - 1;
+      for (int j = 0; j < 100; ++j)
+        tree4.emplace(j, j + 5);
+      i = static_cast< int >(tree4.size()) - 1;
       for (auto iter = tree4.rbegin(); iter != tree4.rend(); ++iter, --i) {
         std::pair< int, int > pair(i, i + 5);
         TS_GUM_ASSERT_EQUALS(*iter, pair)
@@ -378,7 +379,7 @@ namespace gum_tests {
         TS_GUM_ASSERT_EQUALS(str.str(), str2.str())
       }
 
-      TS_ASSERT_EQUALS(tree.size(), (gum::Size)5)
+      TS_ASSERT_EQUALS(tree.size(), static_cast< gum::Size >(5))
       TS_ASSERT_EQUALS(tree.empty(), false)
       TS_ASSERT_EQUALS(tree.contains(8), true)
       TS_ASSERT_EQUALS(tree.contains(5), false)

@@ -37,6 +37,7 @@
  *   gitlab   : https://gitlab.com/agrumery/agrum                           *
  *                                                                          *
  ****************************************************************************/
+#pragma once
 
 
 #include <sstream>
@@ -54,8 +55,7 @@
  */
 namespace gum_tests {
 
-  class [[maybe_unused]] PRMClassTestSuite: public CxxTest::TestSuite {
-    private:
+  class GUM_TEST_SUITE(PRMClass) {
     using PRMClass     = gum::prm::PRMClass< double >;
     using PRMInterface = gum::prm::PRMInterface< double >;
     using PRMType      = gum::prm::PRMType;
@@ -120,9 +120,9 @@ namespace gum_tests {
       TS_ASSERT_EQUALS(subclass->get(b_id).name(), "b")
       TS_ASSERT(subclass->exists("c"))
       TS_ASSERT_EQUALS(subclass->get(c_id).name(), "c")
-      TS_ASSERT_EQUALS(subclass->attributes().size(), (gum::Size)2)
-      TS_ASSERT_EQUALS(subclass->referenceSlots().size(), (gum::Size)1)
-      TS_ASSERT_EQUALS(subclass->slotChains().size(), (gum::Size)1)
+      TS_ASSERT_EQUALS(subclass->attributes().size(), static_cast< gum::Size >(2))
+      TS_ASSERT_EQUALS(subclass->referenceSlots().size(), static_cast< gum::Size >(1))
+      TS_ASSERT_EQUALS(subclass->slotChains().size(), static_cast< gum::Size >(1))
       delete subclass;
     }
 
@@ -144,9 +144,9 @@ namespace gum_tests {
       // Act
       TS_ASSERT_THROWS_NOTHING(subclass = new PRMClass("subclass", set))
       // Assert
-      TS_ASSERT_EQUALS(subclass->attributes().size(), (gum::Size)0)
-      TS_ASSERT_EQUALS(subclass->referenceSlots().size(), (gum::Size)0)
-      TS_ASSERT_EQUALS(subclass->slotChains().size(), (gum::Size)0)
+      TS_ASSERT_EQUALS(subclass->attributes().size(), static_cast< gum::Size >(0))
+      TS_ASSERT_EQUALS(subclass->referenceSlots().size(), static_cast< gum::Size >(0))
+      TS_ASSERT_EQUALS(subclass->slotChains().size(), static_cast< gum::Size >(0))
       delete subclass;
     }
 
@@ -260,7 +260,7 @@ namespace gum_tests {
       // Act & assert
       TS_ASSERT_THROWS_NOTHING(c.add(attr))
       TS_ASSERT_THROWS(c.add(attr), const gum::DuplicateElement&)
-      TS_ASSERT_EQUALS(c.attributes().size(), (gum::Size)1)
+      TS_ASSERT_EQUALS(c.attributes().size(), static_cast< gum::Size >(1))
     }
 
     /// @}
@@ -460,7 +460,7 @@ namespace gum_tests {
       TS_ASSERT(!c_4.exists(ref->safeName()))
       TS_ASSERT(c_4.exists(sub_ref->name()))
       TS_ASSERT(c_4.exists(sub_ref->safeName()))
-      TS_ASSERT_EQUALS(c_4.referenceSlots().size(), (gum::Size)1)
+      TS_ASSERT_EQUALS(c_4.referenceSlots().size(), static_cast< gum::Size >(1))
     }
 
     GUM_ACTIVE_TEST(OverloadReferenceIllegal) {
@@ -478,7 +478,7 @@ namespace gum_tests {
       TS_ASSERT(c_4.exists(ref->safeName()))
       TS_ASSERT(c_4.exists(ref->name()))
       TS_ASSERT(!c_4.exists(sub_ref->safeName()))
-      TS_ASSERT_EQUALS(c_4.referenceSlots().size(), (gum::Size)1)
+      TS_ASSERT_EQUALS(c_4.referenceSlots().size(), static_cast< gum::Size >(1))
       delete sub_ref;
     }
 
@@ -506,7 +506,7 @@ namespace gum_tests {
       // Assert
       TS_ASSERT(c_4.exists(chain->safeName()))
       TS_ASSERT(c_4.exists(chain->name()))
-      TS_ASSERT_EQUALS(c_4.slotChains().size(), (gum::Size)1)
+      TS_ASSERT_EQUALS(c_4.slotChains().size(), static_cast< gum::Size >(1))
       delete chain_copy;
     }
 

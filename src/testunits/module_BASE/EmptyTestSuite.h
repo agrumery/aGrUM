@@ -37,6 +37,7 @@
  *   gitlab   : https://gitlab.com/agrumery/agrum                           *
  *                                                                          *
  ****************************************************************************/
+#pragma once
 
 
 #include <gumtest/AgrumTestSuite.h>
@@ -46,7 +47,7 @@
 
 namespace gum_tests {
 
-  class [[maybe_unused]] EmptyTestSuite: public CxxTest::TestSuite {
+  class GUM_TEST_SUITE(Empty) {
     public:
     GUM_ACTIVE_TEST(1) { TS_ASSERT(true); }
   };

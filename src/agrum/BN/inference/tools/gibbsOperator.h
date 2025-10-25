@@ -103,7 +103,6 @@ namespace gum {
     Size nbr_;
     bool atRandom_;
 
-    protected:
     void updateSamplingNodes_();
 
     private:

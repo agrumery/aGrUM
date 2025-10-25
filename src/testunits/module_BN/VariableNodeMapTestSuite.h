@@ -37,6 +37,7 @@
  *   gitlab   : https://gitlab.com/agrumery/agrum                           *
  *                                                                          *
  ****************************************************************************/
+#pragma once
 
 
 #include <iostream>
@@ -60,7 +61,7 @@
 
 namespace gum_tests {
 
-  class [[maybe_unused]] VariableNodeMapTestSuite: public CxxTest::TestSuite {
+  class GUM_TEST_SUITE(VariableNodeMap) {
     public:
     gum::LabelizedVariable *var1, *var2, *var3, *var4, *var5;
 
@@ -97,8 +98,8 @@ namespace gum_tests {
       TS_GUM_ASSERT_THROWS_NOTHING(idList.insert(topo.add(*var4)))
       TS_GUM_ASSERT_THROWS_NOTHING(idList.insert(topo.add(*var5)))
 
-      TS_ASSERT_EQUALS(topo.size(), (gum::Size)5)
-      TS_ASSERT_EQUALS(topo.dag().size(), (gum::Size)5)
+      TS_ASSERT_EQUALS(topo.size(), static_cast< gum::Size >(5))
+      TS_ASSERT_EQUALS(topo.dag().size(), static_cast< gum::Size >(5))
 
       gum::NodeId ind = 0;
       TS_GUM_ASSERT_THROWS_NOTHING(const gum::DiscreteVariable& varPtr = topo.variable(idList[0]);
@@ -129,7 +130,7 @@ namespace gum_tests {
       TS_GUM_ASSERT_THROWS_NOTHING(topo.addArc(idList[3], idList[4]))
       TS_GUM_ASSERT_THROWS_NOTHING(topo.addArc(idList[1], idList[4]))
 
-      TS_ASSERT_EQUALS(topo.dag().sizeArcs(), (gum::Size)6)
+      TS_ASSERT_EQUALS(topo.dag().sizeArcs(), static_cast< gum::Size >(6))
     }
 
     GUM_ACTIVE_TEST(EraseVar) {
@@ -146,9 +147,9 @@ namespace gum_tests {
       TS_ASSERT(!topo.dag().empty())
       TS_ASSERT(!topo.dag().emptyArcs())
 
-      TS_ASSERT_EQUALS(topo.size(), (gum::Size)5)
-      TS_ASSERT_EQUALS(topo.dag().size(), (gum::Size)5)
-      TS_ASSERT_EQUALS(topo.dag().sizeArcs(), (gum::Size)6)
+      TS_ASSERT_EQUALS(topo.size(), static_cast< gum::Size >(5))
+      TS_ASSERT_EQUALS(topo.dag().size(), static_cast< gum::Size >(5))
+      TS_ASSERT_EQUALS(topo.dag().sizeArcs(), static_cast< gum::Size >(6))
 
       for (const auto i: idList)
         topo.erase(i);
@@ -158,9 +159,9 @@ namespace gum_tests {
       TS_ASSERT(topo.dag().empty())
       TS_ASSERT(topo.dag().emptyArcs())
 
-      TS_ASSERT_EQUALS(topo.size(), (gum::Size)0)
-      TS_ASSERT_EQUALS(topo.dag().size(), (gum::Size)0)
-      TS_ASSERT_EQUALS(topo.dag().sizeArcs(), (gum::Size)0)
+      TS_ASSERT_EQUALS(topo.size(), static_cast< gum::Size >(0))
+      TS_ASSERT_EQUALS(topo.dag().size(), static_cast< gum::Size >(0))
+      TS_ASSERT_EQUALS(topo.dag().sizeArcs(), static_cast< gum::Size >(0))
     }
 
     GUM_ACTIVE_TEST(EraseArc) {
@@ -177,9 +178,9 @@ namespace gum_tests {
       TS_ASSERT(!topo.dag().empty())
       TS_ASSERT(!topo.dag().emptyArcs())
 
-      TS_ASSERT_EQUALS(topo.size(), (gum::Size)5)
-      TS_ASSERT_EQUALS(topo.dag().size(), (gum::Size)5)
-      TS_ASSERT_EQUALS(topo.dag().sizeArcs(), (gum::Size)6)
+      TS_ASSERT_EQUALS(topo.size(), static_cast< gum::Size >(5))
+      TS_ASSERT_EQUALS(topo.dag().size(), static_cast< gum::Size >(5))
+      TS_ASSERT_EQUALS(topo.dag().sizeArcs(), static_cast< gum::Size >(6))
 
       TS_GUM_ASSERT_THROWS_NOTHING(topo.eraseArc(gum::Arc(idList[0], idList[2])))
       TS_GUM_ASSERT_THROWS_NOTHING(topo.eraseArc(gum::Arc(idList[2], idList[4])))
@@ -225,7 +226,7 @@ namespace gum_tests {
         topoOrder = topo.topologicalOrder();
       } catch (gum::Exception& e) { GUM_SHOWERROR(e); }
 
-      TS_ASSERT_EQUALS(topoOrder.size(), (gum::Size)5)
+      TS_ASSERT_EQUALS(topoOrder.size(), static_cast< gum::Size >(5))
     }
 
     private:

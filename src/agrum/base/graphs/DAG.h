@@ -225,13 +225,12 @@ namespace gum {
                                  NodeSet&       minimal,
                                  NodeSet&       alreadyVisitedUp,
                                  NodeSet&       alreadyVisitedDn) const;
-
   };
 
 } /* namespace gum */
 
 #ifndef GUM_NO_INLINE
 #  include <agrum/base/graphs/DAG_inl.h>
-#endif   // GUM_NOINLINE
+#endif   // GU%_NO_INLINE
 
 #endif   /* GUM_DAG_H */

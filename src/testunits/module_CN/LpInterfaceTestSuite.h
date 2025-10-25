@@ -37,6 +37,7 @@
  *   gitlab   : https://gitlab.com/agrumery/agrum                           *
  *                                                                          *
  ****************************************************************************/
+#pragma once
 
 
 #include <cstdlib>   // rand
@@ -50,7 +51,7 @@
 
 namespace gum_tests {
 
-  class [[maybe_unused]] LpInterfacetTestSuite: public CxxTest::TestSuite {
+  class GUM_TEST_SUITE(LpInterfacet) {
     public:
     GUM_ACTIVE_TEST(LpExpr) {
       gum::credal::lp::LpInterface< double > pl;
@@ -59,7 +60,7 @@ namespace gum_tests {
 
       gum::credal::lp::LpExpr expr = 2 + a <= 5;
       gum::credal::lp::LpRow  row(expr, v);
-    }
+    }   // namespace gum_tests
 
     GUM_ACTIVE_TEST(LpCreation) {
       gum::credal::lp::LpInterface< double > pl;

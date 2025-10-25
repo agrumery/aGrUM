@@ -37,6 +37,7 @@
  *   gitlab   : https://gitlab.com/agrumery/agrum                           *
  *                                                                          *
  ****************************************************************************/
+#pragma once
 
 
 #include <iostream>
@@ -54,7 +55,7 @@
 
 namespace gum_tests {
 
-  class [[maybe_unused]] CorrectedMutualInformationTestSuite: public CxxTest::TestSuite {
+  class GUM_TEST_SUITE(CorrectedMutualInformation) {
     private:
     double _entropy_(const std::vector< double >& vect) {
       double res = 0.0;
@@ -67,7 +68,7 @@ namespace gum_tests {
       }
       res += sum * std::log2(sum);
       return res;
-    }
+    }   // namespace gum_tests
 
     double _H_(const gum::learning::DBRowGeneratorParser& parser, const gum::NodeId id) {
       gum::learning::RecordCounter counter(parser);

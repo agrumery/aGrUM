@@ -37,6 +37,7 @@
  *   gitlab   : https://gitlab.com/agrumery/agrum                           *
  *                                                                          *
  ****************************************************************************/
+#pragma once
 
 
 #include <iostream>
@@ -52,7 +53,7 @@
 
 namespace gum_tests {
 
-  class [[maybe_unused]] ScoreMDLTestSuite: public CxxTest::TestSuite {
+  class GUM_TEST_SUITE(ScoreMDL) {
     private:
     double _score_(const std::vector< double >& N_ijk,
                    const std::vector< double >& N_ij,
@@ -71,7 +72,7 @@ namespace gum_tests {
 
       score -= penalty * 0.5 * std::log2(N);
       return score;
-    }
+    }   // namespace gum_tests
 
     bool _equal_(const double x, const double y) const {
       double dev = x >= y ? (x - y) / x : (y - x) / y;

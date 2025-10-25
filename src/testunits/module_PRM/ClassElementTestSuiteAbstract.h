@@ -37,16 +37,17 @@
  *   gitlab   : https://gitlab.com/agrumery/agrum                           *
  *                                                                          *
  ****************************************************************************/
+#pragma once
 
 
 #ifndef GUM_CLASSELEMENT_TEST_SUITE_H
-#define GUM_CLASSELEMENT_TEST_SUITE_H
+#  define GUM_CLASSELEMENT_TEST_SUITE_H
 
-#include <gumtest/AgrumTestSuite.h>
-#include <gumtest/utils.h>
+#  include <gumtest/AgrumTestSuite.h>
+#  include <gumtest/utils.h>
 
-#include <agrum/base/core/exceptions.h>
-#include <agrum/PRM/elements/PRMClassElement.h>
+#  include <agrum/base/core/exceptions.h>
+#  include <agrum/PRM/elements/PRMClassElement.h>
 
 /*
  * This class is used to test gum::prm::PRMClassElement, since it is an abstract

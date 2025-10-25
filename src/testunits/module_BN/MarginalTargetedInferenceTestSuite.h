@@ -37,6 +37,7 @@
  *   gitlab   : https://gitlab.com/agrumery/agrum                           *
  *                                                                          *
  ****************************************************************************/
+#pragma once
 
 
 #include <iostream>
@@ -61,7 +62,7 @@
 
 namespace gum_tests {
 
-  class [[maybe_unused]] MarginalTargetedInferenceTestSuite: public CxxTest::TestSuite {
+  class GUM_TEST_SUITE(MarginalTargetedInference) {
     public:
     GUM_ACTIVE_TEST(AddTarget) {
       auto bn = gum::BayesNet< double >::fastPrototype("A->B->C->D;A->E->D;F->B;C->H;");
@@ -86,6 +87,6 @@ namespace gum_tests {
       TS_ASSERT_EQUALS(ve.targets(), gum::NodeSet({0}))
       ve.addTarget("B");
       TS_ASSERT_EQUALS(ve.targets(), gum::NodeSet({0, 1}))
-    }
+    }   // namespace gum_tests
   };
 }   // namespace gum_tests

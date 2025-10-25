@@ -37,6 +37,7 @@
  *   gitlab   : https://gitlab.com/agrumery/agrum                           *
  *                                                                          *
  ****************************************************************************/
+#pragma once
 
 
 #include <gumtest/AgrumTestSuite.h>
@@ -47,7 +48,7 @@
 
 namespace gum_tests {
 
-  class [[maybe_unused]] EvidenceTestSuite: public CxxTest::TestSuite {
+  class GUM_TEST_SUITE(Evidence) {
     public:
     GUM_ACTIVE_TEST(IsEvidence) {
       const auto bn = gum::BayesNet< double >::fastPrototype("A[10]->B[3]");
@@ -63,7 +64,7 @@ namespace gum_tests {
       TS_ASSERT((p.isEvidence()))
       p.random();
       TS_ASSERT((p.isEvidence()))
-    }
+    }   // namespace gum_tests
 
     GUM_ACTIVE_TEST(CombineEvidence) {
       const auto bn = gum::BayesNet< double >::fastPrototype("A[10]->C;B[10]");

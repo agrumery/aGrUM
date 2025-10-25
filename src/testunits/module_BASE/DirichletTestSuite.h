@@ -37,6 +37,7 @@
  *   gitlab   : https://gitlab.com/agrumery/agrum                           *
  *                                                                          *
  ****************************************************************************/
+#pragma once
 
 
 #include <iostream>
@@ -48,7 +49,7 @@
 
 namespace gum_tests {
 
-  class [[maybe_unused]] DirichletTestSuite: public CxxTest::TestSuite {
+  class GUM_TEST_SUITE(Dirichlet) {
     public:
     GUM_ACTIVE_TEST(XX) {
       std::vector< float > param{1.0f, 1.0f};
@@ -113,7 +114,7 @@ namespace gum_tests {
         res[j] /= sum;
       }
       TS_ASSERT(fabs(res[0] - res[1]) < 0.03)
-    }
+    }   // namespace gum_tests
   };
 
 } /* namespace gum_tests */

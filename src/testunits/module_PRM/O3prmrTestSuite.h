@@ -37,6 +37,7 @@
  *   gitlab   : https://gitlab.com/agrumery/agrum                           *
  *                                                                          *
  ****************************************************************************/
+#pragma once
 
 
 #include <iostream>
@@ -49,7 +50,7 @@
 
 namespace gum_tests {
 
-  class [[maybe_unused]] O3prmrTestSuite: public CxxTest::TestSuite {
+  class GUM_TEST_SUITE(O3prmr) {
     public:
     void setUp() {
       // std::cerr << std::endl;
@@ -66,12 +67,16 @@ namespace gum_tests {
         TS_GUM_ASSERT_THROWS_NOTHING(
             si->interpretFile(GET_RESSOURCES_PATH("o3prmr/requests/query1.o3prmr")));
 
-        TS_ASSERT_EQUALS(si->errors(), (gum::Size)0)
+        TS_ASSERT_EQUALS(si->errors(), static_cast< gum::Size >(0))
         if (si->errors() > 0) { si->showElegantErrorsAndWarnings(); }
-        TS_ASSERT_EQUALS(si->warnings(), (gum::Size)0)
+        TS_ASSERT_EQUALS(si->warnings(), static_cast< gum::Size >(0))
 
         delete si;
-      } catch (gum::Exception&) { TS_ASSERT(false) }
+      }   // namespace gum_tests
+
+      catch (gum::Exception&) {
+        TS_ASSERT(false)
+      }
     }
 
     GUM_ACTIVE_TEST(ParseFile2) {
@@ -83,8 +88,8 @@ namespace gum_tests {
         TS_GUM_ASSERT_THROWS_NOTHING(
             si->interpretFile(GET_RESSOURCES_PATH("o3prmr/requests/query2.o3prmr")));
 
-        TS_ASSERT_EQUALS(si->errors(), (gum::Size)1)
-        TS_ASSERT_EQUALS(si->warnings(), (gum::Size)0)
+        TS_ASSERT_EQUALS(si->errors(), static_cast< gum::Size >(1))
+        TS_ASSERT_EQUALS(si->warnings(), static_cast< gum::Size >(0))
 
         delete si;
       } catch (gum::Exception&) { TS_ASSERT(false) }
@@ -100,8 +105,8 @@ namespace gum_tests {
         TS_GUM_ASSERT_THROWS_NOTHING(
             si->interpretFile(GET_RESSOURCES_PATH("o3prmr/requests/query1.o3prmr")));
 
-        TS_ASSERT_EQUALS(si->errors(), (gum::Size)0)
-        TS_ASSERT_EQUALS(si->warnings(), (gum::Size)0)
+        TS_ASSERT_EQUALS(si->errors(), static_cast< gum::Size >(0))
+        TS_ASSERT_EQUALS(si->warnings(), static_cast< gum::Size >(0))
 
         delete si;
       } catch (gum::Exception&) { TS_ASSERT(false) }
@@ -116,8 +121,8 @@ namespace gum_tests {
         TS_GUM_ASSERT_THROWS_NOTHING(
             si->interpretFile(GET_RESSOURCES_PATH("o3prmr/requests/queryObserveTest.o3prmr")));
 
-        TS_ASSERT_EQUALS(si->errors(), (gum::Size)0)
-        TS_ASSERT_EQUALS(si->warnings(), (gum::Size)0)
+        TS_ASSERT_EQUALS(si->errors(), static_cast< gum::Size >(0))
+        TS_ASSERT_EQUALS(si->warnings(), static_cast< gum::Size >(0))
 
         // Observe correctly
         const auto& c1 = si->prm()->getSystem("systems.MySystem.MySystem").get("c1");
@@ -160,8 +165,8 @@ namespace gum_tests {
         TS_GUM_ASSERT_THROWS_NOTHING(
             si->interpretFile(GET_RESSOURCES_PATH("o3prmr/requests/queryUnobserveTest.o3prmr")));
 
-        TS_ASSERT_EQUALS(si->errors(), (gum::Size)0)
-        TS_ASSERT_EQUALS(si->warnings(), (gum::Size)0)
+        TS_ASSERT_EQUALS(si->errors(), static_cast< gum::Size >(0))
+        TS_ASSERT_EQUALS(si->warnings(), static_cast< gum::Size >(0))
 
         // Unobserve correctly
         const gum::prm::PRMInstance< double >& c1
@@ -192,8 +197,8 @@ namespace gum_tests {
             si->interpretFile(GET_RESSOURCES_PATH("o3prmr/requests/query1.o3prmr")));
 
         si->showElegantErrorsAndWarnings();
-        TS_ASSERT_EQUALS(si->errors(), (gum::Size)0)
-        TS_ASSERT_EQUALS(si->warnings(), (gum::Size)0)
+        TS_ASSERT_EQUALS(si->errors(), static_cast< gum::Size >(0))
+        TS_ASSERT_EQUALS(si->warnings(), static_cast< gum::Size >(0))
 
         const gum::prm::PRMInstance< double >& c1
             = si->prm()->getSystem("systems.MySystem.MySystem").get("c1");
@@ -243,8 +248,8 @@ namespace gum_tests {
         // Act
         TS_ASSERT_THROWS_NOTHING(asia = &(prm->getClass("Asia.Asia")))
         // Assert
-        TS_ASSERT_EQUALS(asia->attributes().size(), (gum::Size)8)
-        TS_ASSERT_EQUALS(asia->containerDag().sizeArcs(), (gum::Size)8)
+        TS_ASSERT_EQUALS(asia->attributes().size(), static_cast< gum::Size >(8))
+        TS_ASSERT_EQUALS(asia->containerDag().sizeArcs(), static_cast< gum::Size >(8))
         delete si;
       } catch (gum::Exception&) { TS_ASSERT(false) }
     }
@@ -263,8 +268,8 @@ namespace gum_tests {
         // Act
         TS_ASSERT_THROWS_NOTHING(sys.groundedBN(factory))
         // Assert
-        TS_ASSERT_EQUALS(bn->size(), (gum::Size)8)
-        TS_ASSERT_EQUALS(bn->sizeArcs(), (gum::Size)8)
+        TS_ASSERT_EQUALS(bn->size(), static_cast< gum::Size >(8))
+        TS_ASSERT_EQUALS(bn->sizeArcs(), static_cast< gum::Size >(8))
         delete si;
         delete bn;
       } catch (gum::Exception&) { TS_ASSERT(false) }
@@ -278,7 +283,7 @@ namespace gum_tests {
         si->addPath(GET_RESSOURCES_PATH("o3prmr/AsiaOneFile/"));
         si->interpretFile(GET_RESSOURCES_PATH("o3prmr/AsiaOneFile/myRequest.o3prmr"));
         // si->showElegantErrorsAndWarnings();
-        TS_ASSERT_EQUALS(si->count(), (gum::Size)0)
+        TS_ASSERT_EQUALS(si->count(), static_cast< gum::Size >(0))
         if (!si->count()) {
           auto                           prm = si->prm();
           const auto&                    sys = prm->getSystem("Asia.Asia");
@@ -287,8 +292,8 @@ namespace gum_tests {
           // Act
           TS_ASSERT_THROWS_NOTHING(sys.groundedBN(factory))
           // Assert
-          TS_ASSERT_EQUALS(bn->size(), (gum::Size)8)
-          TS_ASSERT_EQUALS(bn->sizeArcs(), (gum::Size)8)
+          TS_ASSERT_EQUALS(bn->size(), static_cast< gum::Size >(8))
+          TS_ASSERT_EQUALS(bn->sizeArcs(), static_cast< gum::Size >(8))
           delete bn;
         }
         delete si;
@@ -311,8 +316,8 @@ namespace gum_tests {
         // Act
         TS_GUM_ASSERT_THROWS_NOTHING(sys.groundedBN(factory))
         // Assert
-        TS_ASSERT_EQUALS(bn->size(), (gum::Size)144)
-        TS_ASSERT_EQUALS(bn->sizeArcs(), (gum::Size)193)
+        TS_ASSERT_EQUALS(bn->size(), static_cast< gum::Size >(144))
+        TS_ASSERT_EQUALS(bn->sizeArcs(), static_cast< gum::Size >(193))
         delete si;
         delete bn;
       } catch (gum::Exception&) { TS_ASSERT(false) }
@@ -329,10 +334,10 @@ namespace gum_tests {
             si.interpretFile(GET_RESSOURCES_PATH("o3prmr/ADD/Request.o3prmr")));
 
         si.showElegantErrorsAndWarnings();
-        TS_ASSERT_EQUALS(si.errors(), (gum::Size)0)
-        TS_ASSERT_EQUALS(si.warnings(), (gum::Size)0)
+        TS_ASSERT_EQUALS(si.errors(), static_cast< gum::Size >(0))
+        TS_ASSERT_EQUALS(si.warnings(), static_cast< gum::Size >(0))
 
-        TS_ASSERT_EQUALS(si.results().size(), (gum::Size)1)
+        TS_ASSERT_EQUALS(si.results().size(), static_cast< gum::Size >(1))
 
       } catch (gum::Exception&) { TS_ASSERT(false) }
     }
@@ -347,10 +352,10 @@ namespace gum_tests {
             si.interpretFile(GET_RESSOURCES_PATH("o3prmr/ADD/Request.o3prmr")));
 
         si.showElegantErrorsAndWarnings();
-        TS_ASSERT_EQUALS(si.errors(), (gum::Size)0)
-        TS_ASSERT_EQUALS(si.warnings(), (gum::Size)0)
+        TS_ASSERT_EQUALS(si.errors(), static_cast< gum::Size >(0))
+        TS_ASSERT_EQUALS(si.warnings(), static_cast< gum::Size >(0))
 
-        TS_ASSERT_EQUALS(si.results().size(), (gum::Size)1)
+        TS_ASSERT_EQUALS(si.results().size(), static_cast< gum::Size >(1))
 
         auto result = si.results()[0];
 
@@ -367,10 +372,10 @@ namespace gum_tests {
             si.interpretFile(GET_RESSOURCES_PATH("o3prmr/aggregates/request.o3prmr")));
 
         si.showElegantErrorsAndWarnings();
-        TS_ASSERT_EQUALS(si.errors(), (gum::Size)0)
-        TS_ASSERT_EQUALS(si.warnings(), (gum::Size)0)
+        TS_ASSERT_EQUALS(si.errors(), static_cast< gum::Size >(0))
+        TS_ASSERT_EQUALS(si.warnings(), static_cast< gum::Size >(0))
 
-        TS_ASSERT_EQUALS(si.results().size(), (gum::Size)7)
+        TS_ASSERT_EQUALS(si.results().size(), static_cast< gum::Size >(7))
 
         auto result = si.results()[0];
 
@@ -387,10 +392,10 @@ namespace gum_tests {
             si.interpretFile(GET_RESSOURCES_PATH("o3prmr/University/fr/request.o3prmr")));
 
         si.showElegantErrorsAndWarnings();
-        TS_ASSERT_EQUALS(si.errors(), (gum::Size)0)
-        TS_ASSERT_EQUALS(si.warnings(), (gum::Size)0)
+        TS_ASSERT_EQUALS(si.errors(), static_cast< gum::Size >(0))
+        TS_ASSERT_EQUALS(si.warnings(), static_cast< gum::Size >(0))
 
-        TS_ASSERT_EQUALS(si.results().size(), (gum::Size)1)
+        TS_ASSERT_EQUALS(si.results().size(), static_cast< gum::Size >(1))
 
       } catch (gum::Exception&) { TS_ASSERT(false) }
     }

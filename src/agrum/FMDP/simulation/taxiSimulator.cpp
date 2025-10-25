@@ -95,8 +95,9 @@ namespace gum {
     _taxiVars_.insert(_fuelLevel_);
 
     // Prime version creation
-    for (SequenceIteratorSafe< const DiscreteVariable* > varIter = this->beginVariables();
-         varIter != this->endVariables();
+    for (SequenceIteratorSafe< const DiscreteVariable* > varIter
+         = this->TaxiSimulator::beginVariables();
+         varIter != this->TaxiSimulator::endVariables();
          ++varIter) {
       DiscreteVariable* primeVar = (*varIter)->clone();
       primeVar->setName((*varIter)->name() + "'");

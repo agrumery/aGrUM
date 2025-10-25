@@ -88,7 +88,7 @@ namespace CxxTest {
     void leaveSuite(const SuiteDescription&) {
       double step = __clock->step();
       __totalTime += step;
-      ((*_o) << " [" << (unsigned int)(1000.0 * step) << " ms]").flush();
+      ((*_o) << " [" << static_cast< unsigned int >(1000.0 * step) << " ms]").flush();
     }
 
     void enterTest(const TestDescription&) { _reported = false; }
@@ -112,7 +112,8 @@ namespace CxxTest {
 #endif   // GUM_DEBUG_MODE
 
       (*_o) << endl
-            << "## Profiling : " << (unsigned int)(1000.0 * __totalTime) << " ms ##" << endl;
+            << "## Profiling : " << static_cast< unsigned int >(1000.0 * __totalTime) << " ms ##"
+            << endl;
 
       (*_o) << "Failed " << tracker().failedTests() << " of " << totalTests << endl;
 
@@ -294,7 +295,7 @@ namespace CxxTest {
 
       if (maxDumpSize() && dumpSize > maxDumpSize()) dumpSize = maxDumpSize();
 
-      const unsigned char* p = (const unsigned char*)buffer;
+      auto p = static_cast< const unsigned char* >(buffer);
 
       (*_o) << "   { ";
 

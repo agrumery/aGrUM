@@ -37,6 +37,7 @@
  *   gitlab   : https://gitlab.com/agrumery/agrum                           *
  *                                                                          *
  ****************************************************************************/
+#pragma once
 
 
 #include <iostream>
@@ -48,7 +49,7 @@
 
 namespace gum_tests {
 
-  class [[maybe_unused]] ScoringCacheTestSuite: public CxxTest::TestSuite {
+  class GUM_TEST_SUITE(ScoringCache) {
     public:
     GUM_ACTIVE_TEST(1) {
       gum::learning::IdCondSet    set1;
@@ -148,7 +149,7 @@ namespace gum_tests {
       TS_ASSERT_EQUALS(cache4->size(), std::size_t(2))
 
       delete cache4;
-    }
+    }   // namespace gum_tests
   };
 
 

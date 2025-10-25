@@ -37,6 +37,7 @@
  *   gitlab   : https://gitlab.com/agrumery/agrum                           *
  *                                                                          *
  ****************************************************************************/
+#pragma once
 
 
 #include <string>
@@ -57,7 +58,7 @@
  */
 namespace gum_tests {
 
-  class [[maybe_unused]] PRMTypeTestSuite: public CxxTest::TestSuite {
+  class GUM_TEST_SUITE(PRMType) {
     using PRMType = gum::prm::PRMType;
 
     gum::LabelizedVariable* _boolean_;
@@ -87,7 +88,7 @@ namespace gum_tests {
       // Act
       auto boolean = PRMType::boolean();
       // Assert
-      TS_ASSERT_EQUALS(boolean->variable().domainSize(), (gum::Size)2)
+      TS_ASSERT_EQUALS(boolean->variable().domainSize(), static_cast< gum::Size >(2))
       TS_ASSERT_EQUALS(boolean->variable().label(0), labels[0])
       TS_ASSERT_EQUALS(boolean->variable().label(1), labels[1])
       delete boolean;

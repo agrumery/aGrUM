@@ -37,7 +37,7 @@
  *   gitlab   : https://gitlab.com/agrumery/agrum                           *
  *                                                                          *
  ****************************************************************************/
-
+#pragma once
 
 #include <iostream>
 #include <sstream>
@@ -49,14 +49,15 @@
 #include <agrum/base/variables/allDiscreteVariables.h>
 
 namespace gum_tests {
-  class [[maybe_unused]] AllVariablesTestSuite: public CxxTest::TestSuite {
+  class GUM_TEST_SUITE(AllVariables) {
     public:
     GUM_ACTIVE_TEST(CreationRange) {
       try {
         {
           auto a = FASTVARDBL("A1", 2);
           TS_ASSERT_EQUALS(a->toString(), "A1:Range([0,1])");
-        }
+        }   // namespace gum_tests
+
         {
           // a way to create a variable with only one value
           auto a = FASTVARDBL("A2", 1);

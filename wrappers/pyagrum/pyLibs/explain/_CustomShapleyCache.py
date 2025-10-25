@@ -38,6 +38,7 @@
 #                                                                          #
 ############################################################################
 
+
 class CustomShapleyCache:
   def __init__(self, max_capacity: int = 1000):
     if max_capacity <= 0:
@@ -106,5 +107,4 @@ class CustomShapleyCache:
     return (
       f"Cache (k={self._current_k_index}, size={self._current_size}/{self._max_capacity}): "
       f"Contents by length: {items_by_length}"
-    )  
-
+    )

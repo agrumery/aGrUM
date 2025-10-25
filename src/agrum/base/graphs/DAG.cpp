@@ -49,7 +49,7 @@
 
 #ifdef GUM_NO_INLINE
 #  include <agrum/base/graphs/DAG_inl.h>
-#endif   // GUM_NOINLINE
+#endif   // GU%_NO_INLINE
 
 namespace gum {
 
@@ -145,7 +145,6 @@ namespace gum {
 
     return (Xcc * Ycc).empty();
   }
-
 
   // visit the nodes and add some of node from soids in minimal
   void DAG::_minimalCondSetVisitUp_(NodeId         node,

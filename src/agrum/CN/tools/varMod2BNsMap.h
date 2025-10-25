@@ -71,7 +71,6 @@ namespace gum {
 
     template < typename GUM_SCALAR >
     class VarMod2BNsMap {
-      private:
       using dBN      = std::vector< bool >;
       using varKey   = std::vector< Size >;
       using hashNet  = gum::HashTable< Size, dBN >;

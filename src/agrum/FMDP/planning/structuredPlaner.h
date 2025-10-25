@@ -160,7 +160,7 @@ namespace gum {
     // ==========================================================================
     /// Returns the best policy obtained so far
     // ==========================================================================
-    INLINE const MultiDimFunctionGraph< ActionSet, SetTerminalNodePolicy >* optimalPolicy() {
+    INLINE MultiDimFunctionGraph< ActionSet, SetTerminalNodePolicy >* optimalPolicy() {
       return optimalPolicy_;
     }
 

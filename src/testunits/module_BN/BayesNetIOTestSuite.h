@@ -37,6 +37,7 @@
  *   gitlab   : https://gitlab.com/agrumery/agrum                           *
  *                                                                          *
  ****************************************************************************/
+#pragma once
 
 
 #include <iostream>
@@ -53,7 +54,7 @@
 
 namespace gum_tests {
 
-  class [[maybe_unused]] BayesNetIOTestSuite: public CxxTest::TestSuite {
+  class GUM_TEST_SUITE(BayesNetIO) {
     public:
     GUM_ACTIVE_TEST(NetImportExport) {
       std::string filebif = GET_RESSOURCES_PATH("bif/alarm.bif");
@@ -104,6 +105,6 @@ namespace gum_tests {
         double err = (netbn2.cpt(n) - p).abs().max();
         TS_ASSERT_LESS_THAN(err, 1e-6)
       }
-    }
+    }   // namespace gum_tests
   };
 }   // namespace gum_tests

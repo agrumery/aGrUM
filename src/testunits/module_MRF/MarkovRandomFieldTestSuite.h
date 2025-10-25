@@ -37,6 +37,7 @@
  *   gitlab   : https://gitlab.com/agrumery/agrum                           *
  *                                                                          *
  ****************************************************************************/
+#pragma once
 
 
 #include <iostream>
@@ -61,7 +62,7 @@
 //
 
 namespace gum_tests {
-  class [[maybe_unused]] MarkovRandomFieldTestSuite: public CxxTest::TestSuite {
+  class GUM_TEST_SUITE(MarkovRandomField) {
     private:
     void _fill(gum::MarkovRandomField< double >& mn) {
       for (const auto i: {11, 21, 31, 41}) {
@@ -90,8 +91,8 @@ namespace gum_tests {
       gum::MarkovRandomField< double > mn;
       _fill(mn);
 
-      TS_ASSERT_EQUALS(mn.size(), (gum::Idx)5)
-      TS_ASSERT_EQUALS(mn.sizeEdges(), (gum::Idx)6)
+      TS_ASSERT_EQUALS(mn.size(), static_cast< gum::Idx >(5))
+      TS_ASSERT_EQUALS(mn.sizeEdges(), static_cast< gum::Idx >(6))
       TS_ASSERT_EQUALS(mn.dim(), (gum::Idx)(3 * 3 + 3 * 3 + 3 * 7 + 3 * 3 * 7))
       TS_ASSERT_EQUALS(mn.toString(), "MRF{nodes: 5, edges: 6, domainSize: 567, dim: 102}")
       TS_ASSERT_EQUALS(mn.neighbours("41"), gum::NodeSet({0, 1, 4}))
@@ -102,7 +103,7 @@ namespace gum_tests {
       TS_ASSERT_EQUALS(mn.idFromName("31"), gum::NodeId(2))
       TS_ASSERT_EQUALS(mn.variableFromName("41").name(), "41")
 
-      TS_ASSERT_EQUALS(mn.maxVarDomainSize(), (gum::Size)7)
+      TS_ASSERT_EQUALS(mn.maxVarDomainSize(), static_cast< gum::Size >(7))
       TS_ASSERT_EQUALS(mn.minParam(), 0.0)
       TS_ASSERT_EQUALS(mn.minNonZeroParam(), 0.03)
       TS_ASSERT_EQUALS(mn.maxParam(), 1.0)
@@ -216,7 +217,7 @@ namespace gum_tests {
     GUM_ACTIVE_TEST(Iterations) {
       gum::MarkovRandomField< double > mn;
       _fill(mn);
-      gum::Size cpt = (gum::Size)0;
+      gum::Size cpt = static_cast< gum::Size >(0);
 
       for (const auto node: mn.nodes()) {
         GUM_UNUSED(node);
@@ -225,7 +226,7 @@ namespace gum_tests {
 
       TS_ASSERT_EQUALS(cpt, mn.size())
 
-      cpt = (gum::Size)0;
+      cpt = static_cast< gum::Size >(0);
 
       for (const auto& edg: mn.edges()) {
         GUM_UNUSED(edg);
@@ -241,8 +242,8 @@ namespace gum_tests {
       TS_ASSERT_THROWS(mn.eraseFactor({12, 14}), const gum::InvalidArgument&)
       TS_GUM_ASSERT_THROWS_NOTHING(mn.eraseFactor({2, 4}))
 
-      TS_ASSERT_EQUALS(mn.size(), (gum::Idx)5)
-      TS_ASSERT_EQUALS(mn.sizeEdges(), (gum::Idx)5)
+      TS_ASSERT_EQUALS(mn.size(), static_cast< gum::Idx >(5))
+      TS_ASSERT_EQUALS(mn.sizeEdges(), static_cast< gum::Idx >(5))
       TS_ASSERT_EQUALS(mn.dim(), (gum::Idx)(3 * 3 + 3 * 3 + 3 * 3 * 7))
       TS_ASSERT_EQUALS(mn.toString(), "MRF{nodes: 5, edges: 5, domainSize: 567, dim: 81}")
     }
@@ -253,8 +254,8 @@ namespace gum_tests {
       TS_ASSERT_THROWS(mn.eraseFactor({"31", "21"}), const gum::InvalidArgument&)
       TS_GUM_ASSERT_THROWS_NOTHING(mn.eraseFactor({"31", "51"}))
 
-      TS_ASSERT_EQUALS(mn.size(), (gum::Idx)5)
-      TS_ASSERT_EQUALS(mn.sizeEdges(), (gum::Idx)5)
+      TS_ASSERT_EQUALS(mn.size(), static_cast< gum::Idx >(5))
+      TS_ASSERT_EQUALS(mn.sizeEdges(), static_cast< gum::Idx >(5))
       TS_ASSERT_EQUALS(mn.dim(), (gum::Idx)(3 * 3 + 3 * 3 + 3 * 3 * 7))
       TS_ASSERT_EQUALS(mn.toString(), "MRF{nodes: 5, edges: 5, domainSize: 567, dim: 81}")
     }
@@ -265,8 +266,8 @@ namespace gum_tests {
       TS_ASSERT_THROWS(mn.erase(36), const gum::InvalidArgument&)
       TS_GUM_ASSERT_THROWS_NOTHING(mn.erase(3))
 
-      TS_ASSERT_EQUALS(mn.size(), (gum::Idx)4)
-      TS_ASSERT_EQUALS(mn.sizeEdges(), (gum::Idx)3)
+      TS_ASSERT_EQUALS(mn.size(), static_cast< gum::Idx >(4))
+      TS_ASSERT_EQUALS(mn.sizeEdges(), static_cast< gum::Idx >(3))
       TS_ASSERT_EQUALS(mn.dim(), (gum::Idx)(3 * 3 + 3 * 7 + 3 * 7))
       TS_ASSERT_EQUALS(mn.toString(), "MRF{nodes: 4, edges: 3, domainSize: 189, dim: 51}")
     }
@@ -277,8 +278,8 @@ namespace gum_tests {
       TS_ASSERT_THROWS(mn.erase("36"), const gum::NotFound&)
       TS_GUM_ASSERT_THROWS_NOTHING(mn.erase("41"))
 
-      TS_ASSERT_EQUALS(mn.size(), (gum::Idx)4)
-      TS_ASSERT_EQUALS(mn.sizeEdges(), (gum::Idx)3)
+      TS_ASSERT_EQUALS(mn.size(), static_cast< gum::Idx >(4))
+      TS_ASSERT_EQUALS(mn.sizeEdges(), static_cast< gum::Idx >(3))
       TS_ASSERT_EQUALS(mn.dim(), (gum::Idx)(3 * 3 + 3 * 7 + 3 * 7))
       TS_ASSERT_EQUALS(mn.toString(), "MRF{nodes: 4, edges: 3, domainSize: 189, dim: 51}")
     }

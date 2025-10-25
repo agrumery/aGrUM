@@ -69,7 +69,7 @@ namespace gum {
    *     never check if it is the case.
    */
   template < typename GUM_SCALAR >
-  class MultiDimLogit: public MultiDimICIModel< GUM_SCALAR > {
+  class MultiDimLogit final: public MultiDimICIModel< GUM_SCALAR > {
     public:
     // ============================================================================
     /// @name Constructors / Destructors

@@ -77,8 +77,7 @@ def bar(explanation: Explanation, y: int = None, ax: plt.Axes = None, percentage
   if explanation.values_type == "SHAP":
     if not isinstance(y, int) and y is not None:
       raise TypeError(f"`y` must be either a positive integer or None, but got {type(y)}")
-    if (isinstance(y, int) and
-       (y < min(explanation.keys()) or y > max(explanation.keys()))):
+    if isinstance(y, int) and (y < min(explanation.keys()) or y > max(explanation.keys())):
       raise IndexError(f"Target index y={y} is out of bounds; expected 0 <= y < {max(explanation.keys()) + 1}.")
   elif explanation.values_type == "SHALL":
     # We force y to be an integer, so we can use the same code after for both explanations

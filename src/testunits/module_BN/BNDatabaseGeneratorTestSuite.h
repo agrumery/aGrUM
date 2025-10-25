@@ -37,6 +37,7 @@
  *   gitlab   : https://gitlab.com/agrumery/agrum                           *
  *                                                                          *
  ****************************************************************************/
+#pragma once
 
 
 #include <algorithm>
@@ -77,7 +78,7 @@ namespace gum_tests {
     std::string getMess() const { return _mess_; }
   };
 
-  class [[maybe_unused]] BNDatabaseGeneratorTestSuite: public CxxTest::TestSuite {
+  class GUM_TEST_SUITE(BNDatabaseGenerator) {
     public:
     static gum::BayesNet< double > initAsia() {
       gum::BayesNet< double > bn("Asia");
@@ -90,7 +91,7 @@ namespace gum_tests {
       } catch (gum::Exception& e) { TS_FAIL(e.errorContent()); }
 
       return bn;
-    }
+    }   // namespace gum_tests
 
     GUM_ACTIVE_TEST(Constuctor) {
       gum::BayesNet< double >                       bn    = initAsia();
@@ -98,15 +99,15 @@ namespace gum_tests {
       TS_GUM_ASSERT_THROWS_NOTHING(dbgen = new gum::learning::BNDatabaseGenerator< double >(bn))
 
       auto varOrder = dbgen->varOrder();
-      TS_ASSERT_EQUALS(varOrder.size(), (gum::Size)6)
-      TS_ASSERT_EQUALS(varOrder.at(0), (gum::Idx)0)
-      TS_ASSERT_EQUALS(varOrder.at(1), (gum::Idx)1)
-      TS_ASSERT_EQUALS(varOrder.at(2), (gum::Idx)2)
-      TS_ASSERT_EQUALS(varOrder.at(3), (gum::Idx)3)
-      TS_ASSERT_EQUALS(varOrder.at(4), (gum::Idx)4)
+      TS_ASSERT_EQUALS(varOrder.size(), static_cast< gum::Size >(6))
+      TS_ASSERT_EQUALS(varOrder.at(0), static_cast< gum::Idx >(0))
+      TS_ASSERT_EQUALS(varOrder.at(1), static_cast< gum::Idx >(1))
+      TS_ASSERT_EQUALS(varOrder.at(2), static_cast< gum::Idx >(2))
+      TS_ASSERT_EQUALS(varOrder.at(3), static_cast< gum::Idx >(3))
+      TS_ASSERT_EQUALS(varOrder.at(4), static_cast< gum::Idx >(4))
 
       auto varOrderNames = dbgen->varOrderNames();
-      TS_ASSERT_EQUALS(varOrderNames.size(), (gum::Size)6)
+      TS_ASSERT_EQUALS(varOrderNames.size(), static_cast< gum::Size >(6))
       TS_ASSERT_EQUALS(varOrderNames.at(0), "A")
       TS_ASSERT_EQUALS(varOrderNames.at(1), "S")
       TS_ASSERT_EQUALS(varOrderNames.at(2), "E")
@@ -131,7 +132,7 @@ namespace gum_tests {
 
       TS_GUM_ASSERT_THROWS_NOTHING(dbgen->setVarOrder(goodOrder1))
       auto varOrderNames = dbgen->varOrderNames();
-      TS_ASSERT_EQUALS(varOrderNames.size(), (gum::Size)6)
+      TS_ASSERT_EQUALS(varOrderNames.size(), static_cast< gum::Size >(6))
       TS_ASSERT_EQUALS(varOrderNames.at(1), "A")
       TS_ASSERT_EQUALS(varOrderNames.at(0), "S")
       TS_ASSERT_EQUALS(varOrderNames.at(3), "E")
@@ -141,18 +142,18 @@ namespace gum_tests {
 
       TS_GUM_ASSERT_THROWS_NOTHING(dbgen->setVarOrder(goodOrder2))
       auto varOrder = dbgen->varOrder();
-      TS_ASSERT_EQUALS(varOrder.size(), (gum::Size)6)
-      TS_ASSERT_EQUALS(varOrder.at(0), (gum::Idx)0)
-      TS_ASSERT_EQUALS(varOrder.at(1), (gum::Idx)2)
-      TS_ASSERT_EQUALS(varOrder.at(2), (gum::Idx)3)
-      TS_ASSERT_EQUALS(varOrder.at(3), (gum::Idx)4)
-      TS_ASSERT_EQUALS(varOrder.at(4), (gum::Idx)1)
-      TS_ASSERT_EQUALS(varOrder.at(5), (gum::Idx)5)
+      TS_ASSERT_EQUALS(varOrder.size(), static_cast< gum::Size >(6))
+      TS_ASSERT_EQUALS(varOrder.at(0), static_cast< gum::Idx >(0))
+      TS_ASSERT_EQUALS(varOrder.at(1), static_cast< gum::Idx >(2))
+      TS_ASSERT_EQUALS(varOrder.at(2), static_cast< gum::Idx >(3))
+      TS_ASSERT_EQUALS(varOrder.at(3), static_cast< gum::Idx >(4))
+      TS_ASSERT_EQUALS(varOrder.at(4), static_cast< gum::Idx >(1))
+      TS_ASSERT_EQUALS(varOrder.at(5), static_cast< gum::Idx >(5))
 
       std::string csvFile = GET_RESSOURCES_PATH("csv/survey1.csv");
       TS_GUM_ASSERT_THROWS_NOTHING(dbgen->setVarOrderFromCSV(csvFile))
       varOrderNames = dbgen->varOrderNames();
-      TS_ASSERT_EQUALS(varOrderNames.size(), (gum::Size)6)
+      TS_ASSERT_EQUALS(varOrderNames.size(), static_cast< gum::Size >(6))
       TS_ASSERT_EQUALS(varOrderNames.at(0), "E")
       TS_ASSERT_EQUALS(varOrderNames.at(1), "A")
       TS_ASSERT_EQUALS(varOrderNames.at(2), "O")
@@ -522,17 +523,17 @@ namespace gum_tests {
       gum::learning::BNDatabaseGenerator< double > dbgen(bn);
 
       ASimpleDBGeneratorListener gener(dbgen);
-      TS_ASSERT_EQUALS(gener.getNbr(), (gum::Size)0)
+      TS_ASSERT_EQUALS(gener.getNbr(), static_cast< gum::Size >(0))
       TS_ASSERT_EQUALS(gener.getMess(), "")
       dbgen.drawSamples(100);
-      TS_ASSERT_EQUALS(gener.getNbr(), (gum::Size)4950)
+      TS_ASSERT_EQUALS(gener.getNbr(), static_cast< gum::Size >(4950))
       TS_ASSERT_DIFFERS(gener.getMess(), "")
 
       ASimpleDBGeneratorListener gener2(dbgen);
-      TS_ASSERT_EQUALS(gener2.getNbr(), (gum::Size)0)
+      TS_ASSERT_EQUALS(gener2.getNbr(), static_cast< gum::Size >(0))
       TS_ASSERT_EQUALS(gener2.getMess(), "")
       dbgen.drawSamples(1000);
-      TS_ASSERT_EQUALS(gener2.getNbr(), (gum::Size)4950)
+      TS_ASSERT_EQUALS(gener2.getNbr(), static_cast< gum::Size >(4950))
       TS_ASSERT_DIFFERS(gener2.getMess(), "")
     }
 

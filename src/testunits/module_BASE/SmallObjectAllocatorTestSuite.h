@@ -37,6 +37,7 @@
  *   gitlab   : https://gitlab.com/agrumery/agrum                           *
  *                                                                          *
  ****************************************************************************/
+#pragma once
 
 
 #include <cstdlib>
@@ -53,7 +54,7 @@
 
 namespace gum_tests {
 
-  class [[maybe_unused]] SmallObjectAllocatorTestSuite: public CxxTest::TestSuite {
+  class GUM_TEST_SUITE(SmallObjectAllocator) {
     private:
 
     public:
@@ -66,7 +67,7 @@ namespace gum_tests {
       TS_ASSERT_THROWS_NOTHING(fa = new gum::FixedAllocator(5 * sizeof(gum::Idx), 50))
       // Test destructor
       TS_ASSERT_THROWS_NOTHING(if (fa != nullptr) delete fa)
-    }
+    }   // namespace gum_tests
 
     // ==============================================================================
     // Test Allocation et Deallocation d'un élément

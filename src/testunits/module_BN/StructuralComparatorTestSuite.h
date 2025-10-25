@@ -37,6 +37,7 @@
  *   gitlab   : https://gitlab.com/agrumery/agrum                           *
  *                                                                          *
  ****************************************************************************/
+#pragma once
 
 
 #include <iostream>
@@ -53,7 +54,7 @@
 
 namespace gum_tests {
 
-  class [[maybe_unused]] StructuralComparatorTestSuite: public CxxTest::TestSuite {
+  class GUM_TEST_SUITE(StructuralComparator) {
     public:
     GUM_ACTIVE_TEST(_graph) {
       gum::StructuralComparator comp;
@@ -143,7 +144,7 @@ namespace gum_tests {
       TS_ASSERT_DELTA(comp.recall_skeleton(), 1, 1e-3)
       TS_ASSERT_DELTA(comp.f_score_skeleton(), 0.4444, 1e-3)
       TS_ASSERT_DELTA(comp.precision(), 0, 1e-3)
-    }
+    }   // namespace gum_tests
 
     GUM_ACTIVE_TEST(_bn) {
       gum::StructuralComparator comp;

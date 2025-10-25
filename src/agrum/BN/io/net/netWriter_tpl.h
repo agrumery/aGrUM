@@ -37,9 +37,12 @@
  *   gitlab   : https://gitlab.com/agrumery/agrum                           *
  *                                                                          *
  ****************************************************************************/
+#pragma once
 
-
+#pragma once
 #ifndef DOXYGEN_SHOULD_SKIP_THIS
+
+#  include <fstream>
 
 // to ease parsing in IDE
 #  include <agrum/BN/io/net/netWriter.h>

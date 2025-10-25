@@ -37,6 +37,7 @@
  *   gitlab   : https://gitlab.com/agrumery/agrum                           *
  *                                                                          *
  ****************************************************************************/
+#pragma once
 
 
 #include <cstdio>
@@ -74,7 +75,7 @@
 //         \  /  C5 -> U2 & D4 -> U2
 //          U2
 namespace gum_tests {
-  class [[maybe_unused]] ShaferShenoyLIMIDInferenceTestSuite: public CxxTest::TestSuite {
+  class GUM_TEST_SUITE(ShaferShenoyLIMIDInference) {
     public:
     GUM_ACTIVE_TEST(Constructor) {
       std::string                     file = GET_RESSOURCES_PATH("ID/decAsia.xml");
@@ -85,7 +86,7 @@ namespace gum_tests {
       gum::ShaferShenoyLIMIDInference< double >* dIDI = nullptr;
       TS_GUM_ASSERT_THROWS_NOTHING(dIDI = new gum::ShaferShenoyLIMIDInference< double >(&net))
       TS_GUM_ASSERT_THROWS_NOTHING(if (dIDI != nullptr) delete dIDI)
-    }
+    }   // namespace gum_tests
 
     GUM_ACTIVE_TEST(InferenceWithOilWildCater) {
       std::string                     file = GET_RESSOURCES_PATH("ID/OilWildcatter.xml");
@@ -495,7 +496,7 @@ namespace gum_tests {
 
       auto       ieid    = gum::ShaferShenoyLIMIDInference< double >(&limids);
       const auto revord1 = ieid.reversePartialOrder();
-      TS_ASSERT_EQUALS(revord1.size(), (gum::Size)2)
+      TS_ASSERT_EQUALS(revord1.size(), static_cast< gum::Size >(2))
       TS_ASSERT_EQUALS(revord1[0], limids.nodeset({"d4", "d2", "d3"}))
       TS_ASSERT_EQUALS(revord1[1], limids.nodeset({"d1"}))
 
@@ -504,9 +505,9 @@ namespace gum_tests {
       ieid.addNoForgettingAssumption(order);
       TS_ASSERT(ieid.isSolvable())
       const auto revord2 = ieid.reversePartialOrder();
-      TS_ASSERT_EQUALS(revord2.size(), (gum::Size)4)
-      for (gum::Idx i = 0; i < (gum::Size)4; i++) {
-        TS_ASSERT_EQUALS(revord2[i].size(), (gum::Size)1)
+      TS_ASSERT_EQUALS(revord2.size(), static_cast< gum::Size >(4))
+      for (gum::Idx i = 0; i < static_cast< gum::Size >(4); i++) {
+        TS_ASSERT_EQUALS(revord2[i].size(), static_cast< gum::Size >(1))
         TS_ASSERT_EQUALS(limids.variable(*(revord2[i].begin())).name(), order[3 - i])
       }
       auto noForgetting = ieid.reducedLIMID();
@@ -529,7 +530,7 @@ namespace gum_tests {
       ieid.addNoForgettingAssumption({"D1", "D2", "D3", "D4"});
 
       auto jt = ieid.junctionTree();
-      TS_ASSERT_EQUALS(jt->size(), (gum::Size)5)
+      TS_ASSERT_EQUALS(jt->size(), static_cast< gum::Size >(5))
       ieid.makeInference();
     }
 

@@ -37,6 +37,7 @@
  *   gitlab   : https://gitlab.com/agrumery/agrum                           *
  *                                                                          *
  ****************************************************************************/
+#pragma once
 
 
 #include <iostream>
@@ -57,7 +58,7 @@
 
 namespace gum_tests {
 
-  class [[maybe_unused]] GraphChangesSelector4DiGraphTestSuite: public CxxTest::TestSuite {
+  class GUM_TEST_SUITE(GraphChangesSelector4DiGraph) {
     private:
     void _order_nodes_(const std::vector< std::vector< double > >&      all_scores,
                        const std::vector< gum::NodeId >&                best_nodes,
@@ -73,7 +74,7 @@ namespace gum_tests {
           sorted_nodes.end(),
           [](const std::pair< gum::NodeId, double >& a,
              const std::pair< gum::NodeId, double >& b) -> bool { return a.second > b.second; });
-    }
+    }   // namespace gum_tests
 
     void _compute_scores_(gum::learning::ScoreK2&               score,
                           const gum::DAG&                       graph,

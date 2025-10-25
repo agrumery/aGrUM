@@ -37,6 +37,7 @@
  *   gitlab   : https://gitlab.com/agrumery/agrum                           *
  *                                                                          *
  ****************************************************************************/
+#pragma once
 
 
 /**
@@ -92,10 +93,10 @@ namespace gum {
     var2Node_.insert(value_, new LinkedList< NodeId >());
 
     model_.addNode();
-    this->root_
-        = insertLeafNode_(new NodeDatabase< AttributeSelection, isScalar >(&setOfVars_, value_),
-                          value_,
-                          new Set< const Observation* >());
+    this->root_ = IncrementalGraphLearner< AttributeSelection, isScalar >::insertLeafNode_(
+        new NodeDatabase< AttributeSelection, isScalar >(&setOfVars_, value_),
+        value_,
+        new Set< const Observation* >());
   }
 
   // ############################################################################

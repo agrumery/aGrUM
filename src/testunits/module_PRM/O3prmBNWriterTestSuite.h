@@ -37,6 +37,7 @@
  *   gitlab   : https://gitlab.com/agrumery/agrum                           *
  *                                                                          *
  ****************************************************************************/
+#pragma once
 
 
 #include <iostream>
@@ -63,7 +64,7 @@
 
 namespace gum_tests {
 
-  class [[maybe_unused]] O3prmBNWriterTestSuite: public CxxTest::TestSuite {
+  class GUM_TEST_SUITE(O3prmBNWriter) {
     public:
     gum::BayesNet< double >* bn;
     gum::NodeId              i1, i2, i3, i4, i5;
@@ -113,9 +114,9 @@ namespace gum_tests {
       gum::O3prmBNReader< double > reader(&bn, rfile);
       gum::Size                    res = 0;
       TS_GUM_ASSERT_THROWS_NOTHING(res = reader.proceed())
-      TS_ASSERT_EQUALS(res, (gum::Size)0)
-      TS_ASSERT_EQUALS(reader.warnings(), (gum::Size)7);   // no system
-      TS_ASSERT_EQUALS(bn.size(), (gum::Size)37)
+      TS_ASSERT_EQUALS(res, static_cast< gum::Size >(0))
+      TS_ASSERT_EQUALS(reader.warnings(), static_cast< gum::Size >(7));   // no system
+      TS_ASSERT_EQUALS(bn.size(), static_cast< gum::Size >(37))
       TS_ASSERT_EQUALS(bn.property("name"), "alarm")
 
 
@@ -128,9 +129,9 @@ namespace gum_tests {
       gum::O3prmBNReader< double > reader2(&bn2, wfile, "alarm");
       gum::Size                    res2 = 0;
       TS_GUM_ASSERT_THROWS_NOTHING(res2 = reader2.proceed())
-      TS_ASSERT_EQUALS(res2, (gum::Size)0)
-      TS_ASSERT_EQUALS(reader2.warnings(), (gum::Size)7);   // no system
-      TS_ASSERT_EQUALS(bn2.size(), (gum::Size)37)
+      TS_ASSERT_EQUALS(res2, static_cast< gum::Size >(0))
+      TS_ASSERT_EQUALS(reader2.warnings(), static_cast< gum::Size >(7));   // no system
+      TS_ASSERT_EQUALS(bn2.size(), static_cast< gum::Size >(37))
 
       std::string nam;
       for (const auto& nod: bn.nodes()) {
@@ -159,8 +160,8 @@ namespace gum_tests {
       gum::O3prmBNReader< double > reader2(&bn2, wfile);
       gum::Size                    res2 = 0;
       TS_GUM_ASSERT_THROWS_NOTHING(res2 = reader2.proceed())
-      TS_ASSERT_EQUALS(res2, (gum::Size)0)
-      TS_ASSERT_EQUALS(bn2.size(), (gum::Size)8)
+      TS_ASSERT_EQUALS(res2, static_cast< gum::Size >(0))
+      TS_ASSERT_EQUALS(bn2.size(), static_cast< gum::Size >(8))
 
       std::string nam;
       for (const auto& nod: bn.nodes()) {

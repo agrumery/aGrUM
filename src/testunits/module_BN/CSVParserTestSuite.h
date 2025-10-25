@@ -27,7 +27,7 @@
 
 namespace gum_tests {
 
-  class [[maybe_unused]] CSVParserTestSuite: public CxxTest::TestSuite {
+  class GUM_TEST_SUITE(CSVParser) {
     private:
     std::size_t _noParsedLine_;
 
@@ -89,7 +89,6 @@ namespace gum_tests {
       TS_ASSERT_EQUALS(res, std::string("::::|::::|::::|"))
     };
 
-
     GUM_ACTIVE_TEST(SimpleCSVwithComment) {
       std::string res;
       std::size_t count;
@@ -136,8 +135,8 @@ namespace gum_tests {
       std::size_t count;
 
       // simpleCSV with double quoted token
-      count
-         = testParseString("1,\"fjkdls2\",3,4 \n# this is a comment \n 5,6,7,8 \n 9,10,11,12", res);
+      count = testParseString("1,\"fjkdls2\",3,4 \n# this is a comment \n 5,6,7,8 \n 9,10,11,12",
+                              res);
       TS_ASSERT_EQUALS(count, std::size_t(3))
       TS_ASSERT_EQUALS(_noParsedLine_, std::size_t(4))
       TS_ASSERT_EQUALS(res, std::string("1:fjkdls2:3:4|5:6:7:8|9:10:11:12|"));
@@ -170,9 +169,9 @@ namespace gum_tests {
 
       // simpleCSV with not ending double quoted token
       TS_ASSERT_THROWS(
-         count
-         = testParseString("1,\"fjk,dls2,3,4 \n# this is a comment \n 5,6,7,8 \n 9,10,11,12", res),
-         const gum::SyntaxError&);
+          count
+          = testParseString("1,\"fjk,dls2,3,4 \n# this is a comment \n 5,6,7,8 \n 9,10,11,12", res),
+          const gum::SyntaxError&);
 
       try {
         count = testParseString("1,\"fjk,dls2,3,4 \n# this is a comment \n 5,6,7,8 \n 9,10,11,12",
@@ -212,7 +211,6 @@ namespace gum_tests {
       TS_ASSERT_EQUALS(_noParsedLine_, std::size_t(2))
       TS_ASSERT_EQUALS(res, std::string("1:1a:1b|2a:2:3c|"));
     }
-
 
     GUM_ACTIVE_TEST(UseNewStream) {
       std::string              csvstring1 = "1,2,3,4 \n 5,6,7,8 \n 9,10,11,12";
@@ -270,6 +268,7 @@ namespace gum_tests {
         TS_ASSERT_EQUALS(v1[2], "c d,e")
       }
     }
+
     GUM_ACTIVE_TEST(Apostrophe) {
       {
         std::string              csvstring1 = "'a','b','c d,e' \n 9,10,11";
@@ -301,7 +300,6 @@ namespace gum_tests {
         TS_ASSERT_EQUALS(v1[2], "c d,e")
       }
     }
-
   };
 
 }   // namespace gum_tests

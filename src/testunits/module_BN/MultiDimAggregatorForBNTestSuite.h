@@ -37,6 +37,7 @@
  *   gitlab   : https://gitlab.com/agrumery/agrum                           *
  *                                                                          *
  ****************************************************************************/
+#pragma once
 
 
 #include <sstream>
@@ -68,7 +69,7 @@
 
 namespace gum_tests {
 
-  class [[maybe_unused]] MultiDimAggregratorsForBNTestSuite: public CxxTest::TestSuite {
+  class GUM_TEST_SUITE(MultiDimAggregratorsForBN) {
     public:
     GUM_ACTIVE_TEST(BNwithMin) {
       gum::List< gum::NodeId > idList;
@@ -101,13 +102,14 @@ namespace gum_tests {
           gum::Idx res;
 
           for (i.setFirst(); !i.end(); ++i) {
-            res = (gum::Idx)10000;   // clearly arbitraty choosen
+            res = static_cast< gum::Idx >(10000);   // clearly arbitraty choosen
 
             for (gum::Idx j = 1; j < i.nbrDim(); j++) {
               if (res > i.val(j)) res = i.val(j);
             }
 
-            TS_ASSERT_EQUALS(bn.cpt(idList[0])[i], (res == i.val((gum::Idx)0)) ? 1.0f : 0.0f)
+            TS_ASSERT_EQUALS(bn.cpt(idList[0])[i],
+                             (res == i.val(static_cast< gum::Idx >(0))) ? 1.0f : 0.0f)
           }
         }
       }
@@ -145,7 +147,7 @@ namespace gum_tests {
           TS_ASSERT(false)
         }
       }
-    }
+    }   // namespace gum_tests
 
     GUM_ACTIVE_TEST(NoisyORNetInBN) {
       gum::BayesNet< double > bn;

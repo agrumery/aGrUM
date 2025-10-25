@@ -29,7 +29,7 @@
 #endif   // _CXXTEST_OLD_STD
 
 namespace CxxTest {
-  class AgrumErrorPrinter: public AgrumErrorFormatter {
+  class AgrumErrorPrinter final: public AgrumErrorFormatter {
     public:
     AgrumErrorPrinter(CXXTEST_STD(ostream) & o = CXXTEST_STD(cout),
                       const char* preLine      = ":",
@@ -39,7 +39,7 @@ namespace CxxTest {
     virtual ~AgrumErrorPrinter() { delete outputStream(); }
 
     private:
-    class Adapter: public OutputStream {
+    class Adapter final: public OutputStream {
       CXXTEST_STD(ostream) & _o;
 
       public:

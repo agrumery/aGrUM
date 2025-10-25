@@ -88,7 +88,6 @@ namespace gum {
    */
   template < typename GUM_SCALAR >
   class BayesNetFragment: public IBayesNet< GUM_SCALAR >, public gum::DiGraphListener {
-    private:
     /// The referred BayesNet
     const IBayesNet< GUM_SCALAR >& _bn_;
 
@@ -167,7 +166,7 @@ namespace gum {
     /**
      * Return id node from discrete var pointer.
      *
-     * @throw NotFound If no variable matches var.
+     * @throw NotFound If no variable match var.
      */
     virtual NodeId nodeId(const DiscreteVariable& var) const final;
 

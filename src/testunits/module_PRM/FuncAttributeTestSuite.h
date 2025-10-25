@@ -37,6 +37,7 @@
  *   gitlab   : https://gitlab.com/agrumery/agrum                           *
  *                                                                          *
  ****************************************************************************/
+#pragma once
 
 
 #include <gumtest/AgrumTestSuite.h>
@@ -55,8 +56,7 @@
  */
 namespace gum_tests {
 
-  class [[maybe_unused]] FuncAttributeTestSuite: public CxxTest::TestSuite {
-    private:
+  class GUM_TEST_SUITE(FuncAttribute) {
     using PRMAttribute = gum::prm::PRMFuncAttribute< double >;
 
     ClassElementTestSuiteAbstract* _classEltTestSuite_;

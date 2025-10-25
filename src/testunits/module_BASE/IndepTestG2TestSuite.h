@@ -37,6 +37,7 @@
  *   gitlab   : https://gitlab.com/agrumery/agrum                           *
  *                                                                          *
  ****************************************************************************/
+#pragma once
 
 
 #include <iostream>
@@ -54,7 +55,7 @@
 
 namespace gum_tests {
 
-  class [[maybe_unused]] IndepTestG2TestSuite: public CxxTest::TestSuite {
+  class GUM_TEST_SUITE(IndepTestG2) {
     public:
     GUM_ACTIVE_TEST(_G2) {
       gum::learning::DBInitializerFromCSV initializer(GET_RESSOURCES_PATH("csv/asia.csv"));
@@ -94,7 +95,7 @@ namespace gum_tests {
       TS_ASSERT_DELTA(score.score(3, 1, std::vector< gum::NodeId >{4}), -0.5569, 1e-3)
       TS_ASSERT_DELTA(score.score(2, 0), 230.7461, 1e-3)
       TS_ASSERT_DELTA(score.score(1, 3, std::vector< gum::NodeId >{4}), -0.5569, 1e-3)
-    }
+    }   // namespace gum_tests
 
     GUM_ACTIVE_TEST(_cache) {
       gum::learning::DBInitializerFromCSV initializer(GET_RESSOURCES_PATH("csv/asia.csv"));

@@ -71,7 +71,7 @@ namespace gum {
      * @ingroup learning_group
      */
     template < typename GUM_SCALAR >
-    class BNLearner: public IBNLearner {
+    class BNLearner final: public IBNLearner {
       public:
       // ##########################################################################
       /// @name Constructors / Destructors
@@ -707,7 +707,7 @@ namespace gum {
 
       protected:
       /// create the prior used for learning
-      void createPrior_() final;
+      void createPrior_();
 
       private:
       BayesNet< GUM_SCALAR > _prior_bn_;

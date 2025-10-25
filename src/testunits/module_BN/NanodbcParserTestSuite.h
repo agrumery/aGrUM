@@ -20,25 +20,23 @@
 #include <iostream>
 #include <string>
 
-#include <agrum/base/database/nanodbcParser.h>
-
 #include <gumtest/AgrumTestSuite.h>
 #include <gumtest/utils.h>
 
+#include <agrum/base/database/nanodbcParser.h>
 
 namespace gum_tests {
 
-  class [[maybe_unused]] NanodbcParserTestSuite : public CxxTest::TestSuite {
+  class GUM_TEST_SUITE(NanodbcParser) {
     public:
     GUM_ACTIVE_TEST(SimpleSQL) {
-
 #ifdef ODBC_
 
       try {
         const std::string dataSource = "PostgreSQL";
-        const std::string login = "gonzales";
-        const std::string password = "agrum";
-        const std::string query = "SELECT * FROM testunit.asia";
+        const std::string login      = "gonzales";
+        const std::string password   = "agrum";
+        const std::string query      = "SELECT * FROM testunit.asia";
 
         // the database contains the following rows:
         // smoking lung_cancer bronchitis visit_to_Asia tuberculosis
@@ -53,7 +51,7 @@ namespace gum_tests {
         // TRUE  TRUE  FALSE TRUE TRUE "true"  "toto titi"  2.45
         // TRUE  TRUE  TRUE  TRUE TRUE "true"  "toto titi"  4
 
-        const std::string current_locale = std::setlocale(LC_NUMERIC, NULL);
+        const std::string   current_locale = std::setlocale(LC_NUMERIC, NULL);
         nanodbc::connection connection(dataSource, login, password, 0);
         std::setlocale(LC_NUMERIC, current_locale.c_str());
 
@@ -101,8 +99,7 @@ namespace gum_tests {
         TS_ASSERT_EQUALS(parser.columnName(std::size_t(2)), "bronchitis")
         TS_ASSERT_EQUALS(parser.columnName(std::size_t(3)), "visit_to_Asia")
         TS_ASSERT_EQUALS(parser.columnName(std::size_t(4)), "tuberculosis")
-        TS_ASSERT_EQUALS(parser.columnName(std::size_t(5)),
-                         "tuberculos_or_cancer");
+        TS_ASSERT_EQUALS(parser.columnName(std::size_t(5)), "tuberculos_or_cancer");
         TS_ASSERT_EQUALS(parser.columnName(std::size_t(6)), "dyspnoea")
         TS_ASSERT_EQUALS(parser.columnName(std::size_t(7)), "positive_XraY")
 
@@ -150,8 +147,7 @@ namespace gum_tests {
         TS_ASSERT_EQUALS(parser.columnName(std::size_t(2)), "bronchitis")
         TS_ASSERT_EQUALS(parser.columnName(std::size_t(3)), "visit_to_Asia")
         TS_ASSERT_EQUALS(parser.columnName(std::size_t(4)), "tuberculosis")
-        TS_ASSERT_EQUALS(parser.columnName(std::size_t(5)),
-                         "tuberculos_or_cancer");
+        TS_ASSERT_EQUALS(parser.columnName(std::size_t(5)), "tuberculos_or_cancer");
         TS_ASSERT_EQUALS(parser.columnName(std::size_t(6)), "dyspnoea")
         TS_ASSERT_EQUALS(parser.columnName(std::size_t(7)), "positive_XraY")
 
@@ -161,23 +157,21 @@ namespace gum_tests {
         // no database. see e.what()
         std::cout << "[PostgreSQL error]";
       }
-#endif  // ODBC_
+#endif   // ODBC_
     }
-
 
     GUM_ACTIVE_TEST(AlarmSQL) {
 #ifdef ODBC_
       const std::string driver_name = "SQLite3";
-#ifdef _WIN32
+#  ifdef _WIN32
       driver_name += " ODBC Driver";
-#endif // _WIN32
+#  endif   // _WIN32
 
       try {
-        const std::string connection_string =
-          "Driver=" + driver_name + ";Database=" +
-          GET_RESSOURCES_PATH("sqlite/alarm.sqlite") + ";";
+        const std::string connection_string = "Driver=" + driver_name + ";Database="
+                                            + GET_RESSOURCES_PATH("sqlite/alarm.sqlite") + ";";
 
-        const std::string current_locale = std::setlocale(LC_NUMERIC, NULL);
+        const std::string   current_locale = std::setlocale(LC_NUMERIC, NULL);
         nanodbc::connection connection(connection_string, 0);
         std::setlocale(LC_NUMERIC, current_locale.c_str());
 
@@ -186,21 +180,19 @@ namespace gum_tests {
         std::cout << "[SQLite error]" << e.what();
       }
 
-#endif  // ODBC_
+#endif   // ODBC_
     }
-
 
     GUM_ACTIVE_TEST(AsiaSQL) {
 #ifdef _ODBC
       const std::string driver_name = "SQLite3";
-#ifdef _WIN32
+#  ifdef _WIN32
       driver_name += " ODBC Driver";
-#endif // _WIN32
+#  endif   // _WIN32
 
       try {
-        const std::string connection_string =
-          "Driver=" + driver_name + ";Database=" +
-          GET_RESSOURCES_PATH("sqlite/asia.sqlite") + ";";
+        const std::string connection_string = "Driver=" + driver_name + ";Database="
+                                            + GET_RESSOURCES_PATH("sqlite/asia.sqlite") + ";";
 
         // the database contains the following rows:
         // smoking lung_cancer bronchitis visit_to_Asia tuberculosis
@@ -215,7 +207,7 @@ namespace gum_tests {
         // TRUE  TRUE  FALSE TRUE TRUE "true"  "toto titi"  2.45
         // TRUE  TRUE  TRUE  TRUE TRUE "true"  "toto titi"  4
 
-        const std::string current_locale = std::setlocale(LC_NUMERIC, NULL);
+        const std::string   current_locale = std::setlocale(LC_NUMERIC, NULL);
         nanodbc::connection connection(connection_string, 0);
         TS_ASSERT(connection.connected())
         std::setlocale(LC_NUMERIC, current_locale.c_str());
@@ -339,7 +331,7 @@ namespace gum_tests {
         // no database. see e.what()
         std::cout << "[SQLite error]";
       }
-#endif  // _ODBC
+#endif   // _ODBC
     }
   };
 

@@ -37,6 +37,7 @@
  *   gitlab   : https://gitlab.com/agrumery/agrum                           *
  *                                                                          *
  ****************************************************************************/
+#pragma once
 
 
 // ==============================================================================
@@ -58,7 +59,7 @@
 
 namespace gum_tests {
 
-  class [[maybe_unused]] SDynaTestSuite: public CxxTest::TestSuite {
+  class GUM_TEST_SUITE(SDyna) {
     private:
     void run(gum::AbstractSimulator& sim) {
       // *********************************************************************************************
@@ -94,7 +95,7 @@ namespace gum_tests {
         TS_GUM_ASSERT_THROWS_NOTHING(sim.setInitialStateRandomly())
       }
       TS_GUM_ASSERT_THROWS_NOTHING(delete sdyna)
-    }
+    }   // namespace gum_tests
 
     public:
     // *******************************************************************************

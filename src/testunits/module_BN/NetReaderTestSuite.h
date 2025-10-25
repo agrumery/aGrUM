@@ -37,6 +37,7 @@
  *   gitlab   : https://gitlab.com/agrumery/agrum                           *
  *                                                                          *
  ****************************************************************************/
+#pragma once
 
 
 #include <iostream>
@@ -59,7 +60,7 @@
 
 namespace gum_tests {
 
-  class [[maybe_unused]] NetReaderTestSuite: public CxxTest::TestSuite {
+  class GUM_TEST_SUITE(NetReader) {
     public:
     GUM_ACTIVE_TEST(Constuctor) {
       std::string file = GET_RESSOURCES_PATH("net/test1.net");
@@ -71,7 +72,7 @@ namespace gum_tests {
       TS_GUM_ASSERT_THROWS_NOTHING(reader = new gum::NetReader< double >(&net, file))
 
       TS_GUM_ASSERT_THROWS_NOTHING(delete reader)
-    }
+    }   // namespace gum_tests
 
     GUM_ACTIVE_TEST(Read_not_existing_file) {
       std::string file = GET_RESSOURCES_PATH("net/test.net");
@@ -87,9 +88,9 @@ namespace gum_tests {
       TS_ASSERT_THROWS(nbrErr = reader.proceed(), const gum::IOError&)
 
       TS_ASSERT(!nbrErr)
-      TS_ASSERT_EQUALS(reader.warnings(), (gum::Size)0)
+      TS_ASSERT_EQUALS(reader.warnings(), static_cast< gum::Size >(0))
       // 0 warnings : no properties
-      TS_ASSERT_EQUALS(reader.errors(), (gum::Size)0)
+      TS_ASSERT_EQUALS(reader.errors(), static_cast< gum::Size >(0))
 
       TS_ASSERT_DIFFERS(net, nullptr)
 
@@ -113,10 +114,10 @@ namespace gum_tests {
 
       TS_GUM_ASSERT_THROWS_NOTHING(nbrErr = reader.proceed())
 
-      TS_ASSERT_EQUALS(nbrErr, (gum::Size)0)
-      TS_ASSERT_EQUALS(reader.warnings(), (gum::Size)0)
+      TS_ASSERT_EQUALS(nbrErr, static_cast< gum::Size >(0))
+      TS_ASSERT_EQUALS(reader.warnings(), static_cast< gum::Size >(0))
       // 0 warnings : no properties
-      TS_ASSERT_EQUALS(reader.errors(), (gum::Size)0)
+      TS_ASSERT_EQUALS(reader.errors(), static_cast< gum::Size >(0))
 
       TS_ASSERT_DIFFERS(net, nullptr)
 
@@ -140,10 +141,10 @@ namespace gum_tests {
 
       TS_GUM_ASSERT_THROWS_NOTHING(nbrErr = reader.proceed())
 
-      TS_ASSERT_EQUALS(nbrErr, (gum::Size)0)
-      TS_ASSERT_EQUALS(reader.warnings(), (gum::Size)0)
+      TS_ASSERT_EQUALS(nbrErr, static_cast< gum::Size >(0))
+      TS_ASSERT_EQUALS(reader.warnings(), static_cast< gum::Size >(0))
       // 0 warnings : no properties
-      TS_ASSERT_EQUALS(reader.errors(), (gum::Size)0)
+      TS_ASSERT_EQUALS(reader.errors(), static_cast< gum::Size >(0))
 
       TS_ASSERT_DIFFERS(net, nullptr)
 
@@ -167,10 +168,10 @@ namespace gum_tests {
 
       TS_GUM_ASSERT_THROWS_NOTHING(nbrErr = reader.proceed())
 
-      TS_ASSERT_EQUALS(nbrErr, (gum::Size)0)
-      TS_ASSERT_EQUALS(reader.warnings(), (gum::Size)0)
+      TS_ASSERT_EQUALS(nbrErr, static_cast< gum::Size >(0))
+      TS_ASSERT_EQUALS(reader.warnings(), static_cast< gum::Size >(0))
       // 0 warnings : no properties
-      TS_ASSERT_EQUALS(reader.errors(), (gum::Size)0)
+      TS_ASSERT_EQUALS(reader.errors(), static_cast< gum::Size >(0))
 
       TS_ASSERT_DIFFERS(net, nullptr)
 
@@ -194,10 +195,10 @@ namespace gum_tests {
 
       TS_GUM_ASSERT_THROWS_NOTHING(nbrErr = reader.proceed())
 
-      TS_ASSERT_EQUALS(nbrErr, (gum::Size)0)
-      TS_ASSERT_EQUALS(reader.warnings(), (gum::Size)0)
+      TS_ASSERT_EQUALS(nbrErr, static_cast< gum::Size >(0))
+      TS_ASSERT_EQUALS(reader.warnings(), static_cast< gum::Size >(0))
       // 0 warnings : no properties
-      TS_ASSERT_EQUALS(reader.errors(), (gum::Size)0)
+      TS_ASSERT_EQUALS(reader.errors(), static_cast< gum::Size >(0))
       reader.showElegantErrors();
 
       TS_ASSERT_DIFFERS(net, nullptr)

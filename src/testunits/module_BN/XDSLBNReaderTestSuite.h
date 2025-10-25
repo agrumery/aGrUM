@@ -37,6 +37,7 @@
  *   gitlab   : https://gitlab.com/agrumery/agrum                           *
  *                                                                          *
  ****************************************************************************/
+#pragma once
 
 
 #include <iostream>
@@ -59,7 +60,7 @@
 
 namespace gum_tests {
 
-  class [[maybe_unused]] XDSLBNReaderTestSuite: public CxxTest::TestSuite {
+  class GUM_TEST_SUITE(XDSLBNReader) {
     public:
     GUM_ACTIVE_TEST(Constuctor) {
       std::string             file = GET_RESSOURCES_PATH("xdsl/benefits.xdsl");
@@ -68,7 +69,7 @@ namespace gum_tests {
       gum::XDSLBNReader< double >* reader = 0;
       TS_GUM_ASSERT_THROWS_NOTHING(reader = new gum::XDSLBNReader< double >(&net, file))
       TS_GUM_ASSERT_THROWS_NOTHING(delete reader)
-    }
+    }   // namespace gum_tests
 
     GUM_ACTIVE_TEST(Read_file1) {
       std::string              file = GET_RESSOURCES_PATH("xdsl/benefits.xdsl");

@@ -37,6 +37,7 @@
  *   gitlab   : https://gitlab.com/agrumery/agrum                           *
  *                                                                          *
  ****************************************************************************/
+#pragma once
 
 
 #include <sstream>
@@ -50,7 +51,7 @@
 
 namespace gum_tests {
 
-  class [[maybe_unused]] ScheduleTestSuite: public CxxTest::TestSuite {
+  class GUM_TEST_SUITE(Schedule) {
     public:
     GUM_ACTIVE_TEST(_construct1) {
       // reset the ids of the ScheduleMultiDim to avoid conflicts with other
@@ -370,7 +371,7 @@ namespace gum_tests {
 
       for (unsigned int i = 0; i < vars.size(); ++i)
         delete vars[i];
-    }
+    }   // namespace gum_tests
 
     GUM_ACTIVE_TEST(_del_store) {
       // reset the ids of the ScheduleMultiDim to avoid conflicts with other

@@ -37,6 +37,7 @@
  *   gitlab   : https://gitlab.com/agrumery/agrum                           *
  *                                                                          *
  ****************************************************************************/
+#pragma once
 
 
 #include <iostream>
@@ -97,7 +98,7 @@ namespace gum_tests {
     };
   };
 
-  class MiicTestSuite: public CxxTest::TestSuite {
+  class GUM_TEST_SUITE(Miic) {
     public:
     GUM_ACTIVE_TEST(_latent_var_) {
       gum::learning::DBInitializerFromCSV initializer(
@@ -150,7 +151,7 @@ namespace gum_tests {
       } catch (gum::Exception& e) { GUM_SHOWERROR(e) }
 
       // TS_ASSERT(!search.latentVariables().empty())
-    }
+    }   // namespace gum_tests
 
     GUM_ACTIVE_TEST(_titanic_learn) {
       gum::learning::DBInitializerFromCSV initializer(GET_RESSOURCES_PATH("csv/titanic.csv"));
@@ -694,6 +695,5 @@ namespace gum_tests {
         // GUM_TRACE_VAR(dag.toDot())
       } catch (gum::Exception& e) { GUM_SHOWERROR(e) }
     }
-
   };   // MiicTestSuite
 }   // namespace gum_tests

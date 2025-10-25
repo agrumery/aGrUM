@@ -37,6 +37,7 @@
  *   gitlab   : https://gitlab.com/agrumery/agrum                           *
  *                                                                          *
  ****************************************************************************/
+#pragma once
 
 
 #include <iostream>
@@ -49,7 +50,7 @@
 
 namespace gum_tests {
 
-  class [[maybe_unused]] DBTranslator4ContinuousVariableTestSuite: public CxxTest::TestSuite {
+  class GUM_TEST_SUITE(DBTranslator4ContinuousVariable) {
     public:
     GUM_ACTIVE_TEST(_trans1) {
       gum::learning::DBTranslator4ContinuousVariable translator;
@@ -146,7 +147,7 @@ namespace gum_tests {
 
       TS_ASSERT_EQUALS(translator5.needsReordering(), false)
       TS_ASSERT(translator5.reorder().empty())
-    }
+    }   // namespace gum_tests
 
     GUM_ACTIVE_TEST(_trans2) {
       {

@@ -37,6 +37,7 @@
  *   gitlab   : https://gitlab.com/agrumery/agrum                           *
  *                                                                          *
  ****************************************************************************/
+#pragma once
 
 
 #include <iostream>
@@ -87,7 +88,7 @@ namespace gum_tests {
   };   // end of : class mcSamplingListener
 
   ////////////////////////////////////////////////////////////////
-  class [[maybe_unused]] CNMonteCarloSamplingInferenceTestSuite: public CxxTest::TestSuite {
+  class GUM_TEST_SUITE(CNMonteCarloSamplingInference) {
     private:
 
     protected:

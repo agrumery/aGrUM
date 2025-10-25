@@ -65,7 +65,7 @@ namespace gum {
    */
 
 
-  class ComposedLeaf: public AbstractLeaf {
+  class ComposedLeaf final: public AbstractLeaf {
     public:
     // ==========================================================================
     /// @name Constructor & destructor.

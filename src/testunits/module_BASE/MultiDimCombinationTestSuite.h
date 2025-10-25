@@ -37,6 +37,7 @@
  *   gitlab   : https://gitlab.com/agrumery/agrum                           *
  *                                                                          *
  ****************************************************************************/
+#pragma once
 
 
 #include <cstdlib>
@@ -53,7 +54,7 @@
 
 namespace gum_tests {
 
-  class [[maybe_unused]] MultiDimCombinationTestSuite: public CxxTest::TestSuite {
+  class GUM_TEST_SUITE(MultiDimCombination) {
     private:
     // ==========================================================================
     /// initialize randomly a table
@@ -63,7 +64,7 @@ namespace gum_tests {
 
       for (i.setFirst(); !i.end(); ++i)
         t.set(i, rand() * 100000.0f / float(RAND_MAX));
-    }
+    }   // namespace gum_tests
 
     // the function used to combine two tables
     static gum::Tensor< double > addTensor(const gum::Tensor< double >& t1,

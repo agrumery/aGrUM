@@ -37,6 +37,7 @@
  *   gitlab   : https://gitlab.com/agrumery/agrum                           *
  *                                                                          *
  ****************************************************************************/
+#pragma once
 
 
 #include <algorithm>
@@ -57,7 +58,7 @@
 
 namespace gum_tests {
 
-  class [[maybe_unused]] DBInitializerFromSQLTestSuite: public CxxTest::TestSuite {
+  class GUM_TEST_SUITE(DBInitializerFromSQL) {
     public:
     GUM_ACTIVE_TEST(_init1) {
 #ifdef ODBC_
@@ -122,6 +123,7 @@ namespace gum_tests {
         database2.insertTranslator(translator_lab, std::size_t(3));
         database2.insertTranslator(translator_lab, std::size_t(4));
         database2.setVariableNames(initializer2.variableNames(), true);
+
         TS_ASSERT_EQUALS(database2.variableNames().size(), 3)
         {
           const auto ignored_vect = database2.ignoredColumns();
@@ -164,6 +166,7 @@ namespace gum_tests {
 
         const std::vector< std::string > names{"x1", "x3", "x4", "x6", "x7"};
         database3.setVariableNames(names, false);
+
         TS_ASSERT_EQUALS(database3.variableNames().size(), std::size_t(5))
 
         {
@@ -257,8 +260,9 @@ namespace gum_tests {
         TS_ASSERT_EQUALS(database9.variableNames().size(), 3)
         initializer.fillDatabase(database9);
         TS_ASSERT_EQUALS(database9.size(), std::size_t(3))
+      }
 
-      } catch (nanodbc::database_error& e) {
+      catch (nanodbc::database_error& e) {
         // no database. see e.what()
         std::cout << "[PostgreSQL error]";
       }

@@ -37,6 +37,7 @@
  *   gitlab   : https://gitlab.com/agrumery/agrum                           *
  *                                                                          *
  ****************************************************************************/
+#pragma once
 
 
 /**
@@ -150,13 +151,13 @@ namespace gum {
     return dag_.minimalCondSet(targets, soids);
   }
 
-  INLINE NodeSet DAGmodel::minimalCondSet(const std::string& target,
-                                          const std::vector<std::string>& soids) const {
+  INLINE NodeSet DAGmodel::minimalCondSet(const std::string&                target,
+                                          const std::vector< std::string >& soids) const {
     return dag_.minimalCondSet(idFromName(target), nodeset(soids));
   }
 
-  INLINE NodeSet DAGmodel::minimalCondSet(const std::vector<std::string>& targets,
-                                          const std::vector<std::string>& soids) const {
+  INLINE NodeSet DAGmodel::minimalCondSet(const std::vector< std::string >& targets,
+                                          const std::vector< std::string >& soids) const {
     return dag_.minimalCondSet(nodeset(targets), nodeset(soids));
   }
 

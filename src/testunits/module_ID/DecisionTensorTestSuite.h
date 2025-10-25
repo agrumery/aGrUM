@@ -37,6 +37,7 @@
  *   gitlab   : https://gitlab.com/agrumery/agrum                           *
  *                                                                          *
  ****************************************************************************/
+#pragma once
 
 
 #include <cstdio>
@@ -54,7 +55,7 @@
 
 namespace gum_tests {
 
-  class [[maybe_unused]] DecisionTensorTestSuite: public CxxTest::TestSuite {
+  class GUM_TEST_SUITE(DecisionTensor) {
     public:
     GUM_ACTIVE_TEST(Construction) {
       gum::DecisionTensor< double > d1, d2;
@@ -87,7 +88,7 @@ namespace gum_tests {
 
       d4 = d1;
       TS_ASSERT_EQUALS(d1, d4)
-    }
+    }   // namespace gum_tests
 
     GUM_ACTIVE_TEST(Construction2) {
       auto infdiag = gum::InfluenceDiagram< double >::fastPrototype("A->$B<-*C");

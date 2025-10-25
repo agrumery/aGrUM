@@ -37,6 +37,7 @@
  *   gitlab   : https://gitlab.com/agrumery/agrum                           *
  *                                                                          *
  ****************************************************************************/
+#pragma once
 
 
 #include <iostream>
@@ -52,7 +53,7 @@
 
 namespace gum_tests {
 
-  class [[maybe_unused]] RecordCounterTestSuite: public CxxTest::TestSuite {
+  class GUM_TEST_SUITE(RecordCounter) {
     private:
     gum::Tensor< double >
         _infer_(const gum::BayesNet< double >&                                  bn,
@@ -75,7 +76,7 @@ namespace gum_tests {
 
       gum::Tensor< double > prob = ve.jointPosterior(target_set);
       return prob;
-    }
+    }   // namespace gum_tests
 
     public:
     void _test_no_range_no_nodeId2col() {

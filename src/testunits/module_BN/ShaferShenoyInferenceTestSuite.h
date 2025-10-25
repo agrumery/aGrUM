@@ -37,6 +37,7 @@
  *   gitlab   : https://gitlab.com/agrumery/agrum                           *
  *                                                                          *
  ****************************************************************************/
+#pragma once
 
 
 #include <cstdlib>
@@ -68,7 +69,7 @@
 //                          2 -> 5
 
 namespace gum_tests {
-  class [[maybe_unused]] ShaferShenoyInferenceBNTestSuite: public CxxTest::TestSuite {
+  class GUM_TEST_SUITE(ShaferShenoyInferenceBN) {
     public:
     gum::BayesNet< double >* bn;
     gum::NodeId              i1, i2, i3, i4, i5;
@@ -274,15 +275,15 @@ namespace gum_tests {
       gum::ShaferShenoyInference< double > inf(bn);
       inf.addJointTarget(gum::NodeSet{0, 1, 2});
       inf.addJointTarget(gum::NodeSet{2, 3});
-      TS_ASSERT_EQUALS(inf.nbrJointTargets(), (gum::Size)2)
+      TS_ASSERT_EQUALS(inf.nbrJointTargets(), static_cast< gum::Size >(2))
 
       // should not be added since {0,1,2} already exists
       inf.addJointTarget(gum::NodeSet{0, 1});
-      TS_ASSERT_EQUALS(inf.nbrJointTargets(), (gum::Size)2)
+      TS_ASSERT_EQUALS(inf.nbrJointTargets(), static_cast< gum::Size >(2))
 
       // should remove {2,3} since {2,3,4} includes {2,3}
       inf.addJointTarget(gum::NodeSet{2, 3, 4});
-      TS_ASSERT_EQUALS(inf.nbrJointTargets(), (gum::Size)2)
+      TS_ASSERT_EQUALS(inf.nbrJointTargets(), static_cast< gum::Size >(2))
 
       auto                                     bn_joint = this->joint(*bn);
       gum::Set< const gum::DiscreteVariable* > vars;
@@ -369,10 +370,10 @@ namespace gum_tests {
       std::string              file = GET_RESSOURCES_PATH("bif/asia.bif");
       gum::BayesNet< double >  bn;
       gum::BIFReader< double > reader(&bn, file);
-      gum::Size                nbrErr = (gum::Size)0;
+      gum::Size                nbrErr = static_cast< gum::Size >(0);
       TS_GUM_ASSERT_THROWS_NOTHING(nbrErr = reader.proceed())
-      TS_ASSERT_EQUALS(nbrErr, (gum::Size)(gum::Size)0)
-      TS_ASSERT_EQUALS(reader.warnings(), (gum::Size)0)
+      TS_ASSERT_EQUALS(nbrErr, (gum::Size) static_cast< gum::Size >(0))
+      TS_ASSERT_EQUALS(reader.warnings(), static_cast< gum::Size >(0))
 
       auto id = bn.idFromName("lung_cancer");
 
@@ -406,10 +407,10 @@ namespace gum_tests {
       std::string              file = GET_RESSOURCES_PATH("bif/asia.bif");
       gum::BayesNet< double >  bn;
       gum::BIFReader< double > reader(&bn, file);
-      gum::Size                nbrErr = (gum::Size)0;
+      gum::Size                nbrErr = static_cast< gum::Size >(0);
       TS_GUM_ASSERT_THROWS_NOTHING(nbrErr = reader.proceed())
-      TS_ASSERT_EQUALS(nbrErr, (gum::Size)(gum::Size)0)
-      TS_ASSERT_EQUALS(reader.warnings(), (gum::Size)0)
+      TS_ASSERT_EQUALS(nbrErr, (gum::Size) static_cast< gum::Size >(0))
+      TS_ASSERT_EQUALS(reader.warnings(), static_cast< gum::Size >(0))
 
       const auto bn_joint = this->joint(bn);
 
@@ -439,7 +440,7 @@ namespace gum_tests {
             TS_ASSERT(
                 equalTensors(inf2.posterior(node), joint.sumIn({&bn.variable(node)}).normalize()))
           }
-          ev_pot.set(inst, (float)0);
+          ev_pot.set(inst, static_cast< float >(0));
         }
       }
     }
@@ -448,10 +449,10 @@ namespace gum_tests {
       std::string              file = GET_RESSOURCES_PATH("bif/alarm.bif");
       gum::BayesNet< double >  bn;
       gum::BIFReader< double > reader(&bn, file);
-      gum::Size                nbrErr = (gum::Size)0;
+      gum::Size                nbrErr = static_cast< gum::Size >(0);
       TS_GUM_ASSERT_THROWS_NOTHING(nbrErr = reader.proceed())
-      TS_ASSERT_EQUALS(nbrErr, (gum::Size)(gum::Size)0)
-      TS_ASSERT_EQUALS(reader.warnings(), (gum::Size)0)
+      TS_ASSERT_EQUALS(nbrErr, (gum::Size) static_cast< gum::Size >(0))
+      TS_ASSERT_EQUALS(reader.warnings(), static_cast< gum::Size >(0))
 
       gum::ShaferShenoyInference< double > inf1(&bn);
       gum::VariableElimination< double >   inf2(&bn);
@@ -527,10 +528,10 @@ namespace gum_tests {
       std::string              file = GET_RESSOURCES_PATH("bif/asia3.bif");
       gum::BayesNet< double >  bn;
       gum::BIFReader< double > reader(&bn, file);
-      gum::Size                nbrErr = (gum::Size)0;
+      gum::Size                nbrErr = static_cast< gum::Size >(0);
       TS_GUM_ASSERT_THROWS_NOTHING(nbrErr = reader.proceed())
-      TS_ASSERT_EQUALS(nbrErr, (gum::Size)(gum::Size)0)
-      TS_ASSERT_EQUALS(reader.warnings(), (gum::Size)0)
+      TS_ASSERT_EQUALS(nbrErr, (gum::Size) static_cast< gum::Size >(0))
+      TS_ASSERT_EQUALS(reader.warnings(), static_cast< gum::Size >(0))
 
       const auto bn_joint = this->joint(bn);
 
@@ -589,10 +590,10 @@ namespace gum_tests {
       std::string              file = GET_RESSOURCES_PATH("bif/asia3.bif");
       gum::BayesNet< double >  bn;
       gum::BIFReader< double > reader(&bn, file);
-      gum::Size                nbrErr = (gum::Size)0;
+      gum::Size                nbrErr = static_cast< gum::Size >(0);
       TS_GUM_ASSERT_THROWS_NOTHING(nbrErr = reader.proceed())
-      TS_ASSERT_EQUALS(nbrErr, (gum::Size)(gum::Size)0)
-      TS_ASSERT_EQUALS(reader.warnings(), (gum::Size)0)
+      TS_ASSERT_EQUALS(nbrErr, (gum::Size) static_cast< gum::Size >(0))
+      TS_ASSERT_EQUALS(reader.warnings(), static_cast< gum::Size >(0))
 
       const auto bn_joint = this->joint(bn);
 
@@ -651,10 +652,10 @@ namespace gum_tests {
       std::string              file = GET_RESSOURCES_PATH("bif/asia.bif");
       gum::BayesNet< double >  bn;
       gum::BIFReader< double > reader(&bn, file);
-      gum::Size                nbrErr = (gum::Size)0;
+      gum::Size                nbrErr = static_cast< gum::Size >(0);
       TS_GUM_ASSERT_THROWS_NOTHING(nbrErr = reader.proceed())
-      TS_ASSERT_EQUALS(nbrErr, (gum::Size)(gum::Size)0)
-      TS_ASSERT_EQUALS(reader.warnings(), (gum::Size)0)
+      TS_ASSERT_EQUALS(nbrErr, (gum::Size) static_cast< gum::Size >(0))
+      TS_ASSERT_EQUALS(reader.warnings(), static_cast< gum::Size >(0))
 
       const auto bn_joint = this->joint(bn);
 
@@ -733,10 +734,10 @@ namespace gum_tests {
       gum::BayesNet< double >  bn;
       gum::BIFReader< double > reader(&bn, file);
 
-      gum::Size nbrErr = (gum::Size)0;
+      gum::Size nbrErr = static_cast< gum::Size >(0);
       TS_GUM_ASSERT_THROWS_NOTHING(nbrErr = reader.proceed())
-      TS_ASSERT_EQUALS(nbrErr, (gum::Size)(gum::Size)0)
-      TS_ASSERT_EQUALS(reader.warnings(), (gum::Size)0)
+      TS_ASSERT_EQUALS(nbrErr, (gum::Size) static_cast< gum::Size >(0))
+      TS_ASSERT_EQUALS(reader.warnings(), static_cast< gum::Size >(0))
 
       const auto bn_joint = this->joint(bn);
 
@@ -787,10 +788,10 @@ namespace gum_tests {
       gum::BayesNet< double >  bn;
       gum::BIFReader< double > reader(&bn, file);
 
-      gum::Size nbrErr = (gum::Size)0;
+      gum::Size nbrErr = static_cast< gum::Size >(0);
       TS_GUM_ASSERT_THROWS_NOTHING(nbrErr = reader.proceed())
-      TS_ASSERT_EQUALS(nbrErr, (gum::Size)(gum::Size)0)
-      TS_ASSERT_EQUALS(reader.warnings(), (gum::Size)0)
+      TS_ASSERT_EQUALS(nbrErr, (gum::Size) static_cast< gum::Size >(0))
+      TS_ASSERT_EQUALS(reader.warnings(), static_cast< gum::Size >(0))
 
       const auto bn_joint = this->joint(bn);
 
@@ -842,10 +843,10 @@ namespace gum_tests {
       gum::BayesNet< double >  bn;
       gum::BIFReader< double > reader(&bn, file);
 
-      gum::Size nbrErr = (gum::Size)0;
+      gum::Size nbrErr = static_cast< gum::Size >(0);
       TS_GUM_ASSERT_THROWS_NOTHING(nbrErr = reader.proceed())
-      TS_ASSERT_EQUALS(nbrErr, (gum::Size)0)
-      TS_ASSERT_EQUALS(reader.warnings(), (gum::Size)0)
+      TS_ASSERT_EQUALS(nbrErr, static_cast< gum::Size >(0))
+      TS_ASSERT_EQUALS(reader.warnings(), static_cast< gum::Size >(0))
 
       gum::ShaferShenoyInference< double > ie_all(&bn);
       TS_ASSERT_THROWS(ie_all.evidenceImpact(gum::NodeId(0), gum::NodeSet{0, 1, 2}),
@@ -853,11 +854,11 @@ namespace gum_tests {
 
       auto res = ie_all.evidenceImpact(gum::NodeId(0), gum::NodeSet{1, 2});
 
-      TS_ASSERT_EQUALS(res.nbrDim(), (gum::Size)2);   // 2 indep 0 given 1
+      TS_ASSERT_EQUALS(res.nbrDim(), static_cast< gum::Size >(2));   // 2 indep 0 given 1
 
       gum::ShaferShenoyInference< double > ie_0(&bn);
-      ie_0.addTarget(0);                              // visit_to_asia
-      ie_0.addEvidence(1, 0);                         // tuberculosis
+      ie_0.addTarget(0);                                             // visit_to_asia
+      ie_0.addEvidence(1, 0);                                        // tuberculosis
       ie_0.makeInference();
       gum::Tensor< double > p_0 = ie_0.posterior(0);
 
@@ -880,10 +881,10 @@ namespace gum_tests {
       gum::BayesNet< double >  bn;
       gum::BIFReader< double > reader(&bn, file);
 
-      gum::Size nbrErr = (gum::Size)0;
+      gum::Size nbrErr = static_cast< gum::Size >(0);
       TS_GUM_ASSERT_THROWS_NOTHING(nbrErr = reader.proceed())
-      TS_ASSERT_EQUALS(nbrErr, (gum::Size)0)
-      TS_ASSERT_EQUALS(reader.warnings(), (gum::Size)0)
+      TS_ASSERT_EQUALS(nbrErr, static_cast< gum::Size >(0))
+      TS_ASSERT_EQUALS(reader.warnings(), static_cast< gum::Size >(0))
 
 
       gum::ShaferShenoyInference< double > ie_all(&bn);
@@ -895,11 +896,11 @@ namespace gum_tests {
 
       auto res = ie_all.evidenceImpact("visit_to_Asia", {"tuberculosis", "tuberculos_or_cancer"});
 
-      TS_ASSERT_EQUALS(res.nbrDim(), (gum::Size)2);   // 2 indep 0 given 1
+      TS_ASSERT_EQUALS(res.nbrDim(), static_cast< gum::Size >(2));   // 2 indep 0 given 1
 
       gum::ShaferShenoyInference< double > ie_0(&bn);
-      ie_0.addTarget(0);                              // visit_to_asia
-      ie_0.addEvidence(1, 0);                         // tuberculosis
+      ie_0.addTarget(0);                                             // visit_to_asia
+      ie_0.addEvidence(1, 0);                                        // tuberculosis
       ie_0.makeInference();
       gum::Tensor< double > p_0 = ie_0.posterior(0);
 
@@ -932,7 +933,7 @@ namespace gum_tests {
       gum::ShaferShenoyInference< double > ie(&bn);
       gum::Tensor< double >                res;
       TS_GUM_ASSERT_THROWS_NOTHING(res = ie.evidenceImpact("E", {"A", "B", "C", "D", "F"}))
-      TS_ASSERT_EQUALS(res.nbrDim(), (gum::Size)4);   // MarkovBlanket(E)=(A,D,C)
+      TS_ASSERT_EQUALS(res.nbrDim(), static_cast< gum::Size >(4));   // MarkovBlanket(E)=(A,D,C)
     }
 
     GUM_ACTIVE_TEST(JointWithHardEvidence) {

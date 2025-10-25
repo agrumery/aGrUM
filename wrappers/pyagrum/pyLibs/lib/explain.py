@@ -46,12 +46,12 @@ import warnings
 
 warnings.warn(
   "The module 'pyagrum.lib.explain' has been deprecated since version 2.2.2. "
-  "Please use the 'pyagrum.explain' module instead." ,
+  "Please use the 'pyagrum.explain' module instead.",
   DeprecationWarning,
-  stacklevel=2
+  stacklevel=2,
 )
 
 from pyagrum.explain.shapley import ShapValues  # noqa: E402
 from pyagrum.explain.notebook import showShapValues  # noqa: E402
 from pyagrum.explain import independenceListForPairs  # noqa: E402
-from pyagrum.explain import showInformation,getInformation,getInformationGraph  # noqa: E402
+from pyagrum.explain import showInformation, getInformation, getInformationGraph  # noqa: E402

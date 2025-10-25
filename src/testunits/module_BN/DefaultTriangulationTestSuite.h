@@ -37,6 +37,7 @@
  *   gitlab   : https://gitlab.com/agrumery/agrum                           *
  *                                                                          *
  ****************************************************************************/
+#pragma once
 
 
 #include <iostream>
@@ -62,7 +63,7 @@
 
 namespace gum_tests {
 
-  class [[maybe_unused]] DefaultTriangulationTestSuite: public CxxTest::TestSuite {
+  class GUM_TEST_SUITE(DefaultTriangulation) {
     public:
     gum::LabelizedVariable *var1, *var2, *var3, *var4, *var5;
 
@@ -203,7 +204,7 @@ namespace gum_tests {
       gum::NodeProperty< gum::Size > dom;
 
       for (unsigned int i = 1; i <= 8; ++i)
-        dom.insert(i, (gum::Size)10);
+        dom.insert(i, static_cast< gum::Size >(10));
 
       gum::DefaultTriangulation triang;
 

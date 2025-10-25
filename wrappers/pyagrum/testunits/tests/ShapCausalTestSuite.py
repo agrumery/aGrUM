@@ -45,7 +45,6 @@ import pandas as pd
 from pyagrum.explain import CausalShapValues
 
 
-
 class ShapCausalTestCase(pyAgrumTestCase):
   @staticmethod
   def create_data():

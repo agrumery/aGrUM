@@ -1,5 +1,5 @@
 /***************************************************************************
- *   (c) Copyright 2007-2024 by Lionel Torti and Pierre-Henri Wuillemin(@LIP6)                                    *
+ *   (c) Copyright 2007-2024 by Lionel Torti and Pierre-Henri Wuillemin(@LIP6) *
  *   info_at_agrum_dot_org                                                  *
  *                                                                         *
  *   This program is free software; you can redistribute it and/or modify  *
@@ -18,27 +18,28 @@
  *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
  ***************************************************************************/
 
-#include <gumtest/AgrumTestSuite.h>
-#include <gumtest/utils.h>
 #include <iostream>
 #include <vector>
-#include <ressources/include/simpleDebugGenerator.h>
-#include <ressources/include/evenDebugGenerator.h>
 
-#include <agrum/BN/inference/lazyPropagation.h>
-#include <agrum/base/database/DBTranslator4LabelizedVariable.h>
-#include <agrum/base/database/DBTranslator4ContinuousVariable.h>
-#include <agrum/base/database/DBRowGeneratorParser.h>
+#include <gumtest/AgrumTestSuite.h>
+#include <gumtest/utils.h>
+
 #include <agrum/base/database/DBRowGeneratorEM.h>
+#include <agrum/base/database/DBRowGeneratorParser.h>
+#include <agrum/base/database/DBTranslator4ContinuousVariable.h>
+#include <agrum/base/database/DBTranslator4LabelizedVariable.h>
+#include <agrum/BN/inference/lazyPropagation.h>
+
+#include <ressources/include/evenDebugGenerator.h>
+#include <ressources/include/simpleDebugGenerator.h>
 
 namespace gum_tests {
 
-  class [[maybe_unused]] DBRowGeneratorParserTestSuite: public CxxTest::TestSuite {
-    private:
+  class GUM_TEST_SUITE(DBRowGeneratorParser) {
     gum::Tensor< double >
-       _infer_(const gum::BayesNet< double >&                                  bn,
-               const std::vector< std::size_t >&                               targets,
-               const gum::learning::DBRow< gum::learning::DBTranslatedValue >& row) {
+        _infer_(const gum::BayesNet< double >&                                  bn,
+                const std::vector< std::size_t >&                               targets,
+                const gum::learning::DBRow< gum::learning::DBTranslatedValue >& row) {
       gum::LazyPropagation< double > ve(&bn);
 
       gum::NodeSet target_set;
@@ -56,7 +57,7 @@ namespace gum_tests {
 
       gum::Tensor< double > prob = ve.jointPosterior(target_set);
       return prob;
-    }
+    }   // namespace gum_tests
 
 
     public:
@@ -96,10 +97,10 @@ namespace gum_tests {
       database.insertRow(row);
 
       const std::vector< gum::learning::DBTranslatedValueType > col_types{
-         gum::learning::DBTranslatedValueType::DISCRETE,
-         gum::learning::DBTranslatedValueType::DISCRETE,
-         gum::learning::DBTranslatedValueType::CONTINUOUS,
-         gum::learning::DBTranslatedValueType::DISCRETE};
+          gum::learning::DBTranslatedValueType::DISCRETE,
+          gum::learning::DBTranslatedValueType::DISCRETE,
+          gum::learning::DBTranslatedValueType::CONTINUOUS,
+          gum::learning::DBTranslatedValueType::DISCRETE};
 
       gum::learning::SimpleDebugGenerator generator1(col_types, 6);
       gum::learning::EvenDebugGenerator   generator2(col_types, 4);
@@ -326,13 +327,12 @@ namespace gum_tests {
       TS_ASSERT_EQUALS(parser2.generatorSet().size(), std::size_t(0))
     }
 
-
     GUM_ACTIVE_TEST(EM) {
       const std::vector< gum::learning::DBTranslatedValueType > col_types{
-         gum::learning::DBTranslatedValueType::DISCRETE,
-         gum::learning::DBTranslatedValueType::DISCRETE,
-         gum::learning::DBTranslatedValueType::DISCRETE,
-         gum::learning::DBTranslatedValueType::DISCRETE};
+          gum::learning::DBTranslatedValueType::DISCRETE,
+          gum::learning::DBTranslatedValueType::DISCRETE,
+          gum::learning::DBTranslatedValueType::DISCRETE,
+          gum::learning::DBTranslatedValueType::DISCRETE};
 
       auto bn0 = gum::BayesNet< double >::fastPrototype("A;B;C;D");
       bn0.cpt("A").fillWith({0.3, 0.7});
@@ -394,7 +394,8 @@ namespace gum_tests {
       const std::vector< std::size_t > cols_of_interest{std::size_t(0), std::size_t(1)};
 
       parser.setColumnsOfInterest(cols_of_interest);
-      TS_ASSERT(parser.hasRows()) {
+      TS_ASSERT(parser.hasRows())
+      {
         const auto& row  = parser.row();
         const auto& xrow = row.row();
 
@@ -408,7 +409,7 @@ namespace gum_tests {
         TS_ASSERT(parser.hasRows())
 
         gum::Tensor< double > proba = _infer_(bn, {std::size_t(1)}, handler.row());
-        gum::Instantiation       inst(proba);
+        gum::Instantiation    inst(proba);
 
         const auto& fill_row1  = parser.row();
         const auto& xfill_row1 = fill_row1.row();
@@ -428,8 +429,7 @@ namespace gum_tests {
         ++handler;
         TS_ASSERT(parser.hasRows())
 
-        gum::Tensor< double > proba
-           = _infer_(bn, {std::size_t(0), std::size_t(1)}, handler.row());
+        gum::Tensor< double > proba = _infer_(bn, {std::size_t(0), std::size_t(1)}, handler.row());
 
         std::vector< double > xproba(4);
         std::vector< bool >   observed(4, false);
@@ -437,8 +437,7 @@ namespace gum_tests {
         for (gum::Instantiation inst(proba); !inst.end(); ++inst) {
           if (proba.variablesSequence()[0]->name() == "A")
             idx = inst.val(0) + std::size_t(2) * inst.val(1);
-          else
-            idx = inst.val(1) + std::size_t(2) * inst.val(0);
+          else idx = inst.val(1) + std::size_t(2) * inst.val(0);
           xproba[idx] = proba.get(inst);
         }
 

@@ -38,6 +38,7 @@
  *                                                                          *
  ****************************************************************************/
 #pragma once
+#pragma once
 
 #ifndef DOXYGEN_SHOULD_SKIP_THIS
 #  include <limits>

@@ -37,62 +37,65 @@
  *   gitlab   : https://gitlab.com/agrumery/agrum                           *
  *                                                                          *
  ****************************************************************************/
+#pragma once
 
 
 #ifndef AGRUM_TEST_SUITE_H
-#define AGRUM_TEST_SUITE_H
+#  define AGRUM_TEST_SUITE_H
 
-#include <gumtest/utils.h>
+#  include <gumtest/utils.h>
 
-#include <agrum/agrum.h>
+#  include <agrum/agrum.h>
 
-#include <agrum/base/core/debug.h>
+#  include <agrum/base/core/debug.h>
 
-#include <cxxtest/TestSuite.h>
+#  include <cxxtest/TestSuite.h>
 
-#define GUM_ACTIVE_TEST(nom)   [[maybe_unused]] void test##nom()
-#define GUM_INACTIVE_TEST(nom) [[maybe_unused]] void inactive_test##nom()
+#  define GUM_TEST_SUITE(nom) [[maybe_unused]] nom##TestSuite final: public CxxTest::TestSuite
 
-#define TS_GUM_ASSERT_THROWS_NOTHING(block)       \
-  TS_ASSERT_THROWS_NOTHING(                       \
-      try { block; } catch (gum::Exception & e) { \
-        GUM_TRACE_NEWLINE;                        \
-        GUM_SHOWERROR(e);                         \
-        TS_FAIL("gum::Exception thrown");         \
-      })
+#  define GUM_ACTIVE_TEST(nom)   [[maybe_unused]] void test##nom()
+#  define GUM_INACTIVE_TEST(nom) [[maybe_unused]] void inactive_test##nom()
 
-#define TS_GUM_TENSOR_ALMOST_EQUALS_SAMEVARS_DELTA(p1, p2, delta) \
-  TS_ASSERT_LESS_THAN(((p1) - (p2)).abs().max(), delta)
-#define TS_GUM_TENSOR_ALMOST_EQUALS_SAMEVARS(p1, p2) \
-  TS_ASSERT_LESS_THAN(((p1) - (p2)).abs().max(), TS_GUM_SMALL_ERROR)
-#define TS_GUM_TENSOR_ALMOST_EQUALS_DELTA(p1, p2, delta) \
-  TS_GUM_TENSOR_ALMOST_EQUALS_SAMEVARS_DELTA((p1), (gum::Tensor(p1).fillWith(p2)), delta)
-#define TS_GUM_TENSOR_ALMOST_EQUALS(p1, p2) \
-  TS_GUM_TENSOR_ALMOST_EQUALS_DELTA(p1, p2, TS_GUM_SMALL_ERROR)
-#define TS_GUM_TENSOR_QUASI_EQUALS(p1, p2) \
-  TS_GUM_TENSOR_ALMOST_EQUALS_DELTA(p1, p2, TS_GUM_VERY_SMALL_ERROR)
+#  define TS_GUM_ASSERT_THROWS_NOTHING(block)       \
+    TS_ASSERT_THROWS_NOTHING(                       \
+        try { block; } catch (gum::Exception & e) { \
+          GUM_TRACE_NEWLINE;                        \
+          GUM_SHOWERROR(e);                         \
+          TS_FAIL("gum::Exception thrown");         \
+        })
 
-#define TS_GUM_TENSOR_DIFFERS_SAMEVARS(p1, p2) \
-  TS_ASSERT(((p1) - (p2)).abs().max() > TS_GUM_VERY_SMALL_ERROR)
-#define TS_GUM_TENSOR_DIFFERS(p1, p2) \
-  TS_GUM_TENSOR_DIFFERS_SAMEVARS((p1), (gum::Tensor(p1).fillWith(p2)))
+#  define TS_GUM_TENSOR_ALMOST_EQUALS_SAMEVARS_DELTA(p1, p2, delta) \
+    TS_ASSERT_LESS_THAN(((p1) - (p2)).abs().max(), delta)
+#  define TS_GUM_TENSOR_ALMOST_EQUALS_SAMEVARS(p1, p2) \
+    TS_ASSERT_LESS_THAN(((p1) - (p2)).abs().max(), TS_GUM_SMALL_ERROR)
+#  define TS_GUM_TENSOR_ALMOST_EQUALS_DELTA(p1, p2, delta) \
+    TS_GUM_TENSOR_ALMOST_EQUALS_SAMEVARS_DELTA((p1), (gum::Tensor(p1).fillWith(p2)), delta)
+#  define TS_GUM_TENSOR_ALMOST_EQUALS(p1, p2) \
+    TS_GUM_TENSOR_ALMOST_EQUALS_DELTA(p1, p2, TS_GUM_SMALL_ERROR)
+#  define TS_GUM_TENSOR_QUASI_EQUALS(p1, p2) \
+    TS_GUM_TENSOR_ALMOST_EQUALS_DELTA(p1, p2, TS_GUM_VERY_SMALL_ERROR)
+
+#  define TS_GUM_TENSOR_DIFFERS_SAMEVARS(p1, p2) \
+    TS_ASSERT(((p1) - (p2)).abs().max() > TS_GUM_VERY_SMALL_ERROR)
+#  define TS_GUM_TENSOR_DIFFERS(p1, p2) \
+    TS_GUM_TENSOR_DIFFERS_SAMEVARS((p1), (gum::Tensor(p1).fillWith(p2)))
 
 
-#define TS_GUM_TENSOR_SHOW_DELTA(p1, p2, delta)           \
-  {                                                       \
-    GUM_TRACE_NEWLINE GUM_TRACE_VAR(p1)                   \
-    GUM_TRACE_VAR(p2)                                     \
-    TS_ASSERT_LESS_THAN(((p1) - (p2)).abs().max(), delta) \
-  }
+#  define TS_GUM_TENSOR_SHOW_DELTA(p1, p2, delta)           \
+    {                                                       \
+      GUM_TRACE_NEWLINE GUM_TRACE_VAR(p1)                   \
+      GUM_TRACE_VAR(p2)                                     \
+      TS_ASSERT_LESS_THAN(((p1) - (p2)).abs().max(), delta) \
+    }
 
-#define TS_GUM_SMALL_ERROR      (1e-5)
-#define TS_GUM_VERY_SMALL_ERROR (1e-10)
+#  define TS_GUM_SMALL_ERROR      (1e-5)
+#  define TS_GUM_VERY_SMALL_ERROR (1e-10)
 
 // ASSERT_{EQUALS|DIFFERS} without copy
-#define TS_GUM_ASSERT_EQUALS(x, y)  TS_ASSERT((x) == (y))
-#define TS_GUM_ASSERT_DIFFERS(x, y) TS_ASSERT((x) != (y))
+#  define TS_GUM_ASSERT_EQUALS(x, y)  TS_ASSERT((x) == (y))
+#  define TS_GUM_ASSERT_DIFFERS(x, y) TS_ASSERT((x) != (y))
 
-#define TS_GUM_ASSERT_ALMOST_EQUALS(x, y) TS_ASSERT_LESS_THAN(fabs((x) - (y)), TS_GUM_SMALL_ERROR)
-#define TS_GUM_ASSERT_QUASI_EQUALS(x, y) \
-  TS_ASSERT_LESS_THAN(fabs((x) - (y)), TS_GUM_VERY_SMALL_ERROR)
+#  define TS_GUM_ASSERT_ALMOST_EQUALS(x, y) TS_ASSERT_LESS_THAN(fabs((x) - (y)), TS_GUM_SMALL_ERROR)
+#  define TS_GUM_ASSERT_QUASI_EQUALS(x, y) \
+    TS_ASSERT_LESS_THAN(fabs((x) - (y)), TS_GUM_VERY_SMALL_ERROR)
 #endif   // AGRUM_TEST_SUITE_H

@@ -37,6 +37,7 @@
  *   gitlab   : https://gitlab.com/agrumery/agrum                           *
  *                                                                          *
  ****************************************************************************/
+#pragma once
 
 
 #include <iostream>
@@ -53,7 +54,7 @@
 
 namespace gum_tests {
 
-  class [[maybe_unused]] BayesBallTestSuite: public CxxTest::TestSuite {
+  class GUM_TEST_SUITE(BayesBall) {
     public:
     void setUp() {}
 
@@ -80,7 +81,7 @@ namespace gum_tests {
           gum::BayesBall::requisiteNodes(bn.dag(), query, hardEvidence, softEvidence, requisite));
 
       TS_ASSERT(requisite.size() >= 5)
-    }
+    }   // namespace gum_tests
 
     GUM_ACTIVE_TEST(RelevantTensors) {
       std::string file = GET_RESSOURCES_PATH("bif/asia.bif");

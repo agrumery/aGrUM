@@ -37,6 +37,7 @@
  *   gitlab   : https://gitlab.com/agrumery/agrum                           *
  *                                                                          *
  ****************************************************************************/
+#pragma once
 
 
 #include <iostream>
@@ -50,7 +51,7 @@
 
 namespace gum_tests {
 
-  class [[maybe_unused]] DBRowGenerator4CompleteRowsTestSuite: public CxxTest::TestSuite {
+  class GUM_TEST_SUITE(DBRowGenerator4CompleteRows) {
     public:
     GUM_ACTIVE_TEST(_identity) {
       const std::vector< gum::learning::DBTranslatedValueType > col_types{
@@ -477,7 +478,7 @@ namespace gum_tests {
 
       generator9.setInputRow(input_row4);
       TS_ASSERT(!generator9.hasRows())
-    }
+    }   // namespace gum_tests
   };
 
 

@@ -37,6 +37,7 @@
  *   gitlab   : https://gitlab.com/agrumery/agrum                           *
  *                                                                          *
  ****************************************************************************/
+#pragma once
 
 
 #include <gumtest/AgrumTestSuite.h>
@@ -55,7 +56,7 @@
  */
 namespace gum_tests {
 
-  class [[maybe_unused]] ReferenceSlotTestSuite: public CxxTest::TestSuite {
+  class GUM_TEST_SUITE(ReferenceSlot) {
     private:
     using PRMReferenceSlot = gum::prm::PRMReferenceSlot< double >;
 

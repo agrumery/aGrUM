@@ -37,6 +37,7 @@
  *   gitlab   : https://gitlab.com/agrumery/agrum                           *
  *                                                                          *
  ****************************************************************************/
+#pragma once
 
 
 #include <iostream>
@@ -56,7 +57,7 @@
 
 namespace gum_tests {
 
-  class [[maybe_unused]] MaxInducedWidthMCBayesNetGeneratorTestSuite: public CxxTest::TestSuite {
+  class GUM_TEST_SUITE(MaxInducedWidthMCBayesNetGenerator) {
     public:
     void setUp() {}
 
@@ -68,7 +69,7 @@ namespace gum_tests {
       TS_GUM_ASSERT_THROWS_NOTHING(
           gen = new gum::MaxInducedWidthMCBayesNetGenerator< double >(30, 100, 3, 4, 30, 40, 50));
       TS_GUM_ASSERT_THROWS_NOTHING(delete gen)
-    }
+    }   // namespace gum_tests
 
     GUM_ACTIVE_TEST(CreationDeletionFloatCPT) {
       gum::MaxInducedWidthMCBayesNetGenerator< double >* gen = nullptr;

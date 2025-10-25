@@ -113,7 +113,7 @@ class ShapValues:
           beeswarm(explanation=explanation, y=y, ax=axs[plot_index])
         plot_index += 1
       if plot_importance:
-          bar(explanation=explanation, y=y, ax=axs[plot_index],percentage=percentage)
+        bar(explanation=explanation, y=y, ax=axs[plot_index], percentage=percentage)
 
       plt.tight_layout()
 

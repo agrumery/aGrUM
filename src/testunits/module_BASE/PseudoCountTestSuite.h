@@ -37,6 +37,7 @@
  *   gitlab   : https://gitlab.com/agrumery/agrum                           *
  *                                                                          *
  ****************************************************************************/
+#pragma once
 
 
 #include <iostream>
@@ -55,7 +56,7 @@
 
 namespace gum_tests {
 
-  class [[maybe_unused]] PseudoCountTestSuite: public CxxTest::TestSuite {
+  class GUM_TEST_SUITE(PseudoCount) {
     public:
     GUM_ACTIVE_TEST(_simple_counts) {
       gum::learning::DBInitializerFromCSV initializer(GET_RESSOURCES_PATH("csv/minimal.csv"));
@@ -99,6 +100,6 @@ namespace gum_tests {
         TS_ASSERT_EQUALS(counts.get({2}), std::vector< double >({3.1, 2.1, 2.1}))
         TS_ASSERT_EQUALS(counts.get({0, 2}), std::vector< double >({2.1, 1.1, 1.1, 1.1, 0.1, 2.1}))
       }
-    }
+    }   // namespace gum_tests
   };
 } /* namespace gum_tests */

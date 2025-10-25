@@ -37,6 +37,7 @@
  *   gitlab   : https://gitlab.com/agrumery/agrum                           *
  *                                                                          *
  ****************************************************************************/
+#pragma once
 
 
 // ============================================================================
@@ -61,7 +62,7 @@
 
 namespace gum_tests {
 
-  class [[maybe_unused]] Operators4MultiDimFunctionGraphTestSuite: public CxxTest::TestSuite {
+  class GUM_TEST_SUITE(Operators4MultiDimFunctionGraph) {
     private:
     /// Defines the maximal number of modalities for a var (which is choose
     /// randomly).

@@ -2,7 +2,13 @@
 
 ## Changelog for 2.3.0
 
+- aGrUM
+    - Use of std::format` (C++20) to correctly print doubles (thanks to Christopher Eveland).
+    - Updated docker images, runners and CI for C++20 and python 3.14.
+
 - pyAgrum
+    - Added python 3.14 support
+    - Refreshed binder files (python 3.10)
     - Introduced the new `pyagrum.explain` submodule for explainability in Bayesian Networks.
     - Improved SHAP value computation performance in `pyagrum.explain` (thanks to Rayane Nasri).
     - Added support for SHAP values on partial subsets of features in `pyagrum.explain` (thanks to Rayane Nasri).
@@ -16,7 +22,7 @@
     - Added  `gum::Set::popFirst()`
 
 - pyAgrum
-    - updated some requirements
+    - Updated some requirements
     - Fixed bugs in `pyagrum.PDAG`(thanks to Louis Derumaux).
 
 ## Changelog for 2.2.0

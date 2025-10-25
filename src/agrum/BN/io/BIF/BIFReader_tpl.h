@@ -37,6 +37,7 @@
  *   gitlab   : https://gitlab.com/agrumery/agrum                           *
  *                                                                          *
  ****************************************************************************/
+#pragma once
 
 
 /**
@@ -68,7 +69,7 @@ namespace gum {
     try {
       _scanner_ = new BIF::Scanner(_streamName_.c_str());
       _parser_  = new BIF::Parser(_scanner_);
-      _parser_->setFactory((IBayesNetFactory*)_factory_);
+      _parser_->setFactory(static_cast< IBayesNetFactory* >(_factory_));
     } catch (IOError const&) { _ioerror_ = true; }
   }
 

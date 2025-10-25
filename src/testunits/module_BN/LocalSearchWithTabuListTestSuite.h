@@ -37,6 +37,7 @@
  *   gitlab   : https://gitlab.com/agrumery/agrum                           *
  *                                                                          *
  ****************************************************************************/
+#pragma once
 
 
 #include <iostream>
@@ -69,7 +70,7 @@
 
 namespace gum_tests {
 
-  class [[maybe_unused]] LocalSearchWithTabuListTestSuite: public CxxTest::TestSuite {
+  class GUM_TEST_SUITE(LocalSearchWithTabuList) {
     public:
     GUM_ACTIVE_TEST(_asia) {
       gum::learning::DBInitializerFromCSV initializer(GET_RESSOURCES_PATH("csv/asia.csv"));
@@ -119,9 +120,9 @@ namespace gum_tests {
       try {
         gum::BayesNet< double > bn  = search.learnBN< double >(selector, estimator);
         gum::BayesNet< double > bn2 = search.learnBN< double >(selector, estimator);
-        TS_ASSERT_EQUALS(bn.dag().arcs().size(), (gum::Size)10)
+        TS_ASSERT_EQUALS(bn.dag().arcs().size(), static_cast< gum::Size >(10))
       } catch (gum::Exception& e) { GUM_SHOWERROR(e); }
-    }
+    }   // namespace gum_tests
 
     /*
     void xtest_alarm1() {

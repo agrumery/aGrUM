@@ -37,6 +37,7 @@
  *   gitlab   : https://gitlab.com/agrumery/agrum                           *
  *                                                                          *
  ****************************************************************************/
+#pragma once
 
 
 #include <sstream>
@@ -51,7 +52,7 @@
 
 namespace gum_tests {
 
-  class [[maybe_unused]] MultiDimNoisyORNetTestSuite: public CxxTest::TestSuite {
+  class GUM_TEST_SUITE(MultiDimNoisyORNet) {
     public:
     GUM_ACTIVE_TEST(CreationNoisyOr) {
       gum::LabelizedVariable            a("a", "", 2), b("b", "", 2), c("c", "", 2), d("d", "", 2);
@@ -74,14 +75,14 @@ namespace gum_tests {
       TS_ASSERT_EQUALS(p.toString(),
                        "a:Labelized({0|1})=noisyORNet([0.2], b:Labelized({0|1})[0.4], "
                        "c:Labelized({0|1})[1], d:Labelized({0|1})[0.7])");
-      TS_ASSERT_EQUALS(p.realSize(), (gum::Size)4)
+      TS_ASSERT_EQUALS(p.realSize(), static_cast< gum::Size >(4))
 
       gum::MultiDimNoisyORNet< double > q(p);
       TS_ASSERT_EQUALS(q.toString(),
                        "a:Labelized({0|1})=noisyORNet([0.2], b:Labelized({0|1})[0.4], "
                        "c:Labelized({0|1})[1], d:Labelized({0|1})[0.7])");
-      TS_ASSERT_EQUALS(p.realSize(), (gum::Size)4)
-    }
+      TS_ASSERT_EQUALS(p.realSize(), static_cast< gum::Size >(4))
+    }   // namespace gum_tests
 
     GUM_ACTIVE_TEST(CompatibleWithHardOR) {
       gum::LabelizedVariable cold("Cold", "", 2);

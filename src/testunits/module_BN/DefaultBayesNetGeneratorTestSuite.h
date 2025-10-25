@@ -37,6 +37,7 @@
  *   gitlab   : https://gitlab.com/agrumery/agrum                           *
  *                                                                          *
  ****************************************************************************/
+#pragma once
 
 
 #include <iostream>
@@ -55,7 +56,7 @@
 
 namespace gum_tests {
 
-  class [[maybe_unused]] SimpleBayesNetGeneratorTestSuite: public CxxTest::TestSuite {
+  class GUM_TEST_SUITE(SimpleBayesNetGenerator) {
     public:
     void setUp() {}
 
@@ -66,7 +67,7 @@ namespace gum_tests {
 
       TS_GUM_ASSERT_THROWS_NOTHING(gen = new gum::SimpleBayesNetGenerator< double >(10, 20))
       TS_GUM_ASSERT_THROWS_NOTHING(delete gen)
-    }
+    }   // namespace gum_tests
 
     GUM_ACTIVE_TEST(CreationDeletion_2) {
       gum::SimpleBayesNetGenerator< double >* gen = nullptr;

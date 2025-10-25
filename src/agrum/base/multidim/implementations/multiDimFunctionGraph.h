@@ -87,7 +87,7 @@ namespace gum {
    */
   template < typename GUM_SCALAR,
              template < typename > class TerminalNodePolicy = ExactTerminalNodePolicy >
-  class MultiDimFunctionGraph:
+  class MultiDimFunctionGraph final:
       public MultiDimImplementation< GUM_SCALAR >,
       public TerminalNodePolicy< GUM_SCALAR > {
     public:

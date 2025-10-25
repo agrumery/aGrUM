@@ -37,6 +37,7 @@
  *   gitlab   : https://gitlab.com/agrumery/agrum                           *
  *                                                                          *
  ****************************************************************************/
+#pragma once
 
 
 #include <cstdlib>
@@ -55,7 +56,7 @@
 
 namespace gum_tests {
 
-  class [[maybe_unused]] MultiDimOperatorsTestSuite: public CxxTest::TestSuite {
+  class GUM_TEST_SUITE(MultiDimOperators) {
     public:
     GUM_ACTIVE_TEST(_op_multidimArray) {
       std::vector< gum::LabelizedVariable* > vars(10);
@@ -132,7 +133,7 @@ namespace gum_tests {
 
       for (gum::Idx i = 0; i < vars.size(); ++i)
         delete vars[i];
-    }
+    }   // namespace gum_tests
 
     GUM_ACTIVE_TEST(_op_multidimImplementationOfMultiDimArray) {
       std::vector< gum::LabelizedVariable* > vars(10);

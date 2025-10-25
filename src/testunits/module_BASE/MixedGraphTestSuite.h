@@ -37,6 +37,7 @@
  *   gitlab   : https://gitlab.com/agrumery/agrum                           *
  *                                                                          *
  ****************************************************************************/
+#pragma once
 
 
 #include <iostream>
@@ -61,7 +62,7 @@
 
 namespace gum_tests {
 
-  class [[maybe_unused]] MixedGraphTestSuite: public CxxTest::TestSuite {
+  class GUM_TEST_SUITE(MixedGraph) {
     private:
     gum::MixedGraph buildGraph() {
       gum::MixedGraph g;
@@ -267,9 +268,9 @@ namespace gum_tests {
       gum::Size edgeCount = graph.sizeEdges();
       gum::Size arcCount  = graph.sizeArcs();
 
-      TS_ASSERT_EQUALS(nodeCount, (gum::Size)5)
-      TS_ASSERT_EQUALS(edgeCount, (gum::Size)3)
-      TS_ASSERT_EQUALS(arcCount, (gum::Size)3)
+      TS_ASSERT_EQUALS(nodeCount, static_cast< gum::Size >(5))
+      TS_ASSERT_EQUALS(edgeCount, static_cast< gum::Size >(3))
+      TS_ASSERT_EQUALS(arcCount, static_cast< gum::Size >(3))
 
       for (int i = 0; i < 10; i++) {
         TS_GUM_ASSERT_THROWS_NOTHING(graph.eraseNode(id5))
@@ -405,7 +406,7 @@ namespace gum_tests {
       gum::List< gum::Size > list;
       TS_ASSERT_THROWS_ANYTHING(list = graph.listMapNodes(&twistedMapFunction))
 
-      TS_ASSERT_EQUALS(list.size(), (gum::Size)0)
+      TS_ASSERT_EQUALS(list.size(), static_cast< gum::Size >(0))
     }
 
     GUM_ACTIVE_TEST(HashMapNodes) {
@@ -432,7 +433,7 @@ namespace gum_tests {
       gum::NodeProperty< gum::Size > hashmap;
       TS_ASSERT_THROWS_ANYTHING(hashmap = graph.nodesPropertyFromFunction(&twistedMapFunction))
 
-      TS_ASSERT_EQUALS(hashmap.size(), (gum::Size)0)
+      TS_ASSERT_EQUALS(hashmap.size(), static_cast< gum::Size >(0))
     }
 
     GUM_ACTIVE_TEST(ListMapEdges) {

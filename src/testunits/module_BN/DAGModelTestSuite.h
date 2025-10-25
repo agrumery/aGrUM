@@ -37,6 +37,7 @@
  *   gitlab   : https://gitlab.com/agrumery/agrum                           *
  *                                                                          *
  ****************************************************************************/
+#pragma once
 
 
 #include <iostream>
@@ -49,7 +50,7 @@
 #include <agrum/BN/BayesNet.h>
 
 namespace gum_tests {
-  class [[maybe_unused]] DAGModelTestSuite: public CxxTest::TestSuite {
+  class GUM_TEST_SUITE(DAGModel) {
     public:
     GUM_ACTIVE_TEST(Equality) {
       auto bn = gum::BayesNet< float >::fastPrototype("a->b->c;a->c");
@@ -66,7 +67,7 @@ namespace gum_tests {
           bn.hasSameStructure(gum::BayesNet< float >::fastPrototype("a ->b  [1,5]->c ;  a->c  ")));
       TS_ASSERT(bn.hasSameStructure(
           gum::BayesNet< float >::fastPrototype("a ->b  [1,\n5]->c ;\n  a->c  ")));
-    }
+    }   // namespace gum_tests
 
     GUM_ACTIVE_TEST(Ancestors) {
       auto bn = gum::BayesNet< float >::fastPrototype("A->B<-C->D->E<-A->F;G->A;D->H;G<-I->C<-J");

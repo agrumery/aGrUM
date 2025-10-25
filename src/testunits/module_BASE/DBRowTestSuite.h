@@ -37,6 +37,7 @@
  *   gitlab   : https://gitlab.com/agrumery/agrum                           *
  *                                                                          *
  ****************************************************************************/
+#pragma once
 
 
 #include <iostream>
@@ -49,7 +50,7 @@
 
 namespace gum_tests {
 
-  class [[maybe_unused]] DBRowTestSuite: public CxxTest::TestSuite {
+  class GUM_TEST_SUITE(DBRow) {
     public:
     GUM_ACTIVE_TEST(_row1) {
       {
@@ -71,74 +72,74 @@ namespace gum_tests {
         std::vector< double > xrow{1, 2, 3};
         row.setRow(xrow);
         TS_ASSERT_EQUALS(row.row(), xrow)
-        TS_ASSERT_EQUALS(row.size(), (gum::Size)3)
+        TS_ASSERT_EQUALS(row.size(), static_cast< gum::Size >(3))
 
         gum::learning::DBRow< double > row2(row);
-        TS_ASSERT_EQUALS(row2.size(), (gum::Size)3)
+        TS_ASSERT_EQUALS(row2.size(), static_cast< gum::Size >(3))
 
         gum::learning::DBRow< double > row2bis(row);
-        TS_ASSERT_EQUALS(row2bis.size(), (gum::Size)3)
+        TS_ASSERT_EQUALS(row2bis.size(), static_cast< gum::Size >(3))
 
         gum::learning::DBRow< double > row3(std::move(row2));
-        TS_ASSERT_EQUALS(row3.size(), (gum::Size)3)
+        TS_ASSERT_EQUALS(row3.size(), static_cast< gum::Size >(3))
         TS_ASSERT_EQUALS(row3[2], 3.0f)
 
         row3.resize(5);
-        TS_ASSERT_EQUALS(row3.size(), (gum::Size)5)
+        TS_ASSERT_EQUALS(row3.size(), static_cast< gum::Size >(5))
 
         row2 = row3;
-        TS_ASSERT_EQUALS(row2.size(), (gum::Size)5)
+        TS_ASSERT_EQUALS(row2.size(), static_cast< gum::Size >(5))
         TS_ASSERT_EQUALS(row3.row(), row2.row())
 
         gum::learning::DBRow< double > row4(4, 1, 2);
-        TS_ASSERT_EQUALS(row4.size(), (gum::Size)4)
+        TS_ASSERT_EQUALS(row4.size(), static_cast< gum::Size >(4))
         TS_ASSERT_EQUALS(row4[3], 1)
         TS_ASSERT_EQUALS(row4.weight(), 2)
 
         gum::learning::DBRow< double > row5{2, 3, 1, 4};
-        TS_ASSERT_EQUALS(row5.size(), (gum::Size)4)
+        TS_ASSERT_EQUALS(row5.size(), static_cast< gum::Size >(4))
         TS_ASSERT_EQUALS(row5[2], 1)
         TS_ASSERT_EQUALS(row5.weight(), 1)
 
         std::vector< double >          vect{1, 2, 3};
         gum::learning::DBRow< double > row6(vect, 4);
-        TS_ASSERT_EQUALS(row6.size(), (gum::Size)3)
+        TS_ASSERT_EQUALS(row6.size(), static_cast< gum::Size >(3))
         TS_ASSERT_EQUALS(row6[1], 2)
         TS_ASSERT_EQUALS(row6.weight(), 4)
 
         gum::learning::DBRow< double > row7(vect, 4);
-        TS_ASSERT_EQUALS(row7.size(), (gum::Size)3)
+        TS_ASSERT_EQUALS(row7.size(), static_cast< gum::Size >(3))
         TS_ASSERT_EQUALS(row7[1], 2)
         TS_ASSERT_EQUALS(row7.weight(), 4)
 
         gum::learning::DBRow< double > row8(std::vector< double >{1, 2, 3}, 4);
-        TS_ASSERT_EQUALS(row8.size(), (gum::Size)3)
+        TS_ASSERT_EQUALS(row8.size(), static_cast< gum::Size >(3))
         TS_ASSERT_EQUALS(row8[1], 2)
         TS_ASSERT_EQUALS(row8.weight(), 4)
 
         gum::learning::DBRow< double > row9(row4);
-        TS_ASSERT_EQUALS(row9.size(), (gum::Size)4)
+        TS_ASSERT_EQUALS(row9.size(), static_cast< gum::Size >(4))
         TS_ASSERT_EQUALS(row9[3], 1)
         TS_ASSERT_EQUALS(row9.weight(), 2)
 
         row = row7;
-        TS_ASSERT_EQUALS(row.size(), (gum::Size)3)
+        TS_ASSERT_EQUALS(row.size(), static_cast< gum::Size >(3))
         TS_ASSERT_EQUALS(row[1], 2)
         TS_ASSERT_EQUALS(row.weight(), 4)
 
         row9 = row6;
-        TS_ASSERT_EQUALS(row9.size(), (gum::Size)3)
+        TS_ASSERT_EQUALS(row9.size(), static_cast< gum::Size >(3))
         TS_ASSERT_EQUALS(row9[1], 2)
         TS_ASSERT_EQUALS(row9.weight(), 4)
 
         row6 = row9;
-        TS_ASSERT_EQUALS(row6.size(), (gum::Size)3)
+        TS_ASSERT_EQUALS(row6.size(), static_cast< gum::Size >(3))
         TS_ASSERT_EQUALS(row6[1], 2)
         TS_ASSERT_EQUALS(row6.weight(), 4)
 
         row2.resize(10);
-        TS_ASSERT_EQUALS(row2.size(), (gum::Size)10)
-      }
+        TS_ASSERT_EQUALS(row2.size(), static_cast< gum::Size >(10))
+      }   // namespace gum_tests
     }
 
     GUM_ACTIVE_TEST(_row2) {
@@ -163,24 +164,24 @@ namespace gum_tests {
                                                   gum::learning::DBCell(3)};
         row.setRow(xrow);
         TS_ASSERT_EQUALS(row.row(), xrow)
-        TS_ASSERT_EQUALS(row.size(), (gum::Size)3)
+        TS_ASSERT_EQUALS(row.size(), static_cast< gum::Size >(3))
 
         gum::learning::DBRow< gum::learning::DBCell > row2(row);
-        TS_ASSERT_EQUALS(row2.size(), (gum::Size)3)
+        TS_ASSERT_EQUALS(row2.size(), static_cast< gum::Size >(3))
 
         gum::learning::DBRow< gum::learning::DBCell > row3(std::move(row2));
-        TS_ASSERT_EQUALS(row3.size(), (gum::Size)3)
+        TS_ASSERT_EQUALS(row3.size(), static_cast< gum::Size >(3))
         TS_ASSERT_EQUALS(row3[2], gum::learning::DBCell(3))
 
         row3.resize(5);
-        TS_ASSERT_EQUALS(row3.size(), (gum::Size)5)
+        TS_ASSERT_EQUALS(row3.size(), static_cast< gum::Size >(5))
 
         row2 = row3;
-        TS_ASSERT_EQUALS(row2.size(), (gum::Size)5)
+        TS_ASSERT_EQUALS(row2.size(), static_cast< gum::Size >(5))
         TS_ASSERT_EQUALS(row3.row(), row2.row())
 
         gum::learning::DBRow< gum::learning::DBCell > row4(4, gum::learning::DBCell(1), 2);
-        TS_ASSERT_EQUALS(row4.size(), (gum::Size)4)
+        TS_ASSERT_EQUALS(row4.size(), static_cast< gum::Size >(4))
         TS_ASSERT_EQUALS(row4[3], gum::learning::DBCell(1))
         TS_ASSERT_EQUALS(row4.weight(), 2)
 
@@ -188,7 +189,7 @@ namespace gum_tests {
                                                            gum::learning::DBCell(3),
                                                            gum::learning::DBCell(1),
                                                            gum::learning::DBCell(4)};
-        TS_ASSERT_EQUALS(row5.size(), (gum::Size)4)
+        TS_ASSERT_EQUALS(row5.size(), static_cast< gum::Size >(4))
         TS_ASSERT_EQUALS(row5[2], gum::learning::DBCell(1))
         TS_ASSERT_EQUALS(row5.weight(), 1)
 
@@ -196,12 +197,12 @@ namespace gum_tests {
                                                   gum::learning::DBCell(2),
                                                   gum::learning::DBCell(3)};
         gum::learning::DBRow< gum::learning::DBCell > row6(vect, 4);
-        TS_ASSERT_EQUALS(row6.size(), (gum::Size)3)
+        TS_ASSERT_EQUALS(row6.size(), static_cast< gum::Size >(3))
         TS_ASSERT_EQUALS(row6[1], gum::learning::DBCell(2))
         TS_ASSERT_EQUALS(row6.weight(), 4)
 
         gum::learning::DBRow< gum::learning::DBCell > row7(vect, 4);
-        TS_ASSERT_EQUALS(row7.size(), (gum::Size)3)
+        TS_ASSERT_EQUALS(row7.size(), static_cast< gum::Size >(3))
         TS_ASSERT_EQUALS(row7[1], gum::learning::DBCell(2))
         TS_ASSERT_EQUALS(row7.weight(), 4)
 
@@ -210,42 +211,42 @@ namespace gum_tests {
                                                  gum::learning::DBCell(2),
                                                  gum::learning::DBCell(3)},
             4);
-        TS_ASSERT_EQUALS(row8.size(), (gum::Size)3)
+        TS_ASSERT_EQUALS(row8.size(), static_cast< gum::Size >(3))
         TS_ASSERT_EQUALS(row8[1], gum::learning::DBCell(2))
         TS_ASSERT_EQUALS(row8.weight(), 4)
 
         gum::learning::DBRow< gum::learning::DBCell > row9(row6);
-        TS_ASSERT_EQUALS(row9.size(), (gum::Size)3)
+        TS_ASSERT_EQUALS(row9.size(), static_cast< gum::Size >(3))
         TS_ASSERT_EQUALS(row9[1], gum::learning::DBCell(2))
         TS_ASSERT_EQUALS(row9.weight(), 4)
 
         row = row7;
-        TS_ASSERT_EQUALS(row.size(), (gum::Size)3)
+        TS_ASSERT_EQUALS(row.size(), static_cast< gum::Size >(3))
         TS_ASSERT_EQUALS(row[1], gum::learning::DBCell(2))
         TS_ASSERT_EQUALS(row.weight(), 4)
 
         row7 = row8;
-        TS_ASSERT_EQUALS(row7.size(), (gum::Size)3)
+        TS_ASSERT_EQUALS(row7.size(), static_cast< gum::Size >(3))
         TS_ASSERT_EQUALS(row7[1], gum::learning::DBCell(2))
         TS_ASSERT_EQUALS(row7.weight(), 4)
 
         row2.resize(10);
-        TS_ASSERT_EQUALS(row2.size(), (gum::Size)10)
+        TS_ASSERT_EQUALS(row2.size(), static_cast< gum::Size >(10))
       }
     }
 
     GUM_ACTIVE_TEST(_row3) {
       gum::learning::DBRow< gum::learning::DBCell > row1(4, gum::learning::DBCell(1), 2);
-      TS_ASSERT_EQUALS(row1.size(), (gum::Size)4)
+      TS_ASSERT_EQUALS(row1.size(), static_cast< gum::Size >(4))
       TS_ASSERT_EQUALS(row1[3], gum::learning::DBCell(1))
       TS_ASSERT_EQUALS(row1.weight(), 2)
 
       gum::learning::DBRow< gum::learning::DBCell > row2(4, 2);
-      TS_ASSERT_EQUALS(row2.size(), (gum::Size)4)
+      TS_ASSERT_EQUALS(row2.size(), static_cast< gum::Size >(4))
       TS_ASSERT_EQUALS(row2.weight(), 2)
 
       gum::learning::DBRow< gum::learning::DBCell > row3(row2);
-      TS_ASSERT_EQUALS(row3.size(), (gum::Size)4)
+      TS_ASSERT_EQUALS(row3.size(), static_cast< gum::Size >(4))
       TS_ASSERT_EQUALS(row3.weight(), 2)
 
       gum::learning::DBRow< gum::learning::DBCell > row4;
@@ -255,11 +256,11 @@ namespace gum_tests {
 
       gum::learning::DBRow< gum::learning::DBCell > row6(4, gum::learning::DBCell(1), 2);
       gum::learning::DBRow< gum::learning::DBCell > row7(row4);
-      TS_ASSERT_EQUALS(row7.size(), (gum::Size)4)
+      TS_ASSERT_EQUALS(row7.size(), static_cast< gum::Size >(4))
       TS_ASSERT_EQUALS(row7.weight(), 2)
 
       gum::learning::DBRow< gum::learning::DBCell > row8(std::move(row7));
-      TS_ASSERT_EQUALS(row8.size(), (gum::Size)4)
+      TS_ASSERT_EQUALS(row8.size(), static_cast< gum::Size >(4))
       TS_ASSERT_EQUALS(row8[3], gum::learning::DBCell())
       TS_ASSERT_EQUALS(row8.weight(), 2)
 

@@ -37,6 +37,7 @@
  *   gitlab   : https://gitlab.com/agrumery/agrum                           *
  *                                                                          *
  ****************************************************************************/
+#pragma once
 
 
 /** @file
@@ -47,11 +48,11 @@
  * @author Christophe GONZALES(_at_AMU) and Pierre-Henri WUILLEMIN(_at_LIP6)
  */
 #ifndef GUM_LEARNING_EVENDEBUGGENERATOR_H
-#define GUM_LEARNING_EVENDEBUGGENERATOR_H
+#  define GUM_LEARNING_EVENDEBUGGENERATOR_H
 
-#include <agrum/agrum.h>
+#  include <agrum/agrum.h>
 
-#include <agrum/base/database/DBRowGenerator.h>
+#  include <agrum/base/database/DBRowGenerator.h>
 
 namespace gum {
 

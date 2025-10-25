@@ -37,6 +37,7 @@
  *   gitlab   : https://gitlab.com/agrumery/agrum                           *
  *                                                                          *
  ****************************************************************************/
+#pragma once
 
 
 #include <iostream>
@@ -56,7 +57,7 @@
 #include "testunits/gumtest/utils.h"
 
 namespace gum_tests {
-  class [[maybe_unused]] InformationTheoryTestSuite: public CxxTest::TestSuite {
+  class GUM_TEST_SUITE(InformationTheory) {
     public:
     GUM_ACTIVE_TEST(Constructor1) {
       auto bn = gum::BayesNet< double >::fastPrototype("A->B->C");
@@ -69,7 +70,7 @@ namespace gum_tests {
       auto         it2 = gum::InformationTheory(ie, {"A", "C"}, {"B"});
       TS_ASSERT_EQUALS(it.entropyX(), it2.entropyX())
       TS_ASSERT_EQUALS(it.entropyY(), it2.entropyY())
-    }
+    }   // namespace gum_tests
 
     GUM_ACTIVE_TEST(CheckSimpleBN) {
       const auto bn = gum::BayesNet< double >::fastPrototype("A->B");

@@ -37,6 +37,7 @@
  *   gitlab   : https://gitlab.com/agrumery/agrum                           *
  *                                                                          *
  ****************************************************************************/
+#pragma once
 
 
 #include <iostream>
@@ -54,7 +55,7 @@
 
 namespace gum_tests {
 
-  class [[maybe_unused]] ParamEstimatorMLTestSuite: public CxxTest::TestSuite {
+  class GUM_TEST_SUITE(ParamEstimatorML) {
     private:
     std::vector< double > _normalize_(const std::vector< double >& vin) {
       double sum = 0;
@@ -64,7 +65,7 @@ namespace gum_tests {
       for (auto& val: vout)
         val /= sum;
       return vout;
-    }
+    }   // namespace gum_tests
 
     std::vector< double > _xnormalize_(const std::vector< double >& vin) {
       std::vector< double > vout(vin);

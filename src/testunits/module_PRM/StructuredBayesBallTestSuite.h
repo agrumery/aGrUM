@@ -37,6 +37,7 @@
  *   gitlab   : https://gitlab.com/agrumery/agrum                           *
  *                                                                          *
  ****************************************************************************/
+#pragma once
 
 
 #include <gumtest/AgrumTestSuite.h>
@@ -48,8 +49,7 @@
 #include <agrum/PRM/o3prm/O3prmReader.h>
 
 namespace gum_tests {
-  class [[maybe_unused]] StructuredBayesBallTestSuite: public CxxTest::TestSuite {
-    private:
+  class GUM_TEST_SUITE(StructuredBayesBall) {
     gum::prm::PRM< double >*          prm;
     gum::prm::PRMInference< double >* prm_inf;
     gum::prm::PRMSystem< double >*    sys;
@@ -105,7 +105,7 @@ namespace gum_tests {
               if ((j.val()) != (i.val())) {
                 TS_ASSERT(!bb->exists(j.val()))
               } else if (bb->exists(j.val())) {
-                TS_ASSERT_EQUALS(bb->requisiteNodes(j.val()).size(), (gum::Size)1)
+                TS_ASSERT_EQUALS(bb->requisiteNodes(j.val()).size(), static_cast< gum::Size >(1))
                 TS_ASSERT(bb->requisiteNodes(j.val()).contains((*(a.val())).id()))
               } else {
                 TS_ASSERT(false)
@@ -135,7 +135,7 @@ namespace gum_tests {
               if ((j.val()) != (i.val())) {
                 TS_ASSERT(!bb->exists(j.val()))
               } else if (bb->exists(j.val())) {
-                TS_ASSERT_EQUALS(bb->requisiteNodes(j.val()).size(), (gum::Size)1)
+                TS_ASSERT_EQUALS(bb->requisiteNodes(j.val()).size(), static_cast< gum::Size >(1))
                 TS_ASSERT(bb->requisiteNodes(j.val()).contains((*(a.val())).id()))
               } else {
                 TS_ASSERT(false)

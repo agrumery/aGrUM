@@ -37,6 +37,7 @@
  *   gitlab   : https://gitlab.com/agrumery/agrum                           *
  *                                                                          *
  ****************************************************************************/
+#pragma once
 
 
 #include <string>
@@ -48,12 +49,12 @@
 
 namespace gum_tests {
 
-  class [[maybe_unused]] SortedPriorityQueueTestSuite: public CxxTest::TestSuite {
+  class GUM_TEST_SUITE(SortedPriorityQueue) {
     public:
     GUM_ACTIVE_TEST(String) {
       gum::SortedPriorityQueue< std::string > queue1;
 
-      TS_ASSERT_EQUALS(queue1.size(), (gum::Size)0)
+      TS_ASSERT_EQUALS(queue1.size(), static_cast< gum::Size >(0))
       TS_ASSERT_EQUALS(queue1.empty(), true)
       TS_ASSERT_EQUALS(queue1.contains("ZZZ"), false)
       TS_ASSERT_THROWS(queue1.top(), const gum::NotFound&)
@@ -96,7 +97,7 @@ namespace gum_tests {
           TS_GUM_ASSERT_EQUALS(*iter, vect[i--])
       }
 
-      TS_ASSERT_EQUALS(queue1.size(), (gum::Size)5)
+      TS_ASSERT_EQUALS(queue1.size(), static_cast< gum::Size >(5))
       TS_ASSERT_EQUALS(queue1.empty(), false)
       TS_ASSERT_EQUALS(queue1.contains("AAA"), true)
       TS_ASSERT_EQUALS(queue1.contains("ZZZ"), false)
@@ -126,11 +127,13 @@ namespace gum_tests {
       nb = 2;
       queue1.setPriority("BBB", nb);
       TS_ASSERT_EQUALS(queue1.bottom(), "BBB")
+
       TS_ASSERT_EQUALS(queue1.bottomPriority(), 2)
       {
         std::string str2 = "[(EEE, 24) ; (AAA, 8) ; (BBB, 2)]";
         TS_GUM_ASSERT_EQUALS(queue1.toString(), str2)
       }
+
       queue1.setPriority("BBB", 10);
       {
         std::string str2 = "[(EEE, 24) ; (BBB, 10) ; (AAA, 8)]";
@@ -147,15 +150,15 @@ namespace gum_tests {
       TS_ASSERT_EQUALS(queue1.priority("BBB"), 10)
 
       queue1.clear();
-      TS_ASSERT_EQUALS(queue1.size(), (gum::Size)0)
+      TS_ASSERT_EQUALS(queue1.size(), static_cast< gum::Size >(0))
       TS_ASSERT_EQUALS(queue1.empty(), true)
       TS_ASSERT_THROWS(queue1.top(), const gum::NotFound&)
       TS_ASSERT_THROWS(queue1.bottom(), const gum::NotFound&)
-    }
+    }   // namespace gum_tests
 
     GUM_ACTIVE_TEST(Int) {
       gum::SortedPriorityQueue< std::pair< int, int >, double > queue;
-      TS_ASSERT_EQUALS(queue.size(), (gum::Size)0)
+      TS_ASSERT_EQUALS(queue.size(), static_cast< gum::Size >(0))
       TS_ASSERT_EQUALS(queue.empty(), true)
 
       std::vector< std::pair< std::pair< int, int >, double > > vect;
@@ -175,7 +178,7 @@ namespace gum_tests {
       }
       TS_GUM_ASSERT_EQUALS(vect2string(vect), queue.toString())
 
-      TS_ASSERT_EQUALS(queue.size(), (gum::Size)100)
+      TS_ASSERT_EQUALS(queue.size(), static_cast< gum::Size >(100))
       TS_ASSERT_EQUALS(queue.empty(), false)
       TS_ASSERT_EQUALS(queue.contains(std::pair< int, int >(15, 25)), true)
       TS_ASSERT_EQUALS(queue.contains(std::pair< int, int >(15, 15)), false)

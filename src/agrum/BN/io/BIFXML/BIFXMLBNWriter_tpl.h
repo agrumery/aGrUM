@@ -37,6 +37,7 @@
  *   gitlab   : https://gitlab.com/agrumery/agrum                           *
  *                                                                          *
  ****************************************************************************/
+#pragma once
 
 
 #ifndef DOXYGEN_SHOULD_SKIP_THIS
@@ -166,7 +167,7 @@ namespace gum {
     //<NAME>name</NAME>
     //<PROPERTY>description = ...</PROPERTY>
     //<PROPERTY>fast = A[4,5]</PROPERTY>
-    // <!- OUTCOMES are not used but are kept for compatibility->
+    // <!--OUTCOMES are not used but are kept for compatibility-->
     //<OUTCOME>outcome1</OUTCOME>
     //<OUTCOME>outcome2</OUTCOME>
     //<PROPERTY>property</PROPERTY>
@@ -183,8 +184,8 @@ namespace gum {
     str << "\t<PROPERTY>fast = " << var.toFast() << "</PROPERTY>" << std::endl;
 
     // Outcomes
-    str << "<!- OUTCOME are not used in pyAgrum BIFXML (see fast property) but are kept for "
-           "compatibility->"
+    str << "<!--OUTCOME are not used in pyAgrum BIFXML (see fast property) but are kept for "
+           "compatibility-->"
         << std::endl;
     for (Idx i = 0; i < var.domainSize(); i++)
       str << "\t<OUTCOME>" << var.label(i) << "</OUTCOME>" << std::endl;
@@ -237,7 +238,7 @@ namespace gum {
       if (inst.val(0) == 0) str << std::endl << "\t\t";
       else str << " ";
 
-      str << cpt[inst];   //"<!-- "<<inst<<" -->"<<std::endl;
+      str << cpt[inst];
     }
 
     str << std::endl << "\t</TABLE>" << std::endl;

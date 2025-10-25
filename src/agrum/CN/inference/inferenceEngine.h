@@ -70,7 +70,6 @@ namespace gum {
      */
     template < typename GUM_SCALAR >
     class InferenceEngine: public ApproximationScheme, public ThreadNumberManager {
-      private:
       using credalSet = NodeProperty< std::vector< std::vector< GUM_SCALAR > > >;
       using margi     = NodeProperty< std::vector< GUM_SCALAR > >;
       using expe      = NodeProperty< GUM_SCALAR >;

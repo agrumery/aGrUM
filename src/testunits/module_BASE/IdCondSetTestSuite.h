@@ -37,6 +37,7 @@
  *   gitlab   : https://gitlab.com/agrumery/agrum                           *
  *                                                                          *
  ****************************************************************************/
+#pragma once
 
 
 #include <iostream>
@@ -48,7 +49,7 @@
 
 namespace gum_tests {
 
-  class [[maybe_unused]] IdtCondSetTestSuite: public CxxTest::TestSuite {
+  class GUM_TEST_SUITE(IdtCondSet) {
     public:
     GUM_ACTIVE_TEST(1) {
       gum::learning::IdCondSet set;
@@ -373,7 +374,7 @@ namespace gum_tests {
         xnb++;
       }
       TS_ASSERT_EQUALS(xnb, gum::NodeId(3))
-    }
+    }   // namespace gum_tests
   };
 
 

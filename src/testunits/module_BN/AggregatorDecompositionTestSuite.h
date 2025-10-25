@@ -37,6 +37,7 @@
  *   gitlab   : https://gitlab.com/agrumery/agrum                           *
  *                                                                          *
  ****************************************************************************/
+#pragma once
 
 
 #include <ctime>
@@ -63,7 +64,7 @@
 #include <agrum/base/core/math/math_utils.h>
 
 namespace gum_tests {
-  class [[maybe_unused]] AggregatorDecompositionTestSuite: public CxxTest::TestSuite {
+  class GUM_TEST_SUITE(AggregatorDecomposition) {
     public:
     GUM_ACTIVE_TEST(Decomposition) {
       gum::prm::PRM< double > prm;
@@ -115,6 +116,6 @@ namespace gum_tests {
         GUM_SHOWERROR(e);
         TS_FAIL("An aGrUM's exception was thrown");
       }
-    }
+    }   // namespace gum_tests
   };
 }   // namespace gum_tests

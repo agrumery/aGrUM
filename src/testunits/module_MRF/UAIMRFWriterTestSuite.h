@@ -37,6 +37,7 @@
  *   gitlab   : https://gitlab.com/agrumery/agrum                           *
  *                                                                          *
  ****************************************************************************/
+#pragma once
 
 
 #include <iostream>
@@ -62,7 +63,7 @@
 
 namespace gum_tests {
 
-  class [[maybe_unused]] UAIMRFWriterTestSuite: public CxxTest::TestSuite {
+  class GUM_TEST_SUITE(UAIMRFWriter) {
     public:
     gum::MarkovRandomField< double >* mn;
     gum::NodeId                       i1, i2, i3, i4, i5;
@@ -105,7 +106,7 @@ namespace gum_tests {
 
       gum::Size nbErr = 0;
       TS_GUM_ASSERT_THROWS_NOTHING(nbErr = reader.proceed())
-      TS_ASSERT_EQUALS(nbErr, (gum::Size)0)
+      TS_ASSERT_EQUALS(nbErr, static_cast< gum::Size >(0))
       TS_ASSERT_EQUALS(*mn, net)
     }
 

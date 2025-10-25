@@ -37,6 +37,7 @@
  *   gitlab   : https://gitlab.com/agrumery/agrum                           *
  *                                                                          *
  ****************************************************************************/
+#pragma once
 
 
 #include <iostream>
@@ -49,7 +50,7 @@
 
 namespace gum_tests {
 
-  class [[maybe_unused]] BinaryJoinTreeConverterTestSuite: public CxxTest::TestSuite {
+  class GUM_TEST_SUITE(BinaryJoinTreeConverter) {
     public:
     GUM_ACTIVE_TEST(1) {
       gum::CliqueGraph            graph;
@@ -85,7 +86,7 @@ namespace gum_tests {
       gum::NodeProperty< gum::Size > domain_sizes;
 
       for (gum::Idx i = 1; i <= 17; ++i) {
-        domain_sizes.insert(i, (gum::Size)3);
+        domain_sizes.insert(i, static_cast< gum::Size >(3));
       }
 
       gum::BinaryJoinTreeConverterDefault converter;
@@ -95,7 +96,7 @@ namespace gum_tests {
       try {
         gum::CliqueGraph binTree = converter.convert(graph, domain_sizes, roots);
       } catch (gum::Exception& e) { GUM_SHOWERROR(e); }
-    }
+    }   // namespace gum_tests
   };
 
 } /* namespace gum_tests */

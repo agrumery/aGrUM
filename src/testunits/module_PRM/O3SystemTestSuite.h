@@ -37,6 +37,7 @@
  *   gitlab   : https://gitlab.com/agrumery/agrum                           *
  *                                                                          *
  ****************************************************************************/
+#pragma once
 
 
 #include <iostream>
@@ -54,7 +55,7 @@
 
 namespace gum_tests {
 
-  class [[maybe_unused]] O3SystemTestSuite: public CxxTest::TestSuite {
+  class GUM_TEST_SUITE(O3System) {
     public:
     gum::prm::PRM< double >* simple_printers;
     gum::prm::PRM< double >* complex_printers;
@@ -101,10 +102,10 @@ namespace gum_tests {
       TS_GUM_ASSERT_THROWS_NOTHING(factory.parseStream(input, output))
       // Assert
       TS_ASSERT_EQUALS(output.str(), "")
-      TS_ASSERT_EQUALS(simple_printers->systems().size(), (gum::Size)1)
+      TS_ASSERT_EQUALS(simple_printers->systems().size(), static_cast< gum::Size >(1))
       TS_ASSERT(simple_printers->isSystem("Foo"))
       const auto& foo = simple_printers->getSystem("Foo");
-      TS_ASSERT_EQUALS(foo.size(), (gum::Size)0)
+      TS_ASSERT_EQUALS(foo.size(), static_cast< gum::Size >(0))
     }
 
     GUM_ACTIVE_TEST(MicroSystem) {
@@ -128,10 +129,10 @@ namespace gum_tests {
       TS_GUM_ASSERT_THROWS_NOTHING(factory.parseStream(input, output))
       // Assert
       TS_ASSERT_EQUALS(output.str(), "")
-      TS_ASSERT_EQUALS(simple_printers->systems().size(), (gum::Size)1)
+      TS_ASSERT_EQUALS(simple_printers->systems().size(), static_cast< gum::Size >(1))
       TS_ASSERT(simple_printers->isSystem("microSys"))
       const auto& foo = simple_printers->getSystem("microSys");
-      TS_ASSERT_EQUALS(foo.size(), (gum::Size)5)
+      TS_ASSERT_EQUALS(foo.size(), static_cast< gum::Size >(5))
     }
 
     GUM_ACTIVE_TEST(MicroSystemWithError1) {
@@ -148,7 +149,7 @@ namespace gum_tests {
       std::stringstream msg;
       msg << "|2 col 12| Error : invalid declaration";
       TS_ASSERT_EQUALS(line, msg.str())
-      TS_ASSERT_EQUALS(simple_printers->systems().size(), (gum::Size)0)
+      TS_ASSERT_EQUALS(simple_printers->systems().size(), static_cast< gum::Size >(0))
     }
 
     GUM_ACTIVE_TEST(MicroSystemWithError2) {
@@ -165,7 +166,7 @@ namespace gum_tests {
       std::stringstream msg;
       msg << "|2 col 1| Error : Unknown class FOO";
       TS_ASSERT_EQUALS(line, msg.str())
-      TS_ASSERT_EQUALS(simple_printers->systems().size(), (gum::Size)0)
+      TS_ASSERT_EQUALS(simple_printers->systems().size(), static_cast< gum::Size >(0))
     }
 
     GUM_ACTIVE_TEST(MicroSystemWithError3) {
@@ -182,7 +183,7 @@ namespace gum_tests {
       std::stringstream msg;
       msg << "|1 col 8| Error : label expected";
       TS_ASSERT_EQUALS(line, msg.str())
-      TS_ASSERT_EQUALS(simple_printers->systems().size(), (gum::Size)0)
+      TS_ASSERT_EQUALS(simple_printers->systems().size(), static_cast< gum::Size >(0))
     }
 
     GUM_ACTIVE_TEST(MicroSystemWithError4) {
@@ -202,7 +203,7 @@ namespace gum_tests {
       std::stringstream msg;
       msg << "|3 col 1| Error : semicolon expected";
       TS_ASSERT_EQUALS(line, msg.str())
-      TS_ASSERT_EQUALS(simple_printers->systems().size(), (gum::Size)0)
+      TS_ASSERT_EQUALS(simple_printers->systems().size(), static_cast< gum::Size >(0))
     }
 
     GUM_ACTIVE_TEST(MicroSystemWithError5) {
@@ -225,7 +226,7 @@ namespace gum_tests {
       std::stringstream msg;
       msg << "|6 col 1| Error : Unknown class r.power";
       TS_ASSERT_EQUALS(line, msg.str())
-      TS_ASSERT_EQUALS(simple_printers->systems().size(), (gum::Size)0)
+      TS_ASSERT_EQUALS(simple_printers->systems().size(), static_cast< gum::Size >(0))
     }
 
     GUM_ACTIVE_TEST(MicroSystemWithError6) {
@@ -252,7 +253,7 @@ namespace gum_tests {
       msg << "|1 col 8| Error : Could not instantiate the system, some "
              "reference slots must be unassigned";
       TS_ASSERT_EQUALS(line, msg.str())
-      TS_ASSERT_EQUALS(simple_printers->systems().size(), (gum::Size)1)
+      TS_ASSERT_EQUALS(simple_printers->systems().size(), static_cast< gum::Size >(1))
     }
 
     GUM_ACTIVE_TEST(MicroSystemWithError7) {
@@ -279,7 +280,7 @@ namespace gum_tests {
       std::stringstream msg;
       msg << "|5 col 1| Error : Instance p already exists";
       TS_ASSERT_EQUALS(line, msg.str())
-      TS_ASSERT_EQUALS(simple_printers->systems().size(), (gum::Size)0)
+      TS_ASSERT_EQUALS(simple_printers->systems().size(), static_cast< gum::Size >(0))
     }
 
     GUM_ACTIVE_TEST(SmallSystem) {
@@ -318,10 +319,10 @@ namespace gum_tests {
       TS_GUM_ASSERT_THROWS_NOTHING(factory.parseStream(input, output))
       // Assert
       TS_ASSERT_EQUALS(output.str(), "")
-      TS_ASSERT_EQUALS(simple_printers->systems().size(), (gum::Size)1)
+      TS_ASSERT_EQUALS(simple_printers->systems().size(), static_cast< gum::Size >(1))
       TS_ASSERT(simple_printers->isSystem("smallSys"))
       const auto& foo = simple_printers->getSystem("smallSys");
-      TS_ASSERT_EQUALS(foo.size(), (gum::Size)10)
+      TS_ASSERT_EQUALS(foo.size(), static_cast< gum::Size >(10))
     }
 
     GUM_ACTIVE_TEST(ComplexSystem) {
@@ -354,10 +355,10 @@ namespace gum_tests {
       TS_GUM_ASSERT_THROWS_NOTHING(factory.parseStream(input, output))
       // Assert
       TS_ASSERT_EQUALS(output.str(), "")
-      TS_ASSERT_EQUALS(complex_printers->systems().size(), (gum::Size)1)
+      TS_ASSERT_EQUALS(complex_printers->systems().size(), static_cast< gum::Size >(1))
       TS_ASSERT(complex_printers->isSystem("aSys"))
       const auto& foo = complex_printers->getSystem("aSys");
-      TS_ASSERT_EQUALS(foo.size(), (gum::Size)18)
+      TS_ASSERT_EQUALS(foo.size(), static_cast< gum::Size >(18))
     }
   };
 

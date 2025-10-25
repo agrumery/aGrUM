@@ -37,6 +37,7 @@
  *   gitlab   : https://gitlab.com/agrumery/agrum                           *
  *                                                                          *
  ****************************************************************************/
+#pragma once
 
 
 #include <sstream>
@@ -55,8 +56,7 @@
  */
 namespace gum_tests {
 
-  class [[maybe_unused]] PRMSystemTestSuite: public CxxTest::TestSuite {
-    private:
+  class GUM_TEST_SUITE(PRMSystem) {
     using PRMSystem    = gum::prm::PRMSystem< double >;
     using PRMInstance  = gum::prm::PRMInstance< double >;
     using PRMClass     = gum::prm::PRMClass< double >;
@@ -175,7 +175,7 @@ namespace gum_tests {
     }
 
     GUM_ACTIVE_TEST(ClassConstruction) {
-      TS_ASSERT_EQUALS(_asia_->attributes().size(), (gum::Size)8)
+      TS_ASSERT_EQUALS(_asia_->attributes().size(), static_cast< gum::Size >(8))
     }
 
     GUM_ACTIVE_TEST(AddInstance) {
@@ -187,7 +187,7 @@ namespace gum_tests {
       // Assert
       TS_ASSERT(sys.exists("asia"))
       TS_ASSERT(sys.isInstantiated(*_asia_))
-      TS_ASSERT_EQUALS(sys.size(), (gum::Size)1)
+      TS_ASSERT_EQUALS(sys.size(), static_cast< gum::Size >(1))
     }
 
     GUM_ACTIVE_TEST(Instantiate) {
@@ -200,7 +200,7 @@ namespace gum_tests {
       // Assert
       TS_ASSERT(sys.exists("asia"))
       TS_ASSERT(sys.isInstantiated(*_asia_))
-      TS_ASSERT_EQUALS(sys.size(), (gum::Size)1)
+      TS_ASSERT_EQUALS(sys.size(), static_cast< gum::Size >(1))
     }
 
     GUM_ACTIVE_TEST(GroundBN) {
@@ -219,8 +219,8 @@ namespace gum_tests {
         y0 = bn->cpt(1).toString();
       }
       // Assert
-      TS_ASSERT_EQUALS(bn->size(), (gum::Size)8)
-      TS_ASSERT_EQUALS(bn->sizeArcs(), (gum::Size)8)
+      TS_ASSERT_EQUALS(bn->size(), static_cast< gum::Size >(8))
+      TS_ASSERT_EQUALS(bn->sizeArcs(), static_cast< gum::Size >(8))
       x1 = bn->cpt(0).toString();
       y1 = bn->cpt(1).toString();
       TS_ASSERT_EQUALS(x0, x1)
@@ -240,8 +240,8 @@ namespace gum_tests {
       // Act
       TS_ASSERT_THROWS_NOTHING(delete sys)
       // Assert
-      TS_ASSERT_EQUALS(bn->size(), (gum::Size)8)
-      TS_ASSERT_EQUALS(bn->sizeArcs(), (gum::Size)8)
+      TS_ASSERT_EQUALS(bn->size(), static_cast< gum::Size >(8))
+      TS_ASSERT_EQUALS(bn->sizeArcs(), static_cast< gum::Size >(8))
       for (auto node: bn->dag()) {
         const gum::Tensor< double >* cpt = nullptr;
         TS_GUM_ASSERT_THROWS_NOTHING(cpt = &(bn->cpt(node)))

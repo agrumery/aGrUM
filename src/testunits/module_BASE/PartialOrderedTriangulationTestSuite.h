@@ -37,6 +37,7 @@
  *   gitlab   : https://gitlab.com/agrumery/agrum                           *
  *                                                                          *
  ****************************************************************************/
+#pragma once
 
 
 #include <iostream>
@@ -49,7 +50,7 @@
 
 namespace gum_tests {
 
-  class [[maybe_unused]] PartialOrderedTriangulationTestSuite: public CxxTest::TestSuite {
+  class GUM_TEST_SUITE(PartialOrderedTriangulation) {
     public:
     GUM_ACTIVE_TEST(TriangulatedGraph1) {
       gum::NodeSet c1, c2, c3, c4, c5;
@@ -160,7 +161,7 @@ namespace gum_tests {
       const gum::EdgeSet& edges = triang.fillIns();
       TS_ASSERT_EQUALS(edges.size(), 1U)
       TS_ASSERT_EQUALS(*(edges.begin()), gum::Edge(20, 50))
-    }
+    }   // namespace gum_tests
 
     GUM_ACTIVE_TEST(TriangulatedGraph2) {
       gum::NodeSet c1, c2, c3, c4, c5;

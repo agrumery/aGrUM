@@ -52,7 +52,7 @@
 
 #ifdef GUM_NO_INLINE
 #  include <agrum/BN/learning/structureUtils/graphChange_inl.h>
-#endif   // GUM_NOINLINE
+#endif   // GU%_NO_INLINE
 
 namespace gum {
 

@@ -37,6 +37,7 @@
  *   gitlab   : https://gitlab.com/agrumery/agrum                           *
  *                                                                          *
  ****************************************************************************/
+#pragma once
 
 
 #include <iostream>
@@ -48,7 +49,7 @@
 
 namespace gum_tests {
 
-  class [[maybe_unused]] DBTranslator4LabelizedVariableTestSuite: public CxxTest::TestSuite {
+  class GUM_TEST_SUITE(DBTranslator4LabelizedVariable) {
     public:
     GUM_ACTIVE_TEST(_trans1) {
       gum::learning::DBTranslator4LabelizedVariable translator;
@@ -113,7 +114,7 @@ namespace gum_tests {
       const std::string back = translator3.translateBack(
           gum::learning::DBTranslatedValue{std::numeric_limits< std::size_t >::max()});
       TS_ASSERT(translator3.missingSymbols().exists(back))
-    }
+    }   // namespace gum_tests
 
     GUM_ACTIVE_TEST(_trans2) {
       gum::learning::DBTranslator4LabelizedVariable translator;
@@ -242,7 +243,7 @@ namespace gum_tests {
                            std::numeric_limits< std::size_t >::max()}),
                        "?");
 
-      TS_ASSERT_EQUALS(translator3.domainSize(), (gum::Size)3)
+      TS_ASSERT_EQUALS(translator3.domainSize(), static_cast< gum::Size >(3))
 
       TS_ASSERT_THROWS(
           gum::learning::DBTranslator4LabelizedVariable translator4(var, missing, true, 2),
@@ -555,7 +556,7 @@ namespace gum_tests {
 
       gum::learning::DBTranslator4LabelizedVariable translator(var, missing);
       TS_ASSERT(translator.needsReordering())
-      TS_ASSERT_EQUALS(translator.domainSize(), (gum::Size)3)
+      TS_ASSERT_EQUALS(translator.domainSize(), static_cast< gum::Size >(3))
 
       TS_ASSERT_EQUALS((translator << "7").discr_val, (std::size_t)0)
       TS_ASSERT_EQUALS((translator >> gum::learning::DBTranslatedValue{std::size_t{0}}), "7")
@@ -600,7 +601,7 @@ namespace gum_tests {
 
       gum::learning::DBTranslator4LabelizedVariable translator2(var2, missing2);
       TS_ASSERT_EQUALS(translator2.needsReordering(), false)
-      TS_ASSERT_EQUALS(translator2.domainSize(), (gum::Size)3)
+      TS_ASSERT_EQUALS(translator2.domainSize(), static_cast< gum::Size >(3))
 
       TS_ASSERT_EQUALS((translator2 << "7").discr_val, (std::size_t)2)
       TS_ASSERT_EQUALS((translator2 >> gum::learning::DBTranslatedValue{std::size_t{2}}), "7")
@@ -618,7 +619,7 @@ namespace gum_tests {
       TS_ASSERT_EQUALS(translator2.missingSymbols(), missing_kept2)
 
       auto new_order2 = translator2.reorder();
-      TS_ASSERT_EQUALS(new_order2.size(), (gum::Size)0)
+      TS_ASSERT_EQUALS(new_order2.size(), static_cast< gum::Size >(0))
     }
   };
 

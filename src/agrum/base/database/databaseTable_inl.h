@@ -37,6 +37,7 @@
  *   gitlab   : https://gitlab.com/agrumery/agrum                           *
  *                                                                          *
  ****************************************************************************/
+#pragma once
 
 
 #ifndef DOXYGEN_SHOULD_SKIP_THIS
@@ -55,7 +56,7 @@ namespace gum {
     }
 
     // move constructor
-    INLINE DatabaseTable::DatabaseTable(DatabaseTable&& from) :
+    INLINE DatabaseTable::DatabaseTable(DatabaseTable&& from) noexcept :
         IDatabaseTable< DBTranslatedValue >(std::move(from)),
         _translators_(std::move(from._translators_)),
         _ignored_cols_(std::move(from._ignored_cols_)) {
