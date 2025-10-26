@@ -4068,6 +4068,9 @@ class DAG(DiGraph):
     def moralGraph(self) -> "pyagrum.UndiGraph":
         return _pyagrum.DAG_moralGraph(self)
 
+    def minimalCondSet(self, *args) -> List[int]:
+        return _pyagrum.DAG_minimalCondSet(self, *args)
+
     def __repr__(self) -> str:
         return _pyagrum.DAG___repr__(self)
 
@@ -6647,6 +6650,9 @@ class DAGmodel(GraphicalModel):
 
         """
         return _pyagrum.DAGmodel_hasSameStructure(self, other)
+
+    def minimalCondSet(self, *args) -> List[int]:
+        return _pyagrum.DAGmodel_minimalCondSet(self, *args)
 
 # Register DAGmodel in _pyagrum:
 _pyagrum.DAGmodel_swigregister(DAGmodel)
@@ -29543,7 +29549,7 @@ class ShaferShenoyLIMIDInference(object):
 
 # Register ShaferShenoyLIMIDInference in _pyagrum:
 _pyagrum.ShaferShenoyLIMIDInference_swigregister(ShaferShenoyLIMIDInference)
-__version__ = '2.2.1.9'
+__version__ = '2.3.0'
 __license__ = __doc__
 __project_url__ = 'https://agrum.org'
 __project_name__ = 'pyAgrum'
@@ -31425,7 +31431,7 @@ def getPosterior(model, *, target, evs=None):
 # creating a new Tensor from posterior(will disappear with ie)
   return pyagrum.Tensor(inf.posterior(target))
 
-__version__ = '2.2.1.9'
+__version__ = '2.3.0'
 __license__ = __doc__
 __project_url__ = 'https://agrum.org'
 __project_name__ = 'pyAgrum'

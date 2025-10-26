@@ -5,14 +5,16 @@
 - aGrUM
     - Use of std::format` (C++20) to correctly print doubles (thanks to Christopher Eveland).
     - Updated docker images, runners and CI for C++20 and python 3.14.
+    - Moved `minimalCondSet` from `gum::IBayesNet` to `gum::DAG{model}`.
 
 - pyAgrum
-    - Added python 3.14 support
+    - Added python 3.14 suppor and fixed some `Py_DecRef`.
     - Refreshed binder files (python 3.10)
     - Introduced the new `pyagrum.explain` submodule for explainability in Bayesian Networks.
-    - Improved SHAP value computation performance in `pyagrum.explain` (thanks to Rayane Nasri).
+    - Improved SHAP value computation performance in in new package `pyagrum.explain` (thanks to Rayane Nasri).
     - Added support for SHAP values on partial subsets of features in `pyagrum.explain` (thanks to Rayane Nasri).
     - Introduced the concept of SHALL values for explaining log-likelihood in Bayesian Networks in `pyagrum.explain` (thanks to Ekaterina Bogush and Amélie Chu).
+    - Added tool for exporting documentation to the new site.
 
 
 ## Changelog for 2.2.1
