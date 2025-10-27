@@ -10,4 +10,4 @@ c.NotebookApp.websocket_compression_options = {}
 
 # jupyter>3
 # c.NotebookApp.notebook_dir = "wrappers/pyAgrum/doc/sphinx/notebooks"
-c.ServerApp.root_dir = "wrappers/pyAgrum/doc/sphinx/notebooks"
+# c.ServerApp.root_dir = "wrappers/pyAgrum/doc/sphinx/notebooks"

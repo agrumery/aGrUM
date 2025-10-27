@@ -167,6 +167,11 @@ def prepareSphinx(site_dir: str):
     }:
       src_path = os.path.join(".", item)
       dest_path = os.path.join(site_dir, item)
+
+      # do not copy zip files
+      if item.endswith(".zip"):
+        continue
+
       if os.path.isdir(src_path):
         os.makedirs(dest_path, exist_ok=True)
         for sub_item in os.listdir(src_path):
@@ -215,15 +220,39 @@ def chgIndexForWeb(site_dir: str):
     f.write(buffer)
 
 
+def recursive_copy(src: str, dest: str):
+  """Recursively copy files from src to dest."""
+  notif(f"Recursive copy from {src} to {dest}")
+  if os.path.isdir(src):
+    os.makedirs(dest, exist_ok=True)
+    for item in os.listdir(src):
+      recursive_copy(os.path.join(src, item), os.path.join(dest, item))
+  else:
+    shutil.copy2(src, dest)
+
+
+def goRTD(site_dir: str):
+  notif("Running Sphinx to build the site (RTD version)...")
+  os.chdir(site_dir)
+  # Run Sphinx to build the site
+  os.system("sphinx-build -M html .. RTD")
+  # move the folders html/_static and html/_images in the folder markdown
+  recursive_copy("RTD/html/_static", "markdown/_static")
+  recursive_copy("RTD/html/_images", "markdown/_images")
+  os.chdir("..")
+
+
 def goSphinx(site_dir: str):
+  notif("Running Sphinx to build the site (html and markdown)...")
   os.chdir(site_dir)
   # Run Sphinx to build the site
   os.system("sphinx-build -M html . .")
   os.system("sphinx-build -M markdown . .")
   # move the folders html/_static and html/_images in the folder markdown
-  os.system("mv html/_static/* markdown/_static/.")
-  os.system("mv html/_images markdown/.")
-  os.system("rm -rf html")
+
+  recursive_copy("html/_static", "markdown/_static")
+  recursive_copy("html/_images", "markdown/_images")
+
   os.chdir("..")
 
 
@@ -248,25 +277,35 @@ def goZipAndFinish(site_dir: str):
 
 
 if __name__ == "__main__":
-  if len(sys.argv) != 2:
-    notif("Usage: python webbuild.py <SITEDIR>")
-    sys.exit(1)
-  site_dir = sys.argv[1]
+  match len(sys.argv):
+    case 1:
+      site_dir = "site"
+    case 2:
+      site_dir = sys.argv[1]
+    case _:
+      notif("Usage: python webbuild.py <SITEDIR>")
+      sys.exit(1)
+
   notif(f"Building site in {site_dir}...")
-  # Ensure the site directory exists
+
   os.makedirs(site_dir, exist_ok=True)
   os.makedirs(os.path.join(site_dir, "data"), exist_ok=True)
   os.makedirs(os.path.join(site_dir, "notebooks"), exist_ok=True)
   os.makedirs(os.path.join(site_dir, "html"), exist_ok=True)
+  os.makedirs(os.path.join(site_dir, "RTD"), exist_ok=True)
 
+  goRTD(site_dir)
   retrieveNotebooksSections(rst_path="notebooks.rst", json_path=f"{site_dir}/data/notebooks_sections.json")
   retrieveThumbnails(
-    RTD_path=os.path.join(site_dir, "RTD/notebooks.html"), json_path=f"{site_dir}/data/thumbnails.json"
+    RTD_path=os.path.join(site_dir, "RTD/html/notebooks.html"),
+    json_path=f"{site_dir}/data/thumbnails.json",
   )
   getTagVersion(os.path.join(site_dir, "data"))
 
   notif("Cleaning RTD directory...")
   shutil.rmtree(os.path.join(site_dir, "RTD"))
+  notif("Cleaning html directory...")
+  shutil.rmtree(os.path.join(site_dir, "html"))
 
   prepareSphinx(site_dir)
   chgIndexForWeb(site_dir)

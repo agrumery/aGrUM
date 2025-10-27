@@ -125,7 +125,7 @@ def getCausalImpact(
     gnb.flow.add(explanation, caption="Impossible")
   else:
     gnb.flow.add(
-      "$$\\begin{equation*}" + formula.toLatex() + "\\end{equation*}$$", caption="Explanation : " + explanation
+      "\n\n$$\n\\begin{equation*}" + formula.toLatex() + "\\end{equation*}\n$$\n\n", caption="Explanation : " + explanation
     )
 
   if formula is None:
