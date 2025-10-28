@@ -249,7 +249,7 @@ def init_params() -> None:
   else:
     cfg.default["compiler"] = "gcc"
 
-  cfg.actions = set("lib test install doc clean purge show uninstall package guideline wheel nightly_wheel".split())
+  cfg.actions = set("lib test install doc clean purge show uninstall package guideline pipinstall wheel nightly_wheel".split())
   cfg.modes = set("debug release".split())
   cfg.targets = {"agrum", "pyagrum"}  # lowercase for relaxing constraints
   cfg.modules = parse_modules_txt()

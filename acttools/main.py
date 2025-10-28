@@ -231,7 +231,7 @@ def main() -> int:
       from .ActBuilderGuideline import ActBuilderGuideline
 
       builder = ActBuilderGuideline(current)
-    case "wheel" | "nightly_wheel":
+    case "wheel" | "nightly_wheel" :
       from .ActBuilderWheel import ActBuilderWheel
 
       builder = ActBuilderWheel(current)
@@ -259,6 +259,9 @@ def main() -> int:
       else:
         error(f"Unknown target [{current['target']}]")
         res = 2
+    case "pipinstall":
+      from .ActBuilderPipInstall import ActBuilderPipInstall
+      builder = ActBuilderPipInstall(current)
 
     case _:
       show_invocation(current)
