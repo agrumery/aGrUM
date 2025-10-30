@@ -179,8 +179,8 @@ namespace gum {
     str << "\t<PROPERTY>fast = " << var.toFast() << "</PROPERTY>" << std::endl;
 
     // Outcomes
-    str << "<!- OUTCOME are not used in pyAgrum BIFXML (see fast property) but are kept for "
-           "compatibility->"
+    str << "<!-- OUTCOME are not used in pyAgrum BIFXML (see fast property) but are kept for "
+           "compatibility-->"
         << std::endl;
     for (Idx i = 0; i < var.domainSize(); i++)
       str << "\t<OUTCOME>" << var.label(i) << "</OUTCOME>" << std::endl;
