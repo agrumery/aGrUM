@@ -44,16 +44,16 @@
 
 #ifndef GUM_NO_EXTERN_TEMPLATE_CLASS
 
-template class gum::ASTtree<double>;
-template class gum::ASTplus<double>;
-template class gum::ASTminus<double>;
-template class gum::ASTmult<double>;
-template class gum::ASTdiv<double>;
-template class gum::ASTposteriorProba<double>;
-template class gum::ASTjointProba<double>;
-template class gum::ASTsum<double>;
+template class gum::ASTtree< double >;
+template class gum::ASTplus< double >;
+template class gum::ASTminus< double >;
+template class gum::ASTmult< double >;
+template class gum::ASTdiv< double >;
+template class gum::ASTposteriorProba< double >;
+template class gum::ASTjointProba< double >;
+template class gum::ASTsum< double >;
 
-template std::unique_ptr<gum::ASTtree<double>>
-gum::productOfTrees<double>(std::vector<std::unique_ptr<gum::ASTtree<double>>>&&);
+template std::unique_ptr< gum::ASTtree< double > >
+    gum::productOfTrees< double >(std::vector< std::unique_ptr< gum::ASTtree< double > > >&&);
 
 #endif

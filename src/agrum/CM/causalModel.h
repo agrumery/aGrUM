@@ -36,25 +36,8 @@
  *   homepage : http://agrum.gitlab.io                                      *
  *   gitlab   : https://gitlab.com/agrumery/agrum                           *
  *                                                                          *
- ****************************************************************************//**
- * @file
- * @brief CausalModel: a thin wrapper around an observational BayesNet with an
- *        explicit causal DAG (including optional latent variables).
- *
- * This header defines a templated CausalModel that:
- *  - stores the **observational** Bayesian network (observed variables only),
- *  - maintains a companion **causal DAG** that may include **latent** nodes,
- *  - offers convenience methods to add latent confounders, manage causal arcs,
- *    and query structure (parents/children, names/ids, components),
- *  - provides a DOT exporter for visualization.
- *
- * ### Key ideas
- * - The observational BN encodes factorization/CPDs over observed variables.
- * - The causal DAG encodes the structural/causal graph over both observed and
- *   (optionally) latent variables. Edges here represent causal relationships.
- * - Latent variables can be introduced as parents of multiple observed children
- *   to model unobserved confounding.
- */
+ ****************************************************************************/
+
 
 #ifndef GUM_CAUSAL_MODEL_H
 #define GUM_CAUSAL_MODEL_H
@@ -66,7 +49,8 @@
 namespace gum {
 
   // forward declaration:
-  template <typename GUM_SCALAR> class ASTtree;
+  template < typename GUM_SCALAR >
+  class ASTtree;
 
   /// LatentDescriptorIds = (latentName, (child1Id, child2Id, ...))
   /**
@@ -75,10 +59,10 @@ namespace gum {
    * The first element is the **name** of the latent to create; the second element is
    * the list of **NodeId**s of observed children the latent points to in the causal DAG.
    */
-  using LatentDescriptorIds = std::pair<std::string, std::vector<NodeId>>;
+  using LatentDescriptorIds = std::pair< std::string, std::vector< NodeId > >;
 
   /// Collection of latent descriptors (see LatentDescriptorIds).
-  using LatentDescriptorVector = std::vector<LatentDescriptorIds>;
+  using LatentDescriptorVector = std::vector< LatentDescriptorIds >;
 
   /**
    * @class CausalModel
@@ -95,19 +79,19 @@ namespace gum {
    *   in the **causal DAG**. The `assumeNonSpurious` flag controls whether existing arcs between
    *   those children are preserved or may be adjusted (implementation dependent).
    */
-  template <typename GUM_SCALAR>
+  template < typename GUM_SCALAR >
   class CausalModel {
     private:
     /// The underlying BayesNet representing the observed part of the model.
-    BayesNet<GUM_SCALAR> _observationalBN_;
+    BayesNet< GUM_SCALAR > _observationalBN_;
 
     /// The underlying DAG representing the causal structure (observed + latent).
     DAG _causalDAG_;
 
     /// Bidirectional mapping between node ids and variable names (observed + latent).
-    Bijection<NodeId, std::string> _id2name_;
+    Bijection< NodeId, std::string > _id2name_;
 
-   public:
+    public:
     /// Default constructor disabled: a causal model must be built from a BN.
     CausalModel() = delete;
 
@@ -117,9 +101,8 @@ namespace gum {
      *
      * Initializes the causal DAG as the BN's DAG (observed-only).
      */
-    explicit CausalModel(const BayesNet<GUM_SCALAR>& observationalBN)
-        : _observationalBN_(observationalBN),
-          _causalDAG_(observationalBN.dag()) {}
+    explicit CausalModel(const BayesNet< GUM_SCALAR >& observationalBN) :
+        _observationalBN_(observationalBN), _causalDAG_(observationalBN.dag()) {}
 
     /**
      * @brief Construct a causal model and add a list of latent confounders.
@@ -130,12 +113,12 @@ namespace gum {
      * Each latent is created and added as a parent of the provided children in the
      * **causal DAG**. The observed BN remains unchanged.
      */
-    explicit CausalModel(const BayesNet<GUM_SCALAR>& observationalBN,
-                    const LatentDescriptorVector& latentVarsDescriptor,
-                    bool assumeNonSpurious = false);
+    explicit CausalModel(const BayesNet< GUM_SCALAR >& observationalBN,
+                         const LatentDescriptorVector& latentVarsDescriptor,
+                         bool                          assumeNonSpurious = false);
 
     /// Copy constructor
-    CausalModel(const CausalModel& other){ GUM_CONS_CPY(CausalModel) };
+    CausalModel(const CausalModel& other) { GUM_CONS_CPY(CausalModel) };
 
     /// Move constructor
     CausalModel(CausalModel&& other) noexcept { GUM_CONS_MOV(CausalModel) };
@@ -166,7 +149,9 @@ namespace gum {
      *          to preserve, and another with `assumeNonSpurious = false` for the subset to drop.
      *          A finer-grained edit API may be added later.
      */
-    void addLatentVariable(const std::string& latentName, const std::vector<std::string>& childrenOfLatent, bool assumeNonSpurious = false);
+    void addLatentVariable(const std::string&                latentName,
+                           const std::vector< std::string >& childrenOfLatent,
+                           bool                              assumeNonSpurious = false);
 
     /**
      * @brief Add a latent variable by **NodeId**s of its observed children.
@@ -185,7 +170,9 @@ namespace gum {
      *          to preserve, and another with `assumeNonSpurious = false` for the subset to drop.
      *          A finer-grained edit API may be added later.
      */
-    void addLatentVariable(const std::string& latentName, const std::vector<NodeId>& childrenOfLatent, bool assumeNonSpurious = false);
+    void addLatentVariable(const std::string&           latentName,
+                           const std::vector< NodeId >& childrenOfLatent,
+                           bool                         assumeNonSpurious = false);
 
     /// @brief Whether a causal arc x → y exists (by ids) in the causal DAG.
     bool existsArc(NodeId x, NodeId y) const;
@@ -254,41 +241,37 @@ namespace gum {
     NodeSet frontDoor(NodeId cause, NodeId effect) const;
 
 
-
     /**
      * @brief Induced causal submodel on a subset of nodes.
      * @param cm a source causal model
      * @param subset node set to keep (observed + latent)
      * @return A new CausalModel induced by the subset (both BN/DAG restricted appropriately).
      */
-    CausalModel<GUM_SCALAR>
-    inducedCausalSubModel(const CausalModel<GUM_SCALAR>& cm, NodeSet subset) const;
+    CausalModel< GUM_SCALAR > inducedCausalSubModel(const CausalModel< GUM_SCALAR >& cm,
+                                                    NodeSet                          subset) const;
 
     /**
      * @brief DOT representation of the causal DAG (observed + latent).
      * @param SHOW_LATENT_NAMES  If true, display latent names explicitly.
-     * @param NODE_BG            Node background color (hex code like "#404040" or Graphviz color name like "lightgray").
+     * @param NODE_BG            Node background color (hex code like "#404040" or Graphviz color
+     * name like "lightgray").
      * @param NODE_FG            Node label/text color (hex code or Graphviz color name).
      * @param EDGE_COL           Edge color (hex code or Graphviz color name).
      * @return A string containing a Graphviz/DOT graph.
      */
-    std::string toDot(const bool   SHOW_LATENT_NAMES = false,
-                      const char*  NODE_BG           = "#404040",
-                      const char*  NODE_FG           = "white",
-                      const char*  EDGE_COL          = "#4A4A4A") const;
+    std::string toDot(const bool  SHOW_LATENT_NAMES = false,
+                      const char* NODE_BG           = "#404040",
+                      const char* NODE_FG           = "white",
+                      const char* EDGE_COL          = "#4A4A4A") const;
 
     /// @brief Observational BN (observed variables only).
-    const BayesNet<GUM_SCALAR>& observationalBN() const {
-      return _observationalBN_;
-    }
+    const BayesNet< GUM_SCALAR >& observationalBN() const { return _observationalBN_; }
 
     /// @brief Causal DAG (observed + latent variables).
-    const DAG& causalDAG() const {
-      return _causalDAG_;
-    }
+    const DAG& causalDAG() const { return _causalDAG_; }
 
     /// @brief All variable names appearing in the causal model (observed + latent).
-    Set<std::string> names() const;
+    Set< std::string > names() const;
 
     /// @brief Node id from variable name (observed or latent).
     NodeId idFromName(const std::string& name) const;
@@ -297,13 +280,13 @@ namespace gum {
     std::string nameFromId(NodeId id) const;
 
     /// @brief Bidirectional mapping between node ids and variable names
-    Bijection<NodeId, std::string> id2name(bool includeLatentVariable=false) const;
+    Bijection< NodeId, std::string > id2name(bool includeLatentVariable = false) const;
 
     /// @brief Node ids of all latent variables.
     NodeSet latentVariablesIds() const;
 
     /// @brief Names of all latent variables.
-    Set<std::string> latentVariablesNames() const;
+    Set< std::string > latentVariablesNames() const;
 
     /// @brief Parents of a node (by id) in the causal DAG (including latents).
     NodeSet parents(NodeId x) const;
@@ -321,16 +304,15 @@ namespace gum {
      * @brief Weakly connected components of the causal DAG.
      * @return A table mapping a representative NodeId to the NodeSet of nodes in its component.
      */
-    HashTable<NodeId, NodeSet> connectedComponents() const;
-
+    HashTable< NodeId, NodeSet > connectedComponents() const;
   };
 
 #ifndef GUM_NO_EXTERN_TEMPLATE_CLASS
-  extern template class CausalModel<double>;
+  extern template class CausalModel< double >;
 #endif
 
-} // namespace gum
+}   // namespace gum
 
 #include <agrum/CM/causalModel_tpl.h>
 
-#endif // GUM_CAUSAL_MODEL_H
+#endif   // GUM_CAUSAL_MODEL_H

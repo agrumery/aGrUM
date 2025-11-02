@@ -42,95 +42,96 @@
  * @brief d-separation utilities implementation
  */
 
- /****************************************************************************
+/****************************************************************************
  *   aGrUM/pyAgrum — Separation implementation                              *
  ****************************************************************************/
 
-#include <agrum/CM/tools/separation.h>
-#include <agrum/BN/algorithms/barrenNodesFinder.h>
-
-#include <queue>
-#include <unordered_set>
 #include <algorithm>
+#include <queue>
 
+#include <agrum/BN/algorithms/barrenNodesFinder.h>
+#include <agrum/CM/tools/separation.h>
+
+#include <unordered_set>
 
 namespace gum {
 
-// --------------------------- small helpers -------------------------------
+  // --------------------------- small helpers -------------------------------
 
-namespace {
-  // Remove every node of Z from the undirected graph
-  inline void _eraseAll(UndiGraph& ug, const NodeSet& Z) {
-    for (const auto z : Z) if (ug.existsNode(z)) ug.eraseNode(z);
+  namespace {
+    // Remove every node of Z from the undirected graph
+    inline void _eraseAll(UndiGraph& ug, const NodeSet& Z) {
+      for (const auto z: Z)
+        if (ug.existsNode(z)) ug.eraseNode(z);
+    }
+
+    static inline void removeConditioningNodes(UndiGraph& ug, const gum::NodeSet& Z) {
+      _eraseAll(ug, Z);
+    }
+  }   // namespace
+
+  // ==========================================================================
+  // Core public API
+  // ==========================================================================
+
+  /**
+   * Pyagrum counterpart: isDSep  (delegates to isDSep_tech2)
+   */
+  bool Separation::isDSeparated(const DAG&     dag,
+                                const NodeSet& X,
+                                const NodeSet& Y,
+                                const NodeSet& Z) {
+    // delegate directly to aGrUM's built-in d-separation
+    return dag.dSeparation(X, Y, Z);
   }
 
-  static inline void removeConditioningNodes(UndiGraph& ug, const gum::NodeSet& Z) {
-  _eraseAll(ug, Z);
-}
-}
+  /**
+   * Pyagrum counterpart: isDSep_parents / _isDSep_tech2_parents
+   */
+  bool Separation::isBackdoorSeparated(const DAG&     dag,
+                                       const NodeSet& X,
+                                       const NodeSet& Y,
+                                       const NodeSet& Z) {
+    // Build G_{\underline X}: remove all outgoing arcs from X
+    DAG g = dag;
 
-// ==========================================================================
-// Core public API
-// ==========================================================================
+    for (auto x: X) {
+      // collect children first, then erase (avoid iterator invalidation)
+      std::vector< NodeId > ch;
+      ch.reserve(g.children(x).size());
+      for (auto c: g.children(x))
+        ch.push_back(c);
 
-/**
- * Pyagrum counterpart: isDSep  (delegates to isDSep_tech2)
- */
-bool Separation::isDSeparated(const DAG& dag,
-                               const NodeSet& X,
-                               const NodeSet& Y,
-                               const NodeSet& Z) {
-  // delegate directly to aGrUM's built-in d-separation
-  return dag.dSeparation(X, Y, Z);
-}
+      for (auto c: ch) {
+        if (g.existsArc(x, c)) g.eraseArc(gum::Arc(x, c));
+      }
+    }
 
-/**
- * Pyagrum counterpart: isDSep_parents / _isDSep_tech2_parents
- */
-bool Separation::isBackdoorSeparated(const DAG& dag,
+    // Now test standard d-separation in G_{\underline X}
+    return g.dSeparation(X, Y, Z);
+  }
+
+  /**
+   * Pyagrum counterpart: _isDSep_tech2_children
+   */
+  bool Separation::isForwardSeparated(const DAG&     dag,
                                       const NodeSet& X,
                                       const NodeSet& Y,
                                       const NodeSet& Z) {
-  // Build G_{\underline X}: remove all outgoing arcs from X
-  DAG g = dag;
-
-  for (auto x : X) {
-    // collect children first, then erase (avoid iterator invalidation)
-    std::vector<NodeId> ch;
-    ch.reserve(g.children(x).size());
-    for (auto c : g.children(x)) ch.push_back(c);
-
-    for (auto c : ch) {
-      if (g.existsArc(x, c)) g.eraseArc(gum::Arc(x, c));
-    }
-  }
-
-  // Now test standard d-separation in G_{\underline X}
-  return g.dSeparation(X, Y, Z);
-}
-
-
-/**
- * Pyagrum counterpart: _isDSep_tech2_children
- */
-bool Separation::isForwardSeparated(const DAG& dag,
-                                     const NodeSet& X,
-                                     const NodeSet& Y,
-                                     const NodeSet& Z) {
-
     // 1) Moralize only on Anc(Y ∪ Z)
     NodeSet interest = Y;
-    for (auto z : Z) interest.insert(z);
+    for (auto z: Z)
+      interest.insert(z);
     UndiGraph ug = dag.moralizedAncestralGraph(interest);
 
     // Ensure nodes in X exist in ug (without adding X—parent edges)
-    for (auto x : X)
-    if (!ug.existsNode(x)) ug.addNodeWithId(x);
+    for (auto x: X)
+      if (!ug.existsNode(x)) ug.addNodeWithId(x);
 
     // 2) Add edges X—c for children c of X that are already in ug
-    for (auto x : X) {
-      for (auto c : dag.children(x)) {
-          if (ug.existsNode(c) && !ug.existsEdge(x, c)) ug.addEdge(x, c);
+    for (auto x: X) {
+      for (auto c: dag.children(x)) {
+        if (ug.existsNode(c) && !ug.existsEdge(x, c)) ug.addEdge(x, c);
       }
     }
 
@@ -139,120 +140,120 @@ bool Separation::isForwardSeparated(const DAG& dag,
 
     // 4) Return true iff there is no undirected path between X and Y
     return !anyUndirectedConnection(ug, X, Y);
+  }
 
-}
+  // ==========================================================================
+  // Optional reduction for speed
+  // ==========================================================================
 
-// ==========================================================================
-// Optional reduction for speed
-// ==========================================================================
+  /**
+   * Pyagrum counterpart: dSep_reduce (uses _barren_nodes)
+   *
+   */
+  DAG Separation::reduceForDSeparation(const DAG&     dag,
+                                       const NodeSet& X,
+                                       const NodeSet& Y,
+                                       const NodeSet& Z) {
+    // Targets = X ∪ Y
+    NodeSet targets = X;
+    for (auto y: Y)
+      targets.insert(y);
 
-/**
- * Pyagrum counterpart: dSep_reduce (uses _barren_nodes)
- *
- */
-DAG Separation::reduceForDSeparation(const DAG& dag,
-                                      const NodeSet& X,
-                                      const NodeSet& Y,
-                                      const NodeSet& Z) {
-  // Targets = X ∪ Y
-  NodeSet targets = X;
-  for (auto y : Y) targets.insert(y);
+    // Configure finder
+    gum::BarrenNodesFinder finder(&dag);
+    finder.setTargets(&targets);   // nodes we care about reaching
+    finder.setEvidence(&Z);        // observed nodes
 
-  // Configure finder
-  gum::BarrenNodesFinder finder(&dag);
-  finder.setTargets(&targets);   // nodes we care about reaching
-  finder.setEvidence(&Z);        // observed nodes
+    // Compute barren nodes and remove them from a copy
+    NodeSet barren  = finder.barrenNodes();
+    DAG     reduced = dag;
+    for (auto n: barren)
+      if (reduced.existsNode(n)) reduced.eraseNode(n);
 
-  // Compute barren nodes and remove them from a copy
-  NodeSet barren = finder.barrenNodes();
-  DAG reduced = dag;
-  for (auto n : barren)
-    if (reduced.existsNode(n)) reduced.eraseNode(n);
+    return reduced;
+  }
 
-  return reduced;
-}
+  /**
+   * Pyagrum counterpart: _barren_nodes
+   *
+   * Implementation note:
+   *  Conservative stand-in: nodes outside Anc(X∪Y∪Z) are "barren" for our purpose.
+   *  If BarrenNodesFinder::barrenNodes() is available, you can implement this
+   *  as a thin wrapper around it.
+   */
+  Separation::NodeSet Separation::findBarrenNodes(const DAG&     dag,
+                                                  const NodeSet& evidenceZ,
+                                                  const NodeSet& targetsXY) {
+    gum::BarrenNodesFinder finder(&dag);
+    finder.setTargets(&targetsXY);
+    finder.setEvidence(&evidenceZ);
+    return finder.barrenNodes();
+  }
 
+  // ==========================================================================
+  // Minimal structural helpers
+  // ==========================================================================
 
-/**
- * Pyagrum counterpart: _barren_nodes
- *
- * Implementation note:
- *  Conservative stand-in: nodes outside Anc(X∪Y∪Z) are "barren" for our purpose.
- *  If BarrenNodesFinder::barrenNodes() is available, you can implement this
- *  as a thin wrapper around it.
- */
-Separation::NodeSet
-Separation::findBarrenNodes(const DAG& dag,
-                             const NodeSet& evidenceZ,
-                             const NodeSet& targetsXY) {
-  gum::BarrenNodesFinder finder(&dag);
-  finder.setTargets(&targetsXY);
-  finder.setEvidence(&evidenceZ);
-  return finder.barrenNodes();
-}
+  /**
+   * Pyagrum counterpart: _is_ascendant
+   */
+  bool Separation::isAncestorOf(const DAG& dag, NodeId x, NodeId y) {
+    for (const auto a: dag.ancestors(y))
+      if (a == x) return true;
+    return false;
+  }
 
+  /**
+   * Pyagrum counterpart: _is_descendant
+   */
+  bool Separation::isDescendantOf(const DAG& dag, NodeId x, NodeId y) {
+    for (const auto d: dag.descendants(y))
+      if (d == x) return true;
+    return false;
+  }
 
-// ==========================================================================
-// Minimal structural helpers
-// ==========================================================================
+  // ==========================================================================
+  // Internal helper
+  // ==========================================================================
 
-/**
- * Pyagrum counterpart: _is_ascendant
- */
-bool Separation::isAncestorOf(const DAG& dag, NodeId x, NodeId y) {
-  for (const auto a : dag.ancestors(y)) if (a == x) return true;
-  return false;
-}
+  /**
+   * Pyagrum counterpart: _is_path_x_y
+   */
+  bool
+      Separation::anyUndirectedConnection(const UndiGraph& ug, const NodeSet& A, const NodeSet& B) {
+    // Put all targets in a hash-set for O(1) hit-testing
+    std::unordered_set< NodeId > target;
+    target.reserve(B.size());
+    for (const auto b: B)
+      target.insert(b);
 
-/**
- * Pyagrum counterpart: _is_descendant
- */
-bool Separation::isDescendantOf(const DAG& dag, NodeId x, NodeId y) {
-  for (const auto d : dag.descendants(y)) if (d == x) return true;
-  return false;
-}
+    // BFS from each start node in A (skipping duplicates via 'visited')
+    NodeSet              globalVisited;
+    std::queue< NodeId > q;
 
-// ==========================================================================
-// Internal helper
-// ==========================================================================
+    for (const auto s: A) {
+      if (!ug.existsNode(s)) continue;
+      if (globalVisited.exists(s)) continue;
 
-/**
- * Pyagrum counterpart: _is_path_x_y
- */
-bool Separation::anyUndirectedConnection(const UndiGraph& ug,
-                                          const NodeSet& A,
-                                          const NodeSet& B) {
-  // Put all targets in a hash-set for O(1) hit-testing
-  std::unordered_set<NodeId> target;
-  target.reserve(B.size());
-  for (const auto b : B) target.insert(b);
+      q = std::queue< NodeId >();
+      q.push(s);
+      globalVisited.insert(s);
 
-  // BFS from each start node in A (skipping duplicates via 'visited')
-  NodeSet globalVisited;
-  std::queue<NodeId> q;
+      while (!q.empty()) {
+        NodeId u = q.front();
+        q.pop();
+        if (target.find(u) != target.end()) return true;
 
-  for (const auto s : A) {
-    if (!ug.existsNode(s)) continue;
-    if (globalVisited.exists(s)) continue;
-
-    q = std::queue<NodeId>();
-    q.push(s);
-    globalVisited.insert(s);
-
-    while (!q.empty()) {
-      NodeId u = q.front(); q.pop();
-      if (target.find(u) != target.end()) return true;
-
-      for (const auto v : ug.neighbours(u)) {
-        if (!globalVisited.exists(v)) {
-          globalVisited.insert(v);
-          q.push(v);
+        for (const auto v: ug.neighbours(u)) {
+          if (!globalVisited.exists(v)) {
+            globalVisited.insert(v);
+            q.push(v);
+          }
         }
       }
     }
+
+    return false;
   }
 
-  return false;
-}
-
-} // namespace gum
+}   // namespace gum

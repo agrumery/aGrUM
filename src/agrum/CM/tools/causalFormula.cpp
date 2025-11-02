@@ -42,8 +42,8 @@
  * @brief Represents an identified causal formula and its query context.
  */
 
- #include <agrum/CM/tools/causalFormula.h>
+#include <agrum/CM/tools/causalFormula.h>
 
- #ifndef GUM_NO_EXTERN_TEMPLATE_CLASS
+#ifndef GUM_NO_EXTERN_TEMPLATE_CLASS
 template class gum::CausalFormula< double >;
 #endif

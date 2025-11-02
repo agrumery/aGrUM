@@ -41,63 +41,60 @@
 #include <gumtest/AgrumTestSuite.h>
 #include <gumtest/utils.h>
 
-#include <agrum/CM/tools/doAST.h>
-
 #include <agrum/CM/causalModel.h>
+#include <agrum/CM/tools/doAST.h>
 
 namespace gum_tests {
 
-  class CausalModelTestSuite : public CxxTest::TestSuite {
-  public:
-
+  class CausalModelTestSuite: public CxxTest::TestSuite {
+    public:
     GUM_ACTIVE_TEST(SimpleBN) {
-      auto bn = gum::BayesNet<double>::fastPrototype("A[2]->B[3]");
-      gum::CausalModel<double> cm(bn);
+      auto                       bn = gum::BayesNet< double >::fastPrototype("A[2]->B[3]");
+      gum::CausalModel< double > cm(bn);
 
       // BN has 2 variables
       TS_ASSERT_EQUALS(cm.observationalBN().size(), 2u);
-      TS_ASSERT(cm.existsArc("A","B"));
-      TS_ASSERT(!cm.existsArc("B","A"));
+      TS_ASSERT(cm.existsArc("A", "B"));
+      TS_ASSERT(!cm.existsArc("B", "A"));
     }
 
-
     GUM_ACTIVE_TEST(LatentFromIds) {
-      auto bn = gum::BayesNet<double>::fastPrototype("X->Y");
-      std::vector<gum::NodeId> childIds;
+      auto                       bn = gum::BayesNet< double >::fastPrototype("X->Y");
+      std::vector< gum::NodeId > childIds;
       childIds.push_back(bn.idFromName("X"));
       childIds.push_back(bn.idFromName("Y"));
 
-      gum::CausalModel<double> cm(bn);
+      gum::CausalModel< double > cm(bn);
       cm.addLatentVariable("Hidden", childIds);
 
       TS_ASSERT(cm.latentVariablesNames().contains("Hidden"));
-      TS_ASSERT(cm.existsArc("Hidden","X"));
-      TS_ASSERT(cm.existsArc("Hidden","Y"));
+      TS_ASSERT(cm.existsArc("Hidden", "X"));
+      TS_ASSERT(cm.existsArc("Hidden", "Y"));
     }
 
     GUM_ACTIVE_TEST(ToDotSmoke) {
       // Smoke network: Smoking -> Tar -> Cancer; Smoking -> Cancer
-      auto bn = gum::BayesNet<double>::fastPrototype("Smoking->Tar->Cancer;Smoking->Cancer");
+      auto bn = gum::BayesNet< double >::fastPrototype("Smoking->Tar->Cancer;Smoking->Cancer");
       gum::LatentDescriptorVector descs;
-      auto id_smoking = bn.idFromName("Smoking");
-      auto id_cancer  = bn.idFromName("Cancer");
-      descs.push_back(gum::LatentDescriptorIds("Genotype", {id_smoking,id_cancer}));
+      auto                        id_smoking = bn.idFromName("Smoking");
+      auto                        id_cancer  = bn.idFromName("Cancer");
+      descs.push_back(gum::LatentDescriptorIds("Genotype", {id_smoking, id_cancer}));
 
-      gum::CausalModel<double> cm(bn, descs);
+      gum::CausalModel< double > cm(bn, descs);
 
       auto dot = cm.toDot();
       //  GUM_TRACE_VAR(std::string("\n") + dot); // uncomment to see the dot output
 
-      TS_ASSERT(dot.find("Smoking")  != std::string::npos);
-      TS_ASSERT(dot.find("Cancer")   != std::string::npos);
-      TS_ASSERT(dot.find("Tar")      != std::string::npos);
+      TS_ASSERT(dot.find("Smoking") != std::string::npos);
+      TS_ASSERT(dot.find("Cancer") != std::string::npos);
+      TS_ASSERT(dot.find("Tar") != std::string::npos);
       TS_ASSERT(dot.find("Genotype") != std::string::npos);
 
       // Expected arcs
-      TS_ASSERT(dot.find("\"Smoking\"->\"Tar\"")    != std::string::npos);
-      TS_ASSERT(dot.find("\"Tar\"->\"Cancer\"")     != std::string::npos);
+      TS_ASSERT(dot.find("\"Smoking\"->\"Tar\"") != std::string::npos);
+      TS_ASSERT(dot.find("\"Tar\"->\"Cancer\"") != std::string::npos);
       TS_ASSERT(dot.find("\"Genotype\"->\"Smoking\"") != std::string::npos);
-      TS_ASSERT(dot.find("\"Genotype\"->\"Cancer\"")  != std::string::npos);
+      TS_ASSERT(dot.find("\"Genotype\"->\"Cancer\"") != std::string::npos);
 
       // Because assumeNonSpurious=false by default, the direct Smoking->Cancer must be gone
       TS_ASSERT(dot.find("\"Smoking\"->\"Cancer\"") == std::string::npos);
@@ -105,33 +102,32 @@ namespace gum_tests {
 
     GUM_ACTIVE_TEST(ToDotSimpson) {
       // Simpson network: Gender->Drug->Patient;Gender->Patient
-      auto bn = gum::BayesNet<double>::fastPrototype("Gender->Drug->Patient;Gender->Patient");
+      auto bn = gum::BayesNet< double >::fastPrototype("Gender->Drug->Patient;Gender->Patient");
 
-      gum::CausalModel<double> cm(bn);
-      auto dot = cm.toDot();
+      gum::CausalModel< double > cm(bn);
+      auto                       dot = cm.toDot();
 
       //   GUM_TRACE_VAR(std::string("\n") + dot); // uncomment to see the dot output
 
       // Nodes
-      TS_ASSERT(dot.find("Gender")  != std::string::npos);
-      TS_ASSERT(dot.find("Drug")    != std::string::npos);
+      TS_ASSERT(dot.find("Gender") != std::string::npos);
+      TS_ASSERT(dot.find("Drug") != std::string::npos);
       TS_ASSERT(dot.find("Patient") != std::string::npos);
 
       // Expected arcs
-      TS_ASSERT(dot.find("\"Gender\"->\"Drug\"")    != std::string::npos);
+      TS_ASSERT(dot.find("\"Gender\"->\"Drug\"") != std::string::npos);
       TS_ASSERT(dot.find("\"Gender\"->\"Patient\"") != std::string::npos);
-      TS_ASSERT(dot.find("\"Drug\"->\"Patient\"")   != std::string::npos);
+      TS_ASSERT(dot.find("\"Drug\"->\"Patient\"") != std::string::npos);
     }
-
 
     GUM_ACTIVE_TEST(InducedCausalSubModel_DropsSingletonLatent) {
       // Base BN: X->Y->Z and W->Z (W will be excluded in subsets)
-      auto bn = gum::BayesNet<double>::fastPrototype("X->Y->Z;W->Z");
-      gum::CausalModel<double> cm(bn);
+      auto                       bn = gum::BayesNet< double >::fastPrototype("X->Y->Z;W->Z");
+      gum::CausalModel< double > cm(bn);
 
       // Create latent U with TWO children (valid): confounds X and Z
-      std::vector<gum::NodeId> childIds{ bn.idFromName("X"), bn.idFromName("Z") };
-      cm.addLatentVariable("U", childIds);  // OK: |children| = 2
+      std::vector< gum::NodeId > childIds{bn.idFromName("X"), bn.idFromName("Z")};
+      cm.addLatentVariable("U", childIds);   // OK: |children| = 2
 
       // Case A: subset {X, Y, Z} → U kept (still has 2 children)
       {
@@ -145,7 +141,7 @@ namespace gum_tests {
         TS_ASSERT_EQUALS(subA.observationalBN().size(), 3u);
         TS_ASSERT(subA.existsArc("X", "Y"));
         TS_ASSERT(subA.existsArc("Y", "Z"));
-        TS_ASSERT(!subA.existsArc("X", "Z")); // removed by latent surgery
+        TS_ASSERT(!subA.existsArc("X", "Z"));   // removed by latent surgery
 
         // U exists and still has 2 children
         TS_ASSERT(subA.latentVariablesNames().contains("U"));
@@ -162,7 +158,7 @@ namespace gum_tests {
         auto subB = cm.inducedCausalSubModel(cm, subsetB);
 
         TS_ASSERT_EQUALS(subB.observationalBN().size(), 2u);
-        TS_ASSERT(subB.existsArc("Y", "Z"));  // observed arc preserved
+        TS_ASSERT(subB.existsArc("Y", "Z"));   // observed arc preserved
 
         // U must be absent; do NOT call existsArc("U", ...)
         TS_ASSERT(!subB.latentVariablesNames().contains("U"));
@@ -181,12 +177,10 @@ namespace gum_tests {
       }
     }
 
-
-
     GUM_ACTIVE_TEST(ParentsChildrenAndConnectedComponents) {
       // Two disjoint observed components: A->B   and   C->D
-      auto bn = gum::BayesNet<double>::fastPrototype("A->B;C->D");
-      gum::CausalModel<double> cm(bn);
+      auto                       bn = gum::BayesNet< double >::fastPrototype("A->B;C->D");
+      gum::CausalModel< double > cm(bn);
 
       // --- parents / children (by name)
       {
@@ -232,21 +226,21 @@ namespace gum_tests {
 
       // Add latent U that confounds B and C -> bridges the two components
       {
-        std::vector<gum::NodeId> childIds{ bn.idFromName("B"), bn.idFromName("C") };
+        std::vector< gum::NodeId > childIds{bn.idFromName("B"), bn.idFromName("C")};
         cm.addLatentVariable("U", childIds /*assumeNonSpurious default = false*/);
 
         // Parents now reflect the latent
         auto pB = cm.parents("B");
-        TS_ASSERT_EQUALS(pB.size(), 2u);              // {A, U}
+        TS_ASSERT_EQUALS(pB.size(), 2u);   // {A, U}
         TS_ASSERT(pB.contains(cm.idFromName("A")));
         TS_ASSERT(pB.contains(cm.idFromName("U")));
 
         auto pC = cm.parents("C");
-        TS_ASSERT_EQUALS(pC.size(), 1u);              // {U}
+        TS_ASSERT_EQUALS(pC.size(), 1u);   // {U}
         TS_ASSERT(pC.contains(cm.idFromName("U")));
 
         auto cU = cm.children("U");
-        TS_ASSERT_EQUALS(cU.size(), 2u);              // {B, C}
+        TS_ASSERT_EQUALS(cU.size(), 2u);   // {B, C}
         TS_ASSERT(cU.contains(cm.idFromName("B")));
         TS_ASSERT(cU.contains(cm.idFromName("C")));
 
@@ -259,8 +253,8 @@ namespace gum_tests {
     // X <- Z -> Y (observed confounder), X -> Y present:
     // backdoor should return {Z} (non-empty, observed-only).
     GUM_ACTIVE_TEST(BackdoorWithObservedConfounder) {
-      auto bn = gum::BayesNet<double>::fastPrototype("Z->X;Z->Y;X->Y");
-      gum::CausalModel<double> cm(bn);
+      auto                       bn = gum::BayesNet< double >::fastPrototype("Z->X;Z->Y;X->Y");
+      gum::CausalModel< double > cm(bn);
 
       const auto X = bn.idFromName("X");
       const auto Y = bn.idFromName("Y");
@@ -272,16 +266,17 @@ namespace gum_tests {
       TS_ASSERT(bd.contains(Z));
 
       // Returned set must not contain latents.
-      for (auto n : bd) TS_ASSERT(!cm.latentVariablesIds().contains(n));
+      for (auto n: bd)
+        TS_ASSERT(!cm.latentVariablesIds().contains(n));
     }
 
     // Only latent confounding U -> {X, Y}, no observed Z:
     // backdoor should find no observed adjustment set => empty.
     GUM_ACTIVE_TEST(BackdoorWithLatentOnly_NoObservedSet) {
-      auto bn = gum::BayesNet<double>::fastPrototype("X->Y");
-      gum::CausalModel<double> cm(bn);
+      auto                       bn = gum::BayesNet< double >::fastPrototype("X->Y");
+      gum::CausalModel< double > cm(bn);
 
-      std::vector<gum::NodeId> kids{bn.idFromName("X"), bn.idFromName("Y")};
+      std::vector< gum::NodeId > kids{bn.idFromName("X"), bn.idFromName("Y")};
       cm.addLatentVariable("U", kids);
 
       gum::NodeSet bd = cm.backDoor(bn.idFromName("X"), bn.idFromName("Y"));
@@ -292,10 +287,10 @@ namespace gum_tests {
     // U -> {X, Y}, X -> Z -> Y, no direct X->Y.
     // frontdoor should return {Z}.
     GUM_ACTIVE_TEST(FrontdoorClassicWithLatent_ReturnsMediator) {
-      auto bn = gum::BayesNet<double>::fastPrototype("X->Z;Z->Y");
-      gum::CausalModel<double> cm(bn);
+      auto                       bn = gum::BayesNet< double >::fastPrototype("X->Z;Z->Y");
+      gum::CausalModel< double > cm(bn);
 
-      std::vector<gum::NodeId> kids{bn.idFromName("X"), bn.idFromName("Y")};
+      std::vector< gum::NodeId > kids{bn.idFromName("X"), bn.idFromName("Y")};
       cm.addLatentVariable("U", kids);
 
       const auto X = bn.idFromName("X");
@@ -307,13 +302,14 @@ namespace gum_tests {
       TS_ASSERT_EQUALS(fd.size(), 1u);
       TS_ASSERT(fd.contains(Z));
 
-      for (auto n : fd) TS_ASSERT(!cm.latentVariablesIds().contains(n));
+      for (auto n: fd)
+        TS_ASSERT(!cm.latentVariablesIds().contains(n));
     }
 
     // If X -> Y is present, our frontdoor enumerator short-circuits (no frontdoor set).
     GUM_ACTIVE_TEST(FrontdoorFailsWithDirectEdge) {
-      auto bn = gum::BayesNet<double>::fastPrototype("X->Y;X->Z;Z->Y");
-      gum::CausalModel<double> cm(bn);
+      auto                       bn = gum::BayesNet< double >::fastPrototype("X->Y;X->Z;Z->Y");
+      gum::CausalModel< double > cm(bn);
 
       gum::NodeSet fd = cm.frontDoor(bn.idFromName("X"), bn.idFromName("Y"));
       TS_ASSERT(fd.empty());
@@ -321,10 +317,10 @@ namespace gum_tests {
 
     // Passing a latent as cause/effect must raise (guard in CausalModel).
     GUM_ACTIVE_TEST(ThrowsWhenCauseOrEffectIsLatent) {
-      auto bn = gum::BayesNet<double>::fastPrototype("X->Z;Z->Y");
-      gum::CausalModel<double> cm(bn);
+      auto                       bn = gum::BayesNet< double >::fastPrototype("X->Z;Z->Y");
+      gum::CausalModel< double > cm(bn);
 
-      std::vector<gum::NodeId> kids{bn.idFromName("X"), bn.idFromName("Y")};
+      std::vector< gum::NodeId > kids{bn.idFromName("X"), bn.idFromName("Y")};
       cm.addLatentVariable("U", kids);
 
       const auto U = cm.idFromName("U");
@@ -335,10 +331,10 @@ namespace gum_tests {
       TS_ASSERT_THROWS(cm.frontDoor(X, U), const gum::InvalidArgument&);
     }
 
-      // ...existing tests...
+    // ...existing tests...
     GUM_ACTIVE_TEST(SpuriousArcFunctions) {
-      auto bn = gum::BayesNet<double>::fastPrototype("A->B;B->C;A->C");
-      gum::CausalModel<double> cm(bn);
+      auto                       bn = gum::BayesNet< double >::fastPrototype("A->B;B->C;A->C");
+      gum::CausalModel< double > cm(bn);
 
       // Initially, all arcs present in both observationalBN and causalDAG
       TS_ASSERT(cm.existsArc("A", "B"));
@@ -374,8 +370,7 @@ namespace gum_tests {
       TS_ASSERT_THROWS(cm.assumeSpurious("B", "A"), const gum::InvalidArgument&);
       TS_ASSERT_THROWS(cm.assumeNonSpurious("B", "A"), const gum::InvalidArgument&);
     }
-
   };
 
 
-}  // namespace gum_tests
+}   // namespace gum_tests

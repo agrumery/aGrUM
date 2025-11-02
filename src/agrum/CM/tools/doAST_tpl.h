@@ -47,553 +47,556 @@
 
 #include <agrum/BN/IBayesNet.h>
 #include <agrum/BN/inference/lazyPropagation.h>
-
 #include <agrum/CM/tools/doAST.h>
 
 namespace gum {
 
-// ================================================================
-// ASTtree
-// ================================================================
-template <typename GUM_SCALAR>
-ASTtree<GUM_SCALAR>::ASTtree(const std::string& type)
-  : _type(type) {}
+  // ================================================================
+  // ASTtree
+  // ================================================================
+  template < typename GUM_SCALAR >
+  ASTtree< GUM_SCALAR >::ASTtree(const std::string& type) : _type(type) {}
 
-template <typename GUM_SCALAR>
-std::string ASTtree<GUM_SCALAR>::toLatex(HashTable<std::string,int> nameOccur) const {
-  // We do not rely on nameOccur mutation at this stage; pass through.
-  return fastToLatex(nameOccur);
-}
-
-template <typename GUM_SCALAR>
-std::string ASTtree<GUM_SCALAR>::_latexCorrect(const std::string& srcName,
-                                               HashTable<std::string,int>& nameOccur) {
-  int count = nameOccur.getWithDefault(srcName,0);
-  const int nbr = (count > 1) ? (count - 1) : 0;
-  // append nbr primes
-  return srcName + std::string(static_cast<size_t>(nbr), '\'');
-}
-
-template <typename GUM_SCALAR>
-std::vector<std::string>
-ASTtree<GUM_SCALAR>::_latexCorrect(const Set<std::string>& srcNames,
-                                   HashTable<std::string,int>& nameOccur) {
-  // Transform each name using the single-name overload, then sort.
-  std::vector<std::string> out;
-  for (const auto& n : srcNames) {
-    out.push_back(_latexCorrect(n, nameOccur));
+  template < typename GUM_SCALAR >
+  std::string ASTtree< GUM_SCALAR >::toLatex(HashTable< std::string, int > nameOccur) const {
+    // We do not rely on nameOccur mutation at this stage; pass through.
+    return fastToLatex(nameOccur);
   }
-  std::sort(out.begin(), out.end());
-  return out;
-}
 
-// ================================================================
-// ASTBinaryOp
-// ================================================================
-template <typename GUM_SCALAR>
-ASTBinaryOp<GUM_SCALAR>::ASTBinaryOp(const std::string& type,
-                                     std::unique_ptr<ASTtree<GUM_SCALAR>> op1,
-                                     std::unique_ptr<ASTtree<GUM_SCALAR>> op2)
-  : ASTtree<GUM_SCALAR>(type), _op1(std::move(op1)), _op2(std::move(op2)) {}
+  template < typename GUM_SCALAR >
+  std::string ASTtree< GUM_SCALAR >::_latexCorrect(const std::string&             srcName,
+                                                   HashTable< std::string, int >& nameOccur) {
+    int       count = nameOccur.getWithDefault(srcName, 0);
+    const int nbr   = (count > 1) ? (count - 1) : 0;
+    // append nbr primes
+    return srcName + std::string(static_cast< size_t >(nbr), '\'');
+  }
 
-template <typename GUM_SCALAR>
-std::string ASTBinaryOp<GUM_SCALAR>::toString(const std::string& prefix) const {
-  std::stringstream s;
-  s << prefix << this->_type << "\n";
-  s << _op1->toString(prefix + ASTtree<GUM_SCALAR>::CONTINUE_PREFIX) << "\n";
-  s << _op2->toString(prefix + ASTtree<GUM_SCALAR>::CONTINUE_PREFIX);
-  return s.str();
-}
+  template < typename GUM_SCALAR >
+  std::vector< std::string >
+      ASTtree< GUM_SCALAR >::_latexCorrect(const Set< std::string >&      srcNames,
+                                           HashTable< std::string, int >& nameOccur) {
+    // Transform each name using the single-name overload, then sort.
+    std::vector< std::string > out;
+    for (const auto& n: srcNames) {
+      out.push_back(_latexCorrect(n, nameOccur));
+    }
+    std::sort(out.begin(), out.end());
+    return out;
+  }
 
-// ================================================================
-// ASTplus (ASTBinaryOp)
-// ================================================================
-template <typename GUM_SCALAR>
-ASTplus<GUM_SCALAR>::ASTplus(std::unique_ptr<ASTtree<GUM_SCALAR>> op1,
-                             std::unique_ptr<ASTtree<GUM_SCALAR>> op2)
-  : ASTBinaryOp<GUM_SCALAR>("+", std::move(op1), std::move(op2)) {}
+  // ================================================================
+  // ASTBinaryOp
+  // ================================================================
+  template < typename GUM_SCALAR >
+  ASTBinaryOp< GUM_SCALAR >::ASTBinaryOp(const std::string&                       type,
+                                         std::unique_ptr< ASTtree< GUM_SCALAR > > op1,
+                                         std::unique_ptr< ASTtree< GUM_SCALAR > > op2) :
+      ASTtree< GUM_SCALAR >(type), _op1(std::move(op1)), _op2(std::move(op2)) {}
 
-template <typename GUM_SCALAR>
-std::string ASTplus<GUM_SCALAR>::protectToLatex(HashTable<std::string,int>& nameOccur) const {
-  return "\\left(" + fastToLatex(nameOccur) + "\\right)";
-}
+  template < typename GUM_SCALAR >
+  std::string ASTBinaryOp< GUM_SCALAR >::toString(const std::string& prefix) const {
+    std::stringstream s;
+    s << prefix << this->_type << "\n";
+    s << _op1->toString(prefix + ASTtree< GUM_SCALAR >::CONTINUE_PREFIX) << "\n";
+    s << _op2->toString(prefix + ASTtree< GUM_SCALAR >::CONTINUE_PREFIX);
+    return s.str();
+  }
 
-template <typename GUM_SCALAR>
-std::string ASTplus<GUM_SCALAR>::fastToLatex(HashTable<std::string,int>& nameOccur) const {
-  return this->_op1->fastToLatex(nameOccur) + "+" + this->_op2->fastToLatex(nameOccur);
-}
+  // ================================================================
+  // ASTplus (ASTBinaryOp)
+  // ================================================================
+  template < typename GUM_SCALAR >
+  ASTplus< GUM_SCALAR >::ASTplus(std::unique_ptr< ASTtree< GUM_SCALAR > > op1,
+                                 std::unique_ptr< ASTtree< GUM_SCALAR > > op2) :
+      ASTBinaryOp< GUM_SCALAR >("+", std::move(op1), std::move(op2)) {}
 
-template <typename GUM_SCALAR>
-std::unique_ptr<ASTtree<GUM_SCALAR>> ASTplus<GUM_SCALAR>::copy() const {
-  auto l = this->_op1->copy();
-  auto r = this->_op2->copy();
-  return std::make_unique<ASTplus<GUM_SCALAR>>(std::move(l), std::move(r));
-}
+  template < typename GUM_SCALAR >
+  std::string
+      ASTplus< GUM_SCALAR >::protectToLatex(HashTable< std::string, int >& nameOccur) const {
+    return "\\left(" + fastToLatex(nameOccur) + "\\right)";
+  }
 
-template <typename GUM_SCALAR>
-Tensor<GUM_SCALAR> ASTplus<GUM_SCALAR>::eval(const IBayesNet<GUM_SCALAR>& bn) const {
-  return this->_op1->eval(bn) + this->_op2->eval(bn);
-}
+  template < typename GUM_SCALAR >
+  std::string ASTplus< GUM_SCALAR >::fastToLatex(HashTable< std::string, int >& nameOccur) const {
+    return this->_op1->fastToLatex(nameOccur) + "+" + this->_op2->fastToLatex(nameOccur);
+  }
 
-// ================================================================
-// ASTminus (ASTBinaryOp)
-// ================================================================
-template <typename GUM_SCALAR>
-ASTminus<GUM_SCALAR>::ASTminus(std::unique_ptr<ASTtree<GUM_SCALAR>> op1,
-                               std::unique_ptr<ASTtree<GUM_SCALAR>> op2)
-  : ASTBinaryOp<GUM_SCALAR>("-", std::move(op1), std::move(op2)) {}
+  template < typename GUM_SCALAR >
+  std::unique_ptr< ASTtree< GUM_SCALAR > > ASTplus< GUM_SCALAR >::copy() const {
+    auto l = this->_op1->copy();
+    auto r = this->_op2->copy();
+    return std::make_unique< ASTplus< GUM_SCALAR > >(std::move(l), std::move(r));
+  }
 
-template <typename GUM_SCALAR>
-std::string ASTminus<GUM_SCALAR>::protectToLatex(HashTable<std::string,int>& nameOccur) const {
-  return "\\left(" + fastToLatex(nameOccur) + "\\right)";
-}
+  template < typename GUM_SCALAR >
+  Tensor< GUM_SCALAR > ASTplus< GUM_SCALAR >::eval(const IBayesNet< GUM_SCALAR >& bn) const {
+    return this->_op1->eval(bn) + this->_op2->eval(bn);
+  }
 
-template <typename GUM_SCALAR>
-std::string ASTminus<GUM_SCALAR>::fastToLatex(HashTable<std::string,int>& nameOccur) const {
-  return this->_op1->fastToLatex(nameOccur) + "-" + this->_op2->fastToLatex(nameOccur);
-}
+  // ================================================================
+  // ASTminus (ASTBinaryOp)
+  // ================================================================
+  template < typename GUM_SCALAR >
+  ASTminus< GUM_SCALAR >::ASTminus(std::unique_ptr< ASTtree< GUM_SCALAR > > op1,
+                                   std::unique_ptr< ASTtree< GUM_SCALAR > > op2) :
+      ASTBinaryOp< GUM_SCALAR >("-", std::move(op1), std::move(op2)) {}
 
-template <typename GUM_SCALAR>
-std::unique_ptr<ASTtree<GUM_SCALAR>> ASTminus<GUM_SCALAR>::copy() const {
-  auto l = this->_op1->copy();
-  auto r = this->_op2->copy();
-  return std::make_unique<ASTminus<GUM_SCALAR>>(std::move(l), std::move(r));
-}
+  template < typename GUM_SCALAR >
+  std::string
+      ASTminus< GUM_SCALAR >::protectToLatex(HashTable< std::string, int >& nameOccur) const {
+    return "\\left(" + fastToLatex(nameOccur) + "\\right)";
+  }
 
-template <typename GUM_SCALAR>
-Tensor<GUM_SCALAR> ASTminus<GUM_SCALAR>::eval(const IBayesNet<GUM_SCALAR>& bn) const {
-  return this->_op1->eval(bn) - this->_op2->eval(bn);
-}
+  template < typename GUM_SCALAR >
+  std::string ASTminus< GUM_SCALAR >::fastToLatex(HashTable< std::string, int >& nameOccur) const {
+    return this->_op1->fastToLatex(nameOccur) + "-" + this->_op2->fastToLatex(nameOccur);
+  }
 
-// ================================================================
-// ASTmult (ASTBinaryOp)
-// ================================================================
-template <typename GUM_SCALAR>
-ASTmult<GUM_SCALAR>::ASTmult(std::unique_ptr<ASTtree<GUM_SCALAR>> op1,
-                             std::unique_ptr<ASTtree<GUM_SCALAR>> op2)
-  : ASTBinaryOp<GUM_SCALAR>("*", std::move(op1), std::move(op2)) {}
+  template < typename GUM_SCALAR >
+  std::unique_ptr< ASTtree< GUM_SCALAR > > ASTminus< GUM_SCALAR >::copy() const {
+    auto l = this->_op1->copy();
+    auto r = this->_op2->copy();
+    return std::make_unique< ASTminus< GUM_SCALAR > >(std::move(l), std::move(r));
+  }
 
-template <typename GUM_SCALAR>
-std::string ASTmult<GUM_SCALAR>::protectToLatex(HashTable<std::string,int>& nameOccur) const {
-  return this->_op1->protectToLatex(nameOccur) + " \\cdot " + this->_op2->protectToLatex(nameOccur);
-}
+  template < typename GUM_SCALAR >
+  Tensor< GUM_SCALAR > ASTminus< GUM_SCALAR >::eval(const IBayesNet< GUM_SCALAR >& bn) const {
+    return this->_op1->eval(bn) - this->_op2->eval(bn);
+  }
 
-template <typename GUM_SCALAR>
-std::string ASTmult<GUM_SCALAR>::fastToLatex(HashTable<std::string,int>& nameOccur) const {
-  return this->_op1->fastToLatex(nameOccur) + " \\cdot " + this->_op2->fastToLatex(nameOccur);
-}
+  // ================================================================
+  // ASTmult (ASTBinaryOp)
+  // ================================================================
+  template < typename GUM_SCALAR >
+  ASTmult< GUM_SCALAR >::ASTmult(std::unique_ptr< ASTtree< GUM_SCALAR > > op1,
+                                 std::unique_ptr< ASTtree< GUM_SCALAR > > op2) :
+      ASTBinaryOp< GUM_SCALAR >("*", std::move(op1), std::move(op2)) {}
 
-template <typename GUM_SCALAR>
-std::unique_ptr<ASTtree<GUM_SCALAR>> ASTmult<GUM_SCALAR>::copy() const {
-  auto l = this->_op1->copy();
-  auto r = this->_op2->copy();
-  return std::make_unique<ASTmult<GUM_SCALAR>>(std::move(l), std::move(r));
-}
+  template < typename GUM_SCALAR >
+  std::string
+      ASTmult< GUM_SCALAR >::protectToLatex(HashTable< std::string, int >& nameOccur) const {
+    return this->_op1->protectToLatex(nameOccur) + " \\cdot "
+         + this->_op2->protectToLatex(nameOccur);
+  }
 
-template <typename GUM_SCALAR>
-Tensor<GUM_SCALAR> ASTmult<GUM_SCALAR>::eval(const IBayesNet<GUM_SCALAR>& bn) const {
-  return this->_op1->eval(bn) * this->_op2->eval(bn);
-}
+  template < typename GUM_SCALAR >
+  std::string ASTmult< GUM_SCALAR >::fastToLatex(HashTable< std::string, int >& nameOccur) const {
+    return this->_op1->fastToLatex(nameOccur) + " \\cdot " + this->_op2->fastToLatex(nameOccur);
+  }
 
-// ================================================================
-// ASTdiv (ASTBinaryOp)
-// ================================================================
-template <typename GUM_SCALAR>
-ASTdiv<GUM_SCALAR>::ASTdiv(std::unique_ptr<ASTtree<GUM_SCALAR>> op1,
-                           std::unique_ptr<ASTtree<GUM_SCALAR>> op2)
-  : ASTBinaryOp<GUM_SCALAR>("/", std::move(op1), std::move(op2)) {}
+  template < typename GUM_SCALAR >
+  std::unique_ptr< ASTtree< GUM_SCALAR > > ASTmult< GUM_SCALAR >::copy() const {
+    auto l = this->_op1->copy();
+    auto r = this->_op2->copy();
+    return std::make_unique< ASTmult< GUM_SCALAR > >(std::move(l), std::move(r));
+  }
 
-template <typename GUM_SCALAR>
-std::string ASTdiv<GUM_SCALAR>::protectToLatex(HashTable<std::string,int>& nameOccur) const {
-  return fastToLatex(nameOccur);
-}
+  template < typename GUM_SCALAR >
+  Tensor< GUM_SCALAR > ASTmult< GUM_SCALAR >::eval(const IBayesNet< GUM_SCALAR >& bn) const {
+    return this->_op1->eval(bn) * this->_op2->eval(bn);
+  }
 
-template <typename GUM_SCALAR>
-std::string ASTdiv<GUM_SCALAR>::fastToLatex(HashTable<std::string,int>& nameOccur) const {
-  return " \\frac {" + this->_op1->fastToLatex(nameOccur) + "}{" + this->_op2->fastToLatex(nameOccur) + "}";
-}
+  // ================================================================
+  // ASTdiv (ASTBinaryOp)
+  // ================================================================
+  template < typename GUM_SCALAR >
+  ASTdiv< GUM_SCALAR >::ASTdiv(std::unique_ptr< ASTtree< GUM_SCALAR > > op1,
+                               std::unique_ptr< ASTtree< GUM_SCALAR > > op2) :
+      ASTBinaryOp< GUM_SCALAR >("/", std::move(op1), std::move(op2)) {}
 
-template <typename GUM_SCALAR>
-std::unique_ptr<ASTtree<GUM_SCALAR>> ASTdiv<GUM_SCALAR>::copy() const {
-  auto l = this->_op1->copy();
-  auto r = this->_op2->copy();
-  return std::make_unique<ASTdiv<GUM_SCALAR>>(std::move(l), std::move(r));
-}
+  template < typename GUM_SCALAR >
+  std::string ASTdiv< GUM_SCALAR >::protectToLatex(HashTable< std::string, int >& nameOccur) const {
+    return fastToLatex(nameOccur);
+  }
 
-template <typename GUM_SCALAR>
-Tensor<GUM_SCALAR> ASTdiv<GUM_SCALAR>::eval(const IBayesNet<GUM_SCALAR>& bn) const {
-  return this->_op1->eval(bn) / this->_op2->eval(bn);
-}
+  template < typename GUM_SCALAR >
+  std::string ASTdiv< GUM_SCALAR >::fastToLatex(HashTable< std::string, int >& nameOccur) const {
+    return " \\frac {" + this->_op1->fastToLatex(nameOccur) + "}{"
+         + this->_op2->fastToLatex(nameOccur) + "}";
+  }
 
+  template < typename GUM_SCALAR >
+  std::unique_ptr< ASTtree< GUM_SCALAR > > ASTdiv< GUM_SCALAR >::copy() const {
+    auto l = this->_op1->copy();
+    auto r = this->_op2->copy();
+    return std::make_unique< ASTdiv< GUM_SCALAR > >(std::move(l), std::move(r));
+  }
 
-// ================================================================
-// ASTposteriorProba   :  P_bn(vars | knw_min)
-// ================================================================
-template <typename GUM_SCALAR>
-ASTposteriorProba<GUM_SCALAR>::ASTposteriorProba(const DAGmodel& bn,
-                                                 const Set<std::string>& vars,
-                                                 const Set<std::string>& knw)
-  : ASTposteriorProba(vars, _compute_knw_from_bn(bn, vars, knw)) {}
+  template < typename GUM_SCALAR >
+  Tensor< GUM_SCALAR > ASTdiv< GUM_SCALAR >::eval(const IBayesNet< GUM_SCALAR >& bn) const {
+    return this->_op1->eval(bn) / this->_op2->eval(bn);
+  }
 
-template <typename GUM_SCALAR>
-ASTposteriorProba<GUM_SCALAR>::ASTposteriorProba(const DAG& dag,
-                                                 const Bijection< NodeId, std::string >& id2name,
-                                                 const Set<std::string>& vars,
-                                                 const Set<std::string>& knw)
-  : ASTposteriorProba(vars, _compute_knw_from_dag(dag, id2name, vars, knw)) {}
+  // ================================================================
+  // ASTposteriorProba   :  P_bn(vars | knw_min)
+  // ================================================================
+  template < typename GUM_SCALAR >
+  ASTposteriorProba< GUM_SCALAR >::ASTposteriorProba(const DAGmodel&           bn,
+                                                     const Set< std::string >& vars,
+                                                     const Set< std::string >& knw) :
+      ASTposteriorProba(vars, _compute_knw_from_bn(bn, vars, knw)) {}
 
-template <typename GUM_SCALAR>
-ASTposteriorProba<GUM_SCALAR>::ASTposteriorProba(const Set<std::string>& vars,
-                                                 const Set<std::string>& knw)
-  : ASTtree<GUM_SCALAR>("_posterior_"), _vars(vars), _knw(knw) {
+  template < typename GUM_SCALAR >
+  ASTposteriorProba< GUM_SCALAR >::ASTposteriorProba(
+      const DAG&                              dag,
+      const Bijection< NodeId, std::string >& id2name,
+      const Set< std::string >&               vars,
+      const Set< std::string >&               knw) :
+      ASTposteriorProba(vars, _compute_knw_from_dag(dag, id2name, vars, knw)) {}
+
+  template < typename GUM_SCALAR >
+  ASTposteriorProba< GUM_SCALAR >::ASTposteriorProba(const Set< std::string >& vars,
+                                                     const Set< std::string >& knw) :
+      ASTtree< GUM_SCALAR >("_posterior_"), _vars(vars), _knw(knw) {
     _ensure_nonempty(vars);
   }
 
-template <typename GUM_SCALAR>
-std::string ASTposteriorProba<GUM_SCALAR>::toString(const std::string& prefix) const {
-  std::stringstream s;
-  s << "P(";
+  template < typename GUM_SCALAR >
+  std::string ASTposteriorProba< GUM_SCALAR >::toString(const std::string& prefix) const {
+    std::stringstream s;
+    s << "P(";
 
-  // Share the occurrence map across both sides so duplicate
-  // names (if any) get consistent LaTeX suffixes.
-  gum::HashTable<std::string,int> occur;
+    // Share the occurrence map across both sides so duplicate
+    // names (if any) get consistent LaTeX suffixes.
+    gum::HashTable< std::string, int > occur;
 
-  // LEFT: variables, sorted & latex-corrected
-  auto left = ASTtree<GUM_SCALAR>::_latexCorrect(_vars, occur);
-  bool first = true;
-  for (const auto& v : left) {
-    if (!first) s << ",";
-    s << v;
-    first = false;
-  }
-
-  // RIGHT: conditioning set, sorted & latex-corrected
-  if (!_knw.empty()) {
-    s << "|";
-    auto right = ASTtree<GUM_SCALAR>::_latexCorrect(_knw, occur);
-    first = true;
-    for (const auto& k : right) {
-      if (!first) s << ",";
-      s << k;
-      first = false;
-    }
-  }
-
-  s << ")";
-  return prefix + s.str();
-}
-
-
-template <typename GUM_SCALAR>
-std::string ASTposteriorProba<GUM_SCALAR>::protectToLatex(HashTable<std::string,int>& nameOccur) const {
-  return fastToLatex(nameOccur);
-}
-
-template <typename GUM_SCALAR>
-std::string ASTposteriorProba<GUM_SCALAR>::fastToLatex(HashTable<std::string,int>& nameOccur) const {
-  std::stringstream s;
-  s << "P\\left(";
-
-  // vars
-  {
-    auto corr = ASTtree<GUM_SCALAR>::_latexCorrect(_vars, nameOccur);
+    // LEFT: variables, sorted & latex-corrected
+    auto left  = ASTtree< GUM_SCALAR >::_latexCorrect(_vars, occur);
     bool first = true;
-    for (const auto& v : corr) {
+    for (const auto& v: left) {
       if (!first) s << ",";
       s << v;
       first = false;
     }
+
+    // RIGHT: conditioning set, sorted & latex-corrected
+    if (!_knw.empty()) {
+      s << "|";
+      auto right = ASTtree< GUM_SCALAR >::_latexCorrect(_knw, occur);
+      first      = true;
+      for (const auto& k: right) {
+        if (!first) s << ",";
+        s << k;
+        first = false;
+      }
+    }
+
+    s << ")";
+    return prefix + s.str();
   }
 
-  // | knw
-  if (!_knw.empty()) {
-    s << "\\mid ";
-    auto corr = ASTtree<GUM_SCALAR>::_latexCorrect(_knw, nameOccur);
+  template < typename GUM_SCALAR >
+  std::string ASTposteriorProba< GUM_SCALAR >::protectToLatex(
+      HashTable< std::string, int >& nameOccur) const {
+    return fastToLatex(nameOccur);
+  }
+
+  template < typename GUM_SCALAR >
+  std::string
+      ASTposteriorProba< GUM_SCALAR >::fastToLatex(HashTable< std::string, int >& nameOccur) const {
+    std::stringstream s;
+    s << "P\\left(";
+
+    // vars
+    {
+      auto corr  = ASTtree< GUM_SCALAR >::_latexCorrect(_vars, nameOccur);
+      bool first = true;
+      for (const auto& v: corr) {
+        if (!first) s << ",";
+        s << v;
+        first = false;
+      }
+    }
+
+    // | knw
+    if (!_knw.empty()) {
+      s << "\\mid ";
+      auto corr  = ASTtree< GUM_SCALAR >::_latexCorrect(_knw, nameOccur);
+      bool first = true;
+      for (const auto& k: corr) {
+        if (!first) s << ",";
+        s << k;
+        first = false;
+      }
+    }
+
+    s << "\\right)";
+    return s.str();
+  }
+
+  template < typename GUM_SCALAR >
+  std::unique_ptr< ASTtree< GUM_SCALAR > > ASTposteriorProba< GUM_SCALAR >::copy() const {
+    // Avoid recomputing minimal set: use private direct-ctor tag declared in header
+    return std::make_unique< ASTposteriorProba< GUM_SCALAR > >(_vars, _knw);
+  }
+
+  template < typename GUM_SCALAR >
+  Tensor< GUM_SCALAR >
+      ASTposteriorProba< GUM_SCALAR >::eval(const IBayesNet< GUM_SCALAR >& contextual_bn) const {
+    // Build NodeSets from names
+    NodeSet set_vars, set_knw;
+    for (const auto& v: _vars)
+      set_vars.insert(contextual_bn.idFromName(v));
+    for (const auto& k: _knw)
+      set_knw.insert(contextual_bn.idFromName(k));
+
+
+    // --- simple CPT case: P(var | parents(var)) ---
+    if (_vars.size() == 1) {
+      const auto& x  = *_vars.begin();
+      NodeId      ix = contextual_bn.idFromName(x);
+
+      // Directly compare NodeSets: parents(ix) vs set_knw
+      if (contextual_bn.parents(ix) == set_knw) { return contextual_bn.cpt(ix); }
+    }
+
+
+    // --- otherwise: use inference ---
+    LazyPropagation< GUM_SCALAR > ie(&contextual_bn);
+    Tensor< GUM_SCALAR >          p;
+
+    if (_knw.empty()) {
+      ie.addJointTarget(set_vars);
+      ie.makeInference();
+      p = ie.jointPosterior(set_vars);
+    } else {
+      ie.addJointTarget(set_vars);
+      ie.makeInference();
+      p = ie.evidenceJointImpact(set_vars, set_knw);
+    }
+
+
+    return p;
+  }
+
+  template < typename GUM_SCALAR >
+  INLINE void ASTposteriorProba< GUM_SCALAR >::_ensure_nonempty(const Set< std::string >& vars) {
+    if (vars.empty()) { GUM_ERROR(InvalidArgument, "ASTposteriorProba: vars must not be empty"); }
+  }
+
+  template < typename GUM_SCALAR >
+  Set< std::string >
+      ASTposteriorProba< GUM_SCALAR >::_compute_knw_from_bn(const DAGmodel&           bn,
+                                                            const Set< std::string >& vars,
+                                                            const Set< std::string >& knw) {
+    NodeSet varIds, knwIds;
+    for (const auto& v: vars)
+      varIds.insert(bn.idFromName(v));
+    for (const auto& k: knw)
+      knwIds.insert(bn.idFromName(k));
+    Set< std::string > out;
+    const auto         minK = bn.minimalCondSet(varIds, knwIds);
+    for (auto nid: minK)
+      out.insert(bn.variable(nid).name());
+    return out;
+  }
+
+  template < typename GUM_SCALAR >
+  Set< std::string > ASTposteriorProba< GUM_SCALAR >::_compute_knw_from_dag(
+      const DAG&                              dag,
+      const Bijection< NodeId, std::string >& id2name,
+      const Set< std::string >&               vars,
+      const Set< std::string >&               knw) {
+    NodeSet varIds, knwIds;
+    for (const auto& v: vars)
+      varIds.insert(id2name.first(v));
+    for (const auto& k: knw)
+      knwIds.insert(id2name.first(k));
+    Set< std::string > out;
+    const auto         minK = dag.minimalCondSet(varIds, knwIds);
+    for (auto nid: minK)
+      out.insert(id2name.second(nid));
+    return out;
+  }
+
+  // ================================================================
+  // ASTjointProba :  P(vars) in observational BN
+  // ================================================================
+  template < typename GUM_SCALAR >
+  ASTjointProba< GUM_SCALAR >::ASTjointProba(const Set< std::string >& varNames) :
+      ASTtree< GUM_SCALAR >("_joint_"), _varNames(varNames) {
+    // validate that vars is not empty
+    if (varNames.empty()) { GUM_ERROR(InvalidArgument, "ASTjointProba: vars must not be empty"); }
+  }
+
+  template < typename GUM_SCALAR >
+  std::string ASTjointProba< GUM_SCALAR >::toString(const std::string& prefix) const {
+    std::stringstream s;
+    s << "joint P(";
+
+    // Build a consistent, sorted, LaTeX-corrected list of names
+    gum::HashTable< std::string, int > occur;   // tracks suffixes if needed
+    auto names = ASTtree< GUM_SCALAR >::_latexCorrect(_varNames, occur);
+
     bool first = true;
-    for (const auto& k : corr) {
+    for (const auto& v: names) {
       if (!first) s << ",";
-      s << k;
+      s << v;
       first = false;
     }
+
+    s << ")";
+    return prefix + s.str();
   }
 
-  s << "\\right)";
-  return s.str();
-}
+  template < typename GUM_SCALAR >
+  std::string
+      ASTjointProba< GUM_SCALAR >::protectToLatex(HashTable< std::string, int >& nameOccur) const {
+    return fastToLatex(nameOccur);
+  }
 
-template <typename GUM_SCALAR>
-std::unique_ptr<ASTtree<GUM_SCALAR>> ASTposteriorProba<GUM_SCALAR>::copy() const {
-  // Avoid recomputing minimal set: use private direct-ctor tag declared in header
-  return std::make_unique<ASTposteriorProba<GUM_SCALAR>>(_vars, _knw);
-}
+  template < typename GUM_SCALAR >
+  std::string
+      ASTjointProba< GUM_SCALAR >::fastToLatex(HashTable< std::string, int >& nameOccur) const {
+    std::stringstream s;
+    s << "P\\left(";
+    auto corr  = ASTtree< GUM_SCALAR >::_latexCorrect(_varNames, nameOccur);
+    bool first = true;
+    for (const auto& v: corr) {
+      if (!first) s << ",";
+      s << v;
+      first = false;
+    }
+    s << "\\right)";
+    return s.str();
+  }
 
-template <typename GUM_SCALAR>
-Tensor<GUM_SCALAR>
-ASTposteriorProba<GUM_SCALAR>::eval(const IBayesNet<GUM_SCALAR>& contextual_bn) const {
+  template < typename GUM_SCALAR >
+  std::unique_ptr< ASTtree< GUM_SCALAR > > ASTjointProba< GUM_SCALAR >::copy() const {
+    return std::make_unique< ASTjointProba< GUM_SCALAR > >(_varNames);
+  }
 
-  // Build NodeSets from names
-  NodeSet set_vars, set_knw;
-  for (const auto& v : _vars) set_vars.insert(contextual_bn.idFromName(v));
-  for (const auto& k : _knw)  set_knw.insert(contextual_bn.idFromName(k));
+  template < typename GUM_SCALAR >
+  Tensor< GUM_SCALAR >
+      ASTjointProba< GUM_SCALAR >::eval(const IBayesNet< GUM_SCALAR >& contextual_bn) const {
+    NodeSet ids;
+    for (const auto& v: _varNames)
+      ids.insert(contextual_bn.idFromName(v));
 
-
-  // --- simple CPT case: P(var | parents(var)) ---
-  if (_vars.size() == 1) {
-    const auto& x = *_vars.begin();
-    NodeId ix = contextual_bn.idFromName(x);
-
-  // Directly compare NodeSets: parents(ix) vs set_knw
-  if (contextual_bn.parents(ix) == set_knw) {
-        return contextual_bn.cpt(ix);
+    LazyPropagation< GUM_SCALAR > ie(&contextual_bn);
+    if (ids.size() == 1) {
+      // Special case: single variable, use its CPT directly
+      NodeId id = *ids.begin();
+      ie.addTarget(id);
+      ie.makeInference();
+      return ie.posterior(id);
+    } else {
+      // General case: add all variables as joint target
+      ie.addJointTarget(ids);
+      ie.makeInference();
+      return ie.jointPosterior(ids);
     }
   }
 
+  // ================================================================
+  // ASTsum  :  sum out over variable of sub-term
+  // ================================================================
+  template < typename GUM_SCALAR >
+  ASTsum< GUM_SCALAR >::ASTsum(const std::string&                       var,
+                               std::unique_ptr< ASTtree< GUM_SCALAR > > term) :
+      ASTtree< GUM_SCALAR >("_sum_"), _var(var), _term(std::move(term)) {}
 
-  // --- otherwise: use inference ---
-  LazyPropagation<GUM_SCALAR> ie(&contextual_bn);
-  Tensor<GUM_SCALAR> p;
+  template < typename GUM_SCALAR >
+  ASTsum< GUM_SCALAR >::ASTsum(const std::vector< std::string >&        vars,
+                               std::unique_ptr< ASTtree< GUM_SCALAR > > term) :
+      ASTtree< GUM_SCALAR >("_sum_") {
+    if (vars.empty()) { throw gum::InvalidArgument("ASTsum: variable list cannot be empty"); }
 
-  if (_knw.empty()) {
-    ie.addJointTarget(set_vars);
-    ie.makeInference();
-    p = ie.jointPosterior(set_vars);
-  } else {
-    ie.addJointTarget(set_vars);
-    ie.makeInference();
-    p = ie.evidenceJointImpact(set_vars, set_knw);
-  }
+    _var = vars.front();
 
-
-  return p;
-}
-
-template <typename GUM_SCALAR>
-INLINE void ASTposteriorProba<GUM_SCALAR>::_ensure_nonempty(const Set<std::string>& vars) {
-    if (vars.empty()) {
-      GUM_ERROR(InvalidArgument, "ASTposteriorProba: vars must not be empty");
+    if (vars.size() > 1) {
+      std::vector< std::string > tail(vars.begin() + 1, vars.end());
+      _term = std::make_unique< ASTsum< GUM_SCALAR > >(tail, std::move(term));
+    } else {
+      _term = std::move(term);
     }
-}
-
-template <typename GUM_SCALAR>
-Set<std::string> ASTposteriorProba<GUM_SCALAR>::_compute_knw_from_bn(const DAGmodel& bn,
-                                                                     const Set<std::string>& vars,
-                                                                     const Set<std::string>& knw) {
-  NodeSet varIds, knwIds;
-  for (const auto& v : vars) varIds.insert(bn.idFromName(v));
-  for (const auto& k : knw)  knwIds.insert(bn.idFromName(k));
-  Set<std::string> out;
-  const auto minK = bn.minimalCondSet(varIds, knwIds);
-  for (auto nid : minK) out.insert(bn.variable(nid).name());
-  return out;
-}
-
-template <typename GUM_SCALAR>
-Set<std::string> ASTposteriorProba<GUM_SCALAR>::_compute_knw_from_dag(const DAG& dag,
-                                                                      const Bijection<NodeId, std::string>& id2name,
-                                                                      const Set<std::string>& vars,
-                                                                      const Set<std::string>& knw) {
-  NodeSet varIds, knwIds;
-  for (const auto& v : vars) varIds.insert(id2name.first(v));
-  for (const auto& k : knw)  knwIds.insert(id2name.first(k));
-  Set<std::string> out;
-  const auto minK = dag.minimalCondSet(varIds, knwIds);
-  for (auto nid : minK) out.insert(id2name.second(nid));
-  return out;
-}
-
-// ================================================================
-// ASTjointProba :  P(vars) in observational BN
-// ================================================================
-template <typename GUM_SCALAR>
-ASTjointProba<GUM_SCALAR>::ASTjointProba(const Set<std::string>& varNames)
-  : ASTtree<GUM_SCALAR>("_joint_"), _varNames(varNames) {
-
-  // validate that vars is not empty
-  if (varNames.empty()) {
-      GUM_ERROR(InvalidArgument, "ASTjointProba: vars must not be empty");
-  }
-}
-
-template <typename GUM_SCALAR>
-std::string ASTjointProba<GUM_SCALAR>::toString(const std::string& prefix) const {
-  std::stringstream s;
-  s << "joint P(";
-
-  // Build a consistent, sorted, LaTeX-corrected list of names
-  gum::HashTable<std::string,int> occur; // tracks suffixes if needed
-  auto names = ASTtree<GUM_SCALAR>::_latexCorrect(_varNames, occur);
-
-  bool first = true;
-  for (const auto& v : names) {
-    if (!first) s << ",";
-    s << v;
-    first = false;
   }
 
-  s << ")";
-  return prefix + s.str();
-}
-
-template <typename GUM_SCALAR>
-std::string ASTjointProba<GUM_SCALAR>::protectToLatex(HashTable<std::string,int>& nameOccur) const {
-  return fastToLatex(nameOccur);
-}
-
-template <typename GUM_SCALAR>
-std::string ASTjointProba<GUM_SCALAR>::fastToLatex(HashTable<std::string,int>& nameOccur) const {
-  std::stringstream s;
-  s << "P\\left(";
-  auto corr = ASTtree<GUM_SCALAR>::_latexCorrect(_varNames, nameOccur);
-  bool first = true;
-  for (const auto& v : corr) {
-    if (!first) s << ",";
-    s << v;
-    first = false;
-  }
-  s << "\\right)";
-  return s.str();
-}
-
-template <typename GUM_SCALAR>
-std::unique_ptr<ASTtree<GUM_SCALAR>> ASTjointProba<GUM_SCALAR>::copy() const {
-  return std::make_unique<ASTjointProba<GUM_SCALAR>>(_varNames);
-}
-
-template <typename GUM_SCALAR>
-Tensor<GUM_SCALAR>
-ASTjointProba<GUM_SCALAR>::eval(const IBayesNet<GUM_SCALAR>& contextual_bn) const {
-  NodeSet ids;
-  for (const auto& v : _varNames) ids.insert(contextual_bn.idFromName(v));
-
-  LazyPropagation<GUM_SCALAR> ie(&contextual_bn);
-  if (ids.size() == 1) {
-    // Special case: single variable, use its CPT directly
-    NodeId id = *ids.begin();
-    ie.addTarget(id);
-    ie.makeInference();
-    return ie.posterior(id);
-  } else {
-    // General case: add all variables as joint target
-    ie.addJointTarget(ids);
-    ie.makeInference();
-    return ie.jointPosterior(ids);
-  }
-}
-
-// ================================================================
-// ASTsum  :  sum out over variable of sub-term
-// ================================================================
-template <typename GUM_SCALAR>
-ASTsum<GUM_SCALAR>::ASTsum(const std::string& var,
-                           std::unique_ptr<ASTtree<GUM_SCALAR>> term)
-  : ASTtree<GUM_SCALAR>("_sum_"), _var(var), _term(std::move(term)) {}
-
-template <typename GUM_SCALAR>
-ASTsum<GUM_SCALAR>::ASTsum(const std::vector<std::string>& vars,
-                           std::unique_ptr<ASTtree<GUM_SCALAR>> term)
-  : ASTtree<GUM_SCALAR>("_sum_") {
-  if (vars.empty()) {
-    throw gum::InvalidArgument("ASTsum: variable list cannot be empty");
+  template < typename GUM_SCALAR >
+  std::string ASTsum< GUM_SCALAR >::toString(const std::string& prefix) const {
+    std::stringstream s;
+    s << prefix << "sum on " << _var << " for\n";
+    s << _term->toString(prefix + ASTtree< GUM_SCALAR >::CONTINUE_PREFIX);
+    return s.str();
   }
 
-  _var = vars.front();
-
-  if (vars.size() > 1) {
-    std::vector<std::string> tail(vars.begin() + 1, vars.end());
-    _term = std::make_unique<ASTsum<GUM_SCALAR>>(tail, std::move(term));
-  } else {
-    _term = std::move(term);
-  }
-}
-
-template <typename GUM_SCALAR>
-std::string ASTsum<GUM_SCALAR>::toString(const std::string& prefix) const {
-  std::stringstream s;
-  s << prefix << "sum on " << _var << " for\n";
-  s << _term->toString(prefix + ASTtree<GUM_SCALAR>::CONTINUE_PREFIX);
-  return s.str();
-}
-
-template <typename GUM_SCALAR>
-std::string ASTsum<GUM_SCALAR>::protectToLatex(HashTable<std::string,int>& nameOccur) const {
-  return "\\left(" + fastToLatex(nameOccur) + "\\right)";
-}
-
-template <typename GUM_SCALAR>
-std::string ASTsum<GUM_SCALAR>::fastToLatex(HashTable<std::string,int>& nameOccur) const {
-
-  // Flatten chained sums: collect all summed variables along the _term chain.
-  std::vector<std::string> vars;
-  const ASTtree<GUM_SCALAR>* a = this;
-  while (auto s = dynamic_cast<const ASTsum<GUM_SCALAR>*>(a)) {
-    if (!nameOccur.exists(s->_var)) nameOccur.insert(s->_var, 0);
-    nameOccur[s->_var] += 1;
-    vars.push_back(s->_var);
-    a = &s->term(); // move down the chain
+  template < typename GUM_SCALAR >
+  std::string ASTsum< GUM_SCALAR >::protectToLatex(HashTable< std::string, int >& nameOccur) const {
+    return "\\left(" + fastToLatex(nameOccur) + "\\right)";
   }
 
-  // Build corrected (prime-adjusted) names, then sort.
-  std::sort(vars.begin(), vars.end());
+  template < typename GUM_SCALAR >
+  std::string ASTsum< GUM_SCALAR >::fastToLatex(HashTable< std::string, int >& nameOccur) const {
+    // Flatten chained sums: collect all summed variables along the _term chain.
+    std::vector< std::string >   vars;
+    const ASTtree< GUM_SCALAR >* a = this;
+    while (auto s = dynamic_cast< const ASTsum< GUM_SCALAR >* >(a)) {
+      if (!nameOccur.exists(s->_var)) nameOccur.insert(s->_var, 0);
+      nameOccur[s->_var] += 1;
+      vars.push_back(s->_var);
+      a = &s->term();   // move down the chain
+    }
 
-  // Join corrected names with commas
-  std::stringstream names;
-  for (size_t i = 0; i < vars.size(); ++i) {
-    if (i) names << ",";
-    names << vars[i];
+    // Build corrected (prime-adjusted) names, then sort.
+    std::sort(vars.begin(), vars.end());
+
+    // Join corrected names with commas
+    std::stringstream names;
+    for (size_t i = 0; i < vars.size(); ++i) {
+      if (i) names << ",";
+      names << vars[i];
+    }
+
+    // Inner formula is the first non-sum node's latex with current nameOccur
+    std::stringstream out;
+    out << "\\sum_{" << names.str() << "}{" << a->fastToLatex(nameOccur) << "}";
+
+    // Restore nameOccur (decrement each var)
+    for (const auto& v: vars) {
+      // nameOccur[v] is guaranteed to exist here
+      nameOccur[v] -= 1;
+    }
+
+    return out.str();
   }
 
-  // Inner formula is the first non-sum node's latex with current nameOccur
-  std::stringstream out;
-  out << "\\sum_{" << names.str() << "}{" << a->fastToLatex(nameOccur) << "}";
-
-  // Restore nameOccur (decrement each var)
-  for (const auto& v : vars) {
-    // nameOccur[v] is guaranteed to exist here
-    nameOccur[v] -= 1;
+  template < typename GUM_SCALAR >
+  std::unique_ptr< ASTtree< GUM_SCALAR > > ASTsum< GUM_SCALAR >::copy() const {
+    return std::make_unique< ASTsum< GUM_SCALAR > >(_var, _term->copy());
   }
 
-  return out.str();
-}
+  template < typename GUM_SCALAR >
+  Tensor< GUM_SCALAR >
+      ASTsum< GUM_SCALAR >::eval(const IBayesNet< GUM_SCALAR >& contextual_bn) const {
+    auto base = _term->eval(contextual_bn);
 
-
-template <typename GUM_SCALAR>
-std::unique_ptr<ASTtree<GUM_SCALAR>> ASTsum<GUM_SCALAR>::copy() const {
-  return std::make_unique<ASTsum<GUM_SCALAR>>(_var, _term->copy());
-}
-
-template <typename GUM_SCALAR>
-Tensor<GUM_SCALAR>
-ASTsum<GUM_SCALAR>::eval(const IBayesNet<GUM_SCALAR>& contextual_bn) const {
-  auto base = _term->eval(contextual_bn);
-
-  const auto& dv = contextual_bn.variable(contextual_bn.idFromName(_var));
-  VariableSet dv_set;
-  dv_set.insert(&dv);
-  return base.sumOut(dv_set);
-}
-
-// ================================================================
-// Utility: productOfTrees
-// ================================================================
-template <typename GUM_SCALAR>
-std::unique_ptr<ASTtree<GUM_SCALAR>>
-productOfTrees(std::vector<std::unique_ptr<ASTtree<GUM_SCALAR>>>&& lterms) {
-  if (lterms.empty()) {
-    GUM_ERROR(InvalidArgument, "productOfTrees requires at least one term");
+    const auto& dv = contextual_bn.variable(contextual_bn.idFromName(_var));
+    VariableSet dv_set;
+    dv_set.insert(&dv);
+    return base.sumOut(dv_set);
   }
 
-  auto it  = lterms.begin();
-  auto end = lterms.end();
+  // ================================================================
+  // Utility: productOfTrees
+  // ================================================================
+  template < typename GUM_SCALAR >
+  std::unique_ptr< ASTtree< GUM_SCALAR > >
+      productOfTrees(std::vector< std::unique_ptr< ASTtree< GUM_SCALAR > > >&& lterms) {
+    if (lterms.empty()) { GUM_ERROR(InvalidArgument, "productOfTrees requires at least one term"); }
 
-  // Take the first term as accumulator
-  std::unique_ptr<ASTtree<GUM_SCALAR>> acc = std::move(*it);
-  ++it;
+    auto it  = lterms.begin();
+    auto end = lterms.end();
 
-  // Left-associate: (((t1 * t2) * t3) * ...)
-  for (; it != end; ++it) {
-    acc = std::make_unique<ASTmult<GUM_SCALAR>>(std::move(acc), std::move(*it));
+    // Take the first term as accumulator
+    std::unique_ptr< ASTtree< GUM_SCALAR > > acc = std::move(*it);
+    ++it;
+
+    // Left-associate: (((t1 * t2) * t3) * ...)
+    for (; it != end; ++it) {
+      acc = std::make_unique< ASTmult< GUM_SCALAR > >(std::move(acc), std::move(*it));
+    }
+    return acc;
   }
-  return acc;
-}
 
-} // namespace gum
+}   // namespace gum

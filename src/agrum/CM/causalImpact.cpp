@@ -43,14 +43,13 @@
  * @brief Top-level API for causal impact analysis.
  */
 
- #include <agrum/CM/causalImpact.h>
+#include <agrum/CM/causalImpact.h>
 
 #ifndef GUM_NO_EXTERN_TEMPLATE_CLASS
 template class gum::CausalImpact< double >;
 
 template gum::Instantiation
-gum::makeInstantiationFromValues<double>(
-    const gum::Tensor<double>&,
-    const gum::HashTable<std::string, std::string>&);
+    gum::makeInstantiationFromValues< double >(const gum::Tensor< double >&,
+                                               const gum::HashTable< std::string, std::string >&);
 
 #endif

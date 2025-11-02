@@ -43,19 +43,18 @@
 #ifndef GUM_NO_EXTERN_TEMPLATE_CLASS
 namespace gum {
 
-template class Counterfactual< double >;
+  template class Counterfactual< double >;
 
-template Tensor<double>
-counterfactual<double>(const CausalModel<double>&,
-					   const NameSet&,
-					   const NameSet&,
-					   const HashTable<std::string, std::string>&,
-					   const HashTable<std::string, std::string>&);
+  template Tensor< double > counterfactual< double >(const CausalModel< double >&,
+                                                     const NameSet&,
+                                                     const NameSet&,
+                                                     const HashTable< std::string, std::string >&,
+                                                     const HashTable< std::string, std::string >&);
 
-template CausalModel<double>
-counterfactualModel<double>(const CausalModel<double>&,
-							const HashTable<std::string, std::string>&,
-							const NameSet&);
+  template CausalModel< double >
+      counterfactualModel< double >(const CausalModel< double >&,
+                                    const HashTable< std::string, std::string >&,
+                                    const NameSet&);
 
-}  // namespace gum
+}   // namespace gum
 #endif

@@ -42,30 +42,29 @@
 #include <memory>
 #include <string>
 
-#include <cxxtest/TestSuite.h>
-
 #include <gumtest/AgrumTestSuite.h>
 #include <gumtest/utils.h>
 
 #include <agrum/agrum.h>
+
+#include <agrum/base/core/exceptions.h>
+#include <agrum/base/core/hashTable.h>
 #include <agrum/base/core/list.h>
 #include <agrum/base/core/set.h>
-#include <agrum/base/core/hashTable.h>
-#include <agrum/base/core/exceptions.h>
-
 #include <agrum/BN/BayesNet.h>
 #include <agrum/BN/inference/lazyPropagation.h>
-
 #include <agrum/CM/tools/doAST.h>
+
+#include <cxxtest/TestSuite.h>
 
 namespace gum_tests {
 
-  class DoASTTestSuite : public CxxTest::TestSuite {
-  public:
-
-    const gum::Bijection<gum::NodeId, std::string> id2name_fromBN(const gum::BayesNet<double>& bn) {
-      gum::Bijection<gum::NodeId, std::string> id2name;
-      for (const auto node: bn.nodes()){
+  class DoASTTestSuite: public CxxTest::TestSuite {
+    public:
+    const gum::Bijection< gum::NodeId, std::string >
+        id2name_fromBN(const gum::BayesNet< double >& bn) {
+      gum::Bijection< gum::NodeId, std::string > id2name;
+      for (const auto node: bn.nodes()) {
         id2name.insert(node, bn.variable(node).name());
       }
       return id2name;
@@ -75,95 +74,103 @@ namespace gum_tests {
     // Reproduce the pyAgrum __str__ tests
     // -------------------------------------------------------------------
     GUM_ACTIVE_TEST(Str_like_pyagrum) {
-      auto bn = gum::BayesNet<double>::fastPrototype("A->B->C<-D");
+      auto bn = gum::BayesNet< double >::fastPrototype("A->B->C<-D");
 
-      gum::Set<std::string> sAC, sB, sA, sC;
-      sAC.insert("A"); sAC.insert("C");
+      gum::Set< std::string > sAC, sB, sA, sC;
+      sAC.insert("A");
+      sAC.insert("C");
       sB.insert("B");
       sA.insert("A");
       sC.insert("C");
 
-      gum::ASTposteriorProba<double> nod(bn, sAC, sB);
+      gum::ASTposteriorProba< double > nod(bn, sAC, sB);
       TS_ASSERT_EQUALS(nod.toString(), "P(A,C|B)");
 
-      gum::ASTposteriorProba<double> nod2(bn, sA, sC);
+      gum::ASTposteriorProba< double > nod2(bn, sA, sC);
       TS_ASSERT_EQUALS(nod2.toString(), "P(A|C)");
 
-      gum::ASTposteriorProba<double> nod3(bn.dag(), id2name_fromBN(bn), sAC, sB);
+      gum::ASTposteriorProba< double > nod3(bn.dag(), id2name_fromBN(bn), sAC, sB);
       TS_ASSERT_EQUALS(nod3.toString(), "P(A,C|B)");
 
-      gum::ASTposteriorProba<double> nod4(bn.dag(), id2name_fromBN(bn), sA, sC);
+      gum::ASTposteriorProba< double > nod4(bn.dag(), id2name_fromBN(bn), sA, sC);
       TS_ASSERT_EQUALS(nod4.toString(), "P(A|C)");
       // sum on A
-      auto n1 = std::make_unique<gum::ASTposteriorProba<double>>(bn, sAC, sB);
+      auto n1 = std::make_unique< gum::ASTposteriorProba< double > >(bn, sAC, sB);
 
-      gum::ASTsum<double> su("A", std::move(n1));
+      gum::ASTsum< double > su("A", std::move(n1));
       TS_ASSERT_EQUALS(su.toString(), "sum on A for\n| P(A,C|B)");
 
       // sum on A,C (accept flat or nested formatting)
-      auto n2 = std::make_unique<gum::ASTposteriorProba<double>>(bn, sAC, sB);
-      std::vector<std::string> twoVars; twoVars.push_back("A"); twoVars.push_back("C");
-      gum::ASTsum<double> su2(twoVars, std::move(n2));
-      const std::string flat   = "sum on A,C for\n| P(A,C|B)";
-      const std::string nested = "sum on A for\n| sum on C for\n| | P(A,C|B)";
-      const std::string got    = su2.toString();
-      TS_ASSERT( got == flat || got == nested );
+      auto n2 = std::make_unique< gum::ASTposteriorProba< double > >(bn, sAC, sB);
+      std::vector< std::string > twoVars;
+      twoVars.push_back("A");
+      twoVars.push_back("C");
+      gum::ASTsum< double > su2(twoVars, std::move(n2));
+      const std::string     flat   = "sum on A,C for\n| P(A,C|B)";
+      const std::string     nested = "sum on A for\n| sum on C for\n| | P(A,C|B)";
+      const std::string     got    = su2.toString();
+      TS_ASSERT(got == flat || got == nested);
 
       // division
-      auto p1 = std::make_unique<gum::ASTposteriorProba<double>>(bn, sAC, sB);
-      auto p2 = std::make_unique<gum::ASTposteriorProba<double>>(bn, sA, sC);
-      gum::ASTdiv<double> op(std::move(p1), std::move(p2));
+      auto                  p1 = std::make_unique< gum::ASTposteriorProba< double > >(bn, sAC, sB);
+      auto                  p2 = std::make_unique< gum::ASTposteriorProba< double > >(bn, sA, sC);
+      gum::ASTdiv< double > op(std::move(p1), std::move(p2));
       TS_ASSERT_EQUALS(op.toString(), "/\n| P(A,C|B)\n| P(A|C)");
 
       // plus
-      auto p3 = std::make_unique<gum::ASTposteriorProba<double>>(bn, sAC, sB);
-      auto p4 = std::make_unique<gum::ASTposteriorProba<double>>(bn, sA, sC);
-      gum::ASTplus<double> op2(std::move(p3), std::move(p4));
+      auto                   p3 = std::make_unique< gum::ASTposteriorProba< double > >(bn, sAC, sB);
+      auto                   p4 = std::make_unique< gum::ASTposteriorProba< double > >(bn, sA, sC);
+      gum::ASTplus< double > op2(std::move(p3), std::move(p4));
       TS_ASSERT_EQUALS(op2.toString(), "+\n| P(A,C|B)\n| P(A|C)");
 
       // mult(op, op2)
-      auto m1 = std::make_unique<gum::ASTdiv<double>>(
-        std::make_unique<gum::ASTposteriorProba<double>>(bn, sAC, sB),
-        std::make_unique<gum::ASTposteriorProba<double>>(bn, sA, sC));
-      auto m2 = std::make_unique<gum::ASTplus<double>>(
-        std::make_unique<gum::ASTposteriorProba<double>>(bn, sAC, sB),
-        std::make_unique<gum::ASTposteriorProba<double>>(bn, sA, sC));
-      gum::ASTmult<double> mult(std::move(m1), std::move(m2));
-      TS_ASSERT_EQUALS(
-        mult.toString(),
-        std::string() +
-        "*\n"
-        "| /\n"
-        "| | P(A,C|B)\n"
-        "| | P(A|C)\n"
-        "| +\n"
-        "| | P(A,C|B)\n"
-        "| | P(A|C)");
+      auto m1 = std::make_unique< gum::ASTdiv< double > >(
+          std::make_unique< gum::ASTposteriorProba< double > >(bn, sAC, sB),
+          std::make_unique< gum::ASTposteriorProba< double > >(bn, sA, sC));
+      auto m2 = std::make_unique< gum::ASTplus< double > >(
+          std::make_unique< gum::ASTposteriorProba< double > >(bn, sAC, sB),
+          std::make_unique< gum::ASTposteriorProba< double > >(bn, sA, sC));
+      gum::ASTmult< double > mult(std::move(m1), std::move(m2));
+      TS_ASSERT_EQUALS(mult.toString(),
+                       std::string()
+                           + "*\n"
+                             "| /\n"
+                             "| | P(A,C|B)\n"
+                             "| | P(A|C)\n"
+                             "| +\n"
+                             "| | P(A,C|B)\n"
+                             "| | P(A|C)");
 
       // minus(op2, op)
-      auto mm1 = std::make_unique<gum::ASTplus<double>>(
-        std::make_unique<gum::ASTposteriorProba<double>>(bn, sAC, sB),
-        std::make_unique<gum::ASTposteriorProba<double>>(bn, sA, sC));
-      auto mm2 = std::make_unique<gum::ASTdiv<double>>(
-        std::make_unique<gum::ASTposteriorProba<double>>(bn, sAC, sB),
-        std::make_unique<gum::ASTposteriorProba<double>>(bn, sA, sC));
-      gum::ASTminus<double> minu(std::move(mm1), std::move(mm2));
-      TS_ASSERT_EQUALS(
-        minu.toString(),
-        std::string() +
-        "-\n"
-        "| +\n"
-        "| | P(A,C|B)\n"
-        "| | P(A|C)\n"
-        "| /\n"
-        "| | P(A,C|B)\n"
-        "| | P(A|C)");
+      auto mm1 = std::make_unique< gum::ASTplus< double > >(
+          std::make_unique< gum::ASTposteriorProba< double > >(bn, sAC, sB),
+          std::make_unique< gum::ASTposteriorProba< double > >(bn, sA, sC));
+      auto mm2 = std::make_unique< gum::ASTdiv< double > >(
+          std::make_unique< gum::ASTposteriorProba< double > >(bn, sAC, sB),
+          std::make_unique< gum::ASTposteriorProba< double > >(bn, sA, sC));
+      gum::ASTminus< double > minu(std::move(mm1), std::move(mm2));
+      TS_ASSERT_EQUALS(minu.toString(),
+                       std::string()
+                           + "-\n"
+                             "| +\n"
+                             "| | P(A,C|B)\n"
+                             "| | P(A|C)\n"
+                             "| /\n"
+                             "| | P(A,C|B)\n"
+                             "| | P(A|C)");
 
-      gum::ASTjointProba<double> j1([]{
-        gum::Set<std::string> s; s.insert("A"); return s; }());
+      gum::ASTjointProba< double > j1([] {
+        gum::Set< std::string > s;
+        s.insert("A");
+        return s;
+      }());
       TS_ASSERT_EQUALS(j1.toString(), "joint P(A)");
-      gum::ASTjointProba<double> j2([]{
-        gum::Set<std::string> s; s.insert("A"); s.insert("C"); return s; }());
+      gum::ASTjointProba< double > j2([] {
+        gum::Set< std::string > s;
+        s.insert("A");
+        s.insert("C");
+        return s;
+      }());
       TS_ASSERT_EQUALS(j2.toString(), "joint P(A,C)");
     }
 
@@ -171,14 +178,17 @@ namespace gum_tests {
     // Test conditional simplification
     // -------------------------------------------------------------------
     GUM_ACTIVE_TEST(ConditionalSimplification) {
-      auto m = gum::BayesNet<double>::fastPrototype("z2->x->z1->y;z2->z1;z2->z3->y");
-      gum::Set<std::string> y, knw;
+      auto m = gum::BayesNet< double >::fastPrototype("z2->x->z1->y;z2->z1;z2->z3->y");
+      gum::Set< std::string > y, knw;
       y.insert("y");
-      knw.insert("x"); knw.insert("z1"); knw.insert("z2"); knw.insert("z3");
-      gum::ASTposteriorProba<double> nod(m, y, knw);
+      knw.insert("x");
+      knw.insert("z1");
+      knw.insert("z2");
+      knw.insert("z3");
+      gum::ASTposteriorProba< double > nod(m, y, knw);
       TS_ASSERT_EQUALS(nod.toString(), "P(y|z1,z3)");
 
-      gum::ASTposteriorProba<double> nod2(m.dag(), id2name_fromBN(m), y, knw);
+      gum::ASTposteriorProba< double > nod2(m.dag(), id2name_fromBN(m), y, knw);
       TS_ASSERT_EQUALS(nod2.toString(), "P(y|z1,z3)");
     }
 
@@ -188,57 +198,61 @@ namespace gum_tests {
 
     // 1) Posterior CPT shortcut: P(B | A) should return bn.cpt(B)
     GUM_ACTIVE_TEST(Eval_Posterior_CPT_Shortcut) {
-      auto bn = gum::BayesNet<double>::fastPrototype("A->B");
+      auto bn = gum::BayesNet< double >::fastPrototype("A->B");
 
-      gum::Set<std::string> varB, condA;
+      gum::Set< std::string > varB, condA;
       varB.insert("B");
       condA.insert("A");
 
-      gum::ASTposteriorProba<double> node(bn, varB, condA);
-      auto got = node.eval(bn);
+      gum::ASTposteriorProba< double > node(bn, varB, condA);
+      auto                             got = node.eval(bn);
 
       auto ref = bn.cpt(bn.idFromName("B"));
       TS_GUM_TENSOR_ALMOST_EQUALS(got, ref);
 
-      gum::ASTposteriorProba<double> node2(bn.dag(), id2name_fromBN(bn), varB, condA);
-      auto got2 = node2.eval(bn);
+      gum::ASTposteriorProba< double > node2(bn.dag(), id2name_fromBN(bn), varB, condA);
+      auto                             got2 = node2.eval(bn);
     }
 
     // 2) Posterior without conditioning: P(C)
     GUM_ACTIVE_TEST(Eval_Posterior_NoConditioning) {
-      auto bn = gum::BayesNet<double>::fastPrototype("A->B->C<-D");
+      auto bn = gum::BayesNet< double >::fastPrototype("A->B->C<-D");
 
-      gum::Set<std::string> varC;
+      gum::Set< std::string > varC;
       varC.insert("C");
-      gum::Set<std::string> empty;
+      gum::Set< std::string > empty;
 
-      gum::ASTposteriorProba<double> node(bn, varC, empty);
-      auto got = node.eval(bn);
+      gum::ASTposteriorProba< double > node(bn, varC, empty);
+      auto                             got = node.eval(bn);
 
-      gum::LazyPropagation<double> ie(&bn);
+      gum::LazyPropagation< double > ie(&bn);
       ie.addTarget(bn.idFromName("C"));
       ie.makeInference();
       auto ref = ie.posterior(bn.idFromName("C"));
 
       TS_GUM_TENSOR_ALMOST_EQUALS(got, ref);
 
-      gum::ASTposteriorProba<double> node2(bn.dag(), id2name_fromBN(bn), varC, empty);
-      auto got2 = node2.eval(bn);
+      gum::ASTposteriorProba< double > node2(bn.dag(), id2name_fromBN(bn), varC, empty);
+      auto                             got2 = node2.eval(bn);
       TS_GUM_TENSOR_ALMOST_EQUALS(got2, ref);
     }
 
     // 3) Posterior with conditioning: P(C | B) = P(C,B) / P(B)
     GUM_ACTIVE_TEST(Eval_Posterior_WithConditioning) {
-      auto bn = gum::BayesNet<double>::fastPrototype("A->B->C<-D");
+      auto bn = gum::BayesNet< double >::fastPrototype("A->B->C<-D");
 
-      gum::Set<std::string> varC, condB;
-      varC.insert("C"); condB.insert("B");
-      gum::ASTposteriorProba<double> node(bn, varC, condB);
-      auto got = node.eval(bn);
+      gum::Set< std::string > varC, condB;
+      varC.insert("C");
+      condB.insert("B");
+      gum::ASTposteriorProba< double > node(bn, varC, condB);
+      auto                             got = node.eval(bn);
 
-      gum::LazyPropagation<double> ie(&bn);
-      gum::NodeSet cb; cb.insert(bn.idFromName("C")); cb.insert(bn.idFromName("B"));
-      gum::NodeSet bset; bset.insert(bn.idFromName("B"));
+      gum::LazyPropagation< double > ie(&bn);
+      gum::NodeSet                   cb;
+      cb.insert(bn.idFromName("C"));
+      cb.insert(bn.idFromName("B"));
+      gum::NodeSet bset;
+      bset.insert(bn.idFromName("B"));
       ie.addJointTarget(cb);
       ie.addJointTarget(bset);
       ie.makeInference();
@@ -246,33 +260,38 @@ namespace gum_tests {
 
       TS_GUM_TENSOR_ALMOST_EQUALS(got, ref);
 
-      gum::ASTposteriorProba<double> node2(bn.dag(), id2name_fromBN(bn), varC, condB);
-      auto got2 = node2.eval(bn);
+      gum::ASTposteriorProba< double > node2(bn.dag(), id2name_fromBN(bn), varC, condB);
+      auto                             got2 = node2.eval(bn);
       TS_GUM_TENSOR_ALMOST_EQUALS(got2, ref);
     }
 
     // 4) Joint: single and pair
     GUM_ACTIVE_TEST(Eval_Joint) {
-      auto bn = gum::BayesNet<double>::fastPrototype("A->B->C<-D");
+      auto bn = gum::BayesNet< double >::fastPrototype("A->B->C<-D");
 
       // single
-      gum::Set<std::string> sA; sA.insert("A");
-      gum::ASTjointProba<double> jA(sA);
-      auto gotA = jA.eval(bn);
+      gum::Set< std::string > sA;
+      sA.insert("A");
+      gum::ASTjointProba< double > jA(sA);
+      auto                         gotA = jA.eval(bn);
 
-      gum::LazyPropagation<double> ie1(&bn);
+      gum::LazyPropagation< double > ie1(&bn);
       ie1.addTarget(bn.idFromName("A"));
       ie1.makeInference();
       auto refA = ie1.posterior(bn.idFromName("A"));
       TS_GUM_TENSOR_ALMOST_EQUALS(gotA, refA);
 
       // pair
-      gum::Set<std::string> sBC; sBC.insert("B"); sBC.insert("C");
-      gum::ASTjointProba<double> jBC(sBC);
-      auto gotBC = jBC.eval(bn);
+      gum::Set< std::string > sBC;
+      sBC.insert("B");
+      sBC.insert("C");
+      gum::ASTjointProba< double > jBC(sBC);
+      auto                         gotBC = jBC.eval(bn);
 
-      gum::LazyPropagation<double> ie2(&bn);
-      gum::NodeSet bc; bc.insert(bn.idFromName("B")); bc.insert(bn.idFromName("C"));
+      gum::LazyPropagation< double > ie2(&bn);
+      gum::NodeSet                   bc;
+      bc.insert(bn.idFromName("B"));
+      bc.insert(bn.idFromName("C"));
       ie2.addJointTarget(bc);
       ie2.makeInference();
       auto refBC = ie2.jointPosterior(bc);
@@ -281,18 +300,24 @@ namespace gum_tests {
 
     // 5) Sum: Σ_A P(A,C|B) = P(C|B)
     GUM_ACTIVE_TEST(Eval_Sum) {
-      auto bn = gum::BayesNet<double>::fastPrototype("A->B->C<-D");
+      auto bn = gum::BayesNet< double >::fastPrototype("A->B->C<-D");
 
-      gum::Set<std::string> vars; vars.insert("A"); vars.insert("C");
-      gum::Set<std::string> knw;  knw.insert("B");
+      gum::Set< std::string > vars;
+      vars.insert("A");
+      vars.insert("C");
+      gum::Set< std::string > knw;
+      knw.insert("B");
 
-      auto term = std::make_unique<gum::ASTposteriorProba<double>>(bn, vars, knw);
-      gum::ASTsum<double> sumA("A", std::move(term));
-      auto got = sumA.eval(bn);
+      auto term = std::make_unique< gum::ASTposteriorProba< double > >(bn, vars, knw);
+      gum::ASTsum< double > sumA("A", std::move(term));
+      auto                  got = sumA.eval(bn);
 
-      gum::LazyPropagation<double> ie(&bn);
-      gum::NodeSet cb; cb.insert(bn.idFromName("C")); cb.insert(bn.idFromName("B"));
-      gum::NodeSet bset; bset.insert(bn.idFromName("B"));
+      gum::LazyPropagation< double > ie(&bn);
+      gum::NodeSet                   cb;
+      cb.insert(bn.idFromName("C"));
+      cb.insert(bn.idFromName("B"));
+      gum::NodeSet bset;
+      bset.insert(bn.idFromName("B"));
       ie.addJointTarget(cb);
       ie.addJointTarget(bset);
       ie.makeInference();
@@ -303,274 +328,310 @@ namespace gum_tests {
 
     // 6) Binary ops (+,-,*,/): use same-scope factor P(A|C) with itself
     GUM_ACTIVE_TEST(Eval_BinaryOps_SameScope) {
-      auto bn = gum::BayesNet<double>::fastPrototype("C->A; D");
+      auto bn = gum::BayesNet< double >::fastPrototype("C->A; D");
 
-      gum::Set<std::string> varA; varA.insert("A");
-      gum::Set<std::string> condC; condC.insert("C");
+      gum::Set< std::string > varA;
+      varA.insert("A");
+      gum::Set< std::string > condC;
+      condC.insert("C");
 
       // reference factor p = P(A|C)
-      gum::ASTposteriorProba<double> pref(bn, varA, condC);
-      auto p = pref.eval(bn);
+      gum::ASTposteriorProba< double > pref(bn, varA, condC);
+      auto                             p = pref.eval(bn);
 
       // plus
-      auto t1 = std::make_unique<gum::ASTposteriorProba<double>>(bn, varA, condC);
-      auto t2 = std::make_unique<gum::ASTposteriorProba<double>>(bn, varA, condC);
-      gum::ASTplus<double> plus(std::move(t1), std::move(t2));
+      auto t1 = std::make_unique< gum::ASTposteriorProba< double > >(bn, varA, condC);
+      auto t2 = std::make_unique< gum::ASTposteriorProba< double > >(bn, varA, condC);
+      gum::ASTplus< double > plus(std::move(t1), std::move(t2));
       TS_GUM_TENSOR_ALMOST_EQUALS(plus.eval(bn), p + p);
 
       // minus
-      auto t3 = std::make_unique<gum::ASTposteriorProba<double>>(bn, varA, condC);
-      auto t4 = std::make_unique<gum::ASTposteriorProba<double>>(bn, varA, condC);
-      gum::ASTminus<double> minus(std::move(t3), std::move(t4));
+      auto t3 = std::make_unique< gum::ASTposteriorProba< double > >(bn, varA, condC);
+      auto t4 = std::make_unique< gum::ASTposteriorProba< double > >(bn, varA, condC);
+      gum::ASTminus< double > minus(std::move(t3), std::move(t4));
       TS_GUM_TENSOR_ALMOST_EQUALS(minus.eval(bn), p - p);
 
       // mult
-      auto t5 = std::make_unique<gum::ASTposteriorProba<double>>(bn, varA, condC);
-      auto t6 = std::make_unique<gum::ASTposteriorProba<double>>(bn, varA, condC);
-      gum::ASTmult<double> mult(std::move(t5), std::move(t6));
+      auto t5 = std::make_unique< gum::ASTposteriorProba< double > >(bn, varA, condC);
+      auto t6 = std::make_unique< gum::ASTposteriorProba< double > >(bn, varA, condC);
+      gum::ASTmult< double > mult(std::move(t5), std::move(t6));
       TS_GUM_TENSOR_ALMOST_EQUALS(mult.eval(bn), p * p);
 
       // div
-      auto t7 = std::make_unique<gum::ASTposteriorProba<double>>(bn, varA, condC);
-      auto t8 = std::make_unique<gum::ASTposteriorProba<double>>(bn, varA, condC);
-      gum::ASTdiv<double> div(std::move(t7), std::move(t8));
+      auto t7 = std::make_unique< gum::ASTposteriorProba< double > >(bn, varA, condC);
+      auto t8 = std::make_unique< gum::ASTposteriorProba< double > >(bn, varA, condC);
+      gum::ASTdiv< double > div(std::move(t7), std::move(t8));
       TS_GUM_TENSOR_ALMOST_EQUALS(div.eval(bn), p / p);
     }
 
     // 7) productOfTrees: multiply identical factors
     GUM_ACTIVE_TEST(Eval_ProductOfTrees) {
-      auto bn = gum::BayesNet<double>::fastPrototype("X->Y");
+      auto bn = gum::BayesNet< double >::fastPrototype("X->Y");
 
-      gum::Set<std::string> varY; varY.insert("Y");
-      gum::Set<std::string> condX; condX.insert("X");
+      gum::Set< std::string > varY;
+      varY.insert("Y");
+      gum::Set< std::string > condX;
+      condX.insert("X");
 
-      std::vector<std::unique_ptr<gum::ASTtree<double>>> terms;
-      terms.push_back(std::make_unique<gum::ASTposteriorProba<double>>(bn, varY, condX));
-      terms.push_back(std::make_unique<gum::ASTposteriorProba<double>>(bn, varY, condX));
+      std::vector< std::unique_ptr< gum::ASTtree< double > > > terms;
+      terms.push_back(std::make_unique< gum::ASTposteriorProba< double > >(bn, varY, condX));
+      terms.push_back(std::make_unique< gum::ASTposteriorProba< double > >(bn, varY, condX));
 
-      auto tree = gum::productOfTrees<double>(std::move(terms));
+      auto tree = gum::productOfTrees< double >(std::move(terms));
       auto got  = tree->eval(bn);
 
-      gum::ASTposteriorProba<double> refNode(bn, varY, condX);
-      auto p = refNode.eval(bn);
+      gum::ASTposteriorProba< double > refNode(bn, varY, condX);
+      auto                             p = refNode.eval(bn);
 
       TS_GUM_TENSOR_ALMOST_EQUALS(got, p * p);
     }
 
-
     // 8) Constructor error paths
     GUM_ACTIVE_TEST(Throws_On_Empty_VarSets) {
-        auto bn = gum::BayesNet<double>::fastPrototype("A->B");
+      auto bn = gum::BayesNet< double >::fastPrototype("A->B");
 
-        gum::Set<std::string> empty, B; B.insert("B");
-        TS_ASSERT_THROWS( (gum::ASTposteriorProba<double>(bn, empty, B)), const gum::InvalidArgument& );
-        TS_ASSERT_THROWS( (gum::ASTjointProba<double>(empty)), const gum::InvalidArgument& );
-        }
+      gum::Set< std::string > empty, B;
+      B.insert("B");
+      TS_ASSERT_THROWS((gum::ASTposteriorProba< double >(bn, empty, B)),
+                       const gum::InvalidArgument&);
+      TS_ASSERT_THROWS((gum::ASTjointProba< double >(empty)), const gum::InvalidArgument&);
+    }
 
-        // 9) Copy() deep-copy equivalence
-        GUM_ACTIVE_TEST(Copy_DeepCopy) {
-        auto bn = gum::BayesNet<double>::fastPrototype("A->B->C");
-        gum::Set<std::string> C; C.insert("C");
-        gum::Set<std::string> B; B.insert("B");
+    // 9) Copy() deep-copy equivalence
+    GUM_ACTIVE_TEST(Copy_DeepCopy) {
+      auto                    bn = gum::BayesNet< double >::fastPrototype("A->B->C");
+      gum::Set< std::string > C;
+      C.insert("C");
+      gum::Set< std::string > B;
+      B.insert("B");
 
-        auto orig = std::make_unique<gum::ASTposteriorProba<double>>(bn, C, B);
-        auto clone = orig->copy();
+      auto orig  = std::make_unique< gum::ASTposteriorProba< double > >(bn, C, B);
+      auto clone = orig->copy();
 
-        TS_ASSERT_EQUALS(orig->toString(), clone->toString());
-        TS_ASSERT_EQUALS(orig->toLatex(),  clone->toLatex());
-        TS_GUM_TENSOR_ALMOST_EQUALS(orig->eval(bn), clone->eval(bn));
+      TS_ASSERT_EQUALS(orig->toString(), clone->toString());
+      TS_ASSERT_EQUALS(orig->toLatex(), clone->toLatex());
+      TS_GUM_TENSOR_ALMOST_EQUALS(orig->eval(bn), clone->eval(bn));
     }
 
     // 10) productOfTrees: empty and single-term cases
     GUM_ACTIVE_TEST(ProductOfTrees_EdgeCases) {
-        auto bn = gum::BayesNet<double>::fastPrototype("A->B");
+      auto bn = gum::BayesNet< double >::fastPrototype("A->B");
 
-        gum::Set<std::string> B; B.insert("B");
-        gum::Set<std::string> A; A.insert("A");
+      gum::Set< std::string > B;
+      B.insert("B");
+      gum::Set< std::string > A;
+      A.insert("A");
 
-        // single term -> identity
-        std::vector<std::unique_ptr<gum::ASTtree<double>>> one;
-        one.push_back(std::make_unique<gum::ASTposteriorProba<double>>(bn, B, A));
-        auto single = gum::productOfTrees<double>(std::move(one));
-        auto ref    = gum::ASTposteriorProba<double>(bn, B, A).eval(bn);
-        TS_GUM_TENSOR_ALMOST_EQUALS(single->eval(bn), ref);
+      // single term -> identity
+      std::vector< std::unique_ptr< gum::ASTtree< double > > > one;
+      one.push_back(std::make_unique< gum::ASTposteriorProba< double > >(bn, B, A));
+      auto single = gum::productOfTrees< double >(std::move(one));
+      auto ref    = gum::ASTposteriorProba< double >(bn, B, A).eval(bn);
+      TS_GUM_TENSOR_ALMOST_EQUALS(single->eval(bn), ref);
 
-        // empty -> throws
-        std::vector<std::unique_ptr<gum::ASTtree<double>>> empty;
-        TS_ASSERT_THROWS( (void)(gum::productOfTrees<double>(std::move(empty))), const gum::InvalidArgument& );
+      // empty -> throws
+      std::vector< std::unique_ptr< gum::ASTtree< double > > > empty;
+      TS_ASSERT_THROWS((void)(gum::productOfTrees< double >(std::move(empty))),
+                       const gum::InvalidArgument&);
     }
 
     // 11) Scope composition: P(A|C) * P(C) == P(A,C)
     GUM_ACTIVE_TEST(Eval_Compose_DifferentScopes) {
-        auto bn = gum::BayesNet<double>::fastPrototype("C->A");
+      auto bn = gum::BayesNet< double >::fastPrototype("C->A");
 
-        gum::Set<std::string> A; A.insert("A");
-        gum::Set<std::string> C; C.insert("C");
-        gum::Set<std::string> none;
+      gum::Set< std::string > A;
+      A.insert("A");
+      gum::Set< std::string > C;
+      C.insert("C");
+      gum::Set< std::string > none;
 
-        auto t1 = std::make_unique<gum::ASTposteriorProba<double>>(bn, A, C);   // P(A|C)
-        auto t2 = std::make_unique<gum::ASTposteriorProba<double>>(bn, C, none); // P(C)
-        gum::ASTmult<double> prod(std::move(t1), std::move(t2));
-        auto got = prod.eval(bn);
+      auto t1 = std::make_unique< gum::ASTposteriorProba< double > >(bn, A, C);      // P(A|C)
+      auto t2 = std::make_unique< gum::ASTposteriorProba< double > >(bn, C, none);   // P(C)
+      gum::ASTmult< double > prod(std::move(t1), std::move(t2));
+      auto                   got = prod.eval(bn);
 
-        gum::LazyPropagation<double> ie(&bn);
-        gum::NodeSet AC; AC.insert(bn.idFromName("A")); AC.insert(bn.idFromName("C"));
-        ie.addJointTarget(AC); ie.makeInference();
-        auto ref = ie.jointPosterior(AC);
+      gum::LazyPropagation< double > ie(&bn);
+      gum::NodeSet                   AC;
+      AC.insert(bn.idFromName("A"));
+      AC.insert(bn.idFromName("C"));
+      ie.addJointTarget(AC);
+      ie.makeInference();
+      auto ref = ie.jointPosterior(AC);
 
-        TS_GUM_TENSOR_ALMOST_EQUALS(got, ref);
+      TS_GUM_TENSOR_ALMOST_EQUALS(got, ref);
 
-        auto t3 = std::make_unique<gum::ASTposteriorProba<double>>(bn.dag(), id2name_fromBN(bn), A, C);   // P(A|C)
-        auto t4 = std::make_unique<gum::ASTposteriorProba<double>>(bn.dag(), id2name_fromBN(bn), C, none); // P(C)
-        gum::ASTmult<double> prod2(std::move(t3), std::move(t4));
-        auto got2 = prod2.eval(bn);
-        TS_GUM_TENSOR_ALMOST_EQUALS(got2, ref);
+      auto                   t3 = std::make_unique< gum::ASTposteriorProba< double > >(bn.dag(),
+                                                                     id2name_fromBN(bn),
+                                                                     A,
+                                                                     C);   // P(A|C)
+      auto                   t4 = std::make_unique< gum::ASTposteriorProba< double > >(bn.dag(),
+                                                                     id2name_fromBN(bn),
+                                                                     C,
+                                                                     none);   // P(C)
+      gum::ASTmult< double > prod2(std::move(t3), std::move(t4));
+      auto                   got2 = prod2.eval(bn);
+      TS_GUM_TENSOR_ALMOST_EQUALS(got2, ref);
     }
 
     // 12) Sum flattening equivalence: Σ_A Σ_C == Σ_{A,C}
     GUM_ACTIVE_TEST(Eval_Sum_Flattening_Equivalence) {
-        auto bn = gum::BayesNet<double>::fastPrototype("A->B->C<-D");
+      auto bn = gum::BayesNet< double >::fastPrototype("A->B->C<-D");
 
-        gum::Set<std::string> vars; vars.insert("A"); vars.insert("C");
-        gum::Set<std::string> knw;  knw.insert("B");
+      gum::Set< std::string > vars;
+      vars.insert("A");
+      vars.insert("C");
+      gum::Set< std::string > knw;
+      knw.insert("B");
 
-        auto term1 = std::make_unique<gum::ASTposteriorProba<double>>(bn, vars, knw);
-        auto nested = std::make_unique<gum::ASTsum<double>>(
-            "A", std::make_unique<gum::ASTsum<double>>("C", std::move(term1)));
-        auto got_nested = nested->eval(bn);
+      auto term1  = std::make_unique< gum::ASTposteriorProba< double > >(bn, vars, knw);
+      auto nested = std::make_unique< gum::ASTsum< double > >(
+          "A",
+          std::make_unique< gum::ASTsum< double > >("C", std::move(term1)));
+      auto got_nested = nested->eval(bn);
 
-        auto term2 = std::make_unique<gum::ASTposteriorProba<double>>(bn, vars, knw);
-        std::vector<std::string> AC; AC.push_back("A"); AC.push_back("C");
-        gum::ASTsum<double> flat(AC, std::move(term2));
-        auto got_flat = flat.eval(bn);
+      auto term2 = std::make_unique< gum::ASTposteriorProba< double > >(bn, vars, knw);
+      std::vector< std::string > AC;
+      AC.push_back("A");
+      AC.push_back("C");
+      gum::ASTsum< double > flat(AC, std::move(term2));
+      auto                  got_flat = flat.eval(bn);
 
-        TS_GUM_TENSOR_ALMOST_EQUALS(got_nested, got_flat);
+      TS_GUM_TENSOR_ALMOST_EQUALS(got_nested, got_flat);
     }
 
     // 13) Deterministic ordering regardless of insertion order
     GUM_ACTIVE_TEST(Deterministic_Ordering) {
-        auto bn = gum::BayesNet<double>::fastPrototype("A->B->C<-D");
+      auto bn = gum::BayesNet< double >::fastPrototype("A->B->C<-D");
 
-        gum::Set<std::string> sCA, sB; // insert in reverse
-        sCA.insert("C"); sCA.insert("A");
-        sB.insert("B");
+      gum::Set< std::string > sCA, sB;   // insert in reverse
+      sCA.insert("C");
+      sCA.insert("A");
+      sB.insert("B");
 
-        gum::ASTposteriorProba<double> nod(bn, sCA, sB);
-        TS_ASSERT_EQUALS(nod.toString(), "P(A,C|B)");
-        TS_ASSERT_EQUALS(nod.toLatex(),  "P\\left(A,C\\mid B\\right)");
+      gum::ASTposteriorProba< double > nod(bn, sCA, sB);
+      TS_ASSERT_EQUALS(nod.toString(), "P(A,C|B)");
+      TS_ASSERT_EQUALS(nod.toLatex(), "P\\left(A,C\\mid B\\right)");
 
-        gum::ASTjointProba<double> j(sCA);
-        TS_ASSERT_EQUALS(j.toString(), "joint P(A,C)");
-        TS_ASSERT_EQUALS(j.toLatex(),  "P\\left(A,C\\right)");
+      gum::ASTjointProba< double > j(sCA);
+      TS_ASSERT_EQUALS(j.toString(), "joint P(A,C)");
+      TS_ASSERT_EQUALS(j.toLatex(), "P\\left(A,C\\right)");
     }
-
 
     // -------------------------------------------------------------------
     // LaTeX rendering tests (match current fastToLatex behaviour exactly)
     // -------------------------------------------------------------------
     GUM_ACTIVE_TEST(Latex_like_pyagrum) {
-        auto bn = gum::BayesNet<double>::fastPrototype("A->B->C<-D");
+      auto bn = gum::BayesNet< double >::fastPrototype("A->B->C<-D");
 
-        gum::Set<std::string> sAC, sB, sA, sC;
-        sAC.insert("A"); sAC.insert("C");
-        sB.insert("B");
-        sA.insert("A");
-        sC.insert("C");
+      gum::Set< std::string > sAC, sB, sA, sC;
+      sAC.insert("A");
+      sAC.insert("C");
+      sB.insert("B");
+      sA.insert("A");
+      sC.insert("C");
 
-        // P(A,C | B)
-        gum::ASTposteriorProba<double> nod(bn, sAC, sB);
-        TS_ASSERT_EQUALS(nod.toLatex(), "P\\left(A,C\\mid B\\right)");
+      // P(A,C | B)
+      gum::ASTposteriorProba< double > nod(bn, sAC, sB);
+      TS_ASSERT_EQUALS(nod.toLatex(), "P\\left(A,C\\mid B\\right)");
 
-        // P(A | C)
-        gum::ASTposteriorProba<double> nod2(bn, sA, sC);
-        TS_ASSERT_EQUALS(nod2.toLatex(), "P\\left(A\\mid C\\right)");
+      // P(A | C)
+      gum::ASTposteriorProba< double > nod2(bn, sA, sC);
+      TS_ASSERT_EQUALS(nod2.toLatex(), "P\\left(A\\mid C\\right)");
 
-        // sum over A :  \sum_{A}{ P(A,C | B) }
-        {
-            auto n1 = std::make_unique<gum::ASTposteriorProba<double>>(bn, sAC, sB);
-            auto su = gum::ASTsum<double>("A", std::move(n1));
-            TS_ASSERT_EQUALS(su.toLatex(), "\\sum_{A}{P\\left(A,C\\mid B\\right)}");
-        }
+      // sum over A :  \sum_{A}{ P(A,C | B) }
+      {
+        auto n1 = std::make_unique< gum::ASTposteriorProba< double > >(bn, sAC, sB);
+        auto su = gum::ASTsum< double >("A", std::move(n1));
+        TS_ASSERT_EQUALS(su.toLatex(), "\\sum_{A}{P\\left(A,C\\mid B\\right)}");
+      }
 
-        // sum over A,C (flattened):  \sum_{A,C}{ P(A,C | B) }
-        {
-            auto n2 = std::make_unique<gum::ASTposteriorProba<double>>(bn, sAC, sB);
-            std::vector<std::string> twoVars; twoVars.push_back("A"); twoVars.push_back("C");
-            gum::ASTsum<double> su2(twoVars, std::move(n2));
-            TS_ASSERT_EQUALS(su2.toLatex(), "\\sum_{A,C}{P\\left(A,C\\mid B\\right)}");
-        }
+      // sum over A,C (flattened):  \sum_{A,C}{ P(A,C | B) }
+      {
+        auto n2 = std::make_unique< gum::ASTposteriorProba< double > >(bn, sAC, sB);
+        std::vector< std::string > twoVars;
+        twoVars.push_back("A");
+        twoVars.push_back("C");
+        gum::ASTsum< double > su2(twoVars, std::move(n2));
+        TS_ASSERT_EQUALS(su2.toLatex(), "\\sum_{A,C}{P\\left(A,C\\mid B\\right)}");
+      }
 
-        // division: note the intentional leading space before \frac
-        {
-            auto p1 = std::make_unique<gum::ASTposteriorProba<double>>(bn, sAC, sB);
-            auto p2 = std::make_unique<gum::ASTposteriorProba<double>>(bn, sA, sC);
-            gum::ASTdiv<double> op(std::move(p1), std::move(p2));
-            TS_ASSERT_EQUALS(op.toLatex(),
-                            " \\frac {P\\left(A,C\\mid B\\right)}{P\\left(A\\mid C\\right)}");
-        }
+      // division: note the intentional leading space before \frac
+      {
+        auto p1 = std::make_unique< gum::ASTposteriorProba< double > >(bn, sAC, sB);
+        auto p2 = std::make_unique< gum::ASTposteriorProba< double > >(bn, sA, sC);
+        gum::ASTdiv< double > op(std::move(p1), std::move(p2));
+        TS_ASSERT_EQUALS(op.toLatex(),
+                         " \\frac {P\\left(A,C\\mid B\\right)}{P\\left(A\\mid C\\right)}");
+      }
 
-        // plus: no parentheses, no spaces around '+'
-        {
-            auto p3 = std::make_unique<gum::ASTposteriorProba<double>>(bn, sAC, sB);
-            auto p4 = std::make_unique<gum::ASTposteriorProba<double>>(bn, sA, sC);
-            gum::ASTplus<double> op2(std::move(p3), std::move(p4));
-            TS_ASSERT_EQUALS(op2.toLatex(),
-                            "P\\left(A,C\\mid B\\right)+P\\left(A\\mid C\\right)");
-        }
+      // plus: no parentheses, no spaces around '+'
+      {
+        auto p3 = std::make_unique< gum::ASTposteriorProba< double > >(bn, sAC, sB);
+        auto p4 = std::make_unique< gum::ASTposteriorProba< double > >(bn, sA, sC);
+        gum::ASTplus< double > op2(std::move(p3), std::move(p4));
+        TS_ASSERT_EQUALS(op2.toLatex(), "P\\left(A,C\\mid B\\right)+P\\left(A\\mid C\\right)");
+      }
 
-        // mult(div, plus): spaces around \cdot, no extra parentheses
-        {
-            auto m1 = std::make_unique<gum::ASTdiv<double>>(
-            std::make_unique<gum::ASTposteriorProba<double>>(bn, sAC, sB),
-            std::make_unique<gum::ASTposteriorProba<double>>(bn, sA, sC));
-            auto m2 = std::make_unique<gum::ASTplus<double>>(
-            std::make_unique<gum::ASTposteriorProba<double>>(bn, sAC, sB),
-            std::make_unique<gum::ASTposteriorProba<double>>(bn, sA, sC));
-            gum::ASTmult<double> mult(std::move(m1), std::move(m2));
-            TS_ASSERT_EQUALS(
-            mult.toLatex(),
-            " \\frac {P\\left(A,C\\mid B\\right)}{P\\left(A\\mid C\\right)} \\cdot P\\left(A,C\\mid B\\right)+P\\left(A\\mid C\\right)");
-        }
+      // mult(div, plus): spaces around \cdot, no extra parentheses
+      {
+        auto m1 = std::make_unique< gum::ASTdiv< double > >(
+            std::make_unique< gum::ASTposteriorProba< double > >(bn, sAC, sB),
+            std::make_unique< gum::ASTposteriorProba< double > >(bn, sA, sC));
+        auto m2 = std::make_unique< gum::ASTplus< double > >(
+            std::make_unique< gum::ASTposteriorProba< double > >(bn, sAC, sB),
+            std::make_unique< gum::ASTposteriorProba< double > >(bn, sA, sC));
+        gum::ASTmult< double > mult(std::move(m1), std::move(m2));
+        TS_ASSERT_EQUALS(mult.toLatex(),
+                         " \\frac {P\\left(A,C\\mid B\\right)}{P\\left(A\\mid C\\right)} \\cdot "
+                         "P\\left(A,C\\mid B\\right)+P\\left(A\\mid C\\right)");
+      }
 
-        // minus(plus, div): note the single space after '-' coming from div's leading space
-        {
-            auto mm1 = std::make_unique<gum::ASTplus<double>>(
-            std::make_unique<gum::ASTposteriorProba<double>>(bn, sAC, sB),
-            std::make_unique<gum::ASTposteriorProba<double>>(bn, sA, sC));
-            auto mm2 = std::make_unique<gum::ASTdiv<double>>(
-            std::make_unique<gum::ASTposteriorProba<double>>(bn, sAC, sB),
-            std::make_unique<gum::ASTposteriorProba<double>>(bn, sA, sC));
-            gum::ASTminus<double> minu(std::move(mm1), std::move(mm2));
-            TS_ASSERT_EQUALS(
-            minu.toLatex(),
-            "P\\left(A,C\\mid B\\right)+P\\left(A\\mid C\\right)- \\frac {P\\left(A,C\\mid B\\right)}{P\\left(A\\mid C\\right)}");
-        }
+      // minus(plus, div): note the single space after '-' coming from div's leading space
+      {
+        auto mm1 = std::make_unique< gum::ASTplus< double > >(
+            std::make_unique< gum::ASTposteriorProba< double > >(bn, sAC, sB),
+            std::make_unique< gum::ASTposteriorProba< double > >(bn, sA, sC));
+        auto mm2 = std::make_unique< gum::ASTdiv< double > >(
+            std::make_unique< gum::ASTposteriorProba< double > >(bn, sAC, sB),
+            std::make_unique< gum::ASTposteriorProba< double > >(bn, sA, sC));
+        gum::ASTminus< double > minu(std::move(mm1), std::move(mm2));
+        TS_ASSERT_EQUALS(minu.toLatex(),
+                         "P\\left(A,C\\mid B\\right)+P\\left(A\\mid C\\right)- \\frac "
+                         "{P\\left(A,C\\mid B\\right)}{P\\left(A\\mid C\\right)}");
+      }
 
-        // joint
-        {
-            gum::ASTjointProba<double> j1([]{ gum::Set<std::string> s; s.insert("A"); return s; }());
-            TS_ASSERT_EQUALS(j1.toLatex(), "P\\left(A\\right)");
-            gum::ASTjointProba<double> j2([]{
-            gum::Set<std::string> s; s.insert("A"); s.insert("C"); return s; }());
-            TS_ASSERT_EQUALS(j2.toLatex(), "P\\left(A,C\\right)");
-        }
+      // joint
+      {
+        gum::ASTjointProba< double > j1([] {
+          gum::Set< std::string > s;
+          s.insert("A");
+          return s;
+        }());
+        TS_ASSERT_EQUALS(j1.toLatex(), "P\\left(A\\right)");
+        gum::ASTjointProba< double > j2([] {
+          gum::Set< std::string > s;
+          s.insert("A");
+          s.insert("C");
+          return s;
+        }());
+        TS_ASSERT_EQUALS(j2.toLatex(), "P\\left(A,C\\right)");
+      }
     }
 
     GUM_ACTIVE_TEST(Latex_ConditionalSimplification) {
-      auto m = gum::BayesNet<double>::fastPrototype("z2->x->z1->y;z2->z1;z2->z3->y");
-      gum::Set<std::string> y, knw;
+      auto m = gum::BayesNet< double >::fastPrototype("z2->x->z1->y;z2->z1;z2->z3->y");
+      gum::Set< std::string > y, knw;
       y.insert("y");
-      knw.insert("x"); knw.insert("z1"); knw.insert("z2"); knw.insert("z3");
-      gum::ASTposteriorProba<double> nod(m, y, knw);
+      knw.insert("x");
+      knw.insert("z1");
+      knw.insert("z2");
+      knw.insert("z3");
+      gum::ASTposteriorProba< double > nod(m, y, knw);
       TS_ASSERT_EQUALS(nod.toLatex(), "P\\left(y\\mid z1,z3\\right)");
 
-      gum::ASTposteriorProba<double> nod2(m, y, knw);
+      gum::ASTposteriorProba< double > nod2(m, y, knw);
       TS_ASSERT_EQUALS(nod2.toLatex(), "P\\left(y\\mid z1,z3\\right)");
     }
-
-
-
   };
 
-} // namespace gum_tests
-
+}   // namespace gum_tests

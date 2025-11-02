@@ -52,122 +52,122 @@
 #include <string>
 #include <vector>
 
-#include <agrum/base/graphs/DAG.h>
 #include <agrum/CM/causalModel.h>
 #include <agrum/CM/tools/doAST.h>
 
 namespace gum {
 
-/**
- * @class DoCalculus
- * @brief Instance-based do-calculus utilities bound to a single CausalModel.
- *
- * This class provides:
- *  - AST builders for standard adjustment formulas:
- *      * Backdoor:  \f$\sum_{Z} P(y \mid x, z)\,P(z)\f$
- *      * Frontdoor: \f$\sum_{Z} P(z \mid x)\,\sum_{x} P(y \mid x, z)\,P(x)\f$
- *  - Public entry points for general identification (ID/IDC):
- *      * identifyingIntervention(Y, X)
- *      * doCalculus(on, doing)
- *      * doCalculusWithObservation(on, doing, knowing)
- *
- * Returned ASTs are evaluated against the **observational BN** of the bound
- * causal model.
- */
-template <typename GUM_SCALAR>
-class DoCalculus {
-public:
-  /// Owned pointer to an AST representing a probability expression.
-  using FormulaPtr = std::unique_ptr<ASTtree<GUM_SCALAR>>;
+  /**
+   * @class DoCalculus
+   * @brief Instance-based do-calculus utilities bound to a single CausalModel.
+   *
+   * This class provides:
+   *  - AST builders for standard adjustment formulas:
+   *      * Backdoor:  \f$\sum_{Z} P(y \mid x, z)\,P(z)\f$
+   *      * Frontdoor: \f$\sum_{Z} P(z \mid x)\,\sum_{x} P(y \mid x, z)\,P(x)\f$
+   *  - Public entry points for general identification (ID/IDC):
+   *      * identifyingIntervention(Y, X)
+   *      * doCalculus(on, doing)
+   *      * doCalculusWithObservation(on, doing, knowing)
+   *
+   * Returned ASTs are evaluated against the **observational BN** of the bound
+   * causal model.
+   */
+  template < typename GUM_SCALAR >
+  class DoCalculus {
+    public:
+    /// Owned pointer to an AST representing a probability expression.
+    using FormulaPtr = std::unique_ptr< ASTtree< GUM_SCALAR > >;
 
-  /// Convenience container for name-based overloads.
-  using NameList = std::vector<std::string>;
+    /// Convenience container for name-based overloads.
+    using NameList = std::vector< std::string >;
 
-  /* ------------------------ Construction ------------------------ */
+    /* ------------------------ Construction ------------------------ */
 
-  explicit DoCalculus(const CausalModel<GUM_SCALAR>& cm) noexcept : _cm{cm} {}
+    explicit DoCalculus(const CausalModel< GUM_SCALAR >& cm) noexcept : _cm{cm} {}
 
-  inline const CausalModel<GUM_SCALAR>& model() const noexcept { return _cm; }
+    inline const CausalModel< GUM_SCALAR >& model() const noexcept { return _cm; }
 
-  /* -------------------- Backdoor / Frontdoor -------------------- */
+    /* -------------------- Backdoor / Frontdoor -------------------- */
 
-  FormulaPtr getBackDoorTree(NodeId cause, NodeId effect, const NodeSet& zset) const;
+    FormulaPtr getBackDoorTree(NodeId cause, NodeId effect, const NodeSet& zset) const;
 
-  FormulaPtr getBackDoorTree(const std::string& causeName,
-                             const std::string& effectName,
-                             const NameList&    zNames) const;
+    FormulaPtr getBackDoorTree(const std::string& causeName,
+                               const std::string& effectName,
+                               const NameList&    zNames) const;
 
-  FormulaPtr getFrontDoorTree(NodeId cause, NodeId effect, const NodeSet& zset) const;
+    FormulaPtr getFrontDoorTree(NodeId cause, NodeId effect, const NodeSet& zset) const;
 
-  FormulaPtr getFrontDoorTree(const std::string& causeName,
-                              const std::string& effectName,
-                              const NameList&    zNames) const;
+    FormulaPtr getFrontDoorTree(const std::string& causeName,
+                                const std::string& effectName,
+                                const NameList&    zNames) const;
 
-  /* --------------------- General identification ----------------- */
+    /* --------------------- General identification ----------------- */
 
-  /// ID: identify P(Y | do(X)) (NodeId-based).
-  FormulaPtr identifyingIntervention(const NodeSet& Y, const NodeSet& X) const;
+    /// ID: identify P(Y | do(X)) (NodeId-based).
+    FormulaPtr identifyingIntervention(const NodeSet& Y, const NodeSet& X) const;
 
-  /// ID: identify P(Y | do(X)) (name-based).
-  FormulaPtr identifyingIntervention(const NameList& Y, const NameList& X) const;
+    /// ID: identify P(Y | do(X)) (name-based).
+    FormulaPtr identifyingIntervention(const NameList& Y, const NameList& X) const;
 
-  /// Thin wrapper around ID: doCalculus(on, doing)
-  FormulaPtr doCalculus(const NodeSet& on, const NodeSet& doing) const;
-  FormulaPtr doCalculus(const NameList& on, const NameList& doing) const;
+    /// Thin wrapper around ID: doCalculus(on, doing)
+    FormulaPtr doCalculus(const NodeSet& on, const NodeSet& doing) const;
+    FormulaPtr doCalculus(const NameList& on, const NameList& doing) const;
 
-  /// IDC: identify P(on | do(doing), knowing)
-  FormulaPtr doCalculusWithObservation(const NodeSet& on,
-                                       const NodeSet& doing,
-                                       const NodeSet& knowing) const;
-  FormulaPtr doCalculusWithObservation(const NameList& on,
-                                       const NameList& doing,
-                                       const NameList& knowing) const;
+    /// IDC: identify P(on | do(doing), knowing)
+    FormulaPtr doCalculusWithObservation(const NodeSet& on,
+                                         const NodeSet& doing,
+                                         const NodeSet& knowing) const;
+    FormulaPtr doCalculusWithObservation(const NameList& on,
+                                         const NameList& doing,
+                                         const NameList& knowing) const;
 
-private:
-  const CausalModel<GUM_SCALAR>& _cm;
+    private:
+    const CausalModel< GUM_SCALAR >& _cm;
 
-  /* ---------- Helpers for ID/IDC (DAG-only; never mutate CausalModel) ---------- */
+    /* ---------- Helpers for ID/IDC (DAG-only; never mutate CausalModel) ---------- */
 
-  /// c-decomposition (confounding components) among observed nodes.
-  std::vector<NodeSet> _cDecomposition_(const CausalModel<GUM_SCALAR>& cm) const;
+    /// c-decomposition (confounding components) among observed nodes.
+    std::vector< NodeSet > _cDecomposition_(const CausalModel< GUM_SCALAR >& cm) const;
 
-  /// c-decomposition on an induced submodel (observed nodes only).
-  std::vector<NodeSet> _cDecompositionOn_(const CausalModel<GUM_SCALAR>& sub) const;
+    /// c-decomposition on an induced submodel (observed nodes only).
+    std::vector< NodeSet > _cDecompositionOn_(const CausalModel< GUM_SCALAR >& sub) const;
 
-  /// Topological order over observed nodes (ignoring latent parents).
-  std::vector<NodeId> _topoObserved_(const CausalModel<GUM_SCALAR>& cm) const;
+    /// Topological order over observed nodes (ignoring latent parents).
+    std::vector< NodeId > _topoObserved_(const CausalModel< GUM_SCALAR >& cm) const;
 
-  /// Ancestors (in DAG g) of a set T (including T).
-  static NodeSet _ancestorsIn_(const DAG& g, const NodeSet& T);
+    /// Ancestors (in DAG g) of a set T (including T).
+    static NodeSet _ancestorsIn_(const DAG& g, const NodeSet& T);
 
-  /// DAG copy with all incoming arcs into X removed (G_{\overline X}).
-  static DAG _removeIncomingInto_(const DAG& dag, const NodeSet& X);
+    /// DAG copy with all incoming arcs into X removed (G_{\overline X}).
+    static DAG _removeIncomingInto_(const DAG& dag, const NodeSet& X);
 
-  /// IDC helper: DAG copy with incoming into doing removed AND outgoing from knowing removed.
-  static DAG _removeInIntoDoing_outOfKnowing_(const DAG& dag,
-                                              const NodeSet& doing,
-                                              const NodeSet& knowing);
+    /// IDC helper: DAG copy with incoming into doing removed AND outgoing from knowing removed.
+    static DAG _removeInIntoDoing_outOfKnowing_(const DAG&     dag,
+                                                const NodeSet& doing,
+                                                const NodeSet& knowing);
 
-  /// ID core (recursive), with optional accumulated distribution P (AST) to carry in decompositions.
-  FormulaPtr _ID_(const CausalModel<GUM_SCALAR>& cm,
-                  const NodeSet&                 Y,
-                  const NodeSet&                 X,
-                  std::unique_ptr<ASTtree<GUM_SCALAR>> P) const;
+    /// ID core (recursive), with optional accumulated distribution P (AST) to carry in
+    /// decompositions.
+    FormulaPtr _ID_(const CausalModel< GUM_SCALAR >&         cm,
+                    const NodeSet&                           Y,
+                    const NodeSet&                           X,
+                    std::unique_ptr< ASTtree< GUM_SCALAR > > P) const;
 
-  /// Format a hedge exception message.
-  static std::string _hedgeExceptionMsg(const CausalModel<GUM_SCALAR>& cm,
-                                const NodeSet& Y,
-                                const NodeSet& X,
-                                const NodeSet& V,
-                                const NodeSet& S);
-};
+    /// Format a hedge exception message.
+    static std::string _hedgeExceptionMsg(const CausalModel< GUM_SCALAR >& cm,
+                                          const NodeSet&                   Y,
+                                          const NodeSet&                   X,
+                                          const NodeSet&                   V,
+                                          const NodeSet&                   S);
+  };
 
 #ifndef GUM_NO_EXTERN_TEMPLATE_CLASS
-  extern template class DoCalculus<double>;
+  extern template class DoCalculus< double >;
 #endif
 
-} // namespace gum
+}   // namespace gum
 
 #include <agrum/CM/tools/doCalculus_tpl.h>
 
-#endif // GUM_DO_CALCULUS_H
+#endif   // GUM_DO_CALCULUS_H

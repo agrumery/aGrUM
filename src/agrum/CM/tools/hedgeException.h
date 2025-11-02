@@ -44,21 +44,22 @@
 
 namespace gum {
 
-/**
- * @brief Raised when a "hedge" (witness of non-identifiability) is detected
- *        in do-calculus / ID computations.
- *
- * Usage:
- *   throw gum::HedgeException("Effect not identifiable: hedge found.");
- *   // or, if you use the macro helper:
- *   // GUM_ERROR(HedgeException, "Effect not identifiable: hedge found.");
- */
-class HedgeException : public Exception {
- public:
-  using Exception::Exception;          // inherit all base constructors
-  ~HedgeException() noexcept override { GUM_DESTRUCTOR(HedgeException) };
-};
+  /**
+   * @brief Raised when a "hedge" (witness of non-identifiability) is detected
+   *        in do-calculus / ID computations.
+   *
+   * Usage:
+   *   throw gum::HedgeException("Effect not identifiable: hedge found.");
+   *   // or, if you use the macro helper:
+   *   // GUM_ERROR(HedgeException, "Effect not identifiable: hedge found.");
+   */
+  class HedgeException: public Exception {
+    public:
+    using Exception::Exception;   // inherit all base constructors
 
-}  // namespace gum
+    ~HedgeException() noexcept override { GUM_DESTRUCTOR(HedgeException) };
+  };
 
-#endif  // GUM_HEDGE_EXCEPTION_H
+}   // namespace gum
+
+#endif   // GUM_HEDGE_EXCEPTION_H

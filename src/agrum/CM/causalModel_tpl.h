@@ -45,455 +45,465 @@
 
 #include <sstream>
 
-#include <agrum/CM/tools/doorCriteria.h>
 #include <agrum/CM/causalModel.h>
+#include <agrum/CM/tools/doorCriteria.h>
 
 namespace gum {
 
-// ===============================
-// Constructors with descriptors
-// ===============================
+  // ===============================
+  // Constructors with descriptors
+  // ===============================
 
-template <typename GUM_SCALAR>
-CausalModel<GUM_SCALAR>::CausalModel(const BayesNet<GUM_SCALAR>& observationalBN,
-                                     const LatentDescriptorVector& latentVarsDescriptor,
-                                     bool assumeNonSpurious)
-  : _observationalBN_(observationalBN),
-    _causalDAG_(observationalBN.dag()) {
-
-  // add each latent (children given as names)
-  for (const auto& desc : latentVarsDescriptor) {
-    addLatentVariable(desc.first, desc.second, assumeNonSpurious);
-  }
-}
-
-
-// ===============================
-// Latent variables
-// ===============================
-
-template <typename GUM_SCALAR>
-void CausalModel<GUM_SCALAR>::addLatentVariable(const std::string& latentName,
-                                                const std::vector<std::string>& childrenOfLatent,
-                                                bool assumeNonSpurious) {
-  std::vector<NodeId> childIds;
-  childIds.reserve(childrenOfLatent.size());
-  for (const auto& nm : childrenOfLatent) {
-    childIds.push_back(idFromName(nm));
-  }
-  addLatentVariable(latentName, childIds, assumeNonSpurious);
-}
-
-template <typename GUM_SCALAR>
-void CausalModel<GUM_SCALAR>::addLatentVariable(const std::string& latentName,
-                                                const std::vector<NodeId>& childrenOfLatent,
-                                                bool assumeNonSpurious) {
-  // must have at least 2 children
-  if (childrenOfLatent.size() < 2) {
-    GUM_ERROR(InvalidArgument, "A latent variable must affect at least 2 children.");
+  template < typename GUM_SCALAR >
+  CausalModel< GUM_SCALAR >::CausalModel(const BayesNet< GUM_SCALAR >& observationalBN,
+                                         const LatentDescriptorVector& latentVarsDescriptor,
+                                         bool                          assumeNonSpurious) :
+      _observationalBN_(observationalBN), _causalDAG_(observationalBN.dag()) {
+    // add each latent (children given as names)
+    for (const auto& desc: latentVarsDescriptor) {
+      addLatentVariable(desc.first, desc.second, assumeNonSpurious);
+    }
   }
 
-  // create a fresh node id for the latent in the causal DAG
-  const NodeId id_latent = _causalDAG_.addNode();
+  // ===============================
+  // Latent variables
+  // ===============================
 
-  // record bookkeeping
-  _id2name_.insert(id_latent, latentName);
-
-  // add arcs latent -> each child
-  for (const auto& cid : childrenOfLatent) {
-    // children are observed nodes: they must already exist in causal DAG (copied from observed BN)
-    _causalDAG_.addArc(id_latent, cid);
+  template < typename GUM_SCALAR >
+  void CausalModel< GUM_SCALAR >::addLatentVariable(
+      const std::string&                latentName,
+      const std::vector< std::string >& childrenOfLatent,
+      bool                              assumeNonSpurious) {
+    std::vector< NodeId > childIds;
+    childIds.reserve(childrenOfLatent.size());
+    for (const auto& nm: childrenOfLatent) {
+      childIds.push_back(idFromName(nm));
+    }
+    addLatentVariable(latentName, childIds, assumeNonSpurious);
   }
 
-  // remove any direct causal arc among children unless assumeNonSpurious=true
-  if (!assumeNonSpurious) {
-    for (auto i = childrenOfLatent.begin(); i != childrenOfLatent.end(); ++i) {
-      auto j = i; ++j;
-      for (auto jj = j; jj != childrenOfLatent.end(); ++jj) {
-        const NodeId a = *i;
-        const NodeId b = *jj;
-        // remove either direction if present
-        Arc ab(a,b), ba(b,a);
-        if (_causalDAG_.existsArc(ab)) _causalDAG_.eraseArc(ab);
-        else if (_causalDAG_.existsArc(ba)) _causalDAG_.eraseArc(ba);
+  template < typename GUM_SCALAR >
+  void CausalModel< GUM_SCALAR >::addLatentVariable(const std::string&           latentName,
+                                                    const std::vector< NodeId >& childrenOfLatent,
+                                                    bool assumeNonSpurious) {
+    // must have at least 2 children
+    if (childrenOfLatent.size() < 2) {
+      GUM_ERROR(InvalidArgument, "A latent variable must affect at least 2 children.");
+    }
+
+    // create a fresh node id for the latent in the causal DAG
+    const NodeId id_latent = _causalDAG_.addNode();
+
+    // record bookkeeping
+    _id2name_.insert(id_latent, latentName);
+
+    // add arcs latent -> each child
+    for (const auto& cid: childrenOfLatent) {
+      // children are observed nodes: they must already exist in causal DAG (copied from observed
+      // BN)
+      _causalDAG_.addArc(id_latent, cid);
+    }
+
+    // remove any direct causal arc among children unless assumeNonSpurious=true
+    if (!assumeNonSpurious) {
+      for (auto i = childrenOfLatent.begin(); i != childrenOfLatent.end(); ++i) {
+        auto j = i;
+        ++j;
+        for (auto jj = j; jj != childrenOfLatent.end(); ++jj) {
+          const NodeId a = *i;
+          const NodeId b = *jj;
+          // remove either direction if present
+          Arc ab(a, b), ba(b, a);
+          if (_causalDAG_.existsArc(ab)) _causalDAG_.eraseArc(ab);
+          else if (_causalDAG_.existsArc(ba)) _causalDAG_.eraseArc(ba);
+        }
       }
     }
   }
-}
 
+  template < typename GUM_SCALAR >
+  bool CausalModel< GUM_SCALAR >::existsArc(NodeId x, NodeId y) const {
+    return _causalDAG_.existsArc(Arc(x, y));
+  }
 
-template <typename GUM_SCALAR>
-bool CausalModel<GUM_SCALAR>::existsArc(NodeId x, NodeId y) const {
-  return _causalDAG_.existsArc(Arc(x, y));
-}
+  template < typename GUM_SCALAR >
+  bool CausalModel< GUM_SCALAR >::existsArc(const std::string& x, const std::string& y) const {
+    const NodeId ix = idFromName(x);
+    const NodeId iy = idFromName(y);
+    return existsArc(ix, iy);
+  }
 
-template <typename GUM_SCALAR>
-bool CausalModel<GUM_SCALAR>::existsArc(const std::string& x, const std::string& y) const {
-  const NodeId ix = idFromName(x);
-  const NodeId iy = idFromName(y);
-  return existsArc(ix, iy);
-}
+  // ===============================
+  // Latent getters
+  // ===============================
 
-// ===============================
-// Latent getters
-// ===============================
+  template < typename GUM_SCALAR >
+  NodeSet CausalModel< GUM_SCALAR >::latentVariablesIds() const {
+    NodeSet latentIds;
+    for (auto it = _id2name_.begin(); it != _id2name_.end(); ++it) {
+      latentIds.insert(it.first());
+    }
+    return latentIds;
+  }
 
-template <typename GUM_SCALAR>
-NodeSet CausalModel<GUM_SCALAR>::latentVariablesIds() const {
-  NodeSet latentIds;
-  for (auto it = _id2name_.begin(); it != _id2name_.end(); ++it) {
-       latentIds.insert(it.first());
- }
-  return latentIds;
-}
-
-template <typename GUM_SCALAR>
-Set<std::string> CausalModel<GUM_SCALAR>::latentVariablesNames() const {
-  Set<std::string> latentNames;
-  for (auto it = _id2name_.begin(); it != _id2name_.end(); ++it) {
+  template < typename GUM_SCALAR >
+  Set< std::string > CausalModel< GUM_SCALAR >::latentVariablesNames() const {
+    Set< std::string > latentNames;
+    for (auto it = _id2name_.begin(); it != _id2name_.end(); ++it) {
       latentNames.insert(it.second());
+    }
+    return latentNames;
   }
-  return latentNames;
-}
 
-// ===============================
-// Spurious arc management
-// ===============================
+  // ===============================
+  // Spurious arc management
+  // ===============================
 
-template <typename GUM_SCALAR>
-void CausalModel<GUM_SCALAR>::assumeSpurious(NodeId x, NodeId y) {
-  // Validate arc in observationalBN
-  if (!_observationalBN_.dag().existsArc(Arc(x, y))) {
-    GUM_ERROR(InvalidArgument, "Arc(" + std::to_string(x) + "," + std::to_string(y) + ") not present in observationalBN");
+  template < typename GUM_SCALAR >
+  void CausalModel< GUM_SCALAR >::assumeSpurious(NodeId x, NodeId y) {
+    // Validate arc in observationalBN
+    if (!_observationalBN_.dag().existsArc(Arc(x, y))) {
+      GUM_ERROR(InvalidArgument,
+                "Arc(" + std::to_string(x) + "," + std::to_string(y)
+                    + ") not present in observationalBN");
+    }
+    // Remove arc from causalDAG if present
+    if (_causalDAG_.existsArc(Arc(x, y))) { _causalDAG_.eraseArc(Arc(x, y)); }
   }
-  // Remove arc from causalDAG if present
-  if (_causalDAG_.existsArc(Arc(x, y))) {
-    _causalDAG_.eraseArc(Arc(x, y));
+
+  template < typename GUM_SCALAR >
+  void CausalModel< GUM_SCALAR >::assumeSpurious(const std::string& x, const std::string& y) {
+    assumeSpurious(idFromName(x), idFromName(y));
   }
-}
 
-template <typename GUM_SCALAR>
-void CausalModel<GUM_SCALAR>::assumeSpurious(const std::string& x, const std::string& y) {
-  assumeSpurious(idFromName(x), idFromName(y));
-}
-
-template <typename GUM_SCALAR>
-void CausalModel<GUM_SCALAR>::assumeNonSpurious(NodeId x, NodeId y) {
-  // Validate arc in observationalBN
-  if (!_observationalBN_.dag().existsArc(Arc(x, y))) {
-    GUM_ERROR(InvalidArgument, "Arc(" + std::to_string(x) + "," + std::to_string(y) + ") not present in observationalBN");
+  template < typename GUM_SCALAR >
+  void CausalModel< GUM_SCALAR >::assumeNonSpurious(NodeId x, NodeId y) {
+    // Validate arc in observationalBN
+    if (!_observationalBN_.dag().existsArc(Arc(x, y))) {
+      GUM_ERROR(InvalidArgument,
+                "Arc(" + std::to_string(x) + "," + std::to_string(y)
+                    + ") not present in observationalBN");
+    }
+    // Add arc to causalDAG if absent
+    if (!_causalDAG_.existsArc(Arc(x, y))) { _causalDAG_.addArc(x, y); }
   }
-  // Add arc to causalDAG if absent
-  if (!_causalDAG_.existsArc(Arc(x, y))) {
-    _causalDAG_.addArc(x, y);
+
+  template < typename GUM_SCALAR >
+  void CausalModel< GUM_SCALAR >::assumeNonSpurious(const std::string& x, const std::string& y) {
+    assumeNonSpurious(idFromName(x), idFromName(y));
   }
-}
 
-template <typename GUM_SCALAR>
-void CausalModel<GUM_SCALAR>::assumeNonSpurious(const std::string& x, const std::string& y) {
-  assumeNonSpurious(idFromName(x), idFromName(y));
-}
+  template < typename GUM_SCALAR >
+  bool CausalModel< GUM_SCALAR >::isAssumedSpurious(NodeId x, NodeId y) const {
+    return _observationalBN_.dag().existsArc(Arc(x, y)) && !_causalDAG_.existsArc(Arc(x, y));
+  }
 
-template <typename GUM_SCALAR>
-bool CausalModel<GUM_SCALAR>::isAssumedSpurious(NodeId x, NodeId y) const {
-  return _observationalBN_.dag().existsArc(Arc(x, y)) && !_causalDAG_.existsArc(Arc(x, y));
-}
+  template < typename GUM_SCALAR >
+  bool CausalModel< GUM_SCALAR >::isAssumedSpurious(const std::string& x,
+                                                    const std::string& y) const {
+    return isAssumedSpurious(idFromName(x), idFromName(y));
+  }
 
-template <typename GUM_SCALAR>
-bool CausalModel<GUM_SCALAR>::isAssumedSpurious(const std::string& x, const std::string& y) const {
-  return isAssumedSpurious(idFromName(x), idFromName(y));
-}
+  // ===============================
+  // Connected components
+  // ===============================
 
-// ===============================
-// Connected components
-// ===============================
+  // -----------------------------------------------------------------------------
+  // Connected components (weak connectivity) on the CAUSAL DAG.
+  // This adapts the inner pyAgrum implementation:
+  // - Work over _causalDAG_.nodes()
+  // - Traverse using parents() and children()
+  // - Keep a "remaining" set; pop an arbitrary root for each component
+  // -----------------------------------------------------------------------------
+  template < typename GUM_SCALAR >
+  HashTable< NodeId, NodeSet > CausalModel< GUM_SCALAR >::connectedComponents() const {
+    HashTable< NodeId, NodeSet > comps;
 
-// -----------------------------------------------------------------------------
-// Connected components (weak connectivity) on the CAUSAL DAG.
-// This adapts the inner pyAgrum implementation:
-// - Work over _causalDAG_.nodes()
-// - Traverse using parents() and children()
-// - Keep a "remaining" set; pop an arbitrary root for each component
-// -----------------------------------------------------------------------------
-template <typename GUM_SCALAR>
-HashTable<NodeId, NodeSet> CausalModel<GUM_SCALAR>::connectedComponents() const {
-  HashTable<NodeId, NodeSet> comps;
+    // Build a mutable "remaining" set from the DAG's node view
+    NodeSet remaining;
+    for (auto n: _causalDAG_.nodes())
+      remaining.insert(n);
 
-  // Build a mutable "remaining" set from the DAG's node view
-  NodeSet remaining;
-  for (auto n : _causalDAG_.nodes()) remaining.insert(n);
+    while (!remaining.empty()) {
+      const NodeId root = *remaining.begin();
 
-  while (!remaining.empty()) {
-    const NodeId root = *remaining.begin();
+      NodeSet               cc;
+      std::vector< NodeId > stack{root};
+      remaining.erase(root);
 
-    NodeSet cc;
-    std::vector<NodeId> stack{root};
-    remaining.erase(root);
+      while (!stack.empty()) {
+        const NodeId u = stack.back();
+        stack.pop_back();
+        cc.insert(u);
 
-    while (!stack.empty()) {
-      const NodeId u = stack.back();
-      stack.pop_back();
-      cc.insert(u);
-
-      // weak neighbours = parents ∪ children
-      for (auto v : _causalDAG_.parents(u)) {
-        if (remaining.contains(v)) { remaining.erase(v); stack.push_back(v); }
+        // weak neighbours = parents ∪ children
+        for (auto v: _causalDAG_.parents(u)) {
+          if (remaining.contains(v)) {
+            remaining.erase(v);
+            stack.push_back(v);
+          }
+        }
+        for (auto v: _causalDAG_.children(u)) {
+          if (remaining.contains(v)) {
+            remaining.erase(v);
+            stack.push_back(v);
+          }
+        }
       }
-      for (auto v : _causalDAG_.children(u)) {
-        if (remaining.contains(v)) { remaining.erase(v); stack.push_back(v); }
+
+      comps.insert(root, std::move(cc));
+    }
+
+    return comps;
+  }
+
+  // causalModel_tpl.h
+  template < typename GUM_SCALAR >
+  CausalModel< GUM_SCALAR >
+      CausalModel< GUM_SCALAR >::inducedCausalSubModel(const CausalModel< GUM_SCALAR >& cm,
+                                                       NodeSet subset) const {
+    // If caller gave an empty subset, use "all observed" nodes
+    if (subset.empty()) {
+      for (auto n: cm.observationalBN().nodes())
+        subset.insert(n);
+    }
+
+    // Keep only OBSERVED nodes (drop latents explicitly)
+    NodeSet nodes = subset;
+    for (auto L: cm.latentVariablesIds())
+      nodes.erase(L);
+
+    // --- Build an observational BN restricted to `nodes`
+    BayesNet< GUM_SCALAR >      bn;
+    HashTable< NodeId, NodeId > idmap;   // oldId -> newId
+
+    // add variables
+    for (auto n: nodes) {
+      const auto&  var = cm.observationalBN().variable(n);
+      const NodeId nn  = bn.add(var, n);   // API accepts "add(var, id)"
+      idmap.insert(n, nn);
+    }
+
+    // add arcs among the kept observed nodes (from the *causal* DAG)
+    for (const auto& a: cm.causalDAG().arcs()) {
+      const NodeId x = a.tail();
+      const NodeId y = a.head();
+      if (nodes.contains(x) && nodes.contains(y)) { bn.addArc(idmap[x], idmap[y]); }
+    }
+
+    // --- Rebuild latent descriptor restricted to kept nodes
+    LatentDescriptorVector latentDesc;
+    for (auto L: cm.latentVariablesIds()) {
+      std::vector< NodeId > mapped_children;
+      mapped_children.reserve(4);
+
+      // intersect latent children with kept observed nodes
+      for (auto c: cm.children(L)) {
+        if (nodes.contains(c)) mapped_children.push_back(idmap[c]);
+      }
+
+      // keep the latent ONLY if it still has at least 2 children
+      if (mapped_children.size() >= 2) {
+        latentDesc.emplace_back(cm.nameFromId(L), std::move(mapped_children));
       }
     }
 
-    comps.insert(root, std::move(cc));
+
+    // assumeNonSpurious=true : pyagrum uses True here (do not remove arcs among children)
+    return CausalModel< GUM_SCALAR >(bn, latentDesc, /*assumeNonSpurious=*/true);
   }
 
-  return comps;
-}
+  // ===============================
+  // Parents / Children (by id / by name)
+  // ===============================
 
-
-// causalModel_tpl.h
-template <typename GUM_SCALAR>
-CausalModel<GUM_SCALAR>
-CausalModel<GUM_SCALAR>::inducedCausalSubModel(const CausalModel<GUM_SCALAR>& cm,
-                                               NodeSet subset) const {
-  // If caller gave an empty subset, use "all observed" nodes
-  if (subset.empty()) {
-    for (auto n : cm.observationalBN().nodes()) subset.insert(n);
+  template < typename GUM_SCALAR >
+  NodeSet CausalModel< GUM_SCALAR >::parents(NodeId x) const {
+    // delegate to the causal DAG (includes latent->observed arcs)
+    return _causalDAG_.parents(x);
   }
 
-  // Keep only OBSERVED nodes (drop latents explicitly)
-  NodeSet nodes = subset;
-  for (auto L : cm.latentVariablesIds()) nodes.erase(L);
-
-  // --- Build an observational BN restricted to `nodes`
-  BayesNet<GUM_SCALAR> bn;
-  HashTable<NodeId, NodeId> idmap;  // oldId -> newId
-
-  // add variables
-  for (auto n : nodes) {
-    const auto& var = cm.observationalBN().variable(n);
-    const NodeId nn = bn.add(var, n);  // API accepts "add(var, id)"
-    idmap.insert(n, nn);
+  template < typename GUM_SCALAR >
+  NodeSet CausalModel< GUM_SCALAR >::parents(const std::string& name) const {
+    return parents(idFromName(name));
   }
 
-  // add arcs among the kept observed nodes (from the *causal* DAG)
-  for (const auto& a : cm.causalDAG().arcs()) {
-    const NodeId x = a.tail();
-    const NodeId y = a.head();
-    if (nodes.contains(x) && nodes.contains(y)) {
-      bn.addArc(idmap[x], idmap[y]);
-    }
+  template < typename GUM_SCALAR >
+  NodeSet CausalModel< GUM_SCALAR >::children(NodeId x) const {
+    return _causalDAG_.children(x);
   }
 
-  // --- Rebuild latent descriptor restricted to kept nodes
-  LatentDescriptorVector latentDesc;
-  for (auto L : cm.latentVariablesIds()) {
-    std::vector<NodeId> mapped_children;
-    mapped_children.reserve(4);
+  template < typename GUM_SCALAR >
+  NodeSet CausalModel< GUM_SCALAR >::children(const std::string& name) const {
+    return children(idFromName(name));
+  }
 
-    // intersect latent children with kept observed nodes
-    for (auto c : cm.children(L)) {
-      if (nodes.contains(c)) mapped_children.push_back(idmap[c]);
+  /* =======================================================================
+   * Backdoor / Frontdoor conveniences (IDs only)
+   * ======================================================================= */
+
+  template < typename GUM_SCALAR >
+  NodeSet CausalModel< GUM_SCALAR >::backDoor(NodeId cause, NodeId effect) const {
+    // Preconditions: cause/effect must be observed (non-latent).
+    const NodeSet lat = latentVariablesIds();
+    if (lat.contains(cause) || lat.contains(effect)) {
+      GUM_ERROR(InvalidArgument,
+                "CausalModel::backDoor: 'cause' and 'effect' must be observed (non-latent).");
     }
 
-    // keep the latent ONLY if it still has at least 2 children
-    if (mapped_children.size() >= 2) {
-      latentDesc.emplace_back(cm.nameFromId(L), std::move(mapped_children));
+    DoorCriteria                     dc(_causalDAG_);
+    DoorCriteria::EnumerationOptions opts;
+    opts.excluded_nodes = lat;   // never allow latents in adjustment sets
+
+    const auto candidates = dc.enumerateBackdoorSets(cause, effect, opts);
+    if (candidates.empty()) return NodeSet{};
+    return candidates.front();   // first valid set
+  }
+
+  template < typename GUM_SCALAR >
+  NodeSet CausalModel< GUM_SCALAR >::frontDoor(NodeId cause, NodeId effect) const {
+    // Preconditions: cause/effect must be observed (non-latent).
+    const NodeSet lat = latentVariablesIds();
+    if (lat.contains(cause) || lat.contains(effect)) {
+      GUM_ERROR(InvalidArgument,
+                "CausalModel::frontDoor: 'cause' and 'effect' must be observed (non-latent).");
     }
+
+    DoorCriteria                     dc(_causalDAG_);
+    DoorCriteria::EnumerationOptions opts;
+    opts.excluded_nodes = lat;   // never allow latents in adjustment sets
+
+    const auto candidates = dc.enumerateFrontdoorSets(cause, effect, opts);
+    if (candidates.empty()) return NodeSet{};
+    return candidates.front();   // first valid set
   }
 
+  // ===============================
+  // DOT export
+  // ===============================
+  template < typename GUM_SCALAR >
+  std::string CausalModel< GUM_SCALAR >::toDot(const bool  SHOW_LATENT_NAMES,
+                                               const char* NODE_BG,
+                                               const char* NODE_FG,
+                                               const char* EDGE_COL) const {
+    //   SHOW_LATENT_NAMES => causal.show_latent_names
+    //   NODE_BG           => causal.default_node_bgcolor
+    //   NODE_FG           => causal.default_node_fgcolor
+    //   EDGE_COL          => notebook.default_arc_color
 
-  // assumeNonSpurious=true : pyagrum uses True here (do not remove arcs among children)
-  return CausalModel<GUM_SCALAR>(bn, latentDesc, /*assumeNonSpurious=*/true);
-}
+    std::stringstream out;
+    out << "digraph {\n";
 
-
-// ===============================
-// Parents / Children (by id / by name)
-// ===============================
-
-template <typename GUM_SCALAR>
-NodeSet CausalModel<GUM_SCALAR>::parents(NodeId x) const {
-  // delegate to the causal DAG (includes latent->observed arcs)
-  return _causalDAG_.parents(x);
-}
-
-template <typename GUM_SCALAR>
-NodeSet CausalModel<GUM_SCALAR>::parents(const std::string& name) const {
-  return parents(idFromName(name));
-}
-
-template <typename GUM_SCALAR>
-NodeSet CausalModel<GUM_SCALAR>::children(NodeId x) const {
-  return _causalDAG_.children(x);
-}
-
-template <typename GUM_SCALAR>
-NodeSet CausalModel<GUM_SCALAR>::children(const std::string& name) const {
-  return children(idFromName(name));
-}
-
-
-/* =======================================================================
- * Backdoor / Frontdoor conveniences (IDs only)
- * ======================================================================= */
-
-template <typename GUM_SCALAR>
-NodeSet CausalModel<GUM_SCALAR>::backDoor(NodeId cause, NodeId effect) const {
-  // Preconditions: cause/effect must be observed (non-latent).
-  const NodeSet lat = latentVariablesIds();
-  if (lat.contains(cause) || lat.contains(effect)) {
-    GUM_ERROR(InvalidArgument, "CausalModel::backDoor: 'cause' and 'effect' must be observed (non-latent).");
-  }
-
-  DoorCriteria dc(_causalDAG_);
-  DoorCriteria::EnumerationOptions opts;
-  opts.excluded_nodes = lat; // never allow latents in adjustment sets
-
-  const auto candidates = dc.enumerateBackdoorSets(cause, effect, opts);
-  if (candidates.empty()) return NodeSet{};
-  return candidates.front(); // first valid set
-}
-
-template <typename GUM_SCALAR>
-NodeSet CausalModel<GUM_SCALAR>::frontDoor(NodeId cause, NodeId effect) const {
-  // Preconditions: cause/effect must be observed (non-latent).
-  const NodeSet lat = latentVariablesIds();
-  if (lat.contains(cause) || lat.contains(effect)) {
-    GUM_ERROR(InvalidArgument, "CausalModel::frontDoor: 'cause' and 'effect' must be observed (non-latent).");
-  }
-
-  DoorCriteria dc(_causalDAG_);
-  DoorCriteria::EnumerationOptions opts;
-  opts.excluded_nodes = lat; // never allow latents in adjustment sets
-
-  const auto candidates = dc.enumerateFrontdoorSets(cause, effect, opts);
-  if (candidates.empty()) return NodeSet{};
-  return candidates.front(); // first valid set
-}
-
-
-// ===============================
-// DOT export
-// ===============================
-template <typename GUM_SCALAR>
-std::string CausalModel<GUM_SCALAR>::toDot(const bool  SHOW_LATENT_NAMES,
-                                           const char* NODE_BG,
-                                           const char* NODE_FG,
-                                           const char* EDGE_COL) const {
-  //   SHOW_LATENT_NAMES => causal.show_latent_names
-  //   NODE_BG           => causal.default_node_bgcolor
-  //   NODE_FG           => causal.default_node_fgcolor
-  //   EDGE_COL          => notebook.default_arc_color
-
-  std::stringstream out;
-  out << "digraph {\n";
-
-  // First, latent nodes
-  for (const auto n : _causalDAG_.nodes()) {
-    if (latentVariablesIds().contains(n)) {
-      std::string label;
-      try { label = nameFromId(n); } catch (gum::NotFound&) { label = "L" + std::to_string(n); }
-      out << "  \"" << label << "\" "
-          << "[fillcolor=\"" << NODE_BG << "\", "
-          <<  "fontcolor=\"" << NODE_FG << "\", "
-          <<  "style=filled,shape=" << (SHOW_LATENT_NAMES ? "ellipse" : "point") << "];\n";
-    }
-  }
-
-  // Then, observed nodes
-  for (const auto n : _causalDAG_.nodes()) {
-    if (!latentVariablesIds().contains(n)) {
-      std::string label;
-      try { label = nameFromId(n); } catch (gum::NotFound&) { label = "L" + std::to_string(n); }
-      out << "  \"" << label << "\" "
-          << "[fillcolor=\"" << NODE_BG << "\", "
-          <<  "fontcolor=\"" << NODE_FG << "\", "
-          <<  "style=filled,shape=ellipse];\n";
-    }
-  }
-
-  // Edges
-  for (const auto tail : _causalDAG_.nodes()) {
-    for (const auto head : _causalDAG_.children(tail)) {
-      std::string lt, lh;
-      try { lt = nameFromId(tail); } catch (gum::NotFound&) { lt = "L" + std::to_string(tail); }
-      try { lh = nameFromId(head); } catch (gum::NotFound&) { lh = "L" + std::to_string(head); }
-
-      const bool dashed = latentVariablesIds().contains(tail) || latentVariablesIds().contains(head);
-
-      out << "  \"" << lt << "\"->\"" << lh << "\" ";
-      if (dashed) {
-        out << "[style=dashed]";
-      } else {
-        // match Python: color="#4A4A4A:#4A4A4A"
-        out << "[color=\"" << EDGE_COL << ":" << EDGE_COL << "\"]";
+    // First, latent nodes
+    for (const auto n: _causalDAG_.nodes()) {
+      if (latentVariablesIds().contains(n)) {
+        std::string label;
+        try {
+          label = nameFromId(n);
+        } catch (gum::NotFound&) { label = "L" + std::to_string(n); }
+        out << "  \"" << label << "\" "
+            << "[fillcolor=\"" << NODE_BG << "\", "
+            << "fontcolor=\"" << NODE_FG << "\", "
+            << "style=filled,shape=" << (SHOW_LATENT_NAMES ? "ellipse" : "point") << "];\n";
       }
-      out << ";\n";
     }
+
+    // Then, observed nodes
+    for (const auto n: _causalDAG_.nodes()) {
+      if (!latentVariablesIds().contains(n)) {
+        std::string label;
+        try {
+          label = nameFromId(n);
+        } catch (gum::NotFound&) { label = "L" + std::to_string(n); }
+        out << "  \"" << label << "\" "
+            << "[fillcolor=\"" << NODE_BG << "\", "
+            << "fontcolor=\"" << NODE_FG << "\", "
+            << "style=filled,shape=ellipse];\n";
+      }
+    }
+
+    // Edges
+    for (const auto tail: _causalDAG_.nodes()) {
+      for (const auto head: _causalDAG_.children(tail)) {
+        std::string lt, lh;
+        try {
+          lt = nameFromId(tail);
+        } catch (gum::NotFound&) { lt = "L" + std::to_string(tail); }
+        try {
+          lh = nameFromId(head);
+        } catch (gum::NotFound&) { lh = "L" + std::to_string(head); }
+
+        const bool dashed
+            = latentVariablesIds().contains(tail) || latentVariablesIds().contains(head);
+
+        out << "  \"" << lt << "\"->\"" << lh << "\" ";
+        if (dashed) {
+          out << "[style=dashed]";
+        } else {
+          // match Python: color="#4A4A4A:#4A4A4A"
+          out << "[color=\"" << EDGE_COL << ":" << EDGE_COL << "\"]";
+        }
+        out << ";\n";
+      }
+    }
+
+    out << "}\n";
+    return out.str();
   }
 
-  out << "}\n";
-  return out.str();
-}
+  // ===============================
+  // Names and IDs Getters
+  // ===============================
 
-// ===============================
-// Names and IDs Getters
-// ===============================
-
-template <typename GUM_SCALAR>
-Set<std::string>
-CausalModel<GUM_SCALAR>::names() const {
-    Set<std::string> names;
-    for (const auto n : _observationalBN_.nodes()) {
-        names.insert(_observationalBN_.variable(n).name());
+  template < typename GUM_SCALAR >
+  Set< std::string > CausalModel< GUM_SCALAR >::names() const {
+    Set< std::string > names;
+    for (const auto n: _observationalBN_.nodes()) {
+      names.insert(_observationalBN_.variable(n).name());
     }
     // latent names (from bijection)
     for (auto it = _id2name_.begin(); it != _id2name_.end(); ++it) {
-        names.insert(it.second());
+      names.insert(it.second());
     }
     return names;
-
-}
-
-template <typename GUM_SCALAR>
-NodeId CausalModel<GUM_SCALAR>::idFromName(const std::string& name) const {
-  if (_id2name_.existsSecond(name)) {
-    return _id2name_.first(name);
   }
-  else {
-   return _observationalBN_.idFromName(name);
-  }
-}
 
-template <typename GUM_SCALAR>
-std::string CausalModel<GUM_SCALAR>::nameFromId(NodeId id) const {
+  template < typename GUM_SCALAR >
+  NodeId CausalModel< GUM_SCALAR >::idFromName(const std::string& name) const {
+    if (_id2name_.existsSecond(name)) {
+      return _id2name_.first(name);
+    } else {
+      return _observationalBN_.idFromName(name);
+    }
+  }
+
+  template < typename GUM_SCALAR >
+  std::string CausalModel< GUM_SCALAR >::nameFromId(NodeId id) const {
     if (_id2name_.existsFirst(id)) {
-        return _id2name_.second(id);
+      return _id2name_.second(id);
+    } else {
+      return _observationalBN_.variable(id).name();
     }
-    else {
-        return _observationalBN_.variable(id).name();
-    }
-}
+  }
 
-template <typename GUM_SCALAR>
-Bijection<NodeId, std::string> CausalModel<GUM_SCALAR>::id2name(bool includeLatentVariables) const {
-    Bijection<NodeId, std::string> result;
+  template < typename GUM_SCALAR >
+  Bijection< NodeId, std::string >
+      CausalModel< GUM_SCALAR >::id2name(bool includeLatentVariables) const {
+    Bijection< NodeId, std::string > result;
 
     // Add observed variables
-    for (const auto n : _observationalBN_.nodes()) {
-        result.insert(n, _observationalBN_.variable(n).name());
+    for (const auto n: _observationalBN_.nodes()) {
+      result.insert(n, _observationalBN_.variable(n).name());
     }
 
     // Add latent variables if requested
     if (includeLatentVariables) {
-        for (auto iter = _id2name_.beginSafe(); iter != _id2name_.endSafe(); ++iter) {
-            result.insert(iter.first(), iter.second());
-        }
-
+      for (auto iter = _id2name_.beginSafe(); iter != _id2name_.endSafe(); ++iter) {
+        result.insert(iter.first(), iter.second());
+      }
     }
 
     return result;
-}
+  }
 
-} // namespace gum
+}   // namespace gum
