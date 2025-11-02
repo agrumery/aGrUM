@@ -37,6 +37,7 @@
  *   gitlab   : https://gitlab.com/agrumery/agrum                           *
  *                                                                          *
  ****************************************************************************/
+#pragma once
 
 #include <algorithm>
 #include <vector>
@@ -51,7 +52,7 @@
 
 namespace gum_tests {
 
-  class CausalFormulaTestSuite: public CxxTest::TestSuite {
+  class GUM_TEST_SUITE(CausalFormula) {
     public:
     using NameSet = gum::Set< std::string >;
     using NodeSet = gum::NodeSet;

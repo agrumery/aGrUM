@@ -42,6 +42,8 @@
  * @brief Template implementation of CausalModel/doAST.h
  */
 
+#pragma once
+
 #include <algorithm>
 #include <sstream>
 

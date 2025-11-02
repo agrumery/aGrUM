@@ -41,6 +41,8 @@
  * @file
  * @brief Template implementation for CausalFormula.
  */
+#pragma once
+
 
 #include <algorithm>
 #include <sstream>

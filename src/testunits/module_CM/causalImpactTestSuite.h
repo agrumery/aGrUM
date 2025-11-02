@@ -37,6 +37,8 @@
  *   gitlab   : https://gitlab.com/agrumery/agrum                           *
  *                                                                          *
  ****************************************************************************/
+#pragma once
+
 #include <string>
 #include <vector>
 
@@ -53,7 +55,7 @@
 
 namespace gum_tests {
 
-  class CausalImpactTestSuite: public CxxTest::TestSuite {
+  class GUM_TEST_SUITE(CausalImpact) {
     using StrSet = gum::Set< std::string >;
 
     static StrSet names(std::initializer_list< const char* > il) {

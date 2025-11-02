@@ -37,6 +37,7 @@
  *   gitlab   : https://gitlab.com/agrumery/agrum                           *
  *                                                                          *
  ****************************************************************************/
+
 /**
  * @file
  * @brief Do-calculus utilities and AST builders bound to a single CausalModel.
@@ -45,6 +46,7 @@
  * helpers to construct adjustment formulas (backdoor/frontdoor) as ASTs and
  * the public entry points for general identification à la Shpitser–Pearl.
  */
+#pragma once
 
 #include <algorithm>
 #include <queue>
@@ -53,7 +55,6 @@
 
 #include <agrum/CM/tools/causalFormula.h>
 #include <agrum/CM/tools/doCalculus.h>
-#include <agrum/CM/tools/hedgeException.h>
 #include <agrum/CM/tools/separation.h>
 
 #include <unordered_map>

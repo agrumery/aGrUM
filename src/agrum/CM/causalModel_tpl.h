@@ -43,6 +43,8 @@
  * @brief Template implementation of CausalModel/causalModel.h
  */
 
+#pragma once
+
 #include <sstream>
 
 #include <agrum/CM/causalModel.h>

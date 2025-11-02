@@ -41,6 +41,7 @@
  * @file
  * @brief d-separation test suite.
  */
+#pragma once
 
 #include <gumtest/AgrumTestSuite.h>
 #include <gumtest/utils.h>
@@ -56,7 +57,7 @@
 
 namespace gum_tests {
 
-  class DSeparationTestSuite: public CxxTest::TestSuite {
+  class GUM_TEST_SUITE(DSeparation) {
     private:
     using BN      = gum::BayesNet< double >;
     using NodeId  = gum::NodeId;

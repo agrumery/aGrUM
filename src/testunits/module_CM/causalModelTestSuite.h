@@ -37,6 +37,8 @@
  *   gitlab   : https://gitlab.com/agrumery/agrum                           *
  *                                                                          *
  ****************************************************************************/
+#pragma once
+
 
 #include <gumtest/AgrumTestSuite.h>
 #include <gumtest/utils.h>
@@ -46,7 +48,7 @@
 
 namespace gum_tests {
 
-  class CausalModelTestSuite: public CxxTest::TestSuite {
+  class GUM_TEST_SUITE(CausalModel) {
     public:
     GUM_ACTIVE_TEST(SimpleBN) {
       auto                       bn = gum::BayesNet< double >::fastPrototype("A[2]->B[3]");

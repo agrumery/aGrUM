@@ -38,6 +38,8 @@
  *                                                                          *
  ****************************************************************************/
 
+#pragma once
+
 #include <agrum/CM/causalImpact.h>
 
 namespace gum {

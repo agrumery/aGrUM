@@ -37,6 +37,7 @@
  *   gitlab   : https://gitlab.com/agrumery/agrum                           *
  *                                                                          *
  ****************************************************************************/
+#pragma once
 
 #include <gumtest/AgrumTestSuite.h>
 #include <gumtest/utils.h>
@@ -47,7 +48,7 @@
 
 namespace gum_tests {
 
-  class DoCalculusTestSuite: public CxxTest::TestSuite {
+  class GUM_TEST_SUITE(DoCalculus) {
     public:
     // Backdoor on Simpson-style BN: Z->X, Z->Y, X->Y.
     // Expect AST = sum_Z [ P(Y|X,Z) * P(Z) ].

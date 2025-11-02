@@ -37,6 +37,9 @@
  *   gitlab   : https://gitlab.com/agrumery/agrum                           *
  *                                                                          *
  ****************************************************************************/
+
+#pragma once
+
 #include <agrum/CM/counterfactual.h>
 
 namespace gum {

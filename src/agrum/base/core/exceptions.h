@@ -515,6 +515,13 @@ namespace gum {
    */
   class NotImplementedYet;
 
+  /**
+   * @class gum::HedgeException agrum/base/core/exceptions.h
+   * @extends gum::Exception
+   * Exception : "hedge" (witness of non-identifiability) is detected
+   *        in do-calculus / ID computations.
+   */
+  class HedgeException;
 
 #ifndef DOXYGEN_SHOULD_SKIP_THIS
   std::string _createMsg_(const std::string& filename,
@@ -559,6 +566,8 @@ namespace gum {
   GUM_MAKE_ERROR(DuplicateLabel, ArgumentError, "Duplicate label")
 
   GUM_MAKE_ERROR(GraphError, Exception, "Graph error")
+
+  GUM_MAKE_ERROR(HedgeException, Exception, "Hedge found")
 
   GUM_MAKE_ERROR(NoNeighbour, GraphError, "No neighbour found")
 

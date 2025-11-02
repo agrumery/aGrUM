@@ -37,7 +37,7 @@
  *   gitlab   : https://gitlab.com/agrumery/agrum                           *
  *                                                                          *
  ****************************************************************************/
-
+#pragma once
 
 #include <memory>
 #include <string>
@@ -59,7 +59,7 @@
 
 namespace gum_tests {
 
-  class DoASTTestSuite: public CxxTest::TestSuite {
+  class GUM_TEST_SUITE(DoAST) {
     public:
     const gum::Bijection< gum::NodeId, std::string >
         id2name_fromBN(const gum::BayesNet< double >& bn) {

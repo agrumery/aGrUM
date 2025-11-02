@@ -37,6 +37,8 @@
  *   gitlab   : https://gitlab.com/agrumery/agrum                           *
  *                                                                          *
  ****************************************************************************/
+#pragma once
+
 
 #include <cmath>
 #include <fstream>
@@ -58,7 +60,7 @@
 
 namespace gum_tests {
 
-  class CounterfactualTestSuite: public CxxTest::TestSuite {
+  class GUM_TEST_SUITE(Counterfactual) {
     using StrSet = gum::Set< std::string >;
 
     static StrSet names(std::initializer_list< const char* > il) {
