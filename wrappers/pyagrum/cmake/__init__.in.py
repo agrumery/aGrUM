@@ -150,6 +150,13 @@ try:
 except ImportError:
     sys.stderr.write("Could not load Influence Diagram submodule")
 
+# submodule causal
+try:
+    from .pyagrum import CausalModel, CausalImpact
+    from .pyagrum import causalImpact 
+except ImportError:
+    sys.stderr.write("Could not load Causal submodule")
+    
 from .common import (
     __version__,
     __license__,

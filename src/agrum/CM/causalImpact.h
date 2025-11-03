@@ -86,29 +86,26 @@ namespace gum {
   template < typename GUM_SCALAR >
   class CausalImpact {
     public:
-    /// If true, skip backdoor/frontdoor and use do-calculus directly
-    bool directDoCalculus_ = false;
-
     // --- Forwarded accessors for wrapping ---
     /// @brief Evaluates the formula's AST to compute the resulting probability distribution.
-    Tensor< GUM_SCALAR > eval() const { return result.eval(); }
+    Tensor< GUM_SCALAR > eval() const { return _resultFormula_.eval(); }
 
     /// @brief Generates a string representation of the formula's AST.
-    std::string toString() const { return result.toString(); }
+    [[nodiscard]] std::string toString() const { return _resultFormula_.toString(); }
 
     /// @brief Generates a full LaTeX equation: Query = Formula.
-    std::string toLatex(const std::string& doOperatorPrefix = "do(",
-                        const std::string& doOperatorSuffix = ")") const {
-      return result.toLatex(doOperatorPrefix, doOperatorSuffix);
+    [[nodiscard]] std::string toLatex(const std::string& doOperatorPrefix = "do(",
+                                      const std::string& doOperatorSuffix = ")") const {
+      return _resultFormula_.toLatex(doOperatorPrefix, doOperatorSuffix);
     }
 
     /**
      * @brief Generates a LaTeX representation of the original query, e.g., P(Y | do(X), Z).
      * @note This version does not yet support specific variable values.
      */
-    std::string latexQuery(const std::string& doOperatorPrefix = "do(",
-                           const std::string& doOperatorSuffix = ")") const {
-      return result.latexQuery(doOperatorPrefix, doOperatorSuffix);
+    [[nodiscard]] std::string latexQuery(const std::string& doOperatorPrefix = "do(",
+                                         const std::string& doOperatorSuffix = ")") const {
+      return _resultFormula_.latexQuery(doOperatorPrefix, doOperatorSuffix);
     }
 
     /**
@@ -120,7 +117,7 @@ namespace gum {
      *
      * @return true if an identification AST exists, false otherwise.
      */
-    bool isIdentified() const noexcept { return result.isIdentified(); }
+    [[nodiscard]] bool isIdentified() const noexcept { return _resultFormula_.isIdentified(); }
 
     /**
      * @brief Access the root AST node of the identified formula.
@@ -132,31 +129,35 @@ namespace gum {
      *         is not identifiable with the current methods).
      * @return const ASTtree<GUM_SCALAR>& reference to the AST root.
      */
-    const ASTtree< GUM_SCALAR >& root() const { return result.root(); }
+    const ASTtree< GUM_SCALAR >& root() const { return _resultFormula_.root(); }
 
     // --- Accessors ---
     /**
      * @brief Access the underlying CausalFormula result.
      * @return const reference to the identified CausalFormula.
      */
-    const CausalFormula< GUM_SCALAR >& getResult() const { return result; }
+    const CausalFormula< GUM_SCALAR >& getResult() const { return _resultFormula_; }
 
-    const CausalModel< GUM_SCALAR >& cm() const { return result.cm(); }
+    const CausalModel< GUM_SCALAR >& cm() const { return _resultFormula_.cm(); }
 
-    const NodeSet& on() const { return result.on(); }
+    [[nodiscard]] const NodeSet& on() const { return _resultFormula_.on(); }
 
-    const NodeSet& doing() const { return result.doing(); }
+    [[nodiscard]] const NodeSet& doing() const { return _resultFormula_.doing(); }
 
-    const NodeSet& knowing() const { return result.knowing(); }
+    [[nodiscard]] const NodeSet& knowing() const { return _resultFormula_.knowing(); }
 
-    const std::string& explanation() const { return result.explanation(); }
+    [[nodiscard]] const std::string& explanation() const { return _resultFormula_.explanation(); }
 
     /// Convenience: return names corresponding to stored node ids (sorted).
-    std::vector< std::string > onNames() const { return result.onNames(); }
+    [[nodiscard]] std::vector< std::string > onNames() const { return _resultFormula_.onNames(); }
 
-    std::vector< std::string > doingNames() const { return result.doingNames(); }
+    [[nodiscard]] std::vector< std::string > doingNames() const {
+      return _resultFormula_.doingNames();
+    }
 
-    std::vector< std::string > knowingNames() const { return result.knowingNames(); }
+    [[nodiscard]] std::vector< std::string > knowingNames() const {
+      return _resultFormula_.knowingNames();
+    }
 
     /**
      * @brief Constructs a CausalImpact object using variable names.
@@ -173,7 +174,7 @@ namespace gum {
     CausalImpact(const CausalModel< GUM_SCALAR >& cm,
                  const NameSet&                   on,
                  const NameSet&                   doing,
-                 const NameSet&                   knowing          = NameSet{},
+                 const NameSet&                   knowing          = NameSet(),
                  bool                             directDoCalculus = false);
 
     /**
@@ -191,13 +192,17 @@ namespace gum {
     CausalImpact(const CausalModel< GUM_SCALAR >& cm,
                  const NodeSet&                   on,
                  const NodeSet&                   doing,
-                 const NodeSet&                   knowing          = NodeSet{},
+                 const NodeSet&                   knowing          = NodeSet(),
                  bool                             directDoCalculus = false);
 
     private:
+    /// If true, skip backdoor/frontdoor and use do-calculus directly
+    bool _directDoCalculus_ = false;
+
     /// Identified symbolic formula. If not identifiable, its AST may be nullptr and
     /// its explanation string (6th ctor arg) will say so.
-    CausalFormula< GUM_SCALAR > result;
+    CausalFormula< GUM_SCALAR > _resultFormula_;
+
 
     // helpers
     static NameSet _idsToNames_(const CausalModel< GUM_SCALAR >& cm, const NodeSet& ids);

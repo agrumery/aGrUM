@@ -40,6 +40,8 @@
 
 #pragma once
 
+#include <utility>
+
 #include <agrum/CM/counterfactual.h>
 
 namespace gum {
@@ -169,7 +171,7 @@ namespace gum {
   template < typename GUM_SCALAR >
   void Counterfactual< GUM_SCALAR >::run() {
     // Build symbolic effect on the twin
-    _ci = std::make_unique< CausalImpact< GUM_SCALAR > >(_twin, _on, _whatif, NameSet{});
+    _ci = std::make_unique< CausalImpact< GUM_SCALAR > >(_twin, _on, _whatif);
 
     // Numeric evaluation on the twin
     Tensor< GUM_SCALAR > adj = _ci->eval();
@@ -211,7 +213,8 @@ namespace gum {
   // ================================= PRINT ==================================
 
   template < typename GUM_SCALAR >
-  void Counterfactual< GUM_SCALAR >::print(std::ostream& os) const {
+  std::string Counterfactual< GUM_SCALAR >::toString() const {
+    std::stringstream os;
     os << "[Counterfactual]\n";
 
     os << " on = {";
@@ -237,9 +240,9 @@ namespace gum {
     if (!_profile.empty()) {
       os << " profile: ";
       bool first = true;
-      for (const auto& kv: _profile) {
+      for (const auto& [k, v]: _profile) {
         if (!first) os << ", ";
-        os << kv.first << "=" << kv.second;
+        os << k << "=" << v;
         first = false;
       }
       os << "\n";
@@ -248,9 +251,9 @@ namespace gum {
     if (!_values.empty()) {
       os << " values: ";
       bool first = true;
-      for (const auto& kv: _values) {
+      for (const auto& [k, v]: _values) {
         if (!first) os << ", ";
-        os << kv.first << "=" << kv.second;
+        os << k << "=" << v;
         first = false;
       }
       os << "\n";
@@ -264,6 +267,8 @@ namespace gum {
       os << " value (adapted to original variables):\n";
       os << _adaptedValue << "\n";
     }
+
+    return os.str();
   }
 
   // ============================== HELPERS (IDs) ==============================

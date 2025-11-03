@@ -1,7 +1,7 @@
 /****************************************************************************
  *   This file is part of the aGrUM/pyAgrum library.                        *
  *                                                                          *
- *   Copyright (c) 2005-2026 by                                             *
+ *   Copyright (c) 2005-2025 by                                             *
  *       - Pierre-Henri WUILLEMIN(_at_LIP6)                                 *
  *       - Christophe GONZALES(_at_AMU)                                     *
  *                                                                          *
@@ -27,7 +27,7 @@
  *                                                                          *
  *   See LICENCES for more details.                                         *
  *                                                                          *
- *   SPDX-FileCopyrightText: Copyright 2005-2026                            *
+ *   SPDX-FileCopyrightText: Copyright 2005-2025                            *
  *       - Pierre-Henri WUILLEMIN(_at_LIP6)                                 *
  *       - Christophe GONZALES(_at_AMU)                                     *
  *   SPDX-License-Identifier: LGPL-3.0-or-later OR MIT                      *
@@ -39,11 +39,22 @@
  ****************************************************************************/
 
 
+/* INCLUDES */
+%{
+#include <agrum/cm.h>
+%}
 
+%include "typemaps.i"
+%include "std_vector.i"
+%include "std_string.i"
 
-%include "aGrUM_wrap_BASE.i"
-%include "aGrUM_wrap_BN.i"
-%include "aGrUM_wrap_CM.i"
-%include "aGrUM_wrap_ID.i"
-%include "aGrUM_wrap_CN.i"
-%include "aGrUM_wrap_MRF.i"
+%include "forUsing.i"
+
+%include <agrum/CM/causalModel.h>
+%include <agrum/CM/causalImpact.h>
+%include <agrum/CM/counterfactual.h>
+
+%template (causalImpact) gum::causalImpact< double >;
+%template (CausalModel) gum::CausalModel< double >;
+%template (CausalImpact) gum::CausalImpact< double >;
+%template (Counterfactual) gum::Counterfactual< double >;

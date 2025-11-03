@@ -85,8 +85,8 @@ namespace gum {
                                            const NameSet&                   doing,
                                            const NameSet&                   knowing,
                                            bool                             directDoCalculus) :
-      directDoCalculus_{directDoCalculus},
-      result(_buildFromNames_(cm, on, doing, knowing, directDoCalculus)) {}
+      _directDoCalculus_{directDoCalculus},
+      _resultFormula_(_buildFromNames_(cm, on, doing, knowing, directDoCalculus)) {}
 
   template < typename GUM_SCALAR >
   CausalImpact< GUM_SCALAR >::CausalImpact(const CausalModel< GUM_SCALAR >& cm,
@@ -94,8 +94,8 @@ namespace gum {
                                            const NodeSet&                   doing,
                                            const NodeSet&                   knowing,
                                            bool                             directDoCalculus) :
-      directDoCalculus_{directDoCalculus},
-      result(_buildFromIds_(cm, on, doing, knowing, directDoCalculus)) {}
+      _directDoCalculus_{directDoCalculus},
+      _resultFormula_(_buildFromIds_(cm, on, doing, knowing, directDoCalculus)) {}
 
   // ---------- builders ----------
 

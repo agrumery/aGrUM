@@ -67,7 +67,7 @@ namespace gum {
    *     - Run inference on the original BN with the optional `profile` evidence
    *       and replace the priors of idiosyncratic variables in the twin by their
    *       posteriors from the original BN.
-   *  2. On the twin model, construct a `CausalImpact` for the query
+   *  2. On the twin model, build a `CausalImpact` for the query
    *     P(on | do(whatif), …) and **evaluate** it numerically.
    *  3. If `values` is provided, **slice** the numeric tensor using only the
    *     assignments present in the result (safe partial instantiation).
@@ -128,8 +128,8 @@ namespace gum {
      *                 during numeric evaluation and optional slicing. May be empty.
      */
     Counterfactual(const CausalModel< GUM_SCALAR >&     cm,
-                   const NameSet&                       on      = NameSet(),
-                   const NameSet&                       whatif  = NameSet(),
+                   const NameSet&                       on,
+                   const NameSet&                       whatif,
                    const HashTable< VarName, ValName >& profile = HashTable< VarName, ValName >(),
                    const HashTable< VarName, ValName >& values  = HashTable< VarName, ValName >());
 
@@ -206,7 +206,7 @@ namespace gum {
 
     const HashTable< VarName, ValName >& values() const { return _values; }
 
-    void print(std::ostream& os) const;
+    std::string toString() const;
 
     private:
     static Tensor< GUM_SCALAR > _adaptToOriginalVariables_(const Tensor< GUM_SCALAR >&      adj,

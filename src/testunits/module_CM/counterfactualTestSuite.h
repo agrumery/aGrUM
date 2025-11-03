@@ -125,16 +125,10 @@ namespace gum_tests {
       whatif_names.insert("education");
 
 
-      gum::Counterfactual< double > cf(cm,
-                                       /*on*/ on_names,
-                                       /*whatif*/ whatif_names,
-                                       /*profile*/ profile,
-                                       /*values*/ values);
-
+      gum::Counterfactual cf(cm, on_names, whatif_names, profile, values);
       // exercise print() and getResult().toString() (should not throw)
       TS_ASSERT_THROWS_NOTHING({
-        std::ostringstream oss;
-        cf.print(oss);
+        const auto _ = cf.toString();
         (void)cf.getResult().toString();
       })
 
@@ -174,11 +168,10 @@ namespace gum_tests {
       gum::NodeSet whatIfIds;
       whatIfIds.insert(idEdu);
 
-      gum::Counterfactual< double > cf(cm, onIds, whatIfIds, profileIds, valuesIds);
+      gum::Counterfactual cf(cm, onIds, whatIfIds, profileIds, valuesIds);
 
       TS_ASSERT_THROWS_NOTHING({
-        std::ostringstream oss;
-        cf.print(oss);
+        const auto _ = cf.toString();
         (void)cf.getResult().toString();
       })
 
@@ -189,8 +182,8 @@ namespace gum_tests {
 
     // Light smoke: ensures ctor+eval do not throw on empty profile using same file.
     GUM_ACTIVE_TEST(test_Counterfactual_FromBIFXML_Smoke_NoProfile) {
-      auto                       bn = loadBNFromBIFXML();
-      gum::CausalModel< double > cm(bn);
+      const auto             bn = loadBNFromBIFXML();
+      const gum::CausalModel cm(bn);
 
       gum::HashTable< std::string, std::string > profile;   // empty
       gum::HashTable< std::string, std::string > values;    // do(X=a)
@@ -201,7 +194,7 @@ namespace gum_tests {
       gum::NameSet whatif_set;
       whatif_set.insert("education");
 
-      gum::Counterfactual< double > cf(cm, on_set, whatif_set, profile);
+      const gum::Counterfactual cf(cm, on_set, whatif_set, profile);
       TS_ASSERT_THROWS_NOTHING({ (void)cf.value(); })
     }
 
