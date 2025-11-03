@@ -92,6 +92,16 @@ if (NOT AGRUM_INLINE)
     target_compile_definitions(agrumBASE PUBLIC GUM_NO_INLINE)
 endif ()
 
+# precompile most often used headers (grep -nrI '#include <agrum' src/|cut -d " " -f 2| sort|uniq -c| sort -n)
+target_precompile_headers(agrumBASE PRIVATE "$<$<COMPILE_LANGUAGE:CXX>:${CMAKE_CURRENT_SOURCE_DIR}/agrum/agrum.h>")
+target_precompile_headers(agrumBASE PRIVATE "$<$<COMPILE_LANGUAGE:CXX>:${CMAKE_CURRENT_SOURCE_DIR}/agrum/base/variables/labelizedVariable.h>")
+target_precompile_headers(agrumBASE PRIVATE "$<$<COMPILE_LANGUAGE:CXX>:${CMAKE_CURRENT_SOURCE_DIR}/agrum/base/core/math/math_utils.h>")
+target_precompile_headers(agrumBASE PRIVATE "$<$<COMPILE_LANGUAGE:CXX>:${CMAKE_CURRENT_SOURCE_DIR}/agrum/base/multidim/tensor.h>")
+if (TARGET agrumBN)
+  target_precompile_headers(agrumBN PRIVATE "$<$<COMPILE_LANGUAGE:CXX>:${CMAKE_CURRENT_SOURCE_DIR}/agrum/BN/BayesNet.h>")
+  target_precompile_headers(agrumBN PRIVATE "$<$<COMPILE_LANGUAGE:CXX>:${CMAKE_CURRENT_SOURCE_DIR}/agrum/BN/inference/lazyPropagation.h>")
+endif ()
+
 ## TARGET library
 add_library(${LIBAGRUM} INTERFACE)
 foreach (OPTION ${LIST_OF_MODULES})
