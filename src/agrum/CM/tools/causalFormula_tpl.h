@@ -56,7 +56,7 @@ namespace gum {
 
   template < GUM_Numeric GUM_SCALAR >
   NodeSet CausalFormula< GUM_SCALAR >::_toNodeSetFromNames_(const CausalModel< GUM_SCALAR >& cm,
-                                                            const NameSet& names) {
+                                                            const Set< std::string >& names) {
     NodeSet     ids;
     const auto& bn = cm.observationalBN();
     for (const auto& n: names) {
@@ -97,9 +97,9 @@ namespace gum {
   template < GUM_Numeric GUM_SCALAR >
   CausalFormula< GUM_SCALAR >::CausalFormula(const CausalModel< GUM_SCALAR >&         cm,
                                              std::unique_ptr< ASTtree< GUM_SCALAR > > root,
-                                             const NameSet&                           on,
-                                             const NameSet&                           doing,
-                                             const NameSet&                           knowing,
+                                             const Set< std::string >&                on,
+                                             const Set< std::string >&                doing,
+                                             const Set< std::string >&                knowing,
                                              const std::string&                       explanation) :
       _cm(cm), _root(std::move(root)), _on(_toNodeSetFromNames_(cm, on)),
       _doing(_toNodeSetFromNames_(cm, doing)), _knowing(_toNodeSetFromNames_(cm, knowing)),

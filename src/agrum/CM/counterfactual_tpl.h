@@ -50,8 +50,8 @@ namespace gum {
 
   template < GUM_Numeric GUM_SCALAR >
   Counterfactual< GUM_SCALAR >::Counterfactual(const CausalModel< GUM_SCALAR >&     cm,
-                                               const NameSet&                       on,
-                                               const NameSet&                       whatif,
+                                               const Set< std::string >&            on,
+                                               const Set< std::string >&            whatif,
                                                const HashTable< VarName, ValName >& profile,
                                                const HashTable< VarName, ValName >& values) :
       _cm(cm), _on(on), _whatif(whatif), _profile(profile), _values(values),
@@ -63,12 +63,11 @@ namespace gum {
   }
 
   template < GUM_Numeric GUM_SCALAR >
-  Counterfactual< GUM_SCALAR >::Counterfactual(
-      const CausalModel< GUM_SCALAR >&            cm,
-      const NodeSet&                              onIds,
-      const NodeSet&                              whatifIds,
-      const HashTable< NodeId, VariableValueId >& profileIds,
-      const HashTable< NodeId, VariableValueId >& valuesIds) :
+  Counterfactual< GUM_SCALAR >::Counterfactual(const CausalModel< GUM_SCALAR >& cm,
+                                               const NodeSet&                   onIds,
+                                               const NodeSet&                   whatifIds,
+                                               const HashTable< NodeId, Idx >&  profileIds,
+                                               const HashTable< NodeId, Idx >&  valuesIds) :
       Counterfactual< GUM_SCALAR >(cm,
                                    _idsToNames_(cm, onIds),
                                    _idsToNames_(cm, whatifIds),
@@ -81,7 +80,7 @@ namespace gum {
   CausalModel< GUM_SCALAR > Counterfactual< GUM_SCALAR >::counterFactualModel(
       const CausalModel< GUM_SCALAR >&     cm,
       const HashTable< VarName, ValName >& profile,
-      const NameSet&                       whatif) {
+      const Set< std::string >&            whatif) {
     const auto&               origBN = cm.observationalBN();
     CausalModel< GUM_SCALAR > twincm(origBN);   // copy (serves as clone)
 
@@ -105,11 +104,11 @@ namespace gum {
     gum::LazyPropagation< GUM_SCALAR > ie(&origBN);
     if (!profile.empty()) {
       for (const auto& kv: profile) {
-        const auto&           varName = kv.first;
-        const auto&           valName = kv.second;
-        const NodeId          nid     = cm.idFromName(varName);
-        const auto&           var     = origBN.variable(nid);
-        const VariableValueId valId   = var.index(valName);
+        const auto&  varName = kv.first;
+        const auto&  valName = kv.second;
+        const NodeId nid     = cm.idFromName(varName);
+        const auto&  var     = origBN.variable(nid);
+        const Idx    valId   = var.index(valName);
         ie.addEvidence(nid, valId);
       }
     }
@@ -126,10 +125,10 @@ namespace gum {
   }
 
   template < GUM_Numeric GUM_SCALAR >
-  CausalModel< GUM_SCALAR > Counterfactual< GUM_SCALAR >::counterFactualModel(
-      const CausalModel< GUM_SCALAR >&            cm,
-      const HashTable< NodeId, VariableValueId >& profileIds,
-      const NodeSet&                              whatifIds) {
+  CausalModel< GUM_SCALAR >
+      Counterfactual< GUM_SCALAR >::counterFactualModel(const CausalModel< GUM_SCALAR >& cm,
+                                                        const HashTable< NodeId, Idx >&  profileIds,
+                                                        const NodeSet& whatifIds) {
     const auto& origBN = cm.observationalBN();
     // 1) idiosyncratic = parentless \ (whatif ∪ latent)
     NodeSet idiosyncratic;
@@ -149,8 +148,8 @@ namespace gum {
       gum::LazyPropagation< GUM_SCALAR > ie(&origBN);
       if (!profileIds.empty()) {
         for (const auto& kv: profileIds) {
-          const NodeId          nid   = kv.first;
-          const VariableValueId valId = kv.second;
+          const NodeId nid   = kv.first;
+          const Idx    valId = kv.second;
           ie.addEvidence(nid, valId);
         }
       }
@@ -274,10 +273,10 @@ namespace gum {
   // ============================== HELPERS (IDs) ==============================
 
   template < GUM_Numeric GUM_SCALAR >
-  NameSet Counterfactual< GUM_SCALAR >::_idsToNames_(const CausalModel< GUM_SCALAR >& cm,
-                                                     const NodeSet&                   ids) {
-    NameSet     out;
-    const auto& bn = cm.observationalBN();
+  Set< std::string > Counterfactual< GUM_SCALAR >::_idsToNames_(const CausalModel< GUM_SCALAR >& cm,
+                                                                const NodeSet& ids) {
+    Set< std::string > out;
+    const auto&        bn = cm.observationalBN();
     for (auto nid: ids) {
       const auto& var = bn.variable(nid);   // reference by id
       out.insert(var.name());
@@ -289,14 +288,14 @@ namespace gum {
   HashTable< typename Counterfactual< GUM_SCALAR >::VarName,
              typename Counterfactual< GUM_SCALAR >::ValName >
       Counterfactual< GUM_SCALAR >::_idAssignToNameAssign_(
-          const CausalModel< GUM_SCALAR >&            cm,
-          const HashTable< NodeId, VariableValueId >& idAssign) {
+          const CausalModel< GUM_SCALAR >& cm,
+          const HashTable< NodeId, Idx >&  idAssign) {
     HashTable< VarName, ValName > out;
     const auto&                   bn = cm.observationalBN();
     for (const auto& kv: idAssign) {
-      const NodeId          nid   = kv.first;
-      const VariableValueId valId = kv.second;
-      const auto&           var   = bn.variable(nid);   // reference by id
+      const NodeId nid   = kv.first;
+      const Idx    valId = kv.second;
+      const auto&  var   = bn.variable(nid);   // reference by id
       out.insert(var.name(), var.label(valId));
     }
     return out;
@@ -308,8 +307,8 @@ namespace gum {
 
   template < GUM_Numeric GUM_SCALAR >
   Tensor< GUM_SCALAR > counterfactual(const CausalModel< GUM_SCALAR >&             cm,
-                                      const NameSet&                               on,
-                                      const NameSet&                               whatif,
+                                      const Set< std::string >&                    on,
+                                      const Set< std::string >&                    whatif,
                                       const HashTable< std::string, std::string >& profile,
                                       const HashTable< std::string, std::string >& values) {
     // Use the class implementation and return the adapted tensor.
@@ -321,7 +320,7 @@ namespace gum {
   CausalModel< GUM_SCALAR >
       counterfactualModel(const CausalModel< GUM_SCALAR >&             cm,
                           const HashTable< std::string, std::string >& profile,
-                          const NameSet&                               whatif) {
+                          const Set< std::string >&                    whatif) {
     const auto& origBN = cm.observationalBN();
 
     // Clone model (copy semantics)
@@ -345,9 +344,9 @@ namespace gum {
     LazyPropagation< GUM_SCALAR > ie(&origBN);
     if (!profile.empty()) {
       for (const auto& kv: profile) {
-        const NodeId          nid   = cm.idFromName(kv.first);
-        const auto&           var   = origBN.variable(nid);
-        const VariableValueId valId = var.index(kv.second);
+        const NodeId nid   = cm.idFromName(kv.first);
+        const auto&  var   = origBN.variable(nid);
+        const Idx    valId = var.index(kv.second);
         ie.addEvidence(nid, valId);
       }
     }

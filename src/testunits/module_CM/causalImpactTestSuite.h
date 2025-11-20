@@ -515,9 +515,9 @@ namespace gum_tests {
       gum::HashTable< std::string, std::string > values;
       values.insert("X", "a");
       // values.insert("Y","a");  // FIXME if a complete instance is given, it would throw.
-      const gum::NameSet on    = names({"Y"});
-      const gum::NameSet doing = names({"X"});
-      const gum::NameSet know;   // empty
+      const gum::Set< std::string > on{"Y"};
+      const gum::Set< std::string > doing{"X"};
+      const gum::Set< std::string > know;   // empty
 
       // Free function
       auto [ff_formula, ff_tensor, ff_expl]
@@ -575,9 +575,9 @@ namespace gum_tests {
 
       gum::HashTable< std::string, std::string > values;
       values.insert("X", "a");
-      const gum::NameSet on    = names({"Y"});
-      const gum::NameSet doing = names({"X"});
-      const gum::NameSet know;   // empty
+      const gum::Set< std::string > on    = names({"Y"});
+      const gum::Set< std::string > doing = names({"X"});
+      const gum::Set< std::string > know;   // empty
 
       auto [formula, tensor, expl] = gum::causalImpact< double >(cm, on, doing, know, values);
 

@@ -155,12 +155,12 @@ namespace gum_tests {
       const auto& vExp = bn.variable(idExp);
       const auto& vSal = bn.variable(idSal);
 
-      gum::HashTable< gum::NodeId, gum::VariableValueId > profileIds;
+      gum::HashTable< gum::NodeId, gum::Idx > profileIds;
       profileIds.insert(idExp, vExp.index("8"));
       profileIds.insert(idEdu, vEdu.index("low"));
       profileIds.insert(idSal, vSal.index("86"));
 
-      gum::HashTable< gum::NodeId, gum::VariableValueId > valuesIds;
+      gum::HashTable< gum::NodeId, gum::Idx > valuesIds;
       valuesIds.insert(idEdu, vEdu.index("medium"));
 
       gum::NodeSet onIds;
@@ -189,9 +189,9 @@ namespace gum_tests {
       gum::HashTable< std::string, std::string > values;    // do(X=a)
       values.insert("education", "low");
 
-      gum::NameSet on_set;
+      gum::Set< std::string > on_set;
       on_set.insert("salary");
-      gum::NameSet whatif_set;
+      gum::Set< std::string > whatif_set;
       whatif_set.insert("education");
 
       const gum::Counterfactual cf(cm, on_set, whatif_set, profile);
@@ -213,9 +213,9 @@ namespace gum_tests {
       gum::HashTable< std::string, std::string > values;
       values.insert("education", "medium");
 
-      gum::NameSet on_names;
+      gum::Set< std::string > on_names;
       on_names.insert("salary");
-      gum::NameSet whatif;
+      gum::Set< std::string > whatif;
       whatif.insert("education");
 
       // Free function
@@ -245,17 +245,20 @@ namespace gum_tests {
       gum::HashTable< std::string, std::string > values;
       values.insert("education", "medium");
 
-      gum::NameSet on_names;
+      gum::Set< std::string > on_names;
       on_names.insert("salary");
-      gum::NameSet whatif;
+      gum::Set< std::string > whatif;
       whatif.insert("education");
 
       // Build twin with the free function
       auto twincm = gum::counterfactualModel< double >(cm, profile, whatif);
 
       // Compute effect on the twin with existing causalImpact free fn
-      auto [_, adj, __]
-          = gum::causalImpact< double >(twincm, on_names, whatif, gum::NameSet{}, values);
+      auto [_, adj, __] = gum::causalImpact< double >(twincm,
+                                                      on_names,
+                                                      whatif,
+                                                      gum::Set< std::string >{},
+                                                      values);
 
       // Adapt to the original BN variables (same pattern as class)
       gum::Tensor< double > adapted;

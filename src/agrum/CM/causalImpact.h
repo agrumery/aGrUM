@@ -51,11 +51,6 @@
 
 namespace gum {
 
-  using NameSet           = Set< std::string >;
-  using VariableName      = std::string;
-  using VariableValueName = std::string;
-  using VariableValueId   = Idx;
-
   template < GUM_Numeric GUM_SCALAR >
   class CausalImpact;
   template < GUM_Numeric GUM_SCALAR >
@@ -68,12 +63,12 @@ namespace gum {
    */
   template < GUM_Numeric GUM_SCALAR >
   std::tuple< CausalImpact< GUM_SCALAR >, Tensor< GUM_SCALAR >, std::string >
-      causalImpact(const CausalModel< GUM_SCALAR >&                    cm,
-                   const NameSet&                                      on,
-                   const NameSet&                                      doing,
-                   const NameSet&                                      knowing = NameSet(),
-                   const HashTable< VariableName, VariableValueName >& values
-                   = HashTable< VariableName, VariableValueName >());
+      causalImpact(const CausalModel< GUM_SCALAR >&             cm,
+                   const Set< std::string >&                    on,
+                   const Set< std::string >&                    doing,
+                   const Set< std::string >&                    knowing = Set< std::string >(),
+                   const HashTable< std::string, std::string >& values
+                   = HashTable< std::string, std::string >());
 
   /**
    * @class CausalImpact
@@ -172,9 +167,9 @@ namespace gum {
      * Frontdoor criteria and use the ID algorithm directly.
      */
     CausalImpact(const CausalModel< GUM_SCALAR >& cm,
-                 const NameSet&                   on,
-                 const NameSet&                   doing,
-                 const NameSet&                   knowing          = NameSet(),
+                 const Set< std::string >&        on,
+                 const Set< std::string >&        doing,
+                 const Set< std::string >&        knowing          = Set< std::string >(),
                  bool                             directDoCalculus = false);
 
     /**
@@ -205,15 +200,18 @@ namespace gum {
 
 
     // helpers
-    static NameSet _idsToNames_(const CausalModel< GUM_SCALAR >& cm, const NodeSet& ids);
-    static NodeSet _namesToIds_(const CausalModel< GUM_SCALAR >& cm, const NameSet& names);
-    static bool    _disjoint_(const NameSet& a, const NameSet& b, const NameSet& c);
+    static Set< std::string > _idsToNames_(const CausalModel< GUM_SCALAR >& cm, const NodeSet& ids);
+    static NodeSet            _namesToIds_(const CausalModel< GUM_SCALAR >& cm,
+                                           const Set< std::string >&        names);
+    static bool               _disjoint_(const Set< std::string >& a,
+                                         const Set< std::string >& b,
+                                         const Set< std::string >& c);
 
     // core builders that return the fully-formed formula (for initializer list)
     static CausalFormula< GUM_SCALAR > _buildFromNames_(const CausalModel< GUM_SCALAR >& cm,
-                                                        const NameSet&                   on,
-                                                        const NameSet&                   doing,
-                                                        const NameSet&                   knowing,
+                                                        const Set< std::string >&        on,
+                                                        const Set< std::string >&        doing,
+                                                        const Set< std::string >&        knowing,
                                                         bool directDoCalculus);
 
     static CausalFormula< GUM_SCALAR > _buildFromIds_(const CausalModel< GUM_SCALAR >& cm,

@@ -72,9 +72,6 @@ namespace gum {
   template < GUM_Numeric GUM_SCALAR >
   class CausalFormula {
     public:
-    /// Convenience alias for variable names.
-    using NameSet = Set< std::string >;
-
     /**
      * @brief Constructs a CausalFormula object (variables given by names).
      *
@@ -87,9 +84,9 @@ namespace gum {
      */
     CausalFormula(const CausalModel< GUM_SCALAR >&         cm,
                   std::unique_ptr< ASTtree< GUM_SCALAR > > root,
-                  const NameSet&                           on,
-                  const NameSet&                           doing,
-                  const NameSet&                           knowing     = NameSet{},
+                  const Set< std::string >&                on,
+                  const Set< std::string >&                doing,
+                  const Set< std::string >&                knowing     = Set< std::string >{},
                   const std::string&                       explanation = "");
 
     /**
@@ -171,7 +168,8 @@ namespace gum {
 
     private:
     /// @brief Convert a set of names to a set of node ids (validates existence).
-    static NodeSet _toNodeSetFromNames_(const CausalModel< GUM_SCALAR >& cm, const NameSet& names);
+    static NodeSet _toNodeSetFromNames_(const CausalModel< GUM_SCALAR >& cm,
+                                        const Set< std::string >&        names);
 
     /**
      * @brief Verifies that all variables (_on, _knowing, _doing) exist in the BN.

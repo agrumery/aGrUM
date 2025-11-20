@@ -46,15 +46,15 @@ namespace gum {
   template class Counterfactual< double >;
 
   template Tensor< double > counterfactual< double >(const CausalModel< double >&,
-                                                     const NameSet&,
-                                                     const NameSet&,
+                                                     const Set< std::string >&,
+                                                     const Set< std::string >&,
                                                      const HashTable< std::string, std::string >&,
                                                      const HashTable< std::string, std::string >&);
 
   template CausalModel< double >
       counterfactualModel< double >(const CausalModel< double >&,
                                     const HashTable< std::string, std::string >&,
-                                    const NameSet&);
+                                    const Set< std::string >&);
 
 }   // namespace gum
 #endif

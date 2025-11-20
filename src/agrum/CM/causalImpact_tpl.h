@@ -47,10 +47,10 @@ namespace gum {
   // ---------- helpers ----------
 
   template < GUM_Numeric GUM_SCALAR >
-  typename gum::NameSet
+  typename gum::Set< std::string >
       CausalImpact< GUM_SCALAR >::_idsToNames_(const CausalModel< GUM_SCALAR >& cm,
                                                const NodeSet&                   ids) {
-    NameSet out;
+    Set< std::string > out;
     for (auto id: ids)
       out.insert(cm.nameFromId(id));
     return out;
@@ -59,7 +59,7 @@ namespace gum {
   template < GUM_Numeric GUM_SCALAR >
   typename gum::NodeSet
       CausalImpact< GUM_SCALAR >::_namesToIds_(const CausalModel< GUM_SCALAR >& cm,
-                                               const NameSet&                   names) {
+                                               const Set< std::string >&        names) {
     NodeSet out;
     for (const auto& n: names)
       out.insert(cm.idFromName(n));
@@ -67,8 +67,9 @@ namespace gum {
   }
 
   template < GUM_Numeric GUM_SCALAR >
-  bool
-      CausalImpact< GUM_SCALAR >::_disjoint_(const NameSet& a, const NameSet& b, const NameSet& c) {
+  bool CausalImpact< GUM_SCALAR >::_disjoint_(const Set< std::string >& a,
+                                              const Set< std::string >& b,
+                                              const Set< std::string >& c) {
     for (const auto& x: a)
       if (b.contains(x) || c.contains(x)) return false;
     for (const auto& x: b)
@@ -81,9 +82,9 @@ namespace gum {
 
   template < GUM_Numeric GUM_SCALAR >
   CausalImpact< GUM_SCALAR >::CausalImpact(const CausalModel< GUM_SCALAR >& cm,
-                                           const NameSet&                   on,
-                                           const NameSet&                   doing,
-                                           const NameSet&                   knowing,
+                                           const Set< std::string >&        on,
+                                           const Set< std::string >&        doing,
+                                           const Set< std::string >&        knowing,
                                            bool                             directDoCalculus) :
       _directDoCalculus_{directDoCalculus},
       _resultFormula_(_buildFromNames_(cm, on, doing, knowing, directDoCalculus)) {}
@@ -102,9 +103,9 @@ namespace gum {
   template < GUM_Numeric GUM_SCALAR >
   CausalFormula< GUM_SCALAR >
       CausalImpact< GUM_SCALAR >::_buildFromNames_(const CausalModel< GUM_SCALAR >& cm,
-                                                   const NameSet&                   on,
-                                                   const NameSet&                   doing,
-                                                   const NameSet&                   knowing,
+                                                   const Set< std::string >&        on,
+                                                   const Set< std::string >&        doing,
+                                                   const Set< std::string >&        knowing,
                                                    bool directDoCalculus) {
     if (!_disjoint_(on, doing, knowing)) {
       GUM_ERROR(InvalidArgument,
@@ -242,11 +243,11 @@ namespace gum {
 
   template < GUM_Numeric GUM_SCALAR >
   std::tuple< CausalImpact< GUM_SCALAR >, Tensor< GUM_SCALAR >, std::string >
-      causalImpact(const CausalModel< GUM_SCALAR >&                    cm,
-                   const NameSet&                                      on,
-                   const NameSet&                                      doing,
-                   const NameSet&                                      knowing,
-                   const HashTable< VariableName, VariableValueName >& values) {
+      causalImpact(const CausalModel< GUM_SCALAR >&             cm,
+                   const Set< std::string >&                    on,
+                   const Set< std::string >&                    doing,
+                   const Set< std::string >&                    knowing,
+                   const HashTable< std::string, std::string >& values) {
     // Delegate to the dedicated class.
     CausalImpact< GUM_SCALAR > ci(cm, on, doing, knowing);
 
