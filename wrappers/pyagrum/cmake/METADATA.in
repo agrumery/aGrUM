@@ -38,6 +38,7 @@ Requires-Python: >=3.10
 Requires-Dist: numpy
 Requires-Dist: matplotlib
 Requires-Dist: pydot
+Requires-Dist: scikit-learn >= 1.7
 
 
 pyAgrum
