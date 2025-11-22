@@ -70,9 +70,27 @@ from .pyagrum import JunctionTreeGenerator
 from .pyagrum import MeekRules
 from .pyagrum import ApproximationScheme
 from .pyagrum import fastVariable
-from .pyagrum import initRandom, randomProba, randomDistribution, randomGeneratorSeed, randomValue
-from .pyagrum import isOMP, getNumberOfThreads, getMaxNumberOfThreads, getNumberOfLogicalProcessors, setNumberOfThreads
-from .pyagrum import VarType_DISCRETIZED, VarType_LABELIZED, VarType_RANGE, VarType_INTEGER, VarType_NUMERICAL
+from .pyagrum import (
+    initRandom,
+    randomProba,
+    randomDistribution,
+    randomGeneratorSeed,
+    randomValue,
+)
+from .pyagrum import (
+    isOMP,
+    getNumberOfThreads,
+    getMaxNumberOfThreads,
+    getNumberOfLogicalProcessors,
+    setNumberOfThreads,
+)
+from .pyagrum import (
+    VarType_DISCRETIZED,
+    VarType_LABELIZED,
+    VarType_RANGE,
+    VarType_INTEGER,
+    VarType_NUMERICAL,
+)
 from .pyagrum import (
     DefaultInLabel,
     DuplicateElement,
@@ -116,9 +134,25 @@ from .pyagrum import mutilateBN
 from .pyagrum import BayesNet, BayesNetFragment, EssentialGraph, MarkovBlanket
 from .pyagrum import ExactBNdistance, GibbsBNdistance, StructuralComparator
 from .pyagrum import LazyPropagation, ShaferShenoyInference, VariableElimination
-from .pyagrum import LoopyBeliefPropagation, GibbsSampling, MonteCarloSampling, ImportanceSampling, WeightedSampling
-from .pyagrum import LoopyImportanceSampling, LoopyGibbsSampling, LoopyWeightedSampling, LoopyMonteCarloSampling
-from .pyagrum import PythonApproximationListener, PythonBNListener, PythonLoadListener, PythonDatabaseGeneratorListener
+from .pyagrum import (
+    LoopyBeliefPropagation,
+    GibbsSampling,
+    MonteCarloSampling,
+    ImportanceSampling,
+    WeightedSampling,
+)
+from .pyagrum import (
+    LoopyImportanceSampling,
+    LoopyGibbsSampling,
+    LoopyWeightedSampling,
+    LoopyMonteCarloSampling,
+)
+from .pyagrum import (
+    PythonApproximationListener,
+    PythonBNListener,
+    PythonLoadListener,
+    PythonDatabaseGeneratorListener,
+)
 from .pyagrum import BNGenerator
 from .pyagrum import BNDatabaseGenerator, InformationTheory
 from .pyagrum import BNLearner
@@ -133,13 +167,13 @@ try:
     from .pyagrum import fastMRF
     from .pyagrum import MarkovRandomField, ShaferShenoyMRFInference
 except ImportError:
-    sys.stderr.write("Could not load Markov Random Field submodule")
+    sys.stderr.write("** pyagrum ** : Could not load Markov Random Field submodule")
 
 # submodule CN
 try:
     from .pyagrum import CredalNet, CNMonteCarloSampling, CNLoopyPropagation
 except ImportError:
-    sys.stderr.write("Could not load Credal Net submodule")
+    sys.stderr.write("** pyagrum ** : Could not load Credal Net submodule")
 
 # submodule ID
 try:
@@ -148,15 +182,17 @@ try:
     from .pyagrum import fastID
     from .pyagrum import InfluenceDiagram, ShaferShenoyLIMIDInference
 except ImportError:
-    sys.stderr.write("Could not load Influence Diagram submodule")
+    sys.stderr.write("** pyagrum ** : Could not load Influence Diagram submodule")
 
-# submodule causal
+# submodule CM
 try:
-    from .pyagrum import CausalModel, CausalImpact
-    from .pyagrum import causalImpact 
+    from .pyagrum import CausalModel
+    from .pyagrum import CausalImpact
+    from .pyagrum import Counterfactual
+    from .pyagrum import causalImpact, counterfactual, counterfactualModel
 except ImportError:
-    sys.stderr.write("Could not load Causal submodule")
-    
+    sys.stderr.write("** pyagrum ** : Could not load Causal submodule")
+
 from .common import (
     __version__,
     __license__,
