@@ -81,6 +81,7 @@ from pyagrum.lib.mrf2graph import MRF2FactorGraphdot
 from pyagrum.lib.bn_vs_bn import graphDiff
 from pyagrum.lib.proba_histogram import proba2histo, probaMinMaxH
 from pyagrum.lib.image import prepareShowInference, prepareLinksForSVG
+from pyagrum.lib.causal2graph import showCausalImpact
 
 import pyagrum.lib._colors as gumcols
 

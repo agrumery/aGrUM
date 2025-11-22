@@ -24,6 +24,10 @@
  *
  * @author Pierre-Henri WUILLEMIN
  */
+#pragma once
+
+#include <Python.h>
+
 #include <agrum/base/core/set.h>
 #include <agrum/base/graphs/graphElements.h>
 #include <agrum/base/graphs/parts/nodeGraphPart.h>
@@ -296,6 +300,45 @@ namespace PyAgrumHelper {
       }
     } else {
       GUM_ERROR(gum::InvalidArgument, "Argument <seq> is not a list nor a set")
+    }
+  }
+
+  void populateStrSetFromPySequenceOfString(gum::Set< std::string >& names, PyObject* seq) {
+    // if seq is just a string
+    const std::string name = stringFromPyObject(seq);
+    if (name != "") {
+      names.insert(name);
+      return;
+    }
+
+    // seq really is a sequence
+    PyObject* iter = PyObject_GetIter(seq);
+    if (iter != NULL) {
+      PyObject* item;
+      while ((item = PyIter_Next(iter))) {
+        const std::string name = stringFromPyObject(seq);
+        if (name != "") { names.insert(name); }
+      }
+    } else {
+      GUM_ERROR(gum::InvalidArgument, "Argument <seq> is not a list nor a set")
+    }
+  }
+
+  void populateHashTableStrStrFromPyDict(gum::HashTable< std::string, std::string >& hash,
+                                         PyObject*                                   dict) {
+    if (!PyDict_Check(dict)) { GUM_ERROR(gum::InvalidArgument, "Argument is not a dictionary") }
+
+    PyObject*  key;
+    PyObject*  value;
+    Py_ssize_t pos = 0;
+    while (PyDict_Next(dict, &pos, &key, &value)) {
+      const std::string name = stringFromPyObject(key);
+      if (name == "") { GUM_ERROR(gum::InvalidArgument, "A key is not a string"); }
+
+      const std::string val = stringFromPyObject(value);
+      if (val == "") { GUM_ERROR(gum::InvalidArgument, "A value is not a string"); }
+
+      hash.insert(name, val);
     }
   }
 
