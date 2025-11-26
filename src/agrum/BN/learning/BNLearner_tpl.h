@@ -296,7 +296,18 @@ namespace gum {
         BNLearner< GUM_SCALAR >::learnParameters(const BayesNet< GUM_SCALAR >& bn,
                                                  bool takeIntoAccountScore) {
       if (!scoreDatabase_.databaseTable().hasMissingValues() || !useEM_) {
-        return _learnParameters_(bn.dag(), takeIntoAccountScore);
+        DAG         dag;
+        const auto& db = scoreDatabase_.databaseTable();
+        for (const auto n: bn.nodes()) {
+          dag.addNodeWithId(db.columnFromVariableName(bn.variable(n).name()));
+        }
+        for (const auto& arc: bn.arcs()) {
+          dag.addArc(db.columnFromVariableName(bn.variable(arc.tail()).name()),
+                     db.columnFromVariableName(bn.variable(arc.head()).name()));
+        }
+
+        // create le DAG en fonction des
+        return _learnParameters_(dag, takeIntoAccountScore);
       } else {
         return _learnParametersWithEM_(bn, takeIntoAccountScore);
       }

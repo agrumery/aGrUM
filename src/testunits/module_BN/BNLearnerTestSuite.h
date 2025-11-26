@@ -2205,5 +2205,16 @@ namespace gum_tests {
         TS_ASSERT_EQUALS(val, std::get< 1 >(state2[i]))
       }
     }
+
+    GUM_ACTIVE_TEST(_mapping_DBCOLUMN_NODEID) {
+      gum::learning::BNLearner< double > learner(GET_RESSOURCES_PATH("csv/XYZ.csv"));
+      auto                               bn  = gum::BayesNet< double >::fastPrototype("Y->X;Z");
+      auto                               bn2 = learner.learnParameters(bn);
+
+      for (const auto& arc: bn.arcs()) {
+        TS_ASSERT(bn2.existsArc(bn2.idFromName(bn.variable(arc.tail()).name()),
+                                bn2.idFromName(bn.variable(arc.head()).name())));
+      }
+    }
   };   // class BNLearnerTestSuite
 } /* namespace gum_tests */

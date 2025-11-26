@@ -215,12 +215,12 @@ def pseudoCount(self,vars):
     return p
 
 def fitParameters(self,bn,take_into_account_score=True):
-  if set(self.names())!=bn.names():
-    raise Exception("Not the same variable names in the database and in the BN")
+  if not set(self.names()).issuperset(bn.names()):
+    raise Exception(f"Some variables are in the BN but not in the data : {bn.names()-set(self.names())}")
 
   tmp=self.learnParameters(bn,take_into_account_score)
   for n in tmp.names():
-    bn.cpt(n).fillWith(tmp.cpt(n))
+    bn.cpt(bn.idFromName(n)).fillWith(tmp.cpt(n))
   return self
 
 def learnEssentialGraph(self):

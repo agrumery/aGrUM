@@ -26269,12 +26269,12 @@ class BNLearner(object):
         return p
 
     def fitParameters(self,bn,take_into_account_score=True):
-      if set(self.names())!=bn.names():
-        raise Exception("Not the same variable names in the database and in the BN")
+      if not set(self.names()).issuperset(bn.names()):
+        raise Exception(f"Some variables are in the BN but not in the data : {bn.names()-set(self.names())}")
 
       tmp=self.learnParameters(bn,take_into_account_score)
       for n in tmp.names():
-        bn.cpt(n).fillWith(tmp.cpt(n))
+        bn.cpt(bn.idFromName(n)).fillWith(tmp.cpt(n))
       return self
 
     def learnEssentialGraph(self):
@@ -29549,7 +29549,7 @@ class ShaferShenoyLIMIDInference(object):
 
 # Register ShaferShenoyLIMIDInference in _pyagrum:
 _pyagrum.ShaferShenoyLIMIDInference_swigregister(ShaferShenoyLIMIDInference)
-__version__ = '2.3.0'
+__version__ = '2.3.0.9'
 __license__ = __doc__
 __project_url__ = 'https://agrum.org'
 __project_name__ = 'pyAgrum'
@@ -31431,7 +31431,7 @@ def getPosterior(model, *, target, evs=None):
 # creating a new Tensor from posterior(will disappear with ie)
   return pyagrum.Tensor(inf.posterior(target))
 
-__version__ = '2.3.0'
+__version__ = '2.3.0.9'
 __license__ = __doc__
 __project_url__ = 'https://agrum.org'
 __project_name__ = 'pyAgrum'
