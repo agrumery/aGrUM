@@ -89,6 +89,10 @@ if (NOT AGRUM_INLINE)
     target_compile_definitions(agrumBASE PUBLIC GUM_NO_INLINE)
 endif ()
 
+if (_AGRUM_CLANG_SUPPORTS_ASSUME_UNIQUE_VTABLES)
+    target_compile_options (agrumBASE PUBLIC "-fno-assume-unique-vtables")
+endif ()
+
 # precompile most often used headers (grep -nrI '#include <agrum' src/|cut -d " " -f 2| sort|uniq -c| sort -n)
 target_precompile_headers(agrumBASE PRIVATE "$<$<COMPILE_LANGUAGE:CXX>:${CMAKE_CURRENT_SOURCE_DIR}/agrum/agrum.h>")
 target_precompile_headers(agrumBASE PRIVATE "$<$<COMPILE_LANGUAGE:CXX>:${CMAKE_CURRENT_SOURCE_DIR}/agrum/base/variables/labelizedVariable.h>")
