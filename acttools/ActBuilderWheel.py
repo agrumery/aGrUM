@@ -311,7 +311,7 @@ class ActBuilderWheel(ActBuilder):
     return True
 
   def build(self) -> bool:
-    zippath=None
+    zippath = None
     self.run_start()
     nightly = self.current.get("action") == "nightly_wheel"
 
@@ -327,7 +327,7 @@ class ActBuilderWheel(ActBuilder):
       self.run_done("Finished building wheel directory.")
       zip_file = zip_wheel(tmp, install_dir, version, self.current["stable_abi_off"], cfg.minimal_python_api, nightly)
       self.run_done("Finished zipping wheel.")
-      zippath= join(self.current["destination"], zip_file)
+      zippath = join(self.current["destination"], zip_file)
       move(join(tmp, zip_file), zippath)
       self.run_done(f"Wheel moved to: {zippath}.")
     except CalledProcessError as err:
@@ -337,6 +337,6 @@ class ActBuilderWheel(ActBuilder):
 
     self.run_done()
     if zippath is not None:
-      self.wheel_path=zippath
+      self.wheel_path = zippath
 
     return True

@@ -46,13 +46,13 @@ from .utils import *
 from .ActBuilder import ActBuilder
 from .ActBuilderWheel import ActBuilderWheel
 
+
 class ActBuilderPipInstall(ActBuilder):
   def __init__(self, current: dict[str, str | bool]):
     super().__init__(current)
 
-
   def check_consistency(self):
-    return  True
+    return True
 
   def build(self) -> bool:
     self.run_start()
