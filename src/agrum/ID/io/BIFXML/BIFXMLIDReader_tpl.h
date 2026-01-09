@@ -57,7 +57,7 @@ namespace gum {
    * A reader is created to reading a defined file.
    * Note that an ID as to be created before and given in parameter.
    */
-  template < typename GUM_SCALAR >
+  template < GUM_Numeric GUM_SCALAR >
   INLINE BIFXMLIDReader< GUM_SCALAR >::BIFXMLIDReader(InfluenceDiagram< GUM_SCALAR >* infdiag,
                                                       const std::string&              filePath) :
       IDReader< GUM_SCALAR >(infdiag, filePath) {
@@ -69,7 +69,7 @@ namespace gum {
   /*
    * Default destructor.
    */
-  template < typename GUM_SCALAR >
+  template < GUM_Numeric GUM_SCALAR >
   INLINE BIFXMLIDReader< GUM_SCALAR >::~BIFXMLIDReader() {
     GUM_DESTRUCTOR(BIFXMLIDReader);
   }
@@ -80,7 +80,7 @@ namespace gum {
    * creation of class
    * @return Returns the number of error during the parsing (0 if none).
    */
-  template < typename GUM_SCALAR >
+  template < GUM_Numeric GUM_SCALAR >
   void BIFXMLIDReader< GUM_SCALAR >::proceed() {
     try {
       // Loading file
@@ -123,7 +123,7 @@ namespace gum {
     } catch (ticpp::Exception& tinyexception) { GUM_ERROR(IOError, tinyexception.what()) }
   }
 
-  template < typename GUM_SCALAR >
+  template < GUM_Numeric GUM_SCALAR >
   void BIFXMLIDReader< GUM_SCALAR >::_parsingVariables_(ticpp::Element* parentNetwork) {
     // Counting the number of variable for the signal
     int                               nbVar = 0;
@@ -208,7 +208,7 @@ namespace gum {
     }
   }
 
-  template < typename GUM_SCALAR >
+  template < GUM_Numeric GUM_SCALAR >
   void BIFXMLIDReader< GUM_SCALAR >::_fillingDiagram_(ticpp::Element* parentNetwork) {
     // Counting the number of variable for the signal
     int                               nbDef = 0;

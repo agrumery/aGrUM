@@ -70,7 +70,7 @@ namespace gum {
    * This class export a bayes net into an text file, using UAI format
    * cf. http://www.cs.huji.ac.il/project/PASCAL/fileFormat.php
    */
-  template < typename GUM_SCALAR >
+  template < GUM_Numeric GUM_SCALAR >
   class UAIBNWriter final: public BNWriter< GUM_SCALAR > {
     public:
     // ==========================================================================

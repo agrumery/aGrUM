@@ -54,7 +54,7 @@
 
 namespace gum {
 
-  template < typename GUM_SCALAR >
+  template < GUM_Numeric GUM_SCALAR >
   class ApproximateInference:
       public MarginalTargetedInference< GUM_SCALAR >,
       public ApproximationScheme {

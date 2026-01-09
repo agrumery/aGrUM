@@ -60,7 +60,7 @@
 namespace gum {
 
   namespace learning {
-    template < typename GUM_SCALAR >
+    template < GUM_Numeric GUM_SCALAR >
     BNLearner< GUM_SCALAR >::BNLearner(const std::string&                filename,
                                        const std::vector< std::string >& missingSymbols,
                                        const bool                        induceTypes) :
@@ -68,12 +68,12 @@ namespace gum {
       GUM_CONSTRUCTOR(BNLearner);
     }
 
-    template < typename GUM_SCALAR >
+    template < GUM_Numeric GUM_SCALAR >
     BNLearner< GUM_SCALAR >::BNLearner(const DatabaseTable& db) : IBNLearner(db) {
       GUM_CONSTRUCTOR(BNLearner);
     }
 
-    template < typename GUM_SCALAR >
+    template < GUM_Numeric GUM_SCALAR >
     BNLearner< GUM_SCALAR >::BNLearner(const std::string&                 filename,
                                        const gum::BayesNet< GUM_SCALAR >& bn,
                                        const std::vector< std::string >&  missing_symbols) :
@@ -82,19 +82,19 @@ namespace gum {
     }
 
     /// copy constructor
-    template < typename GUM_SCALAR >
+    template < GUM_Numeric GUM_SCALAR >
     BNLearner< GUM_SCALAR >::BNLearner(const BNLearner< GUM_SCALAR >& src) : IBNLearner(src) {
       GUM_CONSTRUCTOR(BNLearner);
     }
 
     /// move constructor
-    template < typename GUM_SCALAR >
+    template < GUM_Numeric GUM_SCALAR >
     BNLearner< GUM_SCALAR >::BNLearner(BNLearner< GUM_SCALAR >&& src) : IBNLearner(src) {
       GUM_CONSTRUCTOR(BNLearner);
     }
 
     /// destructor
-    template < typename GUM_SCALAR >
+    template < GUM_Numeric GUM_SCALAR >
     BNLearner< GUM_SCALAR >::~BNLearner() {
       GUM_DESTRUCTOR(BNLearner);
     }
@@ -107,7 +107,7 @@ namespace gum {
     /// @{
 
     /// copy operator
-    template < typename GUM_SCALAR >
+    template < GUM_Numeric GUM_SCALAR >
     BNLearner< GUM_SCALAR >&
         BNLearner< GUM_SCALAR >::operator=(const BNLearner< GUM_SCALAR >& src) {
       IBNLearner::operator=(src);
@@ -115,7 +115,7 @@ namespace gum {
     }
 
     /// move operator
-    template < typename GUM_SCALAR >
+    template < GUM_Numeric GUM_SCALAR >
     BNLearner< GUM_SCALAR >&
         BNLearner< GUM_SCALAR >::operator=(BNLearner< GUM_SCALAR >&& src) noexcept {
       IBNLearner::operator=(std::move(src));
@@ -123,7 +123,7 @@ namespace gum {
     }
 
     /// learn a Bayes Net from a file
-    template < typename GUM_SCALAR >
+    template < GUM_Numeric GUM_SCALAR >
     BayesNet< GUM_SCALAR > BNLearner< GUM_SCALAR >::learnBN() {
       // create the score, the prior and the estimator
       auto notification = checkScorePriorCompatibility();
@@ -138,7 +138,7 @@ namespace gum {
     }
 
     // check that the database contains the nodes of the dag, else raise an exception
-    template < typename GUM_SCALAR >
+    template < GUM_Numeric GUM_SCALAR >
     void BNLearner< GUM_SCALAR >::_checkDAGCompatibility_(const DAG& dag) {
       // if the dag contains no node, this is compatible with the database
       if (dag.size() == 0) return;
@@ -171,7 +171,7 @@ namespace gum {
     }
 
     // learns a BN (its parameters) using a basic learning when its structure is known
-    template < typename GUM_SCALAR >
+    template < GUM_Numeric GUM_SCALAR >
     BayesNet< GUM_SCALAR > BNLearner< GUM_SCALAR >::_learnParameters_(const DAG& dag,
                                                                       bool takeIntoAccountScore) {
       // if the dag contains no node, return an empty BN
@@ -203,7 +203,7 @@ namespace gum {
     }
 
     // initialize the parameter learning by EM
-    template < typename GUM_SCALAR >
+    template < GUM_Numeric GUM_SCALAR >
     std::pair< std::shared_ptr< ParamEstimator >, std::shared_ptr< ParamEstimator > >
         BNLearner< GUM_SCALAR >::_initializeEMParameterLearning_(const DAG& dag,
                                                                  bool       takeIntoAccountScore) {
@@ -246,7 +246,7 @@ namespace gum {
     }
 
     // learns a BN (its parameters) with EM when its structure is known
-    template < typename GUM_SCALAR >
+    template < GUM_Numeric GUM_SCALAR >
     BayesNet< GUM_SCALAR >
         BNLearner< GUM_SCALAR >::_learnParametersWithEM_(const DAG& dag,
                                                          bool       takeIntoAccountScore) {
@@ -263,7 +263,7 @@ namespace gum {
     }
 
     /// learns a BN (its parameters) when its structure is known
-    template < typename GUM_SCALAR >
+    template < GUM_Numeric GUM_SCALAR >
     BayesNet< GUM_SCALAR >
         BNLearner< GUM_SCALAR >::_learnParametersWithEM_(const BayesNet< GUM_SCALAR >& bn,
                                                          bool takeIntoAccountScore) {
@@ -279,7 +279,7 @@ namespace gum {
     }
 
     /// learns a BN (its parameters) when its structure is known
-    template < typename GUM_SCALAR >
+    template < GUM_Numeric GUM_SCALAR >
     BayesNet< GUM_SCALAR > BNLearner< GUM_SCALAR >::learnParameters(const DAG& dag,
                                                                     bool takeIntoAccountScore) {
       if (!scoreDatabase_.databaseTable().hasMissingValues() || !useEM_) {
@@ -292,7 +292,7 @@ namespace gum {
     }
 
     /// learns a BN (its parameters) with EM when its structure and the init parameters are known
-    template < typename GUM_SCALAR >
+    template < GUM_Numeric GUM_SCALAR >
     BayesNet< GUM_SCALAR >
         BNLearner< GUM_SCALAR >::learnParameters(const BayesNet< GUM_SCALAR >& bn,
                                                  bool takeIntoAccountScore) {
@@ -315,12 +315,12 @@ namespace gum {
     }
 
     /// learns a BN (its parameters) when its structure is known
-    template < typename GUM_SCALAR >
+    template < GUM_Numeric GUM_SCALAR >
     BayesNet< GUM_SCALAR > BNLearner< GUM_SCALAR >::learnParameters(bool take_into_account_score) {
       return learnParameters(initialDag_, take_into_account_score);
     }
 
-    template < typename GUM_SCALAR >
+    template < GUM_Numeric GUM_SCALAR >
     NodeProperty< Sequence< std::string > >
         BNLearner< GUM_SCALAR >::_labelsFromBN_(const std::string&            filename,
                                                 const BayesNet< GUM_SCALAR >& src) {
@@ -350,7 +350,7 @@ namespace gum {
       return modals;
     }
 
-    template < typename GUM_SCALAR >
+    template < GUM_Numeric GUM_SCALAR >
     std::string BNLearner< GUM_SCALAR >::toString() const {
       const auto st = state();
 
@@ -368,7 +368,7 @@ namespace gum {
       return s.str();
     }
 
-    template < typename GUM_SCALAR >
+    template < GUM_Numeric GUM_SCALAR >
     std::vector< std::tuple< std::string, std::string, std::string > >
         BNLearner< GUM_SCALAR >::state() const {
       std::vector< std::tuple< std::string, std::string, std::string > > vals;
@@ -579,7 +579,7 @@ namespace gum {
       return vals;
     }
 
-    template < typename GUM_SCALAR >
+    template < GUM_Numeric GUM_SCALAR >
     void BNLearner< GUM_SCALAR >::copyState(const BNLearner< GUM_SCALAR >& learner) {
       switch (learner.selectedAlgo_) {
         case AlgoType::GREEDY_HILL_CLIMBING : useGreedyHillClimbing(); break;
@@ -678,7 +678,7 @@ namespace gum {
       }
     }
 
-    template < typename GUM_SCALAR >
+    template < GUM_Numeric GUM_SCALAR >
     void BNLearner< GUM_SCALAR >::createPrior_() {
       // first, save the old prior, to be delete if everything is ok
       Prior* old_prior = prior_;
@@ -727,7 +727,7 @@ namespace gum {
       if (old_prior != nullptr) delete old_prior;
     }
 
-    template < typename GUM_SCALAR >
+    template < GUM_Numeric GUM_SCALAR >
     INLINE std::ostream& operator<<(std::ostream& output, const BNLearner< GUM_SCALAR >& learner) {
       output << learner.toString();
       return output;

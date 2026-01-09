@@ -59,24 +59,24 @@ namespace gum {
 
   // IMarkovRandomField
 
-  template < typename GUM_SCALAR >
+  template < GUM_Numeric GUM_SCALAR >
   INLINE IMarkovRandomField< GUM_SCALAR >::IMarkovRandomField() : UGmodel() {
     GUM_CONSTRUCTOR(IMarkovRandomField);
   }
 
-  template < typename GUM_SCALAR >
+  template < GUM_Numeric GUM_SCALAR >
   INLINE IMarkovRandomField< GUM_SCALAR >::IMarkovRandomField(std::string name) : UGmodel() {
     GUM_CONSTRUCTOR(IMarkovRandomField);
     this->setProperty("name", name);
   }
 
-  template < typename GUM_SCALAR >
+  template < GUM_Numeric GUM_SCALAR >
   IMarkovRandomField< GUM_SCALAR >::IMarkovRandomField(
       const IMarkovRandomField< GUM_SCALAR >& source) : UGmodel(source) {
     GUM_CONS_CPY(IMarkovRandomField);
   }
 
-  template < typename GUM_SCALAR >
+  template < GUM_Numeric GUM_SCALAR >
   IMarkovRandomField< GUM_SCALAR >&
       IMarkovRandomField< GUM_SCALAR >::operator=(const IMarkovRandomField< GUM_SCALAR >& source) {
     if (this != &source) { UGmodel::operator=(source); }
@@ -84,12 +84,12 @@ namespace gum {
     return *this;
   }
 
-  template < typename GUM_SCALAR >
+  template < GUM_Numeric GUM_SCALAR >
   IMarkovRandomField< GUM_SCALAR >::~IMarkovRandomField() {
     GUM_DESTRUCTOR(IMarkovRandomField);
   }
 
-  template < typename GUM_SCALAR >
+  template < GUM_Numeric GUM_SCALAR >
   INLINE Size IMarkovRandomField< GUM_SCALAR >::dim() const {
     Size res = 0;
     for (auto f: factors()) {
@@ -98,7 +98,7 @@ namespace gum {
     return res;
   }
 
-  template < typename GUM_SCALAR >
+  template < GUM_Numeric GUM_SCALAR >
   INLINE Size IMarkovRandomField< GUM_SCALAR >::maxVarDomainSize() const {
     Size res = 0;
     for (auto node: nodes()) {
@@ -108,7 +108,7 @@ namespace gum {
     return res;
   }
 
-  template < typename GUM_SCALAR >
+  template < GUM_Numeric GUM_SCALAR >
   INLINE GUM_SCALAR IMarkovRandomField< GUM_SCALAR >::minParam() const {
     GUM_SCALAR res = 1.0;
     for (auto elt: factors()) {
@@ -118,7 +118,7 @@ namespace gum {
     return res;
   }
 
-  template < typename GUM_SCALAR >
+  template < GUM_Numeric GUM_SCALAR >
   INLINE GUM_SCALAR IMarkovRandomField< GUM_SCALAR >::maxParam() const {
     GUM_SCALAR res = 1.0;
     for (auto elt: factors()) {
@@ -128,7 +128,7 @@ namespace gum {
     return res;
   }
 
-  template < typename GUM_SCALAR >
+  template < GUM_Numeric GUM_SCALAR >
   INLINE GUM_SCALAR IMarkovRandomField< GUM_SCALAR >::minNonZeroParam() const {
     GUM_SCALAR res = 1.0;
     for (auto elt: factors()) {
@@ -138,7 +138,7 @@ namespace gum {
     return res;
   }
 
-  template < typename GUM_SCALAR >
+  template < GUM_Numeric GUM_SCALAR >
   INLINE GUM_SCALAR IMarkovRandomField< GUM_SCALAR >::maxNonOneParam() const {
     GUM_SCALAR res = 0.0;
     for (auto elt: factors()) {
@@ -148,7 +148,7 @@ namespace gum {
     return res;
   }
 
-  template < typename GUM_SCALAR >
+  template < GUM_Numeric GUM_SCALAR >
   INLINE std::string IMarkovRandomField< GUM_SCALAR >::toString() const {
     Size   param = 0;
     double dSize = log10DomainSize();
@@ -167,7 +167,7 @@ namespace gum {
     return s.str();
   }
 
-  template < typename GUM_SCALAR >
+  template < GUM_Numeric GUM_SCALAR >
   std::string IMarkovRandomField< GUM_SCALAR >::toDot() const {
     std::stringstream output;
     output << "graph \"";
@@ -204,7 +204,7 @@ namespace gum {
     return output.str();
   }
 
-  template < typename GUM_SCALAR >
+  template < GUM_Numeric GUM_SCALAR >
   std::string IMarkovRandomField< GUM_SCALAR >::toDotAsFactorGraph() const {
     std::stringstream output;
     std::string       mn_name = this->propertyWithDefault("name", "no_name");
@@ -253,7 +253,7 @@ namespace gum {
     return output.str();
   }
 
-  template < typename GUM_SCALAR >
+  template < GUM_Numeric GUM_SCALAR >
   bool IMarkovRandomField< GUM_SCALAR >::operator==(const IMarkovRandomField& from) const {
     if (size() != from.size()) { return false; }
 
@@ -299,19 +299,19 @@ namespace gum {
     return true;
   }
 
-  template < typename GUM_SCALAR >
+  template < GUM_Numeric GUM_SCALAR >
   INLINE bool IMarkovRandomField< GUM_SCALAR >::operator!=(const IMarkovRandomField& from) const {
     return !this->operator==(from);
   }
 
-  template < typename GUM_SCALAR >
+  template < GUM_Numeric GUM_SCALAR >
   INLINE std::ostream& operator<<(std::ostream&                           output,
                                   const IMarkovRandomField< GUM_SCALAR >& bn) {
     output << bn.toString();
     return output;
   }
 
-  template < typename GUM_SCALAR >
+  template < GUM_Numeric GUM_SCALAR >
   INLINE const NodeSet&
       IMarkovRandomField< GUM_SCALAR >::smallestFactorFromNode(const std::string& name) const {
     if (!this->exists(name)) {
@@ -321,7 +321,7 @@ namespace gum {
   }
 
   // visit the nodes and add some of node from soids in minimal
-  template < typename GUM_SCALAR >
+  template < GUM_Numeric GUM_SCALAR >
   void IMarkovRandomField< GUM_SCALAR >::_minimalCondSetVisit_(NodeId         node,
                                                                const NodeSet& soids,
                                                                NodeSet&       minimal,
@@ -337,7 +337,7 @@ namespace gum {
     }
   }
 
-  template < typename GUM_SCALAR >
+  template < GUM_Numeric GUM_SCALAR >
   NodeSet IMarkovRandomField< GUM_SCALAR >::minimalCondSet(NodeId         target,
                                                            const NodeSet& soids) const {
     if (soids.contains(target)) return NodeSet({target});
@@ -351,7 +351,7 @@ namespace gum {
     return res;
   }
 
-  template < typename GUM_SCALAR >
+  template < GUM_Numeric GUM_SCALAR >
   NodeSet IMarkovRandomField< GUM_SCALAR >::minimalCondSet(const NodeSet& targets,
                                                            const NodeSet& soids) const {
     NodeSet res;

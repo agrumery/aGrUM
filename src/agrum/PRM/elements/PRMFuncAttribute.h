@@ -70,7 +70,7 @@ namespace gum {
      *
      * See gum::prm::PRMFactory::addAttribute(PRMAttribute*) for more details.
      */
-    template < typename GUM_SCALAR >
+    template < GUM_Numeric GUM_SCALAR >
     class PRMFuncAttribute: public PRMScalarAttribute< GUM_SCALAR > {
       public:
       /**

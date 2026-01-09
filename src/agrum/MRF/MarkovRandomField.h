@@ -84,7 +84,7 @@ namespace gum {
    * You can print a MarkovRandomField using
    * gum::operator<<(std::ostream&, const MarkovRandomField<GUM_SCALAR>&).
    */
-  template < typename GUM_SCALAR >
+  template < GUM_Numeric GUM_SCALAR >
   class MarkovRandomField: public IMarkovRandomField< GUM_SCALAR > {
     public:
     /**
@@ -473,7 +473,7 @@ namespace gum {
   };
 
   /// Prints map's DAG in output using the Graphviz-dot format.
-  template < typename GUM_SCALAR >
+  template < GUM_Numeric GUM_SCALAR >
   std::ostream& operator<<(std::ostream& output, const MarkovRandomField< GUM_SCALAR >& bn);
 
 

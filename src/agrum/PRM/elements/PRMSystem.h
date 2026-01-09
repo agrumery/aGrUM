@@ -66,7 +66,7 @@ namespace gum {
      * relational
      *        skeleton.
      */
-    template < typename GUM_SCALAR >
+    template < GUM_Numeric GUM_SCALAR >
     class PRMSystem: public PRMObject {
       public:
       // ========================================================================

@@ -55,7 +55,7 @@
 namespace gum {
   // Default constructor.
   // Use the SimpleCPTGenerator for generating the IDs CPT.
-  template < typename GUM_SCALAR >
+  template < GUM_Numeric GUM_SCALAR >
   InfluenceDiagramGenerator< GUM_SCALAR >::InfluenceDiagramGenerator() {
     GUM_CONSTRUCTOR(InfluenceDiagramGenerator)
     _cptGenerator_ = new SimpleCPTGenerator< GUM_SCALAR >();
@@ -66,7 +66,7 @@ namespace gum {
   // CPT than the default one.
   // The cptGenerator will be erased when the destructor is called.
   // @param cptGenerator The policy used to generate CPT.
-  template < typename GUM_SCALAR >
+  template < GUM_Numeric GUM_SCALAR >
   InfluenceDiagramGenerator< GUM_SCALAR >::InfluenceDiagramGenerator(
       ICPTGenerator< GUM_SCALAR >* cptGenerator) {
     GUM_CONSTRUCTOR(InfluenceDiagramGenerator)
@@ -78,7 +78,7 @@ namespace gum {
   // UT than the default one.
   // The utGenerator will be erased when the destructor is called.
   // @param utGenerator The policy used to generate UT.
-  template < typename GUM_SCALAR >
+  template < GUM_Numeric GUM_SCALAR >
   InfluenceDiagramGenerator< GUM_SCALAR >::InfluenceDiagramGenerator(UTGenerator* utGenerator) {
     GUM_CONSTRUCTOR(InfluenceDiagramGenerator)
     _cptGenerator_ = new SimpleCPTGenerator< GUM_SCALAR >();
@@ -91,7 +91,7 @@ namespace gum {
   // called.
   // @param cptGenerator The policy used to generate CPT.
   // @param utGenerator The policy used to generate UT.
-  template < typename GUM_SCALAR >
+  template < GUM_Numeric GUM_SCALAR >
   InfluenceDiagramGenerator< GUM_SCALAR >::InfluenceDiagramGenerator(
       ICPTGenerator< GUM_SCALAR >* cptGenerator,
       UTGenerator*                 utGenerator) {
@@ -101,7 +101,7 @@ namespace gum {
   }
 
   // Destructor.
-  template < typename GUM_SCALAR >
+  template < GUM_Numeric GUM_SCALAR >
   InfluenceDiagramGenerator< GUM_SCALAR >::~InfluenceDiagramGenerator() {
     GUM_DESTRUCTOR(InfluenceDiagramGenerator)
     delete _cptGenerator_;
@@ -115,7 +115,7 @@ namespace gum {
   // @param utilityNodeDensity The proportion of utility node
   // @param max_modality Each DRV has from 2 to max_modality modalities
   // @return A IDs randomly generated.
-  template < typename GUM_SCALAR >
+  template < GUM_Numeric GUM_SCALAR >
   InfluenceDiagram< GUM_SCALAR >*
       InfluenceDiagramGenerator< GUM_SCALAR >::generateID(Size       nbrNodes,
                                                           GUM_SCALAR arcDensity,
@@ -175,7 +175,7 @@ namespace gum {
     return influenceDiagram;
   }
 
-  template < typename GUM_SCALAR >
+  template < GUM_Numeric GUM_SCALAR >
   void InfluenceDiagramGenerator< GUM_SCALAR >::_checkTemporalOrder_(
       InfluenceDiagram< GUM_SCALAR >* infdiag) {
     if (!infdiag->decisionOrderExists()) {

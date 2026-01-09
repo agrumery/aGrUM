@@ -53,13 +53,13 @@ namespace gum {
   /* ===                           GUM_BN_WRITER === */
   /* =========================================================================*/
   // Default constructor.
-  template < typename GUM_SCALAR >
+  template < GUM_Numeric GUM_SCALAR >
   INLINE NetWriter< GUM_SCALAR >::NetWriter() {
     GUM_CONSTRUCTOR(NetWriter);
   }
 
   // Default destructor.
-  template < typename GUM_SCALAR >
+  template < GUM_Numeric GUM_SCALAR >
   INLINE NetWriter< GUM_SCALAR >::~NetWriter() {
     GUM_DESTRUCTOR(NetWriter);
   }
@@ -70,7 +70,7 @@ namespace gum {
   // @param ouput The output stream.
   // @param bn The Bayesian network writen in output.
   // @throws Raised if an I/O error occurs.
-  template < typename GUM_SCALAR >
+  template < GUM_Numeric GUM_SCALAR >
   INLINE void NetWriter< GUM_SCALAR >::_doWrite(std::ostream&                  output,
                                                 const IBayesNet< GUM_SCALAR >& bn) {
     if (!output.good()) GUM_ERROR(IOError, "Input/Output error : stream not writable.")
@@ -97,7 +97,7 @@ namespace gum {
   // @param filePath The path to the file used to write the Bayesian network.
   // @param bn The Bayesian network writed in the file.
   // @throws Raised if an I/O error occurs.
-  template < typename GUM_SCALAR >
+  template < GUM_Numeric GUM_SCALAR >
   INLINE void NetWriter< GUM_SCALAR >::_doWrite(const std::string&             filePath,
                                                 const IBayesNet< GUM_SCALAR >& bn) {
     std::ofstream output(filePath.c_str(), std::ios_base::trunc);
@@ -109,7 +109,7 @@ namespace gum {
   }
 
   // Returns a bloc defining a variable's CPT in the BN format.
-  template < typename GUM_SCALAR >
+  template < GUM_Numeric GUM_SCALAR >
   INLINE std::string NetWriter< GUM_SCALAR >::_variableCPT_(const Tensor< GUM_SCALAR >& cpt) {
     std::stringstream str;
     std::string       tab = "   ";   // poor tabulation
@@ -175,7 +175,7 @@ namespace gum {
   }
 
   // Returns the header of the BN file.
-  template < typename GUM_SCALAR >
+  template < GUM_Numeric GUM_SCALAR >
   INLINE std::string NetWriter< GUM_SCALAR >::_header_(const IBayesNet< GUM_SCALAR >& bn) {
     std::stringstream str;
     std::string       tab = "   ";   // poor tabulation
@@ -188,7 +188,7 @@ namespace gum {
   }
 
   // Returns a bloc defining a variable in the BN format.
-  template < typename GUM_SCALAR >
+  template < GUM_Numeric GUM_SCALAR >
   INLINE std::string NetWriter< GUM_SCALAR >::_variableBloc_(const DiscreteVariable& var) {
     std::stringstream str;
     std::string       tab = "   ";   // poor tabulation

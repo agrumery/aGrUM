@@ -48,7 +48,7 @@
 #include <agrum/base/variables/allDiscreteVariables.h>
 
 namespace gum {
-  template < typename GUM_SCALAR >
+  template < GUM_Numeric GUM_SCALAR >
   std::unique_ptr< DiscreteVariable > fastVariable(std::string var_description,
                                                    Size        default_domain_size) {
     if (default_domain_size < 1)
@@ -58,7 +58,7 @@ namespace gum {
     return fastVariable< GUM_SCALAR >(var_description, domain);
   }
 
-  template < typename GUM_SCALAR >
+  template < GUM_Numeric GUM_SCALAR >
   std::unique_ptr< DiscreteVariable > fastVariable(std::string        var_description,
                                                    const std::string& default_domain) {
     Size                       ds        = 0;
@@ -73,10 +73,10 @@ namespace gum {
 
     trim(var_description);
 
-    if (default_domain.size() == 0) GUM_ERROR(InvalidArgument, "default_domain can not be empty")
+    if (default_domain.empty()) GUM_ERROR(InvalidArgument, "default_domain can not be empty")
 
-    auto t = *default_domain.begin();
-    if (t != '[' && t != '{')
+
+    if (auto t = *default_domain.begin(); t != '[' && t != '{')
       GUM_ERROR(InvalidArgument,
                 "default_domain (" << default_domain << ") must start with '[' or '{'")
 
@@ -108,8 +108,8 @@ namespace gum {
 
             if (fmax <= fmin) { GUM_ERROR(InvalidArgument, "last<=first in " << var_description) }
             if (nbr <= 1) { GUM_ERROR(InvalidArgument, "nbr<=1 in " << var_description) }
-            const double step    = double((fmax - fmin) / nbr);
-            double       current = fmin;
+            const auto step    = (fmax - fmin) / nbr;
+            double     current = fmin;
             for (auto i = 0; i <= nbr; i += 1) {
               ticks.push_back(current);
               current += step;
@@ -118,12 +118,11 @@ namespace gum {
           } else {
             // n[4]
             int n = std::stoi(args[0]);
-            if (n < 2)
-              if (default_domain != "[1]")
-                GUM_ERROR(InvalidArgument, n << " is not >=2 for variable " << var_description)
+            if ((n < 2) && (default_domain != "[1]"))
+              GUM_ERROR(InvalidArgument, n << " is not >=2 for variable " << var_description)
             ds        = static_cast< Size >(n);
             range_min = 0;
-            range_max = long(ds) - 1;
+            range_max = static_cast< long >(ds) - 1;
           }
         } else if (args.size() == 2) {
           // n[5,10]

@@ -75,11 +75,11 @@ namespace gum {
   class NodeDatabase {
     using ValueType = typename ValueSelect< isScalar, double, Idx >::type;
 
-    template < typename GUM_SCALAR >
+    template < typename GUM_ELEMENT >
     using TestPolicy = typename TestSelect< AttributeSelection,
-                                            GTestPolicy< GUM_SCALAR >,
-                                            Chi2TestPolicy< GUM_SCALAR >,
-                                            LeastSquareTestPolicy< GUM_SCALAR > >::type;
+                                            GTestPolicy< GUM_ELEMENT >,
+                                            Chi2TestPolicy< GUM_ELEMENT >,
+                                            LeastSquareTestPolicy< GUM_ELEMENT > >::type;
 
     public:
     // ==========================================================================

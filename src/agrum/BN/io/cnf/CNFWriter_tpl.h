@@ -52,13 +52,13 @@ namespace gum {
   /* ===                           GUM_BN_WRITER === */
   /* =========================================================================*/
   // Default constructor.
-  template < typename GUM_SCALAR, template < class > class IApproximationPolicy >
+  template < GUM_Numeric GUM_SCALAR, template < class > class IApproximationPolicy >
   INLINE CNFWriter< GUM_SCALAR, IApproximationPolicy >::CNFWriter() {
     GUM_CONSTRUCTOR(CNFWriter);
   }
 
   // Default destructor.
-  template < typename GUM_SCALAR, template < class > class IApproximationPolicy >
+  template < GUM_Numeric GUM_SCALAR, template < class > class IApproximationPolicy >
   INLINE CNFWriter< GUM_SCALAR, IApproximationPolicy >::~CNFWriter() {
     GUM_DESTRUCTOR(CNFWriter);
   }

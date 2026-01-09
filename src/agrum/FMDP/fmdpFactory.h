@@ -83,7 +83,7 @@ namespace gum {
    *
    */
 
-  template < typename GUM_SCALAR >
+  template < typename GUM_ELEMENT >
   class FMDPFactory: public AbstractFMDPFactory {
     public:
     // ==========================================================================
@@ -96,7 +96,7 @@ namespace gum {
      * markov decision process.
      * @param fmdp A pointer over the @ref FMDP filled by this factory.
      */
-    FMDPFactory(FMDP< GUM_SCALAR >* fmdp);
+    FMDPFactory(FMDP< GUM_ELEMENT >* fmdp);
 
     /**
      * @brief Destructor.
@@ -120,7 +120,7 @@ namespace gum {
      * @throw OperationNotAllowed Raise if the state of the factory is different
      *                            than NONE.
      */
-    FMDP< GUM_SCALAR >* fmdp() const;
+    FMDP< GUM_ELEMENT >* fmdp() const;
 
     /// Returns the current state of the factory.
     FMDPfactory_state state() const;
@@ -289,7 +289,7 @@ namespace gum {
     std::vector< std::string > _stringBag_;
 
     /// Just to keep track of multidim between two start/end calls.
-    std::vector< const MultiDimImplementation< GUM_SCALAR >* > _ddBag_;
+    std::vector< const MultiDimImplementation< GUM_ELEMENT >* > _ddBag_;
 
     /// Used in VARIABLE mode
     /// Checks if in  _stringBag_ there is no other modality with the same name.
@@ -310,10 +310,10 @@ namespace gum {
     std::vector< FMDPfactory_state > _states_;
 
     /// The constructed FMDP
-    FMDP< GUM_SCALAR >* _fmdp_;
+    FMDP< GUM_ELEMENT >* _fmdp_;
 
     /// The FunctionGraph we're building at a given time
-    MultiDimFunctionGraph< GUM_SCALAR >* _FunctionGraph_;
+    MultiDimFunctionGraph< GUM_ELEMENT >* _FunctionGraph_;
 
     /// Mapping between a declared variable's name and itself.
     HashTable< std::string, const DiscreteVariable* > _varNameMap_;
@@ -322,7 +322,7 @@ namespace gum {
     Idx _actionIdcpt_;
 
     /// Copy operator is illegal, use only copy constructor.
-    FMDPFactory< GUM_SCALAR >& operator=(const FMDPFactory< GUM_SCALAR >& source);
+    FMDPFactory< GUM_ELEMENT >& operator=(const FMDPFactory< GUM_ELEMENT >& source);
 
     /// Raise an OperationNotAllowed with the message "Illegal state."
     void _illegalStateError_(const std::string& s);

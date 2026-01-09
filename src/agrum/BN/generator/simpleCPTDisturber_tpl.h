@@ -52,13 +52,13 @@
 namespace gum {
 
   // Default constructor.
-  template < typename GUM_SCALAR >
+  template < GUM_Numeric GUM_SCALAR >
   INLINE SimpleCPTDisturber< GUM_SCALAR >::SimpleCPTDisturber() : ICPTDisturber< GUM_SCALAR >() {
     GUM_CONSTRUCTOR(SimpleCPTDisturber);
   }
 
   // Destructor.
-  template < typename GUM_SCALAR >
+  template < GUM_Numeric GUM_SCALAR >
   INLINE SimpleCPTDisturber< GUM_SCALAR >::~SimpleCPTDisturber() {
     GUM_DESTRUCTOR(SimpleCPTDisturber);
   }
@@ -67,7 +67,7 @@ namespace gum {
   // @param varID The variable id of the CPT owner.
   // @param cpt A reference on the CPT to fill.
 
-  template < typename GUM_SCALAR >
+  template < GUM_Numeric GUM_SCALAR >
   void SimpleCPTDisturber< GUM_SCALAR >::disturbReducCPT(NodeId                  node,
                                                          BayesNet< GUM_SCALAR >& bayesNet,
                                                          Tensor< GUM_SCALAR >&   src,
@@ -91,7 +91,7 @@ namespace gum {
     bayesNet.cpt(node).normalizeAsCPT();
   }
 
-  template < typename GUM_SCALAR >
+  template < GUM_Numeric GUM_SCALAR >
   void SimpleCPTDisturber< GUM_SCALAR >::disturbAugmCPT(NodeId                  node,
                                                         BayesNet< GUM_SCALAR >& bayesNet,
                                                         Tensor< GUM_SCALAR >&   src,

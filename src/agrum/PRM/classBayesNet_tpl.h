@@ -53,7 +53,7 @@
 namespace gum {
   namespace prm {
 
-    template < typename GUM_SCALAR >
+    template < GUM_Numeric GUM_SCALAR >
     void ClassBayesNet< GUM_SCALAR >::_init_(const PRMClass< GUM_SCALAR >& c) {
       for (const auto node: c.containerDag().nodes()) {
         if (c.exists(node)) {
@@ -76,25 +76,25 @@ namespace gum {
       }
     }
 
-    template < typename GUM_SCALAR >
+    template < GUM_Numeric GUM_SCALAR >
     INLINE ClassBayesNet< GUM_SCALAR >::ClassBayesNet(const PRMClass< GUM_SCALAR >& c) :
         IBayesNet< GUM_SCALAR >(), _class_(&c) {
       GUM_CONSTRUCTOR(ClassBayesNet);
       _init_(c);
     }
 
-    template < typename GUM_SCALAR >
+    template < GUM_Numeric GUM_SCALAR >
     INLINE ClassBayesNet< GUM_SCALAR >::ClassBayesNet(const ClassBayesNet< GUM_SCALAR >& from) :
         IBayesNet< GUM_SCALAR >(from), _class_(from._class_) {
       GUM_CONS_CPY(ClassBayesNet);
     }
 
-    template < typename GUM_SCALAR >
+    template < GUM_Numeric GUM_SCALAR >
     INLINE ClassBayesNet< GUM_SCALAR >::~ClassBayesNet() {
       GUM_DESTRUCTOR(ClassBayesNet);
     }
 
-    template < typename GUM_SCALAR >
+    template < GUM_Numeric GUM_SCALAR >
     INLINE ClassBayesNet< GUM_SCALAR >&
            ClassBayesNet< GUM_SCALAR >::operator=(const ClassBayesNet< GUM_SCALAR >& from) {
       if (this != &from) {
@@ -106,38 +106,38 @@ namespace gum {
       return *this;
     }
 
-    template < typename GUM_SCALAR >
+    template < GUM_Numeric GUM_SCALAR >
     INLINE const Tensor< GUM_SCALAR >& ClassBayesNet< GUM_SCALAR >::cpt(NodeId varId) const {
       return _get_(varId).cpf();
     }
 
-    template < typename GUM_SCALAR >
+    template < GUM_Numeric GUM_SCALAR >
     INLINE const VariableNodeMap& ClassBayesNet< GUM_SCALAR >::variableNodeMap() const {
       GUM_ERROR(FatalError, "Sorry no VarMap in a ClassBayesNet.")
     }
 
-    template < typename GUM_SCALAR >
+    template < GUM_Numeric GUM_SCALAR >
     INLINE const DiscreteVariable& ClassBayesNet< GUM_SCALAR >::variable(NodeId id) const {
       return _get_(id).type().variable();
     }
 
-    template < typename GUM_SCALAR >
+    template < GUM_Numeric GUM_SCALAR >
     INLINE NodeId ClassBayesNet< GUM_SCALAR >::nodeId(const DiscreteVariable& var) const {
       return _varNodeMap_[&var]->id();
     }
 
-    template < typename GUM_SCALAR >
+    template < GUM_Numeric GUM_SCALAR >
     INLINE NodeId ClassBayesNet< GUM_SCALAR >::idFromName(const std::string& name) const {
       return _get_(name).id();
     }
 
-    template < typename GUM_SCALAR >
+    template < GUM_Numeric GUM_SCALAR >
     INLINE const DiscreteVariable&
         ClassBayesNet< GUM_SCALAR >::variableFromName(const std::string& name) const {
       return _get_(name).type().variable();
     }
 
-    template < typename GUM_SCALAR >
+    template < GUM_Numeric GUM_SCALAR >
     INLINE const PRMClassElement< GUM_SCALAR >&
                  ClassBayesNet< GUM_SCALAR >::_get_(NodeId id) const {
       if (this->dag_.exists(id)) {
@@ -147,14 +147,14 @@ namespace gum {
       }
     }
 
-    template < typename GUM_SCALAR >
+    template < GUM_Numeric GUM_SCALAR >
     INLINE const PRMClassElement< GUM_SCALAR >&
                  ClassBayesNet< GUM_SCALAR >::_get_(const std::string& name) const {
       if (!_class_->exists(name)) GUM_ERROR(NotFound, "no element found with that id.")
       return _class_->get(name);
     }
 
-    template < typename GUM_SCALAR >
+    template < GUM_Numeric GUM_SCALAR >
     INLINE const NodeProperty< Size >& ClassBayesNet< GUM_SCALAR >::modalities() const {
       if (_modalities_.empty()) {
         for (const auto node: this->nodes()) {
@@ -165,7 +165,7 @@ namespace gum {
       return _modalities_;
     }
 
-    template < typename GUM_SCALAR >
+    template < GUM_Numeric GUM_SCALAR >
     INLINE std::string ClassBayesNet< GUM_SCALAR >::toDot() const {
       std::string       tab = "  ";
       std::stringstream output;

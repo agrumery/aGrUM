@@ -46,7 +46,7 @@
 
 namespace gum::credal {
 
-  template < typename GUM_SCALAR, class BNInferenceEngine >
+  template < GUM_Numeric GUM_SCALAR, class BNInferenceEngine >
   CNMonteCarloSampling< GUM_SCALAR, BNInferenceEngine >::CNMonteCarloSampling(
       const CredalNet< GUM_SCALAR >& credalNet) :
       MultipleInferenceEngine< GUM_SCALAR, BNInferenceEngine >::MultipleInferenceEngine(credalNet) {
@@ -62,12 +62,12 @@ namespace gum::credal {
     GUM_CONSTRUCTOR(CNMonteCarloSampling)
   }
 
-  template < typename GUM_SCALAR, class BNInferenceEngine >
+  template < GUM_Numeric GUM_SCALAR, class BNInferenceEngine >
   CNMonteCarloSampling< GUM_SCALAR, BNInferenceEngine >::~CNMonteCarloSampling() {
     GUM_DESTRUCTOR(CNMonteCarloSampling)
   }
 
-  template < typename GUM_SCALAR, class BNInferenceEngine >
+  template < GUM_Numeric GUM_SCALAR, class BNInferenceEngine >
   void CNMonteCarloSampling< GUM_SCALAR, BNInferenceEngine >::makeInference() {
     if (_infEs_::repetitiveInd_) {
       try {
@@ -131,7 +131,7 @@ namespace gum::credal {
     }
   }
 
-  template < typename GUM_SCALAR, class BNInferenceEngine >
+  template < GUM_Numeric GUM_SCALAR, class BNInferenceEngine >
   void CNMonteCarloSampling< GUM_SCALAR, BNInferenceEngine >::_threadUpdate_(Size tId) {
     if (this->l_inferenceEngine_[tId]->evidenceProbability() > 0) {
       const DAG& tDag = this->workingSet_[tId]->dag();
@@ -153,7 +153,7 @@ namespace gum::credal {
     }
   }
 
-  template < typename GUM_SCALAR, class BNInferenceEngine >
+  template < GUM_Numeric GUM_SCALAR, class BNInferenceEngine >
   inline void CNMonteCarloSampling< GUM_SCALAR, BNInferenceEngine >::_threadInference_(Size tId) {
     _verticesSampling_(tId);
 
@@ -162,7 +162,7 @@ namespace gum::credal {
     this->l_inferenceEngine_[tId]->makeInference();
   }
 
-  template < typename GUM_SCALAR, class BNInferenceEngine >
+  template < GUM_Numeric GUM_SCALAR, class BNInferenceEngine >
   void CNMonteCarloSampling< GUM_SCALAR, BNInferenceEngine >::_mcInitApproximationScheme_() {
     this->setEpsilon(0.);
     this->enableEpsilon();   // to be sure
@@ -173,7 +173,7 @@ namespace gum::credal {
     this->initApproximationScheme();
   }
 
-  template < typename GUM_SCALAR, class BNInferenceEngine >
+  template < GUM_Numeric GUM_SCALAR, class BNInferenceEngine >
   void CNMonteCarloSampling< GUM_SCALAR, BNInferenceEngine >::_mcThreadDataCopy_() {
     auto num_threads = this->getNumberOfThreads();
     this->initThreadsData_(num_threads, _infEs_::storeVertices_, _infEs_::storeBNOpt_);
@@ -217,7 +217,7 @@ namespace gum::credal {
     ThreadExecutor::execute(num_threads, threadedExec);
   }
 
-  template < typename GUM_SCALAR, class BNInferenceEngine >
+  template < GUM_Numeric GUM_SCALAR, class BNInferenceEngine >
   inline void CNMonteCarloSampling< GUM_SCALAR, BNInferenceEngine >::_binaryRep_(
       std::vector< bool >& toFill,
       const Idx            value) const {
@@ -231,7 +231,7 @@ namespace gum::credal {
     }
   }
 
-  template < typename GUM_SCALAR, class BNInferenceEngine >
+  template < GUM_Numeric GUM_SCALAR, class BNInferenceEngine >
   inline void
       CNMonteCarloSampling< GUM_SCALAR, BNInferenceEngine >::_verticesSampling_(Size this_thread) {
     IBayesNet< GUM_SCALAR >* working_bn       = this->workingSet_[this_thread];
@@ -335,7 +335,7 @@ namespace gum::credal {
     }
   }
 
-  template < typename GUM_SCALAR, class BNInferenceEngine >
+  template < GUM_Numeric GUM_SCALAR, class BNInferenceEngine >
   inline void
       CNMonteCarloSampling< GUM_SCALAR, BNInferenceEngine >::_insertEvidence_(Size this_thread) {
     if (this->evidence_.size() == 0) { return; }

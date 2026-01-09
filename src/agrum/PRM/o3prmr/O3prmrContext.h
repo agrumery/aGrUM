@@ -126,7 +126,7 @@ namespace gum {
       };
 
       ///
-      template < typename GUM_SCALAR >
+      template < GUM_Numeric GUM_SCALAR >
       class ObserveCommand: public O3prmrCommand {
         public:
         ObserveCommand(int line, const std::string& leftValue, const std::string& rightValue) :
@@ -148,7 +148,7 @@ namespace gum {
       };
 
       ///
-      template < typename GUM_SCALAR >
+      template < GUM_Numeric GUM_SCALAR >
       class UnobserveCommand: public O3prmrCommand {
         public:
         std::string                                value;
@@ -167,7 +167,7 @@ namespace gum {
       };
 
       ///
-      template < typename GUM_SCALAR >
+      template < GUM_Numeric GUM_SCALAR >
       class QueryCommand: public O3prmrCommand {
         public:
         QueryCommand(int line, const std::string& val) :
@@ -186,7 +186,7 @@ namespace gum {
        * This class contains a o3prmr session.
        * It have a name and a sequence of commands.
        * */
-      template < typename GUM_SCALAR >
+      template < GUM_Numeric GUM_SCALAR >
       class O3prmrSession {
         /// The session name;
         std::string m_name;
@@ -220,7 +220,7 @@ namespace gum {
        * Represent a o3prmr context, with an import, and some sequencials
        * commands.
        */
-      template < typename GUM_SCALAR >
+      template < GUM_Numeric GUM_SCALAR >
       class O3prmrContext {
         std::string                                 m_filename;
         std::string                                 m_package;

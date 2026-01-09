@@ -73,7 +73,7 @@ namespace gum {
    * Every class used to write the content of a Bayesian network in a stream, or
    * a file must be a subclass of BNWriter.
    */
-  template < typename GUM_SCALAR >
+  template < GUM_Numeric GUM_SCALAR >
   class BNWriter {
     public:
     /**

@@ -82,12 +82,12 @@ namespace gum {
    *
    * TODO handle slave switch between buffer and hashtable.
    *
-   * @tparam GUM_SCALAR The type of scalars stored in this multidimensional
+   * @tparam GUM_ELEMENT The type of scalars stored in this multidimensional
    * table.
    */
 
-  template < typename GUM_SCALAR >
-  class MultiDimBucket final: public MultiDimReadOnly< GUM_SCALAR > {
+  template < typename GUM_ELEMENT >
+  class MultiDimBucket final: public MultiDimReadOnly< GUM_ELEMENT > {
     public:
     // ========================================================================
     /// @name Constructor & destructor.
@@ -108,7 +108,7 @@ namespace gum {
      * @brief Copy constructor.
      * @param source The MultiDimBucket to copy.
      */
-    MultiDimBucket(const MultiDimBucket< GUM_SCALAR >& source);
+    MultiDimBucket(const MultiDimBucket< GUM_ELEMENT >& source);
 
     /**
      * @brief Destructor.
@@ -126,33 +126,33 @@ namespace gum {
      * @param impl The MultiDimContainer to copy.
      * @throw DuplicateElement Raised if impl is already in the bucket.
      */
-    void add(const MultiDimContainer< GUM_SCALAR >& impl);
+    void add(const MultiDimContainer< GUM_ELEMENT >& impl);
 
     /**
      * @brief Add a MultiDimContainer in the bucket.
      * @param impl The MultiDimContainer to add.
      * @throw DuplicateElement Raised if impl is already in the bucket.
      */
-    void add(const MultiDimContainer< GUM_SCALAR >* impl);
+    void add(const MultiDimContainer< GUM_ELEMENT >* impl);
 
     /**
      * @brief Remove a MultiDimContainer from this bucket.
      * @param impl The MultiDimContainer to remove.
      */
-    void erase(const MultiDimContainer< GUM_SCALAR >& impl);
+    void erase(const MultiDimContainer< GUM_ELEMENT >& impl);
 
     /**
      * @brief Remove a MultiDimContainer from this bucket.
      * @param impl The MultiDimContainer to remove.
      */
-    void erase(const MultiDimContainer< GUM_SCALAR >* impl);
+    void erase(const MultiDimContainer< GUM_ELEMENT >* impl);
 
     /**
      * @brief Returns true if the MultiDimContainer is in this bucket.
      * @param impl The impl to test for existence.
      * @return Returns true if the MultiDimContainer is in this bucket.
      */
-    bool contains(const MultiDimContainer< GUM_SCALAR >& impl) const;
+    bool contains(const MultiDimContainer< GUM_ELEMENT >& impl) const;
 
     /**
      * @brief Returns the sequence of all the variables contained in the
@@ -187,7 +187,7 @@ namespace gum {
      * @return Returns the MultiDimArray used by this MultiDimBucket.
      * @throw OperationNotAllowed Raised if the bucket has not been built.
      */
-    const MultiDimArray< GUM_SCALAR >& bucket() const;
+    const MultiDimArray< GUM_ELEMENT >& bucket() const;
 
     /**
      * @brief Returns the amount of memory allowed for this bucket.
@@ -233,7 +233,7 @@ namespace gum {
     // ========================================================================
     /// @{
 
-    virtual MultiDimContainer< GUM_SCALAR >* newFactory() const override;
+    virtual MultiDimContainer< GUM_ELEMENT >* newFactory() const override;
 
     const std::string& name() const override;
 
@@ -245,7 +245,7 @@ namespace gum {
 
     bool contains(const DiscreteVariable& v) const override;
 
-    virtual GUM_SCALAR get(const Instantiation& i) const override;
+    virtual GUM_ELEMENT get(const Instantiation& i) const override;
 
     virtual void changeNotification(const Instantiation&          i,
                                     const DiscreteVariable* const var,
@@ -278,7 +278,7 @@ namespace gum {
      * @brief Returns the MultiDimContainer and their respective Instantiation.
      * @return Returns the MultiDimContainer and their respective Instantiation.
      */
-    const HashTable< const MultiDimContainer< GUM_SCALAR >*, Instantiation* >& multidims() const;
+    const HashTable< const MultiDimContainer< GUM_ELEMENT >*, Instantiation* >& multidims() const;
 
     protected:
     virtual void commitMultipleChanges_() override;
@@ -287,7 +287,7 @@ namespace gum {
      * @warning This will raise en exception, you should directly use the get()
      * and operator[]() methods.
      */
-    virtual GUM_SCALAR& get_(const Instantiation& i) const override;
+    virtual GUM_ELEMENT& get_(const Instantiation& i) const override;
 
     virtual void replace_(const DiscreteVariable* x, const DiscreteVariable* y) override;
 
@@ -300,10 +300,10 @@ namespace gum {
     Bijection< Instantiation*, Instantiation* > _instantiations_;
 
     /// The result table of this bucket.
-    MultiDimArray< GUM_SCALAR >* _bucket_;
+    MultiDimArray< GUM_ELEMENT >* _bucket_;
 
     /// The set of MultiDimContainer in this bucket.
-    mutable HashTable< const MultiDimContainer< GUM_SCALAR >*, Instantiation* > _multiDims_;
+    mutable HashTable< const MultiDimContainer< GUM_ELEMENT >*, Instantiation* > _multiDims_;
 
     /// The set of all variables of the multidims in this bucket.
     gum::VariableSet _allVariables_;
@@ -348,7 +348,7 @@ namespace gum {
      * @param value The value to compute.
      * @throw SizeError Raised if the bucket is empty.
      */
-    GUM_SCALAR _computeValue_(const Instantiation& value) const;
+    GUM_ELEMENT _computeValue_(const Instantiation& value) const;
 
     /// Flag used to know if changes has occurred in the bucket since last
     /// computation.
@@ -356,7 +356,7 @@ namespace gum {
 
     /// This table is used to keep the last value computed for an instantiation
     /// when the value are computed on the fly.
-    mutable HashTable< const Instantiation*, GUM_SCALAR > _slavesValue_;
+    mutable HashTable< const Instantiation*, GUM_ELEMENT > _slavesValue_;
 
     /// The class name.
     std::string _name_;

@@ -64,7 +64,7 @@ constexpr auto LBP_DEFAULT_VERBOSITY        = false;
 namespace gum {
 
   /// default constructor
-  template < typename GUM_SCALAR >
+  template < GUM_Numeric GUM_SCALAR >
   LoopyBeliefPropagation< GUM_SCALAR >::LoopyBeliefPropagation(const IBayesNet< GUM_SCALAR >* bn) :
       ApproximateInference< GUM_SCALAR >(bn) {
     // for debugging purposes
@@ -80,12 +80,12 @@ namespace gum {
   }
 
   /// destructor
-  template < typename GUM_SCALAR >
+  template < GUM_Numeric GUM_SCALAR >
   INLINE LoopyBeliefPropagation< GUM_SCALAR >::~LoopyBeliefPropagation() {
     GUM_DESTRUCTOR(LoopyBeliefPropagation)
   }
 
-  template < typename GUM_SCALAR >
+  template < GUM_Numeric GUM_SCALAR >
   void LoopyBeliefPropagation< GUM_SCALAR >::_init_messages_() {
     _messages_.clear();
     for (const auto& tail: this->BN().nodes()) {
@@ -100,12 +100,12 @@ namespace gum {
     }
   }
 
-  template < typename GUM_SCALAR >
+  template < GUM_Numeric GUM_SCALAR >
   void LoopyBeliefPropagation< GUM_SCALAR >::updateOutdatedStructure_() {
     _init_messages_();
   }
 
-  template < typename GUM_SCALAR >
+  template < GUM_Numeric GUM_SCALAR >
   Tensor< GUM_SCALAR > LoopyBeliefPropagation< GUM_SCALAR >::_computeProdPi_(NodeId X) {
     const auto& varX = this->BN().variable(X);
 
@@ -118,7 +118,7 @@ namespace gum {
     return piX;
   }
 
-  template < typename GUM_SCALAR >
+  template < GUM_Numeric GUM_SCALAR >
   Tensor< GUM_SCALAR > LoopyBeliefPropagation< GUM_SCALAR >::_computeProdPi_(NodeId X,
                                                                              NodeId except) {
     const auto& varX      = this->BN().variable(X);
@@ -131,7 +131,7 @@ namespace gum {
     return piXexcept;
   }
 
-  template < typename GUM_SCALAR >
+  template < GUM_Numeric GUM_SCALAR >
   Tensor< GUM_SCALAR > LoopyBeliefPropagation< GUM_SCALAR >::_computeProdLambda_(NodeId X) {
     Tensor< GUM_SCALAR > lamX;
     if (this->hasEvidence(X)) {
@@ -147,7 +147,7 @@ namespace gum {
     return lamX;
   }
 
-  template < typename GUM_SCALAR >
+  template < GUM_Numeric GUM_SCALAR >
   Tensor< GUM_SCALAR > LoopyBeliefPropagation< GUM_SCALAR >::_computeProdLambda_(NodeId X,
                                                                                  NodeId except) {
     Tensor< GUM_SCALAR > lamXexcept;
@@ -164,7 +164,7 @@ namespace gum {
     return lamXexcept;
   }
 
-  template < typename GUM_SCALAR >
+  template < GUM_Numeric GUM_SCALAR >
   GUM_SCALAR LoopyBeliefPropagation< GUM_SCALAR >::_updateNodeMessage_(NodeId X) {
     auto piX  = _computeProdPi_(X);
     auto lamX = _computeProdLambda_(X);
@@ -213,7 +213,7 @@ namespace gum {
     return KL;
   }
 
-  template < typename GUM_SCALAR >
+  template < GUM_Numeric GUM_SCALAR >
   INLINE void LoopyBeliefPropagation< GUM_SCALAR >::_initStats_() {
     _init_messages_();
     for (const auto& node: this->BN().topologicalOrder()) {
@@ -222,7 +222,7 @@ namespace gum {
   }
 
   /// Returns the probability of the variables.
-  template < typename GUM_SCALAR >
+  template < GUM_Numeric GUM_SCALAR >
   void LoopyBeliefPropagation< GUM_SCALAR >::makeInference_() {
     _initStats_();
     this->initApproximationScheme();
@@ -245,7 +245,7 @@ namespace gum {
   }
 
   /// Returns the probability of the variable.
-  template < typename GUM_SCALAR >
+  template < GUM_Numeric GUM_SCALAR >
   INLINE const Tensor< GUM_SCALAR >& LoopyBeliefPropagation< GUM_SCALAR >::posterior_(NodeId id) {
     auto p = _computeProdPi_(id) * _computeProdLambda_(id);
     p.normalize();

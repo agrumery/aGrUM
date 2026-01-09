@@ -53,7 +53,7 @@ namespace gum {
   namespace prm {
     namespace gspan {
 
-      template < typename GUM_SCALAR >
+      template < GUM_Numeric GUM_SCALAR >
       double SearchStrategy< GUM_SCALAR >::computeCost_(const Pattern& p) {
         double                                        cost = 0;
         const Sequence< PRMInstance< GUM_SCALAR >* >& seq
@@ -80,7 +80,7 @@ namespace gum {
         return cost;
       }
 
-      template < typename GUM_SCALAR >
+      template < GUM_Numeric GUM_SCALAR >
       void StrictSearch< GUM_SCALAR >::_buildPatternGraph_(
           typename StrictSearch< GUM_SCALAR >::PData&   data,
           Set< Tensor< GUM_SCALAR >* >&                 pool,
@@ -157,7 +157,7 @@ namespace gum {
           }
       }
 
-      template < typename GUM_SCALAR >
+      template < GUM_Numeric GUM_SCALAR >
       std::pair< Size, Size > StrictSearch< GUM_SCALAR >::_elimination_cost_(
           typename StrictSearch< GUM_SCALAR >::PData& data,
           Set< Tensor< GUM_SCALAR >* >&               pool) {
@@ -211,31 +211,31 @@ namespace gum {
       }
 
       // The SearchStrategy class
-      template < typename GUM_SCALAR >
+      template < GUM_Numeric GUM_SCALAR >
       INLINE SearchStrategy< GUM_SCALAR >::SearchStrategy() : tree_(0) {
         GUM_CONSTRUCTOR(SearchStrategy);
       }
 
-      template < typename GUM_SCALAR >
+      template < GUM_Numeric GUM_SCALAR >
       INLINE
           SearchStrategy< GUM_SCALAR >::SearchStrategy(const SearchStrategy< GUM_SCALAR >& from) :
           tree_(from.tree_) {
         GUM_CONS_CPY(SearchStrategy);
       }
 
-      template < typename GUM_SCALAR >
+      template < GUM_Numeric GUM_SCALAR >
       INLINE SearchStrategy< GUM_SCALAR >::~SearchStrategy() {
         GUM_DESTRUCTOR(SearchStrategy);
       }
 
-      template < typename GUM_SCALAR >
+      template < GUM_Numeric GUM_SCALAR >
       INLINE SearchStrategy< GUM_SCALAR >&
              SearchStrategy< GUM_SCALAR >::operator=(const SearchStrategy< GUM_SCALAR >& from) {
         this->tree_ = from.tree_;
         return *this;
       }
 
-      template < typename GUM_SCALAR >
+      template < GUM_Numeric GUM_SCALAR >
       INLINE void SearchStrategy< GUM_SCALAR >::setTree(DFSTree< GUM_SCALAR >* tree) {
         this->tree_ = tree;
       }
@@ -243,37 +243,37 @@ namespace gum {
       // FrequenceSearch
 
       // The FrequenceSearch class
-      template < typename GUM_SCALAR >
+      template < GUM_Numeric GUM_SCALAR >
       INLINE FrequenceSearch< GUM_SCALAR >::FrequenceSearch(Size freq) :
           SearchStrategy< GUM_SCALAR >(), _freq_(freq) {
         GUM_CONSTRUCTOR(FrequenceSearch);
       }
 
-      template < typename GUM_SCALAR >
+      template < GUM_Numeric GUM_SCALAR >
       INLINE FrequenceSearch< GUM_SCALAR >::FrequenceSearch(
           const FrequenceSearch< GUM_SCALAR >& from) :
           SearchStrategy< GUM_SCALAR >(from), _freq_(from._freq_) {
         GUM_CONS_CPY(FrequenceSearch);
       }
 
-      template < typename GUM_SCALAR >
+      template < GUM_Numeric GUM_SCALAR >
       INLINE FrequenceSearch< GUM_SCALAR >::~FrequenceSearch() {
         GUM_DESTRUCTOR(FrequenceSearch);
       }
 
-      template < typename GUM_SCALAR >
+      template < GUM_Numeric GUM_SCALAR >
       INLINE FrequenceSearch< GUM_SCALAR >&
              FrequenceSearch< GUM_SCALAR >::operator=(const FrequenceSearch< GUM_SCALAR >& from) {
         _freq_ = from._freq_;
         return *this;
       }
 
-      template < typename GUM_SCALAR >
+      template < GUM_Numeric GUM_SCALAR >
       INLINE bool FrequenceSearch< GUM_SCALAR >::accept_root(const Pattern* r) {
         return this->tree_->frequency(*r) >= _freq_;
       }
 
-      template < typename GUM_SCALAR >
+      template < GUM_Numeric GUM_SCALAR >
       INLINE bool
           FrequenceSearch< GUM_SCALAR >::accept_growth(const Pattern*                  parent,
                                                        const Pattern*                  child,
@@ -281,13 +281,13 @@ namespace gum {
         return this->tree_->frequency(*child) >= _freq_;
       }
 
-      template < typename GUM_SCALAR >
+      template < GUM_Numeric GUM_SCALAR >
       INLINE bool FrequenceSearch< GUM_SCALAR >::operator()(gspan::Pattern* i, gspan::Pattern* j) {
         // We want a descending order
         return this->tree_->frequency(*i) > this->tree_->frequency(*j);
       }
 
-      template < typename GUM_SCALAR >
+      template < GUM_Numeric GUM_SCALAR >
       INLINE bool FrequenceSearch< GUM_SCALAR >::operator()(LabelData* i, LabelData* j) {
         return (this->tree_->graph().size(i) > this->tree_->graph().size(j));
       }
@@ -295,36 +295,36 @@ namespace gum {
       // StrictSearch
 
       // The StrictSearch class
-      template < typename GUM_SCALAR >
+      template < GUM_Numeric GUM_SCALAR >
       INLINE StrictSearch< GUM_SCALAR >::StrictSearch(Size freq) :
           SearchStrategy< GUM_SCALAR >(), _freq_(freq), _dot_(".") {
         GUM_CONSTRUCTOR(StrictSearch);
       }
 
-      template < typename GUM_SCALAR >
+      template < GUM_Numeric GUM_SCALAR >
       INLINE StrictSearch< GUM_SCALAR >::StrictSearch(const StrictSearch< GUM_SCALAR >& from) :
           SearchStrategy< GUM_SCALAR >(from), _freq_(from._freq_) {
         GUM_CONS_CPY(StrictSearch);
       }
 
-      template < typename GUM_SCALAR >
+      template < GUM_Numeric GUM_SCALAR >
       INLINE StrictSearch< GUM_SCALAR >::~StrictSearch() {
         GUM_DESTRUCTOR(StrictSearch);
       }
 
-      template < typename GUM_SCALAR >
+      template < GUM_Numeric GUM_SCALAR >
       INLINE StrictSearch< GUM_SCALAR >&
              StrictSearch< GUM_SCALAR >::operator=(const StrictSearch< GUM_SCALAR >& from) {
         _freq_ = from._freq_;
         return *this;
       }
 
-      template < typename GUM_SCALAR >
+      template < GUM_Numeric GUM_SCALAR >
       INLINE bool StrictSearch< GUM_SCALAR >::accept_root(const Pattern* r) {
         return (this->tree_->frequency(*r) >= _freq_);
       }
 
-      template < typename GUM_SCALAR >
+      template < GUM_Numeric GUM_SCALAR >
       INLINE bool
           StrictSearch< GUM_SCALAR >::accept_growth(const Pattern*                  parent,
                                                     const Pattern*                  child,
@@ -333,19 +333,19 @@ namespace gum {
              < this->tree_->frequency(*child) * _outer_cost_(parent);
       }
 
-      template < typename GUM_SCALAR >
+      template < GUM_Numeric GUM_SCALAR >
       INLINE bool StrictSearch< GUM_SCALAR >::operator()(gspan::Pattern* i, gspan::Pattern* j) {
         return _inner_cost_(i) + this->tree_->frequency(*i) * _outer_cost_(i)
              < _inner_cost_(j) + this->tree_->frequency(*j) * _outer_cost_(j);
       }
 
-      template < typename GUM_SCALAR >
+      template < GUM_Numeric GUM_SCALAR >
       INLINE bool StrictSearch< GUM_SCALAR >::operator()(LabelData* i, LabelData* j) {
         return i->tree_width * this->tree_->graph().size(i)
              < j->tree_width * this->tree_->graph().size(j);
       }
 
-      template < typename GUM_SCALAR >
+      template < GUM_Numeric GUM_SCALAR >
       INLINE double StrictSearch< GUM_SCALAR >::_inner_cost_(const Pattern* p) {
         auto pm = _map_.tryGet(p);
         if (!pm) {
@@ -355,7 +355,7 @@ namespace gum {
         return pm->first;
       }
 
-      template < typename GUM_SCALAR >
+      template < GUM_Numeric GUM_SCALAR >
       INLINE double StrictSearch< GUM_SCALAR >::_outer_cost_(const Pattern* p) {
         auto pm = _map_.tryGet(p);
         if (!pm) {
@@ -365,28 +365,28 @@ namespace gum {
         return pm->second;
       }
 
-      template < typename GUM_SCALAR >
+      template < GUM_Numeric GUM_SCALAR >
       INLINE std::string
              StrictSearch< GUM_SCALAR >::_str_(const PRMInstance< GUM_SCALAR >*  i,
                                                const PRMAttribute< GUM_SCALAR >* a) const {
         return i->name() + _dot_ + a->safeName();
       }
 
-      template < typename GUM_SCALAR >
+      template < GUM_Numeric GUM_SCALAR >
       INLINE std::string
              StrictSearch< GUM_SCALAR >::_str_(const PRMInstance< GUM_SCALAR >*  i,
                                                const PRMAttribute< GUM_SCALAR >& a) const {
         return i->name() + _dot_ + a.safeName();
       }
 
-      template < typename GUM_SCALAR >
+      template < GUM_Numeric GUM_SCALAR >
       INLINE std::string
              StrictSearch< GUM_SCALAR >::_str_(const PRMInstance< GUM_SCALAR >*  i,
                                                const PRMSlotChain< GUM_SCALAR >& a) const {
         return i->name() + _dot_ + a.lastElt().safeName();
       }
 
-      template < typename GUM_SCALAR >
+      template < GUM_Numeric GUM_SCALAR >
       INLINE void StrictSearch< GUM_SCALAR >::_compute_costs_(const Pattern* p) {
         typename StrictSearch< GUM_SCALAR >::PData data;
         Set< Tensor< GUM_SCALAR >* >               pool;
@@ -398,29 +398,29 @@ namespace gum {
 
       // TreeWidthSearch
 
-      template < typename GUM_SCALAR >
+      template < GUM_Numeric GUM_SCALAR >
       INLINE TreeWidthSearch< GUM_SCALAR >::TreeWidthSearch() : SearchStrategy< GUM_SCALAR >() {
         GUM_CONSTRUCTOR(TreeWidthSearch);
       }
 
-      template < typename GUM_SCALAR >
+      template < GUM_Numeric GUM_SCALAR >
       INLINE TreeWidthSearch< GUM_SCALAR >::TreeWidthSearch(
           const TreeWidthSearch< GUM_SCALAR >& from) : SearchStrategy< GUM_SCALAR >(from) {
         GUM_CONS_CPY(TreeWidthSearch);
       }
 
-      template < typename GUM_SCALAR >
+      template < GUM_Numeric GUM_SCALAR >
       INLINE TreeWidthSearch< GUM_SCALAR >::~TreeWidthSearch() {
         GUM_DESTRUCTOR(TreeWidthSearch);
       }
 
-      template < typename GUM_SCALAR >
+      template < GUM_Numeric GUM_SCALAR >
       INLINE TreeWidthSearch< GUM_SCALAR >&
              TreeWidthSearch< GUM_SCALAR >::operator=(const TreeWidthSearch< GUM_SCALAR >& from) {
         return *this;
       }
 
-      template < typename GUM_SCALAR >
+      template < GUM_Numeric GUM_SCALAR >
       INLINE double TreeWidthSearch< GUM_SCALAR >::cost(const Pattern& p) {
         auto pm = _map_.tryGet(&p);
         if (!pm) {
@@ -430,7 +430,7 @@ namespace gum {
         return *pm;
       }
 
-      template < typename GUM_SCALAR >
+      template < GUM_Numeric GUM_SCALAR >
       INLINE bool TreeWidthSearch< GUM_SCALAR >::accept_root(const Pattern* r) {
         Size tree_width = 0;
 
@@ -440,7 +440,7 @@ namespace gum {
         return tree_width >= cost(*r);
       }
 
-      template < typename GUM_SCALAR >
+      template < GUM_Numeric GUM_SCALAR >
       INLINE bool
           TreeWidthSearch< GUM_SCALAR >::accept_growth(const Pattern*                  parent,
                                                        const Pattern*                  child,
@@ -448,12 +448,12 @@ namespace gum {
         return cost(*parent) >= cost(*child);
       }
 
-      template < typename GUM_SCALAR >
+      template < GUM_Numeric GUM_SCALAR >
       INLINE bool TreeWidthSearch< GUM_SCALAR >::operator()(gspan::Pattern* i, gspan::Pattern* j) {
         return cost(*i) < cost(*j);
       }
 
-      template < typename GUM_SCALAR >
+      template < GUM_Numeric GUM_SCALAR >
       INLINE bool TreeWidthSearch< GUM_SCALAR >::operator()(LabelData* i, LabelData* j) {
         return i->tree_width < j->tree_width;
       }

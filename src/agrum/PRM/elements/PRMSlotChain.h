@@ -57,9 +57,9 @@
 namespace gum {
   namespace prm {
 
-    template < typename GUM_SCALAR >
+    template < GUM_Numeric GUM_SCALAR >
     class PRMClass;
-    template < typename GUM_SCALAR >
+    template < GUM_Numeric GUM_SCALAR >
     class PRMAttribute;
 
     /**
@@ -87,7 +87,7 @@ namespace gum {
      *
      */
     // ==========================================================================
-    template < typename GUM_SCALAR >
+    template < GUM_Numeric GUM_SCALAR >
     class PRMSlotChain: public PRMClassElement< GUM_SCALAR > {
       public:
       // ========================================================================

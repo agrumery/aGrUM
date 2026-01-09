@@ -47,19 +47,19 @@
 namespace gum {
   namespace credal {
 
-    template < typename GUM_SCALAR, class BNInferenceEngine >
+    template < GUM_Numeric GUM_SCALAR, class BNInferenceEngine >
     MultipleInferenceEngine< GUM_SCALAR, BNInferenceEngine >::MultipleInferenceEngine(
         const CredalNet< GUM_SCALAR >& credalNet) :
         InferenceEngine< GUM_SCALAR >::InferenceEngine(credalNet) {
       GUM_CONSTRUCTOR(MultipleInferenceEngine);
     }
 
-    template < typename GUM_SCALAR, class BNInferenceEngine >
+    template < GUM_Numeric GUM_SCALAR, class BNInferenceEngine >
     MultipleInferenceEngine< GUM_SCALAR, BNInferenceEngine >::~MultipleInferenceEngine() {
       GUM_DESTRUCTOR(MultipleInferenceEngine);
     }
 
-    template < typename GUM_SCALAR, class BNInferenceEngine >
+    template < GUM_Numeric GUM_SCALAR, class BNInferenceEngine >
     inline void MultipleInferenceEngine< GUM_SCALAR, BNInferenceEngine >::initThreadsData_(
         const Size& num_threads,
         const bool  _storeVertices_,
@@ -112,7 +112,7 @@ namespace gum {
       }
     }
 
-    template < typename GUM_SCALAR, class BNInferenceEngine >
+    template < GUM_Numeric GUM_SCALAR, class BNInferenceEngine >
     inline bool MultipleInferenceEngine< GUM_SCALAR, BNInferenceEngine >::updateThread_(
         Size                             tId,
         const NodeId&                    id,
@@ -214,7 +214,7 @@ namespace gum {
       return false;
     }
 
-    template < typename GUM_SCALAR, class BNInferenceEngine >
+    template < GUM_Numeric GUM_SCALAR, class BNInferenceEngine >
     inline void MultipleInferenceEngine< GUM_SCALAR, BNInferenceEngine >::_updateThreadCredalSets_(
         Size                             tId,
         const NodeId&                    id,
@@ -290,7 +290,7 @@ namespace gum {
       l_marginalSets_[tId][id] = lrsWrapper.getOutput();
     }
 
-    template < typename GUM_SCALAR, class BNInferenceEngine >
+    template < GUM_Numeric GUM_SCALAR, class BNInferenceEngine >
     inline void MultipleInferenceEngine< GUM_SCALAR, BNInferenceEngine >::updateMarginals_() {
       // compute the max number of threads to use (avoid nested threads)
       const Size nb_threads = ThreadExecutor::nbRunningThreadsExecutors() == 0
@@ -365,7 +365,7 @@ namespace gum {
     */
 
 
-    template < typename GUM_SCALAR, class BNInferenceEngine >
+    template < GUM_Numeric GUM_SCALAR, class BNInferenceEngine >
     inline const GUM_SCALAR
         MultipleInferenceEngine< GUM_SCALAR, BNInferenceEngine >::computeEpsilon_() {
       // compute the number of threads (avoid nested threads)
@@ -470,7 +470,7 @@ namespace gum {
     }
     */
 
-    template < typename GUM_SCALAR, class BNInferenceEngine >
+    template < GUM_Numeric GUM_SCALAR, class BNInferenceEngine >
     void MultipleInferenceEngine< GUM_SCALAR, BNInferenceEngine >::updateOldMarginals_() {
 #pragma omp parallel
       {
@@ -498,7 +498,7 @@ namespace gum {
       }   // end of : parallel region
     }
 
-    template < typename GUM_SCALAR, class BNInferenceEngine >
+    template < GUM_Numeric GUM_SCALAR, class BNInferenceEngine >
     void MultipleInferenceEngine< GUM_SCALAR, BNInferenceEngine >::verticesFusion_() {
       // don't create threads if there are no vertices saved
       if (!_infE_::storeVertices_) return;
@@ -573,7 +573,7 @@ namespace gum {
     */
 
 
-    template < typename GUM_SCALAR, class BNInferenceEngine >
+    template < GUM_Numeric GUM_SCALAR, class BNInferenceEngine >
     void MultipleInferenceEngine< GUM_SCALAR, BNInferenceEngine >::expFusion_() {
       // don't create threads if there are no modalities to compute expectations
       if (this->modal_.empty()) return;
@@ -732,7 +732,7 @@ namespace gum {
     }
     */
 
-    template < typename GUM_SCALAR, class BNInferenceEngine >
+    template < GUM_Numeric GUM_SCALAR, class BNInferenceEngine >
     void MultipleInferenceEngine< GUM_SCALAR, BNInferenceEngine >::optFusion_() {
       using dBN = std::vector< bool >;
 
@@ -779,7 +779,7 @@ namespace gum {
       }   // end of : all variables
     }
 
-    template < typename GUM_SCALAR, class BNInferenceEngine >
+    template < GUM_Numeric GUM_SCALAR, class BNInferenceEngine >
     void MultipleInferenceEngine< GUM_SCALAR, BNInferenceEngine >::eraseAllEvidence() {
       _infE_::eraseAllEvidence();
       Size tsize = Size(workingSet_.size());

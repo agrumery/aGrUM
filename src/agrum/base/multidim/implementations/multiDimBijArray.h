@@ -64,11 +64,11 @@ namespace gum {
    *
    * @brief Decorator of a MultiDimArray, using a bijection over the variables.
    *
-   * @tparam GUM_SCALAR The type of scaler stored in this multidimensional
+   * @tparam GUM_ELEMENT The type of scaler stored in this multidimensional
    * table.
    */
-  template < typename GUM_SCALAR >
-  class MultiDimBijArray final: public MultiDimWithOffset< GUM_SCALAR > {
+  template < typename GUM_ELEMENT >
+  class MultiDimBijArray final: public MultiDimWithOffset< GUM_ELEMENT > {
     public:
     using VarBijection = Bijection< const DiscreteVariable*, const DiscreteVariable* >;
 
@@ -84,7 +84,7 @@ namespace gum {
      * in this.
      * @param array The MultiDimArray decorated by this MultiDimBijArray.
      */
-    MultiDimBijArray(const VarBijection& bijection, const MultiDimArray< GUM_SCALAR >& array);
+    MultiDimBijArray(const VarBijection& bijection, const MultiDimArray< GUM_ELEMENT >& array);
 
     /**
      * @brief Class constructor.
@@ -93,7 +93,7 @@ namespace gum {
      * in this.
      * @param array The MultiDimBijArray decorated by this MultiDimBijArray.
      */
-    MultiDimBijArray(const VarBijection& bijection, const MultiDimBijArray< GUM_SCALAR >& array);
+    MultiDimBijArray(const VarBijection& bijection, const MultiDimBijArray< GUM_ELEMENT >& array);
 
     /**
      * @brief Copy constructor.
@@ -103,7 +103,7 @@ namespace gum {
      *
      * @param from The MultiDimBijArray to copy.
      */
-    MultiDimBijArray(const MultiDimBijArray< GUM_SCALAR >& from);
+    MultiDimBijArray(const MultiDimBijArray< GUM_ELEMENT >& from);
 
     /**
      * @brief Class destructor.
@@ -120,14 +120,14 @@ namespace gum {
      * @throw OperationNotAllowed Raised since you can't change a readonly
      * structure.
      */
-    MultiDimBijArray< GUM_SCALAR >& operator=(const MultiDimBijArray< GUM_SCALAR >& from);
+    MultiDimBijArray< GUM_ELEMENT >& operator=(const MultiDimBijArray< GUM_ELEMENT >& from);
 
     /**
      * @warning This will raise an exception: read only structure.
      * @throw OperationNotAllowed Raised since you can't change a readonly
      * structure.
      */
-    virtual void set(const Instantiation& i, const GUM_SCALAR& value) const;
+    virtual void set(const Instantiation& i, const GUM_ELEMENT& value) const;
 
     /**
      * This will raise an exception: you can't change the variables in a
@@ -150,7 +150,7 @@ namespace gum {
      * @param d the value changed
      * @throw OperationNotAllowed You can't change data.
      */
-    virtual void fill(const GUM_SCALAR& d) const;
+    virtual void fill(const GUM_ELEMENT& d) const;
 
     /**
      * This will raise an exception: you can't change the variables in a
@@ -158,7 +158,7 @@ namespace gum {
      * @param v The variable not added.
      * @throw OperationNotAllowed You can't add variable in a MultiDimBijArray.
      */
-    virtual void populate(const std::vector< GUM_SCALAR >& v) const;
+    virtual void populate(const std::vector< GUM_ELEMENT >& v) const;
 
     /**
      * This will raise an exception: you can't change the variables in a
@@ -166,7 +166,7 @@ namespace gum {
      * @param l The variable not added.
      * @throw OperationNotAllowed You can't add variable in a MultiDimBijArray.
      */
-    virtual void populate(std::initializer_list< GUM_SCALAR > l) const;
+    virtual void populate(std::initializer_list< GUM_ELEMENT > l) const;
 
     /// @}
     // ========================================================================
@@ -176,16 +176,16 @@ namespace gum {
 
     virtual const std::string& name() const;
 
-    virtual GUM_SCALAR get(const Instantiation& i) const;
+    virtual GUM_ELEMENT get(const Instantiation& i) const;
 
     virtual Size realSize() const;
 
-    virtual MultiDimBijArray< GUM_SCALAR >* newFactory() const;
+    virtual MultiDimBijArray< GUM_ELEMENT >* newFactory() const;
 
     /// @}
 
     protected:
-    virtual GUM_SCALAR& get_(const Instantiation& i) const;
+    virtual GUM_ELEMENT& get_(const Instantiation& i) const;
 
     virtual void commitMultipleChanges_();
 
@@ -193,7 +193,7 @@ namespace gum {
 
     private:
     /// The true data.
-    const MultiDimArray< GUM_SCALAR >& _array_;
+    const MultiDimArray< GUM_ELEMENT >& _array_;
 
     /// The class name.
     std::string _name_;

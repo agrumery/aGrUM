@@ -156,7 +156,7 @@ namespace gum {
        * @warning If the variable contained into the translator has a label
        * equal to a missing value symbol, the label will be taken into
        * account in the translation, not the missing value. */
-      template < typename GUM_SCALAR >
+      template < GUM_Numeric GUM_SCALAR >
       DBTranslator4DiscretizedVariable(const DiscretizedVariable< GUM_SCALAR >& var,
                                        const std::vector< std::string >&        missing_symbols,
                                        std::size_t                              max_dico_entries
@@ -174,7 +174,7 @@ namespace gum {
        * @warning If the variable contained into the translator has a label
        * equal to a missing value symbol, the label will be taken into
        * account in the translation, not the missing value. */
-      template < typename GUM_SCALAR >
+      template < GUM_Numeric GUM_SCALAR >
       DBTranslator4DiscretizedVariable(const DiscretizedVariable< GUM_SCALAR >& var,
                                        std::size_t                              max_dico_entries
                                        = std::numeric_limits< std::size_t >::max());

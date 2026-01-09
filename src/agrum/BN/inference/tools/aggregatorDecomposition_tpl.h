@@ -55,17 +55,17 @@
 
 namespace gum {
 
-  template < typename GUM_SCALAR >
+  template < GUM_Numeric GUM_SCALAR >
   INLINE AggregatorDecomposition< GUM_SCALAR >::AggregatorDecomposition() {
     GUM_CONSTRUCTOR(AggregatorDecomposition)
   }
 
-  template < typename GUM_SCALAR >
+  template < GUM_Numeric GUM_SCALAR >
   AggregatorDecomposition< GUM_SCALAR >::~AggregatorDecomposition() {
     GUM_DESTRUCTOR(AggregatorDecomposition)
   }
 
-  template < typename GUM_SCALAR >
+  template < GUM_Numeric GUM_SCALAR >
   BayesNet< GUM_SCALAR >&
       AggregatorDecomposition< GUM_SCALAR >::getDecomposedAggregator(BayesNet< GUM_SCALAR >& bn) {
     for (NodeId node: bn.nodes().asNodeSet()) {
@@ -79,7 +79,7 @@ namespace gum {
     return bn;
   }
 
-  template < typename GUM_SCALAR >
+  template < GUM_Numeric GUM_SCALAR >
   NodeId AggregatorDecomposition< GUM_SCALAR >::addAggregator_(BayesNet< GUM_SCALAR >& bn,
                                                                const std::string&      aggType,
                                                                const DiscreteVariable& var,
@@ -111,7 +111,7 @@ namespace gum {
     }
   }
 
-  template < typename GUM_SCALAR >
+  template < GUM_Numeric GUM_SCALAR >
   BayesNet< GUM_SCALAR >&
       AggregatorDecomposition< GUM_SCALAR >::decomposeAggregator_(BayesNet< GUM_SCALAR >& bn,
                                                                   NodeId initialAggregator) {
@@ -244,7 +244,7 @@ namespace gum {
     return bn;
   }
 
-  template < typename GUM_SCALAR >
+  template < GUM_Numeric GUM_SCALAR >
   Set< NodeId > AggregatorDecomposition< GUM_SCALAR >::addDepthLayer_(BayesNet< GUM_SCALAR >& bn,
                                                                       Set< NodeId >           nodes,
                                                                       NodeId initialAggregator,
@@ -364,18 +364,18 @@ namespace gum {
     }
   }
 
-  template < typename GUM_SCALAR >
+  template < GUM_Numeric GUM_SCALAR >
   INLINE void AggregatorDecomposition< GUM_SCALAR >::setMaximumArity(gum::Size arity) {
     if (arity < 2) { GUM_ERROR(OperationNotAllowed, "Maximum arity should be at least 2") }
     _arity_ = arity;
   }
 
-  template < typename GUM_SCALAR >
+  template < GUM_Numeric GUM_SCALAR >
   gum::Size AggregatorDecomposition< GUM_SCALAR >::getMaximumArity() {
     return _arity_;
   }
 
-  template < typename GUM_SCALAR >
+  template < GUM_Numeric GUM_SCALAR >
   INLINE std::string AggregatorDecomposition< GUM_SCALAR >::name() const {
     return "aggregator decomposition";
   }

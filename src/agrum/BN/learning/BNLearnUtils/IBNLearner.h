@@ -170,7 +170,7 @@ namespace gum::learning {
        * @param missing_symbols the set of symbols in the CSV file that
        * correspond to missing data
        */
-      template < typename GUM_SCALAR >
+      template < GUM_Numeric GUM_SCALAR >
       Database(const std::string&                 filename,
                const gum::BayesNet< GUM_SCALAR >& bn,
                const std::vector< std::string >&  missing_symbols);
@@ -276,7 +276,7 @@ namespace gum::learning {
       private:
       // returns the set of variables as a BN. This is convenient for
       // the constructors of prior Databases
-      template < typename GUM_SCALAR >
+      template < GUM_Numeric GUM_SCALAR >
       BayesNet< GUM_SCALAR > _BNVars_() const;
     };
 
@@ -320,7 +320,7 @@ namespace gum::learning {
      * @param missing_symbols the set of symbols in the CSV that should
      * be interpreted as missing values
      */
-    template < typename GUM_SCALAR >
+    template < GUM_Numeric GUM_SCALAR >
     IBNLearner(const std::string&                 filename,
                const gum::BayesNet< GUM_SCALAR >& src,
                const std::vector< std::string >&  missing_symbols);

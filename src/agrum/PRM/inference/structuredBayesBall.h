@@ -63,7 +63,7 @@ namespace gum {
      * <agrum/PRM/structuredBayesBall.h>
      * @brief This class represent the BayesBall algorithm applied on PRMs.
      */
-    template < typename GUM_SCALAR >
+    template < GUM_Numeric GUM_SCALAR >
     class StructuredBayesBall {
       public:
       // ========================================================================

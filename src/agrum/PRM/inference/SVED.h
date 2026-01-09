@@ -68,7 +68,7 @@ namespace gum {
      *        algorithm on PRM<GUM_SCALAR>.
      *
      */
-    template < typename GUM_SCALAR >
+    template < GUM_Numeric GUM_SCALAR >
     class SVED: public PRMInference< GUM_SCALAR > {
       public:
       // ========================================================================

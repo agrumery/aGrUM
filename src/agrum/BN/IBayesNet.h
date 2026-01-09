@@ -57,7 +57,7 @@
 #include <agrum/base/multidim/tensor.h>
 
 namespace gum {
-  template < typename GUM_SCALAR >
+  template < GUM_Numeric GUM_SCALAR >
   class BayesNetFactory;
 
   /**
@@ -71,7 +71,7 @@ namespace gum {
    *
    * Many algorithms inference for instance) may use this class when a generic BN is needed.
    */
-  template < typename GUM_SCALAR >
+  template < GUM_Numeric GUM_SCALAR >
   class IBayesNet: public DAGmodel {
     public:
     // ===========================================================================
@@ -273,7 +273,7 @@ namespace gum {
 
 
   /// Prints map's DAG in output using the Graphviz-dot format.
-  template < typename GUM_SCALAR >
+  template < GUM_Numeric GUM_SCALAR >
   std::ostream& operator<<(std::ostream& output, const IBayesNet< GUM_SCALAR >& bn);
 } /* namespace gum */
 

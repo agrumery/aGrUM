@@ -60,7 +60,7 @@ namespace gum {
   namespace learning {
 
     /// default constructor with a continuous variable as translator
-    template < typename GUM_SCALAR >
+    template < GUM_Numeric GUM_SCALAR >
     DBTranslator4ContinuousVariable::DBTranslator4ContinuousVariable(
         const ContinuousVariable< GUM_SCALAR >& var,
         const std::vector< std::string >&       missing_symbols,
@@ -96,7 +96,7 @@ namespace gum {
     }
 
     /// default constructor with a continuous variable as translator
-    template < typename GUM_SCALAR >
+    template < GUM_Numeric GUM_SCALAR >
     DBTranslator4ContinuousVariable::DBTranslator4ContinuousVariable(
         const ContinuousVariable< GUM_SCALAR >& var,
         const bool                              fit_range) :

@@ -56,7 +56,7 @@
 
 namespace gum {
 
-  template < typename GUM_SCALAR >
+  template < typename GUM_ELEMENT >
   class MultiDimBijArray;
 
   // ===========================================================================
@@ -68,13 +68,13 @@ namespace gum {
    * @ingroup multidim_group
    *
    * @brief Multidimensional matrix stored as an array in memory.
-   * @tparam GUM_SCALAR The type of the scalars stroed in the multidimensional
+   * @tparam GUM_ELEMENT The type of the scalars stroed in the multidimensional
    * table.
    */
-  template < typename GUM_SCALAR >
-  class MultiDimArray final: public MultiDimWithOffset< GUM_SCALAR > {
+  template < typename GUM_ELEMENT >
+  class MultiDimArray final: public MultiDimWithOffset< GUM_ELEMENT > {
     public:
-    template < typename GUM_SCALARBIS >
+    template < typename GUM_ELEMENTBIS >
     friend class MultiDimBijArray;
     // =========================================================================
     /// @name Constructors, destructors and copy
@@ -96,7 +96,7 @@ namespace gum {
      *
      * @param src The MultiDimArray to copy.
      */
-    MultiDimArray(const MultiDimArray< GUM_SCALAR >& src);
+    MultiDimArray(const MultiDimArray< GUM_ELEMENT >& src);
 
     /**
      * @todo : operator= for MultiDimArray
@@ -104,8 +104,8 @@ namespace gum {
      * @brief Copy operator.
      * @param src The MultiDimArray to copy.
      * @return Returns this MultiDimArray.
-    MultiDimArray<GUM_SCALAR>&
-    operator=( const MultiDimArray<GUM_SCALAR>& src );
+    MultiDimArray<GUM_ELEMENT>&
+    operator=( const MultiDimArray<GUM_ELEMENT>& src );
      */
 
     /**
@@ -116,7 +116,7 @@ namespace gum {
      */
     virtual ~MultiDimArray();
 
-    virtual MultiDimContainer< GUM_SCALAR >* newFactory() const;
+    virtual MultiDimContainer< GUM_ELEMENT >* newFactory() const;
 
     /// }
     // =========================================================================
@@ -127,21 +127,21 @@ namespace gum {
     /**
      * @brief Copy from a other MultiDimContainer.
      */
-    virtual void copyFrom(const MultiDimContainer< GUM_SCALAR >& src) const;
+    virtual void copyFrom(const MultiDimContainer< GUM_ELEMENT >& src) const;
 
     /**
      * @brief Apply a function on every element of the container
      * @param f the function to apply
      */
-    virtual void apply(std::function< GUM_SCALAR(GUM_SCALAR) > f) const;
+    virtual void apply(std::function< GUM_ELEMENT(GUM_ELEMENT) > f) const;
 
     /**
      * @brief compute lfold for this container
      * @param f the function to apply
      * @param base the initial value
      */
-    virtual GUM_SCALAR reduce(std::function< GUM_SCALAR(GUM_SCALAR, GUM_SCALAR) > f,
-                              GUM_SCALAR                                          base) const;
+    virtual GUM_ELEMENT reduce(std::function< GUM_ELEMENT(GUM_ELEMENT, GUM_ELEMENT) > f,
+                               GUM_ELEMENT                                            base) const;
 
     /**
      * @brief Adds a variable.
@@ -161,7 +161,7 @@ namespace gum {
     /**
      * @brief Fills the MultiDimArray with the given value.
      */
-    virtual void fill(const GUM_SCALAR& d) const;
+    virtual void fill(const GUM_ELEMENT& d) const;
 
     /**
      * @brief Returns the MultiDimArray name.
@@ -194,7 +194,7 @@ namespace gum {
      * @brief Returns the element stored in the multidimArray at a given
      * offset.
      */
-    const GUM_SCALAR& unsafeGet(Idx offset) const;
+    const GUM_ELEMENT& unsafeGet(Idx offset) const;
 
     /**
      * @brief Returns the element stored in the multidimArray at a given
@@ -214,7 +214,7 @@ namespace gum {
      * @throws OutOfBounds Raised if the referenced element does not belong to
      * the MultiDimArray.
      */
-    const GUM_SCALAR& getByOffset(Idx offset) const;
+    const GUM_ELEMENT& getByOffset(Idx offset) const;
 
     /**
      * @brief Modifies the element stored in the multidimArray at a given
@@ -230,12 +230,12 @@ namespace gum {
      * @warning for efficiency reasons, this function does not check whether
      * the element referenced by the offset actually belongs to the
      * MultiDimArray.  If you want this additional feature, use instead
-     * function MultiDimArray::setByOffset(Idx, const GUM_SCALAR&).
+     * function MultiDimArray::setByOffset(Idx, const GUM_ELEMENT&).
      *
      * @param offset The offset where to store the value.
      * @param val The value to store.
      */
-    void unsafeSet(Idx offset, const GUM_SCALAR& val);
+    void unsafeSet(Idx offset, const GUM_ELEMENT& val);
 
     /**
      * @brief Modifies the element stored in the multidimArray at a given
@@ -254,20 +254,20 @@ namespace gum {
      * @throws OutOfBounds Raised if the referenced element does not belong to
      * the MultiDimArray.
      */
-    void setByOffset(Idx offset, const GUM_SCALAR& val);
+    void setByOffset(Idx offset, const GUM_ELEMENT& val);
 
     /// @}
 
     protected:
     /// The true data : the values is mutable since we can change the value /
     /// in a const multiDimArray
-    mutable std::vector< GUM_SCALAR > values_;
+    mutable std::vector< GUM_ELEMENT > values_;
 
     void commitMultipleChanges_() final;
 
-    void commitMultipleChanges_(const GUM_SCALAR&) final;
+    void commitMultipleChanges_(const GUM_ELEMENT&) final;
 
-    GUM_SCALAR& get_(const Instantiation& i) const final;
+    GUM_ELEMENT& get_(const Instantiation& i) const final;
 
     void replace_(const DiscreteVariable* x, const DiscreteVariable* y) final;
   };

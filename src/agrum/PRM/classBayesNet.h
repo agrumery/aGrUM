@@ -75,7 +75,7 @@ namespace gum {
      */
     // clang-format on
 
-    template < typename GUM_SCALAR >
+    template < GUM_Numeric GUM_SCALAR >
     class ClassBayesNet: public IBayesNet< GUM_SCALAR > {
       public:
       // ========================================================================

@@ -52,13 +52,13 @@
 namespace gum {
 
   // Default constructor.
-  template < typename GUM_SCALAR >
+  template < GUM_Numeric GUM_SCALAR >
   ICPTGenerator< GUM_SCALAR >::ICPTGenerator() {
     GUM_CONSTRUCTOR(ICPTGenerator);
   }
 
   // Destructor.
-  template < typename GUM_SCALAR >
+  template < GUM_Numeric GUM_SCALAR >
   ICPTGenerator< GUM_SCALAR >::~ICPTGenerator() {
     GUM_DESTRUCTOR(ICPTGenerator);
   }

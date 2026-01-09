@@ -55,7 +55,7 @@ namespace gum {
   namespace prm {
     namespace o3prm {
 
-      template < typename GUM_SCALAR >
+      template < GUM_Numeric GUM_SCALAR >
       INLINE
           O3InterfaceFactory< GUM_SCALAR >::O3InterfaceFactory(PRM< GUM_SCALAR >&          prm,
                                                                O3PRM&                      o3_prm,
@@ -65,14 +65,14 @@ namespace gum {
         GUM_CONSTRUCTOR(O3InterfaceFactory);
       }
 
-      template < typename GUM_SCALAR >
+      template < GUM_Numeric GUM_SCALAR >
       INLINE O3InterfaceFactory< GUM_SCALAR >::O3InterfaceFactory(
           const O3InterfaceFactory< GUM_SCALAR >& src) :
           _prm_(src._prm_), _o3_prm_(src._o3_prm_), _solver_(src._solver_), _errors_(src._errors_) {
         GUM_CONS_CPY(O3InterfaceFactory);
       }
 
-      template < typename GUM_SCALAR >
+      template < GUM_Numeric GUM_SCALAR >
       INLINE O3InterfaceFactory< GUM_SCALAR >::O3InterfaceFactory(
           O3InterfaceFactory< GUM_SCALAR >&& src) :
           _prm_(std::move(src._prm_)), _o3_prm_(std::move(src._o3_prm_)),
@@ -80,12 +80,12 @@ namespace gum {
         GUM_CONS_MOV(O3InterfaceFactory);
       }
 
-      template < typename GUM_SCALAR >
+      template < GUM_Numeric GUM_SCALAR >
       INLINE O3InterfaceFactory< GUM_SCALAR >::~O3InterfaceFactory() {
         GUM_DESTRUCTOR(O3InterfaceFactory);
       }
 
-      template < typename GUM_SCALAR >
+      template < GUM_Numeric GUM_SCALAR >
       INLINE O3InterfaceFactory< GUM_SCALAR >&
           O3InterfaceFactory< GUM_SCALAR >::operator=(const O3InterfaceFactory< GUM_SCALAR >& src) {
         if (this == &src) { return *this; }
@@ -96,7 +96,7 @@ namespace gum {
         return *this;
       }
 
-      template < typename GUM_SCALAR >
+      template < GUM_Numeric GUM_SCALAR >
       INLINE O3InterfaceFactory< GUM_SCALAR >&
              O3InterfaceFactory< GUM_SCALAR >::operator=(O3InterfaceFactory< GUM_SCALAR >&& src) {
         if (this == &src) { return *this; }
@@ -107,7 +107,7 @@ namespace gum {
         return *this;
       }
 
-      template < typename GUM_SCALAR >
+      template < GUM_Numeric GUM_SCALAR >
       INLINE void O3InterfaceFactory< GUM_SCALAR >::buildInterfaces() {
         PRMFactory< GUM_SCALAR > factory(_prm_);
         if (_checkO3Interfaces_()) {
@@ -122,12 +122,12 @@ namespace gum {
         }
       }
 
-      template < typename GUM_SCALAR >
+      template < GUM_Numeric GUM_SCALAR >
       INLINE bool O3InterfaceFactory< GUM_SCALAR >::_checkO3Interfaces_() {
         return _addInterface2Dag_() && _addArcs2Dag_();
       }
 
-      template < typename GUM_SCALAR >
+      template < GUM_Numeric GUM_SCALAR >
       INLINE bool O3InterfaceFactory< GUM_SCALAR >::_addInterface2Dag_() {
         // Adding nodes to the type inheritance graph
         for (auto& i: _o3_prm_->interfaces()) {
@@ -146,7 +146,7 @@ namespace gum {
         return true;
       }
 
-      template < typename GUM_SCALAR >
+      template < GUM_Numeric GUM_SCALAR >
       INLINE bool O3InterfaceFactory< GUM_SCALAR >::_addArcs2Dag_() {
         // Adding arcs to the graph inheritance graph
         for (auto& i: _o3_prm_->interfaces()) {
@@ -169,7 +169,7 @@ namespace gum {
         return true;
       }
 
-      template < typename GUM_SCALAR >
+      template < GUM_Numeric GUM_SCALAR >
       INLINE void O3InterfaceFactory< GUM_SCALAR >::_setO3InterfaceCreationOrder_() {
         auto topo_order = _dag_.topologicalOrder();
         for (auto id = topo_order.rbegin(); id != topo_order.rend(); --id) {
@@ -177,7 +177,7 @@ namespace gum {
         }
       }
 
-      template < typename GUM_SCALAR >
+      template < GUM_Numeric GUM_SCALAR >
       INLINE void O3InterfaceFactory< GUM_SCALAR >::buildElements() {
         PRMFactory< GUM_SCALAR > factory(_prm_);
 
@@ -205,7 +205,7 @@ namespace gum {
         }
       }
 
-      template < typename GUM_SCALAR >
+      template < GUM_Numeric GUM_SCALAR >
       INLINE bool
           O3InterfaceFactory< GUM_SCALAR >::_checkInterfaceElement_(O3Interface&        i,
                                                                     O3InterfaceElement& elt) {
@@ -227,7 +227,7 @@ namespace gum {
         return true;
       }
 
-      template < typename GUM_SCALAR >
+      template < GUM_Numeric GUM_SCALAR >
       INLINE bool
           O3InterfaceFactory< GUM_SCALAR >::_checkOverloadLegality_(O3Interface&        i,
                                                                     O3InterfaceElement& elt) {
@@ -245,7 +245,7 @@ namespace gum {
         return false;
       }
 
-      template < typename GUM_SCALAR >
+      template < GUM_Numeric GUM_SCALAR >
       INLINE bool O3InterfaceFactory< GUM_SCALAR >::_checkAttributeOverloadLegality_(
           O3Interface&        i,
           O3InterfaceElement& elt) {
@@ -268,7 +268,7 @@ namespace gum {
         return true;
       }
 
-      template < typename GUM_SCALAR >
+      template < GUM_Numeric GUM_SCALAR >
       INLINE bool O3InterfaceFactory< GUM_SCALAR >::_checkReferenceOverloadLegality_(
           O3Interface&        i,
           O3InterfaceElement& elt) {
@@ -299,7 +299,7 @@ namespace gum {
         return true;
       }
 
-      template < typename GUM_SCALAR >
+      template < GUM_Numeric GUM_SCALAR >
       INLINE bool
           O3InterfaceFactory< GUM_SCALAR >::_checkCyclicReference_(O3Interface&        i,
                                                                    O3InterfaceElement& elt) {

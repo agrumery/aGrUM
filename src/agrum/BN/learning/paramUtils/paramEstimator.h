@@ -126,7 +126,7 @@ namespace gum {
       ParamEstimator(const ParamEstimator& from);
 
       /// move constructor
-      ParamEstimator(ParamEstimator&& from);
+      ParamEstimator(ParamEstimator&& from) noexcept;
 
       /// virtual copy constructor
       virtual ParamEstimator* clone() const = 0;
@@ -150,13 +150,13 @@ namespace gum {
        * @param nb the number max of threads to be used. If this number is set to 0, then
        * it is defaulted to aGrUM's max number of threads
        */
-      virtual void setNumberOfThreads(Size nb);
+      void setNumberOfThreads(Size nb) override;
 
       /// returns the current max number of threads of the scheduler
-      virtual Size getNumberOfThreads() const;
+      Size getNumberOfThreads() const override;
 
       /// indicates whether the user set herself the number of threads
-      virtual bool isGumNumberOfThreadsOverriden() const;
+      bool isGumNumberOfThreadsOverriden() const override;
 
       /** @brief changes the number min of rows a thread should process in a
        * multithreading context
@@ -173,7 +173,7 @@ namespace gum {
       virtual std::size_t minNbRowsPerThread() const;
 
       /// sets new ranges to perform the counts used by the parameter estimator
-      /** @param ranges a set of pairs {(X1,Y1),...,(Xn,Yn)} of database's rows
+      /** @param new_ranges a set of pairs {(X1,Y1),...,(Xn,Yn)} of database's rows
        * indices. The counts are then performed only on the union of the
        * rows [Xi,Yi), i in {1,...,n}. This is useful, e.g, when performing
        * cross validation tasks, in which part of the database should be ignored.
@@ -235,7 +235,7 @@ namespace gum {
        * @return a double which corresponds to the log-likelihood (w.r.t. the CPT)
        * if compute_log_likelihood=true, else the method returns 0
        */
-      template < typename GUM_SCALAR >
+      template < GUM_Numeric GUM_SCALAR >
       double setParameters(const NodeId                 target_node,
                            const std::vector< NodeId >& conditioning_nodes,
                            Tensor< GUM_SCALAR >&        pot,
@@ -254,7 +254,7 @@ namespace gum {
       /** Typically, generators based on EM or K-means depend on a model to
        * compute correctly their outputs. Method setBayesNet enables to
        * update their BN model. */
-      template < typename GUM_SCALAR >
+      template < GUM_Numeric GUM_SCALAR >
       void setBayesNet(const BayesNet< GUM_SCALAR >& new_bn);
 
       /// @}
@@ -285,7 +285,7 @@ namespace gum {
 
       /** @brief check the coherency between the parameters passed to
        * the setParameters functions */
-      template < typename GUM_SCALAR >
+      template < GUM_Numeric GUM_SCALAR >
       void _checkParameters_(const NodeId                 target_node,
                              const std::vector< NodeId >& conditioning_nodes,
                              Tensor< GUM_SCALAR >&        pot);
@@ -293,7 +293,7 @@ namespace gum {
       // sets the CPT's parameters corresponding to a given Tensor
       // when the tensor belongs to a BayesNet<GUM_SCALAR> when
       // GUM_SCALAR is different from a double
-      template < typename GUM_SCALAR >
+      template < GUM_Numeric GUM_SCALAR >
       typename std::enable_if< !std::is_same< GUM_SCALAR, double >::value, double >::type
           _setParameters_(const NodeId                 target_node,
                           const std::vector< NodeId >& conditioning_nodes,
@@ -303,7 +303,7 @@ namespace gum {
       // sets the CPT's parameters corresponding to a given Tensor
       // when the tensor belongs to a BayesNet<GUM_SCALAR> when
       // GUM_SCALAR is equal to double (the code is optimized for doubles)
-      template < typename GUM_SCALAR >
+      template < GUM_Numeric GUM_SCALAR >
       typename std::enable_if< std::is_same< GUM_SCALAR, double >::value, double >::type
           _setParameters_(const NodeId                 target_node,
                           const std::vector< NodeId >& conditioning_nodes,

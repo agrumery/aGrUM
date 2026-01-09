@@ -51,7 +51,7 @@ namespace gum {
   /*
    * Default constructor.
    */
-  template < typename GUM_SCALAR >
+  template < GUM_Numeric GUM_SCALAR >
   INLINE O3prmBNWriter< GUM_SCALAR >::O3prmBNWriter() {
     GUM_CONSTRUCTOR(O3prmBNWriter)
   }
@@ -59,7 +59,7 @@ namespace gum {
   /*
    * Destructor.
    */
-  template < typename GUM_SCALAR >
+  template < GUM_Numeric GUM_SCALAR >
   INLINE O3prmBNWriter< GUM_SCALAR >::~O3prmBNWriter() {
     GUM_DESTRUCTOR(O3prmBNWriter)
   }
@@ -71,7 +71,7 @@ namespace gum {
    * @param bn The bayes net writen in the stream.
    * @throws IOError Raised if an I/O error occurs.
    */
-  template < typename GUM_SCALAR >
+  template < GUM_Numeric GUM_SCALAR >
   INLINE void O3prmBNWriter< GUM_SCALAR >::_doWrite(std::ostream&                  output,
                                                     const IBayesNet< GUM_SCALAR >& bn) {
     if (!output.good()) { GUM_ERROR(IOError, "Input/Output error : stream not writable.") }
@@ -93,7 +93,7 @@ namespace gum {
     if (output.fail()) { GUM_ERROR(IOError, "Writing in the ostream failed.") }
   }
 
-  template < typename GUM_SCALAR >
+  template < GUM_Numeric GUM_SCALAR >
   INLINE std::string
          O3prmBNWriter< GUM_SCALAR >::_extractAttribute_(const IBayesNet< GUM_SCALAR >& bn,
                                                          NodeId                         node) {
@@ -106,7 +106,7 @@ namespace gum {
     return str.str();
   }
 
-  template < typename GUM_SCALAR >
+  template < GUM_Numeric GUM_SCALAR >
   INLINE std::string
          O3prmBNWriter< GUM_SCALAR >::_extractParents_(const IBayesNet< GUM_SCALAR >& bn,
                                                        NodeId                         node) {
@@ -118,7 +118,7 @@ namespace gum {
     return str.str().substr(0, str.str().size() - 2);
   }
 
-  template < typename GUM_SCALAR >
+  template < GUM_Numeric GUM_SCALAR >
   INLINE std::string O3prmBNWriter< GUM_SCALAR >::_extractCPT_(const IBayesNet< GUM_SCALAR >& bn,
                                                                NodeId node) {
     std::stringstream str;
@@ -165,7 +165,7 @@ namespace gum {
     return str.str();
   }
 
-  template < typename GUM_SCALAR >
+  template < GUM_Numeric GUM_SCALAR >
   INLINE std::string O3prmBNWriter< GUM_SCALAR >::_extractType_(const IBayesNet< GUM_SCALAR >& bn,
                                                                 NodeId node) {
     switch (bn.variable(node).varType()) {
@@ -182,7 +182,7 @@ namespace gum {
     }
   }
 
-  template < typename GUM_SCALAR >
+  template < GUM_Numeric GUM_SCALAR >
   INLINE std::string
          O3prmBNWriter< GUM_SCALAR >::_extractRangeType_(const IBayesNet< GUM_SCALAR >& bn,
                                                          NodeId                         node) {
@@ -192,7 +192,7 @@ namespace gum {
     return str.str();
   }
 
-  template < typename GUM_SCALAR >
+  template < GUM_Numeric GUM_SCALAR >
   INLINE std::string
          O3prmBNWriter< GUM_SCALAR >::_extractLabelizedType_(const IBayesNet< GUM_SCALAR >& bn,
                                                              NodeId                         node) {
@@ -204,7 +204,7 @@ namespace gum {
     return str.str().substr(0, str.str().size() - 2) + ")";
   }
 
-  template < typename GUM_SCALAR >
+  template < GUM_Numeric GUM_SCALAR >
   template < typename VARTYPE >
   INLINE std::string O3prmBNWriter< GUM_SCALAR >::_extractDiscretizedType_(const VARTYPE* var) {
     std::stringstream str;
@@ -219,7 +219,7 @@ namespace gum {
     GUM_ERROR(InvalidArgument, "discretized variable does not have enough ticks")
   }
 
-  template < typename GUM_SCALAR >
+  template < GUM_Numeric GUM_SCALAR >
   INLINE std::string O3prmBNWriter< GUM_SCALAR >::_extractName_(const IBayesNet< GUM_SCALAR >& bn,
                                                                 NodeId node) {
     if (!bn.variable(node).name().empty()) {
@@ -240,7 +240,7 @@ namespace gum {
    * @param bn The bayes net writen in the file.
    * @throw IOError Raised if an I/O error occurs.
    */
-  template < typename GUM_SCALAR >
+  template < GUM_Numeric GUM_SCALAR >
   INLINE void O3prmBNWriter< GUM_SCALAR >::_doWrite(const std::string&             filePath,
                                                     const IBayesNet< GUM_SCALAR >& bn) {
     std::ofstream output(filePath.c_str(), std::ios_base::trunc);

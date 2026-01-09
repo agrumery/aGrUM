@@ -69,7 +69,7 @@ namespace gum {
      * @author Matthieu HOURBRACQ and Pierre-Henri WUILLEMIN(_at_LIP6)
      */
 
-    template < typename GUM_SCALAR >
+    template < GUM_Numeric GUM_SCALAR >
     class VarMod2BNsMap {
       using dBN      = std::vector< bool >;
       using varKey   = std::vector< Size >;

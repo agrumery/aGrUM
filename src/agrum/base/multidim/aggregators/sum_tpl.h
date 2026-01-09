@@ -50,54 +50,51 @@
 
 #include <agrum/base/multidim/aggregators/sum.h>
 
-namespace gum {
+namespace gum::aggregator {
+  template < GUM_Numeric GUM_SCALAR >
+  INLINE Sum< GUM_SCALAR >::Sum() : MultiDimAggregator< GUM_SCALAR >() {
+    this->decomposable_ = true;
+    this->_value_       = this->neutralElt_();
+    GUM_CONSTRUCTOR(Sum);
+  }
 
-  namespace aggregator {
-    template < typename GUM_SCALAR >
-    INLINE Sum< GUM_SCALAR >::Sum() : MultiDimAggregator< GUM_SCALAR >() {
-      this->decomposable_ = true;
-      GUM_CONSTRUCTOR(Sum);
+  template < GUM_Numeric GUM_SCALAR >
+  INLINE Sum< GUM_SCALAR >::Sum(const Sum< GUM_SCALAR >& from) :
+      MultiDimAggregator< GUM_SCALAR >(from) {
+    GUM_CONS_CPY(Sum);
+  }
+
+  template < GUM_Numeric GUM_SCALAR >
+  INLINE Sum< GUM_SCALAR >::~Sum() {
+    GUM_DESTRUCTOR(Sum);
+  }
+
+  template < GUM_Numeric GUM_SCALAR >
+  INLINE Idx Sum< GUM_SCALAR >::neutralElt_() const {
+    return (Idx)0;
+  }
+
+  template < GUM_Numeric GUM_SCALAR >
+  INLINE Idx Sum< GUM_SCALAR >::fold_(const DiscreteVariable& v,
+                                      Idx                     i1,
+                                      Idx                     i2,
+                                      bool&                   stop_iteration) const {
+    if (auto max_val = this->variable((Idx)0).numerical(this->variable((Idx)0).domainSize() - 1);
+        i1 + i2 > max_val) {
+      stop_iteration = true;
+      return (Idx)max_val;
     }
+    return i1 + i2;
+  }
 
-    template < typename GUM_SCALAR >
-    INLINE Sum< GUM_SCALAR >::Sum(const Sum< GUM_SCALAR >& from) :
-        MultiDimAggregator< GUM_SCALAR >(from) {
-      GUM_CONS_CPY(Sum);
-    }
+  template < GUM_Numeric GUM_SCALAR >
+  INLINE std::string Sum< GUM_SCALAR >::aggregatorName() const {
+    return "sum";
+  }
 
-    template < typename GUM_SCALAR >
-    INLINE Sum< GUM_SCALAR >::~Sum() {
-      GUM_DESTRUCTOR(Sum);
-    }
+  template < GUM_Numeric GUM_SCALAR >
+  INLINE MultiDimContainer< GUM_SCALAR >* Sum< GUM_SCALAR >::newFactory() const {
+    return new Sum< GUM_SCALAR >;
+  }
 
-    template < typename GUM_SCALAR >
-    INLINE Idx Sum< GUM_SCALAR >::neutralElt_() const {
-      return (Idx)0;
-    }
-
-    template < typename GUM_SCALAR >
-    INLINE Idx Sum< GUM_SCALAR >::fold_(const DiscreteVariable& v,
-                                        Idx                     i1,
-                                        Idx                     i2,
-                                        bool&                   stop_iteration) const {
-      GUM_SCALAR max_val
-          = this->variable((Idx)0).numerical(this->variable((Idx)0).domainSize() - 1);
-      if ((i1 + i2) > max_val) {
-        stop_iteration = true;
-        return (Idx)max_val;
-      }
-      return i1 + i2;
-    }
-
-    template < typename GUM_SCALAR >
-    INLINE std::string Sum< GUM_SCALAR >::aggregatorName() const {
-      return "sum";
-    }
-
-    template < typename GUM_SCALAR >
-    INLINE MultiDimContainer< GUM_SCALAR >* Sum< GUM_SCALAR >::newFactory() const {
-      return new Sum< GUM_SCALAR >;
-    }
-
-  }   // namespace aggregator
-}   // namespace gum
+}   // namespace gum::aggregator

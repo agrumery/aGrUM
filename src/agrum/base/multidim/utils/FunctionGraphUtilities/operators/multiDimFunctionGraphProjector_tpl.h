@@ -57,35 +57,35 @@
 namespace gum {
 
   // CONSTRUCTOR
-  template < typename GUM_SCALAR,
+  template < typename GUM_ELEMENT,
              template < typename > class FUNCTOR,
              template < typename > class TerminalNodePolicy >
-  MultiDimFunctionGraphProjector< GUM_SCALAR, FUNCTOR, TerminalNodePolicy >::
+  MultiDimFunctionGraphProjector< GUM_ELEMENT, FUNCTOR, TerminalNodePolicy >::
       MultiDimFunctionGraphProjector(
-          const MultiDimFunctionGraph< GUM_SCALAR, TerminalNodePolicy >* src,
+          const MultiDimFunctionGraph< GUM_ELEMENT, TerminalNodePolicy >* src,
           const gum::VariableSet&                                        delVars,
-          const GUM_SCALAR                                               neutral) :
+          const GUM_ELEMENT                                               neutral) :
       _src_(src), _delVars_(delVars), _function_(), _neutral_(neutral) {
     GUM_CONSTRUCTOR(MultiDimFunctionGraphProjector);
-    _rd_ = MultiDimFunctionGraph< GUM_SCALAR >::getReducedAndOrderedInstance();
+    _rd_ = MultiDimFunctionGraph< GUM_ELEMENT >::getReducedAndOrderedInstance();
   }
 
   // DESTRUCTOR
-  template < typename GUM_SCALAR,
+  template < typename GUM_ELEMENT,
              template < typename > class FUNCTOR,
              template < typename > class TerminalNodePolicy >
-  MultiDimFunctionGraphProjector< GUM_SCALAR, FUNCTOR, TerminalNodePolicy >::
+  MultiDimFunctionGraphProjector< GUM_ELEMENT, FUNCTOR, TerminalNodePolicy >::
       ~MultiDimFunctionGraphProjector() {
     GUM_DESTRUCTOR(MultiDimFunctionGraphProjector);
   }
 
   // This function is the main function. To be call every time an Projection
   // between the two given Function Graphs is required
-  template < typename GUM_SCALAR,
+  template < typename GUM_ELEMENT,
              template < typename > class FUNCTOR,
              template < typename > class TerminalNodePolicy >
-  MultiDimFunctionGraph< GUM_SCALAR, TerminalNodePolicy >*
-      MultiDimFunctionGraphProjector< GUM_SCALAR, FUNCTOR, TerminalNodePolicy >::project() {
+  MultiDimFunctionGraph< GUM_ELEMENT, TerminalNodePolicy >*
+      MultiDimFunctionGraphProjector< GUM_ELEMENT, FUNCTOR, TerminalNodePolicy >::project() {
     _rd_->copy(*_src_);
 
     for (SetIteratorSafe< const DiscreteVariable* > varIter = _delVars_.beginSafe();
@@ -100,7 +100,7 @@ namespace gum {
 
       // 1er cas spécial : le diagramme est un un simple noeud terminal
       if (_rd_->isTerminalNode(_rd_->root())) {
-        GUM_SCALAR newVal = _neutral_, oldVal = _rd_->nodeValue(_rd_->root());
+        GUM_ELEMENT newVal = _neutral_, oldVal = _rd_->nodeValue(_rd_->root());
         for (Idx curVarModality = 0; curVarModality < curVar->domainSize(); ++curVarModality)
           newVal = _function_(newVal, oldVal);
 
@@ -115,7 +115,7 @@ namespace gum {
       // projetée
       if (_rd_->node(_rd_->root())->nodeVar() == curVar) {
         const InternalNode* curVarNode = _rd_->node(_rd_->root());
-        GUM_SCALAR          newVal     = _neutral_;
+        GUM_ELEMENT          newVal     = _neutral_;
         for (Idx curVarModality = 0; curVarModality < curVar->domainSize(); ++curVarModality)
           newVal = _function_(newVal, _rd_->nodeValue(curVarNode->son(curVarModality)));
 
@@ -149,7 +149,7 @@ namespace gum {
                 filo.push_back(oldSonId);
               } else {
                 const InternalNode* curVarNode = _rd_->node(oldSonId);
-                GUM_SCALAR          newVal     = _neutral_;
+                GUM_ELEMENT          newVal     = _neutral_;
                 for (Idx curVarModality = 0; curVarModality < curVar->domainSize();
                      ++curVarModality)
                   newVal = _function_(newVal, _rd_->nodeValue(curVarNode->son(curVarModality)));
@@ -161,7 +161,7 @@ namespace gum {
               }
 
             } else {
-              GUM_SCALAR newVal = _neutral_, oldVal = _rd_->nodeValue(oldSonId);
+              GUM_ELEMENT newVal = _neutral_, oldVal = _rd_->nodeValue(oldSonId);
               for (Idx curVarModality = 0; curVarModality < curVar->domainSize(); ++curVarModality)
                 newVal = _function_(newVal, oldVal);
 

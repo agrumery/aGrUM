@@ -188,7 +188,7 @@ namespace gum {
        * of the continuous variable, it will be discarded. If the fit_range
        * parameter is on, the range of the variable is updated so that it
        * can contain the range of the observed values in the database. */
-      template < typename GUM_SCALAR >
+      template < GUM_Numeric GUM_SCALAR >
       DBTranslator4ContinuousVariable(const ContinuousVariable< GUM_SCALAR >& var,
                                       const std::vector< std::string >&       missing_symbols,
                                       const bool                              fit_range = false);
@@ -205,7 +205,7 @@ namespace gum {
        * of the continuous variable, it will be discarded. If the fit_range
        * parameter is on, the range of the variable is updated so that it
        * can contain the range of the observed values in the database. */
-      template < typename GUM_SCALAR >
+      template < GUM_Numeric GUM_SCALAR >
       DBTranslator4ContinuousVariable(const ContinuousVariable< GUM_SCALAR >& var,
                                       const bool                              fit_range = false);
 

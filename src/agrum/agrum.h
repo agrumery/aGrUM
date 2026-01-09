@@ -70,6 +70,7 @@ namespace gum {
 
 #include <agrum/config.h>
 
+#include <agrum/base/core/concepts.h>
 #include <agrum/base/core/debug.h>
 #include <agrum/base/core/exceptions.h>
 #include <agrum/base/core/inline.h>

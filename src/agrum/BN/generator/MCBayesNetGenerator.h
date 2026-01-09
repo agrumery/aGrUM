@@ -163,7 +163,7 @@ namespace gum {
   }
    \enddot
    */
-  template < typename GUM_SCALAR,
+  template < GUM_Numeric GUM_SCALAR,
              template < typename > class ICPTGenerator = SimpleCPTGenerator,
              template < typename > class ICPTDisturber = SimpleCPTDisturber >
   class MCBayesNetGenerator:

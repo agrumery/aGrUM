@@ -60,7 +60,7 @@
 namespace gum {
 
   // the base object used by the projections
-  template < typename GUM_SCALAR >
+  template < typename GUM_ELEMENT >
   class MultiDimImplementation;
 
   // ===========================================================================
@@ -78,12 +78,12 @@ namespace gum {
    */
   // clang-format on
 
-  template < typename GUM_SCALAR >
+  template < typename GUM_ELEMENT >
   class ProjectionRegister4MultiDim {
     public:
     /// the type of functions used by the register
     using ProjectionPtr
-        = MultiDimImplementation< GUM_SCALAR >* (*)(const MultiDimImplementation< GUM_SCALAR >*,
+        = MultiDimImplementation< GUM_ELEMENT >* (*)(const MultiDimImplementation< GUM_ELEMENT >*,
                                                     const gum::VariableSet&);
 
     // ========================================================================
@@ -219,11 +219,11 @@ namespace gum {
   };
 
   /// A function to more easily register new projection functions in MultiDims
-  template < typename GUM_SCALAR >
+  template < typename GUM_ELEMENT >
   void registerProjection(
       const std::string&                                                projection_name,
       const std::string&                                                type_multidim,
-      typename ProjectionRegister4MultiDim< GUM_SCALAR >::ProjectionPtr function);
+      typename ProjectionRegister4MultiDim< GUM_ELEMENT >::ProjectionPtr function);
 
   // a display operator for ProjectionPtrs
 

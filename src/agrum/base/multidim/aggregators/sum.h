@@ -51,66 +51,64 @@
 
 #include <agrum/base/multidim/aggregators/multiDimAggregator.h>
 
-namespace gum {
+namespace gum::aggregator {
+  // =========================================================================
+  // ===                     GUM_SUM_AGGREGATOR                            ===
+  // =========================================================================
 
-  namespace aggregator {
-    // =========================================================================
-    // ===                     GUM_SUM_AGGREGATOR                            ===
-    // =========================================================================
+  /**
+   * @class Sum
+   * @headerfile sum.h <agrum/base/multidim/aggregators/sum.h>
+   * @ingroup multidim_agg_group
+   *
+   * @brief Sum aggregator
+   *
+   * @see MultiDimAggregator for more details of implementations
+   */
+  template < GUM_Numeric GUM_SCALAR >
+  class Sum: public MultiDimAggregator< GUM_SCALAR > {
+    public:
+    Sum();
+    Sum(const Sum< GUM_SCALAR >& from);
+    ~Sum() final;
 
     /**
-     * @class Sum
-     * @headerfile sum.h <agrum/multidim/aggregators/sum.h>
-     * @ingroup multidim_agg_group
+     * This method creates a clone of this object, without its content
+     * (including variable), you must use this method if you want to ensure
+     * that the generated object has the same type as the object containing
+     * the called newFactory()
      *
-     * @brief Sum aggregator
+     * For example :
+     * @code
+     *   MultiDimArray<double> y;
+     *   auto x = y.newFactory();
+     * @endcode
      *
-     * @see MultiDimAggregator for more details of implementations
+     * Then x is a MultiDimArray<double>*
+     *
+     * @warning you must deallocate by yourself the memory
+     * @return an empty clone of this object with the same type
      */
-    template < typename GUM_SCALAR >
-    class Sum: public MultiDimAggregator< GUM_SCALAR > {
-      public:
-      Sum();
-      Sum(const Sum< GUM_SCALAR >& from);
-      virtual ~Sum();
+    MultiDimContainer< GUM_SCALAR >* newFactory() const final;
 
-      /**
-       * This method creates a clone of this object, without its content
-       * (including variable), you must use this method if you want to ensure
-       * that the generated object has the same type than the object containing
-       * the called newFactory()
-       *
-       * For example :
-       * @code
-       *   MultiDimArray<double> y;
-       *   MultiDimContainer<double>* x = y.newFactory();
-       * @endcode
-       *
-       * Then x is a MultiDimArray<double>*
-       *
-       * @warning you must desallocate by yourself the memory
-       * @return an empty clone of this object with the same type
-       */
-      virtual MultiDimContainer< GUM_SCALAR >* newFactory() const;
+    [[nodiscard]] std::string aggregatorName() const final;
 
-      virtual std::string aggregatorName() const;
+    protected:
+    [[nodiscard]] Idx neutralElt_() const final;
+    [[nodiscard]] Idx
+        fold_(const DiscreteVariable& v, Idx i1, Idx i2, bool& stop_iteration) const final;
 
-      protected:
-      virtual Idx neutralElt_() const;
-      virtual Idx fold_(const DiscreteVariable& v, Idx i1, Idx i2, bool& stop_iteration) const;
-
-      private:
-      Idx _value_;
-    };
+    private:
+    Idx _value_;
+  };
 
 
 #ifndef GUM_NO_EXTERN_TEMPLATE_CLASS
-    extern template class Sum< double >;
+  extern template class Sum< double >;
 #endif
 
 
-  }   // namespace aggregator
-}   // namespace gum
+}   // namespace gum::aggregator
 
 #include <agrum/base/multidim/aggregators/sum_tpl.h>
 

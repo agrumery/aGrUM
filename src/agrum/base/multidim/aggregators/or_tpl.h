@@ -55,29 +55,29 @@
 namespace gum {
 
   namespace aggregator {
-    template < typename GUM_SCALAR >
+    template < GUM_Numeric GUM_SCALAR >
     INLINE Or< GUM_SCALAR >::Or() : MultiDimAggregator< GUM_SCALAR >() {
       this->decomposable_ = true;
       GUM_CONSTRUCTOR(Or);
     }
 
-    template < typename GUM_SCALAR >
+    template < GUM_Numeric GUM_SCALAR >
     INLINE Or< GUM_SCALAR >::Or(const Or< GUM_SCALAR >& from) :
         MultiDimAggregator< GUM_SCALAR >(from) {
       GUM_CONS_CPY(Or);
     }
 
-    template < typename GUM_SCALAR >
+    template < GUM_Numeric GUM_SCALAR >
     INLINE Or< GUM_SCALAR >::~Or() {
       GUM_DESTRUCTOR(Or);
     }
 
-    template < typename GUM_SCALAR >
+    template < GUM_Numeric GUM_SCALAR >
     INLINE Idx Or< GUM_SCALAR >::neutralElt_() const {
       return (Idx)0;
     }
 
-    template < typename GUM_SCALAR >
+    template < GUM_Numeric GUM_SCALAR >
     INLINE Idx Or< GUM_SCALAR >::fold_(const DiscreteVariable& v,
                                        Idx                     i1,
                                        Idx                     i2,
@@ -90,12 +90,12 @@ namespace gum {
       }
     }
 
-    template < typename GUM_SCALAR >
+    template < GUM_Numeric GUM_SCALAR >
     INLINE std::string Or< GUM_SCALAR >::aggregatorName() const {
       return std::string("or");
     }
 
-    template < typename GUM_SCALAR >
+    template < GUM_Numeric GUM_SCALAR >
     INLINE MultiDimContainer< GUM_SCALAR >* Or< GUM_SCALAR >::newFactory() const {
       return new Or< GUM_SCALAR >();
     }

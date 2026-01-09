@@ -60,7 +60,7 @@
 namespace gum {
 
   ///  default constructor
-  template < typename GUM_SCALAR >
+  template < GUM_Numeric GUM_SCALAR >
   GibbsSampling< GUM_SCALAR >::GibbsSampling(const IBayesNet< GUM_SCALAR >* bn) :
       SamplingInference< GUM_SCALAR >(bn),
       GibbsOperator< GUM_SCALAR >(*bn,
@@ -75,17 +75,17 @@ namespace gum {
   }
 
   /// destructor
-  template < typename GUM_SCALAR >
+  template < GUM_Numeric GUM_SCALAR >
   GibbsSampling< GUM_SCALAR >::~GibbsSampling() {
     GUM_DESTRUCTOR(GibbsSampling);
   }
 
-  template < typename GUM_SCALAR >
+  template < GUM_Numeric GUM_SCALAR >
   Instantiation GibbsSampling< GUM_SCALAR >::monteCarloSample_() {
     return GibbsOperator< GUM_SCALAR >::monteCarloSample();
   }
 
-  template < typename GUM_SCALAR >
+  template < GUM_Numeric GUM_SCALAR >
   Instantiation GibbsSampling< GUM_SCALAR >::burnIn_() {
     // we initialize the nodes with hard evidence
     // hypothesis : burnIn_ is called at the beginning of makeInference
@@ -104,7 +104,7 @@ namespace gum {
 
   /// draws next sample for gibbs sampling
 
-  template < typename GUM_SCALAR >
+  template < GUM_Numeric GUM_SCALAR >
   Instantiation GibbsSampling< GUM_SCALAR >::draw_(GUM_SCALAR* w, Instantiation prev) {
     *w = 1.0;
     return GibbsOperator< GUM_SCALAR >::nextSample(prev);

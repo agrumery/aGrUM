@@ -55,7 +55,7 @@
 
 namespace gum {
 
-  template < typename GUM_SCALAR >
+  template < GUM_Numeric GUM_SCALAR >
   BIFReader< GUM_SCALAR >::BIFReader(BayesNet< GUM_SCALAR >* bn, const std::string& filename) :
       BNReader< GUM_SCALAR >(bn, filename) {
     GUM_CONSTRUCTOR(BIFReader);
@@ -74,7 +74,7 @@ namespace gum {
     } catch (IOError const&) { _ioerror_ = true; }
   }
 
-  template < typename GUM_SCALAR >
+  template < GUM_Numeric GUM_SCALAR >
   BIFReader< GUM_SCALAR >::~BIFReader() {
     GUM_DESTRUCTOR(BIFReader);
 
@@ -88,30 +88,30 @@ namespace gum {
     if (_factory_) delete (_factory_);
   }
 
-  template < typename GUM_SCALAR >
+  template < GUM_Numeric GUM_SCALAR >
   INLINE BIF::Scanner& BIFReader< GUM_SCALAR >::scanner() {
     if (_ioerror_) { GUM_ERROR(gum::IOError, "No such file " + streamName()) }
 
     return *_scanner_;
   }
 
-  template < typename GUM_SCALAR >
+  template < GUM_Numeric GUM_SCALAR >
   INLINE const std::string& BIFReader< GUM_SCALAR >::streamName() const {
     return _streamName_;
   }
 
-  template < typename GUM_SCALAR >
+  template < GUM_Numeric GUM_SCALAR >
   INLINE bool BIFReader< GUM_SCALAR >::trace() const {
     return _traceScanning_;
   }
 
-  template < typename GUM_SCALAR >
+  template < GUM_Numeric GUM_SCALAR >
   INLINE void BIFReader< GUM_SCALAR >::trace(bool b) {
     _traceScanning_ = b;
     scanner().setTrace(b);
   }
 
-  template < typename GUM_SCALAR >
+  template < GUM_Numeric GUM_SCALAR >
   Size BIFReader< GUM_SCALAR >::proceed() {
     if (_ioerror_) { GUM_ERROR(gum::IOError, "No such file " + streamName()) }
 
@@ -130,54 +130,54 @@ namespace gum {
 
   /// @{
   /// publishing Errors API
-  template < typename GUM_SCALAR >
+  template < GUM_Numeric GUM_SCALAR >
   INLINE Idx BIFReader< GUM_SCALAR >::errLine(Idx i) {
     if (_parseDone_) return _parser_->errors().error(i).line;
     else { GUM_ERROR(OperationNotAllowed, "BIF file not parsed yet") }
   }
 
-  template < typename GUM_SCALAR >
+  template < GUM_Numeric GUM_SCALAR >
   INLINE Idx BIFReader< GUM_SCALAR >::errCol(Idx i) {
     if (_parseDone_) return _parser_->errors().error(i).column;
     else { GUM_ERROR(OperationNotAllowed, "BIF file not parsed yet") }
   }
 
-  template < typename GUM_SCALAR >
+  template < GUM_Numeric GUM_SCALAR >
   INLINE bool BIFReader< GUM_SCALAR >::errIsError(Idx i) {
     if (_parseDone_) return _parser_->errors().error(i).is_error;
     else { GUM_ERROR(OperationNotAllowed, "BIF file not parsed yet") }
   }
 
-  template < typename GUM_SCALAR >
+  template < GUM_Numeric GUM_SCALAR >
   INLINE std::string BIFReader< GUM_SCALAR >::errMsg(Idx i) {
     if (_parseDone_) return _parser_->errors().error(i).msg;
     else { GUM_ERROR(OperationNotAllowed, "BIF file not parsed yet") }
   }
 
-  template < typename GUM_SCALAR >
+  template < GUM_Numeric GUM_SCALAR >
   INLINE void BIFReader< GUM_SCALAR >::showElegantErrors(std::ostream& o) {
     if (_parseDone_) _parser_->errors().elegantErrors(o);
     else { GUM_ERROR(OperationNotAllowed, "BIF file not parsed yet") }
   }
 
-  template < typename GUM_SCALAR >
+  template < GUM_Numeric GUM_SCALAR >
   INLINE void BIFReader< GUM_SCALAR >::showElegantErrorsAndWarnings(std::ostream& o) {
     if (_parseDone_) _parser_->errors().elegantErrorsAndWarnings(o);
     else { GUM_ERROR(OperationNotAllowed, "BIF file not parsed yet") }
   }
 
-  template < typename GUM_SCALAR >
+  template < GUM_Numeric GUM_SCALAR >
   INLINE void BIFReader< GUM_SCALAR >::showErrorCounts(std::ostream& o) {
     if (_parseDone_) _parser_->errors().syntheticResults(o);
     else { GUM_ERROR(OperationNotAllowed, "BIF file not parsed yet") }
   }
 
-  template < typename GUM_SCALAR >
+  template < GUM_Numeric GUM_SCALAR >
   INLINE Size BIFReader< GUM_SCALAR >::errors() {
     return (!_parseDone_) ? (Size)0 : _parser_->errors().error_count;
   }
 
-  template < typename GUM_SCALAR >
+  template < GUM_Numeric GUM_SCALAR >
   INLINE Size BIFReader< GUM_SCALAR >::warnings() {
     return (!_parseDone_) ? (Size)0 : _parser_->errors().warning_count;
   }

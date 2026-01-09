@@ -65,7 +65,7 @@ namespace gum {
 
 
   // default constructor
-  template < typename GUM_SCALAR >
+  template < GUM_Numeric GUM_SCALAR >
   INLINE VariableElimination< GUM_SCALAR >::VariableElimination(
       const IBayesNet< GUM_SCALAR >* BN,
       RelevantTensorsFinderType      relevant_type,
@@ -84,7 +84,7 @@ namespace gum {
   }
 
   // destructor
-  template < typename GUM_SCALAR >
+  template < GUM_Numeric GUM_SCALAR >
   INLINE VariableElimination< GUM_SCALAR >::~VariableElimination() {
     // remove the junction tree and the triangulation algorithm
     if (_JT_ != nullptr) delete _JT_;
@@ -96,14 +96,14 @@ namespace gum {
   }
 
   /// set a new triangulation algorithm
-  template < typename GUM_SCALAR >
+  template < GUM_Numeric GUM_SCALAR >
   void VariableElimination< GUM_SCALAR >::setTriangulation(const Triangulation& new_triangulation) {
     delete _triangulation_;
     _triangulation_ = new_triangulation.newFactory();
   }
 
   /// returns the current join tree used
-  template < typename GUM_SCALAR >
+  template < GUM_Numeric GUM_SCALAR >
   INLINE const JunctionTree* VariableElimination< GUM_SCALAR >::junctionTree(NodeId id) {
     _createNewJT_(NodeSet{id});
 
@@ -111,7 +111,7 @@ namespace gum {
   }
 
   /// sets how we determine the relevant tensors to combine
-  template < typename GUM_SCALAR >
+  template < GUM_Numeric GUM_SCALAR >
   void VariableElimination< GUM_SCALAR >::setRelevantTensorsFinderType(
       RelevantTensorsFinderType type) {
     if (type != _find_relevant_tensor_type_) {
@@ -146,21 +146,21 @@ namespace gum {
   }
 
   /// sets the operator for performing the projections
-  template < typename GUM_SCALAR >
+  template < GUM_Numeric GUM_SCALAR >
   INLINE void VariableElimination< GUM_SCALAR >::_setProjectionFunction_(
       Tensor< GUM_SCALAR > (*proj)(const Tensor< GUM_SCALAR >&, const gum::VariableSet&)) {
     _projection_op_ = proj;
   }
 
   /// sets the operator for performing the combinations
-  template < typename GUM_SCALAR >
+  template < GUM_Numeric GUM_SCALAR >
   INLINE void VariableElimination< GUM_SCALAR >::_setCombinationFunction_(
       Tensor< GUM_SCALAR > (*comb)(const Tensor< GUM_SCALAR >&, const Tensor< GUM_SCALAR >&)) {
     _combination_op_ = comb;
   }
 
   /// sets how we determine barren nodes
-  template < typename GUM_SCALAR >
+  template < GUM_Numeric GUM_SCALAR >
   void VariableElimination< GUM_SCALAR >::setFindBarrenNodesType(FindBarrenNodesType type) {
     if (type != _barren_nodes_type_) {
       // WARNING: if a new type is added here, method  _createJT_ should certainly
@@ -180,59 +180,59 @@ namespace gum {
   }
 
   /// fired when a new evidence is inserted
-  template < typename GUM_SCALAR >
+  template < GUM_Numeric GUM_SCALAR >
   INLINE void VariableElimination< GUM_SCALAR >::onEvidenceAdded_(const NodeId, bool) {}
 
   /// fired when an evidence is removed
-  template < typename GUM_SCALAR >
+  template < GUM_Numeric GUM_SCALAR >
   INLINE void VariableElimination< GUM_SCALAR >::onEvidenceErased_(const NodeId, bool) {}
 
   /// fired when all the evidence are erased
-  template < typename GUM_SCALAR >
+  template < GUM_Numeric GUM_SCALAR >
   void VariableElimination< GUM_SCALAR >::onAllEvidenceErased_(bool) {}
 
   /// fired when an evidence is changed
-  template < typename GUM_SCALAR >
+  template < GUM_Numeric GUM_SCALAR >
   INLINE void VariableElimination< GUM_SCALAR >::onEvidenceChanged_(const NodeId, bool) {}
 
   /// fired after a new target is inserted
-  template < typename GUM_SCALAR >
+  template < GUM_Numeric GUM_SCALAR >
   INLINE void VariableElimination< GUM_SCALAR >::onMarginalTargetAdded_(const NodeId) {}
 
   /// fired before a target is removed
-  template < typename GUM_SCALAR >
+  template < GUM_Numeric GUM_SCALAR >
   INLINE void VariableElimination< GUM_SCALAR >::onMarginalTargetErased_(const NodeId) {}
 
   /// fired after a new Bayes net has been assigned to the engine
-  template < typename GUM_SCALAR >
+  template < GUM_Numeric GUM_SCALAR >
   INLINE void VariableElimination< GUM_SCALAR >::onModelChanged_(const GraphicalModel* bn) {}
 
   /// fired after a new set target is inserted
-  template < typename GUM_SCALAR >
+  template < GUM_Numeric GUM_SCALAR >
   INLINE void VariableElimination< GUM_SCALAR >::onJointTargetAdded_(const NodeSet&) {}
 
   /// fired before a set target is removed
-  template < typename GUM_SCALAR >
+  template < GUM_Numeric GUM_SCALAR >
   INLINE void VariableElimination< GUM_SCALAR >::onJointTargetErased_(const NodeSet&) {}
 
   /// fired after all the nodes of the BN are added as single targets
-  template < typename GUM_SCALAR >
+  template < GUM_Numeric GUM_SCALAR >
   INLINE void VariableElimination< GUM_SCALAR >::onAllMarginalTargetsAdded_() {}
 
   /// fired before a all the single_targets are removed
-  template < typename GUM_SCALAR >
+  template < GUM_Numeric GUM_SCALAR >
   INLINE void VariableElimination< GUM_SCALAR >::onAllMarginalTargetsErased_() {}
 
   /// fired before a all the joint_targets are removed
-  template < typename GUM_SCALAR >
+  template < GUM_Numeric GUM_SCALAR >
   INLINE void VariableElimination< GUM_SCALAR >::onAllJointTargetsErased_() {}
 
   /// fired before a all the single and joint_targets are removed
-  template < typename GUM_SCALAR >
+  template < GUM_Numeric GUM_SCALAR >
   INLINE void VariableElimination< GUM_SCALAR >::onAllTargetsErased_() {}
 
   /// create a new junction tree as well as its related data structures
-  template < typename GUM_SCALAR >
+  template < GUM_Numeric GUM_SCALAR >
   void VariableElimination< GUM_SCALAR >::_createNewJT_(const NodeSet& targets) {
     // to create the JT, we first create the moral graph of the BN in the
     // following way in order to take into account the barren nodes and the
@@ -450,22 +450,22 @@ namespace gum {
   }
 
   /// prepare the inference structures w.r.t. new targets, soft/hard evidence
-  template < typename GUM_SCALAR >
+  template < GUM_Numeric GUM_SCALAR >
   void VariableElimination< GUM_SCALAR >::updateOutdatedStructure_() {}
 
   /// update the tensors stored in the cliques and invalidate outdated
   /// messages
-  template < typename GUM_SCALAR >
+  template < GUM_Numeric GUM_SCALAR >
   void VariableElimination< GUM_SCALAR >::updateOutdatedTensors_() {}
 
   // find the tensors d-connected to a set of variables
-  template < typename GUM_SCALAR >
+  template < GUM_Numeric GUM_SCALAR >
   void VariableElimination< GUM_SCALAR >::_findRelevantTensorsGetAll_(
       Set< const IScheduleMultiDim* >& pot_list,
       gum::VariableSet&                kept_vars) {}
 
   // find the tensors d-connected to a set of variables
-  template < typename GUM_SCALAR >
+  template < GUM_Numeric GUM_SCALAR >
   void VariableElimination< GUM_SCALAR >::_findRelevantTensorsWithdSeparation_(
       Set< const IScheduleMultiDim* >& pot_list,
       gum::VariableSet&                kept_vars) {
@@ -498,7 +498,7 @@ namespace gum {
   }
 
   // find the tensors d-connected to a set of variables
-  template < typename GUM_SCALAR >
+  template < GUM_Numeric GUM_SCALAR >
   void VariableElimination< GUM_SCALAR >::_findRelevantTensorsWithdSeparation2_(
       Set< const IScheduleMultiDim* >& pot_list,
       gum::VariableSet&                kept_vars) {
@@ -518,7 +518,7 @@ namespace gum {
   }
 
   // find the tensors d-connected to a set of variables
-  template < typename GUM_SCALAR >
+  template < GUM_Numeric GUM_SCALAR >
   void VariableElimination< GUM_SCALAR >::_findRelevantTensorsWithdSeparation3_(
       Set< const IScheduleMultiDim* >& pot_list,
       gum::VariableSet&                kept_vars) {
@@ -539,7 +539,7 @@ namespace gum {
   }
 
   // find the tensors d-connected to a set of variables
-  template < typename GUM_SCALAR >
+  template < GUM_Numeric GUM_SCALAR >
   void VariableElimination< GUM_SCALAR >::_findRelevantTensorsXX_(
       Set< const IScheduleMultiDim* >& pot_list,
       gum::VariableSet&                kept_vars) {
@@ -565,7 +565,7 @@ namespace gum {
   }
 
   // remove barren variables using schedules
-  template < typename GUM_SCALAR >
+  template < GUM_Numeric GUM_SCALAR >
   Set< const IScheduleMultiDim* >
       VariableElimination< GUM_SCALAR >::_removeBarrenVariables_(Schedule&              schedule,
                                                                  _ScheduleMultiDimSet_& pot_list,
@@ -631,7 +631,7 @@ namespace gum {
   }
 
   // remove barren variables directly without schedules
-  template < typename GUM_SCALAR >
+  template < GUM_Numeric GUM_SCALAR >
   Set< const Tensor< GUM_SCALAR >* >
       VariableElimination< GUM_SCALAR >::_removeBarrenVariables_(_TensorSet_&      pot_list,
                                                                  gum::VariableSet& del_vars) {
@@ -693,7 +693,7 @@ namespace gum {
   }
 
   // performs the collect phase of Variable Elimination
-  template < typename GUM_SCALAR >
+  template < GUM_Numeric GUM_SCALAR >
   Set< const IScheduleMultiDim* >
       VariableElimination< GUM_SCALAR >::_collectMessage_(Schedule& schedule,
                                                           NodeId    id,
@@ -712,7 +712,7 @@ namespace gum {
   }
 
   // performs the collect phase of Variable Elimination
-  template < typename GUM_SCALAR >
+  template < GUM_Numeric GUM_SCALAR >
   std::pair< Set< const Tensor< GUM_SCALAR >* >, Set< const Tensor< GUM_SCALAR >* > >
       VariableElimination< GUM_SCALAR >::_collectMessage_(NodeId id, NodeId from) {
     // collect messages from all the neighbors
@@ -730,7 +730,7 @@ namespace gum {
   }
 
   // get the CPT + evidence of a node projected w.r.t. hard evidence
-  template < typename GUM_SCALAR >
+  template < GUM_Numeric GUM_SCALAR >
   Set< const IScheduleMultiDim* >
       VariableElimination< GUM_SCALAR >::_NodeTensors_(Schedule& schedule, NodeId node) {
     _ScheduleMultiDimSet_ res;
@@ -826,7 +826,7 @@ namespace gum {
   }
 
   // get the CPT + evidence of a node projected w.r.t. hard evidence
-  template < typename GUM_SCALAR >
+  template < GUM_Numeric GUM_SCALAR >
   std::pair< Set< const Tensor< GUM_SCALAR >* >, Set< const Tensor< GUM_SCALAR >* > >
       VariableElimination< GUM_SCALAR >::_NodeTensors_(NodeId node) {
     std::pair< _TensorSet_, _TensorSet_ > res;
@@ -915,7 +915,7 @@ namespace gum {
   }
 
   // creates the message sent by clique from_id to clique to_id
-  template < typename GUM_SCALAR >
+  template < GUM_Numeric GUM_SCALAR >
   std::pair< Set< const Tensor< GUM_SCALAR >* >, Set< const Tensor< GUM_SCALAR >* > >
       VariableElimination< GUM_SCALAR >::_produceMessage_(
           NodeId from_id,
@@ -975,7 +975,7 @@ namespace gum {
   }
 
   // creates the message sent by clique from_id to clique to_id
-  template < typename GUM_SCALAR >
+  template < GUM_Numeric GUM_SCALAR >
   Set< const IScheduleMultiDim* > VariableElimination< GUM_SCALAR >::_produceMessage_(
       Schedule&                         schedule,
       NodeId                            from_id,
@@ -1028,7 +1028,7 @@ namespace gum {
   }
 
   // remove variables del_vars from the list of tensors pot_list
-  template < typename GUM_SCALAR >
+  template < GUM_Numeric GUM_SCALAR >
   Set< const Tensor< GUM_SCALAR >* > VariableElimination< GUM_SCALAR >::_marginalizeOut_(
       Set< const Tensor< GUM_SCALAR >* > pot_list,
       gum::VariableSet&                  del_vars,
@@ -1073,7 +1073,7 @@ namespace gum {
   }
 
   // remove variables del_vars from the list of tensors pot_list
-  template < typename GUM_SCALAR >
+  template < GUM_Numeric GUM_SCALAR >
   Set< const IScheduleMultiDim* >
       VariableElimination< GUM_SCALAR >::_marginalizeOut_(Schedule&                       schedule,
                                                           Set< const IScheduleMultiDim* > pot_list,
@@ -1126,11 +1126,11 @@ namespace gum {
   }
 
   // performs a whole inference
-  template < typename GUM_SCALAR >
+  template < GUM_Numeric GUM_SCALAR >
   INLINE void VariableElimination< GUM_SCALAR >::makeInference_() {}
 
   /// returns a fresh tensor equal to P(1st arg,evidence)
-  template < typename GUM_SCALAR >
+  template < GUM_Numeric GUM_SCALAR >
   Tensor< GUM_SCALAR >* VariableElimination< GUM_SCALAR >::unnormalizedJointPosterior_(NodeId id) {
     // hard evidence do not belong to the join tree
     // # TODO: check for sets of inconsistent hard evidence
@@ -1162,7 +1162,7 @@ namespace gum {
   }
 
   /// returns a fresh tensor equal to P(1st arg,evidence) without using schedules
-  template < typename GUM_SCALAR >
+  template < GUM_Numeric GUM_SCALAR >
   Tensor< GUM_SCALAR >* VariableElimination< GUM_SCALAR >::_unnormalizedJointPosterior_(NodeId id) {
     const auto& bn = this->BN();
 
@@ -1234,7 +1234,7 @@ namespace gum {
   }
 
   /// returns a fresh tensor equal to P(1st arg,evidence) without using schedules
-  template < typename GUM_SCALAR >
+  template < GUM_Numeric GUM_SCALAR >
   Tensor< GUM_SCALAR >*
       VariableElimination< GUM_SCALAR >::_unnormalizedJointPosterior_(Schedule& schedule,
                                                                       NodeId    id) {
@@ -1306,7 +1306,7 @@ namespace gum {
   }
 
   /// returns the posterior of a given variable
-  template < typename GUM_SCALAR >
+  template < GUM_Numeric GUM_SCALAR >
   const Tensor< GUM_SCALAR >& VariableElimination< GUM_SCALAR >::posterior_(NodeId id) {
     // compute the joint posterior and normalize
     auto joint = unnormalizedJointPosterior_(id);
@@ -1320,7 +1320,7 @@ namespace gum {
   }
 
   // returns the marginal a posteriori proba of a given node
-  template < typename GUM_SCALAR >
+  template < GUM_Numeric GUM_SCALAR >
   Tensor< GUM_SCALAR >*
       VariableElimination< GUM_SCALAR >::unnormalizedJointPosterior_(const NodeSet& set) {
     // hard evidence do not belong to the join tree, so extract the nodes
@@ -1373,7 +1373,7 @@ namespace gum {
   }
 
   // returns the marginal a posteriori proba of a given node
-  template < typename GUM_SCALAR >
+  template < GUM_Numeric GUM_SCALAR >
   Tensor< GUM_SCALAR >* VariableElimination< GUM_SCALAR >::_unnormalizedJointPosterior_(
       const NodeSet& set,
       const NodeSet& targets,
@@ -1451,7 +1451,7 @@ namespace gum {
   }
 
   // returns the marginal a posteriori proba of a given node
-  template < typename GUM_SCALAR >
+  template < GUM_Numeric GUM_SCALAR >
   Tensor< GUM_SCALAR >* VariableElimination< GUM_SCALAR >::_unnormalizedJointPosterior_(
       Schedule&      schedule,
       const NodeSet& set,
@@ -1527,7 +1527,7 @@ namespace gum {
   }
 
   /// returns the posterior of a given set of variables
-  template < typename GUM_SCALAR >
+  template < GUM_Numeric GUM_SCALAR >
   const Tensor< GUM_SCALAR >&
       VariableElimination< GUM_SCALAR >::jointPosterior_(const NodeSet& set) {
     // compute the joint posterior and normalize
@@ -1541,7 +1541,7 @@ namespace gum {
   }
 
   /// returns the posterior of a given set of variables
-  template < typename GUM_SCALAR >
+  template < GUM_Numeric GUM_SCALAR >
   const Tensor< GUM_SCALAR >&
       VariableElimination< GUM_SCALAR >::jointPosterior_(const NodeSet& wanted_target,
                                                          const NodeSet& declared_target) {

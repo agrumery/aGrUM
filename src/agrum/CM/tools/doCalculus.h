@@ -73,7 +73,7 @@ namespace gum {
    * Returned ASTs are evaluated against the **observational BN** of the bound
    * causal model.
    */
-  template < typename GUM_SCALAR >
+  template < GUM_Numeric GUM_SCALAR >
   class DoCalculus {
     public:
     /// Owned pointer to an AST representing a probability expression.

@@ -62,7 +62,7 @@ namespace gum {
    * @ingroup id_group
    *
    */
-  template < typename GUM_SCALAR >
+  template < GUM_Numeric GUM_SCALAR >
   class InfluenceDiagramInference: public GraphicalModelInference< GUM_SCALAR > {
     public:
     /**

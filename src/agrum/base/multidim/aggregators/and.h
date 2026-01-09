@@ -70,7 +70,7 @@ namespace gum {
      * Note that a <tt>And(i)</tt> aggregator should have a binary aggregator
      * variable since only 0 and 1 indexes are adressed...
      */
-    template < typename GUM_SCALAR >
+    template < GUM_Numeric GUM_SCALAR >
     class And final: public MultiDimAggregator< GUM_SCALAR > {
       public:
       And();

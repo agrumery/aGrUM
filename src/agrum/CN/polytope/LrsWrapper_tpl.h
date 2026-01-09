@@ -50,7 +50,7 @@
 namespace gum {
   namespace credal {
 
-    template < typename GUM_SCALAR >
+    template < GUM_Numeric GUM_SCALAR >
     LRSWrapper< GUM_SCALAR >::LRSWrapper() {
       _state_ = _states_::none;
 
@@ -66,27 +66,27 @@ namespace gum {
       GUM_CONSTRUCTOR(LRSWrapper);
     }
 
-    template < typename GUM_SCALAR >
+    template < GUM_Numeric GUM_SCALAR >
     LRSWrapper< GUM_SCALAR >::~LRSWrapper() {
       GUM_DESTRUCTOR(LRSWrapper);
     }
 
-    template < typename GUM_SCALAR >
+    template < GUM_Numeric GUM_SCALAR >
     auto LRSWrapper< GUM_SCALAR >::getInput() const -> const matrix& {
       return _input_;
     }
 
-    template < typename GUM_SCALAR >
+    template < GUM_Numeric GUM_SCALAR >
     auto LRSWrapper< GUM_SCALAR >::getOutput() const -> const matrix& {
       return _output_;
     }
 
-    template < typename GUM_SCALAR >
+    template < GUM_Numeric GUM_SCALAR >
     const unsigned int& LRSWrapper< GUM_SCALAR >::getVerticesNumber() const {
       return _vertices_;
     }
 
-    template < typename GUM_SCALAR >
+    template < GUM_Numeric GUM_SCALAR >
     const GUM_SCALAR& LRSWrapper< GUM_SCALAR >::getVolume() const {
       if (_volume_ != 0) return _volume_;
       else
@@ -97,7 +97,7 @@ namespace gum {
                   "V-representation.");
     }
 
-    template < typename GUM_SCALAR >
+    template < GUM_Numeric GUM_SCALAR >
     void LRSWrapper< GUM_SCALAR >::setUpH(const Size& card) {
       if (card < 2)
         GUM_ERROR(OperationNotAllowed,
@@ -124,7 +124,7 @@ namespace gum {
       _card_ = (unsigned int)card;
     }
 
-    template < typename GUM_SCALAR >
+    template < GUM_Numeric GUM_SCALAR >
     void LRSWrapper< GUM_SCALAR >::setUpV(const Size& card, const Size& vertices) {
       if (card < 2)
         GUM_ERROR(OperationNotAllowed,
@@ -149,7 +149,7 @@ namespace gum {
       _vertices_ = (unsigned int)vertices;
     }
 
-    template < typename GUM_SCALAR >
+    template < GUM_Numeric GUM_SCALAR >
     void LRSWrapper< GUM_SCALAR >::tearDown() {
       _input_.clear();
       _output_.clear();
@@ -169,7 +169,7 @@ namespace gum {
       _polytope_  = false;
     }
 
-    template < typename GUM_SCALAR >
+    template < GUM_Numeric GUM_SCALAR >
     void LRSWrapper< GUM_SCALAR >::nextHInput() {
       _insertedModals_.clear();
       _insertedVertices_.clear();
@@ -199,7 +199,7 @@ namespace gum {
       }
     }
 
-    template < typename GUM_SCALAR >
+    template < GUM_Numeric GUM_SCALAR >
     void LRSWrapper< GUM_SCALAR >::fillH(const GUM_SCALAR& min,
                                          const GUM_SCALAR& max,
                                          const Size&       modal) {
@@ -228,7 +228,7 @@ namespace gum {
       if (_insertedModals_.size() == _card_) _state_ = _states_::H2Vready;
     }
 
-    template < typename GUM_SCALAR >
+    template < GUM_Numeric GUM_SCALAR >
     void LRSWrapper< GUM_SCALAR >::fillMatrix(
         const std::vector< std::vector< GUM_SCALAR > >& matrix) {
       if (_state_ != _states_::Hup)
@@ -252,7 +252,7 @@ namespace gum {
       _state_ = _states_::H2Vready;
     }
 
-    template < typename GUM_SCALAR >
+    template < GUM_Numeric GUM_SCALAR >
     void LRSWrapper< GUM_SCALAR >::fillV(const std::vector< GUM_SCALAR >& vertex) {
       if (_state_ != _states_::Vup)
         GUM_ERROR(OperationNotAllowed,
@@ -295,7 +295,7 @@ namespace gum {
       if (_insertedVertices_.size() == _vertices_) _state_ = _states_::V2Hready;
     }
 
-    template < typename GUM_SCALAR >
+    template < GUM_Numeric GUM_SCALAR >
     void LRSWrapper< GUM_SCALAR >::H2V() {
       if (_state_ != _states_::H2Vready)
         GUM_ERROR(OperationNotAllowed,
@@ -364,7 +364,7 @@ namespace gum {
       _freeLrs_();
     }
 
-    template < typename GUM_SCALAR >
+    template < GUM_Numeric GUM_SCALAR >
     void LRSWrapper< GUM_SCALAR >::V2H() {
       if (!_state_ == _states_::V2Hready)
         GUM_ERROR(OperationNotAllowed,
@@ -374,7 +374,7 @@ namespace gum {
                       << _setUpStateNames_[_state_]);
     }
 
-    template < typename GUM_SCALAR >
+    template < GUM_Numeric GUM_SCALAR >
     void LRSWrapper< GUM_SCALAR >::computeVolume() {
       if (!_state_ == _states_::V2Hready)
         GUM_ERROR(OperationNotAllowed,
@@ -422,7 +422,7 @@ namespace gum {
       _freeLrs_();
     }
 
-    template < typename GUM_SCALAR >
+    template < GUM_Numeric GUM_SCALAR >
     void LRSWrapper< GUM_SCALAR >::elimRedundVrep() {
       if (_state_ != _states_::V2Hready)
         GUM_ERROR(OperationNotAllowed,
@@ -493,7 +493,7 @@ namespace gum {
       _freeLrs_();
     }
 
-    template < typename GUM_SCALAR >
+    template < GUM_Numeric GUM_SCALAR >
     void LRSWrapper< GUM_SCALAR >::_getLRSWrapperOutput_(lrs_mp                  Nin,
                                                          lrs_mp                  Din,
                                                          std::vector< int64_t >& Num,
@@ -551,7 +551,7 @@ namespace gum {
          fprintf (lrs_ofp, " ");
     }*/
 
-    template < typename GUM_SCALAR >
+    template < GUM_Numeric GUM_SCALAR >
     void LRSWrapper< GUM_SCALAR >::_fill_() const {
       std::size_t cols = _input_[0].size();
 
@@ -587,7 +587,7 @@ namespace gum {
       delete[] den;
     }
 
-    template < typename GUM_SCALAR >
+    template < GUM_Numeric GUM_SCALAR >
     void LRSWrapper< GUM_SCALAR >::_initLrs_() {
       if (_state_ != _states_::H2Vready && _state_ != _states_::V2Hready)
         GUM_ERROR(OperationNotAllowed,
@@ -653,7 +653,7 @@ namespace gum {
       }
     }
 
-    template < typename GUM_SCALAR >
+    template < GUM_Numeric GUM_SCALAR >
     void LRSWrapper< GUM_SCALAR >::_freeLrs_() {
       /* free space : do not change order of next lines! */
 

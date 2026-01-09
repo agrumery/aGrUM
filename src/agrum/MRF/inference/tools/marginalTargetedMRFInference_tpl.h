@@ -52,7 +52,7 @@ namespace gum {
 
 
   // Default Constructor
-  template < typename GUM_SCALAR >
+  template < GUM_Numeric GUM_SCALAR >
   MarginalTargetedMRFInference< GUM_SCALAR >::MarginalTargetedMRFInference(
       const IMarkovRandomField< GUM_SCALAR >* mn) : MRFInference< GUM_SCALAR >(mn) {
     // assign a MRF if this has not been done before (due to virtual inheritance)
@@ -68,13 +68,13 @@ namespace gum {
   }
 
   // Destructor
-  template < typename GUM_SCALAR >
+  template < GUM_Numeric GUM_SCALAR >
   MarginalTargetedMRFInference< GUM_SCALAR >::~MarginalTargetedMRFInference() {
     GUM_DESTRUCTOR(MarginalTargetedMRFInference);
   }
 
   // fired when a new MRF is assigned to the inference engine
-  template < typename GUM_SCALAR >
+  template < GUM_Numeric GUM_SCALAR >
   void MarginalTargetedMRFInference< GUM_SCALAR >::onModelChanged_(const GraphicalModel* mn) {
     _targeted_mode_ = true;
     _setAllMarginalTargets_();
@@ -85,7 +85,7 @@ namespace gum {
   // ##############################################################################
 
   // return true if variable is a target
-  template < typename GUM_SCALAR >
+  template < GUM_Numeric GUM_SCALAR >
   INLINE bool MarginalTargetedMRFInference< GUM_SCALAR >::isTarget(NodeId node) const {
     // check that the variable belongs to the mn
     if (this->hasNoModel_())
@@ -100,14 +100,14 @@ namespace gum {
   }
 
   // Add a single target to the list of targets
-  template < typename GUM_SCALAR >
+  template < GUM_Numeric GUM_SCALAR >
   INLINE bool
       MarginalTargetedMRFInference< GUM_SCALAR >::isTarget(const std::string& nodeName) const {
     return isTarget(this->MRF().idFromName(nodeName));
   }
 
   // Clear all previously defined targets (single targets and sets of targets)
-  template < typename GUM_SCALAR >
+  template < GUM_Numeric GUM_SCALAR >
   INLINE void MarginalTargetedMRFInference< GUM_SCALAR >::eraseAllTargets() {
     onAllMarginalTargetsErased_();
 
@@ -118,7 +118,7 @@ namespace gum {
   }
 
   // Add a single target to the list of targets
-  template < typename GUM_SCALAR >
+  template < GUM_Numeric GUM_SCALAR >
   void MarginalTargetedMRFInference< GUM_SCALAR >::addTarget(NodeId target) {
     // check if the node belongs to the Markov random field
     if (this->hasNoModel_())
@@ -140,7 +140,7 @@ namespace gum {
   }
 
   // Add all nodes as targets
-  template < typename GUM_SCALAR >
+  template < GUM_Numeric GUM_SCALAR >
   void MarginalTargetedMRFInference< GUM_SCALAR >::addAllTargets() {
     // check if the node belongs to the Markov random field
     if (this->hasNoModel_())
@@ -160,7 +160,7 @@ namespace gum {
   }
 
   // Add a single target to the list of targets
-  template < typename GUM_SCALAR >
+  template < GUM_Numeric GUM_SCALAR >
   void MarginalTargetedMRFInference< GUM_SCALAR >::addTarget(const std::string& nodeName) {
     // check if the node belongs to the Markov random field
     if (this->hasNoModel_())
@@ -172,7 +172,7 @@ namespace gum {
   }
 
   // removes an existing target
-  template < typename GUM_SCALAR >
+  template < GUM_Numeric GUM_SCALAR >
   void MarginalTargetedMRFInference< GUM_SCALAR >::eraseTarget(NodeId target) {
     // check if the node belongs to the Markov random field
     if (this->hasNoModel_())
@@ -195,7 +195,7 @@ namespace gum {
   }
 
   // Add a single target to the list of targets
-  template < typename GUM_SCALAR >
+  template < GUM_Numeric GUM_SCALAR >
   void MarginalTargetedMRFInference< GUM_SCALAR >::eraseTarget(const std::string& nodeName) {
     // check if the node belongs to the Markov random field
     if (this->hasNoModel_())
@@ -207,19 +207,19 @@ namespace gum {
   }
 
   // returns the list of single targets
-  template < typename GUM_SCALAR >
+  template < GUM_Numeric GUM_SCALAR >
   INLINE const NodeSet& MarginalTargetedMRFInference< GUM_SCALAR >::targets() const noexcept {
     return _targets_;
   }
 
   // returns the list of single targets
-  template < typename GUM_SCALAR >
+  template < GUM_Numeric GUM_SCALAR >
   INLINE Size MarginalTargetedMRFInference< GUM_SCALAR >::nbrTargets() const noexcept {
     return _targets_.size();
   }
 
   /// sets all the nodes of the Markov net as targets
-  template < typename GUM_SCALAR >
+  template < GUM_Numeric GUM_SCALAR >
   void MarginalTargetedMRFInference< GUM_SCALAR >::_setAllMarginalTargets_() {
     _targets_.clear();
     if (!this->hasNoModel_()) {
@@ -233,7 +233,7 @@ namespace gum {
   // ##############################################################################
 
   // Compute the posterior of a node.
-  template < typename GUM_SCALAR >
+  template < GUM_Numeric GUM_SCALAR >
   const Tensor< GUM_SCALAR >& MarginalTargetedMRFInference< GUM_SCALAR >::posterior(NodeId node) {
     if (this->hardEvidenceNodes().contains(node)) { return *(this->evidence()[node]); }
 
@@ -248,7 +248,7 @@ namespace gum {
   }
 
   // Compute the posterior of a node.
-  template < typename GUM_SCALAR >
+  template < GUM_Numeric GUM_SCALAR >
   const Tensor< GUM_SCALAR >&
       MarginalTargetedMRFInference< GUM_SCALAR >::posterior(const std::string& nodeName) {
     return posterior(this->MRF().idFromName(nodeName));
@@ -257,7 +257,7 @@ namespace gum {
   /* Entropy
    * Compute Shanon's entropy of a node given the observation
    */
-  template < typename GUM_SCALAR >
+  template < GUM_Numeric GUM_SCALAR >
   INLINE GUM_SCALAR MarginalTargetedMRFInference< GUM_SCALAR >::H(NodeId X) {
     return posterior(X).entropy();
   }
@@ -265,12 +265,12 @@ namespace gum {
   /* Entropy
    * Compute Shanon's entropy of a node given the observation
    */
-  template < typename GUM_SCALAR >
+  template < GUM_Numeric GUM_SCALAR >
   INLINE GUM_SCALAR MarginalTargetedMRFInference< GUM_SCALAR >::H(const std::string& nodeName) {
     return H(this->MRF().idFromName(nodeName));
   }
 
-  template < typename GUM_SCALAR >
+  template < GUM_Numeric GUM_SCALAR >
   Tensor< GUM_SCALAR >
       MarginalTargetedMRFInference< GUM_SCALAR >::evidenceImpact(NodeId         target,
                                                                  const NodeSet& evs) {
@@ -309,7 +309,7 @@ namespace gum {
     return res;
   }
 
-  template < typename GUM_SCALAR >
+  template < GUM_Numeric GUM_SCALAR >
   Tensor< GUM_SCALAR > MarginalTargetedMRFInference< GUM_SCALAR >::evidenceImpact(
       const std::string&                target,
       const std::vector< std::string >& evs) {
@@ -317,12 +317,12 @@ namespace gum {
     return evidenceImpact(mn.idFromName(target), mn.nodeset(evs));
   }
 
-  template < typename GUM_SCALAR >
+  template < GUM_Numeric GUM_SCALAR >
   INLINE bool MarginalTargetedMRFInference< GUM_SCALAR >::isTargetedMode_() const {
     return _targeted_mode_;
   }
 
-  template < typename GUM_SCALAR >
+  template < GUM_Numeric GUM_SCALAR >
   INLINE void MarginalTargetedMRFInference< GUM_SCALAR >::setTargetedMode_() {
     if (!_targeted_mode_) {
       _targets_.clear();

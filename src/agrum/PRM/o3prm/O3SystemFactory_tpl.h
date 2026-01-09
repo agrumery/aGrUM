@@ -55,7 +55,7 @@ namespace gum {
   namespace prm {
     namespace o3prm {
 
-      template < typename GUM_SCALAR >
+      template < GUM_Numeric GUM_SCALAR >
       INLINE O3SystemFactory< GUM_SCALAR >::O3SystemFactory(PRM< GUM_SCALAR >&          prm,
                                                             O3PRM&                      o3_prm,
                                                             O3NameSolver< GUM_SCALAR >& solver,
@@ -64,7 +64,7 @@ namespace gum {
         GUM_CONSTRUCTOR(O3SystemFactory);
       }
 
-      template < typename GUM_SCALAR >
+      template < GUM_Numeric GUM_SCALAR >
       INLINE
           O3SystemFactory< GUM_SCALAR >::O3SystemFactory(const O3SystemFactory< GUM_SCALAR >& src) :
           _prm_(src._prm_), _o3_prm_(src._o3_prm_), _solver_(src._solver_), _errors_(src._errors_),
@@ -72,7 +72,7 @@ namespace gum {
         GUM_CONS_CPY(O3SystemFactory);
       }
 
-      template < typename GUM_SCALAR >
+      template < GUM_Numeric GUM_SCALAR >
       INLINE O3SystemFactory< GUM_SCALAR >::O3SystemFactory(O3SystemFactory< GUM_SCALAR >&& src) :
           _prm_(std::move(src._prm_)), _o3_prm_(std::move(src._o3_prm_)),
           _solver_(std::move(src._solver_)), _errors_(std::move(src._errors_)),
@@ -80,12 +80,12 @@ namespace gum {
         GUM_CONS_MOV(O3SystemFactory);
       }
 
-      template < typename GUM_SCALAR >
+      template < GUM_Numeric GUM_SCALAR >
       INLINE O3SystemFactory< GUM_SCALAR >::~O3SystemFactory() {
         GUM_DESTRUCTOR(O3SystemFactory);
       }
 
-      template < typename GUM_SCALAR >
+      template < GUM_Numeric GUM_SCALAR >
       INLINE O3SystemFactory< GUM_SCALAR >&
              O3SystemFactory< GUM_SCALAR >::operator=(const O3SystemFactory< GUM_SCALAR >& src) {
         if (this == &src) { return *this; }
@@ -96,7 +96,7 @@ namespace gum {
         return *this;
       }
 
-      template < typename GUM_SCALAR >
+      template < GUM_Numeric GUM_SCALAR >
       INLINE O3SystemFactory< GUM_SCALAR >&
              O3SystemFactory< GUM_SCALAR >::operator=(O3SystemFactory< GUM_SCALAR >&& src) {
         if (this == &src) { return *this; }
@@ -107,7 +107,7 @@ namespace gum {
         return *this;
       }
 
-      template < typename GUM_SCALAR >
+      template < GUM_Numeric GUM_SCALAR >
       INLINE void O3SystemFactory< GUM_SCALAR >::build() {
         PRMFactory< GUM_SCALAR > factory(_prm_);
 
@@ -129,7 +129,7 @@ namespace gum {
         }
       }
 
-      template < typename GUM_SCALAR >
+      template < GUM_Numeric GUM_SCALAR >
       INLINE void O3SystemFactory< GUM_SCALAR >::_addInstances_(PRMFactory< GUM_SCALAR >& factory,
                                                                 O3System&                 sys) {
         for (auto& i: sys.instances()) {
@@ -150,7 +150,7 @@ namespace gum {
         }
       }
 
-      template < typename GUM_SCALAR >
+      template < GUM_Numeric GUM_SCALAR >
       INLINE void O3SystemFactory< GUM_SCALAR >::_addAssignments_(PRMFactory< GUM_SCALAR >& factory,
                                                                   O3System&                 sys) {
         const auto& real_sys = _prm_->getSystem(sys.name().label());
@@ -176,7 +176,7 @@ namespace gum {
         }
       }
 
-      template < typename GUM_SCALAR >
+      template < GUM_Numeric GUM_SCALAR >
       INLINE void O3SystemFactory< GUM_SCALAR >::_addIncrements_(PRMFactory< GUM_SCALAR >& factory,
                                                                  O3System&                 sys) {
         const auto& real_sys = _prm_->getSystem(sys.name().label());
@@ -201,7 +201,7 @@ namespace gum {
         }
       }
 
-      template < typename GUM_SCALAR >
+      template < GUM_Numeric GUM_SCALAR >
       INLINE bool O3SystemFactory< GUM_SCALAR >::_checkSystem_(O3System& sys) {
         if (_checkInstance_(sys) && _checkAssignments_(sys) && _checkIncrements_(sys)) {
           return true;
@@ -210,7 +210,7 @@ namespace gum {
         return false;
       }
 
-      template < typename GUM_SCALAR >
+      template < GUM_Numeric GUM_SCALAR >
       INLINE bool O3SystemFactory< GUM_SCALAR >::_checkInstance_(O3System& sys) {
         for (auto& i: sys.instances()) {
           if (!_solver_->resolveClass(i.type())) { return false; }
@@ -231,7 +231,7 @@ namespace gum {
         return true;
       }
 
-      template < typename GUM_SCALAR >
+      template < GUM_Numeric GUM_SCALAR >
       INLINE bool
           O3SystemFactory< GUM_SCALAR >::_checkParameters_(const PRMClass< GUM_SCALAR >& type,
                                                            const O3Instance&             inst) {
@@ -274,7 +274,7 @@ namespace gum {
         return true;
       }
 
-      template < typename GUM_SCALAR >
+      template < GUM_Numeric GUM_SCALAR >
       INLINE bool O3SystemFactory< GUM_SCALAR >::_checkAssignments_(O3System& sys) {
         for (auto& ass: sys.assignments()) {
           // if ( ass.leftInstance().label() == ass.leftReference().label() ) {
@@ -319,7 +319,7 @@ namespace gum {
         return true;
       }
 
-      template < typename GUM_SCALAR >
+      template < GUM_Numeric GUM_SCALAR >
       INLINE bool O3SystemFactory< GUM_SCALAR >::_checkIncrements_(O3System& sys) {
         for (auto& inc: sys.increments()) {
           // if ( inc.leftInstance().label() == inc.leftReference().label() ) {

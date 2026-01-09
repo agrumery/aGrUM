@@ -100,7 +100,7 @@ namespace gum {
     }
 
     /// assign a new Bayes net to all the generators that depend on a BN
-    template < typename GUM_SCALAR >
+    template < GUM_Numeric GUM_SCALAR >
     void DBRowGeneratorSet::setBayesNet(const BayesNet< GUM_SCALAR >& new_bn) {
       HashTable< DBRowGeneratorWithBN< GUM_SCALAR >*, const BayesNet< GUM_SCALAR >* > old_bns;
 

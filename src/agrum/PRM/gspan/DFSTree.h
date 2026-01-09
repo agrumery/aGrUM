@@ -59,11 +59,11 @@
 namespace gum {
   namespace prm {
 
-    template < typename GUM_SCALAR >
+    template < GUM_Numeric GUM_SCALAR >
     class GSpan;
 
     namespace gspan {
-      template < typename GUM_SCALAR >
+      template < GUM_Numeric GUM_SCALAR >
       class SearchStrategy;
 
       /**
@@ -73,7 +73,7 @@ namespace gum {
        * A DFSTree is used by gspan to sort lexicographically patterns
        * discovered in an interface graph.
        */
-      template < typename GUM_SCALAR >
+      template < GUM_Numeric GUM_SCALAR >
       class DFSTree: private DiGraph {
         public:
         // =========================================================================

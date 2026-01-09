@@ -67,7 +67,7 @@ namespace gum {
    * The goal of this class is to provide an interface for the computation
    * of the probability of evidence entered in Markov random fields
    */
-  template < typename GUM_SCALAR >
+  template < GUM_Numeric GUM_SCALAR >
   class EvidenceMRFInference: public virtual MRFInference< GUM_SCALAR > {
     public:
     // ############################################################################

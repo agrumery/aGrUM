@@ -68,7 +68,7 @@ namespace gum {
    * All classes used to write an influence diagram in a stream or
    * a file must inherit from this class
    */
-  template < typename GUM_SCALAR >
+  template < GUM_Numeric GUM_SCALAR >
 
   class IDWriter {
     public:

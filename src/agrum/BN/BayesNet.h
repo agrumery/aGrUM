@@ -56,7 +56,7 @@
 #include <agrum/BN/IBayesNet.h>
 
 namespace gum {
-  template < typename GUM_SCALAR >
+  template < GUM_Numeric GUM_SCALAR >
   class BayesNetFactory;
 
   /**
@@ -89,7 +89,7 @@ namespace gum {
    * You can print a BayesNet using
    * gum::operator<<(std::ostream&, const BayesNet<GUM_SCALAR>&).
    */
-  template < typename GUM_SCALAR >
+  template < GUM_Numeric GUM_SCALAR >
   class BayesNet: public IBayesNet< GUM_SCALAR > {
     friend class BayesNetFactory< GUM_SCALAR >;
 
@@ -706,7 +706,7 @@ namespace gum {
   };
 
   /// Prints map's DAG in output using the Graphviz-dot format.
-  template < typename GUM_SCALAR >
+  template < GUM_Numeric GUM_SCALAR >
   std::ostream& operator<<(std::ostream& output, const BayesNet< GUM_SCALAR >& bn);
 
 

@@ -54,26 +54,26 @@
 namespace gum {
 
   ///  default constructor
-  template < typename GUM_SCALAR >
+  template < GUM_Numeric GUM_SCALAR >
   ImportanceSampling< GUM_SCALAR >::ImportanceSampling(const IBayesNet< GUM_SCALAR >* bn) :
       SamplingInference< GUM_SCALAR >(bn) {
     GUM_CONSTRUCTOR(ImportanceSampling);
   }
 
   ///  destructor
-  template < typename GUM_SCALAR >
+  template < GUM_Numeric GUM_SCALAR >
   ImportanceSampling< GUM_SCALAR >::~ImportanceSampling() {
     GUM_DESTRUCTOR(ImportanceSampling);
   }
 
   /// no burn in needed for Importance sampling
-  template < typename GUM_SCALAR >
+  template < GUM_Numeric GUM_SCALAR >
   Instantiation ImportanceSampling< GUM_SCALAR >::burnIn_() {
     Instantiation I;
     return I;
   }
 
-  template < typename GUM_SCALAR >
+  template < GUM_Numeric GUM_SCALAR >
   Instantiation ImportanceSampling< GUM_SCALAR >::draw_(GUM_SCALAR* w, Instantiation prev) {
     GUM_SCALAR pSurQ;
 
@@ -106,7 +106,7 @@ namespace gum {
     return prev;
   }
 
-  template < typename GUM_SCALAR >
+  template < GUM_Numeric GUM_SCALAR >
   void ImportanceSampling< GUM_SCALAR >::unsharpenBN_(BayesNetFragment< GUM_SCALAR >* bn,
                                                       float                           epsilon) {
     for (const auto nod: bn->nodes().asNodeSet()) {
@@ -116,7 +116,7 @@ namespace gum {
     }
   }
 
-  template < typename GUM_SCALAR >
+  template < GUM_Numeric GUM_SCALAR >
   void ImportanceSampling< GUM_SCALAR >::onContextualize_(BayesNetFragment< GUM_SCALAR >* bn) {
     for (const auto ev: this->hardEvidenceNodes()) {
       bn->uninstallCPT(ev);

@@ -57,14 +57,14 @@ namespace gum {
   /* ===                           GUM_FMDP_WRITER === */
   /* ============================================================================
    */
-  template < typename GUM_SCALAR >
-  INLINE FMDPReader< GUM_SCALAR >::FMDPReader(FMDP< GUM_SCALAR >* FMDP,
+  template < typename GUM_ELEMENT >
+  INLINE FMDPReader< GUM_ELEMENT >::FMDPReader(FMDP< GUM_ELEMENT >* FMDP,
                                               const std::string&  filename) {
     GUM_CONSTRUCTOR(FMDPReader);
   }
 
-  template < typename GUM_SCALAR >
-  INLINE FMDPReader< GUM_SCALAR >::~FMDPReader() {
+  template < typename GUM_ELEMENT >
+  INLINE FMDPReader< GUM_ELEMENT >::~FMDPReader() {
     GUM_DESTRUCTOR(FMDPReader);
   }
 

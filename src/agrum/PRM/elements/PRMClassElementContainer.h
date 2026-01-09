@@ -55,9 +55,9 @@
 namespace gum {
   namespace prm {
 
-    template < typename GUM_SCALAR >
+    template < GUM_Numeric GUM_SCALAR >
     class PRMClass;
-    template < typename GUM_SCALAR >
+    template < GUM_Numeric GUM_SCALAR >
     class PRMInterface;
     class PRMClassElementContainterIterator;
     class PRMClassElementContainterConstIterator;
@@ -75,7 +75,7 @@ namespace gum {
      *
      * @ingroup prm_group
      */
-    template < typename GUM_SCALAR >
+    template < GUM_Numeric GUM_SCALAR >
     class PRMClassElementContainer: public PRMObject {
       friend class PRMClassElementContainterIterator;
       friend class PRMClassElementContainterConstIterator;
@@ -463,7 +463,7 @@ namespace gum {
 
 /// @brief An << operator for PRMClassElementContainer.
 /// Output in the graphviz-dot format.
-template < typename GUM_SCALAR >
+template < gum::GUM_Numeric GUM_SCALAR >
 std::ostream& operator<<(std::ostream&                                           output,
                          const gum::prm::PRMClassElementContainer< GUM_SCALAR >& container);
 

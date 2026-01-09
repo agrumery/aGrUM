@@ -68,7 +68,7 @@ namespace gum {
    * Every class used to read the content of a Bayesian network from a stream,
    * or a file must be a subclass of DSLReader.
    */
-  template < typename GUM_SCALAR >
+  template < GUM_Numeric GUM_SCALAR >
   class DSLReader: public BNReader< GUM_SCALAR > {
     public:
     /**

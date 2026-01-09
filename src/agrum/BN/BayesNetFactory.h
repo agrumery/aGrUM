@@ -77,7 +77,7 @@ namespace gum {
    * "Illegal state.".
    *
    */
-  template < typename GUM_SCALAR >
+  template < GUM_Numeric GUM_SCALAR >
   class BayesNetFactory: public IBayesNetFactory {
     public:
     // ==========================================================================

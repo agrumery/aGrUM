@@ -63,13 +63,13 @@ namespace gum {
     this->compare(ref_eg, test_eg);
   }
 
-  template < typename GUM_SCALAR >
+  template < GUM_Numeric GUM_SCALAR >
   void StructuralComparator::compare(const BayesNet< GUM_SCALAR >& ref, const PDAG& test) {
     PDAG ref_eg = EssentialGraph(ref).pdag();
     this->compare(ref_eg, test);
   }
 
-  template < typename GUM_SCALAR >
+  template < GUM_Numeric GUM_SCALAR >
   void StructuralComparator::compare(const PDAG& ref, const BayesNet< GUM_SCALAR >& test) {
     PDAG test_eg = EssentialGraph(test).pdag();
 

@@ -50,7 +50,7 @@ namespace gum {
   /*
    * Default constructor.
    */
-  template < typename GUM_SCALAR >
+  template < GUM_Numeric GUM_SCALAR >
   INLINE XDSLBNWriter< GUM_SCALAR >::XDSLBNWriter() {
     GUM_CONSTRUCTOR(XDSLBNWriter);
   }
@@ -58,7 +58,7 @@ namespace gum {
   /*
    * Destructor.
    */
-  template < typename GUM_SCALAR >
+  template < GUM_Numeric GUM_SCALAR >
   INLINE XDSLBNWriter< GUM_SCALAR >::~XDSLBNWriter() {
     GUM_DESTRUCTOR(XDSLBNWriter);
   }
@@ -70,7 +70,7 @@ namespace gum {
    * @param bn The bayes net writen in the stream.
    * @throws IOError Raised if an I/O error occurs.
    */
-  template < typename GUM_SCALAR >
+  template < GUM_Numeric GUM_SCALAR >
   INLINE void XDSLBNWriter< GUM_SCALAR >::_doWrite(std::ostream&                  output,
                                                    const IBayesNet< GUM_SCALAR >& bn) {
     if (!output.good()) { GUM_ERROR(IOError, "Input/Output error : stream not writable.") }
@@ -108,7 +108,7 @@ namespace gum {
    * @param bn The bayes net writen in the file.
    * @throw IOError Raised if an I/O error occurs.
    */
-  template < typename GUM_SCALAR >
+  template < GUM_Numeric GUM_SCALAR >
   INLINE void XDSLBNWriter< GUM_SCALAR >::_doWrite(const std::string&             filePath,
                                                    const IBayesNet< GUM_SCALAR >& bn) {
     std::ofstream output(filePath.c_str(), std::ios_base::trunc);
@@ -122,7 +122,7 @@ namespace gum {
   /*
    * Send to output the header of the XDSL file.
    */
-  template < typename GUM_SCALAR >
+  template < GUM_Numeric GUM_SCALAR >
   INLINE void XDSLBNWriter< GUM_SCALAR >::_heading_(std::ostream&                  output,
                                                     const IBayesNet< GUM_SCALAR >& bn) {
     // Header for every xml
@@ -137,7 +137,7 @@ namespace gum {
   /*
    * Send to output the header of the extension section
    */
-  template < typename GUM_SCALAR >
+  template < GUM_Numeric GUM_SCALAR >
   INLINE void XDSLBNWriter< GUM_SCALAR >::_headingExtension_(std::ostream&                  output,
                                                              const IBayesNet< GUM_SCALAR >& bn) {
     // Header for every xml
@@ -149,7 +149,7 @@ namespace gum {
   /*
    * Send to output a bloc defining a variable in the XDSL format.
    */
-  template < typename GUM_SCALAR >
+  template < GUM_Numeric GUM_SCALAR >
   INLINE void XDSLBNWriter< GUM_SCALAR >::_variableBloc_(std::ostream&                  output,
                                                          const NodeId&                  varNodeId,
                                                          const IBayesNet< GUM_SCALAR >& bn) {
@@ -206,7 +206,7 @@ namespace gum {
   /*
    * Send to output a bloc defining a variable's CPT in the XDSL format.
    */
-  template < typename GUM_SCALAR >
+  template < GUM_Numeric GUM_SCALAR >
   INLINE void XDSLBNWriter< GUM_SCALAR >::_variableExtension_(std::ostream& output,
                                                               const NodeId& varNodeId,
                                                               const IBayesNet< GUM_SCALAR >& bn) {
@@ -222,7 +222,7 @@ namespace gum {
   /*
    * Send to output the end of the XDSL file.
    */
-  template < typename GUM_SCALAR >
+  template < GUM_Numeric GUM_SCALAR >
   INLINE void XDSLBNWriter< GUM_SCALAR >::_endExtension_(std::ostream& output) {
     output << "    </genie>" << std::endl;
     output << "  </extensions>" << std::endl;
@@ -231,7 +231,7 @@ namespace gum {
   /*
    * Send to output the end of the XDSL file.
    */
-  template < typename GUM_SCALAR >
+  template < GUM_Numeric GUM_SCALAR >
   INLINE void XDSLBNWriter< GUM_SCALAR >::_documentEnd_(std::ostream& output) {
     output << "</smile>" << std::endl;
   }

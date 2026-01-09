@@ -56,7 +56,7 @@
 
 namespace gum {
   namespace prm {
-    template < typename GUM_SCALAR >
+    template < GUM_Numeric GUM_SCALAR >
     class GSpan;
 
     namespace gspan {
@@ -96,7 +96,7 @@ namespace gum {
        * @struct NodeData interfaceGraph.h <agrum/PRM/gspan/interfaceGraph.h>
        * Inner class to handle data about nodes in  _graph_.
        */
-      template < typename GUM_SCALAR >
+      template < GUM_Numeric GUM_SCALAR >
       class NodeData {
         public:
         /// Constructor.
@@ -121,14 +121,14 @@ namespace gum {
        * @param data The data printed.
        * @return Returns out.
        */
-      template < typename GUM_SCALAR >
+      template < GUM_Numeric GUM_SCALAR >
       std::ostream& operator<<(std::ostream& out, const NodeData< GUM_SCALAR >& data);
 
       /**
        * @struct EdgeData interfaceGraph.h <agrum/PRM/gspan/interfaceGraph.h>
        * Inner class to handle data about edges in  _graph_.
        */
-      template < typename GUM_SCALAR >
+      template < GUM_Numeric GUM_SCALAR >
       class EdgeData {
         public:
         /// Constructor.
@@ -159,7 +159,7 @@ namespace gum {
        * @param data The data printed.
        * @return Returns out.
        */
-      template < typename GUM_SCALAR >
+      template < GUM_Numeric GUM_SCALAR >
       std::ostream& operator<<(std::ostream& out, const EdgeData< GUM_SCALAR >& data);
 
       /**
@@ -178,7 +178,7 @@ namespace gum {
        * assigned a unique id.
        *
        */
-      template < typename GUM_SCALAR >
+      template < GUM_Numeric GUM_SCALAR >
       class InterfaceGraph {
         friend class gum::prm::GSpan< GUM_SCALAR >;
 

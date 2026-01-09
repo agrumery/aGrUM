@@ -70,7 +70,7 @@ namespace gum {
      * the DAG but not in the nodes CPT.
      *
      */
-    template < typename GUM_SCALAR >
+    template < GUM_Numeric GUM_SCALAR >
     class InstanceBayesNet: public IBayesNet< GUM_SCALAR > {
       public:
       // ========================================================================

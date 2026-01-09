@@ -56,17 +56,17 @@
 
 namespace gum {
 
-  template < typename GUM_SCALAR >
-  FMDPDatReader< GUM_SCALAR >::FMDPDatReader(FMDP< GUM_SCALAR >* fmdp,
+  template < typename GUM_ELEMENT >
+  FMDPDatReader< GUM_ELEMENT >::FMDPDatReader(FMDP< GUM_ELEMENT >* fmdp,
                                              const std::string&  filename) :
-      FMDPReader< GUM_SCALAR >(fmdp, filename) {
+      FMDPReader< GUM_ELEMENT >(fmdp, filename) {
     GUM_CONSTRUCTOR(FMDPDatReader);
 
     _fmdp_       = fmdp;
     _streamName_ = filename;
     _parseDone_  = false;
     //    ddf->putOnNoVariableCheckMode();
-    _factory_ = new FMDPFactory< GUM_SCALAR >(_fmdp_);
+    _factory_ = new FMDPFactory< GUM_ELEMENT >(_fmdp_);
     //~  _factory_->setVerbose();
     _ioerror_ = false;
 
@@ -77,8 +77,8 @@ namespace gum {
     } catch (const IOError&) { _ioerror_ = true; }
   }
 
-  template < typename GUM_SCALAR >
-  FMDPDatReader< GUM_SCALAR >::~FMDPDatReader() {
+  template < typename GUM_ELEMENT >
+  FMDPDatReader< GUM_ELEMENT >::~FMDPDatReader() {
     GUM_DESTRUCTOR(FMDPDatReader);
 
     if (!_ioerror_) {
@@ -91,31 +91,31 @@ namespace gum {
     if (_factory_) delete (_factory_);
   }
 
-  template < typename GUM_SCALAR >
-  INLINE MDPDAT::Scanner& FMDPDatReader< GUM_SCALAR >::scanner() {
+  template < typename GUM_ELEMENT >
+  INLINE MDPDAT::Scanner& FMDPDatReader< GUM_ELEMENT >::scanner() {
     if (_ioerror_) { GUM_ERROR(gum::IOError, "No such file " + streamName()) }
 
     return *_scanner_;
   }
 
-  template < typename GUM_SCALAR >
-  INLINE const std::string& FMDPDatReader< GUM_SCALAR >::streamName() const {
+  template < typename GUM_ELEMENT >
+  INLINE const std::string& FMDPDatReader< GUM_ELEMENT >::streamName() const {
     return _streamName_;
   }
 
-  template < typename GUM_SCALAR >
-  INLINE bool FMDPDatReader< GUM_SCALAR >::trace() const {
+  template < typename GUM_ELEMENT >
+  INLINE bool FMDPDatReader< GUM_ELEMENT >::trace() const {
     return _traceScanning_;
   }
 
-  template < typename GUM_SCALAR >
-  INLINE void FMDPDatReader< GUM_SCALAR >::trace(bool b) {
+  template < typename GUM_ELEMENT >
+  INLINE void FMDPDatReader< GUM_ELEMENT >::trace(bool b) {
     _traceScanning_ = b;
     scanner().setTrace(b);
   }
 
-  template < typename GUM_SCALAR >
-  Size FMDPDatReader< GUM_SCALAR >::proceed() {
+  template < typename GUM_ELEMENT >
+  Size FMDPDatReader< GUM_ELEMENT >::proceed() {
     if (_ioerror_) { GUM_ERROR(gum::IOError, "No such file " + streamName()) }
 
     if (!_parseDone_) {
@@ -133,55 +133,55 @@ namespace gum {
 
   /// @{
   /// publishing Errors API
-  template < typename GUM_SCALAR >
-  INLINE Idx FMDPDatReader< GUM_SCALAR >::errLine(Idx i) {
+  template < typename GUM_ELEMENT >
+  INLINE Idx FMDPDatReader< GUM_ELEMENT >::errLine(Idx i) {
     if (_parseDone_) return _parser_->errors().error(i).line;
     else GUM_ERROR(OperationNotAllowed, "FMDPDat file not parsed yet")
   }
 
-  template < typename GUM_SCALAR >
-  INLINE Idx FMDPDatReader< GUM_SCALAR >::errCol(Idx i) {
+  template < typename GUM_ELEMENT >
+  INLINE Idx FMDPDatReader< GUM_ELEMENT >::errCol(Idx i) {
     if (_parseDone_) return _parser_->errors().error(i).column;
     else GUM_ERROR(OperationNotAllowed, "FMDPDat file not parsed yet")
   }
 
-  template < typename GUM_SCALAR >
-  INLINE bool FMDPDatReader< GUM_SCALAR >::errIsError(Idx i) {
+  template < typename GUM_ELEMENT >
+  INLINE bool FMDPDatReader< GUM_ELEMENT >::errIsError(Idx i) {
     if (_parseDone_) return _parser_->errors().error(i).is_error;
     else GUM_ERROR(OperationNotAllowed, "FMDPDat file not parsed yet")
   }
 
-  template < typename GUM_SCALAR >
-  INLINE std::string FMDPDatReader< GUM_SCALAR >::errMsg(Idx i) {
+  template < typename GUM_ELEMENT >
+  INLINE std::string FMDPDatReader< GUM_ELEMENT >::errMsg(Idx i) {
     if (_parseDone_) return _parser_->errors().error(i).msg;
     else GUM_ERROR(OperationNotAllowed, "FMDPDat file not parsed yet")
   }
 
-  template < typename GUM_SCALAR >
-  INLINE void FMDPDatReader< GUM_SCALAR >::showElegantErrors(std::ostream& o) {
+  template < typename GUM_ELEMENT >
+  INLINE void FMDPDatReader< GUM_ELEMENT >::showElegantErrors(std::ostream& o) {
     if (_parseDone_) _parser_->errors().elegantErrors(o);
     else GUM_ERROR(OperationNotAllowed, "FMDPDat file not parsed yet")
   }
 
-  template < typename GUM_SCALAR >
-  INLINE void FMDPDatReader< GUM_SCALAR >::showElegantErrorsAndWarnings(std::ostream& o) {
+  template < typename GUM_ELEMENT >
+  INLINE void FMDPDatReader< GUM_ELEMENT >::showElegantErrorsAndWarnings(std::ostream& o) {
     if (_parseDone_) _parser_->errors().elegantErrorsAndWarnings(o);
     else GUM_ERROR(OperationNotAllowed, "FMDPDat file not parsed yet")
   }
 
-  template < typename GUM_SCALAR >
-  INLINE void FMDPDatReader< GUM_SCALAR >::showErrorCounts(std::ostream& o) {
+  template < typename GUM_ELEMENT >
+  INLINE void FMDPDatReader< GUM_ELEMENT >::showErrorCounts(std::ostream& o) {
     if (_parseDone_) _parser_->errors().syntheticResults(o);
     else GUM_ERROR(OperationNotAllowed, "FMDPDat file not parsed yet")
   }
 
-  template < typename GUM_SCALAR >
-  INLINE Size FMDPDatReader< GUM_SCALAR >::errors() {
+  template < typename GUM_ELEMENT >
+  INLINE Size FMDPDatReader< GUM_ELEMENT >::errors() {
     return (!_parseDone_) ? (Size)0 : _parser_->errors().error_count;
   }
 
-  template < typename GUM_SCALAR >
-  INLINE Size FMDPDatReader< GUM_SCALAR >::warnings() {
+  template < typename GUM_ELEMENT >
+  INLINE Size FMDPDatReader< GUM_ELEMENT >::warnings() {
     return (!_parseDone_) ? (Size)0 : _parser_->errors().warning_count;
   }
 

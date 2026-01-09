@@ -60,44 +60,44 @@ namespace gum {
   // of its variables
 
 #  ifdef GUM_MULTI_DIM_PROJECTION_NAME
-#    define GUM_MULTI_DIM_PROJECTION_TYPE GUM_SCALAR
+#    define GUM_MULTI_DIM_PROJECTION_TYPE GUM_ELEMENT
 
-  template < typename GUM_SCALAR >
-  MultiDimImplementation< GUM_SCALAR >*
-      GUM_MULTI_DIM_PROJECTION_NAME(const MultiDimImplementation< GUM_SCALAR >* table,
-                                    const gum::VariableSet&                     del_vars)
+  template < typename GUM_ELEMENT >
+  MultiDimImplementation< GUM_ELEMENT >*
+      GUM_MULTI_DIM_PROJECTION_NAME(const MultiDimImplementation< GUM_ELEMENT >* table,
+                                    const gum::VariableSet&                      del_vars)
 #  endif
 
   // clang-format off
 
 #ifdef GUM_MULTI_DIM_PROJECTION_POINTER_NAME
-#define GUM_MULTI_DIM_PROJECTION_TYPE GUM_SCALAR *
+#define GUM_MULTI_DIM_PROJECTION_TYPE GUM_ELEMENT *
 #define GUM_MULTI_DIM_PROJECTION_POINTER
-  template <typename GUM_SCALAR>
-  MultiDimImplementation<GUM_SCALAR*>* GUM_MULTI_DIM_PROJECTION_POINTER_NAME(
-      const MultiDimImplementation<GUM_SCALAR*>* table,
+  template <typename GUM_ELEMENT>
+  MultiDimImplementation<GUM_ELEMENT*>* GUM_MULTI_DIM_PROJECTION_POINTER_NAME(
+      const MultiDimImplementation<GUM_ELEMENT*>* table,
       const VariableSet& del_vars )
 #endif
 
 #ifdef GUM_MULTI_DIM_PROJECTION_NAME_F
-#define GUM_MULTI_DIM_PROJECTION_TYPE GUM_SCALAR
-  template <typename GUM_SCALAR>
-  MultiDimImplementation<GUM_SCALAR>* GUM_MULTI_DIM_PROJECTION_NAME_F(
-      const MultiDimImplementation<GUM_SCALAR>* table,
+#define GUM_MULTI_DIM_PROJECTION_TYPE GUM_ELEMENT
+  template <typename GUM_ELEMENT>
+  MultiDimImplementation<GUM_ELEMENT>* GUM_MULTI_DIM_PROJECTION_NAME_F(
+      const MultiDimImplementation<GUM_ELEMENT>* table,
       const VariableSet& del_vars,
-      GUM_SCALAR ( *f )( const GUM_SCALAR&, const GUM_SCALAR& ) )
+      GUM_ELEMENT ( *f )( const GUM_ELEMENT&, const GUM_ELEMENT& ) )
 #endif
 
 #ifdef GUM_MULTI_DIM_PROJECTION_POINTER_NAME_F
-#define GUM_MULTI_DIM_PROJECTION_TYPE GUM_SCALAR *
+#define GUM_MULTI_DIM_PROJECTION_TYPE GUM_ELEMENT *
 #define GUM_MULTI_DIM_PROJECTION_POINTER
-  template <typename GUM_SCALAR>
-  MultiDimImplementation<GUM_SCALAR*>*
+  template <typename GUM_ELEMENT>
+  MultiDimImplementation<GUM_ELEMENT*>*
   GUM_MULTI_DIM_PROJECTION_POINTER_NAME_F(
-      const MultiDimImplementation<GUM_SCALAR*>* table,
+      const MultiDimImplementation<GUM_ELEMENT*>* table,
       const VariableSet& del_vars,
-      GUM_SCALAR* ( *f )( const GUM_SCALAR const*,
-                          const GUM_SCALAR const* ) )
+      GUM_ELEMENT* ( *f )( const GUM_ELEMENT const*,
+                          const GUM_ELEMENT const* ) )
 #endif
 
   // clang-format on
@@ -106,7 +106,7 @@ namespace gum {
 
     // create the neutral element used to fill the result upon its
     // creation
-    const GUM_SCALAR neutral_element = GUM_MULTI_DIM_PROJECTION_NEUTRAL;
+    const GUM_ELEMENT neutral_element = GUM_MULTI_DIM_PROJECTION_NEUTRAL;
 
     // first, compute whether we should loop over table or over the projected
     // table first to get a faster algorithm.
@@ -187,7 +187,7 @@ namespace gum {
 #  ifdef GUM_MULTI_DIM_PROJECTION_POINTER
 
       for (Idx i = 0; i < result_domain_size; ++i) {
-        result->unsafeSet(i, new GUM_SCALAR(neutral_element));
+        result->unsafeSet(i, new GUM_ELEMENT(neutral_element));
       }
 
 #  else
@@ -367,7 +367,7 @@ namespace gum {
 #  ifdef GUM_MULTI_DIM_PROJECTION_POINTER
 
       for (Idx i = 0; i < result_domain_size; ++i) {
-        result->unsafeSet(i, new GUM_SCALAR(neutral_element));
+        result->unsafeSet(i, new GUM_ELEMENT(neutral_element));
       }
 
 #  else

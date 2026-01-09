@@ -68,21 +68,21 @@ namespace gum {
    * @brief Abstract base class for all multi dimensionnal implementations
    *
    * The gum::MultiDimImplementation is an abstract class for all
-   * multidimensional implementation of container of GUM_SCALAR. Its purpose is
+   * multidimensional implementation of container of GUM_ELEMENT. Its purpose is
    * to implement base algorithms with no regard to how the storage is done
    * (tree, matrix...)
    *
    * It deals also with variables and implements pure virtual methods concerned
    * with dimensions.
    *
-   * See operator<<(std::ostream&, const MultiDimImplementation<GUM_SCALAR>&)
+   * See operator<<(std::ostream&, const MultiDimImplementation<GUM_ELEMENT>&)
    * to print a gum::MultiDimImplementation.
    *
-   * @tparam GUM_SCALAR The type of the scalar stored in this multidimensional
+   * @tparam GUM_ELEMENT The type of the scalar stored in this multidimensional
    * matrix.
    */
-  template < typename GUM_SCALAR >
-  class MultiDimImplementation: public MultiDimContainer< GUM_SCALAR > {
+  template < typename GUM_ELEMENT >
+  class MultiDimImplementation: public MultiDimContainer< GUM_ELEMENT > {
     public:
     // =========================================================================
     /// @name Constructors / Destructors
@@ -98,7 +98,7 @@ namespace gum {
      * @brief Copy constructor.
      * @param from The MultiDimImplementation to copy.
      */
-    MultiDimImplementation(const MultiDimImplementation< GUM_SCALAR >& from);
+    MultiDimImplementation(const MultiDimImplementation< GUM_ELEMENT >& from);
 
     /**
      * @brief Class destructor.
@@ -201,15 +201,15 @@ namespace gum {
     // =========================================================================
     /// @{
 
-    using MultiDimContainer< GUM_SCALAR >::get;
+    using MultiDimContainer< GUM_ELEMENT >::get;
 
-    virtual MultiDimContainer< GUM_SCALAR >* newFactory() const override = 0;
+    virtual MultiDimContainer< GUM_ELEMENT >* newFactory() const override = 0;
 
     void beginMultipleChanges() override;
 
     void endMultipleChanges() override;
 
-    void endMultipleChanges(const GUM_SCALAR&) override;
+    void endMultipleChanges(const GUM_ELEMENT&) override;
 
     /// @}
 
@@ -228,7 +228,7 @@ namespace gum {
      * @brief Synchronize content after MultipleChanges.
      * @param value Default value for uninitialized values.
      */
-    virtual void commitMultipleChanges_(const GUM_SCALAR& value);
+    virtual void commitMultipleChanges_(const GUM_ELEMENT& value);
 
     /**
      * @brief Get the actual change method of this MultiDimImplementation.
@@ -277,12 +277,12 @@ namespace gum {
     /**
      * @brief Returns the implementation for this object (may be *this).
      */
-    virtual const MultiDimImplementation< GUM_SCALAR >* content() const final;
+    virtual const MultiDimImplementation< GUM_ELEMENT >* content() const final;
 
     /**
      * @brief Returns the implementation for this object (may be *this).
      */
-    virtual MultiDimImplementation< GUM_SCALAR >* content() final;
+    virtual MultiDimImplementation< GUM_ELEMENT >* content() final;
 
     private:
     /// List of discrete variables (dimensions).
@@ -316,8 +316,8 @@ namespace gum {
    * @brief For friendly displaying the content of the array.
    * @ingroup multidim_group
    */
-  template < typename GUM_SCALAR >
-  std::ostream& operator<<(std::ostream&, const MultiDimImplementation< GUM_SCALAR >&);
+  template < typename GUM_ELEMENT >
+  std::ostream& operator<<(std::ostream&, const MultiDimImplementation< GUM_ELEMENT >&);
 
 } /* namespace gum */
 

@@ -60,7 +60,7 @@
 namespace gum {
   namespace prm {
     namespace gspan {
-      template < typename GUM_SCALAR >
+      template < GUM_Numeric GUM_SCALAR >
       class DFSTree;
 
       /**
@@ -69,7 +69,7 @@ namespace gum {
        * This class is used to define an edge growth of a pattern
        * in this DFSTree.
        */
-      template < typename GUM_SCALAR >
+      template < GUM_Numeric GUM_SCALAR >
       class EdgeGrowth {
         public:
         friend class DFSTree< GUM_SCALAR >;
@@ -105,7 +105,7 @@ namespace gum {
         Set< NodeId > max_indep_set;
       };
 
-      template < typename GUM_SCALAR >
+      template < GUM_Numeric GUM_SCALAR >
       std::ostream& operator<<(std::ostream& out, const EdgeGrowth< GUM_SCALAR >& edge);
 
 

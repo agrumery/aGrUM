@@ -199,7 +199,7 @@ namespace gum {
        * database
        * @param translator The cell translator to use.
        * @param initial_dag the DAG we start from for our learning */
-      template < typename GUM_SCALAR = double,
+      template < GUM_Numeric GUM_SCALAR = double,
                  typename GRAPH_CHANGES_SELECTOR,
                  typename PARAM_ESTIMATOR >
       BayesNet< GUM_SCALAR > learnBN(GRAPH_CHANGES_SELECTOR& selector,

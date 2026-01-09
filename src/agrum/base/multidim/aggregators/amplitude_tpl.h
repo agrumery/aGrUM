@@ -58,35 +58,35 @@
 namespace gum {
 
   namespace aggregator {
-    template < typename GUM_SCALAR >
+    template < GUM_Numeric GUM_SCALAR >
     INLINE Amplitude< GUM_SCALAR >::Amplitude() : MultiDimAggregator< GUM_SCALAR >() {
       GUM_CONSTRUCTOR(Amplitude);
     }
 
-    template < typename GUM_SCALAR >
+    template < GUM_Numeric GUM_SCALAR >
     INLINE Amplitude< GUM_SCALAR >::Amplitude(const Amplitude< GUM_SCALAR >& from) :
         MultiDimAggregator< GUM_SCALAR >(from) {
       GUM_CONS_CPY(Amplitude);
     }
 
-    template < typename GUM_SCALAR >
+    template < GUM_Numeric GUM_SCALAR >
     INLINE Amplitude< GUM_SCALAR >::~Amplitude() {
       GUM_DESTRUCTOR(Amplitude);
     }
 
-    template < typename GUM_SCALAR >
+    template < GUM_Numeric GUM_SCALAR >
     INLINE std::string Amplitude< GUM_SCALAR >::aggregatorName() const {
       std::stringstream ss;
       ss << "amplitude";
       return ss.str();
     }
 
-    template < typename GUM_SCALAR >
+    template < GUM_Numeric GUM_SCALAR >
     INLINE MultiDimContainer< GUM_SCALAR >* Amplitude< GUM_SCALAR >::newFactory() const {
       return new Amplitude< GUM_SCALAR >();
     }
 
-    template < typename GUM_SCALAR >
+    template < GUM_Numeric GUM_SCALAR >
     Idx Amplitude< GUM_SCALAR >::buildValue_(const gum::Instantiation& i) const {
       // we assume that every (parent) variable has the same domainSize
       if (i.nbrDim() < 2) return 0;
@@ -102,7 +102,7 @@ namespace gum {
       return max - min;   // multiDimAggregator::get will truncate if needed.
     }
 
-    template < typename GUM_SCALAR >
+    template < GUM_Numeric GUM_SCALAR >
     INLINE Idx Amplitude< GUM_SCALAR >::fold_(const DiscreteVariable& v,
                                               Idx                     i1,
                                               Idx                     i2,

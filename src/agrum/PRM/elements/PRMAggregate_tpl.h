@@ -64,7 +64,7 @@
 namespace gum {
   namespace prm {
 
-    template < typename GUM_SCALAR >
+    template < GUM_Numeric GUM_SCALAR >
     PRMAggregate< GUM_SCALAR >::PRMAggregate(const std::string& name,
                                              AggregateType      aggType,
                                              const PRMType&     rvType) :
@@ -75,7 +75,7 @@ namespace gum {
       this->_type_->variable().setName(name);
     }
 
-    template < typename GUM_SCALAR >
+    template < GUM_Numeric GUM_SCALAR >
     PRMAggregate< GUM_SCALAR >::PRMAggregate(const std::string& name,
                                              AggregateType      aggType,
                                              const PRMType&     rvType,
@@ -87,64 +87,64 @@ namespace gum {
       this->_type_->variable().setName(name);
     }
 
-    template < typename GUM_SCALAR >
+    template < GUM_Numeric GUM_SCALAR >
     PRMAggregate< GUM_SCALAR >::~PRMAggregate() {
       GUM_DESTRUCTOR(PRMAggregate);
       delete _type_;
     }
 
-    template < typename GUM_SCALAR >
+    template < GUM_Numeric GUM_SCALAR >
     PRMAggregate< GUM_SCALAR >::PRMAggregate(const PRMAggregate< GUM_SCALAR >& source) :
         PRMClassElement< GUM_SCALAR >(source) {
       GUM_CONS_CPY(PRMAggregate);
       GUM_ERROR(FatalError, "illegal call to gum::PRMAggregate copy constructor.")
     }
 
-    template < typename GUM_SCALAR >
+    template < GUM_Numeric GUM_SCALAR >
     PRMAggregate< GUM_SCALAR >&
         PRMAggregate< GUM_SCALAR >::operator=(const PRMAggregate< GUM_SCALAR >& source) {
       GUM_ERROR(FatalError, "illegal call to gum::PRMAggregate copy operator.")
     }
 
-    template < typename GUM_SCALAR >
+    template < GUM_Numeric GUM_SCALAR >
     INLINE typename PRMClassElement< GUM_SCALAR >::ClassElementType
         PRMAggregate< GUM_SCALAR >::elt_type() const {
       return this->prm_aggregate;
     }
 
-    template < typename GUM_SCALAR >
+    template < GUM_Numeric GUM_SCALAR >
     INLINE typename PRMAggregate< GUM_SCALAR >::AggregateType
         PRMAggregate< GUM_SCALAR >::agg_type() const {
       return _agg_type_;
     }
 
-    template < typename GUM_SCALAR >
+    template < GUM_Numeric GUM_SCALAR >
     INLINE Idx PRMAggregate< GUM_SCALAR >::label() const {
       if (*_label_ != INT_MAX) return *_label_;
       GUM_ERROR(OperationNotAllowed, "no label defined for this aggregate")
     }
 
-    template < typename GUM_SCALAR >
+    template < GUM_Numeric GUM_SCALAR >
     INLINE const std::string& PRMAggregate< GUM_SCALAR >::labelValue() const {
       return _label_value_;
     }
 
-    template < typename GUM_SCALAR >
+    template < GUM_Numeric GUM_SCALAR >
     INLINE void PRMAggregate< GUM_SCALAR >::setLabel(Idx idx) {
       (*_label_) = idx;
     }
 
-    template < typename GUM_SCALAR >
+    template < GUM_Numeric GUM_SCALAR >
     INLINE void PRMAggregate< GUM_SCALAR >::setLabel(const std::string& value) {
       _label_value_ = value;
     }
 
-    template < typename GUM_SCALAR >
+    template < GUM_Numeric GUM_SCALAR >
     INLINE bool PRMAggregate< GUM_SCALAR >::hasLabel() const {
       return *_label_ != INT_MAX;
     }
 
-    template < typename GUM_SCALAR >
+    template < GUM_Numeric GUM_SCALAR >
     INLINE bool PRMAggregate< GUM_SCALAR >::isDecomposable() const {
       switch (agg_type()) {
         case AggregateType::MIN : {
@@ -183,27 +183,27 @@ namespace gum {
       }
     }
 
-    template < typename GUM_SCALAR >
+    template < GUM_Numeric GUM_SCALAR >
     INLINE PRMType& PRMAggregate< GUM_SCALAR >::type() {
       return *_type_;
     }
 
-    template < typename GUM_SCALAR >
+    template < GUM_Numeric GUM_SCALAR >
     INLINE const PRMType& PRMAggregate< GUM_SCALAR >::type() const {
       return *_type_;
     }
 
-    template < typename GUM_SCALAR >
+    template < GUM_Numeric GUM_SCALAR >
     INLINE Tensor< GUM_SCALAR >& PRMAggregate< GUM_SCALAR >::cpf() {
       GUM_ERROR(OperationNotAllowed, "This is an aggregate.")
     }
 
-    template < typename GUM_SCALAR >
+    template < GUM_Numeric GUM_SCALAR >
     INLINE const Tensor< GUM_SCALAR >& PRMAggregate< GUM_SCALAR >::cpf() const {
       GUM_ERROR(OperationNotAllowed, "This is an aggregate.")
     }
 
-    template < typename GUM_SCALAR >
+    template < GUM_Numeric GUM_SCALAR >
     INLINE MultiDimImplementation< GUM_SCALAR >* PRMAggregate< GUM_SCALAR >::buildImpl() const {
       switch (agg_type()) {
         case AggregateType::MIN : {
@@ -244,14 +244,14 @@ namespace gum {
     }
 
     // See gum::PRMClassElement<GUM_SCALAR>::addParent_().
-    template < typename GUM_SCALAR >
+    template < GUM_Numeric GUM_SCALAR >
     INLINE void PRMAggregate< GUM_SCALAR >::addParent(const PRMClassElement< GUM_SCALAR >& elt) {}
 
     // See gum::PRMClassElement<GUM_SCALAR>::addChild_().
-    template < typename GUM_SCALAR >
+    template < GUM_Numeric GUM_SCALAR >
     INLINE void PRMAggregate< GUM_SCALAR >::addChild(const PRMClassElement< GUM_SCALAR >& elt) {}
 
-    template < typename GUM_SCALAR >
+    template < GUM_Numeric GUM_SCALAR >
     PRMAttribute< GUM_SCALAR >* PRMAggregate< GUM_SCALAR >::getCastDescendant() const {
       if (!type().isSubType()) {
         GUM_ERROR(OperationNotAllowed, "this PRMAggregate can not have cast descendant")
@@ -274,12 +274,12 @@ namespace gum {
       return cast;
     }
 
-    template < typename GUM_SCALAR >
+    template < GUM_Numeric GUM_SCALAR >
     INLINE std::shared_ptr< Idx > PRMAggregate< GUM_SCALAR >::sharedLabel() const {
       return _label_;
     }
 
-    template < typename GUM_SCALAR >
+    template < GUM_Numeric GUM_SCALAR >
     INLINE void PRMAggregate< GUM_SCALAR >::sharedLabel(std::shared_ptr< Idx > label) {
       this->_label_ = label;
     }

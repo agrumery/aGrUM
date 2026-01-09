@@ -64,7 +64,7 @@ namespace gum {
 
       class LpCol;
       class LpRow;
-      template < typename GUM_SCALAR >
+      template < GUM_Numeric GUM_SCALAR >
       class LpInterface;
       class LpExpr;
 
@@ -228,7 +228,7 @@ namespace gum {
        */
       class LpExpr {
         friend class LpRow;
-        template < typename GUM_SCALAR >
+        template < GUM_Numeric GUM_SCALAR >
         friend class LpInterface;
 
         public:
@@ -519,7 +519,7 @@ namespace gum {
        * @author Matthieu HOURBRACQ and Pierre-Henri WUILLEMIN(_at_LIP6)
        */
       class LpRow {
-        template < typename GUM_SCALAR >
+        template < GUM_Numeric GUM_SCALAR >
         friend class LpInterface;
 
         public:
@@ -620,7 +620,7 @@ namespace gum {
        * @brief Class representing a linear program.
        * @author Matthieu HOURBRACQ and Pierre-Henri WUILLEMIN(_at_LIP6)
        */
-      template < typename GUM_SCALAR >
+      template < GUM_Numeric GUM_SCALAR >
       class LpInterface {
         public:
         /// @name Constructor / Destructor

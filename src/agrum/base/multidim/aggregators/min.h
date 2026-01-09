@@ -68,7 +68,7 @@ namespace gum {
      *
      * @see MultiDimAggregator for more details of implementations
      */
-    template < typename GUM_SCALAR >
+    template < GUM_Numeric GUM_SCALAR >
     class Min final: public MultiDimAggregator< GUM_SCALAR > {
       public:
       Min();

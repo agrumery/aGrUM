@@ -53,7 +53,7 @@ namespace gum {
   namespace prm {
 
     // Destructor.
-    template < typename GUM_SCALAR >
+    template < GUM_Numeric GUM_SCALAR >
     ClassDependencyGraph< GUM_SCALAR >::~ClassDependencyGraph() {
       GUM_DESTRUCTOR(ClassDependencyGraph);
 
@@ -65,7 +65,7 @@ namespace gum {
     }
 
     // Build the class dependency graph.
-    template < typename GUM_SCALAR >
+    template < GUM_Numeric GUM_SCALAR >
     void ClassDependencyGraph< GUM_SCALAR >::_buildGraph_(const PRM< GUM_SCALAR >& prm) {
       // First we add all nodes
       for (const auto ci: prm.classes()) {
@@ -90,7 +90,7 @@ namespace gum {
     }
 
     // Add arcs in  _graph_.
-    template < typename GUM_SCALAR >
+    template < GUM_Numeric GUM_SCALAR >
     void ClassDependencyGraph< GUM_SCALAR >::_addArcs_(
         const PRMClassElementContainer< GUM_SCALAR >&              c,
         NodeId                                                     node,
@@ -120,13 +120,13 @@ namespace gum {
       }
     }
 
-    template < typename GUM_SCALAR >
+    template < GUM_Numeric GUM_SCALAR >
     INLINE ClassDependencyGraph< GUM_SCALAR >::ClassDependencyGraph(const PRM< GUM_SCALAR >& prm) {
       GUM_CONSTRUCTOR(ClassDependencyGraph);
       _buildGraph_(prm);
     }
 
-    template < typename GUM_SCALAR >
+    template < GUM_Numeric GUM_SCALAR >
     INLINE ClassDependencyGraph< GUM_SCALAR >::ClassDependencyGraph(
         const ClassDependencyGraph< GUM_SCALAR >& source) :
         _graph_(source._graph_), _modalitites_(source._modalitites_), _elt_map_(source._elt_map_) {
@@ -139,30 +139,30 @@ namespace gum {
       }
     }
 
-    template < typename GUM_SCALAR >
+    template < GUM_Numeric GUM_SCALAR >
     INLINE const DAG& ClassDependencyGraph< GUM_SCALAR >::dag() const {
       return _graph_;
     }
 
-    template < typename GUM_SCALAR >
+    template < GUM_Numeric GUM_SCALAR >
     INLINE const typename ClassDependencyGraph< GUM_SCALAR >::EltPair&
         ClassDependencyGraph< GUM_SCALAR >::get(NodeId id) const {
       return *(_elt_map_[id]);
     }
 
-    template < typename GUM_SCALAR >
+    template < GUM_Numeric GUM_SCALAR >
     INLINE NodeId
         ClassDependencyGraph< GUM_SCALAR >::get(const PRMClassElementContainer< GUM_SCALAR >& c,
                                                 const PRMClassElement< GUM_SCALAR >& elt) const {
       return (*(_node_map_[&c]))[&elt];
     }
 
-    template < typename GUM_SCALAR >
+    template < GUM_Numeric GUM_SCALAR >
     INLINE const NodeProperty< Size >& ClassDependencyGraph< GUM_SCALAR >::modalities() const {
       return _modalitites_;
     }
 
-    template < typename GUM_SCALAR >
+    template < GUM_Numeric GUM_SCALAR >
     INLINE void ClassDependencyGraph< GUM_SCALAR >::_addNode_(
         const PRMClassElementContainer< GUM_SCALAR >* c,
         const PRMClassElement< GUM_SCALAR >&          elt) {

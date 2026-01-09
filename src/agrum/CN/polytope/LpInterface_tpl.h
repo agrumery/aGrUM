@@ -104,14 +104,14 @@ namespace gum {
       /**
        * class LpInterface
        */
-      template < typename GUM_SCALAR >
+      template < GUM_Numeric GUM_SCALAR >
       LpInterface< GUM_SCALAR >::LpInterface() {
         _positivity_ = false;
         _sumIsOne_   = false;
         GUM_CONSTRUCTOR(LpInterface);
       }
 
-      template < typename GUM_SCALAR >
+      template < GUM_Numeric GUM_SCALAR >
       LpInterface< GUM_SCALAR >::LpInterface(const LpInterface< GUM_SCALAR >& from) :
           _cols_(from._cols_), _positivity_(from._positivity_), _sumIsOne_(from._sumIsOne_) {
         _rows_.resize(from._rows_.size());
@@ -122,7 +122,7 @@ namespace gum {
         GUM_CONS_CPY(LpInterface);
       }
 
-      template < typename GUM_SCALAR >
+      template < GUM_Numeric GUM_SCALAR >
       LpInterface< GUM_SCALAR >::LpInterface(LpInterface< GUM_SCALAR >&& from) :
           _positivity_(from._positivity_), _sumIsOne_(from._sumIsOne_) {
         _rows_.swap(from._rows_);
@@ -130,7 +130,7 @@ namespace gum {
         GUM_CONS_CPY(LpInterface);
       }
 
-      template < typename GUM_SCALAR >
+      template < GUM_Numeric GUM_SCALAR >
       LpInterface< GUM_SCALAR >::~LpInterface() {
         for (const auto row: _rows_)
           delete row;
@@ -138,7 +138,7 @@ namespace gum {
         GUM_DESTRUCTOR(LpInterface);
       }
 
-      template < typename GUM_SCALAR >
+      template < GUM_Numeric GUM_SCALAR >
       LpInterface< GUM_SCALAR >&
           LpInterface< GUM_SCALAR >::operator=(const LpInterface< GUM_SCALAR >& from) {
         /// faster than clear (), delete only rows
@@ -160,7 +160,7 @@ namespace gum {
         return *this;
       }
 
-      template < typename GUM_SCALAR >
+      template < GUM_Numeric GUM_SCALAR >
       LpInterface< GUM_SCALAR >&
           LpInterface< GUM_SCALAR >::operator=(LpInterface< GUM_SCALAR >&& from) {
         _rows_.swap(from._rows_);
@@ -178,7 +178,7 @@ namespace gum {
         return out;
       }
 
-      template < typename GUM_SCALAR >
+      template < GUM_Numeric GUM_SCALAR >
       LpCol LpInterface< GUM_SCALAR >::addCol() {
         LpCol col((unsigned int)_cols_.size());
 
@@ -187,7 +187,7 @@ namespace gum {
         return col;
       }
 
-      template < typename GUM_SCALAR >
+      template < GUM_Numeric GUM_SCALAR >
       std::vector< LpCol > LpInterface< GUM_SCALAR >::addCols(const unsigned int& cols) {
         if (cols < 1)
           GUM_ERROR(OperationNotAllowed,
@@ -202,7 +202,7 @@ namespace gum {
         return _cols_;
       }
 
-      template < typename GUM_SCALAR >
+      template < GUM_Numeric GUM_SCALAR >
       void LpInterface< GUM_SCALAR >::addRow(const LpExpr& expr) {
         if (!expr._ileft_ && !expr._iright_)
           GUM_ERROR(OperationNotAllowed,
@@ -222,7 +222,7 @@ namespace gum {
         }
       }
 
-      template < typename GUM_SCALAR >
+      template < GUM_Numeric GUM_SCALAR >
       void LpInterface< GUM_SCALAR >::addRow(LpExpr&& expr) {
         if (!expr._ileft_ && !expr._iright_)
           GUM_ERROR(OperationNotAllowed,
@@ -250,7 +250,7 @@ namespace gum {
         }
       }
 
-      template < typename GUM_SCALAR >
+      template < GUM_Numeric GUM_SCALAR >
       void LpInterface< GUM_SCALAR >::addPositivity() {
         if (_positivity_) return;
 
@@ -260,7 +260,7 @@ namespace gum {
         _positivity_ = true;
       }
 
-      template < typename GUM_SCALAR >
+      template < GUM_Numeric GUM_SCALAR >
       void LpInterface< GUM_SCALAR >::addSumIsOne() {
         if (_sumIsOne_) return;
 
@@ -274,7 +274,7 @@ namespace gum {
         _sumIsOne_ = true;
       }
 
-      template < typename GUM_SCALAR >
+      template < GUM_Numeric GUM_SCALAR >
       void LpInterface< GUM_SCALAR >::addProba() {
         if (_positivity_ && _sumIsOne_) {
           return;
@@ -302,7 +302,7 @@ namespace gum {
         _positivity_ = true;
       }
 
-      template < typename GUM_SCALAR >
+      template < GUM_Numeric GUM_SCALAR >
       std::vector< std::vector< GUM_SCALAR > > LpInterface< GUM_SCALAR >::solve() {
         LRSWrapper< GUM_SCALAR > lrs;
 
@@ -328,12 +328,12 @@ namespace gum {
         return lrs.getOutput();
       }
 
-      template < typename GUM_SCALAR >
+      template < GUM_Numeric GUM_SCALAR >
       std::vector< LpCol > LpInterface< GUM_SCALAR >::getCols() const {
         return _cols_;
       }
 
-      template < typename GUM_SCALAR >
+      template < GUM_Numeric GUM_SCALAR >
       std::string LpInterface< GUM_SCALAR >::toString() const {
         std::ostringstream s;
 
@@ -352,7 +352,7 @@ namespace gum {
         return s.str();
       }
 
-      template < typename GUM_SCALAR >
+      template < GUM_Numeric GUM_SCALAR >
       void LpInterface< GUM_SCALAR >::clear() {
         for (const auto& row: _rows_)
           delete row;
@@ -370,7 +370,7 @@ namespace gum {
         _sumIsOne_   = false;
       }
 
-      template < typename GUM_SCALAR >
+      template < GUM_Numeric GUM_SCALAR >
       void LpInterface< GUM_SCALAR >::clearRows() {
         for (const auto& row: _rows_)
           delete row;

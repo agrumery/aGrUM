@@ -53,7 +53,7 @@ namespace gum {
 
   // update a set of tensors, keeping only those d-connected with
   // query variables given evidence
-  template < typename GUM_SCALAR, class TABLE >
+  template < GUM_Numeric GUM_SCALAR, class TABLE >
   void dSeparationAlgorithm::relevantTensors(const IBayesNet< GUM_SCALAR >& bn,
                                              const NodeSet&                 query,
                                              const NodeSet&                 hardEvidence,

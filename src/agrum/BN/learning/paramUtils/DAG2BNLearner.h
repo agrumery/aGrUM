@@ -81,13 +81,13 @@ namespace gum {
       DAG2BNLearner(const DAG2BNLearner& from);
 
       /// move constructor
-      DAG2BNLearner(DAG2BNLearner&& from);
+      DAG2BNLearner(DAG2BNLearner&& from) noexcept;
 
       /// virtual copy constructor
       virtual DAG2BNLearner* clone() const;
 
       /// destructor
-      virtual ~DAG2BNLearner();
+      ~DAG2BNLearner() override;
 
       /// @}
 
@@ -102,7 +102,7 @@ namespace gum {
       DAG2BNLearner& operator=(const DAG2BNLearner& from);
 
       /// move operator
-      DAG2BNLearner& operator=(DAG2BNLearner&& from);
+      DAG2BNLearner& operator=(DAG2BNLearner&& from) noexcept;
 
       /// @}
 
@@ -123,7 +123,7 @@ namespace gum {
       DAG2BNLearner& setNoise(const double noise);
 
       /// create a BN from a DAG using a one pass generator (typically ML)
-      template < typename GUM_SCALAR = double >
+      template < GUM_Numeric GUM_SCALAR = double >
       static BayesNet< GUM_SCALAR > createBN(ParamEstimator& estimator, const DAG& dag);
 
       /**
@@ -135,7 +135,7 @@ namespace gum {
        * @param dag the graphical structure of the returned BN
        * @return a BN learnt by EM whose graphical structure is dag
        */
-      template < typename GUM_SCALAR = double >
+      template < GUM_Numeric GUM_SCALAR = double >
       BayesNet< GUM_SCALAR > createBNwithEM(ParamEstimator& bootstrap_estimator,
                                             ParamEstimator& EM_estimator,
                                             const DAG&      dag);
@@ -158,7 +158,7 @@ namespace gum {
        * @return a BN whose structure is the same as bn and whose parameters are
        *        learnt by EM.
        */
-      template < typename GUM_SCALAR >
+      template < GUM_Numeric GUM_SCALAR >
       BayesNet< GUM_SCALAR > createBNwithEM(ParamEstimator&               bootstrap_estimator,
                                             ParamEstimator&               EM_estimator,
                                             const BayesNet< GUM_SCALAR >& bn);
@@ -180,7 +180,7 @@ namespace gum {
        * @return a BN whose structure is the same as bn and whose parameters are
        *        learnt by EM.
        */
-      template < typename GUM_SCALAR >
+      template < GUM_Numeric GUM_SCALAR >
       BayesNet< GUM_SCALAR > createBNwithEM(ParamEstimator&          bootstrap_estimator,
                                             ParamEstimator&          EM_estimator,
                                             BayesNet< GUM_SCALAR >&& bn);
@@ -225,7 +225,7 @@ namespace gum {
       /// copy a tensor into another whose variables' sequence differs
       /** The variables of both tensor should be the same, only their
        * order differs */
-      template < typename GUM_SCALAR = double >
+      template < GUM_Numeric GUM_SCALAR = double >
       static void _probaVarReordering_(gum::Tensor< GUM_SCALAR >&       pot,
                                        const gum::Tensor< GUM_SCALAR >& other_pot);
 
@@ -241,7 +241,7 @@ namespace gum {
        * @return the Bayes net whose structure is dag and whose CPT's parameters
        * are learnt from the estimator
        */
-      template < typename GUM_SCALAR = double >
+      template < GUM_Numeric GUM_SCALAR = double >
       BayesNet< GUM_SCALAR >
           _createBN_(ParamEstimator& estimator, const DAG& dag, const bool compute_log_likelihood);
       /**
@@ -253,7 +253,7 @@ namespace gum {
        * @return a Bayes net whose structure is identical to that of bn, and whose
        *        parameters have been learnt by the EM algorithm
        */
-      template < typename GUM_SCALAR >
+      template < GUM_Numeric GUM_SCALAR >
       BayesNet< GUM_SCALAR > _performEM_(ParamEstimator&          bootstrap_estimator,
                                          ParamEstimator&          EM_estimator,
                                          BayesNet< GUM_SCALAR >&& bn);

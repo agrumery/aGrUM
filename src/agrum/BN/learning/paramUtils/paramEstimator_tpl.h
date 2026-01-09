@@ -54,7 +54,7 @@ namespace gum {
   namespace learning {
 
     // check the coherency between the parameters passed to setParameters functions
-    template < typename GUM_SCALAR >
+    template < GUM_Numeric GUM_SCALAR >
     void ParamEstimator::_checkParameters_(const NodeId                 target_node,
                                            const std::vector< NodeId >& conditioning_nodes,
                                            Tensor< GUM_SCALAR >&        pot) {
@@ -106,8 +106,8 @@ namespace gum {
     }
 
     /// sets the CPT's parameters corresponding to a given nodeset
-    template < typename GUM_SCALAR >
-    INLINE typename std::enable_if< !std::is_same< GUM_SCALAR, double >::value, double >::type
+    template < GUM_Numeric GUM_SCALAR >
+    typename std::enable_if< !std::is_same< GUM_SCALAR, double >::value, double >::type
         ParamEstimator::_setParameters_(const NodeId                 target_node,
                                         const std::vector< NodeId >& conditioning_nodes,
                                         Tensor< GUM_SCALAR >&        pot,
@@ -135,8 +135,8 @@ namespace gum {
     }
 
     /// sets the CPT's parameters corresponding to a given nodeset
-    template < typename GUM_SCALAR >
-    INLINE typename std::enable_if< std::is_same< GUM_SCALAR, double >::value, double >::type
+    template < GUM_Numeric GUM_SCALAR >
+    typename std::enable_if< std::is_same< GUM_SCALAR, double >::value, double >::type
         ParamEstimator::_setParameters_(const NodeId                 target_node,
                                         const std::vector< NodeId >& conditioning_nodes,
                                         Tensor< GUM_SCALAR >&        pot,
@@ -158,7 +158,7 @@ namespace gum {
     }
 
     /// sets the CPT's parameters corresponding to a given nodeset
-    template < typename GUM_SCALAR >
+    template < GUM_Numeric GUM_SCALAR >
     INLINE double ParamEstimator::setParameters(const NodeId                 target_node,
                                                 const std::vector< NodeId >& conditioning_nodes,
                                                 Tensor< GUM_SCALAR >&        pot,
@@ -167,7 +167,7 @@ namespace gum {
     }
 
     /// assign a new Bayes net to all the counter's generators depending on a BN
-    template < typename GUM_SCALAR >
+    template < GUM_Numeric GUM_SCALAR >
     INLINE void ParamEstimator::setBayesNet(const BayesNet< GUM_SCALAR >& new_bn) {
       counter_.setBayesNet(new_bn);
     }

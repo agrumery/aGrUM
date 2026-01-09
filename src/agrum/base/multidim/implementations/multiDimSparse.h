@@ -65,11 +65,11 @@ namespace gum {
    * @ingroup multidim_group
    *
    * @brief Multidimensional matrix stored as a sparse array in memory.
-   * @tparam GUM_SCALAR The type of scalars stored in the multidimensional
+   * @tparam GUM_ELEMENT The type of scalars stored in the multidimensional
    * table.
    */
-  template < typename GUM_SCALAR >
-  class MultiDimSparse final: public MultiDimWithOffset< GUM_SCALAR > {
+  template < typename GUM_ELEMENT >
+  class MultiDimSparse final: public MultiDimWithOffset< GUM_ELEMENT > {
     public:
     // =========================================================================
     /// @name Constructors / Destructors
@@ -80,7 +80,7 @@ namespace gum {
      * @brief Default constructor: creates an empty null dimensional matrix.
      * @param default_value The default value of this MultiDimSparse.
      */
-    explicit MultiDimSparse(const GUM_SCALAR& default_value);
+    explicit MultiDimSparse(const GUM_ELEMENT& default_value);
 
     /**
      * @brief Copy constructor.
@@ -90,14 +90,14 @@ namespace gum {
      *
      * @param from The MultiDimSparse to copy.
      */
-    MultiDimSparse(const MultiDimSparse< GUM_SCALAR >& from);
+    MultiDimSparse(const MultiDimSparse< GUM_ELEMENT >& from);
 
     /**
      * @todo operator=
      *
      * @brief Copy operator.
      * @param from The MultiDimSparse to copy.
-    MultiDimSparse<GUM_SCALAR>& operator=( const MultiDimSparse<GUM_SCALAR>&
+    MultiDimSparse<GUM_ELEMENT>& operator=( const MultiDimSparse<GUM_ELEMENT>&
     from );
      */
 
@@ -113,17 +113,17 @@ namespace gum {
     // =========================================================================
     /// @{
 
-    virtual MultiDimContainer< GUM_SCALAR >* newFactory() const;
+    virtual MultiDimContainer< GUM_ELEMENT >* newFactory() const;
 
     void add(const DiscreteVariable& v);
 
     void erase(const DiscreteVariable& v);
 
-    virtual void fill(const GUM_SCALAR& d) const;
+    virtual void fill(const GUM_ELEMENT& d) const;
 
-    virtual GUM_SCALAR get(const Instantiation& i) const;
+    virtual GUM_ELEMENT get(const Instantiation& i) const;
 
-    virtual void set(const Instantiation& i, const GUM_SCALAR& value) const;
+    virtual void set(const Instantiation& i, const GUM_ELEMENT& value) const;
 
     virtual const std::string& name() const;
 
@@ -134,10 +134,10 @@ namespace gum {
     protected:
     /// The true data : the values is mutable since we can change the value
     /// in a const multiDimArray
-    mutable HashTable< Size, GUM_SCALAR > params_;
+    mutable HashTable< Size, GUM_ELEMENT > params_;
 
     /// The default value.
-    mutable GUM_SCALAR default_;
+    mutable GUM_ELEMENT default_;
 
     /// Synchronise content after MultipleChanges.
     virtual void commitMultipleChanges_();
@@ -146,7 +146,7 @@ namespace gum {
      * @warning Will raise an OperationNotAllowed as this use its own internal
      * datastructure.
      */
-    virtual GUM_SCALAR& get_(const Instantiation& i) const;
+    virtual GUM_ELEMENT& get_(const Instantiation& i) const;
 
     // =========================================================================
     /// @name Inherited methods

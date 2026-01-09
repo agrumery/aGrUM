@@ -71,7 +71,7 @@ namespace gum {
      * Note that a <tt>Or(i)</tt> aggregator should have a binary aggregator
      * variable since only 0 and 1 indexes are adressed...
      */
-    template < typename GUM_SCALAR >
+    template < GUM_Numeric GUM_SCALAR >
     class Or final: public MultiDimAggregator< GUM_SCALAR > {
       public:
       Or();

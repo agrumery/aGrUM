@@ -58,7 +58,7 @@
 namespace gum {
   namespace prm {
 
-    template < typename GUM_SCALAR >
+    template < GUM_Numeric GUM_SCALAR >
     PRMScalarAttribute< GUM_SCALAR >::PRMScalarAttribute(
         const std::string&                    name,
         const PRMType&                        type,
@@ -71,7 +71,7 @@ namespace gum {
       this->safeName_ = PRMObject::LEFT_CAST() + _type_->name() + PRMObject::RIGHT_CAST() + name;
     }
 
-    template < typename GUM_SCALAR >
+    template < GUM_Numeric GUM_SCALAR >
     PRMScalarAttribute< GUM_SCALAR >::PRMScalarAttribute(
         const PRMScalarAttribute< GUM_SCALAR >& source) :
         PRMAttribute< GUM_SCALAR >(source), _type_(0), _cpf_(0) {
@@ -79,14 +79,14 @@ namespace gum {
       GUM_ERROR(FatalError, "Illegal call to the copy constructor of gum::ScalarAttribute")
     }
 
-    template < typename GUM_SCALAR >
+    template < GUM_Numeric GUM_SCALAR >
     PRMScalarAttribute< GUM_SCALAR >::~PRMScalarAttribute() {
       GUM_DESTRUCTOR(PRMScalarAttribute);
       delete _cpf_;
       delete _type_;
     }
 
-    template < typename GUM_SCALAR >
+    template < GUM_Numeric GUM_SCALAR >
     PRMAttribute< GUM_SCALAR >*
         PRMScalarAttribute< GUM_SCALAR >::newFactory(const PRMClass< GUM_SCALAR >& c) const {
       auto impl = static_cast< MultiDimImplementation< GUM_SCALAR >* >(
@@ -94,7 +94,7 @@ namespace gum {
       return new PRMScalarAttribute< GUM_SCALAR >(this->name(), this->type(), impl);
     }
 
-    template < typename GUM_SCALAR >
+    template < GUM_Numeric GUM_SCALAR >
     PRMAttribute< GUM_SCALAR >* PRMScalarAttribute< GUM_SCALAR >::copy(
         Bijection< const DiscreteVariable*, const DiscreteVariable* > bij) const {
       auto copy = new PRMScalarAttribute< GUM_SCALAR >(this->name(), this->type());
@@ -109,7 +109,7 @@ namespace gum {
       return copy;
     }
 
-    template < typename GUM_SCALAR >
+    template < GUM_Numeric GUM_SCALAR >
     void PRMScalarAttribute< GUM_SCALAR >::copyCpf(
         const Bijection< const DiscreteVariable*, const DiscreteVariable* >& bij,
         const PRMAttribute< GUM_SCALAR >&                                    source) {
@@ -131,34 +131,34 @@ namespace gum {
       GUM_ASSERT(!_cpf_->contains(source.type().variable()));
     }
 
-    template < typename GUM_SCALAR >
+    template < GUM_Numeric GUM_SCALAR >
     PRMScalarAttribute< GUM_SCALAR >&
         PRMScalarAttribute< GUM_SCALAR >::operator=(const PRMScalarAttribute< GUM_SCALAR >& from) {
       GUM_ERROR(FatalError, "Illegal call to the copy operator of gum::ScalarAttribute")
     }
 
-    template < typename GUM_SCALAR >
+    template < GUM_Numeric GUM_SCALAR >
     INLINE typename PRMClassElement< GUM_SCALAR >::ClassElementType
         PRMScalarAttribute< GUM_SCALAR >::elt_type() const {
       return this->prm_attribute;
     }
 
-    template < typename GUM_SCALAR >
+    template < GUM_Numeric GUM_SCALAR >
     INLINE PRMType& PRMScalarAttribute< GUM_SCALAR >::type() {
       return *_type_;
     }
 
-    template < typename GUM_SCALAR >
+    template < GUM_Numeric GUM_SCALAR >
     INLINE const PRMType& PRMScalarAttribute< GUM_SCALAR >::type() const {
       return *_type_;
     }
 
-    template < typename GUM_SCALAR >
+    template < GUM_Numeric GUM_SCALAR >
     INLINE const Tensor< GUM_SCALAR >& PRMScalarAttribute< GUM_SCALAR >::cpf() const {
       return *_cpf_;
     }
 
-    template < typename GUM_SCALAR >
+    template < GUM_Numeric GUM_SCALAR >
     INLINE void
         PRMScalarAttribute< GUM_SCALAR >::addParent(const PRMClassElement< GUM_SCALAR >& elt) {
       try {
@@ -171,11 +171,11 @@ namespace gum {
     }
 
     // See gum::PRMClassElement<GUM_SCALAR>::addChild_().
-    template < typename GUM_SCALAR >
+    template < GUM_Numeric GUM_SCALAR >
     INLINE void
         PRMScalarAttribute< GUM_SCALAR >::addChild(const PRMClassElement< GUM_SCALAR >& elt) {}
 
-    template < typename GUM_SCALAR >
+    template < GUM_Numeric GUM_SCALAR >
     PRMAttribute< GUM_SCALAR >* PRMScalarAttribute< GUM_SCALAR >::getCastDescendant() const {
       if (!type().isSubType()) {
         GUM_ERROR(OperationNotAllowed, "this ScalarAttribute can not have cast descendant")
@@ -198,7 +198,7 @@ namespace gum {
       return cast;
     }
 
-    template < typename GUM_SCALAR >
+    template < GUM_Numeric GUM_SCALAR >
     void PRMScalarAttribute< GUM_SCALAR >::setAsCastDescendant(PRMAttribute< GUM_SCALAR >* cast) {
       try {
         type().setSuper(cast->type());
@@ -212,7 +212,7 @@ namespace gum {
       cast->becomeCastDescendant(type());
     }
 
-    template < typename GUM_SCALAR >
+    template < GUM_Numeric GUM_SCALAR >
     void PRMScalarAttribute< GUM_SCALAR >::becomeCastDescendant(PRMType& subtype) {
       delete _cpf_;
       _cpf_ = new Tensor< GUM_SCALAR >();
@@ -231,7 +231,7 @@ namespace gum {
       }
     }
 
-    template < typename GUM_SCALAR >
+    template < GUM_Numeric GUM_SCALAR >
     void PRMScalarAttribute< GUM_SCALAR >::swap(const PRMType& old_type, const PRMType& new_type) {
       if (&(old_type) == _type_) {
         GUM_ERROR(OperationNotAllowed, "Cannot replace attribute own type")
@@ -269,12 +269,12 @@ namespace gum {
       GUM_ASSERT(!_cpf_->contains(old_type.variable()));
     }
 
-    template < typename GUM_SCALAR >
+    template < GUM_Numeric GUM_SCALAR >
     PRMType* PRMScalarAttribute< GUM_SCALAR >::type_() {
       return _type_;
     }
 
-    template < typename GUM_SCALAR >
+    template < GUM_Numeric GUM_SCALAR >
     void PRMScalarAttribute< GUM_SCALAR >::type_(PRMType* t) {
       if (_type_->variable().domainSize() != t->variable().domainSize()) {
         GUM_ERROR(OperationNotAllowed, "Cannot replace types with difference domain size")

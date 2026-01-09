@@ -70,7 +70,7 @@ namespace gum {
      * Amplitude may be truncated since the amplitude has not the same type as
      * its parents.
      */
-    template < typename GUM_SCALAR >
+    template < GUM_Numeric GUM_SCALAR >
     class Amplitude final: public MultiDimAggregator< GUM_SCALAR > {
       public:
       Amplitude();

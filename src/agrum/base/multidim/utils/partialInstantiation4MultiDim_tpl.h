@@ -55,11 +55,11 @@
 
 #define GUM_MULTI_DIM_DECORATOR_PARTIAL_INST(NAME)                         \
   namespace gum {                                                          \
-    template < typename GUM_SCALAR >                                       \
-    MultiDimImplementation< GUM_SCALAR >*                                  \
-        NAME(const MultiDimDecorator< GUM_SCALAR >&           table,       \
+    template < typename GUM_ELEMENT >                                       \
+    MultiDimImplementation< GUM_ELEMENT >*                                  \
+        NAME(const MultiDimDecorator< GUM_ELEMENT >&           table,       \
              const HashTable< const DiscreteVariable*, Idx >& inst_vars) { \
-      const MultiDimImplementation< GUM_SCALAR >* impl = table.content();  \
+      const MultiDimImplementation< GUM_ELEMENT >* impl = table.content();  \
       return NAME(*impl, inst_vars);                                       \
     }                                                                      \
   }
@@ -112,7 +112,7 @@ GUM_MULTI_DIM_DECORATOR_PARTIAL_INST(partialInstantiation)
 namespace gum {
 
   // the function used to register all the above functions
-  template < typename GUM_SCALAR >
+  template < typename GUM_ELEMENT >
   void partialInstantiation4MultiDimInit() {
     // ensure that only one thread will register the projections
     static std::once_flag first;
@@ -122,19 +122,19 @@ namespace gum {
       std::string BaseNameString("MultiDimImplementation");
 
       // register base functions for multiDimArrays
-      registerPartialInstantiation< GUM_SCALAR >("i",
+      registerPartialInstantiation< GUM_ELEMENT >("i",
                                                  MultiDimArrayString,
                                                  &partialInstantiationMultiDimArray);
 
       // register default basename functions
-      registerPartialInstantiation< GUM_SCALAR >("i",
+      registerPartialInstantiation< GUM_ELEMENT >("i",
                                                  BaseNameString,
                                                  &partialInstantiationMultiDimImplementation);
     });
   }
 
   // the function used to register all the above functions
-  template < typename GUM_SCALAR >
+  template < typename GUM_ELEMENT >
   void pointerPartialInstantiation4MultiDimInit() {
     // ensure that only one thread will register the projections
     static std::once_flag first;
@@ -143,12 +143,12 @@ namespace gum {
       std::string BaseNameString("MultiDimImplementation");
 
       // register base functions for multiDimArrays
-      registerPartialInstantiation< GUM_SCALAR* >("i",
+      registerPartialInstantiation< GUM_ELEMENT* >("i",
                                                   MultiDimArrayString,
                                                   &partialInstantiationMultiDimArray4Pointers);
 
       // register default basename functions
-      registerPartialInstantiation< GUM_SCALAR* >(
+      registerPartialInstantiation< GUM_ELEMENT* >(
           "i",
           BaseNameString,
           &partialInstantiationMultiDimImplementation4Pointers);

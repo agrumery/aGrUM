@@ -46,7 +46,7 @@
 namespace gum {
   namespace prm {
 
-    template < typename GUM_SCALAR >
+    template < GUM_Numeric GUM_SCALAR >
     Tensor< GUM_SCALAR >*
         copyTensor(const Bijection< const DiscreteVariable*, const DiscreteVariable* >& bij,
                    const Tensor< GUM_SCALAR >&                                          source) {
@@ -114,13 +114,13 @@ namespace gum {
     }
 
     // the function used to combine two tables
-    template < typename GUM_SCALAR >
+    template < GUM_Numeric GUM_SCALAR >
     Tensor< GUM_SCALAR > multTensor(const Tensor< GUM_SCALAR >& t1,
                                     const Tensor< GUM_SCALAR >& t2) {
       return t1 * t2;
     }
 
-    template < typename GUM_SCALAR >
+    template < GUM_Numeric GUM_SCALAR >
     void eliminateNode(const DiscreteVariable*       var,
                        Set< Tensor< GUM_SCALAR >* >& pool,
                        Set< Tensor< GUM_SCALAR >* >& trash) {
@@ -159,7 +159,7 @@ namespace gum {
       trash.insert(pot);
     }
 
-    template < typename GUM_SCALAR >
+    template < GUM_Numeric GUM_SCALAR >
     void eliminateNodes(const std::vector< const DiscreteVariable* >& elim_order,
                         Set< Tensor< GUM_SCALAR >* >&                 pool,
                         Set< Tensor< GUM_SCALAR >* >&                 trash) {

@@ -62,7 +62,7 @@ namespace gum::learning {
    * @headerfile DirichletPriorFromBN.h <agrum/base/database/DirichletPriorFromBN.h>
    * @ingroup learning_priors
    */
-  template < typename GUM_SCALAR >
+  template < GUM_Numeric GUM_SCALAR >
   class DirichletPriorFromBN: public Prior {
     public:
     // ##########################################################################

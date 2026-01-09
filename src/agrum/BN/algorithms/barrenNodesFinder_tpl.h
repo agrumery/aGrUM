@@ -43,7 +43,7 @@
 namespace gum {
 
   /// returns the set of barren tensors in messages sent in a junction tree
-  template < typename GUM_SCALAR >
+  template < GUM_Numeric GUM_SCALAR >
   ArcProperty< Set< const Tensor< GUM_SCALAR >* > >
       BarrenNodesFinder::barrenTensors(const CliqueGraph&             junction_tree,
                                        const IBayesNet< GUM_SCALAR >& bn) {

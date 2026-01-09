@@ -50,7 +50,7 @@
 namespace gum {
   namespace credal {
 
-    template < typename GUM_SCALAR >
+    template < GUM_Numeric GUM_SCALAR >
     CredalNet< GUM_SCALAR >::CredalNet() {
       _initParams_();
 
@@ -61,7 +61,7 @@ namespace gum {
       GUM_CONSTRUCTOR(CredalNet);
     }
 
-    template < typename GUM_SCALAR >
+    template < GUM_Numeric GUM_SCALAR >
     NodeId CredalNet< GUM_SCALAR >::addVariable(const std::string& name, const Size& card) {
       LabelizedVariable var(name, "node " + name, card);
 
@@ -77,14 +77,14 @@ namespace gum {
       return a;
     }
 
-    template < typename GUM_SCALAR >
+    template < GUM_Numeric GUM_SCALAR >
     void CredalNet< GUM_SCALAR >::addArc(const NodeId& tail, const NodeId& head) {
       _src_bn_.addArc(tail, head);
       _src_bn_min_.addArc(tail, head);
       _src_bn_max_.addArc(tail, head);
     }
 
-    template < typename GUM_SCALAR >
+    template < GUM_Numeric GUM_SCALAR >
     void CredalNet< GUM_SCALAR >::setCPTs(
         const NodeId&                                                  id,
         const std::vector< std::vector< std::vector< GUM_SCALAR > > >& cpt) {
@@ -129,7 +129,7 @@ namespace gum {
       _credalNet_src_cpt_.insert(id, cpt);
     }
 
-    template < typename GUM_SCALAR >
+    template < GUM_Numeric GUM_SCALAR >
     void CredalNet< GUM_SCALAR >::setCPT(const NodeId&                                   id,
                                          Size&                                           entry,
                                          const std::vector< std::vector< GUM_SCALAR > >& cpt) {
@@ -182,7 +182,7 @@ namespace gum {
       /// __credalNet_src_cpt.set ( id, node_cpt );
     }
 
-    template < typename GUM_SCALAR >
+    template < GUM_Numeric GUM_SCALAR >
     void CredalNet< GUM_SCALAR >::setCPT(const NodeId&                                   id,
                                          Instantiation                                   ins,
                                          const std::vector< std::vector< GUM_SCALAR > >& cpt) {
@@ -270,7 +270,7 @@ namespace gum {
       /// __credalNet_src_cpt.set ( id, node_cpt );
     }
 
-    template < typename GUM_SCALAR >
+    template < GUM_Numeric GUM_SCALAR >
     void CredalNet< GUM_SCALAR >::fillConstraints(const NodeId&                    id,
                                                   const std::vector< GUM_SCALAR >& lower,
                                                   const std::vector< GUM_SCALAR >& upper) {
@@ -283,7 +283,7 @@ namespace gum {
       }
     }
 
-    template < typename GUM_SCALAR >
+    template < GUM_Numeric GUM_SCALAR >
     void CredalNet< GUM_SCALAR >::fillConstraint(const NodeId&                    id,
                                                  const Idx&                       entry,
                                                  const std::vector< GUM_SCALAR >& lower,
@@ -330,7 +330,7 @@ namespace gum {
       }
     }
 
-    template < typename GUM_SCALAR >
+    template < GUM_Numeric GUM_SCALAR >
     void CredalNet< GUM_SCALAR >::fillConstraint(const NodeId&                    id,
                                                  Instantiation                    ins,
                                                  const std::vector< GUM_SCALAR >& lower,
@@ -397,19 +397,19 @@ namespace gum {
     ////////////////////////////////////////////////
     /// bnet accessors / shortcuts
 
-    template < typename GUM_SCALAR >
+    template < GUM_Numeric GUM_SCALAR >
     INLINE Instantiation CredalNet< GUM_SCALAR >::instantiation(const NodeId& id) {
       return Instantiation(_src_bn_.cpt(id));
     }
 
-    template < typename GUM_SCALAR >
+    template < GUM_Numeric GUM_SCALAR >
     INLINE Size CredalNet< GUM_SCALAR >::domainSize(const NodeId& id) {
       return _src_bn_.variable(id).domainSize();
     }
 
     ///////////////////////////////////////////////
 
-    template < typename GUM_SCALAR >
+    template < GUM_Numeric GUM_SCALAR >
     CredalNet< GUM_SCALAR >::CredalNet(const std::string& src_min_num,
                                        const std::string& src_max_den) {
       _initParams_();
@@ -418,7 +418,7 @@ namespace gum {
       GUM_CONSTRUCTOR(CredalNet);
     }
 
-    template < typename GUM_SCALAR >
+    template < GUM_Numeric GUM_SCALAR >
     CredalNet< GUM_SCALAR >::CredalNet(const BayesNet< GUM_SCALAR >& src_min_num,
                                        const BayesNet< GUM_SCALAR >& src_max_den) {
       _initParams_();
@@ -427,7 +427,7 @@ namespace gum {
       GUM_CONSTRUCTOR(CredalNet);
     }
 
-    template < typename GUM_SCALAR >
+    template < GUM_Numeric GUM_SCALAR >
     CredalNet< GUM_SCALAR >::~CredalNet() {
       if (_current_bn_ != nullptr) delete _current_bn_;
 
@@ -439,12 +439,12 @@ namespace gum {
     }
 
     // from BNs with numerators & denominators or cpts & denominators to credal
-    template < typename GUM_SCALAR >
+    template < GUM_Numeric GUM_SCALAR >
     void CredalNet< GUM_SCALAR >::bnToCredal(GUM_SCALAR beta, bool oneNet) {
       this->bnToCredal(beta, oneNet, false);
     }
 
-    template < typename GUM_SCALAR >
+    template < GUM_Numeric GUM_SCALAR >
     void CredalNet< GUM_SCALAR >::bnToCredal(GUM_SCALAR beta, bool oneNet, bool keepZeroes) {
       GUM_SCALAR epsi_min = 1.;
       GUM_SCALAR epsi_max = 0.;
@@ -570,7 +570,7 @@ namespace gum {
       _intervalToCredal_();
     }
 
-    template < typename GUM_SCALAR >
+    template < GUM_Numeric GUM_SCALAR >
     void CredalNet< GUM_SCALAR >::lagrangeNormalization() {
       for (auto node: _src_bn_.nodes()) {
         const Tensor< GUM_SCALAR >* const tensor(&_src_bn_.cpt(node));
@@ -619,7 +619,7 @@ namespace gum {
       }   // end of : for each variable
     }
 
-    template < typename GUM_SCALAR >
+    template < GUM_Numeric GUM_SCALAR >
     void CredalNet< GUM_SCALAR >::idmLearning(const Idx s, const bool keepZeroes) {
       for (auto node: _src_bn_.nodes()) {
         const Tensor< GUM_SCALAR >* const tensor(&_src_bn_.cpt(node));
@@ -692,7 +692,7 @@ namespace gum {
     }
 
     /* no need for lrs : (max ... min ... max) vertices from bnToCredal() */
-    template < typename GUM_SCALAR >
+    template < GUM_Numeric GUM_SCALAR >
     void CredalNet< GUM_SCALAR >::_intervalToCredal_() {
       if (!_credalNet_src_cpt_.empty()) _credalNet_src_cpt_.clear();
 
@@ -787,7 +787,7 @@ namespace gum {
     }
 
     /* uses lrsWrapper */
-    template < typename GUM_SCALAR >
+    template < GUM_Numeric GUM_SCALAR >
     void CredalNet< GUM_SCALAR >::intervalToCredal() {
       if (!_credalNet_src_cpt_.empty()) _credalNet_src_cpt_.clear();
 
@@ -841,7 +841,7 @@ namespace gum {
     }
 
     /* call lrs */
-    template < typename GUM_SCALAR >
+    template < GUM_Numeric GUM_SCALAR >
     void CredalNet< GUM_SCALAR >::intervalToCredalWithFiles() {
       if (!_credalNet_src_cpt_.empty()) _credalNet_src_cpt_.clear();
 
@@ -935,7 +935,7 @@ namespace gum {
      * to call after bnToCredal( GUM_SCALAR beta )
      * save a BN with lower probabilities and a BN with upper ones
      */
-    template < typename GUM_SCALAR >
+    template < GUM_Numeric GUM_SCALAR >
     void CredalNet< GUM_SCALAR >::saveBNsMinMax(const std::string& min_path,
                                                 const std::string& max_path) const {
       BIFWriter< GUM_SCALAR > writer;
@@ -967,7 +967,7 @@ namespace gum {
       max_file.close();
     }
 
-    template < typename GUM_SCALAR >
+    template < GUM_Numeric GUM_SCALAR >
     void CredalNet< GUM_SCALAR >::approximatedBinarization() {
       // don't forget to delete the old one ( _current_), if necessary at the end
       auto bin_bn = new BayesNet< GUM_SCALAR >();
@@ -1230,7 +1230,7 @@ namespace gum {
       computeBinaryCPTMinMax();
     }
 
-    template < typename GUM_SCALAR >
+    template < GUM_Numeric GUM_SCALAR >
     const NodeProperty< std::vector< std::vector< std::vector< GUM_SCALAR > > > >&
         CredalNet< GUM_SCALAR >::credalNet_currentCpt() const {
       if (_credalNet_current_cpt_ != nullptr) return *_credalNet_current_cpt_;
@@ -1238,13 +1238,13 @@ namespace gum {
       return _credalNet_src_cpt_;
     }
 
-    template < typename GUM_SCALAR >
+    template < GUM_Numeric GUM_SCALAR >
     const NodeProperty< std::vector< std::vector< std::vector< GUM_SCALAR > > > >&
         CredalNet< GUM_SCALAR >::credalNet_srcCpt() const {
       return _credalNet_src_cpt_;
     }
 
-    template < typename GUM_SCALAR >
+    template < GUM_Numeric GUM_SCALAR >
     typename CredalNet< GUM_SCALAR >::NodeType
         CredalNet< GUM_SCALAR >::currentNodeType(const NodeId& id) const {
       if (_current_nodeType_ != nullptr) return (*(_current_nodeType_))[id];
@@ -1252,24 +1252,24 @@ namespace gum {
       return _original_nodeType_[id];
     }
 
-    template < typename GUM_SCALAR >
+    template < GUM_Numeric GUM_SCALAR >
     typename CredalNet< GUM_SCALAR >::NodeType
         CredalNet< GUM_SCALAR >::nodeType(const NodeId& id) const {
       return _original_nodeType_[id];
     }
 
-    template < typename GUM_SCALAR >
+    template < GUM_Numeric GUM_SCALAR >
     bool CredalNet< GUM_SCALAR >::isSeparatelySpecified() const {
       return _separatelySpecified_;
     }
 
-    template < typename GUM_SCALAR >
+    template < GUM_Numeric GUM_SCALAR >
     bool CredalNet< GUM_SCALAR >::hasComputedBinaryCPTMinMax() const {
       return _hasComputedBinaryCPTMinMax_;
     }
 
     // only if CN is binary !!
-    template < typename GUM_SCALAR >
+    template < GUM_Numeric GUM_SCALAR >
     void CredalNet< GUM_SCALAR >::computeBinaryCPTMinMax() {
       _binCptMin_.resize(current_bn().size());
       _binCptMax_.resize(current_bn().size());
@@ -1299,34 +1299,34 @@ namespace gum {
       _hasComputedBinaryCPTMinMax_ = true;
     }
 
-    template < typename GUM_SCALAR >
+    template < GUM_Numeric GUM_SCALAR >
     const std::vector< std::vector< GUM_SCALAR > >&
         CredalNet< GUM_SCALAR >::get_binaryCPT_min() const {
       return _binCptMin_;
     }
 
-    template < typename GUM_SCALAR >
+    template < GUM_Numeric GUM_SCALAR >
     const std::vector< std::vector< GUM_SCALAR > >&
         CredalNet< GUM_SCALAR >::get_binaryCPT_max() const {
       return _binCptMax_;
     }
 
-    template < typename GUM_SCALAR >
+    template < GUM_Numeric GUM_SCALAR >
     const GUM_SCALAR& CredalNet< GUM_SCALAR >::epsilonMin() const {
       return _epsilonMin_;
     }
 
-    template < typename GUM_SCALAR >
+    template < GUM_Numeric GUM_SCALAR >
     const GUM_SCALAR& CredalNet< GUM_SCALAR >::epsilonMax() const {
       return _epsilonMax_;
     }
 
-    template < typename GUM_SCALAR >
+    template < GUM_Numeric GUM_SCALAR >
     const GUM_SCALAR& CredalNet< GUM_SCALAR >::epsilonMean() const {
       return _epsilonMoy_;
     }
 
-    template < typename GUM_SCALAR >
+    template < GUM_Numeric GUM_SCALAR >
     std::string CredalNet< GUM_SCALAR >::toString() const {
       std::stringstream             output;
       const BayesNet< GUM_SCALAR >* _current_bn_;
@@ -1364,14 +1364,14 @@ namespace gum {
       return output.str();
     }
 
-    template < typename GUM_SCALAR >
+    template < GUM_Numeric GUM_SCALAR >
     const BayesNet< GUM_SCALAR >& CredalNet< GUM_SCALAR >::current_bn() const {
       if (_current_bn_ != nullptr) return *_current_bn_;
 
       return _src_bn_;
     }
 
-    template < typename GUM_SCALAR >
+    template < GUM_Numeric GUM_SCALAR >
     const BayesNet< GUM_SCALAR >& CredalNet< GUM_SCALAR >::src_bn() const {
       return _src_bn_;
     }
@@ -1380,7 +1380,7 @@ namespace gum {
 
     /////////// private stuff ////////////
 
-    template < typename GUM_SCALAR >
+    template < GUM_Numeric GUM_SCALAR >
     void CredalNet< GUM_SCALAR >::_initParams_() {
       _epsilonMin_ = 0;
       _epsilonMax_ = 0;
@@ -1407,7 +1407,7 @@ namespace gum {
       _hasComputedBinaryCPTMinMax_ = false;
     }
 
-    template < typename GUM_SCALAR >
+    template < GUM_Numeric GUM_SCALAR >
     void CredalNet< GUM_SCALAR >::_initCNNets_(const std::string& src_min_num,
                                                const std::string& src_max_den) {
       BIFReader< GUM_SCALAR > reader(&_src_bn_, src_min_num);
@@ -1424,7 +1424,7 @@ namespace gum {
       reader_max.proceed();
     }
 
-    template < typename GUM_SCALAR >
+    template < GUM_Numeric GUM_SCALAR >
     void CredalNet< GUM_SCALAR >::_initCNNets_(const BayesNet< GUM_SCALAR >& src_min_num,
                                                const BayesNet< GUM_SCALAR >& src_max_den) {
       _src_bn_     = src_min_num;
@@ -1434,7 +1434,7 @@ namespace gum {
       else _src_bn_max_ = src_min_num;
     }
 
-    template < typename GUM_SCALAR >
+    template < GUM_Numeric GUM_SCALAR >
     int CredalNet< GUM_SCALAR >::_find_dNode_card_(
         const std::vector< std::vector< std::vector< GUM_SCALAR > > >& var_cpt) const {
       Size vertices_size = 0;
@@ -1446,7 +1446,7 @@ namespace gum {
       return int(vertices_size);
     }
 
-    template < typename GUM_SCALAR >
+    template < GUM_Numeric GUM_SCALAR >
     void CredalNet< GUM_SCALAR >::_bnCopy_(BayesNet< GUM_SCALAR >& dest) {
       const BayesNet< GUM_SCALAR >* _current_bn_;
 
@@ -1470,7 +1470,7 @@ namespace gum {
 
     /*
       // cdd can use real values, not just rationals / integers
-      template< typename GUM_SCALAR >
+      template< GumScalar GUM_SCALAR >
       void CredalNet< GUM_SCALAR >:: _H2Vcdd_ ( const std::vector< std::vector<
       GUM_SCALAR > > & h_rep, std::vector< std::vector< GUM_SCALAR > > & v_rep )
       const {
@@ -1520,7 +1520,7 @@ namespace gum {
       }
     */
 
-    template < typename GUM_SCALAR >
+    template < GUM_Numeric GUM_SCALAR >
     void CredalNet< GUM_SCALAR >::_H2Vlrs_(const std::vector< std::vector< GUM_SCALAR > >& h_rep,
                                            std::vector< std::vector< GUM_SCALAR > >& v_rep) const {
       // write H rep file
@@ -1738,7 +1738,7 @@ namespace gum {
       if (std::remove(extfile.c_str()) != 0) GUM_ERROR(IOError, "error removing : " + extfile)
     }
 
-    template < typename GUM_SCALAR >
+    template < GUM_Numeric GUM_SCALAR >
     void CredalNet< GUM_SCALAR >::_sort_varType_() {
       NodeProperty< NodeType >* _current_nodeType_;
       const NodeProperty< std::vector< std::vector< std::vector< GUM_SCALAR > > > >*

@@ -56,7 +56,7 @@
 #include <agrum/base/core/math/math_utils.h>
 
 namespace gum {
-  template < typename GUM_SCALAR >
+  template < GUM_Numeric GUM_SCALAR >
   BNdistance< GUM_SCALAR >::BNdistance(const IBayesNet< GUM_SCALAR >& P,
                                        const IBayesNet< GUM_SCALAR >& Q) :
       p_(P), q_(Q), klPQ_(0.0), klQP_(0.0), errorPQ_(0), errorQP_(0),
@@ -71,77 +71,77 @@ namespace gum {
     else _difficulty_ = Complexity::Correct;
   }
 
-  template < typename GUM_SCALAR >
+  template < GUM_Numeric GUM_SCALAR >
   BNdistance< GUM_SCALAR >::BNdistance(const BNdistance< GUM_SCALAR >& kl) :
       p_(kl.p_), q_(kl.q_), klPQ_(kl.klPQ_), klQP_(kl.klQP_), errorPQ_(kl.errorPQ_),
       errorQP_(kl.errorQP_), _difficulty_(kl._difficulty_), _done_(kl._done_) {
     GUM_CONSTRUCTOR(BNdistance);
   }
 
-  template < typename GUM_SCALAR >
+  template < GUM_Numeric GUM_SCALAR >
   BNdistance< GUM_SCALAR >::~BNdistance() {
     GUM_DESTRUCTOR(BNdistance);
   }
 
-  template < typename GUM_SCALAR >
+  template < GUM_Numeric GUM_SCALAR >
   Complexity BNdistance< GUM_SCALAR >::difficulty() const {
     return _difficulty_;
   }
 
-  template < typename GUM_SCALAR >
+  template < GUM_Numeric GUM_SCALAR >
   INLINE double BNdistance< GUM_SCALAR >::klPQ() {
     process_();
     return klPQ_;
   }
 
-  template < typename GUM_SCALAR >
+  template < GUM_Numeric GUM_SCALAR >
   INLINE double BNdistance< GUM_SCALAR >::klQP() {
     process_();
     return klQP_;
   }
 
-  template < typename GUM_SCALAR >
+  template < GUM_Numeric GUM_SCALAR >
   INLINE double BNdistance< GUM_SCALAR >::hellinger() {
     process_();
     return hellinger_;
   }
 
-  template < typename GUM_SCALAR >
+  template < GUM_Numeric GUM_SCALAR >
   INLINE double BNdistance< GUM_SCALAR >::bhattacharya() {
     process_();
     return bhattacharya_;
   }
 
-  template < typename GUM_SCALAR >
+  template < GUM_Numeric GUM_SCALAR >
   INLINE double BNdistance< GUM_SCALAR >::jsd() {
     process_();
     return jsd_;
   }
 
-  template < typename GUM_SCALAR >
+  template < GUM_Numeric GUM_SCALAR >
   INLINE Size BNdistance< GUM_SCALAR >::errorPQ() {
     process_();
     return errorPQ_;
   }
 
-  template < typename GUM_SCALAR >
+  template < GUM_Numeric GUM_SCALAR >
   INLINE Size BNdistance< GUM_SCALAR >::errorQP() {
     process_();
     return errorQP_;
   }
 
-  template < typename GUM_SCALAR >
+  template < GUM_Numeric GUM_SCALAR >
   INLINE const IBayesNet< GUM_SCALAR >& BNdistance< GUM_SCALAR >::p() const {
     return p_;
   }
 
-  template < typename GUM_SCALAR >
+  template < GUM_Numeric GUM_SCALAR >
   INLINE const IBayesNet< GUM_SCALAR >& BNdistance< GUM_SCALAR >::q() const {
     return q_;
   }
 
   // check if the 2 BNs are compatible
-  template < typename GUM_SCALAR >
+  template < GUM_Numeric GUM_SCALAR >
   bool BNdistance< GUM_SCALAR >::_checkCompatibility_() const {
     // should not be used
     if (p_.size() != q_.size())
@@ -173,7 +173,7 @@ namespace gum {
   }
 
   // do the job if not already  _done_
-  template < typename GUM_SCALAR >
+  template < GUM_Numeric GUM_SCALAR >
   void BNdistance< GUM_SCALAR >::process_() {
     if (!_done_) {
       computeKL_();
@@ -182,7 +182,7 @@ namespace gum {
   }
 
   // in order to keep BNdistance instantiable
-  template < typename GUM_SCALAR >
+  template < GUM_Numeric GUM_SCALAR >
   void BNdistance< GUM_SCALAR >::computeKL_() {
     GUM_ERROR(OperationNotAllowed, "No default computations")
   }

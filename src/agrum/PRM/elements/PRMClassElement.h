@@ -57,7 +57,7 @@
 
 namespace gum {
   namespace prm {
-    template < typename GUM_SCALAR >
+    template < GUM_Numeric GUM_SCALAR >
     class PRMAttribute;
 
     /**
@@ -71,7 +71,7 @@ namespace gum {
      *
      * @ingroup prm_group
      */
-    template < typename GUM_SCALAR >
+    template < GUM_Numeric GUM_SCALAR >
     class PRMClassElement: public PRMObject {
       public:
       // ========================================================================

@@ -55,26 +55,26 @@
 namespace gum {
 
   /// Default constructor
-  template < typename GUM_SCALAR >
+  template < GUM_Numeric GUM_SCALAR >
   MonteCarloSampling< GUM_SCALAR >::MonteCarloSampling(const IBayesNet< GUM_SCALAR >* bn) :
       SamplingInference< GUM_SCALAR >(bn) {
     GUM_CONSTRUCTOR(MonteCarloSampling);
   }
 
   /// Destructor
-  template < typename GUM_SCALAR >
+  template < GUM_Numeric GUM_SCALAR >
   MonteCarloSampling< GUM_SCALAR >::~MonteCarloSampling() {
     GUM_DESTRUCTOR(MonteCarloSampling);
   }
 
   /// no burn in needed for Monte Carlo sampling
-  template < typename GUM_SCALAR >
+  template < GUM_Numeric GUM_SCALAR >
   Instantiation MonteCarloSampling< GUM_SCALAR >::burnIn_() {
     gum::Instantiation I;
     return I;
   }
 
-  template < typename GUM_SCALAR >
+  template < GUM_Numeric GUM_SCALAR >
   Instantiation MonteCarloSampling< GUM_SCALAR >::draw_(GUM_SCALAR* w, Instantiation prev) {
     *w               = 1.0f;
     bool wrong_value = false;

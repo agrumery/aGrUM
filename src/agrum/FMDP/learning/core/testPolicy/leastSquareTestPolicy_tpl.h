@@ -55,8 +55,8 @@
 
 namespace gum {
 
-  template < typename GUM_SCALAR >
-  LeastSquareTestPolicy< GUM_SCALAR >::~LeastSquareTestPolicy() {
+  template < typename GUM_ELEMENT >
+  LeastSquareTestPolicy< GUM_ELEMENT >::~LeastSquareTestPolicy() {
     for (auto obsIter = this->_obsTable_.cbeginSafe(); _obsTable_.cendSafe() != obsIter; ++obsIter)
       delete obsIter.val();
 
@@ -70,9 +70,9 @@ namespace gum {
   // ==========================================================================
   //
   // ==========================================================================
-  template < typename GUM_SCALAR >
-  void LeastSquareTestPolicy< GUM_SCALAR >::addObservation(Idx attr, GUM_SCALAR value) {
-    ITestPolicy< GUM_SCALAR >::addObservation(attr, value);
+  template < typename GUM_ELEMENT >
+  void LeastSquareTestPolicy< GUM_ELEMENT >::addObservation(Idx attr, GUM_ELEMENT value) {
+    ITestPolicy< GUM_ELEMENT >::addObservation(attr, value);
     _sumO_ += value;
 
     if (_sumAttrTable_.exists(attr)) _sumAttrTable_[attr] += value;
@@ -92,9 +92,9 @@ namespace gum {
   // ============================================================================
   // Computes the GStat of current variable according to the test
   // ============================================================================
-  template < typename GUM_SCALAR >
-  void LeastSquareTestPolicy< GUM_SCALAR >::computeScore() {
-    ITestPolicy< GUM_SCALAR >::computeScore();
+  template < typename GUM_ELEMENT >
+  void LeastSquareTestPolicy< GUM_ELEMENT >::computeScore() {
+    ITestPolicy< GUM_ELEMENT >::computeScore();
     double mean         = _sumO_ / (double)this->nbObservation();
     double errorO       = 0.0;
     double sumErrorAttr = 0.0;
@@ -119,8 +119,8 @@ namespace gum {
   // ============================================================================
   // Returns the performance of current variable according to the test
   // ============================================================================
-  template < typename GUM_SCALAR >
-  double LeastSquareTestPolicy< GUM_SCALAR >::score() {
+  template < typename GUM_ELEMENT >
+  double LeastSquareTestPolicy< GUM_ELEMENT >::score() {
     if (this->isModified_()) computeScore();
     return _score_;
   }
@@ -128,15 +128,15 @@ namespace gum {
   // ============================================================================
   // Returns a second criterion to severe ties
   // ============================================================================
-  template < typename GUM_SCALAR >
-  double LeastSquareTestPolicy< GUM_SCALAR >::secondaryscore() const {
+  template < typename GUM_ELEMENT >
+  double LeastSquareTestPolicy< GUM_ELEMENT >::secondaryscore() const {
     if (this->isModified_()) computeScore();
     return _score_;
   }
 
-  template < typename GUM_SCALAR >
-  void LeastSquareTestPolicy< GUM_SCALAR >::add(const LeastSquareTestPolicy& src) {
-    ITestPolicy< GUM_SCALAR >::add(src);
+  template < typename GUM_ELEMENT >
+  void LeastSquareTestPolicy< GUM_ELEMENT >::add(const LeastSquareTestPolicy& src) {
+    ITestPolicy< GUM_ELEMENT >::add(src);
 
     for (auto obsIter = src.nbObsTable().cbeginSafe(); obsIter != src.nbObsTable().cendSafe();
          ++obsIter)

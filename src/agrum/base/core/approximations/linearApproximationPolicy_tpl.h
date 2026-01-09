@@ -55,41 +55,42 @@
 namespace gum {
 
   // Class constructor
-  template < typename GUM_SCALAR >
-  LinearApproximationPolicy< GUM_SCALAR >::LinearApproximationPolicy(GUM_SCALAR low,
-                                                                     GUM_SCALAR high,
-                                                                     GUM_SCALAR eps) :
-      ApproximationPolicy< GUM_SCALAR >(), lowLimit_(low), highLimit_(high), epsilon_(eps) {
+  template < typename GUM_ELEMENT >
+  LinearApproximationPolicy< GUM_ELEMENT >::LinearApproximationPolicy(GUM_ELEMENT low,
+                                                                      GUM_ELEMENT high,
+                                                                      GUM_ELEMENT eps) :
+      ApproximationPolicy< GUM_ELEMENT >(), lowLimit_(low), highLimit_(high), epsilon_(eps) {
     if (eps <= 0) { GUM_ERROR(OutOfBounds, "Epsilon must be >0") }
 
     computeNbInterval_();
   }
 
   // Copy constructor.
-  template < typename GUM_SCALAR >
-  LinearApproximationPolicy< GUM_SCALAR >::LinearApproximationPolicy(
-      const LinearApproximationPolicy< GUM_SCALAR >* md) :
-      ApproximationPolicy< GUM_SCALAR >(md), epsilon_(md->epsilon_), nbInterval_(md->nbInterval_) {}
+  template < typename GUM_ELEMENT >
+  LinearApproximationPolicy< GUM_ELEMENT >::LinearApproximationPolicy(
+      const LinearApproximationPolicy< GUM_ELEMENT >* md) :
+      ApproximationPolicy< GUM_ELEMENT >(md), epsilon_(md->epsilon_), nbInterval_(md->nbInterval_) {
+  }
 
   // @brief Convert value to his approximation.
-  template < typename GUM_SCALAR >
-  INLINE GUM_SCALAR
-      LinearApproximationPolicy< GUM_SCALAR >::fromExact(const GUM_SCALAR& value) const {
-    return _decode_(GUM_SCALAR(encode(value)));
+  template < typename GUM_ELEMENT >
+  INLINE GUM_ELEMENT
+      LinearApproximationPolicy< GUM_ELEMENT >::fromExact(const GUM_ELEMENT& value) const {
+    return _decode_(GUM_ELEMENT(encode(value)));
   }
 
   // @brief Combine using addition with the given gum::ApproximationPolicy.
-  template < typename GUM_SCALAR >
-  INLINE void LinearApproximationPolicy< GUM_SCALAR >::combineAdd(
-      const ApproximationPolicy< GUM_SCALAR >* ap) {
+  template < typename GUM_ELEMENT >
+  INLINE void LinearApproximationPolicy< GUM_ELEMENT >::combineAdd(
+      const ApproximationPolicy< GUM_ELEMENT >* ap) {
     try {
-      const LinearApproximationPolicy< GUM_SCALAR >* lap
-          = dynamic_cast< const LinearApproximationPolicy< GUM_SCALAR >* >(ap);
+      const LinearApproximationPolicy< GUM_ELEMENT >* lap
+          = dynamic_cast< const LinearApproximationPolicy< GUM_ELEMENT >* >(ap);
 
-      GUM_SCALAR newHighLimit = lowLimit_ + lap->lowLimit();
-      GUM_SCALAR newLowLimit  = lowLimit_ + lap->lowLimit();
+      GUM_ELEMENT newHighLimit = lowLimit_ + lap->lowLimit();
+      GUM_ELEMENT newLowLimit  = lowLimit_ + lap->lowLimit();
 
-      GUM_SCALAR newVal = lowLimit_ + lap->highLimit();
+      GUM_ELEMENT newVal = lowLimit_ + lap->highLimit();
 
       if (newHighLimit < newVal) newHighLimit = newVal;
 
@@ -109,17 +110,17 @@ namespace gum {
     } catch (const std::bad_cast&) {}
   }
 
-  template < typename GUM_SCALAR >
-  INLINE void LinearApproximationPolicy< GUM_SCALAR >::combineSub(
-      const ApproximationPolicy< GUM_SCALAR >* ap) {
+  template < typename GUM_ELEMENT >
+  INLINE void LinearApproximationPolicy< GUM_ELEMENT >::combineSub(
+      const ApproximationPolicy< GUM_ELEMENT >* ap) {
     try {
-      const LinearApproximationPolicy< GUM_SCALAR >* lap
-          = dynamic_cast< const LinearApproximationPolicy< GUM_SCALAR >* >(ap);
+      const LinearApproximationPolicy< GUM_ELEMENT >* lap
+          = dynamic_cast< const LinearApproximationPolicy< GUM_ELEMENT >* >(ap);
 
-      GUM_SCALAR newHighLimit = lowLimit_ - lap->lowLimit();
-      GUM_SCALAR newLowLimit  = lowLimit_ - lap->lowLimit();
+      GUM_ELEMENT newHighLimit = lowLimit_ - lap->lowLimit();
+      GUM_ELEMENT newLowLimit  = lowLimit_ - lap->lowLimit();
 
-      GUM_SCALAR newVal = lowLimit_ - lap->highLimit();
+      GUM_ELEMENT newVal = lowLimit_ - lap->highLimit();
 
       if (newHighLimit < newVal) newHighLimit = newVal;
 
@@ -139,17 +140,17 @@ namespace gum {
     } catch (const std::bad_cast&) {}
   }
 
-  template < typename GUM_SCALAR >
-  INLINE void LinearApproximationPolicy< GUM_SCALAR >::combineMult(
-      const ApproximationPolicy< GUM_SCALAR >* ap) {
+  template < typename GUM_ELEMENT >
+  INLINE void LinearApproximationPolicy< GUM_ELEMENT >::combineMult(
+      const ApproximationPolicy< GUM_ELEMENT >* ap) {
     try {
-      const LinearApproximationPolicy< GUM_SCALAR >* lap
-          = dynamic_cast< const LinearApproximationPolicy< GUM_SCALAR >* >(ap);
+      const LinearApproximationPolicy< GUM_ELEMENT >* lap
+          = dynamic_cast< const LinearApproximationPolicy< GUM_ELEMENT >* >(ap);
 
-      GUM_SCALAR newHighLimit = lowLimit_ * lap->lowLimit();
-      GUM_SCALAR newLowLimit  = lowLimit_ * lap->lowLimit();
+      GUM_ELEMENT newHighLimit = lowLimit_ * lap->lowLimit();
+      GUM_ELEMENT newLowLimit  = lowLimit_ * lap->lowLimit();
 
-      GUM_SCALAR newVal = lowLimit_ * lap->highLimit();
+      GUM_ELEMENT newVal = lowLimit_ * lap->highLimit();
 
       if (newHighLimit < newVal) newHighLimit = newVal;
 
@@ -169,17 +170,17 @@ namespace gum {
     } catch (const std::bad_cast&) {}
   }
 
-  template < typename GUM_SCALAR >
-  INLINE void LinearApproximationPolicy< GUM_SCALAR >::combineDiv(
-      const ApproximationPolicy< GUM_SCALAR >* ap) {
+  template < typename GUM_ELEMENT >
+  INLINE void LinearApproximationPolicy< GUM_ELEMENT >::combineDiv(
+      const ApproximationPolicy< GUM_ELEMENT >* ap) {
     try {
-      const LinearApproximationPolicy< GUM_SCALAR >* lap
-          = dynamic_cast< const LinearApproximationPolicy< GUM_SCALAR >* >(ap);
+      const LinearApproximationPolicy< GUM_ELEMENT >* lap
+          = dynamic_cast< const LinearApproximationPolicy< GUM_ELEMENT >* >(ap);
 
-      GUM_SCALAR newHighLimit = lowLimit_ / lap->lowLimit();
-      GUM_SCALAR newLowLimit  = lowLimit_ / lap->lowLimit();
+      GUM_ELEMENT newHighLimit = lowLimit_ / lap->lowLimit();
+      GUM_ELEMENT newLowLimit  = lowLimit_ / lap->lowLimit();
 
-      GUM_SCALAR newVal = lowLimit_ / lap->highLimit();
+      GUM_ELEMENT newVal = lowLimit_ / lap->highLimit();
 
       if (newHighLimit < newVal) newHighLimit = newVal;
 
@@ -199,17 +200,17 @@ namespace gum {
     } catch (const std::bad_cast&) {}
   }
 
-  template < typename GUM_SCALAR >
-  INLINE void LinearApproximationPolicy< GUM_SCALAR >::combineMax(
-      const ApproximationPolicy< GUM_SCALAR >* ap) {
+  template < typename GUM_ELEMENT >
+  INLINE void LinearApproximationPolicy< GUM_ELEMENT >::combineMax(
+      const ApproximationPolicy< GUM_ELEMENT >* ap) {
     try {
-      const LinearApproximationPolicy< GUM_SCALAR >* lap
-          = dynamic_cast< const LinearApproximationPolicy< GUM_SCALAR >* >(ap);
+      const LinearApproximationPolicy< GUM_ELEMENT >* lap
+          = dynamic_cast< const LinearApproximationPolicy< GUM_ELEMENT >* >(ap);
 
-      GUM_SCALAR newHighLimit = lowLimit_ > lap->lowLimit() ? lowLimit_ : lap->lowLimit();
-      GUM_SCALAR newLowLimit  = lowLimit_ > lap->lowLimit() ? lowLimit_ : lap->lowLimit();
+      GUM_ELEMENT newHighLimit = lowLimit_ > lap->lowLimit() ? lowLimit_ : lap->lowLimit();
+      GUM_ELEMENT newLowLimit  = lowLimit_ > lap->lowLimit() ? lowLimit_ : lap->lowLimit();
 
-      GUM_SCALAR newVal = lowLimit_ > lap->highLimit() ? lowLimit_ : lap->highLimit();
+      GUM_ELEMENT newVal = lowLimit_ > lap->highLimit() ? lowLimit_ : lap->highLimit();
 
       if (newHighLimit < newVal) newHighLimit = newVal;
 
@@ -229,17 +230,17 @@ namespace gum {
     } catch (const std::bad_cast&) {}
   }
 
-  template < typename GUM_SCALAR >
-  INLINE void LinearApproximationPolicy< GUM_SCALAR >::combineMin(
-      const ApproximationPolicy< GUM_SCALAR >* ap) {
+  template < typename GUM_ELEMENT >
+  INLINE void LinearApproximationPolicy< GUM_ELEMENT >::combineMin(
+      const ApproximationPolicy< GUM_ELEMENT >* ap) {
     try {
-      const LinearApproximationPolicy< GUM_SCALAR >* lap
-          = dynamic_cast< const LinearApproximationPolicy< GUM_SCALAR >* >(ap);
+      const LinearApproximationPolicy< GUM_ELEMENT >* lap
+          = dynamic_cast< const LinearApproximationPolicy< GUM_ELEMENT >* >(ap);
 
-      GUM_SCALAR newHighLimit = lowLimit_ < lap->lowLimit() ? lowLimit_ : lap->lowLimit();
-      GUM_SCALAR newLowLimit  = lowLimit_ < lap->lowLimit() ? lowLimit_ : lap->lowLimit();
+      GUM_ELEMENT newHighLimit = lowLimit_ < lap->lowLimit() ? lowLimit_ : lap->lowLimit();
+      GUM_ELEMENT newLowLimit  = lowLimit_ < lap->lowLimit() ? lowLimit_ : lap->lowLimit();
 
-      GUM_SCALAR newVal = lowLimit_ < lap->highLimit() ? lowLimit_ : lap->highLimit();
+      GUM_ELEMENT newVal = lowLimit_ < lap->highLimit() ? lowLimit_ : lap->highLimit();
 
       if (newHighLimit < newVal) newHighLimit = newVal;
 
@@ -261,9 +262,9 @@ namespace gum {
 
   // Convert value to his approximation. This method is slower than @ref
   // fromExact since it verifies the bounds
-  template < typename GUM_SCALAR >
-  INLINE GUM_SCALAR
-      LinearApproximationPolicy< GUM_SCALAR >::safeFromExact(const GUM_SCALAR& value) {
+  template < typename GUM_ELEMENT >
+  INLINE GUM_ELEMENT
+      LinearApproximationPolicy< GUM_ELEMENT >::safeFromExact(const GUM_ELEMENT& value) {
     if (value > this->highLimit_) {
       GUM_ERROR(OutOfBounds, "Value asked is higher than high limit")
     }
@@ -274,8 +275,8 @@ namespace gum {
   }
 
   // Convert value to approximation representation
-  template < typename GUM_SCALAR >
-  INLINE Idx LinearApproximationPolicy< GUM_SCALAR >::encode(const GUM_SCALAR& value) const {
+  template < typename GUM_ELEMENT >
+  INLINE Idx LinearApproximationPolicy< GUM_ELEMENT >::encode(const GUM_ELEMENT& value) const {
 // we keep the bounds checked in debug mode
 #ifdef GUM_DEBUG_MODE
     if (value > this->highLimit_) {
@@ -295,26 +296,26 @@ namespace gum {
   }
 
   // Convert approximation representation to value
-  template < typename GUM_SCALAR >
-  INLINE GUM_SCALAR LinearApproximationPolicy< GUM_SCALAR >::decode(Idx representation) const {
+  template < typename GUM_ELEMENT >
+  INLINE GUM_ELEMENT LinearApproximationPolicy< GUM_ELEMENT >::decode(Idx representation) const {
     if (representation > nbInterval_) {
       GUM_ERROR(OutOfBounds, "Interval Number asked is higher than total number of interval")
     }
 
-    return _decode_(GUM_SCALAR(representation));
+    return _decode_(GUM_ELEMENT(representation));
   }
 
   // Sets approximation factor
-  template < typename GUM_SCALAR >
-  INLINE void LinearApproximationPolicy< GUM_SCALAR >::setEpsilon(const GUM_SCALAR& e) {
+  template < typename GUM_ELEMENT >
+  INLINE void LinearApproximationPolicy< GUM_ELEMENT >::setEpsilon(const GUM_ELEMENT& e) {
     epsilon_ = e;
     computeNbInterval_();
   }
 
   // set bounds in a whole
-  template < typename GUM_SCALAR >
-  INLINE void LinearApproximationPolicy< GUM_SCALAR >::setLimits(const GUM_SCALAR& newLowLimit,
-                                                                 const GUM_SCALAR& newHighLimit) {
+  template < typename GUM_ELEMENT >
+  INLINE void LinearApproximationPolicy< GUM_ELEMENT >::setLimits(const GUM_ELEMENT& newLowLimit,
+                                                                  const GUM_ELEMENT& newHighLimit) {
     if (newLowLimit > newHighLimit) {
       GUM_ERROR(OutOfBounds, "Asked low value is higher than asked high value")
     }
@@ -325,8 +326,9 @@ namespace gum {
   }
 
   // Sets lowest possible value
-  template < typename GUM_SCALAR >
-  INLINE void LinearApproximationPolicy< GUM_SCALAR >::setLowLimit(const GUM_SCALAR& newLowLimit) {
+  template < typename GUM_ELEMENT >
+  INLINE void
+      LinearApproximationPolicy< GUM_ELEMENT >::setLowLimit(const GUM_ELEMENT& newLowLimit) {
     if (newLowLimit > this->highLimit_) {
       GUM_ERROR(OutOfBounds, "Value asked is higher than High limit")
     }
@@ -337,15 +339,15 @@ namespace gum {
   }
 
   // Gets lowest possible value
-  template < typename GUM_SCALAR >
-  INLINE const GUM_SCALAR& LinearApproximationPolicy< GUM_SCALAR >::lowLimit() const {
+  template < typename GUM_ELEMENT >
+  INLINE const GUM_ELEMENT& LinearApproximationPolicy< GUM_ELEMENT >::lowLimit() const {
     return lowLimit_;
   }
 
   // Sets Highest possible value
-  template < typename GUM_SCALAR >
+  template < typename GUM_ELEMENT >
   INLINE void
-      LinearApproximationPolicy< GUM_SCALAR >::setHighLimit(const GUM_SCALAR& newHighLimit) {
+      LinearApproximationPolicy< GUM_ELEMENT >::setHighLimit(const GUM_ELEMENT& newHighLimit) {
     if (newHighLimit < this->lowLimit_) {
       GUM_ERROR(OutOfBounds, "Value asked is lower than low limit")
     }
@@ -356,14 +358,14 @@ namespace gum {
   }
 
   // Gets Highest possible value
-  template < typename GUM_SCALAR >
-  INLINE const GUM_SCALAR& LinearApproximationPolicy< GUM_SCALAR >::highLimit() const {
+  template < typename GUM_ELEMENT >
+  INLINE const GUM_ELEMENT& LinearApproximationPolicy< GUM_ELEMENT >::highLimit() const {
     return highLimit_;
   }
 
   // Concretely computes the approximate representation
-  template < typename GUM_SCALAR >
-  INLINE Idx LinearApproximationPolicy< GUM_SCALAR >::_encode_(const GUM_SCALAR& value) const {
+  template < typename GUM_ELEMENT >
+  INLINE Idx LinearApproximationPolicy< GUM_ELEMENT >::_encode_(const GUM_ELEMENT& value) const {
     if (value <= this->lowLimit_) return 0;
 
     if (value >= this->highLimit_) return nbInterval_;
@@ -372,20 +374,20 @@ namespace gum {
   }
 
   // Concretely computes the approximate value from representation
-  template < typename GUM_SCALAR >
-  INLINE GUM_SCALAR
-      LinearApproximationPolicy< GUM_SCALAR >::_decode_(const GUM_SCALAR& representation) const {
+  template < typename GUM_ELEMENT >
+  INLINE GUM_ELEMENT
+      LinearApproximationPolicy< GUM_ELEMENT >::_decode_(const GUM_ELEMENT& representation) const {
     if (representation == 0) return this->lowLimit_;
 
     if (representation == nbInterval_) return this->highLimit_;
 
-    return (GUM_SCALAR)(((representation * this->epsilon_) - (this->epsilon_ / 2))
-                        + this->lowLimit_);
+    return (GUM_ELEMENT)(((representation * this->epsilon_) - (this->epsilon_ / 2))
+                         + this->lowLimit_);
   }
 
   // get the number of interval
-  template < typename GUM_SCALAR >
-  INLINE void LinearApproximationPolicy< GUM_SCALAR >::computeNbInterval_() {
+  template < typename GUM_ELEMENT >
+  INLINE void LinearApproximationPolicy< GUM_ELEMENT >::computeNbInterval_() {
     nbInterval_ = 1 + Idx((this->highLimit_ - this->lowLimit_) / this->epsilon_);
   }
 }   // namespace gum

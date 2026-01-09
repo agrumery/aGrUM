@@ -64,7 +64,7 @@ namespace gum {
    * #include <agrum/base/core/approximations/approximationPolicy.h>
    * @endcode
    */
-  template < typename GUM_SCALAR >
+  template < GUM_Numeric GUM_SCALAR >
   class ApproximationPolicy {
     public:
     // ===========================================================================

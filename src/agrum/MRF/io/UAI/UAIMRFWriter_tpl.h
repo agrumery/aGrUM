@@ -50,7 +50,7 @@ namespace gum {
   /*
    * Default constructor.
    */
-  template < typename GUM_SCALAR >
+  template < GUM_Numeric GUM_SCALAR >
   INLINE UAIMRFWriter< GUM_SCALAR >::UAIMRFWriter() {
     GUM_CONSTRUCTOR(UAIMRFWriter);
   }
@@ -58,7 +58,7 @@ namespace gum {
   /*
    * Destructor.
    */
-  template < typename GUM_SCALAR >
+  template < GUM_Numeric GUM_SCALAR >
   INLINE UAIMRFWriter< GUM_SCALAR >::~UAIMRFWriter() {
     GUM_DESTRUCTOR(UAIMRFWriter);
   }
@@ -70,7 +70,7 @@ namespace gum {
    * @param MRF The Markov net writen in the stream.
    * @throws IOError Raised if an I/O error occurs.
    */
-  template < typename GUM_SCALAR >
+  template < GUM_Numeric GUM_SCALAR >
   INLINE void UAIMRFWriter< GUM_SCALAR >::write(std::ostream&                           output,
                                                 const IMarkovRandomField< GUM_SCALAR >& MN) {
     if (!output.good()) { GUM_ERROR(IOError, "Input/Output error : stream not writable.") }
@@ -96,7 +96,7 @@ namespace gum {
    * @param MRF The Markov net writen in the file.
    * @throw IOError Raised if an I/O error occurs.
    */
-  template < typename GUM_SCALAR >
+  template < GUM_Numeric GUM_SCALAR >
   INLINE void UAIMRFWriter< GUM_SCALAR >::write(const std::string&                      filePath,
                                                 const IMarkovRandomField< GUM_SCALAR >& MN) {
     std::ofstream output(filePath.c_str(), std::ios_base::trunc);
@@ -108,7 +108,7 @@ namespace gum {
     if (output.fail()) { GUM_ERROR(IOError, "Writing in the ostream failed.") }
   }
 
-  template < typename GUM_SCALAR >
+  template < GUM_Numeric GUM_SCALAR >
   INLINE std::string
          UAIMRFWriter< GUM_SCALAR >::_preambule_(const IMarkovRandomField< GUM_SCALAR >& MN) {
     std::stringstream str;
@@ -135,7 +135,7 @@ namespace gum {
     return str.str();
   }
 
-  template < typename GUM_SCALAR >
+  template < GUM_Numeric GUM_SCALAR >
   INLINE std::string
          UAIMRFWriter< GUM_SCALAR >::_factorBloc_(const IMarkovRandomField< GUM_SCALAR >& MN,
                                                   const Tensor< GUM_SCALAR >&             clikpot) {

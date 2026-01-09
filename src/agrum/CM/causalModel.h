@@ -49,7 +49,7 @@
 namespace gum {
 
   // forward declaration:
-  template < typename GUM_SCALAR >
+  template < GUM_Numeric GUM_SCALAR >
   class ASTtree;
 
   /// LatentDescriptorIds = (latentName, (child1Id, child2Id, ...))
@@ -79,7 +79,7 @@ namespace gum {
    *   in the **causal DAG**. The `assumeNonSpurious` flag controls whether existing arcs between
    *   those children are preserved or may be adjusted (implementation dependent).
    */
-  template < typename GUM_SCALAR >
+  template < GUM_Numeric GUM_SCALAR >
   class CausalModel {
     private:
     /// The underlying BayesNet representing the observed part of the model.

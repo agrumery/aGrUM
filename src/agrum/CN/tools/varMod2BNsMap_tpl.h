@@ -46,26 +46,26 @@
 namespace gum {
   namespace credal {
 
-    template < typename GUM_SCALAR >
+    template < GUM_Numeric GUM_SCALAR >
     VarMod2BNsMap< GUM_SCALAR >::VarMod2BNsMap() {
       cnet = nullptr;
 
       GUM_CONSTRUCTOR(VarMod2BNsMap);
     }
 
-    template < typename GUM_SCALAR >
+    template < GUM_Numeric GUM_SCALAR >
     VarMod2BNsMap< GUM_SCALAR >::VarMod2BNsMap(const CredalNet< GUM_SCALAR >& cn) {
       setCNet(cn);
 
       GUM_CONSTRUCTOR(VarMod2BNsMap);
     }
 
-    template < typename GUM_SCALAR >
+    template < GUM_Numeric GUM_SCALAR >
     VarMod2BNsMap< GUM_SCALAR >::~VarMod2BNsMap() {
       GUM_DESTRUCTOR(VarMod2BNsMap);
     }
 
-    template < typename GUM_SCALAR >
+    template < GUM_Numeric GUM_SCALAR >
     void VarMod2BNsMap< GUM_SCALAR >::setCNet(const CredalNet< GUM_SCALAR >& cn) {
       auto* cpt    = &cn.credalNet_currentCpt();
       auto  nNodes = cpt->size();
@@ -87,7 +87,7 @@ namespace gum {
       cnet = &cn;
     }
 
-    template < typename GUM_SCALAR >
+    template < GUM_Numeric GUM_SCALAR >
     bool VarMod2BNsMap< GUM_SCALAR >::insert(const std::vector< bool >& bn,
                                              const std::vector< Size >& key) {
       currentHash_            = Size(vectHash_(bn));
@@ -107,7 +107,7 @@ namespace gum {
       return true;
     }
 
-    template < typename GUM_SCALAR >
+    template < GUM_Numeric GUM_SCALAR >
     bool VarMod2BNsMap< GUM_SCALAR >::insert(const std::vector< Size >& key, const bool isBetter) {
       if (isBetter) {
         // get all nets of this key (maybe entry does not exists)
@@ -177,7 +177,7 @@ namespace gum {
       }   // end of ! isBetter
     }
 
-    template < typename GUM_SCALAR >
+    template < GUM_Numeric GUM_SCALAR >
     void VarMod2BNsMap< GUM_SCALAR >::setCurrentSample(
         const std::vector< std::vector< std::vector< bool > > >& sample) {
       currentSample_.clear();
@@ -193,18 +193,18 @@ namespace gum {
       currentHash_ = Size(vectHash_(currentSample_));
     }
 
-    template < typename GUM_SCALAR >
+    template < GUM_Numeric GUM_SCALAR >
     const std::vector< bool >& VarMod2BNsMap< GUM_SCALAR >::getCurrentSample() {
       return currentSample_;
     }
 
-    template < typename GUM_SCALAR >
+    template < GUM_Numeric GUM_SCALAR >
     const std::vector< std::vector< std::vector< bool > > >&
         VarMod2BNsMap< GUM_SCALAR >::getSampleDef() {
       return sampleDef_;
     }
 
-    template < typename GUM_SCALAR >
+    template < GUM_Numeric GUM_SCALAR >
     const std::vector< std::vector< bool >* >
         VarMod2BNsMap< GUM_SCALAR >::getBNOptsFromKey(const std::vector< Size >& key) {
       // return something even if key does not exist
@@ -224,7 +224,7 @@ namespace gum {
       return nets;
     }
 
-    template < typename GUM_SCALAR >
+    template < GUM_Numeric GUM_SCALAR >
     std::vector< std::vector< std::vector< std::vector< bool > > > >
         VarMod2BNsMap< GUM_SCALAR >::getFullBNOptsFromKey(const std::vector< Size >& key) {
       if (cnet == nullptr)
@@ -258,7 +258,7 @@ namespace gum {
       return nets;
     }
 
-    template < typename GUM_SCALAR >
+    template < GUM_Numeric GUM_SCALAR >
     Size VarMod2BNsMap< GUM_SCALAR >::getEntrySize() const {
       return myHashNet_.size();
     }

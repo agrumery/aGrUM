@@ -55,7 +55,7 @@ namespace gum {
   namespace learning {
 
     /// default constructor
-    template < typename GUM_SCALAR >
+    template < GUM_Numeric GUM_SCALAR >
     DBRowGeneratorEM< GUM_SCALAR >::DBRowGeneratorEM(
         const std::vector< DBTranslatedValueType >& column_types,
         const BayesNet< GUM_SCALAR >&               bn,
@@ -71,7 +71,7 @@ namespace gum {
     }
 
     /// copy constructor
-    template < typename GUM_SCALAR >
+    template < GUM_Numeric GUM_SCALAR >
     DBRowGeneratorEM< GUM_SCALAR >::DBRowGeneratorEM(const DBRowGeneratorEM< GUM_SCALAR >& from) :
         DBRowGeneratorWithBN< GUM_SCALAR >(from), _input_row_(from._input_row_),
         _missing_cols_(from._missing_cols_), _nb_miss_(from._nb_miss_),
@@ -91,7 +91,7 @@ namespace gum {
     }
 
     /// move constructor
-    template < typename GUM_SCALAR >
+    template < GUM_Numeric GUM_SCALAR >
     DBRowGeneratorEM< GUM_SCALAR >::DBRowGeneratorEM(DBRowGeneratorEM< GUM_SCALAR >&& from) :
         DBRowGeneratorWithBN< GUM_SCALAR >(std::move(from)), _input_row_(from._input_row_),
         _missing_cols_(std::move(from._missing_cols_)), _nb_miss_(from._nb_miss_),
@@ -111,20 +111,20 @@ namespace gum {
     }
 
     /// virtual copy constructor
-    template < typename GUM_SCALAR >
+    template < GUM_Numeric GUM_SCALAR >
     DBRowGeneratorEM< GUM_SCALAR >* DBRowGeneratorEM< GUM_SCALAR >::clone() const {
       return new DBRowGeneratorEM< GUM_SCALAR >(*this);
     }
 
     /// destructor
-    template < typename GUM_SCALAR >
+    template < GUM_Numeric GUM_SCALAR >
     DBRowGeneratorEM< GUM_SCALAR >::~DBRowGeneratorEM() {
       if (_joint_inst_ != nullptr) delete _joint_inst_;
       GUM_DESTRUCTOR(DBRowGeneratorEM);
     }
 
     /// copy operator
-    template < typename GUM_SCALAR >
+    template < GUM_Numeric GUM_SCALAR >
     DBRowGeneratorEM< GUM_SCALAR >&
         DBRowGeneratorEM< GUM_SCALAR >::operator=(const DBRowGeneratorEM< GUM_SCALAR >& from) {
       if (this != &from) {
@@ -157,7 +157,7 @@ namespace gum {
     }
 
     /// move operator
-    template < typename GUM_SCALAR >
+    template < GUM_Numeric GUM_SCALAR >
     DBRowGeneratorEM< GUM_SCALAR >&
         DBRowGeneratorEM< GUM_SCALAR >::operator=(DBRowGeneratorEM< GUM_SCALAR >&& from) {
       if (this != &from) {
@@ -190,7 +190,7 @@ namespace gum {
     }
 
     /// generates new lines from those the generator gets in input
-    template < typename GUM_SCALAR >
+    template < GUM_Numeric GUM_SCALAR >
     INLINE const DBRow< DBTranslatedValue >& DBRowGeneratorEM< GUM_SCALAR >::generate() {
       this->decreaseRemainingRows();
 
@@ -225,7 +225,7 @@ namespace gum {
     }
 
     /// computes the rows it will provide in output
-    template < typename GUM_SCALAR >
+    template < GUM_Numeric GUM_SCALAR >
     INLINE std::size_t
            DBRowGeneratorEM< GUM_SCALAR >::computeRows_(const DBRow< DBTranslatedValue >& row) {
       // check if there are unobserved values among the columns of interest.
@@ -375,7 +375,7 @@ namespace gum {
     }
 
     /// assign a new Bayes net to the generator
-    template < typename GUM_SCALAR >
+    template < GUM_Numeric GUM_SCALAR >
     void DBRowGeneratorEM< GUM_SCALAR >::setBayesNet(const BayesNet< GUM_SCALAR >& new_bn) {
       // check that if nodeId2columns is not empty, then all the columns
       // correspond to nodes of the BN

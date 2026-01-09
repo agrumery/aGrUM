@@ -67,8 +67,8 @@ namespace gum {
    * process
    *
    */
-  template < typename GUM_SCALAR >
-  class MDDOperatorStrategy: public IOperatorStrategy< GUM_SCALAR > {
+  template < typename GUM_ELEMENT >
+  class MDDOperatorStrategy: public IOperatorStrategy< GUM_ELEMENT > {
     public:
     // ###################################################################
     /// @name Constructor & destructor.
@@ -93,13 +93,13 @@ namespace gum {
     // ###################################################################
     /// @{
 
-    MultiDimFunctionGraph< GUM_SCALAR, ExactTerminalNodePolicy >* getFunctionInstance() {
-      return MultiDimFunctionGraph< GUM_SCALAR >::getReducedAndOrderedInstance();
+    MultiDimFunctionGraph< GUM_ELEMENT, ExactTerminalNodePolicy >* getFunctionInstance() {
+      return MultiDimFunctionGraph< GUM_ELEMENT >::getReducedAndOrderedInstance();
     }
 
-    MultiDimFunctionGraph< ArgMaxSet< GUM_SCALAR, Idx >, SetTerminalNodePolicy >*
+    MultiDimFunctionGraph< ArgMaxSet< GUM_ELEMENT, Idx >, SetTerminalNodePolicy >*
         getArgMaxFunctionInstance() {
-      return MultiDimFunctionGraph< ArgMaxSet< GUM_SCALAR, Idx >,
+      return MultiDimFunctionGraph< ArgMaxSet< GUM_ELEMENT, Idx >,
                                     SetTerminalNodePolicy >::getReducedAndOrderedInstance();
     }
 
@@ -121,58 +121,59 @@ namespace gum {
      *  Computes Qaction for given actionid
      */
     // ==========================================================================
-    MultiDimFunctionGraph< GUM_SCALAR >* regress(const MultiDimFunctionGraph< GUM_SCALAR >* Vold,
-                                                 Idx                       actionId,
-                                                 const FMDP< GUM_SCALAR >* fmdp,
-                                                 const gum::VariableSet&   elVarSeq);
+    MultiDimFunctionGraph< GUM_ELEMENT >* regress(const MultiDimFunctionGraph< GUM_ELEMENT >* Vold,
+                                                  Idx                        actionId,
+                                                  const FMDP< GUM_ELEMENT >* fmdp,
+                                                  const gum::VariableSet&    elVarSeq);
 
     // ==========================================================================
     /// @warning given vFunction and qAction are deleted, returns the new one
     // ==========================================================================
-    virtual MultiDimFunctionGraph< GUM_SCALAR >*
-        maximize(const MultiDimFunctionGraph< GUM_SCALAR >* f1,
-                 const MultiDimFunctionGraph< GUM_SCALAR >* f2,
-                 Idx                                        del = 3);
+    virtual MultiDimFunctionGraph< GUM_ELEMENT >*
+        maximize(const MultiDimFunctionGraph< GUM_ELEMENT >* f1,
+                 const MultiDimFunctionGraph< GUM_ELEMENT >* f2,
+                 Idx                                         del = 3);
 
     // ==========================================================================
     /// @warning Minimze the two given functions
     // ==========================================================================
-    virtual MultiDimFunctionGraph< GUM_SCALAR >*
-        minimize(const MultiDimFunctionGraph< GUM_SCALAR >* f1,
-                 const MultiDimFunctionGraph< GUM_SCALAR >* f2,
-                 Idx                                        del = 3);
+    virtual MultiDimFunctionGraph< GUM_ELEMENT >*
+        minimize(const MultiDimFunctionGraph< GUM_ELEMENT >* f1,
+                 const MultiDimFunctionGraph< GUM_ELEMENT >* f2,
+                 Idx                                         del = 3);
 
     // ==========================================================================
     /// @warning given f1 and f2 are deleted, returns the new one
     // ==========================================================================
-    virtual MultiDimFunctionGraph< GUM_SCALAR >*
-        multiply(const MultiDimFunctionGraph< GUM_SCALAR >* f1,
-                 const MultiDimFunctionGraph< GUM_SCALAR >* f2,
-                 Idx                                        del = 3);
+    virtual MultiDimFunctionGraph< GUM_ELEMENT >*
+        multiply(const MultiDimFunctionGraph< GUM_ELEMENT >* f1,
+                 const MultiDimFunctionGraph< GUM_ELEMENT >* f2,
+                 Idx                                         del = 3);
 
     // ==========================================================================
     /// @warning given vFunction and qAction are deleted, returns the new one
     // ==========================================================================
-    virtual MultiDimFunctionGraph< ArgMaxSet< GUM_SCALAR, Idx >, SetTerminalNodePolicy >*
+    virtual MultiDimFunctionGraph< ArgMaxSet< GUM_ELEMENT, Idx >, SetTerminalNodePolicy >*
         argmaximize(
-            const MultiDimFunctionGraph< ArgMaxSet< GUM_SCALAR, Idx >, SetTerminalNodePolicy >* f1,
-            const MultiDimFunctionGraph< ArgMaxSet< GUM_SCALAR, Idx >, SetTerminalNodePolicy >* f2,
+            const MultiDimFunctionGraph< ArgMaxSet< GUM_ELEMENT, Idx >, SetTerminalNodePolicy >* f1,
+            const MultiDimFunctionGraph< ArgMaxSet< GUM_ELEMENT, Idx >, SetTerminalNodePolicy >* f2,
             Idx del = 3);
 
     // ==========================================================================
     /// @warning given function is deleted, returns the new one
     // ==========================================================================
-    virtual MultiDimFunctionGraph< GUM_SCALAR >* add(const MultiDimFunctionGraph< GUM_SCALAR >* f1,
-                                                     const MultiDimFunctionGraph< GUM_SCALAR >* f2,
-                                                     Idx del = 1);
+    virtual MultiDimFunctionGraph< GUM_ELEMENT >*
+        add(const MultiDimFunctionGraph< GUM_ELEMENT >* f1,
+            const MultiDimFunctionGraph< GUM_ELEMENT >* f2,
+            Idx                                         del = 1);
 
     // ==========================================================================
     /// @warning this time, nothing is deleted
     // ==========================================================================
-    virtual MultiDimFunctionGraph< GUM_SCALAR >*
-        subtract(const MultiDimFunctionGraph< GUM_SCALAR >* f1,
-                 const MultiDimFunctionGraph< GUM_SCALAR >* f2,
-                 Idx                                        del = 0);
+    virtual MultiDimFunctionGraph< GUM_ELEMENT >*
+        subtract(const MultiDimFunctionGraph< GUM_ELEMENT >* f1,
+                 const MultiDimFunctionGraph< GUM_ELEMENT >* f2,
+                 Idx                                         del = 0);
 
 
     /// @}
@@ -182,7 +183,7 @@ namespace gum {
     /// Indicates if whether or not given var is to be eliminated.
     /// Called by the evalQaction.
     // ==========================================================================
-    INLINE bool shouldEleminateVar_(const DiscreteVariable* v, const FMDP< GUM_SCALAR >* fmdp) {
+    INLINE bool shouldEleminateVar_(const DiscreteVariable* v, const FMDP< GUM_ELEMENT >* fmdp) {
       return v == nullptr ? false : fmdp->mapMainPrime().existsSecond(v);
     }
 
@@ -190,7 +191,7 @@ namespace gum {
     /// Returns the last var in the var order for given graph function
     /// Called by the evalQaction.
     // ==========================================================================
-    INLINE const DiscreteVariable* lastVar_(const MultiDimFunctionGraph< GUM_SCALAR >* function) {
+    INLINE const DiscreteVariable* lastVar_(const MultiDimFunctionGraph< GUM_ELEMENT >* function) {
       return function->variablesSequence().size() == 0
                ? nullptr
                : function->variablesSequence().atPos(function->variablesSequence().size() - 1);

@@ -65,27 +65,27 @@ namespace gum {
   // of its vars
 
 #  ifdef GUM_MULTI_DIM_PROJECTION_NAME
-#    define GUM_MULTI_DIM_PROJECTION_TYPE GUM_SCALAR
+#    define GUM_MULTI_DIM_PROJECTION_TYPE GUM_ELEMENT
 
-  template < typename GUM_SCALAR >
-  MultiDimFunctionGraph< GUM_SCALAR >*
-      GUM_MULTI_DIM_PROJECTION_NAME(const MultiDimFunctionGraph< GUM_SCALAR >* table,
-                                    const gum::VariableSet&                    delVars)
+  template < typename GUM_ELEMENT >
+  MultiDimFunctionGraph< GUM_ELEMENT >*
+      GUM_MULTI_DIM_PROJECTION_NAME(const MultiDimFunctionGraph< GUM_ELEMENT >* table,
+                                    const gum::VariableSet&                     delVars)
 #  endif
 
 
 #  ifdef GUM_MULTI_DIM_PROJECTION_IMPL2DECISION_GRAPH_NAME
-#    define GUM_MULTI_DIM_PROJECTION_TYPE GUM_SCALAR
-          template < typename GUM_SCALAR >
-          MultiDimImplementation< GUM_SCALAR >* GUM_MULTI_DIM_PROJECTION_IMPL2DECISION_GRAPH_NAME(
-              const MultiDimImplementation< GUM_SCALAR >* ttable,
-              const gum::VariableSet&                     delVars)
+#    define GUM_MULTI_DIM_PROJECTION_TYPE GUM_ELEMENT
+          template < typename GUM_ELEMENT >
+          MultiDimImplementation< GUM_ELEMENT >* GUM_MULTI_DIM_PROJECTION_IMPL2DECISION_GRAPH_NAME(
+              const MultiDimImplementation< GUM_ELEMENT >* ttable,
+              const gum::VariableSet&                      delVars)
 #  endif
   {
 
 #  ifdef GUM_MULTI_DIM_PROJECTION_IMPL2DECISION_GRAPH_NAME
-    const MultiDimFunctionGraph< GUM_SCALAR >* table
-        = reinterpret_cast< const MultiDimFunctionGraph< GUM_SCALAR >* >(ttable);
+    const MultiDimFunctionGraph< GUM_ELEMENT >* table
+        = reinterpret_cast< const MultiDimFunctionGraph< GUM_ELEMENT >* >(ttable);
 #  endif
 
     MultiDimFunctionGraphProjector< GUM_MULTI_DIM_PROJECTION_TYPE,

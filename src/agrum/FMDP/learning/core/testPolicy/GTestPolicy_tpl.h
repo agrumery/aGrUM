@@ -65,9 +65,9 @@ namespace gum {
   // ==========================================================================
   //
   // ==========================================================================
-  template < typename GUM_SCALAR >
-  void GTestPolicy< GUM_SCALAR >::addObservation(Idx iattr, GUM_SCALAR ivalue) {
-    ITestPolicy< GUM_SCALAR >::addObservation(iattr, ivalue);
+  template < typename GUM_ELEMENT >
+  void GTestPolicy< GUM_ELEMENT >::addObservation(Idx iattr, GUM_ELEMENT ivalue) {
+    ITestPolicy< GUM_ELEMENT >::addObservation(iattr, ivalue);
     _conTab_.add(iattr, ivalue);
   }
 
@@ -78,9 +78,9 @@ namespace gum {
   // ============================================================================
   // Computes the GStat of current variable according to the test
   // ============================================================================
-  template < typename GUM_SCALAR >
-  void GTestPolicy< GUM_SCALAR >::computeScore() const {
-    ITestPolicy< GUM_SCALAR >::computeScore();
+  template < typename GUM_ELEMENT >
+  void GTestPolicy< GUM_ELEMENT >::computeScore() const {
+    ITestPolicy< GUM_ELEMENT >::computeScore();
     _GStat_ = 0;
 
     // Itération sur l'axe 1 du tableau
@@ -107,8 +107,8 @@ namespace gum {
   // ============================================================================
   // Returns the performance of current variable according to the test
   // ============================================================================
-  template < typename GUM_SCALAR >
-  double GTestPolicy< GUM_SCALAR >::score() const {
+  template < typename GUM_ELEMENT >
+  double GTestPolicy< GUM_ELEMENT >::score() const {
     if (this->isModified_()) computeScore();
     //      std::cout << this->toString() << std::endl;
     double score
@@ -120,15 +120,15 @@ namespace gum {
   // ============================================================================
   // Returns a second criterion to severe ties
   // ============================================================================
-  template < typename GUM_SCALAR >
-  double GTestPolicy< GUM_SCALAR >::secondaryscore() const {
+  template < typename GUM_ELEMENT >
+  double GTestPolicy< GUM_ELEMENT >::secondaryscore() const {
     if (this->isModified_()) computeScore();
     return _GStat_;
   }
 
-  template < typename GUM_SCALAR >
-  void GTestPolicy< GUM_SCALAR >::add(const GTestPolicy< GUM_SCALAR >& src) {
-    ITestPolicy< GUM_SCALAR >::add(src);
+  template < typename GUM_ELEMENT >
+  void GTestPolicy< GUM_ELEMENT >::add(const GTestPolicy< GUM_ELEMENT >& src) {
+    ITestPolicy< GUM_ELEMENT >::add(src);
     _conTab_ += src.ct();
   }
 

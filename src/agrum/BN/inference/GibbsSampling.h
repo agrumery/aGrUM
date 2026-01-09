@@ -68,7 +68,7 @@ namespace gum {
    *
    */
 
-  template < typename GUM_SCALAR >
+  template < GUM_Numeric GUM_SCALAR >
   class GibbsSampling: public SamplingInference< GUM_SCALAR >, public GibbsOperator< GUM_SCALAR > {
     public:
     /**

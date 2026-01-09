@@ -115,7 +115,7 @@ namespace gum {
      * @tparam GUM_SCALAR A floating type ( float, double, long double ... ).
      * @author Matthieu HOURBRACQ and Pierre-Henri WUILLEMIN(_at_LIP6)
      */
-    template < typename GUM_SCALAR >
+    template < GUM_Numeric GUM_SCALAR >
     class LRSWrapper {
       /** @brief Shortcut for dynamic matrix using vectors. */
       using matrix = typename std::vector< std::vector< GUM_SCALAR > >;

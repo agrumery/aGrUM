@@ -67,7 +67,7 @@ namespace gum {
    */
   // clang-format on
 
-  template < typename GUM_SCALAR,
+  template < typename GUM_ELEMENT,
              template < typename > class FUNCTOR,
              template < typename > class TerminalNodePolicy = ExactTerminalNodePolicy >
   class MultiDimFunctionGraphProjector {
@@ -81,9 +81,9 @@ namespace gum {
      * @brief Default constructor.
      */
     MultiDimFunctionGraphProjector(
-        const MultiDimFunctionGraph< GUM_SCALAR, TerminalNodePolicy >* src,
+        const MultiDimFunctionGraph< GUM_ELEMENT, TerminalNodePolicy >* src,
         const gum::VariableSet&                                        delVars,
-        const GUM_SCALAR                                               neutral);
+        const GUM_ELEMENT                                               neutral);
 
     /**
      * @brief Default destructor.
@@ -100,25 +100,25 @@ namespace gum {
      * @brief Computes and builds the Function Graph that is the result of the
      * Projection.
      */
-    MultiDimFunctionGraph< GUM_SCALAR, TerminalNodePolicy >* project();
+    MultiDimFunctionGraph< GUM_ELEMENT, TerminalNodePolicy >* project();
 
     /// @}
 
     private:
     /// One of the two function graphs used for the Projection
-    const MultiDimFunctionGraph< GUM_SCALAR, TerminalNodePolicy >* _src_;
+    const MultiDimFunctionGraph< GUM_ELEMENT, TerminalNodePolicy >* _src_;
 
     /// The list of variables on which the projection is performed
     const gum::VariableSet& _delVars_;
 
     /// The resulting function graph
-    MultiDimFunctionGraph< GUM_SCALAR, TerminalNodePolicy >* _rd_;
+    MultiDimFunctionGraph< GUM_ELEMENT, TerminalNodePolicy >* _rd_;
 
     /// The function to be performed on the leaves
-    const FUNCTOR< GUM_SCALAR > _function_;
+    const FUNCTOR< GUM_ELEMENT > _function_;
 
     /// The function to be performed on the leaves
-    const GUM_SCALAR _neutral_;
+    const GUM_ELEMENT _neutral_;
   };
 
 #ifndef GUM_NO_EXTERN_TEMPLATE_CLASS

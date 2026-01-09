@@ -61,10 +61,10 @@ namespace gum {
    * approximate to itself).
    * @ingroup approximationpolicy_group
    *
-   * @tparam GUM_SCALAR The type used for computations.
+   * @tparam GUM_ELEMENT The type used for computations.
    */
-  template < typename GUM_SCALAR >
-  class ExactPolicy: public virtual ApproximationPolicy< GUM_SCALAR > {
+  template < typename GUM_ELEMENT >
+  class ExactPolicy: public virtual ApproximationPolicy< GUM_ELEMENT > {
     public:
     // ===========================================================================
     /// @name Constructors / Destructors
@@ -88,45 +88,45 @@ namespace gum {
      * @param value The converted value.
      * @return The value approximation representation.
      */
-    INLINE GUM_SCALAR fromExact(const GUM_SCALAR& value) const;
+    INLINE GUM_ELEMENT fromExact(const GUM_ELEMENT& value) const;
 
     /**
      * @brief Combine using addition with the given gum::ApproximationPolicy.
      * @param ap The policy to combine with.
      */
-    void combineAdd(const ApproximationPolicy< GUM_SCALAR >* ap);
+    void combineAdd(const ApproximationPolicy< GUM_ELEMENT >* ap);
 
     /**
      * @brief Combine using substraction with the given
      * gum::ApproximationPolicy.
      * @param ap The policy to combine with.
      */
-    void combineSub(const ApproximationPolicy< GUM_SCALAR >* ap);
+    void combineSub(const ApproximationPolicy< GUM_ELEMENT >* ap);
 
     /**
      * @brief Combine using multiplication with the given
      * gum::ApproximationPolicy.
      * @param ap The policy to combine with.
      */
-    void combineMult(const ApproximationPolicy< GUM_SCALAR >* ap);
+    void combineMult(const ApproximationPolicy< GUM_ELEMENT >* ap);
 
     /**
      * @brief Combine using division with the given gum::ApproximationPolicy.
      * @param ap The policy to combine with.
      */
-    void combineDiv(const ApproximationPolicy< GUM_SCALAR >* ap);
+    void combineDiv(const ApproximationPolicy< GUM_ELEMENT >* ap);
 
     /**
      * @brief Combine using max with the given gum::ApproximationPolicy.
      * @param ap The policy to combine with.
      */
-    void combineMax(const ApproximationPolicy< GUM_SCALAR >* ap);
+    void combineMax(const ApproximationPolicy< GUM_ELEMENT >* ap);
 
     /**
      * @brief Combine using min with the given gum::ApproximationPolicy.
      * @param ap The policy to combine with.
      */
-    void combineMin(const ApproximationPolicy< GUM_SCALAR >* ap);
+    void combineMin(const ApproximationPolicy< GUM_ELEMENT >* ap);
 
     /// @}
   };

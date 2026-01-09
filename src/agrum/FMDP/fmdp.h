@@ -69,11 +69,11 @@ namespace gum {
    *
    */
 
-  template < typename GUM_SCALAR >
+  template < typename GUM_ELEMENT >
   class FMDP {
-    template < typename GUM_SCALAR_O >
+    template < typename GUM_ELEMENT_O >
     using VarTransitionTable
-        = HashTable< const DiscreteVariable*, const MultiDimImplementation< GUM_SCALAR_O >* >;
+        = HashTable< const DiscreteVariable*, const MultiDimImplementation< GUM_ELEMENT_O >* >;
 
     public:
     // ===========================================================================
@@ -171,7 +171,7 @@ namespace gum {
      */
     void addTransitionForAction(Idx                                         actionId,
                                 const DiscreteVariable*                     var,
-                                const MultiDimImplementation< GUM_SCALAR >* transition);
+                                const MultiDimImplementation< GUM_ELEMENT >* transition);
 
     /**
      * Adds a default variable transition
@@ -179,7 +179,7 @@ namespace gum {
      * @throw DuplicateElement if variable already has a default transition
      */
     void addTransition(const DiscreteVariable*                     var,
-                       const MultiDimImplementation< GUM_SCALAR >* transition) {
+                       const MultiDimImplementation< GUM_ELEMENT >* transition) {
       this->addTransitionForAction(0, var, transition);
     }
 
@@ -187,7 +187,7 @@ namespace gum {
      * Returns transition associated to given in parameter variable and the
      * given action
      */
-    const MultiDimImplementation< GUM_SCALAR >* transition(Idx                     actionId,
+    const MultiDimImplementation< GUM_ELEMENT >* transition(Idx                     actionId,
                                                            const DiscreteVariable* v) const;
 
     /// @}
@@ -201,20 +201,20 @@ namespace gum {
      * Adds a cost table to specified action
      * @throw NotFound if action does not exists
      */
-    void addCostForAction(Idx actionId, const MultiDimImplementation< GUM_SCALAR >* cost);
+    void addCostForAction(Idx actionId, const MultiDimImplementation< GUM_ELEMENT >* cost);
 
     /**
      * Adds a default variable cost
      * @throw DuplicateElement if a default cost exists already
      */
-    void addCost(const MultiDimImplementation< GUM_SCALAR >* cost) {
+    void addCost(const MultiDimImplementation< GUM_ELEMENT >* cost) {
       this->addCostForAction(0, cost);
     }
 
     /**
      * Returns the reward table of mdp
      */
-    const MultiDimImplementation< GUM_SCALAR >* cost(Idx actionId = 0) const;
+    const MultiDimImplementation< GUM_ELEMENT >* cost(Idx actionId = 0) const;
 
     /// @}
 
@@ -227,20 +227,20 @@ namespace gum {
      * Adds a default variable reward
      * @throw DuplicateElement if a default reward exists already
      */
-    void addRewardForAction(Idx actionId, const MultiDimImplementation< GUM_SCALAR >* reward);
+    void addRewardForAction(Idx actionId, const MultiDimImplementation< GUM_ELEMENT >* reward);
 
     /**
      * Adds a default variable reward
      * @throw DuplicateElement if a default reward exists already
      */
-    void addReward(const MultiDimImplementation< GUM_SCALAR >* reward) {
+    void addReward(const MultiDimImplementation< GUM_ELEMENT >* reward) {
       this->addRewardForAction(0, reward);
     }
 
     /**
      * Returns the reward table of mdp
      */
-    const MultiDimImplementation< GUM_SCALAR >* reward(Idx actionId = 0) const;
+    const MultiDimImplementation< GUM_ELEMENT >* reward(Idx actionId = 0) const;
 
     /// @}
 
@@ -286,13 +286,13 @@ namespace gum {
 
     /// Table which give for each action a table containing variables transition
     /// cpt
-    HashTable< Idx, VarTransitionTable< GUM_SCALAR >* > _actionTransitionTable_;
+    HashTable< Idx, VarTransitionTable< GUM_ELEMENT >* > _actionTransitionTable_;
 
     /// Table which give for each action cost table
-    HashTable< Idx, const MultiDimImplementation< GUM_SCALAR >* > _actionCostTable_;
+    HashTable< Idx, const MultiDimImplementation< GUM_ELEMENT >* > _actionCostTable_;
 
     /// Table which give for each action reward table
-    HashTable< Idx, const MultiDimImplementation< GUM_SCALAR >* > _actionRewardTable_;
+    HashTable< Idx, const MultiDimImplementation< GUM_ELEMENT >* > _actionRewardTable_;
 
     /// Boolean indicates whether or not main variables should be deleted on
     /// destruction of this instance

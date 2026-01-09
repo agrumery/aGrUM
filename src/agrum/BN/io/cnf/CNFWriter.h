@@ -81,7 +81,7 @@ namespace gum {
    * for information on this format.
    *
    */
-  template < typename GUM_SCALAR, template < typename > class IApproximationPolicy = ExactPolicy >
+  template < GUM_Numeric GUM_SCALAR, template < typename > class IApproximationPolicy = ExactPolicy >
   class CNFWriter: public BNWriter< GUM_SCALAR >, public IApproximationPolicy< GUM_SCALAR > {
     public:
     // ==========================================================================

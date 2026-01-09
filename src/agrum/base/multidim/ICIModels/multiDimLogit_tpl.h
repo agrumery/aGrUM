@@ -53,7 +53,7 @@
 namespace gum {
 
   // Default constructor
-  template < typename GUM_SCALAR >
+  template < GUM_Numeric GUM_SCALAR >
   INLINE MultiDimLogit< GUM_SCALAR >::MultiDimLogit(GUM_SCALAR external_weight,
                                                     GUM_SCALAR default_weight) :
       MultiDimICIModel< GUM_SCALAR >(external_weight, default_weight) {
@@ -61,14 +61,14 @@ namespace gum {
   }
 
   // Default constructor
-  template < typename GUM_SCALAR >
+  template < GUM_Numeric GUM_SCALAR >
   INLINE MultiDimLogit< GUM_SCALAR >::MultiDimLogit(const MultiDimLogit< GUM_SCALAR >& from) :
       MultiDimICIModel< GUM_SCALAR >(from) {
     GUM_CONS_CPY(MultiDimLogit);
   }
 
   // Copy constructor using a bijection to replace variables from source.
-  template < typename GUM_SCALAR >
+  template < GUM_Numeric GUM_SCALAR >
   INLINE MultiDimLogit< GUM_SCALAR >::MultiDimLogit(
       const Bijection< const DiscreteVariable*, const DiscreteVariable* >& bij,
       const MultiDimLogit< GUM_SCALAR >& from) : MultiDimICIModel< GUM_SCALAR >(bij, from) {
@@ -76,12 +76,12 @@ namespace gum {
   }
 
   // destructor
-  template < typename GUM_SCALAR >
+  template < GUM_Numeric GUM_SCALAR >
   INLINE MultiDimLogit< GUM_SCALAR >::~MultiDimLogit() {
     GUM_DESTRUCTOR(MultiDimLogit);
   }
 
-  template < typename GUM_SCALAR >
+  template < GUM_Numeric GUM_SCALAR >
   GUM_SCALAR MultiDimLogit< GUM_SCALAR >::get(const Instantiation& i) const {
     if (this->nbrDim() < 1) { GUM_ERROR(OperationNotAllowed, "Not enough variable for a Logit") }
 
@@ -102,7 +102,7 @@ namespace gum {
     return res;
   }
 
-  template < typename GUM_SCALAR >
+  template < GUM_Numeric GUM_SCALAR >
   std::string MultiDimLogit< GUM_SCALAR >::toString() const {
     std::stringstream s;
     s << this->variable(0) << "=logit(" << this->externalWeight();
@@ -125,18 +125,18 @@ namespace gum {
   }
 
   // For friendly displaying the content of the variable.
-  template < typename GUM_SCALAR >
+  template < GUM_Numeric GUM_SCALAR >
   INLINE std::ostream& operator<<(std::ostream& s, const MultiDimLogit< GUM_SCALAR >& ag) {
     return s << ag.toString();
   }
 
-  template < typename GUM_SCALAR >
+  template < GUM_Numeric GUM_SCALAR >
   INLINE MultiDimContainer< GUM_SCALAR >* MultiDimLogit< GUM_SCALAR >::newFactory() const {
     return new MultiDimLogit< GUM_SCALAR >(this->_external_weight_, this->_default_weight_);
   }
 
   // returns the name of the implementation
-  template < typename GUM_SCALAR >
+  template < GUM_Numeric GUM_SCALAR >
   INLINE const std::string& MultiDimLogit< GUM_SCALAR >::name() const {
     static const std::string str = "MultiDimLogit";
     return str;

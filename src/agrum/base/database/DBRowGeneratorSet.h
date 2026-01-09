@@ -223,7 +223,7 @@ namespace gum {
       /** Typically, generators based on EM or K-means depend on a model to
        * compute correctly their outputs. Method setBayesNet enables to
        * update their BN model. */
-      template < typename GUM_SCALAR >
+      template < GUM_Numeric GUM_SCALAR >
       void setBayesNet(const BayesNet< GUM_SCALAR >& new_bn);
 
       /// resets all the generators

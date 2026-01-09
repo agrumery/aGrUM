@@ -59,7 +59,7 @@
 namespace gum {
 
   // the base object used by the partial instantiations
-  template < typename GUM_SCALAR >
+  template < typename GUM_ELEMENT >
   class MultiDimImplementation;
 
   // ==========================================================================
@@ -80,15 +80,15 @@ namespace gum {
    * multiDimImplementations, i.e., functions assigning values to subsets of
    * the variables of some tables.
    *
-   * @tparam GUM_SCALAR The type of scalars stored in the multidimensional
+   * @tparam GUM_ELEMENT The type of scalars stored in the multidimensional
    * table.
    */
-  template < typename GUM_SCALAR >
+  template < typename GUM_ELEMENT >
   class PartialInstantiationRegister4MultiDim {
     public:
     /// The type of functions used by the register
     using PartialInstantiationPtr
-        = MultiDimImplementation< GUM_SCALAR >* (*)(const MultiDimImplementation< GUM_SCALAR >*,
+        = MultiDimImplementation< GUM_ELEMENT >* (*)(const MultiDimImplementation< GUM_ELEMENT >*,
                                                     const HashTable< const DiscreteVariable*,
                                                                      Idx >&);
 
@@ -227,11 +227,11 @@ namespace gum {
 
   /// A function to more easily register new instantiation functions in
   /// MultiDims
-  template < typename GUM_SCALAR >
+  template < typename GUM_ELEMENT >
   void registerPartialInstantiation(
       const std::string& instantiation_func_name,
       const std::string& type_multidim,
-      typename PartialInstantiationRegister4MultiDim< GUM_SCALAR >::PartialInstantiationPtr
+      typename PartialInstantiationRegister4MultiDim< GUM_ELEMENT >::PartialInstantiationPtr
           function);
 
 } /* namespace gum */

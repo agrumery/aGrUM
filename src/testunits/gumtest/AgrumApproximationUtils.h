@@ -41,8 +41,9 @@
 
 #ifndef AGRUM_AGRUMAPPROXIMATIONUTILS_H_H
 #define AGRUM_AGRUMAPPROXIMATIONUTILS_H_H
+#include <agrum/agrum.h>
 
-template < typename GUM_SCALAR >
+template < gum::GUM_Numeric GUM_SCALAR >
 void unsharpen(const gum::BayesNet< GUM_SCALAR >& bn) {
   for (const auto nod: bn.nodes().asNodeSet()) {
     bn.cpt(nod).translate(1);
@@ -50,7 +51,7 @@ void unsharpen(const gum::BayesNet< GUM_SCALAR >& bn) {
   }
 }
 
-template < typename GUM_SCALAR >
+template < gum::GUM_Numeric GUM_SCALAR >
 bool compareInference(const std::string&                       file,
                       int                                      line,
                       const gum::BayesNet< GUM_SCALAR >&       bn,

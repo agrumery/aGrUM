@@ -59,11 +59,11 @@
 namespace gum {
   namespace prm {
 
-    template < typename GUM_SCALAR >
+    template < GUM_Numeric GUM_SCALAR >
     class GSpan;
 
     namespace gspan {
-      template < typename GUM_SCALAR >
+      template < GUM_Numeric GUM_SCALAR >
       class DFSTree;
 
       // clang_format off
@@ -77,7 +77,7 @@ namespace gum {
        * growths.
        */
       // clang_format on
-      template < typename GUM_SCALAR >
+      template < GUM_Numeric GUM_SCALAR >
       class SearchStrategy {
         public:
         // =========================================================================
@@ -129,7 +129,7 @@ namespace gum {
        * algorithm: it accept a growth if its frequency is above a user defined
        *value.
        */
-      template < typename GUM_SCALAR >
+      template < GUM_Numeric GUM_SCALAR >
       class FrequenceSearch: public SearchStrategy< GUM_SCALAR > {
         public:
         // =========================================================================
@@ -179,7 +179,7 @@ namespace gum {
        *
        * A new growth is accepted if it is at least better than its predecessor.
        */
-      template < typename GUM_SCALAR >
+      template < GUM_Numeric GUM_SCALAR >
       class StrictSearch: public SearchStrategy< GUM_SCALAR > {
         public:
         // =========================================================================
@@ -266,7 +266,7 @@ namespace gum {
        *large
        * or equal than its father.
        */
-      template < typename GUM_SCALAR >
+      template < GUM_Numeric GUM_SCALAR >
       class TreeWidthSearch: public SearchStrategy< GUM_SCALAR > {
         public:
         // =========================================================================

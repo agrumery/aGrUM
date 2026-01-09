@@ -70,7 +70,7 @@ namespace gum {
    * All classes used to read an influence diagram from
    * a file must inherit from this class
    */
-  template < typename GUM_SCALAR >
+  template < GUM_Numeric GUM_SCALAR >
   class IDReader {
     public:
     /**

@@ -50,25 +50,25 @@
 namespace gum {
   namespace prm {
 
-    template < typename GUM_SCALAR >
+    template < GUM_Numeric GUM_SCALAR >
     PRMAttribute< GUM_SCALAR >::PRMAttribute(const std::string& name) :
         PRMClassElement< GUM_SCALAR >(name) {
       GUM_CONSTRUCTOR(PRMAttribute);
     }
 
-    template < typename GUM_SCALAR >
+    template < GUM_Numeric GUM_SCALAR >
     PRMAttribute< GUM_SCALAR >::PRMAttribute(const PRMAttribute< GUM_SCALAR >& source) :
         PRMClassElement< GUM_SCALAR >(source) {
       GUM_CONS_CPY(PRMAttribute);
       GUM_ERROR(OperationNotAllowed, "Cannot copy Attributes")
     }
 
-    template < typename GUM_SCALAR >
+    template < GUM_Numeric GUM_SCALAR >
     PRMAttribute< GUM_SCALAR >::~PRMAttribute() {
       GUM_DESTRUCTOR(PRMAttribute);
     }
 
-    template < typename GUM_SCALAR >
+    template < GUM_Numeric GUM_SCALAR >
     void PRMAttribute< GUM_SCALAR >::overload(PRMAttribute< GUM_SCALAR >* source) {
       auto old_type = this->type_();
       this->type_(source->type_());

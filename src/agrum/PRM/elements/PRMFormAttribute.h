@@ -64,7 +64,7 @@ namespace gum {
      *PRMAttribute
      * @ingroup prm_group
      */
-    template < typename GUM_SCALAR >
+    template < GUM_Numeric GUM_SCALAR >
     class PRMFormAttribute: public PRMAttribute< GUM_SCALAR > {
       public:
       PRMFormAttribute(const PRMClass< GUM_SCALAR >&          c,

@@ -62,23 +62,23 @@ namespace gum {
   // the result
 
 #  ifdef GUM_MULTI_DIM_PARTIAL_INSTANTIATION_NAME
-#    define GUM_MULTI_DIM_PARTIAL_INSTANTIATION_TYPE GUM_SCALAR
+#    define GUM_MULTI_DIM_PARTIAL_INSTANTIATION_TYPE GUM_ELEMENT
 
-  template < typename GUM_SCALAR >
-  MultiDimImplementation< GUM_SCALAR >* GUM_MULTI_DIM_PARTIAL_INSTANTIATION_NAME(
-      const MultiDimImplementation< GUM_SCALAR >*      table,
+  template < typename GUM_ELEMENT >
+  MultiDimImplementation< GUM_ELEMENT >* GUM_MULTI_DIM_PARTIAL_INSTANTIATION_NAME(
+      const MultiDimImplementation< GUM_ELEMENT >*     table,
       const HashTable< const DiscreteVariable*, Idx >& inst_vars)
 #  endif
 
   // clang-format off
 
 #ifdef GUM_MULTI_DIM_PARTIAL_INSTANTIATION_POINTER_NAME
-#define GUM_MULTI_DIM_PARTIAL_INSTANTIATION_TYPE GUM_SCALAR *
+#define GUM_MULTI_DIM_PARTIAL_INSTANTIATION_TYPE GUM_ELEMENT *
 #define GUM_MULTI_DIM_PARTIAL_INSTANTIATION_POINTER
-  template <typename GUM_SCALAR>
-  MultiDimImplementation<GUM_SCALAR*>*
+  template <typename GUM_ELEMENT>
+  MultiDimImplementation<GUM_ELEMENT*>*
   GUM_MULTI_DIM_PARTIAL_INSTANTIATION_POINTER_NAME(
-      const MultiDimImplementation<GUM_SCALAR*>* table,
+      const MultiDimImplementation<GUM_ELEMENT*>* table,
       const HashTable<const DiscreteVariable*, Idx>& inst_vars )
 #endif
 
@@ -166,10 +166,10 @@ namespace gum {
       Instantiation table_inst;
       for (const auto var: table->variablesSequence())
         table_inst.add(*var);
-      const GUM_SCALAR& any_element = *(table->get(table_inst));
+      const GUM_ELEMENT& any_element = *(table->get(table_inst));
 
       for (Idx i = 0; i < result_domain_size; ++i) {
-        result->unsafeSet(i, new GUM_SCALAR(any_element));
+        result->unsafeSet(i, new GUM_ELEMENT(any_element));
       }
     }
 #  endif /* GUM_MULTI_DIM_PARTIAL_INSTANTIATION_POINTER */

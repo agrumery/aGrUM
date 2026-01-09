@@ -68,7 +68,7 @@ namespace gum {
      * @tparam GUM_SCALAR A floating type ( float, double, long double ... ).
      * @author Matthieu HOURBRACQ and Pierre-Henri WUILLEMIN(_at_LIP6)
      */
-    template < typename GUM_SCALAR >
+    template < GUM_Numeric GUM_SCALAR >
     class InferenceEngine: public ApproximationScheme, public ThreadNumberManager {
       using credalSet = NodeProperty< std::vector< std::vector< GUM_SCALAR > > >;
       using margi     = NodeProperty< std::vector< GUM_SCALAR > >;

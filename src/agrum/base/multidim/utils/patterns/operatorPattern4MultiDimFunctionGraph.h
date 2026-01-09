@@ -67,23 +67,23 @@ namespace gum {
    **/
 
 #  ifdef GUM_MULTI_DIM_OPERATOR_NAME
-#    define GUM_MULTI_DIM_OPERATOR_TYPE GUM_SCALAR
+#    define GUM_MULTI_DIM_OPERATOR_TYPE GUM_ELEMENT
 
-  template < typename GUM_SCALAR >
-  MultiDimFunctionGraph< GUM_SCALAR >*
-      GUM_MULTI_DIM_OPERATOR_NAME(const MultiDimFunctionGraph< GUM_SCALAR >* dg1,
-                                  const MultiDimFunctionGraph< GUM_SCALAR >* dg2)
+  template < typename GUM_ELEMENT >
+  MultiDimFunctionGraph< GUM_ELEMENT >*
+      GUM_MULTI_DIM_OPERATOR_NAME(const MultiDimFunctionGraph< GUM_ELEMENT >* dg1,
+                                  const MultiDimFunctionGraph< GUM_ELEMENT >* dg2)
 #  endif
 
   // clang-format off
 
 #ifdef GUM_MULTI_DIM_OPERATOR_IMPL2DECISION_GRAPH_NAME
-#define GUM_MULTI_DIM_OPERATOR_TYPE GUM_SCALAR
-  template <typename GUM_SCALAR>
-  MultiDimImplementation<GUM_SCALAR>*
+#define GUM_MULTI_DIM_OPERATOR_TYPE GUM_ELEMENT
+  template <typename GUM_ELEMENT>
+  MultiDimImplementation<GUM_ELEMENT>*
   GUM_MULTI_DIM_OPERATOR_IMPL2DECISION_GRAPH_NAME(
-      const MultiDimImplementation<GUM_SCALAR>* tt1,
-      const MultiDimImplementation<GUM_SCALAR>* tt2 )
+      const MultiDimImplementation<GUM_ELEMENT>* tt1,
+      const MultiDimImplementation<GUM_ELEMENT>* tt2 )
 #endif
 
   // clang-format on
@@ -91,10 +91,10 @@ namespace gum {
   {
 
 #  ifdef GUM_MULTI_DIM_OPERATOR_IMPL2DECISION_GRAPH_NAME
-    const MultiDimFunctionGraph< GUM_SCALAR >* dg1
-        = reinterpret_cast< const MultiDimFunctionGraph< GUM_SCALAR >* >(tt1);
-    const MultiDimFunctionGraph< GUM_SCALAR >* dg2
-        = reinterpret_cast< const MultiDimFunctionGraph< GUM_SCALAR >* >(tt2);
+    const MultiDimFunctionGraph< GUM_ELEMENT >* dg1
+        = reinterpret_cast< const MultiDimFunctionGraph< GUM_ELEMENT >* >(tt1);
+    const MultiDimFunctionGraph< GUM_ELEMENT >* dg2
+        = reinterpret_cast< const MultiDimFunctionGraph< GUM_ELEMENT >* >(tt2);
 #  endif
     MultiDimFunctionGraphOperator< GUM_MULTI_DIM_OPERATOR_TYPE, GUM_MULTI_DIM_OPERATOR > ope(dg1,
                                                                                              dg2);

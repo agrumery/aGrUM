@@ -51,7 +51,7 @@ namespace gum {
 
 
   // Default Constructor
-  template < typename GUM_SCALAR >
+  template < GUM_Numeric GUM_SCALAR >
   EvidenceInference< GUM_SCALAR >::EvidenceInference(const IBayesNet< GUM_SCALAR >* bn) :
       BayesNetInference< GUM_SCALAR >(bn) {
     // assign a BN if this has not been done before (due to virtual inheritance)
@@ -63,7 +63,7 @@ namespace gum {
   }
 
   // Destructor
-  template < typename GUM_SCALAR >
+  template < GUM_Numeric GUM_SCALAR >
   EvidenceInference< GUM_SCALAR >::~EvidenceInference() {
     GUM_DESTRUCTOR(EvidenceInference);
   }

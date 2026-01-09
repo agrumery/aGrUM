@@ -77,7 +77,7 @@ namespace gum {
      * @see PRM PRMFactory Class PRMSlotChain
      * @ingroup prm_group
      */
-    template < typename GUM_SCALAR >
+    template < GUM_Numeric GUM_SCALAR >
     class PRMAggregate: public PRMClassElement< GUM_SCALAR > {
       friend class PRMClass< GUM_SCALAR >;
 

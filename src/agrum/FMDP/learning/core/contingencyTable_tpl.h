@@ -62,16 +62,16 @@ namespace gum {
   // ==========================================================================
   // Default constructor
   // ==========================================================================
-  template < typename GUM_SCALAR_A, typename GUM_SCALAR_B >
-  ContingencyTable< GUM_SCALAR_A, GUM_SCALAR_B >::ContingencyTable() {
+  template < typename GUM_ELEMENT_A, typename GUM_ELEMENT_B >
+  ContingencyTable< GUM_ELEMENT_A, GUM_ELEMENT_B >::ContingencyTable() {
     GUM_CONSTRUCTOR(ContingencyTable);
   }
 
   // ==========================================================================
   // Default destructor
   // ==========================================================================
-  template < typename GUM_SCALAR_A, typename GUM_SCALAR_B >
-  ContingencyTable< GUM_SCALAR_A, GUM_SCALAR_B >::~ContingencyTable() {
+  template < typename GUM_ELEMENT_A, typename GUM_ELEMENT_B >
+  ContingencyTable< GUM_ELEMENT_A, GUM_ELEMENT_B >::~ContingencyTable() {
     GUM_DESTRUCTOR(ContingencyTable);
   }
 
@@ -82,9 +82,9 @@ namespace gum {
   // ==========================================================================
   //
   // ==========================================================================
-  template < typename GUM_SCALAR_A, typename GUM_SCALAR_B >
-  void ContingencyTable< GUM_SCALAR_A, GUM_SCALAR_B >::add(GUM_SCALAR_A valueA,
-                                                           GUM_SCALAR_B valueB) {
+  template < typename GUM_ELEMENT_A, typename GUM_ELEMENT_B >
+  void ContingencyTable< GUM_ELEMENT_A, GUM_ELEMENT_B >::add(GUM_ELEMENT_A valueA,
+                                                             GUM_ELEMENT_B valueB) {
     // Updating
     if (_attrAMarginalTable_.exists(valueA)) _attrAMarginalTable_[valueA]++;
     else _attrAMarginalTable_.insert(valueA, 1);
@@ -92,22 +92,22 @@ namespace gum {
     if (_attrBMarginalTable_.exists(valueB)) _attrBMarginalTable_[valueB]++;
     else _attrBMarginalTable_.insert(valueB, 1);
 
-    std::pair< GUM_SCALAR_A, GUM_SCALAR_B > cell(valueA, valueB);
+    std::pair< GUM_ELEMENT_A, GUM_ELEMENT_B > cell(valueA, valueB);
     if (_jointTable_.exists(cell)) _jointTable_[cell]++;
     else _jointTable_.insert(cell, 1);
   }
 
-  template < typename GUM_SCALAR_A, typename GUM_SCALAR_B >
-  ContingencyTable< GUM_SCALAR_A, GUM_SCALAR_B >&
-      ContingencyTable< GUM_SCALAR_A, GUM_SCALAR_B >::operator+=(
-          const ContingencyTable< GUM_SCALAR_A, GUM_SCALAR_B >& src) {
+  template < typename GUM_ELEMENT_A, typename GUM_ELEMENT_B >
+  ContingencyTable< GUM_ELEMENT_A, GUM_ELEMENT_B >&
+      ContingencyTable< GUM_ELEMENT_A, GUM_ELEMENT_B >::operator+=(
+          const ContingencyTable< GUM_ELEMENT_A, GUM_ELEMENT_B >& src) {
     // Ajout dans marginal A et table joint des valeurs pour src
     for (auto aTer = src.attrABeginSafe(); aTer != src.attrAEndSafe(); ++aTer) {
       if (_attrAMarginalTable_.exists(aTer.key())) _attrAMarginalTable_[aTer.key()] += aTer.val();
       else _attrAMarginalTable_.insert(aTer.key(), aTer.val());
 
       for (auto bTer = src.attrBBeginSafe(); bTer != src.attrBEndSafe(); ++bTer) {
-        std::pair< GUM_SCALAR_A, GUM_SCALAR_B > cell(aTer.key(), bTer.key());
+        std::pair< GUM_ELEMENT_A, GUM_ELEMENT_B > cell(aTer.key(), bTer.key());
         if (_jointTable_.exists(cell)) _jointTable_[cell] += src.joint(aTer.key(), bTer.key());
         else _jointTable_.insert(cell, src.joint(aTer.key(), bTer.key()));
       }

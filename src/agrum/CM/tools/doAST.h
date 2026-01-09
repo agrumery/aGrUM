@@ -58,9 +58,9 @@
 
 namespace gum {
 
-  template < typename GUM_SCALAR >
+  template < GUM_Numeric GUM_SCALAR >
   class IBayesNet;
-  template < typename GUM_SCALAR >
+  template < GUM_Numeric GUM_SCALAR >
   class Tensor;
 
   // ================================================================
@@ -84,7 +84,7 @@ namespace gum {
    * - LaTeX helpers maintain name hygiene using `nameOccur` to avoid clashes and
    *   to produce stable, readable notation.
    */
-  template < typename GUM_SCALAR >
+  template < GUM_Numeric GUM_SCALAR >
   class ASTtree {
     public:
     /// Construct an AST node with a descriptive `type` string (used in dumps).
@@ -168,7 +168,7 @@ namespace gum {
    * Holds and owns two operand subtrees. Derived nodes implement the actual
    * semantics (`eval`) and LaTeX rendering.
    */
-  template < typename GUM_SCALAR >
+  template < GUM_Numeric GUM_SCALAR >
   class ASTBinaryOp: public ASTtree< GUM_SCALAR > {
     public:
     /**
@@ -208,7 +208,7 @@ namespace gum {
    * LaTeX: renders as \( (\cdot) + (\cdot) \). `eval` computes element-wise sum
    * on aligned tensors (assuming compatible scopes/shapes).
    */
-  template < typename GUM_SCALAR >
+  template < GUM_Numeric GUM_SCALAR >
   class ASTplus: public ASTBinaryOp< GUM_SCALAR > {
     public:
     ASTplus(std::unique_ptr< ASTtree< GUM_SCALAR > > op1,
@@ -230,7 +230,7 @@ namespace gum {
    * LaTeX: renders as \( (\cdot) - (\cdot) \). `eval` computes element-wise
    * subtraction on aligned tensors.
    */
-  template < typename GUM_SCALAR >
+  template < GUM_Numeric GUM_SCALAR >
   class ASTminus: public ASTBinaryOp< GUM_SCALAR > {
     public:
     ASTminus(std::unique_ptr< ASTtree< GUM_SCALAR > > op1,
@@ -250,7 +250,7 @@ namespace gum {
    * @brief Elementwise product of two AST sub-expressions.
    *
    */
-  template < typename GUM_SCALAR >
+  template < GUM_Numeric GUM_SCALAR >
   class ASTmult: public ASTBinaryOp< GUM_SCALAR > {
     public:
     ASTmult(std::unique_ptr< ASTtree< GUM_SCALAR > > op1,
@@ -270,7 +270,7 @@ namespace gum {
    * @brief Elementwise division of two AST sub-expressions (left / right).
    *
    */
-  template < typename GUM_SCALAR >
+  template < GUM_Numeric GUM_SCALAR >
   class ASTdiv: public ASTBinaryOp< GUM_SCALAR > {
     public:
     ASTdiv(std::unique_ptr< ASTtree< GUM_SCALAR > > op1,
@@ -297,7 +297,7 @@ namespace gum {
    * `eval` queries the contextual BN and returns the corresponding posterior
    * tensor.
    */
-  template < typename GUM_SCALAR >
+  template < GUM_Numeric GUM_SCALAR >
   class ASTposteriorProba: public ASTtree< GUM_SCALAR > {
     public:
     /// Constructor for \( \mathbb{P}_{bn}(\mathrm{vars}\mid\mathrm{knw}) \); `knw` will be
@@ -361,7 +361,7 @@ namespace gum {
    *
    * `eval` queries the contextual BN for the joint over the listed variables.
    */
-  template < typename GUM_SCALAR >
+  template < GUM_Numeric GUM_SCALAR >
   class ASTjointProba: public ASTtree< GUM_SCALAR > {
     public:
     /// Build a joint \(\mathbb{P}(\mathrm{varNames})\).
@@ -397,7 +397,7 @@ namespace gum {
    * variables. Operationally, `eval` marginalizes the variable(s) from the
    * evaluated subterm tensor.
    */
-  template < typename GUM_SCALAR >
+  template < GUM_Numeric GUM_SCALAR >
   class ASTsum: public ASTtree< GUM_SCALAR > {
     public:
     /// Single-variable summation \( \sum_{\text{var}} \text{term} \).
@@ -441,7 +441,7 @@ namespace gum {
    * @param lterms list of term nodes (ownership transferred)
    * @return product AST
    */
-  template < typename GUM_SCALAR >
+  template < GUM_Numeric GUM_SCALAR >
   std::unique_ptr< ASTtree< GUM_SCALAR > >
       productOfTrees(std::vector< std::unique_ptr< ASTtree< GUM_SCALAR > > >&& lterms);
 

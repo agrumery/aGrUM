@@ -85,7 +85,7 @@ namespace gum {
    * @endcode
    */
 
-  template < typename GUM_SCALAR >
+  template < GUM_Numeric GUM_SCALAR >
   class ExactBNdistance: public BNdistance< GUM_SCALAR > {
     public:
     /** constructor must give 2 BNs

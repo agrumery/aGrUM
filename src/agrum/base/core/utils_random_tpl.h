@@ -51,7 +51,7 @@ namespace gum {
 
   // return a random discrete distribution
   // @param n is the number of modalities for the distribution
-  template < typename GUM_SCALAR >
+  template < GUM_Numeric GUM_SCALAR >
   std::vector< GUM_SCALAR > randomDistribution(Size n) {
     if (n < 2) n = 2;
 

@@ -52,7 +52,7 @@
 namespace gum {
   namespace prm {
 
-    template < typename GUM_SCALAR >
+    template < GUM_Numeric GUM_SCALAR >
     PRMSlotChain< GUM_SCALAR >::PRMSlotChain(
         const std::string&                                name,
         const Sequence< PRMClassElement< GUM_SCALAR >* >& chain) :
@@ -83,7 +83,7 @@ namespace gum {
 
     // Parameters are inverse to prevent unwanted constructors calls (it
     // happened)
-    template < typename GUM_SCALAR >
+    template < GUM_Numeric GUM_SCALAR >
     PRMSlotChain< GUM_SCALAR >::PRMSlotChain(Sequence< PRMClassElement< GUM_SCALAR >* >* chain,
                                              const std::string& name) : PRMSlotChain(name, *chain) {
       // No need to
@@ -111,7 +111,7 @@ namespace gum {
       // PRMObject::RIGHT_CAST() + name;
     }
 
-    template < typename GUM_SCALAR >
+    template < GUM_Numeric GUM_SCALAR >
     void PRMSlotChain< GUM_SCALAR >::_copyLastElt_() {
       PRMClassElement< GUM_SCALAR >* new_elt = nullptr;
 
@@ -148,14 +148,14 @@ namespace gum {
       _chain_->setAtPos(_chain_->size() - 1, new_elt);
     }
 
-    template < typename GUM_SCALAR >
+    template < GUM_Numeric GUM_SCALAR >
     PRMSlotChain< GUM_SCALAR >::~PRMSlotChain() {
       GUM_DESTRUCTOR(PRMSlotChain);
       delete _chain_->back();
       delete _chain_;
     }
 
-    template < typename GUM_SCALAR >
+    template < GUM_Numeric GUM_SCALAR >
     PRMSlotChain< GUM_SCALAR >::PRMSlotChain(const PRMSlotChain< GUM_SCALAR >& source) :
         PRMClassElement< GUM_SCALAR >(source.name()),
         _chain_(new Sequence< PRMClassElement< GUM_SCALAR >* >(source.chain())),
@@ -164,78 +164,78 @@ namespace gum {
       _copyLastElt_();
     }
 
-    template < typename GUM_SCALAR >
+    template < GUM_Numeric GUM_SCALAR >
     PRMSlotChain< GUM_SCALAR >&
         PRMSlotChain< GUM_SCALAR >::operator=(const PRMSlotChain< GUM_SCALAR >& source) {
       GUM_ERROR(FatalError, "Illegal call to gum::SlotChain<GUM_SCALAR> copy constructor.")
     }
 
-    template < typename GUM_SCALAR >
+    template < GUM_Numeric GUM_SCALAR >
     INLINE typename PRMClassElement< GUM_SCALAR >::ClassElementType
         PRMSlotChain< GUM_SCALAR >::elt_type() const {
       return this->prm_slotchain;
     }
 
-    template < typename GUM_SCALAR >
+    template < GUM_Numeric GUM_SCALAR >
     INLINE PRMType& PRMSlotChain< GUM_SCALAR >::type() {
       return _chain_->back()->type();
     }
 
-    template < typename GUM_SCALAR >
+    template < GUM_Numeric GUM_SCALAR >
     INLINE const PRMType& PRMSlotChain< GUM_SCALAR >::type() const {
       return _chain_->back()->type();
     }
 
-    template < typename GUM_SCALAR >
+    template < GUM_Numeric GUM_SCALAR >
     INLINE const Tensor< GUM_SCALAR >& PRMSlotChain< GUM_SCALAR >::cpf() const {
       return _chain_->back()->cpf();
     }
 
-    template < typename GUM_SCALAR >
+    template < GUM_Numeric GUM_SCALAR >
     INLINE PRMClassElementContainer< GUM_SCALAR >& PRMSlotChain< GUM_SCALAR >::end() {
       return static_cast< PRMReferenceSlot< GUM_SCALAR >* >(_chain_->atPos(_chain_->size() - 2))
           ->slotType();
     }
 
-    template < typename GUM_SCALAR >
+    template < GUM_Numeric GUM_SCALAR >
     INLINE const PRMClassElementContainer< GUM_SCALAR >& PRMSlotChain< GUM_SCALAR >::end() const {
       return static_cast< PRMReferenceSlot< GUM_SCALAR >* >(_chain_->atPos(_chain_->size() - 2))
           ->slotType();
     }
 
-    template < typename GUM_SCALAR >
+    template < GUM_Numeric GUM_SCALAR >
     INLINE PRMClassElement< GUM_SCALAR >& PRMSlotChain< GUM_SCALAR >::lastElt() {
       return *(_chain_->back());
     }
 
-    template < typename GUM_SCALAR >
+    template < GUM_Numeric GUM_SCALAR >
     INLINE const PRMClassElement< GUM_SCALAR >& PRMSlotChain< GUM_SCALAR >::lastElt() const {
       return *(_chain_->back());
     }
 
-    template < typename GUM_SCALAR >
+    template < GUM_Numeric GUM_SCALAR >
     INLINE Sequence< PRMClassElement< GUM_SCALAR >* >& PRMSlotChain< GUM_SCALAR >::chain() {
       return *_chain_;
     }
 
-    template < typename GUM_SCALAR >
+    template < GUM_Numeric GUM_SCALAR >
     INLINE const Sequence< PRMClassElement< GUM_SCALAR >* >&
                  PRMSlotChain< GUM_SCALAR >::chain() const {
       return *_chain_;
     }
 
-    template < typename GUM_SCALAR >
+    template < GUM_Numeric GUM_SCALAR >
     INLINE void PRMSlotChain< GUM_SCALAR >::addParent(const PRMClassElement< GUM_SCALAR >& elt) {}
 
-    template < typename GUM_SCALAR >
+    template < GUM_Numeric GUM_SCALAR >
     INLINE void PRMSlotChain< GUM_SCALAR >::addChild(const PRMClassElement< GUM_SCALAR >& elt) {}
 
-    template < typename GUM_SCALAR >
+    template < GUM_Numeric GUM_SCALAR >
     INLINE bool PRMSlotChain< GUM_SCALAR >::isMultiple() const {
       return _isMultiple_;
     }
 
-    template < typename GUM_SCALAR >
+    template < GUM_Numeric GUM_SCALAR >
     INLINE PRMAttribute< GUM_SCALAR >* PRMSlotChain< GUM_SCALAR >::getCastDescendant() const {
       GUM_ERROR(OperationNotAllowed, "This is a slotchain")
     }

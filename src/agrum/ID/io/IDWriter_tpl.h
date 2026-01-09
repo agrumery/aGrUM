@@ -56,7 +56,7 @@ namespace gum {
   /*
    * Default constructor.
    */
-  template < typename GUM_SCALAR >
+  template < GUM_Numeric GUM_SCALAR >
   INLINE IDWriter< GUM_SCALAR >::IDWriter() {
     GUM_CONSTRUCTOR(IDWriter);
   }
@@ -64,7 +64,7 @@ namespace gum {
   /*
    * Default destructor.
    */
-  template < typename GUM_SCALAR >
+  template < GUM_Numeric GUM_SCALAR >
   INLINE IDWriter< GUM_SCALAR >::~IDWriter() {
     GUM_DESTRUCTOR(IDWriter);
   }

@@ -79,8 +79,8 @@ namespace gum {
      *  However, \f$f(J_1,f(J_2,\cdots,f(J_n,NeutraElement)\cdots))\f$ is
      *  truncated in order to fit in domain(aggregator variable).
      */
-    template < typename GUM_SCALAR >
-    class MultiDimAggregator: public MultiDimReadOnly< GUM_SCALAR > {
+    template < typename GUM_ELEMENT >
+    class MultiDimAggregator: public MultiDimReadOnly< GUM_ELEMENT > {
       public:
       // =======================================================================
       /// @name Constructors / Destructors
@@ -95,7 +95,7 @@ namespace gum {
       /**
        * Copy constructor.
        */
-      MultiDimAggregator(const MultiDimAggregator< GUM_SCALAR >& from);
+      MultiDimAggregator(const MultiDimAggregator< GUM_ELEMENT >& from);
 
       /**
        * Class destructor.
@@ -121,7 +121,7 @@ namespace gum {
        * @warning you must desallocate by yourself the memory
        * @return an empty clone of this object with the same type
        */
-      virtual MultiDimContainer< GUM_SCALAR >* newFactory() const override = 0;
+      virtual MultiDimContainer< GUM_ELEMENT >* newFactory() const override = 0;
 
       // =======================================================================
       /// @name Accessors / Modifiers
@@ -129,7 +129,7 @@ namespace gum {
       /// @{
 
       public:
-      virtual GUM_SCALAR get(const Instantiation& i) const override;
+      virtual GUM_ELEMENT get(const Instantiation& i) const override;
 
       virtual std::string aggregatorName() const = 0;
       std::string         toString() const override;
@@ -180,7 +180,7 @@ namespace gum {
        * @throw OperationNotAllowed Raised if src does not have the same domain
        * size than this MultiDimContainer.
        **/
-      void copyFrom(const MultiDimContainer< GUM_SCALAR >& src) const override;
+      void copyFrom(const MultiDimContainer< GUM_ELEMENT >& src) const override;
 
       /**
        * @return true if the aggregator is decomposable.
@@ -214,8 +214,8 @@ namespace gum {
 #endif
 
     /// For friendly displaying the content of the array.
-    template < typename GUM_SCALAR >
-    std::ostream& operator<<(std::ostream& s, const MultiDimAggregator< GUM_SCALAR >& ag);
+    template < typename GUM_ELEMENT >
+    std::ostream& operator<<(std::ostream& s, const MultiDimAggregator< GUM_ELEMENT >& ag);
 
   } /* namespace aggregator */
 } /* namespace gum */

@@ -46,7 +46,7 @@ namespace gum {
 
   // ---------- helpers ----------
 
-  template < typename GUM_SCALAR >
+  template < GUM_Numeric GUM_SCALAR >
   typename gum::NameSet
       CausalImpact< GUM_SCALAR >::_idsToNames_(const CausalModel< GUM_SCALAR >& cm,
                                                const NodeSet&                   ids) {
@@ -56,7 +56,7 @@ namespace gum {
     return out;
   }
 
-  template < typename GUM_SCALAR >
+  template < GUM_Numeric GUM_SCALAR >
   typename gum::NodeSet
       CausalImpact< GUM_SCALAR >::_namesToIds_(const CausalModel< GUM_SCALAR >& cm,
                                                const NameSet&                   names) {
@@ -66,7 +66,7 @@ namespace gum {
     return out;
   }
 
-  template < typename GUM_SCALAR >
+  template < GUM_Numeric GUM_SCALAR >
   bool
       CausalImpact< GUM_SCALAR >::_disjoint_(const NameSet& a, const NameSet& b, const NameSet& c) {
     for (const auto& x: a)
@@ -79,7 +79,7 @@ namespace gum {
   // ---------- ctors (initializer-list builds) ----------
 
 
-  template < typename GUM_SCALAR >
+  template < GUM_Numeric GUM_SCALAR >
   CausalImpact< GUM_SCALAR >::CausalImpact(const CausalModel< GUM_SCALAR >& cm,
                                            const NameSet&                   on,
                                            const NameSet&                   doing,
@@ -88,7 +88,7 @@ namespace gum {
       _directDoCalculus_{directDoCalculus},
       _resultFormula_(_buildFromNames_(cm, on, doing, knowing, directDoCalculus)) {}
 
-  template < typename GUM_SCALAR >
+  template < GUM_Numeric GUM_SCALAR >
   CausalImpact< GUM_SCALAR >::CausalImpact(const CausalModel< GUM_SCALAR >& cm,
                                            const NodeSet&                   on,
                                            const NodeSet&                   doing,
@@ -99,7 +99,7 @@ namespace gum {
 
   // ---------- builders ----------
 
-  template < typename GUM_SCALAR >
+  template < GUM_Numeric GUM_SCALAR >
   CausalFormula< GUM_SCALAR >
       CausalImpact< GUM_SCALAR >::_buildFromNames_(const CausalModel< GUM_SCALAR >& cm,
                                                    const NameSet&                   on,
@@ -203,7 +203,7 @@ namespace gum {
     }
   }
 
-  template < typename GUM_SCALAR >
+  template < GUM_Numeric GUM_SCALAR >
   CausalFormula< GUM_SCALAR >
       CausalImpact< GUM_SCALAR >::_buildFromIds_(const CausalModel< GUM_SCALAR >& cm,
                                                  const NodeSet&                   on,
@@ -217,7 +217,7 @@ namespace gum {
     return _buildFromNames_(cm, onN, doingN, knowingN, directDoCalculus);
   }
 
-  template < typename GUM_SCALAR >
+  template < GUM_Numeric GUM_SCALAR >
   inline Instantiation
       makeInstantiationFromValues(const Tensor< GUM_SCALAR >&                  tensor,
                                   const HashTable< std::string, std::string >& values) {
@@ -240,7 +240,7 @@ namespace gum {
     return I;
   }
 
-  template < typename GUM_SCALAR >
+  template < GUM_Numeric GUM_SCALAR >
   std::tuple< CausalImpact< GUM_SCALAR >, Tensor< GUM_SCALAR >, std::string >
       causalImpact(const CausalModel< GUM_SCALAR >&                    cm,
                    const NameSet&                                      on,

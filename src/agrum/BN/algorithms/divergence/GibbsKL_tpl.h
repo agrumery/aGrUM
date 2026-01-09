@@ -70,7 +70,7 @@
 namespace gum {
 
 
-  template < typename GUM_SCALAR >
+  template < GUM_Numeric GUM_SCALAR >
   GibbsBNdistance< GUM_SCALAR >::GibbsBNdistance(const IBayesNet< GUM_SCALAR >& P,
                                                  const IBayesNet< GUM_SCALAR >& Q) :
       BNdistance< GUM_SCALAR >(P, Q), ApproximationScheme(),
@@ -89,7 +89,7 @@ namespace gum {
     setMaxTime(GIBBSKL_DEFAULT_TIMEOUT);
   }
 
-  template < typename GUM_SCALAR >
+  template < GUM_Numeric GUM_SCALAR >
   GibbsBNdistance< GUM_SCALAR >::GibbsBNdistance(const BNdistance< GUM_SCALAR >& kl) :
       BNdistance< GUM_SCALAR >(kl), ApproximationScheme()
       // Gibbs operator with 10% of nodes changes at random between each samples
@@ -109,12 +109,12 @@ namespace gum {
     setMaxTime(GIBBSKL_DEFAULT_TIMEOUT);
   }
 
-  template < typename GUM_SCALAR >
+  template < GUM_Numeric GUM_SCALAR >
   GibbsBNdistance< GUM_SCALAR >::~GibbsBNdistance() {
     GUM_DESTRUCTOR(GibbsBNdistance);
   }
 
-  template < typename GUM_SCALAR >
+  template < GUM_Numeric GUM_SCALAR >
   void GibbsBNdistance< GUM_SCALAR >::computeKL_() {
     auto               Iq = q_.completeInstantiation();
     gum::Instantiation I  = this->monteCarloSample();
@@ -197,12 +197,12 @@ namespace gum {
     bhattacharya_ = -std::log(bhattacharya_ / (nbrIterations()));
   }
 
-  template < typename GUM_SCALAR >
+  template < GUM_Numeric GUM_SCALAR >
   void GibbsBNdistance< GUM_SCALAR >::setBurnIn(Size b) {
     this->burn_in_ = b;
   }
 
-  template < typename GUM_SCALAR >
+  template < GUM_Numeric GUM_SCALAR >
   Size GibbsBNdistance< GUM_SCALAR >::burnIn() const {
     return this->burn_in_;
   }

@@ -74,7 +74,7 @@ namespace gum {
    * This class export a bayes net into an XML files, using XDSL format
    *
    */
-  template < typename GUM_SCALAR >
+  template < GUM_Numeric GUM_SCALAR >
   class XDSLBNWriter: public BNWriter< GUM_SCALAR > {
     public:
     // ==========================================================================

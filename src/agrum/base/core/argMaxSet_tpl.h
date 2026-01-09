@@ -58,7 +58,7 @@ namespace gum {
   // ============================================================================
   // Constructor
   // ============================================================================
-  template < typename GUM_SCALAR_VAL, typename GUM_SCALAR_SEQ >
+  template < GUM_Numeric GUM_SCALAR_VAL, GUM_Numeric GUM_SCALAR_SEQ >
   ArgMaxSet< GUM_SCALAR_VAL, GUM_SCALAR_SEQ >::ArgMaxSet() {
     GUM_CONSTRUCTOR(ArgMaxSet);
     _argMaxSeq_ = new Sequence< GUM_SCALAR_SEQ >();
@@ -67,7 +67,7 @@ namespace gum {
   // ============================================================================
   // Constructor
   // ============================================================================
-  template < typename GUM_SCALAR_VAL, typename GUM_SCALAR_SEQ >
+  template < GUM_Numeric GUM_SCALAR_VAL, GUM_Numeric GUM_SCALAR_SEQ >
   ArgMaxSet< GUM_SCALAR_VAL, GUM_SCALAR_SEQ >::ArgMaxSet(const GUM_SCALAR_VAL& val,
                                                          const GUM_SCALAR_SEQ& elem) {
     GUM_CONSTRUCTOR(ArgMaxSet);
@@ -79,7 +79,7 @@ namespace gum {
   // ============================================================================
   // Copy Constructor
   // ============================================================================
-  template < typename GUM_SCALAR_VAL, typename GUM_SCALAR_SEQ >
+  template < GUM_Numeric GUM_SCALAR_VAL, GUM_Numeric GUM_SCALAR_SEQ >
   ArgMaxSet< GUM_SCALAR_VAL, GUM_SCALAR_SEQ >::ArgMaxSet(
       const ArgMaxSet< GUM_SCALAR_VAL, GUM_SCALAR_SEQ >& src) {
     GUM_CONS_CPY(ArgMaxSet);
@@ -88,7 +88,7 @@ namespace gum {
     _val_ = src.value();
   }
 
-  template < typename GUM_SCALAR_VAL, typename GUM_SCALAR_SEQ >
+  template < GUM_Numeric GUM_SCALAR_VAL, GUM_Numeric GUM_SCALAR_SEQ >
   ArgMaxSet< GUM_SCALAR_VAL, GUM_SCALAR_SEQ >&
       ArgMaxSet< GUM_SCALAR_VAL, GUM_SCALAR_SEQ >::operator=(
           const ArgMaxSet< GUM_SCALAR_VAL, GUM_SCALAR_SEQ >& src) {
@@ -101,7 +101,7 @@ namespace gum {
   // ============================================================================
   // Destructor
   // ============================================================================
-  template < typename GUM_SCALAR_VAL, typename GUM_SCALAR_SEQ >
+  template < GUM_Numeric GUM_SCALAR_VAL, GUM_Numeric GUM_SCALAR_SEQ >
   ArgMaxSet< GUM_SCALAR_VAL, GUM_SCALAR_SEQ >::~ArgMaxSet() {
     GUM_DESTRUCTOR(ArgMaxSet);
     delete _argMaxSeq_;
@@ -114,7 +114,7 @@ namespace gum {
   // ============================================================================
   // Ajout d'un élément
   // ============================================================================
-  template < typename GUM_SCALAR_VAL, typename GUM_SCALAR_SEQ >
+  template < GUM_Numeric GUM_SCALAR_VAL, GUM_Numeric GUM_SCALAR_SEQ >
   ArgMaxSet< GUM_SCALAR_VAL, GUM_SCALAR_SEQ >&
       ArgMaxSet< GUM_SCALAR_VAL, GUM_SCALAR_SEQ >::operator+=(const GUM_SCALAR_SEQ& elem) {
     _argMaxSeq_->insert(elem);
@@ -124,7 +124,7 @@ namespace gum {
   // ============================================================================
   // Use to insert the content of another set inside this one
   // ============================================================================
-  template < typename GUM_SCALAR_VAL, typename GUM_SCALAR_SEQ >
+  template < GUM_Numeric GUM_SCALAR_VAL, GUM_Numeric GUM_SCALAR_SEQ >
   ArgMaxSet< GUM_SCALAR_VAL, GUM_SCALAR_SEQ >&
       ArgMaxSet< GUM_SCALAR_VAL, GUM_SCALAR_SEQ >::operator+=(
           const ArgMaxSet< GUM_SCALAR_VAL, GUM_SCALAR_SEQ >& src) {
@@ -136,7 +136,7 @@ namespace gum {
   // ============================================================================
   // Compares two ArgMaxSet to check if they are equals
   // ============================================================================
-  template < typename GUM_SCALAR_VAL, typename GUM_SCALAR_SEQ >
+  template < GUM_Numeric GUM_SCALAR_VAL, GUM_Numeric GUM_SCALAR_SEQ >
   bool ArgMaxSet< GUM_SCALAR_VAL, GUM_SCALAR_SEQ >::operator==(
       const ArgMaxSet< GUM_SCALAR_VAL, GUM_SCALAR_SEQ >& compared) const {
     if (_val_ != compared.value()) return false;

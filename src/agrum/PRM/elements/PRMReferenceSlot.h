@@ -76,7 +76,7 @@ namespace gum {
      * @ingroup prm_group
      */
     // ==========================================================================
-    template < typename GUM_SCALAR >
+    template < GUM_Numeric GUM_SCALAR >
     class PRMReferenceSlot: public PRMClassElement< GUM_SCALAR > {
       public:
       // ========================================================================

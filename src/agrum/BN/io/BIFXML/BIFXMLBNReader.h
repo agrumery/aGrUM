@@ -119,7 +119,7 @@ namespace gum {
    * for information about this format.
    *
    */
-  template < typename GUM_SCALAR >
+  template < GUM_Numeric GUM_SCALAR >
   class BIFXMLBNReader: BNReader< GUM_SCALAR > {
     public:
     /**

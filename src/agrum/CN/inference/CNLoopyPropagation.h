@@ -69,7 +69,7 @@ namespace gum {
      * @tparam GUM_SCALAR A floating type ( float, double, long double ... ).
      * @author Matthieu HOURBRACQ and Pierre-Henri WUILLEMIN(_at_LIP6)
      */
-    template < typename GUM_SCALAR >
+    template < GUM_Numeric GUM_SCALAR >
     class CNLoopyPropagation: public InferenceEngine< GUM_SCALAR > {
       public:
       using msg   = std::vector< Tensor< GUM_SCALAR >* >;
@@ -131,7 +131,7 @@ namespace gum {
        * ones by
        * using the appropriate method which will delete the old ones.
        */
-      void eraseAllEvidence();
+      void eraseAllEvidence() override;
 
       /**
        * @deprecated
@@ -151,7 +151,7 @@ namespace gum {
        */
       explicit CNLoopyPropagation(const CredalNet< GUM_SCALAR >& credalNet);
       /** Destructor. */
-      virtual ~CNLoopyPropagation();
+      ~CNLoopyPropagation() override;
       /// @}
 
       protected:

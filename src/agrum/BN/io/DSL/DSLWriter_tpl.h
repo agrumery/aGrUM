@@ -57,13 +57,13 @@ namespace gum {
   /* ===                           GUM_DSL_WRITER === */
   /* =========================================================================*/
   // Default constructor.
-  template < typename GUM_SCALAR >
+  template < GUM_Numeric GUM_SCALAR >
   INLINE DSLWriter< GUM_SCALAR >::DSLWriter() {
     GUM_CONSTRUCTOR(DSLWriter);
   }
 
   // Default destructor.
-  template < typename GUM_SCALAR >
+  template < GUM_Numeric GUM_SCALAR >
   INLINE DSLWriter< GUM_SCALAR >::~DSLWriter() {
     GUM_DESTRUCTOR(DSLWriter);
   }
@@ -73,7 +73,7 @@ namespace gum {
    * @param bn The Bayesian network writen in output.
    * @throws Raised if an I/O error occurs.
    */
-  template < typename GUM_SCALAR >
+  template < GUM_Numeric GUM_SCALAR >
   void DSLWriter< GUM_SCALAR >::_doWrite(std::ostream& output, const IBayesNet< GUM_SCALAR >& bn) {
     if (!output.good()) { GUM_ERROR(IOError, "Input/Output error : stream not writable.") }
 
@@ -100,7 +100,7 @@ namespace gum {
    * @param bn The Bayesian network writed in the file.
    * @throws Raised if an I/O error occurs.
    */
-  template < typename GUM_SCALAR >
+  template < GUM_Numeric GUM_SCALAR >
   void DSLWriter< GUM_SCALAR >::_doWrite(const std::string&             filePath,
                                          const IBayesNet< GUM_SCALAR >& bn) {
     std::ofstream output(filePath.c_str(), std::ios_base::trunc);
@@ -114,7 +114,7 @@ namespace gum {
   /**
    * Returns a bloc defining a variable in the DSL format.
    */
-  template < typename GUM_SCALAR >
+  template < GUM_Numeric GUM_SCALAR >
   std::string DSLWriter< GUM_SCALAR >::_variableBloc_(const IBayesNet< GUM_SCALAR >& bn,
                                                       const DiscreteVariable&        var) {
     NodeId             id;
@@ -178,7 +178,7 @@ namespace gum {
     return oss.str();
   }
 
-  template < typename GUM_SCALAR >
+  template < GUM_Numeric GUM_SCALAR >
   void DSLWriter< GUM_SCALAR >::_syntacticalCheck(const IBayesNet< GUM_SCALAR >& bn) {
     this->_validCharInNamesCheck(bn);
   }

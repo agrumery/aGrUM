@@ -96,7 +96,7 @@
 namespace gum {
 
   namespace learning {
-    template < typename GUM_SCALAR >
+    template < GUM_Numeric GUM_SCALAR >
     class BNDatabaseGenerator: public ProgressNotifier {
       public:
       enum class DiscretizedLabelMode : char { INTERVAL, MEDIAN, RANDOM };

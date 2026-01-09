@@ -108,10 +108,10 @@ namespace gum {
    * @author Pierre-Henri WUILLEMIN(_at_LIP6) and Jean-Christophe MAGNAN and
    * Christophe GONZALES(_at_AMU)
    */
-  template < typename GUM_SCALAR >
-  class FMDPDatReader: public FMDPReader< GUM_SCALAR > {
+  template < typename GUM_ELEMENT >
+  class FMDPDatReader: public FMDPReader< GUM_ELEMENT > {
     public:
-    FMDPDatReader(FMDP< GUM_SCALAR >* fmdp, const std::string& filename);
+    FMDPDatReader(FMDP< GUM_ELEMENT >* fmdp, const std::string& filename);
     ~FMDPDatReader();
 
     /// Direct access to FMDPDat scanner (mandatory for listener connection)
@@ -158,10 +158,10 @@ namespace gum {
     /// @}
 
     protected:
-    FMDP< GUM_SCALAR >*        _fmdp_;
-    FMDPFactory< GUM_SCALAR >* _factory_;
-    MDPDAT::Scanner*           _scanner_;
-    MDPDAT::Parser*            _parser_;
+    FMDP< GUM_ELEMENT >*        _fmdp_;
+    FMDPFactory< GUM_ELEMENT >* _factory_;
+    MDPDAT::Scanner*            _scanner_;
+    MDPDAT::Parser*             _parser_;
 
     std::string _streamName_;
     bool        _traceScanning_;

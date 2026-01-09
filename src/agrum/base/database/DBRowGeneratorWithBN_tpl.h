@@ -55,7 +55,7 @@ namespace gum {
   namespace learning {
 
     /// default constructor
-    template < typename GUM_SCALAR >
+    template < GUM_Numeric GUM_SCALAR >
     DBRowGeneratorWithBN< GUM_SCALAR >::DBRowGeneratorWithBN(
         const std::vector< DBTranslatedValueType >& column_types,
         const BayesNet< GUM_SCALAR >&               bn,
@@ -66,7 +66,7 @@ namespace gum {
     }
 
     /// copy constructor
-    template < typename GUM_SCALAR >
+    template < GUM_Numeric GUM_SCALAR >
     DBRowGeneratorWithBN< GUM_SCALAR >::DBRowGeneratorWithBN(
         const DBRowGeneratorWithBN< GUM_SCALAR >& from) :
         DBRowGenerator(from), bn_(from.bn_), nodeId2columns_(from.nodeId2columns_) {
@@ -74,7 +74,7 @@ namespace gum {
     }
 
     /// move constructor
-    template < typename GUM_SCALAR >
+    template < GUM_Numeric GUM_SCALAR >
     DBRowGeneratorWithBN< GUM_SCALAR >::DBRowGeneratorWithBN(
         DBRowGeneratorWithBN< GUM_SCALAR >&& from) :
         DBRowGenerator(std::move(from)), bn_(from.bn_),
@@ -83,13 +83,13 @@ namespace gum {
     }
 
     /// destructor
-    template < typename GUM_SCALAR >
+    template < GUM_Numeric GUM_SCALAR >
     DBRowGeneratorWithBN< GUM_SCALAR >::~DBRowGeneratorWithBN() {
       GUM_DESTRUCTOR(DBRowGeneratorWithBN);
     }
 
     /// copy operator
-    template < typename GUM_SCALAR >
+    template < GUM_Numeric GUM_SCALAR >
     DBRowGeneratorWithBN< GUM_SCALAR >& DBRowGeneratorWithBN< GUM_SCALAR >::operator=(
         const DBRowGeneratorWithBN< GUM_SCALAR >& from) {
       if (this != &from) {
@@ -102,7 +102,7 @@ namespace gum {
     }
 
     /// move operator
-    template < typename GUM_SCALAR >
+    template < GUM_Numeric GUM_SCALAR >
     DBRowGeneratorWithBN< GUM_SCALAR >&
         DBRowGeneratorWithBN< GUM_SCALAR >::operator=(DBRowGeneratorWithBN< GUM_SCALAR >&& from) {
       if (this != &from) {
@@ -115,14 +115,14 @@ namespace gum {
     }
 
     /// assign a new Bayes net to the generator
-    template < typename GUM_SCALAR >
+    template < GUM_Numeric GUM_SCALAR >
     INLINE void
         DBRowGeneratorWithBN< GUM_SCALAR >::setBayesNet(const BayesNet< GUM_SCALAR >& new_bn) {
       bn_ = &new_bn;
     }
 
     /// returns the Bayes net used by the generator
-    template < typename GUM_SCALAR >
+    template < GUM_Numeric GUM_SCALAR >
     INLINE const BayesNet< GUM_SCALAR >& DBRowGeneratorWithBN< GUM_SCALAR >::getBayesNet() const {
       return *bn_;
     }

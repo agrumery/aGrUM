@@ -73,7 +73,7 @@ namespace gum {
    * Every class used to write the content of a Markov random field in a stream, or
    * a file must be a subclass of MRFWriter.
    */
-  template < typename GUM_SCALAR >
+  template < GUM_Numeric GUM_SCALAR >
 
   class MRFWriter {
     public:

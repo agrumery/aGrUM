@@ -61,7 +61,7 @@
 
 namespace gum {
 
-  template < typename GUM_SCALAR >
+  template < GUM_Numeric GUM_SCALAR >
   ShaferShenoyLIMIDInference< GUM_SCALAR >::ShaferShenoyLIMIDInference(
       const InfluenceDiagram< GUM_SCALAR >* infDiag) :
       InfluenceDiagramInference< GUM_SCALAR >(infDiag) {
@@ -69,12 +69,12 @@ namespace gum {
     createReduced_();
   }
 
-  template < typename GUM_SCALAR >
+  template < GUM_Numeric GUM_SCALAR >
   ShaferShenoyLIMIDInference< GUM_SCALAR >::~ShaferShenoyLIMIDInference() {
     GUM_DESTRUCTOR(ShaferShenoyLIMIDInference);
   }
 
-  template < typename GUM_SCALAR >
+  template < GUM_Numeric GUM_SCALAR >
   void ShaferShenoyLIMIDInference< GUM_SCALAR >::clear() {
     GraphicalModelInference< GUM_SCALAR >::clear();
     noForgettingOrder_.clear();
@@ -87,10 +87,10 @@ namespace gum {
     reversePartialOrder_.clear();
   }
 
-  template < typename GUM_SCALAR >
+  template < GUM_Numeric GUM_SCALAR >
   void ShaferShenoyLIMIDInference< GUM_SCALAR >::onStateChanged_() {}
 
-  template < typename GUM_SCALAR >
+  template < GUM_Numeric GUM_SCALAR >
   void ShaferShenoyLIMIDInference< GUM_SCALAR >::onEvidenceAdded_(const NodeId id,
                                                                   bool         isHardEvidence) {
     const InfluenceDiagram< GUM_SCALAR >& infdiag = this->influenceDiagram();
@@ -100,32 +100,32 @@ namespace gum {
     }
   }
 
-  template < typename GUM_SCALAR >
+  template < GUM_Numeric GUM_SCALAR >
   void ShaferShenoyLIMIDInference< GUM_SCALAR >::onEvidenceErased_(const NodeId id,
                                                                    bool         isHardEvidence) {}
 
-  template < typename GUM_SCALAR >
+  template < GUM_Numeric GUM_SCALAR >
   void ShaferShenoyLIMIDInference< GUM_SCALAR >::onAllEvidenceErased_(bool contains_hard_evidence) {
   }
 
-  template < typename GUM_SCALAR >
+  template < GUM_Numeric GUM_SCALAR >
   void ShaferShenoyLIMIDInference< GUM_SCALAR >::onEvidenceChanged_(const NodeId id,
                                                                     bool hasChangedSoftHard) {}
 
-  template < typename GUM_SCALAR >
+  template < GUM_Numeric GUM_SCALAR >
   void ShaferShenoyLIMIDInference< GUM_SCALAR >::onModelChanged_(const GraphicalModel* model) {
     createReduced_();
   }
 
-  template < typename GUM_SCALAR >
+  template < GUM_Numeric GUM_SCALAR >
   void ShaferShenoyLIMIDInference< GUM_SCALAR >::updateOutdatedStructure_() {
     createReduced_();
   }
 
-  template < typename GUM_SCALAR >
+  template < GUM_Numeric GUM_SCALAR >
   void ShaferShenoyLIMIDInference< GUM_SCALAR >::updateOutdatedTensors_() {}
 
-  template < typename GUM_SCALAR >
+  template < GUM_Numeric GUM_SCALAR >
   void ShaferShenoyLIMIDInference< GUM_SCALAR >::makeInference_() {
     if (!isSolvable()) { GUM_ERROR(FatalError, "This LIMID/Influence Diagram is not solvable.") }
 
@@ -159,7 +159,7 @@ namespace gum {
     computingPosteriors_(phi, psi);
   }
 
-  template < typename GUM_SCALAR >
+  template < GUM_Numeric GUM_SCALAR >
   void ShaferShenoyLIMIDInference< GUM_SCALAR >::initializingInference_(PhiNodeProperty& phi,
                                                                         PsiArcProperty&  psi) {
     const auto& jt      = *junctionTree();
@@ -196,7 +196,7 @@ namespace gum {
     }
   }
 
-  template < typename GUM_SCALAR >
+  template < GUM_Numeric GUM_SCALAR >
   void ShaferShenoyLIMIDInference< GUM_SCALAR >::_creatingJunctionTree_() {
     const auto& infdiag = this->influenceDiagram();
     auto        moral   = reduced_.moralGraph();
@@ -215,7 +215,7 @@ namespace gum {
     _findingCliqueForEachNode_(triangulation);
   }
 
-  template < typename GUM_SCALAR >
+  template < GUM_Numeric GUM_SCALAR >
   void ShaferShenoyLIMIDInference< GUM_SCALAR >::_findingCliqueForEachNode_(
       DefaultTriangulation& triangulation) {
     // indicate, for each node of the moral graph a clique in  _JT_ that can
@@ -255,7 +255,7 @@ namespace gum {
     }
   }
 
-  template < typename GUM_SCALAR >
+  template < GUM_Numeric GUM_SCALAR >
   std::pair< GUM_SCALAR, GUM_SCALAR > ShaferShenoyLIMIDInference< GUM_SCALAR >::MEU() {
     if (!this->isInferenceDone()) GUM_ERROR(OperationNotAllowed, "Call MakeInference first")
 
@@ -273,7 +273,7 @@ namespace gum {
     return std::pair< GUM_SCALAR, GUM_SCALAR >(resmean, resvar);
   }
 
-  template < typename GUM_SCALAR >
+  template < GUM_Numeric GUM_SCALAR >
   gum::Tensor< GUM_SCALAR >
       ShaferShenoyLIMIDInference< GUM_SCALAR >::optimalDecision(NodeId decisionId) {
     if (!this->isInferenceDone()) GUM_ERROR(OperationNotAllowed, "Call MakeInference first")
@@ -287,12 +287,12 @@ namespace gum {
     return strategies_[decisionId];
   }
 
-  template < typename GUM_SCALAR >
+  template < GUM_Numeric GUM_SCALAR >
   bool ShaferShenoyLIMIDInference< GUM_SCALAR >::isSolvable() const {
     return (!solvabilityOrder_.empty());
   }
 
-  template < typename GUM_SCALAR >
+  template < GUM_Numeric GUM_SCALAR >
   void ShaferShenoyLIMIDInference< GUM_SCALAR >::createReduced_() {
     // from LIMIDS of decision Problems, Lauritzen et Nilsson, 1999
     reduced_.clear();
@@ -326,7 +326,7 @@ namespace gum {
     this->setState_(GraphicalModelInference< GUM_SCALAR >::StateOfInference::OutdatedStructure);
   }
 
-  template < typename GUM_SCALAR >
+  template < GUM_Numeric GUM_SCALAR >
   void ShaferShenoyLIMIDInference< GUM_SCALAR >::_completingNoForgettingAssumption_() {
     // force no forgetting if necessary
     if (hasNoForgettingAssumption()) {
@@ -345,7 +345,7 @@ namespace gum {
     }
   }
 
-  template < typename GUM_SCALAR >
+  template < GUM_Numeric GUM_SCALAR >
   void ShaferShenoyLIMIDInference< GUM_SCALAR >::_checkingSolvability_(const NodeSet& utilities) {
     if (hasNoForgettingAssumption()) {
       solvabilityOrder_ = noForgettingOrder_;
@@ -378,7 +378,7 @@ namespace gum {
     }
   }
 
-  template < typename GUM_SCALAR >
+  template < GUM_Numeric GUM_SCALAR >
   void ShaferShenoyLIMIDInference< GUM_SCALAR >::_reducingLIMID_() {
     for (const auto& sen: reversePartialOrder_) {
       for (auto n: sen) {
@@ -388,7 +388,7 @@ namespace gum {
     }
   }
 
-  template < typename GUM_SCALAR >
+  template < GUM_Numeric GUM_SCALAR >
   void ShaferShenoyLIMIDInference< GUM_SCALAR >::_creatingPartialOrder_(const NodeSet& utilities) {
     const InfluenceDiagram< GUM_SCALAR >& infdiag = this->influenceDiagram();
     NodeProperty< Size >                  level;
@@ -451,23 +451,23 @@ namespace gum {
     reversePartialOrder_.resize(levmax);
   }
 
-  template < typename GUM_SCALAR >
+  template < GUM_Numeric GUM_SCALAR >
   std::vector< NodeSet > ShaferShenoyLIMIDInference< GUM_SCALAR >::reversePartialOrder() const {
     return reversePartialOrder_;
   }
 
-  template < typename GUM_SCALAR >
+  template < GUM_Numeric GUM_SCALAR >
   bool ShaferShenoyLIMIDInference< GUM_SCALAR >::hasNoForgettingAssumption() const {
     return !noForgettingOrder_.empty();
   }
 
-  template < typename GUM_SCALAR >
+  template < GUM_Numeric GUM_SCALAR >
   void ShaferShenoyLIMIDInference< GUM_SCALAR >::addNoForgettingAssumption(
       const std::vector< std::string >& names) {
     addNoForgettingAssumption(this->influenceDiagram().ids(names));
   }
 
-  template < typename GUM_SCALAR >
+  template < GUM_Numeric GUM_SCALAR >
   void ShaferShenoyLIMIDInference< GUM_SCALAR >::addNoForgettingAssumption(
       const std::vector< NodeId >& ids) {
     const auto& infdiag = this->influenceDiagram();
@@ -485,7 +485,7 @@ namespace gum {
     createReduced_();
   }
 
-  template < typename GUM_SCALAR >
+  template < GUM_Numeric GUM_SCALAR >
   NodeSet ShaferShenoyLIMIDInference< GUM_SCALAR >::nonRequisiteNodes_(NodeId d) const {
     const InfluenceDiagram< GUM_SCALAR >& infdiag = this->influenceDiagram();
 
@@ -518,7 +518,7 @@ namespace gum {
     return res;
   }
 
-  template < typename GUM_SCALAR >
+  template < GUM_Numeric GUM_SCALAR >
   InfluenceDiagram< GUM_SCALAR > ShaferShenoyLIMIDInference< GUM_SCALAR >::reducedLIMID() const {
     const auto&                    infdiag = this->influenceDiagram();
     InfluenceDiagram< GUM_SCALAR > res;
@@ -542,13 +542,13 @@ namespace gum {
     return res;
   }
 
-  template < typename GUM_SCALAR >
+  template < GUM_Numeric GUM_SCALAR >
   const JunctionTree* ShaferShenoyLIMIDInference< GUM_SCALAR >::junctionTree() const {
     if (!isSolvable()) { GUM_ERROR(FatalError, "This LIMID/Influence Diagram is not solvable.") }
     return &reducedJunctionTree_;
   }
 
-  template < typename GUM_SCALAR >
+  template < GUM_Numeric GUM_SCALAR >
   void ShaferShenoyLIMIDInference< GUM_SCALAR >::collectingMessage_(PhiNodeProperty& phi,
                                                                     PsiArcProperty&  psi,
                                                                     const NodeId     rootClique) {
@@ -569,7 +569,7 @@ namespace gum {
     }
   }
 
-  template < typename GUM_SCALAR >
+  template < GUM_Numeric GUM_SCALAR >
   void ShaferShenoyLIMIDInference< GUM_SCALAR >::collectingToFollowingRoot_(PhiNodeProperty& phi,
                                                                             PsiArcProperty&  psi,
                                                                             NodeId fromClique,
@@ -598,7 +598,7 @@ namespace gum {
     revparcours(toClique, std::numeric_limits< NodeId >::max(), fromClique);
   }
 
-  template < typename GUM_SCALAR >
+  template < GUM_Numeric GUM_SCALAR >
   void ShaferShenoyLIMIDInference< GUM_SCALAR >::deciding_(PhiNodeProperty& phi,
                                                            PsiArcProperty&  psi,
                                                            NodeId           decisionNode) {
@@ -643,7 +643,7 @@ namespace gum {
     GUM_SSLI_TENSOR_TRACE_ON(phi[node_to_clique_[decisionNode]])
   }
 
-  template < typename GUM_SCALAR >
+  template < GUM_Numeric GUM_SCALAR >
   void ShaferShenoyLIMIDInference< GUM_SCALAR >::binarizingMax_(
       const Tensor< GUM_SCALAR >& decision,
       const Tensor< GUM_SCALAR >& proba) const {   // compute the decisions (as maxEU)
@@ -680,7 +680,7 @@ namespace gum {
     }
   }
 
-  template < typename GUM_SCALAR >
+  template < GUM_Numeric GUM_SCALAR >
   void ShaferShenoyLIMIDInference< GUM_SCALAR >::distributingMessage_(PhiNodeProperty& phi,
                                                                       PsiArcProperty&  psi,
                                                                       NodeId           rootClique) {
@@ -713,7 +713,7 @@ namespace gum {
     }
   }
 
-  template < typename GUM_SCALAR >
+  template < GUM_Numeric GUM_SCALAR >
   void ShaferShenoyLIMIDInference< GUM_SCALAR >::transmittingFinalMessage_(PhiNodeProperty& phi,
                                                                            PsiArcProperty&  psi,
                                                                            NodeId fromClique,
@@ -724,7 +724,7 @@ namespace gum {
             phi[fromClique] ^ varsSeparator_[Edge(fromClique, toClique)]);
   }
 
-  template < typename GUM_SCALAR >
+  template < GUM_Numeric GUM_SCALAR >
   void ShaferShenoyLIMIDInference< GUM_SCALAR >::transmittingMessage_(PhiNodeProperty& phi,
                                                                       PsiArcProperty&  psi,
                                                                       NodeId           fromClique,
@@ -735,7 +735,7 @@ namespace gum {
                 ^ varsSeparator_[Edge(fromClique, toClique)]);
   }
 
-  template < typename GUM_SCALAR >
+  template < GUM_Numeric GUM_SCALAR >
   DecisionTensor< double >
       ShaferShenoyLIMIDInference< GUM_SCALAR >::integrating_(const PhiNodeProperty& phi,
                                                              const PsiArcProperty&  psi,
@@ -752,7 +752,7 @@ namespace gum {
     return res;
   }
 
-  template < typename GUM_SCALAR >
+  template < GUM_Numeric GUM_SCALAR >
   DecisionTensor< double >
       ShaferShenoyLIMIDInference< GUM_SCALAR >::integrating_(const PhiNodeProperty& phi,
                                                              const PsiArcProperty&  psi,
@@ -768,7 +768,7 @@ namespace gum {
     return res;
   }
 
-  template < typename GUM_SCALAR >
+  template < GUM_Numeric GUM_SCALAR >
   void ShaferShenoyLIMIDInference< GUM_SCALAR >::computingPosteriors_(const PhiNodeProperty& phi,
                                                                       const PsiArcProperty&  psi) {
     NodeProperty< DecisionTensor< double > > finalphis;
@@ -825,18 +825,18 @@ namespace gum {
     }
   }
 
-  template < typename GUM_SCALAR >
+  template < GUM_Numeric GUM_SCALAR >
   const Tensor< GUM_SCALAR >& ShaferShenoyLIMIDInference< GUM_SCALAR >::posterior(NodeId node) {
     return posteriors_[node].probPot;
   }
 
-  template < typename GUM_SCALAR >
+  template < GUM_Numeric GUM_SCALAR >
   const Tensor< GUM_SCALAR >&
       ShaferShenoyLIMIDInference< GUM_SCALAR >::posteriorUtility(NodeId node) {
     return posteriors_[node].utilPot;
   }
 
-  template < typename GUM_SCALAR >
+  template < GUM_Numeric GUM_SCALAR >
   std::pair< GUM_SCALAR, GUM_SCALAR >
       ShaferShenoyLIMIDInference< GUM_SCALAR >::meanVar(NodeId node) {
     return posteriors_[node].meanVar();

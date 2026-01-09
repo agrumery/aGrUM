@@ -86,7 +86,7 @@ namespace gum {
    * installed nodes, either all the parents are installed or a local CPT is
    * defined.
    */
-  template < typename GUM_SCALAR >
+  template < GUM_Numeric GUM_SCALAR >
   class BayesNetFragment: public IBayesNet< GUM_SCALAR >, public gum::DiGraphListener {
     /// The referred BayesNet
     const IBayesNet< GUM_SCALAR >& _bn_;

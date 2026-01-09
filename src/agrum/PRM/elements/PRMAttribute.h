@@ -75,7 +75,7 @@ namespace gum {
      * @see PRM PRMFactory Class PRMClassElement PRMType Tensor
      * @ingroup prm_group
      */
-    template < typename GUM_SCALAR >
+    template < GUM_Numeric GUM_SCALAR >
     class PRMAttribute: public PRMClassElement< GUM_SCALAR > {
       public:
       // ========================================================================

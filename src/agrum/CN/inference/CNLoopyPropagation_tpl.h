@@ -45,7 +45,7 @@
 
 namespace gum::credal {
 
-  template < typename GUM_SCALAR >
+  template < GUM_Numeric GUM_SCALAR >
   void CNLoopyPropagation< GUM_SCALAR >::saveInference(const std::string& path) {
     std::string path_name = path.substr(0, path.size() - 4);
     path_name             = path_name + ".res";
@@ -191,7 +191,7 @@ namespace gum::credal {
   /**
    * une fois les cpts marginalises sur X et Ui, on calcul le min/max,
    */
-  template < typename GUM_SCALAR >
+  template < GUM_Numeric GUM_SCALAR >
   void CNLoopyPropagation< GUM_SCALAR >::compute_ext_(GUM_SCALAR&                msg_l_min,
                                                       GUM_SCALAR&                msg_l_max,
                                                       std::vector< GUM_SCALAR >& lx,
@@ -281,7 +281,7 @@ namespace gum::credal {
   /**
    * extremes pour une combinaison des parents, message vers parent
    */
-  template < typename GUM_SCALAR >
+  template < GUM_Numeric GUM_SCALAR >
   void CNLoopyPropagation< GUM_SCALAR >::compute_ext_(
       std::vector< std::vector< GUM_SCALAR > >& combi_msg_p,
       const NodeId&                             id,
@@ -347,7 +347,7 @@ namespace gum::credal {
    * extremes pour une combinaison des parents, message vers enfant
    * marginalisation cpts
    */
-  template < typename GUM_SCALAR >
+  template < GUM_Numeric GUM_SCALAR >
   void CNLoopyPropagation< GUM_SCALAR >::compute_ext_(
       std::vector< std::vector< GUM_SCALAR > >& combi_msg_p,
       const NodeId&                             id,
@@ -396,7 +396,7 @@ namespace gum::credal {
   /**
    * enumerate combinations messages parents, pour message vers enfant
    */
-  template < typename GUM_SCALAR >
+  template < GUM_Numeric GUM_SCALAR >
   void CNLoopyPropagation< GUM_SCALAR >::enum_combi_(
       std::vector< std::vector< std::vector< GUM_SCALAR > > >& msgs_p,
       const NodeId&                                            id,
@@ -466,7 +466,7 @@ namespace gum::credal {
    * comme precedemment mais pour message parent, vraisemblance prise en
    * compte
    */
-  template < typename GUM_SCALAR >
+  template < GUM_Numeric GUM_SCALAR >
   void CNLoopyPropagation< GUM_SCALAR >::enum_combi_(
       std::vector< std::vector< std::vector< GUM_SCALAR > > >& msgs_p,
       const NodeId&                                            id,
@@ -550,7 +550,7 @@ namespace gum::credal {
     real_msg_l_max = msg_l_max;
   }
 
-  template < typename GUM_SCALAR >
+  template < GUM_Numeric GUM_SCALAR >
   void CNLoopyPropagation< GUM_SCALAR >::makeInference() {
     if (InferenceUpToDate_) { return; }
 
@@ -574,7 +574,7 @@ namespace gum::credal {
     InferenceUpToDate_ = true;
   }
 
-  template < typename GUM_SCALAR >
+  template < GUM_Numeric GUM_SCALAR >
   void CNLoopyPropagation< GUM_SCALAR >::eraseAllEvidence() {
     _infE_::eraseAllEvidence();
 
@@ -603,7 +603,7 @@ namespace gum::credal {
     next_active_nodes_set.clear();
   }
 
-  template < typename GUM_SCALAR >
+  template < GUM_Numeric GUM_SCALAR >
   void CNLoopyPropagation< GUM_SCALAR >::initialize_() {
     const DAG& graphe = _bnet_->dag();
 
@@ -725,7 +725,7 @@ namespace gum::credal {
     }
   }
 
-  template < typename GUM_SCALAR >
+  template < GUM_Numeric GUM_SCALAR >
   void CNLoopyPropagation< GUM_SCALAR >::makeInferenceNodeToNeighbours_() {
     const DAG& graphe = _bnet_->dag();
 
@@ -763,7 +763,7 @@ namespace gum::credal {
     // the end of looop
   }
 
-  template < typename GUM_SCALAR >
+  template < GUM_Numeric GUM_SCALAR >
   void CNLoopyPropagation< GUM_SCALAR >::makeInferenceByRandomOrder_() {
     Size nbrArcs = _bnet_->dag().sizeArcs();
 
@@ -808,7 +808,7 @@ namespace gum::credal {
   // gives slightly worse results for some variable/modalities than other
   // inference
   // types (node D on 2U network loose 0.03 precision)
-  template < typename GUM_SCALAR >
+  template < GUM_Numeric GUM_SCALAR >
   void CNLoopyPropagation< GUM_SCALAR >::makeInferenceByOrderedArcs_() {
     Size nbrArcs = _bnet_->dag().sizeArcs();
 
@@ -841,7 +841,7 @@ namespace gum::credal {
     } while (_infE_::continueApproximationScheme(eps));
   }
 
-  template < typename GUM_SCALAR >
+  template < GUM_Numeric GUM_SCALAR >
   void CNLoopyPropagation< GUM_SCALAR >::msgL_(const NodeId Y, const NodeId X) {
     NodeSet const& children = _bnet_->children(Y);
     NodeSet const& parents_ = _bnet_->parents(Y);
@@ -1024,7 +1024,7 @@ namespace gum::credal {
     }   // end of update_p || update_l
   }
 
-  template < typename GUM_SCALAR >
+  template < GUM_Numeric GUM_SCALAR >
   void CNLoopyPropagation< GUM_SCALAR >::msgP_(const NodeId X, const NodeId demanding_child) {
     NodeSet const& children = _bnet_->children(X);
 
@@ -1227,7 +1227,7 @@ namespace gum::credal {
     }   // end of : update_l || update_p
   }
 
-  template < typename GUM_SCALAR >
+  template < GUM_Numeric GUM_SCALAR >
   void CNLoopyPropagation< GUM_SCALAR >::refreshLMsPIs_(bool refreshIndic) {
     for (auto node: _bnet_->nodes()) {
       if ((!refreshIndic)
@@ -1330,7 +1330,7 @@ namespace gum::credal {
     }   // end of : for each node
   }
 
-  template < typename GUM_SCALAR >
+  template < GUM_Numeric GUM_SCALAR >
   void CNLoopyPropagation< GUM_SCALAR >::updateMarginals_() {
     for (auto node: _bnet_->nodes()) {
       GUM_SCALAR msg_p_min = 1.;
@@ -1423,7 +1423,7 @@ namespace gum::credal {
     }
   }
 
-  template < typename GUM_SCALAR >
+  template < GUM_Numeric GUM_SCALAR >
   GUM_SCALAR CNLoopyPropagation< GUM_SCALAR >::calculateEpsilon_() {
     refreshLMsPIs_();
     updateMarginals_();
@@ -1431,7 +1431,7 @@ namespace gum::credal {
     return _infE_::computeEpsilon_();
   }
 
-  template < typename GUM_SCALAR >
+  template < GUM_Numeric GUM_SCALAR >
   void CNLoopyPropagation< GUM_SCALAR >::updateIndicatrices_() {
     for (auto node: _bnet_->nodes()) {
       if (_cn_->currentNodeType(node) != CredalNet< GUM_SCALAR >::NodeType::Indic) { continue; }
@@ -1445,7 +1445,7 @@ namespace gum::credal {
     updateMarginals_();
   }
 
-  template < typename GUM_SCALAR >
+  template < GUM_Numeric GUM_SCALAR >
   void CNLoopyPropagation< GUM_SCALAR >::computeExpectations_() {
     if (_infE_::modal_.empty()) { return; }
 
@@ -1469,7 +1469,7 @@ namespace gum::credal {
     }
   }
 
-  template < typename GUM_SCALAR >
+  template < GUM_Numeric GUM_SCALAR >
   CNLoopyPropagation< GUM_SCALAR >::CNLoopyPropagation(const CredalNet< GUM_SCALAR >& credalNet) :
       InferenceEngine< GUM_SCALAR >::InferenceEngine(credalNet) {
     if (!credalNet.isSeparatelySpecified()) {
@@ -1503,7 +1503,7 @@ namespace gum::credal {
     GUM_CONSTRUCTOR(CNLoopyPropagation)
   }
 
-  template < typename GUM_SCALAR >
+  template < GUM_Numeric GUM_SCALAR >
   CNLoopyPropagation< GUM_SCALAR >::~CNLoopyPropagation() {
     InferenceUpToDate_ = false;
 
@@ -1516,12 +1516,12 @@ namespace gum::credal {
     GUM_DESTRUCTOR(CNLoopyPropagation)
   }
 
-  template < typename GUM_SCALAR >
+  template < GUM_Numeric GUM_SCALAR >
   void CNLoopyPropagation< GUM_SCALAR >::inferenceType(InferenceType inft) {
     _inferenceType_ = inft;
   }
 
-  template < typename GUM_SCALAR >
+  template < GUM_Numeric GUM_SCALAR >
   typename CNLoopyPropagation< GUM_SCALAR >::InferenceType
       CNLoopyPropagation< GUM_SCALAR >::inferenceType() {
     return _inferenceType_;

@@ -65,7 +65,7 @@ namespace gum {
    * for information on this format.
    *
    */
-  template < typename GUM_SCALAR >
+  template < GUM_Numeric GUM_SCALAR >
   class DSLWriter: public BNWriter< GUM_SCALAR > {
     public:
     // ==========================================================================

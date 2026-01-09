@@ -72,14 +72,14 @@ namespace gum {
    *
    * Returns the set that has the maximal value between its two arguments sets
    */
-  template < typename GUM_SCALAR >
+  template < typename GUM_ELEMENT >
   struct ArgumentMaximisesAction {
     // ###########################################################################
     /// @name Operator()
     // ###########################################################################
     /// @{
 
-    const GUM_SCALAR& operator()(const GUM_SCALAR& x, const GUM_SCALAR& y) const {
+    const GUM_ELEMENT& operator()(const GUM_ELEMENT& x, const GUM_ELEMENT& y) const {
       if (x > y) { return x; }
       if (x < y) { return y; }
 
@@ -89,7 +89,7 @@ namespace gum {
     }
 
     private:
-    mutable GUM_SCALAR _temp_;
+    mutable GUM_ELEMENT _temp_;
   };
 
   /**

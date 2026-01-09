@@ -53,7 +53,7 @@ namespace gum {
 
   /// Default constructor
 
-  template < typename GUM_SCALAR >
+  template < GUM_Numeric GUM_SCALAR >
   INLINE MultiDimNoisyORCompound< GUM_SCALAR >::MultiDimNoisyORCompound(GUM_SCALAR external_weight,
                                                                         GUM_SCALAR default_weight) :
       MultiDimICIModel< GUM_SCALAR >(external_weight, default_weight) {
@@ -62,7 +62,7 @@ namespace gum {
 
   /// Default constructor
 
-  template < typename GUM_SCALAR >
+  template < GUM_Numeric GUM_SCALAR >
   INLINE MultiDimNoisyORCompound< GUM_SCALAR >::MultiDimNoisyORCompound(
       const MultiDimNoisyORCompound< GUM_SCALAR >& from) : MultiDimICIModel< GUM_SCALAR >(from) {
     GUM_CONS_CPY(MultiDimNoisyORCompound);
@@ -70,7 +70,7 @@ namespace gum {
 
   /// Copy constructor using a bijection to swap variables from source.
 
-  template < typename GUM_SCALAR >
+  template < GUM_Numeric GUM_SCALAR >
   INLINE MultiDimNoisyORCompound< GUM_SCALAR >::MultiDimNoisyORCompound(
       const Bijection< const DiscreteVariable*, const DiscreteVariable* >& bij,
       const MultiDimNoisyORCompound< GUM_SCALAR >&                         from) :
@@ -80,12 +80,12 @@ namespace gum {
 
   /// destructor
 
-  template < typename GUM_SCALAR >
+  template < GUM_Numeric GUM_SCALAR >
   INLINE MultiDimNoisyORCompound< GUM_SCALAR >::~MultiDimNoisyORCompound() {
     GUM_DESTRUCTOR(MultiDimNoisyORCompound);
   }
 
-  template < typename GUM_SCALAR >
+  template < GUM_Numeric GUM_SCALAR >
   GUM_SCALAR MultiDimNoisyORCompound< GUM_SCALAR >::get(const Instantiation& i) const {
     if (this->nbrDim() < 1) { GUM_ERROR(OperationNotAllowed, "Not enough variable for a NoisyOr ") }
 
@@ -117,7 +117,7 @@ namespace gum {
     return (i.val(C) != 1) ? fact : (GUM_SCALAR)1.0 - fact;
   }
 
-  template < typename GUM_SCALAR >
+  template < GUM_Numeric GUM_SCALAR >
   std::string MultiDimNoisyORCompound< GUM_SCALAR >::toString() const {
     std::stringstream s;
     s << MultiDimImplementation< GUM_SCALAR >::variable(0) << "=noisyORCompound(["
@@ -133,13 +133,13 @@ namespace gum {
 
   // For friendly displaying the content of the variable.
 
-  template < typename GUM_SCALAR >
+  template < GUM_Numeric GUM_SCALAR >
   INLINE std::ostream& operator<<(std::ostream&                                s,
                                   const MultiDimNoisyORCompound< GUM_SCALAR >& ag) {
     return s << ag.toString();
   }
 
-  template < typename GUM_SCALAR >
+  template < GUM_Numeric GUM_SCALAR >
   INLINE MultiDimContainer< GUM_SCALAR >*
          MultiDimNoisyORCompound< GUM_SCALAR >::newFactory() const {
     return new MultiDimNoisyORCompound< GUM_SCALAR >(this->_external_weight_,
@@ -147,7 +147,7 @@ namespace gum {
   }
 
   // returns the name of the implementation
-  template < typename GUM_SCALAR >
+  template < GUM_Numeric GUM_SCALAR >
   INLINE const std::string& MultiDimNoisyORCompound< GUM_SCALAR >::name() const {
     static const std::string str = "MultiDimNoisyORCompound";
     return str;

@@ -54,7 +54,7 @@
 namespace gum {
 
   // Use the SimpleCPTGenerator for generating the BNs CPT.
-  template < typename GUM_SCALAR, template < typename > class ICPTGenerator >
+  template < GUM_Numeric GUM_SCALAR, template < typename > class ICPTGenerator >
   INLINE SimpleBayesNetGenerator< GUM_SCALAR, ICPTGenerator >::SimpleBayesNetGenerator(
       Size nbrNodes,
       Size maxArcs,
@@ -67,7 +67,7 @@ namespace gum {
   // CPT than the default one.
   // The cptGenerator will be erased when the destructor is called.
   // @param cptGenerator The policy used to generate CPT.
-  /*template <typename GUM_SCALAR, template<class> class ICPTGenerator>
+  /*template <GumScalar GUM_SCALAR, template<class> class ICPTGenerator>
   SimpleBayesNetGenerator<GUM_SCALAR,ICPTGenerator>::SimpleBayesNetGenerator(CPTGenerator*
   cptGenerator ,Size nbrNodes, float density, Size maxModality):
     IBayesNetGenerator<GUM_SCALAR,ICPTGenerator>(cptGenerator
@@ -76,7 +76,7 @@ namespace gum {
   }*/
 
   // Destructor.
-  template < typename GUM_SCALAR, template < typename > class ICPTGenerator >
+  template < GUM_Numeric GUM_SCALAR, template < typename > class ICPTGenerator >
   INLINE SimpleBayesNetGenerator< GUM_SCALAR, ICPTGenerator >::~SimpleBayesNetGenerator() {
     GUM_DESTRUCTOR(SimpleBayesNetGenerator);
   }
@@ -86,7 +86,7 @@ namespace gum {
   // @param density The probability of adding an arc between two nodes.
   // @return A BNs randomly generated.
 
-  template < typename GUM_SCALAR, template < typename > class ICPTGenerator >
+  template < GUM_Numeric GUM_SCALAR, template < typename > class ICPTGenerator >
   void SimpleBayesNetGenerator< GUM_SCALAR, ICPTGenerator >::generateBN(
       BayesNet< GUM_SCALAR >& bayesNet) {
     this->dag_.clear();

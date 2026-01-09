@@ -70,7 +70,7 @@ namespace gum {
      * Note that a <tt>Forall(i)</tt> aggregator should have a binary aggregator
      * variable since only 0 and 1 indexes are adressed...
      */
-    template < typename GUM_SCALAR >
+    template < GUM_Numeric GUM_SCALAR >
     class Forall: public MultiDimAggregator< GUM_SCALAR > {
       public:
       Forall(Idx value);

@@ -87,7 +87,7 @@ namespace gum {
    * @return Return a random discrete distribution.
    * @tparam GUM_SCALAR The type used for representing probabilities.
    */
-  template < typename GUM_SCALAR >
+  template < GUM_Numeric GUM_SCALAR >
   std::vector< GUM_SCALAR > randomDistribution(Size n);
 
   /**

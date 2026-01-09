@@ -59,8 +59,8 @@
 
 namespace gum {
 
-  //  template <typename GUM_SCALAR>
-  //  using ConTab = ContingencyTable<Idx, GUM_SCALAR>;
+  //  template <typename GUM_ELEMENT>
+  //  using ConTab = ContingencyTable<Idx, GUM_ELEMENT>;
 
   /**
    * @class GTestPolicy GTestPolicy.h
@@ -70,8 +70,8 @@ namespace gum {
    *
    * @ingroup fmdp_group
    */
-  template < typename GUM_SCALAR >
-  class GTestPolicy final: public ITestPolicy< GUM_SCALAR > {
+  template < typename GUM_ELEMENT >
+  class GTestPolicy final: public ITestPolicy< GUM_ELEMENT > {
     public:
     // ############################################################################
     /// @name Constructor/Destrcutor
@@ -81,7 +81,7 @@ namespace gum {
     // ============================================================================
     /// Constructor
     // ============================================================================
-    GTestPolicy() : ITestPolicy< GUM_SCALAR >(), _conTab_(), _GStat_(0) {
+    GTestPolicy() : ITestPolicy< GUM_ELEMENT >(), _conTab_(), _GStat_(0) {
       GUM_CONSTRUCTOR(GTestPolicy);
     }
 
@@ -112,7 +112,7 @@ namespace gum {
     // ============================================================================
     /// Comptabilizes the new observation
     // ============================================================================
-    void addObservation(Idx iattr, GUM_SCALAR ivalue);
+    void addObservation(Idx iattr, GUM_ELEMENT ivalue);
 
     /// @}
 
@@ -157,13 +157,13 @@ namespace gum {
     // ============================================================================
     /// Performs the merging of current GTestPolicy instance with given instance
     // ============================================================================
-    void add(const GTestPolicy< GUM_SCALAR >& src);
+    void add(const GTestPolicy< GUM_ELEMENT >& src);
 
     // ============================================================================
     /// Returns contingency table (needed for the merging of GTestPolicy
     /// instances)
     // ============================================================================
-    const ContingencyTable< Idx, GUM_SCALAR >& ct() const { return _conTab_; }
+    const ContingencyTable< Idx, GUM_ELEMENT >& ct() const { return _conTab_; }
 
     /// @}
 
@@ -175,7 +175,7 @@ namespace gum {
 
     std::string toString() const {
       std::stringstream ss;
-      ss << ITestPolicy< GUM_SCALAR >::toString() << "\t\t\tContingency Table : " << std::endl
+      ss << ITestPolicy< GUM_ELEMENT >::toString() << "\t\t\tContingency Table : " << std::endl
          << _conTab_.toString() << std::endl
          << "\t\t\tGStat : " << _GStat_ << std::endl
          << "\t\t\tGStat : " << this->secondaryscore() << std::endl;
@@ -186,7 +186,7 @@ namespace gum {
 
     private:
     /// The contingency table used to keeps records of all observation
-    ContingencyTable< Idx, GUM_SCALAR > _conTab_;
+    ContingencyTable< Idx, GUM_ELEMENT > _conTab_;
     mutable double                      _GStat_;
   };
 

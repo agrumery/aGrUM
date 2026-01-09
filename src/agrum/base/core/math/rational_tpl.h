@@ -54,7 +54,7 @@
 
 namespace gum {
 
-  template < typename GUM_SCALAR >
+  template < GUM_Numeric GUM_SCALAR >
   void Rational< GUM_SCALAR >::farey(int64_t&          numerator,
                                      int64_t&          denominator,
                                      const GUM_SCALAR& number,
@@ -113,7 +113,7 @@ namespace gum {
     }
   }   /// end of farey func
 
-  template < typename GUM_SCALAR >
+  template < GUM_Numeric GUM_SCALAR >
   void Rational< GUM_SCALAR >::continuedFracFirst(int64_t&          numerator,
                                                   int64_t&          denominator,
                                                   const GUM_SCALAR& number,
@@ -210,7 +210,7 @@ namespace gum {
     ///} // end of for
   }
 
-  template < typename GUM_SCALAR >
+  template < GUM_Numeric GUM_SCALAR >
   void Rational< GUM_SCALAR >::continuedFracBest(int64_t&          numerator,
                                                  int64_t&          denominator,
                                                  const GUM_SCALAR& number,

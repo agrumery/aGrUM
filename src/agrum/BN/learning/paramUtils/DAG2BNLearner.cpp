@@ -70,7 +70,7 @@ namespace gum {
     }
 
     /// move constructor
-    DAG2BNLearner::DAG2BNLearner(DAG2BNLearner&& from) :
+    DAG2BNLearner::DAG2BNLearner(DAG2BNLearner&& from) noexcept :
         EMApproximationScheme(std::move(from)), noiseEM_(from.noiseEM_),
         max_nb_dec_likelihood_iter_(from.max_nb_dec_likelihood_iter_) {
       GUM_CONS_MOV(DAG2BNLearner);
@@ -90,7 +90,7 @@ namespace gum {
     }
 
     /// move operator
-    DAG2BNLearner& DAG2BNLearner::operator=(DAG2BNLearner&& from) {
+    DAG2BNLearner& DAG2BNLearner::operator=(DAG2BNLearner&& from) noexcept {
       EMApproximationScheme::operator=(std::move(from));
       noiseEM_ = from.noiseEM_;
       return *this;

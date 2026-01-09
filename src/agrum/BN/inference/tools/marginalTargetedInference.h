@@ -72,7 +72,7 @@ namespace gum {
    * the current state of the inference. Note that the MarginalTargetedInference
    * is designed to be used in incremental inference engines.
    */
-  template < typename GUM_SCALAR >
+  template < GUM_Numeric GUM_SCALAR >
   class MarginalTargetedInference: public virtual BayesNetInference< GUM_SCALAR > {
     public:
     // ############################################################################

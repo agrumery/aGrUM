@@ -58,54 +58,54 @@
 namespace gum {
 
   // constructor
-  template < typename GUM_SCALAR, template < typename > class TABLE >
-  MultiDimCompleteProjection< GUM_SCALAR, TABLE >::MultiDimCompleteProjection(
-      GUM_SCALAR (*proj)(const TABLE< GUM_SCALAR >&, Instantiation*)) : proj_(proj) {
+  template < typename GUM_ELEMENT, template < typename > class TABLE >
+  MultiDimCompleteProjection< GUM_ELEMENT, TABLE >::MultiDimCompleteProjection(
+      GUM_ELEMENT (*proj)(const TABLE< GUM_ELEMENT >&, Instantiation*)) : proj_(proj) {
     // for debugging purposes
     GUM_CONSTRUCTOR(MultiDimCompleteProjection);
   }
 
   // copy constructor
-  template < typename GUM_SCALAR, template < typename > class TABLE >
-  MultiDimCompleteProjection< GUM_SCALAR, TABLE >::MultiDimCompleteProjection(
-      const MultiDimCompleteProjection< GUM_SCALAR, TABLE >& from) : proj_(from.proj_) {
+  template < typename GUM_ELEMENT, template < typename > class TABLE >
+  MultiDimCompleteProjection< GUM_ELEMENT, TABLE >::MultiDimCompleteProjection(
+      const MultiDimCompleteProjection< GUM_ELEMENT, TABLE >& from) : proj_(from.proj_) {
     // for debugging purposes
     GUM_CONS_CPY(MultiDimCompleteProjection);
   }
 
   // destructor
-  template < typename GUM_SCALAR, template < typename > class TABLE >
-  MultiDimCompleteProjection< GUM_SCALAR, TABLE >::~MultiDimCompleteProjection() {
+  template < typename GUM_ELEMENT, template < typename > class TABLE >
+  MultiDimCompleteProjection< GUM_ELEMENT, TABLE >::~MultiDimCompleteProjection() {
     // for debugging purposes
     GUM_DESTRUCTOR(MultiDimCompleteProjection);
   }
 
   // virtual constructor
-  template < typename GUM_SCALAR, template < typename > class TABLE >
-  MultiDimCompleteProjection< GUM_SCALAR, TABLE >*
-      MultiDimCompleteProjection< GUM_SCALAR, TABLE >::newFactory() const {
-    return new MultiDimCompleteProjection< GUM_SCALAR, TABLE >(*this);
+  template < typename GUM_ELEMENT, template < typename > class TABLE >
+  MultiDimCompleteProjection< GUM_ELEMENT, TABLE >*
+      MultiDimCompleteProjection< GUM_ELEMENT, TABLE >::newFactory() const {
+    return new MultiDimCompleteProjection< GUM_ELEMENT, TABLE >(*this);
   }
 
   // creates and returns the projection of the table over a subset of its vars
-  template < typename GUM_SCALAR, template < typename > class TABLE >
-  INLINE GUM_SCALAR
-      MultiDimCompleteProjection< GUM_SCALAR, TABLE >::project(const TABLE< GUM_SCALAR >& table,
-                                                               Instantiation*             inst) {
+  template < typename GUM_ELEMENT, template < typename > class TABLE >
+  INLINE GUM_ELEMENT
+      MultiDimCompleteProjection< GUM_ELEMENT, TABLE >::project(const TABLE< GUM_ELEMENT >& table,
+                                                                Instantiation*              inst) {
     return proj_(table, inst);
   }
 
   // changes the function used for projecting TABLES
-  template < typename GUM_SCALAR, template < typename > class TABLE >
-  void MultiDimCompleteProjection< GUM_SCALAR, TABLE >::setProjectFunction(
-      GUM_SCALAR (*proj)(const TABLE< GUM_SCALAR >&, Instantiation*)) {
+  template < typename GUM_ELEMENT, template < typename > class TABLE >
+  void MultiDimCompleteProjection< GUM_ELEMENT, TABLE >::setProjectFunction(
+      GUM_ELEMENT (*proj)(const TABLE< GUM_ELEMENT >&, Instantiation*)) {
     proj_ = proj;
   }
 
   // returns the projection function currently used by the projector
-  template < typename GUM_SCALAR, template < typename > class TABLE >
-  INLINE GUM_SCALAR (*MultiDimCompleteProjection< GUM_SCALAR, TABLE >::projectFunction())(
-      const TABLE< GUM_SCALAR >&,
+  template < typename GUM_ELEMENT, template < typename > class TABLE >
+  INLINE GUM_ELEMENT (*MultiDimCompleteProjection< GUM_ELEMENT, TABLE >::projectFunction())(
+      const TABLE< GUM_ELEMENT >&,
       Instantiation*) {
     return proj_;
   }

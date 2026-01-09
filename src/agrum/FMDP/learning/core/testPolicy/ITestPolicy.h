@@ -67,7 +67,7 @@ namespace gum {
    *
    * @ingroup fmdp_group
    */
-  template < typename GUM_SCALAR >
+  template < typename GUM_ELEMENT >
   class ITestPolicy {
     public:
     // ############################################################################
@@ -108,7 +108,7 @@ namespace gum {
     // ============================================================================
     /// Comptabilizes the new observation
     // ============================================================================
-    virtual void addObservation(Idx attr, GUM_SCALAR value) {
+    virtual void addObservation(Idx attr, GUM_ELEMENT value) {
       _isModified_ = true;
       _nbObs_++;
     }
@@ -158,7 +158,7 @@ namespace gum {
     // ============================================================================
     ///
     // ============================================================================
-    void add(const ITestPolicy< GUM_SCALAR >& src) {
+    void add(const ITestPolicy< GUM_ELEMENT >& src) {
       _isModified_ = true;
       _nbObs_ += src.nbObservation();
     }

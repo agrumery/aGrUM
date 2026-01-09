@@ -54,7 +54,7 @@ namespace gum {
 
   // Default constructor.
   // Use the SimpleCPTGenerator for generating the BNs CPT.
-  template < typename GUM_SCALAR,
+  template < GUM_Numeric GUM_SCALAR,
              template < class > class ICPTGenerator,
              template < class > class ICPTDisturber >
   INLINE MaxParentsMCBayesNetGenerator< GUM_SCALAR, ICPTGenerator, ICPTDisturber >::
@@ -79,7 +79,7 @@ namespace gum {
     GUM_CONSTRUCTOR(MaxParentsMCBayesNetGenerator);
   }
 
-  template < typename GUM_SCALAR,
+  template < GUM_Numeric GUM_SCALAR,
              template < class > class ICPTGenerator,
              template < class > class ICPTDisturber >
   INLINE MaxParentsMCBayesNetGenerator< GUM_SCALAR, ICPTGenerator, ICPTDisturber >::
@@ -94,7 +94,7 @@ namespace gum {
   }
 
   // Destructor.
-  template < typename GUM_SCALAR,
+  template < GUM_Numeric GUM_SCALAR,
              template < class > class ICPTGenerator,
              template < class > class ICPTDisturber >
   INLINE MaxParentsMCBayesNetGenerator< GUM_SCALAR, ICPTGenerator, ICPTDisturber >::
@@ -102,7 +102,7 @@ namespace gum {
     GUM_DESTRUCTOR(MaxParentsMCBayesNetGenerator);
   }
 
-  template < typename GUM_SCALAR,
+  template < GUM_Numeric GUM_SCALAR,
              template < class > class ICPTGenerator,
              template < class > class ICPTDisturber >
   bool MaxParentsMCBayesNetGenerator< GUM_SCALAR, ICPTGenerator, ICPTDisturber >::
@@ -113,7 +113,7 @@ namespace gum {
     return MCBayesNetGenerator< GUM_SCALAR, ICPTGenerator, ICPTDisturber >::_checkConditions_();
   }
 
-  template < typename GUM_SCALAR,
+  template < GUM_Numeric GUM_SCALAR,
              template < class > class ICPTGenerator,
              template < class > class ICPTDisturber >
   INLINE Size
@@ -122,7 +122,7 @@ namespace gum {
     return maxParents_;
   }
 
-  template < typename GUM_SCALAR,
+  template < GUM_Numeric GUM_SCALAR,
              template < class > class ICPTGenerator,
              template < class > class ICPTDisturber >
   INLINE void

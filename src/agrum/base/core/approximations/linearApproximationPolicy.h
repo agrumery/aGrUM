@@ -70,10 +70,10 @@ namespace gum {
    * #include <agrum/base/core/approximations/linearApproximationPolicy.h>
    * @endcode
    *
-   * @tparam GUM_SCALAR The type used for computations.
+   * @tparam GUM_ELEMENT The type used for computations.
    */
-  template < typename GUM_SCALAR >
-  class LinearApproximationPolicy: public virtual ApproximationPolicy< GUM_SCALAR > {
+  template < typename GUM_ELEMENT >
+  class LinearApproximationPolicy: public virtual ApproximationPolicy< GUM_ELEMENT > {
     public:
     // ===========================================================================
     /// @name Constructors / Destructors
@@ -88,15 +88,15 @@ namespace gum {
      * @param eps The epsilon.
      * @throw OutOfBounds if out of bounds (low<high, eps>0)
      */
-    LinearApproximationPolicy(GUM_SCALAR low  = (GUM_SCALAR)0.0,
-                              GUM_SCALAR high = (GUM_SCALAR)1.0,
-                              GUM_SCALAR eps  = (GUM_SCALAR)0.1);
+    LinearApproximationPolicy(GUM_ELEMENT low  = (GUM_ELEMENT)0.0,
+                              GUM_ELEMENT high = (GUM_ELEMENT)1.0,
+                              GUM_ELEMENT eps  = (GUM_ELEMENT)0.1);
 
     /**
      * @brief Copy constructor.
      * @param md The gum::LinearApproximationPolicy to copy.
      */
-    LinearApproximationPolicy(const LinearApproximationPolicy< GUM_SCALAR >* md);
+    LinearApproximationPolicy(const LinearApproximationPolicy< GUM_ELEMENT >* md);
 
     /// @}
 
@@ -110,45 +110,45 @@ namespace gum {
      * @param value The converted value.
      * @return The value approximation representation.
      */
-    GUM_SCALAR fromExact(const GUM_SCALAR& value) const;
+    GUM_ELEMENT fromExact(const GUM_ELEMENT& value) const;
 
     /**
      * @brief Combine using addition with the given gum::ApproximationPolicy.
      * @param ap The policy to combine with.
      */
-    void combineAdd(const ApproximationPolicy< GUM_SCALAR >* ap);
+    void combineAdd(const ApproximationPolicy< GUM_ELEMENT >* ap);
 
     /**
      * @brief Combine using substraction with the given
      * gum::ApproximationPolicy.
      * @param ap The policy to combine with.
      */
-    void combineSub(const ApproximationPolicy< GUM_SCALAR >* ap);
+    void combineSub(const ApproximationPolicy< GUM_ELEMENT >* ap);
 
     /**
      * @brief Combine using multiplication with the given
      * gum::ApproximationPolicy.
      * @param ap The policy to combine with.
      */
-    void combineMult(const ApproximationPolicy< GUM_SCALAR >* ap);
+    void combineMult(const ApproximationPolicy< GUM_ELEMENT >* ap);
 
     /**
      * @brief Combine using division with the given gum::ApproximationPolicy.
      * @param ap The policy to combine with.
      */
-    void combineDiv(const ApproximationPolicy< GUM_SCALAR >* ap);
+    void combineDiv(const ApproximationPolicy< GUM_ELEMENT >* ap);
 
     /**
      * @brief Combine using max with the given gum::ApproximationPolicy.
      * @param ap The policy to combine with.
      */
-    void combineMax(const ApproximationPolicy< GUM_SCALAR >* ap);
+    void combineMax(const ApproximationPolicy< GUM_ELEMENT >* ap);
 
     /**
      * @brief Combine using min with the given gum::ApproximationPolicy.
      * @param ap The policy to combine with.
      */
-    void combineMin(const ApproximationPolicy< GUM_SCALAR >* ap);
+    void combineMin(const ApproximationPolicy< GUM_ELEMENT >* ap);
 
     /**
      * @brief Convert value to his approximation.
@@ -159,7 +159,7 @@ namespace gum {
      * @throw OutOfBounds Raised if value is out of bounds.
      * @throw OutOfBounds Raised if value is out of bounds.
      */
-    GUM_SCALAR safeFromExact(const GUM_SCALAR& value);
+    GUM_ELEMENT safeFromExact(const GUM_ELEMENT& value);
 
     /**
      * @brief Encode a given value into its approximation representation.
@@ -168,7 +168,7 @@ namespace gum {
      * @throw OutOfBounds Raised if value is out of bounds.
      * @throw OutOfBounds Raised if value is out of bounds.
      */
-    Idx encode(const GUM_SCALAR& value) const;
+    Idx encode(const GUM_ELEMENT& value) const;
 
     /**
      * @brief Convert approximation representation to value.
@@ -176,13 +176,13 @@ namespace gum {
      * @return Returns the value decoded from its approximation
      * reprensentation.
      */
-    GUM_SCALAR decode(Idx representation) const;
+    GUM_ELEMENT decode(Idx representation) const;
 
     /**
      * @brief Sets approximation factor.
      * @param e The new epsilon value.
      */
-    virtual void setEpsilon(const GUM_SCALAR& e);
+    virtual void setEpsilon(const GUM_ELEMENT& e);
 
     /**
      * @brief Set bounds in a whole.
@@ -190,62 +190,62 @@ namespace gum {
      * @param newHighLimit New higher bound.
      * @throw OutOfBounds Raised if new bounds are not legit.
      */
-    virtual void setLimits(const GUM_SCALAR& newLowLimit, const GUM_SCALAR& newHighLimit);
+    virtual void setLimits(const GUM_ELEMENT& newLowLimit, const GUM_ELEMENT& newHighLimit);
 
     /**
      * @brief Sets lowest possible value.
      * @param newLowLimit New lower bound.
      * @throw OutOfBounds Raised if out of bound.
      */
-    virtual void setLowLimit(const GUM_SCALAR& newLowLimit);
+    virtual void setLowLimit(const GUM_ELEMENT& newLowLimit);
 
     /**
      * @brief Gets lowest possible value.
      * @return Returns the lowest possible value.
      */
-    const GUM_SCALAR& lowLimit() const;
+    const GUM_ELEMENT& lowLimit() const;
 
     /**
      * @brief Sets Highest possible value.
      * @param newHighLimit New higher bound.
      * @throw OutOfBounds Raised if out of bound.
      */
-    virtual void setHighLimit(const GUM_SCALAR& newHighLimit);
+    virtual void setHighLimit(const GUM_ELEMENT& newHighLimit);
 
     /**
      * @brief Gets Highest possible value.
      * @return Returns the highest possible value.
      */
-    const GUM_SCALAR& highLimit() const;
+    const GUM_ELEMENT& highLimit() const;
     /// @}
 
     protected:
     /// Lowest value possible.
-    GUM_SCALAR lowLimit_;
+    GUM_ELEMENT lowLimit_;
 
     /// Highest value possible.
-    GUM_SCALAR highLimit_;
+    GUM_ELEMENT highLimit_;
 
     /// Approximation factor.
-    GUM_SCALAR epsilon_;
+    GUM_ELEMENT epsilon_;
 
     /**
      * @brief Concretely computes the approximate representation.
      *
      * @warning We accept value smaller or higher than limits : please @see
-     * gum::ApproximationPolicy::safeFromExact(const GUM_SCALAR&).
+     * gum::ApproximationPolicy::safeFromExact(const GUM_ELEMENT&).
      *
      * @param value The value to encode.
      * @return The encoded value.
      */
-    Idx _encode_(const GUM_SCALAR& value) const;
+    Idx _encode_(const GUM_ELEMENT& value) const;
 
     /**
      * @brief Concretely computes the approximate value from representation.
      * @param representation The approximate value to decode.
      * @return The decoded value.
      */
-    GUM_SCALAR _decode_(const GUM_SCALAR& representation) const;
+    GUM_ELEMENT _decode_(const GUM_ELEMENT& representation) const;
 
     /**
      * @brief Get the number of interval.

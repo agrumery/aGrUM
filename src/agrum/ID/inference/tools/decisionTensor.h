@@ -57,7 +57,7 @@ namespace gum {
    *<agrum/ID/inference/decisionTensor.h>
    * @brief Tensor for optimization in LIMIDS (such as Single Policy Update)
    */
-  template < typename GUM_SCALAR >
+  template < GUM_Numeric GUM_SCALAR >
   class DecisionTensor {
     public:
     Tensor< GUM_SCALAR > probPot;
@@ -200,7 +200,7 @@ namespace gum {
     }
   };
 
-  template < typename GUM_SCALAR >
+  template < GUM_Numeric GUM_SCALAR >
   std::ostream& operator<<(std::ostream& out, const DecisionTensor< GUM_SCALAR >& array) {
     out << array.toString();
     return out;

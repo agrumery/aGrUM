@@ -61,19 +61,19 @@ namespace gum {
   // JointTargetedMRFInference, the class for computing joint posteriors, should
   // have access to the states of Inference and change them when needed: this
   // will be a friend of Inference
-  template < typename GUM_SCALAR >
+  template < GUM_Numeric GUM_SCALAR >
   class JointTargetedMRFInference;
 
   // MarginalTargetedMRFInference, the class for computing marginal posteriors,
   // should have access to the states of Inference and change them when needed:
   // this should be a friend of Inference
-  template < typename GUM_SCALAR >
+  template < GUM_Numeric GUM_SCALAR >
   class MarginalTargetedMRFInference;
 
   // EvidenceMRFInference, the class for computing the probability of evidence,
   // should have access to the states of Inference and change them when needed:
   // this will be a friend of Inference
-  template < typename GUM_SCALAR >
+  template < GUM_Numeric GUM_SCALAR >
   class EvidenceMRFInference;
 
   /**
@@ -131,7 +131,7 @@ namespace gum {
    *   step may even be empty.
    */
 
-  template < typename GUM_SCALAR >
+  template < GUM_Numeric GUM_SCALAR >
   class MRFInference: public GraphicalModelInference< GUM_SCALAR > {
     public:
     /**

@@ -56,7 +56,7 @@
 namespace gum {
 
   // Default Constructor
-  template < typename GUM_SCALAR >
+  template < GUM_Numeric GUM_SCALAR >
   InfluenceDiagramInference< GUM_SCALAR >::InfluenceDiagramInference(
       const InfluenceDiagram< GUM_SCALAR >* infDiag) :
       GraphicalModelInference< GUM_SCALAR >(infDiag) {
@@ -64,26 +64,26 @@ namespace gum {
   }
 
   // Destructor
-  template < typename GUM_SCALAR >
+  template < GUM_Numeric GUM_SCALAR >
   InfluenceDiagramInference< GUM_SCALAR >::~InfluenceDiagramInference() {
     GUM_DESTRUCTOR(InfluenceDiagramInference);
   }
 
-  template < typename GUM_SCALAR >
+  template < GUM_Numeric GUM_SCALAR >
   const InfluenceDiagram< GUM_SCALAR >&
       InfluenceDiagramInference< GUM_SCALAR >::influenceDiagram() const {
     return static_cast< const InfluenceDiagram< GUM_SCALAR >& >(this->model());
   }
 
   // assigns a new BN to the inference engine
-  template < typename GUM_SCALAR >
+  template < GUM_Numeric GUM_SCALAR >
   void InfluenceDiagramInference< GUM_SCALAR >::setInfluenceDiagram(
       const InfluenceDiagram< GUM_SCALAR >* infdiag) {
     this->setModel_(infdiag);
   }
 
   // assigns a BN to a newly constructed inference engine
-  template < typename GUM_SCALAR >
+  template < GUM_Numeric GUM_SCALAR >
   void InfluenceDiagramInference< GUM_SCALAR >::_setIDDuringConstruction_(
       const InfluenceDiagram< GUM_SCALAR >* infdiag) {
     this->setModelDuringConstruction_(infdiag);

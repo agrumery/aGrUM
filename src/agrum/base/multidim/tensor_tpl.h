@@ -58,7 +58,7 @@
 namespace gum {
   // Default constructor: creates an empty null dimensional matrix
   // choose a MultiDimArray<> as decorated implementation
-  template < typename GUM_SCALAR >
+  template < GUM_Numeric GUM_SCALAR >
   INLINE Tensor< GUM_SCALAR >::Tensor() :
       MultiDimDecorator< GUM_SCALAR >(new MultiDimArray< GUM_SCALAR >(), GUM_SCALAR(1)) {
     GUM_CONSTRUCTOR(Tensor)
@@ -66,7 +66,7 @@ namespace gum {
 
   // Default constructor: creates an empty null dimensional matrix
   // choose a MultiDimArray<> as decorated implementation
-  template < typename GUM_SCALAR >
+  template < GUM_Numeric GUM_SCALAR >
   INLINE Tensor< GUM_SCALAR >::Tensor(const std::vector< const DiscreteVariable* >& vars) :
       Tensor() {
     for (const auto& var: vars) {
@@ -75,7 +75,7 @@ namespace gum {
   }
 
   // constructor using aContent as content
-  template < typename GUM_SCALAR >
+  template < GUM_Numeric GUM_SCALAR >
   INLINE Tensor< GUM_SCALAR >::Tensor(MultiDimImplementation< GUM_SCALAR >* aContent) :
       MultiDimDecorator< GUM_SCALAR >(aContent, GUM_SCALAR(1)) {
     // for debugging purposes
@@ -83,7 +83,7 @@ namespace gum {
   }
 
   // copy constructor
-  template < typename GUM_SCALAR >
+  template < GUM_Numeric GUM_SCALAR >
   INLINE Tensor< GUM_SCALAR >::Tensor(const Tensor< GUM_SCALAR >& src) :
       Tensor< GUM_SCALAR >(
           static_cast< MultiDimImplementation< GUM_SCALAR >* >(src.content()->newFactory()),
@@ -94,14 +94,14 @@ namespace gum {
   }
 
   /// move constructor
-  template < typename GUM_SCALAR >
+  template < GUM_Numeric GUM_SCALAR >
   INLINE Tensor< GUM_SCALAR >::Tensor(Tensor< GUM_SCALAR >&& from) :
       MultiDimDecorator< GUM_SCALAR >(std::forward< MultiDimDecorator< GUM_SCALAR > >(from)) {
     GUM_CONS_MOV(Tensor)
   }
 
   // complex copy constructor : we choose the implementation
-  template < typename GUM_SCALAR >
+  template < GUM_Numeric GUM_SCALAR >
   Tensor< GUM_SCALAR >::Tensor(MultiDimImplementation< GUM_SCALAR >*  aContent,
                                const MultiDimContainer< GUM_SCALAR >& src) :
       MultiDimDecorator< GUM_SCALAR >(aContent) {
@@ -121,7 +121,7 @@ namespace gum {
   }
 
   // operator= (copy)
-  template < typename GUM_SCALAR >
+  template < GUM_Numeric GUM_SCALAR >
   Tensor< GUM_SCALAR >& Tensor< GUM_SCALAR >::operator=(const Tensor< GUM_SCALAR >& src) {
     GUM_OP_CPY(Tensor)
     if (&src == this) return *this;
@@ -130,7 +130,7 @@ namespace gum {
   }
 
   // operator= (move)
-  template < typename GUM_SCALAR >
+  template < GUM_Numeric GUM_SCALAR >
   Tensor< GUM_SCALAR >& Tensor< GUM_SCALAR >::operator=(Tensor< GUM_SCALAR >&& src) {
     GUM_OP_MOV(Tensor)
     if (&src == this) return *this;
@@ -141,20 +141,20 @@ namespace gum {
 
   // destructor
 
-  template < typename GUM_SCALAR >
+  template < GUM_Numeric GUM_SCALAR >
   Tensor< GUM_SCALAR >::~Tensor() {
     // for debugging purposes
     GUM_DESTRUCTOR(Tensor)
   }
 
-  template < typename GUM_SCALAR >
+  template < GUM_Numeric GUM_SCALAR >
   INLINE Tensor< GUM_SCALAR >* Tensor< GUM_SCALAR >::newFactory() const {
     return new Tensor< GUM_SCALAR >(
         static_cast< MultiDimImplementation< GUM_SCALAR >* >(this->content()->newFactory()));
   }
 
   // sum of all elements in this
-  template < typename GUM_SCALAR >
+  template < GUM_Numeric GUM_SCALAR >
   INLINE GUM_SCALAR Tensor< GUM_SCALAR >::sum() const {
     if (static_cast< MultiDimContainer< GUM_SCALAR >* >(this->content_)->empty()) {
       return this->empty_value_;
@@ -163,7 +163,7 @@ namespace gum {
   }
 
   // product of all elements in this
-  template < typename GUM_SCALAR >
+  template < GUM_Numeric GUM_SCALAR >
   INLINE GUM_SCALAR Tensor< GUM_SCALAR >::product() const {
     if (static_cast< MultiDimContainer< GUM_SCALAR >* >(this->content_)->empty()) {
       return this->empty_value_;
@@ -172,7 +172,7 @@ namespace gum {
   }
 
   // max of all elements in this
-  template < typename GUM_SCALAR >
+  template < GUM_Numeric GUM_SCALAR >
   INLINE GUM_SCALAR Tensor< GUM_SCALAR >::max() const {
     if (static_cast< MultiDimContainer< GUM_SCALAR >* >(this->content_)->empty()) {
       return this->empty_value_;
@@ -181,7 +181,7 @@ namespace gum {
   }
 
   // min of all elements in this
-  template < typename GUM_SCALAR >
+  template < GUM_Numeric GUM_SCALAR >
   INLINE GUM_SCALAR Tensor< GUM_SCALAR >::min() const {
     if (static_cast< MultiDimContainer< GUM_SCALAR >* >(this->content_)->empty()) {
       return this->empty_value_;
@@ -191,7 +191,7 @@ namespace gum {
 
   // max of all non-one elements in this
   // warning can return 1 if no other value than 1 ...
-  template < typename GUM_SCALAR >
+  template < GUM_Numeric GUM_SCALAR >
   GUM_SCALAR Tensor< GUM_SCALAR >::maxNonOne() const {
     GUM_SCALAR res;
 
@@ -212,7 +212,7 @@ namespace gum {
 
   // min of all non-zero elements in this
   // warning can return 0 if no other value than 0 ...
-  template < typename GUM_SCALAR >
+  template < GUM_Numeric GUM_SCALAR >
   INLINE GUM_SCALAR Tensor< GUM_SCALAR >::minNonZero() const {
     GUM_SCALAR res;
 
@@ -230,7 +230,7 @@ namespace gum {
     return res;
   }
 
-  template < typename GUM_SCALAR >
+  template < GUM_Numeric GUM_SCALAR >
   GUM_SCALAR Tensor< GUM_SCALAR >::expectedValue(
       std::function< GUM_SCALAR(const gum::Instantiation&) > f) const {
     if (static_cast< MultiDimContainer< GUM_SCALAR >* >(this->content_)->empty()) {
@@ -247,27 +247,27 @@ namespace gum {
   }
 
   // entropy of this
-  template < typename GUM_SCALAR >
+  template < GUM_Numeric GUM_SCALAR >
   INLINE GUM_SCALAR Tensor< GUM_SCALAR >::entropy() const {
     return -this->expectedValue([this](const gum::Instantiation& i) -> GUM_SCALAR {
       return GUM_SCALAR(GUM_LOG2_OR_0(this->get(i)));
     });
   }
 
-  template < typename GUM_SCALAR >
+  template < GUM_Numeric GUM_SCALAR >
   INLINE const Tensor< GUM_SCALAR >&
                Tensor< GUM_SCALAR >::fillWith(const std::vector< GUM_SCALAR >& data) const {
     this->populate(data);
     return *this;
   }
 
-  template < typename GUM_SCALAR >
+  template < GUM_Numeric GUM_SCALAR >
   INLINE const Tensor< GUM_SCALAR >& Tensor< GUM_SCALAR >::fillWith(const GUM_SCALAR& val) const {
     this->fill(val);
     return *this;
   }
 
-  template < typename GUM_SCALAR >
+  template < GUM_Numeric GUM_SCALAR >
   INLINE const Tensor< GUM_SCALAR >&
                Tensor< GUM_SCALAR >::fillWith(const Tensor< GUM_SCALAR >& src) const {
     if (src.domainSize() != this->domainSize()) {
@@ -300,7 +300,7 @@ namespace gum {
     return *this;
   }
 
-  template < typename GUM_SCALAR >
+  template < GUM_Numeric GUM_SCALAR >
   INLINE const Tensor< GUM_SCALAR >&
                Tensor< GUM_SCALAR >::fillWith(const Tensor< GUM_SCALAR >&       src,
                                               const std::vector< std::string >& mapSrc) const {
@@ -328,25 +328,25 @@ namespace gum {
     return *this;
   }
 
-  template < typename GUM_SCALAR >
+  template < GUM_Numeric GUM_SCALAR >
   INLINE const Tensor< GUM_SCALAR >& Tensor< GUM_SCALAR >::sq() const {
     this->apply([](GUM_SCALAR x) { return x * x; });
     return *this;
   }
 
-  template < typename GUM_SCALAR >
+  template < GUM_Numeric GUM_SCALAR >
   INLINE const Tensor< GUM_SCALAR >& Tensor< GUM_SCALAR >::log2() const {
     this->apply([](GUM_SCALAR x) { return std::log2(x); });
     return *this;
   }
 
-  template < typename GUM_SCALAR >
+  template < GUM_Numeric GUM_SCALAR >
   INLINE const Tensor< GUM_SCALAR >& Tensor< GUM_SCALAR >::sgn() const {
     this->apply([](GUM_SCALAR x) { return (GUM_SCALAR(0) < x) - (x < GUM_SCALAR(0)); });
     return *this;
   }
 
-  template < typename GUM_SCALAR >
+  template < GUM_Numeric GUM_SCALAR >
   INLINE GUM_SCALAR Tensor< GUM_SCALAR >::KL(const Tensor< GUM_SCALAR >& p) const {
     if (this->nbrDim() != p.nbrDim())
       GUM_ERROR(InvalidArgument, "BNdistance between tensors with different numbers of dimensions")
@@ -376,7 +376,7 @@ namespace gum {
     return res;
   }
 
-  template < typename GUM_SCALAR >
+  template < GUM_Numeric GUM_SCALAR >
   INLINE const Tensor< GUM_SCALAR >& Tensor< GUM_SCALAR >::abs() const {
     this->apply([](GUM_SCALAR x) {
       if (x >= 0) return x;
@@ -387,7 +387,7 @@ namespace gum {
 
   // normalisation of this
   // do nothing is sum is 0
-  template < typename GUM_SCALAR >
+  template < GUM_Numeric GUM_SCALAR >
   INLINE const Tensor< GUM_SCALAR >& Tensor< GUM_SCALAR >::normalize() const {
     if (static_cast< MultiDimContainer< GUM_SCALAR >* >(this->content_)->empty()) {
       if (this->empty_value_ != static_cast< GUM_SCALAR >(0))
@@ -402,7 +402,7 @@ namespace gum {
     return *this;
   }
 
-  template < typename GUM_SCALAR >
+  template < GUM_Numeric GUM_SCALAR >
   INLINE const Tensor< GUM_SCALAR >& Tensor< GUM_SCALAR >::normalizeAsCPT(const Idx& varId) const {
     if (static_cast< MultiDimContainer< GUM_SCALAR >* >(this->content_)->empty()) {
       if (this->empty_value_ != static_cast< GUM_SCALAR >(0)) {
@@ -434,25 +434,25 @@ namespace gum {
     return *this;
   }
 
-  template < typename GUM_SCALAR >
+  template < GUM_Numeric GUM_SCALAR >
   INLINE const Tensor< GUM_SCALAR >& Tensor< GUM_SCALAR >::scale(GUM_SCALAR v) const {
     this->apply([v](GUM_SCALAR x) { return x * v; });
     return *this;
   }
 
-  template < typename GUM_SCALAR >
+  template < GUM_Numeric GUM_SCALAR >
   INLINE const Tensor< GUM_SCALAR >& Tensor< GUM_SCALAR >::translate(GUM_SCALAR v) const {
     this->apply([v](GUM_SCALAR x) { return x + v; });
     return *this;
   }
 
-  template < typename GUM_SCALAR >
+  template < GUM_Numeric GUM_SCALAR >
   INLINE const Tensor< GUM_SCALAR >& Tensor< GUM_SCALAR >::inverse() const {
     this->apply([](GUM_SCALAR x) { return 1 / x; });
     return *this;
   }
 
-  template < typename GUM_SCALAR >
+  template < GUM_Numeric GUM_SCALAR >
   INLINE Tensor< GUM_SCALAR > Tensor< GUM_SCALAR >::sumOut(const gum::VariableSet& del_vars) const {
     if (static_cast< MultiDimContainer< GUM_SCALAR >* >(this->content_)->empty()) {
       return Tensor< GUM_SCALAR >().fillWith(this->empty_value_);
@@ -474,7 +474,7 @@ namespace gum {
     return Tensor< GUM_SCALAR >(gum::projectSum(*this->content(), del_vars));
   }
 
-  template < typename GUM_SCALAR >
+  template < GUM_Numeric GUM_SCALAR >
   INLINE Tensor< GUM_SCALAR >
          Tensor< GUM_SCALAR >::prodOut(const gum::VariableSet& del_vars) const {
     if (static_cast< MultiDimContainer< GUM_SCALAR >* >(this->content_)->empty()) {
@@ -497,7 +497,7 @@ namespace gum {
     return Tensor< GUM_SCALAR >(gum::projectProduct(*this->content(), del_vars));
   }
 
-  template < typename GUM_SCALAR >
+  template < GUM_Numeric GUM_SCALAR >
   INLINE Tensor< GUM_SCALAR > Tensor< GUM_SCALAR >::minOut(const gum::VariableSet& del_vars) const {
     if (static_cast< MultiDimContainer< GUM_SCALAR >* >(this->content_)->empty()) {
       return Tensor< GUM_SCALAR >().fillWith(this->empty_value_);
@@ -519,7 +519,7 @@ namespace gum {
     return Tensor< GUM_SCALAR >(gum::projectMin(*this->content(), del_vars));
   }
 
-  template < typename GUM_SCALAR >
+  template < GUM_Numeric GUM_SCALAR >
   INLINE Tensor< GUM_SCALAR > Tensor< GUM_SCALAR >::maxOut(const gum::VariableSet& del_vars) const {
     if (static_cast< MultiDimContainer< GUM_SCALAR >* >(this->content_)->empty()) {
       return Tensor< GUM_SCALAR >().fillWith(this->empty_value_);
@@ -541,7 +541,7 @@ namespace gum {
     return Tensor< GUM_SCALAR >(gum::projectMax(*this->content(), del_vars));
   }
 
-  template < typename GUM_SCALAR >
+  template < GUM_Numeric GUM_SCALAR >
   INLINE Tensor< GUM_SCALAR > Tensor< GUM_SCALAR >::sumIn(const gum::VariableSet& kept_vars) const {
     if (static_cast< MultiDimContainer< GUM_SCALAR >* >(this->content_)->empty()) {
       return Tensor< GUM_SCALAR >().fillWith(this->empty_value_);
@@ -551,10 +551,10 @@ namespace gum {
     // TODO: remove this test when operations will be able to handle empty tensors
     if (kept_vars.empty()) { return Tensor< GUM_SCALAR >().fillWith(this->sum()); }
 
-    return Tensor< GUM_SCALAR >(gum::projectSum(*this->content(), complementVars_(kept_vars)));
+    return Tensor< GUM_SCALAR >(gum::projectSum(*this->content(), _complementVars_(kept_vars)));
   }
 
-  template < typename GUM_SCALAR >
+  template < GUM_Numeric GUM_SCALAR >
   INLINE Tensor< GUM_SCALAR >
          Tensor< GUM_SCALAR >::prodIn(const gum::VariableSet& kept_vars) const {
     if (static_cast< MultiDimContainer< GUM_SCALAR >* >(this->content_)->empty()) {
@@ -565,10 +565,10 @@ namespace gum {
     // TODO: remove this test when operations will be able to handle empty tensors
     if (kept_vars.empty()) { return Tensor< GUM_SCALAR >().fillWith(this->product()); }
 
-    return Tensor< GUM_SCALAR >(gum::projectProduct(*this->content(), complementVars_(kept_vars)));
+    return Tensor< GUM_SCALAR >(gum::projectProduct(*this->content(), _complementVars_(kept_vars)));
   }
 
-  template < typename GUM_SCALAR >
+  template < GUM_Numeric GUM_SCALAR >
   INLINE Tensor< GUM_SCALAR > Tensor< GUM_SCALAR >::minIn(const gum::VariableSet& kept_vars) const {
     if (static_cast< MultiDimContainer< GUM_SCALAR >* >(this->content_)->empty()) {
       return Tensor< GUM_SCALAR >().fillWith(this->empty_value_);
@@ -578,10 +578,10 @@ namespace gum {
     // TODO: remove this test when operations will be able to handle empty tensors
     if (kept_vars.empty()) { return Tensor< GUM_SCALAR >().fillWith(this->min()); }
 
-    return Tensor< GUM_SCALAR >(gum::projectMin(*this->content(), complementVars_(kept_vars)));
+    return Tensor< GUM_SCALAR >(gum::projectMin(*this->content(), _complementVars_(kept_vars)));
   }
 
-  template < typename GUM_SCALAR >
+  template < GUM_Numeric GUM_SCALAR >
   INLINE Tensor< GUM_SCALAR > Tensor< GUM_SCALAR >::maxIn(const gum::VariableSet& kept_vars) const {
     if (static_cast< MultiDimContainer< GUM_SCALAR >* >(this->content_)->empty()) {
       return Tensor< GUM_SCALAR >().fillWith(this->empty_value_);
@@ -591,10 +591,10 @@ namespace gum {
     // TODO: remove this test when operations will be able to handle empty tensors
     if (kept_vars.empty()) { return Tensor< GUM_SCALAR >().fillWith(this->max()); }
 
-    return Tensor< GUM_SCALAR >(gum::projectMax(*this->content(), complementVars_(kept_vars)));
+    return Tensor< GUM_SCALAR >(gum::projectMax(*this->content(), _complementVars_(kept_vars)));
   }
 
-  template < typename GUM_SCALAR >
+  template < GUM_Numeric GUM_SCALAR >
   INLINE Tensor< GUM_SCALAR > Tensor< GUM_SCALAR >::isNonZeroMap() const {
     auto p = Tensor< GUM_SCALAR >(*this);
     p.apply([](GUM_SCALAR x) {
@@ -604,8 +604,8 @@ namespace gum {
     return p;
   }
 
-  template < typename GUM_SCALAR >
-  gum::VariableSet Tensor< GUM_SCALAR >::complementVars_(const gum::VariableSet& vars) const {
+  template < GUM_Numeric GUM_SCALAR >
+  gum::VariableSet Tensor< GUM_SCALAR >::_complementVars_(const gum::VariableSet& vars) const {
     gum::VariableSet cplt;
 
     for (const auto x: this->variablesSequence())
@@ -614,7 +614,7 @@ namespace gum {
     return cplt;
   }
 
-  template < typename GUM_SCALAR >
+  template < GUM_Numeric GUM_SCALAR >
   Tensor< GUM_SCALAR >
       Tensor< GUM_SCALAR >::reorganize(const std::vector< const DiscreteVariable* >& vars) const {
     if (vars.size() != this->nbrDim())
@@ -636,7 +636,7 @@ namespace gum {
     return p;
   }
 
-  template < typename GUM_SCALAR >
+  template < GUM_Numeric GUM_SCALAR >
   Tensor< GUM_SCALAR >
       Tensor< GUM_SCALAR >::reorganize(const std::vector< std::string >& vars) const {
     std::vector< const DiscreteVariable* > res;
@@ -655,7 +655,7 @@ namespace gum {
     return reorganize(res);
   }
 
-  template < typename GUM_SCALAR >
+  template < GUM_Numeric GUM_SCALAR >
   Tensor< GUM_SCALAR > Tensor< GUM_SCALAR >::putFirst(const DiscreteVariable* var) const {
     if (!this->contains(*var)) {
       GUM_ERROR(InvalidArgument, "The variable to put first does not belong to the tensor")
@@ -670,7 +670,7 @@ namespace gum {
     return this->reorganize(vars);
   }
 
-  template < typename GUM_SCALAR >
+  template < GUM_Numeric GUM_SCALAR >
   Tensor< GUM_SCALAR > Tensor< GUM_SCALAR >::putFirst(const std::string& varname) const {
     const DiscreteVariable* var = nullptr;
 
@@ -685,7 +685,7 @@ namespace gum {
     return this->putFirst(var);
   }
 
-  template < typename GUM_SCALAR >
+  template < GUM_Numeric GUM_SCALAR >
   Tensor< GUM_SCALAR > Tensor< GUM_SCALAR >::extract(const Instantiation& inst) const {
     Tensor< GUM_SCALAR > p;
     p.extractFrom(*this, inst);
@@ -693,7 +693,7 @@ namespace gum {
     return p;
   }
 
-  template < typename GUM_SCALAR >
+  template < GUM_Numeric GUM_SCALAR >
   Idx Tensor< GUM_SCALAR >::draw() const {
     if (this->nbrDim() != 1) {
       GUM_ERROR(FatalError, "To draw from a tensor, the dimension must be 1")
@@ -708,14 +708,14 @@ namespace gum {
     return this->variable(0).domainSize() - 1;
   }
 
-  template < typename GUM_SCALAR >
+  template < GUM_Numeric GUM_SCALAR >
   std::ostream& operator<<(std::ostream& out, const Tensor< GUM_SCALAR >& array) {
     out << array.toString();
     return out;
   }
 
   // argmax of all elements in this
-  template < typename GUM_SCALAR >
+  template < GUM_Numeric GUM_SCALAR >
   Set< Instantiation > Tensor< GUM_SCALAR >::findAll(GUM_SCALAR v) const {
     Instantiation        I(*this);
     Set< Instantiation > res;
@@ -729,20 +729,20 @@ namespace gum {
   }
 
   // argmax of all elements in this
-  template < typename GUM_SCALAR >
+  template < GUM_Numeric GUM_SCALAR >
   INLINE std::pair< Set< Instantiation >, GUM_SCALAR > Tensor< GUM_SCALAR >::argmax() const {
     auto m = max();
     return std::pair(findAll(m), m);
   }
 
   // argmin of all elements in this
-  template < typename GUM_SCALAR >
+  template < GUM_Numeric GUM_SCALAR >
   INLINE std::pair< Set< Instantiation >, GUM_SCALAR > Tensor< GUM_SCALAR >::argmin() const {
     auto m = min();
     return std::pair(findAll(m), m);
   }
 
-  template < typename GUM_SCALAR >
+  template < GUM_Numeric GUM_SCALAR >
   const Tensor< GUM_SCALAR >& Tensor< GUM_SCALAR >::random() const {
     if (this->domainSize() == 0) return *this;
 
@@ -756,7 +756,7 @@ namespace gum {
     return *this;
   }
 
-  template < typename GUM_SCALAR >
+  template < GUM_Numeric GUM_SCALAR >
   INLINE const Tensor< GUM_SCALAR >& Tensor< GUM_SCALAR >::randomDistribution() const {
     if (this->domainSize() == 0) {
       this->fillWith((GUM_SCALAR)1.0);
@@ -767,7 +767,7 @@ namespace gum {
     return *this;
   }
 
-  template < typename GUM_SCALAR >
+  template < GUM_Numeric GUM_SCALAR >
   INLINE const Tensor< GUM_SCALAR >& Tensor< GUM_SCALAR >::randomCPT() const {
     if (this->domainSize() == 0) {
       this->fillWith((GUM_SCALAR)1.0);
@@ -785,7 +785,7 @@ namespace gum {
     return *this;
   }
 
-  template < typename GUM_SCALAR >
+  template < GUM_Numeric GUM_SCALAR >
   const Tensor< GUM_SCALAR >& Tensor< GUM_SCALAR >::noising(GUM_SCALAR alpha) const {
     if ((alpha < GUM_SCALAR(0.0)) || (alpha > GUM_SCALAR(1.0))) {
       GUM_ERROR(InvalidArgument, "alpha must be in [0,1]")
@@ -794,34 +794,34 @@ namespace gum {
     return fillWith(scale(1 - alpha) + noise.randomCPT().scale(alpha)).normalizeAsCPT();
   }
 
-  template < typename GUM_SCALAR >
+  template < GUM_Numeric GUM_SCALAR >
   Tensor< GUM_SCALAR > Tensor< GUM_SCALAR >::new_abs() const {
     return Tensor< GUM_SCALAR >(*this).abs();
   }
 
-  template < typename GUM_SCALAR >
+  template < GUM_Numeric GUM_SCALAR >
   Tensor< GUM_SCALAR > Tensor< GUM_SCALAR >::new_sq() const {
     return Tensor< GUM_SCALAR >(*this).sq();
   }
 
-  template < typename GUM_SCALAR >
+  template < GUM_Numeric GUM_SCALAR >
   Tensor< GUM_SCALAR > Tensor< GUM_SCALAR >::new_log2() const {
     return Tensor< GUM_SCALAR >(*this).log2();
   }
 
-  template < typename GUM_SCALAR >
+  template < GUM_Numeric GUM_SCALAR >
   Tensor< GUM_SCALAR > Tensor< GUM_SCALAR >::new_sgn() const {
     return Tensor< GUM_SCALAR >(*this).sgn();
   }
 
-  template < typename GUM_SCALAR >
+  template < GUM_Numeric GUM_SCALAR >
   Tensor< GUM_SCALAR >& Tensor< GUM_SCALAR >::operator<<(const DiscreteVariable& v) {
     this->add(v);
     return *this;
   }
 
   /// the function to be used to add two Tensors
-  template < typename GUM_SCALAR >
+  template < GUM_Numeric GUM_SCALAR >
   Tensor< GUM_SCALAR > Tensor< GUM_SCALAR >::operator+(const Tensor< GUM_SCALAR >& p2) const {
     if (p2.empty()) return Tensor< GUM_SCALAR >(*this).translate(p2.empty_value_);
     if (this->empty()) return Tensor< GUM_SCALAR >(p2).translate(this->empty_value_);
@@ -830,13 +830,13 @@ namespace gum {
   }
 
   /// the function to be used to add a GUM_SCALAR to a Tensor
-  template < typename GUM_SCALAR >
+  template < GUM_Numeric GUM_SCALAR >
   Tensor< GUM_SCALAR > Tensor< GUM_SCALAR >::operator+(const GUM_SCALAR& v) const {
     return Tensor< GUM_SCALAR >(*this).translate(v);
   }
 
   /// is an evidence ? (marginal-like but has not to sum to 1)
-  template < typename GUM_SCALAR >
+  template < GUM_Numeric GUM_SCALAR >
   bool Tensor< GUM_SCALAR >::isEvidence() const {
     if (this->nbrDim() != 1) return false;
     if (this->sum() <= 0.0) return false;
@@ -844,7 +844,7 @@ namespace gum {
   }
 
   // max function between two evidence
-  template < typename GUM_SCALAR >
+  template < GUM_Numeric GUM_SCALAR >
   Tensor< GUM_SCALAR > Tensor< GUM_SCALAR >::operator|(const Tensor< GUM_SCALAR >& p2) const {
     if (!isEvidence() || !p2.isEvidence())
       GUM_ERROR(InvalidArgument, "The tensors are not evidences.")
@@ -859,7 +859,7 @@ namespace gum {
   }
 
   // min function between two evidence
-  template < typename GUM_SCALAR >
+  template < GUM_Numeric GUM_SCALAR >
   Tensor< GUM_SCALAR > Tensor< GUM_SCALAR >::operator&(const Tensor< GUM_SCALAR >& p2) const {
     if (!isEvidence() || !p2.isEvidence())
       GUM_ERROR(InvalidArgument, "The tensors are not evidences.")
@@ -874,7 +874,7 @@ namespace gum {
   }
 
   // complement function between two evidence
-  template < typename GUM_SCALAR >
+  template < GUM_Numeric GUM_SCALAR >
   Tensor< GUM_SCALAR > Tensor< GUM_SCALAR >::operator~() const {
     if (!isEvidence()) GUM_ERROR(InvalidArgument, "The tensor is not an evidence.")
 
@@ -887,7 +887,7 @@ namespace gum {
   }
 
   /// the function to be used to subtract two Tensors
-  template < typename GUM_SCALAR >
+  template < GUM_Numeric GUM_SCALAR >
   Tensor< GUM_SCALAR > Tensor< GUM_SCALAR >::operator-(const Tensor< GUM_SCALAR >& p2) const {
     if (p2.empty()) return Tensor< GUM_SCALAR >(*this).translate(-p2.empty_value_);
     if (this->empty()) {
@@ -899,13 +899,13 @@ namespace gum {
   }
 
   /// the function to be used to substract a GUM_SCALAR from a Tensor
-  template < typename GUM_SCALAR >
+  template < GUM_Numeric GUM_SCALAR >
   Tensor< GUM_SCALAR > Tensor< GUM_SCALAR >::operator-(const GUM_SCALAR& v) const {
     return Tensor< GUM_SCALAR >(*this).translate(-v);
   }
 
   /// the function to be used to multiply two Tensors
-  template < typename GUM_SCALAR >
+  template < GUM_Numeric GUM_SCALAR >
   Tensor< GUM_SCALAR > Tensor< GUM_SCALAR >::operator*(const Tensor< GUM_SCALAR >& p2) const {
     if (p2.empty()) return Tensor< GUM_SCALAR >(*this).scale(p2.empty_value_);
     if (this->empty()) return Tensor< GUM_SCALAR >(p2).scale(this->empty_value_);
@@ -914,13 +914,13 @@ namespace gum {
   }
 
   /// the function to be used to multiply a Tensor and a scalar
-  template < typename GUM_SCALAR >
+  template < GUM_Numeric GUM_SCALAR >
   Tensor< GUM_SCALAR > Tensor< GUM_SCALAR >::operator*(const GUM_SCALAR& v) const {
     return Tensor< GUM_SCALAR >(*this).scale(v);
   }
 
   /// the function to be used to divide two Tensors
-  template < typename GUM_SCALAR >
+  template < GUM_Numeric GUM_SCALAR >
   Tensor< GUM_SCALAR > Tensor< GUM_SCALAR >::operator/(const Tensor< GUM_SCALAR >& p2) const {
     if (p2.empty()) return Tensor< GUM_SCALAR >(*this).scale(1 / p2.empty_value_);
     if (this->empty()) {
@@ -932,60 +932,60 @@ namespace gum {
   }
 
   /// the function to be used to divide a Tensor by a scalar
-  template < typename GUM_SCALAR >
+  template < GUM_Numeric GUM_SCALAR >
   Tensor< GUM_SCALAR > Tensor< GUM_SCALAR >::operator/(const GUM_SCALAR& v) const {
     return Tensor< GUM_SCALAR >(*this).scale(1 / v);
   }
 
-  template < typename GUM_SCALAR >
+  template < GUM_Numeric GUM_SCALAR >
   Tensor< GUM_SCALAR >& Tensor< GUM_SCALAR >::operator+=(const Tensor< GUM_SCALAR >& r) {
     *this = *this + r;
     return *this;
   }
 
-  template < typename GUM_SCALAR >
+  template < GUM_Numeric GUM_SCALAR >
   Tensor< GUM_SCALAR >& Tensor< GUM_SCALAR >::operator+=(const GUM_SCALAR& v) {
     this->translate(v);
     return *this;
   }
 
-  template < typename GUM_SCALAR >
+  template < GUM_Numeric GUM_SCALAR >
   Tensor< GUM_SCALAR >& Tensor< GUM_SCALAR >::operator*=(const Tensor< GUM_SCALAR >& r) {
     *this = *this * r;
     return *this;
   }
 
-  template < typename GUM_SCALAR >
+  template < GUM_Numeric GUM_SCALAR >
   Tensor< GUM_SCALAR >& Tensor< GUM_SCALAR >::operator*=(const GUM_SCALAR& v) {
     this->scale(v);
     return *this;
   }
 
-  template < typename GUM_SCALAR >
+  template < GUM_Numeric GUM_SCALAR >
   Tensor< GUM_SCALAR >& Tensor< GUM_SCALAR >::operator-=(const Tensor< GUM_SCALAR >& r) {
     *this = *this - r;
     return *this;
   }
 
-  template < typename GUM_SCALAR >
+  template < GUM_Numeric GUM_SCALAR >
   Tensor< GUM_SCALAR >& Tensor< GUM_SCALAR >::operator-=(const GUM_SCALAR& v) {
     this->translate(-v);
     return *this;
   }
 
-  template < typename GUM_SCALAR >
+  template < GUM_Numeric GUM_SCALAR >
   Tensor< GUM_SCALAR >& Tensor< GUM_SCALAR >::operator/=(const Tensor< GUM_SCALAR >& r) {
     *this = *this / r;
     return *this;
   }
 
-  template < typename GUM_SCALAR >
+  template < GUM_Numeric GUM_SCALAR >
   Tensor< GUM_SCALAR >& Tensor< GUM_SCALAR >::operator/=(const GUM_SCALAR& v) {
     this->scale(1 / v);
     return *this;
   }
 
-  template < typename GUM_SCALAR >
+  template < GUM_Numeric GUM_SCALAR >
   bool Tensor< GUM_SCALAR >::operator==(const Tensor< GUM_SCALAR >& r) const {
     if (this->empty()) {
       if (r.empty()) return this->empty_value_ == r.empty_value_;
@@ -996,7 +996,7 @@ namespace gum {
     }
   }
 
-  template < typename GUM_SCALAR >
+  template < GUM_Numeric GUM_SCALAR >
   std::string Tensor< GUM_SCALAR >::toString() const {
     auto              table = this->content();
     std::stringstream ss;
@@ -1082,7 +1082,7 @@ namespace gum {
     return ss.str();
   }
 
-  template < typename GUM_SCALAR >
+  template < GUM_Numeric GUM_SCALAR >
   Tensor< GUM_SCALAR > Tensor< GUM_SCALAR >::evEq(const DiscreteVariable& v, double val) {
     const auto i = v.closestIndex(val);
 
@@ -1095,7 +1095,7 @@ namespace gum {
     return p;
   }
 
-  template < typename GUM_SCALAR >
+  template < GUM_Numeric GUM_SCALAR >
   Tensor< GUM_SCALAR >
       Tensor< GUM_SCALAR >::evIn(const DiscreteVariable& v, double val1, double val2) {
     if (val2 < val1) {
@@ -1116,7 +1116,7 @@ namespace gum {
     return p;
   }
 
-  template < typename GUM_SCALAR >
+  template < GUM_Numeric GUM_SCALAR >
   Tensor< GUM_SCALAR > Tensor< GUM_SCALAR >::evGt(const DiscreteVariable& v, double val) {
     const auto i = v.closestIndex(val);
     if (i == v.domainSize() - 1) { return evEq(v, val); }
@@ -1132,7 +1132,7 @@ namespace gum {
     return p;
   }
 
-  template < typename GUM_SCALAR >
+  template < GUM_Numeric GUM_SCALAR >
   Tensor< GUM_SCALAR > Tensor< GUM_SCALAR >::evLt(const DiscreteVariable& v, double val) {
     const auto i = v.closestIndex(val);
     if (i == 0) { return evEq(v, val); }
@@ -1148,12 +1148,12 @@ namespace gum {
     return p;
   }
 
-  template < typename GUM_SCALAR >
+  template < GUM_Numeric GUM_SCALAR >
   Size Tensor< GUM_SCALAR >::memoryFootprint() const {
     return this->content()->realSize() * sizeof(GUM_SCALAR);
   }
 
-  template < typename GUM_SCALAR >
+  template < GUM_Numeric GUM_SCALAR >
   Tensor< GUM_SCALAR > Tensor< GUM_SCALAR >::deterministicTensor(const DiscreteVariable& var,
                                                                  Idx                     value) {
     Tensor< GUM_SCALAR > pot;
@@ -1169,13 +1169,13 @@ namespace gum {
     return pot;
   }
 
-  template < typename GUM_SCALAR >
+  template < GUM_Numeric GUM_SCALAR >
   Tensor< GUM_SCALAR > Tensor< GUM_SCALAR >::deterministicTensor(const DiscreteVariable& var,
                                                                  const std::string&      value) {
     return Tensor< GUM_SCALAR >::deterministicTensor(var, var.index(value));
   }
 
-  template < typename GUM_SCALAR >
+  template < GUM_Numeric GUM_SCALAR >
   Tensor< GUM_SCALAR > Tensor< GUM_SCALAR >::uniformTensor(const DiscreteVariable& var) {
     Tensor< GUM_SCALAR > pot;
 

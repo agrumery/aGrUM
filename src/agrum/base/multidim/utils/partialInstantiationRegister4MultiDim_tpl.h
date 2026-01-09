@@ -57,11 +57,11 @@
 namespace gum {
 
   // adds a new entry into the register
-  template < typename GUM_SCALAR >
-  void PartialInstantiationRegister4MultiDim< GUM_SCALAR >::insert(
+  template < typename GUM_ELEMENT >
+  void PartialInstantiationRegister4MultiDim< GUM_ELEMENT >::insert(
       const std::string& instantiation_func_name,
       const std::string& type_multidim,
-      typename PartialInstantiationRegister4MultiDim< GUM_SCALAR >::PartialInstantiationPtr
+      typename PartialInstantiationRegister4MultiDim< GUM_ELEMENT >::PartialInstantiationPtr
           newFunction) {
     // insert the new entry
     PartialInstantiationSet* theset = nullptr;
@@ -83,8 +83,8 @@ namespace gum {
   }
 
   // removes a given entry from the register
-  template < typename GUM_SCALAR >
-  void PartialInstantiationRegister4MultiDim< GUM_SCALAR >::erase(
+  template < typename GUM_ELEMENT >
+  void PartialInstantiationRegister4MultiDim< GUM_ELEMENT >::erase(
       const std::string& instantiation_func_name,
       const std::string& type_multidim) {
     if (!_set_.exists(instantiation_func_name)) return;
@@ -95,8 +95,8 @@ namespace gum {
   }
 
   // indicates whether a given entry exists in the register
-  template < typename GUM_SCALAR >
-  INLINE bool PartialInstantiationRegister4MultiDim< GUM_SCALAR >::exists(
+  template < typename GUM_ELEMENT >
+  INLINE bool PartialInstantiationRegister4MultiDim< GUM_ELEMENT >::exists(
       const std::string& instantiation_func_name,
       const std::string& type_multidim) const {
     if (!_set_.exists(instantiation_func_name)) return false;
@@ -107,9 +107,9 @@ namespace gum {
 
   /** @brief returns the specialized operator assigned to a given subtype of
    * MultiDimImplementation */
-  template < typename GUM_SCALAR >
-  INLINE typename PartialInstantiationRegister4MultiDim< GUM_SCALAR >::PartialInstantiationPtr
-      PartialInstantiationRegister4MultiDim< GUM_SCALAR >::get(
+  template < typename GUM_ELEMENT >
+  INLINE typename PartialInstantiationRegister4MultiDim< GUM_ELEMENT >::PartialInstantiationPtr
+      PartialInstantiationRegister4MultiDim< GUM_ELEMENT >::get(
           const std::string& instantiation_func_name,
           const std::string& type_multidim) const {
     const PartialInstantiationSet& theset = *(_set_[instantiation_func_name]);
@@ -118,9 +118,9 @@ namespace gum {
 
   // a named constructor that constructs one and only one Register per data
   // type
-  template < typename GUM_SCALAR >
-  PartialInstantiationRegister4MultiDim< GUM_SCALAR >&
-      PartialInstantiationRegister4MultiDim< GUM_SCALAR >::Register() {
+  template < typename GUM_ELEMENT >
+  PartialInstantiationRegister4MultiDim< GUM_ELEMENT >&
+      PartialInstantiationRegister4MultiDim< GUM_ELEMENT >::Register() {
     // Here, this initialization is thread-safe due to Meyer’s Singleton property
     static PartialInstantiationRegister4MultiDim container;
 
@@ -143,12 +143,12 @@ namespace gum {
   }
 
   // Default constructor: creates an empty register
-  template < typename GUM_SCALAR >
-  PartialInstantiationRegister4MultiDim< GUM_SCALAR >::PartialInstantiationRegister4MultiDim() {}
+  template < typename GUM_ELEMENT >
+  PartialInstantiationRegister4MultiDim< GUM_ELEMENT >::PartialInstantiationRegister4MultiDim() {}
 
   // destructor
-  template < typename GUM_SCALAR >
-  PartialInstantiationRegister4MultiDim< GUM_SCALAR >::~PartialInstantiationRegister4MultiDim() {
+  template < typename GUM_ELEMENT >
+  PartialInstantiationRegister4MultiDim< GUM_ELEMENT >::~PartialInstantiationRegister4MultiDim() {
     // remove all the sets
     for (typename HashTable< std::string, PartialInstantiationSet* >::iterator_safe iter
          = _set_.beginSafe();
@@ -159,15 +159,15 @@ namespace gum {
 
   // a function to more easily register new instantiation functions in
   // MultiDims
-  template < typename GUM_SCALAR >
+  template < typename GUM_ELEMENT >
   void registerPartialInstantiation(
       const std::string& instantiation_func_name,
       const std::string& type_multidim,
-      typename PartialInstantiationRegister4MultiDim< GUM_SCALAR >::PartialInstantiationPtr
+      typename PartialInstantiationRegister4MultiDim< GUM_ELEMENT >::PartialInstantiationPtr
           function) {
-    PartialInstantiationRegister4MultiDim< GUM_SCALAR >::Register().insert(instantiation_func_name,
-                                                                           type_multidim,
-                                                                           function);
+    PartialInstantiationRegister4MultiDim< GUM_ELEMENT >::Register().insert(instantiation_func_name,
+                                                                            type_multidim,
+                                                                            function);
   }
 
 } /* namespace gum */

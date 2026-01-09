@@ -50,7 +50,7 @@ namespace gum {
   /*
    * Default constructor.
    */
-  template < typename GUM_SCALAR >
+  template < GUM_Numeric GUM_SCALAR >
   INLINE UAIBNWriter< GUM_SCALAR >::UAIBNWriter() {
     GUM_CONSTRUCTOR(UAIBNWriter);
   }
@@ -58,7 +58,7 @@ namespace gum {
   /*
    * Destructor.
    */
-  template < typename GUM_SCALAR >
+  template < GUM_Numeric GUM_SCALAR >
   INLINE UAIBNWriter< GUM_SCALAR >::~UAIBNWriter() {
     GUM_DESTRUCTOR(UAIBNWriter);
   }
@@ -70,7 +70,7 @@ namespace gum {
    * @param bn The bayes net writen in the stream.
    * @throws IOError Raised if an I/O error occurs.
    */
-  template < typename GUM_SCALAR >
+  template < GUM_Numeric GUM_SCALAR >
   INLINE void UAIBNWriter< GUM_SCALAR >::_doWrite(std::ostream&                  output,
                                                   const IBayesNet< GUM_SCALAR >& bn) {
     if (!output.good()) { GUM_ERROR(IOError, "Input/Output error : stream not writable.") }
@@ -96,7 +96,7 @@ namespace gum {
    * @param bn The bayes net writen in the file.
    * @throw IOError Raised if an I/O error occurs.
    */
-  template < typename GUM_SCALAR >
+  template < GUM_Numeric GUM_SCALAR >
   INLINE void UAIBNWriter< GUM_SCALAR >::_doWrite(const std::string&             filePath,
                                                   const IBayesNet< GUM_SCALAR >& bn) {
     std::ofstream output(filePath.c_str(), std::ios_base::trunc);
@@ -107,7 +107,7 @@ namespace gum {
     if (output.fail()) { GUM_ERROR(IOError, "Writing in the ostream failed.") }
   }
 
-  template < typename GUM_SCALAR >
+  template < GUM_Numeric GUM_SCALAR >
   INLINE std::string UAIBNWriter< GUM_SCALAR >::_preambule_(const IBayesNet< GUM_SCALAR >& bn) {
     std::stringstream str;
 
@@ -143,7 +143,7 @@ namespace gum {
     return str.str();
   }
 
-  template < typename GUM_SCALAR >
+  template < GUM_Numeric GUM_SCALAR >
   INLINE std::string UAIBNWriter< GUM_SCALAR >::_cptBloc_(const IBayesNet< GUM_SCALAR >& bn,
                                                           NodeId                         node) {
     std::stringstream str;

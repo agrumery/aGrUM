@@ -63,42 +63,42 @@ namespace gum {
   // the result
 
 #  ifdef GUM_MULTI_DIM_PARTIAL_INSTANTIATION_NAME
-#    define GUM_MULTI_DIM_PARTIAL_INSTANTIATION_TYPE GUM_SCALAR
+#    define GUM_MULTI_DIM_PARTIAL_INSTANTIATION_TYPE GUM_ELEMENT
 
-  template < typename GUM_SCALAR >
-  MultiDimArray< GUM_SCALAR >* GUM_MULTI_DIM_PARTIAL_INSTANTIATION_NAME(
-      const MultiDimArray< GUM_SCALAR >*               table,
+  template < typename GUM_ELEMENT >
+  MultiDimArray< GUM_ELEMENT >* GUM_MULTI_DIM_PARTIAL_INSTANTIATION_NAME(
+      const MultiDimArray< GUM_ELEMENT >*               table,
       const HashTable< const DiscreteVariable*, Idx >& inst_vars)
 #  endif
 
   // clang-format off
 
 #ifdef GUM_MULTI_DIM_PARTIAL_INSTANTIATION_POINTER_NAME
-#define GUM_MULTI_DIM_PARTIAL_INSTANTIATION_TYPE GUM_SCALAR *
+#define GUM_MULTI_DIM_PARTIAL_INSTANTIATION_TYPE GUM_ELEMENT *
 #define GUM_MULTI_DIM_PARTIAL_INSTANTIATION_POINTER
-  template <typename GUM_SCALAR>
-  MultiDimArray<GUM_SCALAR*>*
+  template <typename GUM_ELEMENT>
+  MultiDimArray<GUM_ELEMENT*>*
   GUM_MULTI_DIM_PARTIAL_INSTANTIATION_POINTER_NAME(
-      const MultiDimArray<GUM_SCALAR*>* table,
+      const MultiDimArray<GUM_ELEMENT*>* table,
       const HashTable<const DiscreteVariable*, Idx>& inst_vars )
 #endif
 
 #ifdef GUM_MULTI_DIM_PARTIAL_INSTANTIATION_IMPL2ARRAY_NAME
-#define GUM_MULTI_DIM_PARTIAL_INSTANTIATION_TYPE GUM_SCALAR
-  template <typename GUM_SCALAR>
-  MultiDimImplementation<GUM_SCALAR>*
+#define GUM_MULTI_DIM_PARTIAL_INSTANTIATION_TYPE GUM_ELEMENT
+  template <typename GUM_ELEMENT>
+  MultiDimImplementation<GUM_ELEMENT>*
   GUM_MULTI_DIM_PARTIAL_INSTANTIATION_IMPL2ARRAY_NAME(
-      const MultiDimImplementation<GUM_SCALAR>* ttable,
+      const MultiDimImplementation<GUM_ELEMENT>* ttable,
       const HashTable<const DiscreteVariable*, Idx>& inst_vars )
 #endif
 
 #ifdef GUM_MULTI_DIM_PARTIAL_INSTANTIATION_POINTER_IMPL2ARRAY_NAME
-#define GUM_MULTI_DIM_PARTIAL_INSTANTIATION_TYPE GUM_SCALAR *
+#define GUM_MULTI_DIM_PARTIAL_INSTANTIATION_TYPE GUM_ELEMENT *
 #define GUM_MULTI_DIM_PARTIAL_INSTANTIATION_POINTER
-  template <typename GUM_SCALAR>
-  MultiDimImplementation<GUM_SCALAR*>*
+  template <typename GUM_ELEMENT>
+  MultiDimImplementation<GUM_ELEMENT*>*
   GUM_MULTI_DIM_PARTIAL_INSTANTIATION_POINTER_IMPL2ARRAY_NAME(
-      const MultiDimImplementation<GUM_SCALAR*>* ttable,
+      const MultiDimImplementation<GUM_ELEMENT*>* ttable,
       const HashTable<const DiscreteVariable*, Idx>& inst_vars )
 #endif
 
@@ -106,13 +106,13 @@ namespace gum {
 
   {
 #  ifdef GUM_MULTI_DIM_PARTIAL_INSTANTIATION_IMPL2ARRAY_NAME
-    const MultiDimArray< GUM_SCALAR >* table
-        = reinterpret_cast< const MultiDimArray< GUM_SCALAR >* >(ttable);
+    const MultiDimArray< GUM_ELEMENT >* table
+        = reinterpret_cast< const MultiDimArray< GUM_ELEMENT >* >(ttable);
 #  endif
 
 #  ifdef GUM_MULTI_DIM_PARTIAL_INSTANTIATION_POINTER_IMPL2ARRAY_NAME
-    const MultiDimArray< GUM_SCALAR* >* table
-        = reinterpret_cast< const MultiDimArray< GUM_SCALAR* >* >(ttable);
+    const MultiDimArray< GUM_ELEMENT* >* table
+        = reinterpret_cast< const MultiDimArray< GUM_ELEMENT* >* >(ttable);
 #  endif
     // get the variables of the uninstantiated table
     const Sequence< const DiscreteVariable* >& table_vars = table->variablesSequence();
@@ -189,10 +189,10 @@ namespace gum {
 #  ifdef GUM_MULTI_DIM_PARTIAL_INSTANTIATION_POINTER
     // fill the matrix with any element
     {
-      const GUM_SCALAR& any_element = *(table->unsafeGet(0));
+      const GUM_ELEMENT& any_element = *(table->unsafeGet(0));
 
       for (Idx i = 0; i < result_domain_size; ++i) {
-        result->unsafeSet(i, new GUM_SCALAR(any_element));
+        result->unsafeSet(i, new GUM_ELEMENT(any_element));
       }
     }
 #  endif /* GUM_MULTI_DIM_PARTIAL_INSTANTIATION_POINTER */

@@ -58,32 +58,32 @@
 
 namespace gum {
 
-  template < typename GUM_SCALAR,
+  template < typename GUM_ELEMENT,
              template < typename > class COMBINEOPERATOR,
              template < typename > class PROJECTOPERATOR,
              template < typename > class TerminalNodePolicy >
-  INLINE Regress< GUM_SCALAR, COMBINEOPERATOR, PROJECTOPERATOR, TerminalNodePolicy >::Regress(
-      const MultiDimFunctionGraph< GUM_SCALAR, TerminalNodePolicy >* DG1,
-      const MultiDimFunctionGraph< GUM_SCALAR, TerminalNodePolicy >* DG2,
+  INLINE Regress< GUM_ELEMENT, COMBINEOPERATOR, PROJECTOPERATOR, TerminalNodePolicy >::Regress(
+      const MultiDimFunctionGraph< GUM_ELEMENT, TerminalNodePolicy >* DG1,
+      const MultiDimFunctionGraph< GUM_ELEMENT, TerminalNodePolicy >* DG2,
       const gum::VariableSet*                                        primedVars,
       const DiscreteVariable*                                        targetVar,
-      const GUM_SCALAR                                               neutral) :
+      const GUM_ELEMENT                                               neutral) :
       _DG1_(DG1), _DG2_(DG2), _neutral_(neutral), _combine_(), _project_(),
       _DG1InstantiationNeeded_(DG1->realSize(), true, false),
       _DG2InstantiationNeeded_(DG2->realSize(), true, false) {
     GUM_CONSTRUCTOR(Regress);
-    _rd_ = MultiDimFunctionGraph< GUM_SCALAR, TerminalNodePolicy >::getReducedAndOrderedInstance();
+    _rd_ = MultiDimFunctionGraph< GUM_ELEMENT, TerminalNodePolicy >::getReducedAndOrderedInstance();
     _nbVar_      = 0;
     _default_    = nullptr;
     _primedVars_ = primedVars;
     _targetVar_  = targetVar;
   }
 
-  template < typename GUM_SCALAR,
+  template < typename GUM_ELEMENT,
              template < typename > class COMBINEOPERATOR,
              template < typename > class PROJECTOPERATOR,
              template < typename > class TerminalNodePolicy >
-  INLINE Regress< GUM_SCALAR, COMBINEOPERATOR, PROJECTOPERATOR, TerminalNodePolicy >::~Regress() {
+  INLINE Regress< GUM_ELEMENT, COMBINEOPERATOR, PROJECTOPERATOR, TerminalNodePolicy >::~Regress() {
     GUM_DESTRUCTOR(Regress);
 
     for (auto instIter = _DG1InstantiationNeeded_.beginSafe();
@@ -101,12 +101,12 @@ namespace gum {
 
   // This function is the main function. To be call every time an operation
   // between the two given Function Graphs is required
-  template < typename GUM_SCALAR,
+  template < typename GUM_ELEMENT,
              template < typename > class COMBINEOPERATOR,
              template < typename > class PROJECTOPERATOR,
              template < typename > class TerminalNodePolicy >
-  INLINE MultiDimFunctionGraph< GUM_SCALAR, TerminalNodePolicy >*
-         Regress< GUM_SCALAR, COMBINEOPERATOR, PROJECTOPERATOR, TerminalNodePolicy >::compute() {
+  INLINE MultiDimFunctionGraph< GUM_ELEMENT, TerminalNodePolicy >*
+         Regress< GUM_ELEMENT, COMBINEOPERATOR, PROJECTOPERATOR, TerminalNodePolicy >::compute() {
     _establishVarOrder_();
     _findRetrogradeVariables_(_DG1_, _DG1InstantiationNeeded_);
     _findRetrogradeVariables_(_DG2_, _DG2InstantiationNeeded_);
@@ -135,11 +135,11 @@ namespace gum {
   // This function computes an efficient order for the final decision diagrams.
   // Its main criterion to do so is the number of
   // re-exploration to be done
-  template < typename GUM_SCALAR,
+  template < typename GUM_ELEMENT,
              template < typename > class COMBINEOPERATOR,
              template < typename > class PROJECTOPERATOR,
              template < typename > class TerminalNodePolicy >
-  INLINE void Regress< GUM_SCALAR, COMBINEOPERATOR, PROJECTOPERATOR, TerminalNodePolicy >::
+  INLINE void Regress< GUM_ELEMENT, COMBINEOPERATOR, PROJECTOPERATOR, TerminalNodePolicy >::
       _establishVarOrder_() {
     SequenceIteratorSafe< const DiscreteVariable* > fite = _DG1_->variablesSequence().beginSafe();
     SequenceIteratorSafe< const DiscreteVariable* > site = _DG2_->variablesSequence().beginSafe();
@@ -215,12 +215,12 @@ namespace gum {
 
   // This function computes for every nodes if any retrograde variable is
   // present below
-  template < typename GUM_SCALAR,
+  template < typename GUM_ELEMENT,
              template < typename > class COMBINEOPERATOR,
              template < typename > class PROJECTOPERATOR,
              template < typename > class TerminalNodePolicy >
-  INLINE void Regress< GUM_SCALAR, COMBINEOPERATOR, PROJECTOPERATOR, TerminalNodePolicy >::
-      _findRetrogradeVariables_(const MultiDimFunctionGraph< GUM_SCALAR, TerminalNodePolicy >* dg,
+  INLINE void Regress< GUM_ELEMENT, COMBINEOPERATOR, PROJECTOPERATOR, TerminalNodePolicy >::
+      _findRetrogradeVariables_(const MultiDimFunctionGraph< GUM_ELEMENT, TerminalNodePolicy >* dg,
                                 HashTable< NodeId, short int* >& dgInstNeed) {
     HashTable< NodeId, short int* > nodesVarDescendant;
     Size                            tableSize = Size(_nbVar_ * sizeof(short int));
@@ -304,12 +304,12 @@ namespace gum {
   // Since GUM_MULTI_DIM_DECISION_DIAGRAM_RECUR_FUNCTION is a corner step in
   // algorithm ( meaning each time we explore a node we go trought
   // this function ), check only have to be at the beginning of that function.
-  template < typename GUM_SCALAR,
+  template < typename GUM_ELEMENT,
              template < typename > class COMBINEOPERATOR,
              template < typename > class PROJECTOPERATOR,
              template < typename > class TerminalNodePolicy >
   INLINE NodeId
-      Regress< GUM_SCALAR, COMBINEOPERATOR, PROJECTOPERATOR, TerminalNodePolicy >::_compute_(
+      Regress< GUM_ELEMENT, COMBINEOPERATOR, PROJECTOPERATOR, TerminalNodePolicy >::_compute_(
           O4DGContext& currentSituation,
           Idx          lastInstVarPos) {
     NodeId newNode = 0;
@@ -320,8 +320,8 @@ namespace gum {
         && _DG2_->isTerminalNode(currentSituation.DG2Node())) {
       // We have to compute new valueand we insert a new node in diagram with
       // this value, ...
-      GUM_SCALAR newVal  = _neutral_;
-      GUM_SCALAR tempVal = _combine_(_DG1_->nodeValue(currentSituation.DG1Node()),
+      GUM_ELEMENT newVal  = _neutral_;
+      GUM_ELEMENT tempVal = _combine_(_DG1_->nodeValue(currentSituation.DG1Node()),
                                      _DG2_->nodeValue(currentSituation.DG2Node()));
       for (Idx targetModa = 0; targetModa < _targetVar_->domainSize(); ++targetModa)
         newVal = _project_(newVal, tempVal);
@@ -366,7 +366,7 @@ namespace gum {
 
     NodeId origDG1 = currentSituation.DG1Node(), origDG2 = currentSituation.DG2Node();
 
-    const MultiDimFunctionGraph< GUM_SCALAR, TerminalNodePolicy >* leaddg     = nullptr;
+    const MultiDimFunctionGraph< GUM_ELEMENT, TerminalNodePolicy >* leaddg     = nullptr;
     NodeId                                                         leadNodeId = 0;
     Idx leadVarPos               = _rd_->variablesSequence().size();
     using SetNodeFunction        = void (O4DGContext::*)(const NodeId&);
@@ -456,7 +456,7 @@ namespace gum {
     // ====================================================
     // Terminal Exploration
     if (sameVar && _DG1_->node(origDG1)->nodeVar() == _targetVar_) {
-      GUM_SCALAR newVal = _neutral_;
+      GUM_ELEMENT newVal = _neutral_;
       for (Idx targetModa = 0; targetModa < _targetVar_->domainSize(); ++targetModa)
         newVal = _project_(newVal,
                            _combine_(_DG1_->nodeValue(_DG1_->node(origDG1)->son(targetModa)),
@@ -468,7 +468,7 @@ namespace gum {
     }
     if (_DG1_->isTerminalNode(origDG1)) {
       if (_DG2_->node(origDG2)->nodeVar() == _targetVar_) {
-        GUM_SCALAR newVal = _neutral_;
+        GUM_ELEMENT newVal = _neutral_;
         for (Idx targetModa = 0; targetModa < _targetVar_->domainSize(); ++targetModa)
           newVal = _project_(newVal,
                              _combine_(_DG1_->nodeValue(origDG1),
@@ -480,7 +480,7 @@ namespace gum {
       }
     } else {
       if (_DG1_->node(origDG1)->nodeVar() == _targetVar_ && _DG2_->isTerminalNode(origDG2)) {
-        GUM_SCALAR newVal = _neutral_;
+        GUM_ELEMENT newVal = _neutral_;
         for (Idx targetModa = 0; targetModa < _targetVar_->domainSize(); ++targetModa)
           newVal = _project_(newVal,
                              _combine_(_DG1_->nodeValue(_DG1_->node(origDG1)->son(targetModa)),

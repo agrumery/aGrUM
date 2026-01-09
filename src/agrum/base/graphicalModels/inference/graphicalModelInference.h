@@ -101,7 +101,7 @@ namespace gum {
    *   tensors we need.
    */
 
-  template < typename GUM_SCALAR >
+  template < GUM_Numeric GUM_SCALAR >
   class GraphicalModelInference {
     public:
     /**

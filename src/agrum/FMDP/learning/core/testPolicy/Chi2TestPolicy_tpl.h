@@ -63,9 +63,9 @@ namespace gum {
   // ==========================================================================
   //
   // ==========================================================================
-  template < typename GUM_SCALAR >
-  void Chi2TestPolicy< GUM_SCALAR >::addObservation(Idx iattr, GUM_SCALAR ivalue) {
-    ITestPolicy< GUM_SCALAR >::addObservation(iattr, ivalue);
+  template < typename GUM_ELEMENT >
+  void Chi2TestPolicy< GUM_ELEMENT >::addObservation(Idx iattr, GUM_ELEMENT ivalue) {
+    ITestPolicy< GUM_ELEMENT >::addObservation(iattr, ivalue);
     _conTab_.add(iattr, ivalue);
   }
 
@@ -76,9 +76,9 @@ namespace gum {
   // ============================================================================
   // Computes the GStat of current variable according to the test
   // ============================================================================
-  template < typename GUM_SCALAR >
-  void Chi2TestPolicy< GUM_SCALAR >::computeScore() const {
-    ITestPolicy< GUM_SCALAR >::computeScore();
+  template < typename GUM_ELEMENT >
+  void Chi2TestPolicy< GUM_ELEMENT >::computeScore() const {
+    ITestPolicy< GUM_ELEMENT >::computeScore();
     _chi2Score_ = 0;
     for (auto attrIter = _conTab_.attrABeginSafe(); attrIter != _conTab_.attrAEndSafe();
          ++attrIter) {
@@ -97,8 +97,8 @@ namespace gum {
   // ============================================================================
   // Returns the performance of current variable according to the test
   // ============================================================================
-  template < typename GUM_SCALAR >
-  double Chi2TestPolicy< GUM_SCALAR >::score() const {
+  template < typename GUM_ELEMENT >
+  double Chi2TestPolicy< GUM_ELEMENT >::score() const {
     if (this->isModified_()) computeScore();
     double score = 1
                  - ChiSquare::probaChi2(_chi2Score_,
@@ -109,15 +109,15 @@ namespace gum {
   // ============================================================================
   // Returns a second criterion to severe ties
   // ============================================================================
-  template < typename GUM_SCALAR >
-  double Chi2TestPolicy< GUM_SCALAR >::secondaryscore() const {
+  template < typename GUM_ELEMENT >
+  double Chi2TestPolicy< GUM_ELEMENT >::secondaryscore() const {
     if (this->isModified_()) computeScore();
     return _chi2Score_;
   }
 
-  template < typename GUM_SCALAR >
-  void Chi2TestPolicy< GUM_SCALAR >::add(const Chi2TestPolicy< GUM_SCALAR >& src) {
-    ITestPolicy< GUM_SCALAR >::add(src);
+  template < typename GUM_ELEMENT >
+  void Chi2TestPolicy< GUM_ELEMENT >::add(const Chi2TestPolicy< GUM_ELEMENT >& src) {
+    ITestPolicy< GUM_ELEMENT >::add(src);
     _conTab_ += src.ct();
   }
 

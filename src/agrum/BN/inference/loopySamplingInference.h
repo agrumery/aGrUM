@@ -72,7 +72,7 @@ namespace gum {
    *
    */
 
-  template < typename GUM_SCALAR, template < typename > class APPROX >
+  template < GUM_Numeric GUM_SCALAR, template < typename > class APPROX >
   class LoopySamplingInference: public APPROX< GUM_SCALAR > {
     public:
     /**
@@ -237,13 +237,13 @@ namespace gum {
 #  endif
 #endif
 
-  template < typename GUM_SCALAR >
+  template < GUM_Numeric GUM_SCALAR >
   using HybridMonteCarloSampling = LoopySamplingInference< GUM_SCALAR, MonteCarloSampling >;
-  template < typename GUM_SCALAR >
+  template < GUM_Numeric GUM_SCALAR >
   using HybridWeightedSampling = LoopySamplingInference< GUM_SCALAR, WeightedSampling >;
-  template < typename GUM_SCALAR >
+  template < GUM_Numeric GUM_SCALAR >
   using HybridImportanceSampling = LoopySamplingInference< GUM_SCALAR, ImportanceSampling >;
-  template < typename GUM_SCALAR >
+  template < GUM_Numeric GUM_SCALAR >
   using HybridGibbsSampling = LoopySamplingInference< GUM_SCALAR, GibbsSampling >;
 }   // namespace gum
 

@@ -50,7 +50,7 @@ namespace gum {
 
   // update a set of tensors, keeping only those d-connected with
   // query variables
-  template < typename GUM_SCALAR, class TABLE >
+  template < GUM_Numeric GUM_SCALAR, class TABLE >
   void BayesBall::relevantTensors(const IBayesNet< GUM_SCALAR >& bn,
                                   const NodeSet&                 query,
                                   const NodeSet&                 hardEvidence,

@@ -73,7 +73,7 @@ namespace gum {
    * This class export a bayes net into an text file, using O3PRM format
    *
    */
-  template < typename GUM_SCALAR >
+  template < GUM_Numeric GUM_SCALAR >
   class O3prmBNWriter: public BNWriter< GUM_SCALAR > {
     public:
     // ==========================================================================

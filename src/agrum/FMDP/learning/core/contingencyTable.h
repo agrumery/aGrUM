@@ -67,7 +67,7 @@ namespace gum {
    *
    */
 
-  template < typename GUM_SCALAR_A, typename GUM_SCALAR_B >
+  template < typename GUM_ELEMENT_A, typename GUM_ELEMENT_B >
   class ContingencyTable {
     public:
     // ##########################################################################
@@ -104,49 +104,49 @@ namespace gum {
 
     /// Increments the number of sample for case( iattr, ivalue )
 
-    void add(GUM_SCALAR_A valueA, GUM_SCALAR_B valueB);
+    void add(GUM_ELEMENT_A valueA, GUM_ELEMENT_B valueB);
 
     /// Returns the number of samples for case (iattr, ivalue)
 
-    Idx joint(GUM_SCALAR_A valueA, GUM_SCALAR_B valueB) const {
-      return _jointTable_.exists(std::pair< GUM_SCALAR_A, GUM_SCALAR_B >(valueA, valueB))
-               ? _jointTable_[std::pair< GUM_SCALAR_A, GUM_SCALAR_B >(valueA, valueB)]
+    Idx joint(GUM_ELEMENT_A valueA, GUM_ELEMENT_B valueB) const {
+      return _jointTable_.exists(std::pair< GUM_ELEMENT_A, GUM_ELEMENT_B >(valueA, valueB))
+               ? _jointTable_[std::pair< GUM_ELEMENT_A, GUM_ELEMENT_B >(valueA, valueB)]
                : 0;
     }
 
     /// Returns the number of samples for case (iattr, ivalue)
 
-    Idx attrAMarginal(GUM_SCALAR_A valueA) const {
+    Idx attrAMarginal(GUM_ELEMENT_A valueA) const {
       return _attrAMarginalTable_.exists(valueA) ? _attrAMarginalTable_[valueA] : 0;
     }
 
     /// Returns the number of samples for case (iattr, ivalue)
 
-    Idx attrBMarginal(GUM_SCALAR_B valueB) const {
+    Idx attrBMarginal(GUM_ELEMENT_B valueB) const {
       return _attrAMarginalTable_.exists(valueB) ? _attrAMarginalTable_[valueB] : 0;
     }
 
     /// Returns the number of samples for line iattr
 
-    //        Idx aMarginal( GUM_SCALAR_A iattr ) { return
+    //        Idx aMarginal( GUM_ELEMENT_A iattr ) { return
     //         _attrMarginalTable_[iattr]; }
-    HashTableConstIteratorSafe< GUM_SCALAR_A, Idx > attrABeginSafe() const {
+    HashTableConstIteratorSafe< GUM_ELEMENT_A, Idx > attrABeginSafe() const {
       return _attrAMarginalTable_.cbeginSafe();
     }
 
-    HashTableConstIteratorSafe< GUM_SCALAR_A, Idx > attrAEndSafe() const {
+    HashTableConstIteratorSafe< GUM_ELEMENT_A, Idx > attrAEndSafe() const {
       return _attrAMarginalTable_.cendSafe();
     }
 
     /// Returns the number of samples for column ivalue
 
-    //        Idx vMarginal( GUM_SCALAR_B ivalue ) { return
+    //        Idx vMarginal( GUM_ELEMENT_B ivalue ) { return
     //         _valueMarginalTable_[ivalue]; }
-    HashTableConstIteratorSafe< GUM_SCALAR_B, Idx > attrBBeginSafe() const {
+    HashTableConstIteratorSafe< GUM_ELEMENT_B, Idx > attrBBeginSafe() const {
       return _attrBMarginalTable_.cbeginSafe();
     }
 
-    HashTableConstIteratorSafe< GUM_SCALAR_B, Idx > attrBEndSafe() const {
+    HashTableConstIteratorSafe< GUM_ELEMENT_B, Idx > attrBEndSafe() const {
       return _attrBMarginalTable_.cendSafe();
     }
 
@@ -160,8 +160,8 @@ namespace gum {
 
     /// @}
 
-    ContingencyTable< GUM_SCALAR_A, GUM_SCALAR_B >&
-        operator+=(const ContingencyTable< GUM_SCALAR_A, GUM_SCALAR_B >& src);
+    ContingencyTable< GUM_ELEMENT_A, GUM_ELEMENT_B >&
+        operator+=(const ContingencyTable< GUM_ELEMENT_A, GUM_ELEMENT_B >& src);
 
     std::string toString() const {
       std::stringstream ss;
@@ -181,9 +181,9 @@ namespace gum {
      * If someone ever use this class and has time to correctly implements
      * a efficient contingency table, you're welcome
      */
-    HashTable< std::pair< GUM_SCALAR_A, GUM_SCALAR_B >, Idx > _jointTable_;
-    HashTable< GUM_SCALAR_A, Idx >                            _attrAMarginalTable_;
-    HashTable< GUM_SCALAR_B, Idx >                            _attrBMarginalTable_;
+    HashTable< std::pair< GUM_ELEMENT_A, GUM_ELEMENT_B >, Idx > _jointTable_;
+    HashTable< GUM_ELEMENT_A, Idx >                            _attrAMarginalTable_;
+    HashTable< GUM_ELEMENT_B, Idx >                            _attrBMarginalTable_;
   };
 
 } /* namespace gum */

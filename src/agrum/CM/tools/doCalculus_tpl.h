@@ -83,7 +83,7 @@ namespace gum {
   /*                              Backdoor / Frontdoor                          */
   /* ========================================================================== */
 
-  template < typename GUM_SCALAR >
+  template < GUM_Numeric GUM_SCALAR >
   typename DoCalculus< GUM_SCALAR >::FormulaPtr
       DoCalculus< GUM_SCALAR >::getBackDoorTree(NodeId         cause,
                                                 NodeId         effect,
@@ -141,7 +141,7 @@ namespace gum {
     return std::make_unique< ASTsum< GUM_SCALAR > >(zOrder, std::move(prod));
   }
 
-  template < typename GUM_SCALAR >
+  template < GUM_Numeric GUM_SCALAR >
   typename DoCalculus< GUM_SCALAR >::FormulaPtr
       DoCalculus< GUM_SCALAR >::getBackDoorTree(const std::string& causeName,
                                                 const std::string& effectName,
@@ -156,7 +156,7 @@ namespace gum {
     return getBackDoorTree(x, y, Z);
   }
 
-  template < typename GUM_SCALAR >
+  template < GUM_Numeric GUM_SCALAR >
   typename DoCalculus< GUM_SCALAR >::FormulaPtr
       DoCalculus< GUM_SCALAR >::getFrontDoorTree(NodeId         cause,
                                                  NodeId         effect,
@@ -224,7 +224,7 @@ namespace gum {
     return std::make_unique< ASTsum< GUM_SCALAR > >(zOrder, std::move(outer_prod));
   }
 
-  template < typename GUM_SCALAR >
+  template < GUM_Numeric GUM_SCALAR >
   typename DoCalculus< GUM_SCALAR >::FormulaPtr
       DoCalculus< GUM_SCALAR >::getFrontDoorTree(const std::string& causeName,
                                                  const std::string& effectName,
@@ -243,7 +243,7 @@ namespace gum {
   /*                               Helper utilities                             */
   /* ========================================================================== */
 
-  template < typename GUM_SCALAR >
+  template < GUM_Numeric GUM_SCALAR >
   std::string DoCalculus< GUM_SCALAR >::_hedgeExceptionMsg(const CausalModel< GUM_SCALAR >& cm,
                                                            const NodeSet&                   Y,
                                                            const NodeSet&                   X,
@@ -276,7 +276,7 @@ namespace gum {
     return msg.str();
   }
 
-  template < typename GUM_SCALAR >
+  template < GUM_Numeric GUM_SCALAR >
   std::vector< NodeSet >
       DoCalculus< GUM_SCALAR >::_cDecomposition_(const CausalModel< GUM_SCALAR >& cm) const {
     // c-components: undirected connectivity among observed children of the same latent.
@@ -329,13 +329,13 @@ namespace gum {
     return comps;
   }
 
-  template < typename GUM_SCALAR >
+  template < GUM_Numeric GUM_SCALAR >
   std::vector< NodeSet >
       DoCalculus< GUM_SCALAR >::_cDecompositionOn_(const CausalModel< GUM_SCALAR >& sub) const {
     return _cDecomposition_(sub);
   }
 
-  template < typename GUM_SCALAR >
+  template < GUM_Numeric GUM_SCALAR >
   std::vector< NodeId >
       DoCalculus< GUM_SCALAR >::_topoObserved_(const CausalModel< GUM_SCALAR >& cm) const {
     const NodeSet lat = cm.latentVariablesIds();
@@ -373,7 +373,7 @@ namespace gum {
     return order;
   }
 
-  template < typename GUM_SCALAR >
+  template < GUM_Numeric GUM_SCALAR >
   NodeSet DoCalculus< GUM_SCALAR >::_ancestorsIn_(const DAG& g, const NodeSet& T) {
     NodeSet res = T * g.nodes().asNodeSet();   // keep only nodes that actually exist in g
 
@@ -394,7 +394,7 @@ namespace gum {
     return res;
   }
 
-  template < typename GUM_SCALAR >
+  template < GUM_Numeric GUM_SCALAR >
   DAG DoCalculus< GUM_SCALAR >::_removeIncomingInto_(const DAG& dag, const NodeSet& X) {
     DAG g = dag;                // copy
     for (auto x: X) {
@@ -405,7 +405,7 @@ namespace gum {
     return g;
   }
 
-  template < typename GUM_SCALAR >
+  template < GUM_Numeric GUM_SCALAR >
   DAG DoCalculus< GUM_SCALAR >::_removeInIntoDoing_outOfKnowing_(const DAG&     dag,
                                                                  const NodeSet& doing,
                                                                  const NodeSet& knowing) {
@@ -427,13 +427,13 @@ namespace gum {
   /*                             General identification                         */
   /* ========================================================================== */
 
-  template < typename GUM_SCALAR >
+  template < GUM_Numeric GUM_SCALAR >
   typename DoCalculus< GUM_SCALAR >::FormulaPtr
       DoCalculus< GUM_SCALAR >::identifyingIntervention(const NodeSet& Y, const NodeSet& X) const {
     return _ID_(_cm, Y, X, nullptr);
   }
 
-  template < typename GUM_SCALAR >
+  template < GUM_Numeric GUM_SCALAR >
   typename DoCalculus< GUM_SCALAR >::FormulaPtr
       DoCalculus< GUM_SCALAR >::identifyingIntervention(const NameList& Y,
                                                         const NameList& X) const {
@@ -445,19 +445,19 @@ namespace gum {
     return identifyingIntervention(YY, XX);
   }
 
-  template < typename GUM_SCALAR >
+  template < GUM_Numeric GUM_SCALAR >
   typename DoCalculus< GUM_SCALAR >::FormulaPtr
       DoCalculus< GUM_SCALAR >::doCalculus(const NodeSet& on, const NodeSet& doing) const {
     return identifyingIntervention(on, doing);
   }
 
-  template < typename GUM_SCALAR >
+  template < GUM_Numeric GUM_SCALAR >
   typename DoCalculus< GUM_SCALAR >::FormulaPtr
       DoCalculus< GUM_SCALAR >::doCalculus(const NameList& on, const NameList& doing) const {
     return identifyingIntervention(on, doing);
   }
 
-  template < typename GUM_SCALAR >
+  template < GUM_Numeric GUM_SCALAR >
   typename DoCalculus< GUM_SCALAR >::FormulaPtr
       DoCalculus< GUM_SCALAR >::doCalculusWithObservation(const NodeSet& on,
                                                           const NodeSet& doing,
@@ -503,7 +503,7 @@ namespace gum {
     return std::make_unique< ASTdiv< GUM_SCALAR > >(std::move(num), std::move(den));
   }
 
-  template < typename GUM_SCALAR >
+  template < GUM_Numeric GUM_SCALAR >
   typename DoCalculus< GUM_SCALAR >::FormulaPtr
       DoCalculus< GUM_SCALAR >::doCalculusWithObservation(const NameList& on,
                                                           const NameList& doing,
@@ -522,7 +522,7 @@ namespace gum {
   /*                                  ID core                                   */
   /* ========================================================================== */
 
-  template < typename GUM_SCALAR >
+  template < GUM_Numeric GUM_SCALAR >
   typename DoCalculus< GUM_SCALAR >::FormulaPtr
       DoCalculus< GUM_SCALAR >::_ID_(const CausalModel< GUM_SCALAR >&         cm,
                                      const NodeSet&                           Y,

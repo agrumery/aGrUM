@@ -82,7 +82,7 @@ namespace gum {
    *case, KL
    *keeps working but trace this error (errorPQ() and errorQP())?
    */
-  template < typename GUM_SCALAR >
+  template < GUM_Numeric GUM_SCALAR >
   class BNdistance {
 // difficulty is chosen w.r.t the log10DomainSize of the BN
 #define GAP_COMPLEXITY_KL_HEAVY_DIFFICULT   double(12.0)

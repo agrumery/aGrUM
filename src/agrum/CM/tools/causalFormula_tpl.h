@@ -54,7 +54,7 @@ namespace gum {
 
   // ---------- helpers ----------
 
-  template < typename GUM_SCALAR >
+  template < GUM_Numeric GUM_SCALAR >
   NodeSet CausalFormula< GUM_SCALAR >::_toNodeSetFromNames_(const CausalModel< GUM_SCALAR >& cm,
                                                             const NameSet& names) {
     NodeSet     ids;
@@ -65,7 +65,7 @@ namespace gum {
     return ids;
   }
 
-  template < typename GUM_SCALAR >
+  template < GUM_Numeric GUM_SCALAR >
   void CausalFormula< GUM_SCALAR >::_ensureVariablesExist() const {
     const auto& bn = _cm.observationalBN();
     // Touch the variable object to ensure validity (throws NotFound if invalid)
@@ -77,7 +77,7 @@ namespace gum {
       (void)bn.variable(id);
   }
 
-  template < typename GUM_SCALAR >
+  template < GUM_Numeric GUM_SCALAR >
   void CausalFormula< GUM_SCALAR >::_ensureNoVariablesOverlap() const {
     // Ensure pairwise disjointness: on ∩ doing = ∅, on ∩ knowing = ∅, doing ∩ knowing = ∅
     for (const auto& id: _on) {
@@ -94,7 +94,7 @@ namespace gum {
 
   // ---------- constructors ----------
 
-  template < typename GUM_SCALAR >
+  template < GUM_Numeric GUM_SCALAR >
   CausalFormula< GUM_SCALAR >::CausalFormula(const CausalModel< GUM_SCALAR >&         cm,
                                              std::unique_ptr< ASTtree< GUM_SCALAR > > root,
                                              const NameSet&                           on,
@@ -108,7 +108,7 @@ namespace gum {
     _ensureNoVariablesOverlap();
   }
 
-  template < typename GUM_SCALAR >
+  template < GUM_Numeric GUM_SCALAR >
   CausalFormula< GUM_SCALAR >::CausalFormula(const CausalModel< GUM_SCALAR >&         cm,
                                              std::unique_ptr< ASTtree< GUM_SCALAR > > root,
                                              const NodeSet&                           on,
@@ -124,18 +124,18 @@ namespace gum {
   // ---------- core API ----------
 
   // causalFormula_tpl.h (or inline in the header)
-  template < typename GUM_SCALAR >
+  template < GUM_Numeric GUM_SCALAR >
   inline bool CausalFormula< GUM_SCALAR >::isIdentified() const noexcept {
     return static_cast< bool >(_root);
   }
 
-  template < typename GUM_SCALAR >
+  template < GUM_Numeric GUM_SCALAR >
   inline const ASTtree< GUM_SCALAR >& CausalFormula< GUM_SCALAR >::root() const {
     if (!_root) GUM_ERROR(OperationNotAllowed, "No AST: effect not identified.");
     return *_root;
   }
 
-  template < typename GUM_SCALAR >
+  template < GUM_Numeric GUM_SCALAR >
   Tensor< GUM_SCALAR > CausalFormula< GUM_SCALAR >::eval() const {
     if (!_root) {
       GUM_ERROR(gum::OperationNotAllowed,
@@ -144,13 +144,13 @@ namespace gum {
     return _root->eval(_cm.observationalBN());
   }
 
-  template < typename GUM_SCALAR >
+  template < GUM_Numeric GUM_SCALAR >
   std::string CausalFormula< GUM_SCALAR >::toString() const {
     if (!_root) return "[unidentifiable] " + _explanation;
     return _root->toString();
   }
 
-  template < typename GUM_SCALAR >
+  template < GUM_Numeric GUM_SCALAR >
   std::string CausalFormula< GUM_SCALAR >::toLatex(const std::string& doOperatorPrefix,
                                                    const std::string& doOperatorSuffix) const {
     // Track variable name occurrences for prime management in AST LaTeX
@@ -171,7 +171,7 @@ namespace gum {
     return latexQuery(doOperatorPrefix, doOperatorSuffix) + " = " + _root->toLatex(nameOccur);
   }
 
-  template < typename GUM_SCALAR >
+  template < GUM_Numeric GUM_SCALAR >
   std::string CausalFormula< GUM_SCALAR >::latexQuery(const std::string& doOperatorPrefix,
                                                       const std::string& doOperatorSuffix) const {
     const auto& bn = _cm.observationalBN();
@@ -219,7 +219,7 @@ namespace gum {
     return ss.str();
   }
 
-  template < typename GUM_SCALAR >
+  template < GUM_Numeric GUM_SCALAR >
   std::unique_ptr< CausalFormula< GUM_SCALAR > > CausalFormula< GUM_SCALAR >::copy() const {
     return std::make_unique< CausalFormula< GUM_SCALAR > >(_cm,
                                                            _root->copy(),
@@ -230,7 +230,7 @@ namespace gum {
 
   // ---------- convenience name accessors ----------
 
-  template < typename GUM_SCALAR >
+  template < GUM_Numeric GUM_SCALAR >
   std::vector< std::string > CausalFormula< GUM_SCALAR >::onNames() const {
     const auto&                bn = _cm.observationalBN();
     std::vector< std::string > out;
@@ -241,7 +241,7 @@ namespace gum {
     return out;
   }
 
-  template < typename GUM_SCALAR >
+  template < GUM_Numeric GUM_SCALAR >
   std::vector< std::string > CausalFormula< GUM_SCALAR >::doingNames() const {
     const auto&                bn = _cm.observationalBN();
     std::vector< std::string > out;
@@ -252,7 +252,7 @@ namespace gum {
     return out;
   }
 
-  template < typename GUM_SCALAR >
+  template < GUM_Numeric GUM_SCALAR >
   std::vector< std::string > CausalFormula< GUM_SCALAR >::knowingNames() const {
     const auto&                bn = _cm.observationalBN();
     std::vector< std::string > out;

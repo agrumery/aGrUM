@@ -340,7 +340,7 @@
 namespace gum {
 
   // the function used to register all the above functions
-  template < typename GUM_SCALAR >
+  template < typename GUM_ELEMENT >
   void operators4MultiDimInit() {
     // ensure that only one thread will register the projections
     static std::once_flag first;
@@ -350,63 +350,63 @@ namespace gum {
       std::string BaseNameString("MultiDimImplementation");
 
       // register base functions for multiDimArrays
-      registerOperator< GUM_SCALAR >("+",
-                                     MultiDimArrayString,
-                                     MultiDimArrayString,
-                                     &add2MultiDimArrays);
-      registerOperator< GUM_SCALAR >("-",
-                                     MultiDimArrayString,
-                                     MultiDimArrayString,
-                                     &subtract2MultiDimArrays);
-      registerOperator< GUM_SCALAR >("*",
-                                     MultiDimArrayString,
-                                     MultiDimArrayString,
-                                     &multiply2MultiDimArrays);
-      registerOperator< GUM_SCALAR >("/",
-                                     MultiDimArrayString,
-                                     MultiDimArrayString,
-                                     &divide2MultiDimArrays);
+      registerOperator< GUM_ELEMENT >("+",
+                                      MultiDimArrayString,
+                                      MultiDimArrayString,
+                                      &add2MultiDimArrays);
+      registerOperator< GUM_ELEMENT >("-",
+                                      MultiDimArrayString,
+                                      MultiDimArrayString,
+                                      &subtract2MultiDimArrays);
+      registerOperator< GUM_ELEMENT >("*",
+                                      MultiDimArrayString,
+                                      MultiDimArrayString,
+                                      &multiply2MultiDimArrays);
+      registerOperator< GUM_ELEMENT >("/",
+                                      MultiDimArrayString,
+                                      MultiDimArrayString,
+                                      &divide2MultiDimArrays);
 
       // register base functions for multiDimFunctionGraphs
-      registerOperator< GUM_SCALAR >("+",
-                                     MultiDimFunctionGraphString,
-                                     MultiDimFunctionGraphString,
-                                     &add2MultiDimFunctionGraphs);
-      registerOperator< GUM_SCALAR >("-",
-                                     MultiDimFunctionGraphString,
-                                     MultiDimFunctionGraphString,
-                                     &subtract2MultiDimFunctionGraphs);
-      registerOperator< GUM_SCALAR >("*",
-                                     MultiDimFunctionGraphString,
-                                     MultiDimFunctionGraphString,
-                                     &multiply2MultiDimFunctionGraphs);
-      registerOperator< GUM_SCALAR >("/",
-                                     MultiDimFunctionGraphString,
-                                     MultiDimFunctionGraphString,
-                                     &divide2MultiDimFunctionGraphs);
+      registerOperator< GUM_ELEMENT >("+",
+                                      MultiDimFunctionGraphString,
+                                      MultiDimFunctionGraphString,
+                                      &add2MultiDimFunctionGraphs);
+      registerOperator< GUM_ELEMENT >("-",
+                                      MultiDimFunctionGraphString,
+                                      MultiDimFunctionGraphString,
+                                      &subtract2MultiDimFunctionGraphs);
+      registerOperator< GUM_ELEMENT >("*",
+                                      MultiDimFunctionGraphString,
+                                      MultiDimFunctionGraphString,
+                                      &multiply2MultiDimFunctionGraphs);
+      registerOperator< GUM_ELEMENT >("/",
+                                      MultiDimFunctionGraphString,
+                                      MultiDimFunctionGraphString,
+                                      &divide2MultiDimFunctionGraphs);
 
       // register default basename functions
-      registerOperator< GUM_SCALAR >("+",
-                                     BaseNameString,
-                                     BaseNameString,
-                                     &add2MultiDimImplementations);
-      registerOperator< GUM_SCALAR >("-",
-                                     BaseNameString,
-                                     BaseNameString,
-                                     &subtract2MultiDimImplementations);
-      registerOperator< GUM_SCALAR >("*",
-                                     BaseNameString,
-                                     BaseNameString,
-                                     &multiply2MultiDimImplementations);
-      registerOperator< GUM_SCALAR >("/",
-                                     BaseNameString,
-                                     BaseNameString,
-                                     &divide2MultiDimImplementations);
+      registerOperator< GUM_ELEMENT >("+",
+                                      BaseNameString,
+                                      BaseNameString,
+                                      &add2MultiDimImplementations);
+      registerOperator< GUM_ELEMENT >("-",
+                                      BaseNameString,
+                                      BaseNameString,
+                                      &subtract2MultiDimImplementations);
+      registerOperator< GUM_ELEMENT >("*",
+                                      BaseNameString,
+                                      BaseNameString,
+                                      &multiply2MultiDimImplementations);
+      registerOperator< GUM_ELEMENT >("/",
+                                      BaseNameString,
+                                      BaseNameString,
+                                      &divide2MultiDimImplementations);
     });
   }
 
   // the function used to register all the above functions
-  template < typename GUM_SCALAR >
+  template < typename GUM_ELEMENT >
   void pointerOperators4MultiDimInit() {
     // ensure that only one thread will register the projections
     static std::once_flag first;
@@ -415,22 +415,22 @@ namespace gum {
       std::string BaseNameString("MultiDimImplementation");
 
       // register base functions for multiDimArrays
-      registerOperator< GUM_SCALAR* >("+",
-                                      MultiDimArrayString,
-                                      MultiDimArrayString,
-                                      &add2MultiDimArrays4Pointers);
-      registerOperator< GUM_SCALAR* >("-",
-                                      MultiDimArrayString,
-                                      MultiDimArrayString,
-                                      &subtract2MultiDimArrays4Pointers);
-      registerOperator< GUM_SCALAR* >("*",
-                                      MultiDimArrayString,
-                                      MultiDimArrayString,
-                                      &multiply2MultiDimArrays4Pointers);
-      registerOperator< GUM_SCALAR* >("/",
-                                      MultiDimArrayString,
-                                      MultiDimArrayString,
-                                      &divide2MultiDimArrays4Pointers);
+      registerOperator< GUM_ELEMENT* >("+",
+                                       MultiDimArrayString,
+                                       MultiDimArrayString,
+                                       &add2MultiDimArrays4Pointers);
+      registerOperator< GUM_ELEMENT* >("-",
+                                       MultiDimArrayString,
+                                       MultiDimArrayString,
+                                       &subtract2MultiDimArrays4Pointers);
+      registerOperator< GUM_ELEMENT* >("*",
+                                       MultiDimArrayString,
+                                       MultiDimArrayString,
+                                       &multiply2MultiDimArrays4Pointers);
+      registerOperator< GUM_ELEMENT* >("/",
+                                       MultiDimArrayString,
+                                       MultiDimArrayString,
+                                       &divide2MultiDimArrays4Pointers);
     });
   }
 

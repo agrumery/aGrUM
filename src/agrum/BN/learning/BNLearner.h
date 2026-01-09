@@ -70,7 +70,7 @@ namespace gum {
      * LocalSearchWithTabuList
      * @ingroup learning_group
      */
-    template < typename GUM_SCALAR >
+    template < GUM_Numeric GUM_SCALAR >
     class BNLearner final: public IBNLearner {
       public:
       // ##########################################################################
@@ -819,7 +819,7 @@ namespace gum {
     };
 
     /// Prints BNLearner's current features
-    template < typename GUM_SCALAR >
+    template < GUM_Numeric GUM_SCALAR >
     std::ostream& operator<<(std::ostream& output, const BNLearner< GUM_SCALAR >& learner);
   } /* namespace learning */
 } /* namespace gum */

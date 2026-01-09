@@ -651,7 +651,7 @@ namespace gum {
    * multidimImplementations over non-pointers types.
    * @ingroup multidim_op_group
    */
-  template < typename GUM_SCALAR >
+  template < typename GUM_ELEMENT >
   void operators4MultiDimInit();
 
   /**
@@ -659,7 +659,7 @@ namespace gum {
    * multidimImplementations over pointers types.
    * @ingroup multidim_op_group
    */
-  template < typename GUM_SCALAR >
+  template < typename GUM_ELEMENT >
   void pointerOperators4MultiDimInit();
 
   /**
@@ -676,9 +676,9 @@ namespace gum {
    * partial specialization. This is most effective to produce different codes
    * for pointer types and non-pointer types.
    */
-  template < typename GUM_SCALAR >
+  template < typename GUM_ELEMENT >
   struct Operators4MultiDimInitialize {
-    void init() { operators4MultiDimInit< GUM_SCALAR >(); };
+    void init() { operators4MultiDimInit< GUM_ELEMENT >(); };
   };
 
   /**
@@ -696,9 +696,9 @@ namespace gum {
    * pointerOperators4MultiDimInit, we allow this partial specialization to
    * obtain.
    */
-  template < typename GUM_SCALAR >
-  struct Operators4MultiDimInitialize< GUM_SCALAR* > {
-    void init() { pointerOperators4MultiDimInit< GUM_SCALAR >(); };
+  template < typename GUM_ELEMENT >
+  struct Operators4MultiDimInitialize< GUM_ELEMENT* > {
+    void init() { pointerOperators4MultiDimInit< GUM_ELEMENT >(); };
   };
 
   /// @}

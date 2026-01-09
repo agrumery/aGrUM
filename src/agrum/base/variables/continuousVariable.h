@@ -63,7 +63,7 @@ namespace gum {
    * @class ContinuousVariable
    * @brief Defines a continuous random variable.
    */
-  template < typename GUM_SCALAR = float >
+  template < GUM_Numeric GUM_SCALAR = float >
   class ContinuousVariable: public IContinuousVariable {
     public:
     // ##########################################################################
@@ -203,7 +203,7 @@ namespace gum {
     // the upper bound.
     GUM_SCALAR _upper_bound_;
 
-    template < typename TX_VAL >
+    template < GUM_Numeric TX_VAL >
     friend class ContinuousVariable;
   };
 

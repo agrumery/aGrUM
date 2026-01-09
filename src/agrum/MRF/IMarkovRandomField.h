@@ -57,7 +57,7 @@
 #include <agrum/base/multidim/tensor.h>
 
 namespace gum {
-  template < typename GUM_SCALAR >
+  template < GUM_Numeric GUM_SCALAR >
   using FactorTable = HashTable< NodeSet, const Tensor< GUM_SCALAR >* >;
 
   /**
@@ -71,7 +71,7 @@ namespace gum {
    *algorithms (inference for instance) may use this class when a simple MRF is
    *needed.
    */
-  template < typename GUM_SCALAR >
+  template < GUM_Numeric GUM_SCALAR >
   class IMarkovRandomField: public UGmodel {
     public:
     // ===========================================================================
@@ -259,7 +259,7 @@ namespace gum {
 
 
   /// Prints map's graph in output using the Graphviz-dot format.
-  template < typename GUM_SCALAR >
+  template < GUM_Numeric GUM_SCALAR >
   std::ostream& operator<<(std::ostream& output, const IMarkovRandomField< GUM_SCALAR >& mn);
 
 } /* namespace gum */

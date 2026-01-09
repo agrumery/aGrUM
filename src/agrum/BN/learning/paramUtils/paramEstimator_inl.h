@@ -63,7 +63,7 @@ namespace gum {
     }
 
     /// move constructor
-    INLINE ParamEstimator::ParamEstimator(ParamEstimator&& from) :
+    INLINE ParamEstimator::ParamEstimator(ParamEstimator&& from) noexcept :
         external_prior_(from.external_prior_), score_internal_prior_(from.score_internal_prior_),
         counter_(std::move(from.counter_)) {
       from.external_prior_       = nullptr;

@@ -117,7 +117,7 @@ namespace gum {
    * for information about this format.
    *
    */
-  template < typename GUM_SCALAR >
+  template < GUM_Numeric GUM_SCALAR >
   class BIFXMLIDReader: IDReader< GUM_SCALAR > {
     public:
     /**

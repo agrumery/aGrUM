@@ -56,9 +56,9 @@ namespace gum {
   using VariableValueName = std::string;
   using VariableValueId   = Idx;
 
-  template < typename GUM_SCALAR >
+  template < GUM_Numeric GUM_SCALAR >
   class CausalImpact;
-  template < typename GUM_SCALAR >
+  template < GUM_Numeric GUM_SCALAR >
   class Tensor;
 
   /**
@@ -66,7 +66,7 @@ namespace gum {
    * Returns: (symbolic CausalFormula, numeric Tensor, explanation string).
    * If not identifiable, the formula carries a null AST and the tensor is empty.
    */
-  template < typename GUM_SCALAR >
+  template < GUM_Numeric GUM_SCALAR >
   std::tuple< CausalImpact< GUM_SCALAR >, Tensor< GUM_SCALAR >, std::string >
       causalImpact(const CausalModel< GUM_SCALAR >&                    cm,
                    const NameSet&                                      on,
@@ -83,7 +83,7 @@ namespace gum {
    * With your CausalFormula’s API (no default ctor, non-assignable), we compute the
    * AST first and initialize `result` in the initializer list (single shot).
    */
-  template < typename GUM_SCALAR >
+  template < GUM_Numeric GUM_SCALAR >
   class CausalImpact {
     public:
     // --- Forwarded accessors for wrapping ---
@@ -233,7 +233,7 @@ namespace gum {
    * @throws NotFound If a variable name in @p values is not a dimension of @p tensor.
    * @throws NotFound If a label in @p values is not in the corresponding variable’s domain.
    */
-  template < typename GUM_SCALAR >
+  template < GUM_Numeric GUM_SCALAR >
   inline Instantiation
       makeInstantiationFromValues(const Tensor< GUM_SCALAR >&                  tensor,
                                   const HashTable< std::string, std::string >& values);

@@ -55,7 +55,7 @@
 
 namespace gum {
 
-  template < typename GUM_SCALAR >
+  template < GUM_Numeric GUM_SCALAR >
   GibbsOperator< GUM_SCALAR >::GibbsOperator(const IBayesNet< GUM_SCALAR >& BN,
                                              const NodeProperty< Idx >*     hardEv,
                                              Size                           nbr,
@@ -64,12 +64,12 @@ namespace gum {
     GUM_CONSTRUCTOR(GibbsOperator);
   }
 
-  template < typename GUM_SCALAR >
+  template < GUM_Numeric GUM_SCALAR >
   GibbsOperator< GUM_SCALAR >::~GibbsOperator() {
     GUM_DESTRUCTOR(GibbsOperator);
   }
 
-  template < typename GUM_SCALAR >
+  template < GUM_Numeric GUM_SCALAR >
   void GibbsOperator< GUM_SCALAR >::updateSamplingNodes_() {
     samplingNodes_.clear();
     for (const auto node: samplingBn_.nodes())
@@ -84,7 +84,7 @@ namespace gum {
   /// This is not a really sample since we take into account evidence without
   /// care about parent of evidence, etc.
   /// This is just a not-so-bad first sample for GibbsSampler
-  template < typename GUM_SCALAR >
+  template < GUM_Numeric GUM_SCALAR >
   Instantiation GibbsOperator< GUM_SCALAR >::monteCarloSample() {
     gum::Instantiation I;
 
@@ -99,14 +99,14 @@ namespace gum {
     return I;
   }
 
-  template < typename GUM_SCALAR >
+  template < GUM_Numeric GUM_SCALAR >
   void GibbsOperator< GUM_SCALAR >::_drawVarMonteCarlo_(NodeId nod, Instantiation* I) {
     gum::Instantiation Itop(*I);
     Itop.erase(samplingBn_.variable(nod));
     I->chgVal(samplingBn_.variable(nod), samplingBn_.cpt(nod).extract(Itop).draw());
   }
 
-  template < typename GUM_SCALAR >
+  template < GUM_Numeric GUM_SCALAR >
   Instantiation GibbsOperator< GUM_SCALAR >::nextSample(Instantiation prev) {
     for (Idx i = 0; i < nbr_; i++) {
       auto pos
@@ -119,7 +119,7 @@ namespace gum {
 
   /// change in Instantiation I a new drawn value for id
 
-  template < typename GUM_SCALAR >
+  template < GUM_Numeric GUM_SCALAR >
   void GibbsOperator< GUM_SCALAR >::_GibbsSample_(NodeId id, Instantiation* I) {
     gum::Instantiation Itop(*I);
     Itop.erase(samplingBn_.variable(id));

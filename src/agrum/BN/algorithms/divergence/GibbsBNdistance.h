@@ -92,7 +92,7 @@ namespace gum {
    * @endcode
    */
 
-  template < typename GUM_SCALAR >
+  template < GUM_Numeric GUM_SCALAR >
   class GibbsBNdistance:
       public BNdistance< GUM_SCALAR >,
       public ApproximationScheme,

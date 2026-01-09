@@ -58,12 +58,12 @@
 namespace gum {
 
   // adds a new entry into the register
-  template < typename GUM_SCALAR >
-  void OperatorRegister4MultiDim< GUM_SCALAR >::insert(
-      const std::string&                                            operation_name,
-      const std::string&                                            type1,
-      const std::string&                                            type2,
-      typename OperatorRegister4MultiDim< GUM_SCALAR >::OperatorPtr newFunction) {
+  template < typename GUM_ELEMENT >
+  void OperatorRegister4MultiDim< GUM_ELEMENT >::insert(
+      const std::string&                                             operation_name,
+      const std::string&                                             type1,
+      const std::string&                                             type2,
+      typename OperatorRegister4MultiDim< GUM_ELEMENT >::OperatorPtr newFunction) {
     // insert the new entry
     OperatorSet* theset;
 
@@ -85,10 +85,10 @@ namespace gum {
   }
 
   // removes a given entry from the register
-  template < typename GUM_SCALAR >
-  void OperatorRegister4MultiDim< GUM_SCALAR >::erase(const std::string& operation_name,
-                                                      const std::string& type1,
-                                                      const std::string& type2) {
+  template < typename GUM_ELEMENT >
+  void OperatorRegister4MultiDim< GUM_ELEMENT >::erase(const std::string& operation_name,
+                                                       const std::string& type1,
+                                                       const std::string& type2) {
     if (!_set_.exists(operation_name)) return;
 
     OperatorSet* theset = _set_[operation_name];
@@ -97,10 +97,10 @@ namespace gum {
   }
 
   // indicates whether a given entry exists in the register
-  template < typename GUM_SCALAR >
-  INLINE bool OperatorRegister4MultiDim< GUM_SCALAR >::exists(const std::string& operation_name,
-                                                              const std::string& type1,
-                                                              const std::string& type2) const {
+  template < typename GUM_ELEMENT >
+  INLINE bool OperatorRegister4MultiDim< GUM_ELEMENT >::exists(const std::string& operation_name,
+                                                               const std::string& type1,
+                                                               const std::string& type2) const {
     if (!_set_.exists(operation_name)) return false;
     const OperatorSet&                          theset = *(_set_[operation_name]);
     const std::pair< std::string, std::string > key(type1, type2);
@@ -109,11 +109,11 @@ namespace gum {
 
   /** @brief returns the specialized operator assigned to a given pair of
    * MultiDimImplementations */
-  template < typename GUM_SCALAR >
-  INLINE typename OperatorRegister4MultiDim< GUM_SCALAR >::OperatorPtr
-      OperatorRegister4MultiDim< GUM_SCALAR >::get(const std::string& operation_name,
-                                                   const std::string& type1,
-                                                   const std::string& type2) const {
+  template < typename GUM_ELEMENT >
+  INLINE typename OperatorRegister4MultiDim< GUM_ELEMENT >::OperatorPtr
+      OperatorRegister4MultiDim< GUM_ELEMENT >::get(const std::string& operation_name,
+                                                    const std::string& type1,
+                                                    const std::string& type2) const {
     const OperatorSet&                          theset = *(_set_[operation_name]);
     const std::pair< std::string, std::string > key(type1, type2);
     return theset[key];
@@ -121,10 +121,10 @@ namespace gum {
 
   // a named constructor that constructs one and only one Register per data
   // type
-  template < typename GUM_SCALAR >
-  OperatorRegister4MultiDim< GUM_SCALAR >& OperatorRegister4MultiDim< GUM_SCALAR >::Register() {
+  template < typename GUM_ELEMENT >
+  OperatorRegister4MultiDim< GUM_ELEMENT >& OperatorRegister4MultiDim< GUM_ELEMENT >::Register() {
     // Here, this initialization is thread-safe due to Meyer’s Singleton property
-    static OperatorRegister4MultiDim< GUM_SCALAR > container;
+    static OperatorRegister4MultiDim< GUM_ELEMENT > container;
 
 #  ifdef GUM_DEBUG_MODE
     static std::atomic_flag first = ATOMIC_FLAG_INIT;
@@ -144,12 +144,12 @@ namespace gum {
   }
 
   // Default constructor: creates an empty register
-  template < typename GUM_SCALAR >
-  OperatorRegister4MultiDim< GUM_SCALAR >::OperatorRegister4MultiDim() {}
+  template < typename GUM_ELEMENT >
+  OperatorRegister4MultiDim< GUM_ELEMENT >::OperatorRegister4MultiDim() {}
 
   // destructor
-  template < typename GUM_SCALAR >
-  OperatorRegister4MultiDim< GUM_SCALAR >::~OperatorRegister4MultiDim() {
+  template < typename GUM_ELEMENT >
+  OperatorRegister4MultiDim< GUM_ELEMENT >::~OperatorRegister4MultiDim() {
     // remove all the sets
     for (typename HashTable< std::string, OperatorSet* >::iterator_safe iter = _set_.beginSafe();
          iter != _set_.endSafe();
@@ -158,15 +158,15 @@ namespace gum {
   }
 
   // a function to more easily register new operators in MultiDims
-  template < typename GUM_SCALAR >
+  template < typename GUM_ELEMENT >
   void registerOperator(const std::string& operation_name,
                         const std::string& type1,
                         const std::string& type2,
-                        typename OperatorRegister4MultiDim< GUM_SCALAR >::OperatorPtr function) {
-    OperatorRegister4MultiDim< GUM_SCALAR >::Register().insert(operation_name,
-                                                               type1,
-                                                               type2,
-                                                               function);
+                        typename OperatorRegister4MultiDim< GUM_ELEMENT >::OperatorPtr function) {
+    OperatorRegister4MultiDim< GUM_ELEMENT >::Register().insert(operation_name,
+                                                                type1,
+                                                                type2,
+                                                                function);
   }
 
 } /* namespace gum */

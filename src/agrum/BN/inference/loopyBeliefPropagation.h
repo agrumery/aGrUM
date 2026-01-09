@@ -57,7 +57,7 @@ namespace gum {
    * @ingroup bn_inference
    *
    */
-  template < typename GUM_SCALAR >
+  template < GUM_Numeric GUM_SCALAR >
   class LoopyBeliefPropagation: public ApproximateInference< GUM_SCALAR > {
     public:
     /**

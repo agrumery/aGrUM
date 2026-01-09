@@ -58,22 +58,22 @@
 namespace gum {
 
 #  ifdef GUM_MULTI_DIM_PARTIAL_INSTANTIATION_NAME
-  template < typename GUM_SCALAR >
-  MultiDimImplementation< GUM_SCALAR >* GUM_MULTI_DIM_PARTIAL_INSTANTIATION_NAME(
-      const MultiDimImplementation< GUM_SCALAR >&      ttable,
+  template < typename GUM_ELEMENT >
+  MultiDimImplementation< GUM_ELEMENT >* GUM_MULTI_DIM_PARTIAL_INSTANTIATION_NAME(
+      const MultiDimImplementation< GUM_ELEMENT >&      ttable,
       const HashTable< const DiscreteVariable*, Idx >& inst_vars) {
 #  endif
 
-    typename PartialInstantiationRegister4MultiDim< GUM_SCALAR >::PartialInstantiationPtr func;
+    typename PartialInstantiationRegister4MultiDim< GUM_ELEMENT >::PartialInstantiationPtr func;
 
     // get the appropriate function to perform the operation
     if (PartialInstantiationRegister4MultiDim< GUM_SCALAR >::Register().exists("i",
                                                                                ttable.name())) {
       // try to find func(ttable,inst_vars) in the register
       func
-          = PartialInstantiationRegister4MultiDim< GUM_SCALAR >::Register().get("i", ttable.name());
+          = PartialInstantiationRegister4MultiDim< GUM_ELEMENT >::Register().get("i", ttable.name());
     } else {
-      func = PartialInstantiationRegister4MultiDim< GUM_SCALAR >::Register().get("i",
+      func = PartialInstantiationRegister4MultiDim< GUM_ELEMENT >::Register().get("i",
                                                                                  ttable.basename());
     }
 

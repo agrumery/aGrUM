@@ -47,7 +47,7 @@
 
 namespace gum::learning {
 
-  template < typename GUM_SCALAR >
+  template < GUM_Numeric GUM_SCALAR >
   IBNLearner::Database::Database(const std::string&                filename,
                                  const BayesNet< GUM_SCALAR >&     bn,
                                  const std::vector< std::string >& missing_symbols) {
@@ -86,7 +86,7 @@ namespace gum::learning {
     _parser_ = new DBRowGeneratorParser(_database_.handler(), DBRowGeneratorSet());
   }
 
-  template < typename GUM_SCALAR >
+  template < GUM_Numeric GUM_SCALAR >
   BayesNet< GUM_SCALAR > IBNLearner::Database::_BNVars_() const {
     BayesNet< GUM_SCALAR > bn;
     const std::size_t      nb_vars = _database_.nbVariables();
@@ -97,7 +97,7 @@ namespace gum::learning {
     return bn;
   }
 
-  template < typename GUM_SCALAR >
+  template < GUM_Numeric GUM_SCALAR >
   IBNLearner::IBNLearner(const std::string&                 filename,
                          const gum::BayesNet< GUM_SCALAR >& bn,
                          const std::vector< std::string >&  missing_symbols) :

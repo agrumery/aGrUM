@@ -75,7 +75,7 @@ namespace gum {
      * which is not in the range of the variables. In that case, we choose
      * (arbitrarilly by excess) the value 2.
      */
-    template < typename GUM_SCALAR >
+    template < GUM_Numeric GUM_SCALAR >
     class Median final: public MultiDimAggregator< GUM_SCALAR > {
       public:
       Median();

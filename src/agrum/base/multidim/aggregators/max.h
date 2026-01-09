@@ -69,7 +69,7 @@ namespace gum {
      * Note that a <tt>Max</tt> aggregator with a binary aggregator variable is
      * the \f$ \exists \neq 0\f$ aggregator.
      */
-    template < typename GUM_SCALAR >
+    template < GUM_Numeric GUM_SCALAR >
     class Max final: public MultiDimAggregator< GUM_SCALAR > {
       public:
       Max();

@@ -55,25 +55,25 @@
 #include <agrum/base/core/math/math_utils.h>
 
 namespace gum {
-  template < typename GUM_SCALAR >
+  template < GUM_Numeric GUM_SCALAR >
   ExactBNdistance< GUM_SCALAR >::ExactBNdistance(const IBayesNet< GUM_SCALAR >& P,
                                                  const IBayesNet< GUM_SCALAR >& Q) :
       BNdistance< GUM_SCALAR >(P, Q) {
     GUM_CONSTRUCTOR(ExactBNdistance);
   }
 
-  template < typename GUM_SCALAR >
+  template < GUM_Numeric GUM_SCALAR >
   ExactBNdistance< GUM_SCALAR >::ExactBNdistance(const BNdistance< GUM_SCALAR >& kl) :
       BNdistance< GUM_SCALAR >(kl) {
     GUM_CONSTRUCTOR(ExactBNdistance);
   }
 
-  template < typename GUM_SCALAR >
+  template < GUM_Numeric GUM_SCALAR >
   ExactBNdistance< GUM_SCALAR >::~ExactBNdistance() {
     GUM_DESTRUCTOR(ExactBNdistance);
   }
 
-  template < typename GUM_SCALAR >
+  template < GUM_Numeric GUM_SCALAR >
   void ExactBNdistance< GUM_SCALAR >::computeKL_() {
     klPQ_ = klQP_ = hellinger_ = bhattacharya_ = jsd_ = (GUM_SCALAR)0.0;
     errorPQ_ = errorQP_ = 0;

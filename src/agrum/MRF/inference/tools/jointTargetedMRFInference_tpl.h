@@ -54,7 +54,7 @@ namespace gum {
 
 
   // Default Constructor
-  template < typename GUM_SCALAR >
+  template < GUM_Numeric GUM_SCALAR >
   JointTargetedMRFInference< GUM_SCALAR >::JointTargetedMRFInference(
       const IMarkovRandomField< GUM_SCALAR >* mn) : MarginalTargetedMRFInference< GUM_SCALAR >(mn) {
     // assign a MRF if this has not been done before (due to virtual inheritance)
@@ -63,13 +63,13 @@ namespace gum {
   }
 
   // Destructor
-  template < typename GUM_SCALAR >
+  template < GUM_Numeric GUM_SCALAR >
   JointTargetedMRFInference< GUM_SCALAR >::~JointTargetedMRFInference() {
     GUM_DESTRUCTOR(JointTargetedMRFInference);
   }
 
   // assigns a new MRF to the inference engine
-  template < typename GUM_SCALAR >
+  template < GUM_Numeric GUM_SCALAR >
   void JointTargetedMRFInference< GUM_SCALAR >::onModelChanged_(const GraphicalModel* mn) {
     MarginalTargetedMRFInference< GUM_SCALAR >::onModelChanged_(mn);
     onAllJointTargetsErased_();
@@ -81,7 +81,7 @@ namespace gum {
   // ##############################################################################
 
   // return true if target is a nodeset target.
-  template < typename GUM_SCALAR >
+  template < GUM_Numeric GUM_SCALAR >
   INLINE bool JointTargetedMRFInference< GUM_SCALAR >::isJointTarget(const NodeSet& vars) const {
     if (this->hasNoModel_())
       GUM_ERROR(NullElement,
@@ -99,13 +99,13 @@ namespace gum {
   }
 
   // Clear all previously defined single targets
-  template < typename GUM_SCALAR >
+  template < GUM_Numeric GUM_SCALAR >
   INLINE void JointTargetedMRFInference< GUM_SCALAR >::eraseAllMarginalTargets() {
     MarginalTargetedMRFInference< GUM_SCALAR >::eraseAllTargets();
   }
 
   // Clear all previously defined targets (single targets and sets of targets)
-  template < typename GUM_SCALAR >
+  template < GUM_Numeric GUM_SCALAR >
   INLINE void JointTargetedMRFInference< GUM_SCALAR >::eraseAllJointTargets() {
     if (_joint_targets_.size() > 0) {
       // we already are in target mode. So no this->setTargetedMode_();  is needed
@@ -116,14 +116,14 @@ namespace gum {
   }
 
   // Clear all previously defined targets (single and joint targets)
-  template < typename GUM_SCALAR >
+  template < GUM_Numeric GUM_SCALAR >
   INLINE void JointTargetedMRFInference< GUM_SCALAR >::eraseAllTargets() {
     eraseAllMarginalTargets();
     eraseAllJointTargets();
   }
 
   // Add a set of nodes as a new target
-  template < typename GUM_SCALAR >
+  template < GUM_Numeric GUM_SCALAR >
   void JointTargetedMRFInference< GUM_SCALAR >::addJointTarget(const NodeSet& joint_target) {
     // check if the nodes in the target belong to the Markov random field
     if (this->hasNoModel_())
@@ -160,7 +160,7 @@ namespace gum {
   }
 
   // removes an existing set target
-  template < typename GUM_SCALAR >
+  template < GUM_Numeric GUM_SCALAR >
   void JointTargetedMRFInference< GUM_SCALAR >::eraseJointTarget(const NodeSet& joint_target) {
     // check if the nodes in the target belong to the Markov random field
     if (this->hasNoModel_())
@@ -187,14 +187,14 @@ namespace gum {
   }
 
   /// returns the list of target sets
-  template < typename GUM_SCALAR >
+  template < GUM_Numeric GUM_SCALAR >
   INLINE const Set< NodeSet >&
                JointTargetedMRFInference< GUM_SCALAR >::jointTargets() const noexcept {
     return _joint_targets_;
   }
 
   /// returns the number of target sets
-  template < typename GUM_SCALAR >
+  template < GUM_Numeric GUM_SCALAR >
   INLINE Size JointTargetedMRFInference< GUM_SCALAR >::nbrJointTargets() const noexcept {
     return _joint_targets_.size();
   }
@@ -204,7 +204,7 @@ namespace gum {
   // ##############################################################################
 
   // Compute the posterior of a nodeset.
-  template < typename GUM_SCALAR >
+  template < GUM_Numeric GUM_SCALAR >
   const Tensor< GUM_SCALAR >&
       JointTargetedMRFInference< GUM_SCALAR >::jointPosterior(const NodeSet& nodes) {
     NodeSet real_nodes;
@@ -233,14 +233,14 @@ namespace gum {
   }
 
   // Compute the posterior of a node
-  template < typename GUM_SCALAR >
+  template < GUM_Numeric GUM_SCALAR >
   const Tensor< GUM_SCALAR >& JointTargetedMRFInference< GUM_SCALAR >::posterior(NodeId node) {
     if (this->isTarget(node)) return MarginalTargetedMRFInference< GUM_SCALAR >::posterior(node);
     else return jointPosterior(NodeSet{node});
   }
 
   // Compute the posterior of a node
-  template < typename GUM_SCALAR >
+  template < GUM_Numeric GUM_SCALAR >
   const Tensor< GUM_SCALAR >&
       JointTargetedMRFInference< GUM_SCALAR >::posterior(const std::string& nodeName) {
     return posterior(this->MRF().idFromName(nodeName));
@@ -250,7 +250,7 @@ namespace gum {
   // Entropy
   // ##############################################################################
 
-  template < typename GUM_SCALAR >
+  template < GUM_Numeric GUM_SCALAR >
   Tensor< GUM_SCALAR >
       JointTargetedMRFInference< GUM_SCALAR >::evidenceJointImpact(const NodeSet& targets,
                                                                    const NodeSet& evs) {
@@ -292,7 +292,7 @@ namespace gum {
     return res;
   }
 
-  template < typename GUM_SCALAR >
+  template < GUM_Numeric GUM_SCALAR >
   Tensor< GUM_SCALAR > JointTargetedMRFInference< GUM_SCALAR >::evidenceJointImpact(
       const std::vector< std::string >& targets,
       const std::vector< std::string >& evs) {
@@ -300,7 +300,7 @@ namespace gum {
     return evidenceJointImpact(mn.nodeset(targets), mn.nodeset(evs));
   }
 
-  template < typename GUM_SCALAR >
+  template < GUM_Numeric GUM_SCALAR >
   GUM_SCALAR
       JointTargetedMRFInference< GUM_SCALAR >::jointMutualInformation(const NodeSet& targets) {
     const auto& mn  = this->MRF();
@@ -351,20 +351,20 @@ namespace gum {
     return res;
   }
 
-  template < typename GUM_SCALAR >
+  template < GUM_Numeric GUM_SCALAR >
   GUM_SCALAR JointTargetedMRFInference< GUM_SCALAR >::jointMutualInformation(
       const std::vector< std::string >& targets) {
     return jointMutualInformation(this->MRF().nodeset(targets));
   }
 
-  template < typename GUM_SCALAR >
+  template < GUM_Numeric GUM_SCALAR >
   bool JointTargetedMRFInference< GUM_SCALAR >::isExactJointComputable_(const NodeSet& vars) {
     if (_joint_targets_.contains(vars)) return true;
 
     return false;
   }
 
-  template < typename GUM_SCALAR >
+  template < GUM_Numeric GUM_SCALAR >
   NodeSet JointTargetedMRFInference< GUM_SCALAR >::superForJointComputable_(const NodeSet& vars) {
     for (const auto& target: _joint_targets_)
       if (vars.isSubsetOrEqual(target)) return target;

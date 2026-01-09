@@ -75,7 +75,7 @@ namespace gum {
    *
    * The class used for the triangulation is partialOrderedTriangulation.
    */
-  template < typename GUM_SCALAR >
+  template < GUM_Numeric GUM_SCALAR >
   class ShaferShenoyLIMIDInference: public InfluenceDiagramInference< GUM_SCALAR > {
     using PhiNodeProperty = NodeProperty< DecisionTensor< GUM_SCALAR > >;
     using PsiArcProperty  = ArcProperty< DecisionTensor< GUM_SCALAR > >;

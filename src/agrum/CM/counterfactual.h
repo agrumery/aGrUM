@@ -103,7 +103,7 @@ namespace gum {
    *
    * @tparam GUM_SCALAR Numeric type used in potentials (e.g., double).
    */
-  template < typename GUM_SCALAR >
+  template < GUM_Numeric GUM_SCALAR >
   class Counterfactual {
     public:
     using VarName = VariableName;
@@ -253,7 +253,7 @@ namespace gum {
    * @return Tensor<GUM_SCALAR> probability distribution over \p on
    *         (variables are those of \p cm).
    */
-  template < typename GUM_SCALAR >
+  template < GUM_Numeric GUM_SCALAR >
   Tensor< GUM_SCALAR > counterfactual(const CausalModel< GUM_SCALAR >&             cm,
                                       const NameSet&                               on,
                                       const NameSet&                               whatif,
@@ -275,7 +275,7 @@ namespace gum {
    * @param whatif   Intervention targets (do-variables) by name
    * @return CausalModel<GUM_SCALAR> the twin causal model
    */
-  template < typename GUM_SCALAR >
+  template < GUM_Numeric GUM_SCALAR >
   CausalModel< GUM_SCALAR >
       counterfactualModel(const CausalModel< GUM_SCALAR >&             cm,
                           const HashTable< std::string, std::string >& profile,

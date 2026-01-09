@@ -56,14 +56,14 @@
 
 namespace gum {
   namespace prm {
-    template < typename GUM_SCALAR >
+    template < GUM_Numeric GUM_SCALAR >
     PRMClass< GUM_SCALAR >::PRMClass(const std::string& name) :
         PRMClassElementContainer< GUM_SCALAR >(name), _superClass_(nullptr), _implements_(nullptr),
         _bijection_(nullptr) {
       GUM_CONSTRUCTOR(PRMClass);
     }
 
-    template < typename GUM_SCALAR >
+    template < GUM_Numeric GUM_SCALAR >
     PRMClass< GUM_SCALAR >::PRMClass(const std::string&      name,
                                      PRMClass< GUM_SCALAR >& super,
                                      bool                    delayInheritance) :
@@ -76,7 +76,7 @@ namespace gum {
       }
     }
 
-    template < typename GUM_SCALAR >
+    template < GUM_Numeric GUM_SCALAR >
     PRMClass< GUM_SCALAR >::PRMClass(const std::string&                        name,
                                      const Set< PRMInterface< GUM_SCALAR >* >& set,
                                      bool                                      delayInheritance) :
@@ -87,7 +87,7 @@ namespace gum {
       if (!delayInheritance) { _implementInterfaces_(false); }
     }
 
-    template < typename GUM_SCALAR >
+    template < GUM_Numeric GUM_SCALAR >
     PRMClass< GUM_SCALAR >::PRMClass(const std::string&                        name,
                                      PRMClass< GUM_SCALAR >&                   super,
                                      const Set< PRMInterface< GUM_SCALAR >* >& set,
@@ -112,7 +112,7 @@ namespace gum {
       if (!delayInheritance) { _implementInterfaces_(false); }
     }
 
-    template < typename GUM_SCALAR >
+    template < GUM_Numeric GUM_SCALAR >
     void PRMClass< GUM_SCALAR >::_implementInterfaces_(bool delayedInheritance) {
       for (const auto impl: *_implements_) {
         impl->_addImplementation_(this);
@@ -129,7 +129,7 @@ namespace gum {
       }
     }
 
-    template < typename GUM_SCALAR >
+    template < GUM_Numeric GUM_SCALAR >
     PRMClass< GUM_SCALAR >::~PRMClass() {
       GUM_DESTRUCTOR(PRMClass);
 
@@ -142,7 +142,7 @@ namespace gum {
       if (_bijection_) { delete _bijection_; }
     }
 
-    template < typename GUM_SCALAR >
+    template < GUM_Numeric GUM_SCALAR >
     void PRMClass< GUM_SCALAR >::initializeInheritance() {
       if (_superClass_) {
         _superClass_->_addExtension_(this);
@@ -160,7 +160,7 @@ namespace gum {
       if (_implements_) { _implementInterfaces_(true); }
     }
 
-    template < typename GUM_SCALAR >
+    template < GUM_Numeric GUM_SCALAR >
     void PRMClass< GUM_SCALAR >::inheritReferenceSlots() {
       if (_superClass_) {
         // Copying reference slots
@@ -186,7 +186,7 @@ namespace gum {
       }
     }
 
-    template < typename GUM_SCALAR >
+    template < GUM_Numeric GUM_SCALAR >
     void PRMClass< GUM_SCALAR >::inheritParameters() {
       if (_superClass_) {
         // Copying parameters
@@ -205,7 +205,7 @@ namespace gum {
       }
     }
 
-    template < typename GUM_SCALAR >
+    template < GUM_Numeric GUM_SCALAR >
     void PRMClass< GUM_SCALAR >::inheritAttributes() {
       if (_superClass_) {
         for (const auto c_attr: _superClass_->_attributes_) {
@@ -233,7 +233,7 @@ namespace gum {
       }
     }
 
-    template < typename GUM_SCALAR >
+    template < GUM_Numeric GUM_SCALAR >
     void PRMClass< GUM_SCALAR >::inheritAggregates() {
       if (_superClass_) {
         for (const auto c_agg: _superClass_->_aggregates_) {
@@ -264,7 +264,7 @@ namespace gum {
       }
     }
 
-    template < typename GUM_SCALAR >
+    template < GUM_Numeric GUM_SCALAR >
     void PRMClass< GUM_SCALAR >::inheritSlotChains() {
       if (_superClass_) {
         // Copying slot chains
@@ -292,7 +292,7 @@ namespace gum {
       }
     }
 
-    template < typename GUM_SCALAR >
+    template < GUM_Numeric GUM_SCALAR >
     void PRMClass< GUM_SCALAR >::completeInheritance(const std::string& name) {
       if (_superClass_) {
         auto& elt = this->get(name);
@@ -313,7 +313,7 @@ namespace gum {
       }
     }
 
-    template < typename GUM_SCALAR >
+    template < GUM_Numeric GUM_SCALAR >
     void PRMClass< GUM_SCALAR >::_inheritClass_(const PRMClass< GUM_SCALAR >& c) {
       if (_superClass_) {
         _superClass_->_addExtension_(this);
@@ -442,7 +442,7 @@ namespace gum {
       }
     }
 
-    template < typename GUM_SCALAR >
+    template < GUM_Numeric GUM_SCALAR >
     bool PRMClass< GUM_SCALAR >::isSubTypeOf(
         const PRMClassElementContainer< GUM_SCALAR >& cec) const {
       switch (cec.obj_type()) {
@@ -478,7 +478,7 @@ namespace gum {
       }
     }
 
-    template < typename GUM_SCALAR >
+    template < GUM_Numeric GUM_SCALAR >
     void PRMClass< GUM_SCALAR >::addArc(const std::string& tail_name,
                                         const std::string& head_name) {
       auto p_tail = _nameMap_.tryGet(tail_name);
@@ -520,7 +520,7 @@ namespace gum {
       }
     }
 
-    template < typename GUM_SCALAR >
+    template < GUM_Numeric GUM_SCALAR >
     void PRMClass< GUM_SCALAR >::_checkInterfaces_(PRMClassElement< GUM_SCALAR >* elt) {
       if (_implements_ != nullptr) {
         for (auto i: implements()) {
@@ -529,7 +529,7 @@ namespace gum {
       }
     }
 
-    template < typename GUM_SCALAR >
+    template < GUM_Numeric GUM_SCALAR >
     void PRMClass< GUM_SCALAR >::_checkInterface_(PRMClassElement< GUM_SCALAR >* elt,
                                                   PRMInterface< GUM_SCALAR >*    i) {
       const auto& i_elt   = i->get(elt->name());
@@ -569,7 +569,7 @@ namespace gum {
       _nodeIdMap_.insert(elt->id(), elt);
     }
 
-    template < typename GUM_SCALAR >
+    template < GUM_Numeric GUM_SCALAR >
     void PRMClass< GUM_SCALAR >::_checkRefInterfaces_(PRMReferenceSlot< GUM_SCALAR >* ref) {
       if (_implements_ != nullptr) {
         for (auto i: implements()) {
@@ -578,7 +578,7 @@ namespace gum {
       }
     }
 
-    template < typename GUM_SCALAR >
+    template < GUM_Numeric GUM_SCALAR >
     void PRMClass< GUM_SCALAR >::_checkRefInterface_(PRMReferenceSlot< GUM_SCALAR >* ref,
                                                      PRMInterface< GUM_SCALAR >*     i) {
       auto& i_elt = i->get(ref->name());
@@ -602,7 +602,7 @@ namespace gum {
       _nodeIdMap_.insert(ref->id(), ref);
     }
 
-    template < typename GUM_SCALAR >
+    template < GUM_Numeric GUM_SCALAR >
     NodeId PRMClass< GUM_SCALAR >::add(PRMClassElement< GUM_SCALAR >* elt) {
       if (_nameMap_.exists(elt->name())) {
         GUM_ERROR(DuplicateElement,
@@ -675,7 +675,7 @@ namespace gum {
       return elt->id();
     }
 
-    template < typename GUM_SCALAR >
+    template < GUM_Numeric GUM_SCALAR >
     void PRMClass< GUM_SCALAR >::_addCastDescendants_(PRMClassElement< GUM_SCALAR >* attr) {
       auto                        parent = attr;
       PRMAttribute< GUM_SCALAR >* child  = 0;
@@ -710,7 +710,7 @@ namespace gum {
       }
     }
 
-    template < typename GUM_SCALAR >
+    template < GUM_Numeric GUM_SCALAR >
     NodeId PRMClass< GUM_SCALAR >::overload(PRMClassElement< GUM_SCALAR >* overloader) {
       if (!_superClass_) {
         GUM_ERROR(OperationNotAllowed, "overload is possible only with subclasses")
@@ -771,7 +771,7 @@ namespace gum {
       return overloader->id();
     }
 
-    template < typename GUM_SCALAR >
+    template < GUM_Numeric GUM_SCALAR >
     void PRMClass< GUM_SCALAR >::_overloadAttribute_(PRMAttribute< GUM_SCALAR >* overloader,
                                                      PRMAttribute< GUM_SCALAR >* overloaded) {
       _dag_.eraseParents(overloaded->id());
@@ -797,7 +797,7 @@ namespace gum {
       }
     }
 
-    template < typename GUM_SCALAR >
+    template < GUM_Numeric GUM_SCALAR >
     void PRMClass< GUM_SCALAR >::_overloadReference_(PRMReferenceSlot< GUM_SCALAR >* overloader,
                                                      PRMReferenceSlot< GUM_SCALAR >* overloaded) {
       // Adding overloading reference
@@ -892,7 +892,7 @@ namespace gum {
       delete overloaded;
     }
 
-    template < typename GUM_SCALAR >
+    template < GUM_Numeric GUM_SCALAR >
     void PRMClass< GUM_SCALAR >::_overloadParameter_(PRMParameter< GUM_SCALAR >* overloader,
                                                      PRMParameter< GUM_SCALAR >* overloaded) {
       overloader->setId(overloaded->id());
@@ -904,7 +904,7 @@ namespace gum {
       delete overloaded;
     }
 
-    template < typename GUM_SCALAR >
+    template < GUM_Numeric GUM_SCALAR >
     void PRMClass< GUM_SCALAR >::_addCastDescendants_(PRMAttribute< GUM_SCALAR >* start,
                                                       PRMAttribute< GUM_SCALAR >* end) {
       PRMAttribute< GUM_SCALAR >* parent = start;
@@ -929,7 +929,7 @@ namespace gum {
       _dag_.addArc(parent->id(), end->id());
     }
 
-    template < typename GUM_SCALAR >
+    template < GUM_Numeric GUM_SCALAR >
     void PRMClass< GUM_SCALAR >::findAllSubtypes_(
         Set< PRMClassElementContainer< GUM_SCALAR >* >& set) {
       for (auto ext: _extensions_) {
@@ -938,7 +938,7 @@ namespace gum {
       }
     }
 
-    template < typename GUM_SCALAR >
+    template < GUM_Numeric GUM_SCALAR >
     void PRMClass< GUM_SCALAR >::_addIOInterfaceFlags_(PRMClassElement< GUM_SCALAR >* elt) {
       // We only add IO Flags if elt matches is required by and interface
       if (_implements_ != nullptr) {
@@ -958,7 +958,7 @@ namespace gum {
       }
     }
 
-    template < typename GUM_SCALAR >
+    template < GUM_Numeric GUM_SCALAR >
     void PRMClass< GUM_SCALAR >::updateDescendants_(const PRMClassElement< GUM_SCALAR >& elt) {
       // for ( const auto ext :  _extensions_ ) {
       //  // We test to prevent unnecessary recursive call from iter
@@ -968,29 +968,29 @@ namespace gum {
       //}
     }
 
-    template < typename GUM_SCALAR >
+    template < GUM_Numeric GUM_SCALAR >
     INLINE typename PRMObject::prm_type PRMClass< GUM_SCALAR >::obj_type() const {
       return PRMObject::prm_type::CLASS;
     }
 
-    template < typename GUM_SCALAR >
+    template < GUM_Numeric GUM_SCALAR >
     INLINE const DAG& PRMClass< GUM_SCALAR >::dag_() const {
       return _dag_;
     }
 
-    template < typename GUM_SCALAR >
+    template < GUM_Numeric GUM_SCALAR >
     INLINE DAG& PRMClass< GUM_SCALAR >::dag_() {
       return _dag_;
     }
 
-    template < typename GUM_SCALAR >
+    template < GUM_Numeric GUM_SCALAR >
     INLINE PRMClassElement< GUM_SCALAR >& PRMClass< GUM_SCALAR >::get(NodeId id) {
       auto p = _nodeIdMap_.tryGet(id);
       if (!p) { GUM_ERROR(NotFound, "no ClassElement<GUM_SCALAR> with the given NodeId") }
       return **p;
     }
 
-    template < typename GUM_SCALAR >
+    template < GUM_Numeric GUM_SCALAR >
     INLINE const PRMClassElement< GUM_SCALAR >& PRMClass< GUM_SCALAR >::get(NodeId id) const {
       auto p = _nodeIdMap_.tryGet(id);
       if (!p) {
@@ -999,7 +999,7 @@ namespace gum {
       return **p;
     }
 
-    template < typename GUM_SCALAR >
+    template < GUM_Numeric GUM_SCALAR >
     INLINE PRMClassElement< GUM_SCALAR >& PRMClass< GUM_SCALAR >::get(const std::string& name) {
       auto p = _nameMap_.tryGet(name);
       if (!p) {
@@ -1008,7 +1008,7 @@ namespace gum {
       return **p;
     }
 
-    template < typename GUM_SCALAR >
+    template < GUM_Numeric GUM_SCALAR >
     INLINE const PRMClassElement< GUM_SCALAR >&
                  PRMClass< GUM_SCALAR >::get(const std::string& name) const {
       auto p = _nameMap_.tryGet(name);
@@ -1018,18 +1018,18 @@ namespace gum {
       return **p;
     }
 
-    template < typename GUM_SCALAR >
+    template < GUM_Numeric GUM_SCALAR >
     INLINE const Set< PRMAttribute< GUM_SCALAR >* >& PRMClass< GUM_SCALAR >::attributes() const {
       return _attributes_;
     }
 
-    template < typename GUM_SCALAR >
+    template < GUM_Numeric GUM_SCALAR >
     INLINE const Set< PRMParameter< GUM_SCALAR >* >& PRMClass< GUM_SCALAR >::parameters() const {
       return _parameters_;
     }
 
     // Private struct for retrieving all params in scope
-    template < typename GUM_SCALAR >
+    template < GUM_Numeric GUM_SCALAR >
     struct ParamScopeData {
       std::string                   prefix;
       const PRMClass< GUM_SCALAR >* c;
@@ -1040,7 +1040,7 @@ namespace gum {
           c(static_cast< const PRMClass< GUM_SCALAR >* >(&(ref.slotType()))), depth(d) {}
     };
 
-    template < typename GUM_SCALAR >
+    template < GUM_Numeric GUM_SCALAR >
     INLINE HashTable< std::string, const PRMParameter< GUM_SCALAR >* >
            PRMClass< GUM_SCALAR >::scope() const {
       HashTable< std::string, const PRMParameter< GUM_SCALAR >* > params;
@@ -1080,23 +1080,23 @@ namespace gum {
       return params;
     }
 
-    template < typename GUM_SCALAR >
+    template < GUM_Numeric GUM_SCALAR >
     INLINE const Set< PRMAggregate< GUM_SCALAR >* >& PRMClass< GUM_SCALAR >::aggregates() const {
       return _aggregates_;
     }
 
-    template < typename GUM_SCALAR >
+    template < GUM_Numeric GUM_SCALAR >
     INLINE const Set< PRMReferenceSlot< GUM_SCALAR >* >&
                  PRMClass< GUM_SCALAR >::referenceSlots() const {
       return _referenceSlots_;
     }
 
-    template < typename GUM_SCALAR >
+    template < GUM_Numeric GUM_SCALAR >
     INLINE const Set< PRMSlotChain< GUM_SCALAR >* >& PRMClass< GUM_SCALAR >::slotChains() const {
       return _slotChains_;
     }
 
-    template < typename GUM_SCALAR >
+    template < GUM_Numeric GUM_SCALAR >
     INLINE const PRMClass< GUM_SCALAR >& PRMClass< GUM_SCALAR >::super() const {
       if (_superClass_) {
         return *_superClass_;
@@ -1105,7 +1105,7 @@ namespace gum {
       }
     }
 
-    template < typename GUM_SCALAR >
+    template < GUM_Numeric GUM_SCALAR >
     INLINE const Set< PRMInterface< GUM_SCALAR >* >& PRMClass< GUM_SCALAR >::implements() const {
       if (_implements_) {
         return *_implements_;
@@ -1114,30 +1114,30 @@ namespace gum {
       }
     }
 
-    template < typename GUM_SCALAR >
+    template < GUM_Numeric GUM_SCALAR >
     INLINE PRMClassElement< GUM_SCALAR >& PRMClass< GUM_SCALAR >::operator[](NodeId id) {
       return get(id);
     }
 
-    template < typename GUM_SCALAR >
+    template < GUM_Numeric GUM_SCALAR >
     INLINE const PRMClassElement< GUM_SCALAR >&
                  PRMClass< GUM_SCALAR >::operator[](NodeId id) const {
       return get(id);
     }
 
-    template < typename GUM_SCALAR >
+    template < GUM_Numeric GUM_SCALAR >
     INLINE PRMClassElement< GUM_SCALAR >&
            PRMClass< GUM_SCALAR >::operator[](const std::string& name) {
       return get(name);
     }
 
-    template < typename GUM_SCALAR >
+    template < GUM_Numeric GUM_SCALAR >
     INLINE const PRMClassElement< GUM_SCALAR >&
                  PRMClass< GUM_SCALAR >::operator[](const std::string& name) const {
       return get(name);
     }
 
-    template < typename GUM_SCALAR >
+    template < GUM_Numeric GUM_SCALAR >
     INLINE void
         PRMClass< GUM_SCALAR >::_overloadAggregate_(PRMAggregate< GUM_SCALAR >*    overloader,
                                                     PRMClassElement< GUM_SCALAR >* overloaded) {
@@ -1145,7 +1145,7 @@ namespace gum {
       _aggregates_.insert(overloader);
     }
 
-    template < typename GUM_SCALAR >
+    template < GUM_Numeric GUM_SCALAR >
     INLINE bool PRMClass< GUM_SCALAR >::_checkOverloadLegality_(
         const PRMClassElement< GUM_SCALAR >* overloaded,
         const PRMClassElement< GUM_SCALAR >* overloader) {
@@ -1183,17 +1183,17 @@ namespace gum {
       return true;
     }
 
-    template < typename GUM_SCALAR >
+    template < GUM_Numeric GUM_SCALAR >
     INLINE const Set< PRMClass< GUM_SCALAR >* >& PRMClass< GUM_SCALAR >::extensions() const {
       return _extensions_;
     }
 
-    template < typename GUM_SCALAR >
+    template < GUM_Numeric GUM_SCALAR >
     INLINE void PRMClass< GUM_SCALAR >::_addExtension_(PRMClass< GUM_SCALAR >* c) {
       _extensions_.insert(c);
     }
 
-    template < typename GUM_SCALAR >
+    template < GUM_Numeric GUM_SCALAR >
     INLINE bool PRMClass< GUM_SCALAR >::isCastDescendant(const std::string& safe_name) const {
       const PRMClassElement< GUM_SCALAR >& elt = get(safe_name);
 
@@ -1204,7 +1204,7 @@ namespace gum {
       }
     }
 
-    template < typename GUM_SCALAR >
+    template < GUM_Numeric GUM_SCALAR >
     INLINE bool
         PRMClass< GUM_SCALAR >::isOutputNode(const PRMClassElement< GUM_SCALAR >& elt) const {
       try {

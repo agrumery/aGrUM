@@ -72,7 +72,7 @@ namespace gum {
    * the current state of the inference. Note that the MarginalTargetedMRFInference
    * is designed to be used in incremental inference engines.
    */
-  template < typename GUM_SCALAR >
+  template < GUM_Numeric GUM_SCALAR >
   class MarginalTargetedMRFInference: public virtual MRFInference< GUM_SCALAR > {
     public:
     // ############################################################################

@@ -55,29 +55,29 @@
 namespace gum {
 
   namespace aggregator {
-    template < typename GUM_SCALAR >
+    template < GUM_Numeric GUM_SCALAR >
     INLINE And< GUM_SCALAR >::And() : MultiDimAggregator< GUM_SCALAR >() {
       this->decomposable_ = true;
       GUM_CONSTRUCTOR(And);
     }
 
-    template < typename GUM_SCALAR >
+    template < GUM_Numeric GUM_SCALAR >
     INLINE And< GUM_SCALAR >::And(const And< GUM_SCALAR >& from) :
         MultiDimAggregator< GUM_SCALAR >(from) {
       GUM_CONS_CPY(And);
     }
 
-    template < typename GUM_SCALAR >
+    template < GUM_Numeric GUM_SCALAR >
     INLINE And< GUM_SCALAR >::~And() {
       GUM_DESTRUCTOR(And);
     }
 
-    template < typename GUM_SCALAR >
+    template < GUM_Numeric GUM_SCALAR >
     INLINE Idx And< GUM_SCALAR >::neutralElt_() const {
       return (Idx)1;
     }
 
-    template < typename GUM_SCALAR >
+    template < GUM_Numeric GUM_SCALAR >
     INLINE Idx And< GUM_SCALAR >::fold_(const DiscreteVariable& v,
                                         Idx                     i1,
                                         Idx                     i2,
@@ -90,12 +90,12 @@ namespace gum {
       }
     }
 
-    template < typename GUM_SCALAR >
+    template < GUM_Numeric GUM_SCALAR >
     INLINE std::string And< GUM_SCALAR >::aggregatorName() const {
       return std::string("and");
     }
 
-    template < typename GUM_SCALAR >
+    template < GUM_Numeric GUM_SCALAR >
     INLINE MultiDimContainer< GUM_SCALAR >* And< GUM_SCALAR >::newFactory() const {
       return new And< GUM_SCALAR >();
     }

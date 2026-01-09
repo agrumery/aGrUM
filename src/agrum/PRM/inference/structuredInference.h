@@ -65,7 +65,7 @@ namespace gum {
      *algorithm to discover new
      * patters and exploit them in a structured way.
      */
-    template < typename GUM_SCALAR >
+    template < GUM_Numeric GUM_SCALAR >
     class StructuredInference: public PRMInference< GUM_SCALAR > {
       public:
       // ========================================================================

@@ -69,7 +69,7 @@ namespace gum {
    * @tparam GUM_SCALAR The scalar type used both for the gum::prm::PRM and the
    * gum::BayesNet.
    */
-  template < typename GUM_SCALAR >
+  template < GUM_Numeric GUM_SCALAR >
   class O3prmBNReader: public BNReader< GUM_SCALAR > {
     public:
     O3prmBNReader(BayesNet< GUM_SCALAR >* bn,

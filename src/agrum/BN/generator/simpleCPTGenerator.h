@@ -62,7 +62,7 @@ namespace gum {
    *
    * This class implements a CPTGenerator CPT generation algorithm.
    */
-  template < typename GUM_SCALAR >
+  template < GUM_Numeric GUM_SCALAR >
   class SimpleCPTGenerator: public ICPTGenerator< GUM_SCALAR > {
     public:
     // ############################################################################

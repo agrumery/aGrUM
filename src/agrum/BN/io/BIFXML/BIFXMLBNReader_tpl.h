@@ -52,7 +52,7 @@ namespace gum {
    * A reader is created to reading a defined file.
    * Note that an BN as to be created before and given in parameter.
    */
-  template < typename GUM_SCALAR >
+  template < GUM_Numeric GUM_SCALAR >
   INLINE BIFXMLBNReader< GUM_SCALAR >::BIFXMLBNReader(BayesNet< GUM_SCALAR >* bn,
                                                       const std::string&      filePath) :
       BNReader< GUM_SCALAR >(bn, filePath) {
@@ -78,7 +78,7 @@ namespace gum {
   /*
    * Default destructor.
    */
-  template < typename GUM_SCALAR >
+  template < GUM_Numeric GUM_SCALAR >
   INLINE BIFXMLBNReader< GUM_SCALAR >::~BIFXMLBNReader() {
     GUM_DESTRUCTOR(BIFXMLBNReader);
   }
@@ -89,7 +89,7 @@ namespace gum {
    * of class
    * @return Returns the number of errors during the parsing (0 if none).
    */
-  template < typename GUM_SCALAR >
+  template < GUM_Numeric GUM_SCALAR >
   Size BIFXMLBNReader< GUM_SCALAR >::proceed() {
     try {
       // Loading file or parsing string
@@ -143,7 +143,7 @@ namespace gum {
     } catch (ticpp::Exception& tinyexception) { GUM_ERROR(IOError, tinyexception.what()) }
   }
 
-  template < typename GUM_SCALAR >
+  template < GUM_Numeric GUM_SCALAR >
   void BIFXMLBNReader< GUM_SCALAR >::_parsingVariables_(ticpp::Element* parentNetwork) {
     int                               nbVar = 0;
     ticpp::Iterator< ticpp::Element > varIte("VARIABLE");
@@ -218,7 +218,7 @@ namespace gum {
     }
   }
 
-  template < typename GUM_SCALAR >
+  template < GUM_Numeric GUM_SCALAR >
 
 
   void BIFXMLBNReader< GUM_SCALAR >::_fillingBN_(ticpp::Element* parentNetwork) {

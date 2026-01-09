@@ -71,7 +71,7 @@ namespace gum {
    * the proportion of chance node and the proportion of utility node (the
    * proportion of decision node is deduce from thos two)
    */
-  template < typename GUM_SCALAR >
+  template < GUM_Numeric GUM_SCALAR >
   class InfluenceDiagramGenerator {
     public:
     // ############################################################################

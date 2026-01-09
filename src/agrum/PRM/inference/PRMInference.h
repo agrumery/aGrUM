@@ -64,7 +64,7 @@ namespace gum {
      * The main purpose of this class is to give a common interface between all
      * inference algorithms and to handle evidences.
      */
-    template < typename GUM_SCALAR >
+    template < GUM_Numeric GUM_SCALAR >
     class PRMInference {
       public:
       /// Code alias.

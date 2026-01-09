@@ -61,7 +61,7 @@ namespace gum {
    * This abstract class is an implementation of the strategy pattern to
    * help changing CPT generation policies for the BayesNetGenerator class.
    */
-  template < typename GUM_SCALAR >
+  template < GUM_Numeric GUM_SCALAR >
   class ICPTDisturber {
     public:
     // ############################################################################

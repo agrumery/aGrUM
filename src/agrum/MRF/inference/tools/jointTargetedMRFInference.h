@@ -72,7 +72,7 @@ namespace gum {
    * for the handling of marginal targets. Note that the JointTargetedMRFInference
    * is designed to be used in incremental inference engines.
    */
-  template < typename GUM_SCALAR >
+  template < GUM_Numeric GUM_SCALAR >
   class JointTargetedMRFInference: public MarginalTargetedMRFInference< GUM_SCALAR > {
     public:
     // ############################################################################

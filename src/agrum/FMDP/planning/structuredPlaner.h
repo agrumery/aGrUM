@@ -78,8 +78,8 @@ namespace gum {
    *  (MDDs, DTs, BNs, ...)
    *
    */
-  template < typename GUM_SCALAR >
-  class StructuredPlaner: public IPlanningStrategy< GUM_SCALAR > {
+  template < typename GUM_ELEMENT >
+  class StructuredPlaner: public IPlanningStrategy< GUM_ELEMENT > {
     // ###################################################################
     /// @name
     // ###################################################################
@@ -89,10 +89,10 @@ namespace gum {
     // ==========================================================================
     ///
     // ==========================================================================
-    static StructuredPlaner< GUM_SCALAR >* spumddInstance(GUM_SCALAR discountFactor = 0.9,
-                                                          GUM_SCALAR epsilon        = 0.00001,
+    static StructuredPlaner< GUM_ELEMENT >* spumddInstance(GUM_ELEMENT discountFactor = 0.9,
+                                                          GUM_ELEMENT epsilon        = 0.00001,
                                                           bool       verbose        = true) {
-      return new StructuredPlaner< GUM_SCALAR >(new MDDOperatorStrategy< GUM_SCALAR >(),
+      return new StructuredPlaner< GUM_ELEMENT >(new MDDOperatorStrategy< GUM_ELEMENT >(),
                                                 discountFactor,
                                                 epsilon,
                                                 verbose);
@@ -101,10 +101,10 @@ namespace gum {
     // ==========================================================================
     ///
     // ==========================================================================
-    static StructuredPlaner< GUM_SCALAR >* sviInstance(GUM_SCALAR discountFactor = 0.9,
-                                                       GUM_SCALAR epsilon        = 0.00001,
+    static StructuredPlaner< GUM_ELEMENT >* sviInstance(GUM_ELEMENT discountFactor = 0.9,
+                                                       GUM_ELEMENT epsilon        = 0.00001,
                                                        bool       verbose        = true) {
-      return new StructuredPlaner< GUM_SCALAR >(new TreeOperatorStrategy< GUM_SCALAR >(),
+      return new StructuredPlaner< GUM_ELEMENT >(new TreeOperatorStrategy< GUM_ELEMENT >(),
                                                 discountFactor,
                                                 epsilon,
                                                 verbose);
@@ -121,9 +121,9 @@ namespace gum {
     // ==========================================================================
     /// Default constructor
     // ==========================================================================
-    StructuredPlaner(IOperatorStrategy< GUM_SCALAR >* opi,
-                     GUM_SCALAR                       discountFactor,
-                     GUM_SCALAR                       epsilon,
+    StructuredPlaner(IOperatorStrategy< GUM_ELEMENT >* opi,
+                     GUM_ELEMENT                       discountFactor,
+                     GUM_ELEMENT                       epsilon,
                      bool                             verbose);
 
     // ==========================================================================
@@ -145,12 +145,12 @@ namespace gum {
     /// Returns a const ptr on the Factored Markov Decision Process on which
     /// we're planning
     // ==========================================================================
-    INLINE const FMDP< GUM_SCALAR >* fmdp() { return fmdp_; }
+    INLINE const FMDP< GUM_ELEMENT >* fmdp() { return fmdp_; }
 
     // ==========================================================================
     /// Returns a const ptr on the value function computed so far
     // ==========================================================================
-    INLINE const MultiDimFunctionGraph< GUM_SCALAR >* vFunction() { return vFunction_; }
+    INLINE const MultiDimFunctionGraph< GUM_ELEMENT >* vFunction() { return vFunction_; }
 
     // ==========================================================================
     /// Returns vFunction computed so far current size
@@ -194,7 +194,7 @@ namespace gum {
      * will surely and definitely result in a crash
      */
     // ==========================================================================
-    virtual void initialize(const FMDP< GUM_SCALAR >* fmdp);
+    virtual void initialize(const FMDP< GUM_ELEMENT >* fmdp);
 
 
     // ==========================================================================
@@ -226,34 +226,34 @@ namespace gum {
     // ==========================================================================
     /// Performs a single step of value iteration
     // ==========================================================================
-    virtual MultiDimFunctionGraph< GUM_SCALAR >* valueIteration_();
+    virtual MultiDimFunctionGraph< GUM_ELEMENT >* valueIteration_();
 
     // ==========================================================================
     /// Performs the P(s'|s,a).V^{t-1}(s') part of the value itération
     // ==========================================================================
-    virtual MultiDimFunctionGraph< GUM_SCALAR >*
-        evalQaction_(const MultiDimFunctionGraph< GUM_SCALAR >*, Idx);
+    virtual MultiDimFunctionGraph< GUM_ELEMENT >*
+        evalQaction_(const MultiDimFunctionGraph< GUM_ELEMENT >*, Idx);
 
     // ==========================================================================
     /// Performs max_a Q(s,a)
     /// @warning Performs also the deallocation of the QActions
     // ==========================================================================
-    virtual MultiDimFunctionGraph< GUM_SCALAR >*
-        maximiseQactions_(std::vector< MultiDimFunctionGraph< GUM_SCALAR >* >&);
+    virtual MultiDimFunctionGraph< GUM_ELEMENT >*
+        maximiseQactions_(std::vector< MultiDimFunctionGraph< GUM_ELEMENT >* >&);
 
     // ==========================================================================
     /// Performs min_i F_i
     /// @warning Performs also the deallocation of the F_i
     // ==========================================================================
-    virtual MultiDimFunctionGraph< GUM_SCALAR >*
-        minimiseFunctions_(std::vector< MultiDimFunctionGraph< GUM_SCALAR >* >&);
+    virtual MultiDimFunctionGraph< GUM_ELEMENT >*
+        minimiseFunctions_(std::vector< MultiDimFunctionGraph< GUM_ELEMENT >* >&);
 
     // ==========================================================================
     /// Perform the R(s) + gamma . function
     /// @warning function is deleted, new one is returned
     // ==========================================================================
-    virtual MultiDimFunctionGraph< GUM_SCALAR >*
-        addReward_(MultiDimFunctionGraph< GUM_SCALAR >* function, Idx actionId = 0);
+    virtual MultiDimFunctionGraph< GUM_ELEMENT >*
+        addReward_(MultiDimFunctionGraph< GUM_ELEMENT >* function, Idx actionId = 0);
 
     /// @}
 
@@ -281,8 +281,8 @@ namespace gum {
      * @warning delete the original Qaction, returns its conversion
      */
     // ==========================================================================
-    MultiDimFunctionGraph< ArgMaxSet< GUM_SCALAR, Idx >, SetTerminalNodePolicy >*
-        makeArgMax_(const MultiDimFunctionGraph< GUM_SCALAR >* Qaction, Idx actionId);
+    MultiDimFunctionGraph< ArgMaxSet< GUM_ELEMENT, Idx >, SetTerminalNodePolicy >*
+        makeArgMax_(const MultiDimFunctionGraph< GUM_ELEMENT >* Qaction, Idx actionId);
 
     private:
     // ==========================================================================
@@ -291,8 +291,8 @@ namespace gum {
     NodeId _recurArgMaxCopy_(
         NodeId,
         Idx,
-        const MultiDimFunctionGraph< GUM_SCALAR >*,
-        MultiDimFunctionGraph< ArgMaxSet< GUM_SCALAR, Idx >, SetTerminalNodePolicy >*,
+        const MultiDimFunctionGraph< GUM_ELEMENT >*,
+        MultiDimFunctionGraph< ArgMaxSet< GUM_ELEMENT, Idx >, SetTerminalNodePolicy >*,
         HashTable< NodeId, NodeId >&);
 
     protected:
@@ -300,8 +300,8 @@ namespace gum {
     /// Performs argmax_a Q(s,a)
     /// @warning Performs also the deallocation of the QActions
     // ==========================================================================
-    virtual MultiDimFunctionGraph< ArgMaxSet< GUM_SCALAR, Idx >, SetTerminalNodePolicy >*
-        argmaximiseQactions_(std::vector< MultiDimFunctionGraph< ArgMaxSet< GUM_SCALAR, Idx >,
+    virtual MultiDimFunctionGraph< ArgMaxSet< GUM_ELEMENT, Idx >, SetTerminalNodePolicy >*
+        argmaximiseQactions_(std::vector< MultiDimFunctionGraph< ArgMaxSet< GUM_ELEMENT, Idx >,
                                                                  SetTerminalNodePolicy >* >&);
 
     // ==========================================================================
@@ -311,7 +311,7 @@ namespace gum {
     /// @warning deallocate the argmax optimal value function
     // ==========================================================================
     void extractOptimalPolicy_(
-        const MultiDimFunctionGraph< ArgMaxSet< GUM_SCALAR, Idx >, SetTerminalNodePolicy >*
+        const MultiDimFunctionGraph< ArgMaxSet< GUM_ELEMENT, Idx >, SetTerminalNodePolicy >*
             optimalValueFunction);
 
     private:
@@ -320,13 +320,13 @@ namespace gum {
     // ==========================================================================
     NodeId _recurExtractOptPol_(
         NodeId,
-        const MultiDimFunctionGraph< ArgMaxSet< GUM_SCALAR, Idx >, SetTerminalNodePolicy >*,
+        const MultiDimFunctionGraph< ArgMaxSet< GUM_ELEMENT, Idx >, SetTerminalNodePolicy >*,
         HashTable< NodeId, NodeId >&);
 
     // ==========================================================================
     /// Extract from an ArgMaxSet the associated ActionSet
     // ==========================================================================
-    void _transferActionIds_(const ArgMaxSet< GUM_SCALAR, Idx >&, ActionSet&);
+    void _transferActionIds_(const ArgMaxSet< GUM_ELEMENT, Idx >&, ActionSet&);
 
 
     /// @}
@@ -337,12 +337,12 @@ namespace gum {
     /// (NB : this one must have function graph as transitions and reward
     /// functions )
     // ==========================================================================
-    const FMDP< GUM_SCALAR >* fmdp_;
+    const FMDP< GUM_ELEMENT >* fmdp_;
 
     // ==========================================================================
     /// The Value Function computed iteratively
     // ==========================================================================
-    MultiDimFunctionGraph< GUM_SCALAR >* vFunction_;
+    MultiDimFunctionGraph< GUM_ELEMENT >* vFunction_;
 
     // ==========================================================================
     /// The associated optimal policy
@@ -362,9 +362,9 @@ namespace gum {
     // ==========================================================================
     /// Discount Factor used for infinite horizon planning
     // ==========================================================================
-    GUM_SCALAR discountFactor_;
+    GUM_ELEMENT discountFactor_;
 
-    IOperatorStrategy< GUM_SCALAR >* operator_;
+    IOperatorStrategy< GUM_ELEMENT >* operator_;
 
     // ==========================================================================
     /// Boolean used to indcates whether or not iteration informations should be
@@ -378,7 +378,7 @@ namespace gum {
     /// The threshold value
     /// Whenever | V^{n} - V^{n+1} | < threshold, we consider that V ~ V*
     // ==========================================================================
-    GUM_SCALAR _threshold_;
+    GUM_ELEMENT _threshold_;
     bool       _firstTime_;
   };
 

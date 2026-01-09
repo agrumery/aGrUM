@@ -52,7 +52,7 @@
 #include <agrum/PRM/o3prm/O3prmBNReader.h>
 
 namespace gum {
-  template < typename GUM_SCALAR >
+  template < GUM_Numeric GUM_SCALAR >
   INLINE std::string O3prmBNReader< GUM_SCALAR >::_getVariableName_(const std::string& path,
                                                                     const std::string& type,
                                                                     const std::string& name,
@@ -64,14 +64,14 @@ namespace gum {
     return res;
   }
 
-  template < typename GUM_SCALAR >
+  template < GUM_Numeric GUM_SCALAR >
   std::string O3prmBNReader< GUM_SCALAR >::_getInstanceName_(const std::string& classname) {
     auto res = classname.substr(0, 4);
     std::transform(res.begin(), res.end(), res.begin(), ::tolower);
     return res;
   }
 
-  template < typename GUM_SCALAR >
+  template < GUM_Numeric GUM_SCALAR >
   std::string O3prmBNReader< GUM_SCALAR >::_getEntityName_(const std::string& filename) {
     auto b = filename.find_last_of("/\\");
     auto e = filename.find_last_of(".") - 1;
@@ -79,7 +79,7 @@ namespace gum {
     return filename.substr(b + 1, e - b);
   }
 
-  template < typename GUM_SCALAR >
+  template < GUM_Numeric GUM_SCALAR >
   O3prmBNReader< GUM_SCALAR >::O3prmBNReader(BayesNet< GUM_SCALAR >* bn,
                                              const std::string&      filename,
                                              const std::string&      entityName,
@@ -92,7 +92,7 @@ namespace gum {
     _classpath_  = classpath;
   }
 
-  template < typename GUM_SCALAR >
+  template < GUM_Numeric GUM_SCALAR >
   O3prmBNReader< GUM_SCALAR >::~O3prmBNReader() {
     GUM_DESTRUCTOR(O3prmBNReader);
   }
@@ -100,7 +100,7 @@ namespace gum {
   /// parse.
   /// @return the number of detected errors
   /// @throws IOError if file not exists
-  template < typename GUM_SCALAR >
+  template < GUM_Numeric GUM_SCALAR >
   Size O3prmBNReader< GUM_SCALAR >::proceed() {
     prm::o3prm::O3prmReader< GUM_SCALAR > reader;
     if (_classpath_ != "") { reader.addClassPath(_classpath_); }
@@ -190,7 +190,7 @@ namespace gum {
     return errors();
   }
 
-  template < typename GUM_SCALAR >
+  template < GUM_Numeric GUM_SCALAR >
   void O3prmBNReader< GUM_SCALAR >::_generateBN_(prm::PRMSystem< GUM_SCALAR >& system) {
     system.instantiate();
     BayesNetFactory< GUM_SCALAR > factory(_bn_);

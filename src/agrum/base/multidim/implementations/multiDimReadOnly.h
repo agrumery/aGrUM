@@ -59,11 +59,11 @@ namespace gum {
    * @ingroup multidim_group
    *
    * @brief Abstract base class for all multi dimensionnal read only structure.
-   * @tparam GUM_SCALAR The type of scalars stored in the multidimensional
+   * @tparam GUM_ELEMENT The type of scalars stored in the multidimensional
    * table.
    */
-  template < typename GUM_SCALAR >
-  class MultiDimReadOnly: public MultiDimImplementation< GUM_SCALAR > {
+  template < typename GUM_ELEMENT >
+  class MultiDimReadOnly: public MultiDimImplementation< GUM_ELEMENT > {
     public:
     // =========================================================================
     /// @name Constructors / Destructors
@@ -79,14 +79,14 @@ namespace gum {
      * @brief Copy constructor.
      * @param from The MultiDimReadOnly to copy.
      */
-    MultiDimReadOnly(const MultiDimReadOnly< GUM_SCALAR >& from);
+    MultiDimReadOnly(const MultiDimReadOnly< GUM_ELEMENT >& from);
 
     /**
      * @brief Class destructor.
      */
     virtual ~MultiDimReadOnly();
 
-    virtual MultiDimContainer< GUM_SCALAR >* newFactory() const = 0;
+    virtual MultiDimContainer< GUM_ELEMENT >* newFactory() const = 0;
 
     /// @}
     // =========================================================================
@@ -98,13 +98,13 @@ namespace gum {
      * @warning An OperationNotAllowed will be raised because this is a read
      * only table.
      */
-    virtual void set(const Instantiation& i, const GUM_SCALAR& value) const;
+    virtual void set(const Instantiation& i, const GUM_ELEMENT& value) const;
 
     /**
      * @warning An OperationNotAllowed will be raised because this is a read
      * only table.
      */
-    virtual void fill(const GUM_SCALAR&) const;
+    virtual void fill(const GUM_ELEMENT&) const;
 
     /// @}
 
@@ -113,7 +113,7 @@ namespace gum {
      * @warning An OperationNotAllowed will be raised because this is a read
      * only table.
      */
-    virtual GUM_SCALAR& get_(const Instantiation& i) const;
+    virtual GUM_ELEMENT& get_(const Instantiation& i) const;
   };
 } /* namespace gum */
 

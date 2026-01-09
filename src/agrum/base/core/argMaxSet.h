@@ -74,7 +74,7 @@ namespace gum {
    *
    */
   /// Class to handle efficiently argMaxSet
-  template < typename GUM_SCALAR_VAL, typename GUM_SCALAR_SEQ >
+  template < GUM_Numeric GUM_SCALAR_VAL, GUM_Numeric GUM_SCALAR_SEQ >
   class ArgMaxSet {
     public:
     // ###########################################################################

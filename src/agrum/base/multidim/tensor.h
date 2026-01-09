@@ -81,7 +81,7 @@ namespace gum {
    * @warning The Tensor class does not contain its variables. It only contains
    * (maybe dangling) pointers to the variables.
    */
-  template < typename GUM_SCALAR >
+  template < GUM_Numeric GUM_SCALAR >
   class Tensor final: public MultiDimDecorator< GUM_SCALAR > {
     public:
     static Tensor< GUM_SCALAR > deterministicTensor(const DiscreteVariable& var, Idx value);
@@ -484,25 +484,25 @@ namespace gum {
     static Tensor< GUM_SCALAR > evLt(const DiscreteVariable& v, double val);
     ///@}
 
-    protected:
-    [[nodiscard]] gum::VariableSet complementVars_(const gum::VariableSet& del_vars) const;
+    private:
+    [[nodiscard]] gum::VariableSet _complementVars_(const gum::VariableSet& del_vars) const;
   };
 
 #ifndef GUM_NO_EXTERN_TEMPLATE_CLASS
   extern template class Tensor< double >;
 #endif
 
-  template < typename GUM_SCALAR >
+  template < GUM_Numeric GUM_SCALAR >
   inline Tensor< GUM_SCALAR > log2(const Tensor< GUM_SCALAR >& arg) {
     return arg.new_log2();
   }
 
-  template < typename GUM_SCALAR >
+  template < GUM_Numeric GUM_SCALAR >
   inline Tensor< GUM_SCALAR > abs(const Tensor< GUM_SCALAR >& arg) {
     return arg.new_abs();
   }
 
-  template < typename GUM_SCALAR >
+  template < GUM_Numeric GUM_SCALAR >
   inline Tensor< GUM_SCALAR > sq(const Tensor< GUM_SCALAR >& arg) {
     return arg.new_sq();
   }

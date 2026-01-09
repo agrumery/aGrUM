@@ -66,11 +66,11 @@ namespace gum {
    * memory and with an offset associated with each slave instantiation.
    *
    * @ingroup multidim_group
-   * @tparam GUM_SCALAR The type of scalar stored in the multidimensional
+   * @tparam GUM_ELEMENT The type of scalar stored in the multidimensional
    * table.
    */
-  template < typename GUM_SCALAR >
-  class MultiDimWithOffset: public MultiDimImplementation< GUM_SCALAR > {
+  template < typename GUM_ELEMENT >
+  class MultiDimWithOffset: public MultiDimImplementation< GUM_ELEMENT > {
     public:
     // =========================================================================
     /// @name Constructors, destructor and copy.
@@ -90,7 +90,7 @@ namespace gum {
      *
      * @param from The MultiDimWithOffset to copy.
      */
-    MultiDimWithOffset(const MultiDimWithOffset< GUM_SCALAR >& from);
+    MultiDimWithOffset(const MultiDimWithOffset< GUM_ELEMENT >& from);
 
     /**
      * @brief Class destrucor.
@@ -102,9 +102,9 @@ namespace gum {
      *
      * @param from The multidimensional matrix we copy into this.
      */
-    MultiDimWithOffset< GUM_SCALAR >& operator=(const MultiDimWithOffset< GUM_SCALAR >& from);
+    MultiDimWithOffset< GUM_ELEMENT >& operator=(const MultiDimWithOffset< GUM_ELEMENT >& from);
 
-    virtual MultiDimContainer< GUM_SCALAR >* newFactory() const = 0;
+    virtual MultiDimContainer< GUM_ELEMENT >* newFactory() const = 0;
 
     /// @}
     // =========================================================================
@@ -116,7 +116,7 @@ namespace gum {
 
     virtual void erase(const DiscreteVariable& v);
 
-    virtual void fill(const GUM_SCALAR& d) const = 0;
+    virtual void fill(const GUM_ELEMENT& d) const = 0;
 
     virtual std::string toString(const Instantiation* i) const;
 
@@ -214,7 +214,7 @@ namespace gum {
      */
     void computeInstantiationValue_(Instantiation& result, Size indice) const;
 
-    virtual GUM_SCALAR& get_(const Instantiation& i) const = 0;
+    virtual GUM_ELEMENT& get_(const Instantiation& i) const = 0;
   };
 } /* namespace gum */
 

@@ -52,7 +52,7 @@ namespace gum {
    * A reader is created to reading a defined file.
    * Note that an BN has to be created before and given in parameter.
    */
-  template < typename GUM_SCALAR >
+  template < GUM_Numeric GUM_SCALAR >
   INLINE XDSLBNReader< GUM_SCALAR >::XDSLBNReader(BayesNet< GUM_SCALAR >* bn,
                                                   const std::string&      filePath) :
       BNReader< GUM_SCALAR >(bn, filePath) {
@@ -64,7 +64,7 @@ namespace gum {
   /*
    * Default destructor.
    */
-  template < typename GUM_SCALAR >
+  template < GUM_Numeric GUM_SCALAR >
   INLINE XDSLBNReader< GUM_SCALAR >::~XDSLBNReader() {
     GUM_DESTRUCTOR(XDSLBNReader);
   }
@@ -75,7 +75,7 @@ namespace gum {
    * of class
    * @return Returns the number of error during the parsing (0 if none).
    */
-  template < typename GUM_SCALAR >
+  template < GUM_Numeric GUM_SCALAR >
   Size XDSLBNReader< GUM_SCALAR >::proceed() {
     try {
       // Loading file
@@ -130,7 +130,7 @@ namespace gum {
     } catch (ticpp::Exception& tinyexception) { GUM_ERROR(IOError, tinyexception.what()) }
   }
 
-  template < typename GUM_SCALAR >
+  template < GUM_Numeric GUM_SCALAR >
   Size XDSLBNReader< GUM_SCALAR >::_parsingCpts_(ticpp::Element* cptsNetwork) {
     // Counting the number of variable for the signal
     Size                              nbVar = Size(0);
@@ -204,7 +204,7 @@ namespace gum {
     return nbIte;
   }
 
-  template < typename GUM_SCALAR >
+  template < GUM_Numeric GUM_SCALAR >
   void XDSLBNReader< GUM_SCALAR >::_parsingExtension_(ticpp::Element* nodesNetwork) {
     ticpp::Iterator< ticpp::Element > varIte("node");
     for (varIte = varIte.begin(nodesNetwork); varIte != varIte.end(); ++varIte) {

@@ -62,7 +62,7 @@ namespace gum {
    * Framework
    * @ingroup multidim_group
    */
-  template < typename GUM_SCALAR,
+  template < typename GUM_ELEMENT,
              template < typename > class COMBINEOPERATOR,
              template < typename > class PROJECTOPERATOR,
              template < typename > class TerminalNodePolicy = ExactTerminalNodePolicy >
@@ -74,11 +74,11 @@ namespace gum {
     /// @{
 
     /// Default constructor.
-    Regress(const MultiDimFunctionGraph< GUM_SCALAR, TerminalNodePolicy >* vfunction,
-            const MultiDimFunctionGraph< GUM_SCALAR, TerminalNodePolicy >* probDist,
+    Regress(const MultiDimFunctionGraph< GUM_ELEMENT, TerminalNodePolicy >* vfunction,
+            const MultiDimFunctionGraph< GUM_ELEMENT, TerminalNodePolicy >* probDist,
             const gum::VariableSet*                                        primedVars,
             const DiscreteVariable*                                        targetVar,
-            const GUM_SCALAR                                               neutral);
+            const GUM_ELEMENT                                               neutral);
 
     /// Default destructor.
     ~Regress();
@@ -92,7 +92,7 @@ namespace gum {
 
     /// Computes and builds the Function Graph that is the result of the
     /// operation
-    MultiDimFunctionGraph< GUM_SCALAR, TerminalNodePolicy >* compute();
+    MultiDimFunctionGraph< GUM_ELEMENT, TerminalNodePolicy >* compute();
 
     /// @}
 
@@ -106,20 +106,20 @@ namespace gum {
     /// variables
     /// beneath it
     void
-        _findRetrogradeVariables_(const MultiDimFunctionGraph< GUM_SCALAR, TerminalNodePolicy >* dg,
+        _findRetrogradeVariables_(const MultiDimFunctionGraph< GUM_ELEMENT, TerminalNodePolicy >* dg,
                                   HashTable< NodeId, short int* >& dgInstNeed);
 
     /// The main recursion function
     NodeId _compute_(O4DGContext& currentSituation, Idx lastInstVarPos);
 
     /// One of the two function graphs used for the operation
-    const MultiDimFunctionGraph< GUM_SCALAR, TerminalNodePolicy >* _DG1_;
+    const MultiDimFunctionGraph< GUM_ELEMENT, TerminalNodePolicy >* _DG1_;
 
     /// The other one
-    const MultiDimFunctionGraph< GUM_SCALAR, TerminalNodePolicy >* _DG2_;
+    const MultiDimFunctionGraph< GUM_ELEMENT, TerminalNodePolicy >* _DG2_;
 
     /// The resulting function graph
-    MultiDimFunctionGraph< GUM_SCALAR, TerminalNodePolicy >* _rd_;
+    MultiDimFunctionGraph< GUM_ELEMENT, TerminalNodePolicy >* _rd_;
 
     /// The set of variables we want to keep at the end
     const gum::VariableSet* _primedVars_;
@@ -128,14 +128,14 @@ namespace gum {
     const DiscreteVariable* _targetVar_;
 
     /// The function to be performed on the leaves
-    const GUM_SCALAR _neutral_;
+    const GUM_ELEMENT _neutral_;
 
     /// The total number of variable implied in the operation
     Idx _nbVar_;
 
     /// The functions to be performed on the leaves
-    const COMBINEOPERATOR< GUM_SCALAR > _combine_;
-    const PROJECTOPERATOR< GUM_SCALAR > _project_;
+    const COMBINEOPERATOR< GUM_ELEMENT > _combine_;
+    const PROJECTOPERATOR< GUM_ELEMENT > _project_;
 
     /// The hashtable used to know if two pair of nodes have already been
     /// visited

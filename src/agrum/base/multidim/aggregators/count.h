@@ -72,7 +72,7 @@ namespace gum {
      * variable is n-ary variable, <tt>Count(i)</tt> can serve as the \f$
      * \exists \f$ at least \f$ n\ times\ i \f$ aggregator.
      */
-    template < typename GUM_SCALAR >
+    template < GUM_Numeric GUM_SCALAR >
     class Count final: public MultiDimAggregator< GUM_SCALAR > {
       public:
       Count(Idx value);

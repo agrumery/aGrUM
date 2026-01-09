@@ -69,7 +69,7 @@ namespace gum {
    *
    * @tparam GUM_SCALAR The numeric type for tensor computations.
    */
-  template < typename GUM_SCALAR >
+  template < GUM_Numeric GUM_SCALAR >
   class CausalFormula {
     public:
     /// Convenience alias for variable names.

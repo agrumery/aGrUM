@@ -53,12 +53,12 @@ namespace gum {
   /* =========================================================================*/
   /* ===                           GUM_BN_WRITER                         === */
   /* =========================================================================*/
-  template < typename GUM_SCALAR >
+  template < GUM_Numeric GUM_SCALAR >
   INLINE MRFWriter< GUM_SCALAR >::MRFWriter() {
     GUM_CONSTRUCTOR(MRFWriter);
   }
 
-  template < typename GUM_SCALAR >
+  template < GUM_Numeric GUM_SCALAR >
   INLINE MRFWriter< GUM_SCALAR >::~MRFWriter() {
     GUM_DESTRUCTOR(MRFWriter);
   }

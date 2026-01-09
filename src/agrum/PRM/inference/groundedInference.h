@@ -62,7 +62,7 @@ namespace gum {
      * The best way to build this class is to use the static creation methods.
      *
      */
-    template < typename GUM_SCALAR >
+    template < GUM_Numeric GUM_SCALAR >
     class GroundedInference: public PRMInference< GUM_SCALAR > {
       public:
       // ========================================================================

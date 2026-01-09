@@ -73,7 +73,7 @@ namespace gum {
    * cf. http://www.cs.huji.ac.il/project/PASCAL/fileFormat.php
    *
    */
-  template < typename GUM_SCALAR >
+  template < GUM_Numeric GUM_SCALAR >
   class UAIMRFWriter: public MRFWriter< GUM_SCALAR > {
     public:
     // ==========================================================================

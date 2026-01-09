@@ -54,7 +54,7 @@ namespace gum::learning {
 
 
   /// default constructor
-  template < typename GUM_SCALAR >
+  template < GUM_Numeric GUM_SCALAR >
   BNDatabaseGenerator< GUM_SCALAR >::BNDatabaseGenerator(const BayesNet< GUM_SCALAR >& bn) :
       _bn_(bn) {
     GUM_CONSTRUCTOR(BNDatabaseGenerator)
@@ -73,20 +73,20 @@ namespace gum::learning {
   }
 
   /// destructor
-  template < typename GUM_SCALAR >
+  template < GUM_Numeric GUM_SCALAR >
   BNDatabaseGenerator< GUM_SCALAR >::~BNDatabaseGenerator() {
     GUM_DESTRUCTOR(BNDatabaseGenerator)
   }
 
   /// draw instances from  _bn_
-  template < typename GUM_SCALAR >
+  template < GUM_Numeric GUM_SCALAR >
   double BNDatabaseGenerator< GUM_SCALAR >::drawSamples(Size nbSamples) {
     const Instantiation inst;
     return drawSamples(nbSamples, inst);
   }
 
   /// draw instances from  _bn_
-  template < typename GUM_SCALAR >
+  template < GUM_Numeric GUM_SCALAR >
   double BNDatabaseGenerator< GUM_SCALAR >::drawSamples(Size                 nbSamples,
                                                         const Instantiation& evs,
                                                         int                  timeout) {
@@ -166,50 +166,50 @@ namespace gum::learning {
     return _log2likelihood_;
   }
 
-  template < typename GUM_SCALAR >
+  template < GUM_Numeric GUM_SCALAR >
   INLINE Size BNDatabaseGenerator< GUM_SCALAR >::samplesNbRows() const {
     if (!_drawnSamples_) { GUM_ERROR(OperationNotAllowed, "drawSamples() must be called first.") }
 
     return _database_.size();
   }
 
-  template < typename GUM_SCALAR >
+  template < GUM_Numeric GUM_SCALAR >
   INLINE Size BNDatabaseGenerator< GUM_SCALAR >::samplesNbCols() const {
     if (!_drawnSamples_) { GUM_ERROR(OperationNotAllowed, "drawSamples() must be called first.") }
 
     return _nbVars_;
   }
 
-  template < typename GUM_SCALAR >
+  template < GUM_Numeric GUM_SCALAR >
   INLINE Idx BNDatabaseGenerator< GUM_SCALAR >::samplesAt(Idx row, Idx col) const {
     if (!_drawnSamples_) { GUM_ERROR(OperationNotAllowed, "drawSamples() must be called first.") }
     return _database_.at(row).at(_varOrder_.at(col));
   }
 
-  template < typename GUM_SCALAR >
+  template < GUM_Numeric GUM_SCALAR >
   INLINE std::string BNDatabaseGenerator< GUM_SCALAR >::samplesLabelAt(Idx row, Idx col) const {
     if (!_drawnSamples_) { GUM_ERROR(OperationNotAllowed, "drawSamples() must be called first.") }
     const auto j = _varOrder_.at(col);
     return _label_(_database_.at(row), _bn_.variable(j), j);
   }
 
-  template < typename GUM_SCALAR >
+  template < GUM_Numeric GUM_SCALAR >
   void BNDatabaseGenerator< GUM_SCALAR >::setDiscretizedLabelModeRandom() {
     _discretizedLabelMode_ = DiscretizedLabelMode::RANDOM;
   }
 
-  template < typename GUM_SCALAR >
+  template < GUM_Numeric GUM_SCALAR >
   void BNDatabaseGenerator< GUM_SCALAR >::setDiscretizedLabelModeMedian() {
     _discretizedLabelMode_ = DiscretizedLabelMode::MEDIAN;
   }
 
-  template < typename GUM_SCALAR >
+  template < GUM_Numeric GUM_SCALAR >
   void BNDatabaseGenerator< GUM_SCALAR >::setDiscretizedLabelModeInterval() {
     _discretizedLabelMode_ = DiscretizedLabelMode::INTERVAL;
   }
 
   /// generates database, and writes csv file
-  template < typename GUM_SCALAR >
+  template < GUM_Numeric GUM_SCALAR >
   void BNDatabaseGenerator< GUM_SCALAR >::toCSV(const std::string& csvFileURL,
                                                 bool               useLabels,
                                                 bool               append,
@@ -290,7 +290,7 @@ namespace gum::learning {
     os.close();
   }
 
-  template < typename GUM_SCALAR >
+  template < GUM_Numeric GUM_SCALAR >
   std::string BNDatabaseGenerator< GUM_SCALAR >::_label_(const std::vector< Idx >& row,
                                                          const DiscreteVariable&   v,
                                                          Idx                       i) const {
@@ -307,7 +307,7 @@ namespace gum::learning {
   }
 
   /// generates a DatabaseVectInRAM
-  template < typename GUM_SCALAR >
+  template < GUM_Numeric GUM_SCALAR >
   DatabaseTable BNDatabaseGenerator< GUM_SCALAR >::toDatabaseTable(bool useLabels) const {
     if (!_drawnSamples_) GUM_ERROR(OperationNotAllowed, "proceed() must be called first.")
 
@@ -355,7 +355,7 @@ namespace gum::learning {
   }
 
   /// returns database using specified data order
-  template < typename GUM_SCALAR >
+  template < GUM_Numeric GUM_SCALAR >
   std::vector< std::vector< Idx > > BNDatabaseGenerator< GUM_SCALAR >::database() const {
     if (!_drawnSamples_) GUM_ERROR(OperationNotAllowed, "drawSamples() must be called first.")
 
@@ -369,7 +369,7 @@ namespace gum::learning {
   }
 
   /// change columns order
-  template < typename GUM_SCALAR >
+  template < GUM_Numeric GUM_SCALAR >
   void BNDatabaseGenerator< GUM_SCALAR >::setVarOrder(const std::vector< Idx >& varOrder) {
     if (varOrder.size() != _nbVars_)
       GUM_ERROR(FatalError, "varOrder's size must be equal to the number of variables")
@@ -389,7 +389,7 @@ namespace gum::learning {
   }
 
   /// change columns order using variable names
-  template < typename GUM_SCALAR >
+  template < GUM_Numeric GUM_SCALAR >
   void BNDatabaseGenerator< GUM_SCALAR >::setVarOrder(const std::vector< std::string >& varOrder) {
     std::vector< Idx > varOrderIdx;
     varOrderIdx.reserve(varOrder.size());
@@ -400,14 +400,14 @@ namespace gum::learning {
   }
 
   /// change columns order according to a csv file
-  template < typename GUM_SCALAR >
+  template < GUM_Numeric GUM_SCALAR >
   void BNDatabaseGenerator< GUM_SCALAR >::setVarOrderFromCSV(const std::string& csvFileURL,
                                                              const std::string& csvSeparator) {
     setVarOrder(_varOrderFromCSV_(csvFileURL, csvSeparator));
   }
 
   /// set columns in Topological order
-  template < typename GUM_SCALAR >
+  template < GUM_Numeric GUM_SCALAR >
   void BNDatabaseGenerator< GUM_SCALAR >::setTopologicalVarOrder() {
     std::vector< Idx > varOrder;
     varOrder.reserve(_nbVars_);
@@ -418,7 +418,7 @@ namespace gum::learning {
   }
 
   /// set columns in antiTopological order
-  template < typename GUM_SCALAR >
+  template < GUM_Numeric GUM_SCALAR >
   void BNDatabaseGenerator< GUM_SCALAR >::setAntiTopologicalVarOrder() {
     std::vector< Idx > varOrder;
     varOrder.reserve(_nbVars_);
@@ -430,7 +430,7 @@ namespace gum::learning {
   }
 
   /// set columns in random order
-  template < typename GUM_SCALAR >
+  template < GUM_Numeric GUM_SCALAR >
   void BNDatabaseGenerator< GUM_SCALAR >::setRandomVarOrder() {
     std::vector< std::string > varOrder;
     varOrder.reserve(_bn_.size());
@@ -442,13 +442,13 @@ namespace gum::learning {
   }
 
   /// returns variable order indexes
-  template < typename GUM_SCALAR >
+  template < GUM_Numeric GUM_SCALAR >
   std::vector< Idx > BNDatabaseGenerator< GUM_SCALAR >::varOrder() const {
     return _varOrder_;
   }
 
   /// returns variable order.
-  template < typename GUM_SCALAR >
+  template < GUM_Numeric GUM_SCALAR >
   std::vector< std::string > BNDatabaseGenerator< GUM_SCALAR >::varOrderNames() const {
     std::vector< std::string > varNames;
     varNames.reserve(_nbVars_);
@@ -460,14 +460,14 @@ namespace gum::learning {
   }
 
   /// returns log2Likelihood of generated samples
-  template < typename GUM_SCALAR >
+  template < GUM_Numeric GUM_SCALAR >
   double BNDatabaseGenerator< GUM_SCALAR >::log2likelihood() const {
     if (!_drawnSamples_) { GUM_ERROR(OperationNotAllowed, "drawSamples() must be called first.") }
     return _log2likelihood_;
   }
 
   /// returns varOrder from a csv file
-  template < typename GUM_SCALAR >
+  template < GUM_Numeric GUM_SCALAR >
   std::vector< Idx >
       BNDatabaseGenerator< GUM_SCALAR >::_varOrderFromCSV_(const std::string& csvFileURL,
                                                            const std::string& csvSeparator) const {
@@ -484,7 +484,7 @@ namespace gum::learning {
   }
 
   /// returns varOrder from a csv file
-  template < typename GUM_SCALAR >
+  template < GUM_Numeric GUM_SCALAR >
   std::vector< Idx >
       BNDatabaseGenerator< GUM_SCALAR >::_varOrderFromCSV_(std::ifstream&     csvFile,
                                                            const std::string& csvSeparator) const {

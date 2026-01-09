@@ -60,7 +60,7 @@
 namespace gum {
 
   // the base object used by combinations
-  template < typename GUM_SCALAR >
+  template < typename GUM_ELEMENT >
   class MultiDimImplementation;
 
   // ===========================================================================
@@ -77,13 +77,13 @@ namespace gum {
    */
   // clang-format on
 
-  template < typename GUM_SCALAR >
+  template < typename GUM_ELEMENT >
   class OperatorRegister4MultiDim {
     public:
     /// The type of functions used by the register
     using OperatorPtr
-        = MultiDimImplementation< GUM_SCALAR >* (*)(const MultiDimImplementation< GUM_SCALAR >*,
-                                                    const MultiDimImplementation< GUM_SCALAR >*);
+        = MultiDimImplementation< GUM_ELEMENT >* (*)(const MultiDimImplementation< GUM_ELEMENT >*,
+                                                     const MultiDimImplementation< GUM_ELEMENT >*);
 
     // ========================================================================
     /// @name Accessors / Modifiers
@@ -199,7 +199,7 @@ namespace gum {
      *
      * Note that this constructor prevents the famous init order fiasco.
      */
-    static OperatorRegister4MultiDim< GUM_SCALAR >& Register();
+    static OperatorRegister4MultiDim< GUM_ELEMENT >& Register();
 
     /// @}
 
@@ -213,7 +213,7 @@ namespace gum {
     OperatorRegister4MultiDim();
 
     /// Copy operator: never to be used
-    OperatorRegister4MultiDim(const OperatorRegister4MultiDim< GUM_SCALAR >&);
+    OperatorRegister4MultiDim(const OperatorRegister4MultiDim< GUM_ELEMENT >&);
 
     /// Destructor
     ~OperatorRegister4MultiDim();
@@ -236,11 +236,11 @@ namespace gum {
   };
 
   /// A function to more easily register new operators in MultiDims
-  template < typename GUM_SCALAR >
+  template < typename GUM_ELEMENT >
   void registerOperator(const std::string& operation_name,
                         const std::string& type1,
                         const std::string& type2,
-                        typename OperatorRegister4MultiDim< GUM_SCALAR >::OperatorPtr function);
+                        typename OperatorRegister4MultiDim< GUM_ELEMENT >::OperatorPtr function);
 
 } /* namespace gum */
 

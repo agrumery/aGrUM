@@ -50,7 +50,7 @@
 
 namespace gum {
 
-  template < typename GUM_SCALAR >
+  template < GUM_Numeric GUM_SCALAR >
   Estimator< GUM_SCALAR >::Estimator() {
     GUM_CONSTRUCTOR(Estimator);
     wtotal_ = (GUM_SCALAR)0.;
@@ -58,7 +58,7 @@ namespace gum {
     bn_     = nullptr;
   }
 
-  template < typename GUM_SCALAR >
+  template < GUM_Numeric GUM_SCALAR >
   Estimator< GUM_SCALAR >::Estimator(const IBayesNet< GUM_SCALAR >* bn) : Estimator() {
     bn_ = bn;
 
@@ -69,7 +69,7 @@ namespace gum {
     GUM_CONSTRUCTOR(Estimator);
   }
 
-  template < typename GUM_SCALAR >
+  template < GUM_Numeric GUM_SCALAR >
   INLINE Estimator< GUM_SCALAR >::~Estimator() {
     GUM_DESTRUCTOR(Estimator);
     // remove all the posteriors computed
@@ -78,7 +78,7 @@ namespace gum {
 
   /* adds all tensor target variables from a given BN to the Estimator */
 
-  template < typename GUM_SCALAR >
+  template < GUM_Numeric GUM_SCALAR >
   void Estimator< GUM_SCALAR >::setFromBN(const IBayesNet< GUM_SCALAR >* bn,
                                           const NodeSet&                 hardEvidence) {
     for (gum::NodeGraphPartIterator iter = bn->nodes().begin(); iter != bn->nodes().end(); ++iter) {
@@ -98,7 +98,7 @@ namespace gum {
 
   // we multiply the posteriors obtained by LoopyBeliefPropagation by the it's
   // number of iterations
-  template < typename GUM_SCALAR >
+  template < GUM_Numeric GUM_SCALAR >
   void Estimator< GUM_SCALAR >::setFromLBP(LoopyBeliefPropagation< GUM_SCALAR >* lbp,
                                            const NodeSet&                        hardEvidence,
                                            GUM_SCALAR                            virtualLBPSize) {
@@ -121,7 +121,7 @@ namespace gum {
 
   /*update the Estimator given an instantiation I with weight bias w*/
 
-  template < typename GUM_SCALAR >
+  template < GUM_Numeric GUM_SCALAR >
   void Estimator< GUM_SCALAR >::update(Instantiation I, GUM_SCALAR w) {
     wtotal_ += w;
     ntotal_ += (Size)1;
@@ -133,7 +133,7 @@ namespace gum {
 
   /* returns the approximation CPT of a variable */
 
-  template < typename GUM_SCALAR >
+  template < GUM_Numeric GUM_SCALAR >
   const Tensor< GUM_SCALAR >& Estimator< GUM_SCALAR >::posterior(const DiscreteVariable& var) {
     Tensor< GUM_SCALAR >* p = nullptr;
 
@@ -155,14 +155,14 @@ namespace gum {
 
   /* expected value considering a Bernouilli variable with parameter val */
 
-  template < typename GUM_SCALAR >
+  template < GUM_Numeric GUM_SCALAR >
   GUM_SCALAR Estimator< GUM_SCALAR >::EV(std::string name, Idx val) {
     return estimator_[name][val] / wtotal_;
   }
 
   /* variance considering a Bernouilli variable with parameter val */
 
-  template < typename GUM_SCALAR >
+  template < GUM_Numeric GUM_SCALAR >
   GUM_SCALAR Estimator< GUM_SCALAR >::variance(std::string name, Idx val) {
     GUM_SCALAR p = EV(name, val);
     return p * (1 - p);
@@ -171,7 +171,7 @@ namespace gum {
   /* returns maximum length of confidence intervals for each variable, each
    * parameter */
 
-  template < typename GUM_SCALAR >
+  template < GUM_Numeric GUM_SCALAR >
   GUM_SCALAR Estimator< GUM_SCALAR >::confidence() {
     GUM_SCALAR ic_max = 0;
 
@@ -185,7 +185,7 @@ namespace gum {
     return ic_max;
   }
 
-  template < typename GUM_SCALAR >
+  template < GUM_Numeric GUM_SCALAR >
   void Estimator< GUM_SCALAR >::clear() {
     estimator_.clear();
     wtotal_ = (GUM_SCALAR)0;

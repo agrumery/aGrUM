@@ -71,7 +71,7 @@ namespace gum {
    */
   // clang-format on
 
-  template < typename GUM_SCALAR >
+  template < GUM_Numeric GUM_SCALAR >
   class MultiDimNoisyORNet final: public MultiDimICIModel< GUM_SCALAR > {
     public:
     // ============================================================================
@@ -80,7 +80,8 @@ namespace gum {
     /// @{
 
     /// Default constructor.
-    MultiDimNoisyORNet(GUM_SCALAR external_weight, GUM_SCALAR default_weight = (GUM_SCALAR)1.0);
+    explicit MultiDimNoisyORNet(GUM_SCALAR external_weight,
+                                GUM_SCALAR default_weight = (GUM_SCALAR)1.0);
 
     MultiDimNoisyORNet(const MultiDimNoisyORNet< GUM_SCALAR >& from);
 
@@ -94,7 +95,7 @@ namespace gum {
                        const MultiDimNoisyORNet< GUM_SCALAR >&                              from);
 
     /// Destructor.
-    virtual ~MultiDimNoisyORNet();
+    ~MultiDimNoisyORNet() final;
 
     /// @}
 
@@ -122,10 +123,9 @@ namespace gum {
     // ============================================================================
     /// @{
 
-    public:
-    virtual GUM_SCALAR get(const Instantiation& i) const;
+    GUM_SCALAR get(const Instantiation& i) const final;
 
-    std::string toString() const;
+    [[nodiscard]] std::string toString() const final;
 
     ///
     /**
@@ -139,7 +139,7 @@ namespace gum {
      * which is the best functions to use, say, when we wish to use operators
      * such as operator+ on two MultiDimImplementations.
      */
-    virtual const std::string& name() const;
+    [[nodiscard]] const std::string& name() const final;
 
     /// @}
   };
@@ -150,7 +150,7 @@ namespace gum {
 #endif
 
   /// For friendly displaying the content of the array.
-  template < typename GUM_SCALAR >
+  template < GUM_Numeric GUM_SCALAR >
   std::ostream& operator<<(std::ostream& s, const MultiDimNoisyORNet< GUM_SCALAR >& ag);
 
 } /* namespace gum */

@@ -52,7 +52,7 @@ namespace gum {
   namespace learning {
 
     /// copy a tensor into another whose variables' sequence differs
-    template < typename GUM_SCALAR >
+    template < GUM_Numeric GUM_SCALAR >
     void DAG2BNLearner::_probaVarReordering_(gum::Tensor< GUM_SCALAR >&       pot,
                                              const gum::Tensor< GUM_SCALAR >& other_pot) {
       // check that the variables are identical
@@ -70,14 +70,14 @@ namespace gum {
     }
 
     /// create a BN
-    template < typename GUM_SCALAR >
+    template < GUM_Numeric GUM_SCALAR >
     INLINE BayesNet< GUM_SCALAR > DAG2BNLearner::createBN(ParamEstimator& estimator,
                                                           const DAG&      dag) {
       return DAG2BNLearner()._createBN_(estimator, dag, false);
     }
 
     /// create a BN and compute the log-likelihood if needed
-    template < typename GUM_SCALAR >
+    template < GUM_Numeric GUM_SCALAR >
     BayesNet< GUM_SCALAR > DAG2BNLearner::_createBN_(ParamEstimator& estimator,
                                                      const DAG&      dag,
                                                      const bool      compute_log_likelihood) {
@@ -127,7 +127,7 @@ namespace gum {
     }
 
     /// create a BN with EM: initialized by an estimator
-    template < typename GUM_SCALAR >
+    template < GUM_Numeric GUM_SCALAR >
     INLINE BayesNet< GUM_SCALAR > DAG2BNLearner::createBNwithEM(ParamEstimator& bootstrap_estimator,
                                                                 ParamEstimator& EM_estimator,
                                                                 const DAG&      dag) {
@@ -142,7 +142,7 @@ namespace gum {
     }
 
     /// create a BN with EM: initialized by the parameters of a BN
-    template < typename GUM_SCALAR >
+    template < GUM_Numeric GUM_SCALAR >
     INLINE BayesNet< GUM_SCALAR > DAG2BNLearner::createBNwithEM(ParamEstimator& bootstrap_estimator,
                                                                 ParamEstimator& EM_estimator,
                                                                 const BayesNet< GUM_SCALAR >& bn) {
@@ -155,7 +155,7 @@ namespace gum {
     }
 
     /// create a BN with EM: initialized by the parameters of a BN
-    template < typename GUM_SCALAR >
+    template < GUM_Numeric GUM_SCALAR >
     BayesNet< GUM_SCALAR > DAG2BNLearner::createBNwithEM(ParamEstimator& bootstrap_estimator,
                                                          ParamEstimator& EM_estimator,
                                                          BayesNet< GUM_SCALAR >&& bn) {
@@ -193,7 +193,7 @@ namespace gum {
     }
 
     /// create a BN with EM: initialized by the parameters of a BN
-    template < typename GUM_SCALAR >
+    template < GUM_Numeric GUM_SCALAR >
     BayesNet< GUM_SCALAR > DAG2BNLearner::_performEM_(ParamEstimator&          bootstrap_estimator,
                                                       ParamEstimator&          EM_estimator,
                                                       BayesNet< GUM_SCALAR >&& bn) {

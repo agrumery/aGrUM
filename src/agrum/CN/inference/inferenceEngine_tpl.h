@@ -55,13 +55,13 @@
 namespace gum {
   namespace credal {
 
-    /*template< typename GUM_SCALAR >
+    /*template< GumScalar GUM_SCALAR >
     InferenceEngine< GUM_SCALAR >::InferenceEngine () : ApproximationScheme() {
       std::cout << "InferenceEngine construct ()" << std::endl;
       GUM_CONSTRUCTOR ( InferenceEngine )
     }*/
 
-    template < typename GUM_SCALAR >
+    template < GUM_Numeric GUM_SCALAR >
     InferenceEngine< GUM_SCALAR >::InferenceEngine(const CredalNet< GUM_SCALAR >& credalNet) :
         ApproximationScheme() {
       credalNet_ = &credalNet;
@@ -73,17 +73,17 @@ namespace gum {
       GUM_CONSTRUCTOR(InferenceEngine);
     }
 
-    template < typename GUM_SCALAR >
+    template < GUM_Numeric GUM_SCALAR >
     InferenceEngine< GUM_SCALAR >::~InferenceEngine() {
       GUM_DESTRUCTOR(InferenceEngine);
     }
 
-    template < typename GUM_SCALAR >
+    template < GUM_Numeric GUM_SCALAR >
     const CredalNet< GUM_SCALAR >& InferenceEngine< GUM_SCALAR >::credalNet() const {
       return *credalNet_;
     }
 
-    template < typename GUM_SCALAR >
+    template < GUM_Numeric GUM_SCALAR >
     void InferenceEngine< GUM_SCALAR >::eraseAllEvidence() {
       evidence_.clear();
       query_.clear();
@@ -113,24 +113,24 @@ namespace gum {
     }
 
     /*
-    template< typename GUM_SCALAR >
+    template< GumScalar GUM_SCALAR >
     void InferenceEngine< GUM_SCALAR >::setIterStop ( const int &iter_stop ) {
       iterStop_ = iter_stop;
     }*/
 
-    template < typename GUM_SCALAR >
+    template < GUM_Numeric GUM_SCALAR >
     void InferenceEngine< GUM_SCALAR >::storeBNOpt(const bool value) {
       storeBNOpt_ = value;
     }
 
-    template < typename GUM_SCALAR >
+    template < GUM_Numeric GUM_SCALAR >
     void InferenceEngine< GUM_SCALAR >::storeVertices(const bool value) {
       storeVertices_ = value;
 
       if (value) initMarginalSets_();
     }
 
-    template < typename GUM_SCALAR >
+    template < GUM_Numeric GUM_SCALAR >
     void InferenceEngine< GUM_SCALAR >::setRepetitiveInd(const bool repetitive) {
       bool oldValue  = repetitiveInd_;
       repetitiveInd_ = repetitive;
@@ -139,33 +139,33 @@ namespace gum {
       if (repetitiveInd_ && !oldValue) repetitiveInit_();
     }
 
-    template < typename GUM_SCALAR >
+    template < GUM_Numeric GUM_SCALAR >
     bool InferenceEngine< GUM_SCALAR >::repetitiveInd() const {
       return repetitiveInd_;
     }
 
     /*
-        template< typename GUM_SCALAR >
+        template< GumScalar GUM_SCALAR >
         int InferenceEngine< GUM_SCALAR >::iterStop () const {
           return iterStop_;
         }*/
 
-    template < typename GUM_SCALAR >
+    template < GUM_Numeric GUM_SCALAR >
     bool InferenceEngine< GUM_SCALAR >::storeVertices() const {
       return storeVertices_;
     }
 
-    template < typename GUM_SCALAR >
+    template < GUM_Numeric GUM_SCALAR >
     bool InferenceEngine< GUM_SCALAR >::storeBNOpt() const {
       return storeBNOpt_;
     }
 
-    template < typename GUM_SCALAR >
+    template < GUM_Numeric GUM_SCALAR >
     VarMod2BNsMap< GUM_SCALAR >* InferenceEngine< GUM_SCALAR >::getVarMod2BNsMap() {
       return &dbnOpt_;
     }
 
-    template < typename GUM_SCALAR >
+    template < GUM_Numeric GUM_SCALAR >
     void InferenceEngine< GUM_SCALAR >::insertModalsFile(const std::string& path) {
       std::ifstream mod_stream(path.c_str(), std::ios::in);
 
@@ -212,7 +212,7 @@ namespace gum {
       initExpectations_();
     }
 
-    template < typename GUM_SCALAR >
+    template < GUM_Numeric GUM_SCALAR >
     void InferenceEngine< GUM_SCALAR >::insertModals(
         const std::map< std::string, std::vector< GUM_SCALAR > >& modals) {
       if (!modal_.empty()) modal_.clear();
@@ -243,7 +243,7 @@ namespace gum {
       initExpectations_();
     }
 
-    template < typename GUM_SCALAR >
+    template < GUM_Numeric GUM_SCALAR >
     void InferenceEngine< GUM_SCALAR >::insertEvidence(
         const std::map< std::string, std::vector< GUM_SCALAR > >& eviMap) {
       if (!evidence_.empty()) evidence_.clear();
@@ -264,7 +264,7 @@ namespace gum {
     // check that observed variables DO exists in the network (otherwise Lazy
     // report
     // an error and app crash)
-    template < typename GUM_SCALAR >
+    template < GUM_Numeric GUM_SCALAR >
     void InferenceEngine< GUM_SCALAR >::insertEvidence(
         const NodeProperty< std::vector< GUM_SCALAR > >& evidence) {
       if (!evidence_.empty()) evidence_.clear();
@@ -281,7 +281,7 @@ namespace gum {
       evidence_.begin();
     }
 
-    template < typename GUM_SCALAR >
+    template < GUM_Numeric GUM_SCALAR >
     void InferenceEngine< GUM_SCALAR >::insertEvidenceFile(const std::string& path) {
       std::ifstream evi_stream(path.c_str(), std::ios::in);
 
@@ -342,7 +342,7 @@ namespace gum {
       evidence_.begin();
     }
 
-    template < typename GUM_SCALAR >
+    template < GUM_Numeric GUM_SCALAR >
     void InferenceEngine< GUM_SCALAR >::insertQuery(
         const NodeProperty< std::vector< bool > >& query) {
       if (!query_.empty()) query_.clear();
@@ -354,7 +354,7 @@ namespace gum {
       }
     }
 
-    template < typename GUM_SCALAR >
+    template < GUM_Numeric GUM_SCALAR >
     void InferenceEngine< GUM_SCALAR >::insertQueryFile(const std::string& path) {
       std::ifstream evi_stream(path.c_str(), std::ios::in);
 
@@ -424,19 +424,19 @@ namespace gum {
       evi_stream.close();
     }
 
-    template < typename GUM_SCALAR >
+    template < GUM_Numeric GUM_SCALAR >
     INLINE Tensor< GUM_SCALAR >
            InferenceEngine< GUM_SCALAR >::marginalMin(const std::string& varName) const {
       return marginalMin(credalNet_->current_bn().idFromName(varName));
     }
 
-    template < typename GUM_SCALAR >
+    template < GUM_Numeric GUM_SCALAR >
     INLINE Tensor< GUM_SCALAR >
            InferenceEngine< GUM_SCALAR >::marginalMax(const std::string& varName) const {
       return marginalMax(credalNet_->current_bn().idFromName(varName));
     }
 
-    template < typename GUM_SCALAR >
+    template < GUM_Numeric GUM_SCALAR >
     gum::Tensor< GUM_SCALAR > InferenceEngine< GUM_SCALAR >::marginalMin(const NodeId id) const {
       Tensor< GUM_SCALAR > res;
       res.add(credalNet_->current_bn().variable(id));
@@ -444,7 +444,7 @@ namespace gum {
       return res;
     }
 
-    template < typename GUM_SCALAR >
+    template < GUM_Numeric GUM_SCALAR >
     gum::Tensor< GUM_SCALAR > InferenceEngine< GUM_SCALAR >::marginalMax(const NodeId id) const {
       Tensor< GUM_SCALAR > res;
       res.add(credalNet_->current_bn().variable(id));
@@ -452,29 +452,29 @@ namespace gum {
       return res;
     }
 
-    template < typename GUM_SCALAR >
+    template < GUM_Numeric GUM_SCALAR >
     const GUM_SCALAR&
         InferenceEngine< GUM_SCALAR >::expectationMin(const std::string& varName) const {
       return expectationMin_[credalNet_->current_bn().idFromName(varName)];
     }
 
-    template < typename GUM_SCALAR >
+    template < GUM_Numeric GUM_SCALAR >
     const GUM_SCALAR&
         InferenceEngine< GUM_SCALAR >::expectationMax(const std::string& varName) const {
       return expectationMax_[credalNet_->current_bn().idFromName(varName)];
     }
 
-    template < typename GUM_SCALAR >
+    template < GUM_Numeric GUM_SCALAR >
     const GUM_SCALAR& InferenceEngine< GUM_SCALAR >::expectationMin(const NodeId id) const {
       return expectationMin_[id];
     }
 
-    template < typename GUM_SCALAR >
+    template < GUM_Numeric GUM_SCALAR >
     const GUM_SCALAR& InferenceEngine< GUM_SCALAR >::expectationMax(const NodeId id) const {
       return expectationMax_[id];
     }
 
-    template < typename GUM_SCALAR >
+    template < GUM_Numeric GUM_SCALAR >
     const std::vector< GUM_SCALAR >&
         InferenceEngine< GUM_SCALAR >::dynamicExpMin(const std::string& varName) const {
       std::string errTxt = "const std::vector< GUM_SCALAR > & InferenceEngine< "
@@ -491,7 +491,7 @@ namespace gum {
       return *p;
     }
 
-    template < typename GUM_SCALAR >
+    template < GUM_Numeric GUM_SCALAR >
     const std::vector< GUM_SCALAR >&
         InferenceEngine< GUM_SCALAR >::dynamicExpMax(const std::string& varName) const {
       std::string errTxt = "const std::vector< GUM_SCALAR > & InferenceEngine< "
@@ -508,13 +508,13 @@ namespace gum {
       return *p;
     }
 
-    template < typename GUM_SCALAR >
+    template < GUM_Numeric GUM_SCALAR >
     const std::vector< std::vector< GUM_SCALAR > >&
         InferenceEngine< GUM_SCALAR >::vertices(const NodeId id) const {
       return marginalSets_[id];
     }
 
-    template < typename GUM_SCALAR >
+    template < GUM_Numeric GUM_SCALAR >
     void InferenceEngine< GUM_SCALAR >::saveMarginals(const std::string& path) const {
       std::ofstream m_stream(path.c_str(), std::ios::out | std::ios::trunc);
 
@@ -537,7 +537,7 @@ namespace gum {
       m_stream.close();
     }
 
-    template < typename GUM_SCALAR >
+    template < GUM_Numeric GUM_SCALAR >
     void InferenceEngine< GUM_SCALAR >::saveExpectations(const std::string& path) const {
       if (dynamicExpMin_.empty())   //_modal.empty())
         return;
@@ -581,7 +581,7 @@ namespace gum {
       m_stream.close();
     }
 
-    template < typename GUM_SCALAR >
+    template < GUM_Numeric GUM_SCALAR >
     std::string InferenceEngine< GUM_SCALAR >::toString() const {
       std::stringstream output;
       output << std::endl;
@@ -609,7 +609,7 @@ namespace gum {
       return output.str();
     }
 
-    template < typename GUM_SCALAR >
+    template < GUM_Numeric GUM_SCALAR >
     void InferenceEngine< GUM_SCALAR >::saveVertices(const std::string& path) const {
       std::ofstream m_stream(path.c_str(), std::ios::out | std::ios::trunc);
 
@@ -643,7 +643,7 @@ namespace gum {
       m_stream.close();
     }
 
-    template < typename GUM_SCALAR >
+    template < GUM_Numeric GUM_SCALAR >
     void InferenceEngine< GUM_SCALAR >::initMarginals_() {
       marginalMin_.clear();
       marginalMax_.clear();
@@ -664,7 +664,7 @@ namespace gum {
       displatchMarginalsToThreads_();
     }
 
-    template < typename GUM_SCALAR >
+    template < GUM_Numeric GUM_SCALAR >
     void InferenceEngine< GUM_SCALAR >::initMarginalSets_() {
       marginalSets_.clear();
 
@@ -679,7 +679,7 @@ namespace gum {
     // modal_ variables will always be checked further, so it is not necessary
     // to
     // check it here, but doing so will use less memory
-    template < typename GUM_SCALAR >
+    template < GUM_Numeric GUM_SCALAR >
     void InferenceEngine< GUM_SCALAR >::initExpectations_() {
       expectationMin_.clear();
       expectationMax_.clear();
@@ -701,12 +701,12 @@ namespace gum {
       }
     }
 
-    template < typename GUM_SCALAR >
+    template < GUM_Numeric GUM_SCALAR >
     void InferenceEngine< GUM_SCALAR >::dynamicExpectations() {
       dynamicExpectations_();
     }
 
-    template < typename GUM_SCALAR >
+    template < GUM_Numeric GUM_SCALAR >
     void InferenceEngine< GUM_SCALAR >::dynamicExpectations_() {
       // no modals, no expectations computed during inference
       if (expectationMin_.empty() || modal_.empty()) return;
@@ -762,7 +762,7 @@ namespace gum {
       }
     }
 
-    template < typename GUM_SCALAR >
+    template < GUM_Numeric GUM_SCALAR >
     void InferenceEngine< GUM_SCALAR >::repetitiveInit_() {
       timeSteps_ = 0;
       t0_.clear();
@@ -873,7 +873,7 @@ namespace gum {
       }
     }
 
-    template < typename GUM_SCALAR >
+    template < GUM_Numeric GUM_SCALAR >
     void InferenceEngine< GUM_SCALAR >::updateExpectations_(
         const NodeId&                    id,
         const std::vector< GUM_SCALAR >& vertex) {
@@ -895,7 +895,7 @@ namespace gum {
       }
     }
 
-    template < typename GUM_SCALAR >
+    template < GUM_Numeric GUM_SCALAR >
     void InferenceEngine< GUM_SCALAR >::updateCredalSets_(const NodeId&                    id,
                                                           const std::vector< GUM_SCALAR >& vertex,
                                                           const bool& elimRedund) {
@@ -967,19 +967,19 @@ namespace gum {
       marginalSets_[id] = lrsWrapper.getOutput();
     }
 
-    template < typename GUM_SCALAR >
+    template < GUM_Numeric GUM_SCALAR >
     const NodeProperty< std::vector< NodeId > >&
         InferenceEngine< GUM_SCALAR >::getT0Cluster() const {
       return t0_;
     }
 
-    template < typename GUM_SCALAR >
+    template < GUM_Numeric GUM_SCALAR >
     const NodeProperty< std::vector< NodeId > >&
         InferenceEngine< GUM_SCALAR >::getT1Cluster() const {
       return t1_;
     }
 
-    template < typename GUM_SCALAR >
+    template < GUM_Numeric GUM_SCALAR >
     inline const GUM_SCALAR InferenceEngine< GUM_SCALAR >::computeEpsilon_() {
       // compute the number of threads and prepare for the result
       const Size                nb_threads = ThreadExecutor::nbRunningThreadsExecutors() == 0
@@ -1094,7 +1094,7 @@ namespace gum {
     */
 
 
-    template < typename GUM_SCALAR >
+    template < GUM_Numeric GUM_SCALAR >
     void InferenceEngine< GUM_SCALAR >::displatchMarginalsToThreads_() {
       // we compute the number of elements in the 2 loops (over i,j in marginalMin_[i][j])
       Size       nb_elements      = 0;
@@ -1154,7 +1154,7 @@ namespace gum {
       }
     }
 
-    template < typename GUM_SCALAR >
+    template < GUM_Numeric GUM_SCALAR >
     void InferenceEngine< GUM_SCALAR >::addEvidence(NodeId                           id,
                                                     const std::vector< GUM_SCALAR >& vals) {
       evidence_.insert(id, vals);
@@ -1164,7 +1164,7 @@ namespace gum {
     }
 
     /// adds a new hard evidence on node id
-    template < typename GUM_SCALAR >
+    template < GUM_Numeric GUM_SCALAR >
     void InferenceEngine< GUM_SCALAR >::addEvidence(NodeId id, const Idx val) {
       std::vector< GUM_SCALAR > vals(this->credalNet_->current_bn().variable(id).domainSize(), 0);
       vals[val] = 1;
@@ -1172,32 +1172,32 @@ namespace gum {
     }
 
     /// adds a new hard evidence on node named nodeName
-    template < typename GUM_SCALAR >
+    template < GUM_Numeric GUM_SCALAR >
     void InferenceEngine< GUM_SCALAR >::addEvidence(const std::string& nodeName, const Idx val) {
       addEvidence(this->credalNet_->current_bn().idFromName(nodeName), val);
     }
 
     /// adds a new hard evidence on node id
-    template < typename GUM_SCALAR >
+    template < GUM_Numeric GUM_SCALAR >
     void InferenceEngine< GUM_SCALAR >::addEvidence(NodeId id, const std::string& label) {
       addEvidence(id, this->credalNet_->current_bn().variable(id)[label]);
     }
 
     /// adds a new hard evidence on node named nodeName
-    template < typename GUM_SCALAR >
+    template < GUM_Numeric GUM_SCALAR >
     void InferenceEngine< GUM_SCALAR >::addEvidence(const std::string& nodeName,
                                                     const std::string& label) {
       const NodeId id = this->credalNet_->current_bn().idFromName(nodeName);
       addEvidence(id, this->credalNet_->current_bn().variable(id)[label]);
     }
 
-    template < typename GUM_SCALAR >
+    template < GUM_Numeric GUM_SCALAR >
     void InferenceEngine< GUM_SCALAR >::addEvidence(const std::string&               nodeName,
                                                     const std::vector< GUM_SCALAR >& vals) {
       addEvidence(this->credalNet_->current_bn().idFromName(nodeName), vals);
     }
 
-    template < typename GUM_SCALAR >
+    template < GUM_Numeric GUM_SCALAR >
     void InferenceEngine< GUM_SCALAR >::addEvidence(const Tensor< GUM_SCALAR >& pot) {
       const auto id = this->credalNet_->current_bn().idFromName(pot.variable(0).name());
       std::vector< GUM_SCALAR > vals(this->credalNet_->current_bn().variable(id).domainSize(), 0);

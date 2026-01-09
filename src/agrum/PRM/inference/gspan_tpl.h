@@ -53,7 +53,7 @@
 namespace gum {
   namespace prm {
 
-    template < typename GUM_SCALAR >
+    template < GUM_Numeric GUM_SCALAR >
     void GSpan< GUM_SCALAR >::discoverPatterns() {
       Timer t;
       _sortNodesAndEdges_();
@@ -75,7 +75,7 @@ namespace gum {
       _sortPatterns_();
     }
 
-    template < typename GUM_SCALAR >
+    template < GUM_Numeric GUM_SCALAR >
     void GSpan< GUM_SCALAR >::_sortNodesAndEdges_() {
       for (auto iter = _graph_->labels().begin(); iter != _graph_->labels().end(); ++iter) {
         try {
@@ -117,7 +117,7 @@ namespace gum {
       _graph_->_labels_ = new_labels;
     }
 
-    template < typename GUM_SCALAR >
+    template < GUM_Numeric GUM_SCALAR >
     void GSpan< GUM_SCALAR >::_subgraph_mining_(gspan::InterfaceGraph< GUM_SCALAR >& ig,
                                                 gspan::Pattern&                      pat) {
       std::vector< gspan::Pattern* > stack;
@@ -237,7 +237,7 @@ namespace gum {
       }
     }
 
-    template < typename GUM_SCALAR >
+    template < GUM_Numeric GUM_SCALAR >
     void GSpan< GUM_SCALAR >::_sortPatterns_() {
       // First we put all the patterns in  _patterns_.
       std::vector< NodeId > stack;
@@ -362,7 +362,7 @@ namespace gum {
       }
     }
 
-    template < typename GUM_SCALAR >
+    template < GUM_Numeric GUM_SCALAR >
     INLINE GSpan< GUM_SCALAR >::GSpan(const PRM< GUM_SCALAR >&             prm,
                                       const PRMSystem< GUM_SCALAR >&       sys,
                                       gspan::SearchStrategy< GUM_SCALAR >* strategy) :
@@ -371,7 +371,7 @@ namespace gum {
       GUM_CONSTRUCTOR(GSpan);
     }
 
-    template < typename GUM_SCALAR >
+    template < GUM_Numeric GUM_SCALAR >
     INLINE GSpan< GUM_SCALAR >::~GSpan() {
       GUM_DESTRUCTOR(GSpan);
 
@@ -381,64 +381,64 @@ namespace gum {
       delete _graph_;
     }
 
-    template < typename GUM_SCALAR >
+    template < GUM_Numeric GUM_SCALAR >
     INLINE Size GSpan< GUM_SCALAR >::getMaxDFSDepth() const {
       return _depth_stop_;
     }
 
-    template < typename GUM_SCALAR >
+    template < GUM_Numeric GUM_SCALAR >
     INLINE void GSpan< GUM_SCALAR >::setMaxDFSDepth(Size depth) {
       _depth_stop_ = depth;
     }
 
-    template < typename GUM_SCALAR >
+    template < GUM_Numeric GUM_SCALAR >
     INLINE gspan::DFSTree< GUM_SCALAR >& GSpan< GUM_SCALAR >::tree() {
       return _tree_;
     }
 
-    template < typename GUM_SCALAR >
+    template < GUM_Numeric GUM_SCALAR >
     INLINE const gspan::DFSTree< GUM_SCALAR >& GSpan< GUM_SCALAR >::tree() const {
       return _tree_;
     }
 
-    template < typename GUM_SCALAR >
+    template < GUM_Numeric GUM_SCALAR >
     INLINE Idx GSpan< GUM_SCALAR >::_cost_func_(Size interface_size, Size frequency) {
       return Idx(interface_size * frequency);
     }
 
-    template < typename GUM_SCALAR >
+    template < GUM_Numeric GUM_SCALAR >
     INLINE std::vector< gspan::Pattern* >& GSpan< GUM_SCALAR >::patterns() {
       return _patterns_;
     }
 
-    template < typename GUM_SCALAR >
+    template < GUM_Numeric GUM_SCALAR >
     INLINE const std::vector< gspan::Pattern* >& GSpan< GUM_SCALAR >::patterns() const {
       return _patterns_;
     }
 
-    template < typename GUM_SCALAR >
+    template < GUM_Numeric GUM_SCALAR >
     INLINE typename GSpan< GUM_SCALAR >::MatchedInstances&
         GSpan< GUM_SCALAR >::matches(const gspan::Pattern& p) {
       return *(_matched_instances_[const_cast< gspan::Pattern* >(&p)]);
     }
 
-    template < typename GUM_SCALAR >
+    template < GUM_Numeric GUM_SCALAR >
     INLINE const typename GSpan< GUM_SCALAR >::MatchedInstances&
         GSpan< GUM_SCALAR >::matches(const gspan::Pattern& p) const {
       return *(_matched_instances_[const_cast< gspan::Pattern* >(&p)]);
     }
 
-    template < typename GUM_SCALAR >
+    template < GUM_Numeric GUM_SCALAR >
     INLINE gspan::InterfaceGraph< GUM_SCALAR >& GSpan< GUM_SCALAR >::interfaceGraph() {
       return *_graph_;
     }
 
-    template < typename GUM_SCALAR >
+    template < GUM_Numeric GUM_SCALAR >
     INLINE const gspan::InterfaceGraph< GUM_SCALAR >& GSpan< GUM_SCALAR >::interfaceGraph() const {
       return *_graph_;
     }
 
-    template < typename GUM_SCALAR >
+    template < GUM_Numeric GUM_SCALAR >
     INLINE bool GSpan< GUM_SCALAR >::_isEdgeEligible_(gspan::EdgeData< GUM_SCALAR >* e) {
       return (_graph_->edges(e->l).size() >= 2) && (_graph_->nodes(e->l_u).size() >= 2)
           && (_graph_->nodes(e->l_v).size() >= 2);
@@ -446,23 +446,23 @@ namespace gum {
 
     // LalbeSort
 
-    template < typename GUM_SCALAR >
+    template < GUM_Numeric GUM_SCALAR >
     INLINE GSpan< GUM_SCALAR >::LabelSort::LabelSort(GSpan* my_gspan) : gspan(my_gspan) {
       GUM_CONSTRUCTOR(GSpan< GUM_SCALAR >::LabelSort);
     }
 
-    template < typename GUM_SCALAR >
+    template < GUM_Numeric GUM_SCALAR >
     INLINE GSpan< GUM_SCALAR >::LabelSort::LabelSort(const LabelSort& source) :
         gspan(source.gspan) {
       GUM_CONS_CPY(GSpan< GUM_SCALAR >::LabelSort);
     }
 
-    template < typename GUM_SCALAR >
+    template < GUM_Numeric GUM_SCALAR >
     INLINE GSpan< GUM_SCALAR >::LabelSort::~LabelSort() {
       GUM_DESTRUCTOR(GSpan< GUM_SCALAR >::LabelSort);
     }
 
-    template < typename GUM_SCALAR >
+    template < GUM_Numeric GUM_SCALAR >
     INLINE bool GSpan< GUM_SCALAR >::LabelSort::operator()(gspan::LabelData* i,
                                                            gspan::LabelData* j) {
       // We want a descending order
@@ -472,23 +472,23 @@ namespace gum {
 
     // PatternSort
 
-    template < typename GUM_SCALAR >
+    template < GUM_Numeric GUM_SCALAR >
     INLINE GSpan< GUM_SCALAR >::PatternSort::PatternSort(GSpan* my_gspan) : gspan(my_gspan) {
       GUM_CONSTRUCTOR(GSpan< GUM_SCALAR >::PatternSort);
     }
 
-    template < typename GUM_SCALAR >
+    template < GUM_Numeric GUM_SCALAR >
     INLINE GSpan< GUM_SCALAR >::PatternSort::PatternSort(const PatternSort& source) :
         gspan(source.gspan) {
       GUM_CONS_CPY(GSpan< GUM_SCALAR >::PatternSort);
     }
 
-    template < typename GUM_SCALAR >
+    template < GUM_Numeric GUM_SCALAR >
     INLINE GSpan< GUM_SCALAR >::PatternSort::~PatternSort() {
       GUM_DESTRUCTOR(GSpan< GUM_SCALAR >::PatternSort);
     }
 
-    template < typename GUM_SCALAR >
+    template < GUM_Numeric GUM_SCALAR >
     INLINE bool GSpan< GUM_SCALAR >::PatternSort::operator()(gspan::Pattern* i, gspan::Pattern* j) {
       // We want a descending order
       return gspan->tree().strategy().operator()(i, j);

@@ -58,7 +58,7 @@
 
 namespace gum {
 
-  template < typename GUM_SCALAR, template < typename > class TerminalNodePolicy >
+  template < typename GUM_ELEMENT, template < typename > class TerminalNodePolicy >
   class MultiDimFunctionGraph;
 
   /**
@@ -89,11 +89,11 @@ namespace gum {
    * auto manager = dg->manager();
    * @endcode
    *
-   * @tparam GUM_SCALAR The type of scalars stored in the multidimensional
+   * @tparam GUM_ELEMENT The type of scalars stored in the multidimensional
    * table.
    * @tparam TerminalNodePolicy The terminal node policy to use.
    */
-  template < typename GUM_SCALAR, template < typename > class TerminalNodePolicy >
+  template < typename GUM_ELEMENT, template < typename > class TerminalNodePolicy >
   class MultiDimFunctionGraphManager {
     // =========================================================================
     /// @name Constructors / Destructors
@@ -106,8 +106,8 @@ namespace gum {
      *
      * See class description for more info.
      */
-    friend MultiDimFunctionGraphManager< GUM_SCALAR, TerminalNodePolicy >*
-        MultiDimFunctionGraph< GUM_SCALAR, TerminalNodePolicy >::manager();
+    friend MultiDimFunctionGraphManager< GUM_ELEMENT, TerminalNodePolicy >*
+        MultiDimFunctionGraph< GUM_ELEMENT, TerminalNodePolicy >::manager();
 
     /**
      * @brief Default constructor.
@@ -118,7 +118,7 @@ namespace gum {
 
     protected:
     explicit MultiDimFunctionGraphManager(
-        MultiDimFunctionGraph< GUM_SCALAR, TerminalNodePolicy >* master);
+        MultiDimFunctionGraph< GUM_ELEMENT, TerminalNodePolicy >* master);
 
     public:
     /**
@@ -197,7 +197,7 @@ namespace gum {
      * @param value The value added by copy.
      * @return Returns he id of the terminal node hence created.
      */
-    NodeId addTerminalNode(const GUM_SCALAR& value);
+    NodeId addTerminalNode(const GUM_ELEMENT& value);
 
     /**
      * @brief Erases a node from the diagram.
@@ -331,7 +331,7 @@ namespace gum {
 
     private:
     /// The multidimdecisiongraph supposed to be edited.
-    MultiDimFunctionGraph< GUM_SCALAR, TerminalNodePolicy >* _functionGraph_;
+    MultiDimFunctionGraph< GUM_ELEMENT, TerminalNodePolicy >* _functionGraph_;
   };
 
   // ===========================================================================
@@ -349,17 +349,17 @@ namespace gum {
    * #include <agrum/base/multidim/implementations/multiDimFunctionGraphManager.h>
    * @endcode
    *
-   * @tparam GUM_SCALAR The type of scalars stored in the multidimensional
+   * @tparam GUM_ELEMENT The type of scalars stored in the multidimensional
    * table.
    * @tparam TerminalNodePolicy The terminal node policy to use.
    */
-  template < typename GUM_SCALAR, template < typename > class TerminalNodePolicy >
+  template < typename GUM_ELEMENT, template < typename > class TerminalNodePolicy >
   class MultiDimFunctionGraphTreeManager final:
-      public MultiDimFunctionGraphManager< GUM_SCALAR, TerminalNodePolicy > {
+      public MultiDimFunctionGraphManager< GUM_ELEMENT, TerminalNodePolicy > {
     /// This friend methods from is the only way to get an instance of a
     /// manager.
-    friend MultiDimFunctionGraphManager< GUM_SCALAR, TerminalNodePolicy >*
-        MultiDimFunctionGraph< GUM_SCALAR, TerminalNodePolicy >::manager();
+    friend MultiDimFunctionGraphManager< GUM_ELEMENT, TerminalNodePolicy >*
+        MultiDimFunctionGraph< GUM_ELEMENT, TerminalNodePolicy >::manager();
 
     // ========================================================================
     /// @name Constructor and destructor
@@ -369,7 +369,7 @@ namespace gum {
      * @brief Class constructor.
      */
     MultiDimFunctionGraphTreeManager(
-        MultiDimFunctionGraph< GUM_SCALAR, TerminalNodePolicy >* master);
+        MultiDimFunctionGraph< GUM_ELEMENT, TerminalNodePolicy >* master);
 
     public:
     /**
@@ -403,23 +403,23 @@ namespace gum {
    * #include <agrum/base/multidim/implementations/multiDimFunctionGraphManager.h>
    * @endcode
    *
-   * @tparam GUM_SCALAR The type of scalars stored in the multidimensional
+   * @tparam GUM_ELEMENT The type of scalars stored in the multidimensional
    * table.
    * @tparam TerminalNodePolicy The terminal node policy to use.
    */
-  template < typename GUM_SCALAR, template < typename > class TerminalNodePolicy >
+  template < typename GUM_ELEMENT, template < typename > class TerminalNodePolicy >
   class MultiDimFunctionGraphROManager final:
-      public MultiDimFunctionGraphManager< GUM_SCALAR, TerminalNodePolicy > {
+      public MultiDimFunctionGraphManager< GUM_ELEMENT, TerminalNodePolicy > {
     /// This friend methods from is the only way to get an instance of a
     /// manager.
-    friend MultiDimFunctionGraphManager< GUM_SCALAR, TerminalNodePolicy >*
-        MultiDimFunctionGraph< GUM_SCALAR, TerminalNodePolicy >::manager();
+    friend MultiDimFunctionGraphManager< GUM_ELEMENT, TerminalNodePolicy >*
+        MultiDimFunctionGraph< GUM_ELEMENT, TerminalNodePolicy >::manager();
 
     // ========================================================================
     /// @name Constructor and destructor
     // ========================================================================
     /// @{
-    MultiDimFunctionGraphROManager(MultiDimFunctionGraph< GUM_SCALAR, TerminalNodePolicy >* master);
+    MultiDimFunctionGraphROManager(MultiDimFunctionGraph< GUM_ELEMENT, TerminalNodePolicy >* master);
 
     public:
     ~MultiDimFunctionGraphROManager();

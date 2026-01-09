@@ -82,7 +82,7 @@ namespace gum {
      * methods GSpan:: _sortNodesAndEdges_(), GSpan:: _subgraph_mining_() and
      * GSpan:: _sortPatterns_().
      */
-    template < typename GUM_SCALAR >
+    template < GUM_Numeric GUM_SCALAR >
     class GSpan {
       public:
       // ========================================================================

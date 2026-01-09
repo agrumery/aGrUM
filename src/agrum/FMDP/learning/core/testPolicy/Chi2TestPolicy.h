@@ -68,10 +68,10 @@ namespace gum {
    *
    * @ingroup fmdp_group
    */
-  template < typename GUM_SCALAR >
-  class Chi2TestPolicy: public ITestPolicy< GUM_SCALAR > {
+  template < typename GUM_ELEMENT >
+  class Chi2TestPolicy: public ITestPolicy< GUM_ELEMENT > {
     public:
-    Chi2TestPolicy() : ITestPolicy< GUM_SCALAR >(), _conTab_(), _chi2Score_(0) {
+    Chi2TestPolicy() : ITestPolicy< GUM_ELEMENT >(), _conTab_(), _chi2Score_(0) {
       GUM_CONSTRUCTOR(Chi2TestPolicy);
     }
 
@@ -97,7 +97,7 @@ namespace gum {
     // ============================================================================
     /// Comptabilizes the new observation
     // ============================================================================
-    void addObservation(Idx attr, GUM_SCALAR value);
+    void addObservation(Idx attr, GUM_ELEMENT value);
 
     /// @}
 
@@ -140,13 +140,13 @@ namespace gum {
 
     /// @}
 
-    const ContingencyTable< Idx, GUM_SCALAR >& ct() const { return _conTab_; }
+    const ContingencyTable< Idx, GUM_ELEMENT >& ct() const { return _conTab_; }
 
-    void add(const Chi2TestPolicy< GUM_SCALAR >& src);
+    void add(const Chi2TestPolicy< GUM_ELEMENT >& src);
 
     std::string toString() const {
       std::stringstream ss;
-      ss << ITestPolicy< GUM_SCALAR >::toString() << "\t\t\tContingency Table : " << std::endl
+      ss << ITestPolicy< GUM_ELEMENT >::toString() << "\t\t\tContingency Table : " << std::endl
          << _conTab_.toString() << std::endl
          << "\t\t\tGStat : " << this->score() << std::endl
          << "\t\t\tGStat : " << this->secondaryscore() << std::endl;
@@ -155,7 +155,7 @@ namespace gum {
 
     private:
     /// The contingency table used to keeps records of all observation
-    ContingencyTable< Idx, GUM_SCALAR > _conTab_;
+    ContingencyTable< Idx, GUM_ELEMENT > _conTab_;
 
     mutable double _chi2Score_;
   };

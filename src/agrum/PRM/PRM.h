@@ -57,9 +57,9 @@
 namespace gum {
   namespace prm {
 
-    template < typename GUM_SCALAR >
+    template < GUM_Numeric GUM_SCALAR >
     class PRMSystem;
-    template < typename GUM_SCALAR >
+    template < GUM_Numeric GUM_SCALAR >
     class PRMFactory;
 
     /**
@@ -70,7 +70,7 @@ namespace gum {
      *
      * @ingroup prm_group
      */
-    template < typename GUM_SCALAR >
+    template < GUM_Numeric GUM_SCALAR >
     class PRM {
       public:
       friend class PRMFactory< GUM_SCALAR >;

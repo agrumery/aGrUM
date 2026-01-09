@@ -93,7 +93,7 @@ namespace gum {
      * }
      * @endcode
      */
-    template < typename GUM_SCALAR = double >
+    template < GUM_Numeric GUM_SCALAR = double >
     class DBRowGeneratorEM: public DBRowGeneratorWithBN< GUM_SCALAR > {
       public:
       // ##########################################################################

@@ -61,7 +61,7 @@
 namespace gum {
   namespace prm {
 
-    template < typename GUM_SCALAR >
+    template < GUM_Numeric GUM_SCALAR >
     class PRMClass;
 
     /**
@@ -76,7 +76,7 @@ namespace gum {
      *
      * @see PRM Class<GUM_SCALAR> PRMClassElement<GUM_SCALAR>
      */
-    template < typename GUM_SCALAR >
+    template < GUM_Numeric GUM_SCALAR >
     class PRMInterface: public PRMClassElementContainer< GUM_SCALAR > {
       // ========================================================================
       friend class PRMClass< GUM_SCALAR >;

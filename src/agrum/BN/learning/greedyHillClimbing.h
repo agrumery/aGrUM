@@ -133,7 +133,7 @@ namespace gum {
        * STRUCT_CONSTRAINT, GRAPH_CHANGES_GENERATOR>.
        * @param estimator A estimator.
        * @param initial_dag the DAG we start from for our learning */
-      template < typename GUM_SCALAR = double,
+      template < GUM_Numeric GUM_SCALAR = double,
                  typename GRAPH_CHANGES_SELECTOR,
                  typename PARAM_ESTIMATOR >
       BayesNet< GUM_SCALAR > learnBN(GRAPH_CHANGES_SELECTOR& selector,

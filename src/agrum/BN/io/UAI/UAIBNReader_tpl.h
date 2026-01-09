@@ -45,7 +45,7 @@
 
 namespace gum {
 
-  template < typename GUM_SCALAR >
+  template < GUM_Numeric GUM_SCALAR >
   UAIBNReader< GUM_SCALAR >::UAIBNReader(BayesNet< GUM_SCALAR >* bn, const std::string& filename) :
       BNReader< GUM_SCALAR >(bn, filename) {
     GUM_CONSTRUCTOR(UAIBNReader);
@@ -61,7 +61,7 @@ namespace gum {
     } catch (IOError const&) { _ioerror_ = true; }
   }
 
-  template < typename GUM_SCALAR >
+  template < GUM_Numeric GUM_SCALAR >
   UAIBNReader< GUM_SCALAR >::~UAIBNReader() {
     GUM_DESTRUCTOR(UAIBNReader);
 
@@ -73,30 +73,30 @@ namespace gum {
     }
   }
 
-  template < typename GUM_SCALAR >
+  template < GUM_Numeric GUM_SCALAR >
   INLINE UAIBN::Scanner& UAIBNReader< GUM_SCALAR >::scanner() {
     if (_ioerror_) { GUM_ERROR(gum::IOError, "No such file " + streamName()) }
 
     return *_scanner_;
   }
 
-  template < typename GUM_SCALAR >
+  template < GUM_Numeric GUM_SCALAR >
   INLINE const std::string& UAIBNReader< GUM_SCALAR >::streamName() const {
     return _streamName_;
   }
 
-  template < typename GUM_SCALAR >
+  template < GUM_Numeric GUM_SCALAR >
   INLINE bool UAIBNReader< GUM_SCALAR >::trace() const {
     return _traceScanning_;
   }
 
-  template < typename GUM_SCALAR >
+  template < GUM_Numeric GUM_SCALAR >
   INLINE void UAIBNReader< GUM_SCALAR >::trace(bool b) {
     _traceScanning_ = b;
     scanner().setTrace(b);
   }
 
-  template < typename GUM_SCALAR >
+  template < GUM_Numeric GUM_SCALAR >
   Size UAIBNReader< GUM_SCALAR >::proceed() {
     if (_ioerror_) { GUM_ERROR(gum::IOError, "No such file " + streamName()) }
 
@@ -114,7 +114,7 @@ namespace gum {
     return (_parser_->errors().error_count);
   }
 
-  template < typename GUM_SCALAR >
+  template < GUM_Numeric GUM_SCALAR >
   void UAIBNReader< GUM_SCALAR >::buildFromQuartets(
       std::vector< std::tuple< float, int, int, int > > quartets) {
     Idx  current;
@@ -199,76 +199,76 @@ namespace gum {
 
   // @{
   // publishing Errors API
-  template < typename GUM_SCALAR >
+  template < GUM_Numeric GUM_SCALAR >
   INLINE Idx UAIBNReader< GUM_SCALAR >::errLine(Idx i) {
     if (_parseDone_) return _parser_->errors().error(i).line;
     else { GUM_ERROR(OperationNotAllowed, "UAI file not parsed yet") }
   }
 
-  template < typename GUM_SCALAR >
+  template < GUM_Numeric GUM_SCALAR >
   INLINE Idx UAIBNReader< GUM_SCALAR >::errCol(Idx i) {
     if (_parseDone_) return _parser_->errors().error(i).column;
     else { GUM_ERROR(OperationNotAllowed, "UAI file not parsed yet") }
   }
 
-  template < typename GUM_SCALAR >
+  template < GUM_Numeric GUM_SCALAR >
   INLINE bool UAIBNReader< GUM_SCALAR >::errIsError(Idx i) {
     if (_parseDone_) return _parser_->errors().error(i).is_error;
     else { GUM_ERROR(OperationNotAllowed, "UAI file not parsed yet") }
   }
 
-  template < typename GUM_SCALAR >
+  template < GUM_Numeric GUM_SCALAR >
   INLINE std::string UAIBNReader< GUM_SCALAR >::errMsg(Idx i) {
     if (_parseDone_) return _parser_->errors().error(i).msg;
     else { GUM_ERROR(OperationNotAllowed, "UAI file not parsed yet") }
   }
 
-  template < typename GUM_SCALAR >
+  template < GUM_Numeric GUM_SCALAR >
   INLINE void UAIBNReader< GUM_SCALAR >::showElegantErrors(std::ostream& o) {
     if (_parseDone_) _parser_->errors().elegantErrors(o);
     else { GUM_ERROR(OperationNotAllowed, "UAI file not parsed yet") }
   }
 
-  template < typename GUM_SCALAR >
+  template < GUM_Numeric GUM_SCALAR >
   INLINE void UAIBNReader< GUM_SCALAR >::showElegantErrorsAndWarnings(std::ostream& o) {
     if (_parseDone_) _parser_->errors().elegantErrorsAndWarnings(o);
     else { GUM_ERROR(OperationNotAllowed, "UAI file not parsed yet") }
   }
 
-  template < typename GUM_SCALAR >
+  template < GUM_Numeric GUM_SCALAR >
   INLINE void UAIBNReader< GUM_SCALAR >::showErrorsAndWarnings(std::ostream& o) {
     if (_parseDone_) _parser_->errors().simpleErrorsAndWarnings(o);
     else { GUM_ERROR(OperationNotAllowed, "UAI file not parsed yet") }
   }
 
-  template < typename GUM_SCALAR >
+  template < GUM_Numeric GUM_SCALAR >
   INLINE void UAIBNReader< GUM_SCALAR >::showErrorCounts(std::ostream& o) {
     if (_parseDone_) _parser_->errors().syntheticResults(o);
     else { GUM_ERROR(OperationNotAllowed, "UAI file not parsed yet") }
   }
 
-  template < typename GUM_SCALAR >
+  template < GUM_Numeric GUM_SCALAR >
   INLINE Size UAIBNReader< GUM_SCALAR >::errors() {
     return (!_parseDone_) ? (Size)0 : _parser_->errors().error_count;
   }
 
-  template < typename GUM_SCALAR >
+  template < GUM_Numeric GUM_SCALAR >
   INLINE Size UAIBNReader< GUM_SCALAR >::warnings() {
     return (!_parseDone_) ? (Size)0 : _parser_->errors().warning_count;
   }
 
-  template < typename GUM_SCALAR >
+  template < GUM_Numeric GUM_SCALAR >
   INLINE void UAIBNReader< GUM_SCALAR >::_addFatalError_(Idx lig, Idx col, const std::string& s) {
     _parser_->errors().addError(s, _streamName_, lig, col);
     GUM_ERROR(gum::OperationNotAllowed, "")
   }
 
-  template < typename GUM_SCALAR >
+  template < GUM_Numeric GUM_SCALAR >
   INLINE void UAIBNReader< GUM_SCALAR >::_addError_(Idx lig, Idx col, const std::string& s) {
     _parser_->errors().addError(s, _streamName_, lig, col);
   }
 
-  template < typename GUM_SCALAR >
+  template < GUM_Numeric GUM_SCALAR >
   INLINE void UAIBNReader< GUM_SCALAR >::_addWarning_(Idx lig, Idx col, const std::string& s) {
     _parser_->errors().addWarning(s, _streamName_, lig, col);
   }

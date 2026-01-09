@@ -71,7 +71,7 @@ namespace gum {
    * and from ApproximationScheme.
    */
 
-  template < typename GUM_SCALAR >
+  template < GUM_Numeric GUM_SCALAR >
   class SamplingInference: public ApproximateInference< GUM_SCALAR > {
     public:
     // ############################################################################

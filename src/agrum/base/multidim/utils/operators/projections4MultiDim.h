@@ -79,9 +79,9 @@ namespace gum {
    * take care to select this function if it is appropriate for your
    * projection.
    */
-  template < typename GUM_SCALAR >
-  MultiDimArray< GUM_SCALAR >* projectMaxMultiDimArray(const MultiDimArray< GUM_SCALAR >* table,
-                                                       const gum::VariableSet&            del_vars);
+  template < typename GUM_ELEMENT >
+  MultiDimArray< GUM_ELEMENT >* projectMaxMultiDimArray(const MultiDimArray< GUM_ELEMENT >* table,
+                                                        const gum::VariableSet& del_vars);
 
   /**
    * @brief a specialized function for projecting a multiDimArray using a Max
@@ -100,10 +100,10 @@ namespace gum {
    * take care to select this function if it is appropriate for your
    * projection.
    */
-  template < typename GUM_SCALAR >
-  MultiDimImplementation< GUM_SCALAR >*
-      projectMaxMultiDimArray(const MultiDimImplementation< GUM_SCALAR >* table,
-                              const gum::VariableSet&                     del_vars);
+  template < typename GUM_ELEMENT >
+  MultiDimImplementation< GUM_ELEMENT >*
+      projectMaxMultiDimArray(const MultiDimImplementation< GUM_ELEMENT >* table,
+                              const gum::VariableSet&                      del_vars);
 
   /**
    * @brief a specialized function for projecting a multiDimArray using a Max
@@ -122,10 +122,10 @@ namespace gum {
    * take care to select this function if it is appropriate for your
    * projection.
    */
-  template < typename GUM_SCALAR >
-  MultiDimArray< GUM_SCALAR* >*
-      projectMaxMultiDimArray4Pointers(const MultiDimArray< GUM_SCALAR* >* table,
-                                       const gum::VariableSet&             del_vars);
+  template < typename GUM_ELEMENT >
+  MultiDimArray< GUM_ELEMENT* >*
+      projectMaxMultiDimArray4Pointers(const MultiDimArray< GUM_ELEMENT* >* table,
+                                       const gum::VariableSet&              del_vars);
 
   /**
    * @brief a specialized function for projecting a multiDimArray using a Max
@@ -144,10 +144,10 @@ namespace gum {
    * take care to select this function if it is appropriate for your
    * projection.
    */
-  template < typename GUM_SCALAR >
-  MultiDimImplementation< GUM_SCALAR* >*
-      projectMaxMultiDimArray4Pointers(const MultiDimImplementation< GUM_SCALAR* >* table,
-                                       const gum::VariableSet&                      del_vars);
+  template < typename GUM_ELEMENT >
+  MultiDimImplementation< GUM_ELEMENT* >*
+      projectMaxMultiDimArray4Pointers(const MultiDimImplementation< GUM_ELEMENT* >* table,
+                                       const gum::VariableSet&                       del_vars);
 
   // @}
   // ==========================================================================
@@ -172,9 +172,9 @@ namespace gum {
    * take care to select this function if it is appropriate for your
    * projection.
    */
-  template < typename GUM_SCALAR >
-  MultiDimArray< GUM_SCALAR >* projectMinMultiDimArray(const MultiDimArray< GUM_SCALAR >* table,
-                                                       const gum::VariableSet&            del_vars);
+  template < typename GUM_ELEMENT >
+  MultiDimArray< GUM_ELEMENT >* projectMinMultiDimArray(const MultiDimArray< GUM_ELEMENT >* table,
+                                                        const gum::VariableSet& del_vars);
 
   /**
    * @brief a specialized function for projecting a multiDimArray using a Min
@@ -193,10 +193,10 @@ namespace gum {
    * take care to select this function if it is appropriate for your
    * projection.
    */
-  template < typename GUM_SCALAR >
-  MultiDimImplementation< GUM_SCALAR >*
-      projectMinMultiDimArray(const MultiDimImplementation< GUM_SCALAR >* table,
-                              const gum::VariableSet&                     del_vars);
+  template < typename GUM_ELEMENT >
+  MultiDimImplementation< GUM_ELEMENT >*
+      projectMinMultiDimArray(const MultiDimImplementation< GUM_ELEMENT >* table,
+                              const gum::VariableSet&                      del_vars);
 
   /**
    * @brief a specialized function for projecting a multiDimArray using a Min
@@ -215,10 +215,10 @@ namespace gum {
    * take care to select this function if it is appropriate for your
    * projection.
    */
-  template < typename GUM_SCALAR >
-  MultiDimArray< GUM_SCALAR* >*
-      projectMinMultiDimArray4Pointers(const MultiDimArray< GUM_SCALAR* >* table,
-                                       const gum::VariableSet&             del_vars);
+  template < typename GUM_ELEMENT >
+  MultiDimArray< GUM_ELEMENT* >*
+      projectMinMultiDimArray4Pointers(const MultiDimArray< GUM_ELEMENT* >* table,
+                                       const gum::VariableSet&              del_vars);
 
   /**
    * @brief a specialized function for projecting a multiDimArray using a Min
@@ -237,10 +237,10 @@ namespace gum {
    * take care to select this function if it is appropriate for your
    * projection.
    */
-  template < typename GUM_SCALAR >
-  MultiDimImplementation< GUM_SCALAR* >*
-      projectMinMultiDimArray4Pointers(const MultiDimImplementation< GUM_SCALAR* >* table,
-                                       const gum::VariableSet&                      del_vars);
+  template < typename GUM_ELEMENT >
+  MultiDimImplementation< GUM_ELEMENT* >*
+      projectMinMultiDimArray4Pointers(const MultiDimImplementation< GUM_ELEMENT* >* table,
+                                       const gum::VariableSet&                       del_vars);
 
   // @}
   // ==========================================================================
@@ -265,9 +265,9 @@ namespace gum {
    * take care to select this function if it is appropriate for your
    * projection.
    */
-  template < typename GUM_SCALAR >
-  MultiDimArray< GUM_SCALAR >* projectSumMultiDimArray(const MultiDimArray< GUM_SCALAR >* table,
-                                                       const gum::VariableSet&            del_vars);
+  template < typename GUM_ELEMENT >
+  MultiDimArray< GUM_ELEMENT >* projectSumMultiDimArray(const MultiDimArray< GUM_ELEMENT >* table,
+                                                        const gum::VariableSet& del_vars);
 
   /**
    * @brief a specialized function for projecting a multiDimArray using a
@@ -286,10 +286,10 @@ namespace gum {
    * take care to select this function if it is appropriate for your
    * projection.
    */
-  template < typename GUM_SCALAR >
-  MultiDimImplementation< GUM_SCALAR >*
-      projectSumMultiDimArray(const MultiDimImplementation< GUM_SCALAR >* table,
-                              const gum::VariableSet&                     del_vars);
+  template < typename GUM_ELEMENT >
+  MultiDimImplementation< GUM_ELEMENT >*
+      projectSumMultiDimArray(const MultiDimImplementation< GUM_ELEMENT >* table,
+                              const gum::VariableSet&                      del_vars);
 
   /**
    * @brief a specialized function for projecting a multiDimArray using a
@@ -308,10 +308,10 @@ namespace gum {
    * take care to select this function if it is appropriate for your
    * projection.
    */
-  template < typename GUM_SCALAR >
-  MultiDimArray< GUM_SCALAR* >*
-      projectSumMultiDimArray4Pointers(const MultiDimArray< GUM_SCALAR* >* table,
-                                       const gum::VariableSet&             del_vars);
+  template < typename GUM_ELEMENT >
+  MultiDimArray< GUM_ELEMENT* >*
+      projectSumMultiDimArray4Pointers(const MultiDimArray< GUM_ELEMENT* >* table,
+                                       const gum::VariableSet&              del_vars);
 
   /**
    * @brief a specialized function for projecting a multiDimArray using a
@@ -330,10 +330,10 @@ namespace gum {
    * take care to select this function if it is appropriate for your
    * projection.
    */
-  template < typename GUM_SCALAR >
-  MultiDimImplementation< GUM_SCALAR* >*
-      projectSumMultiDimArray4Pointers(const MultiDimImplementation< GUM_SCALAR* >* table,
-                                       const gum::VariableSet&                      del_vars);
+  template < typename GUM_ELEMENT >
+  MultiDimImplementation< GUM_ELEMENT* >*
+      projectSumMultiDimArray4Pointers(const MultiDimImplementation< GUM_ELEMENT* >* table,
+                                       const gum::VariableSet&                       del_vars);
 
   // @}
   // ==========================================================================
@@ -358,9 +358,10 @@ namespace gum {
    * will take care to select this function if it is appropriate for your
    * projection.
    */
-  template < typename GUM_SCALAR >
-  MultiDimArray< GUM_SCALAR >* projectProductMultiDimArray(const MultiDimArray< GUM_SCALAR >* table,
-                                                           const gum::VariableSet& del_vars);
+  template < typename GUM_ELEMENT >
+  MultiDimArray< GUM_ELEMENT >*
+      projectProductMultiDimArray(const MultiDimArray< GUM_ELEMENT >* table,
+                                  const gum::VariableSet&             del_vars);
 
   /**
    * @brief a specialized function for projecting a multiDimArray using
@@ -379,10 +380,10 @@ namespace gum {
    * will take care to select this function if it is appropriate for your
    * projection.
    */
-  template < typename GUM_SCALAR >
-  MultiDimImplementation< GUM_SCALAR >*
-      projectProductMultiDimArray(const MultiDimImplementation< GUM_SCALAR >* table,
-                                  const gum::VariableSet&                     del_vars);
+  template < typename GUM_ELEMENT >
+  MultiDimImplementation< GUM_ELEMENT >*
+      projectProductMultiDimArray(const MultiDimImplementation< GUM_ELEMENT >* table,
+                                  const gum::VariableSet&                      del_vars);
 
   /**
    * @brief a specialized function for projecting a multiDimArray using
@@ -401,10 +402,10 @@ namespace gum {
    * will take care to select this function if it is appropriate for your
    * projection.
    */
-  template < typename GUM_SCALAR >
-  MultiDimArray< GUM_SCALAR* >*
-      projectProductMultiDimArray4Pointers(const MultiDimArray< GUM_SCALAR* >* table,
-                                           const gum::VariableSet&             del_vars);
+  template < typename GUM_ELEMENT >
+  MultiDimArray< GUM_ELEMENT* >*
+      projectProductMultiDimArray4Pointers(const MultiDimArray< GUM_ELEMENT* >* table,
+                                           const gum::VariableSet&              del_vars);
 
   /**
    * @brief a specialized function for projecting a multiDimArray using
@@ -423,10 +424,10 @@ namespace gum {
    * will take care to select this function if it is appropriate for your
    * projection.
    */
-  template < typename GUM_SCALAR >
-  MultiDimImplementation< GUM_SCALAR* >*
-      projectProductMultiDimArray4Pointers(const MultiDimImplementation< GUM_SCALAR* >* table,
-                                           const gum::VariableSet&                      del_vars);
+  template < typename GUM_ELEMENT >
+  MultiDimImplementation< GUM_ELEMENT* >*
+      projectProductMultiDimArray4Pointers(const MultiDimImplementation< GUM_ELEMENT* >* table,
+                                           const gum::VariableSet&                       del_vars);
 
   // @}
   // ==========================================================================
@@ -445,11 +446,11 @@ namespace gum {
    * @return function combine2MultiDimArrays allocates on the heap the new T
    * multiDimArray and returns it.
    */
-  template < typename GUM_SCALAR >
-  MultiDimArray< GUM_SCALAR >* ProjectFuncMultiDimArray(const MultiDimArray< GUM_SCALAR >* t1,
-                                                        const MultiDimArray< GUM_SCALAR >* t2,
-                                                        const GUM_SCALAR (*f)(const GUM_SCALAR&,
-                                                                              const GUM_SCALAR&));
+  template < typename GUM_ELEMENT >
+  MultiDimArray< GUM_ELEMENT >*
+      ProjectFuncMultiDimArray(const MultiDimArray< GUM_ELEMENT >* t1,
+                               const MultiDimArray< GUM_ELEMENT >* t2,
+                               const GUM_ELEMENT (*f)(const GUM_ELEMENT&, const GUM_ELEMENT&));
 
   /**
    * @brief a specialized function for functionally projecting a multiDimArray
@@ -462,11 +463,11 @@ namespace gum {
    * @return function combine2MultiDimArrays allocates on the heap the new T
    * multiDimArray and returns it.
    */
-  template < typename GUM_SCALAR >
-  MultiDimImplementation< GUM_SCALAR >*
-      combine2MultiDimArrays(const MultiDimImplementation< GUM_SCALAR >* t1,
-                             const MultiDimImplementation< GUM_SCALAR >* t2,
-                             const GUM_SCALAR (*f)(const GUM_SCALAR&, const GUM_SCALAR&));
+  template < typename GUM_ELEMENT >
+  MultiDimImplementation< GUM_ELEMENT >*
+      combine2MultiDimArrays(const MultiDimImplementation< GUM_ELEMENT >* t1,
+                             const MultiDimImplementation< GUM_ELEMENT >* t2,
+                             const GUM_ELEMENT (*f)(const GUM_ELEMENT&, const GUM_ELEMENT&));
 
   // @}
   // ==========================================================================
@@ -492,10 +493,10 @@ namespace gum {
    * take care to select this function if it is appropriate for your
    * projection.
    */
-  template < typename GUM_SCALAR >
-  MultiDimFunctionGraph< GUM_SCALAR >*
-      projectMaxMultiDimFunctionGraph(const MultiDimFunctionGraph< GUM_SCALAR >* table,
-                                      const gum::VariableSet&                    del_vars);
+  template < typename GUM_ELEMENT >
+  MultiDimFunctionGraph< GUM_ELEMENT >*
+      projectMaxMultiDimFunctionGraph(const MultiDimFunctionGraph< GUM_ELEMENT >* table,
+                                      const gum::VariableSet&                     del_vars);
 
   /**
    * @brief a specialized function for projecting a multiDimFunctionGraph using
@@ -515,10 +516,10 @@ namespace gum {
    * take care to select this function if it is appropriate for your
    * projection.
    */
-  template < typename GUM_SCALAR >
-  MultiDimImplementation< GUM_SCALAR >*
-      projectMaxMultiDimFunctionGraph(const MultiDimImplementation< GUM_SCALAR >* table,
-                                      const gum::VariableSet&                     del_vars);
+  template < typename GUM_ELEMENT >
+  MultiDimImplementation< GUM_ELEMENT >*
+      projectMaxMultiDimFunctionGraph(const MultiDimImplementation< GUM_ELEMENT >* table,
+                                      const gum::VariableSet&                      del_vars);
 
 
   /**
@@ -539,10 +540,10 @@ namespace gum {
    * take care to select this function if it is appropriate for your
    * projection.
    */
-  template < typename GUM_SCALAR >
-  MultiDimFunctionGraph< GUM_SCALAR >*
-      projectMinMultiDimFunctionGraph(const MultiDimFunctionGraph< GUM_SCALAR >* table,
-                                      const gum::VariableSet&                    del_vars);
+  template < typename GUM_ELEMENT >
+  MultiDimFunctionGraph< GUM_ELEMENT >*
+      projectMinMultiDimFunctionGraph(const MultiDimFunctionGraph< GUM_ELEMENT >* table,
+                                      const gum::VariableSet&                     del_vars);
 
   /**
    * @brief a specialized function for projecting a multiDimFunctionGraph
@@ -562,10 +563,10 @@ namespace gum {
    * take care to select this function if it is appropriate for your
    * projection.
    */
-  template < typename GUM_SCALAR >
-  MultiDimImplementation< GUM_SCALAR >*
-      projectMinMultiDimFunctionGraph(const MultiDimImplementation< GUM_SCALAR >* table,
-                                      const gum::VariableSet&                     del_vars);
+  template < typename GUM_ELEMENT >
+  MultiDimImplementation< GUM_ELEMENT >*
+      projectMinMultiDimFunctionGraph(const MultiDimImplementation< GUM_ELEMENT >* table,
+                                      const gum::VariableSet&                      del_vars);
 
 
   /**
@@ -586,10 +587,10 @@ namespace gum {
    * take care to select this function if it is appropriate for your
    * projection.
    */
-  template < typename GUM_SCALAR >
-  MultiDimFunctionGraph< GUM_SCALAR >*
-      projectSumMultiDimFunctionGraph(const MultiDimFunctionGraph< GUM_SCALAR >* table,
-                                      const gum::VariableSet&                    del_vars);
+  template < typename GUM_ELEMENT >
+  MultiDimFunctionGraph< GUM_ELEMENT >*
+      projectSumMultiDimFunctionGraph(const MultiDimFunctionGraph< GUM_ELEMENT >* table,
+                                      const gum::VariableSet&                     del_vars);
 
   /**
    * @brief a specialized function for projecting a multiDimFunctionGraph using
@@ -609,10 +610,10 @@ namespace gum {
    * take care to select this function if it is appropriate for your
    * projection.
    */
-  template < typename GUM_SCALAR >
-  MultiDimImplementation< GUM_SCALAR >*
-      projectSumMultiDimFunctionGraph(const MultiDimImplementation< GUM_SCALAR >* table,
-                                      const gum::VariableSet&                     del_vars);
+  template < typename GUM_ELEMENT >
+  MultiDimImplementation< GUM_ELEMENT >*
+      projectSumMultiDimFunctionGraph(const MultiDimImplementation< GUM_ELEMENT >* table,
+                                      const gum::VariableSet&                      del_vars);
 
 
   /**
@@ -633,60 +634,60 @@ namespace gum {
    * will take care to select this function if it is appropriate for your
    * projection.
    */
-  template < typename GUM_SCALAR >
-  MultiDimFunctionGraph< GUM_SCALAR >*
-      projectProductMultiDimFunctionGraph(const MultiDimFunctionGraph< GUM_SCALAR >* table,
-                                          const gum::VariableSet&                    del_vars);
-
-  /**
-   * @brief a specialized function for projecting a multiDimFunctionGraph using
-   * products
-   *
-   * The function projects a table over the subset of its variables NOT IN the
-   * set of variables del_vars. For instance, if table is a
-   * MultiDimFunctionGraph defined over A,B,C,D and if del_vars = {A,C}, then
-   * the function returns a table over B,D defined as Prod_{A,C} table
-   * (A,B,C,D).
-   *
-   * @return function ProjectMaxMultiDimFunctionGraphs allocates on the heap
-   * the new T multiDimFunctionGraph and returns it
-   *
-   * @warning In practice, do not use this function but rather
-   * operator/function projectProduct on MultiDimImplementation. This operator
-   * will take care to select this function if it is appropriate for your
-   * projection.
-   */
-  template < typename GUM_SCALAR >
-  MultiDimImplementation< GUM_SCALAR >*
-      projectProductMultiDimFunctionGraph(const MultiDimImplementation< GUM_SCALAR >* table,
+  template < typename GUM_ELEMENT >
+  MultiDimFunctionGraph< GUM_ELEMENT >*
+      projectProductMultiDimFunctionGraph(const MultiDimFunctionGraph< GUM_ELEMENT >* table,
                                           const gum::VariableSet&                     del_vars);
+
+  /**
+   * @brief a specialized function for projecting a multiDimFunctionGraph using
+   * products
+   *
+   * The function projects a table over the subset of its variables NOT IN the
+   * set of variables del_vars. For instance, if table is a
+   * MultiDimFunctionGraph defined over A,B,C,D and if del_vars = {A,C}, then
+   * the function returns a table over B,D defined as Prod_{A,C} table
+   * (A,B,C,D).
+   *
+   * @return function ProjectMaxMultiDimFunctionGraphs allocates on the heap
+   * the new T multiDimFunctionGraph and returns it
+   *
+   * @warning In practice, do not use this function but rather
+   * operator/function projectProduct on MultiDimImplementation. This operator
+   * will take care to select this function if it is appropriate for your
+   * projection.
+   */
+  template < typename GUM_ELEMENT >
+  MultiDimImplementation< GUM_ELEMENT >*
+      projectProductMultiDimFunctionGraph(const MultiDimImplementation< GUM_ELEMENT >* table,
+                                          const gum::VariableSet&                      del_vars);
 
   /// @}
 
   /// The function to be used to project a MultiDimImplementation using a Max
-  template < typename GUM_SCALAR >
-  MultiDimImplementation< GUM_SCALAR >*
-      projectMax(const MultiDimImplementation< GUM_SCALAR >& table,
-                 const gum::VariableSet&                     del_vars);
+  template < typename GUM_ELEMENT >
+  MultiDimImplementation< GUM_ELEMENT >*
+      projectMax(const MultiDimImplementation< GUM_ELEMENT >& table,
+                 const gum::VariableSet&                      del_vars);
 
   /// The function to be used to project a MultiDimImplementation using a Min
-  template < typename GUM_SCALAR >
-  MultiDimImplementation< GUM_SCALAR >*
-      projectMin(const MultiDimImplementation< GUM_SCALAR >& table,
-                 const gum::VariableSet&                     del_vars);
+  template < typename GUM_ELEMENT >
+  MultiDimImplementation< GUM_ELEMENT >*
+      projectMin(const MultiDimImplementation< GUM_ELEMENT >& table,
+                 const gum::VariableSet&                      del_vars);
 
   /// The function to be used to project a MultiDimImplementation using a Sum
-  template < typename GUM_SCALAR >
-  MultiDimImplementation< GUM_SCALAR >*
-      projectSum(const MultiDimImplementation< GUM_SCALAR >& table,
-                 const gum::VariableSet&                     del_vars);
+  template < typename GUM_ELEMENT >
+  MultiDimImplementation< GUM_ELEMENT >*
+      projectSum(const MultiDimImplementation< GUM_ELEMENT >& table,
+                 const gum::VariableSet&                      del_vars);
 
   /// The function to be used to project a MultiDimImplementation using a
   /// Product
-  template < typename GUM_SCALAR >
-  MultiDimImplementation< GUM_SCALAR >*
-      projectProduct(const MultiDimImplementation< GUM_SCALAR >& table,
-                     const gum::VariableSet&                     del_vars);
+  template < typename GUM_ELEMENT >
+  MultiDimImplementation< GUM_ELEMENT >*
+      projectProduct(const MultiDimImplementation< GUM_ELEMENT >& table,
+                     const gum::VariableSet&                      del_vars);
 
 
   // ==========================================================================
@@ -698,14 +699,14 @@ namespace gum {
    * @brief the function used to register all the projection operators on
    * multidimImplementations over non-pointers types.
    */
-  template < typename GUM_SCALAR >
+  template < typename GUM_ELEMENT >
   void projections4MultiDimInit();
 
   /**
    * @brief the function used to register all the projections on
    * multidimImplementations over pointers types.
    */
-  template < typename GUM_SCALAR >
+  template < typename GUM_ELEMENT >
   void pointerProjections4MultiDimInit();
 
   /**
@@ -721,9 +722,9 @@ namespace gum {
    * this partial specialization. This is most effective to produce different
    * codes for pointer types and non-pointer types.
    */
-  template < typename GUM_SCALAR >
+  template < typename GUM_ELEMENT >
   struct Projections4MultiDimInitialize {
-    void init() { projections4MultiDimInit< GUM_SCALAR >(); };
+    void init() { projections4MultiDimInit< GUM_ELEMENT >(); };
   };
 
   /**
@@ -740,9 +741,9 @@ namespace gum {
    * pointerProjections4MultiDimInit, we allow this partial specialization to
    * obtain.
    */
-  template < typename GUM_SCALAR >
-  struct Projections4MultiDimInitialize< GUM_SCALAR* > {
-    void init() { pointerProjections4MultiDimInit< GUM_SCALAR >(); };
+  template < typename GUM_ELEMENT >
+  struct Projections4MultiDimInitialize< GUM_ELEMENT* > {
+    void init() { pointerProjections4MultiDimInit< GUM_ELEMENT >(); };
   };
 
 } /* namespace gum */

@@ -69,8 +69,8 @@ namespace gum {
    *
    * @ingroup fmdp_group
    */
-  template < typename GUM_SCALAR >
-  class LeastSquareTestPolicy: public ITestPolicy< GUM_SCALAR > {
+  template < typename GUM_ELEMENT >
+  class LeastSquareTestPolicy: public ITestPolicy< GUM_ELEMENT > {
     public:
     // ############################################################################
     /// @name Constructor/Destrcutor
@@ -80,7 +80,7 @@ namespace gum {
     // ============================================================================
     /// Constructor
     // ============================================================================
-    LeastSquareTestPolicy() : ITestPolicy< GUM_SCALAR >(), _sumO_(0.0), _score_(0) {
+    LeastSquareTestPolicy() : ITestPolicy< GUM_ELEMENT >(), _sumO_(0.0), _score_(0) {
       GUM_CONSTRUCTOR(LeastSquareTestPolicy);
     }
 
@@ -106,7 +106,7 @@ namespace gum {
     // ============================================================================
     /// Comptabilizes the new observation
     // ============================================================================
-    void addObservation(Idx attr, GUM_SCALAR value);
+    void addObservation(Idx attr, GUM_ELEMENT value);
 
     /// @}
 
@@ -157,7 +157,7 @@ namespace gum {
     /// Performs the merging of current LeastSquareTestPolicy instance with
     /// given instance
     // ============================================================================
-    void add(const LeastSquareTestPolicy< GUM_SCALAR >& src);
+    void add(const LeastSquareTestPolicy< GUM_ELEMENT >& src);
 
     // ============================================================================
     /// Returns global sum (needed for the merging)

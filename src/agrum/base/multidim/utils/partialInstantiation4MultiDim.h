@@ -60,13 +60,13 @@
 
 namespace gum {
 
-  template < typename GUM_SCALAR >
+  template < typename GUM_ELEMENT >
   class MultiDimImplementation;
 
-  template < typename GUM_SCALAR >
+  template < typename GUM_ELEMENT >
   class MultiDimArray;
 
-  template < typename GUM_SCALAR >
+  template < typename GUM_ELEMENT >
   class MultiDimDecorator;
 
   /**
@@ -87,9 +87,9 @@ namespace gum {
    * @param inst_vars The variables instantiation.
    * @return Returns the partial instantiation of table as a new MultiDimArray.
    */
-  template < typename GUM_SCALAR >
-  MultiDimArray< GUM_SCALAR >*
-      partialInstantiationMultiDimArray(const MultiDimArray< GUM_SCALAR >*               table,
+  template < typename GUM_ELEMENT >
+  MultiDimArray< GUM_ELEMENT >*
+      partialInstantiationMultiDimArray(const MultiDimArray< GUM_ELEMENT >*              table,
                                         const HashTable< const DiscreteVariable*, Idx >& inst_vars);
 
   /**
@@ -111,9 +111,9 @@ namespace gum {
    * @return Returns the partial instantiation of table as a new
    * MultiDimImplementation.
    */
-  template < typename GUM_SCALAR >
-  MultiDimImplementation< GUM_SCALAR >*
-      partialInstantiationMultiDimArray(const MultiDimImplementation< GUM_SCALAR >*      table,
+  template < typename GUM_ELEMENT >
+  MultiDimImplementation< GUM_ELEMENT >*
+      partialInstantiationMultiDimArray(const MultiDimImplementation< GUM_ELEMENT >*     table,
                                         const HashTable< const DiscreteVariable*, Idx >& inst_vars);
 
   /**
@@ -135,9 +135,9 @@ namespace gum {
    * @return Returns the partial instantiation of table as a new
    * MultiDimArray.
    */
-  template < typename GUM_SCALAR >
-  MultiDimArray< GUM_SCALAR* >* partialInstantiationMultiDimArray4Pointers(
-      const MultiDimArray< GUM_SCALAR* >*              table,
+  template < typename GUM_ELEMENT >
+  MultiDimArray< GUM_ELEMENT* >* partialInstantiationMultiDimArray4Pointers(
+      const MultiDimArray< GUM_ELEMENT* >*             table,
       const HashTable< const DiscreteVariable*, Idx >& inst_vars);
 
   /**
@@ -159,9 +159,9 @@ namespace gum {
    * @return Returns the partial instantiation of table as a new
    * MultiDimImplementation.
    */
-  template < typename GUM_SCALAR >
-  MultiDimImplementation< GUM_SCALAR* >* partialInstantiationMultiDimArray4Pointers(
-      const MultiDimImplementation< GUM_SCALAR* >*     table,
+  template < typename GUM_ELEMENT >
+  MultiDimImplementation< GUM_ELEMENT* >* partialInstantiationMultiDimArray4Pointers(
+      const MultiDimImplementation< GUM_ELEMENT* >*    table,
       const HashTable< const DiscreteVariable*, Idx >& inst_vars);
 
   /**
@@ -172,9 +172,9 @@ namespace gum {
    * @return Returns the partial instantiation of table as a new
    * MultiDimImplementation.
    */
-  template < typename GUM_SCALAR >
-  MultiDimImplementation< GUM_SCALAR >*
-      partialInstantiation(const MultiDimImplementation< GUM_SCALAR >&      table,
+  template < typename GUM_ELEMENT >
+  MultiDimImplementation< GUM_ELEMENT >*
+      partialInstantiation(const MultiDimImplementation< GUM_ELEMENT >&     table,
                            const HashTable< const DiscreteVariable*, Idx >& inst_vars);
 
   /**
@@ -185,9 +185,9 @@ namespace gum {
    * @return Returns the partial instantiation of table as a new
    * MultiDimImplementation.
    */
-  template < typename GUM_SCALAR >
-  MultiDimImplementation< GUM_SCALAR >*
-      partialInstantiation(const MultiDimDecorator< GUM_SCALAR >&           table,
+  template < typename GUM_ELEMENT >
+  MultiDimImplementation< GUM_ELEMENT >*
+      partialInstantiation(const MultiDimDecorator< GUM_ELEMENT >&          table,
                            const HashTable< const DiscreteVariable*, Idx >& inst_vars);
 
   // ==========================================================================
@@ -199,14 +199,14 @@ namespace gum {
    * @brief The function used to register all the instantiation operators on
    * multidimImplementations over non-pointers types.
    */
-  template < typename GUM_SCALAR >
+  template < typename GUM_ELEMENT >
   void partialInstantiation4MultiDimInit();
 
   /**
    * @brief The function used to register all the instantiations on
    * multidimImplementations over pointers types.
    */
-  template < typename GUM_SCALAR >
+  template < typename GUM_ELEMENT >
   void pointerPartialInstantiation4MultiDimInit();
 
   /**
@@ -224,15 +224,15 @@ namespace gum {
    * allow this partial specialization. This is most effective to produce
    * different codes for pointer types and non-pointer types.
    *
-   * @tparam GUM_SCALAR The type of scalars stored in the multidimensional
+   * @tparam GUM_ELEMENT The type of scalars stored in the multidimensional
    * table.
    */
-  template < typename GUM_SCALAR >
+  template < typename GUM_ELEMENT >
   struct PartialInstantiation4MultiDimInitialize {
     /**
      * @brief Initialize the partial instantiation functions.
      */
-    void init() { partialInstantiation4MultiDimInit< GUM_SCALAR >(); };
+    void init() { partialInstantiation4MultiDimInit< GUM_ELEMENT >(); };
   };
 
   /**
@@ -251,15 +251,15 @@ namespace gum {
    * pointerPartialInstantiation4MultiDimInit, we allow this partial
    * specialization to obtain.
    *
-   * @tparam GUM_SCALAR The type of scalars stored in the multidimensional
+   * @tparam GUM_ELEMENT The type of scalars stored in the multidimensional
    * table as pointer.
    */
-  template < typename GUM_SCALAR >
-  struct PartialInstantiation4MultiDimInitialize< GUM_SCALAR* > {
+  template < typename GUM_ELEMENT >
+  struct PartialInstantiation4MultiDimInitialize< GUM_ELEMENT* > {
     /**
      * @brief Initialize the partial instantiation functions.
      */
-    void init() { pointerPartialInstantiation4MultiDimInit< GUM_SCALAR >(); };
+    void init() { pointerPartialInstantiation4MultiDimInit< GUM_ELEMENT >(); };
   };
 
 } /* namespace gum */

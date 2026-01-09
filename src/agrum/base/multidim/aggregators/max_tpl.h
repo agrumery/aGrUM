@@ -54,29 +54,29 @@
 namespace gum {
 
   namespace aggregator {
-    template < typename GUM_SCALAR >
+    template < GUM_Numeric GUM_SCALAR >
     INLINE Max< GUM_SCALAR >::Max() : MultiDimAggregator< GUM_SCALAR >() {
       this->decomposable_ = true;
       GUM_CONSTRUCTOR(Max);
     }
 
-    template < typename GUM_SCALAR >
+    template < GUM_Numeric GUM_SCALAR >
     INLINE Max< GUM_SCALAR >::Max(const Max< GUM_SCALAR >& from) :
         MultiDimAggregator< GUM_SCALAR >(from) {
       GUM_CONS_CPY(Max);
     }
 
-    template < typename GUM_SCALAR >
+    template < GUM_Numeric GUM_SCALAR >
     INLINE Max< GUM_SCALAR >::~Max() {
       GUM_DESTRUCTOR(Max);
     }
 
-    template < typename GUM_SCALAR >
+    template < GUM_Numeric GUM_SCALAR >
     INLINE Idx Max< GUM_SCALAR >::neutralElt_() const {
       return (Idx)0;
     }
 
-    template < typename GUM_SCALAR >
+    template < GUM_Numeric GUM_SCALAR >
     INLINE Idx Max< GUM_SCALAR >::fold_(const DiscreteVariable& v,
                                         Idx                     i1,
                                         Idx                     i2,
@@ -84,12 +84,12 @@ namespace gum {
       return (i1 > i2) ? i1 : i2;
     }
 
-    template < typename GUM_SCALAR >
+    template < GUM_Numeric GUM_SCALAR >
     INLINE std::string Max< GUM_SCALAR >::aggregatorName() const {
       return "max";
     }
 
-    template < typename GUM_SCALAR >
+    template < GUM_Numeric GUM_SCALAR >
     INLINE MultiDimContainer< GUM_SCALAR >* Max< GUM_SCALAR >::newFactory() const {
       return new Max< GUM_SCALAR >;
     }

@@ -74,7 +74,7 @@ namespace gum {
    *density of the Bayesian network to be too high
    * resulting in the failure of most of the inference Methods.
    */
-  template < typename GUM_SCALAR, template < typename > class ICPTGenerator = SimpleCPTGenerator >
+  template < GUM_Numeric GUM_SCALAR, template < typename > class ICPTGenerator = SimpleCPTGenerator >
   class SimpleBayesNetGenerator: public IBayesNetGenerator< GUM_SCALAR, ICPTGenerator > {
     public:
     // ############################################################################

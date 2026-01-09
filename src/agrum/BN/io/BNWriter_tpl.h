@@ -55,45 +55,45 @@ namespace gum {
   /* =========================================================================*/
   /* ===                           GUM_BN_WRITER === */
   /* =========================================================================*/
-  template < typename GUM_SCALAR >
+  template < GUM_Numeric GUM_SCALAR >
   INLINE BNWriter< GUM_SCALAR >::BNWriter() {
     GUM_CONSTRUCTOR(BNWriter);
   }
 
-  template < typename GUM_SCALAR >
+  template < GUM_Numeric GUM_SCALAR >
   INLINE BNWriter< GUM_SCALAR >::~BNWriter() {
     GUM_DESTRUCTOR(BNWriter);
   }
 
-  template < typename GUM_SCALAR >
+  template < GUM_Numeric GUM_SCALAR >
   INLINE bool BNWriter< GUM_SCALAR >::isModificationAllowed() const {
     return _allowModification_;
   }
 
-  template < typename GUM_SCALAR >
+  template < GUM_Numeric GUM_SCALAR >
   INLINE void BNWriter< GUM_SCALAR >::setAllowModification(bool am) {
     _allowModification_ = am;
   }
 
-  template < typename GUM_SCALAR >
+  template < GUM_Numeric GUM_SCALAR >
   void BNWriter< GUM_SCALAR >::write(std::ostream& output, const IBayesNet< GUM_SCALAR >& bn) {
     _syntacticalCheck(bn);
     _doWrite(output, bn);
   }
 
-  template < typename GUM_SCALAR >
+  template < GUM_Numeric GUM_SCALAR >
   void BNWriter< GUM_SCALAR >::write(const std::string&             filePath,
                                      const IBayesNet< GUM_SCALAR >& bn) {
     _syntacticalCheck(bn);
     _doWrite(filePath, bn);
   }
 
-  template < typename GUM_SCALAR >
+  template < GUM_Numeric GUM_SCALAR >
   void BNWriter< GUM_SCALAR >::_syntacticalCheck(const IBayesNet< GUM_SCALAR >& bn) {
     // no check by default
   }
 
-  template < typename GUM_SCALAR >
+  template < GUM_Numeric GUM_SCALAR >
   void BNWriter< GUM_SCALAR >::_validCharInNamesCheck(const IBayesNet< GUM_SCALAR >& bn) {
     if (_allowModification_)
       return;   // we do anything if the names will be modified when saved ...
@@ -115,14 +115,14 @@ namespace gum {
     }
   }
 
-  template < typename GUM_SCALAR >
+  template < GUM_Numeric GUM_SCALAR >
   std::string BNWriter< GUM_SCALAR >::_onlyValidCharsInName(const std::string& name) {
     if (!_allowModification_)
       return name;   // we do anything if the names will be modified when saved ...
     return _buildNameWithOnlyValidChars(name);
   }
 
-  template < typename GUM_SCALAR >
+  template < GUM_Numeric GUM_SCALAR >
   std::string BNWriter< GUM_SCALAR >::_buildNameWithOnlyValidChars(const std::string& name) {
     std::string pat = "[^_a-z0-9]+";
     std::regex  reg(pat, std::regex::icase);

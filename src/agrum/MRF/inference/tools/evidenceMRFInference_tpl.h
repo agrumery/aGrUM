@@ -51,7 +51,7 @@ namespace gum {
 
 
   // Default Constructor
-  template < typename GUM_SCALAR >
+  template < GUM_Numeric GUM_SCALAR >
   EvidenceMRFInference< GUM_SCALAR >::EvidenceMRFInference(
       const IMarkovRandomField< GUM_SCALAR >* mn) : MRFInference< GUM_SCALAR >(mn) {
     // assign a MRF if this has not been done before (due to virtual inheritance)
@@ -61,7 +61,7 @@ namespace gum {
   }
 
   // Destructor
-  template < typename GUM_SCALAR >
+  template < GUM_Numeric GUM_SCALAR >
   EvidenceMRFInference< GUM_SCALAR >::~EvidenceMRFInference() {
     GUM_DESTRUCTOR(EvidenceMRFInference);
   }

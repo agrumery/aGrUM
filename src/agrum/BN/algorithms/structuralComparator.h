@@ -89,10 +89,10 @@ namespace gum {
     template < typename GS1, typename GS2 >
     void compare(const BayesNet< GS1 >& ref, const BayesNet< GS2 >& test);
     /// compare a PDAG with the essential graph of a reference BN
-    template < typename GUM_SCALAR >
+    template < GUM_Numeric GUM_SCALAR >
     void compare(const BayesNet< GUM_SCALAR >& ref, const PDAG& test);
     /// compare the essential graph of a BN with a reference PDAG
-    template < typename GUM_SCALAR >
+    template < GUM_Numeric GUM_SCALAR >
     void compare(const PDAG& ref, const BayesNet< GUM_SCALAR >& test);
 
     /// Measures for the skeleton, aka graph without orientations

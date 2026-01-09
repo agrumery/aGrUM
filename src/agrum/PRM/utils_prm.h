@@ -85,12 +85,12 @@ namespace gum {
      * @throw FatalError raised if an unknown MultiDimImplementation is
      *encountered.
      */
-    template < typename GUM_SCALAR >
+    template < GUM_Numeric GUM_SCALAR >
     Tensor< GUM_SCALAR >*
         copyTensor(const Bijection< const DiscreteVariable*, const DiscreteVariable* >& bij,
                    const Tensor< GUM_SCALAR >&                                          source);
 
-    template < typename GUM_SCALAR >
+    template < GUM_Numeric GUM_SCALAR >
     Tensor< GUM_SCALAR > multTensor(const Tensor< GUM_SCALAR >& t1, const Tensor< GUM_SCALAR >& t2);
     /**
      * @brief Proceeds with the elimination of var in pool.
@@ -99,12 +99,12 @@ namespace gum {
      * @param trash All create tensors are inserted in this set, useful to
      *              delete later.
      */
-    template < typename GUM_SCALAR >
+    template < GUM_Numeric GUM_SCALAR >
     void eliminateNode(const DiscreteVariable*       var,
                        Set< Tensor< GUM_SCALAR >* >& pool,
                        Set< Tensor< GUM_SCALAR >* >& trash);
 
-    template < typename GUM_SCALAR >
+    template < GUM_Numeric GUM_SCALAR >
     void eliminateNodes(const std::vector< const DiscreteVariable* >& elim_order,
                         Set< Tensor< GUM_SCALAR >* >&                 pool,
                         Set< Tensor< GUM_SCALAR >* >&                 trash);

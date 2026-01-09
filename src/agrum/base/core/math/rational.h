@@ -75,7 +75,7 @@ namespace gum {
    * @tparam GUM_SCALAR The floating type ( float, double, long double ... ) of
    * the number.
    */
-  template < typename GUM_SCALAR >
+  template < GUM_Numeric GUM_SCALAR >
   class Rational {
     public:
     // ========================================================================

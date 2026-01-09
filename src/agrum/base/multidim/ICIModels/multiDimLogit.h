@@ -68,7 +68,7 @@ namespace gum {
    *     assumed to be of probability 0). But for optimization reason, we will
    *     never check if it is the case.
    */
-  template < typename GUM_SCALAR >
+  template < GUM_Numeric GUM_SCALAR >
   class MultiDimLogit final: public MultiDimICIModel< GUM_SCALAR > {
     public:
     // ============================================================================
@@ -147,7 +147,7 @@ namespace gum {
 #endif
 
   /// For friendly displaying the content of the array.
-  template < typename GUM_SCALAR >
+  template < GUM_Numeric GUM_SCALAR >
   std::ostream& operator<<(std::ostream& s, const MultiDimLogit< GUM_SCALAR >& ag);
 
 } /* namespace gum */

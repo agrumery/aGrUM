@@ -64,7 +64,7 @@ namespace gum {
    *
    * This class implements a CPTGenerator CPT generation algorithm.
    */
-  template < typename GUM_SCALAR >
+  template < GUM_Numeric GUM_SCALAR >
   class SimpleCPTDisturber: public ICPTDisturber< GUM_SCALAR > {
     public:
     // ############################################################################

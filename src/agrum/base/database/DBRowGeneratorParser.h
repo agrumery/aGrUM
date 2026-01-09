@@ -242,7 +242,7 @@ namespace gum {
        * update their BN model.
        * @warning if one generator that relies on Bayes nets cannot be assigned
        * new_bn, then no generator is updated and an exception is raised. */
-      template < typename GUM_SCALAR >
+      template < GUM_Numeric GUM_SCALAR >
       void setBayesNet(const BayesNet< GUM_SCALAR >& new_bn);
 
       /// @}

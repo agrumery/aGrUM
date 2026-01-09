@@ -75,7 +75,7 @@ namespace gum {
    */
   // clang-format on
 
-  template < typename GUM_SCALAR >
+  template < GUM_Numeric GUM_SCALAR >
 
   class MultiDimNoisyORCompound final: public MultiDimICIModel< GUM_SCALAR > {
     public:
@@ -152,7 +152,7 @@ namespace gum {
 #endif
 
   /// For friendly displaying the content of the array.
-  template < typename GUM_SCALAR >
+  template < GUM_Numeric GUM_SCALAR >
   std::ostream& operator<<(std::ostream& s, const MultiDimNoisyORCompound< GUM_SCALAR >& ag);
 
 } /* namespace gum */

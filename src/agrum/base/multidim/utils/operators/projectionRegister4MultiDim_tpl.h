@@ -58,11 +58,11 @@
 namespace gum {
 
   // adds a new entry into the register
-  template < typename GUM_SCALAR >
-  void ProjectionRegister4MultiDim< GUM_SCALAR >::insert(
-      const std::string&                                                projection_name,
-      const std::string&                                                type_multidim,
-      typename ProjectionRegister4MultiDim< GUM_SCALAR >::ProjectionPtr newFunction) {
+  template < typename GUM_ELEMENT >
+  void ProjectionRegister4MultiDim< GUM_ELEMENT >::insert(
+      const std::string&                                                 projection_name,
+      const std::string&                                                 type_multidim,
+      typename ProjectionRegister4MultiDim< GUM_ELEMENT >::ProjectionPtr newFunction) {
     // insert the new entry
     ProjectionSet* theset;
 
@@ -82,9 +82,9 @@ namespace gum {
   }
 
   // removes a given entry from the register
-  template < typename GUM_SCALAR >
-  void ProjectionRegister4MultiDim< GUM_SCALAR >::erase(const std::string& projection_name,
-                                                        const std::string& type_multidim) {
+  template < typename GUM_ELEMENT >
+  void ProjectionRegister4MultiDim< GUM_ELEMENT >::erase(const std::string& projection_name,
+                                                         const std::string& type_multidim) {
     if (!_set_.exists(projection_name)) return;
 
     ProjectionSet* theset = _set_[projection_name];
@@ -93,10 +93,10 @@ namespace gum {
   }
 
   // indicates whether a given entry exists in the register
-  template < typename GUM_SCALAR >
+  template < typename GUM_ELEMENT >
   INLINE bool
-      ProjectionRegister4MultiDim< GUM_SCALAR >::exists(const std::string& projection_name,
-                                                        const std::string& type_multidim) const {
+      ProjectionRegister4MultiDim< GUM_ELEMENT >::exists(const std::string& projection_name,
+                                                         const std::string& type_multidim) const {
     if (!_set_.exists(projection_name)) return false;
 
     const ProjectionSet& theset = *(_set_[projection_name]);
@@ -105,18 +105,19 @@ namespace gum {
 
   /** @brief returns the specialized operator assigned to a given subtype of
    * MultiDimImplementation */
-  template < typename GUM_SCALAR >
-  INLINE typename ProjectionRegister4MultiDim< GUM_SCALAR >::ProjectionPtr
-      ProjectionRegister4MultiDim< GUM_SCALAR >::get(const std::string& projection_name,
-                                                     const std::string& type_multidim) const {
+  template < typename GUM_ELEMENT >
+  INLINE typename ProjectionRegister4MultiDim< GUM_ELEMENT >::ProjectionPtr
+      ProjectionRegister4MultiDim< GUM_ELEMENT >::get(const std::string& projection_name,
+                                                      const std::string& type_multidim) const {
     const ProjectionSet& theset = *(_set_[projection_name]);
     return theset[type_multidim];
   }
 
   // a named constructor that constructs one and only one Register per data
   // type
-  template < typename GUM_SCALAR >
-  ProjectionRegister4MultiDim< GUM_SCALAR >& ProjectionRegister4MultiDim< GUM_SCALAR >::Register() {
+  template < typename GUM_ELEMENT >
+  ProjectionRegister4MultiDim< GUM_ELEMENT >&
+      ProjectionRegister4MultiDim< GUM_ELEMENT >::Register() {
     // Here, this initialization is thread-safe due to Meyer’s Singleton property
     static ProjectionRegister4MultiDim container;
 
@@ -138,12 +139,12 @@ namespace gum {
   }
 
   // Default constructor: creates an empty register
-  template < typename GUM_SCALAR >
-  ProjectionRegister4MultiDim< GUM_SCALAR >::ProjectionRegister4MultiDim() {}
+  template < typename GUM_ELEMENT >
+  ProjectionRegister4MultiDim< GUM_ELEMENT >::ProjectionRegister4MultiDim() {}
 
   // destructor
-  template < typename GUM_SCALAR >
-  ProjectionRegister4MultiDim< GUM_SCALAR >::~ProjectionRegister4MultiDim() {
+  template < typename GUM_ELEMENT >
+  ProjectionRegister4MultiDim< GUM_ELEMENT >::~ProjectionRegister4MultiDim() {
     // remove all the sets
     for (typename HashTable< std::string, ProjectionSet* >::iterator_safe iter = _set_.beginSafe();
          iter != _set_.endSafe();
@@ -152,14 +153,14 @@ namespace gum {
   }
 
   // a function to more easily register new projection functions in MultiDims
-  template < typename GUM_SCALAR >
+  template < typename GUM_ELEMENT >
   void registerProjection(
-      const std::string&                                                projection_name,
-      const std::string&                                                type_multidim,
-      typename ProjectionRegister4MultiDim< GUM_SCALAR >::ProjectionPtr function) {
-    ProjectionRegister4MultiDim< GUM_SCALAR >::Register().insert(projection_name,
-                                                                 type_multidim,
-                                                                 function);
+      const std::string&                                                 projection_name,
+      const std::string&                                                 type_multidim,
+      typename ProjectionRegister4MultiDim< GUM_ELEMENT >::ProjectionPtr function) {
+    ProjectionRegister4MultiDim< GUM_ELEMENT >::Register().insert(projection_name,
+                                                                  type_multidim,
+                                                                  function);
   }
 
 } /* namespace gum */

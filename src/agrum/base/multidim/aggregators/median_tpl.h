@@ -58,35 +58,35 @@
 namespace gum {
 
   namespace aggregator {
-    template < typename GUM_SCALAR >
+    template < GUM_Numeric GUM_SCALAR >
     INLINE Median< GUM_SCALAR >::Median() : MultiDimAggregator< GUM_SCALAR >() {
       GUM_CONSTRUCTOR(Median);
     }
 
-    template < typename GUM_SCALAR >
+    template < GUM_Numeric GUM_SCALAR >
     INLINE Median< GUM_SCALAR >::Median(const Median< GUM_SCALAR >& from) :
         MultiDimAggregator< GUM_SCALAR >(from) {
       GUM_CONS_CPY(Median);
     }
 
-    template < typename GUM_SCALAR >
+    template < GUM_Numeric GUM_SCALAR >
     INLINE Median< GUM_SCALAR >::~Median() {
       GUM_DESTRUCTOR(Median);
     }
 
-    template < typename GUM_SCALAR >
+    template < GUM_Numeric GUM_SCALAR >
     INLINE std::string Median< GUM_SCALAR >::aggregatorName() const {
       std::stringstream ss;
       ss << "median";
       return ss.str();
     }
 
-    template < typename GUM_SCALAR >
+    template < GUM_Numeric GUM_SCALAR >
     INLINE MultiDimContainer< GUM_SCALAR >* Median< GUM_SCALAR >::newFactory() const {
       return new Median< GUM_SCALAR >();
     }
 
-    template < typename GUM_SCALAR >
+    template < GUM_Numeric GUM_SCALAR >
     Idx Median< GUM_SCALAR >::buildValue_(const gum::Instantiation& i) const {
       if (i.nbrDim() < 2) return i.nbrDim() / 2;   // arbitrary. Guess = (max-min)/2 .
 
@@ -117,7 +117,7 @@ namespace gum {
       return (maxR + max) / 2;
     }
 
-    template < typename GUM_SCALAR >
+    template < GUM_Numeric GUM_SCALAR >
     INLINE Idx Median< GUM_SCALAR >::fold_(const DiscreteVariable& v,
                                            Idx                     i1,
                                            Idx                     i2,

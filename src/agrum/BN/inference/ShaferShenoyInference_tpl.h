@@ -62,7 +62,7 @@
 
 namespace gum {
   // default constructor
-  template < typename GUM_SCALAR >
+  template < GUM_Numeric GUM_SCALAR >
   INLINE ShaferShenoyInference< GUM_SCALAR >::ShaferShenoyInference(
       const IBayesNet< GUM_SCALAR >* BN,
       RelevantTensorsFinderType      relevant_type,
@@ -84,7 +84,7 @@ namespace gum {
   }
 
   // destructor
-  template < typename GUM_SCALAR >
+  template < GUM_Numeric GUM_SCALAR >
   INLINE ShaferShenoyInference< GUM_SCALAR >::~ShaferShenoyInference() {
     // remove all the tensors created during the last message passing
     for (const auto& pot: _arc_to_created_tensors_)
@@ -120,7 +120,7 @@ namespace gum {
   }
 
   /// set a new triangulation algorithm
-  template < typename GUM_SCALAR >
+  template < GUM_Numeric GUM_SCALAR >
   void ShaferShenoyInference< GUM_SCALAR >::setTriangulation(
       const Triangulation& new_triangulation) {
     delete _triangulation_;
@@ -130,7 +130,7 @@ namespace gum {
   }
 
   /// returns the current join tree used
-  template < typename GUM_SCALAR >
+  template < GUM_Numeric GUM_SCALAR >
   INLINE const JoinTree* ShaferShenoyInference< GUM_SCALAR >::joinTree() {
     if (_is_new_jt_needed_) _createNewJT_();
 
@@ -138,7 +138,7 @@ namespace gum {
   }
 
   /// returns the current junction tree
-  template < typename GUM_SCALAR >
+  template < GUM_Numeric GUM_SCALAR >
   INLINE const JunctionTree* ShaferShenoyInference< GUM_SCALAR >::junctionTree() {
     if (_is_new_jt_needed_) _createNewJT_();
 
@@ -146,7 +146,7 @@ namespace gum {
   }
 
   /// sets how we determine the relevant tensors to combine
-  template < typename GUM_SCALAR >
+  template < GUM_Numeric GUM_SCALAR >
   void ShaferShenoyInference< GUM_SCALAR >::setRelevantTensorsFinderType(
       RelevantTensorsFinderType type) {
     if (type != _find_relevant_tensor_type_) {
@@ -185,7 +185,7 @@ namespace gum {
   }
 
   /// sets the operator for performing the projections
-  template < typename GUM_SCALAR >
+  template < GUM_Numeric GUM_SCALAR >
   INLINE void ShaferShenoyInference< GUM_SCALAR >::_setProjectionFunction_(
       Tensor< GUM_SCALAR > (*proj)(const Tensor< GUM_SCALAR >&, const gum::VariableSet&)) {
     _projection_op_ = proj;
@@ -196,7 +196,7 @@ namespace gum {
   }
 
   /// sets the operator for performing the combinations
-  template < typename GUM_SCALAR >
+  template < GUM_Numeric GUM_SCALAR >
   INLINE void ShaferShenoyInference< GUM_SCALAR >::_setCombinationFunction_(
       Tensor< GUM_SCALAR > (*comb)(const Tensor< GUM_SCALAR >&, const Tensor< GUM_SCALAR >&)) {
     _combination_op_ = comb;
@@ -207,7 +207,7 @@ namespace gum {
   }
 
   /// invalidate all messages, posteriors and created tensors
-  template < typename GUM_SCALAR >
+  template < GUM_Numeric GUM_SCALAR >
   void ShaferShenoyInference< GUM_SCALAR >::_invalidateAllMessages_() {
     // remove all the messages computed
     for (auto& pot: _separator_tensors_)
@@ -234,7 +234,7 @@ namespace gum {
   }
 
   /// sets how we determine barren nodes
-  template < typename GUM_SCALAR >
+  template < GUM_Numeric GUM_SCALAR >
   void ShaferShenoyInference< GUM_SCALAR >::setFindBarrenNodesType(FindBarrenNodesType type) {
     if (type != _barren_nodes_type_) {
       // WARNING: if a new type is added here, method  _createJT_ should certainly
@@ -257,7 +257,7 @@ namespace gum {
   }
 
   /// fired when a new evidence is inserted
-  template < typename GUM_SCALAR >
+  template < GUM_Numeric GUM_SCALAR >
   INLINE void ShaferShenoyInference< GUM_SCALAR >::onEvidenceAdded_(const NodeId id,
                                                                     bool         isHardEvidence) {
     // if we have a new hard evidence, this modifies the undigraph over which
@@ -278,7 +278,7 @@ namespace gum {
   }
 
   /// fired when an evidence is removed
-  template < typename GUM_SCALAR >
+  template < GUM_Numeric GUM_SCALAR >
   INLINE void ShaferShenoyInference< GUM_SCALAR >::onEvidenceErased_(const NodeId id,
                                                                      bool         isHardEvidence) {
     // if we delete a hard evidence, this modifies the undigraph over which
@@ -301,7 +301,7 @@ namespace gum {
   }
 
   /// fired when all the evidence are erased
-  template < typename GUM_SCALAR >
+  template < GUM_Numeric GUM_SCALAR >
   void ShaferShenoyInference< GUM_SCALAR >::onAllEvidenceErased_(bool has_hard_evidence) {
     if (has_hard_evidence || !this->hardEvidenceNodes().empty()) _is_new_jt_needed_ = true;
     else {
@@ -323,7 +323,7 @@ namespace gum {
   }
 
   /// fired when an evidence is changed
-  template < typename GUM_SCALAR >
+  template < GUM_Numeric GUM_SCALAR >
   INLINE void ShaferShenoyInference< GUM_SCALAR >::onEvidenceChanged_(const NodeId id,
                                                                       bool hasChangedSoftHard) {
     if (hasChangedSoftHard) _is_new_jt_needed_ = true;
@@ -339,11 +339,11 @@ namespace gum {
   }
 
   /// fired after a new Bayes net has been assigned to the engine
-  template < typename GUM_SCALAR >
+  template < GUM_Numeric GUM_SCALAR >
   INLINE void ShaferShenoyInference< GUM_SCALAR >::onModelChanged_(const GraphicalModel* bn) {}
 
   /// fired after a new target is inserted
-  template < typename GUM_SCALAR >
+  template < GUM_Numeric GUM_SCALAR >
   INLINE void ShaferShenoyInference< GUM_SCALAR >::onMarginalTargetAdded_(const NodeId id) {
     // if the graph does not contain the node, either this is due to the fact that
     // the node has received a hard evidence or because it was d-separated from the
@@ -353,11 +353,11 @@ namespace gum {
   }
 
   /// fired before a target is removed
-  template < typename GUM_SCALAR >
+  template < GUM_Numeric GUM_SCALAR >
   INLINE void ShaferShenoyInference< GUM_SCALAR >::onMarginalTargetErased_(const NodeId id) {}
 
   /// fired after a new set target is inserted
-  template < typename GUM_SCALAR >
+  template < GUM_Numeric GUM_SCALAR >
   INLINE void ShaferShenoyInference< GUM_SCALAR >::onJointTargetAdded_(const NodeSet& set) {
     // if there is no current joint tree, obviously, we need one.
     if (_JT_ == nullptr) {
@@ -406,11 +406,11 @@ namespace gum {
   }
 
   /// fired before a set target is removed
-  template < typename GUM_SCALAR >
+  template < GUM_Numeric GUM_SCALAR >
   INLINE void ShaferShenoyInference< GUM_SCALAR >::onJointTargetErased_(const NodeSet& set) {}
 
   /// fired after all the nodes of the BN are added as single targets
-  template < typename GUM_SCALAR >
+  template < GUM_Numeric GUM_SCALAR >
   INLINE void ShaferShenoyInference< GUM_SCALAR >::onAllMarginalTargetsAdded_() {
     for (const auto node: this->BN().dag()) {
       // if the graph does not contain the node, either this is due to the fact
@@ -425,19 +425,19 @@ namespace gum {
   }
 
   /// fired before a all the single_targets are removed
-  template < typename GUM_SCALAR >
+  template < GUM_Numeric GUM_SCALAR >
   INLINE void ShaferShenoyInference< GUM_SCALAR >::onAllMarginalTargetsErased_() {}
 
   /// fired before a all the joint_targets are removed
-  template < typename GUM_SCALAR >
+  template < GUM_Numeric GUM_SCALAR >
   INLINE void ShaferShenoyInference< GUM_SCALAR >::onAllJointTargetsErased_() {}
 
   /// fired before a all the single and joint_targets are removed
-  template < typename GUM_SCALAR >
+  template < GUM_Numeric GUM_SCALAR >
   INLINE void ShaferShenoyInference< GUM_SCALAR >::onAllTargetsErased_() {}
 
   // check whether a new junction tree is really needed for the next inference
-  template < typename GUM_SCALAR >
+  template < GUM_Numeric GUM_SCALAR >
   bool ShaferShenoyInference< GUM_SCALAR >::_isNewJTNeeded_() const {
     // if we do not have a JT or if _new_jt_needed_ is set to true, then
     // we know that we need to create a new join tree
@@ -502,7 +502,7 @@ namespace gum {
   }
 
   /// create a new junction tree as well as its related data structures
-  template < typename GUM_SCALAR >
+  template < GUM_Numeric GUM_SCALAR >
   void ShaferShenoyInference< GUM_SCALAR >::_createNewJT_() {
     // to create the JT, we first create the moral graph of the BN in the
     // following way in order to take into account the barren nodes and the
@@ -838,7 +838,7 @@ namespace gum {
   }
 
   /// put all the CPTs into the cliques when creating the JT without using a schedule
-  template < typename GUM_SCALAR >
+  template < GUM_Numeric GUM_SCALAR >
   void ShaferShenoyInference< GUM_SCALAR >::_initializeJTCliques_() {
     const auto& bn  = this->BN();
     const DAG&  dag = bn.dag();
@@ -953,7 +953,7 @@ namespace gum {
   }
 
   /// put all the CPTs into the cliques when creating the JT using a schedule
-  template < typename GUM_SCALAR >
+  template < GUM_Numeric GUM_SCALAR >
   void ShaferShenoyInference< GUM_SCALAR >::_initializeJTCliques_(Schedule& schedule) {
     const auto& bn  = this->BN();
     const DAG&  dag = bn.dag();
@@ -1076,7 +1076,7 @@ namespace gum {
   }
 
   /// prepare the inference structures w.r.t. new targets, soft/hard evidence
-  template < typename GUM_SCALAR >
+  template < GUM_Numeric GUM_SCALAR >
   void ShaferShenoyInference< GUM_SCALAR >::updateOutdatedStructure_() {
     // check if a new JT is really needed. If so, create it
     if (_isNewJTNeeded_()) {
@@ -1090,7 +1090,7 @@ namespace gum {
   }
 
   /// invalidate all the messages sent from a given clique
-  template < typename GUM_SCALAR >
+  template < GUM_Numeric GUM_SCALAR >
   void ShaferShenoyInference< GUM_SCALAR >::_diffuseMessageInvalidations_(
       NodeId   from_id,
       NodeId   to_id,
@@ -1118,7 +1118,7 @@ namespace gum {
 
   /// update the tensors stored in the cliques and invalidate outdated
   /// messages
-  template < typename GUM_SCALAR >
+  template < GUM_Numeric GUM_SCALAR >
   void ShaferShenoyInference< GUM_SCALAR >::updateOutdatedTensors_() {
     // for each clique, indicate whether the tensor stored into
     // _clique_ss_tensor_[clique] is the result of a combination. In this
@@ -1422,7 +1422,7 @@ namespace gum {
   }
 
   /// compute a root for each connected component of  _JT_
-  template < typename GUM_SCALAR >
+  template < GUM_Numeric GUM_SCALAR >
   void ShaferShenoyInference< GUM_SCALAR >::_computeJoinTreeRoots_() {
     // get the set of cliques in which we can find the targets and joint_targets.
     // Due to hard evidence, the cliques related to a given target node
@@ -1479,13 +1479,13 @@ namespace gum {
   }
 
   // find the tensors d-connected to a set of variables
-  template < typename GUM_SCALAR >
+  template < GUM_Numeric GUM_SCALAR >
   void ShaferShenoyInference< GUM_SCALAR >::_findRelevantTensorsGetAll_(
       Set< const IScheduleMultiDim* >& pot_list,
       gum::VariableSet&                kept_vars) {}
 
   // find the tensors d-connected to a set of variables
-  template < typename GUM_SCALAR >
+  template < GUM_Numeric GUM_SCALAR >
   void ShaferShenoyInference< GUM_SCALAR >::_findRelevantTensorsWithdSeparation_(
       Set< const IScheduleMultiDim* >& pot_list,
       gum::VariableSet&                kept_vars) {
@@ -1518,7 +1518,7 @@ namespace gum {
   }
 
   // find the tensors d-connected to a set of variables
-  template < typename GUM_SCALAR >
+  template < GUM_Numeric GUM_SCALAR >
   void ShaferShenoyInference< GUM_SCALAR >::_findRelevantTensorsWithdSeparation2_(
       Set< const IScheduleMultiDim* >& pot_list,
       gum::VariableSet&                kept_vars) {
@@ -1538,7 +1538,7 @@ namespace gum {
   }
 
   // find the tensors d-connected to a set of variables
-  template < typename GUM_SCALAR >
+  template < GUM_Numeric GUM_SCALAR >
   void ShaferShenoyInference< GUM_SCALAR >::_findRelevantTensorsWithdSeparation3_(
       Set< const IScheduleMultiDim* >& pot_list,
       gum::VariableSet&                kept_vars) {
@@ -1559,7 +1559,7 @@ namespace gum {
   }
 
   // find the tensors d-connected to a set of variables
-  template < typename GUM_SCALAR >
+  template < GUM_Numeric GUM_SCALAR >
   void ShaferShenoyInference< GUM_SCALAR >::_findRelevantTensorsXX_(
       Set< const IScheduleMultiDim* >& pot_list,
       gum::VariableSet&                kept_vars) {
@@ -1585,7 +1585,7 @@ namespace gum {
   }
 
   // remove barren variables using schedules
-  template < typename GUM_SCALAR >
+  template < GUM_Numeric GUM_SCALAR >
   Set< const IScheduleMultiDim* >
       ShaferShenoyInference< GUM_SCALAR >::_removeBarrenVariables_(Schedule&              schedule,
                                                                    _ScheduleMultiDimSet_& pot_list,
@@ -1651,7 +1651,7 @@ namespace gum {
   }
 
   // remove barren variables directly without schedules
-  template < typename GUM_SCALAR >
+  template < GUM_Numeric GUM_SCALAR >
   Set< const Tensor< GUM_SCALAR >* >
       ShaferShenoyInference< GUM_SCALAR >::_removeBarrenVariables_(_TensorSet_&      pot_list,
                                                                    gum::VariableSet& del_vars) {
@@ -1713,7 +1713,7 @@ namespace gum {
   }
 
   // performs the collect phase of Shafer-Shenoy using schedules
-  template < typename GUM_SCALAR >
+  template < GUM_Numeric GUM_SCALAR >
   INLINE void ShaferShenoyInference< GUM_SCALAR >::_collectMessage_(Schedule& schedule,
                                                                     NodeId    id,
                                                                     NodeId    from) {
@@ -1728,7 +1728,7 @@ namespace gum {
   }
 
   // performs the collect phase of Shafer-Shenoy without schedules
-  template < typename GUM_SCALAR >
+  template < GUM_Numeric GUM_SCALAR >
   INLINE void ShaferShenoyInference< GUM_SCALAR >::_collectMessage_(NodeId id, NodeId from) {
     for (const auto other: _JT_->neighbours(id)) {
       if ((other != from) && !_messages_computed_[Arc(other, id)]) _collectMessage_(other, id);
@@ -1738,7 +1738,7 @@ namespace gum {
   }
 
   // remove variables del_vars from the list of tensors pot_list
-  template < typename GUM_SCALAR >
+  template < GUM_Numeric GUM_SCALAR >
   const IScheduleMultiDim* ShaferShenoyInference< GUM_SCALAR >::_marginalizeOut_(
       Schedule&                       schedule,
       Set< const IScheduleMultiDim* > pot_list,
@@ -1797,7 +1797,7 @@ namespace gum {
   }
 
   // remove variables del_vars from the list of tensors pot_list
-  template < typename GUM_SCALAR >
+  template < GUM_Numeric GUM_SCALAR >
   const IScheduleMultiDim* ShaferShenoyInference< GUM_SCALAR >::_marginalizeOut_(
       Set< const IScheduleMultiDim* >& pot_list,
       gum::VariableSet&                del_vars,
@@ -1873,7 +1873,7 @@ namespace gum {
   }
 
   // creates the message sent by clique from_id to clique to_id
-  template < typename GUM_SCALAR >
+  template < GUM_Numeric GUM_SCALAR >
   void ShaferShenoyInference< GUM_SCALAR >::_produceMessage_(Schedule& schedule,
                                                              NodeId    from_id,
                                                              NodeId    to_id) {
@@ -1925,7 +1925,7 @@ namespace gum {
   }
 
   // creates the message sent by clique from_id to clique to_id
-  template < typename GUM_SCALAR >
+  template < GUM_Numeric GUM_SCALAR >
   void ShaferShenoyInference< GUM_SCALAR >::_produceMessage_(NodeId from_id, NodeId to_id) {
     // get the tensors of the clique.
     _ScheduleMultiDimSet_ pot_list;
@@ -1969,7 +1969,7 @@ namespace gum {
   }
 
   // performs a whole inference
-  template < typename GUM_SCALAR >
+  template < GUM_Numeric GUM_SCALAR >
   INLINE void ShaferShenoyInference< GUM_SCALAR >::makeInference_() {
     if (_use_schedules_) {
       Schedule schedule;
@@ -2014,7 +2014,7 @@ namespace gum {
   }
 
   /// returns a fresh tensor equal to P(1st arg,evidence)
-  template < typename GUM_SCALAR >
+  template < GUM_Numeric GUM_SCALAR >
   Tensor< GUM_SCALAR >*
       ShaferShenoyInference< GUM_SCALAR >::unnormalizedJointPosterior_(NodeId id) {
     if (_use_schedules_) {
@@ -2026,7 +2026,7 @@ namespace gum {
   }
 
   /// returns a fresh tensor equal to P(1st arg,evidence)
-  template < typename GUM_SCALAR >
+  template < GUM_Numeric GUM_SCALAR >
   Tensor< GUM_SCALAR >*
       ShaferShenoyInference< GUM_SCALAR >::_unnormalizedJointPosterior_(Schedule& schedule,
                                                                         NodeId    id) {
@@ -2102,7 +2102,7 @@ namespace gum {
   }
 
   /// returns a fresh tensor equal to P(1st arg,evidence)
-  template < typename GUM_SCALAR >
+  template < GUM_Numeric GUM_SCALAR >
   Tensor< GUM_SCALAR >*
       ShaferShenoyInference< GUM_SCALAR >::_unnormalizedJointPosterior_(NodeId id) {
     const auto& bn = this->BN();
@@ -2174,7 +2174,7 @@ namespace gum {
   }
 
   /// returns the posterior of a given variable
-  template < typename GUM_SCALAR >
+  template < GUM_Numeric GUM_SCALAR >
   const Tensor< GUM_SCALAR >& ShaferShenoyInference< GUM_SCALAR >::posterior_(NodeId id) {
     // check if we have already computed the posterior
     if (_target_posteriors_.exists(id)) { return *(_target_posteriors_[id]); }
@@ -2189,7 +2189,7 @@ namespace gum {
   }
 
   /// returns the marginal a posteriori proba of a given node
-  template < typename GUM_SCALAR >
+  template < GUM_Numeric GUM_SCALAR >
   Tensor< GUM_SCALAR >*
       ShaferShenoyInference< GUM_SCALAR >::unnormalizedJointPosterior_(const NodeSet& set) {
     if (_use_schedules_) {
@@ -2201,7 +2201,7 @@ namespace gum {
   }
 
   /// returns the marginal a posteriori proba of a given node
-  template < typename GUM_SCALAR >
+  template < GUM_Numeric GUM_SCALAR >
   Tensor< GUM_SCALAR >*
       ShaferShenoyInference< GUM_SCALAR >::_unnormalizedJointPosterior_(Schedule&      schedule,
                                                                         const NodeSet& set) {
@@ -2382,7 +2382,7 @@ namespace gum {
   }
 
   /// returns the marginal a posteriori proba of a given node
-  template < typename GUM_SCALAR >
+  template < GUM_Numeric GUM_SCALAR >
   Tensor< GUM_SCALAR >*
       ShaferShenoyInference< GUM_SCALAR >::_unnormalizedJointPosterior_(const NodeSet& set) {
     // hard evidence do not belong to the join tree, so extract the nodes
@@ -2552,7 +2552,7 @@ namespace gum {
   }
 
   /// returns the posterior of a given set of variables
-  template < typename GUM_SCALAR >
+  template < GUM_Numeric GUM_SCALAR >
   const Tensor< GUM_SCALAR >&
       ShaferShenoyInference< GUM_SCALAR >::jointPosterior_(const NodeSet& set) {
     // check if we have already computed the posterior
@@ -2567,7 +2567,7 @@ namespace gum {
   }
 
   /// returns the posterior of a given set of variables
-  template < typename GUM_SCALAR >
+  template < GUM_Numeric GUM_SCALAR >
   const Tensor< GUM_SCALAR >&
       ShaferShenoyInference< GUM_SCALAR >::jointPosterior_(const NodeSet& wanted_target,
                                                            const NodeSet& declared_target) {
@@ -2595,7 +2595,7 @@ namespace gum {
     return *pot;
   }
 
-  template < typename GUM_SCALAR >
+  template < GUM_Numeric GUM_SCALAR >
   GUM_SCALAR ShaferShenoyInference< GUM_SCALAR >::evidenceProbability() {
     // here, we should check that  _find_relevant_tensor_type_ is equal to
     // FIND_ALL. Otherwise, the computations could be wrong.

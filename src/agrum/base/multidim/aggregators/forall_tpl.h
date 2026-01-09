@@ -55,30 +55,30 @@
 namespace gum {
 
   namespace aggregator {
-    template < typename GUM_SCALAR >
+    template < GUM_Numeric GUM_SCALAR >
     INLINE Forall< GUM_SCALAR >::Forall(Idx value) :
         MultiDimAggregator< GUM_SCALAR >(), _value_(value) {
       GUM_CONSTRUCTOR(Forall);
     }
 
-    template < typename GUM_SCALAR >
+    template < GUM_Numeric GUM_SCALAR >
     INLINE Forall< GUM_SCALAR >::Forall(const Forall< GUM_SCALAR >& from) :
         MultiDimAggregator< GUM_SCALAR >(from) {
       _value_ = from._value_;
       GUM_CONS_CPY(Forall);
     }
 
-    template < typename GUM_SCALAR >
+    template < GUM_Numeric GUM_SCALAR >
     INLINE Forall< GUM_SCALAR >::~Forall() {
       GUM_DESTRUCTOR(Forall);
     }
 
-    template < typename GUM_SCALAR >
+    template < GUM_Numeric GUM_SCALAR >
     INLINE Idx Forall< GUM_SCALAR >::neutralElt_() const {
       return (Idx)1;
     }
 
-    template < typename GUM_SCALAR >
+    template < GUM_Numeric GUM_SCALAR >
     INLINE Idx Forall< GUM_SCALAR >::fold_(const DiscreteVariable& v,
                                            Idx                     i1,
                                            Idx                     i2,
@@ -91,7 +91,7 @@ namespace gum {
       }
     }
 
-    template < typename GUM_SCALAR >
+    template < GUM_Numeric GUM_SCALAR >
     INLINE
 
         std::string
@@ -101,7 +101,7 @@ namespace gum {
       return ss.str();
     }
 
-    template < typename GUM_SCALAR >
+    template < GUM_Numeric GUM_SCALAR >
     INLINE MultiDimContainer< GUM_SCALAR >* Forall< GUM_SCALAR >::newFactory() const {
       return new Forall< GUM_SCALAR >(_value_);
     }

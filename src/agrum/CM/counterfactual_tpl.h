@@ -48,7 +48,7 @@ namespace gum {
 
   // ============================== CONSTRUCTORS ===============================
 
-  template < typename GUM_SCALAR >
+  template < GUM_Numeric GUM_SCALAR >
   Counterfactual< GUM_SCALAR >::Counterfactual(const CausalModel< GUM_SCALAR >&     cm,
                                                const NameSet&                       on,
                                                const NameSet&                       whatif,
@@ -62,7 +62,7 @@ namespace gum {
     run();
   }
 
-  template < typename GUM_SCALAR >
+  template < GUM_Numeric GUM_SCALAR >
   Counterfactual< GUM_SCALAR >::Counterfactual(
       const CausalModel< GUM_SCALAR >&            cm,
       const NodeSet&                              onIds,
@@ -77,7 +77,7 @@ namespace gum {
 
   // ============================== TWIN BUILDERS ==============================
 
-  template < typename GUM_SCALAR >
+  template < GUM_Numeric GUM_SCALAR >
   CausalModel< GUM_SCALAR > Counterfactual< GUM_SCALAR >::counterFactualModel(
       const CausalModel< GUM_SCALAR >&     cm,
       const HashTable< VarName, ValName >& profile,
@@ -125,7 +125,7 @@ namespace gum {
     return twincm;
   }
 
-  template < typename GUM_SCALAR >
+  template < GUM_Numeric GUM_SCALAR >
   CausalModel< GUM_SCALAR > Counterfactual< GUM_SCALAR >::counterFactualModel(
       const CausalModel< GUM_SCALAR >&            cm,
       const HashTable< NodeId, VariableValueId >& profileIds,
@@ -168,7 +168,7 @@ namespace gum {
 
   // ================================ EXECUTION ================================
 
-  template < typename GUM_SCALAR >
+  template < GUM_Numeric GUM_SCALAR >
   void Counterfactual< GUM_SCALAR >::run() {
     // Build symbolic effect on the twin
     _ci = std::make_unique< CausalImpact< GUM_SCALAR > >(_twin, _on, _whatif);
@@ -188,7 +188,7 @@ namespace gum {
 
   // =============================== ADAPTATION ================================
 
-  template < typename GUM_SCALAR >
+  template < GUM_Numeric GUM_SCALAR >
   Tensor< GUM_SCALAR > Counterfactual< GUM_SCALAR >::_adaptToOriginalVariables_(
       const Tensor< GUM_SCALAR >&      adj,
       const CausalModel< GUM_SCALAR >& cm) {
@@ -205,14 +205,14 @@ namespace gum {
 
   // ============================ RESULT ACCESSOR ==============================
 
-  template < typename GUM_SCALAR >
+  template < GUM_Numeric GUM_SCALAR >
   const CausalFormula< GUM_SCALAR >& Counterfactual< GUM_SCALAR >::_ciResult() const {
     return _ci->getResult();   // public accessor in CausalImpact
   }
 
   // ================================= PRINT ==================================
 
-  template < typename GUM_SCALAR >
+  template < GUM_Numeric GUM_SCALAR >
   std::string Counterfactual< GUM_SCALAR >::toString() const {
     std::stringstream os;
     os << "[Counterfactual]\n";
@@ -273,7 +273,7 @@ namespace gum {
 
   // ============================== HELPERS (IDs) ==============================
 
-  template < typename GUM_SCALAR >
+  template < GUM_Numeric GUM_SCALAR >
   NameSet Counterfactual< GUM_SCALAR >::_idsToNames_(const CausalModel< GUM_SCALAR >& cm,
                                                      const NodeSet&                   ids) {
     NameSet     out;
@@ -285,7 +285,7 @@ namespace gum {
     return out;
   }
 
-  template < typename GUM_SCALAR >
+  template < GUM_Numeric GUM_SCALAR >
   HashTable< typename Counterfactual< GUM_SCALAR >::VarName,
              typename Counterfactual< GUM_SCALAR >::ValName >
       Counterfactual< GUM_SCALAR >::_idAssignToNameAssign_(
@@ -306,7 +306,7 @@ namespace gum {
   // Standalone helpers (Python-parity)
   // ============================================================================
 
-  template < typename GUM_SCALAR >
+  template < GUM_Numeric GUM_SCALAR >
   Tensor< GUM_SCALAR > counterfactual(const CausalModel< GUM_SCALAR >&             cm,
                                       const NameSet&                               on,
                                       const NameSet&                               whatif,
@@ -317,7 +317,7 @@ namespace gum {
     return cf.value();
   }
 
-  template < typename GUM_SCALAR >
+  template < GUM_Numeric GUM_SCALAR >
   CausalModel< GUM_SCALAR >
       counterfactualModel(const CausalModel< GUM_SCALAR >&             cm,
                           const HashTable< std::string, std::string >& profile,

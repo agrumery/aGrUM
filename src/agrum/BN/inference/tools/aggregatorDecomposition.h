@@ -59,7 +59,7 @@ namespace gum {
    *<agrum/BN/inference/tools/aggregatorDecomposition.h>
    * @brief This class is used to decompose aggregator in PRM<GUM_SCALAR>.
    */
-  template < typename GUM_SCALAR >
+  template < GUM_Numeric GUM_SCALAR >
   class AggregatorDecomposition {
     public:
     // ========================================================================

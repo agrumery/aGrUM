@@ -53,7 +53,7 @@
 namespace gum {
 
   // Default constructor
-  template < typename GUM_SCALAR >
+  template < GUM_Numeric GUM_SCALAR >
   INLINE MultiDimNoisyORNet< GUM_SCALAR >::MultiDimNoisyORNet(GUM_SCALAR external_weight,
                                                               GUM_SCALAR default_weight) :
       MultiDimICIModel< GUM_SCALAR >(external_weight, default_weight) {
@@ -61,14 +61,14 @@ namespace gum {
   }
 
   // Default constructor
-  template < typename GUM_SCALAR >
+  template < GUM_Numeric GUM_SCALAR >
   INLINE MultiDimNoisyORNet< GUM_SCALAR >::MultiDimNoisyORNet(
       const MultiDimNoisyORNet< GUM_SCALAR >& from) : MultiDimICIModel< GUM_SCALAR >(from) {
     GUM_CONS_CPY(MultiDimNoisyORNet);
   }
 
   // Copy constructor using a bijection to replace variables from source.
-  template < typename GUM_SCALAR >
+  template < GUM_Numeric GUM_SCALAR >
   INLINE MultiDimNoisyORNet< GUM_SCALAR >::MultiDimNoisyORNet(
       const Bijection< const DiscreteVariable*, const DiscreteVariable* >& bij,
       const MultiDimNoisyORNet< GUM_SCALAR >& from) : MultiDimICIModel< GUM_SCALAR >(bij, from) {
@@ -76,12 +76,12 @@ namespace gum {
   }
 
   // destructor
-  template < typename GUM_SCALAR >
+  template < GUM_Numeric GUM_SCALAR >
   INLINE MultiDimNoisyORNet< GUM_SCALAR >::~MultiDimNoisyORNet() {
     GUM_DESTRUCTOR(MultiDimNoisyORNet);
   }
 
-  template < typename GUM_SCALAR >
+  template < GUM_Numeric GUM_SCALAR >
   GUM_SCALAR MultiDimNoisyORNet< GUM_SCALAR >::get(const Instantiation& i) const {
     if (this->nbrDim() < 1) { GUM_ERROR(OperationNotAllowed, "Not enough variable for a NoisyOr ") }
 
@@ -113,7 +113,7 @@ namespace gum {
     return (i.val(C) != 1) ? fact : (GUM_SCALAR)1.0 - fact;
   }
 
-  template < typename GUM_SCALAR >
+  template < GUM_Numeric GUM_SCALAR >
   std::string MultiDimNoisyORNet< GUM_SCALAR >::toString() const {
     std::stringstream s;
     s << MultiDimImplementation< GUM_SCALAR >::variable(0) << "=noisyORNet(["
@@ -128,18 +128,18 @@ namespace gum {
   }
 
   // For friendly displaying the content of the variable.
-  template < typename GUM_SCALAR >
+  template < GUM_Numeric GUM_SCALAR >
   INLINE std::ostream& operator<<(std::ostream& s, const MultiDimNoisyORNet< GUM_SCALAR >& ag) {
     return s << ag.toString();
   }
 
-  template < typename GUM_SCALAR >
+  template < GUM_Numeric GUM_SCALAR >
   INLINE MultiDimContainer< GUM_SCALAR >* MultiDimNoisyORNet< GUM_SCALAR >::newFactory() const {
     return new MultiDimNoisyORNet< GUM_SCALAR >(this->_external_weight_, this->_default_weight_);
   }
 
   // returns the name of the implementation
-  template < typename GUM_SCALAR >
+  template < GUM_Numeric GUM_SCALAR >
   INLINE const std::string& MultiDimNoisyORNet< GUM_SCALAR >::name() const {
     static const std::string str = "MultiDimNoisyORNet";
     return str;

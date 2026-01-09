@@ -1,17 +1,45 @@
-# aGrUM/pyAgrum
+# aGrUM/pyAgrUM
 
-**aGrUM** is a fast and powerful C++ library for developing applications based on graphical models such as Bayesian networks, influence diagrams, decision trees, GAI networks, and Markov decision processes. It provides fundamental building blocks for tasks such as:
+[![Build Status](https://img.shields.io/badge/build-pending-lightgrey)] [![PyPI](https://img.shields.io/badge/pypi-unknown-lightgrey)] [![Docs](https://img.shields.io/badge/docs-latest-lightgrey)] [![License](https://img.shields.io/badge/license-MIT-lightgrey)] [![Release](https://img.shields.io/badge/release-vX.Y-lightgrey)]
+
+**aGrUM** is a fast and powerful C++ library for developing applications based on graphical models such as Bayesian
+networks, influence diagrams, decision trees, GAI networks, and Markov decision processes. It provides fundamental
+building blocks for tasks such as:
 
 - Graphical model learning/elicitation
 - Probabilistic inference with graphical models
 - Planning and decision-making
 
-**pyAgrum** is a Python wrapper for the C++ **aGrUM** library (built using SWIG). It offers a high-level interface to simplify the creation, modeling, learning, inference, and embedding of Bayesian Networks and other graphical models. Additionally, it includes extensions for:
+**pyAgrum** is a Python wrapper for the C++ **aGrUM** library (built using SWIG). It offers a high-level
+interface to simplify the creation, modeling, learning, inference, and embedding of Bayesian Networks and
+other graphical models. Additionally, it includes extensions for:
 
 - **Scikit-learn-compatible probabilistic classifiers** based on Bayesian networks
 - **Causal analysis tools**, including causal networks and do-calculus
 - **Dynamic Bayesian networks**
 - **Explainability tools** for Bayesian networks
+
+## Table of Contents
+
+- [Quick entrypoints](#quick-entrypoints)
+- [Quick Start](#quick-start)
+- [Dependencies](#dependencies)
+- [Project Structure](#project-structure)
+- [Philosophy & Design](#philosophy--design)
+- [Wrappers](#wrappers)
+- [Building aGrUM](#building-agrum)
+- [Contributions](#contributions)
+- [Guidelines](#guidelines)
+- [Continuous Integration](#continuous-integration)
+- [Testing](#testing)
+- [Bibliography](#bibliography)
+
+## Quick entrypoints
+
+Choose the path that best matches your goal:
+
+- I want to use `pyAgrum` from Python → see [Quick Start](#quick-start) and the `wrappers/pyAgrum` documentation.
+- I want to build, extend or contribute to the C++ core → see [Building aGrUM](#building-agrum) and `/src`.
 
 ## Quick Start
 
@@ -37,7 +65,8 @@ conda install -c conda-forge pyagrum
 
 ## Dependencies
 
-**aGrUM** is designed to minimize external dependencies in its C++ codebase. All essential dependencies are included in the source code. The external libraries currently used by **aGrUM** are:
+**aGrUM** is designed to minimize external dependencies in its C++ codebase. All essential dependencies are included in
+the source code. The external libraries currently used by **aGrUM** are:
 
 - [nanodbc](https://github.com/lexicalunit/nanodbc): A lightweight C++ wrapper for ODBC
 - [lrs](http://cgm.cs.mcgill.ca/~avis/C/lrs.html): A vertex enumeration program
@@ -46,7 +75,8 @@ conda install -c conda-forge pyagrum
 
 ### pyAgrum Dependencies
 
-The Python wrapper **pyAgrum** introduces additional dependencies. These are managed separately and specified in the following files:
+The Python wrapper **pyAgrum** introduces additional dependencies. These are managed separately and specified
+in the following files:
 
 - **`requirements.txt`**: Mandatory dependencies
 - **`optional_requirements.txt`**: Optional dependencies for advanced features
@@ -75,7 +105,9 @@ The project is organized as follows:
 
 ## Philosophy & Design
 
-**aGrUM** was initially developed to support the research of the Graphical Models and Decision team at [LIP6](http://www.lip6.fr). Over time, it evolved into a comprehensive open-source library to aid both research and practical applications in decision support and data science.
+**aGrUM** was initially developed to support the research of the Graphical Models and Decision team
+at [LIP6](http://www.lip6.fr). Over time, it evolved into a comprehensive open-source library to aid both research and
+practical applications in decision support and data science.
 
 Key design principles include:
 
@@ -124,7 +156,55 @@ For more details, run `act --help`.
 
 We welcome contributions! Please fork the repository, make your changes, and submit a merge request.
 
-**Note:** Contributors must sign a [contribution policy](https://gitlab.com/agrumery/aGrUM/blob/master/CONTRIBUTING.md) before their changes can be merged.
+**Note:** Contributors must sign a [contribution policy](https://gitlab.com/agrumery/aGrUM/blob/master/CONTRIBUTING.md)
+before their changes can be merged.
+
+## Guidelines
+
+This section provides practical guidance for contributing to the aGrUM/pyAgrum project.
+
+- Style and standards
+    - Primary language: C++ (C++20). Respect the target compatibility (GCC ≥ 8.0, Clang, MSVC).
+    - Use the repository formatting and analysis tools (e.g. clang-format / clang-tidy for C++, ruff for Python).
+    - Keep the copyright header at the top of source files.
+
+- Commits and branches
+    - Use imperative, short and descriptive commit messages. Reference the issue/MR when relevant.
+    - One feature or bugfix per merge request.
+
+- Pull Requests / Merge Requests
+    - Clearly describe the change, its purpose and its impact (breaking changes, public API).
+    - Add or update automated tests covering main use cases and edge cases.
+    - Make sure the MR passes CI on all supported platforms before requesting a review.
+
+- Tests
+    - Place C++ tests in `/src/testunits` and Python/pyAgrum tests in `wrappers/pyAgrum` following the repository
+      structure.
+    - Run local tests with the ACT tool:
+
+  ```bash
+  act test
+  act test release pyAgrum
+  ```
+
+- Documentation
+    - Update documentation (Sphinx for `pyAgrum`, C++ docs in `/src/docs`) and example notebooks when needed.
+    - Add reproducible snippets or notebooks for new public features.
+
+- Wrappers and SWIG
+    - For any change to the public C++ API, update the SWIG files in `wrappers/` and verify the Python bindings.
+    - Run Python tests after regenerating the wrappers.
+
+- API compatibility and versioning
+    - Avoid undocumented API breaks. If a breaking change is necessary, document it and bump the version according to
+      the project policy.
+
+- Code review
+    - Address review comments, add tests when requested, and fix important warnings.
+
+- Support and communication
+    - Open an issue to discuss large refactorings or new features before implementation.
+    - Use the repository issue tracker for bugs and feature requests.
 
 ## Continuous Integration
 

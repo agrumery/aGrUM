@@ -53,7 +53,7 @@
 namespace gum::learning {
 
   /// default constructor
-  template < typename GUM_SCALAR >
+  template < GUM_Numeric GUM_SCALAR >
   DirichletPriorFromBN< GUM_SCALAR >::DirichletPriorFromBN(const DatabaseTable& learning_db,
                                                            const BayesNet< GUM_SCALAR >* priorbn) :
       Prior(learning_db), _prior_bn_(priorbn) {
@@ -61,34 +61,34 @@ namespace gum::learning {
   }
 
   /// copy constructor
-  template < typename GUM_SCALAR >
+  template < GUM_Numeric GUM_SCALAR >
   DirichletPriorFromBN< GUM_SCALAR >::DirichletPriorFromBN(const DirichletPriorFromBN& from) :
       Prior(from), _prior_bn_(from._prior_bn_) {
     GUM_CONS_CPY(DirichletPriorFromBN)
   }
 
   /// move constructor
-  template < typename GUM_SCALAR >
+  template < GUM_Numeric GUM_SCALAR >
   DirichletPriorFromBN< GUM_SCALAR >::DirichletPriorFromBN(DirichletPriorFromBN&& from) noexcept :
       Prior(std::move(from)), _prior_bn_(std::move(from._prior_bn_)) {
     GUM_CONS_MOV(DirichletPriorFromBN)
   }
 
   /// virtual copy constructor
-  template < typename GUM_SCALAR >
+  template < GUM_Numeric GUM_SCALAR >
   DirichletPriorFromBN< GUM_SCALAR >* DirichletPriorFromBN< GUM_SCALAR >::clone() const {
     return new DirichletPriorFromBN(*this);
   }
 
   /// destructor
 
-  template < typename GUM_SCALAR >
+  template < GUM_Numeric GUM_SCALAR >
   DirichletPriorFromBN< GUM_SCALAR >::~DirichletPriorFromBN() {
     GUM_DESTRUCTOR(DirichletPriorFromBN)
   }
 
   /// copy operator
-  template < typename GUM_SCALAR >
+  template < GUM_Numeric GUM_SCALAR >
   DirichletPriorFromBN< GUM_SCALAR >&
       DirichletPriorFromBN< GUM_SCALAR >::operator=(const DirichletPriorFromBN& from) {
     if (this != &from) {
@@ -99,7 +99,7 @@ namespace gum::learning {
   }
 
   /// move operator
-  template < typename GUM_SCALAR >
+  template < GUM_Numeric GUM_SCALAR >
   DirichletPriorFromBN< GUM_SCALAR >&
       DirichletPriorFromBN< GUM_SCALAR >::operator=(DirichletPriorFromBN&& from) {
     if (this != &from) {
@@ -111,26 +111,26 @@ namespace gum::learning {
 
   /// returns the type of the prior
 
-  template < typename GUM_SCALAR >
+  template < GUM_Numeric GUM_SCALAR >
   INLINE PriorType DirichletPriorFromBN< GUM_SCALAR >::getType() const {
     return PriorType::DirichletPriorType;
   }
 
   /// indicates whether the prior is tensorly informative
 
-  template < typename GUM_SCALAR >
+  template < GUM_Numeric GUM_SCALAR >
   INLINE bool DirichletPriorFromBN< GUM_SCALAR >::isInformative() const {
     return (this->weight_ != 0.0);
   }
 
   /// sets the weight of the a prior(kind of effective sample size)
-  template < typename GUM_SCALAR >
+  template < GUM_Numeric GUM_SCALAR >
   INLINE void DirichletPriorFromBN< GUM_SCALAR >::setWeight(const double weight) {
     Prior::setWeight(weight);
   }
 
   /// returns the prior vector all the variables in the idset
-  template < typename GUM_SCALAR >
+  template < GUM_Numeric GUM_SCALAR >
   INLINE void
       DirichletPriorFromBN< GUM_SCALAR >::addJointPseudoCount(const IdCondSet&       idset,
                                                               std::vector< double >& counts) {
@@ -146,7 +146,7 @@ namespace gum::learning {
   }
 
   /// returns the prior vector over only the conditioning set of an idset
-  template < typename GUM_SCALAR >
+  template < GUM_Numeric GUM_SCALAR >
   INLINE void DirichletPriorFromBN< GUM_SCALAR >::addConditioningPseudoCount(
       const IdCondSet&       idset,
       std::vector< double >& counts) {
@@ -158,7 +158,7 @@ namespace gum::learning {
     _addCountsForJoint_(Ijoint, Y, counts);
   }
 
-  template < typename GUM_SCALAR >
+  template < GUM_Numeric GUM_SCALAR >
   void DirichletPriorFromBN< GUM_SCALAR >::_addCountsForJoint_(Instantiation&         Ijoint,
                                                                const NodeSet&         joint,
                                                                std::vector< double >& counts) {

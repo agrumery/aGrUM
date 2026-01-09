@@ -64,14 +64,14 @@ namespace gum {
 
 
   // the function used to combine two tables
-  template < typename GUM_SCALAR >
+  template < GUM_Numeric GUM_SCALAR >
   INLINE static Tensor< GUM_SCALAR > SSNewmultiTensor(const Tensor< GUM_SCALAR >& t1,
                                                       const Tensor< GUM_SCALAR >& t2) {
     return t1 * t2;
   }
 
   // the function used to combine two tables
-  template < typename GUM_SCALAR >
+  template < GUM_Numeric GUM_SCALAR >
   INLINE static Tensor< GUM_SCALAR > SSNewprojTensor(const Tensor< GUM_SCALAR >& t1,
                                                      const gum::VariableSet&     del_vars) {
     return t1.sumOut(del_vars);
@@ -84,7 +84,7 @@ namespace gum {
    * for inference in Bayesian networks
    * @ingroup bn_inference
    */
-  template < typename GUM_SCALAR >
+  template < GUM_Numeric GUM_SCALAR >
   class ShaferShenoyInference:
       public JointTargetedInference< GUM_SCALAR >,
       public EvidenceInference< GUM_SCALAR >,

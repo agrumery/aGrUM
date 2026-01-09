@@ -64,7 +64,7 @@ namespace gum {
    *
    * @brief Class used to perform Decision Tree Operation in the FMDP Framework
    */
-  template < typename GUM_SCALAR,
+  template < typename GUM_ELEMENT,
              template < typename > class COMBINEOPERATOR,
              template < typename > class TerminalNodePolicy = ExactTerminalNodePolicy >
   class TreeOperator {
@@ -77,14 +77,14 @@ namespace gum {
     /**
      * @brief Default constructor.
      */
-    TreeOperator(const MultiDimFunctionGraph< GUM_SCALAR, TerminalNodePolicy >* dt1,
-                 const MultiDimFunctionGraph< GUM_SCALAR, TerminalNodePolicy >* dt2);
+    TreeOperator(const MultiDimFunctionGraph< GUM_ELEMENT, TerminalNodePolicy >* dt1,
+                 const MultiDimFunctionGraph< GUM_ELEMENT, TerminalNodePolicy >* dt2);
 
     /**
      * @brief Default constructor.
      */
-    TreeOperator(const MultiDimFunctionGraph< GUM_SCALAR, TerminalNodePolicy >* dt1,
-                 const MultiDimFunctionGraph< GUM_SCALAR, TerminalNodePolicy >* dt2,
+    TreeOperator(const MultiDimFunctionGraph< GUM_ELEMENT, TerminalNodePolicy >* dt1,
+                 const MultiDimFunctionGraph< GUM_ELEMENT, TerminalNodePolicy >* dt2,
                  const HashTable< const DiscreteVariable*, Idx >                givenContext);
 
     /**
@@ -100,7 +100,7 @@ namespace gum {
 
     /// Computes and builds the Function Graph that is the result of the
     /// operation
-    MultiDimFunctionGraph< GUM_SCALAR, TerminalNodePolicy >* compute();
+    MultiDimFunctionGraph< GUM_ELEMENT, TerminalNodePolicy >* compute();
 
     /// @}
 
@@ -114,14 +114,14 @@ namespace gum {
     NodeId _checkRedundancy_(const DiscreteVariable*, NodeId*);
 
     /// The two function graphs used for the operation
-    const MultiDimFunctionGraph< GUM_SCALAR, TerminalNodePolicy >* _dt1_;
-    const MultiDimFunctionGraph< GUM_SCALAR, TerminalNodePolicy >* _dt2_;
+    const MultiDimFunctionGraph< GUM_ELEMENT, TerminalNodePolicy >* _dt1_;
+    const MultiDimFunctionGraph< GUM_ELEMENT, TerminalNodePolicy >* _dt2_;
 
     /// The resulting function graph
-    MultiDimFunctionGraph< GUM_SCALAR, TerminalNodePolicy >* _rd_;
+    MultiDimFunctionGraph< GUM_ELEMENT, TerminalNodePolicy >* _rd_;
 
     /// The function to be performed on the leaves
-    const COMBINEOPERATOR< GUM_SCALAR > _combine_;
+    const COMBINEOPERATOR< GUM_ELEMENT > _combine_;
 
     HashTable< const DiscreteVariable*, Idx > _context_;
     NodeId                                    _curDT1Leaf_;
