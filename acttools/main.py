@@ -247,7 +247,7 @@ def main() -> int:
       else:
         error(f"Unknown target [{current['target']}]")
         res = 1
-    case "build" | "install" | "test":
+    case "build" | "install" | "test" | "lib":
       if current["target"] == "aGrUM":
         from .ActBuilderAgrum import ActBuilderAgrum
 
