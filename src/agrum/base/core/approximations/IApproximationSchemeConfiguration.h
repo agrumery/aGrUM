@@ -77,10 +77,10 @@ namespace gum {
   class IApproximationSchemeConfiguration {
     public:
     /// Progression, error and time.
-    Signaler3< Size, double, double > onProgress;
+    Signaler< Size, double, double > onProgress;
 
     /// Criteria messageApproximationScheme
-    Signaler1< const std::string& > onStop;
+    Signaler< const std::string& > onStop;
 
     /// The different state of an approximation scheme.
     enum class ApproximationSchemeSTATE : char {

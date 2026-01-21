@@ -7486,8 +7486,8 @@ class MultiDimContainer(object):
     def fill(self, d: float) -> None:
         return _pyagrum.MultiDimContainer_fill(self, d)
 
-    def populate(self, v: "pyagrum.Vector") -> None:
-        return _pyagrum.MultiDimContainer_populate(self, v)
+    def populate(self, *args) -> None:
+        return _pyagrum.MultiDimContainer_populate(self, *args)
 
     def copyFrom(self, *args) -> None:
         return _pyagrum.MultiDimContainer_copyFrom(self, *args)

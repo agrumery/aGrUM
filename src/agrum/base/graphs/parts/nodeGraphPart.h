@@ -286,8 +286,8 @@ namespace gum {
     using NodeIteratorSafe      = NodeGraphPartIteratorSafe;
     using NodeConstIteratorSafe = NodeGraphPartIteratorSafe;
 
-    Signaler1< NodeId > onNodeAdded;
-    Signaler1< NodeId > onNodeDeleted;
+    Signaler< NodeId > onNodeAdded;
+    Signaler< NodeId > onNodeDeleted;
 
     // ############################################################################
     /// @name Constructors / Destructors

@@ -95,8 +95,8 @@ namespace gum {
     public:
     using EdgeIterator = EdgeSetIterator;
 
-    Signaler2< NodeId, NodeId > onEdgeAdded;
-    Signaler2< NodeId, NodeId > onEdgeDeleted;
+    Signaler< NodeId, NodeId > onEdgeAdded;
+    Signaler< NodeId, NodeId > onEdgeDeleted;
 
     // ############################################################################
     /// @name Constructors / Destructors

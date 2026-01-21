@@ -38,23 +38,18 @@
  *                                                                          *
  ****************************************************************************/
 
-
 /**
  * @file
- * @brief Declare all signalers.
+ * @brief Convenience header for the signal/listener pattern.
+ *
+ * This header is provided for backward compatibility.
+ * New code should include <agrum/base/core/signal/signaler.h> directly.
  *
  * @author Pierre-Henri WUILLEMIN(_at_LIP6) & Christophe GONZALES(_at_AMU)
- *
  */
 #ifndef GUM_SIGNALERS_H
 #define GUM_SIGNALERS_H
-#include <agrum/base/core/signal/signaler0.h>
-#include <agrum/base/core/signal/signaler1.h>
-#include <agrum/base/core/signal/signaler2.h>
-#include <agrum/base/core/signal/signaler3.h>
-#include <agrum/base/core/signal/signaler4.h>
-#include <agrum/base/core/signal/signaler5.h>
-#include <agrum/base/core/signal/signaler6.h>
-#include <agrum/base/core/signal/signaler7.h>
+
+#include <agrum/base/core/signal/signaler.h>
 
 #endif   // GUM_SIGNALERS_H

@@ -42,7 +42,7 @@ Coco/R itself) does not fall under the GNU General Public License.
 #include <wchar.h>
 #include <locale.h>
 
-#include <agrum/base/core/signal/signaler1.h>
+#include <agrum/base/core/signal/signaler.h>
 #include <agrum/base/core/errorsContainer.h>
 
 namespace gum {
@@ -246,7 +246,7 @@ class Scanner {
     Token* NextToken();
 
   public:
-    Signaler1<int> onLoad;
+    Signaler<int> onLoad;
 
     Buffer* buffer;   // scanner buffer
 

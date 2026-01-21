@@ -398,7 +398,7 @@ namespace gum {
       bool _isNotLatentCouple_(NodeId x, NodeId y);
 
       public:
-      Signaler4< gum::NodeId, gum::NodeId, std::string, std::string > onStructuralModification;
+      Signaler< gum::NodeId, gum::NodeId, std::string, std::string > onStructuralModification;
     };
 
   } /* namespace learning */

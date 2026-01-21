@@ -64,10 +64,10 @@ namespace gum {
   class ProgressNotifier {
     public:
     /// Progression (percent) and time.
-    Signaler2< Size, double > onProgress;
+    Signaler< Size, double > onProgress;
 
     /// with a possible explanation for stopping
-    Signaler1< const std::string& > onStop;
+    Signaler< const std::string& > onStop;
   };
 
   /**

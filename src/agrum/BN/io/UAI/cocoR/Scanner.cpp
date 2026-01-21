@@ -621,5 +621,3 @@ void Scanner::ResetPeek() {
 } // namespace
 } // namespace
 
-
-

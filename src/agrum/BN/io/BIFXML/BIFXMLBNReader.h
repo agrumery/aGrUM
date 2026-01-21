@@ -155,7 +155,7 @@ namespace gum {
      * parsed
      * yet
      */
-    typename gum::Signaler2< int, std::string > onProceed;
+    typename gum::Signaler< int, std::string > onProceed;
 
     private:
     /**

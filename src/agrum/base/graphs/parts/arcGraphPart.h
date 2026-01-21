@@ -99,8 +99,8 @@ namespace gum {
     public:
     using ArcIterator = ArcSetIterator;
 
-    Signaler2< NodeId, NodeId > onArcAdded;     // onArcAdded(tail,head)
-    Signaler2< NodeId, NodeId > onArcDeleted;   // onArcDeleted(tail,head)
+    Signaler< NodeId, NodeId > onArcAdded;     // onArcAdded(tail,head)
+    Signaler< NodeId, NodeId > onArcDeleted;   // onArcDeleted(tail,head)
 
     // ############################################################################
     /// @name Constructors / Destructors
