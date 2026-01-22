@@ -104,10 +104,24 @@ Coco/R itself) does not fall under the GNU General Public License.
 #  endif
 
 #  define COCO_WCHAR_MAX               65535
-#  define MIN_BUFFER_LENGTH            1024
-#  define MAX_BUFFER_LENGTH            (64 * MIN_BUFFER_LENGTH)
 #  define HEAP_BLOCK_SIZE              (64 * 1024)
 #  define COCO_CPP_NAMESPACE_SEPARATOR L':'
+
+// ==========================================================================
+// Buffer size thresholds for hybrid I/O strategy
+// ==========================================================================
+// Files smaller than this are loaded entirely into memory (fastest for small files)
+#  define COCO_SMALL_FILE_THRESHOLD    (2 * 1024 * 1024)      // 4 MB
+
+// Files between SMALL and MMAP thresholds use large buffer with chunked reading
+#  define COCO_LARGE_BUFFER_SIZE       (4 * 1024 * 1024)      // 4 MB buffer
+
+// Files larger than this use memory-mapped I/O (most efficient for large files)
+#  define COCO_MMAP_FILE_THRESHOLD     (64 * 1024 * 1024)     // 64 MB
+
+// Legacy constants (kept for compatibility, but superseded by hybrid strategy)
+#  define MIN_BUFFER_LENGTH            1024
+#  define MAX_BUFFER_LENGTH            COCO_LARGE_BUFFER_SIZE
 
 namespace gum {
 
@@ -173,6 +187,289 @@ namespace gum {
     istr >> res;
     return res;
   }
+
+  // ==========================================================================
+  // Token - Represents a lexical token
+  // ==========================================================================
+  class Token {
+    public:
+      int      kind;      // token kind
+      int      pos;       // token position in bytes in the source text (starting at 0)
+      int      charPos;   // token position in characters in the source text (starting at 0)
+      int      col;       // token column (starting at 1)
+      int      line;      // token line (starting at 1)
+      wchar_t* val;       // token value
+      Token*   next;      // ML 2005-03-11 Peek tokens are kept in linked list
+
+      Token();
+      ~Token();
+  };
+
+  // ==========================================================================
+  // Buffer - Abstract base class for input buffering
+  // ==========================================================================
+  // Hybrid I/O strategy based on file size:
+  // - Small files (< 2MB): InMemoryBuffer - entire file loaded at once
+  // - Medium files (2-64MB): StreamBuffer - large buffer with chunked reading
+  // - Large files (>= 64MB): MappedBuffer - memory-mapped I/O
+  // ==========================================================================
+  class Buffer {
+    protected:
+      int fileLen_;   // length of input stream
+      int bufPos_;    // current position in buffer
+
+    public:
+      static const int EoF = COCO_WCHAR_MAX + 1;
+
+      Buffer() : fileLen_(0), bufPos_(0) {}
+
+      virtual ~Buffer() = default;
+
+      // Factory method: creates optimal buffer based on file size
+      static Buffer* CreateOptimal(const char* fileName);
+      static Buffer* CreateOptimal(FILE* s, bool isUserStream);
+      static Buffer* CreateFromMemory(const unsigned char* data, int len);
+
+      virtual void     Close()                         = 0;
+      virtual int      Read()                          = 0;
+      virtual int      Peek()                          = 0;
+      virtual wchar_t* GetString(int beg, int end)     = 0;
+      virtual int      GetPos()                        = 0;
+      virtual void     SetPos(int value)               = 0;
+
+      int GetPercent() { return (fileLen_ > 0) ? (int)((100.0 * GetPos()) / fileLen_) : 0; }
+
+      int GetFileLen() const { return fileLen_; }
+  };
+
+  // ==========================================================================
+  // InMemoryBuffer - For small files (< COCO_SMALL_FILE_THRESHOLD)
+  // ==========================================================================
+  // Loads entire file into memory at once. Fastest for small files.
+  class InMemoryBuffer: public Buffer {
+    private:
+      unsigned char* buf_;
+      bool           ownsData_;
+
+    public:
+      InMemoryBuffer(const unsigned char* data, int len, bool copy = true);
+      InMemoryBuffer(FILE* s);
+      ~InMemoryBuffer() override;
+
+      void Close() override {}
+
+      int Read() override { return (bufPos_ < fileLen_) ? buf_[bufPos_++] : EoF; }
+
+      int Peek() override { return (bufPos_ < fileLen_) ? buf_[bufPos_] : EoF; }
+
+      wchar_t* GetString(int beg, int end) override;
+
+      int GetPos() override { return bufPos_; }
+
+      void SetPos(int value) override {
+        bufPos_ = (value >= 0 && value <= fileLen_) ? value : bufPos_;
+      }
+  };
+
+  // ==========================================================================
+  // StreamBuffer - For medium files (COCO_SMALL_FILE_THRESHOLD to COCO_MMAP_FILE_THRESHOLD)
+  // ==========================================================================
+  // Uses a large buffer with chunked reading from file stream.
+  class StreamBuffer: public Buffer {
+    private:
+      unsigned char* buf_;
+      int            bufCapacity_;
+      int            bufStart_;   // position of first byte in buffer relative to input stream
+      int            bufLen_;     // length of valid data in buffer
+      FILE*          stream_;
+      bool           isUserStream_;
+
+      int  ReadNextStreamChunk();
+      bool CanSeek();
+
+    public:
+      StreamBuffer(FILE* s, bool isUserStream);
+      StreamBuffer(StreamBuffer* b);   // for UTF8Buffer wrapping
+      ~StreamBuffer() override;
+
+      void     Close() override;
+      int      Read() override;
+      int      Peek() override;
+      wchar_t* GetString(int beg, int end) override;
+
+      int GetPos() override { return bufPos_ + bufStart_; }
+
+      void SetPos(int value) override;
+  };
+
+  // ==========================================================================
+  // MappedBuffer - For large files (>= COCO_MMAP_FILE_THRESHOLD)
+  // ==========================================================================
+  // Uses memory-mapped I/O for efficient access to very large files.
+#  if defined(_WIN32)
+#    include <windows.h>
+#  else
+#    include <fcntl.h>
+#    include <sys/mman.h>
+#    include <sys/stat.h>
+#    include <unistd.h>
+#  endif
+
+  class MappedBuffer: public Buffer {
+    private:
+      unsigned char* mappedData_;
+#  if defined(_WIN32)
+      HANDLE fileHandle_;
+      HANDLE mappingHandle_;
+#  else
+      int fd_;
+#  endif
+
+    public:
+      explicit MappedBuffer(const char* fileName);
+      ~MappedBuffer() override;
+
+      void Close() override;
+
+      int Read() override { return (bufPos_ < fileLen_) ? mappedData_[bufPos_++] : EoF; }
+
+      int Peek() override { return (bufPos_ < fileLen_) ? mappedData_[bufPos_] : EoF; }
+
+      wchar_t* GetString(int beg, int end) override;
+
+      int GetPos() override { return bufPos_; }
+
+      void SetPos(int value) override {
+        bufPos_ = (value >= 0 && value <= fileLen_) ? value : bufPos_;
+      }
+  };
+
+  // ==========================================================================
+  // UTF8Buffer - Wrapper for UTF-8 decoding (works with any buffer type)
+  // ==========================================================================
+  class UTF8Buffer: public Buffer {
+    private:
+      Buffer* innerBuffer_;
+      bool    ownsInner_;
+
+    public:
+      UTF8Buffer(Buffer* b, bool takeOwnership = true);
+      ~UTF8Buffer() override;
+
+      void Close() override {
+        if (innerBuffer_) innerBuffer_->Close();
+      }
+
+      int Read() override;
+      int Peek() override;
+
+      wchar_t* GetString(int beg, int end) override { return innerBuffer_->GetString(beg, end); }
+
+      int GetPos() override { return innerBuffer_->GetPos(); }
+
+      void SetPos(int value) override { innerBuffer_->SetPos(value); }
+  };
+
+  // ==========================================================================
+  // StartStates - Maps characters to start states of tokens
+  // ==========================================================================
+  class StartStates {
+    private:
+      class Elem {
+        public:
+          int   key, val;
+          Elem* next;
+
+          Elem(int key, int val) : key(key), val(val), next(nullptr) {}
+      };
+
+      Elem** tab;
+
+    public:
+      StartStates() {
+        tab = new Elem*[128];
+        memset(tab, 0, 128 * sizeof(Elem*));
+      }
+
+      virtual ~StartStates() {
+        for (int i = 0; i < 128; ++i) {
+          Elem* e = tab[i];
+          while (e != nullptr) {
+            Elem* next = e->next;
+            delete e;
+            e = next;
+          }
+        }
+        delete[] tab;
+      }
+
+      void set(int key, int val) {
+        Elem* e   = new Elem(key, val);
+        int   k   = ((unsigned int)key) % 128;
+        e->next   = tab[k];
+        tab[k]    = e;
+      }
+
+      int state(int key) {
+        Elem* e = tab[((unsigned int)key) % 128];
+        while (e != nullptr && e->key != key)
+          e = e->next;
+        return e == nullptr ? 0 : e->val;
+      }
+  };
+
+  // ==========================================================================
+  // KeywordMap - Maps strings to integers (identifiers to keyword kinds)
+  // ==========================================================================
+  class KeywordMap {
+    private:
+      class Elem {
+        public:
+          wchar_t* key;
+          int      val;
+          Elem*    next;
+
+          Elem(const wchar_t* key, int val) : val(val), next(nullptr) {
+            this->key = coco_string_create(key);
+          }
+
+          virtual ~Elem() { coco_string_delete(key); }
+      };
+
+      Elem** tab;
+
+    public:
+      KeywordMap() {
+        tab = new Elem*[128];
+        memset(tab, 0, 128 * sizeof(Elem*));
+      }
+
+      virtual ~KeywordMap() {
+        for (int i = 0; i < 128; ++i) {
+          Elem* e = tab[i];
+          while (e != nullptr) {
+            Elem* next = e->next;
+            delete e;
+            e = next;
+          }
+        }
+        delete[] tab;
+      }
+
+      void set(const wchar_t* key, int val) {
+        Elem* e   = new Elem(key, val);
+        int   k   = coco_string_hash(key) % 128;
+        e->next   = tab[k];
+        tab[k]    = e;
+      }
+
+      int get(const wchar_t* key, int defaultVal) {
+        Elem* e = tab[coco_string_hash(key) % 128];
+        while (e != nullptr && !coco_string_equal(e->key, key))
+          e = e->next;
+        return e == nullptr ? defaultVal : e->val;
+      }
+  };
 
 }   // namespace gum
 
