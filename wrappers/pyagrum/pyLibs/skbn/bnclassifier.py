@@ -394,7 +394,7 @@ class BNClassifier(sklearn.base.BaseEstimator, sklearn.base.ClassifierMixin):
       variableNames = [f"X{x}" if check_int(x) else x for x in X.columns]
 
     # verifies the shape of the two arrays
-    X, y = sklearn.utils.check_X_y(X, y, dtype=None, accept_sparse=True)
+    X, y = sklearn.utils.check_X_y(X, y, dtype=object, accept_sparse=True)
 
     d = X.shape[1]
 
