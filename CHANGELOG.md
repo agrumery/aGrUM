@@ -1,5 +1,10 @@
 # aGrUM Changelog
 
+## Changelog for 2.3.2
+
+- pyAgrum
+  - Fix sklearn `check_X_y` compatibility with mixed-type DataFrames.
+
 ## Changelog for 2.3.1
 
 - aGrUM
