@@ -277,7 +277,8 @@ namespace gum {
      * extraction will concern every variable not in the instantiation and the
      * copy of data will use the (relevant) values in this instantiation.
      */
-    virtual void extractFrom(const MultiDimContainer< GUM_ELEMENT >& src, const Instantiation& mask);
+    virtual void extractFrom(const MultiDimContainer< GUM_ELEMENT >& src,
+                             const Instantiation&                    mask);
 
     /**
      * @brief Returns the implementation for this object (may be *this).
@@ -376,7 +377,7 @@ namespace gum {
      * @param base the initial value
      */
     virtual GUM_ELEMENT reduce(std::function< GUM_ELEMENT(GUM_ELEMENT, GUM_ELEMENT) > f,
-                              GUM_ELEMENT                                          base) const;
+                               GUM_ELEMENT                                            base) const;
 
 
     /// @}

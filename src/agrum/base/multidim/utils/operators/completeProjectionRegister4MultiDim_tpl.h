@@ -85,7 +85,7 @@ namespace gum {
   // removes a given entry from the register
   template < typename GUM_ELEMENT >
   void CompleteProjectionRegister4MultiDim< GUM_ELEMENT >::erase(const std::string& projection_name,
-                                                                const std::string& type_multidim) {
+                                                                 const std::string& type_multidim) {
     if (!_set_.exists(projection_name)) return;
 
     CompleteProjectionSet* theset = _set_[projection_name];
@@ -162,8 +162,8 @@ namespace gum {
       const std::string& type_multidim,
       typename CompleteProjectionRegister4MultiDim< GUM_ELEMENT >::CompleteProjectionPtr function) {
     CompleteProjectionRegister4MultiDim< GUM_ELEMENT >::Register().insert(projection_name,
-                                                                         type_multidim,
-                                                                         function);
+                                                                          type_multidim,
+                                                                          function);
   }
 
 } /* namespace gum */

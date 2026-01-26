@@ -353,7 +353,7 @@ namespace gum_tests {
         gum::LazyPropagation< double > inference(&asia);
         auto                           id       = asia.idFromName("Has Lung Cancer");
         const auto&                    marginal = inference.posterior("Has Lung Cancer");
-        CHECK((marginal.domainSize()) == (static_cast< gum::Size >(2)));
+        GUM_CHECK_EQ(marginal.domainSize(), static_cast< gum::Size >(2));
 
 
         // We can add some evidence
@@ -363,7 +363,7 @@ namespace gum_tests {
         const auto& updated_marginal = inference.posterior(id);
 
         // To prevent warning for unused variable
-        CHECK((updated_marginal.domainSize()) == (static_cast< gum::Size >(2)));
+        GUM_CHECK_EQ(updated_marginal.domainSize(), static_cast< gum::Size >(2));
       } catch (gum::Exception& e) { FAIL(e.errorContent()); }
     }
 

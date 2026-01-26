@@ -71,12 +71,12 @@ namespace gum_tests {
       // Act
       GUM_CHECK_ASSERT_THROWS_NOTHING(factory.parseStream(input, output));
       // Assert
-      CHECK((output.str()) == (""));
-      CHECK((prm.interfaces().size()) == (static_cast< gum::Size >(1)));
+      GUM_CHECK_EQ(output.str(), "");
+      GUM_CHECK_EQ(prm.interfaces().size(), static_cast< gum::Size >(1));
       CHECK(prm.isInterface("IBar"));
       const auto& i_bar = prm.getInterface("IBar");
-      CHECK((i_bar.attributes().size()) == (static_cast< gum::Size >(0)));
-      CHECK((i_bar.referenceSlots().size()) == (static_cast< gum::Size >(0)));
+      GUM_CHECK_EQ(i_bar.attributes().size(), static_cast< gum::Size >(0));
+      GUM_CHECK_EQ(i_bar.referenceSlots().size(), static_cast< gum::Size >(0));
       CHECK_THROWS_AS(i_bar.super(), const gum::NotFound&);
     }   // namespace gum_tests
 
@@ -94,8 +94,8 @@ namespace gum_tests {
       std::getline(output, line);
       std::stringstream msg;
       msg << "|1 col 1| Error : invalid declaration";
-      CHECK((line) == (msg.str()));
-      CHECK((prm.interfaces().size()) == (static_cast< gum::Size >(0)));
+      GUM_CHECK_EQ(line, msg.str());
+      GUM_CHECK_EQ(prm.interfaces().size(), static_cast< gum::Size >(0));
       CHECK(!prm.isInterface("IBar"));
     }
 
@@ -113,8 +113,8 @@ namespace gum_tests {
       std::getline(output, line);
       std::stringstream msg;
       msg << "|1 col 11| Error : label expected";
-      CHECK((line) == (msg.str()));
-      CHECK((prm.interfaces().size()) == (static_cast< gum::Size >(0)));
+      GUM_CHECK_EQ(line, msg.str());
+      GUM_CHECK_EQ(prm.interfaces().size(), static_cast< gum::Size >(0));
       CHECK(!prm.isInterface("IBar"));
     }
 
@@ -132,8 +132,8 @@ namespace gum_tests {
       std::getline(output, line);
       std::stringstream msg;
       msg << "|1 col 11| Error : label expected";
-      CHECK((line) == (msg.str()));
-      CHECK((prm.interfaces().size()) == (static_cast< gum::Size >(0)));
+      GUM_CHECK_EQ(line, msg.str());
+      GUM_CHECK_EQ(prm.interfaces().size(), static_cast< gum::Size >(0));
       CHECK(!prm.isInterface("IBar"));
     }
 
@@ -147,12 +147,12 @@ namespace gum_tests {
       // Act
       GUM_CHECK_ASSERT_THROWS_NOTHING(factory.parseStream(input, output));
       // Assert
-      CHECK((output.str()) == (""));
-      CHECK((prm.interfaces().size()) == (static_cast< gum::Size >(1)));
+      GUM_CHECK_EQ(output.str(), "");
+      GUM_CHECK_EQ(prm.interfaces().size(), static_cast< gum::Size >(1));
       CHECK(prm.isInterface("IBar"));
       const auto& i_bar = prm.getInterface("IBar");
-      CHECK((i_bar.attributes().size()) == (static_cast< gum::Size >(1)));
-      CHECK((i_bar.referenceSlots().size()) == (static_cast< gum::Size >(0)));
+      GUM_CHECK_EQ(i_bar.attributes().size(), static_cast< gum::Size >(1));
+      GUM_CHECK_EQ(i_bar.referenceSlots().size(), static_cast< gum::Size >(0));
       CHECK_THROWS_AS(i_bar.super(), const gum::NotFound&);
     }
 
@@ -170,12 +170,12 @@ namespace gum_tests {
       std::getline(output, line);
       std::stringstream msg;
       msg << "|2 col 1| Error : Unknown type t_state";
-      CHECK((line) == (msg.str()));
-      CHECK((prm.interfaces().size()) == (static_cast< gum::Size >(1)));
+      GUM_CHECK_EQ(line, msg.str());
+      GUM_CHECK_EQ(prm.interfaces().size(), static_cast< gum::Size >(1));
       CHECK(prm.isInterface("IBar"));
       const auto& i_bar = prm.getInterface("IBar");
-      CHECK((i_bar.attributes().size()) == (static_cast< gum::Size >(0)));
-      CHECK((i_bar.referenceSlots().size()) == (static_cast< gum::Size >(0)));
+      GUM_CHECK_EQ(i_bar.attributes().size(), static_cast< gum::Size >(0));
+      GUM_CHECK_EQ(i_bar.referenceSlots().size(), static_cast< gum::Size >(0));
       CHECK_THROWS_AS(i_bar.super(), const gum::NotFound&);
     }
 
@@ -193,8 +193,8 @@ namespace gum_tests {
       std::getline(output, line);
       std::stringstream msg;
       msg << "|2 col 1| Error : \"}\" expected";
-      CHECK((line) == (msg.str()));
-      CHECK((prm.interfaces().size()) == (static_cast< gum::Size >(0)));
+      GUM_CHECK_EQ(line, msg.str());
+      GUM_CHECK_EQ(prm.interfaces().size(), static_cast< gum::Size >(0));
       CHECK(!prm.isInterface("IBar"));
     }
 
@@ -212,8 +212,8 @@ namespace gum_tests {
       std::getline(output, line);
       std::stringstream msg;
       msg << "|2 col 6| Error : label expected";
-      CHECK((line) == (msg.str()));
-      CHECK((prm.interfaces().size()) == (static_cast< gum::Size >(0)));
+      GUM_CHECK_EQ(line, msg.str());
+      GUM_CHECK_EQ(prm.interfaces().size(), static_cast< gum::Size >(0));
       CHECK(!prm.isInterface("IBar"));
     }
 
@@ -231,8 +231,8 @@ namespace gum_tests {
       std::getline(output, line);
       std::stringstream msg;
       msg << "|3 col 1| Error : semicolon expected";
-      CHECK((line) == (msg.str()));
-      CHECK((prm.interfaces().size()) == (static_cast< gum::Size >(0)));
+      GUM_CHECK_EQ(line, msg.str());
+      GUM_CHECK_EQ(prm.interfaces().size(), static_cast< gum::Size >(0));
       CHECK(!prm.isInterface("IBar"));
     }
 
@@ -250,8 +250,8 @@ namespace gum_tests {
       std::getline(output, line);
       std::stringstream msg;
       msg << "|2 col 9| Error : label expected";
-      CHECK((line) == (msg.str()));
-      CHECK((prm.interfaces().size()) == (static_cast< gum::Size >(0)));
+      GUM_CHECK_EQ(line, msg.str());
+      GUM_CHECK_EQ(prm.interfaces().size(), static_cast< gum::Size >(0));
       CHECK(!prm.isInterface("IBar"));
     }
 
@@ -265,12 +265,12 @@ namespace gum_tests {
       // Act
       GUM_CHECK_ASSERT_THROWS_NOTHING(factory.parseStream(input, output));
       // Assert
-      CHECK((output.str()) == (""));
-      CHECK((prm.interfaces().size()) == (static_cast< gum::Size >(1)));
+      GUM_CHECK_EQ(output.str(), "");
+      GUM_CHECK_EQ(prm.interfaces().size(), static_cast< gum::Size >(1));
       CHECK(prm.isInterface("IBar"));
       const auto& i_bar = prm.getInterface("IBar");
-      CHECK((i_bar.attributes().size()) == (static_cast< gum::Size >(1)));
-      CHECK((i_bar.referenceSlots().size()) == (static_cast< gum::Size >(0)));
+      GUM_CHECK_EQ(i_bar.attributes().size(), static_cast< gum::Size >(1));
+      GUM_CHECK_EQ(i_bar.referenceSlots().size(), static_cast< gum::Size >(0));
       CHECK_THROWS_AS(i_bar.super(), const gum::NotFound&);
     }
 
@@ -291,12 +291,12 @@ namespace gum_tests {
       std::getline(output, line);
       std::stringstream msg;
       msg << "|3 col 1| Error : Element state already exists";
-      CHECK((line) == (msg.str()));
-      CHECK((prm.interfaces().size()) == (static_cast< gum::Size >(1)));
+      GUM_CHECK_EQ(line, msg.str());
+      GUM_CHECK_EQ(prm.interfaces().size(), static_cast< gum::Size >(1));
       CHECK(prm.isInterface("IBar"));
       const auto& i_bar = prm.getInterface("IBar");
-      CHECK((i_bar.attributes().size()) == (static_cast< gum::Size >(1)));
-      CHECK((i_bar.referenceSlots().size()) == (static_cast< gum::Size >(0)));
+      GUM_CHECK_EQ(i_bar.attributes().size(), static_cast< gum::Size >(1));
+      GUM_CHECK_EQ(i_bar.referenceSlots().size(), static_cast< gum::Size >(0));
       CHECK_THROWS_AS(i_bar.super(), const gum::NotFound&);
     }
 
@@ -314,17 +314,17 @@ namespace gum_tests {
       // Act
       GUM_CHECK_ASSERT_THROWS_NOTHING(factory.parseStream(input, output));
       // Assert
-      CHECK((output.str()) == (""));
-      CHECK((prm.interfaces().size()) == (static_cast< gum::Size >(2)));
+      GUM_CHECK_EQ(output.str(), "");
+      GUM_CHECK_EQ(prm.interfaces().size(), static_cast< gum::Size >(2));
       CHECK(prm.isInterface("IFoo"));
       const auto& i_foo = prm.getInterface("IFoo");
-      CHECK((i_foo.attributes().size()) == (static_cast< gum::Size >(1)));
-      CHECK((i_foo.referenceSlots().size()) == (static_cast< gum::Size >(0)));
+      GUM_CHECK_EQ(i_foo.attributes().size(), static_cast< gum::Size >(1));
+      GUM_CHECK_EQ(i_foo.referenceSlots().size(), static_cast< gum::Size >(0));
       CHECK_THROWS_AS(i_foo.super(), const gum::NotFound&);
       CHECK(prm.isInterface("IBar"));
       const auto& i_bar = prm.getInterface("IBar");
-      CHECK((i_bar.attributes().size()) == (static_cast< gum::Size >(1)));
-      CHECK((i_bar.referenceSlots().size()) == (static_cast< gum::Size >(1)));
+      GUM_CHECK_EQ(i_bar.attributes().size(), static_cast< gum::Size >(1));
+      GUM_CHECK_EQ(i_bar.referenceSlots().size(), static_cast< gum::Size >(1));
       CHECK_THROWS_AS(i_bar.super(), const gum::NotFound&);
     }
 
@@ -341,17 +341,17 @@ namespace gum_tests {
       // Act
       GUM_CHECK_ASSERT_THROWS_NOTHING(factory.parseStream(input, output));
       // Assert
-      CHECK((output.str()) == (""));
-      CHECK((prm.interfaces().size()) == (static_cast< gum::Size >(2)));
+      GUM_CHECK_EQ(output.str(), "");
+      GUM_CHECK_EQ(prm.interfaces().size(), static_cast< gum::Size >(2));
       CHECK(prm.isInterface("IFoo"));
       const auto& i_foo = prm.getInterface("IFoo");
-      CHECK((i_foo.attributes().size()) == (static_cast< gum::Size >(1)));
-      CHECK((i_foo.referenceSlots().size()) == (static_cast< gum::Size >(0)));
+      GUM_CHECK_EQ(i_foo.attributes().size(), static_cast< gum::Size >(1));
+      GUM_CHECK_EQ(i_foo.referenceSlots().size(), static_cast< gum::Size >(0));
       CHECK_THROWS_AS(i_foo.super(), const gum::NotFound&);
       CHECK(prm.isInterface("IBar"));
       const auto& i_bar = prm.getInterface("IBar");
-      CHECK((i_bar.attributes().size()) == (static_cast< gum::Size >(2)));
-      CHECK((i_bar.super()) == (i_foo));
+      GUM_CHECK_EQ(i_bar.attributes().size(), static_cast< gum::Size >(2));
+      GUM_CHECK_EQ(i_bar.super(), i_foo);
     }
 
     static void testSuperInterfaceError1() {
@@ -373,8 +373,8 @@ namespace gum_tests {
       std::getline(output, line);
       std::stringstream msg;
       msg << "|4 col 24| Error : Interface IFooBar not found";
-      CHECK((line) == (msg.str()));
-      CHECK((prm.interfaces().size()) == (static_cast< gum::Size >(0)));
+      GUM_CHECK_EQ(line, msg.str());
+      GUM_CHECK_EQ(prm.interfaces().size(), static_cast< gum::Size >(0));
       CHECK(!prm.isInterface("IFoo"));
       CHECK(!prm.isInterface("IBar"));
     }
@@ -399,8 +399,8 @@ namespace gum_tests {
       std::getline(output, line);
       std::stringstream msg;
       msg << "|5 col 24| Error : Interface t_state not found";
-      CHECK((line) == (msg.str()));
-      CHECK((prm.interfaces().size()) == (static_cast< gum::Size >(0)));
+      GUM_CHECK_EQ(line, msg.str());
+      GUM_CHECK_EQ(prm.interfaces().size(), static_cast< gum::Size >(0));
       CHECK(!prm.isInterface("IFoo"));
       CHECK(!prm.isInterface("IBar"));
     }
@@ -424,8 +424,8 @@ namespace gum_tests {
       std::getline(output, line);
       std::stringstream msg;
       msg << "|4 col 16| Error : \"{\" expected";
-      CHECK((line) == (msg.str()));
-      CHECK((prm.interfaces().size()) == (static_cast< gum::Size >(0)));
+      GUM_CHECK_EQ(line, msg.str());
+      GUM_CHECK_EQ(prm.interfaces().size(), static_cast< gum::Size >(0));
     }
 
     static void testSuperInterfaceWithAttributeOverload() {
@@ -445,17 +445,17 @@ namespace gum_tests {
       // Act
       GUM_CHECK_ASSERT_THROWS_NOTHING(factory.parseStream(input, output));
       // Assert
-      CHECK((output.str()) == (""));
-      CHECK((prm.interfaces().size()) == (static_cast< gum::Size >(2)));
+      GUM_CHECK_EQ(output.str(), "");
+      GUM_CHECK_EQ(prm.interfaces().size(), static_cast< gum::Size >(2));
       CHECK(prm.isInterface("IFoo"));
       const auto& i_foo = prm.getInterface("IFoo");
-      CHECK((i_foo.attributes().size()) == (static_cast< gum::Size >(1)));
-      CHECK((i_foo.referenceSlots().size()) == (static_cast< gum::Size >(0)));
+      GUM_CHECK_EQ(i_foo.attributes().size(), static_cast< gum::Size >(1));
+      GUM_CHECK_EQ(i_foo.referenceSlots().size(), static_cast< gum::Size >(0));
       CHECK_THROWS_AS(i_foo.super(), const gum::NotFound&);
       CHECK(prm.isInterface("IBar"));
       const auto& i_bar = prm.getInterface("IBar");
-      CHECK((i_bar.attributes().size()) == (static_cast< gum::Size >(2)));
-      CHECK((i_bar.super()) == (i_foo));
+      GUM_CHECK_EQ(i_bar.attributes().size(), static_cast< gum::Size >(2));
+      GUM_CHECK_EQ(i_bar.super(), i_foo);
     }
 
     static void testSuperInterfaceWithReferenceOverload() {
@@ -475,18 +475,18 @@ namespace gum_tests {
       // Act
       GUM_CHECK_ASSERT_THROWS_NOTHING(factory.parseStream(input, output));
       // Assert
-      CHECK((output.str()) == (""));
-      CHECK((prm.interfaces().size()) == (static_cast< gum::Size >(4)));
+      GUM_CHECK_EQ(output.str(), "");
+      GUM_CHECK_EQ(prm.interfaces().size(), static_cast< gum::Size >(4));
       CHECK(prm.isInterface("IPlop"));
       const auto& i_plop = prm.getInterface("IPlop");
-      CHECK((i_plop.attributes().size()) == (static_cast< gum::Size >(0)));
-      CHECK((i_plop.referenceSlots().size()) == (static_cast< gum::Size >(1)));
+      GUM_CHECK_EQ(i_plop.attributes().size(), static_cast< gum::Size >(0));
+      GUM_CHECK_EQ(i_plop.referenceSlots().size(), static_cast< gum::Size >(1));
       CHECK_THROWS_AS(i_plop.super(), const gum::NotFound&);
       CHECK(prm.isInterface("IPloc"));
       const auto& i_ploc = prm.getInterface("IPloc");
-      CHECK((i_ploc.attributes().size()) == (static_cast< gum::Size >(0)));
-      CHECK((i_ploc.referenceSlots().size()) == (static_cast< gum::Size >(1)));
-      CHECK((i_ploc.super()) == (i_plop));
+      GUM_CHECK_EQ(i_ploc.attributes().size(), static_cast< gum::Size >(0));
+      GUM_CHECK_EQ(i_ploc.referenceSlots().size(), static_cast< gum::Size >(1));
+      GUM_CHECK_EQ(i_ploc.super(), i_plop);
     }
 
     static void testOrderDoesNotMatter1() {
@@ -502,13 +502,13 @@ namespace gum_tests {
       // Act
       GUM_CHECK_ASSERT_THROWS_NOTHING(factory.parseStream(input, output));
       // Assert
-      CHECK((output.str()) == (""));
-      CHECK((prm.interfaces().size()) == (static_cast< gum::Size >(1)));
+      GUM_CHECK_EQ(output.str(), "");
+      GUM_CHECK_EQ(prm.interfaces().size(), static_cast< gum::Size >(1));
       CHECK(prm.isType("t_state"));
       CHECK(prm.isInterface("IBar"));
       const auto& i_bar = prm.getInterface("IBar");
-      CHECK((i_bar.attributes().size()) == (static_cast< gum::Size >(1)));
-      CHECK((i_bar.referenceSlots().size()) == (static_cast< gum::Size >(0)));
+      GUM_CHECK_EQ(i_bar.attributes().size(), static_cast< gum::Size >(1));
+      GUM_CHECK_EQ(i_bar.referenceSlots().size(), static_cast< gum::Size >(0));
       CHECK_THROWS_AS(i_bar.super(), const gum::NotFound&);
     }
 
@@ -528,17 +528,17 @@ namespace gum_tests {
       // Act
       GUM_CHECK_ASSERT_THROWS_NOTHING(factory.parseStream(input, output));
       // Assert
-      CHECK((output.str()) == (""));
-      CHECK((prm.interfaces().size()) == (static_cast< gum::Size >(2)));
+      GUM_CHECK_EQ(output.str(), "");
+      GUM_CHECK_EQ(prm.interfaces().size(), static_cast< gum::Size >(2));
       CHECK(prm.isInterface("IFoo"));
       const auto& i_foo = prm.getInterface("IFoo");
-      CHECK((i_foo.attributes().size()) == (static_cast< gum::Size >(1)));
-      CHECK((i_foo.referenceSlots().size()) == (static_cast< gum::Size >(0)));
+      GUM_CHECK_EQ(i_foo.attributes().size(), static_cast< gum::Size >(1));
+      GUM_CHECK_EQ(i_foo.referenceSlots().size(), static_cast< gum::Size >(0));
       CHECK_THROWS_AS(i_foo.super(), const gum::NotFound&);
       CHECK(prm.isInterface("IBar"));
       const auto& i_bar = prm.getInterface("IBar");
-      CHECK((i_bar.attributes().size()) == (static_cast< gum::Size >(2)));
-      CHECK((i_bar.super()) == (i_foo));
+      GUM_CHECK_EQ(i_bar.attributes().size(), static_cast< gum::Size >(2));
+      GUM_CHECK_EQ(i_bar.super(), i_foo);
     }
 
     static void testOrderDoesNotMatter3() {
@@ -557,16 +557,16 @@ namespace gum_tests {
       // Act
       GUM_CHECK_ASSERT_THROWS_NOTHING(factory.parseStream(input, output));
       // Assert
-      CHECK((output.str()) == (""));
-      CHECK((prm.interfaces().size()) == (static_cast< gum::Size >(2)));
+      GUM_CHECK_EQ(output.str(), "");
+      GUM_CHECK_EQ(prm.interfaces().size(), static_cast< gum::Size >(2));
       CHECK(prm.isInterface("IFoo"));
       const auto& i_foo = prm.getInterface("IFoo");
-      CHECK((i_foo.attributes().size()) == (static_cast< gum::Size >(1)));
-      CHECK((i_foo.referenceSlots().size()) == (static_cast< gum::Size >(0)));
+      GUM_CHECK_EQ(i_foo.attributes().size(), static_cast< gum::Size >(1));
+      GUM_CHECK_EQ(i_foo.referenceSlots().size(), static_cast< gum::Size >(0));
       CHECK_THROWS_AS(i_foo.super(), const gum::NotFound&);
       CHECK(prm.isInterface("IBar"));
       const auto& i_bar = prm.getInterface("IBar");
-      CHECK((i_bar.attributes().size()) == (static_cast< gum::Size >(1)));
+      GUM_CHECK_EQ(i_bar.attributes().size(), static_cast< gum::Size >(1));
       CHECK_THROWS_AS(i_bar.super(), const gum::NotFound&);
     }
 
@@ -587,17 +587,17 @@ namespace gum_tests {
       // Act
       GUM_CHECK_ASSERT_THROWS_NOTHING(factory.parseStream(input, output));
       // Assert
-      CHECK((output.str()) == (""));
-      CHECK((prm.interfaces().size()) == (static_cast< gum::Size >(2)));
+      GUM_CHECK_EQ(output.str(), "");
+      GUM_CHECK_EQ(prm.interfaces().size(), static_cast< gum::Size >(2));
       CHECK(prm.isInterface("IFoo"));
       const auto& i_foo = prm.getInterface("IFoo");
-      CHECK((i_foo.attributes().size()) == (static_cast< gum::Size >(1)));
-      CHECK((i_foo.referenceSlots().size()) == (static_cast< gum::Size >(1)));
+      GUM_CHECK_EQ(i_foo.attributes().size(), static_cast< gum::Size >(1));
+      GUM_CHECK_EQ(i_foo.referenceSlots().size(), static_cast< gum::Size >(1));
       CHECK_THROWS_AS(i_foo.super(), const gum::NotFound&);
       CHECK(prm.isInterface("IBar"));
       const auto& i_bar = prm.getInterface("IBar");
-      CHECK((i_bar.attributes().size()) == (static_cast< gum::Size >(1)));
-      CHECK((i_bar.referenceSlots().size()) == (static_cast< gum::Size >(1)));
+      GUM_CHECK_EQ(i_bar.attributes().size(), static_cast< gum::Size >(1));
+      GUM_CHECK_EQ(i_bar.referenceSlots().size(), static_cast< gum::Size >(1));
       CHECK_THROWS_AS(i_bar.super(), const gum::NotFound&);
     }
 
@@ -619,8 +619,8 @@ namespace gum_tests {
       std::stringstream msg;
       msg << "|2 col 1| Error : Interface IFoo cannot reference "
              "itself";
-      CHECK((line) == (msg.str()));
-      CHECK((prm.interfaces().size()) == (static_cast< gum::Size >(1)));
+      GUM_CHECK_EQ(line, msg.str());
+      GUM_CHECK_EQ(prm.interfaces().size(), static_cast< gum::Size >(1));
     }
 
     static void testInterfaceWithOverloading() {
@@ -650,38 +650,38 @@ namespace gum_tests {
       // Act
       GUM_CHECK_ASSERT_THROWS_NOTHING(factory.parseStream(input, output));
       // Assert
-      CHECK((output.str()) == (""));
-      CHECK((prm.interfaces().size()) == (static_cast< gum::Size >(4)));
+      GUM_CHECK_EQ(output.str(), "");
+      GUM_CHECK_EQ(prm.interfaces().size(), static_cast< gum::Size >(4));
       CHECK(prm.isInterface("Plop"));
       const auto& plop = prm.getInterface("Plop");
-      CHECK((plop.attributes().size()) == (static_cast< gum::Size >(1)));
+      GUM_CHECK_EQ(plop.attributes().size(), static_cast< gum::Size >(1));
       CHECK(plop.exists("state"));
       CHECK(plop.exists("(boolean)state"));
 
       CHECK(prm.isInterface("SubPlop"));
       const auto& sub_plop = prm.getInterface("SubPlop");
-      CHECK((sub_plop.attributes().size()) == (static_cast< gum::Size >(2)));
+      GUM_CHECK_EQ(sub_plop.attributes().size(), static_cast< gum::Size >(2));
       CHECK(sub_plop.exists("state"));
       CHECK(sub_plop.exists("(boolean)state"));
       CHECK(sub_plop.exists("(state)state"));
 
       CHECK(prm.isInterface("Foo"));
       const auto& foo = prm.getInterface("Foo");
-      CHECK((foo.referenceSlots().size()) == (static_cast< gum::Size >(1)));
+      GUM_CHECK_EQ(foo.referenceSlots().size(), static_cast< gum::Size >(1));
       CHECK(foo.exists("plop"));
       CHECK(gum::prm::PRMClassElement< double >::isReferenceSlot(foo.get("plop")));
       const auto& ref_plop
           = static_cast< const gum::prm::PRMReferenceSlot< double >& >(foo.get("plop"));
-      CHECK((&(ref_plop.slotType())) == (&plop));
+      GUM_CHECK_EQ(&(ref_plop.slotType()), &plop);
 
       CHECK(prm.isInterface("Bar"));
       const auto& bar = prm.getInterface("Bar");
-      CHECK((bar.referenceSlots().size()) == (static_cast< gum::Size >(1)));
+      GUM_CHECK_EQ(bar.referenceSlots().size(), static_cast< gum::Size >(1));
       CHECK(bar.exists("plop"));
       CHECK(gum::prm::PRMClassElement< double >::isReferenceSlot(bar.get("plop")));
       const auto& ref_subplop
           = static_cast< const gum::prm::PRMReferenceSlot< double >& >(bar.get("plop"));
-      CHECK((&(ref_subplop.slotType())) == (&sub_plop));
+      GUM_CHECK_EQ(&(ref_subplop.slotType()), &sub_plop);
     }
 
     static void testInterfaceWithOverloadingError1() {
@@ -715,7 +715,7 @@ namespace gum_tests {
       std::getline(output, line);
       std::stringstream msg;
       msg << "|5 col 29| Error : Illegal overload of element plop";
-      CHECK((line) == (msg.str()));
+      GUM_CHECK_EQ(line, msg.str());
     }
 
     static void testInterfaceWithOverloadingError2() {
@@ -741,7 +741,7 @@ namespace gum_tests {
       std::getline(output, line);
       std::stringstream msg;
       msg << "|3 col 34| Error : Illegal overload of element state";
-      CHECK((line) == (msg.str()));
+      GUM_CHECK_EQ(line, msg.str());
     }
   };
 

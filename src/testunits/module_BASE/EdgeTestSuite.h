@@ -71,25 +71,25 @@ namespace gum_tests {
       gum::Edge copy(edge1);
       gum::Edge edge3(6, 7);
 
-      CHECK((edge1) == (edge1));
-      CHECK((edge1) == (edge2));
-      CHECK((edge2) == (edge1));
-      CHECK((copy) == (edge1));
-      CHECK((edge2) == (copy));
+      GUM_CHECK_EQ(edge1, edge1);
+      GUM_CHECK_EQ(edge1, edge2);
+      GUM_CHECK_EQ(edge2, edge1);
+      GUM_CHECK_EQ(copy, edge1);
+      GUM_CHECK_EQ(edge2, copy);
 
-      CHECK((edge1) != (edge3));
-      CHECK((edge3) != (edge1));
-      CHECK((copy) != (edge3));
-      CHECK((edge2) != (edge3));
+      GUM_CHECK_NE(edge1, edge3);
+      GUM_CHECK_NE(edge3, edge1);
+      GUM_CHECK_NE(copy, edge3);
+      GUM_CHECK_NE(edge2, edge3);
     }
 
     static void testGetters() {
       const gum::Edge edge1((gum::NodeId)1, (gum::NodeId)2);
       const gum::Edge edge2((gum::NodeId)2, (gum::NodeId)1);
 
-      CHECK((edge1) == (edge1));
-      CHECK((edge1) == (edge2));
-      CHECK((edge2) == (edge1));
+      GUM_CHECK_EQ(edge1, edge1);
+      GUM_CHECK_EQ(edge1, edge2);
+      GUM_CHECK_EQ(edge2, edge1);
 
       const gum::Edge edge3((gum::NodeId)3, (gum::NodeId)4);
       const gum::Edge edge4((gum::NodeId)1, (gum::NodeId)2);
@@ -102,14 +102,14 @@ namespace gum_tests {
       GUM_CHECK_ASSERT_THROWS_NOTHING(n = edge4.first());
       GUM_CHECK_ASSERT_THROWS_NOTHING(n = edge4.second());
 
-      CHECK((n = edge2.first()) == ((gum::NodeId)1));
-      CHECK((n = edge2.second()) == ((gum::NodeId)2));
+      GUM_CHECK_EQ(n = edge2.first(), (gum::NodeId)1);
+      GUM_CHECK_EQ(n = edge2.second(), (gum::NodeId)2);
 
       GUM_CHECK_ASSERT_THROWS_NOTHING(n = edge3.other((gum::NodeId)3));
       GUM_CHECK_ASSERT_THROWS_NOTHING(n = edge3.other((gum::NodeId)4));
 
-      CHECK((n = edge3.other((gum::NodeId)3)) == ((gum::NodeId)4));
-      CHECK((n = edge3.other((gum::NodeId)4)) == ((gum::NodeId)3));
+      GUM_CHECK_EQ(n = edge3.other((gum::NodeId)3), (gum::NodeId)4);
+      GUM_CHECK_EQ(n = edge3.other((gum::NodeId)4), (gum::NodeId)3);
 
       CHECK_THROWS(n = edge4.other((gum::NodeId)42));
     }
@@ -127,7 +127,7 @@ namespace gum_tests {
       for (gum::NodeId x = 0; x < 1000; ++x) {
         for (gum::NodeId y = x; y < 1000; ++y) {
           gum::Edge edge(x, y);
-          CHECK((hash[edge]) == ((x + y)));
+          GUM_CHECK_EQ(hash[edge], (x + y));
         }
       }
     }

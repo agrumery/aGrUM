@@ -73,20 +73,20 @@ namespace gum_tests {
       GUM_CHECK_ASSERT_THROWS_NOTHING(p << a << b << c << d);
 
       // doing the right stuff :)
-      CHECK((p.toString()) == ("a:Labelized({0|1})=logit(0.2)"));
+      GUM_CHECK_EQ(p.toString(), "a:Labelized({0|1})=logit(0.2)");
       GUM_CHECK_ASSERT_THROWS_NOTHING(p.causalWeight(b, 0.4f));
-      CHECK((p.toString()) == ("a:Labelized({0|1})=logit(0.2 +0.4*b:Labelized({0|1}))"));
+      GUM_CHECK_EQ(p.toString(), "a:Labelized({0|1})=logit(0.2 +0.4*b:Labelized({0|1}))");
       GUM_CHECK_ASSERT_THROWS_NOTHING(p.causalWeight(d, 0.7f));
       CHECK((p.toString())
             == ("a:Labelized({0|1})=logit(0.2 +0.4*b:Labelized({0|1}) +0.7*d:Labelized({0|1}))"));
 
-      CHECK((p.nbrDim()) == (static_cast< gum::Size >(4)));
-      CHECK((p.realSize()) == (static_cast< gum::Size >(4)));
+      GUM_CHECK_EQ(p.nbrDim(), static_cast< gum::Size >(4));
+      GUM_CHECK_EQ(p.realSize(), static_cast< gum::Size >(4));
 
       gum::MultiDimLogit< double > q(p);
       CHECK((q.toString())
             == ("a:Labelized({0|1})=logit(0.2 +0.4*b:Labelized({0|1}) +0.7*d:Labelized({0|1}))"));
-      CHECK((p.realSize()) == (static_cast< gum::Size >(4)));
+      GUM_CHECK_EQ(p.realSize(), static_cast< gum::Size >(4));
 
       GUM_CHECK_ASSERT_THROWS_NOTHING(q.causalWeight(c, -1.3f));
       CHECK((q.toString())

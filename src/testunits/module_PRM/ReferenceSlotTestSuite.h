@@ -172,7 +172,7 @@ namespace gum_tests {
       // Act
       auto& type = ref.slotType();
       // Assert
-      CHECK((_A_) == (&type));
+      GUM_CHECK_EQ(_A_, &type);
     }
 
     static void testSlotTypeConst() {
@@ -182,7 +182,7 @@ namespace gum_tests {
       // Act
       const auto& type = const_ref.slotType();
       // Assert
-      CHECK((_A_) == (&type));
+      GUM_CHECK_EQ(_A_, &type);
     }
 
     static void testIsArrayFalse() {
@@ -242,7 +242,7 @@ namespace gum_tests {
       CHECK_NOTHROW(child.addParent(parent));
       // Assert
       auto after = parent.cpf().variablesSequence().size();
-      CHECK((before) == (after));
+      GUM_CHECK_EQ(before, after);
     }
 
     static void testAddChild() {
@@ -254,7 +254,7 @@ namespace gum_tests {
       CHECK_NOTHROW(parent.addChild(child));
       // Assert
       auto after = child.cpf().variablesSequence().size();
-      CHECK((before) == (after));
+      GUM_CHECK_EQ(before, after);
     }
 
     /// @}

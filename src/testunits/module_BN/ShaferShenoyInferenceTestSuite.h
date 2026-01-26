@@ -278,15 +278,15 @@ namespace gum_tests {
       gum::ShaferShenoyInference< double > inf(bn);
       inf.addJointTarget(gum::NodeSet{0, 1, 2});
       inf.addJointTarget(gum::NodeSet{2, 3});
-      CHECK((inf.nbrJointTargets()) == (static_cast< gum::Size >(2)));
+      GUM_CHECK_EQ(inf.nbrJointTargets(), static_cast< gum::Size >(2));
 
       // should not be added since {0,1,2} already exists
       inf.addJointTarget(gum::NodeSet{0, 1});
-      CHECK((inf.nbrJointTargets()) == (static_cast< gum::Size >(2)));
+      GUM_CHECK_EQ(inf.nbrJointTargets(), static_cast< gum::Size >(2));
 
       // should remove {2,3} since {2,3,4} includes {2,3}
       inf.addJointTarget(gum::NodeSet{2, 3, 4});
-      CHECK((inf.nbrJointTargets()) == (static_cast< gum::Size >(2)));
+      GUM_CHECK_EQ(inf.nbrJointTargets(), static_cast< gum::Size >(2));
 
       auto                                     bn_joint = this->joint(*bn);
       gum::Set< const gum::DiscreteVariable* > vars;
@@ -376,8 +376,8 @@ namespace gum_tests {
       gum::BIFReader< double > reader(&bn, file);
       gum::Size                nbrErr = static_cast< gum::Size >(0);
       GUM_CHECK_ASSERT_THROWS_NOTHING(nbrErr = reader.proceed());
-      CHECK((nbrErr) == ((gum::Size) static_cast< gum::Size >(0)));
-      CHECK((reader.warnings()) == (static_cast< gum::Size >(0)));
+      GUM_CHECK_EQ(nbrErr, (gum::Size) static_cast< gum::Size >(0));
+      GUM_CHECK_EQ(reader.warnings(), static_cast< gum::Size >(0));
 
       auto id = bn.idFromName("lung_cancer");
 
@@ -413,8 +413,8 @@ namespace gum_tests {
       gum::BIFReader< double > reader(&bn, file);
       gum::Size                nbrErr = static_cast< gum::Size >(0);
       GUM_CHECK_ASSERT_THROWS_NOTHING(nbrErr = reader.proceed());
-      CHECK((nbrErr) == ((gum::Size) static_cast< gum::Size >(0)));
-      CHECK((reader.warnings()) == (static_cast< gum::Size >(0)));
+      GUM_CHECK_EQ(nbrErr, (gum::Size) static_cast< gum::Size >(0));
+      GUM_CHECK_EQ(reader.warnings(), static_cast< gum::Size >(0));
 
       const auto bn_joint = this->joint(bn);
 
@@ -455,8 +455,8 @@ namespace gum_tests {
       gum::BIFReader< double > reader(&bn, file);
       gum::Size                nbrErr = static_cast< gum::Size >(0);
       GUM_CHECK_ASSERT_THROWS_NOTHING(nbrErr = reader.proceed());
-      CHECK((nbrErr) == ((gum::Size) static_cast< gum::Size >(0)));
-      CHECK((reader.warnings()) == (static_cast< gum::Size >(0)));
+      GUM_CHECK_EQ(nbrErr, (gum::Size) static_cast< gum::Size >(0));
+      GUM_CHECK_EQ(reader.warnings(), static_cast< gum::Size >(0));
 
       gum::ShaferShenoyInference< double > inf1(&bn);
       gum::VariableElimination< double >   inf2(&bn);
@@ -534,8 +534,8 @@ namespace gum_tests {
       gum::BIFReader< double > reader(&bn, file);
       gum::Size                nbrErr = static_cast< gum::Size >(0);
       GUM_CHECK_ASSERT_THROWS_NOTHING(nbrErr = reader.proceed());
-      CHECK((nbrErr) == ((gum::Size) static_cast< gum::Size >(0)));
-      CHECK((reader.warnings()) == (static_cast< gum::Size >(0)));
+      GUM_CHECK_EQ(nbrErr, (gum::Size) static_cast< gum::Size >(0));
+      GUM_CHECK_EQ(reader.warnings(), static_cast< gum::Size >(0));
 
       const auto bn_joint = this->joint(bn);
 
@@ -596,8 +596,8 @@ namespace gum_tests {
       gum::BIFReader< double > reader(&bn, file);
       gum::Size                nbrErr = static_cast< gum::Size >(0);
       GUM_CHECK_ASSERT_THROWS_NOTHING(nbrErr = reader.proceed());
-      CHECK((nbrErr) == ((gum::Size) static_cast< gum::Size >(0)));
-      CHECK((reader.warnings()) == (static_cast< gum::Size >(0)));
+      GUM_CHECK_EQ(nbrErr, (gum::Size) static_cast< gum::Size >(0));
+      GUM_CHECK_EQ(reader.warnings(), static_cast< gum::Size >(0));
 
       const auto bn_joint = this->joint(bn);
 
@@ -658,8 +658,8 @@ namespace gum_tests {
       gum::BIFReader< double > reader(&bn, file);
       gum::Size                nbrErr = static_cast< gum::Size >(0);
       GUM_CHECK_ASSERT_THROWS_NOTHING(nbrErr = reader.proceed());
-      CHECK((nbrErr) == ((gum::Size) static_cast< gum::Size >(0)));
-      CHECK((reader.warnings()) == (static_cast< gum::Size >(0)));
+      GUM_CHECK_EQ(nbrErr, (gum::Size) static_cast< gum::Size >(0));
+      GUM_CHECK_EQ(reader.warnings(), static_cast< gum::Size >(0));
 
       const auto bn_joint = this->joint(bn);
 
@@ -740,8 +740,8 @@ namespace gum_tests {
 
       gum::Size nbrErr = static_cast< gum::Size >(0);
       GUM_CHECK_ASSERT_THROWS_NOTHING(nbrErr = reader.proceed());
-      CHECK((nbrErr) == ((gum::Size) static_cast< gum::Size >(0)));
-      CHECK((reader.warnings()) == (static_cast< gum::Size >(0)));
+      GUM_CHECK_EQ(nbrErr, (gum::Size) static_cast< gum::Size >(0));
+      GUM_CHECK_EQ(reader.warnings(), static_cast< gum::Size >(0));
 
       const auto bn_joint = this->joint(bn);
 
@@ -776,14 +776,14 @@ namespace gum_tests {
       ie.addTarget(0);
       ie.addEvidence(1, 0);
       ie.makeInference();
-      CHECK((p_0) == (ie.posterior(0)));
+      GUM_CHECK_EQ(p_0, ie.posterior(0));
       const auto& var0 = bn.variable(0);
       GUM_CHECK_TENSOR_ALMOST_EQUALS(ie.posterior(0), joint0.sumIn({&var0}).normalize());
 
       ie.chgEvidence(1, 1);
       ie.makeInference();
-      CHECK((p_0) != (ie.posterior(0)));
-      CHECK((p_1) == (ie.posterior(0)));
+      GUM_CHECK_NE(p_0, ie.posterior(0));
+      GUM_CHECK_EQ(p_1, ie.posterior(0));
       GUM_CHECK_TENSOR_ALMOST_EQUALS(ie.posterior(0), joint1.sumIn({&var0}).normalize());
     }
 
@@ -794,8 +794,8 @@ namespace gum_tests {
 
       gum::Size nbrErr = static_cast< gum::Size >(0);
       GUM_CHECK_ASSERT_THROWS_NOTHING(nbrErr = reader.proceed());
-      CHECK((nbrErr) == ((gum::Size) static_cast< gum::Size >(0)));
-      CHECK((reader.warnings()) == (static_cast< gum::Size >(0)));
+      GUM_CHECK_EQ(nbrErr, (gum::Size) static_cast< gum::Size >(0));
+      GUM_CHECK_EQ(reader.warnings(), static_cast< gum::Size >(0));
 
       const auto bn_joint = this->joint(bn);
 
@@ -831,14 +831,14 @@ namespace gum_tests {
       ie.addTarget(0);
       ie.addEvidence(1, 0);
       ie.makeInference();
-      CHECK((p_0) == (ie.posterior(0)));
+      GUM_CHECK_EQ(p_0, ie.posterior(0));
       const auto& var0 = bn.variable(0);
       GUM_CHECK_TENSOR_ALMOST_EQUALS(ie.posterior(0), joint0.sumIn({&var0}).normalize());
 
       ie.chgEvidence(1, 1);
       ie.makeInference();
-      CHECK((p_0) != (ie.posterior(0)));
-      CHECK((p_1) == (ie.posterior(0)));
+      GUM_CHECK_NE(p_0, ie.posterior(0));
+      GUM_CHECK_EQ(p_1, ie.posterior(0));
       GUM_CHECK_TENSOR_ALMOST_EQUALS(ie.posterior(0), joint1.sumIn({&var0}).normalize());
     }
 
@@ -849,8 +849,8 @@ namespace gum_tests {
 
       gum::Size nbrErr = static_cast< gum::Size >(0);
       GUM_CHECK_ASSERT_THROWS_NOTHING(nbrErr = reader.proceed());
-      CHECK((nbrErr) == (static_cast< gum::Size >(0)));
-      CHECK((reader.warnings()) == (static_cast< gum::Size >(0)));
+      GUM_CHECK_EQ(nbrErr, static_cast< gum::Size >(0));
+      GUM_CHECK_EQ(reader.warnings(), static_cast< gum::Size >(0));
 
       gum::ShaferShenoyInference< double > ie_all(&bn);
       CHECK_THROWS_AS(ie_all.evidenceImpact(gum::NodeId(0), gum::NodeSet{0, 1, 2}),
@@ -858,11 +858,11 @@ namespace gum_tests {
 
       auto res = ie_all.evidenceImpact(gum::NodeId(0), gum::NodeSet{1, 2});
 
-      CHECK((res.nbrDim()) == (static_cast< gum::Size >(2)));   // 2 indep 0 given 1
+      GUM_CHECK_EQ(res.nbrDim(), static_cast< gum::Size >(2));   // 2 indep 0 given 1
 
       gum::ShaferShenoyInference< double > ie_0(&bn);
-      ie_0.addTarget(0);                                        // visit_to_asia
-      ie_0.addEvidence(1, 0);                                   // tuberculosis
+      ie_0.addTarget(0);                                         // visit_to_asia
+      ie_0.addEvidence(1, 0);                                    // tuberculosis
       ie_0.makeInference();
       gum::Tensor< double > p_0 = ie_0.posterior(0);
 
@@ -875,9 +875,9 @@ namespace gum_tests {
       gum::Instantiation i;
       i.add(bn.variable(1));
       i.setFirst();
-      CHECK((p_0) == (res.extract(i)));
+      GUM_CHECK_EQ(p_0, res.extract(i));
       i.inc();
-      CHECK((p_1) == (res.extract(i)));
+      GUM_CHECK_EQ(p_1, res.extract(i));
     }
 
     static void testEvidenceImpactWithNames() {
@@ -887,8 +887,8 @@ namespace gum_tests {
 
       gum::Size nbrErr = static_cast< gum::Size >(0);
       GUM_CHECK_ASSERT_THROWS_NOTHING(nbrErr = reader.proceed());
-      CHECK((nbrErr) == (static_cast< gum::Size >(0)));
-      CHECK((reader.warnings()) == (static_cast< gum::Size >(0)));
+      GUM_CHECK_EQ(nbrErr, static_cast< gum::Size >(0));
+      GUM_CHECK_EQ(reader.warnings(), static_cast< gum::Size >(0));
 
 
       gum::ShaferShenoyInference< double > ie_all(&bn);
@@ -900,11 +900,11 @@ namespace gum_tests {
 
       auto res = ie_all.evidenceImpact("visit_to_Asia", {"tuberculosis", "tuberculos_or_cancer"});
 
-      CHECK((res.nbrDim()) == (static_cast< gum::Size >(2)));   // 2 indep 0 given 1
+      GUM_CHECK_EQ(res.nbrDim(), static_cast< gum::Size >(2));   // 2 indep 0 given 1
 
       gum::ShaferShenoyInference< double > ie_0(&bn);
-      ie_0.addTarget(0);                                        // visit_to_asia
-      ie_0.addEvidence(1, 0);                                   // tuberculosis
+      ie_0.addTarget(0);                                         // visit_to_asia
+      ie_0.addEvidence(1, 0);                                    // tuberculosis
       ie_0.makeInference();
       gum::Tensor< double > p_0 = ie_0.posterior(0);
 
@@ -917,9 +917,9 @@ namespace gum_tests {
       gum::Instantiation i;
       i.add(bn.variable(1));
       i.setFirst();
-      CHECK((p_0) == (res.extract(i)));
+      GUM_CHECK_EQ(p_0, res.extract(i));
       i.inc();
-      CHECK((p_1) == (res.extract(i)));
+      GUM_CHECK_EQ(p_1, res.extract(i));
     }
 
     static void testEvidenceImpact() {
@@ -937,7 +937,7 @@ namespace gum_tests {
       gum::ShaferShenoyInference< double > ie(&bn);
       gum::Tensor< double >                res;
       GUM_CHECK_ASSERT_THROWS_NOTHING(res = ie.evidenceImpact("E", {"A", "B", "C", "D", "F"}));
-      CHECK((res.nbrDim()) == (static_cast< gum::Size >(4)));   // MarkovBlanket(E)=(A,D,C)
+      GUM_CHECK_EQ(res.nbrDim(), static_cast< gum::Size >(4));   // MarkovBlanket(E)=(A,D,C)
     }
 
     void testJointWithHardEvidence() {

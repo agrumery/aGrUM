@@ -911,7 +911,7 @@ namespace gum_tests {
       CHECK(_equal_(xxscore_2, score2.score(node0, cond2)));
       CHECK(_equal_(xxscore_3, score2.score(node0, cond3)));
 
-      CHECK((score2.ranges()) == (ranges));
+      GUM_CHECK_EQ(score2.ranges(), ranges);
 
       score2.clearRanges();
       CHECK(_equal_(xscore_1, score2.score(node0)));

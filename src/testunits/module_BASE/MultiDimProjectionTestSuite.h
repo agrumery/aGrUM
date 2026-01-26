@@ -100,12 +100,6 @@ namespace gum_tests {
     // ==========================================================================
     /// initialize randomly a table
     // ==========================================================================
-    static void randomInitPPointer(gum::Tensor< double* >& t) {
-      gum::Instantiation i(t);
-
-      for (i.setFirst(); !i.end(); ++i)
-        t.set(i, new double(100000.0f * double(gum::randomProba())));
-    }
 
     template < typename T >
     static void pointerDelete(gum::MultiDimArray< T* >* t) {
@@ -288,37 +282,6 @@ namespace gum_tests {
         double xxx = result->get(inst);
         double yyy = table[inst];
         result->set(inst, xxx > yyy ? xxx : yyy);
-      }
-
-      return result;
-    }
-
-    // projection of a table over a set
-    static gum::Tensor< double* >* proj(const gum::Tensor< double* >& table,
-                                        const gum::VariableSet&       del_vars,
-                                        double                        neutral_elt) {
-      gum::Tensor< double* >*                              result = new gum::Tensor< double* >;
-      const gum::Sequence< const gum::DiscreteVariable* >& vars   = table.variablesSequence();
-      result->beginMultipleChanges();
-
-      for (const auto var: vars)
-        if (!del_vars.exists(var)) *result << *var;
-
-      result->endMultipleChanges();
-
-      gum::Instantiation inst1(result);
-
-      for (inst1.setFirst(); !inst1.end(); ++inst1) {
-        result->set(inst1, new double(neutral_elt));
-      }
-
-      gum::Instantiation inst2(table);
-
-      for (inst2.setFirst(); !inst2.end(); ++inst2) {
-        double* xxx = result->get(inst2);
-        double* yyy = table[inst2];
-
-        if (*xxx < *yyy) *xxx = *yyy;
       }
 
       return result;
@@ -863,60 +826,6 @@ namespace gum_tests {
         delete vars[i];
     }
 
-    static void test_Pointer_tensor() {
-      std::vector< gum::LabelizedVariable* > vars(10);
-
-      for (gum::Idx i = 0; i < 10; ++i) {
-        std::stringstream str;
-        str << "x" << i;
-        std::string s = str.str();
-        vars[i]       = new gum::LabelizedVariable(s, s, 4);
-      }
-
-      gum::Tensor< double* >* t1 = new gum::Tensor< double* >;
-
-      *t1 << *(vars[0]) << *(vars[1]) << *(vars[2]) << *(vars[3]) << *(vars[4]) << *(vars[5])
-          << *(vars[6]) << *(vars[7]) << *(vars[8]) << *(vars[9]);
-      randomInitPPointer(*t1);
-      gum::VariableSet proj_set;
-      proj_set.insert(vars[2]);
-      proj_set.insert(vars[3]);
-      proj_set.insert(vars[6]);
-      proj_set.insert(vars[7]);
-      proj_set.insert(vars[4]);
-      proj_set.insert(vars[5]);
-      proj_set.insert(vars[8]);
-      gum::VariableSet del_vars;
-      del_vars.insert(vars[0]);
-      del_vars.insert(vars[9]);
-      del_vars.insert(vars[1]);
-
-      gum::Tensor< double* >* t2 = new gum::Tensor< double* >(t1->maxOut(del_vars));
-      gum::Tensor< double* >* t3 = proj(*t1, del_vars, 0.0f);
-      CHECK(equal(*t2, *t3));
-
-      pointerDelete(t2);
-      pointerDelete(t3);
-
-      gum::Tensor< double* >* t4 = new gum::Tensor< double* >(t1->maxOut(proj_set));
-      t3                         = proj(*t1, proj_set, 0.0f);
-      CHECK(equal(*t4, *t3));
-
-      pointerDelete(t4);
-      pointerDelete(t3);
-
-      proj_set.insert(vars[0]);
-      proj_set.insert(vars[9]);
-      proj_set.insert(vars[1]);
-      gum::Tensor< double* >* t5 = new gum::Tensor< double* >(t1->maxOut(proj_set));
-      pointerDelete(t5);
-
-      pointerDelete(t1);
-
-      for (gum::Idx i = 0; i < vars.size(); ++i)
-        delete vars[i];
-    }
-
     static void test_MultiDimProjection() {
       std::vector< gum::LabelizedVariable* > vars(10);
 
@@ -949,20 +858,20 @@ namespace gum_tests {
       {
         auto t2 = t1.maxOut(del_vars);
         auto t3 = Proj.execute(t1, del_vars);
-        CHECK((t2) == (*t3));
+        GUM_CHECK_EQ(t2, *t3);
         delete t3;
       }
       {
         auto t2 = t1.maxOut(proj_set);
         auto t3 = Proj.execute(t1, proj_set);
-        CHECK((t2) == (*t3));
+        GUM_CHECK_EQ(t2, *t3);
         delete (t3);
       }
       {
         gum::Tensor< double > t3;
         auto                  t2 = t1.maxOut(proj_set);
         Proj.execute(t3, t1, proj_set);
-        CHECK((t2) == (t3));
+        GUM_CHECK_EQ(t2, t3);
       }
 
       {
@@ -999,11 +908,11 @@ namespace gum_tests {
       gum::Tensor< double >* t5 = Proj.execute(t1, proj_set);
       delete t5;
 
-      CHECK((Proj.nbOperations(t1, proj_set)) == (59049));
-      CHECK((Proj.nbOperations(t1.variablesSequence(), proj_set)) == (59049));
+      GUM_CHECK_EQ(Proj.nbOperations(t1, proj_set), 59049);
+      GUM_CHECK_EQ(Proj.nbOperations(t1.variablesSequence(), proj_set), 59049);
 
       std::pair< double, double > yyy = Proj.memoryUsage(t1, del_vars);
-      CHECK((yyy.first) == (2187 * sizeof(double) + sizeof(gum::Tensor< double >)));
+      GUM_CHECK_EQ(yyy.first, 2187 * sizeof(double) + sizeof(gum::Tensor< double >));
       yyy = Proj.memoryUsage(t1.variablesSequence(), del_vars);
 
       gum::Tensor< double > t6;
@@ -1079,8 +988,8 @@ namespace gum_tests {
       {
         gum::Tensor< double >* t3 = proj.execute(t1, del_vars);
         auto                   t2 = t1.sumOut(del_vars);
-        CHECK((t2) == (*t3));
-        CHECK((t1) == (*t3));
+        GUM_CHECK_EQ(t2, *t3);
+        GUM_CHECK_EQ(t1, *t3);
         gum::Instantiation inst(t3);
         CHECK(t3->get(inst) == 3.0);
         delete (t3);
@@ -1100,8 +1009,8 @@ namespace gum_tests {
       {
         gum::Tensor< double >* t3 = proj.execute(t1, del_vars);
         auto                   t2 = t1.maxOut(del_vars);
-        CHECK((t2) == (*t3));
-        CHECK((t1) == (*t3));
+        GUM_CHECK_EQ(t2, *t3);
+        GUM_CHECK_EQ(t1, *t3);
         gum::Instantiation inst(t3);
         CHECK(t3->get(inst) == 3.0);
         delete (t3);
@@ -1111,8 +1020,8 @@ namespace gum_tests {
       {
         gum::Tensor< double >* t3 = proj.execute(t1, del_vars);
         auto                   t2 = t1.maxOut(del_vars);
-        CHECK((t2) == (*t3));
-        CHECK((t1) == (*t3));
+        GUM_CHECK_EQ(t2, *t3);
+        GUM_CHECK_EQ(t1, *t3);
         gum::Instantiation inst(t3);
         CHECK(t3->get(inst) == 3.0);
         delete (t3);
@@ -1129,8 +1038,8 @@ namespace gum_tests {
       {
         gum::Tensor< double >* t3 = proj.execute(t1, del_vars);
         auto                   t2 = t1.sumOut(del_vars);
-        CHECK((t2) == (*t3));
-        CHECK((t3->variablesSequence().size()) == (gum::Size(0)));
+        GUM_CHECK_EQ(t2, *t3);
+        GUM_CHECK_EQ(t3->variablesSequence().size(), gum::Size(0));
         gum::Instantiation inst3(t3);
         CHECK(((*t3)[inst3]) == doctest::Approx(2.0).epsilon(0.001));
         delete (t3);
@@ -1146,8 +1055,8 @@ namespace gum_tests {
       {
         gum::Tensor< double >* t3 = proj.execute(t1, del_vars);
         auto                   t2 = t1.sumOut(del_vars);
-        CHECK((t2) == (*t3));
-        CHECK((t3->variablesSequence().size()) == (gum::Size(0)));
+        GUM_CHECK_EQ(t2, *t3);
+        GUM_CHECK_EQ(t3->variablesSequence().size(), gum::Size(0));
         gum::Instantiation inst3(t3);
         CHECK(((*t3)[inst3]) == doctest::Approx(5.0).epsilon(0.001));
         delete (t3);
@@ -1223,11 +1132,11 @@ namespace gum_tests {
       gum::Tensor< double >* t5 = Proj.execute(t1, proj_set);
       delete t5;
 
-      CHECK((Proj.nbOperations(t1, proj_set)) == (59049));
-      CHECK((Proj.nbOperations(t1.variablesSequence(), proj_set)) == (59049));
+      GUM_CHECK_EQ(Proj.nbOperations(t1, proj_set), 59049);
+      GUM_CHECK_EQ(Proj.nbOperations(t1.variablesSequence(), proj_set), 59049);
 
       std::pair< double, double > yyy = Proj.memoryUsage(t1, del_vars);
-      CHECK((yyy.first) == (2187 * sizeof(double) + sizeof(gum::Tensor< double >)));
+      GUM_CHECK_EQ(yyy.first, 2187 * sizeof(double) + sizeof(gum::Tensor< double >));
       yyy = Proj.memoryUsage(t1.variablesSequence(), del_vars);
 
       gum::Tensor< double > t6;
@@ -1325,13 +1234,13 @@ namespace gum_tests {
       {
         auto t2 = t1.sumOut(del_vars);
         auto t3 = Proj.execute(t1, del_vars);
-        CHECK((t2) == (*t3));
+        GUM_CHECK_EQ(t2, *t3);
         delete t3;
       }
       {
         auto t2 = t1.sumOut(proj_set);
         auto t3 = Proj.execute(t1, proj_set);
-        CHECK((t2) == (*t3));
+        GUM_CHECK_EQ(t2, *t3);
         delete t3;
       }
 
@@ -1341,18 +1250,18 @@ namespace gum_tests {
       gum::Tensor< double >* t5 = Proj.execute(t1, proj_set);
       {
         auto t2 = t1.sumOut(proj_set);
-        CHECK((t2) == (*t5));
+        GUM_CHECK_EQ(t2, *t5);
 
         gum::Instantiation I5(*t5);
         CHECK((1.0) == doctest::Approx((*t5)[I5]).epsilon(0.0001));
       }
       delete t5;
 
-      CHECK((Proj.nbOperations(t1, proj_set)) == (59049));
-      CHECK((Proj.nbOperations(t1.variablesSequence(), proj_set)) == (59049));
+      GUM_CHECK_EQ(Proj.nbOperations(t1, proj_set), 59049);
+      GUM_CHECK_EQ(Proj.nbOperations(t1.variablesSequence(), proj_set), 59049);
 
       std::pair< double, double > yyy = Proj.memoryUsage(t1, del_vars);
-      CHECK((yyy.first) == (2187 * sizeof(double) + sizeof(gum::Tensor< double >)));
+      GUM_CHECK_EQ(yyy.first, 2187 * sizeof(double) + sizeof(gum::Tensor< double >));
       yyy = Proj.memoryUsage(t1.variablesSequence(), del_vars);
 
       for (gum::Idx i = 0; i < vars.size(); ++i)
@@ -1370,7 +1279,6 @@ namespace gum_tests {
   GUM_TEST_ACTIF(_projections_init)
   GUM_TEST_ACTIF(_tensors)
   GUM_TEST_ACTIF(_Pointer_init)
-  GUM_TEST_ACTIF(_Pointer_tensor)
   GUM_TEST_ACTIF(_MultiDimProjection)
   GUM_TEST_ACTIF(Constants)
   GUM_TEST_ACTIF(_persistence)

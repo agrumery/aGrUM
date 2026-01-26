@@ -65,8 +65,8 @@ namespace gum {
   INLINE Regress< GUM_ELEMENT, COMBINEOPERATOR, PROJECTOPERATOR, TerminalNodePolicy >::Regress(
       const MultiDimFunctionGraph< GUM_ELEMENT, TerminalNodePolicy >* DG1,
       const MultiDimFunctionGraph< GUM_ELEMENT, TerminalNodePolicy >* DG2,
-      const gum::VariableSet*                                        primedVars,
-      const DiscreteVariable*                                        targetVar,
+      const gum::VariableSet*                                         primedVars,
+      const DiscreteVariable*                                         targetVar,
       const GUM_ELEMENT                                               neutral) :
       _DG1_(DG1), _DG2_(DG2), _neutral_(neutral), _combine_(), _project_(),
       _DG1InstantiationNeeded_(DG1->realSize(), true, false),
@@ -322,7 +322,7 @@ namespace gum {
       // this value, ...
       GUM_ELEMENT newVal  = _neutral_;
       GUM_ELEMENT tempVal = _combine_(_DG1_->nodeValue(currentSituation.DG1Node()),
-                                     _DG2_->nodeValue(currentSituation.DG2Node()));
+                                      _DG2_->nodeValue(currentSituation.DG2Node()));
       for (Idx targetModa = 0; targetModa < _targetVar_->domainSize(); ++targetModa)
         newVal = _project_(newVal, tempVal);
       return _rd_->manager()->addTerminalNode(newVal);
@@ -367,7 +367,7 @@ namespace gum {
     NodeId origDG1 = currentSituation.DG1Node(), origDG2 = currentSituation.DG2Node();
 
     const MultiDimFunctionGraph< GUM_ELEMENT, TerminalNodePolicy >* leaddg     = nullptr;
-    NodeId                                                         leadNodeId = 0;
+    NodeId                                                          leadNodeId = 0;
     Idx leadVarPos               = _rd_->variablesSequence().size();
     using SetNodeFunction        = void (O4DGContext::*)(const NodeId&);
     SetNodeFunction leadFunction = nullptr;

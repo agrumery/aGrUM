@@ -62,9 +62,9 @@ namespace gum_tests {
     private:
     static void _test_prior_(gum::learning::DirichletPriorFromBN< double >& prior) {
       prior.setWeight(100.0);
-      CHECK((prior.weight()) == (100.0));
+      GUM_CHECK_EQ(prior.weight(), 100.0);
 
-      CHECK((prior.getType()) == (gum::learning::PriorType::DirichletPriorType));
+      GUM_CHECK_EQ(prior.getType(), gum::learning::PriorType::DirichletPriorType);
 
       gum::NodeId                node0 = 0;
       std::vector< gum::NodeId > cond_empty;
@@ -232,19 +232,19 @@ namespace gum_tests {
       database.insertRow({"0", "0", "0", "1", "1", "1"});
 
       gum::learning::DirichletPriorFromBN< double > prior(database, &bn);
-      CHECK((prior.weight()) == (1.0));
+      GUM_CHECK_EQ(prior.weight(), 1.0);
       _test_prior_(prior);
 
       gum::learning::DirichletPriorFromBN prior2(prior);
-      CHECK((prior2.weight()) == (100.0));
+      GUM_CHECK_EQ(prior2.weight(), 100.0);
       _test_prior_(prior2);
 
       gum::learning::DirichletPriorFromBN prior3(std::move(prior2));
-      CHECK((prior3.weight()) == (100.0));
+      GUM_CHECK_EQ(prior3.weight(), 100.0);
       _test_prior_(prior3);
 
       gum::learning::DirichletPriorFromBN< double >* prior4 = prior3.clone();
-      CHECK((prior4->weight()) == (100.0));
+      GUM_CHECK_EQ(prior4->weight(), 100.0);
       _test_prior_(*prior4);
       delete (prior4);
     }

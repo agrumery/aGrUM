@@ -125,9 +125,9 @@ namespace gum_tests {
 
       gum::Size nbErr = 0;
       GUM_CHECK_ASSERT_THROWS_NOTHING(nbErr = reader.proceed());
-      CHECK((nbErr) == (static_cast< gum::Size >(0)));
+      GUM_CHECK_EQ(nbErr, static_cast< gum::Size >(0));
 
-      CHECK((*bn) == (net));
+      GUM_CHECK_EQ(*bn, net);
     }
 
     private:

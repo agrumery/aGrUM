@@ -136,7 +136,8 @@ namespace gum {
     MultiDimContainer< GUM_ELEMENT >::operator=(from);
     empty_value_ = from.empty_value_;
     if (content_ == nullptr)
-      content_ = static_cast< MultiDimImplementation< GUM_ELEMENT >* >(from.content()->newFactory());
+      content_
+          = static_cast< MultiDimImplementation< GUM_ELEMENT >* >(from.content()->newFactory());
     MultiDimDecorator< GUM_ELEMENT >::content()->copy(*from.content());
     return *this;
   }
@@ -168,7 +169,7 @@ namespace gum {
 
   template < typename GUM_ELEMENT >
   INLINE void MultiDimDecorator< GUM_ELEMENT >::set(const Instantiation& i,
-                                                   const GUM_ELEMENT&    value) const {
+                                                    const GUM_ELEMENT&   value) const {
     if (static_cast< MultiDimContainer< GUM_ELEMENT >* >(content_)->nbrDim() == 0) {
       empty_value_ = value;
     } else {
@@ -196,14 +197,15 @@ namespace gum {
   // listen to change in each recorded Instantiation. final method
 
   template < typename GUM_ELEMENT >
-  INLINE void MultiDimDecorator< GUM_ELEMENT >::changeNotification(const Instantiation&          i,
-                                                                  const DiscreteVariable* const var,
-                                                                  Idx oldval,
-                                                                  Idx newval) {
+  INLINE void
+      MultiDimDecorator< GUM_ELEMENT >::changeNotification(const Instantiation&          i,
+                                                           const DiscreteVariable* const var,
+                                                           Idx                           oldval,
+                                                           Idx                           newval) {
     static_cast< MultiDimContainer< GUM_ELEMENT >* >(content_)->changeNotification(i,
-                                                                                  var,
-                                                                                  oldval,
-                                                                                  newval);
+                                                                                   var,
+                                                                                   oldval,
+                                                                                   newval);
   }
 
   // listen to an assignment of a value in a Instantiation
@@ -345,9 +347,9 @@ namespace gum {
   }
 
   template < typename GUM_ELEMENT >
-  GUM_ELEMENT
-      MultiDimDecorator< GUM_ELEMENT >::reduce(std::function< GUM_ELEMENT(GUM_ELEMENT, GUM_ELEMENT) > f,
-                                              GUM_ELEMENT base) const {
+  GUM_ELEMENT MultiDimDecorator< GUM_ELEMENT >::reduce(
+      std::function< GUM_ELEMENT(GUM_ELEMENT, GUM_ELEMENT) > f,
+      GUM_ELEMENT                                            base) const {
     if (static_cast< MultiDimContainer< GUM_ELEMENT >* >(content_)->empty()) {
       return base;
     } else {
@@ -390,7 +392,7 @@ namespace gum {
       // TODO : frees all slave instantiations
       // TODO : control the dimensions ?
       MultiDimImplementation< GUM_ELEMENT >* tmp = content_;
-      content_                                  = aContent;
+      content_                                   = aContent;
       // registers all instantiations
       delete (tmp);
     }
@@ -404,7 +406,7 @@ namespace gum {
 
   template < typename GUM_ELEMENT >
   INLINE void MultiDimDecorator< GUM_ELEMENT >::replace_(const DiscreteVariable* x,
-                                                        const DiscreteVariable* y) {
+                                                         const DiscreteVariable* y) {
     this->content()->replace(*x, *y);
   }
 

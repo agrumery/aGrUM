@@ -111,7 +111,7 @@ namespace gum_tests {
               if ((j.val()) != (i.val())) {
                 CHECK(!bb->exists(j.val()));
               } else if (bb->exists(j.val())) {
-                CHECK((bb->requisiteNodes(j.val()).size()) == (static_cast< gum::Size >(1)));
+                GUM_CHECK_EQ(bb->requisiteNodes(j.val()).size(), static_cast< gum::Size >(1));
                 CHECK(bb->requisiteNodes(j.val()).contains((*(a.val())).id()));
               } else {
                 CHECK(false);
@@ -141,7 +141,7 @@ namespace gum_tests {
               if ((j.val()) != (i.val())) {
                 CHECK(!bb->exists(j.val()));
               } else if (bb->exists(j.val())) {
-                CHECK((bb->requisiteNodes(j.val()).size()) == (static_cast< gum::Size >(1)));
+                GUM_CHECK_EQ(bb->requisiteNodes(j.val()).size(), static_cast< gum::Size >(1));
                 CHECK(bb->requisiteNodes(j.val()).contains((*(a.val())).id()));
               } else {
                 CHECK(false);

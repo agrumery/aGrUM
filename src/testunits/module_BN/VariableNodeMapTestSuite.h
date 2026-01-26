@@ -104,20 +104,20 @@ namespace gum_tests {
       GUM_CHECK_ASSERT_THROWS_NOTHING(idList.insert(topo.add(*var4)));
       GUM_CHECK_ASSERT_THROWS_NOTHING(idList.insert(topo.add(*var5)));
 
-      CHECK((topo.size()) == (static_cast< gum::Size >(5)));
-      CHECK((topo.dag().size()) == (static_cast< gum::Size >(5)));
+      GUM_CHECK_EQ(topo.size(), static_cast< gum::Size >(5));
+      GUM_CHECK_EQ(topo.dag().size(), static_cast< gum::Size >(5));
 
       gum::NodeId ind = 0;
       GUM_CHECK_ASSERT_THROWS_NOTHING(const gum::DiscreteVariable& varPtr
                                       = topo.variable(idList[0]);
                                       ind = topo.nodeId(varPtr););
-      CHECK((idList[0]) == (ind));
+      GUM_CHECK_EQ(idList[0], ind);
 
-      CHECK((*((gum::LabelizedVariable*)&topo.variable(idList[0]))) == (*var1));
-      CHECK((*((gum::LabelizedVariable*)&topo.variable(idList[1]))) == (*var2));
-      CHECK((*((gum::LabelizedVariable*)&topo.variable(idList[2]))) == (*var3));
-      CHECK((*((gum::LabelizedVariable*)&topo.variable(idList[3]))) == (*var4));
-      CHECK((*((gum::LabelizedVariable*)&topo.variable(idList[4]))) == (*var5));
+      GUM_CHECK_EQ(*((gum::LabelizedVariable*)&topo.variable(idList[0])), *var1);
+      GUM_CHECK_EQ(*((gum::LabelizedVariable*)&topo.variable(idList[1])), *var2);
+      GUM_CHECK_EQ(*((gum::LabelizedVariable*)&topo.variable(idList[2])), *var3);
+      GUM_CHECK_EQ(*((gum::LabelizedVariable*)&topo.variable(idList[3])), *var4);
+      GUM_CHECK_EQ(*((gum::LabelizedVariable*)&topo.variable(idList[4])), *var5);
     }
 
     void testArcInsertion() const {
@@ -137,7 +137,7 @@ namespace gum_tests {
       GUM_CHECK_ASSERT_THROWS_NOTHING(topo.addArc(idList[3], idList[4]));
       GUM_CHECK_ASSERT_THROWS_NOTHING(topo.addArc(idList[1], idList[4]));
 
-      CHECK((topo.dag().sizeArcs()) == (static_cast< gum::Size >(6)));
+      GUM_CHECK_EQ(topo.dag().sizeArcs(), static_cast< gum::Size >(6));
     }
 
     void testEraseVar() const {
@@ -154,9 +154,9 @@ namespace gum_tests {
       CHECK(!topo.dag().empty());
       CHECK(!topo.dag().emptyArcs());
 
-      CHECK((topo.size()) == (static_cast< gum::Size >(5)));
-      CHECK((topo.dag().size()) == (static_cast< gum::Size >(5)));
-      CHECK((topo.dag().sizeArcs()) == (static_cast< gum::Size >(6)));
+      GUM_CHECK_EQ(topo.size(), static_cast< gum::Size >(5));
+      GUM_CHECK_EQ(topo.dag().size(), static_cast< gum::Size >(5));
+      GUM_CHECK_EQ(topo.dag().sizeArcs(), static_cast< gum::Size >(6));
 
       for (const auto i: idList)
         topo.erase(i);
@@ -166,9 +166,9 @@ namespace gum_tests {
       CHECK(topo.dag().empty());
       CHECK(topo.dag().emptyArcs());
 
-      CHECK((topo.size()) == (static_cast< gum::Size >(0)));
-      CHECK((topo.dag().size()) == (static_cast< gum::Size >(0)));
-      CHECK((topo.dag().sizeArcs()) == (static_cast< gum::Size >(0)));
+      GUM_CHECK_EQ(topo.size(), static_cast< gum::Size >(0));
+      GUM_CHECK_EQ(topo.dag().size(), static_cast< gum::Size >(0));
+      GUM_CHECK_EQ(topo.dag().sizeArcs(), static_cast< gum::Size >(0));
     }
 
     void testEraseArc() const {
@@ -185,9 +185,9 @@ namespace gum_tests {
       CHECK(!topo.dag().empty());
       CHECK(!topo.dag().emptyArcs());
 
-      CHECK((topo.size()) == (static_cast< gum::Size >(5)));
-      CHECK((topo.dag().size()) == (static_cast< gum::Size >(5)));
-      CHECK((topo.dag().sizeArcs()) == (static_cast< gum::Size >(6)));
+      GUM_CHECK_EQ(topo.size(), static_cast< gum::Size >(5));
+      GUM_CHECK_EQ(topo.dag().size(), static_cast< gum::Size >(5));
+      GUM_CHECK_EQ(topo.dag().sizeArcs(), static_cast< gum::Size >(6));
 
       GUM_CHECK_ASSERT_THROWS_NOTHING(topo.eraseArc(gum::Arc(idList[0], idList[2])));
       GUM_CHECK_ASSERT_THROWS_NOTHING(topo.eraseArc(gum::Arc(idList[2], idList[4])));
@@ -217,7 +217,7 @@ namespace gum_tests {
 
       gum::UndiGraph graph;
       GUM_CHECK_ASSERT_THROWS_NOTHING(graph = topo.moralGraph());
-      CHECK((graph) == (_getRealMoralGraph_(topo, idList)));
+      GUM_CHECK_EQ(graph, _getRealMoralGraph_(topo, idList));
     }
 
     void testTopologicalOrder() const {
@@ -233,7 +233,7 @@ namespace gum_tests {
         topoOrder = topo.topologicalOrder();
       } catch (gum::Exception& e) { GUM_SHOWERROR(e); }
 
-      CHECK((topoOrder.size()) == (static_cast< gum::Size >(5)));
+      GUM_CHECK_EQ(topoOrder.size(), static_cast< gum::Size >(5));
     }
 
     private:

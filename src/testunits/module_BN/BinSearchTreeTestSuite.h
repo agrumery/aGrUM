@@ -59,7 +59,7 @@ namespace gum_tests {
       gum::BinSearchTree< int >* tree = 0;
 
       GUM_CHECK_ASSERT_THROWS_NOTHING(tree = new gum::BinSearchTree< int >);
-      CHECK((tree->size()) == (static_cast< gum::Size >(0)));
+      GUM_CHECK_EQ(tree->size(), static_cast< gum::Size >(0));
 
       GUM_CHECK_ASSERT_THROWS_NOTHING(gum::BinSearchTree< int > tree2(*tree));
       gum::BinSearchTree< int > tree3;
@@ -69,9 +69,9 @@ namespace gum_tests {
       tree->insert(3);
       tree->insert(4);
 
-      CHECK((tree->size()) == (static_cast< gum::Size >(2)));
+      GUM_CHECK_EQ(tree->size(), static_cast< gum::Size >(2));
       tree3 = *tree;
-      CHECK((tree3.size()) == (static_cast< gum::Size >(2)));
+      GUM_CHECK_EQ(tree3.size(), static_cast< gum::Size >(2));
 
       tree->insert(1);
       tree->insert(4);
@@ -91,23 +91,23 @@ namespace gum_tests {
       tree.insert(6);
       tree.insert(8);
 
-      CHECK((tree.minValue()) == (1));
-      CHECK((tree.maxValue()) == (8));
-      CHECK((tree.rootValue()) == (5));
+      GUM_CHECK_EQ(tree.minValue(), 1);
+      GUM_CHECK_EQ(tree.maxValue(), 8);
+      GUM_CHECK_EQ(tree.rootValue(), 5);
 
       tree.erase(5);
 
-      CHECK((tree.rootValue()) == (6));
-      CHECK((tree.contains(4)) == (true));
-      CHECK((tree.empty()) == (false));
+      GUM_CHECK_EQ(tree.rootValue(), 6);
+      GUM_CHECK_EQ(tree.contains(4), true);
+      GUM_CHECK_EQ(tree.empty(), false);
 
       tree.clear();
 
       CHECK_THROWS(tree.rootValue());
       CHECK_THROWS(tree.minValue());
       CHECK_THROWS(tree.maxValue());
-      CHECK((tree.size()) == (static_cast< gum::Size >(0)));
-      CHECK((tree.empty()) == (true));
+      GUM_CHECK_EQ(tree.size(), static_cast< gum::Size >(0));
+      GUM_CHECK_EQ(tree.empty(), true);
     }
 
     static void testErase() {
@@ -120,26 +120,26 @@ namespace gum_tests {
       tree.insert(5);
       tree.insert(5);
 
-      CHECK((tree.size()) == (static_cast< gum::Size >(7)));
+      GUM_CHECK_EQ(tree.size(), static_cast< gum::Size >(7));
 
       tree.erase(5);
       tree.erase(5);
       tree.erase(5);
 
-      CHECK((tree.size()) == (static_cast< gum::Size >(4)));
+      GUM_CHECK_EQ(tree.size(), static_cast< gum::Size >(4));
       CHECK_THROWS_AS(tree.erase(5), const gum::NotFound&);
-      CHECK((tree.size()) == (static_cast< gum::Size >(4)));
+      GUM_CHECK_EQ(tree.size(), static_cast< gum::Size >(4));
       CHECK_THROWS_AS(tree.erase(9), const gum::NotFound&);
-      CHECK((tree.size()) == (static_cast< gum::Size >(4)));
+      GUM_CHECK_EQ(tree.size(), static_cast< gum::Size >(4));
       tree.erase(1);
-      CHECK((tree.size()) == (static_cast< gum::Size >(3)));
+      GUM_CHECK_EQ(tree.size(), static_cast< gum::Size >(3));
       tree.erase(7);
-      CHECK((tree.size()) == (static_cast< gum::Size >(2)));
+      GUM_CHECK_EQ(tree.size(), static_cast< gum::Size >(2));
       tree.erase(4);
-      CHECK((tree.size()) == (static_cast< gum::Size >(1)));
+      GUM_CHECK_EQ(tree.size(), static_cast< gum::Size >(1));
       tree.erase(3);
-      CHECK((tree.size()) == (static_cast< gum::Size >(0)));
-      CHECK((tree.empty()) == (true));
+      GUM_CHECK_EQ(tree.size(), static_cast< gum::Size >(0));
+      GUM_CHECK_EQ(tree.empty(), true);
     }
 
     static void testUniqueness() {
@@ -150,10 +150,10 @@ namespace gum_tests {
       tree.insert(4);
       tree.insert(7);
 
-      CHECK((tree.uniquenessPolicy()) == (false));
+      GUM_CHECK_EQ(tree.uniquenessPolicy(), false);
 
       tree.insert(5);
-      CHECK((tree.size()) == (static_cast< gum::Size >(6)));
+      GUM_CHECK_EQ(tree.size(), static_cast< gum::Size >(6));
 
       tree.setUniquenessPolicy(true);
       CHECK_THROWS(tree.insert(5));
@@ -173,17 +173,17 @@ namespace gum_tests {
       for (gum::BinSearchTree< int >::iterator iter = tree.begin(); iter != tree.end();
            ++iter, ++i) {
         switch (i) {
-          case 0 : CHECK((*iter) == (1)); break;
+          case 0 : GUM_CHECK_EQ(*iter, 1); break;
 
-          case 1 : CHECK((*iter) == (3)); break;
+          case 1 : GUM_CHECK_EQ(*iter, 3); break;
 
-          case 2 : CHECK((*iter) == (4)); break;
+          case 2 : GUM_CHECK_EQ(*iter, 4); break;
 
-          case 3 : CHECK((*iter) == (5)); break;
+          case 3 : GUM_CHECK_EQ(*iter, 5); break;
 
-          case 4 : CHECK((*iter) == (5)); break;
+          case 4 : GUM_CHECK_EQ(*iter, 5); break;
 
-          case 5 : CHECK((*iter) == (7)); break;
+          case 5 : GUM_CHECK_EQ(*iter, 7); break;
         }
       }
 
@@ -192,23 +192,23 @@ namespace gum_tests {
       for (gum::BinSearchTree< int >::iterator iter = tree.rbegin(); iter != tree.rend();
            --iter, --i) {
         switch (i) {
-          case 0 : CHECK((*iter) == (1)); break;
+          case 0 : GUM_CHECK_EQ(*iter, 1); break;
 
-          case 1 : CHECK((*iter) == (3)); break;
+          case 1 : GUM_CHECK_EQ(*iter, 3); break;
 
-          case 2 : CHECK((*iter) == (4)); break;
+          case 2 : GUM_CHECK_EQ(*iter, 4); break;
 
-          case 3 : CHECK((*iter) == (5)); break;
+          case 3 : GUM_CHECK_EQ(*iter, 5); break;
 
-          case 4 : CHECK((*iter) == (5)); break;
+          case 4 : GUM_CHECK_EQ(*iter, 5); break;
 
-          case 5 : CHECK((*iter) == (7)); break;
+          case 5 : GUM_CHECK_EQ(*iter, 7); break;
         }
       }
 
       gum::BinSearchTree< int >::iterator iter = tree.root();
 
-      CHECK((*iter) == (5));
+      GUM_CHECK_EQ(*iter, 5);
     }
 
     static void testEraseIterator() {
@@ -221,30 +221,30 @@ namespace gum_tests {
       tree.insert(5);
       tree.insert(5);
 
-      CHECK((tree.size()) == (static_cast< gum::Size >(7)));
+      GUM_CHECK_EQ(tree.size(), static_cast< gum::Size >(7));
 
       gum::BinSearchTree< int >::iterator iter = tree.begin();
 
       tree.erase(iter);
-      CHECK((tree.size()) == (static_cast< gum::Size >(6)));
+      GUM_CHECK_EQ(tree.size(), static_cast< gum::Size >(6));
 
       iter = tree.rbegin();
       tree.erase(iter);
-      CHECK((tree.size()) == (static_cast< gum::Size >(5)));
+      GUM_CHECK_EQ(tree.size(), static_cast< gum::Size >(5));
 
       iter = tree.begin();
       ++iter;
       ++iter;
       tree.erase(iter);
-      CHECK((tree.size()) == (static_cast< gum::Size >(4)));
+      GUM_CHECK_EQ(tree.size(), static_cast< gum::Size >(4));
 
       iter = tree.end();
       tree.erase(iter);
-      CHECK((tree.size()) == (static_cast< gum::Size >(4)));
+      GUM_CHECK_EQ(tree.size(), static_cast< gum::Size >(4));
 
       iter = tree.rend();
       tree.erase(iter);
-      CHECK((tree.size()) == (static_cast< gum::Size >(4)));
+      GUM_CHECK_EQ(tree.size(), static_cast< gum::Size >(4));
     }
   };
 

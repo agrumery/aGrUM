@@ -93,35 +93,35 @@ namespace gum_tests {
       gum::MarkovRandomField< double > mn;
       _fill(mn);
 
-      CHECK((mn.size()) == (static_cast< gum::Idx >(5)));
-      CHECK((mn.sizeEdges()) == (static_cast< gum::Idx >(6)));
-      CHECK((mn.dim()) == ((gum::Idx)(3 * 3 + 3 * 3 + 3 * 7 + 3 * 3 * 7)));
-      CHECK((mn.toString()) == ("MRF{nodes: 5, edges: 6, domainSize: 567, dim: 102}"));
-      CHECK((mn.neighbours("41")) == (gum::NodeSet({0, 1, 4})));
-      CHECK((mn.neighbours(3)) == (gum::NodeSet({0, 1, 4})));
+      GUM_CHECK_EQ(mn.size(), static_cast< gum::Idx >(5));
+      GUM_CHECK_EQ(mn.sizeEdges(), static_cast< gum::Idx >(6));
+      GUM_CHECK_EQ(mn.dim(), (gum::Idx)(3 * 3 + 3 * 3 + 3 * 7 + 3 * 3 * 7));
+      GUM_CHECK_EQ(mn.toString(), "MRF{nodes: 5, edges: 6, domainSize: 567, dim: 102}");
+      GUM_CHECK_EQ(mn.neighbours("41"), gum::NodeSet({0, 1, 4}));
+      GUM_CHECK_EQ(mn.neighbours(3), gum::NodeSet({0, 1, 4}));
 
-      CHECK((mn.variable(1).name()) == ("21"));
-      CHECK((mn.nodeId(mn.variable(2))) == (gum::NodeId(2)));
-      CHECK((mn.idFromName("31")) == (gum::NodeId(2)));
-      CHECK((mn.variableFromName("41").name()) == ("41"));
+      GUM_CHECK_EQ(mn.variable(1).name(), "21");
+      GUM_CHECK_EQ(mn.nodeId(mn.variable(2)), gum::NodeId(2));
+      GUM_CHECK_EQ(mn.idFromName("31"), gum::NodeId(2));
+      GUM_CHECK_EQ(mn.variableFromName("41").name(), "41");
 
-      CHECK((mn.maxVarDomainSize()) == (static_cast< gum::Size >(7)));
-      CHECK((mn.minParam()) == (0.0));
-      CHECK((mn.minNonZeroParam()) == (0.03));
-      CHECK((mn.maxParam()) == (1.0));
-      CHECK((mn.maxNonOneParam()) == (0.97));
+      GUM_CHECK_EQ(mn.maxVarDomainSize(), static_cast< gum::Size >(7));
+      GUM_CHECK_EQ(mn.minParam(), 0.0);
+      GUM_CHECK_EQ(mn.minNonZeroParam(), 0.03);
+      GUM_CHECK_EQ(mn.maxParam(), 1.0);
+      GUM_CHECK_EQ(mn.maxNonOneParam(), 0.97);
     }
 
     static void testCopyConstructor() {
       gum::MarkovRandomField< double > mn;
       _fill(mn);
       gum::MarkovRandomField< double > mn2(mn);
-      CHECK((mn2.toString()) == ("MRF{nodes: 5, edges: 6, domainSize: 567, dim: 102}"));
+      GUM_CHECK_EQ(mn2.toString(), "MRF{nodes: 5, edges: 6, domainSize: 567, dim: 102}");
 
       GUM_CHECK_ASSERT_THROWS_NOTHING({
         for (const auto n: mn.nodes()) {
-          CHECK((mn.variable(n).name()) == (mn2.variable(n).name()));
-          CHECK((mn.neighbours(n)) == (mn2.neighbours(n)));
+          GUM_CHECK_EQ(mn.variable(n).name(), mn2.variable(n).name());
+          GUM_CHECK_EQ(mn.neighbours(n), mn2.neighbours(n));
         }
       });
     }
@@ -131,10 +131,10 @@ namespace gum_tests {
       gum::MarkovRandomField< double > mn2;
       _fill(mn);
       mn2 = mn;
-      CHECK((mn2.toString()) == ("MRF{nodes: 5, edges: 6, domainSize: 567, dim: 102}"));
+      GUM_CHECK_EQ(mn2.toString(), "MRF{nodes: 5, edges: 6, domainSize: 567, dim: 102}");
       for (const auto n: mn.nodes()) {
-        CHECK((mn.variable(n).name()) == (mn2.variable(n).name()));
-        CHECK((mn.neighbours(n)) == (mn2.neighbours(n)));
+        GUM_CHECK_EQ(mn.variable(n).name(), mn2.variable(n).name());
+        GUM_CHECK_EQ(mn.neighbours(n), mn2.neighbours(n));
       }
     }
 
@@ -142,11 +142,11 @@ namespace gum_tests {
       gum::MarkovRandomField< double > mn1;
       _fill(mn1);
       gum::MarkovRandomField< double > mn2;
-      CHECK((mn1) != (mn2));
+      GUM_CHECK_NE(mn1, mn2);
       _fill(mn2);
-      CHECK((mn1) == (mn2));
+      GUM_CHECK_EQ(mn1, mn2);
       mn2.generateFactors();
-      CHECK((mn1) != (mn2));
+      GUM_CHECK_NE(mn1, mn2);
     }
 
     static void testOrderInsertion() {
@@ -158,23 +158,23 @@ namespace gum_tests {
 
       // V0 should be the first
       mn.addFactor({"V0", "V1"});
-      CHECK((mn.factor({"V0", "V1"}).variable(0).name()) == ("V0"));
-      CHECK((mn.factor({"V1", "V0"}).variable(0).name()) == ("V0"));
+      GUM_CHECK_EQ(mn.factor({"V0", "V1"}).variable(0).name(), "V0");
+      GUM_CHECK_EQ(mn.factor({"V1", "V0"}).variable(0).name(), "V0");
 
       // V2 should be the first
       mn.addFactor({"V2", "V1"});
-      CHECK((mn.factor({"V2", "V1"}).variable(0).name()) == ("V2"));
-      CHECK((mn.factor({"V1", "V2"}).variable(0).name()) == ("V2"));
+      GUM_CHECK_EQ(mn.factor({"V2", "V1"}).variable(0).name(), "V2");
+      GUM_CHECK_EQ(mn.factor({"V1", "V2"}).variable(0).name(), "V2");
 
       // 2 should be the first
       gum::NodeSet s1{2, 3};
       mn.addFactor(s1);
-      CHECK((mn.factor(s1).variable(0).name()) == (mn.variable(2).name()));
+      GUM_CHECK_EQ(mn.factor(s1).variable(0).name(), mn.variable(2).name());
 
       // 1 should be the first
       gum::NodeSet s2{3, 1};
       mn.addFactor(s2);
-      CHECK((mn.factor(s2).variable(0).name()) == (mn.variable(1).name()));
+      GUM_CHECK_EQ(mn.factor(s2).variable(0).name(), mn.variable(1).name());
     }
 
     static void testInsertionFromTensor() {
@@ -193,7 +193,7 @@ namespace gum_tests {
         pot.add(mn1.variable("21"));
         pot.randomDistribution();
         GUM_CHECK_ASSERT_THROWS_NOTHING(mn1.addFactor(pot));
-        CHECK((pot.toString()) == (mn1.factor({"11", "21"}).toString()));
+        GUM_CHECK_EQ(pot.toString(), mn1.factor({"11", "21"}).toString());
       }
       {
         gum::MarkovRandomField< double > mn1;
@@ -205,7 +205,7 @@ namespace gum_tests {
         GUM_CHECK_ASSERT_THROWS_NOTHING(mn1.addFactor(pot));
 
         // should be equal because no sorting by order of the vars in pot.
-        CHECK((pot.toString()) == (mn1.factor({"11", "21"}).toString()));
+        GUM_CHECK_EQ(pot.toString(), mn1.factor({"11", "21"}).toString());
 
         // but the data should be the same
         gum::Instantiation I(pot);
@@ -226,7 +226,7 @@ namespace gum_tests {
         cpt++;
       }
 
-      CHECK((cpt) == (mn.size()));
+      GUM_CHECK_EQ(cpt, mn.size());
 
       cpt = static_cast< gum::Size >(0);
 
@@ -235,7 +235,7 @@ namespace gum_tests {
         cpt++;
       }
 
-      CHECK((cpt) == (mn.sizeEdges()));
+      GUM_CHECK_EQ(cpt, mn.sizeEdges());
     }
 
     static void testEraseFactor() {
@@ -244,10 +244,10 @@ namespace gum_tests {
       CHECK_THROWS_AS(mn.eraseFactor({12, 14}), const gum::InvalidArgument&);
       GUM_CHECK_ASSERT_THROWS_NOTHING(mn.eraseFactor({2, 4}));
 
-      CHECK((mn.size()) == (static_cast< gum::Idx >(5)));
-      CHECK((mn.sizeEdges()) == (static_cast< gum::Idx >(5)));
-      CHECK((mn.dim()) == ((gum::Idx)(3 * 3 + 3 * 3 + 3 * 3 * 7)));
-      CHECK((mn.toString()) == ("MRF{nodes: 5, edges: 5, domainSize: 567, dim: 81}"));
+      GUM_CHECK_EQ(mn.size(), static_cast< gum::Idx >(5));
+      GUM_CHECK_EQ(mn.sizeEdges(), static_cast< gum::Idx >(5));
+      GUM_CHECK_EQ(mn.dim(), (gum::Idx)(3 * 3 + 3 * 3 + 3 * 3 * 7));
+      GUM_CHECK_EQ(mn.toString(), "MRF{nodes: 5, edges: 5, domainSize: 567, dim: 81}");
     }
 
     static void testEraseFactorWithNames() {
@@ -256,10 +256,10 @@ namespace gum_tests {
       CHECK_THROWS_AS(mn.eraseFactor({"31", "21"}), const gum::InvalidArgument&);
       GUM_CHECK_ASSERT_THROWS_NOTHING(mn.eraseFactor({"31", "51"}));
 
-      CHECK((mn.size()) == (static_cast< gum::Idx >(5)));
-      CHECK((mn.sizeEdges()) == (static_cast< gum::Idx >(5)));
-      CHECK((mn.dim()) == ((gum::Idx)(3 * 3 + 3 * 3 + 3 * 3 * 7)));
-      CHECK((mn.toString()) == ("MRF{nodes: 5, edges: 5, domainSize: 567, dim: 81}"));
+      GUM_CHECK_EQ(mn.size(), static_cast< gum::Idx >(5));
+      GUM_CHECK_EQ(mn.sizeEdges(), static_cast< gum::Idx >(5));
+      GUM_CHECK_EQ(mn.dim(), (gum::Idx)(3 * 3 + 3 * 3 + 3 * 3 * 7));
+      GUM_CHECK_EQ(mn.toString(), "MRF{nodes: 5, edges: 5, domainSize: 567, dim: 81}");
     }
 
     static void testErase() {
@@ -268,10 +268,10 @@ namespace gum_tests {
       CHECK_THROWS_AS(mn.erase(36), const gum::InvalidArgument&);
       GUM_CHECK_ASSERT_THROWS_NOTHING(mn.erase(3));
 
-      CHECK((mn.size()) == (static_cast< gum::Idx >(4)));
-      CHECK((mn.sizeEdges()) == (static_cast< gum::Idx >(3)));
-      CHECK((mn.dim()) == ((gum::Idx)(3 * 3 + 3 * 7 + 3 * 7)));
-      CHECK((mn.toString()) == ("MRF{nodes: 4, edges: 3, domainSize: 189, dim: 51}"));
+      GUM_CHECK_EQ(mn.size(), static_cast< gum::Idx >(4));
+      GUM_CHECK_EQ(mn.sizeEdges(), static_cast< gum::Idx >(3));
+      GUM_CHECK_EQ(mn.dim(), (gum::Idx)(3 * 3 + 3 * 7 + 3 * 7));
+      GUM_CHECK_EQ(mn.toString(), "MRF{nodes: 4, edges: 3, domainSize: 189, dim: 51}");
     }
 
     static void testEraseWithNames() {
@@ -280,10 +280,10 @@ namespace gum_tests {
       CHECK_THROWS_AS(mn.erase("36"), const gum::NotFound&);
       GUM_CHECK_ASSERT_THROWS_NOTHING(mn.erase("41"));
 
-      CHECK((mn.size()) == (static_cast< gum::Idx >(4)));
-      CHECK((mn.sizeEdges()) == (static_cast< gum::Idx >(3)));
-      CHECK((mn.dim()) == ((gum::Idx)(3 * 3 + 3 * 7 + 3 * 7)));
-      CHECK((mn.toString()) == ("MRF{nodes: 4, edges: 3, domainSize: 189, dim: 51}"));
+      GUM_CHECK_EQ(mn.size(), static_cast< gum::Idx >(4));
+      GUM_CHECK_EQ(mn.sizeEdges(), static_cast< gum::Idx >(3));
+      GUM_CHECK_EQ(mn.dim(), (gum::Idx)(3 * 3 + 3 * 7 + 3 * 7));
+      GUM_CHECK_EQ(mn.toString(), "MRF{nodes: 4, edges: 3, domainSize: 189, dim: 51}");
     }
 
     static void testToDot() {
@@ -302,7 +302,7 @@ namespace gum_tests {
       gum::Tensor< double > pbn;
       pbn.fill(1);
       for (gum::NodeId nod: bn.nodes()) {
-        CHECK((bn.variable(nod).toString()) == (mn.variable(nod).toString()));
+        GUM_CHECK_EQ(bn.variable(nod).toString(), mn.variable(nod).toString());
 
         pbn *= bn.cpt(nod);
       }
@@ -310,7 +310,7 @@ namespace gum_tests {
       gum::Tensor< double > pmn;
       pmn.fill(1);
       for (const auto& key: mn.factors()) {
-        CHECK((mn.factor(key.first)) == (*key.second));
+        GUM_CHECK_EQ(mn.factor(key.first), *key.second);
         pmn *= *key.second;
       }
       pmn.normalize();
@@ -326,10 +326,10 @@ namespace gum_tests {
       gum::Tensor< double > ppmn(pbn);
       ppmn.fillWith(pmn);   // copy of pmn using pbn's variables
       auto diff = (pbn - ppmn).new_abs();
-      CHECK((pbn.domainSize()) == (diff.domainSize()));
-      CHECK((diff.max()) < (1e-10));
+      GUM_CHECK_EQ(pbn.domainSize(), diff.domainSize());
+      GUM_CHECK_LT(diff.max(), 1e-10);
 
-      CHECK((mn.graph()) == (bn.moralGraph()));
+      GUM_CHECK_EQ(mn.graph(), bn.moralGraph());
     }
 
     static void testExistsEdge() {
@@ -348,9 +348,9 @@ namespace gum_tests {
     static void testMinimalCondSet() {
       auto mn = gum::MarkovRandomField< double >::fastPrototype("A--B--C;C--D;E--F--G;B--E");
 
-      CHECK((mn.minimalCondSet(0, {1, 2, 3, 4, 5, 6})) == (gum::NodeSet({1, 2})));
-      CHECK((mn.minimalCondSet({0, 6}, {1, 2, 3, 4, 5})) == (gum::NodeSet({1, 2, 4, 5})));
-      CHECK((mn.minimalCondSet(3, {0, 4, 5, 6})) == (gum::NodeSet({0, 4})));
+      GUM_CHECK_EQ(mn.minimalCondSet(0, {1, 2, 3, 4, 5, 6}), gum::NodeSet({1, 2}));
+      GUM_CHECK_EQ(mn.minimalCondSet({0, 6}, {1, 2, 3, 4, 5}), gum::NodeSet({1, 2, 4, 5}));
+      GUM_CHECK_EQ(mn.minimalCondSet(3, {0, 4, 5, 6}), gum::NodeSet({0, 4}));
     }
 
     static void testIndependence() {
@@ -365,12 +365,12 @@ namespace gum_tests {
     static void testFastPrototypeVarType() {
       auto mn = gum::MarkovRandomField< float >::fastPrototype(
           "a{1|4|6}--b{1|-4|6};c{1|toto|6}--d{1.0|-4.0|6.0};e{1|-4|6.0}--f{1.0|-4.0|+6.0}");
-      CHECK((mn.variable("a").varType()) == (gum::VarType::INTEGER));
-      CHECK((mn.variable("b").varType()) == (gum::VarType::INTEGER));
-      CHECK((mn.variable("c").varType()) == (gum::VarType::LABELIZED));
-      CHECK((mn.variable("d").varType()) == (gum::VarType::NUMERICAL));
-      CHECK((mn.variable("e").varType()) == (gum::VarType::NUMERICAL));
-      CHECK((mn.variable("f").varType()) == (gum::VarType::NUMERICAL));
+      GUM_CHECK_EQ(mn.variable("a").varType(), gum::VarType::INTEGER);
+      GUM_CHECK_EQ(mn.variable("b").varType(), gum::VarType::INTEGER);
+      GUM_CHECK_EQ(mn.variable("c").varType(), gum::VarType::LABELIZED);
+      GUM_CHECK_EQ(mn.variable("d").varType(), gum::VarType::NUMERICAL);
+      GUM_CHECK_EQ(mn.variable("e").varType(), gum::VarType::NUMERICAL);
+      GUM_CHECK_EQ(mn.variable("f").varType(), gum::VarType::NUMERICAL);
     }
 
     static void testMonoClique() {
@@ -382,11 +382,12 @@ namespace gum_tests {
       gum::MarkovRandomField< double > mn;
 
       gum::NodeId i1, i2, i3;
+      i1 = i2 = i3 = 0;
 
       CHECK_NOTHROW(i1 = mn.add("A", 2));
       CHECK_NOTHROW(i2 = mn.add("B", 3));
-      CHECK((i1) == (gum::NodeId(0)));
-      CHECK((i2) == (gum::NodeId(1)));
+      GUM_CHECK_EQ(i1, gum::NodeId(0));
+      GUM_CHECK_EQ(i2, gum::NodeId(1));
 
       CHECK_THROWS_AS(i3 = mn.add("A", 5), const gum::DuplicateLabel&);
       // the variable "C",1 can be created but the BN does not allow to add such a variable
@@ -394,7 +395,7 @@ namespace gum_tests {
       GUM_UNUSED(i3);
 
       CHECK_NOTHROW(mn.add("X{top|middle|bottom}"));
-      CHECK((mn.variable("X").toString()) == ("X:Labelized({top|middle|bottom})"));
+      GUM_CHECK_EQ(mn.variable("X").toString(), "X:Labelized({top|middle|bottom})");
 
       // a mono-label with default 4 is impossible
       CHECK_THROWS_AS(mn.add("Y[1,1]", 4), const gum::ArgumentError&);

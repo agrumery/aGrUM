@@ -65,8 +65,8 @@ namespace gum_tests {
     public:
     static void testConstruction() {
       gum::DecisionTensor< double > d1, d2;
-      CHECK((d1) == (d2));
-      CHECK((d1) == (d1 * d2));
+      GUM_CHECK_EQ(d1, d2);
+      GUM_CHECK_EQ(d1, d1 * d2);
 
       gum::DecisionTensor< double > d3(std::move(d2));
 
@@ -78,22 +78,22 @@ namespace gum_tests {
 
       gum::DecisionTensor< double > d4(P1, U1);
       gum::DecisionTensor< double > d5(d4);
-      CHECK((d4) == (d5));
+      GUM_CHECK_EQ(d4, d5);
 
       gum::DecisionTensor< double > d6 = d5;
-      CHECK((d6) == (d4));
+      GUM_CHECK_EQ(d6, d4);
 
       gum::DecisionTensor< double > d7(std::move(d4));
-      CHECK((d7) == (d6));
+      GUM_CHECK_EQ(d7, d6);
 
       d1 = std::move(d7);
-      CHECK((d1) == (d6));
+      GUM_CHECK_EQ(d1, d6);
 
       d5 = d1;
-      CHECK((d1) == (d5));
+      GUM_CHECK_EQ(d1, d5);
 
       d4 = d1;
-      CHECK((d1) == (d4));
+      GUM_CHECK_EQ(d1, d4);
     }   // namespace gum_tests
 
     static void testConstruction2() {
@@ -105,7 +105,7 @@ namespace gum_tests {
       d1.insertUtility(infdiag.utility("B"));
 
       auto res = d1 ^ std::vector< std::string >({"C"});
-      CHECK((res.probPot) == (gum::Tensor< double >().fillWith(1)));
+      GUM_CHECK_EQ(res.probPot, gum::Tensor< double >().fillWith(1));
       CHECK((res.utilPot)
             == ((gum::Tensor< double >() << infdiag.variableFromName("C")).fillWith({37, 58})));
     }
@@ -123,9 +123,9 @@ namespace gum_tests {
       d2.insertProba(infdiag.cpt("A"));
       d2.insertUtility(infdiag.utility("B"));
 
-      CHECK((d1.probPot) == (d2.probPot));
-      CHECK((d1.utilPot) != (d2.utilPot));
-      CHECK((d1) == (d2));   // d1 and d2 differ for utility with proba is 0
+      GUM_CHECK_EQ(d1.probPot, d2.probPot);
+      GUM_CHECK_NE(d1.utilPot, d2.utilPot);
+      GUM_CHECK_EQ(d1, d2);   // d1 and d2 differ for utility with proba is 0
     }
 
     static void testSuperSetForMarginalization() {
@@ -145,7 +145,7 @@ namespace gum_tests {
       vars.insert(&infdiag.variableFromName("D"));
       auto res2 = d1 ^ vars;
 
-      CHECK((res1) == (res2));
+      GUM_CHECK_EQ(res1, res2);
     }
   };
 

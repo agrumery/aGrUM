@@ -63,7 +63,7 @@ namespace gum {
   MultiDimFunctionGraphProjector< GUM_ELEMENT, FUNCTOR, TerminalNodePolicy >::
       MultiDimFunctionGraphProjector(
           const MultiDimFunctionGraph< GUM_ELEMENT, TerminalNodePolicy >* src,
-          const gum::VariableSet&                                        delVars,
+          const gum::VariableSet&                                         delVars,
           const GUM_ELEMENT                                               neutral) :
       _src_(src), _delVars_(delVars), _function_(), _neutral_(neutral) {
     GUM_CONSTRUCTOR(MultiDimFunctionGraphProjector);
@@ -115,7 +115,7 @@ namespace gum {
       // projetée
       if (_rd_->node(_rd_->root())->nodeVar() == curVar) {
         const InternalNode* curVarNode = _rd_->node(_rd_->root());
-        GUM_ELEMENT          newVal     = _neutral_;
+        GUM_ELEMENT         newVal     = _neutral_;
         for (Idx curVarModality = 0; curVarModality < curVar->domainSize(); ++curVarModality)
           newVal = _function_(newVal, _rd_->nodeValue(curVarNode->son(curVarModality)));
 
@@ -149,7 +149,7 @@ namespace gum {
                 filo.push_back(oldSonId);
               } else {
                 const InternalNode* curVarNode = _rd_->node(oldSonId);
-                GUM_ELEMENT          newVal     = _neutral_;
+                GUM_ELEMENT         newVal     = _neutral_;
                 for (Idx curVarModality = 0; curVarModality < curVar->domainSize();
                      ++curVarModality)
                   newVal = _function_(newVal, _rd_->nodeValue(curVarNode->son(curVarModality)));

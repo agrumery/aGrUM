@@ -200,8 +200,8 @@ namespace gum {
   // ===========================================================================
   template < typename GUM_ELEMENT >
   INLINE void FMDP< GUM_ELEMENT >::addTransitionForAction(
-      Idx                                         actionId,
-      const DiscreteVariable*                     var,
+      Idx                                          actionId,
+      const DiscreteVariable*                      var,
       const MultiDimImplementation< GUM_ELEMENT >* transition) {
     if (!_varSeq_.exists(var))
       GUM_ERROR(NotFound, " Variable " << var->name() << " has not been declared before.")
@@ -248,8 +248,8 @@ namespace gum {
   // ===========================================================================
   template < typename GUM_ELEMENT >
   INLINE void
-      FMDP< GUM_ELEMENT >::addCostForAction(Idx                                         actionId,
-                                           const MultiDimImplementation< GUM_ELEMENT >* cost) {
+      FMDP< GUM_ELEMENT >::addCostForAction(Idx                                          actionId,
+                                            const MultiDimImplementation< GUM_ELEMENT >* cost) {
     if (!_actionCostTable_.exists(actionId))
       GUM_ERROR(NotFound, " Action " << actionName(actionId) << " has not been declared before.");
 
@@ -264,7 +264,8 @@ namespace gum {
   // action
   // ===========================================================================
   template < typename GUM_ELEMENT >
-  INLINE const MultiDimImplementation< GUM_ELEMENT >* FMDP< GUM_ELEMENT >::cost(Idx actionId) const {
+  INLINE const MultiDimImplementation< GUM_ELEMENT >*
+               FMDP< GUM_ELEMENT >::cost(Idx actionId) const {
     if (!_actionCostTable_.exists(actionId))
       GUM_ERROR(NotFound, " Action " << actionName(actionId) << " has not been declared before.");
 
@@ -286,8 +287,8 @@ namespace gum {
   // ===========================================================================
   template < typename GUM_ELEMENT >
   INLINE void
-      FMDP< GUM_ELEMENT >::addRewardForAction(Idx                                         actionId,
-                                             const MultiDimImplementation< GUM_ELEMENT >* reward) {
+      FMDP< GUM_ELEMENT >::addRewardForAction(Idx                                          actionId,
+                                              const MultiDimImplementation< GUM_ELEMENT >* reward) {
     if (!_actionRewardTable_.exists(actionId))
       GUM_ERROR(NotFound, " Action " << actionName(actionId) << " has not been declared before.");
 

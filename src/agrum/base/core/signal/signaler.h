@@ -74,6 +74,7 @@
 #include <vector>
 
 #include <agrum/agrum.h>
+
 #include <agrum/base/core/signal/listener.h>
 
 namespace gum {
@@ -131,9 +132,7 @@ namespace gum {
 
       /// Copy constructor.
       Connector(const Connector& src) :
-          IConnector< Args... >(),
-          _target_(src._target_),
-          _action_(src._action_) {
+          IConnector< Args... >(), _target_(src._target_), _action_(src._action_) {
         GUM_CONS_CPY(Connector);
       }
 
@@ -351,12 +350,14 @@ namespace gum {
 #define GUM_EMIT_ARGS(signal, ...) (signal)(this, __VA_ARGS__)
 
 // Legacy macros for backward compatibility (all map to GUM_EMIT_ARGS)
-#define GUM_EMIT1(signal, arg1)                               GUM_EMIT_ARGS(signal, arg1)
-#define GUM_EMIT2(signal, arg1, arg2)                         GUM_EMIT_ARGS(signal, arg1, arg2)
-#define GUM_EMIT3(signal, arg1, arg2, arg3)                   GUM_EMIT_ARGS(signal, arg1, arg2, arg3)
-#define GUM_EMIT4(signal, arg1, arg2, arg3, arg4)             GUM_EMIT_ARGS(signal, arg1, arg2, arg3, arg4)
-#define GUM_EMIT5(signal, arg1, arg2, arg3, arg4, arg5)       GUM_EMIT_ARGS(signal, arg1, arg2, arg3, arg4, arg5)
-#define GUM_EMIT6(signal, arg1, arg2, arg3, arg4, arg5, arg6) GUM_EMIT_ARGS(signal, arg1, arg2, arg3, arg4, arg5, arg6)
+#define GUM_EMIT1(signal, arg1)                   GUM_EMIT_ARGS(signal, arg1)
+#define GUM_EMIT2(signal, arg1, arg2)             GUM_EMIT_ARGS(signal, arg1, arg2)
+#define GUM_EMIT3(signal, arg1, arg2, arg3)       GUM_EMIT_ARGS(signal, arg1, arg2, arg3)
+#define GUM_EMIT4(signal, arg1, arg2, arg3, arg4) GUM_EMIT_ARGS(signal, arg1, arg2, arg3, arg4)
+#define GUM_EMIT5(signal, arg1, arg2, arg3, arg4, arg5) \
+  GUM_EMIT_ARGS(signal, arg1, arg2, arg3, arg4, arg5)
+#define GUM_EMIT6(signal, arg1, arg2, arg3, arg4, arg5, arg6) \
+  GUM_EMIT_ARGS(signal, arg1, arg2, arg3, arg4, arg5, arg6)
 #define GUM_EMIT7(signal, arg1, arg2, arg3, arg4, arg5, arg6, arg7) \
   GUM_EMIT_ARGS(signal, arg1, arg2, arg3, arg4, arg5, arg6, arg7)
 

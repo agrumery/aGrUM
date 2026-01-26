@@ -223,21 +223,21 @@ namespace gum_tests {
         gum::LabelizedVariable* Banditovar = new gum::LabelizedVariable("Bandito", "Desperado", 2);
 
         // Test isTerminalNode
-        CHECK((functionGraph->isTerminalNode(16)) == (true));
-        CHECK((functionGraph->isTerminalNode(6)) == (false));
-        CHECK((functionGraph->isTerminalNode(24)) == (false));
+        GUM_CHECK_EQ(functionGraph->isTerminalNode(16), true);
+        GUM_CHECK_EQ(functionGraph->isTerminalNode(6), false);
+        GUM_CHECK_EQ(functionGraph->isTerminalNode(24), false);
 
         // Test isInternalNode
-        CHECK((functionGraph->isInternalNode(6)) == (true));
-        CHECK((functionGraph->isInternalNode(16)) == (false));
-        CHECK((functionGraph->isInternalNode(24)) == (false));
+        GUM_CHECK_EQ(functionGraph->isInternalNode(6), true);
+        GUM_CHECK_EQ(functionGraph->isInternalNode(16), false);
+        GUM_CHECK_EQ(functionGraph->isInternalNode(24), false);
 
         // Test Root
-        CHECK((functionGraph->root()) == ((gum::NodeId)1));
+        GUM_CHECK_EQ(functionGraph->root(), (gum::NodeId)1);
 
         // test terminal node value
         GUM_CHECK_ASSERT_THROWS_NOTHING(functionGraph->nodeValue(16));
-        CHECK((functionGraph->nodeValue(16)) == (0));
+        GUM_CHECK_EQ(functionGraph->nodeValue(16), 0);
         CHECK_THROWS_AS(functionGraph->nodeValue(6), const gum::InvalidArgument&);
         CHECK_THROWS_AS(functionGraph->nodeValue(24), const gum::InvalidArgument&);
 
@@ -314,7 +314,7 @@ namespace gum_tests {
         // Inserting a new terminal node with same value as an already inserted
         // one
         // (returned id must be the one of the already inserted)
-        CHECK((functionGraph->manager()->addTerminalNode(10)) == (idList[16]));
+        GUM_CHECK_EQ(functionGraph->manager()->addTerminalNode(10), idList[16]);
 
         // Testing terminal node removal
         GUM_CHECK_ASSERT_THROWS_NOTHING(functionGraph->manager()->eraseNode(idList[15]));
@@ -384,22 +384,22 @@ namespace gum_tests {
         // *********************************************************************
         gum::Sequence< const gum::DiscreteVariable* > varSeq;
         GUM_CHECK_ASSERT_THROWS_NOTHING(varSeq = functionGraph->variablesSequence());
-        CHECK((varSeq.exists(Cprimevar)) == (true));
-        CHECK((varSeq.exists(Cvar)) == (true));
-        CHECK((varSeq.exists(PLvar)) == (true));
-        CHECK((varSeq.exists(APUvar)) == (true));
-        CHECK((varSeq.exists(BPUvar)) == (true));
-        CHECK((varSeq.exists(ADRvar)) == (true));
-        CHECK((varSeq.exists(BDRvar)) == (true));
-        CHECK((varSeq.exists(BOvar)) == (true));
+        GUM_CHECK_EQ(varSeq.exists(Cprimevar), true);
+        GUM_CHECK_EQ(varSeq.exists(Cvar), true);
+        GUM_CHECK_EQ(varSeq.exists(PLvar), true);
+        GUM_CHECK_EQ(varSeq.exists(APUvar), true);
+        GUM_CHECK_EQ(varSeq.exists(BPUvar), true);
+        GUM_CHECK_EQ(varSeq.exists(ADRvar), true);
+        GUM_CHECK_EQ(varSeq.exists(BDRvar), true);
+        GUM_CHECK_EQ(varSeq.exists(BOvar), true);
 
 
         // *********************************************************************
         // Test name() and basename()
         // *********************************************************************
-        CHECK((functionGraph->name()) == ("MultiDimFunctionGraph"));
+        GUM_CHECK_EQ(functionGraph->name(), "MultiDimFunctionGraph");
 
-        CHECK((functionGraph->basename()) == ("MultiDimImplementation"));
+        GUM_CHECK_EQ(functionGraph->basename(), "MultiDimImplementation");
 
 
         // *********************************************************************
@@ -566,11 +566,11 @@ namespace gum_tests {
         // Test nbrDim(), domainSize(), realSize()
         // *********************************************************************
 
-        CHECK((functionGraph->nbrDim()) == (static_cast< gum::Idx >(8)));
+        GUM_CHECK_EQ(functionGraph->nbrDim(), static_cast< gum::Idx >(8));
 
-        CHECK((functionGraph->domainSize()) == (static_cast< gum::Size >(256)));
+        GUM_CHECK_EQ(functionGraph->domainSize(), static_cast< gum::Size >(256));
 
-        CHECK((functionGraph->realSize()) == (static_cast< gum::Size >(15)));   // 19)
+        GUM_CHECK_EQ(functionGraph->realSize(), static_cast< gum::Size >(15));   // 19)
 
         GUM_CHECK_ASSERT_THROWS_NOTHING(functionGraph->compressionRate());
 
@@ -578,21 +578,21 @@ namespace gum_tests {
 
         GUM_CHECK_ASSERT_THROWS_NOTHING(functionGraph->pos(*Cvar));
 
-        CHECK((functionGraph->contains(*Cprimevar)) == (true));
-        CHECK((functionGraph->contains(*lv)) == (false));
+        GUM_CHECK_EQ(functionGraph->contains(*Cprimevar), true);
+        GUM_CHECK_EQ(functionGraph->contains(*lv), false);
 
-        CHECK((functionGraph->empty()) == (false));
+        GUM_CHECK_EQ(functionGraph->empty(), false);
 
         // *********************************************************************
         // Test add(), erase()
         // *********************************************************************
 
         GUM_CHECK_ASSERT_THROWS_NOTHING(functionGraph->add(*lv));
-        CHECK((functionGraph->contains(*lv)) == (true));
+        GUM_CHECK_EQ(functionGraph->contains(*lv), true);
 
 
         GUM_CHECK_ASSERT_THROWS_NOTHING(functionGraph->erase(*Cvar));
-        CHECK((functionGraph->contains(*Cvar)) == (false));
+        GUM_CHECK_EQ(functionGraph->contains(*Cvar), false);
 
 
         GUM_CHECK_ASSERT_THROWS_NOTHING(delete functionGraph);
@@ -740,11 +740,11 @@ namespace gum_tests {
         // *********************************************************************
         // test == et !=
         // *********************************************************************
-        CHECK((*dg1 == *dg2) == (true));
-        CHECK((*dg1 == *dg3) == (false));
+        GUM_CHECK_EQ(*dg1 == *dg2, true);
+        GUM_CHECK_EQ(*dg1 == *dg3, false);
 
-        CHECK((*dg1 != *dg2) == (false));
-        CHECK((*dg1 != *dg3) == (true));
+        GUM_CHECK_EQ(*dg1 != *dg2, false);
+        GUM_CHECK_EQ(*dg1 != *dg3, true);
 
 
         GUM_CHECK_ASSERT_THROWS_NOTHING(delete dg1);

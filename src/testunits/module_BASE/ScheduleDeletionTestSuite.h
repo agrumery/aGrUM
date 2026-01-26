@@ -94,9 +94,9 @@ namespace gum_tests {
       CHECK(del1b.implyDeletion());
       CHECK(del2.implyDeletion());
 
-      CHECK((del1) != (del1b));
+      GUM_CHECK_NE(del1, del1b);
       CHECK(del1.isSameOperator(del1b));
-      CHECK((del1) != (del1b));
+      GUM_CHECK_NE(del1, del1b);
       CHECK(del1.hasSimilarArguments(del1b));
       CHECK(del1.hasSameArguments(del1b));
 
@@ -116,11 +116,11 @@ namespace gum_tests {
       CHECK(xres1.empty());
 
       const auto& arg1 = del1.arg();
-      CHECK((&arg1) == (&f1));
-      CHECK((arg1) == (f1));
+      GUM_CHECK_EQ(&arg1, &f1);
+      GUM_CHECK_EQ(arg1, f1);
 
       const auto& args1 = del1.args();
-      CHECK((args1.size()) == (gum::Size(1)));
+      GUM_CHECK_EQ(args1.size(), gum::Size(1));
       CHECK(arg1 == *args1[0]);
 
       del1b.execute();
@@ -135,14 +135,14 @@ namespace gum_tests {
 
       CHECK_THROWS_AS(del1.undo(), const gum::OperationNotAllowed&);
 
-      CHECK((del2.nbOperations()) == (1.0));
+      GUM_CHECK_EQ(del2.nbOperations(), 1.0);
       const auto [xfirst, xsecond] = del2.memoryUsage();
-      CHECK((xfirst) == (-4.0 * sizeof(double) - sizeof(gum::Tensor< double >)));
-      CHECK((xsecond) == (-4.0 * sizeof(double) - sizeof(gum::Tensor< double >)));
+      GUM_CHECK_EQ(xfirst, -4.0 * sizeof(double) - sizeof(gum::Tensor< double >));
+      GUM_CHECK_EQ(xsecond, -4.0 * sizeof(double) - sizeof(gum::Tensor< double >));
 
       const auto [xxfirst, xxsecond] = del1.memoryUsage();
-      CHECK((xxfirst) == (-16.0 * sizeof(double) - sizeof(gum::Tensor< double >)));
-      CHECK((xxsecond) == (-16.0 * sizeof(double) - sizeof(gum::Tensor< double >)));
+      GUM_CHECK_EQ(xxfirst, -16.0 * sizeof(double) - sizeof(gum::Tensor< double >));
+      GUM_CHECK_EQ(xxsecond, -16.0 * sizeof(double) - sizeof(gum::Tensor< double >));
 
       gum::ScheduleDeletion< gum::Tensor< double > > del4(del2);
       CHECK(del4.implyDeletion());
@@ -167,28 +167,28 @@ namespace gum_tests {
 
       gum::ScheduleMultiDim< gum::Tensor< double > > f4(pot2, true);
       del2.updateArgs({&f4});
-      CHECK((del2) != (del1));
+      GUM_CHECK_NE(del2, del1);
       CHECK(del1.hasSameArguments(del2));
 
       del1 = del2;
       CHECK(del1.implyDeletion());
       CHECK(del2.implyDeletion());
-      CHECK((del2) == (del1));
-      CHECK((del1) != (del1b));
+      GUM_CHECK_EQ(del2, del1);
+      GUM_CHECK_NE(del1, del1b);
       gum::ScheduleDeletion< gum::Tensor< double > > del6 = del1b;
       CHECK(del6.implyDeletion());
       del1 = std::move(del6);
-      CHECK((del1) == (del1b));
+      GUM_CHECK_EQ(del1, del1b);
 
       auto del7 = del1.clone();
       CHECK(del7->implyDeletion());
-      CHECK((del1) == (*del7));
-      CHECK((*del7) != (del2));
+      GUM_CHECK_EQ(del1, *del7);
+      GUM_CHECK_NE(*del7, del2);
       delete del7;
 
       std::stringstream s;
       s << "delete ( " << f1b.toString() << " )";
-      CHECK((s.str()) == (del1.toString()));
+      GUM_CHECK_EQ(s.str(), del1.toString());
 
       gum::VariableSet del_vars1;
       del_vars1 << vars[0] << vars[3];

@@ -112,9 +112,9 @@ namespace gum {
   }
 
   template < typename GUM_ELEMENT, template < class > class TerminalNodePolicy >
-  INLINE void
-      MultiDimFunctionGraph< GUM_ELEMENT, TerminalNodePolicy >::set(const Instantiation& i,
-                                                                   const GUM_ELEMENT& value) const {
+  INLINE void MultiDimFunctionGraph< GUM_ELEMENT, TerminalNodePolicy >::set(
+      const Instantiation& i,
+      const GUM_ELEMENT&   value) const {
     GUM_ERROR(OperationNotAllowed,
               "Function Graph can't be edited so "
               "easily.\nMultiDimFunctionGraphManager "
@@ -217,7 +217,7 @@ namespace gum {
   template < typename GUM_ELEMENT, template < class > class TerminalNodePolicy >
   INLINE void MultiDimFunctionGraph< GUM_ELEMENT, TerminalNodePolicy >::copyFrom(
       const MultiDimContainer< GUM_ELEMENT >& src,
-      Instantiation*                         p_i) const {
+      Instantiation*                          p_i) const {
     GUM_ERROR(OperationNotAllowed,
               "You cannot copy another type of multiDim "
               "into a MultiDimFunctionGraph.");
@@ -291,7 +291,7 @@ namespace gum {
   // Copies src diagrams structure into this diagrams.
   template < typename GUM_ELEMENT, template < class > class TerminalNodePolicy >
   INLINE void MultiDimFunctionGraph< GUM_ELEMENT, TerminalNodePolicy >::copyAndReassign(
-      const MultiDimFunctionGraph< GUM_ELEMENT, TerminalNodePolicy >&       src,
+      const MultiDimFunctionGraph< GUM_ELEMENT, TerminalNodePolicy >&      src,
       const Bijection< const DiscreteVariable*, const DiscreteVariable* >& reassign) {
     if (this->_isReduced_ != src.isReducedAndOrdered())
       GUM_ERROR(OperationNotAllowed,
@@ -530,7 +530,8 @@ namespace gum {
     if (_manager_ == nullptr) {
       if (_isReduced_)
         _manager_ = new MultiDimFunctionGraphROManager< GUM_ELEMENT, TerminalNodePolicy >(this);
-      else _manager_ = new MultiDimFunctionGraphTreeManager< GUM_ELEMENT, TerminalNodePolicy >(this);
+      else
+        _manager_ = new MultiDimFunctionGraphTreeManager< GUM_ELEMENT, TerminalNodePolicy >(this);
     }
     return _manager_;
   }
@@ -600,7 +601,8 @@ namespace gum {
 
   // Returns true if this MultiDimFunctionGraph is reduced and Ordered.
   template < typename GUM_ELEMENT, template < class > class TerminalNodePolicy >
-  INLINE bool MultiDimFunctionGraph< GUM_ELEMENT, TerminalNodePolicy >::isReducedAndOrdered() const {
+  INLINE bool
+      MultiDimFunctionGraph< GUM_ELEMENT, TerminalNodePolicy >::isReducedAndOrdered() const {
     return _isReduced_;
   }
 
@@ -620,9 +622,9 @@ namespace gum {
 
   // Not implemented yet
   template < typename GUM_ELEMENT, template < class > class TerminalNodePolicy >
-  INLINE void
-      MultiDimFunctionGraph< GUM_ELEMENT, TerminalNodePolicy >::replace_(const DiscreteVariable* x,
-                                                                        const DiscreteVariable* y) {
+  INLINE void MultiDimFunctionGraph< GUM_ELEMENT, TerminalNodePolicy >::replace_(
+      const DiscreteVariable* x,
+      const DiscreteVariable* y) {
     GUM_ERROR(OperationNotAllowed, "Not Implemented Yet")
   }
 

@@ -378,7 +378,7 @@ namespace gum_tests {
       gum::BIFReader< double > reader(&bn, GET_RESSOURCES_PATH("bif/asia.bif"));
       gum::Size                nbrErr = static_cast< gum::Size >(0);
       GUM_CHECK_ASSERT_THROWS_NOTHING(nbrErr = reader.proceed());
-      CHECK((nbrErr) == (static_cast< gum::Size >(0)));
+      GUM_CHECK_EQ(nbrErr, static_cast< gum::Size >(0));
 
       try {
         gum::LazyPropagation< double > lazy(&bn);
@@ -402,7 +402,7 @@ namespace gum_tests {
       gum::BIFReader< double > reader(&bn, GET_RESSOURCES_PATH("bif/alarm.bif"));
       gum::Size                nbrErr = static_cast< gum::Size >(0);
       GUM_CHECK_ASSERT_THROWS_NOTHING(nbrErr = reader.proceed());
-      CHECK((nbrErr) == (static_cast< gum::Size >(0)));
+      GUM_CHECK_EQ(nbrErr, static_cast< gum::Size >(0));
 
       try {
         gum::LazyPropagation< double > lazy(&bn);
@@ -426,7 +426,7 @@ namespace gum_tests {
       gum::BIFReader< double > reader(&bn, GET_RESSOURCES_PATH("bif/alarm.bif"));
       gum::Size                nbrErr = static_cast< gum::Size >(0);
       GUM_CHECK_ASSERT_THROWS_NOTHING(nbrErr = reader.proceed());
-      CHECK((nbrErr) == (static_cast< gum::Size >(0)));
+      GUM_CHECK_EQ(nbrErr, static_cast< gum::Size >(0));
 
       gum::MonteCarloSampling< double > inf(&bn);
       aSimpleMCListener                 agsl(inf);
@@ -443,8 +443,8 @@ namespace gum_tests {
         CHECK(false);
       }
 
-      CHECK((agsl.getNbr() * inf.periodSize()) == (inf.nbrIterations()));
-      CHECK((agsl.getMess()) != (std::string("")));
+      GUM_CHECK_EQ(agsl.getNbr() * inf.periodSize(), inf.nbrIterations());
+      GUM_CHECK_NE(agsl.getMess(), std::string(""));
     }
 
     static void testConstructor() {
@@ -452,7 +452,7 @@ namespace gum_tests {
       gum::BIFReader< double > reader(&bn, GET_RESSOURCES_PATH("bif/alarm.bif"));
       gum::Size                nbrErr = static_cast< gum::Size >(0);
       GUM_CHECK_ASSERT_THROWS_NOTHING(nbrErr = reader.proceed());
-      CHECK((nbrErr) == (static_cast< gum::Size >(0)));
+      GUM_CHECK_EQ(nbrErr, static_cast< gum::Size >(0));
       try {
         gum::MonteCarloSampling< double > inf(&bn);
         inf.setEpsilon(EPSILON_FOR_MONTECARLO);

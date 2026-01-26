@@ -76,8 +76,8 @@ namespace gum {
     /// Default constructor.
     Regress(const MultiDimFunctionGraph< GUM_ELEMENT, TerminalNodePolicy >* vfunction,
             const MultiDimFunctionGraph< GUM_ELEMENT, TerminalNodePolicy >* probDist,
-            const gum::VariableSet*                                        primedVars,
-            const DiscreteVariable*                                        targetVar,
+            const gum::VariableSet*                                         primedVars,
+            const DiscreteVariable*                                         targetVar,
             const GUM_ELEMENT                                               neutral);
 
     /// Default destructor.
@@ -105,9 +105,9 @@ namespace gum {
     /// Establish for each node in both function graph if it has retrograde
     /// variables
     /// beneath it
-    void
-        _findRetrogradeVariables_(const MultiDimFunctionGraph< GUM_ELEMENT, TerminalNodePolicy >* dg,
-                                  HashTable< NodeId, short int* >& dgInstNeed);
+    void _findRetrogradeVariables_(
+        const MultiDimFunctionGraph< GUM_ELEMENT, TerminalNodePolicy >* dg,
+        HashTable< NodeId, short int* >&                                dgInstNeed);
 
     /// The main recursion function
     NodeId _compute_(O4DGContext& currentSituation, Idx lastInstVarPos);

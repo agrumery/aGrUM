@@ -61,10 +61,10 @@ namespace gum_tests {
       gum::O3prmBNReader< double > reader(&bn, GET_RESSOURCES_PATH("o3prm/Asia.o3prm"));
       gum::Size                    res = 0;
       GUM_CHECK_ASSERT_THROWS_NOTHING(res = reader.proceed());
-      CHECK((bn.property("name")) == ("Asia"));
-      CHECK((res) == (static_cast< gum::Size >(0)));
-      CHECK((reader.warnings()) == (static_cast< gum::Size >(1)));   // no system
-      CHECK((bn.size()) == (static_cast< gum::Size >(8)));
+      GUM_CHECK_EQ(bn.property("name"), "Asia");
+      GUM_CHECK_EQ(res, static_cast< gum::Size >(0));
+      GUM_CHECK_EQ(reader.warnings(), static_cast< gum::Size >(1));   // no system
+      GUM_CHECK_EQ(bn.size(), static_cast< gum::Size >(8));
     }   // namespace gum_tests
 
     static void testClassWithoutSystemWithOtherClassName() {
@@ -74,10 +74,10 @@ namespace gum_tests {
                                             GET_RESSOURCES_PATH("o3prm/AsiaOtherClassName.o3prm"));
         gum::Size                    res = 0;
         GUM_CHECK_ASSERT_THROWS_NOTHING(res = reader.proceed());
-        CHECK((bn.property("name")) == ("Asia"));
-        CHECK((res) == (static_cast< gum::Size >(0)));
-        CHECK((reader.warnings()) == (static_cast< gum::Size >(1)));   // no system
-        CHECK((bn.size()) == (static_cast< gum::Size >(8)));
+        GUM_CHECK_EQ(bn.property("name"), "Asia");
+        GUM_CHECK_EQ(res, static_cast< gum::Size >(0));
+        GUM_CHECK_EQ(reader.warnings(), static_cast< gum::Size >(1));   // no system
+        GUM_CHECK_EQ(bn.size(), static_cast< gum::Size >(8));
       } catch (gum::Exception& e) { GUM_SHOWERROR(e); }
     }
 
@@ -86,18 +86,18 @@ namespace gum_tests {
       gum::O3prmBNReader< double > reader(&bn, GET_RESSOURCES_PATH("o3prm/Asia.o3prm"));
       gum::Size                    res = 0;
       GUM_CHECK_ASSERT_THROWS_NOTHING(res = reader.proceed());
-      CHECK((res) == (static_cast< gum::Size >(0)));
-      CHECK((reader.warnings()) == (static_cast< gum::Size >(1)));   // no system
-      CHECK((bn.size()) == (static_cast< gum::Size >(8)));
+      GUM_CHECK_EQ(res, static_cast< gum::Size >(0));
+      GUM_CHECK_EQ(reader.warnings(), static_cast< gum::Size >(1));   // no system
+      GUM_CHECK_EQ(bn.size(), static_cast< gum::Size >(8));
 
 
       gum::BayesNet< double >      bn2;
       gum::O3prmBNReader< double > reader2(&bn2, GET_RESSOURCES_PATH("o3prm/Asia.o3prm"));
       gum::Size                    res2 = 0;
       GUM_CHECK_ASSERT_THROWS_NOTHING(res2 = reader2.proceed());
-      CHECK((res2) == (static_cast< gum::Size >(0)));
-      CHECK((reader2.warnings()) == (static_cast< gum::Size >(1)));   // no system
-      CHECK((bn2.size()) == (static_cast< gum::Size >(8)));
+      GUM_CHECK_EQ(res2, static_cast< gum::Size >(0));
+      GUM_CHECK_EQ(reader2.warnings(), static_cast< gum::Size >(1));   // no system
+      GUM_CHECK_EQ(bn2.size(), static_cast< gum::Size >(8));
     }
 
     static void testClassWithoutSystemAfterDeletingReader() {
@@ -106,9 +106,9 @@ namespace gum_tests {
         gum::O3prmBNReader< double > reader(&bn, GET_RESSOURCES_PATH("o3prm/Asia.o3prm"));
         gum::Size                    res = 0;
         GUM_CHECK_ASSERT_THROWS_NOTHING(res = reader.proceed());
-        CHECK((res) == (static_cast< gum::Size >(0)));
-        CHECK((reader.warnings()) == (static_cast< gum::Size >(1)));   // no system
-        CHECK((bn.size()) == (static_cast< gum::Size >(8)));
+        GUM_CHECK_EQ(res, static_cast< gum::Size >(0));
+        GUM_CHECK_EQ(reader.warnings(), static_cast< gum::Size >(1));   // no system
+        GUM_CHECK_EQ(bn.size(), static_cast< gum::Size >(8));
       }
     }
 
@@ -120,9 +120,9 @@ namespace gum_tests {
           "Asia");
       gum::Size res = 0;
       GUM_CHECK_ASSERT_THROWS_NOTHING(res = reader.proceed());
-      CHECK((bn.property("name")) == ("Asia"));
-      CHECK((res) == (static_cast< gum::Size >(0)));
-      CHECK((bn.size()) == (static_cast< gum::Size >(8)));
+      GUM_CHECK_EQ(bn.property("name"), "Asia");
+      GUM_CHECK_EQ(res, static_cast< gum::Size >(0));
+      GUM_CHECK_EQ(bn.size(), static_cast< gum::Size >(8));
     }
 
     static void testWithError() {
@@ -132,17 +132,17 @@ namespace gum_tests {
                                           "Asia");
       gum::Size                    res = 0;
       GUM_CHECK_ASSERT_THROWS_NOTHING(res = reader.proceed());
-      CHECK((res) == (static_cast< gum::Size >(1)));               // file not found
-      CHECK((reader.errors()) == (static_cast< gum::Size >(1)));   // file not found
-      CHECK((bn.size()) == (static_cast< gum::Size >(0)));
+      GUM_CHECK_EQ(res, static_cast< gum::Size >(1));               // file not found
+      GUM_CHECK_EQ(reader.errors(), static_cast< gum::Size >(1));   // file not found
+      GUM_CHECK_EQ(bn.size(), static_cast< gum::Size >(0));
 
       gum::O3prmBNReader< double > reader2(&bn,
                                            GET_RESSOURCES_PATH("o3prm/AsiaWithError.o3prm"),
                                            "Asia");
       res = 0;
-      GUM_CHECK_ASSERT_THROWS_NOTHING(res = reader2.proceed());     // class plop not existing
-      CHECK((reader2.errors()) == (static_cast< gum::Size >(1)));   // class plop not existing
-      CHECK((bn.size()) == (static_cast< gum::Size >(0)));
+      GUM_CHECK_ASSERT_THROWS_NOTHING(res = reader2.proceed());      // class plop not existing
+      GUM_CHECK_EQ(reader2.errors(), static_cast< gum::Size >(1));   // class plop not existing
+      GUM_CHECK_EQ(bn.size(), static_cast< gum::Size >(0));
     }
 
     static void testWithCplxFile() {
@@ -152,8 +152,8 @@ namespace gum_tests {
                                           "aSys");
       gum::Size                    res = 0;
       GUM_CHECK_ASSERT_THROWS_NOTHING(res = reader.proceed());
-      CHECK((res) == (static_cast< gum::Size >(0)));
-      CHECK((bn.size()) == (static_cast< gum::Size >(72)));
+      GUM_CHECK_EQ(res, static_cast< gum::Size >(0));
+      GUM_CHECK_EQ(bn.size(), static_cast< gum::Size >(72));
     }
 
     static void testWithClassPathAndSystem() {
@@ -165,8 +165,8 @@ namespace gum_tests {
           GET_RESSOURCES_PATH("o3prmr/ComplexPrinters"));
       gum::Size res = 0;
       GUM_CHECK_ASSERT_THROWS_NOTHING(res = reader.proceed());
-      CHECK((res) == (static_cast< gum::Size >(0)));
-      CHECK((bn.size()) == (static_cast< gum::Size >(144)));
+      GUM_CHECK_EQ(res, static_cast< gum::Size >(0));
+      GUM_CHECK_EQ(bn.size(), static_cast< gum::Size >(144));
       reader.showElegantErrorsAndWarnings();
     }
 
@@ -178,10 +178,10 @@ namespace gum_tests {
         gum::O3prmBNReader< double > reader(&bn, GET_RESSOURCES_PATH("o3prm/Asia.o3prm"));
         gum::Size                    res = 0;
         GUM_CHECK_ASSERT_THROWS_NOTHING(res = reader.proceed());
-        CHECK((res) == (static_cast< gum::Size >(0)));
-        CHECK((reader.warnings()) == (static_cast< gum::Size >(1)));   // no system
+        GUM_CHECK_EQ(res, static_cast< gum::Size >(0));
+        GUM_CHECK_EQ(reader.warnings(), static_cast< gum::Size >(1));   // no system
         for (auto n: bn.nodes()) {
-          CHECK((bn.variable(n).name().find(".")) == (std::string::npos));
+          GUM_CHECK_EQ(bn.variable(n).name().find("."), std::string::npos);
         }
       }
       {
@@ -192,10 +192,10 @@ namespace gum_tests {
             "Asia");
         gum::Size res = 0;
         GUM_CHECK_ASSERT_THROWS_NOTHING(res = reader.proceed());
-        CHECK((res) == (static_cast< gum::Size >(0)));
-        CHECK((reader.warnings()) == (static_cast< gum::Size >(0)));
+        GUM_CHECK_EQ(res, static_cast< gum::Size >(0));
+        GUM_CHECK_EQ(reader.warnings(), static_cast< gum::Size >(0));
         for (auto n: bn.nodes()) {
-          CHECK((bn.variable(n).name().find(".")) != (std::string::npos));
+          GUM_CHECK_NE(bn.variable(n).name().find("."), std::string::npos);
         }
       }
     }
@@ -205,9 +205,9 @@ namespace gum_tests {
       gum::O3prmBNReader< double > reader(&bn, GET_RESSOURCES_PATH("o3prm/Asia.o3prm"));
       gum::Size                    res = 0;
       GUM_CHECK_ASSERT_THROWS_NOTHING(res = reader.proceed());
-      CHECK((res) == (static_cast< gum::Size >(0)));
-      CHECK((reader.warnings()) == (static_cast< gum::Size >(1)));   // no system
-      CHECK((bn.size()) == (static_cast< gum::Size >(8)));
+      GUM_CHECK_EQ(res, static_cast< gum::Size >(0));
+      GUM_CHECK_EQ(reader.warnings(), static_cast< gum::Size >(1));   // no system
+      GUM_CHECK_EQ(bn.size(), static_cast< gum::Size >(8));
     }
   };
 

@@ -80,13 +80,13 @@ namespace gum_tests {
       CHECK((p.toString())
             == ("a:Labelized({0|1})=noisyORCompound([0.2], b:Labelized({0|1})[0.4], c:"
                 "Labelized({0|1})[1], d:Labelized({0|1})[0.7])"));
-      CHECK((p.realSize()) == (static_cast< gum::Size >(4)));
+      GUM_CHECK_EQ(p.realSize(), static_cast< gum::Size >(4));
 
       gum::MultiDimNoisyORCompound< double > q(p);
       CHECK((q.toString())
             == ("a:Labelized({0|1})=noisyORCompound([0.2], b:Labelized({0|1})[0.4], c:"
                 "Labelized({0|1})[1], d:Labelized({0|1})[0.7])"));
-      CHECK((p.realSize()) == (static_cast< gum::Size >(4)));
+      GUM_CHECK_EQ(p.realSize(), static_cast< gum::Size >(4));
     }   // namespace gum_tests
 
     static void testCompatibleWithHardOR() {

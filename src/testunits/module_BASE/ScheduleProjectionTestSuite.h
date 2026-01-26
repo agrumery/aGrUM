@@ -99,8 +99,8 @@ namespace gum_tests {
 
       CHECK(myproj.nbOperations() == 16.0);
       const auto [xfirst, xsecond] = myproj.memoryUsage();
-      CHECK((xfirst) == (4.0 * sizeof(double) + sizeof(gum::Tensor< double >)));
-      CHECK((xsecond) == (4.0 * sizeof(double) + sizeof(gum::Tensor< double >)));
+      GUM_CHECK_EQ(xfirst, 4.0 * sizeof(double) + sizeof(gum::Tensor< double >));
+      GUM_CHECK_EQ(xsecond, 4.0 * sizeof(double) + sizeof(gum::Tensor< double >));
 
       CHECK(myproj.arg() == f1);
 
@@ -113,7 +113,7 @@ namespace gum_tests {
       CHECK(!myproj2.implyDeletion());
       CHECK(myproj2.result().isAbstract());
       CHECK(!myproj2.isExecuted());
-      CHECK((myproj2) == (myproj));
+      GUM_CHECK_EQ(myproj2, myproj);
       CHECK(!(myproj2 != myproj));
 
       myproj.execute();

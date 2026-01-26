@@ -72,11 +72,11 @@ namespace gum_tests {
       CHECK_THROWS_AS(bijection.insert(7, 6), const gum::DuplicateElement&);
 
       gum::Bijection< int, int > bijection2(bijection);
-      CHECK((bijection2.size()) == ((gum::Size) static_cast< gum::Size >(3)));
+      GUM_CHECK_EQ(bijection2.size(), (gum::Size) static_cast< gum::Size >(3));
 
       gum::Bijection< int, int > bij_bis(bijection);
       bij_bis.insert(8, 10);
-      CHECK((bij_bis.size()) == ((gum::Size) static_cast< gum::Size >(4)));
+      GUM_CHECK_EQ(bij_bis.size(), (gum::Size) static_cast< gum::Size >(4));
 
       gum::Bijection< int, int >* bijection3 = new gum::Bijection< int, int >;
       bijection3->insert(1, 2);
@@ -85,28 +85,28 @@ namespace gum_tests {
       gum::Bijection< int, int > bijection4 = bijection;
       bijection4                            = *bijection3;
       delete bijection3;
-      CHECK((bijection4.first(2)) == (1));
-      CHECK((bijection4.first(3)) == (3));
-      CHECK((bijection4.second(1)) == (2));
-      CHECK((bijection4.second(3)) == (3));
+      GUM_CHECK_EQ(bijection4.first(2), 1);
+      GUM_CHECK_EQ(bijection4.first(3), 3);
+      GUM_CHECK_EQ(bijection4.second(1), 2);
+      GUM_CHECK_EQ(bijection4.second(3), 3);
 
       gum::Bijection< int, int > bij_ter(std::move(bij_bis));
-      CHECK((bij_ter.size()) == ((gum::Size) static_cast< gum::Size >(4)));
+      GUM_CHECK_EQ(bij_ter.size(), (gum::Size) static_cast< gum::Size >(4));
 
       gum::Bijection< int, int > bij5{std::pair< int, int >(3, 4), std::pair< int, int >(5, 6)};
-      CHECK((bij5.size()) == ((gum::Size) static_cast< gum::Size >(2)));
+      GUM_CHECK_EQ(bij5.size(), (gum::Size) static_cast< gum::Size >(2));
 
       bij5 = bijection;
-      CHECK((bij5.size()) == ((gum::Size) static_cast< gum::Size >(3)));
+      GUM_CHECK_EQ(bij5.size(), (gum::Size) static_cast< gum::Size >(3));
       CHECK(bij5.existsFirst(5));
       CHECK(bij5.existsFirst(3));
 
       bij5 = bij_ter;
-      CHECK((bij5.size()) == ((gum::Size) static_cast< gum::Size >(4)));
+      GUM_CHECK_EQ(bij5.size(), (gum::Size) static_cast< gum::Size >(4));
       CHECK(bij5.existsFirst(8));
 
       bij5 = std::move(bijection);
-      CHECK((bij5.size()) == (static_cast< gum::Size >(3)));
+      GUM_CHECK_EQ(bij5.size(), static_cast< gum::Size >(3));
     }   // namespace gum_tests
 
     static void test_constructors2() {
@@ -121,11 +121,11 @@ namespace gum_tests {
       CHECK_THROWS_AS(bijection.insert("e", "bc"), const gum::DuplicateElement&);
 
       gum::Bijection< std::string, std::string > bijection2(bijection);
-      CHECK((bijection2.size()) == (static_cast< gum::Size >(3)));
+      GUM_CHECK_EQ(bijection2.size(), static_cast< gum::Size >(3));
 
       gum::Bijection< std::string, std::string > bij_bis(bijection);
       bij_bis.insert("d", "bd");
-      CHECK((bij_bis.size()) == (static_cast< gum::Size >(4)));
+      GUM_CHECK_EQ(bij_bis.size(), static_cast< gum::Size >(4));
 
       gum::Bijection< std::string, std::string >* bijection3
           = new gum::Bijection< std::string, std::string >;
@@ -135,30 +135,30 @@ namespace gum_tests {
       gum::Bijection< std::string, std::string > bijection4 = bijection;
       bijection4                                            = *bijection3;
       delete bijection3;
-      CHECK((bijection4.first("a")) == ("b"));
-      CHECK((bijection4.first("b")) == ("a"));
-      CHECK((bijection4.second("a")) == ("b"));
-      CHECK((bijection4.second("b")) == ("a"));
+      GUM_CHECK_EQ(bijection4.first("a"), "b");
+      GUM_CHECK_EQ(bijection4.first("b"), "a");
+      GUM_CHECK_EQ(bijection4.second("a"), "b");
+      GUM_CHECK_EQ(bijection4.second("b"), "a");
 
       gum::Bijection< std::string, std::string > bij_ter(std::move(bij_bis));
-      CHECK((bij_ter.size()) == (static_cast< gum::Size >(4)));
+      GUM_CHECK_EQ(bij_ter.size(), static_cast< gum::Size >(4));
 
       gum::Bijection< std::string, std::string > bij5{
           std::pair< std::string, std::string >("3", "4"),
           std::pair< std::string, std::string >("5", "6")};
-      CHECK((bij5.size()) == (static_cast< gum::Size >(2)));
+      GUM_CHECK_EQ(bij5.size(), static_cast< gum::Size >(2));
 
       bij5 = bijection;
-      CHECK((bij5.size()) == (static_cast< gum::Size >(3)));
+      GUM_CHECK_EQ(bij5.size(), static_cast< gum::Size >(3));
       CHECK(bij5.existsFirst("a"));
       CHECK(bij5.existsFirst("c"));
 
       bij5 = bij_ter;
-      CHECK((bij5.size()) == (static_cast< gum::Size >(4)));
+      GUM_CHECK_EQ(bij5.size(), static_cast< gum::Size >(4));
       CHECK(bij5.existsFirst("d"));
 
       bij5 = std::move(bijection);
-      CHECK((bij5.size()) == (static_cast< gum::Size >(3)));
+      GUM_CHECK_EQ(bij5.size(), static_cast< gum::Size >(3));
     }
 
     static void testMoves() {
@@ -180,8 +180,8 @@ namespace gum_tests {
       bij3 = std::move(bij2);
       bij2 = std::move(bij1);
 
-      CHECK((bij2.size()) == (static_cast< gum::Size >(3)));
-      CHECK((bij2.second(3)) == (4));
+      GUM_CHECK_EQ(bij2.size(), static_cast< gum::Size >(3));
+      GUM_CHECK_EQ(bij2.second(3), 4);
     }
 
     static void testAccess1() {
@@ -192,19 +192,19 @@ namespace gum_tests {
       GUM_CHECK_ASSERT_THROWS_NOTHING(bijection.insert(3, 4));
       GUM_CHECK_ASSERT_THROWS_NOTHING(bijection.insert(5, 6));
 
-      CHECK((bijection.first(2)) == (1));
-      CHECK((bijection.first(4)) == (3));
-      CHECK((bijection.first(6)) == (5));
-      CHECK((bijection.second(1)) == (2));
-      CHECK((bijection.second(3)) == (4));
-      CHECK((bijection.second(5)) == (6));
+      GUM_CHECK_EQ(bijection.first(2), 1);
+      GUM_CHECK_EQ(bijection.first(4), 3);
+      GUM_CHECK_EQ(bijection.first(6), 5);
+      GUM_CHECK_EQ(bijection.second(1), 2);
+      GUM_CHECK_EQ(bijection.second(3), 4);
+      GUM_CHECK_EQ(bijection.second(5), 6);
       CHECK(bijection.existsFirst(1));
       CHECK(bijection.existsFirst(3));
       CHECK(bijection.existsFirst(5));
       CHECK(bijection.existsSecond(2));
       CHECK(bijection.existsSecond(4));
       CHECK(bijection.existsSecond(6));
-      CHECK((bijection.size()) == (static_cast< gum::Size >(3)));
+      GUM_CHECK_EQ(bijection.size(), static_cast< gum::Size >(3));
       GUM_CHECK_ASSERT_THROWS_NOTHING(bijection.eraseFirst(1));
       CHECK(!bijection.existsSecond(2));
       GUM_CHECK_ASSERT_THROWS_NOTHING(bijection.eraseFirst(3));
@@ -229,19 +229,19 @@ namespace gum_tests {
       GUM_CHECK_ASSERT_THROWS_NOTHING(bijection.insert("3", "4"));
       GUM_CHECK_ASSERT_THROWS_NOTHING(bijection.insert("5", "6"));
 
-      CHECK((bijection.first("2")) == ("1"));
-      CHECK((bijection.first("4")) == ("3"));
-      CHECK((bijection.first("6")) == ("5"));
-      CHECK((bijection.second("1")) == ("2"));
-      CHECK((bijection.second("3")) == ("4"));
-      CHECK((bijection.second("5")) == ("6"));
+      GUM_CHECK_EQ(bijection.first("2"), "1");
+      GUM_CHECK_EQ(bijection.first("4"), "3");
+      GUM_CHECK_EQ(bijection.first("6"), "5");
+      GUM_CHECK_EQ(bijection.second("1"), "2");
+      GUM_CHECK_EQ(bijection.second("3"), "4");
+      GUM_CHECK_EQ(bijection.second("5"), "6");
       CHECK(bijection.existsFirst("1"));
       CHECK(bijection.existsFirst("3"));
       CHECK(bijection.existsFirst("5"));
       CHECK(bijection.existsSecond("2"));
       CHECK(bijection.existsSecond("4"));
       CHECK(bijection.existsSecond("6"));
-      CHECK((bijection.size()) == (static_cast< gum::Size >(3)));
+      GUM_CHECK_EQ(bijection.size(), static_cast< gum::Size >(3));
       GUM_CHECK_ASSERT_THROWS_NOTHING(bijection.eraseFirst("1"));
       CHECK(!bijection.existsSecond("2"));
       GUM_CHECK_ASSERT_THROWS_NOTHING(bijection.eraseFirst("3"));
@@ -301,7 +301,7 @@ namespace gum_tests {
 
       bijection.resize(2);
 
-      CHECK((bijection.capacity()) != (static_cast< gum::Size >(2)));
+      GUM_CHECK_NE(bijection.capacity(), static_cast< gum::Size >(2));
     }
 
     static void testResize2() {
@@ -318,7 +318,7 @@ namespace gum_tests {
 
       bijection.resize(2);
 
-      CHECK((bijection.capacity()) != (static_cast< gum::Size >(2)));
+      GUM_CHECK_NE(bijection.capacity(), static_cast< gum::Size >(2));
     }
 
     static void testIterators1() {
@@ -340,7 +340,7 @@ namespace gum_tests {
 
       for (auto iter = bijection.begin(); iter != bijection.end(); ++iter, ++nb) {}
 
-      CHECK((nb) == ((gum::Size) static_cast< gum::Size >(8)));
+      GUM_CHECK_EQ(nb, (gum::Size) static_cast< gum::Size >(8));
 
       bijection.eraseFirst(1);
       bijection.eraseFirst(5);
@@ -351,14 +351,14 @@ namespace gum_tests {
 
       for (; iter1 != iter2; ++iter1, ++nb) {}
 
-      CHECK((nb) == ((gum::Size) static_cast< gum::Size >(4)));
+      GUM_CHECK_EQ(nb, (gum::Size) static_cast< gum::Size >(4));
 
       nb        = 0;
       auto iter = iter2;
 
       for (iter = bijection.begin(); iter != iter2; ++iter, ++nb) {}
 
-      CHECK((nb) == ((gum::Size) static_cast< gum::Size >(4)));
+      GUM_CHECK_EQ(nb, (gum::Size) static_cast< gum::Size >(4));
 
       iter = bijection.begin();
       nb   = iter.first();
@@ -385,7 +385,7 @@ namespace gum_tests {
       for (gum::Bijection< int, int >::iterator iter = bijection.begin(); iter != bijection.end();
            ++iter, ++nb) {}
 
-      CHECK((nb) == ((gum::Size) static_cast< gum::Size >(8)));
+      GUM_CHECK_EQ(nb, (gum::Size) static_cast< gum::Size >(8));
 
       bijection.eraseFirst(1);
       bijection.eraseFirst(5);
@@ -396,14 +396,14 @@ namespace gum_tests {
 
       for (; iter1 != iter2; ++iter1, ++nb) {}
 
-      CHECK((nb) == ((gum::Size) static_cast< gum::Size >(4)));
+      GUM_CHECK_EQ(nb, (gum::Size) static_cast< gum::Size >(4));
 
       nb                                        = 0;
       gum::Bijection< int, int >::iterator iter = iter2;
 
       for (iter = bijection.begin(); iter != iter2; ++iter, ++nb) {}
 
-      CHECK((nb) == ((gum::Size) static_cast< gum::Size >(4)));
+      GUM_CHECK_EQ(nb, (gum::Size) static_cast< gum::Size >(4));
 
       iter = bijection.begin();
       nb   = iter.first();
@@ -429,7 +429,7 @@ namespace gum_tests {
 
       for (auto iter = bijection.begin(); iter != bijection.end(); ++iter, ++nb) {}
 
-      CHECK((nb) == ((gum::Size) static_cast< gum::Size >(8)));
+      GUM_CHECK_EQ(nb, (gum::Size) static_cast< gum::Size >(8));
 
       bijection.eraseFirst("1");
       bijection.eraseFirst("5");
@@ -440,14 +440,14 @@ namespace gum_tests {
 
       for (; iter1 != iter2; ++iter1, ++nb) {}
 
-      CHECK((nb) == ((gum::Size) static_cast< gum::Size >(4)));
+      GUM_CHECK_EQ(nb, (gum::Size) static_cast< gum::Size >(4));
 
       nb        = 0;
       auto iter = iter2;
 
       for (iter = bijection.begin(); iter != iter2; ++iter, ++nb) {}
 
-      CHECK((nb) == ((gum::Size) static_cast< gum::Size >(4)));
+      GUM_CHECK_EQ(nb, (gum::Size) static_cast< gum::Size >(4));
 
       iter            = bijection.begin();
       std::string str = iter.first();
@@ -475,7 +475,7 @@ namespace gum_tests {
            iter != bijection.end();
            ++iter, ++nb) {}
 
-      CHECK((nb) == ((gum::Size) static_cast< gum::Size >(8)));
+      GUM_CHECK_EQ(nb, (gum::Size) static_cast< gum::Size >(8));
 
       bijection.eraseFirst("1");
       bijection.eraseFirst("5");
@@ -486,14 +486,14 @@ namespace gum_tests {
 
       for (; iter1 != iter2; ++iter1, ++nb) {}
 
-      CHECK((nb) == ((gum::Size) static_cast< gum::Size >(4)));
+      GUM_CHECK_EQ(nb, (gum::Size) static_cast< gum::Size >(4));
 
       nb                                                        = 0;
       gum::Bijection< std::string, std::string >::iterator iter = iter2;
 
       for (iter = bijection.begin(); iter != iter2; ++iter, ++nb) {}
 
-      CHECK((nb) == ((gum::Size) static_cast< gum::Size >(4)));
+      GUM_CHECK_EQ(nb, (gum::Size) static_cast< gum::Size >(4));
 
       iter            = bijection.begin();
       std::string str = iter.first();
@@ -512,7 +512,7 @@ namespace gum_tests {
       CHECK_THROWS_AS(bijection.insert((int*)7, (int*)6), const gum::DuplicateElement&);
 
       gum::Bijection< int*, int* > bijection2 = bijection;
-      CHECK((bijection2.size()) == (static_cast< gum::Size >(3)));
+      GUM_CHECK_EQ(bijection2.size(), static_cast< gum::Size >(3));
 
       gum::Bijection< int*, int* >* bijection3 = new gum::Bijection< int*, int* >;
       bijection3->insert((int*)1, (int*)2);
@@ -521,10 +521,10 @@ namespace gum_tests {
       gum::Bijection< int*, int* > bijection4 = bijection;
       bijection4                              = *bijection3;
       delete bijection3;
-      CHECK((bijection4.first((int*)2)) == ((int*)1));
-      CHECK((bijection4.first((int*)3)) == ((int*)3));
-      CHECK((bijection4.second((int*)1)) == ((int*)2));
-      CHECK((bijection4.second((int*)3)) == ((int*)3));
+      GUM_CHECK_EQ(bijection4.first((int*)2), (int*)1);
+      GUM_CHECK_EQ(bijection4.first((int*)3), (int*)3);
+      GUM_CHECK_EQ(bijection4.second((int*)1), (int*)2);
+      GUM_CHECK_EQ(bijection4.second((int*)3), (int*)3);
     }
 
     static void testAccessStar() {
@@ -534,19 +534,19 @@ namespace gum_tests {
       GUM_CHECK_ASSERT_THROWS_NOTHING(bijection.insert((int*)3, (int*)4));
       GUM_CHECK_ASSERT_THROWS_NOTHING(bijection.insert((int*)5, (int*)6));
 
-      CHECK((bijection.first((int*)2)) == ((int*)1));
-      CHECK((bijection.first((int*)4)) == ((int*)3));
-      CHECK((bijection.first((int*)6)) == ((int*)5));
-      CHECK((bijection.second((int*)1)) == ((int*)2));
-      CHECK((bijection.second((int*)3)) == ((int*)4));
-      CHECK((bijection.second((int*)5)) == ((int*)6));
+      GUM_CHECK_EQ(bijection.first((int*)2), (int*)1);
+      GUM_CHECK_EQ(bijection.first((int*)4), (int*)3);
+      GUM_CHECK_EQ(bijection.first((int*)6), (int*)5);
+      GUM_CHECK_EQ(bijection.second((int*)1), (int*)2);
+      GUM_CHECK_EQ(bijection.second((int*)3), (int*)4);
+      GUM_CHECK_EQ(bijection.second((int*)5), (int*)6);
       CHECK(bijection.existsFirst((int*)1));
       CHECK(bijection.existsFirst((int*)3));
       CHECK(bijection.existsFirst((int*)5));
       CHECK(bijection.existsSecond((int*)2));
       CHECK(bijection.existsSecond((int*)4));
       CHECK(bijection.existsSecond((int*)6));
-      CHECK((bijection.size()) == (static_cast< gum::Size >(3)));
+      GUM_CHECK_EQ(bijection.size(), static_cast< gum::Size >(3));
       GUM_CHECK_ASSERT_THROWS_NOTHING(bijection.eraseFirst((int*)1));
       CHECK(!bijection.existsSecond((int*)2));
       GUM_CHECK_ASSERT_THROWS_NOTHING(bijection.eraseFirst((int*)3));
@@ -590,7 +590,7 @@ namespace gum_tests {
 
       bijection.resize(2);
 
-      CHECK((bijection.capacity()) != (static_cast< gum::Size >(2)));
+      GUM_CHECK_NE(bijection.capacity(), static_cast< gum::Size >(2));
     }
 
     static void testIteratorsStar() {
@@ -612,7 +612,7 @@ namespace gum_tests {
 
       for (auto iter = bijection.begin(); iter != bijection.end(); ++iter, ++nb) {}
 
-      CHECK((nb) == ((gum::Size) static_cast< gum::Size >(8)));
+      GUM_CHECK_EQ(nb, (gum::Size) static_cast< gum::Size >(8));
 
       bijection.eraseFirst((int*)1);
       bijection.eraseFirst((int*)5);
@@ -623,14 +623,14 @@ namespace gum_tests {
 
       for (; iter1 != iter2; ++iter1, ++nb) {}
 
-      CHECK((nb) == (static_cast< gum::Size >(4)));
+      GUM_CHECK_EQ(nb, static_cast< gum::Size >(4));
 
       nb        = 0;
       auto iter = iter2;
 
       for (iter = bijection.begin(); iter != iter2; ++iter, ++nb) {}
 
-      CHECK((nb) == (static_cast< gum::Size >(4)));
+      GUM_CHECK_EQ(nb, static_cast< gum::Size >(4));
 
       iter = bijection.begin();
       iter.first();

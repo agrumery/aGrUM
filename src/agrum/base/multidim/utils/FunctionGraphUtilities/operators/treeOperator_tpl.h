@@ -76,7 +76,7 @@ namespace gum {
   INLINE TreeOperator< GUM_ELEMENT, COMBINEOPERATOR, TerminalNodePolicy >::TreeOperator(
       const MultiDimFunctionGraph< GUM_ELEMENT, TerminalNodePolicy >* dt1,
       const MultiDimFunctionGraph< GUM_ELEMENT, TerminalNodePolicy >* dt2,
-      const HashTable< const DiscreteVariable*, Idx >                givenContext) :
+      const HashTable< const DiscreteVariable*, Idx >                 givenContext) :
       _dt1_(dt1), _dt2_(dt2), _combine_(), _context_(givenContext) {
     GUM_CONSTRUCTOR(TreeOperator);
 

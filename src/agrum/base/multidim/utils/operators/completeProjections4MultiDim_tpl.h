@@ -285,31 +285,31 @@ namespace gum {
 
       // register base functions for multiDimArrays
       registerCompleteProjection< GUM_ELEMENT >("max",
-                                               MultiDimArrayString,
-                                               &projectMaxMultiDimArray);
+                                                MultiDimArrayString,
+                                                &projectMaxMultiDimArray);
       registerCompleteProjection< GUM_ELEMENT >("min",
-                                               MultiDimArrayString,
-                                               &projectMinMultiDimArray);
+                                                MultiDimArrayString,
+                                                &projectMinMultiDimArray);
       registerCompleteProjection< GUM_ELEMENT >("sum",
-                                               MultiDimArrayString,
-                                               &projectSumMultiDimArray);
+                                                MultiDimArrayString,
+                                                &projectSumMultiDimArray);
       registerCompleteProjection< GUM_ELEMENT >("product",
-                                               MultiDimArrayString,
-                                               &projectProductMultiDimArray);
+                                                MultiDimArrayString,
+                                                &projectProductMultiDimArray);
 
       // register default basename functions
       registerCompleteProjection< GUM_ELEMENT >("max",
-                                               BaseNameString,
-                                               &projectMaxMultiDimImplementation);
+                                                BaseNameString,
+                                                &projectMaxMultiDimImplementation);
       registerCompleteProjection< GUM_ELEMENT >("min",
-                                               BaseNameString,
-                                               &projectMinMultiDimImplementation);
+                                                BaseNameString,
+                                                &projectMinMultiDimImplementation);
       registerCompleteProjection< GUM_ELEMENT >("sum",
-                                               BaseNameString,
-                                               &projectSumMultiDimImplementation);
+                                                BaseNameString,
+                                                &projectSumMultiDimImplementation);
       registerCompleteProjection< GUM_ELEMENT >("product",
-                                               BaseNameString,
-                                               &projectProductMultiDimImplementation);
+                                                BaseNameString,
+                                                &projectProductMultiDimImplementation);
     });
   }
 
@@ -324,17 +324,17 @@ namespace gum {
 
       // register base functions for multiDimArrays
       registerCompleteProjection< GUM_ELEMENT* >("max",
-                                                MultiDimArrayString,
-                                                &projectMaxMultiDimArray4Pointers);
+                                                 MultiDimArrayString,
+                                                 &projectMaxMultiDimArray4Pointers);
       registerCompleteProjection< GUM_ELEMENT* >("min",
-                                                MultiDimArrayString,
-                                                &projectMinMultiDimArray4Pointers);
+                                                 MultiDimArrayString,
+                                                 &projectMinMultiDimArray4Pointers);
       registerCompleteProjection< GUM_ELEMENT* >("sum",
-                                                MultiDimArrayString,
-                                                &projectSumMultiDimArray4Pointers);
+                                                 MultiDimArrayString,
+                                                 &projectSumMultiDimArray4Pointers);
       registerCompleteProjection< GUM_ELEMENT* >("product",
-                                                MultiDimArrayString,
-                                                &projectProductMultiDimArray4Pointers);
+                                                 MultiDimArrayString,
+                                                 &projectProductMultiDimArray4Pointers);
     });
   }
 

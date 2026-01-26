@@ -72,29 +72,29 @@ namespace gum_tests {
       GUM_CHECK_ASSERT_THROWS_NOTHING(seq << 2);
       GUM_CHECK_ASSERT_THROWS_NOTHING(seq << 4);
 
-      CHECK((seq.size()) == (static_cast< gum::Size >(5)));
+      GUM_CHECK_EQ(seq.size(), static_cast< gum::Size >(5));
 
       CHECK(!seq.empty());
 
       gum::Sequence< int > seq2{1, 2, 3};
-      CHECK((seq2.size()) == (static_cast< gum::Size >(3)));
+      GUM_CHECK_EQ(seq2.size(), static_cast< gum::Size >(3));
 
       gum::Sequence< int > seq3(seq2);
-      CHECK((seq3) == (seq2));
+      GUM_CHECK_EQ(seq3, seq2);
 
       gum::Sequence< int > seq4(std::move(seq2));
-      CHECK((seq4.size()) == (static_cast< gum::Size >(3)));
+      GUM_CHECK_EQ(seq4.size(), static_cast< gum::Size >(3));
 
       gum::Sequence< int > seq5{2, 4};
       gum::Sequence< int > seq6(seq5);
-      CHECK((seq5) == (seq6));
+      GUM_CHECK_EQ(seq5, seq6);
 
       seq5 = seq;
-      CHECK((seq5.size()) == (static_cast< gum::Size >(5)));
+      GUM_CHECK_EQ(seq5.size(), static_cast< gum::Size >(5));
       seq6 = seq;
-      CHECK((seq6.size()) == (static_cast< gum::Size >(5)));
+      GUM_CHECK_EQ(seq6.size(), static_cast< gum::Size >(5));
       seq6 = std::move(seq3);
-      CHECK((seq6.size()) == (static_cast< gum::Size >(3)));
+      GUM_CHECK_EQ(seq6.size(), static_cast< gum::Size >(3));
     }
 
     static void testConstructor2() {
@@ -117,29 +117,29 @@ namespace gum_tests {
       GUM_CHECK_ASSERT_THROWS_NOTHING(seq << p[1]);
       GUM_CHECK_ASSERT_THROWS_NOTHING(seq << p[3]);
 
-      CHECK((seq.size()) == (static_cast< gum::Size >(5)));
+      GUM_CHECK_EQ(seq.size(), static_cast< gum::Size >(5));
 
       CHECK(!seq.empty());
 
       gum::Sequence< std::string > seq2{p[0], p[1], p[2]};
-      CHECK((seq2.size()) == (static_cast< gum::Size >(3)));
+      GUM_CHECK_EQ(seq2.size(), static_cast< gum::Size >(3));
 
       gum::Sequence< std::string > seq3(seq2);
-      CHECK((seq3) == (seq2));
+      GUM_CHECK_EQ(seq3, seq2);
 
       gum::Sequence< std::string > seq4(std::move(seq2));
-      CHECK((seq4.size()) == (static_cast< gum::Size >(3)));
+      GUM_CHECK_EQ(seq4.size(), static_cast< gum::Size >(3));
 
       gum::Sequence< std::string > seq5{p[1], p[3]};
       gum::Sequence< std::string > seq6(seq5);
-      CHECK((seq5) == (seq6));
+      GUM_CHECK_EQ(seq5, seq6);
 
       seq5 = seq;
-      CHECK((seq5.size()) == (static_cast< gum::Size >(5)));
+      GUM_CHECK_EQ(seq5.size(), static_cast< gum::Size >(5));
       seq6 = seq;
-      CHECK((seq6.size()) == (static_cast< gum::Size >(5)));
+      GUM_CHECK_EQ(seq6.size(), static_cast< gum::Size >(5));
       seq6 = std::move(seq3);
-      CHECK((seq6.size()) == (static_cast< gum::Size >(3)));
+      GUM_CHECK_EQ(seq6.size(), static_cast< gum::Size >(3));
     }
 
     static void testMoves() {
@@ -151,8 +151,8 @@ namespace gum_tests {
       seq3                      = std::move(seq2);
       seq2                      = std::move(seq1);
 
-      CHECK((seq2.size()) == (static_cast< gum::Size >(3)));
-      CHECK((seq2.atPos(1)) == (2));
+      GUM_CHECK_EQ(seq2.size(), static_cast< gum::Size >(3));
+      GUM_CHECK_EQ(seq2.atPos(1), 2);
     }
 
     static void testCopy() {
@@ -164,9 +164,9 @@ namespace gum_tests {
       GUM_CHECK_ASSERT_THROWS_NOTHING(seq << 4);
 
       gum::Sequence< int >* p_seq2 = nullptr;
-      CHECK((seq.toString()) == ("[0:1 - 1:3 - 2:5 - 3:2 - 4:4]"));
+      GUM_CHECK_EQ(seq.toString(), "[0:1 - 1:3 - 2:5 - 3:2 - 4:4]");
       GUM_CHECK_ASSERT_THROWS_NOTHING(p_seq2 = new gum::Sequence< int >(seq));
-      CHECK((p_seq2->toString()) == ("[0:1 - 1:3 - 2:5 - 3:2 - 4:4]"));
+      GUM_CHECK_EQ(p_seq2->toString(), "[0:1 - 1:3 - 2:5 - 3:2 - 4:4]");
 
       GUM_CHECK_ASSERT_THROWS_NOTHING(if (p_seq2) delete (p_seq2));
 
@@ -183,21 +183,21 @@ namespace gum_tests {
       gum::Sequence< int > seq1, seq2;
       fill(seq1);
       fill(seq2);
-      CHECK((seq1) == (seq2));
+      GUM_CHECK_EQ(seq1, seq2);
 
       gum::Sequence< int > seq3;
-      CHECK((seq1) != (seq3));
+      GUM_CHECK_NE(seq1, seq3);
       seq3 << 1;
-      CHECK((seq1) != (seq3));
+      GUM_CHECK_NE(seq1, seq3);
       seq3 << 2 << 3 << 4 << 5;
-      CHECK((seq1) != (seq3));
+      GUM_CHECK_NE(seq1, seq3);
 
       gum::Sequence< int > seq4;
-      CHECK((seq1) != (seq4));
+      GUM_CHECK_NE(seq1, seq4);
       seq4 << 1;
-      CHECK((seq1) != (seq4));
+      GUM_CHECK_NE(seq1, seq4);
       seq4 << 2 << 3 << 4 << 5;
-      CHECK((seq1) != (seq4));
+      GUM_CHECK_NE(seq1, seq4);
     }
 
     static void testEquality2() {
@@ -211,21 +211,21 @@ namespace gum_tests {
       gum::Sequence< std::string > seq1, seq2;
       seq1 << p[0] << p[1];
       seq2 << p[0] << p[1];
-      CHECK((seq1) == (seq2));
+      GUM_CHECK_EQ(seq1, seq2);
 
       gum::Sequence< std::string > seq3;
-      CHECK((seq1) != (seq3));
+      GUM_CHECK_NE(seq1, seq3);
       seq3 << p[0];
-      CHECK((seq1) != (seq3));
+      GUM_CHECK_NE(seq1, seq3);
       seq3 << p[1] << p[2] << p[3] << p[4];
-      CHECK((seq1) != (seq3));
+      GUM_CHECK_NE(seq1, seq3);
 
       gum::Sequence< std::string > seq4;
-      CHECK((seq1) != (seq4));
+      GUM_CHECK_NE(seq1, seq4);
       seq4 << p[0] << p[1];
-      CHECK((seq1) == (seq4));
+      GUM_CHECK_EQ(seq1, seq4);
       seq4 << p[2] << p[3] << p[4];
-      CHECK((seq1) != (seq4));
+      GUM_CHECK_NE(seq1, seq4);
     }
 
     static void testGettersAndSetters() {
@@ -239,10 +239,10 @@ namespace gum_tests {
       CHECK_THROWS_AS(seq.insert("ddd"), const gum::DuplicateElement&);
       CHECK_THROWS_AS(seq << "ddd", const gum::DuplicateElement&);
 
-      CHECK((seq.toString()) == ("[0:aaaa - 1:b - 2:cc - 3:ddd]"));
+      GUM_CHECK_EQ(seq.toString(), "[0:aaaa - 1:b - 2:cc - 3:ddd]");
 
-      CHECK((seq[1]) == ("b"));
-      CHECK((seq.pos("ddd")) == (static_cast< gum::Idx >(3)));
+      GUM_CHECK_EQ(seq[1], "b");
+      GUM_CHECK_EQ(seq.pos("ddd"), static_cast< gum::Idx >(3));
 
       CHECK(seq.exists("b"));
       CHECK(!seq.exists("bb"));
@@ -250,42 +250,42 @@ namespace gum_tests {
       CHECK_THROWS_AS(seq[15], const gum::OutOfBounds&);
       CHECK_THROWS_AS(seq.pos("aaaaaaa"), const gum::NotFound&);
 
-      CHECK((seq.toString()) == ("[0:aaaa - 1:b - 2:cc - 3:ddd]"));
+      GUM_CHECK_EQ(seq.toString(), "[0:aaaa - 1:b - 2:cc - 3:ddd]");
       GUM_CHECK_ASSERT_THROWS_NOTHING(seq.setAtPos(1, "boom"));
-      CHECK((seq.toString()) == ("[0:aaaa - 1:boom - 2:cc - 3:ddd]"));
+      GUM_CHECK_EQ(seq.toString(), "[0:aaaa - 1:boom - 2:cc - 3:ddd]");
       CHECK_THROWS_AS(seq.setAtPos(15, "crach"), const gum::NotFound&);
       CHECK_THROWS_AS(seq.setAtPos(1, "aaaa"), const gum::DuplicateElement&);
 
-      CHECK((seq.toString()) == ("[0:aaaa - 1:boom - 2:cc - 3:ddd]"));
+      GUM_CHECK_EQ(seq.toString(), "[0:aaaa - 1:boom - 2:cc - 3:ddd]");
 
       GUM_CHECK_ASSERT_THROWS_NOTHING(seq.swap(0, 2));
-      CHECK((seq.toString()) == ("[0:cc - 1:boom - 2:aaaa - 3:ddd]"));
+      GUM_CHECK_EQ(seq.toString(), "[0:cc - 1:boom - 2:aaaa - 3:ddd]");
       GUM_CHECK_ASSERT_THROWS_NOTHING(seq.swap(0, 3));
-      CHECK((seq.toString()) == ("[0:ddd - 1:boom - 2:aaaa - 3:cc]"));
+      GUM_CHECK_EQ(seq.toString(), "[0:ddd - 1:boom - 2:aaaa - 3:cc]");
       CHECK_THROWS_AS(seq.swap(1, 10), const gum::OutOfBounds&);
       CHECK_THROWS_AS(seq.swap(10, 1), const gum::OutOfBounds&);
 
-      CHECK((seq.toString()) == ("[0:ddd - 1:boom - 2:aaaa - 3:cc]"));
+      GUM_CHECK_EQ(seq.toString(), "[0:ddd - 1:boom - 2:aaaa - 3:cc]");
     }
 
     static void testRemove() {
       gum::Sequence< int > seq;
       fill(seq);
 
-      CHECK((seq.toString()) == ("[0:1 - 1:3 - 2:5 - 3:2 - 4:4]"));
+      GUM_CHECK_EQ(seq.toString(), "[0:1 - 1:3 - 2:5 - 3:2 - 4:4]");
       GUM_CHECK_ASSERT_THROWS_NOTHING(seq >> 2);
-      CHECK((seq.toString()) == ("[0:1 - 1:3 - 2:5 - 3:4]"));
+      GUM_CHECK_EQ(seq.toString(), "[0:1 - 1:3 - 2:5 - 3:4]");
       GUM_CHECK_ASSERT_THROWS_NOTHING(seq.erase(1));
-      CHECK((seq.toString()) == ("[0:3 - 1:5 - 2:4]"));
+      GUM_CHECK_EQ(seq.toString(), "[0:3 - 1:5 - 2:4]");
       GUM_CHECK_ASSERT_THROWS_NOTHING(seq >> 4);
-      CHECK((seq.toString()) == ("[0:3 - 1:5]"));
+      GUM_CHECK_EQ(seq.toString(), "[0:3 - 1:5]");
       GUM_CHECK_ASSERT_THROWS_NOTHING(seq >> 4);
-      CHECK((seq.toString()) == ("[0:3 - 1:5]"));
+      GUM_CHECK_EQ(seq.toString(), "[0:3 - 1:5]");
 
       seq.clear();
       CHECK(seq.empty());
-      CHECK((seq.size()) == (static_cast< gum::Size >(0)));
-      CHECK((seq.toString()) == ("[]"));
+      GUM_CHECK_EQ(seq.size(), static_cast< gum::Size >(0));
+      GUM_CHECK_EQ(seq.toString(), "[]");
     }
 
     static void testIterators() {
@@ -298,14 +298,14 @@ namespace gum_tests {
       for (auto it = seq.begin(); it != seq.end(); ++it)
         n++;
 
-      CHECK((n) == (0));
+      GUM_CHECK_EQ(n, 0);
 
       n = 0;
 
       for (auto it = seq.rbegin(); it != seq.rend(); --it)
         n++;
 
-      CHECK((n) == (0));
+      GUM_CHECK_EQ(n, 0);
 
       n = 0;
 
@@ -314,7 +314,7 @@ namespace gum_tests {
         n++;
       }
 
-      CHECK((n) == (0));
+      GUM_CHECK_EQ(n, 0);
 
       seq << 1 << 3 << 5 << 2 << 4;
 
@@ -325,7 +325,7 @@ namespace gum_tests {
         n += *it;
       }
 
-      CHECK((n) == (13524));
+      GUM_CHECK_EQ(n, 13524);
 
       n = 0;
 
@@ -334,7 +334,7 @@ namespace gum_tests {
         n += i;
       }
 
-      CHECK((n) == (13524));
+      GUM_CHECK_EQ(n, 13524);
 
       n = 0;
 
@@ -343,7 +343,7 @@ namespace gum_tests {
         n += *it;
       }
 
-      CHECK((n) == (42531));
+      GUM_CHECK_EQ(n, 42531);
     }
 
     static void testIterators2() {
@@ -355,14 +355,14 @@ namespace gum_tests {
       for (gum::Sequence< int >::iterator it = seq.begin(); it != seq.end(); ++it)
         n++;
 
-      CHECK((n) == (0));
+      GUM_CHECK_EQ(n, 0);
 
       n = 0;
 
       for (gum::Sequence< int >::iterator it = seq.rbegin(); it != seq.rend(); --it)
         n++;
 
-      CHECK((n) == (0));
+      GUM_CHECK_EQ(n, 0);
 
       seq << 1 << 3 << 5 << 2 << 4;
       n = 0;
@@ -372,7 +372,7 @@ namespace gum_tests {
         n += *it;
       }
 
-      CHECK((n) == (13524));
+      GUM_CHECK_EQ(n, 13524);
 
       n = 0;
 
@@ -381,7 +381,7 @@ namespace gum_tests {
         n += *it;
       }
 
-      CHECK((n) == (42531));
+      GUM_CHECK_EQ(n, 42531);
     }
 
     static void testIterators3() {
@@ -402,7 +402,7 @@ namespace gum_tests {
         n++;
       }
 
-      CHECK((n) == (0));
+      GUM_CHECK_EQ(n, 0);
 
       n = 0;
 
@@ -412,13 +412,13 @@ namespace gum_tests {
            --it)
         n++;
 
-      CHECK((n) == (0));
+      GUM_CHECK_EQ(n, 0);
       n = 0;
 
       for (gum::Sequence< std::string >::iterator_safe it = seq.rbegin(); it != seq.rend(); --it)
         n++;
 
-      CHECK((n) == (0));
+      GUM_CHECK_EQ(n, 0);
       n = 0;
 
       for (gum::Sequence< std::string >::iterator_safe it
@@ -427,13 +427,13 @@ namespace gum_tests {
            ++it)
         n++;
 
-      CHECK((n) == (0));
+      GUM_CHECK_EQ(n, 0);
       n = 0;
 
       for (gum::Sequence< std::string >::iterator_safe it = seq.begin(); it != seq.end(); ++it)
         n++;
 
-      CHECK((n) == (0));
+      GUM_CHECK_EQ(n, 0);
       n = 0;
 
       for (const auto& i: seq) {
@@ -441,7 +441,7 @@ namespace gum_tests {
         n++;
       }
 
-      CHECK((n) == (0));
+      GUM_CHECK_EQ(n, 0);
 
       seq << p[1] << p[3] << p[5] << p[2] << p[4];
 
@@ -451,7 +451,7 @@ namespace gum_tests {
       for (const auto& s: seq)
         str += s;
 
-      CHECK((str) == ("bbddffccee"));
+      GUM_CHECK_EQ(str, "bbddffccee");
 
       str = "";
 
@@ -459,7 +459,7 @@ namespace gum_tests {
         str += *it;
       }
 
-      CHECK((str) == ("eeccffddbb"));
+      GUM_CHECK_EQ(str, "eeccffddbb");
     }
 
     static void testIterators4() {
@@ -478,13 +478,13 @@ namespace gum_tests {
       for (gum::Sequence< std::string >::iterator it = seq.begin(); it != seq.end(); ++it)
         n++;
 
-      CHECK((n) == (0));
+      GUM_CHECK_EQ(n, 0);
       n = 0;
 
       for (gum::Sequence< std::string >::iterator it = seq.rbegin(); it != seq.rend(); --it)
         n++;
 
-      CHECK((n) == (0));
+      GUM_CHECK_EQ(n, 0);
 
       seq << p[1] << p[3] << p[5] << p[2] << p[4];
 
@@ -495,35 +495,35 @@ namespace gum_tests {
         str += *it;
       }
 
-      CHECK((str) == ("bbddffccee"));
+      GUM_CHECK_EQ(str, "bbddffccee");
       str = "";
 
       for (gum::Sequence< std::string >::iterator it = seq.rbegin(); it != seq.rend(); --it) {
         str += *it;
       }
 
-      CHECK((str) == ("eeccffddbb"));
+      GUM_CHECK_EQ(str, "eeccffddbb");
     }
 
     static void testInsert1() {
       gum::Sequence< int > seq;
 
       seq.insert(1);
-      CHECK((seq.size()) == (static_cast< gum::Size >(1)));
+      GUM_CHECK_EQ(seq.size(), static_cast< gum::Size >(1));
       int x = 2;
       seq.insert(x);
-      CHECK((seq.size()) == (static_cast< gum::Size >(2)));
+      GUM_CHECK_EQ(seq.size(), static_cast< gum::Size >(2));
 
       seq.clear();
       seq << 1;
-      CHECK((seq.size()) == (static_cast< gum::Size >(1)));
+      GUM_CHECK_EQ(seq.size(), static_cast< gum::Size >(1));
       seq << x;
-      CHECK((seq.size()) == (static_cast< gum::Size >(2)));
+      GUM_CHECK_EQ(seq.size(), static_cast< gum::Size >(2));
 
       seq.erase(1);
-      CHECK((seq.size()) == (static_cast< gum::Size >(1)));
+      GUM_CHECK_EQ(seq.size(), static_cast< gum::Size >(1));
       seq.erase(seq.beginSafe());   // safe iterator needed here
-      CHECK((seq.size()) == (static_cast< gum::Size >(0)));
+      GUM_CHECK_EQ(seq.size(), static_cast< gum::Size >(0));
     }
 
     static void testInsert2() {
@@ -531,20 +531,20 @@ namespace gum_tests {
       std::string                  x = "1";
 
       seq.insert(x);
-      CHECK((seq.size()) == (static_cast< gum::Size >(1)));
+      GUM_CHECK_EQ(seq.size(), static_cast< gum::Size >(1));
       seq.insert("2");
-      CHECK((seq.size()) == (static_cast< gum::Size >(2)));
+      GUM_CHECK_EQ(seq.size(), static_cast< gum::Size >(2));
 
       seq.clear();
       seq << x;
-      CHECK((seq.size()) == (static_cast< gum::Size >(1)));
+      GUM_CHECK_EQ(seq.size(), static_cast< gum::Size >(1));
       seq << "2";
-      CHECK((seq.size()) == (static_cast< gum::Size >(2)));
+      GUM_CHECK_EQ(seq.size(), static_cast< gum::Size >(2));
 
       seq.erase(x);
-      CHECK((seq.size()) == (static_cast< gum::Size >(1)));
+      GUM_CHECK_EQ(seq.size(), static_cast< gum::Size >(1));
       seq.erase(seq.beginSafe());   // safe iterator needed here
-      CHECK((seq.size()) == (static_cast< gum::Size >(0)));
+      GUM_CHECK_EQ(seq.size(), static_cast< gum::Size >(0));
     }
 
     static void testEmplace1() {
@@ -552,14 +552,14 @@ namespace gum_tests {
       std::pair< int, int >                  x(2, 3);
 
       seq.emplace(2, 3);
-      CHECK((seq.size()) == (static_cast< gum::Size >(1)));
+      GUM_CHECK_EQ(seq.size(), static_cast< gum::Size >(1));
       seq.emplace(5, 7);
-      CHECK((seq.size()) == (static_cast< gum::Size >(2)));
+      GUM_CHECK_EQ(seq.size(), static_cast< gum::Size >(2));
 
       seq.erase(x);
-      CHECK((seq.size()) == (static_cast< gum::Size >(1)));
+      GUM_CHECK_EQ(seq.size(), static_cast< gum::Size >(1));
       seq.erase(seq.beginSafe());   // safe iterator needed here
-      CHECK((seq.size()) == (static_cast< gum::Size >(0)));
+      GUM_CHECK_EQ(seq.size(), static_cast< gum::Size >(0));
     }
 
     static void testEmplace2() {
@@ -567,30 +567,30 @@ namespace gum_tests {
       int                  x = 2;
 
       seq.emplace(2);
-      CHECK((seq.size()) == (static_cast< gum::Size >(1)));
+      GUM_CHECK_EQ(seq.size(), static_cast< gum::Size >(1));
       seq.emplace(5);
-      CHECK((seq.size()) == (static_cast< gum::Size >(2)));
+      GUM_CHECK_EQ(seq.size(), static_cast< gum::Size >(2));
 
       seq.erase(x);
-      CHECK((seq.size()) == (static_cast< gum::Size >(1)));
+      GUM_CHECK_EQ(seq.size(), static_cast< gum::Size >(1));
       seq.erase(seq.beginSafe());   // safe iterator needed here
-      CHECK((seq.size()) == (static_cast< gum::Size >(0)));
+      GUM_CHECK_EQ(seq.size(), static_cast< gum::Size >(0));
     }
 
     static void testNewIterOp1() {
       gum::Sequence< int > seq;
       seq << 1 << 2 << 3 << 4 << 5;
       gum::SequenceIteratorSafe< int > iter = seq.begin();
-      CHECK((*iter) == (1));
+      GUM_CHECK_EQ(*iter, 1);
       ++iter;
-      CHECK((*iter) == (2));
+      GUM_CHECK_EQ(*iter, 2);
       iter += 2;
-      CHECK((*iter) == (4));
+      GUM_CHECK_EQ(*iter, 4);
       iter -= 3;
-      CHECK((*iter) == (1));
+      GUM_CHECK_EQ(*iter, 1);
       iter += 3;
-      CHECK((*(iter - 2)) == (2));
-      CHECK((*(iter + 1)) == (5));
+      GUM_CHECK_EQ(*(iter - 2), 2);
+      GUM_CHECK_EQ(*(iter + 1), 5);
     }
 
     static void testNewIterOp2() {
@@ -605,32 +605,32 @@ namespace gum_tests {
       gum::Sequence< std::string > seq;
       seq << p[1] << p[2] << p[3] << p[4] << p[5];
       gum::SequenceIteratorSafe< std::string > iter = seq.begin();
-      CHECK((*iter) == (p[1]));
+      GUM_CHECK_EQ(*iter, p[1]);
       ++iter;
-      CHECK((*iter) == (p[2]));
+      GUM_CHECK_EQ(*iter, p[2]);
       iter += 2;
-      CHECK((*iter) == (p[4]));
+      GUM_CHECK_EQ(*iter, p[4]);
       iter -= 3;
-      CHECK((*iter) == (p[1]));
+      GUM_CHECK_EQ(*iter, p[1]);
       iter += 3;
-      CHECK((*(iter - 2)) == (p[2]));
-      CHECK((*(iter + 1)) == (p[5]));
+      GUM_CHECK_EQ(*(iter - 2), p[2]);
+      GUM_CHECK_EQ(*(iter + 1), p[5]);
     }
 
     static void testNewIterOp3() {
       gum::Sequence< int > seq;
       seq << 1 << 2 << 3 << 4 << 5;
       gum::SequenceIterator< int > iter = seq.begin();
-      CHECK((*iter) == (1));
+      GUM_CHECK_EQ(*iter, 1);
       ++iter;
-      CHECK((*iter) == (2));
+      GUM_CHECK_EQ(*iter, 2);
       iter += 2;
-      CHECK((*iter) == (4));
+      GUM_CHECK_EQ(*iter, 4);
       iter -= 3;
-      CHECK((*iter) == (1));
+      GUM_CHECK_EQ(*iter, 1);
       iter += 3;
-      CHECK((*(iter - 2)) == (2));
-      CHECK((*(iter + 1)) == (5));
+      GUM_CHECK_EQ(*(iter - 2), 2);
+      GUM_CHECK_EQ(*(iter + 1), 5);
     }
 
     static void testNewIterOp4() {
@@ -645,16 +645,16 @@ namespace gum_tests {
       gum::Sequence< std::string > seq;
       seq << p[1] << p[2] << p[3] << p[4] << p[5];
       gum::SequenceIterator< std::string > iter = seq.begin();
-      CHECK((*iter) == (p[1]));
+      GUM_CHECK_EQ(*iter, p[1]);
       ++iter;
-      CHECK((*iter) == (p[2]));
+      GUM_CHECK_EQ(*iter, p[2]);
       iter += 2;
-      CHECK((*iter) == (p[4]));
+      GUM_CHECK_EQ(*iter, p[4]);
       iter -= 3;
-      CHECK((*iter) == (p[1]));
+      GUM_CHECK_EQ(*iter, p[1]);
       iter += 3;
-      CHECK((*(iter - 2)) == (p[2]));
-      CHECK((*(iter + 1)) == (p[5]));
+      GUM_CHECK_EQ(*(iter - 2), p[2]);
+      GUM_CHECK_EQ(*(iter + 1), p[5]);
     }
 
     static void testIdxSeq() {
@@ -668,7 +668,7 @@ namespace gum_tests {
         n += *it;
       }
 
-      CHECK((n) == (static_cast< gum::Size >(42531)));
+      GUM_CHECK_EQ(n, static_cast< gum::Size >(42531));
       n = 0;
 
       for (auto it = seq.rbegin(); it != seq.rend(); --it) {
@@ -676,7 +676,7 @@ namespace gum_tests {
         n += *it;
       }
 
-      CHECK((n) == (static_cast< gum::Size >(42531)));
+      GUM_CHECK_EQ(n, static_cast< gum::Size >(42531));
       n = 0;
 
       for (auto it = seq.beginSafe(); it != seq.endSafe(); ++it) {   // safe iterator needed here
@@ -684,7 +684,7 @@ namespace gum_tests {
         n += *it;
       }
 
-      CHECK((n) == (static_cast< gum::Size >(13524)));
+      GUM_CHECK_EQ(n, static_cast< gum::Size >(13524));
       n = 0;
 
       for (auto it = seq.begin(); it != seq.end(); ++it) {
@@ -692,7 +692,7 @@ namespace gum_tests {
         n += *it;
       }
 
-      CHECK((n) == (static_cast< gum::Size >(13524)));
+      GUM_CHECK_EQ(n, static_cast< gum::Size >(13524));
       n = 0;
 
       for (const auto i: seq) {
@@ -700,7 +700,7 @@ namespace gum_tests {
         n += i;
       }
 
-      CHECK((n) == (static_cast< gum::Size >(13524)));
+      GUM_CHECK_EQ(n, static_cast< gum::Size >(13524));
 
       gum::Sequence< gum::Idx > seq2;
       CHECK_THROWS_AS(seq2.front(), const gum::NotFound&);

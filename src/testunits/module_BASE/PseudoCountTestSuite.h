@@ -85,26 +85,26 @@ namespace gum_tests {
         gum::learning::NoPrior     prior(database);
         gum::learning::PseudoCount counts(parser, prior);
 
-        CHECK((counts.get({1})) == (std::vector< double >({4, 3})));
-        CHECK((counts.get({2})) == (std::vector< double >({3, 2, 2})));
-        CHECK((counts.get({0, 2})) == (std::vector< double >({2, 1, 1, 1, 0, 2})));
+        GUM_CHECK_EQ(counts.get({1}), std::vector< double >({4, 3}));
+        GUM_CHECK_EQ(counts.get({2}), std::vector< double >({3, 2, 2}));
+        GUM_CHECK_EQ(counts.get({0, 2}), std::vector< double >({2, 1, 1, 1, 0, 2}));
       }
       {
         gum::learning::SmoothingPrior prior(database);
         gum::learning::PseudoCount    counts(parser, prior);
 
-        CHECK((counts.get({1})) == (std::vector< double >({5, 4})));
-        CHECK((counts.get({2})) == (std::vector< double >({4, 3, 3})));
-        CHECK((counts.get({0, 2})) == (std::vector< double >({3, 2, 2, 2, 1, 3})));
+        GUM_CHECK_EQ(counts.get({1}), std::vector< double >({5, 4}));
+        GUM_CHECK_EQ(counts.get({2}), std::vector< double >({4, 3, 3}));
+        GUM_CHECK_EQ(counts.get({0, 2}), std::vector< double >({3, 2, 2, 2, 1, 3}));
       }
       {
         gum::learning::SmoothingPrior prior(database);
         prior.setWeight(0.1);
         gum::learning::PseudoCount counts(parser, prior);
 
-        CHECK((counts.get({1})) == (std::vector< double >({4.1, 3.1})));
-        CHECK((counts.get({2})) == (std::vector< double >({3.1, 2.1, 2.1})));
-        CHECK((counts.get({0, 2})) == (std::vector< double >({2.1, 1.1, 1.1, 1.1, 0.1, 2.1})));
+        GUM_CHECK_EQ(counts.get({1}), std::vector< double >({4.1, 3.1}));
+        GUM_CHECK_EQ(counts.get({2}), std::vector< double >({3.1, 2.1, 2.1}));
+        GUM_CHECK_EQ(counts.get({0, 2}), std::vector< double >({2.1, 1.1, 1.1, 1.1, 0.1, 2.1}));
       }
     }   // namespace gum_tests
   };

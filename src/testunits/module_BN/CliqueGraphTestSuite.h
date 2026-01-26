@@ -147,12 +147,12 @@ namespace gum_tests {
 
       GUM_CHECK_ASSERT_THROWS_NOTHING(fillG1(graph));
 
-      CHECK((graph.size()) == (static_cast< gum::Size >(4)));
+      GUM_CHECK_EQ(graph.size(), static_cast< gum::Size >(4));
 
-      CHECK((graph.clique(1)) == (A));
-      CHECK((graph.clique(2)) == (B));
-      CHECK((graph.clique(3)) == (C));
-      CHECK((graph.clique(4)) == (D));
+      GUM_CHECK_EQ(graph.clique(1), A);
+      GUM_CHECK_EQ(graph.clique(2), B);
+      GUM_CHECK_EQ(graph.clique(3), C);
+      GUM_CHECK_EQ(graph.clique(4), D);
 
       CHECK(graph.existsEdge(1, 2));
       CHECK(graph.existsEdge(2, 4));
@@ -166,12 +166,12 @@ namespace gum_tests {
       gum::CliqueGraph graph;
       GUM_CHECK_ASSERT_THROWS_NOTHING(fillG2(graph));
 
-      CHECK((graph.size()) == (static_cast< gum::Size >(4)));
+      GUM_CHECK_EQ(graph.size(), static_cast< gum::Size >(4));
 
-      CHECK((graph.clique(1)) == (A));
-      CHECK((graph.clique(2)) == (B));
-      CHECK((graph.clique(3)) == (C));
-      CHECK((graph.clique(4)) == (D));
+      GUM_CHECK_EQ(graph.clique(1), A);
+      GUM_CHECK_EQ(graph.clique(2), B);
+      GUM_CHECK_EQ(graph.clique(3), C);
+      GUM_CHECK_EQ(graph.clique(4), D);
 
       CHECK(graph.existsEdge(1, 2));
       CHECK(graph.existsEdge(2, 4));
@@ -187,17 +187,17 @@ namespace gum_tests {
       gum::CliqueGraph graph;
       GUM_CHECK_ASSERT_THROWS_NOTHING(fillG3(graph));
 
-      CHECK((graph.size()) == (static_cast< gum::Size >(4)));
+      GUM_CHECK_EQ(graph.size(), static_cast< gum::Size >(4));
 
       CHECK(graph.existsEdge(1, 2));
       CHECK(graph.existsEdge(2, 4));
       CHECK(graph.existsEdge(2, 3));
 
-      CHECK((graph.clique(1)) == (A));
-      CHECK((graph.clique(2)) == (B));
-      CHECK((graph.clique(3)) == (C));
-      CHECK((graph.clique(4)) != (D));
-      CHECK((graph.clique(4)) == (E));
+      GUM_CHECK_EQ(graph.clique(1), A);
+      GUM_CHECK_EQ(graph.clique(2), B);
+      GUM_CHECK_EQ(graph.clique(3), C);
+      GUM_CHECK_NE(graph.clique(4), D);
+      GUM_CHECK_EQ(graph.clique(4), E);
     }
 
     static void testEquality() {
@@ -207,22 +207,22 @@ namespace gum_tests {
       fillG3(g3);
       fillG1(g4);
 
-      CHECK((g1) == (g4));
-      CHECK((g4) == (g1));
+      GUM_CHECK_EQ(g1, g4);
+      GUM_CHECK_EQ(g4, g1);
 
-      CHECK((g1) != (g2));
-      CHECK((g2) != (g1));
+      GUM_CHECK_NE(g1, g2);
+      GUM_CHECK_NE(g2, g1);
 
-      CHECK((g1) != (g3));
-      CHECK((g3) != (g1));
+      GUM_CHECK_NE(g1, g3);
+      GUM_CHECK_NE(g3, g1);
 
-      CHECK((g2) != (g3));
-      CHECK((g3) != (g2));
+      GUM_CHECK_NE(g2, g3);
+      GUM_CHECK_NE(g3, g2);
 
-      CHECK((g1) == (g1));
-      CHECK((g2) == (g2));
-      CHECK((g3) == (g3));
-      CHECK((g4) == (g4));
+      GUM_CHECK_EQ(g1, g1);
+      GUM_CHECK_EQ(g2, g2);
+      GUM_CHECK_EQ(g3, g3);
+      GUM_CHECK_EQ(g4, g4);
     }
 
     static void testCopyConstructor() {
@@ -239,15 +239,15 @@ namespace gum_tests {
       GUM_CHECK_ASSERT_THROWS_NOTHING((copy2 = new gum::CliqueGraph(g2)));
       GUM_CHECK_ASSERT_THROWS_NOTHING((copy3 = new gum::CliqueGraph(g3)));
 
-      CHECK((g1) == (*copy1));
-      CHECK((g2) == (*copy2));
-      CHECK((g3) == (*copy3));
+      GUM_CHECK_EQ(g1, *copy1);
+      GUM_CHECK_EQ(g2, *copy2);
+      GUM_CHECK_EQ(g3, *copy3);
 
       copy1->clear();
       copy2->clearEdges();
 
-      CHECK((g1) != (*copy1));
-      CHECK((g2) != (*copy2));
+      GUM_CHECK_NE(g1, *copy1);
+      GUM_CHECK_NE(g2, *copy2);
 
       GUM_CHECK_ASSERT_THROWS_NOTHING((delete copy1));
       GUM_CHECK_ASSERT_THROWS_NOTHING((delete copy2));
@@ -295,9 +295,9 @@ namespace gum_tests {
       fillG2(g2);
       fillG3(g3);
 
-      CHECK((g1.sizeEdges()) == (static_cast< gum::Size >(3)));
-      CHECK((g2.sizeEdges()) == (static_cast< gum::Size >(5)));
-      CHECK((g3.sizeEdges()) == (static_cast< gum::Size >(3)));
+      GUM_CHECK_EQ(g1.sizeEdges(), static_cast< gum::Size >(3));
+      GUM_CHECK_EQ(g2.sizeEdges(), static_cast< gum::Size >(5));
+      GUM_CHECK_EQ(g3.sizeEdges(), static_cast< gum::Size >(3));
     }
 
     static void testClearNodes() {
@@ -307,16 +307,16 @@ namespace gum_tests {
       fillG3(g3);
 
       GUM_CHECK_ASSERT_THROWS_NOTHING(g1.clear());
-      CHECK((g1.size()) == (static_cast< gum::Size >(0)));
-      CHECK((g1.sizeEdges()) == (static_cast< gum::Size >(0)));
+      GUM_CHECK_EQ(g1.size(), static_cast< gum::Size >(0));
+      GUM_CHECK_EQ(g1.sizeEdges(), static_cast< gum::Size >(0));
 
       GUM_CHECK_ASSERT_THROWS_NOTHING(g2.clear());
-      CHECK((g2.size()) == (static_cast< gum::Size >(0)));
-      CHECK((g2.sizeEdges()) == (static_cast< gum::Size >(0)));
+      GUM_CHECK_EQ(g2.size(), static_cast< gum::Size >(0));
+      GUM_CHECK_EQ(g2.sizeEdges(), static_cast< gum::Size >(0));
 
       GUM_CHECK_ASSERT_THROWS_NOTHING(g3.clear());
-      CHECK((g3.size()) == (static_cast< gum::Size >(0)));
-      CHECK((g3.sizeEdges()) == (static_cast< gum::Size >(0)));
+      GUM_CHECK_EQ(g3.size(), static_cast< gum::Size >(0));
+      GUM_CHECK_EQ(g3.sizeEdges(), static_cast< gum::Size >(0));
     }
 
     static void testClearEdges() {
@@ -327,18 +327,18 @@ namespace gum_tests {
 
       gum::Size nodeG1Count = g1.size();
       GUM_CHECK_ASSERT_THROWS_NOTHING(g1.clearEdges());
-      CHECK((g1.size()) == (nodeG1Count));
-      CHECK((g1.sizeEdges()) == (static_cast< gum::Size >(0)));
+      GUM_CHECK_EQ(g1.size(), nodeG1Count);
+      GUM_CHECK_EQ(g1.sizeEdges(), static_cast< gum::Size >(0));
 
       gum::Size nodeG2Count = g2.size();
       GUM_CHECK_ASSERT_THROWS_NOTHING(g2.clearEdges());
-      CHECK((g2.size()) == (nodeG2Count));
-      CHECK((g2.sizeEdges()) == (static_cast< gum::Size >(0)));
+      GUM_CHECK_EQ(g2.size(), nodeG2Count);
+      GUM_CHECK_EQ(g2.sizeEdges(), static_cast< gum::Size >(0));
 
       gum::Size nodeG3Count = g3.size();
       GUM_CHECK_ASSERT_THROWS_NOTHING(g3.clearEdges());
-      CHECK((g3.size()) == (nodeG3Count));
-      CHECK((g3.sizeEdges()) == (static_cast< gum::Size >(0)));
+      GUM_CHECK_EQ(g3.size(), nodeG3Count);
+      GUM_CHECK_EQ(g3.sizeEdges(), static_cast< gum::Size >(0));
     }
 
     static void testEraseNode() {
@@ -349,27 +349,27 @@ namespace gum_tests {
 
       gum::Size nodeG1Count = g1.size();
       GUM_CHECK_ASSERT_THROWS_NOTHING(g1.eraseNode(1));
-      CHECK((g1.size()) == (nodeG1Count - 1));
+      GUM_CHECK_EQ(g1.size(), nodeG1Count - 1);
       GUM_CHECK_ASSERT_THROWS_NOTHING(g1.eraseNode(1));
-      CHECK((g1.size()) == (nodeG1Count - 1));
+      GUM_CHECK_EQ(g1.size(), nodeG1Count - 1);
       GUM_CHECK_ASSERT_THROWS_NOTHING(g1.eraseNode(15));
-      CHECK((g1.size()) == (nodeG1Count - 1));
+      GUM_CHECK_EQ(g1.size(), nodeG1Count - 1);
 
       gum::Size nodeG2Count = g2.size();
       GUM_CHECK_ASSERT_THROWS_NOTHING(g2.eraseNode(1));
-      CHECK((g2.size()) == (nodeG2Count - 1));
+      GUM_CHECK_EQ(g2.size(), nodeG2Count - 1);
       GUM_CHECK_ASSERT_THROWS_NOTHING(g2.eraseNode(1));
-      CHECK((g2.size()) == (nodeG2Count - 1));
+      GUM_CHECK_EQ(g2.size(), nodeG2Count - 1);
       GUM_CHECK_ASSERT_THROWS_NOTHING(g2.eraseNode(15));
-      CHECK((g2.size()) == (nodeG2Count - 1));
+      GUM_CHECK_EQ(g2.size(), nodeG2Count - 1);
 
       gum::Size nodeG3Count = g3.size();
       GUM_CHECK_ASSERT_THROWS_NOTHING(g3.eraseNode(1));
-      CHECK((g3.size()) == (nodeG3Count - 1));
+      GUM_CHECK_EQ(g3.size(), nodeG3Count - 1);
       GUM_CHECK_ASSERT_THROWS_NOTHING(g3.eraseNode(1));
-      CHECK((g3.size()) == (nodeG3Count - 1));
+      GUM_CHECK_EQ(g3.size(), nodeG3Count - 1);
       GUM_CHECK_ASSERT_THROWS_NOTHING(g3.eraseNode(15));
-      CHECK((g3.size()) == (nodeG3Count - 1));
+      GUM_CHECK_EQ(g3.size(), nodeG3Count - 1);
     }
 
     static void testEraseNodeStubborn() {
@@ -380,7 +380,7 @@ namespace gum_tests {
 
       for (int i = 0; i < 10; i++) {
         GUM_CHECK_ASSERT_THROWS_NOTHING(g1.eraseNode(1));
-        CHECK((g1.size()) == (nodeG1Count - 1));
+        GUM_CHECK_EQ(g1.size(), nodeG1Count - 1);
       }
     }
 
@@ -391,16 +391,16 @@ namespace gum_tests {
       gum::NodeSet separator;
 
       GUM_CHECK_ASSERT_THROWS_NOTHING(separator = g1.separator(1, 2));
-      CHECK((separator.size()) == (static_cast< gum::Size >(1)));
+      GUM_CHECK_EQ(separator.size(), static_cast< gum::Size >(1));
       CHECK(separator.contains(2));
 
       GUM_CHECK_ASSERT_THROWS_NOTHING(separator = g1.separator(2, 3));
-      CHECK((separator.size()) == (static_cast< gum::Size >(2)));
+      GUM_CHECK_EQ(separator.size(), static_cast< gum::Size >(2));
       CHECK(separator.contains(3));
       CHECK(separator.contains(4));
 
       GUM_CHECK_ASSERT_THROWS_NOTHING(separator = g1.separator(2, 4));
-      CHECK((separator.size()) == (static_cast< gum::Size >(2)));
+      GUM_CHECK_EQ(separator.size(), static_cast< gum::Size >(2));
       CHECK(separator.contains(2));
       CHECK(separator.contains(4));
     }
@@ -412,20 +412,20 @@ namespace gum_tests {
       gum::NodeSet separator;
 
       GUM_CHECK_ASSERT_THROWS_NOTHING(separator = g2.separator(1, 2));
-      CHECK((separator.size()) == (static_cast< gum::Size >(1)));
+      GUM_CHECK_EQ(separator.size(), static_cast< gum::Size >(1));
       CHECK(separator.contains(2));
 
       separator.clear();
 
       GUM_CHECK_ASSERT_THROWS_NOTHING(separator = g2.separator(2, 3));
-      CHECK((separator.size()) == (static_cast< gum::Size >(2)));
+      GUM_CHECK_EQ(separator.size(), static_cast< gum::Size >(2));
       CHECK(separator.contains(3));
       CHECK(separator.contains(4));
 
       separator.clear();
 
       GUM_CHECK_ASSERT_THROWS_NOTHING(separator = g2.separator(2, 4));
-      CHECK((separator.size()) == (static_cast< gum::Size >(2)));
+      GUM_CHECK_EQ(separator.size(), static_cast< gum::Size >(2));
       CHECK(separator.contains(2));
       CHECK(separator.contains(4));
 
@@ -436,7 +436,7 @@ namespace gum_tests {
       separator.clear();
 
       GUM_CHECK_ASSERT_THROWS_NOTHING(separator = g2.separator(3, 4));
-      CHECK((separator.size()) == (static_cast< gum::Size >(1)));
+      GUM_CHECK_EQ(separator.size(), static_cast< gum::Size >(1));
       CHECK(separator.contains(4));
     }
 
@@ -447,20 +447,20 @@ namespace gum_tests {
       gum::NodeSet separator;
 
       GUM_CHECK_ASSERT_THROWS_NOTHING(separator = g3.separator(1, 2));
-      CHECK((separator.size()) == (static_cast< gum::Size >(1)));
+      GUM_CHECK_EQ(separator.size(), static_cast< gum::Size >(1));
       CHECK(separator.contains(2));
 
       separator.clear();
 
       GUM_CHECK_ASSERT_THROWS_NOTHING(separator = g3.separator(2, 3));
-      CHECK((separator.size()) == (static_cast< gum::Size >(2)));
+      GUM_CHECK_EQ(separator.size(), static_cast< gum::Size >(2));
       CHECK(separator.contains(3));
       CHECK(separator.contains(4));
 
       separator.clear();
 
       GUM_CHECK_ASSERT_THROWS_NOTHING(separator = g3.separator(2, 4));
-      CHECK((separator.size()) == (static_cast< gum::Size >(2)));
+      GUM_CHECK_EQ(separator.size(), static_cast< gum::Size >(2));
       CHECK(separator.contains(2));
       CHECK(separator.contains(4));
     }
@@ -475,7 +475,7 @@ namespace gum_tests {
       GUM_CHECK_ASSERT_THROWS_NOTHING(g1.eraseEdge(gum::Edge(1, 2)));
       GUM_CHECK_ASSERT_THROWS_NOTHING(g1.eraseEdge(gum::Edge(19, 33)));
 
-      CHECK((g1.sizeEdges()) == (gum::Size(countEdgeG1 - 1)));
+      GUM_CHECK_EQ(g1.sizeEdges(), gum::Size(countEdgeG1 - 1));
 
       CHECK_THROWS(g1.separator(1, 2));
     }
@@ -489,7 +489,7 @@ namespace gum_tests {
       GUM_CHECK_ASSERT_THROWS_NOTHING(g2.eraseEdge(gum::Edge(2, 4)));
       GUM_CHECK_ASSERT_THROWS_NOTHING(g2.eraseEdge(gum::Edge(1, 3)));
 
-      CHECK((g2.sizeEdges()) == (gum::Size(countEdgeG2 - 2)));
+      GUM_CHECK_EQ(g2.sizeEdges(), gum::Size(countEdgeG2 - 2));
     }
 
     static void testEraseEdgeG3() {
@@ -500,7 +500,7 @@ namespace gum_tests {
 
       GUM_CHECK_ASSERT_THROWS_NOTHING(g3.eraseEdge(gum::Edge(2, 4)));
 
-      CHECK((g3.sizeEdges()) == (gum::Size(countEdgeG3 - 1)));
+      GUM_CHECK_EQ(g3.sizeEdges(), gum::Size(countEdgeG3 - 1));
     }
 
     static void testGetClique_1() {
@@ -510,7 +510,7 @@ namespace gum_tests {
       GUM_CHECK_ASSERT_THROWS_NOTHING(graph.clique(1));
       const gum::NodeSet& clique = graph.clique(1);
 
-      CHECK((clique.size()) == (static_cast< gum::Size >(2)));
+      GUM_CHECK_EQ(clique.size(), static_cast< gum::Size >(2));
       CHECK(clique.contains(1));
       CHECK(clique.contains(2));
 
@@ -528,13 +528,13 @@ namespace gum_tests {
 
       CHECK_THROWS(graph.clique(1));
 
-      CHECK((clique.size()) == (static_cast< gum::Size >(2)));
+      GUM_CHECK_EQ(clique.size(), static_cast< gum::Size >(2));
       CHECK(clique.contains(1));
       CHECK(clique.contains(2));
 
       gum::NodeId new_1 = 0;
       GUM_CHECK_ASSERT_THROWS_NOTHING(new_1 = graph.addNode(clique));
-      CHECK((clique) == (graph.clique(new_1)));
+      GUM_CHECK_EQ(clique, graph.clique(new_1));
     }
 
     static void testGetContainerNode() {
@@ -546,7 +546,7 @@ namespace gum_tests {
 
       gum::NodeId id = 0;
       GUM_CHECK_ASSERT_THROWS_NOTHING(id = graph.container(1));
-      CHECK((id) == ((gum::NodeId)1));
+      GUM_CHECK_EQ(id, (gum::NodeId)1);
 
       CHECK_THROWS(graph.container(42));
 
@@ -582,7 +582,7 @@ namespace gum_tests {
       clique << 2 << 3 << 4 << 5;
 
       GUM_CHECK_ASSERT_THROWS_NOTHING(graph.setClique(2, clique));
-      CHECK((graph.clique(2).size()) == (static_cast< gum::Size >(4)));
+      GUM_CHECK_EQ(graph.clique(2).size(), static_cast< gum::Size >(4));
       CHECK(graph.hasRunningIntersection());
     }
 
@@ -606,7 +606,7 @@ namespace gum_tests {
 
       GUM_CHECK_ASSERT_THROWS_NOTHING(graph.addToClique(2, 5));
       // check a new separator ??
-      CHECK((graph.clique(2).size()) == (static_cast< gum::Size >(4)));
+      GUM_CHECK_EQ(graph.clique(2).size(), static_cast< gum::Size >(4));
 
       CHECK(graph.hasRunningIntersection());
     }
@@ -620,7 +620,7 @@ namespace gum_tests {
       gum::NodeSet result;
 
       GUM_CHECK_ASSERT_THROWS_NOTHING(graph.addToClique(2, 5));
-      CHECK((graph.clique(2).size()) == (static_cast< gum::Size >(4)));
+      GUM_CHECK_EQ(graph.clique(2).size(), static_cast< gum::Size >(4));
 
       CHECK(graph.hasRunningIntersection());
     }
@@ -677,7 +677,7 @@ namespace gum_tests {
         GUM_CHECK_ASSERT_THROWS_NOTHING(vec = graph.undirectedPath(1, 4));
 
         /** Now can only have 3 nodes in the path. */
-        CHECK((vec.size()) == (static_cast< gum::Size >(3)));
+        GUM_CHECK_EQ(vec.size(), static_cast< gum::Size >(3));
 
         graph.eraseEdge(gum::Edge(2, 3));
 
@@ -697,15 +697,15 @@ namespace gum_tests {
       GUM_CHECK_ASSERT_THROWS_NOTHING(copy2 = g2);
       GUM_CHECK_ASSERT_THROWS_NOTHING(copy3 = g3);
 
-      CHECK((g1) == (copy1));
-      CHECK((g2) == (copy2));
-      CHECK((g3) == (copy3));
+      GUM_CHECK_EQ(g1, copy1);
+      GUM_CHECK_EQ(g2, copy2);
+      GUM_CHECK_EQ(g3, copy3);
 
       copy1.clear();
       copy2.clearEdges();
 
-      CHECK((g1) != (copy1));
-      CHECK((g2) != (copy2));
+      GUM_CHECK_NE(g1, copy1);
+      GUM_CHECK_NE(g2, copy2);
     }
 
     static void testRunningIntProp() {
@@ -747,7 +747,7 @@ namespace gum_tests {
       g.addEdge(4, 5);
       g.addEdge(5, 1);
 
-      CHECK((g.hasRunningIntersection()) == (true));
+      GUM_CHECK_EQ(g.hasRunningIntersection(), true);
     }
 
     void xxipydevtestToDot() {

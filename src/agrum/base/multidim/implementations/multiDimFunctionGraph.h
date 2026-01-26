@@ -161,7 +161,7 @@ namespace gum {
      * can't copy other multiDim.
      */
     virtual void copyFrom(const MultiDimContainer< GUM_ELEMENT >& src,
-                          Instantiation*                         p_i = (Instantiation*)0) const;
+                          Instantiation*                          p_i = (Instantiation*)0) const;
 
     /**
      * @warning This will raise an OperationNotAllowed as MultiDimFunctionGraph
@@ -232,7 +232,7 @@ namespace gum {
      * @param reassign A Bijection form variables in src to variables in this.
      */
     void copyAndReassign(
-        const MultiDimFunctionGraph< GUM_ELEMENT, TerminalNodePolicy >&       src,
+        const MultiDimFunctionGraph< GUM_ELEMENT, TerminalNodePolicy >&      src,
         const Bijection< const DiscreteVariable*, const DiscreteVariable* >& reassign);
 
     /**
@@ -241,8 +241,9 @@ namespace gum {
      * @param src The MultiDimFunctionGraph to copy.
      * @param gamma The scalar used to multiply every value with.
      */
-    void copyAndMultiplyByScalar(const MultiDimFunctionGraph< GUM_ELEMENT, TerminalNodePolicy >& src,
-                                 GUM_ELEMENT gamma);
+    void
+        copyAndMultiplyByScalar(const MultiDimFunctionGraph< GUM_ELEMENT, TerminalNodePolicy >& src,
+                                GUM_ELEMENT gamma);
 
     /**
      * @brief Clears the function graph

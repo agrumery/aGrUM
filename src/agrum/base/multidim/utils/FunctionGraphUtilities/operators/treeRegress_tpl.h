@@ -121,8 +121,8 @@ namespace gum {
 
       if (vpxi != nullptr) {
         TreeOperator< GUM_ELEMENT, COMBINEOPERATOR > combinope(vpxi,
-                                                              _pxi_.second(currentNode->nodeVar()),
-                                                              _context_);
+                                                               _pxi_.second(currentNode->nodeVar()),
+                                                               _context_);
         varbucket.push_back(combinope.compute());
       }
       delete vpxi;

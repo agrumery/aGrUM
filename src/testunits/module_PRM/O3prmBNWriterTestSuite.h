@@ -133,10 +133,10 @@ namespace gum_tests {
       gum::O3prmBNReader< double > reader(&bn, rfile);
       gum::Size                    res = 0;
       GUM_CHECK_ASSERT_THROWS_NOTHING(res = reader.proceed());
-      CHECK((res) == (static_cast< gum::Size >(0)));
-      CHECK((reader.warnings()) == (static_cast< gum::Size >(7)));   // no system
-      CHECK((bn.size()) == (static_cast< gum::Size >(37)));
-      CHECK((bn.property("name")) == ("alarm"));
+      GUM_CHECK_EQ(res, static_cast< gum::Size >(0));
+      GUM_CHECK_EQ(reader.warnings(), static_cast< gum::Size >(7));   // no system
+      GUM_CHECK_EQ(bn.size(), static_cast< gum::Size >(37));
+      GUM_CHECK_EQ(bn.property("name"), "alarm");
 
 
       gum::O3prmBNWriter< double > writer;
@@ -148,20 +148,20 @@ namespace gum_tests {
       gum::O3prmBNReader< double > reader2(&bn2, wfile, "alarm");
       gum::Size                    res2 = 0;
       GUM_CHECK_ASSERT_THROWS_NOTHING(res2 = reader2.proceed());
-      CHECK((res2) == (static_cast< gum::Size >(0)));
-      CHECK((reader2.warnings()) == (static_cast< gum::Size >(7)));   // no system
-      CHECK((bn2.size()) == (static_cast< gum::Size >(37)));
+      GUM_CHECK_EQ(res2, static_cast< gum::Size >(0));
+      GUM_CHECK_EQ(reader2.warnings(), static_cast< gum::Size >(7));   // no system
+      GUM_CHECK_EQ(bn2.size(), static_cast< gum::Size >(37));
 
       std::string nam;
       for (const auto& nod: bn.nodes()) {
         nam = bn.variable(nod).name();
-        CHECK((bn.variable(nam).toString()) == (bn2.variable(nam).toString()));
+        GUM_CHECK_EQ(bn.variable(nam).toString(), bn2.variable(nam).toString());
         const gum::Tensor< double > p(bn.cpt(nam));
         std::vector< std::string >  varmap;
         for (gum::Idx i = 0; i < p.nbrDim(); i++)
           varmap.push_back(p.variable(i).name());
         p.fillWith(bn2.cpt(nam), varmap);
-        CHECK(((p - bn.cpt(nam)).abs().max()) < (GUM_SMALL_ERROR));
+        GUM_CHECK_LT((p - bn.cpt(nam)).abs().max(), GUM_SMALL_ERROR);
       }
     }
 
@@ -179,19 +179,19 @@ namespace gum_tests {
       gum::O3prmBNReader< double > reader2(&bn2, wfile);
       gum::Size                    res2 = 0;
       GUM_CHECK_ASSERT_THROWS_NOTHING(res2 = reader2.proceed());
-      CHECK((res2) == (static_cast< gum::Size >(0)));
-      CHECK((bn2.size()) == (static_cast< gum::Size >(8)));
+      GUM_CHECK_EQ(res2, static_cast< gum::Size >(0));
+      GUM_CHECK_EQ(bn2.size(), static_cast< gum::Size >(8));
 
       std::string nam;
       for (const auto& nod: bn.nodes()) {
         nam = bn.variable(nod).name();
-        CHECK((bn.variable(nam).toString()) == (bn2.variable(nam).toString()));
+        GUM_CHECK_EQ(bn.variable(nam).toString(), bn2.variable(nam).toString());
         const gum::Tensor< double > p(bn.cpt(nam));
         std::vector< std::string >  varmap;
         for (gum::Idx i = 0; i < p.nbrDim(); i++)
           varmap.push_back(p.variable(i).name());
         p.fillWith(bn2.cpt(nam), varmap);
-        CHECK(((p - bn.cpt(nam)).abs().max()) < (GUM_SMALL_ERROR));
+        GUM_CHECK_LT((p - bn.cpt(nam)).abs().max(), GUM_SMALL_ERROR);
       }
     }
 

@@ -224,8 +224,8 @@ namespace gum_tests {
       // Act
       auto& actual = attr.type();
       // Assert
-      CHECK((expected) == (actual));
-      CHECK((&expected) != (&actual));
+      GUM_CHECK_EQ(expected, actual);
+      GUM_CHECK_NE(&expected, &actual);
     }
 
     static void testTypeConst() {
@@ -236,8 +236,8 @@ namespace gum_tests {
       // Act
       const auto& actual = attr_const.type();
       // Assert
-      CHECK((expected) == (actual));
-      CHECK((&expected) != (&actual));
+      GUM_CHECK_EQ(expected, actual);
+      GUM_CHECK_NE(&expected, &actual);
     }
 
     static void testCpf() {
@@ -251,7 +251,7 @@ namespace gum_tests {
       gum::Instantiation i(expected);
       gum::Instantiation j(actual);
       for (i.setFirst(), j.setFirst(); !(i.end() || j.end()); i.inc(), j.inc()) {
-        CHECK((expected[i]) == (actual[j]));
+        GUM_CHECK_EQ(expected[i], actual[j]);
       }
       CHECK(i.end());
       CHECK(j.end());
@@ -269,7 +269,7 @@ namespace gum_tests {
       gum::Instantiation i(expected);
       gum::Instantiation j(actual);
       for (i.setFirst(), j.setFirst(); !(i.end() || j.end()); i.inc(), j.inc()) {
-        CHECK((expected[i]) == (actual[j]));
+        GUM_CHECK_EQ(expected[i], actual[j]);
       }
       CHECK(i.end());
       CHECK(j.end());
@@ -288,7 +288,7 @@ namespace gum_tests {
       CHECK_NOTHROW(child.addParent(parent));
       // Assert
       auto after = child.cpf().variablesSequence().size();
-      CHECK((before) == (after));
+      GUM_CHECK_EQ(before, after);
       CHECK(!child.cpf().contains(parent.type().variable()));
     }
 
@@ -302,7 +302,7 @@ namespace gum_tests {
       CHECK_NOTHROW(child.addParent(parent));
       // Assert
       auto after = child.cpf().variablesSequence().size();
-      CHECK((before) == (after));
+      GUM_CHECK_EQ(before, after);
       CHECK(!child.cpf().contains(parent.type().variable()));
     }
 
@@ -315,7 +315,7 @@ namespace gum_tests {
       CHECK_NOTHROW(parent.addChild(child));
       // Assert
       auto after = parent.cpf().variablesSequence().size();
-      CHECK((before) == (after));
+      GUM_CHECK_EQ(before, after);
       CHECK(!parent.cpf().contains(child.type().variable()));
     }
 
@@ -330,9 +330,9 @@ namespace gum_tests {
       // Act
       CHECK_NOTHROW(cast = state.getCastDescendant());
       // Assert
-      CHECK((cast) != (nullptr));
-      CHECK((cast->type()) == (*_boolean_));
-      CHECK((&(cast->type().variable())) != (&(_boolean_->variable())));
+      GUM_CHECK_NE(cast, nullptr);
+      GUM_CHECK_EQ(cast->type(), *_boolean_);
+      GUM_CHECK_NE(&(cast->type().variable()), &(_boolean_->variable()));
       CHECK(cast->cpf().contains(cast->type().variable()));
       CHECK(cast->cpf().contains(state.type().variable()));
       CHECK_NOTHROW(delete cast);
@@ -347,7 +347,7 @@ namespace gum_tests {
       CHECK_NOTHROW(state.setAsCastDescendant(&boolean));
       // Assert
       auto after = boolean.cpf().variablesSequence().size();
-      CHECK((before + 1) == (after));
+      GUM_CHECK_EQ(before + 1, after);
     }
 
     static void testSetAsCastDescendantOperationNotAllowed() {
@@ -359,7 +359,7 @@ namespace gum_tests {
       CHECK_THROWS_AS(boolean_bis.setAsCastDescendant(&boolean), const gum::OperationNotAllowed&);
       // Assert
       auto after = boolean.cpf().variablesSequence().size();
-      CHECK((before) == (after));
+      GUM_CHECK_EQ(before, after);
     }
 
     static void testSetAsCastDescendantTypeError() {
@@ -372,7 +372,7 @@ namespace gum_tests {
       CHECK_THROWS_AS(state.setAsCastDescendant(&foo), const gum::TypeError&);
       // Assert
       auto after = foo.cpf().variablesSequence().size();
-      CHECK((before) == (after));
+      GUM_CHECK_EQ(before, after);
     }
 
     /// @}

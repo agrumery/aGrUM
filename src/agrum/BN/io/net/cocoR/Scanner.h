@@ -35,7 +35,6 @@ Coco/R itself) does not fall under the GNU General Public License.
 #if !defined(gum_net_COCO_SCANNER_H__)
 #define gum_net_COCO_SCANNER_H__
 
-#include <agrum/base/core/cocoR/common.h>
 #include <agrum/base/core/signal/signaler.h>
 #include <agrum/base/core/errorsContainer.h>
 
@@ -123,4 +122,5 @@ class Scanner {
 
 
 #endif // !defined(COCO_SCANNER_H__)
+
 

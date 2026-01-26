@@ -61,43 +61,43 @@ namespace gum_tests {
       try {
         {
           auto a = FASTVARDBL("A1", 2);
-          CHECK((a->toString()) == ("A1:Range([0,1])"));
+          GUM_CHECK_EQ(a->toString(), "A1:Range([0,1])");
         }   // namespace gum_tests
 
         {
           // a way to create a variable with only one value
           auto a = FASTVARDBL("A2", 1);
-          CHECK((a->toString()) == ("A2:Range([0,0])"));
+          GUM_CHECK_EQ(a->toString(), "A2:Range([0,0])");
         }
         {
           auto a = FASTVARDBL("A3", 4);
-          CHECK((a->toString()) == ("A3:Range([0,3])"));
+          GUM_CHECK_EQ(a->toString(), "A3:Range([0,3])");
         }
         {
           auto a = FASTVARDBL("A4[3]", 4);
-          CHECK((a->toString()) == ("A4:Range([0,2])"));
+          GUM_CHECK_EQ(a->toString(), "A4:Range([0,2])");
         }
         {
           auto a = FASTVARDBL("A5[3,7]", 4);
-          CHECK((a->toString()) == ("A5:Range([3,7])"));
+          GUM_CHECK_EQ(a->toString(), "A5:Range([3,7])");
         }
         {
           auto a = FASTVARDBL("A6[-7,-3]", 4);
-          CHECK((a->toString()) == ("A6:Range([-7,-3])"));
+          GUM_CHECK_EQ(a->toString(), "A6:Range([-7,-3])");
         }
         {
           auto a = FASTVARDBL("A7{0|1|2|3}", 4);
-          CHECK((a->toString()) == ("A7:Range([0,3])"));
-          CHECK((a->toFast()) == ("A7[4]"));
+          GUM_CHECK_EQ(a->toString(), "A7:Range([0,3])");
+          GUM_CHECK_EQ(a->toFast(), "A7[4]");
         }
         {
           auto a = FASTVARDBL("A8{1|2|3}", 4);
-          CHECK((a->toString()) == ("A8:Range([1,3])"));
+          GUM_CHECK_EQ(a->toString(), "A8:Range([1,3])");
         }
         {
           auto a = FASTVARDBL("A9{0|1}", 4);
-          CHECK((a->toString()) == ("A9:Range([0,1])"));
-          CHECK((a->toFast()) == ("A9[2]"));
+          GUM_CHECK_EQ(a->toString(), "A9:Range([0,1])");
+          GUM_CHECK_EQ(a->toFast(), "A9[2]");
         }
 
         CHECK_THROWS_AS(auto a = FASTVARDBL("A7[7,3]", 4), const gum::InvalidArgument&);
@@ -108,7 +108,7 @@ namespace gum_tests {
 
         {
           auto a = FASTVARDBL("AA[1,1]", 1);
-          CHECK((a->toString()) == ("AA:Range([1,1])"));
+          GUM_CHECK_EQ(a->toString(), "AA:Range([1,1])");
         }
       } catch (gum::Exception const& e) GUM_SHOWERROR(e);
     }
@@ -117,13 +117,13 @@ namespace gum_tests {
       try {
         {
           auto a = FASTVARDBL("A{a|b|c}", 4);
-          CHECK((a->toString()) == ("A:Labelized({a|b|c})"));
+          GUM_CHECK_EQ(a->toString(), "A:Labelized({a|b|c})");
         }
         CHECK_THROWS_AS(auto a = FASTVARDBL("A{a}", 4), const gum::InvalidArgument&);
 
         {
           auto a = FASTVARDBL("A{a}", 1);
-          CHECK((a->toString()) == ("A:Labelized({a})"));
+          GUM_CHECK_EQ(a->toString(), "A:Labelized({a})");
         }
       } catch (gum::Exception const& e) { GUM_SHOWERROR(e); }
     }
@@ -131,37 +131,37 @@ namespace gum_tests {
     static void testCreationInteger() {
       {
         auto a = FASTVARDBL("A{0|3|5}", 4);
-        CHECK((a->toString()) == ("A:Integer({0|3|5})"));
+        GUM_CHECK_EQ(a->toString(), "A:Integer({0|3|5})");
       }
       {
         auto a = FASTVARDBL("A{-3|0|3}", 4);
-        CHECK((a->toString()) == ("A:Integer({-3|0|3})"));
+        GUM_CHECK_EQ(a->toString(), "A:Integer({-3|0|3})");
       }
       {
         auto a = FASTVARDBL("A{15|-3|0|3}", 4);
-        CHECK((a->toString()) == ("A:Integer({-3|0|3|15})"));
+        GUM_CHECK_EQ(a->toString(), "A:Integer({-3|0|3|15})");
       }
       CHECK_THROWS_AS(auto a = FASTVARDBL("A{15}", 4), gum::InvalidArgument&);
 
       {
         auto a = FASTVARDBL("A{15}", 1);
-        CHECK((a->toString()) == ("A:Integer({15})"));
+        GUM_CHECK_EQ(a->toString(), "A:Integer({15})");
       }
       {
         auto a = FASTVARDBL("A{15|14|12|13|11}");
-        CHECK((a->toString()) == ("A:Range([11,15])"));
+        GUM_CHECK_EQ(a->toString(), "A:Range([11,15])");
       }
     }
 
     static void testCreationDiscretized() {
       {
         auto a = FASTVARDBL("A[1,2,3,4,5,6]", 4);
-        CHECK((a->toString()) == ("A:Discretized(<[1;2[,[2;3[,[3;4[,[4;5[,[5;6]>)"));
+        GUM_CHECK_EQ(a->toString(), "A:Discretized(<[1;2[,[2;3[,[3;4[,[4;5[,[5;6]>)");
         CHECK(!a->isEmpirical());
       }
       {
         auto a = FASTVARDBL("A+[1,2,3,4,5,6]", 4);
-        CHECK((a->toString()) == ("A:Discretized(<(1;2[,[2;3[,[3;4[,[4;5[,[5;6)>)"));
+        GUM_CHECK_EQ(a->toString(), "A:Discretized(<(1;2[,[2;3[,[3;4[,[4;5[,[5;6)>)");
         CHECK(a->isEmpirical());
       }
 
@@ -172,22 +172,22 @@ namespace gum_tests {
     static void testCreationDiscretized2() {
       {
         auto a = FASTVARDBL("A[1:6:5]", 4);
-        CHECK((a->toString()) == ("A:Discretized(<[1;2[,[2;3[,[3;4[,[4;5[,[5;6]>)"));
+        GUM_CHECK_EQ(a->toString(), "A:Discretized(<[1;2[,[2;3[,[3;4[,[4;5[,[5;6]>)");
         CHECK(!a->isEmpirical());
       }
       {
         auto a = FASTVARDBL("A[1:6:2]", 4);
-        CHECK((a->toString()) == ("A:Discretized(<[1;3.5[,[3.5;6]>)"));
+        GUM_CHECK_EQ(a->toString(), "A:Discretized(<[1;3.5[,[3.5;6]>)");
         CHECK(!a->isEmpirical());
       }
       {
         auto a = FASTVARDBL("A+[1:6:5]", 4);
-        CHECK((a->toString()) == ("A:Discretized(<(1;2[,[2;3[,[3;4[,[4;5[,[5;6)>)"));
+        GUM_CHECK_EQ(a->toString(), "A:Discretized(<(1;2[,[2;3[,[3;4[,[4;5[,[5;6)>)");
         CHECK(a->isEmpirical());
       }
       {
         auto a = FASTVARDBL("A+[1:6:2]", 4);
-        CHECK((a->toString()) == ("A:Discretized(<(1;3.5[,[3.5;6)>)"));
+        GUM_CHECK_EQ(a->toString(), "A:Discretized(<(1;3.5[,[3.5;6)>)");
         CHECK(a->isEmpirical());
       }
 
@@ -198,26 +198,26 @@ namespace gum_tests {
       try {
         {
           auto a = FASTVARDBL("A{1|1.5|6|2.9|3.14}", 4);
-          CHECK((a->toString()) == ("A:NumericalDiscrete({1|1.5|2.9|3.14|6})"));
+          GUM_CHECK_EQ(a->toString(), "A:NumericalDiscrete({1|1.5|2.9|3.14|6})");
         }
         CHECK_THROWS_AS(auto a = FASTVARDBL("A{3.14}", 4), const gum::InvalidArgument&);
         {
           auto a = FASTVARDBL("A{3.14}", 1);
-          CHECK((a->toString()) == ("A:NumericalDiscrete({3.14})"));
+          GUM_CHECK_EQ(a->toString(), "A:NumericalDiscrete({3.14})");
         }
         {
           auto a = FASTVARDBL("A{1.2:5.2:5}", 5);
-          CHECK((a->toString()) == ("A:NumericalDiscrete({1.2|2.2|3.2|4.2|5.2})"));
+          GUM_CHECK_EQ(a->toString(), "A:NumericalDiscrete({1.2|2.2|3.2|4.2|5.2})");
         }
         {
           auto a = FASTVARDBL("A{1.2:5.2:2}", 2);
-          CHECK((a->toString()) == ("A:NumericalDiscrete({1.2|5.2})"));
+          GUM_CHECK_EQ(a->toString(), "A:NumericalDiscrete({1.2|5.2})");
           auto b = FASTVARDBL("A{1.2|5.2}", 2);
-          CHECK((b->toString()) == ("A:NumericalDiscrete({1.2|5.2})"));
+          GUM_CHECK_EQ(b->toString(), "A:NumericalDiscrete({1.2|5.2})");
         }
         {
           auto a = FASTVARDBL("A{1.2:5.2:2.8}", 2);
-          CHECK((a->toString()) == ("A:NumericalDiscrete({1.2|5.2})"));
+          GUM_CHECK_EQ(a->toString(), "A:NumericalDiscrete({1.2|5.2})");
         }
       } catch (gum::Exception const& e) {
         GUM_SHOWERROR(e);
@@ -228,23 +228,23 @@ namespace gum_tests {
     static void testToFastMethod() {
       std::string s;
       s = "A{On|Off|Defun}";
-      CHECK((s) == ((FASTVARDBL(s)->toFast())));              // labelized
+      GUM_CHECK_EQ(s, (FASTVARDBL(s)->toFast()));              // labelized
       s = "A{0|1.15|2.3}";
-      CHECK((s) == ((FASTVARDBL(s)->toFast())));              // NumericalDiscrete
-      CHECK((s) == ((FASTVARDBL("A{0:2.3:3}")->toFast())));   // NumericalDiscrete
+      GUM_CHECK_EQ(s, (FASTVARDBL(s)->toFast()));              // NumericalDiscrete
+      GUM_CHECK_EQ(s, (FASTVARDBL("A{0:2.3:3}")->toFast()));   // NumericalDiscrete
       s = "A{1|3|5}";
-      CHECK((s) == ((FASTVARDBL(s)->toFast())));              // Integer
-      CHECK((s) == ((FASTVARDBL("A{1:5:3}")->toFast())));     // Integer
+      GUM_CHECK_EQ(s, (FASTVARDBL(s)->toFast()));              // Integer
+      GUM_CHECK_EQ(s, (FASTVARDBL("A{1:5:3}")->toFast()));     // Integer
       s = "A[3,5]";
-      CHECK((s) == ((FASTVARDBL(s)->toFast())));              // Range
+      GUM_CHECK_EQ(s, (FASTVARDBL(s)->toFast()));              // Range
       s = "A[5]";
-      CHECK((s) == ((FASTVARDBL(s)->toFast())));              // Range
+      GUM_CHECK_EQ(s, (FASTVARDBL(s)->toFast()));              // Range
       s = "A[1,2,3,4,5,6]";
-      CHECK((s) == ((FASTVARDBL(s)->toFast())));              // Discretized
-      CHECK((s) == ((FASTVARDBL("A[1:6:5]")->toFast())));     // Discretized
+      GUM_CHECK_EQ(s, (FASTVARDBL(s)->toFast()));              // Discretized
+      GUM_CHECK_EQ(s, (FASTVARDBL("A[1:6:5]")->toFast()));     // Discretized
       s = "A+[1,2,3,4,5,6]";
-      CHECK((s) == ((FASTVARDBL(s)->toFast())));              // Discretized
-      CHECK((s) == ((FASTVARDBL("A+[1:6:5]")->toFast())));    // Discretized
+      GUM_CHECK_EQ(s, (FASTVARDBL(s)->toFast()));              // Discretized
+      GUM_CHECK_EQ(s, (FASTVARDBL("A+[1:6:5]")->toFast()));    // Discretized
     }
 
     static void testFastNumericalWithoutInfinity() {
@@ -300,7 +300,7 @@ namespace gum_tests {
     static void testEquallySpacedIntervall() {
       auto v = gum::fastVariable("alpha { 0 : 1 : 101 }");
       for (const auto& la: v->labels()) {
-        CHECK((la.length()) <= (5u));   // 0.94 for instance
+        GUM_CHECK_LE(la.length(), 5u);   // 0.94 for instance
       }
     }
 
@@ -308,68 +308,68 @@ namespace gum_tests {
       CHECK_THROWS_AS(FASTVARDBL("A{On|Off|Defun}")->closestIndex(1.5),
                       const gum::NotImplementedYet&);
 
-      CHECK((FASTVARDBL("A{0|1.15|2.3}")->closestIndex(-1.0)) == (0u));
-      CHECK((FASTVARDBL("A{0|1.15|2.3}")->closestIndex(0.0)) == (0u));
-      CHECK((FASTVARDBL("A{0|1.15|2.3}")->closestIndex(0.575)) == (0u));
-      CHECK((FASTVARDBL("A{0|1.15|2.3}")->closestIndex(1.2)) == (1u));
-      CHECK((FASTVARDBL("A{0|1.15|2.3}")->closestIndex(1.15)) == (1u));
-      CHECK((FASTVARDBL("A{0|1.15|2.3}")->closestIndex(3.0)) == (2u));
-      CHECK((FASTVARDBL("A{0|1.15|2.3}")->closestIndex(2.0)) == (2u));
-      CHECK((FASTVARDBL("A{0|1.15|2.3}")->closestIndex(2.3)) == (2u));
+      GUM_CHECK_EQ(FASTVARDBL("A{0|1.15|2.3}")->closestIndex(-1.0), 0u);
+      GUM_CHECK_EQ(FASTVARDBL("A{0|1.15|2.3}")->closestIndex(0.0), 0u);
+      GUM_CHECK_EQ(FASTVARDBL("A{0|1.15|2.3}")->closestIndex(0.575), 0u);
+      GUM_CHECK_EQ(FASTVARDBL("A{0|1.15|2.3}")->closestIndex(1.2), 1u);
+      GUM_CHECK_EQ(FASTVARDBL("A{0|1.15|2.3}")->closestIndex(1.15), 1u);
+      GUM_CHECK_EQ(FASTVARDBL("A{0|1.15|2.3}")->closestIndex(3.0), 2u);
+      GUM_CHECK_EQ(FASTVARDBL("A{0|1.15|2.3}")->closestIndex(2.0), 2u);
+      GUM_CHECK_EQ(FASTVARDBL("A{0|1.15|2.3}")->closestIndex(2.3), 2u);
 
-      CHECK((FASTVARDBL("A{1|3|5}")->closestIndex(0.1)) == (0u));
-      CHECK((FASTVARDBL("A{1|3|5}")->closestIndex(1.0)) == (0u));
-      CHECK((FASTVARDBL("A{1|3|5}")->closestIndex(1.5)) == (0u));
-      CHECK((FASTVARDBL("A{1|3|5}")->closestIndex(2.0)) == (0u));
-      CHECK((FASTVARDBL("A{1|3|5}")->closestIndex(2.5)) == (1u));
-      CHECK((FASTVARDBL("A{1|3|5}")->closestIndex(3.1)) == (1u));
-      CHECK((FASTVARDBL("A{1|3|5}")->closestIndex(3.0)) == (1u));
-      CHECK((FASTVARDBL("A{1|3|5}")->closestIndex(3.9)) == (1u));
-      CHECK((FASTVARDBL("A{1|3|5}")->closestIndex(4.9)) == (2u));
-      CHECK((FASTVARDBL("A{1|3|5}")->closestIndex(5.0)) == (2u));
-      CHECK((FASTVARDBL("A{1|3|5}")->closestIndex(9.9)) == (2u));
+      GUM_CHECK_EQ(FASTVARDBL("A{1|3|5}")->closestIndex(0.1), 0u);
+      GUM_CHECK_EQ(FASTVARDBL("A{1|3|5}")->closestIndex(1.0), 0u);
+      GUM_CHECK_EQ(FASTVARDBL("A{1|3|5}")->closestIndex(1.5), 0u);
+      GUM_CHECK_EQ(FASTVARDBL("A{1|3|5}")->closestIndex(2.0), 0u);
+      GUM_CHECK_EQ(FASTVARDBL("A{1|3|5}")->closestIndex(2.5), 1u);
+      GUM_CHECK_EQ(FASTVARDBL("A{1|3|5}")->closestIndex(3.1), 1u);
+      GUM_CHECK_EQ(FASTVARDBL("A{1|3|5}")->closestIndex(3.0), 1u);
+      GUM_CHECK_EQ(FASTVARDBL("A{1|3|5}")->closestIndex(3.9), 1u);
+      GUM_CHECK_EQ(FASTVARDBL("A{1|3|5}")->closestIndex(4.9), 2u);
+      GUM_CHECK_EQ(FASTVARDBL("A{1|3|5}")->closestIndex(5.0), 2u);
+      GUM_CHECK_EQ(FASTVARDBL("A{1|3|5}")->closestIndex(9.9), 2u);
 
-      CHECK((FASTVARDBL("A[3,5]")->closestIndex(1.5)) == (0u));
-      CHECK((FASTVARDBL("A[3,5]")->closestIndex(3.0)) == (0u));
-      CHECK((FASTVARDBL("A[3,5]")->closestIndex(3.2)) == (0u));
-      CHECK((FASTVARDBL("A[3,5]")->closestIndex(3.5)) == (0u));
-      CHECK((FASTVARDBL("A[3,5]")->closestIndex(3.8)) == (1u));
-      CHECK((FASTVARDBL("A[3,5]")->closestIndex(4.0)) == (1u));
-      CHECK((FASTVARDBL("A[3,5]")->closestIndex(4.2)) == (1u));
-      CHECK((FASTVARDBL("A[3,5]")->closestIndex(4.5)) == (1u));
-      CHECK((FASTVARDBL("A[3,5]")->closestIndex(4.7)) == (2u));
-      CHECK((FASTVARDBL("A[3,5]")->closestIndex(5.0)) == (2u));
-      CHECK((FASTVARDBL("A[3,5]")->closestIndex(9.0)) == (2u));
+      GUM_CHECK_EQ(FASTVARDBL("A[3,5]")->closestIndex(1.5), 0u);
+      GUM_CHECK_EQ(FASTVARDBL("A[3,5]")->closestIndex(3.0), 0u);
+      GUM_CHECK_EQ(FASTVARDBL("A[3,5]")->closestIndex(3.2), 0u);
+      GUM_CHECK_EQ(FASTVARDBL("A[3,5]")->closestIndex(3.5), 0u);
+      GUM_CHECK_EQ(FASTVARDBL("A[3,5]")->closestIndex(3.8), 1u);
+      GUM_CHECK_EQ(FASTVARDBL("A[3,5]")->closestIndex(4.0), 1u);
+      GUM_CHECK_EQ(FASTVARDBL("A[3,5]")->closestIndex(4.2), 1u);
+      GUM_CHECK_EQ(FASTVARDBL("A[3,5]")->closestIndex(4.5), 1u);
+      GUM_CHECK_EQ(FASTVARDBL("A[3,5]")->closestIndex(4.7), 2u);
+      GUM_CHECK_EQ(FASTVARDBL("A[3,5]")->closestIndex(5.0), 2u);
+      GUM_CHECK_EQ(FASTVARDBL("A[3,5]")->closestIndex(9.0), 2u);
 
-      CHECK((FASTVARDBL("A[-5,-3]")->closestIndex(-1.5)) == (2u));
-      CHECK((FASTVARDBL("A[-5,-3]")->closestIndex(-3.2)) == (2u));
-      CHECK((FASTVARDBL("A[-5,-3]")->closestIndex(-3.5)) == (1u));
-      CHECK((FASTVARDBL("A[-5,-3]")->closestIndex(-3.8)) == (1u));
-      CHECK((FASTVARDBL("A[-5,-3]")->closestIndex(-4.0)) == (1u));
-      CHECK((FASTVARDBL("A[-5,-3]")->closestIndex(-4.2)) == (1u));
-      CHECK((FASTVARDBL("A[-5,-3]")->closestIndex(-4.5)) == (0u));
-      CHECK((FASTVARDBL("A[-5,-3]")->closestIndex(-4.7)) == (0u));
-      CHECK((FASTVARDBL("A[-5,-3]")->closestIndex(-5.0)) == (0u));
-      CHECK((FASTVARDBL("A[-5,-3]")->closestIndex(-9.0)) == (0u));
+      GUM_CHECK_EQ(FASTVARDBL("A[-5,-3]")->closestIndex(-1.5), 2u);
+      GUM_CHECK_EQ(FASTVARDBL("A[-5,-3]")->closestIndex(-3.2), 2u);
+      GUM_CHECK_EQ(FASTVARDBL("A[-5,-3]")->closestIndex(-3.5), 1u);
+      GUM_CHECK_EQ(FASTVARDBL("A[-5,-3]")->closestIndex(-3.8), 1u);
+      GUM_CHECK_EQ(FASTVARDBL("A[-5,-3]")->closestIndex(-4.0), 1u);
+      GUM_CHECK_EQ(FASTVARDBL("A[-5,-3]")->closestIndex(-4.2), 1u);
+      GUM_CHECK_EQ(FASTVARDBL("A[-5,-3]")->closestIndex(-4.5), 0u);
+      GUM_CHECK_EQ(FASTVARDBL("A[-5,-3]")->closestIndex(-4.7), 0u);
+      GUM_CHECK_EQ(FASTVARDBL("A[-5,-3]")->closestIndex(-5.0), 0u);
+      GUM_CHECK_EQ(FASTVARDBL("A[-5,-3]")->closestIndex(-9.0), 0u);
 
-      CHECK((FASTVARDBL("A[1,2,3,4,5,6]")->closestIndex(0.5)) == (0u));
-      CHECK((FASTVARDBL("A[1,2,3,4,5,6]")->closestIndex(1.0)) == (0u));
-      CHECK((FASTVARDBL("A[1,2,3,4,5,6]")->closestIndex(1.3)) == (0u));
-      CHECK((FASTVARDBL("A[1,2,3,4,5,6]")->closestIndex(1.5)) == (0u));
-      CHECK((FASTVARDBL("A[1,2,3,4,5,6]")->closestIndex(1.7)) == (0u));
-      CHECK((FASTVARDBL("A[1,2,3,4,5,6]")->closestIndex(2.0)) == (1u));
-      CHECK((FASTVARDBL("A[1,2,3,4,5,6]")->closestIndex(2.5)) == (1u));
-      CHECK((FASTVARDBL("A[1,2,3,4,5,6]")->closestIndex(3.0)) == (2u));
-      CHECK((FASTVARDBL("A[1,2,3,4,5,6]")->closestIndex(5.5)) == (4u));
-      CHECK((FASTVARDBL("A[1,2,3,4,5,6]")->closestIndex(6.0)) == (4u));
-      CHECK((FASTVARDBL("A[1,2,3,4,5,6]")->closestIndex(9.9)) == (4u));
+      GUM_CHECK_EQ(FASTVARDBL("A[1,2,3,4,5,6]")->closestIndex(0.5), 0u);
+      GUM_CHECK_EQ(FASTVARDBL("A[1,2,3,4,5,6]")->closestIndex(1.0), 0u);
+      GUM_CHECK_EQ(FASTVARDBL("A[1,2,3,4,5,6]")->closestIndex(1.3), 0u);
+      GUM_CHECK_EQ(FASTVARDBL("A[1,2,3,4,5,6]")->closestIndex(1.5), 0u);
+      GUM_CHECK_EQ(FASTVARDBL("A[1,2,3,4,5,6]")->closestIndex(1.7), 0u);
+      GUM_CHECK_EQ(FASTVARDBL("A[1,2,3,4,5,6]")->closestIndex(2.0), 1u);
+      GUM_CHECK_EQ(FASTVARDBL("A[1,2,3,4,5,6]")->closestIndex(2.5), 1u);
+      GUM_CHECK_EQ(FASTVARDBL("A[1,2,3,4,5,6]")->closestIndex(3.0), 2u);
+      GUM_CHECK_EQ(FASTVARDBL("A[1,2,3,4,5,6]")->closestIndex(5.5), 4u);
+      GUM_CHECK_EQ(FASTVARDBL("A[1,2,3,4,5,6]")->closestIndex(6.0), 4u);
+      GUM_CHECK_EQ(FASTVARDBL("A[1,2,3,4,5,6]")->closestIndex(9.9), 4u);
     }
 
     static void testRegressionTestFromChristopheEveland() {
       auto var = FASTVARDBL("A[0.0, 100.000001, 100.000002, 200.0]");
       CHECK((var->toString())
             == ("A:Discretized(<[0;100.000001[,[100.000001;100.000002[,[100.000002;200]>)"));
-      CHECK((var->toFast()) == ("A[0,100.000001,100.000002,200]"));
+      GUM_CHECK_EQ(var->toFast(), "A[0,100.000001,100.000002,200]");
     }
   };
 

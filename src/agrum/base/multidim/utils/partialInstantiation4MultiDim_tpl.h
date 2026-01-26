@@ -55,11 +55,11 @@
 
 #define GUM_MULTI_DIM_DECORATOR_PARTIAL_INST(NAME)                         \
   namespace gum {                                                          \
-    template < typename GUM_ELEMENT >                                       \
-    MultiDimImplementation< GUM_ELEMENT >*                                  \
-        NAME(const MultiDimDecorator< GUM_ELEMENT >&           table,       \
+    template < typename GUM_ELEMENT >                                      \
+    MultiDimImplementation< GUM_ELEMENT >*                                 \
+        NAME(const MultiDimDecorator< GUM_ELEMENT >&          table,       \
              const HashTable< const DiscreteVariable*, Idx >& inst_vars) { \
-      const MultiDimImplementation< GUM_ELEMENT >* impl = table.content();  \
+      const MultiDimImplementation< GUM_ELEMENT >* impl = table.content(); \
       return NAME(*impl, inst_vars);                                       \
     }                                                                      \
   }
@@ -123,13 +123,13 @@ namespace gum {
 
       // register base functions for multiDimArrays
       registerPartialInstantiation< GUM_ELEMENT >("i",
-                                                 MultiDimArrayString,
-                                                 &partialInstantiationMultiDimArray);
+                                                  MultiDimArrayString,
+                                                  &partialInstantiationMultiDimArray);
 
       // register default basename functions
       registerPartialInstantiation< GUM_ELEMENT >("i",
-                                                 BaseNameString,
-                                                 &partialInstantiationMultiDimImplementation);
+                                                  BaseNameString,
+                                                  &partialInstantiationMultiDimImplementation);
     });
   }
 
@@ -144,8 +144,8 @@ namespace gum {
 
       // register base functions for multiDimArrays
       registerPartialInstantiation< GUM_ELEMENT* >("i",
-                                                  MultiDimArrayString,
-                                                  &partialInstantiationMultiDimArray4Pointers);
+                                                   MultiDimArrayString,
+                                                   &partialInstantiationMultiDimArray4Pointers);
 
       // register default basename functions
       registerPartialInstantiation< GUM_ELEMENT* >(

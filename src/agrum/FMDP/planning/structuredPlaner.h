@@ -90,24 +90,24 @@ namespace gum {
     ///
     // ==========================================================================
     static StructuredPlaner< GUM_ELEMENT >* spumddInstance(GUM_ELEMENT discountFactor = 0.9,
-                                                          GUM_ELEMENT epsilon        = 0.00001,
-                                                          bool       verbose        = true) {
+                                                           GUM_ELEMENT epsilon        = 0.00001,
+                                                           bool        verbose        = true) {
       return new StructuredPlaner< GUM_ELEMENT >(new MDDOperatorStrategy< GUM_ELEMENT >(),
-                                                discountFactor,
-                                                epsilon,
-                                                verbose);
+                                                 discountFactor,
+                                                 epsilon,
+                                                 verbose);
     }
 
     // ==========================================================================
     ///
     // ==========================================================================
     static StructuredPlaner< GUM_ELEMENT >* sviInstance(GUM_ELEMENT discountFactor = 0.9,
-                                                       GUM_ELEMENT epsilon        = 0.00001,
-                                                       bool       verbose        = true) {
+                                                        GUM_ELEMENT epsilon        = 0.00001,
+                                                        bool        verbose        = true) {
       return new StructuredPlaner< GUM_ELEMENT >(new TreeOperatorStrategy< GUM_ELEMENT >(),
-                                                discountFactor,
-                                                epsilon,
-                                                verbose);
+                                                 discountFactor,
+                                                 epsilon,
+                                                 verbose);
     }
 
     /// @}
@@ -124,7 +124,7 @@ namespace gum {
     StructuredPlaner(IOperatorStrategy< GUM_ELEMENT >* opi,
                      GUM_ELEMENT                       discountFactor,
                      GUM_ELEMENT                       epsilon,
-                     bool                             verbose);
+                     bool                              verbose);
 
     // ==========================================================================
     /// Default destructor
@@ -379,7 +379,7 @@ namespace gum {
     /// Whenever | V^{n} - V^{n+1} | < threshold, we consider that V ~ V*
     // ==========================================================================
     GUM_ELEMENT _threshold_;
-    bool       _firstTime_;
+    bool        _firstTime_;
   };
 
 } /* namespace gum */

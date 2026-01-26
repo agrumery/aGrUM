@@ -279,12 +279,13 @@ namespace gum_tests {
       gum::RangeVariable a("a", "", 0, 3), b("b", "", 0, 3), c("c", "", 0, 3), d("d", "", 0, 3);
       gum::aggregator::Min< double > p;
       GUM_CHECK_ASSERT_THROWS_NOTHING(p << a << b << c << d);
-      CHECK((p.toString()) == ("a:Range([0,3])=min(b:Range([0,3]),c:Range([0,3]),d:Range([0,3]))"));
+      GUM_CHECK_EQ(p.toString(),
+                   "a:Range([0,3])=min(b:Range([0,3]),c:Range([0,3]),d:Range([0,3]))");
 
       gum::Instantiation i(p);
 
       for (i.setFirst(); !i.end(); ++i) {
-        CHECK((p[i]) == (_is_min_(i.val(a), i.val(b), i.val(c), i.val(d))));
+        GUM_CHECK_EQ(p[i], _is_min_(i.val(a), i.val(b), i.val(c), i.val(d)));
       }
     }
 
@@ -292,12 +293,13 @@ namespace gum_tests {
       gum::RangeVariable a("a", "", 0, 3), b("b", "", 0, 3), c("c", "", 0, 3), d("d", "", 0, 3);
       gum::aggregator::Max< double > p;
       GUM_CHECK_ASSERT_THROWS_NOTHING(p << a << b << c << d);
-      CHECK((p.toString()) == ("a:Range([0,3])=max(b:Range([0,3]),c:Range([0,3]),d:Range([0,3]))"));
+      GUM_CHECK_EQ(p.toString(),
+                   "a:Range([0,3])=max(b:Range([0,3]),c:Range([0,3]),d:Range([0,3]))");
 
       gum::Instantiation i(p);
 
       for (i.setFirst(); !i.end(); ++i) {
-        CHECK((p[i]) == (_is_max_(i.val(a), i.val(b), i.val(c), i.val(d))));
+        GUM_CHECK_EQ(p[i], _is_max_(i.val(a), i.val(b), i.val(c), i.val(d)));
       }
     }
 
@@ -311,7 +313,7 @@ namespace gum_tests {
       gum::Instantiation i(p);
 
       for (i.setFirst(); !i.end(); ++i) {
-        CHECK((p[i]) == (_is_count_2_(i.val(a), i.val(b), i.val(c), i.val(d))));
+        GUM_CHECK_EQ(p[i], _is_count_2_(i.val(a), i.val(b), i.val(c), i.val(d)));
       }
     }
 
@@ -325,7 +327,7 @@ namespace gum_tests {
       gum::Instantiation i(p);
 
       for (i.setFirst(); !i.end(); ++i) {
-        CHECK((p[i]) == (_is_forall_2_(i.val(a), i.val(b), i.val(c), i.val(d))));
+        GUM_CHECK_EQ(p[i], _is_forall_2_(i.val(a), i.val(b), i.val(c), i.val(d)));
       }
     }
 
@@ -339,7 +341,7 @@ namespace gum_tests {
       gum::Instantiation i(p);
 
       for (i.setFirst(); !i.end(); ++i) {
-        CHECK((p[i]) == (_is_exists_2_(i.val(a), i.val(b), i.val(c), i.val(d))));
+        GUM_CHECK_EQ(p[i], _is_exists_2_(i.val(a), i.val(b), i.val(c), i.val(d)));
       }
     }
 
@@ -354,7 +356,7 @@ namespace gum_tests {
       gum::Instantiation i(p);
 
       for (i.setFirst(); !i.end(); ++i) {
-        CHECK((p[i]) == (_is_or_(i.val(a), i.val(b), i.val(c), i.val(d))));
+        GUM_CHECK_EQ(p[i], _is_or_(i.val(a), i.val(b), i.val(c), i.val(d)));
       }
     }
 
@@ -369,7 +371,7 @@ namespace gum_tests {
       gum::Instantiation i(p);
 
       for (i.setFirst(); !i.end(); ++i) {
-        CHECK((p[i]) == (_is_and_(i.val(a), i.val(b), i.val(c), i.val(d))));
+        GUM_CHECK_EQ(p[i], _is_and_(i.val(a), i.val(b), i.val(c), i.val(d)));
       }
     }
 
@@ -384,7 +386,7 @@ namespace gum_tests {
       gum::Instantiation i(p);
 
       for (i.setFirst(); !i.end(); ++i) {
-        CHECK((_is_median3_(i.val(a), i.val(b), i.val(c), i.val(d))) == (p[i]));
+        GUM_CHECK_EQ(_is_median3_(i.val(a), i.val(b), i.val(c), i.val(d)), p[i]);
       }
     }
 
@@ -400,7 +402,7 @@ namespace gum_tests {
       gum::Instantiation i(p);
 
       for (i.setFirst(); !i.end(); ++i) {
-        CHECK((_is_median4_(i.val(a), i.val(b), i.val(c), i.val(d), i.val(e))) == (p[i]));
+        GUM_CHECK_EQ(_is_median4_(i.val(a), i.val(b), i.val(c), i.val(d), i.val(e)), p[i]);
       }
     }
 
@@ -416,7 +418,7 @@ namespace gum_tests {
       gum::Instantiation i(p);
 
       for (i.setFirst(); !i.end(); ++i) {
-        CHECK((_is_amplitude_(i.val(a), i.val(b), i.val(c), i.val(d), i.val(e))) == (p[i]));
+        GUM_CHECK_EQ(_is_amplitude_(i.val(a), i.val(b), i.val(c), i.val(d), i.val(e)), p[i]);
       }
     }
 
@@ -429,7 +431,7 @@ namespace gum_tests {
       gum::Instantiation i(p);
 
       for (i.setFirst(); !i.end(); ++i) {
-        CHECK((p[i]) == (_is_min_(i.val(a), i.val(b), i.val(c), i.val(d))));
+        GUM_CHECK_EQ(p[i], _is_min_(i.val(a), i.val(b), i.val(c), i.val(d)));
       }
 
       // it is not allowed to change a value but can only be detected at the
@@ -490,12 +492,12 @@ namespace gum_tests {
 
       p << a;
       GUM_CHECK_ASSERT_THROWS_NOTHING(s = pot2arr_(p));
-      CHECK((s) == (res0));
+      GUM_CHECK_EQ(s, res0);
 
       p << b;
       GUM_CHECK_ASSERT_THROWS_NOTHING(p.toString());
       GUM_CHECK_ASSERT_THROWS_NOTHING(s = pot2arr_(p));
-      CHECK((s) == (res1));
+      GUM_CHECK_EQ(s, res1);
     }
 
     static void testAnd_ZeroParent() {
@@ -512,12 +514,12 @@ namespace gum_tests {
 
       p << a;
       GUM_CHECK_ASSERT_THROWS_NOTHING(s = pot2arr_(p));
-      CHECK((s) == (res0));
+      GUM_CHECK_EQ(s, res0);
 
       p << b;
       GUM_CHECK_ASSERT_THROWS_NOTHING(p.toString());
       GUM_CHECK_ASSERT_THROWS_NOTHING(s = pot2arr_(p));
-      CHECK((s) == (res1));
+      GUM_CHECK_EQ(s, res1);
     }
 
     static void testExists_ZeroParent() {
@@ -534,12 +536,12 @@ namespace gum_tests {
 
       p << a;
       GUM_CHECK_ASSERT_THROWS_NOTHING(s = pot2arr_(p));
-      CHECK((s) == (res0));
+      GUM_CHECK_EQ(s, res0);
 
       p << b;
       GUM_CHECK_ASSERT_THROWS_NOTHING(p.toString());
       GUM_CHECK_ASSERT_THROWS_NOTHING(s = pot2arr_(p));
-      CHECK((s) == (res1));
+      GUM_CHECK_EQ(s, res1);
     }
 
     static void testForall_ZeroParent() {
@@ -556,12 +558,12 @@ namespace gum_tests {
 
       p << a;
       GUM_CHECK_ASSERT_THROWS_NOTHING(s = pot2arr_(p));
-      CHECK((s) == (res0));
+      GUM_CHECK_EQ(s, res0);
 
       p << b;
       GUM_CHECK_ASSERT_THROWS_NOTHING(p.toString());
       GUM_CHECK_ASSERT_THROWS_NOTHING(s = pot2arr_(p));
-      CHECK((s) == (res1));
+      GUM_CHECK_EQ(s, res1);
     }
 
     static void testMin_ZeroParent() {
@@ -578,12 +580,12 @@ namespace gum_tests {
 
       p << a;
       GUM_CHECK_ASSERT_THROWS_NOTHING(s = pot2arr_(p));
-      CHECK((s) == (res0));
+      GUM_CHECK_EQ(s, res0);
 
       p << b;
       GUM_CHECK_ASSERT_THROWS_NOTHING(p.toString());
       GUM_CHECK_ASSERT_THROWS_NOTHING(s = pot2arr_(p));
-      CHECK((s) == (res1));
+      GUM_CHECK_EQ(s, res1);
     }
 
     static void testMax_ZeroParent() {
@@ -600,12 +602,12 @@ namespace gum_tests {
 
       p << a;
       GUM_CHECK_ASSERT_THROWS_NOTHING(s = pot2arr_(p));
-      CHECK((s) == (res0));
+      GUM_CHECK_EQ(s, res0);
 
       p << b;
       GUM_CHECK_ASSERT_THROWS_NOTHING(p.toString());
       GUM_CHECK_ASSERT_THROWS_NOTHING(s = pot2arr_(p));
-      CHECK((s) == (res1));
+      GUM_CHECK_EQ(s, res1);
     }
 
     static void testCount_ZeroParent() {
@@ -622,12 +624,12 @@ namespace gum_tests {
 
       p << a;
       GUM_CHECK_ASSERT_THROWS_NOTHING(s = pot2arr_(p));
-      CHECK((s) == (res0));
+      GUM_CHECK_EQ(s, res0);
 
       p << b;
       GUM_CHECK_ASSERT_THROWS_NOTHING(p.toString());
       GUM_CHECK_ASSERT_THROWS_NOTHING(s = pot2arr_(p));
-      CHECK((s) == (res1));
+      GUM_CHECK_EQ(s, res1);
     }
 
     static void testAmplitude_ZeroParent() {
@@ -644,12 +646,12 @@ namespace gum_tests {
 
       p << a;
       GUM_CHECK_ASSERT_THROWS_NOTHING(s = pot2arr_(p));
-      CHECK((s) == (res0));
+      GUM_CHECK_EQ(s, res0);
 
       p << b;
       GUM_CHECK_ASSERT_THROWS_NOTHING(p.toString());
       GUM_CHECK_ASSERT_THROWS_NOTHING(s = pot2arr_(p));
-      CHECK((s) == (res1));
+      GUM_CHECK_EQ(s, res1);
     }
 
     static void testMedian_ZeroParent() {
@@ -666,12 +668,12 @@ namespace gum_tests {
 
       p << a;
       GUM_CHECK_ASSERT_THROWS_NOTHING(s = pot2arr_(p));
-      CHECK((s) == (res0));
+      GUM_CHECK_EQ(s, res0);
 
       p << b;
       GUM_CHECK_ASSERT_THROWS_NOTHING(p.toString());
       GUM_CHECK_ASSERT_THROWS_NOTHING(s = pot2arr_(p));
-      CHECK((s) == (res1));
+      GUM_CHECK_EQ(s, res1);
     }
   };
 

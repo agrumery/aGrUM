@@ -61,199 +61,199 @@ namespace gum_tests {
     static void test_row1() {
       {
         gum::learning::DBRow< double > row;
-        CHECK((row.weight()) == (1.0f));
+        GUM_CHECK_EQ(row.weight(), 1.0f);
 
         gum::learning::DBRow< double > xrow1(3, 2.0);
-        CHECK((xrow1.weight()) == (2.0f));
-        CHECK((xrow1.size()) == ((gum::Size)std::size_t(3)));
+        GUM_CHECK_EQ(xrow1.weight(), 2.0f);
+        GUM_CHECK_EQ(xrow1.size(), (gum::Size)std::size_t(3));
 
         gum::learning::DBRow< double > xrow2(3, 4, 2.0);
-        CHECK((xrow2.weight()) == (2.0f));
-        CHECK((xrow2.size()) == ((gum::Size)std::size_t(3)));
-        CHECK((xrow2[1]) == (4.0f));
+        GUM_CHECK_EQ(xrow2.weight(), 2.0f);
+        GUM_CHECK_EQ(xrow2.size(), (gum::Size)std::size_t(3));
+        GUM_CHECK_EQ(xrow2[1], 4.0f);
 
         row.setWeight(3);
-        CHECK((row.weight()) == (3.0f));
+        GUM_CHECK_EQ(row.weight(), 3.0f);
 
         std::vector< double > xrow{1, 2, 3};
         row.setRow(xrow);
         CHECK((row.row() == xrow));
-        CHECK((row.size()) == (static_cast< gum::Size >(3)));
+        GUM_CHECK_EQ(row.size(), static_cast< gum::Size >(3));
 
         gum::learning::DBRow< double > row2(row);
-        CHECK((row2.size()) == (static_cast< gum::Size >(3)));
+        GUM_CHECK_EQ(row2.size(), static_cast< gum::Size >(3));
 
         gum::learning::DBRow< double > row2bis(row);
-        CHECK((row2bis.size()) == (static_cast< gum::Size >(3)));
+        GUM_CHECK_EQ(row2bis.size(), static_cast< gum::Size >(3));
 
         gum::learning::DBRow< double > row3(std::move(row2));
-        CHECK((row3.size()) == (static_cast< gum::Size >(3)));
-        CHECK((row3[2]) == (3.0f));
+        GUM_CHECK_EQ(row3.size(), static_cast< gum::Size >(3));
+        GUM_CHECK_EQ(row3[2], 3.0f);
 
         row3.resize(5);
-        CHECK((row3.size()) == (static_cast< gum::Size >(5)));
+        GUM_CHECK_EQ(row3.size(), static_cast< gum::Size >(5));
 
         row2 = row3;
-        CHECK((row2.size()) == (static_cast< gum::Size >(5)));
+        GUM_CHECK_EQ(row2.size(), static_cast< gum::Size >(5));
         CHECK((row3.row() == row2.row()));
 
         gum::learning::DBRow< double > row4(4, 1, 2);
-        CHECK((row4.size()) == (static_cast< gum::Size >(4)));
-        CHECK((row4[3]) == (1));
-        CHECK((row4.weight()) == (2));
+        GUM_CHECK_EQ(row4.size(), static_cast< gum::Size >(4));
+        GUM_CHECK_EQ(row4[3], 1);
+        GUM_CHECK_EQ(row4.weight(), 2);
 
         gum::learning::DBRow< double > row5{2, 3, 1, 4};
-        CHECK((row5.size()) == (static_cast< gum::Size >(4)));
-        CHECK((row5[2]) == (1));
-        CHECK((row5.weight()) == (1));
+        GUM_CHECK_EQ(row5.size(), static_cast< gum::Size >(4));
+        GUM_CHECK_EQ(row5[2], 1);
+        GUM_CHECK_EQ(row5.weight(), 1);
 
         std::vector< double >          vect{1, 2, 3};
         gum::learning::DBRow< double > row6(vect, 4);
-        CHECK((row6.size()) == (static_cast< gum::Size >(3)));
-        CHECK((row6[1]) == (2));
-        CHECK((row6.weight()) == (4));
+        GUM_CHECK_EQ(row6.size(), static_cast< gum::Size >(3));
+        GUM_CHECK_EQ(row6[1], 2);
+        GUM_CHECK_EQ(row6.weight(), 4);
 
         gum::learning::DBRow< double > row7(vect, 4);
-        CHECK((row7.size()) == (static_cast< gum::Size >(3)));
-        CHECK((row7[1]) == (2));
-        CHECK((row7.weight()) == (4));
+        GUM_CHECK_EQ(row7.size(), static_cast< gum::Size >(3));
+        GUM_CHECK_EQ(row7[1], 2);
+        GUM_CHECK_EQ(row7.weight(), 4);
 
         gum::learning::DBRow< double > row8(std::vector< double >{1, 2, 3}, 4);
-        CHECK((row8.size()) == (static_cast< gum::Size >(3)));
-        CHECK((row8[1]) == (2));
-        CHECK((row8.weight()) == (4));
+        GUM_CHECK_EQ(row8.size(), static_cast< gum::Size >(3));
+        GUM_CHECK_EQ(row8[1], 2);
+        GUM_CHECK_EQ(row8.weight(), 4);
 
         gum::learning::DBRow< double > row9(row4);
-        CHECK((row9.size()) == (static_cast< gum::Size >(4)));
-        CHECK((row9[3]) == (1));
-        CHECK((row9.weight()) == (2));
+        GUM_CHECK_EQ(row9.size(), static_cast< gum::Size >(4));
+        GUM_CHECK_EQ(row9[3], 1);
+        GUM_CHECK_EQ(row9.weight(), 2);
 
         row = row7;
-        CHECK((row.size()) == (static_cast< gum::Size >(3)));
-        CHECK((row[1]) == (2));
-        CHECK((row.weight()) == (4));
+        GUM_CHECK_EQ(row.size(), static_cast< gum::Size >(3));
+        GUM_CHECK_EQ(row[1], 2);
+        GUM_CHECK_EQ(row.weight(), 4);
 
         row9 = row6;
-        CHECK((row9.size()) == (static_cast< gum::Size >(3)));
-        CHECK((row9[1]) == (2));
-        CHECK((row9.weight()) == (4));
+        GUM_CHECK_EQ(row9.size(), static_cast< gum::Size >(3));
+        GUM_CHECK_EQ(row9[1], 2);
+        GUM_CHECK_EQ(row9.weight(), 4);
 
         row6 = row9;
-        CHECK((row6.size()) == (static_cast< gum::Size >(3)));
-        CHECK((row6[1]) == (2));
-        CHECK((row6.weight()) == (4));
+        GUM_CHECK_EQ(row6.size(), static_cast< gum::Size >(3));
+        GUM_CHECK_EQ(row6[1], 2);
+        GUM_CHECK_EQ(row6.weight(), 4);
 
         row2.resize(10);
-        CHECK((row2.size()) == (static_cast< gum::Size >(10)));
+        GUM_CHECK_EQ(row2.size(), static_cast< gum::Size >(10));
       }   // namespace gum_tests
     }
 
     static void test_row2() {
       {
         gum::learning::DBRow< gum::learning::DBCell > row;
-        CHECK((row.weight()) == (1.0f));
+        GUM_CHECK_EQ(row.weight(), 1.0f);
 
         gum::learning::DBRow< gum::learning::DBCell > xrow1(3, 2.0);
-        CHECK((xrow1.weight()) == (2.0f));
-        CHECK((xrow1.size()) == ((gum::Size)std::size_t(3)));
+        GUM_CHECK_EQ(xrow1.weight(), 2.0f);
+        GUM_CHECK_EQ(xrow1.size(), (gum::Size)std::size_t(3));
 
         gum::learning::DBRow< gum::learning::DBCell > xrow2(3, gum::learning::DBCell(4), 2.0);
-        CHECK((xrow2.weight()) == (2.0f));
-        CHECK((xrow2.size()) == ((gum::Size)std::size_t(3)));
-        CHECK((xrow2[1].integer()) == (4));
+        GUM_CHECK_EQ(xrow2.weight(), 2.0f);
+        GUM_CHECK_EQ(xrow2.size(), (gum::Size)std::size_t(3));
+        GUM_CHECK_EQ(xrow2[1].integer(), 4);
 
         row.setWeight(3);
-        CHECK((row.weight()) == (3.0f));
+        GUM_CHECK_EQ(row.weight(), 3.0f);
 
         std::vector< gum::learning::DBCell > xrow{gum::learning::DBCell(1),
                                                   gum::learning::DBCell(2),
                                                   gum::learning::DBCell(3)};
         row.setRow(xrow);
         CHECK((row.row() == xrow));
-        CHECK((row.size()) == (static_cast< gum::Size >(3)));
+        GUM_CHECK_EQ(row.size(), static_cast< gum::Size >(3));
 
         gum::learning::DBRow< gum::learning::DBCell > row2(row);
-        CHECK((row2.size()) == (static_cast< gum::Size >(3)));
+        GUM_CHECK_EQ(row2.size(), static_cast< gum::Size >(3));
 
         gum::learning::DBRow< gum::learning::DBCell > row3(std::move(row2));
-        CHECK((row3.size()) == (static_cast< gum::Size >(3)));
-        CHECK((row3[2]) == (gum::learning::DBCell(3)));
+        GUM_CHECK_EQ(row3.size(), static_cast< gum::Size >(3));
+        GUM_CHECK_EQ(row3[2], gum::learning::DBCell(3));
 
         row3.resize(5);
-        CHECK((row3.size()) == (static_cast< gum::Size >(5)));
+        GUM_CHECK_EQ(row3.size(), static_cast< gum::Size >(5));
 
         row2 = row3;
-        CHECK((row2.size()) == (static_cast< gum::Size >(5)));
+        GUM_CHECK_EQ(row2.size(), static_cast< gum::Size >(5));
         CHECK((row3.row() == row2.row()));
 
         gum::learning::DBRow< gum::learning::DBCell > row4(4, gum::learning::DBCell(1), 2);
-        CHECK((row4.size()) == (static_cast< gum::Size >(4)));
-        CHECK((row4[3]) == (gum::learning::DBCell(1)));
-        CHECK((row4.weight()) == (2));
+        GUM_CHECK_EQ(row4.size(), static_cast< gum::Size >(4));
+        GUM_CHECK_EQ(row4[3], gum::learning::DBCell(1));
+        GUM_CHECK_EQ(row4.weight(), 2);
 
         gum::learning::DBRow< gum::learning::DBCell > row5{gum::learning::DBCell(2),
                                                            gum::learning::DBCell(3),
                                                            gum::learning::DBCell(1),
                                                            gum::learning::DBCell(4)};
-        CHECK((row5.size()) == (static_cast< gum::Size >(4)));
-        CHECK((row5[2]) == (gum::learning::DBCell(1)));
-        CHECK((row5.weight()) == (1));
+        GUM_CHECK_EQ(row5.size(), static_cast< gum::Size >(4));
+        GUM_CHECK_EQ(row5[2], gum::learning::DBCell(1));
+        GUM_CHECK_EQ(row5.weight(), 1);
 
         std::vector< gum::learning::DBCell >          vect{gum::learning::DBCell(1),
                                                            gum::learning::DBCell(2),
                                                            gum::learning::DBCell(3)};
         gum::learning::DBRow< gum::learning::DBCell > row6(vect, 4);
-        CHECK((row6.size()) == (static_cast< gum::Size >(3)));
-        CHECK((row6[1]) == (gum::learning::DBCell(2)));
-        CHECK((row6.weight()) == (4));
+        GUM_CHECK_EQ(row6.size(), static_cast< gum::Size >(3));
+        GUM_CHECK_EQ(row6[1], gum::learning::DBCell(2));
+        GUM_CHECK_EQ(row6.weight(), 4);
 
         gum::learning::DBRow< gum::learning::DBCell > row7(vect, 4);
-        CHECK((row7.size()) == (static_cast< gum::Size >(3)));
-        CHECK((row7[1]) == (gum::learning::DBCell(2)));
-        CHECK((row7.weight()) == (4));
+        GUM_CHECK_EQ(row7.size(), static_cast< gum::Size >(3));
+        GUM_CHECK_EQ(row7[1], gum::learning::DBCell(2));
+        GUM_CHECK_EQ(row7.weight(), 4);
 
         gum::learning::DBRow< gum::learning::DBCell > row8(
             std::vector< gum::learning::DBCell >{gum::learning::DBCell(1),
                                                  gum::learning::DBCell(2),
                                                  gum::learning::DBCell(3)},
             4);
-        CHECK((row8.size()) == (static_cast< gum::Size >(3)));
-        CHECK((row8[1]) == (gum::learning::DBCell(2)));
-        CHECK((row8.weight()) == (4));
+        GUM_CHECK_EQ(row8.size(), static_cast< gum::Size >(3));
+        GUM_CHECK_EQ(row8[1], gum::learning::DBCell(2));
+        GUM_CHECK_EQ(row8.weight(), 4);
 
         gum::learning::DBRow< gum::learning::DBCell > row9(row6);
-        CHECK((row9.size()) == (static_cast< gum::Size >(3)));
-        CHECK((row9[1]) == (gum::learning::DBCell(2)));
-        CHECK((row9.weight()) == (4));
+        GUM_CHECK_EQ(row9.size(), static_cast< gum::Size >(3));
+        GUM_CHECK_EQ(row9[1], gum::learning::DBCell(2));
+        GUM_CHECK_EQ(row9.weight(), 4);
 
         row = row7;
-        CHECK((row.size()) == (static_cast< gum::Size >(3)));
-        CHECK((row[1]) == (gum::learning::DBCell(2)));
-        CHECK((row.weight()) == (4));
+        GUM_CHECK_EQ(row.size(), static_cast< gum::Size >(3));
+        GUM_CHECK_EQ(row[1], gum::learning::DBCell(2));
+        GUM_CHECK_EQ(row.weight(), 4);
 
         row7 = row8;
-        CHECK((row7.size()) == (static_cast< gum::Size >(3)));
-        CHECK((row7[1]) == (gum::learning::DBCell(2)));
-        CHECK((row7.weight()) == (4));
+        GUM_CHECK_EQ(row7.size(), static_cast< gum::Size >(3));
+        GUM_CHECK_EQ(row7[1], gum::learning::DBCell(2));
+        GUM_CHECK_EQ(row7.weight(), 4);
 
         row2.resize(10);
-        CHECK((row2.size()) == (static_cast< gum::Size >(10)));
+        GUM_CHECK_EQ(row2.size(), static_cast< gum::Size >(10));
       }
     }
 
     static void test_row3() {
       gum::learning::DBRow< gum::learning::DBCell > row1(4, gum::learning::DBCell(1), 2);
-      CHECK((row1.size()) == (static_cast< gum::Size >(4)));
-      CHECK((row1[3]) == (gum::learning::DBCell(1)));
-      CHECK((row1.weight()) == (2));
+      GUM_CHECK_EQ(row1.size(), static_cast< gum::Size >(4));
+      GUM_CHECK_EQ(row1[3], gum::learning::DBCell(1));
+      GUM_CHECK_EQ(row1.weight(), 2);
 
       gum::learning::DBRow< gum::learning::DBCell > row2(4, 2);
-      CHECK((row2.size()) == (static_cast< gum::Size >(4)));
-      CHECK((row2.weight()) == (2));
+      GUM_CHECK_EQ(row2.size(), static_cast< gum::Size >(4));
+      GUM_CHECK_EQ(row2.weight(), 2);
 
       gum::learning::DBRow< gum::learning::DBCell > row3(row2);
-      CHECK((row3.size()) == (static_cast< gum::Size >(4)));
-      CHECK((row3.weight()) == (2));
+      GUM_CHECK_EQ(row3.size(), static_cast< gum::Size >(4));
+      GUM_CHECK_EQ(row3.weight(), 2);
 
       gum::learning::DBRow< gum::learning::DBCell > row4;
       row4 = row3;
@@ -262,13 +262,13 @@ namespace gum_tests {
 
       gum::learning::DBRow< gum::learning::DBCell > row6(4, gum::learning::DBCell(1), 2);
       gum::learning::DBRow< gum::learning::DBCell > row7(row4);
-      CHECK((row7.size()) == (static_cast< gum::Size >(4)));
-      CHECK((row7.weight()) == (2));
+      GUM_CHECK_EQ(row7.size(), static_cast< gum::Size >(4));
+      GUM_CHECK_EQ(row7.weight(), 2);
 
       gum::learning::DBRow< gum::learning::DBCell > row8(std::move(row7));
-      CHECK((row8.size()) == (static_cast< gum::Size >(4)));
-      CHECK((row8[3]) == (gum::learning::DBCell()));
-      CHECK((row8.weight()) == (2));
+      GUM_CHECK_EQ(row8.size(), static_cast< gum::Size >(4));
+      GUM_CHECK_EQ(row8[3], gum::learning::DBCell());
+      GUM_CHECK_EQ(row8.weight(), 2);
 
       gum::learning::DBRow< gum::learning::DBCell > row9(row8);
 

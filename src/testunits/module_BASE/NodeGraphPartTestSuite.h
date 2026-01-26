@@ -59,23 +59,23 @@ namespace gum_tests {
 
     static void testInsertion() {
       gum::NodeGraphPart ngp;
-      CHECK((ngp.size()) == (static_cast< gum::Size >(0)));
+      GUM_CHECK_EQ(ngp.size(), static_cast< gum::Size >(0));
       CHECK(ngp.empty());
 
       gum::NodeId firstId = ngp.addNode();
       CHECK(!ngp.empty());
-      CHECK((ngp.size()) == (static_cast< gum::Size >(1)));
-      CHECK((firstId) == ((gum::NodeId)0));
+      GUM_CHECK_EQ(ngp.size(), static_cast< gum::Size >(1));
+      GUM_CHECK_EQ(firstId, (gum::NodeId)0);
 
       ngp.addNode();
-      CHECK((ngp.size()) == (static_cast< gum::Size >(2)));
+      GUM_CHECK_EQ(ngp.size(), static_cast< gum::Size >(2));
 
       ngp.addNode();
-      CHECK((ngp.size()) == (static_cast< gum::Size >(3)));
+      GUM_CHECK_EQ(ngp.size(), static_cast< gum::Size >(3));
 
       gum::NodeId next  = ngp.nextNodeId();
       gum::NodeId next2 = ngp.addNode();
-      CHECK((next) == (next2));
+      GUM_CHECK_EQ(next, next2);
 
       GUM_CHECK_ASSERT_THROWS_NOTHING(ngp.addNodeWithId(next2 + 1));
       CHECK_THROWS_AS(ngp.addNodeWithId(next2 + 1), const gum::DuplicateElement&);
@@ -90,24 +90,24 @@ namespace gum_tests {
 
       ngp.eraseNode(id3);
       GUM_CHECK_ASSERT_THROWS_NOTHING(ngp.eraseNode(id3));
-      CHECK((ngp.size()) == (static_cast< gum::Size >(3)));
+      GUM_CHECK_EQ(ngp.size(), static_cast< gum::Size >(3));
 
       GUM_CHECK_ASSERT_THROWS_NOTHING(ngp.addNodeWithId(id3));
       CHECK_THROWS_AS(ngp.addNodeWithId(id3), const gum::DuplicateElement&);
-      CHECK((ngp.size()) == (static_cast< gum::Size >(4)));
+      GUM_CHECK_EQ(ngp.size(), static_cast< gum::Size >(4));
 
       ngp.clear();
-      CHECK((ngp.size()) == (static_cast< gum::Size >(0)));
+      GUM_CHECK_EQ(ngp.size(), static_cast< gum::Size >(0));
     }
 
     static void testAdd2() {
       gum::NodeGraphPart ngp;
       ngp.addNodeWithId(gum::NodeId(3));
-      CHECK((ngp._sizeHoles_()) == (static_cast< gum::Size >(3)));
+      GUM_CHECK_EQ(ngp._sizeHoles_(), static_cast< gum::Size >(3));
       ngp.addNodeWithId(gum::NodeId(2));
       ngp.addNodeWithId(gum::NodeId(1));
       ngp.addNodeWithId(gum::NodeId(0));
-      CHECK((ngp._sizeHoles_()) == (static_cast< gum::Size >(0)));
+      GUM_CHECK_EQ(ngp._sizeHoles_(), static_cast< gum::Size >(0));
 
       gum::NodeGraphPart ngp2;
       ngp2.addNodeWithId(gum::NodeId(0));
@@ -115,7 +115,7 @@ namespace gum_tests {
       ngp2.addNodeWithId(gum::NodeId(2));
       ngp2.addNodeWithId(gum::NodeId(3));
 
-      CHECK((ngp) == (ngp2));
+      GUM_CHECK_EQ(ngp, ngp2);
     }
 
     static void testCopy() {
@@ -123,15 +123,15 @@ namespace gum_tests {
       ngp.addNode();
       ngp.addNode();
       _ForTestCopy_(ngp);
-      CHECK((ngp._sizeHoles_()) == (static_cast< gum::Size >(0)));
+      GUM_CHECK_EQ(ngp._sizeHoles_(), static_cast< gum::Size >(0));
       gum::NodeId id3 = ngp.addNode();
       gum::NodeId id4 = ngp.addNode();
       ngp.eraseNode(id3);
       _ForTestCopy_(ngp);
-      CHECK((ngp._sizeHoles_()) == (static_cast< gum::Size >(1)));
+      GUM_CHECK_EQ(ngp._sizeHoles_(), static_cast< gum::Size >(1));
       ngp.eraseNode(id4);
       _ForTestCopy_(ngp);
-      CHECK((ngp._sizeHoles_()) == (static_cast< gum::Size >(0)));   // 2 last hole has vanished
+      GUM_CHECK_EQ(ngp._sizeHoles_(), static_cast< gum::Size >(0));   // 2 last hole has vanished
     }
 
     static void testInsertionForcee() {
@@ -147,43 +147,43 @@ namespace gum_tests {
       ngp.addNodeWithId(c);
       CHECK(ngp._inHoles_(a));
       CHECK(ngp._inHoles_(b));
-      CHECK((ngp._sizeHoles_()) == ((static_cast< gum::Size >(3))));
-      CHECK((ngp.bound()) == (c + 1));
+      GUM_CHECK_EQ(ngp._sizeHoles_(), (static_cast< gum::Size >(3)));
+      GUM_CHECK_EQ(ngp.bound(), c + 1);
 
       ngp.addNodeWithId(a);
       CHECK(ngp._inHoles_(b));
-      CHECK((ngp._sizeHoles_()) == ((static_cast< gum::Size >(2))));
-      CHECK((ngp.bound()) == (c + 1));
+      GUM_CHECK_EQ(ngp._sizeHoles_(), (static_cast< gum::Size >(2)));
+      GUM_CHECK_EQ(ngp.bound(), c + 1);
 
       ngp.addNodeWithId(f);
       CHECK(ngp._inHoles_(b));
       CHECK(ngp._inHoles_(d));
       CHECK(ngp._inHoles_(e));
-      CHECK((ngp._sizeHoles_()) == ((static_cast< gum::Size >(4))));
-      CHECK((ngp.bound()) == (f + 1));
+      GUM_CHECK_EQ(ngp._sizeHoles_(), (static_cast< gum::Size >(4)));
+      GUM_CHECK_EQ(ngp.bound(), f + 1);
 
       ngp.addNodeWithId(e);
       CHECK(ngp._inHoles_(b));
       CHECK(ngp._inHoles_(d));
-      CHECK((ngp._sizeHoles_()) == ((static_cast< gum::Size >(3))));
-      CHECK((ngp.bound()) == (f + 1));
+      GUM_CHECK_EQ(ngp._sizeHoles_(), (static_cast< gum::Size >(3)));
+      GUM_CHECK_EQ(ngp.bound(), f + 1);
 
       ngp.addNodeWithId(b);
       CHECK(ngp._inHoles_(d));
-      CHECK((ngp._sizeHoles_()) == ((static_cast< gum::Size >(2))));
-      CHECK((ngp.bound()) == (f + 1));
+      GUM_CHECK_EQ(ngp._sizeHoles_(), (static_cast< gum::Size >(2)));
+      GUM_CHECK_EQ(ngp.bound(), f + 1);
 
       ngp.addNodeWithId(d);
-      CHECK((ngp._sizeHoles_()) == ((static_cast< gum::Size >(1))));
-      CHECK((ngp.bound()) == (f + 1));
+      GUM_CHECK_EQ(ngp._sizeHoles_(), (static_cast< gum::Size >(1)));
+      GUM_CHECK_EQ(ngp.bound(), f + 1);
 
       ngp.addNodeWithId(g);
-      CHECK((ngp._sizeHoles_()) == ((static_cast< gum::Size >(1))));
-      CHECK((ngp.bound()) == (g + 1));
+      GUM_CHECK_EQ(ngp._sizeHoles_(), (static_cast< gum::Size >(1)));
+      GUM_CHECK_EQ(ngp.bound(), g + 1);
 
       ngp.addNodeWithId(gum::NodeId(0));
-      CHECK((ngp._sizeHoles_()) == ((static_cast< gum::Size >(0))));
-      CHECK((ngp.bound()) == (g + 1));
+      GUM_CHECK_EQ(ngp._sizeHoles_(), (static_cast< gum::Size >(0)));
+      GUM_CHECK_EQ(ngp.bound(), g + 1);
 
       CHECK_THROWS_AS(ngp.addNodeWithId(f), const gum::DuplicateElement&);
     }
@@ -192,35 +192,35 @@ namespace gum_tests {
       gum::NodeGraphPart ngp;
       gum::NodeId        node = 6;
 
-      CHECK((ngp.bound()) == ((gum::NodeId)(0)));
-      CHECK((ngp._sizeHoles_()) == ((static_cast< gum::Size >(0))));
-      CHECK((ngp.nextNodeId()) == ((static_cast< gum::Size >(0))));
+      GUM_CHECK_EQ(ngp.bound(), (gum::NodeId)(0));
+      GUM_CHECK_EQ(ngp._sizeHoles_(), (static_cast< gum::Size >(0)));
+      GUM_CHECK_EQ(ngp.nextNodeId(), (static_cast< gum::Size >(0)));
       ngp.addNodeWithId(node);
-      CHECK((ngp.bound()) == ((gum::NodeId)(node + 1)));
-      CHECK((ngp._sizeHoles_()) == ((gum::Size(node))));
+      GUM_CHECK_EQ(ngp.bound(), (gum::NodeId)(node + 1));
+      GUM_CHECK_EQ(ngp._sizeHoles_(), (gum::Size(node)));
       CHECK(ngp.nextNodeId() < node);   // we fill one of the holes
       ngp.eraseNode(node);
-      CHECK((ngp._sizeHoles_()) == ((static_cast< gum::Size >(0))));
-      CHECK((ngp.nextNodeId()) == ((static_cast< gum::Size >(0))));
-      CHECK((ngp.bound()) == ((gum::NodeId)(0)));
+      GUM_CHECK_EQ(ngp._sizeHoles_(), (static_cast< gum::Size >(0)));
+      GUM_CHECK_EQ(ngp.nextNodeId(), (static_cast< gum::Size >(0)));
+      GUM_CHECK_EQ(ngp.bound(), (gum::NodeId)(0));
 
       // do we fill all the holes?
       gum::NodeGraphPart ngp2;
       ngp2.addNodeWithId(node);
 
       for (gum::Size i = 1; i < node; i++) {
-        CHECK((ngp2._sizeHoles_()) == ((gum::Size(node) + 1 - i)));
+        GUM_CHECK_EQ(ngp2._sizeHoles_(), (gum::Size(node) + 1 - i));
         CHECK(ngp2.addNode() < node);
       }
 
-      CHECK((ngp2._sizeHoles_()) == (static_cast< gum::Size >(1)));
+      GUM_CHECK_EQ(ngp2._sizeHoles_(), static_cast< gum::Size >(1));
 
-      CHECK((ngp2.nextNodeId()) == (gum::NodeId(node - 1)));
+      GUM_CHECK_EQ(ngp2.nextNodeId(), gum::NodeId(node - 1));
 
       ngp2.addNode();
 
-      CHECK((ngp2._sizeHoles_()) == (static_cast< gum::Size >(0)));
-      CHECK((ngp2.nextNodeId()) == (gum::NodeId(node + 1)));
+      GUM_CHECK_EQ(ngp2._sizeHoles_(), static_cast< gum::Size >(0));
+      GUM_CHECK_EQ(ngp2.nextNodeId(), gum::NodeId(node + 1));
     }
 
     static void testUnsafeIterator() {
@@ -237,7 +237,7 @@ namespace gum_tests {
       gum::NodeGraphPartIteratorSafe safe_iter = ngp.beginSafe();   // safe iterator needed here
 
       for (gum::NodeGraphPartIterator iter = ngp.begin(); iter != ngp.end(); ++iter, ++safe_iter) {
-        CHECK((*iter) == (*safe_iter));
+        GUM_CHECK_EQ(*iter, *safe_iter);
       }
 
       gum::Size nb = 0, nb2 = 0;
@@ -247,7 +247,7 @@ namespace gum_tests {
         nb2 += x;
       }
 
-      CHECK((nb) == (static_cast< gum::Size >(13)));
+      GUM_CHECK_EQ(nb, static_cast< gum::Size >(13));
       CHECK(nb2 > gum::Size(0));
     }
 
@@ -296,7 +296,7 @@ namespace gum_tests {
         }
       }
 
-      CHECK((cpt) == (max_cpt));
+      GUM_CHECK_EQ(cpt, max_cpt);
     }
 
     static void testIteratorAddNodes() {
@@ -304,18 +304,18 @@ namespace gum_tests {
 
       auto v = nodeset.addNodes(100);
       for (gum::NodeId i = 0; i < 100; i++)
-        CHECK((v[i]) == (i));
+        GUM_CHECK_EQ(v[i], i);
 
       for (int i = 0; i < 5; i++)
         nodeset.eraseNode(2 + i * 19);
 
       nodeset.addNodes(5);
 
-      CHECK((nodeset.size()) == (static_cast< gum::Size >(100)));
+      GUM_CHECK_EQ(nodeset.size(), static_cast< gum::Size >(100));
 
       gum::NodeId i = 0;
       for (auto n: nodeset.nodes())
-        CHECK((n) == (i++));
+        GUM_CHECK_EQ(n, i++);
 
       gum::NodeGraphPart nodeset2;
       nodeset2.addNodes(10);
@@ -396,15 +396,15 @@ namespace gum_tests {
 
     static void _ForTestCopy_(gum::NodeGraphPart& ngp) {
       gum::NodeGraphPart ngp2(ngp);
-      CHECK((ngp.toString()) == (ngp2.toString()));
+      GUM_CHECK_EQ(ngp.toString(), ngp2.toString());
 
       gum::NodeGraphPart ngp3 = ngp;
-      CHECK((ngp.toString()) == (ngp3.toString()));
+      GUM_CHECK_EQ(ngp.toString(), ngp3.toString());
 
       gum::NodeGraphPart ngp4;
       CHECK(ngp4.empty());
       ngp4 = ngp;
-      CHECK((ngp.toString()) == (ngp3.toString()));
+      GUM_CHECK_EQ(ngp.toString(), ngp3.toString());
     }
 
     static constexpr const int _NBR_PROFILING_NODES_ = 50000;

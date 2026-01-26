@@ -95,7 +95,7 @@ namespace gum {
   // creates and returns the partial instantiation of the table
   template < typename GUM_ELEMENT, template < typename > class TABLE >
   TABLE< GUM_ELEMENT >* MultiDimPartialInstantiation< GUM_ELEMENT, TABLE >::instantiate(
-      const TABLE< GUM_ELEMENT >&                       table,
+      const TABLE< GUM_ELEMENT >&                      table,
       const HashTable< const DiscreteVariable*, Idx >& inst_vars) {
     MultiDimImplementation< GUM_ELEMENT >* new_impl = partialInstantiation(table, inst_vars);
     return new TABLE< GUM_ELEMENT >(new_impl);
@@ -104,11 +104,11 @@ namespace gum {
   // creates and returns the partial instantiation of the table
   template < typename GUM_ELEMENT, template < typename > class TABLE >
   void MultiDimPartialInstantiation< GUM_ELEMENT, TABLE >::instantiate(
-      TABLE< GUM_ELEMENT >&                             container,
-      const TABLE< GUM_ELEMENT >&                       table,
+      TABLE< GUM_ELEMENT >&                            container,
+      const TABLE< GUM_ELEMENT >&                      table,
       const HashTable< const DiscreteVariable*, Idx >& inst_vars) {
     MultiDimImplementation< GUM_ELEMENT >* new_impl = partialInstantiation(table, inst_vars);
-    container                                      = *new_impl;
+    container                                       = *new_impl;
     delete new_impl;
   }
 

@@ -88,9 +88,11 @@ namespace gum {
     // ###################################################################
     /// @{
 
-    virtual MultiDimFunctionGraph< GUM_ELEMENT, ExactTerminalNodePolicy >* getFunctionInstance() = 0;
+    virtual MultiDimFunctionGraph< GUM_ELEMENT, ExactTerminalNodePolicy >* getFunctionInstance()
+        = 0;
     virtual MultiDimFunctionGraph< ArgMaxSet< GUM_ELEMENT, Idx >, SetTerminalNodePolicy >*
-        getArgMaxFunctionInstance()                                                            = 0;
+        getArgMaxFunctionInstance()
+        = 0;
     virtual MultiDimFunctionGraph< ActionSet, SetTerminalNodePolicy >* getAggregatorInstance() = 0;
 
     /// @}
@@ -109,9 +111,10 @@ namespace gum {
     // ==========================================================================
     virtual MultiDimFunctionGraph< GUM_ELEMENT >*
         regress(const MultiDimFunctionGraph< GUM_ELEMENT >* Vold,
-                Idx                                        actionId,
+                Idx                                         actionId,
                 const FMDP< GUM_ELEMENT >*                  fmdp,
-                const gum::VariableSet&                    elVarSeq) = 0;
+                const gum::VariableSet&                     elVarSeq)
+        = 0;
 
     // ==========================================================================
     /// @warning given vFunction and qAction are deleted, returns the new one
@@ -119,7 +122,8 @@ namespace gum {
     virtual MultiDimFunctionGraph< GUM_ELEMENT >*
         maximize(const MultiDimFunctionGraph< GUM_ELEMENT >* f1,
                  const MultiDimFunctionGraph< GUM_ELEMENT >* f2,
-                 Idx                                        del = 3) = 0;
+                 Idx                                         del = 3)
+        = 0;
 
     // ==========================================================================
     /// @warning Minimze the two given functions
@@ -127,7 +131,8 @@ namespace gum {
     virtual MultiDimFunctionGraph< GUM_ELEMENT >*
         minimize(const MultiDimFunctionGraph< GUM_ELEMENT >* f1,
                  const MultiDimFunctionGraph< GUM_ELEMENT >* f2,
-                 Idx                                        del = 3) = 0;
+                 Idx                                         del = 3)
+        = 0;
 
     // ==========================================================================
     /// @warning given f1 and f2 are deleted, returns the new one
@@ -135,7 +140,8 @@ namespace gum {
     virtual MultiDimFunctionGraph< GUM_ELEMENT >*
         multiply(const MultiDimFunctionGraph< GUM_ELEMENT >* f1,
                  const MultiDimFunctionGraph< GUM_ELEMENT >* f2,
-                 Idx                                        del = 3) = 0;
+                 Idx                                         del = 3)
+        = 0;
 
     // ==========================================================================
     /// @warning given vFunction and qAction are deleted, returns the new one
@@ -144,14 +150,17 @@ namespace gum {
         argmaximize(
             const MultiDimFunctionGraph< ArgMaxSet< GUM_ELEMENT, Idx >, SetTerminalNodePolicy >* f1,
             const MultiDimFunctionGraph< ArgMaxSet< GUM_ELEMENT, Idx >, SetTerminalNodePolicy >* f2,
-            Idx del = 3) = 0;
+            Idx del = 3)
+        = 0;
 
     // ==========================================================================
     /// @warning given function is deleted, returns the new one
     // ==========================================================================
-    virtual MultiDimFunctionGraph< GUM_ELEMENT >* add(const MultiDimFunctionGraph< GUM_ELEMENT >* f1,
-                                                     const MultiDimFunctionGraph< GUM_ELEMENT >* f2,
-                                                     Idx del = 1) = 0;
+    virtual MultiDimFunctionGraph< GUM_ELEMENT >*
+        add(const MultiDimFunctionGraph< GUM_ELEMENT >* f1,
+            const MultiDimFunctionGraph< GUM_ELEMENT >* f2,
+            Idx                                         del = 1)
+        = 0;
 
     // ==========================================================================
     /// @warning this time, nothing is deleted
@@ -159,7 +168,8 @@ namespace gum {
     virtual MultiDimFunctionGraph< GUM_ELEMENT >*
         subtract(const MultiDimFunctionGraph< GUM_ELEMENT >* f1,
                  const MultiDimFunctionGraph< GUM_ELEMENT >* f2,
-                 Idx                                        del = 0) = 0;
+                 Idx                                         del = 0)
+        = 0;
 
 
     /// @}
@@ -167,7 +177,7 @@ namespace gum {
     protected:
     INLINE void deleteFunctionGraph_(const MultiDimFunctionGraph< GUM_ELEMENT >* f1,
                                      const MultiDimFunctionGraph< GUM_ELEMENT >* f2,
-                                     Idx                                        del) {
+                                     Idx                                         del) {
       if (del == 1 || del == 3) delete f1;
       if (del >= 2) delete f2;
     }
@@ -175,7 +185,7 @@ namespace gum {
     INLINE void deleteFunctionGraph_(
         const MultiDimFunctionGraph< ArgMaxSet< GUM_ELEMENT, Idx >, SetTerminalNodePolicy >* f1,
         const MultiDimFunctionGraph< ArgMaxSet< GUM_ELEMENT, Idx >, SetTerminalNodePolicy >* f2,
-        Idx                                                                                 del) {
+        Idx                                                                                  del) {
       if (del == 1 || del == 3) delete f1;
       if (del >= 2) delete f2;
     }

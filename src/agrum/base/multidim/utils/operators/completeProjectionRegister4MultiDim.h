@@ -84,8 +84,8 @@ namespace gum {
   class CompleteProjectionRegister4MultiDim {
     public:
     /// the type of functions used by the register
-    using CompleteProjectionPtr
-        = GUM_ELEMENT (*)(const MultiDimImplementation< GUM_ELEMENT >*, Instantiation* instantiation);
+    using CompleteProjectionPtr = GUM_ELEMENT (*)(const MultiDimImplementation< GUM_ELEMENT >*,
+                                                  Instantiation* instantiation);
 
     // =========================================================================
     /// @name Accessors / Modifiers

@@ -75,7 +75,7 @@ namespace gum_tests {
       const auto res_dag   = mr.propagateToDAG(pdag);
 
       CHECK(res_cpdag.existsArc(2, 3));
-      CHECK((res_cpdag.edges().size()) == (0u));
+      GUM_CHECK_EQ(res_cpdag.edges().size(), 0u);
     }
 
     static void testcritereMinParents1() {

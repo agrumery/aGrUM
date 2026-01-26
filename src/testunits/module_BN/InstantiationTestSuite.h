@@ -64,7 +64,7 @@ namespace gum_tests {
     public:
     static void testCreation() {
       gum::Instantiation i;
-      CHECK((i.nbrDim()) == (static_cast< gum::Size >(0)));
+      GUM_CHECK_EQ(i.nbrDim(), static_cast< gum::Size >(0));
     }
 
     InstantiationTestSuite() {
@@ -98,23 +98,23 @@ namespace gum_tests {
 
       GUM_CHECK_ASSERT_THROWS_NOTHING(i << a << b << c);
       CHECK_THROWS_AS(i << a, const gum::DuplicateElement&);
-      CHECK((i.nbrDim()) == (static_cast< gum::Size >(3)));
-      CHECK((i.domainSize()) == ((gum::Size)(2 * 4 * 5)));
+      GUM_CHECK_EQ(i.nbrDim(), static_cast< gum::Size >(3));
+      GUM_CHECK_EQ(i.domainSize(), (gum::Size)(2 * 4 * 5));
 
       CHECK(i.contains(a));
 
-      CHECK((i.pos(b)) == (static_cast< gum::Size >(1)));
-      CHECK((&(i.variable(1))) == (&b));
+      GUM_CHECK_EQ(i.pos(b), static_cast< gum::Size >(1));
+      GUM_CHECK_EQ(&(i.variable(1)), &b);
 
       i.chgVal(a, 1).chgVal(b, 2).chgVal(c, 4);
-      CHECK((i.toString()) == ("<a:1|b:2|c:4>"));
+      GUM_CHECK_EQ(i.toString(), "<a:1|b:2|c:4>");
 
       GUM_CHECK_ASSERT_THROWS_NOTHING(i >> b);
       CHECK_THROWS_AS(i >> b, const gum::NotFound&);
-      CHECK((i.nbrDim()) == (static_cast< gum::Size >(2)));
-      CHECK((i.domainSize()) == ((gum::Size)(2 * 5)));
+      GUM_CHECK_EQ(i.nbrDim(), static_cast< gum::Size >(2));
+      GUM_CHECK_EQ(i.domainSize(), (gum::Size)(2 * 5));
 
-      CHECK((i.toString()) == ("<a:1|c:4>"));
+      GUM_CHECK_EQ(i.toString(), "<a:1|c:4>");
 
       CHECK(!i.contains(b));
     }
@@ -132,27 +132,27 @@ namespace gum_tests {
       for (nb = 0, i.setFirst(); !i.end(); ++i)
         nb++;
 
-      CHECK((nb) == (i.domainSize()));
+      GUM_CHECK_EQ(nb, i.domainSize());
 
       for (nb = 0, i.setFirstNotVar(b); !i.end(); i.incNotVar(b))
         nb++;
 
-      CHECK((nb) == ((gum::Size)(2 * 5)));
+      GUM_CHECK_EQ(nb, (gum::Size)(2 * 5));
 
       for (nb = 0, i.setFirstVar(b); !i.end(); i.incVar(b))
         nb++;
 
-      CHECK((nb) == (static_cast< gum::Size >(4)));
+      GUM_CHECK_EQ(nb, static_cast< gum::Size >(4));
 
       for (nb = 0, i.setFirstIn(j); !i.end(); i.incIn(j))
         nb++;
 
-      CHECK((nb) == ((gum::Size)(4 * 5)));
+      GUM_CHECK_EQ(nb, (gum::Size)(4 * 5));
 
       for (nb = 0, i.setFirstOut(j); !i.end(); i.incOut(j))
         nb++;
 
-      CHECK((nb) == (static_cast< gum::Size >(2)));
+      GUM_CHECK_EQ(nb, static_cast< gum::Size >(2));
     }
 
     static void testDecrementations() {
@@ -167,27 +167,27 @@ namespace gum_tests {
       for (nb = 0, i.setLast(); !i.rend(); --i)
         nb++;
 
-      CHECK((nb) == (i.domainSize()));
+      GUM_CHECK_EQ(nb, i.domainSize());
 
       for (nb = 0, i.setLastNotVar(b); !i.rend(); i.decNotVar(b))
         nb++;
 
-      CHECK((nb) == ((gum::Size)(2 * 5)));
+      GUM_CHECK_EQ(nb, (gum::Size)(2 * 5));
 
       for (nb = 0, i.setLastVar(b); !i.rend(); i.decVar(b))
         nb++;
 
-      CHECK((nb) == (static_cast< gum::Size >(4)));
+      GUM_CHECK_EQ(nb, static_cast< gum::Size >(4));
 
       for (nb = 0, i.setLastIn(j); !i.rend(); i.decIn(j))
         nb++;
 
-      CHECK((nb) == ((gum::Size)(4 * 5)));
+      GUM_CHECK_EQ(nb, (gum::Size)(4 * 5));
 
       for (nb = 0, i.setLastOut(j); !i.rend(); i.decOut(j))
         nb++;
 
-      CHECK((nb) == (static_cast< gum::Size >(2)));
+      GUM_CHECK_EQ(nb, static_cast< gum::Size >(2));
     }
 
     static void testReordering() {
@@ -200,17 +200,17 @@ namespace gum_tests {
 
       // reordering in {in|de}crementation
       i.setFirst();
-      CHECK((i.toString()) == ("<a:0|b:0|c:0>"));
+      GUM_CHECK_EQ(i.toString(), "<a:0|b:0|c:0>");
       i.inc();
-      CHECK((i.toString()) == ("<a:1|b:0|c:0>"));
+      GUM_CHECK_EQ(i.toString(), "<a:1|b:0|c:0>");
       i.incIn(j);
-      CHECK((i.toString()) == ("<a:1|b:0|c:1>"));
+      GUM_CHECK_EQ(i.toString(), "<a:1|b:0|c:1>");
       i.decIn(j);
-      CHECK((i.toString()) == ("<a:1|b:0|c:0>"));
+      GUM_CHECK_EQ(i.toString(), "<a:1|b:0|c:0>");
 
       // reordering
       i.reorder(j);
-      CHECK((i.toString()) == ("<c:0|a:1|b:0>"));
+      GUM_CHECK_EQ(i.toString(), "<c:0|a:1|b:0>");
     }
 
     void testReordering_cpt() const {
@@ -231,7 +231,7 @@ namespace gum_tests {
         gum::Instantiation instcomp(inst);
 
         instcomp.reorder(Order);
-        CHECK((pot[inst]) == (pot[instcomp]));
+        GUM_CHECK_EQ(pot[inst], pot[instcomp]);
       }
 
       gum::Instantiation inst2(pot);
@@ -240,7 +240,7 @@ namespace gum_tests {
 
       for (inst2.setFirst(); !inst2.end(); ++inst2) {
         inst.setVals(inst2);
-        CHECK((pot[inst2]) == (pot[inst]));
+        GUM_CHECK_EQ(pot[inst2], pot[inst]);
       }
     }
 
@@ -254,7 +254,7 @@ namespace gum_tests {
 
       gum::Instantiation i(t);
       i.setFirst();
-      CHECK((i.toString()) == ("<a:0|b:0|c:0>"));
+      GUM_CHECK_EQ(i.toString(), "<a:0|b:0|c:0>");
       CHECK_THROWS_AS(i.actAsSlave(t2), const gum::OperationNotAllowed&);
 
       gum::Instantiation j;
@@ -263,10 +263,10 @@ namespace gum_tests {
       j << a;
       j.chgVal(a, 1);
       CHECK(j.actAsSlave(t));
-      CHECK((j.toString()) == ("<a:1|b:0|c:0>"));
+      GUM_CHECK_EQ(j.toString(), "<a:1|b:0|c:0>");
       j.forgetMaster();
       CHECK(j.actAsSlave(t2));
-      CHECK((j.toString()) == ("<b:0|a:1|c:0>"));
+      GUM_CHECK_EQ(j.toString(), "<b:0|a:1|c:0>");
 
       gum::DiscretizedVariable< double > d("d", "Discretized variable");
       ;
@@ -289,16 +289,16 @@ namespace gum_tests {
 
       i.chgVal(b, 2).chgVal(c, 3).chgVal(d, 1);
       j.chgVal(b, 1).chgVal(a, 0).chgVal(c, 1);
-      CHECK((i.toString()) == ("<b:2|c:3|d:1>"));
-      CHECK((j.toString()) == ("<b:1|a:0|c:1>"));
+      GUM_CHECK_EQ(i.toString(), "<b:2|c:3|d:1>");
+      GUM_CHECK_EQ(j.toString(), "<b:1|a:0|c:1>");
 
       j.setVals(i);
-      CHECK((j.toString()) == ("<b:2|a:0|c:3>"));
+      GUM_CHECK_EQ(j.toString(), "<b:2|a:0|c:3>");
 
       j.chgVal("a", "1");
       j.chgVal("b", 0);
       j.chgVal("c", "2");
-      CHECK((j.toString()) == ("<b:0|a:1|c:2>"));
+      GUM_CHECK_EQ(j.toString(), "<b:0|a:1|c:2>");
     }
 
     static void testOperatorEgal() {
@@ -314,22 +314,22 @@ namespace gum_tests {
 
       // free = slave
       GUM_CHECK_ASSERT_THROWS_NOTHING(j = ip);
-      CHECK((p.toOffset(j)) == (p.toOffset(ip)));
-      CHECK((j.toString()) == (ip.toString()));
+      GUM_CHECK_EQ(p.toOffset(j), p.toOffset(ip));
+      GUM_CHECK_EQ(j.toString(), ip.toString());
 
       // slave_same_master=slave_same_master
       GUM_CHECK_ASSERT_THROWS_NOTHING(ip2 = ip);
-      CHECK((p.toOffset(ip2)) == (p.toOffset(ip)));
-      CHECK((ip2.toString()) == (ip.toString()));
+      GUM_CHECK_EQ(p.toOffset(ip2), p.toOffset(ip));
+      GUM_CHECK_EQ(ip2.toString(), ip.toString());
 
       // slave = free - same variables set
       k << b << a << c;
       ++k;
       GUM_CHECK_ASSERT_THROWS_NOTHING(ip2 = k);
-      CHECK((p.toOffset(k)) == (p.toOffset(ip2)));
-      CHECK((k.val(a)) == (ip2.val(a)));
-      CHECK((k.val(b)) == (ip2.val(b)));
-      CHECK((k.val(c)) == (ip2.val(c)));
+      GUM_CHECK_EQ(p.toOffset(k), p.toOffset(ip2));
+      GUM_CHECK_EQ(k.val(a), ip2.val(a));
+      GUM_CHECK_EQ(k.val(b), ip2.val(b));
+      GUM_CHECK_EQ(k.val(c), ip2.val(c));
 
       // slave = free- not same variables set
       CHECK_THROWS_AS(iq = k, const gum::OperationNotAllowed&);
@@ -349,7 +349,7 @@ namespace gum_tests {
       for (i1.setFirst(); !i1.end(); ++i1) {
         gum::Size l = p.toOffset(i1);
         p.fromOffset(i2, l);
-        CHECK((p.toOffset(i1)) == (p.toOffset(i2)));
+        GUM_CHECK_EQ(p.toOffset(i1), p.toOffset(i2));
       }
     }
 
@@ -363,15 +363,15 @@ namespace gum_tests {
       i2.setFirst();
       ++i2;   // for i2 to be !=i1 in the first iteration
       for (i1.setFirst(); !i1.end(); ++i1) {
-        CHECK((i1) != (i2));
+        GUM_CHECK_NE(i1, i2);
         p.fromOffset(i2, p.toOffset(i1));
-        CHECK((i1) == (i2));
+        GUM_CHECK_EQ(i1, i2);
       }
 
       gum::Instantiation j;
-      CHECK((i1) != (j));
-      j.inc();              // j is in overflow
-      CHECK((i1) == (j));   // both are in overflow => equals
+      GUM_CHECK_NE(i1, j);
+      j.inc();               // j is in overflow
+      GUM_CHECK_EQ(i1, j);   // both are in overflow => equals
     }
 
     private:

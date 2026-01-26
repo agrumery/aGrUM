@@ -321,7 +321,7 @@ namespace gum {
 
   template < typename GUM_ELEMENT >
   INLINE void FMDPFactory< GUM_ELEMENT >::addTransition(const std::string&        var,
-                                                       const MultiDimAdressable* transition) {
+                                                        const MultiDimAdressable* transition) {
     const MultiDimImplementation< GUM_ELEMENT >* t
         = reinterpret_cast< const MultiDimImplementation< GUM_ELEMENT >* >(transition);
 

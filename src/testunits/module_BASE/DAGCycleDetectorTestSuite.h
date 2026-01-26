@@ -226,24 +226,24 @@ namespace gum_tests {
       detector.setDAG(g);
 
       std::vector< gum::DAGCycleDetector::Change > changes;
-      CHECK((detector.hasCycleFromModifications(changes)) == (false));
+      GUM_CHECK_EQ(detector.hasCycleFromModifications(changes), false);
 
       changes.push_back(gum::DAGCycleDetector::ArcAdd(id5, id1));
-      CHECK((detector.hasCycleFromModifications(changes)) == (true));
+      GUM_CHECK_EQ(detector.hasCycleFromModifications(changes), true);
 
       changes.clear();
       changes.push_back(gum::DAGCycleDetector::ArcAdd(id2, id1));
       changes.push_back(gum::DAGCycleDetector::ArcAdd(id5, id1));
       changes.push_back(gum::DAGCycleDetector::ArcReverse(id4, id5));
       changes.push_back(gum::DAGCycleDetector::ArcDel(id1, id3));
-      CHECK((detector.hasCycleFromModifications(changes)) == (false));
+      GUM_CHECK_EQ(detector.hasCycleFromModifications(changes), false);
 
       changes.clear();
       changes.push_back(gum::DAGCycleDetector::ArcAdd(id2, id1));
       changes.push_back(gum::DAGCycleDetector::ArcAdd(id5, id1));
       changes.push_back(gum::DAGCycleDetector::ArcDel(id1, id3));
       changes.push_back(gum::DAGCycleDetector::ArcReverse(id4, id5));
-      CHECK((detector.hasCycleFromModifications(changes)) == (false));
+      GUM_CHECK_EQ(detector.hasCycleFromModifications(changes), false);
     }
 
     static void testG1() {
@@ -274,7 +274,7 @@ namespace gum_tests {
       changes.push_back(gum::DAGCycleDetector::ArcReverse(3, 0));
       changes.push_back(gum::DAGCycleDetector::ArcAdd(4, 3));
 
-      CHECK((detector.hasCycleFromModifications(changes)) == (true));
+      GUM_CHECK_EQ(detector.hasCycleFromModifications(changes), true);
     }
 
     static void testRandom() {
@@ -287,7 +287,7 @@ namespace gum_tests {
         detector.setDAG(g);
 
         changes.clear();
-        CHECK((detector.hasCycleFromModifications(changes)) == (false));
+        GUM_CHECK_EQ(detector.hasCycleFromModifications(changes), false);
 
         for (gum::Idx j = 0; j < 20; ++j) {
           gum::Size length = gum::randomValue(11);
@@ -321,7 +321,7 @@ namespace gum_tests {
             } catch (gum::InvalidDirectedCycle&) { hasCycle = true; }
           }
 
-          CHECK((detector.hasCycleFromModifications(changes)) == (hasCycle));
+          GUM_CHECK_EQ(detector.hasCycleFromModifications(changes), hasCycle);
         }
       }
     }
@@ -336,11 +336,11 @@ namespace gum_tests {
         detector1.setDAG(g);
         detector2.setDAG(g);
 
-        CHECK((detector1) == (detector2));
+        GUM_CHECK_EQ(detector1, detector2);
 
         for (gum::Idx j = 0; j < 30; ++j) {
           _createChanges_(g, changes, del_add_changes, 1);
-          CHECK((changes.size()) == (static_cast< gum::Size >(1)));
+          GUM_CHECK_EQ(changes.size(), static_cast< gum::Size >(1));
           if (detector1.hasCycleFromModifications(changes)) {
             --j;
             continue;
@@ -369,7 +369,7 @@ namespace gum_tests {
             detector2.setDAG(g);
           }
 
-          CHECK((detector1) == (detector2));
+          GUM_CHECK_EQ(detector1, detector2);
         }
       }
     }
@@ -384,11 +384,11 @@ namespace gum_tests {
         detector1.setDAG(g);
         detector2.setDAG(g);
 
-        CHECK((detector1) == (detector2));
+        GUM_CHECK_EQ(detector1, detector2);
 
         for (gum::Idx j = 0; j < 30; ++j) {
           _createChanges_(g, changes, del_add_changes, 1);
-          CHECK((changes.size()) == (static_cast< gum::Size >(1)));
+          GUM_CHECK_EQ(changes.size(), static_cast< gum::Size >(1));
 
           for (auto& chgt: changes) {
             switch (chgt.type()) {

@@ -201,7 +201,8 @@ namespace gum {
        * first, there is the target node, then the conditioning nodes (in the
        * order in which they were specified). */
       virtual std::vector< double > parameters(const NodeId                 target_node,
-                                               const std::vector< NodeId >& conditioning_nodes) = 0;
+                                               const std::vector< NodeId >& conditioning_nodes)
+          = 0;
 
       /**
        * @brief returns the parameters of a CPT as well as its log-likelihood
@@ -217,7 +218,8 @@ namespace gum {
        */
       virtual std::pair< std::vector< double >, double >
           parametersAndLogLikelihood(const NodeId                 target_node,
-                                     const std::vector< NodeId >& conditioning_nodes) = 0;
+                                     const std::vector< NodeId >& conditioning_nodes)
+          = 0;
 
       /**
        * @brief sets a CPT's parameters and, possibly, return its log-likelihhod

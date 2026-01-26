@@ -107,26 +107,26 @@ namespace gum_tests {
       gum::SpanningForestPrim prim(&g, &cost);
 
       const gum::UndiGraph& g2 = prim.spanningForest();
-      CHECK((g2.sizeNodes()) == (12U));
-      CHECK((g2.sizeEdges()) == (9U));
-      CHECK((g2.existsEdge(id1, id2)) == (true));
-      CHECK((g2.existsEdge(id1, id6)) == (true));
-      CHECK((g2.existsEdge(id2, id4)) == (true));
-      CHECK((g2.existsEdge(id3, id4)) == (true));
-      CHECK((g2.existsEdge(id5, id6)) == (true));
-      CHECK((g2.existsEdge(id7, id8)) == (true));
-      CHECK((g2.existsEdge(id8, id10)) == (true));
-      CHECK((g2.existsEdge(id9, id10)) == (true));
-      CHECK((g2.existsEdge(id10, id11)) == (true));
+      GUM_CHECK_EQ(g2.sizeNodes(), 12U);
+      GUM_CHECK_EQ(g2.sizeEdges(), 9U);
+      GUM_CHECK_EQ(g2.existsEdge(id1, id2), true);
+      GUM_CHECK_EQ(g2.existsEdge(id1, id6), true);
+      GUM_CHECK_EQ(g2.existsEdge(id2, id4), true);
+      GUM_CHECK_EQ(g2.existsEdge(id3, id4), true);
+      GUM_CHECK_EQ(g2.existsEdge(id5, id6), true);
+      GUM_CHECK_EQ(g2.existsEdge(id7, id8), true);
+      GUM_CHECK_EQ(g2.existsEdge(id8, id10), true);
+      GUM_CHECK_EQ(g2.existsEdge(id9, id10), true);
+      GUM_CHECK_EQ(g2.existsEdge(id10, id11), true);
 
       gum::SpanningForestPrim prim2(&g, &cost);
-      CHECK((prim2.costOfSpanningForest()) == (53));
+      GUM_CHECK_EQ(prim2.costOfSpanningForest(), 53);
       const gum::EdgeSet& edges2 = prim2.edgesInSpanningForest();
-      CHECK((edges2.size()) == (9U));
+      GUM_CHECK_EQ(edges2.size(), 9U);
 
       gum::SpanningForestPrim prim3(&g, &cost);
       const gum::EdgeSet&     edges3 = prim3.edgesInSpanningForest();
-      CHECK((edges3.size()) == (9U));
+      GUM_CHECK_EQ(edges3.size(), 9U);
     }   // namespace gum_tests
   };
 

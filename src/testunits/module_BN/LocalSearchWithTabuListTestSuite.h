@@ -126,7 +126,7 @@ namespace gum_tests {
       try {
         gum::BayesNet< double > bn  = search.learnBN< double >(selector, estimator);
         gum::BayesNet< double > bn2 = search.learnBN< double >(selector, estimator);
-        CHECK((bn.dag().arcs().size()) == (static_cast< gum::Size >(10)));
+        GUM_CHECK_EQ(bn.dag().arcs().size(), static_cast< gum::Size >(10));
       } catch (gum::Exception& e) { GUM_SHOWERROR(e); }
     }   // namespace gum_tests
 

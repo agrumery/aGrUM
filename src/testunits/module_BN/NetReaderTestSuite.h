@@ -94,11 +94,11 @@ namespace gum_tests {
       CHECK_THROWS_AS(nbrErr = reader.proceed(), const gum::IOError&);
 
       CHECK(!nbrErr);
-      CHECK((reader.warnings()) == (static_cast< gum::Size >(0)));
+      GUM_CHECK_EQ(reader.warnings(), static_cast< gum::Size >(0));
       // 0 warnings : no properties
-      CHECK((reader.errors()) == (static_cast< gum::Size >(0)));
+      GUM_CHECK_EQ(reader.errors(), static_cast< gum::Size >(0));
 
-      CHECK((net) != (nullptr));
+      GUM_CHECK_NE(net, nullptr);
 
       if (net != nullptr) {
         CHECK(net->empty());
@@ -120,12 +120,12 @@ namespace gum_tests {
 
       GUM_CHECK_ASSERT_THROWS_NOTHING(nbrErr = reader.proceed());
 
-      CHECK((nbrErr) == (static_cast< gum::Size >(0)));
-      CHECK((reader.warnings()) == (static_cast< gum::Size >(0)));
+      GUM_CHECK_EQ(nbrErr, static_cast< gum::Size >(0));
+      GUM_CHECK_EQ(reader.warnings(), static_cast< gum::Size >(0));
       // 0 warnings : no properties
-      CHECK((reader.errors()) == (static_cast< gum::Size >(0)));
+      GUM_CHECK_EQ(reader.errors(), static_cast< gum::Size >(0));
 
-      CHECK((net) != (nullptr));
+      GUM_CHECK_NE(net, nullptr);
 
       if (net != nullptr) {
         CHECK(!net->empty());
@@ -147,12 +147,12 @@ namespace gum_tests {
 
       GUM_CHECK_ASSERT_THROWS_NOTHING(nbrErr = reader.proceed());
 
-      CHECK((nbrErr) == (static_cast< gum::Size >(0)));
-      CHECK((reader.warnings()) == (static_cast< gum::Size >(0)));
+      GUM_CHECK_EQ(nbrErr, static_cast< gum::Size >(0));
+      GUM_CHECK_EQ(reader.warnings(), static_cast< gum::Size >(0));
       // 0 warnings : no properties
-      CHECK((reader.errors()) == (static_cast< gum::Size >(0)));
+      GUM_CHECK_EQ(reader.errors(), static_cast< gum::Size >(0));
 
-      CHECK((net) != (nullptr));
+      GUM_CHECK_NE(net, nullptr);
 
       if (net != nullptr) {
         CHECK(!net->empty());
@@ -174,12 +174,12 @@ namespace gum_tests {
 
       GUM_CHECK_ASSERT_THROWS_NOTHING(nbrErr = reader.proceed());
 
-      CHECK((nbrErr) == (static_cast< gum::Size >(0)));
-      CHECK((reader.warnings()) == (static_cast< gum::Size >(0)));
+      GUM_CHECK_EQ(nbrErr, static_cast< gum::Size >(0));
+      GUM_CHECK_EQ(reader.warnings(), static_cast< gum::Size >(0));
       // 0 warnings : no properties
-      CHECK((reader.errors()) == (static_cast< gum::Size >(0)));
+      GUM_CHECK_EQ(reader.errors(), static_cast< gum::Size >(0));
 
-      CHECK((net) != (nullptr));
+      GUM_CHECK_NE(net, nullptr);
 
       if (net != nullptr) {
         CHECK(!net->empty());
@@ -201,13 +201,13 @@ namespace gum_tests {
 
       GUM_CHECK_ASSERT_THROWS_NOTHING(nbrErr = reader.proceed());
 
-      CHECK((nbrErr) == (static_cast< gum::Size >(0)));
-      CHECK((reader.warnings()) == (static_cast< gum::Size >(0)));
+      GUM_CHECK_EQ(nbrErr, static_cast< gum::Size >(0));
+      GUM_CHECK_EQ(reader.warnings(), static_cast< gum::Size >(0));
       // 0 warnings : no properties
-      CHECK((reader.errors()) == (static_cast< gum::Size >(0)));
+      GUM_CHECK_EQ(reader.errors(), static_cast< gum::Size >(0));
       reader.showElegantErrors();
 
-      CHECK((net) != (nullptr));
+      GUM_CHECK_NE(net, nullptr);
 
       if (net != nullptr) {
         CHECK(!net->empty());

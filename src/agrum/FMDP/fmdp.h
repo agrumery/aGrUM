@@ -169,8 +169,8 @@ namespace gum {
      * @throw DuplicateElement if variable already has a transition for this
      * action
      */
-    void addTransitionForAction(Idx                                         actionId,
-                                const DiscreteVariable*                     var,
+    void addTransitionForAction(Idx                                          actionId,
+                                const DiscreteVariable*                      var,
                                 const MultiDimImplementation< GUM_ELEMENT >* transition);
 
     /**
@@ -178,7 +178,7 @@ namespace gum {
      * @throw NotFound if var does not exists
      * @throw DuplicateElement if variable already has a default transition
      */
-    void addTransition(const DiscreteVariable*                     var,
+    void addTransition(const DiscreteVariable*                      var,
                        const MultiDimImplementation< GUM_ELEMENT >* transition) {
       this->addTransitionForAction(0, var, transition);
     }
@@ -188,7 +188,7 @@ namespace gum {
      * given action
      */
     const MultiDimImplementation< GUM_ELEMENT >* transition(Idx                     actionId,
-                                                           const DiscreteVariable* v) const;
+                                                            const DiscreteVariable* v) const;
 
     /// @}
 

@@ -122,11 +122,11 @@ namespace gum_tests {
       // Act
       GUM_CHECK_ASSERT_THROWS_NOTHING(factory.parseStream(input, output));
       // Assert
-      CHECK((output.str()) == (""));
-      CHECK((simple_printers->systems().size()) == (static_cast< gum::Size >(1)));
+      GUM_CHECK_EQ(output.str(), "");
+      GUM_CHECK_EQ(simple_printers->systems().size(), static_cast< gum::Size >(1));
       CHECK(simple_printers->isSystem("Foo"));
       const auto& foo = simple_printers->getSystem("Foo");
-      CHECK((foo.size()) == (static_cast< gum::Size >(0)));
+      GUM_CHECK_EQ(foo.size(), static_cast< gum::Size >(0));
     }
 
     static void testMicroSystem() {
@@ -149,11 +149,11 @@ namespace gum_tests {
       // Act
       GUM_CHECK_ASSERT_THROWS_NOTHING(factory.parseStream(input, output));
       // Assert
-      CHECK((output.str()) == (""));
-      CHECK((simple_printers->systems().size()) == (static_cast< gum::Size >(1)));
+      GUM_CHECK_EQ(output.str(), "");
+      GUM_CHECK_EQ(simple_printers->systems().size(), static_cast< gum::Size >(1));
       CHECK(simple_printers->isSystem("microSys"));
       const auto& foo = simple_printers->getSystem("microSys");
-      CHECK((foo.size()) == (static_cast< gum::Size >(5)));
+      GUM_CHECK_EQ(foo.size(), static_cast< gum::Size >(5));
     }
 
     static void testMicroSystemWithError1() {
@@ -169,8 +169,8 @@ namespace gum_tests {
       std::getline(output, line);
       std::stringstream msg;
       msg << "|2 col 12| Error : invalid declaration";
-      CHECK((line) == (msg.str()));
-      CHECK((simple_printers->systems().size()) == (static_cast< gum::Size >(0)));
+      GUM_CHECK_EQ(line, msg.str());
+      GUM_CHECK_EQ(simple_printers->systems().size(), static_cast< gum::Size >(0));
     }
 
     static void testMicroSystemWithError2() {
@@ -186,8 +186,8 @@ namespace gum_tests {
       std::getline(output, line);
       std::stringstream msg;
       msg << "|2 col 1| Error : Unknown class FOO";
-      CHECK((line) == (msg.str()));
-      CHECK((simple_printers->systems().size()) == (static_cast< gum::Size >(0)));
+      GUM_CHECK_EQ(line, msg.str());
+      GUM_CHECK_EQ(simple_printers->systems().size(), static_cast< gum::Size >(0));
     }
 
     static void testMicroSystemWithError3() {
@@ -203,8 +203,8 @@ namespace gum_tests {
       std::getline(output, line);
       std::stringstream msg;
       msg << "|1 col 8| Error : label expected";
-      CHECK((line) == (msg.str()));
-      CHECK((simple_printers->systems().size()) == (static_cast< gum::Size >(0)));
+      GUM_CHECK_EQ(line, msg.str());
+      GUM_CHECK_EQ(simple_printers->systems().size(), static_cast< gum::Size >(0));
     }
 
     static void testMicroSystemWithError4() {
@@ -223,8 +223,8 @@ namespace gum_tests {
       std::getline(output, line);
       std::stringstream msg;
       msg << "|3 col 1| Error : semicolon expected";
-      CHECK((line) == (msg.str()));
-      CHECK((simple_printers->systems().size()) == (static_cast< gum::Size >(0)));
+      GUM_CHECK_EQ(line, msg.str());
+      GUM_CHECK_EQ(simple_printers->systems().size(), static_cast< gum::Size >(0));
     }
 
     static void testMicroSystemWithError5() {
@@ -246,8 +246,8 @@ namespace gum_tests {
       std::getline(output, line);
       std::stringstream msg;
       msg << "|6 col 1| Error : Unknown class r.power";
-      CHECK((line) == (msg.str()));
-      CHECK((simple_printers->systems().size()) == (static_cast< gum::Size >(0)));
+      GUM_CHECK_EQ(line, msg.str());
+      GUM_CHECK_EQ(simple_printers->systems().size(), static_cast< gum::Size >(0));
     }
 
     static void testMicroSystemWithError6() {
@@ -273,8 +273,8 @@ namespace gum_tests {
       std::stringstream msg;
       msg << "|1 col 8| Error : Could not instantiate the system, some "
              "reference slots must be unassigned";
-      CHECK((line) == (msg.str()));
-      CHECK((simple_printers->systems().size()) == (static_cast< gum::Size >(1)));
+      GUM_CHECK_EQ(line, msg.str());
+      GUM_CHECK_EQ(simple_printers->systems().size(), static_cast< gum::Size >(1));
     }
 
     static void testMicroSystemWithError7() {
@@ -300,8 +300,8 @@ namespace gum_tests {
       std::getline(output, line);
       std::stringstream msg;
       msg << "|5 col 1| Error : Instance p already exists";
-      CHECK((line) == (msg.str()));
-      CHECK((simple_printers->systems().size()) == (static_cast< gum::Size >(0)));
+      GUM_CHECK_EQ(line, msg.str());
+      GUM_CHECK_EQ(simple_printers->systems().size(), static_cast< gum::Size >(0));
     }
 
     static void testSmallSystem() {
@@ -339,11 +339,11 @@ namespace gum_tests {
       // Act
       GUM_CHECK_ASSERT_THROWS_NOTHING(factory.parseStream(input, output));
       // Assert
-      CHECK((output.str()) == (""));
-      CHECK((simple_printers->systems().size()) == (static_cast< gum::Size >(1)));
+      GUM_CHECK_EQ(output.str(), "");
+      GUM_CHECK_EQ(simple_printers->systems().size(), static_cast< gum::Size >(1));
       CHECK(simple_printers->isSystem("smallSys"));
       const auto& foo = simple_printers->getSystem("smallSys");
-      CHECK((foo.size()) == (static_cast< gum::Size >(10)));
+      GUM_CHECK_EQ(foo.size(), static_cast< gum::Size >(10));
     }
 
     static void testComplexSystem() {
@@ -375,11 +375,11 @@ namespace gum_tests {
       // Act
       GUM_CHECK_ASSERT_THROWS_NOTHING(factory.parseStream(input, output));
       // Assert
-      CHECK((output.str()) == (""));
-      CHECK((complex_printers->systems().size()) == (static_cast< gum::Size >(1)));
+      GUM_CHECK_EQ(output.str(), "");
+      GUM_CHECK_EQ(complex_printers->systems().size(), static_cast< gum::Size >(1));
       CHECK(complex_printers->isSystem("aSys"));
       const auto& foo = complex_printers->getSystem("aSys");
-      CHECK((foo.size()) == (static_cast< gum::Size >(18)));
+      GUM_CHECK_EQ(foo.size(), static_cast< gum::Size >(18));
     }
   };
 

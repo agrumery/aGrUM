@@ -74,14 +74,14 @@ namespace gum_tests {
       gum::NetReader< double > netreader(&netbn, filenet);
       netreader.proceed();
 
-      CHECK((netbn.size()) == (bifbn.size()));
-      CHECK((netbn.sizeArcs()) == (bifbn.sizeArcs()));
-      CHECK((netbn.toString()) == (bifbn.toString()));
+      GUM_CHECK_EQ(netbn.size(), bifbn.size());
+      GUM_CHECK_EQ(netbn.sizeArcs(), bifbn.sizeArcs());
+      GUM_CHECK_EQ(netbn.toString(), bifbn.toString());
       for (const auto n: bifbn.nodes()) {
         const gum::Tensor< double > p(bifbn.cpt(n));
         p.fillWith(netbn.cpt(bifbn.variable(n).name()));
         double err = (bifbn.cpt(n) - p).abs().max();
-        CHECK((err) <= (1e-6));
+        GUM_CHECK_LE(err, 1e-6);
       }
 
       gum::NetWriter< double > netwriter;
@@ -92,24 +92,24 @@ namespace gum_tests {
       gum::NetReader< double > netreader2(&netbn2, netwritefile);
       netreader2.proceed();
 
-      CHECK((netbn.size()) == (netbn2.size()));
-      CHECK((netbn.sizeArcs()) == (netbn2.sizeArcs()));
-      CHECK((netbn.toString()) == (netbn2.toString()));
+      GUM_CHECK_EQ(netbn.size(), netbn2.size());
+      GUM_CHECK_EQ(netbn.sizeArcs(), netbn2.sizeArcs());
+      GUM_CHECK_EQ(netbn.toString(), netbn2.toString());
       for (const auto n: netbn2.nodes()) {
         const gum::Tensor< double > p(netbn2.cpt(n));
         p.fillWith(netbn.cpt(netbn2.variable(n).name()));
         double err = (netbn2.cpt(n) - p).abs().max();
-        CHECK((err) < (1e-6));
+        GUM_CHECK_LT(err, 1e-6);
       }
 
-      CHECK((bifbn.size()) == (netbn2.size()));
-      CHECK((bifbn.sizeArcs()) == (netbn2.sizeArcs()));
-      CHECK((bifbn.toString()) == (netbn2.toString()));
+      GUM_CHECK_EQ(bifbn.size(), netbn2.size());
+      GUM_CHECK_EQ(bifbn.sizeArcs(), netbn2.sizeArcs());
+      GUM_CHECK_EQ(bifbn.toString(), netbn2.toString());
       for (const auto n: netbn2.nodes()) {
         const gum::Tensor< double > p(netbn2.cpt(n));
         p.fillWith(bifbn.cpt(netbn2.variable(n).name()));
         double err = (netbn2.cpt(n) - p).abs().max();
-        CHECK((err) < (1e-6));
+        GUM_CHECK_LT(err, 1e-6);
       }
     }   // namespace gum_tests
   };

@@ -739,7 +739,8 @@ namespace gum {
             .getWithDefault(atoi(time_step.c_str()), 0)
             = elt.second;   // we iterate with min iterators
         expectationsMax.getWithDefault(var_name, innerMap())
-            .getWithDefault(atoi(time_step.c_str()), 0) = expectationMax_[elt.first];
+            .getWithDefault(atoi(time_step.c_str()), 0)
+            = expectationMax_[elt.first];
       }
 
       for (const auto& elt: expectationsMin) {

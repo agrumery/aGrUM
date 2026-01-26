@@ -85,7 +85,7 @@ namespace gum {
      */
     TreeOperator(const MultiDimFunctionGraph< GUM_ELEMENT, TerminalNodePolicy >* dt1,
                  const MultiDimFunctionGraph< GUM_ELEMENT, TerminalNodePolicy >* dt2,
-                 const HashTable< const DiscreteVariable*, Idx >                givenContext);
+                 const HashTable< const DiscreteVariable*, Idx >                 givenContext);
 
     /**
      * @brief Default destructor.

@@ -419,7 +419,8 @@ namespace gum {
     /// @name Constructor and destructor
     // ========================================================================
     /// @{
-    MultiDimFunctionGraphROManager(MultiDimFunctionGraph< GUM_ELEMENT, TerminalNodePolicy >* master);
+    MultiDimFunctionGraphROManager(
+        MultiDimFunctionGraph< GUM_ELEMENT, TerminalNodePolicy >* master);
 
     public:
     ~MultiDimFunctionGraphROManager();

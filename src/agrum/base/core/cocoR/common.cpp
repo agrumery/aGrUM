@@ -408,25 +408,23 @@ namespace gum {
     bufCapacity_ = (bufLen_ > 0) ? bufLen_ : MIN_BUFFER_LENGTH;
     buf_         = new unsigned char[bufCapacity_];
 
-    if (fileLen_ > 0)
-      SetPos(0);
-    else
-      bufPos_ = 0;
+    if (fileLen_ > 0) SetPos(0);
+    else bufPos_ = 0;
 
     // If entire file fits in buffer, close the file handle
     if (bufLen_ == fileLen_ && CanSeek()) Close();
   }
 
   StreamBuffer::StreamBuffer(StreamBuffer* b) {
-    buf_         = b->buf_;
-    bufCapacity_ = b->bufCapacity_;
-    b->buf_      = nullptr;
-    bufStart_    = b->bufStart_;
-    bufLen_      = b->bufLen_;
-    fileLen_     = b->fileLen_;
-    bufPos_      = b->bufPos_;
-    stream_      = b->stream_;
-    b->stream_   = nullptr;
+    buf_          = b->buf_;
+    bufCapacity_  = b->bufCapacity_;
+    b->buf_       = nullptr;
+    bufStart_     = b->bufStart_;
+    bufLen_       = b->bufLen_;
+    fileLen_      = b->fileLen_;
+    bufPos_       = b->bufPos_;
+    stream_       = b->stream_;
+    b->stream_    = nullptr;
     isUserStream_ = b->isUserStream_;
   }
 
@@ -507,7 +505,7 @@ namespace gum {
     int free = bufCapacity_ - bufLen_;
 
     if (free == 0) {
-      bufCapacity_        = bufLen_ * 2;
+      bufCapacity_          = bufLen_ * 2;
       unsigned char* newBuf = new unsigned char[bufCapacity_];
       memcpy(newBuf, buf_, bufLen_ * sizeof(unsigned char));
       delete[] buf_;
@@ -590,7 +588,7 @@ namespace gum {
     }
   }
 
-#  else   // POSIX (Linux, macOS, etc.)
+#  else    // POSIX (Linux, macOS, etc.)
 
   MappedBuffer::MappedBuffer(const char* fileName) {
     mappedData_ = nullptr;

@@ -82,7 +82,7 @@ namespace gum {
      */
     MultiDimFunctionGraphProjector(
         const MultiDimFunctionGraph< GUM_ELEMENT, TerminalNodePolicy >* src,
-        const gum::VariableSet&                                        delVars,
+        const gum::VariableSet&                                         delVars,
         const GUM_ELEMENT                                               neutral);
 
     /**

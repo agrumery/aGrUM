@@ -223,8 +223,8 @@ namespace gum {
              template < typename > class TerminalNodePolicy >
   INLINE Idx MultiDimFunctionGraphOperator< GUM_ELEMENT, FUNCTOR, TerminalNodePolicy >::_distance_(
       const MultiDimFunctionGraph< GUM_ELEMENT, TerminalNodePolicy >* d,
-      const DiscreteVariable*                                        from,
-      const DiscreteVariable*                                        to) {
+      const DiscreteVariable*                                         from,
+      const DiscreteVariable*                                         to) {
     Idx posi = d->variablesSequence().pos(from);
     Idx dist = 1;
 
@@ -386,7 +386,7 @@ namespace gum {
     NodeId origDG1 = currentSituation.DG1Node(), origDG2 = currentSituation.DG2Node();
 
     const MultiDimFunctionGraph< GUM_ELEMENT, TerminalNodePolicy >* leaddg     = nullptr;
-    NodeId                                                         leadNodeId = 0;
+    NodeId                                                          leadNodeId = 0;
     Idx leadVarPos        = _rd_->variablesSequence().size();
     using SetNodeFunction = void (O4DGContext::*)(const NodeId&);
 

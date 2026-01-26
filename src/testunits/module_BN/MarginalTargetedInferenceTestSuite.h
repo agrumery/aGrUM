@@ -74,25 +74,25 @@ namespace gum_tests {
       auto bn = gum::BayesNet< double >::fastPrototype("A->B->C->D;A->E->D;F->B;C->H;");
 
       gum::LazyPropagation< double > lazy(&bn);
-      CHECK((lazy.targets()) == (gum::NodeSet({0, 1, 2, 3, 4, 5, 6})));
+      GUM_CHECK_EQ(lazy.targets(), gum::NodeSet({0, 1, 2, 3, 4, 5, 6}));
       lazy.addTarget("A");
-      CHECK((lazy.targets()) == (gum::NodeSet({0})));
+      GUM_CHECK_EQ(lazy.targets(), gum::NodeSet({0}));
       lazy.addTarget("B");
-      CHECK((lazy.targets()) == (gum::NodeSet({0, 1})));
+      GUM_CHECK_EQ(lazy.targets(), gum::NodeSet({0, 1}));
 
       gum::ShaferShenoyInference< double > shafer(&bn);
-      CHECK((shafer.targets()) == (gum::NodeSet({0, 1, 2, 3, 4, 5, 6})));
+      GUM_CHECK_EQ(shafer.targets(), gum::NodeSet({0, 1, 2, 3, 4, 5, 6}));
       shafer.addTarget("A");
-      CHECK((shafer.targets()) == (gum::NodeSet({0})));
+      GUM_CHECK_EQ(shafer.targets(), gum::NodeSet({0}));
       shafer.addTarget("B");
-      CHECK((shafer.targets()) == (gum::NodeSet({0, 1})));
+      GUM_CHECK_EQ(shafer.targets(), gum::NodeSet({0, 1}));
 
       gum::VariableElimination< double > ve(&bn);
-      CHECK((ve.targets()) == (gum::NodeSet({0, 1, 2, 3, 4, 5, 6})));
+      GUM_CHECK_EQ(ve.targets(), gum::NodeSet({0, 1, 2, 3, 4, 5, 6}));
       ve.addTarget("A");
-      CHECK((ve.targets()) == (gum::NodeSet({0})));
+      GUM_CHECK_EQ(ve.targets(), gum::NodeSet({0}));
       ve.addTarget("B");
-      CHECK((ve.targets()) == (gum::NodeSet({0, 1})));
+      GUM_CHECK_EQ(ve.targets(), gum::NodeSet({0, 1}));
     }   // namespace gum_tests
   };
 

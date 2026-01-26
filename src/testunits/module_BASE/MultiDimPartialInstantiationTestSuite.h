@@ -102,12 +102,6 @@ namespace gum_tests {
     // ==========================================================================
     /// initialize randomly a table
     // ==========================================================================
-    static void randomInitPPointer(gum::Tensor< double* >& t) {
-      gum::Instantiation i(t);
-
-      for (i.setFirst(); !i.end(); ++i)
-        t.set(i, new double(gum::randomProba()));
-    }
 
     template < typename T >
     static void pointerDelete(gum::MultiDimArray< T* >* t) {
@@ -740,62 +734,6 @@ namespace gum_tests {
         delete vars[i];
     }
 
-    static void test_tensor_pointer() {
-      std::vector< gum::LabelizedVariable* > vars(10);
-
-      for (gum::Idx i = 0; i < 10; ++i) {
-        std::stringstream str;
-        str << "x" << i;
-        std::string s = str.str();
-        vars[i]       = new gum::LabelizedVariable(s, s, 4);
-      }
-
-      gum::Tensor< double* > t1;
-
-      t1 << *(vars[0]) << *(vars[1]) << *(vars[2]) << *(vars[3]) << *(vars[4]) << *(vars[5])
-         << *(vars[6]) << *(vars[7]) << *(vars[8]) << *(vars[9]);
-      randomInitPPointer(t1);
-
-      gum::HashTable< const gum::DiscreteVariable*, gum::Idx > inst_set;
-      inst_set.insert(vars[2], 0);
-      inst_set.insert(vars[3], 2);
-      inst_set.insert(vars[5], 1);
-      inst_set.insert(vars[8], 3);
-      inst_set.insert(vars[9], 2);
-
-      gum::Tensor< double* >* t2 = new gum::Tensor< double* >(partialInstantiation(t1, inst_set));
-      gum::Tensor< double* >* t3 = manual_instantiate(t1, inst_set);
-
-      CHECK(equal(*t2, *t3));
-      pointerDelete(t2);
-      pointerDelete(t3);
-
-      inst_set.clear();
-      inst_set.insert(vars[6], 1);
-      inst_set.insert(vars[7], 0);
-      inst_set.insert(vars[8], 2);
-      inst_set.insert(vars[9], 3);
-      t2 = new gum::Tensor< double* >(partialInstantiation(t1, inst_set));
-      t3 = manual_instantiate(t1, inst_set);
-      CHECK(equal(*t2, *t3));
-      pointerDelete(t2);
-      pointerDelete(t3);
-
-      inst_set.clear();
-      inst_set.insert(vars[0], 1);
-      inst_set.insert(vars[1], 0);
-      inst_set.insert(vars[2], 2);
-      inst_set.insert(vars[3], 3);
-      t2 = new gum::Tensor< double* >(partialInstantiation(t1, inst_set));
-      t3 = manual_instantiate(t1, inst_set);
-      CHECK(equal(*t2, *t3));
-      pointerDelete(t2);
-      pointerDelete(t3);
-
-      for (gum::Idx i = 0; i < vars.size(); ++i)
-        delete vars[i];
-    }
-
     static void test_multidimPartialInstantiation() {
       std::vector< gum::LabelizedVariable* > vars(10);
 
@@ -862,7 +800,6 @@ namespace gum_tests {
   GUM_TEST_ACTIF(_partialInstantiation_init)
   GUM_TEST_ACTIF(_partialInstantiationPointer_init)
   GUM_TEST_ACTIF(_tensor)
-  GUM_TEST_ACTIF(_tensor_pointer)
   GUM_TEST_ACTIF(_multidimPartialInstantiation)
 
 } /* namespace gum_tests */

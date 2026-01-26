@@ -67,7 +67,7 @@ namespace gum {
 
   template < typename GUM_ELEMENT >
   MultiDimArray< GUM_ELEMENT >* GUM_MULTI_DIM_PARTIAL_INSTANTIATION_NAME(
-      const MultiDimArray< GUM_ELEMENT >*               table,
+      const MultiDimArray< GUM_ELEMENT >*              table,
       const HashTable< const DiscreteVariable*, Idx >& inst_vars)
 #  endif
 

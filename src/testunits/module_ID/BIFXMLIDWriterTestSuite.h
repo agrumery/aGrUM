@@ -262,7 +262,7 @@ namespace gum_tests {
 
       for (const auto n: net.nodes()) {
         const std::string& name = net.variable(n).name();
-        CHECK((net.variable(name).toFast()) == (net2.variable(name).toFast()));
+        GUM_CHECK_EQ(net.variable(name).toFast(), net2.variable(name).toFast());
         if (net.isChanceNode(n)) { GUM_CHECK_TENSOR_ALMOST_EQUALS(net.cpt(name), net2.cpt(name)); }
         if (net.isUtilityNode(n)) {
           GUM_CHECK_TENSOR_ALMOST_EQUALS(net.utility(name), net2.utility(name));

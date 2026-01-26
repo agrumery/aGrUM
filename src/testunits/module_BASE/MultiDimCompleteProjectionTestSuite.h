@@ -95,16 +95,6 @@ namespace gum_tests {
         t.set(i, rand() * 100000.0f / float(RAND_MAX));
     }
 
-    // ==========================================================================
-    /// initialize randomly a table
-    // ==========================================================================
-    static void randomInitPPointer(gum::Tensor< double* >& t) {
-      gum::Instantiation i(t);
-
-      for (i.setFirst(); !i.end(); ++i)
-        t.set(i, new double(rand() * 100000.0f / float(RAND_MAX)));
-    }
-
     template < typename T >
     static void pointerDelete(gum::MultiDimArray< T* >* t) {
       if (t->variablesSequence().size()) {
@@ -189,13 +179,6 @@ namespace gum_tests {
       return result;
     }
 
-    static double* local_projmax(const gum::Tensor< double* >& table,
-                                 gum::Instantiation&           instantiation) {
-      const gum::MultiDimArray< double* >& impl
-          = dynamic_cast< const gum::MultiDimArray< double* >& >(*(table.content()));
-      return local_projmax(impl, instantiation);
-    }
-
     static double local_projsum(const gum::MultiDimArray< double >& table) {
       gum::Instantiation inst(table);
       double             result = 0;
@@ -236,7 +219,7 @@ namespace gum_tests {
       double             t2 = projectMaxMultiDimArray(&t1);
       double             t3 = local_projmax(t1, inst);
 
-      CHECK((t2) == (t3));
+      GUM_CHECK_EQ(t2, t3);
 
       gum::Instantiation inst2(t1);
       t2 = projectMaxMultiDimArray(&t1, &inst2);
@@ -244,7 +227,7 @@ namespace gum_tests {
 
       t2 = projectSumMultiDimArray(&t1);
       t3 = local_projsum(t1);
-      CHECK((t2) == (t3));
+      GUM_CHECK_EQ(t2, t3);
 
       for (gum::Idx i = 0; i < vars.size(); ++i)
         delete vars[i];
@@ -272,14 +255,14 @@ namespace gum_tests {
       double             t2 = projectMaxMultiDimArray(&t1);
       double             t3 = local_projmax(tt1, inst);
 
-      CHECK((t2) == (t3));
+      GUM_CHECK_EQ(t2, t3);
 
       gum::Instantiation inst2(t1);
       t2 = projectMaxMultiDimImplementation(&t1, &inst2);
       CHECK(local_equal(inst2, inst));
 
       t2 = projectMaxMultiDimImplementation(&t1);
-      CHECK((t2) == (t3));
+      GUM_CHECK_EQ(t2, t3);
 
       gum::Instantiation inst3(t1);
       t2 = projectMaxMultiDimImplementation(&t1, &inst3);
@@ -309,13 +292,13 @@ namespace gum_tests {
       double*            t2 = projectMaxMultiDimArray4Pointers(t1);
       double*            t3 = local_projmax(*t1, inst);
 
-      CHECK((*t2) == (*t3));
-      CHECK((t2) == (t3));
+      GUM_CHECK_EQ(*t2, *t3);
+      GUM_CHECK_EQ(t2, t3);
 
       gum::Instantiation inst2(t1);
       t2 = projectMaxMultiDimArray4Pointers(t1, &inst2);
       CHECK(local_equal(inst2, inst));
-      CHECK((t2) == (t3));
+      GUM_CHECK_EQ(t2, t3);
 
       pointerDelete(t1);
 
@@ -344,13 +327,13 @@ namespace gum_tests {
       double*            t2 = projectMaxMultiDimArray4Pointers(t1);
       double*            t3 = local_projmax(*tt1, inst);
 
-      CHECK((*t2) == (*t3));
-      CHECK((t2) == (t3));
+      GUM_CHECK_EQ(*t2, *t3);
+      GUM_CHECK_EQ(t2, t3);
 
       gum::Instantiation inst2(*t1);
       t2 = projectMaxMultiDimArray4Pointers(t1, &inst2);
       CHECK(local_equal(inst2, inst));
-      CHECK((t2) == (t3));
+      GUM_CHECK_EQ(t2, t3);
 
       pointerDelete(tt1);
 
@@ -381,37 +364,12 @@ namespace gum_tests {
       gum::Instantiation inst(t1);
       double             t2 = projectMax(t1);
       double             t3 = local_projmax(t1, inst);
-      CHECK((t2) == (t3));
+      GUM_CHECK_EQ(t2, t3);
 
       gum::Instantiation inst2(t1);
       t2 = projectMax(t1, &inst2);
-      CHECK((t2) == (t3));
+      GUM_CHECK_EQ(t2, t3);
       CHECK(local_equal(inst2, inst));
-
-      for (gum::Idx i = 0; i < vars.size(); ++i)
-        delete vars[i];
-    }
-
-    static void test_tensors() {
-      std::vector< gum::LabelizedVariable* > vars(10);
-
-      for (gum::Idx i = 0; i < 10; ++i) {
-        std::stringstream str;
-        str << "x" << i;
-        std::string s = str.str();
-        vars[i]       = new gum::LabelizedVariable(s, s, 3);
-      }
-
-      gum::Tensor< double > t1;
-
-      t1 << *(vars[0]) << *(vars[1]) << *(vars[2]) << *(vars[3]) << *(vars[4]) << *(vars[5])
-         << *(vars[6]) << *(vars[7]) << *(vars[8]) << *(vars[9]);
-      randomInitP(t1);
-
-      gum::Instantiation inst(t1);
-      double             t2 = t1.max();
-      double             t3 = local_projmax(t1, inst);
-      CHECK((t2) == (t3));
 
       for (gum::Idx i = 0; i < vars.size(); ++i)
         delete vars[i];
@@ -441,13 +399,13 @@ namespace gum_tests {
       double*            t2 = projectMax(*t1);
       double*            t3 = local_projmax(*t1, inst);
 
-      CHECK((*t2) == (*t3));
-      CHECK((t2) == (t3));
+      GUM_CHECK_EQ(*t2, *t3);
+      GUM_CHECK_EQ(t2, t3);
 
       gum::Instantiation inst2(t1);
       t2 = projectMax(*t1, &inst2);
       CHECK(local_equal(inst2, inst));
-      CHECK((t2) == (t3));
+      GUM_CHECK_EQ(t2, t3);
 
       pointerDelete(t1);
 
@@ -479,15 +437,15 @@ namespace gum_tests {
       double             t2 = Proj.project(t1);
       double             t3 = local_projmax(t1, inst);
 
-      CHECK((t2) == (t3));
+      GUM_CHECK_EQ(t2, t3);
 
       gum::Instantiation inst2(t1);
       t2 = Proj.project(t1, &inst2);
-      CHECK((t2) == (t3));
+      GUM_CHECK_EQ(t2, t3);
 
       Proj.setProjectFunction(myMax);
       t2 = Proj.project(t1);
-      CHECK((t2) == (t3));
+      GUM_CHECK_EQ(t2, t3);
 
       for (gum::Idx i = 0; i < vars.size(); ++i)
         delete vars[i];
@@ -499,7 +457,6 @@ namespace gum_tests {
   GUM_TEST_ACTIF(_MultiDimArrayPointer)
   GUM_TEST_ACTIF(_MultiDimImplementationPointer)
   GUM_TEST_ACTIF(_projections_init)
-  GUM_TEST_ACTIF(_tensors)
   GUM_TEST_ACTIF(_Pointer_init)
   GUM_TEST_ACTIF(_MultiDimCompleteProjection)
 

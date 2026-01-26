@@ -85,9 +85,9 @@ namespace gum {
   // ===========================================================================
   template < typename GUM_ELEMENT >
   INLINE StructuredPlaner< GUM_ELEMENT >::StructuredPlaner(IOperatorStrategy< GUM_ELEMENT >* opi,
-                                                          GUM_ELEMENT discountFactor,
-                                                          GUM_ELEMENT epsilon,
-                                                          bool       verbose) :
+                                                           GUM_ELEMENT discountFactor,
+                                                           GUM_ELEMENT epsilon,
+                                                           bool        verbose) :
       discountFactor_(discountFactor), operator_(opi), verbose_(verbose) {
     GUM_CONSTRUCTOR(StructuredPlaner);
 
@@ -270,7 +270,7 @@ namespace gum {
     // *****************************************************************************************
     // Main loop
     // *****************************************************************************************
-    Idx        nbIte = 0;
+    Idx         nbIte = 0;
     GUM_ELEMENT gap   = _threshold_ + 1;
     while ((gap > _threshold_) && (nbIte < nbStep)) {
       ++nbIte;
@@ -280,7 +280,7 @@ namespace gum {
       // *****************************************************************************************
       // Then we compare new value function and the old one
       MultiDimFunctionGraph< GUM_ELEMENT >* deltaV = operator_->subtract(newVFunction, vFunction_);
-      gap                                         = 0;
+      gap                                          = 0;
 
       for (deltaV->beginValues(); deltaV->hasValue(); deltaV->nextValue())
         if (gap < fabs(deltaV->value())) gap = fabs(deltaV->value());
@@ -354,9 +354,9 @@ namespace gum {
   // Evals the q function for current fmdp action
   // ===========================================================================
   template < typename GUM_ELEMENT >
-  MultiDimFunctionGraph< GUM_ELEMENT >*
-      StructuredPlaner< GUM_ELEMENT >::evalQaction_(const MultiDimFunctionGraph< GUM_ELEMENT >* Vold,
-                                                   Idx actionId) {
+  MultiDimFunctionGraph< GUM_ELEMENT >* StructuredPlaner< GUM_ELEMENT >::evalQaction_(
+      const MultiDimFunctionGraph< GUM_ELEMENT >* Vold,
+      Idx                                         actionId) {
     // ******************************************************************************
     // Initialisation :
     // Creating a copy of last Vfunction to deduce from the new Qaction
@@ -407,7 +407,7 @@ namespace gum {
   template < typename GUM_ELEMENT >
   MultiDimFunctionGraph< GUM_ELEMENT >*
       StructuredPlaner< GUM_ELEMENT >::addReward_(MultiDimFunctionGraph< GUM_ELEMENT >* Vold,
-                                                 Idx                                  actionId) {
+                                                  Idx                                   actionId) {
     // *****************************************************************************************
     // ... we multiply the result by the discount factor, ...
     MultiDimFunctionGraph< GUM_ELEMENT >* newVFunction = operator_->getFunctionInstance();
@@ -474,7 +474,7 @@ namespace gum {
   MultiDimFunctionGraph< ArgMaxSet< GUM_ELEMENT, Idx >, SetTerminalNodePolicy >*
       StructuredPlaner< GUM_ELEMENT >::makeArgMax_(
           const MultiDimFunctionGraph< GUM_ELEMENT >* qAction,
-          Idx                                        actionId) {
+          Idx                                         actionId) {
     MultiDimFunctionGraph< ArgMaxSet< GUM_ELEMENT, Idx >, SetTerminalNodePolicy >* amcpy
         = operator_->getArgMaxFunctionInstance();
 
@@ -498,11 +498,11 @@ namespace gum {
   // ==========================================================================
   template < typename GUM_ELEMENT >
   NodeId StructuredPlaner< GUM_ELEMENT >::_recurArgMaxCopy_(
-      NodeId                                                                        currentNodeId,
-      Idx                                                                           actionId,
+      NodeId                                                                         currentNodeId,
+      Idx                                                                            actionId,
       const MultiDimFunctionGraph< GUM_ELEMENT >*                                    src,
       MultiDimFunctionGraph< ArgMaxSet< GUM_ELEMENT, Idx >, SetTerminalNodePolicy >* argMaxCpy,
-      HashTable< NodeId, NodeId >&                                                  visitedNodes) {
+      HashTable< NodeId, NodeId >&                                                   visitedNodes) {
     if (visitedNodes.exists(currentNodeId)) return visitedNodes[currentNodeId];
 
     NodeId nody;
@@ -602,7 +602,8 @@ namespace gum {
   // Extract from an ArgMaxSet the associated ActionSet
   // ==========================================================================
   template < typename GUM_ELEMENT >
-  void StructuredPlaner< GUM_ELEMENT >::_transferActionIds_(const ArgMaxSet< GUM_ELEMENT, Idx >& src,
+  void
+      StructuredPlaner< GUM_ELEMENT >::_transferActionIds_(const ArgMaxSet< GUM_ELEMENT, Idx >& src,
                                                            ActionSet& dest) {
     for (auto idi = src.beginSafe(); idi != src.endSafe(); ++idi)
       dest += *idi;

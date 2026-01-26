@@ -60,6 +60,18 @@
 #  define GUM_VERY_SMALL_ERROR (1e-10)
 
 // ============================================================================
+// Comparison macros to avoid clangd warning:
+// "Overloaded operator << has higher precedence than comparison operator"
+// Usage: GUM_CHECK_EQ(a, b) instead of CHECK((a) == (b))
+// ============================================================================
+#  define GUM_CHECK_EQ(a, b) CHECK(((a) == (b)))
+#  define GUM_CHECK_NE(a, b) CHECK(((a) != (b)))
+#  define GUM_CHECK_LT(a, b) CHECK(((a) < (b)))
+#  define GUM_CHECK_LE(a, b) CHECK(((a) <= (b)))
+#  define GUM_CHECK_GT(a, b) CHECK(((a) > (b)))
+#  define GUM_CHECK_GE(a, b) CHECK(((a) >= (b)))
+
+// ============================================================================
 // aGrUM-specific assertion macro for exception handling with error display
 // ============================================================================
 #  define GUM_CHECK_ASSERT_THROWS_NOTHING(block)    \

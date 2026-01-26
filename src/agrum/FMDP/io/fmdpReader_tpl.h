@@ -59,7 +59,7 @@ namespace gum {
    */
   template < typename GUM_ELEMENT >
   INLINE FMDPReader< GUM_ELEMENT >::FMDPReader(FMDP< GUM_ELEMENT >* FMDP,
-                                              const std::string&  filename) {
+                                               const std::string&   filename) {
     GUM_CONSTRUCTOR(FMDPReader);
   }
 

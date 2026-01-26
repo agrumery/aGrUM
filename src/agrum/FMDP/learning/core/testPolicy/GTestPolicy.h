@@ -187,7 +187,7 @@ namespace gum {
     private:
     /// The contingency table used to keeps records of all observation
     ContingencyTable< Idx, GUM_ELEMENT > _conTab_;
-    mutable double                      _GStat_;
+    mutable double                       _GStat_;
   };
 
 }   // End of namespace gum

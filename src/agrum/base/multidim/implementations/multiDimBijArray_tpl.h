@@ -64,8 +64,8 @@ namespace gum {
   }
 
   template < typename GUM_ELEMENT >
-  MultiDimBijArray< GUM_ELEMENT >::MultiDimBijArray(const VarBijection&                bijection,
-                                                   const MultiDimArray< GUM_ELEMENT >& array) :
+  MultiDimBijArray< GUM_ELEMENT >::MultiDimBijArray(const VarBijection&                 bijection,
+                                                    const MultiDimArray< GUM_ELEMENT >& array) :
       MultiDimWithOffset< GUM_ELEMENT >(), _array_(array), _name_("MultiDimBijArray") {
     GUM_CONSTRUCTOR(MultiDimBijArray);
 
@@ -75,8 +75,8 @@ namespace gum {
   }
 
   template < typename GUM_ELEMENT >
-  MultiDimBijArray< GUM_ELEMENT >::MultiDimBijArray(const VarBijection&                   bijection,
-                                                   const MultiDimBijArray< GUM_ELEMENT >& array) :
+  MultiDimBijArray< GUM_ELEMENT >::MultiDimBijArray(const VarBijection& bijection,
+                                                    const MultiDimBijArray< GUM_ELEMENT >& array) :
       MultiDimWithOffset< GUM_ELEMENT >(), _array_(array._array_), _name_("MultiDimBijArray") {
     GUM_CONSTRUCTOR(MultiDimBijArray);
 
@@ -142,7 +142,7 @@ namespace gum {
 
   template < typename GUM_ELEMENT >
   INLINE void MultiDimBijArray< GUM_ELEMENT >::set(const Instantiation& i,
-                                                  const GUM_ELEMENT&    value) const {
+                                                   const GUM_ELEMENT&   value) const {
     GUM_ERROR(OperationNotAllowed, "MultiDimBijArray<GUM_ELEMENT> are read only.")
   }
 
@@ -164,7 +164,7 @@ namespace gum {
 
   template < typename GUM_ELEMENT >
   INLINE void MultiDimBijArray< GUM_ELEMENT >::replace_(const DiscreteVariable* x,
-                                                       const DiscreteVariable* y) {
+                                                        const DiscreteVariable* y) {
     MultiDimImplementation< GUM_ELEMENT >::replace_(x, y);
   }
 

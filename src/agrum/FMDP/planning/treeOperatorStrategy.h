@@ -120,9 +120,9 @@ namespace gum {
     /// @return qAction : the computed Q(s,a)
     // ==========================================================================
     MultiDimFunctionGraph< GUM_ELEMENT >* regress(const MultiDimFunctionGraph< GUM_ELEMENT >* Vold,
-                                                 Idx                       actionId,
-                                                 const FMDP< GUM_ELEMENT >* fmdp,
-                                                 const gum::VariableSet&   elVarSeq);
+                                                  Idx                        actionId,
+                                                  const FMDP< GUM_ELEMENT >* fmdp,
+                                                  const gum::VariableSet&    elVarSeq);
 
     // ==========================================================================
     /// @warning given vFunction and qAction are deleted, returns the new one
@@ -130,7 +130,7 @@ namespace gum {
     virtual MultiDimFunctionGraph< GUM_ELEMENT >*
         maximize(const MultiDimFunctionGraph< GUM_ELEMENT >* f1,
                  const MultiDimFunctionGraph< GUM_ELEMENT >* f2,
-                 Idx                                        del = 3);
+                 Idx                                         del = 3);
 
     // ==========================================================================
     /// @warning Minimze the two given functions
@@ -138,7 +138,7 @@ namespace gum {
     virtual MultiDimFunctionGraph< GUM_ELEMENT >*
         minimize(const MultiDimFunctionGraph< GUM_ELEMENT >* f1,
                  const MultiDimFunctionGraph< GUM_ELEMENT >* f2,
-                 Idx                                        del = 3);
+                 Idx                                         del = 3);
 
     // ==========================================================================
     /// @warning given f1 and f2 are deleted, returns the new one
@@ -146,7 +146,7 @@ namespace gum {
     virtual MultiDimFunctionGraph< GUM_ELEMENT >*
         multiply(const MultiDimFunctionGraph< GUM_ELEMENT >* f1,
                  const MultiDimFunctionGraph< GUM_ELEMENT >* f2,
-                 Idx                                        del = 3);
+                 Idx                                         del = 3);
 
     // ==========================================================================
     /// @warning given vFunction and qAction are deleted, returns the new one
@@ -160,9 +160,10 @@ namespace gum {
     // ==========================================================================
     /// @warning given function is deleted, returns the new one
     // ==========================================================================
-    virtual MultiDimFunctionGraph< GUM_ELEMENT >* add(const MultiDimFunctionGraph< GUM_ELEMENT >* f1,
-                                                     const MultiDimFunctionGraph< GUM_ELEMENT >* f2,
-                                                     Idx del = 1);
+    virtual MultiDimFunctionGraph< GUM_ELEMENT >*
+        add(const MultiDimFunctionGraph< GUM_ELEMENT >* f1,
+            const MultiDimFunctionGraph< GUM_ELEMENT >* f2,
+            Idx                                         del = 1);
 
     // ==========================================================================
     /// @warning this time, nothing is deleted
@@ -170,7 +171,7 @@ namespace gum {
     virtual MultiDimFunctionGraph< GUM_ELEMENT >*
         subtract(const MultiDimFunctionGraph< GUM_ELEMENT >* f1,
                  const MultiDimFunctionGraph< GUM_ELEMENT >* f2,
-                 Idx                                        del = 0);
+                 Idx                                         del = 0);
 
 
     /// @}

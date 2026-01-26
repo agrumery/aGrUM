@@ -266,38 +266,38 @@ namespace gum_tests {
       g1.addArc(g1.addNode(), g1.addNode());
       buildDAG(g1);   // 7 nodes/7 arcs for g1
 
-      CHECK((c1.nodes()) == (7));
-      CHECK((c1.arcs()) == (7));
-      CHECK((c2.nodes()) == (7 + 5));
-      CHECK((c2.arcs()) == (7 + 6));
+      GUM_CHECK_EQ(c1.nodes(), 7);
+      GUM_CHECK_EQ(c1.arcs(), 7);
+      GUM_CHECK_EQ(c2.nodes(), 7 + 5);
+      GUM_CHECK_EQ(c2.arcs(), 7 + 6);
 
       g1.eraseNode(id5);   // -1 nodes/-3 arcs for g1
 
-      CHECK((c1.nodes()) == (6));
-      CHECK((c1.arcs()) == (4));
-      CHECK((c2.nodes()) == (6 + 5));
-      CHECK((c2.arcs()) == (4 + 6));
+      GUM_CHECK_EQ(c1.nodes(), 6);
+      GUM_CHECK_EQ(c1.arcs(), 4);
+      GUM_CHECK_EQ(c2.nodes(), 6 + 5);
+      GUM_CHECK_EQ(c2.arcs(), 4 + 6);
 
       g1.eraseArc(gum::Arc(id1, id3));   // 6 nodes, 3 arcs
 
-      CHECK((c1.nodes()) == (6));
-      CHECK((c1.arcs()) == (3));
-      CHECK((c2.nodes()) == (6 + 5));
-      CHECK((c2.arcs()) == (3 + 6));
+      GUM_CHECK_EQ(c1.nodes(), 6);
+      GUM_CHECK_EQ(c1.arcs(), 3);
+      GUM_CHECK_EQ(c2.nodes(), 6 + 5);
+      GUM_CHECK_EQ(c2.arcs(), 3 + 6);
 
       g1.clear();   // 0 node, 0 arc
 
-      CHECK((c1.nodes()) == (0));
-      CHECK((c1.arcs()) == (0));
-      CHECK((c2.nodes()) == (0 + 5));
-      CHECK((c2.arcs()) == (0 + 6));
+      GUM_CHECK_EQ(c1.nodes(), 0);
+      GUM_CHECK_EQ(c1.arcs(), 0);
+      GUM_CHECK_EQ(c2.nodes(), 0 + 5);
+      GUM_CHECK_EQ(c2.arcs(), 0 + 6);
 
       g2.clearArcs();   // 5 nodes, 0 arc
 
-      CHECK((c1.nodes()) == (0));
-      CHECK((c1.arcs()) == (0));
-      CHECK((c2.nodes()) == (0 + 5));
-      CHECK((c2.arcs()) == (0 + 0));
+      GUM_CHECK_EQ(c1.nodes(), 0);
+      GUM_CHECK_EQ(c1.arcs(), 0);
+      GUM_CHECK_EQ(c2.nodes(), 0 + 5);
+      GUM_CHECK_EQ(c2.arcs(), 0 + 0);
     }
 
     void testUndiGraph() {
@@ -331,38 +331,38 @@ namespace gum_tests {
       g1.addEdge(g1.addNode(), g1.addNode());
       buildUndiGraph(g1);   // 7 nodes/7 edges for g1
 
-      CHECK((c1.nodes()) == (7));
-      CHECK((c1.edges()) == (7));
-      CHECK((c2.nodes()) == (7 + 5));
-      CHECK((c2.edges()) == (7 + 6));
+      GUM_CHECK_EQ(c1.nodes(), 7);
+      GUM_CHECK_EQ(c1.edges(), 7);
+      GUM_CHECK_EQ(c2.nodes(), 7 + 5);
+      GUM_CHECK_EQ(c2.edges(), 7 + 6);
 
       g1.eraseNode(id5);   // -1 nodes/-3 edges for g1
 
-      CHECK((c1.nodes()) == (6));
-      CHECK((c1.edges()) == (4));
-      CHECK((c2.nodes()) == (6 + 5));
-      CHECK((c2.edges()) == (4 + 6));
+      GUM_CHECK_EQ(c1.nodes(), 6);
+      GUM_CHECK_EQ(c1.edges(), 4);
+      GUM_CHECK_EQ(c2.nodes(), 6 + 5);
+      GUM_CHECK_EQ(c2.edges(), 4 + 6);
 
       g1.eraseEdge(gum::Edge(id1, id3));   // 6 nodes, 3 edges
 
-      CHECK((c1.nodes()) == (6));
-      CHECK((c1.edges()) == (3));
-      CHECK((c2.nodes()) == (6 + 5));
-      CHECK((c2.edges()) == (3 + 6));
+      GUM_CHECK_EQ(c1.nodes(), 6);
+      GUM_CHECK_EQ(c1.edges(), 3);
+      GUM_CHECK_EQ(c2.nodes(), 6 + 5);
+      GUM_CHECK_EQ(c2.edges(), 3 + 6);
 
       g1.clear();   // 0 node, 0 arc
 
-      CHECK((c1.nodes()) == (0));
-      CHECK((c1.edges()) == (0));
-      CHECK((c2.nodes()) == (0 + 5));
-      CHECK((c2.edges()) == (0 + 6));
+      GUM_CHECK_EQ(c1.nodes(), 0);
+      GUM_CHECK_EQ(c1.edges(), 0);
+      GUM_CHECK_EQ(c2.nodes(), 0 + 5);
+      GUM_CHECK_EQ(c2.edges(), 0 + 6);
 
       g2.clearEdges();   // 5 nodes, 0 arc
 
-      CHECK((c1.nodes()) == (0));
-      CHECK((c1.edges()) == (0));
-      CHECK((c2.nodes()) == (0 + 5));
-      CHECK((c2.edges()) == (0 + 0));
+      GUM_CHECK_EQ(c1.nodes(), 0);
+      GUM_CHECK_EQ(c1.edges(), 0);
+      GUM_CHECK_EQ(c2.nodes(), 0 + 5);
+      GUM_CHECK_EQ(c2.edges(), 0 + 0);
     }
 
     void testMixedGraph() {
@@ -419,56 +419,56 @@ namespace gum_tests {
       g1.addEdge(g1.addNode(), g1.addNode());
       buildMixedGraph(g1);   // 7 nodes/4 edges / 3 arcs for g1
 
-      CHECK((c1.nodes()) == (7));
-      CHECK((c1.edges()) == (4));
-      CHECK((c1.arcs()) == (3));
-      CHECK((c2.nodes()) == (7 + 5));
-      CHECK((c2.edges()) == (4 + 3));
-      CHECK((c2.arcs()) == (3 + 3));
+      GUM_CHECK_EQ(c1.nodes(), 7);
+      GUM_CHECK_EQ(c1.edges(), 4);
+      GUM_CHECK_EQ(c1.arcs(), 3);
+      GUM_CHECK_EQ(c2.nodes(), 7 + 5);
+      GUM_CHECK_EQ(c2.edges(), 4 + 3);
+      GUM_CHECK_EQ(c2.arcs(), 3 + 3);
 
       g1.eraseNode(id5);   // -1 nodes/-2 edges / -1 arcs for g1
 
-      CHECK((c1.nodes()) == (6));
-      CHECK((c1.edges()) == (2));
-      CHECK((c1.arcs()) == (2));
-      CHECK((c2.nodes()) == (6 + 5));
-      CHECK((c2.edges()) == (2 + 3));
-      CHECK((c2.arcs()) == (2 + 3));
+      GUM_CHECK_EQ(c1.nodes(), 6);
+      GUM_CHECK_EQ(c1.edges(), 2);
+      GUM_CHECK_EQ(c1.arcs(), 2);
+      GUM_CHECK_EQ(c2.nodes(), 6 + 5);
+      GUM_CHECK_EQ(c2.edges(), 2 + 3);
+      GUM_CHECK_EQ(c2.arcs(), 2 + 3);
 
       g1.eraseEdge(gum::Edge(id1,
                              id3));   // THIS EDGE DOES NOT EXISTS !!!! => 6 nodes, 2 edges
 
-      CHECK((c1.nodes()) == (6));
-      CHECK((c1.edges()) == (2));
-      CHECK((c2.nodes()) == (6 + 5));
-      CHECK((c2.edges()) == (2 + 3));
+      GUM_CHECK_EQ(c1.nodes(), 6);
+      GUM_CHECK_EQ(c1.edges(), 2);
+      GUM_CHECK_EQ(c2.nodes(), 6 + 5);
+      GUM_CHECK_EQ(c2.edges(), 2 + 3);
 
       g1.clear();   // 0 node, 0 arc
 
-      CHECK((c1.nodes()) == (0));
-      CHECK((c1.edges()) == (0));
-      CHECK((c1.arcs()) == (0));
-      CHECK((c2.nodes()) == (0 + 5));
-      CHECK((c2.edges()) == (0 + 3));
-      CHECK((c2.arcs()) == (0 + 3));
+      GUM_CHECK_EQ(c1.nodes(), 0);
+      GUM_CHECK_EQ(c1.edges(), 0);
+      GUM_CHECK_EQ(c1.arcs(), 0);
+      GUM_CHECK_EQ(c2.nodes(), 0 + 5);
+      GUM_CHECK_EQ(c2.edges(), 0 + 3);
+      GUM_CHECK_EQ(c2.arcs(), 0 + 3);
 
       g2.clearEdges();   // 5 nodes, 0 arc
 
-      CHECK((c1.nodes()) == (0));
-      CHECK((c1.edges()) == (0));
-      CHECK((c1.arcs()) == (0));
-      CHECK((c2.nodes()) == (0 + 5));
-      CHECK((c2.edges()) == (0 + 0));
-      CHECK((c2.arcs()) == (0 + 3));
+      GUM_CHECK_EQ(c1.nodes(), 0);
+      GUM_CHECK_EQ(c1.edges(), 0);
+      GUM_CHECK_EQ(c1.arcs(), 0);
+      GUM_CHECK_EQ(c2.nodes(), 0 + 5);
+      GUM_CHECK_EQ(c2.edges(), 0 + 0);
+      GUM_CHECK_EQ(c2.arcs(), 0 + 3);
 
       g2.clearArcs();   // 5 nodes, 0 arc
 
-      CHECK((c1.nodes()) == (0));
-      CHECK((c1.edges()) == (0));
-      CHECK((c1.arcs()) == (0));
-      CHECK((c2.nodes()) == (0 + 5));
-      CHECK((c2.edges()) == (0 + 0));
-      CHECK((c2.arcs()) == (0 + 0));
+      GUM_CHECK_EQ(c1.nodes(), 0);
+      GUM_CHECK_EQ(c1.edges(), 0);
+      GUM_CHECK_EQ(c1.arcs(), 0);
+      GUM_CHECK_EQ(c2.nodes(), 0 + 5);
+      GUM_CHECK_EQ(c2.edges(), 0 + 0);
+      GUM_CHECK_EQ(c2.arcs(), 0 + 0);
     }
 
     void testUndiGraphWithGraphListener() {
@@ -478,23 +478,23 @@ namespace gum_tests {
 
       buildUndiGraph(g);   // 5 nodes/6 edges for g
 
-      CHECK((c.nodes()) == (5));
-      CHECK((c.edges()) == (6));
+      GUM_CHECK_EQ(c.nodes(), 5);
+      GUM_CHECK_EQ(c.edges(), 6);
 
       g.eraseNode(id5);   // -1 nodes/-3 edges for g
 
-      CHECK((c.nodes()) == (4));
-      CHECK((c.edges()) == (3));
+      GUM_CHECK_EQ(c.nodes(), 4);
+      GUM_CHECK_EQ(c.edges(), 3);
 
       g.eraseEdge(gum::Edge(id1, id3));   // -1 edges
 
-      CHECK((c.nodes()) == (4));
-      CHECK((c.edges()) == (2));
+      GUM_CHECK_EQ(c.nodes(), 4);
+      GUM_CHECK_EQ(c.edges(), 2);
 
       g.clear();   // 0 node, 0 arc
 
-      CHECK((c.nodes()) == (0));
-      CHECK((c.edges()) == (0));
+      GUM_CHECK_EQ(c.nodes(), 0);
+      GUM_CHECK_EQ(c.edges(), 0);
     }
 
     void testDiGraphWithGraphListener() {
@@ -504,23 +504,23 @@ namespace gum_tests {
 
       buildDAG(g);   // 5 nodes/6 arcs for g
 
-      CHECK((c.nodes()) == (5));
-      CHECK((c.arcs()) == (6));
+      GUM_CHECK_EQ(c.nodes(), 5);
+      GUM_CHECK_EQ(c.arcs(), 6);
 
       g.eraseNode(id5);   // -1 nodes/-3 arcs for g
 
-      CHECK((c.nodes()) == (4));
-      CHECK((c.arcs()) == (3));
+      GUM_CHECK_EQ(c.nodes(), 4);
+      GUM_CHECK_EQ(c.arcs(), 3);
 
       g.eraseArc(gum::Arc(id1, id3));   // -1 arcs
 
-      CHECK((c.nodes()) == (4));
-      CHECK((c.arcs()) == (2));
+      GUM_CHECK_EQ(c.nodes(), 4);
+      GUM_CHECK_EQ(c.arcs(), 2);
 
       g.clear();   // 0 node, 0 arc
 
-      CHECK((c.nodes()) == (0));
-      CHECK((c.arcs()) == (0));
+      GUM_CHECK_EQ(c.nodes(), 0);
+      GUM_CHECK_EQ(c.arcs(), 0);
     }
 
     void testDAGWithGraphListener() {
@@ -535,23 +535,23 @@ namespace gum_tests {
       // InvalidDirectedCycle and should
       // not call the listeners
 
-      CHECK((c.nodes()) == (5));
-      CHECK((c.arcs()) == (6));
+      GUM_CHECK_EQ(c.nodes(), 5);
+      GUM_CHECK_EQ(c.arcs(), 6);
 
       g.eraseNode(id5);   // -1 nodes/-3 arcs for g
 
-      CHECK((c.nodes()) == (4));
-      CHECK((c.arcs()) == (3));
+      GUM_CHECK_EQ(c.nodes(), 4);
+      GUM_CHECK_EQ(c.arcs(), 3);
 
       g.eraseArc(gum::Arc(id1, id3));   // -1 arcs
 
-      CHECK((c.nodes()) == (4));
-      CHECK((c.arcs()) == (2));
+      GUM_CHECK_EQ(c.nodes(), 4);
+      GUM_CHECK_EQ(c.arcs(), 2);
 
       g.clear();   // 0 node, 0 arc
 
-      CHECK((c.nodes()) == (0));
-      CHECK((c.arcs()) == (0));
+      GUM_CHECK_EQ(c.nodes(), 0);
+      GUM_CHECK_EQ(c.arcs(), 0);
     }
 
     void testMixedGraphWithGraphListener() {
@@ -561,27 +561,27 @@ namespace gum_tests {
 
       buildMixedGraph(g);   // 5 nodes/3 arcs/3 edges for g
 
-      CHECK((c.nodes()) == (5));
-      CHECK((c.edges()) == (3));
-      CHECK((c.arcs()) == (3));
+      GUM_CHECK_EQ(c.nodes(), 5);
+      GUM_CHECK_EQ(c.edges(), 3);
+      GUM_CHECK_EQ(c.arcs(), 3);
 
       g.eraseNode(id5);   // -1 nodes/-2 edge / -1 arcs for g
 
-      CHECK((c.nodes()) == (4));
-      CHECK((c.edges()) == (1));
-      CHECK((c.arcs()) == (2));
+      GUM_CHECK_EQ(c.nodes(), 4);
+      GUM_CHECK_EQ(c.edges(), 1);
+      GUM_CHECK_EQ(c.arcs(), 2);
 
       g.eraseArc(gum::Arc(id1, id3));   // -1 arcs
 
-      CHECK((c.nodes()) == (4));
-      CHECK((c.edges()) == (1));
-      CHECK((c.arcs()) == (1));
+      GUM_CHECK_EQ(c.nodes(), 4);
+      GUM_CHECK_EQ(c.edges(), 1);
+      GUM_CHECK_EQ(c.arcs(), 1);
 
       g.clear();   // 0 node, 0 arc
 
-      CHECK((c.nodes()) == (0));
-      CHECK((c.edges()) == (0));
-      CHECK((c.arcs()) == (0));
+      GUM_CHECK_EQ(c.nodes(), 0);
+      GUM_CHECK_EQ(c.edges(), 0);
+      GUM_CHECK_EQ(c.arcs(), 0);
     }
   };
 

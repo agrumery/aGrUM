@@ -228,9 +228,9 @@ namespace gum_tests {
 
       const gum::UndiGraph& gr2 = triang.triangulatedGraph();
 
-      CHECK((gr2.sizeNodes()) == (8U));
+      GUM_CHECK_EQ(gr2.sizeNodes(), 8U);
 
-      CHECK((gr2.sizeEdges()) == (14U));
+      GUM_CHECK_EQ(gr2.sizeEdges(), 14U);
 
       triang.clear();
 
@@ -238,9 +238,9 @@ namespace gum_tests {
 
       const gum::UndiGraph& gr3 = triang.triangulatedGraph();
 
-      CHECK((gr3.sizeNodes()) == (8U));
+      GUM_CHECK_EQ(gr3.sizeNodes(), 8U);
 
-      CHECK((gr3.sizeEdges()) == (14U));
+      GUM_CHECK_EQ(gr3.sizeEdges(), 14U);
 
       graph.eraseEdge(gum::Edge(2, 5));
 
@@ -248,15 +248,15 @@ namespace gum_tests {
 
       const gum::UndiGraph& gr4 = triang.triangulatedGraph();
 
-      CHECK((gr4.sizeNodes()) == (8U));
+      GUM_CHECK_EQ(gr4.sizeNodes(), 8U);
 
-      CHECK((gr4.sizeEdges()) == (14U));
+      GUM_CHECK_EQ(gr4.sizeEdges(), 14U);
 
       const gum::EdgeSet& edges = triang.fillIns();
 
-      CHECK((edges.size()) == (1U));
+      GUM_CHECK_EQ(edges.size(), 1U);
 
-      CHECK((*(edges.begin())) == (gum::Edge(2, 5)));
+      GUM_CHECK_EQ(*(edges.begin()), gum::Edge(2, 5));
     }
 
     void testTriangulatedGraph2() {
@@ -281,21 +281,21 @@ namespace gum_tests {
 
       const gum::CliqueGraph& elim = triang.eliminationTree();
 
-      CHECK((elim.sizeNodes()) == (8U));
+      GUM_CHECK_EQ(elim.sizeNodes(), 8U);
 
-      CHECK((elim.sizeEdges()) == (7U));
+      GUM_CHECK_EQ(elim.sizeEdges(), 7U);
 
       const gum::CliqueGraph& JT = triang.junctionTree();
 
-      CHECK((JT.sizeNodes()) == (6U));
+      GUM_CHECK_EQ(JT.sizeNodes(), 6U);
 
-      CHECK((JT.sizeEdges()) == (5U));
+      GUM_CHECK_EQ(JT.sizeEdges(), 5U);
 
       const gum::UndiGraph& gr = triang.triangulatedGraph();
 
-      CHECK((gr.sizeNodes()) == (8U));
+      GUM_CHECK_EQ(gr.sizeNodes(), 8U);
 
-      CHECK((gr.sizeEdges()) == (13U));
+      GUM_CHECK_EQ(gr.sizeEdges(), 13U);
     }
 
     private:

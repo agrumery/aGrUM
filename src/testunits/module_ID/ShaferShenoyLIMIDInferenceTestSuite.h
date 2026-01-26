@@ -276,7 +276,7 @@ namespace gum_tests {
         GUM_CHECK_TENSOR_ALMOST_EQUALS_SAMEVARS(
             inf.optimalDecision(d),
             (gum::Tensor< double >() << net.variable(d)).fillWith({0, 1}));
-        CHECK((inf.MEU().first) == (110.5));
+        GUM_CHECK_EQ(inf.MEU().first, 110.5);
       }
       {
         gum::ShaferShenoyLIMIDInference< double > inf(&net);
@@ -290,7 +290,7 @@ namespace gum_tests {
         GUM_CHECK_TENSOR_ALMOST_EQUALS_SAMEVARS(
             inf.optimalDecision(d),
             (gum::Tensor< double >() << net.variable(d)).fillWith({0, 1}));
-        CHECK((inf.MEU().first) == (21));
+        GUM_CHECK_EQ(inf.MEU().first, 21);
       }
     }
 
@@ -366,7 +366,7 @@ namespace gum_tests {
       gum::ShaferShenoyLIMIDInference< double > inf(&model);
       inf.makeInference();
       CHECK((inf.MEU().first) == doctest::Approx(28).epsilon(GUM_SMALL_ERROR));
-      CHECK((inf.optimalDecision("Buy").sum()) == (9));
+      GUM_CHECK_EQ(inf.optimalDecision("Buy").sum(), 9);
     }
 
     static void testBugFromNeapolitan2() {
@@ -393,7 +393,7 @@ namespace gum_tests {
 
       inf.makeInference();
       CHECK((inf.MEU().first) == doctest::Approx(40.6).epsilon(GUM_SMALL_ERROR));
-      CHECK((inf.optimalDecision("Buy").sum()) == (9));
+      GUM_CHECK_EQ(inf.optimalDecision("Buy").sum(), 9);
     }
 
     static void testNewStructure() {
@@ -401,15 +401,15 @@ namespace gum_tests {
         auto infdiag = gum::InfluenceDiagram< double >::fastPrototype("*D1->Z->*D2->X->$U");
         auto ieid    = gum::ShaferShenoyLIMIDInference< double >(&infdiag);
         auto res     = ieid.reversePartialOrder();
-        CHECK((res.size()) == (2U));
-        CHECK((res[0]) == (gum::NodeSet({infdiag.idFromName("D2")})));
-        CHECK((res[1]) == (gum::NodeSet({infdiag.idFromName("D1")})));
+        GUM_CHECK_EQ(res.size(), 2U);
+        GUM_CHECK_EQ(res[0], gum::NodeSet({infdiag.idFromName("D2")}));
+        GUM_CHECK_EQ(res[1], gum::NodeSet({infdiag.idFromName("D1")}));
       }
       {
         auto infdiag = gum::InfluenceDiagram< double >::fastPrototype("D1->Z->D2->X->$U");
         auto ieid    = gum::ShaferShenoyLIMIDInference< double >(&infdiag);
         auto res     = ieid.reversePartialOrder();
-        CHECK((res.size()) == (0U));
+        GUM_CHECK_EQ(res.size(), 0U);
       }
 
       {
@@ -419,11 +419,11 @@ namespace gum_tests {
             "U->$Q2<-D4;N->$Q3;X->$Q4<-D2;Q2<-*D7->Q4");
         auto ieid = gum::ShaferShenoyLIMIDInference< double >(&infdiag);
         auto res  = ieid.reversePartialOrder();
-        CHECK((res.size()) == (4U));
-        CHECK((res[0]) == (gum::NodeSet({infdiag.idFromName("D4"), infdiag.idFromName("D7")})));
-        CHECK((res[1]) == (gum::NodeSet({infdiag.idFromName("D3"), infdiag.idFromName("D5")})));
-        CHECK((res[2]) == (gum::NodeSet({infdiag.idFromName("D2"), infdiag.idFromName("D6")})));
-        CHECK((res[3]) == (gum::NodeSet({infdiag.idFromName("D1")})));
+        GUM_CHECK_EQ(res.size(), 4U);
+        GUM_CHECK_EQ(res[0], gum::NodeSet({infdiag.idFromName("D4"), infdiag.idFromName("D7")}));
+        GUM_CHECK_EQ(res[1], gum::NodeSet({infdiag.idFromName("D3"), infdiag.idFromName("D5")}));
+        GUM_CHECK_EQ(res[2], gum::NodeSet({infdiag.idFromName("D2"), infdiag.idFromName("D6")}));
+        GUM_CHECK_EQ(res[3], gum::NodeSet({infdiag.idFromName("D1")}));
       }
     }
 
@@ -459,10 +459,10 @@ namespace gum_tests {
       auto       dag    = ieid.reducedGraph();
       CHECK(ieid.isSolvable());
 
-      CHECK((dag.parents(infdiag.idFromName("D1"))) == (infdiag.nodeset({})));
-      CHECK((dag.parents(infdiag.idFromName("D2"))) == (infdiag.nodeset({"D1"})));
-      CHECK((dag.parents(infdiag.idFromName("D3"))) == (infdiag.nodeset({"D2"})));
-      CHECK((dag.parents(infdiag.idFromName("D4"))) == (infdiag.nodeset({"D3", "R4"})));
+      GUM_CHECK_EQ(dag.parents(infdiag.idFromName("D1")), infdiag.nodeset({}));
+      GUM_CHECK_EQ(dag.parents(infdiag.idFromName("D2")), infdiag.nodeset({"D1"}));
+      GUM_CHECK_EQ(dag.parents(infdiag.idFromName("D3")), infdiag.nodeset({"D2"}));
+      GUM_CHECK_EQ(dag.parents(infdiag.idFromName("D4")), infdiag.nodeset({"D3", "R4"}));
 
       CHECK_THROWS_AS(ieid.addNoForgettingAssumption({"D11"}), const gum::NotFound&);
       CHECK_THROWS_AS(ieid.addNoForgettingAssumption({"D4", "D1", "D2", "D3"}),
@@ -474,21 +474,21 @@ namespace gum_tests {
 
       dag = ieid.reducedGraph();
 
-      CHECK((dag.parents(infdiag.idFromName("D1"))) == (infdiag.nodeset({})));
-      CHECK((dag.parents(infdiag.idFromName("D2"))) == (infdiag.nodeset({"D1"})));
-      CHECK((dag.parents(infdiag.idFromName("D3"))) == (infdiag.nodeset({"D2"})));
-      CHECK((dag.parents(infdiag.idFromName("D4"))) == (infdiag.nodeset({"D2", "R4"})));
+      GUM_CHECK_EQ(dag.parents(infdiag.idFromName("D1")), infdiag.nodeset({}));
+      GUM_CHECK_EQ(dag.parents(infdiag.idFromName("D2")), infdiag.nodeset({"D1"}));
+      GUM_CHECK_EQ(dag.parents(infdiag.idFromName("D3")), infdiag.nodeset({"D2"}));
+      GUM_CHECK_EQ(dag.parents(infdiag.idFromName("D4")), infdiag.nodeset({"D2", "R4"}));
 
 
-      CHECK((dag.parents(infdiag.idFromName("R1"))) == (infdiag.nodeset({"D2"})));
-      CHECK((dag.parents(infdiag.idFromName("R2"))) == (infdiag.nodeset({"R1"})));
-      CHECK((dag.parents(infdiag.idFromName("R3"))) == (infdiag.nodeset({"R2", "D4"})));
-      CHECK((dag.parents(infdiag.idFromName("R4"))) == (infdiag.nodeset({"R1"})));
+      GUM_CHECK_EQ(dag.parents(infdiag.idFromName("R1")), infdiag.nodeset({"D2"}));
+      GUM_CHECK_EQ(dag.parents(infdiag.idFromName("R2")), infdiag.nodeset({"R1"}));
+      GUM_CHECK_EQ(dag.parents(infdiag.idFromName("R3")), infdiag.nodeset({"R2", "D4"}));
+      GUM_CHECK_EQ(dag.parents(infdiag.idFromName("R4")), infdiag.nodeset({"R1"}));
 
-      CHECK((dag.parents(infdiag.idFromName("U1"))) == (infdiag.nodeset({"D3", "R2"})));
-      CHECK((dag.parents(infdiag.idFromName("U2"))) == (infdiag.nodeset({"R3"})));
-      CHECK((dag.parents(infdiag.idFromName("U3"))) == (infdiag.nodeset({"R1", "D1"})));
-      CHECK((dag.parents(infdiag.idFromName("U4"))) == (infdiag.nodeset({"R4", "D4"})));
+      GUM_CHECK_EQ(dag.parents(infdiag.idFromName("U1")), infdiag.nodeset({"D3", "R2"}));
+      GUM_CHECK_EQ(dag.parents(infdiag.idFromName("U2")), infdiag.nodeset({"R3"}));
+      GUM_CHECK_EQ(dag.parents(infdiag.idFromName("U3")), infdiag.nodeset({"R1", "D1"}));
+      GUM_CHECK_EQ(dag.parents(infdiag.idFromName("U4")), infdiag.nodeset({"R4", "D4"}));
     }
 
     static void testNoForgettingAssumption2() {
@@ -501,26 +501,26 @@ namespace gum_tests {
 
       auto       ieid    = gum::ShaferShenoyLIMIDInference< double >(&limids);
       const auto revord1 = ieid.reversePartialOrder();
-      CHECK((revord1.size()) == (static_cast< gum::Size >(2)));
-      CHECK((revord1[0]) == (limids.nodeset({"d4", "d2", "d3"})));
-      CHECK((revord1[1]) == (limids.nodeset({"d1"})));
+      GUM_CHECK_EQ(revord1.size(), static_cast< gum::Size >(2));
+      GUM_CHECK_EQ(revord1[0], limids.nodeset({"d4", "d2", "d3"}));
+      GUM_CHECK_EQ(revord1[1], limids.nodeset({"d1"}));
 
       CHECK(!ieid.isSolvable());
 
       ieid.addNoForgettingAssumption(order);
       CHECK(ieid.isSolvable());
       const auto revord2 = ieid.reversePartialOrder();
-      CHECK((revord2.size()) == (static_cast< gum::Size >(4)));
+      GUM_CHECK_EQ(revord2.size(), static_cast< gum::Size >(4));
       for (gum::Idx i = 0; i < static_cast< gum::Size >(4); i++) {
-        CHECK((revord2[i].size()) == (static_cast< gum::Size >(1)));
-        CHECK((limids.variable(*(revord2[i].begin())).name()) == (order[3 - i]));
+        GUM_CHECK_EQ(revord2[i].size(), static_cast< gum::Size >(1));
+        GUM_CHECK_EQ(limids.variable(*(revord2[i].begin())).name(), order[3 - i]);
       }
       auto noForgetting = ieid.reducedLIMID();
 
-      CHECK((noForgetting.parents("d1")) == (limids.nodeset({"b"})));
-      CHECK((noForgetting.parents("d2")) == (limids.nodeset({"e"})));
-      CHECK((noForgetting.parents("d3")) == (limids.nodeset({"f"})));
-      CHECK((noForgetting.parents("d4")) == (limids.nodeset({"d2", "g"})));
+      GUM_CHECK_EQ(noForgetting.parents("d1"), limids.nodeset({"b"}));
+      GUM_CHECK_EQ(noForgetting.parents("d2"), limids.nodeset({"e"}));
+      GUM_CHECK_EQ(noForgetting.parents("d3"), limids.nodeset({"f"}));
+      GUM_CHECK_EQ(noForgetting.parents("d4"), limids.nodeset({"d2", "g"}));
       // GUM_TRACE_VAR(noForgetting.toDot());
     }
 
@@ -535,7 +535,7 @@ namespace gum_tests {
       ieid.addNoForgettingAssumption({"D1", "D2", "D3", "D4"});
 
       auto jt = ieid.junctionTree();
-      CHECK((jt->size()) == (static_cast< gum::Size >(5)));
+      GUM_CHECK_EQ(jt->size(), static_cast< gum::Size >(5));
       ieid.makeInference();
     }
 
@@ -600,7 +600,7 @@ namespace gum_tests {
       ie.makeInference();
       CHECK((ie.optimalDecision("d"))
             == ((gum::Tensor< double >() << net.variableFromName("d")).fillWith({0, 1})));
-      CHECK((ie.MEU().first) == (110.5));
+      GUM_CHECK_EQ(ie.MEU().first, 110.5);
       CHECK((ie.posterior("c1"))
             == ((gum::Tensor< double >() << net.variableFromName("c1")).fillWith({0.5, 0.5})));
       GUM_CHECK_TENSOR_ALMOST_EQUALS_SAMEVARS(
@@ -618,7 +618,7 @@ namespace gum_tests {
       ie.makeInference();
       CHECK((ie.optimalDecision("d"))
             == ((gum::Tensor< double >() << net.variableFromName("d")).fillWith({0, 1})));
-      CHECK((ie.MEU().first) == (200));
+      GUM_CHECK_EQ(ie.MEU().first, 200);
       CHECK((ie.posterior("c1"))
             == ((gum::Tensor< double >() << net.variableFromName("c1")).fillWith({0, 1})));
       GUM_CHECK_TENSOR_ALMOST_EQUALS_SAMEVARS(
@@ -639,7 +639,7 @@ namespace gum_tests {
       GUM_CHECK_TENSOR_ALMOST_EQUALS_SAMEVARS(
           ie.optimalDecision("d"),
           (gum::Tensor< double >() << net.variableFromName("d")).fillWith({0, 1}));
-      CHECK((ie.MEU().first) == (110.5));
+      GUM_CHECK_EQ(ie.MEU().first, 110.5);
       CHECK((ie.posterior("c1"))
             == ((gum::Tensor< double >() << net.variableFromName("c1")).fillWith({0.5, 0.5})));
       GUM_CHECK_TENSOR_ALMOST_EQUALS_SAMEVARS(
@@ -658,7 +658,7 @@ namespace gum_tests {
       ie.makeInference();
       CHECK((ie.optimalDecision("d"))
             == ((gum::Tensor< double >() << net.variableFromName("d")).fillWith({0, 1})));
-      CHECK((ie.MEU().first) == (56.8));
+      GUM_CHECK_EQ(ie.MEU().first, 56.8);
       CHECK((ie.MEU().second) == doctest::Approx(5126.56).epsilon(GUM_SMALL_ERROR));
       GUM_CHECK_TENSOR_ALMOST_EQUALS_SAMEVARS(
           ie.posterior("c"),
@@ -838,11 +838,11 @@ namespace gum_tests {
       iediag.makeInference();
 
       const auto [m1, v1] = iediag.meanVar("Tran");
-      CHECK((v1) == (0.0));
+      GUM_CHECK_EQ(v1, 0.0);
       const auto [m2, v2] = iediag.meanVar("Test");
-      CHECK((v2) == (0.0));
+      GUM_CHECK_EQ(v2, 0.0);
       const auto [m3, v3] = iediag.meanVar("U");
-      CHECK((v3) == (0.0));
+      GUM_CHECK_EQ(v3, 0.0);
     }
   };
 

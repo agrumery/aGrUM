@@ -109,9 +109,9 @@ namespace gum_tests {
 
     public:
     static void testLesserThan() {
-      CHECK((*gamma) < (*alpha));
-      CHECK((*gamma) < (*beta));
-      CHECK((*alpha) < (*beta));
+      GUM_CHECK_LT(*gamma, *alpha);
+      GUM_CHECK_LT(*gamma, *beta);
+      GUM_CHECK_LT(*alpha, *beta);
       CHECK(!((*alpha) < (*alpha)));
       CHECK(!((*beta) < (*beta)));
       CHECK(!((*gamma) < (*gamma)));
@@ -151,12 +151,12 @@ namespace gum_tests {
     }
 
     static void testLesserOrEqualThan() {
-      CHECK((*gamma) <= (*alpha));
-      CHECK((*gamma) <= (*beta));
-      CHECK((*alpha) <= (*beta));
-      CHECK((*alpha) <= (*alpha));
-      CHECK((*beta) <= (*beta));
-      CHECK((*gamma) <= (*gamma));
+      GUM_CHECK_LE(*gamma, *alpha);
+      GUM_CHECK_LE(*gamma, *beta);
+      GUM_CHECK_LE(*alpha, *beta);
+      GUM_CHECK_LE(*alpha, *alpha);
+      GUM_CHECK_LE(*beta, *beta);
+      GUM_CHECK_LE(*gamma, *gamma);
       CHECK(!((*alpha) <= (*gamma)));
       CHECK(!((*beta) <= (*gamma)));
       CHECK(!((*beta) <= (*alpha)));

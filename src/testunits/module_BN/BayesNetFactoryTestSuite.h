@@ -126,8 +126,8 @@ namespace gum_tests {
       GUM_CHECK_ASSERT_THROWS_NOTHING(factory->addNetworkProperty("author", "Lionel"));
       GUM_CHECK_ASSERT_THROWS_NOTHING(factory->endNetworkDeclaration());
 
-      CHECK((__bn_d->property("name")) == ("TestSuite BayesNet"));
-      CHECK((__bn_d->property("author")) == ("Lionel"));
+      GUM_CHECK_EQ(__bn_d->property("name"), "TestSuite BayesNet");
+      GUM_CHECK_EQ(__bn_d->property("author"), "Lionel");
 
       GUM_CHECK_ASSERT_THROWS_NOTHING(delete factory);
     }

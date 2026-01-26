@@ -69,22 +69,22 @@ namespace gum_tests {
       gum::Arc arc1(1, 2);
       gum::Arc arc2(2, 1);
 
-      CHECK((arc1) == (arc1));
-      CHECK((arc1) != (arc2));
-      CHECK((arc2) != (arc1));
+      GUM_CHECK_EQ(arc1, arc1);
+      GUM_CHECK_NE(arc1, arc2);
+      GUM_CHECK_NE(arc2, arc1);
 
       gum::Arc copy(arc1);
       gum::Arc arc3(6, 7);
 
-      CHECK((arc1) == (arc1));
-      CHECK((copy) == (arc1));
-      CHECK((arc1) == (copy));
+      GUM_CHECK_EQ(arc1, arc1);
+      GUM_CHECK_EQ(copy, arc1);
+      GUM_CHECK_EQ(arc1, copy);
 
-      CHECK((arc1) != (arc3));
-      CHECK((arc3) != (arc1));
-      CHECK((copy) != (arc3));
-      CHECK((arc2) != (arc3));
-      CHECK((arc1) != (arc2));
+      GUM_CHECK_NE(arc1, arc3);
+      GUM_CHECK_NE(arc3, arc1);
+      GUM_CHECK_NE(copy, arc3);
+      GUM_CHECK_NE(arc2, arc3);
+      GUM_CHECK_NE(arc1, arc2);
     }
 
     static void testGetters1() {
@@ -102,14 +102,14 @@ namespace gum_tests {
       GUM_CHECK_ASSERT_THROWS_NOTHING(n = copy.first());
       GUM_CHECK_ASSERT_THROWS_NOTHING(n = copy.second());
 
-      CHECK((n = arc2.first()) == (static_cast< gum::NodeId >(2)));
-      CHECK((n = arc2.second()) == (static_cast< gum::NodeId >(1)));
+      GUM_CHECK_EQ(n = arc2.first(), static_cast< gum::NodeId >(2));
+      GUM_CHECK_EQ(n = arc2.second(), static_cast< gum::NodeId >(1));
 
       GUM_CHECK_ASSERT_THROWS_NOTHING(n = arc3.other(3));
       GUM_CHECK_ASSERT_THROWS_NOTHING(n = arc3.other(4));
 
-      CHECK((n = arc3.other((gum::NodeId)3)) == (static_cast< gum::NodeId >(4)));
-      CHECK((n = arc3.other((gum::NodeId)4)) == (static_cast< gum::NodeId >(3)));
+      GUM_CHECK_EQ(n = arc3.other((gum::NodeId)3), static_cast< gum::NodeId >(4));
+      GUM_CHECK_EQ(n = arc3.other((gum::NodeId)4), static_cast< gum::NodeId >(3));
 
       CHECK_THROWS(n = copy.other((gum::NodeId)42));
     }
@@ -117,8 +117,8 @@ namespace gum_tests {
     static void testGetters2() {
       gum::Arc arc1(1, 2);
 
-      CHECK((arc1.tail()) == (static_cast< gum::NodeId >(1)));
-      CHECK((arc1.head()) == (static_cast< gum::NodeId >(2)));
+      GUM_CHECK_EQ(arc1.tail(), static_cast< gum::NodeId >(1));
+      GUM_CHECK_EQ(arc1.head(), static_cast< gum::NodeId >(2));
     }
 
     static void testHash() {
@@ -134,7 +134,7 @@ namespace gum_tests {
       for (gum::NodeId x = 0; x < 1000; ++x) {
         for (gum::NodeId y = x; y < 1000; ++y) {
           gum::Arc arc(x, y);
-          CHECK((hash[arc]) == ((x + y)));
+          GUM_CHECK_EQ(hash[arc], (x + y));
         }
       }
     }

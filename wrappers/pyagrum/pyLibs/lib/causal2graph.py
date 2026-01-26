@@ -1,7 +1,7 @@
 ############################################################################
 #   This file is part of the aGrUM/pyAgrum library.                        #
 #                                                                          #
-#   Copyright (c) 2005-2025 by                                             #
+#   Copyright (c) 2005-2026 by                                             #
 #       - Pierre-Henri WUILLEMIN(_at_LIP6)                                 #
 #       - Christophe GONZALES(_at_AMU)                                     #
 #                                                                          #
@@ -27,7 +27,7 @@
 #                                                                          #
 #   See LICENCES for more details.                                         #
 #                                                                          #
-#   SPDX-FileCopyrightText: Copyright 2005-2025                            #
+#   SPDX-FileCopyrightText: Copyright 2005-2026                            #
 #       - Pierre-Henri WUILLEMIN(_at_LIP6)                                 #
 #       - Christophe GONZALES(_at_AMU)                                     #
 #   SPDX-License-Identifier: LGPL-3.0-or-later OR MIT                      #
@@ -41,9 +41,11 @@
 """
 This file defines some helpers for handling causal concepts in notebooks
 """
+
 from typing import Union, Optional
 
 import pyagrum as gum
+
 
 def getCausalModel(cm: gum.CausalModel, size=None) -> str:
   """
@@ -81,12 +83,13 @@ def showCausalModel(cm: gum.CausalModel, size=None):
     size = pyagrum.config["causal", "default_graph_size"]
   gnb.showDot(cm.toDot(), size=size)
 
+
 def getCausalImpact(
-   model: gum.CausalModel,
-   on: Union[str, NameSet],
-   doing: Union[str, NameSet],
-   knowing: Optional[NameSet] = None,
-   values: Optional[dict[str, int]] = None,
+  model: gum.CausalModel,
+  on: Union[str, NameSet],
+  doing: Union[str, NameSet],
+  knowing: Optional[NameSet] = None,
+  values: Optional[dict[str, int]] = None,
 ):
   """
   return a HTML representing of the three values defining a causal impact : formula, value, explanation
@@ -117,7 +120,8 @@ def getCausalImpact(
     gnb.flow.add(explanation, caption="Impossible")
   else:
     gnb.flow.add(
-      "\n\n$$\n\\begin{equation*}" + formula.toLatex() + "\\end{equation*}\n$$\n\n", caption="Explanation : " + explanation
+      "\n\n$$\n\\begin{equation*}" + formula.toLatex() + "\\end{equation*}\n$$\n\n",
+      caption="Explanation : " + explanation,
     )
 
   if formula is None:
@@ -133,11 +137,11 @@ def getCausalImpact(
 
 
 def showCausalImpact(
-   model: gum.CausalModel,
-   on: Union[str, NameSet],
-   doing: Union[str, NameSet],
-   knowing: Optional[NameSet] = None,
-   values: Optional[Dict[str, int]] = None,
+  model: gum.CausalModel,
+  on: Union[str, NameSet],
+  doing: Union[str, NameSet],
+  knowing: Optional[NameSet] = None,
+  values: Optional[Dict[str, int]] = None,
 ):
   """
   display a HTML representing of the three values defining a causal impact :  formula, value, explanation

@@ -81,12 +81,12 @@ namespace gum_tests {
       std::string              file = GET_RESSOURCES_PATH("xdsl/benefits.xdsl");
       gum::BayesNet< double >* net  = new gum::BayesNet< double >();
 
-      CHECK((net) != (nullptr));
+      GUM_CHECK_NE(net, nullptr);
 
       gum::XDSLBNReader< double > reader(net, file);
       GUM_CHECK_ASSERT_THROWS_NOTHING(reader.proceed());
 
-      CHECK((net->propertyWithDefault("name", "")) == ("Network3"));
+      GUM_CHECK_EQ(net->propertyWithDefault("name", ""), "Network3");
 
       if (net != nullptr) {
         CHECK(!net->empty());

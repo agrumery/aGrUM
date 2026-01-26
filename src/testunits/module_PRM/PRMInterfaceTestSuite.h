@@ -116,11 +116,11 @@ namespace gum_tests {
       CHECK_NOTHROW(subclass = new PRMInterface("subclass", super));
       // Assert
       CHECK(subclass->exists("b"));
-      CHECK((subclass->get(b_id).name()) == ("b"));
+      GUM_CHECK_EQ(subclass->get(b_id).name(), "b");
       CHECK(subclass->exists("c"));
-      CHECK((subclass->get(c_id).name()) == ("c"));
-      CHECK((subclass->attributes().size()) == (static_cast< gum::Size >(2)));
-      CHECK((subclass->referenceSlots().size()) == (static_cast< gum::Size >(1)));
+      GUM_CHECK_EQ(subclass->get(c_id).name(), "c");
+      GUM_CHECK_EQ(subclass->attributes().size(), static_cast< gum::Size >(2));
+      GUM_CHECK_EQ(subclass->referenceSlots().size(), static_cast< gum::Size >(1));
       delete subclass;
     }
 
@@ -180,7 +180,7 @@ namespace gum_tests {
       // Act
       auto& actual = c.get(attr->name());
       // Assert
-      CHECK((&actual) == (attr));
+      GUM_CHECK_EQ(&actual, attr);
     }
 
     static void testGetConst() {
@@ -192,7 +192,7 @@ namespace gum_tests {
       // Act
       const auto& actual = const_c.get(attr->name());
       // Assert
-      CHECK((&actual) == (attr));
+      GUM_CHECK_EQ(&actual, attr);
     }
 
     static void testGetNotFound() {
@@ -222,9 +222,9 @@ namespace gum_tests {
       // Act & assert
       CHECK_NOTHROW(id = c.add(attr));
       CHECK(c.exists(attr->name()));
-      CHECK((&(c.get(attr->name()))) == (attr));
-      CHECK((id) == (attr->id()));
-      CHECK((id) != ((gum::NodeId)100));
+      GUM_CHECK_EQ(&(c.get(attr->name())), attr);
+      GUM_CHECK_EQ(id, attr->id());
+      GUM_CHECK_NE(id, (gum::NodeId)100);
     }
 
     static void testAddDuplicate() {
@@ -234,7 +234,7 @@ namespace gum_tests {
       // Act & assert
       CHECK_NOTHROW(c.add(attr));
       CHECK_THROWS_AS(c.add(attr), const gum::DuplicateElement&);
-      CHECK((c.attributes().size()) == (static_cast< gum::Size >(1)));
+      GUM_CHECK_EQ(c.attributes().size(), static_cast< gum::Size >(1));
     }
 
     /// @}
@@ -293,7 +293,7 @@ namespace gum_tests {
       CHECK(sub_c.exists(attr->safeName()));
       const auto& b = sub_c.get(attr->safeName());
       const auto& s = sub_c.get(sub_attr->safeName());
-      CHECK((b.type()) == (s.type()));
+      GUM_CHECK_EQ(b.type(), s.type());
     }
 
     static void testOverloadAttributeWithSubtype() {
@@ -310,7 +310,7 @@ namespace gum_tests {
       CHECK(sub_c.exists(attr->safeName()));
       const auto& b = sub_c.get(attr->safeName());
       const auto& s = sub_c.get(state->safeName());
-      CHECK((b.type()) != (s.type()));
+      GUM_CHECK_NE(b.type(), s.type());
     }
 
     static void testOverloadAttributeWithSeveralCastDescendants() {
@@ -346,7 +346,7 @@ namespace gum_tests {
           std::string j_name = "(" + types[j]->name() + ")attr";
           auto        i_attr = sub_c.get(i_name).type();
           auto        j_attr = sub_c.get(j_name).type();
-          CHECK((i_attr) != (j_attr));
+          GUM_CHECK_NE(i_attr, j_attr);
         }
       }
       // Cleanup
@@ -370,7 +370,7 @@ namespace gum_tests {
       auto after = sub_c.attributes().size();
       CHECK(sub_c.exists(attr->safeName()));
       CHECK(sub_c.exists(state->safeName()));
-      CHECK((before) == (after));
+      GUM_CHECK_EQ(before, after);
     }
 
     static void testOverloadAttributeWithSeveralCastDescendantsDuplicate() {
@@ -409,10 +409,10 @@ namespace gum_tests {
           std::string j_name = "(" + types[j]->name() + ")attr";
           auto        i_attr = sub_c.get(i_name).type();
           auto        j_attr = sub_c.get(j_name).type();
-          CHECK((i_attr) != (j_attr));
+          GUM_CHECK_NE(i_attr, j_attr);
         }
       }
-      CHECK((before) == (after));
+      GUM_CHECK_EQ(before, after);
       // Cleanup
       for (int i = 1; i < size; ++i) {
         delete types[i];
@@ -434,7 +434,7 @@ namespace gum_tests {
       CHECK(!c_4.exists(ref->safeName()));
       CHECK(c_4.exists(sub_ref->name()));
       CHECK(c_4.exists(sub_ref->safeName()));
-      CHECK((c_4.referenceSlots().size()) == (static_cast< gum::Size >(1)));
+      GUM_CHECK_EQ(c_4.referenceSlots().size(), static_cast< gum::Size >(1));
     }
 
     static void testOverloadReferenceIllegal() {
@@ -452,7 +452,7 @@ namespace gum_tests {
       CHECK(c_4.exists(ref->safeName()));
       CHECK(c_4.exists(ref->name()));
       CHECK(!c_4.exists(sub_ref->safeName()));
-      CHECK((c_4.referenceSlots().size()) == (static_cast< gum::Size >(1)));
+      GUM_CHECK_EQ(c_4.referenceSlots().size(), static_cast< gum::Size >(1));
       delete sub_ref;
     }
 
@@ -483,7 +483,7 @@ namespace gum_tests {
       CHECK_NOTHROW(c.setInputNode(*a, true));
       // Assert
       CHECK(after = c.isInputNode(*a));
-      CHECK((before) != (after));
+      GUM_CHECK_NE(before, after);
       CHECK(after);
     }
 
@@ -510,7 +510,7 @@ namespace gum_tests {
       CHECK_NOTHROW(c.setOutputNode(*a, true));
       // Assert
       CHECK(after = c.isOutputNode(*a));
-      CHECK((before) != (after));
+      GUM_CHECK_NE(before, after);
       CHECK(after);
     }
 

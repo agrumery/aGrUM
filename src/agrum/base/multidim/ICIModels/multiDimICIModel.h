@@ -101,7 +101,7 @@ namespace gum {
      * @param from the copied instance
      */
     MultiDimICIModel(const Bijection< const DiscreteVariable*, const DiscreteVariable* >& bij,
-                     const MultiDimICIModel< GUM_ELEMENT >&                                from);
+                     const MultiDimICIModel< GUM_ELEMENT >&                               from);
 
     /**
      * Destructor.

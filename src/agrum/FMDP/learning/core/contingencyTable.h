@@ -182,8 +182,8 @@ namespace gum {
      * a efficient contingency table, you're welcome
      */
     HashTable< std::pair< GUM_ELEMENT_A, GUM_ELEMENT_B >, Idx > _jointTable_;
-    HashTable< GUM_ELEMENT_A, Idx >                            _attrAMarginalTable_;
-    HashTable< GUM_ELEMENT_B, Idx >                            _attrBMarginalTable_;
+    HashTable< GUM_ELEMENT_A, Idx >                             _attrAMarginalTable_;
+    HashTable< GUM_ELEMENT_B, Idx >                             _attrBMarginalTable_;
   };
 
 } /* namespace gum */

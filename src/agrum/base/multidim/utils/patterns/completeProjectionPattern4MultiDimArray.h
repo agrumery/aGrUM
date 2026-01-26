@@ -63,7 +63,7 @@ namespace gum {
 
   template < typename GUM_ELEMENT >
   GUM_ELEMENT GUM_MULTI_DIM_COMPLETE_PROJECTION_NAME(const MultiDimArray< GUM_ELEMENT >* table,
-                                                    Instantiation* instantiation)
+                                                     Instantiation* instantiation)
 #  endif
 
   // clang-format off
@@ -138,7 +138,7 @@ namespace gum {
     GUM_ELEMENT current_val = GUM_MULTI_DIM_COMPLETE_PROJECTION_NEUTRAL;
 
     if (instantiation) {
-      GUM_ELEMENT                              old_val     = current_val;
+      GUM_ELEMENT                             old_val     = current_val;
       GUM_MULTI_DIM_COMPLETE_PROJECTION_TYPE* current_ptr = ptable;
       GUM_MULTI_DIM_COMPLETE_PROJECTION_TYPE* deb_ptr     = ptable;
 
@@ -172,7 +172,7 @@ namespace gum {
 #  endif /* GUM_MULTI_DIM_COMPLETE_PROJECTION_POINTER */
     } else {
 #  ifdef GUM_MULTI_DIM_COMPLETE_PROJECTION_POINTER
-      GUM_ELEMENT                              old_val     = current_val;
+      GUM_ELEMENT                             old_val     = current_val;
       GUM_MULTI_DIM_COMPLETE_PROJECTION_TYPE* current_ptr = ptable;
 
       for (Size i = 0; i < nb_elt; ++i, ++ptable) {

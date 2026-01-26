@@ -66,24 +66,24 @@ namespace gum_tests {
 
       gum::HashTable< int, int > t2{std::pair< int, int >(3, 4)};
       table = new gum::HashTable< int, int >(t2);
-      CHECK((*table) == (t2));
+      GUM_CHECK_EQ(*table, t2);
 
       gum::HashTable< int, int > t3(t2);
-      CHECK((t3) == (t2));
+      GUM_CHECK_EQ(t3, t2);
 
       gum::HashTable< int, int > t4(t3);
-      CHECK((t4) == (t3));
+      GUM_CHECK_EQ(t4, t3);
 
       gum::HashTable< int, int > t5(std::move(*table));
       delete table;
 
       t5 = t3;
-      CHECK((t5) == (t3));
+      GUM_CHECK_EQ(t5, t3);
       t5 = t2;
-      CHECK((t5) == (t2));
+      GUM_CHECK_EQ(t5, t2);
       t5.clear();
       t5 = std::move(t2);
-      CHECK((t5.size()) == (static_cast< gum::Size >(1)));
+      GUM_CHECK_EQ(t5.size(), static_cast< gum::Size >(1));
     }   // namespace gum_tests
 
     static void testMoves() {
@@ -99,7 +99,7 @@ namespace gum_tests {
       t3                            = std::move(t2);
       t2                            = std::move(t1);
 
-      CHECK((t2.size()) == (static_cast< gum::Size >(2)));
+      GUM_CHECK_EQ(t2.size(), static_cast< gum::Size >(2));
       CHECK(t2.exists(5));
     }
 
@@ -136,16 +136,16 @@ namespace gum_tests {
       fill(t2);
       fill(t3);
 
-      CHECK((t1) == (t1));
-      CHECK((t2) == (t2));
-      CHECK((t3) == (t3));
+      GUM_CHECK_EQ(t1, t1);
+      GUM_CHECK_EQ(t2, t2);
+      GUM_CHECK_EQ(t3, t3);
 
-      CHECK((t1) == (t2));
-      CHECK((t2) == (t1));
-      CHECK((t1) == (t3));
-      CHECK((t3) == (t1));
-      CHECK((t2) == (t3));
-      CHECK((t3) == (t2));
+      GUM_CHECK_EQ(t1, t2);
+      GUM_CHECK_EQ(t2, t1);
+      GUM_CHECK_EQ(t1, t3);
+      GUM_CHECK_EQ(t3, t1);
+      GUM_CHECK_EQ(t2, t3);
+      GUM_CHECK_EQ(t3, t2);
 
       t2.erase(1);
       t2.erase(3);
@@ -155,20 +155,20 @@ namespace gum_tests {
       t3.erase(4);
       t3.erase(6);
 
-      CHECK((t1) != (t2));
-      CHECK((t2) != (t1));
-      CHECK((t1) != (t3));
-      CHECK((t3) != (t1));
-      CHECK((t2) != (t3));
-      CHECK((t3) != (t2));
+      GUM_CHECK_NE(t1, t2);
+      GUM_CHECK_NE(t2, t1);
+      GUM_CHECK_NE(t1, t3);
+      GUM_CHECK_NE(t3, t1);
+      GUM_CHECK_NE(t2, t3);
+      GUM_CHECK_NE(t3, t2);
     }
 
     static void testsize() {
       gum::HashTable< int, std::string > table;
 
-      CHECK((table.size()) == (static_cast< gum::Size >(0)));
+      GUM_CHECK_EQ(table.size(), static_cast< gum::Size >(0));
       fill(table);
-      CHECK((table.size()) == (static_cast< gum::Size >(6)));
+      GUM_CHECK_EQ(table.size(), static_cast< gum::Size >(6));
     }
 
     static void testErase() {
@@ -176,52 +176,52 @@ namespace gum_tests {
       fill(table);
 
       GUM_CHECK_ASSERT_THROWS_NOTHING(table.erase(4));
-      CHECK((table.size()) == (static_cast< gum::Size >(5)));
+      GUM_CHECK_EQ(table.size(), static_cast< gum::Size >(5));
       GUM_CHECK_ASSERT_THROWS_NOTHING(table.erase(6));
-      CHECK((table.size()) == (static_cast< gum::Size >(4)));
+      GUM_CHECK_EQ(table.size(), static_cast< gum::Size >(4));
       GUM_CHECK_ASSERT_THROWS_NOTHING(table.erase(1));
-      CHECK((table.size()) == (static_cast< gum::Size >(3)));
+      GUM_CHECK_EQ(table.size(), static_cast< gum::Size >(3));
       GUM_CHECK_ASSERT_THROWS_NOTHING(table.erase(3));
-      CHECK((table.size()) == (static_cast< gum::Size >(2)));
+      GUM_CHECK_EQ(table.size(), static_cast< gum::Size >(2));
       GUM_CHECK_ASSERT_THROWS_NOTHING(table.erase(5));
-      CHECK((table.size()) == (static_cast< gum::Size >(1)));
+      GUM_CHECK_EQ(table.size(), static_cast< gum::Size >(1));
 
       GUM_CHECK_ASSERT_THROWS_NOTHING(table.erase(4));
       GUM_CHECK_ASSERT_THROWS_NOTHING(table.erase(-23));
       GUM_CHECK_ASSERT_THROWS_NOTHING(table.erase(10000));
       GUM_CHECK_ASSERT_THROWS_NOTHING(table.erase(42));
 
-      CHECK((table.size()) == (static_cast< gum::Size >(1)));
+      GUM_CHECK_EQ(table.size(), static_cast< gum::Size >(1));
     }
 
     static void testEraseIterator() {
       gum::HashTable< int, std::string > table(4);
       fill(table);
-      CHECK((table.size()) == (static_cast< gum::Size >(6)));
+      GUM_CHECK_EQ(table.size(), static_cast< gum::Size >(6));
 
       gum::HashTable< int, std::string >::iterator_safe iter
           = table.beginSafe();   // safe iterator needed here
 
       GUM_CHECK_ASSERT_THROWS_NOTHING(table.erase(iter));
-      CHECK((table.size()) == (static_cast< gum::Size >(5)));
+      GUM_CHECK_EQ(table.size(), static_cast< gum::Size >(5));
 
       ++iter;
       ++iter;
 
       GUM_CHECK_ASSERT_THROWS_NOTHING(table.erase(iter));
-      CHECK((table.size()) == (static_cast< gum::Size >(4)));
+      GUM_CHECK_EQ(table.size(), static_cast< gum::Size >(4));
 
       iter = table.beginSafe();   // safe iterator needed here
       GUM_CHECK_ASSERT_THROWS_NOTHING(table.erase(iter));
-      CHECK((table.size()) == (static_cast< gum::Size >(3)));
+      GUM_CHECK_EQ(table.size(), static_cast< gum::Size >(3));
 
       iter = table.endSafe();
       GUM_CHECK_ASSERT_THROWS_NOTHING(table.erase(iter));
-      CHECK((table.size()) == (static_cast< gum::Size >(3)));
+      GUM_CHECK_EQ(table.size(), static_cast< gum::Size >(3));
 
       iter = table.endSafe();
       GUM_CHECK_ASSERT_THROWS_NOTHING(table.erase(iter));
-      CHECK((table.size()) == (static_cast< gum::Size >(3)));
+      GUM_CHECK_EQ(table.size(), static_cast< gum::Size >(3));
     }
 
     static void testEraseByVal() {
@@ -229,22 +229,22 @@ namespace gum_tests {
       fill(table);
 
       GUM_CHECK_ASSERT_THROWS_NOTHING(table.eraseByVal("a"));
-      CHECK((table.size()) == (static_cast< gum::Size >(5)));
+      GUM_CHECK_EQ(table.size(), static_cast< gum::Size >(5));
       GUM_CHECK_ASSERT_THROWS_NOTHING(table.eraseByVal("d"));
-      CHECK((table.size()) == (static_cast< gum::Size >(4)));
+      GUM_CHECK_EQ(table.size(), static_cast< gum::Size >(4));
       GUM_CHECK_ASSERT_THROWS_NOTHING(table.eraseByVal("e"));
-      CHECK((table.size()) == (static_cast< gum::Size >(3)));
+      GUM_CHECK_EQ(table.size(), static_cast< gum::Size >(3));
       GUM_CHECK_ASSERT_THROWS_NOTHING(table.eraseByVal("b"));
-      CHECK((table.size()) == (static_cast< gum::Size >(2)));
+      GUM_CHECK_EQ(table.size(), static_cast< gum::Size >(2));
       GUM_CHECK_ASSERT_THROWS_NOTHING(table.eraseByVal("f"));
-      CHECK((table.size()) == (static_cast< gum::Size >(1)));
+      GUM_CHECK_EQ(table.size(), static_cast< gum::Size >(1));
 
       GUM_CHECK_ASSERT_THROWS_NOTHING(table.eraseByVal("f"));
       GUM_CHECK_ASSERT_THROWS_NOTHING(table.eraseByVal("foo"));
       GUM_CHECK_ASSERT_THROWS_NOTHING(table.eraseByVal("bar"));
       GUM_CHECK_ASSERT_THROWS_NOTHING(table.eraseByVal("42"));
 
-      CHECK((table.size()) == (static_cast< gum::Size >(1)));
+      GUM_CHECK_EQ(table.size(), static_cast< gum::Size >(1));
     }
 
     static void testEraseAllVal() {
@@ -263,27 +263,27 @@ namespace gum_tests {
       GUM_CHECK_ASSERT_THROWS_NOTHING(table.insert(10, "foo"));
       GUM_CHECK_ASSERT_THROWS_NOTHING(table.insert(11, "bar"));
 
-      CHECK((table.size()) == (static_cast< gum::Size >(11)));
+      GUM_CHECK_EQ(table.size(), static_cast< gum::Size >(11));
 
       GUM_CHECK_ASSERT_THROWS_NOTHING(table.eraseAllVal("Space, the final frontiere"));
 
-      CHECK((table.size()) == (static_cast< gum::Size >(2)));
+      GUM_CHECK_EQ(table.size(), static_cast< gum::Size >(2));
 
       GUM_CHECK_ASSERT_THROWS_NOTHING(table.eraseAllVal("Space, the final frontiere"));
-      CHECK((table.size()) == (static_cast< gum::Size >(2)));
+      GUM_CHECK_EQ(table.size(), static_cast< gum::Size >(2));
     }
 
     static void testClear() {
       gum::HashTable< int, std::string > table;
 
-      CHECK((table.size()) == (static_cast< gum::Size >(0)));
+      GUM_CHECK_EQ(table.size(), static_cast< gum::Size >(0));
       GUM_CHECK_ASSERT_THROWS_NOTHING(table.clear());
-      CHECK((table.size()) == (static_cast< gum::Size >(0)));
+      GUM_CHECK_EQ(table.size(), static_cast< gum::Size >(0));
 
       fill(table);
-      CHECK((table.size()) == (static_cast< gum::Size >(6)));
+      GUM_CHECK_EQ(table.size(), static_cast< gum::Size >(6));
       GUM_CHECK_ASSERT_THROWS_NOTHING(table.clear());
-      CHECK((table.size()) == (static_cast< gum::Size >(0)));
+      GUM_CHECK_EQ(table.size(), static_cast< gum::Size >(0));
     }
 
     static void testIsEmpty() {
@@ -327,17 +327,17 @@ namespace gum_tests {
       int val = -1;
 
       GUM_CHECK_ASSERT_THROWS_NOTHING(val = table.key(1));
-      CHECK((val) == (1));
+      GUM_CHECK_EQ(val, 1);
       GUM_CHECK_ASSERT_THROWS_NOTHING(val = table.key(2));
-      CHECK((val) == (2));
+      GUM_CHECK_EQ(val, 2);
       GUM_CHECK_ASSERT_THROWS_NOTHING(val = table.key(3));
-      CHECK((val) == (3));
+      GUM_CHECK_EQ(val, 3);
       GUM_CHECK_ASSERT_THROWS_NOTHING(val = table.key(4));
-      CHECK((val) == (4));
+      GUM_CHECK_EQ(val, 4);
       GUM_CHECK_ASSERT_THROWS_NOTHING(val = table.key(5));
-      CHECK((val) == (5));
+      GUM_CHECK_EQ(val, 5);
       GUM_CHECK_ASSERT_THROWS_NOTHING(val = table.key(6));
-      CHECK((val) == (6));
+      GUM_CHECK_EQ(val, 6);
 
       CHECK_THROWS(table.key(42));
       GUM_CHECK_ASSERT_THROWS_NOTHING(table.erase(6));
@@ -351,17 +351,17 @@ namespace gum_tests {
       int key = 0;
 
       GUM_CHECK_ASSERT_THROWS_NOTHING(key = table.keyByVal("a"));
-      CHECK((key) == (1));
+      GUM_CHECK_EQ(key, 1);
       GUM_CHECK_ASSERT_THROWS_NOTHING(key = table.keyByVal("b"));
-      CHECK((key) == (2));
+      GUM_CHECK_EQ(key, 2);
       GUM_CHECK_ASSERT_THROWS_NOTHING(key = table.keyByVal("c"));
-      CHECK((key) == (3));
+      GUM_CHECK_EQ(key, 3);
       GUM_CHECK_ASSERT_THROWS_NOTHING(key = table.keyByVal("d"));
-      CHECK((key) == (4));
+      GUM_CHECK_EQ(key, 4);
       GUM_CHECK_ASSERT_THROWS_NOTHING(key = table.keyByVal("e"));
-      CHECK((key) == (5));
+      GUM_CHECK_EQ(key, 5);
       GUM_CHECK_ASSERT_THROWS_NOTHING(key = table.keyByVal("f"));
-      CHECK((key) == (6));
+      GUM_CHECK_EQ(key, 6);
 
       CHECK_THROWS(table.keyByVal("foo"));
       GUM_CHECK_ASSERT_THROWS_NOTHING(table.erase(6));
@@ -375,15 +375,15 @@ namespace gum_tests {
       GUM_CHECK_ASSERT_THROWS_NOTHING(t2 = t1);
       GUM_CHECK_ASSERT_THROWS_NOTHING(t3 = t2);
 
-      CHECK((t1) == (t2));
-      CHECK((t3) == (t2));
-      CHECK((t1) == (t3));
+      GUM_CHECK_EQ(t1, t2);
+      GUM_CHECK_EQ(t3, t2);
+      GUM_CHECK_EQ(t1, t3);
 
       GUM_CHECK_ASSERT_THROWS_NOTHING(t2.clear());
 
-      CHECK((t1) != (t2));
-      CHECK((t2) != (t3));
-      CHECK((t1) == (t3));
+      GUM_CHECK_NE(t1, t2);
+      GUM_CHECK_NE(t2, t3);
+      GUM_CHECK_EQ(t1, t3);
     }
 
     static void testGenCopyOperator() {
@@ -394,27 +394,27 @@ namespace gum_tests {
       GUM_CHECK_ASSERT_THROWS_NOTHING(t2 = t1);
       GUM_CHECK_ASSERT_THROWS_NOTHING(t3 = t2);
 
-      CHECK((t1) == (t2));
-      CHECK((t3) == (t2));
-      CHECK((t1) == (t3));
+      GUM_CHECK_EQ(t1, t2);
+      GUM_CHECK_EQ(t3, t2);
+      GUM_CHECK_EQ(t1, t3);
 
       GUM_CHECK_ASSERT_THROWS_NOTHING(t2.clear());
 
-      CHECK((t1) != (t2));
-      CHECK((t2) != (t3));
-      CHECK((t1) == (t3));
+      GUM_CHECK_NE(t1, t2);
+      GUM_CHECK_NE(t2, t3);
+      GUM_CHECK_EQ(t1, t3);
     }
 
     static void testGetOperator() {
       gum::HashTable< int, std::string > t1;
       fill(t1);
 
-      CHECK((t1[1]) == ("a"));
-      CHECK((t1[2]) == ("b"));
-      CHECK((t1[3]) == ("c"));
-      CHECK((t1[4]) == ("d"));
-      CHECK((t1[5]) == ("e"));
-      CHECK((t1[6]) == ("f"));
+      GUM_CHECK_EQ(t1[1], "a");
+      GUM_CHECK_EQ(t1[2], "b");
+      GUM_CHECK_EQ(t1[3], "c");
+      GUM_CHECK_EQ(t1[4], "d");
+      GUM_CHECK_EQ(t1[5], "e");
+      GUM_CHECK_EQ(t1[6], "f");
 
       CHECK_THROWS(t1[42]);
       CHECK_THROWS(t1[-1]);
@@ -431,10 +431,10 @@ namespace gum_tests {
       GUM_CHECK_ASSERT_THROWS_NOTHING(t2.insert(5, t1[5]));
       GUM_CHECK_ASSERT_THROWS_NOTHING(t2.insert(6, t1[6]));
 
-      CHECK((t1) == (t2));
+      GUM_CHECK_EQ(t1, t2);
 
       CHECK_THROWS(t2.insert(4, t1[42]));
-      CHECK((t2[4]) == (t1[4]));
+      GUM_CHECK_EQ(t2[4], t1[4]);
     }
 
     static void testKeyUniqueness() {
@@ -447,7 +447,7 @@ namespace gum_tests {
 
       GUM_CHECK_ASSERT_THROWS_NOTHING(t2.setKeyUniquenessPolicy(false));
       CHECK(!t2.keyUniquenessPolicy());
-      CHECK((t1) == (t2));
+      GUM_CHECK_EQ(t1, t2);
     }
 
     static void testResizePolicy() {
@@ -460,7 +460,7 @@ namespace gum_tests {
 
       GUM_CHECK_ASSERT_THROWS_NOTHING(t2.setResizePolicy(false));
       CHECK(!t2.resizePolicy());
-      CHECK((t1) == (t2));
+      GUM_CHECK_EQ(t1, t2);
     }
 
     static void testSize() {
@@ -468,17 +468,17 @@ namespace gum_tests {
 
       GUM_CHECK_ASSERT_THROWS_NOTHING(t2.setResizePolicy(false));
 
-      CHECK((t1.capacity()) == (static_cast< gum::Size >(4)));
-      CHECK((t2.capacity()) == (static_cast< gum::Size >(4)));
+      GUM_CHECK_EQ(t1.capacity(), static_cast< gum::Size >(4));
+      GUM_CHECK_EQ(t2.capacity(), static_cast< gum::Size >(4));
 
       for (int i = 0; i < 10000; i++) {
         GUM_CHECK_ASSERT_THROWS_NOTHING(t1.insert(i, i));
         GUM_CHECK_ASSERT_THROWS_NOTHING(t2.insert(i, i));
       }
 
-      CHECK((t1.capacity()) != (static_cast< gum::Size >(4)));
+      GUM_CHECK_NE(t1.capacity(), static_cast< gum::Size >(4));
 
-      CHECK((t2.capacity()) == (static_cast< gum::Size >(4)));
+      GUM_CHECK_EQ(t2.capacity(), static_cast< gum::Size >(4));
     }
 
     static void testMap() {
@@ -492,10 +492,10 @@ namespace gum_tests {
       GUM_CHECK_ASSERT_THROWS_NOTHING(map4 = t1.map(str));
 
       for (int i = 1; i < 7; i++) {
-        CHECK((map1[i]) == (t1[i] + ".foo"));
-        CHECK((map2[i]) == (t1[i] + ".bar"));
-        CHECK((map3[i]) == (t1[i] + ".42"));
-        CHECK((map4[i]) == (str));
+        GUM_CHECK_EQ(map1[i], t1[i] + ".foo");
+        GUM_CHECK_EQ(map2[i], t1[i] + ".bar");
+        GUM_CHECK_EQ(map3[i], t1[i] + ".42");
+        GUM_CHECK_EQ(map4[i], str);
       }
     }
 
@@ -512,10 +512,10 @@ namespace gum_tests {
       GUM_CHECK_ASSERT_THROWS_NOTHING(map5 = t1.map(12));
 
       for (int i = 1; i < 7; i++) {
-        CHECK((map1[i]) == (t1[i] + ".foo"));
-        CHECK((map2[i]) == (t1[i] + ".bar"));
-        CHECK((map3[i]) == (2));
-        CHECK((map4[i]) == (str));
+        GUM_CHECK_EQ(map1[i], t1[i] + ".foo");
+        GUM_CHECK_EQ(map2[i], t1[i] + ".bar");
+        GUM_CHECK_EQ(map3[i], 2);
+        GUM_CHECK_EQ(map4[i], str);
       }
     }
 
@@ -532,7 +532,7 @@ namespace gum_tests {
       for (const auto& elt: t1)
         obtained.insert(elt.second);
 
-      CHECK((expected.size()) == (obtained.size()));
+      GUM_CHECK_EQ(expected.size(), obtained.size());
 
       for (gum::Size i = 0; i < obtained.size(); i++) {
         CHECK(expected.exists(obtained[i]));
@@ -552,7 +552,7 @@ namespace gum_tests {
       for (const auto& elt: t1)
         obtained.insert(elt.second);
 
-      CHECK((expected.size()) == (obtained.size()));
+      GUM_CHECK_EQ(expected.size(), obtained.size());
 
       for (gum::Size i = 0; i < obtained.size(); i++) {
         CHECK(expected.exists(obtained[i]));
@@ -576,7 +576,7 @@ namespace gum_tests {
 
       for (gum::Idx i = 0; i < size; ++i) {
         CHECK(t1.exists(vect[i]));
-        CHECK((t1[vect[i]]) == (i * 1000 + i));
+        GUM_CHECK_EQ(t1[vect[i]], i * 1000 + i);
       }
     }
 
@@ -599,7 +599,7 @@ namespace gum_tests {
       for (gum::Idx i = 0; i < size; ++i) {
         std::pair< float, float > thepair(vect[i], float(2.0 * i));
         CHECK(t1.exists(thepair));
-        CHECK((t1[thepair]) == (i * 1000 + i));
+        GUM_CHECK_EQ(t1[thepair], i * 1000 + i);
       }
     }
 
@@ -620,7 +620,7 @@ namespace gum_tests {
 
       for (gum::Idx i = 0; i < size; ++i) {
         CHECK(t1.exists(vect[i]));
-        CHECK((t1[vect[i]]) == (i * 1000 + i));
+        GUM_CHECK_EQ(t1[vect[i]], i * 1000 + i);
       }
     }
 
@@ -643,7 +643,7 @@ namespace gum_tests {
       for (gum::Idx i = 0; i < size; ++i) {
         std::pair< double, double > thepair(vect[i], double(2.0 * i));
         CHECK(t1.exists(thepair));
-        CHECK((t1[thepair]) == (i * 1000 + i));
+        GUM_CHECK_EQ(t1[thepair], i * 1000 + i);
       }
     }
 
@@ -651,9 +651,9 @@ namespace gum_tests {
       gum::HashTable< unsigned int, std::string > table{std::make_pair(3U, "a"),
                                                         std::make_pair(2U, "b")};
 
-      CHECK((table.size()) == ((gum::Size) static_cast< gum::Size >(2)));
-      CHECK((table.exists(3U)) == (true));
-      CHECK((table.exists(2U)) == (true));
+      GUM_CHECK_EQ(table.size(), (gum::Size) static_cast< gum::Size >(2));
+      GUM_CHECK_EQ(table.exists(3U), true);
+      GUM_CHECK_EQ(table.exists(2U), true);
     }
 
     private:

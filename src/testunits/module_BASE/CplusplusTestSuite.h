@@ -59,17 +59,17 @@ namespace gum_tests {
     static void test_CPP17_binding_array() {
       int arry[3]    = {3, 4, 5};
       auto [a, b, c] = arry;
-      CHECK((a) == (3));
-      CHECK((b) == (4));
-      CHECK((c) == (5));
+      GUM_CHECK_EQ(a, 3);
+      GUM_CHECK_EQ(b, 4);
+      GUM_CHECK_EQ(c, 5);
     }   // namespace gum_tests
 
     static void test_CPP17_autobinding() {
       std::tuple tplex(1, 'a', 3.14);
       auto [a, b, c] = tplex;
-      CHECK((a) == (1));
-      CHECK((b) == ('a'));
-      CHECK((c) == (3.14));
+      GUM_CHECK_EQ(a, 1);
+      GUM_CHECK_EQ(b, 'a');
+      GUM_CHECK_EQ(c, 3.14);
     }
 
     static void test_CPP17_enumInit() {
@@ -103,8 +103,8 @@ namespace gum_tests {
             == (-2));   // left-shift for signed negative integers(previously undefined behavior)
 
       int i2 = std::numeric_limits< int >::max();
-      CHECK((i2 <<= 1) == (-2));   // "unrepresentable" left-shift for signed integers(previously
-                                   // undefined behavior)
+      GUM_CHECK_EQ(i2 <<= 1, -2);   // "unrepresentable" left-shift for signed integers(previously
+                                    // undefined behavior)
     }
 
     static void test_CPP20_lambda_implicit_this_capture() {
@@ -114,7 +114,7 @@ namespace gum_tests {
       };
 
       S s;
-      CHECK((s.y) == (2));
+      GUM_CHECK_EQ(s.y, 2);
     }
   };
 

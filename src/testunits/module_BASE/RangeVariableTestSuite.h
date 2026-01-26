@@ -67,14 +67,14 @@ namespace gum_tests {
       gum::RangeVariable var4("var4", "this is var4");
       GUM_CHECK_ASSERT_THROWS_NOTHING(var4 = var2);
 
-      CHECK((var4.minVal()) == (var2.minVal()));
-      CHECK((var1.maxVal()) == (var3.maxVal()));
-      CHECK((var4.minVal()) != (var1.minVal()));
+      GUM_CHECK_EQ(var4.minVal(), var2.minVal());
+      GUM_CHECK_EQ(var1.maxVal(), var3.maxVal());
+      GUM_CHECK_NE(var4.minVal(), var1.minVal());
     }   // namespace gum_tests
 
     static void testLabels() {
       gum::RangeVariable var1("var1", "this is var1");
-      CHECK((var1.domainSize()) == (static_cast< gum::Size >(2)));
+      GUM_CHECK_EQ(var1.domainSize(), static_cast< gum::Size >(2));
       CHECK(!var1.empty());
 
       var1.setMinVal(1);
@@ -83,33 +83,33 @@ namespace gum_tests {
 
       var1.setMaxVal(9);
       CHECK(!var1.empty());
-      CHECK((var1.domainSize()) == (static_cast< gum::Size >(9)));
+      GUM_CHECK_EQ(var1.domainSize(), static_cast< gum::Size >(9));
       CHECK(var1.belongs(3L));
       CHECK(!var1.belongs(0L));
       CHECK(!var1.belongs(10L));
 
       var1.setMinVal(3);
 
-      CHECK((var1.label(1)) == ("4"));
-      CHECK((var1["4"]) == (static_cast< gum::Idx >(1)));
+      GUM_CHECK_EQ(var1.label(1), "4");
+      GUM_CHECK_EQ(var1["4"], static_cast< gum::Idx >(1));
 
       gum::DiscreteVariable& v = var1;
 
-      CHECK((v.label(1)) == ("4"));
-      CHECK((v["4"]) == (static_cast< gum::Idx >(1)));
+      GUM_CHECK_EQ(v.label(1), "4");
+      GUM_CHECK_EQ(v["4"], static_cast< gum::Idx >(1));
 
       std::stringstream s;
       s << v;
-      CHECK((s.str()) == ("var1:Range([3,9])"));
-      CHECK((v.toString()) == ("var1:Range([3,9])"));
+      GUM_CHECK_EQ(s.str(), "var1:Range([3,9])");
+      GUM_CHECK_EQ(v.toString(), "var1:Range([3,9])");
     }
 
     static void testNumerical() {
       gum::RangeVariable var1("var1", "this is var1", 10, 20);
-      CHECK((var1.domainSize()) == (static_cast< gum::Size >(11)));
+      GUM_CHECK_EQ(var1.domainSize(), static_cast< gum::Size >(11));
 
       for (gum::Idx i = 0; i < var1.domainSize(); i++) {
-        CHECK((var1.numerical(i)) == (var1.minVal() + i));
+        GUM_CHECK_EQ(var1.numerical(i), var1.minVal() + i);
       }
     }
   };

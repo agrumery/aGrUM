@@ -88,18 +88,18 @@ namespace gum_tests {
       auto mp1 = p1.min();
       auto mp2 = p2.min();
 
-      CHECK((Mp1) <= ((p1 | p2).max()));
-      CHECK((Mp2) <= ((p1 | p2).max()));
-      CHECK((std::max(Mp1, Mp2)) == ((p1 | p2).max()));
-      CHECK(((p1 & p2).min()) <= (mp1));
-      CHECK(((p1 & p2).min()) <= (mp2));
-      CHECK((std::min(mp1, mp2)) == ((p1 & p2).min()));
+      GUM_CHECK_LE(Mp1, (p1 | p2).max());
+      GUM_CHECK_LE(Mp2, (p1 | p2).max());
+      GUM_CHECK_EQ(std::max(Mp1, Mp2), (p1 | p2).max());
+      GUM_CHECK_LE((p1 & p2).min(), mp1);
+      GUM_CHECK_LE((p1 & p2).min(), mp2);
+      GUM_CHECK_EQ(std::min(mp1, mp2), (p1 & p2).min());
 
-      CHECK((1) <= ((p1 | p2).sum()));
-      CHECK(((p1 & p2).sum()) <= (1));
+      GUM_CHECK_LE(1, (p1 | p2).sum());
+      GUM_CHECK_LE((p1 & p2).sum(), 1);
 
-      CHECK((1 - p1.max()) == ((~p1).min()));
-      CHECK((1 - p1.min()) == ((~p1).max()));
+      GUM_CHECK_EQ(1 - p1.max(), (~p1).min());
+      GUM_CHECK_EQ(1 - p1.min(), (~p1).max());
       CHECK((10 - 1) == doctest::Approx((~p1).sum()).epsilon(GUM_SMALL_ERROR));
     }
 
@@ -108,15 +108,15 @@ namespace gum_tests {
           = gum::BayesNet< double >::fastPrototype("A[10];B[1,10];C{1.0:20.0:10};D{1:100:10};E[1.0:"
                                                    "20.0:10];X{A1|A2|A3|A4|A5|A6|A7|A8|A9|A10}");
       for (auto i: bn.nodes()) {
-        CHECK((bn.variable(i).domainSize()) == (10u));
+        GUM_CHECK_EQ(bn.variable(i).domainSize(), 10u);
       }
 
 
-      CHECK((toBoolString(gum::Tensor< double >::evEq(bn.variable("A"), 4.0))) == ("....1....."));
-      CHECK((toBoolString(gum::Tensor< double >::evEq(bn.variable("B"), 4.0))) == ("...1......"));
-      CHECK((toBoolString(gum::Tensor< double >::evEq(bn.variable("C"), 4.0))) == (".1........"));
-      CHECK((toBoolString(gum::Tensor< double >::evEq(bn.variable("D"), 4.0))) == ("1........."));
-      CHECK((toBoolString(gum::Tensor< double >::evEq(bn.variable("E"), 4.0))) == (".1........"));
+      GUM_CHECK_EQ(toBoolString(gum::Tensor< double >::evEq(bn.variable("A"), 4.0)), "....1.....");
+      GUM_CHECK_EQ(toBoolString(gum::Tensor< double >::evEq(bn.variable("B"), 4.0)), "...1......");
+      GUM_CHECK_EQ(toBoolString(gum::Tensor< double >::evEq(bn.variable("C"), 4.0)), ".1........");
+      GUM_CHECK_EQ(toBoolString(gum::Tensor< double >::evEq(bn.variable("D"), 4.0)), "1.........");
+      GUM_CHECK_EQ(toBoolString(gum::Tensor< double >::evEq(bn.variable("E"), 4.0)), ".1........");
 
       CHECK((toBoolString(gum::Tensor< double >::evEq(bn.variable("A"), 4.0)
                           | gum::Tensor< double >::evEq(bn.variable("A"), 8.0)))
@@ -126,17 +126,17 @@ namespace gum_tests {
       CHECK((toBoolString(~gum::Tensor< double >::evIn(bn.variable("A"), 4.0, 8.0)))
             == ("1111.....1"));
 
-      CHECK((toBoolString(gum::Tensor< double >::evLt(bn.variable("A"), 4.0))) == ("1111......"));
-      CHECK((toBoolString(gum::Tensor< double >::evLt(bn.variable("A"), 0.0))) == ("1........."));
+      GUM_CHECK_EQ(toBoolString(gum::Tensor< double >::evLt(bn.variable("A"), 4.0)), "1111......");
+      GUM_CHECK_EQ(toBoolString(gum::Tensor< double >::evLt(bn.variable("A"), 0.0)), "1.........");
 
-      CHECK((toBoolString(gum::Tensor< double >::evGt(bn.variable("A"), 4.0))) == (".....11111"));
-      CHECK((toBoolString(gum::Tensor< double >::evGt(bn.variable("A"), 8.0))) == (".........1"));
+      GUM_CHECK_EQ(toBoolString(gum::Tensor< double >::evGt(bn.variable("A"), 4.0)), ".....11111");
+      GUM_CHECK_EQ(toBoolString(gum::Tensor< double >::evGt(bn.variable("A"), 8.0)), ".........1");
 
-      CHECK((toBoolString(gum::Tensor< double >::evLt(bn.variable("C"), 7.0))) == ("111......."));
-      CHECK((toBoolString(gum::Tensor< double >::evLt(bn.variable("C"), 1.0))) == ("1........."));
+      GUM_CHECK_EQ(toBoolString(gum::Tensor< double >::evLt(bn.variable("C"), 7.0)), "111.......");
+      GUM_CHECK_EQ(toBoolString(gum::Tensor< double >::evLt(bn.variable("C"), 1.0)), "1.........");
 
-      CHECK((toBoolString(gum::Tensor< double >::evGt(bn.variable("C"), 7.0))) == ("....111111"));
-      CHECK((toBoolString(gum::Tensor< double >::evGt(bn.variable("C"), 20.0))) == (".........1"));
+      GUM_CHECK_EQ(toBoolString(gum::Tensor< double >::evGt(bn.variable("C"), 7.0)), "....111111");
+      GUM_CHECK_EQ(toBoolString(gum::Tensor< double >::evGt(bn.variable("C"), 20.0)), ".........1");
     }
 
     private:

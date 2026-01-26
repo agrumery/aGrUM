@@ -78,30 +78,30 @@ namespace gum_tests {
       }
 
       for (i.setFirst(); !i.end(); ++i) {
-        CHECK((sparse[i]) == (agg[i]));
-        CHECK((full[i]) == (agg[i]));
+        GUM_CHECK_EQ(sparse[i], agg[i]);
+        GUM_CHECK_EQ(full[i], agg[i]);
       }
 
       gum::Instantiation j(sparse);
 
       for (j.setFirst(); !j.end(); ++j) {
-        CHECK((agg[j]) == (sparse[j]));
-        CHECK((full[j]) == (sparse[j]));
+        GUM_CHECK_EQ(agg[j], sparse[j]);
+        GUM_CHECK_EQ(full[j], sparse[j]);
       }
 
       gum::Instantiation k(full);
 
       for (k.setFirst(); !k.end(); ++k) {
-        CHECK((agg[k]) == (full[k]));
-        CHECK((sparse[k]) == (full[k]));
+        GUM_CHECK_EQ(agg[k], full[k]);
+        GUM_CHECK_EQ(sparse[k], full[k]);
       }
 
-      CHECK((agg.compressionRate()) == (static_cast< float >(1.0)));   // 100% de compression
+      GUM_CHECK_EQ(agg.compressionRate(), static_cast< float >(1.0));   // 100% de compression
 
       CHECK(
           (sparse.compressionRate())
           == (static_cast< float >(0.75)));   // deterministic as a sparse : 75% parameters are 0...
-      CHECK((full.compressionRate()) == (static_cast< float >(0)));   // 0% de compression...
+      GUM_CHECK_EQ(full.compressionRate(), static_cast< float >(0));   // 0% de compression...
     }   // namespace gum_tests
   };
 

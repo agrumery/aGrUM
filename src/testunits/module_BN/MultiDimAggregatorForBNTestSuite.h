@@ -423,7 +423,7 @@ namespace gum_tests {
         GUM_CHECK_ASSERT_THROWS_NOTHING(p = ie.posterior("min"));
         gum::Instantiation I(p);
         for (I.setFirst(); !I.end(); I.inc())
-          CHECK((p.get(I)) == (I.val(0) == 3 ? 1 : 0));
+          GUM_CHECK_EQ(p.get(I), I.val(0) == 3 ? 1 : 0);
       }
       {
         gum::ShaferShenoyInference< double > ie(&bn);
@@ -432,7 +432,7 @@ namespace gum_tests {
         GUM_CHECK_ASSERT_THROWS_NOTHING(p = ie.posterior("min"));
         gum::Instantiation I(p);
         for (I.setFirst(); !I.end(); I.inc())
-          CHECK((p.get(I)) == (I.val(0) == 3 ? 1 : 0));
+          GUM_CHECK_EQ(p.get(I), I.val(0) == 3 ? 1 : 0);
       }
       {
         gum::VariableElimination< double > ie(&bn);
@@ -441,7 +441,7 @@ namespace gum_tests {
         GUM_CHECK_ASSERT_THROWS_NOTHING(p = ie.posterior("min"));
         gum::Instantiation I(p);
         for (I.setFirst(); !I.end(); I.inc())
-          CHECK((p.get(I)) == (I.val(0) == 3 ? 1 : 0));
+          GUM_CHECK_EQ(p.get(I), I.val(0) == 3 ? 1 : 0);
       }
       {
         gum::LoopyBeliefPropagation< double > ie(&bn);
@@ -450,7 +450,7 @@ namespace gum_tests {
         GUM_CHECK_ASSERT_THROWS_NOTHING(p = ie.posterior("min"));
         gum::Instantiation I(p);
         for (I.setFirst(); !I.end(); I.inc())
-          CHECK((p.get(I)) == (I.val(0) == 3 ? 1 : 0));
+          GUM_CHECK_EQ(p.get(I), I.val(0) == 3 ? 1 : 0);
       }
       // if (joint->sum()!=1)  // hard test for ReadOnly CPT (as aggregator)
     }

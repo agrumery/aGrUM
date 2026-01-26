@@ -83,7 +83,7 @@ namespace gum_tests {
     static void testInit() {
       gum::prm::o3prm::O3prmReader< double > driver;
       driver.readFile(GET_RESSOURCES_PATH("o3prm/specialprinters.o3prm"));
-      CHECK((driver.prm()) != (nullptr));
+      GUM_CHECK_NE(driver.prm(), nullptr);
 
       if (driver.prm() != nullptr) delete driver.prm();
     }
@@ -105,7 +105,7 @@ namespace gum_tests {
       GUM_CHECK_ASSERT_THROWS_NOTHING(
           gspan
           = new gum::prm::GSpan< double >(*(_driver_->prm()), _driver_->prm()->getSystem("m")));
-      CHECK((gspan) != (nullptr));
+      GUM_CHECK_NE(gspan, nullptr);
 
       if (gspan != nullptr) {
         GUM_CHECK_ASSERT_THROWS_NOTHING(gspan->discoverPatterns());

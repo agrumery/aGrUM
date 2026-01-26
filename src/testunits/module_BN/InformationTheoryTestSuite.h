@@ -73,8 +73,8 @@ namespace gum_tests {
       gum::NodeSet Y   = bn.nodeset({"B"});
       auto         it  = gum::InformationTheory(ie, X, Y);
       auto         it2 = gum::InformationTheory(ie, {"A", "C"}, {"B"});
-      CHECK((it.entropyX()) == (it2.entropyX()));
-      CHECK((it.entropyY()) == (it2.entropyY()));
+      GUM_CHECK_EQ(it.entropyX(), it2.entropyX());
+      GUM_CHECK_EQ(it.entropyY(), it2.entropyY());
     }   // namespace gum_tests
 
     static void testCheckSimpleBN() {

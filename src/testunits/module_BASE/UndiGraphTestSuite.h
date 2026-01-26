@@ -124,7 +124,7 @@ namespace gum_tests {
 
       gum::UndiGraph* copy = nullptr;
       GUM_CHECK_ASSERT_THROWS_NOTHING((copy = new gum::UndiGraph(graph)));
-      CHECK((graph) == (*copy));
+      GUM_CHECK_EQ(graph, *copy);
       delete (copy);
 
       GUM_CHECK_ASSERT_THROWS_NOTHING(gum::UndiGraph copy2 = graph);
@@ -141,14 +141,14 @@ namespace gum_tests {
 
       g2 = g3 = graph;
 
-      CHECK((g2) == (graph));
-      CHECK((g3) == (graph));
+      GUM_CHECK_EQ(g2, graph);
+      GUM_CHECK_EQ(g3, graph);
 
       g2.clear();
       g3.clearEdges();
 
-      CHECK((g2) != (graph));
-      CHECK((g3) != (graph));
+      GUM_CHECK_NE(g2, graph);
+      GUM_CHECK_NE(g3, graph);
     }
 
     void testEmptyNodes() {
@@ -199,8 +199,8 @@ namespace gum_tests {
 
       GUM_CHECK_ASSERT_THROWS_NOTHING(graph.eraseNode(id2));
 
-      CHECK((nodeCount) == (graph.size() + 1));
-      CHECK((edgeCount) == (graph.sizeEdges() + 2));
+      GUM_CHECK_EQ(nodeCount, graph.size() + 1);
+      GUM_CHECK_EQ(edgeCount, graph.sizeEdges() + 2);
 
       CHECK(!graph.exists(id2));
       CHECK(!graph.existsEdge(id2, id4));
@@ -214,16 +214,16 @@ namespace gum_tests {
       gum::Size nodeCount = graph.size();
       gum::Size edgeCount = graph.sizeEdges();
 
-      CHECK((nodeCount) == (static_cast< gum::Size >(5)));
-      CHECK((edgeCount) == (static_cast< gum::Size >(6)));
+      GUM_CHECK_EQ(nodeCount, static_cast< gum::Size >(5));
+      GUM_CHECK_EQ(edgeCount, static_cast< gum::Size >(6));
 
       for (int i = 0; i < 10; i++) {
         GUM_CHECK_ASSERT_THROWS_NOTHING(graph.eraseNode(id5));
       }
 
-      CHECK((nodeCount) == (graph.size() + 1));
+      GUM_CHECK_EQ(nodeCount, graph.size() + 1);
 
-      CHECK((edgeCount) == (graph.sizeEdges() + 3));
+      GUM_CHECK_EQ(edgeCount, graph.sizeEdges() + 3);
 
       CHECK(!graph.existsEdge(2, 4));
       CHECK(!graph.existsEdge(3, 4));
@@ -242,8 +242,8 @@ namespace gum_tests {
 
       GUM_CHECK_ASSERT_THROWS_NOTHING(graph.eraseEdge(gum::Edge(4, 2)));
 
-      CHECK((nodeCount) == (graph.size()));
-      CHECK((edgeCount) == (graph.sizeEdges() + 1));
+      GUM_CHECK_EQ(nodeCount, graph.size());
+      GUM_CHECK_EQ(edgeCount, graph.sizeEdges() + 1);
 
       CHECK(!graph.existsEdge(2, 4));
     }
@@ -260,8 +260,8 @@ namespace gum_tests {
 
       GUM_CHECK_ASSERT_THROWS_NOTHING(graph.eraseEdge(gum::Edge(id3, id5)));
 
-      CHECK((nodeCount) == (graph.size()));
-      CHECK((edgeCount) == (graph.sizeEdges() + 1));
+      GUM_CHECK_EQ(nodeCount, graph.size());
+      GUM_CHECK_EQ(edgeCount, graph.sizeEdges() + 1);
 
       CHECK(!graph.existsEdge(id3, id5));
     }
@@ -270,7 +270,7 @@ namespace gum_tests {
       gum::UndiGraph graph = buildGraph();
 
       const gum::NodeSet nodeset = graph.asNodeSet();
-      CHECK((nodeset.size()) == (graph.size()));
+      GUM_CHECK_EQ(nodeset.size(), graph.size());
       gum::Size nodeCount = graph.size();
 
       for (const auto node: nodeset)
@@ -278,14 +278,14 @@ namespace gum_tests {
 
       CHECK(graph.empty());
 
-      CHECK((nodeCount) == (nodeset.size()));
+      GUM_CHECK_EQ(nodeCount, nodeset.size());
     }
 
     void testGetEdges() {
       gum::UndiGraph graph = buildGraph();
 
       gum::EdgeSet edgeset = graph.edges();
-      CHECK((edgeset.size()) == (graph.sizeEdges()));
+      GUM_CHECK_EQ(edgeset.size(), graph.sizeEdges());
       gum::Size edgeCount = graph.sizeEdges();
 
       for (const auto& edge: edgeset)
@@ -293,14 +293,14 @@ namespace gum_tests {
 
       CHECK(graph.emptyEdges());
 
-      CHECK((edgeCount) == (edgeset.size()));
+      GUM_CHECK_EQ(edgeCount, edgeset.size());
     }
 
     void testNodeListMapNodes() {
       gum::UndiGraph graph = buildGraph();
 
       gum::List< gum::Size > list = graph.listMapNodes(&simpleDoubleFunction);
-      CHECK((list.size()) == (graph.size()));
+      GUM_CHECK_EQ(list.size(), graph.size());
 
       gum::Size s = 0;
 
@@ -308,7 +308,7 @@ namespace gum_tests {
         s += *iter;
       }
 
-      CHECK((s) == (2 * (id1 + id2 + id3 + id4 + id5)));
+      GUM_CHECK_EQ(s, 2 * (id1 + id2 + id3 + id4 + id5));
     }
 
     void testTwistedNodeListMapNodes() {
@@ -317,7 +317,7 @@ namespace gum_tests {
       gum::List< gum::Size > list;
       CHECK_THROWS(list = graph.listMapNodes(&twistedMapFunction));
 
-      CHECK((list.size()) == (static_cast< gum::Size >(0)));
+      GUM_CHECK_EQ(list.size(), static_cast< gum::Size >(0));
     }
 
     void testHashMapNodes() {
@@ -325,7 +325,7 @@ namespace gum_tests {
 
       gum::NodeProperty< gum::Size > hashmap
           = graph.nodesPropertyFromFunction(&simpleDoubleFunction);
-      CHECK((hashmap.size()) == (graph.size()));
+      GUM_CHECK_EQ(hashmap.size(), graph.size());
 
       gum::Size sk = 0;
       gum::Size sv = 0;
@@ -335,7 +335,7 @@ namespace gum_tests {
         sv += elt.second;
       }
 
-      CHECK((sk * 2) == (sv));
+      GUM_CHECK_EQ(sk * 2, sv);
     }
 
     void testTwistedHashMapNodes() {
@@ -344,14 +344,14 @@ namespace gum_tests {
       gum::NodeProperty< gum::Size > hashmap;
       CHECK_THROWS(hashmap = graph.nodesPropertyFromFunction(&twistedMapFunction));
 
-      CHECK((hashmap.size()) == (static_cast< gum::Size >(0)));
+      GUM_CHECK_EQ(hashmap.size(), static_cast< gum::Size >(0));
     }
 
     void testListMapEdges() {
       gum::UndiGraph graph = buildGraph();
 
       gum::List< gum::Size > list = graph.listMapEdges(&simpleEdgeMapFunction);
-      CHECK((list.size()) == (graph.sizeEdges()));
+      GUM_CHECK_EQ(list.size(), graph.sizeEdges());
 
       gum::Size s = 0;
 
@@ -359,14 +359,14 @@ namespace gum_tests {
         s += *iter;
       }
 
-      CHECK((s) == ((gum::Size)(0 + 0 + 2 + 3 + 1 + 4 + 2 + 3 + 4 + 4 + 3 + 1)));
+      GUM_CHECK_EQ(s, (gum::Size)(0 + 0 + 2 + 3 + 1 + 4 + 2 + 3 + 4 + 4 + 3 + 1));
     }
 
     void testHashMapEdges() {
       gum::UndiGraph graph = buildGraph();
 
       gum::EdgeProperty< gum::Size > hashmap = graph.edgesProperty(&simpleEdgeMapFunction);
-      CHECK((hashmap.size()) == (graph.sizeEdges()));
+      GUM_CHECK_EQ(hashmap.size(), graph.sizeEdges());
 
       gum::Size sk = 0;
       gum::Size sv = 0;
@@ -376,7 +376,7 @@ namespace gum_tests {
         sk += elt.first.first() + elt.first.second();
       }
 
-      CHECK((sk) == (sv));
+      GUM_CHECK_EQ(sk, sv);
     }
 
     void testUndirectedPaths() {
@@ -386,19 +386,19 @@ namespace gum_tests {
       graph.addEdge(id6, id7);
 
       std::vector< gum::NodeId > path = graph.undirectedPath(0, 1);
-      CHECK((path.size()) == (3U));
-      CHECK((path[0]) == (0U));
-      CHECK((path[1]) == (3U));
-      CHECK((path[2]) == (1U));
+      GUM_CHECK_EQ(path.size(), 3U);
+      GUM_CHECK_EQ(path[0], 0U);
+      GUM_CHECK_EQ(path[1], 3U);
+      GUM_CHECK_EQ(path[2], 1U);
 
       std::vector< gum::NodeId > path2 = graph.undirectedPath(1, 2);
-      CHECK((path2.size()) == (3U));
-      CHECK((path2[0]) == (1U));
-      CHECK((path2[1]) == (4U));
-      CHECK((path2[2]) == (2U));
+      GUM_CHECK_EQ(path2.size(), 3U);
+      GUM_CHECK_EQ(path2[0], 1U);
+      GUM_CHECK_EQ(path2[1], 4U);
+      GUM_CHECK_EQ(path2[2], 2U);
 
       std::vector< gum::NodeId > path3 = graph.undirectedPath(5, 6);
-      CHECK((path3.size()) == (2U));
+      GUM_CHECK_EQ(path3.size(), 2U);
 
       CHECK_THROWS_AS(graph.undirectedPath(1, 5), const gum::NotFound&);
     }
@@ -413,13 +413,13 @@ namespace gum_tests {
 
       auto cc = g.nodes2ConnectedComponent();
 
-      CHECK((cc.size()) == (6U));
-      CHECK((cc[0]) != (cc[3]));
-      CHECK((cc[0]) != (cc[5]));
-      CHECK((cc[5]) != (cc[3]));
-      CHECK((cc[0]) == (cc[1]));
-      CHECK((cc[0]) == (cc[2]));
-      CHECK((cc[3]) == (cc[4]));
+      GUM_CHECK_EQ(cc.size(), 6U);
+      GUM_CHECK_NE(cc[0], cc[3]);
+      GUM_CHECK_NE(cc[0], cc[5]);
+      GUM_CHECK_NE(cc[5], cc[3]);
+      GUM_CHECK_EQ(cc[0], cc[1]);
+      GUM_CHECK_EQ(cc[0], cc[2]);
+      GUM_CHECK_EQ(cc[3], cc[4]);
     }
 
     static void testConnexComponents2() {
@@ -434,12 +434,12 @@ namespace gum_tests {
 
       auto cc = g.nodes2ConnectedComponent();
 
-      CHECK((cc.size()) == (6U));
-      CHECK((cc[0]) == (cc[1]));
-      CHECK((cc[0]) == (cc[2]));
-      CHECK((cc[0]) == (cc[3]));
-      CHECK((cc[0]) == (cc[4]));
-      CHECK((cc[0]) == (cc[5]));
+      GUM_CHECK_EQ(cc.size(), 6U);
+      GUM_CHECK_EQ(cc[0], cc[1]);
+      GUM_CHECK_EQ(cc[0], cc[2]);
+      GUM_CHECK_EQ(cc[0], cc[3]);
+      GUM_CHECK_EQ(cc[0], cc[4]);
+      GUM_CHECK_EQ(cc[0], cc[5]);
     }
   };
 

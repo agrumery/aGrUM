@@ -157,87 +157,87 @@ namespace gum_tests {
 
       std::vector< double > v0  = param_estimator.parameters(gum::NodeId(0));
       std::vector< double > xv0 = _normalize_({1201, 126, 76});
-      CHECK((v0) == (xv0));
+      GUM_CHECK_EQ(v0, xv0);
 
       std::vector< double > v1  = param_estimator.parameters(gum::NodeId(1));
       std::vector< double > xv1 = _normalize_({276, 1076, 51});
-      CHECK((v1) == (xv1));
+      GUM_CHECK_EQ(v1, xv1);
 
       std::vector< double > v2  = param_estimator.parameters(gum::NodeId(2));
       std::vector< double > xv2 = _normalize_({1401, 1, 1});
-      CHECK((v2) == (xv2));
+      GUM_CHECK_EQ(v2, xv2);
 
       std::vector< double > v02  = param_estimator.parameters(gum::NodeId(0), {gum::NodeId(2)});
       std::vector< double > xv02 = _xnormalize_({1201, 126, 76, 1, 1, 1, 1, 1, 1});
-      CHECK((v02) == (xv02));
+      GUM_CHECK_EQ(v02, xv02);
 
       std::vector< double > v01  = param_estimator.parameters(gum::NodeId(0), {gum::NodeId(1)});
       std::vector< double > xv01 = _xnormalize_({201, 76, 1, 1001, 1, 76, 1, 51, 1});
-      CHECK((v01) == (xv01));
+      GUM_CHECK_EQ(v01, xv01);
 
       std::vector< double > v21  = param_estimator.parameters(gum::NodeId(2), {gum::NodeId(1)});
       std::vector< double > xv21 = _xnormalize_({276, 1, 1, 1076, 1, 1, 51, 1, 1});
-      CHECK((v21) == (xv21));
+      GUM_CHECK_EQ(v21, xv21);
 
 
       gum::learning::ParamEstimatorML param_estimator2(param_estimator);
       std::vector< double >           w0 = param_estimator2.parameters(gum::NodeId(0));
-      CHECK((w0) == (xv0));
+      GUM_CHECK_EQ(w0, xv0);
 
       std::vector< double > w1 = param_estimator2.parameters(gum::NodeId(1));
-      CHECK((w1) == (xv1));
+      GUM_CHECK_EQ(w1, xv1);
 
       std::vector< double > w2 = param_estimator2.parameters(gum::NodeId(2));
-      CHECK((w2) == (xv2));
+      GUM_CHECK_EQ(w2, xv2);
 
       std::vector< double > w02 = param_estimator2.parameters(gum::NodeId(0), {gum::NodeId(2)});
-      CHECK((w02) == (xv02));
+      GUM_CHECK_EQ(w02, xv02);
 
       std::vector< double > w01 = param_estimator2.parameters(gum::NodeId(0), {gum::NodeId(1)});
-      CHECK((w01) == (xv01));
+      GUM_CHECK_EQ(w01, xv01);
 
       std::vector< double > w21 = param_estimator2.parameters(gum::NodeId(2), {gum::NodeId(1)});
-      CHECK((w21) == (xv21));
+      GUM_CHECK_EQ(w21, xv21);
 
 
       gum::learning::ParamEstimatorML param_estimator3(std::move(param_estimator2));
       std::vector< double >           x0 = param_estimator3.parameters(gum::NodeId(0));
-      CHECK((x0) == (xv0));
+      GUM_CHECK_EQ(x0, xv0);
 
       std::vector< double > x1 = param_estimator3.parameters(gum::NodeId(1));
-      CHECK((x1) == (xv1));
+      GUM_CHECK_EQ(x1, xv1);
 
       std::vector< double > x2 = param_estimator3.parameters(gum::NodeId(2));
-      CHECK((x2) == (xv2));
+      GUM_CHECK_EQ(x2, xv2);
 
       std::vector< double > x02 = param_estimator3.parameters(gum::NodeId(0), {gum::NodeId(2)});
-      CHECK((x02) == (xv02));
+      GUM_CHECK_EQ(x02, xv02);
 
       std::vector< double > x01 = param_estimator3.parameters(gum::NodeId(0), {gum::NodeId(1)});
-      CHECK((x01) == (xv01));
+      GUM_CHECK_EQ(x01, xv01);
 
       std::vector< double > x21 = param_estimator3.parameters(gum::NodeId(2), {gum::NodeId(1)});
-      CHECK((x21) == (xv21));
+      GUM_CHECK_EQ(x21, xv21);
 
 
       gum::learning::ParamEstimatorML* param_estimator4 = param_estimator.clone();
       std::vector< double >            y0 = param_estimator4->parameters(gum::NodeId(0));
-      CHECK((y0) == (xv0));
+      GUM_CHECK_EQ(y0, xv0);
 
       std::vector< double > y1 = param_estimator4->parameters(gum::NodeId(1));
-      CHECK((y1) == (xv1));
+      GUM_CHECK_EQ(y1, xv1);
 
       std::vector< double > y2 = param_estimator4->parameters(gum::NodeId(2));
-      CHECK((y2) == (xv2));
+      GUM_CHECK_EQ(y2, xv2);
 
       std::vector< double > y02 = param_estimator4->parameters(gum::NodeId(0), {gum::NodeId(2)});
-      CHECK((y02) == (xv02));
+      GUM_CHECK_EQ(y02, xv02);
 
       std::vector< double > y01 = param_estimator4->parameters(gum::NodeId(0), {gum::NodeId(1)});
-      CHECK((y01) == (xv01));
+      GUM_CHECK_EQ(y01, xv01);
 
       std::vector< double > y21 = param_estimator4->parameters(gum::NodeId(2), {gum::NodeId(1)});
-      CHECK((y21) == (xv21));
+      GUM_CHECK_EQ(y21, xv21);
 
       delete param_estimator4;
     }
@@ -291,87 +291,87 @@ namespace gum_tests {
 
       std::vector< double > r0  = param_estimator.parameters(gum::NodeId(0));
       std::vector< double > xr0 = _normalize_({401, 76, 76});
-      CHECK((r0) == (xr0));
+      GUM_CHECK_EQ(r0, xr0);
 
       std::vector< double > r1  = param_estimator.parameters(gum::NodeId(1));
       std::vector< double > xr1 = _normalize_({276, 276, 1});
-      CHECK((r1) == (xr1));
+      GUM_CHECK_EQ(r1, xr1);
 
       std::vector< double > r2  = param_estimator.parameters(gum::NodeId(2));
       std::vector< double > xr2 = _normalize_({551, 1, 1});
-      CHECK((r2) == (xr2));
+      GUM_CHECK_EQ(r2, xr2);
 
       std::vector< double > r02  = param_estimator.parameters(gum::NodeId(0), {gum::NodeId(2)});
       std::vector< double > xr02 = _xnormalize_({401, 76, 76, 1, 1, 1, 1, 1, 1});
-      CHECK((r02) == (xr02));
+      GUM_CHECK_EQ(r02, xr02);
 
       std::vector< double > r01  = param_estimator.parameters(gum::NodeId(0), {gum::NodeId(1)});
       std::vector< double > xr01 = _xnormalize_({201, 76, 1, 201, 1, 76, 1, 1, 1});
-      CHECK((r01) == (xr01));
+      GUM_CHECK_EQ(r01, xr01);
 
       std::vector< double > r21  = param_estimator.parameters(gum::NodeId(2), {gum::NodeId(1)});
       std::vector< double > xr21 = _xnormalize_({276, 1, 1, 276, 1, 1, 1, 1, 1});
-      CHECK((r21) == (xr21));
+      GUM_CHECK_EQ(r21, xr21);
 
 
       gum::learning::ParamEstimatorML param_estimator2(param_estimator);
       std::vector< double >           v0 = param_estimator2.parameters(gum::NodeId(0));
-      CHECK((v0) == (xr0));
+      GUM_CHECK_EQ(v0, xr0);
 
       std::vector< double > v1 = param_estimator2.parameters(gum::NodeId(1));
-      CHECK((v1) == (xr1));
+      GUM_CHECK_EQ(v1, xr1);
 
       std::vector< double > v2 = param_estimator2.parameters(gum::NodeId(2));
-      CHECK((v2) == (xr2));
+      GUM_CHECK_EQ(v2, xr2);
 
       std::vector< double > v02 = param_estimator2.parameters(gum::NodeId(0), {gum::NodeId(2)});
-      CHECK((v02) == (xr02));
+      GUM_CHECK_EQ(v02, xr02);
 
       std::vector< double > v01 = param_estimator2.parameters(gum::NodeId(0), {gum::NodeId(1)});
-      CHECK((v01) == (xr01));
+      GUM_CHECK_EQ(v01, xr01);
 
       std::vector< double > v21 = param_estimator2.parameters(gum::NodeId(2), {gum::NodeId(1)});
-      CHECK((v21) == (xr21));
+      GUM_CHECK_EQ(v21, xr21);
 
 
       gum::learning::ParamEstimatorML param_estimator3(std::move(param_estimator2));
       std::vector< double >           w0 = param_estimator3.parameters(gum::NodeId(0));
-      CHECK((w0) == (xr0));
+      GUM_CHECK_EQ(w0, xr0);
 
       std::vector< double > w1 = param_estimator3.parameters(gum::NodeId(1));
-      CHECK((w1) == (xr1));
+      GUM_CHECK_EQ(w1, xr1);
 
       std::vector< double > w2 = param_estimator3.parameters(gum::NodeId(2));
-      CHECK((w2) == (xr2));
+      GUM_CHECK_EQ(w2, xr2);
 
       std::vector< double > w02 = param_estimator3.parameters(gum::NodeId(0), {gum::NodeId(2)});
-      CHECK((w02) == (xr02));
+      GUM_CHECK_EQ(w02, xr02);
 
       std::vector< double > w01 = param_estimator3.parameters(gum::NodeId(0), {gum::NodeId(1)});
-      CHECK((w01) == (xr01));
+      GUM_CHECK_EQ(w01, xr01);
 
       std::vector< double > w21 = param_estimator3.parameters(gum::NodeId(2), {gum::NodeId(1)});
-      CHECK((w21) == (xr21));
+      GUM_CHECK_EQ(w21, xr21);
 
 
       gum::learning::ParamEstimatorML* param_estimator4 = param_estimator.clone();
       std::vector< double >            x0 = param_estimator4->parameters(gum::NodeId(0));
-      CHECK((x0) == (xr0));
+      GUM_CHECK_EQ(x0, xr0);
 
       std::vector< double > x1 = param_estimator4->parameters(gum::NodeId(1));
-      CHECK((x1) == (xr1));
+      GUM_CHECK_EQ(x1, xr1);
 
       std::vector< double > x2 = param_estimator4->parameters(gum::NodeId(2));
-      CHECK((x2) == (xr2));
+      GUM_CHECK_EQ(x2, xr2);
 
       std::vector< double > x02 = param_estimator4->parameters(gum::NodeId(0), {gum::NodeId(2)});
-      CHECK((x02) == (xr02));
+      GUM_CHECK_EQ(x02, xr02);
 
       std::vector< double > x01 = param_estimator4->parameters(gum::NodeId(0), {gum::NodeId(1)});
-      CHECK((x01) == (xr01));
+      GUM_CHECK_EQ(x01, xr01);
 
       std::vector< double > x21 = param_estimator4->parameters(gum::NodeId(2), {gum::NodeId(1)});
-      CHECK((x21) == (xr21));
+      GUM_CHECK_EQ(x21, xr21);
 
       delete param_estimator4;
     }
@@ -431,87 +431,87 @@ namespace gum_tests {
 
       std::vector< double > v0  = param_estimator.parameters(gum::NodeId(1));
       std::vector< double > xv0 = _normalize_({1201, 126, 76});
-      CHECK((v0) == (xv0));
+      GUM_CHECK_EQ(v0, xv0);
 
       std::vector< double > v1  = param_estimator.parameters(gum::NodeId(2));
       std::vector< double > xv1 = _normalize_({276, 1076, 51});
-      CHECK((v1) == (xv1));
+      GUM_CHECK_EQ(v1, xv1);
 
       std::vector< double > v2  = param_estimator.parameters(gum::NodeId(0));
       std::vector< double > xv2 = _normalize_({1401, 1, 1});
-      CHECK((v2) == (xv2));
+      GUM_CHECK_EQ(v2, xv2);
 
       std::vector< double > v02  = param_estimator.parameters(gum::NodeId(1), {gum::NodeId(0)});
       std::vector< double > xv02 = _xnormalize_({1201, 126, 76, 1, 1, 1, 1, 1, 1});
-      CHECK((v02) == (xv02));
+      GUM_CHECK_EQ(v02, xv02);
 
       std::vector< double > v01  = param_estimator.parameters(gum::NodeId(1), {gum::NodeId(2)});
       std::vector< double > xv01 = _xnormalize_({201, 76, 1, 1001, 1, 76, 1, 51, 1});
-      CHECK((v01) == (xv01));
+      GUM_CHECK_EQ(v01, xv01);
 
       std::vector< double > v21  = param_estimator.parameters(gum::NodeId(0), {gum::NodeId(2)});
       std::vector< double > xv21 = _xnormalize_({276, 1, 1, 1076, 1, 1, 51, 1, 1});
-      CHECK((v21) == (xv21));
+      GUM_CHECK_EQ(v21, xv21);
 
 
       gum::learning::ParamEstimatorML param_estimator2(param_estimator);
       std::vector< double >           w0 = param_estimator2.parameters(gum::NodeId(1));
-      CHECK((w0) == (xv0));
+      GUM_CHECK_EQ(w0, xv0);
 
       std::vector< double > w1 = param_estimator2.parameters(gum::NodeId(2));
-      CHECK((w1) == (xv1));
+      GUM_CHECK_EQ(w1, xv1);
 
       std::vector< double > w2 = param_estimator2.parameters(gum::NodeId(0));
-      CHECK((w2) == (xv2));
+      GUM_CHECK_EQ(w2, xv2);
 
       std::vector< double > w02 = param_estimator2.parameters(gum::NodeId(1), {gum::NodeId(0)});
-      CHECK((w02) == (xv02));
+      GUM_CHECK_EQ(w02, xv02);
 
       std::vector< double > w01 = param_estimator2.parameters(gum::NodeId(1), {gum::NodeId(2)});
-      CHECK((w01) == (xv01));
+      GUM_CHECK_EQ(w01, xv01);
 
       std::vector< double > w21 = param_estimator2.parameters(gum::NodeId(0), {gum::NodeId(2)});
-      CHECK((w21) == (xv21));
+      GUM_CHECK_EQ(w21, xv21);
 
 
       gum::learning::ParamEstimatorML param_estimator3(std::move(param_estimator2));
       std::vector< double >           x0 = param_estimator3.parameters(gum::NodeId(1));
-      CHECK((x0) == (xv0));
+      GUM_CHECK_EQ(x0, xv0);
 
       std::vector< double > x1 = param_estimator3.parameters(gum::NodeId(2));
-      CHECK((x1) == (xv1));
+      GUM_CHECK_EQ(x1, xv1);
 
       std::vector< double > x2 = param_estimator3.parameters(gum::NodeId(0));
-      CHECK((x2) == (xv2));
+      GUM_CHECK_EQ(x2, xv2);
 
       std::vector< double > x02 = param_estimator3.parameters(gum::NodeId(1), {gum::NodeId(0)});
-      CHECK((x02) == (xv02));
+      GUM_CHECK_EQ(x02, xv02);
 
       std::vector< double > x01 = param_estimator3.parameters(gum::NodeId(1), {gum::NodeId(2)});
-      CHECK((x01) == (xv01));
+      GUM_CHECK_EQ(x01, xv01);
 
       std::vector< double > x21 = param_estimator3.parameters(gum::NodeId(0), {gum::NodeId(2)});
-      CHECK((x21) == (xv21));
+      GUM_CHECK_EQ(x21, xv21);
 
 
       gum::learning::ParamEstimatorML* param_estimator4 = param_estimator.clone();
       std::vector< double >            y0 = param_estimator4->parameters(gum::NodeId(1));
-      CHECK((y0) == (xv0));
+      GUM_CHECK_EQ(y0, xv0);
 
       std::vector< double > y1 = param_estimator4->parameters(gum::NodeId(2));
-      CHECK((y1) == (xv1));
+      GUM_CHECK_EQ(y1, xv1);
 
       std::vector< double > y2 = param_estimator4->parameters(gum::NodeId(0));
-      CHECK((y2) == (xv2));
+      GUM_CHECK_EQ(y2, xv2);
 
       std::vector< double > y02 = param_estimator4->parameters(gum::NodeId(1), {gum::NodeId(0)});
-      CHECK((y02) == (xv02));
+      GUM_CHECK_EQ(y02, xv02);
 
       std::vector< double > y01 = param_estimator4->parameters(gum::NodeId(1), {gum::NodeId(2)});
-      CHECK((y01) == (xv01));
+      GUM_CHECK_EQ(y01, xv01);
 
       std::vector< double > y21 = param_estimator4->parameters(gum::NodeId(0), {gum::NodeId(2)});
-      CHECK((y21) == (xv21));
+      GUM_CHECK_EQ(y21, xv21);
 
       delete param_estimator4;
     }
@@ -574,87 +574,87 @@ namespace gum_tests {
 
       std::vector< double > r0  = param_estimator.parameters(gum::NodeId(1));
       std::vector< double > xr0 = _normalize_({401, 76, 76});
-      CHECK((r0) == (xr0));
+      GUM_CHECK_EQ(r0, xr0);
 
       std::vector< double > r1  = param_estimator.parameters(gum::NodeId(2));
       std::vector< double > xr1 = _normalize_({276, 276, 1});
-      CHECK((r1) == (xr1));
+      GUM_CHECK_EQ(r1, xr1);
 
       std::vector< double > r2  = param_estimator.parameters(gum::NodeId(0));
       std::vector< double > xr2 = _normalize_({551, 1, 1});
-      CHECK((r2) == (xr2));
+      GUM_CHECK_EQ(r2, xr2);
 
       std::vector< double > r02  = param_estimator.parameters(gum::NodeId(1), {gum::NodeId(0)});
       std::vector< double > xr02 = _xnormalize_({401, 76, 76, 1, 1, 1, 1, 1, 1});
-      CHECK((r02) == (xr02));
+      GUM_CHECK_EQ(r02, xr02);
 
       std::vector< double > r01  = param_estimator.parameters(gum::NodeId(1), {gum::NodeId(2)});
       std::vector< double > xr01 = _xnormalize_({201, 76, 1, 201, 1, 76, 1, 1, 1});
-      CHECK((r01) == (xr01));
+      GUM_CHECK_EQ(r01, xr01);
 
       std::vector< double > r21  = param_estimator.parameters(gum::NodeId(0), {gum::NodeId(2)});
       std::vector< double > xr21 = _xnormalize_({276, 1, 1, 276, 1, 1, 1, 1, 1});
-      CHECK((r21) == (xr21));
+      GUM_CHECK_EQ(r21, xr21);
 
 
       gum::learning::ParamEstimatorML param_estimator2(param_estimator);
       std::vector< double >           v0 = param_estimator2.parameters(gum::NodeId(1));
-      CHECK((v0) == (xr0));
+      GUM_CHECK_EQ(v0, xr0);
 
       std::vector< double > v1 = param_estimator2.parameters(gum::NodeId(2));
-      CHECK((v1) == (xr1));
+      GUM_CHECK_EQ(v1, xr1);
 
       std::vector< double > v2 = param_estimator2.parameters(gum::NodeId(0));
-      CHECK((v2) == (xr2));
+      GUM_CHECK_EQ(v2, xr2);
 
       std::vector< double > v02 = param_estimator2.parameters(gum::NodeId(1), {gum::NodeId(0)});
-      CHECK((v02) == (xr02));
+      GUM_CHECK_EQ(v02, xr02);
 
       std::vector< double > v01 = param_estimator2.parameters(gum::NodeId(1), {gum::NodeId(2)});
-      CHECK((v01) == (xr01));
+      GUM_CHECK_EQ(v01, xr01);
 
       std::vector< double > v21 = param_estimator2.parameters(gum::NodeId(0), {gum::NodeId(2)});
-      CHECK((v21) == (xr21));
+      GUM_CHECK_EQ(v21, xr21);
 
 
       gum::learning::ParamEstimatorML param_estimator3(std::move(param_estimator2));
       std::vector< double >           w0 = param_estimator3.parameters(gum::NodeId(1));
-      CHECK((w0) == (xr0));
+      GUM_CHECK_EQ(w0, xr0);
 
       std::vector< double > w1 = param_estimator3.parameters(gum::NodeId(2));
-      CHECK((w1) == (xr1));
+      GUM_CHECK_EQ(w1, xr1);
 
       std::vector< double > w2 = param_estimator3.parameters(gum::NodeId(0));
-      CHECK((w2) == (xr2));
+      GUM_CHECK_EQ(w2, xr2);
 
       std::vector< double > w02 = param_estimator3.parameters(gum::NodeId(1), {gum::NodeId(0)});
-      CHECK((w02) == (xr02));
+      GUM_CHECK_EQ(w02, xr02);
 
       std::vector< double > w01 = param_estimator3.parameters(gum::NodeId(1), {gum::NodeId(2)});
-      CHECK((w01) == (xr01));
+      GUM_CHECK_EQ(w01, xr01);
 
       std::vector< double > w21 = param_estimator3.parameters(gum::NodeId(0), {gum::NodeId(2)});
-      CHECK((w21) == (xr21));
+      GUM_CHECK_EQ(w21, xr21);
 
 
       gum::learning::ParamEstimatorML* param_estimator4 = param_estimator.clone();
       std::vector< double >            x0 = param_estimator4->parameters(gum::NodeId(1));
-      CHECK((x0) == (xr0));
+      GUM_CHECK_EQ(x0, xr0);
 
       std::vector< double > x1 = param_estimator4->parameters(gum::NodeId(2));
-      CHECK((x1) == (xr1));
+      GUM_CHECK_EQ(x1, xr1);
 
       std::vector< double > x2 = param_estimator4->parameters(gum::NodeId(0));
-      CHECK((x2) == (xr2));
+      GUM_CHECK_EQ(x2, xr2);
 
       std::vector< double > x02 = param_estimator4->parameters(gum::NodeId(1), {gum::NodeId(0)});
-      CHECK((x02) == (xr02));
+      GUM_CHECK_EQ(x02, xr02);
 
       std::vector< double > x01 = param_estimator4->parameters(gum::NodeId(1), {gum::NodeId(2)});
-      CHECK((x01) == (xr01));
+      GUM_CHECK_EQ(x01, xr01);
 
       std::vector< double > x21 = param_estimator4->parameters(gum::NodeId(0), {gum::NodeId(2)});
-      CHECK((x21) == (xr21));
+      GUM_CHECK_EQ(x21, xr21);
 
       delete param_estimator4;
     }
@@ -706,116 +706,116 @@ namespace gum_tests {
 
       std::vector< double > v0  = param_estimator.parameters(gum::NodeId(0));
       std::vector< double > xv0 = _normalize_({1201, 126, 76});
-      CHECK((v0) == (xv0));
+      GUM_CHECK_EQ(v0, xv0);
 
       std::vector< double > v1  = param_estimator.parameters(gum::NodeId(1));
       std::vector< double > xv1 = _normalize_({276, 1076, 51});
-      CHECK((v1) == (xv1));
+      GUM_CHECK_EQ(v1, xv1);
 
       std::vector< double > v2  = param_estimator.parameters(gum::NodeId(2));
       std::vector< double > xv2 = _normalize_({1401, 1, 1});
-      CHECK((v2) == (xv2));
+      GUM_CHECK_EQ(v2, xv2);
 
       std::vector< double > v02  = param_estimator.parameters(gum::NodeId(0), {gum::NodeId(2)});
       std::vector< double > xv02 = _xnormalize_({1201, 126, 76, 1, 1, 1, 1, 1, 1});
-      CHECK((v02) == (xv02));
+      GUM_CHECK_EQ(v02, xv02);
 
       std::vector< double > v01  = param_estimator.parameters(gum::NodeId(0), {gum::NodeId(1)});
       std::vector< double > xv01 = _xnormalize_({201, 76, 1, 1001, 1, 76, 1, 51, 1});
-      CHECK((v01) == (xv01));
+      GUM_CHECK_EQ(v01, xv01);
 
       std::vector< double > v21  = param_estimator.parameters(gum::NodeId(2), {gum::NodeId(1)});
       std::vector< double > xv21 = _xnormalize_({276, 1, 1, 1076, 1, 1, 51, 1, 1});
-      CHECK((v21) == (xv21));
+      GUM_CHECK_EQ(v21, xv21);
 
 
       gum::learning::ParamEstimatorML param_estimator2(param_estimator);
       std::vector< double >           w0 = param_estimator2.parameters(gum::NodeId(0));
-      CHECK((w0) == (xv0));
+      GUM_CHECK_EQ(w0, xv0);
 
       std::vector< double > w1 = param_estimator2.parameters(gum::NodeId(1));
-      CHECK((w1) == (xv1));
+      GUM_CHECK_EQ(w1, xv1);
 
       std::vector< double > w2 = param_estimator2.parameters(gum::NodeId(2));
-      CHECK((w2) == (xv2));
+      GUM_CHECK_EQ(w2, xv2);
 
       std::vector< double > w02 = param_estimator2.parameters(gum::NodeId(0), {gum::NodeId(2)});
-      CHECK((w02) == (xv02));
+      GUM_CHECK_EQ(w02, xv02);
 
       std::vector< double > w01 = param_estimator2.parameters(gum::NodeId(0), {gum::NodeId(1)});
-      CHECK((w01) == (xv01));
+      GUM_CHECK_EQ(w01, xv01);
 
       std::vector< double > w21 = param_estimator2.parameters(gum::NodeId(2), {gum::NodeId(1)});
-      CHECK((w21) == (xv21));
+      GUM_CHECK_EQ(w21, xv21);
 
       std::vector< std::pair< std::size_t, std::size_t > > ranges{{800, 1000}, {1050, 1400}};
       param_estimator.setRanges(ranges);
 
       std::vector< double > ar0  = param_estimator.parameters(gum::NodeId(0));
       std::vector< double > axr0 = _normalize_({401, 76, 76});
-      CHECK((ar0) == (axr0));
+      GUM_CHECK_EQ(ar0, axr0);
 
       std::vector< double > ar1  = param_estimator.parameters(gum::NodeId(1));
       std::vector< double > axr1 = _normalize_({276, 276, 1});
-      CHECK((ar1) == (axr1));
+      GUM_CHECK_EQ(ar1, axr1);
 
       std::vector< double > ar2  = param_estimator.parameters(gum::NodeId(2));
       std::vector< double > axr2 = _normalize_({551, 1, 1});
-      CHECK((ar2) == (axr2));
+      GUM_CHECK_EQ(ar2, axr2);
 
       std::vector< double > ar02  = param_estimator.parameters(gum::NodeId(0), {gum::NodeId(2)});
       std::vector< double > axr02 = _xnormalize_({401, 76, 76, 1, 1, 1, 1, 1, 1});
-      CHECK((ar02) == (axr02));
+      GUM_CHECK_EQ(ar02, axr02);
 
       std::vector< double > ar01  = param_estimator.parameters(gum::NodeId(0), {gum::NodeId(1)});
       std::vector< double > axr01 = _xnormalize_({201, 76, 1, 201, 1, 76, 1, 1, 1});
-      CHECK((ar01) == (axr01));
+      GUM_CHECK_EQ(ar01, axr01);
 
       std::vector< double > ar21  = param_estimator.parameters(gum::NodeId(2), {gum::NodeId(1)});
       std::vector< double > axr21 = _xnormalize_({276, 1, 1, 276, 1, 1, 1, 1, 1});
-      CHECK((ar21) == (axr21));
+      GUM_CHECK_EQ(ar21, axr21);
 
       param_estimator2.setRanges(ranges);
 
       std::vector< double > av0 = param_estimator2.parameters(gum::NodeId(0));
-      CHECK((av0) == (axr0));
+      GUM_CHECK_EQ(av0, axr0);
 
       std::vector< double > av1 = param_estimator2.parameters(gum::NodeId(1));
-      CHECK((av1) == (axr1));
+      GUM_CHECK_EQ(av1, axr1);
 
       std::vector< double > av2 = param_estimator2.parameters(gum::NodeId(2));
-      CHECK((av2) == (axr2));
+      GUM_CHECK_EQ(av2, axr2);
 
       std::vector< double > av02 = param_estimator2.parameters(gum::NodeId(0), {gum::NodeId(2)});
-      CHECK((av02) == (axr02));
+      GUM_CHECK_EQ(av02, axr02);
 
       std::vector< double > av01 = param_estimator2.parameters(gum::NodeId(0), {gum::NodeId(1)});
-      CHECK((av01) == (axr01));
+      GUM_CHECK_EQ(av01, axr01);
 
       std::vector< double > av21 = param_estimator2.parameters(gum::NodeId(2), {gum::NodeId(1)});
-      CHECK((av21) == (axr21));
+      GUM_CHECK_EQ(av21, axr21);
 
-      CHECK((param_estimator2.ranges()) == (ranges));
+      GUM_CHECK_EQ(param_estimator2.ranges(), ranges);
 
       param_estimator2.clearRanges();
 
       std::vector< double > bv0 = param_estimator2.parameters(gum::NodeId(0));
-      CHECK((bv0) == (xv0));
+      GUM_CHECK_EQ(bv0, xv0);
 
       std::vector< double > bv1 = param_estimator2.parameters(gum::NodeId(1));
-      CHECK((bv1) == (xv1));
+      GUM_CHECK_EQ(bv1, xv1);
 
       std::vector< double > bv2 = param_estimator2.parameters(gum::NodeId(2));
-      CHECK((bv2) == (xv2));
+      GUM_CHECK_EQ(bv2, xv2);
 
       std::vector< double > bv02 = param_estimator2.parameters(gum::NodeId(0), {gum::NodeId(2)});
-      CHECK((bv02) == (xv02));
+      GUM_CHECK_EQ(bv02, xv02);
 
       std::vector< double > bv01 = param_estimator2.parameters(gum::NodeId(0), {gum::NodeId(1)});
-      CHECK((bv01) == (xv01));
+      GUM_CHECK_EQ(bv01, xv01);
 
       std::vector< double > bv21 = param_estimator2.parameters(gum::NodeId(2), {gum::NodeId(1)});
-      CHECK((bv21) == (xv21));
+      GUM_CHECK_EQ(bv21, xv21);
     }
 
     static void testEM() {
@@ -1019,27 +1019,27 @@ namespace gum_tests {
 
         std::vector< double > v0  = param_estimator.parameters(gum::NodeId(0));
         std::vector< double > xv0 = _normalize_({1201, 126, 76});
-        CHECK((v0) == (xv0));
+        GUM_CHECK_EQ(v0, xv0);
 
         std::vector< double > v1  = param_estimator.parameters(gum::NodeId(1));
         std::vector< double > xv1 = _normalize_({276, 1076, 51});
-        CHECK((v1) == (xv1));
+        GUM_CHECK_EQ(v1, xv1);
 
         std::vector< double > v2  = param_estimator.parameters(gum::NodeId(2));
         std::vector< double > xv2 = _normalize_({1401, 1, 1});
-        CHECK((v2) == (xv2));
+        GUM_CHECK_EQ(v2, xv2);
 
         std::vector< double > v02  = param_estimator.parameters(gum::NodeId(0), {gum::NodeId(2)});
         std::vector< double > xv02 = _xnormalize_({1201, 126, 76, 1, 1, 1, 1, 1, 1});
-        CHECK((v02) == (xv02));
+        GUM_CHECK_EQ(v02, xv02);
 
         std::vector< double > v01  = param_estimator.parameters(gum::NodeId(0), {gum::NodeId(1)});
         std::vector< double > xv01 = _xnormalize_({201, 76, 1, 1001, 1, 76, 1, 51, 1});
-        CHECK((v01) == (xv01));
+        GUM_CHECK_EQ(v01, xv01);
 
         std::vector< double > v21  = param_estimator.parameters(gum::NodeId(2), {gum::NodeId(1)});
         std::vector< double > xv21 = _xnormalize_({276, 1, 1, 1076, 1, 1, 51, 1, 1});
-        CHECK((v21) == (xv21));
+        GUM_CHECK_EQ(v21, xv21);
       }
     }
   };
