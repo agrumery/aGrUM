@@ -1,7 +1,7 @@
 /****************************************************************************
  *   This file is part of the aGrUM/pyAgrum library.                        *
  *                                                                          *
- *   Copyright (c) 2005-2025 by                                             *
+ *   Copyright (c) 2005-2026 by                                             *
  *       - Pierre-Henri WUILLEMIN(_at_LIP6)                                 *
  *       - Christophe GONZALES(_at_AMU)                                     *
  *                                                                          *
@@ -27,7 +27,7 @@
  *                                                                          *
  *   See LICENCES for more details.                                         *
  *                                                                          *
- *   SPDX-FileCopyrightText: Copyright 2005-2025                            *
+ *   SPDX-FileCopyrightText: Copyright 2005-2026                            *
  *       - Pierre-Henri WUILLEMIN(_at_LIP6)                                 *
  *       - Christophe GONZALES(_at_AMU)                                     *
  *   SPDX-License-Identifier: LGPL-3.0-or-later OR MIT                      *
@@ -37,6 +37,7 @@
  *   gitlab   : https://gitlab.com/agrumery/agrum                           *
  *                                                                          *
  ****************************************************************************/
+
 #pragma once
 
 
@@ -53,9 +54,14 @@
 #include <agrum/BN/BayesNet.h>
 #include <agrum/BN/generator/simpleCPTGenerator.h>
 
+#undef GUM_CURRENT_SUITE
+#undef GUM_CURRENT_MODULE
+#define GUM_CURRENT_SUITE  MultiDimBucket
+#define GUM_CURRENT_MODULE BN
+
 namespace gum_tests {
 
-  class GUM_TEST_SUITE(MultiDimBucket) {
+  struct MultiDimBucketTestSuite {
     private:
     std::vector< gum::LabelizedVariable* >* _variables_;
     std::vector< gum::Tensor< double >* >*  _tensors_;
@@ -88,13 +94,23 @@ namespace gum_tests {
     }
 
     public:
-    void setUp() {
+    static void testCreation() {
+      gum::MultiDimBucket< double >* bucket = 0;
+
+      CHECK_NOTHROW(bucket = new gum::MultiDimBucket< double >());
+      CHECK_NOTHROW(delete bucket);
+    }
+
+    MultiDimBucketTestSuite() {
       gum::SimpleCPTGenerator< double > cptGenerator;
+
       _variables_ = new std::vector< gum::LabelizedVariable* >();
 
       for (gum::Size i = 0; i < 10; ++i) {
         std::stringstream sBuff;
+
         sBuff << "var_" << i;
+
         _variables_->push_back(new gum::LabelizedVariable(sBuff.str(), "A binary variable", 2));
       }
 
@@ -105,16 +121,19 @@ namespace gum_tests {
       }
 
       // Creating a table of 2 elements
+
       _tensors_->at(0)->add(*(_variables_->at(0)));
 
       cptGenerator.generateCPT(_tensors_->at(0)->pos(*(_variables_->at(0))), *(_tensors_->at(0)));
 
       // Creating a table of 2 elements
+
       _tensors_->at(1)->add(*(_variables_->at(1)));
 
       cptGenerator.generateCPT(_tensors_->at(1)->pos(*(_variables_->at(1))), *(_tensors_->at(1)));
 
       // Creating a table of 2^4=16 elements
+
       for (size_t i = 2; i < 6; ++i) {
         _tensors_->at(2)->add(*(_variables_->at(i)));
       }
@@ -138,14 +157,16 @@ namespace gum_tests {
       cptGenerator.generateCPT(_tensors_->at(4)->pos(*(_variables_->at(6))), *(_tensors_->at(4)));
     }
 
-    void tearDown() {
-      while (_tensors_->size() > 0) {
+    ~MultiDimBucketTestSuite() {
+      while (!_tensors_->empty()) {
         delete _tensors_->back();
+
         _tensors_->pop_back();
       }
 
-      while (_variables_->size() > 0) {
+      while (!_variables_->empty()) {
         delete _variables_->back();
+
         _variables_->pop_back();
       }
 
@@ -154,122 +175,118 @@ namespace gum_tests {
       delete _tensors_;
     }
 
-    GUM_ACTIVE_TEST(Creation) {
+    void testAddEraseTables() {
       gum::MultiDimBucket< double >* bucket = 0;
-
-      TS_ASSERT_THROWS_NOTHING(bucket = new gum::MultiDimBucket< double >())
-      TS_ASSERT_THROWS_NOTHING(delete bucket)
-    }
-
-    GUM_ACTIVE_TEST(AddEraseTables) {
-      gum::MultiDimBucket< double >* bucket = 0;
-      TS_ASSERT_THROWS_NOTHING(bucket = new gum::MultiDimBucket< double >())
+      CHECK_NOTHROW(bucket = new gum::MultiDimBucket< double >());
 
       if (bucket != 0) {
-        TS_ASSERT(bucket->isBucketEmpty())
+        CHECK(bucket->isBucketEmpty());
 
         for (size_t i = 0; i < 5; ++i) {
-          TS_ASSERT_THROWS_NOTHING(bucket->add(_tensors_->at(i)))
+          CHECK_NOTHROW(bucket->add(_tensors_->at(i)));
         }
 
-        TS_ASSERT(!bucket->isBucketEmpty())
+        CHECK(!bucket->isBucketEmpty());
 
-        TS_ASSERT_EQUALS(bucket->bucketSize(), static_cast< gum::Size >(5))
-        TS_ASSERT_THROWS_NOTHING(bucket->erase(_tensors_->at(4)))
-        TS_ASSERT_EQUALS(bucket->bucketSize(), static_cast< gum::Size >(4))
+        CHECK((bucket->bucketSize()) == (static_cast< gum::Size >(5)));
+        CHECK_NOTHROW(bucket->erase(_tensors_->at(4)));
+        CHECK((bucket->bucketSize()) == (static_cast< gum::Size >(4)));
 
         for (size_t i = 5; i > 0; --i) {
-          TS_ASSERT_THROWS_NOTHING(bucket->erase(_tensors_->at(i - 1)))
+          CHECK_NOTHROW(bucket->erase(_tensors_->at(i - 1)));
         }
 
-        TS_ASSERT_EQUALS(bucket->bucketSize(), static_cast< gum::Size >(0))
+        CHECK((bucket->bucketSize()) == (static_cast< gum::Size >(0)));
 
-        TS_ASSERT(bucket->isBucketEmpty())
+        CHECK(bucket->isBucketEmpty());
         delete bucket;
       }
     }
 
-    GUM_ACTIVE_TEST(Computation) {
+    void testComputation() {
       gum::MultiDimBucket< double >* bucket = 0;
       gum::Tensor< double >          product;
-      TS_ASSERT_THROWS_NOTHING(bucket = new gum::MultiDimBucket< double >())
+      CHECK_NOTHROW(bucket = new gum::MultiDimBucket< double >());
       if (bucket != 0) {
-        TS_ASSERT_THROWS_NOTHING(_fillBucket_(bucket))
+        CHECK_NOTHROW(_fillBucket_(bucket));
 
         for (size_t i = 3; i < 6; ++i) {
-          TS_ASSERT_THROWS_NOTHING(bucket->add(*(_variables_->at(i))))
+          CHECK_NOTHROW(bucket->add(*(_variables_->at(i))));
           product.add(*(_variables_->at(i)));
         }
 
-        TS_GUM_ASSERT_THROWS_NOTHING(bucket->compute())
-        TS_GUM_ASSERT_THROWS_NOTHING(_makeProduct_(product))
+        GUM_CHECK_ASSERT_THROWS_NOTHING(bucket->compute());
+        GUM_CHECK_ASSERT_THROWS_NOTHING(_makeProduct_(product));
         gum::Instantiation inst(product);
 
-        TS_ASSERT_EQUALS(bucket->domainSize(), product.domainSize())
-        TS_ASSERT_EQUALS(bucket->nbrDim(), product.nbrDim())
+        CHECK((bucket->domainSize()) == (product.domainSize()));
+        CHECK((bucket->nbrDim()) == (product.nbrDim()));
 
         for (inst.setFirst(); !inst.end(); inst.inc()) {
-          TS_ASSERT_DELTA(bucket->get(inst), product.get(inst), static_cast< double >(0.01))
+          CHECK((bucket->get(inst))
+                == doctest::Approx(product.get(inst)).epsilon(static_cast< double >(0.01)));
         }
         delete bucket;
       }
     }
 
-    GUM_ACTIVE_TEST(OnTheFly) {
+    void testOnTheFly() {
       gum::MultiDimBucket< double >* bucket = 0;
       gum::Tensor< double >          product;
-      TS_ASSERT_THROWS_NOTHING(bucket = new gum::MultiDimBucket< double >(0))
+      CHECK_NOTHROW(bucket = new gum::MultiDimBucket< double >(0));
 
       if (bucket != 0) {
-        TS_ASSERT_THROWS_NOTHING(_fillBucket_(bucket))
+        CHECK_NOTHROW(_fillBucket_(bucket));
 
         for (size_t i = 3; i < 6; ++i) {
-          TS_ASSERT_THROWS_NOTHING(bucket->add(*(_variables_->at(i))))
+          CHECK_NOTHROW(bucket->add(*(_variables_->at(i))));
           product.add(*(_variables_->at(i)));
         }
 
-        TS_GUM_ASSERT_THROWS_NOTHING(bucket->compute())
+        GUM_CHECK_ASSERT_THROWS_NOTHING(bucket->compute());
 
-        TS_GUM_ASSERT_THROWS_NOTHING(_makeProduct_(product))
+        GUM_CHECK_ASSERT_THROWS_NOTHING(_makeProduct_(product));
         gum::Instantiation inst(product);
-        TS_ASSERT_EQUALS(bucket->domainSize(), product.domainSize())
-        TS_ASSERT_EQUALS(bucket->nbrDim(), product.nbrDim())
-        TS_ASSERT_EQUALS(bucket->realSize(), static_cast< gum::Size >(0))
+        CHECK((bucket->domainSize()) == (product.domainSize()));
+        CHECK((bucket->nbrDim()) == (product.nbrDim()));
+        CHECK((bucket->realSize()) == (static_cast< gum::Size >(0)));
 
         for (inst.setFirst(); !inst.end(); inst.inc()) {
-          TS_ASSERT_DELTA(bucket->get(inst), product.get(inst), static_cast< double >(0.01))
+          CHECK((bucket->get(inst))
+                == doctest::Approx(product.get(inst)).epsilon(static_cast< double >(0.01)));
         }
 
         delete bucket;
       }
     }
 
-    GUM_ACTIVE_TEST(InstantiationsWithBuffer) {
+    void testInstantiationsWithBuffer() {
       gum::MultiDimBucket< double >* bucket = 0;
       gum::Tensor< double >          product;
-      TS_ASSERT_THROWS_NOTHING(bucket = new gum::MultiDimBucket< double >())
+      CHECK_NOTHROW(bucket = new gum::MultiDimBucket< double >());
 
       if (bucket != 0) {
-        TS_ASSERT_THROWS_NOTHING(_fillBucket_(bucket))
+        CHECK_NOTHROW(_fillBucket_(bucket));
 
         for (size_t i = 3; i < 6; ++i) {
-          TS_ASSERT_THROWS_NOTHING(bucket->add(*(_variables_->at(i))))
+          CHECK_NOTHROW(bucket->add(*(_variables_->at(i))));
           product.add(*(_variables_->at(i)));
         }
 
-        TS_GUM_ASSERT_THROWS_NOTHING(bucket->compute())
+        GUM_CHECK_ASSERT_THROWS_NOTHING(bucket->compute());
 
-        TS_GUM_ASSERT_THROWS_NOTHING(_makeProduct_(product))
+        GUM_CHECK_ASSERT_THROWS_NOTHING(_makeProduct_(product));
 
         gum::Instantiation* inst = 0;
-        TS_GUM_ASSERT_THROWS_NOTHING(inst = new gum::Instantiation(*bucket))
+        GUM_CHECK_ASSERT_THROWS_NOTHING(inst = new gum::Instantiation(*bucket));
 
         if (inst != 0) {
-          TS_ASSERT(!inst->isMaster(bucket))
-          TS_ASSERT(inst->isMaster(bucket->getMasterRef()))
+          CHECK(!inst->isMaster(bucket));
+          CHECK(inst->isMaster(bucket->getMasterRef()));
 
           for (inst->setFirst(); !inst->end(); inst->inc()) {
-            TS_ASSERT_DELTA(bucket->get(*inst), product.get(*inst), static_cast< double >(0.01))
+            CHECK((bucket->get(*inst))
+                  == doctest::Approx(product.get(*inst)).epsilon(static_cast< double >(0.01)));
           }
 
           delete inst;
@@ -279,30 +296,31 @@ namespace gum_tests {
       }
     }
 
-    GUM_ACTIVE_TEST(InstantiationsWithBufferAndAutoCompute) {
+    void testInstantiationsWithBufferAndAutoCompute() {
       gum::MultiDimBucket< double >* bucket = 0;
       gum::Tensor< double >          product;
-      TS_ASSERT_THROWS_NOTHING(bucket = new gum::MultiDimBucket< double >())
+      CHECK_NOTHROW(bucket = new gum::MultiDimBucket< double >());
 
       if (bucket != 0) {
-        TS_ASSERT_THROWS_NOTHING(_fillBucket_(bucket))
+        CHECK_NOTHROW(_fillBucket_(bucket));
 
         for (size_t i = 3; i < 6; ++i) {
-          TS_ASSERT_THROWS_NOTHING(bucket->add(*(_variables_->at(i))))
+          CHECK_NOTHROW(bucket->add(*(_variables_->at(i))));
           product.add(*(_variables_->at(i)));
         }
 
-        TS_GUM_ASSERT_THROWS_NOTHING(_makeProduct_(product))
+        GUM_CHECK_ASSERT_THROWS_NOTHING(_makeProduct_(product));
 
         gum::Instantiation* inst = 0;
-        TS_GUM_ASSERT_THROWS_NOTHING(inst = new gum::Instantiation(*bucket))
+        GUM_CHECK_ASSERT_THROWS_NOTHING(inst = new gum::Instantiation(*bucket));
 
         if (inst != 0) {
-          TS_ASSERT(!inst->isMaster(bucket))
-          TS_ASSERT(inst->isMaster(bucket->getMasterRef()))
+          CHECK(!inst->isMaster(bucket));
+          CHECK(inst->isMaster(bucket->getMasterRef()));
 
           for (inst->setFirst(); !inst->end(); inst->inc()) {
-            TS_ASSERT_DELTA(bucket->get(*inst), product.get(*inst), static_cast< double >(0.01))
+            CHECK((bucket->get(*inst))
+                  == doctest::Approx(product.get(*inst)).epsilon(static_cast< double >(0.01)));
           }
 
           delete inst;
@@ -312,32 +330,33 @@ namespace gum_tests {
       }
     }
 
-    GUM_ACTIVE_TEST(InstantiationsOnTheFly) {
+    void testInstantiationsOnTheFly() {
       gum::MultiDimBucket< double >* bucket = 0;
       gum::Tensor< double >          product;
-      TS_ASSERT_THROWS_NOTHING(bucket = new gum::MultiDimBucket< double >(0))
+      CHECK_NOTHROW(bucket = new gum::MultiDimBucket< double >(0));
 
       if (bucket != 0) {
-        TS_ASSERT_THROWS_NOTHING(_fillBucket_(bucket))
+        CHECK_NOTHROW(_fillBucket_(bucket));
 
         for (size_t i = 3; i < 6; ++i) {
-          TS_ASSERT_THROWS_NOTHING(bucket->add(*(_variables_->at(i))))
+          CHECK_NOTHROW(bucket->add(*(_variables_->at(i))));
           product.add(*(_variables_->at(i)));
         }
 
-        TS_GUM_ASSERT_THROWS_NOTHING(bucket->compute())
+        GUM_CHECK_ASSERT_THROWS_NOTHING(bucket->compute());
 
-        TS_GUM_ASSERT_THROWS_NOTHING(_makeProduct_(product))
+        GUM_CHECK_ASSERT_THROWS_NOTHING(_makeProduct_(product));
 
         gum::Instantiation* inst = 0;
-        TS_GUM_ASSERT_THROWS_NOTHING(inst = new gum::Instantiation(*bucket))
+        GUM_CHECK_ASSERT_THROWS_NOTHING(inst = new gum::Instantiation(*bucket));
 
         if (inst != 0) {
-          TS_ASSERT(inst->isMaster(bucket))
-          TS_ASSERT(inst->isMaster(bucket->getMasterRef()))
+          CHECK(inst->isMaster(bucket));
+          CHECK(inst->isMaster(bucket->getMasterRef()));
 
           for (inst->setFirst(); !inst->end(); inst->inc()) {
-            TS_ASSERT_DELTA(bucket->get(*inst), product.get(*inst), static_cast< double >(0.01))
+            CHECK((bucket->get(*inst))
+                  == doctest::Approx(product.get(*inst)).epsilon(static_cast< double >(0.01)));
           }
 
           delete inst;
@@ -347,54 +366,56 @@ namespace gum_tests {
       }
     }
 
-    GUM_ACTIVE_TEST(BucketSizeChanges) {
+    void testBucketSizeChanges() {
       gum::MultiDimBucket< double >* bucket = 0;
       gum::Tensor< double >          product;
-      TS_ASSERT_THROWS_NOTHING(bucket = new gum::MultiDimBucket< double >(0))
+      CHECK_NOTHROW(bucket = new gum::MultiDimBucket< double >(0));
 
       if (bucket != 0) {
-        TS_ASSERT_THROWS_NOTHING(_fillBucket_(bucket))
-        TS_ASSERT(bucket->bucketChanged())
+        CHECK_NOTHROW(_fillBucket_(bucket));
+        CHECK(bucket->bucketChanged());
 
         for (size_t i = 3; i < 6; ++i) {
-          TS_ASSERT_THROWS_NOTHING(bucket->add(*(_variables_->at(i))))
-          TS_ASSERT(bucket->bucketChanged())
+          CHECK_NOTHROW(bucket->add(*(_variables_->at(i))));
+          CHECK(bucket->bucketChanged());
           product.add(*(_variables_->at(i)));
         }
 
-        TS_GUM_ASSERT_THROWS_NOTHING(bucket->compute())
+        GUM_CHECK_ASSERT_THROWS_NOTHING(bucket->compute());
 
-        TS_ASSERT(!bucket->bucketChanged())
-        TS_GUM_ASSERT_THROWS_NOTHING(_makeProduct_(product))
+        CHECK(!bucket->bucketChanged());
+        GUM_CHECK_ASSERT_THROWS_NOTHING(_makeProduct_(product));
 
-        TS_ASSERT_EQUALS(bucket->realSize(), static_cast< gum::Size >(0))
+        CHECK((bucket->realSize()) == (static_cast< gum::Size >(0)));
 
-        gum::Instantiation* inst = 0;
-        TS_GUM_ASSERT_THROWS_NOTHING(inst = new gum::Instantiation(*bucket))
-        TS_ASSERT(!bucket->bucketChanged())
+        gum::Instantiation* inst = nullptr;
+        GUM_CHECK_ASSERT_THROWS_NOTHING(inst = new gum::Instantiation(*bucket));
+        CHECK(!bucket->bucketChanged());
 
-        if (inst != 0) {
-          TS_ASSERT(inst->isMaster(bucket))
-          TS_ASSERT(inst->isMaster(bucket->getMasterRef()))
+        if (inst != nullptr) {
+          CHECK(inst->isMaster(bucket));
+          CHECK(inst->isMaster(bucket->getMasterRef()));
 
           for (inst->setFirst(); !inst->end(); inst->inc()) {
-            TS_ASSERT_DELTA(bucket->get(*inst), product.get(*inst), static_cast< double >(0.01))
-            TS_ASSERT(!bucket->bucketChanged())
+            CHECK((bucket->get(*inst))
+                  == doctest::Approx(product.get(*inst)).epsilon(static_cast< double >(0.01)));
+            CHECK(!bucket->bucketChanged());
           }
 
-          TS_GUM_ASSERT_THROWS_NOTHING(bucket->setBufferSize(static_cast< gum::Size >(65536)))
+          GUM_CHECK_ASSERT_THROWS_NOTHING(bucket->setBufferSize(static_cast< gum::Size >(65536)));
 
-          TS_ASSERT(bucket->bucketChanged())
-          TS_ASSERT(bucket->realSize() > static_cast< gum::Size >(0))
-          TS_ASSERT(bucket->bucketChanged())
-          TS_GUM_ASSERT_THROWS_NOTHING(bucket->compute())
-          TS_ASSERT(!bucket->bucketChanged())
+          CHECK(bucket->bucketChanged());
+          CHECK(bucket->realSize() > static_cast< gum::Size >(0));
+          CHECK(bucket->bucketChanged());
+          GUM_CHECK_ASSERT_THROWS_NOTHING(bucket->compute());
+          CHECK(!bucket->bucketChanged());
 
-          TS_ASSERT(inst->isMaster(bucket))
-          TS_ASSERT(inst->isMaster(bucket))
+          CHECK(inst->isMaster(bucket));
+          CHECK(inst->isMaster(bucket));
 
           for (inst->setFirst(); !inst->end(); inst->inc()) {
-            TS_ASSERT_DELTA(bucket->get(*inst), product.get(*inst), static_cast< double >(0.01))
+            CHECK((bucket->get(*inst))
+                  == doctest::Approx(product.get(*inst)).epsilon(static_cast< double >(0.01)));
           }
 
           delete inst;
@@ -404,13 +425,13 @@ namespace gum_tests {
       }
     }
 
-    GUM_ACTIVE_TEST(AllVariables) {
+    void testAllVariables() {
       gum::MultiDimBucket< double >* bucket = 0;
-      TS_ASSERT_THROWS_NOTHING(bucket = new gum::MultiDimBucket< double >(0))
+      CHECK_NOTHROW(bucket = new gum::MultiDimBucket< double >(0));
 
       if (bucket != 0) {
-        TS_ASSERT_THROWS_NOTHING(_fillBucket_(bucket))
-        TS_ASSERT_EQUALS(bucket->allVariables().size(), static_cast< gum::Size >(10))
+        CHECK_NOTHROW(_fillBucket_(bucket));
+        CHECK((bucket->allVariables().size()) == (static_cast< gum::Size >(10)));
         gum::Size inBucket  = 0;
         gum::Size outBucket = 0;
 
@@ -420,17 +441,17 @@ namespace gum_tests {
             else outBucket++;
         } catch (gum::Exception& e) {
           std::cerr << std::endl << e.errorContent() << std::endl;
-          TS_ASSERT(false)
+          CHECK(false);
         }
 
-        TS_ASSERT_EQUALS(inBucket, bucket->nbrDim())
+        CHECK((inBucket) == (bucket->nbrDim()));
 
-        TS_ASSERT_EQUALS(inBucket + outBucket, static_cast< gum::Size >(10))
+        CHECK((inBucket + outBucket) == (static_cast< gum::Size >(10)));
         delete bucket;
       }
     }
 
-    GUM_ACTIVE_TEST(WithSmallBN) {
+    void testWithSmallBN() {
       gum::BayesNet< double >* bn = new gum::BayesNet< double >();
       gum::LabelizedVariable   vc("c", "cloudy", 2), vs("s", "sprinklet", 2);
       gum::LabelizedVariable   vr("r", "rain", 2), vw("w", "wet grass", 2);
@@ -448,11 +469,11 @@ namespace gum_tests {
       bn->cpt(w).fillWith({1., 0., 0.1, 0.9, 0.1, 0.9, 0.01, 0.99});
 
 
-      gum::Tensor< double >* e_s = new gum::Tensor< double >();
+      auto e_s = new gum::Tensor< double >();
       e_s->add(bn->variable(s));
       e_s->fillWith({0., 1.});
 
-      gum::Tensor< double >* e_c = new gum::Tensor< double >();
+      auto e_c = new gum::Tensor< double >();
       e_c->add(bn->variable(c));
       e_c->fillWith({1., 0.});
 
@@ -483,7 +504,7 @@ namespace gum_tests {
         i.add(bn->variable(s));
 
         for (i.setFirst(); !i.end(); i.inc()) {
-          TS_ASSERT_DELTA(clique_csr.get(i), bucket_csr.get(i), 1e-7)
+          CHECK((clique_csr.get(i)) == doctest::Approx(bucket_csr.get(i)).epsilon(1e-7));
         }
       }
 
@@ -507,7 +528,7 @@ namespace gum_tests {
         i.add(bn->variable(s));
 
         for (i.setFirst(); !i.end(); i.inc()) {
-          TS_ASSERT_DELTA(sep_sr.get(i), bucket_sr.get(i), 1e-7)
+          CHECK((sep_sr.get(i)) == doctest::Approx(bucket_sr.get(i)).epsilon(1e-7));
         }
       }
 
@@ -530,7 +551,7 @@ namespace gum_tests {
         i.add(bn->variable(s));
 
         for (i.setFirst(); !i.end(); i.inc()) {
-          TS_ASSERT_DELTA(clique_wsr.get(i), bucket_wsr.get(i), 1e-7)
+          CHECK((clique_wsr.get(i)) == doctest::Approx(bucket_wsr.get(i)).epsilon(1e-7));
         }
       }
 
@@ -559,7 +580,7 @@ namespace gum_tests {
         i.add(bn->variable(w));
 
         for (i.setFirst(); !i.end(); i.inc()) {
-          TS_ASSERT_DELTA(marg_w.get(i), bucket_marg_w.get(i), 1e-7)
+          CHECK((marg_w.get(i)) == doctest::Approx(bucket_marg_w.get(i)).epsilon(1e-7));
         }
       }
 
@@ -601,7 +622,7 @@ namespace gum_tests {
         i.add(bn->variable(w));
 
         for (i.setFirst(); !i.end(); i.inc()) {
-          TS_ASSERT_DELTA(marg_w.get(i), norm_b_m_w.get(i), 1e-7)
+          CHECK((marg_w.get(i)) == doctest::Approx(norm_b_m_w.get(i)).epsilon(1e-7));
         }
       }
 
@@ -610,4 +631,15 @@ namespace gum_tests {
       delete e_c;
     }
   };
+
+  GUM_TEST_ACTIF(Creation)
+  GUM_TEST_ACTIF(AddEraseTables)
+  GUM_TEST_ACTIF(Computation)
+  GUM_TEST_ACTIF(OnTheFly)
+  GUM_TEST_ACTIF(InstantiationsWithBuffer)
+  GUM_TEST_ACTIF(InstantiationsWithBufferAndAutoCompute)
+  GUM_TEST_ACTIF(InstantiationsOnTheFly)
+  GUM_TEST_ACTIF(BucketSizeChanges)
+  GUM_TEST_ACTIF(AllVariables)
+  GUM_TEST_ACTIF(WithSmallBN)
 }   // namespace gum_tests

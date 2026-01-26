@@ -1,7 +1,7 @@
 /****************************************************************************
  *   This file is part of the aGrUM/pyAgrum library.                        *
  *                                                                          *
- *   Copyright (c) 2005-2025 by                                             *
+ *   Copyright (c) 2005-2026 by                                             *
  *       - Pierre-Henri WUILLEMIN(_at_LIP6)                                 *
  *       - Christophe GONZALES(_at_AMU)                                     *
  *                                                                          *
@@ -27,7 +27,7 @@
  *                                                                          *
  *   See LICENCES for more details.                                         *
  *                                                                          *
- *   SPDX-FileCopyrightText: Copyright 2005-2025                            *
+ *   SPDX-FileCopyrightText: Copyright 2005-2026                            *
  *       - Pierre-Henri WUILLEMIN(_at_LIP6)                                 *
  *       - Christophe GONZALES(_at_AMU)                                     *
  *   SPDX-License-Identifier: LGPL-3.0-or-later OR MIT                      *
@@ -37,6 +37,7 @@
  *   gitlab   : https://gitlab.com/agrumery/agrum                           *
  *                                                                          *
  ****************************************************************************/
+
 #pragma once
 
 
@@ -47,6 +48,11 @@
 
 #include <agrum/base/graphs/graphElements.h>
 #include <agrum/base/graphs/PDAG.h>
+
+#undef GUM_CURRENT_SUITE
+#undef GUM_CURRENT_MODULE
+#define GUM_CURRENT_SUITE  PDAG
+#define GUM_CURRENT_MODULE GUMBASE
 
 // The graph used for the tests:
 //  1 -> 3
@@ -60,7 +66,7 @@
 //  8 -> 7
 namespace gum_tests {
 
-  class GUM_TEST_SUITE(PDAG) {
+  struct PDAGTestSuite {
     private:
     static gum::Size simpleDoubleFunction(const gum::NodeId& aNodeId) { return aNodeId * 2; }
 
@@ -110,73 +116,73 @@ namespace gum_tests {
     gum::NodeId id7;
     gum::NodeId id8;
 
-    GUM_ACTIVE_TEST(Constructor1) {
+    static void testConstructor1() {
       gum::PDAG* graph = nullptr;
-      TS_GUM_ASSERT_THROWS_NOTHING((graph = new gum::PDAG()))
-      TS_GUM_ASSERT_THROWS_NOTHING((delete (graph)))
+      GUM_CHECK_ASSERT_THROWS_NOTHING((graph = new gum::PDAG()));
+      GUM_CHECK_ASSERT_THROWS_NOTHING((delete (graph)));
     }
 
-    GUM_ACTIVE_TEST(Insert1) {
+    void testInsert1() {
       gum::PDAG graph;
 
-      TS_GUM_ASSERT_THROWS_NOTHING(id0 = graph.addNode())
-      TS_GUM_ASSERT_THROWS_NOTHING(id1 = graph.addNode())
-      TS_GUM_ASSERT_THROWS_NOTHING(id2 = graph.addNode())
-      TS_GUM_ASSERT_THROWS_NOTHING(id3 = graph.addNode())
-      TS_GUM_ASSERT_THROWS_NOTHING(id4 = graph.addNode())
-      TS_GUM_ASSERT_THROWS_NOTHING(id5 = graph.addNode())
-      TS_GUM_ASSERT_THROWS_NOTHING(id6 = graph.addNode())
-      TS_GUM_ASSERT_THROWS_NOTHING(id7 = graph.addNode())
-      TS_GUM_ASSERT_THROWS_NOTHING(id8 = graph.addNode())
+      GUM_CHECK_ASSERT_THROWS_NOTHING(id0 = graph.addNode());
+      GUM_CHECK_ASSERT_THROWS_NOTHING(id1 = graph.addNode());
+      GUM_CHECK_ASSERT_THROWS_NOTHING(id2 = graph.addNode());
+      GUM_CHECK_ASSERT_THROWS_NOTHING(id3 = graph.addNode());
+      GUM_CHECK_ASSERT_THROWS_NOTHING(id4 = graph.addNode());
+      GUM_CHECK_ASSERT_THROWS_NOTHING(id5 = graph.addNode());
+      GUM_CHECK_ASSERT_THROWS_NOTHING(id6 = graph.addNode());
+      GUM_CHECK_ASSERT_THROWS_NOTHING(id7 = graph.addNode());
+      GUM_CHECK_ASSERT_THROWS_NOTHING(id8 = graph.addNode());
 
-      TS_GUM_ASSERT_THROWS_NOTHING(graph.addArc(id0, id2))
-      TS_GUM_ASSERT_THROWS_NOTHING(graph.addArc(id2, id4))
-      TS_GUM_ASSERT_THROWS_NOTHING(graph.addArc(id1, id3))
-      TS_GUM_ASSERT_THROWS_NOTHING(graph.addArc(id0, id3))
-      TS_GUM_ASSERT_THROWS_NOTHING(graph.addArc(id3, id4))
-      TS_GUM_ASSERT_THROWS_NOTHING(graph.addArc(id1, id4))
-      TS_GUM_ASSERT_THROWS_NOTHING(graph.addEdge(id3, id5))
-      TS_GUM_ASSERT_THROWS_NOTHING(graph.addEdge(id5, id6))
-      TS_GUM_ASSERT_THROWS_NOTHING(graph.addArc(id7, id6))
-      TS_GUM_ASSERT_THROWS_NOTHING(graph.addArc(id6, id8))
+      GUM_CHECK_ASSERT_THROWS_NOTHING(graph.addArc(id0, id2));
+      GUM_CHECK_ASSERT_THROWS_NOTHING(graph.addArc(id2, id4));
+      GUM_CHECK_ASSERT_THROWS_NOTHING(graph.addArc(id1, id3));
+      GUM_CHECK_ASSERT_THROWS_NOTHING(graph.addArc(id0, id3));
+      GUM_CHECK_ASSERT_THROWS_NOTHING(graph.addArc(id3, id4));
+      GUM_CHECK_ASSERT_THROWS_NOTHING(graph.addArc(id1, id4));
+      GUM_CHECK_ASSERT_THROWS_NOTHING(graph.addEdge(id3, id5));
+      GUM_CHECK_ASSERT_THROWS_NOTHING(graph.addEdge(id5, id6));
+      GUM_CHECK_ASSERT_THROWS_NOTHING(graph.addArc(id7, id6));
+      GUM_CHECK_ASSERT_THROWS_NOTHING(graph.addArc(id6, id8));
     }
 
-    GUM_ACTIVE_TEST(Insert2) {
+    void testInsert2() {
       gum::PDAG graph;
       buildPDAG(graph);
 
-      TS_ASSERT_THROWS(graph.addArc(id4, id1), const gum::InvalidDirectedCycle&)
-      TS_ASSERT_THROWS(graph.addArc(id8, id1), const gum::InvalidPartiallyDirectedCycle&)
-      TS_ASSERT_THROWS(graph.addEdge(id0, id4), const gum::InvalidPartiallyDirectedCycle&)
-      TS_ASSERT_THROWS(graph.addEdge(id8, id1), const gum::InvalidPartiallyDirectedCycle&)
+      CHECK_THROWS_AS(graph.addArc(id4, id1), const gum::InvalidDirectedCycle&);
+      CHECK_THROWS_AS(graph.addArc(id8, id1), const gum::InvalidPartiallyDirectedCycle&);
+      CHECK_THROWS_AS(graph.addEdge(id0, id4), const gum::InvalidPartiallyDirectedCycle&);
+      CHECK_THROWS_AS(graph.addEdge(id8, id1), const gum::InvalidPartiallyDirectedCycle&);
 
-      TS_GUM_ASSERT_THROWS_NOTHING(graph.addEdge(id8, id4))
-      TS_GUM_ASSERT_THROWS_NOTHING(graph.addEdge(id0, id7))
-      TS_GUM_ASSERT_THROWS_NOTHING(graph.addEdge(id3, id6))
+      GUM_CHECK_ASSERT_THROWS_NOTHING(graph.addEdge(id8, id4));
+      GUM_CHECK_ASSERT_THROWS_NOTHING(graph.addEdge(id0, id7));
+      GUM_CHECK_ASSERT_THROWS_NOTHING(graph.addEdge(id3, id6));
 
       auto id9 = graph.addNode();
-      TS_GUM_ASSERT_THROWS_NOTHING(graph.addEdge(id8, id9))
-      TS_ASSERT_THROWS(graph.addArc(id8, id1), const gum::InvalidPartiallyDirectedCycle&)
-      TS_ASSERT_THROWS(graph.addEdge(id8, id1), const gum::InvalidPartiallyDirectedCycle&)
+      GUM_CHECK_ASSERT_THROWS_NOTHING(graph.addEdge(id8, id9));
+      CHECK_THROWS_AS(graph.addArc(id8, id1), const gum::InvalidPartiallyDirectedCycle&);
+      CHECK_THROWS_AS(graph.addEdge(id8, id1), const gum::InvalidPartiallyDirectedCycle&);
 
-      TS_ASSERT_THROWS(graph.addArc(1000, id1), const gum::InvalidNode&)
-      TS_ASSERT_THROWS(graph.addArc(id1, 1000), const gum::InvalidNode&)
+      CHECK_THROWS_AS(graph.addArc(1000, id1), const gum::InvalidNode&);
+      CHECK_THROWS_AS(graph.addArc(id1, 1000), const gum::InvalidNode&);
     }
 
-    GUM_ACTIVE_TEST(CopyConstructor) {
+    void testCopyConstructor() {
       gum::PDAG graph;
       buildPDAG(graph);
 
       gum::PDAG* copy = nullptr;
-      TS_GUM_ASSERT_THROWS_NOTHING(copy = new gum::PDAG(graph))
-      TS_ASSERT_EQUALS(graph, *copy)
+      GUM_CHECK_ASSERT_THROWS_NOTHING(copy = new gum::PDAG(graph));
+      CHECK((graph) == (*copy));
       delete copy;
 
-      TS_GUM_ASSERT_THROWS_NOTHING(gum::PDAG copy2 = graph)
-      TS_GUM_ASSERT_THROWS_NOTHING(gum::PDAG copy3(graph))
+      GUM_CHECK_ASSERT_THROWS_NOTHING(gum::PDAG copy2 = graph);
+      GUM_CHECK_ASSERT_THROWS_NOTHING(gum::PDAG copy3(graph));
     }
 
-    GUM_ACTIVE_TEST(UndiGraphCopyConstructor) {
+    static void testUndiGraphCopyConstructor() {
       gum::UndiGraph ug;
       ug.addNodes(10);
       ug.addEdge(1, 2);
@@ -185,12 +191,12 @@ namespace gum_tests {
       ug.addEdge(4, 5);
 
       gum::PDAG g(ug);
-      TS_ASSERT_EQUALS(g.size(), 10u)
-      TS_ASSERT_EQUALS(g.sizeArcs(), 0u)
-      TS_ASSERT_EQUALS(g.sizeEdges(), 4u)
+      CHECK((g.size()) == (10u));
+      CHECK((g.sizeArcs()) == (0u));
+      CHECK((g.sizeEdges()) == (4u));
     }
 
-    GUM_ACTIVE_TEST(DAGCopyConstructor) {
+    static void testDAGCopyConstructor() {
       gum::DAG dag;
       dag.addNodes(10);
       dag.addArc(1, 2);
@@ -199,12 +205,12 @@ namespace gum_tests {
       dag.addArc(4, 5);
 
       gum::PDAG g(dag);
-      TS_ASSERT_EQUALS(g.size(), 10u)
-      TS_ASSERT_EQUALS(g.sizeArcs(), 4u)
-      TS_ASSERT_EQUALS(g.sizeEdges(), 0u)
+      CHECK((g.size()) == (10u));
+      CHECK((g.sizeArcs()) == (4u));
+      CHECK((g.sizeEdges()) == (0u));
     }
 
-    GUM_ACTIVE_TEST(MixedGraphCopyConstructor) {
+    static void testMixedGraphCopyConstructor() {
       gum::MixedGraph dag;
       dag.addNodes(10);
       dag.addArc(1, 2);
@@ -213,94 +219,94 @@ namespace gum_tests {
       dag.addEdge(4, 5);
 
       gum::PDAG g(dag);
-      TS_ASSERT_EQUALS(g.size(), 10u)
-      TS_ASSERT_EQUALS(g.sizeArcs(), 2u)
-      TS_ASSERT_EQUALS(g.sizeEdges(), 2u)
+      CHECK((g.size()) == (10u));
+      CHECK((g.sizeArcs()) == (2u));
+      CHECK((g.sizeEdges()) == (2u));
     }
 
-    GUM_ACTIVE_TEST(EmptyNodes) {
+    void testEmptyNodes() {
       gum::PDAG graph;
 
-      TS_ASSERT(graph.empty())
+      CHECK(graph.empty());
       buildPDAG(graph);
-      TS_ASSERT(!graph.empty())
+      CHECK(!graph.empty());
     }
 
-    GUM_ACTIVE_TEST(EmptyArcs) {
+    void testEmptyArcs() {
       gum::PDAG graph;
-      TS_ASSERT(graph.emptyArcs())
+      CHECK(graph.emptyArcs());
       buildPDAG(graph);
-      TS_ASSERT(!graph.emptyArcs())
+      CHECK(!graph.emptyArcs());
     }
 
-    GUM_ACTIVE_TEST(EmptyEdges) {
+    void testEmptyEdges() {
       gum::PDAG graph;
-      TS_ASSERT(graph.emptyEdges())
+      CHECK(graph.emptyEdges());
       buildPDAG(graph);
-      TS_ASSERT(!graph.emptyEdges())
+      CHECK(!graph.emptyEdges());
     }
 
-    GUM_ACTIVE_TEST(EmptyEdgesMove) {
+    void testEmptyEdgesMove() {
       gum::PDAG graph;
-      TS_ASSERT(graph.emptyEdges())
+      CHECK(graph.emptyEdges());
       buildPDAG(graph);
-      TS_ASSERT(!graph.emptyEdges())
+      CHECK(!graph.emptyEdges());
     }
 
-    GUM_ACTIVE_TEST(ClearNodes) {
+    void testClearNodes() {
       gum::PDAG graph;
       buildPDAG(graph);
-      TS_ASSERT(!graph.empty())
-      TS_GUM_ASSERT_THROWS_NOTHING(graph.clear())
-      TS_ASSERT(graph.empty() && graph.emptyArcs() && graph.emptyEdges())
+      CHECK(!graph.empty());
+      GUM_CHECK_ASSERT_THROWS_NOTHING(graph.clear());
+      CHECK((graph.empty() && graph.emptyArcs() && graph.emptyEdges()));
     }
 
-    GUM_ACTIVE_TEST(ClearArcs) {
+    void testClearArcs() {
       gum::PDAG graph;
       buildPDAG(graph);
-      TS_ASSERT(!graph.emptyArcs())
-      TS_GUM_ASSERT_THROWS_NOTHING(graph.clearArcs())
-      TS_ASSERT(graph.emptyArcs())
-      TS_ASSERT(!graph.empty())
+      CHECK(!graph.emptyArcs());
+      GUM_CHECK_ASSERT_THROWS_NOTHING(graph.clearArcs());
+      CHECK(graph.emptyArcs());
+      CHECK(!graph.empty());
     }
 
-    GUM_ACTIVE_TEST(AddDelNodes_2) {
+    void testAddDelNodes_2() {
       gum::PDAG graph;
       buildPDAG(graph);
 
-      TS_ASSERT(graph.exists(id0))
-      TS_ASSERT(graph.exists(id1))
-      TS_ASSERT(graph.exists(id2))
-      TS_ASSERT(graph.exists(id3))
-      TS_ASSERT(graph.exists(id4))
-      TS_ASSERT(!graph.exists(id5 + id4 + id3 + id2 + id1))
+      CHECK(graph.exists(id0));
+      CHECK(graph.exists(id1));
+      CHECK(graph.exists(id2));
+      CHECK(graph.exists(id3));
+      CHECK(graph.exists(id4));
+      CHECK(!graph.exists(id5 + id4 + id3 + id2 + id1));
 
-      TS_ASSERT(graph.existsArc(id2, id4))
-      TS_ASSERT(!graph.existsArc(id4, id2))
-      TS_ASSERT(!graph.existsArc(id0, id0))
+      CHECK(graph.existsArc(id2, id4));
+      CHECK(!graph.existsArc(id4, id2));
+      CHECK(!graph.existsArc(id0, id0));
 
       gum::Size nodeCount = graph.size();
       gum::Size arcCount  = graph.sizeArcs();
       gum::Size edgeCount = graph.sizeEdges();
 
-      TS_GUM_ASSERT_THROWS_NOTHING(graph.eraseNode(id0))
+      GUM_CHECK_ASSERT_THROWS_NOTHING(graph.eraseNode(id0));
 
-      TS_ASSERT_EQUALS(nodeCount, graph.size() + 1)
-      TS_ASSERT_EQUALS(arcCount, graph.sizeArcs() + 2)
-      TS_ASSERT_EQUALS(edgeCount, graph.sizeEdges())
+      CHECK((nodeCount) == (graph.size() + 1));
+      CHECK((arcCount) == (graph.sizeArcs() + 2));
+      CHECK((edgeCount) == (graph.sizeEdges()));
 
-      TS_ASSERT(!graph.exists(id0))
-      TS_ASSERT(!graph.existsArc(id0, id2))
-      TS_ASSERT(!graph.existsArc(id3, id0))
+      CHECK(!graph.exists(id0));
+      CHECK(!graph.existsArc(id0, id2));
+      CHECK(!graph.existsArc(id3, id0));
 
-      TS_GUM_ASSERT_THROWS_NOTHING(graph.eraseNode(id6))
+      GUM_CHECK_ASSERT_THROWS_NOTHING(graph.eraseNode(id6));
 
-      TS_ASSERT_EQUALS(nodeCount, graph.size() + 2)
-      TS_ASSERT_EQUALS(arcCount, graph.sizeArcs() + 4)
-      TS_ASSERT_EQUALS(edgeCount, graph.sizeEdges() + 1)
+      CHECK((nodeCount) == (graph.size() + 2));
+      CHECK((arcCount) == (graph.sizeArcs() + 4));
+      CHECK((edgeCount) == (graph.sizeEdges() + 1));
     }
 
-    GUM_ACTIVE_TEST(RemoveNodes_1) {
+    void testRemoveNodes_1() {
       gum::PDAG graph;
       buildPDAG(graph);
 
@@ -308,146 +314,146 @@ namespace gum_tests {
       gum::Size arcCount  = graph.sizeArcs();
       gum::Size edgeCount = graph.sizeEdges();
 
-      TS_ASSERT_EQUALS(nodeCount, static_cast< gum::Size >(9))
-      TS_ASSERT_EQUALS(arcCount, static_cast< gum::Size >(8))
-      TS_ASSERT_EQUALS(edgeCount, static_cast< gum::Size >(2))
+      CHECK((nodeCount) == (static_cast< gum::Size >(9)));
+      CHECK((arcCount) == (static_cast< gum::Size >(8)));
+      CHECK((edgeCount) == (static_cast< gum::Size >(2)));
 
       for (int i = 0; i < 10; i++) {
-        TS_GUM_ASSERT_THROWS_NOTHING(graph.eraseNode(id4))
+        GUM_CHECK_ASSERT_THROWS_NOTHING(graph.eraseNode(id4));
       }
 
-      TS_ASSERT_EQUALS(nodeCount, graph.size() + 1)
+      CHECK((nodeCount) == (graph.size() + 1));
 
-      TS_ASSERT_EQUALS(arcCount, graph.sizeArcs() + 3)
-      TS_ASSERT_EQUALS(edgeCount, graph.sizeEdges())
+      CHECK((arcCount) == (graph.sizeArcs() + 3));
+      CHECK((edgeCount) == (graph.sizeEdges()));
 
-      TS_ASSERT(!graph.existsArc(id2, id4))
-      TS_ASSERT(!graph.existsArc(id3, id4))
-      TS_ASSERT(!graph.existsArc(id4, id1))
+      CHECK(!graph.existsArc(id2, id4));
+      CHECK(!graph.existsArc(id3, id4));
+      CHECK(!graph.existsArc(id4, id1));
     }
 
-    GUM_ACTIVE_TEST(AddDelArcs_2) {
+    void testAddDelArcs_2() {
       gum::PDAG graph;
       buildPDAG(graph);
 
-      TS_ASSERT(graph.existsArc(id0, id3))
-      TS_ASSERT(graph.existsArc(id3, id4))
-      TS_ASSERT(graph.existsArc(id1, id4))
+      CHECK(graph.existsArc(id0, id3));
+      CHECK(graph.existsArc(id3, id4));
+      CHECK(graph.existsArc(id1, id4));
 
       gum::Size nodeCount = graph.size();
       gum::Size arcCount  = graph.sizeArcs();
       gum::Size edgeCount = graph.sizeEdges();
 
-      TS_GUM_ASSERT_THROWS_NOTHING(graph.eraseArc(gum::Arc(id1, id4)))
+      GUM_CHECK_ASSERT_THROWS_NOTHING(graph.eraseArc(gum::Arc(id1, id4)));
 
-      TS_ASSERT_EQUALS(nodeCount, graph.size())
-      TS_ASSERT_EQUALS(arcCount, graph.sizeArcs() + 1)
-      TS_ASSERT_EQUALS(edgeCount, graph.sizeEdges())
+      CHECK((nodeCount) == (graph.size()));
+      CHECK((arcCount) == (graph.sizeArcs() + 1));
+      CHECK((edgeCount) == (graph.sizeEdges()));
 
-      TS_ASSERT(!graph.existsArc(id1, id4))
+      CHECK(!graph.existsArc(id1, id4));
     }
 
-    GUM_ACTIVE_TEST(DelEdge) {
+    void testDelEdge() {
       gum::PDAG graph;
       buildPDAG(graph);
 
-      TS_ASSERT(graph.existsEdge(id3, id5))
-      TS_ASSERT(graph.existsEdge(id5, id6))
+      CHECK(graph.existsEdge(id3, id5));
+      CHECK(graph.existsEdge(id5, id6));
 
       gum::Size nodeCount = graph.size();
       gum::Size arcCount  = graph.sizeArcs();
       gum::Size edgeCount = graph.sizeEdges();
 
-      TS_GUM_ASSERT_THROWS_NOTHING(graph.eraseEdge(gum::Edge(id3, id5)))
+      GUM_CHECK_ASSERT_THROWS_NOTHING(graph.eraseEdge(gum::Edge(id3, id5)));
 
-      TS_ASSERT_EQUALS(nodeCount, graph.size())
-      TS_ASSERT_EQUALS(arcCount, graph.sizeArcs())
-      TS_ASSERT_EQUALS(edgeCount, graph.sizeEdges() + 1)
+      CHECK((nodeCount) == (graph.size()));
+      CHECK((arcCount) == (graph.sizeArcs()));
+      CHECK((edgeCount) == (graph.sizeEdges() + 1));
 
-      TS_ASSERT(!graph.existsEdge(id3, id5))
+      CHECK(!graph.existsEdge(id3, id5));
     }
 
-    GUM_ACTIVE_TEST(GetNodes) {
+    void testGetNodes() {
       gum::PDAG graph;
       buildPDAG(graph);
 
       gum::NodeSet nodelist = graph.asNodeSet();
-      TS_ASSERT_EQUALS(nodelist.size(), graph.size())
+      CHECK((nodelist.size()) == (graph.size()));
       gum::Size nodeCount = graph.size();
 
       for (const auto node: nodelist)
         graph.eraseNode(node);
 
-      TS_ASSERT(graph.empty())
+      CHECK(graph.empty());
 
-      TS_ASSERT_EQUALS(nodeCount, nodelist.size())
+      CHECK((nodeCount) == (nodelist.size()));
     }
 
-    GUM_ACTIVE_TEST(GetArcs) {
+    void testGetArcs() {
       gum::PDAG graph;
       buildPDAG(graph);
 
       gum::ArcSet arclist = graph.arcs();
-      TS_ASSERT_EQUALS(arclist.size(), graph.sizeArcs())
+      CHECK((arclist.size()) == (graph.sizeArcs()));
       gum::Size arcCount = graph.sizeArcs();
 
       for (const auto& arc: arclist) {
         graph.eraseArc(arc);
       }
 
-      TS_ASSERT(graph.emptyArcs())
+      CHECK(graph.emptyArcs());
 
-      TS_ASSERT_EQUALS(arcCount, arclist.size())
+      CHECK((arcCount) == (arclist.size()));
     }
 
-    GUM_ACTIVE_TEST(GetEdges) {
+    void testGetEdges() {
       gum::PDAG graph;
       buildPDAG(graph);
 
       gum::EdgeSet edgelist = graph.edges();
-      TS_ASSERT_EQUALS(edgelist.size(), graph.sizeEdges())
+      CHECK((edgelist.size()) == (graph.sizeEdges()));
       gum::Size edgeCount = graph.sizeEdges();
 
       for (const auto& edge: edgelist) {
         graph.eraseEdge(edge);
       }
 
-      TS_ASSERT(graph.emptyEdges())
+      CHECK(graph.emptyEdges());
 
-      TS_ASSERT_EQUALS(edgeCount, edgelist.size())
+      CHECK((edgeCount) == (edgelist.size()));
     }
 
-    GUM_ACTIVE_TEST(NodeListMapNodes) {
+    void testNodeListMapNodes() {
       gum::PDAG graph;
       buildPDAG(graph);
 
       auto list = graph.listMapNodes(&simpleDoubleFunction);
-      TS_ASSERT_EQUALS(list.size(), graph.size())
+      CHECK((list.size()) == (graph.size()));
 
       gum::Size s = 0;
 
       for (const auto elt: list)
         s += elt;
 
-      TS_ASSERT_EQUALS(s, 2 * (id0 + id1 + id2 + id3 + id4 + id5 + id6 + id7 + id8))
+      CHECK((s) == (2 * (id0 + id1 + id2 + id3 + id4 + id5 + id6 + id7 + id8)));
     }
 
-    GUM_ACTIVE_TEST(TwistedNodeListMapNodes) {
+    void testTwistedNodeListMapNodes() {
       gum::PDAG graph;
       buildPDAG(graph);
 
       gum::List< gum::Size > list;
-      TS_ASSERT_THROWS_ANYTHING(list = graph.listMapNodes(&twistedMapFunction))
+      CHECK_THROWS(list = graph.listMapNodes(&twistedMapFunction));
 
-      TS_ASSERT_EQUALS(list.size(), static_cast< gum::Size >(0))
+      CHECK((list.size()) == (static_cast< gum::Size >(0)));
     }
 
-    GUM_ACTIVE_TEST(HashMapNodes) {
+    void testHashMapNodes() {
       gum::PDAG graph;
       buildPDAG(graph);
 
       auto hashmap = graph.nodesPropertyFromFunction(&simpleDoubleFunction);
-      TS_ASSERT_EQUALS(hashmap.size(), graph.size())
+      CHECK((hashmap.size()) == (graph.size()));
 
       gum::Size sk = 0;
       gum::Size sv = 0;
@@ -457,41 +463,40 @@ namespace gum_tests {
         sv += v;
       }
 
-      TS_ASSERT_EQUALS(sk * 2, sv)
+      CHECK((sk * 2) == (sv));
     }
 
-    GUM_ACTIVE_TEST(TwistedHashMapNodes) {
+    void testTwistedHashMapNodes() {
       gum::PDAG graph;
       buildPDAG(graph);
 
       gum::NodeProperty< gum::Size > hashmap;
-      TS_ASSERT_THROWS_ANYTHING(hashmap = graph.nodesPropertyFromFunction(&twistedMapFunction))
+      CHECK_THROWS(hashmap = graph.nodesPropertyFromFunction(&twistedMapFunction));
 
-      TS_ASSERT_EQUALS(hashmap.size(), static_cast< gum::Size >(0))
+      CHECK((hashmap.size()) == (static_cast< gum::Size >(0)));
     }
 
-    GUM_ACTIVE_TEST(ListMapArcs) {
+    void testListMapArcs() {
       gum::PDAG graph;
       buildPDAG(graph);
 
       gum::List< gum::Size > list = graph.listMapArcs(&simpleArcMapFunction);
-      TS_ASSERT_EQUALS(list.size(), graph.sizeArcs())
+      CHECK((list.size()) == (graph.sizeArcs()));
 
       gum::Size s = 0;
 
       for (const auto elt: list)
         s += elt;
 
-      TS_ASSERT_EQUALS(s,
-                       (gum::Size)(0 + 2 + 0 + 3 + 1 + 6 + 1 + 4 + +1 + 3 + 2 + 4 + 7 + 6 + 6 + 8))
+      CHECK((s) == ((gum::Size)(0 + 2 + 0 + 3 + 1 + 6 + 1 + 4 + +1 + 3 + 2 + 4 + 7 + 6 + 6 + 8)));
     }
 
-    GUM_ACTIVE_TEST(HashMapArcs) {
+    void testHashMapArcs() {
       gum::PDAG graph;
       buildPDAG(graph);
 
       auto hashmap = graph.arcsProperty(&simpleArcMapFunction);
-      TS_ASSERT_EQUALS(hashmap.size(), graph.sizeArcs())
+      CHECK((hashmap.size()) == (graph.sizeArcs()));
 
       gum::Size sk = 0;
       gum::Size sv = 0;
@@ -501,30 +506,30 @@ namespace gum_tests {
         sv += v;
       }
 
-      TS_ASSERT_EQUALS(sk, sv)
+      CHECK((sk) == (sv));
     }
 
-    GUM_ACTIVE_TEST(ListMapEdges) {
+    void testListMapEdges() {
       gum::PDAG graph;
       buildPDAG(graph);
 
       gum::List< gum::Size > list = graph.listMapEdges(&simpleEdgeMapFunction);
-      TS_ASSERT_EQUALS(list.size(), graph.sizeEdges())
+      CHECK((list.size()) == (graph.sizeEdges()));
 
       gum::Size s = 0;
 
       for (const auto& elt: list)
         s += elt;
 
-      TS_ASSERT_EQUALS(s, (gum::Size)(3 + 5 + 5 + 6))
+      CHECK((s) == ((gum::Size)(3 + 5 + 5 + 6)));
     }
 
-    GUM_ACTIVE_TEST(HashMapEdges) {
+    void testHashMapEdges() {
       gum::PDAG graph;
       buildPDAG(graph);
 
       auto hashmap = graph.edgesProperty(&simpleEdgeMapFunction);
-      TS_ASSERT_EQUALS(hashmap.size(), graph.sizeEdges())
+      CHECK((hashmap.size()) == (graph.sizeEdges()));
 
       gum::Size sk = 0;
       gum::Size sv = 0;
@@ -534,10 +539,10 @@ namespace gum_tests {
         sv += v;
       }
 
-      TS_ASSERT_EQUALS(sk, sv)
+      CHECK((sk) == (sv));
     }
 
-    GUM_ACTIVE_TEST(CopyOperator) {
+    void testCopyOperator() {
       gum::PDAG graph;
       buildPDAG(graph);
 
@@ -550,45 +555,45 @@ namespace gum_tests {
 
       g2 = g3 = g4 = graph;
 
-      TS_ASSERT_EQUALS(g2, graph)
-      TS_ASSERT_EQUALS(g3, graph)
-      TS_ASSERT_EQUALS(g4, graph)
+      CHECK((g2) == (graph));
+      CHECK((g3) == (graph));
+      CHECK((g4) == (graph));
 
       g2.clear();
       g3.clearArcs();
       g4.clearEdges();
 
-      TS_ASSERT_DIFFERS(g2, graph)
-      TS_ASSERT_DIFFERS(g3, graph)
-      TS_ASSERT_DIFFERS(g4, graph)
+      CHECK((g2) != (graph));
+      CHECK((g3) != (graph));
+      CHECK((g4) != (graph));
     }
 
-    GUM_ACTIVE_TEST(Family) {
+    void testFamily() {
       gum::PDAG graph;
       buildPDAG(graph);
-      TS_ASSERT_EQUALS(graph.family(0), gum::NodeSet({0}))
-      TS_ASSERT_EQUALS(graph.family(4), gum::NodeSet({1, 2, 3, 4}))
+      CHECK((graph.family(0)) == (gum::NodeSet({0})));
+      CHECK((graph.family(4)) == (gum::NodeSet({1, 2, 3, 4})));
     }
 
-    GUM_ACTIVE_TEST(MonoCycle) {
+    static void testMonoCycle() {
       gum::PDAG graph;
       auto      x = graph.addNode();
-      TS_ASSERT_THROWS(graph.addArc(x, x), const gum::Exception&)
+      CHECK_THROWS_AS(graph.addArc(x, x), const gum::Exception&);
     }
 
-    GUM_ACTIVE_TEST(cSeparationFromKennethLee) {
+    static void testcSeparationFromKennethLee() {
       {
         gum::PDAG p;
         p.addNodes(10);
         p.addArc(0, 1);
         p.addArc(1, 2);
-        TS_GUM_ASSERT_THROWS_NOTHING(p.cSeparation(0, 2, gum::NodeSet({1})))
+        GUM_CHECK_ASSERT_THROWS_NOTHING(p.cSeparation(0, 2, gum::NodeSet({1})));
       }
       {
         gum::PDAG p;
         p.addNodes(10);
         p.addEdge(0, 1);
-        TS_ASSERT(!p.cSeparation(0, 1, gum::NodeSet({2})))
+        CHECK(!p.cSeparation(0, 1, gum::NodeSet({2})));
       }
       {
         gum::PDAG p;
@@ -596,26 +601,26 @@ namespace gum_tests {
         p.addEdge(0, 1);
         p.addArc(1, 2);
         p.addArc(3, 2);
-        TS_ASSERT(!p.cSeparation(0, 2, gum::NodeSet()))
-        TS_ASSERT(!p.cSeparation(3, 2, gum::NodeSet()))
-        TS_ASSERT(p.cSeparation(1, 3, gum::NodeSet()))
-        TS_ASSERT(p.cSeparation(0, 3, gum::NodeSet()))
-        TS_ASSERT(!p.cSeparation(1, 3, gum::NodeSet({2})))
-        TS_ASSERT(!p.cSeparation(0, 3, gum::NodeSet({2})))
-        TS_ASSERT(p.cSeparation(0, 3, gum::NodeSet({1, 2})))
-        TS_ASSERT(!p.cSeparation(1, 3, gum::NodeSet({0, 2})))
-        TS_ASSERT(p.cSeparation(1, 3, gum::NodeSet({0})))
+        CHECK(!p.cSeparation(0, 2, gum::NodeSet()));
+        CHECK(!p.cSeparation(3, 2, gum::NodeSet()));
+        CHECK(p.cSeparation(1, 3, gum::NodeSet()));
+        CHECK(p.cSeparation(0, 3, gum::NodeSet()));
+        CHECK(!p.cSeparation(1, 3, gum::NodeSet({2})));
+        CHECK(!p.cSeparation(0, 3, gum::NodeSet({2})));
+        CHECK(p.cSeparation(0, 3, gum::NodeSet({1, 2})));
+        CHECK(!p.cSeparation(1, 3, gum::NodeSet({0, 2})));
+        CHECK(p.cSeparation(1, 3, gum::NodeSet({0})));
       }
     }
 
-    GUM_ACTIVE_TEST(MoralGraphFromLouisDerumaux) {
+    void testMoralGraphFromLouisDerumaux() {
       gum::PDAG graph;
       buildPDAG(graph);
       gum::UndiGraph moral = graph.moralGraph();
-      TS_ASSERT(moral.existsEdge(id0, id7))
+      CHECK(moral.existsEdge(id0, id7));
     }
 
-    GUM_ACTIVE_TEST(cSeparationBugFromLouisDerumaux) {
+    static void testcSeparationBugFromLouisDerumaux() {
       auto p = gum::PDAG();
 
       const auto a  = p.addNode();
@@ -651,12 +656,47 @@ namespace gum_tests {
 
       const auto m = p.moralizedAncestralGraph({c, e, f, h});
 
-      TS_ASSERT(m.existsEdge(c, d))
-      TS_ASSERT(m.existsEdge(y, c))
-      TS_ASSERT(m.existsEdge(y, d))
+      CHECK(m.existsEdge(c, d));
+      CHECK(m.existsEdge(y, c));
+      CHECK(m.existsEdge(y, d));
 
-      TS_ASSERT(!p.cSeparation(e, h, {f, c}))
+      CHECK(!p.cSeparation(e, h, {f, c}));
     }
   };
+
+  GUM_TEST_ACTIF(Constructor1)
+  GUM_TEST_ACTIF(Insert1)
+  GUM_TEST_ACTIF(Insert2)
+  GUM_TEST_ACTIF(CopyConstructor)
+  GUM_TEST_ACTIF(UndiGraphCopyConstructor)
+  GUM_TEST_ACTIF(DAGCopyConstructor)
+  GUM_TEST_ACTIF(MixedGraphCopyConstructor)
+  GUM_TEST_ACTIF(EmptyNodes)
+  GUM_TEST_ACTIF(EmptyArcs)
+  GUM_TEST_ACTIF(EmptyEdges)
+  GUM_TEST_ACTIF(EmptyEdgesMove)
+  GUM_TEST_ACTIF(ClearNodes)
+  GUM_TEST_ACTIF(ClearArcs)
+  GUM_TEST_ACTIF(AddDelNodes_2)
+  GUM_TEST_ACTIF(RemoveNodes_1)
+  GUM_TEST_ACTIF(AddDelArcs_2)
+  GUM_TEST_ACTIF(DelEdge)
+  GUM_TEST_ACTIF(GetNodes)
+  GUM_TEST_ACTIF(GetArcs)
+  GUM_TEST_ACTIF(GetEdges)
+  GUM_TEST_ACTIF(NodeListMapNodes)
+  GUM_TEST_ACTIF(TwistedNodeListMapNodes)
+  GUM_TEST_ACTIF(HashMapNodes)
+  GUM_TEST_ACTIF(TwistedHashMapNodes)
+  GUM_TEST_ACTIF(ListMapArcs)
+  GUM_TEST_ACTIF(HashMapArcs)
+  GUM_TEST_ACTIF(ListMapEdges)
+  GUM_TEST_ACTIF(HashMapEdges)
+  GUM_TEST_ACTIF(CopyOperator)
+  GUM_TEST_ACTIF(Family)
+  GUM_TEST_ACTIF(MonoCycle)
+  GUM_TEST_ACTIF(cSeparationFromKennethLee)
+  GUM_TEST_ACTIF(MoralGraphFromLouisDerumaux)
+  GUM_TEST_ACTIF(cSeparationBugFromLouisDerumaux)
 
 }   // namespace gum_tests

@@ -1,7 +1,7 @@
 /****************************************************************************
  *   This file is part of the aGrUM/pyAgrum library.                        *
  *                                                                          *
- *   Copyright (c) 2005-2025 by                                             *
+ *   Copyright (c) 2005-2026 by                                             *
  *       - Pierre-Henri WUILLEMIN(_at_LIP6)                                 *
  *       - Christophe GONZALES(_at_AMU)                                     *
  *                                                                          *
@@ -27,7 +27,7 @@
  *                                                                          *
  *   See LICENCES for more details.                                         *
  *                                                                          *
- *   SPDX-FileCopyrightText: Copyright 2005-2025                            *
+ *   SPDX-FileCopyrightText: Copyright 2005-2026                            *
  *       - Pierre-Henri WUILLEMIN(_at_LIP6)                                 *
  *       - Christophe GONZALES(_at_AMU)                                     *
  *   SPDX-License-Identifier: LGPL-3.0-or-later OR MIT                      *
@@ -88,6 +88,6 @@ bool compareInference(const std::string&                       file,
     break;                                                           \
   }                                                                  \
   std::cout << "![" << __LINE__ << "]" << std::flush;                \
-  if (ii == 10) TS_FAIL("even with 10 tries.");                      \
+  if (ii == 10) FAIL("even with 10 tries.");                         \
   }
 #endif   // AGRUM_AGRUMAPPROXIMATIONUTILS_H_H

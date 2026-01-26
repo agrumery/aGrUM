@@ -1,7 +1,7 @@
 /****************************************************************************
  *   This file is part of the aGrUM/pyAgrum library.                        *
  *                                                                          *
- *   Copyright (c) 2005-2025 by                                             *
+ *   Copyright (c) 2005-2026 by                                             *
  *       - Pierre-Henri WUILLEMIN(_at_LIP6)                                 *
  *       - Christophe GONZALES(_at_AMU)                                     *
  *                                                                          *
@@ -27,7 +27,7 @@
  *                                                                          *
  *   See LICENCES for more details.                                         *
  *                                                                          *
- *   SPDX-FileCopyrightText: Copyright 2005-2025                            *
+ *   SPDX-FileCopyrightText: Copyright 2005-2026                            *
  *       - Pierre-Henri WUILLEMIN(_at_LIP6)                                 *
  *       - Christophe GONZALES(_at_AMU)                                     *
  *   SPDX-License-Identifier: LGPL-3.0-or-later OR MIT                      *
@@ -37,6 +37,7 @@
  *   gitlab   : https://gitlab.com/agrumery/agrum                           *
  *                                                                          *
  ****************************************************************************/
+
 #pragma once
 
 
@@ -65,7 +66,7 @@ namespace gum_tests {
       // Act
       bool actual = ClassElt::isReferenceSlot(elt);
       // Assert
-      TS_ASSERT_EQUALS(actual, expected)
+      CHECK((actual) == (expected));
     }
 
     void testIsAttribute(const ClassElt& elt, bool expected) {
@@ -73,7 +74,7 @@ namespace gum_tests {
       // Act
       bool actual = ClassElt::isAttribute(elt);
       // Assert
-      TS_ASSERT_EQUALS(actual, expected)
+      CHECK((actual) == (expected));
     }
 
     void testIsSlotChain(const ClassElt& elt, bool expected) {
@@ -81,7 +82,7 @@ namespace gum_tests {
       // Act
       bool actual = ClassElt::isSlotChain(elt);
       // Assert
-      TS_ASSERT_EQUALS(actual, expected)
+      CHECK((actual) == (expected));
     }
 
     void testSetNodeId(ClassElt& elt) {
@@ -91,8 +92,8 @@ namespace gum_tests {
       // Act
       elt.setId(new_id);
       // Assert
-      TS_ASSERT_DIFFERS(old_id, elt.id())
-      TS_ASSERT_EQUALS(new_id, elt.id())
+      CHECK((old_id) != (elt.id()));
+      CHECK((new_id) == (elt.id()));
     }
 
     void test_obj_type(const ClassElt& elt) {
@@ -101,7 +102,7 @@ namespace gum_tests {
       // Act
       auto actual = elt.obj_type();
       // Assert
-      TS_ASSERT_EQUALS(expected, actual)
+      CHECK((expected) == (actual));
     }
 
     void testSafeName(const ClassElt& elt) {
@@ -118,7 +119,7 @@ namespace gum_tests {
       // Act
       auto actual = elt.safeName();
       // Assert
-      TS_ASSERT_EQUALS(expected, actual)
+      CHECK((expected) == (actual));
     }
 
     void testCast_NotAllowed(const ClassElt& elt) {
@@ -127,7 +128,7 @@ namespace gum_tests {
       gum::prm::PRMType      bar{foo};
       // Assert
       try {
-        TS_ASSERT_THROWS(elt.cast(bar), const gum::OperationNotAllowed&)
+        CHECK_THROWS_AS(elt.cast(bar), const gum::OperationNotAllowed&);
       } catch (gum::OperationNotAllowed&) {}
     }
 
@@ -138,10 +139,10 @@ namespace gum_tests {
                       + gum::prm::PRMObject::RIGHT_CAST() + elt.name();
         std::string actual;
         // Act
-        TS_ASSERT_THROWS_NOTHING(actual = elt.cast(type))
+        CHECK_NOTHROW(actual = elt.cast(type));
         // Assert
-        TS_ASSERT_EQUALS(expected, actual)
-      } catch (gum::OperationNotAllowed&) { TS_FAIL("Exception raised"); }
+        CHECK((expected) == (actual));
+      } catch (gum::OperationNotAllowed&) { FAIL("Exception raised"); }
     }
   };
 

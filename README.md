@@ -42,7 +42,7 @@ conda install -c conda-forge pyagrum
 - [nanodbc](https://github.com/lexicalunit/nanodbc): A lightweight C++ wrapper for ODBC
 - [lrs](http://cgm.cs.mcgill.ca/~avis/C/lrs.html): A vertex enumeration program
 - [tinyxml](http://www.grinninglizard.com/tinyxml/): A simple and lightweight XML parser
-- [CxxTest](http://cxxtest.com/): A unit testing framework for C++
+- [doctest](https://github.com/doctest/doctest): A fast single-header C++ testing framework (since version 2.4.0, replaces CxxTest)
 
 ### pyAgrum Dependencies
 
@@ -138,10 +138,45 @@ The CI pipeline builds and tests both **aGrUM** and **pyAgrum** to ensure cross-
 
 ## Testing
 
-Run tests with the `act test` command:
+### C++ Tests (aGrUM)
 
-- **aGrUM**: Test individual modules using `-m MODULES` or specific suites using `-t TESTS`.
-- **pyAgrum**: Choose between quick tests (`-t quick`) or comprehensive tests including Jupyter notebooks (`-t all`).
+Run C++ tests with the `act test` command:
+
+```bash
+# Run all C++ tests
+act test release aGrUM
+
+# Run specific modules (BASE, BN, MRF, CN, ID, CM, FMDP)
+act test release aGrUM -m BN
+act test release aGrUM -m BASE+BN
+
+# Run specific test suites
+act test release aGrUM -t BayesNetTestSuite
+act test release aGrUM -t BayesNetTestSuite+BNLearnerTestSuite
+
+# Show available modules/tests
+act test release aGrUM -m show
+act test release aGrUM -t show
+```
+
+#### Running Tests Directly (doctest)
+
+After building with `act test release aGrUM`, you can run the test executable directly for faster iteration:
+
+```bash
+./gumTest                              # Run all tests
+./gumTest --list-test-cases            # List all test cases
+./gumTest --test-case="*BayesNet*"     # Run tests matching pattern
+./gumTest --test-case="*[BN]*"         # Run all BN module tests
+./gumTest --test-case="*[BASE]*"       # Run all BASE module tests
+```
+
+### Python Tests (pyAgrum)
+
+```bash
+act test release pyAgrum -t quick      # Fast tests only
+act test release pyAgrum -t all        # Includes notebook tests
+```
 
 ## Bibliography
 

@@ -1,7 +1,7 @@
 /****************************************************************************
  *   This file is part of the aGrUM/pyAgrum library.                        *
  *                                                                          *
- *   Copyright (c) 2005-2025 by                                             *
+ *   Copyright (c) 2005-2026 by                                             *
  *       - Pierre-Henri WUILLEMIN(_at_LIP6)                                 *
  *       - Christophe GONZALES(_at_AMU)                                     *
  *                                                                          *
@@ -27,7 +27,7 @@
  *                                                                          *
  *   See LICENCES for more details.                                         *
  *                                                                          *
- *   SPDX-FileCopyrightText: Copyright 2005-2025                            *
+ *   SPDX-FileCopyrightText: Copyright 2005-2026                            *
  *       - Pierre-Henri WUILLEMIN(_at_LIP6)                                 *
  *       - Christophe GONZALES(_at_AMU)                                     *
  *   SPDX-License-Identifier: LGPL-3.0-or-later OR MIT                      *
@@ -37,6 +37,7 @@
  *   gitlab   : https://gitlab.com/agrumery/agrum                           *
  *                                                                          *
  ****************************************************************************/
+
 #pragma once
 
 
@@ -50,12 +51,15 @@
 #include <agrum/PRM/inference/structuredInference.h>
 #include <agrum/PRM/o3prm/O3prmReader.h>
 
+#undef GUM_CURRENT_SUITE
+#undef GUM_CURRENT_MODULE
+#define GUM_CURRENT_SUITE  StructuredInference
+#define GUM_CURRENT_MODULE PRM
+
 namespace gum_tests {
 
-  class GUM_TEST_SUITE(StructuredInference) {
+  struct StructuredInferenceTestSuite {
     public:
-    void setUp() {}
-
     void generateLayer1(gum::Size                                                     nb_class,
                         gum::Size                                                     depth,
                         std::vector< gum::prm::LayerGenerator< double >::LayerData >& v) {
@@ -72,7 +76,7 @@ namespace gum_tests {
       }
 
       catch (gum::Exception&) {
-        TS_ASSERT(false)
+        CHECK(false);
       }
     }
 
@@ -89,7 +93,7 @@ namespace gum_tests {
           v[lvl].inner_density  = 0.2f;
           v[lvl].outter_density = 0.05f;
         }
-      } catch (gum::Exception&) { TS_ASSERT(false) }
+      } catch (gum::Exception&) { CHECK(false); }
     }
 
     void generateLayer3(gum::Size                                                     nb_class,
@@ -105,7 +109,7 @@ namespace gum_tests {
           v[lvl].inner_density  = 0.2f;
           v[lvl].outter_density = 0.05f;
         }
-      } catch (gum::Exception&) { TS_ASSERT(false) }
+      } catch (gum::Exception&) { CHECK(false); }
     }
 
     const gum::prm::PRMInstance< double >& pickInstance(const gum::prm::PRMSystem< double >& sys) {
@@ -129,7 +133,7 @@ namespace gum_tests {
       return *(seq.atPos(std::rand() % seq.size()));
     }
 
-    GUM_ACTIVE_TEST(StructuredInference_gen1) {
+    static void testStructuredInference_gen1() {
       try {
         std::vector< gum::prm::LayerGenerator< double >::LayerData > layers;
         generateLayer1(5, 2, layers);
@@ -146,19 +150,19 @@ namespace gum_tests {
         const gum::prm::PRMAttribute< double >& a     = pickAttribute(i);
         gum::prm::PRMInference< double >::Chain chain = std::make_pair(&i, &a);
         gum::Tensor< double >                   m;
-        TS_GUM_ASSERT_THROWS_NOTHING(inf.posterior(chain, m))
+        GUM_CHECK_ASSERT_THROWS_NOTHING(inf.posterior(chain, m));
         double             sum = 0.0;
         gum::Instantiation inst(m);
 
         for (inst.setFirst(); !inst.end(); inst.inc())
           sum += m.get(inst);
 
-        TS_ASSERT_DELTA(sum, 1.0, 1e-6)
+        CHECK((sum) == doctest::Approx(1.0).epsilon(1e-6));
         delete prm;
-      } catch (gum::Exception&) { TS_ASSERT(false) }
+      } catch (gum::Exception&) { CHECK(false); }
     }
 
-    GUM_ACTIVE_TEST(StructuredInference_gen2) {
+    static void testStructuredInference_gen2() {
       try {
         std::vector< gum::prm::LayerGenerator< double >::LayerData > layers;
         generateLayer2(5, 2, layers);
@@ -175,19 +179,19 @@ namespace gum_tests {
         const gum::prm::PRMAttribute< double >& a     = pickAttribute(i);
         gum::prm::PRMInference< double >::Chain chain = std::make_pair(&i, &a);
         gum::Tensor< double >                   m;
-        TS_GUM_ASSERT_THROWS_NOTHING(inf.posterior(chain, m))
+        GUM_CHECK_ASSERT_THROWS_NOTHING(inf.posterior(chain, m));
         double             sum = 0.0;
         gum::Instantiation inst(m);
 
         for (inst.setFirst(); !inst.end(); inst.inc())
           sum += m.get(inst);
 
-        TS_ASSERT_DELTA(sum, 1.0, 1e-6)
+        CHECK((sum) == doctest::Approx(1.0).epsilon(1e-6));
         delete prm;
-      } catch (gum::Exception&) { TS_ASSERT(false) }
+      } catch (gum::Exception&) { CHECK(false); }
     }
 
-    GUM_ACTIVE_TEST(StructuredInference_gen3) {
+    static void testStructuredInference_gen3() {
       try {
         std::vector< gum::prm::LayerGenerator< double >::LayerData > layers;
         generateLayer3(5, 2, layers);
@@ -204,19 +208,19 @@ namespace gum_tests {
         const gum::prm::PRMAttribute< double >& a     = pickAttribute(i);
         gum::prm::PRMInference< double >::Chain chain = std::make_pair(&i, &a);
         gum::Tensor< double >                   m;
-        TS_GUM_ASSERT_THROWS_NOTHING(inf.posterior(chain, m))
+        GUM_CHECK_ASSERT_THROWS_NOTHING(inf.posterior(chain, m));
         double             sum = 0.0;
         gum::Instantiation inst(m);
 
         for (inst.setFirst(); !inst.end(); inst.inc())
           sum += m.get(inst);
 
-        TS_ASSERT_DELTA(sum, 1.0, 1e-6)
+        CHECK((sum) == doctest::Approx(1.0).epsilon(1e-6));
         delete prm;
-      } catch (gum::Exception&) { TS_ASSERT(false) }
+      } catch (gum::Exception&) { CHECK(false); }
     }
 
-    // GUM_ACTIVE_TEST(FrequenceSearch_gen1) {
+    // static void testFrequenceSearch_gen1() {
     //  try {
     //    std::vector<gum::prm::LayerGenerator<double>::LayerData> layers;
     //    generateLayer1( 5, 2, layers );
@@ -240,19 +244,24 @@ namespace gum_tests {
     //    gum::prm::PRMInference<double>::Chain chain = std::make_pair( &i, &a
     //    );
     //    gum::Tensor<double> m;
-    //    TS_GUM_ASSERT_THROWS_NOTHING( inf.posterior( chain, m ) )
+    //    GUM_CHECK_ASSERT_THROWS_NOTHING( inf.posterior( chain, m ) );
     //    double sum = 0.0;
     //    gum::Instantiation inst( m );
 
     //    for( inst.setFirst(); not inst.end(); inst.inc() )
     //      sum += m.get( inst );
 
-    //    TS_ASSERT_DELTA( sum, 1.0, 1e-6 )
+    //    CHECK((sum) == doctest::Approx(1.0).epsilon(1e-6));
     //    delete prm;
     //  } catch (gum::Exception&) {
-    //    TS_ASSERT(false)
+    //    CHECK(false);
     //  }
     //}
   };
+
+  GUM_TEST_ACTIF(StructuredInference_gen1)
+  GUM_TEST_ACTIF(StructuredInference_gen2)
+  GUM_TEST_ACTIF(StructuredInference_gen3)
+  GUM_TEST_ACTIF(FrequenceSearch_gen1)
 
 }   // namespace gum_tests

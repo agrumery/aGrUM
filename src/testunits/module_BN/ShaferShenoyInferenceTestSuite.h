@@ -1,7 +1,7 @@
 /****************************************************************************
  *   This file is part of the aGrUM/pyAgrum library.                        *
  *                                                                          *
- *   Copyright (c) 2005-2025 by                                             *
+ *   Copyright (c) 2005-2026 by                                             *
  *       - Pierre-Henri WUILLEMIN(_at_LIP6)                                 *
  *       - Christophe GONZALES(_at_AMU)                                     *
  *                                                                          *
@@ -27,7 +27,7 @@
  *                                                                          *
  *   See LICENCES for more details.                                         *
  *                                                                          *
- *   SPDX-FileCopyrightText: Copyright 2005-2025                            *
+ *   SPDX-FileCopyrightText: Copyright 2005-2026                            *
  *       - Pierre-Henri WUILLEMIN(_at_LIP6)                                 *
  *       - Christophe GONZALES(_at_AMU)                                     *
  *   SPDX-License-Identifier: LGPL-3.0-or-later OR MIT                      *
@@ -37,6 +37,7 @@
  *   gitlab   : https://gitlab.com/agrumery/agrum                           *
  *                                                                          *
  ****************************************************************************/
+
 #pragma once
 
 
@@ -60,6 +61,11 @@
 #include <agrum/BN/inference/variableElimination.h>
 #include <agrum/BN/io/BIF/BIFReader.h>
 
+#undef GUM_CURRENT_SUITE
+#undef GUM_CURRENT_MODULE
+#define GUM_CURRENT_SUITE  ShaferShenoyInferenceBN
+#define GUM_CURRENT_MODULE BN
+
 // The graph used for the tests:
 //          1   2_          1 -> 3
 //         / \ / /          1 -> 4
@@ -69,32 +75,10 @@
 //                          2 -> 5
 
 namespace gum_tests {
-  class GUM_TEST_SUITE(ShaferShenoyInferenceBN) {
+  struct ShaferShenoyInferenceBNTestSuite {
     public:
     gum::BayesNet< double >* bn;
     gum::NodeId              i1, i2, i3, i4, i5;
-
-    void setUp() {
-      bn = new gum::BayesNet< double >();
-
-      gum::LabelizedVariable n1("1", "", 2), n2("2", "", 2), n3("3", "", 2);
-      gum::LabelizedVariable n4("4", "", 2), n5("5", "", 3);
-
-      i1 = bn->add(n1);
-      i2 = bn->add(n2);
-      i3 = bn->add(n3);
-      i4 = bn->add(n4);
-      i5 = bn->add(n5);
-
-      bn->addArc(i1, i3);
-      bn->addArc(i1, i4);
-      bn->addArc(i3, i5);
-      bn->addArc(i4, i5);
-      bn->addArc(i2, i4);
-      bn->addArc(i2, i5);
-    }
-
-    void tearDown() { delete bn; }
 
     [[nodiscard]] gum::Tensor< double > joint(const gum::BayesNet< double >& bn) {
       gum::Tensor< double > pot;
@@ -104,16 +88,16 @@ namespace gum_tests {
       return pot;
     }
 
-    [[nodiscard]] bool equalTensors(const gum::Tensor< double >& p1,
-                                    const gum::Tensor< double >& p2) const {
+    [[nodiscard]] static bool equalTensors(const gum::Tensor< double >& p1,
+                                           const gum::Tensor< double >& p2) {
       gum::Instantiation ii(p1);
 
       for (ii.setFirst(); !ii.end(); ii.inc()) {
-        if ((p1[ii] == 0) && (std::fabs(p2[ii]) > TS_GUM_SMALL_ERROR)) return false;
+        if ((p1[ii] == 0) && (std::fabs(p2[ii]) > GUM_SMALL_ERROR)) return false;
         if (p1[ii] > p2[ii]) {
-          if (std::fabs((p1[ii] - p2[ii]) / p1[ii]) > TS_GUM_SMALL_ERROR) return false;
+          if (std::fabs((p1[ii] - p2[ii]) / p1[ii]) > GUM_SMALL_ERROR) return false;
         } else {
-          if (std::fabs((p1[ii] - p2[ii]) / p1[ii]) > TS_GUM_SMALL_ERROR) return false;
+          if (std::fabs((p1[ii] - p2[ii]) / p1[ii]) > GUM_SMALL_ERROR) return false;
         }
       }
 
@@ -121,44 +105,63 @@ namespace gum_tests {
     }
 
     // Testing when there is no evidence
-    GUM_ACTIVE_TEST(CreationAndInference) {
+    ShaferShenoyInferenceBNTestSuite() {
+      bn = new gum::BayesNet< double >();
+      gum::LabelizedVariable n1("1", "", 2), n2("2", "", 2), n3("3", "", 2);
+      gum::LabelizedVariable n4("4", "", 2), n5("5", "", 3);
+      i1 = bn->add(n1);
+      i2 = bn->add(n2);
+      i3 = bn->add(n3);
+      i4 = bn->add(n4);
+      i5 = bn->add(n5);
+      bn->addArc(i1, i3);
+      bn->addArc(i1, i4);
+      bn->addArc(i3, i5);
+      bn->addArc(i4, i5);
+      bn->addArc(i2, i4);
+      bn->addArc(i2, i5);
+    }
+
+    ~ShaferShenoyInferenceBNTestSuite() { delete bn; }
+
+    void testCreationAndInference() {
       try {
         fill(*bn);
         // Testing the inference
         gum::ShaferShenoyInference< double >* inf = 0;
-        TS_GUM_ASSERT_THROWS_NOTHING(inf = new gum::ShaferShenoyInference< double >(bn))
-        TS_GUM_ASSERT_THROWS_NOTHING(inf->makeInference())
+        GUM_CHECK_ASSERT_THROWS_NOTHING(inf = new gum::ShaferShenoyInference< double >(bn));
+        GUM_CHECK_ASSERT_THROWS_NOTHING(inf->makeInference());
 
-        if (inf != 0) { TS_GUM_ASSERT_THROWS_NOTHING(delete inf); }
+        if (inf != 0) { GUM_CHECK_ASSERT_THROWS_NOTHING(delete inf); }
       } catch (gum::Exception& e) {
-        TS_ASSERT(false)
+        CHECK(false);
         std::cerr << std::endl << e.errorContent() << std::endl;
         throw;
       }
     }
 
-    GUM_ACTIVE_TEST(Marginal) {
+    void testMarginal() {
       fill(*bn);
       gum::ShaferShenoyInference< double > inf(bn);
 
-      TS_GUM_ASSERT_THROWS_NOTHING(inf.makeInference())
-      TS_GUM_ASSERT_THROWS_NOTHING(inf.posterior(i1))
-      TS_GUM_ASSERT_THROWS_NOTHING(inf.posterior(i2))
-      TS_GUM_ASSERT_THROWS_NOTHING(inf.posterior(i3))
-      TS_GUM_ASSERT_THROWS_NOTHING(inf.posterior(i4))
-      TS_GUM_ASSERT_THROWS_NOTHING(inf.posterior(i5))
+      GUM_CHECK_ASSERT_THROWS_NOTHING(inf.makeInference());
+      GUM_CHECK_ASSERT_THROWS_NOTHING(inf.posterior(i1));
+      GUM_CHECK_ASSERT_THROWS_NOTHING(inf.posterior(i2));
+      GUM_CHECK_ASSERT_THROWS_NOTHING(inf.posterior(i3));
+      GUM_CHECK_ASSERT_THROWS_NOTHING(inf.posterior(i4));
+      GUM_CHECK_ASSERT_THROWS_NOTHING(inf.posterior(i5));
 
       const auto                               bn_joint = this->joint(*bn);
       gum::Set< const gum::DiscreteVariable* > vars;
 
       for (const auto node: bn->dag()) {
         vars.insert(&(bn->variable(node)));
-        TS_GUM_TENSOR_ALMOST_EQUALS(inf.posterior(node), bn_joint.sumIn(vars))
+        GUM_CHECK_TENSOR_ALMOST_EQUALS(inf.posterior(node), bn_joint.sumIn(vars));
         vars.clear();
       }
     }
 
-    GUM_ACTIVE_TEST(MarginalWithEvidence) {
+    void testMarginalWithEvidence() {
       fill(*bn);
       gum::List< const gum::Tensor< double >* > e_list;
       e_list.insert(const_cast< gum::Tensor< double >* >(&(bn->cpt(i1))));
@@ -170,19 +173,19 @@ namespace gum_tests {
         bn_joint *= *pot;
       }
 
-      TS_GUM_ASSERT_THROWS_NOTHING(inf.addListOfEvidence(e_list))
-      TS_GUM_ASSERT_THROWS_NOTHING(inf.makeInference())
+      GUM_CHECK_ASSERT_THROWS_NOTHING(inf.addListOfEvidence(e_list));
+      GUM_CHECK_ASSERT_THROWS_NOTHING(inf.makeInference());
 
       gum::Set< const gum::DiscreteVariable* > vars;
       for (const auto node: bn->dag()) {
         vars.insert(&(bn->variable(node)));
-        TS_GUM_TENSOR_ALMOST_EQUALS(inf.posterior(node), bn_joint.sumIn(vars).normalize())
+        GUM_CHECK_TENSOR_ALMOST_EQUALS(inf.posterior(node), bn_joint.sumIn(vars).normalize());
         vars.clear();
       }
     }
 
     // Testing when there is no evidence
-    GUM_ACTIVE_TEST(Joint) {
+    void testJoint() {
       fill(*bn);
       // Testing the inference
       gum::ShaferShenoyInference< double > inf(bn);
@@ -191,17 +194,17 @@ namespace gum_tests {
       nodeset.insert(4);
       inf.addJointTarget(nodeset);
 
-      TS_ASSERT_THROWS_NOTHING(inf.jointPosterior(nodeset))
+      CHECK_NOTHROW(inf.jointPosterior(nodeset));
 
       const auto                               bn_joint = this->joint(*bn);
       gum::Set< const gum::DiscreteVariable* > vars;
       vars.insert(&(bn->variable(2)));
       vars.insert(&(bn->variable(4)));
-      TS_GUM_TENSOR_ALMOST_EQUALS(inf.jointPosterior(nodeset), bn_joint.sumIn(vars))
+      GUM_CHECK_TENSOR_ALMOST_EQUALS(inf.jointPosterior(nodeset), bn_joint.sumIn(vars));
     }
 
     // Testing when there is no evidence
-    GUM_ACTIVE_TEST(Joint2) {
+    void testJoint2() {
       fill(*bn);
       // Testing the inference
       gum::ShaferShenoyInference< double > inf(bn);
@@ -221,34 +224,34 @@ namespace gum_tests {
       vars.insert(&(bn->variable(2)));
       vars.insert(&(bn->variable(4)));
 
-      TS_ASSERT_THROWS_NOTHING(inf.jointPosterior(nodeset2))
-      TS_GUM_TENSOR_ALMOST_EQUALS(inf.jointPosterior(nodeset2), bn_joint.sumIn(vars))
+      CHECK_NOTHROW(inf.jointPosterior(nodeset2));
+      GUM_CHECK_TENSOR_ALMOST_EQUALS(inf.jointPosterior(nodeset2), bn_joint.sumIn(vars));
 
-      TS_ASSERT_THROWS_NOTHING(inf.posterior(3))
+      CHECK_NOTHROW(inf.posterior(3));
       vars.clear();
       vars.insert(&(bn->variable(3)));
-      TS_GUM_TENSOR_ALMOST_EQUALS(inf.posterior(3), bn_joint.sumIn(vars))
+      GUM_CHECK_TENSOR_ALMOST_EQUALS(inf.posterior(3), bn_joint.sumIn(vars));
 
       vars.insert(&(bn->variable(1)));
       vars.insert(&(bn->variable(2)));
       vars.insert(&(bn->variable(4)));
-      TS_GUM_TENSOR_ALMOST_EQUALS(inf.jointPosterior(nodeset), bn_joint.sumIn(vars))
+      GUM_CHECK_TENSOR_ALMOST_EQUALS(inf.jointPosterior(nodeset), bn_joint.sumIn(vars));
     }
 
     // testing information methods
-    GUM_ACTIVE_TEST(InformationMethods) {
+    void testInformationMethods() {
       fill(*bn);
 
       gum::ShaferShenoyInference< double > inf(bn);
 
-      TS_GUM_ASSERT_THROWS_NOTHING(
-          gum::InformationTheory itheo(inf, gum::NodeSet({2}), gum::NodeSet({4})))
+      GUM_CHECK_ASSERT_THROWS_NOTHING(
+          gum::InformationTheory itheo(inf, gum::NodeSet({2}), gum::NodeSet({4})));
       gum::InformationTheory itheo(inf, gum::NodeSet({2}), gum::NodeSet({4}));
-      TS_GUM_ASSERT_THROWS_NOTHING(inf.H((gum::NodeId)2))
-      TS_GUM_ASSERT_THROWS_NOTHING(itheo.mutualInformationXY())
+      GUM_CHECK_ASSERT_THROWS_NOTHING(inf.H((gum::NodeId)2));
+      GUM_CHECK_ASSERT_THROWS_NOTHING(itheo.mutualInformationXY());
     }
 
-    GUM_ACTIVE_TEST(WithGenerator) {
+    static void testWithGenerator() {
       gum::Size density[] = {9, 18, 27, 36, 45};
       int       trial_nb  = 5;
 
@@ -259,58 +262,59 @@ namespace gum_tests {
         bnGen.generateBN(*bayesNet);
 
         gum::ShaferShenoyInference< double >* inf = nullptr;
-        TS_GUM_ASSERT_THROWS_NOTHING(inf = new gum::ShaferShenoyInference< double >(bayesNet))
+        GUM_CHECK_ASSERT_THROWS_NOTHING(inf = new gum::ShaferShenoyInference< double >(bayesNet));
 
-        TS_GUM_ASSERT_THROWS_NOTHING(if (inf) inf->makeInference())
+        GUM_CHECK_ASSERT_THROWS_NOTHING(if (inf) inf->makeInference());
 
-        TS_GUM_ASSERT_THROWS_NOTHING(if (inf) delete inf)
+        GUM_CHECK_ASSERT_THROWS_NOTHING(if (inf) delete inf);
 
         delete bayesNet;
       }
     }
 
-    GUM_ACTIVE_TEST(SmartManagementOfJointTarget) {
+    void testSmartManagementOfJointTarget() {
       fill(*bn);
 
       gum::ShaferShenoyInference< double > inf(bn);
       inf.addJointTarget(gum::NodeSet{0, 1, 2});
       inf.addJointTarget(gum::NodeSet{2, 3});
-      TS_ASSERT_EQUALS(inf.nbrJointTargets(), static_cast< gum::Size >(2))
+      CHECK((inf.nbrJointTargets()) == (static_cast< gum::Size >(2)));
 
       // should not be added since {0,1,2} already exists
       inf.addJointTarget(gum::NodeSet{0, 1});
-      TS_ASSERT_EQUALS(inf.nbrJointTargets(), static_cast< gum::Size >(2))
+      CHECK((inf.nbrJointTargets()) == (static_cast< gum::Size >(2)));
 
       // should remove {2,3} since {2,3,4} includes {2,3}
       inf.addJointTarget(gum::NodeSet{2, 3, 4});
-      TS_ASSERT_EQUALS(inf.nbrJointTargets(), static_cast< gum::Size >(2))
+      CHECK((inf.nbrJointTargets()) == (static_cast< gum::Size >(2)));
 
       auto                                     bn_joint = this->joint(*bn);
       gum::Set< const gum::DiscreteVariable* > vars;
       vars.insert(&(bn->variable(0)));
       vars.insert(&(bn->variable(1)));
       vars.insert(&(bn->variable(2)));
-      TS_ASSERT(
-          equalTensors(inf.jointPosterior(gum::NodeSet{0, 1, 2}), bn_joint.sumIn(vars).normalize()))
+      CHECK(equalTensors(inf.jointPosterior(gum::NodeSet{0, 1, 2}),
+                         bn_joint.sumIn(vars).normalize()));
 
       vars.clear();
       vars.insert(&(bn->variable(2)));
       vars.insert(&(bn->variable(3)));
-      TS_GUM_TENSOR_ALMOST_EQUALS(inf.jointPosterior(gum::NodeSet{2, 3}), bn_joint.sumIn(vars))
+      GUM_CHECK_TENSOR_ALMOST_EQUALS(inf.jointPosterior(gum::NodeSet{2, 3}), bn_joint.sumIn(vars));
 
       vars.clear();
       vars.insert(&(bn->variable(0)));
       vars.insert(&(bn->variable(1)));
-      TS_GUM_TENSOR_ALMOST_EQUALS(inf.jointPosterior(gum::NodeSet{0, 1}), bn_joint.sumIn(vars))
+      GUM_CHECK_TENSOR_ALMOST_EQUALS(inf.jointPosterior(gum::NodeSet{0, 1}), bn_joint.sumIn(vars));
 
       vars.clear();
       vars.insert(&(bn->variable(2)));
       vars.insert(&(bn->variable(3)));
       vars.insert(&(bn->variable(4)));
-      TS_GUM_TENSOR_ALMOST_EQUALS(inf.jointPosterior(gum::NodeSet{2, 3, 4}), bn_joint.sumIn(vars))
+      GUM_CHECK_TENSOR_ALMOST_EQUALS(inf.jointPosterior(gum::NodeSet{2, 3, 4}),
+                                     bn_joint.sumIn(vars));
     }
 
-    GUM_ACTIVE_TEST(EvidenceProbability) {
+    void testEvidenceProbability() {
       fill(*bn);
       gum::ShaferShenoyInference< double > inf(bn);
       inf.makeInference();
@@ -322,7 +326,7 @@ namespace gum_tests {
       inf.makeInference();
       auto proba2 = inf.evidenceProbability();
 
-      TS_ASSERT_DELTA(proba, proba2, TS_GUM_SMALL_ERROR)
+      CHECK((proba) == doctest::Approx(proba2).epsilon(GUM_SMALL_ERROR));
 
       auto                  bn_joint = this->joint(*bn);
       gum::Tensor< double > ev0;
@@ -335,10 +339,10 @@ namespace gum_tests {
       bn_joint *= ev0;
       const auto proba3 = bn_joint.sumIn({&var0}).sum();
 
-      TS_ASSERT_DELTA(proba, proba3, TS_GUM_SMALL_ERROR)
+      CHECK((proba) == doctest::Approx(proba3).epsilon(GUM_SMALL_ERROR));
     }
 
-    GUM_ACTIVE_TEST(EvidenceProbability2) {
+    void testEvidenceProbability2() {
       fill(*bn);
       gum::ShaferShenoyInference< double > inf(bn);
       inf.makeInference();
@@ -350,7 +354,7 @@ namespace gum_tests {
       inf.makeInference();
       auto proba2 = inf.evidenceProbability();
 
-      TS_ASSERT_DELTA(proba, proba2, TS_GUM_SMALL_ERROR)
+      CHECK((proba) == doctest::Approx(proba2).epsilon(GUM_SMALL_ERROR));
 
       auto                  bn_joint = this->joint(*bn);
       gum::Tensor< double > ev0;
@@ -363,17 +367,17 @@ namespace gum_tests {
       bn_joint *= ev0;
       const auto proba3 = bn_joint.sumIn({&var0}).sum();
 
-      TS_ASSERT_DELTA(proba, proba3, TS_GUM_SMALL_ERROR)
+      CHECK((proba) == doctest::Approx(proba3).epsilon(GUM_SMALL_ERROR));
     }
 
-    GUM_ACTIVE_TEST(EvidenceProbabilityAsia) {
+    void testEvidenceProbabilityAsia() {
       std::string              file = GET_RESSOURCES_PATH("bif/asia.bif");
       gum::BayesNet< double >  bn;
       gum::BIFReader< double > reader(&bn, file);
       gum::Size                nbrErr = static_cast< gum::Size >(0);
-      TS_GUM_ASSERT_THROWS_NOTHING(nbrErr = reader.proceed())
-      TS_ASSERT_EQUALS(nbrErr, (gum::Size) static_cast< gum::Size >(0))
-      TS_ASSERT_EQUALS(reader.warnings(), static_cast< gum::Size >(0))
+      GUM_CHECK_ASSERT_THROWS_NOTHING(nbrErr = reader.proceed());
+      CHECK((nbrErr) == ((gum::Size) static_cast< gum::Size >(0)));
+      CHECK((reader.warnings()) == (static_cast< gum::Size >(0)));
 
       auto id = bn.idFromName("lung_cancer");
 
@@ -387,7 +391,7 @@ namespace gum_tests {
       inf.makeInference();
       auto proba2 = inf.evidenceProbability();
 
-      TS_ASSERT_DELTA(proba, proba2, TS_GUM_SMALL_ERROR)
+      CHECK((proba) == doctest::Approx(proba2).epsilon(GUM_SMALL_ERROR));
 
       auto                  bn_joint = this->joint(bn);
       gum::Tensor< double > ev0;
@@ -400,17 +404,17 @@ namespace gum_tests {
       bn_joint *= ev0;
       const auto proba3 = bn_joint.sumIn({&var0}).sum();
 
-      TS_ASSERT_DELTA(proba, proba3, TS_GUM_SMALL_ERROR)
+      CHECK((proba) == doctest::Approx(proba3).epsilon(GUM_SMALL_ERROR));
     }
 
-    GUM_ACTIVE_TEST(Asia) {
+    void testAsia() {
       std::string              file = GET_RESSOURCES_PATH("bif/asia.bif");
       gum::BayesNet< double >  bn;
       gum::BIFReader< double > reader(&bn, file);
       gum::Size                nbrErr = static_cast< gum::Size >(0);
-      TS_GUM_ASSERT_THROWS_NOTHING(nbrErr = reader.proceed())
-      TS_ASSERT_EQUALS(nbrErr, (gum::Size) static_cast< gum::Size >(0))
-      TS_ASSERT_EQUALS(reader.warnings(), static_cast< gum::Size >(0))
+      GUM_CHECK_ASSERT_THROWS_NOTHING(nbrErr = reader.proceed());
+      CHECK((nbrErr) == ((gum::Size) static_cast< gum::Size >(0)));
+      CHECK((reader.warnings()) == (static_cast< gum::Size >(0)));
 
       const auto bn_joint = this->joint(bn);
 
@@ -429,41 +433,41 @@ namespace gum_tests {
           gum::ShaferShenoyInference< double > inf2(&bn);
           auto                                 joint = bn_joint;
           for (auto pot: evidences) {
-            TS_ASSERT_THROWS_NOTHING(inf1.addEvidence(*pot))
-            TS_ASSERT_THROWS_NOTHING(inf2.addEvidence(*pot))
+            CHECK_NOTHROW(inf1.addEvidence(*pot));
+            CHECK_NOTHROW(inf2.addEvidence(*pot));
             joint *= *pot;
           }
-          TS_ASSERT_THROWS_NOTHING(inf1.makeInference())
-          TS_ASSERT_THROWS_NOTHING(inf2.makeInference())
+          CHECK_NOTHROW(inf1.makeInference());
+          CHECK_NOTHROW(inf2.makeInference());
           for (auto node: bn.dag()) {
-            TS_GUM_TENSOR_ALMOST_EQUALS(inf1.posterior(node), inf2.posterior(node))
-            TS_ASSERT(
-                equalTensors(inf2.posterior(node), joint.sumIn({&bn.variable(node)}).normalize()))
+            GUM_CHECK_TENSOR_ALMOST_EQUALS(inf1.posterior(node), inf2.posterior(node));
+            CHECK(
+                equalTensors(inf2.posterior(node), joint.sumIn({&bn.variable(node)}).normalize()));
           }
           ev_pot.set(inst, static_cast< float >(0));
         }
       }
     }
 
-    GUM_ACTIVE_TEST(Alarm) {
+    void testAlarm() {
       std::string              file = GET_RESSOURCES_PATH("bif/alarm.bif");
       gum::BayesNet< double >  bn;
       gum::BIFReader< double > reader(&bn, file);
       gum::Size                nbrErr = static_cast< gum::Size >(0);
-      TS_GUM_ASSERT_THROWS_NOTHING(nbrErr = reader.proceed())
-      TS_ASSERT_EQUALS(nbrErr, (gum::Size) static_cast< gum::Size >(0))
-      TS_ASSERT_EQUALS(reader.warnings(), static_cast< gum::Size >(0))
+      GUM_CHECK_ASSERT_THROWS_NOTHING(nbrErr = reader.proceed());
+      CHECK((nbrErr) == ((gum::Size) static_cast< gum::Size >(0)));
+      CHECK((reader.warnings()) == (static_cast< gum::Size >(0)));
 
       gum::ShaferShenoyInference< double > inf1(&bn);
       gum::VariableElimination< double >   inf2(&bn);
 
-      TS_ASSERT_THROWS_NOTHING(inf1.makeInference())
-      TS_ASSERT_THROWS_NOTHING(inf2.makeInference())
+      CHECK_NOTHROW(inf1.makeInference());
+      CHECK_NOTHROW(inf2.makeInference());
 
       for (auto node: bn.dag()) {
-        TS_ASSERT_THROWS_NOTHING(inf1.posterior(node))
-        TS_ASSERT_THROWS_NOTHING(inf2.posterior(node))
-        TS_GUM_TENSOR_ALMOST_EQUALS(inf1.posterior(node), inf2.posterior(node))
+        CHECK_NOTHROW(inf1.posterior(node));
+        CHECK_NOTHROW(inf2.posterior(node));
+        GUM_CHECK_TENSOR_ALMOST_EQUALS(inf1.posterior(node), inf2.posterior(node));
       }
 
       std::vector< gum::NodeId >                ev_nodes{2, 6, 7, 10, 12, 14, 16};
@@ -489,49 +493,49 @@ namespace gum_tests {
       gum::ShaferShenoyInference< double > inf3(&bn);
       gum::LazyPropagation< double >       inf4(&bn);
       for (auto pot: evidences) {
-        TS_ASSERT_THROWS_NOTHING(inf1.addEvidence(*pot))
-        TS_ASSERT_THROWS_NOTHING(inf2.addEvidence(*pot))
-        TS_ASSERT_THROWS_NOTHING(inf3.addEvidence(*pot))
-        TS_ASSERT_THROWS_NOTHING(inf4.addEvidence(*pot))
+        CHECK_NOTHROW(inf1.addEvidence(*pot));
+        CHECK_NOTHROW(inf2.addEvidence(*pot));
+        CHECK_NOTHROW(inf3.addEvidence(*pot));
+        CHECK_NOTHROW(inf4.addEvidence(*pot));
       }
 
-      TS_ASSERT_THROWS_NOTHING(inf1.makeInference())
-      TS_ASSERT_THROWS_NOTHING(inf2.makeInference())
-      TS_ASSERT_THROWS_NOTHING(inf3.makeInference())
-      TS_ASSERT_THROWS_NOTHING(inf4.makeInference())
+      CHECK_NOTHROW(inf1.makeInference());
+      CHECK_NOTHROW(inf2.makeInference());
+      CHECK_NOTHROW(inf3.makeInference());
+      CHECK_NOTHROW(inf4.makeInference());
 
       for (auto node: bn.dag()) {
-        TS_ASSERT_THROWS_NOTHING(inf1.posterior(node))
-        TS_ASSERT_THROWS_NOTHING(inf2.posterior(node))
-        TS_ASSERT_THROWS_NOTHING(inf3.posterior(node))
-        TS_ASSERT_THROWS_NOTHING(inf4.posterior(node))
-        TS_GUM_TENSOR_ALMOST_EQUALS(inf1.posterior(node), inf2.posterior(node))
-        TS_GUM_TENSOR_ALMOST_EQUALS(inf1.posterior(node), inf3.posterior(node))
-        TS_GUM_TENSOR_ALMOST_EQUALS(inf1.posterior(node), inf4.posterior(node))
+        CHECK_NOTHROW(inf1.posterior(node));
+        CHECK_NOTHROW(inf2.posterior(node));
+        CHECK_NOTHROW(inf3.posterior(node));
+        CHECK_NOTHROW(inf4.posterior(node));
+        GUM_CHECK_TENSOR_ALMOST_EQUALS(inf1.posterior(node), inf2.posterior(node));
+        GUM_CHECK_TENSOR_ALMOST_EQUALS(inf1.posterior(node), inf3.posterior(node));
+        GUM_CHECK_TENSOR_ALMOST_EQUALS(inf1.posterior(node), inf4.posterior(node));
       }
 
       gum::ShaferShenoyInference< double > inf5(&bn);
       for (auto pot: evidences) {
-        TS_ASSERT_THROWS_NOTHING(inf5.addEvidence(*pot))
+        CHECK_NOTHROW(inf5.addEvidence(*pot));
       }
-      TS_ASSERT_THROWS_NOTHING(inf5.makeInference())
+      CHECK_NOTHROW(inf5.makeInference());
       for (auto node: bn.dag()) {
-        TS_ASSERT_THROWS_NOTHING(inf5.posterior(node))
-        TS_GUM_TENSOR_ALMOST_EQUALS(inf1.posterior(node), inf5.posterior(node))
+        CHECK_NOTHROW(inf5.posterior(node));
+        GUM_CHECK_TENSOR_ALMOST_EQUALS(inf1.posterior(node), inf5.posterior(node));
       }
 
       for (auto pot: evidences)
         delete pot;
     }
 
-    GUM_ACTIVE_TEST(Asia2) {
+    void testAsia2() {
       std::string              file = GET_RESSOURCES_PATH("bif/asia3.bif");
       gum::BayesNet< double >  bn;
       gum::BIFReader< double > reader(&bn, file);
       gum::Size                nbrErr = static_cast< gum::Size >(0);
-      TS_GUM_ASSERT_THROWS_NOTHING(nbrErr = reader.proceed())
-      TS_ASSERT_EQUALS(nbrErr, (gum::Size) static_cast< gum::Size >(0))
-      TS_ASSERT_EQUALS(reader.warnings(), static_cast< gum::Size >(0))
+      GUM_CHECK_ASSERT_THROWS_NOTHING(nbrErr = reader.proceed());
+      CHECK((nbrErr) == ((gum::Size) static_cast< gum::Size >(0)));
+      CHECK((reader.warnings()) == (static_cast< gum::Size >(0)));
 
       const auto bn_joint = this->joint(bn);
 
@@ -564,17 +568,17 @@ namespace gum_tests {
                 gum::LazyPropagation< double >       inf2(&bn);
                 auto                                 joint = bn_joint;
                 for (auto pot: evidences) {
-                  TS_ASSERT_THROWS_NOTHING(inf1.addEvidence(*pot))
-                  TS_ASSERT_THROWS_NOTHING(inf2.addEvidence(*pot))
+                  CHECK_NOTHROW(inf1.addEvidence(*pot));
+                  CHECK_NOTHROW(inf2.addEvidence(*pot));
                   joint *= *pot;
                 }
-                TS_ASSERT_THROWS_NOTHING(inf1.makeInference())
-                TS_ASSERT_THROWS_NOTHING(inf2.makeInference())
+                CHECK_NOTHROW(inf1.makeInference());
+                CHECK_NOTHROW(inf2.makeInference());
 
                 for (auto xnode: bn.dag()) {
-                  TS_GUM_TENSOR_ALMOST_EQUALS(inf1.posterior(xnode), inf2.posterior(xnode))
-                  TS_ASSERT(equalTensors(inf1.posterior(xnode),
-                                         joint.sumIn({&bn.variable(xnode)}).normalize()))
+                  GUM_CHECK_TENSOR_ALMOST_EQUALS(inf1.posterior(xnode), inf2.posterior(xnode));
+                  CHECK(equalTensors(inf1.posterior(xnode),
+                                     joint.sumIn({&bn.variable(xnode)}).normalize()));
                 }
                 ev_pot2.set(inst2, 0.0f);
               }
@@ -586,14 +590,14 @@ namespace gum_tests {
       }
     }
 
-    GUM_ACTIVE_TEST(Asia3) {
+    void testAsia3() {
       std::string              file = GET_RESSOURCES_PATH("bif/asia3.bif");
       gum::BayesNet< double >  bn;
       gum::BIFReader< double > reader(&bn, file);
       gum::Size                nbrErr = static_cast< gum::Size >(0);
-      TS_GUM_ASSERT_THROWS_NOTHING(nbrErr = reader.proceed())
-      TS_ASSERT_EQUALS(nbrErr, (gum::Size) static_cast< gum::Size >(0))
-      TS_ASSERT_EQUALS(reader.warnings(), static_cast< gum::Size >(0))
+      GUM_CHECK_ASSERT_THROWS_NOTHING(nbrErr = reader.proceed());
+      CHECK((nbrErr) == ((gum::Size) static_cast< gum::Size >(0)));
+      CHECK((reader.warnings()) == (static_cast< gum::Size >(0)));
 
       const auto bn_joint = this->joint(bn);
 
@@ -626,17 +630,17 @@ namespace gum_tests {
                 gum::LazyPropagation< double >       inf2(&bn);
                 auto                                 joint = bn_joint;
                 for (auto pot: evidences) {
-                  TS_ASSERT_THROWS_NOTHING(inf1.addEvidence(*pot))
-                  TS_ASSERT_THROWS_NOTHING(inf2.addEvidence(*pot))
+                  CHECK_NOTHROW(inf1.addEvidence(*pot));
+                  CHECK_NOTHROW(inf2.addEvidence(*pot));
                   joint *= *pot;
                 }
-                TS_ASSERT_THROWS_NOTHING(inf1.makeInference())
-                TS_ASSERT_THROWS_NOTHING(inf2.makeInference())
+                CHECK_NOTHROW(inf1.makeInference());
+                CHECK_NOTHROW(inf2.makeInference());
 
                 for (auto xnode: bn.dag()) {
-                  TS_ASSERT(equalTensors(inf1.posterior(xnode),
-                                         joint.sumIn({&bn.variable(xnode)}).normalize()))
-                  TS_GUM_TENSOR_ALMOST_EQUALS(inf1.posterior(xnode), inf2.posterior(xnode))
+                  CHECK(equalTensors(inf1.posterior(xnode),
+                                     joint.sumIn({&bn.variable(xnode)}).normalize()));
+                  GUM_CHECK_TENSOR_ALMOST_EQUALS(inf1.posterior(xnode), inf2.posterior(xnode));
                 }
                 ev_pot2.set(inst2, 0.0f);
               }
@@ -648,14 +652,14 @@ namespace gum_tests {
       }
     }
 
-    GUM_ACTIVE_TEST(Asia4) {
+    void testAsia4() {
       std::string              file = GET_RESSOURCES_PATH("bif/asia.bif");
       gum::BayesNet< double >  bn;
       gum::BIFReader< double > reader(&bn, file);
       gum::Size                nbrErr = static_cast< gum::Size >(0);
-      TS_GUM_ASSERT_THROWS_NOTHING(nbrErr = reader.proceed())
-      TS_ASSERT_EQUALS(nbrErr, (gum::Size) static_cast< gum::Size >(0))
-      TS_ASSERT_EQUALS(reader.warnings(), static_cast< gum::Size >(0))
+      GUM_CHECK_ASSERT_THROWS_NOTHING(nbrErr = reader.proceed());
+      CHECK((nbrErr) == ((gum::Size) static_cast< gum::Size >(0)));
+      CHECK((reader.warnings()) == (static_cast< gum::Size >(0)));
 
       const auto bn_joint = this->joint(bn);
 
@@ -690,19 +694,19 @@ namespace gum_tests {
                 gum::LazyPropagation< double >       inf2(&bn);
                 auto                                 joint = bn_joint;
                 for (auto pot: evidences) {
-                  TS_ASSERT_THROWS_NOTHING(inf1.addEvidence(*pot))
-                  TS_ASSERT_THROWS_NOTHING(inf2.addEvidence(*pot))
+                  CHECK_NOTHROW(inf1.addEvidence(*pot));
+                  CHECK_NOTHROW(inf2.addEvidence(*pot));
                   joint *= *pot;
                 }
-                TS_ASSERT_THROWS_NOTHING(inf1.makeInference())
-                TS_ASSERT_THROWS_NOTHING(inf2.makeInference())
+                CHECK_NOTHROW(inf1.makeInference());
+                CHECK_NOTHROW(inf2.makeInference());
 
                 for (auto xnode: bn.dag()) {
                   try {
                     const auto res = joint.sumIn({&bn.variable(xnode)});
-                    if (res.sum() > TS_GUM_SMALL_ERROR) {
-                      TS_ASSERT(equalTensors(inf1.posterior(xnode),
-                                             joint.sumIn({&bn.variable(xnode)}).normalize()))
+                    if (res.sum() > GUM_SMALL_ERROR) {
+                      CHECK(equalTensors(inf1.posterior(xnode),
+                                         joint.sumIn({&bn.variable(xnode)}).normalize()));
                     }
                     [[maybe_unused]] auto f
                         = equalTensors(inf1.posterior(xnode), inf2.posterior(xnode));
@@ -711,11 +715,11 @@ namespace gum_tests {
                     if (node2 == gum::NodeId(2)) {
                       // node2 = tuberculos_or_cancer, then node =
                       // tuberculosis
-                      TS_ASSERT((inst2_index == 1) && (inst_index == 0))
+                      CHECK(((inst2_index == 1) && (inst_index == 0)));
                     } else {
                       // node2 = lung_cancer & node =
                       // tuberculos_or_cancer
-                      TS_ASSERT((inst2_index == 0) && (inst_index == 1))
+                      CHECK(((inst2_index == 0) && (inst_index == 1)));
                     }
                   }
                 }
@@ -729,15 +733,15 @@ namespace gum_tests {
       }
     }
 
-    GUM_ACTIVE_TEST(ChgEvidence) {
+    void testChgEvidence() {
       std::string              file = GET_RESSOURCES_PATH("bif/asia.bif");
       gum::BayesNet< double >  bn;
       gum::BIFReader< double > reader(&bn, file);
 
       gum::Size nbrErr = static_cast< gum::Size >(0);
-      TS_GUM_ASSERT_THROWS_NOTHING(nbrErr = reader.proceed())
-      TS_ASSERT_EQUALS(nbrErr, (gum::Size) static_cast< gum::Size >(0))
-      TS_ASSERT_EQUALS(reader.warnings(), static_cast< gum::Size >(0))
+      GUM_CHECK_ASSERT_THROWS_NOTHING(nbrErr = reader.proceed());
+      CHECK((nbrErr) == ((gum::Size) static_cast< gum::Size >(0)));
+      CHECK((reader.warnings()) == (static_cast< gum::Size >(0)));
 
       const auto bn_joint = this->joint(bn);
 
@@ -772,26 +776,26 @@ namespace gum_tests {
       ie.addTarget(0);
       ie.addEvidence(1, 0);
       ie.makeInference();
-      TS_ASSERT_EQUALS(p_0, ie.posterior(0))
+      CHECK((p_0) == (ie.posterior(0)));
       const auto& var0 = bn.variable(0);
-      TS_GUM_TENSOR_ALMOST_EQUALS(ie.posterior(0), joint0.sumIn({&var0}).normalize())
+      GUM_CHECK_TENSOR_ALMOST_EQUALS(ie.posterior(0), joint0.sumIn({&var0}).normalize());
 
       ie.chgEvidence(1, 1);
       ie.makeInference();
-      TS_ASSERT_DIFFERS(p_0, ie.posterior(0))
-      TS_ASSERT_EQUALS(p_1, ie.posterior(0))
-      TS_GUM_TENSOR_ALMOST_EQUALS(ie.posterior(0), joint1.sumIn({&var0}).normalize())
+      CHECK((p_0) != (ie.posterior(0)));
+      CHECK((p_1) == (ie.posterior(0)));
+      GUM_CHECK_TENSOR_ALMOST_EQUALS(ie.posterior(0), joint1.sumIn({&var0}).normalize());
     }
 
-    GUM_ACTIVE_TEST(ChgEvidence2) {
+    void testChgEvidence2() {
       std::string              file = GET_RESSOURCES_PATH("bif/asia.bif");
       gum::BayesNet< double >  bn;
       gum::BIFReader< double > reader(&bn, file);
 
       gum::Size nbrErr = static_cast< gum::Size >(0);
-      TS_GUM_ASSERT_THROWS_NOTHING(nbrErr = reader.proceed())
-      TS_ASSERT_EQUALS(nbrErr, (gum::Size) static_cast< gum::Size >(0))
-      TS_ASSERT_EQUALS(reader.warnings(), static_cast< gum::Size >(0))
+      GUM_CHECK_ASSERT_THROWS_NOTHING(nbrErr = reader.proceed());
+      CHECK((nbrErr) == ((gum::Size) static_cast< gum::Size >(0)));
+      CHECK((reader.warnings()) == (static_cast< gum::Size >(0)));
 
       const auto bn_joint = this->joint(bn);
 
@@ -827,38 +831,38 @@ namespace gum_tests {
       ie.addTarget(0);
       ie.addEvidence(1, 0);
       ie.makeInference();
-      TS_ASSERT_EQUALS(p_0, ie.posterior(0))
+      CHECK((p_0) == (ie.posterior(0)));
       const auto& var0 = bn.variable(0);
-      TS_GUM_TENSOR_ALMOST_EQUALS(ie.posterior(0), joint0.sumIn({&var0}).normalize())
+      GUM_CHECK_TENSOR_ALMOST_EQUALS(ie.posterior(0), joint0.sumIn({&var0}).normalize());
 
       ie.chgEvidence(1, 1);
       ie.makeInference();
-      TS_ASSERT_DIFFERS(p_0, ie.posterior(0))
-      TS_ASSERT_EQUALS(p_1, ie.posterior(0))
-      TS_GUM_TENSOR_ALMOST_EQUALS(ie.posterior(0), joint1.sumIn({&var0}).normalize())
+      CHECK((p_0) != (ie.posterior(0)));
+      CHECK((p_1) == (ie.posterior(0)));
+      GUM_CHECK_TENSOR_ALMOST_EQUALS(ie.posterior(0), joint1.sumIn({&var0}).normalize());
     }
 
-    GUM_ACTIVE_TEST(StaticEvidenceImpact) {
+    static void testStaticEvidenceImpact() {
       std::string              file = GET_RESSOURCES_PATH("bif/asia.bif");
       gum::BayesNet< double >  bn;
       gum::BIFReader< double > reader(&bn, file);
 
       gum::Size nbrErr = static_cast< gum::Size >(0);
-      TS_GUM_ASSERT_THROWS_NOTHING(nbrErr = reader.proceed())
-      TS_ASSERT_EQUALS(nbrErr, static_cast< gum::Size >(0))
-      TS_ASSERT_EQUALS(reader.warnings(), static_cast< gum::Size >(0))
+      GUM_CHECK_ASSERT_THROWS_NOTHING(nbrErr = reader.proceed());
+      CHECK((nbrErr) == (static_cast< gum::Size >(0)));
+      CHECK((reader.warnings()) == (static_cast< gum::Size >(0)));
 
       gum::ShaferShenoyInference< double > ie_all(&bn);
-      TS_ASSERT_THROWS(ie_all.evidenceImpact(gum::NodeId(0), gum::NodeSet{0, 1, 2}),
-                       const gum::InvalidArgument&)
+      CHECK_THROWS_AS(ie_all.evidenceImpact(gum::NodeId(0), gum::NodeSet{0, 1, 2}),
+                      const gum::InvalidArgument&);
 
       auto res = ie_all.evidenceImpact(gum::NodeId(0), gum::NodeSet{1, 2});
 
-      TS_ASSERT_EQUALS(res.nbrDim(), static_cast< gum::Size >(2));   // 2 indep 0 given 1
+      CHECK((res.nbrDim()) == (static_cast< gum::Size >(2)));   // 2 indep 0 given 1
 
       gum::ShaferShenoyInference< double > ie_0(&bn);
-      ie_0.addTarget(0);                                             // visit_to_asia
-      ie_0.addEvidence(1, 0);                                        // tuberculosis
+      ie_0.addTarget(0);                                        // visit_to_asia
+      ie_0.addEvidence(1, 0);                                   // tuberculosis
       ie_0.makeInference();
       gum::Tensor< double > p_0 = ie_0.posterior(0);
 
@@ -871,36 +875,36 @@ namespace gum_tests {
       gum::Instantiation i;
       i.add(bn.variable(1));
       i.setFirst();
-      TS_ASSERT_EQUALS(p_0, res.extract(i))
+      CHECK((p_0) == (res.extract(i)));
       i.inc();
-      TS_ASSERT_EQUALS(p_1, res.extract(i))
+      CHECK((p_1) == (res.extract(i)));
     }
 
-    GUM_ACTIVE_TEST(EvidenceImpactWithNames) {
+    static void testEvidenceImpactWithNames() {
       std::string              file = GET_RESSOURCES_PATH("bif/asia.bif");
       gum::BayesNet< double >  bn;
       gum::BIFReader< double > reader(&bn, file);
 
       gum::Size nbrErr = static_cast< gum::Size >(0);
-      TS_GUM_ASSERT_THROWS_NOTHING(nbrErr = reader.proceed())
-      TS_ASSERT_EQUALS(nbrErr, static_cast< gum::Size >(0))
-      TS_ASSERT_EQUALS(reader.warnings(), static_cast< gum::Size >(0))
+      GUM_CHECK_ASSERT_THROWS_NOTHING(nbrErr = reader.proceed());
+      CHECK((nbrErr) == (static_cast< gum::Size >(0)));
+      CHECK((reader.warnings()) == (static_cast< gum::Size >(0)));
 
 
       gum::ShaferShenoyInference< double > ie_all(&bn);
-      TS_ASSERT_THROWS(ie_all.evidenceImpact(gum::NodeId(0), gum::NodeSet{0, 1, 2}),
-                       const gum::InvalidArgument&)
+      CHECK_THROWS_AS(ie_all.evidenceImpact(gum::NodeId(0), gum::NodeSet{0, 1, 2}),
+                      const gum::InvalidArgument&);
 
-      TS_ASSERT_THROWS(ie_all.evidenceImpact("visit_to_asia", {"tuberculoisis", "toto"}),
-                       const gum::NotFound&)
+      CHECK_THROWS_AS(ie_all.evidenceImpact("visit_to_asia", {"tuberculoisis", "toto"}),
+                      const gum::NotFound&);
 
       auto res = ie_all.evidenceImpact("visit_to_Asia", {"tuberculosis", "tuberculos_or_cancer"});
 
-      TS_ASSERT_EQUALS(res.nbrDim(), static_cast< gum::Size >(2));   // 2 indep 0 given 1
+      CHECK((res.nbrDim()) == (static_cast< gum::Size >(2)));   // 2 indep 0 given 1
 
       gum::ShaferShenoyInference< double > ie_0(&bn);
-      ie_0.addTarget(0);                                             // visit_to_asia
-      ie_0.addEvidence(1, 0);                                        // tuberculosis
+      ie_0.addTarget(0);                                        // visit_to_asia
+      ie_0.addEvidence(1, 0);                                   // tuberculosis
       ie_0.makeInference();
       gum::Tensor< double > p_0 = ie_0.posterior(0);
 
@@ -913,12 +917,12 @@ namespace gum_tests {
       gum::Instantiation i;
       i.add(bn.variable(1));
       i.setFirst();
-      TS_ASSERT_EQUALS(p_0, res.extract(i))
+      CHECK((p_0) == (res.extract(i)));
       i.inc();
-      TS_ASSERT_EQUALS(p_1, res.extract(i))
+      CHECK((p_1) == (res.extract(i)));
     }
 
-    GUM_ACTIVE_TEST(EvidenceImpact) {
+    static void testEvidenceImpact() {
       /*
       F  A
       \ / \
@@ -932,11 +936,11 @@ namespace gum_tests {
 
       gum::ShaferShenoyInference< double > ie(&bn);
       gum::Tensor< double >                res;
-      TS_GUM_ASSERT_THROWS_NOTHING(res = ie.evidenceImpact("E", {"A", "B", "C", "D", "F"}))
-      TS_ASSERT_EQUALS(res.nbrDim(), static_cast< gum::Size >(4));   // MarkovBlanket(E)=(A,D,C)
+      GUM_CHECK_ASSERT_THROWS_NOTHING(res = ie.evidenceImpact("E", {"A", "B", "C", "D", "F"}));
+      CHECK((res.nbrDim()) == (static_cast< gum::Size >(4)));   // MarkovBlanket(E)=(A,D,C)
     }
 
-    GUM_ACTIVE_TEST(JointWithHardEvidence) {
+    void testJointWithHardEvidence() {
       /*
       F  A
       \ / \
@@ -968,30 +972,30 @@ namespace gum_tests {
         gum::Set< const gum::DiscreteVariable* > xjoint{&bn.variableFromName("A"),
                                                         &bn.variableFromName("B"),
                                                         &bn.variableFromName("D")};
-        TS_GUM_TENSOR_ALMOST_EQUALS(p, pjoint.sumIn(xjoint).normalize())
+        GUM_CHECK_TENSOR_ALMOST_EQUALS(p, pjoint.sumIn(xjoint).normalize());
       } catch (gum::Exception& e) {
         GUM_SHOWERROR(e);
-        TS_ASSERT(false)
+        CHECK(false);
       }
     }
 
-    GUM_ACTIVE_TEST(AdaptiveNbThreads) {
+    void testAdaptiveNbThreads() {
       fill(*bn);
       // Testing the inference
       gum::ShaferShenoyInference< double > inf(bn);
 
-      TS_ASSERT(inf.getNumberOfThreads() == gum::getNumberOfThreads());
+      CHECK(inf.getNumberOfThreads() == gum::getNumberOfThreads());
       inf.setNumberOfThreads(10);
-      TS_ASSERT(inf.getNumberOfThreads() == 10);
+      CHECK(inf.getNumberOfThreads() == 10);
       gum::setNumberOfThreads(25);
-      TS_ASSERT(inf.getNumberOfThreads() == 10);
+      CHECK(inf.getNumberOfThreads() == 10);
       inf.setNumberOfThreads(0);
-      TS_ASSERT(inf.getNumberOfThreads() == gum::getNumberOfThreads());
+      CHECK(inf.getNumberOfThreads() == gum::getNumberOfThreads());
       gum::setNumberOfThreads(32);
-      TS_ASSERT(inf.getNumberOfThreads() == gum::getNumberOfThreads());
+      CHECK(inf.getNumberOfThreads() == gum::getNumberOfThreads());
     }
 
-    GUM_ACTIVE_TEST(ProbaEvidence) {
+    static void testProbaEvidence() {
       std::vector< gum::LabelizedVariable* > vars(10);
 
       for (gum::Idx i = 0; i < 10; ++i) {
@@ -1020,8 +1024,8 @@ namespace gum_tests {
         inf.addEvidence(ev0);
         double xpe0 = inf.evidenceProbability();
         double pe0  = (p0 * ev0).sum();
-        TS_ASSERT_DELTA(pe0, 0.27, 0.0001)
-        TS_ASSERT_DELTA(xpe0, pe0, 0.0001)
+        CHECK((pe0) == doctest::Approx(0.27).epsilon(0.0001));
+        CHECK((xpe0) == doctest::Approx(pe0).epsilon(0.0001));
       }
 
       {
@@ -1029,8 +1033,8 @@ namespace gum_tests {
         inf.addEvidence(ev0b);
         double xpe0b = inf.evidenceProbability();
         double pe0b  = (p0 * ev0b).sum();
-        TS_ASSERT_DELTA(pe0b, 0.7, 0.0001)
-        TS_ASSERT_DELTA(xpe0b, pe0b, 0.0001)
+        CHECK((pe0b) == doctest::Approx(0.7).epsilon(0.0001));
+        CHECK((xpe0b) == doctest::Approx(pe0b).epsilon(0.0001));
       }
 
       gum::NodeId i1 = bn.add(*vars[1]);
@@ -1052,8 +1056,8 @@ namespace gum_tests {
         inf.addEvidence(ev1);
         double xpe01 = inf.evidenceProbability();
         double pe01  = (p0 * ev0 * p1 * ev1).sum();
-        TS_ASSERT_DELTA(pe01, 0.27 * 0.52, 0.0001)
-        TS_ASSERT_DELTA(xpe01, pe01, 0.0001)
+        CHECK((pe01) == doctest::Approx(0.27 * 0.52).epsilon(0.0001));
+        CHECK((xpe01) == doctest::Approx(pe01).epsilon(0.0001));
       }
 
       {
@@ -1062,8 +1066,8 @@ namespace gum_tests {
         inf.addEvidence(ev1);
         double xpe01 = inf.evidenceProbability();
         double pe01  = (p0 * ev0b * p1 * ev1).sum();
-        TS_ASSERT_DELTA(pe01, 0.7 * 0.52, 0.0001)
-        TS_ASSERT_DELTA(xpe01, pe01, 0.0001)
+        CHECK((pe01) == doctest::Approx(0.7 * 0.52).epsilon(0.0001));
+        CHECK((xpe01) == doctest::Approx(pe01).epsilon(0.0001));
       }
 
       {
@@ -1072,8 +1076,8 @@ namespace gum_tests {
         inf.addEvidence(ev1b);
         double xpe01 = inf.evidenceProbability();
         double pe01  = (p0 * ev0 * p1 * ev1b).sum();
-        TS_ASSERT_DELTA(pe01, 0.27 * 0.6, 0.0001)
-        TS_ASSERT_DELTA(xpe01, pe01, 0.0001)
+        CHECK((pe01) == doctest::Approx(0.27 * 0.6).epsilon(0.0001));
+        CHECK((xpe01) == doctest::Approx(pe01).epsilon(0.0001));
       }
 
       {
@@ -1082,8 +1086,8 @@ namespace gum_tests {
         inf.addEvidence(ev1b);
         double xpe01 = inf.evidenceProbability();
         double pe01  = (p0 * ev0b * p1 * ev1b).sum();
-        TS_ASSERT_DELTA(pe01, 0.7 * 0.6, 0.0001)
-        TS_ASSERT_DELTA(xpe01, pe01, 0.0001)
+        CHECK((pe01) == doctest::Approx(0.7 * 0.6).epsilon(0.0001));
+        CHECK((xpe01) == doctest::Approx(pe01).epsilon(0.0001));
       }
 
       gum::NodeId i2 = bn.add(*vars[2]);
@@ -1098,8 +1102,8 @@ namespace gum_tests {
         inf.addEvidence(ev1);
         double xpe02 = inf.evidenceProbability();
         double pe02  = (p0 * ev0 * p1 * ev1 * p2).sum();
-        TS_ASSERT_DELTA(pe02, 0.27 * 0.52, 0.0001)
-        TS_ASSERT_DELTA(xpe02, pe02, 0.0001)
+        CHECK((pe02) == doctest::Approx(0.27 * 0.52).epsilon(0.0001));
+        CHECK((xpe02) == doctest::Approx(pe02).epsilon(0.0001));
       }
 
       gum::NodeId i3 = bn.add(*vars[3]);
@@ -1114,8 +1118,8 @@ namespace gum_tests {
         inf.addEvidence(ev1);
         double xpe03 = inf.evidenceProbability();
         double pe03  = (p0 * ev0 * p1 * ev1 * p2 * p3).sum();
-        TS_ASSERT_DELTA(pe03, 0.27 * 0.52, 0.0001)
-        TS_ASSERT_DELTA(xpe03, pe03, 0.0001)
+        CHECK((pe03) == doctest::Approx(0.27 * 0.52).epsilon(0.0001));
+        CHECK((xpe03) == doctest::Approx(pe03).epsilon(0.0001));
       }
 
       gum::Tensor< double > ev3;
@@ -1136,8 +1140,8 @@ namespace gum_tests {
 
         // P(x0,x3) = [X00: [0.3220, 0.3780], x01: [0.0660, 0.2340]]
         double p03 = 0.322 * 0.12 + 0.378 * 0.09 + 0.066 * 0.08 + 0.234 * .06;
-        TS_ASSERT_DELTA(pe0_3, p03 * 0.52, 0.0001)
-        TS_ASSERT_DELTA(xpe0_3, pe0_3, 0.0001)
+        CHECK((pe0_3) == doctest::Approx(p03 * 0.52).epsilon(0.0001));
+        CHECK((xpe0_3) == doctest::Approx(pe0_3).epsilon(0.0001));
       }
 
       {
@@ -1150,8 +1154,8 @@ namespace gum_tests {
 
         // P(x0,x3) = [X00: [0.3220, 0.3780], x01: [0.0660, 0.2340]]
         double p03 = 0.322 * 0.3 + 0.066 * 0.2;
-        TS_ASSERT_DELTA(pe0_3, p03 * 0.52, 0.0001)
-        TS_ASSERT_DELTA(xpe0_3, pe0_3, 0.0001)
+        CHECK((pe0_3) == doctest::Approx(p03 * 0.52).epsilon(0.0001));
+        CHECK((xpe0_3) == doctest::Approx(pe0_3).epsilon(0.0001));
       }
 
       gum::NodeId i4 = bn.add(*vars[4]);
@@ -1186,7 +1190,7 @@ namespace gum_tests {
 
         double xpe0_5 = inf.evidenceProbability();
         double pe0_5  = (pot0_5 * ev0 * ev1 * ev5).sum();
-        TS_ASSERT_DELTA(xpe0_5, pe0_5, 0.0001)
+        CHECK((xpe0_5) == doctest::Approx(pe0_5).epsilon(0.0001));
       }
 
       gum::NodeId i6 = bn.add(*vars[6]);
@@ -1207,7 +1211,7 @@ namespace gum_tests {
 
         double xpe0_6 = inf.evidenceProbability();
         double pe0_6  = (pot0_5 * ev0 * ev1 * ev5 * p6 * ev6).sum();
-        TS_ASSERT_DELTA(xpe0_6, pe0_6, 0.0001)
+        CHECK((xpe0_6) == doctest::Approx(pe0_6).epsilon(0.0001));
       }
 
       gum::NodeId i7 = bn.add(*vars[7]);
@@ -1237,14 +1241,14 @@ namespace gum_tests {
 
         double xpe0_7 = inf.evidenceProbability();
         double pe0_7  = (pot0_7 * ev0 * ev1 * ev5 * ev7 * p6 * ev6).sum();
-        TS_ASSERT_DELTA(xpe0_7, pe0_7, 0.0001)
+        CHECK((xpe0_7) == doctest::Approx(pe0_7).epsilon(0.0001));
       }
 
       for (gum::Idx i = 0; i < vars.size(); ++i)
         delete vars[i];
     }
 
-    GUM_ACTIVE_TEST(OnChanged) {
+    static void testOnChanged() {
       std::vector< gum::LabelizedVariable* > vars(5);
 
       for (gum::Idx i = 0; i < 5; ++i) {
@@ -1288,29 +1292,29 @@ namespace gum_tests {
       {
         gum::ShaferShenoyInference< double > inf(&xbn);
         inf.addTarget("x0");
-        TS_ASSERT(inf.targets().size() == 1)
+        CHECK(inf.targets().size() == 1);
         inf.makeInference();
-        TS_ASSERT_THROWS(inf.posterior(i3), const gum::UndefinedElement&)
+        CHECK_THROWS_AS(inf.posterior(i3), const gum::UndefinedElement&);
         inf.addTarget("x3");
         const auto& pot3 = inf.posterior(i3);
-        TS_ASSERT(inf.junctionTree()->sizeNodes() == 2)
+        CHECK(inf.junctionTree()->sizeNodes() == 2);
 
         gum::VariableSet            set3{&x0, &x1, &x2, &x4};
         const gum::Tensor< double > pot3bis = (p0 * p1 * p2 * p3 * p4).sumOut(set3).normalize();
-        TS_GUM_TENSOR_ALMOST_EQUALS(pot3, pot3bis)
+        GUM_CHECK_TENSOR_ALMOST_EQUALS(pot3, pot3bis);
       }
 
       {
         gum::ShaferShenoyInference< double > inf(&xbn);
         inf.addTarget("x0");
         inf.addTarget("x2");
-        TS_ASSERT(inf.targets().size() == 2)
+        CHECK(inf.targets().size() == 2);
         inf.makeInference();
-        TS_ASSERT(inf.junctionTree()->sizeNodes() == 1)
+        CHECK(inf.junctionTree()->sizeNodes() == 1);
 
         inf.addEvidence(i4, 1);
         const auto& pot2 = inf.posterior(i2);
-        TS_ASSERT(inf.junctionTree()->sizeNodes() == 2)
+        CHECK(inf.junctionTree()->sizeNodes() == 2);
 
         gum::VariableSet      set2{&x0, &x1, &x3, &x4};
         gum::Tensor< double > ev4;
@@ -1318,21 +1322,21 @@ namespace gum_tests {
         ev4.fillWith({0.0, 1.0});
         const gum::Tensor< double > pot2bis
             = (p0 * p1 * p2 * p3 * p4 * ev4).sumOut(set2).normalize();
-        TS_GUM_TENSOR_ALMOST_EQUALS(pot2, pot2bis)
+        GUM_CHECK_TENSOR_ALMOST_EQUALS(pot2, pot2bis);
       }
 
       {
         gum::ShaferShenoyInference< double > inf(&xbn);
         inf.addTarget("x0");
-        TS_ASSERT(inf.targets().size() == 1)
+        CHECK(inf.targets().size() == 1);
         inf.makeInference();
-        TS_ASSERT_THROWS(inf.posterior(i2), const gum::UndefinedElement&)
-        TS_ASSERT(inf.junctionTree()->sizeNodes() == 1)
+        CHECK_THROWS_AS(inf.posterior(i2), const gum::UndefinedElement&);
+        CHECK(inf.junctionTree()->sizeNodes() == 1);
 
         inf.addTarget("x2");
         inf.addEvidence(i4, 1);
         const auto& pot2 = inf.posterior(i2);
-        TS_ASSERT(inf.junctionTree()->sizeNodes() == 2)
+        CHECK(inf.junctionTree()->sizeNodes() == 2);
 
         gum::VariableSet      set2{&x0, &x1, &x3, &x4};
         gum::Tensor< double > ev4;
@@ -1340,22 +1344,22 @@ namespace gum_tests {
         ev4.fillWith({0.0, 1.0});
         const gum::Tensor< double > pot2bis
             = (p0 * p1 * p2 * p3 * p4 * ev4).sumOut(set2).normalize();
-        TS_GUM_TENSOR_ALMOST_EQUALS(pot2, pot2bis)
+        GUM_CHECK_TENSOR_ALMOST_EQUALS(pot2, pot2bis);
       }
 
       {
         gum::ShaferShenoyInference< double > inf(&xbn);
         inf.addTarget("x0");
-        TS_ASSERT(inf.targets().size() == 1)
+        CHECK(inf.targets().size() == 1);
         inf.makeInference();
-        TS_ASSERT_THROWS(inf.posterior(i2), const gum::UndefinedElement&)
-        TS_ASSERT(inf.junctionTree()->sizeNodes() == 1)
+        CHECK_THROWS_AS(inf.posterior(i2), const gum::UndefinedElement&);
+        CHECK(inf.junctionTree()->sizeNodes() == 1);
 
         inf.addTarget("x2");
         inf.addEvidence(i4, 1);
         inf.makeInference();
         const auto& pot2 = inf.posterior(i2);
-        TS_ASSERT(inf.junctionTree()->sizeNodes() == 2)
+        CHECK(inf.junctionTree()->sizeNodes() == 2);
 
         gum::VariableSet      set2{&x0, &x1, &x3, &x4};
         gum::Tensor< double > ev4;
@@ -1363,14 +1367,14 @@ namespace gum_tests {
         ev4.fillWith({0.0, 1.0});
         const gum::Tensor< double > pot2bis
             = (p0 * p1 * p2 * p3 * p4 * ev4).sumOut(set2).normalize();
-        TS_GUM_TENSOR_ALMOST_EQUALS(pot2, pot2bis)
+        GUM_CHECK_TENSOR_ALMOST_EQUALS(pot2, pot2bis);
       }
 
       for (const auto var: vars)
         delete var;
     }
 
-    GUM_ACTIVE_TEST(ImplicitTargetAllCheck) {
+    static void testImplicitTargetAllCheck() {
       auto bn = gum::BayesNet< double >::fastPrototype("A->B->C->Y->E->F->G;W->E<-Z;X->E");
       auto ie = gum::ShaferShenoyInference(&bn);
       ie.addJointTarget(bn.nodeset({"B", "Y", "F"}));
@@ -1379,22 +1383,22 @@ namespace gum_tests {
         p *= bn.cpt(n);
 
       // target
-      TS_GUM_TENSOR_ALMOST_EQUALS_SAMEVARS(ie.jointPosterior(bn.nodeset({"B", "Y", "F"})),
-                                           p.sumIn(bn.variables({"B", "Y", "F"})))
+      GUM_CHECK_TENSOR_ALMOST_EQUALS_SAMEVARS(ie.jointPosterior(bn.nodeset({"B", "Y", "F"})),
+                                              p.sumIn(bn.variables({"B", "Y", "F"})));
       // subtargets
-      TS_GUM_TENSOR_ALMOST_EQUALS_SAMEVARS(ie.jointPosterior(bn.nodeset({"B", "Y"})),
-                                           p.sumIn(bn.variables({"B", "Y"})))
-      TS_GUM_TENSOR_ALMOST_EQUALS_SAMEVARS(ie.jointPosterior(bn.nodeset({"F", "Y"})),
-                                           p.sumIn(bn.variables({"F", "Y"})))
+      GUM_CHECK_TENSOR_ALMOST_EQUALS_SAMEVARS(ie.jointPosterior(bn.nodeset({"B", "Y"})),
+                                              p.sumIn(bn.variables({"B", "Y"})));
+      GUM_CHECK_TENSOR_ALMOST_EQUALS_SAMEVARS(ie.jointPosterior(bn.nodeset({"F", "Y"})),
+                                              p.sumIn(bn.variables({"F", "Y"})));
       // implicit target
-      TS_GUM_TENSOR_ALMOST_EQUALS_SAMEVARS(ie.jointPosterior(bn.nodeset({"W", "Z", "X"})),
-                                           p.sumIn(bn.variables({"W", "Z", "X"})))
+      GUM_CHECK_TENSOR_ALMOST_EQUALS_SAMEVARS(ie.jointPosterior(bn.nodeset({"W", "Z", "X"})),
+                                              p.sumIn(bn.variables({"W", "Z", "X"})));
 
       // impossible target in optimized inference
-      TS_ASSERT_THROWS(ie.jointPosterior(bn.nodeset({"A", "E"})), gum::UndefinedElement&)
+      CHECK_THROWS_AS(ie.jointPosterior(bn.nodeset({"A", "E"})), gum::UndefinedElement&);
     }
 
-    GUM_ACTIVE_TEST(ImplicitTargetAllCheckWithEvidenceOutOFTarget) {
+    static void testImplicitTargetAllCheckWithEvidenceOutOFTarget() {
       auto bn = gum::BayesNet< double >::fastPrototype("A->B->C->Y->E->F->G;W->E<-Z;X->E");
       auto ie = gum::ShaferShenoyInference(&bn);
       ie.addEvidence("E", 1);
@@ -1410,19 +1414,19 @@ namespace gum_tests {
       p.normalize();
 
       // target
-      TS_GUM_TENSOR_ALMOST_EQUALS_SAMEVARS(ie.jointPosterior(bn.nodeset({"B", "Y", "F"})),
-                                           p.sumIn(bn.variables({"B", "Y", "F"})))
+      GUM_CHECK_TENSOR_ALMOST_EQUALS_SAMEVARS(ie.jointPosterior(bn.nodeset({"B", "Y", "F"})),
+                                              p.sumIn(bn.variables({"B", "Y", "F"})));
       // subtargets
-      TS_GUM_TENSOR_ALMOST_EQUALS_SAMEVARS(ie.jointPosterior(bn.nodeset({"B", "Y"})),
-                                           p.sumIn(bn.variables({"B", "Y"})))
-      TS_GUM_TENSOR_ALMOST_EQUALS_SAMEVARS(ie.jointPosterior(bn.nodeset({"F", "Y"})),
-                                           p.sumIn(bn.variables({"F", "Y"})))
+      GUM_CHECK_TENSOR_ALMOST_EQUALS_SAMEVARS(ie.jointPosterior(bn.nodeset({"B", "Y"})),
+                                              p.sumIn(bn.variables({"B", "Y"})));
+      GUM_CHECK_TENSOR_ALMOST_EQUALS_SAMEVARS(ie.jointPosterior(bn.nodeset({"F", "Y"})),
+                                              p.sumIn(bn.variables({"F", "Y"})));
       // implicit target
-      TS_GUM_TENSOR_ALMOST_EQUALS_SAMEVARS(ie.jointPosterior(bn.nodeset({"W", "Z", "X"})),
-                                           p.sumIn(bn.variables({"W", "Z", "X"})))
+      GUM_CHECK_TENSOR_ALMOST_EQUALS_SAMEVARS(ie.jointPosterior(bn.nodeset({"W", "Z", "X"})),
+                                              p.sumIn(bn.variables({"W", "Z", "X"})));
     }
 
-    GUM_ACTIVE_TEST(ImplicitTargetAllCheckWithEvidenceInTarget) {
+    static void testImplicitTargetAllCheckWithEvidenceInTarget() {
       auto bn = gum::BayesNet< double >::fastPrototype("A->B->C->Y->E->F->G;W->E<-Z;X->E");
       auto ie = gum::ShaferShenoyInference(&bn);
       ie.addEvidence("Y", 1);
@@ -1438,19 +1442,19 @@ namespace gum_tests {
       p.normalize();
 
       // target
-      TS_GUM_TENSOR_ALMOST_EQUALS_SAMEVARS(ie.jointPosterior(bn.nodeset({"B", "Y", "F"})),
-                                           p.sumIn(bn.variables({"B", "Y", "F"})))
+      GUM_CHECK_TENSOR_ALMOST_EQUALS_SAMEVARS(ie.jointPosterior(bn.nodeset({"B", "Y", "F"})),
+                                              p.sumIn(bn.variables({"B", "Y", "F"})));
       // subtargets
-      TS_GUM_TENSOR_ALMOST_EQUALS_SAMEVARS(ie.jointPosterior(bn.nodeset({"B", "Y"})),
-                                           p.sumIn(bn.variables({"B", "Y"})))
-      TS_GUM_TENSOR_ALMOST_EQUALS_SAMEVARS(ie.jointPosterior(bn.nodeset({"F", "Y"})),
-                                           p.sumIn(bn.variables({"F", "Y"})))
+      GUM_CHECK_TENSOR_ALMOST_EQUALS_SAMEVARS(ie.jointPosterior(bn.nodeset({"B", "Y"})),
+                                              p.sumIn(bn.variables({"B", "Y"})));
+      GUM_CHECK_TENSOR_ALMOST_EQUALS_SAMEVARS(ie.jointPosterior(bn.nodeset({"F", "Y"})),
+                                              p.sumIn(bn.variables({"F", "Y"})));
       // implicit target
-      TS_GUM_TENSOR_ALMOST_EQUALS_SAMEVARS(ie.jointPosterior(bn.nodeset({"W", "Z", "X"})),
-                                           p.sumIn(bn.variables({"W", "Z", "X"})))
+      GUM_CHECK_TENSOR_ALMOST_EQUALS_SAMEVARS(ie.jointPosterior(bn.nodeset({"W", "Z", "X"})),
+                                              p.sumIn(bn.variables({"W", "Z", "X"})));
     }
 
-    GUM_ACTIVE_TEST(IrrelevantSoftEvidence) {
+    void testIrrelevantSoftEvidence() {
       auto                  bn = gum::BayesNet< double >::fastPrototype("A->B<-C");
       gum::Tensor< double > psoft;
       gum::Tensor< double > phard;
@@ -1465,7 +1469,7 @@ namespace gum_tests {
         gum::ShaferShenoyInference ie(&bn);
         ie.addEvidence(hardev);
         ie.addTarget("C");
-        TS_GUM_ASSERT_THROWS_NOTHING(ie.makeInference());
+        GUM_CHECK_ASSERT_THROWS_NOTHING(ie.makeInference());
         phard = gum::Tensor(ie.posterior("C"));
       }
       {
@@ -1477,15 +1481,17 @@ namespace gum_tests {
         gum::ShaferShenoyInference ie(&bn);
         ie.addEvidence(softev);
         ie.addTarget("C");
-        TS_GUM_ASSERT_THROWS_NOTHING(ie.makeInference());
+        GUM_CHECK_ASSERT_THROWS_NOTHING(ie.makeInference());
         psoft = gum::Tensor(ie.posterior("C"));
       }
-      TS_GUM_TENSOR_ALMOST_EQUALS_SAMEVARS(phard, psoft)
-      TS_GUM_TENSOR_ALMOST_EQUALS(phard, jointhard.sumIn({&bn.variableFromName("C")}).normalize())
-      TS_GUM_TENSOR_ALMOST_EQUALS(psoft, jointsoft.sumIn({&bn.variableFromName("C")}).normalize())
+      GUM_CHECK_TENSOR_ALMOST_EQUALS_SAMEVARS(phard, psoft);
+      GUM_CHECK_TENSOR_ALMOST_EQUALS(phard,
+                                     jointhard.sumIn({&bn.variableFromName("C")}).normalize());
+      GUM_CHECK_TENSOR_ALMOST_EQUALS(psoft,
+                                     jointsoft.sumIn({&bn.variableFromName("C")}).normalize());
     }
 
-    GUM_ACTIVE_TEST(NonRegressionBugJoinTarget) {
+    void testNonRegressionBugJoinTarget() {
       auto bn = gum::BayesNet< double >::fastPrototype(
           "X02->X03->X11<-X08->X09->X10<-X07<-X05->X09<-X04<-X00;X03->X04;X01->X10;X05->X06");
       auto ie = gum::ShaferShenoyInference(&bn);
@@ -1497,16 +1503,16 @@ namespace gum_tests {
         ie.makeInference();
         gum::Set< const gum::DiscreteVariable* > set{&bn.variableFromName("X04"),
                                                      &bn.variable("X11")};
-        TS_ASSERT(equalTensors(ie.jointPosterior(bn.nodeset({"X04", "X11"})),
-                               bn_joint.sumIn(set).normalize()))
+        CHECK(equalTensors(ie.jointPosterior(bn.nodeset({"X04", "X11"})),
+                           bn_joint.sumIn(set).normalize()));
         set = {&bn.variableFromName("X00"), &bn.variable("X01"), &bn.variable("X06")};
-        TS_ASSERT(equalTensors(ie.jointPosterior(bn.nodeset({"X00", "X01", "X06"})),
-                               bn_joint.sumIn(set).normalize()))
+        CHECK(equalTensors(ie.jointPosterior(bn.nodeset({"X00", "X01", "X06"})),
+                           bn_joint.sumIn(set).normalize()));
       } catch (gum::Exception& e) { GUM_SHOWERROR(e); }
     }
 
     private:
-    void randomInitP(const gum::Tensor< double >& tt) {
+    static void randomInitP(const gum::Tensor< double >& tt) {
       auto&              t = const_cast< gum::Tensor< double >& >(tt);
       gum::Instantiation i(t);
 
@@ -1515,7 +1521,7 @@ namespace gum_tests {
     }
 
     // Builds a BN to tst the inference
-    void fill(gum::BayesNet< double >& bn) {
+    void fill(gum::BayesNet< double >& bn) const {
       bn.cpt(i1).fillWith({0.2f, 0.8f});
       bn.cpt(i2).fillWith({0.3f, 0.7f});
       bn.cpt(i3).fillWith({0.1f, 0.9f, 0.9f, 0.1f});
@@ -1545,4 +1551,35 @@ namespace gum_tests {
       // std::cerr << std::endl;
     }
   };
+
+  GUM_TEST_ACTIF(CreationAndInference)
+  GUM_TEST_ACTIF(Marginal)
+  GUM_TEST_ACTIF(MarginalWithEvidence)
+  GUM_TEST_ACTIF(Joint)
+  GUM_TEST_ACTIF(Joint2)
+  GUM_TEST_ACTIF(InformationMethods)
+  GUM_TEST_ACTIF(WithGenerator)
+  GUM_TEST_ACTIF(SmartManagementOfJointTarget)
+  GUM_TEST_ACTIF(EvidenceProbability)
+  GUM_TEST_ACTIF(EvidenceProbability2)
+  GUM_TEST_ACTIF(EvidenceProbabilityAsia)
+  GUM_TEST_ACTIF(Asia)
+  GUM_TEST_ACTIF(Alarm)
+  GUM_TEST_ACTIF(Asia2)
+  GUM_TEST_ACTIF(Asia3)
+  GUM_TEST_ACTIF(Asia4)
+  GUM_TEST_ACTIF(ChgEvidence)
+  GUM_TEST_ACTIF(ChgEvidence2)
+  GUM_TEST_ACTIF(StaticEvidenceImpact)
+  GUM_TEST_ACTIF(EvidenceImpactWithNames)
+  GUM_TEST_ACTIF(EvidenceImpact)
+  GUM_TEST_ACTIF(JointWithHardEvidence)
+  GUM_TEST_ACTIF(AdaptiveNbThreads)
+  GUM_TEST_ACTIF(ProbaEvidence)
+  GUM_TEST_ACTIF(OnChanged)
+  GUM_TEST_ACTIF(ImplicitTargetAllCheck)
+  GUM_TEST_ACTIF(ImplicitTargetAllCheckWithEvidenceOutOFTarget)
+  GUM_TEST_ACTIF(ImplicitTargetAllCheckWithEvidenceInTarget)
+  GUM_TEST_ACTIF(IrrelevantSoftEvidence)
+  GUM_TEST_ACTIF(NonRegressionBugJoinTarget)
 }   // namespace gum_tests

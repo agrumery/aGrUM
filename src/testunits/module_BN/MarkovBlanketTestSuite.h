@@ -1,7 +1,7 @@
 /****************************************************************************
  *   This file is part of the aGrUM/pyAgrum library.                        *
  *                                                                          *
- *   Copyright (c) 2005-2025 by                                             *
+ *   Copyright (c) 2005-2026 by                                             *
  *       - Pierre-Henri WUILLEMIN(_at_LIP6)                                 *
  *       - Christophe GONZALES(_at_AMU)                                     *
  *                                                                          *
@@ -27,7 +27,7 @@
  *                                                                          *
  *   See LICENCES for more details.                                         *
  *                                                                          *
- *   SPDX-FileCopyrightText: Copyright 2005-2025                            *
+ *   SPDX-FileCopyrightText: Copyright 2005-2026                            *
  *       - Pierre-Henri WUILLEMIN(_at_LIP6)                                 *
  *       - Christophe GONZALES(_at_AMU)                                     *
  *   SPDX-License-Identifier: LGPL-3.0-or-later OR MIT                      *
@@ -37,6 +37,7 @@
  *   gitlab   : https://gitlab.com/agrumery/agrum                           *
  *                                                                          *
  ****************************************************************************/
+
 #pragma once
 
 
@@ -50,92 +51,102 @@
 #include <agrum/BN/algorithms/MarkovBlanket.h>
 #include <agrum/BN/BayesNet.h>
 
+#undef GUM_CURRENT_SUITE
+#undef GUM_CURRENT_MODULE
+#define GUM_CURRENT_SUITE  MarkovBlanket
+#define GUM_CURRENT_MODULE BN
+
 namespace gum_tests {
-  class GUM_TEST_SUITE(MarkovBlanket) {
+  struct MarkovBlanketTestSuite {
     public:
-    GUM_ACTIVE_TEST(Chain) {
+    static void testChain() {
       auto bn = gum::BayesNet< float >::fastPrototype("a->b->c");
       {
         auto mb = gum::MarkovBlanket(bn, "a");
 
-        TS_ASSERT_EQUALS(mb.size(), 2u)
-        TS_ASSERT_EQUALS(mb.sizeArcs(), 1u)
+        CHECK((mb.size()) == (2u));
+        CHECK((mb.sizeArcs()) == (1u));
       }
       {
         auto mb = gum::MarkovBlanket(bn, 0);
 
-        TS_ASSERT_EQUALS(mb.size(), 2u)
-        TS_ASSERT_EQUALS(mb.sizeArcs(), 1u)
+        CHECK((mb.size()) == (2u));
+        CHECK((mb.sizeArcs()) == (1u));
       }
 
       {
         auto mb = gum::MarkovBlanket(bn, "b");
 
-        TS_ASSERT_EQUALS(mb.size(), 3u)
-        TS_ASSERT_EQUALS(mb.sizeArcs(), 2u)
+        CHECK((mb.size()) == (3u));
+        CHECK((mb.sizeArcs()) == (2u));
       }
       {
         auto mb = gum::MarkovBlanket(bn, 1);
 
-        TS_ASSERT_EQUALS(mb.size(), 3u)
-        TS_ASSERT_EQUALS(mb.sizeArcs(), 2u)
+        CHECK((mb.size()) == (3u));
+        CHECK((mb.sizeArcs()) == (2u));
       }
 
       {
         auto mb = gum::MarkovBlanket(bn, "c");
 
-        TS_ASSERT_EQUALS(mb.size(), 2u)
-        TS_ASSERT_EQUALS(mb.sizeArcs(), 1u)
+        CHECK((mb.size()) == (2u));
+        CHECK((mb.sizeArcs()) == (1u));
       }
       {
         auto mb = gum::MarkovBlanket(bn, 2);
 
-        TS_ASSERT_EQUALS(mb.size(), 2u)
-        TS_ASSERT_EQUALS(mb.sizeArcs(), 1u)
+        CHECK((mb.size()) == (2u));
+        CHECK((mb.sizeArcs()) == (1u));
       }
     }   // namespace gum_tests
 
-    GUM_ACTIVE_TEST(MarkovBlanketStructure) {
+    static void testMarkovBlanketStructure() {
       const auto bn = gum::BayesNet< float >::fastPrototype("a->b->c->d->e;f->d->g;h->i->g");
-      TS_ASSERT(!gum::MarkovBlanket(bn, "a").hasSameStructure(
+      CHECK(!gum::MarkovBlanket(bn, "a").hasSameStructure(
           gum::BayesNet< float >::fastPrototype("b->a")));
 
-      TS_ASSERT(gum::MarkovBlanket(bn, "a").hasSameStructure(
+      CHECK(gum::MarkovBlanket(bn, "a").hasSameStructure(
           gum::BayesNet< float >::fastPrototype("a->b")));
-      TS_ASSERT(gum::MarkovBlanket(bn, "b").hasSameStructure(
+      CHECK(gum::MarkovBlanket(bn, "b").hasSameStructure(
           gum::BayesNet< float >::fastPrototype("a->b->c")));
-      TS_ASSERT(gum::MarkovBlanket(bn, "c").hasSameStructure(
+      CHECK(gum::MarkovBlanket(bn, "c").hasSameStructure(
           gum::BayesNet< float >::fastPrototype("b->c->d;f->d")));
-      TS_ASSERT(gum::MarkovBlanket(bn, "d").hasSameStructure(
+      CHECK(gum::MarkovBlanket(bn, "d").hasSameStructure(
           gum::BayesNet< float >::fastPrototype("c->d->e;f->d->g;i->g")));
-      TS_ASSERT(gum::MarkovBlanket(bn, "e").hasSameStructure(
+      CHECK(gum::MarkovBlanket(bn, "e").hasSameStructure(
           gum::BayesNet< float >::fastPrototype("d->e")));
-      TS_ASSERT(gum::MarkovBlanket(bn, "f").hasSameStructure(
+      CHECK(gum::MarkovBlanket(bn, "f").hasSameStructure(
           gum::BayesNet< float >::fastPrototype("c->d;f->d;")));
-      TS_ASSERT(gum::MarkovBlanket(bn, "g").hasSameStructure(
+      CHECK(gum::MarkovBlanket(bn, "g").hasSameStructure(
           gum::BayesNet< float >::fastPrototype("d->g;i->g;")));
-      TS_ASSERT(gum::MarkovBlanket(bn, "h").hasSameStructure(
+      CHECK(gum::MarkovBlanket(bn, "h").hasSameStructure(
           gum::BayesNet< float >::fastPrototype("h->i;")));
-      TS_ASSERT(gum::MarkovBlanket(bn, "i").hasSameStructure(
+      CHECK(gum::MarkovBlanket(bn, "i").hasSameStructure(
           gum::BayesNet< float >::fastPrototype("d->g;h->i->g;;")));
     }
 
-    GUM_ACTIVE_TEST(MarkovBlanketSpecialArcs) {
+    static void testMarkovBlanketSpecialArcs() {
       const auto bn = gum::BayesNet< float >::fastPrototype(
           "aa->bb->cc->dd->ee;ff->dd->gg;hh->ii->gg;ff->ii;ff->gg");
       const auto mb
           = gum::BayesNet< float >::fastPrototype("cc->dd->ee;ff->dd->gg;ff->gg;ff->ii->gg");
-      TS_ASSERT(gum::MarkovBlanket(bn, "dd").hasSameStructure(mb))
+      CHECK(gum::MarkovBlanket(bn, "dd").hasSameStructure(mb));
     }
 
-    GUM_ACTIVE_TEST(MarkovBlanketMultiLevel) {
+    static void testMarkovBlanketMultiLevel() {
       const auto bn
           = gum::BayesNet< float >::fastPrototype("Z<-A->B->C->D->E<-Y;X->G<-F<-C<-I<-H->W");
-      TS_ASSERT_THROWS(gum::MarkovBlanket(bn, "C", 0).size(), const gum::InvalidArgument&)
-      TS_ASSERT_EQUALS(gum::MarkovBlanket(bn, "C", 1).size(), static_cast< gum::Size >(5))
-      TS_ASSERT_EQUALS(gum::MarkovBlanket(bn, "C", 2).size(), static_cast< gum::Size >(11))
-      TS_ASSERT_EQUALS(gum::MarkovBlanket(bn, "C", 3).size(), static_cast< gum::Size >(13))
+      CHECK_THROWS_AS(gum::MarkovBlanket(bn, "C", 0).size(), const gum::InvalidArgument&);
+      CHECK((gum::MarkovBlanket(bn, "C", 1).size()) == (static_cast< gum::Size >(5)));
+      CHECK((gum::MarkovBlanket(bn, "C", 2).size()) == (static_cast< gum::Size >(11)));
+      CHECK((gum::MarkovBlanket(bn, "C", 3).size()) == (static_cast< gum::Size >(13)));
     }
   };
+
+  GUM_TEST_ACTIF(Chain)
+  GUM_TEST_ACTIF(MarkovBlanketStructure)
+  GUM_TEST_ACTIF(MarkovBlanketSpecialArcs)
+  GUM_TEST_ACTIF(MarkovBlanketMultiLevel)
 
 }   // namespace gum_tests

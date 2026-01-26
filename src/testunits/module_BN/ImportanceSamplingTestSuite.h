@@ -1,7 +1,7 @@
 /****************************************************************************
  *   This file is part of the aGrUM/pyAgrum library.                        *
  *                                                                          *
- *   Copyright (c) 2005-2025 by                                             *
+ *   Copyright (c) 2005-2026 by                                             *
  *       - Pierre-Henri WUILLEMIN(_at_LIP6)                                 *
  *       - Christophe GONZALES(_at_AMU)                                     *
  *                                                                          *
@@ -27,7 +27,7 @@
  *                                                                          *
  *   See LICENCES for more details.                                         *
  *                                                                          *
- *   SPDX-FileCopyrightText: Copyright 2005-2025                            *
+ *   SPDX-FileCopyrightText: Copyright 2005-2026                            *
  *       - Pierre-Henri WUILLEMIN(_at_LIP6)                                 *
  *       - Christophe GONZALES(_at_AMU)                                     *
  *   SPDX-License-Identifier: LGPL-3.0-or-later OR MIT                      *
@@ -37,6 +37,7 @@
  *   gitlab   : https://gitlab.com/agrumery/agrum                           *
  *                                                                          *
  ****************************************************************************/
+
 #pragma once
 
 
@@ -54,7 +55,13 @@
 #include <agrum/BN/inference/lazyPropagation.h>
 #include <agrum/BN/io/BIF/BIFReader.h>
 
-#include <gumtest/AgrumApproximationUtils.h>   // must be last include
+#include <gumtest/AgrumApproximationUtils.h>
+
+#undef GUM_CURRENT_SUITE
+#undef GUM_CURRENT_MODULE
+#define GUM_CURRENT_SUITE  ImportanceSampling
+#define GUM_CURRENT_MODULE BN
+// must be last include
 
 #define EPSILON_FOR_IMPORTANCE_SIMPLE_TEST 15e-2
 #define EPSILON_FOR_IMPORTANCE             7e-2
@@ -84,9 +91,9 @@ namespace gum_tests {
     std::string getMess() { return __mess; }
   };
 
-  class GUM_TEST_SUITE(ImportanceSampling) {
+  struct ImportanceSamplingTestSuite {
     public:
-    GUM_ACTIVE_TEST(ImportanceBinaryTreeWithoutEvidence) {
+    static void testImportanceBinaryTreeWithoutEvidence() {
       auto bn = gum::BayesNet< double >::fastPrototype("a->d->f;b->d->g;b->e->h;c->e;i->j->h");
       unsharpen(bn);
 
@@ -104,11 +111,11 @@ namespace gum_tests {
 
       } catch (gum::Exception& e) {
         GUM_SHOWERROR(e);
-        TS_ASSERT(false)
+        CHECK(false);
       }
     }   // namespace gum_tests
 
-    GUM_ACTIVE_TEST(ImportanceBinaryTreeWithEvidenceOnRoot) {
+    static void testImportanceBinaryTreeWithEvidenceOnRoot() {
       auto bn = gum::BayesNet< double >::fastPrototype("a->d->f;b->d->g;b->e->h;c->e;i->j->h");
       unsharpen(bn);
       std::string ev = "b";
@@ -126,11 +133,11 @@ namespace gum_tests {
         GUM_APPROX_TEST_END_ITERATION(EPSILON_FOR_IMPORTANCE_SIMPLE_TEST)
       } catch (gum::Exception& e) {
         GUM_SHOWERROR(e);
-        TS_ASSERT(false)
+        CHECK(false);
       }
     }
 
-    GUM_ACTIVE_TEST(ImportanceBinaryTreeWithEvidenceOnLeaf) {
+    static void testImportanceBinaryTreeWithEvidenceOnLeaf() {
       auto bn = gum::BayesNet< double >::fastPrototype("a->d->f;b->d->g;b->e->h;c->e;i->j->h");
       unsharpen(bn);
       std::string ev = "h";
@@ -150,11 +157,11 @@ namespace gum_tests {
 
       } catch (gum::Exception& e) {
         GUM_SHOWERROR(e);
-        TS_ASSERT(false)
+        CHECK(false);
       }
     }
 
-    GUM_ACTIVE_TEST(ImportanceBinaryTreeWithEvidenceOnMid) {
+    static void testImportanceBinaryTreeWithEvidenceOnMid() {
       auto bn = gum::BayesNet< double >::fastPrototype("a->d->f;b->d->g;b->e->h;c->e;i->j->h");
       unsharpen(bn);
       std::string ev = "e";
@@ -174,11 +181,11 @@ namespace gum_tests {
 
       } catch (gum::Exception& e) {
         GUM_SHOWERROR(e);
-        TS_ASSERT(false)
+        CHECK(false);
       }
     }
 
-    GUM_ACTIVE_TEST(ImportanceBinaryTreeWithMultipleEvidence) {
+    static void testImportanceBinaryTreeWithMultipleEvidence() {
       auto bn = gum::BayesNet< double >::fastPrototype("a->d->f;b->d->g;b->e->h;c->e;i->j->h");
       unsharpen(bn);
 
@@ -201,11 +208,11 @@ namespace gum_tests {
 
       } catch (gum::Exception& e) {
         GUM_SHOWERROR(e);
-        TS_ASSERT(false)
+        CHECK(false);
       }
     }
 
-    GUM_ACTIVE_TEST(ImportanceNaryTreeWithMultipleEvidence) {
+    static void testImportanceNaryTreeWithMultipleEvidence() {
       auto bn = gum::BayesNet< double >::fastPrototype(
           "a[4]->d[8]->f[3];b->d->g[5];b->e[4]->h;c->e;i[10]->j[3]->h");
       unsharpen(bn);
@@ -229,11 +236,11 @@ namespace gum_tests {
 
       } catch (gum::Exception& e) {
         GUM_SHOWERROR(e);
-        TS_ASSERT(false)
+        CHECK(false);
       }
     }
 
-    GUM_ACTIVE_TEST(ImportanceSimpleBN) {
+    static void testImportanceSimpleBN() {
       auto bn = gum::BayesNet< double >::fastPrototype("a->b->c;a->d->c", 3);
       unsharpen(bn);
 
@@ -250,7 +257,7 @@ namespace gum_tests {
 
       } catch (gum::Exception& e) {
         GUM_SHOWERROR(e);
-        TS_ASSERT(false)
+        CHECK(false);
       }
 
       try {
@@ -268,7 +275,7 @@ namespace gum_tests {
 
       } catch (gum::Exception& e) {
         GUM_SHOWERROR(e);
-        TS_ASSERT(false)
+        CHECK(false);
       }
 
       try {
@@ -286,11 +293,11 @@ namespace gum_tests {
 
       } catch (gum::Exception& e) {
         GUM_SHOWERROR(e);
-        TS_ASSERT(false)
+        CHECK(false);
       }
     }
 
-    GUM_ACTIVE_TEST(ImportanceCplxBN) {
+    static void testImportanceCplxBN() {
       auto bn = gum::BayesNet< double >::fastPrototype(
           "a->d->f;b->d->g;b->e->h;c->e->g;i->j->h;c->j;x->c;x->j;",
           3);
@@ -309,7 +316,7 @@ namespace gum_tests {
 
       } catch (gum::Exception& e) {
         GUM_SHOWERROR(e);
-        TS_ASSERT(false)
+        CHECK(false);
       }
 
       try {
@@ -327,7 +334,7 @@ namespace gum_tests {
 
       } catch (gum::Exception& e) {
         GUM_SHOWERROR(e);
-        TS_ASSERT(false)
+        CHECK(false);
       }
 
 
@@ -346,11 +353,11 @@ namespace gum_tests {
 
       } catch (gum::Exception& e) {
         GUM_SHOWERROR(e);
-        TS_ASSERT(false)
+        CHECK(false);
       }
     }
 
-    GUM_ACTIVE_TEST(ImportanceEvidenceAsTargetOnCplxBN) {
+    static void testImportanceEvidenceAsTargetOnCplxBN() {
       auto bn = gum::BayesNet< double >::fastPrototype(
           "a->d->f;b->d->g;b->e->h;c->e->g;i->j->h;c->j;x->c;x->j;",
           3);
@@ -359,27 +366,27 @@ namespace gum_tests {
       try {
         gum::ImportanceSampling< double > inf(&bn);
         inf.addEvidence(bn.idFromName("d"), 0);
-        TS_ASSERT_THROWS(inf.addEvidence("i", std::vector< double >{1, 0, 1}),
-                         const gum::FatalError&)
+        CHECK_THROWS_AS(inf.addEvidence("i", std::vector< double >{1, 0, 1}),
+                        const gum::FatalError&);
 
         inf.setVerbosity(false);
         inf.setEpsilon(EPSILON_FOR_IMPORTANCE);
         inf.makeInference();
-        TS_GUM_ASSERT_THROWS_NOTHING(inf.posterior("d"))
-        TS_GUM_ASSERT_THROWS_NOTHING(inf.posterior(bn.idFromName("d")))
+        GUM_CHECK_ASSERT_THROWS_NOTHING(inf.posterior("d"));
+        GUM_CHECK_ASSERT_THROWS_NOTHING(inf.posterior(bn.idFromName("d")));
 
       } catch (gum::Exception& e) {
         GUM_SHOWERROR(e);
-        TS_ASSERT(false)
+        CHECK(false);
       }
     }
 
-    GUM_ACTIVE_TEST(ImportanceAsia) {
+    static void testImportanceAsia() {
       gum::BayesNet< double >  bn;
       gum::BIFReader< double > reader(&bn, GET_RESSOURCES_PATH("bif/asia.bif"));
       gum::Size                nbrErr = static_cast< gum::Size >(0);
-      TS_GUM_ASSERT_THROWS_NOTHING(nbrErr = reader.proceed())
-      TS_ASSERT_EQUALS(nbrErr, static_cast< gum::Size >(0))
+      GUM_CHECK_ASSERT_THROWS_NOTHING(nbrErr = reader.proceed());
+      CHECK((nbrErr) == (static_cast< gum::Size >(0)));
 
       try {
         gum::LazyPropagation< double > lazy(&bn);
@@ -394,16 +401,16 @@ namespace gum_tests {
 
       } catch (gum::Exception& e) {
         GUM_SHOWERROR(e);
-        TS_ASSERT(false)
+        CHECK(false);
       }
     }
 
-    GUM_ACTIVE_TEST(ImportanceAlarm) {
+    static void testImportanceAlarm() {
       gum::BayesNet< double >  bn;
       gum::BIFReader< double > reader(&bn, GET_RESSOURCES_PATH("bif/alarm.bif"));
       gum::Size                nbrErr = static_cast< gum::Size >(0);
-      TS_GUM_ASSERT_THROWS_NOTHING(nbrErr = reader.proceed())
-      TS_ASSERT_EQUALS(nbrErr, static_cast< gum::Size >(0))
+      GUM_CHECK_ASSERT_THROWS_NOTHING(nbrErr = reader.proceed());
+      CHECK((nbrErr) == (static_cast< gum::Size >(0)));
 
       try {
         gum::LazyPropagation< double > lazy(&bn);
@@ -418,16 +425,16 @@ namespace gum_tests {
 
       } catch (gum::Exception& e) {
         GUM_SHOWERROR(e);
-        TS_ASSERT(false)
+        CHECK(false);
       }
     }
 
-    GUM_ACTIVE_TEST(ImportanceDiabetes) {
+    static void testImportanceDiabetes() {
       gum::BayesNet< double >  bn;
       gum::BIFReader< double > reader(&bn, GET_RESSOURCES_PATH("bif/Diabetes.bif"));
       gum::Size                nbrErr = static_cast< gum::Size >(0);
-      TS_GUM_ASSERT_THROWS_NOTHING(nbrErr = reader.proceed())
-      TS_ASSERT_EQUALS(nbrErr, static_cast< gum::Size >(0))
+      GUM_CHECK_ASSERT_THROWS_NOTHING(nbrErr = reader.proceed());
+      CHECK((nbrErr) == (static_cast< gum::Size >(0)));
 
       try {
         gum::ImportanceSampling< double > inf(&bn);
@@ -438,27 +445,41 @@ namespace gum_tests {
 
       } catch (gum::Exception& e) {
         GUM_SHOWERROR(e);
-        TS_ASSERT(false)
+        CHECK(false);
       }
-      TS_ASSERT(true)
+      CHECK(true);
     }
 
-    GUM_ACTIVE_TEST(ImportanceInfListener) {
+    static void testImportanceInfListener() {
       gum::BayesNet< double >  bn;
       gum::BIFReader< double > reader(&bn, GET_RESSOURCES_PATH("bif/alarm.bif"));
       gum::Size                nbrErr = static_cast< gum::Size >(0);
-      TS_GUM_ASSERT_THROWS_NOTHING(nbrErr = reader.proceed())
-      TS_ASSERT_EQUALS(nbrErr, static_cast< gum::Size >(0))
+      GUM_CHECK_ASSERT_THROWS_NOTHING(nbrErr = reader.proceed());
+      CHECK((nbrErr) == (static_cast< gum::Size >(0)));
 
       gum::ImportanceSampling< double > inf(&bn);
       aSimpleImportanceListener         agsl(inf);
       inf.setVerbosity(false);
 
       inf.setEpsilon(EPSILON_FOR_IMPORTANCE);
-      TS_GUM_ASSERT_THROWS_NOTHING(inf.makeInference())
+      GUM_CHECK_ASSERT_THROWS_NOTHING(inf.makeInference());
 
-      TS_ASSERT_EQUALS(agsl.getNbr() * inf.periodSize(), inf.nbrIterations())
-      TS_ASSERT_DIFFERS(agsl.getMess(), std::string(""))
+      CHECK((agsl.getNbr() * inf.periodSize()) == (inf.nbrIterations()));
+      CHECK((agsl.getMess()) != (std::string("")));
     }
   };
+
+  GUM_TEST_ACTIF(ImportanceBinaryTreeWithoutEvidence)
+  GUM_TEST_ACTIF(ImportanceBinaryTreeWithEvidenceOnRoot)
+  GUM_TEST_ACTIF(ImportanceBinaryTreeWithEvidenceOnLeaf)
+  GUM_TEST_ACTIF(ImportanceBinaryTreeWithEvidenceOnMid)
+  GUM_TEST_ACTIF(ImportanceBinaryTreeWithMultipleEvidence)
+  GUM_TEST_ACTIF(ImportanceNaryTreeWithMultipleEvidence)
+  GUM_TEST_ACTIF(ImportanceSimpleBN)
+  GUM_TEST_ACTIF(ImportanceCplxBN)
+  GUM_TEST_ACTIF(ImportanceEvidenceAsTargetOnCplxBN)
+  GUM_TEST_ACTIF(ImportanceAsia)
+  GUM_TEST_ACTIF(ImportanceAlarm)
+  GUM_TEST_ACTIF(ImportanceDiabetes)
+  GUM_TEST_ACTIF(ImportanceInfListener)
 }   // namespace gum_tests

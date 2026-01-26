@@ -1,7 +1,7 @@
 /****************************************************************************
  *   This file is part of the aGrUM/pyAgrum library.                        *
  *                                                                          *
- *   Copyright (c) 2005-2025 by                                             *
+ *   Copyright (c) 2005-2026 by                                             *
  *       - Pierre-Henri WUILLEMIN(_at_LIP6)                                 *
  *       - Christophe GONZALES(_at_AMU)                                     *
  *                                                                          *
@@ -27,7 +27,7 @@
  *                                                                          *
  *   See LICENCES for more details.                                         *
  *                                                                          *
- *   SPDX-FileCopyrightText: Copyright 2005-2025                            *
+ *   SPDX-FileCopyrightText: Copyright 2005-2026                            *
  *       - Pierre-Henri WUILLEMIN(_at_LIP6)                                 *
  *       - Christophe GONZALES(_at_AMU)                                     *
  *   SPDX-License-Identifier: LGPL-3.0-or-later OR MIT                      *
@@ -37,6 +37,7 @@
  *   gitlab   : https://gitlab.com/agrumery/agrum                           *
  *                                                                          *
  ****************************************************************************/
+
 #pragma once
 
 
@@ -52,56 +53,61 @@
 
 #include "utils.h"
 
+#undef GUM_CURRENT_SUITE
+#undef GUM_CURRENT_MODULE
+#define GUM_CURRENT_SUITE  SmallObjectAllocator
+#define GUM_CURRENT_MODULE GUMBASE
+
 namespace gum_tests {
 
-  class GUM_TEST_SUITE(SmallObjectAllocator) {
+  struct SmallObjectAllocatorTestSuite {
     private:
 
     public:
     // ==============================================================================
     // Test CREATION et DESTRUCTION dun Fixed Allocator
     // ==============================================================================
-    GUM_ACTIVE_TEST(_Fixed_Allocator_CONST_AND_DEST) {
+    static void test_Fixed_Allocator_CONST_AND_DEST() {
       gum::FixedAllocator* fa = nullptr;
       // Test constructor
-      TS_ASSERT_THROWS_NOTHING(fa = new gum::FixedAllocator(5 * sizeof(gum::Idx), 50))
+      CHECK_NOTHROW(fa = new gum::FixedAllocator(5 * sizeof(gum::Idx), 50));
       // Test destructor
-      TS_ASSERT_THROWS_NOTHING(if (fa != nullptr) delete fa)
+      CHECK_NOTHROW(if (fa != nullptr) delete fa);
     }   // namespace gum_tests
 
     // ==============================================================================
     // Test Allocation et Deallocation d'un élément
     // ==============================================================================
-    GUM_ACTIVE_TEST(_Fixed_Allocator_ALLOC_DEALLOC_1_ELEM) {
+    static void test_Fixed_Allocator_ALLOC_DEALLOC_1_ELEM() {
       gum::FixedAllocator* fa    = new gum::FixedAllocator(5 * sizeof(gum::Idx), 50);
       void*                pVoid = nullptr;
-      TS_ASSERT_THROWS_NOTHING(pVoid = fa->allocate())
-      TS_ASSERT_THROWS_NOTHING(fa->deallocate(pVoid))
-      TS_ASSERT_THROWS_NOTHING(if (fa != nullptr) delete fa)
+      CHECK_NOTHROW(pVoid = fa->allocate());
+      CHECK_NOTHROW(fa->deallocate(pVoid));
+      CHECK_NOTHROW(if (fa != nullptr) delete fa);
     }
 
     // ==============================================================================
     // Test Allocation de 50 et 1 élément => création d'un nouveau chunk
     // ==============================================================================
-    GUM_ACTIVE_TEST(_Fixed_Allocator_ALLOC_DEALLOC_51_ELEM) {
+    static void test_Fixed_Allocator_ALLOC_DEALLOC_51_ELEM() {
       gum::FixedAllocator* fa = new gum::FixedAllocator(5 * sizeof(gum::Idx), 50);
       std::vector< void* > vVoid;
       // Alocation des 50 premiers éléments
       for (int i = 0; i < 50; ++i)
-        TS_ASSERT_THROWS_NOTHING(vVoid.push_back(fa->allocate()))
+        CHECK_NOTHROW(vVoid.push_back(fa->allocate()));
       // Demande du 51ème élément
-      TS_ASSERT_THROWS_NOTHING(vVoid.push_back(fa->allocate()))
+      CHECK_NOTHROW(vVoid.push_back(fa->allocate()));
       // Désallocation de tous les éléments.
       for (std::vector< void* >::iterator vite = vVoid.begin(); vite != vVoid.end(); ++vite)
-        TS_ASSERT_THROWS_NOTHING(fa->deallocate(*vite))
-      TS_ASSERT_THROWS_NOTHING(delete fa)
+        CHECK_NOTHROW(fa->deallocate(*vite));
+      CHECK_NOTHROW(delete fa);
     }
 
     // ==============================================================================
     // Test d'allocation et déallocation cascade coirsée
     // Au terme de ce test, seul 7 Chunk supplémentaire doivent avoir été créé
     // ==============================================================================
-    GUM_ACTIVE_TEST(_Fixed_Allocator_ALLOC_DEALLOC_CROISEE) {
+    static void test_Fixed_Allocator_ALLOC_DEALLOC_CROISEE() {
       gum::FixedAllocator*                 fa = new gum::FixedAllocator(5 * sizeof(gum::Idx), 50);
       std::vector< std::vector< void* >* > vvVoid;
       for (int i = 0; i < 7; ++i)
@@ -109,66 +115,64 @@ namespace gum_tests {
 
       // Alocation de 250 premiers éléments
       for (int i = 0; i < 250; ++i)
-        TS_ASSERT_THROWS_NOTHING(vvVoid[i / 50]->push_back(fa->allocate()))
+        CHECK_NOTHROW(vvVoid[i / 50]->push_back(fa->allocate()));
 
       // Désallocation d'éléments.
       for (int i = 0; i < 50; ++i) {
         //              std::cout << "Destruction du " << i << "ème élément de
         //              la table " << i%5 << std::endl;
-        TS_ASSERT_THROWS_NOTHING(fa->deallocate(vvVoid[i % 5]->at(i)))
+        CHECK_NOTHROW(fa->deallocate(vvVoid[i % 5]->at(i)));
       }
 
       // Réallocation et forçage diagonal
       std::vector< void* > v6;
       for (int i = 0; i < 125; ++i)
-        TS_ASSERT_THROWS_NOTHING(v6.push_back(fa->allocate()))
+        CHECK_NOTHROW(v6.push_back(fa->allocate()));
 
       // Nettoyage
       for (int i = 0; i < 7; ++i) {
         for (std::vector< void* >::iterator vite = vvVoid[i]->begin(); vite != vvVoid[i]->end();
              ++vite)
-          TS_ASSERT_THROWS_NOTHING(fa->deallocate(*vite))
+          CHECK_NOTHROW(fa->deallocate(*vite));
         delete vvVoid[i];
       }
       for (std::vector< void* >::iterator vite = v6.begin(); vite != v6.end(); ++vite)
-        TS_ASSERT_THROWS_NOTHING(fa->deallocate(*vite))
-      TS_ASSERT_THROWS_NOTHING(delete fa)
+        CHECK_NOTHROW(fa->deallocate(*vite));
+      CHECK_NOTHROW(delete fa);
     }
 
     // ==============================================================================
     // Test CREATION et DESTRUCTION dun SmallObjectAllocator
     // ==============================================================================
-    GUM_ACTIVE_TEST(_Small_Object_Allocator_CONST_AND_DEST){
-        // Test constructor
-        TS_ASSERT_THROWS_NOTHING(gum::SmallObjectAllocator::instance())
+    static void test_Small_Object_Allocator_CONST_AND_DEST() {
+      // Test constructor
+      CHECK_NOTHROW(gum::SmallObjectAllocator::instance());
 
-        // Test destructor
-        // TS_ASSERT_THROWS_NOTHING( delete soa )
+      // Test destructor
+      // CHECK_NOTHROW( delete soa );
     }
 
     // ==============================================================================
     // Test Allocation et Deallocation d'un élément
     // ==============================================================================
-    GUM_ACTIVE_TEST(_Small_Object_Allocator_ALLOC_DEALLOC_1_ELEM) {
+    static void test_Small_Object_Allocator_ALLOC_DEALLOC_1_ELEM() {
       void* pVoid = nullptr;
-      TS_ASSERT_THROWS_NOTHING(
-          pVoid = gum::SmallObjectAllocator::instance().allocate(5 * sizeof(gum::Idx)));
-      TS_ASSERT_THROWS_NOTHING(
-          gum::SmallObjectAllocator::instance().deallocate(pVoid, 5 * sizeof(gum::Idx)));
+      CHECK_NOTHROW(pVoid = gum::SmallObjectAllocator::instance().allocate(5 * sizeof(gum::Idx)));
+      CHECK_NOTHROW(gum::SmallObjectAllocator::instance().deallocate(pVoid, 5 * sizeof(gum::Idx)));
     }
 
     // ==============================================================================
     // Test Allocation et Deallocation d'un élément
     // ==============================================================================
-    GUM_ACTIVE_TEST(_Small_Object_Allocator_ALLOC_DEALLOC_ELEMS) {
+    static void test_Small_Object_Allocator_ALLOC_DEALLOC_ELEMS() {
       std::vector< void* > vVoid;
       for (std::size_t i = 1; i < 13; ++i)
-        TS_ASSERT_THROWS_NOTHING(vVoid.push_back(
+        CHECK_NOTHROW(vVoid.push_back(
             gum::SmallObjectAllocator::instance().allocate(gum::Size(2 * i * sizeof(gum::Idx)))));
 
       std::vector< std::size_t > dv = {12, 6, 3, 9, 4, 11, 2, 7, 1, 5, 8, 10};
       for (int i = 0; i < 12; ++i)
-        TS_ASSERT_THROWS_NOTHING(gum::SmallObjectAllocator::instance().deallocate(
+        CHECK_NOTHROW(gum::SmallObjectAllocator::instance().deallocate(
             vVoid[dv[i] - 1],
             gum::Size(2 * dv[i] * sizeof(gum::Idx))));
     }
@@ -194,26 +198,34 @@ namespace gum_tests {
     //      timy.reset();
     //      std::vector<void*> vVoid;
     //      for ( gum::Idx i = 0; i < NbTotalSOA; ++i )
-    //        TS_ASSERT_THROWS_NOTHING( vVoid.push_back(
+    //        CHECK_NOTHROW( vVoid.push_back(
     //            soa->allocate( vectorSize[i] * sizeof( gum::Idx ) ) ) );
 
     //      for ( gum::Idx i = 0; i < NbTotalSOA; ++i )
-    //        TS_ASSERT_THROWS_NOTHING(
+    //        CHECK_NOTHROW(
     //            soa->deallocate( vVoid[i], vectorSize[i] * sizeof( gum::Idx )
     //            ) );
     //      double soaT = timy.pause();
     //      std::cout << "Temps Alloc/Dealloc SOA: " << soaT << std::endl;
-    //      TS_ASSERT_THROWS_NOTHING( delete soa )
+    //      CHECK_NOTHROW( delete soa );
 
     //      std::vector<std::vector<gum::Idx>*> vVector;
     //      timy.resume();
     //      for ( gum::Idx i = 0; i < NbTotalSOA; ++i )
-    //        TS_ASSERT_THROWS_NOTHING( vVector.push_back(
+    //        CHECK_NOTHROW( vVector.push_back(
     //            new std::vector<gum::Idx>( vectorSize[i], 0 ) ) );
     //      for ( gum::Idx i = 0; i < NbTotalSOA; ++i )
-    //        TS_ASSERT_THROWS_NOTHING( delete vVector[i] )
+    //        CHECK_NOTHROW( delete vVector[i] );
     //      double vT = timy.pause();
     //      std::cout << "Temps Alloc/Dealloc SOA: " << vT - soaT << std::endl;
     //    }
   };
+
+  GUM_TEST_ACTIF(_Fixed_Allocator_CONST_AND_DEST)
+  GUM_TEST_ACTIF(_Fixed_Allocator_ALLOC_DEALLOC_1_ELEM)
+  GUM_TEST_ACTIF(_Fixed_Allocator_ALLOC_DEALLOC_51_ELEM)
+  GUM_TEST_ACTIF(_Fixed_Allocator_ALLOC_DEALLOC_CROISEE)
+  GUM_TEST_ACTIF(_Small_Object_Allocator_CONST_AND_DEST)
+  GUM_TEST_ACTIF(_Small_Object_Allocator_ALLOC_DEALLOC_1_ELEM)
+  GUM_TEST_ACTIF(_Small_Object_Allocator_ALLOC_DEALLOC_ELEMS)
 }   // namespace gum_tests

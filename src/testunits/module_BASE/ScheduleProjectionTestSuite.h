@@ -1,7 +1,7 @@
 /****************************************************************************
  *   This file is part of the aGrUM/pyAgrum library.                        *
  *                                                                          *
- *   Copyright (c) 2005-2025 by                                             *
+ *   Copyright (c) 2005-2026 by                                             *
  *       - Pierre-Henri WUILLEMIN(_at_LIP6)                                 *
  *       - Christophe GONZALES(_at_AMU)                                     *
  *                                                                          *
@@ -27,7 +27,7 @@
  *                                                                          *
  *   See LICENCES for more details.                                         *
  *                                                                          *
- *   SPDX-FileCopyrightText: Copyright 2005-2025                            *
+ *   SPDX-FileCopyrightText: Copyright 2005-2026                            *
  *       - Pierre-Henri WUILLEMIN(_at_LIP6)                                 *
  *       - Christophe GONZALES(_at_AMU)                                     *
  *   SPDX-License-Identifier: LGPL-3.0-or-later OR MIT                      *
@@ -37,6 +37,7 @@
  *   gitlab   : https://gitlab.com/agrumery/agrum                           *
  *                                                                          *
  ****************************************************************************/
+
 #pragma once
 
 
@@ -49,11 +50,16 @@
 #include <agrum/base/multidim/tensor.h>
 #include <agrum/base/variables/labelizedVariable.h>
 
+#undef GUM_CURRENT_SUITE
+#undef GUM_CURRENT_MODULE
+#define GUM_CURRENT_SUITE  ScheduleProjection
+#define GUM_CURRENT_MODULE GUMBASE
+
 namespace gum_tests {
 
-  class GUM_TEST_SUITE(ScheduleProjection) {
+  struct ScheduleProjectionTestSuite {
     public:
-    GUM_ACTIVE_TEST(_construct) {
+    static void test_construct() {
       // reset the ids of the ScheduleMultiDim to avoid conflicts with other
       // testunits
       gum::IScheduleMultiDim::resetIdGenerator();
@@ -81,169 +87,169 @@ namespace gum_tests {
       del_vars2 << vars[0] << vars[3] << vars[2];
 
       gum::ScheduleProjection< gum::Tensor< double > > myproj(f1, del_vars1, myProjectMax);
-      TS_ASSERT(!myproj.implyDeletion());
+      CHECK(!myproj.implyDeletion());
 
       const auto& res = myproj.result();
-      TS_ASSERT(res.isAbstract());
+      CHECK(res.isAbstract());
 
       const gum::ScheduleProjection< gum::Tensor< double > >& myprojconst(myproj);
-      TS_ASSERT(!myprojconst.implyDeletion());
+      CHECK(!myprojconst.implyDeletion());
       const gum::ScheduleMultiDim< gum::Tensor< double > >& resconst = myprojconst.result();
-      TS_ASSERT(resconst.isAbstract());
+      CHECK(resconst.isAbstract());
 
-      TS_ASSERT(myproj.nbOperations() == 16.0);
+      CHECK(myproj.nbOperations() == 16.0);
       const auto [xfirst, xsecond] = myproj.memoryUsage();
-      TS_ASSERT_EQUALS(xfirst, 4.0 * sizeof(double) + sizeof(gum::Tensor< double >))
-      TS_ASSERT_EQUALS(xsecond, 4.0 * sizeof(double) + sizeof(gum::Tensor< double >))
+      CHECK((xfirst) == (4.0 * sizeof(double) + sizeof(gum::Tensor< double >)));
+      CHECK((xsecond) == (4.0 * sizeof(double) + sizeof(gum::Tensor< double >)));
 
-      TS_ASSERT(myproj.arg() == f1);
+      CHECK(myproj.arg() == f1);
 
       std::stringstream s1;
       s1 << res.toString() << " = project ( " << f1.toString() << " , " << del_vars1.toString()
          << " )";
-      TS_ASSERT(s1.str() == myproj.toString());
+      CHECK(s1.str() == myproj.toString());
 
       gum::ScheduleProjection< gum::Tensor< double > > myproj2(myproj);
-      TS_ASSERT(!myproj2.implyDeletion())
-      TS_ASSERT(myproj2.result().isAbstract())
-      TS_ASSERT(!myproj2.isExecuted())
-      TS_ASSERT_EQUALS(myproj2, myproj)
-      TS_ASSERT(!(myproj2 != myproj))
+      CHECK(!myproj2.implyDeletion());
+      CHECK(myproj2.result().isAbstract());
+      CHECK(!myproj2.isExecuted());
+      CHECK((myproj2) == (myproj));
+      CHECK(!(myproj2 != myproj));
 
       myproj.execute();
-      TS_ASSERT(!myproj.implyDeletion())
-      TS_ASSERT(!res.isAbstract())
-      TS_ASSERT(myproj2.result().isAbstract())
+      CHECK(!myproj.implyDeletion());
+      CHECK(!res.isAbstract());
+      CHECK(myproj2.result().isAbstract());
       myproj2.execute();
-      TS_ASSERT(!myproj2.result().isAbstract())
-      TS_ASSERT(myproj2.isExecuted())
+      CHECK(!myproj2.result().isAbstract());
+      CHECK(myproj2.isExecuted());
       myproj2.undo();
-      TS_ASSERT(myproj2.result().isAbstract())
-      TS_ASSERT(!myproj2.isExecuted())
+      CHECK(myproj2.result().isAbstract());
+      CHECK(!myproj2.isExecuted());
 
       gum::Tensor< double > res2 = proj(pot1, del_vars1, 0);
       myproj2.execute();
       const gum::ScheduleMultiDim< gum::Tensor< double > >& xres2 = myproj2.result();
-      TS_ASSERT(xres2.multiDim() == res.multiDim());
-      TS_ASSERT(xres2.multiDim() == res2);
+      CHECK(xres2.multiDim() == res.multiDim());
+      CHECK(xres2.multiDim() == res2);
 
       gum::ScheduleProjection< gum::Tensor< double > > myproj3(f2, del_vars2, myProjectMin);
-      TS_ASSERT(!myproj3.implyDeletion());
-      TS_ASSERT(myproj3 != myproj);
+      CHECK(!myproj3.implyDeletion());
+      CHECK(myproj3 != myproj);
       const gum::ScheduleMultiDim< gum::Tensor< double > >& xxres3 = myproj3.result();
-      TS_ASSERT(xxres3.isAbstract());
+      CHECK(xxres3.isAbstract());
       myproj3.execute();
-      TS_ASSERT(!xxres3.isAbstract());
+      CHECK(!xxres3.isAbstract());
       gum::Tensor< double > res3
           = gum::Tensor< double >(gum::projectMin(*(pot2.content()), del_vars2));
-      TS_ASSERT(xxres3.multiDim() == res3);
+      CHECK(xxres3.multiDim() == res3);
 
       myproj3 = myproj;
-      TS_ASSERT(!myproj3.implyDeletion());
-      TS_ASSERT(myproj3 == myproj);
+      CHECK(!myproj3.implyDeletion());
+      CHECK(myproj3 == myproj);
       myproj3.execute();
       const gum::ScheduleMultiDim< gum::Tensor< double > >& xres3 = myproj3.result();
-      TS_ASSERT(xres3.multiDim() == res.multiDim());
+      CHECK(xres3.multiDim() == res.multiDim());
 
       const gum::Sequence< const gum::IScheduleMultiDim* >& results = myproj3.results();
-      TS_ASSERT(results.size() == gum::Size(1));
-      TS_ASSERT(res.hasSameContent(*(results[0])));
-      TS_ASSERT(res.hasSameVariables(*(results[0])));
+      CHECK(results.size() == gum::Size(1));
+      CHECK(res.hasSameContent(*(results[0])));
+      CHECK(res.hasSameVariables(*(results[0])));
 
       gum::ScheduleProjection< gum::Tensor< double > > myproj4x(f1, del_vars1, myProjectMax);
-      TS_ASSERT(!myproj4x.implyDeletion());
+      CHECK(!myproj4x.implyDeletion());
 
       gum::ScheduleProjection< gum::Tensor< double > > myproj4(std::move(myproj4x));
-      TS_ASSERT(!myproj4.implyDeletion());
-      TS_ASSERT(myproj4.result().isAbstract());
+      CHECK(!myproj4.implyDeletion());
+      CHECK(myproj4.result().isAbstract());
 
       myproj4.execute();
-      TS_ASSERT(myproj4.result().multiDim() == res2);
+      CHECK(myproj4.result().multiDim() == res2);
       gum::ScheduleProjection< gum::Tensor< double > > myproj4b(std::move(myproj4));
-      TS_ASSERT(!myproj4b.implyDeletion());
-      TS_ASSERT(myproj4b.result().multiDim() == res2);
+      CHECK(!myproj4b.implyDeletion());
+      CHECK(myproj4b.result().multiDim() == res2);
 
       myproj3.setProjectionFunction(myProjectMin);
       gum::Tensor< double > res3b
           = gum::Tensor< double >(gum::projectMin(*(pot1.content()), del_vars1));
-      TS_ASSERT(!myproj3.isExecuted());
+      CHECK(!myproj3.isExecuted());
       myproj3.execute();
-      TS_ASSERT(myproj3.result().multiDim() == res3b);
+      CHECK(myproj3.result().multiDim() == res3b);
 
-      TS_ASSERT(myproj4b != myproj3);
-      TS_ASSERT(myproj4b == myproj);
+      CHECK(myproj4b != myproj3);
+      CHECK(myproj4b == myproj);
       gum::ScheduleProjection< gum::Tensor< double > > myproj3x(myproj3);
       myproj4b = std::move(myproj3x);
-      TS_ASSERT(!myproj4b.implyDeletion());
-      TS_ASSERT(myproj4b != myproj);
+      CHECK(!myproj4b.implyDeletion());
+      CHECK(myproj4b != myproj);
       myproj4b.execute();
-      TS_ASSERT(myproj4b.result().multiDim() == res3b);
+      CHECK(myproj4b.result().multiDim() == res3b);
 
       myproj3 = myproj;
-      TS_ASSERT(!myproj3.implyDeletion());
-      TS_ASSERT(myproj3.result().multiDim() == res.multiDim());
+      CHECK(!myproj3.implyDeletion());
+      CHECK(myproj3.result().multiDim() == res.multiDim());
 
       gum::ScheduleProjection< gum::Tensor< double > > myproj5(f1, del_vars1, myProjectMin);
-      TS_ASSERT(!myproj5.implyDeletion());
+      CHECK(!myproj5.implyDeletion());
       gum::ScheduleProjection< gum::Tensor< double > >* myproj6 = myproj5.clone();
-      TS_ASSERT(!myproj6->implyDeletion());
-      TS_ASSERT(*myproj6 == myproj5);
+      CHECK(!myproj6->implyDeletion());
+      CHECK(*myproj6 == myproj5);
       myproj6->execute();
-      TS_ASSERT(myproj4b.result().multiDim() == res3b);
+      CHECK(myproj4b.result().multiDim() == res3b);
 
       const gum::Sequence< const gum::IScheduleMultiDim* >& args = myproj6->args();
-      TS_ASSERT(args.size() == gum::Size(1));
-      TS_ASSERT(f1 == *(args[0]));
+      CHECK(args.size() == gum::Size(1));
+      CHECK(f1 == *(args[0]));
       delete myproj6;
 
       myproj5.execute();
       myproj5.execute();
 
       const gum::Sequence< const gum::IScheduleMultiDim* >& xresults = myproj5.results();
-      TS_ASSERT(xresults.size() == gum::Size(1));
-      TS_ASSERT(myproj5.result() == *(xresults[0]));
+      CHECK(xresults.size() == gum::Size(1));
+      CHECK(myproj5.result() == *(xresults[0]));
 
       const auto&                                           myproj5const  = myproj5;
       const gum::Sequence< const gum::IScheduleMultiDim* >& xresultsconst = myproj5const.results();
-      TS_ASSERT(!myproj5const.implyDeletion());
-      TS_ASSERT(xresultsconst.size() == gum::Size(1));
-      TS_ASSERT(myproj5.result() == *(xresultsconst[0]));
-      TS_ASSERT(myproj5const.hasSameArguments(myproj5));
-      TS_ASSERT(myproj5const.hasSimilarArguments(myproj5));
-      TS_ASSERT(myproj5const.hasSameArguments(dynamic_cast< gum::ScheduleOperator& >(myproj5)));
-      TS_ASSERT(myproj5const.hasSimilarArguments(dynamic_cast< gum::ScheduleOperator& >(myproj5)));
-      TS_ASSERT(myproj5const == myproj5);
-      TS_ASSERT(!(myproj5const != myproj5));
+      CHECK(!myproj5const.implyDeletion());
+      CHECK(xresultsconst.size() == gum::Size(1));
+      CHECK(myproj5.result() == *(xresultsconst[0]));
+      CHECK(myproj5const.hasSameArguments(myproj5));
+      CHECK(myproj5const.hasSimilarArguments(myproj5));
+      CHECK(myproj5const.hasSameArguments(dynamic_cast< gum::ScheduleOperator& >(myproj5)));
+      CHECK(myproj5const.hasSimilarArguments(dynamic_cast< gum::ScheduleOperator& >(myproj5)));
+      CHECK(myproj5const == myproj5);
+      CHECK(!(myproj5const != myproj5));
 
       const gum::ScheduleOperator& proj5op = myproj5;
-      TS_ASSERT(!proj5op.implyDeletion());
-      TS_ASSERT(myproj5 == proj5op);
-      TS_ASSERT(!(myproj5 != proj5op));
-      TS_ASSERT(myproj5.isSameOperator(proj5op));
-      TS_ASSERT(myproj5.hasSameArguments(proj5op));
-      TS_ASSERT(myproj5.hasSimilarArguments(proj5op));
+      CHECK(!proj5op.implyDeletion());
+      CHECK(myproj5 == proj5op);
+      CHECK(!(myproj5 != proj5op));
+      CHECK(myproj5.isSameOperator(proj5op));
+      CHECK(myproj5.hasSameArguments(proj5op));
+      CHECK(myproj5.hasSimilarArguments(proj5op));
 
       gum::ScheduleProjection< gum::Tensor< double > > myproj7(f1, del_vars1, myProjectMax);
-      TS_ASSERT(!myproj5.isSameOperator(myproj7));
-      TS_ASSERT(myproj5.hasSameArguments(myproj7));
-      TS_ASSERT(myproj5.hasSimilarArguments(myproj7));
+      CHECK(!myproj5.isSameOperator(myproj7));
+      CHECK(myproj5.hasSameArguments(myproj7));
+      CHECK(myproj5.hasSimilarArguments(myproj7));
 
       gum::ScheduleProjection< gum::Tensor< double > > myproj8(f2, del_vars2, myProjectMax);
-      TS_ASSERT(myproj8.isSameOperator(myproj7));
-      TS_ASSERT(!myproj8.hasSameArguments(myproj7));
-      TS_ASSERT(!myproj8.hasSimilarArguments(myproj7));
+      CHECK(myproj8.isSameOperator(myproj7));
+      CHECK(!myproj8.hasSameArguments(myproj7));
+      CHECK(!myproj8.hasSimilarArguments(myproj7));
 
       gum::ScheduleProjection< gum::Tensor< double > > myproj9(f2, del_vars1, myProjectMax);
-      TS_ASSERT(myproj9.isSameOperator(myproj7));
-      TS_ASSERT(!myproj9.hasSameArguments(myproj7));
-      TS_ASSERT(!myproj9.hasSimilarArguments(myproj7));
+      CHECK(myproj9.isSameOperator(myproj7));
+      CHECK(!myproj9.hasSameArguments(myproj7));
+      CHECK(!myproj9.hasSimilarArguments(myproj7));
 
 
       for (unsigned int i = 0; i < vars.size(); ++i)
         delete vars[i];
     }   // namespace gum_tests
 
-    GUM_ACTIVE_TEST(Constants) {
+    static void testConstants() {
       gum::IScheduleMultiDim::resetIdGenerator();
 
       std::vector< gum::LabelizedVariable* > vars(10);
@@ -261,53 +267,53 @@ namespace gum_tests {
 
       gum::VariableSet                                 del_vars1;
       gum::ScheduleProjection< gum::Tensor< double > > myproj1(f1, del_vars1, myProjectMax);
-      TS_ASSERT(myproj1.result().domainSize() == 16)
-      TS_ASSERT(myproj1.nbOperations() == 16.0)
+      CHECK(myproj1.result().domainSize() == 16);
+      CHECK(myproj1.nbOperations() == 16.0);
       auto mem_usage
           = std::pair< double, double >(16.0 * sizeof(double) + sizeof(gum::Tensor< double >),
                                         16.0 * sizeof(double) + sizeof(gum::Tensor< double >));
-      TS_ASSERT(myproj1.memoryUsage() == mem_usage)
-      TS_ASSERT(myproj1.result().isAbstract())
+      CHECK(myproj1.memoryUsage() == mem_usage);
+      CHECK(myproj1.result().isAbstract());
       myproj1.execute();
-      TS_ASSERT(myproj1.result().multiDim() == pot1);
-      TS_ASSERT(&myproj1.result().multiDim() != &pot1);
+      CHECK(myproj1.result().multiDim() == pot1);
+      CHECK(&myproj1.result().multiDim() != &pot1);
 
       del_vars1 << vars[0] << vars[2] << vars[3] << vars[4];
       gum::ScheduleProjection< gum::Tensor< double > > myproj1b(f1, del_vars1, myProjectMax);
-      TS_ASSERT(myproj1b.result().domainSize() == 1)
-      TS_ASSERT(myproj1b.nbOperations() == 16.0)
+      CHECK(myproj1b.result().domainSize() == 1);
+      CHECK(myproj1b.nbOperations() == 16.0);
       mem_usage = std::pair< double, double >(1.0 * sizeof(double) + sizeof(gum::Tensor< double >),
                                               1.0 * sizeof(double) + sizeof(gum::Tensor< double >));
-      TS_ASSERT(myproj1b.memoryUsage() == mem_usage)
-      TS_ASSERT(myproj1b.result().isAbstract())
+      CHECK(myproj1b.memoryUsage() == mem_usage);
+      CHECK(myproj1b.result().isAbstract());
       myproj1b.execute();
-      TS_ASSERT(!myproj1b.result().isAbstract())
-      TS_ASSERT(myproj1b.result().multiDim().domainSize() == 1);
+      CHECK(!myproj1b.result().isAbstract());
+      CHECK(myproj1b.result().multiDim().domainSize() == 1);
       gum::Tensor< double >* pot1b
           = const_cast< gum::ScheduleMultiDim< gum::Tensor< double > >& >(myproj1b.result())
                 .exportMultiDim();
-      TS_ASSERT(pot1b->domainSize() == 1);
+      CHECK(pot1b->domainSize() == 1);
       delete pot1b;
 
       del_vars1.clear();
       del_vars1 << vars[0];
       gum::ScheduleProjection< gum::Tensor< double > > myproj2(f1, del_vars1, myProjectMax);
-      TS_ASSERT(myproj2.result().domainSize() == 8)
+      CHECK(myproj2.result().domainSize() == 8);
       myproj2.execute();
       gum::Tensor< double > pot2 = myProjectMax(pot1, del_vars1);
-      TS_ASSERT(pot2 == myproj2.result().multiDim())
+      CHECK(pot2 == myproj2.result().multiDim());
       gum::Sequence< const gum::IScheduleMultiDim* > seq;
       gum::ScheduleMultiDim< gum::Tensor< double > > xpot2(pot2, false);
       seq << &xpot2;
       myproj2.updateArgs(seq);
-      TS_ASSERT(myproj2.result().domainSize() == 8)
-      TS_ASSERT(myproj2.nbOperations() == 8.0)
+      CHECK(myproj2.result().domainSize() == 8);
+      CHECK(myproj2.nbOperations() == 8.0);
       mem_usage = std::pair< double, double >(8.0 * sizeof(double) + sizeof(gum::Tensor< double >),
                                               8.0 * sizeof(double) + sizeof(gum::Tensor< double >));
-      TS_ASSERT(myproj2.memoryUsage() == mem_usage)
-      TS_ASSERT(myproj2.result().isAbstract())
+      CHECK(myproj2.memoryUsage() == mem_usage);
+      CHECK(myproj2.result().isAbstract());
       myproj2.execute();
-      TS_ASSERT(myproj2.result().multiDim() == pot2);
+      CHECK(myproj2.result().multiDim() == pot2);
 
       gum::Tensor< double > pot3;
       pot3 << *(vars[2]) << *(vars[3]) << *(vars[4]);
@@ -317,7 +323,7 @@ namespace gum_tests {
       seq << &f3;
       myproj2.updateArgs(seq);
       myproj2.execute();
-      TS_ASSERT(myproj2.result().multiDim() == pot3)
+      CHECK(myproj2.result().multiDim() == pot3);
 
       gum::Tensor< double > pot4;
       pot4.fillWith({3.0});
@@ -325,48 +331,48 @@ namespace gum_tests {
       seq.clear();
       seq << &f4;
       myproj2.updateArgs(seq);
-      TS_ASSERT(!myproj2.result().isAbstract())
+      CHECK(!myproj2.result().isAbstract());
       myproj2.execute();
-      TS_ASSERT(!myproj2.result().isAbstract())
-      TS_ASSERT(myproj2.result().multiDim() == pot4)
-      TS_ASSERT(myproj2.result().domainSize() == 1)
+      CHECK(!myproj2.result().isAbstract());
+      CHECK(myproj2.result().multiDim() == pot4);
+      CHECK(myproj2.result().domainSize() == 1);
       mem_usage = std::pair< double, double >(1.0 * sizeof(double) + sizeof(gum::Tensor< double >),
                                               1.0 * sizeof(double) + sizeof(gum::Tensor< double >));
-      TS_ASSERT(myproj2.nbOperations() == 1.0)
-      TS_ASSERT(myproj2.memoryUsage() == mem_usage)
+      CHECK(myproj2.nbOperations() == 1.0);
+      CHECK(myproj2.memoryUsage() == mem_usage);
       myproj2.execute();
-      TS_ASSERT(!myproj2.result().isAbstract())
-      TS_ASSERT(myproj2.result().multiDim() == pot4)
-      TS_ASSERT(myproj2.result().domainSize() == 1)
-      TS_ASSERT(myproj2.nbOperations() == 1.0)
-      TS_ASSERT(myproj2.memoryUsage() == mem_usage)
+      CHECK(!myproj2.result().isAbstract());
+      CHECK(myproj2.result().multiDim() == pot4);
+      CHECK(myproj2.result().domainSize() == 1);
+      CHECK(myproj2.nbOperations() == 1.0);
+      CHECK(myproj2.memoryUsage() == mem_usage);
 
       gum::ScheduleProjection< gum::Tensor< double > > myproj3(f4, del_vars1, myProjectMax);
-      TS_ASSERT(!myproj3.result().isAbstract())
-      TS_ASSERT(myproj3.result().multiDim() == pot4)
-      TS_ASSERT(myproj3.result().domainSize() == 1)
-      TS_ASSERT(myproj3.nbOperations() == 1.0)
-      TS_ASSERT(myproj3.memoryUsage() == mem_usage)
+      CHECK(!myproj3.result().isAbstract());
+      CHECK(myproj3.result().multiDim() == pot4);
+      CHECK(myproj3.result().domainSize() == 1);
+      CHECK(myproj3.nbOperations() == 1.0);
+      CHECK(myproj3.memoryUsage() == mem_usage);
       myproj3.execute();
-      TS_ASSERT(!myproj3.result().isAbstract())
-      TS_ASSERT(myproj3.result().multiDim() == pot4)
-      TS_ASSERT(myproj3.result().domainSize() == 1)
-      TS_ASSERT(myproj3.nbOperations() == 1.0)
-      TS_ASSERT(myproj3.memoryUsage() == mem_usage)
+      CHECK(!myproj3.result().isAbstract());
+      CHECK(myproj3.result().multiDim() == pot4);
+      CHECK(myproj3.result().domainSize() == 1);
+      CHECK(myproj3.nbOperations() == 1.0);
+      CHECK(myproj3.memoryUsage() == mem_usage);
 
       del_vars1.clear();
       gum::ScheduleProjection< gum::Tensor< double > > myproj4(f4, del_vars1, myProjectMax);
-      TS_ASSERT(!myproj4.result().isAbstract())
-      TS_ASSERT(myproj4.result().multiDim() == pot4)
-      TS_ASSERT(myproj4.result().domainSize() == 1)
-      TS_ASSERT(myproj4.nbOperations() == 1.0)
-      TS_ASSERT(myproj4.memoryUsage() == mem_usage)
+      CHECK(!myproj4.result().isAbstract());
+      CHECK(myproj4.result().multiDim() == pot4);
+      CHECK(myproj4.result().domainSize() == 1);
+      CHECK(myproj4.nbOperations() == 1.0);
+      CHECK(myproj4.memoryUsage() == mem_usage);
       myproj3.execute();
-      TS_ASSERT(!myproj4.result().isAbstract())
-      TS_ASSERT(myproj4.result().multiDim() == pot4)
-      TS_ASSERT(myproj4.result().domainSize() == 1)
-      TS_ASSERT(myproj4.nbOperations() == 1.0)
-      TS_ASSERT(myproj4.memoryUsage() == mem_usage)
+      CHECK(!myproj4.result().isAbstract());
+      CHECK(myproj4.result().multiDim() == pot4);
+      CHECK(myproj4.result().domainSize() == 1);
+      CHECK(myproj4.nbOperations() == 1.0);
+      CHECK(myproj4.memoryUsage() == mem_usage);
 
       for (unsigned int i = 0; i < vars.size(); ++i)
         delete vars[i];
@@ -384,9 +390,9 @@ namespace gum_tests {
     }
 
     // projection of a table over a set
-    gum::Tensor< double > proj(const gum::Tensor< double >& table,
-                               const gum::VariableSet&      del_vars,
-                               float                        neutral_elt) {
+    static gum::Tensor< double > proj(const gum::Tensor< double >& table,
+                                      const gum::VariableSet&      del_vars,
+                                      float                        neutral_elt) {
       gum::Tensor< double >                                result;
       const gum::Sequence< const gum::DiscreteVariable* >& vars = table.variablesSequence();
       result.beginMultipleChanges();
@@ -408,5 +414,8 @@ namespace gum_tests {
       return result;
     }
   };
+
+  GUM_TEST_ACTIF(_construct)
+  GUM_TEST_ACTIF(Constants)
 
 } /* namespace gum_tests */

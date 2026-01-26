@@ -1,7 +1,7 @@
 /****************************************************************************
  *   This file is part of the aGrUM/pyAgrum library.                        *
  *                                                                          *
- *   Copyright (c) 2005-2025 by                                             *
+ *   Copyright (c) 2005-2026 by                                             *
  *       - Pierre-Henri WUILLEMIN(_at_LIP6)                                 *
  *       - Christophe GONZALES(_at_AMU)                                     *
  *                                                                          *
@@ -27,7 +27,7 @@
  *                                                                          *
  *   See LICENCES for more details.                                         *
  *                                                                          *
- *   SPDX-FileCopyrightText: Copyright 2005-2025                            *
+ *   SPDX-FileCopyrightText: Copyright 2005-2026                            *
  *       - Pierre-Henri WUILLEMIN(_at_LIP6)                                 *
  *       - Christophe GONZALES(_at_AMU)                                     *
  *   SPDX-License-Identifier: LGPL-3.0-or-later OR MIT                      *
@@ -37,6 +37,7 @@
  *   gitlab   : https://gitlab.com/agrumery/agrum                           *
  *                                                                          *
  ****************************************************************************/
+
 #pragma once
 
 
@@ -55,6 +56,11 @@
 #include <agrum/BN/inference/variableElimination.h>
 #include <agrum/BN/io/BIF/BIFReader.h>
 
+#undef GUM_CURRENT_SUITE
+#undef GUM_CURRENT_MODULE
+#define GUM_CURRENT_SUITE  CompareInferences
+#define GUM_CURRENT_MODULE BN
+
 // The graph used for the tests:
 //          1   2_          1 -> 3
 //         / \ / /          1 -> 4
@@ -65,7 +71,7 @@
 
 namespace gum_tests {
 
-  class GUM_TEST_SUITE(CompareInferences) {
+  struct CompareInferencesTestSuite {
     private:
     // Builds a BN to test the inference
     void fill_bn1(gum::BayesNet< double >& bn) {
@@ -109,15 +115,23 @@ namespace gum_tests {
     gum::BayesNet< double >* bn;
     gum::NodeId              i1, i2, i3, i4, i5;
 
-    void setUp() {
+    CompareInferencesTestSuite() {
+
       bn = new gum::BayesNet< double >();
 
       fill_bn1(*bn);
+
     }
 
-    void tearDown() { delete (bn); }
 
-    GUM_ACTIVE_TEST(InferencesWithNoEvidence) {
+    ~CompareInferencesTestSuite() {
+
+      delete (bn);
+
+    }
+
+
+    void testInferencesWithNoEvidence()const {
       try {
         begin_test_waiting();
 
@@ -138,7 +152,7 @@ namespace gum_tests {
         inf_gibbs.setEpsilon(1e-3);
         inf_gibbs.setMinEpsilonRate(1e-3);
         test_waiting();
-        TS_GUM_ASSERT_THROWS_NOTHING(inf_gibbs.makeInference())
+        GUM_CHECK_ASSERT_THROWS_NOTHING(inf_gibbs.makeInference());
 
         for (const auto i : bn->nodes()) {
           const gum::Tensor< double >& marginal_gibbs = inf_gibbs.posterior(i);
@@ -153,18 +167,10 @@ namespace gum_tests {
           I << bn->variable(i);
 
           for (I.setFirst(); !I.end(); ++I) {
-            TS_ASSERT_DELTA(marginal_gibbs[I],
-                            marginal_ShaShe[I],
-                            5e-2);  // APPROX INFERENCE
-            TS_ASSERT_DELTA(marginal_LazyProp[I],
-                            marginal_ShaShe[I],
-                            1e-10);  // EXACT INFERENCE
-            TS_ASSERT_DELTA(marginal_LazyProp[I],
-                            marginal_ValElim[I],
-                            1e-10);  // EXACT INFERENCE
-            TS_ASSERT_DELTA(marginal_ShaShe[I],
-                            marginal_ValElim[I],
-                            1e-10);  // EXACT INFERENCE
+            CHECK((marginal_gibbs[I]) == doctest::Approx(marginal_ShaShe[I]).epsilon(5e-2));  // APPROX INFERENCE
+            CHECK((marginal_LazyProp[I]) == doctest::Approx(marginal_ShaShe[I]).epsilon(1e-10));  // EXACT INFERENCE
+            CHECK((marginal_LazyProp[I]) == doctest::Approx(marginal_ValElim[I]).epsilon(1e-10));  // EXACT INFERENCE
+            CHECK((marginal_ShaShe[I]) == doctest::Approx(marginal_ValElim[I]).epsilon(1e-10));  // EXACT INFERENCE
           }
         }
         end_test_waiting();
@@ -173,7 +179,7 @@ namespace gum_tests {
       }
     }
 
-    GUM_ACTIVE_TEST(InferencesWithHardEvidence) {
+    void testInferencesWithHardEvidence()const {
       begin_test_waiting();
       gum::Tensor< double > e_i1;
       e_i1 << bn->variable(i1);
@@ -212,7 +218,7 @@ namespace gum_tests {
       inf_his.setEpsilon(1e-3);
       inf_his.setMinEpsilonRate(1e-3);
       test_waiting();
-      TS_GUM_ASSERT_THROWS_NOTHING(inf_his.makeInference())
+      GUM_CHECK_ASSERT_THROWS_NOTHING(inf_his.makeInference());
 
       for (const auto i : bn->nodes()) {
         const gum::Tensor< double >& marginal_gibbs = inf_his.posterior(i);
@@ -226,24 +232,16 @@ namespace gum_tests {
         I << bn->variable(i);
 
         for (I.setFirst(); !I.end(); ++I) {
-          TS_ASSERT_DELTA(marginal_gibbs[I],
-                          marginal_ShaShe[I],
-                          1e-1);  // APPROX INFERENCE
-          TS_ASSERT_DELTA(marginal_LazyProp[I],
-                          marginal_ShaShe[I],
-                          1e-10);  // EXACT INFERENCE
-          TS_ASSERT_DELTA(marginal_LazyProp[I],
-                          marginal_VarElim[I],
-                          1e-10);  // EXACT INFERENCE
-          TS_ASSERT_DELTA(marginal_ShaShe[I],
-                          marginal_VarElim[I],
-                          1e-10);  // EXACT INFERENCE
+          CHECK((marginal_gibbs[I]) == doctest::Approx(marginal_ShaShe[I]).epsilon(1e-1));  // APPROX INFERENCE
+          CHECK((marginal_LazyProp[I]) == doctest::Approx(marginal_ShaShe[I]).epsilon(1e-10));  // EXACT INFERENCE
+          CHECK((marginal_LazyProp[I]) == doctest::Approx(marginal_VarElim[I]).epsilon(1e-10));  // EXACT INFERENCE
+          CHECK((marginal_ShaShe[I]) == doctest::Approx(marginal_VarElim[I]).epsilon(1e-10));  // EXACT INFERENCE
         }
       }
       end_test_waiting();
     }
 
-    GUM_ACTIVE_TEST(InferencesWithSoftEvidence) {
+    void testInferencesWithSoftEvidence() const {
       begin_test_waiting();
 
       gum::Tensor< double > e_i1;
@@ -287,21 +285,15 @@ namespace gum_tests {
         I << bn->variable(i);
 
         for (I.setFirst(); !I.end(); ++I) {
-          TS_ASSERT_DELTA(marginal_LazyProp[I],
-                          marginal_ShaShe[I],
-                          1e-10);  // EXACT INFERENCE
-          TS_ASSERT_DELTA(marginal_LazyProp[I],
-                          marginal_VarElim[I],
-                          1e-10);  // EXACT INFERENCE
-          TS_ASSERT_DELTA(marginal_ShaShe[I],
-                          marginal_VarElim[I],
-                          1e-10);  // EXACT INFERENCE
+          CHECK((marginal_LazyProp[I]) == doctest::Approx(marginal_ShaShe[I]).epsilon(1e-10));  // EXACT INFERENCE
+          CHECK((marginal_LazyProp[I]) == doctest::Approx(marginal_VarElim[I]).epsilon(1e-10));  // EXACT INFERENCE
+          CHECK((marginal_ShaShe[I]) == doctest::Approx(marginal_VarElim[I]).epsilon(1e-10));  // EXACT INFERENCE
         }
       }
       end_test_waiting();
     }
 
-  GUM_ACTIVE_TEST(MultipleInference) {
+  static void testMultipleInference() {
       try {
         gum::BayesNet< double > bn;
         gum::NodeId            c, s, r, w;
@@ -342,9 +334,9 @@ namespace gum_tests {
           {
             const gum::Tensor< double >& p = inf.posterior(w);
             gum::Instantiation             I(p);
-            TS_ASSERT_DELTA(p[I], 0.3529f, TS_GUM_SMALL_ERROR)
+            CHECK((p[I]) == doctest::Approx(0.3529f).epsilon(GUM_SMALL_ERROR));
             ++I;
-            TS_ASSERT_DELTA(p[I], 0.6471f, TS_GUM_SMALL_ERROR)
+            CHECK((p[I]) == doctest::Approx(0.6471f).epsilon(GUM_SMALL_ERROR));
           }
 
           inf.eraseAllEvidence();
@@ -354,9 +346,9 @@ namespace gum_tests {
           {
             const gum::Tensor< double >& p = inf.posterior(w);
             gum::Instantiation             I(p);
-            TS_ASSERT_DELTA(p[I], 0.082f, TS_GUM_SMALL_ERROR)
+            CHECK((p[I]) == doctest::Approx(0.082f).epsilon(GUM_SMALL_ERROR));
             ++I;
-            TS_ASSERT_DELTA(p[I], 0.918f, TS_GUM_SMALL_ERROR)
+            CHECK((p[I]) == doctest::Approx(0.918f).epsilon(GUM_SMALL_ERROR));
           }
         }
 
@@ -366,9 +358,9 @@ namespace gum_tests {
           {
             const gum::Tensor< double >& p = inf.posterior(w);
             gum::Instantiation             I(p);
-            TS_ASSERT_DELTA(p[I], 0.3529f, TS_GUM_SMALL_ERROR)
+            CHECK((p[I]) == doctest::Approx(0.3529f).epsilon(GUM_SMALL_ERROR));
             ++I;
-            TS_ASSERT_DELTA(p[I], 0.6471f, TS_GUM_SMALL_ERROR)
+            CHECK((p[I]) == doctest::Approx(0.6471f).epsilon(GUM_SMALL_ERROR));
           }
 
           inf.eraseAllEvidence();
@@ -378,9 +370,9 @@ namespace gum_tests {
           {
             const gum::Tensor< double >& p = inf.posterior(w);
             gum::Instantiation             I(p);
-            TS_ASSERT_DELTA(p[I], 0.082f, TS_GUM_SMALL_ERROR)
+            CHECK((p[I]) == doctest::Approx(0.082f).epsilon(GUM_SMALL_ERROR));
             ++I;
-            TS_ASSERT_DELTA(p[I], 0.918f, TS_GUM_SMALL_ERROR)
+            CHECK((p[I]) == doctest::Approx(0.918f).epsilon(GUM_SMALL_ERROR));
           }
         }
 
@@ -390,9 +382,9 @@ namespace gum_tests {
           {
             const gum::Tensor< double >& p = inf.posterior(w);
             gum::Instantiation             I(p);
-            TS_ASSERT_DELTA(p[I], 0.3529f, TS_GUM_SMALL_ERROR)
+            CHECK((p[I]) == doctest::Approx(0.3529f).epsilon(GUM_SMALL_ERROR));
             ++I;
-            TS_ASSERT_DELTA(p[I], 0.6471f, TS_GUM_SMALL_ERROR)
+            CHECK((p[I]) == doctest::Approx(0.6471f).epsilon(GUM_SMALL_ERROR));
           }
 
           inf.eraseAllEvidence();
@@ -402,9 +394,9 @@ namespace gum_tests {
           {
             const gum::Tensor< double >& p = inf.posterior(w);
             gum::Instantiation             I(p);
-            TS_ASSERT_DELTA(p[I], 0.082f, TS_GUM_SMALL_ERROR)
+            CHECK((p[I]) == doctest::Approx(0.082f).epsilon(GUM_SMALL_ERROR));
             ++I;
-            TS_ASSERT_DELTA(p[I], 0.918f, TS_GUM_SMALL_ERROR)
+            CHECK((p[I]) == doctest::Approx(0.918f).epsilon(GUM_SMALL_ERROR));
           }
         }
       } catch (gum::Exception& e) {
@@ -414,38 +406,37 @@ namespace gum_tests {
 
 
   // compare only Lazy and ShaferShenoy on alarm BN
-  void
-  testAlarm() {
+  static void testAlarm() {
     // Arrange
     std::string              file = GET_RESSOURCES_PATH("bif/alarm.bif");
     gum::BayesNet< double >  bn;
     gum::BIFReader< double > reader(&bn, file);
-    TS_GUM_ASSERT_THROWS_NOTHING(reader.proceed())
+    GUM_CHECK_ASSERT_THROWS_NOTHING(reader.proceed());
     gum::VariableElimination< double >   ve(&bn);
     gum::ShaferShenoyInference< double > ss(&bn);
     gum::LazyPropagation< double >       lazy(&bn);
     gum::Tensor< double >             p_ve, p_ss, p_lazy;
     for (auto var_id : bn.nodes()) {
       // Act
-      TS_GUM_ASSERT_THROWS_NOTHING(p_ve = ve.posterior(var_id))
-      TS_GUM_ASSERT_THROWS_NOTHING(p_ss = ss.posterior(var_id))
-      TS_GUM_ASSERT_THROWS_NOTHING(p_lazy = lazy.posterior(var_id))
+      GUM_CHECK_ASSERT_THROWS_NOTHING(p_ve = ve.posterior(var_id));
+      GUM_CHECK_ASSERT_THROWS_NOTHING(p_ss = ss.posterior(var_id));
+      GUM_CHECK_ASSERT_THROWS_NOTHING(p_lazy = lazy.posterior(var_id));
       // Assert
-      TS_ASSERT_EQUALS(p_ve.domainSize(), p_ss.domainSize())
-      TS_ASSERT_EQUALS(p_ve.domainSize(), p_lazy.domainSize())
+      CHECK((p_ve.domainSize()) == (p_ss.domainSize()));
+      CHECK((p_ve.domainSize()) == (p_lazy.domainSize()));
       for (gum::Instantiation i(p_ve); !i.end(); i.inc()) {
-        TS_ASSERT_DELTA(p_ve[i], p_ss[i], 1e-6)
-        TS_ASSERT_DELTA(p_ve[i], p_lazy[i], 1e-6)
+        CHECK((p_ve[i]) == doctest::Approx(p_ss[i]).epsilon(1e-6));
+        CHECK((p_ve[i]) == doctest::Approx(p_lazy[i]).epsilon(1e-6));
       }
     }
   }
 
-  GUM_ACTIVE_TEST(AlarmWithHardEvidence) {
+  static void testAlarmWithHardEvidence() {
     // Arrange
     std::string              file = GET_RESSOURCES_PATH("bif/alarm.bif");
     gum::BayesNet< double >  bn;
     gum::BIFReader< double > reader(&bn, file);
-    TS_GUM_ASSERT_THROWS_NOTHING(reader.proceed())
+    GUM_CHECK_ASSERT_THROWS_NOTHING(reader.proceed());
     gum::VariableElimination< double >   ve(&bn);
     gum::ShaferShenoyInference< double > ss(&bn);
     gum::LazyPropagation< double >       lazy(&bn);
@@ -457,25 +448,25 @@ namespace gum_tests {
     }
     for (auto var_id : bn.nodes()) {
       // Act
-      TS_GUM_ASSERT_THROWS_NOTHING(p_ve = ve.posterior(var_id))
-      TS_GUM_ASSERT_THROWS_NOTHING(p_ss = ss.posterior(var_id))
-      TS_GUM_ASSERT_THROWS_NOTHING(p_lazy = lazy.posterior(var_id))
+      GUM_CHECK_ASSERT_THROWS_NOTHING(p_ve = ve.posterior(var_id));
+      GUM_CHECK_ASSERT_THROWS_NOTHING(p_ss = ss.posterior(var_id));
+      GUM_CHECK_ASSERT_THROWS_NOTHING(p_lazy = lazy.posterior(var_id));
       // Assert
-      TS_ASSERT_EQUALS(p_ve.domainSize(), p_ss.domainSize())
-      TS_ASSERT_EQUALS(p_ve.domainSize(), p_lazy.domainSize())
+      CHECK((p_ve.domainSize()) == (p_ss.domainSize()));
+      CHECK((p_ve.domainSize()) == (p_lazy.domainSize()));
       for (gum::Instantiation i(p_ve); !i.end(); i.inc()) {
-        TS_ASSERT_DELTA(p_ve[i], p_ss[i], 1e-6)
-        TS_ASSERT_DELTA(p_ve[i], p_lazy[i], 1e-6)
+        CHECK((p_ve[i]) == doctest::Approx(p_ss[i]).epsilon(1e-6));
+        CHECK((p_ve[i]) == doctest::Approx(p_lazy[i]).epsilon(1e-6));
       }
     }
   }
 
-  GUM_ACTIVE_TEST(AlarmWithSoftEvidence) {
+  static void testAlarmWithSoftEvidence() {
     // Arrange
     std::string              file = GET_RESSOURCES_PATH("bif/alarm.bif");
     gum::BayesNet< double >  bn;
     gum::BIFReader< double > reader(&bn, file);
-    TS_GUM_ASSERT_THROWS_NOTHING(reader.proceed())
+    GUM_CHECK_ASSERT_THROWS_NOTHING(reader.proceed());
     gum::VariableElimination< double >   ve(&bn);
     gum::ShaferShenoyInference< double > ss(&bn);
     gum::LazyPropagation< double >       lazy(&bn);
@@ -496,54 +487,54 @@ namespace gum_tests {
 
     for (auto var_id : bn.nodes()) {
       // Act
-      TS_GUM_ASSERT_THROWS_NOTHING(p_ve = ve.posterior(var_id))
-      TS_GUM_ASSERT_THROWS_NOTHING(p_ss = ss.posterior(var_id))
-      TS_GUM_ASSERT_THROWS_NOTHING(p_lazy = lazy.posterior(var_id))
+      GUM_CHECK_ASSERT_THROWS_NOTHING(p_ve = ve.posterior(var_id));
+      GUM_CHECK_ASSERT_THROWS_NOTHING(p_ss = ss.posterior(var_id));
+      GUM_CHECK_ASSERT_THROWS_NOTHING(p_lazy = lazy.posterior(var_id));
       // Assert
-      TS_ASSERT_EQUALS(p_ve.domainSize(), p_ss.domainSize())
-      TS_ASSERT_EQUALS(p_ve.domainSize(), p_lazy.domainSize())
+      CHECK((p_ve.domainSize()) == (p_ss.domainSize()));
+      CHECK((p_ve.domainSize()) == (p_lazy.domainSize()));
 
       gum::Instantiation i_ve(p_ve);
       for (gum::Instantiation i(p_ve); !i.end(); i.inc()) {
-        TS_ASSERT_DELTA(p_ve[i], p_ss[i], 1e-6)
-        TS_ASSERT_DELTA(p_ve[i], p_lazy[i], 1e-6)
+        CHECK((p_ve[i]) == doctest::Approx(p_ss[i]).epsilon(1e-6));
+        CHECK((p_ve[i]) == doctest::Approx(p_lazy[i]).epsilon(1e-6));
       }
     }
   }
 
-  GUM_ACTIVE_TEST(Asia) {
+  static void testAsia() {
     // Arrange
     std::string              file = GET_RESSOURCES_PATH("bif/asia.bif");
     gum::BayesNet< double >  bn;
     gum::BIFReader< double > reader(&bn, file);
-    TS_GUM_ASSERT_THROWS_NOTHING(reader.proceed())
+    GUM_CHECK_ASSERT_THROWS_NOTHING(reader.proceed());
     gum::VariableElimination< double >   ve(&bn);
     gum::ShaferShenoyInference< double > ss(&bn);
     gum::LazyPropagation< double >       lazy(&bn);
     gum::Tensor< double >             p_ve, p_ss, p_lazy;
     for (auto var_id : bn.nodes()) {
       // Act
-      TS_GUM_ASSERT_THROWS_NOTHING(p_ve = ve.posterior(var_id))
-      TS_GUM_ASSERT_THROWS_NOTHING(p_ss = ss.posterior(var_id))
-      TS_GUM_ASSERT_THROWS_NOTHING(p_lazy = lazy.posterior(var_id))
+      GUM_CHECK_ASSERT_THROWS_NOTHING(p_ve = ve.posterior(var_id));
+      GUM_CHECK_ASSERT_THROWS_NOTHING(p_ss = ss.posterior(var_id));
+      GUM_CHECK_ASSERT_THROWS_NOTHING(p_lazy = lazy.posterior(var_id));
       // Assert
-      TS_ASSERT_EQUALS(p_ve.domainSize(), p_ss.domainSize())
-      TS_ASSERT_EQUALS(p_ve.domainSize(), p_lazy.domainSize())
+      CHECK((p_ve.domainSize()) == (p_ss.domainSize()));
+      CHECK((p_ve.domainSize()) == (p_lazy.domainSize()));
 
       gum::Instantiation i_ve(p_ve);
       for (gum::Instantiation i(p_ve); !i.end(); i.inc()) {
-        TS_ASSERT_DELTA(p_ve[i], p_ss[i], 1e-6)
-        TS_ASSERT_DELTA(p_ve[i], p_lazy[i], 1e-6)
+        CHECK((p_ve[i]) == doctest::Approx(p_ss[i]).epsilon(1e-6));
+        CHECK((p_ve[i]) == doctest::Approx(p_lazy[i]).epsilon(1e-6));
       }
     }
   }
 
-  GUM_ACTIVE_TEST(AsiaWithHardEvidence) {
+  static void testAsiaWithHardEvidence() {
     // Arrange
     std::string              file = GET_RESSOURCES_PATH("bif/asia.bif");
     gum::BayesNet< double >  bn;
     gum::BIFReader< double > reader(&bn, file);
-    TS_GUM_ASSERT_THROWS_NOTHING(reader.proceed())
+    GUM_CHECK_ASSERT_THROWS_NOTHING(reader.proceed());
     gum::VariableElimination< double >   ve(&bn);
     gum::ShaferShenoyInference< double > ss(&bn);
     gum::LazyPropagation< double >       lazy(&bn);
@@ -556,27 +547,27 @@ namespace gum_tests {
     }
     for (auto var_id : bn.nodes()) {
       // Act
-      TS_GUM_ASSERT_THROWS_NOTHING(p_ve = ve.posterior(var_id))
-      TS_GUM_ASSERT_THROWS_NOTHING(p_ss = ss.posterior(var_id))
-      TS_GUM_ASSERT_THROWS_NOTHING(p_lazy = lazy.posterior(var_id))
+      GUM_CHECK_ASSERT_THROWS_NOTHING(p_ve = ve.posterior(var_id));
+      GUM_CHECK_ASSERT_THROWS_NOTHING(p_ss = ss.posterior(var_id));
+      GUM_CHECK_ASSERT_THROWS_NOTHING(p_lazy = lazy.posterior(var_id));
       // Assert
-      TS_ASSERT_EQUALS(p_ve.domainSize(), p_ss.domainSize())
-      TS_ASSERT_EQUALS(p_ve.domainSize(), p_lazy.domainSize())
+      CHECK((p_ve.domainSize()) == (p_ss.domainSize()));
+      CHECK((p_ve.domainSize()) == (p_lazy.domainSize()));
 
       gum::Instantiation i_ve(p_ve);
       for (gum::Instantiation i(p_ve); !i.end(); i.inc()) {
-        TS_ASSERT_DELTA(p_ve[i], p_ss[i], 1e-6)
-        TS_ASSERT_DELTA(p_ve[i], p_lazy[i], 1e-6)
+        CHECK((p_ve[i]) == doctest::Approx(p_ss[i]).epsilon(1e-6));
+        CHECK((p_ve[i]) == doctest::Approx(p_lazy[i]).epsilon(1e-6));
       }
     }
   }
 
-  GUM_ACTIVE_TEST(AsiaWithSoftEvidence) {
+  static void testAsiaWithSoftEvidence() {
     // Arrange
     std::string              file = GET_RESSOURCES_PATH("bif/asia.bif");
     gum::BayesNet< double >  bn;
     gum::BIFReader< double > reader(&bn, file);
-    TS_GUM_ASSERT_THROWS_NOTHING(reader.proceed())
+    GUM_CHECK_ASSERT_THROWS_NOTHING(reader.proceed());
     gum::VariableElimination< double >   ve(&bn);
     gum::ShaferShenoyInference< double > ss(&bn);
     gum::LazyPropagation< double >       lazy(&bn);
@@ -597,19 +588,29 @@ namespace gum_tests {
 
     for (auto var_id : bn.nodes()) {
       // Act
-      TS_GUM_ASSERT_THROWS_NOTHING(p_ve = ve.posterior(var_id))
-      TS_GUM_ASSERT_THROWS_NOTHING(p_ss = ss.posterior(var_id))
-      TS_GUM_ASSERT_THROWS_NOTHING(p_lazy = lazy.posterior(var_id))
+      GUM_CHECK_ASSERT_THROWS_NOTHING(p_ve = ve.posterior(var_id));
+      GUM_CHECK_ASSERT_THROWS_NOTHING(p_ss = ss.posterior(var_id));
+      GUM_CHECK_ASSERT_THROWS_NOTHING(p_lazy = lazy.posterior(var_id));
       // Assert
-      TS_ASSERT_EQUALS(p_ve.domainSize(), p_ss.domainSize())
-      TS_ASSERT_EQUALS(p_ve.domainSize(), p_lazy.domainSize())
+      CHECK((p_ve.domainSize()) == (p_ss.domainSize()));
+      CHECK((p_ve.domainSize()) == (p_lazy.domainSize()));
 
       gum::Instantiation i_ve(p_ve);
       for (gum::Instantiation i(p_ve); !i.end(); i.inc()) {
-        TS_ASSERT_DELTA(p_ve[i], p_ss[i], 1e-6)
-        TS_ASSERT_DELTA(p_ve[i], p_lazy[i], 1e-6)
+        CHECK((p_ve[i]) == doctest::Approx(p_ss[i]).epsilon(1e-6));
+        CHECK((p_ve[i]) == doctest::Approx(p_lazy[i]).epsilon(1e-6));
       }
     }
   }
 };
+
+GUM_TEST_ACTIF(InferencesWithNoEvidence)
+GUM_TEST_ACTIF(InferencesWithHardEvidence)
+GUM_TEST_ACTIF(InferencesWithSoftEvidence)
+GUM_TEST_ACTIF(MultipleInference)
+GUM_TEST_ACTIF(AlarmWithHardEvidence)
+GUM_TEST_ACTIF(AlarmWithSoftEvidence)
+GUM_TEST_ACTIF(Asia)
+GUM_TEST_ACTIF(AsiaWithHardEvidence)
+GUM_TEST_ACTIF(AsiaWithSoftEvidence)
 }

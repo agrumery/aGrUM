@@ -1,7 +1,7 @@
 /****************************************************************************
  *   This file is part of the aGrUM/pyAgrum library.                        *
  *                                                                          *
- *   Copyright (c) 2005-2025 by                                             *
+ *   Copyright (c) 2005-2026 by                                             *
  *       - Pierre-Henri WUILLEMIN(_at_LIP6)                                 *
  *       - Christophe GONZALES(_at_AMU)                                     *
  *                                                                          *
@@ -27,7 +27,7 @@
  *                                                                          *
  *   See LICENCES for more details.                                         *
  *                                                                          *
- *   SPDX-FileCopyrightText: Copyright 2005-2025                            *
+ *   SPDX-FileCopyrightText: Copyright 2005-2026                            *
  *       - Pierre-Henri WUILLEMIN(_at_LIP6)                                 *
  *       - Christophe GONZALES(_at_AMU)                                     *
  *   SPDX-License-Identifier: LGPL-3.0-or-later OR MIT                      *
@@ -37,6 +37,7 @@
  *   gitlab   : https://gitlab.com/agrumery/agrum                           *
  *                                                                          *
  ****************************************************************************/
+
 #pragma once
 
 
@@ -51,6 +52,11 @@
 #include <agrum/base/variables/labelizedVariable.h>
 #include <agrum/ID/influenceDiagram.h>
 #include <agrum/ID/io/BIFXML/BIFXMLIDReader.h>
+
+#undef GUM_CURRENT_SUITE
+#undef GUM_CURRENT_MODULE
+#define GUM_CURRENT_SUITE  BIFXMLIDReader
+#define GUM_CURRENT_MODULE ID
 
 // The graph used for the tests:
 //           D1
@@ -86,32 +92,32 @@ namespace gum_tests {
     int getNbr() { return _nbr_; };
   };
 
-  class GUM_TEST_SUITE(BIFXMLIDReader) {
+  struct BIFXMLIDReaderTestSuite {
     public:
-    GUM_ACTIVE_TEST(Constuctor) {
+    static void testConstuctor() {
       std::string file = GET_RESSOURCES_PATH("ID/IDBIFXMLIO_file.xml");
 
       gum::InfluenceDiagram< double > net;
 
       gum::BIFXMLIDReader< double >* reader = 0;
 
-      TS_GUM_ASSERT_THROWS_NOTHING(reader = new gum::BIFXMLIDReader< double >(&net, file))
+      GUM_CHECK_ASSERT_THROWS_NOTHING(reader = new gum::BIFXMLIDReader< double >(&net, file));
 
-      TS_GUM_ASSERT_THROWS_NOTHING(delete reader)
+      GUM_CHECK_ASSERT_THROWS_NOTHING(delete reader);
 
       // delete reader;
     }   // namespace gum_tests
 
-    GUM_ACTIVE_TEST(Read_file1) {
+    static void testRead_file1() {
       std::string file = GET_RESSOURCES_PATH("ID/IDBIFXMLIO_file.xml");
 
       gum::InfluenceDiagram< double >* net = new gum::InfluenceDiagram< double >();
 
       gum::BIFXMLIDReader< double > reader(net, file);
 
-      TS_GUM_ASSERT_THROWS_NOTHING(reader.proceed())
+      GUM_CHECK_ASSERT_THROWS_NOTHING(reader.proceed());
 
-      TS_ASSERT_DIFFERS(net, nullptr)
+      CHECK((net) != (nullptr));
 
       // For comparison with what have wrote Writer
       std::string   dotfile = GET_RESSOURCES_PATH("outputs/IDToDotReader.dot");
@@ -125,21 +131,21 @@ namespace gum_tests {
 
       if (output.fail()) { GUM_ERROR(gum::IOError, "Writing in the ostream failed.") }
 
-      if (net != nullptr) { TS_ASSERT(!net->empty()); }
+      if (net != nullptr) { CHECK(!net->empty()); }
 
       delete net;
     }
 
-    GUM_ACTIVE_TEST(Read_file2_float) {
+    static void testRead_file2_float() {
       std::string file = GET_RESSOURCES_PATH("ID/IDBIFXMLIO_file.xml");
 
       gum::InfluenceDiagram< double >* net = new gum::InfluenceDiagram< double >();
 
       gum::BIFXMLIDReader< double > reader(net, file);
 
-      TS_GUM_ASSERT_THROWS_NOTHING(reader.proceed())
+      GUM_CHECK_ASSERT_THROWS_NOTHING(reader.proceed());
 
-      TS_ASSERT_DIFFERS(net, nullptr)
+      CHECK((net) != (nullptr));
 
       if (net != nullptr) {
         gum::HashTable< std::string, gum::NodeId > idMap;
@@ -148,230 +154,230 @@ namespace gum_tests {
           idMap.insert(net->variable(node).name(), node);
 
         gum::NodeId decisionVar1Id = idMap["decisionVar1"];
-        TS_ASSERT(net->isDecisionNode(decisionVar1Id))
-        TS_ASSERT(!net->isUtilityNode(decisionVar1Id))
-        TS_ASSERT(!net->isChanceNode(decisionVar1Id))
+        CHECK(net->isDecisionNode(decisionVar1Id));
+        CHECK(!net->isUtilityNode(decisionVar1Id));
+        CHECK(!net->isChanceNode(decisionVar1Id));
         const gum::DiscreteVariable& decisionVar1 = net->variable(decisionVar1Id);
-        TS_ASSERT_EQUALS(decisionVar1.name(), "decisionVar1")
-        TS_ASSERT_EQUALS(decisionVar1.domainSize(), static_cast< gum::Size >(2))
-        TS_ASSERT_EQUALS(decisionVar1.label(0), "0")
-        TS_ASSERT_EQUALS(decisionVar1.label(1), "1")
+        CHECK((decisionVar1.name()) == ("decisionVar1"));
+        CHECK((decisionVar1.domainSize()) == (static_cast< gum::Size >(2)));
+        CHECK((decisionVar1.label(0)) == ("0"));
+        CHECK((decisionVar1.label(1)) == ("1"));
 
         gum::NodeId decisionVar2Id = idMap["decisionVar2"];
-        TS_ASSERT(net->isDecisionNode(decisionVar2Id))
-        TS_ASSERT(!net->isUtilityNode(decisionVar2Id))
-        TS_ASSERT(!net->isChanceNode(decisionVar2Id))
+        CHECK(net->isDecisionNode(decisionVar2Id));
+        CHECK(!net->isUtilityNode(decisionVar2Id));
+        CHECK(!net->isChanceNode(decisionVar2Id));
         const gum::DiscreteVariable& decisionVar2 = net->variable(decisionVar2Id);
-        TS_ASSERT_EQUALS(decisionVar2.name(), "decisionVar2")
-        TS_ASSERT_EQUALS(decisionVar2.domainSize(), static_cast< gum::Size >(2))
-        TS_ASSERT_EQUALS(decisionVar2.label(0), "0")
-        TS_ASSERT_EQUALS(decisionVar2.label(1), "1")
+        CHECK((decisionVar2.name()) == ("decisionVar2"));
+        CHECK((decisionVar2.domainSize()) == (static_cast< gum::Size >(2)));
+        CHECK((decisionVar2.label(0)) == ("0"));
+        CHECK((decisionVar2.label(1)) == ("1"));
 
         gum::NodeId decisionVar3Id = idMap["decisionVar3"];
-        TS_ASSERT(net->isDecisionNode(decisionVar3Id))
-        TS_ASSERT(!net->isUtilityNode(decisionVar3Id))
-        TS_ASSERT(!net->isChanceNode(decisionVar3Id))
+        CHECK(net->isDecisionNode(decisionVar3Id));
+        CHECK(!net->isUtilityNode(decisionVar3Id));
+        CHECK(!net->isChanceNode(decisionVar3Id));
         const gum::DiscreteVariable& decisionVar3 = net->variable(decisionVar3Id);
-        TS_ASSERT_EQUALS(decisionVar3.name(), "decisionVar3")
-        TS_ASSERT_EQUALS(decisionVar3.domainSize(), static_cast< gum::Size >(2))
-        TS_ASSERT_EQUALS(decisionVar3.label(0), "0")
-        TS_ASSERT_EQUALS(decisionVar3.label(1), "1")
+        CHECK((decisionVar3.name()) == ("decisionVar3"));
+        CHECK((decisionVar3.domainSize()) == (static_cast< gum::Size >(2)));
+        CHECK((decisionVar3.label(0)) == ("0"));
+        CHECK((decisionVar3.label(1)) == ("1"));
 
         gum::NodeId decisionVar4Id = idMap["decisionVar4"];
-        TS_ASSERT(net->isDecisionNode(decisionVar4Id))
-        TS_ASSERT(!net->isUtilityNode(decisionVar4Id))
-        TS_ASSERT(!net->isChanceNode(decisionVar4Id))
+        CHECK(net->isDecisionNode(decisionVar4Id));
+        CHECK(!net->isUtilityNode(decisionVar4Id));
+        CHECK(!net->isChanceNode(decisionVar4Id));
         const gum::DiscreteVariable& decisionVar4 = net->variable(decisionVar4Id);
-        TS_ASSERT_EQUALS(decisionVar4.name(), "decisionVar4")
-        TS_ASSERT_EQUALS(decisionVar4.domainSize(), static_cast< gum::Size >(2))
-        TS_ASSERT_EQUALS(decisionVar4.label(0), "0")
-        TS_ASSERT_EQUALS(decisionVar4.label(1), "1")
+        CHECK((decisionVar4.name()) == ("decisionVar4"));
+        CHECK((decisionVar4.domainSize()) == (static_cast< gum::Size >(2)));
+        CHECK((decisionVar4.label(0)) == ("0"));
+        CHECK((decisionVar4.label(1)) == ("1"));
 
         gum::NodeId chanceVar1Id = idMap["chanceVar1"];
-        TS_ASSERT(!net->isDecisionNode(chanceVar1Id))
-        TS_ASSERT(!net->isUtilityNode(chanceVar1Id))
-        TS_ASSERT(net->isChanceNode(chanceVar1Id))
+        CHECK(!net->isDecisionNode(chanceVar1Id));
+        CHECK(!net->isUtilityNode(chanceVar1Id));
+        CHECK(net->isChanceNode(chanceVar1Id));
         const gum::DiscreteVariable& chanceVar1 = net->variable(chanceVar1Id);
-        TS_ASSERT_EQUALS(chanceVar1.name(), "chanceVar1")
-        TS_ASSERT_EQUALS(chanceVar1.domainSize(), static_cast< gum::Size >(2))
-        TS_ASSERT_EQUALS(chanceVar1.label(0), "0")
-        TS_ASSERT_EQUALS(chanceVar1.label(1), "1")
+        CHECK((chanceVar1.name()) == ("chanceVar1"));
+        CHECK((chanceVar1.domainSize()) == (static_cast< gum::Size >(2)));
+        CHECK((chanceVar1.label(0)) == ("0"));
+        CHECK((chanceVar1.label(1)) == ("1"));
 
         gum::NodeId chanceVar2Id = idMap["chanceVar2"];
-        TS_ASSERT(!net->isDecisionNode(chanceVar2Id))
-        TS_ASSERT(!net->isUtilityNode(chanceVar2Id))
-        TS_ASSERT(net->isChanceNode(chanceVar2Id))
+        CHECK(!net->isDecisionNode(chanceVar2Id));
+        CHECK(!net->isUtilityNode(chanceVar2Id));
+        CHECK(net->isChanceNode(chanceVar2Id));
         const gum::DiscreteVariable& chanceVar2 = net->variable(chanceVar2Id);
-        TS_ASSERT_EQUALS(chanceVar2.name(), "chanceVar2")
-        TS_ASSERT_EQUALS(chanceVar2.domainSize(), static_cast< gum::Size >(2))
-        TS_ASSERT_EQUALS(chanceVar2.label(0), "0")
-        TS_ASSERT_EQUALS(chanceVar2.label(1), "1")
+        CHECK((chanceVar2.name()) == ("chanceVar2"));
+        CHECK((chanceVar2.domainSize()) == (static_cast< gum::Size >(2)));
+        CHECK((chanceVar2.label(0)) == ("0"));
+        CHECK((chanceVar2.label(1)) == ("1"));
 
         gum::NodeId chanceVar3Id = idMap["chanceVar3"];
-        TS_ASSERT(!net->isDecisionNode(chanceVar3Id))
-        TS_ASSERT(!net->isUtilityNode(chanceVar3Id))
-        TS_ASSERT(net->isChanceNode(chanceVar3Id))
+        CHECK(!net->isDecisionNode(chanceVar3Id));
+        CHECK(!net->isUtilityNode(chanceVar3Id));
+        CHECK(net->isChanceNode(chanceVar3Id));
         const gum::DiscreteVariable& chanceVar3 = net->variable(chanceVar3Id);
-        TS_ASSERT_EQUALS(chanceVar3.name(), "chanceVar3")
-        TS_ASSERT_EQUALS(chanceVar3.domainSize(), static_cast< gum::Size >(2))
-        TS_ASSERT_EQUALS(chanceVar3.label(0), "0")
-        TS_ASSERT_EQUALS(chanceVar3.label(1), "1")
+        CHECK((chanceVar3.name()) == ("chanceVar3"));
+        CHECK((chanceVar3.domainSize()) == (static_cast< gum::Size >(2)));
+        CHECK((chanceVar3.label(0)) == ("0"));
+        CHECK((chanceVar3.label(1)) == ("1"));
 
         gum::NodeId chanceVar4Id = idMap["chanceVar4"];
-        TS_ASSERT(!net->isDecisionNode(chanceVar4Id))
-        TS_ASSERT(!net->isUtilityNode(chanceVar4Id))
-        TS_ASSERT(net->isChanceNode(chanceVar4Id))
+        CHECK(!net->isDecisionNode(chanceVar4Id));
+        CHECK(!net->isUtilityNode(chanceVar4Id));
+        CHECK(net->isChanceNode(chanceVar4Id));
         const gum::DiscreteVariable& chanceVar4 = net->variable(chanceVar4Id);
-        TS_ASSERT_EQUALS(chanceVar4.name(), "chanceVar4")
-        TS_ASSERT_EQUALS(chanceVar4.domainSize(), static_cast< gum::Size >(2))
-        TS_ASSERT_EQUALS(chanceVar4.label(0), "0")
-        TS_ASSERT_EQUALS(chanceVar4.label(1), "1")
+        CHECK((chanceVar4.name()) == ("chanceVar4"));
+        CHECK((chanceVar4.domainSize()) == (static_cast< gum::Size >(2)));
+        CHECK((chanceVar4.label(0)) == ("0"));
+        CHECK((chanceVar4.label(1)) == ("1"));
 
         gum::NodeId chanceVar5Id = idMap["chanceVar5"];
-        TS_ASSERT(!net->isDecisionNode(chanceVar5Id))
-        TS_ASSERT(!net->isUtilityNode(chanceVar5Id))
-        TS_ASSERT(net->isChanceNode(chanceVar5Id))
+        CHECK(!net->isDecisionNode(chanceVar5Id));
+        CHECK(!net->isUtilityNode(chanceVar5Id));
+        CHECK(net->isChanceNode(chanceVar5Id));
         const gum::DiscreteVariable& chanceVar5 = net->variable(chanceVar5Id);
-        TS_ASSERT_EQUALS(chanceVar5.name(), "chanceVar5")
-        TS_ASSERT_EQUALS(chanceVar5.domainSize(), static_cast< gum::Size >(2))
-        TS_ASSERT_EQUALS(chanceVar5.label(0), "0")
-        TS_ASSERT_EQUALS(chanceVar5.label(1), "1")
+        CHECK((chanceVar5.name()) == ("chanceVar5"));
+        CHECK((chanceVar5.domainSize()) == (static_cast< gum::Size >(2)));
+        CHECK((chanceVar5.label(0)) == ("0"));
+        CHECK((chanceVar5.label(1)) == ("1"));
 
         gum::NodeId utilityVar1Id = idMap["utilityVar1"];
-        TS_ASSERT(!net->isDecisionNode(utilityVar1Id))
-        TS_ASSERT(net->isUtilityNode(utilityVar1Id))
-        TS_ASSERT(!net->isChanceNode(utilityVar1Id))
+        CHECK(!net->isDecisionNode(utilityVar1Id));
+        CHECK(net->isUtilityNode(utilityVar1Id));
+        CHECK(!net->isChanceNode(utilityVar1Id));
         const gum::DiscreteVariable& utilityVar1 = net->variable(utilityVar1Id);
-        TS_ASSERT_EQUALS(utilityVar1.name(), "utilityVar1")
-        TS_ASSERT_EQUALS(utilityVar1.domainSize(), static_cast< gum::Size >(1))
-        TS_ASSERT_EQUALS(utilityVar1.label(0), "0")
+        CHECK((utilityVar1.name()) == ("utilityVar1"));
+        CHECK((utilityVar1.domainSize()) == (static_cast< gum::Size >(1)));
+        CHECK((utilityVar1.label(0)) == ("0"));
 
         gum::NodeId utilityVar2Id = idMap["utilityVar2"];
-        TS_ASSERT(!net->isDecisionNode(utilityVar2Id))
-        TS_ASSERT(net->isUtilityNode(utilityVar2Id))
-        TS_ASSERT(!net->isChanceNode(utilityVar2Id))
+        CHECK(!net->isDecisionNode(utilityVar2Id));
+        CHECK(net->isUtilityNode(utilityVar2Id));
+        CHECK(!net->isChanceNode(utilityVar2Id));
         const gum::DiscreteVariable& utilityVar2 = net->variable(utilityVar2Id);
-        TS_ASSERT_EQUALS(utilityVar2.name(), "utilityVar2")
-        TS_ASSERT_EQUALS(utilityVar2.domainSize(), static_cast< gum::Size >(1))
-        TS_ASSERT_EQUALS(utilityVar2.label(0), "0")
+        CHECK((utilityVar2.name()) == ("utilityVar2"));
+        CHECK((utilityVar2.domainSize()) == (static_cast< gum::Size >(1)));
+        CHECK((utilityVar2.label(0)) == ("0"));
 
         const gum::Tensor< double >& cptChanceVar1 = net->cpt(idMap["chanceVar1"]);
-        TS_ASSERT_EQUALS(cptChanceVar1.domainSize(), static_cast< gum::Size >(4))
+        CHECK((cptChanceVar1.domainSize()) == (static_cast< gum::Size >(4)));
         gum::Instantiation instChanceVar1(cptChanceVar1);
         instChanceVar1.chgVal(decisionVar1, 0);
         instChanceVar1.chgVal(chanceVar1, 0);
-        TS_ASSERT_DELTA(cptChanceVar1[instChanceVar1], 0.2, 0.001)
+        CHECK((cptChanceVar1[instChanceVar1]) == doctest::Approx(0.2).epsilon(0.001));
         instChanceVar1.chgVal(chanceVar1, 1);
-        TS_ASSERT_DELTA(cptChanceVar1[instChanceVar1], 0.8, 0.001)
+        CHECK((cptChanceVar1[instChanceVar1]) == doctest::Approx(0.8).epsilon(0.001));
         instChanceVar1.chgVal(decisionVar1, 1);
         instChanceVar1.chgVal(chanceVar1, 0);
-        TS_ASSERT_DELTA(cptChanceVar1[instChanceVar1], 0.5, 0.001)
+        CHECK((cptChanceVar1[instChanceVar1]) == doctest::Approx(0.5).epsilon(0.001));
         instChanceVar1.chgVal(chanceVar1, 1);
-        TS_ASSERT_DELTA(cptChanceVar1[instChanceVar1], 0.5, 0.001)
+        CHECK((cptChanceVar1[instChanceVar1]) == doctest::Approx(0.5).epsilon(0.001));
 
         const gum::Tensor< double >& cptChanceVar2 = net->cpt(idMap["chanceVar2"]);
-        TS_ASSERT_EQUALS(cptChanceVar2.domainSize(), static_cast< gum::Size >(4))
+        CHECK((cptChanceVar2.domainSize()) == (static_cast< gum::Size >(4)));
         gum::Instantiation instChanceVar2(cptChanceVar2);
         instChanceVar2.chgVal(chanceVar1, 0);
         instChanceVar2.chgVal(chanceVar2, 0);
-        TS_ASSERT_DELTA(cptChanceVar2[instChanceVar2], 0.1, 0.001)
+        CHECK((cptChanceVar2[instChanceVar2]) == doctest::Approx(0.1).epsilon(0.001));
         instChanceVar2.chgVal(chanceVar2, 1);
-        TS_ASSERT_DELTA(cptChanceVar2[instChanceVar2], 0.9, 0.001)
+        CHECK((cptChanceVar2[instChanceVar2]) == doctest::Approx(0.9).epsilon(0.001));
         instChanceVar2.chgVal(chanceVar1, 1);
         instChanceVar2.chgVal(chanceVar2, 0);
-        TS_ASSERT_DELTA(cptChanceVar2[instChanceVar2], 0.9, 0.001)
+        CHECK((cptChanceVar2[instChanceVar2]) == doctest::Approx(0.9).epsilon(0.001));
         instChanceVar2.chgVal(chanceVar2, 1);
-        TS_ASSERT_DELTA(cptChanceVar2[instChanceVar2], 0.1, 0.001)
+        CHECK((cptChanceVar2[instChanceVar2]) == doctest::Approx(0.1).epsilon(0.001));
 
         const gum::Tensor< double >& cptChanceVar3 = net->cpt(idMap["chanceVar3"]);
-        TS_ASSERT_EQUALS(cptChanceVar3.domainSize(), static_cast< gum::Size >(4))
+        CHECK((cptChanceVar3.domainSize()) == (static_cast< gum::Size >(4)));
         gum::Instantiation instChanceVar3(cptChanceVar3);
         instChanceVar3.chgVal(decisionVar3, 0);
         instChanceVar3.chgVal(chanceVar3, 0);
-        TS_ASSERT_DELTA(cptChanceVar3[instChanceVar3], 0.35, 0.001)
+        CHECK((cptChanceVar3[instChanceVar3]) == doctest::Approx(0.35).epsilon(0.001));
         instChanceVar3.chgVal(chanceVar3, 1);
-        TS_ASSERT_DELTA(cptChanceVar3[instChanceVar3], 0.65, 0.001)
+        CHECK((cptChanceVar3[instChanceVar3]) == doctest::Approx(0.65).epsilon(0.001));
         instChanceVar3.chgVal(decisionVar3, 1);
         instChanceVar3.chgVal(chanceVar3, 0);
-        TS_ASSERT_DELTA(cptChanceVar3[instChanceVar3], 0.19, 0.001)
+        CHECK((cptChanceVar3[instChanceVar3]) == doctest::Approx(0.19).epsilon(0.001));
         instChanceVar3.chgVal(chanceVar3, 1);
-        TS_ASSERT_DELTA(cptChanceVar3[instChanceVar3], 0.81, 0.001)
+        CHECK((cptChanceVar3[instChanceVar3]) == doctest::Approx(0.81).epsilon(0.001));
 
         const gum::Tensor< double >& cptChanceVar4 = net->cpt(idMap["chanceVar4"]);
-        TS_ASSERT_EQUALS(cptChanceVar4.domainSize(), static_cast< gum::Size >(4))
+        CHECK((cptChanceVar4.domainSize()) == (static_cast< gum::Size >(4)));
         gum::Instantiation instChanceVar4(cptChanceVar4);
         instChanceVar4.chgVal(decisionVar2, 0);
         instChanceVar4.chgVal(chanceVar4, 0);
-        TS_ASSERT_DELTA(cptChanceVar4[instChanceVar4], 0.4, 0.001)
+        CHECK((cptChanceVar4[instChanceVar4]) == doctest::Approx(0.4).epsilon(0.001));
         instChanceVar4.chgVal(chanceVar4, 1);
-        TS_ASSERT_DELTA(cptChanceVar4[instChanceVar4], 0.6, 0.001)
+        CHECK((cptChanceVar4[instChanceVar4]) == doctest::Approx(0.6).epsilon(0.001));
         instChanceVar4.chgVal(decisionVar2, 1);
         instChanceVar4.chgVal(chanceVar4, 0);
-        TS_ASSERT_DELTA(cptChanceVar4[instChanceVar4], 0.5, 0.001)
+        CHECK((cptChanceVar4[instChanceVar4]) == doctest::Approx(0.5).epsilon(0.001));
         instChanceVar4.chgVal(chanceVar4, 1);
-        TS_ASSERT_DELTA(cptChanceVar4[instChanceVar4], 0.5, 0.001)
+        CHECK((cptChanceVar4[instChanceVar4]) == doctest::Approx(0.5).epsilon(0.001));
 
         const gum::Tensor< double >& cptChanceVar5 = net->cpt(idMap["chanceVar5"]);
-        TS_ASSERT_EQUALS(cptChanceVar5.domainSize(), static_cast< gum::Size >(8))
+        CHECK((cptChanceVar5.domainSize()) == (static_cast< gum::Size >(8)));
         gum::Instantiation instChanceVar5(cptChanceVar5);
         instChanceVar5.chgVal(chanceVar4, 0);
         instChanceVar5.chgVal(chanceVar3, 0);
         instChanceVar5.chgVal(chanceVar5, 0);
-        TS_ASSERT_DELTA(cptChanceVar5[instChanceVar5], 0.4, 0.001)
+        CHECK((cptChanceVar5[instChanceVar5]) == doctest::Approx(0.4).epsilon(0.001));
         instChanceVar5.chgVal(chanceVar5, 1);
-        TS_ASSERT_DELTA(cptChanceVar5[instChanceVar5], 0.6, 0.001)
+        CHECK((cptChanceVar5[instChanceVar5]) == doctest::Approx(0.6).epsilon(0.001));
         instChanceVar5.chgVal(chanceVar3, 1);
         instChanceVar5.chgVal(chanceVar5, 0);
-        TS_ASSERT_DELTA(cptChanceVar5[instChanceVar5], 0.8, 0.001)
+        CHECK((cptChanceVar5[instChanceVar5]) == doctest::Approx(0.8).epsilon(0.001));
         instChanceVar5.chgVal(chanceVar5, 1);
-        TS_ASSERT_DELTA(cptChanceVar5[instChanceVar5], 0.2, 0.001)
+        CHECK((cptChanceVar5[instChanceVar5]) == doctest::Approx(0.2).epsilon(0.001));
         instChanceVar5.chgVal(chanceVar4, 1);
         instChanceVar5.chgVal(chanceVar3, 0);
         instChanceVar5.chgVal(chanceVar5, 0);
-        TS_ASSERT_DELTA(cptChanceVar5[instChanceVar5], 0.4, 0.001)
+        CHECK((cptChanceVar5[instChanceVar5]) == doctest::Approx(0.4).epsilon(0.001));
         instChanceVar5.chgVal(chanceVar5, 1);
-        TS_ASSERT_DELTA(cptChanceVar5[instChanceVar5], 0.6, 0.001)
+        CHECK((cptChanceVar5[instChanceVar5]) == doctest::Approx(0.6).epsilon(0.001));
         instChanceVar5.chgVal(chanceVar3, 1);
         instChanceVar5.chgVal(chanceVar5, 0);
-        TS_ASSERT_DELTA(cptChanceVar5[instChanceVar5], 0.3, 0.001)
+        CHECK((cptChanceVar5[instChanceVar5]) == doctest::Approx(0.3).epsilon(0.001));
         instChanceVar5.chgVal(chanceVar5, 1);
-        TS_ASSERT_DELTA(cptChanceVar5[instChanceVar5], 0.7, 0.001)
+        CHECK((cptChanceVar5[instChanceVar5]) == doctest::Approx(0.7).epsilon(0.001));
 
         const gum::Tensor< double >& utUtilityVar1 = net->utility(idMap["utilityVar1"]);
-        TS_ASSERT_EQUALS(utUtilityVar1.domainSize(), static_cast< gum::Size >(4))
+        CHECK((utUtilityVar1.domainSize()) == (static_cast< gum::Size >(4)));
         gum::Instantiation instUtilityVar1(utUtilityVar1);
         instUtilityVar1.chgVal(utilityVar1, 0);
         instUtilityVar1.chgVal(decisionVar2, 0);
         instUtilityVar1.chgVal(chanceVar1, 0);
-        TS_ASSERT_DELTA(utUtilityVar1[instUtilityVar1], 42, 0.001)
+        CHECK((utUtilityVar1[instUtilityVar1]) == doctest::Approx(42).epsilon(0.001));
         instUtilityVar1.chgVal(chanceVar1, 1);
-        TS_ASSERT_DELTA(utUtilityVar1[instUtilityVar1], 666, 0.001)
+        CHECK((utUtilityVar1[instUtilityVar1]) == doctest::Approx(666).epsilon(0.001));
         instUtilityVar1.chgVal(decisionVar2, 1);
         instUtilityVar1.chgVal(chanceVar1, 0);
-        TS_ASSERT_DELTA(utUtilityVar1[instUtilityVar1], 69, 0.001)
+        CHECK((utUtilityVar1[instUtilityVar1]) == doctest::Approx(69).epsilon(0.001));
         instUtilityVar1.chgVal(chanceVar1, 1);
-        TS_ASSERT_DELTA(utUtilityVar1[instUtilityVar1], 84, 0.001)
+        CHECK((utUtilityVar1[instUtilityVar1]) == doctest::Approx(84).epsilon(0.001));
 
         const gum::Tensor< double >& utUtilityVar2 = net->utility(idMap["utilityVar2"]);
-        TS_ASSERT_EQUALS(utUtilityVar2.domainSize(), static_cast< gum::Size >(4))
+        CHECK((utUtilityVar2.domainSize()) == (static_cast< gum::Size >(4)));
         gum::Instantiation instUtilityVar2(utUtilityVar2);
         instUtilityVar2.chgVal(utilityVar2, 0);
         instUtilityVar2.chgVal(decisionVar4, 0);
         instUtilityVar2.chgVal(chanceVar5, 0);
-        TS_ASSERT_DELTA(utUtilityVar2[instUtilityVar2], 42, 0.001)
+        CHECK((utUtilityVar2[instUtilityVar2]) == doctest::Approx(42).epsilon(0.001));
         instUtilityVar2.chgVal(chanceVar5, 1);
-        TS_ASSERT_DELTA(utUtilityVar2[instUtilityVar2], -69, 0.001)
+        CHECK((utUtilityVar2[instUtilityVar2]) == doctest::Approx(-69).epsilon(0.001));
         instUtilityVar2.chgVal(decisionVar4, 1);
         instUtilityVar2.chgVal(chanceVar5, 0);
-        TS_ASSERT_DELTA(utUtilityVar2[instUtilityVar2], 666, 0.001)
+        CHECK((utUtilityVar2[instUtilityVar2]) == doctest::Approx(666).epsilon(0.001));
         instUtilityVar2.chgVal(chanceVar5, 1);
-        TS_ASSERT_DELTA(utUtilityVar2[instUtilityVar2], 84, 0.001)
+        CHECK((utUtilityVar2[instUtilityVar2]) == doctest::Approx(84).epsilon(0.001));
       }
 
       delete net;
     }
 
-    GUM_ACTIVE_TEST(Read_file3_float) {
+    static void testRead_file3_float() {
       std::string file = GET_RESSOURCES_PATH("ID/IDBIFXMLIO_file.xml");
 
       gum::InfluenceDiagram< double >* net = new gum::InfluenceDiagram< double >();
@@ -381,10 +387,15 @@ namespace gum_tests {
       aSimpleListener asl;
       GUM_CONNECT(reader, onProceed, asl, aSimpleListener::whenProceeding);
 
-      TS_GUM_ASSERT_THROWS_NOTHING(reader.proceed())
+      GUM_CHECK_ASSERT_THROWS_NOTHING(reader.proceed());
 
-      TS_ASSERT_EQUALS(asl.getNbr(), 100)
+      CHECK((asl.getNbr()) == (100));
       delete net;
     }
   };
+
+  GUM_TEST_ACTIF(Constuctor)
+  GUM_TEST_ACTIF(Read_file1)
+  GUM_TEST_ACTIF(Read_file2_float)
+  GUM_TEST_ACTIF(Read_file3_float)
 }   // namespace gum_tests

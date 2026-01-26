@@ -1,7 +1,7 @@
 /****************************************************************************
  *   This file is part of the aGrUM/pyAgrum library.                        *
  *                                                                          *
- *   Copyright (c) 2005-2025 by                                             *
+ *   Copyright (c) 2005-2026 by                                             *
  *       - Pierre-Henri WUILLEMIN(_at_LIP6)                                 *
  *       - Christophe GONZALES(_at_AMU)                                     *
  *                                                                          *
@@ -27,7 +27,7 @@
  *                                                                          *
  *   See LICENCES for more details.                                         *
  *                                                                          *
- *   SPDX-FileCopyrightText: Copyright 2005-2025                            *
+ *   SPDX-FileCopyrightText: Copyright 2005-2026                            *
  *       - Pierre-Henri WUILLEMIN(_at_LIP6)                                 *
  *       - Christophe GONZALES(_at_AMU)                                     *
  *   SPDX-License-Identifier: LGPL-3.0-or-later OR MIT                      *
@@ -37,6 +37,7 @@
  *   gitlab   : https://gitlab.com/agrumery/agrum                           *
  *                                                                          *
  ****************************************************************************/
+
 #pragma once
 
 
@@ -47,131 +48,138 @@
 
 #include <agrum/base/database/DBCell.h>
 
+#undef GUM_CURRENT_SUITE
+#undef GUM_CURRENT_MODULE
+#define GUM_CURRENT_SUITE  DBCell
+#define GUM_CURRENT_MODULE GUMBASE
+
 namespace gum_tests {
 
-  class GUM_TEST_SUITE(DBCell) {
+  struct DBCellTestSuite {
     public:
-    GUM_ACTIVE_TEST(_cell1) {
+    static void test_cell1() {
       const std::vector< std::string > miss{"N/A", "???"};
 
       gum::learning::DBCell cell1;
-      TS_ASSERT_EQUALS(cell1.type(), gum::learning::DBCell::EltType::MISSING)
-      TS_ASSERT_THROWS(cell1.integer(), const gum::TypeError&)
-      TS_ASSERT_THROWS(cell1.string(), const gum::TypeError&)
-      TS_ASSERT_THROWS(cell1.real(), const gum::TypeError&)
-      TS_ASSERT_EQUALS(cell1.toString(miss), "N/A")
+      CHECK((cell1.type()) == (gum::learning::DBCell::EltType::MISSING));
+      CHECK_THROWS_AS(cell1.integer(), const gum::TypeError&);
+      CHECK_THROWS_AS(cell1.string(), const gum::TypeError&);
+      CHECK_THROWS_AS(cell1.real(), const gum::TypeError&);
+      CHECK((cell1.toString(miss)) == ("N/A"));
 
       gum::learning::DBCell cell2(3.5f);
-      TS_ASSERT_EQUALS(cell2.type(), gum::learning::DBCell::EltType::REAL)
-      TS_ASSERT_THROWS(cell2.integer(), const gum::TypeError&)
-      TS_ASSERT_THROWS(cell2.string(), const gum::TypeError&)
-      TS_ASSERT_EQUALS(cell2.isMissing(), false)
-      TS_ASSERT_EQUALS(cell2.real(), 3.5f)
-      TS_ASSERT_EQUALS(std::stof(cell2.toString(miss)), 3.5f)
+      CHECK((cell2.type()) == (gum::learning::DBCell::EltType::REAL));
+      CHECK_THROWS_AS(cell2.integer(), const gum::TypeError&);
+      CHECK_THROWS_AS(cell2.string(), const gum::TypeError&);
+      CHECK((cell2.isMissing()) == (false));
+      CHECK((cell2.real()) == (3.5f));
+      CHECK((std::stof(cell2.toString(miss))) == (3.5f));
 
       gum::learning::DBCell cell3(int(3));
-      TS_ASSERT_EQUALS(cell3.type(), gum::learning::DBCell::EltType::INTEGER)
-      TS_ASSERT_THROWS(cell3.real(), const gum::TypeError&)
-      TS_ASSERT_THROWS(cell3.string(), const gum::TypeError&)
-      TS_ASSERT_EQUALS(cell3.isMissing(), false)
-      TS_ASSERT_EQUALS(cell3.integer(), 3)
+      CHECK((cell3.type()) == (gum::learning::DBCell::EltType::INTEGER));
+      CHECK_THROWS_AS(cell3.real(), const gum::TypeError&);
+      CHECK_THROWS_AS(cell3.string(), const gum::TypeError&);
+      CHECK((cell3.isMissing()) == (false));
+      CHECK((cell3.integer()) == (3));
 
       gum::learning::DBCell cell3b("toto");
-      TS_ASSERT_EQUALS(cell3b.type(), gum::learning::DBCell::EltType::STRING)
-      TS_ASSERT_THROWS(cell3b.real(), const gum::TypeError&)
-      TS_ASSERT_THROWS(cell3b.integer(), const gum::TypeError&)
-      TS_ASSERT_EQUALS(cell3b.isMissing(), false)
-      TS_ASSERT_EQUALS(cell3b.string(), "toto")
+      CHECK((cell3b.type()) == (gum::learning::DBCell::EltType::STRING));
+      CHECK_THROWS_AS(cell3b.real(), const gum::TypeError&);
+      CHECK_THROWS_AS(cell3b.integer(), const gum::TypeError&);
+      CHECK((cell3b.isMissing()) == (false));
+      CHECK((cell3b.string()) == ("toto"));
 
       gum::learning::DBCell cell4(4);
-      TS_ASSERT_EQUALS(cell4.type(), gum::learning::DBCell::EltType::INTEGER)
-      TS_ASSERT_EQUALS(cell4.integer(), 4)
+      CHECK((cell4.type()) == (gum::learning::DBCell::EltType::INTEGER));
+      CHECK((cell4.integer()) == (4));
 
       gum::learning::DBCell cell5(cell4);
-      TS_ASSERT_EQUALS(cell5.type(), gum::learning::DBCell::EltType::INTEGER)
-      TS_ASSERT_EQUALS(cell5.integer(), 4)
+      CHECK((cell5.type()) == (gum::learning::DBCell::EltType::INTEGER));
+      CHECK((cell5.integer()) == (4));
       gum::learning::DBCell cell6(std::move(cell3));
-      TS_ASSERT_EQUALS(cell6.type(), gum::learning::DBCell::EltType::INTEGER)
-      TS_ASSERT_EQUALS(cell6.integer(), 3)
+      CHECK((cell6.type()) == (gum::learning::DBCell::EltType::INTEGER));
+      CHECK((cell6.integer()) == (3));
 
       cell2 = cell3;
-      TS_ASSERT_EQUALS(cell3.type(), gum::learning::DBCell::EltType::INTEGER)
-      TS_ASSERT_EQUALS(cell3.integer(), 3)
+      CHECK((cell3.type()) == (gum::learning::DBCell::EltType::INTEGER));
+      CHECK((cell3.integer()) == (3));
       cell3 = cell1;
-      TS_ASSERT_EQUALS(cell3.type(), gum::learning::DBCell::EltType::MISSING)
+      CHECK((cell3.type()) == (gum::learning::DBCell::EltType::MISSING));
       cell4 = 5.2f;
-      TS_ASSERT_EQUALS(cell4.type(), gum::learning::DBCell::EltType::REAL)
-      TS_ASSERT_EQUALS(cell4.real(), 5.2f)
+      CHECK((cell4.type()) == (gum::learning::DBCell::EltType::REAL));
+      CHECK((cell4.real()) == (5.2f));
       cell4 = 2;
-      TS_ASSERT_EQUALS(cell4.type(), gum::learning::DBCell::EltType::INTEGER)
-      TS_ASSERT_EQUALS(cell4.integer(), 2)
+      CHECK((cell4.type()) == (gum::learning::DBCell::EltType::INTEGER));
+      CHECK((cell4.integer()) == (2));
       cell4 = std::move(cell6);
-      TS_ASSERT_EQUALS(cell4.type(), gum::learning::DBCell::EltType::INTEGER)
-      TS_ASSERT_EQUALS(cell4.integer(), 3)
+      CHECK((cell4.type()) == (gum::learning::DBCell::EltType::INTEGER));
+      CHECK((cell4.integer()) == (3));
 
       cell4.convertType(gum::learning::DBCell::EltType::REAL);
-      TS_ASSERT_EQUALS(cell4.type(), gum::learning::DBCell::EltType::REAL)
-      TS_ASSERT_EQUALS(cell4.real(), 3.0f)
+      CHECK((cell4.type()) == (gum::learning::DBCell::EltType::REAL));
+      CHECK((cell4.real()) == (3.0f));
       cell4.convertType(gum::learning::DBCell::EltType::INTEGER);
-      TS_ASSERT_EQUALS(cell4.type(), gum::learning::DBCell::EltType::INTEGER)
-      TS_ASSERT_EQUALS(cell4.integer(), 3)
+      CHECK((cell4.type()) == (gum::learning::DBCell::EltType::INTEGER));
+      CHECK((cell4.integer()) == (3));
       cell4.convertType(gum::learning::DBCell::EltType::STRING);
-      TS_ASSERT_EQUALS(cell4.type(), gum::learning::DBCell::EltType::STRING)
-      TS_ASSERT_EQUALS(cell4.string(), "3")
+      CHECK((cell4.type()) == (gum::learning::DBCell::EltType::STRING));
+      CHECK((cell4.string()) == ("3"));
       cell4.convertType(gum::learning::DBCell::EltType::INTEGER);
-      TS_ASSERT_EQUALS(cell4.type(), gum::learning::DBCell::EltType::INTEGER)
-      TS_ASSERT_EQUALS(cell4.integer(), 3)
+      CHECK((cell4.type()) == (gum::learning::DBCell::EltType::INTEGER));
+      CHECK((cell4.integer()) == (3));
       cell4.convertType(gum::learning::DBCell::EltType::INTEGER);
-      TS_ASSERT_EQUALS(cell4.type(), gum::learning::DBCell::EltType::INTEGER)
-      TS_ASSERT_EQUALS(cell4.integer(), 3)
+      CHECK((cell4.type()) == (gum::learning::DBCell::EltType::INTEGER));
+      CHECK((cell4.integer()) == (3));
       cell4.convertType(gum::learning::DBCell::EltType::MISSING);
-      TS_ASSERT_EQUALS(cell4.type(), gum::learning::DBCell::EltType::MISSING)
-      TS_ASSERT_THROWS(cell4.real(), const gum::TypeError&)
-      TS_ASSERT_THROWS(cell4.integer(), const gum::TypeError&)
-      TS_ASSERT_THROWS(cell4.string(), const gum::TypeError&)
+      CHECK((cell4.type()) == (gum::learning::DBCell::EltType::MISSING));
+      CHECK_THROWS_AS(cell4.real(), const gum::TypeError&);
+      CHECK_THROWS_AS(cell4.integer(), const gum::TypeError&);
+      CHECK_THROWS_AS(cell4.string(), const gum::TypeError&);
 
       cell4.setReal(4.5);
-      TS_ASSERT_EQUALS(cell4.type(), gum::learning::DBCell::EltType::REAL)
-      TS_ASSERT_EQUALS(cell4.real(), 4.5f)
-      TS_ASSERT_EQUALS(cell4.convertType(gum::learning::DBCell::EltType::INTEGER), false)
+      CHECK((cell4.type()) == (gum::learning::DBCell::EltType::REAL));
+      CHECK((cell4.real()) == (4.5f));
+      CHECK((cell4.convertType(gum::learning::DBCell::EltType::INTEGER)) == (false));
 
       cell4.setReal(5);
-      TS_ASSERT_EQUALS(cell4.type(), gum::learning::DBCell::EltType::REAL)
-      TS_ASSERT_EQUALS(cell4.real(), 5.0f)
+      CHECK((cell4.type()) == (gum::learning::DBCell::EltType::REAL));
+      CHECK((cell4.real()) == (5.0f));
       cell4.setReal("55");
-      TS_ASSERT_EQUALS(cell4.type(), gum::learning::DBCell::EltType::REAL)
-      TS_ASSERT_EQUALS(cell4.real(), 55.0f)
-      TS_ASSERT_THROWS(cell4.setReal("toto"), const gum::TypeError&)
-      TS_ASSERT_EQUALS(cell4.type(), gum::learning::DBCell::EltType::REAL)
-      TS_ASSERT_EQUALS(cell4.real(), 55.0f)
-      TS_ASSERT_THROWS(cell4.setReal("3.4toto"), const gum::TypeError&)
-      TS_ASSERT_EQUALS(cell4.type(), gum::learning::DBCell::EltType::REAL)
-      TS_ASSERT_EQUALS(cell4.real(), 55.0f)
+      CHECK((cell4.type()) == (gum::learning::DBCell::EltType::REAL));
+      CHECK((cell4.real()) == (55.0f));
+      CHECK_THROWS_AS(cell4.setReal("toto"), const gum::TypeError&);
+      CHECK((cell4.type()) == (gum::learning::DBCell::EltType::REAL));
+      CHECK((cell4.real()) == (55.0f));
+      CHECK_THROWS_AS(cell4.setReal("3.4toto"), const gum::TypeError&);
+      CHECK((cell4.type()) == (gum::learning::DBCell::EltType::REAL));
+      CHECK((cell4.real()) == (55.0f));
 
       cell4.setInteger(6);
-      TS_ASSERT_EQUALS(cell4.type(), gum::learning::DBCell::EltType::INTEGER)
-      TS_ASSERT_EQUALS(cell4.integer(), 6)
+      CHECK((cell4.type()) == (gum::learning::DBCell::EltType::INTEGER));
+      CHECK((cell4.integer()) == (6));
       cell4.setInteger("55");
-      TS_ASSERT_EQUALS(cell4.type(), gum::learning::DBCell::EltType::INTEGER)
-      TS_ASSERT_EQUALS(cell4.integer(), 55)
+      CHECK((cell4.type()) == (gum::learning::DBCell::EltType::INTEGER));
+      CHECK((cell4.integer()) == (55));
 
-      TS_ASSERT_EQUALS(cell4.toString(miss), "55")
+      CHECK((cell4.toString(miss)) == ("55"));
 
       cell4.setString("titi");
-      TS_ASSERT_EQUALS(cell4.type(), gum::learning::DBCell::EltType::STRING)
-      TS_ASSERT_EQUALS(cell4.string(), "titi")
-      TS_ASSERT_EQUALS(cell4.toString(miss), "titi")
+      CHECK((cell4.type()) == (gum::learning::DBCell::EltType::STRING));
+      CHECK((cell4.string()) == ("titi"));
+      CHECK((cell4.toString(miss)) == ("titi"));
 
-      TS_ASSERT_EQUALS(gum::learning::DBCell::string(0), "toto")
-      TS_ASSERT_EQUALS(gum::learning::DBCell::string(2), "titi")
-      TS_ASSERT_EQUALS(cell4.stringIndex(), 2)
+      CHECK((gum::learning::DBCell::string(0)) == ("toto"));
+      CHECK((gum::learning::DBCell::string(2)) == ("titi"));
+      CHECK((cell4.stringIndex()) == (2));
 
       cell4.setMissingState();
-      TS_ASSERT_EQUALS(cell4.type(), gum::learning::DBCell::EltType::MISSING)
-      TS_ASSERT_THROWS(cell4.integer(), const gum::TypeError&)
-      TS_ASSERT_THROWS(cell4.string(), const gum::TypeError&)
-      TS_ASSERT_THROWS(cell4.real(), const gum::TypeError&)
+      CHECK((cell4.type()) == (gum::learning::DBCell::EltType::MISSING));
+      CHECK_THROWS_AS(cell4.integer(), const gum::TypeError&);
+      CHECK_THROWS_AS(cell4.string(), const gum::TypeError&);
+      CHECK_THROWS_AS(cell4.real(), const gum::TypeError&);
     }   // namespace gum_tests
   };
+
+  GUM_TEST_ACTIF(_cell1)
 
 }   // namespace gum_tests

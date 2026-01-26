@@ -1,7 +1,7 @@
 /****************************************************************************
  *   This file is part of the aGrUM/pyAgrum library.                        *
  *                                                                          *
- *   Copyright (c) 2005-2025 by                                             *
+ *   Copyright (c) 2005-2026 by                                             *
  *       - Pierre-Henri WUILLEMIN(_at_LIP6)                                 *
  *       - Christophe GONZALES(_at_AMU)                                     *
  *                                                                          *
@@ -27,7 +27,7 @@
  *                                                                          *
  *   See LICENCES for more details.                                         *
  *                                                                          *
- *   SPDX-FileCopyrightText: Copyright 2005-2025                            *
+ *   SPDX-FileCopyrightText: Copyright 2005-2026                            *
  *       - Pierre-Henri WUILLEMIN(_at_LIP6)                                 *
  *       - Christophe GONZALES(_at_AMU)                                     *
  *   SPDX-License-Identifier: LGPL-3.0-or-later OR MIT                      *
@@ -37,6 +37,7 @@
  *   gitlab   : https://gitlab.com/agrumery/agrum                           *
  *                                                                          *
  ****************************************************************************/
+
 #pragma once
 
 
@@ -54,11 +55,16 @@
 #include <agrum/BN/learning/priors/noPrior.h>
 #include <agrum/BN/learning/priors/smoothingPrior.h>
 
+#undef GUM_CURRENT_SUITE
+#undef GUM_CURRENT_MODULE
+#define GUM_CURRENT_SUITE  PseudoCount
+#define GUM_CURRENT_MODULE GUMBASE
+
 namespace gum_tests {
 
-  class GUM_TEST_SUITE(PseudoCount) {
+  struct PseudoCountTestSuite {
     public:
-    GUM_ACTIVE_TEST(_simple_counts) {
+    static void test_simple_counts() {
       gum::learning::DBInitializerFromCSV initializer(GET_RESSOURCES_PATH("csv/minimal.csv"));
       const auto&                         var_names = initializer.variableNames();
       const std::size_t                   nb_vars   = var_names.size();
@@ -79,27 +85,29 @@ namespace gum_tests {
         gum::learning::NoPrior     prior(database);
         gum::learning::PseudoCount counts(parser, prior);
 
-        TS_ASSERT_EQUALS(counts.get({1}), std::vector< double >({4, 3}))
-        TS_ASSERT_EQUALS(counts.get({2}), std::vector< double >({3, 2, 2}))
-        TS_ASSERT_EQUALS(counts.get({0, 2}), std::vector< double >({2, 1, 1, 1, 0, 2}))
+        CHECK((counts.get({1})) == (std::vector< double >({4, 3})));
+        CHECK((counts.get({2})) == (std::vector< double >({3, 2, 2})));
+        CHECK((counts.get({0, 2})) == (std::vector< double >({2, 1, 1, 1, 0, 2})));
       }
       {
         gum::learning::SmoothingPrior prior(database);
         gum::learning::PseudoCount    counts(parser, prior);
 
-        TS_ASSERT_EQUALS(counts.get({1}), std::vector< double >({5, 4}))
-        TS_ASSERT_EQUALS(counts.get({2}), std::vector< double >({4, 3, 3}))
-        TS_ASSERT_EQUALS(counts.get({0, 2}), std::vector< double >({3, 2, 2, 2, 1, 3}))
+        CHECK((counts.get({1})) == (std::vector< double >({5, 4})));
+        CHECK((counts.get({2})) == (std::vector< double >({4, 3, 3})));
+        CHECK((counts.get({0, 2})) == (std::vector< double >({3, 2, 2, 2, 1, 3})));
       }
       {
         gum::learning::SmoothingPrior prior(database);
         prior.setWeight(0.1);
         gum::learning::PseudoCount counts(parser, prior);
 
-        TS_ASSERT_EQUALS(counts.get({1}), std::vector< double >({4.1, 3.1}))
-        TS_ASSERT_EQUALS(counts.get({2}), std::vector< double >({3.1, 2.1, 2.1}))
-        TS_ASSERT_EQUALS(counts.get({0, 2}), std::vector< double >({2.1, 1.1, 1.1, 1.1, 0.1, 2.1}))
+        CHECK((counts.get({1})) == (std::vector< double >({4.1, 3.1})));
+        CHECK((counts.get({2})) == (std::vector< double >({3.1, 2.1, 2.1})));
+        CHECK((counts.get({0, 2})) == (std::vector< double >({2.1, 1.1, 1.1, 1.1, 0.1, 2.1})));
       }
     }   // namespace gum_tests
   };
+
+  GUM_TEST_ACTIF(_simple_counts)
 } /* namespace gum_tests */

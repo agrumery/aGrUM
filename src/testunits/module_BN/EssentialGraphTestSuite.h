@@ -1,7 +1,7 @@
 /****************************************************************************
  *   This file is part of the aGrUM/pyAgrum library.                        *
  *                                                                          *
- *   Copyright (c) 2005-2025 by                                             *
+ *   Copyright (c) 2005-2026 by                                             *
  *       - Pierre-Henri WUILLEMIN(_at_LIP6)                                 *
  *       - Christophe GONZALES(_at_AMU)                                     *
  *                                                                          *
@@ -27,7 +27,7 @@
  *                                                                          *
  *   See LICENCES for more details.                                         *
  *                                                                          *
- *   SPDX-FileCopyrightText: Copyright 2005-2025                            *
+ *   SPDX-FileCopyrightText: Copyright 2005-2026                            *
  *       - Pierre-Henri WUILLEMIN(_at_LIP6)                                 *
  *       - Christophe GONZALES(_at_AMU)                                     *
  *   SPDX-License-Identifier: LGPL-3.0-or-later OR MIT                      *
@@ -37,6 +37,7 @@
  *   gitlab   : https://gitlab.com/agrumery/agrum                           *
  *                                                                          *
  ****************************************************************************/
+
 #pragma once
 
 
@@ -50,114 +51,130 @@
 #include <agrum/BN/algorithms/essentialGraph.h>
 #include <agrum/BN/BayesNet.h>
 
+#undef GUM_CURRENT_SUITE
+#undef GUM_CURRENT_MODULE
+#define GUM_CURRENT_SUITE  EssentialGraph
+#define GUM_CURRENT_MODULE BN
+
 namespace gum_tests {
-  class GUM_TEST_SUITE(EssentialGraph) {
+  struct EssentialGraphTestSuite {
     public:
-    GUM_ACTIVE_TEST(Chain) {
+    static void testChain() {
       auto bn = gum::BayesNet< float >::fastPrototype("a->b->c");
       auto eg = gum::EssentialGraph(bn);
 
-      TS_ASSERT_EQUALS(eg.size(), 3u)
-      TS_ASSERT_EQUALS(eg.sizeArcs(), 0u)
-      TS_ASSERT_EQUALS(eg.sizeEdges(), 2u)
+      CHECK((eg.size()) == (3u));
+      CHECK((eg.sizeArcs()) == (0u));
+      CHECK((eg.sizeEdges()) == (2u));
     }   // namespace gum_tests
 
-    GUM_ACTIVE_TEST(Vstructure) {
+    static void testVstructure() {
       auto bn = gum::BayesNet< float >::fastPrototype("a->b;c->b");
       auto eg = gum::EssentialGraph(bn);
 
-      TS_ASSERT_EQUALS(eg.size(), 3u)
-      TS_ASSERT_EQUALS(eg.sizeArcs(), 2u)
-      TS_ASSERT_EQUALS(eg.sizeEdges(), 0u)
+      CHECK((eg.size()) == (3u));
+      CHECK((eg.sizeArcs()) == (2u));
+      CHECK((eg.sizeEdges()) == (0u));
     }
 
-    GUM_ACTIVE_TEST(CaseD) {
+    static void testCaseD() {
       auto bn = gum::BayesNet< float >::fastPrototype("a->b;c1->b;c2->b;a->c1;a->c2");
       auto eg = gum::EssentialGraph(bn);
 
-      TS_ASSERT_EQUALS(eg.size(), 4u)
-      TS_ASSERT_EQUALS(eg.sizeArcs(), 3u)
-      TS_ASSERT_EQUALS(eg.sizeEdges(), 2u)
+      CHECK((eg.size()) == (4u));
+      CHECK((eg.sizeArcs()) == (3u));
+      CHECK((eg.sizeEdges()) == (2u));
     }
 
-    GUM_ACTIVE_TEST(Notebook1) {
+    static void testNotebook1() {
       auto bn = gum::BayesNet< float >::fastPrototype(
           "A->B->C->D;E->B;F->G->D;F->H->I;E->J->K->I->M;K->L");
       auto eg = gum::EssentialGraph(bn);
 
-      TS_ASSERT_EQUALS(eg.size(), 13u)
-      TS_ASSERT_EQUALS(eg.sizeArcs(), 8u)
-      TS_ASSERT_EQUALS(eg.sizeEdges(), 5u)
+      CHECK((eg.size()) == (13u));
+      CHECK((eg.sizeArcs()) == (8u));
+      CHECK((eg.sizeEdges()) == (5u));
     }
 
-    GUM_ACTIVE_TEST(Notebook2) {
+    static void testNotebook2() {
       auto bn = gum::BayesNet< float >::fastPrototype("A->B;C->B;C->D;B->D;A->C");
       auto eg = gum::EssentialGraph(bn);
 
-      TS_ASSERT_EQUALS(eg.size(), 4u)
-      TS_ASSERT_EQUALS(eg.sizeArcs(), 0u)
-      TS_ASSERT_EQUALS(eg.sizeEdges(), 5u)
+      CHECK((eg.size()) == (4u));
+      CHECK((eg.sizeArcs()) == (0u));
+      CHECK((eg.sizeEdges()) == (5u));
     }
 
-    GUM_ACTIVE_TEST(Notebook3) {
+    static void testNotebook3() {
       auto bn = gum::BayesNet< float >::fastPrototype("Z->X->U;Y->X;Y->W");
       auto eg = gum::EssentialGraph(bn);
 
-      TS_ASSERT_EQUALS(eg.size(), 5u)
-      TS_ASSERT_EQUALS(eg.sizeArcs(), 3u)
-      TS_ASSERT_EQUALS(eg.sizeEdges(), 1u)
+      CHECK((eg.size()) == (5u));
+      CHECK((eg.sizeArcs()) == (3u));
+      CHECK((eg.sizeEdges()) == (1u));
     }
 
-    GUM_ACTIVE_TEST(Skeleton) {
+    static void testSkeleton() {
       auto bn   = gum::BayesNet< float >::fastPrototype("Z->X->U;Y->X;Y->W");
       auto eg   = gum::EssentialGraph(bn);
       auto skel = eg.skeleton();
 
-      TS_ASSERT_EQUALS(skel.size(), 5u)
-      TS_ASSERT_EQUALS(eg.sizeEdges(), 1u)
-      TS_ASSERT_EQUALS(eg.sizeArcs(), 3u)
+      CHECK((skel.size()) == (5u));
+      CHECK((eg.sizeEdges()) == (1u));
+      CHECK((eg.sizeArcs()) == (3u));
 
-      TS_ASSERT_EQUALS(eg.idFromName("Z"), 0u)
-      TS_ASSERT_EQUALS(eg.idFromName("X"), 1u)
-      TS_ASSERT_EQUALS(eg.idFromName("U"), 2u)
-      TS_ASSERT_EQUALS(eg.idFromName("Y"), 3u)
-      TS_ASSERT_EQUALS(eg.idFromName("W"), 4u)
+      CHECK((eg.idFromName("Z")) == (0u));
+      CHECK((eg.idFromName("X")) == (1u));
+      CHECK((eg.idFromName("U")) == (2u));
+      CHECK((eg.idFromName("Y")) == (3u));
+      CHECK((eg.idFromName("W")) == (4u));
 
-      TS_ASSERT_EQUALS(eg.nameFromId(0u), "Z")
-      TS_ASSERT_EQUALS(eg.nameFromId(1u), "X")
-      TS_ASSERT_EQUALS(eg.nameFromId(2u), "U")
-      TS_ASSERT_EQUALS(eg.nameFromId(3u), "Y")
-      TS_ASSERT_EQUALS(eg.nameFromId(4u), "W")
+      CHECK((eg.nameFromId(0u)) == ("Z"));
+      CHECK((eg.nameFromId(1u)) == ("X"));
+      CHECK((eg.nameFromId(2u)) == ("U"));
+      CHECK((eg.nameFromId(3u)) == ("Y"));
+      CHECK((eg.nameFromId(4u)) == ("W"));
     }
 
-    GUM_ACTIVE_TEST(NonRegression1) {
+    static void testNonRegression1() {
       auto bn   = gum::BayesNet< float >::fastPrototype("0->1->2<-0");
       auto eg   = gum::EssentialGraph(bn);
       auto skel = eg.skeleton();
 
-      TS_ASSERT_EQUALS(skel.size(), 3u)
-      TS_ASSERT_EQUALS(eg.sizeEdges(), 3u)
-      TS_ASSERT_EQUALS(eg.sizeArcs(), 0u)
+      CHECK((skel.size()) == (3u));
+      CHECK((eg.sizeEdges()) == (3u));
+      CHECK((eg.sizeArcs()) == (0u));
     }
 
-    GUM_ACTIVE_TEST(NonRegression2) {
+    static void testNonRegression2() {
       auto bn   = gum::BayesNet< float >::fastPrototype("0->1->2<-0;3->1");
       auto eg   = gum::EssentialGraph(bn);
       auto skel = eg.skeleton();
 
-      TS_ASSERT_EQUALS(skel.size(), 4u)
-      TS_ASSERT_EQUALS(eg.sizeEdges(), 0u)
-      TS_ASSERT_EQUALS(eg.sizeArcs(), 4u)
+      CHECK((skel.size()) == (4u));
+      CHECK((eg.sizeEdges()) == (0u));
+      CHECK((eg.sizeArcs()) == (4u));
     }
 
-    GUM_ACTIVE_TEST(NonRegression3) {
+    static void testNonRegression3() {
       auto bn   = gum::BayesNet< float >::fastPrototype("0->1->2->3<-4<-2<-5");
       auto eg   = gum::EssentialGraph(bn);
       auto skel = eg.skeleton();
-      TS_ASSERT_EQUALS(skel.size(), 6u)
-      TS_ASSERT_EQUALS(eg.sizeEdges(), 2u)
-      TS_ASSERT_EQUALS(eg.sizeArcs(), 4u)
+      CHECK((skel.size()) == (6u));
+      CHECK((eg.sizeEdges()) == (2u));
+      CHECK((eg.sizeArcs()) == (4u));
     }
   };
+
+  GUM_TEST_ACTIF(Chain)
+  GUM_TEST_ACTIF(Vstructure)
+  GUM_TEST_ACTIF(CaseD)
+  GUM_TEST_ACTIF(Notebook1)
+  GUM_TEST_ACTIF(Notebook2)
+  GUM_TEST_ACTIF(Notebook3)
+  GUM_TEST_ACTIF(Skeleton)
+  GUM_TEST_ACTIF(NonRegression1)
+  GUM_TEST_ACTIF(NonRegression2)
+  GUM_TEST_ACTIF(NonRegression3)
 
 }   // namespace gum_tests

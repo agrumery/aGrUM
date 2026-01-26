@@ -1,7 +1,7 @@
 /****************************************************************************
  *   This file is part of the aGrUM/pyAgrum library.                        *
  *                                                                          *
- *   Copyright (c) 2005-2025 by                                             *
+ *   Copyright (c) 2005-2026 by                                             *
  *       - Pierre-Henri WUILLEMIN(_at_LIP6)                                 *
  *       - Christophe GONZALES(_at_AMU)                                     *
  *                                                                          *
@@ -27,7 +27,7 @@
  *                                                                          *
  *   See LICENCES for more details.                                         *
  *                                                                          *
- *   SPDX-FileCopyrightText: Copyright 2005-2025                            *
+ *   SPDX-FileCopyrightText: Copyright 2005-2026                            *
  *       - Pierre-Henri WUILLEMIN(_at_LIP6)                                 *
  *       - Christophe GONZALES(_at_AMU)                                     *
  *   SPDX-License-Identifier: LGPL-3.0-or-later OR MIT                      *
@@ -37,6 +37,7 @@
  *   gitlab   : https://gitlab.com/agrumery/agrum                           *
  *                                                                          *
  ****************************************************************************/
+
 #pragma once
 
 
@@ -49,208 +50,216 @@
 
 #include <agrum/base/variables/integerVariable.h>
 
+#undef GUM_CURRENT_SUITE
+#undef GUM_CURRENT_MODULE
+#define GUM_CURRENT_SUITE  IntegerVariable
+#define GUM_CURRENT_MODULE GUMBASE
+
 namespace gum_tests {
 
-  class GUM_TEST_SUITE(IntegerVariable) {
+  struct IntegerVariableTestSuite {
     public:
-    GUM_ACTIVE_TEST(All) {
+    static void testAll() {
       gum::IntegerVariable var1("var1", "this is var1");
       gum::IntegerVariable var2("var2", "this is var2", {1, 9, 7});
 
-      TS_ASSERT_EQUALS(var1.domainSize(), static_cast< gum::Size >(0))
+      CHECK((var1.domainSize()) == (static_cast< gum::Size >(0)));
       const auto& vect1 = var1.integerDomain();
-      TS_ASSERT_EQUALS(vect1.size(), static_cast< gum::Size >(0))
-      TS_ASSERT_EQUALS(var2.domainSize(), static_cast< gum::Size >(3))
+      CHECK((vect1.size()) == (static_cast< gum::Size >(0)));
+      CHECK((var2.domainSize()) == (static_cast< gum::Size >(3)));
       const auto& vect2 = var2.integerDomain();
-      TS_ASSERT_EQUALS(vect2[0], 1)
-      TS_ASSERT_EQUALS(vect2[1], 7)
-      TS_ASSERT_EQUALS(vect2[2], 9)
+      CHECK((vect2[0]) == (1));
+      CHECK((vect2[1]) == (7));
+      CHECK((vect2[2]) == (9));
 
       gum::IntegerVariable var3(var2);
-      TS_ASSERT_EQUALS(var3.domainSize(), static_cast< gum::Size >(3))
+      CHECK((var3.domainSize()) == (static_cast< gum::Size >(3)));
       const auto& vect3 = var3.integerDomain();
-      TS_ASSERT_EQUALS(vect3[0], 1)
-      TS_ASSERT_EQUALS(vect3[1], 7)
-      TS_ASSERT_EQUALS(vect3[2], 9)
+      CHECK((vect3[0]) == (1));
+      CHECK((vect3[1]) == (7));
+      CHECK((vect3[2]) == (9));
 
       gum::IntegerVariable var4(std::move(var3));
-      TS_ASSERT_EQUALS(var4.domainSize(), static_cast< gum::Size >(3))
+      CHECK((var4.domainSize()) == (static_cast< gum::Size >(3)));
       const auto& vect4 = var4.integerDomain();
-      TS_ASSERT_EQUALS(vect4[0], 1)
-      TS_ASSERT_EQUALS(vect4[1], 7)
-      TS_ASSERT_EQUALS(vect4[2], 9)
-      TS_ASSERT(vect3.empty())
-      TS_ASSERT_EQUALS(var3.domainSize(), static_cast< gum::Size >(0))
+      CHECK((vect4[0]) == (1));
+      CHECK((vect4[1]) == (7));
+      CHECK((vect4[2]) == (9));
+      CHECK(vect3.empty());
+      CHECK((var3.domainSize()) == (static_cast< gum::Size >(0)));
 
       gum::IntegerVariable* var5 = var4.clone();
-      TS_ASSERT_EQUALS(var5->domainSize(), static_cast< gum::Size >(3))
+      CHECK((var5->domainSize()) == (static_cast< gum::Size >(3)));
       const auto& vect5 = var5->integerDomain();
-      TS_ASSERT_EQUALS(vect5[0], 1)
-      TS_ASSERT_EQUALS(vect5[1], 7)
-      TS_ASSERT_EQUALS(vect5[2], 9)
+      CHECK((vect5[0]) == (1));
+      CHECK((vect5[1]) == (7));
+      CHECK((vect5[2]) == (9));
 
       gum::IntegerVariable var6("var6", "", {-2, -1, 4, 8});
       gum::IntegerVariable var7 = var2;
-      TS_ASSERT_EQUALS(var7.domainSize(), static_cast< gum::Size >(3))
+      CHECK((var7.domainSize()) == (static_cast< gum::Size >(3)));
       var7 = var6;
-      TS_ASSERT_EQUALS(var7.domainSize(), static_cast< gum::Size >(4))
+      CHECK((var7.domainSize()) == (static_cast< gum::Size >(4)));
       const auto& vect7 = var7.integerDomain();
-      TS_ASSERT_EQUALS(vect7[0], -2)
-      TS_ASSERT_EQUALS(vect7[1], -1)
-      TS_ASSERT_EQUALS(vect7[2], 4)
-      TS_ASSERT_EQUALS(vect7[3], 8)
+      CHECK((vect7[0]) == (-2));
+      CHECK((vect7[1]) == (-1));
+      CHECK((vect7[2]) == (4));
+      CHECK((vect7[3]) == (8));
 
       var3 = std::move(var7);
-      TS_ASSERT_EQUALS(vect3[0], -2)
-      TS_ASSERT_EQUALS(vect3[1], -1)
-      TS_ASSERT_EQUALS(vect3[2], 4)
-      TS_ASSERT_EQUALS(vect3[3], 8)
-      TS_ASSERT_EQUALS(var7.domainSize(), static_cast< gum::Size >(0))
+      CHECK((vect3[0]) == (-2));
+      CHECK((vect3[1]) == (-1));
+      CHECK((vect3[2]) == (4));
+      CHECK((vect3[3]) == (8));
+      CHECK((var7.domainSize()) == (static_cast< gum::Size >(0)));
 
-      TS_ASSERT_DIFFERS(var7, var6)
-      TS_ASSERT_EQUALS(var3, var6)
+      CHECK((var7) != (var6));
+      CHECK((var3) == (var6));
 
-      TS_ASSERT_EQUALS(var3.varType(), gum::VarType::INTEGER)
-      TS_ASSERT_THROWS(var3.index("0"), const gum::NotFound&)
-      TS_GUM_ASSERT_THROWS_NOTHING(var3.index("-1"))
-      TS_ASSERT_EQUALS(var3.index("-2"), gum::Idx(0))
-      TS_ASSERT_EQUALS(var3.index("-1"), gum::Idx(1))
-      TS_ASSERT_EQUALS(var3.index("4"), gum::Idx(2))
-      TS_ASSERT_EQUALS(var3.index("8"), gum::Idx(3))
-      TS_ASSERT_EQUALS(var3.index("  8  "), gum::Idx(3))
-      TS_ASSERT_EQUALS(var3.index("  8 7"), gum::Idx(3))
+      CHECK((var3.varType()) == (gum::VarType::INTEGER));
+      CHECK_THROWS_AS(var3.index("0"), const gum::NotFound&);
+      GUM_CHECK_ASSERT_THROWS_NOTHING(var3.index("-1"));
+      CHECK((var3.index("-2")) == (gum::Idx(0)));
+      CHECK((var3.index("-1")) == (gum::Idx(1)));
+      CHECK((var3.index("4")) == (gum::Idx(2)));
+      CHECK((var3.index("8")) == (gum::Idx(3)));
+      CHECK((var3.index("  8  ")) == (gum::Idx(3)));
+      CHECK((var3.index("  8 7")) == (gum::Idx(3)));
 
-      TS_ASSERT_EQUALS(var3.label(0), "-2")
-      TS_ASSERT_EQUALS(var3.label(1), "-1")
-      TS_ASSERT_EQUALS(var3.label(2), "4")
-      TS_ASSERT_EQUALS(var3.label(3), "8")
-      TS_ASSERT_THROWS(var3.label(4), const gum::OutOfBounds&)
+      CHECK((var3.label(0)) == ("-2"));
+      CHECK((var3.label(1)) == ("-1"));
+      CHECK((var3.label(2)) == ("4"));
+      CHECK((var3.label(3)) == ("8"));
+      CHECK_THROWS_AS(var3.label(4), const gum::OutOfBounds&);
 
-      TS_ASSERT_EQUALS(var3.numerical(0), -2.0)
-      TS_ASSERT_EQUALS(var3.numerical(1), -1.0)
-      TS_ASSERT_EQUALS(var3.numerical(2), 4.0)
-      TS_ASSERT_EQUALS(var3.numerical(3), 8.0)
-      TS_ASSERT_THROWS(var3.numerical(4), const gum::OutOfBounds&)
+      CHECK((var3.numerical(0)) == (-2.0));
+      CHECK((var3.numerical(1)) == (-1.0));
+      CHECK((var3.numerical(2)) == (4.0));
+      CHECK((var3.numerical(3)) == (8.0));
+      CHECK_THROWS_AS(var3.numerical(4), const gum::OutOfBounds&);
 
-      TS_ASSERT_EQUALS(var3.domain(), "{-2|-1|4|8}")
-      TS_ASSERT_EQUALS(var1.domain(), "{}")
+      CHECK((var3.domain()) == ("{-2|-1|4|8}"));
+      CHECK((var1.domain()) == ("{}"));
 
       var1.addValue(4);
-      TS_ASSERT_EQUALS(vect1.size(), static_cast< gum::Size >(1))
-      TS_ASSERT_EQUALS(vect1[0], 4)
+      CHECK((vect1.size()) == (static_cast< gum::Size >(1)));
+      CHECK((vect1[0]) == (4));
       var1.addValue(8);
-      TS_ASSERT_EQUALS(vect1.size(), static_cast< gum::Size >(2))
-      TS_ASSERT_EQUALS(vect1[0], 4)
-      TS_ASSERT_EQUALS(vect1[1], 8)
+      CHECK((vect1.size()) == (static_cast< gum::Size >(2)));
+      CHECK((vect1[0]) == (4));
+      CHECK((vect1[1]) == (8));
       var1.addValue(6);
-      TS_ASSERT_EQUALS(vect1.size(), static_cast< gum::Size >(3))
-      TS_ASSERT_EQUALS(vect1[0], 4)
-      TS_ASSERT_EQUALS(vect1[1], 6)
-      TS_ASSERT_EQUALS(vect1[2], 8)
+      CHECK((vect1.size()) == (static_cast< gum::Size >(3)));
+      CHECK((vect1[0]) == (4));
+      CHECK((vect1[1]) == (6));
+      CHECK((vect1[2]) == (8));
       var1.addValue(2);
-      TS_ASSERT_EQUALS(vect1.size(), static_cast< gum::Size >(4))
-      TS_ASSERT_EQUALS(vect1[0], 2)
-      TS_ASSERT_EQUALS(vect1[1], 4)
-      TS_ASSERT_EQUALS(vect1[2], 6)
-      TS_ASSERT_EQUALS(vect1[3], 8)
-      TS_ASSERT_THROWS(var1.addValue(2), const gum::DuplicateElement&)
-      TS_ASSERT_THROWS(var1.addValue(4), const gum::DuplicateElement&)
-      TS_ASSERT_THROWS(var1.addValue(6), const gum::DuplicateElement&)
-      TS_ASSERT_THROWS(var1.addValue(8), const gum::DuplicateElement&)
+      CHECK((vect1.size()) == (static_cast< gum::Size >(4)));
+      CHECK((vect1[0]) == (2));
+      CHECK((vect1[1]) == (4));
+      CHECK((vect1[2]) == (6));
+      CHECK((vect1[3]) == (8));
+      CHECK_THROWS_AS(var1.addValue(2), const gum::DuplicateElement&);
+      CHECK_THROWS_AS(var1.addValue(4), const gum::DuplicateElement&);
+      CHECK_THROWS_AS(var1.addValue(6), const gum::DuplicateElement&);
+      CHECK_THROWS_AS(var1.addValue(8), const gum::DuplicateElement&);
 
       var1.changeValue(6, 7);
-      TS_ASSERT_EQUALS(vect1.size(), static_cast< gum::Size >(4))
-      TS_ASSERT_EQUALS(vect1[0], 2)
-      TS_ASSERT_EQUALS(vect1[1], 4)
-      TS_ASSERT_EQUALS(vect1[2], 7)
-      TS_ASSERT_EQUALS(vect1[3], 8)
+      CHECK((vect1.size()) == (static_cast< gum::Size >(4)));
+      CHECK((vect1[0]) == (2));
+      CHECK((vect1[1]) == (4));
+      CHECK((vect1[2]) == (7));
+      CHECK((vect1[3]) == (8));
 
       var1.changeValue(7, 3);
-      TS_ASSERT_EQUALS(vect1.size(), static_cast< gum::Size >(4))
-      TS_ASSERT_EQUALS(vect1[0], 2)
-      TS_ASSERT_EQUALS(vect1[1], 3)
-      TS_ASSERT_EQUALS(vect1[2], 4)
-      TS_ASSERT_EQUALS(vect1[3], 8)
+      CHECK((vect1.size()) == (static_cast< gum::Size >(4)));
+      CHECK((vect1[0]) == (2));
+      CHECK((vect1[1]) == (3));
+      CHECK((vect1[2]) == (4));
+      CHECK((vect1[3]) == (8));
 
       var1.changeValue(3, 0);
-      TS_ASSERT_EQUALS(vect1.size(), static_cast< gum::Size >(4))
-      TS_ASSERT_EQUALS(vect1[0], 0)
-      TS_ASSERT_EQUALS(vect1[1], 2)
-      TS_ASSERT_EQUALS(vect1[2], 4)
-      TS_ASSERT_EQUALS(vect1[3], 8)
+      CHECK((vect1.size()) == (static_cast< gum::Size >(4)));
+      CHECK((vect1[0]) == (0));
+      CHECK((vect1[1]) == (2));
+      CHECK((vect1[2]) == (4));
+      CHECK((vect1[3]) == (8));
 
       var1.changeValue(0, 10);
-      TS_ASSERT_EQUALS(vect1.size(), static_cast< gum::Size >(4))
-      TS_ASSERT_EQUALS(vect1[0], 2)
-      TS_ASSERT_EQUALS(vect1[1], 4)
-      TS_ASSERT_EQUALS(vect1[2], 8)
-      TS_ASSERT_EQUALS(vect1[3], 10)
+      CHECK((vect1.size()) == (static_cast< gum::Size >(4)));
+      CHECK((vect1[0]) == (2));
+      CHECK((vect1[1]) == (4));
+      CHECK((vect1[2]) == (8));
+      CHECK((vect1[3]) == (10));
 
       var1.changeValue(4, 12);
-      TS_ASSERT_EQUALS(vect1.size(), static_cast< gum::Size >(4))
-      TS_ASSERT_EQUALS(vect1[0], 2)
-      TS_ASSERT_EQUALS(vect1[1], 8)
-      TS_ASSERT_EQUALS(vect1[2], 10)
-      TS_ASSERT_EQUALS(vect1[3], 12)
+      CHECK((vect1.size()) == (static_cast< gum::Size >(4)));
+      CHECK((vect1[0]) == (2));
+      CHECK((vect1[1]) == (8));
+      CHECK((vect1[2]) == (10));
+      CHECK((vect1[3]) == (12));
 
-      TS_ASSERT_THROWS(var1.changeValue(12, 10), const gum::DuplicateElement&)
-      TS_ASSERT_EQUALS(vect1.size(), static_cast< gum::Size >(4))
-      TS_ASSERT_EQUALS(vect1[0], 2)
-      TS_ASSERT_EQUALS(vect1[1], 8)
-      TS_ASSERT_EQUALS(vect1[2], 10)
-      TS_ASSERT_EQUALS(vect1[3], 12)
+      CHECK_THROWS_AS(var1.changeValue(12, 10), const gum::DuplicateElement&);
+      CHECK((vect1.size()) == (static_cast< gum::Size >(4)));
+      CHECK((vect1[0]) == (2));
+      CHECK((vect1[1]) == (8));
+      CHECK((vect1[2]) == (10));
+      CHECK((vect1[3]) == (12));
 
-      TS_ASSERT_THROWS_NOTHING(var1.changeValue(22, 10))
+      CHECK_NOTHROW(var1.changeValue(22, 10));
 
       var1.eraseValue(8);
-      TS_ASSERT_EQUALS(vect1.size(), static_cast< gum::Size >(3))
-      TS_ASSERT_EQUALS(vect1[0], 2)
-      TS_ASSERT_EQUALS(vect1[1], 10)
-      TS_ASSERT_EQUALS(vect1[2], 12)
+      CHECK((vect1.size()) == (static_cast< gum::Size >(3)));
+      CHECK((vect1[0]) == (2));
+      CHECK((vect1[1]) == (10));
+      CHECK((vect1[2]) == (12));
 
-      TS_ASSERT_THROWS_NOTHING(var1.eraseValue(22))
+      CHECK_NOTHROW(var1.eraseValue(22));
       var1.eraseValue(2);
-      TS_ASSERT_EQUALS(vect1.size(), static_cast< gum::Size >(2))
-      TS_ASSERT_EQUALS(vect1[0], 10)
-      TS_ASSERT_EQUALS(vect1[1], 12)
+      CHECK((vect1.size()) == (static_cast< gum::Size >(2)));
+      CHECK((vect1[0]) == (10));
+      CHECK((vect1[1]) == (12));
       var1.eraseValue(12);
-      TS_ASSERT_EQUALS(vect1.size(), static_cast< gum::Size >(1))
-      TS_ASSERT_EQUALS(vect1[0], 10)
+      CHECK((vect1.size()) == (static_cast< gum::Size >(1)));
+      CHECK((vect1[0]) == (10));
 
-      TS_ASSERT_EQUALS(var6.domainSize(), static_cast< gum::Size >(4))
+      CHECK((var6.domainSize()) == (static_cast< gum::Size >(4)));
       var6.eraseValues();
-      TS_ASSERT_EQUALS(var6.domainSize(), static_cast< gum::Size >(0))
+      CHECK((var6.domainSize()) == (static_cast< gum::Size >(0)));
 
       delete var5;
     }   // namespace gum_tests
 
-    GUM_ACTIVE_TEST(SecondConstructor) {
+    static void testSecondConstructor() {
       {
         gum::IntegerVariable var("var", "this is var2", 0, 10, gum::Size(6));
 
-        TS_ASSERT_EQUALS(var.domainSize(), static_cast< gum::Size >(6))
+        CHECK((var.domainSize()) == (static_cast< gum::Size >(6)));
         const auto& vect = var.integerDomain();
-        TS_ASSERT_EQUALS(vect.size(), static_cast< gum::Size >(6))
-        TS_ASSERT_EQUALS(vect[0], 0)
-        TS_ASSERT_EQUALS(vect[1], 2)
-        TS_ASSERT_EQUALS(vect[2], 4)
-        TS_ASSERT_EQUALS(vect[3], 6)
-        TS_ASSERT_EQUALS(vect[4], 8)
-        TS_ASSERT_EQUALS(vect[5], 10)
+        CHECK((vect.size()) == (static_cast< gum::Size >(6)));
+        CHECK((vect[0]) == (0));
+        CHECK((vect[1]) == (2));
+        CHECK((vect[2]) == (4));
+        CHECK((vect[3]) == (6));
+        CHECK((vect[4]) == (8));
+        CHECK((vect[5]) == (10));
       }
       {
         gum::IntegerVariable var("var", "this is var2", 0, 9, gum::Size(6));
 
-        TS_ASSERT_EQUALS(var.domainSize(), static_cast< gum::Size >(6))
+        CHECK((var.domainSize()) == (static_cast< gum::Size >(6)));
         const auto& vect = var.integerDomain();
-        TS_ASSERT_EQUALS(vect.size(), static_cast< gum::Size >(6))
-        TS_ASSERT_EQUALS(vect[0], 0)
-        TS_ASSERT_EQUALS(vect[1], 1)
-        TS_ASSERT_EQUALS(vect[2], 3)
-        TS_ASSERT_EQUALS(vect[3], 5)
-        TS_ASSERT_EQUALS(vect[4], 7)
-        TS_ASSERT_EQUALS(vect[5], 9)
+        CHECK((vect.size()) == (static_cast< gum::Size >(6)));
+        CHECK((vect[0]) == (0));
+        CHECK((vect[1]) == (1));
+        CHECK((vect[2]) == (3));
+        CHECK((vect[3]) == (5));
+        CHECK((vect[4]) == (7));
+        CHECK((vect[5]) == (9));
       }
     }
   };
+
+  GUM_TEST_ACTIF(All)
+  GUM_TEST_ACTIF(SecondConstructor)
 }   // namespace gum_tests

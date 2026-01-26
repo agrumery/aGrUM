@@ -1,7 +1,7 @@
 /****************************************************************************
  *   This file is part of the aGrUM/pyAgrum library.                        *
  *                                                                          *
- *   Copyright (c) 2005-2025 by                                             *
+ *   Copyright (c) 2005-2026 by                                             *
  *       - Pierre-Henri WUILLEMIN(_at_LIP6)                                 *
  *       - Christophe GONZALES(_at_AMU)                                     *
  *                                                                          *
@@ -27,7 +27,7 @@
  *                                                                          *
  *   See LICENCES for more details.                                         *
  *                                                                          *
- *   SPDX-FileCopyrightText: Copyright 2005-2025                            *
+ *   SPDX-FileCopyrightText: Copyright 2005-2026                            *
  *       - Pierre-Henri WUILLEMIN(_at_LIP6)                                 *
  *       - Christophe GONZALES(_at_AMU)                                     *
  *   SPDX-License-Identifier: LGPL-3.0-or-later OR MIT                      *
@@ -37,6 +37,7 @@
  *   gitlab   : https://gitlab.com/agrumery/agrum                           *
  *                                                                          *
  ****************************************************************************/
+
 #pragma once
 
 
@@ -49,6 +50,11 @@
 #include <agrum/base/core/multiPriorityQueue.h>
 #include <agrum/base/core/priorityQueue.h>
 #include <agrum/base/core/set.h>
+
+#undef GUM_CURRENT_SUITE
+#undef GUM_CURRENT_MODULE
+#define GUM_CURRENT_SUITE  PriorityQueue
+#define GUM_CURRENT_MODULE GUMBASE
 
 namespace gum {
   template <>
@@ -63,17 +69,17 @@ namespace gum {
 
 namespace gum_tests {
 
-  class GUM_TEST_SUITE(PriorityQueue) {
+  struct PriorityQueueTestSuite {
     public:
-    GUM_ACTIVE_TEST(Construct) {
+    static void testConstruct() {
       gum::PriorityQueue< std::string > queue1;
 
-      TS_ASSERT_EQUALS(queue1.size(), static_cast< gum::Size >(0))
-      TS_ASSERT_EQUALS(queue1.empty(), true)
-      TS_ASSERT_EQUALS(queue1.contains("ZZZ"), false)
-      TS_ASSERT_THROWS(queue1.top(), const gum::NotFound&)
-      TS_ASSERT_THROWS(queue1.pop(), const gum::NotFound&)
-      TS_ASSERT_THROWS(queue1.topPriority(), const gum::NotFound&)
+      CHECK((queue1.size()) == (static_cast< gum::Size >(0)));
+      CHECK((queue1.empty()) == (true));
+      CHECK((queue1.contains("ZZZ")) == (false));
+      CHECK_THROWS_AS(queue1.top(), const gum::NotFound&);
+      CHECK_THROWS_AS(queue1.pop(), const gum::NotFound&);
+      CHECK_THROWS_AS(queue1.topPriority(), const gum::NotFound&);
 
       queue1.insert("AAA", 8);
       queue1.insert("BBB", 10);
@@ -83,122 +89,122 @@ namespace gum_tests {
       int         nb  = 24;
       queue1.insert(xxx, nb);
 
-      TS_ASSERT_EQUALS(queue1.size(), static_cast< gum::Size >(5))
-      TS_ASSERT_EQUALS(queue1.empty(), false)
-      TS_ASSERT_EQUALS(queue1.contains("AAA"), true)
-      TS_ASSERT_EQUALS(queue1.contains("ZZZ"), false)
+      CHECK((queue1.size()) == (static_cast< gum::Size >(5)));
+      CHECK((queue1.empty()) == (false));
+      CHECK((queue1.contains("AAA")) == (true));
+      CHECK((queue1.contains("ZZZ")) == (false));
 
       const std::string& str = queue1.top();
-      TS_ASSERT_EQUALS(str, "CCC")
-      TS_ASSERT_EQUALS(queue1.topPriority(), 2)
+      CHECK((str) == ("CCC"));
+      CHECK((queue1.topPriority()) == (2));
 
       std::string str2 = queue1.pop();
-      TS_ASSERT_EQUALS(str2, "CCC")
-      TS_ASSERT_EQUALS(queue1.top(), "AAA")
-      TS_ASSERT_EQUALS(queue1.topPriority(), 8)
+      CHECK((str2) == ("CCC"));
+      CHECK((queue1.top()) == ("AAA"));
+      CHECK((queue1.topPriority()) == (8));
 
       queue1.setPriorityByPos(0, 4);
-      TS_ASSERT_EQUALS(queue1.top(), "AAA")
-      TS_ASSERT_EQUALS(queue1.topPriority(), 4)
-      TS_ASSERT_THROWS(queue1.setPriorityByPos(10, 4), const gum::NotFound&)
+      CHECK((queue1.top()) == ("AAA"));
+      CHECK((queue1.topPriority()) == (4));
+      CHECK_THROWS_AS(queue1.setPriorityByPos(10, 4), const gum::NotFound&);
 
       queue1.setPriority("BBB", 100);
       nb = 2;
       queue1.setPriority("BBB", nb);
-      TS_ASSERT_EQUALS(queue1.top(), "BBB")
-      TS_ASSERT_EQUALS(queue1.topPriority(), 2)
-      TS_ASSERT_THROWS(queue1.setPriority("zzz", 4), const gum::NotFound&)
+      CHECK((queue1.top()) == ("BBB"));
+      CHECK((queue1.topPriority()) == (2));
+      CHECK_THROWS_AS(queue1.setPriority("zzz", 4), const gum::NotFound&);
 
-      TS_ASSERT_THROWS(queue1.priority("zzz"), const gum::NotFound&)
-      TS_ASSERT_EQUALS(queue1.priority("BBB"), 2)
+      CHECK_THROWS_AS(queue1.priority("zzz"), const gum::NotFound&);
+      CHECK((queue1.priority("BBB")) == (2));
 
       queue1.resize(10);
-      TS_ASSERT_EQUALS(queue1.capacity(), static_cast< gum::Size >(10))
+      CHECK((queue1.capacity()) == (static_cast< gum::Size >(10)));
 
       const gum::HashTable< std::string, gum::Size >& vals = queue1.allValues();
-      TS_ASSERT_EQUALS(vals.size(), static_cast< gum::Size >(4))
+      CHECK((vals.size()) == (static_cast< gum::Size >(4)));
 
       gum::PriorityQueue< std::string > queue10{std::pair< std::string, int >("aa", 3),
                                                 std::pair< std::string, int >("bb", 2)};
-      TS_ASSERT_EQUALS(queue10.size(), static_cast< gum::Size >(2))
-      TS_ASSERT_EQUALS(queue10.top(), "bb")
+      CHECK((queue10.size()) == (static_cast< gum::Size >(2)));
+      CHECK((queue10.top()) == ("bb"));
     }   // namespace gum_tests
 
-    GUM_ACTIVE_TEST(MoveScalar) {
+    static void testMoveScalar() {
       gum::PriorityQueue< int > queue1{std::pair< int, int >(1, 3),
                                        std::pair< int, int >(2, 1),
                                        std::pair< int, int >(3, 10)};
 
       gum::PriorityQueue< int, int, std::less< int > > queue3;
       queue3 = queue1;
-      TS_ASSERT_EQUALS(queue3.top(), 2)
-      TS_ASSERT_EQUALS(queue3.topPriority(), 1)
-      TS_ASSERT_EQUALS(queue3.size(), static_cast< gum::Size >(3))
+      CHECK((queue3.top()) == (2));
+      CHECK((queue3.topPriority()) == (1));
+      CHECK((queue3.size()) == (static_cast< gum::Size >(3)));
 
       gum::PriorityQueue< int, int, std::less< int > > queue4(queue1);
-      TS_ASSERT_EQUALS(queue4.top(), 2)
-      TS_ASSERT_EQUALS(queue4.topPriority(), 1)
-      TS_ASSERT_EQUALS(queue4.size(), static_cast< gum::Size >(3))
+      CHECK((queue4.top()) == (2));
+      CHECK((queue4.topPriority()) == (1));
+      CHECK((queue4.size()) == (static_cast< gum::Size >(3)));
 
       gum::PriorityQueue< int > queue2 = std::move(queue1);
-      TS_ASSERT_EQUALS(queue2.top(), 2)
-      TS_ASSERT_EQUALS(queue2.topPriority(), 1)
-      TS_ASSERT_EQUALS(queue2.size(), static_cast< gum::Size >(3))
+      CHECK((queue2.top()) == (2));
+      CHECK((queue2.topPriority()) == (1));
+      CHECK((queue2.size()) == (static_cast< gum::Size >(3)));
 
       gum::PriorityQueue< int, int, std::less< int > > queue5(std::move(queue4));
-      TS_ASSERT_EQUALS(queue5.top(), 2)
-      TS_ASSERT_EQUALS(queue5.topPriority(), 1)
-      TS_ASSERT_EQUALS(queue5.size(), static_cast< gum::Size >(3))
+      CHECK((queue5.top()) == (2));
+      CHECK((queue5.topPriority()) == (1));
+      CHECK((queue5.size()) == (static_cast< gum::Size >(3)));
 
       gum::PriorityQueue< int > queue6{std::pair< int, int >(2, 1)};
       queue6 = std::move(queue2);
-      TS_ASSERT_EQUALS(queue6.top(), 2)
-      TS_ASSERT_EQUALS(queue6.topPriority(), 1)
-      TS_ASSERT_EQUALS(queue6.size(), static_cast< gum::Size >(3))
+      CHECK((queue6.top()) == (2));
+      CHECK((queue6.topPriority()) == (1));
+      CHECK((queue6.size()) == (static_cast< gum::Size >(3)));
     }
 
-    GUM_ACTIVE_TEST(MoveGen) {
+    static void testMoveGen() {
       gum::PriorityQueue< std::string > queue1{std::pair< std::string, int >("a", 3),
                                                std::pair< std::string, int >("b", 1),
                                                std::pair< std::string, int >("c", 10)};
 
       gum::PriorityQueue< std::string, int, std::less< int > > queue3;
       queue3 = queue1;
-      TS_ASSERT_EQUALS(queue3.top(), "b")
-      TS_ASSERT_EQUALS(queue3.topPriority(), 1)
-      TS_ASSERT_EQUALS(queue3.size(), static_cast< gum::Size >(3))
+      CHECK((queue3.top()) == ("b"));
+      CHECK((queue3.topPriority()) == (1));
+      CHECK((queue3.size()) == (static_cast< gum::Size >(3)));
 
       gum::PriorityQueue< std::string, int, std::less< int > > queue4(queue1);
-      TS_ASSERT_EQUALS(queue4.top(), "b")
-      TS_ASSERT_EQUALS(queue4.topPriority(), 1)
-      TS_ASSERT_EQUALS(queue4.size(), static_cast< gum::Size >(3))
+      CHECK((queue4.top()) == ("b"));
+      CHECK((queue4.topPriority()) == (1));
+      CHECK((queue4.size()) == (static_cast< gum::Size >(3)));
 
       gum::PriorityQueue< std::string > queue2 = std::move(queue1);
-      TS_ASSERT_EQUALS(queue2.top(), "b")
-      TS_ASSERT_EQUALS(queue2.topPriority(), 1)
-      TS_ASSERT_EQUALS(queue2.size(), static_cast< gum::Size >(3))
+      CHECK((queue2.top()) == ("b"));
+      CHECK((queue2.topPriority()) == (1));
+      CHECK((queue2.size()) == (static_cast< gum::Size >(3)));
 
       gum::PriorityQueue< std::string, int, std::less< int > > queue5(std::move(queue4));
-      TS_ASSERT_EQUALS(queue5.top(), "b")
-      TS_ASSERT_EQUALS(queue5.topPriority(), 1)
-      TS_ASSERT_EQUALS(queue5.size(), static_cast< gum::Size >(3))
+      CHECK((queue5.top()) == ("b"));
+      CHECK((queue5.topPriority()) == (1));
+      CHECK((queue5.size()) == (static_cast< gum::Size >(3)));
 
       gum::PriorityQueue< std::string > queue6{std::pair< std::string, int >("a", 1)};
       queue6 = std::move(queue2);
-      TS_ASSERT_EQUALS(queue6.top(), "b")
-      TS_ASSERT_EQUALS(queue6.topPriority(), 1)
-      TS_ASSERT_EQUALS(queue6.size(), static_cast< gum::Size >(3))
+      CHECK((queue6.top()) == ("b"));
+      CHECK((queue6.topPriority()) == (1));
+      CHECK((queue6.size()) == (static_cast< gum::Size >(3)));
     }
 
-    GUM_ACTIVE_TEST(Scalar) {
+    static void testScalar() {
       gum::PriorityQueue< int > queue1;
 
-      TS_ASSERT_EQUALS(queue1.size(), static_cast< gum::Size >(0))
-      TS_ASSERT_EQUALS(queue1.empty(), true)
-      TS_ASSERT_EQUALS(queue1.contains(32), false)
-      TS_ASSERT_THROWS(queue1.top(), const gum::NotFound&)
-      TS_ASSERT_THROWS(queue1.pop(), const gum::NotFound&)
-      TS_ASSERT_THROWS(queue1.topPriority(), const gum::NotFound&)
+      CHECK((queue1.size()) == (static_cast< gum::Size >(0)));
+      CHECK((queue1.empty()) == (true));
+      CHECK((queue1.contains(32)) == (false));
+      CHECK_THROWS_AS(queue1.top(), const gum::NotFound&);
+      CHECK_THROWS_AS(queue1.pop(), const gum::NotFound&);
+      CHECK_THROWS_AS(queue1.topPriority(), const gum::NotFound&);
 
       queue1.insert(1, 8);
       queue1.insert(2, 10);
@@ -208,43 +214,43 @@ namespace gum_tests {
       int nb  = 24;
       queue1.insert(xxx, nb);
 
-      TS_ASSERT_EQUALS(queue1.size(), static_cast< gum::Size >(5))
-      TS_ASSERT_EQUALS(queue1.empty(), false)
-      TS_ASSERT_EQUALS(queue1.contains(1), true)
-      TS_ASSERT_EQUALS(queue1.contains(26), false)
+      CHECK((queue1.size()) == (static_cast< gum::Size >(5)));
+      CHECK((queue1.empty()) == (false));
+      CHECK((queue1.contains(1)) == (true));
+      CHECK((queue1.contains(26)) == (false));
 
       int str = queue1.top();
-      TS_ASSERT_EQUALS(str, 3)
-      TS_ASSERT_EQUALS(queue1.topPriority(), 2)
+      CHECK((str) == (3));
+      CHECK((queue1.topPriority()) == (2));
 
       int str2 = queue1.pop();
-      TS_ASSERT_EQUALS(str2, 3)
-      TS_ASSERT_EQUALS(queue1.top(), 1)
-      TS_ASSERT_EQUALS(queue1.topPriority(), 8)
+      CHECK((str2) == (3));
+      CHECK((queue1.top()) == (1));
+      CHECK((queue1.topPriority()) == (8));
 
       queue1.setPriorityByPos(0, 4);
-      TS_ASSERT_EQUALS(queue1.top(), 1)
-      TS_ASSERT_EQUALS(queue1.topPriority(), 4)
-      TS_ASSERT_THROWS(queue1.setPriorityByPos(10, 4), const gum::NotFound&)
+      CHECK((queue1.top()) == (1));
+      CHECK((queue1.topPriority()) == (4));
+      CHECK_THROWS_AS(queue1.setPriorityByPos(10, 4), const gum::NotFound&);
 
       queue1.setPriority(2, 100);
       nb = 2;
       queue1.setPriority(2, nb);
-      TS_ASSERT_EQUALS(queue1.top(), 2)
-      TS_ASSERT_EQUALS(queue1.topPriority(), 2)
-      TS_ASSERT_THROWS(queue1.setPriority(25, 4), const gum::NotFound&)
+      CHECK((queue1.top()) == (2));
+      CHECK((queue1.topPriority()) == (2));
+      CHECK_THROWS_AS(queue1.setPriority(25, 4), const gum::NotFound&);
 
-      TS_ASSERT_THROWS(queue1.priority(25), const gum::NotFound&)
-      TS_ASSERT_EQUALS(queue1.priority(2), 2)
+      CHECK_THROWS_AS(queue1.priority(25), const gum::NotFound&);
+      CHECK((queue1.priority(2)) == (2));
 
       queue1.resize(10);
-      TS_ASSERT_EQUALS(queue1.capacity(), static_cast< gum::Size >(10))
+      CHECK((queue1.capacity()) == (static_cast< gum::Size >(10)));
 
       const gum::HashTable< int, gum::Size >& vals = queue1.allValues();
-      TS_ASSERT_EQUALS(vals.size(), static_cast< gum::Size >(4))
+      CHECK((vals.size()) == (static_cast< gum::Size >(4)));
     }
 
-    GUM_ACTIVE_TEST(Copy) {
+    static void testCopy() {
       gum::PriorityQueue< std::string > queue1;
       queue1.insert("AAA", 8);
       queue1.insert("BBB", 10);
@@ -253,43 +259,43 @@ namespace gum_tests {
       queue1.insert("EEE", 24);
 
       gum::PriorityQueue< std::string > queue2 = queue1;
-      TS_ASSERT_EQUALS(queue2.size(), static_cast< gum::Size >(5))
-      TS_ASSERT_EQUALS(queue2.empty(), false)
-      TS_ASSERT_EQUALS(queue2.contains("AAA"), true)
-      TS_ASSERT_EQUALS(queue2.contains("ZZZ"), false)
+      CHECK((queue2.size()) == (static_cast< gum::Size >(5)));
+      CHECK((queue2.empty()) == (false));
+      CHECK((queue2.contains("AAA")) == (true));
+      CHECK((queue2.contains("ZZZ")) == (false));
 
       queue2.clear();
-      TS_ASSERT_EQUALS(queue2.size(), static_cast< gum::Size >(0))
-      TS_GUM_ASSERT_THROWS_NOTHING(queue2.eraseByPos(10))
-      TS_GUM_ASSERT_THROWS_NOTHING(queue2.erase("RRR"))
+      CHECK((queue2.size()) == (static_cast< gum::Size >(0)));
+      GUM_CHECK_ASSERT_THROWS_NOTHING(queue2.eraseByPos(10));
+      GUM_CHECK_ASSERT_THROWS_NOTHING(queue2.erase("RRR"));
 
       queue2 = queue1;
       queue2.eraseTop();
       queue2 = queue1;
-      TS_ASSERT_EQUALS(queue2.size(), static_cast< gum::Size >(5))
-      TS_ASSERT_EQUALS(queue2.empty(), false)
-      TS_ASSERT_EQUALS(queue2.contains("AAA"), true)
-      TS_ASSERT_EQUALS(queue2.contains("ZZZ"), false)
+      CHECK((queue2.size()) == (static_cast< gum::Size >(5)));
+      CHECK((queue2.empty()) == (false));
+      CHECK((queue2.contains("AAA")) == (true));
+      CHECK((queue2.contains("ZZZ")) == (false));
       queue2 = queue1;
-      TS_ASSERT_EQUALS(queue2.size(), static_cast< gum::Size >(5))
-      TS_ASSERT_EQUALS(queue2.empty(), false)
-      TS_ASSERT_EQUALS(queue2.contains("AAA"), true)
-      TS_ASSERT_EQUALS(queue2.contains("ZZZ"), false)
+      CHECK((queue2.size()) == (static_cast< gum::Size >(5)));
+      CHECK((queue2.empty()) == (false));
+      CHECK((queue2.contains("AAA")) == (true));
+      CHECK((queue2.contains("ZZZ")) == (false));
 
       queue2.eraseTop();
-      TS_ASSERT_EQUALS(queue2.topPriority(), 8)
+      CHECK((queue2.topPriority()) == (8));
       queue2.eraseByPos(0);
-      TS_ASSERT_EQUALS(queue2.topPriority(), 10)
+      CHECK((queue2.topPriority()) == (10));
       queue2.eraseByPos(3);
-      TS_ASSERT_EQUALS(queue2.size(), static_cast< gum::Size >(3))
+      CHECK((queue2.size()) == (static_cast< gum::Size >(3)));
       queue2.erase("AAA");
-      TS_ASSERT_EQUALS(queue2.size(), static_cast< gum::Size >(3))
+      CHECK((queue2.size()) == (static_cast< gum::Size >(3)));
 
       const std::string& str1 = queue2[0];
-      TS_ASSERT_EQUALS(str1, "BBB")
+      CHECK((str1) == ("BBB"));
     }
 
-    GUM_ACTIVE_TEST(ConstObj) {
+    static void testConstObj() {
       gum::Set< int > set1, set2, set3, set4, set5, set6;
       set1 << 1;
       set2 << 1 << 2;
@@ -298,12 +304,12 @@ namespace gum_tests {
       set5 << 1 << 2 << 3 << 4 << 5;
 
       gum::PriorityQueue< gum::Set< int > > queue1;
-      TS_ASSERT_EQUALS(queue1.size(), static_cast< gum::Size >(0))
-      TS_ASSERT_EQUALS(queue1.empty(), true)
-      TS_ASSERT_EQUALS(queue1.contains(set1), false)
-      TS_ASSERT_THROWS(queue1.top(), const gum::NotFound&)
-      TS_ASSERT_THROWS(queue1.pop(), const gum::NotFound&)
-      TS_ASSERT_THROWS(queue1.topPriority(), const gum::NotFound&)
+      CHECK((queue1.size()) == (static_cast< gum::Size >(0)));
+      CHECK((queue1.empty()) == (true));
+      CHECK((queue1.contains(set1)) == (false));
+      CHECK_THROWS_AS(queue1.top(), const gum::NotFound&);
+      CHECK_THROWS_AS(queue1.pop(), const gum::NotFound&);
+      CHECK_THROWS_AS(queue1.topPriority(), const gum::NotFound&);
 
       queue1.insert(set1, 8);
       queue1.insert(set2, 10);
@@ -311,41 +317,41 @@ namespace gum_tests {
       queue1.insert(set4, 23);
       queue1.insert(set5, 24);
 
-      TS_ASSERT_EQUALS(queue1.size(), static_cast< gum::Size >(5))
-      TS_ASSERT_EQUALS(queue1.empty(), false)
-      TS_ASSERT_EQUALS(queue1.contains(set1), true)
-      TS_ASSERT_EQUALS(queue1.contains(set6), false)
+      CHECK((queue1.size()) == (static_cast< gum::Size >(5)));
+      CHECK((queue1.empty()) == (false));
+      CHECK((queue1.contains(set1)) == (true));
+      CHECK((queue1.contains(set6)) == (false));
 
       const gum::Set< int >& str = queue1.top();
-      TS_ASSERT_EQUALS(str, set3)
-      TS_ASSERT_EQUALS(queue1.topPriority(), 2)
+      CHECK((str) == (set3));
+      CHECK((queue1.topPriority()) == (2));
 
       gum::Set< int > str2 = queue1.pop();
-      TS_ASSERT_EQUALS(str2, set3)
-      TS_ASSERT_EQUALS(queue1.top(), set1)
-      TS_ASSERT_EQUALS(queue1.topPriority(), 8)
+      CHECK((str2) == (set3));
+      CHECK((queue1.top()) == (set1));
+      CHECK((queue1.topPriority()) == (8));
 
       queue1.setPriorityByPos(0, 4);
-      TS_ASSERT_EQUALS(queue1.top(), set1)
-      TS_ASSERT_EQUALS(queue1.topPriority(), 4)
-      TS_ASSERT_THROWS(queue1.setPriorityByPos(10, 4), const gum::NotFound&)
+      CHECK((queue1.top()) == (set1));
+      CHECK((queue1.topPriority()) == (4));
+      CHECK_THROWS_AS(queue1.setPriorityByPos(10, 4), const gum::NotFound&);
 
       int nb = 2;
       queue1.setPriority(set2, nb);
-      TS_ASSERT_EQUALS(queue1.top(), set2)
-      TS_ASSERT_EQUALS(queue1.topPriority(), 2)
-      TS_ASSERT_THROWS(queue1.setPriority(set6, 4), const gum::NotFound&)
+      CHECK((queue1.top()) == (set2));
+      CHECK((queue1.topPriority()) == (2));
+      CHECK_THROWS_AS(queue1.setPriority(set6, 4), const gum::NotFound&);
 
-      TS_ASSERT_THROWS(queue1.priority(set6), const gum::NotFound&)
-      TS_ASSERT_EQUALS(queue1.priority(set2), 2)
+      CHECK_THROWS_AS(queue1.priority(set6), const gum::NotFound&);
+      CHECK((queue1.priority(set2)) == (2));
 
       queue1.resize(10);
-      TS_ASSERT_EQUALS(queue1.capacity(), static_cast< gum::Size >(10))
+      CHECK((queue1.capacity()) == (static_cast< gum::Size >(10)));
 
-      TS_ASSERT_THROWS(queue1.insert(set1, 10), const gum::DuplicateElement&)
+      CHECK_THROWS_AS(queue1.insert(set1, 10), const gum::DuplicateElement&);
 
       const gum::HashTable< gum::Set< int >, gum::Size >& vals = queue1.allValues();
-      TS_ASSERT_EQUALS(vals.size(), static_cast< gum::Size >(4))
+      CHECK((vals.size()) == (static_cast< gum::Size >(4)));
 
       queue1.clear();
       queue1.insert(set1, 8);
@@ -359,39 +365,39 @@ namespace gum_tests {
       queue2.eraseTop();
       queue2 = queue1;
 
-      TS_ASSERT_EQUALS(queue2.size(), static_cast< gum::Size >(5))
-      TS_ASSERT_EQUALS(queue2.empty(), false)
-      TS_ASSERT_EQUALS(queue2.contains(set1), true)
-      TS_ASSERT_EQUALS(queue2.contains(set6), false)
+      CHECK((queue2.size()) == (static_cast< gum::Size >(5)));
+      CHECK((queue2.empty()) == (false));
+      CHECK((queue2.contains(set1)) == (true));
+      CHECK((queue2.contains(set6)) == (false));
       queue2 = queue1;
-      TS_ASSERT_EQUALS(queue2.size(), static_cast< gum::Size >(5))
-      TS_ASSERT_EQUALS(queue2.empty(), false)
-      TS_ASSERT_EQUALS(queue2.contains(set1), true)
-      TS_ASSERT_EQUALS(queue2.contains(set6), false)
+      CHECK((queue2.size()) == (static_cast< gum::Size >(5)));
+      CHECK((queue2.empty()) == (false));
+      CHECK((queue2.contains(set1)) == (true));
+      CHECK((queue2.contains(set6)) == (false));
 
       queue2.eraseTop();
-      TS_ASSERT_EQUALS(queue2.topPriority(), 8)
+      CHECK((queue2.topPriority()) == (8));
       queue2.eraseByPos(0);
-      TS_ASSERT_EQUALS(queue2.topPriority(), 10)
+      CHECK((queue2.topPriority()) == (10));
       queue2.eraseByPos(3);
-      TS_ASSERT_EQUALS(queue2.size(), static_cast< gum::Size >(3))
+      CHECK((queue2.size()) == (static_cast< gum::Size >(3)));
       queue2.erase(set1);
-      TS_ASSERT_EQUALS(queue2.size(), static_cast< gum::Size >(3))
+      CHECK((queue2.size()) == (static_cast< gum::Size >(3)));
 
       const gum::Set< int >& str3 = queue2[0];
       const gum::Set< int >& str4 = queue2[1];
-      TS_ASSERT_EQUALS(str3, set2)
-      TS_ASSERT_EQUALS(str4, set4)
+      CHECK((str3) == (set2));
+      CHECK((str4) == (set4));
     }
 
-    GUM_ACTIVE_TEST(MultiConstruct) {
+    static void testMultiConstruct() {
       gum::MultiPriorityQueue< std::string > queue1;
-      TS_ASSERT_EQUALS(queue1.size(), static_cast< gum::Size >(0))
-      TS_ASSERT_EQUALS(queue1.empty(), true)
-      TS_ASSERT_EQUALS(queue1.contains("ZZZ"), false)
-      TS_ASSERT_THROWS(queue1.top(), const gum::NotFound&)
-      TS_ASSERT_THROWS(queue1.pop(), const gum::NotFound&)
-      TS_ASSERT_THROWS(queue1.topPriority(), const gum::NotFound&)
+      CHECK((queue1.size()) == (static_cast< gum::Size >(0)));
+      CHECK((queue1.empty()) == (true));
+      CHECK((queue1.contains("ZZZ")) == (false));
+      CHECK_THROWS_AS(queue1.top(), const gum::NotFound&);
+      CHECK_THROWS_AS(queue1.pop(), const gum::NotFound&);
+      CHECK_THROWS_AS(queue1.topPriority(), const gum::NotFound&);
 
       queue1.insert("AAA", 8);
       queue1.insert("BBB", 10);
@@ -400,41 +406,41 @@ namespace gum_tests {
       queue1.insert("EEE", 24);
       queue1.insert("AAA", 10);
 
-      TS_ASSERT_EQUALS(queue1.size(), static_cast< gum::Size >(6))
-      TS_ASSERT_EQUALS(queue1.empty(), false)
-      TS_ASSERT_EQUALS(queue1.contains("AAA"), true)
-      TS_ASSERT_EQUALS(queue1.contains("ZZZ"), false)
+      CHECK((queue1.size()) == (static_cast< gum::Size >(6)));
+      CHECK((queue1.empty()) == (false));
+      CHECK((queue1.contains("AAA")) == (true));
+      CHECK((queue1.contains("ZZZ")) == (false));
 
       const std::string& str = queue1.top();
-      TS_ASSERT_EQUALS(str, "CCC")
-      TS_ASSERT_EQUALS(queue1.topPriority(), 2)
+      CHECK((str) == ("CCC"));
+      CHECK((queue1.topPriority()) == (2));
 
       std::string str2 = queue1.pop();
-      TS_ASSERT_EQUALS(str2, "CCC")
-      TS_ASSERT_EQUALS(queue1.top(), "AAA")
-      TS_ASSERT_EQUALS(queue1.topPriority(), 8)
+      CHECK((str2) == ("CCC"));
+      CHECK((queue1.top()) == ("AAA"));
+      CHECK((queue1.topPriority()) == (8));
 
       queue1.setPriorityByPos(0, 4);
-      TS_ASSERT_EQUALS(queue1.top(), "AAA")
-      TS_ASSERT_EQUALS(queue1.topPriority(), 4)
-      TS_ASSERT_THROWS(queue1.setPriorityByPos(10, 4), const gum::NotFound&)
+      CHECK((queue1.top()) == ("AAA"));
+      CHECK((queue1.topPriority()) == (4));
+      CHECK_THROWS_AS(queue1.setPriorityByPos(10, 4), const gum::NotFound&);
 
       queue1.setPriority("BBB", 2);
-      TS_ASSERT_EQUALS(queue1.top(), "BBB")
-      TS_ASSERT_EQUALS(queue1.topPriority(), 2)
-      TS_ASSERT_THROWS(queue1.setPriority("zzz", 4), const gum::NotFound&)
+      CHECK((queue1.top()) == ("BBB"));
+      CHECK((queue1.topPriority()) == (2));
+      CHECK_THROWS_AS(queue1.setPriority("zzz", 4), const gum::NotFound&);
 
-      TS_ASSERT_THROWS(queue1.priority("zzz"), const gum::NotFound&)
-      TS_ASSERT_EQUALS(queue1.priority("BBB"), 2)
+      CHECK_THROWS_AS(queue1.priority("zzz"), const gum::NotFound&);
+      CHECK((queue1.priority("BBB")) == (2));
 
       queue1.resize(10);
-      TS_ASSERT_EQUALS(queue1.capacity(), static_cast< gum::Size >(10))
+      CHECK((queue1.capacity()) == (static_cast< gum::Size >(10)));
 
       const gum::HashTable< std::string, std::vector< gum::Size > >& vals = queue1.allValues();
-      TS_ASSERT_EQUALS(vals.size(), static_cast< gum::Size >(4))
+      CHECK((vals.size()) == (static_cast< gum::Size >(4)));
     }
 
-    GUM_ACTIVE_TEST(MultiCopy) {
+    static void testMultiCopy() {
       gum::MultiPriorityQueue< std::string > queue1;
       queue1.insert("AAA", 8);
       queue1.insert("BBB", 10);
@@ -444,45 +450,45 @@ namespace gum_tests {
       queue1.insert("AAA", 20);
 
       gum::MultiPriorityQueue< std::string > queue2 = queue1;
-      TS_ASSERT_EQUALS(queue2.size(), static_cast< gum::Size >(6))
-      TS_ASSERT_EQUALS(queue2.empty(), false)
-      TS_ASSERT_EQUALS(queue2.contains("AAA"), true)
-      TS_ASSERT_EQUALS(queue2.contains("ZZZ"), false)
+      CHECK((queue2.size()) == (static_cast< gum::Size >(6)));
+      CHECK((queue2.empty()) == (false));
+      CHECK((queue2.contains("AAA")) == (true));
+      CHECK((queue2.contains("ZZZ")) == (false));
 
       queue2.clear();
-      TS_ASSERT_EQUALS(queue2.size(), static_cast< gum::Size >(0))
-      TS_GUM_ASSERT_THROWS_NOTHING(queue2.eraseByPos(10))
-      TS_GUM_ASSERT_THROWS_NOTHING(queue2.erase("RRR"))
+      CHECK((queue2.size()) == (static_cast< gum::Size >(0)));
+      GUM_CHECK_ASSERT_THROWS_NOTHING(queue2.eraseByPos(10));
+      GUM_CHECK_ASSERT_THROWS_NOTHING(queue2.erase("RRR"));
 
       queue2 = queue1;
       queue2.eraseTop();
       queue2 = queue1;
-      TS_ASSERT_EQUALS(queue2.size(), static_cast< gum::Size >(6))
-      TS_ASSERT_EQUALS(queue2.empty(), false)
-      TS_ASSERT_EQUALS(queue2.contains("AAA"), true)
-      TS_ASSERT_EQUALS(queue2.contains("ZZZ"), false)
+      CHECK((queue2.size()) == (static_cast< gum::Size >(6)));
+      CHECK((queue2.empty()) == (false));
+      CHECK((queue2.contains("AAA")) == (true));
+      CHECK((queue2.contains("ZZZ")) == (false));
       queue2 = queue1;
-      TS_ASSERT_EQUALS(queue2.size(), static_cast< gum::Size >(6))
-      TS_ASSERT_EQUALS(queue2.empty(), false)
-      TS_ASSERT_EQUALS(queue2.contains("AAA"), true)
-      TS_ASSERT_EQUALS(queue2.contains("ZZZ"), false)
+      CHECK((queue2.size()) == (static_cast< gum::Size >(6)));
+      CHECK((queue2.empty()) == (false));
+      CHECK((queue2.contains("AAA")) == (true));
+      CHECK((queue2.contains("ZZZ")) == (false));
 
       queue2.eraseTop();
-      TS_ASSERT_EQUALS(queue2.topPriority(), 8)
+      CHECK((queue2.topPriority()) == (8));
       queue2.eraseByPos(0);
-      TS_ASSERT_EQUALS(queue2.topPriority(), 10)
+      CHECK((queue2.topPriority()) == (10));
       queue2.eraseByPos(3);
-      TS_ASSERT_EQUALS(queue2.size(), static_cast< gum::Size >(3))
+      CHECK((queue2.size()) == (static_cast< gum::Size >(3)));
       queue2.erase("AAA");
-      TS_ASSERT_EQUALS(queue2.size(), static_cast< gum::Size >(2))
+      CHECK((queue2.size()) == (static_cast< gum::Size >(2)));
 
       const std::string& str1 = queue2[0];
       const std::string& str2 = queue2[1];
-      TS_ASSERT_EQUALS(str1, "BBB")
-      TS_ASSERT_EQUALS(str2, "DDD")
+      CHECK((str1) == ("BBB"));
+      CHECK((str2) == ("DDD"));
     }
 
-    GUM_ACTIVE_TEST(MultiConstObj) {
+    static void testMultiConstObj() {
       gum::Set< int > set1, set2, set3, set4, set5, set6;
       set1 << 1;
       set2 << 1 << 2;
@@ -491,12 +497,12 @@ namespace gum_tests {
       set5 << 1 << 2 << 3 << 4 << 5;
 
       gum::MultiPriorityQueue< gum::Set< int > > queue1;
-      TS_ASSERT_EQUALS(queue1.size(), static_cast< gum::Size >(0))
-      TS_ASSERT_EQUALS(queue1.empty(), true)
-      TS_ASSERT_EQUALS(queue1.contains(set1), false)
-      TS_ASSERT_THROWS(queue1.top(), const gum::NotFound&)
-      TS_ASSERT_THROWS(queue1.pop(), const gum::NotFound&)
-      TS_ASSERT_THROWS(queue1.topPriority(), const gum::NotFound&)
+      CHECK((queue1.size()) == (static_cast< gum::Size >(0)));
+      CHECK((queue1.empty()) == (true));
+      CHECK((queue1.contains(set1)) == (false));
+      CHECK_THROWS_AS(queue1.top(), const gum::NotFound&);
+      CHECK_THROWS_AS(queue1.pop(), const gum::NotFound&);
+      CHECK_THROWS_AS(queue1.topPriority(), const gum::NotFound&);
 
       queue1.insert(set1, 8);
       queue1.insert(set2, 10);
@@ -505,38 +511,38 @@ namespace gum_tests {
       queue1.insert(set5, 24);
       queue1.insert(set1, 10);
 
-      TS_ASSERT_EQUALS(queue1.size(), static_cast< gum::Size >(6))
-      TS_ASSERT_EQUALS(queue1.empty(), false)
-      TS_ASSERT_EQUALS(queue1.contains(set1), true)
-      TS_ASSERT_EQUALS(queue1.contains(set6), false)
+      CHECK((queue1.size()) == (static_cast< gum::Size >(6)));
+      CHECK((queue1.empty()) == (false));
+      CHECK((queue1.contains(set1)) == (true));
+      CHECK((queue1.contains(set6)) == (false));
 
       const gum::Set< int >& str = queue1.top();
-      TS_ASSERT_EQUALS(str, set3)
-      TS_ASSERT_EQUALS(queue1.topPriority(), 2)
+      CHECK((str) == (set3));
+      CHECK((queue1.topPriority()) == (2));
 
       gum::Set< int > str2 = queue1.pop();
-      TS_ASSERT_EQUALS(str2, set3)
-      TS_ASSERT_EQUALS(queue1.top(), set1)
-      TS_ASSERT_EQUALS(queue1.topPriority(), 8)
+      CHECK((str2) == (set3));
+      CHECK((queue1.top()) == (set1));
+      CHECK((queue1.topPriority()) == (8));
 
       queue1.setPriorityByPos(0, 4);
-      TS_ASSERT_EQUALS(queue1.top(), set1)
-      TS_ASSERT_EQUALS(queue1.topPriority(), 4)
-      TS_ASSERT_THROWS(queue1.setPriorityByPos(10, 4), const gum::NotFound&)
+      CHECK((queue1.top()) == (set1));
+      CHECK((queue1.topPriority()) == (4));
+      CHECK_THROWS_AS(queue1.setPriorityByPos(10, 4), const gum::NotFound&);
 
       queue1.setPriority(set2, 2);
-      TS_ASSERT_EQUALS(queue1.top(), set2)
-      TS_ASSERT_EQUALS(queue1.topPriority(), 2)
-      TS_ASSERT_THROWS(queue1.setPriority(set6, 4), const gum::NotFound&)
+      CHECK((queue1.top()) == (set2));
+      CHECK((queue1.topPriority()) == (2));
+      CHECK_THROWS_AS(queue1.setPriority(set6, 4), const gum::NotFound&);
 
-      TS_ASSERT_THROWS(queue1.priority(set6), const gum::NotFound&)
-      TS_ASSERT_EQUALS(queue1.priority(set2), 2)
+      CHECK_THROWS_AS(queue1.priority(set6), const gum::NotFound&);
+      CHECK((queue1.priority(set2)) == (2));
 
       queue1.resize(10);
-      TS_ASSERT_EQUALS(queue1.capacity(), static_cast< gum::Size >(10))
+      CHECK((queue1.capacity()) == (static_cast< gum::Size >(10)));
 
       const gum::HashTable< gum::Set< int >, std::vector< gum::Size > >& vals = queue1.allValues();
-      TS_ASSERT_EQUALS(vals.size(), static_cast< gum::Size >(4))
+      CHECK((vals.size()) == (static_cast< gum::Size >(4)));
 
       queue1.clear();
       queue1.insert(set1, 8);
@@ -551,63 +557,74 @@ namespace gum_tests {
       queue2.eraseTop();
       queue2 = queue1;
 
-      TS_ASSERT_EQUALS(queue2.size(), static_cast< gum::Size >(6))
-      TS_ASSERT_EQUALS(queue2.empty(), false)
-      TS_ASSERT_EQUALS(queue2.contains(set1), true)
-      TS_ASSERT_EQUALS(queue2.contains(set6), false)
+      CHECK((queue2.size()) == (static_cast< gum::Size >(6)));
+      CHECK((queue2.empty()) == (false));
+      CHECK((queue2.contains(set1)) == (true));
+      CHECK((queue2.contains(set6)) == (false));
       queue2 = queue1;
-      TS_ASSERT_EQUALS(queue2.size(), static_cast< gum::Size >(6))
-      TS_ASSERT_EQUALS(queue2.empty(), false)
-      TS_ASSERT_EQUALS(queue2.contains(set1), true)
-      TS_ASSERT_EQUALS(queue2.contains(set6), false)
+      CHECK((queue2.size()) == (static_cast< gum::Size >(6)));
+      CHECK((queue2.empty()) == (false));
+      CHECK((queue2.contains(set1)) == (true));
+      CHECK((queue2.contains(set6)) == (false));
 
       queue2.eraseTop();
-      TS_ASSERT_EQUALS(queue2.topPriority(), 8)
+      CHECK((queue2.topPriority()) == (8));
       queue2.eraseByPos(0);
-      TS_ASSERT_EQUALS(queue2.topPriority(), 10)
+      CHECK((queue2.topPriority()) == (10));
       queue2.eraseByPos(3);
-      TS_ASSERT_EQUALS(queue2.size(), static_cast< gum::Size >(3))
+      CHECK((queue2.size()) == (static_cast< gum::Size >(3)));
       queue2.erase(set1);
-      TS_ASSERT_EQUALS(queue2.size(), static_cast< gum::Size >(2))
+      CHECK((queue2.size()) == (static_cast< gum::Size >(2)));
 
       const gum::Set< int >& str3 = queue2[0];
       const gum::Set< int >& str4 = queue2[1];
-      TS_ASSERT_EQUALS(str3, set2)
-      TS_ASSERT_EQUALS(str4, set4)
+      CHECK((str3) == (set2));
+      CHECK((str4) == (set4));
     }
 
-    GUM_ACTIVE_TEST(MultiMoveScalar) {
+    static void testMultiMoveScalar() {
       gum::MultiPriorityQueue< int > queue1{std::pair< int, int >(1, 3),
                                             std::pair< int, int >(2, 1),
                                             std::pair< int, int >(3, 10)};
 
       gum::MultiPriorityQueue< int, int, std::less< int > > queue3;
       queue3 = queue1;
-      TS_ASSERT_EQUALS(queue3.top(), 2)
-      TS_ASSERT_EQUALS(queue3.topPriority(), 1)
-      TS_ASSERT_EQUALS(queue3.size(), static_cast< gum::Size >(3))
+      CHECK((queue3.top()) == (2));
+      CHECK((queue3.topPriority()) == (1));
+      CHECK((queue3.size()) == (static_cast< gum::Size >(3)));
 
       gum::MultiPriorityQueue< int, int, std::less< int > > queue4(queue1);
-      TS_ASSERT_EQUALS(queue4.top(), 2)
-      TS_ASSERT_EQUALS(queue4.topPriority(), 1)
-      TS_ASSERT_EQUALS(queue4.size(), static_cast< gum::Size >(3))
+      CHECK((queue4.top()) == (2));
+      CHECK((queue4.topPriority()) == (1));
+      CHECK((queue4.size()) == (static_cast< gum::Size >(3)));
 
       gum::MultiPriorityQueue< int > queue2 = std::move(queue1);
-      TS_ASSERT_EQUALS(queue2.top(), 2)
-      TS_ASSERT_EQUALS(queue2.topPriority(), 1)
-      TS_ASSERT_EQUALS(queue2.size(), static_cast< gum::Size >(3))
+      CHECK((queue2.top()) == (2));
+      CHECK((queue2.topPriority()) == (1));
+      CHECK((queue2.size()) == (static_cast< gum::Size >(3)));
 
       gum::MultiPriorityQueue< int, int, std::less< int > > queue5(std::move(queue4));
-      TS_ASSERT_EQUALS(queue5.top(), 2)
-      TS_ASSERT_EQUALS(queue5.topPriority(), 1)
-      TS_ASSERT_EQUALS(queue5.size(), static_cast< gum::Size >(3))
+      CHECK((queue5.top()) == (2));
+      CHECK((queue5.topPriority()) == (1));
+      CHECK((queue5.size()) == (static_cast< gum::Size >(3)));
 
       gum::MultiPriorityQueue< int > queue6{std::pair< int, int >(2, 1)};
       queue6 = std::move(queue2);
-      TS_ASSERT_EQUALS(queue6.top(), 2)
-      TS_ASSERT_EQUALS(queue6.topPriority(), 1)
-      TS_ASSERT_EQUALS(queue6.size(), static_cast< gum::Size >(3))
+      CHECK((queue6.top()) == (2));
+      CHECK((queue6.topPriority()) == (1));
+      CHECK((queue6.size()) == (static_cast< gum::Size >(3)));
     }
   };
+
+  GUM_TEST_ACTIF(Construct)
+  GUM_TEST_ACTIF(MoveScalar)
+  GUM_TEST_ACTIF(MoveGen)
+  GUM_TEST_ACTIF(Scalar)
+  GUM_TEST_ACTIF(Copy)
+  GUM_TEST_ACTIF(ConstObj)
+  GUM_TEST_ACTIF(MultiConstruct)
+  GUM_TEST_ACTIF(MultiCopy)
+  GUM_TEST_ACTIF(MultiConstObj)
+  GUM_TEST_ACTIF(MultiMoveScalar)
 
 } /* namespace gum_tests */

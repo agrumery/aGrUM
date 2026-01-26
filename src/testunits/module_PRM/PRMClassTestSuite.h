@@ -1,7 +1,7 @@
 /****************************************************************************
  *   This file is part of the aGrUM/pyAgrum library.                        *
  *                                                                          *
- *   Copyright (c) 2005-2025 by                                             *
+ *   Copyright (c) 2005-2026 by                                             *
  *       - Pierre-Henri WUILLEMIN(_at_LIP6)                                 *
  *       - Christophe GONZALES(_at_AMU)                                     *
  *                                                                          *
@@ -27,7 +27,7 @@
  *                                                                          *
  *   See LICENCES for more details.                                         *
  *                                                                          *
- *   SPDX-FileCopyrightText: Copyright 2005-2025                            *
+ *   SPDX-FileCopyrightText: Copyright 2005-2026                            *
  *       - Pierre-Henri WUILLEMIN(_at_LIP6)                                 *
  *       - Christophe GONZALES(_at_AMU)                                     *
  *   SPDX-License-Identifier: LGPL-3.0-or-later OR MIT                      *
@@ -37,6 +37,7 @@
  *   gitlab   : https://gitlab.com/agrumery/agrum                           *
  *                                                                          *
  ****************************************************************************/
+
 #pragma once
 
 
@@ -48,6 +49,11 @@
 #include <agrum/base/variables/labelizedVariable.h>
 #include <agrum/PRM/elements/PRMClass.h>
 
+#undef GUM_CURRENT_SUITE
+#undef GUM_CURRENT_MODULE
+#define GUM_CURRENT_SUITE  PRMClass
+#define GUM_CURRENT_MODULE PRM
+
 /**
  * This class is used to test gum::prm::PRMClassElement, since it is an abstrac
  * class, tests defined here should be called by each sub class of
@@ -55,7 +61,7 @@
  */
 namespace gum_tests {
 
-  class GUM_TEST_SUITE(PRMClass) {
+  struct PRMClassTestSuite {
     using PRMClass     = gum::prm::PRMClass< double >;
     using PRMInterface = gum::prm::PRMInterface< double >;
     using PRMType      = gum::prm::PRMType;
@@ -68,7 +74,9 @@ namespace gum_tests {
     PRMType* _state_;
 
     public:
-    void setUp() {
+    /// Constructor & Destructor
+    /// @{
+    PRMClassTestSuite() {
       _boolean_ = gum::prm::PRMType::boolean();
       gum::LabelizedVariable state{"state", "A state variable", 0};
       state.addLabel("OK");
@@ -79,22 +87,20 @@ namespace gum_tests {
       _state_ = new PRMType(*_boolean_, map, state);
     }
 
-    void tearDown() {
+    ~PRMClassTestSuite() {
       delete _boolean_;
       delete _state_;
     }
 
-    /// Constructor & Destructor
-    /// @{
-    GUM_ACTIVE_TEST(Constructor) {
+    static void testConstructor() {
       // Arrange
       PRMClass* c = nullptr;
       // Act & Assert
-      TS_ASSERT_THROWS_NOTHING(c = new PRMClass("class"))
-      TS_ASSERT_THROWS_NOTHING(delete c)
+      CHECK_NOTHROW(c = new PRMClass("class"));
+      CHECK_NOTHROW(delete c);
     }
 
-    GUM_ACTIVE_TEST(ConstructorInheritance) {
+    static void testConstructorInheritance() {
       // Arrange
       PRMClass toRef("toRef");
       auto     a = new PRMAttribute("a", *_boolean_);
@@ -114,19 +120,19 @@ namespace gum_tests {
       super.addArc("rho.a", "c");
       PRMClass* subclass = nullptr;
       // Act
-      TS_ASSERT_THROWS_NOTHING(subclass = new PRMClass("subclass", super))
+      CHECK_NOTHROW(subclass = new PRMClass("subclass", super));
       // Assert
-      TS_ASSERT(subclass->exists("b"))
-      TS_ASSERT_EQUALS(subclass->get(b_id).name(), "b")
-      TS_ASSERT(subclass->exists("c"))
-      TS_ASSERT_EQUALS(subclass->get(c_id).name(), "c")
-      TS_ASSERT_EQUALS(subclass->attributes().size(), static_cast< gum::Size >(2))
-      TS_ASSERT_EQUALS(subclass->referenceSlots().size(), static_cast< gum::Size >(1))
-      TS_ASSERT_EQUALS(subclass->slotChains().size(), static_cast< gum::Size >(1))
+      CHECK(subclass->exists("b"));
+      CHECK((subclass->get(b_id).name()) == ("b"));
+      CHECK(subclass->exists("c"));
+      CHECK((subclass->get(c_id).name()) == ("c"));
+      CHECK((subclass->attributes().size()) == (static_cast< gum::Size >(2)));
+      CHECK((subclass->referenceSlots().size()) == (static_cast< gum::Size >(1)));
+      CHECK((subclass->slotChains().size()) == (static_cast< gum::Size >(1)));
       delete subclass;
     }
 
-    GUM_ACTIVE_TEST(ConstructorImplementation) {
+    static void testConstructorImplementation() {
       // Arrange
       PRMClass toRef("toRef");
       auto     a = new PRMAttribute("a", *_boolean_);
@@ -142,63 +148,63 @@ namespace gum_tests {
       gum::Set< PRMInterface* > set;
       set << &i;
       // Act
-      TS_ASSERT_THROWS_NOTHING(subclass = new PRMClass("subclass", set))
+      CHECK_NOTHROW(subclass = new PRMClass("subclass", set));
       // Assert
-      TS_ASSERT_EQUALS(subclass->attributes().size(), static_cast< gum::Size >(0))
-      TS_ASSERT_EQUALS(subclass->referenceSlots().size(), static_cast< gum::Size >(0))
-      TS_ASSERT_EQUALS(subclass->slotChains().size(), static_cast< gum::Size >(0))
+      CHECK((subclass->attributes().size()) == (static_cast< gum::Size >(0)));
+      CHECK((subclass->referenceSlots().size()) == (static_cast< gum::Size >(0)));
+      CHECK((subclass->slotChains().size()) == (static_cast< gum::Size >(0)));
       delete subclass;
     }
 
     /// @}
     /// Belongs and exists tests
     /// @{
-    GUM_ACTIVE_TEST(BelongsTo) {
+    static void testBelongsTo() {
       // Arrange
       PRMClass      c("class");
       PRMAttribute* attr = new PRMAttribute("attr", *_boolean_);
       c.add(attr);
       bool actual = false;
       // Act
-      TS_ASSERT_THROWS_NOTHING(actual = c.belongsTo(*attr))
+      CHECK_NOTHROW(actual = c.belongsTo(*attr));
       // Assert
-      TS_ASSERT(actual)
+      CHECK(actual);
     }
 
-    GUM_ACTIVE_TEST(BelongsToNot) {
+    static void testBelongsToNot() {
       // Arrange
       PRMClass     c("class");
       PRMAttribute attr("attr", *_boolean_);
       bool         actual = false;
       // Act
-      TS_ASSERT_THROWS_NOTHING(actual = c.belongsTo(attr))
+      CHECK_NOTHROW(actual = c.belongsTo(attr));
       // Assert
-      TS_ASSERT(!actual)
+      CHECK(!actual);
     }
 
-    GUM_ACTIVE_TEST(Exists) {
+    static void testExists() {
       // Arrange
       PRMClass      c("class");
       PRMAttribute* attr = new PRMAttribute("attr", *_boolean_);
       c.add(attr);
       bool actual = false;
       // Act
-      TS_ASSERT_THROWS_NOTHING(actual = c.exists("attr"))
+      CHECK_NOTHROW(actual = c.exists("attr"));
       // Assert
-      TS_ASSERT(actual)
+      CHECK(actual);
     }
 
-    GUM_ACTIVE_TEST(ExistsNot) {
+    static void testExistsNot() {
       // Arrange
       PRMClass c("class");
       bool     actual = false;
       // Act
-      TS_ASSERT_THROWS_NOTHING(actual = c.exists("attr"))
+      CHECK_NOTHROW(actual = c.exists("attr"));
       // Assert
-      TS_ASSERT(!actual)
+      CHECK(!actual);
     }
 
-    GUM_ACTIVE_TEST(Get) {
+    static void testGet() {
       // Arrange
       PRMClass      c("class");
       PRMAttribute* attr = new PRMAttribute("attr", *_boolean_);
@@ -206,10 +212,10 @@ namespace gum_tests {
       // Act
       auto& actual = c.get(attr->name());
       // Assert
-      TS_ASSERT_EQUALS(&actual, attr)
+      CHECK((&actual) == (attr));
     }
 
-    GUM_ACTIVE_TEST(GetConst) {
+    static void testGetConst() {
       // Arrange
       PRMClass      c("class");
       PRMAttribute* attr = new PRMAttribute("attr", *_boolean_);
@@ -218,66 +224,66 @@ namespace gum_tests {
       // Act
       const auto& actual = const_c.get(attr->name());
       // Assert
-      TS_ASSERT_EQUALS(&actual, attr)
+      CHECK((&actual) == (attr));
     }
 
-    GUM_ACTIVE_TEST(GetNotFound) {
+    static void testGetNotFound() {
       // Arrange
       PRMClass      c("class");
       PRMAttribute* attr = new PRMAttribute("attr", *_boolean_);
       c.add(attr);
       // Act & Assert
-      TS_ASSERT_THROWS(c.get("foo"), const gum::NotFound&)
+      CHECK_THROWS_AS(c.get("foo"), const gum::NotFound&);
     }
 
-    GUM_ACTIVE_TEST(GetConstNotFound) {
+    static void testGetConstNotFound() {
       // Arrange
       PRMClass      c("class");
       PRMAttribute* attr = new PRMAttribute("attr", *_boolean_);
       c.add(attr);
       const auto& const_c = c;
       // Act & Assert
-      TS_ASSERT_THROWS(const_c.get("foo"), const gum::NotFound&)
+      CHECK_THROWS_AS(const_c.get("foo"), const gum::NotFound&);
     }
 
-    GUM_ACTIVE_TEST(Add) {
+    static void testAdd() {
       // Arra,ge
       PRMClass      c("class");
       PRMAttribute* attr = new PRMAttribute("attr", *_boolean_);
       gum::NodeId   id   = 100;   // Id generation starts at 0
       // Act & assert
-      TS_ASSERT_THROWS_NOTHING(id = c.add(attr))
-      TS_ASSERT(c.exists(attr->name()))
-      TS_ASSERT_EQUALS(&(c.get(attr->name())), attr)
-      TS_ASSERT_EQUALS(id, attr->id())
-      TS_ASSERT_DIFFERS(id, (gum::NodeId)100)
+      CHECK_NOTHROW(id = c.add(attr));
+      CHECK(c.exists(attr->name()));
+      CHECK((&(c.get(attr->name()))) == (attr));
+      CHECK((id) == (attr->id()));
+      CHECK((id) != ((gum::NodeId)100));
     }
 
-    GUM_ACTIVE_TEST(AddDuplicate) {
+    static void testAddDuplicate() {
       // Arrange
       PRMClass      c("class");
       PRMAttribute* attr = new PRMAttribute("attr", *_boolean_);
       // Act & assert
-      TS_ASSERT_THROWS_NOTHING(c.add(attr))
-      TS_ASSERT_THROWS(c.add(attr), const gum::DuplicateElement&)
-      TS_ASSERT_EQUALS(c.attributes().size(), static_cast< gum::Size >(1))
+      CHECK_NOTHROW(c.add(attr));
+      CHECK_THROWS_AS(c.add(attr), const gum::DuplicateElement&);
+      CHECK((c.attributes().size()) == (static_cast< gum::Size >(1)));
     }
 
     /// @}
     /// Overloading
     /// @{
 
-    GUM_ACTIVE_TEST(OverloadOperationNotAllowed) {
+    static void testOverloadOperationNotAllowed() {
       // Arrange
       PRMClass      c("class");
       PRMAttribute* attr = new PRMAttribute("attr", *_boolean_);
       // Act & assert
-      TS_ASSERT_THROWS(c.overload(attr), const gum::OperationNotAllowed&)
+      CHECK_THROWS_AS(c.overload(attr), const gum::OperationNotAllowed&);
       // Cleanup
       delete attr;
     }
 
-    GUM_ACTIVE_TEST(OverloadWrongClassElement) {
+    static void testOverloadWrongClassElement() {
       // Arrange
       PRMClass      c("class");
       PRMAttribute* attr = new PRMAttribute("attr", *_boolean_);
@@ -285,12 +291,12 @@ namespace gum_tests {
       PRMClass   sub_c("sub c", c);
       Reference* ref = new Reference("attr", c);
       // Act & Assert
-      TS_ASSERT_THROWS(sub_c.overload(ref), const gum::OperationNotAllowed&)
+      CHECK_THROWS_AS(sub_c.overload(ref), const gum::OperationNotAllowed&);
       // Cleanup
       delete ref;
     }
 
-    GUM_ACTIVE_TEST(OverloadTypeError) {
+    static void testOverloadTypeError() {
       // Arrange
       PRMClass      c("class");
       PRMAttribute* attr = new PRMAttribute("attr", *_boolean_);
@@ -300,12 +306,12 @@ namespace gum_tests {
       gum::prm::PRMType      type(var);
       PRMAttribute*          bttr = new PRMAttribute("attr", type);
       // Act & Assert
-      TS_ASSERT_THROWS(sub_c.overload(bttr), const gum::OperationNotAllowed&)
+      CHECK_THROWS_AS(sub_c.overload(bttr), const gum::OperationNotAllowed&);
       // Cleanup
       delete bttr;
     }
 
-    GUM_ACTIVE_TEST(OverloadAttribute) {
+    static void testOverloadAttribute() {
       // Arrange
       PRMClass      c("class");
       PRMAttribute* attr = new PRMAttribute("attr", *_boolean_);
@@ -313,16 +319,16 @@ namespace gum_tests {
       PRMClass      sub_c("sub_c", c);
       PRMAttribute* sub_attr = new PRMAttribute("attr", *_boolean_);
       // Act
-      TS_ASSERT_THROWS_NOTHING(sub_c.overload(sub_attr))
+      CHECK_NOTHROW(sub_c.overload(sub_attr));
       // Assert
-      TS_ASSERT(sub_c.exists(sub_attr->safeName()))
-      TS_ASSERT(sub_c.exists(attr->safeName()))
+      CHECK(sub_c.exists(sub_attr->safeName()));
+      CHECK(sub_c.exists(attr->safeName()));
       const auto& b = sub_c.get(attr->safeName());
       const auto& s = sub_c.get(sub_attr->safeName());
-      TS_ASSERT_EQUALS(b.type(), s.type())
+      CHECK((b.type()) == (s.type()));
     }
 
-    GUM_ACTIVE_TEST(OverloadAttributeWithSubtype) {
+    static void testOverloadAttributeWithSubtype() {
       // Arrange
       PRMClass      c("class");
       PRMAttribute* attr = new PRMAttribute("attr", *_boolean_);
@@ -330,16 +336,16 @@ namespace gum_tests {
       PRMClass      sub_c("sub_c", c);
       PRMAttribute* state = new PRMAttribute("attr", *_state_);
       // Act
-      TS_ASSERT_THROWS_NOTHING(sub_c.overload(state))
+      CHECK_NOTHROW(sub_c.overload(state));
       // Assert
-      TS_ASSERT(sub_c.exists(state->safeName()))
-      TS_ASSERT(sub_c.exists(attr->safeName()))
+      CHECK(sub_c.exists(state->safeName()));
+      CHECK(sub_c.exists(attr->safeName()));
       const auto& b = sub_c.get(attr->safeName());
       const auto& s = sub_c.get(state->safeName());
-      TS_ASSERT_DIFFERS(b.type(), s.type())
+      CHECK((b.type()) != (s.type()));
     }
 
-    GUM_ACTIVE_TEST(OverloadAttributeWithSeveralCastDescendants) {
+    static void testOverloadAttributeWithSeveralCastDescendants() {
       // Arrange
       int                     size = 10;
       std::vector< PRMType* > types;
@@ -362,17 +368,17 @@ namespace gum_tests {
       PRMClass      sub_c("sub_c", c);
       PRMAttribute* state = new PRMAttribute("attr", *(types[size - 1]));
       // Act
-      TS_ASSERT_THROWS_NOTHING(sub_c.overload(state))
+      CHECK_NOTHROW(sub_c.overload(state));
       // Assert
       for (int i = 0; i < size; i++) {
         std::string i_name = "(" + types[i]->name() + ")attr";
-        TS_ASSERT(sub_c.exists(i_name))
+        CHECK(sub_c.exists(i_name));
 
         for (int j = i + 1; j < size; j++) {
           std::string j_name = "(" + types[j]->name() + ")attr";
           auto        i_attr = sub_c.get(i_name).type();
           auto        j_attr = sub_c.get(j_name).type();
-          TS_ASSERT_DIFFERS(i_attr, j_attr)
+          CHECK((i_attr) != (j_attr));
         }
       }
       // Cleanup
@@ -381,7 +387,7 @@ namespace gum_tests {
       }
     }
 
-    GUM_ACTIVE_TEST(OverloadAttributeDuplicateElement) {
+    static void testOverloadAttributeDuplicateElement() {
       // Arrange
       PRMClass      c("class");
       PRMAttribute* attr = new PRMAttribute("attr", *_boolean_);
@@ -391,15 +397,15 @@ namespace gum_tests {
       sub_c.overload(state);
       auto before = sub_c.attributes().size();
       // Act
-      TS_ASSERT_THROWS(sub_c.overload(state), const gum::DuplicateElement&)
+      CHECK_THROWS_AS(sub_c.overload(state), const gum::DuplicateElement&);
       // Assert
       auto after = sub_c.attributes().size();
-      TS_ASSERT(sub_c.exists(attr->safeName()))
-      TS_ASSERT(sub_c.exists(state->safeName()))
-      TS_ASSERT_EQUALS(before, after)
+      CHECK(sub_c.exists(attr->safeName()));
+      CHECK(sub_c.exists(state->safeName()));
+      CHECK((before) == (after));
     }
 
-    GUM_ACTIVE_TEST(OverloadAttributeWithSeveralCastDescendantsDuplicate) {
+    static void testOverloadAttributeWithSeveralCastDescendantsDuplicate() {
       // Arrange
       int                     size = 10;
       std::vector< PRMType* > types;
@@ -424,28 +430,28 @@ namespace gum_tests {
       sub_c.overload(state);
       auto before = sub_c.attributes().size();
       // Act
-      TS_ASSERT_THROWS(sub_c.overload(state), const gum::DuplicateElement&)
+      CHECK_THROWS_AS(sub_c.overload(state), const gum::DuplicateElement&);
       // Assert
       auto after = sub_c.attributes().size();
       for (int i = 0; i < size; i++) {
         std::string i_name = "(" + types[i]->name() + ")attr";
-        TS_ASSERT(sub_c.exists(i_name))
+        CHECK(sub_c.exists(i_name));
 
         for (int j = i + 1; j < size; j++) {
           std::string j_name = "(" + types[j]->name() + ")attr";
           auto        i_attr = sub_c.get(i_name).type();
           auto        j_attr = sub_c.get(j_name).type();
-          TS_ASSERT_DIFFERS(i_attr, j_attr)
+          CHECK((i_attr) != (j_attr));
         }
       }
-      TS_ASSERT_EQUALS(before, after)
+      CHECK((before) == (after));
       // Cleanup
       for (int i = 1; i < size; ++i) {
         delete types[i];
       }
     }
 
-    GUM_ACTIVE_TEST(OverloadReference) {
+    static void testOverloadReference() {
       // Arrange
       PRMClass   c_1("c_1");
       PRMClass   c_2("c_2", c_1);
@@ -455,15 +461,15 @@ namespace gum_tests {
       PRMClass   c_4("c_4", c_3);
       Reference* sub_ref = new Reference("ref", c_2, false);
       // Act
-      TS_ASSERT_THROWS_NOTHING(c_4.overload(sub_ref))
+      CHECK_NOTHROW(c_4.overload(sub_ref));
       // Assert
-      TS_ASSERT(!c_4.exists(ref->safeName()))
-      TS_ASSERT(c_4.exists(sub_ref->name()))
-      TS_ASSERT(c_4.exists(sub_ref->safeName()))
-      TS_ASSERT_EQUALS(c_4.referenceSlots().size(), static_cast< gum::Size >(1))
+      CHECK(!c_4.exists(ref->safeName()));
+      CHECK(c_4.exists(sub_ref->name()));
+      CHECK(c_4.exists(sub_ref->safeName()));
+      CHECK((c_4.referenceSlots().size()) == (static_cast< gum::Size >(1)));
     }
 
-    GUM_ACTIVE_TEST(OverloadReferenceIllegal) {
+    static void testOverloadReferenceIllegal() {
       // Arrange
       PRMClass   c_1("c_1");
       PRMClass   c_2("c_2", c_1);
@@ -473,16 +479,16 @@ namespace gum_tests {
       PRMClass   c_4("c_4", c_3);
       Reference* sub_ref = new Reference("ref", c_3);
       // Act
-      TS_ASSERT_THROWS(c_4.overload(sub_ref), const gum::OperationNotAllowed&)
+      CHECK_THROWS_AS(c_4.overload(sub_ref), const gum::OperationNotAllowed&);
       // Assert
-      TS_ASSERT(c_4.exists(ref->safeName()))
-      TS_ASSERT(c_4.exists(ref->name()))
-      TS_ASSERT(!c_4.exists(sub_ref->safeName()))
-      TS_ASSERT_EQUALS(c_4.referenceSlots().size(), static_cast< gum::Size >(1))
+      CHECK(c_4.exists(ref->safeName()));
+      CHECK(c_4.exists(ref->name()));
+      CHECK(!c_4.exists(sub_ref->safeName()));
+      CHECK((c_4.referenceSlots().size()) == (static_cast< gum::Size >(1)));
       delete sub_ref;
     }
 
-    GUM_ACTIVE_TEST(OverloadSlotChainOperantionNotAllowed) {
+    static void testOverloadSlotChainOperantionNotAllowed() {
       // Arrange
       PRMClass   c_1("c_1");
       PRMClass   c_2("c_2");
@@ -502,11 +508,11 @@ namespace gum_tests {
       PRMClass      c_4("c_4", c_1);
       PRMSlotChain* chain_copy = new PRMSlotChain("ref_1.ref_2.attr", seq);
       // Act
-      TS_ASSERT_THROWS(c_4.overload(chain_copy), const gum::OperationNotAllowed&)
+      CHECK_THROWS_AS(c_4.overload(chain_copy), const gum::OperationNotAllowed&);
       // Assert
-      TS_ASSERT(c_4.exists(chain->safeName()))
-      TS_ASSERT(c_4.exists(chain->name()))
-      TS_ASSERT_EQUALS(c_4.slotChains().size(), static_cast< gum::Size >(1))
+      CHECK(c_4.exists(chain->safeName()));
+      CHECK(c_4.exists(chain->name()));
+      CHECK((c_4.slotChains().size()) == (static_cast< gum::Size >(1)));
       delete chain_copy;
     }
 
@@ -514,19 +520,19 @@ namespace gum_tests {
     /// Input, output and inner nodes methods.
     /// @{
 
-    GUM_ACTIVE_TEST(IsInputNode) {
+    static void testIsInputNode() {
       // Arrange
       PRMClass      c("class");
       PRMAttribute* a = new PRMAttribute("attr", *_boolean_);
       c.add(a);
       bool actual = false;
       // Act
-      TS_ASSERT_THROWS_NOTHING(actual = c.isInputNode(*a))
+      CHECK_NOTHROW(actual = c.isInputNode(*a));
       // Assert
-      TS_ASSERT(!actual)
+      CHECK(!actual);
     }
 
-    GUM_ACTIVE_TEST(SetInputNode) {
+    static void testSetInputNode() {
       // Arrange
       PRMClass      c("class");
       PRMAttribute* a = new PRMAttribute("attr", *_boolean_);
@@ -534,26 +540,26 @@ namespace gum_tests {
       bool before = c.isInputNode(*a);
       bool after  = false;
       // Act
-      TS_ASSERT_THROWS_NOTHING(c.setInputNode(*a, true))
+      CHECK_NOTHROW(c.setInputNode(*a, true));
       // Assert
-      TS_ASSERT(after = c.isInputNode(*a))
-      TS_ASSERT_DIFFERS(before, after)
-      TS_ASSERT(after)
+      CHECK(after = c.isInputNode(*a));
+      CHECK((before) != (after));
+      CHECK(after);
     }
 
-    GUM_ACTIVE_TEST(IsOutputNode) {
+    static void testIsOutputNode() {
       // Arrange
       PRMClass      c("class");
       PRMAttribute* a = new PRMAttribute("attr", *_boolean_);
       c.add(a);
       bool actual = false;
       // Act
-      TS_ASSERT_THROWS_NOTHING(actual = c.isOutputNode(*a))
+      CHECK_NOTHROW(actual = c.isOutputNode(*a));
       // Assert
-      TS_ASSERT(!actual)
+      CHECK(!actual);
     }
 
-    GUM_ACTIVE_TEST(SetOutputNode) {
+    static void testSetOutputNode() {
       // Arrange
       PRMClass      c("class");
       PRMAttribute* a = new PRMAttribute("attr", *_boolean_);
@@ -561,50 +567,50 @@ namespace gum_tests {
       bool before = c.isOutputNode(*a);
       bool after  = false;
       // Act
-      TS_ASSERT_THROWS_NOTHING(c.setOutputNode(*a, true))
+      CHECK_NOTHROW(c.setOutputNode(*a, true));
       // Assert
-      TS_ASSERT(after = c.isOutputNode(*a))
-      TS_ASSERT_DIFFERS(before, after)
-      TS_ASSERT(after)
+      CHECK(after = c.isOutputNode(*a));
+      CHECK((before) != (after));
+      CHECK(after);
     }
 
-    GUM_ACTIVE_TEST(IsInnerNode) {
+    static void testIsInnerNode() {
       // Arrange
       PRMClass      c("class");
       PRMAttribute* a = new PRMAttribute("attr", *_boolean_);
       c.add(a);
       bool actual = false;
       // Act
-      TS_ASSERT_THROWS_NOTHING(actual = c.isInnerNode(*a))
+      CHECK_NOTHROW(actual = c.isInnerNode(*a));
       // Assert
-      TS_ASSERT(actual)
+      CHECK(actual);
     }
 
-    GUM_ACTIVE_TEST(InnerNodeConsistency) {
+    static void testInnerNodeConsistency() {
       // Arrange
       PRMClass      c("class");
       PRMAttribute* a = new PRMAttribute("attr", *_boolean_);
       c.add(a);
       // Act & Assert
-      TS_ASSERT(c.isInnerNode(*a))
-      TS_ASSERT(!c.isInputNode(*a))
-      TS_ASSERT(!c.isOutputNode(*a))
-      TS_ASSERT_THROWS_NOTHING(c.setInputNode(*a, true))
-      TS_ASSERT(!c.isInnerNode(*a))
-      TS_ASSERT(c.isInputNode(*a))
-      TS_ASSERT(!c.isOutputNode(*a))
-      TS_ASSERT_THROWS_NOTHING(c.setOutputNode(*a, true))
-      TS_ASSERT(!c.isInnerNode(*a))
-      TS_ASSERT(c.isInputNode(*a))
-      TS_ASSERT(c.isOutputNode(*a))
-      TS_ASSERT_THROWS_NOTHING(c.setInputNode(*a, false))
-      TS_ASSERT_THROWS_NOTHING(c.setOutputNode(*a, false))
-      TS_ASSERT(c.isInnerNode(*a))
-      TS_ASSERT(!c.isInputNode(*a))
-      TS_ASSERT(!c.isOutputNode(*a))
+      CHECK(c.isInnerNode(*a));
+      CHECK(!c.isInputNode(*a));
+      CHECK(!c.isOutputNode(*a));
+      CHECK_NOTHROW(c.setInputNode(*a, true));
+      CHECK(!c.isInnerNode(*a));
+      CHECK(c.isInputNode(*a));
+      CHECK(!c.isOutputNode(*a));
+      CHECK_NOTHROW(c.setOutputNode(*a, true));
+      CHECK(!c.isInnerNode(*a));
+      CHECK(c.isInputNode(*a));
+      CHECK(c.isOutputNode(*a));
+      CHECK_NOTHROW(c.setInputNode(*a, false));
+      CHECK_NOTHROW(c.setOutputNode(*a, false));
+      CHECK(c.isInnerNode(*a));
+      CHECK(!c.isInputNode(*a));
+      CHECK(!c.isOutputNode(*a));
     }
 
-    GUM_ACTIVE_TEST(IONodesInheritance) {
+    static void testIONodesInheritance() {
       try {
         // Arrange
         // Event
@@ -664,11 +670,43 @@ namespace gum_tests {
         knGate.addArc("K", "state");
         knGate.addArc("Nb_true", "state");
         // Assert
-        TS_ASSERT(knGate.isOutputNode(knGate.get("state")))
-      } catch (gum::Exception& e) { TS_FAIL(e.errorContent()); }
+        CHECK(knGate.isOutputNode(knGate.get("state")));
+      } catch (gum::Exception& e) { FAIL(e.errorContent()); }
     }
 
     /// @}
   };
+
+  GUM_TEST_ACTIF(Constructor)
+  GUM_TEST_ACTIF(ConstructorInheritance)
+  GUM_TEST_ACTIF(ConstructorImplementation)
+  GUM_TEST_ACTIF(BelongsTo)
+  GUM_TEST_ACTIF(BelongsToNot)
+  GUM_TEST_ACTIF(Exists)
+  GUM_TEST_ACTIF(ExistsNot)
+  GUM_TEST_ACTIF(Get)
+  GUM_TEST_ACTIF(GetConst)
+  GUM_TEST_ACTIF(GetNotFound)
+  GUM_TEST_ACTIF(GetConstNotFound)
+  GUM_TEST_ACTIF(Add)
+  GUM_TEST_ACTIF(AddDuplicate)
+  GUM_TEST_ACTIF(OverloadOperationNotAllowed)
+  GUM_TEST_ACTIF(OverloadWrongClassElement)
+  GUM_TEST_ACTIF(OverloadTypeError)
+  GUM_TEST_ACTIF(OverloadAttribute)
+  GUM_TEST_ACTIF(OverloadAttributeWithSubtype)
+  GUM_TEST_ACTIF(OverloadAttributeWithSeveralCastDescendants)
+  GUM_TEST_ACTIF(OverloadAttributeDuplicateElement)
+  GUM_TEST_ACTIF(OverloadAttributeWithSeveralCastDescendantsDuplicate)
+  GUM_TEST_ACTIF(OverloadReference)
+  GUM_TEST_ACTIF(OverloadReferenceIllegal)
+  GUM_TEST_ACTIF(OverloadSlotChainOperantionNotAllowed)
+  GUM_TEST_ACTIF(IsInputNode)
+  GUM_TEST_ACTIF(SetInputNode)
+  GUM_TEST_ACTIF(IsOutputNode)
+  GUM_TEST_ACTIF(SetOutputNode)
+  GUM_TEST_ACTIF(IsInnerNode)
+  GUM_TEST_ACTIF(InnerNodeConsistency)
+  GUM_TEST_ACTIF(IONodesInheritance)
 
 }   // namespace gum_tests

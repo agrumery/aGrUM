@@ -1,7 +1,7 @@
 /****************************************************************************
  *   This file is part of the aGrUM/pyAgrum library.                        *
  *                                                                          *
- *   Copyright (c) 2005-2025 by                                             *
+ *   Copyright (c) 2005-2026 by                                             *
  *       - Pierre-Henri WUILLEMIN(_at_LIP6)                                 *
  *       - Christophe GONZALES(_at_AMU)                                     *
  *                                                                          *
@@ -27,7 +27,7 @@
  *                                                                          *
  *   See LICENCES for more details.                                         *
  *                                                                          *
- *   SPDX-FileCopyrightText: Copyright 2005-2025                            *
+ *   SPDX-FileCopyrightText: Copyright 2005-2026                            *
  *       - Pierre-Henri WUILLEMIN(_at_LIP6)                                 *
  *       - Christophe GONZALES(_at_AMU)                                     *
  *   SPDX-License-Identifier: LGPL-3.0-or-later OR MIT                      *
@@ -37,6 +37,7 @@
  *   gitlab   : https://gitlab.com/agrumery/agrum                           *
  *                                                                          *
  ****************************************************************************/
+
 #pragma once
 
 
@@ -54,7 +55,13 @@
 #include <agrum/BN/inference/lazyPropagation.h>
 #include <agrum/BN/io/BIF/BIFReader.h>
 
-#include <gumtest/AgrumApproximationUtils.h>   // must be last include
+#include <gumtest/AgrumApproximationUtils.h>
+
+#undef GUM_CURRENT_SUITE
+#undef GUM_CURRENT_MODULE
+#define GUM_CURRENT_SUITE  GibbsSampling
+#define GUM_CURRENT_MODULE BN
+// must be last include
 
 
 #define EPSILON_FOR_GIBBS_SIMPLE_TEST 2e-1
@@ -85,9 +92,9 @@ namespace gum_tests {
     std::string getMess() { return __mess; }
   };
 
-  class GUM_TEST_SUITE(GibbsSampling) {
+  struct GibbsSamplingTestSuite {
     public:
-    GUM_ACTIVE_TEST(GibbsSimpleBN) {
+    static void testGibbsSimpleBN() {
       auto bn = gum::BayesNet< double >::fastPrototype("a->b->c->f;d->b->e->f;e->g");
       unsharpen(bn);
 
@@ -103,11 +110,11 @@ namespace gum_tests {
         GUM_APPROX_TEST_END_ITERATION(EPSILON_FOR_GIBBS_SIMPLE_TEST)
       } catch (gum::Exception& e) {
         GUM_SHOWERROR(e);
-        TS_ASSERT(false)
+        CHECK(false);
       }
     }   // namespace gum_tests
 
-    GUM_ACTIVE_TEST(GibbsApproxBinaryTreeWithoutEvidence) {
+    static void testGibbsApproxBinaryTreeWithoutEvidence() {
       auto bn = gum::BayesNet< double >::fastPrototype("a->d->f;b->d->g;b->e->h;c->e;i->j->h");
       unsharpen(bn);
 
@@ -127,11 +134,11 @@ namespace gum_tests {
         GUM_APPROX_TEST_END_ITERATION(EPSILON_FOR_GIBBS_SIMPLE_TEST)
       } catch (gum::Exception& e) {
         GUM_SHOWERROR(e);
-        TS_ASSERT(false)
+        CHECK(false);
       }
     }
 
-    GUM_ACTIVE_TEST(GibbsApproxBinaryTreeWithEvidenceOnRoot) {
+    static void testGibbsApproxBinaryTreeWithEvidenceOnRoot() {
       auto bn = gum::BayesNet< double >::fastPrototype("a->d->f;b->d->g;b->e->h;c->e;i->j->h");
       unsharpen(bn);
       std::string ev = "b";
@@ -150,12 +157,12 @@ namespace gum_tests {
         GUM_APPROX_TEST_END_ITERATION(EPSILON_FOR_GIBBS_SIMPLE_TEST)
       } catch (gum::Exception& e) {
         GUM_SHOWERROR(e);
-        TS_ASSERT(false)
+        CHECK(false);
       }
 
     }   //
 
-    GUM_ACTIVE_TEST(GibbsApproxBinaryTreeWithEvidenceOnLeaf) {
+    static void testGibbsApproxBinaryTreeWithEvidenceOnLeaf() {
       auto bn = gum::BayesNet< double >::fastPrototype("a->d->f;b->d->g;b->e->h;c->e;i->j->h");
       unsharpen(bn);
       std::string ev = "h";
@@ -174,11 +181,11 @@ namespace gum_tests {
         GUM_APPROX_TEST_END_ITERATION(EPSILON_FOR_GIBBS_SIMPLE_TEST)
       } catch (gum::Exception& e) {
         GUM_SHOWERROR(e);
-        TS_ASSERT(false)
+        CHECK(false);
       }
     }
 
-    GUM_ACTIVE_TEST(GibbsApproxBinaryTreeWithEvidenceOnMid) {
+    static void testGibbsApproxBinaryTreeWithEvidenceOnMid() {
       auto bn = gum::BayesNet< double >::fastPrototype("a->d->f;b->d->g;b->e->h;c->e;i->j->h");
       unsharpen(bn);
       std::string ev = "e";
@@ -197,11 +204,11 @@ namespace gum_tests {
         GUM_APPROX_TEST_END_ITERATION(EPSILON_FOR_GIBBS_SIMPLE_TEST)
       } catch (gum::Exception& e) {
         GUM_SHOWERROR(e);
-        TS_ASSERT(false)
+        CHECK(false);
       }
     }
 
-    GUM_ACTIVE_TEST(GibbsApproxBinaryTreeWithMultipleEvidence) {
+    static void testGibbsApproxBinaryTreeWithMultipleEvidence() {
       auto bn = gum::BayesNet< double >::fastPrototype("a->d->f;b->d->g;b->e->h;c->e;i->j->h");
       unsharpen(bn);
 
@@ -223,11 +230,11 @@ namespace gum_tests {
         GUM_APPROX_TEST_END_ITERATION(EPSILON_FOR_GIBBS_SIMPLE_TEST)
       } catch (gum::Exception& e) {
         GUM_SHOWERROR(e);
-        TS_ASSERT(false)
+        CHECK(false);
       }
     }
 
-    GUM_ACTIVE_TEST(GibbsApproxNaryTreeWithMultipleEvidence) {
+    static void testGibbsApproxNaryTreeWithMultipleEvidence() {
       auto bn = gum::BayesNet< double >::fastPrototype(
           "a[4]->d[8]->f[3];b->d->g[5];b->e[4]->h;c->e;i[10]->j[3]->h");
       unsharpen(bn);
@@ -250,11 +257,11 @@ namespace gum_tests {
         GUM_APPROX_TEST_END_ITERATION(EPSILON_FOR_GIBBS_SIMPLE_TEST)
       } catch (gum::Exception& e) {
         GUM_SHOWERROR(e);
-        TS_ASSERT(false)
+        CHECK(false);
       }
     }
 
-    GUM_ACTIVE_TEST(GibbsApproxSimpleBN) {
+    static void testGibbsApproxSimpleBN() {
       auto bn = gum::BayesNet< double >::fastPrototype("a->b->c;a->d->c", 3);
       unsharpen(bn);
 
@@ -270,7 +277,7 @@ namespace gum_tests {
         GUM_APPROX_TEST_END_ITERATION(EPSILON_FOR_GIBBS_SIMPLE_TEST)
       } catch (gum::Exception& e) {
         GUM_SHOWERROR(e);
-        TS_ASSERT(false)
+        CHECK(false);
       }
 
       try {
@@ -287,7 +294,7 @@ namespace gum_tests {
         GUM_APPROX_TEST_END_ITERATION(EPSILON_FOR_GIBBS_SIMPLE_TEST)
       } catch (gum::Exception& e) {
         GUM_SHOWERROR(e);
-        TS_ASSERT(false)
+        CHECK(false);
       }
 
       try {
@@ -304,11 +311,11 @@ namespace gum_tests {
         GUM_APPROX_TEST_END_ITERATION(EPSILON_FOR_GIBBS_SIMPLE_TEST)
       } catch (gum::Exception& e) {
         GUM_SHOWERROR(e);
-        TS_ASSERT(false)
+        CHECK(false);
       }
     }
 
-    GUM_ACTIVE_TEST(GibbsApproxCplxBN) {
+    static void testGibbsApproxCplxBN() {
       auto bn = gum::BayesNet< double >::fastPrototype(
           "a->d->f;b->d->g;b->e->h;c->e->g;i->j->h;c->j;x->c;x->j;",
           3);
@@ -326,7 +333,7 @@ namespace gum_tests {
         GUM_APPROX_TEST_END_ITERATION(EPSILON_FOR_GIBBS_SIMPLE_TEST)
       } catch (gum::Exception& e) {
         GUM_SHOWERROR(e);
-        TS_ASSERT(false)
+        CHECK(false);
       }
 
       try {
@@ -343,7 +350,7 @@ namespace gum_tests {
         GUM_APPROX_TEST_END_ITERATION(EPSILON_FOR_GIBBS_SIMPLE_TEST)
       } catch (gum::Exception& e) {
         GUM_SHOWERROR(e);
-        TS_ASSERT(false)
+        CHECK(false);
       }
 
       try {
@@ -360,16 +367,16 @@ namespace gum_tests {
         GUM_APPROX_TEST_END_ITERATION(EPSILON_FOR_GIBBS_SIMPLE_TEST)
       } catch (gum::Exception& e) {
         GUM_SHOWERROR(e);
-        TS_ASSERT(false)
+        CHECK(false);
       }
     }
 
-    GUM_ACTIVE_TEST(GibbsApproxAsia) {
+    static void testGibbsApproxAsia() {
       gum::BayesNet< double >  bn;
       gum::BIFReader< double > reader(&bn, GET_RESSOURCES_PATH("bif/asia.bif"));
       gum::Size                nbrErr = static_cast< gum::Size >(0);
-      TS_GUM_ASSERT_THROWS_NOTHING(nbrErr = reader.proceed())
-      TS_ASSERT_EQUALS(nbrErr, static_cast< gum::Size >(0))
+      GUM_CHECK_ASSERT_THROWS_NOTHING(nbrErr = reader.proceed());
+      CHECK((nbrErr) == (static_cast< gum::Size >(0)));
 
       try {
         gum::LazyPropagation< double > lazy(&bn);
@@ -384,16 +391,16 @@ namespace gum_tests {
         GUM_APPROX_TEST_END_ITERATION(EPSILON_FOR_GIBBS_HARD_TEST)
       } catch (gum::Exception& e) {
         GUM_SHOWERROR(e);
-        TS_ASSERT(false)
+        CHECK(false);
       }
     }
 
-    GUM_ACTIVE_TEST(GibbsApproxInfListener) {
+    static void testGibbsApproxInfListener() {
       gum::BayesNet< double >  bn;
       gum::BIFReader< double > reader(&bn, GET_RESSOURCES_PATH("bif/alarm.bif"));
       gum::Size                nbrErr = static_cast< gum::Size >(0);
-      TS_GUM_ASSERT_THROWS_NOTHING(nbrErr = reader.proceed())
-      TS_ASSERT_EQUALS(nbrErr, static_cast< gum::Size >(0))
+      GUM_CHECK_ASSERT_THROWS_NOTHING(nbrErr = reader.proceed());
+      CHECK((nbrErr) == (static_cast< gum::Size >(0)));
 
       gum::GibbsSampling< double > inf(&bn);
       aSimpleGibbsApproxListener   agsl(inf);
@@ -403,12 +410,12 @@ namespace gum_tests {
       // Testing the inference
       inf.setVerbosity(false);
       inf.setEpsilon(EPSILON_FOR_GIBBS);
-      TS_GUM_ASSERT_THROWS_NOTHING(inf.makeInference())
-      TS_ASSERT_EQUALS(agsl.getNbr() * inf.periodSize() + inf.burnIn(), inf.nbrIterations())
-      TS_ASSERT_DIFFERS(agsl.getMess(), std::string(""))
+      GUM_CHECK_ASSERT_THROWS_NOTHING(inf.makeInference());
+      CHECK((agsl.getNbr() * inf.periodSize() + inf.burnIn()) == (inf.nbrIterations()));
+      CHECK((agsl.getMess()) != (std::string("")));
     }
 
-    GUM_ACTIVE_TEST(EvidenceAsTargetOnCplxBN) {
+    static void testEvidenceAsTargetOnCplxBN() {
       auto bn = gum::BayesNet< double >::fastPrototype(
           "a->d->f;b->d->g;b->e->h;c->e->g;i->j->h;c->j;x->c;x->j;",
           3);
@@ -421,16 +428,16 @@ namespace gum_tests {
         inf.setEpsilon(EPSILON_FOR_GIBBS);
         inf.makeInference();
 
-        TS_GUM_ASSERT_THROWS_NOTHING(inf.posterior("d"))
-        TS_GUM_ASSERT_THROWS_NOTHING(inf.posterior(bn.idFromName("d")))
+        GUM_CHECK_ASSERT_THROWS_NOTHING(inf.posterior("d"));
+        GUM_CHECK_ASSERT_THROWS_NOTHING(inf.posterior(bn.idFromName("d")));
 
       } catch (gum::Exception& e) {
         GUM_SHOWERROR(e);
-        TS_ASSERT(false)
+        CHECK(false);
       }
     }
 
-    GUM_ACTIVE_TEST(MultipleInferenceWithSameEngine) {
+    static void testMultipleInferenceWithSameEngine() {
       auto bn = gum::BayesNet< double >::fastPrototype("a->b->c;a->d->c", 3);
       unsharpen(bn);
 
@@ -449,11 +456,11 @@ namespace gum_tests {
 
       } catch (gum::Exception& e) {
         GUM_SHOWERROR(e);
-        TS_ASSERT(false)
+        CHECK(false);
       }
     }
 
-    GUM_ACTIVE_TEST(BugGibbs) {
+    static void testBugGibbs() {
       auto         bn           = gum::BayesNet< double >::fastPrototype("d->g->l;s<-i->g");
       const double RELEVANT_ERR = 0.02;
       const double EPSILON      = 1e-2;
@@ -473,7 +480,7 @@ namespace gum_tests {
           const double err_n = (exact.posterior(n) - gibbs.posterior(n)).abs().max();
           if (err < err_n) err = err_n;
         }
-        TS_ASSERT_LESS_THAN(err, RELEVANT_ERR);
+        CHECK((err) < (RELEVANT_ERR));
       }
       {
         auto exact = gum::LazyPropagation(&bn);
@@ -491,7 +498,7 @@ namespace gum_tests {
           const double err_n = (exact.posterior(n) - gibbs.posterior(n)).abs().max();
           if (err < err_n) err = err_n;
         }
-        TS_ASSERT_LESS_THAN(err, RELEVANT_ERR);
+        CHECK((err) < (RELEVANT_ERR));
       }
       {
         auto exact = gum::LazyPropagation(&bn);
@@ -509,8 +516,23 @@ namespace gum_tests {
           const double err_n = (exact.posterior(n) - gibbs.posterior(n)).abs().max();
           if (err < err_n) err = err_n;
         }
-        TS_ASSERT_LESS_THAN(err, RELEVANT_ERR);
+        CHECK((err) < (RELEVANT_ERR));
       }
     }
   };
+
+  GUM_TEST_ACTIF(GibbsSimpleBN)
+  GUM_TEST_ACTIF(GibbsApproxBinaryTreeWithoutEvidence)
+  GUM_TEST_ACTIF(GibbsApproxBinaryTreeWithEvidenceOnRoot)
+  GUM_TEST_ACTIF(GibbsApproxBinaryTreeWithEvidenceOnLeaf)
+  GUM_TEST_ACTIF(GibbsApproxBinaryTreeWithEvidenceOnMid)
+  GUM_TEST_ACTIF(GibbsApproxBinaryTreeWithMultipleEvidence)
+  GUM_TEST_ACTIF(GibbsApproxNaryTreeWithMultipleEvidence)
+  GUM_TEST_ACTIF(GibbsApproxSimpleBN)
+  GUM_TEST_ACTIF(GibbsApproxCplxBN)
+  GUM_TEST_ACTIF(GibbsApproxAsia)
+  GUM_TEST_ACTIF(GibbsApproxInfListener)
+  GUM_TEST_ACTIF(EvidenceAsTargetOnCplxBN)
+  GUM_TEST_ACTIF(MultipleInferenceWithSameEngine)
+  GUM_TEST_ACTIF(BugGibbs)
 }   // namespace gum_tests

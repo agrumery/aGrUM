@@ -1,7 +1,7 @@
 /****************************************************************************
  *   This file is part of the aGrUM/pyAgrum library.                        *
  *                                                                          *
- *   Copyright (c) 2005-2025 by                                             *
+ *   Copyright (c) 2005-2026 by                                             *
  *       - Pierre-Henri WUILLEMIN(_at_LIP6)                                 *
  *       - Christophe GONZALES(_at_AMU)                                     *
  *                                                                          *
@@ -27,7 +27,7 @@
  *                                                                          *
  *   See LICENCES for more details.                                         *
  *                                                                          *
- *   SPDX-FileCopyrightText: Copyright 2005-2025                            *
+ *   SPDX-FileCopyrightText: Copyright 2005-2026                            *
  *       - Pierre-Henri WUILLEMIN(_at_LIP6)                                 *
  *       - Christophe GONZALES(_at_AMU)                                     *
  *   SPDX-License-Identifier: LGPL-3.0-or-later OR MIT                      *
@@ -37,6 +37,7 @@
  *   gitlab   : https://gitlab.com/agrumery/agrum                           *
  *                                                                          *
  ****************************************************************************/
+
 #pragma once
 
 
@@ -59,14 +60,19 @@
 
 #include <agrum/base/core/utils_random.h>
 
+#undef GUM_CURRENT_SUITE
+#undef GUM_CURRENT_MODULE
+#define GUM_CURRENT_SUITE  MultiDimPartialInstantiation
+#define GUM_CURRENT_MODULE GUMBASE
+
 namespace gum_tests {
 
-  class GUM_TEST_SUITE(MultiDimPartialInstantiation) {
+  struct MultiDimPartialInstantiationTestSuite {
     private:
     // ==========================================================================
     /// initialize randomly a table
     // ==========================================================================
-    void randomInit(gum::MultiDimArray< double >* t) {
+    static void randomInit(gum::MultiDimArray< double >* t) {
       gum::Instantiation i(t);
 
       for (i.setFirst(); !i.end(); ++i)
@@ -76,17 +82,17 @@ namespace gum_tests {
     // ==========================================================================
     /// initialize randomly a table
     // ==========================================================================
-    void randomInitPointer(gum::MultiDimArray< double* >* t) {
+    static void randomInitPointer(gum::MultiDimArray< double* >* t) {
       gum::Instantiation i(t);
 
       for (i.setFirst(); !i.end(); ++i)
-        t->set(i, new double(double(gum::randomProba())));
+        t->set(i, new double(gum::randomProba()));
     }
 
     // ==========================================================================
     /// initialize randomly a table
     // ==========================================================================
-    void randomInitP(gum::Tensor< double >& t) {
+    static void randomInitP(gum::Tensor< double >& t) {
       gum::Instantiation i(t);
 
       for (i.setFirst(); !i.end(); ++i)
@@ -96,7 +102,7 @@ namespace gum_tests {
     // ==========================================================================
     /// initialize randomly a table
     // ==========================================================================
-    void randomInitPPointer(gum::Tensor< double* >& t) {
+    static void randomInitPPointer(gum::Tensor< double* >& t) {
       gum::Instantiation i(t);
 
       for (i.setFirst(); !i.end(); ++i)
@@ -104,7 +110,7 @@ namespace gum_tests {
     }
 
     template < typename T >
-    void pointerDelete(gum::MultiDimArray< T* >* t) {
+    static void pointerDelete(gum::MultiDimArray< T* >* t) {
       if (t->variablesSequence().size()) {
         gum::Instantiation i(t);
 
@@ -117,7 +123,7 @@ namespace gum_tests {
     }
 
     template < typename T >
-    void pointerDelete(gum::MultiDimImplementation< T* >* t) {
+    static void pointerDelete(gum::MultiDimImplementation< T* >* t) {
       if (t->variablesSequence().size()) {
         gum::Instantiation i(t);
 
@@ -130,7 +136,7 @@ namespace gum_tests {
     }
 
     template < typename T >
-    void pointerDelete(gum::Tensor< T* >* t) {
+    static void pointerDelete(gum::Tensor< T* >* t) {
       if (t->variablesSequence().size()) {
         gum::Instantiation i(t);
 
@@ -145,8 +151,8 @@ namespace gum_tests {
     // ==========================================================================
     // ==========================================================================
     template < typename T >
-    bool equal(const gum::MultiDimImplementation< T* >& t1,
-               const gum::MultiDimImplementation< T* >& t2) {
+    static bool equal(const gum::MultiDimImplementation< T* >& t1,
+                      const gum::MultiDimImplementation< T* >& t2) {
       if ((t1.nbrDim() == t2.nbrDim()) && (t1.domainSize() == t2.domainSize())) {
         for (const auto var: t1.variablesSequence())
           if (!t2.variablesSequence().exists(var)) return false;
@@ -166,7 +172,7 @@ namespace gum_tests {
     // ==========================================================================
     // ==========================================================================
     template < typename T >
-    bool equal(const gum::Tensor< T* >& t1, const gum::Tensor< T* >& t2) {
+    static bool equal(const gum::Tensor< T* >& t1, const gum::Tensor< T* >& t2) {
       if ((t1.nbrDim() == t2.nbrDim()) && (t1.domainSize() == t2.domainSize())) {
         for (const auto var: t1.variablesSequence())
           if (!t2.variablesSequence().exists(var)) return false;
@@ -186,7 +192,7 @@ namespace gum_tests {
     // ==========================================================================
     // ==========================================================================
     template < typename T >
-    gum::Tensor< T >* manual_instantiate(
+    static gum::Tensor< T >* manual_instantiate(
         const gum::Tensor< T >&                                         t_in,
         const gum::HashTable< const gum::DiscreteVariable*, gum::Idx >& inst_vars) {
       // construction of the output table
@@ -223,7 +229,7 @@ namespace gum_tests {
     // ==========================================================================
     // ==========================================================================
     template < typename T >
-    gum::Tensor< T* >* manual_instantiate(
+    static gum::Tensor< T* >* manual_instantiate(
         const gum::Tensor< T* >&                                        t_in,
         const gum::HashTable< const gum::DiscreteVariable*, gum::Idx >& inst_vars) {
       // construction of the output table
@@ -260,7 +266,7 @@ namespace gum_tests {
     // ==========================================================================
     // ==========================================================================
     template < typename T >
-    gum::MultiDimArray< T >* manual_instantiate(
+    static gum::MultiDimArray< T >* manual_instantiate(
         const gum::MultiDimArray< T >&                                  t_in,
         const gum::HashTable< const gum::DiscreteVariable*, gum::Idx >& inst_vars) {
       // construction of the output table
@@ -297,7 +303,7 @@ namespace gum_tests {
     // ==========================================================================
     // ==========================================================================
     template < typename T >
-    gum::MultiDimArray< T* >* manual_instantiate(
+    static gum::MultiDimArray< T* >* manual_instantiate(
         const gum::MultiDimArray< T* >&                                 t_in,
         const gum::HashTable< const gum::DiscreteVariable*, gum::Idx >& inst_vars) {
       // construction of the output table
@@ -332,7 +338,7 @@ namespace gum_tests {
     }
 
     public:
-    GUM_ACTIVE_TEST(_MultiDimArray) {
+    static void test_MultiDimArray() {
       std::vector< gum::LabelizedVariable* > vars(10);
 
       for (gum::Idx i = 0; i < 10; ++i) {
@@ -359,7 +365,7 @@ namespace gum_tests {
 
       gum::MultiDimArray< double >* t3 = manual_instantiate(t1, inst_set);
 
-      TS_ASSERT(*t2 == *t3)
+      CHECK(*t2 == *t3);
       delete t2;
       delete t3;
 
@@ -370,7 +376,7 @@ namespace gum_tests {
       inst_set.insert(vars[9], 3);
       t2 = partialInstantiationMultiDimArray(&t1, inst_set);
       t3 = manual_instantiate(t1, inst_set);
-      TS_ASSERT(*t2 == *t3)
+      CHECK(*t2 == *t3);
       delete t2;
       delete t3;
 
@@ -381,7 +387,7 @@ namespace gum_tests {
       inst_set.insert(vars[3], 3);
       t2 = partialInstantiationMultiDimArray(&t1, inst_set);
       t3 = manual_instantiate(t1, inst_set);
-      TS_ASSERT(*t2 == *t3)
+      CHECK(*t2 == *t3);
       delete t2;
       delete t3;
 
@@ -389,7 +395,7 @@ namespace gum_tests {
         delete vars[i];
     }
 
-    GUM_ACTIVE_TEST(_MultiDimImplementation) {
+    static void test_MultiDimImplementation() {
       std::vector< gum::LabelizedVariable* > vars(10);
 
       for (gum::Idx i = 0; i < 10; ++i) {
@@ -417,7 +423,7 @@ namespace gum_tests {
 
       gum::MultiDimArray< double >* t3 = manual_instantiate(t1, inst_set);
 
-      TS_ASSERT(*t2 == *t3)
+      CHECK(*t2 == *t3);
       delete t2;
       delete t3;
 
@@ -428,7 +434,7 @@ namespace gum_tests {
       inst_set.insert(vars[9], 3);
       t2 = partialInstantiationMultiDimImplementation(&t1, inst_set);
       t3 = manual_instantiate(t1, inst_set);
-      TS_ASSERT(*t2 == *t3)
+      CHECK(*t2 == *t3);
       delete t2;
       delete t3;
 
@@ -439,7 +445,7 @@ namespace gum_tests {
       inst_set.insert(vars[3], 3);
       t2 = partialInstantiationMultiDimImplementation(&t1, inst_set);
       t3 = manual_instantiate(t1, inst_set);
-      TS_ASSERT(*t2 == *t3)
+      CHECK(*t2 == *t3);
       delete t2;
       delete t3;
 
@@ -447,7 +453,7 @@ namespace gum_tests {
         delete vars[i];
     }
 
-    GUM_ACTIVE_TEST(_MultiDimArrayPointer) {
+    static void test_MultiDimArrayPointer() {
       std::vector< gum::LabelizedVariable* > vars(10);
 
       for (gum::Idx i = 0; i < 10; ++i) {
@@ -474,7 +480,7 @@ namespace gum_tests {
 
       gum::MultiDimArray< double* >* t3 = manual_instantiate(t1, inst_set);
 
-      TS_ASSERT(equal(*t2, *t3))
+      CHECK(equal(*t2, *t3));
       pointerDelete(t2);
       pointerDelete(t3);
 
@@ -485,7 +491,7 @@ namespace gum_tests {
       inst_set.insert(vars[9], 3);
       t2 = partialInstantiationMultiDimArray4Pointers(&t1, inst_set);
       t3 = manual_instantiate(t1, inst_set);
-      TS_ASSERT(equal(*t2, *t3))
+      CHECK(equal(*t2, *t3));
       pointerDelete(t2);
       pointerDelete(t3);
 
@@ -496,7 +502,7 @@ namespace gum_tests {
       inst_set.insert(vars[3], 3);
       t2 = partialInstantiationMultiDimArray4Pointers(&t1, inst_set);
       t3 = manual_instantiate(t1, inst_set);
-      TS_ASSERT(equal(*t2, *t3))
+      CHECK(equal(*t2, *t3));
       pointerDelete(t2);
       pointerDelete(t3);
 
@@ -504,7 +510,7 @@ namespace gum_tests {
         delete vars[i];
     }
 
-    GUM_ACTIVE_TEST(_MultiDimImplementationPointer) {
+    static void test_MultiDimImplementationPointer() {
       std::vector< gum::LabelizedVariable* > vars(10);
 
       for (gum::Idx i = 0; i < 10; ++i) {
@@ -532,7 +538,7 @@ namespace gum_tests {
 
       gum::MultiDimArray< double* >* t3 = manual_instantiate(t1, inst_set);
 
-      TS_ASSERT(equal(*t2, *t3))
+      CHECK(equal(*t2, *t3));
       pointerDelete(t2);
       pointerDelete(t3);
 
@@ -543,7 +549,7 @@ namespace gum_tests {
       inst_set.insert(vars[9], 3);
       t2 = partialInstantiationMultiDimImplementation4Pointers(&t1, inst_set);
       t3 = manual_instantiate(t1, inst_set);
-      TS_ASSERT(equal(*t2, *t3))
+      CHECK(equal(*t2, *t3));
       pointerDelete(t2);
       pointerDelete(t3);
 
@@ -554,7 +560,7 @@ namespace gum_tests {
       inst_set.insert(vars[3], 3);
       t2 = partialInstantiationMultiDimImplementation4Pointers(&t1, inst_set);
       t3 = manual_instantiate(t1, inst_set);
-      TS_ASSERT(equal(*t2, *t3))
+      CHECK(equal(*t2, *t3));
       pointerDelete(t2);
       pointerDelete(t3);
 
@@ -562,7 +568,7 @@ namespace gum_tests {
         delete vars[i];
     }
 
-    GUM_ACTIVE_TEST(_partialInstantiation_init) {
+    static void test_partialInstantiation_init() {
       gum::partialInstantiation4MultiDimInit< double >();
 
       std::vector< gum::LabelizedVariable* > vars(10);
@@ -590,7 +596,7 @@ namespace gum_tests {
       gum::MultiDimImplementation< double >* t2 = partialInstantiation(t1, inst_set);
       gum::MultiDimArray< double >*          t3 = manual_instantiate(t1, inst_set);
 
-      TS_ASSERT(*t2 == *t3)
+      CHECK(*t2 == *t3);
       delete t2;
       delete t3;
 
@@ -601,7 +607,7 @@ namespace gum_tests {
       inst_set.insert(vars[9], 3);
       t2 = partialInstantiation(t1, inst_set);
       t3 = manual_instantiate(t1, inst_set);
-      TS_ASSERT(*t2 == *t3)
+      CHECK(*t2 == *t3);
       delete t2;
       delete t3;
 
@@ -612,7 +618,7 @@ namespace gum_tests {
       inst_set.insert(vars[3], 3);
       t2 = partialInstantiation(t1, inst_set);
       t3 = manual_instantiate(t1, inst_set);
-      TS_ASSERT(*t2 == *t3)
+      CHECK(*t2 == *t3);
       delete t2;
       delete t3;
 
@@ -620,7 +626,7 @@ namespace gum_tests {
         delete vars[i];
     }
 
-    GUM_ACTIVE_TEST(_partialInstantiationPointer_init) {
+    static void test_partialInstantiationPointer_init() {
       gum::pointerPartialInstantiation4MultiDimInit< double >();
 
       std::vector< gum::LabelizedVariable* > vars(10);
@@ -648,7 +654,7 @@ namespace gum_tests {
       gum::MultiDimImplementation< double* >* t2 = partialInstantiation(t1, inst_set);
       gum::MultiDimArray< double* >*          t3 = manual_instantiate(t1, inst_set);
 
-      TS_ASSERT(equal(*t2, *t3))
+      CHECK(equal(*t2, *t3));
       pointerDelete(t2);
       pointerDelete(t3);
 
@@ -659,7 +665,7 @@ namespace gum_tests {
       inst_set.insert(vars[9], 3);
       t2 = partialInstantiation(t1, inst_set);
       t3 = manual_instantiate(t1, inst_set);
-      TS_ASSERT(equal(*t2, *t3))
+      CHECK(equal(*t2, *t3));
       pointerDelete(t2);
       pointerDelete(t3);
 
@@ -670,7 +676,7 @@ namespace gum_tests {
       inst_set.insert(vars[3], 3);
       t2 = partialInstantiation(t1, inst_set);
       t3 = manual_instantiate(t1, inst_set);
-      TS_ASSERT(equal(*t2, *t3))
+      CHECK(equal(*t2, *t3));
       pointerDelete(t2);
       pointerDelete(t3);
 
@@ -678,7 +684,7 @@ namespace gum_tests {
         delete vars[i];
     }
 
-    GUM_ACTIVE_TEST(_tensor) {
+    static void test_tensor() {
       std::vector< gum::LabelizedVariable* > vars(10);
 
       for (gum::Idx i = 0; i < 10; ++i) {
@@ -704,7 +710,7 @@ namespace gum_tests {
       gum::Tensor< double >* t2 = new gum::Tensor< double >(partialInstantiation(t1, inst_set));
       gum::Tensor< double >* t3 = manual_instantiate(t1, inst_set);
 
-      TS_ASSERT(*t2 == *t3)
+      CHECK(*t2 == *t3);
       delete t2;
       delete t3;
 
@@ -715,7 +721,7 @@ namespace gum_tests {
       inst_set.insert(vars[9], 3);
       t2 = new gum::Tensor< double >(partialInstantiation(t1, inst_set));
       t3 = manual_instantiate(t1, inst_set);
-      TS_ASSERT(*t2 == *t3)
+      CHECK(*t2 == *t3);
       delete t2;
       delete t3;
 
@@ -726,7 +732,7 @@ namespace gum_tests {
       inst_set.insert(vars[3], 3);
       t2 = new gum::Tensor< double >(partialInstantiation(t1, inst_set));
       t3 = manual_instantiate(t1, inst_set);
-      TS_ASSERT(*t2 == *t3)
+      CHECK(*t2 == *t3);
       delete t2;
       delete t3;
 
@@ -734,7 +740,7 @@ namespace gum_tests {
         delete vars[i];
     }
 
-    GUM_ACTIVE_TEST(_tensor_pointer) {
+    static void test_tensor_pointer() {
       std::vector< gum::LabelizedVariable* > vars(10);
 
       for (gum::Idx i = 0; i < 10; ++i) {
@@ -760,7 +766,7 @@ namespace gum_tests {
       gum::Tensor< double* >* t2 = new gum::Tensor< double* >(partialInstantiation(t1, inst_set));
       gum::Tensor< double* >* t3 = manual_instantiate(t1, inst_set);
 
-      TS_ASSERT(equal(*t2, *t3))
+      CHECK(equal(*t2, *t3));
       pointerDelete(t2);
       pointerDelete(t3);
 
@@ -771,7 +777,7 @@ namespace gum_tests {
       inst_set.insert(vars[9], 3);
       t2 = new gum::Tensor< double* >(partialInstantiation(t1, inst_set));
       t3 = manual_instantiate(t1, inst_set);
-      TS_ASSERT(equal(*t2, *t3))
+      CHECK(equal(*t2, *t3));
       pointerDelete(t2);
       pointerDelete(t3);
 
@@ -782,7 +788,7 @@ namespace gum_tests {
       inst_set.insert(vars[3], 3);
       t2 = new gum::Tensor< double* >(partialInstantiation(t1, inst_set));
       t3 = manual_instantiate(t1, inst_set);
-      TS_ASSERT(equal(*t2, *t3))
+      CHECK(equal(*t2, *t3));
       pointerDelete(t2);
       pointerDelete(t3);
 
@@ -790,7 +796,7 @@ namespace gum_tests {
         delete vars[i];
     }
 
-    GUM_ACTIVE_TEST(_multidimPartialInstantiation) {
+    static void test_multidimPartialInstantiation() {
       std::vector< gum::LabelizedVariable* > vars(10);
 
       for (gum::Idx i = 0; i < 10; ++i) {
@@ -818,7 +824,7 @@ namespace gum_tests {
       gum::Tensor< double >* t2 = MDPI.instantiate(t1, inst_set);
       gum::Tensor< double >* t3 = manual_instantiate(t1, inst_set);
 
-      TS_ASSERT(*t2 == *t3)
+      CHECK(*t2 == *t3);
       delete t2;
       delete t3;
 
@@ -829,7 +835,7 @@ namespace gum_tests {
       inst_set.insert(vars[9], 3);
       t2 = MDPI.instantiate(t1, inst_set);
       t3 = manual_instantiate(t1, inst_set);
-      TS_ASSERT(*t2 == *t3)
+      CHECK(*t2 == *t3);
       delete t2;
       delete t3;
 
@@ -840,7 +846,7 @@ namespace gum_tests {
       inst_set.insert(vars[3], 3);
       t2 = MDPI.instantiate(t1, inst_set);
       t3 = manual_instantiate(t1, inst_set);
-      TS_ASSERT(*t2 == *t3)
+      CHECK(*t2 == *t3);
       delete t2;
       delete t3;
 
@@ -848,5 +854,15 @@ namespace gum_tests {
         delete vars[i];
     }
   };
+
+  GUM_TEST_ACTIF(_MultiDimArray)
+  GUM_TEST_ACTIF(_MultiDimImplementation)
+  GUM_TEST_ACTIF(_MultiDimArrayPointer)
+  GUM_TEST_ACTIF(_MultiDimImplementationPointer)
+  GUM_TEST_ACTIF(_partialInstantiation_init)
+  GUM_TEST_ACTIF(_partialInstantiationPointer_init)
+  GUM_TEST_ACTIF(_tensor)
+  GUM_TEST_ACTIF(_tensor_pointer)
+  GUM_TEST_ACTIF(_multidimPartialInstantiation)
 
 } /* namespace gum_tests */

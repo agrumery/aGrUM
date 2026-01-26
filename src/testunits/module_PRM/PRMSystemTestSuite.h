@@ -1,7 +1,7 @@
 /****************************************************************************
  *   This file is part of the aGrUM/pyAgrum library.                        *
  *                                                                          *
- *   Copyright (c) 2005-2025 by                                             *
+ *   Copyright (c) 2005-2026 by                                             *
  *       - Pierre-Henri WUILLEMIN(_at_LIP6)                                 *
  *       - Christophe GONZALES(_at_AMU)                                     *
  *                                                                          *
@@ -27,7 +27,7 @@
  *                                                                          *
  *   See LICENCES for more details.                                         *
  *                                                                          *
- *   SPDX-FileCopyrightText: Copyright 2005-2025                            *
+ *   SPDX-FileCopyrightText: Copyright 2005-2026                            *
  *       - Pierre-Henri WUILLEMIN(_at_LIP6)                                 *
  *       - Christophe GONZALES(_at_AMU)                                     *
  *   SPDX-License-Identifier: LGPL-3.0-or-later OR MIT                      *
@@ -37,6 +37,7 @@
  *   gitlab   : https://gitlab.com/agrumery/agrum                           *
  *                                                                          *
  ****************************************************************************/
+
 #pragma once
 
 
@@ -49,6 +50,11 @@
 #include <agrum/base/variables/labelizedVariable.h>
 #include <agrum/PRM/elements/PRMSystem.h>
 
+#undef GUM_CURRENT_SUITE
+#undef GUM_CURRENT_MODULE
+#define GUM_CURRENT_SUITE  PRMSystem
+#define GUM_CURRENT_MODULE PRM
+
 /**
  * This class is used to test gum::prm::PRMClassElement, since it is an abstrac
  * class, tests defined here should be called by each sub class of
@@ -56,7 +62,7 @@
  */
 namespace gum_tests {
 
-  class GUM_TEST_SUITE(PRMSystem) {
+  struct PRMSystemTestSuite {
     using PRMSystem    = gum::prm::PRMSystem< double >;
     using PRMInstance  = gum::prm::PRMInstance< double >;
     using PRMClass     = gum::prm::PRMClass< double >;
@@ -70,19 +76,6 @@ namespace gum_tests {
     gum::HashTable< std::string, gum::NodeId >* _nodeMap_;
 
     public:
-    void setUp() {
-      _boolean_ = PRMType::boolean();
-      _nodeMap_ = new gum::HashTable< std::string, gum::NodeId >();
-      _asia_    = new PRMClass("asia");
-      _buildAsiaBN_();
-    }
-
-    void tearDown() {
-      delete _boolean_;
-      delete _nodeMap_;
-      delete _asia_;
-    }
-
     void _buildAsiaBN_() {
       _visitToAsia_();
       _tuberculosis_();
@@ -174,36 +167,54 @@ namespace gum_tests {
       _nodeMap_->insert(name, id);
     }
 
-    GUM_ACTIVE_TEST(ClassConstruction) {
-      TS_ASSERT_EQUALS(_asia_->attributes().size(), static_cast< gum::Size >(8))
+    PRMSystemTestSuite() {
+      _boolean_ = PRMType::boolean();
+
+      _nodeMap_ = new gum::HashTable< std::string, gum::NodeId >();
+
+      _asia_ = new PRMClass("asia");
+
+      _buildAsiaBN_();
     }
 
-    GUM_ACTIVE_TEST(AddInstance) {
+    ~PRMSystemTestSuite() {
+      delete _boolean_;
+
+      delete _nodeMap_;
+
+      delete _asia_;
+    }
+
+    static void testClassConstruction() {
+      CHECK((_asia_->attributes().size()) == (static_cast< gum::Size >(8)));
+    }
+
+    static void testAddInstance() {
       // Arrange
       PRMSystem sys("asia");
       auto      inst = new PRMInstance("asia", *_asia_);
       // Act
-      TS_ASSERT_THROWS_NOTHING(sys.add(inst))
+      CHECK_NOTHROW(sys.add(inst));
       // Assert
-      TS_ASSERT(sys.exists("asia"))
-      TS_ASSERT(sys.isInstantiated(*_asia_))
-      TS_ASSERT_EQUALS(sys.size(), static_cast< gum::Size >(1))
+      CHECK(sys.exists("asia"));
+      CHECK(sys.isInstantiated(*_asia_));
+      CHECK((sys.size()) == (static_cast< gum::Size >(1)));
     }
 
-    GUM_ACTIVE_TEST(Instantiate) {
+    static void testInstantiate() {
       // Arrange
       PRMSystem sys("asia");
       auto      inst = new PRMInstance("asia", *_asia_);
       sys.add(inst);
       // Act
-      TS_ASSERT_THROWS_NOTHING(sys.instantiate())
+      CHECK_NOTHROW(sys.instantiate());
       // Assert
-      TS_ASSERT(sys.exists("asia"))
-      TS_ASSERT(sys.isInstantiated(*_asia_))
-      TS_ASSERT_EQUALS(sys.size(), static_cast< gum::Size >(1))
+      CHECK(sys.exists("asia"));
+      CHECK(sys.isInstantiated(*_asia_));
+      CHECK((sys.size()) == (static_cast< gum::Size >(1)));
     }
 
-    GUM_ACTIVE_TEST(GroundBN) {
+    static void testGroundBN() {
       // Arrange
       std::string x0, y0, x1, y1;
       auto        bn = new gum::BayesNet< double >("asia");
@@ -214,21 +225,21 @@ namespace gum_tests {
         sys.instantiate();
         gum::BayesNetFactory< double > factory(bn);
         // Act
-        TS_ASSERT_THROWS_NOTHING(sys.groundedBN(factory))
+        CHECK_NOTHROW(sys.groundedBN(factory));
         x0 = bn->cpt(0).toString();
         y0 = bn->cpt(1).toString();
       }
       // Assert
-      TS_ASSERT_EQUALS(bn->size(), static_cast< gum::Size >(8))
-      TS_ASSERT_EQUALS(bn->sizeArcs(), static_cast< gum::Size >(8))
+      CHECK((bn->size()) == (static_cast< gum::Size >(8)));
+      CHECK((bn->sizeArcs()) == (static_cast< gum::Size >(8)));
       x1 = bn->cpt(0).toString();
       y1 = bn->cpt(1).toString();
-      TS_ASSERT_EQUALS(x0, x1)
-      TS_ASSERT_EQUALS(y0, y1)
+      CHECK((x0) == (x1));
+      CHECK((y0) == (y1));
       delete bn;
     }
 
-    GUM_ACTIVE_TEST(GroundBNAfterDelete) {
+    static void testGroundBNAfterDelete() {
       // Arrange
       PRMSystem* sys  = new PRMSystem("asia");
       auto       inst = new PRMInstance("asia", *_asia_);
@@ -238,22 +249,22 @@ namespace gum_tests {
       gum::BayesNetFactory< double > factory(bn);
       sys->groundedBN(factory);
       // Act
-      TS_ASSERT_THROWS_NOTHING(delete sys)
+      CHECK_NOTHROW(delete sys);
       // Assert
-      TS_ASSERT_EQUALS(bn->size(), static_cast< gum::Size >(8))
-      TS_ASSERT_EQUALS(bn->sizeArcs(), static_cast< gum::Size >(8))
+      CHECK((bn->size()) == (static_cast< gum::Size >(8)));
+      CHECK((bn->sizeArcs()) == (static_cast< gum::Size >(8)));
       for (auto node: bn->dag()) {
         const gum::Tensor< double >* cpt = nullptr;
-        TS_GUM_ASSERT_THROWS_NOTHING(cpt = &(bn->cpt(node)))
+        GUM_CHECK_ASSERT_THROWS_NOTHING(cpt = &(bn->cpt(node)));
         gum::Instantiation inst(*cpt);
         for (inst.setFirst(); !inst.end(); inst.inc()) {
-          TS_GUM_ASSERT_THROWS_NOTHING(cpt->get(inst))
+          GUM_CHECK_ASSERT_THROWS_NOTHING(cpt->get(inst));
         }
       }
       delete bn;
     }
 
-    GUM_ACTIVE_TEST(VisitToAsiaId) {
+    static void testVisitToAsiaId() {
       // Arrange
       PRMSystem sys("asia");
       auto      inst = new PRMInstance("asia", *_asia_);
@@ -263,12 +274,12 @@ namespace gum_tests {
       gum::BayesNetFactory< double > factory(bn);
       sys.groundedBN(factory);
       // Act
-      TS_ASSERT_THROWS_NOTHING(bn->idFromName("asia.(boolean)visitToAsia"))
+      CHECK_NOTHROW(bn->idFromName("asia.(boolean)visitToAsia"));
       // Assert
       delete bn;
     }
 
-    GUM_ACTIVE_TEST(VisitToAsia) {
+    static void testVisitToAsia() {
       // Arrange
       PRMSystem sys("asia");
       auto      inst = new PRMInstance("asia", *_asia_);
@@ -282,17 +293,17 @@ namespace gum_tests {
       const auto&                  cpf = _asia_->get("visitToAsia").cpf();
       gum::Tensor< double > const* cpt = nullptr;
       // Act
-      TS_ASSERT_THROWS_NOTHING(cpt = &(bn->cpt(id)))
+      CHECK_NOTHROW(cpt = &(bn->cpt(id)));
       // Assert
       gum::Instantiation i(cpf);
       gum::Instantiation j(cpt);
       for (i.setFirst(), j.setFirst(); !(i.end() || j.end()); i.inc(), j.inc()) {
-        TS_ASSERT_EQUALS(cpf.get(i), cpt->get(j))
+        CHECK((cpf.get(i)) == (cpt->get(j)));
       }
       delete bn;
     }
 
-    GUM_ACTIVE_TEST(Tuberculosis) {
+    static void testTuberculosis() {
       // Arrange
       PRMSystem sys("asia");
       auto      inst = new PRMInstance("asia", *_asia_);
@@ -306,17 +317,17 @@ namespace gum_tests {
       const auto&                  cpf = _asia_->get("tuberculosis").cpf();
       gum::Tensor< double > const* cpt = nullptr;
       // Act
-      TS_ASSERT_THROWS_NOTHING(cpt = &(bn->cpt(id)))
+      CHECK_NOTHROW(cpt = &(bn->cpt(id)));
       // Assert
       gum::Instantiation i(cpf);
       gum::Instantiation j(cpt);
       for (i.setFirst(), j.setFirst(); !(i.end() || j.end()); i.inc(), j.inc()) {
-        TS_ASSERT_EQUALS(cpf.get(i), cpt->get(j))
+        CHECK((cpf.get(i)) == (cpt->get(j)));
       }
       delete bn;
     }
 
-    GUM_ACTIVE_TEST(Smoking) {
+    static void testSmoking() {
       // Arrange
       PRMSystem sys("asia");
       auto      inst = new PRMInstance("asia", *_asia_);
@@ -330,17 +341,17 @@ namespace gum_tests {
       const auto&                  cpf = _asia_->get("smoking").cpf();
       gum::Tensor< double > const* cpt = nullptr;
       // Act
-      TS_ASSERT_THROWS_NOTHING(cpt = &(bn->cpt(id)))
+      CHECK_NOTHROW(cpt = &(bn->cpt(id)));
       // Assert
       gum::Instantiation i(cpf);
       gum::Instantiation j(cpt);
       for (i.setFirst(), j.setFirst(); !(i.end() || j.end()); i.inc(), j.inc()) {
-        TS_ASSERT_EQUALS(cpf.get(i), cpt->get(j))
+        CHECK((cpf.get(i)) == (cpt->get(j)));
       }
       delete bn;
     }
 
-    GUM_ACTIVE_TEST(LungCancer) {
+    static void testLungCancer() {
       // Arrange
       PRMSystem sys("asia");
       auto      inst = new PRMInstance("asia", *_asia_);
@@ -354,17 +365,17 @@ namespace gum_tests {
       const auto&                  cpf = _asia_->get("lungCancer").cpf();
       gum::Tensor< double > const* cpt = nullptr;
       // Act
-      TS_ASSERT_THROWS_NOTHING(cpt = &(bn->cpt(id)))
+      CHECK_NOTHROW(cpt = &(bn->cpt(id)));
       // Assert
       gum::Instantiation i(cpf);
       gum::Instantiation j(cpt);
       for (i.setFirst(), j.setFirst(); !(i.end() || j.end()); i.inc(), j.inc()) {
-        TS_ASSERT_EQUALS(cpf.get(i), cpt->get(j))
+        CHECK((cpf.get(i)) == (cpt->get(j)));
       }
       delete bn;
     }
 
-    GUM_ACTIVE_TEST(Bronchitis) {
+    static void testBronchitis() {
       // Arrange
       PRMSystem sys("asia");
       auto      inst = new PRMInstance("asia", *_asia_);
@@ -378,17 +389,17 @@ namespace gum_tests {
       const auto&                  cpf = _asia_->get("bronchitis").cpf();
       gum::Tensor< double > const* cpt = nullptr;
       // Act
-      TS_ASSERT_THROWS_NOTHING(cpt = &(bn->cpt(id)))
+      CHECK_NOTHROW(cpt = &(bn->cpt(id)));
       // Assert
       gum::Instantiation i(cpf);
       gum::Instantiation j(cpt);
       for (i.setFirst(), j.setFirst(); !(i.end() || j.end()); i.inc(), j.inc()) {
-        TS_ASSERT_EQUALS(cpf.get(i), cpt->get(j))
+        CHECK((cpf.get(i)) == (cpt->get(j)));
       }
       delete bn;
     }
 
-    GUM_ACTIVE_TEST(TubOrCancer) {
+    static void testTubOrCancer() {
       // Arrange
       PRMSystem sys("asia");
       auto      inst = new PRMInstance("asia", *_asia_);
@@ -402,17 +413,17 @@ namespace gum_tests {
       const auto&                  cpf = _asia_->get("tubOrCancer").cpf();
       gum::Tensor< double > const* cpt = nullptr;
       // Act
-      TS_ASSERT_THROWS_NOTHING(cpt = &(bn->cpt(id)))
+      CHECK_NOTHROW(cpt = &(bn->cpt(id)));
       // Assert
       gum::Instantiation i(cpf);
       gum::Instantiation j(cpt);
       for (i.setFirst(), j.setFirst(); !(i.end() || j.end()); i.inc(), j.inc()) {
-        TS_ASSERT_EQUALS(cpf.get(i), cpt->get(j))
+        CHECK((cpf.get(i)) == (cpt->get(j)));
       }
       delete bn;
     }
 
-    GUM_ACTIVE_TEST(PositiveXRay) {
+    static void testPositiveXRay() {
       // Arrange
       PRMSystem sys("asia");
       auto      inst = new PRMInstance("asia", *_asia_);
@@ -426,17 +437,17 @@ namespace gum_tests {
       const auto&                  cpf = _asia_->get("positiveXRay").cpf();
       gum::Tensor< double > const* cpt = nullptr;
       // Act
-      TS_ASSERT_THROWS_NOTHING(cpt = &(bn->cpt(id)))
+      CHECK_NOTHROW(cpt = &(bn->cpt(id)));
       // Assert
       gum::Instantiation i(cpf);
       gum::Instantiation j(cpt);
       for (i.setFirst(), j.setFirst(); !(i.end() || j.end()); i.inc(), j.inc()) {
-        TS_ASSERT_EQUALS(cpf.get(i), cpt->get(j))
+        CHECK((cpf.get(i)) == (cpt->get(j)));
       }
       delete bn;
     }
 
-    GUM_ACTIVE_TEST(Dyspnea) {
+    static void testDyspnea() {
       // Arrange
       PRMSystem sys("asia");
       auto      inst = new PRMInstance("asia", *_asia_);
@@ -450,15 +461,30 @@ namespace gum_tests {
       const auto&                  cpf = _asia_->get("dyspnea").cpf();
       gum::Tensor< double > const* cpt = nullptr;
       // Act
-      TS_ASSERT_THROWS_NOTHING(cpt = &(bn->cpt(id)))
+      CHECK_NOTHROW(cpt = &(bn->cpt(id)));
       // Assert
       gum::Instantiation i(cpf);
       gum::Instantiation j(cpt);
       for (i.setFirst(), j.setFirst(); !(i.end() || j.end()); i.inc(), j.inc()) {
-        TS_ASSERT_EQUALS(cpf.get(i), cpt->get(j))
+        CHECK((cpf.get(i)) == (cpt->get(j)));
       }
       delete bn;
     }
   };
+
+  GUM_TEST_ACTIF(ClassConstruction)
+  GUM_TEST_ACTIF(AddInstance)
+  GUM_TEST_ACTIF(Instantiate)
+  GUM_TEST_ACTIF(GroundBN)
+  GUM_TEST_ACTIF(GroundBNAfterDelete)
+  GUM_TEST_ACTIF(VisitToAsiaId)
+  GUM_TEST_ACTIF(VisitToAsia)
+  GUM_TEST_ACTIF(Tuberculosis)
+  GUM_TEST_ACTIF(Smoking)
+  GUM_TEST_ACTIF(LungCancer)
+  GUM_TEST_ACTIF(Bronchitis)
+  GUM_TEST_ACTIF(TubOrCancer)
+  GUM_TEST_ACTIF(PositiveXRay)
+  GUM_TEST_ACTIF(Dyspnea)
 
 }   // namespace gum_tests

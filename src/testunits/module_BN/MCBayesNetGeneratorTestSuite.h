@@ -1,7 +1,7 @@
 /****************************************************************************
  *   This file is part of the aGrUM/pyAgrum library.                        *
  *                                                                          *
- *   Copyright (c) 2005-2025 by                                             *
+ *   Copyright (c) 2005-2026 by                                             *
  *       - Pierre-Henri WUILLEMIN(_at_LIP6)                                 *
  *       - Christophe GONZALES(_at_AMU)                                     *
  *                                                                          *
@@ -27,7 +27,7 @@
  *                                                                          *
  *   See LICENCES for more details.                                         *
  *                                                                          *
- *   SPDX-FileCopyrightText: Copyright 2005-2025                            *
+ *   SPDX-FileCopyrightText: Copyright 2005-2026                            *
  *       - Pierre-Henri WUILLEMIN(_at_LIP6)                                 *
  *       - Christophe GONZALES(_at_AMU)                                     *
  *   SPDX-License-Identifier: LGPL-3.0-or-later OR MIT                      *
@@ -37,6 +37,7 @@
  *   gitlab   : https://gitlab.com/agrumery/agrum                           *
  *                                                                          *
  ****************************************************************************/
+
 #pragma once
 
 
@@ -55,39 +56,44 @@
 #include <agrum/BN/inference/lazyPropagation.h>
 #include <agrum/BN/inference/ShaferShenoyInference.h>
 
+#undef GUM_CURRENT_SUITE
+#undef GUM_CURRENT_MODULE
+#define GUM_CURRENT_SUITE  MCBayesNetGenerator
+#define GUM_CURRENT_MODULE BN
+
 namespace gum_tests {
 
-  class GUM_TEST_SUITE(MCBayesNetGenerator) {
+  struct MCBayesNetGeneratorTestSuite {
     public:
-    GUM_ACTIVE_TEST(CreationDeletionFloat) {
+    static void testCreationDeletionFloat() {
       gum::MCBayesNetGenerator< float >* gen = nullptr;
 
-      TS_GUM_ASSERT_THROWS_NOTHING(gen
-                                   = new gum::MCBayesNetGenerator< float >(10, 15, 3, 15, 20, 25));
-      TS_GUM_ASSERT_THROWS_NOTHING(delete gen)
+      GUM_CHECK_ASSERT_THROWS_NOTHING(
+          gen = new gum::MCBayesNetGenerator< float >(10, 15, 3, 15, 20, 25));
+      GUM_CHECK_ASSERT_THROWS_NOTHING(delete gen);
     }   // namespace gum_tests
 
-    GUM_ACTIVE_TEST(CreationDeletionDouble) {
+    static void testCreationDeletionDouble() {
       gum::MCBayesNetGenerator< double >* gen = nullptr;
 
-      TS_GUM_ASSERT_THROWS_NOTHING(gen
-                                   = new gum::MCBayesNetGenerator< double >(10, 15, 3, 15, 20, 25));
-      TS_GUM_ASSERT_THROWS_NOTHING(delete gen)
+      GUM_CHECK_ASSERT_THROWS_NOTHING(
+          gen = new gum::MCBayesNetGenerator< double >(10, 15, 3, 15, 20, 25));
+      GUM_CHECK_ASSERT_THROWS_NOTHING(delete gen);
     }
 
-    GUM_ACTIVE_TEST(GenerationBNFloat) {
+    static void testGenerationBNFloat() {
       gum::MCBayesNetGenerator< float > gen(10, 15, 3, 15, 20, 25);
       gum::BayesNet< float >            bn;
-      TS_GUM_ASSERT_THROWS_NOTHING(gen.generateBN(bn))
+      GUM_CHECK_ASSERT_THROWS_NOTHING(gen.generateBN(bn));
     }
 
-    GUM_ACTIVE_TEST(GenerationBNDouble) {
+    static void testGenerationBNDouble() {
       gum::MCBayesNetGenerator< double > gen(10, 15, 3, 15, 20, 25);
       gum::BayesNet< double >            bn;
-      TS_GUM_ASSERT_THROWS_NOTHING(gen.generateBN(bn))
+      GUM_CHECK_ASSERT_THROWS_NOTHING(gen.generateBN(bn));
     }
 
-    GUM_ACTIVE_TEST(GenerationfromBNDouble) {
+    static void testGenerationfromBNDouble() {
       int nbrtests = 0;
       while (true) {
         try {
@@ -106,7 +112,7 @@ namespace gum_tests {
           GUM_SHOWERROR(e);
           nbrtests++;
           if (nbrtests > 3) {
-            TS_ASSERT(false)
+            CHECK(false);
             return;
           }
         }
@@ -114,7 +120,7 @@ namespace gum_tests {
       }
     }
 
-    GUM_ACTIVE_TEST(DisturbBNFloatCPT) {
+    static void testDisturbBNFloatCPT() {
       int nbrtests = 0;
       while (true) {
         try {
@@ -128,36 +134,46 @@ namespace gum_tests {
           GUM_SHOWERROR(e);
           nbrtests++;
           if (nbrtests > 3) {
-            TS_ASSERT(false)
+            CHECK(false);
             return;
           }
         }
       }
     }
 
-    GUM_ACTIVE_TEST(GenerationBNDoubleCPT) {
+    static void testGenerationBNDoubleCPT() {
       gum::MCBayesNetGenerator< double > gen(10, 15, 3, 15, 20, 25);
       gum::BayesNet< double >            bn;
       gen.generateBN(bn);
-      // TS_GUM_ASSERT_THROWS_NOTHING(gen.disturbBN(bn))
+      // GUM_CHECK_ASSERT_THROWS_NOTHING(gen.disturbBN(bn));
     }
 
-    GUM_ACTIVE_TEST(InferenceFloat) {
+    static void testInferenceFloat() {
       gum::MCBayesNetGenerator< double > gen(10, 15, 3, 15, 20, 25);
       gum::BayesNet< double >            bn;
       gen.generateBN(bn);
       // Test for inference
       gum::LazyPropagation< double > lazyInf(&bn);
-      TS_GUM_ASSERT_THROWS_NOTHING(lazyInf.makeInference())
+      GUM_CHECK_ASSERT_THROWS_NOTHING(lazyInf.makeInference());
     }
 
-    GUM_ACTIVE_TEST(InferenceDouble) {
+    static void testInferenceDouble() {
       gum::MCBayesNetGenerator< double > gen(10, 15, 3, 15, 20, 25);
       gum::BayesNet< double >            bn;
       gen.generateBN(bn);
       // Test for inference
       gum::LazyPropagation< double > lazyInf(&bn);
-      TS_GUM_ASSERT_THROWS_NOTHING(lazyInf.makeInference())
+      GUM_CHECK_ASSERT_THROWS_NOTHING(lazyInf.makeInference());
     }
   };
+
+  GUM_TEST_ACTIF(CreationDeletionFloat)
+  GUM_TEST_ACTIF(CreationDeletionDouble)
+  GUM_TEST_ACTIF(GenerationBNFloat)
+  GUM_TEST_ACTIF(GenerationBNDouble)
+  GUM_TEST_ACTIF(GenerationfromBNDouble)
+  GUM_TEST_ACTIF(DisturbBNFloatCPT)
+  GUM_TEST_ACTIF(GenerationBNDoubleCPT)
+  GUM_TEST_ACTIF(InferenceFloat)
+  GUM_TEST_ACTIF(InferenceDouble)
 }   // namespace gum_tests

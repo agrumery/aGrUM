@@ -1,7 +1,7 @@
 /****************************************************************************
  *   This file is part of the aGrUM/pyAgrum library.                        *
  *                                                                          *
- *   Copyright (c) 2005-2025 by                                             *
+ *   Copyright (c) 2005-2026 by                                             *
  *       - Pierre-Henri WUILLEMIN(_at_LIP6)                                 *
  *       - Christophe GONZALES(_at_AMU)                                     *
  *                                                                          *
@@ -27,7 +27,7 @@
  *                                                                          *
  *   See LICENCES for more details.                                         *
  *                                                                          *
- *   SPDX-FileCopyrightText: Copyright 2005-2025                            *
+ *   SPDX-FileCopyrightText: Copyright 2005-2026                            *
  *       - Pierre-Henri WUILLEMIN(_at_LIP6)                                 *
  *       - Christophe GONZALES(_at_AMU)                                     *
  *   SPDX-License-Identifier: LGPL-3.0-or-later OR MIT                      *
@@ -37,6 +37,7 @@
  *   gitlab   : https://gitlab.com/agrumery/agrum                           *
  *                                                                          *
  ****************************************************************************/
+
 #pragma once
 
 
@@ -57,15 +58,20 @@
 // ==========================================================================
 #include <agrum/base/variables/labelizedVariable.h>
 
+#undef GUM_CURRENT_SUITE
+#undef GUM_CURRENT_MODULE
+#define GUM_CURRENT_SUITE  MultiDimProjectors4FunctionGraph
+#define GUM_CURRENT_MODULE GUMBASE
+
 // ==========================================================================
 
 namespace gum_tests {
 
-  class GUM_TEST_SUITE(MultiDimProjectors4FunctionGraph) {
+  struct MultiDimProjectors4FunctionGraphTestSuite {
     // ************************************************************************************************
     /// Génération fixe d'une liste de variable
     // ************************************************************************************************
-    gum::Sequence< const gum::DiscreteVariable* >* _generateFixVarList_() {
+    static gum::Sequence< const gum::DiscreteVariable* >* _generateFixVarList_() {
       gum::Sequence< const gum::DiscreteVariable* >* ret
           = new gum::Sequence< const gum::DiscreteVariable* >();
       ret->insert(new gum::LabelizedVariable("A", "", 2));
@@ -79,7 +85,7 @@ namespace gum_tests {
     // ************************************************************************************************
     /// Génération aléatoire d'une liste de 10 variables
     // ************************************************************************************************
-    gum::Sequence< const gum::DiscreteVariable* >* _generateRandomVarList_(int i) {
+    static gum::Sequence< const gum::DiscreteVariable* >* _generateRandomVarList_(int i) {
       //        gum::Sequence< const gum::DiscreteVariable* >* ret = new
       //        gum::Sequence< const gum::DiscreteVariable* >();
       //        ret->insert ( new gum::LabelizedVariable ( "A", "", 3 ) );
@@ -104,7 +110,7 @@ namespace gum_tests {
     // ************************************************************************************************
     /// Brassage aléatoire d'une liste de 10 variables
     // ************************************************************************************************
-    void _shuffleVarList_(gum::Sequence< const gum::DiscreteVariable* >* varList, int i) {
+    static void _shuffleVarList_(gum::Sequence< const gum::DiscreteVariable* >* varList, int i) {
       for (int j = 0; j < 10; j++)
         varList->swap(rand() % (varList->size()), rand() % (varList->size()));
     }
@@ -112,7 +118,7 @@ namespace gum_tests {
     // ************************************************************************************************
     /// Génération fixe de diagramme de décision
     // ************************************************************************************************
-    gum::MultiDimFunctionGraph< double >*
+    static gum::MultiDimFunctionGraph< double >*
         _generateFunctionGraph1_(const gum::Sequence< const gum::DiscreteVariable* >* varList) {
       gum::MultiDimFunctionGraph< double >* generatedFunctionGraph
           = gum::MultiDimFunctionGraph< double >::getReducedAndOrderedInstance();
@@ -149,7 +155,7 @@ namespace gum_tests {
     // ************************************************************************************************
     /// Génération aléatoire de diagramme de décision
     // ************************************************************************************************
-    gum::MultiDimFunctionGraph< double >*
+    static gum::MultiDimFunctionGraph< double >*
         _generateRandomFunctionGraph_(const gum::Sequence< const gum::DiscreteVariable* >* varList,
                                       double lowLimit  = -100,
                                       double highLimit = 100) {
@@ -161,9 +167,9 @@ namespace gum_tests {
     // ************************************************************************************************
     /// Sauvegarde des diagrammes générant une erreur dans un fichier log
     // ************************************************************************************************
-    void _saveDiagrams_(gum::MultiDimFunctionGraph< double >* a1,
-                        gum::MultiDimFunctionGraph< double >* a3,
-                        gum::VariableSet                      delVars) {
+    static void _saveDiagrams_(gum::MultiDimFunctionGraph< double >* a1,
+                               gum::MultiDimFunctionGraph< double >* a3,
+                               gum::VariableSet                      delVars) {
       std::string   dotfile = GET_RESSOURCES_PATH("FunctionGraphError.log");
       std::ofstream output(dotfile.c_str(), std::ios::out);
 
@@ -215,12 +221,12 @@ namespace gum_tests {
     /// Evals given in parameter operation. Returned boolean parameter indicates
     /// if all went well or not
     // ************************************************************************************************
-    bool _evalOperation_(int                                   operationId,
-                         gum::MultiDimFunctionGraph< double >* a1,
-                         gum::VariableSet                      del_vars,
-                         double&                               tempsCalcul,
-                         double&                               tempsEval,
-                         double                                delta = 0.01) {
+    static bool _evalOperation_(int                                   operationId,
+                                gum::MultiDimFunctionGraph< double >* a1,
+                                gum::VariableSet                      del_vars,
+                                double&                               tempsCalcul,
+                                double&                               tempsEval,
+                                double                                delta = 0.01) {
       bool                                  hasNoError = true;
       gum::MultiDimFunctionGraph< double >* a3         = nullptr;
 
@@ -232,19 +238,19 @@ namespace gum_tests {
 
       switch (operationId) {
         case 1 :   // Test Addition
-          TS_GUM_ASSERT_THROWS_NOTHING(a3 = projectSumMultiDimFunctionGraph(a1, del_vars))
+          GUM_CHECK_ASSERT_THROWS_NOTHING(a3 = projectSumMultiDimFunctionGraph(a1, del_vars));
           break;
 
         case 2 :   // Test Multiplication
-          TS_GUM_ASSERT_THROWS_NOTHING(a3 = projectProductMultiDimFunctionGraph(a1, del_vars))
+          GUM_CHECK_ASSERT_THROWS_NOTHING(a3 = projectProductMultiDimFunctionGraph(a1, del_vars));
           break;
 
         case 3 :   // Test Minimisation
-          TS_GUM_ASSERT_THROWS_NOTHING(a3 = projectMinMultiDimFunctionGraph(a1, del_vars))
+          GUM_CHECK_ASSERT_THROWS_NOTHING(a3 = projectMinMultiDimFunctionGraph(a1, del_vars));
           break;
 
         case 4 :   // Test Maximisation
-          TS_GUM_ASSERT_THROWS_NOTHING(a3 = projectMaxMultiDimFunctionGraph(a1, del_vars))
+          GUM_CHECK_ASSERT_THROWS_NOTHING(a3 = projectMaxMultiDimFunctionGraph(a1, del_vars));
           break;
 
         default :   // Should Not Happen
@@ -269,7 +275,7 @@ namespace gum_tests {
              varIter != del_vars.endSafe();
              ++varIter) {
           if (!instEleminatedVar.variablesSequence().exists(*varIter))
-            TS_GUM_ASSERT_THROWS_NOTHING(instEleminatedVar.add(**varIter))
+            GUM_CHECK_ASSERT_THROWS_NOTHING(instEleminatedVar.add(**varIter));
         }
         gum::Instantiation instRemainingVar;
         for (gum::SequenceIteratorSafe< const gum::DiscreteVariable* > varIter
@@ -289,7 +295,7 @@ namespace gum_tests {
                    instEleminatedVar.incOut(instRemainingVar))
                 sum += a1->get(instEleminatedVar);
 
-              TS_ASSERT_DELTA(a3->get(instRemainingVar), sum, delta)
+              CHECK((a3->get(instRemainingVar)) == doctest::Approx(sum).epsilon(delta));
 
               if (std::abs(a3->get(instRemainingVar) - sum) >= delta) {
                 std::cout << a3->get(instRemainingVar) << " - " << sum << " - "
@@ -313,8 +319,9 @@ namespace gum_tests {
               //                          product *= a1->get ( instEleminatedVar
               //                          );
 
-              //                        TS_ASSERT_DELTA ( a3->get (
-              //                        instRemainingVar ), product, delta );
+              //                        CHECK((a3->get (
+              //                        instRemainingVar )) ==
+              //                        doctest::Approx(product).epsilon(delta));
 
               //                        if ( std::abs( a3->get (
               //                        instRemainingVar ) - product ) >= delta
@@ -331,7 +338,7 @@ namespace gum_tests {
                    instEleminatedVar.incOut(instRemainingVar))
                 min = min >= a1->get(instEleminatedVar) ? a1->get(instEleminatedVar) : min;
 
-              TS_ASSERT_DELTA(a3->get(instRemainingVar), min, delta)
+              CHECK((a3->get(instRemainingVar)) == doctest::Approx(min).epsilon(delta));
 
               if (std::abs(a3->get(instRemainingVar) - min) >= delta) hasNoError = false;
             }
@@ -345,7 +352,7 @@ namespace gum_tests {
                    instEleminatedVar.incOut(instRemainingVar))
                 max = max >= a1->get(instEleminatedVar) ? max : a1->get(instEleminatedVar);
 
-              TS_ASSERT_DELTA(a3->get(instRemainingVar), max, delta)
+              CHECK((a3->get(instRemainingVar)) == doctest::Approx(max).epsilon(delta));
 
               if (std::abs(a3->get(instRemainingVar) - max) >= delta) hasNoError = false;
             }
@@ -375,7 +382,7 @@ namespace gum_tests {
     // ************************************************************************************************
     /// Test sur les fonctions avec valeurs exactes
     // ************************************************************************************************
-    GUM_ACTIVE_TEST(_Projections_Functions_on_MultiDimFunctionGraphs) {
+    static void test_Projections_Functions_on_MultiDimFunctionGraphs() {
       gum::Timer time;
       double     tempsGene   = 0;
       double     tempsCalcul = 0;
@@ -389,7 +396,7 @@ namespace gum_tests {
         gum::Sequence< const gum::DiscreteVariable* >* varList = _generateFixVarList_();
 
         gum::MultiDimFunctionGraph< double >* a1 = nullptr;
-        TS_GUM_ASSERT_THROWS_NOTHING(a1 = _generateFunctionGraph1_(varList))
+        GUM_CHECK_ASSERT_THROWS_NOTHING(a1 = _generateFunctionGraph1_(varList));
 
         gum::VariableSet del_vars;
         del_vars << varList->atPos(0);
@@ -416,7 +423,7 @@ namespace gum_tests {
         if (!evalRes) return;
       }
 
-      TS_ASSERT(tempsGene > 0)
+      CHECK(tempsGene > 0);
     }
 
     //  ************************************************************************************************
@@ -535,7 +542,7 @@ namespace gum_tests {
         del_vars << vB;
 
         double a = 0.0, b = 0.0, c = 0.0;
-        TS_GUM_ASSERT_THROWS_NOTHING(_evalOperation_(1, dg1, del_vars, a, b, c))
+        GUM_CHECK_ASSERT_THROWS_NOTHING(_evalOperation_(1, dg1, del_vars, a, b, c));
 
         delete dg1;
         del_vars.clear();
@@ -653,7 +660,7 @@ namespace gum_tests {
         del_vars << vC;
 
         double a = 0.0, b = 0.0, c = 0.01;
-        TS_GUM_ASSERT_THROWS_NOTHING(_evalOperation_(1, dg1, del_vars, a, b, c))
+        GUM_CHECK_ASSERT_THROWS_NOTHING(_evalOperation_(1, dg1, del_vars, a, b, c));
 
         delete dg1;
         del_vars.clear();
@@ -880,7 +887,7 @@ namespace gum_tests {
         del_vars << v1;
 
         double a = 0.0, b = 0.0, c = 0.01;
-        TS_GUM_ASSERT_THROWS_NOTHING(_evalOperation_(1, dg1, del_vars, a, b, c))
+        GUM_CHECK_ASSERT_THROWS_NOTHING(_evalOperation_(1, dg1, del_vars, a, b, c));
 
         delete dg1;
         del_vars.clear();
@@ -895,6 +902,8 @@ namespace gum_tests {
       }
     }
   };
+
+  GUM_TEST_ACTIF(_Projections_Functions_on_MultiDimFunctionGraphs)
 }   // namespace gum_tests
 
 // ===================================================================================
@@ -913,7 +922,7 @@ namespace gum_tests {
 //             _generateRandomVarList_( nbLoop + 1 );
 
 //        gum::MultiDimFunctionGraph<double>* a1 = nullptr;
-//        TS_GUM_ASSERT_THROWS_NOTHING(
+//        GUM_CHECK_ASSERT_THROWS_NOTHING(
 //            a1 =  _generateRandomFunctionGraph_( varList, nbLoop + 2 ) );
 
 //        gum::Idx maxSwapVar = ( rand() % ( varList->size() - 2 ) ) + 1;

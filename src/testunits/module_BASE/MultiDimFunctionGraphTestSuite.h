@@ -1,7 +1,7 @@
 /****************************************************************************
  *   This file is part of the aGrUM/pyAgrum library.                        *
  *                                                                          *
- *   Copyright (c) 2005-2025 by                                             *
+ *   Copyright (c) 2005-2026 by                                             *
  *       - Pierre-Henri WUILLEMIN(_at_LIP6)                                 *
  *       - Christophe GONZALES(_at_AMU)                                     *
  *                                                                          *
@@ -27,7 +27,7 @@
  *                                                                          *
  *   See LICENCES for more details.                                         *
  *                                                                          *
- *   SPDX-FileCopyrightText: Copyright 2005-2025                            *
+ *   SPDX-FileCopyrightText: Copyright 2005-2026                            *
  *       - Pierre-Henri WUILLEMIN(_at_LIP6)                                 *
  *       - Christophe GONZALES(_at_AMU)                                     *
  *   SPDX-License-Identifier: LGPL-3.0-or-later OR MIT                      *
@@ -37,6 +37,7 @@
  *   gitlab   : https://gitlab.com/agrumery/agrum                           *
  *                                                                          *
  ****************************************************************************/
+
 #pragma once
 
 
@@ -59,11 +60,16 @@
 // =========================================================================
 #include <agrum/base/variables/labelizedVariable.h>
 
+#undef GUM_CURRENT_SUITE
+#undef GUM_CURRENT_MODULE
+#define GUM_CURRENT_SUITE  MultiDimFunctionGraph
+#define GUM_CURRENT_MODULE GUMBASE
+
 // =========================================================================
 
 namespace gum_tests {
 
-  class GUM_TEST_SUITE(MultiDimFunctionGraph) {
+  struct MultiDimFunctionGraphTestSuite {
     private:
     void _fillFactory_(gum::MultiDimFunctionGraph< double >* factory,
                        gum::List< gum::NodeId >*             idList) {
@@ -141,7 +147,7 @@ namespace gum_tests {
     public:
     gum::LabelizedVariable *Cvar, *PLvar, *APUvar, *BPUvar, *ADRvar, *BDRvar, *BOvar, *Cprimevar;
 
-    void setUp() {
+    MultiDimFunctionGraphTestSuite() {
       try {
         Cvar      = new gum::LabelizedVariable("C", "C", 2);
         PLvar     = new gum::LabelizedVariable("PL", "PL", 2);
@@ -154,7 +160,7 @@ namespace gum_tests {
       } catch (gum::Exception& e) { GUM_SHOWERROR(e); }
     }
 
-    void tearDown() {
+    ~MultiDimFunctionGraphTestSuite() {
       try {
         delete Cvar;
         delete Cprimevar;
@@ -172,14 +178,14 @@ namespace gum_tests {
     /** Testing creation, filling and destrcution of a function graph */
     /**
      * **********************************************************************************/
-    GUM_ACTIVE_TEST(_Simple_Creation) {
+    void test_Simple_Creation() {
       try {
         // *********************************************************************
         // Création of the Function Graph
         // *********************************************************************
         gum::MultiDimFunctionGraph< double >* functionGraph = NULL;
 
-        TS_GUM_ASSERT_THROWS_NOTHING(
+        GUM_CHECK_ASSERT_THROWS_NOTHING(
             functionGraph = gum::MultiDimFunctionGraph< double >::getReducedAndOrderedInstance());
 
         // *********************************************************************
@@ -187,12 +193,12 @@ namespace gum_tests {
         // The insertion are done so that no error should be rised
         // *********************************************************************
         gum::List< gum::NodeId > idList;
-        TS_GUM_ASSERT_THROWS_NOTHING(_fillFactory_(functionGraph, &idList))
+        GUM_CHECK_ASSERT_THROWS_NOTHING(_fillFactory_(functionGraph, &idList));
 
         // *********************************************************************
         // Destruction of the multidim
         // *********************************************************************
-        TS_GUM_ASSERT_THROWS_NOTHING(delete functionGraph)
+        GUM_CHECK_ASSERT_THROWS_NOTHING(delete functionGraph);
       } catch (gum::Exception& e) { GUM_SHOWERROR(e); }
     }
 
@@ -201,7 +207,7 @@ namespace gum_tests {
     /** Testing access method in the graph */
     /**
      * **********************************************************************************/
-    GUM_ACTIVE_TEST(_MultiDimFunctionGraph_Diagram_Handlers_Methods) {
+    void test_MultiDimFunctionGraph_Diagram_Handlers_Methods() {
       try {
         // *********************************************************************
         // Création du multidim
@@ -217,37 +223,37 @@ namespace gum_tests {
         gum::LabelizedVariable* Banditovar = new gum::LabelizedVariable("Bandito", "Desperado", 2);
 
         // Test isTerminalNode
-        TS_ASSERT_EQUALS(functionGraph->isTerminalNode(16), true)
-        TS_ASSERT_EQUALS(functionGraph->isTerminalNode(6), false)
-        TS_ASSERT_EQUALS(functionGraph->isTerminalNode(24), false)
+        CHECK((functionGraph->isTerminalNode(16)) == (true));
+        CHECK((functionGraph->isTerminalNode(6)) == (false));
+        CHECK((functionGraph->isTerminalNode(24)) == (false));
 
         // Test isInternalNode
-        TS_ASSERT_EQUALS(functionGraph->isInternalNode(6), true)
-        TS_ASSERT_EQUALS(functionGraph->isInternalNode(16), false)
-        TS_ASSERT_EQUALS(functionGraph->isInternalNode(24), false)
+        CHECK((functionGraph->isInternalNode(6)) == (true));
+        CHECK((functionGraph->isInternalNode(16)) == (false));
+        CHECK((functionGraph->isInternalNode(24)) == (false));
 
         // Test Root
-        TS_ASSERT_EQUALS(functionGraph->root(), (gum::NodeId)1)
+        CHECK((functionGraph->root()) == ((gum::NodeId)1));
 
         // test terminal node value
-        TS_GUM_ASSERT_THROWS_NOTHING(functionGraph->nodeValue(16))
-        TS_ASSERT_EQUALS(functionGraph->nodeValue(16), 0)
-        TS_ASSERT_THROWS(functionGraph->nodeValue(6), const gum::InvalidArgument&)
-        TS_ASSERT_THROWS(functionGraph->nodeValue(24), const gum::InvalidArgument&)
+        GUM_CHECK_ASSERT_THROWS_NOTHING(functionGraph->nodeValue(16));
+        CHECK((functionGraph->nodeValue(16)) == (0));
+        CHECK_THROWS_AS(functionGraph->nodeValue(6), const gum::InvalidArgument&);
+        CHECK_THROWS_AS(functionGraph->nodeValue(24), const gum::InvalidArgument&);
 
         // Test internal node structure
-        TS_GUM_ASSERT_THROWS_NOTHING(functionGraph->node(6))
-        TS_ASSERT_THROWS(functionGraph->node(16), const gum::InvalidArgument&)
-        TS_ASSERT_THROWS(functionGraph->node(24), const gum::InvalidArgument&)
+        GUM_CHECK_ASSERT_THROWS_NOTHING(functionGraph->node(6));
+        CHECK_THROWS_AS(functionGraph->node(16), const gum::InvalidArgument&);
+        CHECK_THROWS_AS(functionGraph->node(24), const gum::InvalidArgument&);
 
         // Test var node List
-        TS_GUM_ASSERT_THROWS_NOTHING(functionGraph->varNodeListe(Cvar))
-        TS_ASSERT_THROWS(functionGraph->varNodeListe(Banditovar), const gum::InvalidArgument&)
+        GUM_CHECK_ASSERT_THROWS_NOTHING(functionGraph->varNodeListe(Cvar));
+        CHECK_THROWS_AS(functionGraph->varNodeListe(Banditovar), const gum::InvalidArgument&);
 
         // *********************************************************************
         // Cleaning
         // *********************************************************************
-        TS_GUM_ASSERT_THROWS_NOTHING(delete functionGraph)
+        GUM_CHECK_ASSERT_THROWS_NOTHING(delete functionGraph);
         delete Banditovar;
       } catch (gum::Exception& e) { GUM_SHOWERROR(e); }
     }
@@ -257,7 +263,7 @@ namespace gum_tests {
     /** Testing export method */
     /**
      * **********************************************************************************/
-    GUM_ACTIVE_TEST(_toDot) {
+    void test_toDot() {
       try {
         // *********************************************************************
         // Création du multidim
@@ -290,7 +296,7 @@ namespace gum_tests {
     /**  Test on manager graph handling methods */
     /**
      * *******************************************************************************/
-    GUM_ACTIVE_TEST(_Manager_Graphical_Functions) {
+    void test_Manager_Graphical_Functions() {
       try {
         // *********************************************************************
         // Creation of the multidim
@@ -308,19 +314,19 @@ namespace gum_tests {
         // Inserting a new terminal node with same value as an already inserted
         // one
         // (returned id must be the one of the already inserted)
-        TS_ASSERT_EQUALS(functionGraph->manager()->addTerminalNode(10), idList[16])
+        CHECK((functionGraph->manager()->addTerminalNode(10)) == (idList[16]));
 
         // Testing terminal node removal
-        TS_GUM_ASSERT_THROWS_NOTHING(functionGraph->manager()->eraseNode(idList[15]))
+        GUM_CHECK_ASSERT_THROWS_NOTHING(functionGraph->manager()->eraseNode(idList[15]));
 
         // Testing terminal node removal again
-        TS_ASSERT_THROWS(functionGraph->manager()->eraseNode(idList[15]), const gum::NotFound&)
+        CHECK_THROWS_AS(functionGraph->manager()->eraseNode(idList[15]), const gum::NotFound&);
 
         // Testing internal node removal
-        TS_GUM_ASSERT_THROWS_NOTHING(functionGraph->manager()->eraseNode(idList[12]))
+        GUM_CHECK_ASSERT_THROWS_NOTHING(functionGraph->manager()->eraseNode(idList[12]));
 
         // Testing internal node removal again
-        TS_ASSERT_THROWS(functionGraph->manager()->eraseNode(idList[12]), const gum::NotFound&)
+        CHECK_THROWS_AS(functionGraph->manager()->eraseNode(idList[12]), const gum::NotFound&);
 
 
         // *********************************************************************
@@ -330,30 +336,30 @@ namespace gum_tests {
         // Testing arc modification where starting node does not exist
         // (must raise gum::NotFound)
         // (node 15 has been erased before)
-        TS_ASSERT_THROWS(functionGraph->manager()->setSon(idList[15], 2, idList[1]),
-                         const gum::NotFound&)
-        TS_ASSERT_THROWS(functionGraph->manager()->setSon(idList[1], 2, idList[15]),
-                         const gum::NotFound&)
+        CHECK_THROWS_AS(functionGraph->manager()->setSon(idList[15], 2, idList[1]),
+                        const gum::NotFound&);
+        CHECK_THROWS_AS(functionGraph->manager()->setSon(idList[1], 2, idList[15]),
+                        const gum::NotFound&);
 
         // Testing node modification where starting node is a terminal node
         // (must raise gum::InvalidNode
         // as terminal nodes are ... terminal)
-        TS_ASSERT_THROWS(functionGraph->manager()->setSon(idList[16], 3, idList[1]),
-                         const gum::InvalidNode&);
+        CHECK_THROWS_AS(functionGraph->manager()->setSon(idList[16], 3, idList[1]),
+                        const gum::InvalidNode&);
 
         // Testing arc modification where variable modality is higher than its
         // domain size
-        TS_ASSERT_THROWS(functionGraph->manager()->setSon(idList[8], 4, idList[18]),
-                         const gum::InvalidArgument&)
+        CHECK_THROWS_AS(functionGraph->manager()->setSon(idList[8], 4, idList[18]),
+                        const gum::InvalidArgument&);
 
         // Testing arc modification that violates order constraint
-        TS_ASSERT_THROWS(functionGraph->manager()->setSon(idList[10], 0, idList[1]),
-                         const gum::OperationNotAllowed&)
+        CHECK_THROWS_AS(functionGraph->manager()->setSon(idList[10], 0, idList[1]),
+                        const gum::OperationNotAllowed&);
         // NB : idList 8 and 1 are bound to the same variable
-        TS_ASSERT_THROWS(functionGraph->manager()->setSon(idList[8], 0, idList[1]),
-                         const gum::OperationNotAllowed&)
+        CHECK_THROWS_AS(functionGraph->manager()->setSon(idList[8], 0, idList[1]),
+                        const gum::OperationNotAllowed&);
 
-        TS_GUM_ASSERT_THROWS_NOTHING(delete functionGraph)
+        GUM_CHECK_ASSERT_THROWS_NOTHING(delete functionGraph);
       } catch (gum::Exception& e) { GUM_SHOWERROR(e); }
     }
 
@@ -362,7 +368,7 @@ namespace gum_tests {
     /**   Testing access and modification function on multidim */
     /**
      * **********************************************************************************/
-    GUM_ACTIVE_TEST(_MultiDimFunctionGraph_Accessors_Modifiers_Methods) {
+    void test_MultiDimFunctionGraph_Accessors_Modifiers_Methods() {
       try {
         // *********************************************************************
         // Creation of multidim
@@ -377,23 +383,23 @@ namespace gum_tests {
         // Testing variablesSequence(), and if all variables are indeed present
         // *********************************************************************
         gum::Sequence< const gum::DiscreteVariable* > varSeq;
-        TS_GUM_ASSERT_THROWS_NOTHING(varSeq = functionGraph->variablesSequence())
-        TS_ASSERT_EQUALS(varSeq.exists(Cprimevar), true)
-        TS_ASSERT_EQUALS(varSeq.exists(Cvar), true)
-        TS_ASSERT_EQUALS(varSeq.exists(PLvar), true)
-        TS_ASSERT_EQUALS(varSeq.exists(APUvar), true)
-        TS_ASSERT_EQUALS(varSeq.exists(BPUvar), true)
-        TS_ASSERT_EQUALS(varSeq.exists(ADRvar), true)
-        TS_ASSERT_EQUALS(varSeq.exists(BDRvar), true)
-        TS_ASSERT_EQUALS(varSeq.exists(BOvar), true)
+        GUM_CHECK_ASSERT_THROWS_NOTHING(varSeq = functionGraph->variablesSequence());
+        CHECK((varSeq.exists(Cprimevar)) == (true));
+        CHECK((varSeq.exists(Cvar)) == (true));
+        CHECK((varSeq.exists(PLvar)) == (true));
+        CHECK((varSeq.exists(APUvar)) == (true));
+        CHECK((varSeq.exists(BPUvar)) == (true));
+        CHECK((varSeq.exists(ADRvar)) == (true));
+        CHECK((varSeq.exists(BDRvar)) == (true));
+        CHECK((varSeq.exists(BOvar)) == (true));
 
 
         // *********************************************************************
         // Test name() and basename()
         // *********************************************************************
-        TS_ASSERT_EQUALS(functionGraph->name(), "MultiDimFunctionGraph")
+        CHECK((functionGraph->name()) == ("MultiDimFunctionGraph"));
 
-        TS_ASSERT_EQUALS(functionGraph->basename(), "MultiDimImplementation")
+        CHECK((functionGraph->basename()) == ("MultiDimImplementation"));
 
 
         // *********************************************************************
@@ -401,37 +407,37 @@ namespace gum_tests {
         // *********************************************************************
         gum::Instantiation inst(*functionGraph);
 
-        TS_ASSERT_THROWS(functionGraph->set(inst, 14.0), const gum::OperationNotAllowed&)
+        CHECK_THROWS_AS(functionGraph->set(inst, 14.0), const gum::OperationNotAllowed&);
 
-        TS_ASSERT_THROWS(functionGraph->fill(14.0), const gum::OperationNotAllowed&)
+        CHECK_THROWS_AS(functionGraph->fill(14.0), const gum::OperationNotAllowed&);
 
         std::vector< double > v;
 
         for (float i = 0; i < 128; i++)
           v.push_back(i);
 
-        TS_ASSERT_THROWS(functionGraph->populate(v), const gum::OperationNotAllowed&)
+        CHECK_THROWS_AS(functionGraph->populate(v), const gum::OperationNotAllowed&);
 
         for (float i = 128; i < 256; i++)
           v.push_back(i);
 
-        TS_ASSERT_THROWS(functionGraph->populate(v), const gum::OperationNotAllowed&)
+        CHECK_THROWS_AS(functionGraph->populate(v), const gum::OperationNotAllowed&);
 
-        TS_ASSERT_THROWS(functionGraph->populate({1, 2, 3}), const gum::OperationNotAllowed&)
+        CHECK_THROWS_AS(functionGraph->populate({1, 2, 3}), const gum::OperationNotAllowed&);
 
 
         // *********************************************************************
         // Test get(), [], and value access
         // *********************************************************************
-        TS_GUM_ASSERT_THROWS_NOTHING(functionGraph->get(inst))
-        TS_GUM_ASSERT_THROWS_NOTHING((*functionGraph)[inst])
+        GUM_CHECK_ASSERT_THROWS_NOTHING(functionGraph->get(inst));
+        GUM_CHECK_ASSERT_THROWS_NOTHING((*functionGraph)[inst]);
 
         for (inst.setFirst(); !inst.end(); ++inst)
           if (inst.val(*Cvar) == 1) {
             if (inst.val(*Cprimevar) == 1) {
-              TS_ASSERT_DELTA(functionGraph->get(inst), 9, 0.001)
+              CHECK((functionGraph->get(inst)) == doctest::Approx(9).epsilon(0.001));
             } else {
-              TS_ASSERT_DELTA(functionGraph->get(inst), 1, 0.001)
+              CHECK((functionGraph->get(inst)) == doctest::Approx(1).epsilon(0.001));
             }
           } else {
             if (inst.val(*PLvar) == 1) {
@@ -439,23 +445,23 @@ namespace gum_tests {
                 if (inst.val(*BPUvar) == 1) {
                   if (inst.val(*BOvar) == 1) {
                     if (inst.val(*Cprimevar) == 1) {
-                      TS_ASSERT_DELTA(functionGraph->get(inst), 9, 0.001)
+                      CHECK((functionGraph->get(inst)) == doctest::Approx(9).epsilon(0.001));
                     } else {
-                      TS_ASSERT_DELTA(functionGraph->get(inst), 1, 0.001)
+                      CHECK((functionGraph->get(inst)) == doctest::Approx(1).epsilon(0.001));
                     }
 
                   } else {
                     if (inst.val(*Cprimevar) == 1) {
-                      TS_ASSERT_DELTA(functionGraph->get(inst), 0, 0.001)
+                      CHECK((functionGraph->get(inst)) == doctest::Approx(0).epsilon(0.001));
                     } else {
-                      TS_ASSERT_DELTA(functionGraph->get(inst), 10, 0.001)
+                      CHECK((functionGraph->get(inst)) == doctest::Approx(10).epsilon(0.001));
                     }
                   }
                 } else {
                   if (inst.val(*Cprimevar) == 1) {
-                    TS_ASSERT_DELTA(functionGraph->get(inst), 0, 0.001)
+                    CHECK((functionGraph->get(inst)) == doctest::Approx(0).epsilon(0.001));
                   } else {
-                    TS_ASSERT_DELTA(functionGraph->get(inst), 10, 0.001)
+                    CHECK((functionGraph->get(inst)) == doctest::Approx(10).epsilon(0.001));
                   }
                 }
               } else {
@@ -463,32 +469,32 @@ namespace gum_tests {
                   if (inst.val(*BDRvar) == 1) {
                     if (inst.val(*BOvar) == 1) {
                       if (inst.val(*Cprimevar) == 1) {
-                        TS_ASSERT_DELTA(functionGraph->get(inst), 9, 0.001)
+                        CHECK((functionGraph->get(inst)) == doctest::Approx(9).epsilon(0.001));
                       } else {
-                        TS_ASSERT_DELTA(functionGraph->get(inst), 1, 0.001)
+                        CHECK((functionGraph->get(inst)) == doctest::Approx(1).epsilon(0.001));
                       }
 
                     } else {
                       if (inst.val(*Cprimevar) == 1) {
-                        TS_ASSERT_DELTA(functionGraph->get(inst), 0, 0.001)
+                        CHECK((functionGraph->get(inst)) == doctest::Approx(0).epsilon(0.001));
                       } else {
-                        TS_ASSERT_DELTA(functionGraph->get(inst), 10, 0.001)
+                        CHECK((functionGraph->get(inst)) == doctest::Approx(10).epsilon(0.001));
                       }
                     }
 
                   } else {
                     if (inst.val(*Cprimevar) == 1) {
-                      TS_ASSERT_DELTA(functionGraph->get(inst), 0, 0.001)
+                      CHECK((functionGraph->get(inst)) == doctest::Approx(0).epsilon(0.001));
                     } else {
-                      TS_ASSERT_DELTA(functionGraph->get(inst), 10, 0.001)
+                      CHECK((functionGraph->get(inst)) == doctest::Approx(10).epsilon(0.001));
                     }
                   }
 
                 } else {
                   if (inst.val(*Cprimevar) == 1) {
-                    TS_ASSERT_DELTA(functionGraph->get(inst), 0, 0.001)
+                    CHECK((functionGraph->get(inst)) == doctest::Approx(0).epsilon(0.001));
                   } else {
-                    TS_ASSERT_DELTA(functionGraph->get(inst), 10, 0.001)
+                    CHECK((functionGraph->get(inst)) == doctest::Approx(10).epsilon(0.001));
                   }
                 }
               }
@@ -497,32 +503,32 @@ namespace gum_tests {
                 if (inst.val(*BDRvar) == 1) {
                   if (inst.val(*BOvar) == 1) {
                     if (inst.val(*Cprimevar) == 1) {
-                      TS_ASSERT_DELTA(functionGraph->get(inst), 9, 0.001)
+                      CHECK((functionGraph->get(inst)) == doctest::Approx(9).epsilon(0.001));
                     } else {
-                      TS_ASSERT_DELTA(functionGraph->get(inst), 1, 0.001)
+                      CHECK((functionGraph->get(inst)) == doctest::Approx(1).epsilon(0.001));
                     }
 
                   } else {
                     if (inst.val(*Cprimevar) == 1) {
-                      TS_ASSERT_DELTA(functionGraph->get(inst), 0, 0.001)
+                      CHECK((functionGraph->get(inst)) == doctest::Approx(0).epsilon(0.001));
                     } else {
-                      TS_ASSERT_DELTA(functionGraph->get(inst), 10, 0.001)
+                      CHECK((functionGraph->get(inst)) == doctest::Approx(10).epsilon(0.001));
                     }
                   }
 
                 } else {
                   if (inst.val(*Cprimevar) == 1) {
-                    TS_ASSERT_DELTA(functionGraph->get(inst), 0, 0.001)
+                    CHECK((functionGraph->get(inst)) == doctest::Approx(0).epsilon(0.001));
                   } else {
-                    TS_ASSERT_DELTA(functionGraph->get(inst), 10, 0.001)
+                    CHECK((functionGraph->get(inst)) == doctest::Approx(10).epsilon(0.001));
                   }
                 }
 
               } else {
                 if (inst.val(*Cprimevar) == 1) {
-                  TS_ASSERT_DELTA(functionGraph->get(inst), 0, 0.001)
+                  CHECK((functionGraph->get(inst)) == doctest::Approx(0).epsilon(0.001));
                 } else {
-                  TS_ASSERT_DELTA(functionGraph->get(inst), 10, 0.001)
+                  CHECK((functionGraph->get(inst)) == doctest::Approx(10).epsilon(0.001));
                 }
               }
             }
@@ -533,10 +539,10 @@ namespace gum_tests {
         // Testing replace()
         // *********************************************************************
         gum::LabelizedVariable* lv = new gum::LabelizedVariable("Test", "Cornichon", 2);
-        TS_ASSERT_THROWS(functionGraph->replace(*Cvar, *lv), const gum::OperationNotAllowed&)
+        CHECK_THROWS_AS(functionGraph->replace(*Cvar, *lv), const gum::OperationNotAllowed&);
         delete lv;
 
-        TS_GUM_ASSERT_THROWS_NOTHING(delete functionGraph)
+        GUM_CHECK_ASSERT_THROWS_NOTHING(delete functionGraph);
       } catch (gum::Exception& e) { GUM_SHOWERROR(e); }
     }
 
@@ -545,7 +551,7 @@ namespace gum_tests {
     /**   Tests on Function Graph implementation of MultiDimImplementation */
     /**
      * **********************************************************************************/
-    GUM_ACTIVE_TEST(_MultiDimFunctionGraph_Implementation_Methods) {
+    void test_MultiDimFunctionGraph_Implementation_Methods() {
       try {
         // *********************************************************************
         // Creation of the multidim
@@ -560,36 +566,36 @@ namespace gum_tests {
         // Test nbrDim(), domainSize(), realSize()
         // *********************************************************************
 
-        TS_ASSERT_EQUALS(functionGraph->nbrDim(), static_cast< gum::Idx >(8))
+        CHECK((functionGraph->nbrDim()) == (static_cast< gum::Idx >(8)));
 
-        TS_ASSERT_EQUALS(functionGraph->domainSize(), static_cast< gum::Size >(256))
+        CHECK((functionGraph->domainSize()) == (static_cast< gum::Size >(256)));
 
-        TS_ASSERT_EQUALS(functionGraph->realSize(), static_cast< gum::Size >(15));   // 19)
+        CHECK((functionGraph->realSize()) == (static_cast< gum::Size >(15)));   // 19)
 
-        TS_GUM_ASSERT_THROWS_NOTHING(functionGraph->compressionRate())
+        GUM_CHECK_ASSERT_THROWS_NOTHING(functionGraph->compressionRate());
 
-        TS_GUM_ASSERT_THROWS_NOTHING(functionGraph->variable(0))
+        GUM_CHECK_ASSERT_THROWS_NOTHING(functionGraph->variable(0));
 
-        TS_GUM_ASSERT_THROWS_NOTHING(functionGraph->pos(*Cvar))
+        GUM_CHECK_ASSERT_THROWS_NOTHING(functionGraph->pos(*Cvar));
 
-        TS_ASSERT_EQUALS(functionGraph->contains(*Cprimevar), true)
-        TS_ASSERT_EQUALS(functionGraph->contains(*lv), false)
+        CHECK((functionGraph->contains(*Cprimevar)) == (true));
+        CHECK((functionGraph->contains(*lv)) == (false));
 
-        TS_ASSERT_EQUALS(functionGraph->empty(), false)
+        CHECK((functionGraph->empty()) == (false));
 
         // *********************************************************************
         // Test add(), erase()
         // *********************************************************************
 
-        TS_GUM_ASSERT_THROWS_NOTHING(functionGraph->add(*lv))
-        TS_ASSERT_EQUALS(functionGraph->contains(*lv), true)
+        GUM_CHECK_ASSERT_THROWS_NOTHING(functionGraph->add(*lv));
+        CHECK((functionGraph->contains(*lv)) == (true));
 
 
-        TS_GUM_ASSERT_THROWS_NOTHING(functionGraph->erase(*Cvar))
-        TS_ASSERT_EQUALS(functionGraph->contains(*Cvar), false)
+        GUM_CHECK_ASSERT_THROWS_NOTHING(functionGraph->erase(*Cvar));
+        CHECK((functionGraph->contains(*Cvar)) == (false));
 
 
-        TS_GUM_ASSERT_THROWS_NOTHING(delete functionGraph)
+        GUM_CHECK_ASSERT_THROWS_NOTHING(delete functionGraph);
         delete lv;
       } catch (gum::Exception& e) { GUM_SHOWERROR(e); }
     }
@@ -599,7 +605,7 @@ namespace gum_tests {
     /**   Tests on Copy Methods */
     /**
      * **********************************************************************************/
-    GUM_ACTIVE_TEST(_MultiDimFunctionGraph_Copy_Methods) {
+    void test_MultiDimFunctionGraph_Copy_Methods() {
       try {
         // *********************************************************************
         // Création du multidim
@@ -621,19 +627,19 @@ namespace gum_tests {
         // *********************************************************************
         gum::MultiDimArray< double >* array = new gum::MultiDimArray< double >();
 
-        TS_ASSERT_THROWS(functionGraph2->copy(*array), const gum::OperationNotAllowed&)
-        TS_ASSERT_THROWS(functionGraph2->copyFrom(*array), const gum::OperationNotAllowed&)
+        CHECK_THROWS_AS(functionGraph2->copy(*array), const gum::OperationNotAllowed&);
+        CHECK_THROWS_AS(functionGraph2->copyFrom(*array), const gum::OperationNotAllowed&);
 
         delete array;
 
         // *********************************************************************
         // Testing MultiDimFunctionGraph Duplication
         // *********************************************************************
-        TS_ASSERT_THROWS(functionGraph2->copyFrom(*functionGraph), const gum::OperationNotAllowed&)
+        CHECK_THROWS_AS(functionGraph2->copyFrom(*functionGraph), const gum::OperationNotAllowed&);
 
-        TS_GUM_ASSERT_THROWS_NOTHING(functionGraph2->copy(*functionGraph);)
+        GUM_CHECK_ASSERT_THROWS_NOTHING(functionGraph2->copy(*functionGraph););
 
-        TS_GUM_ASSERT_THROWS_NOTHING(*functionGraph2 = *functionGraph;)
+        GUM_CHECK_ASSERT_THROWS_NOTHING(*functionGraph2 = *functionGraph;);
 
         // *********************************************************************
         // Testing CopyAndReassign method
@@ -659,18 +665,18 @@ namespace gum_tests {
         map.insert(BDRvar, Joujouvar);
         map.insert(BOvar, Pouvar);
 
-        TS_GUM_ASSERT_THROWS_NOTHING(functionGraph2->copyAndReassign(*functionGraph, map);)
+        GUM_CHECK_ASSERT_THROWS_NOTHING(functionGraph2->copyAndReassign(*functionGraph, map););
 
-        TS_GUM_ASSERT_THROWS_NOTHING(functionGraph2->clear();)
+        GUM_CHECK_ASSERT_THROWS_NOTHING(functionGraph2->clear(););
 
         map.eraseFirst(PLvar);
         gum::LabelizedVariable* failvar
             = new gum::LabelizedVariable("Fail", "Different domain size", 3);
         map.insert(PLvar, failvar);
-        TS_ASSERT_THROWS(functionGraph2->copyAndReassign(*functionGraph, map),
-                         const gum::InvalidArgument&)
+        CHECK_THROWS_AS(functionGraph2->copyAndReassign(*functionGraph, map),
+                        const gum::InvalidArgument&);
 
-        TS_GUM_ASSERT_THROWS_NOTHING(functionGraph2->clear();)
+        GUM_CHECK_ASSERT_THROWS_NOTHING(functionGraph2->clear(););
         delete failvar;
 
         delete Bijouvar;
@@ -685,14 +691,16 @@ namespace gum_tests {
         // *********************************************************************
         // Testing copyAndMultiplyByScalar method
         // *********************************************************************
-        TS_GUM_ASSERT_THROWS_NOTHING(functionGraph2->copyAndMultiplyByScalar(*functionGraph, 2);)
+        GUM_CHECK_ASSERT_THROWS_NOTHING(
+            functionGraph2->copyAndMultiplyByScalar(*functionGraph, 2););
 
-        TS_GUM_ASSERT_THROWS_NOTHING(functionGraph2->copyAndMultiplyByScalar(*functionGraph, 0);)
+        GUM_CHECK_ASSERT_THROWS_NOTHING(
+            functionGraph2->copyAndMultiplyByScalar(*functionGraph, 0););
 
 
-        TS_GUM_ASSERT_THROWS_NOTHING(delete functionGraph)
+        GUM_CHECK_ASSERT_THROWS_NOTHING(delete functionGraph);
 
-        TS_GUM_ASSERT_THROWS_NOTHING(delete functionGraph2)
+        GUM_CHECK_ASSERT_THROWS_NOTHING(delete functionGraph2);
       } catch (gum::Exception& e) { GUM_SHOWERROR(e); }
     }
 
@@ -701,7 +709,7 @@ namespace gum_tests {
     /**   Tests on several miscelleanous methods */
     /**
      * **********************************************************************************/
-    GUM_ACTIVE_TEST(_MultiDimFunctionGraph_Various_Methods) {
+    void test_MultiDimFunctionGraph_Various_Methods() {
       try {
         // *********************************************************************
         // Creation of severals multidims
@@ -722,26 +730,26 @@ namespace gum_tests {
         // *********************************************************************
         // test tostring() and tostring(gum::Instantiation*)
         // *********************************************************************
-        //        TS_GUM_ASSERT_THROWS_NOTHING (dg1->toString());
+        //        GUM_CHECK_ASSERT_THROWS_NOTHING (dg1->toString());
 
         gum::Instantiation inst(*dg1);
         inst.setFirst();
-        TS_GUM_ASSERT_THROWS_NOTHING(dg1->toString(&inst))
+        GUM_CHECK_ASSERT_THROWS_NOTHING(dg1->toString(&inst));
 
 
         // *********************************************************************
         // test == et !=
         // *********************************************************************
-        TS_ASSERT_EQUALS(*dg1 == *dg2, true)
-        TS_ASSERT_EQUALS(*dg1 == *dg3, false)
+        CHECK((*dg1 == *dg2) == (true));
+        CHECK((*dg1 == *dg3) == (false));
 
-        TS_ASSERT_EQUALS(*dg1 != *dg2, false)
-        TS_ASSERT_EQUALS(*dg1 != *dg3, true)
+        CHECK((*dg1 != *dg2) == (false));
+        CHECK((*dg1 != *dg3) == (true));
 
 
-        TS_GUM_ASSERT_THROWS_NOTHING(delete dg1)
-        TS_GUM_ASSERT_THROWS_NOTHING(delete dg2)
-        TS_GUM_ASSERT_THROWS_NOTHING(delete dg3)
+        GUM_CHECK_ASSERT_THROWS_NOTHING(delete dg1);
+        GUM_CHECK_ASSERT_THROWS_NOTHING(delete dg2);
+        GUM_CHECK_ASSERT_THROWS_NOTHING(delete dg3);
       } catch (gum::Exception& e) { GUM_SHOWERROR(e); }
     }
 
@@ -750,7 +758,7 @@ namespace gum_tests {
     /**   Tests on moveTo function and minimize */
     /**
      * **********************************************************************************/
-    GUM_ACTIVE_TEST(_MoveTo) {
+    void test_MoveTo() {
       try {
         // *********************************************************************
         // Creation of the multidim
@@ -763,7 +771,7 @@ namespace gum_tests {
         // *********************************************************************
         // Testing moveTo function
         // *********************************************************************
-        // TS_GUM_ASSERT_THROWS_NOTHING(functionGraph->manager()->moveTo(
+        // GUM_CHECK_ASSERT_THROWS_NOTHING(functionGraph->manager()->moveTo(
         //  Cprimevar, functionGraph->variablesSequence().pos(BOvar)));
         functionGraph->manager()->moveTo(Cprimevar, functionGraph->variablesSequence().pos(BOvar));
 
@@ -779,7 +787,7 @@ namespace gum_tests {
         gum::LabelizedVariable* phantomvar
             = new gum::LabelizedVariable("Phantom", "Not here, nor there", 2);
         functionGraph->add(*phantomvar);
-        TS_GUM_ASSERT_THROWS_NOTHING(
+        GUM_CHECK_ASSERT_THROWS_NOTHING(
             functionGraph->manager()->moveTo(Cprimevar,
                                              functionGraph->variablesSequence().pos(phantomvar)));
 
@@ -803,23 +811,23 @@ namespace gum_tests {
           gum::MultiDimFunctionGraphGenerator gene(2, 5, *varList);
 
           gum::MultiDimFunctionGraph< double >* dg1 = nullptr;
-          TS_GUM_ASSERT_THROWS_NOTHING(dg1 = gene.generate())
+          GUM_CHECK_ASSERT_THROWS_NOTHING(dg1 = gene.generate());
 
           gum::MultiDimFunctionGraph< double >* dg2
               = gum::MultiDimFunctionGraph< double >::getReducedAndOrderedInstance();
 
-          TS_GUM_ASSERT_THROWS_NOTHING(dg2->copy(*dg1))
-          TS_GUM_ASSERT_THROWS_NOTHING(dg2->manager()->reduce())
+          GUM_CHECK_ASSERT_THROWS_NOTHING(dg2->copy(*dg1));
+          GUM_CHECK_ASSERT_THROWS_NOTHING(dg2->manager()->reduce());
 
           gum::Instantiation inst(dg1);
           for (inst.setFirst(); !inst.end(); ++inst) {
-            TS_ASSERT_DELTA(dg1->get(inst), dg2->get(inst), 0.001)
+            CHECK((dg1->get(inst)) == doctest::Approx(dg2->get(inst)).epsilon(0.001));
           }
 
 
           dg2->manager()->clean();
           for (inst.setFirst(); !inst.end(); ++inst) {
-            TS_ASSERT_DELTA(dg1->get(inst), dg2->get(inst), 0.001)
+            CHECK((dg1->get(inst)) == doctest::Approx(dg2->get(inst)).epsilon(0.001));
           }
 
           delete dg1;
@@ -834,4 +842,14 @@ namespace gum_tests {
       } catch (gum::Exception& e) { GUM_SHOWERROR(e); }
     }
   };
+
+  GUM_TEST_ACTIF(_Simple_Creation)
+  GUM_TEST_ACTIF(_MultiDimFunctionGraph_Diagram_Handlers_Methods)
+  GUM_TEST_ACTIF(_toDot)
+  GUM_TEST_ACTIF(_Manager_Graphical_Functions)
+  GUM_TEST_ACTIF(_MultiDimFunctionGraph_Accessors_Modifiers_Methods)
+  GUM_TEST_ACTIF(_MultiDimFunctionGraph_Implementation_Methods)
+  GUM_TEST_ACTIF(_MultiDimFunctionGraph_Copy_Methods)
+  GUM_TEST_ACTIF(_MultiDimFunctionGraph_Various_Methods)
+  GUM_TEST_ACTIF(_MoveTo)
 }   // namespace gum_tests

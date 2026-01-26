@@ -1,7 +1,7 @@
 /****************************************************************************
  *   This file is part of the aGrUM/pyAgrum library.                        *
  *                                                                          *
- *   Copyright (c) 2005-2025 by                                             *
+ *   Copyright (c) 2005-2026 by                                             *
  *       - Pierre-Henri WUILLEMIN(_at_LIP6)                                 *
  *       - Christophe GONZALES(_at_AMU)                                     *
  *                                                                          *
@@ -27,7 +27,7 @@
  *                                                                          *
  *   See LICENCES for more details.                                         *
  *                                                                          *
- *   SPDX-FileCopyrightText: Copyright 2005-2025                            *
+ *   SPDX-FileCopyrightText: Copyright 2005-2026                            *
  *       - Pierre-Henri WUILLEMIN(_at_LIP6)                                 *
  *       - Christophe GONZALES(_at_AMU)                                     *
  *   SPDX-License-Identifier: LGPL-3.0-or-later OR MIT                      *
@@ -37,6 +37,7 @@
  *   gitlab   : https://gitlab.com/agrumery/agrum                           *
  *                                                                          *
  ****************************************************************************/
+
 #pragma once
 
 
@@ -56,21 +57,26 @@
 #include <agrum/MRF/inference/ShaferShenoyMRFInference.h>
 #include <agrum/MRF/MarkovRandomField.h>
 
+#undef GUM_CURRENT_SUITE
+#undef GUM_CURRENT_MODULE
+#define GUM_CURRENT_SUITE  ShaferShenoyMRF
+#define GUM_CURRENT_MODULE MRF
+
 namespace gum_tests {
-  class GUM_TEST_SUITE(ShaferShenoyMRF) {
+  struct ShaferShenoyMRFTestSuite {
     public:
-    GUM_ACTIVE_TEST(Constructor) {
+    static void testConstructor() {
       auto mn = gum::MarkovRandomField< double >::fastPrototype("A--B--C;C--D;C--E--F");
       gum::ShaferShenoyMRFInference< double > ie(&mn);
     }   // namespace gum_tests
 
-    GUM_ACTIVE_TEST(SimpleInference) {
+    static void testSimpleInference() {
       auto mn = gum::MarkovRandomField< double >::fastPrototype("A--B--C;C--D;C--E--F");
       gum::ShaferShenoyMRFInference< double > ie(&mn);
       ie.makeInference();
     }
 
-    GUM_ACTIVE_TEST(CompareInferenceTree) {
+    static void testCompareInferenceTree() {
       auto bn = gum::BayesNet< double >::fastPrototype("A->B<-C->D<-E;B->F;D->G;");
       gum::LazyPropagation< double > iebn(&bn);
       iebn.makeInference();
@@ -87,11 +93,11 @@ namespace gum_tests {
         postmn.add(bn.variable(n));
         postmn.fillWith(iemn.posterior(name));   // postmn using bn variable
 
-        TS_ASSERT_LESS_THAN((postbn - postmn).abs().max(), 1e-7)
+        CHECK(((postbn - postmn).abs().max()) < (1e-7));
       }
     }
 
-    GUM_ACTIVE_TEST(CompareInferenceDAG) {
+    static void testCompareInferenceDAG() {
       auto bn = gum::BayesNet< double >::fastPrototype("A->B<-C->D<-E;B->F;D->F;");
       gum::LazyPropagation< double > iebn(&bn);
       iebn.makeInference();
@@ -108,11 +114,11 @@ namespace gum_tests {
         postmn.add(bn.variable(n));
         postmn.fillWith(iemn.posterior(name));   // postmn using bn variable
 
-        TS_ASSERT_LESS_THAN((postbn - postmn).abs().max(), 1e-7)
+        CHECK(((postbn - postmn).abs().max()) < (1e-7));
       }
     }
 
-    GUM_ACTIVE_TEST(CompareInferenceTreeWithEvidence) {
+    static void testCompareInferenceTreeWithEvidence() {
       auto bn = gum::BayesNet< double >::fastPrototype("A->B<-C->D<-E;B->F;D->G;");
       gum::LazyPropagation< double > iebn(&bn);
       iebn.addEvidence("B", 1);
@@ -131,11 +137,11 @@ namespace gum_tests {
         postmn.add(bn.variable(n));
         postmn.fillWith(iemn.posterior(name));   // postmn using bn variable
 
-        TS_ASSERT_LESS_THAN((postbn - postmn).abs().max(), 1e-7)
+        CHECK(((postbn - postmn).abs().max()) < (1e-7));
       }
     }
 
-    GUM_ACTIVE_TEST(CompareInferenceDAGWithEvidence) {
+    static void testCompareInferenceDAGWithEvidence() {
       auto bn = gum::BayesNet< double >::fastPrototype("A->B<-C->D<-E;B->F;D->F;");
       gum::LazyPropagation< double > iebn(&bn);
       iebn.addEvidence("B", 1);
@@ -154,11 +160,11 @@ namespace gum_tests {
         postmn.add(bn.variable(n));
         postmn.fillWith(iemn.posterior(name));   // postmn using bn variable
 
-        TS_ASSERT_LESS_THAN((postbn - postmn).abs().max(), 1e-8)
+        CHECK(((postbn - postmn).abs().max()) < (1e-8));
       }
     }
 
-    GUM_ACTIVE_TEST(CompareInferenceDAGWithSoftEvidence) {
+    static void testCompareInferenceDAGWithSoftEvidence() {
       auto bn = gum::BayesNet< double >::fastPrototype("A->B<-C->D<-E;B->F;D->F;");
       gum::LazyPropagation< double > iebn(&bn);
       iebn.addEvidence("B", std::vector< double >{0.8, 0.5});
@@ -177,22 +183,22 @@ namespace gum_tests {
         postmn.add(bn.variable(n));
         postmn.fillWith(iemn.posterior(name));   // postmn using bn variable
 
-        TS_ASSERT_LESS_THAN((postbn - postmn).abs().max(), 1e-8)
+        CHECK(((postbn - postmn).abs().max()) < (1e-8));
       }
     }
 
-    GUM_ACTIVE_TEST(ClassicalInference) {
+    static void testClassicalInference() {
       auto mn = gum::MarkovRandomField< double >::fastPrototype("A--B--C;C--D;D--E--F;F--A");
       gum::ShaferShenoyMRFInference< double > iemn(&mn);
       iemn.addEvidence("B", 1);
       iemn.makeInference();
 
       for (const auto n: mn.nodes()) {
-        TS_ASSERT_DELTA(iemn.posterior(n).sum(), 1.0, 1e-8)
+        CHECK((iemn.posterior(n).sum()) == doctest::Approx(1.0).epsilon(1e-8));
       }
     }
 
-    GUM_ACTIVE_TEST(SeparationInInference) {
+    static void testSeparationInInference() {
       auto mn = gum::MarkovRandomField< double >::fastPrototype("A--B--C;C--D;D--E--F;F--A");
       gum::ShaferShenoyMRFInference< double > iemn(&mn);
       iemn.addEvidence("A", 0);
@@ -217,27 +223,27 @@ namespace gum_tests {
       gum::Tensor< double > Cwith_evB1(iemn.posterior("C"));
       gum::Tensor< double > Ewith_evB1(iemn.posterior("E"));
 
-      TS_ASSERT_LESS_THAN(-(Cwithout_evB - Cwith_evB0).abs().max(), -1e-8)
-      TS_ASSERT_LESS_THAN(-(Cwithout_evB - Cwith_evB1).abs().max(), -1e-8)
-      TS_ASSERT_LESS_THAN(-(Cwith_evB1 - Cwith_evB0).abs().max(), -1e-8)
+      CHECK((-(Cwithout_evB - Cwith_evB0).abs().max()) < (-1e-8));
+      CHECK((-(Cwithout_evB - Cwith_evB1).abs().max()) < (-1e-8));
+      CHECK((-(Cwith_evB1 - Cwith_evB0).abs().max()) < (-1e-8));
 
-      TS_ASSERT_LESS_THAN((Ewithout_evB - Ewith_evB0).abs().max(), 1e-8)
-      TS_ASSERT_LESS_THAN((Ewithout_evB - Ewith_evB1).abs().max(), 1e-8)
-      TS_ASSERT_LESS_THAN((Ewith_evB1 - Ewith_evB0).abs().max(), 1e-8)
+      CHECK(((Ewithout_evB - Ewith_evB0).abs().max()) < (1e-8));
+      CHECK(((Ewithout_evB - Ewith_evB1).abs().max()) < (1e-8));
+      CHECK(((Ewith_evB1 - Ewith_evB0).abs().max()) < (1e-8));
     }
 
-    GUM_ACTIVE_TEST(IndependencyInference) {
+    static void testIndependencyInference() {
       auto mn = gum::MarkovRandomField< double >::fastPrototype("A;B;C;D;E;F");
       gum::ShaferShenoyMRFInference< double > iemn(&mn);
       iemn.addEvidence("B", 1);
       iemn.makeInference();
 
       for (const auto n: mn.nodes()) {
-        TS_ASSERT_DELTA(iemn.posterior(n).sum(), 1.0, 1e-8)
+        CHECK((iemn.posterior(n).sum()) == doctest::Approx(1.0).epsilon(1e-8));
       }
     }
 
-    GUM_ACTIVE_TEST(IncrementalInference) {
+    static void testIncrementalInference() {
       auto mn = gum::MarkovRandomField< double >::fastPrototype("A--B--C;C--D;D--E--F;F--A");
 
       {
@@ -258,7 +264,7 @@ namespace gum_tests {
         ie2.makeInference();
 
         for (const auto n: mn.nodes()) {
-          TS_ASSERT_LESS_THAN((ie2.posterior(n) - ie.posterior(n)).abs().max(), 1e-8)
+          CHECK(((ie2.posterior(n) - ie.posterior(n)).abs().max()) < (1e-8));
         }
       }
 
@@ -279,12 +285,12 @@ namespace gum_tests {
         ie2.makeInference();
 
         for (const auto n: mn.nodes()) {
-          TS_ASSERT_LESS_THAN((ie2.posterior(n) - ie.posterior(n)).abs().max(), 1e-8)
+          CHECK(((ie2.posterior(n) - ie.posterior(n)).abs().max()) < (1e-8));
         }
       }
     }
 
-    GUM_ACTIVE_TEST(IncrementalInferenceWithSoftEvidence) {
+    static void testIncrementalInferenceWithSoftEvidence() {
       auto mn = gum::MarkovRandomField< double >::fastPrototype("A--B--C;C--D;D--E--F;F--A");
 
       {
@@ -305,12 +311,12 @@ namespace gum_tests {
         ie2.makeInference();
 
         for (const auto n: mn.nodes()) {
-          TS_ASSERT_LESS_THAN((ie2.posterior(n) - ie.posterior(n)).abs().max(), 1e-8)
+          CHECK(((ie2.posterior(n) - ie.posterior(n)).abs().max()) < (1e-8));
         }
       }
     }
 
-    const gum::Tensor< double > pAC(const gum::MarkovRandomField< double >& mn) {
+    static gum::Tensor< double > pAC(const gum::MarkovRandomField< double >& mn) {
       gum::Tensor< double > joint;
       for (auto& [nods, factor]: mn.factors()) {
         joint *= *factor;
@@ -319,7 +325,7 @@ namespace gum_tests {
       return joint.sumOut({&mn.variable("B")});
     }
 
-    const gum::Tensor< double > pAB(const gum::MarkovRandomField< double >& mn) {
+    static gum::Tensor< double > pAB(const gum::MarkovRandomField< double >& mn) {
       gum::Tensor< double > joint;
       for (auto& [nods, factor]: mn.factors()) {
         joint *= *factor;
@@ -328,7 +334,7 @@ namespace gum_tests {
       return joint.sumOut({&mn.variable("C")});
     }
 
-    GUM_ACTIVE_TEST(JointTargetFromExistingJoint) {
+    static void testJointTargetFromExistingJoint() {
       // explicit jointtarget
       // gum::Tensor< double > p;
       {
@@ -336,7 +342,7 @@ namespace gum_tests {
 
         gum::ShaferShenoyMRFInference< double > ie(&mn);
         ie.makeInference();
-        TS_ASSERT_THROWS(auto p = ie.jointPosterior({0, 2}), const gum::UndefinedElement&)
+        CHECK_THROWS_AS(auto p = ie.jointPosterior({0, 2}), const gum::UndefinedElement&);
       }
       {
         auto mn = gum::MarkovRandomField< double >::fastPrototype("A--B;B--C");
@@ -344,7 +350,7 @@ namespace gum_tests {
         ie.addJointTarget({0, 2});
         ie.makeInference();
         auto p = ie.jointPosterior({0, 2});
-        TS_GUM_TENSOR_ALMOST_EQUALS(p, pAC(mn))
+        GUM_CHECK_TENSOR_ALMOST_EQUALS(p, pAC(mn));
       }
       {
         auto mn = gum::MarkovRandomField< double >::fastPrototype("A--B;B--C");
@@ -353,7 +359,7 @@ namespace gum_tests {
 
         try {
           auto p = ie.jointPosterior({0, 2});
-          TS_GUM_TENSOR_ALMOST_EQUALS(p, pAC(mn))
+          GUM_CHECK_TENSOR_ALMOST_EQUALS(p, pAC(mn));
         } catch (gum::Exception& e) { GUM_SHOWERROR(e) }
       }
       // implicit jointtarget as factor
@@ -362,7 +368,7 @@ namespace gum_tests {
         gum::ShaferShenoyMRFInference< double > ie(&mn);
         ie.makeInference();
         auto p = ie.jointPosterior({0, 1});
-        TS_GUM_TENSOR_ALMOST_EQUALS(p, pAB(mn))
+        GUM_CHECK_TENSOR_ALMOST_EQUALS(p, pAB(mn));
       }
       {
         auto mn = gum::MarkovRandomField< double >::fastPrototype("A--B;B--C");
@@ -370,7 +376,7 @@ namespace gum_tests {
         ie.addJointTarget({0, 1});
         ie.makeInference();
         auto p = ie.jointPosterior({0, 1});
-        TS_GUM_TENSOR_ALMOST_EQUALS(p, pAB(mn))
+        GUM_CHECK_TENSOR_ALMOST_EQUALS(p, pAB(mn));
       }
       // implicit jointtarget as subset of clique in junction tree
       {
@@ -378,7 +384,7 @@ namespace gum_tests {
         gum::ShaferShenoyMRFInference< double > ie(&mn);
         ie.makeInference();
         auto p = ie.jointPosterior({0, 2});
-        TS_GUM_TENSOR_ALMOST_EQUALS(p, pAC(mn))
+        GUM_CHECK_TENSOR_ALMOST_EQUALS(p, pAC(mn));
       }
       {
         auto mn = gum::MarkovRandomField< double >::fastPrototype("A--B;B--C;A--C");
@@ -386,11 +392,11 @@ namespace gum_tests {
         ie.addJointTarget({0, 2});
         ie.makeInference();
         auto p = ie.jointPosterior({0, 2});
-        TS_GUM_TENSOR_ALMOST_EQUALS(p, pAC(mn))
+        GUM_CHECK_TENSOR_ALMOST_EQUALS(p, pAC(mn));
       }
     }
 
-    GUM_ACTIVE_TEST(IrrelevantSoftEvidence) {
+    static void testIrrelevantSoftEvidence() {
       auto                  mn = gum::MarkovRandomField< double >::fastPrototype("A--B--C;D--C--E");
       gum::Tensor< double > psoft;
       gum::Tensor< double > phard;
@@ -408,7 +414,7 @@ namespace gum_tests {
         ie.addEvidence(hardevC);
         ie.addEvidence(hardev);
         ie.addTarget("E");
-        TS_GUM_ASSERT_THROWS_NOTHING(ie.makeInference());
+        GUM_CHECK_ASSERT_THROWS_NOTHING(ie.makeInference());
         phard = gum::Tensor(ie.posterior("E"));
       }
       {
@@ -420,10 +426,25 @@ namespace gum_tests {
         ie.addEvidence(hardevC);
         ie.addEvidence(softev);
         ie.addTarget("E");
-        TS_GUM_ASSERT_THROWS_NOTHING(ie.makeInference());
+        GUM_CHECK_ASSERT_THROWS_NOTHING(ie.makeInference());
         psoft = gum::Tensor(ie.posterior("E"));
       }
-      TS_GUM_TENSOR_ALMOST_EQUALS_SAMEVARS(phard, psoft)
+      GUM_CHECK_TENSOR_ALMOST_EQUALS_SAMEVARS(phard, psoft);
     }
   };
+
+  GUM_TEST_ACTIF(Constructor)
+  GUM_TEST_ACTIF(SimpleInference)
+  GUM_TEST_ACTIF(CompareInferenceTree)
+  GUM_TEST_ACTIF(CompareInferenceDAG)
+  GUM_TEST_ACTIF(CompareInferenceTreeWithEvidence)
+  GUM_TEST_ACTIF(CompareInferenceDAGWithEvidence)
+  GUM_TEST_ACTIF(CompareInferenceDAGWithSoftEvidence)
+  GUM_TEST_ACTIF(ClassicalInference)
+  GUM_TEST_ACTIF(SeparationInInference)
+  GUM_TEST_ACTIF(IndependencyInference)
+  GUM_TEST_ACTIF(IncrementalInference)
+  GUM_TEST_ACTIF(IncrementalInferenceWithSoftEvidence)
+  GUM_TEST_ACTIF(JointTargetFromExistingJoint)
+  GUM_TEST_ACTIF(IrrelevantSoftEvidence)
 }   // namespace gum_tests

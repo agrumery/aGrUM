@@ -1,7 +1,7 @@
 ############################################################################
 #   This file is part of the aGrUM/pyAgrum library.                        #
 #                                                                          #
-#   Copyright (c) 2005-2025 by                                             #
+#   Copyright (c) 2005-2026 by                                             #
 #       - Pierre-Henri WUILLEMIN(_at_LIP6)                                 #
 #       - Christophe GONZALES(_at_AMU)                                     #
 #                                                                          #
@@ -27,7 +27,7 @@
 #                                                                          #
 #   See LICENCES for more details.                                         #
 #                                                                          #
-#   SPDX-FileCopyrightText: Copyright 2005-2025                            #
+#   SPDX-FileCopyrightText: Copyright 2005-2026                            #
 #       - Pierre-Henri WUILLEMIN(_at_LIP6)                                 #
 #       - Christophe GONZALES(_at_AMU)                                     #
 #   SPDX-License-Identifier: LGPL-3.0-or-later OR MIT                      #
@@ -249,12 +249,12 @@ class PyAgrumDocCoverage:
     self.lognodoc("=" * 50)
 
     return (
-      len(self.undoc_class)
-      + len(self.partial_doc_class)
-      + len(self.undoc_meth)
-      + len(self.partial_doc_meth)
-      + len(self.undoc_func)
-      + len(self.partial_doc_func)
+       len(self.undoc_class)
+       + len(self.partial_doc_class)
+       + len(self.undoc_meth)
+       + len(self.partial_doc_meth)
+       + len(self.undoc_func)
+       + len(self.partial_doc_func)
     )
 
 
@@ -351,7 +351,7 @@ def _check_clang_format(details: bool, correction: bool) -> int:
   else:
     with open(os.devnull, "w") as blackhole:
       for src in srcAgrum():
-        exceptions = {f"{os.sep}external{os.sep}", "Parser", "Scanner"}
+        exceptions = {f"{os.sep}external{os.sep}", "Parser", "Scanner", "doctest"}
         if any(subs in src for subs in exceptions):
           continue
 
@@ -528,9 +528,9 @@ def _check_LGPL_MIT_license_CPP(details: bool, correction: bool) -> int:
   exceptions = [
     f"{os.sep}mvsc{os.sep}",
     f"{os.sep}external{os.sep}",
-    f"{os.sep}cxxtest{os.sep}",
     "Parser",
     "Scanner",
+    "doctest"
   ]
   for gum_file in srcAgrum():
     if any(subs in gum_file for subs in exceptions):

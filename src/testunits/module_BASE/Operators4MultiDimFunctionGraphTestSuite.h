@@ -1,7 +1,7 @@
 /****************************************************************************
  *   This file is part of the aGrUM/pyAgrum library.                        *
  *                                                                          *
- *   Copyright (c) 2005-2025 by                                             *
+ *   Copyright (c) 2005-2026 by                                             *
  *       - Pierre-Henri WUILLEMIN(_at_LIP6)                                 *
  *       - Christophe GONZALES(_at_AMU)                                     *
  *                                                                          *
@@ -27,7 +27,7 @@
  *                                                                          *
  *   See LICENCES for more details.                                         *
  *                                                                          *
- *   SPDX-FileCopyrightText: Copyright 2005-2025                            *
+ *   SPDX-FileCopyrightText: Copyright 2005-2026                            *
  *       - Pierre-Henri WUILLEMIN(_at_LIP6)                                 *
  *       - Christophe GONZALES(_at_AMU)                                     *
  *   SPDX-License-Identifier: LGPL-3.0-or-later OR MIT                      *
@@ -37,6 +37,7 @@
  *   gitlab   : https://gitlab.com/agrumery/agrum                           *
  *                                                                          *
  ****************************************************************************/
+
 #pragma once
 
 
@@ -58,11 +59,16 @@
 // =============================================================================
 #include <agrum/base/variables/labelizedVariable.h>
 
+#undef GUM_CURRENT_SUITE
+#undef GUM_CURRENT_MODULE
+#define GUM_CURRENT_SUITE  Operators4MultiDimFunctionGraph
+#define GUM_CURRENT_MODULE GUMBASE
+
 // =============================================================================
 
 namespace gum_tests {
 
-  class GUM_TEST_SUITE(Operators4MultiDimFunctionGraph) {
+  struct Operators4MultiDimFunctionGraphTestSuite {
     private:
     /// Defines the maximal number of modalities for a var (which is choose
     /// randomly).
@@ -81,7 +87,7 @@ namespace gum_tests {
     // *****************************************************************************************************
     /// Génération fixe d'une liste de variable
     // *****************************************************************************************************
-    gum::Sequence< const gum::DiscreteVariable* >* _generateFixVarList_() {
+    static gum::Sequence< const gum::DiscreteVariable* >* _generateFixVarList_() {
       gum::Sequence< const gum::DiscreteVariable* >* ret
           = new gum::Sequence< const gum::DiscreteVariable* >();
       ret->insert(new gum::LabelizedVariable("A", "", 2));
@@ -118,7 +124,7 @@ namespace gum_tests {
     // *****************************************************************************************************
     /// Génération fixe de diagramme de décision
     // *****************************************************************************************************
-    gum::MultiDimFunctionGraph< double >*
+    static gum::MultiDimFunctionGraph< double >*
         _generateFunctionGraph1_(const gum::Sequence< const gum::DiscreteVariable* >* varList) {
       gum::MultiDimFunctionGraph< double >* generatedFunctionGraph
           = gum::MultiDimFunctionGraph< double >::getReducedAndOrderedInstance();
@@ -153,7 +159,7 @@ namespace gum_tests {
     // *****************************************************************************************************
     /// Génération fixe de diagramme de décision
     // *****************************************************************************************************
-    gum::MultiDimFunctionGraph< double >*
+    static gum::MultiDimFunctionGraph< double >*
         _generateFunctionGraph2_(const gum::Sequence< const gum::DiscreteVariable* >* varList) {
       gum::MultiDimFunctionGraph< double >* generatedFunctionGraph
           = gum::MultiDimFunctionGraph< double >::getReducedAndOrderedInstance();
@@ -196,9 +202,9 @@ namespace gum_tests {
     // *****************************************************************************************************
     /// Sauvegarde des diagrammes générant une erreur dans un fichier log
     // *****************************************************************************************************
-    void _saveDiagrams_(gum::MultiDimFunctionGraph< double >* a1,
-                        gum::MultiDimFunctionGraph< double >* a2,
-                        gum::MultiDimFunctionGraph< double >* a3) {
+    static void _saveDiagrams_(gum::MultiDimFunctionGraph< double >* a1,
+                               gum::MultiDimFunctionGraph< double >* a2,
+                               gum::MultiDimFunctionGraph< double >* a3) {
       std::string   dotfile = GET_RESSOURCES_PATH("FunctionGraphError.log");
       std::ofstream output(dotfile.c_str(), std::ios::out);
 
@@ -253,12 +259,12 @@ namespace gum_tests {
     /// Evals given in parameter operation. Returned boolean parameter indicates
     /// if all went well or not
     // *****************************************************************************************************
-    bool _evalOperation_(gum::Idx                              operationId,
-                         gum::MultiDimFunctionGraph< double >* a1,
-                         gum::MultiDimFunctionGraph< double >* a2,
-                         double&                               tempsCalcul,
-                         double&                               tempsEval,
-                         double                                delta = 0.01) {
+    static bool _evalOperation_(gum::Idx                              operationId,
+                                gum::MultiDimFunctionGraph< double >* a1,
+                                gum::MultiDimFunctionGraph< double >* a2,
+                                double&                               tempsCalcul,
+                                double&                               tempsEval,
+                                double                                delta = 0.01) {
       bool                                  hasNoError = true;
       gum::MultiDimFunctionGraph< double >* a3         = nullptr;
 
@@ -270,19 +276,19 @@ namespace gum_tests {
 
       switch (operationId) {
         case 1 :   // Test addition
-          TS_GUM_ASSERT_THROWS_NOTHING(a3 = add2MultiDimFunctionGraphs(a1, a2))
+          GUM_CHECK_ASSERT_THROWS_NOTHING(a3 = add2MultiDimFunctionGraphs(a1, a2));
           break;
 
         case 2 :   // Test Substraction
-          TS_GUM_ASSERT_THROWS_NOTHING(a3 = subtract2MultiDimFunctionGraphs(a1, a2))
+          GUM_CHECK_ASSERT_THROWS_NOTHING(a3 = subtract2MultiDimFunctionGraphs(a1, a2));
           break;
 
         case 3 :   // Test Multiplication
-          TS_GUM_ASSERT_THROWS_NOTHING(a3 = multiply2MultiDimFunctionGraphs(a1, a2))
+          GUM_CHECK_ASSERT_THROWS_NOTHING(a3 = multiply2MultiDimFunctionGraphs(a1, a2));
           break;
 
         case 4 :   // Test Maximum
-          TS_GUM_ASSERT_THROWS_NOTHING(a3 = maximize2MultiDimFunctionGraphs(a1, a2))
+          GUM_CHECK_ASSERT_THROWS_NOTHING(a3 = maximize2MultiDimFunctionGraphs(a1, a2));
           break;
 
         default :   // Should not happen
@@ -304,28 +310,32 @@ namespace gum_tests {
         for (inst.setFirst(); !inst.end() && hasNoError; ++inst) {
           switch (operationId) {
             case 1 :   // Test addition
-              TS_ASSERT_DELTA(a3->get(inst), a1->get(inst) + a2->get(inst), delta)
+              CHECK((a3->get(inst))
+                    == doctest::Approx(a1->get(inst) + a2->get(inst)).epsilon(delta));
               if (a3->get(inst) != a1->get(inst) + a2->get(inst)) hasNoError = false;
               break;
 
             case 2 :   // Test Substraction
-              TS_ASSERT_DELTA(a3->get(inst), a1->get(inst) - a2->get(inst), delta)
+              CHECK((a3->get(inst))
+                    == doctest::Approx(a1->get(inst) - a2->get(inst)).epsilon(delta));
 
               if (a3->get(inst) != a1->get(inst) - a2->get(inst)) hasNoError = false;
 
               break;
 
             case 3 :   // Test Multiplication
-              TS_ASSERT_DELTA(a3->get(inst), a1->get(inst) * a2->get(inst), delta)
+              CHECK((a3->get(inst))
+                    == doctest::Approx(a1->get(inst) * a2->get(inst)).epsilon(delta));
 
               if (a3->get(inst) != a1->get(inst) * a2->get(inst)) hasNoError = false;
 
               break;
 
             case 4 :   // Test Maximum
-              TS_ASSERT_DELTA(a3->get(inst),
-                              a1->get(inst) > a2->get(inst) ? a1->get(inst) : a2->get(inst),
-                              delta);
+              CHECK(
+                  (a3->get(inst))
+                  == doctest::Approx(a1->get(inst) > a2->get(inst) ? a1->get(inst) : a2->get(inst))
+                         .epsilon(delta));
 
               if (a3->get(inst) != (a1->get(inst) > a2->get(inst) ? a1->get(inst) : a2->get(inst)))
                 hasNoError = false;
@@ -353,7 +363,7 @@ namespace gum_tests {
     // *****************************************************************************************************
     /// Test sur les fonctions avec valeurs exactes
     // *****************************************************************************************************
-    GUM_ACTIVE_TEST(_Operators_Functions_on_MultiDimFunctionGraphs) {
+    static void test_Operators_Functions_on_MultiDimFunctionGraphs() {
       gum::Timer time;
       double     tempsGene   = 0;
       double     tempsCalcul = 0;
@@ -367,10 +377,10 @@ namespace gum_tests {
         gum::Sequence< const gum::DiscreteVariable* >* varList = _generateFixVarList_();
 
         gum::MultiDimFunctionGraph< double >* a1 = nullptr;
-        TS_GUM_ASSERT_THROWS_NOTHING(a1 = _generateFunctionGraph1_(varList))
+        GUM_CHECK_ASSERT_THROWS_NOTHING(a1 = _generateFunctionGraph1_(varList));
 
         gum::MultiDimFunctionGraph< double >* a2 = nullptr;
-        TS_GUM_ASSERT_THROWS_NOTHING(a2 = _generateFunctionGraph2_(varList))
+        GUM_CHECK_ASSERT_THROWS_NOTHING(a2 = _generateFunctionGraph2_(varList));
 
         //          std::cout << a1->toDot() << std::endl;
 
@@ -401,7 +411,7 @@ namespace gum_tests {
         std::fflush(stdout);
       }
 
-      TS_ASSERT(tempsGene > 0.0)
+      CHECK(tempsGene > 0.0);
 
 
       // Then we try with random structure
@@ -578,7 +588,7 @@ namespace gum_tests {
       dg2->manager()->setRootNode(n01);
 
       double foo = 0.0, bar = 0.0;
-      TS_GUM_ASSERT_THROWS_NOTHING(_evalOperation_(1, dg1, dg2, foo, bar, 0.0))
+      GUM_CHECK_ASSERT_THROWS_NOTHING(_evalOperation_(1, dg1, dg2, foo, bar, 0.0));
 
       delete dg1;
       delete dg2;
@@ -595,6 +605,8 @@ namespace gum_tests {
       delete v9;
     }
   };
+
+  GUM_TEST_ACTIF(_Operators_Functions_on_MultiDimFunctionGraphs)
 }   // namespace gum_tests
 
 // =================================================================================
@@ -616,7 +628,7 @@ namespace gum_tests {
 //  //          std::cout << std::endl;
 
 //  gum::MultiDimFunctionGraph<double>* a1 = nullptr;
-//  TS_GUM_ASSERT_THROWS_NOTHING(
+//  GUM_CHECK_ASSERT_THROWS_NOTHING(
 //      a1 =  _generateRandomFunctionGraph_( varList, i + 3 ) );
 //  //          std::cout << a1->toDot() << std::endl;
 
@@ -629,7 +641,7 @@ namespace gum_tests {
 //  //          std::cout << std::endl;
 
 //  gum::MultiDimFunctionGraph<double>* a2 = nullptr;
-//  TS_GUM_ASSERT_THROWS_NOTHING(
+//  GUM_CHECK_ASSERT_THROWS_NOTHING(
 //      a2 =  _generateRandomFunctionGraph_( varList, i + 5 ) );
 //  //          std::cout << a2->toDot();
 
@@ -639,7 +651,7 @@ namespace gum_tests {
 
 //  //          gum::Idx j = 1;
 //  for ( gum::Idx nbOp = 1; nbOp < nbOperation && evalRes; nbOp++ )
-//    TS_GUM_ASSERT_THROWS_NOTHING(
+//    GUM_CHECK_ASSERT_THROWS_NOTHING(
 //        evalRes =
 //             _evalOperation_( nbOp, a1, a2, tempsCalcul, tempsEval ) );
 

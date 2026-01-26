@@ -1,7 +1,7 @@
 /****************************************************************************
  *   This file is part of the aGrUM/pyAgrum library.                        *
  *                                                                          *
- *   Copyright (c) 2005-2025 by                                             *
+ *   Copyright (c) 2005-2026 by                                             *
  *       - Pierre-Henri WUILLEMIN(_at_LIP6)                                 *
  *       - Christophe GONZALES(_at_AMU)                                     *
  *                                                                          *
@@ -27,7 +27,7 @@
  *                                                                          *
  *   See LICENCES for more details.                                         *
  *                                                                          *
- *   SPDX-FileCopyrightText: Copyright 2005-2025                            *
+ *   SPDX-FileCopyrightText: Copyright 2005-2026                            *
  *       - Pierre-Henri WUILLEMIN(_at_LIP6)                                 *
  *       - Christophe GONZALES(_at_AMU)                                     *
  *   SPDX-License-Identifier: LGPL-3.0-or-later OR MIT                      *
@@ -37,6 +37,7 @@
  *   gitlab   : https://gitlab.com/agrumery/agrum                           *
  *                                                                          *
  ****************************************************************************/
+
 #pragma once
 
 
@@ -52,6 +53,11 @@
 #include <agrum/BN/inference/lazyPropagation.h>
 #include <agrum/BN/inference/loopyBeliefPropagation.h>
 #include <agrum/BN/io/BIF/BIFReader.h>
+
+#undef GUM_CURRENT_SUITE
+#undef GUM_CURRENT_MODULE
+#define GUM_CURRENT_SUITE  LoopyBeliefPropagation
+#define GUM_CURRENT_MODULE BN
 
 // The graph used for the tests:
 //          1   2_          1 -> 3
@@ -88,9 +94,9 @@ namespace gum_tests {
 
 #define MAX_ITER 10
 
-  class GUM_TEST_SUITE(LoopyBeliefPropagation) {
+  struct LoopyBeliefPropagationTestSuite {
     public:
-    GUM_ACTIVE_TEST(LBPBinaryTreeWithoutEvidence) {
+    static void testLBPBinaryTreeWithoutEvidence() {
       for (int i = 0; i < MAX_ITER; i++) {
         const auto bn
             = gum::BayesNet< double >::fastPrototype("a->d->f;b->d->g;b->e->h;c->e;i->j->h");
@@ -105,12 +111,12 @@ namespace gum_tests {
           if (__compareInference(bn, lazy, inf)) break;
         } catch (gum::Exception& e) {
           GUM_SHOWERROR(e);
-          TS_ASSERT(false)
+          CHECK(false);
         }
       }   // namespace gum_tests
     }
 
-    GUM_ACTIVE_TEST(LBPBinaryTreeWithEvidenceOnRoot) {
+    static void testLBPBinaryTreeWithEvidenceOnRoot() {
       const std::string ev = "b";
       for (int i = 0; i < MAX_ITER; i++) {
         const auto bn
@@ -128,7 +134,7 @@ namespace gum_tests {
           if (__compareInference(bn, lazy, inf)) break;
         } catch (gum::Exception& e) {
           GUM_SHOWERROR(e);
-          TS_ASSERT(false)
+          CHECK(false);
         }
       }
 
@@ -147,12 +153,12 @@ namespace gum_tests {
           if (__compareInference(bn, lazy, inf)) break;
         } catch (gum::Exception& e) {
           GUM_SHOWERROR(e);
-          TS_ASSERT(false)
+          CHECK(false);
         }
       }
     }
 
-    GUM_ACTIVE_TEST(LBPBinaryTreeWithEvidenceOnLeaf) {
+    static void testLBPBinaryTreeWithEvidenceOnLeaf() {
       const std::string ev = "h";
       for (int i = 0; i < MAX_ITER; i++) {
         const auto bn
@@ -170,7 +176,7 @@ namespace gum_tests {
           if (__compareInference(bn, lazy, inf)) break;
         } catch (gum::Exception& e) {
           GUM_SHOWERROR(e);
-          TS_ASSERT(false)
+          CHECK(false);
         }
       }
       for (int i = 0; i < MAX_ITER; i++) {
@@ -188,12 +194,12 @@ namespace gum_tests {
           if (__compareInference(bn, lazy, inf)) break;
         } catch (gum::Exception& e) {
           GUM_SHOWERROR(e);
-          TS_ASSERT(false)
+          CHECK(false);
         }
       }
     }
 
-    GUM_ACTIVE_TEST(LBPBinaryTreeWithEvidenceOnMid) {
+    static void testLBPBinaryTreeWithEvidenceOnMid() {
       const std::string ev = "e";
       for (int i = 0; i < MAX_ITER; i++) {
         const auto bn
@@ -211,7 +217,7 @@ namespace gum_tests {
           if (__compareInference(bn, lazy, inf)) break;
         } catch (gum::Exception& e) {
           GUM_SHOWERROR(e);
-          TS_ASSERT(false)
+          CHECK(false);
         }
       }
       for (int i = 0; i < MAX_ITER; i++) {
@@ -229,12 +235,12 @@ namespace gum_tests {
           if (__compareInference(bn, lazy, inf)) break;
         } catch (gum::Exception& e) {
           GUM_SHOWERROR(e);
-          TS_ASSERT(false)
+          CHECK(false);
         }
       }
     }
 
-    GUM_ACTIVE_TEST(LBPBinaryTreeWithMultipleEvidence) {
+    static void testLBPBinaryTreeWithMultipleEvidence() {
       for (int i = 0; i < MAX_ITER; i++) {
         const auto bn
             = gum::BayesNet< double >::fastPrototype("a->d->f;b->d->g;b->e->h;c->e;i->j->h");
@@ -255,7 +261,7 @@ namespace gum_tests {
           if (__compareInference(bn, lazy, inf)) break;
         } catch (gum::Exception& e) {
           GUM_SHOWERROR(e);
-          TS_ASSERT(false)
+          CHECK(false);
         }
       }
       for (int i = 0; i < MAX_ITER; i++) {
@@ -277,12 +283,12 @@ namespace gum_tests {
           if (__compareInference(bn, lazy, inf)) break;
         } catch (gum::Exception& e) {
           GUM_SHOWERROR(e);
-          TS_ASSERT(false)
+          CHECK(false);
         }
       }
     }
 
-    GUM_ACTIVE_TEST(LBPNaryTreeWithMultipleEvidence) {
+    static void testLBPNaryTreeWithMultipleEvidence() {
       for (int i = 0; i < MAX_ITER; i++) {
         const auto bn = gum::BayesNet< double >::fastPrototype(
             "a[4]->d[8]->f[3];b->d->g[5];b->e[4]->h;c->e;i[10]->j[3]->h");
@@ -303,7 +309,7 @@ namespace gum_tests {
           if (__compareInference(bn, lazy, inf)) break;
         } catch (gum::Exception& e) {
           GUM_SHOWERROR(e);
-          TS_ASSERT(false)
+          CHECK(false);
         }
       }
       for (int i = 0; i < MAX_ITER; i++) {
@@ -325,12 +331,12 @@ namespace gum_tests {
           if (__compareInference(bn, lazy, inf)) break;
         } catch (gum::Exception& e) {
           GUM_SHOWERROR(e);
-          TS_ASSERT(false)
+          CHECK(false);
         }
       }
     }
 
-    GUM_ACTIVE_TEST(LBPSimpleBN) {
+    static void testLBPSimpleBN() {
       for (int i = 0; i < MAX_ITER; i++) {
         const auto bn = gum::BayesNet< double >::fastPrototype("a->b->c;a->d->c", 3);
 
@@ -344,7 +350,7 @@ namespace gum_tests {
           if (__compareInference(bn, lazy, inf)) break;
         } catch (gum::Exception& e) {
           GUM_SHOWERROR(e);
-          TS_ASSERT(false)
+          CHECK(false);
         }
       }
       for (int i = 0; i < MAX_ITER; i++) {
@@ -362,7 +368,7 @@ namespace gum_tests {
           if (__compareInference(bn, lazy, inf)) break;
         } catch (gum::Exception& e) {
           GUM_SHOWERROR(e);
-          TS_ASSERT(false)
+          CHECK(false);
         }
       }
       for (int i = 0; i < MAX_ITER; i++) {
@@ -380,7 +386,7 @@ namespace gum_tests {
           if (__compareInference(bn, lazy, inf)) break;
         } catch (gum::Exception& e) {
           GUM_SHOWERROR(e);
-          TS_ASSERT(false)
+          CHECK(false);
         }
       }
       for (int i = 0; i < MAX_ITER; i++) {
@@ -398,7 +404,7 @@ namespace gum_tests {
           if (__compareInference(bn, lazy, inf)) break;
         } catch (gum::Exception& e) {
           GUM_SHOWERROR(e);
-          TS_ASSERT(false)
+          CHECK(false);
         }
       }
       for (int i = 0; i < MAX_ITER; i++) {
@@ -416,12 +422,12 @@ namespace gum_tests {
           if (__compareInference(bn, lazy, inf)) break;
         } catch (gum::Exception& e) {
           GUM_SHOWERROR(e);
-          TS_ASSERT(false)
+          CHECK(false);
         }
       }
     }
 
-    GUM_ACTIVE_TEST(LBPCplxBN) {
+    static void testLBPCplxBN() {
       for (int i = 0; i < MAX_ITER; i++) {
         const auto bn = gum::BayesNet< double >::fastPrototype(
             "a->d->f;b->d->g;b->e->h;c->e->g;i->j->h;c->j;x->c;x->j;",
@@ -437,7 +443,7 @@ namespace gum_tests {
           if (__compareInference(bn, lazy, inf)) break;
         } catch (gum::Exception& e) {
           GUM_SHOWERROR(e);
-          TS_ASSERT(false)
+          CHECK(false);
         }
       }
       for (int i = 0; i < MAX_ITER; i++) {
@@ -457,7 +463,7 @@ namespace gum_tests {
           if (__compareInference(bn, lazy, inf)) break;
         } catch (gum::Exception& e) {
           GUM_SHOWERROR(e);
-          TS_ASSERT(false)
+          CHECK(false);
         }
       }
       for (int i = 0; i < MAX_ITER; i++) {
@@ -477,7 +483,7 @@ namespace gum_tests {
           if (__compareInference(bn, lazy, inf)) break;
         } catch (gum::Exception& e) {
           GUM_SHOWERROR(e);
-          TS_ASSERT(false)
+          CHECK(false);
         }
       }
       for (int i = 0; i < MAX_ITER; i++) {
@@ -497,7 +503,7 @@ namespace gum_tests {
           if (__compareInference(bn, lazy, inf)) break;
         } catch (gum::Exception& e) {
           GUM_SHOWERROR(e);
-          TS_ASSERT(false)
+          CHECK(false);
         }
       }
       for (int i = 0; i < MAX_ITER; i++) {
@@ -517,17 +523,17 @@ namespace gum_tests {
           if (__compareInference(bn, lazy, inf)) break;
         } catch (gum::Exception& e) {
           GUM_SHOWERROR(e);
-          TS_ASSERT(false)
+          CHECK(false);
         }
       }
     }
 
-    GUM_ACTIVE_TEST(LBPAsia) {
+    static void testLBPAsia() {
       gum::BayesNet< double >  bn;
       gum::BIFReader< double > reader(&bn, GET_RESSOURCES_PATH("bif/asia.bif"));
       gum::Size                nbrErr = static_cast< gum::Size >(0);
-      TS_GUM_ASSERT_THROWS_NOTHING(nbrErr = reader.proceed())
-      TS_ASSERT_EQUALS(nbrErr, static_cast< gum::Size >(0))
+      GUM_CHECK_ASSERT_THROWS_NOTHING(nbrErr = reader.proceed());
+      CHECK((nbrErr) == (static_cast< gum::Size >(0)));
 
       for (int i = 0; i < MAX_ITER; i++) {
         try {
@@ -540,17 +546,17 @@ namespace gum_tests {
           if (__compareInference(bn, lazy, inf)) break;
         } catch (gum::Exception& e) {
           GUM_SHOWERROR(e);
-          TS_ASSERT(false)
+          CHECK(false);
         }
       }
     }
 
-    GUM_ACTIVE_TEST(LBPAlarm) {
+    static void testLBPAlarm() {
       gum::BayesNet< double >  bn;
       gum::BIFReader< double > reader(&bn, GET_RESSOURCES_PATH("bif/alarm.bif"));
       gum::Size                nbrErr = static_cast< gum::Size >(0);
-      TS_GUM_ASSERT_THROWS_NOTHING(nbrErr = reader.proceed())
-      TS_ASSERT_EQUALS(nbrErr, static_cast< gum::Size >(0))
+      GUM_CHECK_ASSERT_THROWS_NOTHING(nbrErr = reader.proceed());
+      CHECK((nbrErr) == (static_cast< gum::Size >(0)));
 
       for (int i = 0; i < MAX_ITER; i++) {
         try {
@@ -565,28 +571,28 @@ namespace gum_tests {
           if (__compareInference(bn, lazy, inf, 2.5e-1)) break;
         } catch (gum::Exception& e) {
           GUM_SHOWERROR(e);
-          TS_ASSERT(false)
+          CHECK(false);
         }
       }
     }
 
-    GUM_ACTIVE_TEST(LBPInfListener) {
+    static void testLBPInfListener() {
       gum::BayesNet< double >  bn;
       gum::BIFReader< double > reader(&bn, GET_RESSOURCES_PATH("bif/alarm.bif"));
       gum::Size                nbrErr = static_cast< gum::Size >(0);
-      TS_GUM_ASSERT_THROWS_NOTHING(nbrErr = reader.proceed())
-      TS_ASSERT_EQUALS(nbrErr, static_cast< gum::Size >(0))
+      GUM_CHECK_ASSERT_THROWS_NOTHING(nbrErr = reader.proceed());
+      CHECK((nbrErr) == (static_cast< gum::Size >(0)));
 
       gum::LoopyBeliefPropagation< double > inf(&bn);
       aSimpleLBPListener                    agsl(inf);
       inf.setVerbosity(true);
 
-      TS_GUM_ASSERT_THROWS_NOTHING(inf.makeInference())
-      TS_ASSERT_EQUALS(agsl.getNbr() * inf.periodSize(), inf.nbrIterations())
-      TS_ASSERT_DIFFERS(agsl.getMess(), std::string(""))
+      GUM_CHECK_ASSERT_THROWS_NOTHING(inf.makeInference());
+      CHECK((agsl.getNbr() * inf.periodSize()) == (inf.nbrIterations()));
+      CHECK((agsl.getMess()) != (std::string("")));
     }
 
-    GUM_ACTIVE_TEST(AggregatorsInLBP) {
+    static void testAggregatorsInLBP() {
       gum::BayesNet< double > bn;
       for (const auto& e: {"a", "b", "c", "d"})
         bn.add(e, 2);
@@ -608,37 +614,37 @@ namespace gum_tests {
       bn.addArc("d", "F");
 
       auto ie = gum::LoopyBeliefPropagation< double >(&bn);
-      TS_GUM_ASSERT_THROWS_NOTHING(ie.makeInference();)
+      GUM_CHECK_ASSERT_THROWS_NOTHING(ie.makeInference(););
     }
 
-    GUM_ACTIVE_TEST(LogitInLBP) {
+    static void testLogitInLBP() {
       gum::BayesNet< double > bn;
       for (const auto& item: {"Cold", "Flu", "Malaria", "X", "Y", "Z"})
         bn.add(item, 2);
 
       gum::LabelizedVariable fever("Fever", "", 2);
-      TS_GUM_ASSERT_THROWS_NOTHING(bn.addLogit(fever, 0.3f))
+      GUM_CHECK_ASSERT_THROWS_NOTHING(bn.addLogit(fever, 0.3f));
 
       bn.addWeightedArc("Malaria", "Fever", 0.9f);
       bn.addWeightedArc("Flu", "Fever", 0.8f);
       bn.addWeightedArc("Cold", "Fever", 0.4f);
 
-      TS_ASSERT_THROWS(bn.addWeightedArc("Malaria", "Cold", 0.8f), const gum::InvalidArc&)
+      CHECK_THROWS_AS(bn.addWeightedArc("Malaria", "Cold", 0.8f), const gum::InvalidArc&);
 
       bn.addArc("Y", "X");
       bn.addArc("Fever", "X");
       bn.addArc("Z", "X");
 
       gum::LoopyBeliefPropagation< double > ie(&bn);
-      TS_GUM_ASSERT_THROWS_NOTHING(ie.makeInference();)
+      GUM_CHECK_ASSERT_THROWS_NOTHING(ie.makeInference(););
     }
 
     private:
     template < typename GUM_SCALAR >
-    bool __compareInference(const gum::BayesNet< GUM_SCALAR >&         bn,
-                            gum::LazyPropagation< GUM_SCALAR >&        lazy,
-                            gum::LoopyBeliefPropagation< GUM_SCALAR >& inf,
-                            double                                     errmax = 1e-2) {
+    static bool __compareInference(const gum::BayesNet< GUM_SCALAR >&         bn,
+                                   gum::LazyPropagation< GUM_SCALAR >&        lazy,
+                                   gum::LoopyBeliefPropagation< GUM_SCALAR >& inf,
+                                   double                                     errmax = 1e-2) {
       GUM_SCALAR  err    = static_cast< GUM_SCALAR >(0);
       std::string argstr = "";
       for (const auto& node: bn.nodes()) {
@@ -654,4 +660,18 @@ namespace gum_tests {
       return err < errmax;
     }
   };
+
+  GUM_TEST_ACTIF(LBPBinaryTreeWithoutEvidence)
+  GUM_TEST_ACTIF(LBPBinaryTreeWithEvidenceOnRoot)
+  GUM_TEST_ACTIF(LBPBinaryTreeWithEvidenceOnLeaf)
+  GUM_TEST_ACTIF(LBPBinaryTreeWithEvidenceOnMid)
+  GUM_TEST_ACTIF(LBPBinaryTreeWithMultipleEvidence)
+  GUM_TEST_ACTIF(LBPNaryTreeWithMultipleEvidence)
+  GUM_TEST_ACTIF(LBPSimpleBN)
+  GUM_TEST_ACTIF(LBPCplxBN)
+  GUM_TEST_ACTIF(LBPAsia)
+  GUM_TEST_ACTIF(LBPAlarm)
+  GUM_TEST_ACTIF(LBPInfListener)
+  GUM_TEST_ACTIF(AggregatorsInLBP)
+  GUM_TEST_ACTIF(LogitInLBP)
 }   // namespace gum_tests

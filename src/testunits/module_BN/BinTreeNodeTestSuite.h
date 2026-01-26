@@ -1,7 +1,7 @@
 /****************************************************************************
  *   This file is part of the aGrUM/pyAgrum library.                        *
  *                                                                          *
- *   Copyright (c) 2005-2025 by                                             *
+ *   Copyright (c) 2005-2026 by                                             *
  *       - Pierre-Henri WUILLEMIN(_at_LIP6)                                 *
  *       - Christophe GONZALES(_at_AMU)                                     *
  *                                                                          *
@@ -27,7 +27,7 @@
  *                                                                          *
  *   See LICENCES for more details.                                         *
  *                                                                          *
- *   SPDX-FileCopyrightText: Copyright 2005-2025                            *
+ *   SPDX-FileCopyrightText: Copyright 2005-2026                            *
  *       - Pierre-Henri WUILLEMIN(_at_LIP6)                                 *
  *       - Christophe GONZALES(_at_AMU)                                     *
  *   SPDX-License-Identifier: LGPL-3.0-or-later OR MIT                      *
@@ -37,6 +37,7 @@
  *   gitlab   : https://gitlab.com/agrumery/agrum                           *
  *                                                                          *
  ****************************************************************************/
+
 #pragma once
 
 
@@ -45,65 +46,70 @@
 
 #include <agrum/base/core/binTreeNode.h>
 
+#undef GUM_CURRENT_SUITE
+#undef GUM_CURRENT_MODULE
+#define GUM_CURRENT_SUITE  binTreeNode
+#define GUM_CURRENT_MODULE BN
+
 namespace gum_tests {
 
-  class GUM_TEST_SUITE(binTreeNode) {
+  struct binTreeNodeTestSuite {
     public:
-    GUM_ACTIVE_TEST(Constructors) {
+    static void testConstructors() {
       gum::BinTreeNode< int >* node = 0;
 
-      TS_GUM_ASSERT_THROWS_NOTHING(node = new gum::BinTreeNode< int >(33))
-      TS_ASSERT_EQUALS(node->value(), 33)
-      TS_ASSERT_EQUALS(**node, 33)
-      TS_GUM_ASSERT_THROWS_NOTHING(delete node)
+      GUM_CHECK_ASSERT_THROWS_NOTHING(node = new gum::BinTreeNode< int >(33));
+      CHECK((node->value()) == (33));
+      CHECK((**node) == (33));
+      GUM_CHECK_ASSERT_THROWS_NOTHING(delete node);
 
       gum::BinTreeNode< int > node2(33);
       gum::BinTreeNode< int > node3 = node2;
-      TS_ASSERT_EQUALS(*node2, *node3)
+      CHECK((*node2) == (*node3));
 
       gum::BinTreeNode< int > node4(1);
       node4 = node2;
-      TS_ASSERT_EQUALS(*node2, *node4)
+      CHECK((*node2) == (*node4));
     }   // namespace gum_tests
 
-    GUM_ACTIVE_TEST(InsertChildren) {
+    static void testInsertChildren() {
       gum::BinTreeNode< int > node(0);
 
-      TS_ASSERT_EQUALS(node.parent(), nullptr)
-      TS_ASSERT_EQUALS(node.leftChild(), nullptr)
-      TS_ASSERT_EQUALS(node.rightChild(), nullptr)
-      TS_ASSERT_EQUALS(node.child(gum::BinTreeDir::LEFT_CHILD), nullptr)
-      TS_ASSERT_EQUALS(node.child(gum::BinTreeDir::RIGHT_CHILD), nullptr)
+      CHECK((node.parent()) == (nullptr));
+      CHECK((node.leftChild()) == (nullptr));
+      CHECK((node.rightChild()) == (nullptr));
+      CHECK((node.child(gum::BinTreeDir::LEFT_CHILD)) == (nullptr));
+      CHECK((node.child(gum::BinTreeDir::RIGHT_CHILD)) == (nullptr));
 
       gum::BinTreeNode< int > node2(1);
       gum::BinTreeNode< int > node3(2);
 
       node.insertLeftChild(node2);
-      TS_ASSERT_THROWS_ANYTHING(node.insertLeftChild(node3))
+      CHECK_THROWS(node.insertLeftChild(node3));
       node.insertRightChild(node3);
-      TS_ASSERT_EQUALS(node.leftChild(), &node2)
-      TS_ASSERT_EQUALS(node.rightChild(), &node3)
-      TS_ASSERT_EQUALS(node2.parent(), &node)
-      TS_ASSERT_EQUALS(node3.parent(), &node)
-      TS_ASSERT_EQUALS(node3.parentDir(), gum::BinTreeDir::RIGHT_CHILD)
+      CHECK((node.leftChild()) == (&node2));
+      CHECK((node.rightChild()) == (&node3));
+      CHECK((node2.parent()) == (&node));
+      CHECK((node3.parent()) == (&node));
+      CHECK((node3.parentDir()) == (gum::BinTreeDir::RIGHT_CHILD));
 
       node2.insertLeftChild(4);
       node2.insertRightChild(6);
-      TS_ASSERT_EQUALS(node.leftChild()->leftChild()->value(), 4)
-      TS_ASSERT_EQUALS(node.leftChild()->rightChild()->value(), 6)
+      CHECK((node.leftChild()->leftChild()->value()) == (4));
+      CHECK((node.leftChild()->rightChild()->value()) == (6));
 
       delete node2.leftChild();
       delete node2.rightChild();
 
-      TS_ASSERT_EQUALS(node.leftChild()->leftChild(), nullptr)
-      TS_ASSERT_EQUALS(node.leftChild()->rightChild(), nullptr)
+      CHECK((node.leftChild()->leftChild()) == (nullptr));
+      CHECK((node.leftChild()->rightChild()) == (nullptr));
 
       gum::BinTreeNode< int >* node4 = node2.insertLeftChild(3);
       gum::BinTreeNode< int >* node5 = node2.insertRightChild(5);
-      TS_ASSERT_EQUALS(node2.leftChild(), node4)
-      TS_ASSERT_EQUALS(node2.rightChild(), node5)
-      TS_ASSERT_EQUALS(node4->parent(), &node2)
-      TS_ASSERT_EQUALS(node5->parent(), &node2)
+      CHECK((node2.leftChild()) == (node4));
+      CHECK((node2.rightChild()) == (node5));
+      CHECK((node4->parent()) == (&node2));
+      CHECK((node5->parent()) == (&node2));
 
       gum::BinTreeNode< int >* node6 = node4->insertChild(6, gum::BinTreeDir::LEFT_CHILD);
       gum::BinTreeNode< int >* node7 = new gum::BinTreeNode< int >(8);
@@ -115,23 +121,23 @@ namespace gum_tests {
       delete (node7);
     }
 
-    GUM_ACTIVE_TEST(EraseLink) {
+    static void testEraseLink() {
       gum::BinTreeNode< int > node1(0);
       gum::BinTreeNode< int > node2(1);
       gum::BinTreeNode< int > node3(2);
       node1.insertLeftChild(node2);
       node1.insertRightChild(node3);
 
-      TS_ASSERT_EQUALS(node1.leftChild(), &node2)
-      TS_ASSERT_EQUALS(node1.rightChild(), &node3)
+      CHECK((node1.leftChild()) == (&node2));
+      CHECK((node1.rightChild()) == (&node3));
 
       node1.eraseLeftLink();
       node1.eraseRightLink();
 
-      TS_ASSERT_EQUALS(node1.leftChild(), nullptr)
-      TS_ASSERT_EQUALS(node1.rightChild(), nullptr)
-      TS_ASSERT_EQUALS(node2.parent(), nullptr)
-      TS_ASSERT_EQUALS(node3.parent(), nullptr)
+      CHECK((node1.leftChild()) == (nullptr));
+      CHECK((node1.rightChild()) == (nullptr));
+      CHECK((node2.parent()) == (nullptr));
+      CHECK((node3.parent()) == (nullptr));
 
       node1.insertLeftChild(node2);
       node1.insertRightChild(node3);
@@ -139,4 +145,8 @@ namespace gum_tests {
       node1.eraseLink(gum::BinTreeDir::RIGHT_CHILD);
     }
   };
+
+  GUM_TEST_ACTIF(Constructors)
+  GUM_TEST_ACTIF(InsertChildren)
+  GUM_TEST_ACTIF(EraseLink)
 }   // namespace gum_tests

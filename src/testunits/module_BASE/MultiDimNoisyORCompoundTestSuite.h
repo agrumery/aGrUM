@@ -1,7 +1,7 @@
 /****************************************************************************
  *   This file is part of the aGrUM/pyAgrum library.                        *
  *                                                                          *
- *   Copyright (c) 2005-2025 by                                             *
+ *   Copyright (c) 2005-2026 by                                             *
  *       - Pierre-Henri WUILLEMIN(_at_LIP6)                                 *
  *       - Christophe GONZALES(_at_AMU)                                     *
  *                                                                          *
@@ -27,7 +27,7 @@
  *                                                                          *
  *   See LICENCES for more details.                                         *
  *                                                                          *
- *   SPDX-FileCopyrightText: Copyright 2005-2025                            *
+ *   SPDX-FileCopyrightText: Copyright 2005-2026                            *
  *       - Pierre-Henri WUILLEMIN(_at_LIP6)                                 *
  *       - Christophe GONZALES(_at_AMU)                                     *
  *   SPDX-License-Identifier: LGPL-3.0-or-later OR MIT                      *
@@ -37,6 +37,7 @@
  *   gitlab   : https://gitlab.com/agrumery/agrum                           *
  *                                                                          *
  ****************************************************************************/
+
 #pragma once
 
 
@@ -50,40 +51,45 @@
 #include <agrum/base/variables/labelizedVariable.h>
 #include <agrum/base/variables/rangeVariable.h>
 
+#undef GUM_CURRENT_SUITE
+#undef GUM_CURRENT_MODULE
+#define GUM_CURRENT_SUITE  MultiDimNoisyORCompound
+#define GUM_CURRENT_MODULE GUMBASE
+
 namespace gum_tests {
 
-  class GUM_TEST_SUITE(MultiDimNoisyORCompound) {
+  struct MultiDimNoisyORCompoundTestSuite {
     public:
-    GUM_ACTIVE_TEST(CreationNoisyOr) {
+    static void testCreationNoisyOr() {
       gum::LabelizedVariable a("a", "", 2), b("b", "", 2), c("c", "", 2), d("d", "", 2);
       gum::MultiDimNoisyORCompound< double > p(0.2f);
 
       // trying to change weight for a non cause
-      TS_ASSERT_THROWS(p.causalWeight(b, 0.4f), const gum::InvalidArgument&)
-      TS_ASSERT_THROWS(p.causalWeight(d, 0.0f), const gum::InvalidArgument&)
+      CHECK_THROWS_AS(p.causalWeight(b, 0.4f), const gum::InvalidArgument&);
+      CHECK_THROWS_AS(p.causalWeight(d, 0.0f), const gum::InvalidArgument&);
 
       // adding causes
-      TS_GUM_ASSERT_THROWS_NOTHING(p << a << b << c << d)
+      GUM_CHECK_ASSERT_THROWS_NOTHING(p << a << b << c << d);
 
       // trying to set 0 for causal weight
-      TS_ASSERT_THROWS(p.causalWeight(d, 0.0f), const gum::OutOfBounds&)
+      CHECK_THROWS_AS(p.causalWeight(d, 0.0f), const gum::OutOfBounds&);
 
       // doing the right stuff :)
       p.causalWeight(b, 0.4f);
       p.causalWeight(d, 0.7f);
-      TS_ASSERT_EQUALS(p.toString(),
-                       "a:Labelized({0|1})=noisyORCompound([0.2], b:Labelized({0|1})[0.4], c:"
-                       "Labelized({0|1})[1], d:Labelized({0|1})[0.7])");
-      TS_ASSERT_EQUALS(p.realSize(), static_cast< gum::Size >(4))
+      CHECK((p.toString())
+            == ("a:Labelized({0|1})=noisyORCompound([0.2], b:Labelized({0|1})[0.4], c:"
+                "Labelized({0|1})[1], d:Labelized({0|1})[0.7])"));
+      CHECK((p.realSize()) == (static_cast< gum::Size >(4)));
 
       gum::MultiDimNoisyORCompound< double > q(p);
-      TS_ASSERT_EQUALS(q.toString(),
-                       "a:Labelized({0|1})=noisyORCompound([0.2], b:Labelized({0|1})[0.4], c:"
-                       "Labelized({0|1})[1], d:Labelized({0|1})[0.7])");
-      TS_ASSERT_EQUALS(p.realSize(), static_cast< gum::Size >(4))
+      CHECK((q.toString())
+            == ("a:Labelized({0|1})=noisyORCompound([0.2], b:Labelized({0|1})[0.4], c:"
+                "Labelized({0|1})[1], d:Labelized({0|1})[0.7])"));
+      CHECK((p.realSize()) == (static_cast< gum::Size >(4)));
     }   // namespace gum_tests
 
-    GUM_ACTIVE_TEST(CompatibleWithHardOR) {
+    static void testCompatibleWithHardOR() {
       gum::LabelizedVariable cold("Cold", "", 2);
       gum::LabelizedVariable flu("Flu", "", 2);
       gum::LabelizedVariable malaria("Malaria", "", 2);
@@ -116,11 +122,11 @@ namespace gum_tests {
       int j = 0;
 
       for (i.setFirst(); !i.end(); ++i, j++) {
-        TS_ASSERT_DELTA(p[i], witness[j], 1e-6)
+        CHECK((p[i]) == doctest::Approx(witness[j]).epsilon(1e-6));
       }
     }
 
-    GUM_ACTIVE_TEST(ComputationInNoisyORCompound) {
+    static void testComputationInNoisyORCompound() {
       gum::LabelizedVariable cold("Cold", "", 2);
       gum::LabelizedVariable flu("Flu", "", 2);
       gum::LabelizedVariable malaria("Malaria", "", 2);
@@ -153,7 +159,7 @@ namespace gum_tests {
       int j = 0;
 
       for (i.setFirst(); !i.end(); ++i, j++) {
-        TS_ASSERT_DELTA(p[i], witness[j], 1e-6)
+        CHECK((p[i]) == doctest::Approx(witness[j]).epsilon(1e-6));
       }
 
       gum::MultiDimNoisyORCompound< double > q(p);
@@ -161,11 +167,11 @@ namespace gum_tests {
       j = 0;
 
       for (i.setFirst(); !i.end(); ++i, j++) {
-        TS_ASSERT_DELTA(q[i], witness[j], 1e-6)
+        CHECK((q[i]) == doctest::Approx(witness[j]).epsilon(1e-6));
       }
     }
 
-    GUM_ACTIVE_TEST(ComputationInNoisyORCompound2) {
+    static void testComputationInNoisyORCompound2() {
       gum::LabelizedVariable lazy("lazy", "", 2);
       gum::LabelizedVariable degree("degree", "", 2);
       gum::LabelizedVariable motivation("motivation", "", 2);
@@ -195,7 +201,7 @@ namespace gum_tests {
       int j = 0;
 
       for (i.setFirst(); !i.end(); ++i, j++) {
-        TS_ASSERT_DELTA(p[i], witness[j], 1e-6)
+        CHECK((p[i]) == doctest::Approx(witness[j]).epsilon(1e-6));
       }
 
       gum::MultiDimNoisyORCompound< double > q(p);
@@ -203,8 +209,13 @@ namespace gum_tests {
       j = 0;
 
       for (i.setFirst(); !i.end(); ++i, j++) {
-        TS_ASSERT_DELTA(q[i], witness[j], 1e-6)
+        CHECK((q[i]) == doctest::Approx(witness[j]).epsilon(1e-6));
       }
     }
   };
+
+  GUM_TEST_ACTIF(CreationNoisyOr)
+  GUM_TEST_ACTIF(CompatibleWithHardOR)
+  GUM_TEST_ACTIF(ComputationInNoisyORCompound)
+  GUM_TEST_ACTIF(ComputationInNoisyORCompound2)
 }   // namespace gum_tests

@@ -1,7 +1,7 @@
 /****************************************************************************
  *   This file is part of the aGrUM/pyAgrum library.                        *
  *                                                                          *
- *   Copyright (c) 2005-2025 by                                             *
+ *   Copyright (c) 2005-2026 by                                             *
  *       - Pierre-Henri WUILLEMIN(_at_LIP6)                                 *
  *       - Christophe GONZALES(_at_AMU)                                     *
  *                                                                          *
@@ -27,7 +27,7 @@
  *                                                                          *
  *   See LICENCES for more details.                                         *
  *                                                                          *
- *   SPDX-FileCopyrightText: Copyright 2005-2025                            *
+ *   SPDX-FileCopyrightText: Copyright 2005-2026                            *
  *       - Pierre-Henri WUILLEMIN(_at_LIP6)                                 *
  *       - Christophe GONZALES(_at_AMU)                                     *
  *   SPDX-License-Identifier: LGPL-3.0-or-later OR MIT                      *
@@ -37,6 +37,7 @@
  *   gitlab   : https://gitlab.com/agrumery/agrum                           *
  *                                                                          *
  ****************************************************************************/
+
 #pragma once
 
 
@@ -53,9 +54,14 @@
 #include <agrum/BN/inference/lazyPropagation.h>
 #include <agrum/BN/inference/ShaferShenoyInference.h>
 
+#undef GUM_CURRENT_SUITE
+#undef GUM_CURRENT_MODULE
+#define GUM_CURRENT_SUITE  Torcs
+#define GUM_CURRENT_MODULE BN
+
 namespace gum_tests {
 
-  class GUM_TEST_SUITE(Torcs) {
+  struct TorcsTestSuite {
     public:
     gum::BayesNet< double >* bn;
 
@@ -67,92 +73,132 @@ namespace gum_tests {
 
     gum::List< gum::Tensor< double >* >* evidence;
 
-    void setUp() {
+    TorcsTestSuite() {
       gum::HashTable< gum::LabelizedVariable*, gum::NodeId > idMap;
+
       bn = new gum::BayesNet< double >();
 
       node1 = new gum::LabelizedVariable("TgR", "", 72);
+
       node2 = new gum::LabelizedVariable("DirV", "", 72);
+
       node3 = new gum::LabelizedVariable("Angle 1", "", 72);
+
       node4 = new gum::LabelizedVariable("DistM", "", 100);
+
       node5 = new gum::LabelizedVariable("Angle 2", "", 72);
 
       idMap.insert(node1, bn->add(*node1));
+
       idMap.insert(node2, bn->add(*node2));
+
       idMap.insert(node3, bn->add(*node3));
+
       idMap.insert(node4, bn->add(*node4));
+
       idMap.insert(node5, bn->add(*node5));
 
       bn->addArc(idMap[node1], idMap[node3]);
+
       bn->addArc(idMap[node2], idMap[node3]);
+
       bn->addArc(idMap[node3], idMap[node5]);
+
       bn->addArc(idMap[node4], idMap[node5]);
 
-      evidence                  = new gum::List< gum::Tensor< double >* >();
+      evidence = new gum::List< gum::Tensor< double >* >();
+
       gum::Tensor< double >* e1 = new gum::Tensor< double >(new gum::MultiDimArray< double >());
+
       gum::Tensor< double >* e2 = new gum::Tensor< double >(new gum::MultiDimArray< double >());
+
       gum::Tensor< double >* e3 = new gum::Tensor< double >(new gum::MultiDimArray< double >());
 
       try {
         (*e1) << bn->variable(idMap[node1]);
+
         e1->fill(static_cast< float >(0));
+
         gum::Instantiation inst1(*e1);
+
         inst1.chgVal(bn->variable(idMap[node1]), 4);
+
         e1->set(inst1, static_cast< float >(1));
+
       } catch (gum::Exception& e) { GUM_SHOWERROR(e); }
 
       try {
         (*e2) << bn->variable(idMap[node2]);
+
         e2->fill(static_cast< float >(0));
+
         gum::Instantiation inst2(*e2);
+
         inst2.chgVal(bn->variable(idMap[node2]), 4);
+
         e2->set(inst2, static_cast< float >(1));
+
       } catch (gum::Exception& e) { GUM_SHOWERROR(e); }
 
       try {
         (*e3) << bn->variable(idMap[node3]);
+
         e3->fill(static_cast< float >(0));
+
         gum::Instantiation inst3(*e3);
+
         inst3.chgVal(bn->variable(idMap[node3]), 4);
+
         e3->set(inst3, static_cast< float >(1));
+
       } catch (gum::Exception& e) { GUM_SHOWERROR(e); }
 
       try {
         evidence->insert(e1);
+
         evidence->insert(e2);
+
         evidence->insert(e3);
+
       } catch (gum::Exception& e) { GUM_SHOWERROR(e); }
     }
 
-    void tearDown() {
+    ~TorcsTestSuite() {
       delete bn;
 
       delete node1;
+
       delete node2;
+
       delete node3;
+
       delete node4;
+
       delete node5;
 
       delete (*evidence)[0];
+
       delete (*evidence)[1];
+
       delete (*evidence)[2];
+
       delete evidence;
     }
 
-    GUM_ACTIVE_TEST(Inference) {
+    void testInference() const {
       gum::LazyPropagation< double > inf(bn);
 
       try {
         inf.makeInference();
       } catch (const gum::Exception& e) {
         GUM_UNUSED(e);
-        TS_ASSERT(false);
+        CHECK(false);
       }
     }
 
     private:
     // Uncomment this to have some outputs.
-    void printProba(const gum::Tensor< double >&) {
+    static void printProba(const gum::Tensor< double >&) {
       // gum::Instantiation inst(p);
 
       // for (inst.setFirst(); !inst.end(); ++inst)
@@ -162,4 +208,6 @@ namespace gum_tests {
       // std::cerr << std::endl;
     }
   };
+
+  GUM_TEST_ACTIF(Inference)
 }   // namespace gum_tests

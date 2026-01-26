@@ -1,7 +1,7 @@
 /****************************************************************************
  *   This file is part of the aGrUM/pyAgrum library.                        *
  *                                                                          *
- *   Copyright (c) 2005-2025 by                                             *
+ *   Copyright (c) 2005-2026 by                                             *
  *       - Pierre-Henri WUILLEMIN(_at_LIP6)                                 *
  *       - Christophe GONZALES(_at_AMU)                                     *
  *                                                                          *
@@ -27,7 +27,7 @@
  *                                                                          *
  *   See LICENCES for more details.                                         *
  *                                                                          *
- *   SPDX-FileCopyrightText: Copyright 2005-2025                            *
+ *   SPDX-FileCopyrightText: Copyright 2005-2026                            *
  *       - Pierre-Henri WUILLEMIN(_at_LIP6)                                 *
  *       - Christophe GONZALES(_at_AMU)                                     *
  *   SPDX-License-Identifier: LGPL-3.0-or-later OR MIT                      *
@@ -37,6 +37,7 @@
  *   gitlab   : https://gitlab.com/agrumery/agrum                           *
  *                                                                          *
  ****************************************************************************/
+
 #pragma once
 
 
@@ -53,6 +54,11 @@
 #include <agrum/BN/inference/lazyPropagation.h>
 #include <agrum/BN/io/BIF/BIFReader.h>
 
+#undef GUM_CURRENT_SUITE
+#undef GUM_CURRENT_MODULE
+#define GUM_CURRENT_SUITE  DefaultTriangulation
+#define GUM_CURRENT_MODULE BN
+
 // The graph used for the tests:
 //          1   2_          1 -> 3
 //         / \ / /          1 -> 4
@@ -63,27 +69,37 @@
 
 namespace gum_tests {
 
-  class GUM_TEST_SUITE(DefaultTriangulation) {
+  struct DefaultTriangulationTestSuite {
     public:
     gum::LabelizedVariable *var1, *var2, *var3, *var4, *var5;
+    ;
+    ;
 
-    void setUp() {
+    DefaultTriangulationTestSuite() {
       var1 = new gum::LabelizedVariable("var1", "1");
+
       var2 = new gum::LabelizedVariable("var2", "2");
+
       var3 = new gum::LabelizedVariable("var3", "3");
+
       var4 = new gum::LabelizedVariable("var4", "4");
+
       var5 = new gum::LabelizedVariable("var5", "5");
-    };
+    }
 
-    void tearDown() {
+    ~DefaultTriangulationTestSuite() {
       delete var1;
-      delete var2;
-      delete var3;
-      delete var4;
-      delete var5;
-    };
 
-    GUM_ACTIVE_TEST(triangulatedGraph) {
+      delete var2;
+
+      delete var3;
+
+      delete var4;
+
+      delete var5;
+    }
+
+    void testtriangulatedGraph() {
       gum::BayesNet< double >  topo;
       gum::List< gum::NodeId > idList;
 
@@ -99,18 +115,18 @@ namespace gum_tests {
 
       gum::DefaultTriangulation* triangle = nullptr;
 
-      TS_GUM_ASSERT_THROWS_NOTHING(triangle
-                                   = new gum::DefaultTriangulation(&undiGraph, &modalities));
+      GUM_CHECK_ASSERT_THROWS_NOTHING(triangle
+                                      = new gum::DefaultTriangulation(&undiGraph, &modalities));
 
-      TS_GUM_ASSERT_THROWS_NOTHING(triangle->triangulatedGraph())
+      GUM_CHECK_ASSERT_THROWS_NOTHING(triangle->triangulatedGraph());
 
-      TS_ASSERT_EQUALS(triangle->maxLog10CliqueDomainSize(),
-                       log10(16));   // clique of 4 binary variables
+      CHECK((triangle->maxLog10CliqueDomainSize())
+            == (log10(16)));   // clique of 4 binary variables
 
-      TS_GUM_ASSERT_THROWS_NOTHING(if (triangle) delete triangle)
+      GUM_CHECK_ASSERT_THROWS_NOTHING(if (triangle) delete triangle);
     };
 
-    GUM_ACTIVE_TEST(junctionTree) {
+    void testjunctionTree() {
       gum::BayesNet< double >  topo;
       gum::List< gum::NodeId > idList;
 
@@ -119,7 +135,7 @@ namespace gum_tests {
       gum::UndiGraph                 undiGraph;
       gum::NodeProperty< gum::Size > modalities;
 
-      TS_GUM_ASSERT_THROWS_NOTHING(undiGraph = topo.moralGraph())
+      GUM_CHECK_ASSERT_THROWS_NOTHING(undiGraph = topo.moralGraph());
 
       // Builds a hashTable where the keys are the id of the variable,
       // and the values the variable's domain size.
@@ -128,61 +144,61 @@ namespace gum_tests {
 
       gum::DefaultTriangulation* triangle = nullptr;
 
-      TS_GUM_ASSERT_THROWS_NOTHING(triangle
-                                   = new gum::DefaultTriangulation(&undiGraph, &modalities));
-      TS_GUM_ASSERT_THROWS_NOTHING(triangle->junctionTree())
+      GUM_CHECK_ASSERT_THROWS_NOTHING(triangle
+                                      = new gum::DefaultTriangulation(&undiGraph, &modalities));
+      GUM_CHECK_ASSERT_THROWS_NOTHING(triangle->junctionTree());
 
       // TODO : problem here !!
-      TS_ASSERT(triangle->junctionTree().hasRunningIntersection())
+      CHECK(triangle->junctionTree().hasRunningIntersection());
 
-      TS_GUM_ASSERT_THROWS_NOTHING(if (triangle) delete triangle)
+      GUM_CHECK_ASSERT_THROWS_NOTHING(if (triangle) delete triangle);
     };
 
     void xxtestBIFtriangulation1() {
-      TS_GUM_ASSERT_THROWS_NOTHING(__triangulate_bif(GET_RESSOURCES_PATH("bif/Barley.bif")))
+      GUM_CHECK_ASSERT_THROWS_NOTHING(_triangulate_bif_(GET_RESSOURCES_PATH("bif/Barley.bif")));
     };
 
     void xxtestBIFtriangulation1bis() {
-      TS_GUM_ASSERT_THROWS_NOTHING(__triangulate_bif(GET_RESSOURCES_PATH("bif/alarm.bif")))
+      GUM_CHECK_ASSERT_THROWS_NOTHING(_triangulate_bif_(GET_RESSOURCES_PATH("bif/alarm.bif")));
     };
 
     void xxtestBIFtriangulation2() {
-      TS_GUM_ASSERT_THROWS_NOTHING(__triangulate_bif(GET_RESSOURCES_PATH("bif/carpo.bif")))
+      GUM_CHECK_ASSERT_THROWS_NOTHING(_triangulate_bif_(GET_RESSOURCES_PATH("bif/carpo.bif")));
     };
 
     void xxtestBIFtriangulation3() {
-      TS_GUM_ASSERT_THROWS_NOTHING(__triangulate_bif(GET_RESSOURCES_PATH("bif/Pigs.bif")))
+      GUM_CHECK_ASSERT_THROWS_NOTHING(_triangulate_bif_(GET_RESSOURCES_PATH("bif/Pigs.bif")));
     };
 
     void xxtestBIFtriangulation4() {
-      TS_GUM_ASSERT_THROWS_NOTHING(__triangulate_bif(GET_RESSOURCES_PATH("bif/Water.bif")))
+      GUM_CHECK_ASSERT_THROWS_NOTHING(_triangulate_bif_(GET_RESSOURCES_PATH("bif/Water.bif")));
     };
 
     void xxtestBIFtriangulation5() {
-      TS_GUM_ASSERT_THROWS_NOTHING(__triangulate_bif(GET_RESSOURCES_PATH("bif/Link.bif")))
+      GUM_CHECK_ASSERT_THROWS_NOTHING(_triangulate_bif_(GET_RESSOURCES_PATH("bif/Link.bif")));
     };
 
     void xxtestBIFtriangulation6() {
-      TS_GUM_ASSERT_THROWS_NOTHING(__triangulate_bif(GET_RESSOURCES_PATH("bif/Mildew.bif")))
+      GUM_CHECK_ASSERT_THROWS_NOTHING(_triangulate_bif_(GET_RESSOURCES_PATH("bif/Mildew.bif")));
     };
 
     void xxtestBIFtriangulation7() {
-      TS_GUM_ASSERT_THROWS_NOTHING(__triangulate_bif(GET_RESSOURCES_PATH("bif/Munin1.bif")))
+      GUM_CHECK_ASSERT_THROWS_NOTHING(_triangulate_bif_(GET_RESSOURCES_PATH("bif/Munin1.bif")));
     };
 
     void xxtestBIFtriangulation8() {
-      TS_GUM_ASSERT_THROWS_NOTHING(__triangulate_bif(GET_RESSOURCES_PATH("bif/hailfinder.bif")))
+      GUM_CHECK_ASSERT_THROWS_NOTHING(_triangulate_bif_(GET_RESSOURCES_PATH("bif/hailfinder.bif")));
     };
 
     void xxtestBIFtriangulation9() {
-      TS_GUM_ASSERT_THROWS_NOTHING(__triangulate_bif(GET_RESSOURCES_PATH("bif/Diabetes.bif")))
+      GUM_CHECK_ASSERT_THROWS_NOTHING(_triangulate_bif_(GET_RESSOURCES_PATH("bif/Diabetes.bif")));
     };
 
     void xxtestBIFtriangulation10() {
-      TS_GUM_ASSERT_THROWS_NOTHING(__triangulate_bif(GET_RESSOURCES_PATH("bif/insurance.bif")))
+      GUM_CHECK_ASSERT_THROWS_NOTHING(_triangulate_bif_(GET_RESSOURCES_PATH("bif/insurance.bif")));
     };
 
-    GUM_ACTIVE_TEST(TriangulatedGraph1) {
+    void testTriangulatedGraph1() {
       gum::NodeSet c1, c2, c3, c4, c5;
       c1 << 1 << 2 << 3 << 4;
       c2 << 2 << 4 << 5;
@@ -195,11 +211,11 @@ namespace gum_tests {
       for (unsigned int i = 1; i <= 8; ++i)
         graph.addNodeWithId(i);
 
-      createClique(graph, c1);
-      createClique(graph, c2);
-      createClique(graph, c3);
-      createClique(graph, c4);
-      createClique(graph, c5);
+      _createClique_(graph, c1);
+      _createClique_(graph, c2);
+      _createClique_(graph, c3);
+      _createClique_(graph, c4);
+      _createClique_(graph, c5);
 
       gum::NodeProperty< gum::Size > dom;
 
@@ -212,9 +228,9 @@ namespace gum_tests {
 
       const gum::UndiGraph& gr2 = triang.triangulatedGraph();
 
-      TS_ASSERT_EQUALS(gr2.sizeNodes(), 8U)
+      CHECK((gr2.sizeNodes()) == (8U));
 
-      TS_ASSERT_EQUALS(gr2.sizeEdges(), 14U)
+      CHECK((gr2.sizeEdges()) == (14U));
 
       triang.clear();
 
@@ -222,9 +238,9 @@ namespace gum_tests {
 
       const gum::UndiGraph& gr3 = triang.triangulatedGraph();
 
-      TS_ASSERT_EQUALS(gr3.sizeNodes(), 8U)
+      CHECK((gr3.sizeNodes()) == (8U));
 
-      TS_ASSERT_EQUALS(gr3.sizeEdges(), 14U)
+      CHECK((gr3.sizeEdges()) == (14U));
 
       graph.eraseEdge(gum::Edge(2, 5));
 
@@ -232,18 +248,18 @@ namespace gum_tests {
 
       const gum::UndiGraph& gr4 = triang.triangulatedGraph();
 
-      TS_ASSERT_EQUALS(gr4.sizeNodes(), 8U)
+      CHECK((gr4.sizeNodes()) == (8U));
 
-      TS_ASSERT_EQUALS(gr4.sizeEdges(), 14U)
+      CHECK((gr4.sizeEdges()) == (14U));
 
       const gum::EdgeSet& edges = triang.fillIns();
 
-      TS_ASSERT_EQUALS(edges.size(), 1U)
+      CHECK((edges.size()) == (1U));
 
-      TS_ASSERT_EQUALS(*(edges.begin()), gum::Edge(2, 5))
+      CHECK((*(edges.begin())) == (gum::Edge(2, 5)));
     }
 
-    GUM_ACTIVE_TEST(TriangulatedGraph2) {
+    void testTriangulatedGraph2() {
       gum::UndiGraph graph;
 
       for (unsigned int i = 1; i <= 8; ++i)
@@ -265,25 +281,25 @@ namespace gum_tests {
 
       const gum::CliqueGraph& elim = triang.eliminationTree();
 
-      TS_ASSERT_EQUALS(elim.sizeNodes(), 8U)
+      CHECK((elim.sizeNodes()) == (8U));
 
-      TS_ASSERT_EQUALS(elim.sizeEdges(), 7U)
+      CHECK((elim.sizeEdges()) == (7U));
 
       const gum::CliqueGraph& JT = triang.junctionTree();
 
-      TS_ASSERT_EQUALS(JT.sizeNodes(), 6U)
+      CHECK((JT.sizeNodes()) == (6U));
 
-      TS_ASSERT_EQUALS(JT.sizeEdges(), 5U)
+      CHECK((JT.sizeEdges()) == (5U));
 
       const gum::UndiGraph& gr = triang.triangulatedGraph();
 
-      TS_ASSERT_EQUALS(gr.sizeNodes(), 8U)
+      CHECK((gr.sizeNodes()) == (8U));
 
-      TS_ASSERT_EQUALS(gr.sizeEdges(), 13U)
+      CHECK((gr.sizeEdges()) == (13U));
     }
 
     private:
-    void createClique(gum::UndiGraph& graph, const gum::NodeSet& clique) {
+    static void _createClique_(gum::UndiGraph& graph, const gum::NodeSet& clique) {
       for (auto iter = clique.begin(); iter != clique.end(); ++iter) {
         auto iter2 = iter;
 
@@ -293,19 +309,19 @@ namespace gum_tests {
       }
     }
 
-    void __triangulate_bif(std::string file) {
+    static void _triangulate_bif_(std::string file) {
       gum::BayesNet< double >* bn = new gum::BayesNet< double >();
       gum::BIFReader< double > reader(bn, file);
       reader.trace(false);
 
-      TS_GUM_ASSERT_THROWS_NOTHING(reader.proceed())
+      GUM_CHECK_ASSERT_THROWS_NOTHING(reader.proceed());
 
       gum::LazyPropagation< double > inf(bn);
 
       if (bn != 0) delete (bn);
     };
 
-    void fill(gum::BayesNet< double >& topo, gum::List< gum::NodeId >& idList) {
+    void fill(gum::BayesNet< double >& topo, gum::List< gum::NodeId >& idList) const {
       idList.clear();
       idList.insert(topo.add(*var1));
       idList.insert(topo.add(*var2));
@@ -320,28 +336,10 @@ namespace gum_tests {
       topo.addArc(idList[3], idList[4]);
       topo.addArc(idList[1], idList[4]);
     };
-
-    gum::UndiGraph getRealMoralGraph(const gum::List< gum::NodeId >& idList) {
-      gum::UndiGraph graph;
-      /*
-        idList.clear();
-        idList.insert(graph.addNode());
-        idList.insert(graph.addNode());
-        idList.insert(graph.addNode());
-        idList.insert(graph.addNode());
-        idList.insert(graph.addNodeWithId());*/
-
-      graph.addEdge(idList[0], idList[2]);
-      graph.addEdge(idList[0], idList[3]);
-      graph.addEdge(idList[0], idList[1]);
-      graph.addEdge(idList[2], idList[4]);
-      graph.addEdge(idList[3], idList[4]);
-      graph.addEdge(idList[2], idList[3]);
-      graph.addEdge(idList[1], idList[3]);
-      graph.addEdge(idList[1], idList[4]);
-      graph.addEdge(idList[1], idList[2]);
-
-      return graph;
-    }
   };
+
+  GUM_TEST_ACTIF(triangulatedGraph)
+  GUM_TEST_ACTIF(junctionTree)
+  GUM_TEST_ACTIF(TriangulatedGraph1)
+  GUM_TEST_ACTIF(TriangulatedGraph2)
 }   // namespace gum_tests

@@ -1,7 +1,7 @@
 /****************************************************************************
  *   This file is part of the aGrUM/pyAgrum library.                        *
  *                                                                          *
- *   Copyright (c) 2005-2025 by                                             *
+ *   Copyright (c) 2005-2026 by                                             *
  *       - Pierre-Henri WUILLEMIN(_at_LIP6)                                 *
  *       - Christophe GONZALES(_at_AMU)                                     *
  *                                                                          *
@@ -27,7 +27,7 @@
  *                                                                          *
  *   See LICENCES for more details.                                         *
  *                                                                          *
- *   SPDX-FileCopyrightText: Copyright 2005-2025                            *
+ *   SPDX-FileCopyrightText: Copyright 2005-2026                            *
  *       - Pierre-Henri WUILLEMIN(_at_LIP6)                                 *
  *       - Christophe GONZALES(_at_AMU)                                     *
  *   SPDX-License-Identifier: LGPL-3.0-or-later OR MIT                      *
@@ -37,6 +37,7 @@
  *   gitlab   : https://gitlab.com/agrumery/agrum                           *
  *                                                                          *
  ****************************************************************************/
+
 #pragma once
 
 
@@ -53,14 +54,19 @@
 #include <agrum/ID/inference/tools/decisionTensor.h>
 #include <agrum/ID/influenceDiagram.h>
 
+#undef GUM_CURRENT_SUITE
+#undef GUM_CURRENT_MODULE
+#define GUM_CURRENT_SUITE  DecisionTensor
+#define GUM_CURRENT_MODULE ID
+
 namespace gum_tests {
 
-  class GUM_TEST_SUITE(DecisionTensor) {
+  struct DecisionTensorTestSuite {
     public:
-    GUM_ACTIVE_TEST(Construction) {
+    static void testConstruction() {
       gum::DecisionTensor< double > d1, d2;
-      TS_ASSERT_EQUALS(d1, d2)
-      TS_ASSERT_EQUALS(d1, d1 * d2)
+      CHECK((d1) == (d2));
+      CHECK((d1) == (d1 * d2));
 
       gum::DecisionTensor< double > d3(std::move(d2));
 
@@ -72,25 +78,25 @@ namespace gum_tests {
 
       gum::DecisionTensor< double > d4(P1, U1);
       gum::DecisionTensor< double > d5(d4);
-      TS_ASSERT_EQUALS(d4, d5)
+      CHECK((d4) == (d5));
 
       gum::DecisionTensor< double > d6 = d5;
-      TS_ASSERT_EQUALS(d6, d4)
+      CHECK((d6) == (d4));
 
       gum::DecisionTensor< double > d7(std::move(d4));
-      TS_ASSERT_EQUALS(d7, d6)
+      CHECK((d7) == (d6));
 
       d1 = std::move(d7);
-      TS_ASSERT_EQUALS(d1, d6)
+      CHECK((d1) == (d6));
 
       d5 = d1;
-      TS_ASSERT_EQUALS(d1, d5)
+      CHECK((d1) == (d5));
 
       d4 = d1;
-      TS_ASSERT_EQUALS(d1, d4)
+      CHECK((d1) == (d4));
     }   // namespace gum_tests
 
-    GUM_ACTIVE_TEST(Construction2) {
+    static void testConstruction2() {
       auto infdiag = gum::InfluenceDiagram< double >::fastPrototype("A->$B<-*C");
       infdiag.cpt("A").fillWith({0.3, 0.7});
       infdiag.utility("B").fillWith({100, 10, 30, 70});
@@ -99,13 +105,12 @@ namespace gum_tests {
       d1.insertUtility(infdiag.utility("B"));
 
       auto res = d1 ^ std::vector< std::string >({"C"});
-      TS_ASSERT_EQUALS(res.probPot, gum::Tensor< double >().fillWith(1))
-      TS_ASSERT_EQUALS(
-          res.utilPot,
-          (gum::Tensor< double >() << infdiag.variableFromName("C")).fillWith({37, 58}));
+      CHECK((res.probPot) == (gum::Tensor< double >().fillWith(1)));
+      CHECK((res.utilPot)
+            == ((gum::Tensor< double >() << infdiag.variableFromName("C")).fillWith({37, 58})));
     }
 
-    GUM_ACTIVE_TEST(Equalities) {
+    static void testEqualities() {
       auto infdiag = gum::InfluenceDiagram< double >::fastPrototype("A->$B<-*C");
       infdiag.cpt("A").fillWith({1.0, 0.0});
       infdiag.utility("B").fillWith({100, 10, 30, 70});
@@ -118,12 +123,12 @@ namespace gum_tests {
       d2.insertProba(infdiag.cpt("A"));
       d2.insertUtility(infdiag.utility("B"));
 
-      TS_ASSERT_EQUALS(d1.probPot, d2.probPot)
-      TS_ASSERT_DIFFERS(d1.utilPot, d2.utilPot)
-      TS_ASSERT_EQUALS(d1, d2);   // d1 and d2 differ for utility with proba is 0
+      CHECK((d1.probPot) == (d2.probPot));
+      CHECK((d1.utilPot) != (d2.utilPot));
+      CHECK((d1) == (d2));   // d1 and d2 differ for utility with proba is 0
     }
 
-    GUM_ACTIVE_TEST(SuperSetForMarginalization) {
+    static void testSuperSetForMarginalization() {
       auto infdiag = gum::InfluenceDiagram< double >::fastPrototype("D<-A->$B<-*C");
       infdiag.cpt("A").fillWith({0.3, 0.7});
       infdiag.cpt("D").fillWith({0.1, 0.9, 0.9, 0.1});
@@ -140,7 +145,12 @@ namespace gum_tests {
       vars.insert(&infdiag.variableFromName("D"));
       auto res2 = d1 ^ vars;
 
-      TS_ASSERT_EQUALS(res1, res2)
+      CHECK((res1) == (res2));
     }
   };
+
+  GUM_TEST_ACTIF(Construction)
+  GUM_TEST_ACTIF(Construction2)
+  GUM_TEST_ACTIF(Equalities)
+  GUM_TEST_ACTIF(SuperSetForMarginalization)
 }   // namespace gum_tests

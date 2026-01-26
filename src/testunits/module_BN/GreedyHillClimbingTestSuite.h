@@ -1,7 +1,7 @@
 /****************************************************************************
  *   This file is part of the aGrUM/pyAgrum library.                        *
  *                                                                          *
- *   Copyright (c) 2005-2025 by                                             *
+ *   Copyright (c) 2005-2026 by                                             *
  *       - Pierre-Henri WUILLEMIN(_at_LIP6)                                 *
  *       - Christophe GONZALES(_at_AMU)                                     *
  *                                                                          *
@@ -27,7 +27,7 @@
  *                                                                          *
  *   See LICENCES for more details.                                         *
  *                                                                          *
- *   SPDX-FileCopyrightText: Copyright 2005-2025                            *
+ *   SPDX-FileCopyrightText: Copyright 2005-2026                            *
  *       - Pierre-Henri WUILLEMIN(_at_LIP6)                                 *
  *       - Christophe GONZALES(_at_AMU)                                     *
  *   SPDX-License-Identifier: LGPL-3.0-or-later OR MIT                      *
@@ -37,6 +37,7 @@
  *   gitlab   : https://gitlab.com/agrumery/agrum                           *
  *                                                                          *
  ****************************************************************************/
+
 #pragma once
 
 
@@ -73,6 +74,11 @@
 #include <agrum/BN/learning/scores_and_tests/scoreBIC.h>
 #include <agrum/BN/learning/scores_and_tests/scoreK2.h>
 
+#undef GUM_CURRENT_SUITE
+#undef GUM_CURRENT_MODULE
+#define GUM_CURRENT_SUITE  GreedyHillClimbing
+#define GUM_CURRENT_MODULE BN
+
 namespace gum_tests {
 
   class simpleListenerForGHC: public gum::ApproximationSchemeListener {
@@ -96,7 +102,7 @@ namespace gum_tests {
     std::string getMess() { return _mess_; }
   };
 
-  class GUM_TEST_SUITE(GreedyHillClimbing) {
+  struct GreedyHillClimbingTestSuite {
     private:
     double _score_(gum::learning::ScoreBIC& score, const gum::NodeId& node, const gum::DAG& dag) {
       std::vector< gum::NodeId > cond_set;
@@ -206,7 +212,7 @@ namespace gum_tests {
 
 
     public:
-    GUM_ACTIVE_TEST(_k2_asia) {
+    static void test_k2_asia() {
       gum::learning::DBInitializerFromCSV initializer(GET_RESSOURCES_PATH("csv/asia.csv"));
       const auto&                         var_names = initializer.variableNames();
       const std::size_t                   nb_vars   = var_names.size();
@@ -260,7 +266,7 @@ namespace gum_tests {
       search.approximationScheme().setEpsilon(1000);
 
       gum::DAG dag = search.learnStructure(selector);
-      TS_ASSERT_EQUALS(dag.arcs().size(), static_cast< gum::Size >(11))
+      CHECK((dag.arcs().size()) == (static_cast< gum::Size >(11)));
 
       // gum::BayesNet<double> bn =
       // search.learnBN<double> ( selector, estimator,
@@ -273,7 +279,7 @@ namespace gum_tests {
       // modalities );
     }
 
-    GUM_ACTIVE_TEST(_asia_with_ordered_values) {
+    static void test_asia_with_ordered_values() {
       gum::learning::DBInitializerFromCSV initializer(GET_RESSOURCES_PATH("csv/asia.csv"));
       const auto&                         var_names = initializer.variableNames();
       const std::size_t                   nb_vars   = var_names.size();
@@ -329,7 +335,7 @@ namespace gum_tests {
       search.approximationScheme().setEpsilon(1000);
 
       gum::DAG dag = search.learnStructure(selector);
-      TS_ASSERT_EQUALS(dag.arcs().size(), static_cast< gum::Size >(11))
+      CHECK((dag.arcs().size()) == (static_cast< gum::Size >(11)));
 
       gum::BayesNet< double > bn = search.learnBN< double >(selector, estimator);
 
@@ -337,12 +343,12 @@ namespace gum_tests {
       const std::string s1 = "1";
       for (gum::Idx i = 0; i < database.nbVariables(); ++i) {
         const gum::DiscreteVariable& var = bn.variable(i);
-        TS_ASSERT_EQUALS(var.label(0), s0)
-        TS_ASSERT_EQUALS(var.label(1), s1)
+        CHECK((var.label(0)) == (s0));
+        CHECK((var.label(1)) == (s1));
       }
     }
 
-    GUM_ACTIVE_TEST(_alarm_with_ordered_values) {
+    static void test_alarm_with_ordered_values() {
       gum::learning::DBInitializerFromCSV initializer(GET_RESSOURCES_PATH("csv/alarm.csv"));
       const auto&                         var_names = initializer.variableNames();
       const std::size_t                   nb_vars   = var_names.size();
@@ -408,13 +414,13 @@ namespace gum_tests {
       gum::Set< gum::Idx > seq{1, 10, 11, 14};
       for (gum::Idx i = 0; i < database.nbVariables(); ++i) {
         const gum::DiscreteVariable& var = bn.variable(i);
-        TS_ASSERT_EQUALS(var.label(0), s0)
-        TS_ASSERT_EQUALS(var.label(1), s1)
-        if (seq.exists(i)) { TS_ASSERT_EQUALS(var.label(2), s2); }
+        CHECK((var.label(0)) == (s0));
+        CHECK((var.label(1)) == (s1));
+        if (seq.exists(i)) { CHECK((var.label(2)) == (s2)); }
       }
     }
 
-    GUM_ACTIVE_TEST(_alarm_with_ordered_values2) {
+    static void test_alarm_with_ordered_values2() {
       gum::learning::DBInitializerFromCSV initializer(GET_RESSOURCES_PATH("csv/alarm.csv"));
       const auto&                         var_names = initializer.variableNames();
       const std::size_t                   nb_vars   = var_names.size();
@@ -482,13 +488,13 @@ namespace gum_tests {
       gum::Set< gum::Idx > seq{1, 10, 11, 14};
       for (auto i: seq) {
         const gum::DiscreteVariable& var = bn.variable(i);
-        TS_ASSERT_EQUALS(var.label(0), s0)
-        TS_ASSERT_EQUALS(var.label(1), s1)
-        TS_ASSERT_EQUALS(var.label(2), s2)
+        CHECK((var.label(0)) == (s0));
+        CHECK((var.label(1)) == (s1));
+        CHECK((var.label(2)) == (s2));
       }
     }
 
-    GUM_ACTIVE_TEST(_dirichlet) {
+    void test_dirichlet() {
       // read the learning database
       gum::learning::DBInitializerFromCSV initializer(
           GET_RESSOURCES_PATH("csv/db_dirichlet_learning.csv"));
@@ -565,11 +571,11 @@ namespace gum_tests {
 
         while (_applyNextChange_(score, scores, xdag)) {}
 
-        TS_ASSERT_EQUALS(xdag, dag)
+        CHECK((xdag) == (dag));
       }
     }
 
-    void xtest_alarm1() {
+    static void xtest_alarm1() {
       /*
       gum::learning::DatabaseFromCSV
       database(GET_RESSOURCES_PATH("csv/alarm.csv"));
@@ -883,5 +889,11 @@ namespace gum_tests {
       */
     }
   };
+
+  GUM_TEST_ACTIF(_k2_asia)
+  GUM_TEST_ACTIF(_asia_with_ordered_values)
+  GUM_TEST_ACTIF(_alarm_with_ordered_values)
+  GUM_TEST_ACTIF(_alarm_with_ordered_values2)
+  GUM_TEST_ACTIF(_dirichlet)
 
 } /* namespace gum_tests */

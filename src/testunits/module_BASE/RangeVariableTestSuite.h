@@ -1,7 +1,7 @@
 /****************************************************************************
  *   This file is part of the aGrUM/pyAgrum library.                        *
  *                                                                          *
- *   Copyright (c) 2005-2025 by                                             *
+ *   Copyright (c) 2005-2026 by                                             *
  *       - Pierre-Henri WUILLEMIN(_at_LIP6)                                 *
  *       - Christophe GONZALES(_at_AMU)                                     *
  *                                                                          *
@@ -27,7 +27,7 @@
  *                                                                          *
  *   See LICENCES for more details.                                         *
  *                                                                          *
- *   SPDX-FileCopyrightText: Copyright 2005-2025                            *
+ *   SPDX-FileCopyrightText: Copyright 2005-2026                            *
  *       - Pierre-Henri WUILLEMIN(_at_LIP6)                                 *
  *       - Christophe GONZALES(_at_AMU)                                     *
  *   SPDX-License-Identifier: LGPL-3.0-or-later OR MIT                      *
@@ -37,6 +37,7 @@
  *   gitlab   : https://gitlab.com/agrumery/agrum                           *
  *                                                                          *
  ****************************************************************************/
+
 #pragma once
 
 
@@ -49,62 +50,71 @@
 
 #include <agrum/base/variables/rangeVariable.h>
 
+#undef GUM_CURRENT_SUITE
+#undef GUM_CURRENT_MODULE
+#define GUM_CURRENT_SUITE  RangeVariable
+#define GUM_CURRENT_MODULE GUMBASE
+
 namespace gum_tests {
 
-  class GUM_TEST_SUITE(RangeVariable) {
+  struct RangeVariableTestSuite {
     public:
-    GUM_ACTIVE_TEST(Copy) {
+    static void testCopy() {
       gum::RangeVariable var1("var1", "this is var1");
       gum::RangeVariable var2("var2", "this is var2", 1, 4);
 
       gum::RangeVariable var3(var1);
       gum::RangeVariable var4("var4", "this is var4");
-      TS_GUM_ASSERT_THROWS_NOTHING(var4 = var2)
+      GUM_CHECK_ASSERT_THROWS_NOTHING(var4 = var2);
 
-      TS_ASSERT_EQUALS(var4.minVal(), var2.minVal())
-      TS_ASSERT_EQUALS(var1.maxVal(), var3.maxVal())
-      TS_ASSERT_DIFFERS(var4.minVal(), var1.minVal())
+      CHECK((var4.minVal()) == (var2.minVal()));
+      CHECK((var1.maxVal()) == (var3.maxVal()));
+      CHECK((var4.minVal()) != (var1.minVal()));
     }   // namespace gum_tests
 
-    GUM_ACTIVE_TEST(Labels) {
+    static void testLabels() {
       gum::RangeVariable var1("var1", "this is var1");
-      TS_ASSERT_EQUALS(var1.domainSize(), static_cast< gum::Size >(2))
-      TS_ASSERT(!var1.empty())
+      CHECK((var1.domainSize()) == (static_cast< gum::Size >(2)));
+      CHECK(!var1.empty());
 
       var1.setMinVal(1);
       var1.setMaxVal(0);
-      TS_ASSERT(var1.empty())
+      CHECK(var1.empty());
 
       var1.setMaxVal(9);
-      TS_ASSERT(!var1.empty())
-      TS_ASSERT_EQUALS(var1.domainSize(), static_cast< gum::Size >(9))
-      TS_ASSERT(var1.belongs(3L))
-      TS_ASSERT(!var1.belongs(0L))
-      TS_ASSERT(!var1.belongs(10L))
+      CHECK(!var1.empty());
+      CHECK((var1.domainSize()) == (static_cast< gum::Size >(9)));
+      CHECK(var1.belongs(3L));
+      CHECK(!var1.belongs(0L));
+      CHECK(!var1.belongs(10L));
 
       var1.setMinVal(3);
 
-      TS_ASSERT_EQUALS(var1.label(1), "4")
-      TS_ASSERT_EQUALS(var1["4"], static_cast< gum::Idx >(1))
+      CHECK((var1.label(1)) == ("4"));
+      CHECK((var1["4"]) == (static_cast< gum::Idx >(1)));
 
       gum::DiscreteVariable& v = var1;
 
-      TS_ASSERT_EQUALS(v.label(1), "4")
-      TS_ASSERT_EQUALS(v["4"], static_cast< gum::Idx >(1))
+      CHECK((v.label(1)) == ("4"));
+      CHECK((v["4"]) == (static_cast< gum::Idx >(1)));
 
       std::stringstream s;
       s << v;
-      TS_ASSERT_EQUALS(s.str(), "var1:Range([3,9])")
-      TS_ASSERT_EQUALS(v.toString(), "var1:Range([3,9])")
+      CHECK((s.str()) == ("var1:Range([3,9])"));
+      CHECK((v.toString()) == ("var1:Range([3,9])"));
     }
 
-    GUM_ACTIVE_TEST(Numerical) {
+    static void testNumerical() {
       gum::RangeVariable var1("var1", "this is var1", 10, 20);
-      TS_ASSERT_EQUALS(var1.domainSize(), static_cast< gum::Size >(11))
+      CHECK((var1.domainSize()) == (static_cast< gum::Size >(11)));
 
       for (gum::Idx i = 0; i < var1.domainSize(); i++) {
-        TS_ASSERT_EQUALS(var1.numerical(i), var1.minVal() + i)
+        CHECK((var1.numerical(i)) == (var1.minVal() + i));
       }
     }
   };
+
+  GUM_TEST_ACTIF(Copy)
+  GUM_TEST_ACTIF(Labels)
+  GUM_TEST_ACTIF(Numerical)
 }   // namespace gum_tests

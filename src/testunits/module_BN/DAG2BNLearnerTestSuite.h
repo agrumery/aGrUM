@@ -1,7 +1,7 @@
 /****************************************************************************
  *   This file is part of the aGrUM/pyAgrum library.                        *
  *                                                                          *
- *   Copyright (c) 2005-2025 by                                             *
+ *   Copyright (c) 2005-2026 by                                             *
  *       - Pierre-Henri WUILLEMIN(_at_LIP6)                                 *
  *       - Christophe GONZALES(_at_AMU)                                     *
  *                                                                          *
@@ -27,7 +27,7 @@
  *                                                                          *
  *   See LICENCES for more details.                                         *
  *                                                                          *
- *   SPDX-FileCopyrightText: Copyright 2005-2025                            *
+ *   SPDX-FileCopyrightText: Copyright 2005-2026                            *
  *       - Pierre-Henri WUILLEMIN(_at_LIP6)                                 *
  *       - Christophe GONZALES(_at_AMU)                                     *
  *   SPDX-License-Identifier: LGPL-3.0-or-later OR MIT                      *
@@ -37,6 +37,7 @@
  *   gitlab   : https://gitlab.com/agrumery/agrum                           *
  *                                                                          *
  ****************************************************************************/
+
 #pragma once
 
 
@@ -54,11 +55,16 @@
 #include <testunits/gumtest/AgrumTestSuite.h>
 #include <testunits/gumtest/utils.h>
 
+#undef GUM_CURRENT_SUITE
+#undef GUM_CURRENT_MODULE
+#define GUM_CURRENT_SUITE  DAG2BNLearner
+#define GUM_CURRENT_MODULE BN
+
 namespace gum_tests {
 
-  class GUM_TEST_SUITE(DAG2BNLearner) {
+  struct DAG2BNLearnerTestSuite {
     private:
-    std::vector< double > _normalize_(const std::vector< double >& vin) {
+    static std::vector< double > _normalize_(const std::vector< double >& vin) {
       double sum = 0;
       for (const auto& val: vin)
         sum += val;
@@ -68,19 +74,20 @@ namespace gum_tests {
       return vout;
     }   // namespace gum_tests
 
-    std::vector< double > _xnormalize_(const std::vector< double >& vin) {
+    static std::vector< double > _xnormalize_(const std::vector< double >& vin) {
       std::vector< double > vout(vin);
-      for (std::size_t i = 0; i < vin.size(); i += 3) {
+      for (auto i = static_cast< gum::Size >(0); i < vin.size(); i += 3) {
         double sum = 0;
-        for (std::size_t j = std::size_t(0); j < 3; ++j)
+        for (auto j = static_cast< std::size_t >(0); j < 3; ++j)
           sum += vin[i + j];
-        for (std::size_t j = std::size_t(0); j < 3; ++j)
+        for (auto j = static_cast< std::size_t >(0); j < 3; ++j)
           vout[i + j] /= sum;
       }
       return vout;
     }
 
-    std::vector< double > _getProba_(const gum::BayesNet< double >& bn, const gum::NodeId id) {
+    static std::vector< double > _getProba_(const gum::BayesNet< double >& bn,
+                                            const gum::NodeId              id) {
       const gum::Tensor< double >& pot = bn.cpt(id);
       std::vector< double >        vect;
       for (gum::Instantiation inst(pot); !inst.end(); ++inst) {
@@ -90,7 +97,7 @@ namespace gum_tests {
     }
 
     public:
-    GUM_ACTIVE_TEST(1) {
+    static void test1() {
       // create the translator set
       gum::LabelizedVariable var("X1", "", 0);
       var.addLabel("0");
@@ -103,7 +110,7 @@ namespace gum_tests {
         gum::learning::DBTranslator4LabelizedVariable translator(var, miss);
         std::vector< std::string >                    names{"A", "B", "C", "D", "E", "F"};
 
-        for (std::size_t i = std::size_t(0); i < names.size(); ++i) {
+        for (auto i = std::size_t(0); i < names.size(); ++i) {
           translator.setVariableName(names[i]);
           trans_set.insertTranslator(translator, i);
         }
@@ -138,7 +145,7 @@ namespace gum_tests {
       gum::learning::DAG2BNLearner learner;
 
       gum::DAG dag;
-      for (std::size_t i = std::size_t(0); i < database.nbVariables(); ++i) {
+      for (auto i = std::size_t(0); i < database.nbVariables(); ++i) {
         dag.addNodeWithId(gum::NodeId(i));
       }
       dag.addArc(0, 1);
@@ -148,14 +155,14 @@ namespace gum_tests {
 
       auto                  v2  = _getProba_(bn1, 2);
       std::vector< double > xv2 = _normalize_({1401, 1, 1});
-      TS_ASSERT_EQUALS(v2, xv2)
+      CHECK((v2) == (xv2));
 
       auto                  v02  = _getProba_(bn1, 0);
       std::vector< double > xv02 = _xnormalize_({1201, 126, 76, 1, 1, 1, 1, 1, 1});
-      TS_ASSERT_EQUALS(v02, xv02)
+      CHECK((v02) == (xv02));
     }
 
-    GUM_ACTIVE_TEST(EM) {
+    static void testEM() {
       gum::LabelizedVariable var("x", "", 0);
       var.addLabel("0");
       var.addLabel("1");
@@ -165,7 +172,7 @@ namespace gum_tests {
         gum::learning::DBTranslator4LabelizedVariable translator(var, miss);
         std::vector< std::string >                    names{"A", "B", "C", "D"};
 
-        for (std::size_t i = std::size_t(0); i < names.size(); ++i) {
+        for (auto i = std::size_t(0); i < names.size(); ++i) {
           translator.setVariableName(names[i]);
           trans_set.insertTranslator(translator, i);
         }
@@ -226,7 +233,7 @@ namespace gum_tests {
       gum::learning::DAG2BNLearner learner;
 
       gum::DAG dag;
-      for (std::size_t i = std::size_t(0); i < database.nbVariables(); ++i) {
+      for (auto i = std::size_t(0); i < database.nbVariables(); ++i) {
         dag.addNodeWithId(gum::NodeId(i));
       }
       dag.addArc(gum::NodeId(1), gum::NodeId(0));
@@ -246,7 +253,7 @@ namespace gum_tests {
           break;
         ok = false;
       }
-      TS_ASSERT(ok)
+      CHECK(ok);
 
       gum::BayesNet< double > xbn  = bn;
       auto&                   cpt0 = xbn.cpt(0);
@@ -263,8 +270,11 @@ namespace gum_tests {
           break;
         ok = false;
       }
-      TS_ASSERT(ok)
+      CHECK(ok);
     }
   };
+
+  GUM_TEST_ACTIF(1)
+  GUM_TEST_ACTIF(EM)
 
 }   // namespace gum_tests

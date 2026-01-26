@@ -1,7 +1,7 @@
 /****************************************************************************
  *   This file is part of the aGrUM/pyAgrum library.                        *
  *                                                                          *
- *   Copyright (c) 2005-2025 by                                             *
+ *   Copyright (c) 2005-2026 by                                             *
  *       - Pierre-Henri WUILLEMIN(_at_LIP6)                                 *
  *       - Christophe GONZALES(_at_AMU)                                     *
  *                                                                          *
@@ -27,7 +27,7 @@
  *                                                                          *
  *   See LICENCES for more details.                                         *
  *                                                                          *
- *   SPDX-FileCopyrightText: Copyright 2005-2025                            *
+ *   SPDX-FileCopyrightText: Copyright 2005-2026                            *
  *       - Pierre-Henri WUILLEMIN(_at_LIP6)                                 *
  *       - Christophe GONZALES(_at_AMU)                                     *
  *   SPDX-License-Identifier: LGPL-3.0-or-later OR MIT                      *
@@ -37,6 +37,7 @@
  *   gitlab   : https://gitlab.com/agrumery/agrum                           *
  *                                                                          *
  ****************************************************************************/
+
 #pragma once
 
 
@@ -52,55 +53,54 @@
 #include <agrum/FMDP/io/dat/fmdpDatReader.h>
 #include <agrum/FMDP/planning/structuredPlaner.h>
 
+#undef GUM_CURRENT_SUITE
+#undef GUM_CURRENT_MODULE
+#define GUM_CURRENT_SUITE  StructuredPlaner
+#define GUM_CURRENT_MODULE FMDP
+
 // ==============================================================================
 
 namespace gum_tests {
 
-  class GUM_TEST_SUITE(StructuredPlaner) {
-    private:
-    std::string file;
-
-    void run() {
+  struct StructuredPlanerTestSuite {
+    static void run(const std::string& file) {
       gum::FMDP< double >              fmdp(true);
       gum::StructuredPlaner< double >* planer = nullptr;
-      TS_GUM_ASSERT_THROWS_NOTHING(
+      GUM_CHECK_ASSERT_THROWS_NOTHING(
           planer = gum::StructuredPlaner< double >::spumddInstance(0.9, 0.01, false));
 
       gum::FMDPDatReader< double > reader(&fmdp, file);
-      TS_GUM_ASSERT_THROWS_NOTHING(reader.trace(false))
-      TS_GUM_ASSERT_THROWS_NOTHING(reader.proceed())
+      GUM_CHECK_ASSERT_THROWS_NOTHING(reader.trace(false));
+      GUM_CHECK_ASSERT_THROWS_NOTHING(reader.proceed());
 
-      TS_GUM_ASSERT_THROWS_NOTHING(planer->initialize(&fmdp))
-      TS_GUM_ASSERT_THROWS_NOTHING(planer->makePlanning(10))
+      GUM_CHECK_ASSERT_THROWS_NOTHING(planer->initialize(&fmdp));
+      GUM_CHECK_ASSERT_THROWS_NOTHING(planer->makePlanning(10));
 
 
       std::ofstream _traceAlgoSaveFile_;
       _traceAlgoSaveFile_.open(GET_RESSOURCES_PATH("outputs/PlannedPolicy.dot"),
                                std::ios::out | std::ios::trunc);
       if (!_traceAlgoSaveFile_) return;
-      TS_GUM_ASSERT_THROWS_NOTHING(_traceAlgoSaveFile_ << fmdp.toString())
+      GUM_CHECK_ASSERT_THROWS_NOTHING(_traceAlgoSaveFile_ << fmdp.toString());
       _traceAlgoSaveFile_.close();
 
       int deletedFile = std::remove(GET_RESSOURCES_PATH("outputs/PlannedPolicy.dot"));
       if (deletedFile != 0) std::cout << "Couldn't delete output file." << std::endl;
 
-      TS_GUM_ASSERT_THROWS_NOTHING(delete planer)
+      GUM_CHECK_ASSERT_THROWS_NOTHING(delete planer);
     }
 
     public:
-    GUM_ACTIVE_TEST(PlanningCoffee) {
-      file = GET_RESSOURCES_PATH("FMDP/coffee/coffee.dat");
-      run();
+    static void testPlanningCoffee() { run(GET_RESSOURCES_PATH("FMDP/coffee/coffee.dat")); }
+
+    static void testPlanningTinyFactory() {
+      run(GET_RESSOURCES_PATH("FMDP/factory/tiny-factory.dat"));
     }
 
-    GUM_ACTIVE_TEST(PlanningTinyFactory) {
-      file = GET_RESSOURCES_PATH("FMDP/factory/tiny-factory.dat");
-      run();
-    }
-
-    GUM_ACTIVE_TEST(PlanningTaxi) {
-      file = GET_RESSOURCES_PATH("FMDP/taxi/taxi.dat");
-      run();
-    }
+    static void testPlanningTaxi() { run(GET_RESSOURCES_PATH("FMDP/taxi/taxi.dat")); }
   };
+
+  GUM_TEST_ACTIF(PlanningCoffee)
+  GUM_TEST_ACTIF(PlanningTinyFactory)
+  GUM_TEST_ACTIF(PlanningTaxi)
 }   // namespace gum_tests

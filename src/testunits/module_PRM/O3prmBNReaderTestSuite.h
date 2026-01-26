@@ -1,7 +1,7 @@
 /****************************************************************************
  *   This file is part of the aGrUM/pyAgrum library.                        *
  *                                                                          *
- *   Copyright (c) 2005-2025 by                                             *
+ *   Copyright (c) 2005-2026 by                                             *
  *       - Pierre-Henri WUILLEMIN(_at_LIP6)                                 *
  *       - Christophe GONZALES(_at_AMU)                                     *
  *                                                                          *
@@ -27,7 +27,7 @@
  *                                                                          *
  *   See LICENCES for more details.                                         *
  *                                                                          *
- *   SPDX-FileCopyrightText: Copyright 2005-2025                            *
+ *   SPDX-FileCopyrightText: Copyright 2005-2026                            *
  *       - Pierre-Henri WUILLEMIN(_at_LIP6)                                 *
  *       - Christophe GONZALES(_at_AMU)                                     *
  *   SPDX-License-Identifier: LGPL-3.0-or-later OR MIT                      *
@@ -37,6 +37,7 @@
  *   gitlab   : https://gitlab.com/agrumery/agrum                           *
  *                                                                          *
  ****************************************************************************/
+
 #pragma once
 
 
@@ -46,112 +47,116 @@
 #include <agrum/BN/BayesNet.h>
 #include <agrum/PRM/o3prm/O3prmBNReader.h>
 
+#undef GUM_CURRENT_SUITE
+#undef GUM_CURRENT_MODULE
+#define GUM_CURRENT_SUITE  O3prmBNReader
+#define GUM_CURRENT_MODULE PRM
+
 namespace gum_tests {
 
-  class GUM_TEST_SUITE(O3prmBNReader) {
+  struct O3prmBNReaderTestSuite {
     public:
-    GUM_ACTIVE_TEST(ClassWithoutSystem) {
+    static void testClassWithoutSystem() {
       gum::BayesNet< double >      bn;
       gum::O3prmBNReader< double > reader(&bn, GET_RESSOURCES_PATH("o3prm/Asia.o3prm"));
       gum::Size                    res = 0;
-      TS_GUM_ASSERT_THROWS_NOTHING(res = reader.proceed())
-      TS_ASSERT_EQUALS(bn.property("name"), "Asia")
-      TS_ASSERT_EQUALS(res, static_cast< gum::Size >(0))
-      TS_ASSERT_EQUALS(reader.warnings(), static_cast< gum::Size >(1));   // no system
-      TS_ASSERT_EQUALS(bn.size(), static_cast< gum::Size >(8))
+      GUM_CHECK_ASSERT_THROWS_NOTHING(res = reader.proceed());
+      CHECK((bn.property("name")) == ("Asia"));
+      CHECK((res) == (static_cast< gum::Size >(0)));
+      CHECK((reader.warnings()) == (static_cast< gum::Size >(1)));   // no system
+      CHECK((bn.size()) == (static_cast< gum::Size >(8)));
     }   // namespace gum_tests
 
-    GUM_ACTIVE_TEST(ClassWithoutSystemWithOtherClassName) {
+    static void testClassWithoutSystemWithOtherClassName() {
       try {
         gum::BayesNet< double >      bn;
         gum::O3prmBNReader< double > reader(&bn,
                                             GET_RESSOURCES_PATH("o3prm/AsiaOtherClassName.o3prm"));
         gum::Size                    res = 0;
-        TS_GUM_ASSERT_THROWS_NOTHING(res = reader.proceed())
-        TS_ASSERT_EQUALS(bn.property("name"), "Asia")
-        TS_ASSERT_EQUALS(res, static_cast< gum::Size >(0))
-        TS_ASSERT_EQUALS(reader.warnings(), static_cast< gum::Size >(1));   // no system
-        TS_ASSERT_EQUALS(bn.size(), static_cast< gum::Size >(8))
+        GUM_CHECK_ASSERT_THROWS_NOTHING(res = reader.proceed());
+        CHECK((bn.property("name")) == ("Asia"));
+        CHECK((res) == (static_cast< gum::Size >(0)));
+        CHECK((reader.warnings()) == (static_cast< gum::Size >(1)));   // no system
+        CHECK((bn.size()) == (static_cast< gum::Size >(8)));
       } catch (gum::Exception& e) { GUM_SHOWERROR(e); }
     }
 
-    GUM_ACTIVE_TEST(DoublingClassWithoutSystem) {
+    static void testDoublingClassWithoutSystem() {
       gum::BayesNet< double >      bn;
       gum::O3prmBNReader< double > reader(&bn, GET_RESSOURCES_PATH("o3prm/Asia.o3prm"));
       gum::Size                    res = 0;
-      TS_GUM_ASSERT_THROWS_NOTHING(res = reader.proceed())
-      TS_ASSERT_EQUALS(res, static_cast< gum::Size >(0))
-      TS_ASSERT_EQUALS(reader.warnings(), static_cast< gum::Size >(1));   // no system
-      TS_ASSERT_EQUALS(bn.size(), static_cast< gum::Size >(8))
+      GUM_CHECK_ASSERT_THROWS_NOTHING(res = reader.proceed());
+      CHECK((res) == (static_cast< gum::Size >(0)));
+      CHECK((reader.warnings()) == (static_cast< gum::Size >(1)));   // no system
+      CHECK((bn.size()) == (static_cast< gum::Size >(8)));
 
 
       gum::BayesNet< double >      bn2;
       gum::O3prmBNReader< double > reader2(&bn2, GET_RESSOURCES_PATH("o3prm/Asia.o3prm"));
       gum::Size                    res2 = 0;
-      TS_GUM_ASSERT_THROWS_NOTHING(res2 = reader2.proceed())
-      TS_ASSERT_EQUALS(res2, static_cast< gum::Size >(0))
-      TS_ASSERT_EQUALS(reader2.warnings(), static_cast< gum::Size >(1));   // no system
-      TS_ASSERT_EQUALS(bn2.size(), static_cast< gum::Size >(8))
+      GUM_CHECK_ASSERT_THROWS_NOTHING(res2 = reader2.proceed());
+      CHECK((res2) == (static_cast< gum::Size >(0)));
+      CHECK((reader2.warnings()) == (static_cast< gum::Size >(1)));   // no system
+      CHECK((bn2.size()) == (static_cast< gum::Size >(8)));
     }
 
-    GUM_ACTIVE_TEST(ClassWithoutSystemAfterDeletingReader) {
+    static void testClassWithoutSystemAfterDeletingReader() {
       gum::BayesNet< double > bn;
       {
         gum::O3prmBNReader< double > reader(&bn, GET_RESSOURCES_PATH("o3prm/Asia.o3prm"));
         gum::Size                    res = 0;
-        TS_GUM_ASSERT_THROWS_NOTHING(res = reader.proceed())
-        TS_ASSERT_EQUALS(res, static_cast< gum::Size >(0))
-        TS_ASSERT_EQUALS(reader.warnings(), static_cast< gum::Size >(1));   // no system
-        TS_ASSERT_EQUALS(bn.size(), static_cast< gum::Size >(8))
+        GUM_CHECK_ASSERT_THROWS_NOTHING(res = reader.proceed());
+        CHECK((res) == (static_cast< gum::Size >(0)));
+        CHECK((reader.warnings()) == (static_cast< gum::Size >(1)));   // no system
+        CHECK((bn.size()) == (static_cast< gum::Size >(8)));
       }
     }
 
-    GUM_ACTIVE_TEST(ClassesWithSystem) {
+    static void testClassesWithSystem() {
       gum::BayesNet< double >      bn;
       gum::O3prmBNReader< double > reader(
           &bn,
           GET_RESSOURCES_PATH("o3prm/AsiaClassAndSystemWithTwoClasses.o3prm"),
           "Asia");
       gum::Size res = 0;
-      TS_GUM_ASSERT_THROWS_NOTHING(res = reader.proceed())
-      TS_ASSERT_EQUALS(bn.property("name"), "Asia")
-      TS_ASSERT_EQUALS(res, static_cast< gum::Size >(0))
-      TS_ASSERT_EQUALS(bn.size(), static_cast< gum::Size >(8))
+      GUM_CHECK_ASSERT_THROWS_NOTHING(res = reader.proceed());
+      CHECK((bn.property("name")) == ("Asia"));
+      CHECK((res) == (static_cast< gum::Size >(0)));
+      CHECK((bn.size()) == (static_cast< gum::Size >(8)));
     }
 
-    GUM_ACTIVE_TEST(WithError) {
+    static void testWithError() {
       gum::BayesNet< double >      bn;
       gum::O3prmBNReader< double > reader(&bn,
                                           GET_RESSOURCES_PATH("o3prm/DoesNotExists.o3prm"),
                                           "Asia");
       gum::Size                    res = 0;
-      TS_GUM_ASSERT_THROWS_NOTHING(res = reader.proceed())
-      TS_ASSERT_EQUALS(res, static_cast< gum::Size >(1));               // file not found
-      TS_ASSERT_EQUALS(reader.errors(), static_cast< gum::Size >(1));   // file not found
-      TS_ASSERT_EQUALS(bn.size(), static_cast< gum::Size >(0))
+      GUM_CHECK_ASSERT_THROWS_NOTHING(res = reader.proceed());
+      CHECK((res) == (static_cast< gum::Size >(1)));               // file not found
+      CHECK((reader.errors()) == (static_cast< gum::Size >(1)));   // file not found
+      CHECK((bn.size()) == (static_cast< gum::Size >(0)));
 
       gum::O3prmBNReader< double > reader2(&bn,
                                            GET_RESSOURCES_PATH("o3prm/AsiaWithError.o3prm"),
                                            "Asia");
       res = 0;
-      TS_GUM_ASSERT_THROWS_NOTHING(res = reader2.proceed())   // class plop not existing
-      TS_ASSERT_EQUALS(reader2.errors(),
-                       static_cast< gum::Size >(1));          // class plop not existing
-      TS_ASSERT_EQUALS(bn.size(), static_cast< gum::Size >(0))
+      GUM_CHECK_ASSERT_THROWS_NOTHING(res = reader2.proceed());     // class plop not existing
+      CHECK((reader2.errors()) == (static_cast< gum::Size >(1)));   // class plop not existing
+      CHECK((bn.size()) == (static_cast< gum::Size >(0)));
     }
 
-    GUM_ACTIVE_TEST(WithCplxFile) {
+    static void testWithCplxFile() {
       gum::BayesNet< double >      bn;
       gum::O3prmBNReader< double > reader(&bn,
                                           GET_RESSOURCES_PATH("o3prm/inference.o3prm"),
                                           "aSys");
       gum::Size                    res = 0;
-      TS_GUM_ASSERT_THROWS_NOTHING(res = reader.proceed())
-      TS_ASSERT_EQUALS(res, static_cast< gum::Size >(0))
-      TS_ASSERT_EQUALS(bn.size(), static_cast< gum::Size >(72))
+      GUM_CHECK_ASSERT_THROWS_NOTHING(res = reader.proceed());
+      CHECK((res) == (static_cast< gum::Size >(0)));
+      CHECK((bn.size()) == (static_cast< gum::Size >(72)));
     }
 
-    GUM_ACTIVE_TEST(WithClassPathAndSystem) {
+    static void testWithClassPathAndSystem() {
       gum::BayesNet< double >      bn;
       gum::O3prmBNReader< double > reader(
           &bn,
@@ -159,24 +164,24 @@ namespace gum_tests {
           "Work",
           GET_RESSOURCES_PATH("o3prmr/ComplexPrinters"));
       gum::Size res = 0;
-      TS_GUM_ASSERT_THROWS_NOTHING(res = reader.proceed())
-      TS_ASSERT_EQUALS(res, static_cast< gum::Size >(0))
-      TS_ASSERT_EQUALS(bn.size(), static_cast< gum::Size >(144))
+      GUM_CHECK_ASSERT_THROWS_NOTHING(res = reader.proceed());
+      CHECK((res) == (static_cast< gum::Size >(0)));
+      CHECK((bn.size()) == (static_cast< gum::Size >(144)));
       reader.showElegantErrorsAndWarnings();
     }
 
-    GUM_ACTIVE_TEST(NameWithOrWithoutSystem) {
+    static void testNameWithOrWithoutSystem() {
       // in a file with only one class and no system, there should not be any "."
       // in the names
       {
         gum::BayesNet< double >      bn;
         gum::O3prmBNReader< double > reader(&bn, GET_RESSOURCES_PATH("o3prm/Asia.o3prm"));
         gum::Size                    res = 0;
-        TS_GUM_ASSERT_THROWS_NOTHING(res = reader.proceed())
-        TS_ASSERT_EQUALS(res, static_cast< gum::Size >(0))
-        TS_ASSERT_EQUALS(reader.warnings(), static_cast< gum::Size >(1));   // no system
+        GUM_CHECK_ASSERT_THROWS_NOTHING(res = reader.proceed());
+        CHECK((res) == (static_cast< gum::Size >(0)));
+        CHECK((reader.warnings()) == (static_cast< gum::Size >(1)));   // no system
         for (auto n: bn.nodes()) {
-          TS_ASSERT_EQUALS(bn.variable(n).name().find("."), std::string::npos)
+          CHECK((bn.variable(n).name().find(".")) == (std::string::npos));
         }
       }
       {
@@ -186,23 +191,34 @@ namespace gum_tests {
             GET_RESSOURCES_PATH("o3prm/AsiaClassAndSystemWithTwoClasses.o3prm"),
             "Asia");
         gum::Size res = 0;
-        TS_GUM_ASSERT_THROWS_NOTHING(res = reader.proceed())
-        TS_ASSERT_EQUALS(res, static_cast< gum::Size >(0))
-        TS_ASSERT_EQUALS(reader.warnings(), static_cast< gum::Size >(0))
+        GUM_CHECK_ASSERT_THROWS_NOTHING(res = reader.proceed());
+        CHECK((res) == (static_cast< gum::Size >(0)));
+        CHECK((reader.warnings()) == (static_cast< gum::Size >(0)));
         for (auto n: bn.nodes()) {
-          TS_ASSERT_DIFFERS(bn.variable(n).name().find("."), std::string::npos)
+          CHECK((bn.variable(n).name().find(".")) != (std::string::npos));
         }
       }
     }
 
-    GUM_ACTIVE_TEST(ReadAndWriteAndRead) {
+    static void testReadAndWriteAndRead() {
       gum::BayesNet< double >      bn;
       gum::O3prmBNReader< double > reader(&bn, GET_RESSOURCES_PATH("o3prm/Asia.o3prm"));
       gum::Size                    res = 0;
-      TS_GUM_ASSERT_THROWS_NOTHING(res = reader.proceed())
-      TS_ASSERT_EQUALS(res, static_cast< gum::Size >(0))
-      TS_ASSERT_EQUALS(reader.warnings(), static_cast< gum::Size >(1));   // no system
-      TS_ASSERT_EQUALS(bn.size(), static_cast< gum::Size >(8))
+      GUM_CHECK_ASSERT_THROWS_NOTHING(res = reader.proceed());
+      CHECK((res) == (static_cast< gum::Size >(0)));
+      CHECK((reader.warnings()) == (static_cast< gum::Size >(1)));   // no system
+      CHECK((bn.size()) == (static_cast< gum::Size >(8)));
     }
   };
+
+  GUM_TEST_ACTIF(ClassWithoutSystem)
+  GUM_TEST_ACTIF(ClassWithoutSystemWithOtherClassName)
+  GUM_TEST_ACTIF(DoublingClassWithoutSystem)
+  GUM_TEST_ACTIF(ClassWithoutSystemAfterDeletingReader)
+  GUM_TEST_ACTIF(ClassesWithSystem)
+  GUM_TEST_ACTIF(WithError)
+  GUM_TEST_ACTIF(WithCplxFile)
+  GUM_TEST_ACTIF(WithClassPathAndSystem)
+  GUM_TEST_ACTIF(NameWithOrWithoutSystem)
+  GUM_TEST_ACTIF(ReadAndWriteAndRead)
 }   // namespace gum_tests

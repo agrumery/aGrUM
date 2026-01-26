@@ -1,7 +1,7 @@
 /****************************************************************************
  *   This file is part of the aGrUM/pyAgrum library.                        *
  *                                                                          *
- *   Copyright (c) 2005-2025 by                                             *
+ *   Copyright (c) 2005-2026 by                                             *
  *       - Pierre-Henri WUILLEMIN(_at_LIP6)                                 *
  *       - Christophe GONZALES(_at_AMU)                                     *
  *                                                                          *
@@ -27,7 +27,7 @@
  *                                                                          *
  *   See LICENCES for more details.                                         *
  *                                                                          *
- *   SPDX-FileCopyrightText: Copyright 2005-2025                            *
+ *   SPDX-FileCopyrightText: Copyright 2005-2026                            *
  *       - Pierre-Henri WUILLEMIN(_at_LIP6)                                 *
  *       - Christophe GONZALES(_at_AMU)                                     *
  *   SPDX-License-Identifier: LGPL-3.0-or-later OR MIT                      *
@@ -37,6 +37,7 @@
  *   gitlab   : https://gitlab.com/agrumery/agrum                           *
  *                                                                          *
  ****************************************************************************/
+
 #pragma once
 
 
@@ -52,36 +53,37 @@
 #include <agrum/base/variables/labelizedVariable.h>
 #include <agrum/base/variables/rangeVariable.h>
 
+#undef GUM_CURRENT_SUITE
+#undef GUM_CURRENT_MODULE
+#define GUM_CURRENT_SUITE  Tensor
+#define GUM_CURRENT_MODULE GUMBASE
+
 namespace gum_tests {
-  class GUM_TEST_SUITE(Tensor) {
+  struct TensorTestSuite {
     public:
-    void setUp() {}
-
-    void tearDown() {}
-
-    GUM_ACTIVE_TEST(Creation) {
+    static void testCreation() {
       gum::Tensor< double > p(new gum::MultiDimArray< double >());
-      TS_ASSERT(p.empty());
+      CHECK(p.empty());
 
       gum::LabelizedVariable a("a", "first var", 2), b("b", "second var", 4),
           c("c", "third var", 5), other_a("a", "first var", 2);
-      TS_GUM_ASSERT_THROWS_NOTHING(p << a << b << c)
-      TS_ASSERT_THROWS(p << a << a, const gum::DuplicateElement&)
-      TS_ASSERT_THROWS(p << a << other_a, const gum::DuplicateElement&)
+      GUM_CHECK_ASSERT_THROWS_NOTHING(p << a << b << c);
+      CHECK_THROWS_AS(p << a << a, const gum::DuplicateElement&);
+      CHECK_THROWS_AS(p << a << other_a, const gum::DuplicateElement&);
     }   // namespace gum_tests
 
-    GUM_ACTIVE_TEST(CreationWithVars) {
+    static void testCreationWithVars() {
       gum::LabelizedVariable a("a", "first var", 2);
       gum::LabelizedVariable b("b", "second var", 4);
       gum::LabelizedVariable c("c", "third var", 5);
       gum::LabelizedVariable other_a("a", "first var", 2);
 
       gum::Tensor< double > p({&a, &b, &c});
-      TS_ASSERT_THROWS(p << a << a, const gum::DuplicateElement&)
-      TS_ASSERT_THROWS(p << a << other_a, const gum::DuplicateElement&)
+      CHECK_THROWS_AS(p << a << a, const gum::DuplicateElement&);
+      CHECK_THROWS_AS(p << a << other_a, const gum::DuplicateElement&);
     }
 
-    GUM_ACTIVE_TEST(Normalisation) {
+    static void testNormalisation() {
       gum::Tensor< double > p(new gum::MultiDimArray< double >());
 
       gum::LabelizedVariable a("a", "first var", 2);
@@ -104,25 +106,24 @@ namespace gum_tests {
         p.normalize();
 
         i.setLast();
-        TS_ASSERT_EQUALS(p[i], 2.0 / (taille + 1))
+        CHECK((p[i]) == (2.0 / (taille + 1)));
 
         i.setFirst();
-        TS_ASSERT_EQUALS(p[i], 2.0 / (taille * (taille + 1)))
+        CHECK((p[i]) == (2.0 / (taille * (taille + 1))));
       } catch (gum::Exception& e) { GUM_SHOWERROR(e); }
     }
 
-    GUM_ACTIVE_TEST(DomainSizeChanges) {
+    static void testDomainSizeChanges() {
       gum::Tensor< double >  p1(new gum::MultiDimArray< double >());
       gum::LabelizedVariable var1("var1", "first var", 2);
       gum::LabelizedVariable var2("var2", "second var", 2);
       gum::LabelizedVariable var3("var3", "third var", 2);
       p1 << var1 << var2 << var3;
 
-      TS_ASSERT_EQUALS(p1.domainSize(),
-                       (var1.domainSize() * var2.domainSize() * var3.domainSize()));
+      CHECK((p1.domainSize()) == ((var1.domainSize() * var2.domainSize() * var3.domainSize())));
     }
 
-    GUM_ACTIVE_TEST(AddAnyNumber) {
+    static void testAddAnyNumber() {
       gum::LabelizedVariable a("a", "first var", 2);
       gum::LabelizedVariable b("b", "second var", 4);
       gum::LabelizedVariable c("c", "third var", 5);
@@ -131,10 +132,10 @@ namespace gum_tests {
       gum::Instantiation    i(proba);
 
       for (i.setFirst(); !i.end(); ++i)
-        TS_GUM_ASSERT_THROWS_NOTHING(proba.set(i, (double)-1))
+        GUM_CHECK_ASSERT_THROWS_NOTHING(proba.set(i, (double)-1));
     }
 
-    GUM_ACTIVE_TEST(CopyProba) {
+    static void testCopyProba() {
       gum::Tensor< double >  m(new gum::MultiDimArray< double >());
       gum::LabelizedVariable a("a", "first var", 2);
       gum::LabelizedVariable b("b", "second var", 4);
@@ -156,17 +157,17 @@ namespace gum_tests {
       gum::LabelizedVariable y("y", "second var", 4);
       gum::LabelizedVariable z("z", "third var", 5);
       mm << x << z;
-      TS_ASSERT_THROWS_ANYTHING(mm.copyFrom(m))
+      CHECK_THROWS(mm.copyFrom(m));
       mm << y;
-      TS_GUM_ASSERT_THROWS_NOTHING(mm.copyFrom(m))
+      GUM_CHECK_ASSERT_THROWS_NOTHING(mm.copyFrom(m));
 
       gum::Instantiation j(mm);
       i.chgVal(a, 0).chgVal(b, 2).chgVal(c, 2);
       j.chgVal(x, 0).chgVal(y, 2).chgVal(z, 0);
-      TS_ASSERT_EQUALS(m[i], mm[j])
+      CHECK((m[i]) == (mm[j]));
     }
 
-    GUM_ACTIVE_TEST(RegressionCopy) {
+    static void testRegressionCopy() {
       gum::LabelizedVariable a("a", "first var", 2);
       gum::LabelizedVariable b("b", "second var", 4);
       gum::LabelizedVariable c("c", "third var", 5);
@@ -174,23 +175,23 @@ namespace gum_tests {
         gum::Tensor< double > P1({&a, &b, &c});
         gum::Tensor< double > P2({&a, &c});
 
-        TS_GUM_ASSERT_THROWS_NOTHING(P2.copy(P1))
+        GUM_CHECK_ASSERT_THROWS_NOTHING(P2.copy(P1));
       }
       {
         gum::Tensor< double > P1, P2;
         P1 << a << b << c;
         P2 << a << c;
-        TS_GUM_ASSERT_THROWS_NOTHING(P1.copy(P2))
+        GUM_CHECK_ASSERT_THROWS_NOTHING(P1.copy(P2));
       }
       {
         gum::Tensor< double > P1, P2;
         P1 << b;
         P2 << a << c;
-        TS_GUM_ASSERT_THROWS_NOTHING(P1.copy(P2))
+        GUM_CHECK_ASSERT_THROWS_NOTHING(P1.copy(P2));
       }
     }
 
-    GUM_ACTIVE_TEST(Equality) {
+    static void testEquality() {
       auto a = gum::LabelizedVariable("a", "afoo", 3);
       auto b = gum::LabelizedVariable("b", "bfoo", 3);
       auto c = gum::LabelizedVariable("c", "cfoo", 3);
@@ -211,13 +212,13 @@ namespace gum_tests {
       u << b << a;   // same dims, same data, different order
       u.fillWith({1, 4, 7, 2, 5, 8, 3, 6, 9});
 
-      TS_ASSERT_DIFFERS(p, q)
-      TS_ASSERT_EQUALS(p, r)
-      TS_ASSERT_DIFFERS(p, t)
-      TS_ASSERT_EQUALS(p, u)
+      CHECK((p) != (q));
+      CHECK((p) == (r));
+      CHECK((p) != (t));
+      CHECK((p) == (u));
     }
 
-    GUM_ACTIVE_TEST(MinMax) {
+    static void testMinMax() {
       auto a = gum::LabelizedVariable("a", "afoo", 3);
       auto b = gum::LabelizedVariable("b", "bfoo", 3);
 
@@ -225,19 +226,19 @@ namespace gum_tests {
       p << a << b;
       p.fillWith({1, 9, 3, 0, 5, 0, 7, 8, 9}).normalizeAsCPT();
 
-      TS_ASSERT_EQUALS(p.min(), 0.0)
-      TS_ASSERT_EQUALS(p.max(), 1.0)
-      TS_ASSERT_EQUALS(p.minNonZero(), 1.0 / 13.0)
-      TS_ASSERT_EQUALS(p.maxNonOne(), 9.0 / 13.0)
+      CHECK((p.min()) == (0.0));
+      CHECK((p.max()) == (1.0));
+      CHECK((p.minNonZero()) == (1.0 / 13.0));
+      CHECK((p.maxNonOne()) == (9.0 / 13.0));
 
       p.fillWith({1, 1, 1, 1, 1, 1, 1, 1, 1});
-      TS_ASSERT_EQUALS(p.maxNonOne(), 1)
+      CHECK((p.maxNonOne()) == (1));
 
       p.fillWith({0, 0, 0, 0, 0, 0, 0, 0, 0});
-      TS_ASSERT_EQUALS(p.minNonZero(), 0)
+      CHECK((p.minNonZero()) == (0));
     }
 
-    GUM_ACTIVE_TEST(IsNonZeroMap) {
+    static void testIsNonZeroMap() {
       auto a = gum::LabelizedVariable("a", "afoo", 3);
       auto b = gum::LabelizedVariable("b", "bfoo", 3);
 
@@ -247,10 +248,10 @@ namespace gum_tests {
       q << a << b;
       q.fillWith({1, 1, 1, 0, 1, 0, 1, 1, 1});
 
-      TS_ASSERT_EQUALS(p.isNonZeroMap(), q)
+      CHECK((p.isNonZeroMap()) == (q));
     }
 
-    GUM_ACTIVE_TEST(Operators) {
+    static void testOperators() {
       auto a = gum::LabelizedVariable("a", "afoo");
       auto b = gum::LabelizedVariable("b", "bfoo");
       auto c = gum::LabelizedVariable("c", "cfoo");
@@ -268,33 +269,29 @@ namespace gum_tests {
       // just checking memory allocation (what else ?)
       auto pA = p1 * p2;
 
-      TS_ASSERT_EQUALS(
-          pA,
-          (gum::Tensor< int >() << b << c << a).fillWith({5, 18, 7, 24, 10, 24, 14, 32}))
+      CHECK((pA)
+            == ((gum::Tensor< int >() << b << c << a).fillWith({5, 18, 7, 24, 10, 24, 14, 32})));
 
       auto pB = p1 + p2;
-      TS_ASSERT_EQUALS(pB,
-                       (gum::Tensor< int >() << b << c << a).fillWith({6, 9, 8, 11, 7, 10, 9, 12}))
+      CHECK((pB) == ((gum::Tensor< int >() << b << c << a).fillWith({6, 9, 8, 11, 7, 10, 9, 12})));
 
       auto pC = p2 / p1;
-      TS_ASSERT_EQUALS(pC, (gum::Tensor< int >() << b << a << c).fillWith({5, 2, 2, 1, 7, 2, 3, 2}))
+      CHECK((pC) == ((gum::Tensor< int >() << b << a << c).fillWith({5, 2, 2, 1, 7, 2, 3, 2})));
 
       auto pD = p2 - p1;
-      TS_ASSERT_EQUALS(pD, (gum::Tensor< int >() << b << a << c).fillWith({4, 3, 3, 2, 6, 5, 5, 4}))
+      CHECK((pD) == ((gum::Tensor< int >() << b << a << c).fillWith({4, 3, 3, 2, 6, 5, 5, 4})));
 
-      TS_ASSERT_EQUALS(
-          ((p1 * p2) - (p2 / p1) + p1),
-          (gum::Tensor< int >() << b << a << c).fillWith({1, 19, 10, 27, 1, 25, 13, 34}))
+      CHECK((((p1 * p2) - (p2 / p1) + p1))
+            == ((gum::Tensor< int >() << b << a << c).fillWith({1, 19, 10, 27, 1, 25, 13, 34})));
 
       p = p1 * p2;
       p -= (p2 / p1);
       p += p1;
-      TS_ASSERT_EQUALS(
-          p,
-          (gum::Tensor< int >() << b << a << c).fillWith({1, 19, 10, 27, 1, 25, 13, 34}))
+      CHECK((p)
+            == ((gum::Tensor< int >() << b << a << c).fillWith({1, 19, 10, 27, 1, 25, 13, 34})));
     }
 
-    GUM_ACTIVE_TEST(MargOutFunctions) {
+    static void testMargOutFunctions() {
       try {
         auto a = gum::LabelizedVariable("a", "afoo", 3);
         auto b = gum::LabelizedVariable("b", "bfoo", 3);
@@ -311,35 +308,35 @@ namespace gum_tests {
         q.fillWith({1, 2, 3, 4, 5, 6, 7, 8, 9});
         q.normalize();
 
-        TS_ASSERT_DIFFERS(p, q)
+        CHECK((p) != (q));
 
         gum::Tensor< double > r;
         r << c << d;
         r.fillWith({1, 2, 3, 4, 5, 6, 7, 8, 9});
-        TS_ASSERT_DIFFERS(q, r)
+        CHECK((q) != (r));
         r.normalize();
-        TS_ASSERT_EQUALS(q, r)
+        CHECK((q) == (r));
 
         auto joint = p * q;
 
         auto margAB = joint.sumOut({&c, &d});
-        TS_ASSERT_EQUALS(p, margAB)
+        CHECK((p) == (margAB));
         auto margCD = joint.sumOut({&b, &a});
-        TS_ASSERT_EQUALS(q, margCD)
+        CHECK((q) == (margCD));
 
         p.fillWith({1, 2, 3, 4, 5, 6, 7, 8, 9});
-        TS_ASSERT_EQUALS(p.prodOut({&a}), (gum::Tensor< double >() << b).fillWith({6, 120, 504}))
-        TS_ASSERT_EQUALS(p.prodOut({&b}), (gum::Tensor< double >() << a).fillWith({28, 80, 162}))
+        CHECK((p.prodOut({&a})) == ((gum::Tensor< double >() << b).fillWith({6, 120, 504})));
+        CHECK((p.prodOut({&b})) == ((gum::Tensor< double >() << a).fillWith({28, 80, 162})));
 
-        TS_ASSERT_EQUALS(p.maxOut({&a}), (gum::Tensor< double >() << b).fillWith({3, 6, 9}))
-        TS_ASSERT_EQUALS(p.maxOut({&b}), (gum::Tensor< double >() << a).fillWith({7, 8, 9}))
+        CHECK((p.maxOut({&a})) == ((gum::Tensor< double >() << b).fillWith({3, 6, 9})));
+        CHECK((p.maxOut({&b})) == ((gum::Tensor< double >() << a).fillWith({7, 8, 9})));
 
-        TS_ASSERT_EQUALS(p.minOut({&a}), (gum::Tensor< double >() << b).fillWith({1, 4, 7}))
-        TS_ASSERT_EQUALS(p.minOut({&b}), (gum::Tensor< double >() << a).fillWith({1, 2, 3}))
+        CHECK((p.minOut({&a})) == ((gum::Tensor< double >() << b).fillWith({1, 4, 7})));
+        CHECK((p.minOut({&b})) == ((gum::Tensor< double >() << a).fillWith({1, 2, 3})));
       } catch (gum::Exception& e) { GUM_SHOWERROR(e); }
     }
 
-    GUM_ACTIVE_TEST(MarginalizingFunctions) {
+    static void testMarginalizingFunctions() {
       auto a = gum::LabelizedVariable("a", "afoo", 3);
       auto b = gum::LabelizedVariable("b", "bfoo", 3);
       auto c = gum::LabelizedVariable("c", "cfoo", 3);
@@ -355,17 +352,17 @@ namespace gum_tests {
 
       auto joint = p * q;
 
-      TS_ASSERT_EQUALS(joint.sumOut({&c, &d}), joint.sumIn({&a, &b}))
-      TS_ASSERT_EQUALS(joint.sumOut({&c, &d}), joint.sumIn({&b, &a}))
+      CHECK((joint.sumOut({&c, &d})) == (joint.sumIn({&a, &b})));
+      CHECK((joint.sumOut({&c, &d})) == (joint.sumIn({&b, &a})));
 
-      TS_ASSERT_EQUALS(joint.prodOut({&c, &d}), joint.prodIn({&a, &b}))
+      CHECK((joint.prodOut({&c, &d})) == (joint.prodIn({&a, &b})));
 
-      TS_ASSERT_EQUALS(joint.minOut({&c, &d}), joint.minIn({&a, &b}))
+      CHECK((joint.minOut({&c, &d})) == (joint.minIn({&a, &b})));
 
-      TS_ASSERT_EQUALS(joint.maxOut({&c, &d}), joint.maxIn({&a, &b}))
+      CHECK((joint.maxOut({&c, &d})) == (joint.maxIn({&a, &b})));
     }
 
-    GUM_ACTIVE_TEST(DeprecatedMarginalizingFunctions) {
+    static void testDeprecatedMarginalizingFunctions() {
       auto a = gum::LabelizedVariable("a", "afoo", 3);
       auto b = gum::LabelizedVariable("b", "bfoo", 3);
       auto c = gum::LabelizedVariable("c", "cfoo", 3);
@@ -381,17 +378,17 @@ namespace gum_tests {
 
       auto joint = p * q;
 
-      TS_ASSERT_EQUALS(joint.sumOut({&c, &d}), joint.sumIn({&a, &b}))
-      TS_ASSERT_EQUALS(joint.sumOut({&c, &d}), joint.sumIn({&b, &a}))
+      CHECK((joint.sumOut({&c, &d})) == (joint.sumIn({&a, &b})));
+      CHECK((joint.sumOut({&c, &d})) == (joint.sumIn({&b, &a})));
 
-      TS_ASSERT_EQUALS(joint.prodOut({&c, &d}), joint.prodIn({&a, &b}))
+      CHECK((joint.prodOut({&c, &d})) == (joint.prodIn({&a, &b})));
 
-      TS_ASSERT_EQUALS(joint.minOut({&c, &d}), joint.minIn({&a, &b}))
+      CHECK((joint.minOut({&c, &d})) == (joint.minIn({&a, &b})));
 
-      TS_ASSERT_EQUALS(joint.maxOut({&c, &d}), joint.maxIn({&a, &b}))
+      CHECK((joint.maxOut({&c, &d})) == (joint.maxIn({&a, &b})));
     }
 
-    GUM_ACTIVE_TEST(AbsTensor) {
+    static void testAbsTensor() {
       auto a = gum::LabelizedVariable("a", "afoo", 2);
       auto b = gum::LabelizedVariable("b", "bfoo", 2);
 
@@ -403,13 +400,13 @@ namespace gum_tests {
       q << a << b;
       q.fillWith({0, 3, 0, 3});
 
-      TS_ASSERT_EQUALS((p - q).abs(), (gum::Tensor< double >() << a << b).fillWith({0, 2, 2, 0}))
-      TS_ASSERT_EQUALS((q - p).abs(), (gum::Tensor< double >() << a << b).fillWith({0, 2, 2, 0}))
-      TS_ASSERT_EQUALS((q - p).abs().max(), 2)
-      TS_ASSERT_EQUALS((q - p).abs().min(), 0)
+      CHECK(((p - q).abs()) == ((gum::Tensor< double >() << a << b).fillWith({0, 2, 2, 0})));
+      CHECK(((q - p).abs()) == ((gum::Tensor< double >() << a << b).fillWith({0, 2, 2, 0})));
+      CHECK(((q - p).abs().max()) == (2));
+      CHECK(((q - p).abs().min()) == (0));
     }
 
-    GUM_ACTIVE_TEST(SqTensor) {
+    static void testSqTensor() {
       auto a = gum::LabelizedVariable("a", "afoo", 2);
       auto b = gum::LabelizedVariable("b", "bfoo", 2);
 
@@ -421,22 +418,22 @@ namespace gum_tests {
       q << b << a;
       q.fillWith({0, 0, 3, 3});
 
-      TS_ASSERT_EQUALS((p - q).sq(), (gum::Tensor< double >() << a << b).fillWith({0, 4, 4, 0}))
-      TS_ASSERT_EQUALS((q - p).sq(), (gum::Tensor< double >() << b << a).fillWith({0, 4, 4, 0}))
-      TS_ASSERT_EQUALS((q - p).sq().max(), 4)
-      TS_ASSERT_EQUALS((q - p).sq().min(), 0)
+      CHECK(((p - q).sq()) == ((gum::Tensor< double >() << a << b).fillWith({0, 4, 4, 0})));
+      CHECK(((q - p).sq()) == ((gum::Tensor< double >() << b << a).fillWith({0, 4, 4, 0})));
+      CHECK(((q - p).sq().max()) == (4));
+      CHECK(((q - p).sq().min()) == (0));
     }
 
-    GUM_ACTIVE_TEST(EntropyTensor) {
+    static void testEntropyTensor() {
       auto                  a = gum::LabelizedVariable("a", "afoo", 2);
       gum::Tensor< double > p;
       p.add(a);
-      TS_ASSERT_EQUALS(p.fillWith({0, 1}).entropy(), 0.0)
-      TS_ASSERT_EQUALS(p.fillWith({1, 0}).entropy(), 0.0)
-      TS_ASSERT_EQUALS(p.fillWith({0.5, 0.5}).entropy(), 1.0)
+      CHECK((p.fillWith({0, 1}).entropy()) == (0.0));
+      CHECK((p.fillWith({1, 0}).entropy()) == (0.0));
+      CHECK((p.fillWith({0.5, 0.5}).entropy()) == (1.0));
     }
 
-    GUM_ACTIVE_TEST(ReorganizeTensor) {
+    static void testReorganizeTensor() {
       auto a = gum::LabelizedVariable("a", "afoo", 3);
       auto b = gum::LabelizedVariable("b", "bfoo", 3);
       auto c = gum::LabelizedVariable("c", "cfoo", 3);
@@ -452,35 +449,35 @@ namespace gum_tests {
 
       auto joint1 = p * q;
       auto joint2 = q * p;
-      TS_ASSERT_DIFFERS(joint1.toString(), joint2.toString())
+      CHECK((joint1.toString()) != (joint2.toString()));
       auto joint3 = (q * p).reorganize({&c, &d, &a, &b});
-      TS_ASSERT_EQUALS(joint1.toString(), joint3.toString())
+      CHECK((joint1.toString()) == (joint3.toString()));
 
       gum::Instantiation inst;
       inst << a << b << c << d;
       for (inst.setFirst(); !inst.end(); ++inst) {
-        TS_ASSERT_EQUALS(joint1.get(inst), joint2.get(inst))
-        TS_ASSERT_EQUALS(joint1.get(inst), joint3.get(inst))
+        CHECK((joint1.get(inst)) == (joint2.get(inst)));
+        CHECK((joint1.get(inst)) == (joint3.get(inst)));
       }
 
-      TS_ASSERT_THROWS(p.reorganize({&a, &b, &c}), const gum::InvalidArgument&)
-      TS_ASSERT_THROWS(p.reorganize(std::vector< const gum::DiscreteVariable* >{&a, &d}),
+      CHECK_THROWS_AS(p.reorganize({&a, &b, &c}), const gum::InvalidArgument&);
+      CHECK_THROWS_AS(p.reorganize(std::vector< const gum::DiscreteVariable* >{&a, &d}),
 
 
-                       const gum::InvalidArgument&
+                      const gum::InvalidArgument&
 
 
-      )
-      TS_ASSERT_THROWS(p.reorganize(std::vector< const gum::DiscreteVariable* >{&a}),
+      );
+      CHECK_THROWS_AS(p.reorganize(std::vector< const gum::DiscreteVariable* >{&a}),
 
 
-                       const gum::InvalidArgument&
+                      const gum::InvalidArgument&
 
 
-      )
+      );
     }
 
-    GUM_ACTIVE_TEST(ReorganizeTensorFromNames) {
+    static void testReorganizeTensorFromNames() {
       auto a = gum::LabelizedVariable("a", "afoo", 3);
       auto b = gum::LabelizedVariable("b", "bfoo", 3);
       auto c = gum::LabelizedVariable("c", "cfoo", 3);
@@ -496,24 +493,24 @@ namespace gum_tests {
 
       auto joint1 = p * q;
       auto joint2 = q * p;
-      TS_ASSERT_DIFFERS(joint1.toString(), joint2.toString())
+      CHECK((joint1.toString()) != (joint2.toString()));
       auto joint3 = (q * p).reorganize({"c", "d", "a", "b"});
-      TS_ASSERT_EQUALS(joint1.toString(), joint3.toString())
+      CHECK((joint1.toString()) == (joint3.toString()));
 
       gum::Instantiation inst;
       inst << a << b << c << d;
       for (inst.setFirst(); !inst.end(); ++inst) {
-        TS_ASSERT_EQUALS(joint1.get(inst), joint2.get(inst))
-        TS_ASSERT_EQUALS(joint1.get(inst), joint3.get(inst))
+        CHECK((joint1.get(inst)) == (joint2.get(inst)));
+        CHECK((joint1.get(inst)) == (joint3.get(inst)));
       }
 
-      TS_ASSERT_THROWS(p.reorganize({"a", "b", "c"}), const gum::InvalidArgument&)
-      TS_ASSERT_THROWS(p.reorganize({std::string("a"), "d"}), const gum::InvalidArgument&)
-      TS_ASSERT_THROWS(p.reorganize({std::string("a")}), const gum::InvalidArgument&)
-      TS_ASSERT_THROWS(p.reorganize({std::string("héhé")}), const gum::InvalidArgument&)
+      CHECK_THROWS_AS(p.reorganize({"a", "b", "c"}), const gum::InvalidArgument&);
+      CHECK_THROWS_AS(p.reorganize({std::string("a"), "d"}), const gum::InvalidArgument&);
+      CHECK_THROWS_AS(p.reorganize({std::string("a")}), const gum::InvalidArgument&);
+      CHECK_THROWS_AS(p.reorganize({std::string("héhé")}), const gum::InvalidArgument&);
     }
 
-    GUM_ACTIVE_TEST(PutFirst) {
+    static void testPutFirst() {
       auto a = gum::LabelizedVariable("a", "afoo", 3);
       auto b = gum::LabelizedVariable("b", "bfoo", 3);
       auto c = gum::LabelizedVariable("b", "bfoo", 3);
@@ -522,14 +519,14 @@ namespace gum_tests {
       p << a << b;
       p.fillWith({1, 2, 3, 4, 5, 6, 7, 8, 9});
 
-      TS_ASSERT_DIFFERS(p.toString(), p.putFirst(&b).toString())
-      TS_ASSERT_EQUALS(p.toString(), p.putFirst(&b).putFirst(&a).toString())
-      TS_ASSERT_EQUALS(p.toString(), p.putFirst(&a).toString())
+      CHECK((p.toString()) != (p.putFirst(&b).toString()));
+      CHECK((p.toString()) == (p.putFirst(&b).putFirst(&a).toString()));
+      CHECK((p.toString()) == (p.putFirst(&a).toString()));
 
-      TS_ASSERT_THROWS(p.putFirst(&c), const gum::InvalidArgument&)
+      CHECK_THROWS_AS(p.putFirst(&c), const gum::InvalidArgument&);
     }
 
-    GUM_ACTIVE_TEST(PutFirstWithName) {
+    static void testPutFirstWithName() {
       auto a = gum::LabelizedVariable("a", "afoo", 3);
       auto b = gum::LabelizedVariable("b", "bfoo", 3);
       auto c = gum::LabelizedVariable("b", "bfoo", 3);
@@ -538,14 +535,14 @@ namespace gum_tests {
       p << a << b;
       p.fillWith({1, 2, 3, 4, 5, 6, 7, 8, 9});
 
-      TS_ASSERT_DIFFERS(p.toString(), p.putFirst("b").toString())
-      TS_ASSERT_EQUALS(p.toString(), p.putFirst("b").putFirst("a").toString())
-      TS_ASSERT_EQUALS(p.toString(), p.putFirst("a").toString())
+      CHECK((p.toString()) != (p.putFirst("b").toString()));
+      CHECK((p.toString()) == (p.putFirst("b").putFirst("a").toString()));
+      CHECK((p.toString()) == (p.putFirst("a").toString()));
 
-      TS_ASSERT_THROWS(p.putFirst("c"), const gum::InvalidArgument&)
+      CHECK_THROWS_AS(p.putFirst("c"), const gum::InvalidArgument&);
     }
 
-    GUM_ACTIVE_TEST(Extraction) {
+    static void testExtraction() {
       auto a = gum::LabelizedVariable("a", "afoo", 3);
       auto b = gum::LabelizedVariable("b", "bfoo", 3);
       auto c = gum::LabelizedVariable("c", "cfoo", 3);
@@ -563,15 +560,15 @@ namespace gum_tests {
       gum::Instantiation I;
       I << c;
       I.chgVal(c, 0);
-      TS_ASSERT_EQUALS(pot.extract(I), p)
+      CHECK((pot.extract(I)) == (p));
       I.chgVal(c, 2);
       gum::Tensor< double > r;
       r << a << b;
       r.fillWith({3, 6, 9, 12, 15, 18, 21, 24, 27});
-      TS_ASSERT_EQUALS(pot.reorganize({&b, &c, &a}).extract(I), r)
+      CHECK((pot.reorganize({&b, &c, &a}).extract(I)) == (r));
     }
 
-    GUM_ACTIVE_TEST(OperatorEqual) {
+    static void testOperatorEqual() {
       auto a = gum::LabelizedVariable("a", "afoo", 3);
       auto b = gum::LabelizedVariable("b", "bfoo", 3);
 
@@ -579,42 +576,42 @@ namespace gum_tests {
       {
         // empty tensors are equal
         gum::Tensor< double > q;
-        TS_ASSERT_EQUALS(p, q)
+        CHECK((p) == (q));
       }
       p << a;
       p.fillWith({1, 2, 3});
-      TS_ASSERT_EQUALS(p, p)
+      CHECK((p) == (p));
       {
         // same tensor
         gum::Tensor< double > q;
         q << a;
         q.fillWith({1, 2, 3});
-        TS_ASSERT_EQUALS(p, q)
+        CHECK((p) == (q));
       }
       {
         // difference values
         gum::Tensor< double > q;
         q << a;
         q.fillWith({3, 6, 9});
-        TS_ASSERT_DIFFERS(p, q)
+        CHECK((p) != (q));
       }
       {
         // same values, different variables
         gum::Tensor< double > q;
         q << b;
         q.fillWith({1, 2, 3});
-        TS_ASSERT_DIFFERS(p, q)
+        CHECK((p) != (q));
       }
       {
         // different dimensions
         gum::Tensor< double > q;
         q << b << a;
         q.fillWith(1);
-        TS_ASSERT_DIFFERS(p, q)
+        CHECK((p) != (q));
       }
     }
 
-    GUM_ACTIVE_TEST(ScaleAndTranslate) {
+    static void testScaleAndTranslate() {
       auto a = gum::LabelizedVariable("a", "afoo", 3);
 
       gum::Tensor< double > p;
@@ -624,18 +621,18 @@ namespace gum_tests {
       p3 << a;
       p3.fillWith({3, 6, 9});
 
-      TS_GUM_ASSERT_THROWS_NOTHING(p.scale(3.0))
-      TS_ASSERT_EQUALS(p, p3)
-      TS_ASSERT_EQUALS(p, p3)
+      GUM_CHECK_ASSERT_THROWS_NOTHING(p.scale(3.0));
+      CHECK((p) == (p3));
+      CHECK((p) == (p3));
 
       p.fillWith({1, 2, 3});
       gum::Tensor< double > p2;
       p2 << a;
       p2.fillWith({2, 3, 4});
 
-      TS_GUM_ASSERT_THROWS_NOTHING(p.translate(1.0))
-      TS_ASSERT_EQUALS(p, p2)
-      TS_ASSERT_EQUALS(p, p2)
+      GUM_CHECK_ASSERT_THROWS_NOTHING(p.translate(1.0));
+      CHECK((p) == (p2));
+      CHECK((p) == (p2));
 
 
       p.fillWith({1, 2, 3});
@@ -643,12 +640,12 @@ namespace gum_tests {
       p1 << a;
       p1.fillWith({4, 7, 10});
       p.scale(3.0).translate(1.0);
-      // TS_GUM_ASSERT_THROWS_NOTHING(p.scale(3.0).translate(1.0))
-      TS_ASSERT_EQUALS(p, p1)
-      TS_ASSERT_EQUALS(p, p1)
+      // GUM_CHECK_ASSERT_THROWS_NOTHING(p.scale(3.0).translate(1.0));
+      CHECK((p) == (p1));
+      CHECK((p) == (p1));
     }
 
-    GUM_ACTIVE_TEST(NormalizeAsCPT) {
+    static void testNormalizeAsCPT() {
       auto a = gum::LabelizedVariable("a", "afoo", 3);
       auto b = gum::LabelizedVariable("b", "bfoo", 3);
 
@@ -658,18 +655,18 @@ namespace gum_tests {
 
       auto q = p / p.sumOut({&a});
       p.normalizeAsCPT();
-      TS_ASSERT_EQUALS(p, q)
-      TS_ASSERT_EQUALS(q, p)
+      CHECK((p) == (q));
+      CHECK((q) == (p));
 
       gum::Tensor< double > p2;
       p2 << a << b;
       p2.fill(0.0f);
-      TS_ASSERT_THROWS(p2.normalizeAsCPT(), const gum::FatalError&)
+      CHECK_THROWS_AS(p2.normalizeAsCPT(), const gum::FatalError&);
 
       gum::Tensor< double > p3;
       p3 << a << b;
       p3.fillWith({1, 2, 3, 0, 0, 0, 7, 8, 9});
-      TS_ASSERT_THROWS(p2.normalizeAsCPT(), const gum::FatalError&)
+      CHECK_THROWS_AS(p2.normalizeAsCPT(), const gum::FatalError&);
 
       gum::Tensor< double > p4;
       p4 << a;
@@ -678,92 +675,93 @@ namespace gum_tests {
       gum::Tensor< double > witness;
       witness << a;
       witness.fillWith({0.1f, 0.3f, 0.6f});
-      TS_ASSERT_EQUALS(p4, witness)
+      CHECK((p4) == (witness));
     }
 
-    GUM_ACTIVE_TEST(EmptyTensor) {
+    static void testEmptyTensor() {
       gum::Tensor< double > p;
       gum::Instantiation    inst(p);
       double                a     = 0;
       auto                  var_a = gum::LabelizedVariable("a", "afoo", 3);
 
-      TS_GUM_ASSERT_THROWS_NOTHING(a = p[inst];)
-      TS_ASSERT_EQUALS(a, 1.0f)
+      GUM_CHECK_ASSERT_THROWS_NOTHING(a = p[inst];);
+      CHECK((a) == (1.0f));
 
-      TS_GUM_ASSERT_THROWS_NOTHING(p.set(inst, a + static_cast< double >(3.0f));)
-      TS_ASSERT_EQUALS(p[inst], 4.0f)
+      GUM_CHECK_ASSERT_THROWS_NOTHING(p.set(inst, a + static_cast< double >(3.0f)););
+      CHECK((p[inst]) == (4.0f));
 
-      TS_GUM_ASSERT_THROWS_NOTHING(p.populate({1.0f}))
-      TS_ASSERT_EQUALS(p[inst], 1.0f)
-      TS_GUM_ASSERT_THROWS_NOTHING(p.populate(std::vector< double >{2.0f}))
-      TS_ASSERT_EQUALS(p[inst], 2.0f)
-      TS_ASSERT_THROWS(p.populate(std::vector< double >{2.0f, 3.0f}), const gum::SizeError&)
+      GUM_CHECK_ASSERT_THROWS_NOTHING(p.populate({1.0f}));
+      CHECK((p[inst]) == (1.0f));
+      GUM_CHECK_ASSERT_THROWS_NOTHING(p.populate(std::vector< double >{2.0f}));
+      CHECK((p[inst]) == (2.0f));
+      CHECK_THROWS_AS(p.populate(std::vector< double >{2.0f, 3.0f}), const gum::SizeError&);
 
-      TS_GUM_ASSERT_THROWS_NOTHING(p.apply([](double x) { return x * 2.0f + 1.0f; });)
-      TS_ASSERT_EQUALS(p[inst], 5.0f)
+      GUM_CHECK_ASSERT_THROWS_NOTHING(p.apply([](double x) { return x * 2.0f + 1.0f; }););
+      CHECK((p[inst]) == (5.0f));
 
       a = 0.3f;
-      TS_GUM_ASSERT_THROWS_NOTHING(a = p.reduce([](double x, double y) { return x + y; }, 0.0f);)
-      TS_ASSERT_EQUALS(a, 0.0f)
+      GUM_CHECK_ASSERT_THROWS_NOTHING(a
+                                      = p.reduce([](double x, double y) { return x + y; }, 0.0f););
+      CHECK((a) == (0.0f));
 
-      TS_GUM_ASSERT_THROWS_NOTHING(p.populate({33.0f}))
-      TS_ASSERT_EQUALS(p.domainSize(), 1u)
-      TS_ASSERT_EQUALS(p.get(gum::Instantiation()), 33.0f)
-
-
-      TS_GUM_ASSERT_THROWS_NOTHING(p.set(inst, static_cast< double >(3.0f));)
-      TS_ASSERT_EQUALS(p.sum(), 3.0f)
-      TS_ASSERT_EQUALS(p.product(), 3.0f)
-      TS_ASSERT_EQUALS(p.max(), 3.0f)
-      TS_ASSERT_EQUALS(p.min(), 3.0f)
-      TS_ASSERT_EQUALS(p.minNonZero(), 3.0f)
-      TS_ASSERT_EQUALS(p.maxNonOne(), 3.0f)
-
-      TS_GUM_ASSERT_THROWS_NOTHING(p.set(inst, static_cast< double >(0.0f));)
-      TS_ASSERT_EQUALS(p.minNonZero(), 0)
-
-      TS_GUM_ASSERT_THROWS_NOTHING(p.set(inst, static_cast< double >(1.0f));)
-      TS_ASSERT_EQUALS(p.maxNonOne(), 1.0f)
-
-      TS_GUM_ASSERT_THROWS_NOTHING(p.fill(2.0f);)
-      TS_ASSERT_EQUALS(p[inst], 2.0f)
-      TS_GUM_ASSERT_THROWS_NOTHING(p.fillWith(3.0f);)
-      TS_ASSERT_EQUALS(p[inst], 3.0f)
-      TS_GUM_ASSERT_THROWS_NOTHING(p.fillWith({4.0f});)
-      TS_ASSERT_EQUALS(p[inst], 4.0f)
-      TS_GUM_ASSERT_THROWS_NOTHING(p.fillWith(std::vector< double >({5.0f}));)
-      TS_ASSERT_EQUALS(p[inst], 5.0f)
-
-      TS_ASSERT_EQUALS(p.entropy(), 0.0f)
-
-      TS_ASSERT_EQUALS(p.fillWith(2.0f).sq()[inst], 4.0f)
-      TS_ASSERT_EQUALS(p.fillWith(-2.0f).sq()[inst], 4.0f)
-      TS_ASSERT_EQUALS(p.fillWith(2.0f).abs()[inst], 2.0f)
-      TS_ASSERT_EQUALS(p.fillWith(-2.0f).abs()[inst], 2.0f)
-
-      TS_ASSERT_EQUALS(p.fillWith(2.0f).normalize()[inst], 1.0f)
-      TS_ASSERT_EQUALS(p.fillWith(0.0f).normalize()[inst], 0.0f)
-
-      TS_ASSERT_EQUALS(p.fillWith(2.0f).scale(4)[inst], 8.0f)
-      TS_ASSERT_EQUALS(p.fillWith(2.0f).translate(4)[inst], 6.0f)
+      GUM_CHECK_ASSERT_THROWS_NOTHING(p.populate({33.0f}));
+      CHECK((p.domainSize()) == (1u));
+      CHECK((p.get(gum::Instantiation())) == (33.0f));
 
 
-      TS_ASSERT_EQUALS(p.fillWith(2.0f).sumOut({&var_a})[inst], 2.0f)
-      TS_ASSERT_EQUALS(p.fillWith(3.0f).sumIn({&var_a})[inst], 3.0f)
-      TS_ASSERT_EQUALS(p.fillWith(4.0f).prodOut({&var_a})[inst], 4.0f)
-      TS_ASSERT_EQUALS(p.fillWith(5.0f).prodIn({&var_a})[inst], 5.0f)
-      TS_ASSERT_EQUALS(p.fillWith(6.0f).maxIn({&var_a})[inst], 6.0f)
-      TS_ASSERT_EQUALS(p.fillWith(7.0f).maxOut({&var_a})[inst], 7.0f)
-      TS_ASSERT_EQUALS(p.fillWith(8.0f).minOut({&var_a})[inst], 8.0f)
-      TS_ASSERT_EQUALS(p.fillWith(9.0f).minOut({&var_a})[inst], 9.0f)
+      GUM_CHECK_ASSERT_THROWS_NOTHING(p.set(inst, static_cast< double >(3.0f)););
+      CHECK((p.sum()) == (3.0f));
+      CHECK((p.product()) == (3.0f));
+      CHECK((p.max()) == (3.0f));
+      CHECK((p.min()) == (3.0f));
+      CHECK((p.minNonZero()) == (3.0f));
+      CHECK((p.maxNonOne()) == (3.0f));
 
-      TS_ASSERT_EQUALS(p.fillWith(0.0f).isNonZeroMap()[inst], 0.0f)
-      TS_ASSERT_EQUALS(p.fillWith(1.0f).isNonZeroMap()[inst], 1.0f)
-      TS_ASSERT_EQUALS(p.fillWith(0.5f).isNonZeroMap()[inst], 1.0f)
-      TS_ASSERT_EQUALS(p.fillWith(-0.5f).isNonZeroMap()[inst], 1.0f)
+      GUM_CHECK_ASSERT_THROWS_NOTHING(p.set(inst, static_cast< double >(0.0f)););
+      CHECK((p.minNonZero()) == (0));
+
+      GUM_CHECK_ASSERT_THROWS_NOTHING(p.set(inst, static_cast< double >(1.0f)););
+      CHECK((p.maxNonOne()) == (1.0f));
+
+      GUM_CHECK_ASSERT_THROWS_NOTHING(p.fill(2.0f););
+      CHECK((p[inst]) == (2.0f));
+      GUM_CHECK_ASSERT_THROWS_NOTHING(p.fillWith(3.0f););
+      CHECK((p[inst]) == (3.0f));
+      GUM_CHECK_ASSERT_THROWS_NOTHING(p.fillWith({4.0f}););
+      CHECK((p[inst]) == (4.0f));
+      GUM_CHECK_ASSERT_THROWS_NOTHING(p.fillWith(std::vector< double >({5.0f})););
+      CHECK((p[inst]) == (5.0f));
+
+      CHECK((p.entropy()) == (0.0f));
+
+      CHECK((p.fillWith(2.0f).sq()[inst]) == (4.0f));
+      CHECK((p.fillWith(-2.0f).sq()[inst]) == (4.0f));
+      CHECK((p.fillWith(2.0f).abs()[inst]) == (2.0f));
+      CHECK((p.fillWith(-2.0f).abs()[inst]) == (2.0f));
+
+      CHECK((p.fillWith(2.0f).normalize()[inst]) == (1.0f));
+      CHECK((p.fillWith(0.0f).normalize()[inst]) == (0.0f));
+
+      CHECK((p.fillWith(2.0f).scale(4)[inst]) == (8.0f));
+      CHECK((p.fillWith(2.0f).translate(4)[inst]) == (6.0f));
+
+
+      CHECK((p.fillWith(2.0f).sumOut({&var_a})[inst]) == (2.0f));
+      CHECK((p.fillWith(3.0f).sumIn({&var_a})[inst]) == (3.0f));
+      CHECK((p.fillWith(4.0f).prodOut({&var_a})[inst]) == (4.0f));
+      CHECK((p.fillWith(5.0f).prodIn({&var_a})[inst]) == (5.0f));
+      CHECK((p.fillWith(6.0f).maxIn({&var_a})[inst]) == (6.0f));
+      CHECK((p.fillWith(7.0f).maxOut({&var_a})[inst]) == (7.0f));
+      CHECK((p.fillWith(8.0f).minOut({&var_a})[inst]) == (8.0f));
+      CHECK((p.fillWith(9.0f).minOut({&var_a})[inst]) == (9.0f));
+
+      CHECK((p.fillWith(0.0f).isNonZeroMap()[inst]) == (0.0f));
+      CHECK((p.fillWith(1.0f).isNonZeroMap()[inst]) == (1.0f));
+      CHECK((p.fillWith(0.5f).isNonZeroMap()[inst]) == (1.0f));
+      CHECK((p.fillWith(-0.5f).isNonZeroMap()[inst]) == (1.0f));
     }
 
-    GUM_ACTIVE_TEST(OperationForEmptyTensor) {
+    static void testOperationForEmptyTensor() {
       auto a = gum::LabelizedVariable("a", "afoo", 3);
       auto b = gum::LabelizedVariable("b", "bfoo", 3);
 
@@ -780,38 +778,38 @@ namespace gum_tests {
       gum::Tensor< double > tmp;
 
       res.fillWith({3, 4, 5, 6, 7, 8, 9, 10, 11});
-      TS_ASSERT_EQUALS(p + q, res)
+      CHECK((p + q) == (res));
       tmp = p;
       tmp += q;
-      TS_ASSERT_EQUALS(tmp, res)
+      CHECK((tmp) == (res));
 
-      TS_ASSERT_EQUALS(q + p, res)
+      CHECK((q + p) == (res));
       tmp = q;
       tmp += p;
-      TS_ASSERT_EQUALS(tmp, res)
+      CHECK((tmp) == (res));
 
       res.fillWith({2, 4, 6, 8, 10, 12, 14, 16, 18});
-      TS_ASSERT_EQUALS(p * q, res)
+      CHECK((p * q) == (res));
       tmp = p;
       tmp *= q;
-      TS_ASSERT_EQUALS(tmp, res)
+      CHECK((tmp) == (res));
 
-      TS_ASSERT_EQUALS(q * p, res)
+      CHECK((q * p) == (res));
       tmp = q;
       tmp *= p;
-      TS_ASSERT_EQUALS(tmp, res)
+      CHECK((tmp) == (res));
 
       res.fillWith({-1, 0, 1, 2, 3, 4, 5, 6, 7});
-      TS_ASSERT_EQUALS(p - q, res)
+      CHECK((p - q) == (res));
       tmp = p;
       tmp -= q;
-      TS_ASSERT_EQUALS(tmp, res)
+      CHECK((tmp) == (res));
 
       res.fillWith({1, 0, -1, -2, -3, -4, -5, -6, -7});
-      TS_ASSERT_EQUALS(q - p, res)
+      CHECK((q - p) == (res));
       tmp = q;
       tmp -= p;
-      TS_ASSERT_EQUALS(tmp, res)
+      CHECK((tmp) == (res));
 
       res.fillWith({1 / 2.0f,
                     2 / 2.0f,
@@ -822,10 +820,10 @@ namespace gum_tests {
                     7 / 2.0f,
                     8 / 2.0f,
                     9 / 2.0f});
-      TS_ASSERT_EQUALS(p / q, res)
+      CHECK((p / q) == (res));
       tmp = p;
       tmp /= q;
-      TS_ASSERT_EQUALS(tmp, res)
+      CHECK((tmp) == (res));
 
       res.fillWith({2.0f / 1,
                     2.0f / 2,
@@ -836,13 +834,13 @@ namespace gum_tests {
                     2.0f / 7,
                     2.0f / 8,
                     2.0f / 9});
-      TS_ASSERT_EQUALS(q / p, res)
+      CHECK((q / p) == (res));
       tmp = q;
       tmp /= p;
-      TS_ASSERT_EQUALS(tmp, res)
+      CHECK((tmp) == (res));
     }
 
-    GUM_ACTIVE_TEST(OperationForTwoEmptyTensors) {
+    static void testOperationForTwoEmptyTensors() {
       gum::Tensor< double > p;
       p.fill(3);
 
@@ -851,53 +849,53 @@ namespace gum_tests {
 
       gum::Tensor< double > res, tmp;
       res.fill(5);
-      TS_ASSERT_EQUALS(p + q, res)
+      CHECK((p + q) == (res));
       tmp = p;
       tmp += q;
-      TS_ASSERT_EQUALS(tmp, res)
+      CHECK((tmp) == (res));
 
-      TS_ASSERT_EQUALS(q + p, res)
+      CHECK((q + p) == (res));
       tmp = q;
       tmp += p;
-      TS_ASSERT_EQUALS(tmp, res)
+      CHECK((tmp) == (res));
 
       res.fillWith({6});
-      TS_ASSERT_EQUALS(p * q, res)
+      CHECK((p * q) == (res));
       tmp = p;
       tmp *= q;
-      TS_ASSERT_EQUALS(tmp, res)
+      CHECK((tmp) == (res));
 
-      TS_ASSERT_EQUALS(q * p, res)
+      CHECK((q * p) == (res));
       tmp = q;
       tmp *= p;
-      TS_ASSERT_EQUALS(tmp, res)
+      CHECK((tmp) == (res));
 
       res.fillWith({1});
-      TS_ASSERT_EQUALS(p - q, res)
+      CHECK((p - q) == (res));
       tmp = p;
       tmp -= q;
-      TS_ASSERT_EQUALS(tmp, res)
+      CHECK((tmp) == (res));
 
       res.fillWith({-1});
-      TS_ASSERT_EQUALS(q - p, res)
+      CHECK((q - p) == (res));
       tmp = q;
       tmp -= p;
-      TS_ASSERT_EQUALS(tmp, res)
+      CHECK((tmp) == (res));
 
       res.fillWith({3 / 2.0f});
-      TS_ASSERT_EQUALS(p / q, res)
+      CHECK((p / q) == (res));
       tmp = p;
       tmp /= q;
-      TS_ASSERT_EQUALS(tmp, res)
+      CHECK((tmp) == (res));
 
       res.fillWith({2.0f / 3});
-      TS_ASSERT_LESS_THAN((q / p - res).abs().max(), 1e-7)
+      CHECK(((q / p - res).abs().max()) < (1e-7));
       tmp = q;
       tmp /= p;
-      TS_ASSERT_LESS_THAN((tmp - res).abs().max(), 1e-7)
+      CHECK(((tmp - res).abs().max()) < (1e-7));
     }
 
-    GUM_ACTIVE_TEST(LoopsForEmptyTensor) {
+    static void testLoopsForEmptyTensor() {
       gum::Tensor< double > p;
       gum::Instantiation    inst(p);
       p.fill(3);
@@ -908,8 +906,8 @@ namespace gum_tests {
         cpt++;
         total += p[inst];
       }
-      TS_ASSERT_EQUALS(cpt, static_cast< gum::Size >(1))
-      TS_ASSERT_EQUALS(total, 3)
+      CHECK((cpt) == (static_cast< gum::Size >(1)));
+      CHECK((total) == (3));
 
       cpt   = 0;
       total = 0.0;
@@ -917,8 +915,8 @@ namespace gum_tests {
         cpt++;
         total += p[inst];
       }
-      TS_ASSERT_EQUALS(cpt, static_cast< gum::Size >(1))
-      TS_ASSERT_EQUALS(total, 3)
+      CHECK((cpt) == (static_cast< gum::Size >(1)));
+      CHECK((total) == (3));
     }
 
     void /*test*/ EliminatationOffAllVariables() {
@@ -928,10 +926,10 @@ namespace gum_tests {
       gum::Tensor< int > p;
       p << a << b;
       p.fillWith({1, 2, 3, 4, 5, 6, 7, 8, 9});
-      TS_ASSERT_EQUALS(p.sumOut({&a, &b}).toString(), "[45]")
+      CHECK((p.sumOut({&a, &b}).toString()) == ("[45]"));
     }
 
-    GUM_ACTIVE_TEST(KL) {
+    static void testKL() {
       gum::LabelizedVariable v("v", "v", 2), w("w", "w", 2);
       gum::Tensor< double >  p, q, r, s;
       p.add(v);
@@ -946,28 +944,32 @@ namespace gum_tests {
 
       double res = -1.0f;
 
-      TS_GUM_ASSERT_THROWS_NOTHING(res = p.KL(p))
-      TS_ASSERT_EQUALS(res, 0.0f)
+      GUM_CHECK_ASSERT_THROWS_NOTHING(res = p.KL(p));
+      CHECK((res) == (0.0f));
 
-      TS_ASSERT_THROWS(res = p.KL(s), const gum::InvalidArgument&)
-      TS_ASSERT_THROWS(res = s.KL(p), const gum::InvalidArgument&)
+      CHECK_THROWS_AS(res = p.KL(s), const gum::InvalidArgument&);
+      CHECK_THROWS_AS(res = s.KL(p), const gum::InvalidArgument&);
 
-      TS_GUM_ASSERT_THROWS_NOTHING(res = p.KL(q))
-      TS_ASSERT_DELTA(res, 0.0 + 1.0 * log2(1.0 / 0.5), TS_GUM_SMALL_ERROR)
-      TS_ASSERT_THROWS(res = q.KL(p), const gum::FatalError&)
+      GUM_CHECK_ASSERT_THROWS_NOTHING(res = p.KL(q));
+      CHECK((res) == doctest::Approx(0.0 + 1.0 * log2(1.0 / 0.5)).epsilon(GUM_SMALL_ERROR));
+      CHECK_THROWS_AS(res = q.KL(p), const gum::FatalError&);
 
-      TS_GUM_ASSERT_THROWS_NOTHING(res = p.KL(r))
-      TS_ASSERT_DELTA(res, 0.0 + 1.0 * log2(1.0 / 0.3), TS_GUM_SMALL_ERROR)
-      TS_ASSERT_THROWS(res = r.KL(p), const gum::FatalError&)
+      GUM_CHECK_ASSERT_THROWS_NOTHING(res = p.KL(r));
+      CHECK((res) == doctest::Approx(0.0 + 1.0 * log2(1.0 / 0.3)).epsilon(GUM_SMALL_ERROR));
+      CHECK_THROWS_AS(res = r.KL(p), const gum::FatalError&);
 
-      TS_GUM_ASSERT_THROWS_NOTHING(res = q.KL(r))
-      TS_ASSERT_DELTA(res, 0.5 * log2(0.5 / 0.7) + 0.5 * log2(0.5 / 0.3), TS_GUM_SMALL_ERROR)
+      GUM_CHECK_ASSERT_THROWS_NOTHING(res = q.KL(r));
+      CHECK((res)
+            == doctest::Approx(0.5 * log2(0.5 / 0.7) + 0.5 * log2(0.5 / 0.3))
+                   .epsilon(GUM_SMALL_ERROR));
 
-      TS_GUM_ASSERT_THROWS_NOTHING(res = r.KL(q))
-      TS_ASSERT_DELTA(res, 0.7 * log2(0.7 / 0.5) + 0.3 * log2(0.3 / 0.5), TS_GUM_SMALL_ERROR)
+      GUM_CHECK_ASSERT_THROWS_NOTHING(res = r.KL(q));
+      CHECK((res)
+            == doctest::Approx(0.7 * log2(0.7 / 0.5) + 0.3 * log2(0.3 / 0.5))
+                   .epsilon(GUM_SMALL_ERROR));
     }
 
-    GUM_ACTIVE_TEST(TensorDraw) {
+    static void testTensorDraw() {
       try {
         constexpr int          DELTA   = 200;
         constexpr int          NBRITER = 10000;
@@ -980,10 +982,10 @@ namespace gum_tests {
         for (int i = 0; i < NBRITER; i++) {
           if (p.draw() == 0) s++;
         }
-        TS_ASSERT_DELTA(s, int(0.2 * NBRITER), DELTA)
+        CHECK((s) == doctest::Approx(int(0.2 * NBRITER)).epsilon(DELTA));
 
         p.add(w);
-        TS_ASSERT_THROWS(auto x [[maybe_unused]] = p.draw(), const gum::FatalError&)
+        CHECK_THROWS_AS(auto x [[maybe_unused]] = p.draw(), const gum::FatalError&);
 
         gum::Tensor< double > q;
         q.add(w);
@@ -995,27 +997,27 @@ namespace gum_tests {
           if (d == 1) s1++;
           if (d == 2) s2++;
         }
-        TS_ASSERT_DELTA(s0, int(0.3 * NBRITER), DELTA)
-        TS_ASSERT_DELTA(s1, int(0.6 * NBRITER), DELTA)
-        TS_ASSERT_DELTA(s2, int(0.1 * NBRITER), DELTA)
+        CHECK((s0) == doctest::Approx(int(0.3 * NBRITER)).epsilon(DELTA));
+        CHECK((s1) == doctest::Approx(int(0.6 * NBRITER)).epsilon(DELTA));
+        CHECK((s2) == doctest::Approx(int(0.1 * NBRITER)).epsilon(DELTA));
       } catch (const gum::Exception& e) { GUM_SHOWERROR(e); }
     }
 
-    GUM_ACTIVE_TEST(VariableAccessor) {
+    static void testVariableAccessor() {
       gum::LabelizedVariable v("v", "v", 2), w("w", "w", 3);
       gum::Tensor< double >  p;
       p.add(v);
       p.add(w);
 
-      TS_ASSERT(p.variable(0) == p.variable("v"))
-      TS_ASSERT(p.variable(1) == p.variable("w"))
-      TS_ASSERT(p.variable(1) != p.variable("v"))
-      TS_ASSERT(p.variable(0) != p.variable("w"))
+      CHECK(p.variable(0) == p.variable("v"));
+      CHECK(p.variable(1) == p.variable("w"));
+      CHECK(p.variable(1) != p.variable("v"));
+      CHECK(p.variable(0) != p.variable("w"));
 
-      TS_ASSERT_THROWS(p.variable("ZZ"), const gum::NotFound&)
+      CHECK_THROWS_AS(p.variable("ZZ"), const gum::NotFound&);
     }
 
-    GUM_ACTIVE_TEST(FillWithTensorMethod) {
+    static void testFillWithTensorMethod() {
       gum::LabelizedVariable v("v", "v", 2), w("w", "w", 3);
       gum::LabelizedVariable z("z", "z", 2);
       gum::LabelizedVariable vv("v", "v", 2), ww("w", "w", 3);
@@ -1029,8 +1031,8 @@ namespace gum_tests {
       pp.add(ww);
       pp.add(vv);
 
-      TS_ASSERT_EQUALS(p.domainSize(), static_cast< gum::Size >(6))
-      TS_ASSERT(pp.domainSize() == static_cast< gum::Size >(6))
+      CHECK((p.domainSize()) == (static_cast< gum::Size >(6)));
+      CHECK(pp.domainSize() == static_cast< gum::Size >(6));
 
       p.fillWith({1, 2, 3, 4, 5, 6});
       pp.fillWith(p);
@@ -1043,33 +1045,33 @@ namespace gum_tests {
         try {
           auto vp  = p[Ip];
           auto vpp = pp[Ipp];
-          TS_ASSERT_EQUALS(vp, vpp)
+          CHECK((vp) == (vpp));
         } catch (gum::Exception& e) { GUM_SHOWERROR(e); }
 
       // errors
       gum::Tensor< int > bad_p;
       bad_p.add(w);
-      TS_ASSERT_THROWS(bad_p.fillWith(p), const gum::InvalidArgument&)
+      CHECK_THROWS_AS(bad_p.fillWith(p), const gum::InvalidArgument&);
 
       gum::Tensor< int > bad_p2;
       bad_p2.add(vvv);
       bad_p2.add(www);
-      TS_ASSERT_THROWS(bad_p2.fillWith(p), const gum::InvalidArgument&)
+      CHECK_THROWS_AS(bad_p2.fillWith(p), const gum::InvalidArgument&);
 
       gum::Tensor< int > bad_p3;
       bad_p3.add(w);
       bad_p3.add(z);
-      TS_ASSERT_THROWS(bad_p3.fillWith(p), const gum::InvalidArgument&)
+      CHECK_THROWS_AS(bad_p3.fillWith(p), const gum::InvalidArgument&);
 
       gum::Tensor< int >     bad_p4;
       gum::LabelizedVariable badv("v", "v", 0);
       badv.addLabel("3").addLabel("1");
       bad_p4.add(w);
       bad_p4.add(badv);
-      TS_ASSERT_THROWS(bad_p4.fillWith(p), const gum::InvalidArgument&)
+      CHECK_THROWS_AS(bad_p4.fillWith(p), const gum::InvalidArgument&);
     }
 
-    GUM_ACTIVE_TEST(FillWithTensorAndMapMethod) {
+    static void testFillWithTensorAndMapMethod() {
       gum::LabelizedVariable v("v", "v", 2), w("w", "w", 3);
       gum::Tensor< int >     p;
       p.add(v);
@@ -1080,15 +1082,15 @@ namespace gum_tests {
       pp.add(ww);
       pp.add(vv);
 
-      TS_ASSERT_EQUALS(p.domainSize(), static_cast< gum::Size >(6))
-      TS_ASSERT_EQUALS(pp.domainSize(), static_cast< gum::Size >(6))
+      CHECK((p.domainSize()) == (static_cast< gum::Size >(6)));
+      CHECK((pp.domainSize()) == (static_cast< gum::Size >(6)));
 
       p.fillWith({1, 2, 3, 4, 5, 6});
-      TS_GUM_ASSERT_THROWS_NOTHING(pp.fillWith(p, {"w", "v"}))
-      TS_ASSERT_THROWS(pp.fillWith(p, {"v", "w"}), const gum::InvalidArgument&)
+      GUM_CHECK_ASSERT_THROWS_NOTHING(pp.fillWith(p, {"w", "v"}));
+      CHECK_THROWS_AS(pp.fillWith(p, {"v", "w"}), const gum::InvalidArgument&);
     }
 
-    GUM_ACTIVE_TEST(ArgMaxMinFindAll) {
+    static void testArgMaxMinFindAll() {
       gum::LabelizedVariable v("v", "v", 2), w("w", "w", 3);
       gum::Tensor< int >     p;
       _testval_for_set_(p, 4, p.findAll(4), 0);
@@ -1107,22 +1109,22 @@ namespace gum_tests {
       _testval_for_set_(p, 1, amin, 2);
     }
 
-    GUM_ACTIVE_TEST(AddDummyVariables) {
+    static void testAddDummyVariables() {
       {
         gum::LabelizedVariable v("v", "v", 0);
 
         gum::Tensor< double > p;
-        TS_ASSERT_EQUALS(v.domainSize(), static_cast< gum::Size >(0))
-        TS_ASSERT_THROWS(p.add(v), const gum::InvalidArgument&)
+        CHECK((v.domainSize()) == (static_cast< gum::Size >(0)));
+        CHECK_THROWS_AS(p.add(v), const gum::InvalidArgument&);
 
         v.addLabel("first");
-        TS_ASSERT_EQUALS(v.domainSize(), static_cast< gum::Size >(1))
-        TS_GUM_ASSERT_THROWS_NOTHING(p.add(v))
+        CHECK((v.domainSize()) == (static_cast< gum::Size >(1)));
+        GUM_CHECK_ASSERT_THROWS_NOTHING(p.add(v));
 
         p = gum::Tensor< double >();
         v.addLabel("second");
-        TS_ASSERT_EQUALS(v.domainSize(), static_cast< gum::Size >(2))
-        TS_GUM_ASSERT_THROWS_NOTHING(p.add(v))
+        CHECK((v.domainSize()) == (static_cast< gum::Size >(2)));
+        GUM_CHECK_ASSERT_THROWS_NOTHING(p.add(v));
       }
 
       {
@@ -1130,41 +1132,41 @@ namespace gum_tests {
         v.setMinVal(1);
         v.setMaxVal(0);
         gum::Tensor< double > p;
-        TS_ASSERT_EQUALS(v.domainSize(), static_cast< gum::Size >(0))
-        TS_ASSERT_THROWS(p.add(v), const gum::InvalidArgument&)
+        CHECK((v.domainSize()) == (static_cast< gum::Size >(0)));
+        CHECK_THROWS_AS(p.add(v), const gum::InvalidArgument&);
 
         v.setMaxVal(1);
-        TS_ASSERT_EQUALS(v.domainSize(), static_cast< gum::Size >(1))
-        TS_GUM_ASSERT_THROWS_NOTHING(p.add(v))
+        CHECK((v.domainSize()) == (static_cast< gum::Size >(1)));
+        GUM_CHECK_ASSERT_THROWS_NOTHING(p.add(v));
 
         p = gum::Tensor< double >();
         v.setMaxVal(2);
-        TS_ASSERT_EQUALS(v.domainSize(), static_cast< gum::Size >(2))
-        TS_GUM_ASSERT_THROWS_NOTHING(p.add(v))
+        CHECK((v.domainSize()) == (static_cast< gum::Size >(2)));
+        GUM_CHECK_ASSERT_THROWS_NOTHING(p.add(v));
       }
 
       {
         gum::DiscretizedVariable< int > v("v", "v");
         gum::Tensor< double >           p;
-        TS_ASSERT_EQUALS(v.domainSize(), static_cast< gum::Size >(0))
-        TS_ASSERT_THROWS(p.add(v), const gum::InvalidArgument&)
+        CHECK((v.domainSize()) == (static_cast< gum::Size >(0)));
+        CHECK_THROWS_AS(p.add(v), const gum::InvalidArgument&);
 
         v.addTick(1);
-        TS_ASSERT_EQUALS(v.domainSize(), static_cast< gum::Size >(0))
-        TS_ASSERT_THROWS(p.add(v), const gum::InvalidArgument&)
+        CHECK((v.domainSize()) == (static_cast< gum::Size >(0)));
+        CHECK_THROWS_AS(p.add(v), const gum::InvalidArgument&);
 
         v.addTick(2);
-        TS_ASSERT_EQUALS(v.domainSize(), static_cast< gum::Size >(1))
-        TS_GUM_ASSERT_THROWS_NOTHING(p.add(v))
+        CHECK((v.domainSize()) == (static_cast< gum::Size >(1)));
+        GUM_CHECK_ASSERT_THROWS_NOTHING(p.add(v));
 
         p = gum::Tensor< double >();
         v.addTick(3);
-        TS_ASSERT_EQUALS(v.domainSize(), static_cast< gum::Size >(2))
-        TS_GUM_ASSERT_THROWS_NOTHING(p.add(v))
+        CHECK((v.domainSize()) == (static_cast< gum::Size >(2)));
+        GUM_CHECK_ASSERT_THROWS_NOTHING(p.add(v));
       }
     }
 
-    GUM_ACTIVE_TEST(RandomTensor) {
+    static void testRandomTensor() {
       gum::LabelizedVariable u("u", "u", 4), v("v", "v", 2), w("w", "w", 3);
       gum::Tensor< double >  p;
       p.add(u);
@@ -1174,32 +1176,32 @@ namespace gum_tests {
 
       p.random();
       for (I.setFirst(); !I.end(); I.inc()) {
-        TS_ASSERT_LESS_THAN_EQUALS(p[I], 1.0)
+        CHECK((p[I]) <= (1.0));
       }
 
       p.randomDistribution();
       double cum = 0.0;
       for (I.setFirst(); !I.end(); I.inc()) {
-        TS_ASSERT_LESS_THAN_EQUALS(p[I], 1.0)
+        CHECK((p[I]) <= (1.0));
         cum += p[I];
       }
-      TS_ASSERT_DELTA(cum, 1.0, 1e-6)
+      CHECK((cum) == doctest::Approx(1.0).epsilon(1e-6));
 
       p.randomCPT();
       const gum::DiscreteVariable& var = p.variable(0);
       for (I.setFirstNotVar(var); !I.end(); I.incNotVar(var)) {
         cum = 0.0;
         for (I.setFirstVar(var); !I.end(); I.incVar(var)) {
-          TS_ASSERT_LESS_THAN_EQUALS(p[I], 1.0)
+          CHECK((p[I]) <= (1.0));
           cum += p[I];
         }
-        TS_ASSERT_DELTA(cum, 1.0, 1e-6)
+        CHECK((cum) == doctest::Approx(1.0).epsilon(1e-6));
         I.unsetEnd();
       }
 
       p.fillWith(1.0).normalizeAsCPT();   // every thing should be 0.25
       for (I.setFirst(); !I.end(); I.inc()) {
-        TS_ASSERT_DELTA(p[I], 0.25, 1e-6)
+        CHECK((p[I]) == doctest::Approx(0.25).epsilon(1e-6));
       }
 
       for (double alpha = 0.0; alpha <= 1; alpha += 0.1) {
@@ -1208,13 +1210,13 @@ namespace gum_tests {
         double min = (1 - alpha) * 0.25 + alpha * 0.0;
         double max = (1 - alpha) * 0.25 + alpha * 1.0;
         for (I.setFirst(); !I.end(); I.inc()) {
-          TS_ASSERT_LESS_THAN_EQUALS(min, p[I])
-          TS_ASSERT_LESS_THAN_EQUALS(p[I], max)
+          CHECK((min) <= (p[I]));
+          CHECK((p[I]) <= (max));
         }
       }
     }
 
-    GUM_ACTIVE_TEST(Equalities) {
+    static void testEqualities() {
       gum::LabelizedVariable u("u", "u", 4);
       gum::LabelizedVariable v("v", "v", 2);
       gum::LabelizedVariable w("w", "w", 3);
@@ -1224,28 +1226,28 @@ namespace gum_tests {
       p.add(w);
       p.random();
       gum::Tensor< double > q(p);
-      TS_ASSERT_EQUALS(p, q)
+      CHECK((p) == (q));
       gum::Instantiation i(q);
       i.setLast();
       q.set(i, 0);
-      TS_ASSERT_DIFFERS(p, q)
+      CHECK((p) != (q));
       q.fillWith(p);
-      TS_ASSERT_EQUALS(p, q)
+      CHECK((p) == (q));
       q.fillWith(1);
-      TS_ASSERT_DIFFERS(p, q)
+      CHECK((p) != (q));
       q.fillWith(p);
-      TS_ASSERT_EQUALS(p, q)
+      CHECK((p) == (q));
       gum::LabelizedVariable x("x", "Unknown", 5);
       q.add(x);
-      TS_ASSERT_DIFFERS(p, q)
+      CHECK((p) != (q));
       q.erase("x");
       q.fillWith(p);
-      TS_ASSERT_EQUALS(p, q)
+      CHECK((p) == (q));
       q.erase("u");
-      TS_ASSERT_DIFFERS(p, q)
+      CHECK((p) != (q));
     }
 
-    GUM_ACTIVE_TEST(ExpectedValue) {
+    static void testExpectedValue() {
       gum::LabelizedVariable u("u", "u", 4);
       gum::LabelizedVariable v("v", "v", 2);
       gum::LabelizedVariable w("w", "w", 3);
@@ -1255,9 +1257,8 @@ namespace gum_tests {
       p.add(w);
       p.randomDistribution();
 
-      TS_GUM_ASSERT_QUASI_EQUALS(
-          p.expectedValue([](const gum::Instantiation&) -> auto { return 1.0; }),
-          1.0)
+      CHECK(fabs((p.expectedValue([](const gum::Instantiation&) -> auto { return 1.0; })) - (1.0))
+            < 1e-10);
 
       gum::Tensor< double > q;
       q.add(u);
@@ -1271,12 +1272,13 @@ namespace gum_tests {
         mean += q[I] * I.val(0);
       }
 
-      TS_GUM_ASSERT_QUASI_EQUALS(
-          q.expectedValue([](const gum::Instantiation& i) -> auto { return double(i.val(0)); }),
-          mean);
+      CHECK(fabs((q.expectedValue(
+                     [](const gum::Instantiation& i) -> auto { return double(i.val(0)); }))
+                 - (mean))
+            < 1e-10);
     }
 
-    GUM_ACTIVE_TEST(Inverse) {
+    static void testInverse() {
       gum::LabelizedVariable u("u", "u", 4);
       gum::LabelizedVariable v("v", "v", 2);
       gum::LabelizedVariable w("w", "w", 3);
@@ -1287,11 +1289,11 @@ namespace gum_tests {
       p.random();
       gum::Tensor< double > q(p);
       q.inverse();
-      TS_ASSERT_DELTA((p * q).min(), 1.0, 1e-7)
-      TS_ASSERT_DELTA((p * q).max(), 1.0, 1e-7)
+      CHECK(((p * q).min()) == doctest::Approx(1.0).epsilon(1e-7));
+      CHECK(((p * q).max()) == doctest::Approx(1.0).epsilon(1e-7));
     }
 
-    GUM_ACTIVE_TEST(MinNegatif) {
+    static void testMinNegatif() {
       gum::LabelizedVariable u("u", "u", 4);
       gum::LabelizedVariable v("v", "v", 2);
       gum::LabelizedVariable w("w", "w", 3);
@@ -1305,11 +1307,11 @@ namespace gum_tests {
       for (I.setFirst(); !I.end(); I.inc())
         p.set(I, f++);
 
-      TS_ASSERT_DELTA(p.min(), -150.0, 1e-7)
-      TS_ASSERT_DELTA(p.max(), -150 + 4 * 2 * 3 - 1, 1e-7)
+      CHECK((p.min()) == doctest::Approx(-150.0).epsilon(1e-7));
+      CHECK((p.max()) == doctest::Approx(-150 + 4 * 2 * 3 - 1).epsilon(1e-7));
     }
 
-    GUM_ACTIVE_TEST(Sgn) {
+    static void testSgn() {
       gum::LabelizedVariable u("u", "u", 4);
       gum::LabelizedVariable v("v", "v", 2);
       gum::LabelizedVariable w("w", "w", 3);
@@ -1320,15 +1322,15 @@ namespace gum_tests {
       p.random();
 
       auto r = p * 2;
-      TS_ASSERT_EQUALS((r - p).sgn().min(), 1.0);
-      TS_ASSERT_EQUALS((r - p).sgn().max(), 1.0);
-      TS_ASSERT_EQUALS((p - r).sgn().min(), -1.0);
-      TS_ASSERT_EQUALS((p - r).sgn().max(), -1.0);
-      TS_ASSERT_EQUALS((p - p).sgn().min(), 0.0);
-      TS_ASSERT_EQUALS((p - p).sgn().max(), 0.0);
+      CHECK(((r - p).sgn().min()) == (1.0));
+      CHECK(((r - p).sgn().max()) == (1.0));
+      CHECK(((p - r).sgn().min()) == (-1.0));
+      CHECK(((p - r).sgn().max()) == (-1.0));
+      CHECK(((p - p).sgn().min()) == (0.0));
+      CHECK(((p - p).sgn().max()) == (0.0));
     }
 
-    GUM_ACTIVE_TEST(OperatorWithScalars) {
+    static void testOperatorWithScalars() {
       gum::LabelizedVariable u("u", "u", 4);
       gum::LabelizedVariable v("v", "v", 2);
       gum::LabelizedVariable w("w", "w", 3);
@@ -1340,99 +1342,99 @@ namespace gum_tests {
       {
         gum::Tensor< double > q(p);
         q.scale(2);
-        TS_ASSERT_EQUALS(p * 2, q)
+        CHECK((p * 2) == (q));
       }
       {
         gum::Tensor< double > q(p);
         q.scale(0.5);
-        TS_ASSERT_EQUALS(p / 2, q)
+        CHECK((p / 2) == (q));
       }
       {
         gum::Tensor< double > q(p);
         q.translate(1.5);
-        TS_ASSERT_EQUALS(p + 1.5, q)
+        CHECK((p + 1.5) == (q));
       }
       {
         gum::Tensor< double > q(p);
         q.translate(3.2);
-        TS_ASSERT_EQUALS(p - 3.2, q)
+        CHECK((p - 3.2) == (q));
       }
       {
         gum::Tensor< double > q(p);
         gum::Tensor< double > r(p);
         q.translate(4.33);
         r += 4.33;
-        TS_ASSERT_EQUALS(r, q)
+        CHECK((r) == (q));
       }
       {
         gum::Tensor< double > q(p);
         gum::Tensor< double > r(p);
         q.translate(-4.33);
         r -= 4.33;
-        TS_ASSERT_EQUALS(r, q)
+        CHECK((r) == (q));
       }
       {
         gum::Tensor< double > q(p);
         gum::Tensor< double > r(p);
         q.scale(4.33);
         r *= 4.33;
-        TS_ASSERT_EQUALS(r, q)
+        CHECK((r) == (q));
       }
       {
         gum::Tensor< double > q(p);
         gum::Tensor< double > r(p);
         q.scale(1 / 4.33);
         r /= 4.33;
-        TS_ASSERT_EQUALS(r, q)
+        CHECK((r) == (q));
       }
     }
 
-    GUM_ACTIVE_TEST(DeterministicTensor_CreatesTensorWithCorrectValue) {
+    static void testDeterministicTensor_CreatesTensorWithCorrectValue() {
       gum::RangeVariable var("var", "Variable1", 1, 4);
       const gum::Idx     value = 2;
 
       auto tensor = gum::Tensor< double >::deterministicTensor(var, value);
 
-      TS_ASSERT_EQUALS(tensor.sum(), 1.0);
+      CHECK((tensor.sum()) == (1.0));
 
-      TS_ASSERT_EQUALS(tensor.max(), 1.0);
+      CHECK((tensor.max()) == (1.0));
       const auto& [x, y] = tensor.argmax();
-      TS_ASSERT_EQUALS(x.size(), gum::Size(1))
+      CHECK((x.size()) == (gum::Size(1)));
       const auto& i = *x.begin();
-      TS_ASSERT_EQUALS(i.val(0), value);
+      CHECK((i.val(0)) == (value));
 
-      TS_ASSERT_EQUALS(tensor.min(), 0.0);
-      TS_ASSERT_EQUALS(tensor.minNonZero(), 1.0);
-      TS_ASSERT_EQUALS(tensor.maxNonOne(), 0.0);
+      CHECK((tensor.min()) == (0.0));
+      CHECK((tensor.minNonZero()) == (1.0));
+      CHECK((tensor.maxNonOne()) == (0.0));
     }
 
-    GUM_ACTIVE_TEST(DeterministicTensor_CreatesTensorWithCorrectLabel) {
+    static void testDeterministicTensor_CreatesTensorWithCorrectLabel() {
       const gum::RangeVariable var("var", "Variable1", 1, 4);
       const std::string        label = "2";
 
       const auto tensor = gum::Tensor< double >::deterministicTensor(var, label);
 
-      TS_ASSERT_EQUALS(tensor.sum(), 1.0);
+      CHECK((tensor.sum()) == (1.0));
 
-      TS_ASSERT_EQUALS(tensor.max(), 1.0);
+      CHECK((tensor.max()) == (1.0));
       const auto& [x, y] = tensor.argmax();
-      TS_ASSERT_EQUALS(x.size(), gum::Size(1))
+      CHECK((x.size()) == (gum::Size(1)));
       const auto& i = *x.begin();
-      TS_ASSERT_EQUALS(i.val(0), gum::Idx(1));
+      CHECK((i.val(0)) == (gum::Idx(1)));
 
-      TS_ASSERT_EQUALS(tensor.min(), 0.0);
-      TS_ASSERT_EQUALS(tensor.minNonZero(), 1.0);
-      TS_ASSERT_EQUALS(tensor.maxNonOne(), 0.0);
+      CHECK((tensor.min()) == (0.0));
+      CHECK((tensor.minNonZero()) == (1.0));
+      CHECK((tensor.maxNonOne()) == (0.0));
     }
 
-    GUM_ACTIVE_TEST(UniformTensor_CreatesUniformTensor) {
+    static void testUniformTensor_CreatesUniformTensor() {
       const gum::RangeVariable var("var", "Variable1", 0, 3);
 
       const auto tensor = gum::Tensor< double >::uniformTensor(var);
 
-      TS_ASSERT_EQUALS(tensor.sum(), 1.0);
-      TS_ASSERT_EQUALS(tensor.max(), 0.25);
-      TS_ASSERT_EQUALS(tensor.min(), 0.25);
+      CHECK((tensor.sum()) == (1.0));
+      CHECK((tensor.max()) == (0.25));
+      CHECK((tensor.min()) == (0.25));
     }
 
     private:
@@ -1442,14 +1444,61 @@ namespace gum_tests {
                                   gum::Size                             expected_size) {
       gum::Instantiation ip(p);
 
-      TS_ASSERT_EQUALS(s.size(), expected_size)
+      CHECK((s.size()) == (expected_size));
       for (ip.setFirst(); !ip.end(); ++ip) {
         if (s.contains(ip)) {
-          TS_ASSERT_EQUALS(p[ip], val)
+          CHECK((p[ip]) == (val));
         } else {
-          TS_ASSERT_DIFFERS(p[ip], val)
+          CHECK((p[ip]) != (val));
         }
       }
     }
   };
+
+  GUM_TEST_ACTIF(Creation)
+  GUM_TEST_ACTIF(CreationWithVars)
+  GUM_TEST_ACTIF(Normalisation)
+  GUM_TEST_ACTIF(DomainSizeChanges)
+  GUM_TEST_ACTIF(AddAnyNumber)
+  GUM_TEST_ACTIF(CopyProba)
+  GUM_TEST_ACTIF(RegressionCopy)
+  GUM_TEST_ACTIF(Equality)
+  GUM_TEST_ACTIF(MinMax)
+  GUM_TEST_ACTIF(IsNonZeroMap)
+  GUM_TEST_ACTIF(Operators)
+  GUM_TEST_ACTIF(MargOutFunctions)
+  GUM_TEST_ACTIF(MarginalizingFunctions)
+  GUM_TEST_ACTIF(DeprecatedMarginalizingFunctions)
+  GUM_TEST_ACTIF(AbsTensor)
+  GUM_TEST_ACTIF(SqTensor)
+  GUM_TEST_ACTIF(EntropyTensor)
+  GUM_TEST_ACTIF(ReorganizeTensor)
+  GUM_TEST_ACTIF(ReorganizeTensorFromNames)
+  GUM_TEST_ACTIF(PutFirst)
+  GUM_TEST_ACTIF(PutFirstWithName)
+  GUM_TEST_ACTIF(Extraction)
+  GUM_TEST_ACTIF(OperatorEqual)
+  GUM_TEST_ACTIF(ScaleAndTranslate)
+  GUM_TEST_ACTIF(NormalizeAsCPT)
+  GUM_TEST_ACTIF(EmptyTensor)
+  GUM_TEST_ACTIF(OperationForEmptyTensor)
+  GUM_TEST_ACTIF(OperationForTwoEmptyTensors)
+  GUM_TEST_ACTIF(LoopsForEmptyTensor)
+  GUM_TEST_ACTIF(KL)
+  GUM_TEST_ACTIF(TensorDraw)
+  GUM_TEST_ACTIF(VariableAccessor)
+  GUM_TEST_ACTIF(FillWithTensorMethod)
+  GUM_TEST_ACTIF(FillWithTensorAndMapMethod)
+  GUM_TEST_ACTIF(ArgMaxMinFindAll)
+  GUM_TEST_ACTIF(AddDummyVariables)
+  GUM_TEST_ACTIF(RandomTensor)
+  GUM_TEST_ACTIF(Equalities)
+  GUM_TEST_ACTIF(ExpectedValue)
+  GUM_TEST_ACTIF(Inverse)
+  GUM_TEST_ACTIF(MinNegatif)
+  GUM_TEST_ACTIF(Sgn)
+  GUM_TEST_ACTIF(OperatorWithScalars)
+  GUM_TEST_ACTIF(DeterministicTensor_CreatesTensorWithCorrectValue)
+  GUM_TEST_ACTIF(DeterministicTensor_CreatesTensorWithCorrectLabel)
+  GUM_TEST_ACTIF(UniformTensor_CreatesUniformTensor)
 }   // namespace gum_tests

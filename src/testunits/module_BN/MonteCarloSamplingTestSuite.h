@@ -1,7 +1,7 @@
 /****************************************************************************
  *   This file is part of the aGrUM/pyAgrum library.                        *
  *                                                                          *
- *   Copyright (c) 2005-2025 by                                             *
+ *   Copyright (c) 2005-2026 by                                             *
  *       - Pierre-Henri WUILLEMIN(_at_LIP6)                                 *
  *       - Christophe GONZALES(_at_AMU)                                     *
  *                                                                          *
@@ -27,7 +27,7 @@
  *                                                                          *
  *   See LICENCES for more details.                                         *
  *                                                                          *
- *   SPDX-FileCopyrightText: Copyright 2005-2025                            *
+ *   SPDX-FileCopyrightText: Copyright 2005-2026                            *
  *       - Pierre-Henri WUILLEMIN(_at_LIP6)                                 *
  *       - Christophe GONZALES(_at_AMU)                                     *
  *   SPDX-License-Identifier: LGPL-3.0-or-later OR MIT                      *
@@ -37,6 +37,7 @@
  *   gitlab   : https://gitlab.com/agrumery/agrum                           *
  *                                                                          *
  ****************************************************************************/
+
 #pragma once
 
 
@@ -53,7 +54,13 @@
 #include <agrum/BN/inference/MonteCarloSampling.h>
 #include <agrum/BN/io/BIF/BIFReader.h>
 
-#include <gumtest/AgrumApproximationUtils.h>   // must be last include
+#include <gumtest/AgrumApproximationUtils.h>
+
+#undef GUM_CURRENT_SUITE
+#undef GUM_CURRENT_MODULE
+#define GUM_CURRENT_SUITE  MonteCarloSampling
+#define GUM_CURRENT_MODULE BN
+// must be last include
 
 #define EPSILON_FOR_MONTECARLO_SIMPLE_TEST 15e-2
 #define EPSILON_FOR_MONTECARLO             2e-1
@@ -83,9 +90,9 @@ namespace gum_tests {
     std::string getMess() { return __mess; }
   };
 
-  class GUM_TEST_SUITE(MonteCarloSampling) {
+  struct MonteCarloSamplingTestSuite {
     public:
-    GUM_ACTIVE_TEST(MCbasic) {
+    static void testMCbasic() {
       auto bn = gum::BayesNet< double >::fastPrototype("a->h->c");
       bn.cpt("a").fillWith({0.2f, 0.8f});
       bn.cpt("h").fillWith({0.4f, 0.6f, 0.7f, 0.3f});
@@ -102,11 +109,11 @@ namespace gum_tests {
         GUM_APPROX_TEST_END_ITERATION(EPSILON_FOR_MONTECARLO_SIMPLE_TEST)
       } catch (gum::Exception& e) {
         GUM_SHOWERROR(e);
-        TS_ASSERT(false)
+        CHECK(false);
       }
     }   // namespace gum_tests
 
-    GUM_ACTIVE_TEST(MCBinaryTreeWithoutEvidence) {
+    static void testMCBinaryTreeWithoutEvidence() {
       auto bn = gum::BayesNet< double >::fastPrototype("a->d->f;b->d->g;b->e->h;c->e;i->j->h");
       unsharpen(bn);
 
@@ -121,11 +128,11 @@ namespace gum_tests {
         GUM_APPROX_TEST_END_ITERATION(EPSILON_FOR_MONTECARLO_SIMPLE_TEST)
       } catch (gum::Exception& e) {
         GUM_SHOWERROR(e);
-        TS_ASSERT(false)
+        CHECK(false);
       }
     }
 
-    GUM_ACTIVE_TEST(MCBinaryTreeWithEvidenceOnRoot) {
+    static void testMCBinaryTreeWithEvidenceOnRoot() {
       auto bn = gum::BayesNet< double >::fastPrototype("a->d->f;b->d->g;b->e->h;c->e;i->j->h");
       unsharpen(bn);
 
@@ -144,11 +151,11 @@ namespace gum_tests {
         GUM_APPROX_TEST_END_ITERATION(EPSILON_FOR_MONTECARLO_SIMPLE_TEST)
       } catch (gum::Exception& e) {
         GUM_SHOWERROR(e);
-        TS_ASSERT(false)
+        CHECK(false);
       }
     }
 
-    GUM_ACTIVE_TEST(MCBinaryTreeWithEvidenceOnLeaf) {
+    static void testMCBinaryTreeWithEvidenceOnLeaf() {
       auto bn = gum::BayesNet< double >::fastPrototype("a->d->f;b->d->g;b->e->h;c->e;i->j->h");
       unsharpen(bn);
       std::string ev = "h";
@@ -168,11 +175,11 @@ namespace gum_tests {
 
       } catch (gum::Exception& e) {
         GUM_SHOWERROR(e);
-        TS_ASSERT(false)
+        CHECK(false);
       }
     }
 
-    GUM_ACTIVE_TEST(MCBinaryTreeWithEvidenceOnMid) {
+    static void testMCBinaryTreeWithEvidenceOnMid() {
       auto bn = gum::BayesNet< double >::fastPrototype("a->d->f;b->d->g;b->e->h;c->e;i->j->h");
       unsharpen(bn);
       std::string ev = "e";
@@ -192,11 +199,11 @@ namespace gum_tests {
 
       } catch (gum::Exception& e) {
         GUM_SHOWERROR(e);
-        TS_ASSERT(false)
+        CHECK(false);
       }
     }
 
-    GUM_ACTIVE_TEST(MCBinaryTreeWithMultipleEvidence) {
+    static void testMCBinaryTreeWithMultipleEvidence() {
       auto bn = gum::BayesNet< double >::fastPrototype("a->d->f;b->d->g;b->e->h;c->e;i->j->h");
       unsharpen(bn);
 
@@ -219,11 +226,11 @@ namespace gum_tests {
 
       } catch (gum::Exception& e) {
         GUM_SHOWERROR(e);
-        TS_ASSERT(false)
+        CHECK(false);
       }
     }
 
-    GUM_ACTIVE_TEST(MCNaryTreeWithMultipleEvidence) {
+    static void testMCNaryTreeWithMultipleEvidence() {
       auto bn = gum::BayesNet< double >::fastPrototype(
           "a[4]->d[8]->f[3];b->d->g[5];b->e[4]->h;c->e;i[10]->j[3]->h");
       unsharpen(bn);
@@ -247,11 +254,11 @@ namespace gum_tests {
 
       } catch (gum::Exception& e) {
         GUM_SHOWERROR(e);
-        TS_ASSERT(false)
+        CHECK(false);
       }
     }
 
-    GUM_ACTIVE_TEST(MCSimpleBN) {
+    static void testMCSimpleBN() {
       auto bn = gum::BayesNet< double >::fastPrototype("a->b->c;a->d->c", 3);
       unsharpen(bn);
 
@@ -268,7 +275,7 @@ namespace gum_tests {
 
       } catch (gum::Exception& e) {
         GUM_SHOWERROR(e);
-        TS_ASSERT(false)
+        CHECK(false);
       }
 
       try {
@@ -286,7 +293,7 @@ namespace gum_tests {
 
       } catch (gum::Exception& e) {
         GUM_SHOWERROR(e);
-        TS_ASSERT(false)
+        CHECK(false);
       }
 
       try {
@@ -304,11 +311,11 @@ namespace gum_tests {
 
       } catch (gum::Exception& e) {
         GUM_SHOWERROR(e);
-        TS_ASSERT(false)
+        CHECK(false);
       }
     }
 
-    GUM_ACTIVE_TEST(MCCplxBN) {
+    static void testMCCplxBN() {
       auto bn = gum::BayesNet< double >::fastPrototype(
           "a->d->f;b->d->g;b->e->h;c->e->g;i->j->h;c->j;x->c;x->j;",
           3);
@@ -326,7 +333,7 @@ namespace gum_tests {
 
       } catch (gum::Exception& e) {
         GUM_SHOWERROR(e);
-        TS_ASSERT(false)
+        CHECK(false);
       }
 
       try {
@@ -344,7 +351,7 @@ namespace gum_tests {
 
       } catch (gum::Exception& e) {
         GUM_SHOWERROR(e);
-        TS_ASSERT(false)
+        CHECK(false);
       }
 
       try {
@@ -362,16 +369,16 @@ namespace gum_tests {
 
       } catch (gum::Exception& e) {
         GUM_SHOWERROR(e);
-        TS_ASSERT(false)
+        CHECK(false);
       }
     }
 
-    GUM_ACTIVE_TEST(MCAsia) {
+    static void testMCAsia() {
       gum::BayesNet< double >  bn;
       gum::BIFReader< double > reader(&bn, GET_RESSOURCES_PATH("bif/asia.bif"));
       gum::Size                nbrErr = static_cast< gum::Size >(0);
-      TS_GUM_ASSERT_THROWS_NOTHING(nbrErr = reader.proceed())
-      TS_ASSERT_EQUALS(nbrErr, static_cast< gum::Size >(0))
+      GUM_CHECK_ASSERT_THROWS_NOTHING(nbrErr = reader.proceed());
+      CHECK((nbrErr) == (static_cast< gum::Size >(0)));
 
       try {
         gum::LazyPropagation< double > lazy(&bn);
@@ -386,16 +393,16 @@ namespace gum_tests {
 
       } catch (gum::Exception& e) {
         GUM_SHOWERROR(e);
-        TS_ASSERT(false)
+        CHECK(false);
       }
     }
 
-    GUM_ACTIVE_TEST(MCAlarm) {
+    static void testMCAlarm() {
       gum::BayesNet< double >  bn;
       gum::BIFReader< double > reader(&bn, GET_RESSOURCES_PATH("bif/alarm.bif"));
       gum::Size                nbrErr = static_cast< gum::Size >(0);
-      TS_GUM_ASSERT_THROWS_NOTHING(nbrErr = reader.proceed())
-      TS_ASSERT_EQUALS(nbrErr, static_cast< gum::Size >(0))
+      GUM_CHECK_ASSERT_THROWS_NOTHING(nbrErr = reader.proceed());
+      CHECK((nbrErr) == (static_cast< gum::Size >(0)));
 
       try {
         gum::LazyPropagation< double > lazy(&bn);
@@ -410,16 +417,16 @@ namespace gum_tests {
 
       } catch (gum::Exception& e) {
         GUM_SHOWERROR(e);
-        TS_ASSERT(false)
+        CHECK(false);
       }
     }
 
-    GUM_ACTIVE_TEST(MCInfListener) {
+    static void testMCInfListener() {
       gum::BayesNet< double >  bn;
       gum::BIFReader< double > reader(&bn, GET_RESSOURCES_PATH("bif/alarm.bif"));
       gum::Size                nbrErr = static_cast< gum::Size >(0);
-      TS_GUM_ASSERT_THROWS_NOTHING(nbrErr = reader.proceed())
-      TS_ASSERT_EQUALS(nbrErr, static_cast< gum::Size >(0))
+      GUM_CHECK_ASSERT_THROWS_NOTHING(nbrErr = reader.proceed());
+      CHECK((nbrErr) == (static_cast< gum::Size >(0)));
 
       gum::MonteCarloSampling< double > inf(&bn);
       aSimpleMCListener                 agsl(inf);
@@ -433,29 +440,29 @@ namespace gum_tests {
 
       } catch (const gum::Exception& e) {
         GUM_SHOWERROR(e);
-        TS_ASSERT(false)
+        CHECK(false);
       }
 
-      TS_ASSERT_EQUALS(agsl.getNbr() * inf.periodSize(), inf.nbrIterations())
-      TS_ASSERT_DIFFERS(agsl.getMess(), std::string(""))
+      CHECK((agsl.getNbr() * inf.periodSize()) == (inf.nbrIterations()));
+      CHECK((agsl.getMess()) != (std::string("")));
     }
 
-    GUM_ACTIVE_TEST(Constructor) {
+    static void testConstructor() {
       gum::BayesNet< double >  bn;
       gum::BIFReader< double > reader(&bn, GET_RESSOURCES_PATH("bif/alarm.bif"));
       gum::Size                nbrErr = static_cast< gum::Size >(0);
-      TS_GUM_ASSERT_THROWS_NOTHING(nbrErr = reader.proceed())
-      TS_ASSERT_EQUALS(nbrErr, static_cast< gum::Size >(0))
+      GUM_CHECK_ASSERT_THROWS_NOTHING(nbrErr = reader.proceed());
+      CHECK((nbrErr) == (static_cast< gum::Size >(0)));
       try {
         gum::MonteCarloSampling< double > inf(&bn);
         inf.setEpsilon(EPSILON_FOR_MONTECARLO);
       } catch (const gum::Exception& e) {
         GUM_SHOWERROR(e);
-        TS_ASSERT(false)
+        CHECK(false);
       }
     }
 
-    GUM_ACTIVE_TEST(EvidenceAsTargetOnCplxBN) {
+    static void testEvidenceAsTargetOnCplxBN() {
       auto bn = gum::BayesNet< double >::fastPrototype(
           "a->d->f;b->d->g;b->e->h;c->e->g;i->j->h;c->j;x->c;x->j;",
           3);
@@ -467,13 +474,28 @@ namespace gum_tests {
         inf.setVerbosity(false);
         inf.setEpsilon(EPSILON_FOR_MONTECARLO);
         inf.makeInference();
-        TS_GUM_ASSERT_THROWS_NOTHING(inf.posterior("d"))
-        TS_GUM_ASSERT_THROWS_NOTHING(inf.posterior(bn.idFromName("d")))
+        GUM_CHECK_ASSERT_THROWS_NOTHING(inf.posterior("d"));
+        GUM_CHECK_ASSERT_THROWS_NOTHING(inf.posterior(bn.idFromName("d")));
 
       } catch (gum::Exception& e) {
         GUM_SHOWERROR(e);
-        TS_ASSERT(false)
+        CHECK(false);
       }
     }
   };
+
+  GUM_TEST_ACTIF(MCbasic)
+  GUM_TEST_ACTIF(MCBinaryTreeWithoutEvidence)
+  GUM_TEST_ACTIF(MCBinaryTreeWithEvidenceOnRoot)
+  GUM_TEST_ACTIF(MCBinaryTreeWithEvidenceOnLeaf)
+  GUM_TEST_ACTIF(MCBinaryTreeWithEvidenceOnMid)
+  GUM_TEST_ACTIF(MCBinaryTreeWithMultipleEvidence)
+  GUM_TEST_ACTIF(MCNaryTreeWithMultipleEvidence)
+  GUM_TEST_ACTIF(MCSimpleBN)
+  GUM_TEST_ACTIF(MCCplxBN)
+  GUM_TEST_ACTIF(MCAsia)
+  GUM_TEST_ACTIF(MCAlarm)
+  GUM_TEST_ACTIF(MCInfListener)
+  GUM_TEST_ACTIF(Constructor)
+  GUM_TEST_ACTIF(EvidenceAsTargetOnCplxBN)
 }   // namespace gum_tests

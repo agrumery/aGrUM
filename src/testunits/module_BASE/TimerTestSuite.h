@@ -1,7 +1,7 @@
 /****************************************************************************
  *   This file is part of the aGrUM/pyAgrum library.                        *
  *                                                                          *
- *   Copyright (c) 2005-2025 by                                             *
+ *   Copyright (c) 2005-2026 by                                             *
  *       - Pierre-Henri WUILLEMIN(_at_LIP6)                                 *
  *       - Christophe GONZALES(_at_AMU)                                     *
  *                                                                          *
@@ -27,7 +27,7 @@
  *                                                                          *
  *   See LICENCES for more details.                                         *
  *                                                                          *
- *   SPDX-FileCopyrightText: Copyright 2005-2025                            *
+ *   SPDX-FileCopyrightText: Copyright 2005-2026                            *
  *       - Pierre-Henri WUILLEMIN(_at_LIP6)                                 *
  *       - Christophe GONZALES(_at_AMU)                                     *
  *   SPDX-License-Identifier: LGPL-3.0-or-later OR MIT                      *
@@ -37,6 +37,7 @@
  *   gitlab   : https://gitlab.com/agrumery/agrum                           *
  *                                                                          *
  ****************************************************************************/
+
 #pragma once
 
 
@@ -45,37 +46,43 @@
 
 #include <agrum/base/core/timer.h>
 
+#undef GUM_CURRENT_SUITE
+#undef GUM_CURRENT_MODULE
+#define GUM_CURRENT_SUITE  Timer
+#define GUM_CURRENT_MODULE GUMBASE
+
 namespace gum_tests {
 
-  class GUM_TEST_SUITE(Timer) {
+  struct TimerTestSuite {
     public:
-    GUM_ACTIVE_TEST(Constructors) {
-      TS_GUM_ASSERT_THROWS_NOTHING(gum::Timer t1)
-      TS_GUM_ASSERT_THROWS_NOTHING(gum::Timer* t2 = new gum::Timer(); delete (t2);) {
+    static void testConstructors() {
+      GUM_CHECK_ASSERT_THROWS_NOTHING(gum::Timer t1);
+      GUM_CHECK_ASSERT_THROWS_NOTHING(gum::Timer* t2 = new gum::Timer(); delete (t2););
+      {
         gum::Timer t1;
         t1.reset();
 
         gum::Timer* t2 = new gum::Timer();
         t2->reset();
 
-        TS_GUM_ASSERT_THROWS_NOTHING(gum::Timer t3(*t2))
+        GUM_CHECK_ASSERT_THROWS_NOTHING(gum::Timer t3(*t2));
 
         gum::Timer* t4 = nullptr;
-        TS_GUM_ASSERT_THROWS_NOTHING(t4 = new gum::Timer(t1))
-        TS_ASSERT_DELTA(t4->step(), t1.step(), 1e-3)
+        GUM_CHECK_ASSERT_THROWS_NOTHING(t4 = new gum::Timer(t1));
+        CHECK((t4->step()) == doctest::Approx(t1.step()).epsilon(1e-3));
 
         gum::Timer t3(*t2);
-        TS_ASSERT_DELTA(t2->step(), t3.step(), 1e-3)
+        CHECK((t2->step()) == doctest::Approx(t3.step()).epsilon(1e-3));
 
         gum::Timer t5 = t3;
-        TS_ASSERT_DELTA(t5.step(), t3.step(), 1e-3)
+        CHECK((t5.step()) == doctest::Approx(t3.step()).epsilon(1e-3));
 
         delete t2;
         delete t4;
       }   // namespace gum_tests
     }
 
-    GUM_ACTIVE_TEST(Trivial) {
+    static void testTrivial() {
       bool test_pass = false;
       // The test randomly fails for reasons, it have to fails three times in
       // a row to be considered trully as failed
@@ -102,17 +109,17 @@ namespace gum_tests {
         double t6 = tt.step();
         end_test_waiting();
 
-        // TS_ASSERT_DELTA( t6 - t5, 3.0, 1e-3 )
+        // CHECK((t6 - t5) == doctest::Approx(3.0).epsilon(1e-3));
         test_pass = std::abs(std::abs(t6 - t5) - 3.0) <= 1e-3;
-        // TS_ASSERT_DELTA( t4 - t1, 2.0, 1e-3 )
+        // CHECK((t4 - t1) == doctest::Approx(2.0).epsilon(1e-3));
         test_pass = test_pass && std::abs(std::abs(t4 - t1) - 2.0) <= 1e-3;
-        // TS_ASSERT_DELTA( t3 - t2, 0.0, 1e-3 )
+        // CHECK((t3 - t2) == doctest::Approx(0.0).epsilon(1e-3));
         test_pass = test_pass && std::abs(std::abs(t3 - t2) - 0.0) <= 1e-3;
       }
       GUM_ASSERT(test_pass);
     }
 
-    inline void simpleSleep(double second) {
+    static inline void simpleSleep(double second) {
       gum::Timer t;
       t.reset();
 
@@ -120,4 +127,7 @@ namespace gum_tests {
         ;
     }
   };
+
+  GUM_TEST_ACTIF(Constructors)
+  GUM_TEST_ACTIF(Trivial)
 }   // namespace gum_tests

@@ -1,7 +1,7 @@
 /****************************************************************************
  *   This file is part of the aGrUM/pyAgrum library.                        *
  *                                                                          *
- *   Copyright (c) 2005-2025 by                                             *
+ *   Copyright (c) 2005-2026 by                                             *
  *       - Pierre-Henri WUILLEMIN(_at_LIP6)                                 *
  *       - Christophe GONZALES(_at_AMU)                                     *
  *                                                                          *
@@ -27,7 +27,7 @@
  *                                                                          *
  *   See LICENCES for more details.                                         *
  *                                                                          *
- *   SPDX-FileCopyrightText: Copyright 2005-2025                            *
+ *   SPDX-FileCopyrightText: Copyright 2005-2026                            *
  *       - Pierre-Henri WUILLEMIN(_at_LIP6)                                 *
  *       - Christophe GONZALES(_at_AMU)                                     *
  *   SPDX-License-Identifier: LGPL-3.0-or-later OR MIT                      *
@@ -37,6 +37,7 @@
  *   gitlab   : https://gitlab.com/agrumery/agrum                           *
  *                                                                          *
  ****************************************************************************/
+
 #pragma once
 
 
@@ -48,11 +49,16 @@
 
 #include <agrum/base/graphs/algorithms/triangulations/partialOrderedTriangulation.h>
 
+#undef GUM_CURRENT_SUITE
+#undef GUM_CURRENT_MODULE
+#define GUM_CURRENT_SUITE  PartialOrderedTriangulation
+#define GUM_CURRENT_MODULE GUMBASE
+
 namespace gum_tests {
 
-  class GUM_TEST_SUITE(PartialOrderedTriangulation) {
+  struct PartialOrderedTriangulationTestSuite {
     public:
-    GUM_ACTIVE_TEST(TriangulatedGraph1) {
+    static void testTriangulatedGraph1() {
       gum::NodeSet c1, c2, c3, c4, c5;
       c1 << 10 << 20 << 30 << 40;
       c2 << 20 << 40 << 50;
@@ -93,15 +99,15 @@ namespace gum_tests {
       triang.setGraph(&graph, &dom);
       triang.setPartialOrder(&partial_order);
       const gum::UndiGraph& gr2 = triang.triangulatedGraph();
-      TS_ASSERT_EQUALS(gr2.sizeNodes(), 8U)
-      TS_ASSERT_EQUALS(gr2.sizeEdges(), 14U)
+      CHECK((gr2.sizeNodes()) == (8U));
+      CHECK((gr2.sizeEdges()) == (14U));
 
       triang.clear();
       triang.setGraph(&graph, &dom);
       triang.setPartialOrder(&partial_order);
       const gum::UndiGraph& gr3 = triang.triangulatedGraph();
-      TS_ASSERT_EQUALS(gr3.sizeNodes(), 8U)
-      TS_ASSERT_EQUALS(gr3.sizeEdges(), 14U)
+      CHECK((gr3.sizeNodes()) == (8U));
+      CHECK((gr3.sizeEdges()) == (14U));
 
       triang.clear();
       partial_order.clear();
@@ -116,22 +122,22 @@ namespace gum_tests {
       triang.setPartialOrder(&partial_order);
 
       const gum::UndiGraph& gr5 = triang.triangulatedGraph();
-      TS_ASSERT_EQUALS(gr5.sizeNodes(), 8U)
-      TS_ASSERT_EQUALS(gr5.sizeEdges(), 23U)
+      CHECK((gr5.sizeNodes()) == (8U));
+      CHECK((gr5.sizeEdges()) == (23U));
       const gum::EdgeSet& edges2 = triang.fillIns();
-      TS_ASSERT_EQUALS(edges2.size(), 9U)
-      TS_ASSERT_EQUALS(edges2.exists(gum::Edge(20, 80)), true)
-      TS_ASSERT_EQUALS(edges2.exists(gum::Edge(40, 80)), true)
-      TS_ASSERT_EQUALS(edges2.exists(gum::Edge(30, 50)), true)
-      TS_ASSERT_EQUALS(edges2.exists(gum::Edge(30, 70)), true)
-      TS_ASSERT_EQUALS(edges2.exists(gum::Edge(40, 70)), true)
-      TS_ASSERT_EQUALS(edges2.exists(gum::Edge(50, 80)), true)
-      TS_ASSERT_EQUALS(edges2.exists(gum::Edge(70, 80)), true)
-      TS_ASSERT_EQUALS(edges2.exists(gum::Edge(60, 70)), true)
-      TS_ASSERT_EQUALS(edges2.exists(gum::Edge(60, 80)), true)
+      CHECK((edges2.size()) == (9U));
+      CHECK((edges2.exists(gum::Edge(20, 80))) == (true));
+      CHECK((edges2.exists(gum::Edge(40, 80))) == (true));
+      CHECK((edges2.exists(gum::Edge(30, 50))) == (true));
+      CHECK((edges2.exists(gum::Edge(30, 70))) == (true));
+      CHECK((edges2.exists(gum::Edge(40, 70))) == (true));
+      CHECK((edges2.exists(gum::Edge(50, 80))) == (true));
+      CHECK((edges2.exists(gum::Edge(70, 80))) == (true));
+      CHECK((edges2.exists(gum::Edge(60, 70))) == (true));
+      CHECK((edges2.exists(gum::Edge(60, 80))) == (true));
       const gum::CliqueGraph& JT = triang.junctionTree();
-      TS_ASSERT_EQUALS(JT.sizeNodes(), 3U)
-      TS_ASSERT_EQUALS(JT.sizeEdges(), 2U)
+      CHECK((JT.sizeNodes()) == (3U));
+      CHECK((JT.sizeEdges()) == (2U));
       const gum::NodeSet& clique1 = JT.clique(0);
       const gum::NodeSet& clique2 = JT.clique(1);
       const gum::NodeSet& clique3 = JT.clique(3);
@@ -139,9 +145,9 @@ namespace gum_tests {
       cc1 << 10 << 20 << 30 << 40 << 80;
       cc2 << 20 << 30 << 40 << 50 << 70 << 80;
       cc3 << 40 << 50 << 60 << 70 << 80;
-      TS_ASSERT_EQUALS(clique1, cc1)
-      TS_ASSERT_EQUALS(clique2, cc2)
-      TS_ASSERT_EQUALS(clique3, cc3)
+      CHECK((clique1) == (cc1));
+      CHECK((clique2) == (cc2));
+      CHECK((clique3) == (cc3));
 
       partial_order.clear();
 
@@ -156,14 +162,14 @@ namespace gum_tests {
       triang.setGraph(&graph, &dom);
       triang.setPartialOrder(&partial_order);
       const gum::UndiGraph& gr4 = triang.triangulatedGraph();
-      TS_ASSERT_EQUALS(gr4.sizeNodes(), 8U)
-      TS_ASSERT_EQUALS(gr4.sizeEdges(), 14U)
+      CHECK((gr4.sizeNodes()) == (8U));
+      CHECK((gr4.sizeEdges()) == (14U));
       const gum::EdgeSet& edges = triang.fillIns();
-      TS_ASSERT_EQUALS(edges.size(), 1U)
-      TS_ASSERT_EQUALS(*(edges.begin()), gum::Edge(20, 50))
+      CHECK((edges.size()) == (1U));
+      CHECK((*(edges.begin())) == (gum::Edge(20, 50)));
     }   // namespace gum_tests
 
-    GUM_ACTIVE_TEST(TriangulatedGraph2) {
+    static void testTriangulatedGraph2() {
       gum::NodeSet c1, c2, c3, c4, c5;
       c1 << 10 << 20 << 30 << 40;
       c2 << 20 << 40 << 50;
@@ -205,11 +211,11 @@ namespace gum_tests {
       triang.setGraph(&graph, &dom);
       triang.setPartialOrder(&partial_order);
       const gum::UndiGraph& gr2 = triang.triangulatedGraph();
-      TS_ASSERT_EQUALS(gr2.sizeNodes(), 8U)
-      TS_ASSERT_EQUALS(gr2.sizeEdges(), 14U)
+      CHECK((gr2.sizeNodes()) == (8U));
+      CHECK((gr2.sizeEdges()) == (14U));
     }
 
-    GUM_ACTIVE_TEST(TriangulatedGraph3) {
+    static void testTriangulatedGraph3() {
       gum::UndiGraph graph;
 
       for (gum::NodeId i = 1; i <= 8; ++i)
@@ -238,20 +244,20 @@ namespace gum_tests {
       triang.setGraph(&graph, &dom);
       triang.setPartialOrder(&partial_order);
       const gum::CliqueGraph& elim = triang.eliminationTree();
-      TS_ASSERT_EQUALS(elim.sizeNodes(), 8U)
-      TS_ASSERT_EQUALS(elim.sizeEdges(), 7U)
+      CHECK((elim.sizeNodes()) == (8U));
+      CHECK((elim.sizeEdges()) == (7U));
 
       const gum::CliqueGraph& JT = triang.junctionTree();
-      TS_ASSERT_EQUALS(JT.sizeNodes(), 6U)
-      TS_ASSERT_EQUALS(JT.sizeEdges(), 5U)
+      CHECK((JT.sizeNodes()) == (6U));
+      CHECK((JT.sizeEdges()) == (5U));
 
       const gum::UndiGraph& gr = triang.triangulatedGraph();
-      TS_ASSERT_EQUALS(gr.sizeNodes(), 8U)
-      TS_ASSERT_EQUALS(gr.sizeEdges(), 13U)
+      CHECK((gr.sizeNodes()) == (8U));
+      CHECK((gr.sizeEdges()) == (13U));
     }
 
     private:
-    void createClique(gum::UndiGraph& graph, const gum::NodeSet& clique) {
+    static void createClique(gum::UndiGraph& graph, const gum::NodeSet& clique) {
       for (auto iter = clique.begin(); iter != clique.end(); ++iter) {
         auto iter2 = iter;
 
@@ -261,4 +267,8 @@ namespace gum_tests {
       }
     }
   };
+
+  GUM_TEST_ACTIF(TriangulatedGraph1)
+  GUM_TEST_ACTIF(TriangulatedGraph2)
+  GUM_TEST_ACTIF(TriangulatedGraph3)
 }   // namespace gum_tests

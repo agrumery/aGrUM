@@ -1,7 +1,7 @@
 /****************************************************************************
  *   This file is part of the aGrUM/pyAgrum library.                        *
  *                                                                          *
- *   Copyright (c) 2005-2025 by                                             *
+ *   Copyright (c) 2005-2026 by                                             *
  *       - Pierre-Henri WUILLEMIN(_at_LIP6)                                 *
  *       - Christophe GONZALES(_at_AMU)                                     *
  *                                                                          *
@@ -27,7 +27,7 @@
  *                                                                          *
  *   See LICENCES for more details.                                         *
  *                                                                          *
- *   SPDX-FileCopyrightText: Copyright 2005-2025                            *
+ *   SPDX-FileCopyrightText: Copyright 2005-2026                            *
  *       - Pierre-Henri WUILLEMIN(_at_LIP6)                                 *
  *       - Christophe GONZALES(_at_AMU)                                     *
  *   SPDX-License-Identifier: LGPL-3.0-or-later OR MIT                      *
@@ -37,6 +37,7 @@
  *   gitlab   : https://gitlab.com/agrumery/agrum                           *
  *                                                                          *
  ****************************************************************************/
+
 #pragma once
 
 
@@ -68,11 +69,16 @@
 #include <agrum/BN/learning/scores_and_tests/scoreBDeu.h>
 #include <agrum/BN/learning/scores_and_tests/scoreK2.h>
 
+#undef GUM_CURRENT_SUITE
+#undef GUM_CURRENT_MODULE
+#define GUM_CURRENT_SUITE  LocalSearchWithTabuList
+#define GUM_CURRENT_MODULE BN
+
 namespace gum_tests {
 
-  class GUM_TEST_SUITE(LocalSearchWithTabuList) {
+  struct LocalSearchWithTabuListTestSuite {
     public:
-    GUM_ACTIVE_TEST(_asia) {
+    static void test_asia() {
       gum::learning::DBInitializerFromCSV initializer(GET_RESSOURCES_PATH("csv/asia.csv"));
       const auto&                         var_names = initializer.variableNames();
       const std::size_t                   nb_vars   = var_names.size();
@@ -120,7 +126,7 @@ namespace gum_tests {
       try {
         gum::BayesNet< double > bn  = search.learnBN< double >(selector, estimator);
         gum::BayesNet< double > bn2 = search.learnBN< double >(selector, estimator);
-        TS_ASSERT_EQUALS(bn.dag().arcs().size(), static_cast< gum::Size >(10))
+        CHECK((bn.dag().arcs().size()) == (static_cast< gum::Size >(10)));
       } catch (gum::Exception& e) { GUM_SHOWERROR(e); }
     }   // namespace gum_tests
 
@@ -304,5 +310,7 @@ namespace gum_tests {
     }
     */
   };
+
+  GUM_TEST_ACTIF(_asia)
 
 } /* namespace gum_tests */

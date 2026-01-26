@@ -1,7 +1,7 @@
 /****************************************************************************
  *   This file is part of the aGrUM/pyAgrum library.                        *
  *                                                                          *
- *   Copyright (c) 2005-2025 by                                             *
+ *   Copyright (c) 2005-2026 by                                             *
  *       - Pierre-Henri WUILLEMIN(_at_LIP6)                                 *
  *       - Christophe GONZALES(_at_AMU)                                     *
  *                                                                          *
@@ -27,7 +27,7 @@
  *                                                                          *
  *   See LICENCES for more details.                                         *
  *                                                                          *
- *   SPDX-FileCopyrightText: Copyright 2005-2025                            *
+ *   SPDX-FileCopyrightText: Copyright 2005-2026                            *
  *       - Pierre-Henri WUILLEMIN(_at_LIP6)                                 *
  *       - Christophe GONZALES(_at_AMU)                                     *
  *   SPDX-License-Identifier: LGPL-3.0-or-later OR MIT                      *
@@ -37,6 +37,7 @@
  *   gitlab   : https://gitlab.com/agrumery/agrum                           *
  *                                                                          *
  ****************************************************************************/
+
 #pragma once
 
 
@@ -49,29 +50,34 @@
 #include <agrum/base/multidim/instantiation.h>
 #include <agrum/base/variables/labelizedVariable.h>
 
+#undef GUM_CURRENT_SUITE
+#undef GUM_CURRENT_MODULE
+#define GUM_CURRENT_SUITE  Multidim
+#define GUM_CURRENT_MODULE GUMBASE
+
 namespace gum_tests {
 
-  class GUM_TEST_SUITE(Multidim) {
+  struct MultidimTestSuite {
     public:
-    GUM_ACTIVE_TEST(Creation) {
+    static void testCreation() {
       gum::MultiDimArray< double > m;
-      TS_ASSERT_EQUALS(m.nbrDim(), static_cast< gum::Size >(0))
-      TS_ASSERT_EQUALS(m.domainSize(), static_cast< gum::Size >(1))
+      CHECK((m.nbrDim()) == (static_cast< gum::Size >(0)));
+      CHECK((m.domainSize()) == (static_cast< gum::Size >(1)));
 
       gum::LabelizedVariable a("a", "", 4), b("b", "", 5);
       m << a;
-      TS_ASSERT_EQUALS(m.nbrDim(), static_cast< gum::Size >(1))
-      TS_ASSERT_EQUALS(m.domainSize(), static_cast< gum::Size >(4))
+      CHECK((m.nbrDim()) == (static_cast< gum::Size >(1)));
+      CHECK((m.domainSize()) == (static_cast< gum::Size >(4)));
       m << b;
-      TS_ASSERT_EQUALS(m.nbrDim(), static_cast< gum::Size >(2))
-      TS_ASSERT_EQUALS(m.domainSize(), static_cast< gum::Size >(20))
+      CHECK((m.nbrDim()) == (static_cast< gum::Size >(2)));
+      CHECK((m.domainSize()) == (static_cast< gum::Size >(20)));
 
       gum::MultiDimArray< double > mm = m;
-      TS_ASSERT_EQUALS(mm.nbrDim(), static_cast< gum::Size >(2))
-      TS_ASSERT_EQUALS(mm.domainSize(), static_cast< gum::Size >(20))
+      CHECK((mm.nbrDim()) == (static_cast< gum::Size >(2)));
+      CHECK((mm.domainSize()) == (static_cast< gum::Size >(20)));
     }   // namespace gum_tests
 
-    GUM_ACTIVE_TEST(MemoryCrash) {
+    static void testMemoryCrash() {
       gum::MultiDimArray< double > m;
       gum::LabelizedVariable*      v[100];
 
@@ -81,14 +87,15 @@ namespace gum_tests {
         v[i] = new gum::LabelizedVariable(name, "x");
       }
 
-      TS_ASSERT_THROWS(feedMultiDimUntilOverflow(v, m), const gum::OutOfBounds&)
+      CHECK_THROWS_AS(feedMultiDimUntilOverflow(v, m), const gum::OutOfBounds&);
 
       for (int i = 0; i < 100; i++)
         delete (v[i]);
     }
 
     private:
-    void feedMultiDimUntilOverflow(gum::LabelizedVariable* v[], gum::MultiDimArray< double >& t) {
+    static void feedMultiDimUntilOverflow(gum::LabelizedVariable*       v[],
+                                          gum::MultiDimArray< double >& t) {
       t.beginMultipleChanges();
 
       for (int i = 0; i < 100; i++)
@@ -97,4 +104,7 @@ namespace gum_tests {
       t.endMultipleChanges();
     }
   };
+
+  GUM_TEST_ACTIF(Creation)
+  GUM_TEST_ACTIF(MemoryCrash)
 }   // namespace gum_tests

@@ -1,7 +1,7 @@
 /****************************************************************************
  *   This file is part of the aGrUM/pyAgrum library.                        *
  *                                                                          *
- *   Copyright (c) 2005-2025 by                                             *
+ *   Copyright (c) 2005-2026 by                                             *
  *       - Pierre-Henri WUILLEMIN(_at_LIP6)                                 *
  *       - Christophe GONZALES(_at_AMU)                                     *
  *                                                                          *
@@ -27,7 +27,7 @@
  *                                                                          *
  *   See LICENCES for more details.                                         *
  *                                                                          *
- *   SPDX-FileCopyrightText: Copyright 2005-2025                            *
+ *   SPDX-FileCopyrightText: Copyright 2005-2026                            *
  *       - Pierre-Henri WUILLEMIN(_at_LIP6)                                 *
  *       - Christophe GONZALES(_at_AMU)                                     *
  *   SPDX-License-Identifier: LGPL-3.0-or-later OR MIT                      *
@@ -37,6 +37,7 @@
  *   gitlab   : https://gitlab.com/agrumery/agrum                           *
  *                                                                          *
  ****************************************************************************/
+
 #pragma once
 
 
@@ -48,6 +49,11 @@
 #include <agrum/base/variables/labelizedVariable.h>
 #include <agrum/PRM/elements/PRMInstance.h>
 
+#undef GUM_CURRENT_SUITE
+#undef GUM_CURRENT_MODULE
+#define GUM_CURRENT_SUITE  PRMInstance
+#define GUM_CURRENT_MODULE PRM
+
 /**
  * This class is used to test gum::prm::PRMClassElement, since it is an abstrac
  * class, tests defined here should be called by each sub class of
@@ -55,7 +61,7 @@
  */
 namespace gum_tests {
 
-  class GUM_TEST_SUITE(PRMInstance) {
+  struct PRMInstanceTestSuite {
     private:
     using PRMInstance  = gum::prm::PRMInstance< double >;
     using PRMClass     = gum::prm::PRMClass< double >;
@@ -74,7 +80,9 @@ namespace gum_tests {
     PRMClass* _classB_;
 
     public:
-    void setUp() {
+    /// Constructor & Destructor
+    /// @{
+    PRMInstanceTestSuite() {
       _boolean_ = gum::prm::PRMType::boolean();
       gum::LabelizedVariable state{"state", "A state variable", 0};
       state.addLabel("OK");
@@ -82,13 +90,11 @@ namespace gum_tests {
       std::vector< gum::Idx > map;
       map.push_back(1);
       map.push_back(0);
-      _state_ = new PRMType(*_boolean_, map, state);
-
+      _state_  = new PRMType(*_boolean_, map, state);
       _classA_ = new PRMClass("A");
       _classA_->add(new PRMAttribute("a", *_boolean_));
       _classA_->add(new PRMAttribute("b", *_state_));
       _classA_->addArc("a", "b");
-
       _classB_ = new PRMClass("B");
       _classB_->add(new PRMAttribute("a", *_boolean_));
       _classB_->add(new PRMAttribute("b", *_state_));
@@ -100,48 +106,46 @@ namespace gum_tests {
       _classB_->addArc("rho.a", "b");
     }
 
-    void tearDown() {
+    ~PRMInstanceTestSuite() {
       delete _classA_;
       delete _classB_;
       delete _boolean_;
       delete _state_;
     }
 
-    /// Constructor & Destructor
-    /// @{
-    GUM_ACTIVE_TEST(Constructor) {
+    static void testConstructor() {
       // Arrange
       PRMInstance* i = nullptr;
       // Act & Assert
-      TS_ASSERT_THROWS_NOTHING(i = new PRMInstance("i", *_classA_))
-      TS_ASSERT_THROWS_NOTHING(delete i)
+      CHECK_NOTHROW(i = new PRMInstance("i", *_classA_));
+      CHECK_NOTHROW(delete i);
     }
 
     /// @}
 
     /// Getters & setters
     /// @{
-    GUM_ACTIVE_TEST(ObjType) {
+    static void testObjType() {
       // Arrange
       PRMInstance i("i", *_classA_);
       auto        expected = PRMObject::prm_type::INSTANCE;
       // Act
       auto actual = i.obj_type();
       // Assert
-      TS_ASSERT_EQUALS(actual, expected)
+      CHECK((actual) == (expected));
     }
 
-    GUM_ACTIVE_TEST(Type) {
+    static void testType() {
       // Arrange
       PRMInstance i("i", *_classA_);
       auto        expected = _classA_;
       // Act
       auto actual = &(i.type());
       // Assert
-      TS_ASSERT_EQUALS(actual, expected)
+      CHECK((actual) == (expected));
     }
 
-    GUM_ACTIVE_TEST(TypeConst) {
+    static void testTypeConst() {
       // Arrange
       PRMInstance i("i", *_classA_);
       const auto& const_i  = i;
@@ -149,10 +153,10 @@ namespace gum_tests {
       // Act
       const auto actual = &(const_i.type());
       // Assert
-      TS_ASSERT_EQUALS(actual, expected)
+      CHECK((actual) == (expected));
     }
 
-    GUM_ACTIVE_TEST(ExistsById) {
+    static void testExistsById() {
       // Arrange
       PRMInstance i("i", *_classA_);
       auto        id       = _classA_->get("a").id();
@@ -160,149 +164,149 @@ namespace gum_tests {
       // Act
       bool actual = i.exists(id);
       // Assert
-      TS_ASSERT_EQUALS(actual, expected)
+      CHECK((actual) == (expected));
     }
 
-    GUM_ACTIVE_TEST(NotExistsById) {
+    static void testNotExistsById() {
       // Arrange
       PRMInstance i("i", *_classA_);
       bool        expected = false;
       // Act
       bool actual = i.exists(666);
       // Assert
-      TS_ASSERT_EQUALS(actual, expected)
+      CHECK((actual) == (expected));
     }
 
-    GUM_ACTIVE_TEST(ExistsByName) {
+    static void testExistsByName() {
       // Arrange
       PRMInstance i("i", *_classA_);
       bool        expected = true;
       // Act
       bool actual = i.exists("a");
       // Assert
-      TS_ASSERT_EQUALS(actual, expected)
+      CHECK((actual) == (expected));
     }
 
-    GUM_ACTIVE_TEST(NotExistsByName) {
+    static void testNotExistsByName() {
       // Arrange
       PRMInstance i("i", *_classA_);
       bool        expected = false;
       // Act
       bool actual = i.exists("aazeazeaze");
       // Assert
-      TS_ASSERT_EQUALS(actual, expected)
+      CHECK((actual) == (expected));
     }
 
-    GUM_ACTIVE_TEST(GetByName) {
+    static void testGetByName() {
       // Arrange
       PRMInstance                       i("i", *_classA_);
       gum::prm::PRMAttribute< double >* attr       = nullptr;
       auto&                             class_attr = _classA_->get("a");
       // Act
-      TS_ASSERT_THROWS_NOTHING(attr = &(i.get("a")))
+      CHECK_NOTHROW(attr = &(i.get("a")));
       // Assert
-      TS_ASSERT_EQUALS(attr->name(), "a")
-      TS_ASSERT_DIFFERS(&(attr->type().variable()), &(class_attr.type().variable()))
-      TS_ASSERT_EQUALS(attr->cpf().domainSize(), class_attr.cpf().domainSize())
-      TS_ASSERT_EQUALS(attr->cpf().nbrDim(), class_attr.cpf().nbrDim())
+      CHECK((attr->name()) == ("a"));
+      CHECK((&(attr->type().variable())) != (&(class_attr.type().variable())));
+      CHECK((attr->cpf().domainSize()) == (class_attr.cpf().domainSize()));
+      CHECK((attr->cpf().nbrDim()) == (class_attr.cpf().nbrDim()));
     }
 
-    GUM_ACTIVE_TEST(GetByNameConst) {
+    static void testGetByNameConst() {
       // Arrange
       PRMInstance                             i("i", *_classA_);
       const auto&                             const_i    = i;
       gum::prm::PRMAttribute< double > const* attr       = nullptr;
       const auto&                             class_attr = _classA_->get("a");
       // Act
-      TS_ASSERT_THROWS_NOTHING(attr = &(const_i.get("a")))
+      CHECK_NOTHROW(attr = &(const_i.get("a")));
       // Assert
-      TS_ASSERT_EQUALS(attr->name(), "a")
-      TS_ASSERT_DIFFERS(&(attr->type().variable()), &(class_attr.type().variable()))
-      TS_ASSERT_EQUALS(attr->cpf().domainSize(), class_attr.cpf().domainSize())
-      TS_ASSERT_EQUALS(attr->cpf().nbrDim(), class_attr.cpf().nbrDim())
+      CHECK((attr->name()) == ("a"));
+      CHECK((&(attr->type().variable())) != (&(class_attr.type().variable())));
+      CHECK((attr->cpf().domainSize()) == (class_attr.cpf().domainSize()));
+      CHECK((attr->cpf().nbrDim()) == (class_attr.cpf().nbrDim()));
     }
 
-    GUM_ACTIVE_TEST(GetByNameNotFound) {
+    static void testGetByNameNotFound() {
       // Arrange
       PRMInstance i("i", *_classA_);
       // Act & Assert
-      TS_ASSERT_THROWS(i.get("azeaze"), const gum::NotFound&)
+      CHECK_THROWS_AS(i.get("azeaze"), const gum::NotFound&);
     }
 
-    GUM_ACTIVE_TEST(GetByNameConstNotFound) {
+    static void testGetByNameConstNotFound() {
       // Arrange
       PRMInstance i("i", *_classA_);
       const auto& const_i = i;
       // Act & Assert
-      TS_ASSERT_THROWS(const_i.get("azeaze"), const gum::NotFound&)
+      CHECK_THROWS_AS(const_i.get("azeaze"), const gum::NotFound&);
     }
 
-    GUM_ACTIVE_TEST(GetById) {
+    static void testGetById() {
       // Arrange
       PRMInstance                       i("i", *_classA_);
       gum::prm::PRMAttribute< double >* attr       = nullptr;
       auto&                             class_attr = _classA_->get("a");
       // Act
-      TS_ASSERT_THROWS_NOTHING(attr = &(i.get(class_attr.id())))
+      CHECK_NOTHROW(attr = &(i.get(class_attr.id())));
       // Assert
-      TS_ASSERT_EQUALS(attr->name(), "a")
-      TS_ASSERT_DIFFERS(&(attr->type().variable()), &(class_attr.type().variable()))
-      TS_ASSERT_EQUALS(attr->cpf().domainSize(), class_attr.cpf().domainSize())
-      TS_ASSERT_EQUALS(attr->cpf().nbrDim(), class_attr.cpf().nbrDim())
+      CHECK((attr->name()) == ("a"));
+      CHECK((&(attr->type().variable())) != (&(class_attr.type().variable())));
+      CHECK((attr->cpf().domainSize()) == (class_attr.cpf().domainSize()));
+      CHECK((attr->cpf().nbrDim()) == (class_attr.cpf().nbrDim()));
     }
 
-    GUM_ACTIVE_TEST(GetByIdConst) {
+    static void testGetByIdConst() {
       // Arrange
       PRMInstance                             i("i", *_classA_);
       const auto&                             const_i    = i;
       gum::prm::PRMAttribute< double > const* attr       = nullptr;
       const auto&                             class_attr = _classA_->get("a");
       // Act
-      TS_ASSERT_THROWS_NOTHING(attr = &(const_i.get(class_attr.id())))
+      CHECK_NOTHROW(attr = &(const_i.get(class_attr.id())));
       // Assert
-      TS_ASSERT_EQUALS(attr->name(), "a")
-      TS_ASSERT_DIFFERS(&(attr->type().variable()), &(class_attr.type().variable()))
-      TS_ASSERT_EQUALS(attr->cpf().domainSize(), class_attr.cpf().domainSize())
-      TS_ASSERT_EQUALS(attr->cpf().nbrDim(), class_attr.cpf().nbrDim())
+      CHECK((attr->name()) == ("a"));
+      CHECK((&(attr->type().variable())) != (&(class_attr.type().variable())));
+      CHECK((attr->cpf().domainSize()) == (class_attr.cpf().domainSize()));
+      CHECK((attr->cpf().nbrDim()) == (class_attr.cpf().nbrDim()));
     }
 
-    GUM_ACTIVE_TEST(GetByIdNotFound) {
+    static void testGetByIdNotFound() {
       // Arrange
       PRMInstance i("i", *_classA_);
       // Act & Assert
-      TS_ASSERT_THROWS(i.get(666), const gum::NotFound&)
+      CHECK_THROWS_AS(i.get(666), const gum::NotFound&);
     }
 
-    GUM_ACTIVE_TEST(GetByIdConstNotFound) {
+    static void testGetByIdConstNotFound() {
       // Arrange
       PRMInstance i("i", *_classA_);
       const auto& const_i = i;
       // Act & Assert
-      TS_ASSERT_THROWS(const_i.get(666), const gum::NotFound&)
+      CHECK_THROWS_AS(const_i.get(666), const gum::NotFound&);
     }
 
-    GUM_ACTIVE_TEST(Size) {
+    static void testSize() {
       // Arrage
       PRMInstance i("i", *_classA_);
       gum::Size   expected = 3;   // 2 Attributes + 1 cast descendant
       // Act
       auto actual = i.size();
       // Assert
-      TS_ASSERT_EQUALS(expected, actual)
+      CHECK((expected) == (actual));
     }
 
     /// @}
 
     /// Instantiation methods
     /// @{
-    GUM_ACTIVE_TEST(Instiate) {
+    static void testInstiate() {
       // Arrange
       PRMInstance i("i", *_classA_);
       // Act && Assert
-      TS_ASSERT_THROWS_NOTHING(i.instantiate())
+      CHECK_NOTHROW(i.instantiate());
     }
 
-    GUM_ACTIVE_TEST(Bijection) {
+    static void testBijection() {
       // Arrange
       PRMInstance      i("i", *_classA_);
       Bijection const* bij   = nullptr;
@@ -311,12 +315,12 @@ namespace gum_tests {
       auto             i_a   = &(i.get("a").type().variable());
       auto             i_b   = &(i.get("b").type().variable());
       // Act
-      TS_ASSERT_THROWS_NOTHING(bij = &(i.bijection()))
+      CHECK_NOTHROW(bij = &(i.bijection()));
       // Assert
-      TS_ASSERT_EQUALS(bij->second(var_a), i_a)
-      TS_ASSERT_EQUALS(bij->second(var_b), i_b)
-      TS_ASSERT_EQUALS(bij->first(i_a), var_a)
-      TS_ASSERT_EQUALS(bij->first(i_b), var_b)
+      CHECK((bij->second(var_a)) == (i_a));
+      CHECK((bij->second(var_b)) == (i_b));
+      CHECK((bij->first(i_a)) == (var_a));
+      CHECK((bij->first(i_b)) == (var_b));
     }
 
     /// @}
@@ -326,5 +330,25 @@ namespace gum_tests {
 
     /// @}
   };
+
+  GUM_TEST_ACTIF(Constructor)
+  GUM_TEST_ACTIF(ObjType)
+  GUM_TEST_ACTIF(Type)
+  GUM_TEST_ACTIF(TypeConst)
+  GUM_TEST_ACTIF(ExistsById)
+  GUM_TEST_ACTIF(NotExistsById)
+  GUM_TEST_ACTIF(ExistsByName)
+  GUM_TEST_ACTIF(NotExistsByName)
+  GUM_TEST_ACTIF(GetByName)
+  GUM_TEST_ACTIF(GetByNameConst)
+  GUM_TEST_ACTIF(GetByNameNotFound)
+  GUM_TEST_ACTIF(GetByNameConstNotFound)
+  GUM_TEST_ACTIF(GetById)
+  GUM_TEST_ACTIF(GetByIdConst)
+  GUM_TEST_ACTIF(GetByIdNotFound)
+  GUM_TEST_ACTIF(GetByIdConstNotFound)
+  GUM_TEST_ACTIF(Size)
+  GUM_TEST_ACTIF(Instiate)
+  GUM_TEST_ACTIF(Bijection)
 
 }   // namespace gum_tests

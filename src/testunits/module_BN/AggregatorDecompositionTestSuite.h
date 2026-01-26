@@ -1,7 +1,7 @@
 /****************************************************************************
  *   This file is part of the aGrUM/pyAgrum library.                        *
  *                                                                          *
- *   Copyright (c) 2005-2025 by                                             *
+ *   Copyright (c) 2005-2026 by                                             *
  *       - Pierre-Henri WUILLEMIN(_at_LIP6)                                 *
  *       - Christophe GONZALES(_at_AMU)                                     *
  *                                                                          *
@@ -27,7 +27,7 @@
  *                                                                          *
  *   See LICENCES for more details.                                         *
  *                                                                          *
- *   SPDX-FileCopyrightText: Copyright 2005-2025                            *
+ *   SPDX-FileCopyrightText: Copyright 2005-2026                            *
  *       - Pierre-Henri WUILLEMIN(_at_LIP6)                                 *
  *       - Christophe GONZALES(_at_AMU)                                     *
  *   SPDX-License-Identifier: LGPL-3.0-or-later OR MIT                      *
@@ -37,6 +37,7 @@
  *   gitlab   : https://gitlab.com/agrumery/agrum                           *
  *                                                                          *
  ****************************************************************************/
+
 #pragma once
 
 
@@ -63,10 +64,15 @@
 
 #include <agrum/base/core/math/math_utils.h>
 
+#undef GUM_CURRENT_SUITE
+#undef GUM_CURRENT_MODULE
+#define GUM_CURRENT_SUITE  AggregatorDecomposition
+#define GUM_CURRENT_MODULE BN
+
 namespace gum_tests {
-  class GUM_TEST_SUITE(AggregatorDecomposition) {
+  struct AggregatorDecompositionTestSuite {
     public:
-    GUM_ACTIVE_TEST(Decomposition) {
+    static void testDecomposition() {
       gum::prm::PRM< double > prm;
 
       gum::prm::o3prm::O3prmReader< double > reader(prm);
@@ -83,12 +89,12 @@ namespace gum_tests {
       auto factory  = gum::BayesNetFactory< double >(&bn);
       auto factory2 = gum::BayesNetFactory< double >(&bn2);
 
-      TS_GUM_ASSERT_THROWS_NOTHING(prm.getSystem("aSys").groundedBN(factory))
-      TS_GUM_ASSERT_THROWS_NOTHING(prm.getSystem("aSys").groundedBN(factory2))
+      GUM_CHECK_ASSERT_THROWS_NOTHING(prm.getSystem("aSys").groundedBN(factory));
+      GUM_CHECK_ASSERT_THROWS_NOTHING(prm.getSystem("aSys").groundedBN(factory2));
 
       gum::AggregatorDecomposition< double > aggregatorDecomposition;
-      TS_GUM_ASSERT_THROWS_NOTHING(aggregatorDecomposition.setMaximumArity(2))
-      TS_GUM_ASSERT_THROWS_NOTHING(bn = aggregatorDecomposition.getDecomposedAggregator(bn))
+      GUM_CHECK_ASSERT_THROWS_NOTHING(aggregatorDecomposition.setMaximumArity(2));
+      GUM_CHECK_ASSERT_THROWS_NOTHING(bn = aggregatorDecomposition.getDecomposedAggregator(bn));
 
       try {
         auto inf = gum::LazyPropagation< double >(&bn);
@@ -106,16 +112,17 @@ namespace gum_tests {
         inst2.setFirst();
 
         while (!inst.end()) {
-          TS_ASSERT_DELTA(abs(inf.posterior(node).get(inst) - inf2.posterior(node).get(inst2)),
-                          0,
-                          TS_GUM_SMALL_ERROR);
+          CHECK((abs(inf.posterior(node).get(inst) - inf2.posterior(node).get(inst2)))
+                == doctest::Approx(0).epsilon(GUM_SMALL_ERROR));
           inst.inc();
           inst2.inc();
         }
       } catch (gum::Exception const& e) {
         GUM_SHOWERROR(e);
-        TS_FAIL("An aGrUM's exception was thrown");
+        FAIL("An aGrUM's exception was thrown");
       }
     }   // namespace gum_tests
   };
+
+  GUM_TEST_ACTIF(Decomposition)
 }   // namespace gum_tests

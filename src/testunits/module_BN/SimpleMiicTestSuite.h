@@ -1,7 +1,7 @@
 /****************************************************************************
  *   This file is part of the aGrUM/pyAgrum library.                        *
  *                                                                          *
- *   Copyright (c) 2005-2025 by                                             *
+ *   Copyright (c) 2005-2026 by                                             *
  *       - Pierre-Henri WUILLEMIN(_at_LIP6)                                 *
  *       - Christophe GONZALES(_at_AMU)                                     *
  *                                                                          *
@@ -27,7 +27,7 @@
  *                                                                          *
  *   See LICENCES for more details.                                         *
  *                                                                          *
- *   SPDX-FileCopyrightText: Copyright 2005-2025                            *
+ *   SPDX-FileCopyrightText: Copyright 2005-2026                            *
  *       - Pierre-Henri WUILLEMIN(_at_LIP6)                                 *
  *       - Christophe GONZALES(_at_AMU)                                     *
  *   SPDX-License-Identifier: LGPL-3.0-or-later OR MIT                      *
@@ -37,6 +37,7 @@
  *   gitlab   : https://gitlab.com/agrumery/agrum                           *
  *                                                                          *
  ****************************************************************************/
+
 #pragma once
 
 
@@ -60,6 +61,11 @@
 #include <agrum/BN/learning/paramUtils/paramEstimatorML.h>
 #include <agrum/BN/learning/priors/noPrior.h>
 #include <agrum/BN/learning/SimpleMiic.h>
+
+#undef GUM_CURRENT_SUITE
+#undef GUM_CURRENT_MODULE
+#define GUM_CURRENT_SUITE  SimpleMiic
+#define GUM_CURRENT_MODULE BN
 
 namespace gum_tests {
 
@@ -96,9 +102,9 @@ namespace gum_tests {
     };
   };
 
-  class GUM_TEST_SUITE(SimpleMiic) {
+  struct SimpleMiicTestSuite {
     public:
-    GUM_ACTIVE_TEST(_latent_var_) {
+    static void test_latent_var_() {
       gum::learning::DBInitializerFromCSV initializer(
           GET_RESSOURCES_PATH("csv/latent_variable.csv"));
       const auto&       var_names = initializer.variableNames();
@@ -137,7 +143,7 @@ namespace gum_tests {
       // GUM_TRACE(search.latentVariables())
     }
 
-    GUM_ACTIVE_TEST(_MIIC_asia_NMLcorr) {
+    static void test_MIIC_asia_NMLcorr() {
       gum::learning::DBInitializerFromCSV initializer(GET_RESSOURCES_PATH("csv/asia.csv"));
       const auto&                         var_names = initializer.variableNames();
       const std::size_t                   nb_vars   = var_names.size();
@@ -176,14 +182,14 @@ namespace gum_tests {
       }
 
       graph = search.learnMixedStructure(cI, graph);
-      // TS_ASSERT_EQUALS(graph.arcs().size(), static_cast<gum::Size>(5))
-      // TS_ASSERT_EQUALS(graph.edges().size(), static_cast<gum::Size>(3))
+      // CHECK((graph.arcs().size()) == (static_cast<gum::Size>(5)));
+      // CHECK((graph.edges().size()) == (static_cast<gum::Size>(3)));
       std::vector< gum::Arc > latents = search.latentVariables();
-      TS_ASSERT_EQUALS(latents.size(), static_cast< gum::Size >(0))
+      CHECK((latents.size()) == (static_cast< gum::Size >(0)));
       gum::DAG dag = search.learnStructure(cI, graph);
     }
 
-    GUM_ACTIVE_TEST(_MIIC_asia_constraints) {
+    static void test_MIIC_asia_constraints() {
       gum::learning::DBInitializerFromCSV initializer(GET_RESSOURCES_PATH("csv/asia.csv"));
       const auto&                         var_names = initializer.variableNames();
       const std::size_t                   nb_vars   = var_names.size();
@@ -229,12 +235,12 @@ namespace gum_tests {
       }
 
       graph = search.learnMixedStructure(cI, graph);
-      TS_ASSERT_EQUALS(graph.arcs().size(), static_cast< gum::Size >(5))
-      TS_ASSERT_EQUALS(graph.edges().size(), static_cast< gum::Size >(3))
+      CHECK((graph.arcs().size()) == (static_cast< gum::Size >(5)));
+      CHECK((graph.edges().size()) == (static_cast< gum::Size >(3)));
       std::vector< gum::Arc > latents = search.latentVariables();
-      TS_ASSERT_EQUALS(latents.size(), static_cast< gum::Size >(0))
-      TS_ASSERT(graph.existsArc(4, 3))
-      TS_ASSERT(graph.existsEdge(5, 7))
+      CHECK((latents.size()) == (static_cast< gum::Size >(0)));
+      CHECK(graph.existsArc(4, 3));
+      CHECK(graph.existsEdge(5, 7));
     }
 
     void xtest_tonda() {
@@ -272,15 +278,19 @@ namespace gum_tests {
         }
       }
       gum::MixedGraph g = search.learnMixedStructure(cI, graph);
-      TS_ASSERT_EQUALS(g.arcs().size(), static_cast<gum::Size>(0))
-      TS_ASSERT_EQUALS(g.edges().size(), static_cast<gum::Size>(9))
+      CHECK((g.arcs().size()) == (static_cast<gum::Size>(0)));
+      CHECK((g.edges().size()) == (static_cast<gum::Size>(9)));
 
       gum::DAG                dag = search.learnStructure(cI, graph);
       std::vector< gum::Arc > latents = search.latentVariables();
-      TS_ASSERT_EQUALS(dag.arcs().size(), static_cast<gum::Size>(9))
-      TS_ASSERT_EQUALS(latents.size(), static_cast<gum::Size>(0))
+      CHECK((dag.arcs().size()) == (static_cast<gum::Size>(9)));
+      CHECK((latents.size()) == (static_cast<gum::Size>(0)));
       */
     }
   };
+
+  GUM_TEST_ACTIF(_latent_var_)
+  GUM_TEST_ACTIF(_MIIC_asia_NMLcorr)
+  GUM_TEST_ACTIF(_MIIC_asia_constraints)
 
 } /* namespace gum_tests */
