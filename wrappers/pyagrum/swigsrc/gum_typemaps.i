@@ -90,15 +90,59 @@
   }
 }
 
+// gum::NodeSet -> Python set[int]
+%typemap(out) gum::NodeSet {
+  $result = PyAgrumHelper::PySetFromNodeSet($1);
+}
+%typemap(out) const gum::NodeSet& {
+  $result = PyAgrumHelper::PySetFromNodeSet(*$1);
+}
 
-// for gum::IMarkovRandomField::factors
-%typemap(out) const gum::FactorTable<double> & {
-  $result = PyList_New(0);
+// gum::ArcSet -> Python set[tuple[int,int]]
+%typemap(out) gum::ArcSet {
+  $result = PyAgrumHelper::PySetFromArcSet($1);
+}
+%typemap(out) const gum::ArcSet& {
+  $result = PyAgrumHelper::PySetFromArcSet(*$1);
+}
 
-  PyObject* pyval;
-  for (auto kv : *$1) {
-    pyval=PyAgrumHelper::PySetFromNodeSet(kv.first);
-    PyList_Append($result, pyval);
-    Py_DecRef(pyval);
-  }
+// gum::EdgeSet -> Python set[tuple[int,int]]
+%typemap(out) gum::EdgeSet {
+  $result = PyAgrumHelper::PySetFromEdgeSet($1);
+}
+%typemap(out) const gum::EdgeSet& {
+  $result = PyAgrumHelper::PySetFromEdgeSet(*$1);
+}
+
+// std::vector<gum::NodeId> -> Python list[int]
+%typemap(out) std::vector<gum::NodeId> {
+  $result = PyAgrumHelper::PyListFromNodeVect($1);
+}
+%typemap(out) const std::vector<gum::NodeId>& {
+  $result = PyAgrumHelper::PyListFromNodeVect(*$1);
+}
+
+// Conversion C++ gum::Set<std::string> vers Python set[str]
+%typemap(out) gum::Set<std::string> {
+  $result = PyAgrumHelper::PySetFromStringSet($1);
+}
+
+%typemap(out) const gum::Set<std::string>& {
+  $result = PyAgrumHelper::PySetFromStringSet(*$1);
+}
+
+// Conversion Python set[str] vers C++ gum::Set<std::string>
+%typemap(in) gum::Set<std::string> (gum::Set<std::string> temp) {
+  PyAgrumHelper::populateStringSetFromPySequence(temp, $input);
+  $1 = temp;
+}
+
+%typemap(in) const gum::Set<std::string>& (gum::Set<std::string> temp) {
+  PyAgrumHelper::populateStringSetFromPySequence(temp, $input);
+  $1 = &temp;
+}
+
+// Typecheck pour la surcharge (permet d'accepter set, list ou str comme argument)
+%typemap(typecheck, precedence=SWIG_TYPECHECK_STRING_ARRAY) gum::Set<std::string>, const gum::Set<std::string>& {
+  $1 = PySet_Check($input) || PyList_Check($input) || PyUnicode_Check($input) || PyBytes_Check($input);
 }

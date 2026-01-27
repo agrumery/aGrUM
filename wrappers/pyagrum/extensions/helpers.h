@@ -571,6 +571,46 @@ namespace PyAgrumHelper {
     return q;
   }
 
+  PyObject* PySetFromStringSet(const gum::Set< std::string >& strset) {
+    PyObject* q = PySet_New(0);
+    PyObject* pyval;
+
+    for (const auto& str: strset) {
+      pyval = PyUnicode_FromString(str.c_str());
+      PySet_Add(q, pyval);
+      Py_DecRef(pyval);
+    }
+    return q;
+  }
+
+  void populateStringSetFromPySequence(gum::Set< std::string >& strset, PyObject* seq) {
+    // if seq is just a string
+    const std::string name = stringFromPyObject(seq);
+    if (name != "") {
+      strset.insert(name);
+      return;
+    }
+
+    // seq really is a sequence (set or list)
+    PyObject* iter = PyObject_GetIter(seq);
+    if (iter != NULL) {
+      PyObject* item;
+      while ((item = PyIter_Next(iter))) {
+        const std::string str = stringFromPyObject(item);
+        if (str == "") {
+          Py_DecRef(item);
+          Py_DecRef(iter);
+          GUM_ERROR(gum::InvalidArgument, "An element in the sequence is not a string")
+        }
+        strset.insert(str);
+        Py_DecRef(item);
+      }
+      Py_DecRef(iter);
+    } else {
+      GUM_ERROR(gum::InvalidArgument, "Argument is not a string, a list nor a set")
+    }
+  }
+
   PyObject* PyDictFromInstantiation(const gum::Instantiation& inst) {
     PyObject* q = PyDict_New();
     PyObject* pyval;
@@ -603,6 +643,18 @@ namespace PyAgrumHelper {
     PyObject* pyval;
     for (const auto& inst: soi) {
       pyval = PyDictFromInstantiation(inst);
+      PyList_Append(q, pyval);
+      Py_DecRef(pyval);
+    }
+    return q;
+  }
+
+  template < typename T >
+  PyObject* PyListOfSetsFromSetOfNodeSets(const T& setOfNodeSets) {
+    PyObject* q = PyList_New(0);
+    PyObject* pyval;
+    for (const auto& ns: setOfNodeSets) {
+      pyval = PySetFromNodeSet(ns);
       PyList_Append(q, pyval);
       Py_DecRef(pyval);
     }

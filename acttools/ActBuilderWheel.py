@@ -76,10 +76,10 @@ def install_pyAgrum(current: dict[str, str | bool], tmp):
   instbuilder = ActBuilderPyAgrum(c)
   if instbuilder.check_consistency():
     if not instbuilder.build():
-      error("pyAgrum's installation failed 😭                        ")
+      error("pyAgrum's installation failed �                        ")
       sys.exit(1)
   else:
-    error("pyAgrum's installation failed due to consistency checks 😭")
+    error("pyAgrum's installation failed due to consistency checks �")
     sys.exit(1)
 
 

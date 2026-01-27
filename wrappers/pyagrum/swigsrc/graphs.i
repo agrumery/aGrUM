@@ -181,16 +181,7 @@ ADD_METHODS_FOR_ALL_GUM_GRAPHCLASS(gum::UndiGraph);
 %ignore classname::addNodes(gum::Size n);
 %extend classname {
   PyObject *addNodes(gum::Size n) const {
-    PyObject* q=PySet_New(0);
-
-    PyObject* pyval;
-    for(auto node : const_cast<classname *>(self)->addNodes(n)) {
-      pyval=PyInt_FromLong(node);
-      PySet_Add(q,pyval);
-      Py_DecRef(pyval);
-    }
-
-    return q;
+    return PyAgrumHelper::PySetFromNodeVect(const_cast<classname *>(self)->addNodes(n));
   };
 
 
@@ -300,29 +291,11 @@ ADD_MIXED_METHOD_TO_GRAPHCLASS(gum::PDAG);
 
 %extend gum::CliqueGraph {
   PyObject *clique(const gum::NodeId clique) const {
-    PyObject* q=PySet_New(0);
-
-    PyObject* pyval;
-    for(auto node :self->clique(clique)) {
-      pyval=PyInt_FromLong(node);
-      PySet_Add(q,pyval);
-      Py_DecRef(pyval);
-    }
-
-    return q;
+    return PyAgrumHelper::PySetFromNodeSet(self->clique(clique));
   };
 
   PyObject* separator(const gum::NodeId cliq1,const gum::NodeId cliq2) const {
-    PyObject* q=PySet_New(0);
-
-    PyObject* pyval;
-    for(auto node : self->separator(cliq1,cliq2)) {
-      pyval=PyInt_FromLong(node);
-      PySet_Add(q,pyval);
-      Py_DecRef(pyval);
-    }
-
-    return q;
+    return PyAgrumHelper::PySetFromNodeSet(self->separator(cliq1,cliq2));
   };
 
   %pythoncode {

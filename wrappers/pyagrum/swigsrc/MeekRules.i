@@ -47,15 +47,7 @@
 // defines some macro for MeekRules classe
 %extend gum::MeekRules {
   PyObject* choices() const {
-    PyObject* q=PyList_New(0);
-
-    PyObject* pyval;
-    for ( auto arc : self->choices()) {
-      pyval=Py_BuildValue("(i,i)", arc.tail(), arc.head());
-      PyList_Append(q,pyval);
-      Py_DecRef(pyval);
-    }
-    return q;
+    return PyAgrumHelper::PyListFromArcVect(self->choices());
   };
 }
 %ignore gum::MeekRules::choices() const;
