@@ -1,7 +1,7 @@
 /****************************************************************************
  *   This file is part of the aGrUM/pyAgrum library.                        *
  *                                                                          *
- *   Copyright (c) 2005-2025 by                                             *
+ *   Copyright (c) 2005-2026 by                                             *
  *       - Pierre-Henri WUILLEMIN(_at_LIP6)                                 *
  *       - Christophe GONZALES(_at_AMU)                                     *
  *                                                                          *
@@ -27,7 +27,7 @@
  *                                                                          *
  *   See LICENCES for more details.                                         *
  *                                                                          *
- *   SPDX-FileCopyrightText: Copyright 2005-2025                            *
+ *   SPDX-FileCopyrightText: Copyright 2005-2026                            *
  *       - Pierre-Henri WUILLEMIN(_at_LIP6)                                 *
  *       - Christophe GONZALES(_at_AMU)                                     *
  *   SPDX-License-Identifier: LGPL-3.0-or-later OR MIT                      *
@@ -37,6 +37,7 @@
  *   gitlab   : https://gitlab.com/agrumery/agrum                           *
  *                                                                          *
  ****************************************************************************/
+
 #pragma once
 
 
@@ -49,11 +50,16 @@
 
 #include <agrum/base/graphs/algorithms/spanningForestPrim.h>
 
+#undef GUM_CURRENT_SUITE
+#undef GUM_CURRENT_MODULE
+#define GUM_CURRENT_SUITE  SpanningForesPrim
+#define GUM_CURRENT_MODULE GUMBASE
+
 namespace gum_tests {
 
-  class GUM_TEST_SUITE(SpanningForesPrim) {
+  struct SpanningForesPrimTestSuite {
     public:
-    GUM_ACTIVE_TEST(1) {
+    static void test1() {
       gum::UndiGraph g;
 
       gum::NodeId id1  = g.addNode();
@@ -101,26 +107,28 @@ namespace gum_tests {
       gum::SpanningForestPrim prim(&g, &cost);
 
       const gum::UndiGraph& g2 = prim.spanningForest();
-      TS_ASSERT_EQUALS(g2.sizeNodes(), 12U)
-      TS_ASSERT_EQUALS(g2.sizeEdges(), 9U)
-      TS_ASSERT_EQUALS(g2.existsEdge(id1, id2), true)
-      TS_ASSERT_EQUALS(g2.existsEdge(id1, id6), true)
-      TS_ASSERT_EQUALS(g2.existsEdge(id2, id4), true)
-      TS_ASSERT_EQUALS(g2.existsEdge(id3, id4), true)
-      TS_ASSERT_EQUALS(g2.existsEdge(id5, id6), true)
-      TS_ASSERT_EQUALS(g2.existsEdge(id7, id8), true)
-      TS_ASSERT_EQUALS(g2.existsEdge(id8, id10), true)
-      TS_ASSERT_EQUALS(g2.existsEdge(id9, id10), true)
-      TS_ASSERT_EQUALS(g2.existsEdge(id10, id11), true)
+      CHECK((g2.sizeNodes()) == (12U));
+      CHECK((g2.sizeEdges()) == (9U));
+      CHECK((g2.existsEdge(id1, id2)) == (true));
+      CHECK((g2.existsEdge(id1, id6)) == (true));
+      CHECK((g2.existsEdge(id2, id4)) == (true));
+      CHECK((g2.existsEdge(id3, id4)) == (true));
+      CHECK((g2.existsEdge(id5, id6)) == (true));
+      CHECK((g2.existsEdge(id7, id8)) == (true));
+      CHECK((g2.existsEdge(id8, id10)) == (true));
+      CHECK((g2.existsEdge(id9, id10)) == (true));
+      CHECK((g2.existsEdge(id10, id11)) == (true));
 
       gum::SpanningForestPrim prim2(&g, &cost);
-      TS_ASSERT_EQUALS(prim2.costOfSpanningForest(), 53)
+      CHECK((prim2.costOfSpanningForest()) == (53));
       const gum::EdgeSet& edges2 = prim2.edgesInSpanningForest();
-      TS_ASSERT_EQUALS(edges2.size(), 9U)
+      CHECK((edges2.size()) == (9U));
 
       gum::SpanningForestPrim prim3(&g, &cost);
       const gum::EdgeSet&     edges3 = prim3.edgesInSpanningForest();
-      TS_ASSERT_EQUALS(edges3.size(), 9U)
+      CHECK((edges3.size()) == (9U));
     }   // namespace gum_tests
   };
+
+  GUM_TEST_ACTIF(1)
 }   // namespace gum_tests

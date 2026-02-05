@@ -1,5 +1,26 @@
 # aGrUM Changelog
 
+## Changelog for 2.3.2
+
+- pyAgrum
+  - Fix sklearn `check_X_y` compatibility with mixed-type DataFrames.
+
+## Changelog for 2.3.1
+
+- aGrUM
+    - Fixed a typo in BIFXML export (thanks to Pierre-François Gimenez).
+    - Better use of PCH in CMakefiles (thanks to Julien Schueller).
+    - o4DGContext :disambiguated log2 namespace.
+    - Make -fno-assume-unique-vtables public (thanks to Julien Schueller).
+    - better ci for linux.
+    - Improved logic for `gum::BNLearner::learnParameters()`.
+     
+- pyAgrum
+    - `scikit-learn` as a required-dist.
+    - New action for `act` : `pipinstall`.
+    - Improved documentation and notebooks.
+    - Improved logic for `pyagrum.BNLearner.learnParameters()` and `pyagrum.BNLearner.fitParameters()`.
+
 ## Changelog for 2.3.0
 
 - aGrUM

@@ -1,7 +1,7 @@
 /****************************************************************************
  *   This file is part of the aGrUM/pyAgrum library.                        *
  *                                                                          *
- *   Copyright (c) 2005-2025 by                                             *
+ *   Copyright (c) 2005-2026 by                                             *
  *       - Pierre-Henri WUILLEMIN(_at_LIP6)                                 *
  *       - Christophe GONZALES(_at_AMU)                                     *
  *                                                                          *
@@ -27,7 +27,7 @@
  *                                                                          *
  *   See LICENCES for more details.                                         *
  *                                                                          *
- *   SPDX-FileCopyrightText: Copyright 2005-2025                            *
+ *   SPDX-FileCopyrightText: Copyright 2005-2026                            *
  *       - Pierre-Henri WUILLEMIN(_at_LIP6)                                 *
  *       - Christophe GONZALES(_at_AMU)                                     *
  *   SPDX-License-Identifier: LGPL-3.0-or-later OR MIT                      *
@@ -37,6 +37,7 @@
  *   gitlab   : https://gitlab.com/agrumery/agrum                           *
  *                                                                          *
  ****************************************************************************/
+
 #pragma once
 
 
@@ -52,6 +53,11 @@
 #include <agrum/BN/BayesNet.h>
 #include <agrum/BN/io/cnf/ContextualDependenciesCNFWriter.h>
 
+#undef GUM_CURRENT_SUITE
+#undef GUM_CURRENT_MODULE
+#define GUM_CURRENT_SUITE  ContextualDependenciesCNFWriter
+#define GUM_CURRENT_MODULE BN
+
 // The graph used for the tests:
 //          1   2_          1 -> 3
 //         / \ / /          1 -> 4
@@ -62,12 +68,12 @@
 
 namespace gum_tests {
 
-  class GUM_TEST_SUITE(ContextualDependenciesCNFWriter) {
+  struct ContextualDependenciesCNFWriterTestSuite {
     public:
     gum::BayesNet< double >* bn;
     gum::NodeId              i1, i2, i3, i4, i5;
 
-    void setUp() {
+    ContextualDependenciesCNFWriterTestSuite() {
       bn = new gum::BayesNet< double >();
 
       gum::LabelizedVariable n1("n1", "", 2), n2("n2", "", 2), n3("n3", "", 2);
@@ -89,18 +95,19 @@ namespace gum_tests {
       fill(*bn);
     }
 
-    void tearDown() { delete bn; }
+    ~ContextualDependenciesCNFWriterTestSuite() { delete bn; }
 
-    GUM_ACTIVE_TEST(Constuctor) {
+    static void testConstuctor() {
       gum::ContextualDependenciesCNFWriter< double >* writer = nullptr;
-      TS_GUM_ASSERT_THROWS_NOTHING(writer = new gum::ContextualDependenciesCNFWriter< double >())
+      GUM_CHECK_ASSERT_THROWS_NOTHING(writer
+                                      = new gum::ContextualDependenciesCNFWriter< double >());
       delete writer;
     }
 
-    GUM_ACTIVE_TEST(Constuctor_With_Aproximation) {
+    static void testConstuctor_With_Aproximation() {
       using typCNF   = gum::ContextualDependenciesCNFWriter< double, gum::ExactPolicy >;
       typCNF* writer = nullptr;
-      TS_GUM_ASSERT_THROWS_NOTHING(writer = new typCNF())
+      GUM_CHECK_ASSERT_THROWS_NOTHING(writer = new typCNF());
       //   writer->setEpsilon( 0.2 );
       //         writer->setLowLimit ( 0 );
       //         writer->setHighLimit ( 0.5 );
@@ -108,30 +115,30 @@ namespace gum_tests {
       delete writer;
     }
 
-    GUM_ACTIVE_TEST(Writer_ostream) {
+    void testWriter_ostream() const {
       gum::ContextualDependenciesCNFWriter< double > writer;
       std::stringstream                              sstream;
-      TS_GUM_ASSERT_THROWS_NOTHING(writer.write(sstream, *bn))
+      GUM_CHECK_ASSERT_THROWS_NOTHING(writer.write(sstream, *bn));
     }
 
-    GUM_ACTIVE_TEST(Writer_ostream_With_Approximation) {
+    static void testWriter_ostream_With_Approximation() {
       gum::ContextualDependenciesCNFWriter< double, gum::LinearApproximationPolicy > writer;
       writer.setEpsilon(0.2);
       writer.setLowLimit(0);
       writer.setHighLimit(1);
 
       // Uncomment this to check the ouput
-      // TS_GUM_ASSERT_THROWS_NOTHING(writer.write(std::cerr, *bn))
+      // GUM_CHECK_ASSERT_THROWS_NOTHING(writer.write(std::cerr, *bn));
     }
 
-    GUM_ACTIVE_TEST(Writer_string) {
+    void testWriter_string() const {
       gum::ContextualDependenciesCNFWriter< double > writer;
       std::string                                    file
           = GET_RESSOURCES_PATH("outputs/ContextualDependenciesCNFWriter_TestFile.cnf");
-      TS_GUM_ASSERT_THROWS_NOTHING(writer.write(file, *bn))
+      GUM_CHECK_ASSERT_THROWS_NOTHING(writer.write(file, *bn));
     }
 
-    GUM_ACTIVE_TEST(Writer_string_With_Approximation) {
+    void testWriter_string_With_Approximation() const {
       gum::ContextualDependenciesCNFWriter< double, gum::LinearApproximationPolicy > writer;
 
       writer.setEpsilon(0.2);
@@ -140,20 +147,20 @@ namespace gum_tests {
       std::string file = GET_RESSOURCES_PATH(
           "outputs/ContextualDependenciesCNFWriter_TestFile_Approximation.cnf");
 
-      TS_GUM_ASSERT_THROWS_NOTHING(writer.write(file, *bn))
+      GUM_CHECK_ASSERT_THROWS_NOTHING(writer.write(file, *bn));
 
       file = GET_RESSOURCES_PATH(
           "outputs/ContextualDependenciesCNFWriter_RO_TestFile_Approximation.cnf");
 
       try {
         writer.write(file, *bn);
-        // TS_ASSERT(false)
-      } catch (gum::IOError&) { TS_ASSERT(true); }
+        // CHECK(false);
+      } catch (gum::IOError&) { CHECK(true); }
     }
 
     private:
     // Builds a BN to test the inference
-    void fill(gum::BayesNet< double >& bn) {
+    void fill(gum::BayesNet< double >& bn) const {
       bn.cpt(i1).fillWith({0.5, 0.5});
       bn.cpt(i2).fillWith({0.3, 0.7});
       bn.cpt(i3).fillWith({0.1, 0.9, 0.9, 0.1});
@@ -173,4 +180,11 @@ namespace gum_tests {
                0.0,1.0} );   // clang-format on
     }
   };
+
+  GUM_TEST_ACTIF(Constuctor)
+  GUM_TEST_ACTIF(Constuctor_With_Aproximation)
+  GUM_TEST_ACTIF(Writer_ostream)
+  GUM_TEST_ACTIF(Writer_ostream_With_Approximation)
+  GUM_TEST_ACTIF(Writer_string)
+  GUM_TEST_ACTIF(Writer_string_With_Approximation)
 }   // namespace gum_tests

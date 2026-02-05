@@ -1,7 +1,7 @@
 /****************************************************************************
  *   This file is part of the aGrUM/pyAgrum library.                        *
  *                                                                          *
- *   Copyright (c) 2005-2025 by                                             *
+ *   Copyright (c) 2005-2026 by                                             *
  *       - Pierre-Henri WUILLEMIN(_at_LIP6)                                 *
  *       - Christophe GONZALES(_at_AMU)                                     *
  *                                                                          *
@@ -27,7 +27,7 @@
  *                                                                          *
  *   See LICENCES for more details.                                         *
  *                                                                          *
- *   SPDX-FileCopyrightText: Copyright 2005-2025                            *
+ *   SPDX-FileCopyrightText: Copyright 2005-2026                            *
  *       - Pierre-Henri WUILLEMIN(_at_LIP6)                                 *
  *       - Christophe GONZALES(_at_AMU)                                     *
  *   SPDX-License-Identifier: LGPL-3.0-or-later OR MIT                      *
@@ -37,6 +37,7 @@
  *   gitlab   : https://gitlab.com/agrumery/agrum                           *
  *                                                                          *
  ****************************************************************************/
+
 #pragma once
 
 
@@ -51,14 +52,19 @@
 
 #include <agrum/base/core/utils_random.h>
 
+#undef GUM_CURRENT_SUITE
+#undef GUM_CURRENT_MODULE
+#define GUM_CURRENT_SUITE  RandomGenerator
+#define GUM_CURRENT_MODULE GUMBASE
+
 namespace gum_tests {
   // a test to see if GUM_RANDOMSEED is working
-  class GUM_TEST_SUITE(RandomGenerator) {
+  struct RandomGeneratorTestSuite {
     public:
-    GUM_ACTIVE_TEST(RandomSeed) {
-      TS_ASSERT((GUM_RANDOMSEED == 0) || (GUM_RANDOMSEED == 10))
+    static void testRandomSeed() {
+      CHECK(((GUM_RANDOMSEED == 0) || (GUM_RANDOMSEED == 10)));
 
-      TS_ASSERT_EQUALS(GUM_RANDOMSEED, 0);
+      CHECK((GUM_RANDOMSEED) == (0));
 
       gum::initRandom(20);
       const auto x1 = gum::randomProba();
@@ -67,18 +73,18 @@ namespace gum_tests {
 
       gum::initRandom(0);
       // can falsely fail in rare occasion
-      if (fabs((gum::randomProba()) - (x1)) < TS_GUM_SMALL_ERROR)
-        if (fabs((gum::randomProba()) - (x2)) < TS_GUM_SMALL_ERROR)
-          if (fabs((gum::randomProba()) - (x3)) < TS_GUM_SMALL_ERROR) TS_ASSERT(false);
+      if (fabs((gum::randomProba()) - (x1)) < GUM_SMALL_ERROR)
+        if (fabs((gum::randomProba()) - (x2)) < GUM_SMALL_ERROR)
+          if (fabs((gum::randomProba()) - (x3)) < GUM_SMALL_ERROR) CHECK(false);
       gum::initRandom(20);
-      TS_GUM_ASSERT_ALMOST_EQUALS(gum::randomProba(), x1)
-      TS_GUM_ASSERT_ALMOST_EQUALS(gum::randomProba(), x2)
-      TS_GUM_ASSERT_ALMOST_EQUALS(gum::randomProba(), x3)
+      CHECK(fabs((gum::randomProba()) - (x1)) < 1e-5);
+      CHECK(fabs((gum::randomProba()) - (x2)) < 1e-5);
+      CHECK(fabs((gum::randomProba()) - (x3)) < 1e-5);
 
       gum::initRandom(GUM_RANDOMSEED);
     }   // namespace gum_tests
 
-    GUM_ACTIVE_TEST(RandomSeeForStructure) {
+    static void testRandomSeeForStructure() {
       try {
         const auto n_nodes  = 100;
         const auto n_arcs   = 150;
@@ -92,7 +98,7 @@ namespace gum_tests {
       } catch (gum::Exception& e) { GUM_SHOWERROR(e) }
     }
 
-    GUM_ACTIVE_TEST(BugSeed) {
+    static void testBugSeed() {
       gum::initRandom(0);
       const auto x0 = gum::randomProba();
       gum::initRandom(10);
@@ -101,15 +107,15 @@ namespace gum_tests {
       const auto x42 = gum::randomProba();
 
       gum::initRandom(0);
-      TS_ASSERT_DIFFERS(x0, gum::randomProba())   // may fail but highly improbable
+      CHECK((x0) != (gum::randomProba()));   // may fail but highly improbable
       gum::initRandom(10);
-      TS_ASSERT_EQUALS(x10, gum::randomProba())
+      CHECK((x10) == (gum::randomProba()));
       gum::initRandom(42);
-      TS_ASSERT_EQUALS(x42, gum::randomProba())
+      CHECK((x42) == (gum::randomProba()));
       gum::initRandom(GUM_RANDOMSEED);
     }
 
-    GUM_ACTIVE_TEST(BugSeed2) {
+    static void testBugSeed2() {
       gum::initRandom(0);
       const auto bn0 = gum::BayesNet< double >::fastPrototype("A->B<-C");
       gum::initRandom(10);
@@ -133,15 +139,20 @@ namespace gum_tests {
 
       for (const auto i: bn0.nodes())
         // may fail but highly improbable
-        TS_GUM_TENSOR_DIFFERS(bn0.cpt(i), bn0b.cpt(bn0.variable(i).name()))
+        GUM_CHECK_TENSOR_DIFFERS(bn0.cpt(i), bn0b.cpt(bn0.variable(i).name()));
 
       for (const auto i: bn10.nodes())
-        TS_GUM_TENSOR_ALMOST_EQUALS(bn10.cpt(i), bn10b.cpt(bn10.variable(i).name()))
+        GUM_CHECK_TENSOR_ALMOST_EQUALS(bn10.cpt(i), bn10b.cpt(bn10.variable(i).name()));
 
       for (const auto i: bn42.nodes())
-        TS_GUM_TENSOR_ALMOST_EQUALS(bn42.cpt(i), bn42b.cpt(bn42.variable(i).name()))
+        GUM_CHECK_TENSOR_ALMOST_EQUALS(bn42.cpt(i), bn42b.cpt(bn42.variable(i).name()));
 
       gum::initRandom(GUM_RANDOMSEED);
     }
   };
+
+  GUM_TEST_ACTIF(RandomSeed)
+  GUM_TEST_ACTIF(RandomSeeForStructure)
+  GUM_TEST_ACTIF(BugSeed)
+  GUM_TEST_ACTIF(BugSeed2)
 }   // namespace gum_tests

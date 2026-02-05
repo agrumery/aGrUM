@@ -1,7 +1,7 @@
 /****************************************************************************
  *   This file is part of the aGrUM/pyAgrum library.                        *
  *                                                                          *
- *   Copyright (c) 2005-2025 by                                             *
+ *   Copyright (c) 2005-2026 by                                             *
  *       - Pierre-Henri WUILLEMIN(_at_LIP6)                                 *
  *       - Christophe GONZALES(_at_AMU)                                     *
  *                                                                          *
@@ -27,7 +27,7 @@
  *                                                                          *
  *   See LICENCES for more details.                                         *
  *                                                                          *
- *   SPDX-FileCopyrightText: Copyright 2005-2025                            *
+ *   SPDX-FileCopyrightText: Copyright 2005-2026                            *
  *       - Pierre-Henri WUILLEMIN(_at_LIP6)                                 *
  *       - Christophe GONZALES(_at_AMU)                                     *
  *   SPDX-License-Identifier: LGPL-3.0-or-later OR MIT                      *
@@ -37,6 +37,7 @@
  *   gitlab   : https://gitlab.com/agrumery/agrum                           *
  *                                                                          *
  ****************************************************************************/
+
 #pragma once
 
 
@@ -54,6 +55,11 @@
 
 #include <agrum/base/core/math/math_utils.h>
 
+#undef GUM_CURRENT_SUITE
+#undef GUM_CURRENT_MODULE
+#define GUM_CURRENT_SUITE  BIFReader
+#define GUM_CURRENT_MODULE BN
+
 // The graph used for the tests:
 //          1   2_          1 -> 3
 //         / \ / /          1 -> 4
@@ -65,19 +71,19 @@
 
 namespace gum_tests {
 
-  class GUM_TEST_SUITE(BIFReader) {
+  struct BIFReaderTestSuite {
     public:
-    GUM_ACTIVE_TEST(Constuctor) {
+    static void testConstuctor() {
       std::string file = GET_RESSOURCES_PATH("bif/BIFReader_file1.bif");
 
       gum::BayesNet< double >   net;
       gum::BIFReader< double >* reader = nullptr;
 
-      TS_GUM_ASSERT_THROWS_NOTHING(reader = new gum::BIFReader< double >(&net, file))
-      TS_GUM_ASSERT_THROWS_NOTHING(delete reader)
+      GUM_CHECK_ASSERT_THROWS_NOTHING(reader = new gum::BIFReader< double >(&net, file));
+      GUM_CHECK_ASSERT_THROWS_NOTHING(delete reader);
     }   // namespace gum_tests
 
-    GUM_ACTIVE_TEST(Read_file1) {
+    static void testRead_file1() {
       std::string file = GET_RESSOURCES_PATH("bif/BIFReader_file1.bif");
 
       auto                     net = new gum::BayesNet< double >();
@@ -86,20 +92,20 @@ namespace gum_tests {
       reader.trace(false);
       gum::Size nbrErr = 0;
 
-      TS_GUM_ASSERT_THROWS_NOTHING(nbrErr = reader.proceed())
-      TS_ASSERT_EQUALS(nbrErr, static_cast< gum::Size >(0))
-      TS_ASSERT_EQUALS(reader.warnings(), static_cast< gum::Size >(2))
+      GUM_CHECK_ASSERT_THROWS_NOTHING(nbrErr = reader.proceed());
+      CHECK((nbrErr) == (static_cast< gum::Size >(0)));
+      CHECK((reader.warnings()) == (static_cast< gum::Size >(2)));
       // 2 warnings : properties
-      TS_ASSERT_EQUALS(reader.errors(), static_cast< gum::Size >(0))
-      TS_ASSERT_DIFFERS(net, nullptr)
+      CHECK((reader.errors()) == (static_cast< gum::Size >(0)));
+      CHECK((net) != (nullptr));
 
       if (net != nullptr) {
-        TS_ASSERT(net->empty())
+        CHECK(net->empty());
         delete net;
       }
     }
 
-    GUM_ACTIVE_TEST(Read_file2_float) {
+    static void testRead_file2_float() {
       std::string file = GET_RESSOURCES_PATH("bif/BIFReader_file2.bif");
       auto        net  = new gum::BayesNet< double >();
 
@@ -107,15 +113,15 @@ namespace gum_tests {
 
       auto nbrErr = static_cast< gum::Size >(0);
 
-      TS_GUM_ASSERT_THROWS_NOTHING(nbrErr = reader.proceed())
-      TS_ASSERT_EQUALS(nbrErr, static_cast< gum::Size >(0))
-      TS_ASSERT_EQUALS(reader.warnings(), static_cast< gum::Size >(2))
+      GUM_CHECK_ASSERT_THROWS_NOTHING(nbrErr = reader.proceed());
+      CHECK((nbrErr) == (static_cast< gum::Size >(0)));
+      CHECK((reader.warnings()) == (static_cast< gum::Size >(2)));
       // 2 warnings
-      TS_ASSERT_EQUALS(reader.errors(), static_cast< gum::Size >(0))
-      TS_ASSERT_DIFFERS(net, nullptr)
+      CHECK((reader.errors()) == (static_cast< gum::Size >(0)));
+      CHECK((net) != (nullptr));
 
       if (net != nullptr) {
-        TS_ASSERT_EQUALS(net->size(), static_cast< gum::Size >(2))
+        CHECK((net->size()) == (static_cast< gum::Size >(2)));
         gum::NodeId node_1 = 0, node_2 = 0;
 
         for (const auto node: net->nodes())
@@ -124,50 +130,50 @@ namespace gum_tests {
 
         const gum::DiscreteVariable& var_1 = net->variable(node_1);
 
-        TS_ASSERT_EQUALS(var_1.name(), "n1")
-        TS_ASSERT_EQUALS(var_1.domainSize(), static_cast< gum::Size >(2))
+        CHECK((var_1.name()) == ("n1"));
+        CHECK((var_1.domainSize()) == (static_cast< gum::Size >(2)));
 
         const gum::Tensor< double >& proba_1 = net->cpt(node_1);
-        TS_ASSERT_EQUALS(proba_1.domainSize(), static_cast< gum::Size >(2))
+        CHECK((proba_1.domainSize()) == (static_cast< gum::Size >(2)));
 
         gum::Instantiation inst_1(proba_1);
         inst_1.setFirst();
-        TS_ASSERT(std::abs((proba_1[inst_1] - 0.2f)) < 0.001f)
+        CHECK(std::abs((proba_1[inst_1] - 0.2f)) < 0.001f);
         inst_1.setLast();
-        TS_ASSERT(std::abs((proba_1[inst_1] - 0.8f)) < 0.001f)
+        CHECK(std::abs((proba_1[inst_1] - 0.8f)) < 0.001f);
 
         const gum::DiscreteVariable& var_2 = net->variable(node_2);
-        TS_ASSERT_EQUALS(var_2.name(), "n2")
-        TS_ASSERT_EQUALS(var_2.domainSize(), static_cast< gum::Size >(2))
+        CHECK((var_2.name()) == ("n2"));
+        CHECK((var_2.domainSize()) == (static_cast< gum::Size >(2)));
 
         const gum::Tensor< double >& proba_2 = net->cpt(node_2);
-        TS_ASSERT_EQUALS(proba_2.domainSize(), static_cast< gum::Size >(2))
+        CHECK((proba_2.domainSize()) == (static_cast< gum::Size >(2)));
 
         gum::Instantiation inst_2(proba_2);
         inst_2.setFirst();
-        TS_ASSERT(std::abs((proba_2[inst_2] - 0.3f)) < 0.001f)
+        CHECK(std::abs((proba_2[inst_2] - 0.3f)) < 0.001f);
         inst_2.setLast();
-        TS_ASSERT(std::abs((proba_2[inst_2] - 0.7f)) < 0.001f)
+        CHECK(std::abs((proba_2[inst_2] - 0.7f)) < 0.001f);
 
         delete net;
       }
     }
 
-    GUM_ACTIVE_TEST(Read_file2_double) {
+    static void testRead_file2_double() {
       std::string              file = GET_RESSOURCES_PATH("bif/BIFReader_file2.bif");
       auto                     net  = new gum::BayesNet< double >();
       gum::BIFReader< double > reader(net, file);
 
       gum::Size nbrErr = static_cast< gum::Size >(0);
 
-      TS_GUM_ASSERT_THROWS_NOTHING(nbrErr = reader.proceed())
-      TS_ASSERT_EQUALS(nbrErr, static_cast< gum::Size >(0))
-      TS_ASSERT_EQUALS(reader.warnings(), static_cast< gum::Size >(2))
-      TS_ASSERT_EQUALS(reader.errors(), static_cast< gum::Size >(0))
-      TS_ASSERT_DIFFERS(net, nullptr)
+      GUM_CHECK_ASSERT_THROWS_NOTHING(nbrErr = reader.proceed());
+      CHECK((nbrErr) == (static_cast< gum::Size >(0)));
+      CHECK((reader.warnings()) == (static_cast< gum::Size >(2)));
+      CHECK((reader.errors()) == (static_cast< gum::Size >(0)));
+      CHECK((net) != (nullptr));
 
       if (net != nullptr) {
-        TS_ASSERT_EQUALS(net->size(), static_cast< gum::Size >(2))
+        CHECK((net->size()) == (static_cast< gum::Size >(2)));
 
         gum::NodeId node_1 = 0, node_2 = 0;
 
@@ -177,61 +183,61 @@ namespace gum_tests {
 
         const gum::DiscreteVariable& var_1 = net->variable(node_1);
 
-        TS_ASSERT_EQUALS(var_1.name(), "n1")
+        CHECK((var_1.name()) == ("n1"));
 
-        TS_ASSERT_EQUALS(var_1.domainSize(), static_cast< gum::Size >(2))
+        CHECK((var_1.domainSize()) == (static_cast< gum::Size >(2)));
 
         const gum::Tensor< double >& proba_1 = net->cpt(node_1);
 
-        TS_ASSERT_EQUALS(proba_1.domainSize(), static_cast< gum::Size >(2))
+        CHECK((proba_1.domainSize()) == (static_cast< gum::Size >(2)));
 
         gum::Instantiation inst_1(proba_1);
 
         inst_1.setFirst();
 
-        TS_ASSERT(std::abs((proba_1[inst_1] - 0.2)) < 0.001)
+        CHECK(std::abs((proba_1[inst_1] - 0.2)) < 0.001);
 
         inst_1.setLast();
 
-        TS_ASSERT(std::abs((proba_1[inst_1] - 0.8)) < 0.001)
+        CHECK(std::abs((proba_1[inst_1] - 0.8)) < 0.001);
 
         const gum::DiscreteVariable& var_2 = net->variable(node_2);
 
-        TS_ASSERT_EQUALS(var_2.name(), "n2")
+        CHECK((var_2.name()) == ("n2"));
 
-        TS_ASSERT_EQUALS(var_2.domainSize(), static_cast< gum::Size >(2))
+        CHECK((var_2.domainSize()) == (static_cast< gum::Size >(2)));
 
         const gum::Tensor< double >& proba_2 = net->cpt(node_2);
 
-        TS_ASSERT_EQUALS(proba_2.domainSize(), static_cast< gum::Size >(2))
+        CHECK((proba_2.domainSize()) == (static_cast< gum::Size >(2)));
 
         gum::Instantiation inst_2(proba_2);
 
         inst_2.setFirst();
 
-        TS_ASSERT(std::abs((proba_2[inst_2] - 0.3)) < 0.001)
+        CHECK(std::abs((proba_2[inst_2] - 0.3)) < 0.001);
 
         inst_2.setLast();
 
-        TS_ASSERT(std::abs((proba_2[inst_2] - 0.7)) < 0.001)
+        CHECK(std::abs((proba_2[inst_2] - 0.7)) < 0.001);
 
         delete net;
       }
     }
 
-    GUM_ACTIVE_TEST(Read_file3) {
+    static void testRead_file3() {
       std::string              file = GET_RESSOURCES_PATH("bif/BIFReader_file3.bif");
       auto                     net  = new gum::BayesNet< double >();
       gum::BIFReader< double > reader(net, file);
 
       auto nbrErr = static_cast< gum::Size >(0);
 
-      TS_GUM_ASSERT_THROWS_NOTHING(nbrErr = reader.proceed())
-      TS_ASSERT_EQUALS(nbrErr, static_cast< gum::Size >(0))
-      TS_ASSERT_EQUALS(reader.warnings(), static_cast< gum::Size >(3))
+      GUM_CHECK_ASSERT_THROWS_NOTHING(nbrErr = reader.proceed());
+      CHECK((nbrErr) == (static_cast< gum::Size >(0)));
+      CHECK((reader.warnings()) == (static_cast< gum::Size >(3)));
       // 3 warnings
-      TS_ASSERT_EQUALS(reader.errors(), static_cast< gum::Size >(0))
-      TS_ASSERT_DIFFERS(net, nullptr)
+      CHECK((reader.errors()) == (static_cast< gum::Size >(0)));
+      CHECK((net) != (nullptr));
 
       if (net != nullptr) {
         gum::HashTable< std::string, gum::NodeId > idMap;
@@ -241,67 +247,67 @@ namespace gum_tests {
 
         const gum::DiscreteVariable& var_1 = net->variable(idMap["n1"]);
 
-        TS_ASSERT_EQUALS(var_1.name(), "n1")
+        CHECK((var_1.name()) == ("n1"));
 
-        TS_ASSERT_EQUALS(var_1.domainSize(), static_cast< gum::Size >(2))
+        CHECK((var_1.domainSize()) == (static_cast< gum::Size >(2)));
 
-        TS_ASSERT_EQUALS(var_1.label(0), "0")
+        CHECK((var_1.label(0)) == ("0"));
 
-        TS_ASSERT_EQUALS(var_1.label(1), "1")
+        CHECK((var_1.label(1)) == ("1"));
 
         const gum::Tensor< double >& proba_1 = net->cpt(idMap["n1"]);
 
-        TS_ASSERT_EQUALS(proba_1.domainSize(), static_cast< gum::Size >(2))
+        CHECK((proba_1.domainSize()) == (static_cast< gum::Size >(2)));
 
         gum::Instantiation inst_1(proba_1);
 
         inst_1.setFirst();
 
-        TS_ASSERT_DELTA(proba_1[inst_1], 0.2f, 0.001f)
+        CHECK((proba_1[inst_1]) == doctest::Approx(0.2f).epsilon(0.001f));
 
         inst_1.setLast();
 
-        TS_ASSERT_DELTA(proba_1[inst_1], 0.8f, 0.001f)
+        CHECK((proba_1[inst_1]) == doctest::Approx(0.8f).epsilon(0.001f));
 
         const gum::DiscreteVariable& var_2 = net->variable(idMap["n2"]);
 
-        TS_ASSERT_EQUALS(var_2.name(), "n2")
+        CHECK((var_2.name()) == ("n2"));
 
-        TS_ASSERT_EQUALS(var_2.domainSize(), static_cast< gum::Size >(2))
+        CHECK((var_2.domainSize()) == (static_cast< gum::Size >(2)));
 
-        TS_ASSERT_EQUALS(var_2.label(0), "foo")
+        CHECK((var_2.label(0)) == ("foo"));
 
-        TS_ASSERT_EQUALS(var_2.label(1), "bar")
+        CHECK((var_2.label(1)) == ("bar"));
 
         const gum::Tensor< double >& proba_2 = net->cpt(idMap["n2"]);
 
-        TS_ASSERT_EQUALS(proba_2.domainSize(), static_cast< gum::Size >(2))
+        CHECK((proba_2.domainSize()) == (static_cast< gum::Size >(2)));
 
         gum::Instantiation inst_2(proba_2);
 
         inst_2.setFirst();
 
-        TS_ASSERT_DELTA(proba_2[inst_2], 0.3f, 0.001f)
+        CHECK((proba_2[inst_2]) == doctest::Approx(0.3f).epsilon(0.001f));
 
         inst_2.setLast();
 
-        TS_ASSERT_DELTA(proba_2[inst_2], 0.7f, 0.001f)
+        CHECK((proba_2[inst_2]) == doctest::Approx(0.7f).epsilon(0.001f));
 
         const gum::DiscreteVariable& var_3 = net->variable(idMap["n3"]);
 
-        TS_ASSERT_EQUALS(var_3.name(), "n3")
+        CHECK((var_3.name()) == ("n3"));
 
-        TS_ASSERT_EQUALS(var_3.domainSize(), static_cast< gum::Size >(2))
+        CHECK((var_3.domainSize()) == (static_cast< gum::Size >(2)));
 
-        TS_ASSERT_EQUALS(var_3.label(0), "0")
+        CHECK((var_3.label(0)) == ("0"));
 
-        TS_ASSERT_EQUALS(var_3.label(1), "1")
+        CHECK((var_3.label(1)) == ("1"));
 
-        TS_ASSERT(net->dag().existsArc(idMap["n1"], idMap["n3"]))
+        CHECK(net->dag().existsArc(idMap["n1"], idMap["n3"]));
 
         const gum::Tensor< double >& proba_3 = net->cpt(idMap["n3"]);
 
-        TS_ASSERT_EQUALS(proba_3.domainSize(), static_cast< gum::Size >(4))
+        CHECK((proba_3.domainSize()) == (static_cast< gum::Size >(4)));
 
         gum::Instantiation inst_3(proba_3);
 
@@ -309,39 +315,39 @@ namespace gum_tests {
 
         inst_3.chgVal(var_3, 0);
 
-        TS_ASSERT_DELTA(proba_3[inst_3], 0.1f, 0.001f)
+        CHECK((proba_3[inst_3]) == doctest::Approx(0.1f).epsilon(0.001f));
 
         inst_3.chgVal(var_3, 1);
 
-        TS_ASSERT_DELTA(proba_3[inst_3], 0.9f, 0.001f)
+        CHECK((proba_3[inst_3]) == doctest::Approx(0.9f).epsilon(0.001f));
 
         inst_3.chgVal(var_1, 1);
 
         inst_3.chgVal(var_3, 0);
 
-        TS_ASSERT_DELTA(proba_3[inst_3], 0.9f, 0.001f)
+        CHECK((proba_3[inst_3]) == doctest::Approx(0.9f).epsilon(0.001f));
 
         inst_3.chgVal(var_3, 1);
 
-        TS_ASSERT_DELTA(proba_3[inst_3], 0.1f, 0.001f)
+        CHECK((proba_3[inst_3]) == doctest::Approx(0.1f).epsilon(0.001f));
 
         const gum::DiscreteVariable& var_4 = net->variable(idMap["n4"]);
 
-        TS_ASSERT_EQUALS(var_4.name(), "n4")
+        CHECK((var_4.name()) == ("n4"));
 
-        TS_ASSERT_EQUALS(var_4.domainSize(), static_cast< gum::Size >(2))
+        CHECK((var_4.domainSize()) == (static_cast< gum::Size >(2)));
 
-        TS_ASSERT_EQUALS(var_4.label(0), "0")
+        CHECK((var_4.label(0)) == ("0"));
 
-        TS_ASSERT_EQUALS(var_4.label(1), "1")
+        CHECK((var_4.label(1)) == ("1"));
 
-        TS_ASSERT(net->dag().existsArc(idMap["n1"], idMap["n4"]))
+        CHECK(net->dag().existsArc(idMap["n1"], idMap["n4"]));
 
-        TS_ASSERT(net->dag().existsArc(idMap["n2"], idMap["n4"]))
+        CHECK(net->dag().existsArc(idMap["n2"], idMap["n4"]));
 
         const gum::Tensor< double >& proba_4 = net->cpt(idMap["n4"]);
 
-        TS_ASSERT_EQUALS(proba_4.domainSize(), static_cast< gum::Size >(8))
+        CHECK((proba_4.domainSize()) == (static_cast< gum::Size >(8)));
 
         gum::Instantiation inst_4(proba_4);
 
@@ -351,11 +357,11 @@ namespace gum_tests {
 
         inst_4.chgVal(var_4, 0);
 
-        TS_ASSERT_DELTA(proba_4[inst_4], 0.4f, 0.001f)
+        CHECK((proba_4[inst_4]) == doctest::Approx(0.4f).epsilon(0.001f));
 
         inst_4.chgVal(var_4, 1);
 
-        TS_ASSERT_DELTA(proba_4[inst_4], 0.6f, 0.001f)
+        CHECK((proba_4[inst_4]) == doctest::Approx(0.6f).epsilon(0.001f));
 
         inst_4.chgVal(var_1, 1);
 
@@ -363,11 +369,11 @@ namespace gum_tests {
 
         inst_4.chgVal(var_4, 0);
 
-        TS_ASSERT_DELTA(proba_4[inst_4], 0.5f, 0.001f)
+        CHECK((proba_4[inst_4]) == doctest::Approx(0.5f).epsilon(0.001f));
 
         inst_4.chgVal(var_4, 1);
 
-        TS_ASSERT_DELTA(proba_4[inst_4], 0.5f, 0.001f)
+        CHECK((proba_4[inst_4]) == doctest::Approx(0.5f).epsilon(0.001f));
 
         inst_4.chgVal(var_1, 0);
 
@@ -375,11 +381,11 @@ namespace gum_tests {
 
         inst_4.chgVal(var_4, 0);
 
-        TS_ASSERT_DELTA(proba_4[inst_4], 0.5f, 0.001f)
+        CHECK((proba_4[inst_4]) == doctest::Approx(0.5f).epsilon(0.001f));
 
         inst_4.chgVal(var_4, 1);
 
-        TS_ASSERT_DELTA(proba_4[inst_4], 0.5f, 0.001f)
+        CHECK((proba_4[inst_4]) == doctest::Approx(0.5f).epsilon(0.001f));
 
         inst_4.chgVal(var_1, 1);
 
@@ -387,31 +393,31 @@ namespace gum_tests {
 
         inst_4.chgVal(var_4, 0);
 
-        TS_ASSERT_EQUALS(proba_4[inst_4], 1)
+        CHECK((proba_4[inst_4]) == (1));
 
         inst_4.chgVal(var_4, 1);
 
-        TS_ASSERT_EQUALS(proba_4[inst_4], 0)
+        CHECK((proba_4[inst_4]) == (0));
 
         const gum::DiscreteVariable& var_5 = net->variable(idMap["n5"]);
 
-        TS_ASSERT_EQUALS(var_5.name(), "n5")
+        CHECK((var_5.name()) == ("n5"));
 
-        TS_ASSERT_EQUALS(var_5.domainSize(), static_cast< gum::Size >(3))
+        CHECK((var_5.domainSize()) == (static_cast< gum::Size >(3)));
 
-        TS_ASSERT_EQUALS(var_5.label(0), "space")
+        CHECK((var_5.label(0)) == ("space"));
 
-        TS_ASSERT_EQUALS(var_5.label(1), "final")
+        CHECK((var_5.label(1)) == ("final"));
 
-        TS_ASSERT_EQUALS(var_5.label(2), "frontiere")
+        CHECK((var_5.label(2)) == ("frontiere"));
 
-        TS_ASSERT(net->dag().existsArc(idMap["n2"], idMap["n5"]))
+        CHECK(net->dag().existsArc(idMap["n2"], idMap["n5"]));
 
-        TS_ASSERT(net->dag().existsArc(idMap["n3"], idMap["n5"]))
+        CHECK(net->dag().existsArc(idMap["n3"], idMap["n5"]));
 
         const gum::Tensor< double >& proba_5 = net->cpt(idMap["n5"]);
 
-        TS_ASSERT_EQUALS(proba_5.domainSize(), static_cast< gum::Size >(12))
+        CHECK((proba_5.domainSize()) == (static_cast< gum::Size >(12)));
 
         gum::Instantiation inst_5(proba_5);
 
@@ -421,15 +427,15 @@ namespace gum_tests {
 
         inst_5.chgVal(var_5, 0);
 
-        TS_ASSERT_DELTA(proba_5[inst_5], 0.3f, 0.001f)
+        CHECK((proba_5[inst_5]) == doctest::Approx(0.3f).epsilon(0.001f));
 
         inst_5.chgVal(var_5, 1);
 
-        TS_ASSERT_DELTA(proba_5[inst_5], 0.6f, 0.001f)
+        CHECK((proba_5[inst_5]) == doctest::Approx(0.6f).epsilon(0.001f));
 
         inst_5.chgVal(var_5, 2);
 
-        TS_ASSERT_DELTA(proba_5[inst_5], 0.1f, 0.001f)
+        CHECK((proba_5[inst_5]) == doctest::Approx(0.1f).epsilon(0.001f));
 
         inst_5.chgVal(var_2, 0);
 
@@ -437,15 +443,15 @@ namespace gum_tests {
 
         inst_5.chgVal(var_5, 0);
 
-        TS_ASSERT_DELTA(proba_5[inst_5], 0.5f, 0.001f)
+        CHECK((proba_5[inst_5]) == doctest::Approx(0.5f).epsilon(0.001f));
 
         inst_5.chgVal(var_5, 1);
 
-        TS_ASSERT_DELTA(proba_5[inst_5], 0.5f, 0.001f)
+        CHECK((proba_5[inst_5]) == doctest::Approx(0.5f).epsilon(0.001f));
 
         inst_5.chgVal(var_5, 2);
 
-        TS_ASSERT_DELTA(proba_5[inst_5], 0.0f, 0.001f)
+        CHECK((proba_5[inst_5]) == doctest::Approx(0.0f).epsilon(0.001f));
 
         inst_5.chgVal(var_2, 1);
 
@@ -453,15 +459,15 @@ namespace gum_tests {
 
         inst_5.chgVal(var_5, 0);
 
-        TS_ASSERT_DELTA(proba_5[inst_5], 0.4f, 0.001f)
+        CHECK((proba_5[inst_5]) == doctest::Approx(0.4f).epsilon(0.001f));
 
         inst_5.chgVal(var_5, 1);
 
-        TS_ASSERT_DELTA(proba_5[inst_5], 0.6f, 0.001f)
+        CHECK((proba_5[inst_5]) == doctest::Approx(0.6f).epsilon(0.001f));
 
         inst_5.chgVal(var_5, 2);
 
-        TS_ASSERT_DELTA(proba_5[inst_5], 0.0f, 0.001f)
+        CHECK((proba_5[inst_5]) == doctest::Approx(0.0f).epsilon(0.001f));
 
         inst_5.chgVal(var_2, 1);
 
@@ -469,33 +475,33 @@ namespace gum_tests {
 
         inst_5.chgVal(var_5, 0);
 
-        TS_ASSERT_DELTA(proba_5[inst_5], 0.5f, 0.001f)
+        CHECK((proba_5[inst_5]) == doctest::Approx(0.5f).epsilon(0.001f));
 
         inst_5.chgVal(var_5, 1);
 
-        TS_ASSERT_DELTA(proba_5[inst_5], 0.5f, 0.001f)
+        CHECK((proba_5[inst_5]) == doctest::Approx(0.5f).epsilon(0.001f));
 
         inst_5.chgVal(var_5, 2);
 
-        TS_ASSERT_EQUALS(proba_5[inst_5], 0)
+        CHECK((proba_5[inst_5]) == (0));
 
         const gum::DiscreteVariable& var_6 = net->variable(idMap["n6"]);
 
-        TS_ASSERT_EQUALS(var_6.name(), "n6")
+        CHECK((var_6.name()) == ("n6"));
 
-        TS_ASSERT_EQUALS(var_6.domainSize(), static_cast< gum::Size >(2))
+        CHECK((var_6.domainSize()) == (static_cast< gum::Size >(2)));
 
-        TS_ASSERT_EQUALS(var_6.label(0), "0")
+        CHECK((var_6.label(0)) == ("0"));
 
-        TS_ASSERT_EQUALS(var_6.label(1), "1")
+        CHECK((var_6.label(1)) == ("1"));
 
-        TS_ASSERT(net->dag().existsArc(idMap["n1"], idMap["n6"]))
+        CHECK(net->dag().existsArc(idMap["n1"], idMap["n6"]));
 
-        TS_ASSERT(net->dag().existsArc(idMap["n5"], idMap["n6"]))
+        CHECK(net->dag().existsArc(idMap["n5"], idMap["n6"]));
 
         const gum::Tensor< double >& proba_6 = net->cpt(idMap["n6"]);
 
-        TS_ASSERT_EQUALS(proba_6.domainSize(), static_cast< gum::Size >(12))
+        CHECK((proba_6.domainSize()) == (static_cast< gum::Size >(12)));
 
         gum::Instantiation inst_6(proba_6);
 
@@ -505,29 +511,29 @@ namespace gum_tests {
 
         inst_6.chgVal(var_5, 0);
 
-        TS_ASSERT_DELTA(proba_6[inst_6], 0.1f, 0.001f)
+        CHECK((proba_6[inst_6]) == doctest::Approx(0.1f).epsilon(0.001f));
 
         inst_6.chgVal(var_5, 1);
 
-        TS_ASSERT_DELTA(proba_6[inst_6], 0.2f, 0.001f)
+        CHECK((proba_6[inst_6]) == doctest::Approx(0.2f).epsilon(0.001f));
 
         inst_6.chgVal(var_5, 2);
 
-        TS_ASSERT_DELTA(proba_6[inst_6], 0.3f, 0.001f)
+        CHECK((proba_6[inst_6]) == doctest::Approx(0.3f).epsilon(0.001f));
 
         inst_6.chgVal(var_1, 1);
 
         inst_6.chgVal(var_5, 0);
 
-        TS_ASSERT_DELTA(proba_6[inst_6], 0.4f, 0.001f)
+        CHECK((proba_6[inst_6]) == doctest::Approx(0.4f).epsilon(0.001f));
 
         inst_6.chgVal(var_5, 1);
 
-        TS_ASSERT_DELTA(proba_6[inst_6], 0.5f, 0.001f)
+        CHECK((proba_6[inst_6]) == doctest::Approx(0.5f).epsilon(0.001f));
 
         inst_6.chgVal(var_5, 2);
 
-        TS_ASSERT_DELTA(proba_6[inst_6], 0.6f, 0.001f)
+        CHECK((proba_6[inst_6]) == doctest::Approx(0.6f).epsilon(0.001f));
 
         inst_6.chgVal(var_6, 1);
 
@@ -535,35 +541,35 @@ namespace gum_tests {
 
         inst_6.chgVal(var_5, 0);
 
-        TS_ASSERT_DELTA(proba_6[inst_6], 0.7f, 0.001f)
+        CHECK((proba_6[inst_6]) == doctest::Approx(0.7f).epsilon(0.001f));
 
         inst_6.chgVal(var_5, 1);
 
-        TS_ASSERT_DELTA(proba_6[inst_6], 0.8f, 0.001f)
+        CHECK((proba_6[inst_6]) == doctest::Approx(0.8f).epsilon(0.001f));
 
         inst_6.chgVal(var_5, 2);
 
-        TS_ASSERT_DELTA(proba_6[inst_6], 0.9f, 0.001f)
+        CHECK((proba_6[inst_6]) == doctest::Approx(0.9f).epsilon(0.001f));
 
         inst_6.chgVal(var_1, 1);
 
         inst_6.chgVal(var_5, 0);
 
-        TS_ASSERT_EQUALS(proba_6[inst_6], 1)
+        CHECK((proba_6[inst_6]) == (1));
 
         inst_6.chgVal(var_5, 1);
 
-        TS_ASSERT_EQUALS(proba_6[inst_6], 0)
+        CHECK((proba_6[inst_6]) == (0));
 
         inst_6.chgVal(var_5, 2);
 
-        TS_ASSERT_EQUALS(proba_6[inst_6], 0)
+        CHECK((proba_6[inst_6]) == (0));
 
         delete net;
       }
     }
 
-    GUM_ACTIVE_TEST(Alarm) {
+    static void testAlarm() {
       std::string file = GET_RESSOURCES_PATH("bif/alarm.bif");
 
       auto net = new gum::BayesNet< double >();
@@ -572,12 +578,12 @@ namespace gum_tests {
 
       auto nbrErr = static_cast< gum::Size >(0);
 
-      TS_GUM_ASSERT_THROWS_NOTHING(nbrErr = reader.proceed())
+      GUM_CHECK_ASSERT_THROWS_NOTHING(nbrErr = reader.proceed());
 
-      TS_ASSERT_EQUALS(nbrErr, static_cast< gum::Size >(0))
+      CHECK((nbrErr) == (static_cast< gum::Size >(0)));
 
-      TS_ASSERT_EQUALS(reader.warnings(), static_cast< gum::Size >(0))
-      TS_ASSERT_EQUALS(reader.errors(), static_cast< gum::Size >(0))
+      CHECK((reader.warnings()) == (static_cast< gum::Size >(0)));
+      CHECK((reader.errors()) == (static_cast< gum::Size >(0)));
 
       gum::HashTable< std::string, gum::NodeId > idMap;
 
@@ -585,29 +591,29 @@ namespace gum_tests {
         idMap.insert(net->variable(node).name(), node);
 
       // The node wich we'll test
-      TS_ASSERT(idMap.exists("HISTORY"))
+      CHECK(idMap.exists("HISTORY"));
 
       // It's parent
-      TS_ASSERT(idMap.exists("LVFAILURE"))
+      CHECK(idMap.exists("LVFAILURE"));
 
       if (idMap.exists("HISTORY") && idMap.exists("LVFAILURE")) {
         const gum::DiscreteVariable& history = net->variable(idMap["HISTORY"]);
 
-        TS_ASSERT_EQUALS(history.domainSize(), static_cast< gum::Size >(2))
+        CHECK((history.domainSize()) == (static_cast< gum::Size >(2)));
 
-        TS_ASSERT_EQUALS(history.label(0), "TRUE")
+        CHECK((history.label(0)) == ("TRUE"));
 
-        TS_ASSERT_EQUALS(history.label(1), "FALSE")
+        CHECK((history.label(1)) == ("FALSE"));
 
-        TS_ASSERT(net->dag().existsArc(idMap["LVFAILURE"], idMap["HISTORY"]))
+        CHECK(net->dag().existsArc(idMap["LVFAILURE"], idMap["HISTORY"]));
 
         const gum::Tensor< double >& historyCPT = net->cpt(idMap["HISTORY"]);
 
-        TS_ASSERT_EQUALS(historyCPT.domainSize(), static_cast< gum::Size >(4))
+        CHECK((historyCPT.domainSize()) == (static_cast< gum::Size >(4)));
 
-        TS_ASSERT(historyCPT.contains(net->variable(idMap["HISTORY"])))
+        CHECK(historyCPT.contains(net->variable(idMap["HISTORY"])));
 
-        TS_ASSERT(historyCPT.contains(net->variable(idMap["LVFAILURE"])))
+        CHECK(historyCPT.contains(net->variable(idMap["LVFAILURE"])));
 
         gum::Instantiation historyInst(historyCPT);
 
@@ -616,71 +622,71 @@ namespace gum_tests {
 
         historyInst.chgVal(net->variable(idMap["LVFAILURE"]), 0);
 
-        TS_ASSERT(std::abs(historyCPT[historyInst] - 0.9f) < 0.0001f)
+        CHECK(std::abs(historyCPT[historyInst] - 0.9f) < 0.0001f);
 
         // (FALSE | TRUE)
         historyInst.chgVal(history, 1);
 
         historyInst.chgVal(net->variable(idMap["LVFAILURE"]), 0);
 
-        TS_ASSERT(std::abs(historyCPT[historyInst] - 0.1f) < 0.0001f)
+        CHECK(std::abs(historyCPT[historyInst] - 0.1f) < 0.0001f);
 
         // (TRUE | FALSE)
         historyInst.chgVal(history, 0);
 
         historyInst.chgVal(net->variable(idMap["LVFAILURE"]), 1);
 
-        TS_ASSERT(std::abs(historyCPT[historyInst] - 0.01f) < 0.0001f)
+        CHECK(std::abs(historyCPT[historyInst] - 0.01f) < 0.0001f);
 
         // (FALSE | FALSE)
         historyInst.chgVal(history, 1);
 
         historyInst.chgVal(net->variable(idMap["LVFAILURE"]), 1);
 
-        TS_ASSERT(std::abs(historyCPT[historyInst] - 0.99f) < 0.0001f)
+        CHECK(std::abs(historyCPT[historyInst] - 0.99f) < 0.0001f);
       }
 
       // The node wich we'll test
-      TS_ASSERT(idMap.exists("ERRLOWOUTPUT"))
+      CHECK(idMap.exists("ERRLOWOUTPUT"));
 
       // It's Children
-      TS_ASSERT(idMap.exists("HRBP"))
+      CHECK(idMap.exists("HRBP"));
 
       if (idMap.exists("ERRLOWOUTPUT") && idMap.exists("HRBP")) {
         const gum::DiscreteVariable& errlowoutput = net->variable(idMap["ERRLOWOUTPUT"]);
 
-        TS_ASSERT_EQUALS(errlowoutput.domainSize(), static_cast< gum::Size >(2))
+        CHECK((errlowoutput.domainSize()) == (static_cast< gum::Size >(2)));
 
-        TS_ASSERT_EQUALS(errlowoutput.label(0), "TRUE")
+        CHECK((errlowoutput.label(0)) == ("TRUE"));
 
-        TS_ASSERT_EQUALS(errlowoutput.label(1), "FALSE")
+        CHECK((errlowoutput.label(1)) == ("FALSE"));
 
-        TS_ASSERT(net->dag().existsArc(idMap["ERRLOWOUTPUT"], idMap["HRBP"]))
+        CHECK(net->dag().existsArc(idMap["ERRLOWOUTPUT"], idMap["HRBP"]));
 
         const gum::Tensor< double >& errlowoutputCPT = net->cpt(idMap["ERRLOWOUTPUT"]);
 
-        TS_ASSERT_EQUALS(errlowoutputCPT.domainSize(), static_cast< gum::Size >(2))
+        CHECK((errlowoutputCPT.domainSize()) == (static_cast< gum::Size >(2)));
 
-        TS_ASSERT(errlowoutputCPT.contains(errlowoutput))
+        CHECK(errlowoutputCPT.contains(errlowoutput));
 
         gum::Instantiation errlowoutputInst(errlowoutputCPT);
 
         errlowoutputInst.chgVal(errlowoutput, 0);
 
-        TS_ASSERT(std::abs(errlowoutputCPT[errlowoutputInst] - 0.05f) < 0.001f)
+        CHECK(std::abs(errlowoutputCPT[errlowoutputInst] - 0.05f) < 0.001f);
 
         errlowoutputInst.chgVal(errlowoutput, 1);
 
-        TS_ASSERT(std::abs(errlowoutputCPT[errlowoutputInst] - 0.95f) < 0.001f)
+        CHECK(std::abs(errlowoutputCPT[errlowoutputInst] - 0.95f) < 0.001f);
       }
 
       // The nide wich we'll test
-      TS_ASSERT(idMap.exists("LVEDVOLUME"))
+      CHECK(idMap.exists("LVEDVOLUME"));
 
       // It's parents
-      TS_ASSERT(idMap.exists("HYPOVOLEMIA"))
+      CHECK(idMap.exists("HYPOVOLEMIA"));
 
-      TS_ASSERT(idMap.exists("LVFAILURE"))
+      CHECK(idMap.exists("LVFAILURE"));
 
       if (idMap.exists("LVEDVOLUME") && idMap.exists("HYPOVOLEMIA") && idMap.exists("LVFAILURE")) {
         const gum::DiscreteVariable& lvedvolume = net->variable(idMap["LVEDVOLUME"]);
@@ -690,19 +696,19 @@ namespace gum_tests {
         const gum::DiscreteVariable& lvfailure = net->variable(idMap["LVFAILURE"]);
 
         // checking label order
-        TS_ASSERT_EQUALS(lvedvolume.label(0), "LOW")
+        CHECK((lvedvolume.label(0)) == ("LOW"));
 
-        TS_ASSERT_EQUALS(lvedvolume.label(1), "NORMAL")
+        CHECK((lvedvolume.label(1)) == ("NORMAL"));
 
-        TS_ASSERT_EQUALS(lvedvolume.label(2), "HIGH")
+        CHECK((lvedvolume.label(2)) == ("HIGH"));
 
-        TS_ASSERT_EQUALS(hypovolemia.label(0), "TRUE")
+        CHECK((hypovolemia.label(0)) == ("TRUE"));
 
-        TS_ASSERT_EQUALS(hypovolemia.label(1), "FALSE")
+        CHECK((hypovolemia.label(1)) == ("FALSE"));
 
-        TS_ASSERT_EQUALS(lvfailure.label(0), "TRUE")
+        CHECK((lvfailure.label(0)) == ("TRUE"));
 
-        TS_ASSERT_EQUALS(lvfailure.label(1), "FALSE")
+        CHECK((lvfailure.label(1)) == ("FALSE"));
 
         const gum::Tensor< double >& cpt = net->cpt(idMap["LVEDVOLUME"]);
 
@@ -721,7 +727,7 @@ namespace gum_tests {
         size_t i = 0;
 
         for (inst.setFirstIn(var_inst); !inst.end(); inst.incIn(var_inst), ++i) {
-          TS_ASSERT_DELTA(cpt[inst], array_1[i], 0.001f)
+          CHECK((cpt[inst]) == doctest::Approx(array_1[i]).epsilon(0.001f));
         }
 
         inst.chgVal(hypovolemia, 1);
@@ -733,7 +739,7 @@ namespace gum_tests {
         i = 0;
 
         for (inst.setFirstIn(var_inst); !inst.end(); inst.incIn(var_inst), ++i) {
-          TS_ASSERT_DELTA(cpt[inst], array_2[i], 0.001f)
+          CHECK((cpt[inst]) == doctest::Approx(array_2[i]).epsilon(0.001f));
         }
 
         inst.chgVal(hypovolemia, 0);
@@ -745,7 +751,7 @@ namespace gum_tests {
         i = 0;
 
         for (inst.setFirstIn(var_inst); !inst.end(); inst.incIn(var_inst), ++i) {
-          TS_ASSERT_DELTA(cpt[inst], array_3[i], 0.001f)
+          CHECK((cpt[inst]) == doctest::Approx(array_3[i]).epsilon(0.001f));
         }
 
         inst.chgVal(hypovolemia, 1);
@@ -757,185 +763,182 @@ namespace gum_tests {
         i = 0;
 
         for (inst.setFirstIn(var_inst); !inst.end(); inst.incIn(var_inst), ++i) {
-          TS_ASSERT_DELTA(cpt[inst], array_4[i], 0.001f)
+          CHECK((cpt[inst]) == doctest::Approx(array_4[i]).epsilon(0.001f));
         }
       }
 
       delete net;
     }
 
-    GUM_ACTIVE_TEST(Unexisting) {
+    static void testUnexisting() {
       std::string file = "Schmurtz";
       auto        net  = new gum::BayesNet< double >();
 
-      TS_GUM_ASSERT_THROWS_NOTHING(gum::BIFReader< double > reader(net, file))
+      GUM_CHECK_ASSERT_THROWS_NOTHING(gum::BIFReader< double > reader(net, file));
 
       gum::BIFReader< double > reader(net, file);
-      TS_ASSERT_THROWS(reader.proceed(), const gum::IOError&)
+      CHECK_THROWS_AS(reader.proceed(), const gum::IOError&);
 
       if (net) delete net;
     }
 
-    GUM_ACTIVE_TEST(Barley) {
+    static void testBarley() {
       std::string              file = GET_RESSOURCES_PATH("bif/Barley.bif");
       auto                     net  = new gum::BayesNet< double >();
       gum::BIFReader< double > reader(net, file);
 
       auto nbrErr = static_cast< gum::Size >(0);
 
-      TS_GUM_ASSERT_THROWS_NOTHING(nbrErr = reader.proceed())
-      TS_ASSERT_EQUALS(
-          net->toString(),
-          "BN{nodes: 47, arcs: 82, domainSize: 10^41.2492, dim: 113749, mem: 1014Ko 640o}")
+      GUM_CHECK_ASSERT_THROWS_NOTHING(nbrErr = reader.proceed());
+      CHECK((net->toString())
+            == ("BN{nodes: 47, arcs: 82, domainSize: 10^41.2492, dim: 113749, mem: 1014Ko 640o}"));
 
-      TS_ASSERT(nbrErr > static_cast< gum::Size >(0))
-      TS_ASSERT_EQUALS(reader.warnings(), static_cast< gum::Size >(96))
-      TS_ASSERT_EQUALS(reader.errors(), static_cast< gum::Size >(107))
+      CHECK(nbrErr > static_cast< gum::Size >(0));
+      CHECK((reader.warnings()) == (static_cast< gum::Size >(96)));
+      CHECK((reader.errors()) == (static_cast< gum::Size >(107)));
 
       if (net != nullptr) delete net;
     }
 
-    GUM_ACTIVE_TEST(Carpo) {
+    static void testCarpo() {
       std::string              file = GET_RESSOURCES_PATH("bif/carpo.bif");
       auto                     net  = new gum::BayesNet< double >();
       gum::BIFReader< double > reader(net, file);
 
       auto nbrErr = static_cast< gum::Size >(0);
 
-      TS_GUM_ASSERT_THROWS_NOTHING(nbrErr = reader.proceed())
-      TS_ASSERT_EQUALS(net->toString(),
-                       "BN{nodes: 61, arcs: 74, domainSize: 10^20.6746, dim: 343, mem: 4Ko 528o}")
+      GUM_CHECK_ASSERT_THROWS_NOTHING(nbrErr = reader.proceed());
+      CHECK((net->toString())
+            == ("BN{nodes: 61, arcs: 74, domainSize: 10^20.6746, dim: 343, mem: 4Ko 528o}"));
 
-      TS_ASSERT_EQUALS(nbrErr, static_cast< gum::Size >(0))
-      TS_ASSERT_EQUALS(reader.warnings(), static_cast< gum::Size >(361))
-      TS_ASSERT_EQUALS(reader.errors(), static_cast< gum::Size >(0))
+      CHECK((nbrErr) == (static_cast< gum::Size >(0)));
+      CHECK((reader.warnings()) == (static_cast< gum::Size >(361)));
+      CHECK((reader.errors()) == (static_cast< gum::Size >(0)));
 
       if (net) delete net;
     }
 
-    GUM_ACTIVE_TEST(Diabetes) {
+    static void testDiabetes() {
       std::string              file = GET_RESSOURCES_PATH("bif/Diabetes.bif");
       auto                     net  = new gum::BayesNet< double >();
       gum::BIFReader< double > reader(net, file);
 
       auto nbrErr = static_cast< gum::Size >(0);
 
-      TS_GUM_ASSERT_THROWS_NOTHING(nbrErr = reader.proceed())
-      TS_ASSERT_EQUALS(
-          net->toString(),
-          "BN{nodes: 413, arcs: 602, domainSize: 10^406.108, dim: 429409, mem: 3Mo 530Ko 104o}")
+      GUM_CHECK_ASSERT_THROWS_NOTHING(nbrErr = reader.proceed());
+      CHECK((net->toString())
+            == ("BN{nodes: 413, arcs: 602, domainSize: 10^406.108, dim: 429409, mem: 3Mo 530Ko "
+                "104o}"));
 
-      TS_ASSERT_EQUALS(nbrErr, static_cast< gum::Size >(0))
-      TS_ASSERT_EQUALS(reader.warnings(), static_cast< gum::Size >(826))
-      TS_ASSERT_EQUALS(reader.errors(), static_cast< gum::Size >(0))
+      CHECK((nbrErr) == (static_cast< gum::Size >(0)));
+      CHECK((reader.warnings()) == (static_cast< gum::Size >(826)));
+      CHECK((reader.errors()) == (static_cast< gum::Size >(0)));
 
       if (net) delete net;
     }
 
-    GUM_ACTIVE_TEST(Hailfinder) {
+    static void testHailfinder() {
       std::string              file = GET_RESSOURCES_PATH("bif/hailfinder.bif");
       auto                     net  = new gum::BayesNet< double >();
       gum::BIFReader< double > reader(net, file);
 
       auto nbrErr = static_cast< gum::Size >(0);
 
-      TS_GUM_ASSERT_THROWS_NOTHING(nbrErr = reader.proceed())
-      TS_ASSERT_EQUALS(net->toString(),
-                       "BN{nodes: 56, arcs: 66, domainSize: 10^32.0767, dim: 2656, mem: 29Ko 232o}")
+      GUM_CHECK_ASSERT_THROWS_NOTHING(nbrErr = reader.proceed());
+      CHECK((net->toString())
+            == ("BN{nodes: 56, arcs: 66, domainSize: 10^32.0767, dim: 2656, mem: 29Ko 232o}"));
 
-      TS_ASSERT_EQUALS(nbrErr, static_cast< gum::Size >(0))
-      TS_ASSERT_EQUALS(reader.warnings(), static_cast< gum::Size >(0))
-      TS_ASSERT_EQUALS(reader.errors(), static_cast< gum::Size >(0))
+      CHECK((nbrErr) == (static_cast< gum::Size >(0)));
+      CHECK((reader.warnings()) == (static_cast< gum::Size >(0)));
+      CHECK((reader.errors()) == (static_cast< gum::Size >(0)));
 
       if (net) delete net;
     }
 
-    GUM_ACTIVE_TEST(Insurance) {
+    static void testInsurance() {
       std::string              file = GET_RESSOURCES_PATH("bif/insurance.bif");
       auto                     net  = new gum::BayesNet< double >();
       gum::BIFReader< double > reader(net, file);
 
       auto nbrErr = static_cast< gum::Size >(0);
 
-      TS_GUM_ASSERT_THROWS_NOTHING(nbrErr = reader.proceed())
-      TS_ASSERT_EQUALS(net->toString(),
-                       "BN{nodes: 27, arcs: 52, domainSize: 10^13.4165, dim: 1008, mem: 11Ko 88o}")
+      GUM_CHECK_ASSERT_THROWS_NOTHING(nbrErr = reader.proceed());
+      CHECK((net->toString())
+            == ("BN{nodes: 27, arcs: 52, domainSize: 10^13.4165, dim: 1008, mem: 11Ko 88o}"));
 
-      TS_ASSERT_EQUALS(nbrErr, static_cast< gum::Size >(0))
-      TS_ASSERT_EQUALS(reader.warnings(), static_cast< gum::Size >(0))
-      TS_ASSERT_EQUALS(reader.errors(), static_cast< gum::Size >(0))
+      CHECK((nbrErr) == (static_cast< gum::Size >(0)));
+      CHECK((reader.warnings()) == (static_cast< gum::Size >(0)));
+      CHECK((reader.errors()) == (static_cast< gum::Size >(0)));
 
       if (net != nullptr) delete net;
     }
 
-    GUM_ACTIVE_TEST(Link) {
+    static void testLink() {
       std::string              file = GET_RESSOURCES_PATH("bif/Link.bif");
       auto                     net  = new gum::BayesNet< double >();
       gum::BIFReader< double > reader(net, file);
 
       auto nbrErr = static_cast< gum::Size >(0);
 
-      TS_GUM_ASSERT_THROWS_NOTHING(nbrErr = reader.proceed())
-      TS_ASSERT_EQUALS(
-          net->toString(),
-          "BN{nodes: 724, arcs: 1125, domainSize: 10^277.761, dim: 14211, mem: 160Ko 176o}")
+      GUM_CHECK_ASSERT_THROWS_NOTHING(nbrErr = reader.proceed());
+      CHECK((net->toString())
+            == ("BN{nodes: 724, arcs: 1125, domainSize: 10^277.761, dim: 14211, mem: 160Ko 176o}"));
 
-      TS_ASSERT_EQUALS(nbrErr, static_cast< gum::Size >(0))
-      TS_ASSERT_EQUALS(reader.warnings(), static_cast< gum::Size >(724))
-      TS_ASSERT_EQUALS(reader.errors(), static_cast< gum::Size >(0))
+      CHECK((nbrErr) == (static_cast< gum::Size >(0)));
+      CHECK((reader.warnings()) == (static_cast< gum::Size >(724)));
+      CHECK((reader.errors()) == (static_cast< gum::Size >(0)));
 
       if (net) delete net;
     }
 
-    GUM_ACTIVE_TEST(Mildew) {
+    static void testMildew() {
       std::string              file = GET_RESSOURCES_PATH("bif/Mildew.bif");
       auto                     net  = new gum::BayesNet< double >();
       gum::BIFReader< double > reader(net, file);
 
       auto nbrErr = static_cast< gum::Size >(0);
 
-      TS_GUM_ASSERT_THROWS_NOTHING(nbrErr = reader.proceed())
-      TS_ASSERT_EQUALS(
-          net->toString(),
-          "BN{nodes: 35, arcs: 46, domainSize: 10^32.6263, dim: 540150, mem: 4Mo 178Ko 688o}")
+      GUM_CHECK_ASSERT_THROWS_NOTHING(nbrErr = reader.proceed());
+      CHECK(
+          (net->toString())
+          == ("BN{nodes: 35, arcs: 46, domainSize: 10^32.6263, dim: 540150, mem: 4Mo 178Ko 688o}"));
 
-      TS_ASSERT_EQUALS(nbrErr, static_cast< gum::Size >(0))
-      TS_ASSERT_EQUALS(reader.warnings(), static_cast< gum::Size >(70))
-      TS_ASSERT_EQUALS(reader.errors(), static_cast< gum::Size >(0))
+      CHECK((nbrErr) == (static_cast< gum::Size >(0)));
+      CHECK((reader.warnings()) == (static_cast< gum::Size >(70)));
+      CHECK((reader.errors()) == (static_cast< gum::Size >(0)));
 
       if (net) delete net;
     }
 
-    GUM_ACTIVE_TEST(Munin1) {
+    static void testMunin1() {
       std::string              file = GET_RESSOURCES_PATH("bif/Munin1.bif");
       auto                     net  = new gum::BayesNet< double >();
       gum::BIFReader< double > reader(net, file);
 
       auto nbrErr = static_cast< gum::Size >(0);
 
-      TS_GUM_ASSERT_THROWS_NOTHING(nbrErr = reader.proceed())
-      TS_ASSERT_EQUALS(nbrErr, static_cast< gum::Size >(0))
-      TS_ASSERT_EQUALS(reader.warnings(), static_cast< gum::Size >(372))
-      TS_ASSERT_EQUALS(reader.errors(), static_cast< gum::Size >(0))
+      GUM_CHECK_ASSERT_THROWS_NOTHING(nbrErr = reader.proceed());
+      CHECK((nbrErr) == (static_cast< gum::Size >(0)));
+      CHECK((reader.warnings()) == (static_cast< gum::Size >(372)));
+      CHECK((reader.errors()) == (static_cast< gum::Size >(0)));
 
       if (net) delete net;
     }
 
-    GUM_ACTIVE_TEST(Pigs) {
+    static void testPigs() {
       std::string              file = GET_RESSOURCES_PATH("bif/Pigs.bif");
       auto                     net  = new gum::BayesNet< double >();
       gum::BIFReader< double > reader(net, file);
 
       auto nbrErr = static_cast< gum::Size >(0);
 
-      TS_GUM_ASSERT_THROWS_NOTHING(nbrErr = reader.proceed())
-      TS_ASSERT_EQUALS(
-          net->toString(),
-          "BN{nodes: 441, arcs: 592, domainSize: 10^210.41, dim: 5618, mem: 65Ko 856o}")
+      GUM_CHECK_ASSERT_THROWS_NOTHING(nbrErr = reader.proceed());
+      CHECK((net->toString())
+            == ("BN{nodes: 441, arcs: 592, domainSize: 10^210.41, dim: 5618, mem: 65Ko 856o}"));
 
-      TS_ASSERT_EQUALS(nbrErr, static_cast< gum::Size >(0))
-      TS_ASSERT_EQUALS(reader.warnings(), static_cast< gum::Size >(441))
-      TS_ASSERT_EQUALS(reader.errors(), static_cast< gum::Size >(0))
+      CHECK((nbrErr) == (static_cast< gum::Size >(0)));
+      CHECK((reader.warnings()) == (static_cast< gum::Size >(441)));
+      CHECK((reader.errors()) == (static_cast< gum::Size >(0)));
 
       if (net) delete net;
     }
@@ -946,37 +949,36 @@ namespace gum_tests {
         gum::BIFReader< double > reader(
             &net,
             std::string(GET_RESSOURCES_PATH("bif/dBN_with_errors.bif")));
-        TS_ASSERT_EQUALS(reader.warnings(), static_cast< gum::Size >(3))
-        TS_ASSERT_EQUALS(reader.errors(), static_cast< gum::Size >(3))
+        CHECK((reader.warnings()) == (static_cast< gum::Size >(3)));
+        CHECK((reader.errors()) == (static_cast< gum::Size >(3)));
       }
       {
         gum::BayesNet< double >  net;
         gum::BIFReader< double > reader(&net, std::string(GET_RESSOURCES_PATH("bif/dBN.bif")));
-        TS_ASSERT_EQUALS(reader.warnings(), static_cast< gum::Size >(2))
-        TS_ASSERT_EQUALS(reader.errors(), static_cast< gum::Size >(0))
+        CHECK((reader.warnings()) == (static_cast< gum::Size >(2)));
+        CHECK((reader.errors()) == (static_cast< gum::Size >(0)));
       }
     }
 
-    GUM_ACTIVE_TEST(Water) {
+    static void testWater() {
       std::string              file = GET_RESSOURCES_PATH("bif/Water.bif");
       auto                     net  = new gum::BayesNet< double >();
       gum::BIFReader< double > reader(net, file);
 
       auto nbrErr = static_cast< gum::Size >(0);
 
-      TS_GUM_ASSERT_THROWS_NOTHING(nbrErr = reader.proceed())
-      TS_ASSERT_EQUALS(
-          net->toString(),
-          "BN{nodes: 32, arcs: 66, domainSize: 10^17.7667, dim: 10083, mem: 105Ko 352o}")
+      GUM_CHECK_ASSERT_THROWS_NOTHING(nbrErr = reader.proceed());
+      CHECK((net->toString())
+            == ("BN{nodes: 32, arcs: 66, domainSize: 10^17.7667, dim: 10083, mem: 105Ko 352o}"));
 
-      TS_ASSERT_EQUALS(nbrErr, static_cast< gum::Size >(0))
-      TS_ASSERT_EQUALS(reader.warnings(), static_cast< gum::Size >(64))
-      TS_ASSERT_EQUALS(reader.errors(), static_cast< gum::Size >(0))
+      CHECK((nbrErr) == (static_cast< gum::Size >(0)));
+      CHECK((reader.warnings()) == (static_cast< gum::Size >(64)));
+      CHECK((reader.errors()) == (static_cast< gum::Size >(0)));
 
       if (net) delete net;
     }
 
-    GUM_ACTIVE_TEST(BenchFillingCpt) {
+    static void testBenchFillingCpt() {
       std::string              file = GET_RESSOURCES_PATH("bif/Diabetes.bif");
       gum::BayesNet< double >  net;
       gum::BIFReader< double > reader(&net, file);
@@ -984,12 +986,31 @@ namespace gum_tests {
       gum::Size nbrErr = 0;
 
       gum::Timer t;
-      TS_GUM_ASSERT_THROWS_NOTHING(nbrErr = reader.proceed())
+      GUM_CHECK_ASSERT_THROWS_NOTHING(nbrErr = reader.proceed());
 
-      TS_ASSERT_EQUALS(nbrErr, static_cast< gum::Size >(0))
-      TS_ASSERT_EQUALS(reader.warnings(), static_cast< gum::Size >(826))
+      CHECK((nbrErr) == (static_cast< gum::Size >(0)));
+      CHECK((reader.warnings()) == (static_cast< gum::Size >(826)));
       // 2 warnings : properties
-      TS_ASSERT_EQUALS(reader.errors(), static_cast< gum::Size >(0))
+      CHECK((reader.errors()) == (static_cast< gum::Size >(0)));
     }
   };
+
+  GUM_TEST_ACTIF(Constuctor)
+  GUM_TEST_ACTIF(Read_file1)
+  GUM_TEST_ACTIF(Read_file2_float)
+  GUM_TEST_ACTIF(Read_file2_double)
+  GUM_TEST_ACTIF(Read_file3)
+  GUM_TEST_ACTIF(Alarm)
+  GUM_TEST_ACTIF(Unexisting)
+  GUM_TEST_ACTIF(Barley)
+  GUM_TEST_ACTIF(Carpo)
+  GUM_TEST_ACTIF(Diabetes)
+  GUM_TEST_ACTIF(Hailfinder)
+  GUM_TEST_ACTIF(Insurance)
+  GUM_TEST_ACTIF(Link)
+  GUM_TEST_ACTIF(Mildew)
+  GUM_TEST_ACTIF(Munin1)
+  GUM_TEST_ACTIF(Pigs)
+  GUM_TEST_ACTIF(Water)
+  GUM_TEST_ACTIF(BenchFillingCpt)
 }   // namespace gum_tests

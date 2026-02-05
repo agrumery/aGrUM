@@ -1,7 +1,7 @@
 ############################################################################
 #   This file is part of the aGrUM/pyAgrum library.                        #
 #                                                                          #
-#   Copyright (c) 2005-2025 by                                             #
+#   Copyright (c) 2005-2026 by                                             #
 #       - Pierre-Henri WUILLEMIN(_at_LIP6)                                 #
 #       - Christophe GONZALES(_at_AMU)                                     #
 #                                                                          #
@@ -27,7 +27,7 @@
 #                                                                          #
 #   See LICENCES for more details.                                         #
 #                                                                          #
-#   SPDX-FileCopyrightText: Copyright 2005-2025                            #
+#   SPDX-FileCopyrightText: Copyright 2005-2026                            #
 #       - Pierre-Henri WUILLEMIN(_at_LIP6)                                 #
 #       - Christophe GONZALES(_at_AMU)                                     #
 #   SPDX-License-Identifier: LGPL-3.0-or-later OR MIT                      #
@@ -249,7 +249,9 @@ def init_params() -> None:
   else:
     cfg.default["compiler"] = "gcc"
 
-  cfg.actions = set("lib test install doc clean purge show uninstall package guideline wheel nightly_wheel".split())
+  cfg.actions = set(
+    "lib test install doc clean purge show uninstall package guideline pipinstall wheel nightly_wheel".split()
+  )
   cfg.modes = set("debug release".split())
   cfg.targets = {"agrum", "pyagrum"}  # lowercase for relaxing constraints
   cfg.modules = parse_modules_txt()

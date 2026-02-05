@@ -1,7 +1,7 @@
 /****************************************************************************
  *   This file is part of the aGrUM/pyAgrum library.                        *
  *                                                                          *
- *   Copyright (c) 2005-2025 by                                             *
+ *   Copyright (c) 2005-2026 by                                             *
  *       - Pierre-Henri WUILLEMIN(_at_LIP6)                                 *
  *       - Christophe GONZALES(_at_AMU)                                     *
  *                                                                          *
@@ -27,7 +27,7 @@
  *                                                                          *
  *   See LICENCES for more details.                                         *
  *                                                                          *
- *   SPDX-FileCopyrightText: Copyright 2005-2025                            *
+ *   SPDX-FileCopyrightText: Copyright 2005-2026                            *
  *       - Pierre-Henri WUILLEMIN(_at_LIP6)                                 *
  *       - Christophe GONZALES(_at_AMU)                                     *
  *   SPDX-License-Identifier: LGPL-3.0-or-later OR MIT                      *
@@ -37,6 +37,7 @@
  *   gitlab   : https://gitlab.com/agrumery/agrum                           *
  *                                                                          *
  ****************************************************************************/
+
 #pragma once
 
 
@@ -45,68 +46,75 @@
 
 #include <agrum/base/graphs/graphElements.h>
 
+#undef GUM_CURRENT_SUITE
+#undef GUM_CURRENT_MODULE
+#define GUM_CURRENT_SUITE  Edge
+#define GUM_CURRENT_MODULE GUMBASE
+
 namespace gum_tests {
 
-  class GUM_TEST_SUITE(Edge) {
+  struct EdgeTestSuite {
     public:
-    GUM_ACTIVE_TEST(Constructor1){TS_GUM_ASSERT_THROWS_NOTHING(gum::Edge edge1(1, 2))
-                                      TS_GUM_ASSERT_THROWS_NOTHING(gum::Edge edge1(1, 1))}
+    static void testConstructor1() {
+      GUM_CHECK_ASSERT_THROWS_NOTHING(gum::Edge edge1(1, 2));
+      GUM_CHECK_ASSERT_THROWS_NOTHING(gum::Edge edge1(1, 1));
+    }
 
-    GUM_ACTIVE_TEST(Constructor2) {
+    static void testConstructor2() {
       gum::Edge edge1(1, 2);
-      TS_GUM_ASSERT_THROWS_NOTHING(gum::Edge copy(edge1))
+      GUM_CHECK_ASSERT_THROWS_NOTHING(gum::Edge copy(edge1));
     }   // namespace gum_tests
 
-    GUM_ACTIVE_TEST(Equality) {
+    static void testEquality() {
       gum::Edge edge1(1, 2);
       gum::Edge edge2(2, 1);
       gum::Edge copy(edge1);
       gum::Edge edge3(6, 7);
 
-      TS_ASSERT_EQUALS(edge1, edge1)
-      TS_ASSERT_EQUALS(edge1, edge2)
-      TS_ASSERT_EQUALS(edge2, edge1)
-      TS_ASSERT_EQUALS(copy, edge1)
-      TS_ASSERT_EQUALS(edge2, copy)
+      CHECK((edge1) == (edge1));
+      CHECK((edge1) == (edge2));
+      CHECK((edge2) == (edge1));
+      CHECK((copy) == (edge1));
+      CHECK((edge2) == (copy));
 
-      TS_ASSERT_DIFFERS(edge1, edge3)
-      TS_ASSERT_DIFFERS(edge3, edge1)
-      TS_ASSERT_DIFFERS(copy, edge3)
-      TS_ASSERT_DIFFERS(edge2, edge3)
+      CHECK((edge1) != (edge3));
+      CHECK((edge3) != (edge1));
+      CHECK((copy) != (edge3));
+      CHECK((edge2) != (edge3));
     }
 
-    GUM_ACTIVE_TEST(Getters) {
+    static void testGetters() {
       const gum::Edge edge1((gum::NodeId)1, (gum::NodeId)2);
       const gum::Edge edge2((gum::NodeId)2, (gum::NodeId)1);
 
-      TS_ASSERT_EQUALS(edge1, edge1)
-      TS_ASSERT_EQUALS(edge1, edge2)
-      TS_ASSERT_EQUALS(edge2, edge1)
+      CHECK((edge1) == (edge1));
+      CHECK((edge1) == (edge2));
+      CHECK((edge2) == (edge1));
 
       const gum::Edge edge3((gum::NodeId)3, (gum::NodeId)4);
       const gum::Edge edge4((gum::NodeId)1, (gum::NodeId)2);
 
       gum::NodeId n;
 
-      TS_GUM_ASSERT_THROWS_NOTHING(n = edge1.first())
-      TS_GUM_ASSERT_THROWS_NOTHING(n = edge1.second())
+      GUM_CHECK_ASSERT_THROWS_NOTHING(n = edge1.first());
+      GUM_CHECK_ASSERT_THROWS_NOTHING(n = edge1.second());
 
-      TS_GUM_ASSERT_THROWS_NOTHING(n = edge4.first())
-      TS_GUM_ASSERT_THROWS_NOTHING(n = edge4.second())
+      GUM_CHECK_ASSERT_THROWS_NOTHING(n = edge4.first());
+      GUM_CHECK_ASSERT_THROWS_NOTHING(n = edge4.second());
 
-      TS_ASSERT_EQUALS(n = edge2.first(), (gum::NodeId)1)
-      TS_ASSERT_EQUALS(n = edge2.second(), (gum::NodeId)2)
+      CHECK((n = edge2.first()) == ((gum::NodeId)1));
+      CHECK((n = edge2.second()) == ((gum::NodeId)2));
 
-      TS_GUM_ASSERT_THROWS_NOTHING(n = edge3.other((gum::NodeId)3))
-      TS_GUM_ASSERT_THROWS_NOTHING(n = edge3.other((gum::NodeId)4))
+      GUM_CHECK_ASSERT_THROWS_NOTHING(n = edge3.other((gum::NodeId)3));
+      GUM_CHECK_ASSERT_THROWS_NOTHING(n = edge3.other((gum::NodeId)4));
 
-      TS_ASSERT_EQUALS(n = edge3.other((gum::NodeId)3), (gum::NodeId)4)
-      TS_ASSERT_EQUALS(n = edge3.other((gum::NodeId)4), (gum::NodeId)3)
+      CHECK((n = edge3.other((gum::NodeId)3)) == ((gum::NodeId)4));
+      CHECK((n = edge3.other((gum::NodeId)4)) == ((gum::NodeId)3));
 
-      TS_ASSERT_THROWS_ANYTHING(n = edge4.other((gum::NodeId)42))
+      CHECK_THROWS(n = edge4.other((gum::NodeId)42));
     }
 
-    GUM_ACTIVE_TEST(Hash) {
+    static void testHash() {
       gum::HashTable< gum::Edge, gum::NodeId > hash;
 
       for (gum::NodeId x = 0; x < 1000; ++x) {
@@ -119,9 +127,15 @@ namespace gum_tests {
       for (gum::NodeId x = 0; x < 1000; ++x) {
         for (gum::NodeId y = x; y < 1000; ++y) {
           gum::Edge edge(x, y);
-          TS_ASSERT_EQUALS(hash[edge], (x + y))
+          CHECK((hash[edge]) == ((x + y)));
         }
       }
     }
   };
+
+  GUM_TEST_ACTIF(Constructor1)
+  GUM_TEST_ACTIF(Constructor2)
+  GUM_TEST_ACTIF(Equality)
+  GUM_TEST_ACTIF(Getters)
+  GUM_TEST_ACTIF(Hash)
 }   // namespace gum_tests

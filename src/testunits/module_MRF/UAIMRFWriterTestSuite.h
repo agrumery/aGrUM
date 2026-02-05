@@ -1,7 +1,7 @@
 /****************************************************************************
  *   This file is part of the aGrUM/pyAgrum library.                        *
  *                                                                          *
- *   Copyright (c) 2005-2025 by                                             *
+ *   Copyright (c) 2005-2026 by                                             *
  *       - Pierre-Henri WUILLEMIN(_at_LIP6)                                 *
  *       - Christophe GONZALES(_at_AMU)                                     *
  *                                                                          *
@@ -27,7 +27,7 @@
  *                                                                          *
  *   See LICENCES for more details.                                         *
  *                                                                          *
- *   SPDX-FileCopyrightText: Copyright 2005-2025                            *
+ *   SPDX-FileCopyrightText: Copyright 2005-2026                            *
  *       - Pierre-Henri WUILLEMIN(_at_LIP6)                                 *
  *       - Christophe GONZALES(_at_AMU)                                     *
  *   SPDX-License-Identifier: LGPL-3.0-or-later OR MIT                      *
@@ -37,6 +37,7 @@
  *   gitlab   : https://gitlab.com/agrumery/agrum                           *
  *                                                                          *
  ****************************************************************************/
+
 #pragma once
 
 
@@ -53,6 +54,11 @@
 
 #include <sys/stat.h>
 
+#undef GUM_CURRENT_SUITE
+#undef GUM_CURRENT_MODULE
+#define GUM_CURRENT_SUITE  UAIMRFWriter
+#define GUM_CURRENT_MODULE MRF
+
 // The graph used for the tests:
 //          0   1_
 //         / \ / /
@@ -63,40 +69,48 @@
 
 namespace gum_tests {
 
-  class GUM_TEST_SUITE(UAIMRFWriter) {
+  struct UAIMRFWriterTestSuite {
     public:
     gum::MarkovRandomField< double >* mn;
     gum::NodeId                       i1, i2, i3, i4, i5;
 
-    void setUp() {
+    UAIMRFWriterTestSuite() {
       mn = new gum::MarkovRandomField< double >();
 
       gum::LabelizedVariable n1("0", "", 2), n2("1", "", 2), n3("2", "", 2);
+
       gum::LabelizedVariable n4("3", "", 2), n5("4", "", 3);
 
       i1 = mn->add(n1);
+
       i2 = mn->add(n2);
+
       i3 = mn->add(n3);
+
       i4 = mn->add(n4);
+
       i5 = mn->add(n5);
 
       mn->addFactor({i1, i3});
+
       mn->addFactor({i1, i4});
+
       mn->addFactor({i3, i5});
+
       mn->addFactor({i2, i4, i5});
 
-      __fill(*mn);
+      _fill_(*mn);
     }
 
-    void tearDown() { delete mn; }
+    ~UAIMRFWriterTestSuite() { delete mn; }
 
-    GUM_ACTIVE_TEST(Constructor) {
+    static void testConstructor() {
       gum::UAIMRFWriter< double >* writer = nullptr;
-      TS_GUM_ASSERT_THROWS_NOTHING(writer = new gum::UAIMRFWriter< double >())
+      GUM_CHECK_ASSERT_THROWS_NOTHING(writer = new gum::UAIMRFWriter< double >());
       delete writer;
     }
 
-    GUM_ACTIVE_TEST(Writer_ostream) {
+    void testWriter_ostream() const {
       gum::UAIMRFWriter< double > writer;
       std::string                 file = GET_RESSOURCES_PATH("outputs/uaimn_generated.uai");
       writer.write(file, *mn);
@@ -105,14 +119,14 @@ namespace gum_tests {
       gum::UAIMRFReader< double >      reader(&net, file);
 
       gum::Size nbErr = 0;
-      TS_GUM_ASSERT_THROWS_NOTHING(nbErr = reader.proceed())
-      TS_ASSERT_EQUALS(nbErr, static_cast< gum::Size >(0))
-      TS_ASSERT_EQUALS(*mn, net)
+      GUM_CHECK_ASSERT_THROWS_NOTHING(nbErr = reader.proceed());
+      CHECK((nbErr) == (static_cast< gum::Size >(0)));
+      CHECK((*mn) == (net));
     }
 
     private:
     // Builds a MRF to test the inference
-    void __fill(gum::MarkovRandomField< double >& mn) {
+    static void _fill_(gum::MarkovRandomField< double >& mn) {
       try {
         mn.factor({"0", "2"}).fillWith({1, 2, 3, 4});
         mn.factor({"0", "3"}).fillWith({11, 12, 13, 14});
@@ -121,4 +135,7 @@ namespace gum_tests {
       } catch (gum::Exception& e) { GUM_SHOWERROR(e); }
     }
   };
+
+  GUM_TEST_ACTIF(Constructor)
+  GUM_TEST_ACTIF(Writer_ostream)
 }   // namespace gum_tests

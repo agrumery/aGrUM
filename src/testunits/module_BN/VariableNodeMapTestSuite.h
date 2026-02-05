@@ -1,7 +1,7 @@
 /****************************************************************************
  *   This file is part of the aGrUM/pyAgrum library.                        *
  *                                                                          *
- *   Copyright (c) 2005-2025 by                                             *
+ *   Copyright (c) 2005-2026 by                                             *
  *       - Pierre-Henri WUILLEMIN(_at_LIP6)                                 *
  *       - Christophe GONZALES(_at_AMU)                                     *
  *                                                                          *
@@ -27,7 +27,7 @@
  *                                                                          *
  *   See LICENCES for more details.                                         *
  *                                                                          *
- *   SPDX-FileCopyrightText: Copyright 2005-2025                            *
+ *   SPDX-FileCopyrightText: Copyright 2005-2026                            *
  *       - Pierre-Henri WUILLEMIN(_at_LIP6)                                 *
  *       - Christophe GONZALES(_at_AMU)                                     *
  *   SPDX-License-Identifier: LGPL-3.0-or-later OR MIT                      *
@@ -37,6 +37,7 @@
  *   gitlab   : https://gitlab.com/agrumery/agrum                           *
  *                                                                          *
  ****************************************************************************/
+
 #pragma once
 
 
@@ -51,6 +52,11 @@
 #include <agrum/base/variables/labelizedVariable.h>
 #include <agrum/BN/BayesNet.h>
 
+#undef GUM_CURRENT_SUITE
+#undef GUM_CURRENT_MODULE
+#define GUM_CURRENT_SUITE  VariableNodeMap
+#define GUM_CURRENT_MODULE BN
+
 // The graph used for the tests:
 //          1   2_          1 -> 3
 //         / \ / /          1 -> 4
@@ -61,11 +67,11 @@
 
 namespace gum_tests {
 
-  class GUM_TEST_SUITE(VariableNodeMap) {
+  struct VariableNodeMapTestSuite {
     public:
     gum::LabelizedVariable *var1, *var2, *var3, *var4, *var5;
 
-    void setUp() {
+    VariableNodeMapTestSuite() {
       var1 = new gum::LabelizedVariable("var1", "1");
       var2 = new gum::LabelizedVariable("var2", "2");
       var3 = new gum::LabelizedVariable("var3", "3");
@@ -73,7 +79,7 @@ namespace gum_tests {
       var5 = new gum::LabelizedVariable("var5", "5");
     }
 
-    void tearDown() {
+    ~VariableNodeMapTestSuite() {
       delete var1;
       delete var2;
       delete var3;
@@ -81,39 +87,40 @@ namespace gum_tests {
       delete var5;
     }
 
-    GUM_ACTIVE_TEST(Constructor) {
+    static void testConstructor() {
       gum::BayesNet< double >* topology = nullptr;
-      TS_GUM_ASSERT_THROWS_NOTHING(topology = new gum::BayesNet< double >())
+      GUM_CHECK_ASSERT_THROWS_NOTHING(topology = new gum::BayesNet< double >());
 
-      TS_GUM_ASSERT_THROWS_NOTHING(if (topology) delete topology)
+      GUM_CHECK_ASSERT_THROWS_NOTHING(if (topology) delete topology);
     }
 
-    GUM_ACTIVE_TEST(Insertion) {
+    void testInsertion() const {
       gum::BayesNet< double >  topo;
       gum::List< gum::NodeId > idList;
 
-      TS_GUM_ASSERT_THROWS_NOTHING(idList.insert(topo.add(*var1)))
-      TS_GUM_ASSERT_THROWS_NOTHING(idList.insert(topo.add(*var2)))
-      TS_GUM_ASSERT_THROWS_NOTHING(idList.insert(topo.add(*var3)))
-      TS_GUM_ASSERT_THROWS_NOTHING(idList.insert(topo.add(*var4)))
-      TS_GUM_ASSERT_THROWS_NOTHING(idList.insert(topo.add(*var5)))
+      GUM_CHECK_ASSERT_THROWS_NOTHING(idList.insert(topo.add(*var1)));
+      GUM_CHECK_ASSERT_THROWS_NOTHING(idList.insert(topo.add(*var2)));
+      GUM_CHECK_ASSERT_THROWS_NOTHING(idList.insert(topo.add(*var3)));
+      GUM_CHECK_ASSERT_THROWS_NOTHING(idList.insert(topo.add(*var4)));
+      GUM_CHECK_ASSERT_THROWS_NOTHING(idList.insert(topo.add(*var5)));
 
-      TS_ASSERT_EQUALS(topo.size(), static_cast< gum::Size >(5))
-      TS_ASSERT_EQUALS(topo.dag().size(), static_cast< gum::Size >(5))
+      CHECK((topo.size()) == (static_cast< gum::Size >(5)));
+      CHECK((topo.dag().size()) == (static_cast< gum::Size >(5)));
 
       gum::NodeId ind = 0;
-      TS_GUM_ASSERT_THROWS_NOTHING(const gum::DiscreteVariable& varPtr = topo.variable(idList[0]);
-                                   ind                                 = topo.nodeId(varPtr);)
-      TS_ASSERT_EQUALS(idList[0], ind)
+      GUM_CHECK_ASSERT_THROWS_NOTHING(const gum::DiscreteVariable& varPtr
+                                      = topo.variable(idList[0]);
+                                      ind = topo.nodeId(varPtr););
+      CHECK((idList[0]) == (ind));
 
-      TS_ASSERT_EQUALS(*((gum::LabelizedVariable*)&topo.variable(idList[0])), *var1)
-      TS_ASSERT_EQUALS(*((gum::LabelizedVariable*)&topo.variable(idList[1])), *var2)
-      TS_ASSERT_EQUALS(*((gum::LabelizedVariable*)&topo.variable(idList[2])), *var3)
-      TS_ASSERT_EQUALS(*((gum::LabelizedVariable*)&topo.variable(idList[3])), *var4)
-      TS_ASSERT_EQUALS(*((gum::LabelizedVariable*)&topo.variable(idList[4])), *var5)
+      CHECK((*((gum::LabelizedVariable*)&topo.variable(idList[0]))) == (*var1));
+      CHECK((*((gum::LabelizedVariable*)&topo.variable(idList[1]))) == (*var2));
+      CHECK((*((gum::LabelizedVariable*)&topo.variable(idList[2]))) == (*var3));
+      CHECK((*((gum::LabelizedVariable*)&topo.variable(idList[3]))) == (*var4));
+      CHECK((*((gum::LabelizedVariable*)&topo.variable(idList[4]))) == (*var5));
     }
 
-    GUM_ACTIVE_TEST(ArcInsertion) {
+    void testArcInsertion() const {
       gum::BayesNet< double >  topo;
       gum::List< gum::NodeId > idList;
 
@@ -123,114 +130,114 @@ namespace gum_tests {
       idList.insert(topo.add(*var4));
       idList.insert(topo.add(*var5));
 
-      TS_GUM_ASSERT_THROWS_NOTHING(topo.addArc(idList[0], idList[2]))
-      TS_GUM_ASSERT_THROWS_NOTHING(topo.addArc(idList[2], idList[4]))
-      TS_GUM_ASSERT_THROWS_NOTHING(topo.addArc(idList[1], idList[3]))
-      TS_GUM_ASSERT_THROWS_NOTHING(topo.addArc(idList[0], idList[3]))
-      TS_GUM_ASSERT_THROWS_NOTHING(topo.addArc(idList[3], idList[4]))
-      TS_GUM_ASSERT_THROWS_NOTHING(topo.addArc(idList[1], idList[4]))
+      GUM_CHECK_ASSERT_THROWS_NOTHING(topo.addArc(idList[0], idList[2]));
+      GUM_CHECK_ASSERT_THROWS_NOTHING(topo.addArc(idList[2], idList[4]));
+      GUM_CHECK_ASSERT_THROWS_NOTHING(topo.addArc(idList[1], idList[3]));
+      GUM_CHECK_ASSERT_THROWS_NOTHING(topo.addArc(idList[0], idList[3]));
+      GUM_CHECK_ASSERT_THROWS_NOTHING(topo.addArc(idList[3], idList[4]));
+      GUM_CHECK_ASSERT_THROWS_NOTHING(topo.addArc(idList[1], idList[4]));
 
-      TS_ASSERT_EQUALS(topo.dag().sizeArcs(), static_cast< gum::Size >(6))
+      CHECK((topo.dag().sizeArcs()) == (static_cast< gum::Size >(6)));
     }
 
-    GUM_ACTIVE_TEST(EraseVar) {
+    void testEraseVar() const {
       gum::BayesNet< double >  topo;
       gum::List< gum::NodeId > idList;
 
-      TS_ASSERT(topo.empty())
-      TS_ASSERT(topo.dag().empty())
-      TS_ASSERT(topo.dag().emptyArcs())
+      CHECK(topo.empty());
+      CHECK(topo.dag().empty());
+      CHECK(topo.dag().emptyArcs());
 
-      fill(topo, idList);
+      _fill_(topo, idList);
 
-      TS_ASSERT(!topo.empty())
-      TS_ASSERT(!topo.dag().empty())
-      TS_ASSERT(!topo.dag().emptyArcs())
+      CHECK(!topo.empty());
+      CHECK(!topo.dag().empty());
+      CHECK(!topo.dag().emptyArcs());
 
-      TS_ASSERT_EQUALS(topo.size(), static_cast< gum::Size >(5))
-      TS_ASSERT_EQUALS(topo.dag().size(), static_cast< gum::Size >(5))
-      TS_ASSERT_EQUALS(topo.dag().sizeArcs(), static_cast< gum::Size >(6))
+      CHECK((topo.size()) == (static_cast< gum::Size >(5)));
+      CHECK((topo.dag().size()) == (static_cast< gum::Size >(5)));
+      CHECK((topo.dag().sizeArcs()) == (static_cast< gum::Size >(6)));
 
       for (const auto i: idList)
         topo.erase(i);
 
-      TS_ASSERT(topo.empty())
+      CHECK(topo.empty());
 
-      TS_ASSERT(topo.dag().empty())
-      TS_ASSERT(topo.dag().emptyArcs())
+      CHECK(topo.dag().empty());
+      CHECK(topo.dag().emptyArcs());
 
-      TS_ASSERT_EQUALS(topo.size(), static_cast< gum::Size >(0))
-      TS_ASSERT_EQUALS(topo.dag().size(), static_cast< gum::Size >(0))
-      TS_ASSERT_EQUALS(topo.dag().sizeArcs(), static_cast< gum::Size >(0))
+      CHECK((topo.size()) == (static_cast< gum::Size >(0)));
+      CHECK((topo.dag().size()) == (static_cast< gum::Size >(0)));
+      CHECK((topo.dag().sizeArcs()) == (static_cast< gum::Size >(0)));
     }
 
-    GUM_ACTIVE_TEST(EraseArc) {
+    void testEraseArc() const {
       gum::BayesNet< double >  topo;
       gum::List< gum::NodeId > idList;
 
-      TS_ASSERT(topo.empty())
-      TS_ASSERT(topo.dag().empty())
-      TS_ASSERT(topo.dag().emptyArcs())
+      CHECK(topo.empty());
+      CHECK(topo.dag().empty());
+      CHECK(topo.dag().emptyArcs());
 
-      fill(topo, idList);
+      _fill_(topo, idList);
 
-      TS_ASSERT(!topo.empty())
-      TS_ASSERT(!topo.dag().empty())
-      TS_ASSERT(!topo.dag().emptyArcs())
+      CHECK(!topo.empty());
+      CHECK(!topo.dag().empty());
+      CHECK(!topo.dag().emptyArcs());
 
-      TS_ASSERT_EQUALS(topo.size(), static_cast< gum::Size >(5))
-      TS_ASSERT_EQUALS(topo.dag().size(), static_cast< gum::Size >(5))
-      TS_ASSERT_EQUALS(topo.dag().sizeArcs(), static_cast< gum::Size >(6))
+      CHECK((topo.size()) == (static_cast< gum::Size >(5)));
+      CHECK((topo.dag().size()) == (static_cast< gum::Size >(5)));
+      CHECK((topo.dag().sizeArcs()) == (static_cast< gum::Size >(6)));
 
-      TS_GUM_ASSERT_THROWS_NOTHING(topo.eraseArc(gum::Arc(idList[0], idList[2])))
-      TS_GUM_ASSERT_THROWS_NOTHING(topo.eraseArc(gum::Arc(idList[2], idList[4])))
-      TS_GUM_ASSERT_THROWS_NOTHING(topo.eraseArc(gum::Arc(idList[1], idList[3])))
-      TS_GUM_ASSERT_THROWS_NOTHING(topo.eraseArc(gum::Arc(idList[0], idList[3])))
-      TS_GUM_ASSERT_THROWS_NOTHING(topo.eraseArc(gum::Arc(idList[3], idList[4])))
-      TS_GUM_ASSERT_THROWS_NOTHING(topo.eraseArc(gum::Arc(idList[1], idList[4])))
+      GUM_CHECK_ASSERT_THROWS_NOTHING(topo.eraseArc(gum::Arc(idList[0], idList[2])));
+      GUM_CHECK_ASSERT_THROWS_NOTHING(topo.eraseArc(gum::Arc(idList[2], idList[4])));
+      GUM_CHECK_ASSERT_THROWS_NOTHING(topo.eraseArc(gum::Arc(idList[1], idList[3])));
+      GUM_CHECK_ASSERT_THROWS_NOTHING(topo.eraseArc(gum::Arc(idList[0], idList[3])));
+      GUM_CHECK_ASSERT_THROWS_NOTHING(topo.eraseArc(gum::Arc(idList[3], idList[4])));
+      GUM_CHECK_ASSERT_THROWS_NOTHING(topo.eraseArc(gum::Arc(idList[1], idList[4])));
 
-      TS_ASSERT(!topo.empty())
-      TS_ASSERT(!topo.dag().empty())
-      TS_ASSERT(topo.dag().emptyArcs())
+      CHECK(!topo.empty());
+      CHECK(!topo.dag().empty());
+      CHECK(topo.dag().emptyArcs());
     }
 
-    GUM_ACTIVE_TEST(Iterator) {
+    static void testIterator() {
       gum::BayesNet< double >  topo;
       gum::List< gum::NodeId > idList;
 
       for (const auto node: topo.nodes())
-        TS_ASSERT(idList.exists(node))
+        CHECK(idList.exists(node));
     }
 
-    GUM_ACTIVE_TEST(MoralGraph) {
+    void testMoralGraph() const {
       gum::BayesNet< double >  topo;
       gum::List< gum::NodeId > idList;
 
-      fill(topo, idList);
+      _fill_(topo, idList);
 
       gum::UndiGraph graph;
-      TS_GUM_ASSERT_THROWS_NOTHING(graph = topo.moralGraph())
-      TS_ASSERT_EQUALS(graph, getRealMoralGraph(topo, idList))
+      GUM_CHECK_ASSERT_THROWS_NOTHING(graph = topo.moralGraph());
+      CHECK((graph) == (_getRealMoralGraph_(topo, idList)));
     }
 
-    GUM_ACTIVE_TEST(TopologicalOrder) {
+    void testTopologicalOrder() const {
       gum::BayesNet< double >  topo;
       gum::List< gum::NodeId > idList;
 
-      fill(topo, idList);
+      _fill_(topo, idList);
 
       gum::Sequence< gum::NodeId > topoOrder;
-      // TS_GUM_ASSERT_THROWS_NOTHING( topoOrder = topo.topologicalOrder() )
+      // GUM_CHECK_ASSERT_THROWS_NOTHING( topoOrder = topo.topologicalOrder() );
 
       try {
         topoOrder = topo.topologicalOrder();
       } catch (gum::Exception& e) { GUM_SHOWERROR(e); }
 
-      TS_ASSERT_EQUALS(topoOrder.size(), static_cast< gum::Size >(5))
+      CHECK((topoOrder.size()) == (static_cast< gum::Size >(5)));
     }
 
     private:
-    void fill(gum::BayesNet< double >& topo, gum::List< gum::NodeId >& idList) {
+    void _fill_(gum::BayesNet< double >& topo, gum::List< gum::NodeId >& idList) const {
       idList.insert(topo.add(*var1));
       idList.insert(topo.add(*var2));
       idList.insert(topo.add(*var3));
@@ -245,8 +252,8 @@ namespace gum_tests {
       topo.addArc(idList[1], idList[4]);
     }
 
-    gum::UndiGraph getRealMoralGraph(const gum::BayesNet< double >& topo,
-                                     gum::List< gum::NodeId >&      idList) {
+    static gum::UndiGraph _getRealMoralGraph_(const gum::BayesNet< double >& topo,
+                                              gum::List< gum::NodeId >&      idList) {
       gum::UndiGraph graph;
 
       graph.populateNodes(topo.dag());
@@ -264,4 +271,13 @@ namespace gum_tests {
       return graph;
     }
   };
+
+  GUM_TEST_ACTIF(Constructor)
+  GUM_TEST_ACTIF(Insertion)
+  GUM_TEST_ACTIF(ArcInsertion)
+  GUM_TEST_ACTIF(EraseVar)
+  GUM_TEST_ACTIF(EraseArc)
+  GUM_TEST_ACTIF(Iterator)
+  GUM_TEST_ACTIF(MoralGraph)
+  GUM_TEST_ACTIF(TopologicalOrder)
 }   // namespace gum_tests

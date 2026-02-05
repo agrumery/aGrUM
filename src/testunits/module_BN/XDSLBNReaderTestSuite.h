@@ -1,7 +1,7 @@
 /****************************************************************************
  *   This file is part of the aGrUM/pyAgrum library.                        *
  *                                                                          *
- *   Copyright (c) 2005-2025 by                                             *
+ *   Copyright (c) 2005-2026 by                                             *
  *       - Pierre-Henri WUILLEMIN(_at_LIP6)                                 *
  *       - Christophe GONZALES(_at_AMU)                                     *
  *                                                                          *
@@ -27,7 +27,7 @@
  *                                                                          *
  *   See LICENCES for more details.                                         *
  *                                                                          *
- *   SPDX-FileCopyrightText: Copyright 2005-2025                            *
+ *   SPDX-FileCopyrightText: Copyright 2005-2026                            *
  *       - Pierre-Henri WUILLEMIN(_at_LIP6)                                 *
  *       - Christophe GONZALES(_at_AMU)                                     *
  *   SPDX-License-Identifier: LGPL-3.0-or-later OR MIT                      *
@@ -37,6 +37,7 @@
  *   gitlab   : https://gitlab.com/agrumery/agrum                           *
  *                                                                          *
  ****************************************************************************/
+
 #pragma once
 
 
@@ -50,6 +51,11 @@
 #include <agrum/BN/BayesNet.h>
 #include <agrum/BN/io/XDSL/XDSLBNReader.h>
 
+#undef GUM_CURRENT_SUITE
+#undef GUM_CURRENT_MODULE
+#define GUM_CURRENT_SUITE  XDSLBNReader
+#define GUM_CURRENT_MODULE BN
+
 // The graph used for the tests:
 //          1   2_          1 -> 3
 //         / \ / /          1 -> 4
@@ -60,32 +66,35 @@
 
 namespace gum_tests {
 
-  class GUM_TEST_SUITE(XDSLBNReader) {
+  struct XDSLBNReaderTestSuite {
     public:
-    GUM_ACTIVE_TEST(Constuctor) {
+    static void testConstuctor() {
       std::string             file = GET_RESSOURCES_PATH("xdsl/benefits.xdsl");
       gum::BayesNet< double > net;
 
       gum::XDSLBNReader< double >* reader = 0;
-      TS_GUM_ASSERT_THROWS_NOTHING(reader = new gum::XDSLBNReader< double >(&net, file))
-      TS_GUM_ASSERT_THROWS_NOTHING(delete reader)
+      GUM_CHECK_ASSERT_THROWS_NOTHING(reader = new gum::XDSLBNReader< double >(&net, file));
+      GUM_CHECK_ASSERT_THROWS_NOTHING(delete reader);
     }   // namespace gum_tests
 
-    GUM_ACTIVE_TEST(Read_file1) {
+    static void testRead_file1() {
       std::string              file = GET_RESSOURCES_PATH("xdsl/benefits.xdsl");
       gum::BayesNet< double >* net  = new gum::BayesNet< double >();
 
-      TS_ASSERT_DIFFERS(net, nullptr)
+      CHECK((net) != (nullptr));
 
       gum::XDSLBNReader< double > reader(net, file);
-      TS_GUM_ASSERT_THROWS_NOTHING(reader.proceed())
+      GUM_CHECK_ASSERT_THROWS_NOTHING(reader.proceed());
 
-      TS_ASSERT_EQUALS(net->propertyWithDefault("name", ""), "Network3")
+      CHECK((net->propertyWithDefault("name", "")) == ("Network3"));
 
       if (net != nullptr) {
-        TS_ASSERT(!net->empty())
+        CHECK(!net->empty());
         delete net;
       }
     }
   };
+
+  GUM_TEST_ACTIF(Constuctor)
+  GUM_TEST_ACTIF(Read_file1)
 }   // namespace gum_tests

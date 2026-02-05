@@ -1,7 +1,7 @@
 /****************************************************************************
  *   This file is part of the aGrUM/pyAgrum library.                        *
  *                                                                          *
- *   Copyright (c) 2005-2025 by                                             *
+ *   Copyright (c) 2005-2026 by                                             *
  *       - Pierre-Henri WUILLEMIN(_at_LIP6)                                 *
  *       - Christophe GONZALES(_at_AMU)                                     *
  *                                                                          *
@@ -27,7 +27,7 @@
  *                                                                          *
  *   See LICENCES for more details.                                         *
  *                                                                          *
- *   SPDX-FileCopyrightText: Copyright 2005-2025                            *
+ *   SPDX-FileCopyrightText: Copyright 2005-2026                            *
  *       - Pierre-Henri WUILLEMIN(_at_LIP6)                                 *
  *       - Christophe GONZALES(_at_AMU)                                     *
  *   SPDX-License-Identifier: LGPL-3.0-or-later OR MIT                      *
@@ -37,6 +37,7 @@
  *   gitlab   : https://gitlab.com/agrumery/agrum                           *
  *                                                                          *
  ****************************************************************************/
+
 #pragma once
 
 
@@ -53,11 +54,16 @@
 #include <agrum/base/stattests/kNML.h>
 #include <agrum/BN/learning/priors/noPrior.h>
 
+#undef GUM_CURRENT_SUITE
+#undef GUM_CURRENT_MODULE
+#define GUM_CURRENT_SUITE  KNML
+#define GUM_CURRENT_MODULE GUMBASE
+
 namespace gum_tests {
 
-  class GUM_TEST_SUITE(KNML) {
+  struct KNMLTestSuite {
     public:
-    GUM_ACTIVE_TEST(1) {
+    static void test1() {
       gum::learning::DBInitializerFromCSV initializer(GET_RESSOURCES_PATH("csv/asia.csv"));
       const auto&                         var_names = initializer.variableNames();
       const std::size_t                   nb_vars   = var_names.size();
@@ -86,18 +92,20 @@ namespace gum_tests {
       // gum::Idx id1 = score.addNodeSet(3, 4);
       // gum::Idx id2 = score.addNodeSet(2, 6);
       // gum::Idx id3 = score.addNodeSet(4, 7, std::vector< gum::Idx >{5});
-      TS_ASSERT_DELTA(score.score(3, 4), 3.87288, 1e-2)
-      TS_ASSERT_DELTA(score.score(2, 6), 5.97477, 1e-2)
-      TS_ASSERT_DELTA(score.score(4, 7, std::vector< gum::NodeId >{5}), 5.43007, 1e-2)
+      CHECK((score.score(3, 4)) == doctest::Approx(3.87288).epsilon(1e-2));
+      CHECK((score.score(2, 6)) == doctest::Approx(5.97477).epsilon(1e-2));
+      CHECK((score.score(4, 7, std::vector< gum::NodeId >{5}))
+            == doctest::Approx(5.43007).epsilon(1e-2));
 
       score.clear();
       // id1 = score.addNodeSet(6, 7, std::vector< gum::Idx >{5, 1, 4});
       // id2 = score.addNodeSet(6, 7, std::vector< gum::Idx >{1, 4});
-      TS_ASSERT_DELTA(score.score(6, 7, std::vector< gum::NodeId >{5, 1, 4})
-                          - score.score(6, 7, std::vector< gum::NodeId >{1, 4}),
-                      0.0,
-                      1e-2);
+      CHECK((score.score(6, 7, std::vector< gum::NodeId >{5, 1, 4})
+             - score.score(6, 7, std::vector< gum::NodeId >{1, 4}))
+            == doctest::Approx(0.0).epsilon(1e-2));
     }   // namespace gum_tests
   };
+
+  GUM_TEST_ACTIF(1)
 
 } /* namespace gum_tests */

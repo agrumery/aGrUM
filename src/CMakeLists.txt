@@ -1,7 +1,7 @@
 ############################################################################
 #   This file is part of the aGrUM/pyAgrum library.                        #
 #                                                                          #
-#   Copyright (c) 2005-2025 by                                             #
+#   Copyright (c) 2005-2026 by                                             #
 #       - Pierre-Henri WUILLEMIN(_at_LIP6)                                 #
 #       - Christophe GONZALES(_at_AMU)                                     #
 #                                                                          #
@@ -27,7 +27,7 @@
 #                                                                          #
 #   See LICENCES for more details.                                         #
 #                                                                          #
-#   SPDX-FileCopyrightText: Copyright 2005-2025                            #
+#   SPDX-FileCopyrightText: Copyright 2005-2026                            #
 #       - Pierre-Henri WUILLEMIN(_at_LIP6)                                 #
 #       - Christophe GONZALES(_at_AMU)                                     #
 #   SPDX-License-Identifier: LGPL-3.0-or-later OR MIT                      #
@@ -89,6 +89,10 @@ if (NOT AGRUM_INLINE)
     target_compile_definitions(agrumBASE PUBLIC GUM_NO_INLINE)
 endif ()
 
+if (_AGRUM_CLANG_SUPPORTS_ASSUME_UNIQUE_VTABLES)
+    target_compile_options (agrumBASE PUBLIC "-fno-assume-unique-vtables")
+endif ()
+
 # precompile most often used headers (grep -nrI '#include <agrum' src/|cut -d " " -f 2| sort|uniq -c| sort -n)
 target_precompile_headers(agrumBASE PRIVATE "$<$<COMPILE_LANGUAGE:CXX>:${CMAKE_CURRENT_SOURCE_DIR}/agrum/agrum.h>")
 target_precompile_headers(agrumBASE PRIVATE "$<$<COMPILE_LANGUAGE:CXX>:${CMAKE_CURRENT_SOURCE_DIR}/agrum/base/variables/labelizedVariable.h>")
@@ -116,7 +120,7 @@ include(Doxygen.agrum)
 
 ####################################################################
 ## TARGET test
-include(CxxTest.agrum)
+include(doctest.agrum)
 
 ####################################################################
 ## TARGET install

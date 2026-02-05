@@ -1,7 +1,7 @@
 /****************************************************************************
  *   This file is part of the aGrUM/pyAgrum library.                        *
  *                                                                          *
- *   Copyright (c) 2005-2025 by                                             *
+ *   Copyright (c) 2005-2026 by                                             *
  *       - Pierre-Henri WUILLEMIN(_at_LIP6)                                 *
  *       - Christophe GONZALES(_at_AMU)                                     *
  *                                                                          *
@@ -27,7 +27,7 @@
  *                                                                          *
  *   See LICENCES for more details.                                         *
  *                                                                          *
- *   SPDX-FileCopyrightText: Copyright 2005-2025                            *
+ *   SPDX-FileCopyrightText: Copyright 2005-2026                            *
  *       - Pierre-Henri WUILLEMIN(_at_LIP6)                                 *
  *       - Christophe GONZALES(_at_AMU)                                     *
  *   SPDX-License-Identifier: LGPL-3.0-or-later OR MIT                      *
@@ -37,6 +37,7 @@
  *   gitlab   : https://gitlab.com/agrumery/agrum                           *
  *                                                                          *
  ****************************************************************************/
+
 #pragma once
 
 
@@ -45,17 +46,22 @@
 
 #include <agrum/base/core/binSearchTree.h>
 
+#undef GUM_CURRENT_SUITE
+#undef GUM_CURRENT_MODULE
+#define GUM_CURRENT_SUITE  binSearchTree
+#define GUM_CURRENT_MODULE BN
+
 namespace gum_tests {
 
-  class GUM_TEST_SUITE(binSearchTree) {
+  struct binSearchTreeTestSuite {
     public:
-    GUM_ACTIVE_TEST(Constructors) {
+    static void testConstructors() {
       gum::BinSearchTree< int >* tree = 0;
 
-      TS_GUM_ASSERT_THROWS_NOTHING(tree = new gum::BinSearchTree< int >)
-      TS_ASSERT_EQUALS(tree->size(), static_cast< gum::Size >(0))
+      GUM_CHECK_ASSERT_THROWS_NOTHING(tree = new gum::BinSearchTree< int >);
+      CHECK((tree->size()) == (static_cast< gum::Size >(0)));
 
-      TS_GUM_ASSERT_THROWS_NOTHING(gum::BinSearchTree< int > tree2(*tree))
+      GUM_CHECK_ASSERT_THROWS_NOTHING(gum::BinSearchTree< int > tree2(*tree));
       gum::BinSearchTree< int > tree3;
       gum::BinSearchTree< int > tree4 = *tree;
       tree3                           = tree4;
@@ -63,9 +69,9 @@ namespace gum_tests {
       tree->insert(3);
       tree->insert(4);
 
-      TS_ASSERT_EQUALS(tree->size(), static_cast< gum::Size >(2))
+      CHECK((tree->size()) == (static_cast< gum::Size >(2)));
       tree3 = *tree;
-      TS_ASSERT_EQUALS(tree3.size(), static_cast< gum::Size >(2))
+      CHECK((tree3.size()) == (static_cast< gum::Size >(2)));
 
       tree->insert(1);
       tree->insert(4);
@@ -75,7 +81,7 @@ namespace gum_tests {
       delete tree;
     }   // namespace gum_tests
 
-    GUM_ACTIVE_TEST(Values) {
+    static void testValues() {
       gum::BinSearchTree< int > tree;
       tree.insert(5);
       tree.insert(3);
@@ -85,26 +91,26 @@ namespace gum_tests {
       tree.insert(6);
       tree.insert(8);
 
-      TS_ASSERT_EQUALS(tree.minValue(), 1)
-      TS_ASSERT_EQUALS(tree.maxValue(), 8)
-      TS_ASSERT_EQUALS(tree.rootValue(), 5)
+      CHECK((tree.minValue()) == (1));
+      CHECK((tree.maxValue()) == (8));
+      CHECK((tree.rootValue()) == (5));
 
       tree.erase(5);
 
-      TS_ASSERT_EQUALS(tree.rootValue(), 6)
-      TS_ASSERT_EQUALS(tree.contains(4), true)
-      TS_ASSERT_EQUALS(tree.empty(), false)
+      CHECK((tree.rootValue()) == (6));
+      CHECK((tree.contains(4)) == (true));
+      CHECK((tree.empty()) == (false));
 
       tree.clear();
 
-      TS_ASSERT_THROWS_ANYTHING(tree.rootValue();)
-      TS_ASSERT_THROWS_ANYTHING(tree.minValue();)
-      TS_ASSERT_THROWS_ANYTHING(tree.maxValue();)
-      TS_ASSERT_EQUALS(tree.size(), static_cast< gum::Size >(0))
-      TS_ASSERT_EQUALS(tree.empty(), true)
+      CHECK_THROWS(tree.rootValue());
+      CHECK_THROWS(tree.minValue());
+      CHECK_THROWS(tree.maxValue());
+      CHECK((tree.size()) == (static_cast< gum::Size >(0)));
+      CHECK((tree.empty()) == (true));
     }
 
-    GUM_ACTIVE_TEST(Erase) {
+    static void testErase() {
       gum::BinSearchTree< int > tree;
       tree.insert(5);
       tree.insert(3);
@@ -114,29 +120,29 @@ namespace gum_tests {
       tree.insert(5);
       tree.insert(5);
 
-      TS_ASSERT_EQUALS(tree.size(), static_cast< gum::Size >(7))
+      CHECK((tree.size()) == (static_cast< gum::Size >(7)));
 
       tree.erase(5);
       tree.erase(5);
       tree.erase(5);
 
-      TS_ASSERT_EQUALS(tree.size(), static_cast< gum::Size >(4))
-      TS_ASSERT_THROWS(tree.erase(5), const gum::NotFound&)
-      TS_ASSERT_EQUALS(tree.size(), static_cast< gum::Size >(4))
-      TS_ASSERT_THROWS(tree.erase(9), const gum::NotFound&)
-      TS_ASSERT_EQUALS(tree.size(), static_cast< gum::Size >(4))
+      CHECK((tree.size()) == (static_cast< gum::Size >(4)));
+      CHECK_THROWS_AS(tree.erase(5), const gum::NotFound&);
+      CHECK((tree.size()) == (static_cast< gum::Size >(4)));
+      CHECK_THROWS_AS(tree.erase(9), const gum::NotFound&);
+      CHECK((tree.size()) == (static_cast< gum::Size >(4)));
       tree.erase(1);
-      TS_ASSERT_EQUALS(tree.size(), static_cast< gum::Size >(3))
+      CHECK((tree.size()) == (static_cast< gum::Size >(3)));
       tree.erase(7);
-      TS_ASSERT_EQUALS(tree.size(), static_cast< gum::Size >(2))
+      CHECK((tree.size()) == (static_cast< gum::Size >(2)));
       tree.erase(4);
-      TS_ASSERT_EQUALS(tree.size(), static_cast< gum::Size >(1))
+      CHECK((tree.size()) == (static_cast< gum::Size >(1)));
       tree.erase(3);
-      TS_ASSERT_EQUALS(tree.size(), static_cast< gum::Size >(0))
-      TS_ASSERT_EQUALS(tree.empty(), true)
+      CHECK((tree.size()) == (static_cast< gum::Size >(0)));
+      CHECK((tree.empty()) == (true));
     }
 
-    GUM_ACTIVE_TEST(Uniqueness) {
+    static void testUniqueness() {
       gum::BinSearchTree< int > tree;
       tree.insert(5);
       tree.insert(3);
@@ -144,16 +150,16 @@ namespace gum_tests {
       tree.insert(4);
       tree.insert(7);
 
-      TS_ASSERT_EQUALS(tree.uniquenessPolicy(), false)
+      CHECK((tree.uniquenessPolicy()) == (false));
 
       tree.insert(5);
-      TS_ASSERT_EQUALS(tree.size(), static_cast< gum::Size >(6))
+      CHECK((tree.size()) == (static_cast< gum::Size >(6)));
 
       tree.setUniquenessPolicy(true);
-      TS_ASSERT_THROWS_ANYTHING(tree.insert(5);)
+      CHECK_THROWS(tree.insert(5));
     }
 
-    GUM_ACTIVE_TEST(Iterators) {
+    static void testIterators() {
       gum::BinSearchTree< int > tree;
       tree.insert(5);
       tree.insert(5);
@@ -167,17 +173,17 @@ namespace gum_tests {
       for (gum::BinSearchTree< int >::iterator iter = tree.begin(); iter != tree.end();
            ++iter, ++i) {
         switch (i) {
-          case 0 : TS_ASSERT_EQUALS(*iter, 1) break;
+          case 0 : CHECK((*iter) == (1)); break;
 
-          case 1 : TS_ASSERT_EQUALS(*iter, 3) break;
+          case 1 : CHECK((*iter) == (3)); break;
 
-          case 2 : TS_ASSERT_EQUALS(*iter, 4) break;
+          case 2 : CHECK((*iter) == (4)); break;
 
-          case 3 : TS_ASSERT_EQUALS(*iter, 5) break;
+          case 3 : CHECK((*iter) == (5)); break;
 
-          case 4 : TS_ASSERT_EQUALS(*iter, 5) break;
+          case 4 : CHECK((*iter) == (5)); break;
 
-          case 5 : TS_ASSERT_EQUALS(*iter, 7) break;
+          case 5 : CHECK((*iter) == (7)); break;
         }
       }
 
@@ -186,26 +192,26 @@ namespace gum_tests {
       for (gum::BinSearchTree< int >::iterator iter = tree.rbegin(); iter != tree.rend();
            --iter, --i) {
         switch (i) {
-          case 0 : TS_ASSERT_EQUALS(*iter, 1) break;
+          case 0 : CHECK((*iter) == (1)); break;
 
-          case 1 : TS_ASSERT_EQUALS(*iter, 3) break;
+          case 1 : CHECK((*iter) == (3)); break;
 
-          case 2 : TS_ASSERT_EQUALS(*iter, 4) break;
+          case 2 : CHECK((*iter) == (4)); break;
 
-          case 3 : TS_ASSERT_EQUALS(*iter, 5) break;
+          case 3 : CHECK((*iter) == (5)); break;
 
-          case 4 : TS_ASSERT_EQUALS(*iter, 5) break;
+          case 4 : CHECK((*iter) == (5)); break;
 
-          case 5 : TS_ASSERT_EQUALS(*iter, 7) break;
+          case 5 : CHECK((*iter) == (7)); break;
         }
       }
 
       gum::BinSearchTree< int >::iterator iter = tree.root();
 
-      TS_ASSERT_EQUALS(*iter, 5)
+      CHECK((*iter) == (5));
     }
 
-    GUM_ACTIVE_TEST(EraseIterator) {
+    static void testEraseIterator() {
       gum::BinSearchTree< int > tree;
       tree.insert(5);
       tree.insert(3);
@@ -215,30 +221,37 @@ namespace gum_tests {
       tree.insert(5);
       tree.insert(5);
 
-      TS_ASSERT_EQUALS(tree.size(), static_cast< gum::Size >(7))
+      CHECK((tree.size()) == (static_cast< gum::Size >(7)));
 
       gum::BinSearchTree< int >::iterator iter = tree.begin();
 
       tree.erase(iter);
-      TS_ASSERT_EQUALS(tree.size(), static_cast< gum::Size >(6))
+      CHECK((tree.size()) == (static_cast< gum::Size >(6)));
 
       iter = tree.rbegin();
       tree.erase(iter);
-      TS_ASSERT_EQUALS(tree.size(), static_cast< gum::Size >(5))
+      CHECK((tree.size()) == (static_cast< gum::Size >(5)));
 
       iter = tree.begin();
       ++iter;
       ++iter;
       tree.erase(iter);
-      TS_ASSERT_EQUALS(tree.size(), static_cast< gum::Size >(4))
+      CHECK((tree.size()) == (static_cast< gum::Size >(4)));
 
       iter = tree.end();
       tree.erase(iter);
-      TS_ASSERT_EQUALS(tree.size(), static_cast< gum::Size >(4))
+      CHECK((tree.size()) == (static_cast< gum::Size >(4)));
 
       iter = tree.rend();
       tree.erase(iter);
-      TS_ASSERT_EQUALS(tree.size(), static_cast< gum::Size >(4))
+      CHECK((tree.size()) == (static_cast< gum::Size >(4)));
     }
   };
+
+  GUM_TEST_ACTIF(Constructors)
+  GUM_TEST_ACTIF(Values)
+  GUM_TEST_ACTIF(Erase)
+  GUM_TEST_ACTIF(Uniqueness)
+  GUM_TEST_ACTIF(Iterators)
+  GUM_TEST_ACTIF(EraseIterator)
 }   // namespace gum_tests

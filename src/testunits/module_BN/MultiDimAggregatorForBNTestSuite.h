@@ -1,7 +1,7 @@
 /****************************************************************************
  *   This file is part of the aGrUM/pyAgrum library.                        *
  *                                                                          *
- *   Copyright (c) 2005-2025 by                                             *
+ *   Copyright (c) 2005-2026 by                                             *
  *       - Pierre-Henri WUILLEMIN(_at_LIP6)                                 *
  *       - Christophe GONZALES(_at_AMU)                                     *
  *                                                                          *
@@ -27,7 +27,7 @@
  *                                                                          *
  *   See LICENCES for more details.                                         *
  *                                                                          *
- *   SPDX-FileCopyrightText: Copyright 2005-2025                            *
+ *   SPDX-FileCopyrightText: Copyright 2005-2026                            *
  *       - Pierre-Henri WUILLEMIN(_at_LIP6)                                 *
  *       - Christophe GONZALES(_at_AMU)                                     *
  *   SPDX-License-Identifier: LGPL-3.0-or-later OR MIT                      *
@@ -37,6 +37,7 @@
  *   gitlab   : https://gitlab.com/agrumery/agrum                           *
  *                                                                          *
  ****************************************************************************/
+
 #pragma once
 
 
@@ -67,11 +68,16 @@
 #include <agrum/BN/inference/ShaferShenoyInference.h>
 #include <agrum/BN/inference/variableElimination.h>
 
+#undef GUM_CURRENT_SUITE
+#undef GUM_CURRENT_MODULE
+#define GUM_CURRENT_SUITE  MultiDimAggregratorsForBN
+#define GUM_CURRENT_MODULE BN
+
 namespace gum_tests {
 
-  class GUM_TEST_SUITE(MultiDimAggregratorsForBN) {
+  struct MultiDimAggregratorsForBNTestSuite {
     public:
-    GUM_ACTIVE_TEST(BNwithMin) {
+    static void testBNwithMin() {
       gum::List< gum::NodeId > idList;
       gum::BayesNet< double >  bn;
 
@@ -108,48 +114,48 @@ namespace gum_tests {
               if (res > i.val(j)) res = i.val(j);
             }
 
-            TS_ASSERT_EQUALS(bn.cpt(idList[0])[i],
-                             (res == i.val(static_cast< gum::Idx >(0))) ? 1.0f : 0.0f)
+            CHECK((bn.cpt(idList[0])[i])
+                  == ((res == i.val(static_cast< gum::Idx >(0))) ? 1.0f : 0.0f));
           }
         }
       }
 
       {
         gum::ShaferShenoyInference< double > inf(&bn);
-        TS_GUM_ASSERT_THROWS_NOTHING(inf.makeInference();)
+        GUM_CHECK_ASSERT_THROWS_NOTHING(inf.makeInference(););
 
         try {
-          TS_ASSERT_EQUALS(inf.posterior(idList[0]),
-                           (gum::Tensor< double >() << bn.variable(idList[0]))
-                               .fillWith({0.468559, 0.269297, 0.144495, 0.117649}))
-          TS_ASSERT_EQUALS(
-              inf.posterior(idList[1]),
-              (gum::Tensor< double >() << bn.variable(idList[1])).fillWith({0.1, 0.1, 0.1, 0.7}))
+          CHECK((inf.posterior(idList[0]))
+                == ((gum::Tensor< double >() << bn.variable(idList[0]))
+                        .fillWith({0.468559, 0.269297, 0.144495, 0.117649})));
+          CHECK((inf.posterior(idList[1]))
+                == ((gum::Tensor< double >() << bn.variable(idList[1]))
+                        .fillWith({0.1, 0.1, 0.1, 0.7})));
         } catch (const gum::Exception& e) {
           GUM_UNUSED(e);
-          TS_ASSERT(false)
+          CHECK(false);
         }
       }
 
       {
         gum::LazyPropagation< double > inf(&bn);
-        TS_GUM_ASSERT_THROWS_NOTHING(inf.makeInference())
+        GUM_CHECK_ASSERT_THROWS_NOTHING(inf.makeInference());
 
         try {
-          TS_ASSERT_EQUALS(inf.posterior(idList[0]),
-                           (gum::Tensor< double >() << bn.variable(idList[0]))
-                               .fillWith({0.468559, 0.269297, 0.144495, 0.117649}))
-          TS_ASSERT_EQUALS(
-              inf.posterior(idList[1]),
-              (gum::Tensor< double >() << bn.variable(idList[1])).fillWith({0.1, 0.1, 0.1, 0.7}))
+          CHECK((inf.posterior(idList[0]))
+                == ((gum::Tensor< double >() << bn.variable(idList[0]))
+                        .fillWith({0.468559, 0.269297, 0.144495, 0.117649})));
+          CHECK((inf.posterior(idList[1]))
+                == ((gum::Tensor< double >() << bn.variable(idList[1]))
+                        .fillWith({0.1, 0.1, 0.1, 0.7})));
         } catch (const gum::Exception& e) {
           GUM_UNUSED(e);
-          TS_ASSERT(false)
+          CHECK(false);
         }
       }
     }   // namespace gum_tests
 
-    GUM_ACTIVE_TEST(NoisyORNetInBN) {
+    static void testNoisyORNetInBN() {
       gum::BayesNet< double > bn;
 
       gum::LabelizedVariable cold("Cold", "", 2);
@@ -172,7 +178,7 @@ namespace gum_tests {
       bn.addWeightedArc(idFlu, idFever, 0.8f);
       bn.addWeightedArc(idCold, idFever, 0.4f);
 
-      TS_ASSERT_THROWS(bn.addWeightedArc(idMalaria, idCold, 0.8f), const gum::InvalidArc&)
+      CHECK_THROWS_AS(bn.addWeightedArc(idMalaria, idCold, 0.8f), const gum::InvalidArc&);
 
       const gum::Tensor< double >& pOneMoreParent1 = bn.cpt(idOneMoreParent1);
       pOneMoreParent1.fillWith(std::vector< double >{0.2f, 0.8f});
@@ -224,7 +230,7 @@ namespace gum_tests {
       int j = 0;
 
       for (i.setFirst(); !i.end(); ++i, j++) {
-        TS_ASSERT_DELTA(p[i], witness[j], 1e-6)
+        CHECK((p[i]) == doctest::Approx(witness[j]).epsilon(1e-6));
       }
 
       gum::LazyPropagation< double > inf_LazyProp(&bn);
@@ -232,7 +238,7 @@ namespace gum_tests {
       inf_LazyProp.makeInference();
     }
 
-    GUM_ACTIVE_TEST(NoisyORCompoundInBN) {
+    static void testNoisyORCompoundInBN() {
       gum::BayesNet< double > bn;
 
       gum::LabelizedVariable cold("Cold", "", 2);
@@ -255,7 +261,7 @@ namespace gum_tests {
       bn.addWeightedArc(idFlu, idFever, 0.8f);
       bn.addWeightedArc(idCold, idFever, 0.4f);
 
-      TS_ASSERT_THROWS(bn.addWeightedArc(idMalaria, idCold, 0.8f), const gum::InvalidArc&)
+      CHECK_THROWS_AS(bn.addWeightedArc(idMalaria, idCold, 0.8f), const gum::InvalidArc&);
 
       const gum::Tensor< double >& pOneMoreParent1 = bn.cpt(idOneMoreParent1);
       // FILLING PARAMS
@@ -310,7 +316,7 @@ namespace gum_tests {
       int j = 0;
 
       for (i.setFirst(); !i.end(); ++i, j++) {
-        TS_ASSERT_DELTA(p[i], witness[j], 1e-6)
+        CHECK((p[i]) == doctest::Approx(witness[j]).epsilon(1e-6));
       }
 
       gum::LazyPropagation< double > inf_LazyProp(&bn);
@@ -318,7 +324,7 @@ namespace gum_tests {
       inf_LazyProp.makeInference();
     }
 
-    GUM_ACTIVE_TEST(NoisyANDInBN) {
+    static void testNoisyANDInBN() {
       gum::BayesNet< double > bn;
 
       gum::LabelizedVariable cold("Cold", "", 2);
@@ -333,8 +339,8 @@ namespace gum_tests {
       gum::NodeId idFlu     = bn.add(flu);
       gum::NodeId idMalaria = bn.add(malaria);
       gum::NodeId idFever   = 0;
-      TS_ASSERT_THROWS(idFever = bn.addNoisyAND(fever, 0.0f), const gum::InvalidArgument&)
-      TS_GUM_ASSERT_THROWS_NOTHING(idFever = bn.addNoisyAND(fever, 0.999f))
+      CHECK_THROWS_AS(idFever = bn.addNoisyAND(fever, 0.0f), const gum::InvalidArgument&);
+      GUM_CHECK_ASSERT_THROWS_NOTHING(idFever = bn.addNoisyAND(fever, 0.999f));
       gum::NodeId idOneMore        = bn.add(oneMore);
       gum::NodeId idOneMoreParent1 = bn.add(oneMoreParent1);
       gum::NodeId idOneMoreParent2 = bn.add(oneMoreParent2);
@@ -343,7 +349,7 @@ namespace gum_tests {
       bn.addWeightedArc(idFlu, idFever, 0.8f);
       bn.addWeightedArc(idCold, idFever, 0.4f);
 
-      TS_ASSERT_THROWS(bn.addWeightedArc(idMalaria, idCold, 0.8f), const gum::InvalidArc&)
+      CHECK_THROWS_AS(bn.addWeightedArc(idMalaria, idCold, 0.8f), const gum::InvalidArc&);
 
       const gum::Tensor< double >& pOneMoreParent1 = bn.cpt(idOneMoreParent1);
       // FILLING PARAMS
@@ -398,7 +404,7 @@ namespace gum_tests {
       int j = 0;
 
       for (i.setFirst(); !i.end(); ++i, j++) {
-        TS_ASSERT_DELTA(p[i], witness[j], 1e-6)
+        CHECK((p[i]) == doctest::Approx(witness[j]).epsilon(1e-6));
       }
 
       gum::LazyPropagation< double > inf_LazyProp(&bn);
@@ -406,7 +412,7 @@ namespace gum_tests {
       inf_LazyProp.makeInference();
     }
 
-    GUM_ACTIVE_TEST(BNwithMinNoParents) {
+    static void testBNwithMinNoParents() {
       auto                   bn = gum::BayesNet< double >::fastPrototype("A->B->C");
       gum::LabelizedVariable var("min", "min", 4);
       bn.add(var, new gum::aggregator::Min< double >());
@@ -414,39 +420,45 @@ namespace gum_tests {
         gum::LazyPropagation< double > ie(&bn);
         ie.makeInference();
         gum::Tensor< double > p;
-        TS_GUM_ASSERT_THROWS_NOTHING(p = ie.posterior("min"))
+        GUM_CHECK_ASSERT_THROWS_NOTHING(p = ie.posterior("min"));
         gum::Instantiation I(p);
         for (I.setFirst(); !I.end(); I.inc())
-          TS_ASSERT_EQUALS(p.get(I), I.val(0) == 3 ? 1 : 0)
+          CHECK((p.get(I)) == (I.val(0) == 3 ? 1 : 0));
       }
       {
         gum::ShaferShenoyInference< double > ie(&bn);
         ie.makeInference();
         gum::Tensor< double > p;
-        TS_GUM_ASSERT_THROWS_NOTHING(p = ie.posterior("min"))
+        GUM_CHECK_ASSERT_THROWS_NOTHING(p = ie.posterior("min"));
         gum::Instantiation I(p);
         for (I.setFirst(); !I.end(); I.inc())
-          TS_ASSERT_EQUALS(p.get(I), I.val(0) == 3 ? 1 : 0)
+          CHECK((p.get(I)) == (I.val(0) == 3 ? 1 : 0));
       }
       {
         gum::VariableElimination< double > ie(&bn);
         ie.makeInference();
         gum::Tensor< double > p;
-        TS_GUM_ASSERT_THROWS_NOTHING(p = ie.posterior("min"))
+        GUM_CHECK_ASSERT_THROWS_NOTHING(p = ie.posterior("min"));
         gum::Instantiation I(p);
         for (I.setFirst(); !I.end(); I.inc())
-          TS_ASSERT_EQUALS(p.get(I), I.val(0) == 3 ? 1 : 0)
+          CHECK((p.get(I)) == (I.val(0) == 3 ? 1 : 0));
       }
       {
         gum::LoopyBeliefPropagation< double > ie(&bn);
         ie.makeInference();
         gum::Tensor< double > p;
-        TS_GUM_ASSERT_THROWS_NOTHING(p = ie.posterior("min"))
+        GUM_CHECK_ASSERT_THROWS_NOTHING(p = ie.posterior("min"));
         gum::Instantiation I(p);
         for (I.setFirst(); !I.end(); I.inc())
-          TS_ASSERT_EQUALS(p.get(I), I.val(0) == 3 ? 1 : 0)
+          CHECK((p.get(I)) == (I.val(0) == 3 ? 1 : 0));
       }
       // if (joint->sum()!=1)  // hard test for ReadOnly CPT (as aggregator)
     }
   };
+
+  GUM_TEST_ACTIF(BNwithMin)
+  GUM_TEST_ACTIF(NoisyORNetInBN)
+  GUM_TEST_ACTIF(NoisyORCompoundInBN)
+  GUM_TEST_ACTIF(NoisyANDInBN)
+  GUM_TEST_ACTIF(BNwithMinNoParents)
 }   // namespace gum_tests

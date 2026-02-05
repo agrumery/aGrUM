@@ -1,7 +1,7 @@
 /****************************************************************************
  *   This file is part of the aGrUM/pyAgrum library.                        *
  *                                                                          *
- *   Copyright (c) 2005-2025 by                                             *
+ *   Copyright (c) 2005-2026 by                                             *
  *       - Pierre-Henri WUILLEMIN(_at_LIP6)                                 *
  *       - Christophe GONZALES(_at_AMU)                                     *
  *                                                                          *
@@ -27,7 +27,7 @@
  *                                                                          *
  *   See LICENCES for more details.                                         *
  *                                                                          *
- *   SPDX-FileCopyrightText: Copyright 2005-2025                            *
+ *   SPDX-FileCopyrightText: Copyright 2005-2026                            *
  *       - Pierre-Henri WUILLEMIN(_at_LIP6)                                 *
  *       - Christophe GONZALES(_at_AMU)                                     *
  *   SPDX-License-Identifier: LGPL-3.0-or-later OR MIT                      *
@@ -37,6 +37,7 @@
  *   gitlab   : https://gitlab.com/agrumery/agrum                           *
  *                                                                          *
  ****************************************************************************/
+
 #pragma once
 
 
@@ -60,6 +61,11 @@
 #include <agrum/ID/io/BIFXML/BIFXMLIDReader.h>
 #include <agrum/ID/io/BIFXML/BIFXMLIDWriter.h>
 
+#undef GUM_CURRENT_SUITE
+#undef GUM_CURRENT_MODULE
+#define GUM_CURRENT_SUITE  ShaferShenoyLIMIDInference
+#define GUM_CURRENT_MODULE ID
+
 // The graph used for the tests:
 //           D1
 //           |   D1 -> C1
@@ -75,20 +81,20 @@
 //         \  /  C5 -> U2 & D4 -> U2
 //          U2
 namespace gum_tests {
-  class GUM_TEST_SUITE(ShaferShenoyLIMIDInference) {
+  struct ShaferShenoyLIMIDInferenceTestSuite {
     public:
-    GUM_ACTIVE_TEST(Constructor) {
+    static void testConstructor() {
       std::string                     file = GET_RESSOURCES_PATH("ID/decAsia.xml");
       gum::InfluenceDiagram< double > net;
       gum::BIFXMLIDReader< double >   reader(&net, file);
       reader.proceed();
 
       gum::ShaferShenoyLIMIDInference< double >* dIDI = nullptr;
-      TS_GUM_ASSERT_THROWS_NOTHING(dIDI = new gum::ShaferShenoyLIMIDInference< double >(&net))
-      TS_GUM_ASSERT_THROWS_NOTHING(if (dIDI != nullptr) delete dIDI)
+      GUM_CHECK_ASSERT_THROWS_NOTHING(dIDI = new gum::ShaferShenoyLIMIDInference< double >(&net));
+      GUM_CHECK_ASSERT_THROWS_NOTHING(if (dIDI != nullptr) delete dIDI);
     }   // namespace gum_tests
 
-    GUM_ACTIVE_TEST(InferenceWithOilWildCater) {
+    static void testInferenceWithOilWildCater() {
       std::string                     file = GET_RESSOURCES_PATH("ID/OilWildcatter.xml");
       gum::InfluenceDiagram< double > net;
       gum::BIFXMLIDReader< double >   reader(&net, file);
@@ -96,43 +102,41 @@ namespace gum_tests {
 
       gum::ShaferShenoyLIMIDInference< double > dIDI(&net);
 
-      TS_GUM_ASSERT_THROWS_NOTHING(dIDI.makeInference())
+      GUM_CHECK_ASSERT_THROWS_NOTHING(dIDI.makeInference());
 
-      TS_ASSERT_EQUALS(dIDI.posterior("OilContents"),
-                       (gum::Tensor< double >() << net.variableFromName("OilContents"))
-                           .fillWith({0.5, 0.3, 0.2}))
-      TS_ASSERT_EQUALS(
-          dIDI.posteriorUtility("OilContents"),
-          (gum::Tensor< double >() << net.variableFromName("OilContents")).fillWith({-38, 25, 170}))
+      CHECK((dIDI.posterior("OilContents"))
+            == ((gum::Tensor< double >() << net.variableFromName("OilContents"))
+                    .fillWith({0.5, 0.3, 0.2})));
+      CHECK((dIDI.posteriorUtility("OilContents"))
+            == ((gum::Tensor< double >() << net.variableFromName("OilContents"))
+                    .fillWith({-38, 25, 170})));
 
-      TS_ASSERT_EQUALS(dIDI.posterior("TestResult"),
-                       (gum::Tensor< double >() << net.variableFromName("TestResult"))
-                           .fillWith({0.24, 0.35, 0.41}))
-      TS_ASSERT_EQUALS(dIDI.posteriorUtility("TestResult"),
-                       (gum::Tensor< double >() << net.variableFromName("TestResult"))
-                           .fillWith({77.5, 22.8571, -10}))
+      CHECK((dIDI.posterior("TestResult"))
+            == ((gum::Tensor< double >() << net.variableFromName("TestResult"))
+                    .fillWith({0.24, 0.35, 0.41})));
+      CHECK((dIDI.posteriorUtility("TestResult"))
+            == ((gum::Tensor< double >() << net.variableFromName("TestResult"))
+                    .fillWith({77.5, 22.8571, -10})));
 
-      TS_ASSERT_EQUALS(
-          dIDI.posterior("Testing"),
-          (gum::Tensor< double >() << net.variableFromName("Testing")).fillWith({1, 0}))
-      TS_ASSERT_EQUALS(
-          dIDI.posteriorUtility("Testing"),
-          (gum::Tensor< double >() << net.variableFromName("Testing")).fillWith({22.5, 20}))
+      CHECK((dIDI.posterior("Testing"))
+            == ((gum::Tensor< double >() << net.variableFromName("Testing")).fillWith({1, 0})));
+      CHECK((dIDI.posteriorUtility("Testing"))
+            == ((gum::Tensor< double >() << net.variableFromName("Testing")).fillWith({22.5, 20})));
 
-      TS_ASSERT_EQUALS(
-          dIDI.posterior("Drilling"),
-          (gum::Tensor< double >() << net.variableFromName("Drilling")).fillWith({0.59, 0.41}))
-      TS_ASSERT_EQUALS(
-          dIDI.posteriorUtility("Drilling"),
-          (gum::Tensor< double >() << net.variableFromName("Drilling")).fillWith({45.0847, -10}))
+      CHECK((dIDI.posterior("Drilling"))
+            == ((gum::Tensor< double >() << net.variableFromName("Drilling"))
+                    .fillWith({0.59, 0.41})));
+      CHECK((dIDI.posteriorUtility("Drilling"))
+            == ((gum::Tensor< double >() << net.variableFromName("Drilling"))
+                    .fillWith({45.0847, -10})));
 
-      TS_ASSERT_DELTA(dIDI.meanVar("Cost").first, -10, TS_GUM_SMALL_ERROR)
-      TS_ASSERT_DELTA(dIDI.meanVar("Cost").second, 0, TS_GUM_SMALL_ERROR)
-      TS_ASSERT_DELTA(dIDI.meanVar("Reward").first, 32.5, TS_GUM_SMALL_ERROR)
-      TS_ASSERT_DELTA(dIDI.meanVar("Reward").second, 7648.750, TS_GUM_SMALL_ERROR)
+      CHECK((dIDI.meanVar("Cost").first) == doctest::Approx(-10).epsilon(GUM_SMALL_ERROR));
+      CHECK((dIDI.meanVar("Cost").second) == doctest::Approx(0).epsilon(GUM_SMALL_ERROR));
+      CHECK((dIDI.meanVar("Reward").first) == doctest::Approx(32.5).epsilon(GUM_SMALL_ERROR));
+      CHECK((dIDI.meanVar("Reward").second) == doctest::Approx(7648.750).epsilon(GUM_SMALL_ERROR));
     }
 
-    GUM_ACTIVE_TEST(InferenceWithOilWildCaterWithEvidenceOnDecisionNode) {
+    static void testInferenceWithOilWildCaterWithEvidenceOnDecisionNode() {
       std::string                     file = GET_RESSOURCES_PATH("ID/OilWildcatter.xml");
       gum::InfluenceDiagram< double > net;
       gum::BIFXMLIDReader< double >   reader(&net, file);
@@ -141,47 +145,48 @@ namespace gum_tests {
       gum::ShaferShenoyLIMIDInference< double > dIDI(&net);
 
       dIDI.addEvidence("Testing", "No");
-      TS_GUM_ASSERT_THROWS_NOTHING(dIDI.makeInference())
+      GUM_CHECK_ASSERT_THROWS_NOTHING(dIDI.makeInference());
 
-      TS_GUM_TENSOR_ALMOST_EQUALS_SAMEVARS(
+      GUM_CHECK_TENSOR_ALMOST_EQUALS_SAMEVARS(
           dIDI.posterior("OilContents"),
           (gum::Tensor< double >() << net.variableFromName("OilContents"))
-              .fillWith({0.5, 0.3, 0.2}))
-      TS_GUM_TENSOR_ALMOST_EQUALS_SAMEVARS(
+              .fillWith({0.5, 0.3, 0.2}));
+      GUM_CHECK_TENSOR_ALMOST_EQUALS_SAMEVARS(
           dIDI.posteriorUtility("OilContents"),
-          (gum::Tensor< double >() << net.variableFromName("OilContents")).fillWith({-70, 50, 200}))
+          (gum::Tensor< double >() << net.variableFromName("OilContents"))
+              .fillWith({-70, 50, 200}));
 
-      TS_GUM_TENSOR_ALMOST_EQUALS_SAMEVARS(
+      GUM_CHECK_TENSOR_ALMOST_EQUALS_SAMEVARS(
           dIDI.posterior("TestResult"),
           (gum::Tensor< double >() << net.variableFromName("TestResult"))
-              .fillWith({0.333333, 0.333333, 0.333333}))
-      TS_GUM_TENSOR_ALMOST_EQUALS_SAMEVARS(
+              .fillWith({0.333333, 0.333333, 0.333333}));
+      GUM_CHECK_TENSOR_ALMOST_EQUALS_SAMEVARS(
           dIDI.posteriorUtility("TestResult"),
-          (gum::Tensor< double >() << net.variableFromName("TestResult")).fillWith({20, 20, 20}))
+          (gum::Tensor< double >() << net.variableFromName("TestResult")).fillWith({20, 20, 20}));
 
-      TS_GUM_TENSOR_ALMOST_EQUALS_SAMEVARS(
+      GUM_CHECK_TENSOR_ALMOST_EQUALS_SAMEVARS(
           dIDI.posterior("Testing"),
-          (gum::Tensor< double >() << net.variableFromName("Testing")).fillWith({0, 1}))
-      TS_GUM_TENSOR_ALMOST_EQUALS_SAMEVARS(
+          (gum::Tensor< double >() << net.variableFromName("Testing")).fillWith({0, 1}));
+      GUM_CHECK_TENSOR_ALMOST_EQUALS_SAMEVARS(
           dIDI.posteriorUtility("Testing"),
-          (gum::Tensor< double >() << net.variableFromName("Testing")).fillWith({0, 20}))
+          (gum::Tensor< double >() << net.variableFromName("Testing")).fillWith({0, 20}));
 
-      TS_GUM_TENSOR_ALMOST_EQUALS_SAMEVARS(
+      GUM_CHECK_TENSOR_ALMOST_EQUALS_SAMEVARS(
           dIDI.posterior("Drilling"),
-          (gum::Tensor< double >() << net.variableFromName("Drilling")).fillWith({1, 0}))
-      TS_GUM_TENSOR_ALMOST_EQUALS_SAMEVARS(
+          (gum::Tensor< double >() << net.variableFromName("Drilling")).fillWith({1, 0}));
+      GUM_CHECK_TENSOR_ALMOST_EQUALS_SAMEVARS(
           dIDI.posteriorUtility("Drilling"),
-          (gum::Tensor< double >() << net.variableFromName("Drilling")).fillWith({20, 0}))
+          (gum::Tensor< double >() << net.variableFromName("Drilling")).fillWith({20, 0}));
 
-      TS_ASSERT_DELTA(dIDI.meanVar("Cost").first, 0, TS_GUM_SMALL_ERROR)
-      TS_ASSERT_DELTA(dIDI.meanVar("Cost").second, 0, TS_GUM_SMALL_ERROR)
-      TS_ASSERT_DELTA(dIDI.meanVar("Reward").first, 20, TS_GUM_SMALL_ERROR)
-      TS_ASSERT_DELTA(dIDI.meanVar("Reward").second, 10800, TS_GUM_SMALL_ERROR)
-      TS_ASSERT_DELTA(dIDI.MEU().first, 20, TS_GUM_SMALL_ERROR)
-      TS_ASSERT_DELTA(dIDI.MEU().second, 10800, TS_GUM_SMALL_ERROR)
+      CHECK((dIDI.meanVar("Cost").first) == doctest::Approx(0).epsilon(GUM_SMALL_ERROR));
+      CHECK((dIDI.meanVar("Cost").second) == doctest::Approx(0).epsilon(GUM_SMALL_ERROR));
+      CHECK((dIDI.meanVar("Reward").first) == doctest::Approx(20).epsilon(GUM_SMALL_ERROR));
+      CHECK((dIDI.meanVar("Reward").second) == doctest::Approx(10800).epsilon(GUM_SMALL_ERROR));
+      CHECK((dIDI.MEU().first) == doctest::Approx(20).epsilon(GUM_SMALL_ERROR));
+      CHECK((dIDI.MEU().second) == doctest::Approx(10800).epsilon(GUM_SMALL_ERROR));
     }
 
-    GUM_ACTIVE_TEST(InferenceWithOilWildCaterWithEvidenceOnChanceNode) {
+    static void testInferenceWithOilWildCaterWithEvidenceOnChanceNode() {
       std::string                     file = GET_RESSOURCES_PATH("ID/OilWildcatter.xml");
       gum::InfluenceDiagram< double > net;
       gum::BIFXMLIDReader< double >   reader(&net, file);
@@ -190,67 +195,67 @@ namespace gum_tests {
       gum::ShaferShenoyLIMIDInference< double > dIDI(&net);
 
       dIDI.addEvidence("OilContents", "Wet");
-      TS_GUM_ASSERT_THROWS_NOTHING(dIDI.makeInference())
+      GUM_CHECK_ASSERT_THROWS_NOTHING(dIDI.makeInference());
 
-      TS_GUM_TENSOR_ALMOST_EQUALS_SAMEVARS(
+      GUM_CHECK_TENSOR_ALMOST_EQUALS_SAMEVARS(
           dIDI.posterior("OilContents"),
           (gum::Tensor< double >() << net.variableFromName("OilContents"))
-              .fillWith({0.0, 1.0, 0.0}))
-      TS_GUM_TENSOR_ALMOST_EQUALS_SAMEVARS(
+              .fillWith({0.0, 1.0, 0.0}));
+      GUM_CHECK_TENSOR_ALMOST_EQUALS_SAMEVARS(
           dIDI.posteriorUtility("OilContents"),
-          (gum::Tensor< double >() << net.variableFromName("OilContents")).fillWith({0, 50, 0}))
+          (gum::Tensor< double >() << net.variableFromName("OilContents")).fillWith({0, 50, 0}));
 
-      TS_GUM_TENSOR_ALMOST_EQUALS_SAMEVARS(
+      GUM_CHECK_TENSOR_ALMOST_EQUALS_SAMEVARS(
           dIDI.posterior("TestResult"),
           (gum::Tensor< double >() << net.variableFromName("TestResult"))
-              .fillWith({0.333333, 0.333333, 0.333333}))
-      TS_GUM_TENSOR_ALMOST_EQUALS_SAMEVARS(
+              .fillWith({0.333333, 0.333333, 0.333333}));
+      GUM_CHECK_TENSOR_ALMOST_EQUALS_SAMEVARS(
           dIDI.posteriorUtility("TestResult"),
-          (gum::Tensor< double >() << net.variableFromName("TestResult")).fillWith({50, 50, 50}))
+          (gum::Tensor< double >() << net.variableFromName("TestResult")).fillWith({50, 50, 50}));
 
-      TS_GUM_TENSOR_ALMOST_EQUALS_SAMEVARS(
+      GUM_CHECK_TENSOR_ALMOST_EQUALS_SAMEVARS(
           dIDI.posterior("Testing"),
-          (gum::Tensor< double >() << net.variableFromName("Testing")).fillWith({0, 1}))
-      TS_GUM_TENSOR_ALMOST_EQUALS_SAMEVARS(
+          (gum::Tensor< double >() << net.variableFromName("Testing")).fillWith({0, 1}));
+      GUM_CHECK_TENSOR_ALMOST_EQUALS_SAMEVARS(
           dIDI.posteriorUtility("Testing"),
-          (gum::Tensor< double >() << net.variableFromName("Testing")).fillWith({40, 50}))
+          (gum::Tensor< double >() << net.variableFromName("Testing")).fillWith({40, 50}));
 
-      TS_GUM_TENSOR_ALMOST_EQUALS_SAMEVARS(
+      GUM_CHECK_TENSOR_ALMOST_EQUALS_SAMEVARS(
           dIDI.posterior("Drilling"),
-          (gum::Tensor< double >() << net.variableFromName("Drilling")).fillWith({1, 0}))
-      TS_GUM_TENSOR_ALMOST_EQUALS_SAMEVARS(
+          (gum::Tensor< double >() << net.variableFromName("Drilling")).fillWith({1, 0}));
+      GUM_CHECK_TENSOR_ALMOST_EQUALS_SAMEVARS(
           dIDI.posteriorUtility("Drilling"),
-          (gum::Tensor< double >() << net.variableFromName("Drilling")).fillWith({50, 0}))
+          (gum::Tensor< double >() << net.variableFromName("Drilling")).fillWith({50, 0}));
 
-      TS_ASSERT_DELTA(dIDI.meanVar("Cost").first, 0, TS_GUM_SMALL_ERROR)
-      TS_ASSERT_DELTA(dIDI.meanVar("Cost").second, 0, TS_GUM_SMALL_ERROR)
-      TS_ASSERT_DELTA(dIDI.meanVar("Reward").first, 50, TS_GUM_SMALL_ERROR)
-      TS_ASSERT_DELTA(dIDI.meanVar("Reward").second, 0, TS_GUM_SMALL_ERROR)
-      TS_ASSERT_DELTA(dIDI.MEU().first, 50, TS_GUM_SMALL_ERROR)
-      TS_ASSERT_DELTA(dIDI.MEU().second, 0, TS_GUM_SMALL_ERROR)
+      CHECK((dIDI.meanVar("Cost").first) == doctest::Approx(0).epsilon(GUM_SMALL_ERROR));
+      CHECK((dIDI.meanVar("Cost").second) == doctest::Approx(0).epsilon(GUM_SMALL_ERROR));
+      CHECK((dIDI.meanVar("Reward").first) == doctest::Approx(50).epsilon(GUM_SMALL_ERROR));
+      CHECK((dIDI.meanVar("Reward").second) == doctest::Approx(0).epsilon(GUM_SMALL_ERROR));
+      CHECK((dIDI.MEU().first) == doctest::Approx(50).epsilon(GUM_SMALL_ERROR));
+      CHECK((dIDI.MEU().second) == doctest::Approx(0).epsilon(GUM_SMALL_ERROR));
     }
 
-    GUM_ACTIVE_TEST(InferenceWithDecAsia) {
+    static void testInferenceWithDecAsia() {
       std::string                     file = GET_RESSOURCES_PATH("ID/decAsia.xml");
       gum::InfluenceDiagram< double > net;
       gum::BIFXMLIDReader< double >   reader(&net, file);
       reader.proceed();
       gum::ShaferShenoyLIMIDInference< double >* dIDI = nullptr;
-      TS_GUM_ASSERT_THROWS_NOTHING(dIDI = new gum::ShaferShenoyLIMIDInference< double >(&net))
+      GUM_CHECK_ASSERT_THROWS_NOTHING(dIDI = new gum::ShaferShenoyLIMIDInference< double >(&net));
 
-      TS_ASSERT_THROWS(dIDI->MEU(), const gum::OperationNotAllowed&)
-      TS_ASSERT_THROWS(dIDI->optimalDecision(0), const gum::OperationNotAllowed&)
+      CHECK_THROWS_AS(dIDI->MEU(), const gum::OperationNotAllowed&);
+      CHECK_THROWS_AS(dIDI->optimalDecision(0), const gum::OperationNotAllowed&);
 
-      TS_GUM_ASSERT_THROWS_NOTHING(dIDI->makeInference())
-      TS_GUM_ASSERT_THROWS_NOTHING(dIDI->MEU())
-      TS_GUM_ASSERT_THROWS_NOTHING(dIDI->optimalDecision(0))
-      TS_ASSERT_THROWS(dIDI->optimalDecision(2), const gum::InvalidNode&)
-      TS_GUM_ASSERT_THROWS_NOTHING(dIDI->makeInference())
+      GUM_CHECK_ASSERT_THROWS_NOTHING(dIDI->makeInference());
+      GUM_CHECK_ASSERT_THROWS_NOTHING(dIDI->MEU());
+      GUM_CHECK_ASSERT_THROWS_NOTHING(dIDI->optimalDecision(0));
+      CHECK_THROWS_AS(dIDI->optimalDecision(2), const gum::InvalidNode&);
+      GUM_CHECK_ASSERT_THROWS_NOTHING(dIDI->makeInference());
 
       delete dIDI;
     }
 
-    GUM_ACTIVE_TEST(FromBug) {
+    static void testFromBug() {
       gum::InfluenceDiagram< double > net;
 
       auto c  = net.add(gum::LabelizedVariable("c", "chance variable", 2));
@@ -268,10 +273,10 @@ namespace gum_tests {
       {
         gum::ShaferShenoyLIMIDInference< double > inf(&net);
         inf.makeInference();
-        TS_GUM_TENSOR_ALMOST_EQUALS_SAMEVARS(
+        GUM_CHECK_TENSOR_ALMOST_EQUALS_SAMEVARS(
             inf.optimalDecision(d),
-            (gum::Tensor< double >() << net.variable(d)).fillWith({0, 1}))
-        TS_ASSERT_EQUALS(inf.MEU().first, 110.5)
+            (gum::Tensor< double >() << net.variable(d)).fillWith({0, 1}));
+        CHECK((inf.MEU().first) == (110.5));
       }
       {
         gum::ShaferShenoyLIMIDInference< double > inf(&net);
@@ -282,14 +287,14 @@ namespace gum_tests {
         l.insert(&evidence);
         inf.addListOfEvidence(l);
         inf.makeInference();
-        TS_GUM_TENSOR_ALMOST_EQUALS_SAMEVARS(
+        GUM_CHECK_TENSOR_ALMOST_EQUALS_SAMEVARS(
             inf.optimalDecision(d),
-            (gum::Tensor< double >() << net.variable(d)).fillWith({0, 1}))
-        TS_ASSERT_EQUALS(inf.MEU().first, 21)
+            (gum::Tensor< double >() << net.variable(d)).fillWith({0, 1}));
+        CHECK((inf.MEU().first) == (21));
       }
     }
 
-    gum::InfluenceDiagram< double > buildNeapolitanModel_() {
+    static gum::InfluenceDiagram< double > buildNeapolitanModel_() {
       gum::InfluenceDiagram< double > model;
 
       model.addDecisionNode(
@@ -356,15 +361,15 @@ namespace gum_tests {
       return model;
     }
 
-    GUM_ACTIVE_TEST(BugFromNeapolitan1) {
+    static void testBugFromNeapolitan1() {
       auto                                      model = buildNeapolitanModel_();
       gum::ShaferShenoyLIMIDInference< double > inf(&model);
       inf.makeInference();
-      TS_ASSERT_DELTA(inf.MEU().first, 28, TS_GUM_SMALL_ERROR)
-      TS_ASSERT_EQUALS(inf.optimalDecision("Buy").sum(), 9)
+      CHECK((inf.MEU().first) == doctest::Approx(28).epsilon(GUM_SMALL_ERROR));
+      CHECK((inf.optimalDecision("Buy").sum()) == (9));
     }
 
-    GUM_ACTIVE_TEST(BugFromNeapolitan2) {
+    static void testBugFromNeapolitan2() {
       auto                                      model = buildNeapolitanModel_();
       gum::ShaferShenoyLIMIDInference< double > inf(&model);
 
@@ -387,24 +392,24 @@ namespace gum_tests {
       inf.addListOfEvidence(l);
 
       inf.makeInference();
-      TS_ASSERT_DELTA(inf.MEU().first, 40.6, TS_GUM_SMALL_ERROR)
-      TS_ASSERT_EQUALS(inf.optimalDecision("Buy").sum(), 9)
+      CHECK((inf.MEU().first) == doctest::Approx(40.6).epsilon(GUM_SMALL_ERROR));
+      CHECK((inf.optimalDecision("Buy").sum()) == (9));
     }
 
-    GUM_ACTIVE_TEST(NewStructure) {
+    static void testNewStructure() {
       {
         auto infdiag = gum::InfluenceDiagram< double >::fastPrototype("*D1->Z->*D2->X->$U");
         auto ieid    = gum::ShaferShenoyLIMIDInference< double >(&infdiag);
         auto res     = ieid.reversePartialOrder();
-        TS_ASSERT_EQUALS(res.size(), 2U)
-        TS_ASSERT_EQUALS(res[0], gum::NodeSet({infdiag.idFromName("D2")}))
-        TS_ASSERT_EQUALS(res[1], gum::NodeSet({infdiag.idFromName("D1")}))
+        CHECK((res.size()) == (2U));
+        CHECK((res[0]) == (gum::NodeSet({infdiag.idFromName("D2")})));
+        CHECK((res[1]) == (gum::NodeSet({infdiag.idFromName("D1")})));
       }
       {
         auto infdiag = gum::InfluenceDiagram< double >::fastPrototype("D1->Z->D2->X->$U");
         auto ieid    = gum::ShaferShenoyLIMIDInference< double >(&infdiag);
         auto res     = ieid.reversePartialOrder();
-        TS_ASSERT_EQUALS(res.size(), 0U)
+        CHECK((res.size()) == (0U));
       }
 
       {
@@ -414,34 +419,34 @@ namespace gum_tests {
             "U->$Q2<-D4;N->$Q3;X->$Q4<-D2;Q2<-*D7->Q4");
         auto ieid = gum::ShaferShenoyLIMIDInference< double >(&infdiag);
         auto res  = ieid.reversePartialOrder();
-        TS_ASSERT_EQUALS(res.size(), 4U)
-        TS_ASSERT_EQUALS(res[0], gum::NodeSet({infdiag.idFromName("D4"), infdiag.idFromName("D7")}))
-        TS_ASSERT_EQUALS(res[1], gum::NodeSet({infdiag.idFromName("D3"), infdiag.idFromName("D5")}))
-        TS_ASSERT_EQUALS(res[2], gum::NodeSet({infdiag.idFromName("D2"), infdiag.idFromName("D6")}))
-        TS_ASSERT_EQUALS(res[3], gum::NodeSet({infdiag.idFromName("D1")}))
+        CHECK((res.size()) == (4U));
+        CHECK((res[0]) == (gum::NodeSet({infdiag.idFromName("D4"), infdiag.idFromName("D7")})));
+        CHECK((res[1]) == (gum::NodeSet({infdiag.idFromName("D3"), infdiag.idFromName("D5")})));
+        CHECK((res[2]) == (gum::NodeSet({infdiag.idFromName("D2"), infdiag.idFromName("D6")})));
+        CHECK((res[3]) == (gum::NodeSet({infdiag.idFromName("D1")})));
       }
     }
 
-    GUM_ACTIVE_TEST(Solvability) {
+    static void testSolvability() {
       {
         auto infdiag = gum::InfluenceDiagram< double >::fastPrototype("*D1->Z->*D2->X->$U<-Y");
         auto ieid    = gum::ShaferShenoyLIMIDInference< double >(&infdiag);
-        TS_ASSERT(ieid.isSolvable())
+        CHECK(ieid.isSolvable());
       }
       {
         auto infdiag = gum::InfluenceDiagram< double >::fastPrototype("*D1->Z->*D2->X->$U<-Y<-*D3");
         auto ieid    = gum::ShaferShenoyLIMIDInference< double >(&infdiag);
-        TS_ASSERT(!ieid.isSolvable())
+        CHECK(!ieid.isSolvable());
       }
       {
         auto infdiag = gum::InfluenceDiagram< double >::fastPrototype("*D1->Z->*D2->X->$U<-Y<-*D3");
         auto ieid    = gum::ShaferShenoyLIMIDInference< double >(&infdiag);
         ieid.addNoForgettingAssumption({"D1", "D3", "D2"});
-        TS_ASSERT(ieid.isSolvable())
+        CHECK(ieid.isSolvable());
       }
     }
 
-    GUM_ACTIVE_TEST(NoForgettingAssumption) {
+    static void testNoForgettingAssumption() {
       // From Evaluating IDs using LIMIDS, Nillson et Lauritzen, 2000
       auto infdiag = gum::InfluenceDiagram< double >::fastPrototype(
           "*D1->$U3<-R1->R2->R3<-*D4->$U4<-R4<-R1<-*D2;"
@@ -449,44 +454,44 @@ namespace gum_tests {
           "D3->$U1<-R2;R3->$U2");
       auto ieid = gum::ShaferShenoyLIMIDInference< double >(&infdiag);
 
-      TS_ASSERT(!ieid.hasNoForgettingAssumption())
+      CHECK(!ieid.hasNoForgettingAssumption());
       const auto revord = ieid.reversePartialOrder();
       auto       dag    = ieid.reducedGraph();
-      TS_ASSERT(ieid.isSolvable())
+      CHECK(ieid.isSolvable());
 
-      TS_ASSERT_EQUALS(dag.parents(infdiag.idFromName("D1")), infdiag.nodeset({}))
-      TS_ASSERT_EQUALS(dag.parents(infdiag.idFromName("D2")), infdiag.nodeset({"D1"}))
-      TS_ASSERT_EQUALS(dag.parents(infdiag.idFromName("D3")), infdiag.nodeset({"D2"}))
-      TS_ASSERT_EQUALS(dag.parents(infdiag.idFromName("D4")), infdiag.nodeset({"D3", "R4"}))
+      CHECK((dag.parents(infdiag.idFromName("D1"))) == (infdiag.nodeset({})));
+      CHECK((dag.parents(infdiag.idFromName("D2"))) == (infdiag.nodeset({"D1"})));
+      CHECK((dag.parents(infdiag.idFromName("D3"))) == (infdiag.nodeset({"D2"})));
+      CHECK((dag.parents(infdiag.idFromName("D4"))) == (infdiag.nodeset({"D3", "R4"})));
 
-      TS_ASSERT_THROWS(ieid.addNoForgettingAssumption({"D11"}), const gum::NotFound&)
-      TS_ASSERT_THROWS(ieid.addNoForgettingAssumption({"D4", "D1", "D2", "D3"}),
-                       const gum::InvalidDirectedCycle&)
-      TS_ASSERT_THROWS(ieid.addNoForgettingAssumption({"D1", "D2", "D3"}), const gum::SizeError&)
+      CHECK_THROWS_AS(ieid.addNoForgettingAssumption({"D11"}), const gum::NotFound&);
+      CHECK_THROWS_AS(ieid.addNoForgettingAssumption({"D4", "D1", "D2", "D3"}),
+                      const gum::InvalidDirectedCycle&);
+      CHECK_THROWS_AS(ieid.addNoForgettingAssumption({"D1", "D2", "D3"}), const gum::SizeError&);
 
-      TS_GUM_ASSERT_THROWS_NOTHING(ieid.addNoForgettingAssumption({"D1", "D2", "D3", "D4"}))
-      TS_ASSERT(ieid.hasNoForgettingAssumption())
+      GUM_CHECK_ASSERT_THROWS_NOTHING(ieid.addNoForgettingAssumption({"D1", "D2", "D3", "D4"}));
+      CHECK(ieid.hasNoForgettingAssumption());
 
       dag = ieid.reducedGraph();
 
-      TS_ASSERT_EQUALS(dag.parents(infdiag.idFromName("D1")), infdiag.nodeset({}))
-      TS_ASSERT_EQUALS(dag.parents(infdiag.idFromName("D2")), infdiag.nodeset({"D1"}))
-      TS_ASSERT_EQUALS(dag.parents(infdiag.idFromName("D3")), infdiag.nodeset({"D2"}))
-      TS_ASSERT_EQUALS(dag.parents(infdiag.idFromName("D4")), infdiag.nodeset({"D2", "R4"}))
+      CHECK((dag.parents(infdiag.idFromName("D1"))) == (infdiag.nodeset({})));
+      CHECK((dag.parents(infdiag.idFromName("D2"))) == (infdiag.nodeset({"D1"})));
+      CHECK((dag.parents(infdiag.idFromName("D3"))) == (infdiag.nodeset({"D2"})));
+      CHECK((dag.parents(infdiag.idFromName("D4"))) == (infdiag.nodeset({"D2", "R4"})));
 
 
-      TS_ASSERT_EQUALS(dag.parents(infdiag.idFromName("R1")), infdiag.nodeset({"D2"}))
-      TS_ASSERT_EQUALS(dag.parents(infdiag.idFromName("R2")), infdiag.nodeset({"R1"}))
-      TS_ASSERT_EQUALS(dag.parents(infdiag.idFromName("R3")), infdiag.nodeset({"R2", "D4"}))
-      TS_ASSERT_EQUALS(dag.parents(infdiag.idFromName("R4")), infdiag.nodeset({"R1"}))
+      CHECK((dag.parents(infdiag.idFromName("R1"))) == (infdiag.nodeset({"D2"})));
+      CHECK((dag.parents(infdiag.idFromName("R2"))) == (infdiag.nodeset({"R1"})));
+      CHECK((dag.parents(infdiag.idFromName("R3"))) == (infdiag.nodeset({"R2", "D4"})));
+      CHECK((dag.parents(infdiag.idFromName("R4"))) == (infdiag.nodeset({"R1"})));
 
-      TS_ASSERT_EQUALS(dag.parents(infdiag.idFromName("U1")), infdiag.nodeset({"D3", "R2"}))
-      TS_ASSERT_EQUALS(dag.parents(infdiag.idFromName("U2")), infdiag.nodeset({"R3"}))
-      TS_ASSERT_EQUALS(dag.parents(infdiag.idFromName("U3")), infdiag.nodeset({"R1", "D1"}))
-      TS_ASSERT_EQUALS(dag.parents(infdiag.idFromName("U4")), infdiag.nodeset({"R4", "D4"}))
+      CHECK((dag.parents(infdiag.idFromName("U1"))) == (infdiag.nodeset({"D3", "R2"})));
+      CHECK((dag.parents(infdiag.idFromName("U2"))) == (infdiag.nodeset({"R3"})));
+      CHECK((dag.parents(infdiag.idFromName("U3"))) == (infdiag.nodeset({"R1", "D1"})));
+      CHECK((dag.parents(infdiag.idFromName("U4"))) == (infdiag.nodeset({"R4", "D4"})));
     }
 
-    GUM_ACTIVE_TEST(NoForgettingAssumption2) {
+    static void testNoForgettingAssumption2() {
       // from LIMIDS of decision Problems, Lauritzen et Nilsson, 1999
       // p33
       auto limids = gum::InfluenceDiagram< double >::fastPrototype(
@@ -496,30 +501,30 @@ namespace gum_tests {
 
       auto       ieid    = gum::ShaferShenoyLIMIDInference< double >(&limids);
       const auto revord1 = ieid.reversePartialOrder();
-      TS_ASSERT_EQUALS(revord1.size(), static_cast< gum::Size >(2))
-      TS_ASSERT_EQUALS(revord1[0], limids.nodeset({"d4", "d2", "d3"}))
-      TS_ASSERT_EQUALS(revord1[1], limids.nodeset({"d1"}))
+      CHECK((revord1.size()) == (static_cast< gum::Size >(2)));
+      CHECK((revord1[0]) == (limids.nodeset({"d4", "d2", "d3"})));
+      CHECK((revord1[1]) == (limids.nodeset({"d1"})));
 
-      TS_ASSERT(!ieid.isSolvable())
+      CHECK(!ieid.isSolvable());
 
       ieid.addNoForgettingAssumption(order);
-      TS_ASSERT(ieid.isSolvable())
+      CHECK(ieid.isSolvable());
       const auto revord2 = ieid.reversePartialOrder();
-      TS_ASSERT_EQUALS(revord2.size(), static_cast< gum::Size >(4))
+      CHECK((revord2.size()) == (static_cast< gum::Size >(4)));
       for (gum::Idx i = 0; i < static_cast< gum::Size >(4); i++) {
-        TS_ASSERT_EQUALS(revord2[i].size(), static_cast< gum::Size >(1))
-        TS_ASSERT_EQUALS(limids.variable(*(revord2[i].begin())).name(), order[3 - i])
+        CHECK((revord2[i].size()) == (static_cast< gum::Size >(1)));
+        CHECK((limids.variable(*(revord2[i].begin())).name()) == (order[3 - i]));
       }
       auto noForgetting = ieid.reducedLIMID();
 
-      TS_ASSERT_EQUALS(noForgetting.parents("d1"), limids.nodeset({"b"}))
-      TS_ASSERT_EQUALS(noForgetting.parents("d2"), limids.nodeset({"e"}))
-      TS_ASSERT_EQUALS(noForgetting.parents("d3"), limids.nodeset({"f"}))
-      TS_ASSERT_EQUALS(noForgetting.parents("d4"), limids.nodeset({"d2", "g"}))
+      CHECK((noForgetting.parents("d1")) == (limids.nodeset({"b"})));
+      CHECK((noForgetting.parents("d2")) == (limids.nodeset({"e"})));
+      CHECK((noForgetting.parents("d3")) == (limids.nodeset({"f"})));
+      CHECK((noForgetting.parents("d4")) == (limids.nodeset({"d2", "g"})));
       // GUM_TRACE_VAR(noForgetting.toDot());
     }
 
-    GUM_ACTIVE_TEST(JunctionTree) {
+    static void testJunctionTree() {
       // From Evaluating IDs using LIMIDS, Nillson et Lauritzen, 2000
       auto infdiag = gum::InfluenceDiagram< double >::fastPrototype(
           "*D1->$U3<-R1->R2->R3<-*D4->$U4<-R4<-R1<-*D2;"
@@ -530,11 +535,11 @@ namespace gum_tests {
       ieid.addNoForgettingAssumption({"D1", "D2", "D3", "D4"});
 
       auto jt = ieid.junctionTree();
-      TS_ASSERT_EQUALS(jt->size(), static_cast< gum::Size >(5))
+      CHECK((jt->size()) == (static_cast< gum::Size >(5)));
       ieid.makeInference();
     }
 
-    GUM_ACTIVE_TEST(Pinball) {
+    static void testPinball() {
       std::string                     file = GET_RESSOURCES_PATH("ID/Pinball.xml");
       gum::InfluenceDiagram< double > net;
       gum::BIFXMLIDReader< double >   reader(&net, file);
@@ -543,49 +548,48 @@ namespace gum_tests {
       auto ieid = gum::ShaferShenoyLIMIDInference< double >(&net);
       ieid.makeInference();
 
-      TS_ASSERT_EQUALS(ieid.posteriorUtility("BusinessDecision"),
-                       (gum::Tensor< double >() << net.variableFromName("BusinessDecision"))
-                           .fillWith({181.0879, 276.25, 200}))
+      CHECK((ieid.posteriorUtility("BusinessDecision"))
+            == ((gum::Tensor< double >() << net.variableFromName("BusinessDecision"))
+                    .fillWith({181.0879, 276.25, 200})));
 
 
-      TS_ASSERT_EQUALS(
-          ieid.posterior("RentalRate"),
-          (gum::Tensor< double >() << net.variableFromName("RentalRate")).fillWith({0.25, 0.75}))
+      CHECK((ieid.posterior("RentalRate"))
+            == ((gum::Tensor< double >() << net.variableFromName("RentalRate"))
+                    .fillWith({0.25, 0.75})));
 
-      TS_ASSERT_EQUALS(ieid.posterior("RevenueLevel"),
-                       (gum::Tensor< double >() << net.variableFromName("RevenueLevel"))
-                           .fillWith({0.185, 0.63, 0.185}))
+      CHECK((ieid.posterior("RevenueLevel"))
+            == ((gum::Tensor< double >() << net.variableFromName("RevenueLevel"))
+                    .fillWith({0.185, 0.63, 0.185})));
     }
 
-    GUM_ACTIVE_TEST(DavidAndescavage) {
+    static void testDavidAndescavage() {
       std::string                     file = GET_RESSOURCES_PATH("ID/testFromDavidAndescavage.xml");
       gum::InfluenceDiagram< double > net;
       gum::BIFXMLIDReader< double >   reader(&net, file);
       reader.proceed();
 
       auto ieid = gum::ShaferShenoyLIMIDInference< double >(&net);
-      TS_ASSERT_THROWS(ieid.addEvidence("U", 0), const gum::InvalidNode&)
-      TS_ASSERT_THROWS(
+      CHECK_THROWS_AS(ieid.addEvidence("U", 0), const gum::InvalidNode&);
+      CHECK_THROWS_AS(
           ieid.addEvidence(
               (gum::Tensor< double >() << net.variableFromName("DoTest")).fillWith({0.5, 1, 0})),
-          const gum::InvalidNode&)
-      TS_ASSERT_THROWS(ieid.addEvidence("DoTest", "Both"), const gum::InvalidArgument&)
+          const gum::InvalidNode&);
+      CHECK_THROWS_AS(ieid.addEvidence("DoTest", "Both"), const gum::InvalidArgument&);
       ieid.eraseAllEvidence();
       ieid.addEvidence("DoTest", "Both");
       ieid.addEvidence("FirstTest", "Positive");
       ieid.addEvidence("SecondTest", "Positive");
       ieid.makeInference();
       try {
-        TS_ASSERT_EQUALS(
-            ieid.posterior("DoTest"),
-            (gum::Tensor< double >() << net.variableFromName("DoTest")).fillWith({0, 0, 1}))
+        CHECK((ieid.posterior("DoTest"))
+              == ((gum::Tensor< double >() << net.variableFromName("DoTest")).fillWith({0, 0, 1})));
         // are this values correct ?
-        TS_ASSERT_DELTA(ieid.MEU().first, -10.600002592, TS_GUM_SMALL_ERROR)
-        TS_ASSERT_DELTA(ieid.MEU().second, 138.2398, 1e-4)
+        CHECK((ieid.MEU().first) == doctest::Approx(-10.600002592).epsilon(GUM_SMALL_ERROR));
+        CHECK((ieid.MEU().second) == doctest::Approx(138.2398).epsilon(1e-4));
       } catch (gum::Exception& e) { GUM_SHOWERROR(e) }
     }
 
-    GUM_ACTIVE_TEST(BugWithEvidence) {
+    static void testBugWithEvidence() {
       auto net = gum::InfluenceDiagram< double >::fastPrototype("c1<-c->$u<-*d");
       net.cpt("c").fillWith({0.5, 0.5});
       net.cpt("c1").fillWith({1, 0, 0, 1});
@@ -594,17 +598,17 @@ namespace gum_tests {
 
       auto ie = gum::ShaferShenoyLIMIDInference< double >(&net);
       ie.makeInference();
-      TS_ASSERT_EQUALS(ie.optimalDecision("d"),
-                       (gum::Tensor< double >() << net.variableFromName("d")).fillWith({0, 1}))
-      TS_ASSERT_EQUALS(ie.MEU().first, 110.5)
-      TS_ASSERT_EQUALS(ie.posterior("c1"),
-                       (gum::Tensor< double >() << net.variableFromName("c1")).fillWith({0.5, 0.5}))
-      TS_GUM_TENSOR_ALMOST_EQUALS_SAMEVARS(
+      CHECK((ie.optimalDecision("d"))
+            == ((gum::Tensor< double >() << net.variableFromName("d")).fillWith({0, 1})));
+      CHECK((ie.MEU().first) == (110.5));
+      CHECK((ie.posterior("c1"))
+            == ((gum::Tensor< double >() << net.variableFromName("c1")).fillWith({0.5, 0.5})));
+      GUM_CHECK_TENSOR_ALMOST_EQUALS_SAMEVARS(
           ie.posteriorUtility("d"),
-          (gum::Tensor< double >() << net.variableFromName("d")).fillWith({55.0, 110.5}))
+          (gum::Tensor< double >() << net.variableFromName("d")).fillWith({55.0, 110.5}));
     }
 
-    GUM_ACTIVE_TEST(BugWithEvidence2) {
+    static void testBugWithEvidence2() {
       auto net = gum::InfluenceDiagram< double >::fastPrototype("c1<-c->$u<-*d");
       net.cpt("c").fillWith({0.5, 0.5});
       net.cpt("c1").fillWith({1, 0, 0, 1});
@@ -612,17 +616,17 @@ namespace gum_tests {
       auto ie = gum::ShaferShenoyLIMIDInference< double >(&net);
       ie.addEvidence("c", 1);
       ie.makeInference();
-      TS_ASSERT_EQUALS(ie.optimalDecision("d"),
-                       (gum::Tensor< double >() << net.variableFromName("d")).fillWith({0, 1}))
-      TS_ASSERT_EQUALS(ie.MEU().first, 200)
-      TS_ASSERT_EQUALS(ie.posterior("c1"),
-                       (gum::Tensor< double >() << net.variableFromName("c1")).fillWith({0, 1}))
-      TS_GUM_TENSOR_ALMOST_EQUALS_SAMEVARS(
+      CHECK((ie.optimalDecision("d"))
+            == ((gum::Tensor< double >() << net.variableFromName("d")).fillWith({0, 1})));
+      CHECK((ie.MEU().first) == (200));
+      CHECK((ie.posterior("c1"))
+            == ((gum::Tensor< double >() << net.variableFromName("c1")).fillWith({0, 1})));
+      GUM_CHECK_TENSOR_ALMOST_EQUALS_SAMEVARS(
           ie.posteriorUtility("d"),
-          (gum::Tensor< double >() << net.variableFromName("d")).fillWith({100, 200}))
+          (gum::Tensor< double >() << net.variableFromName("d")).fillWith({100, 200}));
     }
 
-    GUM_ACTIVE_TEST(BugWithEvidence3) {
+    static void testBugWithEvidence3() {
       auto net = gum::InfluenceDiagram< double >::fastPrototype("c1<-c->$u<-*d");
       net.cpt("c").fillWith({0.5, 0.5});
       net.cpt("c1").fillWith({1, 0, 0, 1});
@@ -632,18 +636,18 @@ namespace gum_tests {
       ie.addEvidence("d", 1);
       ie.makeInference();
 
-      TS_GUM_TENSOR_ALMOST_EQUALS_SAMEVARS(
+      GUM_CHECK_TENSOR_ALMOST_EQUALS_SAMEVARS(
           ie.optimalDecision("d"),
-          (gum::Tensor< double >() << net.variableFromName("d")).fillWith({0, 1}))
-      TS_ASSERT_EQUALS(ie.MEU().first, 110.5)
-      TS_ASSERT_EQUALS(ie.posterior("c1"),
-                       (gum::Tensor< double >() << net.variableFromName("c1")).fillWith({0.5, 0.5}))
-      TS_GUM_TENSOR_ALMOST_EQUALS_SAMEVARS(
+          (gum::Tensor< double >() << net.variableFromName("d")).fillWith({0, 1}));
+      CHECK((ie.MEU().first) == (110.5));
+      CHECK((ie.posterior("c1"))
+            == ((gum::Tensor< double >() << net.variableFromName("c1")).fillWith({0.5, 0.5})));
+      GUM_CHECK_TENSOR_ALMOST_EQUALS_SAMEVARS(
           ie.posteriorUtility("d"),
-          (gum::Tensor< double >() << net.variableFromName("d")).fillWith({0, 110.5}))
+          (gum::Tensor< double >() << net.variableFromName("d")).fillWith({0, 110.5}));
     }
 
-    GUM_ACTIVE_TEST(BugWithEvidence4) {
+    static void testBugWithEvidence4() {
       auto net = gum::InfluenceDiagram< double >::fastPrototype("c1<-c->$u<-*d");
       net.cpt("c").fillWith({0.5, 0.5});
       net.cpt("c1").fillWith({1, 0, 0, 1});
@@ -652,19 +656,19 @@ namespace gum_tests {
       auto ie = gum::ShaferShenoyLIMIDInference< double >(&net);
       ie.addEvidence("c1", std::vector< double >{0.8, 0.2});
       ie.makeInference();
-      TS_ASSERT_EQUALS(ie.optimalDecision("d"),
-                       (gum::Tensor< double >() << net.variableFromName("d")).fillWith({0, 1}))
-      TS_ASSERT_EQUALS(ie.MEU().first, 56.8)
-      TS_ASSERT_DELTA(ie.MEU().second, 5126.56, TS_GUM_SMALL_ERROR)
-      TS_GUM_TENSOR_ALMOST_EQUALS_SAMEVARS(
+      CHECK((ie.optimalDecision("d"))
+            == ((gum::Tensor< double >() << net.variableFromName("d")).fillWith({0, 1})));
+      CHECK((ie.MEU().first) == (56.8));
+      CHECK((ie.MEU().second) == doctest::Approx(5126.56).epsilon(GUM_SMALL_ERROR));
+      GUM_CHECK_TENSOR_ALMOST_EQUALS_SAMEVARS(
           ie.posterior("c"),
-          (gum::Tensor< double >() << net.variableFromName("c")).fillWith({0.8, 0.2}))
-      TS_GUM_TENSOR_ALMOST_EQUALS_SAMEVARS(
+          (gum::Tensor< double >() << net.variableFromName("c")).fillWith({0.8, 0.2}));
+      GUM_CHECK_TENSOR_ALMOST_EQUALS_SAMEVARS(
           ie.posteriorUtility("d"),
-          (gum::Tensor< double >() << net.variableFromName("d")).fillWith({28, 56.8}))
+          (gum::Tensor< double >() << net.variableFromName("d")).fillWith({28, 56.8}));
     }
 
-    GUM_ACTIVE_TEST(InferenceWithClemenFigure4_12) {
+    static void testInferenceWithClemenFigure4_12() {
       try {
         std::string                     file = GET_RESSOURCES_PATH("ID/ClemenFigure04.12.xml");
         gum::InfluenceDiagram< double > net;
@@ -672,22 +676,23 @@ namespace gum_tests {
         reader.proceed();
 
         gum::ShaferShenoyLIMIDInference< double > ie(&net);
-        TS_GUM_ASSERT_THROWS_NOTHING(ie.makeInference())
-        TS_GUM_TENSOR_ALMOST_EQUALS_SAMEVARS(
+        GUM_CHECK_ASSERT_THROWS_NOTHING(ie.makeInference());
+        GUM_CHECK_TENSOR_ALMOST_EQUALS_SAMEVARS(
             ie.posteriorUtility("Accept2B"),
-            (gum::Tensor< double >() << net.variableFromName("Accept2B")).fillWith({2.000, 4.6348}))
-        TS_GUM_TENSOR_ALMOST_EQUALS_SAMEVARS(
+            (gum::Tensor< double >() << net.variableFromName("Accept2B"))
+                .fillWith({2.000, 4.6348}));
+        GUM_CHECK_TENSOR_ALMOST_EQUALS_SAMEVARS(
             ie.posterior("Court_Decision"),
             (gum::Tensor< double >() << net.variableFromName("Court_Decision"))
-                .fillWith({0.2, 0.5, 0.3}))
-        TS_GUM_TENSOR_ALMOST_EQUALS_SAMEVARS(
+                .fillWith({0.2, 0.5, 0.3}));
+        GUM_CHECK_TENSOR_ALMOST_EQUALS_SAMEVARS(
             ie.posterior("Texaco_Reaction"),
             (gum::Tensor< double >() << net.variableFromName("Texaco_Reaction"))
-                .fillWith({0.17, 0.5, 0.33}))
+                .fillWith({0.17, 0.5, 0.33}));
       } catch (gum::Exception& e) { GUM_SHOWERROR(e) }
     }
 
-    GUM_ACTIVE_TEST(NegativeUtilityNonRegression) {
+    static void testNegativeUtilityNonRegression() {
       auto fs = gum::InfluenceDiagram< double >::fastPrototype(
           "ActualUtility{U1|U2}->$Utility<-*Options{Opt0|Opt1}");
       fs.cpt("ActualUtility").fillWith(1).normalize();
@@ -696,12 +701,12 @@ namespace gum_tests {
       auto ie = gum::ShaferShenoyLIMIDInference< double >(&fs);
       ie.makeInference();
 
-      TS_GUM_TENSOR_ALMOST_EQUALS_SAMEVARS(
+      GUM_CHECK_TENSOR_ALMOST_EQUALS_SAMEVARS(
           ie.optimalDecision("Options"),
-          (gum::Tensor< double >() << fs.variableFromName("Options")).fillWith({1, 0}))
+          (gum::Tensor< double >() << fs.variableFromName("Options")).fillWith({1, 0}));
     }
 
-    GUM_ACTIVE_TEST(UtilityForDeterministicDecision) {
+    static void testUtilityForDeterministicDecision() {
       auto defer = gum::InfluenceDiagram< double >::fastPrototype(
           "*D{D1|D2}->$L<-A{A1|A2}<-H->E{E1|E2|E3}->A;E->L");
       defer.cpt("H").fillWith(1).normalize();   // uniform for H
@@ -712,16 +717,16 @@ namespace gum_tests {
       auto ie = gum::ShaferShenoyLIMIDInference< double >(&defer);
       ie.makeInference();
 
-      TS_GUM_TENSOR_ALMOST_EQUALS_SAMEVARS(
+      GUM_CHECK_TENSOR_ALMOST_EQUALS_SAMEVARS(
           ie.posteriorUtility("D"),
-          (gum::Tensor< double >() << defer.variableFromName("D")).fillWith({-0.1014, -0.400}))
+          (gum::Tensor< double >() << defer.variableFromName("D")).fillWith({-0.1014, -0.400}));
 
       ie.addEvidence("E", "E1");
       ie.makeInference();
-      TS_GUM_TENSOR_ALMOST_EQUALS_SAMEVARS_DELTA(
+      GUM_CHECK_TENSOR_ALMOST_EQUALS_SAMEVARS_DELTA(
           ie.posteriorUtility("D"),
           (gum::Tensor< double >() << defer.variableFromName("D")).fillWith({-0.1818, -0.0818}),
-          1e-4)
+          1e-4);
 
       gum::InfluenceDiagram< double > defer2(defer);
       defer2.addArc("E", "D");
@@ -729,13 +734,13 @@ namespace gum_tests {
       ie2.addEvidence("E", "E1");
       ie2.makeInference();
 
-      TS_GUM_TENSOR_ALMOST_EQUALS_SAMEVARS_DELTA(
+      GUM_CHECK_TENSOR_ALMOST_EQUALS_SAMEVARS_DELTA(
           ie2.posteriorUtility("D"),
           (gum::Tensor< double >() << defer2.variableFromName("D")).fillWith({-0.1818, -0.0818}),
-          1e-4)
+          1e-4);
     }
 
-    GUM_ACTIVE_TEST(OtherNonRegression) {
+    static void testOtherNonRegression() {
       auto infdiag
           = gum::InfluenceDiagram< double >::fastPrototype("C1->*D1->C2->$U<-C3<-*D2<-C1->U");
       infdiag.cpt("C1").fillWith({0.6, 0.4});
@@ -752,11 +757,11 @@ namespace gum_tests {
       auto m   = q.sum();
       auto m2  = qq.sum();
       auto meu = ie.MEU();
-      TS_ASSERT_DELTA(meu.first, m, TS_GUM_SMALL_ERROR)
-      TS_ASSERT_DELTA(meu.second, m2 - m * m, TS_GUM_SMALL_ERROR)
+      CHECK((meu.first) == doctest::Approx(m).epsilon(GUM_SMALL_ERROR));
+      CHECK((meu.second) == doctest::Approx(m2 - m * m).epsilon(GUM_SMALL_ERROR));
     }
 
-    GUM_ACTIVE_TEST(NonRegressionFromMikailo) {
+    static void testNonRegressionFromMikailo() {
       auto diag   = gum::InfluenceDiagram< double >::fastPrototype("*D->L2->L3->$U");
       auto iediag = gum::ShaferShenoyLIMIDInference< double >(&diag);
       iediag.addEvidence("D", 0);
@@ -777,15 +782,15 @@ namespace gum_tests {
       ie.addEvidence("D", 0);
       ie.makeInference();
 
-      TS_GUM_TENSOR_ALMOST_EQUALS_SAMEVARS(
+      GUM_CHECK_TENSOR_ALMOST_EQUALS_SAMEVARS(
           iediag.posterior("L2"),
-          (gum::Tensor< double >() << diag.variableFromName("L2")).fillWith(ie.posterior("L2")))
-      TS_GUM_TENSOR_ALMOST_EQUALS_SAMEVARS(
+          (gum::Tensor< double >() << diag.variableFromName("L2")).fillWith(ie.posterior("L2")));
+      GUM_CHECK_TENSOR_ALMOST_EQUALS_SAMEVARS(
           iediag.posterior("L3"),
-          (gum::Tensor< double >() << diag.variableFromName("L3")).fillWith(ie.posterior("L3")))
+          (gum::Tensor< double >() << diag.variableFromName("L3")).fillWith(ie.posterior("L3")));
     }
 
-    GUM_ACTIVE_TEST(NonRegressionFromMikailo2) {
+    static void testNonRegressionFromMikailo2() {
       std::string                     file = GET_RESSOURCES_PATH("ID/mikailo.bifxml");
       gum::InfluenceDiagram< double > diag;
       gum::BIFXMLIDReader< double >   reader(&diag, file);
@@ -811,13 +816,13 @@ namespace gum_tests {
 
       for (const auto nod: bn.nodes()) {
         const std::string& name = bn.variable(nod).name();
-        TS_GUM_TENSOR_ALMOST_EQUALS_SAMEVARS(
+        GUM_CHECK_TENSOR_ALMOST_EQUALS_SAMEVARS(
             iediag.posterior(name),
-            (gum::Tensor< double >() << diag.variableFromName(name)).fillWith(ie.posterior(name)))
+            (gum::Tensor< double >() << diag.variableFromName(name)).fillWith(ie.posterior(name)));
       }
     }
 
-    GUM_ACTIVE_TEST(NonRegression_BDatko) {
+    static void testNonRegression_BDatko() {
       // from Learning Bayesian Networks by Richard E. Neapolitan page 264, Chapter 5.
       auto diag = gum::InfluenceDiagram< double >::fastPrototype(
           "Test{positive|negative}->*D{Buy Spiffycar|Do not buy}->$U<-Tran{bad|good};"
@@ -833,11 +838,38 @@ namespace gum_tests {
       iediag.makeInference();
 
       const auto [m1, v1] = iediag.meanVar("Tran");
-      TS_ASSERT_EQUALS(v1, 0.0);
+      CHECK((v1) == (0.0));
       const auto [m2, v2] = iediag.meanVar("Test");
-      TS_ASSERT_EQUALS(v2, 0.0);
+      CHECK((v2) == (0.0));
       const auto [m3, v3] = iediag.meanVar("U");
-      TS_ASSERT_EQUALS(v3, 0.0);
+      CHECK((v3) == (0.0));
     }
   };
+
+  GUM_TEST_ACTIF(Constructor)
+  GUM_TEST_ACTIF(InferenceWithOilWildCater)
+  GUM_TEST_ACTIF(InferenceWithOilWildCaterWithEvidenceOnDecisionNode)
+  GUM_TEST_ACTIF(InferenceWithOilWildCaterWithEvidenceOnChanceNode)
+  GUM_TEST_ACTIF(InferenceWithDecAsia)
+  GUM_TEST_ACTIF(FromBug)
+  GUM_TEST_ACTIF(BugFromNeapolitan1)
+  GUM_TEST_ACTIF(BugFromNeapolitan2)
+  GUM_TEST_ACTIF(NewStructure)
+  GUM_TEST_ACTIF(Solvability)
+  GUM_TEST_ACTIF(NoForgettingAssumption)
+  GUM_TEST_ACTIF(NoForgettingAssumption2)
+  GUM_TEST_ACTIF(JunctionTree)
+  GUM_TEST_ACTIF(Pinball)
+  GUM_TEST_ACTIF(DavidAndescavage)
+  GUM_TEST_ACTIF(BugWithEvidence)
+  GUM_TEST_ACTIF(BugWithEvidence2)
+  GUM_TEST_ACTIF(BugWithEvidence3)
+  GUM_TEST_ACTIF(BugWithEvidence4)
+  GUM_TEST_ACTIF(InferenceWithClemenFigure4_12)
+  GUM_TEST_ACTIF(NegativeUtilityNonRegression)
+  GUM_TEST_ACTIF(UtilityForDeterministicDecision)
+  GUM_TEST_ACTIF(OtherNonRegression)
+  GUM_TEST_ACTIF(NonRegressionFromMikailo)
+  GUM_TEST_ACTIF(NonRegressionFromMikailo2)
+  GUM_TEST_ACTIF(NonRegression_BDatko)
 }   // namespace gum_tests

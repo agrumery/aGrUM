@@ -1,7 +1,7 @@
 /****************************************************************************
  *   This file is part of the aGrUM/pyAgrum library.                        *
  *                                                                          *
- *   Copyright (c) 2005-2025 by                                             *
+ *   Copyright (c) 2005-2026 by                                             *
  *       - Pierre-Henri WUILLEMIN(_at_LIP6)                                 *
  *       - Christophe GONZALES(_at_AMU)                                     *
  *                                                                          *
@@ -27,7 +27,7 @@
  *                                                                          *
  *   See LICENCES for more details.                                         *
  *                                                                          *
- *   SPDX-FileCopyrightText: Copyright 2005-2025                            *
+ *   SPDX-FileCopyrightText: Copyright 2005-2026                            *
  *       - Pierre-Henri WUILLEMIN(_at_LIP6)                                 *
  *       - Christophe GONZALES(_at_AMU)                                     *
  *   SPDX-License-Identifier: LGPL-3.0-or-later OR MIT                      *
@@ -37,6 +37,7 @@
  *   gitlab   : https://gitlab.com/agrumery/agrum                           *
  *                                                                          *
  ****************************************************************************/
+
 #pragma once
 
 
@@ -52,14 +53,19 @@
 #include <agrum/base/multidim/utils/operators/multiDimCombinationDefault.h>
 #include <agrum/base/variables/labelizedVariable.h>
 
+#undef GUM_CURRENT_SUITE
+#undef GUM_CURRENT_MODULE
+#define GUM_CURRENT_SUITE  MultiDimCombination
+#define GUM_CURRENT_MODULE GUMBASE
+
 namespace gum_tests {
 
-  class GUM_TEST_SUITE(MultiDimCombination) {
+  struct MultiDimCombinationTestSuite {
     private:
     // ==========================================================================
     /// initialize randomly a table
     // ==========================================================================
-    void randomInitP(gum::Tensor< double >& t) {
+    static void randomInitP(gum::Tensor< double >& t) {
       gum::Instantiation i(t);
 
       for (i.setFirst(); !i.end(); ++i)
@@ -79,7 +85,7 @@ namespace gum_tests {
     }
 
     public:
-    GUM_ACTIVE_TEST(_op_multidimArray) {
+    static void test_op_multidimArray() {
       try {
         std::vector< gum::LabelizedVariable* > vars(10);
 
@@ -109,24 +115,24 @@ namespace gum_tests {
 
         gum::MultiDimCombinationDefault< gum::Tensor< double > > xxx(addTensor);
         t6 = xxx.execute(set);
-        TS_ASSERT(t6)
-        TS_ASSERT_EQUALS(*t6, *t5)
+        CHECK(t6);
+        CHECK((*t6) == (*t5));
 
         delete t4;
         delete t5;
         delete t6;
 
-        TS_ASSERT_EQUALS(xxx.nbOperations(set), 16641)
+        CHECK((xxx.nbOperations(set)) == (16641));
         auto yyy = xxx.memoryUsage(set);
-        TS_ASSERT_EQUALS(yyy.first, 16640 * sizeof(double) + 2 * sizeof(gum::Tensor< double >))
-        TS_ASSERT_EQUALS(yyy.second, 16384 * sizeof(double) + sizeof(gum::Tensor< double >))
+        CHECK((yyy.first) == (16640 * sizeof(double) + 2 * sizeof(gum::Tensor< double >)));
+        CHECK((yyy.second) == (16384 * sizeof(double) + sizeof(gum::Tensor< double >)));
 
         t4 = new gum::Tensor< double >(t1 * t2);
         t5 = new gum::Tensor< double >(t3 * (*t4));
         xxx.setCombinationFunction(multTensor);
         t6 = xxx.execute(set);
-        TS_ASSERT(t6)
-        TS_ASSERT_EQUALS(*t6, *t5)
+        CHECK(t6);
+        CHECK((*t6) == (*t5));
 
         gum::Set< const gum::IScheduleMultiDim* >    sched_set;
         std::vector< const gum::IScheduleMultiDim* > sched_vect;
@@ -137,11 +143,11 @@ namespace gum_tests {
         }
 
         const auto ops_plus_resS = xxx.operations(sched_set);
-        TS_ASSERT(ops_plus_resS.first.size() == 3)
-        TS_ASSERT(ops_plus_resS.second->variablesSequence().size() == 7)
+        CHECK(ops_plus_resS.first.size() == 3);
+        CHECK(ops_plus_resS.second->variablesSequence().size() == 7);
         const auto ops_plus_resV = xxx.operations(sched_vect);
-        TS_ASSERT(ops_plus_resV.first.size() == 3)
-        TS_ASSERT(ops_plus_resV.second->variablesSequence().size() == 7)
+        CHECK(ops_plus_resV.first.size() == 3);
+        CHECK(ops_plus_resV.second->variablesSequence().size() == 7);
 
         for (auto op: ops_plus_resS.first)
           delete op;
@@ -166,7 +172,7 @@ namespace gum_tests {
             }
           }
         } while (not_completed);
-        TS_ASSERT(ptrResS->variablesSequence().size() == 7)
+        CHECK(ptrResS->variablesSequence().size() == 7);
 
         gum::Schedule scheduleV;
         for (const auto pot: sched_set)
@@ -186,7 +192,7 @@ namespace gum_tests {
             }
           }
         } while (not_completed);
-        TS_ASSERT(ptrResV->variablesSequence().size() == 7)
+        CHECK(ptrResV->variablesSequence().size() == 7);
 
         for (const auto pot: sched_set)
           delete pot;
@@ -200,7 +206,7 @@ namespace gum_tests {
       } catch (gum::Exception& e) { GUM_SHOWERROR(e); }
     }
 
-    GUM_ACTIVE_TEST(Constants) {
+    static void testConstants() {
       gum::Tensor< double > t1, t2;
       gum::Instantiation    inst1(t1), inst2(t2);
       t1.set(inst1, 3.0);
@@ -213,7 +219,7 @@ namespace gum_tests {
       gum::Tensor< double >* t3 = xxx.execute(set);
       {
         gum::Instantiation inst3(t3);
-        TS_ASSERT_EQUALS((*t3)[inst3], 12.0)
+        CHECK(((*t3)[inst3]) == (12.0));
       }
       delete t3;
       t3 = nullptr;
@@ -243,9 +249,9 @@ namespace gum_tests {
         double             x = 0;
         for (inst3.setFirst(), inst4.setFirst(); !inst3.end(); ++inst3, ++inst4) {
           x += (*t3)[inst3];
-          TS_ASSERT_DELTA((*t3)[inst3], t4[inst4] * 3.0, 0.001)
+          CHECK(((*t3)[inst3]) == doctest::Approx(t4[inst4] * 3.0).epsilon(0.001));
         }
-        TS_ASSERT_DELTA(x, 6.0, 0.001)
+        CHECK((x) == doctest::Approx(6.0).epsilon(0.001));
       }
       delete t3;
       t3 = nullptr;
@@ -258,9 +264,9 @@ namespace gum_tests {
         double             x = 0;
         for (inst3.setFirst(), inst4.setFirst(); !inst3.end(); ++inst3, ++inst4) {
           x += (*t3)[inst3];
-          TS_ASSERT_DELTA((*t3)[inst3], t4[inst4] * 3.0, 0.001)
+          CHECK(((*t3)[inst3]) == doctest::Approx(t4[inst4] * 3.0).epsilon(0.001));
         }
-        TS_ASSERT_DELTA(x, 6.0, 0.001)
+        CHECK((x) == doctest::Approx(6.0).epsilon(0.001));
       }
       delete t3;
       t3 = nullptr;
@@ -281,9 +287,9 @@ namespace gum_tests {
         double             x = 0;
         for (inst3.setFirst(), inst5.setFirst(); !inst3.end(); ++inst3, ++inst5) {
           x += (*t3)[inst3];
-          TS_ASSERT_DELTA((*t3)[inst3], t5[inst5] * 3.0, 0.001)
+          CHECK(((*t3)[inst3]) == doctest::Approx(t5[inst5] * 3.0).epsilon(0.001));
         }
-        TS_ASSERT_DELTA(x, 6.0, 0.001)
+        CHECK((x) == doctest::Approx(6.0).epsilon(0.001));
       }
       delete t3;
       t3 = nullptr;
@@ -296,9 +302,9 @@ namespace gum_tests {
         double             x = 0;
         for (inst3.setFirst(), inst5.setFirst(); !inst3.end(); ++inst3, ++inst5) {
           x += (*t3)[inst3];
-          TS_ASSERT_DELTA((*t3)[inst3], t5[inst5] * 3.0, 0.001)
+          CHECK(((*t3)[inst3]) == doctest::Approx(t5[inst5] * 3.0).epsilon(0.001));
         }
-        TS_ASSERT_DELTA(x, 6.0, 0.001)
+        CHECK((x) == doctest::Approx(6.0).epsilon(0.001));
       }
       delete t3;
       t3 = nullptr;
@@ -308,7 +314,7 @@ namespace gum_tests {
         delete vars[i];
     }
 
-    GUM_ACTIVE_TEST(_op_persitence) {
+    static void test_op_persitence() {
       try {
         std::vector< gum::LabelizedVariable* > vars(10);
 
@@ -338,24 +344,24 @@ namespace gum_tests {
 
         gum::MultiDimCombinationDefault< gum::Tensor< double > > xxx(addTensor);
         t6 = xxx.execute(set);
-        TS_ASSERT(t6)
-        TS_ASSERT_EQUALS(*t6, *t5)
+        CHECK(t6);
+        CHECK((*t6) == (*t5));
 
         delete t4;
         delete t5;
         delete t6;
 
-        TS_ASSERT_EQUALS(xxx.nbOperations(set), 16641)
+        CHECK((xxx.nbOperations(set)) == (16641));
         auto yyy = xxx.memoryUsage(set);
-        TS_ASSERT_EQUALS(yyy.first, 16640 * sizeof(double) + 2 * sizeof(gum::Tensor< double >))
-        TS_ASSERT_EQUALS(yyy.second, 16384 * sizeof(double) + sizeof(gum::Tensor< double >))
+        CHECK((yyy.first) == (16640 * sizeof(double) + 2 * sizeof(gum::Tensor< double >)));
+        CHECK((yyy.second) == (16384 * sizeof(double) + sizeof(gum::Tensor< double >)));
 
         t4 = new gum::Tensor< double >(t1 * t2);
         t5 = new gum::Tensor< double >(t3 * (*t4));
         xxx.setCombinationFunction(multTensor);
         t6 = xxx.execute(set);
-        TS_ASSERT(t6)
-        TS_ASSERT_EQUALS(*t6, *t5)
+        CHECK(t6);
+        CHECK((*t6) == (*t5));
 
         gum::Set< const gum::IScheduleMultiDim* >    sched_set;
         std::vector< const gum::IScheduleMultiDim* > sched_vect;
@@ -366,11 +372,11 @@ namespace gum_tests {
         }
 
         const auto ops_plus_resS = xxx.operations(sched_set, true);
-        TS_ASSERT(ops_plus_resS.first.size() == 3)
-        TS_ASSERT(ops_plus_resS.second->variablesSequence().size() == 7)
+        CHECK(ops_plus_resS.first.size() == 3);
+        CHECK(ops_plus_resS.second->variablesSequence().size() == 7);
         const auto ops_plus_resV = xxx.operations(sched_vect, true);
-        TS_ASSERT(ops_plus_resV.first.size() == 3)
-        TS_ASSERT(ops_plus_resV.second->variablesSequence().size() == 7)
+        CHECK(ops_plus_resV.first.size() == 3);
+        CHECK(ops_plus_resV.second->variablesSequence().size() == 7);
 
         for (auto op: ops_plus_resS.first)
           delete op;
@@ -397,7 +403,7 @@ namespace gum_tests {
             }
           }
         } while (not_completed);
-        TS_ASSERT(ptrResS->variablesSequence().size() == 7)
+        CHECK(ptrResS->variablesSequence().size() == 7);
 
         gum::Schedule scheduleV;
         for (const auto pot: sched_set)
@@ -417,7 +423,7 @@ namespace gum_tests {
             }
           }
         } while (not_completed);
-        TS_ASSERT(ptrResV->variablesSequence().size() == 7)
+        CHECK(ptrResV->variablesSequence().size() == 7);
 
         for (const auto pot: sched_set)
           delete pot;
@@ -434,5 +440,9 @@ namespace gum_tests {
       } catch (gum::Exception& e) { GUM_SHOWERROR(e); }
     }
   };
+
+  GUM_TEST_ACTIF(_op_multidimArray)
+  GUM_TEST_ACTIF(Constants)
+  GUM_TEST_ACTIF(_op_persitence)
 
 } /* namespace gum_tests */

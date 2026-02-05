@@ -1,7 +1,7 @@
 /****************************************************************************
  *   This file is part of the aGrUM/pyAgrum library.                        *
  *                                                                          *
- *   Copyright (c) 2005-2025 by                                             *
+ *   Copyright (c) 2005-2026 by                                             *
  *       - Pierre-Henri WUILLEMIN(_at_LIP6)                                 *
  *       - Christophe GONZALES(_at_AMU)                                     *
  *                                                                          *
@@ -27,7 +27,7 @@
  *                                                                          *
  *   See LICENCES for more details.                                         *
  *                                                                          *
- *   SPDX-FileCopyrightText: Copyright 2005-2025                            *
+ *   SPDX-FileCopyrightText: Copyright 2005-2026                            *
  *       - Pierre-Henri WUILLEMIN(_at_LIP6)                                 *
  *       - Christophe GONZALES(_at_AMU)                                     *
  *   SPDX-License-Identifier: LGPL-3.0-or-later OR MIT                      *
@@ -37,6 +37,7 @@
  *   gitlab   : https://gitlab.com/agrumery/agrum                           *
  *                                                                          *
  ****************************************************************************/
+
 #pragma once
 
 
@@ -50,11 +51,16 @@
 #include <agrum/base/multidim/tensor.h>
 #include <agrum/base/variables/labelizedVariable.h>
 
+#undef GUM_CURRENT_SUITE
+#undef GUM_CURRENT_MODULE
+#define GUM_CURRENT_SUITE  SchedulerSequential
+#define GUM_CURRENT_MODULE GUMBASE
+
 namespace gum_tests {
 
-  class GUM_TEST_SUITE(SchedulerSequential) {
+  struct SchedulerSequentialTestSuite {
     public:
-    GUM_ACTIVE_TEST(_construct1) {
+    static void test_construct1() {
       // reset the ids of the ScheduleMultiDim to avoid conflicts with other
       // testunits
       gum::IScheduleMultiDim::resetIdGenerator();
@@ -144,34 +150,34 @@ namespace gum_tests {
       gum::Schedule schedule4 = schedule;
 
       gum::SchedulerSequential scheduler;
-      TS_ASSERT_DELTA(scheduler.nbOperations(schedule), 2200000.0, 10);
+      CHECK((scheduler.nbOperations(schedule)) == doctest::Approx(2200000.0).epsilon(10));
       scheduler.execute(schedule);
 
       auto&       op4 = const_cast< gum::ScheduleOperator& >(schedule.operation(gum::NodeId(4)));
       const auto& op4_res = dynamic_cast< const gum::ScheduleMultiDim< gum::Tensor< double > >& >(
           *op4.results()[0]);
-      TS_ASSERT(result4.hasSameVariables(op4_res));
-      TS_ASSERT(result4.hasSameContent(op4_res));
-      TS_ASSERT(!result4.isAbstract());
-      TS_ASSERT(!op4_res.isAbstract());
+      CHECK(result4.hasSameVariables(op4_res));
+      CHECK(result4.hasSameContent(op4_res));
+      CHECK(!result4.isAbstract());
+      CHECK(!op4_res.isAbstract());
 
       scheduler.setMaxMemory(2.15 * sizeof(double));
-      TS_ASSERT_DELTA(scheduler.nbOperations(schedule2), 2200000.0, 10);
+      CHECK((scheduler.nbOperations(schedule2)) == doctest::Approx(2200000.0).epsilon(10));
 
       bool fail = false;
       try {
         scheduler.execute(schedule2);
       } catch (std::bad_alloc&) { fail = true; }
-      TS_ASSERT(!fail);
+      CHECK(!fail);
 
       scheduler.setMaxMemory(2.5 * sizeof(double));
-      TS_GUM_ASSERT_THROWS_NOTHING(scheduler.execute(schedule3))
-      TS_ASSERT_DELTA(scheduler.memoryUsage(schedule4).first,
-                      2100000.0 * sizeof(double) + 3 * sizeof(gum::Tensor< double >),
-                      10);
-      TS_ASSERT_DELTA(scheduler.memoryUsage(schedule4).second,
-                      1000000.0 * sizeof(double) + 1 * sizeof(gum::Tensor< double >),
-                      10);
+      GUM_CHECK_ASSERT_THROWS_NOTHING(scheduler.execute(schedule3));
+      CHECK((scheduler.memoryUsage(schedule4).first)
+            == doctest::Approx(2100000.0 * sizeof(double) + 3 * sizeof(gum::Tensor< double >))
+                   .epsilon(10));
+      CHECK((scheduler.memoryUsage(schedule4).second)
+            == doctest::Approx(1000000.0 * sizeof(double) + 1 * sizeof(gum::Tensor< double >))
+                   .epsilon(10));
 
       for (unsigned int i = 0; i < vars.size(); ++i)
         delete vars[i];
@@ -183,5 +189,7 @@ namespace gum_tests {
       return f1 + f2;
     }
   };
+
+  GUM_TEST_ACTIF(_construct1)
 
 } /* namespace gum_tests */

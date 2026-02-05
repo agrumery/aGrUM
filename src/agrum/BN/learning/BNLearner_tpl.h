@@ -1,7 +1,7 @@
 /****************************************************************************
  *   This file is part of the aGrUM/pyAgrum library.                        *
  *                                                                          *
- *   Copyright (c) 2005-2025 by                                             *
+ *   Copyright (c) 2005-2026 by                                             *
  *       - Pierre-Henri WUILLEMIN(_at_LIP6)                                 *
  *       - Christophe GONZALES(_at_AMU)                                     *
  *                                                                          *
@@ -27,7 +27,7 @@
  *                                                                          *
  *   See LICENCES for more details.                                         *
  *                                                                          *
- *   SPDX-FileCopyrightText: Copyright 2005-2025                            *
+ *   SPDX-FileCopyrightText: Copyright 2005-2026                            *
  *       - Pierre-Henri WUILLEMIN(_at_LIP6)                                 *
  *       - Christophe GONZALES(_at_AMU)                                     *
  *   SPDX-License-Identifier: LGPL-3.0-or-later OR MIT                      *
@@ -37,6 +37,7 @@
  *   gitlab   : https://gitlab.com/agrumery/agrum                           *
  *                                                                          *
  ****************************************************************************/
+
 #pragma once
 
 
@@ -296,7 +297,18 @@ namespace gum {
         BNLearner< GUM_SCALAR >::learnParameters(const BayesNet< GUM_SCALAR >& bn,
                                                  bool takeIntoAccountScore) {
       if (!scoreDatabase_.databaseTable().hasMissingValues() || !useEM_) {
-        return _learnParameters_(bn.dag(), takeIntoAccountScore);
+        DAG         dag;
+        const auto& db = scoreDatabase_.databaseTable();
+        for (const auto n: bn.nodes()) {
+          dag.addNodeWithId(db.columnFromVariableName(bn.variable(n).name()));
+        }
+        for (const auto& arc: bn.arcs()) {
+          dag.addArc(db.columnFromVariableName(bn.variable(arc.tail()).name()),
+                     db.columnFromVariableName(bn.variable(arc.head()).name()));
+        }
+
+        // create le DAG en fonction des
+        return _learnParameters_(dag, takeIntoAccountScore);
       } else {
         return _learnParametersWithEM_(bn, takeIntoAccountScore);
       }

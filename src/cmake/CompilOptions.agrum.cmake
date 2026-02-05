@@ -69,9 +69,6 @@ endif (GUM_COVERAGE)
 
 if (CMAKE_CXX_COMPILER_ID MATCHES "Clang")
     check_cxx_compiler_flag("-fno-assume-unique-vtables" _AGRUM_CLANG_SUPPORTS_ASSUME_UNIQUE_VTABLES)
-    if (_AGRUM_CLANG_SUPPORTS_ASSUME_UNIQUE_VTABLES)
-	set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -fno-assume-unique-vtables")
-    endif ()
 endif ()
 
 set(CMAKE_CXX_FLAGS "${AGRUM_CXX_FLAGS} ${CMAKE_CXX_FLAGS}")

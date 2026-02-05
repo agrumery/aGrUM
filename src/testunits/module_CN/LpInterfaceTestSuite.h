@@ -1,7 +1,7 @@
 /****************************************************************************
  *   This file is part of the aGrUM/pyAgrum library.                        *
  *                                                                          *
- *   Copyright (c) 2005-2025 by                                             *
+ *   Copyright (c) 2005-2026 by                                             *
  *       - Pierre-Henri WUILLEMIN(_at_LIP6)                                 *
  *       - Christophe GONZALES(_at_AMU)                                     *
  *                                                                          *
@@ -27,7 +27,7 @@
  *                                                                          *
  *   See LICENCES for more details.                                         *
  *                                                                          *
- *   SPDX-FileCopyrightText: Copyright 2005-2025                            *
+ *   SPDX-FileCopyrightText: Copyright 2005-2026                            *
  *       - Pierre-Henri WUILLEMIN(_at_LIP6)                                 *
  *       - Christophe GONZALES(_at_AMU)                                     *
  *   SPDX-License-Identifier: LGPL-3.0-or-later OR MIT                      *
@@ -37,6 +37,7 @@
  *   gitlab   : https://gitlab.com/agrumery/agrum                           *
  *                                                                          *
  ****************************************************************************/
+
 #pragma once
 
 
@@ -49,11 +50,16 @@
 
 #include <agrum/CN/polytope/LpInterface.h>
 
+#undef GUM_CURRENT_SUITE
+#undef GUM_CURRENT_MODULE
+#define GUM_CURRENT_SUITE  LpInterfacet
+#define GUM_CURRENT_MODULE CN
+
 namespace gum_tests {
 
-  class GUM_TEST_SUITE(LpInterfacet) {
+  struct LpInterfacetTestSuite {
     public:
-    GUM_ACTIVE_TEST(LpExpr) {
+    static void testLpExpr() {
       gum::credal::lp::LpInterface< double > pl;
       auto                                   v = pl.addCols(3);
       const gum::credal::lp::LpCol&          a = v[0];
@@ -62,7 +68,7 @@ namespace gum_tests {
       gum::credal::lp::LpRow  row(expr, v);
     }   // namespace gum_tests
 
-    GUM_ACTIVE_TEST(LpCreation) {
+    static void testLpCreation() {
       gum::credal::lp::LpInterface< double > pl;
 
       auto A = pl.addCols(3);   // 3 variables for the lp
@@ -71,5 +77,8 @@ namespace gum_tests {
       pl.addRow(0.1 <= A[2] <= 0.6);
     }
   };   // end of class LpInterfacetTestSuite
+
+  GUM_TEST_ACTIF(LpExpr)
+  GUM_TEST_ACTIF(LpCreation)
 
 }   // end of namespace gum_tests

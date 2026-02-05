@@ -1,7 +1,7 @@
 /****************************************************************************
  *   This file is part of the aGrUM/pyAgrum library.                        *
  *                                                                          *
- *   Copyright (c) 2005-2025 by                                             *
+ *   Copyright (c) 2005-2026 by                                             *
  *       - Pierre-Henri WUILLEMIN(_at_LIP6)                                 *
  *       - Christophe GONZALES(_at_AMU)                                     *
  *                                                                          *
@@ -27,7 +27,7 @@
  *                                                                          *
  *   See LICENCES for more details.                                         *
  *                                                                          *
- *   SPDX-FileCopyrightText: Copyright 2005-2025                            *
+ *   SPDX-FileCopyrightText: Copyright 2005-2026                            *
  *       - Pierre-Henri WUILLEMIN(_at_LIP6)                                 *
  *       - Christophe GONZALES(_at_AMU)                                     *
  *   SPDX-License-Identifier: LGPL-3.0-or-later OR MIT                      *
@@ -37,6 +37,7 @@
  *   gitlab   : https://gitlab.com/agrumery/agrum                           *
  *                                                                          *
  ****************************************************************************/
+
 #pragma once
 
 
@@ -55,18 +56,23 @@
 #include <agrum/FMDP/simulation/fmdpSimulator.h>
 #include <agrum/FMDP/simulation/taxiSimulator.h>
 
+#undef GUM_CURRENT_SUITE
+#undef GUM_CURRENT_MODULE
+#define GUM_CURRENT_SUITE  SDyna
+#define GUM_CURRENT_MODULE FMDP
+
 // ==============================================================================
 
 namespace gum_tests {
 
-  class GUM_TEST_SUITE(SDyna) {
+  struct SDynaTestSuite {
     private:
-    void run(gum::AbstractSimulator& sim) {
+    static void run(gum::AbstractSimulator& sim) {
       // *********************************************************************************************
       // Initialisation de l'instance de SDyna
       // *********************************************************************************************
       gum::SDYNA* sdyna = nullptr;
-      TS_GUM_ASSERT_THROWS_NOTHING(sdyna = gum::SDYNA::spimddiInstance())
+      GUM_CHECK_ASSERT_THROWS_NOTHING(sdyna = gum::SDYNA::spimddiInstance());
 
       // Enregistrement des actions possibles auprès de SDyna
       for (auto actionIter = sim.beginActions(); actionIter != sim.endActions(); ++actionIter) {
@@ -76,32 +82,32 @@ namespace gum_tests {
       for (auto varIter = sim.beginVariables(); varIter != sim.endVariables(); ++varIter) {
         sdyna->addVariable(*varIter);
       }
-      TS_GUM_ASSERT_THROWS_NOTHING(sim.setInitialStateRandomly())
-      TS_GUM_ASSERT_THROWS_NOTHING(sdyna->initialize(sim.currentState()))
+      GUM_CHECK_ASSERT_THROWS_NOTHING(sim.setInitialStateRandomly());
+      GUM_CHECK_ASSERT_THROWS_NOTHING(sdyna->initialize(sim.currentState()));
 
       for (gum::Idx nbRun = 0; nbRun < 10; ++nbRun) {
         sim.setInitialStateRandomly();
-        TS_GUM_ASSERT_THROWS_NOTHING(sdyna->setCurrentState(sim.currentState()))
+        GUM_CHECK_ASSERT_THROWS_NOTHING(sdyna->setCurrentState(sim.currentState()));
         gum::Idx nbDec = 0;
         while (!sim.hasReachEnd() && nbDec < 25) {
           // Normal Iteration Part
           gum::Idx actionChosenId = 0;
-          TS_GUM_ASSERT_THROWS_NOTHING(actionChosenId = sdyna->takeAction();)
-          TS_GUM_ASSERT_THROWS_NOTHING(sim.perform(actionChosenId))
+          GUM_CHECK_ASSERT_THROWS_NOTHING(actionChosenId = sdyna->takeAction(););
+          GUM_CHECK_ASSERT_THROWS_NOTHING(sim.perform(actionChosenId));
           nbDec++;
 
-          TS_GUM_ASSERT_THROWS_NOTHING(sdyna->feedback(sim.currentState(), sim.reward());)
+          GUM_CHECK_ASSERT_THROWS_NOTHING(sdyna->feedback(sim.currentState(), sim.reward()););
         }
-        TS_GUM_ASSERT_THROWS_NOTHING(sim.setInitialStateRandomly())
+        GUM_CHECK_ASSERT_THROWS_NOTHING(sim.setInitialStateRandomly());
       }
-      TS_GUM_ASSERT_THROWS_NOTHING(delete sdyna)
+      GUM_CHECK_ASSERT_THROWS_NOTHING(delete sdyna);
     }   // namespace gum_tests
 
     public:
     // *******************************************************************************
     // Run the tests on a Coffee FMDP
     // *******************************************************************************
-    GUM_ACTIVE_TEST(_Coffee) {
+    static void test_Coffee() {
       // **************************************************************
       // Chargement du fmdp servant de base
       gum::FMDPSimulator sim(GET_RESSOURCES_PATH("FMDP/coffee/coffee.dat"));
@@ -118,7 +124,7 @@ namespace gum_tests {
           break;
         }
       }
-      TS_GUM_ASSERT_THROWS_NOTHING(sim.setEndState(theEnd))
+      GUM_CHECK_ASSERT_THROWS_NOTHING(sim.setEndState(theEnd));
 
       // **************************************************************
       // Lancement
@@ -128,7 +134,7 @@ namespace gum_tests {
     // *******************************************************************************
     // Run the tests on a Taxi instance
     // *******************************************************************************
-    GUM_ACTIVE_TEST(_Taxi) {
+    static void test_Taxi() {
       // **************************************************************
       // Chargement du simulateur
       gum::TaxiSimulator sim;
@@ -139,4 +145,7 @@ namespace gum_tests {
       run(sim);
     }
   };
+
+  GUM_TEST_ACTIF(_Coffee)
+  GUM_TEST_ACTIF(_Taxi)
 }   // namespace gum_tests

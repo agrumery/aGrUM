@@ -1,7 +1,7 @@
 /****************************************************************************
  *   This file is part of the aGrUM/pyAgrum library.                        *
  *                                                                          *
- *   Copyright (c) 2005-2025 by                                             *
+ *   Copyright (c) 2005-2026 by                                             *
  *       - Pierre-Henri WUILLEMIN(_at_LIP6)                                 *
  *       - Christophe GONZALES(_at_AMU)                                     *
  *                                                                          *
@@ -27,7 +27,7 @@
  *                                                                          *
  *   See LICENCES for more details.                                         *
  *                                                                          *
- *   SPDX-FileCopyrightText: Copyright 2005-2025                            *
+ *   SPDX-FileCopyrightText: Copyright 2005-2026                            *
  *       - Pierre-Henri WUILLEMIN(_at_LIP6)                                 *
  *       - Christophe GONZALES(_at_AMU)                                     *
  *   SPDX-License-Identifier: LGPL-3.0-or-later OR MIT                      *
@@ -37,6 +37,7 @@
  *   gitlab   : https://gitlab.com/agrumery/agrum                           *
  *                                                                          *
  ****************************************************************************/
+
 #pragma once
 
 
@@ -55,7 +56,13 @@
 #include <agrum/BN/inference/loopySamplingInference.h>
 #include <agrum/BN/io/BIF/BIFReader.h>
 
-#include <gumtest/AgrumApproximationUtils.h>   // must be last include
+#include <gumtest/AgrumApproximationUtils.h>
+
+#undef GUM_CURRENT_SUITE
+#undef GUM_CURRENT_MODULE
+#define GUM_CURRENT_SUITE  loopySamplingInference
+#define GUM_CURRENT_MODULE BN
+// must be last include
 
 #define EPSILON_FOR_HYBRID_SIMPLE_TEST 2e-1
 #define EPSILON_FOR_HYBRID             1e-1
@@ -85,9 +92,9 @@ namespace gum_tests {
     std::string getMess() { return __mess; }
   };
 
-  class GUM_TEST_SUITE(loopySamplingInference) {
+  struct loopySamplingInferenceTestSuite {
     public:
-    GUM_ACTIVE_TEST(HybridBinaryTreeWithoutEvidence) {
+    static void testHybridBinaryTreeWithoutEvidence() {
       auto bn = gum::BayesNet< double >::fastPrototype("a->d->f;b->d->g;b->e->h;c->e;i->j->h");
 
       try {
@@ -106,11 +113,11 @@ namespace gum_tests {
         GUM_APPROX_TEST_END_ITERATION(EPSILON_FOR_HYBRID_SIMPLE_TEST)
       } catch (gum::Exception& e) {
         GUM_SHOWERROR(e);
-        TS_ASSERT(false)
+        CHECK(false);
       }
     }   // namespace gum_tests
 
-    GUM_ACTIVE_TEST(HybridBinaryTreeWithEvidenceOnRoot) {
+    static void testHybridBinaryTreeWithEvidenceOnRoot() {
       auto bn = gum::BayesNet< double >::fastPrototype("a->d->f;b->d->g;b->e->h;c->e;i->j->h");
       std::string ev = "b";
 
@@ -127,11 +134,11 @@ namespace gum_tests {
         GUM_APPROX_TEST_END_ITERATION(EPSILON_FOR_HYBRID_SIMPLE_TEST)
       } catch (gum::Exception& e) {
         GUM_SHOWERROR(e);
-        TS_ASSERT(false)
+        CHECK(false);
       }
     }
 
-    GUM_ACTIVE_TEST(HybridBinaryTreeWithEvidenceOnLeaf) {
+    static void testHybridBinaryTreeWithEvidenceOnLeaf() {
       auto bn = gum::BayesNet< double >::fastPrototype("a->d->f;b->d->g;b->e->h;c->e;i->j->h");
       std::string ev = "h";
 
@@ -150,11 +157,11 @@ namespace gum_tests {
 
       } catch (gum::Exception& e) {
         GUM_SHOWERROR(e);
-        TS_ASSERT(false)
+        CHECK(false);
       }
     }
 
-    GUM_ACTIVE_TEST(HybridBinaryTreeWithEvidenceOnMid) {
+    static void testHybridBinaryTreeWithEvidenceOnMid() {
       auto bn = gum::BayesNet< double >::fastPrototype("a->d->f;b->d->g;b->e->h;c->e;i->j->h");
       std::string ev = "e";
 
@@ -173,11 +180,11 @@ namespace gum_tests {
 
       } catch (gum::Exception& e) {
         GUM_SHOWERROR(e);
-        TS_ASSERT(false)
+        CHECK(false);
       }
     }
 
-    GUM_ACTIVE_TEST(HybridBinaryTreeWithMultipleEvidence) {
+    static void testHybridBinaryTreeWithMultipleEvidence() {
       auto bn = gum::BayesNet< double >::fastPrototype("a->d->f;b->d->g;b->e->h;c->e;i->j->h");
 
       try {
@@ -199,11 +206,11 @@ namespace gum_tests {
 
       } catch (gum::Exception& e) {
         GUM_SHOWERROR(e);
-        TS_ASSERT(false)
+        CHECK(false);
       }
     }
 
-    GUM_ACTIVE_TEST(HybridNaryTreeWithMultipleEvidence) {
+    static void testHybridNaryTreeWithMultipleEvidence() {
       auto bn = gum::BayesNet< double >::fastPrototype(
           "a[4]->d[8]->f[3];b->d->g[5];b->e[4]->h;c->e;i[10]->j[3]->h");
 
@@ -226,11 +233,11 @@ namespace gum_tests {
 
       } catch (gum::Exception& e) {
         GUM_SHOWERROR(e);
-        TS_ASSERT(false)
+        CHECK(false);
       }
     }
 
-    GUM_ACTIVE_TEST(HybridSimpleBN) {
+    static void testHybridSimpleBN() {
       auto bn = gum::BayesNet< double >::fastPrototype("a->b->c;a->d->c", 3);
 
       try {
@@ -247,7 +254,7 @@ namespace gum_tests {
 
       } catch (gum::Exception& e) {
         GUM_SHOWERROR(e);
-        TS_ASSERT(false)
+        CHECK(false);
       }
 
       try {
@@ -266,7 +273,7 @@ namespace gum_tests {
 
       } catch (gum::Exception& e) {
         GUM_SHOWERROR(e);
-        TS_ASSERT(false)
+        CHECK(false);
       }
 
       try {
@@ -285,11 +292,11 @@ namespace gum_tests {
 
       } catch (gum::Exception& e) {
         GUM_SHOWERROR(e);
-        TS_ASSERT(false)
+        CHECK(false);
       }
     }
 
-    GUM_ACTIVE_TEST(HybridCplxBN) {
+    static void testHybridCplxBN() {
       auto bn = gum::BayesNet< double >::fastPrototype(
           "a->d->f;b->d->g;b->e->h;c->e->g;i->j->h;c->j;x->c;x->j;",
           3);
@@ -308,7 +315,7 @@ namespace gum_tests {
 
       } catch (gum::Exception& e) {
         GUM_SHOWERROR(e);
-        TS_ASSERT(false)
+        CHECK(false);
       }
 
       try {
@@ -327,7 +334,7 @@ namespace gum_tests {
 
       } catch (gum::Exception& e) {
         GUM_SHOWERROR(e);
-        TS_ASSERT(false)
+        CHECK(false);
       }
 
       try {
@@ -346,16 +353,16 @@ namespace gum_tests {
 
       } catch (gum::Exception& e) {
         GUM_SHOWERROR(e);
-        TS_ASSERT(false)
+        CHECK(false);
       }
     }
 
-    GUM_ACTIVE_TEST(HybridAsia) {
+    static void testHybridAsia() {
       gum::BayesNet< double >  bn;
       gum::BIFReader< double > reader(&bn, GET_RESSOURCES_PATH("bif/asia.bif"));
       gum::Size                nbrErr = static_cast< gum::Size >(0);
-      TS_GUM_ASSERT_THROWS_NOTHING(nbrErr = reader.proceed())
-      TS_ASSERT_EQUALS(nbrErr, static_cast< gum::Size >(0))
+      GUM_CHECK_ASSERT_THROWS_NOTHING(nbrErr = reader.proceed());
+      CHECK((nbrErr) == (static_cast< gum::Size >(0)));
 
       try {
         gum::LazyPropagation< double > lazy(&bn);
@@ -372,16 +379,16 @@ namespace gum_tests {
 
       } catch (gum::Exception& e) {
         GUM_SHOWERROR(e);
-        TS_ASSERT(false)
+        CHECK(false);
       }
     }
 
-    GUM_ACTIVE_TEST(HybridAlarm) {
+    static void testHybridAlarm() {
       gum::BayesNet< double >  bn;
       gum::BIFReader< double > reader(&bn, GET_RESSOURCES_PATH("bif/alarm.bif"));
       gum::Size                nbrErr = static_cast< gum::Size >(0);
-      TS_GUM_ASSERT_THROWS_NOTHING(nbrErr = reader.proceed())
-      TS_ASSERT_EQUALS(nbrErr, static_cast< gum::Size >(0))
+      GUM_CHECK_ASSERT_THROWS_NOTHING(nbrErr = reader.proceed());
+      CHECK((nbrErr) == (static_cast< gum::Size >(0)));
 
       try {
         gum::LazyPropagation< double > lazy(&bn);
@@ -398,11 +405,11 @@ namespace gum_tests {
 
       } catch (gum::Exception& e) {
         GUM_SHOWERROR(e);
-        TS_ASSERT(false)
+        CHECK(false);
       }
     }
 
-    GUM_ACTIVE_TEST(MultipleInferenceWithSameEngine) {
+    static void testMultipleInferenceWithSameEngine() {
       auto bn = gum::BayesNet< double >::fastPrototype("a->b->c;a->d->c", 3);
       unsharpen(bn);
 
@@ -421,9 +428,21 @@ namespace gum_tests {
 
       } catch (gum::Exception& e) {
         GUM_SHOWERROR(e);
-        TS_ASSERT(false)
+        CHECK(false);
       }
     }
   };
+
+  GUM_TEST_ACTIF(HybridBinaryTreeWithoutEvidence)
+  GUM_TEST_ACTIF(HybridBinaryTreeWithEvidenceOnRoot)
+  GUM_TEST_ACTIF(HybridBinaryTreeWithEvidenceOnLeaf)
+  GUM_TEST_ACTIF(HybridBinaryTreeWithEvidenceOnMid)
+  GUM_TEST_ACTIF(HybridBinaryTreeWithMultipleEvidence)
+  GUM_TEST_ACTIF(HybridNaryTreeWithMultipleEvidence)
+  GUM_TEST_ACTIF(HybridSimpleBN)
+  GUM_TEST_ACTIF(HybridCplxBN)
+  GUM_TEST_ACTIF(HybridAsia)
+  GUM_TEST_ACTIF(HybridAlarm)
+  GUM_TEST_ACTIF(MultipleInferenceWithSameEngine)
 
 }   // namespace gum_tests

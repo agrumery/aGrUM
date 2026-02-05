@@ -1,7 +1,7 @@
 /****************************************************************************
  *   This file is part of the aGrUM/pyAgrum library.                        *
  *                                                                          *
- *   Copyright (c) 2005-2025 by                                             *
+ *   Copyright (c) 2005-2026 by                                             *
  *       - Pierre-Henri WUILLEMIN(_at_LIP6)                                 *
  *       - Christophe GONZALES(_at_AMU)                                     *
  *                                                                          *
@@ -27,7 +27,7 @@
  *                                                                          *
  *   See LICENCES for more details.                                         *
  *                                                                          *
- *   SPDX-FileCopyrightText: Copyright 2005-2025                            *
+ *   SPDX-FileCopyrightText: Copyright 2005-2026                            *
  *       - Pierre-Henri WUILLEMIN(_at_LIP6)                                 *
  *       - Christophe GONZALES(_at_AMU)                                     *
  *   SPDX-License-Identifier: LGPL-3.0-or-later OR MIT                      *
@@ -37,6 +37,7 @@
  *   gitlab   : https://gitlab.com/agrumery/agrum                           *
  *                                                                          *
  ****************************************************************************/
+
 #pragma once
 
 
@@ -55,12 +56,17 @@
 #include <agrum/FMDP/fmdp.h>
 #include <agrum/FMDP/io/dat/fmdpDatReader.h>
 
+#undef GUM_CURRENT_SUITE
+#undef GUM_CURRENT_MODULE
+#define GUM_CURRENT_SUITE  FMDPDatReader
+#define GUM_CURRENT_MODULE FMDP
+
 // =====================================================================
 
 
 namespace gum_tests {
 
-  class GUM_TEST_SUITE(FMDPDatReader) {
+  struct FMDPDatReaderTestSuite {
     private:
     std::string _file_;
 
@@ -70,11 +76,11 @@ namespace gum_tests {
 
       reader.trace(false);
       auto nbrErr = static_cast< gum::Size >(0);
-      TS_GUM_ASSERT_THROWS_NOTHING(nbrErr = reader.proceed())
+      GUM_CHECK_ASSERT_THROWS_NOTHING(nbrErr = reader.proceed());
 
-      TS_ASSERT_EQUALS(nbrErr, static_cast< gum::Size >(0))
-      TS_ASSERT_EQUALS(reader.warnings(), static_cast< gum::Size >(0))
-      TS_ASSERT_EQUALS(reader.errors(), static_cast< gum::Size >(0))
+      CHECK((nbrErr) == (static_cast< gum::Size >(0)));
+      CHECK((reader.warnings()) == (static_cast< gum::Size >(0)));
+      CHECK((reader.errors()) == (static_cast< gum::Size >(0)));
       reader.showElegantErrorsAndWarnings();
 
 
@@ -82,7 +88,7 @@ namespace gum_tests {
       _traceAlgoSaveFile_.open(GET_RESSOURCES_PATH("outputs/FMDPDatRead.dot"),
                                std::ios::out | std::ios::trunc);
       if (!_traceAlgoSaveFile_) return;
-      TS_GUM_ASSERT_THROWS_NOTHING(_traceAlgoSaveFile_ << fmdp.toString())
+      GUM_CHECK_ASSERT_THROWS_NOTHING(_traceAlgoSaveFile_ << fmdp.toString());
       _traceAlgoSaveFile_.close();
 
       int deletedFile = std::remove(GET_RESSOURCES_PATH("outputs/FMDPDatRead.dot"));
@@ -105,35 +111,41 @@ namespace gum_tests {
     }
 
     public:
-    GUM_ACTIVE_TEST(Constuctor) {
+    void testConstuctor() {
       std::string _file_ = GET_RESSOURCES_PATH("");
 
       gum::FMDP< double >           fmdp(true);
       gum::FMDPDatReader< double >* reader = nullptr;
 
-      TS_GUM_ASSERT_THROWS_NOTHING(reader = new gum::FMDPDatReader< double >(&fmdp, _file_))
+      GUM_CHECK_ASSERT_THROWS_NOTHING(reader = new gum::FMDPDatReader< double >(&fmdp, _file_));
 
-      TS_GUM_ASSERT_THROWS_NOTHING(if (reader != nullptr) delete reader)
+      GUM_CHECK_ASSERT_THROWS_NOTHING(if (reader != nullptr) delete reader);
     }
 
-    GUM_ACTIVE_TEST(ReadFileCoffeeRobot) {
+    void testReadFileCoffeeRobot() {
       _file_ = GET_RESSOURCES_PATH("FMDP/coffee/coffee.dat");
       _run_();
     }
 
-    GUM_ACTIVE_TEST(ReadFileTinyFactory) {
+    void testReadFileTinyFactory() {
       _file_ = GET_RESSOURCES_PATH("FMDP/factory/tiny-factory.dat");
       _run_();
     }
 
-    GUM_ACTIVE_TEST(ReadFileFactory) {
+    void testReadFileFactory() {
       _file_ = GET_RESSOURCES_PATH("FMDP/factory/factory.dat");
       _run_();
     }
 
-    GUM_ACTIVE_TEST(ReadFileTaxi) {
+    void testReadFileTaxi() {
       _file_ = GET_RESSOURCES_PATH("FMDP/taxi/taxi.dat");
       _run_();
     }
   };
+
+  GUM_TEST_ACTIF(Constuctor)
+  GUM_TEST_ACTIF(ReadFileCoffeeRobot)
+  GUM_TEST_ACTIF(ReadFileTinyFactory)
+  GUM_TEST_ACTIF(ReadFileFactory)
+  GUM_TEST_ACTIF(ReadFileTaxi)
 }   // namespace gum_tests

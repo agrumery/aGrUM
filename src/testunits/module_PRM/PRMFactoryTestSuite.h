@@ -1,7 +1,7 @@
 /****************************************************************************
  *   This file is part of the aGrUM/pyAgrum library.                        *
  *                                                                          *
- *   Copyright (c) 2005-2025 by                                             *
+ *   Copyright (c) 2005-2026 by                                             *
  *       - Pierre-Henri WUILLEMIN(_at_LIP6)                                 *
  *       - Christophe GONZALES(_at_AMU)                                     *
  *                                                                          *
@@ -27,7 +27,7 @@
  *                                                                          *
  *   See LICENCES for more details.                                         *
  *                                                                          *
- *   SPDX-FileCopyrightText: Copyright 2005-2025                            *
+ *   SPDX-FileCopyrightText: Copyright 2005-2026                            *
  *       - Pierre-Henri WUILLEMIN(_at_LIP6)                                 *
  *       - Christophe GONZALES(_at_AMU)                                     *
  *   SPDX-License-Identifier: LGPL-3.0-or-later OR MIT                      *
@@ -37,6 +37,7 @@
  *   gitlab   : https://gitlab.com/agrumery/agrum                           *
  *                                                                          *
  ****************************************************************************/
+
 #pragma once
 
 
@@ -47,15 +48,20 @@
 #include <agrum/PRM/elements/PRMParameter.h>
 #include <agrum/PRM/PRMFactory.h>
 
+#undef GUM_CURRENT_SUITE
+#undef GUM_CURRENT_MODULE
+#define GUM_CURRENT_SUITE  PRMFactory
+#define GUM_CURRENT_MODULE PRM
+
 namespace gum_tests {
-  class GUM_TEST_SUITE(PRMFactory) {
+  struct PRMFactoryTestSuite {
     public:
-    GUM_ACTIVE_TEST(Init) {
+    static void testInit() {
       gum::prm::PRMFactory< double > f;
       delete f.prm();
     }   // namespace gum_tests
 
-    GUM_ACTIVE_TEST(AddParameter) {
+    static void testAddParameter() {
       try {
         gum::prm::PRMFactory< double > f;
         auto                           prm = f.prm();
@@ -65,12 +71,12 @@ namespace gum_tests {
         f.endClass();
 
         const auto& c = prm->getClass("MyClass");
-        TS_ASSERT_EQUALS(static_cast< gum::Size >(1), c.parameters().size())
+        CHECK((static_cast< gum::Size >(1)) == (c.parameters().size()));
         const auto& elt = c.get("lambda");
-        TS_ASSERT(gum::prm::PRMClassElement< double >::isParameter(elt))
+        CHECK(gum::prm::PRMClassElement< double >::isParameter(elt));
         const auto& lambda = static_cast< const gum::prm::PRMParameter< double >& >(elt);
-        TS_ASSERT_EQUALS(lambda.valueType(), gum::prm::PRMParameter< double >::REAL)
-        TS_ASSERT_EQUALS(lambda.value(), 0.001)
+        CHECK((lambda.valueType()) == (gum::prm::PRMParameter< double >::REAL));
+        CHECK((lambda.value()) == (0.001));
 
         delete prm;
 
@@ -79,11 +85,11 @@ namespace gum_tests {
         std::cout << e.errorContent() << std::endl;
         std::cout << e.errorCallStack() << std::endl;
 
-        TS_ASSERT(false)
+        CHECK(false);
       }
     }
 
-    GUM_ACTIVE_TEST(ParameterSubClass) {
+    static void testParameterSubClass() {
       try {
         gum::prm::PRMFactory< double > f;
         auto                           prm = f.prm();
@@ -92,25 +98,25 @@ namespace gum_tests {
         f.addParameter("real", "lambda", 0.001);
         f.endClass();
 
-        TS_ASSERT_EQUALS(prm->classes().size(), static_cast< gum::Size >(1))
+        CHECK((prm->classes().size()) == (static_cast< gum::Size >(1)));
 
         f.startSystem("MySystem");
         f.addInstance("MyClass", "i");
         f.endSystem();
 
-        TS_ASSERT_EQUALS(prm->classes().size(), static_cast< gum::Size >(2))
+        CHECK((prm->classes().size()) == (static_cast< gum::Size >(2)));
 
         const auto& super_c = prm->getClass("MyClass");
         const auto& c       = prm->getClass("MyClass<lambda=0.001>");
 
-        TS_ASSERT(c.isSubTypeOf(super_c))
+        CHECK(c.isSubTypeOf(super_c));
 
-        TS_ASSERT_EQUALS(static_cast< gum::Size >(1), c.parameters().size())
+        CHECK((static_cast< gum::Size >(1)) == (c.parameters().size()));
         const auto& elt = c.get("lambda");
-        TS_ASSERT(gum::prm::PRMClassElement< double >::isParameter(elt))
+        CHECK(gum::prm::PRMClassElement< double >::isParameter(elt));
         const auto& lambda = static_cast< const gum::prm::PRMParameter< double >& >(elt);
-        TS_ASSERT_EQUALS(lambda.valueType(), gum::prm::PRMParameter< double >::REAL)
-        TS_ASSERT_EQUALS(lambda.value(), 0.001)
+        CHECK((lambda.valueType()) == (gum::prm::PRMParameter< double >::REAL));
+        CHECK((lambda.value()) == (0.001));
 
         delete prm;
 
@@ -119,11 +125,11 @@ namespace gum_tests {
         std::cout << e.errorContent() << std::endl;
         std::cout << e.errorCallStack() << std::endl;
 
-        TS_ASSERT(false)
+        CHECK(false);
       }
     }
 
-    GUM_ACTIVE_TEST(ParameterInstantiation) {
+    static void testParameterInstantiation() {
       try {
         gum::prm::PRMFactory< double > f;
         auto                           prm = f.prm();
@@ -138,12 +144,12 @@ namespace gum_tests {
 
         const auto& s = prm->getSystem("MySystem");
 
-        TS_ASSERT(s.exists("i"))
+        CHECK(s.exists("i"));
 
         const auto& i = s.get("i");
 
         const auto& c = prm->getClass("MyClass<lambda=0.001>");
-        TS_ASSERT(c == i.type())
+        CHECK(c == i.type());
 
         delete prm;
 
@@ -152,11 +158,11 @@ namespace gum_tests {
         std::cout << e.errorContent() << std::endl;
         std::cout << e.errorCallStack() << std::endl;
 
-        TS_ASSERT(false)
+        CHECK(false);
       }
     }
 
-    GUM_ACTIVE_TEST(ParameterSpecificInstantiation) {
+    static void testParameterSpecificInstantiation() {
       try {
         gum::prm::PRMFactory< double > f;
         auto                           prm = f.prm();
@@ -172,12 +178,12 @@ namespace gum_tests {
         f.addInstance("MyClass", "j");
         f.addInstance("MyClass", "k", params);
 
-        TS_ASSERT_EQUALS(prm->classes().size(), static_cast< gum::Size >(3))
+        CHECK((prm->classes().size()) == (static_cast< gum::Size >(3)));
 
         f.endSystem();
         const auto& s = prm->getSystem("MySystem");
 
-        TS_ASSERT(s.exists("i"))
+        CHECK(s.exists("i"));
 
         const auto& i = s.get("i");
         const auto& j = s.get("j");
@@ -188,12 +194,12 @@ namespace gum_tests {
 
         const auto& c_default = prm->getClass("MyClass<lambda=0.001>");
 
-        TS_ASSERT(c.isSubTypeOf(super_c))
-        TS_ASSERT(c == i.type())
-        TS_ASSERT(c == k.type())
+        CHECK(c.isSubTypeOf(super_c));
+        CHECK(c == i.type());
+        CHECK(c == k.type());
 
-        TS_ASSERT(c_default.isSubTypeOf(super_c))
-        TS_ASSERT(c_default == j.type())
+        CHECK(c_default.isSubTypeOf(super_c));
+        CHECK(c_default == j.type());
 
         delete prm;
 
@@ -202,8 +208,14 @@ namespace gum_tests {
         std::cout << e.errorContent() << std::endl;
         std::cout << e.errorCallStack() << std::endl;
 
-        TS_ASSERT(false)
+        CHECK(false);
       }
     }
   };
+
+  GUM_TEST_ACTIF(Init)
+  GUM_TEST_ACTIF(AddParameter)
+  GUM_TEST_ACTIF(ParameterSubClass)
+  GUM_TEST_ACTIF(ParameterInstantiation)
+  GUM_TEST_ACTIF(ParameterSpecificInstantiation)
 }   // namespace gum_tests

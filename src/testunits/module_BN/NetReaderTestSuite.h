@@ -1,7 +1,7 @@
 /****************************************************************************
  *   This file is part of the aGrUM/pyAgrum library.                        *
  *                                                                          *
- *   Copyright (c) 2005-2025 by                                             *
+ *   Copyright (c) 2005-2026 by                                             *
  *       - Pierre-Henri WUILLEMIN(_at_LIP6)                                 *
  *       - Christophe GONZALES(_at_AMU)                                     *
  *                                                                          *
@@ -27,7 +27,7 @@
  *                                                                          *
  *   See LICENCES for more details.                                         *
  *                                                                          *
- *   SPDX-FileCopyrightText: Copyright 2005-2025                            *
+ *   SPDX-FileCopyrightText: Copyright 2005-2026                            *
  *       - Pierre-Henri WUILLEMIN(_at_LIP6)                                 *
  *       - Christophe GONZALES(_at_AMU)                                     *
  *   SPDX-License-Identifier: LGPL-3.0-or-later OR MIT                      *
@@ -37,6 +37,7 @@
  *   gitlab   : https://gitlab.com/agrumery/agrum                           *
  *                                                                          *
  ****************************************************************************/
+
 #pragma once
 
 
@@ -50,6 +51,11 @@
 #include <agrum/BN/BayesNet.h>
 #include <agrum/BN/io/net/netReader.h>
 
+#undef GUM_CURRENT_SUITE
+#undef GUM_CURRENT_MODULE
+#define GUM_CURRENT_SUITE  NetReader
+#define GUM_CURRENT_MODULE BN
+
 // The graph used for the tests:
 //          1   2_          1 -> 3
 //         / \ / /          1 -> 4
@@ -60,48 +66,48 @@
 
 namespace gum_tests {
 
-  class GUM_TEST_SUITE(NetReader) {
+  struct NetReaderTestSuite {
     public:
-    GUM_ACTIVE_TEST(Constuctor) {
+    static void testConstuctor() {
       std::string file = GET_RESSOURCES_PATH("net/test1.net");
 
       gum::BayesNet< double > net;
 
       gum::NetReader< double >* reader = 0;
 
-      TS_GUM_ASSERT_THROWS_NOTHING(reader = new gum::NetReader< double >(&net, file))
+      GUM_CHECK_ASSERT_THROWS_NOTHING(reader = new gum::NetReader< double >(&net, file));
 
-      TS_GUM_ASSERT_THROWS_NOTHING(delete reader)
+      GUM_CHECK_ASSERT_THROWS_NOTHING(delete reader);
     }   // namespace gum_tests
 
-    GUM_ACTIVE_TEST(Read_not_existing_file) {
+    static void testRead_not_existing_file() {
       std::string file = GET_RESSOURCES_PATH("net/test.net");
 
       gum::BayesNet< double >* net = new gum::BayesNet< double >();
 
       gum::NetReader< double > reader(net, file);
 
-      TS_ASSERT_THROWS(reader.trace(false), const gum::IOError&)
+      CHECK_THROWS_AS(reader.trace(false), const gum::IOError&);
 
       gum::Size nbrErr = 0;
 
-      TS_ASSERT_THROWS(nbrErr = reader.proceed(), const gum::IOError&)
+      CHECK_THROWS_AS(nbrErr = reader.proceed(), const gum::IOError&);
 
-      TS_ASSERT(!nbrErr)
-      TS_ASSERT_EQUALS(reader.warnings(), static_cast< gum::Size >(0))
+      CHECK(!nbrErr);
+      CHECK((reader.warnings()) == (static_cast< gum::Size >(0)));
       // 0 warnings : no properties
-      TS_ASSERT_EQUALS(reader.errors(), static_cast< gum::Size >(0))
+      CHECK((reader.errors()) == (static_cast< gum::Size >(0)));
 
-      TS_ASSERT_DIFFERS(net, nullptr)
+      CHECK((net) != (nullptr));
 
       if (net != nullptr) {
-        TS_ASSERT(net->empty())
+        CHECK(net->empty());
 
         delete net;
       }
     }
 
-    GUM_ACTIVE_TEST(Read_file1) {
+    static void testRead_file1() {
       std::string file = GET_RESSOURCES_PATH("net/test1.net");
 
       gum::BayesNet< double >* net = new gum::BayesNet< double >();
@@ -112,23 +118,23 @@ namespace gum_tests {
 
       gum::Size nbrErr = 0;
 
-      TS_GUM_ASSERT_THROWS_NOTHING(nbrErr = reader.proceed())
+      GUM_CHECK_ASSERT_THROWS_NOTHING(nbrErr = reader.proceed());
 
-      TS_ASSERT_EQUALS(nbrErr, static_cast< gum::Size >(0))
-      TS_ASSERT_EQUALS(reader.warnings(), static_cast< gum::Size >(0))
+      CHECK((nbrErr) == (static_cast< gum::Size >(0)));
+      CHECK((reader.warnings()) == (static_cast< gum::Size >(0)));
       // 0 warnings : no properties
-      TS_ASSERT_EQUALS(reader.errors(), static_cast< gum::Size >(0))
+      CHECK((reader.errors()) == (static_cast< gum::Size >(0)));
 
-      TS_ASSERT_DIFFERS(net, nullptr)
+      CHECK((net) != (nullptr));
 
       if (net != nullptr) {
-        TS_ASSERT(!net->empty())
+        CHECK(!net->empty());
 
         delete net;
       }
     }
 
-    GUM_ACTIVE_TEST(Read_file2) {
+    static void testRead_file2() {
       std::string file = GET_RESSOURCES_PATH("net/test2.net");
 
       gum::BayesNet< double >* net = new gum::BayesNet< double >();
@@ -139,23 +145,23 @@ namespace gum_tests {
 
       gum::Size nbrErr = 0;
 
-      TS_GUM_ASSERT_THROWS_NOTHING(nbrErr = reader.proceed())
+      GUM_CHECK_ASSERT_THROWS_NOTHING(nbrErr = reader.proceed());
 
-      TS_ASSERT_EQUALS(nbrErr, static_cast< gum::Size >(0))
-      TS_ASSERT_EQUALS(reader.warnings(), static_cast< gum::Size >(0))
+      CHECK((nbrErr) == (static_cast< gum::Size >(0)));
+      CHECK((reader.warnings()) == (static_cast< gum::Size >(0)));
       // 0 warnings : no properties
-      TS_ASSERT_EQUALS(reader.errors(), static_cast< gum::Size >(0))
+      CHECK((reader.errors()) == (static_cast< gum::Size >(0)));
 
-      TS_ASSERT_DIFFERS(net, nullptr)
+      CHECK((net) != (nullptr));
 
       if (net != nullptr) {
-        TS_ASSERT(!net->empty())
+        CHECK(!net->empty());
 
         delete net;
       }
     }
 
-    GUM_ACTIVE_TEST(Read_file3) {
+    static void testRead_file3() {
       std::string file = GET_RESSOURCES_PATH("net/test3.net");
 
       gum::BayesNet< double >* net = new gum::BayesNet< double >();
@@ -166,23 +172,23 @@ namespace gum_tests {
 
       gum::Size nbrErr = 0;
 
-      TS_GUM_ASSERT_THROWS_NOTHING(nbrErr = reader.proceed())
+      GUM_CHECK_ASSERT_THROWS_NOTHING(nbrErr = reader.proceed());
 
-      TS_ASSERT_EQUALS(nbrErr, static_cast< gum::Size >(0))
-      TS_ASSERT_EQUALS(reader.warnings(), static_cast< gum::Size >(0))
+      CHECK((nbrErr) == (static_cast< gum::Size >(0)));
+      CHECK((reader.warnings()) == (static_cast< gum::Size >(0)));
       // 0 warnings : no properties
-      TS_ASSERT_EQUALS(reader.errors(), static_cast< gum::Size >(0))
+      CHECK((reader.errors()) == (static_cast< gum::Size >(0)));
 
-      TS_ASSERT_DIFFERS(net, nullptr)
+      CHECK((net) != (nullptr));
 
       if (net != nullptr) {
-        TS_ASSERT(!net->empty())
+        CHECK(!net->empty());
 
         delete net;
       }
     }
 
-    GUM_ACTIVE_TEST(Read_file_with_xp) {
+    static void testRead_file_with_xp() {
       std::string file = GET_RESSOURCES_PATH("net/bn_with_xp.net");
 
       gum::BayesNet< double >* net = new gum::BayesNet< double >();
@@ -193,21 +199,28 @@ namespace gum_tests {
 
       gum::Size nbrErr = 0;
 
-      TS_GUM_ASSERT_THROWS_NOTHING(nbrErr = reader.proceed())
+      GUM_CHECK_ASSERT_THROWS_NOTHING(nbrErr = reader.proceed());
 
-      TS_ASSERT_EQUALS(nbrErr, static_cast< gum::Size >(0))
-      TS_ASSERT_EQUALS(reader.warnings(), static_cast< gum::Size >(0))
+      CHECK((nbrErr) == (static_cast< gum::Size >(0)));
+      CHECK((reader.warnings()) == (static_cast< gum::Size >(0)));
       // 0 warnings : no properties
-      TS_ASSERT_EQUALS(reader.errors(), static_cast< gum::Size >(0))
+      CHECK((reader.errors()) == (static_cast< gum::Size >(0)));
       reader.showElegantErrors();
 
-      TS_ASSERT_DIFFERS(net, nullptr)
+      CHECK((net) != (nullptr));
 
       if (net != nullptr) {
-        TS_ASSERT(!net->empty())
+        CHECK(!net->empty());
 
         delete net;
       }
     }
   };
+
+  GUM_TEST_ACTIF(Constuctor)
+  GUM_TEST_ACTIF(Read_not_existing_file)
+  GUM_TEST_ACTIF(Read_file1)
+  GUM_TEST_ACTIF(Read_file2)
+  GUM_TEST_ACTIF(Read_file3)
+  GUM_TEST_ACTIF(Read_file_with_xp)
 }   // namespace gum_tests

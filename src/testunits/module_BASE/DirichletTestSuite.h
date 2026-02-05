@@ -1,7 +1,7 @@
 /****************************************************************************
  *   This file is part of the aGrUM/pyAgrum library.                        *
  *                                                                          *
- *   Copyright (c) 2005-2025 by                                             *
+ *   Copyright (c) 2005-2026 by                                             *
  *       - Pierre-Henri WUILLEMIN(_at_LIP6)                                 *
  *       - Christophe GONZALES(_at_AMU)                                     *
  *                                                                          *
@@ -27,7 +27,7 @@
  *                                                                          *
  *   See LICENCES for more details.                                         *
  *                                                                          *
- *   SPDX-FileCopyrightText: Copyright 2005-2025                            *
+ *   SPDX-FileCopyrightText: Copyright 2005-2026                            *
  *       - Pierre-Henri WUILLEMIN(_at_LIP6)                                 *
  *       - Christophe GONZALES(_at_AMU)                                     *
  *   SPDX-License-Identifier: LGPL-3.0-or-later OR MIT                      *
@@ -37,6 +37,7 @@
  *   gitlab   : https://gitlab.com/agrumery/agrum                           *
  *                                                                          *
  ****************************************************************************/
+
 #pragma once
 
 
@@ -47,11 +48,16 @@
 
 #include <agrum/base/core/math/Dirichlet.h>
 
+#undef GUM_CURRENT_SUITE
+#undef GUM_CURRENT_MODULE
+#define GUM_CURRENT_SUITE  Dirichlet
+#define GUM_CURRENT_MODULE GUMBASE
+
 namespace gum_tests {
 
-  class GUM_TEST_SUITE(Dirichlet) {
+  struct DirichletTestSuite {
     public:
-    GUM_ACTIVE_TEST(XX) {
+    static void testXX() {
       std::vector< float > param{1.0f, 1.0f};
       gum::Dirichlet       dir(param);
 
@@ -68,7 +74,7 @@ namespace gum_tests {
         res[j] /= sum;
       }
 
-      TS_ASSERT(fabs(res[0] - res[1]) < 0.03)
+      CHECK(fabs(res[0] - res[1]) < 0.03);
 
 
       param[0] = 10000;
@@ -85,7 +91,7 @@ namespace gum_tests {
       for (gum::Idx j = 0; j < res.size(); ++j) {
         res[j] /= sum;
       }
-      TS_ASSERT(1 - res[0] < 0.01)
+      CHECK(1 - res[0] < 0.01);
 
       sum    = 0;
       res[0] = res[1] = 0;
@@ -99,7 +105,7 @@ namespace gum_tests {
       for (gum::Idx j = 0; j < res.size(); ++j) {
         res[j] /= sum;
       }
-      TS_ASSERT(1 - res[0] < 0.01)
+      CHECK(1 - res[0] < 0.01);
 
       sum    = 0;
       res[0] = res[1] = 0;
@@ -113,8 +119,10 @@ namespace gum_tests {
       for (gum::Idx j = 0; j < res.size(); ++j) {
         res[j] /= sum;
       }
-      TS_ASSERT(fabs(res[0] - res[1]) < 0.03)
+      CHECK(fabs(res[0] - res[1]) < 0.03);
     }   // namespace gum_tests
   };
+
+  GUM_TEST_ACTIF(XX)
 
 } /* namespace gum_tests */

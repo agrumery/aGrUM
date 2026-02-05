@@ -1,7 +1,7 @@
 /****************************************************************************
  *   This file is part of the aGrUM/pyAgrum library.                        *
  *                                                                          *
- *   Copyright (c) 2005-2025 by                                             *
+ *   Copyright (c) 2005-2026 by                                             *
  *       - Pierre-Henri WUILLEMIN(_at_LIP6)                                 *
  *       - Christophe GONZALES(_at_AMU)                                     *
  *                                                                          *
@@ -27,7 +27,7 @@
  *                                                                          *
  *   See LICENCES for more details.                                         *
  *                                                                          *
- *   SPDX-FileCopyrightText: Copyright 2005-2025                            *
+ *   SPDX-FileCopyrightText: Copyright 2005-2026                            *
  *       - Pierre-Henri WUILLEMIN(_at_LIP6)                                 *
  *       - Christophe GONZALES(_at_AMU)                                     *
  *   SPDX-License-Identifier: LGPL-3.0-or-later OR MIT                      *
@@ -37,6 +37,7 @@
  *   gitlab   : https://gitlab.com/agrumery/agrum                           *
  *                                                                          *
  ****************************************************************************/
+
 #pragma once
 
 
@@ -52,11 +53,16 @@
 #include <agrum/BN/algorithms/structuralComparator.h>
 #include <agrum/BN/BayesNet.h>
 
+#undef GUM_CURRENT_SUITE
+#undef GUM_CURRENT_MODULE
+#define GUM_CURRENT_SUITE  StructuralComparator
+#define GUM_CURRENT_MODULE BN
+
 namespace gum_tests {
 
-  class GUM_TEST_SUITE(StructuralComparator) {
+  struct StructuralComparatorTestSuite {
     public:
-    GUM_ACTIVE_TEST(_graph) {
+    static void test_graph() {
       gum::StructuralComparator comp;
 
       gum::DiGraph   dig1, dig2;
@@ -64,17 +70,17 @@ namespace gum_tests {
       dig1.addNodeWithId(0);
       undig1.addNodeWithId(0);
 
-      TS_ASSERT_THROWS(comp.compare(dig1, dig2), const gum::OperationNotAllowed&)
-      TS_ASSERT_THROWS(comp.compare(dig2, dig1), const gum::OperationNotAllowed&)
-      TS_ASSERT_THROWS(comp.compare(undig1, undig2), const gum::OperationNotAllowed&)
-      TS_ASSERT_THROWS(comp.compare(undig2, undig1), const gum::OperationNotAllowed&)
+      CHECK_THROWS_AS(comp.compare(dig1, dig2), const gum::OperationNotAllowed&);
+      CHECK_THROWS_AS(comp.compare(dig2, dig1), const gum::OperationNotAllowed&);
+      CHECK_THROWS_AS(comp.compare(undig1, undig2), const gum::OperationNotAllowed&);
+      CHECK_THROWS_AS(comp.compare(undig2, undig1), const gum::OperationNotAllowed&);
 
       dig2.addNodeWithId(2);
       undig2.addNodeWithId(2);
-      TS_ASSERT_THROWS(comp.compare(dig1, dig2), const gum::InvalidNode&)
-      TS_ASSERT_THROWS(comp.compare(dig2, dig1), const gum::InvalidNode&)
-      TS_ASSERT_THROWS(comp.compare(undig1, undig2), const gum::InvalidNode&)
-      TS_ASSERT_THROWS(comp.compare(undig2, undig1), const gum::InvalidNode&)
+      CHECK_THROWS_AS(comp.compare(dig1, dig2), const gum::InvalidNode&);
+      CHECK_THROWS_AS(comp.compare(dig2, dig1), const gum::InvalidNode&);
+      CHECK_THROWS_AS(comp.compare(undig1, undig2), const gum::InvalidNode&);
+      CHECK_THROWS_AS(comp.compare(undig2, undig1), const gum::InvalidNode&);
 
       dig1.addNodeWithId(1);
       dig1.addNodeWithId(2);
@@ -87,9 +93,9 @@ namespace gum_tests {
       dig2.addArc(1, 2);
 
       comp.compare(dig1, dig2);
-      TS_ASSERT_DELTA(comp.precision_skeleton(), 0.666, 1e-3)
-      TS_ASSERT_DELTA(comp.recall_skeleton(), 1, 1e-3)
-      TS_ASSERT_DELTA(comp.f_score_skeleton(), 0.8, 1e-3)
+      CHECK((comp.precision_skeleton()) == doctest::Approx(0.666).epsilon(1e-3));
+      CHECK((comp.recall_skeleton()) == doctest::Approx(1).epsilon(1e-3));
+      CHECK((comp.f_score_skeleton()) == doctest::Approx(0.8).epsilon(1e-3));
 
       undig1.addNodeWithId(1);
       undig1.addNodeWithId(2);
@@ -102,9 +108,9 @@ namespace gum_tests {
       undig2.addEdge(2, 1);
 
       comp.compare(undig1, undig2);
-      TS_ASSERT_DELTA(comp.precision_skeleton(), 0.666, 1e-3)
-      TS_ASSERT_DELTA(comp.recall_skeleton(), 1, 1e-3)
-      TS_ASSERT_DELTA(comp.f_score_skeleton(), 0.8, 1e-3)
+      CHECK((comp.precision_skeleton()) == doctest::Approx(0.666).epsilon(1e-3));
+      CHECK((comp.recall_skeleton()) == doctest::Approx(1).epsilon(1e-3));
+      CHECK((comp.f_score_skeleton()) == doctest::Approx(0.8).epsilon(1e-3));
 
       // creating complete graph
       gum::PDAG graph;
@@ -130,36 +136,36 @@ namespace gum_tests {
 
       gum::PDAG g;
 
-      TS_ASSERT_THROWS(comp.compare(asia, g), const gum::OperationNotAllowed&)
+      CHECK_THROWS_AS(comp.compare(asia, g), const gum::OperationNotAllowed&);
 
       for (gum::Size i = 0; i < 16; i += 2) {
         g.addNodeWithId(i);
       }
 
-      TS_ASSERT_THROWS(comp.compare(asia, g), const gum::InvalidNode&)
-      TS_GUM_ASSERT_THROWS_NOTHING(comp.compare(asia, graph))
+      CHECK_THROWS_AS(comp.compare(asia, g), const gum::InvalidNode&);
+      GUM_CHECK_ASSERT_THROWS_NOTHING(comp.compare(asia, graph));
 
       comp.compare(asia, graph);
-      TS_ASSERT_DELTA(comp.precision_skeleton(), 0.2857, 1e-3)
-      TS_ASSERT_DELTA(comp.recall_skeleton(), 1, 1e-3)
-      TS_ASSERT_DELTA(comp.f_score_skeleton(), 0.4444, 1e-3)
-      TS_ASSERT_DELTA(comp.precision(), 0, 1e-3)
+      CHECK((comp.precision_skeleton()) == doctest::Approx(0.2857).epsilon(1e-3));
+      CHECK((comp.recall_skeleton()) == doctest::Approx(1).epsilon(1e-3));
+      CHECK((comp.f_score_skeleton()) == doctest::Approx(0.4444).epsilon(1e-3));
+      CHECK((comp.precision()) == doctest::Approx(0).epsilon(1e-3));
     }   // namespace gum_tests
 
-    GUM_ACTIVE_TEST(_bn) {
+    static void test_bn() {
       gum::StructuralComparator comp;
 
       gum::BayesNet< double > bn1, bn2;
       bn1 = bn1.fastPrototype("0->1;0->2");
       bn2 = bn2.fastPrototype("0->1->2;0->2");
 
-      TS_GUM_ASSERT_THROWS_NOTHING(comp.compare(bn1, bn2))
-      TS_ASSERT_DELTA(comp.precision_skeleton(), 0.666, 1e-3)
-      TS_ASSERT_DELTA(comp.recall_skeleton(), 1, 1e-3)
-      TS_ASSERT_DELTA(comp.f_score_skeleton(), 0.8, 1e-3)
-      TS_ASSERT_DELTA(comp.precision(), 0.666, 1e-3)
-      TS_ASSERT_DELTA(comp.recall(), 1, 1e-3)
-      TS_ASSERT_DELTA(comp.f_score(), 0.8, 1e-3)
+      GUM_CHECK_ASSERT_THROWS_NOTHING(comp.compare(bn1, bn2));
+      CHECK((comp.precision_skeleton()) == doctest::Approx(0.666).epsilon(1e-3));
+      CHECK((comp.recall_skeleton()) == doctest::Approx(1).epsilon(1e-3));
+      CHECK((comp.f_score_skeleton()) == doctest::Approx(0.8).epsilon(1e-3));
+      CHECK((comp.precision()) == doctest::Approx(0.666).epsilon(1e-3));
+      CHECK((comp.recall()) == doctest::Approx(1).epsilon(1e-3));
+      CHECK((comp.f_score()) == doctest::Approx(0.8).epsilon(1e-3));
 
       // creating asia
       gum::BayesNet< double > asia;
@@ -180,16 +186,19 @@ namespace gum_tests {
       mg.addEdge(4, 7);
       mg.addEdge(2, 3);
 
-      TS_GUM_ASSERT_THROWS_NOTHING(comp.compare(mg, asia))
+      GUM_CHECK_ASSERT_THROWS_NOTHING(comp.compare(mg, asia));
 
       comp.compare(asia, mg);
-      TS_ASSERT_DELTA(comp.precision(), 0.5, 1e-3)
-      TS_ASSERT_DELTA(comp.recall(), 0.8, 1e-3)
-      TS_ASSERT_DELTA(comp.f_score(), 0.615384, 1e-3)
-      TS_ASSERT_DELTA(comp.precision_skeleton(), 0.875, 1e-3)
-      TS_ASSERT_DELTA(comp.recall_skeleton(), 0.875, 1e-3)
-      TS_ASSERT_DELTA(comp.f_score_skeleton(), 0.875, 1e-3)
+      CHECK((comp.precision()) == doctest::Approx(0.5).epsilon(1e-3));
+      CHECK((comp.recall()) == doctest::Approx(0.8).epsilon(1e-3));
+      CHECK((comp.f_score()) == doctest::Approx(0.615384).epsilon(1e-3));
+      CHECK((comp.precision_skeleton()) == doctest::Approx(0.875).epsilon(1e-3));
+      CHECK((comp.recall_skeleton()) == doctest::Approx(0.875).epsilon(1e-3));
+      CHECK((comp.f_score_skeleton()) == doctest::Approx(0.875).epsilon(1e-3));
     }
   };
+
+  GUM_TEST_ACTIF(_graph)
+  GUM_TEST_ACTIF(_bn)
 
 } /* namespace gum_tests */

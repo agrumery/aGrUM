@@ -21,7 +21,7 @@ def about():
 ############################################################################
 #   This file is part of the aGrUM/pyAgrum library.                        #
 #                                                                          #
-#   Copyright (c) 2005-2025 by                                             #
+#   Copyright (c) 2005-2026 by                                             #
 #       - Pierre-Henri WUILLEMIN(_at_LIP6)                                 #
 #       - Christophe GONZALES(_at_AMU)                                     #
 #                                                                          #
@@ -47,7 +47,7 @@ def about():
 #                                                                          #
 #   See LICENCES for more details.                                         #
 #                                                                          #
-#   SPDX-FileCopyrightText: Copyright 2005-2025                            #
+#   SPDX-FileCopyrightText: Copyright 2005-2026                            #
 #       - Pierre-Henri WUILLEMIN(_at_LIP6)                                 #
 #       - Christophe GONZALES(_at_AMU)                                     #
 #   SPDX-License-Identifier: LGPL-3.0-or-later OR MIT                      #

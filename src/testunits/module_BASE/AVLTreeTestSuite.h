@@ -1,7 +1,7 @@
 /****************************************************************************
  *   This file is part of the aGrUM/pyAgrum library.                        *
  *                                                                          *
- *   Copyright (c) 2005-2025 by                                             *
+ *   Copyright (c) 2005-2026 by                                             *
  *       - Pierre-Henri WUILLEMIN(_at_LIP6)                                 *
  *       - Christophe GONZALES(_at_AMU)                                     *
  *                                                                          *
@@ -27,7 +27,7 @@
  *                                                                          *
  *   See LICENCES for more details.                                         *
  *                                                                          *
- *   SPDX-FileCopyrightText: Copyright 2005-2025                            *
+ *   SPDX-FileCopyrightText: Copyright 2005-2026                            *
  *       - Pierre-Henri WUILLEMIN(_at_LIP6)                                 *
  *       - Christophe GONZALES(_at_AMU)                                     *
  *   SPDX-License-Identifier: LGPL-3.0-or-later OR MIT                      *
@@ -37,6 +37,7 @@
  *   gitlab   : https://gitlab.com/agrumery/agrum                           *
  *                                                                          *
  ****************************************************************************/
+
 #pragma once
 
 
@@ -49,16 +50,21 @@
 #include <agrum/base/core/AVLTree.h>
 #include <agrum/base/core/heap.h>
 
+#undef GUM_CURRENT_SUITE
+#undef GUM_CURRENT_MODULE
+#define GUM_CURRENT_SUITE  AVLTree
+#define GUM_CURRENT_MODULE GUMBASE
+
 namespace gum_tests {
 
-  class GUM_TEST_SUITE(AVLTree) {
+  struct AVLTreeTestSuite {
     public:
-    GUM_ACTIVE_TEST(_int) {
+    static void test_int() {
       gum::AVLTree< int > tree1;
-      TS_GUM_ASSERT_EQUALS(tree1.empty(), true)
-      TS_GUM_ASSERT_EQUALS(tree1.size(), gum::Size(0))
-      TS_ASSERT_THROWS(tree1.lowestValue(), const gum::NotFound&)
-      TS_ASSERT_THROWS(tree1.highestValue(), const gum::NotFound&)
+      CHECK((tree1.empty()) == (true));
+      CHECK((tree1.size()) == (gum::Size(0)));
+      CHECK_THROWS_AS(tree1.lowestValue(), const gum::NotFound&);
+      CHECK_THROWS_AS(tree1.highestValue(), const gum::NotFound&);
 
       gum::AVLTree< int > tree2 = tree1;
 
@@ -72,19 +78,19 @@ namespace gum_tests {
       std::sort(vect.begin(), vect.end());
       gum::AVLTreeIterator< int > tree1_beg(tree1, true), tree1_end = tree1.end();
       for (int i = 0; tree1_beg != tree1_end; ++tree1_beg, ++i)
-        TS_GUM_ASSERT_EQUALS(*tree1_beg, vect[i]);
+        CHECK((*tree1_beg) == (vect[i]));
       int i = 0;
       for (auto iter = tree1.begin(); iter != tree1.end(); ++iter) {
-        TS_GUM_ASSERT_EQUALS(*iter, vect[i++])
+        CHECK((*iter) == (vect[i++]));
       }
       i = 0;
       for (const auto val: tree2) {
-        TS_GUM_ASSERT_EQUALS(val, vect[i++]);
+        CHECK((val) == (vect[i++]));
       }
       gum::AVLTree< int > tree3(std::move(tree2));
       i = 0;
       for (const auto val: tree3) {
-        TS_GUM_ASSERT_EQUALS(val, vect[i++]);
+        CHECK((val) == (vect[i++]));
       }
 
       {
@@ -98,10 +104,10 @@ namespace gum_tests {
           str << val;
         }
         str << '}';
-        TS_GUM_ASSERT_EQUALS(sss, str.str())
+        CHECK((sss) == (str.str()));
         std::stringstream str2;
         str2 << tree3;
-        TS_GUM_ASSERT_EQUALS(str.str(), str2.str())
+        CHECK((str.str()) == (str2.str()));
       }
 
       gum::AVLTree< int > tree4;
@@ -109,17 +115,17 @@ namespace gum_tests {
         tree4.insert(i);
       i = static_cast< int >(tree4.size()) - 1;
       for (auto iter = tree4.rbegin(); iter != tree4.rend(); ++iter, --i) {
-        TS_GUM_ASSERT_EQUALS(*iter, i)
+        CHECK((*iter) == (i));
       }
       i = 99;
       for (auto iter = tree4.rbegin(); iter != tree4.rend(); iter += 2, i -= 2) {
-        TS_GUM_ASSERT_EQUALS(*iter, i)
+        CHECK((*iter) == (i));
       }
       i = 0;
       for (auto iter = tree4.begin(); iter != tree4.end(); iter += 2, i += 2) {
-        TS_GUM_ASSERT_EQUALS(*iter, i)
+        CHECK((*iter) == (i));
       }
-      TS_GUM_ASSERT_EQUALS(tree4.size(), gum::Size(100))
+      CHECK((tree4.size()) == (gum::Size(100)));
 
       {
         auto xiter1 = tree4.begin();
@@ -147,57 +153,57 @@ namespace gum_tests {
       for (auto iter = tree4.beginSafe(); iter != tree4.endSafe(); i++, iter3 += 3) {
         iter += 2;
         tree4.erase(iter);
-        TS_ASSERT_THROWS(*iter, const gum::NotFound&)
+        CHECK_THROWS_AS(*iter, const gum::NotFound&);
         iter += 2;
 
         if (i == 1) {
-          TS_ASSERT_THROWS(*iter3, const gum::NotFound&)
+          CHECK_THROWS_AS(*iter3, const gum::NotFound&);
           auto iter2 = iter3;
           --iter2;
-          TS_GUM_ASSERT_EQUALS(*iter2, 5)
-        } else if (i >= 2) TS_GUM_ASSERT_EQUALS(*iter3, (i - 2) * 4 + 9)
+          CHECK((*iter2) == (5));
+        } else if (i >= 2) CHECK((*iter3) == ((i - 2) * 4 + 9));
       }
 
-      TS_GUM_ASSERT_EQUALS(tree2.size(), 100)
+      CHECK((tree2.size()) == (100));
       i          = 0;
       auto iter4 = tree2.rbeginSafe();
       iter4 += 3;
       for (auto iter = tree2.rbeginSafe(); iter != tree2.rendSafe(); iter4 += 3, ++i) {
         iter += 2;
         tree2.erase(iter);
-        TS_ASSERT_THROWS(*iter, const gum::NotFound&)
+        CHECK_THROWS_AS(*iter, const gum::NotFound&);
         iter += 2;
 
         if (i == 1) {
-          TS_ASSERT_THROWS(*iter4, const gum::NotFound&)
+          CHECK_THROWS_AS(*iter4, const gum::NotFound&);
           auto iter2 = iter4;
           --iter2;
-          TS_GUM_ASSERT_EQUALS(*iter2, 95)
-        } else if (i >= 2) TS_GUM_ASSERT_EQUALS(*iter4, 99 - (i - 2) * 4 - 9)
+          CHECK((*iter2) == (95));
+        } else if (i >= 2) CHECK((*iter4) == (99 - (i - 2) * 4 - 9));
       }
 
       auto iter5 = gum::AVLTreeIteratorSafe(tree2, false);   // equiv rbegin
-      TS_GUM_ASSERT_EQUALS(++iter5, tree2.endSafe())
-      TS_ASSERT_THROWS_NOTHING(tree2.erase(iter5));
+      CHECK((++iter5) == (tree2.endSafe()));
+      CHECK_NOTHROW(tree2.erase(iter5));
 
       iter3 = tree2.beginSafe();
       iter4 = tree2.rbeginSafe();
       tree2.clear();
-      TS_GUM_ASSERT_EQUALS(iter3, tree2.endSafe())
-      TS_GUM_ASSERT_EQUALS(iter4, tree2.rendSafe())
+      CHECK((iter3) == (tree2.endSafe()));
+      CHECK((iter4) == (tree2.rendSafe()));
 
       tree2.insert(std::move(4));
       tree2.emplace(5);
-      TS_GUM_ASSERT_EQUALS(tree2.size(), gum::Size(2))
+      CHECK((tree2.size()) == (gum::Size(2)));
       tree2.erase(4);
       tree2.erase(3);
-      TS_GUM_ASSERT_EQUALS(tree2.size(), gum::Size(1))
-      TS_GUM_ASSERT_EQUALS(*(tree2.begin()), 5)
+      CHECK((tree2.size()) == (gum::Size(1)));
+      CHECK((*(tree2.begin())) == (5));
       tree2.erase(5);
-      TS_GUM_ASSERT_EQUALS(tree2.size(), gum::Size(0))
+      CHECK((tree2.size()) == (gum::Size(0)));
     }
 
-    GUM_ACTIVE_TEST(_safe) {
+    static void test_safe() {
       gum::AVLTree< int > tree1;
       std::vector< int >  vect  = {3, 1, 7, -5, 2, 4, 3, 6, 7, 7};
       auto                iter1 = tree1.beginSafe();
@@ -205,18 +211,18 @@ namespace gum_tests {
       auto                iter3 = tree1.rbeginSafe();
       auto                iter4 = new gum::AVLTreeReverseIteratorSafe< int >(tree1);
 
-      TS_GUM_ASSERT_EQUALS(iter1, *iter2)
-      TS_GUM_ASSERT_EQUALS(iter3, *iter4)
+      CHECK((iter1) == (*iter2));
+      CHECK((iter3) == (*iter4));
       gum::AVLTree< int > tree2(std::move(tree1));
       auto                iter5 = tree1.beginSafe();
       auto                iter6 = tree1.rbeginSafe();
-      TS_GUM_ASSERT_EQUALS(iter5, *iter2)
-      TS_GUM_ASSERT_EQUALS(iter6, *iter4)
+      CHECK((iter5) == (*iter2));
+      CHECK((iter6) == (*iter4));
       delete iter2;
       delete iter4;
       gum::AVLTree< int > tree3(std::move(tree2));
-      TS_GUM_ASSERT_EQUALS(iter5, iter1)
-      TS_GUM_ASSERT_EQUALS(iter6, iter3)
+      CHECK((iter5) == (iter1));
+      CHECK((iter6) == (iter3));
     }
 
     struct Mycmp {
@@ -226,12 +232,12 @@ namespace gum_tests {
       }
     };
 
-    GUM_ACTIVE_TEST(_pairs) {
+    static void test_pairs() {
       gum::AVLTree< std::pair< int, int >, Mycmp > tree1;
-      TS_GUM_ASSERT_EQUALS(tree1.empty(), true)
-      TS_GUM_ASSERT_EQUALS(tree1.size(), gum::Size(0))
-      TS_ASSERT_THROWS(tree1.lowestValue(), const gum::NotFound&)
-      TS_ASSERT_THROWS(tree1.highestValue(), const gum::NotFound&)
+      CHECK((tree1.empty()) == (true));
+      CHECK((tree1.size()) == (gum::Size(0)));
+      CHECK_THROWS_AS(tree1.lowestValue(), const gum::NotFound&);
+      CHECK_THROWS_AS(tree1.highestValue(), const gum::NotFound&);
 
       gum::AVLTree< std::pair< int, int >, Mycmp > tree2 = tree1;
 
@@ -250,21 +256,21 @@ namespace gum_tests {
       gum::AVLTreeIterator< std::pair< int, int >, Mycmp > tree1_beg(tree1, true),
           tree1_end = tree1.end();
       for (int i = 0; tree1_beg != tree1_end; ++tree1_beg, ++i) {
-        TS_GUM_ASSERT_EQUALS(*tree1_beg, vect[i]);
+        CHECK((*tree1_beg) == (vect[i]));
       }
       int i = 0;
       for (auto iter = tree1.begin(); iter != tree1.end(); ++iter) {
-        TS_GUM_ASSERT_EQUALS(*iter, vect[i++])
+        CHECK((*iter) == (vect[i++]));
       }
       i = 0;
       for (const auto& val: tree2) {
-        TS_GUM_ASSERT_EQUALS(val, vect[i++]);
+        CHECK((val) == (vect[i++]));
       }
 
       gum::AVLTree< std::pair< int, int >, Mycmp > tree3(std::move(tree2));
       i = 0;
       for (const auto& val: tree3) {
-        TS_GUM_ASSERT_EQUALS(val, vect[i++]);
+        CHECK((val) == (vect[i++]));
       }
 
       gum::AVLTree< std::pair< int, int >, Mycmp > tree4;
@@ -273,19 +279,19 @@ namespace gum_tests {
       i = static_cast< int >(tree4.size()) - 1;
       for (auto iter = tree4.rbegin(); iter != tree4.rend(); ++iter, --i) {
         std::pair< int, int > pair(i, i + 5);
-        TS_GUM_ASSERT_EQUALS(*iter, pair)
+        CHECK((*iter) == (pair));
       }
       i = 99;
       for (auto iter = tree4.rbegin(); iter != tree4.rend(); iter += 2, i -= 2) {
         std::pair< int, int > pair(i, i + 5);
-        TS_GUM_ASSERT_EQUALS(*iter, pair)
+        CHECK((*iter) == (pair));
       }
       i = 0;
       for (auto iter = tree4.begin(); iter != tree4.end(); iter += 2, i += 2) {
         std::pair< int, int > pair(i, i + 5);
-        TS_GUM_ASSERT_EQUALS(*iter, pair)
+        CHECK((*iter) == (pair));
       }
-      TS_GUM_ASSERT_EQUALS(tree4.size(), gum::Size(100))
+      CHECK((tree4.size()) == (gum::Size(100)));
 
       tree2 = tree4;
 
@@ -295,71 +301,71 @@ namespace gum_tests {
       for (auto iter = tree4.beginSafe(); iter != tree4.endSafe(); i++, iter3 += 3) {
         iter += 2;
         tree4.erase(iter);
-        TS_ASSERT_THROWS(*iter, const gum::NotFound&)
+        CHECK_THROWS_AS(*iter, const gum::NotFound&);
         iter += 2;
 
         if (i == 1) {
-          TS_ASSERT_THROWS(*iter3, const gum::NotFound&)
+          CHECK_THROWS_AS(*iter3, const gum::NotFound&);
           auto iter2 = iter3;
           --iter2;
           std::pair< int, int > pair(5, 10);
-          TS_GUM_ASSERT_EQUALS(*iter2, pair)
+          CHECK((*iter2) == (pair));
         } else if (i >= 2) {
           const int             x = (i - 2) * 4 + 9;
           std::pair< int, int > pair(x, x + 5);
-          TS_GUM_ASSERT_EQUALS(*iter3, pair)
+          CHECK((*iter3) == (pair));
         }
       }
 
-      TS_GUM_ASSERT_EQUALS(tree2.size(), 100)
+      CHECK((tree2.size()) == (100));
       i          = 0;
       auto iter4 = tree2.rbeginSafe();
       iter4 += 3;
       for (auto iter = tree2.rbeginSafe(); iter != tree2.rendSafe(); iter4 += 3, ++i) {
         iter += 2;
         tree2.erase(iter);
-        TS_ASSERT_THROWS(*iter, const gum::NotFound&)
+        CHECK_THROWS_AS(*iter, const gum::NotFound&);
         iter += 2;
 
         if (i == 1) {
-          TS_ASSERT_THROWS(*iter4, const gum::NotFound&)
+          CHECK_THROWS_AS(*iter4, const gum::NotFound&);
           auto iter2 = iter4;
           --iter2;
           std::pair< int, int > pair(95, 100);
-          TS_GUM_ASSERT_EQUALS(*iter2, pair)
+          CHECK((*iter2) == (pair));
         } else if (i >= 2) {
           const int             x = 99 - (i - 2) * 4 - 9;
           std::pair< int, int > pair(x, x + 5);
-          TS_GUM_ASSERT_EQUALS(*iter4, pair)
+          CHECK((*iter4) == (pair));
         }
       }
 
       auto iter5 = gum::AVLTreeIteratorSafe(tree2, false);   // equiv rbegin
-      TS_GUM_ASSERT_EQUALS(++iter5, tree2.endSafe())
-      TS_ASSERT_THROWS_NOTHING(tree2.erase(iter5));
+      CHECK((++iter5) == (tree2.endSafe()));
+      CHECK_NOTHROW(tree2.erase(iter5));
 
       iter3 = tree2.beginSafe();
       iter4 = tree2.rbeginSafe();
       tree2.clear();
-      TS_GUM_ASSERT_EQUALS(iter3, tree2.endSafe())
-      TS_GUM_ASSERT_EQUALS(iter4, tree2.rendSafe())
+      CHECK((iter3) == (tree2.endSafe()));
+      CHECK((iter4) == (tree2.rendSafe()));
 
       std::pair< int, int > pair(4, 9);
       tree2.insert(std::move(pair));
       tree2.emplace(5, 10);
-      TS_GUM_ASSERT_EQUALS(tree2.size(), gum::Size(2))
+      CHECK((tree2.size()) == (gum::Size(2)));
       std::pair< int, int > pair2(4, 9);
       tree2.erase(pair2);
       std::pair< int, int > pair3(3, 8);
       tree2.erase(pair3);
-      TS_GUM_ASSERT_EQUALS(tree2.size(), gum::Size(1))
+      CHECK((tree2.size()) == (gum::Size(1)));
       std::pair< int, int > pair4(5, 10);
-      TS_GUM_ASSERT_EQUALS(*(tree2.begin()), pair4)
+      CHECK((*(tree2.begin())) == (pair4));
       tree2.erase(pair4);
-      TS_GUM_ASSERT_EQUALS(tree2.size(), gum::Size(0))
+      CHECK((tree2.size()) == (gum::Size(0)));
     }
 
-    GUM_ACTIVE_TEST(_erase) {
+    static void test_erase() {
       gum::AVLTree< int >      tree{8, 10, 2, 23, 24};
       const std::vector< int > vect{2, 8, 10, 23, 24};
       {
@@ -373,30 +379,30 @@ namespace gum_tests {
           str << val;
         }
         str << '}';
-        TS_GUM_ASSERT_EQUALS(sss, str.str())
+        CHECK((sss) == (str.str()));
         std::stringstream str2;
         str2 << tree;
-        TS_GUM_ASSERT_EQUALS(str.str(), str2.str())
+        CHECK((str.str()) == (str2.str()));
       }
 
-      TS_ASSERT_EQUALS(tree.size(), static_cast< gum::Size >(5))
-      TS_ASSERT_EQUALS(tree.empty(), false)
-      TS_ASSERT_EQUALS(tree.contains(8), true)
-      TS_ASSERT_EQUALS(tree.contains(5), false)
+      CHECK((tree.size()) == (static_cast< gum::Size >(5)));
+      CHECK((tree.empty()) == (false));
+      CHECK((tree.contains(8)) == (true));
+      CHECK((tree.contains(5)) == (false));
 
       tree.erase(tree.highestValue());
       const int high = tree.highestValue();
-      TS_ASSERT_EQUALS(high, 23)
-      TS_ASSERT_EQUALS(tree.highestValue(), 23)
+      CHECK((high) == (23));
+      CHECK((tree.highestValue()) == (23));
 
       tree.erase(tree.highestValue());   // remains: {2, 8, 10}
-      TS_ASSERT_EQUALS(tree.highestValue(), 10)
+      CHECK((tree.highestValue()) == (10));
       tree.erase(tree.highestValue());   // remains: {2, 8}
-      TS_ASSERT_EQUALS(tree.highestValue(), 8)
+      CHECK((tree.highestValue()) == (8));
       tree.erase(tree.highestValue());   // remains: {2}
-      TS_ASSERT_EQUALS(tree.highestValue(), 2)
+      CHECK((tree.highestValue()) == (2));
       tree.erase(tree.highestValue());   // remains: {}
-      TS_ASSERT_THROWS(tree.highestValue(), gum::NotFound&)
+      CHECK_THROWS_AS(tree.highestValue(), gum::NotFound&);
 
       for (const auto val: vect)
         tree.insert(val);
@@ -411,33 +417,33 @@ namespace gum_tests {
           str << val;
         }
         str << '}';
-        TS_GUM_ASSERT_EQUALS(sss, str.str())
+        CHECK((sss) == (str.str()));
         std::stringstream str2;
         str2 << tree;
-        TS_GUM_ASSERT_EQUALS(str.str(), str2.str())
+        CHECK((str.str()) == (str2.str()));
       }
 
       tree.erase(tree.lowestValue());   // remains: {8, 10, 23, 24}
       const int low = tree.lowestValue();
-      TS_ASSERT_EQUALS(low, 8)
-      TS_ASSERT_EQUALS(tree.lowestValue(), 8)
+      CHECK((low) == (8));
+      CHECK((tree.lowestValue()) == (8));
 
       tree.erase(tree.lowestValue());   // remains: {10, 23, 24}
-      TS_ASSERT_EQUALS(tree.lowestValue(), 10)
+      CHECK((tree.lowestValue()) == (10));
       tree.erase(tree.lowestValue());   // remains: {23, 24}
-      TS_ASSERT_EQUALS(tree.lowestValue(), 23)
+      CHECK((tree.lowestValue()) == (23));
       tree.erase(tree.lowestValue());   // remains: {24}
-      TS_ASSERT_EQUALS(tree.lowestValue(), 24)
+      CHECK((tree.lowestValue()) == (24));
       tree.erase(tree.lowestValue());   // remains: {}
-      TS_ASSERT_THROWS(tree.lowestValue(), gum::NotFound&)
+      CHECK_THROWS_AS(tree.lowestValue(), gum::NotFound&);
     }
 
-    GUM_ACTIVE_TEST(_shuffle) {
+    static void test_shuffle() {
       gum::AVLTree< std::pair< int, int >, Mycmp > tree;
-      TS_GUM_ASSERT_EQUALS(tree.empty(), true)
-      TS_GUM_ASSERT_EQUALS(tree.size(), gum::Size(0))
-      TS_ASSERT_THROWS(tree.lowestValue(), const gum::NotFound&)
-      TS_ASSERT_THROWS(tree.highestValue(), const gum::NotFound&)
+      CHECK((tree.empty()) == (true));
+      CHECK((tree.size()) == (gum::Size(0)));
+      CHECK_THROWS_AS(tree.lowestValue(), const gum::NotFound&);
+      CHECK_THROWS_AS(tree.highestValue(), const gum::NotFound&);
 
       std::vector< std::pair< int, int > > vect;
       for (int i = 0; i < 100; ++i) {
@@ -452,26 +458,26 @@ namespace gum_tests {
           tree.insert(std::move(elt2));
         }
       }
-      TS_GUM_ASSERT_EQUALS(vect2string(vect), tree.toString())
+      CHECK((vect2string(vect)) == (tree.toString()));
 
       std::shuffle(std::begin(vect2), std::end(vect2), gum::randomGenerator());
       for (const auto& elt: vect2) {
         tree.erase(elt);
         vect.erase(vect.begin() + pos2vect(vect, elt));
-        TS_GUM_ASSERT_EQUALS(vect2string(vect), tree.toString())
+        CHECK((vect2string(vect)) == (tree.toString()));
       }
     }
 
     private:
-    std::size_t pos2vect(const std::vector< std::pair< int, int > >& vect,
-                         const std::pair< int, int >&                elt) {
+    static std::size_t pos2vect(const std::vector< std::pair< int, int > >& vect,
+                                const std::pair< int, int >&                elt) {
       for (std::size_t i = 0, size = vect.size(); i < size; ++i) {
         if (vect[i] == elt) return i;
       }
       throw(gum::NotFound(0));
     }
 
-    std::string vect2string(const std::vector< std::pair< int, int > >& vect) {
+    static std::string vect2string(const std::vector< std::pair< int, int > >& vect) {
       bool              deja = false;
       std::stringstream stream;
       stream << "{";
@@ -484,5 +490,11 @@ namespace gum_tests {
       return stream.str();
     }
   };
+
+  GUM_TEST_ACTIF(_int)
+  GUM_TEST_ACTIF(_safe)
+  GUM_TEST_ACTIF(_pairs)
+  GUM_TEST_ACTIF(_erase)
+  GUM_TEST_ACTIF(_shuffle)
 
 }   // namespace gum_tests

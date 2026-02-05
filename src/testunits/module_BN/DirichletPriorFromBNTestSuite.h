@@ -1,7 +1,7 @@
 /****************************************************************************
  *   This file is part of the aGrUM/pyAgrum library.                        *
  *                                                                          *
- *   Copyright (c) 2005-2025 by                                             *
+ *   Copyright (c) 2005-2026 by                                             *
  *       - Pierre-Henri WUILLEMIN(_at_LIP6)                                 *
  *       - Christophe GONZALES(_at_AMU)                                     *
  *                                                                          *
@@ -27,7 +27,7 @@
  *                                                                          *
  *   See LICENCES for more details.                                         *
  *                                                                          *
- *   SPDX-FileCopyrightText: Copyright 2005-2025                            *
+ *   SPDX-FileCopyrightText: Copyright 2005-2026                            *
  *       - Pierre-Henri WUILLEMIN(_at_LIP6)                                 *
  *       - Christophe GONZALES(_at_AMU)                                     *
  *   SPDX-License-Identifier: LGPL-3.0-or-later OR MIT                      *
@@ -37,6 +37,7 @@
  *   gitlab   : https://gitlab.com/agrumery/agrum                           *
  *                                                                          *
  ****************************************************************************/
+
 #pragma once
 
 
@@ -50,15 +51,20 @@
 #include <agrum/base/stattests/recordCounter.h>
 #include <agrum/BN/learning/priors/DirichletPriorFromBN.h>
 
+#undef GUM_CURRENT_SUITE
+#undef GUM_CURRENT_MODULE
+#define GUM_CURRENT_SUITE  DirichletPriorFromBN
+#define GUM_CURRENT_MODULE BN
+
 namespace gum_tests {
 
-  class GUM_TEST_SUITE(DirichletPriorFromBN) {
+  struct DirichletPriorFromBNTestSuite {
     private:
-    void _test_prior_(gum::learning::DirichletPriorFromBN< double >& prior) {
+    static void _test_prior_(gum::learning::DirichletPriorFromBN< double >& prior) {
       prior.setWeight(100.0);
-      TS_ASSERT_EQUALS(prior.weight(), 100.0)
+      CHECK((prior.weight()) == (100.0));
 
-      TS_ASSERT_EQUALS(prior.getType(), gum::learning::PriorType::DirichletPriorType)
+      CHECK((prior.getType()) == (gum::learning::PriorType::DirichletPriorType));
 
       gum::NodeId                node0 = 0;
       std::vector< gum::NodeId > cond_empty;
@@ -66,9 +72,9 @@ namespace gum_tests {
       gum::learning::IdCondSet idset1(node0, cond_empty);   // #3,#0
       std::vector< double >    vect(3, 10.0);
       prior.addJointPseudoCount(idset1, vect);
-      TS_GUM_ASSERT_ALMOST_EQUALS(vect[0], 43.33333)        // 10 + 0.3333*100
-      TS_GUM_ASSERT_ALMOST_EQUALS(vect[1], 43.33333)
-      TS_GUM_ASSERT_ALMOST_EQUALS(vect[2], 43.33333)
+      CHECK(fabs((vect[0]) - (43.33333)) < 1e-5);           // 10 + 0.3333*100
+      CHECK(fabs((vect[1]) - (43.33333)) < 1e-5);
+      CHECK(fabs((vect[2]) - (43.33333)) < 1e-5);
 
       gum::NodeId              node1 = 1;                                // B
       gum::learning::IdCondSet idset2(node0, node1, cond_empty, true);   // #9,#0
@@ -79,29 +85,29 @@ namespace gum_tests {
       prior.setWeight(100.0);
       prior.addJointPseudoCount(idset2, vect);
 
-      TS_GUM_ASSERT_ALMOST_EQUALS(vect[0], 7.66666)   // 1 + 100 * 0.333 * 0.2
-      TS_GUM_ASSERT_ALMOST_EQUALS(vect[1], 7.66666)
-      TS_GUM_ASSERT_ALMOST_EQUALS(vect[2], 7.66666)
-      TS_GUM_ASSERT_ALMOST_EQUALS(vect[3], 11.0)
-      TS_GUM_ASSERT_ALMOST_EQUALS(vect[4], 11.0)
-      TS_GUM_ASSERT_ALMOST_EQUALS(vect[5], 11.0)
-      TS_GUM_ASSERT_ALMOST_EQUALS(vect[6], 17.66666)
-      TS_GUM_ASSERT_ALMOST_EQUALS(vect[7], 17.66666)
-      TS_GUM_ASSERT_ALMOST_EQUALS(vect[8], 17.666666)
+      CHECK(fabs((vect[0]) - (7.66666)) < 1e-5);   // 1 + 100 * 0.333 * 0.2
+      CHECK(fabs((vect[1]) - (7.66666)) < 1e-5);
+      CHECK(fabs((vect[2]) - (7.66666)) < 1e-5);
+      CHECK(fabs((vect[3]) - (11.0)) < 1e-5);
+      CHECK(fabs((vect[4]) - (11.0)) < 1e-5);
+      CHECK(fabs((vect[5]) - (11.0)) < 1e-5);
+      CHECK(fabs((vect[6]) - (17.66666)) < 1e-5);
+      CHECK(fabs((vect[7]) - (17.66666)) < 1e-5);
+      CHECK(fabs((vect[8]) - (17.666666)) < 1e-5);
 
       vect.clear();
       vect.resize(1, 1.0);
       std::fill(vect.begin(), vect.end(), 1.0);
       prior.addConditioningPseudoCount(idset1, vect);
-      TS_GUM_ASSERT_ALMOST_EQUALS(vect[0], 1 + prior.weight())
+      CHECK(fabs((vect[0]) - (1 + prior.weight())) < 1e-5);
 
       vect.clear();
       vect.resize(3, 1.0);
       std::fill(vect.begin(), vect.end(), 1.0);
       prior.addJointPseudoCount(idset1, vect);
-      TS_GUM_ASSERT_ALMOST_EQUALS(vect[0], 34.33333)   // 1 + 0.3333*100
-      TS_GUM_ASSERT_ALMOST_EQUALS(vect[1], 34.33333)
-      TS_GUM_ASSERT_ALMOST_EQUALS(vect[2], 34.33333)
+      CHECK(fabs((vect[0]) - (34.33333)) < 1e-5);   // 1 + 0.3333*100
+      CHECK(fabs((vect[1]) - (34.33333)) < 1e-5);
+      CHECK(fabs((vect[2]) - (34.33333)) < 1e-5);
 
       gum::NodeId                node3 = 3;
       std::vector< gum::NodeId > cond1{node3};
@@ -111,23 +117,23 @@ namespace gum_tests {
       vect.resize(9, 1.0);
       std::fill(vect.begin(), vect.end(), 1.0);
       prior.addJointPseudoCount(idset3, vect);
-      TS_GUM_ASSERT_ALMOST_EQUALS(vect[0], 12.11111)   // 1+100* (1/3) * (1/3)
-      TS_GUM_ASSERT_ALMOST_EQUALS(vect[1], 12.11111)
-      TS_GUM_ASSERT_ALMOST_EQUALS(vect[2], 12.11111)
-      TS_GUM_ASSERT_ALMOST_EQUALS(vect[3], 12.11111)
-      TS_GUM_ASSERT_ALMOST_EQUALS(vect[4], 12.11111)
-      TS_GUM_ASSERT_ALMOST_EQUALS(vect[5], 12.11111)
-      TS_GUM_ASSERT_ALMOST_EQUALS(vect[6], 12.11111)
-      TS_GUM_ASSERT_ALMOST_EQUALS(vect[7], 12.11111)
-      TS_GUM_ASSERT_ALMOST_EQUALS(vect[8], 12.11111)
+      CHECK(fabs((vect[0]) - (12.11111)) < 1e-5);   // 1+100* (1/3) * (1/3)
+      CHECK(fabs((vect[1]) - (12.11111)) < 1e-5);
+      CHECK(fabs((vect[2]) - (12.11111)) < 1e-5);
+      CHECK(fabs((vect[3]) - (12.11111)) < 1e-5);
+      CHECK(fabs((vect[4]) - (12.11111)) < 1e-5);
+      CHECK(fabs((vect[5]) - (12.11111)) < 1e-5);
+      CHECK(fabs((vect[6]) - (12.11111)) < 1e-5);
+      CHECK(fabs((vect[7]) - (12.11111)) < 1e-5);
+      CHECK(fabs((vect[8]) - (12.11111)) < 1e-5);
 
       vect.clear();
       vect.resize(3, 100.0);
       std::fill(vect.begin(), vect.end(), 100.0);
       prior.addConditioningPseudoCount(idset3, vect);
-      TS_GUM_ASSERT_ALMOST_EQUALS(vect[0], 133.33333)   // 100 + 100*(1/3)
-      TS_GUM_ASSERT_ALMOST_EQUALS(vect[1], 133.33333)
-      TS_GUM_ASSERT_ALMOST_EQUALS(vect[2], 133.33333)
+      CHECK(fabs((vect[0]) - (133.33333)) < 1e-5);   // 100 + 100*(1/3)
+      CHECK(fabs((vect[1]) - (133.33333)) < 1e-5);
+      CHECK(fabs((vect[2]) - (133.33333)) < 1e-5);
 
       gum::NodeId              node4 = 2;                    // C
       gum::learning::IdCondSet idset4(node4, cond1, true);   // C|D
@@ -135,19 +141,19 @@ namespace gum_tests {
       vect.resize(6, 1);
       std::fill(vect.begin(), vect.end(), 1.0);
       prior.addJointPseudoCount(idset4, vect);
-      TS_GUM_ASSERT_ALMOST_EQUALS(vect[0], 4.33333)    // 1+ 100 * 1/3 * 0.1
-      TS_GUM_ASSERT_ALMOST_EQUALS(vect[1], 31.0)       // 1+ 100 * 1/3 * 0.9
-      TS_GUM_ASSERT_ALMOST_EQUALS(vect[2], 11.0)       // 1+ 100 * 1/3 * 0.3
-      TS_GUM_ASSERT_ALMOST_EQUALS(vect[3], 24.33333)   // 1+ 100 * 1/3 * 0.7
-      TS_GUM_ASSERT_ALMOST_EQUALS(vect[4], 17.66666)   // 1+ 100 * 1/3 * 0.5
-      TS_GUM_ASSERT_ALMOST_EQUALS(vect[5], 17.66666)   // 1+ 100 * 1/3 * 0.5
+      CHECK(fabs((vect[0]) - (4.33333)) < 1e-5);    // 1+ 100 * 1/3 * 0.1
+      CHECK(fabs((vect[1]) - (31.0)) < 1e-5);       // 1+ 100 * 1/3 * 0.9
+      CHECK(fabs((vect[2]) - (11.0)) < 1e-5);       // 1+ 100 * 1/3 * 0.3
+      CHECK(fabs((vect[3]) - (24.33333)) < 1e-5);   // 1+ 100 * 1/3 * 0.7
+      CHECK(fabs((vect[4]) - (17.66666)) < 1e-5);   // 1+ 100 * 1/3 * 0.5
+      CHECK(fabs((vect[5]) - (17.66666)) < 1e-5);   // 1+ 100 * 1/3 * 0.5
 
       vect.resize(3, 1);
       std::fill(vect.begin(), vect.end(), 1.0);
       prior.addConditioningPseudoCount(idset4, vect);
-      TS_GUM_ASSERT_ALMOST_EQUALS(vect[0], 34.33333)           // 1+ 100 * 1/3
-      TS_GUM_ASSERT_ALMOST_EQUALS(vect[1], 34.33333)           // 1+ 100 * 1/3
-      TS_GUM_ASSERT_ALMOST_EQUALS(vect[2], 34.33333)           // 1+ 100 * 1/3
+      CHECK(fabs((vect[0]) - (34.33333)) < 1e-5);              // 1+ 100 * 1/3
+      CHECK(fabs((vect[1]) - (34.33333)) < 1e-5);              // 1+ 100 * 1/3
+      CHECK(fabs((vect[2]) - (34.33333)) < 1e-5);              // 1+ 100 * 1/3
 
       std::vector< gum::NodeId > cond2{node3, node1};
       gum::learning::IdCondSet   idset5(node4, cond2, true);   // C|D,B = C|D
@@ -156,42 +162,42 @@ namespace gum_tests {
       std::fill(vect.begin(), vect.end(), 1.0);
       prior.addJointPseudoCount(idset5, vect);
 
-      TS_GUM_ASSERT_ALMOST_EQUALS(vect[0], 1.0 + (100.0 * 1.0 / 3.0 * 0.1 * 0.2))
-      TS_GUM_ASSERT_ALMOST_EQUALS(vect[1], 1.0 + (100.0 * 1.0 / 3.0 * 0.9 * 0.2))
-      TS_GUM_ASSERT_ALMOST_EQUALS(vect[2], 1.0 + (100.0 * 1.0 / 3.0 * 0.3 * 0.2))
-      TS_GUM_ASSERT_ALMOST_EQUALS(vect[3], 1.0 + (100.0 * 1.0 / 3.0 * 0.7 * 0.2))
-      TS_GUM_ASSERT_ALMOST_EQUALS(vect[4], 1.0 + (100.0 * 1.0 / 3.0 * 0.5 * 0.2))
-      TS_GUM_ASSERT_ALMOST_EQUALS(vect[5], 1.0 + (100.0 * 1.0 / 3.0 * 0.5 * 0.2))
-      TS_GUM_ASSERT_ALMOST_EQUALS(vect[6], 1.0 + (100.0 * 1.0 / 3.0 * 0.1 * 0.3))
-      TS_GUM_ASSERT_ALMOST_EQUALS(vect[7], 1.0 + (100.0 * 1.0 / 3.0 * 0.9 * 0.3))
-      TS_GUM_ASSERT_ALMOST_EQUALS(vect[8], 1.0 + (100.0 * 1.0 / 3.0 * 0.3 * 0.3))
-      TS_GUM_ASSERT_ALMOST_EQUALS(vect[9], 1.0 + (100.0 * 1.0 / 3.0 * 0.7 * 0.3))
-      TS_GUM_ASSERT_ALMOST_EQUALS(vect[10], 1.0 + (100.0 * 1.0 / 3.0 * 0.5 * 0.3))
-      TS_GUM_ASSERT_ALMOST_EQUALS(vect[11], 1.0 + (100.0 * 1.0 / 3.0 * 0.5 * 0.3))
-      TS_GUM_ASSERT_ALMOST_EQUALS(vect[12], 1.0 + (100.0 * 1.0 / 3.0 * 0.1 * 0.5))
-      TS_GUM_ASSERT_ALMOST_EQUALS(vect[13], 1.0 + (100.0 * 1.0 / 3.0 * 0.9 * 0.5))
-      TS_GUM_ASSERT_ALMOST_EQUALS(vect[14], 1.0 + (100.0 * 1.0 / 3.0 * 0.3 * 0.5))
-      TS_GUM_ASSERT_ALMOST_EQUALS(vect[15], 1.0 + (100.0 * 1.0 / 3.0 * 0.7 * 0.5))
-      TS_GUM_ASSERT_ALMOST_EQUALS(vect[16], 1.0 + (100.0 * 1.0 / 3.0 * 0.5 * 0.5))
-      TS_GUM_ASSERT_ALMOST_EQUALS(vect[17], 1.0 + (100.0 * 1.0 / 3.0 * 0.5 * 0.5))
+      CHECK(fabs((vect[0]) - (1.0 + (100.0 * 1.0 / 3.0 * 0.1 * 0.2))) < 1e-5);
+      CHECK(fabs((vect[1]) - (1.0 + (100.0 * 1.0 / 3.0 * 0.9 * 0.2))) < 1e-5);
+      CHECK(fabs((vect[2]) - (1.0 + (100.0 * 1.0 / 3.0 * 0.3 * 0.2))) < 1e-5);
+      CHECK(fabs((vect[3]) - (1.0 + (100.0 * 1.0 / 3.0 * 0.7 * 0.2))) < 1e-5);
+      CHECK(fabs((vect[4]) - (1.0 + (100.0 * 1.0 / 3.0 * 0.5 * 0.2))) < 1e-5);
+      CHECK(fabs((vect[5]) - (1.0 + (100.0 * 1.0 / 3.0 * 0.5 * 0.2))) < 1e-5);
+      CHECK(fabs((vect[6]) - (1.0 + (100.0 * 1.0 / 3.0 * 0.1 * 0.3))) < 1e-5);
+      CHECK(fabs((vect[7]) - (1.0 + (100.0 * 1.0 / 3.0 * 0.9 * 0.3))) < 1e-5);
+      CHECK(fabs((vect[8]) - (1.0 + (100.0 * 1.0 / 3.0 * 0.3 * 0.3))) < 1e-5);
+      CHECK(fabs((vect[9]) - (1.0 + (100.0 * 1.0 / 3.0 * 0.7 * 0.3))) < 1e-5);
+      CHECK(fabs((vect[10]) - (1.0 + (100.0 * 1.0 / 3.0 * 0.5 * 0.3))) < 1e-5);
+      CHECK(fabs((vect[11]) - (1.0 + (100.0 * 1.0 / 3.0 * 0.5 * 0.3))) < 1e-5);
+      CHECK(fabs((vect[12]) - (1.0 + (100.0 * 1.0 / 3.0 * 0.1 * 0.5))) < 1e-5);
+      CHECK(fabs((vect[13]) - (1.0 + (100.0 * 1.0 / 3.0 * 0.9 * 0.5))) < 1e-5);
+      CHECK(fabs((vect[14]) - (1.0 + (100.0 * 1.0 / 3.0 * 0.3 * 0.5))) < 1e-5);
+      CHECK(fabs((vect[15]) - (1.0 + (100.0 * 1.0 / 3.0 * 0.7 * 0.5))) < 1e-5);
+      CHECK(fabs((vect[16]) - (1.0 + (100.0 * 1.0 / 3.0 * 0.5 * 0.5))) < 1e-5);
+      CHECK(fabs((vect[17]) - (1.0 + (100.0 * 1.0 / 3.0 * 0.5 * 0.5))) < 1e-5);
 
       vect.resize(9, 1);
       std::fill(vect.begin(), vect.end(), 1.0);
       prior.setWeight(100.0);
       prior.addConditioningPseudoCount(idset5, vect);
-      TS_GUM_ASSERT_ALMOST_EQUALS(vect[0], 1.0 + (100.0 * 1.0 / 3.0 * 0.2))
-      TS_GUM_ASSERT_ALMOST_EQUALS(vect[1], 1.0 + (100.0 * 1.0 / 3.0 * 0.2))
-      TS_GUM_ASSERT_ALMOST_EQUALS(vect[2], 1.0 + (100.0 * 1.0 / 3.0 * 0.2))
-      TS_GUM_ASSERT_ALMOST_EQUALS(vect[3], 1.0 + (100.0 * 1.0 / 3.0 * 0.3))
-      TS_GUM_ASSERT_ALMOST_EQUALS(vect[4], 1.0 + (100.0 * 1.0 / 3.0 * 0.3))
-      TS_GUM_ASSERT_ALMOST_EQUALS(vect[5], 1.0 + (100.0 * 1.0 / 3.0 * 0.3))
-      TS_GUM_ASSERT_ALMOST_EQUALS(vect[6], 1.0 + (100.0 * 1.0 / 3.0 * 0.5))
-      TS_GUM_ASSERT_ALMOST_EQUALS(vect[7], 1.0 + (100.0 * 1.0 / 3.0 * 0.5))
-      TS_GUM_ASSERT_ALMOST_EQUALS(vect[8], 1.0 + (100.0 * 1.0 / 3.0 * 0.5))
+      CHECK(fabs((vect[0]) - (1.0 + (100.0 * 1.0 / 3.0 * 0.2))) < 1e-5);
+      CHECK(fabs((vect[1]) - (1.0 + (100.0 * 1.0 / 3.0 * 0.2))) < 1e-5);
+      CHECK(fabs((vect[2]) - (1.0 + (100.0 * 1.0 / 3.0 * 0.2))) < 1e-5);
+      CHECK(fabs((vect[3]) - (1.0 + (100.0 * 1.0 / 3.0 * 0.3))) < 1e-5);
+      CHECK(fabs((vect[4]) - (1.0 + (100.0 * 1.0 / 3.0 * 0.3))) < 1e-5);
+      CHECK(fabs((vect[5]) - (1.0 + (100.0 * 1.0 / 3.0 * 0.3))) < 1e-5);
+      CHECK(fabs((vect[6]) - (1.0 + (100.0 * 1.0 / 3.0 * 0.5))) < 1e-5);
+      CHECK(fabs((vect[7]) - (1.0 + (100.0 * 1.0 / 3.0 * 0.5))) < 1e-5);
+      CHECK(fabs((vect[8]) - (1.0 + (100.0 * 1.0 / 3.0 * 0.5))) < 1e-5);
     }   // namespace gum_tests
 
     public:
-    GUM_ACTIVE_TEST(1) {
+    static void test1() {
       std::vector< std::string > names{"A", "B", "C", "D", "E", "F"};
       gum::BayesNet< double >    bn
           = gum::BayesNet< double >::fastPrototype("A[3];B[3];C<-D[3];E[3];F[3]");
@@ -226,23 +232,25 @@ namespace gum_tests {
       database.insertRow({"0", "0", "0", "1", "1", "1"});
 
       gum::learning::DirichletPriorFromBN< double > prior(database, &bn);
-      TS_ASSERT_EQUALS(prior.weight(), 1.0)
+      CHECK((prior.weight()) == (1.0));
       _test_prior_(prior);
 
       gum::learning::DirichletPriorFromBN prior2(prior);
-      TS_ASSERT_EQUALS(prior2.weight(), 100.0)
+      CHECK((prior2.weight()) == (100.0));
       _test_prior_(prior2);
 
       gum::learning::DirichletPriorFromBN prior3(std::move(prior2));
-      TS_ASSERT_EQUALS(prior3.weight(), 100.0)
+      CHECK((prior3.weight()) == (100.0));
       _test_prior_(prior3);
 
       gum::learning::DirichletPriorFromBN< double >* prior4 = prior3.clone();
-      TS_ASSERT_EQUALS(prior4->weight(), 100.0)
+      CHECK((prior4->weight()) == (100.0));
       _test_prior_(*prior4);
       delete (prior4);
     }
   };
+
+  GUM_TEST_ACTIF(1)
 
 
 } /* namespace gum_tests */

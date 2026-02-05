@@ -1,7 +1,7 @@
 /****************************************************************************
  *   This file is part of the aGrUM/pyAgrum library.                        *
  *                                                                          *
- *   Copyright (c) 2005-2025 by                                             *
+ *   Copyright (c) 2005-2026 by                                             *
  *       - Pierre-Henri WUILLEMIN(_at_LIP6)                                 *
  *       - Christophe GONZALES(_at_AMU)                                     *
  *                                                                          *
@@ -27,7 +27,7 @@
  *                                                                          *
  *   See LICENCES for more details.                                         *
  *                                                                          *
- *   SPDX-FileCopyrightText: Copyright 2005-2025                            *
+ *   SPDX-FileCopyrightText: Copyright 2005-2026                            *
  *       - Pierre-Henri WUILLEMIN(_at_LIP6)                                 *
  *       - Christophe GONZALES(_at_AMU)                                     *
  *   SPDX-License-Identifier: LGPL-3.0-or-later OR MIT                      *
@@ -37,6 +37,7 @@
  *   gitlab   : https://gitlab.com/agrumery/agrum                           *
  *                                                                          *
  ****************************************************************************/
+
 #pragma once
 
 
@@ -52,15 +53,16 @@
 #include <agrum/BN/generator/simpleBayesNetGenerator.h>
 #include <agrum/BN/io/BIF/BIFReader.h>
 
+#undef GUM_CURRENT_SUITE
+#undef GUM_CURRENT_MODULE
+#define GUM_CURRENT_SUITE  BayesBall
+#define GUM_CURRENT_MODULE BN
+
 namespace gum_tests {
 
-  class GUM_TEST_SUITE(BayesBall) {
+  struct BayesBallTestSuite {
     public:
-    void setUp() {}
-
-    void tearDown() {}
-
-    GUM_ACTIVE_TEST(RequisiteNodes) {
+    static void testRequisiteNodes() {
       gum::SimpleBayesNetGenerator< double > gen(50, 200, 2);
       gum::BayesNet< double >                bn;
       gen.generateBN(bn);
@@ -77,19 +79,19 @@ namespace gum_tests {
       for (gum::Idx j = 24; j > 19; --j)
         query.insert(nodes_seq.atPos(j));
 
-      TS_ASSERT_THROWS_NOTHING(
+      CHECK_NOTHROW(
           gum::BayesBall::requisiteNodes(bn.dag(), query, hardEvidence, softEvidence, requisite));
 
-      TS_ASSERT(requisite.size() >= 5)
+      CHECK(requisite.size() >= 5);
     }   // namespace gum_tests
 
-    GUM_ACTIVE_TEST(RelevantTensors) {
+    static void testRelevantTensors() {
       std::string file = GET_RESSOURCES_PATH("bif/asia.bif");
 
       gum::BayesNet< double >  bn;
       gum::BIFReader< double > reader(&bn, file);
       gum::Size                nbrErr = reader.proceed();
-      TS_ASSERT(nbrErr == gum::Size(0))
+      CHECK(nbrErr == gum::Size(0));
 
       gum::Sequence< gum::NodeId >             nodes_seq;
       gum::Set< const gum::Tensor< double >* > tensors;
@@ -106,21 +108,21 @@ namespace gum_tests {
       query.insert(gum::NodeId(1));          // tuberculosis
       hardEvidence.insert(gum::NodeId(5));   // smoking
 
-      TS_ASSERT_THROWS_NOTHING(
+      CHECK_NOTHROW(
           gum::BayesBall::requisiteNodes(bn.dag(), query, hardEvidence, softEvidence, requisite));
-      TS_ASSERT_THROWS_NOTHING(
+      CHECK_NOTHROW(
           gum::BayesBall::relevantTensors(bn, query, hardEvidence, softEvidence, tensors));
 
-      TS_ASSERT(tensors.size() == 5)
+      CHECK(tensors.size() == 5);
     }
 
-    GUM_ACTIVE_TEST(RelevantScheduleMultiDims) {
+    static void testRelevantScheduleMultiDims() {
       std::string file = GET_RESSOURCES_PATH("bif/asia.bif");
 
       gum::BayesNet< double >  bn;
       gum::BIFReader< double > reader(&bn, file);
       gum::Size                nbrErr = reader.proceed();
-      TS_ASSERT(nbrErr == gum::Size(0))
+      CHECK(nbrErr == gum::Size(0));
 
       gum::Sequence< gum::NodeId >                                      nodes_seq;
       gum::Set< const gum::ScheduleMultiDim< gum::Tensor< double > >* > tensors;
@@ -139,15 +141,19 @@ namespace gum_tests {
       query.insert(gum::NodeId(1));          // tuberculosis
       hardEvidence.insert(gum::NodeId(5));   // smoking
 
-      TS_ASSERT_THROWS_NOTHING(
+      CHECK_NOTHROW(
           gum::BayesBall::requisiteNodes(bn.dag(), query, hardEvidence, softEvidence, requisite));
-      TS_ASSERT_THROWS_NOTHING(
+      CHECK_NOTHROW(
           gum::BayesBall::relevantTensors(bn, query, hardEvidence, softEvidence, tensors));
 
-      TS_ASSERT(tensors.size() == 5)
+      CHECK(tensors.size() == 5);
 
       for (const auto pot: pots)
         delete pot;
     }
   };
+
+  GUM_TEST_ACTIF(RequisiteNodes)
+  GUM_TEST_ACTIF(RelevantTensors)
+  GUM_TEST_ACTIF(RelevantScheduleMultiDims)
 }   // namespace gum_tests

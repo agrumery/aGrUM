@@ -1,7 +1,7 @@
 /****************************************************************************
  *   This file is part of the aGrUM/pyAgrum library.                        *
  *                                                                          *
- *   Copyright (c) 2005-2025 by                                             *
+ *   Copyright (c) 2005-2026 by                                             *
  *       - Pierre-Henri WUILLEMIN(_at_LIP6)                                 *
  *       - Christophe GONZALES(_at_AMU)                                     *
  *                                                                          *
@@ -27,7 +27,7 @@
  *                                                                          *
  *   See LICENCES for more details.                                         *
  *                                                                          *
- *   SPDX-FileCopyrightText: Copyright 2005-2025                            *
+ *   SPDX-FileCopyrightText: Copyright 2005-2026                            *
  *       - Pierre-Henri WUILLEMIN(_at_LIP6)                                 *
  *       - Christophe GONZALES(_at_AMU)                                     *
  *   SPDX-License-Identifier: LGPL-3.0-or-later OR MIT                      *
@@ -37,6 +37,7 @@
  *   gitlab   : https://gitlab.com/agrumery/agrum                           *
  *                                                                          *
  ****************************************************************************/
+
 #pragma once
 
 
@@ -46,71 +47,83 @@
 
 #include <gumtest/AgrumTestSuite.h>
 
+#undef GUM_CURRENT_SUITE
+#undef GUM_CURRENT_MODULE
+#define GUM_CURRENT_SUITE  CPlusPlus
+#define GUM_CURRENT_MODULE GUMBASE
+
 namespace gum_tests {
 
-  class GUM_TEST_SUITE(CPlusPlus) {
+  struct CPlusPlusTestSuite {
     public:
-    GUM_ACTIVE_TEST(_CPP17_binding_array) {
+    static void test_CPP17_binding_array() {
       int arry[3]    = {3, 4, 5};
       auto [a, b, c] = arry;
-      TS_ASSERT_EQUALS(a, 3);
-      TS_ASSERT_EQUALS(b, 4);
-      TS_ASSERT_EQUALS(c, 5);
+      CHECK((a) == (3));
+      CHECK((b) == (4));
+      CHECK((c) == (5));
     }   // namespace gum_tests
 
-    GUM_ACTIVE_TEST(_CPP17_autobinding) {
+    static void test_CPP17_autobinding() {
       std::tuple tplex(1, 'a', 3.14);
       auto [a, b, c] = tplex;
-      TS_ASSERT_EQUALS(a, 1);
-      TS_ASSERT_EQUALS(b, 'a');
-      TS_ASSERT_EQUALS(c, 3.14);
+      CHECK((a) == (1));
+      CHECK((b) == ('a'));
+      CHECK((c) == (3.14));
     }
 
-    GUM_ACTIVE_TEST(_CPP17_enumInit) {
+    static void test_CPP17_enumInit() {
       enum byte : unsigned char {};
 
       byte b0 [[maybe_unused]]{0};
       byte b1 [[maybe_unused]] = byte{255};
     }
 
-    GUM_ACTIVE_TEST(_CPP17_ifWithInit) {
-      if (int i = 3; i % 2 == 0) { TS_ABORT(); }
+    static void test_CPP17_ifWithInit() {
+      if (int i = 3; i % 2 == 0) { FAIL("should not reach here"); }
     }
 
-    GUM_ACTIVE_TEST(_CPP20_likelyAttributes) {
+    static void test_CPP20_likelyAttributes() {
       bool b = false;
       if (b) [[likely]] {
-        TS_ABORT();
+        FAIL("should not reach here");
       } else {
-        TS_ASSERT(!b);
+        CHECK(!b);
       }
     }
 
-    GUM_ACTIVE_TEST(_CPP20_array_size_deduction) {
+    static void test_CPP20_array_size_deduction() {
       int* p2 = new int[]{1, 2, 3};
       delete[] (p2);
     }
 
-    GUM_ACTIVE_TEST(_CPP20_int_two_cplt) {
+    static void test_CPP20_int_two_cplt() {
       int i1 = -1;
-      TS_ASSERT_EQUALS(
-          i1 <<= 1,
-          -2)   // left-shift for signed negative integers(previously undefined behavior)
+      CHECK((i1 <<= 1)
+            == (-2));   // left-shift for signed negative integers(previously undefined behavior)
 
       int i2 = std::numeric_limits< int >::max();
-      TS_ASSERT_EQUALS(
-          i2 <<= 1,
-          -2)   // "unrepresentable" left-shift for signed integers(previously undefined behavior)
+      CHECK((i2 <<= 1) == (-2));   // "unrepresentable" left-shift for signed integers(previously
+                                   // undefined behavior)
     }
 
-    GUM_ACTIVE_TEST(_CPP20_lambda_implicit_this_capture) {
+    static void test_CPP20_lambda_implicit_this_capture() {
       struct S {
         int x{1};
         int y{[&] { return x + 1; }()};   // OK, captures 'this'
       };
 
       S s;
-      TS_ASSERT_EQUALS(s.y, 2);
+      CHECK((s.y) == (2));
     }
   };
+
+  GUM_TEST_ACTIF(_CPP17_binding_array)
+  GUM_TEST_ACTIF(_CPP17_autobinding)
+  GUM_TEST_ACTIF(_CPP17_enumInit)
+  GUM_TEST_ACTIF(_CPP17_ifWithInit)
+  GUM_TEST_ACTIF(_CPP20_likelyAttributes)
+  GUM_TEST_ACTIF(_CPP20_array_size_deduction)
+  GUM_TEST_ACTIF(_CPP20_int_two_cplt)
+  GUM_TEST_ACTIF(_CPP20_lambda_implicit_this_capture)
 }   // namespace gum_tests

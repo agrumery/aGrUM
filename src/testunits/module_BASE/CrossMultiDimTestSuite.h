@@ -1,7 +1,7 @@
 /****************************************************************************
  *   This file is part of the aGrUM/pyAgrum library.                        *
  *                                                                          *
- *   Copyright (c) 2005-2025 by                                             *
+ *   Copyright (c) 2005-2026 by                                             *
  *       - Pierre-Henri WUILLEMIN(_at_LIP6)                                 *
  *       - Christophe GONZALES(_at_AMU)                                     *
  *                                                                          *
@@ -27,7 +27,7 @@
  *                                                                          *
  *   See LICENCES for more details.                                         *
  *                                                                          *
- *   SPDX-FileCopyrightText: Copyright 2005-2025                            *
+ *   SPDX-FileCopyrightText: Copyright 2005-2026                            *
  *       - Pierre-Henri WUILLEMIN(_at_LIP6)                                 *
  *       - Christophe GONZALES(_at_AMU)                                     *
  *   SPDX-License-Identifier: LGPL-3.0-or-later OR MIT                      *
@@ -37,6 +37,7 @@
  *   gitlab   : https://gitlab.com/agrumery/agrum                           *
  *                                                                          *
  ****************************************************************************/
+
 #pragma once
 
 
@@ -50,11 +51,16 @@
 #include <agrum/base/multidim/implementations/multiDimSparse.h>
 #include <agrum/base/variables/rangeVariable.h>
 
+#undef GUM_CURRENT_SUITE
+#undef GUM_CURRENT_MODULE
+#define GUM_CURRENT_SUITE  CrossMultiDim
+#define GUM_CURRENT_MODULE GUMBASE
+
 namespace gum_tests {
 
-  class GUM_TEST_SUITE(CrossMultiDim) {
+  struct CrossMultiDimTestSuite {
     public:
-    GUM_ACTIVE_TEST(ComparaisonMin) {
+    static void testComparaisonMin() {
       gum::RangeVariable a("a", "", 0, 3), b("b", "", 0, 3), c("c", "", 0, 3), d("d", "", 0, 3);
       gum::MultiDimArray< double >   full;
       gum::MultiDimSparse< double >  sparse(static_cast< float >(0));
@@ -72,30 +78,32 @@ namespace gum_tests {
       }
 
       for (i.setFirst(); !i.end(); ++i) {
-        TS_ASSERT_EQUALS(sparse[i], agg[i])
-        TS_ASSERT_EQUALS(full[i], agg[i])
+        CHECK((sparse[i]) == (agg[i]));
+        CHECK((full[i]) == (agg[i]));
       }
 
       gum::Instantiation j(sparse);
 
       for (j.setFirst(); !j.end(); ++j) {
-        TS_ASSERT_EQUALS(agg[j], sparse[j])
-        TS_ASSERT_EQUALS(full[j], sparse[j])
+        CHECK((agg[j]) == (sparse[j]));
+        CHECK((full[j]) == (sparse[j]));
       }
 
       gum::Instantiation k(full);
 
       for (k.setFirst(); !k.end(); ++k) {
-        TS_ASSERT_EQUALS(agg[k], full[k])
-        TS_ASSERT_EQUALS(sparse[k], full[k])
+        CHECK((agg[k]) == (full[k]));
+        CHECK((sparse[k]) == (full[k]));
       }
 
-      TS_ASSERT_EQUALS(agg.compressionRate(), static_cast< float >(1.0));   // 100% de compression
+      CHECK((agg.compressionRate()) == (static_cast< float >(1.0)));   // 100% de compression
 
-      TS_ASSERT_EQUALS(
-          sparse.compressionRate(),
-          static_cast< float >(0.75));   // deterministic as a sparse : 75% parameters are 0...
-      TS_ASSERT_EQUALS(full.compressionRate(), static_cast< float >(0));   // 0% de compression...
+      CHECK(
+          (sparse.compressionRate())
+          == (static_cast< float >(0.75)));   // deterministic as a sparse : 75% parameters are 0...
+      CHECK((full.compressionRate()) == (static_cast< float >(0)));   // 0% de compression...
     }   // namespace gum_tests
   };
+
+  GUM_TEST_ACTIF(ComparaisonMin)
 }   // namespace gum_tests

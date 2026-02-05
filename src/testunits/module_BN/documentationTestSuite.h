@@ -1,7 +1,7 @@
 /****************************************************************************
  *   This file is part of the aGrUM/pyAgrum library.                        *
  *                                                                          *
- *   Copyright (c) 2005-2025 by                                             *
+ *   Copyright (c) 2005-2026 by                                             *
  *       - Pierre-Henri WUILLEMIN(_at_LIP6)                                 *
  *       - Christophe GONZALES(_at_AMU)                                     *
  *                                                                          *
@@ -27,7 +27,7 @@
  *                                                                          *
  *   See LICENCES for more details.                                         *
  *                                                                          *
- *   SPDX-FileCopyrightText: Copyright 2005-2025                            *
+ *   SPDX-FileCopyrightText: Copyright 2005-2026                            *
  *       - Pierre-Henri WUILLEMIN(_at_LIP6)                                 *
  *       - Christophe GONZALES(_at_AMU)                                     *
  *   SPDX-License-Identifier: LGPL-3.0-or-later OR MIT                      *
@@ -37,6 +37,7 @@
  *   gitlab   : https://gitlab.com/agrumery/agrum                           *
  *                                                                          *
  ****************************************************************************/
+
 #pragma once
 
 
@@ -55,10 +56,15 @@
 #include <agrum/BN/io/BIF/BIFReader.h>
 #include <agrum/BN/io/BIF/BIFWriter.h>
 
+#undef GUM_CURRENT_SUITE
+#undef GUM_CURRENT_MODULE
+#define GUM_CURRENT_SUITE  Documentation
+#define GUM_CURRENT_MODULE BN
+
 namespace gum_tests {
-  class GUM_TEST_SUITE(Documentation) {
+  struct DocumentationTestSuite {
     public:
-    GUM_ACTIVE_TEST(BayesNet) {
+    static void testBayesNet() {
       try {
         auto bn = gum::BayesNet< double >("Asia");
         // Variables are added by copy to the BayesNet, so you can use a single
@@ -142,11 +148,11 @@ namespace gum_tests {
       }   // namespace gum_tests
 
       catch (gum::Exception& e) {
-        TS_FAIL(e.errorContent());
+        FAIL(e.errorContent());
       }
     }
 
-    GUM_ACTIVE_TEST(BayesNetFactory) {
+    static void testBayesNetFactory() {
       try {
         auto asia    = gum::BayesNet< double >();
         auto factory = gum::BayesNetFactory< double >(&asia);
@@ -284,10 +290,10 @@ namespace gum_tests {
         factory.setVariableValues(values);
         factory.endFactorizedEntry();
         factory.endFactorizedProbabilityDeclaration();
-      } catch (gum::Exception& e) { TS_FAIL(e.errorContent()); }
+      } catch (gum::Exception& e) { FAIL(e.errorContent()); }
     }
 
-    GUM_ACTIVE_TEST(Inference) {
+    static void testInference() {
       auto asia = gum::BayesNet< double >("Asia");
       // Constructing the BayesNet...
       {
@@ -325,7 +331,7 @@ namespace gum_tests {
         asia.cpt(hasLungCancer).fillWith({0.10f, 0.90f, 0.01f, 0.99f});
         asia.cpt(tubOrCancer)
             .fillWith({1.00f, 0.00f, 1.00f, 0.00f, 1.00f, 0.00f, 0.00f, 1.00f})
-            .translate(TS_GUM_SMALL_ERROR)
+            .translate(GUM_SMALL_ERROR)
             .normalizeAsCPT();
         asia.cpt(xray).fillWith({0.98f, 0.02f, 0.05f, 0.95f});
         asia.cpt(dyspnea).fillWith({0.90f, 0.10f, 0.70f, 0.30f, 0.80f, 0.20f, 0.10f, 0.90f});
@@ -335,10 +341,10 @@ namespace gum_tests {
         gum::LazyPropagation< double > inference(&asia);
         auto                           id       = asia.idFromName("Has Lung Cancer");
         const auto&                    marginal = inference.posterior(id);
-        TS_FAIL("Inference should not be correct with a undefined CPT");
+        FAIL("Inference should not be correct with a undefined CPT");
       } catch (gum::IncompatibleEvidence&) {
         // OK to be here : CPT of Has Bronchitis has not been defined.
-      } catch (gum::Exception& e) { TS_FAIL(e.errorContent()); }
+      } catch (gum::Exception& e) { FAIL(e.errorContent()); }
 
       asia.cpt("Has Bronchitis").fillWith({0.7f, 0.3f, 0.85f, 0.15f});
 
@@ -347,7 +353,7 @@ namespace gum_tests {
         gum::LazyPropagation< double > inference(&asia);
         auto                           id       = asia.idFromName("Has Lung Cancer");
         const auto&                    marginal = inference.posterior("Has Lung Cancer");
-        TS_ASSERT_EQUALS(marginal.domainSize(), static_cast< gum::Size >(2))
+        CHECK((marginal.domainSize()) == (static_cast< gum::Size >(2)));
 
 
         // We can add some evidence
@@ -357,11 +363,11 @@ namespace gum_tests {
         const auto& updated_marginal = inference.posterior(id);
 
         // To prevent warning for unused variable
-        TS_ASSERT_EQUALS(updated_marginal.domainSize(), static_cast< gum::Size >(2))
-      } catch (gum::Exception& e) { TS_FAIL(e.errorContent()); }
+        CHECK((updated_marginal.domainSize()) == (static_cast< gum::Size >(2)));
+      } catch (gum::Exception& e) { FAIL(e.errorContent()); }
     }
 
-    GUM_ACTIVE_TEST(Serialization) {
+    static void testSerialization() {
       try {
         auto asia = gum::BayesNet< double >("Asia");
         // One implementation of the gum::BNReader class
@@ -369,12 +375,12 @@ namespace gum_tests {
         auto        reader = gum::BIFReader< double >(&asia, file);
         try {
           reader.proceed();
-        } catch (gum::IOError& e) { TS_FAIL(e.errorContent()); }
+        } catch (gum::IOError& e) { FAIL(e.errorContent()); }
 
-      } catch (gum::Exception& e) { TS_FAIL(e.errorContent()); }
+      } catch (gum::Exception& e) { FAIL(e.errorContent()); }
     }
 
-    GUM_ACTIVE_TEST(Deserialization) {
+    static void testDeserialization() {
       try {
         auto asia = gum::BayesNet< double >("Asia");
         // Constructing BayesNet...
@@ -425,11 +431,17 @@ namespace gum_tests {
           // This will print the asia BayesNet on the standard output stream
           writer.write(buff, asia);
         } catch (gum::IOError& e) {
-          TS_FAIL(e.errorContent());
+          FAIL(e.errorContent());
           // A gum::IOError will be raised if an error occurred
         }
-      } catch (gum::Exception& e) { TS_FAIL(e.errorContent()); }
+      } catch (gum::Exception& e) { FAIL(e.errorContent()); }
     }
   };
+
+  GUM_TEST_ACTIF(BayesNet)
+  GUM_TEST_ACTIF(BayesNetFactory)
+  GUM_TEST_ACTIF(Inference)
+  GUM_TEST_ACTIF(Serialization)
+  GUM_TEST_ACTIF(Deserialization)
 
 }   // namespace gum_tests

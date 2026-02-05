@@ -1,7 +1,7 @@
 /****************************************************************************
  *   This file is part of the aGrUM/pyAgrum library.                        *
  *                                                                          *
- *   Copyright (c) 2005-2025 by                                             *
+ *   Copyright (c) 2005-2026 by                                             *
  *       - Pierre-Henri WUILLEMIN(_at_LIP6)                                 *
  *       - Christophe GONZALES(_at_AMU)                                     *
  *                                                                          *
@@ -27,7 +27,7 @@
  *                                                                          *
  *   See LICENCES for more details.                                         *
  *                                                                          *
- *   SPDX-FileCopyrightText: Copyright 2005-2025                            *
+ *   SPDX-FileCopyrightText: Copyright 2005-2026                            *
  *       - Pierre-Henri WUILLEMIN(_at_LIP6)                                 *
  *       - Christophe GONZALES(_at_AMU)                                     *
  *   SPDX-License-Identifier: LGPL-3.0-or-later OR MIT                      *
@@ -37,6 +37,7 @@
  *   gitlab   : https://gitlab.com/agrumery/agrum                           *
  *                                                                          *
  ****************************************************************************/
+
 #pragma once
 
 
@@ -51,6 +52,11 @@
 #include <agrum/BN/io/net/netReader.h>
 #include <agrum/BN/io/net/netWriter.h>
 
+#undef GUM_CURRENT_SUITE
+#undef GUM_CURRENT_MODULE
+#define GUM_CURRENT_SUITE  NetWriter
+#define GUM_CURRENT_MODULE BN
+
 // The graph used for the tests:
 //          1   2_          1 -> 3
 //         / \ / /          1 -> 4
@@ -61,74 +67,84 @@
 
 namespace gum_tests {
 
-  class GUM_TEST_SUITE(NetWriter) {
+  struct NetWriterTestSuite {
     public:
     gum::BayesNet< double >* bn;
     gum::NodeId              i1, i2, i3, i4, i5;
 
-    void setUp() {
+    NetWriterTestSuite() {
       bn = new gum::BayesNet< double >();
 
       gum::LabelizedVariable n1("n1", "", 2), n2("n2", "", 2), n3("n3", "", 2);
+
       gum::LabelizedVariable n4("n4", "", 2), n5("n5", "", 2);
 
       i1 = bn->add(n1);
+
       i2 = bn->add(n2);
+
       i3 = bn->add(n3);
+
       i4 = bn->add(n4);
+
       i5 = bn->add(n5);
 
       bn->addArc(i1, i3);
+
       bn->addArc(i1, i4);
+
       bn->addArc(i3, i5);
+
       bn->addArc(i4, i5);
+
       bn->addArc(i2, i4);
+
       bn->addArc(i2, i5);
 
       fill(*bn);
     }
 
-    void tearDown() { delete bn; }
+    ~NetWriterTestSuite() { delete bn; }
 
-    GUM_ACTIVE_TEST(Constuctor) {
+    static void testConstuctor() {
       gum::NetWriter< double >* writer = nullptr;
-      TS_GUM_ASSERT_THROWS_NOTHING(writer = new gum::NetWriter< double >())
+      GUM_CHECK_ASSERT_THROWS_NOTHING(writer = new gum::NetWriter< double >());
       delete writer;
     }
 
-    GUM_ACTIVE_TEST(Writer_ostream) {
+    static void testWriter_ostream() {
       gum::NetWriter< double > writer;
       // Uncomment this to check the ouput
-      // TS_GUM_ASSERT_THROWS_NOTHING(writer.write(std::cerr, *bn))
+      // GUM_CHECK_ASSERT_THROWS_NOTHING(writer.write(std::cerr, *bn));
     }
 
-    GUM_ACTIVE_TEST(Writer_string) {
+    void testWriter_string() const {
       gum::NetWriter< double > writer;
       std::string              file = GET_RESSOURCES_PATH("outputs/NetWriter_TestFile.net");
-      TS_GUM_ASSERT_THROWS_NOTHING(writer.write(file, *bn))
+      GUM_CHECK_ASSERT_THROWS_NOTHING(writer.write(file, *bn));
     }
 
-    GUM_ACTIVE_TEST(_isreadable) {
+    static void test_isreadable() {
       std::string              file = GET_RESSOURCES_PATH("net/NetWriter_RO_TestFile.net");
       gum::BayesNet< double >* net  = new gum::BayesNet< double >();
 
       gum::NetReader< double > reader(net, file);
-      TS_GUM_ASSERT_THROWS_NOTHING(reader.trace(false))
+      GUM_CHECK_ASSERT_THROWS_NOTHING(reader.trace(false));
 
       gum::Size nbrErr = 0;
 
-      TS_GUM_ASSERT_THROWS_NOTHING(nbrErr = reader.proceed())
+      GUM_CHECK_ASSERT_THROWS_NOTHING(nbrErr = reader.proceed());
       reader.showElegantErrors();
 
-      TS_ASSERT_EQUALS(nbrErr, static_cast< gum::Size >(0))
-      TS_ASSERT_EQUALS(reader.warnings(), static_cast< gum::Size >(0))
+      CHECK((nbrErr) == (static_cast< gum::Size >(0)));
+      CHECK((reader.warnings()) == (static_cast< gum::Size >(0)));
       // 0 warnings : no properties
-      TS_ASSERT_EQUALS(reader.errors(), static_cast< gum::Size >(0))
+      CHECK((reader.errors()) == (static_cast< gum::Size >(0)));
 
-      TS_ASSERT_DIFFERS(net, nullptr)
+      CHECK((net) != (nullptr));
 
       if (net != nullptr) {
-        TS_ASSERT(!net->empty())
+        CHECK(!net->empty());
 
         delete net;
       }
@@ -136,7 +152,7 @@ namespace gum_tests {
 
     private:
     // Builds a BN to test the inference
-    void fill(gum::BayesNet< double >& bn) {
+    void fill(gum::BayesNet< double >& bn) const {
       const gum::Tensor< double >& p1 = bn.cpt(i1);
       {
         // FILLING PARAMS
@@ -185,4 +201,9 @@ namespace gum_tests {
       }
     }
   };
+
+  GUM_TEST_ACTIF(Constuctor)
+  GUM_TEST_ACTIF(Writer_ostream)
+  GUM_TEST_ACTIF(Writer_string)
+  GUM_TEST_ACTIF(_isreadable)
 }   // namespace gum_tests

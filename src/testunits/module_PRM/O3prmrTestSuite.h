@@ -1,7 +1,7 @@
 /****************************************************************************
  *   This file is part of the aGrUM/pyAgrum library.                        *
  *                                                                          *
- *   Copyright (c) 2005-2025 by                                             *
+ *   Copyright (c) 2005-2026 by                                             *
  *       - Pierre-Henri WUILLEMIN(_at_LIP6)                                 *
  *       - Christophe GONZALES(_at_AMU)                                     *
  *                                                                          *
@@ -27,7 +27,7 @@
  *                                                                          *
  *   See LICENCES for more details.                                         *
  *                                                                          *
- *   SPDX-FileCopyrightText: Copyright 2005-2025                            *
+ *   SPDX-FileCopyrightText: Copyright 2005-2026                            *
  *       - Pierre-Henri WUILLEMIN(_at_LIP6)                                 *
  *       - Christophe GONZALES(_at_AMU)                                     *
  *   SPDX-License-Identifier: LGPL-3.0-or-later OR MIT                      *
@@ -37,6 +37,7 @@
  *   gitlab   : https://gitlab.com/agrumery/agrum                           *
  *                                                                          *
  ****************************************************************************/
+
 #pragma once
 
 
@@ -48,93 +49,96 @@
 
 #include <agrum/PRM/o3prmr/O3prmrInterpreter.h>
 
+#undef GUM_CURRENT_SUITE
+#undef GUM_CURRENT_MODULE
+#define GUM_CURRENT_SUITE  O3prmr
+#define GUM_CURRENT_MODULE PRM
+
 namespace gum_tests {
 
-  class GUM_TEST_SUITE(O3prmr) {
+  struct O3prmrTestSuite {
     public:
-    void setUp() {
-      // std::cerr << std::endl;
-    }
-
-    void tearDown() {}
-
-    GUM_ACTIVE_TEST(ParseFile1) {
+    static void testParseFile1() {
       try {
         gum::prm::o3prmr::O3prmrInterpreter* si = new gum::prm::o3prmr::O3prmrInterpreter();
         si->setSyntaxMode(true);
         si->addPath(GET_RESSOURCES_PATH("o3prmr/"));
 
-        TS_GUM_ASSERT_THROWS_NOTHING(
+        GUM_CHECK_ASSERT_THROWS_NOTHING(
             si->interpretFile(GET_RESSOURCES_PATH("o3prmr/requests/query1.o3prmr")));
 
-        TS_ASSERT_EQUALS(si->errors(), static_cast< gum::Size >(0))
+        CHECK((si->errors()) == (static_cast< gum::Size >(0)));
         if (si->errors() > 0) { si->showElegantErrorsAndWarnings(); }
-        TS_ASSERT_EQUALS(si->warnings(), static_cast< gum::Size >(0))
+        CHECK((si->warnings()) == (static_cast< gum::Size >(0)));
 
         delete si;
       }   // namespace gum_tests
 
       catch (gum::Exception&) {
-        TS_ASSERT(false)
+        CHECK(false);
       }
     }
 
-    GUM_ACTIVE_TEST(ParseFile2) {
+    O3prmrTestSuite() {
+      // std::cerr << std::endl;
+    }
+
+    static void testParseFile2() {
       try {
         gum::prm::o3prmr::O3prmrInterpreter* si = new gum::prm::o3prmr::O3prmrInterpreter();
         si->setSyntaxMode(true);
         si->addPath(GET_RESSOURCES_PATH("o3prmr/"));
 
-        TS_GUM_ASSERT_THROWS_NOTHING(
+        GUM_CHECK_ASSERT_THROWS_NOTHING(
             si->interpretFile(GET_RESSOURCES_PATH("o3prmr/requests/query2.o3prmr")));
 
-        TS_ASSERT_EQUALS(si->errors(), static_cast< gum::Size >(1))
-        TS_ASSERT_EQUALS(si->warnings(), static_cast< gum::Size >(0))
+        CHECK((si->errors()) == (static_cast< gum::Size >(1)));
+        CHECK((si->warnings()) == (static_cast< gum::Size >(0)));
 
         delete si;
-      } catch (gum::Exception&) { TS_ASSERT(false) }
+      } catch (gum::Exception&) { CHECK(false); }
     }
 
     // ->
-    GUM_ACTIVE_TEST(Inference) {
+    static void testInference() {
       try {
         gum::prm::o3prmr::O3prmrInterpreter* si = new gum::prm::o3prmr::O3prmrInterpreter();
         si->setSyntaxMode(false);
         si->addPath(GET_RESSOURCES_PATH("o3prmr/"));
 
-        TS_GUM_ASSERT_THROWS_NOTHING(
+        GUM_CHECK_ASSERT_THROWS_NOTHING(
             si->interpretFile(GET_RESSOURCES_PATH("o3prmr/requests/query1.o3prmr")));
 
-        TS_ASSERT_EQUALS(si->errors(), static_cast< gum::Size >(0))
-        TS_ASSERT_EQUALS(si->warnings(), static_cast< gum::Size >(0))
+        CHECK((si->errors()) == (static_cast< gum::Size >(0)));
+        CHECK((si->warnings()) == (static_cast< gum::Size >(0)));
 
         delete si;
-      } catch (gum::Exception&) { TS_ASSERT(false) }
+      } catch (gum::Exception&) { CHECK(false); }
     }
 
-    GUM_ACTIVE_TEST(Observe) {
+    static void testObserve() {
       try {
         gum::prm::o3prmr::O3prmrInterpreter* si = new gum::prm::o3prmr::O3prmrInterpreter();
         si->setSyntaxMode(false);
         si->addPath(GET_RESSOURCES_PATH("o3prmr/"));
 
-        TS_GUM_ASSERT_THROWS_NOTHING(
+        GUM_CHECK_ASSERT_THROWS_NOTHING(
             si->interpretFile(GET_RESSOURCES_PATH("o3prmr/requests/queryObserveTest.o3prmr")));
 
-        TS_ASSERT_EQUALS(si->errors(), static_cast< gum::Size >(0))
-        TS_ASSERT_EQUALS(si->warnings(), static_cast< gum::Size >(0))
+        CHECK((si->errors()) == (static_cast< gum::Size >(0)));
+        CHECK((si->warnings()) == (static_cast< gum::Size >(0)));
 
         // Observe correctly
         const auto& c1 = si->prm()->getSystem("systems.MySystem.MySystem").get("c1");
         const auto& c2 = si->prm()->getSystem("systems.MySystem.MySystem").get("c2");
 
-        TS_ASSERT(si->inference()->hasEvidence(
+        CHECK(si->inference()->hasEvidence(
             gum::prm::PRMInference< double >::Chain(&c1, &c1.get("can_print"))));
-        TS_ASSERT(si->inference()->hasEvidence(
+        CHECK(si->inference()->hasEvidence(
             gum::prm::PRMInference< double >::Chain(&c2, &c2.get("equipState"))));
-        TS_ASSERT(!si->inference()->hasEvidence(
+        CHECK(!si->inference()->hasEvidence(
             gum::prm::PRMInference< double >::Chain(&c1, &c1.get("equipState"))));
-        TS_ASSERT(!si->inference()->hasEvidence(
+        CHECK(!si->inference()->hasEvidence(
             gum::prm::PRMInference< double >::Chain(&c2, &c2.get("can_print"))));
 
         const auto& e = si->inference()->evidence(c2);
@@ -146,27 +150,27 @@ namespace gum_tests {
         for (j.setFirst(); !j.end(); j.inc()) {
           if (c2_equipState.type().variable().label(j.val(c2_equipState.type().variable()))
               == "Dysfunctional") {
-            TS_ASSERT_EQUALS(p->get(j), 1.0)
+            CHECK((p->get(j)) == (1.0));
           } else {
-            TS_ASSERT_EQUALS(p->get(j), 0.0)
+            CHECK((p->get(j)) == (0.0));
           }
         }
 
         delete si;
-      } catch (gum::Exception&) { TS_ASSERT(false) }
+      } catch (gum::Exception&) { CHECK(false); }
     }
 
-    GUM_ACTIVE_TEST(Unobserve) {
+    static void testUnobserve() {
       try {
         gum::prm::o3prmr::O3prmrInterpreter* si = new gum::prm::o3prmr::O3prmrInterpreter();
         si->setSyntaxMode(false);
         si->addPath(GET_RESSOURCES_PATH("o3prmr/"));
 
-        TS_GUM_ASSERT_THROWS_NOTHING(
+        GUM_CHECK_ASSERT_THROWS_NOTHING(
             si->interpretFile(GET_RESSOURCES_PATH("o3prmr/requests/queryUnobserveTest.o3prmr")));
 
-        TS_ASSERT_EQUALS(si->errors(), static_cast< gum::Size >(0))
-        TS_ASSERT_EQUALS(si->warnings(), static_cast< gum::Size >(0))
+        CHECK((si->errors()) == (static_cast< gum::Size >(0)));
+        CHECK((si->warnings()) == (static_cast< gum::Size >(0)));
 
         // Unobserve correctly
         const gum::prm::PRMInstance< double >& c1
@@ -174,44 +178,44 @@ namespace gum_tests {
         const gum::prm::PRMInstance< double >& c2
             = si->prm()->getSystem("systems.MySystem.MySystem").get("c2");
 
-        TS_ASSERT(!si->inference()->hasEvidence(
+        CHECK(!si->inference()->hasEvidence(
             gum::prm::PRMInference< double >::Chain(&c1, &c1.get("can_print"))));
-        TS_ASSERT(!si->inference()->hasEvidence(
+        CHECK(!si->inference()->hasEvidence(
             gum::prm::PRMInference< double >::Chain(&c2, &c2.get("equipState"))));
-        TS_ASSERT(!si->inference()->hasEvidence(
+        CHECK(!si->inference()->hasEvidence(
             gum::prm::PRMInference< double >::Chain(&c1, &c1.get("equipState"))));
-        TS_ASSERT(!si->inference()->hasEvidence(
+        CHECK(!si->inference()->hasEvidence(
             gum::prm::PRMInference< double >::Chain(&c2, &c2.get("can_print"))));
 
         delete si;
-      } catch (gum::Exception&) { TS_ASSERT(false) }
+      } catch (gum::Exception&) { CHECK(false); }
     }
 
-    GUM_ACTIVE_TEST(Query) {
+    static void testQuery() {
       try {
         gum::prm::o3prmr::O3prmrInterpreter* si = new gum::prm::o3prmr::O3prmrInterpreter();
         si->setSyntaxMode(false);
         si->addPath(GET_RESSOURCES_PATH("o3prmr/"));
 
-        TS_GUM_ASSERT_THROWS_NOTHING(
+        GUM_CHECK_ASSERT_THROWS_NOTHING(
             si->interpretFile(GET_RESSOURCES_PATH("o3prmr/requests/query1.o3prmr")));
 
         si->showElegantErrorsAndWarnings();
-        TS_ASSERT_EQUALS(si->errors(), static_cast< gum::Size >(0))
-        TS_ASSERT_EQUALS(si->warnings(), static_cast< gum::Size >(0))
+        CHECK((si->errors()) == (static_cast< gum::Size >(0)));
+        CHECK((si->warnings()) == (static_cast< gum::Size >(0)));
 
         const gum::prm::PRMInstance< double >& c1
             = si->prm()->getSystem("systems.MySystem.MySystem").get("c1");
         const gum::prm::PRMInstance< double >& c2
             = si->prm()->getSystem("systems.MySystem.MySystem").get("c2");
 
-        TS_ASSERT(!si->inference()->hasEvidence(
+        CHECK(!si->inference()->hasEvidence(
             gum::prm::PRMInference< double >::Chain(&c1, &c1.get("can_print"))));
-        TS_ASSERT(si->inference()->hasEvidence(
+        CHECK(si->inference()->hasEvidence(
             gum::prm::PRMInference< double >::Chain(&c2, &c2.get("equipState"))));
-        TS_ASSERT(!si->inference()->hasEvidence(
+        CHECK(!si->inference()->hasEvidence(
             gum::prm::PRMInference< double >::Chain(&c1, &c1.get("equipState"))));
-        TS_ASSERT(!si->inference()->hasEvidence(
+        CHECK(!si->inference()->hasEvidence(
             gum::prm::PRMInference< double >::Chain(&c2, &c2.get("can_print"))));
 
         // Est-ce que la valeur Dysfonctionnal de l'attribut can_print de
@@ -226,17 +230,17 @@ namespace gum_tests {
         for (j.setFirst(); !j.end(); j.inc()) {
           if (c2_equipState.type().variable().label(j.val(c2_equipState.type().variable()))
               == "Dysfunctional") {
-            TS_ASSERT_EQUALS(p->get(j), 1.0)
+            CHECK((p->get(j)) == (1.0));
           } else {
-            TS_ASSERT_EQUALS(p->get(j), 0.0)
+            CHECK((p->get(j)) == (0.0));
           }
         }
 
         delete si;
-      } catch (gum::Exception&) { TS_ASSERT(false) }
+      } catch (gum::Exception&) { CHECK(false); }
     }
 
-    GUM_ACTIVE_TEST(AsiaBN) {
+    static void testAsiaBN() {
       try {
         // Arrange
         auto si = new gum::prm::o3prmr::O3prmrInterpreter();
@@ -246,15 +250,15 @@ namespace gum_tests {
         auto                                prm  = si->prm();
         gum::prm::PRMClass< double > const* asia = nullptr;
         // Act
-        TS_ASSERT_THROWS_NOTHING(asia = &(prm->getClass("Asia.Asia")))
+        CHECK_NOTHROW(asia = &(prm->getClass("Asia.Asia")));
         // Assert
-        TS_ASSERT_EQUALS(asia->attributes().size(), static_cast< gum::Size >(8))
-        TS_ASSERT_EQUALS(asia->containerDag().sizeArcs(), static_cast< gum::Size >(8))
+        CHECK((asia->attributes().size()) == (static_cast< gum::Size >(8)));
+        CHECK((asia->containerDag().sizeArcs()) == (static_cast< gum::Size >(8)));
         delete si;
-      } catch (gum::Exception&) { TS_ASSERT(false) }
+      } catch (gum::Exception&) { CHECK(false); }
     }
 
-    GUM_ACTIVE_TEST(AsiaBNGrd) {
+    static void testAsiaBNGrd() {
       try {
         // Arrange
         auto si = new gum::prm::o3prmr::O3prmrInterpreter();
@@ -266,16 +270,16 @@ namespace gum_tests {
         auto                           bn  = new gum::BayesNet< double >("plop");
         gum::BayesNetFactory< double > factory(bn);
         // Act
-        TS_ASSERT_THROWS_NOTHING(sys.groundedBN(factory))
+        CHECK_NOTHROW(sys.groundedBN(factory));
         // Assert
-        TS_ASSERT_EQUALS(bn->size(), static_cast< gum::Size >(8))
-        TS_ASSERT_EQUALS(bn->sizeArcs(), static_cast< gum::Size >(8))
+        CHECK((bn->size()) == (static_cast< gum::Size >(8)));
+        CHECK((bn->sizeArcs()) == (static_cast< gum::Size >(8)));
         delete si;
         delete bn;
-      } catch (gum::Exception&) { TS_ASSERT(false) }
+      } catch (gum::Exception&) { CHECK(false); }
     }
 
-    GUM_ACTIVE_TEST(AsiaOneFileBNGrd) {
+    static void testAsiaOneFileBNGrd() {
       try {
         // Arrange
         auto si = new gum::prm::o3prmr::O3prmrInterpreter();
@@ -283,25 +287,25 @@ namespace gum_tests {
         si->addPath(GET_RESSOURCES_PATH("o3prmr/AsiaOneFile/"));
         si->interpretFile(GET_RESSOURCES_PATH("o3prmr/AsiaOneFile/myRequest.o3prmr"));
         // si->showElegantErrorsAndWarnings();
-        TS_ASSERT_EQUALS(si->count(), static_cast< gum::Size >(0))
+        CHECK((si->count()) == (static_cast< gum::Size >(0)));
         if (!si->count()) {
           auto                           prm = si->prm();
           const auto&                    sys = prm->getSystem("Asia.Asia");
           auto                           bn  = new gum::BayesNet< double >("plop");
           gum::BayesNetFactory< double > factory(bn);
           // Act
-          TS_ASSERT_THROWS_NOTHING(sys.groundedBN(factory))
+          CHECK_NOTHROW(sys.groundedBN(factory));
           // Assert
-          TS_ASSERT_EQUALS(bn->size(), static_cast< gum::Size >(8))
-          TS_ASSERT_EQUALS(bn->sizeArcs(), static_cast< gum::Size >(8))
+          CHECK((bn->size()) == (static_cast< gum::Size >(8)));
+          CHECK((bn->sizeArcs()) == (static_cast< gum::Size >(8)));
           delete bn;
         }
         delete si;
-      } catch (gum::Exception&) { TS_ASSERT(false) }
+      } catch (gum::Exception&) { CHECK(false); }
     }
 
     // ->
-    GUM_ACTIVE_TEST(ComplexPrintersGrd) {
+    static void testComplexPrintersGrd() {
       try {
         // Arrange
         auto si = new gum::prm::o3prmr::O3prmrInterpreter();
@@ -314,91 +318,106 @@ namespace gum_tests {
         auto                           bn  = new gum::BayesNet< double >("plop");
         gum::BayesNetFactory< double > factory(bn);
         // Act
-        TS_GUM_ASSERT_THROWS_NOTHING(sys.groundedBN(factory))
+        GUM_CHECK_ASSERT_THROWS_NOTHING(sys.groundedBN(factory));
         // Assert
-        TS_ASSERT_EQUALS(bn->size(), static_cast< gum::Size >(144))
-        TS_ASSERT_EQUALS(bn->sizeArcs(), static_cast< gum::Size >(193))
+        CHECK((bn->size()) == (static_cast< gum::Size >(144)));
+        CHECK((bn->sizeArcs()) == (static_cast< gum::Size >(193)));
         delete si;
         delete bn;
-      } catch (gum::Exception&) { TS_ASSERT(false) }
+      } catch (gum::Exception&) { CHECK(false); }
     }
 
     // ->
-    GUM_ACTIVE_TEST(ADDWithoutSlash) {
+    static void testADDWithoutSlash() {
       try {
         gum::prm::o3prmr::O3prmrInterpreter si;
         si.setSyntaxMode(false);
         si.addPath(GET_RESSOURCES_PATH("o3prmr/ADD"));
 
-        TS_GUM_ASSERT_THROWS_NOTHING(
+        GUM_CHECK_ASSERT_THROWS_NOTHING(
             si.interpretFile(GET_RESSOURCES_PATH("o3prmr/ADD/Request.o3prmr")));
 
         si.showElegantErrorsAndWarnings();
-        TS_ASSERT_EQUALS(si.errors(), static_cast< gum::Size >(0))
-        TS_ASSERT_EQUALS(si.warnings(), static_cast< gum::Size >(0))
+        CHECK((si.errors()) == (static_cast< gum::Size >(0)));
+        CHECK((si.warnings()) == (static_cast< gum::Size >(0)));
 
-        TS_ASSERT_EQUALS(si.results().size(), static_cast< gum::Size >(1))
+        CHECK((si.results().size()) == (static_cast< gum::Size >(1)));
 
-      } catch (gum::Exception&) { TS_ASSERT(false) }
+      } catch (gum::Exception&) { CHECK(false); }
     }
 
-    GUM_ACTIVE_TEST(ADD) {
+    static void testADD() {
       try {
         gum::prm::o3prmr::O3prmrInterpreter si;
         si.setSyntaxMode(false);
         si.addPath(GET_RESSOURCES_PATH("o3prmr/ADD/"));
 
-        TS_GUM_ASSERT_THROWS_NOTHING(
+        GUM_CHECK_ASSERT_THROWS_NOTHING(
             si.interpretFile(GET_RESSOURCES_PATH("o3prmr/ADD/Request.o3prmr")));
 
         si.showElegantErrorsAndWarnings();
-        TS_ASSERT_EQUALS(si.errors(), static_cast< gum::Size >(0))
-        TS_ASSERT_EQUALS(si.warnings(), static_cast< gum::Size >(0))
+        CHECK((si.errors()) == (static_cast< gum::Size >(0)));
+        CHECK((si.warnings()) == (static_cast< gum::Size >(0)));
 
-        TS_ASSERT_EQUALS(si.results().size(), static_cast< gum::Size >(1))
+        CHECK((si.results().size()) == (static_cast< gum::Size >(1)));
 
         auto result = si.results()[0];
 
-      } catch (gum::Exception&) { TS_ASSERT(false) }
+      } catch (gum::Exception&) { CHECK(false); }
     }
 
-    GUM_ACTIVE_TEST(OrAnd) {
+    static void testOrAnd() {
       try {
         gum::prm::o3prmr::O3prmrInterpreter si;
         si.setSyntaxMode(false);
         si.addPath(GET_RESSOURCES_PATH("o3prmr/aggregates/"));
 
-        TS_GUM_ASSERT_THROWS_NOTHING(
+        GUM_CHECK_ASSERT_THROWS_NOTHING(
             si.interpretFile(GET_RESSOURCES_PATH("o3prmr/aggregates/request.o3prmr")));
 
         si.showElegantErrorsAndWarnings();
-        TS_ASSERT_EQUALS(si.errors(), static_cast< gum::Size >(0))
-        TS_ASSERT_EQUALS(si.warnings(), static_cast< gum::Size >(0))
+        CHECK((si.errors()) == (static_cast< gum::Size >(0)));
+        CHECK((si.warnings()) == (static_cast< gum::Size >(0)));
 
-        TS_ASSERT_EQUALS(si.results().size(), static_cast< gum::Size >(7))
+        CHECK((si.results().size()) == (static_cast< gum::Size >(7)));
 
         auto result = si.results()[0];
 
-      } catch (gum::Exception&) { TS_ASSERT(false) }
+      } catch (gum::Exception&) { CHECK(false); }
     }
 
-    GUM_ACTIVE_TEST(Students) {
+    static void testStudents() {
       try {
         gum::prm::o3prmr::O3prmrInterpreter si;
         si.setSyntaxMode(false);
         si.addPath(GET_RESSOURCES_PATH("o3prmr/University/"));
 
-        TS_GUM_ASSERT_THROWS_NOTHING(
+        GUM_CHECK_ASSERT_THROWS_NOTHING(
             si.interpretFile(GET_RESSOURCES_PATH("o3prmr/University/fr/request.o3prmr")));
 
         si.showElegantErrorsAndWarnings();
-        TS_ASSERT_EQUALS(si.errors(), static_cast< gum::Size >(0))
-        TS_ASSERT_EQUALS(si.warnings(), static_cast< gum::Size >(0))
+        CHECK((si.errors()) == (static_cast< gum::Size >(0)));
+        CHECK((si.warnings()) == (static_cast< gum::Size >(0)));
 
-        TS_ASSERT_EQUALS(si.results().size(), static_cast< gum::Size >(1))
+        CHECK((si.results().size()) == (static_cast< gum::Size >(1)));
 
-      } catch (gum::Exception&) { TS_ASSERT(false) }
+      } catch (gum::Exception&) { CHECK(false); }
     }
   };
+
+  GUM_TEST_ACTIF(ParseFile1)
+  GUM_TEST_ACTIF(ParseFile2)
+  GUM_TEST_ACTIF(Inference)
+  GUM_TEST_ACTIF(Observe)
+  GUM_TEST_ACTIF(Unobserve)
+  GUM_TEST_ACTIF(Query)
+  GUM_TEST_ACTIF(AsiaBN)
+  GUM_TEST_ACTIF(AsiaBNGrd)
+  GUM_TEST_ACTIF(AsiaOneFileBNGrd)
+  GUM_TEST_ACTIF(ComplexPrintersGrd)
+  GUM_TEST_ACTIF(ADDWithoutSlash)
+  GUM_TEST_ACTIF(ADD)
+  GUM_TEST_ACTIF(OrAnd)
+  GUM_TEST_ACTIF(Students)
 
 }   // namespace gum_tests

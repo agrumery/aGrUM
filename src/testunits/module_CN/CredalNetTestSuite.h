@@ -1,7 +1,7 @@
 /****************************************************************************
  *   This file is part of the aGrUM/pyAgrum library.                        *
  *                                                                          *
- *   Copyright (c) 2005-2025 by                                             *
+ *   Copyright (c) 2005-2026 by                                             *
  *       - Pierre-Henri WUILLEMIN(_at_LIP6)                                 *
  *       - Christophe GONZALES(_at_AMU)                                     *
  *                                                                          *
@@ -27,7 +27,7 @@
  *                                                                          *
  *   See LICENCES for more details.                                         *
  *                                                                          *
- *   SPDX-FileCopyrightText: Copyright 2005-2025                            *
+ *   SPDX-FileCopyrightText: Copyright 2005-2026                            *
  *       - Pierre-Henri WUILLEMIN(_at_LIP6)                                 *
  *       - Christophe GONZALES(_at_AMU)                                     *
  *   SPDX-License-Identifier: LGPL-3.0-or-later OR MIT                      *
@@ -37,6 +37,7 @@
  *   gitlab   : https://gitlab.com/agrumery/agrum                           *
  *                                                                          *
  ****************************************************************************/
+
 #pragma once
 
 
@@ -52,6 +53,11 @@
 #include <agrum/CN/credalNet.h>
 #include <agrum/CN/polytope/LpInterface.h>
 
+#undef GUM_CURRENT_SUITE
+#undef GUM_CURRENT_MODULE
+#define GUM_CURRENT_SUITE  CredalNet
+#define GUM_CURRENT_MODULE CN
+
 /**
  * @file
  * @brief Mono-threaded version
@@ -62,7 +68,7 @@
 
 namespace gum_tests {
 
-  class GUM_TEST_SUITE(CredalNet) {
+  struct CredalNetTestSuite {
     private:
 
     protected:
@@ -121,7 +127,7 @@ namespace gum_tests {
     };
 
     /// network : A --> C <-- B built manually
-    GUM_ACTIVE_TEST(CredalNetByLP) {
+    void testCredalNetByLP() {
       initCNet();
 
       std::vector< gum::NodeId > ids;
@@ -129,9 +135,9 @@ namespace gum_tests {
       ids.push_back(cn->addVariable("B", 3));   // id 1
       ids.push_back(cn->addVariable("C", 3));   // id 2
 
-      TS_ASSERT_EQUALS(ids[0], 0U)
-      TS_ASSERT_EQUALS(ids[1], 1U)
-      TS_ASSERT_EQUALS(ids[2], 2U)
+      CHECK((ids[0]) == (0U));
+      CHECK((ids[1]) == (1U));
+      CHECK((ids[2]) == (2U));
 
       cn->addArc(ids[0], ids[2]);
       cn->addArc(ids[1], ids[2]);
@@ -278,7 +284,7 @@ namespace gum_tests {
               lps[id][entry].solve());   // we solve the lp
 
           gum::Size sols_size = gum::Size(lps_sols[id][entry].size());
-          TS_ASSERT_EQUALS(vertices.size(), sols_size)
+          CHECK((vertices.size()) == (sols_size));
 
           std::vector< bool > checked(sols_size, false);
 
@@ -294,7 +300,7 @@ namespace gum_tests {
               }
 
               if (eq) {
-                TS_ASSERT(!checked[sol])
+                CHECK(!checked[sol]);
                 checked[sol] = true;
                 break;
               }
@@ -307,7 +313,7 @@ namespace gum_tests {
             r = r && b;
           }
 
-          TS_ASSERT(r)
+          CHECK(r);
 
           cn->setCPT(id, ins, vertices);
 
@@ -321,7 +327,7 @@ namespace gum_tests {
       clearCNet();
     }
 
-    GUM_ACTIVE_TEST(Binarization) {
+    void testBinarization() {
       auto bn = gum::BayesNet< double >::fastPrototype("A[2]->B[3]");
       for (const auto nod: bn.nodes())
         bn.cpt(nod).translate(1).scale(0.25).normalizeAsCPT();
@@ -344,16 +350,16 @@ namespace gum_tests {
       const auto& valsmax = cnet.get_binaryCPT_max();
 
       for (gum::Idx i = 0; i < 4; i++) {
-        TS_ASSERT_EQUALS(valsmin[current.idFromName("B-v0")][i], (i == 0 ? 1.0 : 0.0))
-        TS_ASSERT_EQUALS(valsmax[current.idFromName("B-v0")][i], (i == 0 ? 1.0 : 0.0))
-        TS_ASSERT_EQUALS(valsmin[current.idFromName("B-v1")][i], (i == 1 ? 1.0 : 0.0))
-        TS_ASSERT_EQUALS(valsmax[current.idFromName("B-v1")][i], (i == 1 ? 1.0 : 0.0))
-        TS_ASSERT_EQUALS(valsmin[current.idFromName("B-v2")][i], (i == 2 ? 1.0 : 0.0))
-        TS_ASSERT_EQUALS(valsmax[current.idFromName("B-v2")][i], (i == 2 ? 1.0 : 0.0))
+        CHECK((valsmin[current.idFromName("B-v0")][i]) == ((i == 0 ? 1.0 : 0.0)));
+        CHECK((valsmax[current.idFromName("B-v0")][i]) == ((i == 0 ? 1.0 : 0.0)));
+        CHECK((valsmin[current.idFromName("B-v1")][i]) == ((i == 1 ? 1.0 : 0.0)));
+        CHECK((valsmax[current.idFromName("B-v1")][i]) == ((i == 1 ? 1.0 : 0.0)));
+        CHECK((valsmin[current.idFromName("B-v2")][i]) == ((i == 2 ? 1.0 : 0.0)));
+        CHECK((valsmax[current.idFromName("B-v2")][i]) == ((i == 2 ? 1.0 : 0.0)));
       }
     }
 
-    GUM_ACTIVE_TEST(BadMinMaxFile) {
+    void testBadMinMaxFile() {
       gum::BayesNet< double >  monBNa;
       gum::BIFReader< double > readera(
           &monBNa,
@@ -367,8 +373,12 @@ namespace gum_tests {
       readerb.proceed();
 
       gum::credal::CredalNet< double > cn(monBNa, monBNb);
-      TS_ASSERT_THROWS(cn.intervalToCredal(), const gum::CPTError&)
+      CHECK_THROWS_AS(cn.intervalToCredal(), const gum::CPTError&);
     }
   };   // end of class CredalNetTestSuite
+
+  GUM_TEST_ACTIF(CredalNetByLP)
+  GUM_TEST_ACTIF(Binarization)
+  GUM_TEST_ACTIF(BadMinMaxFile)
 
 }   // end of namespace gum_tests

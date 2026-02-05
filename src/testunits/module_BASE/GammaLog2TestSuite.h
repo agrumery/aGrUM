@@ -1,7 +1,7 @@
 /****************************************************************************
  *   This file is part of the aGrUM/pyAgrum library.                        *
  *                                                                          *
- *   Copyright (c) 2005-2025 by                                             *
+ *   Copyright (c) 2005-2026 by                                             *
  *       - Pierre-Henri WUILLEMIN(_at_LIP6)                                 *
  *       - Christophe GONZALES(_at_AMU)                                     *
  *                                                                          *
@@ -27,7 +27,7 @@
  *                                                                          *
  *   See LICENCES for more details.                                         *
  *                                                                          *
- *   SPDX-FileCopyrightText: Copyright 2005-2025                            *
+ *   SPDX-FileCopyrightText: Copyright 2005-2026                            *
  *       - Pierre-Henri WUILLEMIN(_at_LIP6)                                 *
  *       - Christophe GONZALES(_at_AMU)                                     *
  *   SPDX-License-Identifier: LGPL-3.0-or-later OR MIT                      *
@@ -37,6 +37,7 @@
  *   gitlab   : https://gitlab.com/agrumery/agrum                           *
  *                                                                          *
  ****************************************************************************/
+
 #pragma once
 
 
@@ -49,11 +50,16 @@
 
 #include <agrum/base/core/math/math_utils.h>
 
+#undef GUM_CURRENT_SUITE
+#undef GUM_CURRENT_MODULE
+#define GUM_CURRENT_SUITE  GammaLog2
+#define GUM_CURRENT_MODULE GUMBASE
+
 namespace gum_tests {
 
-  class GUM_TEST_SUITE(GammaLog2) {
+  struct GammaLog2TestSuite {
     public:
-    GUM_ACTIVE_TEST(1) {
+    static void test1() {
       gum::GammaLog2 f;
       gum::GammaLog2 g(true);
 
@@ -61,14 +67,16 @@ namespace gum_tests {
         for (auto j = 0; j < 100; ++j) {
           if (i + j > 0) {
             double index = i + j / 100.0;
-            TS_ASSERT_DELTA(f(index), g(index), 0.1)
+            CHECK((f(index)) == doctest::Approx(g(index)).epsilon(0.1));
 
             double findex = i + j / 100.0;
-            TS_ASSERT_DELTA(f(findex), g(findex), 0.1)
+            CHECK((f(findex)) == doctest::Approx(g(findex)).epsilon(0.1));
           }
         }
       }
     }   // namespace gum_tests
   };
+
+  GUM_TEST_ACTIF(1)
 
 }   // namespace gum_tests

@@ -1,7 +1,7 @@
 /****************************************************************************
  *   This file is part of the aGrUM/pyAgrum library.                        *
  *                                                                          *
- *   Copyright (c) 2005-2025 by                                             *
+ *   Copyright (c) 2005-2026 by                                             *
  *       - Pierre-Henri WUILLEMIN(_at_LIP6)                                 *
  *       - Christophe GONZALES(_at_AMU)                                     *
  *                                                                          *
@@ -27,7 +27,7 @@
  *                                                                          *
  *   See LICENCES for more details.                                         *
  *                                                                          *
- *   SPDX-FileCopyrightText: Copyright 2005-2025                            *
+ *   SPDX-FileCopyrightText: Copyright 2005-2026                            *
  *       - Pierre-Henri WUILLEMIN(_at_LIP6)                                 *
  *       - Christophe GONZALES(_at_AMU)                                     *
  *   SPDX-License-Identifier: LGPL-3.0-or-later OR MIT                      *
@@ -37,6 +37,7 @@
  *   gitlab   : https://gitlab.com/agrumery/agrum                           *
  *                                                                          *
  ****************************************************************************/
+
 #pragma once
 
 
@@ -45,48 +46,53 @@
 
 #include <agrum/base/core/refPtr.h>
 
+#undef GUM_CURRENT_SUITE
+#undef GUM_CURRENT_MODULE
+#define GUM_CURRENT_SUITE  RefPtr
+#define GUM_CURRENT_MODULE GUMBASE
+
 namespace gum_tests {
 
-  class GUM_TEST_SUITE(RefPtr) {
+  struct RefPtrTestSuite {
     public:
-    GUM_ACTIVE_TEST(Constructors) {
+    static void testConstructors() {
       gum::RefPtr< int > ptr1(new int(4));
 
-      TS_ASSERT(ptr1)
+      CHECK(ptr1);
 
       gum::RefPtr< int > ptr2 = ptr1, ptr3;
 
-      TS_ASSERT_EQUALS(ptr1, ptr2)
+      CHECK((ptr1) == (ptr2));
 
-      TS_ASSERT_DIFFERS(ptr1, ptr3)
+      CHECK((ptr1) != (ptr3));
 
       ptr3 = ptr1;
 
-      TS_ASSERT_EQUALS(ptr1, ptr3)
+      CHECK((ptr1) == (ptr3));
     }
 
-    GUM_ACTIVE_TEST(Modify) {
+    static void testModify() {
       gum::RefPtr< int > ptr1(new int(4));
       gum::RefPtr< int > ptr2 = ptr1, ptr3;
       ptr3                    = ptr1;
 
-      TS_ASSERT_EQUALS(ptr1, ptr2)
+      CHECK((ptr1) == (ptr2));
 
       ptr2.clear();
 
-      TS_ASSERT_DIFFERS(ptr1, ptr2)
+      CHECK((ptr1) != (ptr2));
 
       *ptr1 = 5;
 
-      TS_ASSERT_EQUALS(*ptr1, 5)
+      CHECK((*ptr1) == (5));
 
       ptr1 = 0;
 
-      TS_ASSERT_EQUALS(ptr1.refCount(), 0U)
+      CHECK((ptr1.refCount()) == (0U));
 
       ptr2 = ptr1;
 
-      TS_ASSERT_EQUALS(ptr2.refCount(), 0U)
+      CHECK((ptr2.refCount()) == (0U));
     }
 
     struct toto {
@@ -103,14 +109,18 @@ namespace gum_tests {
       int getY() { return yyy; }
     };
 
-    GUM_ACTIVE_TEST(Downcast) {
+    static void testDowncast() {
       gum::RefPtr< titi > ptr1(new titi);
 
-      TS_ASSERT_EQUALS(ptr1->getY(), 3)
+      CHECK((ptr1->getY()) == (3));
 
       gum::RefPtr< toto > ptr2(ptr1);
 
-      TS_ASSERT_DIFFERS(ptr1->getY(), ptr2->getY())
+      CHECK((ptr1->getY()) != (ptr2->getY()));
     }
   };
+
+  GUM_TEST_ACTIF(Constructors)
+  GUM_TEST_ACTIF(Modify)
+  GUM_TEST_ACTIF(Downcast)
 }   // namespace gum_tests

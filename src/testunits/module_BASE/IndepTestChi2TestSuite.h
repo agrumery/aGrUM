@@ -1,7 +1,7 @@
 /****************************************************************************
  *   This file is part of the aGrUM/pyAgrum library.                        *
  *                                                                          *
- *   Copyright (c) 2005-2025 by                                             *
+ *   Copyright (c) 2005-2026 by                                             *
  *       - Pierre-Henri WUILLEMIN(_at_LIP6)                                 *
  *       - Christophe GONZALES(_at_AMU)                                     *
  *                                                                          *
@@ -27,7 +27,7 @@
  *                                                                          *
  *   See LICENCES for more details.                                         *
  *                                                                          *
- *   SPDX-FileCopyrightText: Copyright 2005-2025                            *
+ *   SPDX-FileCopyrightText: Copyright 2005-2026                            *
  *       - Pierre-Henri WUILLEMIN(_at_LIP6)                                 *
  *       - Christophe GONZALES(_at_AMU)                                     *
  *   SPDX-License-Identifier: LGPL-3.0-or-later OR MIT                      *
@@ -37,6 +37,7 @@
  *   gitlab   : https://gitlab.com/agrumery/agrum                           *
  *                                                                          *
  ****************************************************************************/
+
 #pragma once
 
 
@@ -53,11 +54,16 @@
 #include <agrum/base/stattests/indepTestChi2.h>
 #include <agrum/BN/learning/priors/noPrior.h>
 
+#undef GUM_CURRENT_SUITE
+#undef GUM_CURRENT_MODULE
+#define GUM_CURRENT_SUITE  IndepTestChi2
+#define GUM_CURRENT_MODULE GUMBASE
+
 namespace gum_tests {
 
-  class GUM_TEST_SUITE(IndepTestChi2) {
+  struct IndepTestChi2TestSuite {
     public:
-    GUM_ACTIVE_TEST(_chi2) {
+    static void test_chi2() {
       gum::learning::DBInitializerFromCSV initializer(GET_RESSOURCES_PATH("csv/asia.csv"));
       const auto&                         var_names = initializer.variableNames();
       const std::size_t                   nb_vars   = var_names.size();
@@ -77,25 +83,31 @@ namespace gum_tests {
       gum::learning::NoPrior              prior(database);
       gum::learning::IndepTestChi2        score(parser, prior);
 
-      TS_ASSERT_DELTA(score.score(0, 3), -0.999, 0.01)
-      TS_ASSERT_DELTA(score.score(3, 1), -0.389, 0.01)
-      TS_ASSERT_DELTA(score.score(0, 2), 227.09, 0.01)
-      TS_ASSERT_DELTA(score.score(2, 0), 227.09, 0.01)
-      TS_ASSERT_DELTA(score.score(1, 3, std::vector< gum::NodeId >{4}), -0.648, 0.01)
-      TS_ASSERT_DELTA(score.score(0, 2, std::vector< gum::NodeId >{4}), 145.376, 0.01)
-      TS_ASSERT_DELTA(score.score(3, 6, std::vector< gum::NodeId >{1, 2}), -0.692, 0.01)
+      CHECK((score.score(0, 3)) == doctest::Approx(-0.999).epsilon(0.01));
+      CHECK((score.score(3, 1)) == doctest::Approx(-0.389).epsilon(0.01));
+      CHECK((score.score(0, 2)) == doctest::Approx(227.09).epsilon(0.01));
+      CHECK((score.score(2, 0)) == doctest::Approx(227.09).epsilon(0.01));
+      CHECK((score.score(1, 3, std::vector< gum::NodeId >{4}))
+            == doctest::Approx(-0.648).epsilon(0.01));
+      CHECK((score.score(0, 2, std::vector< gum::NodeId >{4}))
+            == doctest::Approx(145.376).epsilon(0.01));
+      CHECK((score.score(3, 6, std::vector< gum::NodeId >{1, 2}))
+            == doctest::Approx(-0.692).epsilon(0.01));
 
       score.clear();
-      TS_ASSERT_DELTA(score.score(1, 3), -0.389, 0.01)
-      TS_ASSERT_DELTA(score.score(0, 1), 104.865, 0.01)
-      TS_ASSERT_DELTA(score.score(3, 6, std::vector< gum::NodeId >{1, 2}), -0.692, 0.01)
-      TS_ASSERT_DELTA(score.score(2, 0), 227.09, 0.01)
-      TS_ASSERT_DELTA(score.score(3, 1, std::vector< gum::NodeId >{4}), -0.648, 0.01)
-      TS_ASSERT_DELTA(score.score(2, 0), 227.09, 0.01)
-      TS_ASSERT_DELTA(score.score(1, 3, std::vector< gum::NodeId >{4}), -0.648, 0.01)
+      CHECK((score.score(1, 3)) == doctest::Approx(-0.389).epsilon(0.01));
+      CHECK((score.score(0, 1)) == doctest::Approx(104.865).epsilon(0.01));
+      CHECK((score.score(3, 6, std::vector< gum::NodeId >{1, 2}))
+            == doctest::Approx(-0.692).epsilon(0.01));
+      CHECK((score.score(2, 0)) == doctest::Approx(227.09).epsilon(0.01));
+      CHECK((score.score(3, 1, std::vector< gum::NodeId >{4}))
+            == doctest::Approx(-0.648).epsilon(0.01));
+      CHECK((score.score(2, 0)) == doctest::Approx(227.09).epsilon(0.01));
+      CHECK((score.score(1, 3, std::vector< gum::NodeId >{4}))
+            == doctest::Approx(-0.648).epsilon(0.01));
     }   // namespace gum_tests
 
-    GUM_ACTIVE_TEST(_cache) {
+    static void test_cache() {
       gum::learning::DBInitializerFromCSV initializer(GET_RESSOURCES_PATH("csv/asia.csv"));
       const auto&                         var_names = initializer.variableNames();
       const std::size_t                   nb_vars   = var_names.size();
@@ -119,17 +131,20 @@ namespace gum_tests {
       for (gum::Idx i = 0; i < 100; ++i) {
         score.clear();
 
-        TS_ASSERT_DELTA(score.score(0, 1), 104.865, 0.01)
-        TS_ASSERT_DELTA(score.score(1, 3), -0.389, 0.01)
-        TS_ASSERT_DELTA(score.score(3, 6, std::vector< gum::NodeId >{1, 2}), -0.692, 0.01)
-        TS_ASSERT_DELTA(score.score(2, 0), 227.09, 0.01)
-        TS_ASSERT_DELTA(score.score(3, 1, std::vector< gum::NodeId >{4}), -0.648, 0.01)
-        TS_ASSERT_DELTA(score.score(2, 0), 227.09, 0.01)
-        TS_ASSERT_DELTA(score.score(1, 3, std::vector< gum::NodeId >{4}), -0.648, 0.01)
+        CHECK((score.score(0, 1)) == doctest::Approx(104.865).epsilon(0.01));
+        CHECK((score.score(1, 3)) == doctest::Approx(-0.389).epsilon(0.01));
+        CHECK((score.score(3, 6, std::vector< gum::NodeId >{1, 2}))
+              == doctest::Approx(-0.692).epsilon(0.01));
+        CHECK((score.score(2, 0)) == doctest::Approx(227.09).epsilon(0.01));
+        CHECK((score.score(3, 1, std::vector< gum::NodeId >{4}))
+              == doctest::Approx(-0.648).epsilon(0.01));
+        CHECK((score.score(2, 0)) == doctest::Approx(227.09).epsilon(0.01));
+        CHECK((score.score(1, 3, std::vector< gum::NodeId >{4}))
+              == doctest::Approx(-0.648).epsilon(0.01));
       }
     }
 
-    GUM_ACTIVE_TEST(_clearcache) {
+    static void test_clearcache() {
       gum::learning::DBInitializerFromCSV initializer(GET_RESSOURCES_PATH("csv/asia.csv"));
       const auto&                         var_names = initializer.variableNames();
       const std::size_t                   nb_vars   = var_names.size();
@@ -152,17 +167,20 @@ namespace gum_tests {
 
       for (gum::Idx i = 0; i < 4; ++i) {
         score.clear();
-        TS_ASSERT_DELTA(score.score(0, 1), 104.865, 0.01)
-        TS_ASSERT_DELTA(score.score(1, 3), -0.389, 0.01)
-        TS_ASSERT_DELTA(score.score(3, 6, std::vector< gum::NodeId >{1, 2}), -0.692, 0.01)
-        TS_ASSERT_DELTA(score.score(2, 0), 227.09, 0.01)
-        TS_ASSERT_DELTA(score.score(3, 1, std::vector< gum::NodeId >{4}), -0.648, 0.01)
-        TS_ASSERT_DELTA(score.score(2, 0), 227.09, 0.01)
-        TS_ASSERT_DELTA(score.score(1, 3, std::vector< gum::NodeId >{4}), -0.648, 0.01)
+        CHECK((score.score(0, 1)) == doctest::Approx(104.865).epsilon(0.01));
+        CHECK((score.score(1, 3)) == doctest::Approx(-0.389).epsilon(0.01));
+        CHECK((score.score(3, 6, std::vector< gum::NodeId >{1, 2}))
+              == doctest::Approx(-0.692).epsilon(0.01));
+        CHECK((score.score(2, 0)) == doctest::Approx(227.09).epsilon(0.01));
+        CHECK((score.score(3, 1, std::vector< gum::NodeId >{4}))
+              == doctest::Approx(-0.648).epsilon(0.01));
+        CHECK((score.score(2, 0)) == doctest::Approx(227.09).epsilon(0.01));
+        CHECK((score.score(1, 3, std::vector< gum::NodeId >{4}))
+              == doctest::Approx(-0.648).epsilon(0.01));
       }
     }
 
-    GUM_ACTIVE_TEST(_statistics) {
+    static void test_statistics() {
       gum::learning::DBInitializerFromCSV initializer(GET_RESSOURCES_PATH("csv/chi2.csv"));
       const auto&                         var_names = initializer.variableNames();
       const std::size_t                   nb_vars   = var_names.size();
@@ -184,27 +202,27 @@ namespace gum_tests {
 
       // A:0, B:1, C:2, D:3
       auto stat = score.statistics(0, 2);
-      TS_ASSERT_DELTA(stat.first, 0.0007, 1e-3)
-      TS_ASSERT_DELTA(stat.second, 0.978, 1e-3)
+      CHECK((stat.first) == doctest::Approx(0.0007).epsilon(1e-3));
+      CHECK((stat.second) == doctest::Approx(0.978).epsilon(1e-3));
 
       stat = score.statistics(1, 0);
-      TS_ASSERT_DELTA(stat.first, 21.4348, 1e-3)
-      TS_ASSERT_DELTA(stat.second, 3.6e-6, TS_GUM_SMALL_ERROR)
+      CHECK((stat.first) == doctest::Approx(21.4348).epsilon(1e-3));
+      CHECK((stat.second) == doctest::Approx(3.6e-6).epsilon(GUM_SMALL_ERROR));
 
       stat = score.statistics(0, 1);
-      TS_ASSERT_DELTA(stat.first, 21.4348, 1e-3)
-      TS_ASSERT_DELTA(stat.second, 3.6e-6, TS_GUM_SMALL_ERROR)
+      CHECK((stat.first) == doctest::Approx(21.4348).epsilon(1e-3));
+      CHECK((stat.second) == doctest::Approx(3.6e-6).epsilon(GUM_SMALL_ERROR));
 
       stat = score.statistics(1, 3);
-      TS_ASSERT_DELTA(stat.first, 0.903, 1e-3)
-      TS_ASSERT_DELTA(stat.second, 0.341, 1e-3)
+      CHECK((stat.first) == doctest::Approx(0.903).epsilon(1e-3));
+      CHECK((stat.second) == doctest::Approx(0.341).epsilon(1e-3));
 
       stat = score.statistics(0, 2, std::vector< gum::NodeId >{1});
-      TS_ASSERT_DELTA(stat.first, 15.2205, 1e-3)
-      TS_ASSERT_DELTA(stat.second, 0.0005, 1e-4)
+      CHECK((stat.first) == doctest::Approx(15.2205).epsilon(1e-3));
+      CHECK((stat.second) == doctest::Approx(0.0005).epsilon(1e-4));
     }
 
-    GUM_ACTIVE_TEST(_statistics_2) {
+    static void test_statistics_2() {
       gum::learning::DBInitializerFromCSV initializer(GET_RESSOURCES_PATH("csv/testXYbase.csv"));
       const auto&                         var_names = initializer.variableNames();
       const std::size_t                   nb_vars   = var_names.size();
@@ -225,11 +243,11 @@ namespace gum_tests {
       gum::learning::IndepTestChi2        score(parser, prior);
 
       auto stats = score.statistics(0, 1);
-      TS_ASSERT_DELTA(stats.first, 15.3389, 1e-3)
-      TS_ASSERT_DELTA(stats.second, 0.0177784, 1e-3)
+      CHECK((stats.first) == doctest::Approx(15.3389).epsilon(1e-3));
+      CHECK((stats.second) == doctest::Approx(0.0177784).epsilon(1e-3));
     }
 
-    GUM_ACTIVE_TEST(_statistics_3) {
+    static void test_statistics_3() {
       gum::learning::DBInitializerFromCSV initializer(GET_RESSOURCES_PATH("csv/indepXYZ1Z2.csv"));
       const auto&                         var_names = initializer.variableNames();
       const std::size_t                   nb_vars   = var_names.size();
@@ -250,11 +268,11 @@ namespace gum_tests {
       gum::learning::IndepTestChi2        score(parser, prior);
 
       auto stats = score.statistics(0, 1, {2, 3});
-      TS_ASSERT_DELTA(stats.first, 2.0, 1e-3)
-      TS_ASSERT_DELTA(stats.second, 0.7357588823428847, 1e-3)
+      CHECK((stats.first) == doctest::Approx(2.0).epsilon(1e-3));
+      CHECK((stats.second) == doctest::Approx(0.7357588823428847).epsilon(1e-3));
     }
 
-    GUM_ACTIVE_TEST(_statistics_4) {
+    static void test_statistics_4() {
       gum::learning::DBInitializerFromCSV initializer(GET_RESSOURCES_PATH("csv/indepXYZ.csv"));
       const auto&                         var_names = initializer.variableNames();
       const std::size_t                   nb_vars   = var_names.size();
@@ -275,9 +293,17 @@ namespace gum_tests {
       gum::learning::IndepTestChi2        score(parser, prior);
 
       auto stats = score.statistics(0, 1, {2});
-      TS_ASSERT_DELTA(stats.first, 2.0, 1e-3)
-      TS_ASSERT_DELTA(stats.second, 0.5724067044783774, 1e-3)
+      CHECK((stats.first) == doctest::Approx(2.0).epsilon(1e-3));
+      CHECK((stats.second) == doctest::Approx(0.5724067044783774).epsilon(1e-3));
     }
   };
+
+  GUM_TEST_ACTIF(_chi2)
+  GUM_TEST_ACTIF(_cache)
+  GUM_TEST_ACTIF(_clearcache)
+  GUM_TEST_ACTIF(_statistics)
+  GUM_TEST_ACTIF(_statistics_2)
+  GUM_TEST_ACTIF(_statistics_3)
+  GUM_TEST_ACTIF(_statistics_4)
 
 } /* namespace gum_tests */

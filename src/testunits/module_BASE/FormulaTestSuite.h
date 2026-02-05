@@ -1,7 +1,7 @@
 /****************************************************************************
  *   This file is part of the aGrUM/pyAgrum library.                        *
  *                                                                          *
- *   Copyright (c) 2005-2025 by                                             *
+ *   Copyright (c) 2005-2026 by                                             *
  *       - Pierre-Henri WUILLEMIN(_at_LIP6)                                 *
  *       - Christophe GONZALES(_at_AMU)                                     *
  *                                                                          *
@@ -27,7 +27,7 @@
  *                                                                          *
  *   See LICENCES for more details.                                         *
  *                                                                          *
- *   SPDX-FileCopyrightText: Copyright 2005-2025                            *
+ *   SPDX-FileCopyrightText: Copyright 2005-2026                            *
  *       - Pierre-Henri WUILLEMIN(_at_LIP6)                                 *
  *       - Christophe GONZALES(_at_AMU)                                     *
  *   SPDX-License-Identifier: LGPL-3.0-or-later OR MIT                      *
@@ -37,6 +37,7 @@
  *   gitlab   : https://gitlab.com/agrumery/agrum                           *
  *                                                                          *
  ****************************************************************************/
+
 #pragma once
 
 
@@ -48,226 +49,227 @@
 #include <agrum/base/core/exceptions.h>
 #include <agrum/base/core/math/formula.h>
 
+#undef GUM_CURRENT_SUITE
+#undef GUM_CURRENT_MODULE
+#define GUM_CURRENT_SUITE  MultiDimFormula
+#define GUM_CURRENT_MODULE GUMBASE
+
 namespace gum_tests {
 
-  class GUM_TEST_SUITE(MultiDimFormula) {
+  struct MultiDimFormulaTestSuite {
     public:
-    void setUp() {}
-
-    void tearDown() {}
-
-    GUM_ACTIVE_TEST(ConstantInt) {
+    static void testConstantInt() {
       try {   // Arrange
         std::string  eq       = "1";
         double       expected = 1;
         gum::Formula formula(eq);
         // Act
-        TS_GUM_ASSERT_THROWS_NOTHING(formula.result())
+        GUM_CHECK_ASSERT_THROWS_NOTHING(formula.result());
         // Assert
-        TS_ASSERT_DELTA(formula.result(), expected, 1e-6)
+        CHECK((formula.result()) == doctest::Approx(expected).epsilon(1e-6));
       }   // namespace gum_tests
 
       catch (gum::Exception&) {
-        TS_ASSERT(false)
+        CHECK(false);
       }
     }
 
-    GUM_ACTIVE_TEST(ConstantFloat) {
+    static void testConstantFloat() {
       try {
         // Arrange
         std::string  eq       = "0.99";
         double       expected = 0.99;
         gum::Formula formula(eq);
         // Act
-        TS_GUM_ASSERT_THROWS_NOTHING(formula.result())
+        GUM_CHECK_ASSERT_THROWS_NOTHING(formula.result());
         // Assert
-        TS_ASSERT_DELTA(formula.result(), expected, 1e-6)
-      } catch (gum::Exception&) { TS_ASSERT(false) }
+        CHECK((formula.result()) == doctest::Approx(expected).epsilon(1e-6));
+      } catch (gum::Exception&) { CHECK(false); }
     }
 
-    GUM_ACTIVE_TEST(Multiplication) {
+    static void testMultiplication() {
       try {
         // Arrange
         std::string  eq       = "10 * 2";
         double       expected = 20.0;
         gum::Formula formula(eq);
         // Act
-        TS_GUM_ASSERT_THROWS_NOTHING(formula.result())
+        GUM_CHECK_ASSERT_THROWS_NOTHING(formula.result());
         // Assert
-        TS_ASSERT_DELTA(formula.result(), expected, 1e-6)
-      } catch (gum::Exception&) { TS_ASSERT(false) }
+        CHECK((formula.result()) == doctest::Approx(expected).epsilon(1e-6));
+      } catch (gum::Exception&) { CHECK(false); }
     }
 
-    GUM_ACTIVE_TEST(Division) {
+    static void testDivision() {
       try {
         // Arrange
         std::string  eq       = "10 / 2";
         double       expected = 5.0;
         gum::Formula formula(eq);
         // Act
-        TS_GUM_ASSERT_THROWS_NOTHING(formula.result())
+        GUM_CHECK_ASSERT_THROWS_NOTHING(formula.result());
         // Assert
-        TS_ASSERT_DELTA(formula.result(), expected, 1e-6)
-      } catch (gum::Exception&) { TS_ASSERT(false) }
+        CHECK((formula.result()) == doctest::Approx(expected).epsilon(1e-6));
+      } catch (gum::Exception&) { CHECK(false); }
     }
 
-    GUM_ACTIVE_TEST(Addition) {
+    static void testAddition() {
       try {
         // Arrange
         std::string  eq       = "10 + 2";
         double       expected = 12.0;
         gum::Formula formula(eq);
         // Act
-        TS_GUM_ASSERT_THROWS_NOTHING(formula.result())
+        GUM_CHECK_ASSERT_THROWS_NOTHING(formula.result());
         // Assert
-        TS_ASSERT_DELTA(formula.result(), expected, 1e-6)
-      } catch (gum::Exception&) { TS_ASSERT(false) }
+        CHECK((formula.result()) == doctest::Approx(expected).epsilon(1e-6));
+      } catch (gum::Exception&) { CHECK(false); }
     }
 
-    GUM_ACTIVE_TEST(Substraction) {
+    static void testSubstraction() {
       try {
         // Arrange
         std::string  eq       = "10 - 2";
         double       expected = 8.0;
         gum::Formula formula(eq);
         // Act
-        TS_GUM_ASSERT_THROWS_NOTHING(formula.result())
+        GUM_CHECK_ASSERT_THROWS_NOTHING(formula.result());
         // Assert
-        TS_ASSERT_DELTA(formula.result(), expected, 1e-6)
-      } catch (gum::Exception&) { TS_ASSERT(false) }
+        CHECK((formula.result()) == doctest::Approx(expected).epsilon(1e-6));
+      } catch (gum::Exception&) { CHECK(false); }
     }
 
-    GUM_ACTIVE_TEST(SimplePriority1) {
+    static void testSimplePriority1() {
       try {
         // Arrange
         std::string  eq       = "10 - 2 * 5";
         double       expected = 0.0;
         gum::Formula formula(eq);
         // Act
-        TS_GUM_ASSERT_THROWS_NOTHING(formula.result())
+        GUM_CHECK_ASSERT_THROWS_NOTHING(formula.result());
         // Assert
-        TS_ASSERT_DELTA(formula.result(), expected, 1e-6)
-      } catch (gum::Exception&) { TS_ASSERT(false) }
+        CHECK((formula.result()) == doctest::Approx(expected).epsilon(1e-6));
+      } catch (gum::Exception&) { CHECK(false); }
     }
 
-    GUM_ACTIVE_TEST(SimplePriority2) {
+    static void testSimplePriority2() {
       try {
         // Arrange
         std::string  eq       = "10 * 2 - 5";
         double       expected = 15.0;
         gum::Formula formula(eq);
         // Act
-        TS_GUM_ASSERT_THROWS_NOTHING(formula.result())
+        GUM_CHECK_ASSERT_THROWS_NOTHING(formula.result());
         // Assert
-        TS_ASSERT_DELTA(formula.result(), expected, 1e-6)
-      } catch (gum::Exception&) { TS_ASSERT(false) }
+        CHECK((formula.result()) == doctest::Approx(expected).epsilon(1e-6));
+      } catch (gum::Exception&) { CHECK(false); }
     }
 
-    GUM_ACTIVE_TEST(ComplexPriority) {
+    static void testComplexPriority() {
       try {
         // Arrange
         std::string  eq       = "5 + ( ( 1 + 2 ) * 4 ) - 3";
         double       expected = 14.0;
         gum::Formula formula(eq);
         // Act
-        TS_GUM_ASSERT_THROWS_NOTHING(formula.result())
+        GUM_CHECK_ASSERT_THROWS_NOTHING(formula.result());
         // Assert
-        TS_ASSERT_DELTA(formula.result(), expected, 1e-6)
-      } catch (gum::Exception&) { TS_ASSERT(false) }
+        CHECK((formula.result()) == doctest::Approx(expected).epsilon(1e-6));
+      } catch (gum::Exception&) { CHECK(false); }
     }
 
-    GUM_ACTIVE_TEST(MinusSign) {
+    static void testMinusSign() {
       try {
         // Arrange
         std::string  eq       = "-3";
         double       expected = -3.0;
         gum::Formula formula(eq);
         // Act
-        TS_GUM_ASSERT_THROWS_NOTHING(formula.result())
+        GUM_CHECK_ASSERT_THROWS_NOTHING(formula.result());
         // Assert
-        TS_ASSERT_DELTA(formula.result(), expected, 1e-6)
-      } catch (gum::Exception&) { TS_ASSERT(false) }
+        CHECK((formula.result()) == doctest::Approx(expected).epsilon(1e-6));
+      } catch (gum::Exception&) { CHECK(false); }
     }
 
-    GUM_ACTIVE_TEST(Exp) {
+    static void testExp() {
       try {
         // Arrange
         std::string  eq       = "exp(0.001)";
         double       expected = 1.0010005;
         gum::Formula formula(eq);
         // Act
-        TS_GUM_ASSERT_THROWS_NOTHING(formula.result())
+        GUM_CHECK_ASSERT_THROWS_NOTHING(formula.result());
         // Assert
-        TS_ASSERT_DELTA(formula.result(), expected, 1e-6)
-      } catch (gum::Exception&) { TS_ASSERT(false) }
+        CHECK((formula.result()) == doctest::Approx(expected).epsilon(1e-6));
+      } catch (gum::Exception&) { CHECK(false); }
     }
 
-    GUM_ACTIVE_TEST(Log) {
+    static void testLog() {
       try {
         // Arrange
         std::string  eq       = "1 + log(1)";
         double       expected = 1;
         gum::Formula formula(eq);
         // Act
-        TS_GUM_ASSERT_THROWS_NOTHING(formula.result())
+        GUM_CHECK_ASSERT_THROWS_NOTHING(formula.result());
         // Assert
-        TS_ASSERT_DELTA(formula.result(), expected, 1e-6)
-      } catch (gum::Exception&) { TS_ASSERT(false) }
+        CHECK((formula.result()) == doctest::Approx(expected).epsilon(1e-6));
+      } catch (gum::Exception&) { CHECK(false); }
     }
 
-    GUM_ACTIVE_TEST(Ln) {
+    static void testLn() {
       try {
         // Arrange
         std::string  eq       = "2 + ln(1)";
         double       expected = 2;
         gum::Formula formula(eq);
         // Act
-        TS_GUM_ASSERT_THROWS_NOTHING(formula.result())
+        GUM_CHECK_ASSERT_THROWS_NOTHING(formula.result());
         // Assert
-        TS_ASSERT_DELTA(formula.result(), expected, 1e-6)
-      } catch (gum::Exception&) { TS_ASSERT(false) }
+        CHECK((formula.result()) == doctest::Approx(expected).epsilon(1e-6));
+      } catch (gum::Exception&) { CHECK(false); }
     }
 
-    GUM_ACTIVE_TEST(Sqrt) {
+    static void testSqrt() {
       try {
         // Arrange
         std::string  eq       = "1 + sqrt(4)";
         double       expected = 3;
         gum::Formula formula(eq);
         // Act
-        TS_GUM_ASSERT_THROWS_NOTHING(formula.result())
+        GUM_CHECK_ASSERT_THROWS_NOTHING(formula.result());
         // Assert
-        TS_ASSERT_DELTA(formula.result(), expected, 1e-6)
-      } catch (gum::Exception&) { TS_ASSERT(false) }
+        CHECK((formula.result()) == doctest::Approx(expected).epsilon(1e-6));
+      } catch (gum::Exception&) { CHECK(false); }
     }
 
-    GUM_ACTIVE_TEST(Pow) {
+    static void testPow() {
       try {
         // Arrange
         std::string  eq       = "1 + pow(2,2)";
         double       expected = 5;
         gum::Formula formula(eq);
         // Act
-        TS_GUM_ASSERT_THROWS_NOTHING(formula.result())
+        GUM_CHECK_ASSERT_THROWS_NOTHING(formula.result());
         // Assert
-        TS_ASSERT_DELTA(formula.result(), expected, 1e-6)
-      } catch (gum::Exception&) { TS_ASSERT(false) }
+        CHECK((formula.result()) == doctest::Approx(expected).epsilon(1e-6));
+      } catch (gum::Exception&) { CHECK(false); }
     }
 
-    GUM_ACTIVE_TEST(Goal) {
+    static void testGoal() {
       try {
         // Arrange
         std::string  eq       = "1-exp(-0.001*2)";
         double       expected = 1 - std::exp(-0.001 * 2);
         gum::Formula formula(eq);
         // Act
-        TS_GUM_ASSERT_THROWS_NOTHING(formula.result())
+        GUM_CHECK_ASSERT_THROWS_NOTHING(formula.result());
         // Assert
-        TS_ASSERT_DELTA(formula.result(), expected, 1e-6)
-      } catch (gum::Exception&) { TS_ASSERT(false) }
+        CHECK((formula.result()) == doctest::Approx(expected).epsilon(1e-6));
+      } catch (gum::Exception&) { CHECK(false); }
     }
 
-    GUM_ACTIVE_TEST(Variables) {
+    static void testVariables() {
       try {
         // Arrange
         double       lambda   = 0.001;
@@ -280,68 +282,68 @@ namespace gum_tests {
         formula.variables().insert("t", t);
         formula.variables().insert("unused", unused);
         // Act
-        TS_GUM_ASSERT_THROWS_NOTHING(formula.result())
+        GUM_CHECK_ASSERT_THROWS_NOTHING(formula.result());
         // Assert
-        TS_ASSERT(formula.variables().exists("lambda"))
-        TS_ASSERT(formula.variables().exists("t"))
-        TS_ASSERT(formula.variables().exists("unused"))
-        TS_ASSERT_DELTA(formula.result(), expected, 1e-6)
-      } catch (gum::Exception&) { TS_ASSERT(false) }
+        CHECK(formula.variables().exists("lambda"));
+        CHECK(formula.variables().exists("t"));
+        CHECK(formula.variables().exists("unused"));
+        CHECK((formula.result()) == doctest::Approx(expected).epsilon(1e-6));
+      } catch (gum::Exception&) { CHECK(false); }
     }
 
-    GUM_ACTIVE_TEST(ScientificNotation1) {
+    static void testScientificNotation1() {
       try {
         // Arrange
         std::string  eq       = "3.72663E-06";
         double       expected = 3.72663E-06;
         gum::Formula formula(eq);
         // Act
-        TS_GUM_ASSERT_THROWS_NOTHING(formula.result())
+        GUM_CHECK_ASSERT_THROWS_NOTHING(formula.result());
         // Assert
-        TS_ASSERT_DELTA(formula.result(), expected, 1e-6)
-      } catch (gum::Exception&) { TS_ASSERT(false) }
+        CHECK((formula.result()) == doctest::Approx(expected).epsilon(1e-6));
+      } catch (gum::Exception&) { CHECK(false); }
     }
 
-    GUM_ACTIVE_TEST(ScientificNotation2) {
+    static void testScientificNotation2() {
       try {
         // Arrange
         std::string  eq       = "1 - 1.0e-9";
         double       expected = 1 - 1e-9;
         gum::Formula formula(eq);
         // Act
-        TS_GUM_ASSERT_THROWS_NOTHING(formula.result())
+        GUM_CHECK_ASSERT_THROWS_NOTHING(formula.result());
         // Assert
-        TS_ASSERT_DELTA(formula.result(), expected, 1e-6)
-      } catch (gum::Exception&) { TS_ASSERT(false) }
+        CHECK((formula.result()) == doctest::Approx(expected).epsilon(1e-6));
+      } catch (gum::Exception&) { CHECK(false); }
     }
 
-    GUM_ACTIVE_TEST(ScientificNotation3) {
+    static void testScientificNotation3() {
       try {
         // Arrange
         std::string  eq       = "1 - 1e-9";
         double       expected = 1 - 1e-9;
         gum::Formula formula(eq);
         // Act
-        TS_GUM_ASSERT_THROWS_NOTHING(formula.result())
+        GUM_CHECK_ASSERT_THROWS_NOTHING(formula.result());
         // Assert
-        TS_ASSERT_DELTA(formula.result(), expected, 1e-6)
-      } catch (gum::Exception&) { TS_ASSERT(false) }
+        CHECK((formula.result()) == doctest::Approx(expected).epsilon(1e-6));
+      } catch (gum::Exception&) { CHECK(false); }
     }
 
-    GUM_ACTIVE_TEST(OperatorUnary) {
+    static void testOperatorUnary() {
       try {
         // Arrange
         auto a        = gum::Formula("2*5-6");
         auto expected = -(2.0 * 5.0 - 6.0);
         auto result   = gum::Formula("0");
         // Act
-        TS_GUM_ASSERT_THROWS_NOTHING(result = -a)
+        GUM_CHECK_ASSERT_THROWS_NOTHING(result = -a);
         // Assert
-        TS_ASSERT_DELTA(result.result(), expected, 1e-6)
-      } catch (gum::Exception&) { TS_ASSERT(false) }
+        CHECK((result.result()) == doctest::Approx(expected).epsilon(1e-6));
+      } catch (gum::Exception&) { CHECK(false); }
     }
 
-    GUM_ACTIVE_TEST(OperatorPlus) {
+    static void testOperatorPlus() {
       try {
         // Arrange
         auto a        = gum::Formula("2*5-6");
@@ -349,13 +351,13 @@ namespace gum_tests {
         auto expected = 2.0 * 5.0 - 6.0 + 2.0 / 8.0;
         auto result   = gum::Formula("0");
         // Act
-        TS_GUM_ASSERT_THROWS_NOTHING(result = a + b)
+        GUM_CHECK_ASSERT_THROWS_NOTHING(result = a + b);
         // Assert
-        TS_ASSERT_DELTA(result.result(), expected, 1e-6)
-      } catch (gum::Exception&) { TS_ASSERT(false) }
+        CHECK((result.result()) == doctest::Approx(expected).epsilon(1e-6));
+      } catch (gum::Exception&) { CHECK(false); }
     }
 
-    GUM_ACTIVE_TEST(OperatorMinus) {
+    static void testOperatorMinus() {
       try {
         // Arrange
         auto a        = gum::Formula("2*5-6");
@@ -363,13 +365,13 @@ namespace gum_tests {
         auto expected = 2.0 * 5.0 - 6.0 - 2.0 / 8.0;
         auto result   = gum::Formula("0");
         // Act
-        TS_GUM_ASSERT_THROWS_NOTHING(result = a - b)
+        GUM_CHECK_ASSERT_THROWS_NOTHING(result = a - b);
         // Assert
-        TS_ASSERT_DELTA(result.result(), expected, 1e-6)
-      } catch (gum::Exception&) { TS_ASSERT(false) }
+        CHECK((result.result()) == doctest::Approx(expected).epsilon(1e-6));
+      } catch (gum::Exception&) { CHECK(false); }
     }
 
-    GUM_ACTIVE_TEST(OperatorTimes) {
+    static void testOperatorTimes() {
       try {
         // Arrange
         auto a        = gum::Formula("2*5-6");
@@ -377,13 +379,13 @@ namespace gum_tests {
         auto expected = (2.0 * 5.0 - 6.0) * (2.0 / 8.0);
         auto result   = gum::Formula("0");
         // Act
-        TS_GUM_ASSERT_THROWS_NOTHING(result = a * b)
+        GUM_CHECK_ASSERT_THROWS_NOTHING(result = a * b);
         // Assert
-        TS_ASSERT_DELTA(result.result(), expected, 1e-6)
-      } catch (gum::Exception&) { TS_ASSERT(false) }
+        CHECK((result.result()) == doctest::Approx(expected).epsilon(1e-6));
+      } catch (gum::Exception&) { CHECK(false); }
     }
 
-    GUM_ACTIVE_TEST(OperatorDivides) {
+    static void testOperatorDivides() {
       try {
         // Arrange
         auto a        = gum::Formula("2*5-6");
@@ -391,69 +393,100 @@ namespace gum_tests {
         auto expected = (2.0 * 5.0 - 6.0) / (2.0 / 8.0);
         auto result   = gum::Formula("0");
         // Act
-        TS_GUM_ASSERT_THROWS_NOTHING(result = a / b)
+        GUM_CHECK_ASSERT_THROWS_NOTHING(result = a / b);
         // Assert
-        TS_ASSERT_DELTA(result.result(), expected, 1e-6)
-      } catch (gum::Exception&) { TS_ASSERT(false) }
+        CHECK((result.result()) == doctest::Approx(expected).epsilon(1e-6));
+      } catch (gum::Exception&) { CHECK(false); }
     }
 
-    GUM_ACTIVE_TEST(DoubleImplicitConversion) {
+    static void testDoubleImplicitConversion() {
       try {
         // Arrange
         auto a        = gum::Formula("2*5-6");
         auto expected = 2.0 * 5.0 - 6.0;
         auto result   = 0.0;
         // Act
-        TS_GUM_ASSERT_THROWS_NOTHING(result = (double)a)
+        GUM_CHECK_ASSERT_THROWS_NOTHING(result = (double)a);
         // Assert
-        TS_ASSERT_DELTA(result, expected, 1e-6)
-      } catch (gum::Exception&) { TS_ASSERT(false) }
+        CHECK((result) == doctest::Approx(expected).epsilon(1e-6));
+      } catch (gum::Exception&) { CHECK(false); }
     }
 
-    GUM_ACTIVE_TEST(DoubleExplicitConversion) {
+    static void testDoubleExplicitConversion() {
       try {
         // Arrange
         auto a        = gum::Formula("2*5-6");
         auto expected = 2.0 * 5.0 - 6.0;
         auto result   = 0.0;
         // Act
-        TS_GUM_ASSERT_THROWS_NOTHING(result = static_cast< double >(a))
+        GUM_CHECK_ASSERT_THROWS_NOTHING(result = static_cast< double >(a));
         // Assert
-        TS_ASSERT_DELTA(result, expected, 1e-6)
-      } catch (gum::Exception&) { TS_ASSERT(false) }
+        CHECK((result) == doctest::Approx(expected).epsilon(1e-6));
+      } catch (gum::Exception&) { CHECK(false); }
     }
 
-    GUM_ACTIVE_TEST(DoubleInitialisation) {
+    static void testDoubleInitialisation() {
       // Arrange
       try {
         auto expected = 3.14;
         // Act
         gum::Formula f = 3.14;
         // Assert
-        TS_ASSERT_DELTA((double)f, expected, 1e-6)
-      } catch (gum::Exception&) { TS_ASSERT(false) }
+        CHECK(((double)f) == doctest::Approx(expected).epsilon(1e-6));
+      } catch (gum::Exception&) { CHECK(false); }
     }
 
-    GUM_ACTIVE_TEST(ToString) {
+    static void testToString() {
       // Arrange
       auto f        = gum::Formula("2*5+6");
       auto expected = std::to_string(2.0 * 5.0 + 6.0);
       auto result   = std::string();
       // Act
-      TS_GUM_ASSERT_THROWS_NOTHING(result = gum::to_string(f))
+      GUM_CHECK_ASSERT_THROWS_NOTHING(result = gum::to_string(f));
       // Assert
-      TS_ASSERT_EQUALS(result, expected)
+      CHECK((result) == (expected));
     }
 
-    GUM_ACTIVE_TEST(ToStream) {
+    static void testToStream() {
       // Arrange
       auto              f        = gum::Formula("2*5+6");
       auto              expected = std::to_string(2 * 5 + 6);
       std::stringstream result;
       // Act
-      TS_GUM_ASSERT_THROWS_NOTHING(result << f)
+      GUM_CHECK_ASSERT_THROWS_NOTHING(result << f);
       // Assert
-      TS_ASSERT_EQUALS(result.str(), expected)
+      CHECK((result.str()) == (expected));
     }
   };
+
+  GUM_TEST_ACTIF(ConstantInt)
+  GUM_TEST_ACTIF(ConstantFloat)
+  GUM_TEST_ACTIF(Multiplication)
+  GUM_TEST_ACTIF(Division)
+  GUM_TEST_ACTIF(Addition)
+  GUM_TEST_ACTIF(Substraction)
+  GUM_TEST_ACTIF(SimplePriority1)
+  GUM_TEST_ACTIF(SimplePriority2)
+  GUM_TEST_ACTIF(ComplexPriority)
+  GUM_TEST_ACTIF(MinusSign)
+  GUM_TEST_ACTIF(Exp)
+  GUM_TEST_ACTIF(Log)
+  GUM_TEST_ACTIF(Ln)
+  GUM_TEST_ACTIF(Sqrt)
+  GUM_TEST_ACTIF(Pow)
+  GUM_TEST_ACTIF(Goal)
+  GUM_TEST_ACTIF(Variables)
+  GUM_TEST_ACTIF(ScientificNotation1)
+  GUM_TEST_ACTIF(ScientificNotation2)
+  GUM_TEST_ACTIF(ScientificNotation3)
+  GUM_TEST_ACTIF(OperatorUnary)
+  GUM_TEST_ACTIF(OperatorPlus)
+  GUM_TEST_ACTIF(OperatorMinus)
+  GUM_TEST_ACTIF(OperatorTimes)
+  GUM_TEST_ACTIF(OperatorDivides)
+  GUM_TEST_ACTIF(DoubleImplicitConversion)
+  GUM_TEST_ACTIF(DoubleExplicitConversion)
+  GUM_TEST_ACTIF(DoubleInitialisation)
+  GUM_TEST_ACTIF(ToString)
+  GUM_TEST_ACTIF(ToStream)
 }   // namespace gum_tests

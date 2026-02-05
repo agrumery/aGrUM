@@ -1,7 +1,7 @@
 /****************************************************************************
  *   This file is part of the aGrUM/pyAgrum library.                        *
  *                                                                          *
- *   Copyright (c) 2005-2025 by                                             *
+ *   Copyright (c) 2005-2026 by                                             *
  *       - Pierre-Henri WUILLEMIN(_at_LIP6)                                 *
  *       - Christophe GONZALES(_at_AMU)                                     *
  *                                                                          *
@@ -27,7 +27,7 @@
  *                                                                          *
  *   See LICENCES for more details.                                         *
  *                                                                          *
- *   SPDX-FileCopyrightText: Copyright 2005-2025                            *
+ *   SPDX-FileCopyrightText: Copyright 2005-2026                            *
  *       - Pierre-Henri WUILLEMIN(_at_LIP6)                                 *
  *       - Christophe GONZALES(_at_AMU)                                     *
  *   SPDX-License-Identifier: LGPL-3.0-or-later OR MIT                      *
@@ -37,6 +37,7 @@
  *   gitlab   : https://gitlab.com/agrumery/agrum                           *
  *                                                                          *
  ****************************************************************************/
+
 #pragma once
 
 
@@ -50,6 +51,11 @@
 #include <agrum/BN/BayesNet.h>
 #include <agrum/BN/io/DSL/DSLWriter.h>
 
+#undef GUM_CURRENT_SUITE
+#undef GUM_CURRENT_MODULE
+#define GUM_CURRENT_SUITE  DSLWriter
+#define GUM_CURRENT_MODULE BN
+
 // The graph used for the tests:
 //          1   2_          1 -> 3
 //         / \ / /          1 -> 4
@@ -60,93 +66,103 @@
 
 namespace gum_tests {
 
-  class GUM_TEST_SUITE(DSLWriter) {
+  struct DSLWriterTestSuite {
     public:
     gum::BayesNet< double >* bn;
     gum::NodeId              i1, i2, i3, i4, i5;
 
-    void setUp() {
+    DSLWriterTestSuite() {
       bn = new gum::BayesNet< double >();
 
       gum::LabelizedVariable n1("1", "", 2), n2("2", "", 2), n3("3", "", 2);
+
       gum::LabelizedVariable n4("4", "", 2), n5("5", "", 3);
 
       i1 = bn->add(n1);
+
       i2 = bn->add(n2);
+
       i3 = bn->add(n3);
+
       i4 = bn->add(n4);
+
       i5 = bn->add(n5);
 
       bn->addArc(i1, i3);
+
       bn->addArc(i1, i4);
+
       bn->addArc(i3, i5);
+
       bn->addArc(i4, i5);
+
       bn->addArc(i2, i4);
+
       bn->addArc(i2, i5);
 
       fill(*bn);
     }
 
-    void tearDown() { delete bn; }
+    ~DSLWriterTestSuite() { delete bn; }
 
-    GUM_ACTIVE_TEST(Constuctor) {
+    static void testConstuctor() {
       gum::DSLWriter< double >* writer = nullptr;
-      TS_GUM_ASSERT_THROWS_NOTHING(writer = new gum::DSLWriter< double >())
+      GUM_CHECK_ASSERT_THROWS_NOTHING(writer = new gum::DSLWriter< double >());
       delete writer;
     }
 
-    GUM_ACTIVE_TEST(Writer_ostream) {
+    static void testWriter_ostream() {
       gum::DSLWriter< double > writer;
       // Uncomment this to check the output
-      // TS_GUM_ASSERT_THROWS_NOTHING(writer.write(std::cerr, *bn))
+      // GUM_CHECK_ASSERT_THROWS_NOTHING(writer.write(std::cerr, *bn));
     }
 
-    GUM_ACTIVE_TEST(Writer_string) {
+    void testWriter_string() const {
       gum::DSLWriter< double > writer;
       std::string              file = GET_RESSOURCES_PATH("outputs/DSLWriter_TestFile.txt");
-      TS_GUM_ASSERT_THROWS_NOTHING(writer.write(file, *bn))
+      GUM_CHECK_ASSERT_THROWS_NOTHING(writer.write(file, *bn));
     }
 
-    GUM_ACTIVE_TEST(SyntaxicError) {
+    void testSyntaxicError() {
       gum::DSLWriter< double > writer;
       {
-        TS_ASSERT(!writer.isModificationAllowed())
+        CHECK(!writer.isModificationAllowed());
         std::string file = GET_RESSOURCES_PATH("outputs/shouldNotBeWrittenDSL.txt");
         {
           auto bn = gum::BayesNet< double >::fastPrototype("A->Hello World !->c");
-          TS_ASSERT_THROWS(writer.write(file, bn), gum::FatalError&)
+          CHECK_THROWS_AS(writer.write(file, bn), gum::FatalError&);
         }
         {
           auto bn = gum::BayesNet< double >::fastPrototype("A->Hello World->c");
-          TS_ASSERT_THROWS(writer.write(file, bn), gum::FatalError&)
+          CHECK_THROWS_AS(writer.write(file, bn), gum::FatalError&);
         }
         {
           auto bn = gum::BayesNet< double >::fastPrototype("A->HelloWorld!->c");
-          TS_ASSERT_THROWS(writer.write(file, bn), gum::FatalError&)
+          CHECK_THROWS_AS(writer.write(file, bn), gum::FatalError&);
         }
       }
       {
         writer.setAllowModification(true);
-        TS_ASSERT(writer.isModificationAllowed())
+        CHECK(writer.isModificationAllowed());
         std::string file = GET_RESSOURCES_PATH("outputs/shouldBeWrittenDSL.txt");
         {
           auto bn = gum::BayesNet< double >::fastPrototype("A->Hello World !->c");
-          TS_GUM_ASSERT_THROWS_NOTHING(writer.write(file, bn))
+          GUM_CHECK_ASSERT_THROWS_NOTHING(writer.write(file, bn));
         }
         {
           auto bn = gum::BayesNet< double >::fastPrototype("A->Hello World->c");
-          TS_GUM_ASSERT_THROWS_NOTHING(writer.write(file, bn))
+          GUM_CHECK_ASSERT_THROWS_NOTHING(writer.write(file, bn));
         }
         {
           auto bn = gum::BayesNet< double >::fastPrototype("A->HelloWorld!->c");
-          TS_GUM_ASSERT_THROWS_NOTHING(writer.write(file, bn))
+          GUM_CHECK_ASSERT_THROWS_NOTHING(writer.write(file, bn));
         }
       }
     }
 
     private:
     // Builds a BN to test the inference
-    void fill(gum::BayesNet< double >& bn) {
+    void fill(gum::BayesNet< double >& bn) const {
       bn.cpt(i1).fillWith({0.2, 0.8});
       bn.cpt(i2).fillWith({0.3, 0.7});
       bn.cpt(i3).fillWith({0.1, 0.9, 0.9, 0.1});
@@ -167,4 +183,9 @@ namespace gum_tests {
                                                                       // on
     }
   };
+
+GUM_TEST_ACTIF(Constuctor)
+GUM_TEST_ACTIF(Writer_ostream)
+GUM_TEST_ACTIF(Writer_string)
+GUM_TEST_ACTIF(SyntaxicError)
 }

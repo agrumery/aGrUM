@@ -1,7 +1,7 @@
 /****************************************************************************
  *   This file is part of the aGrUM/pyAgrum library.                        *
  *                                                                          *
- *   Copyright (c) 2005-2025 by                                             *
+ *   Copyright (c) 2005-2026 by                                             *
  *       - Pierre-Henri WUILLEMIN(_at_LIP6)                                 *
  *       - Christophe GONZALES(_at_AMU)                                     *
  *                                                                          *
@@ -27,7 +27,7 @@
  *                                                                          *
  *   See LICENCES for more details.                                         *
  *                                                                          *
- *   SPDX-FileCopyrightText: Copyright 2005-2025                            *
+ *   SPDX-FileCopyrightText: Copyright 2005-2026                            *
  *       - Pierre-Henri WUILLEMIN(_at_LIP6)                                 *
  *       - Christophe GONZALES(_at_AMU)                                     *
  *   SPDX-License-Identifier: LGPL-3.0-or-later OR MIT                      *
@@ -37,6 +37,7 @@
  *   gitlab   : https://gitlab.com/agrumery/agrum                           *
  *                                                                          *
  ****************************************************************************/
+
 #pragma once
 
 
@@ -56,16 +57,21 @@
 
 #include <agrum/BN/learning/scores_and_tests/scoreK2.h>
 
+#undef GUM_CURRENT_SUITE
+#undef GUM_CURRENT_MODULE
+#define GUM_CURRENT_SUITE  GraphChangesSelector4DiGraph
+#define GUM_CURRENT_MODULE BN
+
 namespace gum_tests {
 
-  class GUM_TEST_SUITE(GraphChangesSelector4DiGraph) {
+  struct GraphChangesSelector4DiGraphTestSuite {
     private:
-    void _order_nodes_(const std::vector< std::vector< double > >&      all_scores,
-                       const std::vector< gum::NodeId >&                best_nodes,
-                       std::vector< std::pair< gum::NodeId, double > >& sorted_nodes) {
+    static void _order_nodes_(const std::vector< std::vector< double > >&      all_scores,
+                              const std::vector< gum::NodeId >&                best_nodes,
+                              std::vector< std::pair< gum::NodeId, double > >& sorted_nodes) {
       const std::size_t size = best_nodes.size();
-      for (std::size_t i = std::size_t(0); i < size; ++i) {
-        sorted_nodes[i].first  = gum::NodeId(i);
+      for (auto i = static_cast< std::size_t >(0); i < size; ++i) {
+        sorted_nodes[i].first  = i;
         sorted_nodes[i].second = all_scores[i][best_nodes[i]];
       }
 
@@ -76,11 +82,11 @@ namespace gum_tests {
              const std::pair< gum::NodeId, double >& b) -> bool { return a.second > b.second; });
     }   // namespace gum_tests
 
-    void _compute_scores_(gum::learning::ScoreK2&               score,
-                          const gum::DAG&                       graph,
-                          std::vector< std::vector< double > >& all_scores,
-                          std::vector< gum::NodeId >&           best_nodes,
-                          gum::NodeId&                          best_node) {
+    static void _compute_scores_(gum::learning::ScoreK2&               score,
+                                 const gum::DAG&                       graph,
+                                 std::vector< std::vector< double > >& all_scores,
+                                 std::vector< gum::NodeId >&           best_nodes,
+                                 gum::NodeId&                          best_node) {
       const std::size_t size = best_nodes.size();
 
       for (std::size_t i = 0; i < size; ++i) {
@@ -93,11 +99,11 @@ namespace gum_tests {
             all_scores[i][j] = -score.score(i, pars);
 
             if (!parents.exists(j)) {
-              pars.push_back(gum::NodeId(j));
+              pars.push_back(static_cast< gum::NodeId >(j));
               all_scores[i][j] += score.score(i, pars);
             } else {
               for (auto& par: pars) {
-                if (par == gum::NodeId(j)) {
+                if (par == j) {
                   par = *(pars.rbegin());
                   pars.pop_back();
                   break;
@@ -130,7 +136,7 @@ namespace gum_tests {
     }
 
     public:
-    GUM_ACTIVE_TEST(_K2) {
+    static void test_K2() {
       // create the translator set
       gum::LabelizedVariable var("X1", "", 0);
       var.addLabel("0");
@@ -186,26 +192,26 @@ namespace gum_tests {
       gum::DAG graph;
       selector.setGraph(graph);
 
-      TS_ASSERT(!selector.empty())
+      CHECK(!selector.empty());
       for (const auto node: graph) {
-        TS_ASSERT(!selector.empty(node))
+        CHECK(!selector.empty(node));
       }
 
       selector.setGraph(graph);
 
-      TS_ASSERT(!selector.empty())
+      CHECK(!selector.empty());
       for (const auto node: graph) {
-        TS_ASSERT(!selector.empty(node))
+        CHECK(!selector.empty(node));
       }
 
       gum::learning::GraphChange change(gum::learning::GraphChangeType::ARC_DELETION, 0, 1);
-      TS_ASSERT(!selector.isChangeValid(change))
+      CHECK(!selector.isChangeValid(change));
 
       for (const auto node: graph) {
         const auto& change = selector.bestChange(node);
-        TS_ASSERT_EQUALS(change.type(), gum::learning::GraphChangeType::ARC_ADDITION)
+        CHECK((change.type()) == (gum::learning::GraphChangeType::ARC_ADDITION));
       }
-      TS_ASSERT_EQUALS(selector.bestChange().type(), gum::learning::GraphChangeType::ARC_ADDITION)
+      CHECK((selector.bestChange().type()) == (gum::learning::GraphChangeType::ARC_ADDITION));
 
       std::vector< std::vector< double > > all_scores(6, std::vector< double >(6));
       std::vector< gum::NodeId >           best_nodes(6);
@@ -214,11 +220,11 @@ namespace gum_tests {
 
       for (const auto node: graph) {
         const auto& change = selector.bestChange(node);
-        TS_ASSERT_EQUALS(change.type(), gum::learning::GraphChangeType::ARC_ADDITION)
+        CHECK((change.type()) == (gum::learning::GraphChangeType::ARC_ADDITION));
         if (change.node1() == node) {
-          TS_ASSERT_EQUALS(change.node2(), best_nodes[node])
+          CHECK((change.node2()) == (best_nodes[node]));
         } else {
-          TS_ASSERT_EQUALS(change.node1(), best_nodes[node])
+          CHECK((change.node1()) == (best_nodes[node]));
         }
       }
 
@@ -227,10 +233,10 @@ namespace gum_tests {
       for (const auto node: graph) {
         const double sc = selector.bestScore(node);
         scores.insert(node, sc);
-        TS_ASSERT(sc <= best_score)
-        TS_ASSERT_EQUALS(sc, all_scores[node][best_nodes[node]])
+        CHECK(sc <= best_score);
+        CHECK((sc) == (all_scores[node][best_nodes[node]]));
       }
-      TS_ASSERT_EQUALS(best_score, all_scores[best_node][best_nodes[best_node]])
+      CHECK((best_score) == (all_scores[best_node][best_nodes[best_node]]));
 
       gum::learning::GraphChange change2(gum::learning::GraphChangeType::ARC_ADDITION, 3, 1);
       graph.addArc(change2.node1(), change2.node2());
@@ -241,11 +247,11 @@ namespace gum_tests {
 
       for (const auto node: graph) {
         const double sc = selector.bestScore(node);
-        TS_ASSERT_EQUALS(sc, all_scores[node][best_nodes[node]])
+        CHECK((sc) == (all_scores[node][best_nodes[node]]));
         if (node != 1) {
-          TS_ASSERT_EQUALS(sc, scores[node])
+          CHECK((sc) == (scores[node]));
         } else {
-          TS_ASSERT_DIFFERS(sc, scores[node])
+          CHECK((sc) != (scores[node]));
         }
       }
 
@@ -259,11 +265,11 @@ namespace gum_tests {
 
       for (const auto node: graph) {
         const double sc = selector.bestScore(node);
-        TS_ASSERT_EQUALS(sc, all_scores[node][best_nodes[node]])
+        CHECK((sc) == (all_scores[node][best_nodes[node]]));
         if ((node != 2)) {
-          TS_ASSERT_EQUALS(selector.bestScore(node), scores[node])
+          CHECK((selector.bestScore(node)) == (scores[node]));
         } else {
-          TS_ASSERT_DIFFERS(selector.bestScore(node), scores[node])
+          CHECK((selector.bestScore(node)) != (scores[node]));
         }
       }
 
@@ -277,25 +283,27 @@ namespace gum_tests {
 
       for (const auto node: graph) {
         const double sc = selector.bestScore(node);
-        TS_ASSERT_EQUALS(sc, all_scores[node][best_nodes[node]])
+        CHECK((sc) == (all_scores[node][best_nodes[node]]));
         if ((node != 1)) {
-          TS_ASSERT_EQUALS(selector.bestScore(node), scores[node])
+          CHECK((selector.bestScore(node)) == (scores[node]));
         } else {
-          TS_ASSERT_DIFFERS(selector.bestScore(node), scores[node])
+          CHECK((selector.bestScore(node)) != (scores[node]));
         }
       }
 
 
       const auto xnodes = selector.nodesSortedByBestScore();
-      TS_ASSERT_EQUALS(xnodes.size(), std::size_t(6))
+      CHECK((xnodes.size()) == (std::size_t(6)));
 
       std::vector< std::pair< gum::NodeId, double > > sorted_nodes(6);
       _order_nodes_(all_scores, best_nodes, sorted_nodes);
       for (std::size_t i = 0; i < 6; ++i) {
-        TS_ASSERT_EQUALS(xnodes[i], sorted_nodes[i])
+        CHECK((xnodes[i]) == (sorted_nodes[i]));
       }
     }
   };
+
+  GUM_TEST_ACTIF(_K2)
 
 
 } /* namespace gum_tests */

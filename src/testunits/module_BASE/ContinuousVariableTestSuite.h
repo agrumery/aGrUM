@@ -1,7 +1,7 @@
 /****************************************************************************
  *   This file is part of the aGrUM/pyAgrum library.                        *
  *                                                                          *
- *   Copyright (c) 2005-2025 by                                             *
+ *   Copyright (c) 2005-2026 by                                             *
  *       - Pierre-Henri WUILLEMIN(_at_LIP6)                                 *
  *       - Christophe GONZALES(_at_AMU)                                     *
  *                                                                          *
@@ -27,7 +27,7 @@
  *                                                                          *
  *   See LICENCES for more details.                                         *
  *                                                                          *
- *   SPDX-FileCopyrightText: Copyright 2005-2025                            *
+ *   SPDX-FileCopyrightText: Copyright 2005-2026                            *
  *       - Pierre-Henri WUILLEMIN(_at_LIP6)                                 *
  *       - Christophe GONZALES(_at_AMU)                                     *
  *   SPDX-License-Identifier: LGPL-3.0-or-later OR MIT                      *
@@ -37,6 +37,7 @@
  *   gitlab   : https://gitlab.com/agrumery/agrum                           *
  *                                                                          *
  ****************************************************************************/
+
 #pragma once
 
 
@@ -50,97 +51,105 @@
 
 #include <agrum/base/variables/continuousVariable.h>
 
+#undef GUM_CURRENT_SUITE
+#undef GUM_CURRENT_MODULE
+#define GUM_CURRENT_SUITE  ContinuousVariable
+#define GUM_CURRENT_MODULE GUMBASE
+
 namespace gum_tests {
 
-  class GUM_TEST_SUITE(ContinuousVariable) {
+  struct ContinuousVariableTestSuite {
     public:
-    GUM_ACTIVE_TEST(_constructors) {
+    static void test_constructors() {
       gum::ContinuousVariable<> var1("x1", "");
-      TS_ASSERT_EQUALS(var1.upperBound(), std::numeric_limits< double >::infinity())
-      TS_ASSERT_EQUALS(var1.lowerBound(), -std::numeric_limits< double >::infinity())
+      CHECK((var1.upperBound()) == (std::numeric_limits< double >::infinity()));
+      CHECK((var1.lowerBound()) == (-std::numeric_limits< double >::infinity()));
 
       gum::ContinuousVariable<> var2("x2", "", -10, 10);
-      TS_ASSERT_EQUALS(var2.lowerBound(), -10.0f)
-      TS_ASSERT_EQUALS(var2.upperBound(), 10.0f)
+      CHECK((var2.lowerBound()) == (-10.0f));
+      CHECK((var2.upperBound()) == (10.0f));
 
       gum::ContinuousVariable<> var3(var2);
-      TS_ASSERT_EQUALS(var3.lowerBound(), -10.0f)
-      TS_ASSERT_EQUALS(var3.upperBound(), 10.0f)
+      CHECK((var3.lowerBound()) == (-10.0f));
+      CHECK((var3.upperBound()) == (10.0f));
 
       gum::ContinuousVariable< double > var4(var3);
-      TS_ASSERT_EQUALS(var4.lowerBound(), -10.0)
-      TS_ASSERT_EQUALS(var4.upperBound(), 10.0)
+      CHECK((var4.lowerBound()) == (-10.0));
+      CHECK((var4.upperBound()) == (10.0));
 
       gum::ContinuousVariable< double > var5(std::move(var4));
-      TS_ASSERT_EQUALS(var4.lowerBound(), -10.0)
-      TS_ASSERT_EQUALS(var4.upperBound(), 10.0)
+      CHECK((var4.lowerBound()) == (-10.0));
+      CHECK((var4.upperBound()) == (10.0));
 
       gum::ContinuousVariable< double >* var6 = var5.clone();
-      TS_ASSERT_EQUALS(var6->lowerBound(), -10.0)
-      TS_ASSERT_EQUALS(var6->upperBound(), 10.0)
+      CHECK((var6->lowerBound()) == (-10.0));
+      CHECK((var6->upperBound()) == (10.0));
       delete var6;
 
       var3 = var1;
-      TS_ASSERT_EQUALS(var3.upperBound(), std::numeric_limits< double >::infinity())
-      TS_ASSERT_EQUALS(var3.lowerBound(), -std::numeric_limits< double >::infinity())
+      CHECK((var3.upperBound()) == (std::numeric_limits< double >::infinity()));
+      CHECK((var3.lowerBound()) == (-std::numeric_limits< double >::infinity()));
 
       var3 = var5;
-      TS_ASSERT_EQUALS(var3.lowerBound(), -10.0f)
-      TS_ASSERT_EQUALS(var3.upperBound(), 10.0f)
+      CHECK((var3.lowerBound()) == (-10.0f));
+      CHECK((var3.upperBound()) == (10.0f));
 
       var4.setUpperBound(5);
       var4.setLowerBound(0);
-      TS_ASSERT_EQUALS(var4.lowerBound(), 0.0)
-      TS_ASSERT_EQUALS(var4.upperBound(), 5.0)
+      CHECK((var4.lowerBound()) == (0.0));
+      CHECK((var4.upperBound()) == (5.0));
       var4 = std::move(var5);
-      TS_ASSERT_EQUALS(var4.lowerBound(), -10.0)
-      TS_ASSERT_EQUALS(var4.upperBound(), 10.0)
+      CHECK((var4.lowerBound()) == (-10.0));
+      CHECK((var4.upperBound()) == (10.0));
     }   // namespace gum_tests
 
-    GUM_ACTIVE_TEST(_methods) {
+    static void test_methods() {
       gum::ContinuousVariable<> var1("x1", "");
-      TS_ASSERT_EQUALS(var1.upperBound(), std::numeric_limits< double >::infinity())
-      TS_ASSERT_EQUALS(var1.lowerBound(), -std::numeric_limits< double >::infinity())
+      CHECK((var1.upperBound()) == (std::numeric_limits< double >::infinity()));
+      CHECK((var1.lowerBound()) == (-std::numeric_limits< double >::infinity()));
 
       gum::ContinuousVariable<> var2("x2", "xxx", -10, 10);
-      TS_ASSERT_EQUALS(var2.lowerBound(), -10.0f)
-      TS_ASSERT_EQUALS(var2.upperBound(), 10.0f)
+      CHECK((var2.lowerBound()) == (-10.0f));
+      CHECK((var2.upperBound()) == (10.0f));
 
-      TS_ASSERT_EQUALS(var1["44"], 44.0f)
-      TS_ASSERT_EQUALS(var2["4"], 4.0f)
-      TS_ASSERT_THROWS(var2["44"], const gum::OutOfBounds&)
-      TS_ASSERT_THROWS(var2["4xx"], const gum::TypeError&)
-      TS_ASSERT_EQUALS(var2[" \t\t4\t  "], 4.0f)
+      CHECK((var1["44"]) == (44.0f));
+      CHECK((var2["4"]) == (4.0f));
+      CHECK_THROWS_AS(var2["44"], const gum::OutOfBounds&);
+      CHECK_THROWS_AS(var2["4xx"], const gum::TypeError&);
+      CHECK((var2[" \t\t4\t  "]) == (4.0f));
 
-      TS_ASSERT_THROWS(var2.setLowerBound(44.0f), const gum::OutOfBounds&)
+      CHECK_THROWS_AS(var2.setLowerBound(44.0f), const gum::OutOfBounds&);
       var2.setLowerBound(4);
-      TS_ASSERT_EQUALS(var2.lowerBound(), 4.0f)
-      TS_ASSERT_EQUALS(var2.upperBound(), 10.0f)
+      CHECK((var2.lowerBound()) == (4.0f));
+      CHECK((var2.upperBound()) == (10.0f));
 
-      TS_ASSERT_THROWS(var2.setUpperBound(2.0f), const gum::OutOfBounds&)
+      CHECK_THROWS_AS(var2.setUpperBound(2.0f), const gum::OutOfBounds&);
       var2.setUpperBound(8.5f);
-      TS_ASSERT_EQUALS(var2.lowerBound(), 4.0f)
-      TS_ASSERT_EQUALS(var2.upperBound(), 8.5f)
+      CHECK((var2.lowerBound()) == (4.0f));
+      CHECK((var2.upperBound()) == (8.5f));
 
-      TS_ASSERT_EQUALS(var2.varType(), gum::VarType::CONTINUOUS)
-      TS_ASSERT_EQUALS(std::stof(var2.label(4.5)), 4.5f)
-      TS_ASSERT_THROWS(var2.label(10.0f), const gum::OutOfBounds&)
-      TS_ASSERT(var2.belongs(5.6f))
-      TS_ASSERT(!var2.belongs(15.6f))
+      CHECK((var2.varType()) == (gum::VarType::CONTINUOUS));
+      CHECK((std::stof(var2.label(4.5))) == (4.5f));
+      CHECK_THROWS_AS(var2.label(10.0f), const gum::OutOfBounds&);
+      CHECK(var2.belongs(5.6f));
+      CHECK(!var2.belongs(15.6f));
 
       auto domain = var2.domain();
       /*
       std::string regexp = "\\[([0-9.\\-]+);([0-9.\\-]+)\\]";
       std::regex  reg(regexp);
       std::smatch match;
-      TS_ASSERT(std::regex_match(domain, match, reg))
-      TS_ASSERT_EQUALS(std::stof(match[1]) , 4.0f)
-      TS_ASSERT_EQUALS(std::stof(match[2]) , 8.5f)
+      CHECK(std::regex_match(domain, match, reg));
+      CHECK((std::stof(match[1])) == (4.0f));
+      CHECK((std::stof(match[2])) == (8.5f));
       */
-      TS_ASSERT_EQUALS(domain, "[4;8.5]")
+      CHECK((domain) == ("[4;8.5]"));
 
-      TS_ASSERT_EQUALS(var2.toString(), ("x2" + domain))
-      TS_ASSERT_EQUALS(var2.toStringWithDescription(), var2.description() + domain)
+      CHECK((var2.toString()) == (("x2" + domain)));
+      CHECK((var2.toStringWithDescription()) == (var2.description() + domain));
     }
   };
+
+  GUM_TEST_ACTIF(_constructors)
+  GUM_TEST_ACTIF(_methods)
 }   // namespace gum_tests

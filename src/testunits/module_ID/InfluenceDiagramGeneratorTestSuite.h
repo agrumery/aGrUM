@@ -1,7 +1,7 @@
 /****************************************************************************
  *   This file is part of the aGrUM/pyAgrum library.                        *
  *                                                                          *
- *   Copyright (c) 2005-2025 by                                             *
+ *   Copyright (c) 2005-2026 by                                             *
  *       - Pierre-Henri WUILLEMIN(_at_LIP6)                                 *
  *       - Christophe GONZALES(_at_AMU)                                     *
  *                                                                          *
@@ -27,7 +27,7 @@
  *                                                                          *
  *   See LICENCES for more details.                                         *
  *                                                                          *
- *   SPDX-FileCopyrightText: Copyright 2005-2025                            *
+ *   SPDX-FileCopyrightText: Copyright 2005-2026                            *
  *       - Pierre-Henri WUILLEMIN(_at_LIP6)                                 *
  *       - Christophe GONZALES(_at_AMU)                                     *
  *   SPDX-License-Identifier: LGPL-3.0-or-later OR MIT                      *
@@ -37,6 +37,7 @@
  *   gitlab   : https://gitlab.com/agrumery/agrum                           *
  *                                                                          *
  ****************************************************************************/
+
 #pragma once
 
 
@@ -52,59 +53,60 @@
 #include <agrum/ID/generator/simpleUTGenerator.h>
 #include <agrum/ID/influenceDiagram.h>
 
+#undef GUM_CURRENT_SUITE
+#undef GUM_CURRENT_MODULE
+#define GUM_CURRENT_SUITE  InfluenceDiagramGenerator
+#define GUM_CURRENT_MODULE ID
+
 namespace gum_tests {
 
-  class GUM_TEST_SUITE(InfluenceDiagramGenerator) {
+  struct InfluenceDiagramGeneratorTestSuite {
     public:
-    void setUp() {}
-
-    void tearDown() {}
-
-    GUM_ACTIVE_TEST(CreationDeletion_1) {
+    static void testCreationDeletion_1() {
       gum::InfluenceDiagramGenerator< double >* gen = nullptr;
 
-      TS_GUM_ASSERT_THROWS_NOTHING(gen = new gum::InfluenceDiagramGenerator< double >())
-      TS_GUM_ASSERT_THROWS_NOTHING(delete gen)
+      GUM_CHECK_ASSERT_THROWS_NOTHING(gen = new gum::InfluenceDiagramGenerator< double >());
+      GUM_CHECK_ASSERT_THROWS_NOTHING(delete gen);
     }   // namespace gum_tests
 
-    GUM_ACTIVE_TEST(CreationDeletion_2) {
+    static void testCreationDeletion_2() {
       gum::InfluenceDiagramGenerator< double >* gen = nullptr;
 
       gum::SimpleCPTGenerator< double >* cptGen = new gum::SimpleCPTGenerator< double >();
-      TS_GUM_ASSERT_THROWS_NOTHING(gen = new gum::InfluenceDiagramGenerator< double >(cptGen))
-      TS_GUM_ASSERT_THROWS_NOTHING(delete gen)
+      GUM_CHECK_ASSERT_THROWS_NOTHING(gen = new gum::InfluenceDiagramGenerator< double >(cptGen));
+      GUM_CHECK_ASSERT_THROWS_NOTHING(delete gen);
     }
 
-    GUM_ACTIVE_TEST(CreationDeletion_3) {
+    static void testCreationDeletion_3() {
       gum::InfluenceDiagramGenerator< double >* gen = nullptr;
 
       gum::SimpleUTGenerator* utGen = new gum::SimpleUTGenerator();
-      TS_GUM_ASSERT_THROWS_NOTHING(gen = new gum::InfluenceDiagramGenerator< double >(utGen))
-      TS_GUM_ASSERT_THROWS_NOTHING(delete gen)
+      GUM_CHECK_ASSERT_THROWS_NOTHING(gen = new gum::InfluenceDiagramGenerator< double >(utGen));
+      GUM_CHECK_ASSERT_THROWS_NOTHING(delete gen);
     }
 
-    GUM_ACTIVE_TEST(CreationDeletion_4) {
+    static void testCreationDeletion_4() {
       gum::InfluenceDiagramGenerator< double >* gen = nullptr;
 
       gum::SimpleCPTGenerator< double >* cptGen = new gum::SimpleCPTGenerator< double >();
       gum::SimpleUTGenerator*            utGen  = new gum::SimpleUTGenerator();
-      TS_GUM_ASSERT_THROWS_NOTHING(gen
-                                   = new gum::InfluenceDiagramGenerator< double >(cptGen, utGen));
-      TS_GUM_ASSERT_THROWS_NOTHING(delete gen)
+      GUM_CHECK_ASSERT_THROWS_NOTHING(
+          gen = new gum::InfluenceDiagramGenerator< double >(cptGen, utGen));
+      GUM_CHECK_ASSERT_THROWS_NOTHING(delete gen);
     }
 
-    GUM_ACTIVE_TEST(GenerationFloat_1) {
+    static void testGenerationFloat_1() {
       gum::InfluenceDiagramGenerator< double > gen;
       gum::InfluenceDiagram< double >*         id = 0;
 
-      TS_GUM_ASSERT_THROWS_NOTHING(id = gen.generateID(25, 0.3f, 0.3f, 0.1f, 4))
+      GUM_CHECK_ASSERT_THROWS_NOTHING(id = gen.generateID(25, 0.3f, 0.3f, 0.1f, 4));
 
-      TS_ASSERT(id->decisionOrderExists())
+      CHECK(id->decisionOrderExists());
 
       if (id != 0) delete id;
     }
 
-    GUM_ACTIVE_TEST(GenerationFloat_2) {
+    static void testGenerationFloat_2() {
       gum::InfluenceDiagramGenerator< double > gen;
 
       gum::InfluenceDiagram< double >* id = gen.generateID(25, 0.3f, 0.3f, 0.1f, 4);
@@ -114,24 +116,24 @@ namespace gum_tests {
       const gum::DAG&            dag = id->dag();
 
       for (const auto node: dag.nodes()) {
-        TS_ASSERT_THROWS(dag.directedPath(node, node), const gum::NotFound&)
+        CHECK_THROWS_AS(dag.directedPath(node, node), const gum::NotFound&);
       }
 
       if (id != 0) delete id;
     }
 
-    GUM_ACTIVE_TEST(GenerationDouble_1) {
+    static void testGenerationDouble_1() {
       gum::InfluenceDiagramGenerator< double > gen;
       gum::InfluenceDiagram< double >*         id = 0;
 
-      TS_GUM_ASSERT_THROWS_NOTHING(id = gen.generateID(25, 0.3f, 0.3f, 0.1f, 4))
+      GUM_CHECK_ASSERT_THROWS_NOTHING(id = gen.generateID(25, 0.3f, 0.3f, 0.1f, 4));
 
-      TS_ASSERT(id->decisionOrderExists())
+      CHECK(id->decisionOrderExists());
 
       if (id != 0) delete id;
     }
 
-    GUM_ACTIVE_TEST(GenerationDouble_2) {
+    static void testGenerationDouble_2() {
       gum::InfluenceDiagramGenerator< double > gen;
 
       gum::InfluenceDiagram< double >* id = gen.generateID(25, 0.3f, 0.3f, 0.1f, 4);
@@ -141,10 +143,19 @@ namespace gum_tests {
       const gum::DAG&            dag = id->dag();
 
       for (const auto node: dag.nodes()) {
-        TS_ASSERT_THROWS(dag.directedPath(node, node), const gum::NotFound&)
+        CHECK_THROWS_AS(dag.directedPath(node, node), const gum::NotFound&);
       }
 
       if (id != 0) delete id;
     }
   };
+
+  GUM_TEST_ACTIF(CreationDeletion_1)
+  GUM_TEST_ACTIF(CreationDeletion_2)
+  GUM_TEST_ACTIF(CreationDeletion_3)
+  GUM_TEST_ACTIF(CreationDeletion_4)
+  GUM_TEST_ACTIF(GenerationFloat_1)
+  GUM_TEST_ACTIF(GenerationFloat_2)
+  GUM_TEST_ACTIF(GenerationDouble_1)
+  GUM_TEST_ACTIF(GenerationDouble_2)
 }   // namespace gum_tests

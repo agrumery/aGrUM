@@ -1,7 +1,7 @@
 /****************************************************************************
  *   This file is part of the aGrUM/pyAgrum library.                        *
  *                                                                          *
- *   Copyright (c) 2005-2025 by                                             *
+ *   Copyright (c) 2005-2026 by                                             *
  *       - Pierre-Henri WUILLEMIN(_at_LIP6)                                 *
  *       - Christophe GONZALES(_at_AMU)                                     *
  *                                                                          *
@@ -27,7 +27,7 @@
  *                                                                          *
  *   See LICENCES for more details.                                         *
  *                                                                          *
- *   SPDX-FileCopyrightText: Copyright 2005-2025                            *
+ *   SPDX-FileCopyrightText: Copyright 2005-2026                            *
  *       - Pierre-Henri WUILLEMIN(_at_LIP6)                                 *
  *       - Christophe GONZALES(_at_AMU)                                     *
  *   SPDX-License-Identifier: LGPL-3.0-or-later OR MIT                      *
@@ -37,6 +37,7 @@
  *   gitlab   : https://gitlab.com/agrumery/agrum                           *
  *                                                                          *
  ****************************************************************************/
+
 #pragma once
 
 
@@ -46,9 +47,14 @@
 #include <agrum/PRM/inference/gspan.h>
 #include <agrum/PRM/o3prm/O3prmReader.h>
 
+#undef GUM_CURRENT_SUITE
+#undef GUM_CURRENT_MODULE
+#define GUM_CURRENT_SUITE  GSpan
+#define GUM_CURRENT_MODULE PRM
+
 namespace gum_tests {
 
-  class GUM_TEST_SUITE(GSpan) {
+  struct GSpanTestSuite {
     gum::prm::o3prm::O3prmReader< double >*    _driver_;
     std::string                                _dot_dir_;
     gum::prm::gspan::InterfaceGraph< double >* _ig_;
@@ -61,7 +67,7 @@ namespace gum_tests {
         _ig_ = new gum::prm::gspan::InterfaceGraph< double >(_driver_->prm()->getSystem("m"));
       } else {
         _driver_->showElegantErrorsAndWarnings();
-        TS_ASSERT(false)
+        CHECK(false);
       }
     }
 
@@ -74,40 +80,44 @@ namespace gum_tests {
     }
 
     public:
-    GUM_ACTIVE_TEST(Init) {
+    static void testInit() {
       gum::prm::o3prm::O3prmReader< double > driver;
       driver.readFile(GET_RESSOURCES_PATH("o3prm/specialprinters.o3prm"));
-      TS_ASSERT_DIFFERS(driver.prm(), nullptr)
+      CHECK((driver.prm()) != (nullptr));
 
       if (driver.prm() != nullptr) delete driver.prm();
     }
 
-    GUM_ACTIVE_TEST(InterfaceGraph) {
+    static void testInterfaceGraph() {
       try {
         _local_setUp();
-        TS_ASSERT_EQUALS(_ig_->graph().size(),
-                         static_cast< gum::Size >(1) + 5 * 2 + 4 * 3 + 4 * 3 + 5 + 3 + 4)
-        TS_ASSERT_EQUALS(_ig_->graph().sizeEdges(),
-                         (gum::Size)(5 * 2 + 3 * 4 + 4 * 3) + 5 + 3 * 3 + 4 * 2);
+        CHECK((_ig_->graph().size())
+              == (static_cast< gum::Size >(1) + 5 * 2 + 4 * 3 + 4 * 3 + 5 + 3 + 4));
+        CHECK((_ig_->graph().sizeEdges())
+              == ((gum::Size)(5 * 2 + 3 * 4 + 4 * 3) + 5 + 3 * 3 + 4 * 2));
         _local_tearDown();
       } catch (gum::Exception& e) { GUM_SHOWERROR(e); }
     }
 
-    GUM_ACTIVE_TEST(Tree) {
+    static void testTree() {
       _local_setUp();
       gum::prm::GSpan< double >* gspan = nullptr;
-      TS_GUM_ASSERT_THROWS_NOTHING(
+      GUM_CHECK_ASSERT_THROWS_NOTHING(
           gspan
           = new gum::prm::GSpan< double >(*(_driver_->prm()), _driver_->prm()->getSystem("m")));
-      TS_ASSERT_DIFFERS(gspan, nullptr)
+      CHECK((gspan) != (nullptr));
 
       if (gspan != nullptr) {
-        TS_GUM_ASSERT_THROWS_NOTHING(gspan->discoverPatterns())
-        TS_GUM_ASSERT_THROWS_NOTHING(delete gspan)
+        GUM_CHECK_ASSERT_THROWS_NOTHING(gspan->discoverPatterns());
+        GUM_CHECK_ASSERT_THROWS_NOTHING(delete gspan);
       }
 
       _local_tearDown();
     }
   };
+
+  GUM_TEST_ACTIF(Init)
+  GUM_TEST_ACTIF(InterfaceGraph)
+  GUM_TEST_ACTIF(Tree)
 
 }   // namespace gum_tests

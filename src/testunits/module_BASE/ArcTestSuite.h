@@ -1,7 +1,7 @@
 /****************************************************************************
  *   This file is part of the aGrUM/pyAgrum library.                        *
  *                                                                          *
- *   Copyright (c) 2005-2025 by                                             *
+ *   Copyright (c) 2005-2026 by                                             *
  *       - Pierre-Henri WUILLEMIN(_at_LIP6)                                 *
  *       - Christophe GONZALES(_at_AMU)                                     *
  *                                                                          *
@@ -27,7 +27,7 @@
  *                                                                          *
  *   See LICENCES for more details.                                         *
  *                                                                          *
- *   SPDX-FileCopyrightText: Copyright 2005-2025                            *
+ *   SPDX-FileCopyrightText: Copyright 2005-2026                            *
  *       - Pierre-Henri WUILLEMIN(_at_LIP6)                                 *
  *       - Christophe GONZALES(_at_AMU)                                     *
  *   SPDX-License-Identifier: LGPL-3.0-or-later OR MIT                      *
@@ -37,6 +37,7 @@
  *   gitlab   : https://gitlab.com/agrumery/agrum                           *
  *                                                                          *
  ****************************************************************************/
+
 #pragma once
 
 
@@ -45,41 +46,48 @@
 
 #include <agrum/base/graphs/graphElements.h>
 
+#undef GUM_CURRENT_SUITE
+#undef GUM_CURRENT_MODULE
+#define GUM_CURRENT_SUITE  Arc
+#define GUM_CURRENT_MODULE GUMBASE
+
 namespace gum_tests {
 
-  class GUM_TEST_SUITE(Arc) {
+  struct ArcTestSuite {
     public:
-    GUM_ACTIVE_TEST(Constructor1){TS_GUM_ASSERT_THROWS_NOTHING(gum::Arc arc1(1, 2))
-                                      TS_GUM_ASSERT_THROWS_NOTHING(gum::Arc arc1(1, 1))}
+    static void testConstructor1() {
+      GUM_CHECK_ASSERT_THROWS_NOTHING(gum::Arc arc1(1, 2));
+      GUM_CHECK_ASSERT_THROWS_NOTHING(gum::Arc arc1(1, 1));
+    }
 
-    GUM_ACTIVE_TEST(Constructor2) {
+    static void testConstructor2() {
       gum::Arc arc1(1, 2);
-      TS_GUM_ASSERT_THROWS_NOTHING(gum::Arc copy(arc1))
+      GUM_CHECK_ASSERT_THROWS_NOTHING(gum::Arc copy(arc1));
     }   // namespace gum_tests
 
-    GUM_ACTIVE_TEST(Equality) {
+    static void testEquality() {
       gum::Arc arc1(1, 2);
       gum::Arc arc2(2, 1);
 
-      TS_ASSERT_EQUALS(arc1, arc1)
-      TS_ASSERT_DIFFERS(arc1, arc2)
-      TS_ASSERT_DIFFERS(arc2, arc1)
+      CHECK((arc1) == (arc1));
+      CHECK((arc1) != (arc2));
+      CHECK((arc2) != (arc1));
 
       gum::Arc copy(arc1);
       gum::Arc arc3(6, 7);
 
-      TS_ASSERT_EQUALS(arc1, arc1)
-      TS_ASSERT_EQUALS(copy, arc1)
-      TS_ASSERT_EQUALS(arc1, copy)
+      CHECK((arc1) == (arc1));
+      CHECK((copy) == (arc1));
+      CHECK((arc1) == (copy));
 
-      TS_ASSERT_DIFFERS(arc1, arc3)
-      TS_ASSERT_DIFFERS(arc3, arc1)
-      TS_ASSERT_DIFFERS(copy, arc3)
-      TS_ASSERT_DIFFERS(arc2, arc3)
-      TS_ASSERT_DIFFERS(arc1, arc2)
+      CHECK((arc1) != (arc3));
+      CHECK((arc3) != (arc1));
+      CHECK((copy) != (arc3));
+      CHECK((arc2) != (arc3));
+      CHECK((arc1) != (arc2));
     }
 
-    GUM_ACTIVE_TEST(Getters1) {
+    static void testGetters1() {
       gum::Arc arc1((gum::NodeId)1, (gum::NodeId)2);
       gum::Arc arc2((gum::NodeId)2, (gum::NodeId)1);
       gum::Arc arc3((gum::NodeId)3, (gum::NodeId)4);
@@ -88,32 +96,32 @@ namespace gum_tests {
 
       gum::NodeId n;
 
-      TS_GUM_ASSERT_THROWS_NOTHING(n = arc1.first())
-      TS_GUM_ASSERT_THROWS_NOTHING(n = arc1.second())
+      GUM_CHECK_ASSERT_THROWS_NOTHING(n = arc1.first());
+      GUM_CHECK_ASSERT_THROWS_NOTHING(n = arc1.second());
 
-      TS_GUM_ASSERT_THROWS_NOTHING(n = copy.first())
-      TS_GUM_ASSERT_THROWS_NOTHING(n = copy.second())
+      GUM_CHECK_ASSERT_THROWS_NOTHING(n = copy.first());
+      GUM_CHECK_ASSERT_THROWS_NOTHING(n = copy.second());
 
-      TS_ASSERT_EQUALS(n = arc2.first(), static_cast< gum::NodeId >(2))
-      TS_ASSERT_EQUALS(n = arc2.second(), static_cast< gum::NodeId >(1))
+      CHECK((n = arc2.first()) == (static_cast< gum::NodeId >(2)));
+      CHECK((n = arc2.second()) == (static_cast< gum::NodeId >(1)));
 
-      TS_GUM_ASSERT_THROWS_NOTHING(n = arc3.other(3))
-      TS_GUM_ASSERT_THROWS_NOTHING(n = arc3.other(4))
+      GUM_CHECK_ASSERT_THROWS_NOTHING(n = arc3.other(3));
+      GUM_CHECK_ASSERT_THROWS_NOTHING(n = arc3.other(4));
 
-      TS_ASSERT_EQUALS(n = arc3.other((gum::NodeId)3), static_cast< gum::NodeId >(4))
-      TS_ASSERT_EQUALS(n = arc3.other((gum::NodeId)4), static_cast< gum::NodeId >(3))
+      CHECK((n = arc3.other((gum::NodeId)3)) == (static_cast< gum::NodeId >(4)));
+      CHECK((n = arc3.other((gum::NodeId)4)) == (static_cast< gum::NodeId >(3)));
 
-      TS_ASSERT_THROWS_ANYTHING(n = copy.other((gum::NodeId)42))
+      CHECK_THROWS(n = copy.other((gum::NodeId)42));
     }
 
-    GUM_ACTIVE_TEST(Getters2) {
+    static void testGetters2() {
       gum::Arc arc1(1, 2);
 
-      TS_ASSERT_EQUALS(arc1.tail(), static_cast< gum::NodeId >(1))
-      TS_ASSERT_EQUALS(arc1.head(), static_cast< gum::NodeId >(2))
+      CHECK((arc1.tail()) == (static_cast< gum::NodeId >(1)));
+      CHECK((arc1.head()) == (static_cast< gum::NodeId >(2)));
     }
 
-    GUM_ACTIVE_TEST(Hash) {
+    static void testHash() {
       gum::HashTable< gum::Arc, gum::NodeId > hash;
 
       for (gum::NodeId x = 0; x < 1000; ++x) {
@@ -126,9 +134,16 @@ namespace gum_tests {
       for (gum::NodeId x = 0; x < 1000; ++x) {
         for (gum::NodeId y = x; y < 1000; ++y) {
           gum::Arc arc(x, y);
-          TS_ASSERT_EQUALS(hash[arc], (x + y))
+          CHECK((hash[arc]) == ((x + y)));
         }
       }
     }
   };
+
+  GUM_TEST_ACTIF(Constructor1)
+  GUM_TEST_ACTIF(Constructor2)
+  GUM_TEST_ACTIF(Equality)
+  GUM_TEST_ACTIF(Getters1)
+  GUM_TEST_ACTIF(Getters2)
+  GUM_TEST_ACTIF(Hash)
 }   // namespace gum_tests

@@ -1,7 +1,7 @@
 /****************************************************************************
  *   This file is part of the aGrUM/pyAgrum library.                        *
  *                                                                          *
- *   Copyright (c) 2005-2025 by                                             *
+ *   Copyright (c) 2005-2026 by                                             *
  *       - Pierre-Henri WUILLEMIN(_at_LIP6)                                 *
  *       - Christophe GONZALES(_at_AMU)                                     *
  *                                                                          *
@@ -27,7 +27,7 @@
  *                                                                          *
  *   See LICENCES for more details.                                         *
  *                                                                          *
- *   SPDX-FileCopyrightText: Copyright 2005-2025                            *
+ *   SPDX-FileCopyrightText: Copyright 2005-2026                            *
  *       - Pierre-Henri WUILLEMIN(_at_LIP6)                                 *
  *       - Christophe GONZALES(_at_AMU)                                     *
  *   SPDX-License-Identifier: LGPL-3.0-or-later OR MIT                      *
@@ -37,6 +37,7 @@
  *   gitlab   : https://gitlab.com/agrumery/agrum                           *
  *                                                                          *
  ****************************************************************************/
+
 #pragma once
 
 
@@ -49,6 +50,11 @@
 
 #include <module_PRM/ClassElementTestSuiteAbstract.h>
 
+#undef GUM_CURRENT_SUITE
+#undef GUM_CURRENT_MODULE
+#define GUM_CURRENT_SUITE  ReferenceSlot
+#define GUM_CURRENT_MODULE PRM
+
 /**
  * This class is used to test gum::prm::PRMClassElement, since it is an abstrac
  * class, tests defined here should be called by each sub class of
@@ -56,7 +62,7 @@
  */
 namespace gum_tests {
 
-  class GUM_TEST_SUITE(ReferenceSlot) {
+  struct ReferenceSlotTestSuite {
     private:
     using PRMReferenceSlot = gum::prm::PRMReferenceSlot< double >;
 
@@ -66,23 +72,23 @@ namespace gum_tests {
     gum::prm::PRMType*             _boolean_;
 
     public:
-    void setUp() {
+    /// PRMClassElement Tests
+    /// @{
+    ReferenceSlotTestSuite() {
       _classEltTestSuite_ = new ClassElementTestSuiteAbstract();
       _A_                 = new gum::prm::PRMClass< double >("A");
       _B_                 = new gum::prm::PRMClass< double >("B");
       _boolean_           = gum::prm::PRMType::boolean();
     }
 
-    void tearDown() {
+    ~ReferenceSlotTestSuite() {
       delete _classEltTestSuite_;
       delete _A_;
       delete _B_;
       delete _boolean_;
     }
 
-    /// PRMClassElement Tests
-    /// @{
-    GUM_ACTIVE_TEST(IsReferenceSlot) {
+    static void testIsReferenceSlot() {
       // Arrange
       PRMReferenceSlot ref("ref", *_A_);
       bool             expected = true;
@@ -90,7 +96,7 @@ namespace gum_tests {
       _classEltTestSuite_->testIsReferenceSlot(ref, expected);
     }
 
-    GUM_ACTIVE_TEST(IsAttribute) {
+    static void testIsAttribute() {
       // Arrange
       PRMReferenceSlot ref("ref", *_A_);
       bool             expected = false;
@@ -98,7 +104,7 @@ namespace gum_tests {
       _classEltTestSuite_->testIsAttribute(ref, expected);
     }
 
-    GUM_ACTIVE_TEST(IsSlotChain) {
+    static void testIsSlotChain() {
       // Arrange
       PRMReferenceSlot ref("ref", *_A_);
       bool             expected = false;
@@ -106,30 +112,30 @@ namespace gum_tests {
       _classEltTestSuite_->testIsSlotChain(ref, expected);
     }
 
-    GUM_ACTIVE_TEST(SetNodeId) {
+    static void testSetNodeId() {
       // Arrange
       PRMReferenceSlot ref("ref", *_A_);
       // Act & Assert
       _classEltTestSuite_->testSetNodeId(ref);
     }
 
-    GUM_ACTIVE_TEST(ObjType) {
+    static void testObjType() {
       // Arrange
       PRMReferenceSlot ref("ref", *_A_);
       // Act & Assert
       _classEltTestSuite_->test_obj_type(ref);
     }
 
-    GUM_ACTIVE_TEST(SafeName) {
+    static void testSafeName() {
       try {
         // Arrange
         PRMReferenceSlot ref("ref", *_A_);
         // Act & Assert
         _classEltTestSuite_->testSafeName(ref);
-      } catch (gum::Exception&) { TS_ASSERT(false) }
+      } catch (gum::Exception&) { CHECK(false); }
     }
 
-    GUM_ACTIVE_TEST(Cast_NotAllowed) {
+    static void testCast_NotAllowed() {
       // Arrange
       PRMReferenceSlot ref("ref", *_A_);
       // Act & Assert
@@ -140,19 +146,19 @@ namespace gum_tests {
 
     /// Constructors & destructors
     /// @{
-    GUM_ACTIVE_TEST(Constructor) {
+    static void testConstructor() {
       // Arrange
       PRMReferenceSlot* ref = nullptr;
       // Act & Assert
-      TS_ASSERT_THROWS_NOTHING(ref = new PRMReferenceSlot("ref", *_A_, false))
+      CHECK_NOTHROW(ref = new PRMReferenceSlot("ref", *_A_, false));
       delete ref;
     }
 
-    GUM_ACTIVE_TEST(ConstructorArray) {
+    static void testConstructorArray() {
       // Arrange
       PRMReferenceSlot* ref = nullptr;
       // Act & Assert
-      TS_ASSERT_THROWS_NOTHING(ref = new PRMReferenceSlot("ref", *_A_, true))
+      CHECK_NOTHROW(ref = new PRMReferenceSlot("ref", *_A_, true));
       delete ref;
     }
 
@@ -160,98 +166,118 @@ namespace gum_tests {
 
     /// Methods
     /// @{
-    GUM_ACTIVE_TEST(SlotType) {
+    static void testSlotType() {
       // Arrange
       PRMReferenceSlot ref("ref", *_A_, false);
       // Act
       auto& type = ref.slotType();
       // Assert
-      TS_ASSERT_EQUALS(_A_, &type)
+      CHECK((_A_) == (&type));
     }
 
-    GUM_ACTIVE_TEST(SlotTypeConst) {
+    static void testSlotTypeConst() {
       // Arrange
       PRMReferenceSlot ref("ref", *_A_, false);
       const auto&      const_ref = ref;
       // Act
       const auto& type = const_ref.slotType();
       // Assert
-      TS_ASSERT_EQUALS(_A_, &type)
+      CHECK((_A_) == (&type));
     }
 
-    GUM_ACTIVE_TEST(IsArrayFalse) {
+    static void testIsArrayFalse() {
       // Arrange
       PRMReferenceSlot ref("ref", *_A_, false);
       // Act & Assert
-      TS_ASSERT(!ref.isArray())
+      CHECK(!ref.isArray());
     }
 
-    GUM_ACTIVE_TEST(IsArrayTrue) {
+    static void testIsArrayTrue() {
       // Arrange
       PRMReferenceSlot ref("ref", *_A_, true);
       // Act & Assert
-      TS_ASSERT(ref.isArray())
+      CHECK(ref.isArray());
     }
 
-    GUM_ACTIVE_TEST(Type) {
+    static void testType() {
       // Arrange
       PRMReferenceSlot ref("ref", *_A_, false);
       // Act & assert
-      TS_ASSERT_THROWS(ref.type(), const gum::OperationNotAllowed&)
+      CHECK_THROWS_AS(ref.type(), const gum::OperationNotAllowed&);
     }
 
-    GUM_ACTIVE_TEST(TypeConst) {
-      // Arrange
-      PRMReferenceSlot ref("ref", *_A_, false);
-      const auto&      const_ref = ref;
-      // Act & assert
-      TS_ASSERT_THROWS(const_ref.type(), const gum::OperationNotAllowed&)
-    }
-
-    GUM_ACTIVE_TEST(CPF) {
-      // Arrange
-      PRMReferenceSlot ref("ref", *_A_, false);
-      // Act & assert
-      TS_ASSERT_THROWS(ref.cpf(), const gum::OperationNotAllowed&)
-    }
-
-    GUM_ACTIVE_TEST(CPFConst) {
+    static void testTypeConst() {
       // Arrange
       PRMReferenceSlot ref("ref", *_A_, false);
       const auto&      const_ref = ref;
       // Act & assert
-      TS_ASSERT_THROWS(const_ref.cpf(), const gum::OperationNotAllowed&)
+      CHECK_THROWS_AS(const_ref.type(), const gum::OperationNotAllowed&);
+    }
+
+    static void testCPF() {
+      // Arrange
+      PRMReferenceSlot ref("ref", *_A_, false);
+      // Act & assert
+      CHECK_THROWS_AS(ref.cpf(), const gum::OperationNotAllowed&);
+    }
+
+    static void testCPFConst() {
+      // Arrange
+      PRMReferenceSlot ref("ref", *_A_, false);
+      const auto&      const_ref = ref;
+      // Act & assert
+      CHECK_THROWS_AS(const_ref.cpf(), const gum::OperationNotAllowed&);
     }
 
     /// @}
 
     /// Add parents and children
     /// @{
-    GUM_ACTIVE_TEST(AddParentCheckChild) {
+    static void testAddParentCheckChild() {
       // Arrange
       gum::prm::PRMScalarAttribute< double > parent("attr", *_boolean_);
       PRMReferenceSlot                       child("child", *_A_);
       auto                                   before = parent.cpf().variablesSequence().size();
       // Act
-      TS_ASSERT_THROWS_NOTHING(child.addParent(parent))
+      CHECK_NOTHROW(child.addParent(parent));
       // Assert
       auto after = parent.cpf().variablesSequence().size();
-      TS_ASSERT_EQUALS(before, after)
+      CHECK((before) == (after));
     }
 
-    GUM_ACTIVE_TEST(AddChild) {
+    static void testAddChild() {
       // Arrange
       PRMReferenceSlot                       parent("simple", *_A_);
       gum::prm::PRMScalarAttribute< double > child("attr", *_boolean_);
       auto                                   before = child.cpf().variablesSequence().size();
       // Act
-      TS_ASSERT_THROWS_NOTHING(parent.addChild(child))
+      CHECK_NOTHROW(parent.addChild(child));
       // Assert
       auto after = child.cpf().variablesSequence().size();
-      TS_ASSERT_EQUALS(before, after)
+      CHECK((before) == (after));
     }
 
     /// @}
   };
+
+  GUM_TEST_ACTIF(IsReferenceSlot)
+  GUM_TEST_ACTIF(IsAttribute)
+  GUM_TEST_ACTIF(IsSlotChain)
+  GUM_TEST_ACTIF(SetNodeId)
+  GUM_TEST_ACTIF(ObjType)
+  GUM_TEST_ACTIF(SafeName)
+  GUM_TEST_ACTIF(Cast_NotAllowed)
+  GUM_TEST_ACTIF(Constructor)
+  GUM_TEST_ACTIF(ConstructorArray)
+  GUM_TEST_ACTIF(SlotType)
+  GUM_TEST_ACTIF(SlotTypeConst)
+  GUM_TEST_ACTIF(IsArrayFalse)
+  GUM_TEST_ACTIF(IsArrayTrue)
+  GUM_TEST_ACTIF(Type)
+  GUM_TEST_ACTIF(TypeConst)
+  GUM_TEST_ACTIF(CPF)
+  GUM_TEST_ACTIF(CPFConst)
+  GUM_TEST_ACTIF(AddParentCheckChild)
+  GUM_TEST_ACTIF(AddChild)
 
 }   // namespace gum_tests

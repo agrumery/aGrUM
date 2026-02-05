@@ -1,7 +1,7 @@
 /****************************************************************************
  *   This file is part of the aGrUM/pyAgrum library.                        *
  *                                                                          *
- *   Copyright (c) 2005-2025 by                                             *
+ *   Copyright (c) 2005-2026 by                                             *
  *       - Pierre-Henri WUILLEMIN(_at_LIP6)                                 *
  *       - Christophe GONZALES(_at_AMU)                                     *
  *                                                                          *
@@ -27,7 +27,7 @@
  *                                                                          *
  *   See LICENCES for more details.                                         *
  *                                                                          *
- *   SPDX-FileCopyrightText: Copyright 2005-2025                            *
+ *   SPDX-FileCopyrightText: Copyright 2005-2026                            *
  *       - Pierre-Henri WUILLEMIN(_at_LIP6)                                 *
  *       - Christophe GONZALES(_at_AMU)                                     *
  *   SPDX-License-Identifier: LGPL-3.0-or-later OR MIT                      *
@@ -37,6 +37,7 @@
  *   gitlab   : https://gitlab.com/agrumery/agrum                           *
  *                                                                          *
  ****************************************************************************/
+
 #pragma once
 
 
@@ -54,6 +55,11 @@
 #include <agrum/BN/generator/simpleCPTGenerator.h>
 #include <agrum/BN/inference/lazyPropagation.h>
 
+#undef GUM_CURRENT_SUITE
+#undef GUM_CURRENT_MODULE
+#define GUM_CURRENT_SUITE  BayesNetFragment
+#define GUM_CURRENT_MODULE BN
+
 // The graph used for the tests:
 //          1   2_          1 -> 3
 //         / \ / /          1 -> 4
@@ -66,9 +72,9 @@
 
 namespace gum_tests {
 
-  class GUM_TEST_SUITE(BayesNetFragment) {
+  struct BayesNetFragmentTestSuite {
     private:
-    void fill(gum::BayesNet< double >& bn) {
+    static void fill(gum::BayesNet< double >& bn) {
       try {
         auto var1 = gum::LabelizedVariable("v1", "1", 2);
         auto var2 = gum::LabelizedVariable("v2", "2", 2);
@@ -103,7 +109,7 @@ namespace gum_tests {
     }
 
     // the same BN but with no 4-->5
-    void fill2(gum::BayesNet< double >& bn, const gum::BayesNet< double >& source) {
+    static void fill2(gum::BayesNet< double >& bn, const gum::BayesNet< double >& source) {
       try {
         auto var1 = gum::LabelizedVariable("v1", "1", 2);
         auto var2 = gum::LabelizedVariable("v2", "2", 2);
@@ -150,7 +156,7 @@ namespace gum_tests {
     }
 
     public:
-    GUM_ACTIVE_TEST(Creation) {
+    static void testCreation() {
       gum::BayesNet< double > bn;
       fill(bn);
 
@@ -158,172 +164,173 @@ namespace gum_tests {
       gum::BayesNetFragment< double > frag2(static_cast< const gum::IBayesNet< double >& >(frag));
     }
 
-    GUM_ACTIVE_TEST(InstallNodes) {
+    static void testInstallNodes() {
       gum::BayesNet< double > bn;
       fill(bn);
 
       gum::BayesNetFragment< double > frag(bn);
 
       // install a node
-      TS_ASSERT_EQUALS(frag.size(), static_cast< gum::Size >(0))
-      TS_GUM_ASSERT_THROWS_NOTHING(frag.installNode(bn.idFromName("v1")))
-      TS_ASSERT_EQUALS(frag.size(), static_cast< gum::Size >(1))
+      CHECK((frag.size()) == (static_cast< gum::Size >(0)));
+      GUM_CHECK_ASSERT_THROWS_NOTHING(frag.installNode(bn.idFromName("v1")));
+      CHECK((frag.size()) == (static_cast< gum::Size >(1)));
 
       // install twice the same node
-      TS_GUM_ASSERT_THROWS_NOTHING(frag.installNode(bn.idFromName("v1")))
-      TS_ASSERT_EQUALS(frag.size(), static_cast< gum::Size >(1))
-      TS_ASSERT_EQUALS(frag.sizeArcs(), static_cast< gum::Size >(0))
+      GUM_CHECK_ASSERT_THROWS_NOTHING(frag.installNode(bn.idFromName("v1")));
+      CHECK((frag.size()) == (static_cast< gum::Size >(1)));
+      CHECK((frag.sizeArcs()) == (static_cast< gum::Size >(0)));
 
       // install a non-existing node
-      TS_ASSERT_EQUALS(bn.dag().exists((gum::NodeId)100), false)
-      TS_ASSERT_THROWS(frag.installNode((gum::NodeId)100), const gum::NotFound&)
-      TS_ASSERT_EQUALS(frag.size(), static_cast< gum::Size >(1))
-      TS_ASSERT_EQUALS(frag.sizeArcs(), static_cast< gum::Size >(0))
+      CHECK((bn.dag().exists((gum::NodeId)100)) == (false));
+      CHECK_THROWS_AS(frag.installNode((gum::NodeId)100), const gum::NotFound&);
+      CHECK((frag.size()) == (static_cast< gum::Size >(1)));
+      CHECK((frag.sizeArcs()) == (static_cast< gum::Size >(0)));
 
       // install a second node (without arc)
-      TS_GUM_ASSERT_THROWS_NOTHING(frag.installNode(bn.idFromName("v6")))
-      TS_ASSERT_EQUALS(frag.size(), static_cast< gum::Size >(2))
-      TS_ASSERT_EQUALS(frag.sizeArcs(), static_cast< gum::Size >(0))
+      GUM_CHECK_ASSERT_THROWS_NOTHING(frag.installNode(bn.idFromName("v6")));
+      CHECK((frag.size()) == (static_cast< gum::Size >(2)));
+      CHECK((frag.sizeArcs()) == (static_cast< gum::Size >(0)));
 
       // install a third node (and 2 arcs)
-      TS_GUM_ASSERT_THROWS_NOTHING(frag.installNode(bn.idFromName("v3")))
-      TS_ASSERT_EQUALS(frag.size(), static_cast< gum::Size >(3))
-      TS_ASSERT_EQUALS(frag.sizeArcs(), static_cast< gum::Size >(2))
+      GUM_CHECK_ASSERT_THROWS_NOTHING(frag.installNode(bn.idFromName("v3")));
+      CHECK((frag.size()) == (static_cast< gum::Size >(3)));
+      CHECK((frag.sizeArcs()) == (static_cast< gum::Size >(2)));
 
       // install ascendants (nothing should happen)
-      TS_GUM_ASSERT_THROWS_NOTHING(frag.installAscendants(bn.idFromName("v6")))
-      TS_ASSERT_EQUALS(frag.size(), static_cast< gum::Size >(3))
-      TS_ASSERT_EQUALS(frag.sizeArcs(), static_cast< gum::Size >(2))
+      GUM_CHECK_ASSERT_THROWS_NOTHING(frag.installAscendants(bn.idFromName("v6")));
+      CHECK((frag.size()) == (static_cast< gum::Size >(3)));
+      CHECK((frag.sizeArcs()) == (static_cast< gum::Size >(2)));
 
       // install ascendants (nothing should happen)
-      TS_GUM_ASSERT_THROWS_NOTHING(frag.installAscendants(bn.idFromName("v5")))
-      TS_ASSERT_EQUALS(frag.size(), static_cast< gum::Size >(6))
-      TS_ASSERT_EQUALS(frag.sizeArcs(), static_cast< gum::Size >(7))
+      GUM_CHECK_ASSERT_THROWS_NOTHING(frag.installAscendants(bn.idFromName("v5")));
+      CHECK((frag.size()) == (static_cast< gum::Size >(6)));
+      CHECK((frag.sizeArcs()) == (static_cast< gum::Size >(7)));
 
       // another test for ascendants
       gum::BayesNetFragment< double > frag2(bn);
-      TS_GUM_ASSERT_THROWS_NOTHING(frag2.installAscendants(bn.idFromName("v5")))
-      TS_ASSERT_EQUALS(frag2.size(), static_cast< gum::Size >(5))
-      TS_ASSERT_EQUALS(frag2.sizeArcs(), static_cast< gum::Size >(6))
+      GUM_CHECK_ASSERT_THROWS_NOTHING(frag2.installAscendants(bn.idFromName("v5")));
+      CHECK((frag2.size()) == (static_cast< gum::Size >(5)));
+      CHECK((frag2.sizeArcs()) == (static_cast< gum::Size >(6)));
     }
 
-    GUM_ACTIVE_TEST(InstallNodesWithVar) {
+    static void testInstallNodesWithVar() {
       gum::BayesNet< double > bn;
       fill(bn);
 
       gum::BayesNetFragment< double > frag(bn);
 
       // install a node
-      TS_ASSERT_EQUALS(frag.size(), static_cast< gum::Size >(0))
-      TS_GUM_ASSERT_THROWS_NOTHING(frag.installNode("v1"))
-      TS_ASSERT_EQUALS(frag.size(), static_cast< gum::Size >(1))
+      CHECK((frag.size()) == (static_cast< gum::Size >(0)));
+      GUM_CHECK_ASSERT_THROWS_NOTHING(frag.installNode("v1"));
+      CHECK((frag.size()) == (static_cast< gum::Size >(1)));
 
       // install twice the same node
-      TS_GUM_ASSERT_THROWS_NOTHING(frag.installNode("v1"))
-      TS_ASSERT_EQUALS(frag.size(), static_cast< gum::Size >(1))
-      TS_ASSERT_EQUALS(frag.sizeArcs(), static_cast< gum::Size >(0))
+      GUM_CHECK_ASSERT_THROWS_NOTHING(frag.installNode("v1"));
+      CHECK((frag.size()) == (static_cast< gum::Size >(1)));
+      CHECK((frag.sizeArcs()) == (static_cast< gum::Size >(0)));
 
       // install a non-existing node
-      TS_ASSERT_THROWS(frag.installNode("v100"), const gum::NotFound&)
-      TS_ASSERT_EQUALS(frag.size(), static_cast< gum::Size >(1))
-      TS_ASSERT_EQUALS(frag.sizeArcs(), static_cast< gum::Size >(0))
+      CHECK_THROWS_AS(frag.installNode("v100"), const gum::NotFound&);
+      CHECK((frag.size()) == (static_cast< gum::Size >(1)));
+      CHECK((frag.sizeArcs()) == (static_cast< gum::Size >(0)));
 
       // install a second node (without arc)
-      TS_GUM_ASSERT_THROWS_NOTHING(frag.installNode("v6"))
-      TS_ASSERT_EQUALS(frag.size(), static_cast< gum::Size >(2))
-      TS_ASSERT_EQUALS(frag.sizeArcs(), static_cast< gum::Size >(0))
+      GUM_CHECK_ASSERT_THROWS_NOTHING(frag.installNode("v6"));
+      CHECK((frag.size()) == (static_cast< gum::Size >(2)));
+      CHECK((frag.sizeArcs()) == (static_cast< gum::Size >(0)));
 
       // install a third node (and 2 arcs)
-      TS_GUM_ASSERT_THROWS_NOTHING(frag.installNode("v3"))
-      TS_ASSERT_EQUALS(frag.size(), static_cast< gum::Size >(3))
-      TS_ASSERT_EQUALS(frag.sizeArcs(), static_cast< gum::Size >(2))
+      GUM_CHECK_ASSERT_THROWS_NOTHING(frag.installNode("v3"));
+      CHECK((frag.size()) == (static_cast< gum::Size >(3)));
+      CHECK((frag.sizeArcs()) == (static_cast< gum::Size >(2)));
 
       // install ascendants (nothing should happen)
-      TS_GUM_ASSERT_THROWS_NOTHING(frag.installAscendants("v6"))
-      TS_ASSERT_EQUALS(frag.size(), static_cast< gum::Size >(3))
-      TS_ASSERT_EQUALS(frag.sizeArcs(), static_cast< gum::Size >(2))
+      GUM_CHECK_ASSERT_THROWS_NOTHING(frag.installAscendants("v6"));
+      CHECK((frag.size()) == (static_cast< gum::Size >(3)));
+      CHECK((frag.sizeArcs()) == (static_cast< gum::Size >(2)));
 
       // install ascendants (nothing should happen)
-      TS_GUM_ASSERT_THROWS_NOTHING(frag.installAscendants("v5"))
-      TS_ASSERT_EQUALS(frag.size(), static_cast< gum::Size >(6))
-      TS_ASSERT_EQUALS(frag.sizeArcs(), static_cast< gum::Size >(7))
+      GUM_CHECK_ASSERT_THROWS_NOTHING(frag.installAscendants("v5"));
+      CHECK((frag.size()) == (static_cast< gum::Size >(6)));
+      CHECK((frag.sizeArcs()) == (static_cast< gum::Size >(7)));
 
       // another test for ascendants
       gum::BayesNetFragment< double > frag2(bn);
-      TS_GUM_ASSERT_THROWS_NOTHING(frag2.installAscendants("v5"))
-      TS_ASSERT_EQUALS(frag2.size(), static_cast< gum::Size >(5))
-      TS_ASSERT_EQUALS(frag2.sizeArcs(), static_cast< gum::Size >(6))
+      GUM_CHECK_ASSERT_THROWS_NOTHING(frag2.installAscendants("v5"));
+      CHECK((frag2.size()) == (static_cast< gum::Size >(5)));
+      CHECK((frag2.sizeArcs()) == (static_cast< gum::Size >(6)));
     }
 
-    GUM_ACTIVE_TEST(UninstallNode) {
+    static void testUninstallNode() {
       gum::BayesNet< double > bn;
       fill(bn);
 
       gum::BayesNetFragment< double > frag(bn);
 
       // install ascendants (nothing should happen)
-      TS_GUM_ASSERT_THROWS_NOTHING(frag.installAscendants(bn.idFromName("v6")))
-      TS_ASSERT_EQUALS(frag.size(), static_cast< gum::Size >(3))
-      TS_ASSERT_EQUALS(frag.sizeArcs(), static_cast< gum::Size >(2))
+      GUM_CHECK_ASSERT_THROWS_NOTHING(frag.installAscendants(bn.idFromName("v6")));
+      CHECK((frag.size()) == (static_cast< gum::Size >(3)));
+      CHECK((frag.sizeArcs()) == (static_cast< gum::Size >(2)));
 
       // uninstall node 3 (in the middle)
-      TS_GUM_ASSERT_THROWS_NOTHING(frag.uninstallNode(bn.idFromName("v3")))
-      TS_ASSERT_EQUALS(frag.size(), static_cast< gum::Size >(2))
-      TS_ASSERT_EQUALS(frag.sizeArcs(), static_cast< gum::Size >(0))
+      GUM_CHECK_ASSERT_THROWS_NOTHING(frag.uninstallNode(bn.idFromName("v3")));
+      CHECK((frag.size()) == (static_cast< gum::Size >(2)));
+      CHECK((frag.sizeArcs()) == (static_cast< gum::Size >(0)));
     }
 
-    GUM_ACTIVE_TEST(UninstallNodeWithNames) {
+    static void testUninstallNodeWithNames() {
       gum::BayesNet< double > bn;
       fill(bn);
 
       gum::BayesNetFragment< double > frag(bn);
 
       // install ascendants (nothing should happen)
-      TS_GUM_ASSERT_THROWS_NOTHING(frag.installAscendants("v6"))
-      TS_ASSERT_EQUALS(frag.size(), static_cast< gum::Size >(3))
-      TS_ASSERT_EQUALS(frag.sizeArcs(), static_cast< gum::Size >(2))
+      GUM_CHECK_ASSERT_THROWS_NOTHING(frag.installAscendants("v6"));
+      CHECK((frag.size()) == (static_cast< gum::Size >(3)));
+      CHECK((frag.sizeArcs()) == (static_cast< gum::Size >(2)));
 
       // uninstall node 3 (in the middle)
-      TS_GUM_ASSERT_THROWS_NOTHING(frag.uninstallNode("v3"))
-      TS_ASSERT_EQUALS(frag.size(), static_cast< gum::Size >(2))
-      TS_ASSERT_EQUALS(frag.sizeArcs(), static_cast< gum::Size >(0))
+      GUM_CHECK_ASSERT_THROWS_NOTHING(frag.uninstallNode("v3"));
+      CHECK((frag.size()) == (static_cast< gum::Size >(2)));
+      CHECK((frag.sizeArcs()) == (static_cast< gum::Size >(0)));
     }
 
-    GUM_ACTIVE_TEST(IBayetNetMethodsWithoutLocalCPTs) {
+    static void testIBayetNetMethodsWithoutLocalCPTs() {
       gum::BayesNet< double > bn;
       fill(bn);
 
       gum::BayesNetFragment< double > frag(bn);
 
-      TS_ASSERT(frag.empty())
-      TS_GUM_ASSERT_THROWS_NOTHING(frag.installNode(bn.idFromName("v1")))
-      TS_ASSERT(!frag.empty())
+      CHECK(frag.empty());
+      GUM_CHECK_ASSERT_THROWS_NOTHING(frag.installNode(bn.idFromName("v1")));
+      CHECK(!frag.empty());
 
-      TS_GUM_ASSERT_THROWS_NOTHING(frag.installNode(bn.idFromName("v6")))
+      GUM_CHECK_ASSERT_THROWS_NOTHING(frag.installNode(bn.idFromName("v6")));
 
-      TS_ASSERT_EQUALS(frag.dag().sizeNodes(), static_cast< gum::Size >(2))
-      TS_ASSERT_EQUALS(frag.dag().sizeArcs(), static_cast< gum::Size >(0))
-      TS_ASSERT_EQUALS(frag.size(), static_cast< gum::Size >(2))
-      TS_ASSERT_EQUALS(frag.dim(), gum::Size((3 - 1) + (2 - 1)))
-      TS_ASSERT_EQUALS(pow(10, frag.log10DomainSize()), 2 * 3)
+      CHECK((frag.dag().sizeNodes()) == (static_cast< gum::Size >(2)));
+      CHECK((frag.dag().sizeArcs()) == (static_cast< gum::Size >(0)));
+      CHECK((frag.size()) == (static_cast< gum::Size >(2)));
+      CHECK((frag.dim()) == (gum::Size((3 - 1) + (2 - 1))));
+      CHECK((pow(10, frag.log10DomainSize())) == (2 * 3));
 
-      TS_GUM_ASSERT_THROWS_NOTHING(frag.installAscendants(bn.idFromName("v6")))
+      GUM_CHECK_ASSERT_THROWS_NOTHING(frag.installAscendants(bn.idFromName("v6")));
 
-      TS_ASSERT_EQUALS(frag.dag().sizeNodes(), static_cast< gum::Size >(3))
-      TS_ASSERT_EQUALS(frag.dag().sizeArcs(), static_cast< gum::Size >(2))
-      TS_ASSERT_EQUALS(frag.size(), static_cast< gum::Size >(3))
-      TS_ASSERT_EQUALS(frag.dim(), gum::Size((2 * (3 - 1)) + (2 * (2 - 1)) + (2 - 1)))
-      TS_ASSERT_DELTA(pow(10, frag.log10DomainSize()), 2 * 2 * 3, TS_GUM_SMALL_ERROR)
+      CHECK((frag.dag().sizeNodes()) == (static_cast< gum::Size >(3)));
+      CHECK((frag.dag().sizeArcs()) == (static_cast< gum::Size >(2)));
+      CHECK((frag.size()) == (static_cast< gum::Size >(3)));
+      CHECK((frag.dim()) == (gum::Size((2 * (3 - 1)) + (2 * (2 - 1)) + (2 - 1))));
+      CHECK((pow(10, frag.log10DomainSize()))
+            == doctest::Approx(2 * 2 * 3).epsilon(GUM_SMALL_ERROR));
 
       auto I = frag.completeInstantiation();
       I.setFirst();
-      TS_ASSERT_EQUALS(I.toString(), "<v1:0|v3:0|v6:0>")
+      CHECK((I.toString()) == ("<v1:0|v3:0|v6:0>"));
 
       while (!I.end()) {
         double p = bn.cpt(bn.idFromName("v1"))[I] * bn.cpt(bn.idFromName("v3"))[I]
                  * bn.cpt(bn.idFromName("v6"))[I];
-        TS_ASSERT_DELTA(frag.jointProbability(I), p, TS_GUM_SMALL_ERROR)
-        TS_ASSERT_DELTA(frag.log2JointProbability(I), log2(p), TS_GUM_SMALL_ERROR)
+        CHECK((frag.jointProbability(I)) == doctest::Approx(p).epsilon(GUM_SMALL_ERROR));
+        CHECK((frag.log2JointProbability(I)) == doctest::Approx(log2(p)).epsilon(GUM_SMALL_ERROR));
         ++I;
       }
 
@@ -334,7 +341,7 @@ namespace gum_tests {
         count++;
       }
 
-      TS_ASSERT_EQUALS(count, frag.size())
+      CHECK((count) == (frag.size()));
 
       count = 0;
 
@@ -343,49 +350,50 @@ namespace gum_tests {
         count++;
       }
 
-      TS_ASSERT_EQUALS(count, frag.sizeArcs())
+      CHECK((count) == (frag.sizeArcs()));
 
       const auto order = frag.topologicalOrder();
-      TS_ASSERT_EQUALS(order.size(), static_cast< gum::Size >(3))
-      TS_ASSERT_EQUALS(frag.variable(order.atPos(0)).name(), "v1")
-      TS_ASSERT_EQUALS(frag.variable(order.atPos(1)).name(), "v3")
-      TS_ASSERT_EQUALS(frag.variable(order.atPos(2)).name(), "v6")
+      CHECK((order.size()) == (static_cast< gum::Size >(3)));
+      CHECK((frag.variable(order.atPos(0)).name()) == ("v1"));
+      CHECK((frag.variable(order.atPos(1)).name()) == ("v3"));
+      CHECK((frag.variable(order.atPos(2)).name()) == ("v6"));
     }
 
-    GUM_ACTIVE_TEST(IBayetNetMethodsWithoutLocalCPTsWithNames) {
+    static void testIBayetNetMethodsWithoutLocalCPTsWithNames() {
       gum::BayesNet< double > bn;
       fill(bn);
 
       gum::BayesNetFragment< double > frag(bn);
 
-      TS_ASSERT(frag.empty())
-      TS_GUM_ASSERT_THROWS_NOTHING(frag.installNode("v1"))
-      TS_ASSERT(!frag.empty())
+      CHECK(frag.empty());
+      GUM_CHECK_ASSERT_THROWS_NOTHING(frag.installNode("v1"));
+      CHECK(!frag.empty());
 
-      TS_GUM_ASSERT_THROWS_NOTHING(frag.installNode("v6"))
+      GUM_CHECK_ASSERT_THROWS_NOTHING(frag.installNode("v6"));
 
-      TS_ASSERT_EQUALS(frag.dag().sizeNodes(), static_cast< gum::Size >(2))
-      TS_ASSERT_EQUALS(frag.dag().sizeArcs(), static_cast< gum::Size >(0))
-      TS_ASSERT_EQUALS(frag.size(), static_cast< gum::Size >(2))
-      TS_ASSERT_EQUALS(frag.dim(), gum::Size((3 - 1) + (2 - 1)))
-      TS_ASSERT_EQUALS(pow(10, frag.log10DomainSize()), 2 * 3)
+      CHECK((frag.dag().sizeNodes()) == (static_cast< gum::Size >(2)));
+      CHECK((frag.dag().sizeArcs()) == (static_cast< gum::Size >(0)));
+      CHECK((frag.size()) == (static_cast< gum::Size >(2)));
+      CHECK((frag.dim()) == (gum::Size((3 - 1) + (2 - 1))));
+      CHECK((pow(10, frag.log10DomainSize())) == (2 * 3));
 
-      TS_GUM_ASSERT_THROWS_NOTHING(frag.installAscendants("v6"))
+      GUM_CHECK_ASSERT_THROWS_NOTHING(frag.installAscendants("v6"));
 
-      TS_ASSERT_EQUALS(frag.dag().sizeNodes(), static_cast< gum::Size >(3))
-      TS_ASSERT_EQUALS(frag.dag().sizeArcs(), static_cast< gum::Size >(2))
-      TS_ASSERT_EQUALS(frag.size(), static_cast< gum::Size >(3))
-      TS_ASSERT_EQUALS(frag.dim(), gum::Size((2 * (3 - 1)) + (2 * (2 - 1)) + (2 - 1)))
-      TS_ASSERT_DELTA(pow(10, frag.log10DomainSize()), 2 * 2 * 3, TS_GUM_SMALL_ERROR)
+      CHECK((frag.dag().sizeNodes()) == (static_cast< gum::Size >(3)));
+      CHECK((frag.dag().sizeArcs()) == (static_cast< gum::Size >(2)));
+      CHECK((frag.size()) == (static_cast< gum::Size >(3)));
+      CHECK((frag.dim()) == (gum::Size((2 * (3 - 1)) + (2 * (2 - 1)) + (2 - 1))));
+      CHECK((pow(10, frag.log10DomainSize()))
+            == doctest::Approx(2 * 2 * 3).epsilon(GUM_SMALL_ERROR));
 
       auto I = frag.completeInstantiation();
       I.setFirst();
-      TS_ASSERT_EQUALS(I.toString(), "<v1:0|v3:0|v6:0>")
+      CHECK((I.toString()) == ("<v1:0|v3:0|v6:0>"));
 
       while (!I.end()) {
         double p = bn.cpt("v1")[I] * bn.cpt("v3")[I] * bn.cpt("v6")[I];
-        TS_ASSERT_DELTA(frag.jointProbability(I), p, TS_GUM_SMALL_ERROR)
-        TS_ASSERT_DELTA(frag.log2JointProbability(I), log2(p), TS_GUM_SMALL_ERROR)
+        CHECK((frag.jointProbability(I)) == doctest::Approx(p).epsilon(GUM_SMALL_ERROR));
+        CHECK((frag.log2JointProbability(I)) == doctest::Approx(log2(p)).epsilon(GUM_SMALL_ERROR));
         ++I;
       }
 
@@ -396,7 +404,7 @@ namespace gum_tests {
         count++;
       }
 
-      TS_ASSERT_EQUALS(count, frag.size())
+      CHECK((count) == (frag.size()));
 
       count = 0;
 
@@ -405,44 +413,44 @@ namespace gum_tests {
         count++;
       }
 
-      TS_ASSERT_EQUALS(count, frag.sizeArcs())
+      CHECK((count) == (frag.sizeArcs()));
 
       const auto order = frag.topologicalOrder();
-      TS_ASSERT_EQUALS(order.size(), static_cast< gum::Size >(3))
-      TS_ASSERT_EQUALS(frag.variable(order.atPos(0)).name(), "v1")
-      TS_ASSERT_EQUALS(frag.variable(order.atPos(1)).name(), "v3")
-      TS_ASSERT_EQUALS(frag.variable(order.atPos(2)).name(), "v6")
+      CHECK((order.size()) == (static_cast< gum::Size >(3)));
+      CHECK((frag.variable(order.atPos(0)).name()) == ("v1"));
+      CHECK((frag.variable(order.atPos(1)).name()) == ("v3"));
+      CHECK((frag.variable(order.atPos(2)).name()) == ("v6"));
     }
 
-    GUM_ACTIVE_TEST(Listeners) {
+    static void testListeners() {
       gum::BayesNet< double > bn;
       fill(bn);
 
       gum::BayesNetFragment< double > frag(bn);
       frag.installAscendants(bn.idFromName("v5"));
 
-      TS_ASSERT_EQUALS(frag.size(), static_cast< gum::Size >(5))
-      TS_ASSERT_EQUALS(frag.sizeArcs(), static_cast< gum::Size >(6))
+      CHECK((frag.size()) == (static_cast< gum::Size >(5)));
+      CHECK((frag.sizeArcs()) == (static_cast< gum::Size >(6)));
 
       bn.erase(bn.idFromName("v4"));
 
-      TS_ASSERT_EQUALS(frag.size(), static_cast< gum::Size >(4))
-      TS_ASSERT_EQUALS(frag.sizeArcs(), static_cast< gum::Size >(3))
+      CHECK((frag.size()) == (static_cast< gum::Size >(4)));
+      CHECK((frag.sizeArcs()) == (static_cast< gum::Size >(3)));
 
-      TS_ASSERT_EQUALS(frag.dag().parents(bn.idFromName("v5")).size(), static_cast< gum::Size >(2))
-      TS_ASSERT(!frag.dag().parents(bn.idFromName("v5")).contains(bn.idFromName("v1")))
-      TS_ASSERT(frag.dag().parents(bn.idFromName("v5")).contains(bn.idFromName("v2")))
-      TS_ASSERT(frag.dag().parents(bn.idFromName("v5")).contains(bn.idFromName("v3")))
+      CHECK((frag.dag().parents(bn.idFromName("v5")).size()) == (static_cast< gum::Size >(2)));
+      CHECK(!frag.dag().parents(bn.idFromName("v5")).contains(bn.idFromName("v1")));
+      CHECK(frag.dag().parents(bn.idFromName("v5")).contains(bn.idFromName("v2")));
+      CHECK(frag.dag().parents(bn.idFromName("v5")).contains(bn.idFromName("v3")));
 
       bn.eraseArc(gum::Arc(bn.idFromName("v2"), bn.idFromName("v5")));
 
-      TS_ASSERT_EQUALS(frag.size(), static_cast< gum::Size >(4))
-      TS_ASSERT_EQUALS(frag.sizeArcs(), static_cast< gum::Size >(2))
+      CHECK((frag.size()) == (static_cast< gum::Size >(4)));
+      CHECK((frag.sizeArcs()) == (static_cast< gum::Size >(2)));
 
-      TS_ASSERT_EQUALS(frag.dag().parents(bn.idFromName("v5")).size(), static_cast< gum::Size >(1))
-      TS_ASSERT(!frag.dag().parents(bn.idFromName("v5")).contains(bn.idFromName("v1")))
-      TS_ASSERT(!frag.dag().parents(bn.idFromName("v5")).contains(bn.idFromName("v2")))
-      TS_ASSERT(frag.dag().parents(bn.idFromName("v5")).contains(bn.idFromName("v3")))
+      CHECK((frag.dag().parents(bn.idFromName("v5")).size()) == (static_cast< gum::Size >(1)));
+      CHECK(!frag.dag().parents(bn.idFromName("v5")).contains(bn.idFromName("v1")));
+      CHECK(!frag.dag().parents(bn.idFromName("v5")).contains(bn.idFromName("v2")));
+      CHECK(frag.dag().parents(bn.idFromName("v5")).contains(bn.idFromName("v3")));
 
       // nothing should change here
       gum::BayesNet< double > bn2;
@@ -451,29 +459,29 @@ namespace gum_tests {
       gum::BayesNetFragment< double > frag2(bn2);
       frag2.installAscendants(bn2.idFromName("v6"));
 
-      TS_ASSERT_EQUALS(frag2.size(), static_cast< gum::Size >(3))
-      TS_ASSERT_EQUALS(frag2.sizeArcs(), static_cast< gum::Size >(2))
+      CHECK((frag2.size()) == (static_cast< gum::Size >(3)));
+      CHECK((frag2.sizeArcs()) == (static_cast< gum::Size >(2)));
 
       std::string tostr2{frag2.toString()};
 
       bn2.erase(bn2.idFromName("v4"));
 
-      TS_ASSERT_EQUALS(frag2.toString(), tostr2)
+      CHECK((frag2.toString()) == (tostr2));
 
       bn2.eraseArc(gum::Arc(bn.idFromName("v2"), bn2.idFromName("v5")));
 
-      TS_ASSERT_EQUALS(frag2.toString(), tostr2)
+      CHECK((frag2.toString()) == (tostr2));
 
       bn2.add(gum::LabelizedVariable("v7", "unused var"));
 
-      TS_ASSERT_EQUALS(frag2.toString(), tostr2)
+      CHECK((frag2.toString()) == (tostr2));
 
-      TS_GUM_ASSERT_THROWS_NOTHING(bn2.addArc(bn2.idFromName("v6"), bn2.idFromName("v7")))
+      GUM_CHECK_ASSERT_THROWS_NOTHING(bn2.addArc(bn2.idFromName("v6"), bn2.idFromName("v7")));
 
-      TS_ASSERT_EQUALS(frag2.toString(), tostr2)
+      CHECK((frag2.toString()) == (tostr2));
     }
 
-    GUM_ACTIVE_TEST(RelevantForRelevantReasonning) {
+    static void testRelevantForRelevantReasonning() {
       // an inference for all the bn with an hard evidence and an inference for
       // the right fragment with a local CPT should be the same
       try {
@@ -502,8 +510,8 @@ namespace gum_tests {
         newV3 << bn.variable(bn.idFromName("v3"));
         newV3.fillWith({0.0, 1.0});
         frag.installMarginal(frag.idFromName("v3"), newV3);   // 1   3->6
-        TS_ASSERT_EQUALS(frag.size(), static_cast< gum::Size >(3))
-        TS_ASSERT_EQUALS(frag.sizeArcs(), static_cast< gum::Size >(1))
+        CHECK((frag.size()) == (static_cast< gum::Size >(3)));
+        CHECK((frag.sizeArcs()) == (static_cast< gum::Size >(1)));
 
         gum::LazyPropagation< double > inf_frag(&frag);
         inf_frag.makeInference();
@@ -515,69 +523,69 @@ namespace gum_tests {
         gum::Instantiation J(p2);
 
         for (I.setFirst(), J.setFirst(); !I.end(); ++I, ++J)
-          TS_ASSERT_DELTA(p1[I], p2[J], 1e-6)
+          CHECK((p1[I]) == doctest::Approx(p2[J]).epsilon(1e-6));
       } catch (gum::Exception& e) { GUM_SHOWERROR(e); }
     }
 
-    GUM_ACTIVE_TEST(InstallCPTs) {
+    static void testInstallCPTs() {
       gum::BayesNet< double > bn;
       fill(bn);
       gum::BayesNetFragment< double > frag(bn);
       frag.installAscendants(bn.idFromName("v6"));   // 1->3->6
-      TS_ASSERT_EQUALS(frag.size(), static_cast< gum::Size >(3))
-      TS_ASSERT_EQUALS(frag.sizeArcs(), static_cast< gum::Size >(2))
+      CHECK((frag.size()) == (static_cast< gum::Size >(3)));
+      CHECK((frag.sizeArcs()) == (static_cast< gum::Size >(2)));
 
       for (const auto node: frag.nodes())
-        TS_ASSERT(frag.checkConsistency(node))
+        CHECK(frag.checkConsistency(node));
 
-      TS_ASSERT(frag.checkConsistency())
+      CHECK(frag.checkConsistency());
 
       frag.installNode(bn.idFromName("v5"));
       // 1->3->6 et 3->5 but 5 does not have all this parents (2,3 et 4)
-      TS_ASSERT_EQUALS(frag.size(), static_cast< gum::Size >(4))
-      TS_ASSERT_EQUALS(frag.sizeArcs(), static_cast< gum::Size >(3))
+      CHECK((frag.size()) == (static_cast< gum::Size >(4)));
+      CHECK((frag.sizeArcs()) == (static_cast< gum::Size >(3)));
 
       for (const auto node: frag.nodes())
-        TS_ASSERT(node == frag.idFromName("v5") || frag.checkConsistency(node))
+        CHECK((node == frag.idFromName("v5") || frag.checkConsistency(node)));
 
-      TS_ASSERT(!frag.checkConsistency())
+      CHECK(!frag.checkConsistency());
 
       gum::Tensor< double > newV5;
       newV5 << bn.variable(bn.idFromName("v5"));
       newV5.fillWith({0.0, 0.0, 1.0});
       frag.installMarginal(frag.idFromName("v5"), newV5);   // 1-->3-->6 5
-      TS_ASSERT(frag.checkConsistency())
-      TS_ASSERT_EQUALS(frag.size(), static_cast< gum::Size >(4))
-      TS_ASSERT_EQUALS(frag.sizeArcs(), static_cast< gum::Size >(2))
+      CHECK(frag.checkConsistency());
+      CHECK((frag.size()) == (static_cast< gum::Size >(4)));
+      CHECK((frag.sizeArcs()) == (static_cast< gum::Size >(2)));
 
       frag.installAscendants(bn.idFromName("v4"));
-      TS_ASSERT(!frag.checkConsistency());   // V5 has now 2 parents : 4 and 2
-      TS_ASSERT_EQUALS(frag.size(), static_cast< gum::Size >(6))
-      TS_ASSERT_EQUALS(frag.sizeArcs(), static_cast< gum::Size >(6))
+      CHECK(!frag.checkConsistency());   // V5 has now 2 parents : 4 and 2
+      CHECK((frag.size()) == (static_cast< gum::Size >(6)));
+      CHECK((frag.sizeArcs()) == (static_cast< gum::Size >(6)));
 
       frag.uninstallCPT(frag.idFromName("v5"));
       // V5 tensor got its 3 parents back from the referred BN
       // the fragment is the BN
-      TS_ASSERT(frag.checkConsistency())
-      TS_ASSERT_EQUALS(frag.size(), static_cast< gum::Size >(6))
-      TS_ASSERT_EQUALS(frag.sizeArcs(), static_cast< gum::Size >(7))
+      CHECK(frag.checkConsistency());
+      CHECK((frag.size()) == (static_cast< gum::Size >(6)));
+      CHECK((frag.sizeArcs()) == (static_cast< gum::Size >(7)));
 
       // removing 4 make V5 unconsistent
       frag.uninstallNode(frag.idFromName("v4"));
-      TS_ASSERT(!frag.checkConsistency())
-      TS_ASSERT_EQUALS(frag.size(), static_cast< gum::Size >(5))
-      TS_ASSERT_EQUALS(frag.sizeArcs(), static_cast< gum::Size >(4))
+      CHECK(!frag.checkConsistency());
+      CHECK((frag.size()) == (static_cast< gum::Size >(5)));
+      CHECK((frag.sizeArcs()) == (static_cast< gum::Size >(4)));
 
       gum::Tensor< double > newV5bis;
       newV5bis << bn.variable(bn.idFromName("v5")) << bn.variable(bn.idFromName("v2"))
                << bn.variable(bn.idFromName("v3"));
       frag.installCPT(frag.idFromName("v5"), newV5bis);
-      TS_ASSERT(frag.checkConsistency())
-      TS_ASSERT_EQUALS(frag.size(), static_cast< gum::Size >(5))
-      TS_ASSERT_EQUALS(frag.sizeArcs(), static_cast< gum::Size >(4))
+      CHECK(frag.checkConsistency());
+      CHECK((frag.size()) == (static_cast< gum::Size >(5)));
+      CHECK((frag.sizeArcs()) == (static_cast< gum::Size >(4)));
     }
 
-    GUM_ACTIVE_TEST(InferenceWithLocalCPTs) {
+    static void testInferenceWithLocalCPTs() {
       gum::BayesNet< double > bn;
       fill(bn);
       gum::BayesNet< double > bn2;
@@ -588,9 +596,9 @@ namespace gum_tests {
       for (const auto node: bn.nodes())
         frag.installNode(node);
 
-      TS_ASSERT(frag.checkConsistency())
-      TS_ASSERT_EQUALS(frag.size(), static_cast< gum::Size >(6))
-      TS_ASSERT_EQUALS(frag.sizeArcs(), static_cast< gum::Size >(7))
+      CHECK(frag.checkConsistency());
+      CHECK((frag.size()) == (static_cast< gum::Size >(6)));
+      CHECK((frag.sizeArcs()) == (static_cast< gum::Size >(7)));
 
       gum::Tensor< double > newV5;
       newV5 << bn.variable(bn.idFromName("v5")) << bn.variable(bn.idFromName("v2"))
@@ -604,12 +612,12 @@ namespace gum_tests {
         newV5.set(J, pot2[I]);
 
       frag.installCPT(frag.idFromName("v5"), newV5);
-      TS_ASSERT(frag.checkConsistency())
-      TS_ASSERT_EQUALS(frag.size(), static_cast< gum::Size >(6))
-      TS_ASSERT_EQUALS(frag.sizeArcs(), static_cast< gum::Size >(6))
+      CHECK(frag.checkConsistency());
+      CHECK((frag.size()) == (static_cast< gum::Size >(6)));
+      CHECK((frag.sizeArcs()) == (static_cast< gum::Size >(6)));
       str2file("outputs/test.dot", bn2.toDot());
 
-      TS_ASSERT(bn2 == frag)
+      CHECK(bn2 == frag);
 
       gum::LazyPropagation< double > ie2(&bn2);
       ie2.makeInference();
@@ -624,55 +632,69 @@ namespace gum_tests {
       gum::Instantiation JJ(p2);
 
       for (II.setFirst(), JJ.setFirst(); !II.end(); ++II, ++JJ)
-        TS_ASSERT_DELTA(p1[II], p2[JJ], 1e-6)
+        CHECK((p1[II]) == doctest::Approx(p2[JJ]).epsilon(1e-6));
     }
 
-    GUM_ACTIVE_TEST(CopyToBN) {
+    static void testCopyToBN() {
       auto bn = gum::BayesNet< double >::fastPrototype("A->B->C->D;E<-C<-F;");
-      TS_ASSERT_EQUALS(&bn.cpt("B").variable(1), &bn.variable("A"))
+      CHECK((&bn.cpt("B").variable(1)) == (&bn.variable("A")));
 
       gum::BayesNetFragment< double > frag(bn);
 
       frag.installNode("B");
-      TS_ASSERT(!frag.checkConsistency())
-      TS_ASSERT_THROWS(frag.toBN(), const gum::OperationNotAllowed&)
+      CHECK(!frag.checkConsistency());
+      CHECK_THROWS_AS(frag.toBN(), const gum::OperationNotAllowed&);
 
       // checking if the nodes are well copied and referenced in frag and then in
       // minibn checking if the tensor are well copied
       frag.installNode("A");
-      TS_ASSERT(frag.checkConsistency())
-      TS_ASSERT_EQUALS(&bn.variable("A"), &frag.variable("A"))
-      TS_ASSERT_EQUALS(&bn.variable("B"), &frag.variable("B"))
-      TS_ASSERT_EQUALS(bn.cpt("A").toString(), frag.cpt("A").toString())
-      TS_ASSERT_EQUALS(bn.cpt("B").toString(), frag.cpt("B").toString())
-      TS_ASSERT_EQUALS(&frag.cpt("B").variable(1), &bn.variable("A"))
-      TS_ASSERT_EQUALS(&frag.cpt("B").variable(1), &frag.variable("A"))
+      CHECK(frag.checkConsistency());
+      CHECK((&bn.variable("A")) == (&frag.variable("A")));
+      CHECK((&bn.variable("B")) == (&frag.variable("B")));
+      CHECK((bn.cpt("A").toString()) == (frag.cpt("A").toString()));
+      CHECK((bn.cpt("B").toString()) == (frag.cpt("B").toString()));
+      CHECK((&frag.cpt("B").variable(1)) == (&bn.variable("A")));
+      CHECK((&frag.cpt("B").variable(1)) == (&frag.variable("A")));
 
       const auto& minibn = frag.toBN();
-      TS_ASSERT_EQUALS(minibn.size(), 2u)
-      TS_ASSERT_EQUALS(minibn.sizeArcs(), 1u)
-      TS_ASSERT_DIFFERS(&bn.variable("A"), &minibn.variable("A"))
-      TS_ASSERT_DIFFERS(&bn.variable("B"), &minibn.variable("B"))
-      TS_ASSERT_EQUALS(bn.cpt("A").toString(), minibn.cpt("A").toString())
-      TS_ASSERT_EQUALS(bn.cpt("B").toString(), minibn.cpt("B").toString())
-      TS_ASSERT_EQUALS(&minibn.cpt("B").variable(1), &minibn.variable("A"))
-      TS_ASSERT_DIFFERS(&minibn.cpt("B").variable(1), &frag.variable("A"))
+      CHECK((minibn.size()) == (2u));
+      CHECK((minibn.sizeArcs()) == (1u));
+      CHECK((&bn.variable("A")) != (&minibn.variable("A")));
+      CHECK((&bn.variable("B")) != (&minibn.variable("B")));
+      CHECK((bn.cpt("A").toString()) == (minibn.cpt("A").toString()));
+      CHECK((bn.cpt("B").toString()) == (minibn.cpt("B").toString()));
+      CHECK((&minibn.cpt("B").variable(1)) == (&minibn.variable("A")));
+      CHECK((&minibn.cpt("B").variable(1)) != (&frag.variable("A")));
     }
 
-    GUM_ACTIVE_TEST(GraphicalMethods) {
+    static void testGraphicalMethods() {
       auto bn = gum::BayesNet< double >::fastPrototype("A->B->C->D;E<-C<-F;");
-      TS_ASSERT_EQUALS(&bn.cpt("B").variable(1), &bn.variable("A"))
+      CHECK((&bn.cpt("B").variable(1)) == (&bn.variable("A")));
 
       gum::BayesNetFragment< double > frag(bn);
       frag.installNode("A");
       frag.installNode("B");
       frag.installNode("C");
 
-      TS_ASSERT_EQUALS(frag.children("B"), gum::NodeSet({2}))
-      TS_ASSERT_EQUALS(frag.variableNodeMap().size(),
-                       static_cast< gum::Size >(6))   // the size of bn.size() ...
+      CHECK((frag.children("B")) == (gum::NodeSet({2})));
+      CHECK((frag.variableNodeMap().size())
+            == (static_cast< gum::Size >(6)));   // the size of bn.size() ...
 
-      TS_ASSERT_EQUALS(frag.nodes().asNodeSet(), gum::NodeSet({0, 1, 2}))
+      CHECK((frag.nodes().asNodeSet()) == (gum::NodeSet({0, 1, 2})));
     }
   };
+
+  GUM_TEST_ACTIF(Creation)
+  GUM_TEST_ACTIF(InstallNodes)
+  GUM_TEST_ACTIF(InstallNodesWithVar)
+  GUM_TEST_ACTIF(UninstallNode)
+  GUM_TEST_ACTIF(UninstallNodeWithNames)
+  GUM_TEST_ACTIF(IBayetNetMethodsWithoutLocalCPTs)
+  GUM_TEST_ACTIF(IBayetNetMethodsWithoutLocalCPTsWithNames)
+  GUM_TEST_ACTIF(Listeners)
+  GUM_TEST_ACTIF(RelevantForRelevantReasonning)
+  GUM_TEST_ACTIF(InstallCPTs)
+  GUM_TEST_ACTIF(InferenceWithLocalCPTs)
+  GUM_TEST_ACTIF(CopyToBN)
+  GUM_TEST_ACTIF(GraphicalMethods)
 }   // namespace gum_tests

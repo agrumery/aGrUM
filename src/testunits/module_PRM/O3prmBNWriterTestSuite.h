@@ -1,7 +1,7 @@
 /****************************************************************************
  *   This file is part of the aGrUM/pyAgrum library.                        *
  *                                                                          *
- *   Copyright (c) 2005-2025 by                                             *
+ *   Copyright (c) 2005-2026 by                                             *
  *       - Pierre-Henri WUILLEMIN(_at_LIP6)                                 *
  *       - Christophe GONZALES(_at_AMU)                                     *
  *                                                                          *
@@ -27,7 +27,7 @@
  *                                                                          *
  *   See LICENCES for more details.                                         *
  *                                                                          *
- *   SPDX-FileCopyrightText: Copyright 2005-2025                            *
+ *   SPDX-FileCopyrightText: Copyright 2005-2026                            *
  *       - Pierre-Henri WUILLEMIN(_at_LIP6)                                 *
  *       - Christophe GONZALES(_at_AMU)                                     *
  *   SPDX-License-Identifier: LGPL-3.0-or-later OR MIT                      *
@@ -37,6 +37,7 @@
  *   gitlab   : https://gitlab.com/agrumery/agrum                           *
  *                                                                          *
  ****************************************************************************/
+
 #pragma once
 
 
@@ -54,6 +55,11 @@
 
 #include <sys/stat.h>
 
+#undef GUM_CURRENT_SUITE
+#undef GUM_CURRENT_MODULE
+#define GUM_CURRENT_SUITE  O3prmBNWriter
+#define GUM_CURRENT_MODULE PRM
+
 // The graph used for the tests:
 //          1   2_          1 -> 3
 //         / \ / /          1 -> 4
@@ -64,115 +70,128 @@
 
 namespace gum_tests {
 
-  class GUM_TEST_SUITE(O3prmBNWriter) {
+  struct O3prmBNWriterTestSuite {
     public:
     gum::BayesNet< double >* bn;
     gum::NodeId              i1, i2, i3, i4, i5;
 
-    void setUp() {
+    O3prmBNWriterTestSuite() {
       bn = new gum::BayesNet< double >();
 
-      gum::RangeVariable                 n1("1", "", 0, 1);
+      gum::RangeVariable n1("1", "", 0, 1);
+
       gum::DiscretizedVariable< double > n2("2", "");
+
       n2.addTick(0.0).addTick(0.5).addTick(1.0);
+
       gum::LabelizedVariable n3("3", "", 2);
+
       gum::LabelizedVariable n4("4", "", 2), n5("5", "", 3);
 
       i1 = bn->add(n1);
+
       i2 = bn->add(n2);
+
       i3 = bn->add(n3);
+
       i4 = bn->add(n4);
+
       i5 = bn->add(n5);
 
       bn->addArc(i1, i3);
+
       bn->addArc(i1, i4);
+
       bn->addArc(i3, i5);
+
       bn->addArc(i4, i5);
+
       bn->addArc(i2, i4);
+
       bn->addArc(i2, i5);
 
       fill(*bn);
     }
 
-    void tearDown() { delete bn; }
+    ~O3prmBNWriterTestSuite() { delete bn; }
 
-    GUM_ACTIVE_TEST(Constuctor) {
+    static void testConstuctor() {
       gum::O3prmBNWriter< double >* writer = nullptr;
-      TS_GUM_ASSERT_THROWS_NOTHING(writer = new gum::O3prmBNWriter< double >())
+      GUM_CHECK_ASSERT_THROWS_NOTHING(writer = new gum::O3prmBNWriter< double >());
       delete writer;
     }
 
-    GUM_ACTIVE_TEST(Writer_ostream) {
+    static void testWriter_ostream() {
       gum::O3prmBNWriter< double > writer;
       // Uncomment this to check the ouput
-      // TS_GUM_ASSERT_THROWS_NOTHING(writer.write(std::cerr, *bn))
+      // GUM_CHECK_ASSERT_THROWS_NOTHING(writer.write(std::cerr, *bn));
     }
 
-    GUM_ACTIVE_TEST(ReadAfterWrite) {
+    static void testReadAfterWrite() {
       std::string                  rfile = GET_RESSOURCES_PATH("o3prm/alarm.o3prm");
       gum::BayesNet< double >      bn;
       gum::O3prmBNReader< double > reader(&bn, rfile);
       gum::Size                    res = 0;
-      TS_GUM_ASSERT_THROWS_NOTHING(res = reader.proceed())
-      TS_ASSERT_EQUALS(res, static_cast< gum::Size >(0))
-      TS_ASSERT_EQUALS(reader.warnings(), static_cast< gum::Size >(7));   // no system
-      TS_ASSERT_EQUALS(bn.size(), static_cast< gum::Size >(37))
-      TS_ASSERT_EQUALS(bn.property("name"), "alarm")
+      GUM_CHECK_ASSERT_THROWS_NOTHING(res = reader.proceed());
+      CHECK((res) == (static_cast< gum::Size >(0)));
+      CHECK((reader.warnings()) == (static_cast< gum::Size >(7)));   // no system
+      CHECK((bn.size()) == (static_cast< gum::Size >(37)));
+      CHECK((bn.property("name")) == ("alarm"));
 
 
       gum::O3prmBNWriter< double > writer;
       std::string                  wfile = GET_RESSOURCES_PATH("outputs/alarm_written.o3prm");
-      TS_GUM_ASSERT_THROWS_NOTHING(writer.write(wfile, bn))
+      GUM_CHECK_ASSERT_THROWS_NOTHING(writer.write(wfile, bn));
 
 
       gum::BayesNet< double >      bn2;
       gum::O3prmBNReader< double > reader2(&bn2, wfile, "alarm");
       gum::Size                    res2 = 0;
-      TS_GUM_ASSERT_THROWS_NOTHING(res2 = reader2.proceed())
-      TS_ASSERT_EQUALS(res2, static_cast< gum::Size >(0))
-      TS_ASSERT_EQUALS(reader2.warnings(), static_cast< gum::Size >(7));   // no system
-      TS_ASSERT_EQUALS(bn2.size(), static_cast< gum::Size >(37))
+      GUM_CHECK_ASSERT_THROWS_NOTHING(res2 = reader2.proceed());
+      CHECK((res2) == (static_cast< gum::Size >(0)));
+      CHECK((reader2.warnings()) == (static_cast< gum::Size >(7)));   // no system
+      CHECK((bn2.size()) == (static_cast< gum::Size >(37)));
 
       std::string nam;
       for (const auto& nod: bn.nodes()) {
         nam = bn.variable(nod).name();
-        TS_ASSERT_EQUALS(bn.variable(nam).toString(), bn2.variable(nam).toString())
+        CHECK((bn.variable(nam).toString()) == (bn2.variable(nam).toString()));
         const gum::Tensor< double > p(bn.cpt(nam));
         std::vector< std::string >  varmap;
         for (gum::Idx i = 0; i < p.nbrDim(); i++)
           varmap.push_back(p.variable(i).name());
         p.fillWith(bn2.cpt(nam), varmap);
-        TS_ASSERT_LESS_THAN((p - bn.cpt(nam)).abs().max(), TS_GUM_SMALL_ERROR)
+        CHECK(((p - bn.cpt(nam)).abs().max()) < (GUM_SMALL_ERROR));
       }
     }
 
-    GUM_ACTIVE_TEST(ReadAfterWriteRandom) {
+    static void testReadAfterWriteRandom() {
       gum::BayesNet< double > bn = gum::BayesNet< double >::fastPrototype(
           "A[5]->B{yes|maybe|no}<-C[4];D[3,6]->E[1,2,3,4,5,6,7]->F<-G;F<-H");
       bn.setProperty("name", "random_written");
 
       gum::O3prmBNWriter< double > writer;
       std::string                  wfile = GET_RESSOURCES_PATH("outputs/random_written.o3prm");
-      TS_GUM_ASSERT_THROWS_NOTHING(writer.write(wfile, bn))
+      GUM_CHECK_ASSERT_THROWS_NOTHING(writer.write(wfile, bn));
 
 
       gum::BayesNet< double >      bn2;
       gum::O3prmBNReader< double > reader2(&bn2, wfile);
       gum::Size                    res2 = 0;
-      TS_GUM_ASSERT_THROWS_NOTHING(res2 = reader2.proceed())
-      TS_ASSERT_EQUALS(res2, static_cast< gum::Size >(0))
-      TS_ASSERT_EQUALS(bn2.size(), static_cast< gum::Size >(8))
+      GUM_CHECK_ASSERT_THROWS_NOTHING(res2 = reader2.proceed());
+      CHECK((res2) == (static_cast< gum::Size >(0)));
+      CHECK((bn2.size()) == (static_cast< gum::Size >(8)));
 
       std::string nam;
       for (const auto& nod: bn.nodes()) {
         nam = bn.variable(nod).name();
-        TS_ASSERT_EQUALS(bn.variable(nam).toString(), bn2.variable(nam).toString())
+        CHECK((bn.variable(nam).toString()) == (bn2.variable(nam).toString()));
         const gum::Tensor< double > p(bn.cpt(nam));
         std::vector< std::string >  varmap;
         for (gum::Idx i = 0; i < p.nbrDim(); i++)
           varmap.push_back(p.variable(i).name());
         p.fillWith(bn2.cpt(nam), varmap);
-        TS_ASSERT_LESS_THAN((p - bn.cpt(nam)).abs().max(), TS_GUM_SMALL_ERROR)
+        CHECK(((p - bn.cpt(nam)).abs().max()) < (GUM_SMALL_ERROR));
       }
     }
 
@@ -187,4 +206,9 @@ namespace gum_tests {
                            0.4, 0.6, 0.0, 0.5, 0.5, 0.0, 0.5, 0.5, 0.0, 0.0, 0.0, 1.0});
     }
   };
+
+  GUM_TEST_ACTIF(Constuctor)
+  GUM_TEST_ACTIF(Writer_ostream)
+  GUM_TEST_ACTIF(ReadAfterWrite)
+  GUM_TEST_ACTIF(ReadAfterWriteRandom)
 }   // namespace gum_tests

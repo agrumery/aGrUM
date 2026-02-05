@@ -1,7 +1,7 @@
 /****************************************************************************
  *   This file is part of the aGrUM/pyAgrum library.                        *
  *                                                                          *
- *   Copyright (c) 2005-2025 by                                             *
+ *   Copyright (c) 2005-2026 by                                             *
  *       - Pierre-Henri WUILLEMIN(_at_LIP6)                                 *
  *       - Christophe GONZALES(_at_AMU)                                     *
  *                                                                          *
@@ -27,7 +27,7 @@
  *                                                                          *
  *   See LICENCES for more details.                                         *
  *                                                                          *
- *   SPDX-FileCopyrightText: Copyright 2005-2025                            *
+ *   SPDX-FileCopyrightText: Copyright 2005-2026                            *
  *       - Pierre-Henri WUILLEMIN(_at_LIP6)                                 *
  *       - Christophe GONZALES(_at_AMU)                                     *
  *   SPDX-License-Identifier: LGPL-3.0-or-later OR MIT                      *
@@ -37,6 +37,7 @@
  *   gitlab   : https://gitlab.com/agrumery/agrum                           *
  *                                                                          *
  ****************************************************************************/
+
 #pragma once
 
 
@@ -52,11 +53,16 @@
 #include <agrum/BN/io/net/netReader.h>
 #include <agrum/BN/io/net/netWriter.h>
 
+#undef GUM_CURRENT_SUITE
+#undef GUM_CURRENT_MODULE
+#define GUM_CURRENT_SUITE  BayesNetIO
+#define GUM_CURRENT_MODULE BN
+
 namespace gum_tests {
 
-  class GUM_TEST_SUITE(BayesNetIO) {
+  struct BayesNetIOTestSuite {
     public:
-    GUM_ACTIVE_TEST(NetImportExport) {
+    static void testNetImportExport() {
       std::string filebif = GET_RESSOURCES_PATH("bif/alarm.bif");
       std::string filenet = GET_RESSOURCES_PATH("net/alarm.net");
 
@@ -68,43 +74,45 @@ namespace gum_tests {
       gum::NetReader< double > netreader(&netbn, filenet);
       netreader.proceed();
 
-      TS_ASSERT_EQUALS(netbn.size(), bifbn.size())
-      TS_ASSERT_EQUALS(netbn.sizeArcs(), bifbn.sizeArcs())
-      TS_ASSERT_EQUALS(netbn.toString(), bifbn.toString())
+      CHECK((netbn.size()) == (bifbn.size()));
+      CHECK((netbn.sizeArcs()) == (bifbn.sizeArcs()));
+      CHECK((netbn.toString()) == (bifbn.toString()));
       for (const auto n: bifbn.nodes()) {
         const gum::Tensor< double > p(bifbn.cpt(n));
         p.fillWith(netbn.cpt(bifbn.variable(n).name()));
         double err = (bifbn.cpt(n) - p).abs().max();
-        TS_ASSERT_LESS_THAN_EQUALS(err, 1e-6)
+        CHECK((err) <= (1e-6));
       }
 
       gum::NetWriter< double > netwriter;
       std::string              netwritefile = GET_RESSOURCES_PATH("outputs/alarm_writer.net");
-      TS_GUM_ASSERT_THROWS_NOTHING(netwriter.write(netwritefile, netbn))
+      GUM_CHECK_ASSERT_THROWS_NOTHING(netwriter.write(netwritefile, netbn));
 
       gum::BayesNet< double >  netbn2;
       gum::NetReader< double > netreader2(&netbn2, netwritefile);
       netreader2.proceed();
 
-      TS_ASSERT_EQUALS(netbn.size(), netbn2.size())
-      TS_ASSERT_EQUALS(netbn.sizeArcs(), netbn2.sizeArcs())
-      TS_ASSERT_EQUALS(netbn.toString(), netbn2.toString())
+      CHECK((netbn.size()) == (netbn2.size()));
+      CHECK((netbn.sizeArcs()) == (netbn2.sizeArcs()));
+      CHECK((netbn.toString()) == (netbn2.toString()));
       for (const auto n: netbn2.nodes()) {
         const gum::Tensor< double > p(netbn2.cpt(n));
         p.fillWith(netbn.cpt(netbn2.variable(n).name()));
         double err = (netbn2.cpt(n) - p).abs().max();
-        TS_ASSERT_LESS_THAN(err, 1e-6)
+        CHECK((err) < (1e-6));
       }
 
-      TS_ASSERT_EQUALS(bifbn.size(), netbn2.size())
-      TS_ASSERT_EQUALS(bifbn.sizeArcs(), netbn2.sizeArcs())
-      TS_ASSERT_EQUALS(bifbn.toString(), netbn2.toString())
+      CHECK((bifbn.size()) == (netbn2.size()));
+      CHECK((bifbn.sizeArcs()) == (netbn2.sizeArcs()));
+      CHECK((bifbn.toString()) == (netbn2.toString()));
       for (const auto n: netbn2.nodes()) {
         const gum::Tensor< double > p(netbn2.cpt(n));
         p.fillWith(bifbn.cpt(netbn2.variable(n).name()));
         double err = (netbn2.cpt(n) - p).abs().max();
-        TS_ASSERT_LESS_THAN(err, 1e-6)
+        CHECK((err) < (1e-6));
       }
     }   // namespace gum_tests
   };
+
+  GUM_TEST_ACTIF(NetImportExport)
 }   // namespace gum_tests

@@ -1,7 +1,7 @@
 /****************************************************************************
  *   This file is part of the aGrUM/pyAgrum library.                        *
  *                                                                          *
- *   Copyright (c) 2005-2025 by                                             *
+ *   Copyright (c) 2005-2026 by                                             *
  *       - Pierre-Henri WUILLEMIN(_at_LIP6)                                 *
  *       - Christophe GONZALES(_at_AMU)                                     *
  *                                                                          *
@@ -27,7 +27,7 @@
  *                                                                          *
  *   See LICENCES for more details.                                         *
  *                                                                          *
- *   SPDX-FileCopyrightText: Copyright 2005-2025                            *
+ *   SPDX-FileCopyrightText: Copyright 2005-2026                            *
  *       - Pierre-Henri WUILLEMIN(_at_LIP6)                                 *
  *       - Christophe GONZALES(_at_AMU)                                     *
  *   SPDX-License-Identifier: LGPL-3.0-or-later OR MIT                      *
@@ -37,6 +37,7 @@
  *   gitlab   : https://gitlab.com/agrumery/agrum                           *
  *                                                                          *
  ****************************************************************************/
+
 #pragma once
 
 
@@ -48,6 +49,11 @@
 
 #include "utils.h"
 
+#undef GUM_CURRENT_SUITE
+#undef GUM_CURRENT_MODULE
+#define GUM_CURRENT_SUITE  DFSCode
+#define GUM_CURRENT_MODULE PRM
+
 /*
  * Test of gum::prm::gspan::DFSCode and gum::prm::gspan::EdgeCode.
  *
@@ -56,7 +62,7 @@
 
 namespace gum_tests {
 
-  class GUM_TEST_SUITE(DFSCode) {
+  struct DFSCodeTestSuite {
     private:
     gum::prm::gspan::DFSCode* alpha;
     gum::prm::gspan::DFSCode* beta;
@@ -102,92 +108,112 @@ namespace gum_tests {
     }
 
     public:
-    void setUp() {
+    static void testLesserThan() {
+      CHECK((*gamma) < (*alpha));
+      CHECK((*gamma) < (*beta));
+      CHECK((*alpha) < (*beta));
+      CHECK(!((*alpha) < (*alpha)));
+      CHECK(!((*beta) < (*beta)));
+      CHECK(!((*gamma) < (*gamma)));
+      CHECK(!((*alpha) < (*gamma)));
+      CHECK(!((*beta) < (*gamma)));
+      CHECK(!((*beta) < (*alpha)));
+    }
+
+    DFSCodeTestSuite() {
       X = 0;
+
       Y = 1;
+
       Z = 2;
+
       a = 0;
+
       b = 1;
+
       c = 2;
+
       d = 3;
+
       _build_alpha_();
+
       _build_beta_();
+
       _build_gamma_();
     }
 
-    void tearDown() {
+    ~DFSCodeTestSuite() {
       delete alpha;
+
       delete beta;
+
       delete gamma;
     }
 
-    GUM_ACTIVE_TEST(LesserThan) {
-      TS_ASSERT((*gamma) < (*alpha))
-      TS_ASSERT((*gamma) < (*beta))
-      TS_ASSERT((*alpha) < (*beta))
-      TS_ASSERT(!((*alpha) < (*alpha)))
-      TS_ASSERT(!((*beta) < (*beta)))
-      TS_ASSERT(!((*gamma) < (*gamma)))
-      TS_ASSERT(!((*alpha) < (*gamma)))
-      TS_ASSERT(!((*beta) < (*gamma)))
-      TS_ASSERT(!((*beta) < (*alpha)))
+    static void testLesserOrEqualThan() {
+      CHECK((*gamma) <= (*alpha));
+      CHECK((*gamma) <= (*beta));
+      CHECK((*alpha) <= (*beta));
+      CHECK((*alpha) <= (*alpha));
+      CHECK((*beta) <= (*beta));
+      CHECK((*gamma) <= (*gamma));
+      CHECK(!((*alpha) <= (*gamma)));
+      CHECK(!((*beta) <= (*gamma)));
+      CHECK(!((*beta) <= (*alpha)));
     }
 
-    GUM_ACTIVE_TEST(LesserOrEqualThan) {
-      TS_ASSERT((*gamma) <= (*alpha))
-      TS_ASSERT((*gamma) <= (*beta))
-      TS_ASSERT((*alpha) <= (*beta))
-      TS_ASSERT((*alpha) <= (*alpha))
-      TS_ASSERT((*beta) <= (*beta))
-      TS_ASSERT((*gamma) <= (*gamma))
-      TS_ASSERT(!((*alpha) <= (*gamma)))
-      TS_ASSERT(!((*beta) <= (*gamma)))
-      TS_ASSERT(!((*beta) <= (*alpha)))
-    }
-
-    GUM_ACTIVE_TEST(AlphaNeighbors) {
+    static void testAlphaNeighbors() {
       for (gum::prm::gspan::DFSCode::iterator iter = alpha->codes.begin() + 1;
            iter != alpha->codes.end();
            ++iter) {
-        TS_ASSERT(gum::prm::gspan::DFSCode::validNeighbors(*(iter - 1), *iter))
+        CHECK(gum::prm::gspan::DFSCode::validNeighbors(*(iter - 1), *iter));
       }
     }
 
-    GUM_ACTIVE_TEST(BetaNeighbors) {
+    static void testBetaNeighbors() {
       for (gum::prm::gspan::DFSCode::iterator iter = beta->codes.begin() + 1;
            iter != beta->codes.end();
            ++iter) {
-        TS_ASSERT(gum::prm::gspan::DFSCode::validNeighbors(*(iter - 1), *iter))
+        CHECK(gum::prm::gspan::DFSCode::validNeighbors(*(iter - 1), *iter));
       }
     }
 
-    GUM_ACTIVE_TEST(GammaNeighbors) {
+    static void testGammaNeighbors() {
       for (gum::prm::gspan::DFSCode::iterator iter = gamma->codes.begin() + 1;
            iter != gamma->codes.end();
            ++iter) {
-        TS_ASSERT(gum::prm::gspan::DFSCode::validNeighbors(*(iter - 1), *iter))
+        CHECK(gum::prm::gspan::DFSCode::validNeighbors(*(iter - 1), *iter));
       }
     }
 
-    GUM_ACTIVE_TEST(AlphaPrint) {
-      TS_ASSERT_THROWS_NOTHING({
+    static void testAlphaPrint() {
+      CHECK_NOTHROW({
         std::stringstream ss;
         ss << std::endl << (*alpha) << std::endl;
       });
     }
 
-    GUM_ACTIVE_TEST(BetaPrint) {
-      TS_ASSERT_THROWS_NOTHING({
+    static void testBetaPrint() {
+      CHECK_NOTHROW({
         std::stringstream ss;
         ss << std::endl << (*beta) << std::endl;
       });
     }
 
-    GUM_ACTIVE_TEST(GammaPrint) {
-      TS_ASSERT_THROWS_NOTHING({
+    static void testGammaPrint() {
+      CHECK_NOTHROW({
         std::stringstream ss;
         ss << std::endl << (*gamma) << std::endl;
       });
     }
   };
+
+  GUM_TEST_ACTIF(LesserThan)
+  GUM_TEST_ACTIF(LesserOrEqualThan)
+  GUM_TEST_ACTIF(AlphaNeighbors)
+  GUM_TEST_ACTIF(BetaNeighbors)
+  GUM_TEST_ACTIF(GammaNeighbors)
+  GUM_TEST_ACTIF(AlphaPrint)
+  GUM_TEST_ACTIF(BetaPrint)
+  GUM_TEST_ACTIF(GammaPrint)
 }   // namespace gum_tests

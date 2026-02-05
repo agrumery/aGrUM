@@ -1,7 +1,7 @@
 /****************************************************************************
  *   This file is part of the aGrUM/pyAgrum library.                        *
  *                                                                          *
- *   Copyright (c) 2005-2025 by                                             *
+ *   Copyright (c) 2005-2026 by                                             *
  *       - Pierre-Henri WUILLEMIN(_at_LIP6)                                 *
  *       - Christophe GONZALES(_at_AMU)                                     *
  *                                                                          *
@@ -27,7 +27,7 @@
  *                                                                          *
  *   See LICENCES for more details.                                         *
  *                                                                          *
- *   SPDX-FileCopyrightText: Copyright 2005-2025                            *
+ *   SPDX-FileCopyrightText: Copyright 2005-2026                            *
  *       - Pierre-Henri WUILLEMIN(_at_LIP6)                                 *
  *       - Christophe GONZALES(_at_AMU)                                     *
  *   SPDX-License-Identifier: LGPL-3.0-or-later OR MIT                      *
@@ -37,6 +37,7 @@
  *   gitlab   : https://gitlab.com/agrumery/agrum                           *
  *                                                                          *
  ****************************************************************************/
+
 #pragma once
 
 
@@ -55,14 +56,19 @@
 #include <agrum/base/multidim/utils/operators/multiDimCompleteProjection.h>
 #include <agrum/base/variables/labelizedVariable.h>
 
+#undef GUM_CURRENT_SUITE
+#undef GUM_CURRENT_MODULE
+#define GUM_CURRENT_SUITE  MultiDimCompleteProjection
+#define GUM_CURRENT_MODULE GUMBASE
+
 namespace gum_tests {
 
-  class GUM_TEST_SUITE(MultiDimCompleteProjection) {
+  struct MultiDimCompleteProjectionTestSuite {
     private:
     // ==========================================================================
     /// initialize randomly a table
     // ==========================================================================
-    void randomInit(gum::MultiDimArray< double >* t) {
+    static void randomInit(gum::MultiDimArray< double >* t) {
       gum::Instantiation i(t);
 
       for (i.setFirst(); !i.end(); ++i)
@@ -72,7 +78,7 @@ namespace gum_tests {
     // ==========================================================================
     /// initialize randomly a table
     // ==========================================================================
-    void randomInitPointer(gum::MultiDimArray< double* >* t) {
+    static void randomInitPointer(gum::MultiDimArray< double* >* t) {
       gum::Instantiation i(t);
 
       for (i.setFirst(); !i.end(); ++i)
@@ -82,7 +88,7 @@ namespace gum_tests {
     // ==========================================================================
     /// initialize randomly a table
     // ==========================================================================
-    void randomInitP(gum::Tensor< double >& t) {
+    static void randomInitP(gum::Tensor< double >& t) {
       gum::Instantiation i(t);
 
       for (i.setFirst(); !i.end(); ++i)
@@ -92,7 +98,7 @@ namespace gum_tests {
     // ==========================================================================
     /// initialize randomly a table
     // ==========================================================================
-    void randomInitPPointer(gum::Tensor< double* >& t) {
+    static void randomInitPPointer(gum::Tensor< double* >& t) {
       gum::Instantiation i(t);
 
       for (i.setFirst(); !i.end(); ++i)
@@ -100,7 +106,7 @@ namespace gum_tests {
     }
 
     template < typename T >
-    void pointerDelete(gum::MultiDimArray< T* >* t) {
+    static void pointerDelete(gum::MultiDimArray< T* >* t) {
       if (t->variablesSequence().size()) {
         gum::Instantiation i(t);
 
@@ -113,7 +119,7 @@ namespace gum_tests {
     }
 
     template < typename T >
-    void pointerDelete(gum::MultiDimImplementation< T* >* t) {
+    static void pointerDelete(gum::MultiDimImplementation< T* >* t) {
       if (t->variablesSequence().size()) {
         gum::Instantiation i(t);
 
@@ -126,7 +132,7 @@ namespace gum_tests {
     }
 
     template < typename T >
-    void pointerDelete(gum::Tensor< T* >* t) {
+    static void pointerDelete(gum::Tensor< T* >* t) {
       if (t->variablesSequence().size()) {
         gum::Instantiation i(t);
 
@@ -138,8 +144,8 @@ namespace gum_tests {
       delete t;
     }
 
-    double local_projmax(const gum::MultiDimArray< double >& table,
-                         gum::Instantiation&                 instantiation) {
+    static double local_projmax(const gum::MultiDimArray< double >& table,
+                                gum::Instantiation&                 instantiation) {
       gum::Instantiation inst(table);
       double             result = table[inst];
       gum::Size          offset = 0, i = 0;
@@ -157,14 +163,15 @@ namespace gum_tests {
       return result;
     }
 
-    double local_projmax(const gum::Tensor< double >& table, gum::Instantiation& instantiation) {
+    static double local_projmax(const gum::Tensor< double >& table,
+                                gum::Instantiation&          instantiation) {
       const gum::MultiDimArray< double >& impl
           = dynamic_cast< const gum::MultiDimArray< double >& >(*(table.content()));
       return local_projmax(impl, instantiation);
     }
 
-    double* local_projmax(const gum::MultiDimArray< double* >& table,
-                          gum::Instantiation&                  instantiation) {
+    static double* local_projmax(const gum::MultiDimArray< double* >& table,
+                                 gum::Instantiation&                  instantiation) {
       gum::Instantiation inst(table);
       double*            result = table[inst];
       gum::Size          offset = 0, i = 0;
@@ -182,13 +189,14 @@ namespace gum_tests {
       return result;
     }
 
-    double* local_projmax(const gum::Tensor< double* >& table, gum::Instantiation& instantiation) {
+    static double* local_projmax(const gum::Tensor< double* >& table,
+                                 gum::Instantiation&           instantiation) {
       const gum::MultiDimArray< double* >& impl
           = dynamic_cast< const gum::MultiDimArray< double* >& >(*(table.content()));
       return local_projmax(impl, instantiation);
     }
 
-    double local_projsum(const gum::MultiDimArray< double >& table) {
+    static double local_projsum(const gum::MultiDimArray< double >& table) {
       gum::Instantiation inst(table);
       double             result = 0;
 
@@ -198,7 +206,7 @@ namespace gum_tests {
       return result;
     }
 
-    bool local_equal(const gum::Instantiation& inst1, const gum::Instantiation& inst2) {
+    static bool local_equal(const gum::Instantiation& inst1, const gum::Instantiation& inst2) {
       const gum::Sequence< const gum::DiscreteVariable* >& vars = inst1.variablesSequence();
 
       for (const auto var: vars)
@@ -208,7 +216,7 @@ namespace gum_tests {
     }
 
     public:
-    GUM_ACTIVE_TEST(_MultiDimArray) {
+    static void test_MultiDimArray() {
       std::vector< gum::LabelizedVariable* > vars(10);
 
       for (gum::Idx i = 0; i < 10; ++i) {
@@ -228,21 +236,21 @@ namespace gum_tests {
       double             t2 = projectMaxMultiDimArray(&t1);
       double             t3 = local_projmax(t1, inst);
 
-      TS_ASSERT_EQUALS(t2, t3)
+      CHECK((t2) == (t3));
 
       gum::Instantiation inst2(t1);
       t2 = projectMaxMultiDimArray(&t1, &inst2);
-      TS_ASSERT(local_equal(inst2, inst))
+      CHECK(local_equal(inst2, inst));
 
       t2 = projectSumMultiDimArray(&t1);
       t3 = local_projsum(t1);
-      TS_ASSERT_EQUALS(t2, t3)
+      CHECK((t2) == (t3));
 
       for (gum::Idx i = 0; i < vars.size(); ++i)
         delete vars[i];
     }
 
-    GUM_ACTIVE_TEST(_MultiDimImplementation) {
+    static void test_MultiDimImplementation() {
       std::vector< gum::LabelizedVariable* > vars(10);
 
       for (gum::Idx i = 0; i < 10; ++i) {
@@ -264,24 +272,24 @@ namespace gum_tests {
       double             t2 = projectMaxMultiDimArray(&t1);
       double             t3 = local_projmax(tt1, inst);
 
-      TS_ASSERT_EQUALS(t2, t3)
+      CHECK((t2) == (t3));
 
       gum::Instantiation inst2(t1);
       t2 = projectMaxMultiDimImplementation(&t1, &inst2);
-      TS_ASSERT(local_equal(inst2, inst))
+      CHECK(local_equal(inst2, inst));
 
       t2 = projectMaxMultiDimImplementation(&t1);
-      TS_ASSERT_EQUALS(t2, t3)
+      CHECK((t2) == (t3));
 
       gum::Instantiation inst3(t1);
       t2 = projectMaxMultiDimImplementation(&t1, &inst3);
-      TS_ASSERT(local_equal(inst3, inst))
+      CHECK(local_equal(inst3, inst));
 
       for (gum::Idx i = 0; i < vars.size(); ++i)
         delete vars[i];
     }
 
-    GUM_ACTIVE_TEST(_MultiDimArrayPointer) {
+    static void test_MultiDimArrayPointer() {
       std::vector< gum::LabelizedVariable* > vars(10);
 
       for (gum::Idx i = 0; i < 10; ++i) {
@@ -301,13 +309,13 @@ namespace gum_tests {
       double*            t2 = projectMaxMultiDimArray4Pointers(t1);
       double*            t3 = local_projmax(*t1, inst);
 
-      TS_ASSERT_EQUALS(*t2, *t3)
-      TS_ASSERT_EQUALS(t2, t3)
+      CHECK((*t2) == (*t3));
+      CHECK((t2) == (t3));
 
       gum::Instantiation inst2(t1);
       t2 = projectMaxMultiDimArray4Pointers(t1, &inst2);
-      TS_ASSERT(local_equal(inst2, inst))
-      TS_ASSERT_EQUALS(t2, t3)
+      CHECK(local_equal(inst2, inst));
+      CHECK((t2) == (t3));
 
       pointerDelete(t1);
 
@@ -315,7 +323,7 @@ namespace gum_tests {
         delete vars[i];
     }
 
-    GUM_ACTIVE_TEST(_MultiDimImplementationPointer) {
+    static void test_MultiDimImplementationPointer() {
       std::vector< gum::LabelizedVariable* > vars(10);
 
       for (gum::Idx i = 0; i < 10; ++i) {
@@ -336,13 +344,13 @@ namespace gum_tests {
       double*            t2 = projectMaxMultiDimArray4Pointers(t1);
       double*            t3 = local_projmax(*tt1, inst);
 
-      TS_ASSERT_EQUALS(*t2, *t3)
-      TS_ASSERT_EQUALS(t2, t3)
+      CHECK((*t2) == (*t3));
+      CHECK((t2) == (t3));
 
       gum::Instantiation inst2(*t1);
       t2 = projectMaxMultiDimArray4Pointers(t1, &inst2);
-      TS_ASSERT(local_equal(inst2, inst))
-      TS_ASSERT_EQUALS(t2, t3)
+      CHECK(local_equal(inst2, inst));
+      CHECK((t2) == (t3));
 
       pointerDelete(tt1);
 
@@ -350,7 +358,7 @@ namespace gum_tests {
         delete vars[i];
     }
 
-    GUM_ACTIVE_TEST(_projections_init) {
+    static void test_projections_init() {
       gum::completeProjections4MultiDimInit< double >();
       gum::completeProjections4MultiDimInit< double >();
       gum::completeProjections4MultiDimInit< double >();
@@ -373,18 +381,18 @@ namespace gum_tests {
       gum::Instantiation inst(t1);
       double             t2 = projectMax(t1);
       double             t3 = local_projmax(t1, inst);
-      TS_ASSERT_EQUALS(t2, t3)
+      CHECK((t2) == (t3));
 
       gum::Instantiation inst2(t1);
       t2 = projectMax(t1, &inst2);
-      TS_ASSERT_EQUALS(t2, t3)
-      TS_ASSERT(local_equal(inst2, inst))
+      CHECK((t2) == (t3));
+      CHECK(local_equal(inst2, inst));
 
       for (gum::Idx i = 0; i < vars.size(); ++i)
         delete vars[i];
     }
 
-    GUM_ACTIVE_TEST(_tensors) {
+    static void test_tensors() {
       std::vector< gum::LabelizedVariable* > vars(10);
 
       for (gum::Idx i = 0; i < 10; ++i) {
@@ -403,13 +411,13 @@ namespace gum_tests {
       gum::Instantiation inst(t1);
       double             t2 = t1.max();
       double             t3 = local_projmax(t1, inst);
-      TS_ASSERT_EQUALS(t2, t3)
+      CHECK((t2) == (t3));
 
       for (gum::Idx i = 0; i < vars.size(); ++i)
         delete vars[i];
     }
 
-    GUM_ACTIVE_TEST(_Pointer_init) {
+    static void test_Pointer_init() {
       gum::pointerCompleteProjections4MultiDimInit< double >();
       gum::pointerCompleteProjections4MultiDimInit< double >();
       gum::pointerCompleteProjections4MultiDimInit< double >();
@@ -433,13 +441,13 @@ namespace gum_tests {
       double*            t2 = projectMax(*t1);
       double*            t3 = local_projmax(*t1, inst);
 
-      TS_ASSERT_EQUALS(*t2, *t3)
-      TS_ASSERT_EQUALS(t2, t3)
+      CHECK((*t2) == (*t3));
+      CHECK((t2) == (t3));
 
       gum::Instantiation inst2(t1);
       t2 = projectMax(*t1, &inst2);
-      TS_ASSERT(local_equal(inst2, inst))
-      TS_ASSERT_EQUALS(t2, t3)
+      CHECK(local_equal(inst2, inst));
+      CHECK((t2) == (t3));
 
       pointerDelete(t1);
 
@@ -451,7 +459,7 @@ namespace gum_tests {
       return table.max();
     }
 
-    GUM_ACTIVE_TEST(_MultiDimCompleteProjection) {
+    static void test_MultiDimCompleteProjection() {
       std::vector< gum::LabelizedVariable* > vars(10);
       for (gum::Idx i = 0; i < 10; ++i) {
         std::stringstream str;
@@ -471,19 +479,28 @@ namespace gum_tests {
       double             t2 = Proj.project(t1);
       double             t3 = local_projmax(t1, inst);
 
-      TS_ASSERT_EQUALS(t2, t3)
+      CHECK((t2) == (t3));
 
       gum::Instantiation inst2(t1);
       t2 = Proj.project(t1, &inst2);
-      TS_ASSERT_EQUALS(t2, t3)
+      CHECK((t2) == (t3));
 
       Proj.setProjectFunction(myMax);
       t2 = Proj.project(t1);
-      TS_ASSERT_EQUALS(t2, t3)
+      CHECK((t2) == (t3));
 
       for (gum::Idx i = 0; i < vars.size(); ++i)
         delete vars[i];
     }
   };
+
+  GUM_TEST_ACTIF(_MultiDimArray)
+  GUM_TEST_ACTIF(_MultiDimImplementation)
+  GUM_TEST_ACTIF(_MultiDimArrayPointer)
+  GUM_TEST_ACTIF(_MultiDimImplementationPointer)
+  GUM_TEST_ACTIF(_projections_init)
+  GUM_TEST_ACTIF(_tensors)
+  GUM_TEST_ACTIF(_Pointer_init)
+  GUM_TEST_ACTIF(_MultiDimCompleteProjection)
 
 } /* namespace gum_tests */

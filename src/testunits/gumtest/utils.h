@@ -1,7 +1,7 @@
 /****************************************************************************
  *   This file is part of the aGrUM/pyAgrum library.                        *
  *                                                                          *
- *   Copyright (c) 2005-2025 by                                             *
+ *   Copyright (c) 2005-2026 by                                             *
  *       - Pierre-Henri WUILLEMIN(_at_LIP6)                                 *
  *       - Christophe GONZALES(_at_AMU)                                     *
  *                                                                          *
@@ -27,7 +27,7 @@
  *                                                                          *
  *   See LICENCES for more details.                                         *
  *                                                                          *
- *   SPDX-FileCopyrightText: Copyright 2005-2025                            *
+ *   SPDX-FileCopyrightText: Copyright 2005-2026                            *
  *       - Pierre-Henri WUILLEMIN(_at_LIP6)                                 *
  *       - Christophe GONZALES(_at_AMU)                                     *
  *   SPDX-License-Identifier: LGPL-3.0-or-later OR MIT                      *
@@ -37,6 +37,7 @@
  *   gitlab   : https://gitlab.com/agrumery/agrum                           *
  *                                                                          *
  ****************************************************************************/
+
 
 #ifndef TESTSUITE_UTILS_H
 #define TESTSUITE_UTILS_H
@@ -53,15 +54,15 @@
 #define FASTVARDBL gum::fastVariable< double >
 
 namespace gum_tests {
-  const std::string waiter[]{"[*  ]", "[ * ]", "[  *]", "[ * ]"};
-  const std::string backst = "\b\b\b\b\b";
+  inline const std::string waiter[]{"[*  ]", "[ * ]", "[  *]", "[ * ]"};
+  inline const std::string backst = "\b\b\b\b\b";
 
-  void begin_test_waiting() {
+  inline void begin_test_waiting() {
     std::cout << waiter[0];
     std::flush(std::cout);
   }
 
-  void test_waiting(int s = -1) {
+  inline void test_waiting(int s = -1) {
     static int ss = 0;
 
     if (s == -1) s = ss++;
@@ -69,12 +70,12 @@ namespace gum_tests {
     std::flush(std::cout);
   }
 
-  void end_test_waiting() {
+  inline void end_test_waiting() {
     std::cout << backst;
     std::flush(std::cout);
   }
 
-  void str2file(const std::string& filename, const std::string& message) {
+  inline void str2file(const std::string& filename, const std::string& message) {
     std::ofstream outFile;
     outFile.open(filename);
     outFile << message << std::endl;

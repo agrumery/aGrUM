@@ -1,4 +1,5 @@
 #!/bin/bash
 # copying configuration for jupyter notebook
 mkdir ~/.jupyter
-cp binder/jupyter_notebook_config.py ~/.jupyter/
+cp binder/jupyter_notebook_config.py ~/.jupyter/ipython_notebook_config.py
+#cp binder/jupyter_notebook_config.py ~/.jupyter/jupyter_notebook_config.py

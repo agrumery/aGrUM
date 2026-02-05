@@ -1,7 +1,7 @@
 /****************************************************************************
  *   This file is part of the aGrUM/pyAgrum library.                        *
  *                                                                          *
- *   Copyright (c) 2005-2025 by                                             *
+ *   Copyright (c) 2005-2026 by                                             *
  *       - Pierre-Henri WUILLEMIN(_at_LIP6)                                 *
  *       - Christophe GONZALES(_at_AMU)                                     *
  *                                                                          *
@@ -27,7 +27,7 @@
  *                                                                          *
  *   See LICENCES for more details.                                         *
  *                                                                          *
- *   SPDX-FileCopyrightText: Copyright 2005-2025                            *
+ *   SPDX-FileCopyrightText: Copyright 2005-2026                            *
  *       - Pierre-Henri WUILLEMIN(_at_LIP6)                                 *
  *       - Christophe GONZALES(_at_AMU)                                     *
  *   SPDX-License-Identifier: LGPL-3.0-or-later OR MIT                      *
@@ -37,6 +37,7 @@
  *   gitlab   : https://gitlab.com/agrumery/agrum                           *
  *                                                                          *
  ****************************************************************************/
+
 #pragma once
 
 
@@ -52,6 +53,11 @@
 #include <agrum/BN/BayesNet.h>
 #include <agrum/CN/credalNet.h>
 #include <agrum/CN/inference/CNLoopyPropagation.h>
+
+#undef GUM_CURRENT_SUITE
+#undef GUM_CURRENT_MODULE
+#define GUM_CURRENT_SUITE  CNLooopyPropagation
+#define GUM_CURRENT_MODULE CN
 
 /**
  * @file
@@ -73,23 +79,22 @@ namespace gum_tests {
     explicit L2UListener(gum::ApproximationScheme& aS) :
         gum::ApproximationSchemeListener(aS), __nbr(0), __msg("") {};
 
-    void whenProgress(const void* buffer, const gum::Size a, const double b, const double c) {
+    void whenProgress(const void*     buffer,
+                      const gum::Size a,
+                      const double    b,
+                      const double    c) override {
       __nbr++;
     }
 
-    void whenStop(const void* buffer, const std::string& s) { __msg = s; }
+    void whenStop(const void* buffer, const std::string& s) override { __msg = s; }
 
-    int nbr() { return __nbr; }
+    int nbr() const { return __nbr; }
 
-    std::string& msg() { return __msg; }
+    std::string msg() const { return __msg; }
   };   // end of : class l2uListener
 
   ////////////////////////////////////////////////////////////////
-  class GUM_TEST_SUITE(CNLooopyPropagation) {
-    private:
-
-    protected:
-
+  struct CNLooopyPropagationTestSuite {
     public:
     gum::credal::CredalNet< double >* cn;
 
@@ -134,7 +139,7 @@ namespace gum_tests {
     void clearCNet() { delete cn; }
 
     // not dynamic (2U network) - with evidence
-    GUM_ACTIVE_TEST(L2UInference) {
+    void testL2UInference() {
       initCNet();
 
       gum::credal::CNLoopyPropagation< double > lp = gum::credal::CNLoopyPropagation< double >(*cn);
@@ -142,11 +147,11 @@ namespace gum_tests {
       // evidence from file
       try {
         lp.insertEvidenceFile(GET_RESSOURCES_PATH("cn/L2U.evi"));
-      } catch (gum::Exception&) { TS_ASSERT(false) }
+      } catch (gum::Exception&) { CHECK(false); }
 
       try {
         lp.eraseAllEvidence();
-      } catch (gum::Exception&) { TS_ASSERT(false) }
+      } catch (gum::Exception&) { CHECK(false); }
 
       // evidence from map
       std::map< std::string, std::vector< double > > eviMap;
@@ -159,11 +164,11 @@ namespace gum_tests {
 
       try {
         lp.insertEvidence(eviMap);
-      } catch (gum::Exception&) { TS_ASSERT(false) }
+      } catch (gum::Exception&) { CHECK(false); }
 
       try {
         lp.eraseAllEvidence();
-      } catch (gum::Exception&) { TS_ASSERT(false) }
+      } catch (gum::Exception&) { CHECK(false); }
 
       std::map< std::string, std::vector< double > > modals;
       std::vector< double >                          binaryModal(2, 0);
@@ -174,17 +179,17 @@ namespace gum_tests {
       try {
         for (const auto node: cn->current_bn().nodes())
           modals[cn->current_bn().variable(node).name()] = binaryModal;
-      } catch (gum::Exception&) { TS_ASSERT(false) }
+      } catch (gum::Exception&) { CHECK(false); }
 
       /*try {
         lp.insertModals( modals );
       } catch ( gum::Exception & ) {
-        TS_ASSERT ( false )
+        CHECK( false );
       }*/
 
       try {
         lp.makeInference();
-      } catch (gum::Exception&) { TS_ASSERT(false) }
+      } catch (gum::Exception&) { CHECK(false); }
 
       try {
         for (const auto node: cn->current_bn().nodes()) {
@@ -194,17 +199,17 @@ namespace gum_tests {
           // double e_inf = lp.expectationMin ( node_idIt );
           // double e_sup = lp.expectationMax ( node_idIt );
         }
-      } catch (gum::Exception&) { TS_ASSERT(false) }
+      } catch (gum::Exception&) { CHECK(false); }
 
       try {
         lp.eraseAllEvidence();
-      } catch (gum::Exception&) { TS_ASSERT(false) }
+      } catch (gum::Exception&) { CHECK(false); }
 
       clearCNet();
     }   // end of : testL2UInference (2U network)
 
     // dynamic (dynaCheese) - strong indep
-    GUM_ACTIVE_TEST(L2UInferenceD) {
+    void testL2UInferenceD() {
       initDCNet();
 
       gum::credal::CNLoopyPropagation< double > lp = gum::credal::CNLoopyPropagation< double >(*cn);
@@ -216,18 +221,18 @@ namespace gum_tests {
       // evidence from file
       try {
         lp.insertEvidenceFile(GET_RESSOURCES_PATH("cn/dbn_bin_evi.evi"));
-      } catch (gum::Exception&) { TS_ASSERT(false) }
+      } catch (gum::Exception&) { CHECK(false); }
 
       // modalities from file
       /*try {
         lp.insertModalsFile( GET_RESSOURCES_PATH ( modalities.modal ) );
       } catch ( gum::Exception & ) {
-        TS_ASSERT ( false )
+        CHECK( false );
       }*/
 
       try {
         lp.makeInference();
-      } catch (gum::Exception&) { TS_ASSERT(false) }
+      } catch (gum::Exception&) { CHECK(false); }
 
       try {
         for (const auto node: cn->current_bn().nodes()) {
@@ -236,13 +241,13 @@ namespace gum_tests {
           // double e_inf = lp.expectationMin ( node_idIt );
           // double e_sup = lp.expectationMax ( node_idIt );
         }
-      } catch (gum::Exception&) { TS_ASSERT(false) }
+      } catch (gum::Exception&) { CHECK(false); }
 
       /*
       try {
         lp.dynamicExpectations();
       } catch ( gum::Exception & ) {
-        TS_ASSERT ( false )
+        CHECK( false );
       }*/
       /*
               try {
@@ -255,45 +260,45 @@ namespace gum_tests {
                 //std::vector< double >  etemp_sup ( lp.dynamicExpMax ( "temp" )
          );
               } catch ( gum::Exception & ) {
-                TS_ASSERT ( false )
+                CHECK( false );
               }*/
 
       try {
         lp.eraseAllEvidence();
-      } catch (gum::Exception&) { TS_ASSERT(false) }
+      } catch (gum::Exception&) { CHECK(false); }
 
       clearCNet();
     }   // end of : testL2UInferenceD
 
     // with dynamic network
-    GUM_ACTIVE_TEST(L2UListener) {
+    void testL2UListener() {
       initDCNet();
       gum::credal::CNLoopyPropagation< double > lp = gum::credal::CNLoopyPropagation< double >(*cn);
 
       // evidence from file
       try {
         lp.insertEvidenceFile(GET_RESSOURCES_PATH("cn/dbn_bin_evi.evi"));
-      } catch (gum::Exception&) { TS_ASSERT(false) }
+      } catch (gum::Exception&) { CHECK(false); }
 
       // lp.inferenceType(gum::CNLoopyPropagation<double>::InferenceType::randomOrder);
       L2UListener mcl(lp);
 
       try {
         lp.makeInference();
-      } catch (gum::Exception&) { TS_ASSERT(false) }
+      } catch (gum::Exception&) { CHECK(false); }
 
-      TS_ASSERT_EQUALS(mcl.nbr() * lp.periodSize(), lp.nbrIterations())
-      TS_ASSERT_DIFFERS(mcl.msg(), std::string(""))
+      CHECK((mcl.nbr() * lp.periodSize()) == (lp.nbrIterations()));
+      CHECK((mcl.msg()) != (std::string("")));
 
       try {
         lp.eraseAllEvidence();
-      } catch (gum::Exception&) { TS_ASSERT(false) }
+      } catch (gum::Exception&) { CHECK(false); }
 
       clearCNet();
     }   // end of : testL2UListener
 
     // not dynamic (2U network) - with evidence
-    GUM_ACTIVE_TEST(L2UInferenceFromBug) {
+    void testL2UInferenceFromBug() {
       initCNet();
 
       gum::credal::CNLoopyPropagation< double > lp = gum::credal::CNLoopyPropagation< double >(*cn);
@@ -302,27 +307,32 @@ namespace gum_tests {
       lp.eraseAllEvidence();
       try {
         lp.insertEvidenceFile(GET_RESSOURCES_PATH("cn/L2U.evi"));
-      } catch (gum::Exception&) { TS_ASSERT(false) }
+      } catch (gum::Exception&) { CHECK(false); }
 
       try {
         lp.makeInference();
-      } catch (gum::Exception&) { TS_ASSERT(false) }
+      } catch (gum::Exception&) { CHECK(false); }
 
       try {
         for (const auto node: cn->current_bn().nodes()) {
           auto inf(lp.marginalMin(node));
           auto sup(lp.marginalMax(node));
         }
-      } catch (gum::Exception&) { TS_ASSERT(false) }
+      } catch (gum::Exception&) { CHECK(false); }
 
       try {
         lp.eraseAllEvidence();
-      } catch (gum::Exception&) { TS_ASSERT(false) }
+      } catch (gum::Exception&) { CHECK(false); }
 
       clearCNet();
     }
 
 
   };   // end of : class L2UInferenceTestSuite
+
+  GUM_TEST_ACTIF(L2UInference)
+  GUM_TEST_ACTIF(L2UInferenceD)
+  GUM_TEST_ACTIF(L2UListener)
+  GUM_TEST_ACTIF(L2UInferenceFromBug)
 
 }   // namespace gum_tests

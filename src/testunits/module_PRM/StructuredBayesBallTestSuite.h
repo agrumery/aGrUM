@@ -1,7 +1,7 @@
 /****************************************************************************
  *   This file is part of the aGrUM/pyAgrum library.                        *
  *                                                                          *
- *   Copyright (c) 2005-2025 by                                             *
+ *   Copyright (c) 2005-2026 by                                             *
  *       - Pierre-Henri WUILLEMIN(_at_LIP6)                                 *
  *       - Christophe GONZALES(_at_AMU)                                     *
  *                                                                          *
@@ -27,7 +27,7 @@
  *                                                                          *
  *   See LICENCES for more details.                                         *
  *                                                                          *
- *   SPDX-FileCopyrightText: Copyright 2005-2025                            *
+ *   SPDX-FileCopyrightText: Copyright 2005-2026                            *
  *       - Pierre-Henri WUILLEMIN(_at_LIP6)                                 *
  *       - Christophe GONZALES(_at_AMU)                                     *
  *   SPDX-License-Identifier: LGPL-3.0-or-later OR MIT                      *
@@ -37,6 +37,7 @@
  *   gitlab   : https://gitlab.com/agrumery/agrum                           *
  *                                                                          *
  ****************************************************************************/
+
 #pragma once
 
 
@@ -48,8 +49,13 @@
 #include <agrum/PRM/inference/SVE.h>
 #include <agrum/PRM/o3prm/O3prmReader.h>
 
+#undef GUM_CURRENT_SUITE
+#undef GUM_CURRENT_MODULE
+#define GUM_CURRENT_SUITE  StructuredBayesBall
+#define GUM_CURRENT_MODULE PRM
+
 namespace gum_tests {
-  class GUM_TEST_SUITE(StructuredBayesBall) {
+  struct StructuredBayesBallTestSuite {
     gum::prm::PRM< double >*          prm;
     gum::prm::PRMInference< double >* prm_inf;
     gum::prm::PRMSystem< double >*    sys;
@@ -58,7 +64,17 @@ namespace gum_tests {
     gum::prm::PRMSystem< double >*    small_sys;
 
     public:
-    void setUp() {
+    static void testConstructors() {
+      gum::prm::StructuredBayesBall< double >* bb = 0;
+      GUM_CHECK_ASSERT_THROWS_NOTHING(bb = new gum::prm::StructuredBayesBall< double >(*prm_inf));
+      GUM_CHECK_ASSERT_THROWS_NOTHING(delete bb);
+      GUM_CHECK_ASSERT_THROWS_NOTHING(bb = new gum::prm::StructuredBayesBall< double >(*small_inf));
+      GUM_CHECK_ASSERT_THROWS_NOTHING(delete bb);
+    }
+
+    /// Checking that when a root is queried and there is no evidence, the
+    /// requisite nodes set contains only the root node.
+    StructuredBayesBallTestSuite() {
       {
         gum::prm::o3prm::O3prmReader< double > reader;
         reader.readFile(GET_RESSOURCES_PATH("o3prm/inference.o3prm"));
@@ -75,78 +91,72 @@ namespace gum_tests {
       }
     }
 
-    void tearDown() {
+    ~StructuredBayesBallTestSuite() {
       delete prm;
       delete prm_inf;
       delete small;
       delete small_inf;
     }
 
-    GUM_ACTIVE_TEST(Constructors) {
+    static void testRootsNoObs() {
       gum::prm::StructuredBayesBall< double >* bb = 0;
-      TS_GUM_ASSERT_THROWS_NOTHING(bb = new gum::prm::StructuredBayesBall< double >(*prm_inf))
-      TS_GUM_ASSERT_THROWS_NOTHING(delete bb)
-      TS_GUM_ASSERT_THROWS_NOTHING(bb = new gum::prm::StructuredBayesBall< double >(*small_inf))
-      TS_GUM_ASSERT_THROWS_NOTHING(delete bb)
-    }
-
-    /// Checking that when a root is queried and there is no evidence, the
-    /// requisite nodes set contains only the root node.
-    GUM_ACTIVE_TEST(RootsNoObs) {
-      gum::prm::StructuredBayesBall< double >* bb = 0;
-      TS_GUM_ASSERT_THROWS_NOTHING(bb = new gum::prm::StructuredBayesBall< double >(*prm_inf))
+      GUM_CHECK_ASSERT_THROWS_NOTHING(bb = new gum::prm::StructuredBayesBall< double >(*prm_inf));
 
       for (auto i = sys->begin(); i != sys->end(); ++i) {
         for (auto a = (*(i.val())).begin(); a != (*(i.val())).end(); ++a) {
           if ((*(i.val())).type().containerDag().parents((*(a.val())).id()).empty()) {
-            TS_GUM_ASSERT_THROWS_NOTHING(bb->compute(i.val(), (*(a.val())).id()))
+            GUM_CHECK_ASSERT_THROWS_NOTHING(bb->compute(i.val(), (*(a.val())).id()));
 
             for (auto j = sys->begin(); j != sys->end(); ++j) {
               if ((j.val()) != (i.val())) {
-                TS_ASSERT(!bb->exists(j.val()))
+                CHECK(!bb->exists(j.val()));
               } else if (bb->exists(j.val())) {
-                TS_ASSERT_EQUALS(bb->requisiteNodes(j.val()).size(), static_cast< gum::Size >(1))
-                TS_ASSERT(bb->requisiteNodes(j.val()).contains((*(a.val())).id()))
+                CHECK((bb->requisiteNodes(j.val()).size()) == (static_cast< gum::Size >(1)));
+                CHECK(bb->requisiteNodes(j.val()).contains((*(a.val())).id()));
               } else {
-                TS_ASSERT(false)
+                CHECK(false);
               }
             }
           }
         }
       }
 
-      TS_GUM_ASSERT_THROWS_NOTHING(delete bb)
+      GUM_CHECK_ASSERT_THROWS_NOTHING(delete bb);
     }
 
     /// Checking that when a root is queried and there is no evidence, the
     /// requisite nodes set contains only the root node.
-    GUM_ACTIVE_TEST(RootsNoObsSmall) {
+    static void testRootsNoObsSmall() {
       gum::prm::StructuredBayesBall< double >* bb = 0;
-      TS_GUM_ASSERT_THROWS_NOTHING(bb = new gum::prm::StructuredBayesBall< double >(*small_inf))
+      GUM_CHECK_ASSERT_THROWS_NOTHING(bb = new gum::prm::StructuredBayesBall< double >(*small_inf));
 
       for (auto i = small_sys->begin(); i != small_sys->end(); ++i) {
         for (auto a = (*(i.val())).begin(); a != (*(i.val())).end(); ++a) {
           if ((*(i.val())).type().containerDag().parents((*(a.val())).id()).empty()) {
-            TS_GUM_ASSERT_THROWS_NOTHING(bb->compute(i.val(), (*(a.val())).id()))
+            GUM_CHECK_ASSERT_THROWS_NOTHING(bb->compute(i.val(), (*(a.val())).id()));
 
             for (gum::prm::PRMSystem< double >::iterator j = small_sys->begin();
                  j != small_sys->end();
                  ++j) {
               if ((j.val()) != (i.val())) {
-                TS_ASSERT(!bb->exists(j.val()))
+                CHECK(!bb->exists(j.val()));
               } else if (bb->exists(j.val())) {
-                TS_ASSERT_EQUALS(bb->requisiteNodes(j.val()).size(), static_cast< gum::Size >(1))
-                TS_ASSERT(bb->requisiteNodes(j.val()).contains((*(a.val())).id()))
+                CHECK((bb->requisiteNodes(j.val()).size()) == (static_cast< gum::Size >(1)));
+                CHECK(bb->requisiteNodes(j.val()).contains((*(a.val())).id()));
               } else {
-                TS_ASSERT(false)
+                CHECK(false);
               }
             }
           }
         }
       }
 
-      TS_GUM_ASSERT_THROWS_NOTHING(delete bb)
+      GUM_CHECK_ASSERT_THROWS_NOTHING(delete bb);
     }
   };
+
+  GUM_TEST_ACTIF(Constructors)
+  GUM_TEST_ACTIF(RootsNoObs)
+  GUM_TEST_ACTIF(RootsNoObsSmall)
 
 }   // namespace gum_tests

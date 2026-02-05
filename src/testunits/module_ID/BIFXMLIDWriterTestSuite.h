@@ -1,7 +1,7 @@
 /****************************************************************************
  *   This file is part of the aGrUM/pyAgrum library.                        *
  *                                                                          *
- *   Copyright (c) 2005-2025 by                                             *
+ *   Copyright (c) 2005-2026 by                                             *
  *       - Pierre-Henri WUILLEMIN(_at_LIP6)                                 *
  *       - Christophe GONZALES(_at_AMU)                                     *
  *                                                                          *
@@ -27,7 +27,7 @@
  *                                                                          *
  *   See LICENCES for more details.                                         *
  *                                                                          *
- *   SPDX-FileCopyrightText: Copyright 2005-2025                            *
+ *   SPDX-FileCopyrightText: Copyright 2005-2026                            *
  *       - Pierre-Henri WUILLEMIN(_at_LIP6)                                 *
  *       - Christophe GONZALES(_at_AMU)                                     *
  *   SPDX-License-Identifier: LGPL-3.0-or-later OR MIT                      *
@@ -37,6 +37,7 @@
  *   gitlab   : https://gitlab.com/agrumery/agrum                           *
  *                                                                          *
  ****************************************************************************/
+
 #pragma once
 
 
@@ -51,6 +52,11 @@
 #include <agrum/ID/influenceDiagram.h>
 #include <agrum/ID/io/BIFXML/BIFXMLIDReader.h>
 #include <agrum/ID/io/BIFXML/BIFXMLIDWriter.h>
+
+#undef GUM_CURRENT_SUITE
+#undef GUM_CURRENT_MODULE
+#define GUM_CURRENT_SUITE  BIFXMLIDWriter
+#define GUM_CURRENT_MODULE ID
 
 // The graph used for the tests:
 //           D1
@@ -68,7 +74,7 @@
 //          U2
 
 namespace gum_tests {
-  class GUM_TEST_SUITE(BIFXMLIDWriter) {
+  struct BIFXMLIDWriterTestSuite {
     private:
     void fillTopo(gum::InfluenceDiagram< double >& infDiag, gum::List< gum::NodeId >& idList) {
       try {
@@ -127,59 +133,74 @@ namespace gum_tests {
     gum::LabelizedVariable *         chanceVar1, *chanceVar2, *chanceVar3, *chanceVar4, *chanceVar5;
     gum::LabelizedVariable *         utilityVar1, *utilityVar2;
 
-    void setUp() {
-      id        = new gum::InfluenceDiagram< double >();
+    BIFXMLIDWriterTestSuite() {
+      id = new gum::InfluenceDiagram< double >();
+
       idListPtr = new gum::List< gum::NodeId >();
 
       decisionVar1 = new gum::LabelizedVariable("decisionVar1", "D1", 2);
       decisionVar2 = new gum::LabelizedVariable("decisionVar2", "D2", 2);
       decisionVar3 = new gum::LabelizedVariable("decisionVar3", "D3", 2);
       decisionVar4 = new gum::LabelizedVariable("decisionVar4", "D4", 2);
-      chanceVar1   = new gum::LabelizedVariable("chanceVar1", "C1", 2);
-      chanceVar2   = new gum::LabelizedVariable("chanceVar2", "C2", 2);
-      chanceVar3   = new gum::LabelizedVariable("chanceVar3", "C3", 2);
-      chanceVar4   = new gum::LabelizedVariable("chanceVar4", "C4", 2);
-      chanceVar5   = new gum::LabelizedVariable("chanceVar5", "C5", 2);
-      utilityVar1  = new gum::LabelizedVariable("utilityVar1", "U1", 1);
-      utilityVar2  = new gum::LabelizedVariable("utilityVar2", "U2", 1);
+
+      chanceVar1 = new gum::LabelizedVariable("chanceVar1", "C1", 2);
+      chanceVar2 = new gum::LabelizedVariable("chanceVar2", "C2", 2);
+      chanceVar3 = new gum::LabelizedVariable("chanceVar3", "C3", 2);
+      chanceVar4 = new gum::LabelizedVariable("chanceVar4", "C4", 2);
+      chanceVar5 = new gum::LabelizedVariable("chanceVar5", "C5", 2);
+
+      utilityVar1 = new gum::LabelizedVariable("utilityVar1", "U1", 1);
+      utilityVar2 = new gum::LabelizedVariable("utilityVar2", "U2", 1);
 
       fill(*id, *idListPtr);
     }
 
-    void tearDown() {
+    ~BIFXMLIDWriterTestSuite() {
       delete id;
+
       delete idListPtr;
+
       delete decisionVar1;
+
       delete decisionVar2;
+
       delete decisionVar3;
+
       delete decisionVar4;
+
       delete chanceVar1;
+
       delete chanceVar2;
+
       delete chanceVar3;
+
       delete chanceVar4;
+
       delete chanceVar5;
+
       delete utilityVar1;
+
       delete utilityVar2;
     }
 
-    GUM_ACTIVE_TEST(Constuctor) {
+    static void testConstuctor() {
       gum::BIFXMLIDWriter< double >* writer = nullptr;
-      TS_GUM_ASSERT_THROWS_NOTHING(writer = new gum::BIFXMLIDWriter< double >())
+      GUM_CHECK_ASSERT_THROWS_NOTHING(writer = new gum::BIFXMLIDWriter< double >());
       delete writer;
     }
 
-    GUM_ACTIVE_TEST(Writer_ostream) {
+    void testWriter_ostream() const {
       gum::BIFXMLIDWriter< double > writer;
       std::stringstream             s;
 
       // Uncomment this to check the ouput
-      TS_GUM_ASSERT_THROWS_NOTHING(writer.write(s /*cerr*/, *id))
+      GUM_CHECK_ASSERT_THROWS_NOTHING(writer.write(s /*cerr*/, *id));
     }
 
-    GUM_ACTIVE_TEST(Writer_file) {
+    void testWriter_file() const {
       gum::BIFXMLIDWriter< double > writer;
       std::string                   file = GET_RESSOURCES_PATH("outputs/IDBIFXMLIO_file.xml");
-      TS_GUM_ASSERT_THROWS_NOTHING(writer.write(file, *id))
+      GUM_CHECK_ASSERT_THROWS_NOTHING(writer.write(file, *id));
 
       // For comparison with what readers will return
       std::string   dotfile = GET_RESSOURCES_PATH("outputs/IDToDotWriter.dot");
@@ -194,7 +215,7 @@ namespace gum_tests {
       if (output.fail()) { GUM_ERROR(gum::IOError, "Writing in the ostream failed.") }
     }
 
-    GUM_ACTIVE_TEST(GenerationReadWrite) {
+    static void testGenerationReadWrite() {
       gum::InfluenceDiagramGenerator< double > gen;
 
       for (int i = 0; i < 5; i++) {
@@ -213,13 +234,13 @@ namespace gum_tests {
             const std::string&    name = net->variable(n).name();
             gum::Tensor< double > p(net->cpt(name));
             p.fillWith(net2.cpt(name));
-            if (net->cpt(name) != p) { TS_ASSERT(false) }
+            if (net->cpt(name) != p) { CHECK(false); }
           }
           if (net->isUtilityNode(n)) {
             const std::string&    name = net->variable(n).name();
             gum::Tensor< double > p(net->utility(name));
             p.fillWith(net2.utility(name));
-            if (net->utility(name) != p) { TS_ASSERT(false) }
+            if (net->utility(name) != p) { CHECK(false); }
           }
         }
 
@@ -227,7 +248,7 @@ namespace gum_tests {
       }
     }
 
-    GUM_ACTIVE_TEST(GenerationReadWrite2) {
+    static void testGenerationReadWrite2() {
       auto net = gum::InfluenceDiagram< double >::fastPrototype(
           "A[5]->B+[0,10,5]->C{0|1|20|300}->D{0.5|1.99|2|3.14}");
 
@@ -241,12 +262,18 @@ namespace gum_tests {
 
       for (const auto n: net.nodes()) {
         const std::string& name = net.variable(n).name();
-        TS_ASSERT_EQUALS(net.variable(name).toFast(), net2.variable(name).toFast());
-        if (net.isChanceNode(n)) { TS_GUM_TENSOR_ALMOST_EQUALS(net.cpt(name), net2.cpt(name)) }
+        CHECK((net.variable(name).toFast()) == (net2.variable(name).toFast()));
+        if (net.isChanceNode(n)) { GUM_CHECK_TENSOR_ALMOST_EQUALS(net.cpt(name), net2.cpt(name)); }
         if (net.isUtilityNode(n)) {
-          TS_GUM_TENSOR_ALMOST_EQUALS(net.utility(name), net2.utility(name))
+          GUM_CHECK_TENSOR_ALMOST_EQUALS(net.utility(name), net2.utility(name));
         }
       }
     }
   };
+
+  GUM_TEST_ACTIF(Constuctor)
+  GUM_TEST_ACTIF(Writer_ostream)
+  GUM_TEST_ACTIF(Writer_file)
+  GUM_TEST_ACTIF(GenerationReadWrite)
+  GUM_TEST_ACTIF(GenerationReadWrite2)
 }   // namespace gum_tests

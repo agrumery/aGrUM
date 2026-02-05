@@ -1,7 +1,7 @@
 /****************************************************************************
  *   This file is part of the aGrUM/pyAgrum library.                        *
  *                                                                          *
- *   Copyright (c) 2005-2025 by                                             *
+ *   Copyright (c) 2005-2026 by                                             *
  *       - Pierre-Henri WUILLEMIN(_at_LIP6)                                 *
  *       - Christophe GONZALES(_at_AMU)                                     *
  *                                                                          *
@@ -27,7 +27,7 @@
  *                                                                          *
  *   See LICENCES for more details.                                         *
  *                                                                          *
- *   SPDX-FileCopyrightText: Copyright 2005-2025                            *
+ *   SPDX-FileCopyrightText: Copyright 2005-2026                            *
  *       - Pierre-Henri WUILLEMIN(_at_LIP6)                                 *
  *       - Christophe GONZALES(_at_AMU)                                     *
  *   SPDX-License-Identifier: LGPL-3.0-or-later OR MIT                      *
@@ -37,6 +37,7 @@
  *   gitlab   : https://gitlab.com/agrumery/agrum                           *
  *                                                                          *
  ****************************************************************************/
+
 #pragma once
 
 
@@ -53,6 +54,11 @@
 #include <agrum/BN/BayesNet.h>
 #include <agrum/BN/io/BIF/BIFReader.h>
 
+#undef GUM_CURRENT_SUITE
+#undef GUM_CURRENT_MODULE
+#define GUM_CURRENT_SUITE  BNdistance
+#define GUM_CURRENT_MODULE BN
+
 // The graph used for the tests:
 //          1   2_          1 -> 3
 //         / \ / /          1 -> 4
@@ -63,9 +69,9 @@
 
 namespace gum_tests {
 
-  class GUM_TEST_SUITE(BNdistance) {
+  struct BNdistanceTestSuite {
     public:
-    GUM_ACTIVE_TEST(Constructor) {
+    static void testConstructor() {
       gum::BayesNet< double > net1;
       {
         gum::BIFReader< double > reader(&net1, GET_RESSOURCES_PATH("bif/BIFReader_file2.bif"));
@@ -87,14 +93,14 @@ namespace gum_tests {
         reader.proceed();
       }
 
-      TS_GUM_ASSERT_THROWS_NOTHING(gum::ExactBNdistance< double > kl(net1, net1))
-      TS_ASSERT_THROWS(gum::ExactBNdistance< double > kl(net1, net2),
-                       const gum::OperationNotAllowed&)
-      TS_ASSERT_THROWS(gum::ExactBNdistance< double > kl(net2, net3),
-                       const gum::OperationNotAllowed&)
+      GUM_CHECK_ASSERT_THROWS_NOTHING(gum::ExactBNdistance< double > kl(net1, net1));
+      CHECK_THROWS_AS(gum::ExactBNdistance< double > kl(net1, net2),
+                      const gum::OperationNotAllowed&);
+      CHECK_THROWS_AS(gum::ExactBNdistance< double > kl(net2, net3),
+                      const gum::OperationNotAllowed&);
     }   // namespace gum_tests
 
-    GUM_ACTIVE_TEST(ComparableBNsForAnyDiscreteVariables) {
+    static void testComparableBNsForAnyDiscreteVariables() {
       {
         const std::string typevar = "";
         auto bn1 = gum::BayesNet< double >::fastPrototype("A" + typevar + "->B" + typevar);
@@ -139,7 +145,7 @@ namespace gum_tests {
       }
     }
 
-    GUM_ACTIVE_TEST(Difficulty1) {
+    static void testDifficulty1() {
       gum::BayesNet< double > net2;
       {
         gum::BIFReader< double > reader(&net2, GET_RESSOURCES_PATH("bif/BIFReader_file3.bif"));
@@ -148,7 +154,7 @@ namespace gum_tests {
       }
 
       gum::ExactBNdistance< double > kl(net2, net2);
-      TS_ASSERT_EQUALS(kl.difficulty(), gum::Complexity::Correct)
+      CHECK((kl.difficulty()) == (gum::Complexity::Correct));
 
       gum::BayesNet< double > net;
       {
@@ -158,10 +164,10 @@ namespace gum_tests {
       }
 
       gum::BNdistance< double > kl2(net, net);
-      TS_ASSERT_EQUALS(kl2.difficulty(), gum::Complexity::Heavy)
+      CHECK((kl2.difficulty()) == (gum::Complexity::Heavy));
     }
 
-    GUM_ACTIVE_TEST(KLComputation) {
+    static void testKLComputation() {
       gum::BayesNet< double > net3;
       {
         gum::BIFReader< double > reader(&net3, GET_RESSOURCES_PATH("bif/BIFReader_file3.bif"));
@@ -171,11 +177,11 @@ namespace gum_tests {
 
       double                         vkl = 0.0;
       gum::ExactBNdistance< double > stupid_bfkl(net3, net3);
-      TS_ASSERT_EQUALS(stupid_bfkl.difficulty(), gum::Complexity::Correct)
-      TS_GUM_ASSERT_THROWS_NOTHING(vkl = stupid_bfkl.klPQ())
-      TS_ASSERT_EQUALS(vkl, 0.0)
-      TS_GUM_ASSERT_THROWS_NOTHING(vkl = stupid_bfkl.klQP())
-      TS_ASSERT_EQUALS(vkl, 0.0)
+      CHECK((stupid_bfkl.difficulty()) == (gum::Complexity::Correct));
+      GUM_CHECK_ASSERT_THROWS_NOTHING(vkl = stupid_bfkl.klPQ());
+      CHECK((vkl) == (0.0));
+      GUM_CHECK_ASSERT_THROWS_NOTHING(vkl = stupid_bfkl.klQP());
+      CHECK((vkl) == (0.0));
 
       gum::BayesNet< double > net4;
       {
@@ -184,7 +190,7 @@ namespace gum_tests {
         reader.proceed();
       }
 
-      TS_ASSERT_THROWS(gum::BNdistance< double > kl(net3, net4), const gum::OperationNotAllowed&);
+      CHECK_THROWS_AS(gum::BNdistance< double > kl(net3, net4), const gum::OperationNotAllowed&);
 
       gum::BayesNet< double > net5;
       {
@@ -193,30 +199,30 @@ namespace gum_tests {
         reader.proceed();
       }
       gum::BNdistance< double > kl(net3, net5);
-      TS_ASSERT_EQUALS(kl.difficulty(), gum::Complexity::Correct)
+      CHECK((kl.difficulty()) == (gum::Complexity::Correct));
       {
         gum::ExactBNdistance< double > gkl(kl);
-        TS_GUM_ASSERT_THROWS_NOTHING(vkl = gkl.klPQ())
-        TS_ASSERT_DIFFERS(vkl, static_cast< float >(0.0))
+        GUM_CHECK_ASSERT_THROWS_NOTHING(vkl = gkl.klPQ());
+        CHECK((vkl) != (static_cast< float >(0.0)));
       }
       {
         gum::GibbsBNdistance< double > gkl(kl);
         gkl.setMaxIter(40);
-        TS_GUM_ASSERT_THROWS_NOTHING(vkl = gkl.klPQ())
-        TS_ASSERT_DIFFERS(vkl, static_cast< float >(0.0))
-        TS_ASSERT_THROWS(gkl.history(), const gum::OperationNotAllowed&)
+        GUM_CHECK_ASSERT_THROWS_NOTHING(vkl = gkl.klPQ());
+        CHECK((vkl) != (static_cast< float >(0.0)));
+        CHECK_THROWS_AS(gkl.history(), const gum::OperationNotAllowed&);
       }
 
       {
         gum::GibbsBNdistance< double > gkl(kl);
         gkl.setMaxIter(40);
-        TS_GUM_ASSERT_THROWS_NOTHING(vkl = gkl.klPQ())
-        TS_ASSERT_DIFFERS(vkl, static_cast< float >(0.0))
-        TS_ASSERT_THROWS(gkl.history(), const gum::OperationNotAllowed&)
+        GUM_CHECK_ASSERT_THROWS_NOTHING(vkl = gkl.klPQ());
+        CHECK((vkl) != (static_cast< float >(0.0)));
+        CHECK_THROWS_AS(gkl.history(), const gum::OperationNotAllowed&);
       }
     }
 
-    GUM_ACTIVE_TEST(ExactValues) {
+    static void testExactValues() {
       gum::BayesNet< double > netP;
       {
         gum::BIFReader< double > reader(&netP, GET_RESSOURCES_PATH("bif/bnP.bif"));
@@ -232,17 +238,17 @@ namespace gum_tests {
       }
 
       gum::ExactBNdistance< double > kl(netP, netQ);
-      TS_GUM_ASSERT_THROWS_NOTHING(kl.klPQ())
-      TS_ASSERT_DELTA(kl.klPQ(), 0.241864114, 1e-7)
-      TS_ASSERT_DELTA(kl.klQP(), 0.399826689, 1e-7)
-      TS_ASSERT_EQUALS(kl.errorPQ(), static_cast< gum::Size >(0))
-      TS_ASSERT_EQUALS(kl.errorQP(), static_cast< gum::Size >(0))
-      TS_ASSERT_DELTA(kl.hellinger(), 0.321089688, 1e-7)
-      TS_ASSERT_DELTA(kl.jsd(), 0.0696153, 1e-7)
-      TS_ASSERT_DELTA(kl.bhattacharya(), 0.0529255, 1e-7)
+      GUM_CHECK_ASSERT_THROWS_NOTHING(kl.klPQ());
+      CHECK((kl.klPQ()) == doctest::Approx(0.241864114).epsilon(1e-7));
+      CHECK((kl.klQP()) == doctest::Approx(0.399826689).epsilon(1e-7));
+      CHECK((kl.errorPQ()) == (static_cast< gum::Size >(0)));
+      CHECK((kl.errorQP()) == (static_cast< gum::Size >(0)));
+      CHECK((kl.hellinger()) == doctest::Approx(0.321089688).epsilon(1e-7));
+      CHECK((kl.jsd()) == doctest::Approx(0.0696153).epsilon(1e-7));
+      CHECK((kl.bhattacharya()) == doctest::Approx(0.0529255).epsilon(1e-7));
     }
 
-    GUM_ACTIVE_TEST(GibbsValues) {
+    static void testGibbsValues() {
       gum::BayesNet< double > netP;
       {
         gum::BIFReader< double > reader(&netP, GET_RESSOURCES_PATH("bif/bnP.bif"));
@@ -260,14 +266,14 @@ namespace gum_tests {
       // iterations for better robustness : BNdistance may fail from time to time
       for (int ii = 0; ii < TESTKL_MAX_ITER_GIBBS_KL; ii++) {
         if (ii == TESTKL_MAX_ITER_GIBBS_KL - 1) {
-          TS_FAIL(" (GibbsBNdistance failed even with several tries.)");
+          FAIL(" (GibbsBNdistance failed even with several tries.)");
           break;
         }
         gum::GibbsBNdistance< double > kl(netP, netQ);
         kl.setVerbosity(true);
         // very rough approximation in order to not penalize TestSuite
-        kl.setEpsilon(TS_GUM_SMALL_ERROR);
-        kl.setMinEpsilonRate(TS_GUM_SMALL_ERROR);
+        kl.setEpsilon(GUM_SMALL_ERROR);
+        kl.setMinEpsilonRate(GUM_SMALL_ERROR);
         if (fabs(kl.klPQ() - 0.241864114) >= 1e-1) continue;         // next try
         if (fabs(kl.klQP() - 0.399826689) >= 1e-1) continue;         // next try
         if (kl.errorPQ() != static_cast< gum::Size >(0)) continue;   // next try
@@ -282,4 +288,11 @@ namespace gum_tests {
       }
     }
   };   // namespace gum_tests
+
+  GUM_TEST_ACTIF(Constructor)
+  GUM_TEST_ACTIF(ComparableBNsForAnyDiscreteVariables)
+  GUM_TEST_ACTIF(Difficulty1)
+  GUM_TEST_ACTIF(KLComputation)
+  GUM_TEST_ACTIF(ExactValues)
+  GUM_TEST_ACTIF(GibbsValues)
 }   // namespace gum_tests

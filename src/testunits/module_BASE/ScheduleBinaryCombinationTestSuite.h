@@ -1,7 +1,7 @@
 /****************************************************************************
  *   This file is part of the aGrUM/pyAgrum library.                        *
  *                                                                          *
- *   Copyright (c) 2005-2025 by                                             *
+ *   Copyright (c) 2005-2026 by                                             *
  *       - Pierre-Henri WUILLEMIN(_at_LIP6)                                 *
  *       - Christophe GONZALES(_at_AMU)                                     *
  *                                                                          *
@@ -27,7 +27,7 @@
  *                                                                          *
  *   See LICENCES for more details.                                         *
  *                                                                          *
- *   SPDX-FileCopyrightText: Copyright 2005-2025                            *
+ *   SPDX-FileCopyrightText: Copyright 2005-2026                            *
  *       - Pierre-Henri WUILLEMIN(_at_LIP6)                                 *
  *       - Christophe GONZALES(_at_AMU)                                     *
  *   SPDX-License-Identifier: LGPL-3.0-or-later OR MIT                      *
@@ -37,6 +37,7 @@
  *   gitlab   : https://gitlab.com/agrumery/agrum                           *
  *                                                                          *
  ****************************************************************************/
+
 #pragma once
 
 
@@ -49,13 +50,16 @@
 #include <agrum/base/multidim/tensor.h>
 #include <agrum/base/variables/labelizedVariable.h>
 
-#include "cxxtest/TestSuite.h"
+#undef GUM_CURRENT_SUITE
+#undef GUM_CURRENT_MODULE
+#define GUM_CURRENT_SUITE  ScheduleBinaryCombination
+#define GUM_CURRENT_MODULE GUMBASE
 
 namespace gum_tests {
 
-  class GUM_TEST_SUITE(ScheduleBinaryCombination) {
+  struct ScheduleBinaryCombinationTestSuite {
     public:
-    GUM_ACTIVE_TEST(_construct) {
+    static void test_construct() {
       // reset the ids of the ScheduleMultiDim to avoid conflicts with other
       // testunits
       gum::IScheduleMultiDim::resetIdGenerator();
@@ -88,25 +92,25 @@ namespace gum_tests {
                                       gum::Tensor< double >,
                                       gum::Tensor< double > >
           comb1(f1, f2, myadd);
-      TS_ASSERT(!comb1.implyDeletion());
+      CHECK(!comb1.implyDeletion());
 
       const gum::ScheduleMultiDim< gum::Tensor< double > >& result1 = comb1.result();
-      TS_ASSERT(result1.isAbstract());
+      CHECK(result1.isAbstract());
 
       const auto&                                           comb1const   = comb1;
       const gum::ScheduleMultiDim< gum::Tensor< double > >& result1const = comb1const.result();
-      TS_ASSERT(result1const.isAbstract());
-      TS_ASSERT(!comb1const.implyDeletion());
+      CHECK(result1const.isAbstract());
+      CHECK(!comb1const.implyDeletion());
 
-      TS_ASSERT(comb1.nbOperations() == 32.0);
+      CHECK(comb1.nbOperations() == 32.0);
       std::pair< double, double > xxx = comb1.memoryUsage();
-      TS_ASSERT(xxx.first == 32.0 * sizeof(double) + sizeof(gum::Tensor< double >));
-      TS_ASSERT(xxx.second == 32.0 * sizeof(double) + sizeof(gum::Tensor< double >));
+      CHECK(xxx.first == 32.0 * sizeof(double) + sizeof(gum::Tensor< double >));
+      CHECK(xxx.second == 32.0 * sizeof(double) + sizeof(gum::Tensor< double >));
 
       std::stringstream s1;
       s1 << result1.toString() << " = combine ( " << f1.toString() << " , " << f2.toString()
          << " )";
-      TS_ASSERT(s1.str() == comb1.toString());
+      CHECK(s1.str() == comb1.toString());
 
       gum::ScheduleBinaryCombination< gum::Tensor< double >,
                                       gum::Tensor< double >,
@@ -114,121 +118,121 @@ namespace gum_tests {
                                                             comb2(result1, f3, myadd);
       const gum::ScheduleMultiDim< gum::Tensor< double > >& result2 = comb2.result();
 
-      TS_ASSERT(!comb2.implyDeletion());
-      TS_ASSERT(result1.isAbstract());
-      TS_ASSERT(!comb1.isExecuted());
+      CHECK(!comb2.implyDeletion());
+      CHECK(result1.isAbstract());
+      CHECK(!comb1.isExecuted());
       comb1.execute();
-      TS_ASSERT(comb1.isExecuted());
-      TS_ASSERT(!result1.isAbstract());
+      CHECK(comb1.isExecuted());
+      CHECK(!result1.isAbstract());
       comb2.execute();
-      TS_ASSERT(!result2.isAbstract());
+      CHECK(!result2.isAbstract());
 
       gum::Tensor< double > pot4(pot1 + pot2);
       gum::Tensor< double > pot5(pot4 + pot3);
 
-      TS_ASSERT(result1.multiDim() == pot4);
-      TS_ASSERT(result2.multiDim() == pot5);
+      CHECK(result1.multiDim() == pot4);
+      CHECK(result2.multiDim() == pot5);
 
-      TS_ASSERT(comb2.arg1() == result1);
-      TS_ASSERT(comb2.arg2() == f3);
+      CHECK(comb2.arg1() == result1);
+      CHECK(comb2.arg2() == f3);
 
       const auto& args = comb2.args();
-      TS_ASSERT(args.size() == gum::Size(2));
-      TS_ASSERT(result1 == *(args[0]));
-      TS_ASSERT(f3 == *(args[1]));
+      CHECK(args.size() == gum::Size(2));
+      CHECK(result1 == *(args[0]));
+      CHECK(f3 == *(args[1]));
 
       const auto& results = comb2.results();
-      TS_ASSERT(results.size() == gum::Size(1));
-      TS_ASSERT(result2 == *(results[0]));
+      CHECK(results.size() == gum::Size(1));
+      CHECK(result2 == *(results[0]));
 
       const auto&                                          comb2const   = comb2;
       const gum::Sequence< const gum::IScheduleMultiDim* > resultsconst = comb2const.results();
-      TS_ASSERT(!comb2const.implyDeletion());
-      TS_ASSERT(resultsconst.size() == gum::Size(1));
-      TS_ASSERT(result2.hasSameVariables(*(resultsconst[0])));
-      TS_ASSERT(comb2const.hasSameArguments(comb2));
-      TS_ASSERT(comb2const.hasSimilarArguments(comb2));
-      TS_ASSERT(comb2const.isSameOperator(comb2));
-      TS_ASSERT(comb2const == comb2);
-      TS_ASSERT(!(comb2const != comb2));
+      CHECK(!comb2const.implyDeletion());
+      CHECK(resultsconst.size() == gum::Size(1));
+      CHECK(result2.hasSameVariables(*(resultsconst[0])));
+      CHECK(comb2const.hasSameArguments(comb2));
+      CHECK(comb2const.hasSimilarArguments(comb2));
+      CHECK(comb2const.isSameOperator(comb2));
+      CHECK(comb2const == comb2);
+      CHECK(!(comb2const != comb2));
 
       const gum::ScheduleOperator& comb2op = comb2;
-      TS_ASSERT(!comb2op.implyDeletion());
-      TS_ASSERT(comb2const == comb2op);
-      TS_ASSERT(!(comb2const != comb2op));
-      TS_ASSERT(comb2const.hasSameArguments(comb2op));
-      TS_ASSERT(comb2const.isSameOperator(comb2op));
+      CHECK(!comb2op.implyDeletion());
+      CHECK(comb2const == comb2op);
+      CHECK(!(comb2const != comb2op));
+      CHECK(comb2const.hasSameArguments(comb2op));
+      CHECK(comb2const.isSameOperator(comb2op));
 
       gum::ScheduleBinaryCombination< gum::Tensor< double >,
                                       gum::Tensor< double >,
                                       gum::Tensor< double > >
           comb3(comb2);
-      TS_ASSERT(!comb3.implyDeletion());
-      TS_ASSERT(comb3 == comb2);
-      TS_ASSERT(comb3 != comb1);
-      TS_ASSERT(&(comb3.result()) != &(comb2.result()));
-      TS_ASSERT(comb3.result().hasSameVariables(comb2.result()));
-      TS_ASSERT(comb3.result().hasSameContent(comb2.result()));
-      TS_ASSERT(comb3.isExecuted());
+      CHECK(!comb3.implyDeletion());
+      CHECK(comb3 == comb2);
+      CHECK(comb3 != comb1);
+      CHECK(&(comb3.result()) != &(comb2.result()));
+      CHECK(comb3.result().hasSameVariables(comb2.result()));
+      CHECK(comb3.result().hasSameContent(comb2.result()));
+      CHECK(comb3.isExecuted());
 
       comb3.undo();
-      TS_ASSERT(comb3.result() == comb2.result());
-      TS_ASSERT(!comb3.result().hasSameContent(comb2.result()));
-      TS_ASSERT(comb3.result().isAbstract());
-      TS_ASSERT(!comb3.isExecuted());
+      CHECK(comb3.result() == comb2.result());
+      CHECK(!comb3.result().hasSameContent(comb2.result()));
+      CHECK(comb3.result().isAbstract());
+      CHECK(!comb3.isExecuted());
       comb3.execute();
-      TS_ASSERT(comb3.result().hasSameContent(comb2.result()));
-      TS_ASSERT(&(comb3.result()) != &(comb2.result()));
+      CHECK(comb3.result().hasSameContent(comb2.result()));
+      CHECK(&(comb3.result()) != &(comb2.result()));
 
       comb3.undo();
       comb3 = comb1;
-      TS_ASSERT(!comb3.implyDeletion());
-      TS_ASSERT(comb3 == comb1);
-      TS_ASSERT(comb3 != comb2);
-      TS_ASSERT(comb3.result().hasSameContent(result1));
-      TS_ASSERT(comb3.isExecuted());
+      CHECK(!comb3.implyDeletion());
+      CHECK(comb3 == comb1);
+      CHECK(comb3 != comb2);
+      CHECK(comb3.result().hasSameContent(result1));
+      CHECK(comb3.isExecuted());
 
       gum::ScheduleBinaryCombination< gum::Tensor< double >,
                                       gum::Tensor< double >,
                                       gum::Tensor< double > >
           comb3b = comb1;
-      TS_ASSERT(!comb3b.implyDeletion());
+      CHECK(!comb3b.implyDeletion());
       gum::ScheduleBinaryCombination< gum::Tensor< double >,
                                       gum::Tensor< double >,
                                       gum::Tensor< double > >
           comb3c = comb2;
-      TS_ASSERT(!comb3c.implyDeletion());
-      TS_ASSERT(comb3b == comb1);
-      TS_ASSERT(comb3b.isExecuted());
-      TS_ASSERT(comb3b.result().hasSameContent(result1));
+      CHECK(!comb3c.implyDeletion());
+      CHECK(comb3b == comb1);
+      CHECK(comb3b.isExecuted());
+      CHECK(comb3b.result().hasSameContent(result1));
 
       comb3b = std::move(comb3c);
-      TS_ASSERT(!comb3b.implyDeletion());
-      TS_ASSERT(comb3b == comb2);
-      TS_ASSERT(comb3b != comb1);
+      CHECK(!comb3b.implyDeletion());
+      CHECK(comb3b == comb2);
+      CHECK(comb3b != comb1);
       comb3b.undo();
       comb2.undo();
-      TS_ASSERT(!comb3b.implyDeletion());
+      CHECK(!comb3b.implyDeletion());
 
       comb3.execute();
-      TS_ASSERT(comb3.result().multiDim() == pot4);
+      CHECK(comb3.result().multiDim() == pot4);
 
       gum::ScheduleBinaryCombination< gum::Tensor< double >,
                                       gum::Tensor< double >,
                                       gum::Tensor< double > >
           comb4(std::move(comb3));
-      TS_ASSERT(!comb4.implyDeletion());
-      TS_ASSERT_EQUALS(comb4, comb1)
-      TS_ASSERT_DIFFERS(comb4, comb2)
-      TS_ASSERT_EQUALS(comb4.result().multiDim(), pot4)
+      CHECK(!comb4.implyDeletion());
+      CHECK((comb4) == (comb1));
+      CHECK((comb4) != (comb2));
+      CHECK((comb4.result().multiDim()) == (pot4));
 
       gum::ScheduleBinaryCombination< gum::Tensor< double >,
                                       gum::Tensor< double >,
                                       gum::Tensor< double > >* comb5
           = comb4.clone();
-      TS_ASSERT(!comb5->implyDeletion());
-      TS_ASSERT(*comb5 == comb4);
-      TS_ASSERT(comb5->result().multiDim() == pot4);
+      CHECK(!comb5->implyDeletion());
+      CHECK(*comb5 == comb4);
+      CHECK(comb5->result().multiDim() == pot4);
       comb5->undo();
       delete comb5;
 
@@ -236,9 +240,9 @@ namespace gum_tests {
                                       gum::Tensor< double >,
                                       gum::Tensor< double > >* comb6
           = comb4.clone();
-      TS_ASSERT(!comb6->implyDeletion())
-      TS_ASSERT_EQUALS(*comb6, comb4)
-      TS_ASSERT_EQUALS(comb6->result().multiDim(), pot4)
+      CHECK(!comb6->implyDeletion());
+      CHECK((*comb6) == (comb4));
+      CHECK((comb6->result().multiDim()) == (pot4));
       delete comb6;
 
       gum::ScheduleBinaryCombination< gum::Tensor< double >,
@@ -248,32 +252,32 @@ namespace gum_tests {
 
       const gum::Sequence< const gum::IScheduleMultiDim* > new_args32{&f3, &f2};
       comb1.updateArgs(new_args32);
-      TS_ASSERT(!comb1.isExecuted());
+      CHECK(!comb1.isExecuted());
       comb1.execute();
       gum::Tensor< double > pot32(pot3 + pot2);
-      TS_ASSERT(comb1.result().multiDim() == pot32)
+      CHECK(comb1.result().multiDim() == pot32);
 
-      TS_ASSERT(!comb1.hasSameArguments(comb7))
-      TS_ASSERT(!comb1.hasSimilarArguments(comb7))
-      TS_ASSERT(!comb1.hasSimilarArguments(dynamic_cast< gum::ScheduleOperator& >(comb7)))
-      TS_ASSERT(comb1.isSameOperator(comb7))
-      TS_ASSERT(comb1.isSameOperator(dynamic_cast< gum::ScheduleOperator& >(comb7)))
-      TS_ASSERT_DIFFERS(comb1, comb7)
+      CHECK(!comb1.hasSameArguments(comb7));
+      CHECK(!comb1.hasSimilarArguments(comb7));
+      CHECK(!comb1.hasSimilarArguments(dynamic_cast< gum::ScheduleOperator& >(comb7)));
+      CHECK(comb1.isSameOperator(comb7));
+      CHECK(comb1.isSameOperator(dynamic_cast< gum::ScheduleOperator& >(comb7)));
+      CHECK((comb1) != (comb7));
 
       comb1.setCombinationFunction(mymult);
-      TS_ASSERT(!comb1.isExecuted())
+      CHECK(!comb1.isExecuted());
       comb1.execute();
       gum::Tensor< double > mult32(pot3 * pot2);
-      TS_ASSERT_EQUALS(comb1.result().multiDim(), mult32)
-      TS_ASSERT(!comb1.implyDeletion())
-      TS_ASSERT(!comb1.isSameOperator(comb7))
+      CHECK((comb1.result().multiDim()) == (mult32));
+      CHECK(!comb1.implyDeletion());
+      CHECK(!comb1.isSameOperator(comb7));
 
 
       for (unsigned int i = 0; i < vars.size(); ++i)
         delete vars[i];
     }   // namespace gum_tests
 
-    GUM_ACTIVE_TEST(Constants) {
+    static void testConstants() {
       gum::IScheduleMultiDim::resetIdGenerator();
 
       gum::Tensor< double > p1;
@@ -288,15 +292,15 @@ namespace gum_tests {
                                       gum::Tensor< double > >
                                                             comb1(f1, f2, myadd);
       const gum::ScheduleMultiDim< gum::Tensor< double > >& result1 = comb1.result();
-      TS_ASSERT(result1.isAbstract())
+      CHECK(result1.isAbstract());
 
       comb1.execute();
-      TS_ASSERT(comb1.isExecuted())
-      TS_ASSERT(!result1.isAbstract())
-      TS_ASSERT_EQUALS(result1.multiDim().max(), 8.5)
-      TS_ASSERT_EQUALS(result1.multiDim().min(), 8.5)
-      TS_ASSERT_EQUALS(result1.domainSize(), 1u)
-      TS_ASSERT_EQUALS(result1.multiDim().domainSize(), 1u)
+      CHECK(comb1.isExecuted());
+      CHECK(!result1.isAbstract());
+      CHECK((result1.multiDim().max()) == (8.5));
+      CHECK((result1.multiDim().min()) == (8.5));
+      CHECK((result1.domainSize()) == (1u));
+      CHECK((result1.multiDim().domainSize()) == (1u));
 
 
       std::vector< gum::LabelizedVariable* > vars(10);
@@ -323,12 +327,12 @@ namespace gum_tests {
           comb2(f1, f3, myadd);
       comb2.execute();
       const gum::Tensor< double >& result2 = comb2.result().multiDim();
-      TS_ASSERT_EQUALS(result2.domainSize(), 2u)
-      TS_ASSERT_EQUALS(comb2.result().domainSize(), 2u)
+      CHECK((result2.domainSize()) == (2u));
+      CHECK((comb2.result().domainSize()) == (2u));
 
       gum::Instantiation i2(result2);
       for (i2.setFirst(); !i2.end(); ++i2) {
-        TS_ASSERT_EQUALS(result2[i2], p3[i2] + 3.0)
+        CHECK((result2[i2]) == (p3[i2] + 3.0));
       }
 
       gum::ScheduleBinaryCombination< gum::Tensor< double >,
@@ -337,12 +341,12 @@ namespace gum_tests {
           comb3(f1, f4, myadd);
       comb3.execute();
       const gum::Tensor< double >& result3 = comb3.result().multiDim();
-      TS_ASSERT_EQUALS(result3.domainSize(), 4u)
-      TS_ASSERT_EQUALS(comb3.result().domainSize(), 4u)
+      CHECK((result3.domainSize()) == (4u));
+      CHECK((comb3.result().domainSize()) == (4u));
 
       gum::Instantiation i3(result3);
       for (i3.setFirst(); !i3.end(); ++i3) {
-        TS_ASSERT(result3[i3] == p4[i3] + 3.0)
+        CHECK(result3[i3] == p4[i3] + 3.0);
       }
 
       for (unsigned int i = 0; i < vars.size(); ++i)
@@ -360,5 +364,8 @@ namespace gum_tests {
       return f1 * f2;
     }
   };
+
+  GUM_TEST_ACTIF(_construct)
+  GUM_TEST_ACTIF(Constants)
 
 } /* namespace gum_tests */

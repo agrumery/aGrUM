@@ -1,7 +1,7 @@
 /****************************************************************************
  *   This file is part of the aGrUM/pyAgrum library.                        *
  *                                                                          *
- *   Copyright (c) 2005-2025 by                                             *
+ *   Copyright (c) 2005-2026 by                                             *
  *       - Pierre-Henri WUILLEMIN(_at_LIP6)                                 *
  *       - Christophe GONZALES(_at_AMU)                                     *
  *                                                                          *
@@ -27,7 +27,7 @@
  *                                                                          *
  *   See LICENCES for more details.                                         *
  *                                                                          *
- *   SPDX-FileCopyrightText: Copyright 2005-2025                            *
+ *   SPDX-FileCopyrightText: Copyright 2005-2026                            *
  *       - Pierre-Henri WUILLEMIN(_at_LIP6)                                 *
  *       - Christophe GONZALES(_at_AMU)                                     *
  *   SPDX-License-Identifier: LGPL-3.0-or-later OR MIT                      *
@@ -37,6 +37,7 @@
  *   gitlab   : https://gitlab.com/agrumery/agrum                           *
  *                                                                          *
  ****************************************************************************/
+
 #pragma once
 
 
@@ -49,11 +50,16 @@
 #include <agrum/base/multidim/tensor.h>
 #include <agrum/base/variables/labelizedVariable.h>
 
+#undef GUM_CURRENT_SUITE
+#undef GUM_CURRENT_MODULE
+#define GUM_CURRENT_SUITE  ScheduleOperation
+#define GUM_CURRENT_MODULE GUMBASE
+
 namespace gum_tests {
 
-  class GUM_TEST_SUITE(ScheduleOperation) {
+  struct ScheduleOperationTestSuite {
     public:
-    GUM_ACTIVE_TEST(_construct) {
+    static void test_construct() {
       // reset the ids of the ScheduleMultiDim to avoid conflicts with other
       // testunits
       gum::IScheduleMultiDim::resetIdGenerator();
@@ -79,25 +85,25 @@ namespace gum_tests {
       gum::ScheduleOperator&                                myproj = real_myproj;
 
       const gum::Sequence< const gum::IScheduleMultiDim* >& multidims = myproj.args();
-      TS_ASSERT(multidims.size() == 1);
-      TS_ASSERT(*(multidims.atPos(0)) == f1);
+      CHECK(multidims.size() == 1);
+      CHECK(*(multidims.atPos(0)) == f1);
 
       std::stringstream s1;
       s1 << res.toString() << " = project ( " << f1.toString() << " , " << del_vars.toString()
          << " )";
-      TS_ASSERT(s1.str() == myproj.toString());
+      CHECK(s1.str() == myproj.toString());
 
       gum::ScheduleProjection< gum::Tensor< double > > real_myproj2 = real_myproj;
       gum::ScheduleOperator&                           myproj2      = real_myproj2;
-      TS_ASSERT(real_myproj2.result().isAbstract());
-      TS_ASSERT(myproj2 == myproj);
-      TS_ASSERT(!(myproj2 != myproj));
+      CHECK(real_myproj2.result().isAbstract());
+      CHECK(myproj2 == myproj);
+      CHECK(!(myproj2 != myproj));
 
       myproj.execute();
-      TS_ASSERT(!res.isAbstract());
-      TS_ASSERT(real_myproj2.result().isAbstract());
+      CHECK(!res.isAbstract());
+      CHECK(real_myproj2.result().isAbstract());
       gum::Tensor< double >* res2 = proj(pot1, del_vars, 0);
-      TS_ASSERT(*(res2->content()) == res.multiDim());
+      CHECK(*(res2->content()) == res.multiDim());
 
       delete res2;
 
@@ -112,9 +118,9 @@ namespace gum_tests {
     }
 
     // projection of a table over a set
-    gum::Tensor< double >* proj(const gum::Tensor< double >& table,
-                                const gum::VariableSet&      del_vars,
-                                double                       neutral_elt) {
+    static gum::Tensor< double >* proj(const gum::Tensor< double >& table,
+                                       const gum::VariableSet&      del_vars,
+                                       double                       neutral_elt) {
       gum::Tensor< double >* result = new gum::Tensor< double >;
 
       const gum::Sequence< const gum::DiscreteVariable* >& vars = table.variablesSequence();
@@ -137,5 +143,7 @@ namespace gum_tests {
       return result;
     }
   };
+
+  GUM_TEST_ACTIF(_construct)
 
 } /* namespace gum_tests */

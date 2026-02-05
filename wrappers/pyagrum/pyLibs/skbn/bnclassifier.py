@@ -1,7 +1,7 @@
 ############################################################################
 #   This file is part of the aGrUM/pyAgrum library.                        #
 #                                                                          #
-#   Copyright (c) 2005-2025 by                                             #
+#   Copyright (c) 2005-2026 by                                             #
 #       - Pierre-Henri WUILLEMIN(_at_LIP6)                                 #
 #       - Christophe GONZALES(_at_AMU)                                     #
 #                                                                          #
@@ -27,7 +27,7 @@
 #                                                                          #
 #   See LICENCES for more details.                                         #
 #                                                                          #
-#   SPDX-FileCopyrightText: Copyright 2005-2025                            #
+#   SPDX-FileCopyrightText: Copyright 2005-2026                            #
 #       - Pierre-Henri WUILLEMIN(_at_LIP6)                                 #
 #       - Christophe GONZALES(_at_AMU)                                     #
 #   SPDX-License-Identifier: LGPL-3.0-or-later OR MIT                      #
@@ -394,7 +394,7 @@ class BNClassifier(sklearn.base.BaseEstimator, sklearn.base.ClassifierMixin):
       variableNames = [f"X{x}" if check_int(x) else x for x in X.columns]
 
     # verifies the shape of the two arrays
-    X, y = sklearn.utils.check_X_y(X, y, dtype=None, accept_sparse=True)
+    X, y = sklearn.utils.check_X_y(X, y, dtype=object, accept_sparse=True)
 
     d = X.shape[1]
 

@@ -1,7 +1,7 @@
 /****************************************************************************
  *   This file is part of the aGrUM/pyAgrum library.                        *
  *                                                                          *
- *   Copyright (c) 2005-2025 by                                             *
+ *   Copyright (c) 2005-2026 by                                             *
  *       - Pierre-Henri WUILLEMIN(_at_LIP6)                                 *
  *       - Christophe GONZALES(_at_AMU)                                     *
  *                                                                          *
@@ -27,7 +27,7 @@
  *                                                                          *
  *   See LICENCES for more details.                                         *
  *                                                                          *
- *   SPDX-FileCopyrightText: Copyright 2005-2025                            *
+ *   SPDX-FileCopyrightText: Copyright 2005-2026                            *
  *       - Pierre-Henri WUILLEMIN(_at_LIP6)                                 *
  *       - Christophe GONZALES(_at_AMU)                                     *
  *   SPDX-License-Identifier: LGPL-3.0-or-later OR MIT                      *
@@ -37,6 +37,7 @@
  *   gitlab   : https://gitlab.com/agrumery/agrum                           *
  *                                                                          *
  ****************************************************************************/
+
 
 
 
@@ -215,12 +216,12 @@ def pseudoCount(self,vars):
     return p
 
 def fitParameters(self,bn,take_into_account_score=True):
-  if set(self.names())!=bn.names():
-    raise Exception("Not the same variable names in the database and in the BN")
+  if not set(self.names()).issuperset(bn.names()):
+    raise Exception(f"Some variables are in the BN but not in the data : {bn.names()-set(self.names())}")
 
   tmp=self.learnParameters(bn,take_into_account_score)
   for n in tmp.names():
-    bn.cpt(n).fillWith(tmp.cpt(n))
+    bn.cpt(bn.idFromName(n)).fillWith(tmp.cpt(n))
   return self
 
 def learnEssentialGraph(self):

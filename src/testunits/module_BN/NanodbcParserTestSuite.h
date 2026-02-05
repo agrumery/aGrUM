@@ -25,11 +25,16 @@
 
 #include <agrum/base/database/nanodbcParser.h>
 
+#undef GUM_CURRENT_SUITE
+#undef GUM_CURRENT_MODULE
+#define GUM_CURRENT_SUITE  NanodbcParser
+#define GUM_CURRENT_MODULE BN
+
 namespace gum_tests {
 
-  class GUM_TEST_SUITE(NanodbcParser) {
+  struct NanodbcParserTestSuite {
     public:
-    GUM_ACTIVE_TEST(SimpleSQL) {
+    static void testSimpleSQL() {
 #ifdef ODBC_
 
       try {
@@ -56,102 +61,102 @@ namespace gum_tests {
         std::setlocale(LC_NUMERIC, current_locale.c_str());
 
         gum::learning::NanodbcParser parser(connection, query);
-        TS_ASSERT_EQUALS(parser.nbColumns(), std::size_t(8))
+        CHECK((parser.nbColumns()) == (std::size_t(8)));
 
         parser.next();
-        TS_ASSERT_EQUALS(parser.nbLine(), std::size_t(0))
+        CHECK((parser.nbLine()) == (std::size_t(0)));
         const auto& row1 = parser.current();
-        TS_ASSERT_EQUALS(row1[0], "0")
-        TS_ASSERT_EQUALS(row1[1], "0")
-        TS_ASSERT_EQUALS(row1[2], "0")
-        TS_ASSERT_EQUALS(row1[3], "1")
-        TS_ASSERT_EQUALS(row1[4], "1")
-        TS_ASSERT_EQUALS(row1[5], "false")
-        TS_ASSERT_EQUALS(row1[6], "toto titi")
-        TS_ASSERT_EQUALS(row1[7], "-1.2")
+        CHECK((row1[0]) == ("0"));
+        CHECK((row1[1]) == ("0"));
+        CHECK((row1[2]) == ("0"));
+        CHECK((row1[3]) == ("1"));
+        CHECK((row1[4]) == ("1"));
+        CHECK((row1[5]) == ("false"));
+        CHECK((row1[6]) == ("toto titi"));
+        CHECK((row1[7]) == ("-1.2"));
 
         parser.next();
-        TS_ASSERT_EQUALS(parser.nbLine(), std::size_t(1))
+        CHECK((parser.nbLine()) == (std::size_t(1)));
         const auto& row2 = parser.current();
-        TS_ASSERT_EQUALS(row2[0], "1")
-        TS_ASSERT_EQUALS(row2[1], "1")
-        TS_ASSERT_EQUALS(row2[2], "0")
-        TS_ASSERT_EQUALS(row2[3], "1")
-        TS_ASSERT_EQUALS(row2[4], "1")
-        TS_ASSERT_EQUALS(row2[5], "true")
-        TS_ASSERT_EQUALS(row2[6], "toto titi")
-        TS_ASSERT_EQUALS(row2[7], "2.45")
+        CHECK((row2[0]) == ("1"));
+        CHECK((row2[1]) == ("1"));
+        CHECK((row2[2]) == ("0"));
+        CHECK((row2[3]) == ("1"));
+        CHECK((row2[4]) == ("1"));
+        CHECK((row2[5]) == ("true"));
+        CHECK((row2[6]) == ("toto titi"));
+        CHECK((row2[7]) == ("2.45"));
 
         parser.next();
-        TS_ASSERT_EQUALS(parser.nbLine(), std::size_t(2))
+        CHECK((parser.nbLine()) == (std::size_t(2)));
         const auto& row3 = parser.current();
-        TS_ASSERT_EQUALS(row3[0], "1")
-        TS_ASSERT_EQUALS(row3[1], "1")
-        TS_ASSERT_EQUALS(row3[2], "1")
-        TS_ASSERT_EQUALS(row3[3], "1")
-        TS_ASSERT_EQUALS(row3[4], "1")
-        TS_ASSERT_EQUALS(row3[5], "true")
-        TS_ASSERT_EQUALS(row3[6], "toto titi")
-        TS_ASSERT_EQUALS(row3[7], "4")
+        CHECK((row3[0]) == ("1"));
+        CHECK((row3[1]) == ("1"));
+        CHECK((row3[2]) == ("1"));
+        CHECK((row3[3]) == ("1"));
+        CHECK((row3[4]) == ("1"));
+        CHECK((row3[5]) == ("true"));
+        CHECK((row3[6]) == ("toto titi"));
+        CHECK((row3[7]) == ("4"));
 
-        TS_ASSERT_EQUALS(parser.columnName(std::size_t(0)), "smoking")
-        TS_ASSERT_EQUALS(parser.columnName(std::size_t(1)), "lung_cancer")
-        TS_ASSERT_EQUALS(parser.columnName(std::size_t(2)), "bronchitis")
-        TS_ASSERT_EQUALS(parser.columnName(std::size_t(3)), "visit_to_Asia")
-        TS_ASSERT_EQUALS(parser.columnName(std::size_t(4)), "tuberculosis")
-        TS_ASSERT_EQUALS(parser.columnName(std::size_t(5)), "tuberculos_or_cancer");
-        TS_ASSERT_EQUALS(parser.columnName(std::size_t(6)), "dyspnoea")
-        TS_ASSERT_EQUALS(parser.columnName(std::size_t(7)), "positive_XraY")
+        CHECK((parser.columnName(std::size_t(0))) == ("smoking"));
+        CHECK((parser.columnName(std::size_t(1))) == ("lung_cancer"));
+        CHECK((parser.columnName(std::size_t(2))) == ("bronchitis"));
+        CHECK((parser.columnName(std::size_t(3))) == ("visit_to_Asia"));
+        CHECK((parser.columnName(std::size_t(4))) == ("tuberculosis"));
+        CHECK((parser.columnName(std::size_t(5))) == ("tuberculos_or_cancer"));
+        CHECK((parser.columnName(std::size_t(6))) == ("dyspnoea"));
+        CHECK((parser.columnName(std::size_t(7))) == ("positive_XraY"));
 
-        TS_ASSERT_EQUALS(parser.next(), false)
+        CHECK((parser.next()) == (false));
 
         parser.useNewQuery(connection, query);
         parser.next();
-        TS_ASSERT_EQUALS(parser.nbLine(), std::size_t(0))
+        CHECK((parser.nbLine()) == (std::size_t(0)));
         const auto& xrow1 = parser.current();
-        TS_ASSERT_EQUALS(xrow1[0], "0")
-        TS_ASSERT_EQUALS(xrow1[1], "0")
-        TS_ASSERT_EQUALS(xrow1[2], "0")
-        TS_ASSERT_EQUALS(xrow1[3], "1")
-        TS_ASSERT_EQUALS(xrow1[4], "1")
-        TS_ASSERT_EQUALS(xrow1[5], "false")
-        TS_ASSERT_EQUALS(xrow1[6], "toto titi")
-        TS_ASSERT_EQUALS(xrow1[7], "-1.2")
+        CHECK((xrow1[0]) == ("0"));
+        CHECK((xrow1[1]) == ("0"));
+        CHECK((xrow1[2]) == ("0"));
+        CHECK((xrow1[3]) == ("1"));
+        CHECK((xrow1[4]) == ("1"));
+        CHECK((xrow1[5]) == ("false"));
+        CHECK((xrow1[6]) == ("toto titi"));
+        CHECK((xrow1[7]) == ("-1.2"));
 
         parser.next();
-        TS_ASSERT_EQUALS(parser.nbLine(), std::size_t(1))
+        CHECK((parser.nbLine()) == (std::size_t(1)));
         const auto& xrow2 = parser.current();
-        TS_ASSERT_EQUALS(xrow2[0], "1")
-        TS_ASSERT_EQUALS(xrow2[1], "1")
-        TS_ASSERT_EQUALS(xrow2[2], "0")
-        TS_ASSERT_EQUALS(xrow2[3], "1")
-        TS_ASSERT_EQUALS(xrow2[4], "1")
-        TS_ASSERT_EQUALS(xrow2[5], "true")
-        TS_ASSERT_EQUALS(xrow2[6], "toto titi")
-        TS_ASSERT_EQUALS(xrow2[7], "2.45")
+        CHECK((xrow2[0]) == ("1"));
+        CHECK((xrow2[1]) == ("1"));
+        CHECK((xrow2[2]) == ("0"));
+        CHECK((xrow2[3]) == ("1"));
+        CHECK((xrow2[4]) == ("1"));
+        CHECK((xrow2[5]) == ("true"));
+        CHECK((xrow2[6]) == ("toto titi"));
+        CHECK((xrow2[7]) == ("2.45"));
 
         parser.next();
-        TS_ASSERT_EQUALS(parser.nbLine(), std::size_t(2))
+        CHECK((parser.nbLine()) == (std::size_t(2)));
         const auto& xrow3 = parser.current();
-        TS_ASSERT_EQUALS(xrow3[0], "1")
-        TS_ASSERT_EQUALS(xrow3[1], "1")
-        TS_ASSERT_EQUALS(xrow3[2], "1")
-        TS_ASSERT_EQUALS(xrow3[3], "1")
-        TS_ASSERT_EQUALS(xrow3[4], "1")
-        TS_ASSERT_EQUALS(xrow3[5], "true")
-        TS_ASSERT_EQUALS(xrow3[6], "toto titi")
-        TS_ASSERT_EQUALS(xrow3[7], "4")
+        CHECK((xrow3[0]) == ("1"));
+        CHECK((xrow3[1]) == ("1"));
+        CHECK((xrow3[2]) == ("1"));
+        CHECK((xrow3[3]) == ("1"));
+        CHECK((xrow3[4]) == ("1"));
+        CHECK((xrow3[5]) == ("true"));
+        CHECK((xrow3[6]) == ("toto titi"));
+        CHECK((xrow3[7]) == ("4"));
 
-        TS_ASSERT_EQUALS(parser.columnName(std::size_t(0)), "smoking")
-        TS_ASSERT_EQUALS(parser.columnName(std::size_t(1)), "lung_cancer")
-        TS_ASSERT_EQUALS(parser.columnName(std::size_t(2)), "bronchitis")
-        TS_ASSERT_EQUALS(parser.columnName(std::size_t(3)), "visit_to_Asia")
-        TS_ASSERT_EQUALS(parser.columnName(std::size_t(4)), "tuberculosis")
-        TS_ASSERT_EQUALS(parser.columnName(std::size_t(5)), "tuberculos_or_cancer");
-        TS_ASSERT_EQUALS(parser.columnName(std::size_t(6)), "dyspnoea")
-        TS_ASSERT_EQUALS(parser.columnName(std::size_t(7)), "positive_XraY")
+        CHECK((parser.columnName(std::size_t(0))) == ("smoking"));
+        CHECK((parser.columnName(std::size_t(1))) == ("lung_cancer"));
+        CHECK((parser.columnName(std::size_t(2))) == ("bronchitis"));
+        CHECK((parser.columnName(std::size_t(3))) == ("visit_to_Asia"));
+        CHECK((parser.columnName(std::size_t(4))) == ("tuberculosis"));
+        CHECK((parser.columnName(std::size_t(5))) == ("tuberculos_or_cancer"));
+        CHECK((parser.columnName(std::size_t(6))) == ("dyspnoea"));
+        CHECK((parser.columnName(std::size_t(7))) == ("positive_XraY"));
 
-        TS_ASSERT_EQUALS(parser.next(), false)
+        CHECK((parser.next()) == (false));
 
       } catch (nanodbc::database_error& e) {
         // no database. see e.what()
@@ -160,7 +165,7 @@ namespace gum_tests {
 #endif   // ODBC_
     }
 
-    GUM_ACTIVE_TEST(AlarmSQL) {
+    static void testAlarmSQL() {
 #ifdef ODBC_
       const std::string driver_name = "SQLite3";
 #  ifdef _WIN32
@@ -183,7 +188,7 @@ namespace gum_tests {
 #endif   // ODBC_
     }
 
-    GUM_ACTIVE_TEST(AsiaSQL) {
+    static void testAsiaSQL() {
 #ifdef _ODBC
       const std::string driver_name = "SQLite3";
 #  ifdef _WIN32
@@ -209,123 +214,123 @@ namespace gum_tests {
 
         const std::string   current_locale = std::setlocale(LC_NUMERIC, NULL);
         nanodbc::connection connection(connection_string, 0);
-        TS_ASSERT(connection.connected())
+        CHECK(connection.connected());
         std::setlocale(LC_NUMERIC, current_locale.c_str());
 
         const std::string query_count = "select count(*) from asia;";
 
         auto row_count = nanodbc::execute(connection, query_count);
         row_count.next();
-        TS_ASSERT_EQUALS(row_count.get< int >(0), 3)
+        CHECK((row_count.get< int >(0)) == (3));
 
         const std::string query = "select * from asia;";
 
         auto row = nanodbc::execute(connection, query);
         row.next();
-        TS_ASSERT_EQUALS(row.column_name(0), "smoking")
-        TS_ASSERT_EQUALS(row.columns(), 8)
+        CHECK((row.column_name(0)) == ("smoking"));
+        CHECK((row.columns()) == (8));
 
-        TS_ASSERT_EQUALS(row.get< int >(0, 5), 1)
-        TS_ASSERT_EQUALS(row.get< std::string >(6), "toto titi")
-        TS_ASSERT_EQUALS(row.get< double >(7), -1.2)
+        CHECK((row.get< int >(0, 5)) == (1));
+        CHECK((row.get< std::string >(6)) == ("toto titi"));
+        CHECK((row.get< double >(7)) == (-1.2));
 
         gum::learning::NanodbcParser parser(connection, query);
-        TS_ASSERT_EQUALS(parser.nbColumns(), std::size_t(8))
+        CHECK((parser.nbColumns()) == (std::size_t(8)));
 
         parser.next();
-        TS_ASSERT_EQUALS(parser.nbLine(), std::size_t(0))
+        CHECK((parser.nbLine()) == (std::size_t(0)));
         const auto& row1 = parser.current();
-        TS_ASSERT_EQUALS(row1[0], "1")
-        TS_ASSERT_EQUALS(row1[1], "0")
-        TS_ASSERT_EQUALS(row1[2], "0")
-        TS_ASSERT_EQUALS(row1[3], "1")
-        TS_ASSERT_EQUALS(row1[4], "1")
-        TS_ASSERT_EQUALS(row1[5], "0")
-        TS_ASSERT_EQUALS(row1[6], "toto titi")
-        TS_ASSERT_EQUALS(row1[7], "-1.2")
+        CHECK((row1[0]) == ("1"));
+        CHECK((row1[1]) == ("0"));
+        CHECK((row1[2]) == ("0"));
+        CHECK((row1[3]) == ("1"));
+        CHECK((row1[4]) == ("1"));
+        CHECK((row1[5]) == ("0"));
+        CHECK((row1[6]) == ("toto titi"));
+        CHECK((row1[7]) == ("-1.2"));
 
         parser.next();
-        TS_ASSERT_EQUALS(parser.nbLine(), std::size_t(1))
+        CHECK((parser.nbLine()) == (std::size_t(1)));
         const auto& row2 = parser.current();
-        TS_ASSERT_EQUALS(row2[0], "1")
-        TS_ASSERT_EQUALS(row2[1], "1")
-        TS_ASSERT_EQUALS(row2[2], "0")
-        TS_ASSERT_EQUALS(row2[3], "1")
-        TS_ASSERT_EQUALS(row2[4], "1")
-        TS_ASSERT_EQUALS(row2[5], "1")
-        TS_ASSERT_EQUALS(row2[6], "toto titi")
-        TS_ASSERT_EQUALS(row2[7], "2.45")
+        CHECK((row2[0]) == ("1"));
+        CHECK((row2[1]) == ("1"));
+        CHECK((row2[2]) == ("0"));
+        CHECK((row2[3]) == ("1"));
+        CHECK((row2[4]) == ("1"));
+        CHECK((row2[5]) == ("1"));
+        CHECK((row2[6]) == ("toto titi"));
+        CHECK((row2[7]) == ("2.45"));
 
         parser.next();
-        TS_ASSERT_EQUALS(parser.nbLine(), std::size_t(2))
+        CHECK((parser.nbLine()) == (std::size_t(2)));
         const auto& row3 = parser.current();
-        TS_ASSERT_EQUALS(row3[0], "1")
-        TS_ASSERT_EQUALS(row3[1], "1")
-        TS_ASSERT_EQUALS(row3[2], "1")
-        TS_ASSERT_EQUALS(row3[3], "1")
-        TS_ASSERT_EQUALS(row3[4], "1")
-        TS_ASSERT_EQUALS(row3[5], "1")
-        TS_ASSERT_EQUALS(row3[6], "toto titi")
-        TS_ASSERT_EQUALS(row3[7], "4")
+        CHECK((row3[0]) == ("1"));
+        CHECK((row3[1]) == ("1"));
+        CHECK((row3[2]) == ("1"));
+        CHECK((row3[3]) == ("1"));
+        CHECK((row3[4]) == ("1"));
+        CHECK((row3[5]) == ("1"));
+        CHECK((row3[6]) == ("toto titi"));
+        CHECK((row3[7]) == ("4"));
 
-        TS_ASSERT_EQUALS(parser.columnName(std::size_t(0)), "smoking")
-        TS_ASSERT_EQUALS(parser.columnName(std::size_t(1)), "lung_cancer")
-        TS_ASSERT_EQUALS(parser.columnName(std::size_t(2)), "bronchitis")
-        TS_ASSERT_EQUALS(parser.columnName(std::size_t(3)), "visit_to_Asia")
-        TS_ASSERT_EQUALS(parser.columnName(std::size_t(4)), "tuberculosis")
-        TS_ASSERT_EQUALS(parser.columnName(std::size_t(5)), "tuberculos_or_cancer")
-        TS_ASSERT_EQUALS(parser.columnName(std::size_t(6)), "dyspnoea")
-        TS_ASSERT_EQUALS(parser.columnName(std::size_t(7)), "positive_XraY")
+        CHECK((parser.columnName(std::size_t(0))) == ("smoking"));
+        CHECK((parser.columnName(std::size_t(1))) == ("lung_cancer"));
+        CHECK((parser.columnName(std::size_t(2))) == ("bronchitis"));
+        CHECK((parser.columnName(std::size_t(3))) == ("visit_to_Asia"));
+        CHECK((parser.columnName(std::size_t(4))) == ("tuberculosis"));
+        CHECK((parser.columnName(std::size_t(5))) == ("tuberculos_or_cancer"));
+        CHECK((parser.columnName(std::size_t(6))) == ("dyspnoea"));
+        CHECK((parser.columnName(std::size_t(7))) == ("positive_XraY"));
 
-        TS_ASSERT_EQUALS(parser.next(), false)
+        CHECK((parser.next()) == (false));
 
         parser.useNewQuery(connection, query);
         parser.next();
-        TS_ASSERT_EQUALS(parser.nbLine(), std::size_t(0))
+        CHECK((parser.nbLine()) == (std::size_t(0)));
         const auto& xrow1 = parser.current();
-        TS_ASSERT_EQUALS(xrow1[0], "1")
-        TS_ASSERT_EQUALS(xrow1[1], "0")
-        TS_ASSERT_EQUALS(xrow1[2], "0")
-        TS_ASSERT_EQUALS(xrow1[3], "1")
-        TS_ASSERT_EQUALS(xrow1[4], "1")
-        TS_ASSERT_EQUALS(xrow1[5], "0")
-        TS_ASSERT_EQUALS(xrow1[6], "toto titi")
-        TS_ASSERT_EQUALS(xrow1[7], "-1.2")
+        CHECK((xrow1[0]) == ("1"));
+        CHECK((xrow1[1]) == ("0"));
+        CHECK((xrow1[2]) == ("0"));
+        CHECK((xrow1[3]) == ("1"));
+        CHECK((xrow1[4]) == ("1"));
+        CHECK((xrow1[5]) == ("0"));
+        CHECK((xrow1[6]) == ("toto titi"));
+        CHECK((xrow1[7]) == ("-1.2"));
 
         parser.next();
-        TS_ASSERT_EQUALS(parser.nbLine(), std::size_t(1))
+        CHECK((parser.nbLine()) == (std::size_t(1)));
         const auto& xrow2 = parser.current();
-        TS_ASSERT_EQUALS(xrow2[0], "1")
-        TS_ASSERT_EQUALS(xrow2[1], "1")
-        TS_ASSERT_EQUALS(xrow2[2], "0")
-        TS_ASSERT_EQUALS(xrow2[3], "1")
-        TS_ASSERT_EQUALS(xrow2[4], "1")
-        TS_ASSERT_EQUALS(xrow2[5], "1")
-        TS_ASSERT_EQUALS(xrow2[6], "toto titi")
-        TS_ASSERT_EQUALS(xrow2[7], "2.45")
+        CHECK((xrow2[0]) == ("1"));
+        CHECK((xrow2[1]) == ("1"));
+        CHECK((xrow2[2]) == ("0"));
+        CHECK((xrow2[3]) == ("1"));
+        CHECK((xrow2[4]) == ("1"));
+        CHECK((xrow2[5]) == ("1"));
+        CHECK((xrow2[6]) == ("toto titi"));
+        CHECK((xrow2[7]) == ("2.45"));
 
         parser.next();
-        TS_ASSERT_EQUALS(parser.nbLine(), std::size_t(2))
+        CHECK((parser.nbLine()) == (std::size_t(2)));
         const auto& xrow3 = parser.current();
-        TS_ASSERT_EQUALS(xrow3[0], "1")
-        TS_ASSERT_EQUALS(xrow3[1], "1")
-        TS_ASSERT_EQUALS(xrow3[2], "1")
-        TS_ASSERT_EQUALS(xrow3[3], "1")
-        TS_ASSERT_EQUALS(xrow3[4], "1")
-        TS_ASSERT_EQUALS(xrow3[5], "1")
-        TS_ASSERT_EQUALS(xrow3[6], "toto titi")
-        TS_ASSERT_EQUALS(xrow3[7], "4")
+        CHECK((xrow3[0]) == ("1"));
+        CHECK((xrow3[1]) == ("1"));
+        CHECK((xrow3[2]) == ("1"));
+        CHECK((xrow3[3]) == ("1"));
+        CHECK((xrow3[4]) == ("1"));
+        CHECK((xrow3[5]) == ("1"));
+        CHECK((xrow3[6]) == ("toto titi"));
+        CHECK((xrow3[7]) == ("4"));
 
-        TS_ASSERT_EQUALS(parser.columnName(std::size_t(0)), "smoking")
-        TS_ASSERT_EQUALS(parser.columnName(std::size_t(1)), "lung_cancer")
-        TS_ASSERT_EQUALS(parser.columnName(std::size_t(2)), "bronchitis")
-        TS_ASSERT_EQUALS(parser.columnName(std::size_t(3)), "visit_to_Asia")
-        TS_ASSERT_EQUALS(parser.columnName(std::size_t(4)), "tuberculosis")
-        TS_ASSERT_EQUALS(parser.columnName(std::size_t(5)), "tuberculos_or_cancer")
-        TS_ASSERT_EQUALS(parser.columnName(std::size_t(6)), "dyspnoea")
-        TS_ASSERT_EQUALS(parser.columnName(std::size_t(7)), "positive_XraY")
+        CHECK((parser.columnName(std::size_t(0))) == ("smoking"));
+        CHECK((parser.columnName(std::size_t(1))) == ("lung_cancer"));
+        CHECK((parser.columnName(std::size_t(2))) == ("bronchitis"));
+        CHECK((parser.columnName(std::size_t(3))) == ("visit_to_Asia"));
+        CHECK((parser.columnName(std::size_t(4))) == ("tuberculosis"));
+        CHECK((parser.columnName(std::size_t(5))) == ("tuberculos_or_cancer"));
+        CHECK((parser.columnName(std::size_t(6))) == ("dyspnoea"));
+        CHECK((parser.columnName(std::size_t(7))) == ("positive_XraY"));
 
-        TS_ASSERT_EQUALS(parser.next(), false)
+        CHECK((parser.next()) == (false));
 
       } catch (nanodbc::database_error& e) {
         // no database. see e.what()
@@ -334,5 +339,9 @@ namespace gum_tests {
 #endif   // _ODBC
     }
   };
+
+  GUM_TEST_ACTIF(SimpleSQL)
+  GUM_TEST_ACTIF(AlarmSQL)
+  GUM_TEST_ACTIF(AsiaSQL)
 
 } /* namespace gum_tests */

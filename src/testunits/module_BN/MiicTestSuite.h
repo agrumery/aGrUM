@@ -1,7 +1,7 @@
 /****************************************************************************
  *   This file is part of the aGrUM/pyAgrum library.                        *
  *                                                                          *
- *   Copyright (c) 2005-2025 by                                             *
+ *   Copyright (c) 2005-2026 by                                             *
  *       - Pierre-Henri WUILLEMIN(_at_LIP6)                                 *
  *       - Christophe GONZALES(_at_AMU)                                     *
  *                                                                          *
@@ -27,7 +27,7 @@
  *                                                                          *
  *   See LICENCES for more details.                                         *
  *                                                                          *
- *   SPDX-FileCopyrightText: Copyright 2005-2025                            *
+ *   SPDX-FileCopyrightText: Copyright 2005-2026                            *
  *       - Pierre-Henri WUILLEMIN(_at_LIP6)                                 *
  *       - Christophe GONZALES(_at_AMU)                                     *
  *   SPDX-License-Identifier: LGPL-3.0-or-later OR MIT                      *
@@ -37,6 +37,7 @@
  *   gitlab   : https://gitlab.com/agrumery/agrum                           *
  *                                                                          *
  ****************************************************************************/
+
 #pragma once
 
 
@@ -62,6 +63,11 @@
 #include <agrum/BN/learning/Miic.h>
 #include <agrum/BN/learning/paramUtils/paramEstimatorML.h>
 #include <agrum/BN/learning/priors/noPrior.h>
+
+#undef GUM_CURRENT_SUITE
+#undef GUM_CURRENT_MODULE
+#define GUM_CURRENT_SUITE  Miic
+#define GUM_CURRENT_MODULE BN
 
 namespace gum_tests {
 
@@ -98,9 +104,9 @@ namespace gum_tests {
     };
   };
 
-  class GUM_TEST_SUITE(Miic) {
+  struct MiicTestSuite {
     public:
-    GUM_ACTIVE_TEST(_latent_var_) {
+    static void test_latent_var_() {
       gum::learning::DBInitializerFromCSV initializer(
           GET_RESSOURCES_PATH("csv/latent_variable.csv"));
       const auto&       var_names = initializer.variableNames();
@@ -150,10 +156,10 @@ namespace gum_tests {
         // GUM_TRACE_VAR(dag.toDot())
       } catch (gum::Exception& e) { GUM_SHOWERROR(e) }
 
-      // TS_ASSERT(!search.latentVariables().empty())
+      // CHECK(!search.latentVariables().empty());
     }   // namespace gum_tests
 
-    GUM_ACTIVE_TEST(_titanic_learn) {
+    static void test_titanic_learn() {
       gum::learning::DBInitializerFromCSV initializer(GET_RESSOURCES_PATH("csv/titanic.csv"));
       const auto&                         var_names = initializer.variableNames();
       const std::size_t                   nb_vars   = var_names.size();
@@ -207,7 +213,7 @@ namespace gum_tests {
       } catch (gum::Exception& e) { GUM_SHOWERROR(e) }
     }
 
-    GUM_ACTIVE_TEST(_alarm_learn) {
+    static void test_alarm_learn() {
       FilterListenerForMiic filterlistener;
       filterlistener.filter = 24;
 
@@ -264,7 +270,7 @@ namespace gum_tests {
       } catch (gum::Exception& e) { GUM_SHOWERROR(e) }
     }
 
-    GUM_ACTIVE_TEST(_census_learn) {
+    static void test_census_learn() {
       gum::learning::DBInitializerFromCSV initializer(GET_RESSOURCES_PATH("csv/Census01.csv"));
       const auto&                         var_names = initializer.variableNames();
       const std::size_t                   nb_vars   = var_names.size();
@@ -319,7 +325,7 @@ namespace gum_tests {
       } catch (gum::Exception& e) { GUM_SHOWERROR(e) }
     }
 
-    GUM_ACTIVE_TEST(_24_learn) {
+    static void test_24_learn() {
       gum::learning::DBInitializerFromCSV initializer(GET_RESSOURCES_PATH("csv/24.csv"));
       const auto&                         var_names = initializer.variableNames();
       const std::size_t                   nb_vars   = var_names.size();
@@ -373,7 +379,7 @@ namespace gum_tests {
       } catch (gum::Exception& e) { GUM_SHOWERROR(e) }
     }
 
-    GUM_ACTIVE_TEST(_asia_ForbiddenGraph) {
+    static void test_asia_ForbiddenGraph() {
       gum::learning::DBInitializerFromCSV initializer(GET_RESSOURCES_PATH("csv/asia.csv"));
       const auto&                         var_names = initializer.variableNames();
       const std::size_t                   nb_vars   = var_names.size();
@@ -420,17 +426,17 @@ namespace gum_tests {
       search.setForbiddenGraph(forbidGraph);
 
       auto mg = search.learnMixedStructure(cI, graph);
-      TS_ASSERT(!mg.existsArc(2, 6))
-      TS_ASSERT(!mg.existsEdge(2, 6))
-      TS_ASSERT(!mg.existsArc(1, 5))
+      CHECK(!mg.existsArc(2, 6));
+      CHECK(!mg.existsEdge(2, 6));
+      CHECK(!mg.existsArc(1, 5));
 
       auto dag = search.learnStructure(cI, graph);
-      TS_ASSERT(!dag.existsArc(2, 6))
-      TS_ASSERT(!dag.existsArc(2, 6))
-      TS_ASSERT(!dag.existsArc(1, 5))
+      CHECK(!dag.existsArc(2, 6));
+      CHECK(!dag.existsArc(2, 6));
+      CHECK(!dag.existsArc(1, 5));
     }
 
-    GUM_ACTIVE_TEST(_asia_MandatoryGraph) {
+    static void test_asia_MandatoryGraph() {
       gum::learning::DBInitializerFromCSV initializer(GET_RESSOURCES_PATH("csv/asia.csv"));
       const auto&                         var_names = initializer.variableNames();
       const std::size_t                   nb_vars   = var_names.size();
@@ -472,13 +478,13 @@ namespace gum_tests {
       search.setMandatoryGraph(mandaGraph);
 
       auto mg = search.learnMixedStructure(cI, graph);
-      TS_ASSERT(mg.existsArc(3, 4))
+      CHECK(mg.existsArc(3, 4));
 
       auto dag = search.learnStructure(cI, graph);
-      TS_ASSERT(dag.existsArc(3, 4))
+      CHECK(dag.existsArc(3, 4));
     }
 
-    GUM_ACTIVE_TEST(_alarm_MaxIndegree_) {
+    static void test_alarm_MaxIndegree_() {
       gum::learning::DBInitializerFromCSV initializer(GET_RESSOURCES_PATH("csv/alarm.csv"));
       const auto&                         var_names = initializer.variableNames();
       const std::size_t                   nb_vars   = var_names.size();
@@ -527,11 +533,11 @@ namespace gum_tests {
 
       gum::NodeSet nodesSet = graph.asNodeSet();
       for (auto& x: nodesSet) {
-        TS_ASSERT(graph.parents(x).size() <= n)
+        CHECK(graph.parents(x).size() <= n);
       }
     }
 
-    GUM_ACTIVE_TEST(_MIIC_ms_order1_) {
+    static void test_MIIC_ms_order1_() {
       // filterlistener.filter = 6;
       // GUM_CONNECT(search,
       //             onStructuralModification,
@@ -590,7 +596,7 @@ namespace gum_tests {
       auto pdag = search.learnPDAG(cI, graph);
     }
 
-    GUM_ACTIVE_TEST(_MIIC_ms_order2_) {
+    static void test_MIIC_ms_order2_() {
       // filterlistener.filter = 6;
       // GUM_CONNECT(search,
       //             onStructuralModification,
@@ -649,7 +655,7 @@ namespace gum_tests {
       auto pdag = search.learnPDAG(cI, graph);
     }
 
-    GUM_ACTIVE_TEST(_125_learn) {
+    static void test_125_learn() {
       gum::learning::DBInitializerFromCSV initializer(GET_RESSOURCES_PATH("csv/bn125.csv"));
       const auto&                         var_names = initializer.variableNames();
       const std::size_t                   nb_vars   = var_names.size();
@@ -696,4 +702,16 @@ namespace gum_tests {
       } catch (gum::Exception& e) { GUM_SHOWERROR(e) }
     }
   };   // MiicTestSuite
+
+  GUM_TEST_ACTIF(_latent_var_)
+  GUM_TEST_ACTIF(_titanic_learn)
+  GUM_TEST_ACTIF(_alarm_learn)
+  GUM_TEST_ACTIF(_census_learn)
+  GUM_TEST_ACTIF(_24_learn)
+  GUM_TEST_ACTIF(_asia_ForbiddenGraph)
+  GUM_TEST_ACTIF(_asia_MandatoryGraph)
+  GUM_TEST_ACTIF(_alarm_MaxIndegree_)
+  GUM_TEST_ACTIF(_MIIC_ms_order1_)
+  GUM_TEST_ACTIF(_MIIC_ms_order2_)
+  GUM_TEST_ACTIF(_125_learn)
 }   // namespace gum_tests

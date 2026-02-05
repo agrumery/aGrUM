@@ -1,7 +1,7 @@
 /****************************************************************************
  *   This file is part of the aGrUM/pyAgrum library.                        *
  *                                                                          *
- *   Copyright (c) 2005-2025 by                                             *
+ *   Copyright (c) 2005-2026 by                                             *
  *       - Pierre-Henri WUILLEMIN(_at_LIP6)                                 *
  *       - Christophe GONZALES(_at_AMU)                                     *
  *                                                                          *
@@ -27,7 +27,7 @@
  *                                                                          *
  *   See LICENCES for more details.                                         *
  *                                                                          *
- *   SPDX-FileCopyrightText: Copyright 2005-2025                            *
+ *   SPDX-FileCopyrightText: Copyright 2005-2026                            *
  *       - Pierre-Henri WUILLEMIN(_at_LIP6)                                 *
  *       - Christophe GONZALES(_at_AMU)                                     *
  *   SPDX-License-Identifier: LGPL-3.0-or-later OR MIT                      *
@@ -37,6 +37,7 @@
  *   gitlab   : https://gitlab.com/agrumery/agrum                           *
  *                                                                          *
  ****************************************************************************/
+
 #pragma once
 
 
@@ -52,6 +53,11 @@
 
 #include <sys/stat.h>
 
+#undef GUM_CURRENT_SUITE
+#undef GUM_CURRENT_MODULE
+#define GUM_CURRENT_SUITE  BIFXMLBNWriter
+#define GUM_CURRENT_MODULE BN
+
 // The graph used for the tests:
 //          1   2_          1 -> 3
 //         / \ / /          1 -> 4
@@ -61,39 +67,42 @@
 //                          2 -> 5
 
 namespace gum_tests {
-  class GUM_TEST_SUITE(BIFXMLBNWriter) {
+  struct BIFXMLBNWriterTestSuite {
     public:
-    GUM_ACTIVE_TEST(Constuctor) {
+    static void testConstuctor() {
       gum::BIFXMLBNWriter< double >* writer = nullptr;
-      TS_GUM_ASSERT_THROWS_NOTHING(writer = new gum::BIFXMLBNWriter< double >())
+      GUM_CHECK_ASSERT_THROWS_NOTHING(writer = new gum::BIFXMLBNWriter< double >());
       delete writer;
     }   // namespace gum_tests
 
-    GUM_ACTIVE_TEST(Writer_ostream) {
+    static void testWriter_ostream() {
       gum::BIFXMLBNWriter< double > writer;
       const auto                    bn = gum::BayesNet< double >::fastPrototype(
           "A[1,5]->B{a|b|c}->C{1|2|30|400}->D{1.|2|2.5|3|13.5}->E[1:5:10]");
       // Uncomment this to check the ouput
-      // TS_GUM_ASSERT_THROWS_NOTHING(writer.write(std::cerr,bn))
+      // GUM_CHECK_ASSERT_THROWS_NOTHING(writer.write(std::cerr,bn));
     }
 
-    GUM_ACTIVE_TEST(Writer_file) {
+    static void testWriter_file() {
       const auto bn = gum::BayesNet< double >::fastPrototype(
           "A[1,5]->B{a|b|c}->C{1|2|30|400}->D{1.|2|2.5|3|13.5}->E[1:5:10]");
       const std::string file = GET_RESSOURCES_PATH("bifxml/BNBIFXMLWriter_file1.bifxml");
       gum::BIFXMLBNWriter< double > writer;
-      TS_GUM_ASSERT_THROWS_NOTHING(writer.write(file, bn));
+      GUM_CHECK_ASSERT_THROWS_NOTHING(writer.write(file, bn));
 
 
       gum::BayesNet< double >       reload;
       gum::BIFXMLBNReader< double > reader(&reload, file);
-      TS_GUM_ASSERT_THROWS_NOTHING(reader.proceed())
+      GUM_CHECK_ASSERT_THROWS_NOTHING(reader.proceed());
 
       for (auto v: reload.nodes()) {
-        TS_ASSERT_EQUALS(reload.variable(v).toFast(),
-                         bn.variable(reload.variable(v).name()).toFast())
-        TS_GUM_TENSOR_ALMOST_EQUALS(reload.cpt(v), bn.cpt(reload.variable(v).name()))
+        CHECK((reload.variable(v).toFast()) == (bn.variable(reload.variable(v).name()).toFast()));
+        GUM_CHECK_TENSOR_ALMOST_EQUALS(reload.cpt(v), bn.cpt(reload.variable(v).name()));
       }
     }
   };
+
+  GUM_TEST_ACTIF(Constuctor)
+  GUM_TEST_ACTIF(Writer_ostream)
+  GUM_TEST_ACTIF(Writer_file)
 }   // namespace gum_tests

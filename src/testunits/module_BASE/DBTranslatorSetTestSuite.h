@@ -1,7 +1,7 @@
 /****************************************************************************
  *   This file is part of the aGrUM/pyAgrum library.                        *
  *                                                                          *
- *   Copyright (c) 2005-2025 by                                             *
+ *   Copyright (c) 2005-2026 by                                             *
  *       - Pierre-Henri WUILLEMIN(_at_LIP6)                                 *
  *       - Christophe GONZALES(_at_AMU)                                     *
  *                                                                          *
@@ -27,7 +27,7 @@
  *                                                                          *
  *   See LICENCES for more details.                                         *
  *                                                                          *
- *   SPDX-FileCopyrightText: Copyright 2005-2025                            *
+ *   SPDX-FileCopyrightText: Copyright 2005-2026                            *
  *       - Pierre-Henri WUILLEMIN(_at_LIP6)                                 *
  *       - Christophe GONZALES(_at_AMU)                                     *
  *   SPDX-License-Identifier: LGPL-3.0-or-later OR MIT                      *
@@ -37,6 +37,7 @@
  *   gitlab   : https://gitlab.com/agrumery/agrum                           *
  *                                                                          *
  ****************************************************************************/
+
 #pragma once
 
 
@@ -53,125 +54,125 @@
 #include <agrum/base/database/DBTranslator4RangeVariable.h>
 #include <agrum/base/database/DBTranslatorSet.h>
 
+#undef GUM_CURRENT_SUITE
+#undef GUM_CURRENT_MODULE
+#define GUM_CURRENT_SUITE  DBTranslatorSet
+#define GUM_CURRENT_MODULE GUMBASE
+
 namespace gum_tests {
 
-  class GUM_TEST_SUITE(DBTranslatorSet) {
+  struct DBTranslatorSetTestSuite {
     public:
-    GUM_ACTIVE_TEST(_trans1) {
+    static void testTrans1() {
       gum::learning::DBTranslatorSet set;
 
       std::vector< std::string >                    missing{"?", "N/A", "???"};
       gum::learning::DBTranslator4LabelizedVariable translator1(missing, 3);
       std::size_t                                   pos;
       pos = set.insertTranslator(translator1, 1);
-      TS_ASSERT_EQUALS(pos, std::size_t(0))
+      CHECK((pos) == (std::size_t(0)));
 
       gum::learning::DBTranslator4ContinuousVariable translator0;
       pos = set.insertTranslator(translator0, 0);
-      TS_ASSERT_EQUALS(pos, std::size_t(1))
+      CHECK((pos) == (std::size_t(1)));
 
       gum::learning::DBTranslator4LabelizedVariable translator2;
       pos = set.insertTranslator(translator2, 2);
-      TS_ASSERT_EQUALS(pos, std::size_t(2))
+      CHECK((pos) == (std::size_t(2)));
 
       std::vector< std::string > row1{".33", "toto", "titi"};
-      TS_ASSERT_EQUALS(set.translate(row1, 0).discr_val, (std::size_t)0)
-      TS_ASSERT_EQUALS(set.translate(row1, 1).cont_val, 0.33f)
-      TS_ASSERT_EQUALS(set.translate(row1, 2).discr_val, (std::size_t)0)
+      CHECK((set.translate(row1, 0).discr_val) == ((std::size_t)0));
+      CHECK((set.translate(row1, 1).cont_val) == (0.33f));
+      CHECK((set.translate(row1, 2).discr_val) == ((std::size_t)0));
 
       std::vector< std::string > row2{".22", "titi", "toto"};
-      TS_ASSERT_EQUALS(set.translate(row2, 0).discr_val, (std::size_t)1)
-      TS_ASSERT_EQUALS(set.translate(row2, 1).cont_val, 0.22f)
-      TS_ASSERT_EQUALS(set.translate(row2, 2).discr_val, (std::size_t)1)
+      CHECK((set.translate(row2, 0).discr_val) == ((std::size_t)1));
+      CHECK((set.translate(row2, 1).cont_val) == (0.22f));
+      CHECK((set.translate(row2, 2).discr_val) == ((std::size_t)1));
 
       std::vector< std::string > row3{".33", "toto", "toto"};
-      TS_ASSERT_EQUALS(set.translate(row3, 0).discr_val, (std::size_t)0)
-      TS_ASSERT_EQUALS(set.translate(row3, 1).cont_val, 0.33f)
-      TS_ASSERT_EQUALS(set.translate(row3, 2).discr_val, (std::size_t)1)
+      CHECK((set.translate(row3, 0).discr_val) == ((std::size_t)0));
+      CHECK((set.translate(row3, 1).cont_val) == (0.33f));
+      CHECK((set.translate(row3, 2).discr_val) == ((std::size_t)1));
 
       std::vector< std::string > row4{"???", "???", "???"};
-      TS_ASSERT_EQUALS(set.translate(row4, 0).discr_val, std::numeric_limits< std::size_t >::max())
-      TS_ASSERT_THROWS(set.translate(row4, 1), const gum::TypeError&)
+      CHECK((set.translate(row4, 0).discr_val) == (std::numeric_limits< std::size_t >::max()));
+      CHECK_THROWS_AS(set.translate(row4, 1), const gum::TypeError&);
 
       std::vector< std::string > row5{"4.22x", "???", "???"};
-      TS_ASSERT_THROWS(set.translate(row5, 1), const gum::TypeError&)
-      TS_ASSERT_EQUALS(set.translate(row5, 2).discr_val, (std::size_t)2)
+      CHECK_THROWS_AS(set.translate(row5, 1), const gum::TypeError&);
+      CHECK((set.translate(row5, 2).discr_val) == ((std::size_t)2));
 
-      TS_ASSERT_THROWS(set.translateSafe(row5, 3), const gum::UndefinedElement&)
+      CHECK_THROWS_AS(set.translateSafe(row5, 3), const gum::UndefinedElement&);
 
-      TS_ASSERT_EQUALS(set.translateBack(gum::learning::DBTranslatedValue{std::size_t{0}}, 0),
-                       "toto");
-      TS_ASSERT_EQUALS(std::stof(set.translateBack(gum::learning::DBTranslatedValue{7.42f}, 1)),
-                       7.42f);
-      TS_ASSERT_EQUALS(set.translateBack(gum::learning::DBTranslatedValue{std::size_t{2}}, 2),
-                       "???");
-      TS_ASSERT_THROWS(set.translateBackSafe(gum::learning::DBTranslatedValue{std::size_t{0}}, 3),
-                       const gum::UndefinedElement&)
+      CHECK((set.translateBack(gum::learning::DBTranslatedValue{std::size_t{0}}, 0)) == ("toto"));
+      CHECK((std::stof(set.translateBack(gum::learning::DBTranslatedValue{7.42f}, 1))) == (7.42f));
+      CHECK((set.translateBack(gum::learning::DBTranslatedValue{std::size_t{2}}, 2)) == ("???"));
+      CHECK_THROWS_AS(set.translateBackSafe(gum::learning::DBTranslatedValue{std::size_t{0}}, 3),
+                      const gum::UndefinedElement&);
 
-      TS_ASSERT_EQUALS(set.domainSize(0), (std::size_t)2)
-      TS_ASSERT_EQUALS(set.domainSize(2), (std::size_t)3)
-      TS_ASSERT_EQUALS(set.domainSize(1), std::numeric_limits< std::size_t >::max())
-      TS_ASSERT_EQUALS(set.domainSizeSafe(0), (std::size_t)2)
-      TS_ASSERT_EQUALS(set.domainSizeSafe(2), (std::size_t)3)
-      TS_ASSERT_EQUALS(set.domainSizeSafe(1), std::numeric_limits< std::size_t >::max())
+      CHECK((set.domainSize(0)) == ((std::size_t)2));
+      CHECK((set.domainSize(2)) == ((std::size_t)3));
+      CHECK((set.domainSize(1)) == (std::numeric_limits< std::size_t >::max()));
+      CHECK((set.domainSizeSafe(0)) == ((std::size_t)2));
+      CHECK((set.domainSizeSafe(2)) == ((std::size_t)3));
+      CHECK((set.domainSizeSafe(1)) == (std::numeric_limits< std::size_t >::max()));
 
       gum::learning::DBTranslator4LabelizedVariable xtrans
           = dynamic_cast< const gum::learning::DBTranslator4LabelizedVariable& >(set.translator(0));
-      TS_ASSERT_EQUALS(xtrans.translate("toto").discr_val, (std::size_t)0)
-      TS_ASSERT_EQUALS(xtrans.translate("titi").discr_val, (std::size_t)1)
-      TS_ASSERT_EQUALS(xtrans.translate("???").discr_val,
-                       std::numeric_limits< std::size_t >::max());
+      CHECK((xtrans.translate("toto").discr_val) == ((std::size_t)0));
+      CHECK((xtrans.translate("titi").discr_val) == ((std::size_t)1));
+      CHECK((xtrans.translate("???").discr_val) == (std::numeric_limits< std::size_t >::max()));
 
       gum::learning::DBTranslator4LabelizedVariable xtransb
           = dynamic_cast< const gum::learning::DBTranslator4LabelizedVariable& >(
               set.translatorSafe(0));
-      TS_ASSERT_EQUALS(xtransb.translate("toto").discr_val, (std::size_t)0)
-      TS_ASSERT_EQUALS(xtransb.translate("titi").discr_val, (std::size_t)1)
-      TS_ASSERT_EQUALS(xtransb.translate("???").discr_val,
-                       std::numeric_limits< std::size_t >::max());
+      CHECK((xtransb.translate("toto").discr_val) == ((std::size_t)0));
+      CHECK((xtransb.translate("titi").discr_val) == ((std::size_t)1));
+      CHECK((xtransb.translate("???").discr_val) == (std::numeric_limits< std::size_t >::max()));
 
-      TS_ASSERT_EQUALS(set.nbTranslators(), (std::size_t)3)
-      TS_ASSERT_EQUALS(set.size(), (std::size_t)3)
+      CHECK((set.nbTranslators()) == ((std::size_t)3));
+      CHECK((set.size()) == ((std::size_t)3));
 
       gum::LabelizedVariable var = dynamic_cast< const gum::LabelizedVariable& >(set.variable(0));
-      TS_ASSERT_EQUALS(var.domainSize(), static_cast< gum::Size >(2))
-      TS_ASSERT_EQUALS(var.label(0), "toto")
-      TS_ASSERT_EQUALS(var.label(1), "titi")
+      CHECK((var.domainSize()) == (static_cast< gum::Size >(2)));
+      CHECK((var.label(0)) == ("toto"));
+      CHECK((var.label(1)) == ("titi"));
 
       gum::LabelizedVariable varb
           = dynamic_cast< const gum::LabelizedVariable& >(set.variableSafe(0));
-      TS_ASSERT_EQUALS(varb.domainSize(), static_cast< gum::Size >(2))
-      TS_ASSERT_EQUALS(varb.label(0), "toto")
-      TS_ASSERT_EQUALS(varb.label(1), "titi")
+      CHECK((varb.domainSize()) == (static_cast< gum::Size >(2)));
+      CHECK((varb.label(0)) == ("toto"));
+      CHECK((varb.label(1)) == ("titi"));
 
       const gum::learning::DBTranslatedValue miss_disc{std::numeric_limits< std::size_t >::max()};
       const gum::learning::DBTranslatedValue miss_cont{std::numeric_limits< float >::max()};
-      TS_ASSERT(set.isMissingValue(miss_disc, 0))
-      TS_ASSERT(set.isMissingValue(miss_cont, 1))
-      TS_ASSERT(set.isMissingValue(miss_disc, 2))
-      TS_ASSERT(set.isMissingValueSafe(miss_disc, 0))
-      TS_ASSERT(set.isMissingValueSafe(miss_cont, 1))
-      TS_ASSERT(set.isMissingValueSafe(miss_disc, 2))
+      CHECK(set.isMissingValue(miss_disc, 0));
+      CHECK(set.isMissingValue(miss_cont, 1));
+      CHECK(set.isMissingValue(miss_disc, 2));
+      CHECK(set.isMissingValueSafe(miss_disc, 0));
+      CHECK(set.isMissingValueSafe(miss_cont, 1));
+      CHECK(set.isMissingValueSafe(miss_disc, 2));
 
-      TS_ASSERT(set.needsReordering(0))
-      TS_ASSERT(set.needsReorderingSafe(0))
+      CHECK(set.needsReordering(0));
+      CHECK(set.needsReorderingSafe(0));
       const auto order = set.reorder(0);
-      TS_ASSERT_EQUALS(order[0], std::size_t(1))
-      TS_ASSERT_EQUALS(order[1], std::size_t(0))
+      CHECK((order[0]) == (std::size_t(1)));
+      CHECK((order[1]) == (std::size_t(0)));
 
-      TS_ASSERT_EQUALS(set.inputColumn(0), std::size_t(1))
-      TS_ASSERT_EQUALS(set.inputColumn(1), std::size_t(0))
-      TS_ASSERT_EQUALS(set.inputColumn(2), std::size_t(2))
-      TS_ASSERT_EQUALS(set.inputColumnSafe(0), std::size_t(1))
-      TS_ASSERT_EQUALS(set.inputColumnSafe(1), std::size_t(0))
-      TS_ASSERT_EQUALS(set.inputColumnSafe(2), std::size_t(2))
-      TS_ASSERT_EQUALS(set.highestInputColumn(), std::size_t(2))
+      CHECK((set.inputColumn(0)) == (std::size_t(1)));
+      CHECK((set.inputColumn(1)) == (std::size_t(0)));
+      CHECK((set.inputColumn(2)) == (std::size_t(2)));
+      CHECK((set.inputColumnSafe(0)) == (std::size_t(1)));
+      CHECK((set.inputColumnSafe(1)) == (std::size_t(0)));
+      CHECK((set.inputColumnSafe(2)) == (std::size_t(2)));
+      CHECK((set.highestInputColumn()) == (std::size_t(2)));
 
       set.clear();
-      TS_ASSERT_EQUALS(set.nbTranslators(), (std::size_t)0)
+      CHECK((set.nbTranslators()) == ((std::size_t)0));
     }   // namespace gum_tests
 
-    GUM_ACTIVE_TEST(_trans2) {
+    static void testTrans2() {
       {
         gum::learning::DBTranslatorSet set;
 
@@ -186,100 +187,99 @@ namespace gum_tests {
         set.insertTranslator(translator2, 2);
 
         std::vector< std::string > row1{".33", "toto", "titi"};
-        TS_ASSERT_EQUALS(set.translate(row1, 0).discr_val, (std::size_t)0)
-        TS_ASSERT_EQUALS(set.translate(row1, 1).cont_val, 0.33f)
-        TS_ASSERT_EQUALS(set.translate(row1, 2).discr_val, (std::size_t)0)
+        CHECK((set.translate(row1, 0).discr_val) == ((std::size_t)0));
+        CHECK((set.translate(row1, 1).cont_val) == (0.33f));
+        CHECK((set.translate(row1, 2).discr_val) == ((std::size_t)0));
 
         std::vector< std::string > row2{".22", "titi", "toto"};
-        TS_ASSERT_EQUALS(set.translate(row2, 0).discr_val, (std::size_t)1)
-        TS_ASSERT_EQUALS(set.translate(row2, 1).cont_val, 0.22f)
-        TS_ASSERT_EQUALS(set.translate(row2, 2).discr_val, (std::size_t)1)
+        CHECK((set.translate(row2, 0).discr_val) == ((std::size_t)1));
+        CHECK((set.translate(row2, 1).cont_val) == (0.22f));
+        CHECK((set.translate(row2, 2).discr_val) == ((std::size_t)1));
 
         std::vector< std::string > row3{".33", "toto", "toto"};
-        TS_ASSERT_EQUALS(set.translate(row3, 0).discr_val, (std::size_t)0)
-        TS_ASSERT_EQUALS(set.translate(row3, 1).cont_val, 0.33f)
-        TS_ASSERT_EQUALS(set.translate(row3, 2).discr_val, (std::size_t)1)
+        CHECK((set.translate(row3, 0).discr_val) == ((std::size_t)0));
+        CHECK((set.translate(row3, 1).cont_val) == (0.33f));
+        CHECK((set.translate(row3, 2).discr_val) == ((std::size_t)1));
 
         gum::learning::DBTranslator4LabelizedVariable xtrans
             = dynamic_cast< const gum::learning::DBTranslator4LabelizedVariable& >(
                 set.translator(0));
-        TS_ASSERT_EQUALS(xtrans.translate("toto").discr_val, (std::size_t)0)
-        TS_ASSERT_EQUALS(xtrans.translate("titi").discr_val, (std::size_t)1)
-        TS_ASSERT_EQUALS(xtrans.translate("???").discr_val,
-                         std::numeric_limits< std::size_t >::max());
+        CHECK((xtrans.translate("toto").discr_val) == ((std::size_t)0));
+        CHECK((xtrans.translate("titi").discr_val) == ((std::size_t)1));
+        CHECK((xtrans.translate("???").discr_val) == (std::numeric_limits< std::size_t >::max()));
 
         gum::learning::DBTranslatorSet set2(set);
-        TS_ASSERT_EQUALS(set2.translate(row1, 0).discr_val, (std::size_t)0)
-        TS_ASSERT_EQUALS(set2.translate(row1, 1).cont_val, 0.33f)
-        TS_ASSERT_EQUALS(set2.translate(row1, 2).discr_val, (std::size_t)0)
-        TS_ASSERT_EQUALS(set2.translate(row2, 0).discr_val, (std::size_t)1)
-        TS_ASSERT_EQUALS(set2.translate(row2, 1).cont_val, 0.22f)
-        TS_ASSERT_EQUALS(set2.translate(row2, 2).discr_val, (std::size_t)1)
-        TS_ASSERT_EQUALS(set2.translate(row3, 0).discr_val, (std::size_t)0)
-        TS_ASSERT_EQUALS(set2.translate(row3, 1).cont_val, 0.33f)
-        TS_ASSERT_EQUALS(set2.translate(row3, 2).discr_val, (std::size_t)1)
+        CHECK((set2.translate(row1, 0).discr_val) == ((std::size_t)0));
+        CHECK((set2.translate(row1, 1).cont_val) == (0.33f));
+        CHECK((set2.translate(row1, 2).discr_val) == ((std::size_t)0));
+        CHECK((set2.translate(row2, 0).discr_val) == ((std::size_t)1));
+        CHECK((set2.translate(row2, 1).cont_val) == (0.22f));
+        CHECK((set2.translate(row2, 2).discr_val) == ((std::size_t)1));
+        CHECK((set2.translate(row3, 0).discr_val) == ((std::size_t)0));
+        CHECK((set2.translate(row3, 1).cont_val) == (0.33f));
+        CHECK((set2.translate(row3, 2).discr_val) == ((std::size_t)1));
         gum::learning::DBTranslator4LabelizedVariable xtrans2
             = dynamic_cast< const gum::learning::DBTranslator4LabelizedVariable& >(
                 set2.translator(0));
-        TS_ASSERT_EQUALS(xtrans2.translate("toto").discr_val, (std::size_t)0)
-        TS_ASSERT_EQUALS(xtrans2.translate("titi").discr_val, (std::size_t)1)
+        CHECK((xtrans2.translate("toto").discr_val) == ((std::size_t)0));
+        CHECK((xtrans2.translate("titi").discr_val) == ((std::size_t)1));
 
         gum::learning::DBTranslatorSet set2bis(set2);
         gum::learning::DBTranslatorSet set3(std::move(set2));
-        TS_ASSERT_EQUALS(set3.translate(row1, 0).discr_val, (std::size_t)0)
-        TS_ASSERT_EQUALS(set3.translate(row1, 1).cont_val, 0.33f)
-        TS_ASSERT_EQUALS(set3.translate(row1, 2).discr_val, (std::size_t)0)
-        TS_ASSERT_EQUALS(set3.translate(row2, 0).discr_val, (std::size_t)1)
-        TS_ASSERT_EQUALS(set3.translate(row2, 1).cont_val, 0.22f)
-        TS_ASSERT_EQUALS(set3.translate(row2, 2).discr_val, (std::size_t)1)
-        TS_ASSERT_EQUALS(set3.translate(row3, 0).discr_val, (std::size_t)0)
-        TS_ASSERT_EQUALS(set3.translate(row3, 1).cont_val, 0.33f)
-        TS_ASSERT_EQUALS(set3.translate(row3, 2).discr_val, (std::size_t)1)
+        CHECK((set3.translate(row1, 0).discr_val) == ((std::size_t)0));
+        CHECK((set3.translate(row1, 1).cont_val) == (0.33f));
+        CHECK((set3.translate(row1, 2).discr_val) == ((std::size_t)0));
+        CHECK((set3.translate(row2, 0).discr_val) == ((std::size_t)1));
+        CHECK((set3.translate(row2, 1).cont_val) == (0.22f));
+        CHECK((set3.translate(row2, 2).discr_val) == ((std::size_t)1));
+        CHECK((set3.translate(row3, 0).discr_val) == ((std::size_t)0));
+        CHECK((set3.translate(row3, 1).cont_val) == (0.33f));
+        CHECK((set3.translate(row3, 2).discr_val) == ((std::size_t)1));
         gum::learning::DBTranslator4LabelizedVariable xtrans3
             = dynamic_cast< const gum::learning::DBTranslator4LabelizedVariable& >(
                 set3.translator(0));
-        TS_ASSERT_EQUALS(xtrans3.translate("toto").discr_val, (std::size_t)0)
-        TS_ASSERT_EQUALS(xtrans3.translate("titi").discr_val, (std::size_t)1)
+        CHECK((xtrans3.translate("toto").discr_val) == ((std::size_t)0));
+        CHECK((xtrans3.translate("titi").discr_val) == ((std::size_t)1));
 
         gum::learning::DBTranslatorSet set4(set);
-        TS_ASSERT_EQUALS(set4.translate(row1, 0).discr_val, (std::size_t)0)
-        TS_ASSERT_EQUALS(set4.translate(row1, 1).cont_val, 0.33f)
-        TS_ASSERT_EQUALS(set4.translate(row1, 2).discr_val, (std::size_t)0)
-        TS_ASSERT_EQUALS(set4.translate(row2, 0).discr_val, (std::size_t)1)
-        TS_ASSERT_EQUALS(set4.translate(row2, 1).cont_val, 0.22f)
-        TS_ASSERT_EQUALS(set4.translate(row2, 2).discr_val, (std::size_t)1)
-        TS_ASSERT_EQUALS(set4.translate(row3, 0).discr_val, (std::size_t)0)
-        TS_ASSERT_EQUALS(set4.translate(row3, 1).cont_val, 0.33f)
-        TS_ASSERT_EQUALS(set4.translate(row3, 2).discr_val, (std::size_t)1)
+        CHECK((set4.translate(row1, 0).discr_val) == ((std::size_t)0));
+        CHECK((set4.translate(row1, 1).cont_val) == (0.33f));
+        CHECK((set4.translate(row1, 2).discr_val) == ((std::size_t)0));
+        CHECK((set4.translate(row2, 0).discr_val) == ((std::size_t)1));
+        CHECK((set4.translate(row2, 1).cont_val) == (0.22f));
+        CHECK((set4.translate(row2, 2).discr_val) == ((std::size_t)1));
+        CHECK((set4.translate(row3, 0).discr_val) == ((std::size_t)0));
+        CHECK((set4.translate(row3, 1).cont_val) == (0.33f));
+        CHECK((set4.translate(row3, 2).discr_val) == ((std::size_t)1));
         gum::learning::DBTranslator4LabelizedVariable xtrans4
             = dynamic_cast< const gum::learning::DBTranslator4LabelizedVariable& >(
                 set4.translator(0));
-        TS_ASSERT_EQUALS(xtrans4.translate("toto").discr_val, (std::size_t)0)
-        TS_ASSERT_EQUALS(xtrans4.translate("titi").discr_val, (std::size_t)1)
+        CHECK((xtrans4.translate("toto").discr_val) == ((std::size_t)0));
+        CHECK((xtrans4.translate("titi").discr_val) == ((std::size_t)1));
 
         gum::learning::DBTranslatorSet set5(std::move(set2bis));
-        TS_ASSERT_EQUALS(set5.translate(row1, 0).discr_val, (std::size_t)0)
-        TS_ASSERT_EQUALS(set5.translate(row1, 1).cont_val, 0.33f)
-        TS_ASSERT_EQUALS(set5.translate(row1, 2).discr_val, (std::size_t)0)
-        TS_ASSERT_EQUALS(set5.translate(row2, 0).discr_val, (std::size_t)1)
-        TS_ASSERT_EQUALS(set5.translate(row2, 1).cont_val, 0.22f)
-        TS_ASSERT_EQUALS(set5.translate(row2, 2).discr_val, (std::size_t)1)
-        TS_ASSERT_EQUALS(set5.translate(row3, 0).discr_val, (std::size_t)0)
-        TS_ASSERT_EQUALS(set5.translate(row3, 1).cont_val, 0.33f)
-        TS_ASSERT_EQUALS(set5.translate(row3, 2).discr_val, (std::size_t)1)
+        CHECK((set5.translate(row1, 0).discr_val) == ((std::size_t)0));
+        CHECK((set5.translate(row1, 1).cont_val) == (0.33f));
+        CHECK((set5.translate(row1, 2).discr_val) == ((std::size_t)0));
+        CHECK((set5.translate(row2, 0).discr_val) == ((std::size_t)1));
+        CHECK((set5.translate(row2, 1).cont_val) == (0.22f));
+        CHECK((set5.translate(row2, 2).discr_val) == ((std::size_t)1));
+        CHECK((set5.translate(row3, 0).discr_val) == ((std::size_t)0));
+        CHECK((set5.translate(row3, 1).cont_val) == (0.33f));
+        CHECK((set5.translate(row3, 2).discr_val) == ((std::size_t)1));
         gum::learning::DBTranslator4LabelizedVariable xtrans5
             = dynamic_cast< const gum::learning::DBTranslator4LabelizedVariable& >(
                 set5.translator(0));
-        TS_ASSERT_EQUALS(xtrans5.translate("toto").discr_val, (std::size_t)0)
-        TS_ASSERT_EQUALS(xtrans5.translate("titi").discr_val, (std::size_t)1)
+        CHECK((xtrans5.translate("toto").discr_val) == ((std::size_t)0));
+        CHECK((xtrans5.translate("titi").discr_val) == ((std::size_t)1));
 
         const auto ordersafe = set.reorderSafe(0);
-        TS_ASSERT_EQUALS(ordersafe[0], std::size_t(1))
-        TS_ASSERT_EQUALS(ordersafe[1], std::size_t(0))
+        CHECK((ordersafe[0]) == (std::size_t(1)));
+        CHECK((ordersafe[1]) == (std::size_t(0)));
       }
     }
 
-    GUM_ACTIVE_TEST(_trans3) {
+    static void testTrans3() {
       gum::learning::DBTranslatorSet set;
 
       std::vector< std::string >                    missing{"?", "N/A", "???"};
@@ -293,41 +293,41 @@ namespace gum_tests {
       set.insertTranslator(translator2, 2);
 
       std::vector< std::string > row1{".33", "toto", "titi"};
-      TS_ASSERT_EQUALS(set.translate(row1, 0).discr_val, (std::size_t)0)
-      TS_ASSERT_EQUALS(set.translate(row1, 1).cont_val, 0.33f)
-      TS_ASSERT_EQUALS(set.translate(row1, 2).discr_val, (std::size_t)0)
+      CHECK((set.translate(row1, 0).discr_val) == ((std::size_t)0));
+      CHECK((set.translate(row1, 1).cont_val) == (0.33f));
+      CHECK((set.translate(row1, 2).discr_val) == ((std::size_t)0));
 
       std::vector< std::string > row2{".22", "titi", "toto"};
-      TS_ASSERT_EQUALS(set.translate(row2, 0).discr_val, (std::size_t)1)
-      TS_ASSERT_EQUALS(set.translate(row2, 1).cont_val, 0.22f)
-      TS_ASSERT_EQUALS(set.translate(row2, 2).discr_val, (std::size_t)1)
+      CHECK((set.translate(row2, 0).discr_val) == ((std::size_t)1));
+      CHECK((set.translate(row2, 1).cont_val) == (0.22f));
+      CHECK((set.translate(row2, 2).discr_val) == ((std::size_t)1));
 
       std::vector< std::string > row3{".33", "toto", "toto"};
-      TS_ASSERT_EQUALS(set.translate(row3, 0).discr_val, (std::size_t)0)
-      TS_ASSERT_EQUALS(set.translate(row3, 1).cont_val, 0.33f)
-      TS_ASSERT_EQUALS(set.translate(row3, 2).discr_val, (std::size_t)1)
+      CHECK((set.translate(row3, 0).discr_val) == ((std::size_t)0));
+      CHECK((set.translate(row3, 1).cont_val) == (0.33f));
+      CHECK((set.translate(row3, 2).discr_val) == ((std::size_t)1));
 
 
       gum::learning::DBTranslatorSet* set4 = set.clone();
-      TS_ASSERT_EQUALS(set4->translate(row1, 0).discr_val, (std::size_t)0)
-      TS_ASSERT_EQUALS(set4->translate(row1, 1).cont_val, 0.33f)
-      TS_ASSERT_EQUALS(set4->translate(row1, 2).discr_val, (std::size_t)0)
-      TS_ASSERT_EQUALS(set4->translate(row2, 0).discr_val, (std::size_t)1)
-      TS_ASSERT_EQUALS(set4->translate(row2, 1).cont_val, 0.22f)
-      TS_ASSERT_EQUALS(set4->translate(row2, 2).discr_val, (std::size_t)1)
-      TS_ASSERT_EQUALS(set4->translate(row3, 0).discr_val, (std::size_t)0)
-      TS_ASSERT_EQUALS(set4->translate(row3, 1).cont_val, 0.33f)
-      TS_ASSERT_EQUALS(set4->translate(row3, 2).discr_val, (std::size_t)1)
+      CHECK((set4->translate(row1, 0).discr_val) == ((std::size_t)0));
+      CHECK((set4->translate(row1, 1).cont_val) == (0.33f));
+      CHECK((set4->translate(row1, 2).discr_val) == ((std::size_t)0));
+      CHECK((set4->translate(row2, 0).discr_val) == ((std::size_t)1));
+      CHECK((set4->translate(row2, 1).cont_val) == (0.22f));
+      CHECK((set4->translate(row2, 2).discr_val) == ((std::size_t)1));
+      CHECK((set4->translate(row3, 0).discr_val) == ((std::size_t)0));
+      CHECK((set4->translate(row3, 1).cont_val) == (0.33f));
+      CHECK((set4->translate(row3, 2).discr_val) == ((std::size_t)1));
       gum::learning::DBTranslator4LabelizedVariable xtrans4
           = dynamic_cast< const gum::learning::DBTranslator4LabelizedVariable& >(
               set4->translator(0));
-      TS_ASSERT_EQUALS(xtrans4.translate("toto").discr_val, (std::size_t)0)
-      TS_ASSERT_EQUALS(xtrans4.translate("titi").discr_val, (std::size_t)1)
+      CHECK((xtrans4.translate("toto").discr_val) == ((std::size_t)0));
+      CHECK((xtrans4.translate("titi").discr_val) == ((std::size_t)1));
 
       delete set4;
     }
 
-    GUM_ACTIVE_TEST(_trans4) {
+    static void testTrans4() {
       {
         gum::learning::DBTranslatorSet set;
 
@@ -342,73 +342,73 @@ namespace gum_tests {
         set.insertTranslator(translator2, 2);
 
         std::vector< std::string > row1{".33", "toto", "titi"};
-        TS_ASSERT_EQUALS(set.translate(row1, 0).discr_val, (std::size_t)0)
-        TS_ASSERT_EQUALS(set.translate(row1, 1).cont_val, 0.33f)
-        TS_ASSERT_EQUALS(set.translate(row1, 2).discr_val, (std::size_t)0)
+        CHECK((set.translate(row1, 0).discr_val) == ((std::size_t)0));
+        CHECK((set.translate(row1, 1).cont_val) == (0.33f));
+        CHECK((set.translate(row1, 2).discr_val) == ((std::size_t)0));
 
         std::vector< std::string > row2{".22", "titi", "toto"};
-        TS_ASSERT_EQUALS(set.translate(row2, 0).discr_val, (std::size_t)1)
-        TS_ASSERT_EQUALS(set.translate(row2, 1).cont_val, 0.22f)
-        TS_ASSERT_EQUALS(set.translate(row2, 2).discr_val, (std::size_t)1)
+        CHECK((set.translate(row2, 0).discr_val) == ((std::size_t)1));
+        CHECK((set.translate(row2, 1).cont_val) == (0.22f));
+        CHECK((set.translate(row2, 2).discr_val) == ((std::size_t)1));
 
         std::vector< std::string > row3{".33", "toto", "toto"};
-        TS_ASSERT_EQUALS(set.translate(row3, 0).discr_val, (std::size_t)0)
-        TS_ASSERT_EQUALS(set.translate(row3, 1).cont_val, 0.33f)
-        TS_ASSERT_EQUALS(set.translate(row3, 2).discr_val, (std::size_t)1)
+        CHECK((set.translate(row3, 0).discr_val) == ((std::size_t)0));
+        CHECK((set.translate(row3, 1).cont_val) == (0.33f));
+        CHECK((set.translate(row3, 2).discr_val) == ((std::size_t)1));
 
         gum::learning::DBTranslatorSet* set4 = set.clone();
-        TS_ASSERT_EQUALS(set4->translate(row1, 0).discr_val, (std::size_t)0)
-        TS_ASSERT_EQUALS(set4->translate(row1, 1).cont_val, 0.33f)
-        TS_ASSERT_EQUALS(set4->translate(row1, 2).discr_val, (std::size_t)0)
-        TS_ASSERT_EQUALS(set4->translate(row2, 0).discr_val, (std::size_t)1)
-        TS_ASSERT_EQUALS(set4->translate(row2, 1).cont_val, 0.22f)
-        TS_ASSERT_EQUALS(set4->translate(row2, 2).discr_val, (std::size_t)1)
-        TS_ASSERT_EQUALS(set4->translate(row3, 0).discr_val, (std::size_t)0)
-        TS_ASSERT_EQUALS(set4->translate(row3, 1).cont_val, 0.33f)
-        TS_ASSERT_EQUALS(set4->translate(row3, 2).discr_val, (std::size_t)1)
+        CHECK((set4->translate(row1, 0).discr_val) == ((std::size_t)0));
+        CHECK((set4->translate(row1, 1).cont_val) == (0.33f));
+        CHECK((set4->translate(row1, 2).discr_val) == ((std::size_t)0));
+        CHECK((set4->translate(row2, 0).discr_val) == ((std::size_t)1));
+        CHECK((set4->translate(row2, 1).cont_val) == (0.22f));
+        CHECK((set4->translate(row2, 2).discr_val) == ((std::size_t)1));
+        CHECK((set4->translate(row3, 0).discr_val) == ((std::size_t)0));
+        CHECK((set4->translate(row3, 1).cont_val) == (0.33f));
+        CHECK((set4->translate(row3, 2).discr_val) == ((std::size_t)1));
         gum::learning::DBTranslator4LabelizedVariable xtrans4
             = dynamic_cast< const gum::learning::DBTranslator4LabelizedVariable& >(
                 set4->translator(0));
-        TS_ASSERT_EQUALS(xtrans4.translate("toto").discr_val, (std::size_t)0)
-        TS_ASSERT_EQUALS(xtrans4.translate("titi").discr_val, (std::size_t)1)
+        CHECK((xtrans4.translate("toto").discr_val) == ((std::size_t)0));
+        CHECK((xtrans4.translate("titi").discr_val) == ((std::size_t)1));
 
         gum::learning::DBTranslator4LabelizedVariable xtrans4b
             = dynamic_cast< const gum::learning::DBTranslator4LabelizedVariable& >(
                 set4->operator[](0));
-        TS_ASSERT_EQUALS(xtrans4b.translate("toto").discr_val, (std::size_t)0)
-        TS_ASSERT_EQUALS(xtrans4b.translate("titi").discr_val, (std::size_t)1)
+        CHECK((xtrans4b.translate("toto").discr_val) == ((std::size_t)0));
+        CHECK((xtrans4b.translate("titi").discr_val) == ((std::size_t)1));
 
         gum::learning::DBTranslator4LabelizedVariable xtrans4t
             = dynamic_cast< const gum::learning::DBTranslator4LabelizedVariable& >(
                 set4->translatorSafe(0));
-        TS_ASSERT_EQUALS(xtrans4t.translate("toto").discr_val, (std::size_t)0)
-        TS_ASSERT_EQUALS(xtrans4t.translate("titi").discr_val, (std::size_t)1)
+        CHECK((xtrans4t.translate("toto").discr_val) == ((std::size_t)0));
+        CHECK((xtrans4t.translate("titi").discr_val) == ((std::size_t)1));
 
         delete set4;
 
         gum::learning::DBTranslatorSet set2;
-        TS_ASSERT_EQUALS(set2.nbTranslators(), (std::size_t)0)
+        CHECK((set2.nbTranslators()) == ((std::size_t)0));
         set2 = set;
-        TS_ASSERT_EQUALS(set2.translate(row3, 0).discr_val, (std::size_t)0)
-        TS_ASSERT_EQUALS(set2.translate(row3, 1).cont_val, 0.33f)
-        TS_ASSERT_EQUALS(set2.translate(row3, 2).discr_val, (std::size_t)1)
-        TS_ASSERT_EQUALS(set2.translate(row3, 0).discr_val, (std::size_t)0)
-        TS_ASSERT_EQUALS(set2.translate(row3, 1).cont_val, 0.33f)
-        TS_ASSERT_EQUALS(set2.translate(row3, 2).discr_val, (std::size_t)1)
+        CHECK((set2.translate(row3, 0).discr_val) == ((std::size_t)0));
+        CHECK((set2.translate(row3, 1).cont_val) == (0.33f));
+        CHECK((set2.translate(row3, 2).discr_val) == ((std::size_t)1));
+        CHECK((set2.translate(row3, 0).discr_val) == ((std::size_t)0));
+        CHECK((set2.translate(row3, 1).cont_val) == (0.33f));
+        CHECK((set2.translate(row3, 2).discr_val) == ((std::size_t)1));
 
         gum::learning::DBTranslatorSet set3;
-        TS_ASSERT_EQUALS(set3.nbTranslators(), (std::size_t)0)
+        CHECK((set3.nbTranslators()) == ((std::size_t)0));
         set3 = std::move(set);
-        TS_ASSERT_EQUALS(set3.translate(row3, 0).discr_val, (std::size_t)0)
-        TS_ASSERT_EQUALS(set3.translate(row3, 1).cont_val, 0.33f)
-        TS_ASSERT_EQUALS(set3.translate(row3, 2).discr_val, (std::size_t)1)
-        TS_ASSERT_EQUALS(set3.translate(row3, 0).discr_val, (std::size_t)0)
-        TS_ASSERT_EQUALS(set3.translate(row3, 1).cont_val, 0.33f)
-        TS_ASSERT_EQUALS(set3.translate(row3, 2).discr_val, (std::size_t)1)
+        CHECK((set3.translate(row3, 0).discr_val) == ((std::size_t)0));
+        CHECK((set3.translate(row3, 1).cont_val) == (0.33f));
+        CHECK((set3.translate(row3, 2).discr_val) == ((std::size_t)1));
+        CHECK((set3.translate(row3, 0).discr_val) == ((std::size_t)0));
+        CHECK((set3.translate(row3, 1).cont_val) == (0.33f));
+        CHECK((set3.translate(row3, 2).discr_val) == ((std::size_t)1));
       }
     }
 
-    GUM_ACTIVE_TEST(_trans5) {
+    static void testTrans5() {
       gum::learning::DBTranslatorSet set;
       std::size_t                    pos;
 
@@ -417,103 +417,99 @@ namespace gum_tests {
       var1.addLabel("toto");
       var1.addLabel("titi");
       pos = set.insertTranslator(var1, 1, missing, false);
-      TS_ASSERT_EQUALS(pos, std::size_t(0))
+      CHECK((pos) == (std::size_t(0)));
 
       gum::ContinuousVariable< double > var0("var0", "");
       pos = set.insertTranslator(var0, 0, missing);
-      TS_ASSERT_EQUALS(pos, std::size_t(1))
+      CHECK((pos) == (std::size_t(1)));
 
       gum::LabelizedVariable var2("var2", "", 0);
       var2.addLabel("titi");
       var2.addLabel("toto");
       pos = set.insertTranslator(var2, 2, missing);
-      TS_ASSERT_EQUALS(pos, std::size_t(2))
+      CHECK((pos) == (std::size_t(2)));
 
       std::vector< std::string > row1{".33", "toto", "titi"};
-      TS_ASSERT_EQUALS(set.translate(row1, 0).discr_val, (std::size_t)0)
-      TS_ASSERT_EQUALS(set.translate(row1, 1).cont_val, 0.33f)
-      TS_ASSERT_EQUALS(set.translate(row1, 2).discr_val, (std::size_t)0)
+      CHECK((set.translate(row1, 0).discr_val) == ((std::size_t)0));
+      CHECK((set.translate(row1, 1).cont_val) == (0.33f));
+      CHECK((set.translate(row1, 2).discr_val) == ((std::size_t)0));
 
       std::vector< std::string > row2{".22", "titi", "toto"};
-      TS_ASSERT_EQUALS(set.translate(row2, 0).discr_val, (std::size_t)1)
-      TS_ASSERT_EQUALS(set.translate(row2, 1).cont_val, 0.22f)
-      TS_ASSERT_EQUALS(set.translate(row2, 2).discr_val, (std::size_t)1)
+      CHECK((set.translate(row2, 0).discr_val) == ((std::size_t)1));
+      CHECK((set.translate(row2, 1).cont_val) == (0.22f));
+      CHECK((set.translate(row2, 2).discr_val) == ((std::size_t)1));
 
       std::vector< std::string > row3{".33", "toto", "toto"};
-      TS_ASSERT_EQUALS(set.translate(row3, 0).discr_val, (std::size_t)0)
-      TS_ASSERT_EQUALS(set.translate(row3, 1).cont_val, 0.33f)
-      TS_ASSERT_EQUALS(set.translate(row3, 2).discr_val, (std::size_t)1)
+      CHECK((set.translate(row3, 0).discr_val) == ((std::size_t)0));
+      CHECK((set.translate(row3, 1).cont_val) == (0.33f));
+      CHECK((set.translate(row3, 2).discr_val) == ((std::size_t)1));
     }
 
-    GUM_ACTIVE_TEST(_trans6) {
+    static void testTrans6() {
       gum::learning::DBTranslatorSet set;
 
       std::vector< std::string >                    missing{"?", "N/A", "???"};
       gum::learning::DBTranslator4LabelizedVariable translator1(missing, 3);
       std::size_t                                   pos;
       pos = set.insertTranslator(translator1, 1, false);
-      TS_ASSERT_EQUALS(pos, std::size_t(0))
+      CHECK((pos) == (std::size_t(0)));
 
       gum::learning::DBTranslator4ContinuousVariable translator0;
       pos = set.insertTranslator(translator0, 0);
-      TS_ASSERT_EQUALS(pos, std::size_t(1))
+      CHECK((pos) == (std::size_t(1)));
 
       gum::learning::DBTranslator4LabelizedVariable translator2;
       pos = set.insertTranslator(translator2, 2);
-      TS_ASSERT_EQUALS(pos, std::size_t(2))
+      CHECK((pos) == (std::size_t(2)));
 
       pos = set.insertTranslator(translator1, 1, false);
-      TS_ASSERT_EQUALS(pos, std::size_t(3))
+      CHECK((pos) == (std::size_t(3)));
 
       std::vector< std::string > row1{".33", "toto", "titi"};
-      TS_ASSERT_EQUALS(set.translate(row1, 0).discr_val, (std::size_t)0)
-      TS_ASSERT_EQUALS(set.translate(row1, 1).cont_val, 0.33f)
-      TS_ASSERT_EQUALS(set.translate(row1, 2).discr_val, (std::size_t)0)
-      TS_ASSERT_EQUALS(set.translate(row1, 3).discr_val, (std::size_t)0)
+      CHECK((set.translate(row1, 0).discr_val) == ((std::size_t)0));
+      CHECK((set.translate(row1, 1).cont_val) == (0.33f));
+      CHECK((set.translate(row1, 2).discr_val) == ((std::size_t)0));
+      CHECK((set.translate(row1, 3).discr_val) == ((std::size_t)0));
 
       std::vector< std::string > row2{".22", "titi", "toto"};
-      TS_ASSERT_EQUALS(set.translate(row2, 0).discr_val, (std::size_t)1)
-      TS_ASSERT_EQUALS(set.translate(row2, 1).cont_val, 0.22f)
-      TS_ASSERT_EQUALS(set.translate(row2, 2).discr_val, (std::size_t)1)
-      TS_ASSERT_EQUALS(set.translate(row2, 3).discr_val, (std::size_t)1)
+      CHECK((set.translate(row2, 0).discr_val) == ((std::size_t)1));
+      CHECK((set.translate(row2, 1).cont_val) == (0.22f));
+      CHECK((set.translate(row2, 2).discr_val) == ((std::size_t)1));
+      CHECK((set.translate(row2, 3).discr_val) == ((std::size_t)1));
 
       std::vector< std::string > row3{".33", "toto", "toto"};
-      TS_ASSERT_EQUALS(set.translate(row3, 0).discr_val, (std::size_t)0)
-      TS_ASSERT_EQUALS(set.translate(row3, 1).cont_val, 0.33f)
-      TS_ASSERT_EQUALS(set.translate(row3, 2).discr_val, (std::size_t)1)
-      TS_ASSERT_EQUALS(set.translate(row3, 3).discr_val, (std::size_t)0)
+      CHECK((set.translate(row3, 0).discr_val) == ((std::size_t)0));
+      CHECK((set.translate(row3, 1).cont_val) == (0.33f));
+      CHECK((set.translate(row3, 2).discr_val) == ((std::size_t)1));
+      CHECK((set.translate(row3, 3).discr_val) == ((std::size_t)0));
 
       std::vector< std::string > row4{"???", "???", "???"};
-      TS_ASSERT_EQUALS(set.translate(row4, 0).discr_val, std::numeric_limits< std::size_t >::max())
-      TS_ASSERT_THROWS(set.translate(row4, 1), const gum::TypeError&)
-      TS_ASSERT_EQUALS(set.translate(row4, 3).discr_val, std::numeric_limits< std::size_t >::max())
+      CHECK((set.translate(row4, 0).discr_val) == (std::numeric_limits< std::size_t >::max()));
+      CHECK_THROWS_AS(set.translate(row4, 1), const gum::TypeError&);
+      CHECK((set.translate(row4, 3).discr_val) == (std::numeric_limits< std::size_t >::max()));
 
       std::vector< std::string > row5{"4.22x", "???", "???"};
-      TS_ASSERT_THROWS(set.translate(row5, 1), const gum::TypeError&)
-      TS_ASSERT_EQUALS(set.translate(row5, 2).discr_val, (std::size_t)2)
+      CHECK_THROWS_AS(set.translate(row5, 1), const gum::TypeError&);
+      CHECK((set.translate(row5, 2).discr_val) == ((std::size_t)2));
 
-      TS_ASSERT_THROWS(set.translateSafe(row5, 4), const gum::UndefinedElement&)
+      CHECK_THROWS_AS(set.translateSafe(row5, 4), const gum::UndefinedElement&);
 
-      TS_ASSERT_EQUALS(set.translateBack(gum::learning::DBTranslatedValue{std::size_t{0}}, 0),
-                       "toto");
-      TS_ASSERT_EQUALS(set.translateBack(gum::learning::DBTranslatedValue{std::size_t{0}}, 3),
-                       "toto");
-      TS_ASSERT_EQUALS(std::stof(set.translateBack(gum::learning::DBTranslatedValue{7.42f}, 1)),
-                       7.42f);
-      TS_ASSERT_EQUALS(set.translateBack(gum::learning::DBTranslatedValue{std::size_t{2}}, 2),
-                       "???");
+      CHECK((set.translateBack(gum::learning::DBTranslatedValue{std::size_t{0}}, 0)) == ("toto"));
+      CHECK((set.translateBack(gum::learning::DBTranslatedValue{std::size_t{0}}, 3)) == ("toto"));
+      CHECK((std::stof(set.translateBack(gum::learning::DBTranslatedValue{7.42f}, 1))) == (7.42f));
+      CHECK((set.translateBack(gum::learning::DBTranslatedValue{std::size_t{2}}, 2)) == ("???"));
 
-      TS_ASSERT_EQUALS(set.domainSize(0), (std::size_t)2)
-      TS_ASSERT_EQUALS(set.domainSize(2), (std::size_t)3)
-      TS_ASSERT_EQUALS(set.domainSize(1), std::numeric_limits< std::size_t >::max())
-      TS_ASSERT_EQUALS(set.domainSize(3), (std::size_t)2)
-      TS_ASSERT_EQUALS(set.domainSizeSafe(0), (std::size_t)2)
-      TS_ASSERT_EQUALS(set.domainSizeSafe(2), (std::size_t)3)
-      TS_ASSERT_EQUALS(set.domainSizeSafe(1), std::numeric_limits< std::size_t >::max())
-      TS_ASSERT_EQUALS(set.domainSizeSafe(3), (std::size_t)2)
+      CHECK((set.domainSize(0)) == ((std::size_t)2));
+      CHECK((set.domainSize(2)) == ((std::size_t)3));
+      CHECK((set.domainSize(1)) == (std::numeric_limits< std::size_t >::max()));
+      CHECK((set.domainSize(3)) == ((std::size_t)2));
+      CHECK((set.domainSizeSafe(0)) == ((std::size_t)2));
+      CHECK((set.domainSizeSafe(2)) == ((std::size_t)3));
+      CHECK((set.domainSizeSafe(1)) == (std::numeric_limits< std::size_t >::max()));
+      CHECK((set.domainSizeSafe(3)) == ((std::size_t)2));
     }
 
-    GUM_ACTIVE_TEST(_trans7) {
+    static void testTrans7() {
       gum::learning::DBTranslatorSet set;
       std::size_t                    pos;
 
@@ -521,25 +517,25 @@ namespace gum_tests {
       var1.addLabel("toto");
       var1.addLabel("titi");
       pos = set.insertTranslator(var1, 1, false);
-      TS_ASSERT_EQUALS(pos, std::size_t(0))
+      CHECK((pos) == (std::size_t(0)));
 
       gum::ContinuousVariable< double > var0("var0", "");
       pos = set.insertTranslator(var0, 0);
-      TS_ASSERT_EQUALS(pos, std::size_t(1))
+      CHECK((pos) == (std::size_t(1)));
 
       gum::LabelizedVariable var2("var2", "", 0);
       var2.addLabel("titi");
       var2.addLabel("toto");
       pos = set.insertTranslator(var2, 2);
-      TS_ASSERT_EQUALS(pos, std::size_t(2))
+      CHECK((pos) == (std::size_t(2)));
 
       std::vector< std::string > row1{".33", "toto", "titi"};
-      TS_ASSERT_EQUALS(set.translate(row1, 0).discr_val, (std::size_t)0)
-      TS_ASSERT_EQUALS(set.translate(row1, 1).cont_val, 0.33f)
-      TS_ASSERT_EQUALS(set.translate(row1, 2).discr_val, (std::size_t)0)
+      CHECK((set.translate(row1, 0).discr_val) == ((std::size_t)0));
+      CHECK((set.translate(row1, 1).cont_val) == (0.33f));
+      CHECK((set.translate(row1, 2).discr_val) == ((std::size_t)0));
     }
 
-    GUM_ACTIVE_TEST(_trans8) {
+    static void testTrans8() {
       gum::learning::DBTranslatorSet set;
 
       std::vector< std::string >                    missing{"?", "N/A", "???"};
@@ -548,75 +544,84 @@ namespace gum_tests {
 
       std::size_t pos;
       pos = set.insertTranslator(translator1, 1);
-      TS_ASSERT_EQUALS(pos, std::size_t(0))
+      CHECK((pos) == (std::size_t(0)));
 
       gum::learning::DBTranslator4ContinuousVariable translator0;
       translator0.setVariableName("X0");
       pos = set.insertTranslator(translator0, 0);
-      TS_ASSERT_EQUALS(pos, std::size_t(1))
+      CHECK((pos) == (std::size_t(1)));
 
       gum::learning::DBTranslator4LabelizedVariable translator2;
       translator2.setVariableName("X2");
       pos = set.insertTranslator(translator2, 2);
-      TS_ASSERT_EQUALS(pos, std::size_t(2))
+      CHECK((pos) == (std::size_t(2)));
 
       translator1.setVariableName("Y1");
       pos = set.insertTranslator(translator1, 1, false);
-      TS_ASSERT_EQUALS(pos, std::size_t(3))
+      CHECK((pos) == (std::size_t(3)));
 
       translator0.setVariableName("Y0");
       pos = set.insertTranslator(translator0, 0, false);
-      TS_ASSERT_EQUALS(pos, std::size_t(4))
+      CHECK((pos) == (std::size_t(4)));
 
       translator0.setVariableName("Z0");
       pos = set.insertTranslator(translator0, 0, false);
-      TS_ASSERT_EQUALS(pos, std::size_t(5))
+      CHECK((pos) == (std::size_t(5)));
 
       translator1.setVariableName("Z1");
       pos = set.insertTranslator(translator1, 1, false);
-      TS_ASSERT_EQUALS(pos, std::size_t(6))
+      CHECK((pos) == (std::size_t(6)));
 
-      const auto& vect_trans = set.translators();
-      TS_ASSERT_EQUALS(vect_trans.size(), std::size_t(7))
+      const auto& vectTrans = set.translators();
+      CHECK((vectTrans.size()) == (std::size_t(7)));
 
-      TS_ASSERT_EQUALS(vect_trans[0]->variable()->name(), "X1")
-      TS_ASSERT_EQUALS(vect_trans[1]->variable()->name(), "X0")
-      TS_ASSERT_EQUALS(vect_trans[2]->variable()->name(), "X2")
-      TS_ASSERT_EQUALS(vect_trans[3]->variable()->name(), "Y1")
-      TS_ASSERT_EQUALS(vect_trans[4]->variable()->name(), "Y0")
-      TS_ASSERT_EQUALS(vect_trans[5]->variable()->name(), "Z0")
-      TS_ASSERT_EQUALS(vect_trans[6]->variable()->name(), "Z1")
-      TS_ASSERT_EQUALS(set.highestInputColumn(), std::size_t(2))
+      CHECK((vectTrans[0]->variable()->name()) == ("X1"));
+      CHECK((vectTrans[1]->variable()->name()) == ("X0"));
+      CHECK((vectTrans[2]->variable()->name()) == ("X2"));
+      CHECK((vectTrans[3]->variable()->name()) == ("Y1"));
+      CHECK((vectTrans[4]->variable()->name()) == ("Y0"));
+      CHECK((vectTrans[5]->variable()->name()) == ("Z0"));
+      CHECK((vectTrans[6]->variable()->name()) == ("Z1"));
+      CHECK((set.highestInputColumn()) == (std::size_t(2)));
 
       set.eraseTranslator(4, false);
-      TS_ASSERT_EQUALS(vect_trans.size(), std::size_t(6))
-      TS_ASSERT_EQUALS(vect_trans[0]->variable()->name(), "X1")
-      TS_ASSERT_EQUALS(vect_trans[1]->variable()->name(), "X0")
-      TS_ASSERT_EQUALS(vect_trans[2]->variable()->name(), "X2")
-      TS_ASSERT_EQUALS(vect_trans[3]->variable()->name(), "Y1")
-      TS_ASSERT_EQUALS(vect_trans[4]->variable()->name(), "Z0")
-      TS_ASSERT_EQUALS(vect_trans[5]->variable()->name(), "Z1")
-      TS_ASSERT_EQUALS(set.highestInputColumn(), std::size_t(2))
+      CHECK((vectTrans.size()) == (std::size_t(6)));
+      CHECK((vectTrans[0]->variable()->name()) == ("X1"));
+      CHECK((vectTrans[1]->variable()->name()) == ("X0"));
+      CHECK((vectTrans[2]->variable()->name()) == ("X2"));
+      CHECK((vectTrans[3]->variable()->name()) == ("Y1"));
+      CHECK((vectTrans[4]->variable()->name()) == ("Z0"));
+      CHECK((vectTrans[5]->variable()->name()) == ("Z1"));
+      CHECK((set.highestInputColumn()) == (std::size_t(2)));
 
       set.eraseTranslator(0, true);
-      TS_ASSERT_EQUALS(vect_trans.size(), std::size_t(4))
-      TS_ASSERT_EQUALS(vect_trans[0]->variable()->name(), "X1")
-      TS_ASSERT_EQUALS(vect_trans[1]->variable()->name(), "X2")
-      TS_ASSERT_EQUALS(vect_trans[2]->variable()->name(), "Y1")
-      TS_ASSERT_EQUALS(vect_trans[3]->variable()->name(), "Z1")
-      TS_ASSERT_EQUALS(set.highestInputColumn(), std::size_t(2))
+      CHECK((vectTrans.size()) == (std::size_t(4)));
+      CHECK((vectTrans[0]->variable()->name()) == ("X1"));
+      CHECK((vectTrans[1]->variable()->name()) == ("X2"));
+      CHECK((vectTrans[2]->variable()->name()) == ("Y1"));
+      CHECK((vectTrans[3]->variable()->name()) == ("Z1"));
+      CHECK((set.highestInputColumn()) == (std::size_t(2)));
 
       set.eraseTranslator(2, true);
-      TS_ASSERT_EQUALS(vect_trans.size(), std::size_t(3))
-      TS_ASSERT_EQUALS(vect_trans[0]->variable()->name(), "X1")
-      TS_ASSERT_EQUALS(vect_trans[1]->variable()->name(), "Y1")
-      TS_ASSERT_EQUALS(vect_trans[2]->variable()->name(), "Z1")
-      TS_ASSERT_EQUALS(set.highestInputColumn(), std::size_t(1))
+      CHECK((vectTrans.size()) == (std::size_t(3)));
+      CHECK((vectTrans[0]->variable()->name()) == ("X1"));
+      CHECK((vectTrans[1]->variable()->name()) == ("Y1"));
+      CHECK((vectTrans[2]->variable()->name()) == ("Z1"));
+      CHECK((set.highestInputColumn()) == (std::size_t(1)));
 
       set.eraseTranslator(1, true);
-      TS_ASSERT_EQUALS(vect_trans.size(), std::size_t(0))
-      TS_ASSERT_EQUALS(set.highestInputColumn(), std::size_t(0))
+      CHECK((vectTrans.size()) == (std::size_t(0)));
+      CHECK((set.highestInputColumn()) == (std::size_t(0)));
     }
   };
+
+  GUM_TEST_ACTIF(Trans1)
+  GUM_TEST_ACTIF(Trans2)
+  GUM_TEST_ACTIF(Trans3)
+  GUM_TEST_ACTIF(Trans4)
+  GUM_TEST_ACTIF(Trans5)
+  GUM_TEST_ACTIF(Trans6)
+  GUM_TEST_ACTIF(Trans7)
+  GUM_TEST_ACTIF(Trans8)
 
 } /* namespace gum_tests */

@@ -1,7 +1,7 @@
 ############################################################################
 #   This file is part of the aGrUM/pyAgrum library.                        #
 #                                                                          #
-#   Copyright (c) 2005-2025 by                                             #
+#   Copyright (c) 2005-2026 by                                             #
 #       - Pierre-Henri WUILLEMIN(_at_LIP6)                                 #
 #       - Christophe GONZALES(_at_AMU)                                     #
 #                                                                          #
@@ -27,7 +27,7 @@
 #                                                                          #
 #   See LICENCES for more details.                                         #
 #                                                                          #
-#   SPDX-FileCopyrightText: Copyright 2005-2025                            #
+#   SPDX-FileCopyrightText: Copyright 2005-2026                            #
 #       - Pierre-Henri WUILLEMIN(_at_LIP6)                                 #
 #       - Christophe GONZALES(_at_AMU)                                     #
 #   SPDX-License-Identifier: LGPL-3.0-or-later OR MIT                      #
@@ -247,7 +247,7 @@ def main() -> int:
       else:
         error(f"Unknown target [{current['target']}]")
         res = 1
-    case "build" | "install" | "test":
+    case "build" | "install" | "test" | "lib":
       if current["target"] == "aGrUM":
         from .ActBuilderAgrum import ActBuilderAgrum
 
@@ -259,6 +259,10 @@ def main() -> int:
       else:
         error(f"Unknown target [{current['target']}]")
         res = 2
+    case "pipinstall":
+      from .ActBuilderPipInstall import ActBuilderPipInstall
+
+      builder = ActBuilderPipInstall(current)
 
     case _:
       show_invocation(current)

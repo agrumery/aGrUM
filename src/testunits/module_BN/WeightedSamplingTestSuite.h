@@ -1,7 +1,7 @@
 /****************************************************************************
  *   This file is part of the aGrUM/pyAgrum library.                        *
  *                                                                          *
- *   Copyright (c) 2005-2025 by                                             *
+ *   Copyright (c) 2005-2026 by                                             *
  *       - Pierre-Henri WUILLEMIN(_at_LIP6)                                 *
  *       - Christophe GONZALES(_at_AMU)                                     *
  *                                                                          *
@@ -27,7 +27,7 @@
  *                                                                          *
  *   See LICENCES for more details.                                         *
  *                                                                          *
- *   SPDX-FileCopyrightText: Copyright 2005-2025                            *
+ *   SPDX-FileCopyrightText: Copyright 2005-2026                            *
  *       - Pierre-Henri WUILLEMIN(_at_LIP6)                                 *
  *       - Christophe GONZALES(_at_AMU)                                     *
  *   SPDX-License-Identifier: LGPL-3.0-or-later OR MIT                      *
@@ -37,6 +37,7 @@
  *   gitlab   : https://gitlab.com/agrumery/agrum                           *
  *                                                                          *
  ****************************************************************************/
+
 #pragma once
 
 
@@ -53,7 +54,14 @@
 #include <agrum/BN/inference/weightedSampling.h>
 #include <agrum/BN/io/BIF/BIFReader.h>
 
-#include <gumtest/AgrumApproximationUtils.h>   // must be last include
+#include <gumtest/AgrumApproximationUtils.h>
+
+#undef GUM_CURRENT_SUITE
+#undef GUM_CURRENT_MODULE
+#define GUM_CURRENT_SUITE  WeightedSampling
+#define GUM_CURRENT_MODULE BN
+
+// must be last include
 
 namespace gum_tests {
   constexpr auto EPSILON_FOR_WEIGHTED_SIMPLE_TEST = 15e-2;
@@ -82,9 +90,9 @@ namespace gum_tests {
     std::string getMess() { return _mess_; }
   };
 
-  class GUM_TEST_SUITE(WeightedSampling) {
+  struct WeightedSamplingTestSuite {
     public:
-    GUM_ACTIVE_TEST(WeightedBinaryTreeWithoutEvidence) {
+    static void testWeightedBinaryTreeWithoutEvidence() {
       auto bn = gum::BayesNet< double >::fastPrototype("a->d->f;b->d->g;b->e->h;c->e;i->j->h");
       unsharpen(bn);
 
@@ -99,11 +107,11 @@ namespace gum_tests {
         GUM_APPROX_TEST_END_ITERATION(EPSILON_FOR_WEIGHTED_SIMPLE_TEST);
       } catch (gum::Exception& e) {
         GUM_SHOWERROR(e);
-        TS_ASSERT(false)
+        CHECK(false);
       }
     }   // namespace gum_tests
 
-    GUM_ACTIVE_TEST(WeightedBinaryTreeWithEvidenceOnRoot) {
+    static void testWeightedBinaryTreeWithEvidenceOnRoot() {
       auto bn = gum::BayesNet< double >::fastPrototype("a->d->f;b->d->g;b->e->h;c->e;i->j->h");
       unsharpen(bn);
       std::string ev = "b";
@@ -122,11 +130,11 @@ namespace gum_tests {
         GUM_APPROX_TEST_END_ITERATION(EPSILON_FOR_WEIGHTED_SIMPLE_TEST);
       } catch (gum::Exception& e) {
         GUM_SHOWERROR(e);
-        TS_ASSERT(false)
+        CHECK(false);
       }
     }
 
-    GUM_ACTIVE_TEST(WeightedBinaryTreeWithEvidenceOnLeaf) {
+    static void testWeightedBinaryTreeWithEvidenceOnLeaf() {
       auto bn = gum::BayesNet< double >::fastPrototype("a->d->f;b->d->g;b->e->h;c->e;i->j->h");
       unsharpen(bn);
       std::string ev = "h";
@@ -146,11 +154,11 @@ namespace gum_tests {
 
       } catch (gum::Exception& e) {
         GUM_SHOWERROR(e);
-        TS_ASSERT(false)
+        CHECK(false);
       }
     }
 
-    GUM_ACTIVE_TEST(WeightedBinaryTreeWithEvidenceOnMid) {
+    static void testWeightedBinaryTreeWithEvidenceOnMid() {
       auto bn = gum::BayesNet< double >::fastPrototype("a->d->f;b->d->g;b->e->h;c->e;i->j->h");
       unsharpen(bn);
       std::string ev = "e";
@@ -170,11 +178,11 @@ namespace gum_tests {
 
       } catch (gum::Exception& e) {
         GUM_SHOWERROR(e);
-        TS_ASSERT(false)
+        CHECK(false);
       }
     }
 
-    GUM_ACTIVE_TEST(WeightedBinaryTreeWithMultipleEvidence) {
+    static void testWeightedBinaryTreeWithMultipleEvidence() {
       auto bn = gum::BayesNet< double >::fastPrototype("a->d->f;b->d->g;b->e->h;c->e;i->j->h");
       unsharpen(bn);
 
@@ -196,11 +204,11 @@ namespace gum_tests {
         GUM_APPROX_TEST_END_ITERATION(EPSILON_FOR_WEIGHTED_SIMPLE_TEST);
       } catch (gum::Exception& e) {
         GUM_SHOWERROR(e);
-        TS_ASSERT(false)
+        CHECK(false);
       }
     }
 
-    GUM_ACTIVE_TEST(WeightedNaryTreeWithMultipleEvidence) {
+    static void testWeightedNaryTreeWithMultipleEvidence() {
       auto bn = gum::BayesNet< double >::fastPrototype(
           "a[4]->d[8]->f[3];b->d->g[5];b->e[4]->h;c->e;i[10]->j[3]->h");
       unsharpen(bn);
@@ -224,11 +232,11 @@ namespace gum_tests {
 
       } catch (gum::Exception& e) {
         GUM_SHOWERROR(e);
-        TS_ASSERT(false)
+        CHECK(false);
       }
     }
 
-    GUM_ACTIVE_TEST(WeightedSimpleBN) {
+    static void testWeightedSimpleBN() {
       auto bn = gum::BayesNet< double >::fastPrototype("a->b->c;a->d->c", 3);
       unsharpen(bn);
 
@@ -245,7 +253,7 @@ namespace gum_tests {
 
       } catch (gum::Exception& e) {
         GUM_SHOWERROR(e);
-        TS_ASSERT(false)
+        CHECK(false);
       }
 
       try {
@@ -264,7 +272,7 @@ namespace gum_tests {
 
       } catch (gum::Exception& e) {
         GUM_SHOWERROR(e);
-        TS_ASSERT(false)
+        CHECK(false);
       }
 
       try {
@@ -282,11 +290,11 @@ namespace gum_tests {
 
       } catch (gum::Exception& e) {
         GUM_SHOWERROR(e);
-        TS_ASSERT(false)
+        CHECK(false);
       }
     }
 
-    GUM_ACTIVE_TEST(WeightedCplxBN) {
+    static void testWeightedCplxBN() {
       auto bn = gum::BayesNet< double >::fastPrototype(
           "a->d->f;b->d->g;b->e->h;c->e->g;i->j->h;c->j;x->c;x->j;",
           3);
@@ -305,7 +313,7 @@ namespace gum_tests {
 
       } catch (gum::Exception& e) {
         GUM_SHOWERROR(e);
-        TS_ASSERT(false)
+        CHECK(false);
       }
 
       try {
@@ -323,7 +331,7 @@ namespace gum_tests {
 
       } catch (gum::Exception& e) {
         GUM_SHOWERROR(e);
-        TS_ASSERT(false)
+        CHECK(false);
       }
 
       try {
@@ -341,16 +349,16 @@ namespace gum_tests {
 
       } catch (gum::Exception& e) {
         GUM_SHOWERROR(e);
-        TS_ASSERT(false)
+        CHECK(false);
       }
     }
 
-    GUM_ACTIVE_TEST(WeightedAsia) {
+    static void testWeightedAsia() {
       gum::BayesNet< double >  bn;
       gum::BIFReader< double > reader(&bn, GET_RESSOURCES_PATH("bif/asia.bif"));
       gum::Size                nbrErr = static_cast< gum::Size >(0);
-      TS_GUM_ASSERT_THROWS_NOTHING(nbrErr = reader.proceed())
-      TS_ASSERT_EQUALS(nbrErr, static_cast< gum::Size >(0))
+      GUM_CHECK_ASSERT_THROWS_NOTHING(nbrErr = reader.proceed());
+      CHECK((nbrErr) == (static_cast< gum::Size >(0)));
 
       try {
         gum::LazyPropagation< double > lazy(&bn);
@@ -365,16 +373,16 @@ namespace gum_tests {
 
       } catch (gum::Exception& e) {
         GUM_SHOWERROR(e);
-        TS_ASSERT(false)
+        CHECK(false);
       }
     }
 
-    GUM_ACTIVE_TEST(WeightedAlarm) {
+    static void testWeightedAlarm() {
       gum::BayesNet< double >  bn;
       gum::BIFReader< double > reader(&bn, GET_RESSOURCES_PATH("bif/alarm.bif"));
       gum::Size                nbrErr = static_cast< gum::Size >(0);
-      TS_GUM_ASSERT_THROWS_NOTHING(nbrErr = reader.proceed())
-      TS_ASSERT_EQUALS(nbrErr, static_cast< gum::Size >(0))
+      GUM_CHECK_ASSERT_THROWS_NOTHING(nbrErr = reader.proceed());
+      CHECK((nbrErr) == (static_cast< gum::Size >(0)));
 
       try {
         gum::LazyPropagation< double > lazy(&bn);
@@ -389,16 +397,16 @@ namespace gum_tests {
 
       } catch (gum::Exception& e) {
         GUM_SHOWERROR(e);
-        TS_ASSERT(false)
+        CHECK(false);
       }
     }
 
-    GUM_ACTIVE_TEST(WeightedInfListener) {
+    static void testWeightedInfListener() {
       gum::BayesNet< double >  bn;
       gum::BIFReader< double > reader(&bn, GET_RESSOURCES_PATH("bif/alarm.bif"));
       gum::Size                nbrErr = static_cast< gum::Size >(0);
-      TS_GUM_ASSERT_THROWS_NOTHING(nbrErr = reader.proceed())
-      TS_ASSERT_EQUALS(nbrErr, static_cast< gum::Size >(0))
+      GUM_CHECK_ASSERT_THROWS_NOTHING(nbrErr = reader.proceed());
+      CHECK((nbrErr) == (static_cast< gum::Size >(0)));
 
       gum::WeightedSampling< double > inf(&bn);
       aSimpleWeightedListener         agsl(inf);
@@ -406,13 +414,13 @@ namespace gum_tests {
 
       inf.setVerbosity(false);
       inf.setEpsilon(EPSILON_FOR_WEIGHTED);
-      TS_GUM_ASSERT_THROWS_NOTHING(inf.makeInference())
+      GUM_CHECK_ASSERT_THROWS_NOTHING(inf.makeInference());
 
-      TS_ASSERT_EQUALS(agsl.getNbr() * inf.periodSize(), inf.nbrIterations())
-      TS_ASSERT_DIFFERS(agsl.getMess(), std::string(""))
+      CHECK((agsl.getNbr() * inf.periodSize()) == (inf.nbrIterations()));
+      CHECK((agsl.getMess()) != (std::string("")));
     }
 
-    GUM_ACTIVE_TEST(EvidenceAsTargetOnCplxBN) {
+    static void testEvidenceAsTargetOnCplxBN() {
       auto bn = gum::BayesNet< double >::fastPrototype(
           "a->d->f;b->d->g;b->e->h;c->e->g;i->j->h;c->j;x->c;x->j;",
           3);
@@ -424,13 +432,26 @@ namespace gum_tests {
         inf.setVerbosity(false);
         inf.setEpsilon(EPSILON_FOR_WEIGHTED);
         inf.makeInference();
-        TS_GUM_ASSERT_THROWS_NOTHING(inf.posterior("d"))
-        TS_GUM_ASSERT_THROWS_NOTHING(inf.posterior(bn.idFromName("d")))
+        GUM_CHECK_ASSERT_THROWS_NOTHING(inf.posterior("d"));
+        GUM_CHECK_ASSERT_THROWS_NOTHING(inf.posterior(bn.idFromName("d")));
 
       } catch (gum::Exception& e) {
         GUM_SHOWERROR(e);
-        TS_ASSERT(false)
+        CHECK(false);
       }
     }
   };
+
+  GUM_TEST_ACTIF(WeightedBinaryTreeWithoutEvidence)
+  GUM_TEST_ACTIF(WeightedBinaryTreeWithEvidenceOnRoot)
+  GUM_TEST_ACTIF(WeightedBinaryTreeWithEvidenceOnLeaf)
+  GUM_TEST_ACTIF(WeightedBinaryTreeWithEvidenceOnMid)
+  GUM_TEST_ACTIF(WeightedBinaryTreeWithMultipleEvidence)
+  GUM_TEST_ACTIF(WeightedNaryTreeWithMultipleEvidence)
+  GUM_TEST_ACTIF(WeightedSimpleBN)
+  GUM_TEST_ACTIF(WeightedCplxBN)
+  GUM_TEST_ACTIF(WeightedAsia)
+  GUM_TEST_ACTIF(WeightedAlarm)
+  GUM_TEST_ACTIF(WeightedInfListener)
+  GUM_TEST_ACTIF(EvidenceAsTargetOnCplxBN)
 }   // namespace gum_tests

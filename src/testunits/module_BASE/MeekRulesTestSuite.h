@@ -1,7 +1,7 @@
 /****************************************************************************
  *   This file is part of the aGrUM/pyAgrum library.                        *
  *                                                                          *
- *   Copyright (c) 2005-2025 by                                             *
+ *   Copyright (c) 2005-2026 by                                             *
  *       - Pierre-Henri WUILLEMIN(_at_LIP6)                                 *
  *       - Christophe GONZALES(_at_AMU)                                     *
  *                                                                          *
@@ -27,7 +27,7 @@
  *                                                                          *
  *   See LICENCES for more details.                                         *
  *                                                                          *
- *   SPDX-FileCopyrightText: Copyright 2005-2025                            *
+ *   SPDX-FileCopyrightText: Copyright 2005-2026                            *
  *       - Pierre-Henri WUILLEMIN(_at_LIP6)                                 *
  *       - Christophe GONZALES(_at_AMU)                                     *
  *   SPDX-License-Identifier: LGPL-3.0-or-later OR MIT                      *
@@ -37,6 +37,7 @@
  *   gitlab   : https://gitlab.com/agrumery/agrum                           *
  *                                                                          *
  ****************************************************************************/
+
 #pragma once
 
 
@@ -48,31 +49,36 @@
 #include <testunits/gumtest/AgrumTestSuite.h>
 #include <testunits/gumtest/utils.h>
 
+#undef GUM_CURRENT_SUITE
+#undef GUM_CURRENT_MODULE
+#define GUM_CURRENT_SUITE  MeekRules
+#define GUM_CURRENT_MODULE GUMBASE
+
 namespace gum_tests {
 
-  class GUM_TEST_SUITE(MeekRules) {
+  struct MeekRulesTestSuite {
     public:
-    GUM_ACTIVE_TEST(test_cycle_PDAG) {
+    static void testtest_cycle_PDAG() {
       gum::PDAG pdag;
       for (unsigned int i = 0; i < 6; ++i) {
         pdag.addNodeWithId(i);
       }
-      TS_GUM_ASSERT_THROWS_NOTHING(pdag.addArc(0, 1))
-      TS_GUM_ASSERT_THROWS_NOTHING(pdag.addArc(1, 2))
-      TS_GUM_ASSERT_THROWS_NOTHING(pdag.addEdge(2, 3))
-      TS_GUM_ASSERT_THROWS_NOTHING(pdag.addEdge(3, 5))
-      TS_GUM_ASSERT_THROWS_NOTHING(pdag.addEdge(5, 4))
+      GUM_CHECK_ASSERT_THROWS_NOTHING(pdag.addArc(0, 1));
+      GUM_CHECK_ASSERT_THROWS_NOTHING(pdag.addArc(1, 2));
+      GUM_CHECK_ASSERT_THROWS_NOTHING(pdag.addEdge(2, 3));
+      GUM_CHECK_ASSERT_THROWS_NOTHING(pdag.addEdge(3, 5));
+      GUM_CHECK_ASSERT_THROWS_NOTHING(pdag.addEdge(5, 4));
 
       gum::MeekRules mr;
 
       const auto res_cpdag = mr.propagateToCPDAG(pdag);
       const auto res_dag   = mr.propagateToDAG(pdag);
 
-      TS_ASSERT(res_cpdag.existsArc(2, 3));
-      TS_ASSERT_EQUALS(res_cpdag.edges().size(), 0u);
+      CHECK(res_cpdag.existsArc(2, 3));
+      CHECK((res_cpdag.edges().size()) == (0u));
     }
 
-    GUM_ACTIVE_TEST(critereMinParents1) {
+    static void testcritereMinParents1() {
       gum::MixedGraph graph;
       gum::MixedGraph graph2;
       for (unsigned int i = 0; i < 7; ++i) {
@@ -90,7 +96,10 @@ namespace gum_tests {
 
       const auto res_cpdag = mr.propagateToCPDAG(graph);
 
-      TS_ASSERT(res_cpdag.existsArc(5, 4));
+      CHECK(res_cpdag.existsArc(5, 4));
     }
   };   // MeekrulesTestSuite
+
+  GUM_TEST_ACTIF(test_cycle_PDAG)
+  GUM_TEST_ACTIF(critereMinParents1)
 }   // namespace gum_tests

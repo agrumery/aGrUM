@@ -1,7 +1,7 @@
 /****************************************************************************
  *   This file is part of the aGrUM/pyAgrum library.                        *
  *                                                                          *
- *   Copyright (c) 2005-2025 by                                             *
+ *   Copyright (c) 2005-2026 by                                             *
  *       - Pierre-Henri WUILLEMIN(_at_LIP6)                                 *
  *       - Christophe GONZALES(_at_AMU)                                     *
  *                                                                          *
@@ -27,7 +27,7 @@
  *                                                                          *
  *   See LICENCES for more details.                                         *
  *                                                                          *
- *   SPDX-FileCopyrightText: Copyright 2005-2025                            *
+ *   SPDX-FileCopyrightText: Copyright 2005-2026                            *
  *       - Pierre-Henri WUILLEMIN(_at_LIP6)                                 *
  *       - Christophe GONZALES(_at_AMU)                                     *
  *   SPDX-License-Identifier: LGPL-3.0-or-later OR MIT                      *
@@ -37,6 +37,7 @@
  *   gitlab   : https://gitlab.com/agrumery/agrum                           *
  *                                                                          *
  ****************************************************************************/
+
 #pragma once
 
 
@@ -53,6 +54,11 @@
 #include <agrum/base/graphs/parts/listeners/undiGraphListener.h>
 #include <agrum/base/graphs/undiGraph.h>
 
+#undef GUM_CURRENT_SUITE
+#undef GUM_CURRENT_MODULE
+#define GUM_CURRENT_SUITE  GraphListener
+#define GUM_CURRENT_MODULE GUMBASE
+
 // The graph used for the tests:
 //          0   1_          0 -> 2
 //         / \ / /          0 -> 3
@@ -63,7 +69,7 @@
 
 namespace gum_tests {
 
-  class GUM_TEST_SUITE(GraphListener) {
+  struct GraphListenerTestSuite {
     class CountListener: public gum::Listener {
       private:
       int  _nbrNode_, _nbrArcs_, _nbrEdges_;
@@ -113,13 +119,13 @@ namespace gum_tests {
       public:
       DiGraphCounter(gum::DiGraph* g) : gum::DiGraphListener(g) { _nbrNode_ = _nbrArcs_ = 0; }
 
-      void whenNodeAdded(const void*, gum::NodeId) { _nbrNode_++; }
+      void whenNodeAdded(const void*, gum::NodeId) override { _nbrNode_++; }
 
-      void whenNodeDeleted(const void*, gum::NodeId) { _nbrNode_--; }
+      void whenNodeDeleted(const void*, gum::NodeId) override { _nbrNode_--; }
 
-      void whenArcAdded(const void*, gum::NodeId, gum::NodeId) { _nbrArcs_++; }
+      void whenArcAdded(const void*, gum::NodeId, gum::NodeId) override { _nbrArcs_++; }
 
-      void whenArcDeleted(const void*, gum::NodeId, gum::NodeId) { _nbrArcs_--; }
+      void whenArcDeleted(const void*, gum::NodeId, gum::NodeId) override { _nbrArcs_--; }
 
       int nodes() const { return _nbrNode_; }
 
@@ -135,13 +141,13 @@ namespace gum_tests {
         _nbrNode_ = _nbrEdges_ = 0;
       }
 
-      void whenNodeAdded(const void*, gum::NodeId) { _nbrNode_++; }
+      void whenNodeAdded(const void*, gum::NodeId) override { _nbrNode_++; }
 
-      void whenNodeDeleted(const void*, gum::NodeId) { _nbrNode_--; }
+      void whenNodeDeleted(const void*, gum::NodeId) override { _nbrNode_--; }
 
-      void whenEdgeAdded(const void*, gum::NodeId, gum::NodeId) { _nbrEdges_++; }
+      void whenEdgeAdded(const void*, gum::NodeId, gum::NodeId) override { _nbrEdges_++; }
 
-      void whenEdgeDeleted(const void*, gum::NodeId, gum::NodeId) { _nbrEdges_--; }
+      void whenEdgeDeleted(const void*, gum::NodeId, gum::NodeId) override { _nbrEdges_--; }
 
       int nodes() const { return _nbrNode_; }
 
@@ -157,17 +163,17 @@ namespace gum_tests {
         _nbrNode_ = _nbrArcs_ = _nbrEdges_ = 0;
       }
 
-      void whenNodeAdded(const void*, gum::NodeId) { _nbrNode_++; }
+      void whenNodeAdded(const void*, gum::NodeId) override { _nbrNode_++; }
 
-      void whenNodeDeleted(const void*, gum::NodeId) { _nbrNode_--; }
+      void whenNodeDeleted(const void*, gum::NodeId) override { _nbrNode_--; }
 
-      void whenArcAdded(const void*, gum::NodeId, gum::NodeId) { _nbrArcs_++; }
+      void whenArcAdded(const void*, gum::NodeId, gum::NodeId) override { _nbrArcs_++; }
 
-      void whenArcDeleted(const void*, gum::NodeId, gum::NodeId) { _nbrArcs_--; }
+      void whenArcDeleted(const void*, gum::NodeId, gum::NodeId) override { _nbrArcs_--; }
 
-      void whenEdgeAdded(const void*, gum::NodeId, gum::NodeId) { _nbrEdges_++; }
+      void whenEdgeAdded(const void*, gum::NodeId, gum::NodeId) override { _nbrEdges_++; }
 
-      void whenEdgeDeleted(const void*, gum::NodeId, gum::NodeId) { _nbrEdges_--; }
+      void whenEdgeDeleted(const void*, gum::NodeId, gum::NodeId) override { _nbrEdges_--; }
 
       int nodes() const { return _nbrNode_; }
 
@@ -177,11 +183,11 @@ namespace gum_tests {
     };
 
     private:
-    gum::NodeId id1;
-    gum::NodeId id2;
-    gum::NodeId id3;
-    gum::NodeId id4;
-    gum::NodeId id5;
+    gum::NodeId id1 = 0u;
+    gum::NodeId id2 = 0u;
+    gum::NodeId id3 = 0u;
+    gum::NodeId id4 = 0u;
+    gum::NodeId id5 = 0u;
 
     void buildDAG(gum::DiGraph& g) {
       id1 = g.addNode();
@@ -229,7 +235,7 @@ namespace gum_tests {
     }
 
     public:
-    GUM_ACTIVE_TEST(DAG) {
+    void testDAG() {
       gum::DAG g1;
       gum::DAG g2;
 
@@ -260,41 +266,41 @@ namespace gum_tests {
       g1.addArc(g1.addNode(), g1.addNode());
       buildDAG(g1);   // 7 nodes/7 arcs for g1
 
-      TS_ASSERT_EQUALS(c1.nodes(), 7)
-      TS_ASSERT_EQUALS(c1.arcs(), 7)
-      TS_ASSERT_EQUALS(c2.nodes(), 7 + 5)
-      TS_ASSERT_EQUALS(c2.arcs(), 7 + 6)
+      CHECK((c1.nodes()) == (7));
+      CHECK((c1.arcs()) == (7));
+      CHECK((c2.nodes()) == (7 + 5));
+      CHECK((c2.arcs()) == (7 + 6));
 
       g1.eraseNode(id5);   // -1 nodes/-3 arcs for g1
 
-      TS_ASSERT_EQUALS(c1.nodes(), 6)
-      TS_ASSERT_EQUALS(c1.arcs(), 4)
-      TS_ASSERT_EQUALS(c2.nodes(), 6 + 5)
-      TS_ASSERT_EQUALS(c2.arcs(), 4 + 6)
+      CHECK((c1.nodes()) == (6));
+      CHECK((c1.arcs()) == (4));
+      CHECK((c2.nodes()) == (6 + 5));
+      CHECK((c2.arcs()) == (4 + 6));
 
       g1.eraseArc(gum::Arc(id1, id3));   // 6 nodes, 3 arcs
 
-      TS_ASSERT_EQUALS(c1.nodes(), 6)
-      TS_ASSERT_EQUALS(c1.arcs(), 3)
-      TS_ASSERT_EQUALS(c2.nodes(), 6 + 5)
-      TS_ASSERT_EQUALS(c2.arcs(), 3 + 6)
+      CHECK((c1.nodes()) == (6));
+      CHECK((c1.arcs()) == (3));
+      CHECK((c2.nodes()) == (6 + 5));
+      CHECK((c2.arcs()) == (3 + 6));
 
       g1.clear();   // 0 node, 0 arc
 
-      TS_ASSERT_EQUALS(c1.nodes(), 0)
-      TS_ASSERT_EQUALS(c1.arcs(), 0)
-      TS_ASSERT_EQUALS(c2.nodes(), 0 + 5)
-      TS_ASSERT_EQUALS(c2.arcs(), 0 + 6)
+      CHECK((c1.nodes()) == (0));
+      CHECK((c1.arcs()) == (0));
+      CHECK((c2.nodes()) == (0 + 5));
+      CHECK((c2.arcs()) == (0 + 6));
 
       g2.clearArcs();   // 5 nodes, 0 arc
 
-      TS_ASSERT_EQUALS(c1.nodes(), 0)
-      TS_ASSERT_EQUALS(c1.arcs(), 0)
-      TS_ASSERT_EQUALS(c2.nodes(), 0 + 5)
-      TS_ASSERT_EQUALS(c2.arcs(), 0 + 0)
+      CHECK((c1.nodes()) == (0));
+      CHECK((c1.arcs()) == (0));
+      CHECK((c2.nodes()) == (0 + 5));
+      CHECK((c2.arcs()) == (0 + 0));
     }
 
-    GUM_ACTIVE_TEST(UndiGraph) {
+    void testUndiGraph() {
       gum::UndiGraph g1;
       gum::UndiGraph g2;
 
@@ -325,41 +331,41 @@ namespace gum_tests {
       g1.addEdge(g1.addNode(), g1.addNode());
       buildUndiGraph(g1);   // 7 nodes/7 edges for g1
 
-      TS_ASSERT_EQUALS(c1.nodes(), 7)
-      TS_ASSERT_EQUALS(c1.edges(), 7)
-      TS_ASSERT_EQUALS(c2.nodes(), 7 + 5)
-      TS_ASSERT_EQUALS(c2.edges(), 7 + 6)
+      CHECK((c1.nodes()) == (7));
+      CHECK((c1.edges()) == (7));
+      CHECK((c2.nodes()) == (7 + 5));
+      CHECK((c2.edges()) == (7 + 6));
 
       g1.eraseNode(id5);   // -1 nodes/-3 edges for g1
 
-      TS_ASSERT_EQUALS(c1.nodes(), 6)
-      TS_ASSERT_EQUALS(c1.edges(), 4)
-      TS_ASSERT_EQUALS(c2.nodes(), 6 + 5)
-      TS_ASSERT_EQUALS(c2.edges(), 4 + 6)
+      CHECK((c1.nodes()) == (6));
+      CHECK((c1.edges()) == (4));
+      CHECK((c2.nodes()) == (6 + 5));
+      CHECK((c2.edges()) == (4 + 6));
 
       g1.eraseEdge(gum::Edge(id1, id3));   // 6 nodes, 3 edges
 
-      TS_ASSERT_EQUALS(c1.nodes(), 6)
-      TS_ASSERT_EQUALS(c1.edges(), 3)
-      TS_ASSERT_EQUALS(c2.nodes(), 6 + 5)
-      TS_ASSERT_EQUALS(c2.edges(), 3 + 6)
+      CHECK((c1.nodes()) == (6));
+      CHECK((c1.edges()) == (3));
+      CHECK((c2.nodes()) == (6 + 5));
+      CHECK((c2.edges()) == (3 + 6));
 
       g1.clear();   // 0 node, 0 arc
 
-      TS_ASSERT_EQUALS(c1.nodes(), 0)
-      TS_ASSERT_EQUALS(c1.edges(), 0)
-      TS_ASSERT_EQUALS(c2.nodes(), 0 + 5)
-      TS_ASSERT_EQUALS(c2.edges(), 0 + 6)
+      CHECK((c1.nodes()) == (0));
+      CHECK((c1.edges()) == (0));
+      CHECK((c2.nodes()) == (0 + 5));
+      CHECK((c2.edges()) == (0 + 6));
 
       g2.clearEdges();   // 5 nodes, 0 arc
 
-      TS_ASSERT_EQUALS(c1.nodes(), 0)
-      TS_ASSERT_EQUALS(c1.edges(), 0)
-      TS_ASSERT_EQUALS(c2.nodes(), 0 + 5)
-      TS_ASSERT_EQUALS(c2.edges(), 0 + 0)
+      CHECK((c1.nodes()) == (0));
+      CHECK((c1.edges()) == (0));
+      CHECK((c2.nodes()) == (0 + 5));
+      CHECK((c2.edges()) == (0 + 0));
     }
 
-    GUM_ACTIVE_TEST(MixedGraph) {
+    void testMixedGraph() {
       gum::MixedGraph g1;
       gum::MixedGraph g2;
 
@@ -371,28 +377,28 @@ namespace gum_tests {
       // c1 listens to 1 graph
       // c2 listens to 2 graphs
 
-      TS_ASSERT(!g1.onNodeAdded.hasListener())
+      CHECK(!g1.onNodeAdded.hasListener());
       GUM_CONNECT(g1, onNodeAdded, c1, CountListener::whenNodeAdded);
-      TS_ASSERT(g1.onNodeAdded.hasListener())
+      CHECK(g1.onNodeAdded.hasListener());
 
       GUM_CONNECT(g1, onNodeDeleted, c1, CountListener::whenNodeDeleted);
-      TS_ASSERT(g1.onNodeDeleted.hasListener())
+      CHECK(g1.onNodeDeleted.hasListener());
 
-      TS_ASSERT(!g1.onEdgeAdded.hasListener())
+      CHECK(!g1.onEdgeAdded.hasListener());
       GUM_CONNECT(g1, onEdgeAdded, c1, CountListener::whenEdgeAdded);
-      TS_ASSERT(g1.onEdgeAdded.hasListener())
+      CHECK(g1.onEdgeAdded.hasListener());
 
-      TS_ASSERT(!g1.onEdgeDeleted.hasListener())
+      CHECK(!g1.onEdgeDeleted.hasListener());
       GUM_CONNECT(g1, onEdgeDeleted, c1, CountListener::whenEdgeDeleted);
-      TS_ASSERT(g1.onEdgeDeleted.hasListener())
+      CHECK(g1.onEdgeDeleted.hasListener());
 
-      TS_ASSERT(!g1.onArcAdded.hasListener())
+      CHECK(!g1.onArcAdded.hasListener());
       GUM_CONNECT(g1, onArcAdded, c1, CountListener::whenArcAdded);
-      TS_ASSERT(g1.onArcAdded.hasListener())
+      CHECK(g1.onArcAdded.hasListener());
 
-      TS_ASSERT(!g1.onArcDeleted.hasListener())
+      CHECK(!g1.onArcDeleted.hasListener());
       GUM_CONNECT(g1, onArcDeleted, c1, CountListener::whenArcDeleted);
-      TS_ASSERT(g1.onArcDeleted.hasListener())
+      CHECK(g1.onArcDeleted.hasListener());
 
       GUM_CONNECT(g1, onNodeAdded, c2, CountListener::whenNodeAdded);
       GUM_CONNECT(g1, onNodeDeleted, c2, CountListener::whenNodeDeleted);
@@ -413,169 +419,177 @@ namespace gum_tests {
       g1.addEdge(g1.addNode(), g1.addNode());
       buildMixedGraph(g1);   // 7 nodes/4 edges / 3 arcs for g1
 
-      TS_ASSERT_EQUALS(c1.nodes(), 7)
-      TS_ASSERT_EQUALS(c1.edges(), 4)
-      TS_ASSERT_EQUALS(c1.arcs(), 3)
-      TS_ASSERT_EQUALS(c2.nodes(), 7 + 5)
-      TS_ASSERT_EQUALS(c2.edges(), 4 + 3)
-      TS_ASSERT_EQUALS(c2.arcs(), 3 + 3)
+      CHECK((c1.nodes()) == (7));
+      CHECK((c1.edges()) == (4));
+      CHECK((c1.arcs()) == (3));
+      CHECK((c2.nodes()) == (7 + 5));
+      CHECK((c2.edges()) == (4 + 3));
+      CHECK((c2.arcs()) == (3 + 3));
 
       g1.eraseNode(id5);   // -1 nodes/-2 edges / -1 arcs for g1
 
-      TS_ASSERT_EQUALS(c1.nodes(), 6)
-      TS_ASSERT_EQUALS(c1.edges(), 2)
-      TS_ASSERT_EQUALS(c1.arcs(), 2)
-      TS_ASSERT_EQUALS(c2.nodes(), 6 + 5)
-      TS_ASSERT_EQUALS(c2.edges(), 2 + 3)
-      TS_ASSERT_EQUALS(c2.arcs(), 2 + 3)
+      CHECK((c1.nodes()) == (6));
+      CHECK((c1.edges()) == (2));
+      CHECK((c1.arcs()) == (2));
+      CHECK((c2.nodes()) == (6 + 5));
+      CHECK((c2.edges()) == (2 + 3));
+      CHECK((c2.arcs()) == (2 + 3));
 
       g1.eraseEdge(gum::Edge(id1,
                              id3));   // THIS EDGE DOES NOT EXISTS !!!! => 6 nodes, 2 edges
 
-      TS_ASSERT_EQUALS(c1.nodes(), 6)
-      TS_ASSERT_EQUALS(c1.edges(), 2)
-      TS_ASSERT_EQUALS(c2.nodes(), 6 + 5)
-      TS_ASSERT_EQUALS(c2.edges(), 2 + 3)
+      CHECK((c1.nodes()) == (6));
+      CHECK((c1.edges()) == (2));
+      CHECK((c2.nodes()) == (6 + 5));
+      CHECK((c2.edges()) == (2 + 3));
 
       g1.clear();   // 0 node, 0 arc
 
-      TS_ASSERT_EQUALS(c1.nodes(), 0)
-      TS_ASSERT_EQUALS(c1.edges(), 0)
-      TS_ASSERT_EQUALS(c1.arcs(), 0)
-      TS_ASSERT_EQUALS(c2.nodes(), 0 + 5)
-      TS_ASSERT_EQUALS(c2.edges(), 0 + 3)
-      TS_ASSERT_EQUALS(c2.arcs(), 0 + 3)
+      CHECK((c1.nodes()) == (0));
+      CHECK((c1.edges()) == (0));
+      CHECK((c1.arcs()) == (0));
+      CHECK((c2.nodes()) == (0 + 5));
+      CHECK((c2.edges()) == (0 + 3));
+      CHECK((c2.arcs()) == (0 + 3));
 
       g2.clearEdges();   // 5 nodes, 0 arc
 
-      TS_ASSERT_EQUALS(c1.nodes(), 0)
-      TS_ASSERT_EQUALS(c1.edges(), 0)
-      TS_ASSERT_EQUALS(c1.arcs(), 0)
-      TS_ASSERT_EQUALS(c2.nodes(), 0 + 5)
-      TS_ASSERT_EQUALS(c2.edges(), 0 + 0)
-      TS_ASSERT_EQUALS(c2.arcs(), 0 + 3)
+      CHECK((c1.nodes()) == (0));
+      CHECK((c1.edges()) == (0));
+      CHECK((c1.arcs()) == (0));
+      CHECK((c2.nodes()) == (0 + 5));
+      CHECK((c2.edges()) == (0 + 0));
+      CHECK((c2.arcs()) == (0 + 3));
 
       g2.clearArcs();   // 5 nodes, 0 arc
 
-      TS_ASSERT_EQUALS(c1.nodes(), 0)
-      TS_ASSERT_EQUALS(c1.edges(), 0)
-      TS_ASSERT_EQUALS(c1.arcs(), 0)
-      TS_ASSERT_EQUALS(c2.nodes(), 0 + 5)
-      TS_ASSERT_EQUALS(c2.edges(), 0 + 0)
-      TS_ASSERT_EQUALS(c2.arcs(), 0 + 0)
+      CHECK((c1.nodes()) == (0));
+      CHECK((c1.edges()) == (0));
+      CHECK((c1.arcs()) == (0));
+      CHECK((c2.nodes()) == (0 + 5));
+      CHECK((c2.edges()) == (0 + 0));
+      CHECK((c2.arcs()) == (0 + 0));
     }
 
-    GUM_ACTIVE_TEST(UndiGraphWithGraphListener) {
+    void testUndiGraphWithGraphListener() {
       gum::UndiGraph g;
 
       UndiGraphCounter c(&g);
 
       buildUndiGraph(g);   // 5 nodes/6 edges for g
 
-      TS_ASSERT_EQUALS(c.nodes(), 5)
-      TS_ASSERT_EQUALS(c.edges(), 6)
+      CHECK((c.nodes()) == (5));
+      CHECK((c.edges()) == (6));
 
       g.eraseNode(id5);   // -1 nodes/-3 edges for g
 
-      TS_ASSERT_EQUALS(c.nodes(), 4)
-      TS_ASSERT_EQUALS(c.edges(), 3)
+      CHECK((c.nodes()) == (4));
+      CHECK((c.edges()) == (3));
 
       g.eraseEdge(gum::Edge(id1, id3));   // -1 edges
 
-      TS_ASSERT_EQUALS(c.nodes(), 4)
-      TS_ASSERT_EQUALS(c.edges(), 2)
+      CHECK((c.nodes()) == (4));
+      CHECK((c.edges()) == (2));
 
       g.clear();   // 0 node, 0 arc
 
-      TS_ASSERT_EQUALS(c.nodes(), 0)
-      TS_ASSERT_EQUALS(c.edges(), 0)
+      CHECK((c.nodes()) == (0));
+      CHECK((c.edges()) == (0));
     }
 
-    GUM_ACTIVE_TEST(DiGraphWithGraphListener) {
+    void testDiGraphWithGraphListener() {
       gum::DiGraph g;
 
       DiGraphCounter c(&g);
 
       buildDAG(g);   // 5 nodes/6 arcs for g
 
-      TS_ASSERT_EQUALS(c.nodes(), 5)
-      TS_ASSERT_EQUALS(c.arcs(), 6)
+      CHECK((c.nodes()) == (5));
+      CHECK((c.arcs()) == (6));
 
       g.eraseNode(id5);   // -1 nodes/-3 arcs for g
 
-      TS_ASSERT_EQUALS(c.nodes(), 4)
-      TS_ASSERT_EQUALS(c.arcs(), 3)
+      CHECK((c.nodes()) == (4));
+      CHECK((c.arcs()) == (3));
 
       g.eraseArc(gum::Arc(id1, id3));   // -1 arcs
 
-      TS_ASSERT_EQUALS(c.nodes(), 4)
-      TS_ASSERT_EQUALS(c.arcs(), 2)
+      CHECK((c.nodes()) == (4));
+      CHECK((c.arcs()) == (2));
 
       g.clear();   // 0 node, 0 arc
 
-      TS_ASSERT_EQUALS(c.nodes(), 0)
-      TS_ASSERT_EQUALS(c.arcs(), 0)
+      CHECK((c.nodes()) == (0));
+      CHECK((c.arcs()) == (0));
     }
 
-    GUM_ACTIVE_TEST(DAGWithGraphListener) {
+    void testDAGWithGraphListener() {
       gum::DAG g;
 
       DiGraphCounter c(&g);
 
       buildDAG(g);                                         // 5 nodes/6 arcs for g
 
-      TS_ASSERT_THROWS(g.addArc(id5, id2),
-                       const gum::InvalidDirectedCycle&)   // should throw
+      CHECK_THROWS_AS(g.addArc(id5, id2),
+                      const gum::InvalidDirectedCycle&);   // should throw
       // InvalidDirectedCycle and should
       // not call the listeners
 
-      TS_ASSERT_EQUALS(c.nodes(), 5)
-      TS_ASSERT_EQUALS(c.arcs(), 6)
+      CHECK((c.nodes()) == (5));
+      CHECK((c.arcs()) == (6));
 
       g.eraseNode(id5);   // -1 nodes/-3 arcs for g
 
-      TS_ASSERT_EQUALS(c.nodes(), 4)
-      TS_ASSERT_EQUALS(c.arcs(), 3)
+      CHECK((c.nodes()) == (4));
+      CHECK((c.arcs()) == (3));
 
       g.eraseArc(gum::Arc(id1, id3));   // -1 arcs
 
-      TS_ASSERT_EQUALS(c.nodes(), 4)
-      TS_ASSERT_EQUALS(c.arcs(), 2)
+      CHECK((c.nodes()) == (4));
+      CHECK((c.arcs()) == (2));
 
       g.clear();   // 0 node, 0 arc
 
-      TS_ASSERT_EQUALS(c.nodes(), 0)
-      TS_ASSERT_EQUALS(c.arcs(), 0)
+      CHECK((c.nodes()) == (0));
+      CHECK((c.arcs()) == (0));
     }
 
-    GUM_ACTIVE_TEST(MixedGraphWithGraphListener) {
+    void testMixedGraphWithGraphListener() {
       gum::MixedGraph g;
 
       MixedGraphCounter c(&g);
 
       buildMixedGraph(g);   // 5 nodes/3 arcs/3 edges for g
 
-      TS_ASSERT_EQUALS(c.nodes(), 5)
-      TS_ASSERT_EQUALS(c.edges(), 3)
-      TS_ASSERT_EQUALS(c.arcs(), 3)
+      CHECK((c.nodes()) == (5));
+      CHECK((c.edges()) == (3));
+      CHECK((c.arcs()) == (3));
 
       g.eraseNode(id5);   // -1 nodes/-2 edge / -1 arcs for g
 
-      TS_ASSERT_EQUALS(c.nodes(), 4)
-      TS_ASSERT_EQUALS(c.edges(), 1)
-      TS_ASSERT_EQUALS(c.arcs(), 2)
+      CHECK((c.nodes()) == (4));
+      CHECK((c.edges()) == (1));
+      CHECK((c.arcs()) == (2));
 
       g.eraseArc(gum::Arc(id1, id3));   // -1 arcs
 
-      TS_ASSERT_EQUALS(c.nodes(), 4)
-      TS_ASSERT_EQUALS(c.edges(), 1)
-      TS_ASSERT_EQUALS(c.arcs(), 1)
+      CHECK((c.nodes()) == (4));
+      CHECK((c.edges()) == (1));
+      CHECK((c.arcs()) == (1));
 
       g.clear();   // 0 node, 0 arc
 
-      TS_ASSERT_EQUALS(c.nodes(), 0)
-      TS_ASSERT_EQUALS(c.edges(), 0)
-      TS_ASSERT_EQUALS(c.arcs(), 0)
+      CHECK((c.nodes()) == (0));
+      CHECK((c.edges()) == (0));
+      CHECK((c.arcs()) == (0));
     }
   };
+
+  GUM_TEST_ACTIF(DAG)
+  GUM_TEST_ACTIF(UndiGraph)
+  GUM_TEST_ACTIF(MixedGraph)
+  GUM_TEST_ACTIF(UndiGraphWithGraphListener)
+  GUM_TEST_ACTIF(DiGraphWithGraphListener)
+  GUM_TEST_ACTIF(DAGWithGraphListener)
+  GUM_TEST_ACTIF(MixedGraphWithGraphListener)
 }   // namespace gum_tests

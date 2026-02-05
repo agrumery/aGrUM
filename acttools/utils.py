@@ -1,7 +1,7 @@
 ############################################################################
 #   This file is part of the aGrUM/pyAgrum library.                        #
 #                                                                          #
-#   Copyright (c) 2005-2025 by                                             #
+#   Copyright (c) 2005-2026 by                                             #
 #       - Pierre-Henri WUILLEMIN(_at_LIP6)                                 #
 #       - Christophe GONZALES(_at_AMU)                                     #
 #                                                                          #
@@ -27,7 +27,7 @@
 #                                                                          #
 #   See LICENCES for more details.                                         #
 #                                                                          #
-#   SPDX-FileCopyrightText: Copyright 2005-2025                            #
+#   SPDX-FileCopyrightText: Copyright 2005-2026                            #
 #       - Pierre-Henri WUILLEMIN(_at_LIP6)                                 #
 #       - Christophe GONZALES(_at_AMU)                                     #
 #   SPDX-License-Identifier: LGPL-3.0-or-later OR MIT                      #
@@ -112,7 +112,10 @@ def notif_oneline(s: str, pref: Optional[str] = None):
   if pref is None:
     pref = cfg.prefix_line
 
-  printutf8(f"{pref}{colFormat(s, cfg.C_MSG)}{cfg.C_END}", end="                                       \r")
+  printutf8(
+    f"{pref}{colFormat(s, cfg.C_MSG)}{cfg.C_END}",
+    end="                                       \r",
+  )
 
 
 def notif(s: str = "", pref: Optional[str] = None):
@@ -141,7 +144,7 @@ def critic(s: str, pref: Optional[str] = None, rc: int = 1):
     pref = cfg.prefix_line
 
   error(s, pref)
-  printutf8(f"{pref}[colFormat('Stopped.', cfg.C_MSG)]{cfg.C_END}", end="\n\n")
+  printutf8(f"{pref}{colFormat('Stopped.', cfg.C_MSG)}{cfg.C_END}\n\n")
 
   sys.exit(rc)
 

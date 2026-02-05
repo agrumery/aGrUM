@@ -1,7 +1,7 @@
 /****************************************************************************
  *   This file is part of the aGrUM/pyAgrum library.                        *
  *                                                                          *
- *   Copyright (c) 2005-2025 by                                             *
+ *   Copyright (c) 2005-2026 by                                             *
  *       - Pierre-Henri WUILLEMIN(_at_LIP6)                                 *
  *       - Christophe GONZALES(_at_AMU)                                     *
  *                                                                          *
@@ -27,7 +27,7 @@
  *                                                                          *
  *   See LICENCES for more details.                                         *
  *                                                                          *
- *   SPDX-FileCopyrightText: Copyright 2005-2025                            *
+ *   SPDX-FileCopyrightText: Copyright 2005-2026                            *
  *       - Pierre-Henri WUILLEMIN(_at_LIP6)                                 *
  *       - Christophe GONZALES(_at_AMU)                                     *
  *   SPDX-License-Identifier: LGPL-3.0-or-later OR MIT                      *
@@ -37,6 +37,7 @@
  *   gitlab   : https://gitlab.com/agrumery/agrum                           *
  *                                                                          *
  ****************************************************************************/
+
 #pragma once
 
 
@@ -50,10 +51,15 @@
 
 #include <agrum/base/core/utils_random.h>
 
+#undef GUM_CURRENT_SUITE
+#undef GUM_CURRENT_MODULE
+#define GUM_CURRENT_SUITE  DAGCycleDetector
+#define GUM_CURRENT_MODULE GUMBASE
+
 namespace gum_tests {
 
-  class GUM_TEST_SUITE(DAGCycleDetector) {
-    gum::DAG _createDAG_(gum::Size nb_nodes, gum::Size nb_arcs) {
+  struct DAGCycleDetectorTestSuite {
+    static gum::DAG _createDAG_(gum::Size nb_nodes, gum::Size nb_arcs) {
       gum::DAG dag;
       for (gum::Idx i = 0; i < nb_nodes; ++i) {
         dag.addNodeWithId(i);
@@ -73,10 +79,10 @@ namespace gum_tests {
       return dag;
     }   // namespace gum_tests
 
-    void _createChanges_(const gum::DAG&                               g,
-                         std::vector< gum::DAGCycleDetector::Change >& changes,
-                         std::vector< gum::DAGCycleDetector::Change >& del_add_changes,
-                         gum::Size                                     length) {
+    static void _createChanges_(const gum::DAG&                               g,
+                                std::vector< gum::DAGCycleDetector::Change >& changes,
+                                std::vector< gum::DAGCycleDetector::Change >& del_add_changes,
+                                gum::Size                                     length) {
       std::uniform_int_distribution< int > distrib_node(0, int(g.size()) - 1);
       std::uniform_int_distribution< int > distrib_arc(0, int(g.size() * g.size()));
 
@@ -200,7 +206,7 @@ namespace gum_tests {
     }
 
     public:
-    GUM_ACTIVE_TEST(SmallGraph) {
+    static void testSmallGraph() {
       gum::DAG    g;
       gum::NodeId id1, id2, id3, id4, id5;
       id1 = g.addNode();
@@ -220,27 +226,27 @@ namespace gum_tests {
       detector.setDAG(g);
 
       std::vector< gum::DAGCycleDetector::Change > changes;
-      TS_ASSERT_EQUALS(detector.hasCycleFromModifications(changes), false)
+      CHECK((detector.hasCycleFromModifications(changes)) == (false));
 
       changes.push_back(gum::DAGCycleDetector::ArcAdd(id5, id1));
-      TS_ASSERT_EQUALS(detector.hasCycleFromModifications(changes), true)
+      CHECK((detector.hasCycleFromModifications(changes)) == (true));
 
       changes.clear();
       changes.push_back(gum::DAGCycleDetector::ArcAdd(id2, id1));
       changes.push_back(gum::DAGCycleDetector::ArcAdd(id5, id1));
       changes.push_back(gum::DAGCycleDetector::ArcReverse(id4, id5));
       changes.push_back(gum::DAGCycleDetector::ArcDel(id1, id3));
-      TS_ASSERT_EQUALS(detector.hasCycleFromModifications(changes), false)
+      CHECK((detector.hasCycleFromModifications(changes)) == (false));
 
       changes.clear();
       changes.push_back(gum::DAGCycleDetector::ArcAdd(id2, id1));
       changes.push_back(gum::DAGCycleDetector::ArcAdd(id5, id1));
       changes.push_back(gum::DAGCycleDetector::ArcDel(id1, id3));
       changes.push_back(gum::DAGCycleDetector::ArcReverse(id4, id5));
-      TS_ASSERT_EQUALS(detector.hasCycleFromModifications(changes), false)
+      CHECK((detector.hasCycleFromModifications(changes)) == (false));
     }
 
-    GUM_ACTIVE_TEST(G1) {
+    static void testG1() {
       gum::DAG g;
       for (gum::Idx i = 0; i < 10; ++i) {
         g.addNodeWithId(i);
@@ -268,10 +274,10 @@ namespace gum_tests {
       changes.push_back(gum::DAGCycleDetector::ArcReverse(3, 0));
       changes.push_back(gum::DAGCycleDetector::ArcAdd(4, 3));
 
-      TS_ASSERT_EQUALS(detector.hasCycleFromModifications(changes), true)
+      CHECK((detector.hasCycleFromModifications(changes)) == (true));
     }
 
-    GUM_ACTIVE_TEST(Random) {
+    static void testRandom() {
       gum::DAGCycleDetector                        detector;
       std::vector< gum::DAGCycleDetector::Change > changes;
       std::vector< gum::DAGCycleDetector::Change > del_add_changes;
@@ -281,7 +287,7 @@ namespace gum_tests {
         detector.setDAG(g);
 
         changes.clear();
-        TS_ASSERT_EQUALS(detector.hasCycleFromModifications(changes), false)
+        CHECK((detector.hasCycleFromModifications(changes)) == (false));
 
         for (gum::Idx j = 0; j < 20; ++j) {
           gum::Size length = gum::randomValue(11);
@@ -315,12 +321,12 @@ namespace gum_tests {
             } catch (gum::InvalidDirectedCycle&) { hasCycle = true; }
           }
 
-          TS_ASSERT_EQUALS(detector.hasCycleFromModifications(changes), hasCycle)
+          CHECK((detector.hasCycleFromModifications(changes)) == (hasCycle));
         }
       }
     }
 
-    GUM_ACTIVE_TEST(Modifications) {
+    static void testModifications() {
       gum::DAGCycleDetector                        detector1, detector2;
       std::vector< gum::DAGCycleDetector::Change > changes;
       std::vector< gum::DAGCycleDetector::Change > del_add_changes;
@@ -330,11 +336,11 @@ namespace gum_tests {
         detector1.setDAG(g);
         detector2.setDAG(g);
 
-        TS_ASSERT_EQUALS(detector1, detector2)
+        CHECK((detector1) == (detector2));
 
         for (gum::Idx j = 0; j < 30; ++j) {
           _createChanges_(g, changes, del_add_changes, 1);
-          TS_ASSERT_EQUALS(changes.size(), static_cast< gum::Size >(1))
+          CHECK((changes.size()) == (static_cast< gum::Size >(1)));
           if (detector1.hasCycleFromModifications(changes)) {
             --j;
             continue;
@@ -363,12 +369,12 @@ namespace gum_tests {
             detector2.setDAG(g);
           }
 
-          TS_ASSERT_EQUALS(detector1, detector2)
+          CHECK((detector1) == (detector2));
         }
       }
     }
 
-    GUM_ACTIVE_TEST(Modifications2) {
+    static void testModifications2() {
       gum::DAGCycleDetector                        detector1, detector2;
       std::vector< gum::DAGCycleDetector::Change > changes;
       std::vector< gum::DAGCycleDetector::Change > del_add_changes;
@@ -378,27 +384,27 @@ namespace gum_tests {
         detector1.setDAG(g);
         detector2.setDAG(g);
 
-        TS_ASSERT_EQUALS(detector1, detector2)
+        CHECK((detector1) == (detector2));
 
         for (gum::Idx j = 0; j < 30; ++j) {
           _createChanges_(g, changes, del_add_changes, 1);
-          TS_ASSERT_EQUALS(changes.size(), static_cast< gum::Size >(1))
+          CHECK((changes.size()) == (static_cast< gum::Size >(1)));
 
           for (auto& chgt: changes) {
             switch (chgt.type()) {
               case gum::DAGCycleDetector::ChangeType::ARC_DELETION :
-                TS_ASSERT_EQUALS(detector1.hasCycleFromDeletion(chgt.tail(), chgt.head()),
-                                 detector2.hasCycleFromModifications(changes));
+                CHECK((detector1.hasCycleFromDeletion(chgt.tail(), chgt.head()))
+                      == (detector2.hasCycleFromModifications(changes)));
                 break;
 
               case gum::DAGCycleDetector::ChangeType::ARC_ADDITION :
-                TS_ASSERT_EQUALS(detector1.hasCycleFromAddition(chgt.tail(), chgt.head()),
-                                 detector2.hasCycleFromModifications(changes));
+                CHECK((detector1.hasCycleFromAddition(chgt.tail(), chgt.head()))
+                      == (detector2.hasCycleFromModifications(changes)));
                 break;
 
               case gum::DAGCycleDetector::ChangeType::ARC_REVERSAL :
-                TS_ASSERT_EQUALS(detector1.hasCycleFromReversal(chgt.tail(), chgt.head()),
-                                 detector2.hasCycleFromModifications(changes));
+                CHECK((detector1.hasCycleFromReversal(chgt.tail(), chgt.head()))
+                      == (detector2.hasCycleFromModifications(changes)));
                 break;
 
               default : GUM_ERROR(gum::NotFound, "del_add_changes")
@@ -408,5 +414,11 @@ namespace gum_tests {
       }
     }
   };
+
+  GUM_TEST_ACTIF(SmallGraph)
+  GUM_TEST_ACTIF(G1)
+  GUM_TEST_ACTIF(Random)
+  GUM_TEST_ACTIF(Modifications)
+  GUM_TEST_ACTIF(Modifications2)
 
 }   // namespace gum_tests

@@ -1,7 +1,7 @@
 /****************************************************************************
  *   This file is part of the aGrUM/pyAgrum library.                        *
  *                                                                          *
- *   Copyright (c) 2005-2025 by                                             *
+ *   Copyright (c) 2005-2026 by                                             *
  *       - Pierre-Henri WUILLEMIN(_at_LIP6)                                 *
  *       - Christophe GONZALES(_at_AMU)                                     *
  *                                                                          *
@@ -27,7 +27,7 @@
  *                                                                          *
  *   See LICENCES for more details.                                         *
  *                                                                          *
- *   SPDX-FileCopyrightText: Copyright 2005-2025                            *
+ *   SPDX-FileCopyrightText: Copyright 2005-2026                            *
  *       - Pierre-Henri WUILLEMIN(_at_LIP6)                                 *
  *       - Christophe GONZALES(_at_AMU)                                     *
  *   SPDX-License-Identifier: LGPL-3.0-or-later OR MIT                      *
@@ -37,6 +37,7 @@
  *   gitlab   : https://gitlab.com/agrumery/agrum                           *
  *                                                                          *
  ****************************************************************************/
+
 #pragma once
 
 
@@ -54,11 +55,16 @@
 
 #include <agrum/base/core/utils_random.h>
 
+#undef GUM_CURRENT_SUITE
+#undef GUM_CURRENT_MODULE
+#define GUM_CURRENT_SUITE  MultiDimOperators
+#define GUM_CURRENT_MODULE GUMBASE
+
 namespace gum_tests {
 
-  class GUM_TEST_SUITE(MultiDimOperators) {
+  struct MultiDimOperatorsTestSuite {
     public:
-    GUM_ACTIVE_TEST(_op_multidimArray) {
+    static void test_op_multidimArray() {
       std::vector< gum::LabelizedVariable* > vars(10);
 
       for (gum::Idx i = 0; i < 10; ++i) {
@@ -79,26 +85,26 @@ namespace gum_tests {
 
       t4 = add2MultiDimArrays(&t1, &t2);
       t5 = add_test_arrays(&t1, &t2);
-      TS_ASSERT(*t4 == *t5)
+      CHECK(*t4 == *t5);
       delete t4;
       delete t5;
       t4 = add2MultiDimArrays(&t3, &t2);
       t5 = add_test_arrays(&t3, &t2);
-      TS_ASSERT(*t4 == *t5)
+      CHECK(*t4 == *t5);
       delete t4;
       t4 = add2MultiDimArrays(&t2, &t3);
-      TS_ASSERT(*t4 == *t5)
+      CHECK(*t4 == *t5);
       delete t4;
       delete t5;
 
       t4 = subtract2MultiDimArrays(&t1, &t2);
       t5 = sub_test_arrays(&t1, &t2);
-      TS_ASSERT(*t4 == *t5)
+      CHECK(*t4 == *t5);
       t6 = subtract2MultiDimArrays(&t2, &t1);
       t7 = sub_test_arrays(&t2, &t1);
-      TS_ASSERT(*t6 == *t7)
-      TS_ASSERT(*t5 != *t7)
-      TS_ASSERT(*t6 != *t4)
+      CHECK(*t6 == *t7);
+      CHECK(*t5 != *t7);
+      CHECK(*t6 != *t4);
       delete t4;
       delete t5;
       delete t6;
@@ -106,26 +112,26 @@ namespace gum_tests {
 
       t4 = multiply2MultiDimArrays(&t1, &t2);
       t5 = mult_test_arrays(&t1, &t2);
-      TS_ASSERT(*t4 == *t5)
+      CHECK(*t4 == *t5);
       delete t4;
       delete t5;
       t4 = multiply2MultiDimArrays(&t3, &t2);
       t5 = mult_test_arrays(&t3, &t2);
-      TS_ASSERT(*t4 == *t5)
+      CHECK(*t4 == *t5);
       delete t4;
       t4 = multiply2MultiDimArrays(&t2, &t3);
-      TS_ASSERT(*t4 == *t5)
+      CHECK(*t4 == *t5);
       delete t4;
       delete t5;
 
       t4 = divide2MultiDimArrays(&t1, &t2);
       t5 = div_test_arrays(&t1, &t2);
-      TS_ASSERT(*t4 == *t5)
+      CHECK(*t4 == *t5);
       t6 = divide2MultiDimArrays(&t2, &t1);
       t7 = div_test_arrays(&t2, &t1);
-      TS_ASSERT(*t6 == *t7)
-      TS_ASSERT(*t5 != *t7)
-      TS_ASSERT(*t6 != *t4)
+      CHECK(*t6 == *t7);
+      CHECK(*t5 != *t7);
+      CHECK(*t6 != *t4);
       delete t4;
       delete t5;
       delete t6;
@@ -135,7 +141,7 @@ namespace gum_tests {
         delete vars[i];
     }   // namespace gum_tests
 
-    GUM_ACTIVE_TEST(_op_multidimImplementationOfMultiDimArray) {
+    static void test_op_multidimImplementationOfMultiDimArray() {
       std::vector< gum::LabelizedVariable* > vars(10);
 
       for (gum::Idx i = 0; i < 10; ++i) {
@@ -160,27 +166,27 @@ namespace gum_tests {
 
       t4 = add2MultiDimArrays(&t1, &t2);
       t5 = add_test_arrays(&tt1, &tt2);
-      TS_ASSERT(*t4 == *t5)
+      CHECK(*t4 == *t5);
       delete t4;
       delete t5;
       t4 = add2MultiDimArrays(&t3, &t2);
       t5 = add_test_arrays(&tt3, &tt2);
-      TS_ASSERT(*t4 == *t5)
+      CHECK(*t4 == *t5);
       delete t4;
       t4 = add2MultiDimArrays(&t2, &t3);
-      TS_ASSERT(*t4 == *t5)
+      CHECK(*t4 == *t5);
       delete t4;
       delete t5;
 
       // TS_ASSERT_{EQUALS|DIFFERS} can not be used here.
       t4 = subtract2MultiDimArrays(&t1, &t2);
       t5 = sub_test_arrays(&tt1, &tt2);
-      TS_ASSERT(*t4 == *t5)
+      CHECK(*t4 == *t5);
       t6 = subtract2MultiDimArrays(&t2, &t1);
       t7 = sub_test_arrays(&tt2, &tt1);
-      TS_ASSERT(*t6 == *t7)
-      TS_ASSERT(*t5 != *t7)
-      TS_ASSERT(*t6 != *t4)
+      CHECK(*t6 == *t7);
+      CHECK(*t5 != *t7);
+      CHECK(*t6 != *t4);
       delete t4;
       delete t5;
       delete t6;
@@ -188,26 +194,26 @@ namespace gum_tests {
 
       t4 = multiply2MultiDimArrays(&t1, &t2);
       t5 = mult_test_arrays(&tt1, &tt2);
-      TS_ASSERT(*t4 == *t5)
+      CHECK(*t4 == *t5);
       delete t4;
       delete t5;
       t4 = multiply2MultiDimArrays(&t3, &t2);
       t5 = mult_test_arrays(&tt3, &tt2);
-      TS_ASSERT(*t4 == *t5)
+      CHECK(*t4 == *t5);
       delete t4;
       t4 = multiply2MultiDimArrays(&t2, &t3);
-      TS_ASSERT(*t4 == *t5)
+      CHECK(*t4 == *t5);
       delete t4;
       delete t5;
 
       t4 = divide2MultiDimArrays(&t1, &t2);
       t5 = div_test_arrays(&tt1, &tt2);
-      TS_ASSERT(*t4 == *t5)
+      CHECK(*t4 == *t5);
       t6 = divide2MultiDimArrays(&t2, &t1);
       t7 = div_test_arrays(&tt2, &tt1);
-      TS_ASSERT(*t6 == *t7)
-      TS_ASSERT(*t5 != *t7)
-      TS_ASSERT(*t6 != *t4)
+      CHECK(*t6 == *t7);
+      CHECK(*t5 != *t7);
+      CHECK(*t6 != *t4);
       delete t4;
       delete t5;
       delete t6;
@@ -217,7 +223,7 @@ namespace gum_tests {
         delete vars[i];
     }
 
-    GUM_ACTIVE_TEST(_operators_init) {
+    static void test_operators_init() {
       gum::operators4MultiDimInit< double >();
       // why 3 times ?
       // gum::operators4MultiDimInit<double> ();
@@ -244,15 +250,15 @@ namespace gum_tests {
 
       t4 = t1 + t2;
       t5 = add_test_arrays(&t1, &t2);
-      TS_ASSERT(*t4 == *t5)
+      CHECK(*t4 == *t5);
       delete t4;
       delete t5;
       t4 = t3 + t2;
       t5 = add_test_arrays(&t3, &t2);
-      TS_ASSERT(*t4 == *t5)
+      CHECK(*t4 == *t5);
       delete t4;
       t4 = t2 + t3;
-      TS_ASSERT(*t4 == *t5)
+      CHECK(*t4 == *t5);
       delete t4;
       delete t5;
 
@@ -260,7 +266,7 @@ namespace gum_tests {
         delete vars[i];
     }
 
-    GUM_ACTIVE_TEST(_tensors) {
+    static void test_tensors() {
       std::vector< gum::LabelizedVariable* > vars(10);
 
       for (gum::Idx i = 0; i < 10; ++i) {
@@ -285,26 +291,26 @@ namespace gum_tests {
 
       t4 = new gum::Tensor< double >(t1 + t2);
       t5 = add_test_tensors(t1, t2);
-      TS_ASSERT(*t4 == *t5)
+      CHECK(*t4 == *t5);
       delete t4;
       delete t5;
       t4 = new gum::Tensor< double >(t3 + t2);
       t5 = add_test_tensors(t3, t2);
-      TS_ASSERT(*t4 == *t5)
+      CHECK(*t4 == *t5);
       delete t4;
       t4 = new gum::Tensor< double >(t2 + t3);
-      TS_ASSERT(*t4 == *t5)
+      CHECK(*t4 == *t5);
       delete t4;
       delete t5;
 
       t4 = new gum::Tensor< double >(t1 - t2);
       t5 = sub_test_tensors(t1, t2);
-      TS_ASSERT(*t4 == *t5)
+      CHECK(*t4 == *t5);
       t6 = new gum::Tensor< double >(t2 - t1);
       t7 = sub_test_tensors(t2, t1);
-      TS_ASSERT(*t6 == *t7)
-      TS_ASSERT(*t5 != *t7)
-      TS_ASSERT(*t6 != *t4)
+      CHECK(*t6 == *t7);
+      CHECK(*t5 != *t7);
+      CHECK(*t6 != *t4);
       delete t4;
       delete t5;
       delete t6;
@@ -312,26 +318,26 @@ namespace gum_tests {
 
       t4 = new gum::Tensor< double >(t1 * t2);
       t5 = mult_test_tensors(t1, t2);
-      TS_ASSERT(*t4 == *t5)
+      CHECK(*t4 == *t5);
       delete t4;
       delete t5;
       t4 = new gum::Tensor< double >(t3 * t2);
       t5 = mult_test_tensors(t3, t2);
-      TS_ASSERT(*t4 == *t5)
+      CHECK(*t4 == *t5);
       delete t4;
       t4 = new gum::Tensor< double >(t2 * t3);
-      TS_ASSERT(*t4 == *t5)
+      CHECK(*t4 == *t5);
       delete t4;
       delete t5;
 
       t4 = new gum::Tensor< double >(t1 / t2);
       t5 = div_test_tensors(t1, t2);
-      TS_ASSERT(*t4 == *t5)
+      CHECK(*t4 == *t5);
       t6 = new gum::Tensor< double >(t2 / t1);
       t7 = div_test_tensors(t2, t1);
-      TS_ASSERT(*t6 == *t7)
-      TS_ASSERT(*t5 != *t7)
-      TS_ASSERT(*t6 != *t4)
+      CHECK(*t6 == *t7);
+      CHECK(*t5 != *t7);
+      CHECK(*t6 != *t4);
       delete t4;
       delete t5;
       delete t6;
@@ -341,7 +347,7 @@ namespace gum_tests {
         delete vars[i];
     }
 
-    GUM_ACTIVE_TEST(_op_multidimArray4Pointers) {
+    static void test_op_multidimArray4Pointers() {
       std::vector< gum::LabelizedVariable* > vars(10);
 
       for (gum::Idx i = 0; i < 10; ++i) {
@@ -362,26 +368,26 @@ namespace gum_tests {
 
       t4 = add2MultiDimArrays4Pointers(&t1, &t2);
       t5 = add_test_arrays4Pointers(&t1, &t2);
-      TS_ASSERT(equal(*t4, *t5))
+      CHECK(equal(*t4, *t5));
       mydelete(t4);
       mydelete(t5);
       t4 = add2MultiDimArrays4Pointers(&t3, &t2);
       t5 = add_test_arrays4Pointers(&t3, &t2);
-      TS_ASSERT(equal(*t4, *t5))
+      CHECK(equal(*t4, *t5));
       mydelete(t4);
       t4 = add2MultiDimArrays4Pointers(&t2, &t3);
-      TS_ASSERT(equal(*t4, *t5))
+      CHECK(equal(*t4, *t5));
       mydelete(t4);
       mydelete(t5);
 
       t4 = subtract2MultiDimArrays4Pointers(&t1, &t2);
       t5 = sub_test_arrays4Pointers(&t1, &t2);
-      TS_ASSERT(equal(*t4, *t5))
+      CHECK(equal(*t4, *t5));
       t6 = subtract2MultiDimArrays4Pointers(&t2, &t1);
       t7 = sub_test_arrays4Pointers(&t2, &t1);
-      TS_ASSERT(equal(*t6, *t7))
-      TS_ASSERT(!equal(*t5, *t7))
-      TS_ASSERT(!equal(*t6, *t4))
+      CHECK(equal(*t6, *t7));
+      CHECK(!equal(*t5, *t7));
+      CHECK(!equal(*t6, *t4));
       mydelete(t4);
       mydelete(t5);
       mydelete(t6);
@@ -389,26 +395,26 @@ namespace gum_tests {
 
       t4 = multiply2MultiDimArrays4Pointers(&t1, &t2);
       t5 = mult_test_arrays4Pointers(&t1, &t2);
-      TS_ASSERT(equal(*t4, *t5))
+      CHECK(equal(*t4, *t5));
       mydelete(t4);
       mydelete(t5);
       t4 = multiply2MultiDimArrays4Pointers(&t3, &t2);
       t5 = mult_test_arrays4Pointers(&t3, &t2);
-      TS_ASSERT(equal(*t4, *t5))
+      CHECK(equal(*t4, *t5));
       mydelete(t4);
       t4 = multiply2MultiDimArrays4Pointers(&t2, &t3);
-      TS_ASSERT(equal(*t4, *t5))
+      CHECK(equal(*t4, *t5));
       mydelete(t4);
       mydelete(t5);
 
       t4 = divide2MultiDimArrays4Pointers(&t1, &t2);
       t5 = div_test_arrays4Pointers(&t1, &t2);
-      TS_ASSERT(equal(*t4, *t5))
+      CHECK(equal(*t4, *t5));
       t6 = divide2MultiDimArrays4Pointers(&t2, &t1);
       t7 = div_test_arrays4Pointers(&t2, &t1);
-      TS_ASSERT(equal(*t6, *t7))
-      TS_ASSERT(!equal(*t5, *t7))
-      TS_ASSERT(!equal(*t6, *t4))
+      CHECK(equal(*t6, *t7));
+      CHECK(!equal(*t5, *t7));
+      CHECK(!equal(*t6, *t4));
       mydelete(t4);
       mydelete(t5);
       mydelete(t6);
@@ -418,7 +424,7 @@ namespace gum_tests {
         delete vars[i];
     }
 
-    GUM_ACTIVE_TEST(_op_multidimImplementationOfMultiDimArray4Pointers) {
+    static void test_op_multidimImplementationOfMultiDimArray4Pointers() {
       std::vector< gum::LabelizedVariable* > vars(10);
 
       for (gum::Idx i = 0; i < 10; ++i) {
@@ -443,26 +449,26 @@ namespace gum_tests {
 
       t4 = add2MultiDimArrays4Pointers(&t1, &t2);
       t5 = add_test_arrays4Pointers(&tt1, &tt2);
-      TS_ASSERT(equal(*t4, *t5))
+      CHECK(equal(*t4, *t5));
       mydelete(t4);
       mydelete(t5);
       t4 = add2MultiDimArrays4Pointers(&t3, &t2);
       t5 = add_test_arrays4Pointers(&tt3, &tt2);
-      TS_ASSERT(equal(*t4, *t5))
+      CHECK(equal(*t4, *t5));
       mydelete(t4);
       t4 = add2MultiDimArrays4Pointers(&t2, &t3);
-      TS_ASSERT(equal(*t4, *t5))
+      CHECK(equal(*t4, *t5));
       mydelete(t4);
       mydelete(t5);
 
       t4 = subtract2MultiDimArrays4Pointers(&t1, &t2);
       t5 = sub_test_arrays4Pointers(&tt1, &tt2);
-      TS_ASSERT(equal(*t4, *t5))
+      CHECK(equal(*t4, *t5));
       t6 = subtract2MultiDimArrays4Pointers(&t2, &t1);
       t7 = sub_test_arrays4Pointers(&tt2, &tt1);
-      TS_ASSERT(equal(*t6, *t7))
-      TS_ASSERT(!equal(*t5, *t7))
-      TS_ASSERT(!equal(*t6, *t4))
+      CHECK(equal(*t6, *t7));
+      CHECK(!equal(*t5, *t7));
+      CHECK(!equal(*t6, *t4));
       mydelete(t4);
       mydelete(t5);
       mydelete(t6);
@@ -470,26 +476,26 @@ namespace gum_tests {
 
       t4 = multiply2MultiDimArrays4Pointers(&t1, &t2);
       t5 = mult_test_arrays4Pointers(&tt1, &tt2);
-      TS_ASSERT(equal(*t4, *t5))
+      CHECK(equal(*t4, *t5));
       mydelete(t4);
       mydelete(t5);
       t4 = multiply2MultiDimArrays4Pointers(&t3, &t2);
       t5 = mult_test_arrays4Pointers(&tt3, &tt2);
-      TS_ASSERT(equal(*t4, *t5))
+      CHECK(equal(*t4, *t5));
       mydelete(t4);
       t4 = multiply2MultiDimArrays4Pointers(&t2, &t3);
-      TS_ASSERT(equal(*t4, *t5))
+      CHECK(equal(*t4, *t5));
       mydelete(t4);
       mydelete(t5);
 
       t4 = divide2MultiDimArrays4Pointers(&t1, &t2);
       t5 = div_test_arrays4Pointers(&tt1, &tt2);
-      TS_ASSERT(equal(*t4, *t5))
+      CHECK(equal(*t4, *t5));
       t6 = divide2MultiDimArrays4Pointers(&t2, &t1);
       t7 = div_test_arrays4Pointers(&tt2, &tt1);
-      TS_ASSERT(equal(*t6, *t7))
-      TS_ASSERT(!equal(*t5, *t7))
-      TS_ASSERT(!equal(*t6, *t4))
+      CHECK(equal(*t6, *t7));
+      CHECK(!equal(*t5, *t7));
+      CHECK(!equal(*t6, *t4));
       mydelete(t4);
       mydelete(t5);
       mydelete(t6);
@@ -499,7 +505,7 @@ namespace gum_tests {
         delete vars[i];
     }
 
-    GUM_ACTIVE_TEST(_operators_init4Pointers) {
+    static void test_operators_init4Pointers() {
       gum::pointerOperators4MultiDimInit< double >();
       // why 3 times ?
       // gum::pointerOperators4MultiDimInit<double> ();
@@ -526,15 +532,15 @@ namespace gum_tests {
 
       t4 = t1 + t2;
       t5 = add_test_arrays4Pointers(&t1, &t2);
-      TS_ASSERT(equal(*t4, *t5))
+      CHECK(equal(*t4, *t5));
       mydelete(t4);
       mydelete(t5);
       t4 = t3 + t2;
       t5 = add_test_arrays4Pointers(&t3, &t2);
-      TS_ASSERT(equal(*t4, *t5))
+      CHECK(equal(*t4, *t5));
       mydelete(t4);
       t4 = t2 + t3;
-      TS_ASSERT(equal(*t4, *t5))
+      CHECK(equal(*t4, *t5));
       mydelete(t4);
       mydelete(t5);
 
@@ -542,7 +548,7 @@ namespace gum_tests {
         delete vars[i];
     }
 
-    GUM_ACTIVE_TEST(_op_optimizeArrays) {
+    static void test_op_optimizeArrays() {
       std::vector< gum::LabelizedVariable* > vars(10);
 
       for (gum::Idx i = 0; i < 10; ++i) {
@@ -564,25 +570,25 @@ namespace gum_tests {
       randomInit(&t4);
       t5 = add2MultiDimArrays(&t1, &t2);
       t6 = add_test_arrays(&t1, &t2);
-      TS_ASSERT(*t5 == *t6)
+      CHECK(*t5 == *t6);
       delete t6;
       delete t5;
       t5 = add2MultiDimArrays(&t3, &t4);
       t6 = add_test_arrays(&t3, &t4);
-      TS_ASSERT(*t6 == *t5)
+      CHECK(*t6 == *t5);
       delete t6;
       t6 = add2MultiDimArrays(&t4, &t3);
-      TS_ASSERT(*t6 == *t5)
+      CHECK(*t6 == *t5);
       delete t6;
       delete t5;
       t5 = add2MultiDimArrays(&t1, &t2);
       t6 = add_test_arrays(&t1, &t2);
-      TS_ASSERT(*t5 == *t6)
+      CHECK(*t5 == *t6);
       delete t6;
       delete t5;
       t5 = add2MultiDimArrays(&t3, &t2);
       t6 = add_test_arrays(&t3, &t2);
-      TS_ASSERT(*t5 == *t6)
+      CHECK(*t5 == *t6);
       delete t6;
       delete t5;
 
@@ -596,34 +602,34 @@ namespace gum_tests {
 
       t5 = add2MultiDimArrays(&t7, &t8);
       t6 = add_test_arrays(&t7, &t8);
-      TS_ASSERT(*t5 == *t6)
+      CHECK(*t5 == *t6);
       delete t6;
       delete t5;
       t5 = add2MultiDimArrays(&t8, &t7);
       t6 = add_test_arrays(&t8, &t7);
-      TS_ASSERT(*t5 == *t6)
+      CHECK(*t5 == *t6);
       delete t6;
       delete t5;
 
       t5 = add2MultiDimArrays(&t7, &t9);
       t6 = add_test_arrays(&t7, &t9);
-      TS_ASSERT(*t5 == *t6)
+      CHECK(*t5 == *t6);
       delete t6;
       delete t5;
       t5 = add2MultiDimArrays(&t9, &t7);
       t6 = add_test_arrays(&t9, &t7);
-      TS_ASSERT(*t5 == *t6)
+      CHECK(*t5 == *t6);
       delete t6;
       delete t5;
 
       t5 = add2MultiDimArrays(&t8, &t9);
       t6 = add_test_arrays(&t8, &t9);
-      TS_ASSERT(*t5 == *t6)
+      CHECK(*t5 == *t6);
       delete t6;
       delete t5;
       t5 = add2MultiDimArrays(&t9, &t8);
       t6 = add_test_arrays(&t9, &t8);
-      TS_ASSERT(*t5 == *t6)
+      CHECK(*t5 == *t6);
       delete t6;
       delete t5;
 
@@ -637,17 +643,17 @@ namespace gum_tests {
 
       t5 = add2MultiDimArrays(&t10, &t11);
       t6 = add_test_arrays(&t10, &t11);
-      TS_ASSERT(*t5 == *t6)
+      CHECK(*t5 == *t6);
       delete t6;
       delete t5;
       t5 = add2MultiDimArrays(&t10, &t12);
       t6 = add_test_arrays(&t10, &t12);
-      TS_ASSERT(*t5 == *t6)
+      CHECK(*t5 == *t6);
       delete t6;
       delete t5;
       t5 = add2MultiDimArrays(&t11, &t12);
       t6 = add_test_arrays(&t11, &t12);
-      TS_ASSERT(*t5 == *t6)
+      CHECK(*t5 == *t6);
       delete t6;
       delete t5;
 
@@ -655,7 +661,7 @@ namespace gum_tests {
         delete vars[i];
     }
 
-    GUM_ACTIVE_TEST(_op_optimizeMultiDimImplementations) {
+    static void test_op_optimizeMultiDimImplementations() {
       std::vector< gum::LabelizedVariable* > vars(10);
 
       for (gum::Idx i = 0; i < 10; ++i) {
@@ -683,25 +689,25 @@ namespace gum_tests {
 
       t5 = add2MultiDimArrays(&t1, &t2);
       t6 = add_test_arrays(&tt1, &tt2);
-      TS_ASSERT(*t5 == *t6)
+      CHECK(*t5 == *t6);
       delete t6;
       delete t5;
       t5 = add2MultiDimArrays(&t3, &t4);
       t6 = add_test_arrays(&tt3, &tt4);
-      TS_ASSERT(*t6 == *t5)
+      CHECK(*t6 == *t5);
       delete t6;
       t6 = add2MultiDimArrays(&t4, &t3);
-      TS_ASSERT(*t6 == *t5)
+      CHECK(*t6 == *t5);
       delete t6;
       delete t5;
       t5 = add2MultiDimArrays(&t1, &t2);
       t6 = add_test_arrays(&tt1, &tt2);
-      TS_ASSERT(*t5 == *t6)
+      CHECK(*t5 == *t6);
       delete t6;
       delete t5;
       t5 = add2MultiDimArrays(&t3, &t2);
       t6 = add_test_arrays(&tt3, &tt2);
-      TS_ASSERT(*t5 == *t6)
+      CHECK(*t5 == *t6);
       delete t6;
       delete t5;
 
@@ -718,34 +724,34 @@ namespace gum_tests {
 
       t5 = add2MultiDimArrays(&t7, &t8);
       t6 = add_test_arrays(&tt7, &tt8);
-      TS_ASSERT(*t5 == *t6)
+      CHECK(*t5 == *t6);
       delete t6;
       delete t5;
       t5 = add2MultiDimArrays(&t8, &t7);
       t6 = add_test_arrays(&tt8, &tt7);
-      TS_ASSERT(*t5 == *t6)
+      CHECK(*t5 == *t6);
       delete t6;
       delete t5;
 
       t5 = add2MultiDimArrays(&t7, &t9);
       t6 = add_test_arrays(&tt7, &tt9);
-      TS_ASSERT(*t5 == *t6)
+      CHECK(*t5 == *t6);
       delete t6;
       delete t5;
       t5 = add2MultiDimArrays(&t9, &t7);
       t6 = add_test_arrays(&tt9, &tt7);
-      TS_ASSERT(*t5 == *t6)
+      CHECK(*t5 == *t6);
       delete t6;
       delete t5;
 
       t5 = add2MultiDimArrays(&t8, &t9);
       t6 = add_test_arrays(&tt8, &tt9);
-      TS_ASSERT(*t5 == *t6)
+      CHECK(*t5 == *t6);
       delete t6;
       delete t5;
       t5 = add2MultiDimArrays(&t9, &t8);
       t6 = add_test_arrays(&tt9, &tt8);
-      TS_ASSERT(*t5 == *t6)
+      CHECK(*t5 == *t6);
       delete t6;
       delete t5;
 
@@ -762,17 +768,17 @@ namespace gum_tests {
 
       t5 = add2MultiDimArrays(&t10, &t11);
       t6 = add_test_arrays(&tt10, &tt11);
-      TS_ASSERT(*t5 == *t6)
+      CHECK(*t5 == *t6);
       delete t6;
       delete t5;
       t5 = add2MultiDimArrays(&t10, &t12);
       t6 = add_test_arrays(&tt10, &tt12);
-      TS_ASSERT(*t5 == *t6)
+      CHECK(*t5 == *t6);
       delete t6;
       delete t5;
       t5 = add2MultiDimArrays(&t11, &t12);
       t6 = add_test_arrays(&tt11, &tt12);
-      TS_ASSERT(*t5 == *t6)
+      CHECK(*t5 == *t6);
       delete t6;
       delete t5;
 
@@ -784,7 +790,7 @@ namespace gum_tests {
     // ==========================================================================
     // ==========================================================================
     template < typename T >
-    void mydelete(gum::MultiDimImplementation< T* >* t) {
+    static void mydelete(gum::MultiDimImplementation< T* >* t) {
       gum::Instantiation inst(*t);
 
       for (inst.setFirst(); !inst.end(); ++inst) {
@@ -797,8 +803,8 @@ namespace gum_tests {
     // ==========================================================================
     // ==========================================================================
     template < typename T >
-    bool equal(const gum::MultiDimImplementation< T* >& t1,
-               const gum::MultiDimImplementation< T* >& t2) {
+    static bool equal(const gum::MultiDimImplementation< T* >& t1,
+                      const gum::MultiDimImplementation< T* >& t2) {
       if ((t1.nbrDim() == t2.nbrDim()) && (t1.domainSize() == t2.domainSize())) {
         for (const auto var: t1.variablesSequence())
           if (!t2.variablesSequence().exists(var)) return false;
@@ -818,7 +824,7 @@ namespace gum_tests {
     // ==========================================================================
     /// initialize randomly a table
     // ==========================================================================
-    void randomInit(gum::MultiDimArray< double >* t) {
+    static void randomInit(gum::MultiDimArray< double >* t) {
       gum::Instantiation i(t);
 
       for (i.setFirst(); !i.end(); ++i)
@@ -828,7 +834,7 @@ namespace gum_tests {
     // ==========================================================================
     /// initialize randomly a table
     // ==========================================================================
-    void randomInitPointer(gum::MultiDimArray< double* >* t) {
+    static void randomInitPointer(gum::MultiDimArray< double* >* t) {
       gum::Instantiation i(t);
 
       for (i.setFirst(); !i.end(); ++i)
@@ -838,7 +844,7 @@ namespace gum_tests {
     // ==========================================================================
     /// initialize randomly a table
     // ==========================================================================
-    void randomInitP(gum::Tensor< double >& t) {
+    static void randomInitP(gum::Tensor< double >& t) {
       gum::Instantiation i(t);
 
       for (i.setFirst(); !i.end(); ++i)
@@ -847,8 +853,8 @@ namespace gum_tests {
 
     // ==========================================================================
     // ==========================================================================
-    gum::MultiDimArray< double >* add_test_arrays(const gum::MultiDimArray< double >* t1,
-                                                  const gum::MultiDimArray< double >* t2) {
+    static gum::MultiDimArray< double >* add_test_arrays(const gum::MultiDimArray< double >* t1,
+                                                         const gum::MultiDimArray< double >* t2) {
       // creation of the resulting variable list
       gum::Sequence< const gum::DiscreteVariable* >        seq  = t1->variablesSequence();
       const gum::Sequence< const gum::DiscreteVariable* >& seq2 = t2->variablesSequence();
@@ -879,8 +885,8 @@ namespace gum_tests {
 
     // ==========================================================================
     // ==========================================================================
-    gum::MultiDimArray< double >* sub_test_arrays(const gum::MultiDimArray< double >* t1,
-                                                  const gum::MultiDimArray< double >* t2) {
+    static gum::MultiDimArray< double >* sub_test_arrays(const gum::MultiDimArray< double >* t1,
+                                                         const gum::MultiDimArray< double >* t2) {
       // creation of the resulting variable list
       gum::Sequence< const gum::DiscreteVariable* >        seq  = t1->variablesSequence();
       const gum::Sequence< const gum::DiscreteVariable* >& seq2 = t2->variablesSequence();
@@ -908,8 +914,8 @@ namespace gum_tests {
 
     // ==========================================================================
     // ==========================================================================
-    gum::MultiDimArray< double >* mult_test_arrays(const gum::MultiDimArray< double >* t1,
-                                                   const gum::MultiDimArray< double >* t2) {
+    static gum::MultiDimArray< double >* mult_test_arrays(const gum::MultiDimArray< double >* t1,
+                                                          const gum::MultiDimArray< double >* t2) {
       // creation of the resulting variable list
       gum::Sequence< const gum::DiscreteVariable* >        seq  = t1->variablesSequence();
       const gum::Sequence< const gum::DiscreteVariable* >& seq2 = t2->variablesSequence();
@@ -937,8 +943,8 @@ namespace gum_tests {
 
     // ==========================================================================
     // ==========================================================================
-    gum::MultiDimArray< double >* div_test_arrays(const gum::MultiDimArray< double >* t1,
-                                                  const gum::MultiDimArray< double >* t2) {
+    static gum::MultiDimArray< double >* div_test_arrays(const gum::MultiDimArray< double >* t1,
+                                                         const gum::MultiDimArray< double >* t2) {
       // creation of the resulting variable list
       gum::Sequence< const gum::DiscreteVariable* >        seq  = t1->variablesSequence();
       const gum::Sequence< const gum::DiscreteVariable* >& seq2 = t2->variablesSequence();
@@ -967,7 +973,7 @@ namespace gum_tests {
 
     // ==========================================================================
     // ==========================================================================
-    gum::MultiDimArray< double* >*
+    static gum::MultiDimArray< double* >*
         add_test_arrays4Pointers(const gum::MultiDimArray< double* >* t1,
                                  const gum::MultiDimArray< double* >* t2) {
       // creation of the resulting variable list
@@ -1000,7 +1006,7 @@ namespace gum_tests {
 
     // ==========================================================================
     // ==========================================================================
-    gum::MultiDimArray< double* >*
+    static gum::MultiDimArray< double* >*
         sub_test_arrays4Pointers(const gum::MultiDimArray< double* >* t1,
                                  const gum::MultiDimArray< double* >* t2) {
       // creation of the resulting variable list
@@ -1033,7 +1039,7 @@ namespace gum_tests {
 
     // ==========================================================================
     // ==========================================================================
-    gum::MultiDimArray< double* >*
+    static gum::MultiDimArray< double* >*
         mult_test_arrays4Pointers(const gum::MultiDimArray< double* >* t1,
                                   const gum::MultiDimArray< double* >* t2) {
       // creation of the resulting variable list
@@ -1066,7 +1072,7 @@ namespace gum_tests {
 
     // ==========================================================================
     // ==========================================================================
-    gum::MultiDimArray< double* >*
+    static gum::MultiDimArray< double* >*
         div_test_arrays4Pointers(const gum::MultiDimArray< double* >* t1,
                                  const gum::MultiDimArray< double* >* t2) {
       // creation of the resulting variable list
@@ -1099,8 +1105,8 @@ namespace gum_tests {
 
     // ==========================================================================
     // ==========================================================================
-    gum::Tensor< double >* add_test_tensors(const gum::Tensor< double >& t1,
-                                            const gum::Tensor< double >& t2) {
+    static gum::Tensor< double >* add_test_tensors(const gum::Tensor< double >& t1,
+                                                   const gum::Tensor< double >& t2) {
       // creation of the resulting variable list
       gum::Sequence< const gum::DiscreteVariable* >        seq  = t1.variablesSequence();
       const gum::Sequence< const gum::DiscreteVariable* >& seq2 = t2.variablesSequence();
@@ -1131,8 +1137,8 @@ namespace gum_tests {
 
     // ==========================================================================
     // ==========================================================================
-    gum::Tensor< double >* sub_test_tensors(const gum::Tensor< double >& t1,
-                                            const gum::Tensor< double >& t2) {
+    static gum::Tensor< double >* sub_test_tensors(const gum::Tensor< double >& t1,
+                                                   const gum::Tensor< double >& t2) {
       // creation of the resulting variable list
       gum::Sequence< const gum::DiscreteVariable* >        seq  = t1.variablesSequence();
       const gum::Sequence< const gum::DiscreteVariable* >& seq2 = t2.variablesSequence();
@@ -1163,8 +1169,8 @@ namespace gum_tests {
 
     // ==========================================================================
     // ==========================================================================
-    gum::Tensor< double >* mult_test_tensors(const gum::Tensor< double >& t1,
-                                             const gum::Tensor< double >& t2) {
+    static gum::Tensor< double >* mult_test_tensors(const gum::Tensor< double >& t1,
+                                                    const gum::Tensor< double >& t2) {
       // creation of the resulting variable list
       gum::Sequence< const gum::DiscreteVariable* >        seq  = t1.variablesSequence();
       const gum::Sequence< const gum::DiscreteVariable* >& seq2 = t2.variablesSequence();
@@ -1195,8 +1201,8 @@ namespace gum_tests {
 
     // ==========================================================================
     // ==========================================================================
-    gum::Tensor< double >* div_test_tensors(const gum::Tensor< double >& t1,
-                                            const gum::Tensor< double >& t2) {
+    static gum::Tensor< double >* div_test_tensors(const gum::Tensor< double >& t1,
+                                                   const gum::Tensor< double >& t2) {
       // creation of the resulting variable list
       gum::Sequence< const gum::DiscreteVariable* >        seq  = t1.variablesSequence();
       const gum::Sequence< const gum::DiscreteVariable* >& seq2 = t2.variablesSequence();
@@ -1225,4 +1231,14 @@ namespace gum_tests {
       return result;
     }
   };
+
+  GUM_TEST_ACTIF(_op_multidimArray)
+  GUM_TEST_ACTIF(_op_multidimImplementationOfMultiDimArray)
+  GUM_TEST_ACTIF(_operators_init)
+  GUM_TEST_ACTIF(_tensors)
+  GUM_TEST_ACTIF(_op_multidimArray4Pointers)
+  GUM_TEST_ACTIF(_op_multidimImplementationOfMultiDimArray4Pointers)
+  GUM_TEST_ACTIF(_operators_init4Pointers)
+  GUM_TEST_ACTIF(_op_optimizeArrays)
+  GUM_TEST_ACTIF(_op_optimizeMultiDimImplementations)
 } /* namespace gum_tests */

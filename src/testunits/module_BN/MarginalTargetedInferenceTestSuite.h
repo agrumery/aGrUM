@@ -1,7 +1,7 @@
 /****************************************************************************
  *   This file is part of the aGrUM/pyAgrum library.                        *
  *                                                                          *
- *   Copyright (c) 2005-2025 by                                             *
+ *   Copyright (c) 2005-2026 by                                             *
  *       - Pierre-Henri WUILLEMIN(_at_LIP6)                                 *
  *       - Christophe GONZALES(_at_AMU)                                     *
  *                                                                          *
@@ -27,7 +27,7 @@
  *                                                                          *
  *   See LICENCES for more details.                                         *
  *                                                                          *
- *   SPDX-FileCopyrightText: Copyright 2005-2025                            *
+ *   SPDX-FileCopyrightText: Copyright 2005-2026                            *
  *       - Pierre-Henri WUILLEMIN(_at_LIP6)                                 *
  *       - Christophe GONZALES(_at_AMU)                                     *
  *   SPDX-License-Identifier: LGPL-3.0-or-later OR MIT                      *
@@ -37,6 +37,7 @@
  *   gitlab   : https://gitlab.com/agrumery/agrum                           *
  *                                                                          *
  ****************************************************************************/
+
 #pragma once
 
 
@@ -52,6 +53,11 @@
 
 #include <agrum/base/core/math/math_utils.h>
 
+#undef GUM_CURRENT_SUITE
+#undef GUM_CURRENT_MODULE
+#define GUM_CURRENT_SUITE  MarginalTargetedInference
+#define GUM_CURRENT_MODULE BN
+
 // The graph used for the tests:
 //          1   2_          1 -> 3
 //         / \ / /          1 -> 4
@@ -62,31 +68,33 @@
 
 namespace gum_tests {
 
-  class GUM_TEST_SUITE(MarginalTargetedInference) {
+  struct MarginalTargetedInferenceTestSuite {
     public:
-    GUM_ACTIVE_TEST(AddTarget) {
+    static void testAddTarget() {
       auto bn = gum::BayesNet< double >::fastPrototype("A->B->C->D;A->E->D;F->B;C->H;");
 
       gum::LazyPropagation< double > lazy(&bn);
-      TS_ASSERT_EQUALS(lazy.targets(), gum::NodeSet({0, 1, 2, 3, 4, 5, 6}))
+      CHECK((lazy.targets()) == (gum::NodeSet({0, 1, 2, 3, 4, 5, 6})));
       lazy.addTarget("A");
-      TS_ASSERT_EQUALS(lazy.targets(), gum::NodeSet({0}))
+      CHECK((lazy.targets()) == (gum::NodeSet({0})));
       lazy.addTarget("B");
-      TS_ASSERT_EQUALS(lazy.targets(), gum::NodeSet({0, 1}))
+      CHECK((lazy.targets()) == (gum::NodeSet({0, 1})));
 
       gum::ShaferShenoyInference< double > shafer(&bn);
-      TS_ASSERT_EQUALS(shafer.targets(), gum::NodeSet({0, 1, 2, 3, 4, 5, 6}))
+      CHECK((shafer.targets()) == (gum::NodeSet({0, 1, 2, 3, 4, 5, 6})));
       shafer.addTarget("A");
-      TS_ASSERT_EQUALS(shafer.targets(), gum::NodeSet({0}))
+      CHECK((shafer.targets()) == (gum::NodeSet({0})));
       shafer.addTarget("B");
-      TS_ASSERT_EQUALS(shafer.targets(), gum::NodeSet({0, 1}))
+      CHECK((shafer.targets()) == (gum::NodeSet({0, 1})));
 
       gum::VariableElimination< double > ve(&bn);
-      TS_ASSERT_EQUALS(ve.targets(), gum::NodeSet({0, 1, 2, 3, 4, 5, 6}))
+      CHECK((ve.targets()) == (gum::NodeSet({0, 1, 2, 3, 4, 5, 6})));
       ve.addTarget("A");
-      TS_ASSERT_EQUALS(ve.targets(), gum::NodeSet({0}))
+      CHECK((ve.targets()) == (gum::NodeSet({0})));
       ve.addTarget("B");
-      TS_ASSERT_EQUALS(ve.targets(), gum::NodeSet({0, 1}))
+      CHECK((ve.targets()) == (gum::NodeSet({0, 1})));
     }   // namespace gum_tests
   };
+
+  GUM_TEST_ACTIF(AddTarget)
 }   // namespace gum_tests

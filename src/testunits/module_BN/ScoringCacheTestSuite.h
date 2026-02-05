@@ -1,7 +1,7 @@
 /****************************************************************************
  *   This file is part of the aGrUM/pyAgrum library.                        *
  *                                                                          *
- *   Copyright (c) 2005-2025 by                                             *
+ *   Copyright (c) 2005-2026 by                                             *
  *       - Pierre-Henri WUILLEMIN(_at_LIP6)                                 *
  *       - Christophe GONZALES(_at_AMU)                                     *
  *                                                                          *
@@ -27,7 +27,7 @@
  *                                                                          *
  *   See LICENCES for more details.                                         *
  *                                                                          *
- *   SPDX-FileCopyrightText: Copyright 2005-2025                            *
+ *   SPDX-FileCopyrightText: Copyright 2005-2026                            *
  *       - Pierre-Henri WUILLEMIN(_at_LIP6)                                 *
  *       - Christophe GONZALES(_at_AMU)                                     *
  *   SPDX-License-Identifier: LGPL-3.0-or-later OR MIT                      *
@@ -37,6 +37,7 @@
  *   gitlab   : https://gitlab.com/agrumery/agrum                           *
  *                                                                          *
  ****************************************************************************/
+
 #pragma once
 
 
@@ -47,17 +48,22 @@
 
 #include <agrum/base/stattests/scoringCache.h>
 
+#undef GUM_CURRENT_SUITE
+#undef GUM_CURRENT_MODULE
+#define GUM_CURRENT_SUITE  ScoringCache
+#define GUM_CURRENT_MODULE BN
+
 namespace gum_tests {
 
-  class GUM_TEST_SUITE(ScoringCache) {
+  struct ScoringCacheTestSuite {
     public:
-    GUM_ACTIVE_TEST(1) {
+    static void test1() {
       gum::learning::IdCondSet    set1;
       gum::learning::ScoringCache cache;
 
       cache.insert(set1, 2.0);
-      TS_ASSERT(cache.exists(set1))
-      TS_ASSERT_EQUALS(cache.score(set1), 2.0)
+      CHECK(cache.exists(set1));
+      CHECK((cache.score(set1)) == (2.0));
 
       gum::NodeId node0 = 0;
       gum::NodeId node1 = 1;
@@ -69,88 +75,89 @@ namespace gum_tests {
 
       gum::learning::IdCondSet set2(node0, empty);
       cache.insert(set2, 3.2);
-      TS_ASSERT(cache.exists(set2))
-      TS_ASSERT_EQUALS(cache.score(set2), 3.2)
+      CHECK(cache.exists(set2));
+      CHECK((cache.score(set2)) == (3.2));
 
-      TS_ASSERT_THROWS(cache.insert(set2, 5.2), const gum::DuplicateElement&)
-      TS_ASSERT_EQUALS(cache.size(), std::size_t(2))
+      CHECK_THROWS_AS(cache.insert(set2, 5.2), const gum::DuplicateElement&);
+      CHECK((cache.size()) == (std::size_t(2)));
       cache.clear();
-      TS_ASSERT_EQUALS(cache.size(), std::size_t(0))
+      CHECK((cache.size()) == (std::size_t(0)));
 
       gum::learning::IdCondSet xset2(set2);
       cache.insert(std::move(xset2), 7.3);
-      TS_ASSERT(cache.exists(set2))
-      TS_ASSERT_EQUALS(cache.score(set2), 7.3)
+      CHECK(cache.exists(set2));
+      CHECK((cache.score(set2)) == (7.3));
 
       std::vector< gum::NodeId > vect{node4, node2, node3};
       gum::learning::IdCondSet   set3(node0, node1, vect, true, true);
-      TS_ASSERT(!cache.exists(set3))
+      CHECK(!cache.exists(set3));
       cache.insert(set3, 1.3);
-      TS_ASSERT(cache.exists(set3))
-      TS_ASSERT_EQUALS(cache.score(set3), 1.3)
-      TS_ASSERT_EQUALS(cache.score(set2), 7.3)
-      TS_ASSERT_EQUALS(cache.size(), std::size_t(2))
+      CHECK(cache.exists(set3));
+      CHECK((cache.score(set3)) == (1.3));
+      CHECK((cache.score(set2)) == (7.3));
+      CHECK((cache.size()) == (std::size_t(2)));
 
       gum::learning::ScoringCache cache2(cache);
-      TS_ASSERT(cache2.exists(set3))
-      TS_ASSERT_EQUALS(cache2.score(set3), 1.3)
-      TS_ASSERT_EQUALS(cache2.score(set2), 7.3)
-      TS_ASSERT_EQUALS(cache2.size(), std::size_t(2))
+      CHECK(cache2.exists(set3));
+      CHECK((cache2.score(set3)) == (1.3));
+      CHECK((cache2.score(set2)) == (7.3));
+      CHECK((cache2.size()) == (std::size_t(2)));
 
       cache2.erase(set2);
-      TS_ASSERT(cache2.exists(set3))
-      TS_ASSERT(!cache2.exists(set2))
-      TS_ASSERT_EQUALS(cache2.score(set3), 1.3)
-      TS_ASSERT_THROWS(cache2.score(set2), const gum::NotFound&)
-      TS_ASSERT_EQUALS(cache2.size(), std::size_t(1))
-      TS_ASSERT(cache.exists(set3))
-      TS_ASSERT_EQUALS(cache.score(set3), 1.3)
-      TS_ASSERT_EQUALS(cache.score(set2), 7.3)
-      TS_ASSERT_EQUALS(cache.size(), std::size_t(2))
+      CHECK(cache2.exists(set3));
+      CHECK(!cache2.exists(set2));
+      CHECK((cache2.score(set3)) == (1.3));
+      CHECK_THROWS_AS(cache2.score(set2), const gum::NotFound&);
+      CHECK((cache2.size()) == (std::size_t(1)));
+      CHECK(cache.exists(set3));
+      CHECK((cache.score(set3)) == (1.3));
+      CHECK((cache.score(set2)) == (7.3));
+      CHECK((cache.size()) == (std::size_t(2)));
 
       gum::learning::ScoringCache cache3(std::move(cache2));
-      TS_ASSERT(cache3.exists(set3))
-      TS_ASSERT(!cache3.exists(set2))
-      TS_ASSERT_EQUALS(cache3.score(set3), 1.3)
-      TS_ASSERT_THROWS(cache3.score(set2), const gum::NotFound&)
-      TS_ASSERT_EQUALS(cache3.size(), std::size_t(1))
-      TS_ASSERT(cache.exists(set3))
-      TS_ASSERT_EQUALS(cache.score(set3), 1.3)
-      TS_ASSERT_EQUALS(cache.score(set2), 7.3)
-      TS_ASSERT_EQUALS(cache.size(), std::size_t(2))
+      CHECK(cache3.exists(set3));
+      CHECK(!cache3.exists(set2));
+      CHECK((cache3.score(set3)) == (1.3));
+      CHECK_THROWS_AS(cache3.score(set2), const gum::NotFound&);
+      CHECK((cache3.size()) == (std::size_t(1)));
+      CHECK(cache.exists(set3));
+      CHECK((cache.score(set3)) == (1.3));
+      CHECK((cache.score(set2)) == (7.3));
+      CHECK((cache.size()) == (std::size_t(2)));
 
       gum::learning::ScoringCache* cache4 = cache3.clone();
-      TS_ASSERT(cache4->exists(set3))
-      TS_ASSERT(!cache4->exists(set2))
-      TS_ASSERT_EQUALS(cache4->score(set3), 1.3)
-      TS_ASSERT_THROWS(cache4->score(set2), const gum::NotFound&)
-      TS_ASSERT_EQUALS(cache4->size(), std::size_t(1))
-      TS_ASSERT(cache.exists(set3))
-      TS_ASSERT_EQUALS(cache.score(set3), 1.3)
-      TS_ASSERT_EQUALS(cache.score(set2), 7.3)
-      TS_ASSERT_EQUALS(cache.size(), std::size_t(2))
+      CHECK(cache4->exists(set3));
+      CHECK(!cache4->exists(set2));
+      CHECK((cache4->score(set3)) == (1.3));
+      CHECK_THROWS_AS(cache4->score(set2), const gum::NotFound&);
+      CHECK((cache4->size()) == (std::size_t(1)));
+      CHECK(cache.exists(set3));
+      CHECK((cache.score(set3)) == (1.3));
+      CHECK((cache.score(set2)) == (7.3));
+      CHECK((cache.size()) == (std::size_t(2)));
 
       cache3 = cache;
-      TS_ASSERT(cache3.exists(set3))
-      TS_ASSERT_EQUALS(cache3.score(set3), 1.3)
-      TS_ASSERT_EQUALS(cache3.score(set2), 7.3)
-      TS_ASSERT_EQUALS(cache3.size(), std::size_t(2))
+      CHECK(cache3.exists(set3));
+      CHECK((cache3.score(set3)) == (1.3));
+      CHECK((cache3.score(set2)) == (7.3));
+      CHECK((cache3.size()) == (std::size_t(2)));
 
       gum::learning::IdCondSet set4(node1, vect, true);
-      TS_GUM_ASSERT_THROWS_NOTHING(cache3.erase(set4))
-      TS_ASSERT_EQUALS(cache3.score(set3), 1.3)
-      TS_ASSERT_EQUALS(cache3.score(set2), 7.3)
-      TS_ASSERT_EQUALS(cache3.size(), std::size_t(2))
+      GUM_CHECK_ASSERT_THROWS_NOTHING(cache3.erase(set4));
+      CHECK((cache3.score(set3)) == (1.3));
+      CHECK((cache3.score(set2)) == (7.3));
+      CHECK((cache3.size()) == (std::size_t(2)));
 
       *cache4 = std::move(cache3);
-      TS_ASSERT(cache4->exists(set3))
-      TS_ASSERT_EQUALS(cache4->score(set3), 1.3)
-      TS_ASSERT_EQUALS(cache4->score(set2), 7.3)
-      TS_ASSERT_EQUALS(cache4->size(), std::size_t(2))
+      CHECK(cache4->exists(set3));
+      CHECK((cache4->score(set3)) == (1.3));
+      CHECK((cache4->score(set2)) == (7.3));
+      CHECK((cache4->size()) == (std::size_t(2)));
 
       delete cache4;
     }   // namespace gum_tests
   };
 
+  GUM_TEST_ACTIF(1)
 
 } /* namespace gum_tests */
