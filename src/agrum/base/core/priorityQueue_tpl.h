@@ -245,9 +245,9 @@ namespace gum {
   // removes a given element from the priority queue (but does not return it)
   template < typename Val, typename Priority, typename Cmp, bool Gen >
   INLINE void PriorityQueueImplementation< Val, Priority, Cmp, Gen >::erase(const Val& val) {
-    try {
+    if (_indices_.exists(val)) {
       eraseByPos(_indices_[val]);
-    } catch (NotFound const&) {}
+    }
   }
 
   // removes the top of the priority queue (but does not return it)
@@ -707,9 +707,9 @@ namespace gum {
   // removes a given element from the priority queue (but does not return it)
   template < typename Val, typename Priority, typename Cmp >
   INLINE void PriorityQueueImplementation< Val, Priority, Cmp, true >::erase(Val val) {
-    try {
+    if (_indices_.exists(val)) {
       eraseByPos(_indices_[val]);
-    } catch (NotFound const&) {}
+    }
   }
 
   // removes the top of the priority queue (but does not return it)
