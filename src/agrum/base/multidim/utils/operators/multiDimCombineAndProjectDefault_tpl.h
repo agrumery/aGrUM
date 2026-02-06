@@ -510,9 +510,9 @@ namespace gum {
           auto&  iter_vars = clique_vars_per_var[mvar];
           double mult_size = 1.0;
           for (const auto var: marginal_vars) {
-            try {
+            if (iter_vars.exists(var)) {
               ++iter_vars[var];
-            } catch (const NotFound&) {
+            } else {
               iter_vars.insert(var, 1);
               mult_size *= (double)var->domainSize();
             }
