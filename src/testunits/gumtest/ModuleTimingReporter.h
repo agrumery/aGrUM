@@ -135,7 +135,7 @@ namespace gum_test {
       // Print suite header when module or suite changes
       if (_currentSuite != _lastSuite || _currentModule != _lastModule) {
         if (!_lastSuite.empty()) _out << " (" << _currentSuiteCount << ")\n";
-        _out << "  [" << _currentModule << "][" << _currentSuite << "] ";
+        _out << "  [" << _currentModule << "]->[" << _currentSuite << ">] ";
         _out.flush();
         _lastModule        = _currentModule;
         _lastSuite         = _currentSuite;

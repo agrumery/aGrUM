@@ -98,15 +98,14 @@ class ActBuilder:
     if not silent:
       while True:
         line = process.stdout.readline()
-        if line == b"" or process.poll() is not None:
+        if not line:  # EOF: process has finished and all output has been read
           break
-        if line:
-          try:
-            response = line.decode().strip()
-          except UnicodeDecodeError:
-            response = line.decode("utf-8", errors="replace").strip()
+        try:
+          response = line.decode().strip()
+        except UnicodeDecodeError:
+          response = line.decode("utf-8", errors="replace").strip()
 
-          notif(response, cfg.prefix_line)
+        notif(response, cfg.prefix_line)
 
     process.stdout.close()
     return_code = process.wait()

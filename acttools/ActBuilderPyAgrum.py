@@ -39,6 +39,7 @@
 ############################################################################
 
 import os
+import glob
 import platform
 import time
 
@@ -248,6 +249,13 @@ class ActBuilderPyAgrum(ActBuilder):
       cmake_cde = self.build_cmake()
       err = err or 0 < self.execFromLine(cmake_cde, checkRC=False)
     t1 = time.time()
+    if self.current["force_swig"]:
+      self.run_start(prefix + "force-swig (touching .i files)")
+      now = time.time()
+      source_root = os.path.join("..", "..", "..")
+      for fichier in glob.glob(os.path.join(source_root, "**", "*.i"), recursive=True):
+        os.utime(fichier, (now, now))
+        notif(f"  + touched : {fichier}")
     if self.current["build"] != "no-make":
       self.run_start(prefix + "make")
       make_cde = self.build_make()

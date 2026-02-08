@@ -238,6 +238,7 @@ def init_params() -> None:
     "profiling": False,
     "stable_abi_off": False,
     "no_gil": False,  # used to disable the GIL in the python wrapper
+    "force_swig": False,  # force SWIG to regenerate wrappers
   }
 
   if cfg.os_platform == "Windows":
@@ -263,6 +264,7 @@ def init_params() -> None:
     "noSaveParams",
     "correction",
     "build_graph",
+    "force_swig",
   ]
   cfg.mains = ["action", "target", "mode"]
   cfg.specialActions = ["show", "clean", "purge", "guideline"]
@@ -508,6 +510,13 @@ def configure_cli_options(current: dict[str, str | bool]) -> None:
     help="build with no gil python (experimental)",
     action="store_true",
     dest="no_gil",
+    default=False,
+  )
+  cfg.parser.add_argument(
+    "--force-swig",
+    help="force SWIG to regenerate the wrapper in generated-files.",
+    action="store_true",
+    dest="force_swig",
     default=False,
   )
 
