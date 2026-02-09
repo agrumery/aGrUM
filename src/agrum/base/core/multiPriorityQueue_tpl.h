@@ -273,9 +273,7 @@ namespace gum {
   // removes a given element from the priority queue (but does not return it)
   template < typename Val, typename Priority, typename Cmp >
   INLINE void MultiPriorityQueue< Val, Priority, Cmp >::erase(const Val& val) {
-    try {
-      eraseByPos(_indices_[val][0]);
-    } catch (NotFound const&) {}
+    if (_indices_.exists(val)) eraseByPos(_indices_[val][0]);
   }
 
   // removes the top of the priority queue (but does not return it)

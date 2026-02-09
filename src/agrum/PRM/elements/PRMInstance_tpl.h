@@ -108,19 +108,18 @@ namespace gum {
         PRMAttribute< GUM_SCALAR >& attr = get(agg->safeName());
 
         for (const auto node: type().containerDag().parents(agg->id())) {
-          try {
+          if (_nodeIdMap_.exists(node)) {
             attr.addParent(get(node));
-          } catch (NotFound const&) {
+          } else {
             auto elt = &(type().get(node));
             auto sc  = static_cast< PRMSlotChain< GUM_SCALAR >* >(elt);
 
-            try {
+            if (_referenceMap_.exists(sc->id())) {
               const auto& instances = getInstances(sc->id());
 
               for (const auto inst: instances) {
                 attr.addParent(inst->get(sc->lastElt().safeName()));
               }
-            } catch (NotFound const&) {   // there is no parents for this agg
             }
           }
         }
@@ -172,13 +171,9 @@ namespace gum {
 
     template < typename GUM_SCALAR >
     void PRMInstance< GUM_SCALAR >::add(NodeId id, PRMInstance< GUM_SCALAR >& instance) {
-      PRMClassElement< GUM_SCALAR >* elt = 0;
-
-      try {
-        elt = &(type().get(id));
-      } catch (NotFound const&) {
+      if (!type().exists(id))
         GUM_ERROR(NotFound, "no ClassElement<GUM_SCALAR> matches the given id")
-      }
+      PRMClassElement< GUM_SCALAR >* elt = &(type().get(id));
 
       switch (elt->elt_type()) {
         case PRMClassElement< GUM_SCALAR >::prm_refslot : {
@@ -304,39 +299,31 @@ namespace gum {
 
     template < typename GUM_SCALAR >
     INLINE PRMAttribute< GUM_SCALAR >& PRMInstance< GUM_SCALAR >::get(NodeId id) {
-      try {
-        return *(_nodeIdMap_[id]);
-      } catch (NotFound const&) {
+      if (!_nodeIdMap_.exists(id))
         GUM_ERROR(NotFound, "no PRMAttribute<GUM_SCALAR> with the given NodeId")
-      }
+      return *(_nodeIdMap_[id]);
     }
 
     template < typename GUM_SCALAR >
     INLINE const PRMAttribute< GUM_SCALAR >& PRMInstance< GUM_SCALAR >::get(NodeId id) const {
-      try {
-        return *(_nodeIdMap_[id]);
-      } catch (NotFound const&) {
+      if (!_nodeIdMap_.exists(id))
         GUM_ERROR(NotFound, "no PRMAttribute<GUM_SCALAR> with the given NodeId")
-      }
+      return *(_nodeIdMap_[id]);
     }
 
     template < typename GUM_SCALAR >
     INLINE PRMAttribute< GUM_SCALAR >& PRMInstance< GUM_SCALAR >::get(const std::string& name) {
-      try {
-        return *(_nodeIdMap_[type().get(name).id()]);
-      } catch (NotFound const&) {
+      if (!exists(name))
         GUM_ERROR(NotFound, "no PRMAttribute<GUM_SCALAR> with the given name")
-      }
+      return *(_nodeIdMap_[type().get(name).id()]);
     }
 
     template < typename GUM_SCALAR >
     INLINE const PRMAttribute< GUM_SCALAR >&
                  PRMInstance< GUM_SCALAR >::get(const std::string& name) const {
-      try {
-        return *(_nodeIdMap_[type().get(name).id()]);
-      } catch (NotFound const&) {
+      if (!exists(name))
         GUM_ERROR(NotFound, "no PRMAttribute<GUM_SCALAR> with the given name")
-      }
+      return *(_nodeIdMap_[type().get(name).id()]);
     }
 
     template < typename GUM_SCALAR >
@@ -345,15 +332,12 @@ namespace gum {
       NodeId      id   = i->get(sc->lastElt().safeName()).id();
       std::string name = sc->lastElt().safeName();
 
-      try {
-        i->_referenceMap_[id]->insert(this);
-        i->_referingAttr_[id]->push_back(std::make_pair(this, sc->lastElt().safeName()));
-      } catch (NotFound const&) {
+      if (!i->_referenceMap_.exists(id)) {
         i->_referenceMap_.insert(id, new Set< PRMInstance< GUM_SCALAR >* >());
-        i->_referenceMap_[id]->insert(this);
         i->_referingAttr_.insert(id, new std::vector< pair >());
-        i->_referingAttr_[id]->push_back(std::make_pair(this, sc->lastElt().safeName()));
       }
+      i->_referenceMap_[id]->insert(this);
+      i->_referingAttr_[id]->push_back(std::make_pair(this, sc->lastElt().safeName()));
     }
 
     template < typename GUM_SCALAR >
@@ -365,29 +349,25 @@ namespace gum {
     template < typename GUM_SCALAR >
     INLINE const PRMInstance< GUM_SCALAR >&
                  PRMInstance< GUM_SCALAR >::getInstance(NodeId id) const {
-      try {
-        if (_referenceMap_[id]->size() > 0) {
-          return **(_referenceMap_[id]->begin());
-        } else {
-          GUM_ERROR(UndefinedElement, "no Instance associated with the given NodeId")
-        }
-      } catch (NotFound const&) {
+      if (!_referenceMap_.exists(id))
         GUM_ERROR(NotFound,
                   "no ReferenceSlot<GUM_SCALAR> or SlotChain<GUM_SCALAR> "
-                           "matches the given NodeId");
+                           "matches the given NodeId")
+      if (_referenceMap_[id]->size() > 0) {
+        return **(_referenceMap_[id]->begin());
+      } else {
+        GUM_ERROR(UndefinedElement, "no Instance associated with the given NodeId")
       }
     }
 
     template < typename GUM_SCALAR >
     INLINE const Set< PRMInstance< GUM_SCALAR >* >&
                  PRMInstance< GUM_SCALAR >::getInstances(NodeId id) const {
-      try {
-        return *(_referenceMap_[id]);
-      } catch (NotFound const&) {
+      if (!_referenceMap_.exists(id))
         GUM_ERROR(NotFound,
                   "no ReferenceSlot<GUM_SCALAR> or SlotChain<GUM_SCALAR> "
-                           "matches the given NodeId");
-      }
+                           "matches the given NodeId")
+      return *(_referenceMap_[id]);
     }
 
     template < typename GUM_SCALAR >
@@ -415,17 +395,17 @@ namespace gum {
     template < typename GUM_SCALAR >
     INLINE typename PRMInstance< GUM_SCALAR >::RefIterator
         PRMInstance< GUM_SCALAR >::begin(NodeId id) {
-      try {
-        return PRMInstance< GUM_SCALAR >::RefIterator(*(_referenceMap_[id]));
-      } catch (NotFound const&) { GUM_ERROR(NotFound, "no referred instances from this NodeId") }
+      if (!_referenceMap_.exists(id))
+        GUM_ERROR(NotFound, "no referred instances from this NodeId")
+      return PRMInstance< GUM_SCALAR >::RefIterator(*(_referenceMap_[id]));
     }
 
     template < typename GUM_SCALAR >
     INLINE typename PRMInstance< GUM_SCALAR >::RefConstIterator
         PRMInstance< GUM_SCALAR >::begin(NodeId id) const {
-      try {
-        return PRMInstance< GUM_SCALAR >::RefConstIterator(*(_referenceMap_[id]));
-      } catch (NotFound const&) { GUM_ERROR(NotFound, "no referred instances from this NodeId") }
+      if (!_referenceMap_.exists(id))
+        GUM_ERROR(NotFound, "no referred instances from this NodeId")
+      return PRMInstance< GUM_SCALAR >::RefConstIterator(*(_referenceMap_[id]));
     }
 
     template < typename GUM_SCALAR >

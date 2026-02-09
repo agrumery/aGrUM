@@ -65,12 +65,13 @@ namespace gum {
     typename CompleteProjectionRegister4MultiDim< GUM_SCALAR >::CompleteProjectionPtr func;
 
     // get the appropriate function to perform the operation
-    try {
-      // try to find func(ttable,del_vars) in the register
+    if (CompleteProjectionRegister4MultiDim< GUM_SCALAR >::Register().exists(
+            GUM_MULTI_DIM_COMPLETE_PROJECTION_FUNC_NAME,
+            ttable.name())) {
       func = CompleteProjectionRegister4MultiDim< GUM_SCALAR >::Register().get(
           GUM_MULTI_DIM_COMPLETE_PROJECTION_FUNC_NAME,
           ttable.name());
-    } catch (NotFound const&) {
+    } else {
       func = CompleteProjectionRegister4MultiDim< GUM_SCALAR >::Register().get(
           GUM_MULTI_DIM_COMPLETE_PROJECTION_FUNC_NAME,
           ttable.basename());

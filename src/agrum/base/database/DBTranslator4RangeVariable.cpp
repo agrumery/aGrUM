@@ -244,13 +244,13 @@ namespace gum {
       } catch (gum::Exception&) {
         // check that this is not a missing value
         if (this->isMissingSymbol(str)) {
-          try {
+          if (_status_int_missing_symbols_.exists(str)) {
             const bool is_str_translated = _status_int_missing_symbols_[str];
             if (!is_str_translated) {
               _status_int_missing_symbols_[str] = true;
               _translated_int_missing_symbols_.insert(std::stol(str));
             }
-          } catch (gum::NotFound&) {}
+          }
           return DBTranslatedValue{std::numeric_limits< std::size_t >::max()};
         }
 

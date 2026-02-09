@@ -921,9 +921,7 @@ namespace gum {
 
     // parse this and check that each element also belongs to from
     for (auto iter = begin(); iter != end(); ++iter) {
-      try {
-        if (iter.val() != from[iter.key()]) return false;
-      } catch (NotFound const&) { return false; }
+      if (!from.exists(iter.key()) || iter.val() != from[iter.key()]) return false;
     }
 
     return true;

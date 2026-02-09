@@ -165,13 +165,11 @@ namespace gum {
 
     template < typename GUM_SCALAR >
     NodeId PRMInterface< GUM_SCALAR >::overload(PRMClassElement< GUM_SCALAR >* overloader) {
-      try {
-        if (!super().exists(overloader->name()))
-          GUM_ERROR(OperationNotAllowed, "found no ClassElement<GUM_SCALAR> to overload")
-
-      } catch (NotFound const&) {
+      if (!_superInterface_)
         GUM_ERROR(OperationNotAllowed, "overload is possible only with sub interfaces")
-      }
+
+      if (!super().exists(overloader->name()))
+        GUM_ERROR(OperationNotAllowed, "found no ClassElement<GUM_SCALAR> to overload")
 
       PRMClassElement< GUM_SCALAR >* overloaded = _nameMap_[overloader->name()];
       if (overloaded == overloader)
@@ -420,39 +418,35 @@ namespace gum {
 
     template < typename GUM_SCALAR >
     INLINE PRMClassElement< GUM_SCALAR >& PRMInterface< GUM_SCALAR >::get(NodeId id) {
-      try {
-        return *(_nodeIdMap_[id]);
-      } catch (NotFound const&) {
+      if (!_nodeIdMap_.exists(id)) {
         GUM_ERROR(NotFound, "no ClassElement<GUM_SCALAR> with the given NodeId")
       }
+      return *(_nodeIdMap_[id]);
     }
 
     template < typename GUM_SCALAR >
     INLINE const PRMClassElement< GUM_SCALAR >& PRMInterface< GUM_SCALAR >::get(NodeId id) const {
-      try {
-        return *(_nodeIdMap_[id]);
-      } catch (NotFound const&) {
+      if (!_nodeIdMap_.exists(id)) {
         GUM_ERROR(NotFound, "no ClassElement<GUM_SCALAR> with the given NodeId")
       }
+      return *(_nodeIdMap_[id]);
     }
 
     template < typename GUM_SCALAR >
     INLINE PRMClassElement< GUM_SCALAR >& PRMInterface< GUM_SCALAR >::get(const std::string& name) {
-      try {
-        return *(_nameMap_[name]);
-      } catch (NotFound const&) {
+      if (!_nameMap_.exists(name)) {
         GUM_ERROR(NotFound, "no ClassElement<GUM_SCALAR> with the given name")
       }
+      return *(_nameMap_[name]);
     }
 
     template < typename GUM_SCALAR >
     INLINE const PRMClassElement< GUM_SCALAR >&
                  PRMInterface< GUM_SCALAR >::get(const std::string& name) const {
-      try {
-        return *(_nameMap_[name]);
-      } catch (NotFound const&) {
+      if (!_nameMap_.exists(name)) {
         GUM_ERROR(NotFound, "no ClassElement<GUM_SCALAR> with the given name")
       }
+      return *(_nameMap_[name]);
     }
 
     template < typename GUM_SCALAR >

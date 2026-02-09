@@ -133,9 +133,7 @@ namespace gum {
     if (sizeArcs() != other.sizeArcs()) return false;
 
     for (const auto& nid: nodes()) {
-      try {
-        other.idFromName(_model_.variable(nid).name());
-      } catch (NotFound const&) { return false; }
+      if (!other.exists(_model_.variable(nid).name())) { return false; }
     }
 
     for (const auto& arc: arcs()) {

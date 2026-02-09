@@ -484,12 +484,11 @@ namespace gum {
       PRMClassElement< GUM_SCALAR >* tail = 0;
       PRMClassElement< GUM_SCALAR >* head = 0;
 
-      try {
-        tail = _nameMap_[tail_name];
-        head = _nameMap_[head_name];
-      } catch (NotFound const&) {
+      if (!_nameMap_.exists(tail_name) || !_nameMap_.exists(head_name)) {
         GUM_ERROR(NotFound, "tail and/or head of arc does not exists in this Class")
       }
+      tail = _nameMap_[tail_name];
+      head = _nameMap_[head_name];
 
       if ((tail->elt_type() == PRMClassElement< GUM_SCALAR >::prm_refslot)
           || (head->elt_type() == PRMClassElement< GUM_SCALAR >::prm_refslot)) {
@@ -523,12 +522,10 @@ namespace gum {
 
     template < typename GUM_SCALAR >
     void PRMClass< GUM_SCALAR >::_checkInterfaces_(PRMClassElement< GUM_SCALAR >* elt) {
-      try {
+      if (_implements_ != nullptr) {
         for (auto i: implements()) {
           if (i->exists(elt->name())) { _checkInterface_(elt, i); }
         }
-      } catch (NotFound const&) {
-        // No interface
       }
     }
 
@@ -574,12 +571,10 @@ namespace gum {
 
     template < typename GUM_SCALAR >
     void PRMClass< GUM_SCALAR >::_checkRefInterfaces_(PRMReferenceSlot< GUM_SCALAR >* ref) {
-      try {
+      if (_implements_ != nullptr) {
         for (auto i: implements()) {
           if (i->exists(ref->name())) { _checkRefInterface_(ref, i); }
         }
-      } catch (NotFound const&) {
-        // No interface to check
       }
     }
 
@@ -690,7 +685,7 @@ namespace gum {
 
         // Check if id was reserved by one of the class interfaces
         bool found = false;
-        try {
+        if (_implements_ != nullptr) {
           for (auto i: implements()) {
             if (i->exists(child->safeName())) {
               child->setId(i->get(child->safeName()).id());
@@ -698,8 +693,6 @@ namespace gum {
               break;
             }
           }
-        } catch (NotFound const&) {
-          // No interface
         }
         if (!found) {
           child->setId(nextNodeId());
@@ -719,12 +712,11 @@ namespace gum {
 
     template < typename GUM_SCALAR >
     NodeId PRMClass< GUM_SCALAR >::overload(PRMClassElement< GUM_SCALAR >* overloader) {
-      try {
-        if (!super().exists(overloader->name())) {
-          GUM_ERROR(OperationNotAllowed, "found no ClassElement<GUM_SCALAR> to overload")
-        }
-      } catch (NotFound const&) {
+      if (!_superClass_) {
         GUM_ERROR(OperationNotAllowed, "overload is possible only with subclasses")
+      }
+      if (!super().exists(overloader->name())) {
+        GUM_ERROR(OperationNotAllowed, "found no ClassElement<GUM_SCALAR> to overload")
       }
 
       PRMClassElement< GUM_SCALAR >* overloaded = _nameMap_[overloader->name()];
@@ -958,11 +950,11 @@ namespace gum {
             if (impl->exists(elt->name())) {
               try {
                 this->getIOFlag_(*elt).second = true;
-              } catch (NotFound const&) { this->setIOFlag_(*elt, std::make_pair(false, true)); }
+              } catch (NotFound const&) {
+                this->setIOFlag_(*elt, std::make_pair(false, true));
+              }
             }
-            try {
-              super = &(super->super());
-            } catch (NotFound const&) { super = nullptr; }
+            super = super->_superInterface_ ? &(super->super()) : nullptr;
           }
         }
       }
@@ -995,39 +987,35 @@ namespace gum {
 
     template < typename GUM_SCALAR >
     INLINE PRMClassElement< GUM_SCALAR >& PRMClass< GUM_SCALAR >::get(NodeId id) {
-      try {
-        return *(_nodeIdMap_[id]);
-      } catch (NotFound const&) {
+      if (!_nodeIdMap_.exists(id)) {
         GUM_ERROR(NotFound, "no ClassElement<GUM_SCALAR> with the given NodeId")
       }
+      return *(_nodeIdMap_[id]);
     }
 
     template < typename GUM_SCALAR >
     INLINE const PRMClassElement< GUM_SCALAR >& PRMClass< GUM_SCALAR >::get(NodeId id) const {
-      try {
-        return *(_nodeIdMap_[id]);
-      } catch (NotFound const&) {
+      if (!_nodeIdMap_.exists(id)) {
         GUM_ERROR(NotFound, "no ClassElement<GUM_SCALAR> with the given NodeId (" << id << ")");
       }
+      return *(_nodeIdMap_[id]);
     }
 
     template < typename GUM_SCALAR >
     INLINE PRMClassElement< GUM_SCALAR >& PRMClass< GUM_SCALAR >::get(const std::string& name) {
-      try {
-        return *(_nameMap_[name]);
-      } catch (NotFound const&) {
+      if (!_nameMap_.exists(name)) {
         GUM_ERROR(NotFound, "no ClassElement<GUM_SCALAR> with the given name (" << name << ")");
       }
+      return *(_nameMap_[name]);
     }
 
     template < typename GUM_SCALAR >
     INLINE const PRMClassElement< GUM_SCALAR >&
                  PRMClass< GUM_SCALAR >::get(const std::string& name) const {
-      try {
-        return *(_nameMap_[name]);
-      } catch (NotFound const&) {
+      if (!_nameMap_.exists(name)) {
         GUM_ERROR(NotFound, "no ClassElement<GUM_SCALAR> with the given name (" << name << ")");
       }
+      return *(_nameMap_[name]);
     }
 
     template < typename GUM_SCALAR >

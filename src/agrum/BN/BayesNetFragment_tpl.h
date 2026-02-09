@@ -320,9 +320,7 @@ namespace gum {
                                             "color=\"#f0f0f0\","
                                             "fontcolor=\"#000000\"";
 
-    try {
-      bn_name = _bn_.property("name");
-    } catch (NotFound const&) { bn_name = "no_name"; }
+    bn_name = _bn_.propertyWithDefault("name", "no_name");
 
     bn_name = "Fragment of " + bn_name;
 

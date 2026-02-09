@@ -75,9 +75,7 @@ namespace gum {
     if (sizeEdges() != other.sizeEdges()) return false;
 
     for (const auto& nid: nodes()) {
-      try {
-        other.idFromName(variable(nid).name());
-      } catch (NotFound const&) { return false; }
+      if (!other.exists(variable(nid).name())) return false;
     }
 
     for (const auto& edge: edges()) {

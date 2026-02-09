@@ -150,17 +150,16 @@ namespace gum {
 
     for (auto node: p_.nodes()) {
       const DiscreteVariable& vp = p_.variable(node);
-      try {
-        const DiscreteVariable& vq = q_.variableFromName(vp.name());
-        if (vp != vq)
-          GUM_ERROR(OperationNotAllowed,
-                    "BNdistance : the 2 BNs are not compatible "
-                    "(not the same variable for the same name : "
-                        + vp.toString() + "and " + vq.toString() + ")");
-      } catch (NotFound const&) {
+      if (!q_.exists(vp.name())) {
         GUM_ERROR(OperationNotAllowed,
                   "BNdistance : the 2 BNs are not compatible (variable : " + vp.name() + ")");
       }
+      const DiscreteVariable& vq = q_.variableFromName(vp.name());
+      if (vp != vq)
+        GUM_ERROR(OperationNotAllowed,
+                  "BNdistance : the 2 BNs are not compatible "
+                  "(not the same variable for the same name : "
+                      + vp.toString() + "and " + vq.toString() + ")");
     }
 
     if (std::fabs(p_.log10DomainSize() - q_.log10DomainSize()) > 1e-14) {

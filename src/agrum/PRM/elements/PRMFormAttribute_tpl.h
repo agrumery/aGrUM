@@ -193,13 +193,10 @@ namespace gum {
 
     template < typename GUM_SCALAR >
     PRMAttribute< GUM_SCALAR >* PRMFormAttribute< GUM_SCALAR >::getCastDescendant() const {
-      PRMScalarAttribute< GUM_SCALAR >* cast = 0;
-
-      try {
-        cast = new PRMScalarAttribute< GUM_SCALAR >(this->name(), type().superType());
-      } catch (NotFound const&) {
+      if (!type().isSubType()) {
         GUM_ERROR(OperationNotAllowed, "this ScalarAttribute can not have cast descendant")
       }
+      auto cast = new PRMScalarAttribute< GUM_SCALAR >(this->name(), type().superType());
 
       cast->addParent(*this);
 

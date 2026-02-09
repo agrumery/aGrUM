@@ -317,9 +317,8 @@ namespace gum {
   template < typename T1, typename T2, bool Gen >
   INLINE const T1& BijectionImplementation< T1, T2, Gen >::firstWithDefault(const T2& second,
                                                                             const T1& val) const {
-    try {
-      return first(second);
-    } catch (NotFound const&) { return _insert_(val, second)->first; }
+    if (existsSecond(second)) return first(second);
+    return _insert_(val, second)->first;
   }
 
   /* @brief Same method as second, but if the value is not found, a default
@@ -327,9 +326,8 @@ namespace gum {
   template < typename T1, typename T2, bool Gen >
   INLINE const T2& BijectionImplementation< T1, T2, Gen >::secondWithDefault(const T1& first,
                                                                              const T2& val) const {
-    try {
-      return second(first);
-    } catch (NotFound const&) { return *(_insert_(first, val)->second); }
+    if (existsFirst(first)) return second(first);
+    return *(_insert_(first, val)->second);
   }
 
   // inserts a new association in the bijection
@@ -369,19 +367,19 @@ namespace gum {
   // erases an association containing the given first element
   template < typename T1, typename T2, bool Gen >
   INLINE void BijectionImplementation< T1, T2, Gen >::eraseFirst(const T1& first) {
-    try {
+    if (_firstToSecond_.exists(first)) {
       _secondToFirst_.erase(*_firstToSecond_[first]);
       _firstToSecond_.erase(first);
-    } catch (NotFound const&) {}
+    }
   }
 
   // erase an association containing the given second element
   template < typename T1, typename T2, bool Gen >
   INLINE void BijectionImplementation< T1, T2, Gen >::eraseSecond(const T2& second) {
-    try {
+    if (_secondToFirst_.exists(second)) {
       _firstToSecond_.erase(*_secondToFirst_[second]);
       _secondToFirst_.erase(second);
-    } catch (NotFound const&) {}
+    }
   }
 
   // returns the number of hashtables' slots used (@sa hashTable's capacity)
@@ -669,12 +667,9 @@ namespace gum {
   template < typename T1, typename T2 >
   INLINE const T1& BijectionImplementation< T1, T2, true >::firstWithDefault(T2 second,
                                                                              T1 val) const {
-    try {
-      return first(second);
-    } catch (NotFound const&) {
-      _insert_(val, second);
-      return val;
-    }
+    if (existsSecond(second)) return first(second);
+    _insert_(val, second);
+    return val;
   }
 
   /* @brief Same method as second, but if the value is not found, a default
@@ -682,12 +677,9 @@ namespace gum {
   template < typename T1, typename T2 >
   INLINE const T2& BijectionImplementation< T1, T2, true >::secondWithDefault(T1 first,
                                                                               T2 val) const {
-    try {
-      return second(first);
-    } catch (NotFound const&) {
-      _insert_(first, val);
-      return val;
-    }
+    if (existsFirst(first)) return second(first);
+    _insert_(first, val);
+    return val;
   }
 
   // returns true if the bijection doesn't contain any relation
@@ -707,19 +699,19 @@ namespace gum {
   // erases an association containing the given first element
   template < typename T1, typename T2 >
   INLINE void BijectionImplementation< T1, T2, true >::eraseFirst(T1 first) {
-    try {
+    if (_firstToSecond_.exists(first)) {
       _secondToFirst_.erase(_firstToSecond_[first]);
       _firstToSecond_.erase(first);
-    } catch (NotFound const&) {}
+    }
   }
 
   // erase an association containing the given second element
   template < typename T1, typename T2 >
   INLINE void BijectionImplementation< T1, T2, true >::eraseSecond(T2 second) {
-    try {
+    if (_secondToFirst_.exists(second)) {
       _firstToSecond_.erase(_secondToFirst_[second]);
       _secondToFirst_.erase(second);
-    } catch (NotFound const&) {}
+    }
   }
 
   // returns the number of hashtables' slots used (@sa hashTable's capacity)

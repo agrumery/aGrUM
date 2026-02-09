@@ -76,13 +76,11 @@ namespace gum {
       List< const PRMInstance< GUM_SCALAR >* > elim_list;
 
       for (const auto attr: attr_set) {
-        try {
+        if (query->hasRefAttr(attr)) {
           for (auto iter = query->getRefAttr(attr).begin(); iter != query->getRefAttr(attr).end();
                ++iter)
             if ((!ignore.exists(iter->first)) && (_bb_.exists(iter->first)))
               _eliminateNodesDownward_(query, iter->first, pool, trash, elim_list, ignore);
-        } catch (NotFound const&) {
-          // Ok
         }
       }
 
@@ -144,12 +142,10 @@ namespace gum {
       List< const PRMInstance< GUM_SCALAR >* > my_list;
 
       for (const auto attr: attr_set) {
-        try {
+        if (i->hasRefAttr(attr)) {
           for (auto iter = i->getRefAttr(attr).begin(); iter != i->getRefAttr(attr).end(); ++iter)
             if ((!ignore.exists(iter->first)) && (_bb_.exists(iter->first)))
               _eliminateNodesDownward_(i, iter->first, pool, trash, my_list, ignore);
-        } catch (NotFound const&) {
-          // Ok
         }
       }
 
@@ -162,7 +158,7 @@ namespace gum {
         for (const auto agg: i->type().aggregates())
           if (_bb_.requisiteNodes(i).exists(agg->id())) pool.insert(_getAggTensor_(i, agg));
 
-        try {
+        if (_elim_orders_.exists(&(i->type()))) {
           InstanceBayesNet< GUM_SCALAR >         bn(*i);
           std::vector< const DiscreteVariable* > elim_order;
 
@@ -172,8 +168,6 @@ namespace gum {
           }
 
           eliminateNodes(elim_order, pool, trash);
-        } catch (NotFound const&) {
-          // Raised if there is no inner nodes to eliminate
         }
       }
 
@@ -210,12 +204,10 @@ namespace gum {
 
       // Downward elimination
       for (const auto attr: attr_set) {
-        try {
+        if (i->hasRefAttr(attr)) {
           for (auto iter = i->getRefAttr(attr).begin(); iter != i->getRefAttr(attr).end(); ++iter)
             if ((!ignore.exists(iter->first)) && (_bb_.exists(iter->first)))
               _eliminateNodesDownward_(i, iter->first, pool, trash, elim_list, ignore);
-        } catch (NotFound const&) {
-          // Ok
         }
       }
 
@@ -228,7 +220,7 @@ namespace gum {
         for (const auto agg: i->type().aggregates())
           if (_bb_.requisiteNodes(i).exists(agg->id())) pool.insert(_getAggTensor_(i, agg));
 
-        try {
+        if (_elim_orders_.exists(&(i->type()))) {
           InstanceBayesNet< GUM_SCALAR >         bn(*i);
           std::vector< const DiscreteVariable* > elim_order;
 
@@ -237,8 +229,6 @@ namespace gum {
             elim_order.push_back(&var);
           }
           eliminateNodes(elim_order, pool, trash);
-        } catch (NotFound const&) {
-          // Raised if there is no inner nodes to eliminate
         }
       }
 
@@ -292,12 +282,10 @@ namespace gum {
                                                  BucketSet&                       trash) {
       BucketSet* lifted_pool = nullptr;
 
-      try {
-        lifted_pool = _lifted_pools_[&(_bb_.requisiteNodes(i))];
-      } catch (NotFound const&) {
+      if (!_lifted_pools_.exists(&(_bb_.requisiteNodes(i)))) {
         _initLiftedNodes_(i, trash);
-        lifted_pool = _lifted_pools_[&(_bb_.requisiteNodes(i))];
       }
+      lifted_pool = _lifted_pools_[&(_bb_.requisiteNodes(i))];
 
       for (const auto lifted_pot: *lifted_pool) {
         Tensor< GUM_SCALAR >* pot = copyTensor(i->bijection(), *lifted_pot);
@@ -548,22 +536,18 @@ namespace gum {
 
     template < typename GUM_SCALAR >
     INLINE Set< NodeId >& SVED< GUM_SCALAR >::_getAttrSet_(const PRMInstance< GUM_SCALAR >* i) {
-      try {
-        return *(_req_set_[&(_bb_.requisiteNodes(i))].first);
-      } catch (NotFound const&) {
+      if (!_req_set_.exists(&(_bb_.requisiteNodes(i)))) {
         _initReqSets_(i);
-        return *(_req_set_[&(_bb_.requisiteNodes(i))].first);
       }
+      return *(_req_set_[&(_bb_.requisiteNodes(i))].first);
     }
 
     template < typename GUM_SCALAR >
     INLINE Set< NodeId >& SVED< GUM_SCALAR >::_getSCSet_(const PRMInstance< GUM_SCALAR >* i) {
-      try {
-        return *(_req_set_[&(_bb_.requisiteNodes(i))].second);
-      } catch (NotFound const&) {
+      if (!_req_set_.exists(&(_bb_.requisiteNodes(i)))) {
         _initReqSets_(i);
-        return *(_req_set_[&(_bb_.requisiteNodes(i))].second);
       }
+      return *(_req_set_[&(_bb_.requisiteNodes(i))].second);
     }
 
     template < typename GUM_SCALAR >

@@ -181,11 +181,7 @@ namespace gum {
     std::stringstream output;
     output << "digraph \"";
 
-    std::string bn_name;
-
-    try {
-      bn_name = this->property("name");
-    } catch (NotFound const&) { bn_name = "no_name"; }
+    std::string bn_name = this->propertyWithDefault("name", "no_name");
 
     output << bn_name << "\" {" << std::endl;
     output << "  graph [bgcolor=transparent,label=\"" << bn_name << "\"];" << std::endl;
@@ -260,14 +256,10 @@ namespace gum {
     if (sizeArcs() != from.sizeArcs()) { return false; }
 
     for (auto node: nodes()) {
-      try {
-        const auto& v1 = variable(node);
-        const auto& v2 = from.variableFromName(variable(node).name());
-        if (v1 != v2) { return false; }
-      } catch (NotFound const&) {
-        // a name is not found in from
-        return false;
-      }
+      const auto& v1 = variable(node);
+      if (!from.exists(v1.name())) { return false; }
+      const auto& v2 = from.variableFromName(v1.name());
+      if (v1 != v2) { return false; }
     }
 
     for (auto node: nodes()) {

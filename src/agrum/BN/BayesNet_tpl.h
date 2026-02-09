@@ -81,9 +81,8 @@ namespace gum {
     auto v = fastVariable< GUM_SCALAR >(node, default_domain);
 
     NodeId res;
-    try {
-      res = bn.idFromName(v->name());
-    } catch (gum::NotFound const&) { res = bn.add(*v); }
+    if (bn.exists(v->name())) res = bn.idFromName(v->name());
+    else res = bn.add(*v);
     return res;
   }
 

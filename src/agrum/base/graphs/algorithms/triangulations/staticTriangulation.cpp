@@ -319,9 +319,9 @@ namespace gum {
         _reverse_elim_order_[node] = ni;
 
         for (const auto neighbour: _triangulated_graph_.neighbours(node)) {
-          try {
+          if (numbered_neighbours.contains(neighbour)) {
             numbered_neighbours.setPriority(neighbour, 1 + numbered_neighbours.priority(neighbour));
-          } catch (NotFound const&) {}
+          }
         }
       }
     }

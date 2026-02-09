@@ -172,7 +172,7 @@ namespace gum {
     NodeId best_node = 0;
 
     for (const auto node: nodeset_) {
-      try {
+      if (possibleNodes.contains(node)) {
         double score = possibleNodes.priority(node);
 
         if (!found || (score < min_score)) {
@@ -180,7 +180,7 @@ namespace gum {
           min_score = score;
           best_node = node;
         }
-      } catch (NotFound const&) {}
+      }
     }
 
     if (!found) { GUM_ERROR(NotFound, "no possible node to eliminate") }
@@ -203,17 +203,23 @@ namespace gum {
     // select a node to be eliminated: try simplicial nodes, then almost
     // simplicial nodes, then quasi-simplicial nodes
     // note that if graph_ != nullptr,  _simplicial_set_ has been allocated
-    try {
-      return _nodeToEliminate_(_simplicial_set_->allSimplicialNodes());
-    } catch (NotFound const&) {}
+    if (!_simplicial_set_->allSimplicialNodes().empty()) {
+      try {
+        return _nodeToEliminate_(_simplicial_set_->allSimplicialNodes());
+      } catch (NotFound const&) {}
+    }
 
-    try {
-      return _nodeToEliminate_(_simplicial_set_->allAlmostSimplicialNodes());
-    } catch (NotFound const&) {}
+    if (!_simplicial_set_->allAlmostSimplicialNodes().empty()) {
+      try {
+        return _nodeToEliminate_(_simplicial_set_->allAlmostSimplicialNodes());
+      } catch (NotFound const&) {}
+    }
 
-    try {
-      return _nodeToEliminate_(_simplicial_set_->allQuasiSimplicialNodes());
-    } catch (NotFound const&) {}
+    if (!_simplicial_set_->allQuasiSimplicialNodes().empty()) {
+      try {
+        return _nodeToEliminate_(_simplicial_set_->allQuasiSimplicialNodes());
+      } catch (NotFound const&) {}
+    }
 
     // here: select the node through Kjaerulff's heuristic
     auto   iter      = nodeset_.cbegin();

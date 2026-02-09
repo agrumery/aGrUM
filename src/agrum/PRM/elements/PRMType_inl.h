@@ -87,11 +87,10 @@ namespace gum {
     }
 
     INLINE void PRMType::setSuper(PRMType& t) {
-      try {
-        if (t != superType()) {
-          GUM_ERROR(TypeError, "The given type is not a valid super type for this Type")
-        }
-      } catch (NotFound const&) { GUM_ERROR(OperationNotAllowed, "This Type has no super Type") }
+      if (!isSubType()) { GUM_ERROR(OperationNotAllowed, "This Type has no super Type") }
+      if (t != superType()) {
+        GUM_ERROR(TypeError, "The given type is not a valid super type for this Type")
+      }
 
       _superType_ = &t;
     }

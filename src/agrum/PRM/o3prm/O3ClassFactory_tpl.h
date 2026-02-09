@@ -782,9 +782,9 @@ namespace gum {
 
         auto domainSize = type->domainSize();
         for (auto& prnt: attr.parents()) {
-          try {
+          if (c.exists(prnt.label())) {
             domainSize *= c.get(prnt.label()).type()->domainSize();
-          } catch (NotFound const&) {
+          } else {
             // If we are here, all parents have been check so  _resolveSlotChain_
             // will not raise an error and not return a nullptr
             domainSize *= _resolveSlotChain_(c, prnt)->type()->domainSize();

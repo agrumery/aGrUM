@@ -218,14 +218,9 @@ namespace gum {
       if (!modal_.empty()) modal_.clear();
 
       for (auto it = modals.cbegin(), theEnd = modals.cend(); it != theEnd; ++it) {
-        NodeId id;
+        if (!credalNet_->current_bn().exists(it->first)) continue;
 
-        try {
-          id = credalNet_->current_bn().idFromName(it->first);
-        } catch (NotFound& err) {
-          GUM_SHOWERROR(err);
-          continue;
-        }
+        NodeId id = credalNet_->current_bn().idFromName(it->first);
 
         // check that modals are net compatible
         auto dSize = credalNet_->current_bn().variable(id).domainSize();
@@ -254,14 +249,9 @@ namespace gum {
       if (!evidence_.empty()) evidence_.clear();
 
       for (auto it = eviMap.cbegin(), theEnd = eviMap.cend(); it != theEnd; ++it) {
-        NodeId id;
+        if (!credalNet_->current_bn().exists(it->first)) continue;
 
-        try {
-          id = credalNet_->current_bn().idFromName(it->first);
-        } catch (NotFound& err) {
-          GUM_SHOWERROR(err);
-          continue;
-        }
+        NodeId id = credalNet_->current_bn().idFromName(it->first);
 
         evidence_.insert(id, it->second);
       }
@@ -281,12 +271,7 @@ namespace gum {
 
       // use cbegin() to get const_iterator when available in aGrUM hashtables
       for (const auto& elt: evidence) {
-        try {
-          credalNet_->current_bn().variable(elt.first);
-        } catch (NotFound& err) {
-          GUM_SHOWERROR(err);
-          continue;
-        }
+        if (!credalNet_->current_bn().exists(elt.first)) continue;
 
         evidence_.insert(elt.first, elt.second);
       }
@@ -333,12 +318,8 @@ namespace gum {
         // if user input is wrong
         NodeId node = -1;
 
-        try {
-          node = credalNet_->current_bn().idFromName(tmp);
-        } catch (NotFound& err) {
-          GUM_SHOWERROR(err);
-          continue;
-        }
+        if (!credalNet_->current_bn().exists(tmp)) continue;
+        node = credalNet_->current_bn().idFromName(tmp);
 
         std::vector< GUM_SCALAR > values;
         p = strtok(nullptr, " ");
@@ -367,12 +348,7 @@ namespace gum {
       if (!query_.empty()) query_.clear();
 
       for (const auto& elt: query) {
-        try {
-          credalNet_->current_bn().variable(elt.first);
-        } catch (NotFound& err) {
-          GUM_SHOWERROR(err);
-          continue;
-        }
+        if (!credalNet_->current_bn().exists(elt.first)) continue;
 
         query_.insert(elt.first, elt.second);
       }
@@ -414,12 +390,8 @@ namespace gum {
         // if user input is wrong
         NodeId node = -1;
 
-        try {
-          node = credalNet_->current_bn().idFromName(tmp);
-        } catch (NotFound& err) {
-          GUM_SHOWERROR(err);
-          continue;
-        }
+        if (!credalNet_->current_bn().exists(tmp)) continue;
+        node = credalNet_->current_bn().idFromName(tmp);
 
         auto dSize = credalNet_->current_bn().variable(node).domainSize();
 
@@ -466,52 +438,40 @@ namespace gum {
 
     template < typename GUM_SCALAR >
     gum::Tensor< GUM_SCALAR > InferenceEngine< GUM_SCALAR >::marginalMin(const NodeId id) const {
-      try {
-        Tensor< GUM_SCALAR > res;
-        res.add(credalNet_->current_bn().variable(id));
-        res.fillWith(marginalMin_[id]);
-        return res;
-      } catch (NotFound& err) { throw(err); }
+      Tensor< GUM_SCALAR > res;
+      res.add(credalNet_->current_bn().variable(id));
+      res.fillWith(marginalMin_[id]);
+      return res;
     }
 
     template < typename GUM_SCALAR >
     gum::Tensor< GUM_SCALAR > InferenceEngine< GUM_SCALAR >::marginalMax(const NodeId id) const {
-      try {
-        Tensor< GUM_SCALAR > res;
-        res.add(credalNet_->current_bn().variable(id));
-        res.fillWith(marginalMax_[id]);
-        return res;
-      } catch (NotFound& err) { throw(err); }
+      Tensor< GUM_SCALAR > res;
+      res.add(credalNet_->current_bn().variable(id));
+      res.fillWith(marginalMax_[id]);
+      return res;
     }
 
     template < typename GUM_SCALAR >
     const GUM_SCALAR&
         InferenceEngine< GUM_SCALAR >::expectationMin(const std::string& varName) const {
-      try {
-        return expectationMin_[credalNet_->current_bn().idFromName(varName)];
-      } catch (NotFound& err) { throw(err); }
+      return expectationMin_[credalNet_->current_bn().idFromName(varName)];
     }
 
     template < typename GUM_SCALAR >
     const GUM_SCALAR&
         InferenceEngine< GUM_SCALAR >::expectationMax(const std::string& varName) const {
-      try {
-        return expectationMax_[credalNet_->current_bn().idFromName(varName)];
-      } catch (NotFound& err) { throw(err); }
+      return expectationMax_[credalNet_->current_bn().idFromName(varName)];
     }
 
     template < typename GUM_SCALAR >
     const GUM_SCALAR& InferenceEngine< GUM_SCALAR >::expectationMin(const NodeId id) const {
-      try {
-        return expectationMin_[id];
-      } catch (NotFound& err) { throw(err); }
+      return expectationMin_[id];
     }
 
     template < typename GUM_SCALAR >
     const GUM_SCALAR& InferenceEngine< GUM_SCALAR >::expectationMax(const NodeId id) const {
-      try {
-        return expectationMax_[id];
-      } catch (NotFound& err) { throw(err); }
+      return expectationMax_[id];
     }
 
     template < typename GUM_SCALAR >

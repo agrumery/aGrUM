@@ -112,7 +112,7 @@ namespace gum {
 
   template < typename GUM_SCALAR >
   void MultiDimBucket< GUM_SCALAR >::erase(const MultiDimContainer< GUM_SCALAR >* impl) {
-    try {
+    if (_multiDims_.exists(impl)) {
       delete _multiDims_[impl];
       _multiDims_.erase(impl);
 
@@ -123,8 +123,6 @@ namespace gum {
       }
 
       _changed_ = true;
-    } catch (NotFound const&) {
-      // Do nothing
     }
   }
 
@@ -234,9 +232,9 @@ namespace gum {
     compute();
 
     if (_bucket_) {
-      try {
+      if (_instantiations_.existsFirst(const_cast< Instantiation* >(&i))) {
         return _bucket_->get(*(_instantiations_.second(const_cast< Instantiation* >(&i))));
-      } catch (NotFound const&) { return _bucket_->get(i); }
+      } else { return _bucket_->get(i); }
     } else if (i.isMaster(this)) {
       if (!_slavesValue_.exists(&i)) { _slavesValue_.insert(&i, _computeValue_(i)); }
 
@@ -252,14 +250,13 @@ namespace gum {
                                                                Idx                           oldval,
                                                                Idx newval) {
     if (_bucket_) {
-      try {
+      if (_instantiations_.existsFirst(const_cast< Instantiation* >(&i))) {
         _bucket_->changeNotification(*(_instantiations_).second(const_cast< Instantiation* >(&i)),
                                      var,
                                      oldval,
                                      newval);
-      } catch (NotFound const&) {
-        // Then i is not a slave of this
       }
+      // else i is not a slave of this
     } else {
       _slavesValue_.erase(&i);
     }
@@ -268,12 +265,11 @@ namespace gum {
   template < typename GUM_SCALAR >
   INLINE void MultiDimBucket< GUM_SCALAR >::setFirstNotification(const Instantiation& i) {
     if (_bucket_) {
-      try {
+      if (_instantiations_.existsFirst(const_cast< Instantiation* >(&i))) {
         _bucket_->setFirstNotification(
             *(_instantiations_).second(const_cast< Instantiation* >(&i)));
-      } catch (NotFound const&) {
-        // Then i is not a slave of this
       }
+      // else i is not a slave of this
     } else {
       _slavesValue_.erase(&i);
     }
@@ -282,11 +278,10 @@ namespace gum {
   template < typename GUM_SCALAR >
   INLINE void MultiDimBucket< GUM_SCALAR >::setLastNotification(const Instantiation& i) {
     if (_bucket_) {
-      try {
+      if (_instantiations_.existsFirst(const_cast< Instantiation* >(&i))) {
         _bucket_->setLastNotification(*(_instantiations_).second(const_cast< Instantiation* >(&i)));
-      } catch (NotFound const&) {
-        // Then i is not a slave of this
       }
+      // else i is not a slave of this
     } else {
       _slavesValue_.erase(&i);
     }
@@ -295,11 +290,10 @@ namespace gum {
   template < typename GUM_SCALAR >
   INLINE void MultiDimBucket< GUM_SCALAR >::setIncNotification(const Instantiation& i) {
     if (_bucket_) {
-      try {
+      if (_instantiations_.existsFirst(const_cast< Instantiation* >(&i))) {
         _bucket_->setIncNotification(*(_instantiations_.second(const_cast< Instantiation* >(&i))));
-      } catch (NotFound const&) {
-        // Then i is not a slave of this
       }
+      // else i is not a slave of this
     } else {
       _slavesValue_.erase(&i);
     }
@@ -308,11 +302,10 @@ namespace gum {
   template < typename GUM_SCALAR >
   INLINE void MultiDimBucket< GUM_SCALAR >::setDecNotification(const Instantiation& i) {
     if (_bucket_) {
-      try {
+      if (_instantiations_.existsFirst(const_cast< Instantiation* >(&i))) {
         _bucket_->setDecNotification(*(_instantiations_.second(const_cast< Instantiation* >(&i))));
-      } catch (NotFound const&) {
-        // Then i is not a slave of this
       }
+      // else i is not a slave of this
     } else {
       _slavesValue_.erase(&i);
     }
@@ -321,12 +314,11 @@ namespace gum {
   template < typename GUM_SCALAR >
   INLINE void MultiDimBucket< GUM_SCALAR >::setChangeNotification(const Instantiation& i) {
     if (_bucket_) {
-      try {
+      if (_instantiations_.existsFirst(const_cast< Instantiation* >(&i))) {
         _bucket_->setChangeNotification(
             *(_instantiations_.second(const_cast< Instantiation* >(&i))));
-      } catch (NotFound const&) {
-        // Then i is not a slave of this
       }
+      // else i is not a slave of this
     } else {
       _slavesValue_.erase(&i);
     }
@@ -348,11 +340,11 @@ namespace gum {
     MultiDimReadOnly< GUM_SCALAR >::unregisterSlave(i);
 
     if (_bucket_) {
-      try {
+      if (_instantiations_.existsFirst(&i)) {
         delete _instantiations_.second(&i);
         _instantiations_.eraseFirst(&i);
         return true;
-      } catch (NotFound const&) { return false; }
+      } else { return false; }
     } else {
       if (_slavesValue_.exists(&i)) {
         _slavesValue_.erase(&i);
@@ -496,31 +488,29 @@ namespace gum {
 
   template < typename GUM_SCALAR >
   GUM_SCALAR MultiDimBucket< GUM_SCALAR >::_computeValue_(const Instantiation& value) const {
-    try {
-      GUM_SCALAR sum = (GUM_SCALAR)0;
-      GUM_SCALAR current;
-      _allVarsInst_.setVals(value);
-
-      for (_allVarsInst_.setFirstOut(value); !_allVarsInst_.end(); _allVarsInst_.incOut(value)) {
-        current = (GUM_SCALAR)1;
-
-        for (HashTableIteratorSafe< const MultiDimContainer< GUM_SCALAR >*, Instantiation* > iter
-             = _multiDims_.beginSafe();
-             iter != _multiDims_.endSafe();
-             ++iter) {
-          (iter.val())->setVals(_allVarsInst_);
-          current *= iter.key()->get(*(iter.val()));
-        }
-
-        sum += current;
-      }
-
-      return sum;
-    } catch (NotFound& e) {
-      std::cerr << std::endl << e.errorContent() << std::endl;
-      // This happens if the bucket is empty.
+    if (_multiDims_.empty()) {
       GUM_ERROR(SizeError, "This MultiDimBucket is empty.")
     }
+
+    GUM_SCALAR sum = (GUM_SCALAR)0;
+    GUM_SCALAR current;
+    _allVarsInst_.setVals(value);
+
+    for (_allVarsInst_.setFirstOut(value); !_allVarsInst_.end(); _allVarsInst_.incOut(value)) {
+      current = (GUM_SCALAR)1;
+
+      for (HashTableIteratorSafe< const MultiDimContainer< GUM_SCALAR >*, Instantiation* > iter
+           = _multiDims_.beginSafe();
+           iter != _multiDims_.endSafe();
+           ++iter) {
+        (iter.val())->setVals(_allVarsInst_);
+        current *= iter.key()->get(*(iter.val()));
+      }
+
+      sum += current;
+    }
+
+    return sum;
   }
 
   template < typename GUM_SCALAR >

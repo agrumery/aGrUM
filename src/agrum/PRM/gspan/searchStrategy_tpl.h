@@ -347,22 +347,18 @@ namespace gum {
 
       template < typename GUM_SCALAR >
       INLINE double StrictSearch< GUM_SCALAR >::_inner_cost_(const Pattern* p) {
-        try {
-          return _map_[p].first;
-        } catch (NotFound const&) {
+        if (!_map_.exists(p)) {
           _compute_costs_(p);
-          return _map_[p].first;
         }
+        return _map_[p].first;
       }
 
       template < typename GUM_SCALAR >
       INLINE double StrictSearch< GUM_SCALAR >::_outer_cost_(const Pattern* p) {
-        try {
-          return _map_[p].second;
-        } catch (NotFound const&) {
+        if (!_map_.exists(p)) {
           _compute_costs_(p);
-          return _map_[p].second;
         }
+        return _map_[p].second;
       }
 
       template < typename GUM_SCALAR >
@@ -422,12 +418,10 @@ namespace gum {
 
       template < typename GUM_SCALAR >
       INLINE double TreeWidthSearch< GUM_SCALAR >::cost(const Pattern& p) {
-        try {
-          return _map_[&p];
-        } catch (NotFound const&) {
+        if (!_map_.exists(&p)) {
           _map_.insert(&p, this->computeCost_(p));
-          return _map_[&p];
         }
+        return _map_[&p];
       }
 
       template < typename GUM_SCALAR >

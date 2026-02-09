@@ -172,11 +172,7 @@ namespace gum {
     std::stringstream output;
     output << "graph \"";
 
-    std::string mn_name;
-
-    try {
-      mn_name = this->property("name");
-    } catch (NotFound const&) { mn_name = "no_name"; }
+    std::string mn_name = this->propertyWithDefault("name", "no_name");
 
     output << mn_name << "\" {" << std::endl;
     output << "  graph [bgcolor=transparent,label=\"" << mn_name << "\"];" << std::endl;
@@ -211,10 +207,7 @@ namespace gum {
   template < typename GUM_SCALAR >
   std::string IMarkovRandomField< GUM_SCALAR >::toDotAsFactorGraph() const {
     std::stringstream output;
-    std::string       mn_name;
-    try {
-      mn_name = this->property("name");
-    } catch (NotFound const&) { mn_name = "no_name"; }
+    std::string mn_name = this->propertyWithDefault("name", "no_name");
 
     output << "graph FG_" << mn_name << " {" << std::endl;
     output << "  layout=neato;" << std::endl;
@@ -270,16 +263,12 @@ namespace gum {
     Bijection< const DiscreteVariable*, const DiscreteVariable* > alignment;
 
     for (auto node: nodes()) {
-      try {
-        const auto& v1 = variable(node);
-        const auto& v2 = from.variableFromName(variable(node).name());
-        if (v1 != v2) return false;
+      const auto& v1 = variable(node);
+      if (!from.exists(v1.name())) return false;
+      const auto& v2 = from.variableFromName(v1.name());
+      if (v1 != v2) return false;
 
-        alignment.insert(&variable(node), &from.variableFromName(variable(node).name()));
-      } catch (NotFound const&) {
-        // a name is not found in from
-        return false;
-      }
+      alignment.insert(&variable(node), &from.variableFromName(v1.name()));
     }
 
     for (const auto& elt: factors()) {
@@ -325,11 +314,10 @@ namespace gum {
   template < typename GUM_SCALAR >
   INLINE const NodeSet&
       IMarkovRandomField< GUM_SCALAR >::smallestFactorFromNode(const std::string& name) const {
-    try {
-      return smallestFactorFromNode(idFromName(name));
-    } catch (NotFound const&) {
+    if (!this->exists(name)) {
       GUM_ERROR(NotFound, "No factor containing the variable <" << name << ">")
     }
+    return smallestFactorFromNode(idFromName(name));
   }
 
   // visit the nodes and add some of node from soids in minimal

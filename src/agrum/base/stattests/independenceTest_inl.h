@@ -126,9 +126,7 @@ namespace gum {
     INLINE double IndependenceTest::score(const NodeId var1, const NodeId var2) {
       IdCondSet idset(var1, var2, empty_ids_, false, true);
       if (use_cache_) {
-        try {
-          return cache_.score(idset);
-        } catch (NotFound const&) {}
+        if (cache_.exists(idset)) { return cache_.score(idset); }
         double the_score = score_(idset);
         cache_.insert(std::move(idset), the_score);
         return the_score;
@@ -143,9 +141,7 @@ namespace gum {
                                           const std::vector< NodeId >& rhs_ids) {
       IdCondSet idset(var1, var2, rhs_ids, false, false);
       if (use_cache_) {
-        try {
-          return cache_.score(idset);
-        } catch (NotFound const&) {}
+        if (cache_.exists(idset)) { return cache_.score(idset); }
         double the_score = score_(idset);
         cache_.insert(std::move(idset), the_score);
         return the_score;

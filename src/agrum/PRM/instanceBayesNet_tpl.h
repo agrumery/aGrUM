@@ -56,13 +56,11 @@ namespace gum {
     template < typename GUM_SCALAR >
     void InstanceBayesNet< GUM_SCALAR >::_init_(const PRMInstance< GUM_SCALAR >& i) {
       for (const auto node: i.type().containerDag().nodes()) {
-        try {
+        if (i.exists(node)) {
           // Adding the attribute
           const PRMAttribute< GUM_SCALAR >& attr = i.get(node);
           this->dag_.addNodeWithId(attr.id());
           _varNodeMap_.insert(&(attr.type().variable()), &attr);
-        } catch (NotFound const&) {
-          // Not an attribute
         }
       }
 
@@ -145,9 +143,9 @@ namespace gum {
     template < typename GUM_SCALAR >
     INLINE const PRMClassElement< GUM_SCALAR >&
                  InstanceBayesNet< GUM_SCALAR >::_get_(const std::string& name) const {
-      try {
-        return _inst_->get(name);
-      } catch (NotFound const&) { GUM_ERROR(NotFound, "no element found with that name") }
+      if (!_inst_->exists(name))
+        GUM_ERROR(NotFound, "no element found with that name")
+      return _inst_->get(name);
     }
 
     template < typename GUM_SCALAR >

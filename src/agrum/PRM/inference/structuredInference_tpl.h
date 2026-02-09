@@ -365,10 +365,11 @@ namespace gum {
           pot = &(const_cast< Tensor< GUM_SCALAR >& >(inst->get(v.second).cpf()));
 
           for (const auto var: pot->variablesSequence()) {
-            try {
-              if (id != data.vars.first(var)) data.graph.addEdge(id, data.vars.first(var));
-            } catch (DuplicateElement const&) {
-            } catch (NotFound const&) {}
+            if (data.vars.existsSecond(var)) {
+              try {
+                if (id != data.vars.first(var)) data.graph.addEdge(id, data.vars.first(var));
+              } catch (DuplicateElement const&) {}
+            }
           }
 
           _insertNodeInElimLists_(data, match, inst, elt.second, id, v);
@@ -560,7 +561,7 @@ namespace gum {
                 delete my_pool;
                 GUM_ERROR(OperationNotAllowed, "fake pattern")
               }
-            } catch (NotFound const&) {
+            } catch (NotFound const&) {   // bijection lookup failed
               delete my_pool;
               GUM_ERROR(OperationNotAllowed, "fake pattern")
             }
@@ -570,12 +571,15 @@ namespace gum {
 
       for (const auto p: pool) {
         for (const auto v: p->variablesSequence()) {
-          try {
-            target = data.map[data.vars.first(v)];
-            bij.insert(v, &(match[target.first]->get(target.second).type().variable()));
-          } catch (NotFound const&) {
-            GUM_ASSERT(bij.existsFirst(v));
-          } catch (DuplicateElement const&) {}
+          if (data.vars.existsSecond(v)) {
+            auto varId = data.vars.first(v);
+            if (data.map.exists(varId)) {
+              target = data.map[varId];
+              try {
+                bij.insert(v, &(match[target.first]->get(target.second).type().variable()));
+              } catch (DuplicateElement const&) {}
+            }
+          }
         }
 
         try {
@@ -607,9 +611,9 @@ namespace gum {
           if (inst->size()) {
             Set< Tensor< GUM_SCALAR >* > pool;
 
-            try {
+            if (_cdata_map_.exists(&(inst->type()))) {
               data = _cdata_map_[&(inst->type())];
-            } catch (NotFound const&) {
+            } else {
               data = new StructuredInference< GUM_SCALAR >::CData(inst->type());
               _cdata_map_.insert(&(inst->type()), data);
             }

@@ -193,10 +193,10 @@ namespace gum {
                                                               neighbor_label,
                                                               neighbor_node);
 
-                  try {
+                  if (edge_count->exists(temp_growth.toString())) {
                     edge_growth = (*edge_count)[temp_growth.toString()];
                     edge_growth->insert(current, neighbor);
-                  } catch (NotFound const&) {
+                  } else {
                     edge_growth = new gspan::EdgeGrowth< GUM_SCALAR >(node,
                                                                       edge_data->l,
                                                                       neighbor_label,

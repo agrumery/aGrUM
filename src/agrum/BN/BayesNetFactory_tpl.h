@@ -129,9 +129,8 @@ namespace gum {
   // @throw NotFound Raised if no variable matches the name.
   template < typename GUM_SCALAR >
   INLINE NodeId BayesNetFactory< GUM_SCALAR >::variableId(const std::string& name) const {
-    try {
-      return _varNameMap_[name];
-    } catch (NotFound const&) { GUM_ERROR(NotFound, name) }
+    if (!_varNameMap_.exists(name)) { GUM_ERROR(NotFound, name) }
+    return _varNameMap_[name];
   }
 
   // Returns a constant reference on a variable given it's name.
@@ -139,9 +138,8 @@ namespace gum {
   template < typename GUM_SCALAR >
   INLINE const DiscreteVariable&
       BayesNetFactory< GUM_SCALAR >::variable(const std::string& name) const {
-    try {
-      return _bn_->variable(variableId(name));
-    } catch (NotFound const&) { GUM_ERROR(NotFound, name) }
+    if (!_varNameMap_.exists(name)) { GUM_ERROR(NotFound, name) }
+    return _bn_->variable(variableId(name));
   }
 
   // Returns the domainSize of the cpt for the node n.
@@ -782,13 +780,11 @@ namespace gum {
     if (state() != factory_state::NONE) {
       _illegalStateError_("setVariable");
     } else {
-      try {
-        _checkVariableName_(var.name());
+      if (_varNameMap_.exists(var.name())) {
         GUM_ERROR(DuplicateElement, "Name already used: " << var.name())
-      } catch (NotFound const&) {
-        // The var name is unused
-        _varNameMap_.insert(var.name(), _bn_->add(var));
       }
+      // The var name is unused
+      _varNameMap_.insert(var.name(), _bn_->add(var));
     }
   }
 

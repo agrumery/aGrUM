@@ -307,14 +307,14 @@ namespace gum {
       return const_cast< AVLTreeNode< Val >& >(_nodes_.key(*(_tree_cmp_.getNode(val))));
     else {
       AVLTreeNode< Val > xval(std::move(const_cast< Val& >(val)));
-      try {
+      const bool found = _nodes_.exists(xval);
+      if (found) {
         auto& node              = const_cast< AVLTreeNode< Val >& >(_nodes_.key(xval));
         const_cast< Val& >(val) = std::move(xval.value);
         return node;
-      } catch (NotFound const&) {
-        // restore into val the value that was moved
+      } else {
         const_cast< Val& >(val) = std::move(xval.value);
-        throw;
+        GUM_ERROR(NotFound, "element not found in sorted priority queue")
       }
     }
   }
@@ -322,43 +322,41 @@ namespace gum {
   // removes a given element from the priority queue (but does not return it)
   template < typename Val, typename Priority, typename Cmp >
   INLINE void SortedPriorityQueue< Val, Priority, Cmp >::erase(const Val& val) {
-    try {
+    if (contains(val)) {
       AVLNode& node = getNode_(val);
       _tree_.erase(&node);
       _nodes_.erase(node);
-    } catch (NotFound const&) {}
+    }
   }
 
   // modifies the priority of a given element
   template < typename Val, typename Priority, typename Cmp >
   INLINE void SortedPriorityQueue< Val, Priority, Cmp >::setPriority(const Val&      elt,
                                                                      const Priority& new_priority) {
-    try {
-      AVLNode& node = getNode_(elt);
-      _tree_.erase(&node);
-      _nodes_[node] = new_priority;
-      _tree_.insert(&node);
-    } catch (NotFound const&) {
+    if (!contains(elt)) {
       GUM_ERROR(NotFound,
                 "The sorted priority queue does not contain"
                     << elt << ". Hence it is not possible to change its priority")
     }
+    AVLNode& node = getNode_(elt);
+    _tree_.erase(&node);
+    _nodes_[node] = new_priority;
+    _tree_.insert(&node);
   }
 
   // modifies the priority of a given element
   template < typename Val, typename Priority, typename Cmp >
   INLINE void SortedPriorityQueue< Val, Priority, Cmp >::setPriority(const Val& elt,
                                                                      Priority&& new_priority) {
-    try {
-      AVLNode& node = getNode_(elt);
-      _tree_.erase(&node);
-      _nodes_[node] = std::move(new_priority);
-      _tree_.insert(&node);
-    } catch (NotFound const&) {
+    if (!contains(elt)) {
       GUM_ERROR(NotFound,
                 "The sorted priority queue does not contain"
                     << elt << ". Hence it is not possible to change its priority")
     }
+    AVLNode& node = getNode_(elt);
+    _tree_.erase(&node);
+    _nodes_[node] = std::move(new_priority);
+    _tree_.insert(&node);
   }
 
   // returns the priority of a given element

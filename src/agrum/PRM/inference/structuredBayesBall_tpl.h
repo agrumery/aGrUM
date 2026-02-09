@@ -73,24 +73,23 @@ namespace gum {
     template < typename GUM_SCALAR >
     bool StructuredBayesBall< GUM_SCALAR >::_isHardEvidence_(const PRMInstance< GUM_SCALAR >* i,
                                                              NodeId                           n) {
-      try {
-        typename PRMInference< GUM_SCALAR >::Chain chain = std::make_pair(i, &(i->get(n)));
+      if (!i->exists(n)) return false;
+      typename PRMInference< GUM_SCALAR >::Chain chain = std::make_pair(i, &(i->get(n)));
 
-        if (_inf_->hasEvidence(chain)) {
-          const Tensor< GUM_SCALAR >* e = _inf_->evidence(i)[n];
-          Instantiation               inst(e);
-          Size                        count = 0;
+      if (_inf_->hasEvidence(chain)) {
+        const Tensor< GUM_SCALAR >* e = _inf_->evidence(i)[n];
+        Instantiation               inst(e);
+        Size                        count = 0;
 
-          for (inst.setFirst(); !inst.end(); inst.inc()) {
-            if ((e->get(inst) == (GUM_SCALAR)1.0)) ++count;
-            else if (e->get(inst) != (GUM_SCALAR)0.0) return false;
-          }
-
-          return (count == 1);
+        for (inst.setFirst(); !inst.end(); inst.inc()) {
+          if ((e->get(inst) == (GUM_SCALAR)1.0)) ++count;
+          else if (e->get(inst) != (GUM_SCALAR)0.0) return false;
         }
 
-        return false;
-      } catch (NotFound const&) { return false; }
+        return (count == 1);
+      }
+
+      return false;
     }
 
     template < typename GUM_SCALAR >
@@ -153,13 +152,11 @@ namespace gum {
               _fromParent_(i, chi, marks);
 
             // Out of i.
-            try {
+            if (i->hasRefAttr(n)) {
               const auto& refs = i->getRefAttr(n);
 
               for (auto iter = refs.begin(); iter != refs.end(); ++iter)
                 _fromParent_(iter->first, iter->first->type().get(iter->second).id(), marks);
-            } catch (NotFound const&) {
-              // Not an inverse sc
             }
           }
 
@@ -198,11 +195,9 @@ namespace gum {
           _fromParent_(i, chi, marks);
 
         // Out of i.
-        try {
+        if (i->hasRefAttr(n)) {
           for (auto iter = i->getRefAttr(n).begin(); iter != i->getRefAttr(n).end(); ++iter)
             _fromParent_(iter->first, iter->first->type().get(iter->second).id(), marks);
-        } catch (NotFound const&) {
-          // Not an inverse sc
         }
       }
     }

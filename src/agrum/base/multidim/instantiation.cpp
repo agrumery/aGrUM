@@ -192,17 +192,17 @@ namespace gum {
     for (const auto& elt: map) {
       const DiscreteVariable& var = *elt.second;
 
-      try {
-        Idx val = external.val(*elt.first);
-
-        try {
-          chgVal(var, val);
-        } catch (NotFound const&) {
-          GUM_ERROR(NotFound, var.name() << " : missing variable in instantiation")
-        }
-      } catch (NotFound const&) {
+      if (!external.contains(*elt.first)) {
         GUM_ERROR(NotFound, var.name() << " : missing variable in external instantiation")
       }
+
+      Idx val = external.val(*elt.first);
+
+      if (!contains(var)) {
+        GUM_ERROR(NotFound, var.name() << " : missing variable in instantiation")
+      }
+
+      chgVal(var, val);
     }
   }
 

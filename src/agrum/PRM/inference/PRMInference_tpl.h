@@ -170,33 +170,33 @@ namespace gum {
     template < typename GUM_SCALAR >
     INLINE typename PRMInference< GUM_SCALAR >::EMap&
         PRMInference< GUM_SCALAR >::evidence(const PRMInstance< GUM_SCALAR >& i) {
-      try {
-        return *(_evidences_[&i]);
-      } catch (NotFound const&) { GUM_ERROR(NotFound, "this instance has no evidence.") }
+      if (!_evidences_.exists(&i))
+        GUM_ERROR(NotFound, "this instance has no evidence.")
+      return *(_evidences_[&i]);
     }
 
     template < typename GUM_SCALAR >
     INLINE const typename PRMInference< GUM_SCALAR >::EMap&
         PRMInference< GUM_SCALAR >::evidence(const PRMInstance< GUM_SCALAR >& i) const {
-      try {
-        return *(_evidences_[&i]);
-      } catch (NotFound const&) { GUM_ERROR(NotFound, "this instance has no evidence.") }
+      if (!_evidences_.exists(&i))
+        GUM_ERROR(NotFound, "this instance has no evidence.")
+      return *(_evidences_[&i]);
     }
 
     template < typename GUM_SCALAR >
     INLINE typename PRMInference< GUM_SCALAR >::EMap&
         PRMInference< GUM_SCALAR >::evidence(const PRMInstance< GUM_SCALAR >* i) {
-      try {
-        return *(_evidences_[i]);
-      } catch (NotFound const&) { GUM_ERROR(NotFound, "this instance has no evidence.") }
+      if (!_evidences_.exists(i))
+        GUM_ERROR(NotFound, "this instance has no evidence.")
+      return *(_evidences_[i]);
     }
 
     template < typename GUM_SCALAR >
     INLINE const typename PRMInference< GUM_SCALAR >::EMap&
         PRMInference< GUM_SCALAR >::evidence(const PRMInstance< GUM_SCALAR >* i) const {
-      try {
-        return *(_evidences_[i]);
-      } catch (NotFound const&) { GUM_ERROR(NotFound, "this instance has no evidence.") }
+      if (!_evidences_.exists(i))
+        GUM_ERROR(NotFound, "this instance has no evidence.")
+      return *(_evidences_[i]);
     }
 
     template < typename GUM_SCALAR >
@@ -221,14 +221,12 @@ namespace gum {
 
     template < typename GUM_SCALAR >
     INLINE void PRMInference< GUM_SCALAR >::removeEvidence(const Chain& chain) {
-      try {
+      if (hasEvidence(chain.first)) {
         if (_EMap_(chain.first).exists(chain.second->id())) {
           evidenceRemoved_(chain);
           delete _EMap_(chain.first)[chain.second->id()];
           _EMap_(chain.first).erase(chain.second->id());
         }
-      } catch (NotFound const&) {
-        // Ok, we are only removing
       }
     }
 

@@ -56,7 +56,7 @@ namespace gum {
     template < typename GUM_SCALAR >
     void ClassBayesNet< GUM_SCALAR >::_init_(const PRMClass< GUM_SCALAR >& c) {
       for (const auto node: c.containerDag().nodes()) {
-        try {
+        if (c.exists(node)) {
           // Adding the attribute
           if (PRMClassElement< GUM_SCALAR >::isAttribute(c.get(node))
               || PRMClassElement< GUM_SCALAR >::isAggregate(c.get(node))) {
@@ -64,8 +64,6 @@ namespace gum {
             this->dag_.addNodeWithId(elt.id());
             this->_varNodeMap_.insert(&(elt.type().variable()), &elt);
           }
-        } catch (NotFound const&) {
-          // Not an attribute
         }
       }
 
@@ -152,9 +150,9 @@ namespace gum {
     template < typename GUM_SCALAR >
     INLINE const PRMClassElement< GUM_SCALAR >&
                  ClassBayesNet< GUM_SCALAR >::_get_(const std::string& name) const {
-      try {
-        return _class_->get(name);
-      } catch (NotFound const&) { GUM_ERROR(NotFound, "no element found with that id.") }
+      if (!_class_->exists(name))
+        GUM_ERROR(NotFound, "no element found with that id.")
+      return _class_->get(name);
     }
 
     template < typename GUM_SCALAR >

@@ -117,9 +117,9 @@ namespace gum::prm::gspan {
     node_map.insert(u, p.addNodeWithLabel(label(u)));
     node_map.insert(v, p.addNodeWithLabel(label(v)));
 
-    try {
+    if (_arc_map_.exists(Arc(u, v))) {
       p.addArc(1, 2, label(u, v));
-    } catch (NotFound const&) { p.addArc(1, 2, label(v, u)); }
+    } else { p.addArc(1, 2, label(v, u)); }
 
     for (const auto nei: children(u))
       if (nei != v)
@@ -157,9 +157,9 @@ namespace gum::prm::gspan {
     // Retrieving arc label data
     LabelData* data = 0;
 
-    try {
+    if (_arc_map_.exists(Arc(u, v))) {
       data = &(label(u, v));
-    } catch (NotFound const&) { data = &(label(v, u)); }
+    } else { data = &(label(v, u)); }
 
     // Adding arc
     try {
@@ -232,9 +232,8 @@ namespace gum::prm::gspan {
           // Retrieving arc label data
           LabelData* data = 0;
 
-          try {
-            data = &(label(u, v));
-          } catch (NotFound const&) { data = &(label(v, u)); }
+          if (_arc_map_.exists(Arc(u, v))) data = &(label(u, v));
+          else data = &(label(v, u));
 
           // Adding arc
           try {

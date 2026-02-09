@@ -59,12 +59,11 @@ namespace gum {
 
   INLINE
   const std::string& GraphicalModel::property(const std::string& name) const {
-    try {
-      return _properties_()[name];
-    } catch (NotFound const&) {
+    if (!_properties_().exists(name)) {
       std::string msg = "The following property does not exists: ";
       GUM_ERROR(NotFound, msg + name)
     }
+    return _properties_()[name];
   }
 
   INLINE

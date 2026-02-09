@@ -217,11 +217,9 @@ namespace gum {
         // Second we search for active outputs
         for (const auto nn: node->n->type().containerDag().nodes()) {
           if (node->n->type().isOutputNode(node->n->type().get(nn))) {
-            try {
+            if (node->n->hasRefAttr(nn) && node->n->exists(nn)) {
               sBuff << "-" << node->n->getRefAttr(nn).size() << node->n->get(nn).name();
               size *= node->n->get(nn).type().variable().domainSize();
-            } catch (NotFound const&) {
-              // (nn) is an inactive output node
             }
           }
         }
@@ -300,9 +298,9 @@ namespace gum {
 
       template < typename GUM_SCALAR >
       INLINE Size InterfaceGraph< GUM_SCALAR >::size(const LabelData* l) const {
-        try {
+        if (_nodeMap_.exists(const_cast< LabelData* >(l)))
           return _nodeMap_[const_cast< LabelData* >(l)]->size();
-        } catch (NotFound const&) { return _edgeMap_[const_cast< LabelData* >(l)]->size(); }
+        return _edgeMap_[const_cast< LabelData* >(l)]->size();
       }
 
       template < typename GUM_SCALAR >
@@ -368,17 +366,17 @@ namespace gum {
 
       template < typename GUM_SCALAR >
       INLINE EdgeData< GUM_SCALAR >& InterfaceGraph< GUM_SCALAR >::edge(NodeId u, NodeId v) {
-        try {
+        if (_edges_.exists(Edge(u, v)))
           return *(_edges_[Edge(u, v)]);
-        } catch (NotFound const&) { return *(_edges_[Edge(v, u)]); }
+        return *(_edges_[Edge(v, u)]);
       }
 
       template < typename GUM_SCALAR >
       INLINE const EdgeData< GUM_SCALAR >& InterfaceGraph< GUM_SCALAR >::edge(NodeId u,
                                                                               NodeId v) const {
-        try {
+        if (_edges_.exists(Edge(u, v)))
           return *(_edges_[Edge(u, v)]);
-        } catch (NotFound const&) { return *(_edges_[Edge(v, u)]); }
+        return *(_edges_[Edge(v, u)]);
       }
 
       template < typename GUM_SCALAR >

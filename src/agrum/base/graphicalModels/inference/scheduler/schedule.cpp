@@ -522,9 +522,7 @@ namespace gum {
     ScheduleOperator*                    new_op = op.clone();
     Sequence< const IScheduleMultiDim* > new_args(op_args.size());
     for (Idx i = Idx(0), end = op_args.size(); i < end; ++i) {
-      try {
-        new_args << _multidim2id_.first(op_args[i]->id());
-      } catch (NotFound const&) {
+      if (!_multidim2id_.existsSecond(op_args[i]->id())) {
         // deallocate everything we have allocated
         delete new_op;
 
@@ -532,6 +530,7 @@ namespace gum {
                   "the " << _paramString_(i + 1) << " argument of the operation is not known by"
                          << " the schedule")
       }
+      new_args << _multidim2id_.first(op_args[i]->id());
     }
     new_op->updateArgs(new_args);
     new_op->makeResultsPersistent(are_results_persistent);

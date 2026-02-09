@@ -256,36 +256,29 @@ namespace gum {
               // checking for cycles
               if (graph.existsArc(z, x)) {
                 graph.eraseArc(Arc(z, x));
-                try {
-                  std::vector< NodeId > path = graph.directedPath(z, x);
-                  // if we find a cycle, we force the competing edge
-                  _latentCouples_.emplace_back(z, x);
-                } catch (const gum::NotFound&) { graph.addArc(x, z); }
+                // if we find a directed path, we force the competing edge
+                if (graph.hasDirectedPath(z, x)) _latentCouples_.emplace_back(z, x);
+                else graph.addArc(x, z);
                 graph.addArc(z, x);
               } else {
-                try {
-                  std::vector< NodeId > path = graph.directedPath(z, x);
-                  // if we find a cycle, we force the competing edge
+                // if we find a directed path, we force the competing edge
+                if (graph.hasDirectedPath(z, x)) {
                   graph.addArc(z, x);
                   _latentCouples_.emplace_back(z, x);
-                } catch (const gum::NotFound&) { graph.addArc(x, z); }
+                } else { graph.addArc(x, z); }
               }
               if (graph.existsArc(z, y)) {
                 graph.eraseArc(Arc(z, y));
-                try {
-                  std::vector< NodeId > path = graph.directedPath(z, y);
-                  // if we find a cycle, we force the competing edge
-                  _latentCouples_.emplace_back(z, y);
-                } catch (const gum::NotFound&) { graph.addArc(y, z); }
+                // if we find a directed path, we force the competing edge
+                if (graph.hasDirectedPath(z, y)) _latentCouples_.emplace_back(z, y);
+                else graph.addArc(y, z);
                 graph.addArc(z, y);
               } else {
-                try {
-                  std::vector< NodeId > path = graph.directedPath(z, y);
-                  // if we find a cycle, we force the competing edge
+                // if we find a directed path, we force the competing edge
+                if (graph.hasDirectedPath(z, y)) {
                   graph.addArc(z, y);
                   _latentCouples_.emplace_back(z, y);
-
-                } catch (const gum::NotFound&) { graph.addArc(y, z); }
+                } else { graph.addArc(y, z); }
               }
               if (graph.existsArc(z, x) && _isNotLatentCouple_(z, x)) {
                 _latentCouples_.emplace_back(z, x);
@@ -302,22 +295,20 @@ namespace gum {
           if (graph.existsArc(x, z) && !graph.existsArc(z, y) && !graph.existsArc(y, z)) {
             reset = true;
             graph.eraseEdge(Edge(z, y));
-            try {
-              std::vector< NodeId > path = graph.directedPath(y, z);
-              // if we find a cycle, we force the competing edge
+            // if we find a directed path, we force the competing edge
+            if (graph.hasDirectedPath(y, z)) {
               graph.addArc(y, z);
               _latentCouples_.emplace_back(y, z);
-            } catch (const gum::NotFound&) { graph.addArc(z, y); }
+            } else { graph.addArc(z, y); }
           }
           if (graph.existsArc(y, z) && !graph.existsArc(z, x) && !graph.existsArc(x, z)) {
             reset = true;
             graph.eraseEdge(Edge(z, x));
-            try {
-              std::vector< NodeId > path = graph.directedPath(x, z);
-              // if we find a cycle, we force the competing edge
+            // if we find a directed path, we force the competing edge
+            if (graph.hasDirectedPath(x, z)) {
               graph.addArc(x, z);
               _latentCouples_.emplace_back(x, z);
-            } catch (const gum::NotFound&) { graph.addArc(z, x); }
+            } else { graph.addArc(z, x); }
           }
 
           if (reset) {

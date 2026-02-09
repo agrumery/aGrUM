@@ -2249,9 +2249,9 @@ namespace gum {
     // determine the clique on which we should perform collect to compute
     // the unnormalized joint posterior of a set of nodes containing "targets"
     NodeId clique_of_set;
-    try {
+    if (_joint_target_to_clique_.exists(set)) {
       clique_of_set = _joint_target_to_clique_[set];
-    } catch (NotFound const&) {
+    } else {
       // here, the precise set of targets does not belong to the set of targets
       // defined by the user. So we will try to find a clique in the junction
       // tree that contains "targets":
@@ -2422,9 +2422,9 @@ namespace gum {
     // determine the clique on which we should perform collect to compute
     // the unnormalized joint posterior of a set of nodes containing "targets"
     NodeId clique_of_set;
-    try {
+    if (_joint_target_to_clique_.exists(set)) {
       clique_of_set = _joint_target_to_clique_[set];
-    } catch (NotFound const&) {
+    } else {
       // here, the precise set of targets does not belong to the set of targets
       // defined by the user. So we will try to find a clique in the junction
       // tree that contains "targets":

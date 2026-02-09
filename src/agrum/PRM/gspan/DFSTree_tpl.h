@@ -354,10 +354,8 @@ namespace gum {
       bool DFSTree< GUM_SCALAR >::_test_equality_(
           HashTable< PRMClassElement< GUM_SCALAR >*, Size >& x,
           HashTable< PRMClassElement< GUM_SCALAR >*, Size >& y) {
-        try {
-          for (const auto& elt: x)
-            if (y[elt.first] != elt.second) return false;
-        } catch (NotFound const&) { return false; }
+        for (const auto& elt: x)
+          if (!y.exists(elt.first) || y[elt.first] != elt.second) return false;
 
         return true;
       }
@@ -404,86 +402,80 @@ namespace gum {
 
       template < typename GUM_SCALAR >
       INLINE Pattern& DFSTree< GUM_SCALAR >::parent(const Pattern& p) {
-        try {
-          return *(_node_map_.second(
-              *(DiGraph::parents(_node_map_.first(const_cast< Pattern* >(&p))).begin())));
-        } catch (NotFound const&) {
-          if (_node_map_.existsSecond(const_cast< Pattern* >(&p))) {
-            GUM_ERROR(NotFound, "the given pattern is a root node")
-          } else {
-            GUM_ERROR(NotFound, "pattern not found in this DFSTree")
-          }
+        if (!_node_map_.existsSecond(const_cast< Pattern* >(&p))) {
+          GUM_ERROR(NotFound, "pattern not found in this DFSTree")
         }
+        auto node = _node_map_.first(const_cast< Pattern* >(&p));
+        const auto& par = DiGraph::parents(node);
+        if (par.empty()) {
+          GUM_ERROR(NotFound, "the given pattern is a root node")
+        }
+        return *(_node_map_.second(*(par.begin())));
       }
 
       template < typename GUM_SCALAR >
       INLINE const Pattern& DFSTree< GUM_SCALAR >::parent(const Pattern& p) const {
-        try {
-          return *(_node_map_.second(
-              *(DiGraph::parents(_node_map_.first(const_cast< Pattern* >(&p))).begin())));
-        } catch (NotFound const&) {
-          if (_node_map_.existsSecond(const_cast< Pattern* >(&p))) {
-            GUM_ERROR(NotFound, "the given pattern is a root node")
-          } else {
-            GUM_ERROR(NotFound, "pattern not found in this DFSTree")
-          }
+        if (!_node_map_.existsSecond(const_cast< Pattern* >(&p))) {
+          GUM_ERROR(NotFound, "pattern not found in this DFSTree")
         }
+        auto node = _node_map_.first(const_cast< Pattern* >(&p));
+        const auto& par = DiGraph::parents(node);
+        if (par.empty()) {
+          GUM_ERROR(NotFound, "the given pattern is a root node")
+        }
+        return *(_node_map_.second(*(par.begin())));
       }
 
       template < typename GUM_SCALAR >
       INLINE std::list< NodeId >& DFSTree< GUM_SCALAR >::children(const Pattern& p) {
-        try {
-          return _data_[const_cast< Pattern* >(&p)]->children;
-        } catch (NotFound const&) { GUM_ERROR(NotFound, "pattern not found in this DFSTree") }
+        if (!_data_.exists(const_cast< Pattern* >(&p)))
+          GUM_ERROR(NotFound, "pattern not found in this DFSTree")
+        return _data_[const_cast< Pattern* >(&p)]->children;
       }
 
       template < typename GUM_SCALAR >
       INLINE const std::list< NodeId >& DFSTree< GUM_SCALAR >::children(const Pattern& p) const {
-        try {
-          return _data_[const_cast< Pattern* >(&p)]->children;
-        } catch (NotFound const&) { GUM_ERROR(NotFound, "pattern not found in this DFSTree") }
+        if (!_data_.exists(const_cast< Pattern* >(&p)))
+          GUM_ERROR(NotFound, "pattern not found in this DFSTree")
+        return _data_[const_cast< Pattern* >(&p)]->children;
       }
 
       template < typename GUM_SCALAR >
       INLINE Pattern& DFSTree< GUM_SCALAR >::pattern(NodeId id) {
-        try {
-          return *(_node_map_.second(id));
-        } catch (NotFound const&) { GUM_ERROR(NotFound, "no pattern matching the given id") }
+        if (!_node_map_.existsFirst(id))
+          GUM_ERROR(NotFound, "no pattern matching the given id")
+        return *(_node_map_.second(id));
       }
 
       template < typename GUM_SCALAR >
       INLINE const Pattern& DFSTree< GUM_SCALAR >::pattern(NodeId id) const {
-        try {
-          return *(_node_map_.second(id));
-        } catch (NotFound const&) { GUM_ERROR(NotFound, "no pattern matching the given id") }
+        if (!_node_map_.existsFirst(id))
+          GUM_ERROR(NotFound, "no pattern matching the given id")
+        return *(_node_map_.second(id));
       }
 
       template < typename GUM_SCALAR >
       INLINE UndiGraph& DFSTree< GUM_SCALAR >::iso_graph(const Pattern& p) {
-        try {
-          return _data_[const_cast< Pattern* >(&p)]->iso_graph;
-        } catch (NotFound const&) { GUM_ERROR(NotFound, "pattern not found in this DFSTree") }
+        if (!_data_.exists(const_cast< Pattern* >(&p)))
+          GUM_ERROR(NotFound, "pattern not found in this DFSTree")
+        return _data_[const_cast< Pattern* >(&p)]->iso_graph;
       }
 
       template < typename GUM_SCALAR >
       INLINE Sequence< PRMInstance< GUM_SCALAR >* >&
              DFSTree< GUM_SCALAR >::iso_map(const Pattern& p, NodeId node) {
-        try {
-          return *(_data_[const_cast< Pattern* >(&p)]->iso_map[node]);
-        } catch (NotFound const&) {
-          if (_data_.exists(const_cast< Pattern* >(&p))) {
-            GUM_ERROR(NotFound, "node not found in Pattern's isomorphism graph")
-          } else {
-            GUM_ERROR(NotFound, "pattern not found in this DFSTree")
-          }
-        }
+        if (!_data_.exists(const_cast< Pattern* >(&p)))
+          GUM_ERROR(NotFound, "pattern not found in this DFSTree")
+        if (!_data_[const_cast< Pattern* >(&p)]->iso_map.exists(node))
+          GUM_ERROR(NotFound, "node not found in Pattern's isomorphism graph")
+        return *(_data_[const_cast< Pattern* >(&p)]->iso_map[node]);
       }
 
       template < typename GUM_SCALAR >
       INLINE Set< NodeId >& DFSTree< GUM_SCALAR >::max_indep_set(const Pattern& p) {
-        try {
-          return _data_[const_cast< Pattern* >(&p)]->max_indep_set;
-        } catch (NotFound const&) { GUM_ERROR(NotFound, "pattern not found in this DFSTree") }
+        if (!_data_.exists(const_cast< Pattern* >(&p)))
+          GUM_ERROR(NotFound, "pattern not found in this DFSTree")
+        return _data_[const_cast< Pattern* >(&p)]->max_indep_set;
       }
 
       template < typename GUM_SCALAR >

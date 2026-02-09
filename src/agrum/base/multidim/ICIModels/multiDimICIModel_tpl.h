@@ -90,9 +90,9 @@ namespace gum {
          = from._causal_weights_.beginSafe();
          iter != from._causal_weights_.endSafe();
          ++iter) {
-      try {
+      if (bij.existsSecond(iter.key())) {
         causalWeight(*(bij.first(iter.key())), iter.val());
-      } catch (NotFound const&) { causalWeight(*(iter.key()), iter.val()); }
+      } else { causalWeight(*(iter.key()), iter.val()); }
     }
   }
 

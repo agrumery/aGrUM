@@ -80,9 +80,9 @@ namespace gum {
     auto v = fastVariable< GUM_SCALAR >(node, ds);
 
     NodeId res;
-    try {
+    if (infdiag.exists(v->name())) {
       res = infdiag.idFromName(v->name());
-    } catch (gum::NotFound&) {
+    } else {
       if (isChanc) res = infdiag.addChanceNode(*v);
       else if (isDeci) res = infdiag.addDecisionNode(*v);
       else if (isUtil) res = infdiag.addUtilityNode(*v);
@@ -252,9 +252,7 @@ namespace gum {
     std::stringstream arcstream;
     output << "digraph \"";
 
-    try {
-      output << this->property("name") << "\" {" << std::endl;
-    } catch (NotFound const&) { output << "no_name\" {" << std::endl; }
+    output << this->propertyWithDefault("name", "no_name") << "\" {" << std::endl;
 
     output << "  node [bgcolor=\"#AAAAAA\", style=filled, height=0];" << std::endl;
 
@@ -910,20 +908,16 @@ namespace gum {
     Bijection< const DiscreteVariable*, const DiscreteVariable* > alignment;
 
     for (auto node: nodes()) {
-      try {
-        const auto& v1 = variable(node);
-        const auto& v2 = from.variableFromName(variable(node).name());
-        if (v1 != v2) { return false; }
+      const auto& v1 = variable(node);
+      if (!from.exists(v1.name())) return false;
+      const auto& v2 = from.variableFromName(v1.name());
+      if (v1 != v2) { return false; }
 
-        if (isChanceNode(v1.name()) && !from.isChanceNode(v2.name())) { return false; }
-        if (isUtilityNode(v1.name()) && !from.isUtilityNode(v2.name())) { return false; }
-        if (isDecisionNode(v1.name()) && !from.isDecisionNode(v2.name())) { return false; }
+      if (isChanceNode(v1.name()) && !from.isChanceNode(v2.name())) { return false; }
+      if (isUtilityNode(v1.name()) && !from.isUtilityNode(v2.name())) { return false; }
+      if (isDecisionNode(v1.name()) && !from.isDecisionNode(v2.name())) { return false; }
 
-        alignment.insert(&variable(node), &from.variableFromName(variable(node).name()));
-      } catch (NotFound const&) {
-        // a name is not found in from
-        return false;
-      }
+      alignment.insert(&variable(node), &from.variableFromName(v1.name()));
     }
 
     auto check_pot
