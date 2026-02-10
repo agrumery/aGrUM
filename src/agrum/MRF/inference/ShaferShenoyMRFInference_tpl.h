@@ -1189,17 +1189,17 @@ namespace gum {
   void ShaferShenoyMRFInference< GUM_SCALAR >::_computeJoinTreeRoots_() {
     // get the set of cliques in which we can find the targets and joint_targets.
     // Due to hard evidence, the cliques related to a given target node
-    // might not exist, hence the try..catch.
+    // might not exist, hence the if checks
     NodeSet clique_targets;
     for (const auto node: this->targets()) {
-      try {
+      if (_node_to_clique_.exists(node)) {
         clique_targets.insert(_node_to_clique_[node]);
-      } catch (Exception const&) {}
+      }
     }
     for (const auto& set: this->jointTargets()) {
-      try {
+      if (_joint_target_to_clique_.exists(set)) {
         clique_targets.insert(_joint_target_to_clique_[set]);
-      } catch (Exception const&) {}
+      }
     }
 
     // put in a vector these cliques and their sizes
