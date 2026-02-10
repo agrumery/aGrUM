@@ -193,8 +193,10 @@ namespace gum {
 
         if (size > 0) total_size += zeCreatedObjs * (size / 1024.0);
 
-        if (deletion.exists(xx->first)) {
-          zeDeletedObjts = deletion[xx->first];
+        // check if xx->first exists as key
+        auto zeDeletedObjtsEntry = deletion.find(xx->first);
+        if (zeDeletedObjtsEntry != deletion.end()) {
+          zeDeletedObjts = zeDeletedObjtsEntry->second;
           stream << std::setfill(fillChar) << std::setw(widthColItemsNumber) << zeDeletedObjts;
         } else {
           stream << std::setfill(fillChar) << std::setw(widthColItemsNumber) << "?????";
@@ -212,7 +214,8 @@ namespace gum {
 
       // list of deleted objects, but not created (?)
       for (DEBUG_MAP::const_iterator xx = deletion.begin(); xx != deletion.end(); ++xx) {
-        if (!creation.exists(xx->first)) {
+        auto creationValAtKey = creation.find(xx->first);
+        if (creationValAtKey != creation.end()) {
           std::stringstream stream;
           fillChar = (fillChar == '_') ? ' ' : '_';
           stream << std::setfill(fillChar = (fillChar == '_') ? ' ' : '_') << "| "
