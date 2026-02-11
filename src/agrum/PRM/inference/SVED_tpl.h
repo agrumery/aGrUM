@@ -158,11 +158,12 @@ namespace gum {
         for (const auto agg: i->type().aggregates())
           if (_bb_.requisiteNodes(i).exists(agg->id())) pool.insert(_getAggTensor_(i, agg));
 
-        if (_elim_orders_.exists(&(i->type()))) {
+        auto* p_eo = _elim_orders_.tryGet(&(i->type()));
+        if (p_eo) {
           InstanceBayesNet< GUM_SCALAR >         bn(*i);
           std::vector< const DiscreteVariable* > elim_order;
 
-          for (auto node: _getElimOrder_(i->type())) {
+          for (auto node: *(*p_eo)) {
             const auto& var = bn.variable(node);
             elim_order.push_back(&var);
           }
@@ -220,11 +221,12 @@ namespace gum {
         for (const auto agg: i->type().aggregates())
           if (_bb_.requisiteNodes(i).exists(agg->id())) pool.insert(_getAggTensor_(i, agg));
 
-        if (_elim_orders_.exists(&(i->type()))) {
+        auto* p_eo = _elim_orders_.tryGet(&(i->type()));
+        if (p_eo) {
           InstanceBayesNet< GUM_SCALAR >         bn(*i);
           std::vector< const DiscreteVariable* > elim_order;
 
-          for (auto node: _getElimOrder_(i->type())) {
+          for (auto node: *(*p_eo)) {
             const auto& var = bn.variable(node);
             elim_order.push_back(&var);
           }
@@ -282,10 +284,12 @@ namespace gum {
                                                  BucketSet&                       trash) {
       BucketSet* lifted_pool = nullptr;
 
-      if (!_lifted_pools_.exists(&(_bb_.requisiteNodes(i)))) {
+      auto* p_lp = _lifted_pools_.tryGet(&(_bb_.requisiteNodes(i)));
+      if (!p_lp) {
         _initLiftedNodes_(i, trash);
+        p_lp = _lifted_pools_.tryGet(&(_bb_.requisiteNodes(i)));
       }
-      lifted_pool = _lifted_pools_[&(_bb_.requisiteNodes(i))];
+      lifted_pool = *p_lp;
 
       for (const auto lifted_pot: *lifted_pool) {
         Tensor< GUM_SCALAR >* pot = copyTensor(i->bijection(), *lifted_pot);
@@ -536,18 +540,22 @@ namespace gum {
 
     template < typename GUM_SCALAR >
     INLINE Set< NodeId >& SVED< GUM_SCALAR >::_getAttrSet_(const PRMInstance< GUM_SCALAR >* i) {
-      if (!_req_set_.exists(&(_bb_.requisiteNodes(i)))) {
+      auto* p = _req_set_.tryGet(&(_bb_.requisiteNodes(i)));
+      if (!p) {
         _initReqSets_(i);
+        p = _req_set_.tryGet(&(_bb_.requisiteNodes(i)));
       }
-      return *(_req_set_[&(_bb_.requisiteNodes(i))].first);
+      return *(p->first);
     }
 
     template < typename GUM_SCALAR >
     INLINE Set< NodeId >& SVED< GUM_SCALAR >::_getSCSet_(const PRMInstance< GUM_SCALAR >* i) {
-      if (!_req_set_.exists(&(_bb_.requisiteNodes(i)))) {
+      auto* p = _req_set_.tryGet(&(_bb_.requisiteNodes(i)));
+      if (!p) {
         _initReqSets_(i);
+        p = _req_set_.tryGet(&(_bb_.requisiteNodes(i)));
       }
-      return *(_req_set_[&(_bb_.requisiteNodes(i))].second);
+      return *(p->second);
     }
 
     template < typename GUM_SCALAR >

@@ -110,9 +110,13 @@ namespace gum {
     void StructuredBayesBall< GUM_SCALAR >::_fromChild_(const PRMInstance< GUM_SCALAR >* i,
                                                         NodeId                           n,
                                                         InstanceMap&                     marks) {
-      if (!marks.exists(i)) { marks.insert(i, new StructuredBayesBall< GUM_SCALAR >::MarkMap()); }
+      auto* p_marks = marks.tryGet(i);
+      if (!p_marks) {
+        marks.insert(i, new StructuredBayesBall< GUM_SCALAR >::MarkMap());
+        p_marks = marks.tryGet(i);
+      }
 
-      if (!marks[i]->exists(n)) { marks[i]->insert(n, std::pair< bool, bool >(false, false)); }
+      if (!(*p_marks)->exists(n)) { (*p_marks)->insert(n, std::pair< bool, bool >(false, false)); }
 
       // Sending message to parents
       switch (i->type().get(n).elt_type()) {
@@ -177,9 +181,13 @@ namespace gum {
     void StructuredBayesBall< GUM_SCALAR >::_fromParent_(const PRMInstance< GUM_SCALAR >* i,
                                                          NodeId                           n,
                                                          InstanceMap&                     marks) {
-      if (!marks.exists(i)) { marks.insert(i, new StructuredBayesBall< GUM_SCALAR >::MarkMap()); }
+      auto* p_marks = marks.tryGet(i);
+      if (!p_marks) {
+        marks.insert(i, new StructuredBayesBall< GUM_SCALAR >::MarkMap());
+        p_marks = marks.tryGet(i);
+      }
 
-      if (!marks[i]->exists(n)) { marks[i]->insert(n, std::pair< bool, bool >(false, false)); }
+      if (!(*p_marks)->exists(n)) { (*p_marks)->insert(n, std::pair< bool, bool >(false, false)); }
 
       // Concerns only PRMAttribute (because of the hard evidence)
       if ((_isHardEvidence_(i, n)) && (!_getMark_(marks, i, n).first)) {
@@ -231,10 +239,11 @@ namespace gum {
       for (const auto& elt: req_map) {
         std::string key = _buildHashKey_(elt.first, *elt.second);
 
-        if (_reqMap_.exists(key)) {
+        auto* p_req = _reqMap_.tryGet(key);
+        if (p_req) {
           _keyMap_.insert(elt.first,
-                          std::pair< std::string, Set< NodeId >* >(key, _reqMap_[key].first));
-          _reqMap_[key].second += 1;
+                          std::pair< std::string, Set< NodeId >* >(key, p_req->first));
+          p_req->second += 1;
           delete elt.second;
           req_map[elt.first] = 0;
         } else {

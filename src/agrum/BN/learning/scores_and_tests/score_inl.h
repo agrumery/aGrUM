@@ -119,7 +119,8 @@ namespace gum {
     INLINE double Score::score(const NodeId var) {
       IdCondSet idset(var, empty_ids_, true);
       if (use_cache_) {
-        if (cache_.exists(idset)) { return cache_.score(idset); }
+        auto* p = cache_.tryGet(idset);
+        if (p) { return *p; }
         double the_score = score_(idset);
         cache_.insert(std::move(idset), the_score);
         return the_score;
@@ -135,7 +136,8 @@ namespace gum {
     INLINE double Score::score(const NodeId var, const std::vector< NodeId >& rhs_ids) {
       IdCondSet idset(var, rhs_ids, false);
       if (use_cache_) {
-        if (cache_.exists(idset)) { return cache_.score(idset); }
+        auto* p = cache_.tryGet(idset);
+        if (p) { return *p; }
         double the_score = score_(idset);
         cache_.insert(std::move(idset), the_score);
         return the_score;

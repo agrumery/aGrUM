@@ -813,10 +813,11 @@ namespace gum {
     // we shall now add all the tensors of the soft evidence to the cliques
     const NodeProperty< const Tensor< GUM_SCALAR >* >& evidence = this->evidence();
     for (const auto node: this->softEvidenceNodes()) {
-      if (_node_to_clique_.exists(node)) {
+      auto* p = _node_to_clique_.tryGet(node);
+      if (p) {
         auto ev_pot = new ScheduleMultiDim< Tensor< GUM_SCALAR > >(*evidence[node], false);
         _node_to_soft_evidence_.insert(node, ev_pot);
-        _clique_tensors_[_node_to_clique_[node]].insert(ev_pot);
+        _clique_tensors_[*p].insert(ev_pot);
       }
     }
 
@@ -1166,8 +1167,9 @@ namespace gum {
     // projected CPT that should now be changed, do the same.
     NodeSet invalidated_cliques(_JT_->size());
     for (const auto& pair: _evidence_changes_) {
-      if (_node_to_clique_.exists(pair.first)) {
-        const auto clique = _node_to_clique_[pair.first];
+      auto* p = _node_to_clique_.tryGet(pair.first);
+      if (p) {
+        const auto clique = *p;
         invalidated_cliques.insert(clique);
         for (const auto neighbor: _JT_->neighbours(clique)) {
           _diffuseMessageInvalidations_(clique, neighbor, invalidated_cliques);

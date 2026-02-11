@@ -549,6 +549,20 @@ namespace gum {
   }
 
   template < typename Key, typename Val >
+  INLINE Val* HashTable< Key, Val >::tryGet(const Key& key) {
+    Bucket* bucket = _nodes_[_hash_func_(key)].bucket(key);
+    if (bucket == nullptr) return nullptr;
+    return &(bucket->val());
+  }
+
+  template < typename Key, typename Val >
+  INLINE const Val* HashTable< Key, Val >::tryGet(const Key& key) const {
+    const Bucket* bucket = _nodes_[_hash_func_(key)].bucket(key);
+    if (bucket == nullptr) return nullptr;
+    return &(bucket->pair.second);
+  }
+
+  template < typename Key, typename Val >
   INLINE void HashTable< Key, Val >::setResizePolicy(const bool new_policy) noexcept {
     _resize_policy_ = new_policy;
   }
@@ -921,7 +935,8 @@ namespace gum {
 
     // parse this and check that each element also belongs to from
     for (auto iter = begin(); iter != end(); ++iter) {
-      if (!from.exists(iter.key()) || iter.val() != from[iter.key()]) return false;
+      const auto* p = from.tryGet(iter.key());
+      if (p == nullptr || iter.val() != *p) return false;
     }
 
     return true;

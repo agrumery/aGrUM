@@ -314,12 +314,13 @@ namespace gum {
         for (const auto agg: i->type().aggregates())
           pool.insert(_getAggTensor_(i, agg));
 
-        if (_elim_orders_.exists(&(i->type()))) {
+        auto* p_eo = _elim_orders_.tryGet(&(i->type()));
+        if (p_eo) {
           InstanceBayesNet< GUM_SCALAR > bn(*i);
 
           std::vector< const DiscreteVariable* > elim;
 
-          for (const auto node: _getElimOrder_(i->type())) {
+          for (const auto node: *(*p_eo)) {
             const auto& var = bn.variable(node);
             if (delayedVars != nullptr) {
               if (!delayedVars->exists(node)) {
@@ -455,13 +456,14 @@ namespace gum {
         for (const auto agg: i->type().aggregates())
           pool.insert(_getAggTensor_(i, agg));
 
-        if (!_elim_orders_.exists(&(i->type())))
+        auto* p_eo2 = _elim_orders_.tryGet(&(i->type()));
+        if (!p_eo2)
           GUM_ERROR(FatalError, "there should be at least one node here.")
         {
           std::vector< const DiscreteVariable* > elim;
 
-          for (auto iter = _getElimOrder_(i->type()).begin();
-               iter != _getElimOrder_(i->type()).end();
+          for (auto iter = (*p_eo2)->begin();
+               iter != (*p_eo2)->end();
                ++iter) {
             const auto& var = bn.variable(*iter);
             if (delayedVars != nullptr) {
@@ -482,10 +484,12 @@ namespace gum {
                                                 BucketSet&                       trash) {
       SVE< GUM_SCALAR >::BucketSet* lifted_pool = 0;
 
-      if (!_lifted_pools_.exists(&(i->type()))) {
+      auto* p_lp = _lifted_pools_.tryGet(&(i->type()));
+      if (!p_lp) {
         _initLiftedNodes_(i->type());
+        p_lp = _lifted_pools_.tryGet(&(i->type()));
       }
-      lifted_pool = _lifted_pools_[&(i->type())];
+      lifted_pool = *p_lp;
 
       for (const auto lifted_pot: *lifted_pool) {
         Tensor< GUM_SCALAR >* pot = copyTensor(i->bijection(), *lifted_pot);
@@ -676,20 +680,23 @@ namespace gum {
     INLINE void SVE< GUM_SCALAR >::_addDelayedVariable_(const PRMInstance< GUM_SCALAR >* i,
                                                         const PRMInstance< GUM_SCALAR >* j,
                                                         NodeId                           id) {
-      if (!_delayedVariables_.exists(i)) {
+      auto* p_dv = _delayedVariables_.tryGet(i);
+      if (!p_dv) {
         _delayedVariables_.insert(i, new gum::VariableSet());
+        p_dv = _delayedVariables_.tryGet(i);
       }
       try {
-        _delayedVariables_[i]->insert(&(j->get(id).type().variable()));
+        (*p_dv)->insert(&(j->get(id).type().variable()));
       } catch (DuplicateElement const&) {
         // happends if j->get(id) is parent of more than one variable in i
       }
 
       static std::string dot = ".";
 
-      auto key = j->name() + dot + j->get(id).safeName();
-      if (_delayedVariablesCounters_.exists(key)) {
-        _delayedVariablesCounters_[key] += 1;
+      auto  key   = j->name() + dot + j->get(id).safeName();
+      auto* p_cnt = _delayedVariablesCounters_.tryGet(key);
+      if (p_cnt) {
+        *p_cnt += 1;
       } else {
         _delayedVariablesCounters_.insert(key, 1);
       }

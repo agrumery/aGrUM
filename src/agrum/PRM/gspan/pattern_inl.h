@@ -74,16 +74,18 @@ namespace gum {
 
       INLINE
       LabelData& Pattern::label(NodeId node) {
-        if (!_node_map_.exists(node))
+        auto* p = _node_map_.tryGet(node);
+        if (!p)
           GUM_ERROR(NotFound, "node not found in this Pattern")
-        return *(_node_map_[node]);
+        return *(*p);
       }
 
       INLINE
       const LabelData& Pattern::label(NodeId node) const {
-        if (!_node_map_.exists(node))
+        auto* p = _node_map_.tryGet(node);
+        if (!p)
           GUM_ERROR(NotFound, "node not found in this Pattern")
-        return *(_node_map_[node]);
+        return *(*p);
       }
 
       INLINE
@@ -102,30 +104,34 @@ namespace gum {
 
       INLINE
       LabelData& Pattern::label(NodeId i, NodeId j) {
-        if (!_arc_map_.exists(Arc(i, j)))
+        auto* p = _arc_map_.tryGet(Arc(i, j));
+        if (!p)
           GUM_ERROR(NotFound, "arc not found in this Pattern")
-        return *(_arc_map_[Arc(i, j)].first);
+        return *(p->first);
       }
 
       INLINE
       const LabelData& Pattern::label(NodeId i, NodeId j) const {
-        if (!_arc_map_.exists(Arc(i, j)))
+        auto* p = _arc_map_.tryGet(Arc(i, j));
+        if (!p)
           GUM_ERROR(NotFound, "arc not found in this Pattern")
-        return *(_arc_map_[Arc(i, j)].first);
+        return *(p->first);
       }
 
       INLINE
       LabelData& Pattern::label(const Arc& arc) {
-        if (!_arc_map_.exists(arc))
+        auto* p = _arc_map_.tryGet(arc);
+        if (!p)
           GUM_ERROR(NotFound, "arc not found in this Pattern")
-        return *(_arc_map_[arc].first);
+        return *(p->first);
       }
 
       INLINE
       const LabelData& Pattern::label(const Arc& arc) const {
-        if (!_arc_map_.exists(arc))
+        auto* p = _arc_map_.tryGet(arc);
+        if (!p)
           GUM_ERROR(NotFound, "arc not found in this Pattern")
-        return *(_arc_map_[arc].first);
+        return *(p->first);
       }
 
       INLINE
@@ -186,30 +192,34 @@ namespace gum {
 
       INLINE
       EdgeCode& Pattern::edgeCode(NodeId tail, NodeId head) {
-        if (!_arc_map_.exists(Arc(tail, head)))
+        auto* p = _arc_map_.tryGet(Arc(tail, head));
+        if (!p)
           GUM_ERROR(NotFound, "arc not found in Pattern")
-        return *(_arc_map_[Arc(tail, head)].second);
+        return *(p->second);
       }
 
       INLINE
       EdgeCode& Pattern::edgeCode(const Arc& arc) {
-        if (!_arc_map_.exists(arc))
+        auto* p = _arc_map_.tryGet(arc);
+        if (!p)
           GUM_ERROR(NotFound, "arc not found in Pattern")
-        return *(_arc_map_[arc].second);
+        return *(p->second);
       }
 
       INLINE
       const EdgeCode& Pattern::edgeCode(NodeId tail, NodeId head) const {
-        if (!_arc_map_.exists(Arc(tail, head)))
+        auto* p = _arc_map_.tryGet(Arc(tail, head));
+        if (!p)
           GUM_ERROR(NotFound, "arc not found in Pattern")
-        return *(_arc_map_[Arc(tail, head)].second);
+        return *(p->second);
       }
 
       INLINE
       const EdgeCode& Pattern::edgeCode(const Arc& arc) const {
-        if (!_arc_map_.exists(arc))
+        auto* p = _arc_map_.tryGet(arc);
+        if (!p)
           GUM_ERROR(NotFound, "arc not found in Pattern")
-        return *(_arc_map_[arc].second);
+        return *(p->second);
       }
 
       INLINE

@@ -129,8 +129,9 @@ namespace gum {
   // @throw NotFound Raised if no variable matches the name.
   template < typename GUM_SCALAR >
   INLINE NodeId BayesNetFactory< GUM_SCALAR >::variableId(const std::string& name) const {
-    if (!_varNameMap_.exists(name)) { GUM_ERROR(NotFound, name) }
-    return _varNameMap_[name];
+    auto* p = _varNameMap_.tryGet(name);
+    if (!p) { GUM_ERROR(NotFound, name) }
+    return *p;
   }
 
   // Returns a constant reference on a variable given it's name.
@@ -138,8 +139,9 @@ namespace gum {
   template < typename GUM_SCALAR >
   INLINE const DiscreteVariable&
       BayesNetFactory< GUM_SCALAR >::variable(const std::string& name) const {
-    if (!_varNameMap_.exists(name)) { GUM_ERROR(NotFound, name) }
-    return _bn_->variable(variableId(name));
+    auto* p = _varNameMap_.tryGet(name);
+    if (!p) { GUM_ERROR(NotFound, name) }
+    return _bn_->variable(*p);
   }
 
   // Returns the domainSize of the cpt for the node n.
@@ -899,8 +901,9 @@ namespace gum {
   template < typename GUM_SCALAR >
   INLINE Idx BayesNetFactory< GUM_SCALAR >::_checkVariableModality_(const std::string& name,
                                                                     const std::string& mod) {
-    _checkVariableName_(name);
-    const DiscreteVariable& var = _bn_->variable(_varNameMap_[name]);
+    auto* p = _varNameMap_.tryGet(name);
+    if (!p) { GUM_ERROR(NotFound, name) }
+    const DiscreteVariable& var = _bn_->variable(*p);
 
     for (Idx i = 0; i < var.domainSize(); ++i) {
       if (mod == var.label(i)) { return i; }

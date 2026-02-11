@@ -1064,6 +1064,20 @@ namespace gum {
     bool exists(const Key& key) const;
 
     /**
+     * @brief Returns a pointer to the value associated with a given key,
+     * or nullptr if the key does not exist.
+     *
+     * This avoids the double lookup of exists() + operator[].
+     *
+     * @param key The key to search for.
+     * @return A pointer to the mapped value, or nullptr if not found.
+     */
+    Val* tryGet(const Key& key);
+
+    /// @copydoc tryGet(const Key&)
+    const Val* tryGet(const Key& key) const;
+
+    /**
      * @brief Adds a new element (actually a copy of this element) into the
      * hash table.
      *

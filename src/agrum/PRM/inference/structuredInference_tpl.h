@@ -572,9 +572,10 @@ namespace gum {
       for (const auto p: pool) {
         for (const auto v: p->variablesSequence()) {
           if (data.vars.existsSecond(v)) {
-            auto varId = data.vars.first(v);
-            if (data.map.exists(varId)) {
-              target = data.map[varId];
+            auto  varId = data.vars.first(v);
+            auto* p_map = data.map.tryGet(varId);
+            if (p_map) {
+              target = *p_map;
               try {
                 bij.insert(v, &(match[target.first]->get(target.second).type().variable()));
               } catch (DuplicateElement const&) {}
@@ -611,8 +612,9 @@ namespace gum {
           if (inst->size()) {
             Set< Tensor< GUM_SCALAR >* > pool;
 
-            if (_cdata_map_.exists(&(inst->type()))) {
-              data = _cdata_map_[&(inst->type())];
+            auto* p_cdata = _cdata_map_.tryGet(&(inst->type()));
+            if (p_cdata) {
+              data = *p_cdata;
             } else {
               data = new StructuredInference< GUM_SCALAR >::CData(inst->type());
               _cdata_map_.insert(&(inst->type()), data);

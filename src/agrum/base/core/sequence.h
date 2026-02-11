@@ -349,6 +349,17 @@ namespace gum {
     bool exists(const Key& k) const;
 
     /**
+     * @brief Returns a pointer to the position of k in the sequence,
+     * or nullptr if k is not found.
+     *
+     * This avoids the double lookup of exists() + pos().
+     *
+     * @param k The key to search for.
+     * @return A pointer to the position (Idx), or nullptr if not found.
+     */
+    const Idx* tryPos(const Key& k) const;
+
+    /**
      * @brief Insert an element at the end of the sequence.
      *
      * The complexity is \f$o(1)\f$.
@@ -772,6 +783,17 @@ namespace gum {
      * @return Returns true if k is in the gum::SequenceImplementation.
      */
     bool exists(Key k) const;
+
+    /**
+     * @brief Returns a pointer to the position of k in the sequence,
+     * or nullptr if k is not found.
+     *
+     * This avoids the double lookup of exists() + pos().
+     *
+     * @param k The key to search for.
+     * @return A pointer to the position (Idx), or nullptr if not found.
+     */
+    const Idx* tryPos(Key k) const;
 
     /**
      * @brief Insert an element at the end of the sequence.

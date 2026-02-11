@@ -115,11 +115,13 @@ namespace gum {
     template < typename GUM_SCALAR >
     typename PRMInference< GUM_SCALAR >::EMap&
         PRMInference< GUM_SCALAR >::_EMap_(const PRMInstance< GUM_SCALAR >* i) {
-      if (_evidences_.exists(i)) {
-        return *(_evidences_[i]);
+      auto* p = _evidences_.tryGet(i);
+      if (p) {
+        return **p;
       } else {
-        _evidences_.insert(i, new PRMInference< GUM_SCALAR >::EMap());
-        return *(_evidences_[i]);
+        auto* emap = new PRMInference< GUM_SCALAR >::EMap();
+        _evidences_.insert(i, emap);
+        return *emap;
       }
     }
 

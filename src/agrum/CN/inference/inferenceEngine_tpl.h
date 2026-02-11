@@ -484,10 +484,11 @@ namespace gum {
       if (dynamicExpMin_.empty())
         GUM_ERROR(OperationNotAllowed, errTxt + "_dynamicExpectations() needs to be called before")
 
-      if (!dynamicExpMin_.exists(varName) /*dynamicExpMin_.find(varName) == dynamicExpMin_.end()*/)
+      auto* p = dynamicExpMin_.tryGet(varName);
+      if (!p /*dynamicExpMin_.find(varName) == dynamicExpMin_.end()*/)
         GUM_ERROR(NotFound, errTxt + "variable name not found : " << varName)
 
-      return dynamicExpMin_[varName];
+      return *p;
     }
 
     template < typename GUM_SCALAR >
@@ -500,10 +501,11 @@ namespace gum {
       if (dynamicExpMax_.empty())
         GUM_ERROR(OperationNotAllowed, errTxt + "_dynamicExpectations() needs to be called before")
 
-      if (!dynamicExpMax_.exists(varName) /*dynamicExpMin_.find(varName) == dynamicExpMin_.end()*/)
+      auto* p = dynamicExpMax_.tryGet(varName);
+      if (!p /*dynamicExpMin_.find(varName) == dynamicExpMin_.end()*/)
         GUM_ERROR(NotFound, errTxt + "variable name not found : " << varName)
 
-      return dynamicExpMax_[varName];
+      return *p;
     }
 
     template < typename GUM_SCALAR >
@@ -593,8 +595,10 @@ namespace gum {
                  << "|e) = [ ";
           output << marginalMin_[elt.first][mod] << ", " << marginalMax_[elt.first][mod] << " ]";
 
-          if (!query_.empty())
-            if (query_.exists(elt.first) && query_[elt.first][mod]) output << " QUERY";
+          if (!query_.empty()) {
+            auto* p_query = query_.tryGet(elt.first);
+            if (p_query && (*p_query)[mod]) output << " QUERY";
+          }
 
           output << std::endl;
         }
@@ -689,10 +693,11 @@ namespace gum {
         auto delim = var_name.find_first_of("_");
         var_name   = var_name.substr(0, delim);
 
-        if (!modal_.exists(var_name)) continue;
+        auto* p_modal = modal_.tryGet(var_name);
+        if (!p_modal) continue;
 
-        expectationMin_.insert(node, modal_[var_name].back());
-        expectationMax_.insert(node, modal_[var_name].front());
+        expectationMin_.insert(node, p_modal->back());
+        expectationMax_.insert(node, p_modal->front());
       }
     }
 
@@ -878,12 +883,13 @@ namespace gum {
 
       var_name = var_name.substr(0, delim);
 
-      if (modal_.exists(var_name) /*modal_.find(var_name) != modal_.end()*/) {
+      auto* p_modal = modal_.tryGet(var_name);
+      if (p_modal /*modal_.find(var_name) != modal_.end()*/) {
         GUM_SCALAR exp   = 0;
         auto       vsize = vertex.size();
 
         for (Size mod = 0; mod < vsize; mod++)
-          exp += vertex[mod] * modal_[var_name][mod];
+          exp += vertex[mod] * (*p_modal)[mod];
 
         if (exp > expectationMax_[id]) expectationMax_[id] = exp;
 

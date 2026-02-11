@@ -256,6 +256,20 @@ namespace gum {
     return _secondToFirst_.exists(second);
   }
 
+  // returns a pointer to the first value or nullptr if not found
+  template < typename T1, typename T2, bool Gen >
+  INLINE const T1* BijectionImplementation< T1, T2, Gen >::tryFirst(const T2& second) const {
+    auto* ptr = _secondToFirst_.tryGet(second);
+    return ptr ? *ptr : nullptr;
+  }
+
+  // returns a pointer to the second value or nullptr if not found
+  template < typename T1, typename T2, bool Gen >
+  INLINE const T2* BijectionImplementation< T1, T2, Gen >::trySecond(const T1& first) const {
+    auto* ptr = _firstToSecond_.tryGet(first);
+    return ptr ? *ptr : nullptr;
+  }
+
   // inserts a new association in the bijection
   template < typename T1, typename T2, bool Gen >
   INLINE typename BijectionImplementation< T1, T2, Gen >::HashTable12::value_type*
@@ -317,7 +331,8 @@ namespace gum {
   template < typename T1, typename T2, bool Gen >
   INLINE const T1& BijectionImplementation< T1, T2, Gen >::firstWithDefault(const T2& second,
                                                                             const T1& val) const {
-    if (existsSecond(second)) return first(second);
+    const auto* ptr = tryFirst(second);
+    if (ptr) return *ptr;
     return _insert_(val, second)->first;
   }
 
@@ -326,7 +341,8 @@ namespace gum {
   template < typename T1, typename T2, bool Gen >
   INLINE const T2& BijectionImplementation< T1, T2, Gen >::secondWithDefault(const T1& first,
                                                                              const T2& val) const {
-    if (existsFirst(first)) return second(first);
+    const auto* ptr = trySecond(first);
+    if (ptr) return *ptr;
     return *(_insert_(first, val)->second);
   }
 
@@ -367,8 +383,9 @@ namespace gum {
   // erases an association containing the given first element
   template < typename T1, typename T2, bool Gen >
   INLINE void BijectionImplementation< T1, T2, Gen >::eraseFirst(const T1& first) {
-    if (_firstToSecond_.exists(first)) {
-      _secondToFirst_.erase(*_firstToSecond_[first]);
+    auto* ptr = _firstToSecond_.tryGet(first);
+    if (ptr) {
+      _secondToFirst_.erase(**ptr);
       _firstToSecond_.erase(first);
     }
   }
@@ -376,8 +393,9 @@ namespace gum {
   // erase an association containing the given second element
   template < typename T1, typename T2, bool Gen >
   INLINE void BijectionImplementation< T1, T2, Gen >::eraseSecond(const T2& second) {
-    if (_secondToFirst_.exists(second)) {
-      _firstToSecond_.erase(*_secondToFirst_[second]);
+    auto* ptr = _secondToFirst_.tryGet(second);
+    if (ptr) {
+      _firstToSecond_.erase(**ptr);
       _secondToFirst_.erase(second);
     }
   }
@@ -627,6 +645,18 @@ namespace gum {
     return _secondToFirst_.exists(second);
   }
 
+  // returns a pointer to the first value or nullptr if not found
+  template < typename T1, typename T2 >
+  INLINE const T1* BijectionImplementation< T1, T2, true >::tryFirst(T2 second) const {
+    return _secondToFirst_.tryGet(second);
+  }
+
+  // returns a pointer to the second value or nullptr if not found
+  template < typename T1, typename T2 >
+  INLINE const T2* BijectionImplementation< T1, T2, true >::trySecond(T1 first) const {
+    return _firstToSecond_.tryGet(first);
+  }
+
   // inserts a new association in the bijection
   template < typename T1, typename T2 >
   INLINE void BijectionImplementation< T1, T2, true >::_insert_(T1 first, T2 second) {
@@ -667,7 +697,8 @@ namespace gum {
   template < typename T1, typename T2 >
   INLINE const T1& BijectionImplementation< T1, T2, true >::firstWithDefault(T2 second,
                                                                              T1 val) const {
-    if (existsSecond(second)) return first(second);
+    const auto* ptr = tryFirst(second);
+    if (ptr) return *ptr;
     _insert_(val, second);
     return val;
   }
@@ -677,7 +708,8 @@ namespace gum {
   template < typename T1, typename T2 >
   INLINE const T2& BijectionImplementation< T1, T2, true >::secondWithDefault(T1 first,
                                                                               T2 val) const {
-    if (existsFirst(first)) return second(first);
+    const auto* ptr = trySecond(first);
+    if (ptr) return *ptr;
     _insert_(first, val);
     return val;
   }
@@ -699,8 +731,9 @@ namespace gum {
   // erases an association containing the given first element
   template < typename T1, typename T2 >
   INLINE void BijectionImplementation< T1, T2, true >::eraseFirst(T1 first) {
-    if (_firstToSecond_.exists(first)) {
-      _secondToFirst_.erase(_firstToSecond_[first]);
+    auto* ptr = _firstToSecond_.tryGet(first);
+    if (ptr) {
+      _secondToFirst_.erase(*ptr);
       _firstToSecond_.erase(first);
     }
   }
@@ -708,8 +741,9 @@ namespace gum {
   // erase an association containing the given second element
   template < typename T1, typename T2 >
   INLINE void BijectionImplementation< T1, T2, true >::eraseSecond(T2 second) {
-    if (_secondToFirst_.exists(second)) {
-      _firstToSecond_.erase(_secondToFirst_[second]);
+    auto* ptr = _secondToFirst_.tryGet(second);
+    if (ptr) {
+      _firstToSecond_.erase(*ptr);
       _secondToFirst_.erase(second);
     }
   }

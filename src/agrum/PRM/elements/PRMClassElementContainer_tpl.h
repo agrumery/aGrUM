@@ -90,8 +90,9 @@ namespace gum {
     template < typename GUM_SCALAR >
     INLINE bool PRMClassElementContainer< GUM_SCALAR >::isInputNode(
         const PRMClassElement< GUM_SCALAR >& elt) const {
-      if (!_IOFlags_.exists(elt.safeName())) return false;
-      return getIOFlag_(elt).first;
+      const auto* p = _IOFlags_.tryGet(elt.safeName());
+      if (!p) return false;
+      return p->first;
     }
 
     template < typename GUM_SCALAR >
@@ -102,8 +103,9 @@ namespace gum {
         GUM_ERROR(NotFound, ": <" + elt.safeName() + "> is not in <" + name() + ">")
       } else if (PRMClassElement< GUM_SCALAR >::isAttribute(elt)
                  || PRMClassElement< GUM_SCALAR >::isAggregate(elt)) {
-        if (_IOFlags_.exists(elt.safeName())) {
-          getIOFlag_(elt).first = b;
+        auto* p = _IOFlags_.tryGet(elt.safeName());
+        if (p) {
+          p->first = b;
         } else { setIOFlag_(elt, std::make_pair(b, false)); }
       } else {
         GUM_ERROR(WrongClassElement, "given id is not an PRMAttribute or an PRMAggregate")
@@ -118,8 +120,9 @@ namespace gum {
         GUM_ERROR(NotFound, "<" + elt.safeName() + "> is not in <" + name() + ">")
       } else if (PRMClassElement< GUM_SCALAR >::isAttribute(elt)
                  || PRMClassElement< GUM_SCALAR >::isAggregate(elt)) {
-        if (_IOFlags_.exists(elt.safeName())) {
-          getIOFlag_(elt).second = b;
+        auto* p = _IOFlags_.tryGet(elt.safeName());
+        if (p) {
+          p->second = b;
         } else { setIOFlag_(elt, std::make_pair(false, b)); }
 
         if (b) { updateDescendants_(elt); }
@@ -133,8 +136,9 @@ namespace gum {
     template < typename GUM_SCALAR >
     INLINE bool PRMClassElementContainer< GUM_SCALAR >::isInnerNode(
         const PRMClassElement< GUM_SCALAR >& elt) const {
-      if (!_IOFlags_.exists(elt.safeName())) return true;
-      return !(getIOFlag_(elt).first || getIOFlag_(elt).second);
+      const auto* p = _IOFlags_.tryGet(elt.safeName());
+      if (!p) return true;
+      return !(p->first || p->second);
     }
 
     template < typename GUM_SCALAR >
@@ -146,25 +150,28 @@ namespace gum {
     template < typename GUM_SCALAR >
     INLINE std::pair< bool, bool >& PRMClassElementContainer< GUM_SCALAR >::getIOFlag_(
         const PRMClassElement< GUM_SCALAR >& elt) {
-      if (!_IOFlags_.exists(elt.safeName()))
+      auto* p = _IOFlags_.tryGet(elt.safeName());
+      if (!p)
         GUM_ERROR(NotFound, "this ClassElement<GUM_SCALAR> does not have any IO flags")
-      return _IOFlags_[elt.safeName()];
+      return *p;
     }
 
     template < typename GUM_SCALAR >
     INLINE const std::pair< bool, bool >& PRMClassElementContainer< GUM_SCALAR >::getIOFlag_(
         const PRMClassElement< GUM_SCALAR >& elt) const {
-      if (!_IOFlags_.exists(elt.safeName()))
+      const auto* p = _IOFlags_.tryGet(elt.safeName());
+      if (!p)
         GUM_ERROR(NotFound, "this ClassElement<GUM_SCALAR> does not have any IO flags")
-      return _IOFlags_[elt.safeName()];
+      return *p;
     }
 
     template < typename GUM_SCALAR >
     INLINE void
         PRMClassElementContainer< GUM_SCALAR >::setIOFlag_(const PRMClassElement< GUM_SCALAR >& elt,
                                                            const std::pair< bool, bool >& flags) {
-      if (_IOFlags_.exists(elt.safeName())) {
-        _IOFlags_[elt.safeName()] = flags;
+      auto* p = _IOFlags_.tryGet(elt.safeName());
+      if (p) {
+        *p = flags;
       } else { _IOFlags_.insert(elt.safeName(), flags); }
     }
 

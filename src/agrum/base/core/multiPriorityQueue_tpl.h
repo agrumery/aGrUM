@@ -273,7 +273,8 @@ namespace gum {
   // removes a given element from the priority queue (but does not return it)
   template < typename Val, typename Priority, typename Cmp >
   INLINE void MultiPriorityQueue< Val, Priority, Cmp >::erase(const Val& val) {
-    if (_indices_.exists(val)) eraseByPos(_indices_[val][0]);
+    auto* p = _indices_.tryGet(val);
+    if (p) eraseByPos((*p)[0]);
   }
 
   // removes the top of the priority queue (but does not return it)
@@ -306,13 +307,14 @@ namespace gum {
     // create the entry in the indices hashtable
     const Val*           new_val;
     std::vector< Size >* new_vect;
-    if (!_indices_.exists(val)) {
+    auto* existing = _indices_.tryGet(val);
+    if (!existing) {
       auto& new_elt = _indices_.insert(val, std::vector< Size >());
       new_val       = &(new_elt.first);
       new_vect      = &(new_elt.second);
     } else {
       new_val  = &(_indices_.key(val));
-      new_vect = &(_indices_[val]);
+      new_vect = existing;
     }
 
     try {
@@ -361,13 +363,14 @@ namespace gum {
     // create the entry in the indices hashtable
     const Val*           new_val;
     std::vector< Size >* new_vect;
-    if (!_indices_.exists(val)) {
+    auto* existing = _indices_.tryGet(val);
+    if (!existing) {
       auto& new_elt = _indices_.insert(std::move(val), std::vector< Size >());
       new_val       = &(new_elt.first);
       new_vect      = &(new_elt.second);
     } else {
       new_val  = &(_indices_.key(val));
-      new_vect = &(_indices_[val]);
+      new_vect = existing;
     }
 
     try {

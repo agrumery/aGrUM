@@ -59,11 +59,12 @@ namespace gum {
 
   INLINE
   const std::string& GraphicalModel::property(const std::string& name) const {
-    if (!_properties_().exists(name)) {
+    const auto* p = _properties_().tryGet(name);
+    if (!p) {
       std::string msg = "The following property does not exists: ";
       GUM_ERROR(NotFound, msg + name)
     }
-    return _properties_()[name];
+    return *p;
   }
 
   INLINE
@@ -74,7 +75,8 @@ namespace gum {
   INLINE
   const std::string& GraphicalModel::propertyWithDefault(const std::string& name,
                                                          const std::string& byDefault) const {
-    return (_propertiesMap_.exists(name)) ? _propertiesMap_[name] : byDefault;
+    const auto* p = _propertiesMap_.tryGet(name);
+    return p ? *p : byDefault;
   }
 
   INLINE
@@ -87,7 +89,8 @@ namespace gum {
 
   INLINE
   void GraphicalModel::setProperty(const std::string& name, const std::string& value) {
-    if (_propertiesMap_.exists(name)) _propertiesMap_[name] = value;
+    auto* p = _propertiesMap_.tryGet(name);
+    if (p) *p = value;
     else _propertiesMap_.insert(name, value);
   }
 

@@ -94,10 +94,12 @@ namespace gum {
       nodeIdMap_.insert(id, i);
       nameMap_.insert(i->name(), i);
 
-      if (!instanceMap_.exists(&(i->type()))) {
+      auto* p_inst = instanceMap_.tryGet(&(i->type()));
+      if (!p_inst) {
         instanceMap_.insert(&(i->type()), new Set< PRMInstance< GUM_SCALAR >* >());
+        p_inst = instanceMap_.tryGet(&(i->type()));
       }
-      instanceMap_[&(i->type())]->insert(i);
+      (*p_inst)->insert(i);
 
       return id;
     }
@@ -384,16 +386,18 @@ namespace gum {
 
     template < typename GUM_SCALAR >
     INLINE PRMInstance< GUM_SCALAR >& PRMSystem< GUM_SCALAR >::get(NodeId id) {
-      if (!nodeIdMap_.exists(id))
+      auto* p = nodeIdMap_.tryGet(id);
+      if (!p)
         GUM_ERROR(NotFound, "found no Instance<GUM_SCALAR> matching the given id")
-      return *(nodeIdMap_[id]);
+      return *(*p);
     }
 
     template < typename GUM_SCALAR >
     INLINE const PRMInstance< GUM_SCALAR >& PRMSystem< GUM_SCALAR >::get(NodeId id) const {
-      if (!nodeIdMap_.exists(id))
+      auto* p = nodeIdMap_.tryGet(id);
+      if (!p)
         GUM_ERROR(NotFound, "found no Instance<GUM_SCALAR> matching the given id")
-      return *(nodeIdMap_[id]);
+      return *(*p);
     }
 
     template < typename GUM_SCALAR >
@@ -439,61 +443,68 @@ namespace gum {
 
     template < typename GUM_SCALAR >
     INLINE PRMInstance< GUM_SCALAR >& PRMSystem< GUM_SCALAR >::get(const std::string& name) {
-      if (!nameMap_.exists(name))
+      auto* p = nameMap_.tryGet(name);
+      if (!p)
         GUM_ERROR(NotFound, "found no Instance<GUM_SCALAR> matching the given name")
-      return *(nameMap_[name]);
+      return *(*p);
     }
 
     template < typename GUM_SCALAR >
     INLINE const PRMInstance< GUM_SCALAR >&
                  PRMSystem< GUM_SCALAR >::get(const std::string& name) const {
-      if (!nameMap_.exists(name))
+      auto* p = nameMap_.tryGet(name);
+      if (!p)
         GUM_ERROR(NotFound, "found no Instance<GUM_SCALAR> matching the given name")
-      return *(nameMap_[name]);
+      return *(*p);
     }
 
     template < typename GUM_SCALAR >
     INLINE const Set< PRMInstance< GUM_SCALAR >* >&
 
         PRMSystem< GUM_SCALAR >::get(const PRMClass< GUM_SCALAR >& type) const {
-      if (!instanceMap_.exists(const_cast< PRMClass< GUM_SCALAR >* >(&type)))
+      auto* p = instanceMap_.tryGet(const_cast< PRMClass< GUM_SCALAR >* >(&type));
+      if (!p)
         GUM_ERROR(NotFound, "the given Class<GUM_SCALAR> has no instantiation in this System")
-      return *(instanceMap_[const_cast< PRMClass< GUM_SCALAR >* >(&type)]);
+      return *(*p);
     }
 
     template < typename GUM_SCALAR >
     INLINE const Sequence< PRMInstance< GUM_SCALAR >* >&
 
         PRMSystem< GUM_SCALAR >::getArray(const std::string& name) const {
-      if (!arrayMap_.exists(name))
+      auto* p = arrayMap_.tryGet(name);
+      if (!p)
         GUM_ERROR(NotFound, "found no array matching the given name")
-      return *(arrayMap_[name].second);
+      return *(p->second);
     }
 
     template < typename GUM_SCALAR >
     INLINE PRMClassElementContainer< GUM_SCALAR >&
            PRMSystem< GUM_SCALAR >::getArrayType(const std::string& name) {
-      if (!arrayMap_.exists(name))
+      auto* p = arrayMap_.tryGet(name);
+      if (!p)
         GUM_ERROR(NotFound, "found no array matching the given name")
-      return *(arrayMap_[name].first);
+      return *(p->first);
     }
 
     template < typename GUM_SCALAR >
     INLINE const PRMClassElementContainer< GUM_SCALAR >&
                  PRMSystem< GUM_SCALAR >::getArrayType(const std::string& name) const {
-      if (!arrayMap_.exists(name))
+      auto* p = arrayMap_.tryGet(name);
+      if (!p)
         GUM_ERROR(NotFound, "found no array matching the given name")
-      return *(arrayMap_[name].first);
+      return *(p->first);
     }
 
     template < typename GUM_SCALAR >
     INLINE NodeId PRMSystem< GUM_SCALAR >::add(const std::string&         array,
                                                PRMInstance< GUM_SCALAR >* i) {
-      if (!arrayMap_.exists(array))
+      auto* p_arr = arrayMap_.tryGet(array);
+      if (!p_arr)
         GUM_ERROR(NotFound, "found no array matching the given name")
-      if (i->type().isSubTypeOf(*(arrayMap_[array].first))) {
+      if (i->type().isSubTypeOf(*(p_arr->first))) {
         NodeId id = add(i);
-        arrayMap_[array].second->insert(i);
+        p_arr->second->insert(i);
         return id;
       } else {
         GUM_ERROR(PRMTypeError,
@@ -538,33 +549,37 @@ namespace gum {
     template < typename GUM_SCALAR >
     INLINE typename PRMSystem< GUM_SCALAR >::array_iterator
         PRMSystem< GUM_SCALAR >::begin(const std::string& a) {
-      if (!arrayMap_.exists(a))
+      auto* p = arrayMap_.tryGet(a);
+      if (!p)
         GUM_ERROR(NotFound, "found no array matching the given name")
-      return arrayMap_[a].second->begin();
+      return p->second->begin();
     }
 
     template < typename GUM_SCALAR >
     INLINE const typename PRMSystem< GUM_SCALAR >::array_iterator&
         PRMSystem< GUM_SCALAR >::end(const std::string& a) {
-      if (!arrayMap_.exists(a))
+      auto* p = arrayMap_.tryGet(a);
+      if (!p)
         GUM_ERROR(NotFound, "found no array matching the given name")
-      return arrayMap_[a].second->end();
+      return p->second->end();
     }
 
     template < typename GUM_SCALAR >
     INLINE typename PRMSystem< GUM_SCALAR >::const_array_iterator
         PRMSystem< GUM_SCALAR >::begin(const std::string& a) const {
-      if (!arrayMap_.exists(a))
+      auto* p = arrayMap_.tryGet(a);
+      if (!p)
         GUM_ERROR(NotFound, "found no array matching the given name")
-      return arrayMap_[a].second->begin();
+      return p->second->begin();
     }
 
     template < typename GUM_SCALAR >
     INLINE const typename PRMSystem< GUM_SCALAR >::const_array_iterator&
         PRMSystem< GUM_SCALAR >::end(const std::string& a) const {
-      if (!arrayMap_.exists(a))
+      auto* p = arrayMap_.tryGet(a);
+      if (!p)
         GUM_ERROR(NotFound, "found no array matching the given name")
-      return arrayMap_[a].second->end();
+      return p->second->end();
     }
 
     template < typename GUM_SCALAR >

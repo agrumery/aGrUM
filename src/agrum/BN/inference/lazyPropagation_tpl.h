@@ -813,10 +813,11 @@ namespace gum {
     // we shall now add all the tensors of the soft evidence
     const NodeProperty< const Tensor< GUM_SCALAR >* >& evidence = this->evidence();
     for (const auto node: this->softEvidenceNodes()) {
-      if (_node_to_clique_.exists(node)) {
+      auto* p = _node_to_clique_.tryGet(node);
+      if (p) {
         auto ev_pot = new ScheduleMultiDim< Tensor< GUM_SCALAR > >(*evidence[node], false);
         _node_to_soft_evidence_.insert(node, ev_pot);
-        _clique_tensors_[_node_to_clique_[node]].insert(ev_pot);
+        _clique_tensors_[*p].insert(ev_pot);
       }
     }
 
@@ -1088,8 +1089,9 @@ namespace gum {
     // projected CPT that should now be changed, do the same.
     NodeSet invalidated_cliques(_JT_->size());
     for (const auto& pair: _evidence_changes_) {
-      if (_node_to_clique_.exists(pair.first)) {
-        const auto clique = _node_to_clique_[pair.first];
+      auto* p = _node_to_clique_.tryGet(pair.first);
+      if (p) {
+        const auto clique = *p;
         invalidated_cliques.insert(clique);
         for (const auto neighbor: _JT_->neighbours(clique)) {
           _diffuseMessageInvalidations_(clique, neighbor, invalidated_cliques);
@@ -1280,13 +1282,15 @@ namespace gum {
     // might not exist, hence the if checks
     NodeSet clique_targets;
     for (const auto node: this->targets()) {
-      if (_node_to_clique_.exists(node)) {
-        clique_targets.insert(_node_to_clique_[node]);
+      auto* p = _node_to_clique_.tryGet(node);
+      if (p) {
+        clique_targets.insert(*p);
       }
     }
     for (const auto& set: this->jointTargets()) {
-      if (_joint_target_to_clique_.exists(set)) {
-        clique_targets.insert(_joint_target_to_clique_[set]);
+      auto* p = _joint_target_to_clique_.tryGet(set);
+      if (p) {
+        clique_targets.insert(*p);
       }
     }
 
@@ -2061,7 +2065,8 @@ namespace gum {
   template < typename GUM_SCALAR >
   const Tensor< GUM_SCALAR >& LazyPropagation< GUM_SCALAR >::posterior_(NodeId id) {
     // check if we have already computed the posterior
-    if (_target_posteriors_.exists(id)) { return *(_target_posteriors_[id]); }
+    auto* p = _target_posteriors_.tryGet(id);
+    if (p) { return *(*p); }
 
     // compute the joint posterior and normalize
     auto joint = unnormalizedJointPosterior_(id);
@@ -2131,8 +2136,9 @@ namespace gum {
     // determine the clique on which we should perform collect to compute
     // the unnormalized joint posterior of a set of nodes containing "targets"
     NodeId clique_of_set;
-    if (_joint_target_to_clique_.exists(set)) {
-      clique_of_set = _joint_target_to_clique_[set];
+    auto*  p_clique = _joint_target_to_clique_.tryGet(set);
+    if (p_clique) {
+      clique_of_set = *p_clique;
     } else {
       // here, the precise set of targets does not belong to the set of targets
       // defined by the user. So we will try to find a clique in the junction
@@ -2304,8 +2310,9 @@ namespace gum {
     // determine the clique on which we should perform collect to compute
     // the unnormalized joint posterior of a set of nodes containing "targets"
     NodeId clique_of_set;
-    if (_joint_target_to_clique_.exists(set)) {
-      clique_of_set = _joint_target_to_clique_[set];
+    auto*  p_clique = _joint_target_to_clique_.tryGet(set);
+    if (p_clique) {
+      clique_of_set = *p_clique;
     } else {
       // here, the precise set of targets does not belong to the set of targets
       // defined by the user. So we will try to find a clique in the junction
@@ -2449,7 +2456,8 @@ namespace gum {
   template < typename GUM_SCALAR >
   const Tensor< GUM_SCALAR >& LazyPropagation< GUM_SCALAR >::jointPosterior_(const NodeSet& set) {
     // check if we have already computed the posterior
-    if (_joint_target_posteriors_.exists(set)) { return *(_joint_target_posteriors_[set]); }
+    auto* p = _joint_target_posteriors_.tryGet(set);
+    if (p) { return *(*p); }
 
     // compute the joint posterior and normalize
     auto joint = unnormalizedJointPosterior_(set);
@@ -2465,8 +2473,8 @@ namespace gum {
       LazyPropagation< GUM_SCALAR >::jointPosterior_(const NodeSet& wanted_target,
                                                      const NodeSet& declared_target) {
     // check if we have already computed the posterior of wanted_target
-    if (_joint_target_posteriors_.exists(wanted_target))
-      return *(_joint_target_posteriors_[wanted_target]);
+    auto* p = _joint_target_posteriors_.tryGet(wanted_target);
+    if (p) return *(*p);
 
     // here, we will have to compute the posterior of declared_target and
     // marginalize out all the variables that do not belong to wanted_target

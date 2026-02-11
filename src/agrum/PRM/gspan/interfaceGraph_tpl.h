@@ -225,7 +225,8 @@ namespace gum {
         }
 
         // Label is ready
-        if (!label_map.exists(sBuff.str())) {
+        auto* p_lm = label_map.tryGet(sBuff.str());
+        if (!p_lm) {
           LabelData* label = new LabelData();
           label_map.insert(sBuff.str(), label);
           label->id         = ++_counter_;
@@ -233,9 +234,10 @@ namespace gum {
           label->l          = sBuff.str();
           _labels_->insert(label->id, label);
           _nodeMap_.insert(label, new Set< NodeData< GUM_SCALAR >* >());
+          p_lm = label_map.tryGet(sBuff.str());
         }
 
-        node->l = label_map[sBuff.str()];
+        node->l = *p_lm;
         _nodeMap_[node->l]->insert(node);
       }
 
@@ -262,7 +264,8 @@ namespace gum {
           }
 
         // Label is ready
-        if (!label_map.exists(sBuff.str())) {
+        auto* p_elm = label_map.tryGet(sBuff.str());
+        if (!p_elm) {
           LabelData* label = new LabelData();
           label_map.insert(sBuff.str(), label);
           label->id         = ++_counter_;
@@ -270,9 +273,10 @@ namespace gum {
           label->tree_width = size;
           _labels_->insert(label->id, label);
           _edgeMap_.insert(label, new Set< EdgeData< GUM_SCALAR >* >());
+          p_elm = label_map.tryGet(sBuff.str());
         }
 
-        edge->l = label_map[sBuff.str()];
+        edge->l = *p_elm;
         _edgeMap_[edge->l]->insert(edge);
       }
 
@@ -298,8 +302,9 @@ namespace gum {
 
       template < typename GUM_SCALAR >
       INLINE Size InterfaceGraph< GUM_SCALAR >::size(const LabelData* l) const {
-        if (_nodeMap_.exists(const_cast< LabelData* >(l)))
-          return _nodeMap_[const_cast< LabelData* >(l)]->size();
+        auto* p = _nodeMap_.tryGet(const_cast< LabelData* >(l));
+        if (p)
+          return (*p)->size();
         return _edgeMap_[const_cast< LabelData* >(l)]->size();
       }
 
@@ -366,16 +371,18 @@ namespace gum {
 
       template < typename GUM_SCALAR >
       INLINE EdgeData< GUM_SCALAR >& InterfaceGraph< GUM_SCALAR >::edge(NodeId u, NodeId v) {
-        if (_edges_.exists(Edge(u, v)))
-          return *(_edges_[Edge(u, v)]);
+        auto* p = _edges_.tryGet(Edge(u, v));
+        if (p)
+          return *(*p);
         return *(_edges_[Edge(v, u)]);
       }
 
       template < typename GUM_SCALAR >
       INLINE const EdgeData< GUM_SCALAR >& InterfaceGraph< GUM_SCALAR >::edge(NodeId u,
                                                                               NodeId v) const {
-        if (_edges_.exists(Edge(u, v)))
-          return *(_edges_[Edge(u, v)]);
+        auto* p = _edges_.tryGet(Edge(u, v));
+        if (p)
+          return *(*p);
         return *(_edges_[Edge(v, u)]);
       }
 

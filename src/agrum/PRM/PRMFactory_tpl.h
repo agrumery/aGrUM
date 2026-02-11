@@ -1041,8 +1041,9 @@ namespace gum {
 
           while (current != 0) {
             // Filling counters
-            if (counters.exists(current->name())) {
-              ++(counters[current->name()]);
+            auto* p = counters.tryGet(current->name());
+            if (p) {
+              ++(*p);
             } else {
               counters.insert(current->name(), 1);
             }
@@ -1152,16 +1153,16 @@ namespace gum {
       std::string full_name;
 
       // Looking for the type using its name
-      if (_prm_->_typeMap_.exists(name)) {
-        type      = _prm_->_typeMap_[name];
+      if (auto* p = _prm_->_typeMap_.tryGet(name)) {
+        type      = *p;
         full_name = name;
       }
 
       // Looking for the type in current package
       std::string prefixed = _addPrefix_(name);
-      if (_prm_->_typeMap_.exists(prefixed)) {
+      if (auto* p = _prm_->_typeMap_.tryGet(prefixed)) {
         if (type == 0) {
-          type      = _prm_->_typeMap_[prefixed];
+          type      = *p;
           full_name = prefixed;
         } else if (full_name != prefixed) {
           GUM_ERROR(DuplicateElement, "Type name '" << name << "' is ambiguous: specify full name.")
@@ -1173,9 +1174,9 @@ namespace gum {
       size_t      last_dot   = relatif_ns.find_last_of('.');
       if (last_dot != std::string::npos) {
         relatif_ns = relatif_ns.substr(0, last_dot) + '.' + name;
-        if (_prm_->_typeMap_.exists(relatif_ns)) {
+        if (auto* p = _prm_->_typeMap_.tryGet(relatif_ns)) {
           if (type == 0) {
-            type      = _prm_->_typeMap_[relatif_ns];
+            type      = *p;
             full_name = relatif_ns;
           } else if (full_name != relatif_ns) {
             GUM_ERROR(DuplicateElement,
@@ -1191,9 +1192,9 @@ namespace gum {
         for (gum::Size i = 0; i < ns_list->size(); ++i) {
           std::string ns      = (*ns_list)[i];
           std::string ns_name = ns + "." + name;
-          if (_prm_->_typeMap_.exists(ns_name)) {
+          if (auto* p = _prm_->_typeMap_.tryGet(ns_name)) {
             if (type == 0) {
-              type      = _prm_->_typeMap_[ns_name];
+              type      = *p;
               full_name = ns_name;
             } else if (full_name != ns_name) {
               GUM_ERROR(DuplicateElement,
@@ -1215,16 +1216,16 @@ namespace gum {
       std::string             full_name;
 
       // Looking for the type using its name
-      if (_prm_->_classMap_.exists(name)) {
-        a_class   = _prm_->_classMap_[name];
+      if (auto* p = _prm_->_classMap_.tryGet(name)) {
+        a_class   = *p;
         full_name = name;
       }
 
       // Looking for the type using current package
       std::string prefixed = _addPrefix_(name);
-      if (_prm_->_classMap_.exists(prefixed)) {
+      if (auto* p = _prm_->_classMap_.tryGet(prefixed)) {
         if (a_class == nullptr) {
-          a_class   = _prm_->_classMap_[prefixed];
+          a_class   = *p;
           full_name = prefixed;
         } else if (full_name != prefixed) {
           GUM_ERROR(DuplicateElement,
@@ -1238,9 +1239,9 @@ namespace gum {
         for (gum::Size i = 0; i < ns_list->size(); ++i) {
           std::string ns      = (*ns_list)[i];
           std::string ns_name = ns + "." + name;
-          if (_prm_->_classMap_.exists(ns_name)) {
+          if (auto* p = _prm_->_classMap_.tryGet(ns_name)) {
             if (a_class == 0) {
-              a_class   = _prm_->_classMap_[ns_name];
+              a_class   = *p;
               full_name = ns_name;
             } else if (full_name != ns_name) {
               GUM_ERROR(DuplicateElement,
@@ -1262,16 +1263,16 @@ namespace gum {
       std::string                 full_name;
 
       // Looking for the type using its name
-      if (_prm_->_interfaceMap_.exists(name)) {
-        interface = _prm_->_interfaceMap_[name];
+      if (auto* p = _prm_->_interfaceMap_.tryGet(name)) {
+        interface = *p;
         full_name = name;
       }
 
       // Looking for the type using current package
       std::string prefixed = _addPrefix_(name);
-      if (_prm_->_interfaceMap_.exists(prefixed)) {
+      if (auto* p = _prm_->_interfaceMap_.tryGet(prefixed)) {
         if (interface == nullptr) {
-          interface = _prm_->_interfaceMap_[prefixed];
+          interface = *p;
           full_name = prefixed;
         } else if (full_name != prefixed) {
           GUM_ERROR(DuplicateElement,
@@ -1287,9 +1288,9 @@ namespace gum {
           std::string ns      = (*ns_list)[i];
           std::string ns_name = ns + "." + name;
 
-          if (_prm_->_interfaceMap_.exists(ns_name)) {
+          if (auto* p = _prm_->_interfaceMap_.tryGet(ns_name)) {
             if (interface == nullptr) {
-              interface = _prm_->_interfaceMap_[ns_name];
+              interface = *p;
               full_name = ns_name;
             } else if (full_name != ns_name) {
               GUM_ERROR(DuplicateElement,

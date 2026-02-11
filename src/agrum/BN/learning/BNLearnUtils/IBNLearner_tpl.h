@@ -69,10 +69,11 @@ namespace gum::learning {
     std::size_t i = std::size_t(0);
     for (auto node: nodes) {
       const Variable& var = bn.variable(node);
-      if (!var_names.exists(var.name())) {
+      auto* p = var_names.tryGet(var.name());
+      if (!p) {
         GUM_ERROR(MissingVariableInDatabase, "Variable '" << var.name() << "' is missing")
       }
-      _database_.insertTranslator(var, var_names[var.name()], missing_symbols);
+      _database_.insertTranslator(var, *p, missing_symbols);
       _nodeId2cols_.insert(NodeId(node), i++);
     }
 
