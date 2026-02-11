@@ -225,8 +225,8 @@ namespace gum {
         }
 
         // Label is ready
-        auto* p_lm = label_map.tryGet(sBuff.str());
-        if (!p_lm) {
+        const auto* p_lm = label_map.tryGet(sBuff.str());
+        if (p_lm == nullptr) {
           LabelData* label = new LabelData();
           label_map.insert(sBuff.str(), label);
           label->id         = ++_counter_;
@@ -264,8 +264,8 @@ namespace gum {
           }
 
         // Label is ready
-        auto* p_elm = label_map.tryGet(sBuff.str());
-        if (!p_elm) {
+        const auto* p_elm = label_map.tryGet(sBuff.str());
+        if (p_elm == nullptr) {
           LabelData* label = new LabelData();
           label_map.insert(sBuff.str(), label);
           label->id         = ++_counter_;
@@ -302,8 +302,7 @@ namespace gum {
 
       template < typename GUM_SCALAR >
       INLINE Size InterfaceGraph< GUM_SCALAR >::size(const LabelData* l) const {
-        auto* p = _nodeMap_.tryGet(const_cast< LabelData* >(l));
-        if (p)
+        if (const auto* p = _nodeMap_.tryGet(const_cast< LabelData* >(l)); p != nullptr)
           return (*p)->size();
         return _edgeMap_[const_cast< LabelData* >(l)]->size();
       }
@@ -371,8 +370,7 @@ namespace gum {
 
       template < typename GUM_SCALAR >
       INLINE EdgeData< GUM_SCALAR >& InterfaceGraph< GUM_SCALAR >::edge(NodeId u, NodeId v) {
-        auto* p = _edges_.tryGet(Edge(u, v));
-        if (p)
+        if (const auto* p = _edges_.tryGet(Edge(u, v)); p != nullptr)
           return *(*p);
         return *(_edges_[Edge(v, u)]);
       }
@@ -380,8 +378,7 @@ namespace gum {
       template < typename GUM_SCALAR >
       INLINE const EdgeData< GUM_SCALAR >& InterfaceGraph< GUM_SCALAR >::edge(NodeId u,
                                                                               NodeId v) const {
-        auto* p = _edges_.tryGet(Edge(u, v));
-        if (p)
+        if (const auto* p = _edges_.tryGet(Edge(u, v)); p != nullptr)
           return *(*p);
         return *(_edges_[Edge(v, u)]);
       }

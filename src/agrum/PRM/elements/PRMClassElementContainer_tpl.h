@@ -91,7 +91,7 @@ namespace gum {
     INLINE bool PRMClassElementContainer< GUM_SCALAR >::isInputNode(
         const PRMClassElement< GUM_SCALAR >& elt) const {
       const auto* p = _IOFlags_.tryGet(elt.safeName());
-      if (!p) return false;
+      if (p == nullptr) return false;
       return p->first;
     }
 
@@ -103,8 +103,7 @@ namespace gum {
         GUM_ERROR(NotFound, ": <" + elt.safeName() + "> is not in <" + name() + ">")
       } else if (PRMClassElement< GUM_SCALAR >::isAttribute(elt)
                  || PRMClassElement< GUM_SCALAR >::isAggregate(elt)) {
-        auto* p = _IOFlags_.tryGet(elt.safeName());
-        if (p) {
+        if (auto* p = _IOFlags_.tryGet(elt.safeName()); p != nullptr) {
           p->first = b;
         } else { setIOFlag_(elt, std::make_pair(b, false)); }
       } else {
@@ -120,8 +119,7 @@ namespace gum {
         GUM_ERROR(NotFound, "<" + elt.safeName() + "> is not in <" + name() + ">")
       } else if (PRMClassElement< GUM_SCALAR >::isAttribute(elt)
                  || PRMClassElement< GUM_SCALAR >::isAggregate(elt)) {
-        auto* p = _IOFlags_.tryGet(elt.safeName());
-        if (p) {
+        if (auto* p = _IOFlags_.tryGet(elt.safeName()); p != nullptr) {
           p->second = b;
         } else { setIOFlag_(elt, std::make_pair(false, b)); }
 
@@ -137,7 +135,7 @@ namespace gum {
     INLINE bool PRMClassElementContainer< GUM_SCALAR >::isInnerNode(
         const PRMClassElement< GUM_SCALAR >& elt) const {
       const auto* p = _IOFlags_.tryGet(elt.safeName());
-      if (!p) return true;
+      if (p == nullptr) return true;
       return !(p->first || p->second);
     }
 
@@ -151,7 +149,7 @@ namespace gum {
     INLINE std::pair< bool, bool >& PRMClassElementContainer< GUM_SCALAR >::getIOFlag_(
         const PRMClassElement< GUM_SCALAR >& elt) {
       auto* p = _IOFlags_.tryGet(elt.safeName());
-      if (!p)
+      if (p == nullptr)
         GUM_ERROR(NotFound, "this ClassElement<GUM_SCALAR> does not have any IO flags")
       return *p;
     }
@@ -160,7 +158,7 @@ namespace gum {
     INLINE const std::pair< bool, bool >& PRMClassElementContainer< GUM_SCALAR >::getIOFlag_(
         const PRMClassElement< GUM_SCALAR >& elt) const {
       const auto* p = _IOFlags_.tryGet(elt.safeName());
-      if (!p)
+      if (p == nullptr)
         GUM_ERROR(NotFound, "this ClassElement<GUM_SCALAR> does not have any IO flags")
       return *p;
     }
@@ -169,8 +167,7 @@ namespace gum {
     INLINE void
         PRMClassElementContainer< GUM_SCALAR >::setIOFlag_(const PRMClassElement< GUM_SCALAR >& elt,
                                                            const std::pair< bool, bool >& flags) {
-      auto* p = _IOFlags_.tryGet(elt.safeName());
-      if (p) {
+      if (auto* p = _IOFlags_.tryGet(elt.safeName()); p != nullptr) {
         *p = flags;
       } else { _IOFlags_.insert(elt.safeName(), flags); }
     }

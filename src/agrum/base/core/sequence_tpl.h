@@ -419,8 +419,8 @@ namespace gum {
   template < typename Key, bool Gen >
   INLINE void SequenceImplementation< Key, Gen >::erase(const Key& k) {
     // get the position of the element to remove
-    auto* p = _h_.tryGet(k);
-    if (!p) return;
+    const auto* p = _h_.tryGet(k);
+    if (p == nullptr) return;
     Idx pos = *p;
 
     // erase the element
@@ -784,8 +784,8 @@ namespace gum {
   template < typename Key >
   INLINE void SequenceImplementation< Key, true >::erase(Key k) {
     // get the position of the element to remove
-    auto* p = _h_.tryGet(k);
-    if (!p) return;
+    const auto* p = _h_.tryGet(k);
+    if (p == nullptr) return;
     Idx pos = *p;
 
     // erase the element

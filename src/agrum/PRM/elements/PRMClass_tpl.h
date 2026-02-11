@@ -481,10 +481,10 @@ namespace gum {
     template < typename GUM_SCALAR >
     void PRMClass< GUM_SCALAR >::addArc(const std::string& tail_name,
                                         const std::string& head_name) {
-      auto* p_tail = _nameMap_.tryGet(tail_name);
-      auto* p_head = _nameMap_.tryGet(head_name);
+      const auto* p_tail = _nameMap_.tryGet(tail_name);
+      const auto* p_head = _nameMap_.tryGet(head_name);
 
-      if (!p_tail || !p_head) {
+      if (p_tail == nullptr || p_head == nullptr) {
         GUM_ERROR(NotFound, "tail and/or head of arc does not exists in this Class")
       }
       PRMClassElement< GUM_SCALAR >* tail = *p_tail;
@@ -987,8 +987,8 @@ namespace gum {
 
     template < typename GUM_SCALAR >
     INLINE PRMClassElement< GUM_SCALAR >& PRMClass< GUM_SCALAR >::get(NodeId id) {
-      auto* p = _nodeIdMap_.tryGet(id);
-      if (!p) {
+      const auto* p = _nodeIdMap_.tryGet(id);
+      if (p == nullptr) {
         GUM_ERROR(NotFound, "no ClassElement<GUM_SCALAR> with the given NodeId")
       }
       return **p;
@@ -997,7 +997,7 @@ namespace gum {
     template < typename GUM_SCALAR >
     INLINE const PRMClassElement< GUM_SCALAR >& PRMClass< GUM_SCALAR >::get(NodeId id) const {
       const auto* p = _nodeIdMap_.tryGet(id);
-      if (!p) {
+      if (p == nullptr) {
         GUM_ERROR(NotFound, "no ClassElement<GUM_SCALAR> with the given NodeId (" << id << ")");
       }
       return **p;
@@ -1005,8 +1005,8 @@ namespace gum {
 
     template < typename GUM_SCALAR >
     INLINE PRMClassElement< GUM_SCALAR >& PRMClass< GUM_SCALAR >::get(const std::string& name) {
-      auto* p = _nameMap_.tryGet(name);
-      if (!p) {
+      const auto* p = _nameMap_.tryGet(name);
+      if (p == nullptr) {
         GUM_ERROR(NotFound, "no ClassElement<GUM_SCALAR> with the given name (" << name << ")");
       }
       return **p;
@@ -1016,7 +1016,7 @@ namespace gum {
     INLINE const PRMClassElement< GUM_SCALAR >&
                  PRMClass< GUM_SCALAR >::get(const std::string& name) const {
       const auto* p = _nameMap_.tryGet(name);
-      if (!p) {
+      if (p == nullptr) {
         GUM_ERROR(NotFound, "no ClassElement<GUM_SCALAR> with the given name (" << name << ")");
       }
       return **p;

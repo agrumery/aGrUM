@@ -77,7 +77,7 @@ namespace gum {
     // check that the variable does belong to the instantiation and that the
     // new value is possible.
     const auto* pPos = _vars_.tryPos(&v);
-    if (!pPos) {
+    if (pPos == nullptr) {
       std::string name = "instantiation does not contain this DiscreteVariable: ";
       GUM_ERROR(NotFound, name + v.name())
     }
@@ -442,8 +442,7 @@ namespace gum {
     Idx s      = i.nbrDim();
 
     for (Size p = 0; p < s; ++p) {
-      const auto* pPos = _vars_.tryPos(&i.variable(p));
-      if (pPos) _chgVal_(*pPos, i.val(p));
+      if (const auto* pPos = _vars_.tryPos(&i.variable(p)); pPos != nullptr) _chgVal_(*pPos, i.val(p));
     }
 
     return *this;

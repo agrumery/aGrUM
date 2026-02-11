@@ -73,7 +73,7 @@ namespace gum {
 
   INLINE SetInst& SetInst::chgVal(const DiscreteVariable& v, Idx newVal) {
     const auto* pPos = _vars_.tryPos(&v);
-    if (!pPos) {
+    if (pPos == nullptr) {
       GUM_ERROR(NotFound, "SetInst does not contain this DiscreteVariable: " + v.name())
     }
     Idx varPos = *pPos;
@@ -90,7 +90,7 @@ namespace gum {
 
   INLINE SetInst& SetInst::chgVal(const DiscreteVariable* v, Idx newVal) {
     const auto* pPos = _vars_.tryPos(v);
-    if (!pPos) {
+    if (pPos == nullptr) {
       GUM_ERROR(NotFound, "SetInst does not contain this DiscreteVariable: " + v->name())
     }
     Idx varPos = *pPos;
@@ -138,7 +138,7 @@ namespace gum {
 
   INLINE SetInst& SetInst::chgVals(const DiscreteVariable& v, const Size newVals) {
     const auto* pPos = _vars_.tryPos(&v);
-    if (!pPos) {
+    if (pPos == nullptr) {
       GUM_ERROR(NotFound, "SetInst does not contain this DiscreteVariable: " + v.name())
     }
     Idx varPos = *pPos;
@@ -155,7 +155,7 @@ namespace gum {
 
   INLINE SetInst& SetInst::chgVals(const DiscreteVariable* v, const Size newVals) {
     const auto* pPos = _vars_.tryPos(v);
-    if (!pPos) {
+    if (pPos == nullptr) {
       GUM_ERROR(NotFound, "SetInst does not contain this DiscreteVariable: " + v->name())
     }
     Idx varPos = *pPos;
@@ -198,7 +198,7 @@ namespace gum {
 
   INLINE SetInst& SetInst::addVal(const DiscreteVariable* v, Idx newVal) {
     const auto* pPos = _vars_.tryPos(v);
-    if (!pPos) {
+    if (pPos == nullptr) {
       GUM_ERROR(NotFound, "SetInst does not contain this DiscreteVariable: " + v->name())
     }
     Idx varPos = *pPos;
@@ -215,7 +215,7 @@ namespace gum {
 
   INLINE SetInst& SetInst::addVal(const DiscreteVariable& v, Idx newVal) {
     const auto* pPos = _vars_.tryPos(&v);
-    if (!pPos) {
+    if (pPos == nullptr) {
       GUM_ERROR(NotFound, "SetInst does not contain this DiscreteVariable: " + v.name())
     }
     Idx varPos = *pPos;
@@ -241,7 +241,7 @@ namespace gum {
 
   INLINE SetInst& SetInst::addVals(const DiscreteVariable* v, const Size newVal) {
     const auto* pPos = _vars_.tryPos(v);
-    if (!pPos) {
+    if (pPos == nullptr) {
       GUM_ERROR(NotFound, "SetInst does not contain this DiscreteVariable: " + v->name())
     }
     Idx varPos = *pPos;
@@ -255,7 +255,7 @@ namespace gum {
 
   INLINE SetInst& SetInst::addVals(const DiscreteVariable& v, const Size newVal) {
     const auto* pPos = _vars_.tryPos(&v);
-    if (!pPos) {
+    if (pPos == nullptr) {
       GUM_ERROR(NotFound, "SetInst does not contain this DiscreteVariable: " + v.name())
     }
     Idx varPos = *pPos;
@@ -281,7 +281,7 @@ namespace gum {
 
   INLINE SetInst& SetInst::remVal(const DiscreteVariable* v, Idx newVal) {
     const auto* pPos = _vars_.tryPos(v);
-    if (!pPos) {
+    if (pPos == nullptr) {
       GUM_ERROR(NotFound, "SetInst does not contain this DiscreteVariable: " + v->name())
     }
     Idx varPos = *pPos;
@@ -295,7 +295,7 @@ namespace gum {
 
   INLINE SetInst& SetInst::remVal(const DiscreteVariable& v, Idx newVal) {
     const auto* pPos = _vars_.tryPos(&v);
-    if (!pPos) {
+    if (pPos == nullptr) {
       GUM_ERROR(NotFound, "SetInst does not contain this DiscreteVariable: " + v.name())
     }
     Idx varPos = *pPos;
@@ -321,7 +321,7 @@ namespace gum {
 
   INLINE SetInst& SetInst::remVals(const DiscreteVariable* v, const Size newVal) {
     const auto* pPos = _vars_.tryPos(v);
-    if (!pPos) {
+    if (pPos == nullptr) {
       GUM_ERROR(NotFound, "SetInst does not contain this DiscreteVariable: " + v->name())
     }
     Idx varPos = *pPos;
@@ -335,7 +335,7 @@ namespace gum {
 
   INLINE SetInst& SetInst::remVals(const DiscreteVariable& v, const Size newVal) {
     const auto* pPos = _vars_.tryPos(&v);
-    if (!pPos) {
+    if (pPos == nullptr) {
       GUM_ERROR(NotFound, "SetInst does not contain this DiscreteVariable: " + v.name())
     }
     Idx varPos = *pPos;
@@ -370,7 +370,7 @@ namespace gum {
 
   INLINE SetInst& SetInst::interVals(const DiscreteVariable* v, const Size newVal) {
     const auto* pPos = _vars_.tryPos(v);
-    if (!pPos) {
+    if (pPos == nullptr) {
       GUM_ERROR(NotFound, "SetInst does not contain this DiscreteVariable: " + v->name())
     }
     Idx varPos = *pPos;
@@ -384,7 +384,7 @@ namespace gum {
 
   INLINE SetInst& SetInst::interVals(const DiscreteVariable& v, const Size newVal) {
     const auto* pPos = _vars_.tryPos(&v);
-    if (!pPos) {
+    if (pPos == nullptr) {
       GUM_ERROR(NotFound, "SetInst does not contain this DiscreteVariable: " + v.name())
     }
     Idx varPos = *pPos;
@@ -410,7 +410,7 @@ namespace gum {
 
   INLINE SetInst& SetInst::interVal(const DiscreteVariable* v, Idx newVal) {
     const auto* pPos = _vars_.tryPos(v);
-    if (!pPos) {
+    if (pPos == nullptr) {
       GUM_ERROR(NotFound, "SetInst does not contain this DiscreteVariable: " + v->name())
     }
     Idx varPos = *pPos;
@@ -424,7 +424,7 @@ namespace gum {
 
   INLINE SetInst& SetInst::interVal(const DiscreteVariable& v, Idx newVal) {
     const auto* pPos = _vars_.tryPos(&v);
-    if (!pPos) {
+    if (pPos == nullptr) {
       GUM_ERROR(NotFound, "SetInst does not contain this DiscreteVariable: " + v.name())
     }
     Idx varPos = *pPos;

@@ -259,14 +259,14 @@ namespace gum {
   // returns a pointer to the first value or nullptr if not found
   template < typename T1, typename T2, bool Gen >
   INLINE const T1* BijectionImplementation< T1, T2, Gen >::tryFirst(const T2& second) const {
-    auto* ptr = _secondToFirst_.tryGet(second);
+    const auto* ptr = _secondToFirst_.tryGet(second);
     return ptr ? *ptr : nullptr;
   }
 
   // returns a pointer to the second value or nullptr if not found
   template < typename T1, typename T2, bool Gen >
   INLINE const T2* BijectionImplementation< T1, T2, Gen >::trySecond(const T1& first) const {
-    auto* ptr = _firstToSecond_.tryGet(first);
+    const auto* ptr = _firstToSecond_.tryGet(first);
     return ptr ? *ptr : nullptr;
   }
 
@@ -331,8 +331,7 @@ namespace gum {
   template < typename T1, typename T2, bool Gen >
   INLINE const T1& BijectionImplementation< T1, T2, Gen >::firstWithDefault(const T2& second,
                                                                             const T1& val) const {
-    const auto* ptr = tryFirst(second);
-    if (ptr) return *ptr;
+    if (const auto* ptr = tryFirst(second); ptr != nullptr) return *ptr;
     return _insert_(val, second)->first;
   }
 
@@ -341,8 +340,7 @@ namespace gum {
   template < typename T1, typename T2, bool Gen >
   INLINE const T2& BijectionImplementation< T1, T2, Gen >::secondWithDefault(const T1& first,
                                                                              const T2& val) const {
-    const auto* ptr = trySecond(first);
-    if (ptr) return *ptr;
+    if (const auto* ptr = trySecond(first); ptr != nullptr) return *ptr;
     return *(_insert_(first, val)->second);
   }
 
@@ -383,8 +381,7 @@ namespace gum {
   // erases an association containing the given first element
   template < typename T1, typename T2, bool Gen >
   INLINE void BijectionImplementation< T1, T2, Gen >::eraseFirst(const T1& first) {
-    auto* ptr = _firstToSecond_.tryGet(first);
-    if (ptr) {
+    if (const auto* ptr = _firstToSecond_.tryGet(first); ptr != nullptr) {
       _secondToFirst_.erase(**ptr);
       _firstToSecond_.erase(first);
     }
@@ -393,8 +390,7 @@ namespace gum {
   // erase an association containing the given second element
   template < typename T1, typename T2, bool Gen >
   INLINE void BijectionImplementation< T1, T2, Gen >::eraseSecond(const T2& second) {
-    auto* ptr = _secondToFirst_.tryGet(second);
-    if (ptr) {
+    if (const auto* ptr = _secondToFirst_.tryGet(second); ptr != nullptr) {
       _firstToSecond_.erase(**ptr);
       _secondToFirst_.erase(second);
     }
@@ -697,8 +693,7 @@ namespace gum {
   template < typename T1, typename T2 >
   INLINE const T1& BijectionImplementation< T1, T2, true >::firstWithDefault(T2 second,
                                                                              T1 val) const {
-    const auto* ptr = tryFirst(second);
-    if (ptr) return *ptr;
+    if (const auto* ptr = tryFirst(second); ptr != nullptr) return *ptr;
     _insert_(val, second);
     return val;
   }
@@ -708,8 +703,7 @@ namespace gum {
   template < typename T1, typename T2 >
   INLINE const T2& BijectionImplementation< T1, T2, true >::secondWithDefault(T1 first,
                                                                               T2 val) const {
-    const auto* ptr = trySecond(first);
-    if (ptr) return *ptr;
+    if (const auto* ptr = trySecond(first); ptr != nullptr) return *ptr;
     _insert_(first, val);
     return val;
   }
@@ -731,8 +725,7 @@ namespace gum {
   // erases an association containing the given first element
   template < typename T1, typename T2 >
   INLINE void BijectionImplementation< T1, T2, true >::eraseFirst(T1 first) {
-    auto* ptr = _firstToSecond_.tryGet(first);
-    if (ptr) {
+    if (const auto* ptr = _firstToSecond_.tryGet(first); ptr != nullptr) {
       _secondToFirst_.erase(*ptr);
       _firstToSecond_.erase(first);
     }
@@ -741,8 +734,7 @@ namespace gum {
   // erase an association containing the given second element
   template < typename T1, typename T2 >
   INLINE void BijectionImplementation< T1, T2, true >::eraseSecond(T2 second) {
-    auto* ptr = _secondToFirst_.tryGet(second);
-    if (ptr) {
+    if (const auto* ptr = _secondToFirst_.tryGet(second); ptr != nullptr) {
       _firstToSecond_.erase(*ptr);
       _secondToFirst_.erase(second);
     }

@@ -573,8 +573,7 @@ namespace gum {
         for (const auto v: p->variablesSequence()) {
           if (data.vars.existsSecond(v)) {
             auto  varId = data.vars.first(v);
-            auto* p_map = data.map.tryGet(varId);
-            if (p_map) {
+            if (const auto* p_map = data.map.tryGet(varId); p_map != nullptr) {
               target = *p_map;
               try {
                 bij.insert(v, &(match[target.first]->get(target.second).type().variable()));
@@ -612,8 +611,7 @@ namespace gum {
           if (inst->size()) {
             Set< Tensor< GUM_SCALAR >* > pool;
 
-            auto* p_cdata = _cdata_map_.tryGet(&(inst->type()));
-            if (p_cdata) {
+            if (const auto* p_cdata = _cdata_map_.tryGet(&(inst->type())); p_cdata != nullptr) {
               data = *p_cdata;
             } else {
               data = new StructuredInference< GUM_SCALAR >::CData(inst->type());

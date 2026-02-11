@@ -112,8 +112,7 @@ namespace gum {
 
   template < typename GUM_SCALAR >
   void MultiDimBucket< GUM_SCALAR >::erase(const MultiDimContainer< GUM_SCALAR >* impl) {
-    auto* p = _multiDims_.tryGet(impl);
-    if (p) {
+    if (const auto* p = _multiDims_.tryGet(impl); p != nullptr) {
       delete *p;
       _multiDims_.erase(impl);
 

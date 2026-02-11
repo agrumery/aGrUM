@@ -80,8 +80,7 @@ namespace gum {
         // try to find the value in the cache
         if (_use_cache_) {
           const auto  key = std::pair< std::size_t, double >{r, n};
-          const auto* p   = _cache_.tryGet(key);
-          if (p) return *p;
+          if (const auto* p = _cache_.tryGet(key); p != nullptr) return *p;
         }
 
         // use Equation (13) of the paper to compute the value of cnr:
@@ -121,8 +120,7 @@ namespace gum {
       // try to find the value in the cache
       if (_use_cache_) {
         const auto  key = std::pair< std::size_t, double >{r, n};
-        const auto* p   = _cache_.tryGet(key);
-        if (p) return *p;
+        if (const auto* p = _cache_.tryGet(key); p != nullptr) return *p;
       }
 
       // compute the corrected Szpankowski approximation of cn2 (see the

@@ -90,8 +90,7 @@ namespace gum {
          = from._causal_weights_.beginSafe();
          iter != from._causal_weights_.endSafe();
          ++iter) {
-      const auto* pFirst = bij.tryFirst(iter.key());
-      if (pFirst) {
+      if (const auto* pFirst = bij.tryFirst(iter.key()); pFirst != nullptr) {
         causalWeight(**pFirst, iter.val());
       } else { causalWeight(*(iter.key()), iter.val()); }
     }

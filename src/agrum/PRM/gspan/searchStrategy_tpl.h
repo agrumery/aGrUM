@@ -347,8 +347,8 @@ namespace gum {
 
       template < typename GUM_SCALAR >
       INLINE double StrictSearch< GUM_SCALAR >::_inner_cost_(const Pattern* p) {
-        auto* pm = _map_.tryGet(p);
-        if (!pm) {
+        const auto* pm = _map_.tryGet(p);
+        if (pm == nullptr) {
           _compute_costs_(p);
           pm = _map_.tryGet(p);
         }
@@ -357,8 +357,8 @@ namespace gum {
 
       template < typename GUM_SCALAR >
       INLINE double StrictSearch< GUM_SCALAR >::_outer_cost_(const Pattern* p) {
-        auto* pm = _map_.tryGet(p);
-        if (!pm) {
+        const auto* pm = _map_.tryGet(p);
+        if (pm == nullptr) {
           _compute_costs_(p);
           pm = _map_.tryGet(p);
         }
@@ -422,8 +422,8 @@ namespace gum {
 
       template < typename GUM_SCALAR >
       INLINE double TreeWidthSearch< GUM_SCALAR >::cost(const Pattern& p) {
-        auto* pm = _map_.tryGet(&p);
-        if (!pm) {
+        const auto* pm = _map_.tryGet(&p);
+        if (pm == nullptr) {
           _map_.insert(&p, this->computeCost_(p));
           pm = _map_.tryGet(&p);
         }
