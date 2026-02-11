@@ -43,6 +43,7 @@ import re
 import hashlib
 import zipfile
 import platform
+import sysconfig
 import os
 
 from base64 import urlsafe_b64encode
@@ -56,15 +57,6 @@ from .utils import warn, critic
 from .configuration import cfg
 
 from .ActBuilderPyAgrum import ActBuilderPyAgrum
-
-FOUND_WHEEL = True
-
-try:
-  import setuptools.command.bdist_wheel as pep
-  from wheel.vendored.packaging import tags as wheel_tags
-except ImportError:
-  FOUND_WHEEL = False
-
 
 from .utils import *
 
@@ -167,23 +159,18 @@ def update_wheel_file(dist_info, stable_abi_off, minimal_python_api):
 
 
 def get_tags(stable_abi_off, minimal_python_api):
-  """Get proper tags using wheel's package implementation of PEP427."""
-  try:
-    arch = pep.safer_name(pep.get_platform(None))
-  except:
-    arch = pep.safer_name(pep.get_platform())
+  """Get proper tags for PEP427 wheel filenames using only the standard library."""
+  arch = sysconfig.get_platform().replace("-", "_").replace(".", "_")
   if arch == "linux_x86_64":
     arch = "manylinux2014_x86_64"
   elif arch == "linux_i686":
     arch = "manylinux2014_i686"
   elif arch == "linux_aarch64":
     arch = "manylinux2014_aarch64"
-  if "macosx" in arch:
-    arch = arch.replace(".", "_")
 
   if stable_abi_off:
-    impl = wheel_tags.interpreter_name() + wheel_tags.interpreter_version()
-    abi = pep.get_abi_tag()
+    impl = f"cp{sys.version_info.major}{sys.version_info.minor}"
+    abi = impl
     tags = f"{impl}-{abi}-{arch}"
   else:
     tags = f"{minimal_python_api}-abi3-{arch}"
@@ -293,10 +280,6 @@ class ActBuilderWheel(ActBuilder):
     self.wheel_path = None
 
   def check_consistency(self):
-    if not FOUND_WHEEL:
-      error("You need to install the [wheel] package to use this command. Please run '[pip install wheel]'.")
-      return False
-
     version = sys.version_info
     gum_py_version = cfg.python_version
     if gum_py_version.count(".") == 1:
