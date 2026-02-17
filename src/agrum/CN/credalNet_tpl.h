@@ -90,10 +90,9 @@ namespace gum {
         const std::vector< std::vector< std::vector< GUM_SCALAR > > >& cpt) {
       const Tensor< GUM_SCALAR >* const tensor(&_src_bn_.cpt(id));
 
-      auto var_dSize  = _src_bn_.variable(id).domainSize();
-      auto entry_size = tensor->domainSize() / var_dSize;
+      auto var_dSize = _src_bn_.variable(id).domainSize();
 
-      if (cpt.size() != entry_size)
+      if (auto entry_size = tensor->domainSize() / var_dSize; cpt.size() != entry_size)
         GUM_ERROR(SizeError,
                   "setCPTs : entry sizes of cpts does not match for node id : "
                       << id << " : " << cpt.size() << " != " << entry_size);

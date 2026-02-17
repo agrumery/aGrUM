@@ -54,25 +54,6 @@ class ActBuilderPyAgrum(ActBuilder):
 
   def check_consistency(self) -> bool:
     cur_modules = self.current["modules"]
-    if self.current["action"] == "test":
-      match cur_modules.lower():
-        case "all":
-          self.modules = set([""] + list(cfg.modules.keys()))
-        case "quick":
-          self.modules = {""}
-        case _:
-          if cur_modules.lower().startswith("quick+"):
-            module = cur_modules.lower()[len("quick+") :]
-
-            if not module in cfg.pymodules:
-              error(f"Module [{module}] not supported. Please select among [all,quick,quick+[{set(cfg.pymodules)}].")
-              return False
-            else:
-              self.modules = {"", module}
-          else:
-            error(f"Module [{cur_modules}] not supported. '-m quick' is used by default.")
-            self.modules = {""}
-
     if self.current["tests"] == "list":
       error("List of [pyAgrum]'s tests is not available for now. Sorry.")
       return False

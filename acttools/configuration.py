@@ -141,7 +141,15 @@ def check_tools() -> tuple[str, str, str, str, str, str, str]:
   exe_msbuild = is_tool("msbuild")
   exe_ruff = is_tool("ruff")
 
-  return exe_py, version_py, exe_cmake, exe_make, exe_clangformat, exe_msbuild, exe_ruff
+  return (
+    exe_py,
+    version_py,
+    exe_cmake,
+    exe_make,
+    exe_clangformat,
+    exe_msbuild,
+    exe_ruff,
+  )
 
 
 def parse_modules_txt() -> dict[str, str]:
@@ -157,18 +165,6 @@ def parse_modules_txt() -> dict[str, str]:
           descr = module
         modules[module] = descr
   return modules
-
-
-def parse_py_modules() -> set[str]:
-  """
-  Parse the pyagrum modules from the pymodulesPath directory.
-  Returns a set of module names.
-  """
-  import os
-
-  for root, dirs, files in os.walk(cfg.pymodulesPath):
-    return {d for d in dirs if d != "lib"}
-  return {}  # Return an empty set if no modules found
 
 
 cfg.withColour = True
@@ -255,7 +251,6 @@ def init_params() -> None:
   cfg.modes = set("debug release".split())
   cfg.targets = {"agrum", "pyagrum"}  # lowercase for relaxing constraints
   cfg.modules = parse_modules_txt()
-  cfg.pymodules = parse_py_modules()
 
   cfg.non_persistent = [
     "fixed_seed",
@@ -277,7 +272,15 @@ def init_params() -> None:
   }
   cfg.buildPath = {"Release": "release", "Debug": "debug"}
 
-  (cfg.python, cfg.python_version, cfg.cmake, cfg.make, cfg.clangformat, cfg.msbuild, cfg.ruff) = check_tools()
+  (
+    cfg.python,
+    cfg.python_version,
+    cfg.cmake,
+    cfg.make,
+    cfg.clangformat,
+    cfg.msbuild,
+    cfg.ruff,
+  ) = check_tools()
 
 
 def configure_cli_options(current: dict[str, str | bool]) -> None:

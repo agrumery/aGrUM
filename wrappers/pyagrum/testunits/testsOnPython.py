@@ -131,6 +131,13 @@ def runTests(local: bool, test_module: str, test_suite: str, log) -> int:
   from tests import VariablesTestSuite
 
   if pandasFound:
+    from tests import OldCausalASTTestSuite
+    from tests import OldCausalDSepTestSuite
+    from tests import OldCausalModelTestSuite
+    from tests import OldCausalNonRegressionTestSuite
+    from tests import OldCausalEffectEstimationTestSuite
+
+  if pandasFound:
     from tests import CausalASTTestSuite
     from tests import CausalDSepTestSuite
     from tests import CausalModelTestSuite
@@ -192,6 +199,17 @@ def runTests(local: bool, test_module: str, test_suite: str, log) -> int:
       tl.append(VariablesTestSuite.ts)
       tl.append(WorkaroundTestSuite.ts)
 
+    if test_module in {"", "causaleffect"}:
+      log.info("testing 'causaleffect'")
+      if pandasFound:
+        tl.append(OldCausalASTTestSuite.ts)
+        tl.append(OldCausalDSepTestSuite.ts)
+        tl.append(OldCausalModelTestSuite.ts)
+        tl.append(OldCausalNonRegressionTestSuite.ts)
+        tl.append(CausalEffectEstimationTestSuite.ts)
+      else:
+        log.warning("Pandas not found.")
+
     if test_module in {"", "causal"}:
       log.info("testing 'causal'")
       if pandasFound:
@@ -199,9 +217,8 @@ def runTests(local: bool, test_module: str, test_suite: str, log) -> int:
         tl.append(CausalDSepTestSuite.ts)
         tl.append(CausalModelTestSuite.ts)
         tl.append(CausalNonRegressionTestSuite.ts)
-        tl.append(CausalEffectEstimationTestSuite.ts)
       else:
-        log.warning("Pandas or sklearn not found.")
+        log.warning("Pandas not found.")
 
     if test_module in {"", "skbn"}:
       log.info("testing 'skbn'")

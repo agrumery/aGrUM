@@ -125,7 +125,7 @@ def _simplify_dependencies(ancestors: dict[str, dict[str, int]], deps: dict[str,
           warn("-" * len(k))
           first = 1
         nbr += 1
-        warn(f"{nbr:03d} {p}->{k} can be removed")
+        warn(f"{nbr:03d} {k} : include {p} can be removed")
         deps[k].remove(p)
 
 

@@ -55,7 +55,7 @@ def go():
   else:
     os.chdir(os.path.dirname("./" + __file__))
 
-  test_modules = {"", "main", "skbn", "causal", "clg", "ctbn", "bnmixture", "explain"}
+  test_modules = {"", "main", "skbn", "causal", "causaleffect", "clg", "ctbn", "bnmixture", "explain"}
 
   mod = "release"  # release|debug
   islocal = True  # installed|local : test the installed version

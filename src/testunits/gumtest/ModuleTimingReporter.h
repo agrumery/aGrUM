@@ -88,13 +88,24 @@ namespace gum_test {
     std::string                          _currentSuite;
     std::ostream&                        _out;
 
+    // Progress tracking
+    std::string _lastModule;
+    std::string _lastSuite;
+    int         _currentSuiteCount{0};
+
     explicit ModuleTimingReporter(const doctest::ContextOptions& opts) : _out(*opts.cout) {}
 
     void report_query(const doctest::QueryData&) override {}
 
-    void test_run_start() override { _modules.clear(); }
+    void test_run_start() override {
+      _modules.clear();
+      _lastModule        = "";
+      _lastSuite         = "";
+      _currentSuiteCount = 0;
+    }
 
     void test_run_end(const doctest::TestRunStats& /*stats*/) override {
+      if (!_lastSuite.empty()) _out << " (" << _currentSuiteCount << ")\n";
       if (_modules.empty()) return;
 
       printTimingSummary();
@@ -120,6 +131,16 @@ namespace gum_test {
       } else {
         _currentSuite = "Unknown";
       }
+
+      // Print suite header when module or suite changes
+      if (_currentSuite != _lastSuite || _currentModule != _lastModule) {
+        if (!_lastSuite.empty()) _out << " (" << _currentSuiteCount << ")\n";
+        _out << "  [" << _currentModule << "][" << _currentSuite << "] ";
+        _out.flush();
+        _lastModule        = _currentModule;
+        _lastSuite         = _currentSuite;
+        _currentSuiteCount = 0;
+      }
     }
 
     void test_case_reenter(const doctest::TestCaseData&) override {}
@@ -134,6 +155,11 @@ namespace gum_test {
       auto& suite = mod.suites[_currentSuite];
       suite.testCount++;
       suite.totalTime += seconds;
+
+      // Progress dot: '.' = success, 'F' = failure
+      _out << (stats.testCaseSuccess ? '.' : 'F');
+      _out.flush();
+      _currentSuiteCount++;
     }
 
     void test_case_exception(const doctest::TestCaseException&) override {}

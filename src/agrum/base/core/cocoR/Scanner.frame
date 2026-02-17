@@ -40,7 +40,7 @@ Scanner.h Specification
 #if !defined(-->prefixCOCO_SCANNER_H__)
 #define -->prefixCOCO_SCANNER_H__
 
-#include <agrum/base/core/cocoR/common.h>
+//#include <agrum/base/core/cocoR/common.h>
 #include <agrum/base/core/signal/signaler.h>
 #include <agrum/base/core/errorsContainer.h>
 
