@@ -813,10 +813,10 @@ namespace gum {
     // we shall now add all the tensors of the soft evidence
     const NodeProperty< const Tensor< GUM_SCALAR >* >& evidence = this->evidence();
     for (const auto node: this->softEvidenceNodes()) {
-      if (const auto* p = _node_to_clique_.tryGet(node); p != nullptr) {
+      if (const auto* ptr_clique = _node_to_clique_.tryGet(node); ptr_clique  != nullptr) {
         auto ev_pot = new ScheduleMultiDim< Tensor< GUM_SCALAR > >(*evidence[node], false);
         _node_to_soft_evidence_.insert(node, ev_pot);
-        _clique_tensors_[*p].insert(ev_pot);
+        _clique_tensors_[*ptr_clique].insert(ev_pot);
       }
     }
 
@@ -1088,8 +1088,8 @@ namespace gum {
     // projected CPT that should now be changed, do the same.
     NodeSet invalidated_cliques(_JT_->size());
     for (const auto& pair: _evidence_changes_) {
-      if (const auto* p = _node_to_clique_.tryGet(pair.first); p != nullptr) {
-        const auto clique = *p;
+      if (const auto* ptr_clique = _node_to_clique_.tryGet(pair.first); ptr_clique != nullptr) {
+        const auto clique = *ptr_clique;
         invalidated_cliques.insert(clique);
         for (const auto neighbor: _JT_->neighbours(clique)) {
           _diffuseMessageInvalidations_(clique, neighbor, invalidated_cliques);
@@ -1280,13 +1280,13 @@ namespace gum {
     // might not exist, hence the if checks
     NodeSet clique_targets;
     for (const auto node: this->targets()) {
-      if (const auto* p = _node_to_clique_.tryGet(node); p != nullptr) {
-        clique_targets.insert(*p);
+      if (const auto* ptr_clique = _node_to_clique_.tryGet(node); ptr_clique != nullptr) {
+        clique_targets.insert(*ptr_clique);
       }
     }
     for (const auto& set: this->jointTargets()) {
-      if (const auto* p = _joint_target_to_clique_.tryGet(set); p != nullptr) {
-        clique_targets.insert(*p);
+      if (const auto* ptr_clique = _joint_target_to_clique_.tryGet(set); ptr_clique != nullptr) {
+        clique_targets.insert(*ptr_clique);
       }
     }
 

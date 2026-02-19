@@ -244,9 +244,10 @@ namespace gum {
       } catch (gum::Exception&) {
         // check that this is not a missing value
         if (this->isMissingSymbol(str)) {
-          if (auto* p = _status_int_missing_symbols_.tryGet(str); p != nullptr) {
-            if (!*p) {
-              *p = true;
+          auto* ptr_is_str_translated = _status_int_missing_symbols_.tryGet(str);
+          if (ptr_is_str_translated != nullptr) {
+            if (!*ptr_is_str_translated) { // the string is not translated yet
+              *ptr_is_str_translated = true;
               _translated_int_missing_symbols_.insert(std::stol(str));
             }
           }
