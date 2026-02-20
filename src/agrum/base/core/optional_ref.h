@@ -38,77 +38,48 @@
  *                                                                          *
  ****************************************************************************/
 
-#pragma once
+/**
+ * @file
+ * @brief A lightweight optional reference wrapper.
+ *
+ * @author Pierre-Henri WUILLEMIN(_at_LIP6) and Christophe GONZALES(_at_AMU)
+ */
 
+#ifndef GUM_OPTIONAL_REF_H
+#define GUM_OPTIONAL_REF_H
 
-#include <algorithm>
+#include <optional>
 
-#include <agrum/BN/learning/BNLearnUtils/IBNLearner.h>
+namespace gum {
 
-namespace gum::learning {
+  /**
+   * @class optional_ref
+   * @brief A lightweight wrapper around a pointer providing an optional-like API
+   *        for references (not supported by std::optional<T&>).
+   * @tparam T The referenced type.
+   */
+  template < typename T >
+  class optional_ref {
+    T* _ptr_ = nullptr;
 
-  template < typename GUM_SCALAR >
-  IBNLearner::Database::Database(const std::string&                filename,
-                                 const BayesNet< GUM_SCALAR >&     bn,
-                                 const std::vector< std::string >& missing_symbols) {
-    // assign to each column name in the database its position
-    IBNLearner::isCSVFileName_(filename);
-    DBInitializerFromCSV                  initializer(filename);
-    const auto&                           xvar_names = initializer.variableNames();
-    std::size_t                           nb_vars    = xvar_names.size();
-    HashTable< std::string, std::size_t > var_names(nb_vars);
-    for (std::size_t i = std::size_t(0); i < nb_vars; ++i)
-      var_names.insert(xvar_names[i], i);
+    public:
+    optional_ref() noexcept = default;
+    optional_ref(std::nullopt_t) noexcept {}
+    optional_ref(T& ref) noexcept : _ptr_(&ref) {}
+    optional_ref(T&&) = delete;
 
-    // we use the bn to insert the translators into the database table
-    std::vector< NodeId > nodes;
-    nodes.reserve(bn.dag().sizeNodes());
-    for (const auto node: bn.dag())
-      nodes.push_back(node);
-    std::sort(nodes.begin(), nodes.end());
-    std::size_t i = std::size_t(0);
-    for (auto node: nodes) {
-      const Variable& var = bn.variable(node);
-      auto p = var_names.tryGet(var.name());
-      if (!p) {
-        GUM_ERROR(MissingVariableInDatabase, "Variable '" << var.name() << "' is missing")
-      }
-      _database_.insertTranslator(var, *p, missing_symbols);
-      _nodeId2cols_.insert(NodeId(node), i++);
+    explicit operator bool() const noexcept { return _ptr_ != nullptr; }
+    bool     has_value() const noexcept { return _ptr_ != nullptr; }
+
+    T& value() const {
+      if (!_ptr_) throw std::bad_optional_access();
+      return *_ptr_;
     }
 
-    // fill the database
-    initializer.fillDatabase(_database_);
+    T& operator*() const noexcept { return *_ptr_; }
+    T* operator->() const noexcept { return _ptr_; }
+  };
 
-    // get the domain sizes of the variables
-    for (auto dom: _database_.domainSizes())
-      _domain_sizes_.push_back(dom);
+}   // namespace gum
 
-    // create the parser
-    _parser_ = new DBRowGeneratorParser(_database_.handler(), DBRowGeneratorSet());
-  }
-
-  template < typename GUM_SCALAR >
-  BayesNet< GUM_SCALAR > IBNLearner::Database::_BNVars_() const {
-    BayesNet< GUM_SCALAR > bn;
-    const std::size_t      nb_vars = _database_.nbVariables();
-    for (std::size_t i = 0; i < nb_vars; ++i) {
-      const DiscreteVariable& var = dynamic_cast< const DiscreteVariable& >(_database_.variable(i));
-      bn.add(var);
-    }
-    return bn;
-  }
-
-  template < typename GUM_SCALAR >
-  IBNLearner::IBNLearner(const std::string&                 filename,
-                         const gum::BayesNet< GUM_SCALAR >& bn,
-                         const std::vector< std::string >&  missing_symbols) :
-      scoreDatabase_(filename, bn, missing_symbols) {
-    filename_     = filename;
-    noPrior_      = new NoPrior(scoreDatabase_.databaseTable());
-    inducedTypes_ = false;
-    GUM_CONSTRUCTOR(IBNLearner);
-  }
-
-
-}   // namespace gum::learning
+#endif   // GUM_OPTIONAL_REF_H

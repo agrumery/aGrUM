@@ -355,7 +355,7 @@ namespace gum {
           HashTable< PRMClassElement< GUM_SCALAR >*, Size >& x,
           HashTable< PRMClassElement< GUM_SCALAR >*, Size >& y) {
         for (const auto& elt: x) {
-          if (const auto* p = y.tryGet(elt.first); p == nullptr || *p != elt.second) return false;
+          if (auto p = y.tryGet(elt.first); !p || *p != elt.second) return false;
         }
 
         return true;
@@ -429,16 +429,16 @@ namespace gum {
 
       template < typename GUM_SCALAR >
       INLINE std::list< NodeId >& DFSTree< GUM_SCALAR >::children(const Pattern& p) {
-        const auto* pd = _data_.tryGet(const_cast< Pattern* >(&p));
-        if (pd == nullptr)
+        auto pd = _data_.tryGet(const_cast< Pattern* >(&p));
+        if (!pd)
           GUM_ERROR(NotFound, "pattern not found in this DFSTree")
         return (*pd)->children;
       }
 
       template < typename GUM_SCALAR >
       INLINE const std::list< NodeId >& DFSTree< GUM_SCALAR >::children(const Pattern& p) const {
-        const auto* pd = _data_.tryGet(const_cast< Pattern* >(&p));
-        if (pd == nullptr)
+        auto pd = _data_.tryGet(const_cast< Pattern* >(&p));
+        if (!pd)
           GUM_ERROR(NotFound, "pattern not found in this DFSTree")
         return (*pd)->children;
       }
@@ -459,8 +459,8 @@ namespace gum {
 
       template < typename GUM_SCALAR >
       INLINE UndiGraph& DFSTree< GUM_SCALAR >::iso_graph(const Pattern& p) {
-        const auto* pd = _data_.tryGet(const_cast< Pattern* >(&p));
-        if (pd == nullptr)
+        auto pd = _data_.tryGet(const_cast< Pattern* >(&p));
+        if (!pd)
           GUM_ERROR(NotFound, "pattern not found in this DFSTree")
         return (*pd)->iso_graph;
       }
@@ -468,19 +468,19 @@ namespace gum {
       template < typename GUM_SCALAR >
       INLINE Sequence< PRMInstance< GUM_SCALAR >* >&
              DFSTree< GUM_SCALAR >::iso_map(const Pattern& p, NodeId node) {
-        const auto* pd = _data_.tryGet(const_cast< Pattern* >(&p));
-        if (pd == nullptr)
+        auto pd = _data_.tryGet(const_cast< Pattern* >(&p));
+        if (!pd)
           GUM_ERROR(NotFound, "pattern not found in this DFSTree")
-        const auto* p_iso = (*pd)->iso_map.tryGet(node);
-        if (p_iso == nullptr)
+        auto p_iso = (*pd)->iso_map.tryGet(node);
+        if (!p_iso)
           GUM_ERROR(NotFound, "node not found in Pattern's isomorphism graph")
         return *(*p_iso);
       }
 
       template < typename GUM_SCALAR >
       INLINE Set< NodeId >& DFSTree< GUM_SCALAR >::max_indep_set(const Pattern& p) {
-        const auto* pd = _data_.tryGet(const_cast< Pattern* >(&p));
-        if (pd == nullptr)
+        auto pd = _data_.tryGet(const_cast< Pattern* >(&p));
+        if (!pd)
           GUM_ERROR(NotFound, "pattern not found in this DFSTree")
         return (*pd)->max_indep_set;
       }

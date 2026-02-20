@@ -158,7 +158,7 @@ namespace gum {
         for (const auto agg: i->type().aggregates())
           if (_bb_.requisiteNodes(i).exists(agg->id())) pool.insert(_getAggTensor_(i, agg));
 
-        if (const auto* p_eo = _elim_orders_.tryGet(&(i->type())); p_eo != nullptr) {
+        if (auto p_eo = _elim_orders_.tryGet(&(i->type()))) {
           InstanceBayesNet< GUM_SCALAR >         bn(*i);
           std::vector< const DiscreteVariable* > elim_order;
 
@@ -220,7 +220,7 @@ namespace gum {
         for (const auto agg: i->type().aggregates())
           if (_bb_.requisiteNodes(i).exists(agg->id())) pool.insert(_getAggTensor_(i, agg));
 
-        if (const auto* p_eo = _elim_orders_.tryGet(&(i->type())); p_eo != nullptr) {
+        if (auto p_eo = _elim_orders_.tryGet(&(i->type()))) {
           InstanceBayesNet< GUM_SCALAR >         bn(*i);
           std::vector< const DiscreteVariable* > elim_order;
 
@@ -282,8 +282,8 @@ namespace gum {
                                                  BucketSet&                       trash) {
       BucketSet* lifted_pool = nullptr;
 
-      const auto* p_lp = _lifted_pools_.tryGet(&(_bb_.requisiteNodes(i)));
-      if (p_lp == nullptr) {
+      auto p_lp = _lifted_pools_.tryGet(&(_bb_.requisiteNodes(i)));
+      if (!p_lp) {
         _initLiftedNodes_(i, trash);
         p_lp = _lifted_pools_.tryGet(&(_bb_.requisiteNodes(i)));
       }
@@ -538,8 +538,8 @@ namespace gum {
 
     template < typename GUM_SCALAR >
     INLINE Set< NodeId >& SVED< GUM_SCALAR >::_getAttrSet_(const PRMInstance< GUM_SCALAR >* i) {
-      const auto* p = _req_set_.tryGet(&(_bb_.requisiteNodes(i)));
-      if (p == nullptr) {
+      auto p = _req_set_.tryGet(&(_bb_.requisiteNodes(i)));
+      if (!p) {
         _initReqSets_(i);
         p = _req_set_.tryGet(&(_bb_.requisiteNodes(i)));
       }
@@ -548,8 +548,8 @@ namespace gum {
 
     template < typename GUM_SCALAR >
     INLINE Set< NodeId >& SVED< GUM_SCALAR >::_getSCSet_(const PRMInstance< GUM_SCALAR >* i) {
-      const auto* p = _req_set_.tryGet(&(_bb_.requisiteNodes(i)));
-      if (p == nullptr) {
+      auto p = _req_set_.tryGet(&(_bb_.requisiteNodes(i)));
+      if (!p) {
         _initReqSets_(i);
         p = _req_set_.tryGet(&(_bb_.requisiteNodes(i)));
       }

@@ -105,7 +105,7 @@ namespace gum {
     INLINE double ScoringCache::score(const IdCondSet& idset) { return _scores_[idset]; }
 
     /// returns a pointer to a given score, or nullptr if not cached
-    INLINE double* ScoringCache::tryGet(const IdCondSet& idset) { return _scores_.tryGet(idset); }
+    INLINE optional_ref<double> ScoringCache::tryGet(const IdCondSet& idset) { return _scores_.tryGet(idset); }
 
     /// removes all the stored scores
     INLINE void ScoringCache::clear() { _scores_.clear(); }

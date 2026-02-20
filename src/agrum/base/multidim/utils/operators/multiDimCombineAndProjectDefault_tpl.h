@@ -366,7 +366,7 @@ namespace gum {
             // add the variables of the table to clique_vars_per_var[vars[i]]
             auto& comb_vars = clique_vars_per_var[ptrVar];
             for (const auto xptrVar: vars) {
-              if (auto* ptr = comb_vars.tryGet(xptrVar); ptr != nullptr) ++(*ptr);
+              if (auto ptr = comb_vars.tryGet(xptrVar)) ++(*ptr);
               else comb_vars.insert(xptrVar, 1);
             }
           }
@@ -507,7 +507,7 @@ namespace gum {
           auto&  iter_vars = clique_vars_per_var[mvar];
           double mult_size = 1.0;
           for (const auto var: marginal_vars) {
-            if (auto* ptr = iter_vars.tryGet(var); ptr != nullptr) {
+            if (auto ptr = iter_vars.tryGet(var)) {
               ++(*ptr);
             } else {
               iter_vars.insert(var, 1);

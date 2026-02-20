@@ -587,7 +587,7 @@ namespace gum {
     // we shall now add all the tensors of the soft evidence to the cliques
     const NodeProperty< const Tensor< GUM_SCALAR >* >& evidence = this->evidence();
     for (const auto node: this->softEvidenceNodes()) {
-      if (const auto* p = _node_to_clique_.tryGet(node); p != nullptr) {
+      if (auto p = _node_to_clique_.tryGet(node)) {
         auto ev_pot = new ScheduleMultiDim< Tensor< GUM_SCALAR > >(*evidence[node], false);
         _node_to_soft_evidence_.insert(node, ev_pot);
         _clique_tensors_[*p].insert(ev_pot);
@@ -942,7 +942,7 @@ namespace gum {
     // projected factors that should now be changed, do the same.
     NodeSet invalidated_cliques(_JT_->size());
     for (const auto& pair: _evidence_changes_) {
-      if (const auto* p = _node_to_clique_.tryGet(pair.first); p != nullptr) {
+      if (auto p = _node_to_clique_.tryGet(pair.first)) {
         const auto clique = *p;
         invalidated_cliques.insert(clique);
         for (const auto neighbor: _JT_->neighbours(clique)) {
@@ -1192,12 +1192,12 @@ namespace gum {
     // might not exist, hence the if checks
     NodeSet clique_targets;
     for (const auto node: this->targets()) {
-      if (const auto* p = _node_to_clique_.tryGet(node); p != nullptr) {
+      if (auto p = _node_to_clique_.tryGet(node)) {
         clique_targets.insert(*p);
       }
     }
     for (const auto& set: this->jointTargets()) {
-      if (const auto* p = _joint_target_to_clique_.tryGet(set); p != nullptr) {
+      if (auto p = _joint_target_to_clique_.tryGet(set)) {
         clique_targets.insert(*p);
       }
     }
@@ -1648,7 +1648,7 @@ namespace gum {
   template < typename GUM_SCALAR >
   const Tensor< GUM_SCALAR >& ShaferShenoyMRFInference< GUM_SCALAR >::posterior_(NodeId id) {
     // check if we have already computed the posterior
-    if (const auto* p = _target_posteriors_.tryGet(id); p != nullptr) { return *(*p); }
+    if (auto p = _target_posteriors_.tryGet(id)) { return *(*p); }
 
     // compute the joint posterior and normalize
     auto joint = unnormalizedJointPosterior_(id);
@@ -1718,7 +1718,7 @@ namespace gum {
     // determine the clique on which we should perform collect to compute
     // the unnormalized joint posterior of a set of nodes containing "targets"
     NodeId clique_of_set;
-    if (const auto*  p_clique = _joint_target_to_clique_.tryGet(set); p_clique != nullptr) {
+    if (auto p_clique = _joint_target_to_clique_.tryGet(set)) {
       clique_of_set = *p_clique;
     } else {
       // here, the precise set of targets does not belong to the set of targets
@@ -1875,7 +1875,7 @@ namespace gum {
     // determine the clique on which we should perform collect to compute
     // the unnormalized joint posterior of a set of nodes containing "targets"
     NodeId clique_of_set;
-    if (const auto*  p_clique = _joint_target_to_clique_.tryGet(set); p_clique != nullptr) {
+    if (auto p_clique = _joint_target_to_clique_.tryGet(set)) {
       clique_of_set = *p_clique;
     } else {
       // here, the precise set of targets does not belong to the set of targets
@@ -1995,7 +1995,7 @@ namespace gum {
   const Tensor< GUM_SCALAR >&
       ShaferShenoyMRFInference< GUM_SCALAR >::jointPosterior_(const NodeSet& set) {
     // check if we have already computed the posterior
-    if (const auto* p = _joint_target_posteriors_.tryGet(set); p != nullptr) { return *(*p); }
+    if (auto p = _joint_target_posteriors_.tryGet(set)) { return *(*p); }
 
     // compute the joint posterior and normalize
     auto joint = unnormalizedJointPosterior_(set);
@@ -2011,7 +2011,7 @@ namespace gum {
       ShaferShenoyMRFInference< GUM_SCALAR >::jointPosterior_(const NodeSet& wanted_target,
                                                               const NodeSet& declared_target) {
     // check if we have already computed the posterior of wanted_target
-    if (const auto* p = _joint_target_posteriors_.tryGet(wanted_target); p != nullptr) return *(*p);
+    if (auto p = _joint_target_posteriors_.tryGet(wanted_target)) return *(*p);
 
     // here, we will have to compute the posterior of declared_target and
     // marginalize out all the variables that do not belong to wanted_target

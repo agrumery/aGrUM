@@ -225,8 +225,8 @@ namespace gum {
         }
 
         // Label is ready
-        const auto* p_lm = label_map.tryGet(sBuff.str());
-        if (p_lm == nullptr) {
+        auto p_lm = label_map.tryGet(sBuff.str());
+        if (!p_lm) {
           LabelData* label = new LabelData();
           label_map.insert(sBuff.str(), label);
           label->id         = ++_counter_;
@@ -264,8 +264,8 @@ namespace gum {
           }
 
         // Label is ready
-        const auto* p_elm = label_map.tryGet(sBuff.str());
-        if (p_elm == nullptr) {
+        auto p_elm = label_map.tryGet(sBuff.str());
+        if (!p_elm) {
           LabelData* label = new LabelData();
           label_map.insert(sBuff.str(), label);
           label->id         = ++_counter_;
@@ -302,7 +302,7 @@ namespace gum {
 
       template < typename GUM_SCALAR >
       INLINE Size InterfaceGraph< GUM_SCALAR >::size(const LabelData* l) const {
-        if (const auto* p = _nodeMap_.tryGet(const_cast< LabelData* >(l)); p != nullptr)
+        if (auto p = _nodeMap_.tryGet(const_cast< LabelData* >(l)))
           return (*p)->size();
         return _edgeMap_[const_cast< LabelData* >(l)]->size();
       }
@@ -370,7 +370,7 @@ namespace gum {
 
       template < typename GUM_SCALAR >
       INLINE EdgeData< GUM_SCALAR >& InterfaceGraph< GUM_SCALAR >::edge(NodeId u, NodeId v) {
-        if (const auto* p = _edges_.tryGet(Edge(u, v)); p != nullptr)
+        if (auto p = _edges_.tryGet(Edge(u, v)))
           return *(*p);
         return *(_edges_[Edge(v, u)]);
       }
@@ -378,7 +378,7 @@ namespace gum {
       template < typename GUM_SCALAR >
       INLINE const EdgeData< GUM_SCALAR >& InterfaceGraph< GUM_SCALAR >::edge(NodeId u,
                                                                               NodeId v) const {
-        if (const auto* p = _edges_.tryGet(Edge(u, v)); p != nullptr)
+        if (auto p = _edges_.tryGet(Edge(u, v)))
           return *(*p);
         return *(_edges_[Edge(v, u)]);
       }

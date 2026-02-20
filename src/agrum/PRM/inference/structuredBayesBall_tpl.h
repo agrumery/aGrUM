@@ -110,8 +110,8 @@ namespace gum {
     void StructuredBayesBall< GUM_SCALAR >::_fromChild_(const PRMInstance< GUM_SCALAR >* i,
                                                         NodeId                           n,
                                                         InstanceMap&                     marks) {
-      const auto* p_marks = marks.tryGet(i);
-      if (p_marks == nullptr) {
+      auto p_marks = marks.tryGet(i);
+      if (!p_marks) {
         marks.insert(i, new StructuredBayesBall< GUM_SCALAR >::MarkMap());
         p_marks = marks.tryGet(i);
       }
@@ -181,8 +181,8 @@ namespace gum {
     void StructuredBayesBall< GUM_SCALAR >::_fromParent_(const PRMInstance< GUM_SCALAR >* i,
                                                          NodeId                           n,
                                                          InstanceMap&                     marks) {
-      const auto* p_marks = marks.tryGet(i);
-      if (p_marks == nullptr) {
+      auto p_marks = marks.tryGet(i);
+      if (!p_marks) {
         marks.insert(i, new StructuredBayesBall< GUM_SCALAR >::MarkMap());
         p_marks = marks.tryGet(i);
       }
@@ -239,7 +239,7 @@ namespace gum {
       for (const auto& elt: req_map) {
         std::string key = _buildHashKey_(elt.first, *elt.second);
 
-        if (auto* p_req = _reqMap_.tryGet(key); p_req != nullptr) {
+        if (auto p_req = _reqMap_.tryGet(key)) {
           _keyMap_.insert(elt.first,
                           std::pair< std::string, Set< NodeId >* >(key, p_req->first));
           p_req->second += 1;

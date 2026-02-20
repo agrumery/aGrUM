@@ -117,7 +117,7 @@ namespace gum::prm::gspan {
     node_map.insert(u, p.addNodeWithLabel(label(u)));
     node_map.insert(v, p.addNodeWithLabel(label(v)));
 
-    if (_arc_map_.tryGet(Arc(u, v))) {
+    if (_arc_map_.exists(Arc(u, v))) {
       p.addArc(1, 2, label(u, v));
     } else { p.addArc(1, 2, label(v, u)); }
 
@@ -157,7 +157,7 @@ namespace gum::prm::gspan {
     // Retrieving arc label data
     LabelData* data = 0;
 
-    if (_arc_map_.tryGet(Arc(u, v))) {
+    if (_arc_map_.exists(Arc(u, v))) {
       data = &(label(u, v));
     } else { data = &(label(v, u)); }
 
@@ -232,7 +232,7 @@ namespace gum::prm::gspan {
           // Retrieving arc label data
           LabelData* data = 0;
 
-          if (_arc_map_.tryGet(Arc(u, v))) data = &(label(u, v));
+          if (_arc_map_.exists(Arc(u, v))) data = &(label(u, v));
           else data = &(label(v, u));
 
           // Adding arc

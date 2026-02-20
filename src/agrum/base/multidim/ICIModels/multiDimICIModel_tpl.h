@@ -90,7 +90,7 @@ namespace gum {
          = from._causal_weights_.beginSafe();
          iter != from._causal_weights_.endSafe();
          ++iter) {
-      if (const auto* pFirst = bij.tryFirst(iter.key()); pFirst != nullptr) {
+      if (auto pFirst = bij.tryFirst(iter.key())) {
         causalWeight(**pFirst, iter.val());
       } else { causalWeight(*(iter.key()), iter.val()); }
     }
@@ -104,7 +104,7 @@ namespace gum {
 
   template < typename GUM_SCALAR >
   INLINE GUM_SCALAR MultiDimICIModel< GUM_SCALAR >::causalWeight(const DiscreteVariable& v) const {
-    const auto* p = _causal_weights_.tryGet(&v);
+    auto p = _causal_weights_.tryGet(&v);
     return p ? *p : _default_weight_;
   }
 

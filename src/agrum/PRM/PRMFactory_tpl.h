@@ -1041,7 +1041,7 @@ namespace gum {
 
           while (current != 0) {
             // Filling counters
-            if (auto* p = counters.tryGet(current->name()); p != nullptr) {
+            if (auto p = counters.tryGet(current->name())) {
               ++(*p);
             } else {
               counters.insert(current->name(), 1);
@@ -1152,14 +1152,14 @@ namespace gum {
       std::string full_name;
 
       // Looking for the type using its name
-      if (const auto* p = _prm_->_typeMap_.tryGet(name)) {
+      if (auto p = _prm_->_typeMap_.tryGet(name)) {
         type      = *p;
         full_name = name;
       }
 
       // Looking for the type in current package
       std::string prefixed = _addPrefix_(name);
-      if (const auto* p = _prm_->_typeMap_.tryGet(prefixed)) {
+      if (auto p = _prm_->_typeMap_.tryGet(prefixed)) {
         if (type == 0) {
           type      = *p;
           full_name = prefixed;
@@ -1173,7 +1173,7 @@ namespace gum {
       size_t      last_dot   = relatif_ns.find_last_of('.');
       if (last_dot != std::string::npos) {
         relatif_ns = relatif_ns.substr(0, last_dot) + '.' + name;
-        if (const auto* p = _prm_->_typeMap_.tryGet(relatif_ns)) {
+        if (auto p = _prm_->_typeMap_.tryGet(relatif_ns)) {
           if (type == 0) {
             type      = *p;
             full_name = relatif_ns;
@@ -1191,7 +1191,7 @@ namespace gum {
         for (gum::Size i = 0; i < ns_list->size(); ++i) {
           std::string ns      = (*ns_list)[i];
           std::string ns_name = ns + "." + name;
-          if (const auto* p = _prm_->_typeMap_.tryGet(ns_name)) {
+          if (auto p = _prm_->_typeMap_.tryGet(ns_name)) {
             if (type == 0) {
               type      = *p;
               full_name = ns_name;
@@ -1215,14 +1215,14 @@ namespace gum {
       std::string             full_name;
 
       // Looking for the type using its name
-      if (const auto* p = _prm_->_classMap_.tryGet(name)) {
+      if (auto p = _prm_->_classMap_.tryGet(name)) {
         a_class   = *p;
         full_name = name;
       }
 
       // Looking for the type using current package
       std::string prefixed = _addPrefix_(name);
-      if (const auto* p = _prm_->_classMap_.tryGet(prefixed)) {
+      if (auto p = _prm_->_classMap_.tryGet(prefixed)) {
         if (a_class == nullptr) {
           a_class   = *p;
           full_name = prefixed;
@@ -1238,7 +1238,7 @@ namespace gum {
         for (gum::Size i = 0; i < ns_list->size(); ++i) {
           std::string ns      = (*ns_list)[i];
           std::string ns_name = ns + "." + name;
-          if (const auto* p = _prm_->_classMap_.tryGet(ns_name)) {
+          if (auto p = _prm_->_classMap_.tryGet(ns_name)) {
             if (a_class == 0) {
               a_class   = *p;
               full_name = ns_name;
@@ -1262,14 +1262,14 @@ namespace gum {
       std::string                 full_name;
 
       // Looking for the type using its name
-      if (const auto* p = _prm_->_interfaceMap_.tryGet(name)) {
+      if (auto p = _prm_->_interfaceMap_.tryGet(name)) {
         interface = *p;
         full_name = name;
       }
 
       // Looking for the type using current package
       std::string prefixed = _addPrefix_(name);
-      if (const auto* p = _prm_->_interfaceMap_.tryGet(prefixed)) {
+      if (auto p = _prm_->_interfaceMap_.tryGet(prefixed)) {
         if (interface == nullptr) {
           interface = *p;
           full_name = prefixed;
@@ -1287,7 +1287,7 @@ namespace gum {
           std::string ns      = (*ns_list)[i];
           std::string ns_name = ns + "." + name;
 
-          if (const auto* p = _prm_->_interfaceMap_.tryGet(ns_name)) {
+          if (auto p = _prm_->_interfaceMap_.tryGet(ns_name)) {
             if (interface == nullptr) {
               interface = *p;
               full_name = ns_name;

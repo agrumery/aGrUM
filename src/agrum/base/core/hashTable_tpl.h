@@ -549,17 +549,17 @@ namespace gum {
   }
 
   template < typename Key, typename Val >
-  INLINE Val* HashTable< Key, Val >::tryGet(const Key& key) {
+  INLINE optional_ref<Val> HashTable< Key, Val >::tryGet(const Key& key) {
     Bucket* bucket = _nodes_[_hash_func_(key)].bucket(key);
-    if (bucket == nullptr) return nullptr;
-    return &(bucket->val());
+    if (bucket == nullptr) return {};
+    return bucket->val();
   }
 
   template < typename Key, typename Val >
-  INLINE const Val* HashTable< Key, Val >::tryGet(const Key& key) const {
+  INLINE optional_ref<const Val> HashTable< Key, Val >::tryGet(const Key& key) const {
     const Bucket* bucket = _nodes_[_hash_func_(key)].bucket(key);
-    if (bucket == nullptr) return nullptr;
-    return &(bucket->pair.second);
+    if (bucket == nullptr) return {};
+    return bucket->pair.second;
   }
 
   template < typename Key, typename Val >
@@ -935,8 +935,8 @@ namespace gum {
 
     // parse this and check that each element also belongs to from
     for (auto iter = begin(); iter != end(); ++iter) {
-      const auto* p = from.tryGet(iter.key());
-      if (p == nullptr || iter.val() != *p) return false;
+      auto p = from.tryGet(iter.key());
+      if (!p || iter.val() != *p) return false;
     }
 
     return true;

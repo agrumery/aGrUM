@@ -314,7 +314,7 @@ namespace gum {
         for (const auto agg: i->type().aggregates())
           pool.insert(_getAggTensor_(i, agg));
 
-        if (const auto* p_eo = _elim_orders_.tryGet(&(i->type())); p_eo != nullptr) {
+        if (auto p_eo = _elim_orders_.tryGet(&(i->type()))) {
           InstanceBayesNet< GUM_SCALAR > bn(*i);
 
           std::vector< const DiscreteVariable* > elim;
@@ -455,8 +455,8 @@ namespace gum {
         for (const auto agg: i->type().aggregates())
           pool.insert(_getAggTensor_(i, agg));
 
-        const auto* p_eo2 = _elim_orders_.tryGet(&(i->type()));
-        if (p_eo2 == nullptr)
+        auto p_eo2 = _elim_orders_.tryGet(&(i->type()));
+        if (!p_eo2)
           GUM_ERROR(FatalError, "there should be at least one node here.")
         {
           std::vector< const DiscreteVariable* > elim;
@@ -483,8 +483,8 @@ namespace gum {
                                                 BucketSet&                       trash) {
       SVE< GUM_SCALAR >::BucketSet* lifted_pool = 0;
 
-      const auto* p_lp = _lifted_pools_.tryGet(&(i->type()));
-      if (p_lp == nullptr) {
+      auto p_lp = _lifted_pools_.tryGet(&(i->type()));
+      if (!p_lp) {
         _initLiftedNodes_(i->type());
         p_lp = _lifted_pools_.tryGet(&(i->type()));
       }
@@ -679,8 +679,8 @@ namespace gum {
     INLINE void SVE< GUM_SCALAR >::_addDelayedVariable_(const PRMInstance< GUM_SCALAR >* i,
                                                         const PRMInstance< GUM_SCALAR >* j,
                                                         NodeId                           id) {
-      const auto* p_dv = _delayedVariables_.tryGet(i);
-      if (p_dv == nullptr) {
+      auto p_dv = _delayedVariables_.tryGet(i);
+      if (!p_dv) {
         _delayedVariables_.insert(i, new gum::VariableSet());
         p_dv = _delayedVariables_.tryGet(i);
       }
@@ -693,7 +693,7 @@ namespace gum {
       static std::string dot = ".";
 
       auto  key   = j->name() + dot + j->get(id).safeName();
-      if (auto* p_cnt = _delayedVariablesCounters_.tryGet(key); p_cnt != nullptr) {
+      if (auto p_cnt = _delayedVariablesCounters_.tryGet(key)) {
         *p_cnt += 1;
       } else {
         _delayedVariablesCounters_.insert(key, 1);

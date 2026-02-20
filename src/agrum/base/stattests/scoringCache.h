@@ -152,7 +152,7 @@ namespace gum {
       /// returns a pointer to a given score, or nullptr if not cached
       /** @param idset the IdCondSet storing the sets of variables
        * @return a pointer to the score, or nullptr if not found */
-      double* tryGet(const IdCondSet& idset);
+      optional_ref<double> tryGet(const IdCondSet& idset);
 
       /// removes all the stored scores
       void clear();

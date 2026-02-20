@@ -367,7 +367,7 @@ namespace gum {
 
   // returns a pointer to the position of k, or nullptr if not found
   template < typename Key, bool Gen >
-  INLINE const Idx* SequenceImplementation< Key, Gen >::tryPos(const Key& k) const {
+  INLINE optional_ref<const Idx> SequenceImplementation< Key, Gen >::tryPos(const Key& k) const {
     return _h_.tryGet(k);
   }
 
@@ -419,8 +419,8 @@ namespace gum {
   template < typename Key, bool Gen >
   INLINE void SequenceImplementation< Key, Gen >::erase(const Key& k) {
     // get the position of the element to remove
-    const auto* p = _h_.tryGet(k);
-    if (p == nullptr) return;
+    auto p = _h_.tryGet(k);
+    if (!p) return;
     Idx pos = *p;
 
     // erase the element
@@ -749,7 +749,7 @@ namespace gum {
 
   // returns a pointer to the position of k, or nullptr if not found
   template < typename Key >
-  INLINE const Idx* SequenceImplementation< Key, true >::tryPos(Key k) const {
+  INLINE optional_ref<const Idx> SequenceImplementation< Key, true >::tryPos(Key k) const {
     return _h_.tryGet(k);
   }
 
@@ -784,8 +784,8 @@ namespace gum {
   template < typename Key >
   INLINE void SequenceImplementation< Key, true >::erase(Key k) {
     // get the position of the element to remove
-    const auto* p = _h_.tryGet(k);
-    if (p == nullptr) return;
+    auto p = _h_.tryGet(k);
+    if (!p) return;
     Idx pos = *p;
 
     // erase the element

@@ -440,15 +440,15 @@ namespace gum {
      * @param second The second value to look up.
      * @return A pointer to the first value, or nullptr if not found.
      */
-    const T1* tryFirst(const T2& second) const;
+    optional_ref<const T1> tryFirst(const T2& second) const;
 
     /**
-     * @brief Returns a pointer to the second value associated with the given
-     * first value, or nullptr if not found.
+     * @brief Returns an optional reference to the second value associated with the given
+     * first value, or empty if not found.
      * @param first The first value to look up.
-     * @return A pointer to the second value, or nullptr if not found.
+     * @return An optional_ref to the second value, or empty if not found.
      */
-    const T2* trySecond(const T1& first) const;
+    optional_ref<const T2> trySecond(const T1& first) const;
 
     /**
      * @brief Inserts a new association in the gum::Bijection.
@@ -995,15 +995,15 @@ namespace gum {
      * @param second The second value to look up.
      * @return A pointer to the first value, or nullptr if not found.
      */
-    const T1* tryFirst(T2 second) const;
+    optional_ref<const T1> tryFirst(T2 second) const;
 
     /**
-     * @brief Returns a pointer to the second value associated with the given
-     * first value, or nullptr if not found.
+     * @brief Returns an optional reference to the second value associated with the given
+     * first value, or empty if not found.
      * @param first The first value to look up.
-     * @return A pointer to the second value, or nullptr if not found.
+     * @return An optional_ref to the second value, or empty if not found.
      */
-    const T2* trySecond(T1 first) const;
+    optional_ref<const T2> trySecond(T1 first) const;
 
     /**
      * @brief Inserts a new association in the gum::Bijection.

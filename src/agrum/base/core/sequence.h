@@ -357,7 +357,7 @@ namespace gum {
      * @param k The key to search for.
      * @return A pointer to the position (Idx), or nullptr if not found.
      */
-    const Idx* tryPos(const Key& k) const;
+    optional_ref<const Idx> tryPos(const Key& k) const;
 
     /**
      * @brief Insert an element at the end of the sequence.
@@ -793,7 +793,7 @@ namespace gum {
      * @param k The key to search for.
      * @return A pointer to the position (Idx), or nullptr if not found.
      */
-    const Idx* tryPos(Key k) const;
+    optional_ref<const Idx> tryPos(Key k) const;
 
     /**
      * @brief Insert an element at the end of the sequence.

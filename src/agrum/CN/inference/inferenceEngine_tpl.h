@@ -484,8 +484,8 @@ namespace gum {
       if (dynamicExpMin_.empty())
         GUM_ERROR(OperationNotAllowed, errTxt + "_dynamicExpectations() needs to be called before")
 
-      const auto* p = dynamicExpMin_.tryGet(varName);
-      if (p == nullptr /*dynamicExpMin_.find(varName) == dynamicExpMin_.end()*/)
+      auto p = dynamicExpMin_.tryGet(varName);
+      if (!p /*dynamicExpMin_.find(varName) == dynamicExpMin_.end()*/)
         GUM_ERROR(NotFound, errTxt + "variable name not found : " << varName)
 
       return *p;
@@ -501,8 +501,8 @@ namespace gum {
       if (dynamicExpMax_.empty())
         GUM_ERROR(OperationNotAllowed, errTxt + "_dynamicExpectations() needs to be called before")
 
-      const auto* p = dynamicExpMax_.tryGet(varName);
-      if (p == nullptr /*dynamicExpMin_.find(varName) == dynamicExpMin_.end()*/)
+      auto p = dynamicExpMax_.tryGet(varName);
+      if (!p /*dynamicExpMin_.find(varName) == dynamicExpMin_.end()*/)
         GUM_ERROR(NotFound, errTxt + "variable name not found : " << varName)
 
       return *p;
@@ -596,7 +596,7 @@ namespace gum {
           output << marginalMin_[elt.first][mod] << ", " << marginalMax_[elt.first][mod] << " ]";
 
           if (!query_.empty()) {
-            if (const auto* p_query = query_.tryGet(elt.first); p_query != nullptr && (*p_query)[mod]) output << " QUERY";
+            if (auto p_query = query_.tryGet(elt.first); p_query && (*p_query)[mod]) output << " QUERY";
           }
 
           output << std::endl;
@@ -692,8 +692,8 @@ namespace gum {
         auto delim = var_name.find_first_of("_");
         var_name   = var_name.substr(0, delim);
 
-        const auto* p_modal = modal_.tryGet(var_name);
-        if (p_modal == nullptr) continue;
+        auto p_modal = modal_.tryGet(var_name);
+        if (!p_modal) continue;
 
         expectationMin_.insert(node, p_modal->back());
         expectationMax_.insert(node, p_modal->front());
@@ -882,7 +882,7 @@ namespace gum {
 
       var_name = var_name.substr(0, delim);
 
-      if (const auto* p_modal = modal_.tryGet(var_name); p_modal != nullptr) {
+      if (auto p_modal = modal_.tryGet(var_name)) {
         GUM_SCALAR exp   = 0;
         auto       vsize = vertex.size();
 
