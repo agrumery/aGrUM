@@ -144,9 +144,7 @@ namespace gum {
 
   template < typename GUM_SCALAR >
   void MultiDimICIModel< GUM_SCALAR >::copyFrom(const MultiDimContainer< GUM_SCALAR >& src) const {
-    auto p = dynamic_cast< const MultiDimICIModel< GUM_SCALAR >* >(&src);
-    if (p == nullptr) MultiDimReadOnly< GUM_SCALAR >::copyFrom(src);
-    else {
+    if (auto p = dynamic_cast< const MultiDimICIModel< GUM_SCALAR >* >(&src)) {
       if (src.domainSize() != this->domainSize()) {
         GUM_ERROR(OperationNotAllowed, "Domain sizes do not fit")
       }
@@ -156,6 +154,8 @@ namespace gum {
         _causal_weights_.set(const_cast< const DiscreteVariable* >(&this->variable(i)),
                              p->causalWeight(this->variable(i)));
       }
+    } else {
+      MultiDimReadOnly< GUM_SCALAR >::copyFrom(src);
     }
   }
 

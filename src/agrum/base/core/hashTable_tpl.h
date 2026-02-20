@@ -935,8 +935,7 @@ namespace gum {
 
     // parse this and check that each element also belongs to from
     for (auto iter = begin(); iter != end(); ++iter) {
-      auto p = from.tryGet(iter.key());
-      if (!p || iter.val() != *p) return false;
+      if (auto p = from.tryGet(iter.key()); !p || iter.val() != *p) return false;
     }
 
     return true;

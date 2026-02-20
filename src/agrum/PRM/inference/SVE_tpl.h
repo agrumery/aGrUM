@@ -455,10 +455,9 @@ namespace gum {
         for (const auto agg: i->type().aggregates())
           pool.insert(_getAggTensor_(i, agg));
 
-        auto p_eo2 = _elim_orders_.tryGet(&(i->type()));
-        if (!p_eo2)
+        if (auto p_eo2 = _elim_orders_.tryGet(&(i->type())); !p_eo2) {
           GUM_ERROR(FatalError, "there should be at least one node here.")
-        {
+        } else {
           std::vector< const DiscreteVariable* > elim;
 
           for (auto iter = (*p_eo2)->begin();
@@ -576,8 +575,9 @@ namespace gum {
       _class_elim_order_ = new Sequence< std::string >();
       for (auto c: class_elim_order) {
         std::string name = c->name();
-        auto        pos  = name.find_first_of("<");
-        if (pos != std::string::npos) { name = name.substr(0, pos); }
+        if (auto pos = name.find_first_of("<"); pos != std::string::npos) {
+          name = name.substr(0, pos);
+        }
         try {
           _class_elim_order_->insert(name);
         } catch (DuplicateElement const&) {}
@@ -643,8 +643,9 @@ namespace gum {
 
     template < typename GUM_SCALAR >
     INLINE std::string SVE< GUM_SCALAR >::_trim_(const std::string& s) {
-      auto pos = s.find_first_of("<");
-      if (pos != std::string::npos) { return s.substr(0, pos); }
+      if (auto pos = s.find_first_of("<"); pos != std::string::npos) {
+        return s.substr(0, pos);
+      }
       return s;
     }
 

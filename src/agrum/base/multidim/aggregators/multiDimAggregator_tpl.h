@@ -127,14 +127,13 @@ namespace gum {
     template < typename GUM_SCALAR >
     void MultiDimAggregator< GUM_SCALAR >::copyFrom(
         const MultiDimContainer< GUM_SCALAR >& src) const {
-      auto p = dynamic_cast< const MultiDimAggregator< GUM_SCALAR >* >(&src);
-      if (p == nullptr) {
-        MultiDimReadOnly< GUM_SCALAR >::copyFrom(src);
-      } else {
+      if (auto p = dynamic_cast< const MultiDimAggregator< GUM_SCALAR >* >(&src)) {
         if (p->name() != this->name()) {
           GUM_ERROR(OperationNotAllowed,
                     "Can not copy from a " << p->name() << " to a " << this->name());
         }
+      } else {
+        MultiDimReadOnly< GUM_SCALAR >::copyFrom(src);
       }
       // it the types aree consistant, nothing to do...
     }

@@ -188,8 +188,8 @@ void _addO3Import_( O3Import i ) {
 }
 
 void _split_( const O3Label& value, O3Label& left, O3Label& right) {
-  auto idx = value.label().find_first_of('.');
-  if ( ( idx == std::string::npos ) || ( idx == value.label().size() - 1 ) ) {
+  if (auto idx = value.label().find_first_of('.');
+      ( idx == std::string::npos ) || ( idx == value.label().size() - 1 ) ) {
     left = O3Label( value.position(), value.label() );
     right = O3Label( value.position(), value.label() );
   } else {

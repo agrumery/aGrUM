@@ -585,9 +585,7 @@ namespace gum {
               factory.addParent(parent.label());
             }
 
-            auto raw = dynamic_cast< const O3RawCPT* >(attr.get());
-
-            if (raw) {
+            if (auto raw = dynamic_cast< const O3RawCPT* >(attr.get())) {
               auto values = std::vector< std::string >();
               for (const auto& val: raw->values()) {
                 values.push_back(val.formula().formula());
@@ -595,8 +593,7 @@ namespace gum {
               factory.setRawCPFByColumns(values);
             }
 
-            auto rule_cpt = dynamic_cast< const O3RuleCPT* >(attr.get());
-            if (rule_cpt) {
+            if (auto rule_cpt = dynamic_cast< const O3RuleCPT* >(attr.get())) {
               for (const auto& rule: rule_cpt->rules()) {
                 auto labels = std::vector< std::string >();
                 auto values = std::vector< std::string >();
@@ -628,11 +625,9 @@ namespace gum {
         }
 
         // Check that CPT sums to 1
-        auto raw = dynamic_cast< O3RawCPT* >(&attr);
-        if (raw) { return _checkRawCPT_(c, *raw); }
+        if (auto raw = dynamic_cast< O3RawCPT* >(&attr)) { return _checkRawCPT_(c, *raw); }
 
-        auto rule = dynamic_cast< O3RuleCPT* >(&attr);
-        if (rule) { return _checkRuleCPT_(c, *rule); }
+        if (auto rule = dynamic_cast< O3RuleCPT* >(&attr)) { return _checkRuleCPT_(c, *rule); }
 
         return true;
       }
@@ -866,8 +861,7 @@ namespace gum {
           } else {
             // should be a reference slot
 
-            auto ref = dynamic_cast< const PRMReferenceSlot< GUM_SCALAR >* >(elt);
-            if (ref) {
+            if (auto ref = dynamic_cast< const PRMReferenceSlot< GUM_SCALAR >* >(elt)) {
               current = &(ref->slotType());
             } else {
               return nullptr;   // failsafe to prevent infinite loop

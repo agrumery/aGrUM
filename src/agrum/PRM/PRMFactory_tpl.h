@@ -1170,8 +1170,7 @@ namespace gum {
 
       // Looking for the type relatively to current package
       std::string relatif_ns = currentPackage();
-      size_t      last_dot   = relatif_ns.find_last_of('.');
-      if (last_dot != std::string::npos) {
+      if (auto last_dot = relatif_ns.find_last_of('.'); last_dot != std::string::npos) {
         relatif_ns = relatif_ns.substr(0, last_dot) + '.' + name;
         if (auto p = _prm_->_typeMap_.tryGet(relatif_ns)) {
           if (type == 0) {
@@ -1803,9 +1802,7 @@ namespace gum {
     template < typename GUM_SCALAR >
     INLINE void PRMFactory< GUM_SCALAR >::setReferenceSlot(const std::string& l_i,
                                                            const std::string& r_i) {
-      size_t pos = l_i.find_last_of('.');
-
-      if (pos != std::string::npos) {
+      if (auto pos = l_i.find_last_of('.'); pos != std::string::npos) {
         std::string l_ref = l_i.substr(pos + 1, std::string::npos);
         setReferenceSlot(l_i.substr(0, pos), l_ref, r_i);
       } else {

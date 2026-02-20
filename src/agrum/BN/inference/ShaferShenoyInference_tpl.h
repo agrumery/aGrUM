@@ -813,8 +813,7 @@ namespace gum {
     // we shall now add all the tensors of the soft evidence to the cliques
     const NodeProperty< const Tensor< GUM_SCALAR >* >& evidence = this->evidence();
     for (const auto node: this->softEvidenceNodes()) {
-      auto ptr_clique = _node_to_clique_.tryGet(node);
-      if (ptr_clique) {
+      if (auto ptr_clique = _node_to_clique_.tryGet(node)) {
         auto ev_pot = new ScheduleMultiDim< Tensor< GUM_SCALAR > >(*evidence[node], false);
         _node_to_soft_evidence_.insert(node, ev_pot);
         _clique_tensors_[*ptr_clique].insert(ev_pot);
@@ -1430,14 +1429,12 @@ namespace gum {
     // might not exist, hence the if checks
     NodeSet clique_targets;
     for (const auto node: this->targets()) {
-      auto ptr_clique = _node_to_clique_.tryGet(node);
-      if (ptr_clique) {
+      if (auto ptr_clique = _node_to_clique_.tryGet(node)) {
         clique_targets.insert(*ptr_clique);
       }
     }
     for (const auto& set: this->jointTargets()) {
-      auto ptr_clique = _joint_target_to_clique_.tryGet(set);
-      if (ptr_clique) {
+      if (auto ptr_clique = _joint_target_to_clique_.tryGet(set)) {
         clique_targets.insert(*ptr_clique);
       }
     }

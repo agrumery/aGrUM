@@ -306,8 +306,7 @@ namespace gum {
     // create the entry in the indices hashtable
     const Val*           new_val;
     std::vector< Size >* new_vect;
-    auto existing = _indices_.tryGet(val);
-    if (!existing) {
+    if (auto existing = _indices_.tryGet(val); !existing) {
       auto& new_elt = _indices_.insert(val, std::vector< Size >());
       new_val       = &(new_elt.first);
       new_vect      = &(new_elt.second);
@@ -362,8 +361,7 @@ namespace gum {
     // create the entry in the indices hashtable
     const Val*           new_val;
     std::vector< Size >* new_vect;
-    auto existing = _indices_.tryGet(val);
-    if (!existing) {
+    if (auto existing = _indices_.tryGet(val); !existing) {
       auto& new_elt = _indices_.insert(std::move(val), std::vector< Size >());
       new_val       = &(new_elt.first);
       new_vect      = &(new_elt.second);

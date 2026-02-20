@@ -387,8 +387,9 @@ namespace gum {
       _class_elim_order_ = new Sequence< std::string >();
       for (auto c: class_elim_order) {
         std::string name = c->name();
-        auto        pos  = name.find_first_of("<");
-        if (pos != std::string::npos) { name = name.substr(0, pos); }
+        if (auto pos = name.find_first_of("<"); pos != std::string::npos) {
+          name = name.substr(0, pos);
+        }
         try {
           _class_elim_order_->insert(name);
         } catch (DuplicateElement const&) {}
@@ -502,8 +503,9 @@ namespace gum {
 
     template < typename GUM_SCALAR >
     INLINE std::string SVED< GUM_SCALAR >::_trim_(const std::string& s) {
-      auto pos = s.find_first_of("<");
-      if (pos != std::string::npos) { return s.substr(0, pos); }
+      if (auto pos = s.find_first_of("<"); pos != std::string::npos) {
+        return s.substr(0, pos);
+      }
       return s;
     }
 

@@ -70,9 +70,11 @@ namespace gum {
       AggregatorDecomposition< GUM_SCALAR >::getDecomposedAggregator(BayesNet< GUM_SCALAR >& bn) {
     for (NodeId node: bn.nodes().asNodeSet()) {
       std::string description = bn.cpt(node).toString();
-      auto        p = dynamic_cast< const gum::aggregator::MultiDimAggregator< GUM_SCALAR >* >(
-          bn.cpt(node).content());
-      if (p != nullptr && p->isDecomposable()) { decomposeAggregator_(bn, node); }
+      if (auto p = dynamic_cast< const gum::aggregator::MultiDimAggregator< GUM_SCALAR >* >(
+              bn.cpt(node).content());
+          p != nullptr && p->isDecomposable()) {
+        decomposeAggregator_(bn, node);
+      }
     }
     return bn;
   }

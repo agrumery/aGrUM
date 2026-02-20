@@ -530,9 +530,8 @@ namespace gum {
 
   template < typename GUM_SCALAR >
   void BayesNet< GUM_SCALAR >::addWeightedArc(NodeId tail, NodeId head, GUM_SCALAR causalWeight) {
-    auto* CImodel = dynamic_cast< const MultiDimICIModel< GUM_SCALAR >* >(cpt(head).content());
-
-    if (CImodel != 0) {
+    if (auto* CImodel
+        = dynamic_cast< const MultiDimICIModel< GUM_SCALAR >* >(cpt(head).content())) {
       // or is OK
       addArc(tail, head);
 

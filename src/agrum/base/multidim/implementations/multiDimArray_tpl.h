@@ -78,12 +78,10 @@ namespace gum {
 
   template < typename GUM_SCALAR >
   void MultiDimArray< GUM_SCALAR >::copyFrom(const MultiDimContainer< GUM_SCALAR >& src) const {
-    auto mda = dynamic_cast< const MultiDimArray< GUM_SCALAR >* >(&src);
-
-    if (mda == nullptr) {
-      MultiDimContainer< GUM_SCALAR >::copyFrom(src);
-    } else {
+    if (auto mda = dynamic_cast< const MultiDimArray< GUM_SCALAR >* >(&src)) {
       values_ = mda->values_;
+    } else {
+      MultiDimContainer< GUM_SCALAR >::copyFrom(src);
     }
   }
 
