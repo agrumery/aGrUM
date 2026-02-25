@@ -78,12 +78,12 @@ class ActBuilderDocDoxygen(ActBuilderAgrum):
 
     self.run_start(prefix + "cmake")
     cmake_cde = self.build_cmake()
-    err = err or 0 < self.execFromLine(cmake_cde, checkRC=False)
+    err = err or 0 != self.execFromLine(cmake_cde, checkRC=False)
 
     t1 = time.time()
     self.run_start(prefix + "make")
     make_cde = self.build_make()
-    err = err or 0 < self.execFromLine(make_cde, checkRC=False)
+    err = err or 0 != self.execFromLine(make_cde, checkRC=False)
     t2 = time.time()
 
     gc = t1 - t0

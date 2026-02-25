@@ -64,7 +64,7 @@ class ActBuilder:
     notif(f"{builder_name} ⌛ [{msg}]", cfg.prefix_line)
 
   def run_start(self, subaction: str = ""):
-    self.warn(f"{subaction} 🚀                    ")
+    self.warn(f"{subaction} �                    ")
 
   def run_done(self, subaction: str = ""):
     self.warn(f"{subaction} ✅                         ")
@@ -98,14 +98,14 @@ class ActBuilder:
     if not silent:
       while True:
         line = process.stdout.readline()
-        if not line:  # EOF: process has finished and all output has been read
+        if not line:  # EOF: process has exited and all output has been read
           break
         try:
-          response = line.decode().strip()
+          response = line.decode().rstrip()
         except UnicodeDecodeError:
-          response = line.decode("utf-8", errors="replace").strip()
-
-        notif(response, cfg.prefix_line)
+          response = line.decode("utf-8", errors="replace").rstrip()
+        if response:
+          notif(response, cfg.prefix_line)
 
     process.stdout.close()
     return_code = process.wait()
