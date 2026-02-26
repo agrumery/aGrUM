@@ -1256,21 +1256,21 @@ namespace gum {
     template < GUM_Numeric GUM_SCALAR >
     PRMInterface< GUM_SCALAR >*
         PRMFactory< GUM_SCALAR >::_retrieveInterface_(const std::string& name) const {
-      PRMInterface< GUM_SCALAR >* interface = nullptr;
+      PRMInterface< GUM_SCALAR >* a_interface = nullptr;
       std::string                 full_name;
 
       // Looking for the type using its name
       if (auto p = _prm_->_interfaceMap_.tryGet(name)) {
-        interface = *p;
-        full_name = name;
+        a_interface = *p;
+        full_name   = name;
       }
 
       // Looking for the type using current package
       std::string prefixed = _addPrefix_(name);
       if (auto p = _prm_->_interfaceMap_.tryGet(prefixed)) {
-        if (interface == nullptr) {
-          interface = *p;
-          full_name = prefixed;
+        if (a_interface == nullptr) {
+          a_interface = *p;
+          full_name   = prefixed;
         } else if (full_name != prefixed) {
           GUM_ERROR(DuplicateElement,
                     "Interface name '" << name << "' is ambiguous: specify full name.");
@@ -1286,9 +1286,9 @@ namespace gum {
           std::string ns_name = ns + "." + name;
 
           if (auto p = _prm_->_interfaceMap_.tryGet(ns_name)) {
-            if (interface == nullptr) {
-              interface = *p;
-              full_name = ns_name;
+            if (a_interface == nullptr) {
+              a_interface = *p;
+              full_name   = ns_name;
             } else if (full_name != ns_name) {
               GUM_ERROR(DuplicateElement,
                         "Interface name '" << name << "' is ambiguous: specify full name.");
@@ -1297,11 +1297,11 @@ namespace gum {
         }
       }
 
-      if (interface == nullptr) {
+      if (a_interface == nullptr) {
         GUM_ERROR(NotFound, "Interface '" << name << "' not found, check imports.")
       }
 
-      return interface;
+      return a_interface;
     }
 
     template < GUM_Numeric GUM_SCALAR >

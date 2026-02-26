@@ -66,11 +66,11 @@ namespace gum::aggregator {
    * @see MultiDimAggregator for more details of implementations
    */
   template < GUM_Numeric GUM_SCALAR >
-  class Sum: public MultiDimAggregator< GUM_SCALAR > {
+  class Sum final: public MultiDimAggregator< GUM_SCALAR > {
     public:
     Sum();
     Sum(const Sum< GUM_SCALAR >& from);
-    ~Sum() final;
+    ~Sum() override;
 
     /**
      * This method creates a clone of this object, without its content
