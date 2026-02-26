@@ -203,7 +203,7 @@ def main() -> int:
   configure_colors(current["no_fun"])
   about()
 
-  options = cfg.parser.parse_args()
+  options = cfg.parser.parse_intermixed_args()
   extract_cmd_from_args(current, options.cmds)
   update_options_from_args(current, options)
 

@@ -45,6 +45,8 @@
 
 namespace gum::credal {
 
+  using gum::Arc;   // MSVC does not resolve Arc from parent namespace inside templates
+
   template < GUM_Numeric GUM_SCALAR >
   void CNLoopyPropagation< GUM_SCALAR >::saveInference(const std::string& path) {
     std::string path_name = path.substr(0, path.size() - 4);
