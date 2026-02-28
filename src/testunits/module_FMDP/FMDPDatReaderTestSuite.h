@@ -112,7 +112,7 @@ namespace gum_tests {
 
     public:
     void testConstuctor() {
-      std::string _file_ = GET_RESSOURCES_PATH("");
+      std::string _file_ = GET_RESSOURCES_PATH("FMDP/nonexistent_file.dat");
 
       gum::FMDP< double >           fmdp(true);
       gum::FMDPDatReader< double >* reader = nullptr;

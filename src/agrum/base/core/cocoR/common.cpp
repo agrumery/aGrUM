@@ -399,8 +399,13 @@ namespace gum {
       fseek(s, 0, SEEK_END);
       fileLen_ = (int)ftell(s);
       fseek(s, 0, SEEK_SET);
-      bufLen_   = (fileLen_ < COCO_LARGE_BUFFER_SIZE) ? fileLen_ : COCO_LARGE_BUFFER_SIZE;
-      bufStart_ = INT_MAX;   // nothing in the buffer so far
+      if (fileLen_ < 0) {
+        // ftell failed despite CanSeek (e.g. directory fd on Linux): treat as non-seekable
+        fileLen_ = bufLen_ = bufStart_ = 0;
+      } else {
+        bufLen_   = (fileLen_ < COCO_LARGE_BUFFER_SIZE) ? fileLen_ : COCO_LARGE_BUFFER_SIZE;
+        bufStart_ = INT_MAX;   // nothing in the buffer so far
+      }
     } else {
       fileLen_ = bufLen_ = bufStart_ = 0;
     }

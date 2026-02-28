@@ -69,6 +69,8 @@ namespace gum {
     _factory_ = new FMDPFactory< GUM_ELEMENT >(_fmdp_);
     //~  _factory_->setVerbose();
     _ioerror_ = false;
+    _scanner_ = nullptr;
+    _parser_  = nullptr;
 
     try {
       _scanner_ = new MDPDAT::Scanner(_streamName_.c_str());
@@ -81,12 +83,8 @@ namespace gum {
   FMDPDatReader< GUM_ELEMENT >::~FMDPDatReader() {
     GUM_DESTRUCTOR(FMDPDatReader);
 
-    if (!_ioerror_) {
-      // this could lead to memory leak !!
-      if (_parser_) delete (_parser_);
-
-      if (_scanner_) delete (_scanner_);
-    }
+    if (_parser_) delete (_parser_);
+    if (_scanner_) delete (_scanner_);
 
     if (_factory_) delete (_factory_);
   }
