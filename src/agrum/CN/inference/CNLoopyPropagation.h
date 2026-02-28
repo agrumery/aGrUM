@@ -73,7 +73,7 @@ namespace gum {
     class CNLoopyPropagation: public InferenceEngine< GUM_SCALAR > {
       public:
       using msg   = std::vector< Tensor< GUM_SCALAR >* >;
-      using cArcP = const gum::Arc*;
+      using cArcP = const class gum::Arc*;   // 'class' disambiguates from GDI Arc on Windows
 
       /**
        * Inference type to be used by the algorithm.
