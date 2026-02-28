@@ -140,28 +140,6 @@ def adapt_options_from_context(options: argparse.Namespace, args: set[str]) -> N
     notif("Options [no-fun] forced by platform")
 
 
-def show_pickle() -> None:
-  """
-  Show the content of the pickle file used to store the current configuration.
-  """
-  main = ["target", "action", "mode"]
-  try:
-    with open(cfg.configFile, "rb") as fp:
-      shlv = pickle.load(fp)
-      notif("Current configuration loaded from pickle:")
-      notif()
-      for key in main:
-        if key in shlv:
-          warn(f"  [{key}]: {shlv[key]}")
-        else:
-          error(f"  [{key}] not set")
-      notif()
-      for key in sorted(shlv.keys()):
-        if key not in main:
-          notif(f"  [{key}]: {shlv[key]}")
-  except FileNotFoundError:
-    error(f"Configuration file {cfg.configFile} not found.")
-
 
 def load_current_from_pickle() -> dict[str, str]:
   current = {}
@@ -218,15 +196,13 @@ def main() -> int:
 
   match current["action"]:
     case "show":
-      show_pickle()
+      from .ActBuilderShowConfig import ActBuilderShowConfig
+
+      builder = ActBuilderShowConfig(current)
     case "clean" | "purge":
       from .ActBuilderCleaning import ActBuilderCleaning
 
       builder = ActBuilderCleaning(current)
-    case "show":
-      from .ActBuilderShowConfig import ActBuilderShowConfig
-
-      builder = ActBuilderShowConfig(current)
     case "guideline":
       from .ActBuilderGuideline import ActBuilderGuideline
 

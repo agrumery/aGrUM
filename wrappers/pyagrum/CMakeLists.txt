@@ -88,6 +88,10 @@ set(AGRUM_SOURCE_DIR "${CMAKE_CURRENT_SOURCE_DIR}/../../src")
 set(AGRUM_FILE_VERSION "${CMAKE_CURRENT_SOURCE_DIR}/../../VERSION.txt")
 include(${AGRUM_FILE_VERSION})
 include("${AGRUM_SOURCE_DIR}/cmake/Config.agrum.cmake")
+# pyAgrum forces STL threads to avoid OpenMP + fork() deadlocks when Python uses multiprocessing
+set(CMAKE_GUM_THREADS "stl")
+message(STATUS "pyAgrum: forcing STL threads (OpenMP disabled to prevent fork/OpenMP deadlocks)")
+include("${AGRUM_SOURCE_DIR}/cmake/threads.cmake")
 configure_file("${AGRUM_SOURCE_DIR}/cmake/config.h.in" "${CMAKE_CURRENT_BINARY_DIR}/agrum/config.h")
 
 # ==
