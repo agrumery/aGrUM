@@ -871,13 +871,14 @@ namespace gum::credal {
         GUM_SCALAR lmin = 1.;
         GUM_SCALAR lmax = 1.;
 
-        for (auto chil: children) {
-          lmin *= ArcsL_min_[Arc(Y, chil)];
+        for (const NodeId chil: children) {
+          const class gum::Arc arc_YC(Y, chil);
+          lmin *= ArcsL_min_[arc_YC];
 
-          if (ArcsL_max_.exists(Arc(Y, chil))) {
-            lmax *= ArcsL_max_[Arc(Y, chil)];
+          if (ArcsL_max_.exists(arc_YC)) {
+            lmax *= ArcsL_max_[arc_YC];
           } else {
-            lmax *= ArcsL_min_[Arc(Y, chil)];
+            lmax *= ArcsL_min_[arc_YC];
           }
         }
 
@@ -922,10 +923,13 @@ namespace gum::credal {
      *  lmin == lmax == 1  => sends 1 as message to parents
      */
 
+    const class gum::Arc arc_XY(X, Y);
     if (lmin == lmax && lmin == 1.) {
-      ArcsL_min_[Arc(X, Y)] = lmin;
+      ArcsL_min_[arc_XY] = lmin;
 
-      if (ArcsL_max_.exists(Arc(X, Y))) { ArcsL_max_.erase(Arc(X, Y)); }
+      if (ArcsL_max_.exists(arc_XY)) {
+        ArcsL_max_.erase(arc_XY);
+      }
 
       return;
     }
@@ -952,12 +956,13 @@ namespace gum::credal {
 
         // compute probability distribution to avoid doing it multiple times
         // (at each combination of messages)
-        distri[1] = ArcsP_min_[Arc(_bnet_->nodeId(**jt), Y)];
+        const class gum::Arc arc_PY(_bnet_->nodeId(**jt), Y);
+        distri[1] = ArcsP_min_[arc_PY];
         distri[0] = GUM_SCALAR(1.) - distri[1];
         msg_p.push_back(distri);
 
-        if (ArcsP_max_.exists(Arc(_bnet_->nodeId(**jt), Y))) {
-          distri[1] = ArcsP_max_[Arc(_bnet_->nodeId(**jt), Y)];
+        if (ArcsP_max_.exists(arc_PY)) {
+          distri[1] = ArcsP_max_[arc_PY];
           distri[0] = GUM_SCALAR(1.) - distri[1];
           msg_p.push_back(distri);
         }
@@ -994,24 +999,24 @@ namespace gum::credal {
 
       bool update = false;
 
-      if (min != ArcsL_min_[Arc(X, Y)]) {
-        ArcsL_min_[Arc(X, Y)] = min;
-        update                = true;
+      if (min != ArcsL_min_[arc_XY]) {
+        ArcsL_min_[arc_XY] = min;
+        update             = true;
       }
 
-      if (ArcsL_max_.exists(Arc(X, Y))) {
-        if (max != ArcsL_max_[Arc(X, Y)]) {
+      if (ArcsL_max_.exists(arc_XY)) {
+        if (max != ArcsL_max_[arc_XY]) {
           if (max != min) {
-            ArcsL_max_[Arc(X, Y)] = max;
+            ArcsL_max_[arc_XY] = max;
           } else {   // if ( max == min )
-            ArcsL_max_.erase(Arc(X, Y));
+            ArcsL_max_.erase(arc_XY);
           }
 
           update = true;
         }
       } else {
         if (max != min) {
-          ArcsL_max_.insert(Arc(X, Y), max);
+          ArcsL_max_.insert(arc_XY, max);
           update = true;
         }
       }
@@ -1037,10 +1042,11 @@ namespace gum::credal {
     // LM_part ---- from all children but one --- the lonely one will get the
     // message
 
+    const class gum::Arc arc_XDC(X, demanding_child);
     if (_infE_::evidence_.exists(X)) {
-      ArcsP_min_[Arc(X, demanding_child)] = _infE_::evidence_[X][1];
+      ArcsP_min_[arc_XDC] = _infE_::evidence_[X][1];
 
-      if (ArcsP_max_.exists(Arc(X, demanding_child))) { ArcsP_max_.erase(Arc(X, demanding_child)); }
+      if (ArcsP_max_.exists(arc_XDC)) { ArcsP_max_.erase(arc_XDC); }
 
       return;
     }
@@ -1057,12 +1063,13 @@ namespace gum::credal {
     for (auto chil: children) {
       if (chil == demanding_child) { continue; }
 
-      lmin *= ArcsL_min_[Arc(X, chil)];
+      const class gum::Arc arc_XC(X, chil);
+      lmin *= ArcsL_min_[arc_XC];
 
-      if (ArcsL_max_.exists(Arc(X, chil))) {
-        lmax *= ArcsL_max_[Arc(X, chil)];
+      if (ArcsL_max_.exists(arc_XC)) {
+        lmax *= ArcsL_max_[arc_XC];
       } else {
-        lmax *= ArcsL_min_[Arc(X, chil)];
+        lmax *= ArcsL_min_[arc_XC];
       }
     }
 
@@ -1094,14 +1101,14 @@ namespace gum::credal {
       // use const_iterators if available
       for (auto jt = ++parents->begin(), theEnd = parents->end(); jt != theEnd; ++jt) {
         // compute probability distribution to avoid doing it multiple times
-        // (at
-        // each combination of messages)
-        distri[1] = ArcsP_min_[Arc(_bnet_->nodeId(**jt), X)];
+        // (at each combination of messages)
+        const class gum::Arc arc_PX(_bnet_->nodeId(**jt), X);
+        distri[1] = ArcsP_min_[arc_PX];
         distri[0] = GUM_SCALAR(1.) - distri[1];
         msg_p.push_back(distri);
 
-        if (ArcsP_max_.exists(Arc(_bnet_->nodeId(**jt), X))) {
-          distri[1] = ArcsP_max_[Arc(_bnet_->nodeId(**jt), X)];
+        if (ArcsP_max_.exists(arc_PX)) {
+          distri[1] = ArcsP_max_[arc_PX];
           distri[0] = GUM_SCALAR(1.) - distri[1];
           msg_p.push_back(distri);
         }
@@ -1197,24 +1204,24 @@ namespace gum::credal {
 
       bool update = false;
 
-      if (msg_p_min != ArcsP_min_[Arc(X, demanding_child)]) {
-        ArcsP_min_[Arc(X, demanding_child)] = msg_p_min;
-        update                              = true;
+      if (msg_p_min != ArcsP_min_[arc_XDC]) {
+        ArcsP_min_[arc_XDC] = msg_p_min;
+        update              = true;
       }
 
-      if (ArcsP_max_.exists(Arc(X, demanding_child))) {
-        if (msg_p_max != ArcsP_max_[Arc(X, demanding_child)]) {
+      if (ArcsP_max_.exists(arc_XDC)) {
+        if (msg_p_max != ArcsP_max_[arc_XDC]) {
           if (msg_p_max != msg_p_min) {
-            ArcsP_max_[Arc(X, demanding_child)] = msg_p_max;
+            ArcsP_max_[arc_XDC] = msg_p_max;
           } else {   // if ( msg_p_max == msg_p_min )
-            ArcsP_max_.erase(Arc(X, demanding_child));
+            ArcsP_max_.erase(arc_XDC);
           }
 
           update = true;
         }
       } else {
         if (msg_p_max != msg_p_min) {
-          ArcsP_max_.insert(Arc(X, demanding_child), msg_p_max);
+          ArcsP_max_.insert(arc_XDC, msg_p_max);
           update = true;
         }
       }
@@ -1245,12 +1252,13 @@ namespace gum::credal {
 
         if (!children.empty() && !_infE_::evidence_.exists(node)) {
           for (auto chil: children) {
-            lmin *= ArcsL_min_[Arc(node, chil)];
+            const class gum::Arc arc_NC(node, chil);
+            lmin *= ArcsL_min_[arc_NC];
 
-            if (ArcsL_max_.exists(Arc(node, chil))) {
-              lmax *= ArcsL_max_[Arc(node, chil)];
+            if (ArcsL_max_.exists(arc_NC)) {
+              lmax *= ArcsL_max_[arc_NC];
             } else {
-              lmax *= ArcsL_min_[Arc(node, chil)];
+              lmax *= ArcsL_min_[arc_NC];
             }
           }
 
@@ -1290,14 +1298,14 @@ namespace gum::credal {
           // cbegin
           for (auto jt = ++parents->begin(), theEnd = parents->end(); jt != theEnd; ++jt) {
             // compute probability distribution to avoid doing it multiple
-            // times
-            // (at each combination of messages)
-            distri[1] = ArcsP_min_[Arc(_bnet_->nodeId(**jt), node)];
+            // times (at each combination of messages)
+            const class gum::Arc arc_PN(_bnet_->nodeId(**jt), node);
+            distri[1] = ArcsP_min_[arc_PN];
             distri[0] = GUM_SCALAR(1.) - distri[1];
             msg_p.push_back(distri);
 
-            if (ArcsP_max_.exists(Arc(_bnet_->nodeId(**jt), node))) {
-              distri[1] = ArcsP_max_[Arc(_bnet_->nodeId(**jt), node)];
+            if (ArcsP_max_.exists(arc_PN)) {
+              distri[1] = ArcsP_max_[arc_PN];
               distri[0] = GUM_SCALAR(1.) - distri[1];
               msg_p.push_back(distri);
             }
