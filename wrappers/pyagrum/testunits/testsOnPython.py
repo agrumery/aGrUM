@@ -81,6 +81,7 @@ def runTests(local: bool, test_module: str, test_suite: str, log) -> int:
   if pandasFound and sklearnFound:
     from tests import BNClassifierTestSuite
   else:
+    BNClassifierTestSuite = None
     log.warning("[pyAgrum] pyagrum.lib.classifier needs pandas and scikit-learn")
 
   from tests import BNDatabaseGeneratorTestSuite
@@ -91,15 +92,24 @@ def runTests(local: bool, test_module: str, test_suite: str, log) -> int:
 
   if pandasFound:
     from tests import DiscreteTypeProcessorTestSuite
+  else:
+    DiscreteTypeProcessorTestSuite = None
+    log.warning("[pyAgrum] pyagrum.lib.discreteTypeProcessor needs pandas")
+
   from tests import EssentialGraphTestSuite
   from tests import EvidenceTestSuite
 
   if pandasFound:
     from tests import ExplainCausalTest
+  else:
+    ExplainCausalTest = None
+    log.warning("[pyAgrum] ExplainCausalTest needs pandas")
+
   from tests import GraphTestSuite
   from tests import ICIModelsForBNTestSuite
   from tests import ImportTestSuite
   from tests import InfluenceDiagramTestSuite
+  from tests import InformationTheoryTestSuite
   from tests import InstantiationTestSuite
   from tests import JTInferenceTestSuite
   from tests import JunctionTreeTestSuite
@@ -122,27 +132,43 @@ def runTests(local: bool, test_module: str, test_suite: str, log) -> int:
     from tests import ShallCausalTestSuite
     from tests import ShallConditionalTestSuite
     from tests import ShallMarginalTestSuite
+  else:
+    ShapCausalTestSuite = None
+    ShapConditionalTestSuite = None
+    ShapCustomCacheTestSuite = None
+    ShapMarginalTestSuite = None
+    ShallCausalTestSuite = None
+    ShallConditionalTestSuite = None
+    ShallMarginalTestSuite = None
+    log.warning("[pyAgrum] Shapley(s) needs pandas")
 
   if pandasFound and sklearnFound:
     from tests import SkbnTestSuite
   else:
+    SkbnTestSuite = None
     log.warning("[pyAgrum] pyagrum.lib.classifier needs pandas and scikit-learn")
 
   from tests import VariablesTestSuite
 
   if pandasFound:
-    from tests import OldCausalASTTestSuite
-    from tests import OldCausalDSepTestSuite
-    from tests import OldCausalModelTestSuite
-    from tests import OldCausalNonRegressionTestSuite
-    from tests import OldCausalEffectEstimationTestSuite
+    from tests import CausalEffectEstimationTestSuite
+    from tests import InterventionEffectEstimationTestSuite
+  else:
+    CausalEffectEstimationTestSuite = None
+    InterventionEffectEstimationTestSuite = None
+    log.warning("[pyAgrum] CausalEffectEstimationTestSuite needs pandas")
 
   if pandasFound:
     from tests import CausalASTTestSuite
     from tests import CausalDSepTestSuite
     from tests import CausalModelTestSuite
     from tests import CausalNonRegressionTestSuite
-    from tests import CausalEffectEstimationTestSuite
+  else:
+    CausalASTTestSuite = None
+    CausalDSepTestSuite = None
+    CausalModelTestSuite = None
+    CausalNonRegressionTestSuite = None
+    log.warning("[pyAgrum] Causal*TestSuite needs pandas")
 
   from tests import WorkaroundTestSuite
 
@@ -157,12 +183,18 @@ def runTests(local: bool, test_module: str, test_suite: str, log) -> int:
     from tests import CLGSamplingTestSuite
     from tests import CLGCanonicalFormTestSuite
     from tests import CLGInferenceTestSuite
+  else:
+    CLGLearningTestSuite = None
+    CLGSamplingTestSuite = None
+    CLGCanonicalFormTestSuite = None
+    CLGInferenceTestSuite = None
+    log.warning("[pyAgrum] CLG*TestSuite needs pandas")
 
   from tests import MixtureModelTestSuite
 
   import time
 
-  tl = list()
+  tl = []
   if test_suite != "":
     tl.append(eval(test_suite + "TestSuite.ts"))
   else:
@@ -184,6 +216,7 @@ def runTests(local: bool, test_module: str, test_suite: str, log) -> int:
       tl.append(ICIModelsForBNTestSuite.ts)
       tl.append(ImportTestSuite.ts)
       tl.append(InfluenceDiagramTestSuite.ts)
+      tl.append(InformationTheoryTestSuite.ts)
       tl.append(InstantiationTestSuite.ts)
       tl.append(JTInferenceTestSuite.ts)
       tl.append(JunctionTreeTestSuite.ts)
@@ -202,11 +235,8 @@ def runTests(local: bool, test_module: str, test_suite: str, log) -> int:
     if test_module in {"", "causaleffect"}:
       log.info("testing 'causaleffect'")
       if pandasFound:
-        tl.append(OldCausalASTTestSuite.ts)
-        tl.append(OldCausalDSepTestSuite.ts)
-        tl.append(OldCausalModelTestSuite.ts)
-        tl.append(OldCausalNonRegressionTestSuite.ts)
         tl.append(CausalEffectEstimationTestSuite.ts)
+        tl.append(InterventionEffectEstimationTestSuite.ts)
       else:
         log.warning("Pandas not found.")
 
@@ -252,14 +282,17 @@ def runTests(local: bool, test_module: str, test_suite: str, log) -> int:
 
     if test_module in {"", "explain"}:
       log.info("testing 'explain'")
-      tl.append(ExplainCausalTest.ts)
-      tl.append(ShapCausalTestSuite.ts)
-      tl.append(ShapConditionalTestSuite.ts)
-      tl.append(ShapCustomCacheTestSuite.ts)
-      tl.append(ShapMarginalTestSuite.ts)
-      tl.append(ShallCausalTestSuite.ts)
-      tl.append(ShallConditionalTestSuite.ts)
-      tl.append(ShallMarginalTestSuite.ts)
+      if pandasFound:
+        tl.append(ExplainCausalTest.ts)
+        tl.append(ShapCausalTestSuite.ts)
+        tl.append(ShapConditionalTestSuite.ts)
+        tl.append(ShapCustomCacheTestSuite.ts)
+        tl.append(ShapMarginalTestSuite.ts)
+        tl.append(ShallCausalTestSuite.ts)
+        tl.append(ShallConditionalTestSuite.ts)
+        tl.append(ShallMarginalTestSuite.ts)
+      else:
+        log.warning("Pandas not found.")
 
   tests = unittest.TestSuite(tl)
 
