@@ -872,7 +872,7 @@ namespace gum::credal {
         GUM_SCALAR lmax = 1.;
 
         for (const NodeId chil: children) {
-          const class gum::Arc arc_YC(Y, chil);
+          const Arc arc_YC{Y, chil};
           lmin *= ArcsL_min_[arc_YC];
 
           if (ArcsL_max_.exists(arc_YC)) {
@@ -923,7 +923,7 @@ namespace gum::credal {
      *  lmin == lmax == 1  => sends 1 as message to parents
      */
 
-    const class gum::Arc arc_XY(X, Y);
+    const Arc arc_XY{X, Y};
     if (lmin == lmax && lmin == 1.) {
       ArcsL_min_[arc_XY] = lmin;
 
@@ -956,7 +956,7 @@ namespace gum::credal {
 
         // compute probability distribution to avoid doing it multiple times
         // (at each combination of messages)
-        const class gum::Arc arc_PY(_bnet_->nodeId(**jt), Y);
+        const Arc arc_PY{_bnet_->nodeId(**jt), Y};
         distri[1] = ArcsP_min_[arc_PY];
         distri[0] = GUM_SCALAR(1.) - distri[1];
         msg_p.push_back(distri);
@@ -1042,7 +1042,7 @@ namespace gum::credal {
     // LM_part ---- from all children but one --- the lonely one will get the
     // message
 
-    const class gum::Arc arc_XDC(X, demanding_child);
+    const Arc arc_XDC{X, demanding_child};
     if (_infE_::evidence_.exists(X)) {
       ArcsP_min_[arc_XDC] = _infE_::evidence_[X][1];
 
@@ -1063,7 +1063,7 @@ namespace gum::credal {
     for (auto chil: children) {
       if (chil == demanding_child) { continue; }
 
-      const class gum::Arc arc_XC(X, chil);
+      const Arc arc_XC{X, chil};
       lmin *= ArcsL_min_[arc_XC];
 
       if (ArcsL_max_.exists(arc_XC)) {
@@ -1102,7 +1102,7 @@ namespace gum::credal {
       for (auto jt = ++parents->begin(), theEnd = parents->end(); jt != theEnd; ++jt) {
         // compute probability distribution to avoid doing it multiple times
         // (at each combination of messages)
-        const class gum::Arc arc_PX(_bnet_->nodeId(**jt), X);
+        const Arc arc_PX{_bnet_->nodeId(**jt), X};
         distri[1] = ArcsP_min_[arc_PX];
         distri[0] = GUM_SCALAR(1.) - distri[1];
         msg_p.push_back(distri);
@@ -1252,7 +1252,7 @@ namespace gum::credal {
 
         if (!children.empty() && !_infE_::evidence_.exists(node)) {
           for (auto chil: children) {
-            const class gum::Arc arc_NC(node, chil);
+            const Arc arc_NC{node, chil};
             lmin *= ArcsL_min_[arc_NC];
 
             if (ArcsL_max_.exists(arc_NC)) {
@@ -1299,7 +1299,7 @@ namespace gum::credal {
           for (auto jt = ++parents->begin(), theEnd = parents->end(); jt != theEnd; ++jt) {
             // compute probability distribution to avoid doing it multiple
             // times (at each combination of messages)
-            const class gum::Arc arc_PN(_bnet_->nodeId(**jt), node);
+            const Arc arc_PN{_bnet_->nodeId(**jt), node};
             distri[1] = ArcsP_min_[arc_PN];
             distri[0] = GUM_SCALAR(1.) - distri[1];
             msg_p.push_back(distri);

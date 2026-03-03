@@ -307,7 +307,13 @@ namespace gum {
   // ==========================================================================
   // Uses memory-mapped I/O for efficient access to very large files.
 #  if defined(_WIN32)
-#    include <windows.h>
+#    ifndef NOGDI
+#      define NOGDI
+#      include <windows.h>
+#      undef NOGDI
+#    else
+#      include <windows.h>
+#    endif
 #  else
 #    include <fcntl.h>
 #    include <unistd.h>
