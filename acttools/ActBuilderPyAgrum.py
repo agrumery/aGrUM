@@ -56,14 +56,14 @@ class ActBuilderPyAgrum(ActBuilder):
   def check_consistency(self) -> bool:
     cur_modules = self.current["modules"]
     if self.current["tests"] == "list":
-      error("List of [pyAgrum]'s tests is not available for now. Sorry.")
+      error("List of [[pyAgrum]]'s tests is not available for now. Sorry.")
       return False
 
     if not self.check_compiler_and_maker():
       return False
 
     if not self.current["static_lib"]:
-      error("Static library forced for [pyAgrum] target.")
+      error("Static library forced for [[pyAgrum]] target.")
       self.current["static_lib"] = True
 
     return True
@@ -180,7 +180,7 @@ class ActBuilderPyAgrum(ActBuilder):
         line += f' INSTALL.vcxproj /p:Configuration="{self.current["mode"]}"'
       case _:
         critic(
-          f"Action [{self.current['action']}] not treated for target [pyAgrum] for now in this compiler weird world."
+          f"Action [[{self.current['action']}]] not treated for target [[pyAgrum]] for now in this compiler weird world."
         )
 
     line += f" /p:BuildInParallel=true /maxcpucount:{self.current['jobs']}"
@@ -201,7 +201,7 @@ class ActBuilderPyAgrum(ActBuilder):
       case "doc":
         line += " doc"
       case _:
-        critic(f"Action [{self.current['action']}] not treated for now")
+        critic(f"Action [[{self.current['action']}]] not treated for now")
 
     line += f" -j {self.current['jobs']}"
 

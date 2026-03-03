@@ -51,7 +51,7 @@ class ActBuilderShowConfig(ActBuilder):
 
   def build(self):
     def aff_key(key: str):
-      notif(f"[{key}] => {self.current[key]}")
+      notif(f"[[{key}]] => {self.current[key]}")
 
     self.run_start()
 

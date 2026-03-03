@@ -262,7 +262,7 @@ def check_gum_dependencies(graph: bool = True, details: bool = True, correction:
     notif(f"  + Nbr of dependencies : {nb_arcs}")
 
   if graph:
-    notif("  + drawing headers map in [agrum-map.pdf]")
+    notif("  + drawing headers map in [[agrum-map.pdf]]")
     draw_gum_dependencies(deps)
 
   ancestors = {}
@@ -279,7 +279,7 @@ def check_gum_dependencies(graph: bool = True, details: bool = True, correction:
     for k in deps.keys():
       # if some include have to be removed
       if nb_non_opt[k] != len(deps[k]):
-        notif_oneline(f"[{k}]")
+        notif_oneline(f"[[{k}]]")
         remove_redundant_dependencies(k, deps[k])
 
   return nb_arcs - nb_opt_arcs

@@ -61,7 +61,7 @@ def test_names(testsList) -> set[str]:
 
 def print_tests_for_module(m):
   print("═" * 110)
-  notif(f" [{m} ")
+  notif(f" [[{m} ")
   print("═" * 110)
 
   l = test_names(
@@ -125,7 +125,7 @@ class ActBuilderAgrum(ActBuilder):
       case _:
         self.modules = setifyString(self.current["modules"])
         if not self.modules <= set(cfg.modules.keys()):
-          error(f"Modules [{self.current['modules']}] not supported. 'all' is selected by default.")
+          error(f"Modules [[{self.current['modules']}]] not supported. 'all' is selected by default.")
           self.modules = set(cfg.modules.keys())
 
     if self.current["tests"] == "list":
@@ -142,7 +142,7 @@ class ActBuilderAgrum(ActBuilder):
         asked_tests = setifyString(self.current["tests"])
         missing = asked_tests - set(alltests.keys())
         if len(missing) > 0:
-          error(f"Tests [{missing}] not present. Please select 'all' or [-t list] to list all tests.")
+          error(f"Tests [[{missing}]] not present. Please select 'all' or [[-t list]] to list all tests.")
           return False
         alltests = {k: alltests[k] for k in alltests.keys() if k in asked_tests}
 
@@ -259,7 +259,7 @@ class ActBuilderAgrum(ActBuilder):
         line += f' INSTALL.vcxproj /p:Configuration="{self.current["mode"]}"'
       case _:
         critic(
-          f"Action [{self.current['action']}] not treated for target [aGrUM] for now in this compiler weird world."
+          f"Action [[{self.current['action']}]] not treated for target [[aGrUM]] for now in this compiler weird world."
         )
 
     line += f" /p:BuildInParallel=true /maxcpucount:{self.current['jobs']}"
@@ -280,7 +280,7 @@ class ActBuilderAgrum(ActBuilder):
       case "doc":
         line += " doc"
       case _:
-        critic(f"Action [{self.current['action']}] not treated for now")
+        critic(f"Action [[{self.current['action']}]] not treated for now")
 
     line += f" -j {self.current['jobs']}"
     return line

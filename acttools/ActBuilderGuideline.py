@@ -215,9 +215,9 @@ class PyAgrumDocCoverage:
     tf = self.nb_func - (len(self.undoc_func) + len(self.partial_doc_func))
 
     self.lognodoc("\n\n" + "=" * 50)
-    self.notif_and_log(f"Documentation in [pyAgrum {gum.__version__}]")
+    self.notif_and_log(f"Documentation in [[pyAgrum {gum.__version__}]]")
 
-    self.notif_and_log(f"  Classes   : coverage={(pc * 100.0):6.2f}% [({tc}/{self.nb_class})]")
+    self.notif_and_log(f"  Classes   : coverage={(pc * 100.0):6.2f}% [[({tc}/{self.nb_class})]]")
     if self._verbose:
       self.notif_and_log("---------")
       self.notif_and_log("  - nbr of classes : " + str(self.nb_class))
@@ -227,7 +227,7 @@ class PyAgrumDocCoverage:
       self.notif_and_log("  - nbr of undocumented classes : " + str(len(self.undoc_class)))
       self.notif_and_log(DELIM.join([""] + self.undoc_class))
 
-    self.notif_and_log(f"  Methods   : coverage={(pm * 100.0):6.2f}% [({tm}/{self.nb_meth})]")
+    self.notif_and_log(f"  Methods   : coverage={(pm * 100.0):6.2f}% [[({tm}/{self.nb_meth})]]")
     if self._verbose:
       self.notif_and_log("---------")
       self.notif_and_log("  - nbr of methods: " + str(self.nb_meth))
@@ -237,7 +237,7 @@ class PyAgrumDocCoverage:
       self.notif_and_log("  - nbr of undocumented methods : " + str(len(self.undoc_meth)))
       self.notif_and_log(DELIM.join([""] + self.undoc_meth))
 
-    self.notif_and_log(f"  Functions : coverage={(pf * 100.0):6.2f}% [({tf}/{self.nb_func})]")
+    self.notif_and_log(f"  Functions : coverage={(pf * 100.0):6.2f}% [[({tf}/{self.nb_func})]]")
     if self._verbose:
       self.notif_and_log("-----------")
       self.notif_and_log("  - nbr of functions: " + str(self.nb_func))
@@ -285,28 +285,28 @@ def guideline(current: dict[str, str | bool], details: bool, correction: bool) -
       error(f"{nb} {typ} error{'s' if nb > 1 else ''}{' ' * 40}")
     return nb
 
-  notif(f"[aGrUM {'detailed ' if details else ''}guideline {'(with correction)' if correction else ''}]")
+  notif(f"[[aGrUM {'detailed ' if details else ''}guideline {'(with correction)' if correction else ''}]]")
 
   nbrError = 0
 
-  notif("  [(1) ]*.cpp[ file for every ]*.h[ file]")
+  notif("  [[(1) ]]*.cpp[[ file for every ]]*.h[[ file]]")
   nbrError += _aff_errors(_check_cpp_file_exists(details, correction), "missing cpp file")
-  notif("  [(2) check for ]LGPL+MIT[ license]")
+  notif("  [[(2) check for ]]LGPL+MIT[[ license]]")
   nbrError += _aff_errors(_check_LGPL_MIT_license_CPP(details, correction), "missing LGPL+MIT cpp licence")
   nbrError += _aff_errors(
     _check_LGPL_MIT_license_py(details, correction),
     "missing LGPL+MIT python licence",
   )
-  notif("  [(3) check for missing documentation in pyAgrum]")
+  notif("  [[(3) check for missing documentation in pyAgrum]]")
   nbrError += _aff_errors(_check_missing_docs(details), "missing documentation")
-  notif("  [(4) check for deps]")
+  notif("  [[(4) check for deps]]")
   nbrError += _aff_errors(
     check_gum_dependencies(graph=current["build_graph"], details=details, correction=correction),
     "redundant dependency",
   )
-  notif("  [(5) check for cpp format]")
+  notif("  [[(5) check for cpp format]]")
   nbrError += _aff_errors(_check_clang_format(details, correction), "format")
-  notif("  [(6) check for py format]")
+  notif("  [[(6) check for py format]]")
   nbrError += _aff_errors(_check_ruff_format(details, correction), "format")
 
   return nbrError
@@ -315,7 +315,7 @@ def guideline(current: dict[str, str | bool], details: bool, correction: bool) -
 def _check_ruff_format(details: bool, correction: bool) -> int:
   nbrError = 0
   if cfg.ruff is None:
-    warn("No correct [ruff] tool has been found.")
+    warn("No correct [[ruff]] tool has been found.")
   else:
     exceptions = {
       "/apps/",
@@ -335,11 +335,11 @@ def _check_ruff_format(details: bool, correction: bool) -> int:
           if correction:
             line = cfg.ruff + " format " + src
             call(line, shell=True, stderr=blackhole, stdout=blackhole)
-            notif(f"[{src.split('/')[-1]}] : [(✓)]")
+            notif(f"[[{src.split('/')[-1]}]] : [[(✓)]]")
           else:
-            notif(f"[{src}] : Failed")
+            notif(f"[[{src}]] : Failed")
         else:
-          notif_oneline(f"[{src.split('/')[-1]}] OK")
+          notif_oneline(f"[[{src.split('/')[-1]}]] OK")
 
   return nbrError
 
@@ -347,7 +347,7 @@ def _check_ruff_format(details: bool, correction: bool) -> int:
 def _check_clang_format(details: bool, correction: bool) -> int:
   nbrError = 0
   if cfg.clangformat is None:
-    warn("No correct [clang-format] tool has been found.")
+    warn("No correct [[clang-format]] tool has been found.")
   else:
     with open(os.devnull, "w") as blackhole:
       for src in srcAgrum():
@@ -361,11 +361,11 @@ def _check_clang_format(details: bool, correction: bool) -> int:
           if correction:
             line = cfg.clangformat + " -i " + src
             call(line, shell=True)
-            notif(f"Incorrect format [{src:80}] : [(✓)]")
+            notif(f"Incorrect format [[{src:80}]] : [[(✓)]]")
           else:
-            notif(f"err [{src}]")
+            notif(f"err [[{src}]]")
         else:
-          notif_oneline(f"[{src.split('/')[-1]}] OK")
+          notif_oneline(f"[[{src.split('/')[-1]}]] OK")
 
   return nbrError
 
@@ -396,7 +396,7 @@ def _LGPL_MIT_atTop_CPP(filename: str, details: bool, correction: bool) -> int:
           if not in_error:
             in_error = True
             if details:
-              notif(f"[{filename}] lines before the CPP license.")
+              notif(f"[[{filename}]] lines before the CPP license.")
           before += line
         else:
           licence += line
@@ -413,13 +413,13 @@ def _LGPL_MIT_atTop_CPP(filename: str, details: bool, correction: bool) -> int:
       print(f"{base=} {licence=}")
     if licence.strip() != _template_cpp_license.strip():
       err = 1
-      res = f"[{filename:.<80}] missing up-to-date LGPL+MIT license (1)"
+      res = f"[[{filename:.<80}]] missing up-to-date LGPL+MIT license (1)"
       if correction:
         with open(filename, "w", encoding="UTF8") as dest:
           dest.write(before)
           dest.write(_template_cpp_license)
           dest.write(code)
-        res = f"{res} [(✓)]"
+        res = f"{res} [[(✓)]]"
       if details or correction:
         notif(res)
 
@@ -451,7 +451,7 @@ def _LGPL_MIT_atTop_py(filename: str, details: bool, correction: bool) -> int:
           if not in_error:
             in_error = True
             if details:
-              notif(f"[{filename}] lines before the license.")
+              notif(f"[[{filename}]] lines before the license.")
           before += line
         else:
           licence += line
@@ -468,13 +468,13 @@ def _LGPL_MIT_atTop_py(filename: str, details: bool, correction: bool) -> int:
   err = 0
   if licence != _template_py_license:
     err = 1
-    res = f"[{filename:.<80}] missing up-to-date LGPL+MIT license (2)"
+    res = f"[[{filename:.<80}]] missing up-to-date LGPL+MIT license (2)"
     if correction:
       with open(filename, "w") as dest:
         dest.write(before)
         dest.write(_template_py_license)
         dest.write(code)
-      res = f"{res} [(✓)]"
+      res = f"{res} [[(✓)]]"
     notif(res)
 
   return err
@@ -510,12 +510,12 @@ def _LGPL_MIT_atTop_cmake(filename: str, details: bool, correction: bool) -> int
   err = 0
   if licence != _template_py_license:
     err = 1
-    res = f"[{filename:.<80}] missing up-to-date LGPL+MIT license (3"
+    res = f"[[{filename:.<80}]] missing up-to-date LGPL+MIT license (3"
     if correction:
       with open(filename, "w") as dest:
         dest.write(_template_py_license)
         dest.write(code)
-      res = f"{res} [(✓)]"
+      res = f"{res} [[(✓)]]"
     if details or correction:
       notif(res)
 
@@ -529,13 +529,13 @@ def _check_LGPL_MIT_license_CPP(details: bool, correction: bool) -> int:
   for gum_file in srcAgrum():
     if any(subs in gum_file for subs in exceptions):
       if details:
-        notif(f"skip header test for [{gum_file}]")
+        notif(f"skip header test for [[{gum_file}]]")
       continue
     nbrError += _LGPL_MIT_atTop_CPP(gum_file, details, correction)
   for gum_file in srcGeneratorAgrum():
     if any(subs in gum_file for subs in exceptions):
       if details:
-        notif(f"skip header test for [{gum_file}]")
+        notif(f"skip header test for [[{gum_file}]]")
       continue
     nbrError += _LGPL_MIT_atTop_CPP(gum_file, details, correction)
 
@@ -548,14 +548,14 @@ def _check_LGPL_MIT_license_py(details: bool, correction: bool) -> int:
   exceptions = []
   for pygum_file in srcPyAgrum():
     if details:
-      notif_oneline(f"[{pygum_file.split('/')[-1]}]")
+      notif_oneline(f"[[{pygum_file.split('/')[-1]}]]")
     if any(subs in pygum_file for subs in exceptions):
       continue
     nbrError += _LGPL_MIT_atTop_py(pygum_file, details, correction)
 
   for cmake_file in srcCmakeAgrum():
     if details:
-      notif_oneline(f"[{cmake_file.split('/')[-1]}]")
+      notif_oneline(f"[[{cmake_file.split('/')[-1]}]]")
     nbrError += _LGPL_MIT_atTop_cmake(cmake_file, details, correction)
 
   return nbrError
@@ -598,9 +598,9 @@ def _check_cpp_file_exists(details: bool, correction: bool) -> int:
         with open(cppfile, "w") as dest:
           dest.write(_template_cpp_license)
           dest.write(f'\n#include "{header[4:]}"\n')
-        error("No cpp file for [" + header + "h] : [added]")
+        error("No cpp file for [[" + header + "h]] : [[added]]")
       else:
-        error("No cpp file for [" + header + "h]")
+        error("No cpp file for [[" + header + "h]]")
 
   return nbrError
 

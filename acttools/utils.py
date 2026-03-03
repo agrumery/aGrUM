@@ -100,7 +100,22 @@ def printutf8(s: str, end="\n"):
 
 
 def colFormat(v: str, col: str) -> str:
-  return f"{col}{v.replace('[', cfg.C_VALUE).replace(']', col)}"  # .encode("utf-8")}"
+  result = col
+  inside = False
+  i = 0
+  while i < len(v):
+    if v[i : i + 2] == "[[" and not inside:
+      result += cfg.C_VALUE
+      inside = True
+      i += 2
+    elif v[i : i + 2] == "]]" and inside:
+      result += col
+      inside = False
+      i += 2
+    else:
+      result += v[i]
+      i += 1
+  return result
 
 
 def trace(current: dict[str, str | bool], cde: str):

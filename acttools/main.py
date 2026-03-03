@@ -80,21 +80,21 @@ def extract_cmd_from_args(current: dict[str, str | bool], args: set[str]) -> Non
   for t in args:
     if _update("target", t, t.lower() in cfg.targets):
       if bT:
-        error(f"Target overwritten by [{t}]")
+        error(f"Target overwritten by [[{t}]]")
       bT = True
       continue
     if _update("action", t, t in cfg.actions):
       if bA:
-        error(f"Action overwritten by [{t}]")
+        error(f"Action overwritten by [[{t}]]")
       bA = True
       continue
     if _update("mode", t, t in cfg.modes):
       if bM:
-        error(f"Mode overwritten by [{t}]")
+        error(f"Mode overwritten by [[{t}]]")
       bM = True
       continue
 
-    critic(f"arg [{t}] unknown")
+    critic(f"arg [[{t}]] unknown")
 
 
 def update_options_from_args(current: dict[str, str | bool], options: argparse.Namespace) -> None:
@@ -134,10 +134,10 @@ def adapt_options_from_context(options: argparse.Namespace, args: set[str]) -> N
   if platform.system() == "Windows" and options.compiler.startswith("mvsc"):
     options.static_lib = True
     # options.no_fun = True
-    notif("Options [static] forced by option [mvsc*]")
+    notif("Options [[static]] forced by option [[mvsc*]]")
   elif platform.system() == "Windows" and options.compiler == "mingw64":
     options.no_fun = True
-    notif("Options [no-fun] forced by platform")
+    notif("Options [[no-fun]] forced by platform")
 
 
 
@@ -221,7 +221,7 @@ def main() -> int:
 
         builder = ActBuilderDocSphinx(current)
       else:
-        error(f"Unknown target [{current['target']}]")
+        error(f"Unknown target [[{current['target']}]]")
         res = 1
     case "build" | "install" | "test" | "lib":
       if current["target"] == "aGrUM":
@@ -233,7 +233,7 @@ def main() -> int:
 
         builder = ActBuilderPyAgrum(current)
       else:
-        error(f"Unknown target [{current['target']}]")
+        error(f"Unknown target [[{current['target']}]]")
         res = 2
     case "pipinstall":
       from .ActBuilderPipInstall import ActBuilderPipInstall

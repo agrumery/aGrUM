@@ -61,7 +61,7 @@ class ActBuilder:
     builder_name = self.__class__.__name__[10:]
     if builder_name.startswith("ActBuilder"):  # as it should
       builder_name = builder_name[10:]
-    notif(f"{builder_name} ⌛ [{msg}]", cfg.prefix_line)
+    notif(f"{builder_name} ⌛ [[{msg}]]", cfg.prefix_line)
 
   def run_start(self, subaction: str = ""):
     self.warn(f"{subaction} �                    ")
@@ -111,7 +111,7 @@ class ActBuilder:
     return_code = process.wait()
 
     if checkRC and return_code > 0:
-      error(f"Received error {return_code} with command [{cmd}]")
+      error(f"Received error {return_code} with command [[{cmd}]]")
     return return_code
 
   def check_compiler_and_maker(self) -> bool:
@@ -139,7 +139,7 @@ class ActBuilder:
         return False
 
     if self.current["mode"].lower() not in {"release", "debug"}:
-      warn(f"Mode [{self.current['mode']}] not supported. Using 'release' as default.")
+      warn(f"Mode [[{self.current['mode']}]] not supported. Using 'release' as default.")
       self.current["mode"] = "Release"
     elif self.current["mode"].lower() == "debug":
       self.current["mode"] = "Debug"
@@ -147,7 +147,7 @@ class ActBuilder:
       self.current["mode"] = "Release"
 
     self.current["jobs"] = self.check_nbr_of_jobs()
-    notif(f"Using [{self.current['jobs']}] jobs for building.")
+    notif(f"Using [[{self.current['jobs']}]] jobs for building.")
 
     return True
 
