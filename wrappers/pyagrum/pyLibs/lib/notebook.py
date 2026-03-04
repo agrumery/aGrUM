@@ -222,7 +222,8 @@ class FlowLayout(object):
       else:
         self.add(arg, captions[i])
 
-    self.display()
+  def _repr_html_(self):
+    return self.html().data
 
 
 flow = FlowLayout()
@@ -1738,6 +1739,7 @@ def inspectBN(bn):
   bn
   """
   flow.row(bn, *[bn.cpt(c) for c in sorted(bn.names())])
+  return flow
 
 
 def _update_config_notebooks():
@@ -1817,5 +1819,7 @@ else:
   gum.DAG._repr_html_ = lambda self: getDot(self.toDot())
   gum.EssentialGraph._repr_html_ = lambda self: getDot(self.toDot())
   gum.MarkovBlanket._repr_html_ = lambda self: getDot(self.toDot())
+
+  gum.Potential._repr_html_ = lambda self: getTensor(self)
 
   dot.Dot._repr_html_ = lambda self: getGraph(self)

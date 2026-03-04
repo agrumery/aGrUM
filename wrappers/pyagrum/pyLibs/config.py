@@ -165,7 +165,7 @@ class PyAgrumConfiguration(metaclass=GumSingleton):
         no_hook {bool} -- (optional) should this call trigger the hooks ?
 
     Raises:
-        SyntaxError: if the secion name or the property name does not exist
+        SyntaxError: if the section name or the property name does not exist
     """
     if section in self.__parser.sections():
       if option in self.__parser[section]:

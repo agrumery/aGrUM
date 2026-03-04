@@ -55,9 +55,78 @@ from pyagrum.lib.id2graph import ID2dot, LIMIDinference2dot
 from pyagrum.lib.mrf2graph import MRF2UGdot, MRFinference2UGdot
 from pyagrum.lib.mrf2graph import MRF2FactorGraphdot, MRFinference2FactorGraphdot
 import pyagrum.lib._colors as gumcols
+import pyagrum.lib.utils as gutils
 
 
-def export(model, filename=None, **kwargs):
+def export(obj, filename: str = None, **kwargs):
+  """
+  export a graphical model or an inference or an obj with _repr_html as an image
+
+  Parameters
+  ----------
+  obj: pyAgrum:GraphicalModel or str
+      the model to export (pyagrum.BayesNet, pyagrum.MarkovRandomField, pyagrum.InfluenceDiagram or pyagrum.Tensor) or a string in dot format or an object with a method _repr_html_()
+  filename: str
+      the name of the resulting file (suffix in ['pdf', 'png', 'fig', 'jpg', 'svg', 'ps']). If filename is None, the result is a np.array ready to be used with imshow().
+
+  Note
+  ----
+    Model can also just possess a method `toDot()` or even be a simple string in dot syntax.
+
+  Note
+  ----
+    When exporting in pdf, you can adjust the margin with the config parameters `export_pdf_margin_x` and `export_pdf_margin_y` (in pixels, default 40 and 37 resp.). You can also adjust the size of the exported graph with the parameter `size` (default "8,5!").
+
+    pdf export with custom margin :
+    ```
+    gum.config.asInt["notebook", "export_pdf_margin_x"] = 40
+    gum.config.asInt["notebook", "export_pdf_margin_y"] = 37
+    ```
+  """
+  try:
+    return exportModel(obj, filename=filename, **kwargs)
+  except gum.InvalidArgument:
+    pass
+
+  # si l'objet est un string (non dot), on suppose que c'est du html
+  if isinstance(obj, str):
+    return exportHTML(obj, filename=filename)
+  if hasattr(obj, "_repr_html_"):
+    return exportHTML(obj._repr_html_(), filename=filename)
+
+  raise gum.InvalidArgument(
+    "Argument obj should be a PGM (BayesNet, MarkovRandomField or Influence Diagram) or has a method `toDot()` or is a string or has a method _repr_html_()"
+  )
+
+
+def exportHTML(htmlobj: str, filename: str = None):
+  """
+  export an obj with _repr_html as an image
+
+  Parameters
+  ----------
+  htmlobj: object
+      a string in html format
+  filename: str
+      the name of the resulting file (suffix in ['pdf', 'png', 'fig', 'jpg', 'svg', 'ps']). If filename is None, the result is a np.array ready to be used with imshow().
+
+  Note
+  ----
+    Model can also just possess a method `toDot()` or even be a simple string in dot syntax.
+  """
+  if filename is None:
+    raise NameError(f"{filename} is not a correct filename for export.")
+
+  fmt_image = filename.split(".")[-1]
+  if fmt_image not in ["pdf", "png", "fig", "jpg", "svg", "ps"]:
+    raise NameError(
+      f"{filename} is not a correct filename for export : extension '{fmt_image}' not in [pdf,png,fig,jpg,svg,ps]."
+    )
+
+  gutils.html2image(htmlobj, filename)
+
+
+def exportModel(model, filename: str = None, **kwargs):
   """
   export the graphical representation of the model in filename (png, pdf,etc.)
 
@@ -104,6 +173,8 @@ def export(model, filename=None, **kwargs):
   elif hasattr(model, "toDot"):
     fig = dot.graph_from_dot_data(model.toDot())[0]
   elif isinstance(model, str):
+    if not re.match(r"^\s*(strict\s+)?(graph|digraph)\b", model, re.IGNORECASE):
+      raise gum.InvalidArgument("Argument model is a string but not in dot format")
     fig = dot.graph_from_dot_data(model)[0]
   else:
     raise gum.InvalidArgument(
@@ -316,7 +387,7 @@ def dot_as_svg_string(gr, size):
   return gsvg
 
 
-def exportInference(model, filename=None, **kwargs):
+def exportInference(model, filename: str = None, **kwargs):
   """
   the graphical representation of an inference in a notebook
 

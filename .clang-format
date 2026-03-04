@@ -17,14 +17,12 @@ SeparateDefinitionBlocks: Always
 BreakBeforeBraces: Attach
 AlwaysBreakTemplateDeclarations: Yes
 BreakBeforeBinaryOperators: All
-BreakBeforeInheritanceComma: true
 BreakBeforeTernaryOperators: true
-BreakConstructorInitializersBeforeComma: true
 BreakStringLiterals: true
-BreakConstructorInitializers: AfterColon
 AlwaysBreakBeforeMultilineStrings: false
 AlwaysBreakAfterReturnType: None
 BreakInheritanceList: AfterColon
+BreakConstructorInitializers: AfterColon
 
 CompactNamespaces: false
 FixNamespaceComments: true
