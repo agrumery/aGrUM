@@ -537,8 +537,7 @@ namespace gum {
           std::string o3prmrFilename = context->filename();
 
           if (!o3prmrFilename.empty()) {
-            if (auto index = o3prmrFilename.find_last_of('/');
-                index != std::string::npos) {
+            if (auto index = o3prmrFilename.find_last_of('/'); index != std::string::npos) {
               std::string dir     = o3prmrFilename.substr(0, index + 1);
               import_abs_filename = dir + import_name;
 
@@ -569,8 +568,7 @@ namespace gum {
             std::string filename = context->filename();
 
             if (!filename.empty()) {
-              if (auto size = filename.find_last_of('/');
-                  size != std::string::npos) {
+              if (auto size = filename.find_last_of('/'); size != std::string::npos) {
                 root += filename.substr(0, size + 1);   // take with the '/'
               }
             }

@@ -1192,14 +1192,10 @@ namespace gum {
     // might not exist, hence the if checks
     NodeSet clique_targets;
     for (const auto node: this->targets()) {
-      if (auto p = _node_to_clique_.tryGet(node)) {
-        clique_targets.insert(*p);
-      }
+      if (auto p = _node_to_clique_.tryGet(node)) { clique_targets.insert(*p); }
     }
     for (const auto& set: this->jointTargets()) {
-      if (auto p = _joint_target_to_clique_.tryGet(set)) {
-        clique_targets.insert(*p);
-      }
+      if (auto p = _joint_target_to_clique_.tryGet(set)) { clique_targets.insert(*p); }
     }
 
     // put in a vector these cliques and their sizes

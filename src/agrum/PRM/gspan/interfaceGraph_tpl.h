@@ -302,8 +302,7 @@ namespace gum {
 
       template < typename GUM_SCALAR >
       INLINE Size InterfaceGraph< GUM_SCALAR >::size(const LabelData* l) const {
-        if (auto p = _nodeMap_.tryGet(const_cast< LabelData* >(l)))
-          return (*p)->size();
+        if (auto p = _nodeMap_.tryGet(const_cast< LabelData* >(l))) return (*p)->size();
         return _edgeMap_[const_cast< LabelData* >(l)]->size();
       }
 
@@ -370,16 +369,14 @@ namespace gum {
 
       template < typename GUM_SCALAR >
       INLINE EdgeData< GUM_SCALAR >& InterfaceGraph< GUM_SCALAR >::edge(NodeId u, NodeId v) {
-        if (auto p = _edges_.tryGet(Edge(u, v)))
-          return *(*p);
+        if (auto p = _edges_.tryGet(Edge(u, v))) return *(*p);
         return *(_edges_[Edge(v, u)]);
       }
 
       template < typename GUM_SCALAR >
       INLINE const EdgeData< GUM_SCALAR >& InterfaceGraph< GUM_SCALAR >::edge(NodeId u,
                                                                               NodeId v) const {
-        if (auto p = _edges_.tryGet(Edge(u, v)))
-          return *(*p);
+        if (auto p = _edges_.tryGet(Edge(u, v))) return *(*p);
         return *(_edges_[Edge(v, u)]);
       }
 

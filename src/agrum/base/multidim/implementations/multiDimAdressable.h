@@ -148,8 +148,7 @@ namespace gum {
     virtual void changeNotification(const Instantiation&          i,
                                     const DiscreteVariable* const var,
                                     Idx                           oldval,
-                                    Idx                           newval)
-        = 0;
+                                    Idx                           newval) = 0;
 
     /**
      * @brief Listen to setFirst in a given Instantiation.

@@ -147,7 +147,7 @@ namespace gum {
   template < typename Val, typename Priority, typename Cmp, bool Gen >
   INLINE PriorityQueueImplementation< Val, Priority, Cmp, Gen >&
          PriorityQueueImplementation< Val, Priority, Cmp, Gen >::operator=(
-          PriorityQueueImplementation< Val, Priority, Cmp, Gen >&& from) {
+             PriorityQueueImplementation< Val, Priority, Cmp, Gen >&& from) {
     // avoid self assignment
     if (this != &from) {
       GUM_OP_MOV(PriorityQueueImplementation)
@@ -606,7 +606,7 @@ namespace gum {
   template < typename Val, typename Priority, typename Cmp >
   INLINE PriorityQueueImplementation< Val, Priority, Cmp, true >&
          PriorityQueueImplementation< Val, Priority, Cmp, true >::operator=(
-          PriorityQueueImplementation< Val, Priority, Cmp, true >&& from) {
+             PriorityQueueImplementation< Val, Priority, Cmp, true >&& from) {
     // avoid self assignment
     if (this != &from) {
       // for debugging purposes

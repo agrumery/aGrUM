@@ -135,8 +135,8 @@ namespace gum_tests {
     void testCast(const ClassElt& elt, const gum::prm::PRMType& type) {
       try {
         // Arrange
-        auto expected = gum::prm::PRMObject::LEFT_CAST() + type.name()
-                      + gum::prm::PRMObject::RIGHT_CAST() + elt.name();
+        auto        expected = gum::prm::PRMObject::LEFT_CAST() + type.name()
+                             + gum::prm::PRMObject::RIGHT_CAST() + elt.name();
         std::string actual;
         // Act
         CHECK_NOTHROW(actual = elt.cast(type));

@@ -42,13 +42,14 @@
 
 #include <optional>
 #include <string>
-#include <type_traits>
 
 #include <gumtest/AgrumTestSuite.h>
 #include <gumtest/utils.h>
 
-#include <agrum/base/core/optional_ref.h>
 #include <agrum/base/core/hashTable.h>
+
+#include <agrum/base/core/optional_ref.h>
+#include <type_traits>
 
 #undef GUM_CURRENT_SUITE
 #undef GUM_CURRENT_MODULE
@@ -59,7 +60,6 @@ namespace gum_tests {
 
   struct OptionalRefTestSuite {
     public:
-
     // ========================================================================
     // C++26 guard: if std::optional<T&> becomes valid, this class loses its
     // raison d'etre and should be replaced by std::optional<T&>.
@@ -71,8 +71,8 @@ namespace gum_tests {
       WARN("C++26 std::optional<T&> is available: gum::optional_ref<T> is now redundant.");
 
       // Verify that std::optional<T&> actually works as expected
-      int x = 42;
-      std::optional<int&> opt(x);
+      int                   x = 42;
+      std::optional< int& > opt(x);
       CHECK(opt.has_value());
       CHECK(*opt == 42);
       x = 99;
@@ -87,35 +87,35 @@ namespace gum_tests {
     // Construction
     // ========================================================================
     static void testDefaultConstruction() {
-      gum::optional_ref<int> empty;
+      gum::optional_ref< int > empty;
       CHECK(!empty);
       CHECK(!empty.has_value());
     }
 
     static void testNulloptConstruction() {
-      gum::optional_ref<int> empty(std::nullopt);
+      gum::optional_ref< int > empty(std::nullopt);
       CHECK(!empty);
       CHECK(!empty.has_value());
     }
 
     static void testLvalueConstruction() {
-      int x = 42;
-      gum::optional_ref<int> ref(x);
+      int                      x = 42;
+      gum::optional_ref< int > ref(x);
       CHECK(ref.has_value());
-      CHECK(static_cast<bool>(ref));
+      CHECK(static_cast< bool >(ref));
       CHECK(*ref == 42);
     }
 
     static void testRvalueDeleted() {
       // gum::optional_ref<int>(42) should not compile.
       // We verify the delete via type traits.
-      CHECK(!(std::is_constructible<gum::optional_ref<int>, int&&>::value));
-      CHECK(!(std::is_constructible<gum::optional_ref<std::string>, std::string&&>::value));
+      CHECK(!(std::is_constructible< gum::optional_ref< int >, int&& >::value));
+      CHECK(!(std::is_constructible< gum::optional_ref< std::string >, std::string&& >::value));
     }
 
     static void testConstRef() {
-      const int x = 7;
-      gum::optional_ref<const int> ref(x);
+      const int                      x = 7;
+      gum::optional_ref< const int > ref(x);
       CHECK(ref.has_value());
       CHECK(*ref == 7);
     }
@@ -124,40 +124,40 @@ namespace gum_tests {
     // Observers
     // ========================================================================
     static void testOperatorBool() {
-      gum::optional_ref<int> empty;
+      gum::optional_ref< int > empty;
       CHECK(!empty);
 
-      int x = 1;
-      gum::optional_ref<int> full(x);
-      CHECK(static_cast<bool>(full));
+      int                      x = 1;
+      gum::optional_ref< int > full(x);
+      CHECK(static_cast< bool >(full));
 
       // explicit: must not participate in implicit conversions
-      CHECK(!(std::is_convertible<gum::optional_ref<int>, bool>::value));
+      CHECK(!(std::is_convertible< gum::optional_ref< int >, bool >::value));
     }
 
     static void testHasValue() {
-      gum::optional_ref<double> empty;
+      gum::optional_ref< double > empty;
       CHECK(!empty.has_value());
 
-      double d = 3.14;
-      gum::optional_ref<double> full(d);
+      double                      d = 3.14;
+      gum::optional_ref< double > full(d);
       CHECK(full.has_value());
     }
 
     static void testValueSuccess() {
-      int x = 42;
-      gum::optional_ref<int> ref(x);
+      int                      x = 42;
+      gum::optional_ref< int > ref(x);
       CHECK(ref.value() == 42);
     }
 
     static void testValueThrows() {
-      gum::optional_ref<int> empty;
+      gum::optional_ref< int > empty;
       CHECK_THROWS_AS(empty.value(), const std::bad_optional_access&);
     }
 
     static void testDereference() {
-      int x = 10;
-      gum::optional_ref<int> ref(x);
+      int                      x = 10;
+      gum::optional_ref< int > ref(x);
       CHECK(*ref == 10);
 
       // Modification through the reference
@@ -166,8 +166,8 @@ namespace gum_tests {
     }
 
     static void testArrow() {
-      std::string s = "hello";
-      gum::optional_ref<std::string> ref(s);
+      std::string                      s = "hello";
+      gum::optional_ref< std::string > ref(s);
       CHECK(ref->size() == 5);
       ref->append(" world");
       CHECK(s == "hello world");
@@ -177,8 +177,8 @@ namespace gum_tests {
     // Reference semantics: the optional_ref does NOT own a copy
     // ========================================================================
     static void testReferenceSemantics() {
-      int x = 1;
-      gum::optional_ref<int> ref(x);
+      int                      x = 1;
+      gum::optional_ref< int > ref(x);
       CHECK(*ref == 1);
 
       x = 999;
@@ -189,24 +189,24 @@ namespace gum_tests {
     }
 
     static void testConstReferenceSemantics() {
-      int x = 5;
-      gum::optional_ref<const int> ref(x);
+      int                            x = 5;
+      gum::optional_ref< const int > ref(x);
       CHECK(*ref == 5);
 
       x = 100;
       CHECK(*ref == 100);
 
       // *ref = 200; // should not compile (const)
-      CHECK((std::is_same<decltype(*ref), const int&>::value));
+      CHECK((std::is_same< decltype(*ref), const int& >::value));
     }
 
     // ========================================================================
     // Copy/assign semantics
     // ========================================================================
     static void testCopy() {
-      int x = 42;
-      gum::optional_ref<int> ref1(x);
-      gum::optional_ref<int> ref2(ref1);
+      int                      x = 42;
+      gum::optional_ref< int > ref1(x);
+      gum::optional_ref< int > ref2(ref1);
 
       CHECK(ref2.has_value());
       CHECK(*ref2 == 42);
@@ -214,22 +214,22 @@ namespace gum_tests {
     }
 
     static void testAssignment() {
-      int x = 1, y = 2;
-      gum::optional_ref<int> ref(x);
+      int                      x = 1, y = 2;
+      gum::optional_ref< int > ref(x);
       CHECK(*ref == 1);
 
-      gum::optional_ref<int> ref2(y);
+      gum::optional_ref< int > ref2(y);
       ref = ref2;
       CHECK(*ref == 2);
       CHECK(&(*ref) == &y);
     }
 
     static void testAssignFromEmpty() {
-      int x = 1;
-      gum::optional_ref<int> ref(x);
+      int                      x = 1;
+      gum::optional_ref< int > ref(x);
       CHECK(ref.has_value());
 
-      gum::optional_ref<int> empty;
+      gum::optional_ref< int > empty;
       ref = empty;
       CHECK(!ref.has_value());
     }
@@ -238,7 +238,7 @@ namespace gum_tests {
     // Use with if-init-statement (C++17 pattern)
     // ========================================================================
     static void testIfInitStatement() {
-      gum::HashTable<std::string, int> ht;
+      gum::HashTable< std::string, int > ht;
       ht.insert("a", 1);
       ht.insert("b", 2);
 
@@ -259,7 +259,7 @@ namespace gum_tests {
     // Use with HashTable::tryGet
     // ========================================================================
     static void testWithHashTable() {
-      gum::HashTable<int, std::string> ht;
+      gum::HashTable< int, std::string > ht;
       ht.insert(1, "one");
       ht.insert(2, "two");
 
@@ -271,17 +271,15 @@ namespace gum_tests {
       CHECK(!notfound);
 
       // Mutable access
-      if (auto p = ht.tryGet(2)) {
-        *p = "deux";
-      }
+      if (auto p = ht.tryGet(2)) { *p = "deux"; }
       CHECK(ht[2] == "deux");
 
       // Const access
-      const auto& cht = ht;
-      auto cfound = cht.tryGet(1);
+      const auto& cht    = ht;
+      auto        cfound = cht.tryGet(1);
       CHECK(cfound.has_value());
       CHECK(*cfound == "one");
-      CHECK((std::is_same<decltype(*cfound), const std::string&>::value));
+      CHECK((std::is_same< decltype(*cfound), const std::string& >::value));
     }
   };
 

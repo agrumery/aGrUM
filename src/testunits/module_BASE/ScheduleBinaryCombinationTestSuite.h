@@ -228,8 +228,7 @@ namespace gum_tests {
 
       gum::ScheduleBinaryCombination< gum::Tensor< double >,
                                       gum::Tensor< double >,
-                                      gum::Tensor< double > >* comb5
-          = comb4.clone();
+                                      gum::Tensor< double > >* comb5 = comb4.clone();
       CHECK(!comb5->implyDeletion());
       CHECK(*comb5 == comb4);
       CHECK(comb5->result().multiDim() == pot4);
@@ -238,8 +237,7 @@ namespace gum_tests {
 
       gum::ScheduleBinaryCombination< gum::Tensor< double >,
                                       gum::Tensor< double >,
-                                      gum::Tensor< double > >* comb6
-          = comb4.clone();
+                                      gum::Tensor< double > >* comb6 = comb4.clone();
       CHECK(!comb6->implyDeletion());
       CHECK((*comb6) == (comb4));
       CHECK((comb6->result().multiDim()) == (pot4));

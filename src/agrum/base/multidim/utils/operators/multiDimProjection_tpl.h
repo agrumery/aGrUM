@@ -170,7 +170,7 @@ namespace gum {
   template < class TABLE >
   INLINE std::pair< double, double >
          MultiDimProjection< TABLE >::memoryUsage(const Sequence< const DiscreteVariable* >& vars,
-                                               const gum::VariableSet& del_vars) const {
+                                                  const gum::VariableSet& del_vars) const {
     auto res = double(sizeof(value_type));
 
     for (const auto var: vars) {
@@ -185,7 +185,7 @@ namespace gum {
   template < class TABLE >
   INLINE std::pair< double, double >
          MultiDimProjection< TABLE >::memoryUsage(const TABLE&            table,
-                                               const gum::VariableSet& del_vars) const {
+                                                  const gum::VariableSet& del_vars) const {
     return memoryUsage(table.variablesSequence(), del_vars);
   }
 

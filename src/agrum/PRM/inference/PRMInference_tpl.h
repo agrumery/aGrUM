@@ -171,32 +171,28 @@ namespace gum {
     template < typename GUM_SCALAR >
     INLINE typename PRMInference< GUM_SCALAR >::EMap&
         PRMInference< GUM_SCALAR >::evidence(const PRMInstance< GUM_SCALAR >& i) {
-      if (!_evidences_.exists(&i))
-        GUM_ERROR(NotFound, "this instance has no evidence.")
+      if (!_evidences_.exists(&i)) GUM_ERROR(NotFound, "this instance has no evidence.")
       return *(_evidences_[&i]);
     }
 
     template < typename GUM_SCALAR >
     INLINE const typename PRMInference< GUM_SCALAR >::EMap&
         PRMInference< GUM_SCALAR >::evidence(const PRMInstance< GUM_SCALAR >& i) const {
-      if (!_evidences_.exists(&i))
-        GUM_ERROR(NotFound, "this instance has no evidence.")
+      if (!_evidences_.exists(&i)) GUM_ERROR(NotFound, "this instance has no evidence.")
       return *(_evidences_[&i]);
     }
 
     template < typename GUM_SCALAR >
     INLINE typename PRMInference< GUM_SCALAR >::EMap&
         PRMInference< GUM_SCALAR >::evidence(const PRMInstance< GUM_SCALAR >* i) {
-      if (!_evidences_.exists(i))
-        GUM_ERROR(NotFound, "this instance has no evidence.")
+      if (!_evidences_.exists(i)) GUM_ERROR(NotFound, "this instance has no evidence.")
       return *(_evidences_[i]);
     }
 
     template < typename GUM_SCALAR >
     INLINE const typename PRMInference< GUM_SCALAR >::EMap&
         PRMInference< GUM_SCALAR >::evidence(const PRMInstance< GUM_SCALAR >* i) const {
-      if (!_evidences_.exists(i))
-        GUM_ERROR(NotFound, "this instance has no evidence.")
+      if (!_evidences_.exists(i)) GUM_ERROR(NotFound, "this instance has no evidence.")
       return *(_evidences_[i]);
     }
 

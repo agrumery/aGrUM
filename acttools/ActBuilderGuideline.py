@@ -249,12 +249,12 @@ class PyAgrumDocCoverage:
     self.lognodoc("=" * 50)
 
     return (
-       len(self.undoc_class)
-       + len(self.partial_doc_class)
-       + len(self.undoc_meth)
-       + len(self.partial_doc_meth)
-       + len(self.undoc_func)
-       + len(self.partial_doc_func)
+      len(self.undoc_class)
+      + len(self.partial_doc_class)
+      + len(self.undoc_meth)
+      + len(self.partial_doc_meth)
+      + len(self.undoc_func)
+      + len(self.partial_doc_func)
     )
 
 
@@ -525,13 +525,7 @@ def _LGPL_MIT_atTop_cmake(filename: str, details: bool, correction: bool) -> int
 def _check_LGPL_MIT_license_CPP(details: bool, correction: bool) -> int:
   nbrError = 0
 
-  exceptions = [
-    f"{os.sep}mvsc{os.sep}",
-    f"{os.sep}external{os.sep}",
-    "Parser",
-    "Scanner",
-    "doctest"
-  ]
+  exceptions = [f"{os.sep}mvsc{os.sep}", f"{os.sep}external{os.sep}", "Parser", "Scanner", "doctest"]
   for gum_file in srcAgrum():
     if any(subs in gum_file for subs in exceptions):
       if details:

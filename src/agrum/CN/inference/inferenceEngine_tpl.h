@@ -596,7 +596,8 @@ namespace gum {
           output << marginalMin_[elt.first][mod] << ", " << marginalMax_[elt.first][mod] << " ]";
 
           if (!query_.empty()) {
-            if (auto p_query = query_.tryGet(elt.first); p_query && (*p_query)[mod]) output << " QUERY";
+            if (auto p_query = query_.tryGet(elt.first); p_query && (*p_query)[mod])
+              output << " QUERY";
           }
 
           output << std::endl;
@@ -738,8 +739,7 @@ namespace gum {
             .getWithDefault(atoi(time_step.c_str()), 0)
             = elt.second;   // we iterate with min iterators
         expectationsMax.getWithDefault(var_name, innerMap())
-            .getWithDefault(atoi(time_step.c_str()), 0)
-            = expectationMax_[elt.first];
+            .getWithDefault(atoi(time_step.c_str()), 0) = expectationMax_[elt.first];
       }
 
       for (const auto& elt: expectationsMin) {

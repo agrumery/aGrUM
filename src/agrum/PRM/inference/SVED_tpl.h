@@ -503,9 +503,7 @@ namespace gum {
 
     template < typename GUM_SCALAR >
     INLINE std::string SVED< GUM_SCALAR >::_trim_(const std::string& s) {
-      if (auto pos = s.find_first_of("<"); pos != std::string::npos) {
-        return s.substr(0, pos);
-      }
+      if (auto pos = s.find_first_of("<"); pos != std::string::npos) { return s.substr(0, pos); }
       return s;
     }
 
@@ -522,7 +520,7 @@ namespace gum {
     template < typename GUM_SCALAR >
     INLINE Tensor< GUM_SCALAR >*
            SVED< GUM_SCALAR >::_getAggTensor_(const PRMInstance< GUM_SCALAR >*  i,
-                                           const PRMAggregate< GUM_SCALAR >* agg) {
+                                              const PRMAggregate< GUM_SCALAR >* agg) {
       return &(const_cast< Tensor< GUM_SCALAR >& >(i->get(agg->safeName()).cpf()));
     }
 

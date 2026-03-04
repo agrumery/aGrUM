@@ -387,16 +387,14 @@ namespace gum {
     template < typename GUM_SCALAR >
     INLINE PRMInstance< GUM_SCALAR >& PRMSystem< GUM_SCALAR >::get(NodeId id) {
       auto p = nodeIdMap_.tryGet(id);
-      if (!p)
-        GUM_ERROR(NotFound, "found no Instance<GUM_SCALAR> matching the given id")
+      if (!p) GUM_ERROR(NotFound, "found no Instance<GUM_SCALAR> matching the given id")
       return *(*p);
     }
 
     template < typename GUM_SCALAR >
     INLINE const PRMInstance< GUM_SCALAR >& PRMSystem< GUM_SCALAR >::get(NodeId id) const {
       auto p = nodeIdMap_.tryGet(id);
-      if (!p)
-        GUM_ERROR(NotFound, "found no Instance<GUM_SCALAR> matching the given id")
+      if (!p) GUM_ERROR(NotFound, "found no Instance<GUM_SCALAR> matching the given id")
       return *(*p);
     }
 
@@ -444,8 +442,7 @@ namespace gum {
     template < typename GUM_SCALAR >
     INLINE PRMInstance< GUM_SCALAR >& PRMSystem< GUM_SCALAR >::get(const std::string& name) {
       auto p = nameMap_.tryGet(name);
-      if (!p)
-        GUM_ERROR(NotFound, "found no Instance<GUM_SCALAR> matching the given name")
+      if (!p) GUM_ERROR(NotFound, "found no Instance<GUM_SCALAR> matching the given name")
       return *(*p);
     }
 
@@ -453,8 +450,7 @@ namespace gum {
     INLINE const PRMInstance< GUM_SCALAR >&
                  PRMSystem< GUM_SCALAR >::get(const std::string& name) const {
       auto p = nameMap_.tryGet(name);
-      if (!p)
-        GUM_ERROR(NotFound, "found no Instance<GUM_SCALAR> matching the given name")
+      if (!p) GUM_ERROR(NotFound, "found no Instance<GUM_SCALAR> matching the given name")
       return *(*p);
     }
 
@@ -463,8 +459,7 @@ namespace gum {
 
         PRMSystem< GUM_SCALAR >::get(const PRMClass< GUM_SCALAR >& type) const {
       auto p = instanceMap_.tryGet(const_cast< PRMClass< GUM_SCALAR >* >(&type));
-      if (!p)
-        GUM_ERROR(NotFound, "the given Class<GUM_SCALAR> has no instantiation in this System")
+      if (!p) GUM_ERROR(NotFound, "the given Class<GUM_SCALAR> has no instantiation in this System")
       return *(*p);
     }
 
@@ -473,8 +468,7 @@ namespace gum {
 
         PRMSystem< GUM_SCALAR >::getArray(const std::string& name) const {
       auto p = arrayMap_.tryGet(name);
-      if (!p)
-        GUM_ERROR(NotFound, "found no array matching the given name")
+      if (!p) GUM_ERROR(NotFound, "found no array matching the given name")
       return *(p->second);
     }
 
@@ -482,8 +476,7 @@ namespace gum {
     INLINE PRMClassElementContainer< GUM_SCALAR >&
            PRMSystem< GUM_SCALAR >::getArrayType(const std::string& name) {
       auto p = arrayMap_.tryGet(name);
-      if (!p)
-        GUM_ERROR(NotFound, "found no array matching the given name")
+      if (!p) GUM_ERROR(NotFound, "found no array matching the given name")
       return *(p->first);
     }
 
@@ -491,8 +484,7 @@ namespace gum {
     INLINE const PRMClassElementContainer< GUM_SCALAR >&
                  PRMSystem< GUM_SCALAR >::getArrayType(const std::string& name) const {
       auto p = arrayMap_.tryGet(name);
-      if (!p)
-        GUM_ERROR(NotFound, "found no array matching the given name")
+      if (!p) GUM_ERROR(NotFound, "found no array matching the given name")
       return *(p->first);
     }
 
@@ -500,8 +492,7 @@ namespace gum {
     INLINE NodeId PRMSystem< GUM_SCALAR >::add(const std::string&         array,
                                                PRMInstance< GUM_SCALAR >* i) {
       auto p_arr = arrayMap_.tryGet(array);
-      if (!p_arr)
-        GUM_ERROR(NotFound, "found no array matching the given name")
+      if (!p_arr) GUM_ERROR(NotFound, "found no array matching the given name")
       if (i->type().isSubTypeOf(*(p_arr->first))) {
         NodeId id = add(i);
         p_arr->second->insert(i);
@@ -550,8 +541,7 @@ namespace gum {
     INLINE typename PRMSystem< GUM_SCALAR >::array_iterator
         PRMSystem< GUM_SCALAR >::begin(const std::string& a) {
       auto p = arrayMap_.tryGet(a);
-      if (!p)
-        GUM_ERROR(NotFound, "found no array matching the given name")
+      if (!p) GUM_ERROR(NotFound, "found no array matching the given name")
       return p->second->begin();
     }
 
@@ -559,8 +549,7 @@ namespace gum {
     INLINE const typename PRMSystem< GUM_SCALAR >::array_iterator&
         PRMSystem< GUM_SCALAR >::end(const std::string& a) {
       auto p = arrayMap_.tryGet(a);
-      if (!p)
-        GUM_ERROR(NotFound, "found no array matching the given name")
+      if (!p) GUM_ERROR(NotFound, "found no array matching the given name")
       return p->second->end();
     }
 
@@ -568,8 +557,7 @@ namespace gum {
     INLINE typename PRMSystem< GUM_SCALAR >::const_array_iterator
         PRMSystem< GUM_SCALAR >::begin(const std::string& a) const {
       auto p = arrayMap_.tryGet(a);
-      if (!p)
-        GUM_ERROR(NotFound, "found no array matching the given name")
+      if (!p) GUM_ERROR(NotFound, "found no array matching the given name")
       return p->second->begin();
     }
 
@@ -577,8 +565,7 @@ namespace gum {
     INLINE const typename PRMSystem< GUM_SCALAR >::const_array_iterator&
         PRMSystem< GUM_SCALAR >::end(const std::string& a) const {
       auto p = arrayMap_.tryGet(a);
-      if (!p)
-        GUM_ERROR(NotFound, "found no array matching the given name")
+      if (!p) GUM_ERROR(NotFound, "found no array matching the given name")
       return p->second->end();
     }
 

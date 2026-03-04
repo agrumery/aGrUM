@@ -234,7 +234,9 @@ namespace gum {
     if (_bucket_) {
       if (_instantiations_.existsFirst(const_cast< Instantiation* >(&i))) {
         return _bucket_->get(*(_instantiations_.second(const_cast< Instantiation* >(&i))));
-      } else { return _bucket_->get(i); }
+      } else {
+        return _bucket_->get(i);
+      }
     } else if (i.isMaster(this)) {
       if (!_slavesValue_.exists(&i)) { _slavesValue_.insert(&i, _computeValue_(i)); }
 
@@ -344,7 +346,9 @@ namespace gum {
         delete _instantiations_.second(&i);
         _instantiations_.eraseFirst(&i);
         return true;
-      } else { return false; }
+      } else {
+        return false;
+      }
     } else {
       if (_slavesValue_.exists(&i)) {
         _slavesValue_.erase(&i);
@@ -488,9 +492,7 @@ namespace gum {
 
   template < typename GUM_SCALAR >
   GUM_SCALAR MultiDimBucket< GUM_SCALAR >::_computeValue_(const Instantiation& value) const {
-    if (_multiDims_.empty()) {
-      GUM_ERROR(SizeError, "This MultiDimBucket is empty.")
-    }
+    if (_multiDims_.empty()) { GUM_ERROR(SizeError, "This MultiDimBucket is empty.") }
 
     GUM_SCALAR sum = (GUM_SCALAR)0;
     GUM_SCALAR current;

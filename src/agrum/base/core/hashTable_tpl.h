@@ -549,14 +549,14 @@ namespace gum {
   }
 
   template < typename Key, typename Val >
-  INLINE optional_ref<Val> HashTable< Key, Val >::tryGet(const Key& key) {
+  INLINE optional_ref< Val > HashTable< Key, Val >::tryGet(const Key& key) {
     Bucket* bucket = _nodes_[_hash_func_(key)].bucket(key);
     if (bucket == nullptr) return {};
     return bucket->val();
   }
 
   template < typename Key, typename Val >
-  INLINE optional_ref<const Val> HashTable< Key, Val >::tryGet(const Key& key) const {
+  INLINE optional_ref< const Val > HashTable< Key, Val >::tryGet(const Key& key) const {
     const Bucket* bucket = _nodes_[_hash_func_(key)].bucket(key);
     if (bucket == nullptr) return {};
     return bucket->pair.second;

@@ -277,7 +277,7 @@ namespace gum {
   template < class Element >
   INLINE SplayBinaryNode< Element >*
          SplayBinaryNode< Element >::join(const SplayBinaryNode< Element >*                  e,
-                                       HashTable< Element, SplayBinaryNode< Element >* >& addr) {
+                                          HashTable< Element, SplayBinaryNode< Element >* >& addr) {
     SplayBinaryNode< Element >* b = new SplayBinaryNode< Element >(*e, addr);
     GUM_ASSERT(b != 0);
     SplayBinaryNode< Element >* act = this;

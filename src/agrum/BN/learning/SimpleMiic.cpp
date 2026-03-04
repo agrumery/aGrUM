@@ -265,7 +265,9 @@ namespace gum {
                 if (graph.hasDirectedPath(z, x)) {
                   graph.addArc(z, x);
                   _latentCouples_.emplace_back(z, x);
-                } else { graph.addArc(x, z); }
+                } else {
+                  graph.addArc(x, z);
+                }
               }
               if (graph.existsArc(z, y)) {
                 graph.eraseArc(Arc(z, y));
@@ -278,7 +280,9 @@ namespace gum {
                 if (graph.hasDirectedPath(z, y)) {
                   graph.addArc(z, y);
                   _latentCouples_.emplace_back(z, y);
-                } else { graph.addArc(y, z); }
+                } else {
+                  graph.addArc(y, z);
+                }
               }
               if (graph.existsArc(z, x) && _isNotLatentCouple_(z, x)) {
                 _latentCouples_.emplace_back(z, x);
@@ -299,7 +303,9 @@ namespace gum {
             if (graph.hasDirectedPath(y, z)) {
               graph.addArc(y, z);
               _latentCouples_.emplace_back(y, z);
-            } else { graph.addArc(z, y); }
+            } else {
+              graph.addArc(z, y);
+            }
           }
           if (graph.existsArc(y, z) && !graph.existsArc(z, x) && !graph.existsArc(x, z)) {
             reset = true;
@@ -308,7 +314,9 @@ namespace gum {
             if (graph.hasDirectedPath(x, z)) {
               graph.addArc(x, z);
               _latentCouples_.emplace_back(x, z);
-            } else { graph.addArc(z, x); }
+            } else {
+              graph.addArc(z, x);
+            }
           }
 
           if (reset) {

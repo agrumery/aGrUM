@@ -127,7 +127,7 @@ namespace gum {
     template < typename GUM_SCALAR >
     void PRMInstance< GUM_SCALAR >::_instantiateSlotChain_(PRMSlotChain< GUM_SCALAR >* sc) {
       auto first_id = sc->chain()[0]->id();
-      auto p_first = _referenceMap_.tryGet(first_id);
+      auto p_first  = _referenceMap_.tryGet(first_id);
       if (!p_first) { return; }
       auto set = new Set< PRMInstance< GUM_SCALAR >* >(*(*p_first));
       // We proceed with a width-first run of the slot chain
@@ -186,7 +186,8 @@ namespace gum {
           }
 
           // Checking the reference's size limit
-          if (auto p_ref_slot = _referenceMap_.tryGet(id); p_ref_slot
+          if (auto p_ref_slot = _referenceMap_.tryGet(id);
+              p_ref_slot
               && (!static_cast< PRMReferenceSlot< GUM_SCALAR >& >(type().get(id)).isArray())
               && ((*p_ref_slot)->size() == 1)) {
             GUM_ERROR(OutOfBounds, "ReferenceSlot<GUM_SCALAR> size limit reached")
@@ -208,8 +209,8 @@ namespace gum {
           }
 
           // Checking the reference's size limit
-          if (auto p_ref_sc = _referenceMap_.tryGet(id); p_ref_sc
-              && (!static_cast< PRMSlotChain< GUM_SCALAR >& >(type().get(id)).isMultiple())
+          if (auto p_ref_sc = _referenceMap_.tryGet(id);
+              p_ref_sc && (!static_cast< PRMSlotChain< GUM_SCALAR >& >(type().get(id)).isMultiple())
               && ((*p_ref_sc)->size() == 1)) {
             GUM_ERROR(OutOfBounds, "SlotChain<GUM_SCALAR> size limit reached")
           }
@@ -301,31 +302,27 @@ namespace gum {
     template < typename GUM_SCALAR >
     INLINE PRMAttribute< GUM_SCALAR >& PRMInstance< GUM_SCALAR >::get(NodeId id) {
       auto p = _nodeIdMap_.tryGet(id);
-      if (!p)
-        GUM_ERROR(NotFound, "no PRMAttribute<GUM_SCALAR> with the given NodeId")
+      if (!p) GUM_ERROR(NotFound, "no PRMAttribute<GUM_SCALAR> with the given NodeId")
       return *(*p);
     }
 
     template < typename GUM_SCALAR >
     INLINE const PRMAttribute< GUM_SCALAR >& PRMInstance< GUM_SCALAR >::get(NodeId id) const {
       auto p = _nodeIdMap_.tryGet(id);
-      if (!p)
-        GUM_ERROR(NotFound, "no PRMAttribute<GUM_SCALAR> with the given NodeId")
+      if (!p) GUM_ERROR(NotFound, "no PRMAttribute<GUM_SCALAR> with the given NodeId")
       return *(*p);
     }
 
     template < typename GUM_SCALAR >
     INLINE PRMAttribute< GUM_SCALAR >& PRMInstance< GUM_SCALAR >::get(const std::string& name) {
-      if (!exists(name))
-        GUM_ERROR(NotFound, "no PRMAttribute<GUM_SCALAR> with the given name")
+      if (!exists(name)) GUM_ERROR(NotFound, "no PRMAttribute<GUM_SCALAR> with the given name")
       return *(_nodeIdMap_[type().get(name).id()]);
     }
 
     template < typename GUM_SCALAR >
     INLINE const PRMAttribute< GUM_SCALAR >&
                  PRMInstance< GUM_SCALAR >::get(const std::string& name) const {
-      if (!exists(name))
-        GUM_ERROR(NotFound, "no PRMAttribute<GUM_SCALAR> with the given name")
+      if (!exists(name)) GUM_ERROR(NotFound, "no PRMAttribute<GUM_SCALAR> with the given name")
       return *(_nodeIdMap_[type().get(name).id()]);
     }
 
@@ -358,7 +355,7 @@ namespace gum {
       if (!p)
         GUM_ERROR(NotFound,
                   "no ReferenceSlot<GUM_SCALAR> or SlotChain<GUM_SCALAR> "
-                           "matches the given NodeId")
+                  "matches the given NodeId")
       if ((*p)->size() > 0) {
         return **((*p)->begin());
       } else {
@@ -373,7 +370,7 @@ namespace gum {
       if (!p)
         GUM_ERROR(NotFound,
                   "no ReferenceSlot<GUM_SCALAR> or SlotChain<GUM_SCALAR> "
-                           "matches the given NodeId")
+                  "matches the given NodeId")
       return *(*p);
     }
 
@@ -403,8 +400,7 @@ namespace gum {
     INLINE typename PRMInstance< GUM_SCALAR >::RefIterator
         PRMInstance< GUM_SCALAR >::begin(NodeId id) {
       auto p = _referenceMap_.tryGet(id);
-      if (!p)
-        GUM_ERROR(NotFound, "no referred instances from this NodeId")
+      if (!p) GUM_ERROR(NotFound, "no referred instances from this NodeId")
       return PRMInstance< GUM_SCALAR >::RefIterator(*(*p));
     }
 
@@ -412,8 +408,7 @@ namespace gum {
     INLINE typename PRMInstance< GUM_SCALAR >::RefConstIterator
         PRMInstance< GUM_SCALAR >::begin(NodeId id) const {
       auto p = _referenceMap_.tryGet(id);
-      if (!p)
-        GUM_ERROR(NotFound, "no referred instances from this NodeId")
+      if (!p) GUM_ERROR(NotFound, "no referred instances from this NodeId")
       return PRMInstance< GUM_SCALAR >::RefConstIterator(*(*p));
     }
 

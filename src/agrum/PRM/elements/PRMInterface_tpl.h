@@ -419,27 +419,21 @@ namespace gum {
     template < typename GUM_SCALAR >
     INLINE PRMClassElement< GUM_SCALAR >& PRMInterface< GUM_SCALAR >::get(NodeId id) {
       auto p = _nodeIdMap_.tryGet(id);
-      if (!p) {
-        GUM_ERROR(NotFound, "no ClassElement<GUM_SCALAR> with the given NodeId")
-      }
+      if (!p) { GUM_ERROR(NotFound, "no ClassElement<GUM_SCALAR> with the given NodeId") }
       return **p;
     }
 
     template < typename GUM_SCALAR >
     INLINE const PRMClassElement< GUM_SCALAR >& PRMInterface< GUM_SCALAR >::get(NodeId id) const {
       auto p = _nodeIdMap_.tryGet(id);
-      if (!p) {
-        GUM_ERROR(NotFound, "no ClassElement<GUM_SCALAR> with the given NodeId")
-      }
+      if (!p) { GUM_ERROR(NotFound, "no ClassElement<GUM_SCALAR> with the given NodeId") }
       return **p;
     }
 
     template < typename GUM_SCALAR >
     INLINE PRMClassElement< GUM_SCALAR >& PRMInterface< GUM_SCALAR >::get(const std::string& name) {
       auto p = _nameMap_.tryGet(name);
-      if (!p) {
-        GUM_ERROR(NotFound, "no ClassElement<GUM_SCALAR> with the given name")
-      }
+      if (!p) { GUM_ERROR(NotFound, "no ClassElement<GUM_SCALAR> with the given name") }
       return **p;
     }
 
@@ -447,9 +441,7 @@ namespace gum {
     INLINE const PRMClassElement< GUM_SCALAR >&
                  PRMInterface< GUM_SCALAR >::get(const std::string& name) const {
       auto p = _nameMap_.tryGet(name);
-      if (!p) {
-        GUM_ERROR(NotFound, "no ClassElement<GUM_SCALAR> with the given name")
-      }
+      if (!p) { GUM_ERROR(NotFound, "no ClassElement<GUM_SCALAR> with the given name") }
       return **p;
     }
 

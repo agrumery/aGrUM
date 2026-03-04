@@ -572,7 +572,7 @@ namespace gum {
       for (const auto p: pool) {
         for (const auto v: p->variablesSequence()) {
           if (data.vars.existsSecond(v)) {
-            auto  varId = data.vars.first(v);
+            auto varId = data.vars.first(v);
             if (auto p_map = data.map.tryGet(varId)) {
               target = *p_map;
               try {
@@ -945,21 +945,21 @@ namespace gum {
     template < typename GUM_SCALAR >
     INLINE std::string
            StructuredInference< GUM_SCALAR >::_str_(const PRMInstance< GUM_SCALAR >*  i,
-                                                 const PRMAttribute< GUM_SCALAR >* a) const {
+                                                    const PRMAttribute< GUM_SCALAR >* a) const {
       return i->name() + _dot_ + a->safeName();
     }
 
     template < typename GUM_SCALAR >
     INLINE std::string
            StructuredInference< GUM_SCALAR >::_str_(const PRMInstance< GUM_SCALAR >*  i,
-                                                 const PRMAttribute< GUM_SCALAR >& a) const {
+                                                    const PRMAttribute< GUM_SCALAR >& a) const {
       return i->name() + _dot_ + a.safeName();
     }
 
     template < typename GUM_SCALAR >
     INLINE std::string
            StructuredInference< GUM_SCALAR >::_str_(const PRMInstance< GUM_SCALAR >*  i,
-                                                 const PRMSlotChain< GUM_SCALAR >& a) const {
+                                                    const PRMSlotChain< GUM_SCALAR >& a) const {
       return i->name() + _dot_ + a.lastElt().safeName();
     }
 

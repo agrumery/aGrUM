@@ -76,7 +76,7 @@ namespace gum {
     template < typename GUM_SCALAR >
     INLINE PRMClassElementContainer< GUM_SCALAR >&
            PRMClassElementContainer< GUM_SCALAR >::operator=(
-            const PRMClassElementContainer< GUM_SCALAR >& source) {
+               const PRMClassElementContainer< GUM_SCALAR >& source) {
       GUM_ERROR(FatalError, "illegal call to ClassElementContainer copy operator")
     }
 
@@ -105,7 +105,9 @@ namespace gum {
                  || PRMClassElement< GUM_SCALAR >::isAggregate(elt)) {
         if (auto p = _IOFlags_.tryGet(elt.safeName())) {
           p->first = b;
-        } else { setIOFlag_(elt, std::make_pair(b, false)); }
+        } else {
+          setIOFlag_(elt, std::make_pair(b, false));
+        }
       } else {
         GUM_ERROR(WrongClassElement, "given id is not an PRMAttribute or an PRMAggregate")
       }
@@ -121,7 +123,9 @@ namespace gum {
                  || PRMClassElement< GUM_SCALAR >::isAggregate(elt)) {
         if (auto p = _IOFlags_.tryGet(elt.safeName())) {
           p->second = b;
-        } else { setIOFlag_(elt, std::make_pair(false, b)); }
+        } else {
+          setIOFlag_(elt, std::make_pair(false, b));
+        }
 
         if (b) { updateDescendants_(elt); }
       } else {
@@ -149,8 +153,7 @@ namespace gum {
     INLINE std::pair< bool, bool >& PRMClassElementContainer< GUM_SCALAR >::getIOFlag_(
         const PRMClassElement< GUM_SCALAR >& elt) {
       auto p = _IOFlags_.tryGet(elt.safeName());
-      if (!p)
-        GUM_ERROR(NotFound, "this ClassElement<GUM_SCALAR> does not have any IO flags")
+      if (!p) GUM_ERROR(NotFound, "this ClassElement<GUM_SCALAR> does not have any IO flags")
       return *p;
     }
 
@@ -158,8 +161,7 @@ namespace gum {
     INLINE const std::pair< bool, bool >& PRMClassElementContainer< GUM_SCALAR >::getIOFlag_(
         const PRMClassElement< GUM_SCALAR >& elt) const {
       auto p = _IOFlags_.tryGet(elt.safeName());
-      if (!p)
-        GUM_ERROR(NotFound, "this ClassElement<GUM_SCALAR> does not have any IO flags")
+      if (!p) GUM_ERROR(NotFound, "this ClassElement<GUM_SCALAR> does not have any IO flags")
       return *p;
     }
 
@@ -169,7 +171,9 @@ namespace gum {
                                                            const std::pair< bool, bool >& flags) {
       if (auto p = _IOFlags_.tryGet(elt.safeName())) {
         *p = flags;
-      } else { _IOFlags_.insert(elt.safeName(), flags); }
+      } else {
+        _IOFlags_.insert(elt.safeName(), flags);
+      }
     }
 
     template < typename GUM_SCALAR >

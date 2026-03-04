@@ -214,8 +214,7 @@ namespace gum {
 
       // list of deleted objects, but not created (?)
       for (DEBUG_MAP::const_iterator xx = deletion.begin(); xx != deletion.end(); ++xx) {
-        if (auto creationValAtKey = creation.find(xx->first);
-            creationValAtKey != creation.end()) {
+        if (auto creationValAtKey = creation.find(xx->first); creationValAtKey != creation.end()) {
           std::stringstream stream;
           fillChar = (fillChar == '_') ? ' ' : '_';
           stream << std::setfill(fillChar = (fillChar == '_') ? ' ' : '_') << "| "

@@ -78,7 +78,7 @@ namespace gum {
     template < typename CONSTRAINT1, typename... OTHER_CONSTRAINTS >
     INLINE _StructuralConstraintSetStatic_< CONSTRAINT1, OTHER_CONSTRAINTS... >&
            _StructuralConstraintSetStatic_< CONSTRAINT1, OTHER_CONSTRAINTS... >::operator=(
-            const _StructuralConstraintSetStatic_< CONSTRAINT1, OTHER_CONSTRAINTS... >& from) {
+               const _StructuralConstraintSetStatic_< CONSTRAINT1, OTHER_CONSTRAINTS... >& from) {
       if (this != &from) {
         next_constraints::operator=(from);
         first_constraint::operator=(from);
@@ -221,7 +221,7 @@ namespace gum {
     template < typename CONSTRAINT >
     INLINE _StructuralConstraintSetStatic_< CONSTRAINT >&
            _StructuralConstraintSetStatic_< CONSTRAINT >::operator=(
-            const _StructuralConstraintSetStatic_< CONSTRAINT >& from) {
+               const _StructuralConstraintSetStatic_< CONSTRAINT >& from) {
       if (this != &from) { CONSTRAINT::operator=(from); }
 
       return *this;
@@ -346,7 +346,7 @@ namespace gum {
     template < typename CONSTRAINT1, typename... OTHER_CONSTRAINTS >
     INLINE StructuralConstraintSetStatic< CONSTRAINT1, OTHER_CONSTRAINTS... >&
            StructuralConstraintSetStatic< CONSTRAINT1, OTHER_CONSTRAINTS... >::operator=(
-            const StructuralConstraintSetStatic< CONSTRAINT1, OTHER_CONSTRAINTS... >& from) {
+               const StructuralConstraintSetStatic< CONSTRAINT1, OTHER_CONSTRAINTS... >& from) {
       if (this != &from) { constraints::operator=(from); }
 
       return *this;
@@ -513,7 +513,7 @@ namespace gum {
     template < typename CONSTRAINT >
     INLINE StructuralConstraintSetStatic< CONSTRAINT >&
            StructuralConstraintSetStatic< CONSTRAINT >::operator=(
-            const StructuralConstraintSetStatic< CONSTRAINT >& from) {
+               const StructuralConstraintSetStatic< CONSTRAINT >& from) {
       if (this != &from) { constraints::operator=(from); }
 
       return *this;

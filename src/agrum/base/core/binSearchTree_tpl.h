@@ -144,7 +144,7 @@ namespace gum {
   template < typename Val, class Cmp, class Node >
   INLINE BinSearchTreeIterator< Val, Cmp, Node >&
          BinSearchTreeIterator< Val, Cmp, Node >::operator=(
-          const BinSearchTreeIterator< Val, Cmp, Node >& from) {
+             const BinSearchTreeIterator< Val, Cmp, Node >& from) {
     // avoid self assignment
     if (this != &from) {
       GUM_OP_CPY(BinSearchTreeIterator);

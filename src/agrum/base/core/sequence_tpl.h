@@ -367,7 +367,7 @@ namespace gum {
 
   // returns a pointer to the position of k, or nullptr if not found
   template < typename Key, bool Gen >
-  INLINE optional_ref<const Idx> SequenceImplementation< Key, Gen >::tryPos(const Key& k) const {
+  INLINE optional_ref< const Idx > SequenceImplementation< Key, Gen >::tryPos(const Key& k) const {
     return _h_.tryGet(k);
   }
 
@@ -749,7 +749,7 @@ namespace gum {
 
   // returns a pointer to the position of k, or nullptr if not found
   template < typename Key >
-  INLINE optional_ref<const Idx> SequenceImplementation< Key, true >::tryPos(Key k) const {
+  INLINE optional_ref< const Idx > SequenceImplementation< Key, true >::tryPos(Key k) const {
     return _h_.tryGet(k);
   }
 

@@ -128,7 +128,7 @@ namespace gum {
         instanceName += ".";   // to be removed in  _getVariableName_
       } else if (prm->classes().size() == 1) {
         const std::string& entityName = (*prm->classes().begin())->name();
-        ParseError         warn(false,
+        ParseError warn(false,
                         "Unique class '" + entityName + "' found. Generating unnamed instance.",
                         _filename_,
                         0);

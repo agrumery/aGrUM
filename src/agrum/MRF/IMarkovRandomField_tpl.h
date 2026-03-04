@@ -207,7 +207,7 @@ namespace gum {
   template < typename GUM_SCALAR >
   std::string IMarkovRandomField< GUM_SCALAR >::toDotAsFactorGraph() const {
     std::stringstream output;
-    std::string mn_name = this->propertyWithDefault("name", "no_name");
+    std::string       mn_name = this->propertyWithDefault("name", "no_name");
 
     output << "graph FG_" << mn_name << " {" << std::endl;
     output << "  layout=neato;" << std::endl;

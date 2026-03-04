@@ -460,9 +460,7 @@ namespace gum {
         } else {
           std::vector< const DiscreteVariable* > elim;
 
-          for (auto iter = (*p_eo2)->begin();
-               iter != (*p_eo2)->end();
-               ++iter) {
+          for (auto iter = (*p_eo2)->begin(); iter != (*p_eo2)->end(); ++iter) {
             const auto& var = bn.variable(*iter);
             if (delayedVars != nullptr) {
               if (!delayedVars->exists(*iter)) { elim.push_back(&var); }
@@ -643,9 +641,7 @@ namespace gum {
 
     template < typename GUM_SCALAR >
     INLINE std::string SVE< GUM_SCALAR >::_trim_(const std::string& s) {
-      if (auto pos = s.find_first_of("<"); pos != std::string::npos) {
-        return s.substr(0, pos);
-      }
+      if (auto pos = s.find_first_of("<"); pos != std::string::npos) { return s.substr(0, pos); }
       return s;
     }
 
@@ -662,7 +658,7 @@ namespace gum {
     template < typename GUM_SCALAR >
     INLINE Tensor< GUM_SCALAR >*
            SVE< GUM_SCALAR >::_getAggTensor_(const PRMInstance< GUM_SCALAR >*  i,
-                                          const PRMAggregate< GUM_SCALAR >* agg) {
+                                             const PRMAggregate< GUM_SCALAR >* agg) {
       return &(const_cast< Tensor< GUM_SCALAR >& >(i->get(agg->id()).cpf()));
     }
 
@@ -693,7 +689,7 @@ namespace gum {
 
       static std::string dot = ".";
 
-      auto  key   = j->name() + dot + j->get(id).safeName();
+      auto key = j->name() + dot + j->get(id).safeName();
       if (auto p_cnt = _delayedVariablesCounters_.tryGet(key)) {
         *p_cnt += 1;
       } else {

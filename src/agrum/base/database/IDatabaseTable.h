@@ -863,8 +863,7 @@ namespace gum {
        * assigned to the columns of the IDatabaseTable because the size of their
        * vector is inadequate. */
       virtual void setVariableNames(const std::vector< std::string >& names,
-                                    const bool                        from_external_object = true)
-          = 0;
+                                    const bool from_external_object = true) = 0;
 
       /// returns the name of the kth column of the IDatabaseTable
       /** @throw OutOfBounds is raised if the IDatabaseTable contains fewer

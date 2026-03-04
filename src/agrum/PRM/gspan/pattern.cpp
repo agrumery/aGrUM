@@ -119,7 +119,9 @@ namespace gum::prm::gspan {
 
     if (_arc_map_.exists(Arc(u, v))) {
       p.addArc(1, 2, label(u, v));
-    } else { p.addArc(1, 2, label(v, u)); }
+    } else {
+      p.addArc(1, 2, label(v, u));
+    }
 
     for (const auto nei: children(u))
       if (nei != v)
@@ -159,7 +161,9 @@ namespace gum::prm::gspan {
 
     if (_arc_map_.exists(Arc(u, v))) {
       data = &(label(u, v));
-    } else { data = &(label(v, u)); }
+    } else {
+      data = &(label(v, u));
+    }
 
     // Adding arc
     try {

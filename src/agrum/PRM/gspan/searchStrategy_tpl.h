@@ -368,21 +368,21 @@ namespace gum {
       template < typename GUM_SCALAR >
       INLINE std::string
              StrictSearch< GUM_SCALAR >::_str_(const PRMInstance< GUM_SCALAR >*  i,
-                                            const PRMAttribute< GUM_SCALAR >* a) const {
+                                               const PRMAttribute< GUM_SCALAR >* a) const {
         return i->name() + _dot_ + a->safeName();
       }
 
       template < typename GUM_SCALAR >
       INLINE std::string
              StrictSearch< GUM_SCALAR >::_str_(const PRMInstance< GUM_SCALAR >*  i,
-                                            const PRMAttribute< GUM_SCALAR >& a) const {
+                                               const PRMAttribute< GUM_SCALAR >& a) const {
         return i->name() + _dot_ + a.safeName();
       }
 
       template < typename GUM_SCALAR >
       INLINE std::string
              StrictSearch< GUM_SCALAR >::_str_(const PRMInstance< GUM_SCALAR >*  i,
-                                            const PRMSlotChain< GUM_SCALAR >& a) const {
+                                               const PRMSlotChain< GUM_SCALAR >& a) const {
         return i->name() + _dot_ + a.lastElt().safeName();
       }
 

@@ -92,7 +92,9 @@ namespace gum {
          ++iter) {
       if (auto pFirst = bij.tryFirst(iter.key())) {
         causalWeight(**pFirst, iter.val());
-      } else { causalWeight(*(iter.key()), iter.val()); }
+      } else {
+        causalWeight(*(iter.key()), iter.val());
+      }
     }
   }
 

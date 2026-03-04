@@ -120,7 +120,7 @@
       test##TestName();                                                           \
     }
 #  define GUM_TEST_IMPL(Suite, Module, TestName) GUM_TEST_IMPL_(Suite, Module, TestName)
-#  define GUM_TEST_ACTIF(TestName)               GUM_TEST_IMPL(GUM_CURRENT_SUITE, GUM_CURRENT_MODULE, TestName)
+#  define GUM_TEST_ACTIF(TestName) GUM_TEST_IMPL(GUM_CURRENT_SUITE, GUM_CURRENT_MODULE, TestName)
 // Helper macros for generating warnings with file and line information
 #  define GUM_STRINGIFY_(x) #x
 #  define GUM_STRINGIFY(x)  GUM_STRINGIFY_(x)

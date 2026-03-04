@@ -163,9 +163,9 @@ namespace gum {
          */
         friend std::ostream& operator<<(std::ostream& out,
                                         const LpCol&  col);   // calls col.toString(),
-                                                             // friend is useless but
-                                                             // good for documentation
-                                                             // purpose
+                                                              // friend is useless but
+                                                              // good for documentation
+                                                              // purpose
 
         /// @}
 
@@ -592,9 +592,9 @@ namespace gum {
          */
         friend std::ostream& operator<<(std::ostream& out,
                                         const LpRow&  row);   // calls row.toString(),
-                                                             // friend is useless but
-                                                             // good for documentation
-                                                             // purpose
+                                                              // friend is useless but
+                                                              // good for documentation
+                                                              // purpose
 
         /**
          * @brief Get the string representation of a calling row.

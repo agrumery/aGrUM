@@ -305,8 +305,7 @@ namespace gum {
      * @param declared_target the joint target declared by the user that
      * contains set */
     virtual const Tensor< GUM_SCALAR >& jointPosterior_(const NodeSet& wanted_target,
-                                                        const NodeSet& declared_target)
-        = 0;
+                                                        const NodeSet& declared_target) = 0;
 
     /** @brief returns a fresh unnormalized joint posterior of
      * a given set of variables

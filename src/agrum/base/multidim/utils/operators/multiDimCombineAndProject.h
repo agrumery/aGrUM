@@ -123,8 +123,7 @@ namespace gum {
      * argument contains less than two elements
      */
     virtual Set< const TABLE* > execute(const Set< const TABLE* >& set,
-                                        const gum::VariableSet&    del_vars)
-        = 0;
+                                        const gum::VariableSet&    del_vars) = 0;
 
     /** @brief returns the set of operations to perform to make all the combinations
      * and projections
@@ -132,13 +131,11 @@ namespace gum {
     virtual std::pair< std::vector< ScheduleOperator* >, Set< const IScheduleMultiDim* > >
         operations(const Set< const IScheduleMultiDim* >& original_tables,
                    const gum::VariableSet&                del_vars,
-                   const bool                             is_result_persistent = false) const
-        = 0;
+                   const bool                             is_result_persistent = false) const = 0;
     virtual std::pair< std::vector< ScheduleOperator* >, Set< const IScheduleMultiDim* > >
         operations(const std::vector< const IScheduleMultiDim* >& original_tables,
                    const gum::VariableSet&                        del_vars,
-                   const bool is_result_persistent = false) const
-        = 0;
+                   const bool is_result_persistent = false) const = 0;
 
     /** @brief add to a given schedule the set of operations needed to perform all
      * the combinations and projections
@@ -189,16 +186,14 @@ namespace gum {
      * performed to compute the combination.
      */
     virtual double nbOperations(const Set< const TABLE* >& set,
-                                const gum::VariableSet&    del_vars) const
-        = 0;
+                                const gum::VariableSet&    del_vars) const = 0;
 
     /**
      * @brief returns a rough estimate of the number of operations that will be
      * performed to compute the combination.
      */
     virtual double nbOperations(const Set< const Sequence< const DiscreteVariable* >* >& set,
-                                const gum::VariableSet& del_vars) const
-        = 0;
+                                const gum::VariableSet& del_vars) const = 0;
 
     /**
      * @brief returns the memory consumption used during the combinations and
@@ -214,8 +209,7 @@ namespace gum {
      * end of the function ( the memory used by the resulting tables )
      */
     virtual std::pair< double, double > memoryUsage(const Set< const TABLE* >& set,
-                                                    const gum::VariableSet&    del_vars) const
-        = 0;
+                                                    const gum::VariableSet&    del_vars) const = 0;
 
     /**
      * @brief returns the memory consumption used during the combinations and
@@ -232,8 +226,7 @@ namespace gum {
      */
     virtual std::pair< double, double >
         memoryUsage(const Set< const Sequence< const DiscreteVariable* >* >& set,
-                    const gum::VariableSet&                                  del_vars) const
-        = 0;
+                    const gum::VariableSet&                                  del_vars) const = 0;
 
     /// @}
 

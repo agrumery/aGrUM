@@ -213,9 +213,9 @@ namespace gum {
 
   double StructuralComparator::precision() const {
     double tp, fp, precision;
-    tp = _true_arc_ + _true_edge_;
-    fp = _wrong_edge_arc_ + _wrong_arc_edge_ + _wrong_arc_none_ + _wrong_edge_none_
-       + _misoriented_arc_;
+    tp        = _true_arc_ + _true_edge_;
+    fp        = _wrong_edge_arc_ + _wrong_arc_edge_ + _wrong_arc_none_ + _wrong_edge_none_
+              + _misoriented_arc_;
     precision = tp / (tp + fp);
     return precision;
   }

@@ -240,8 +240,7 @@ namespace gum {
         std::string key = _buildHashKey_(elt.first, *elt.second);
 
         if (auto p_req = _reqMap_.tryGet(key)) {
-          _keyMap_.insert(elt.first,
-                          std::pair< std::string, Set< NodeId >* >(key, p_req->first));
+          _keyMap_.insert(elt.first, std::pair< std::string, Set< NodeId >* >(key, p_req->first));
           p_req->second += 1;
           delete elt.second;
           req_map[elt.first] = 0;
@@ -351,8 +350,8 @@ namespace gum {
     template < typename GUM_SCALAR >
     INLINE std::pair< bool, bool >&
            StructuredBayesBall< GUM_SCALAR >::_getMark_(InstanceMap&                     marks,
-                                                     const PRMInstance< GUM_SCALAR >* i,
-                                                     NodeId                           n) {
+                                                        const PRMInstance< GUM_SCALAR >* i,
+                                                        NodeId                           n) {
       return (*(marks[i]))[n];
     }
 

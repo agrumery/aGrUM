@@ -950,9 +950,7 @@ namespace gum {
             if (impl->exists(elt->name())) {
               try {
                 this->getIOFlag_(*elt).second = true;
-              } catch (NotFound const&) {
-                this->setIOFlag_(*elt, std::make_pair(false, true));
-              }
+              } catch (NotFound const&) { this->setIOFlag_(*elt, std::make_pair(false, true)); }
             }
             super = super->_superInterface_ ? &(super->super()) : nullptr;
           }
@@ -988,9 +986,7 @@ namespace gum {
     template < typename GUM_SCALAR >
     INLINE PRMClassElement< GUM_SCALAR >& PRMClass< GUM_SCALAR >::get(NodeId id) {
       auto p = _nodeIdMap_.tryGet(id);
-      if (!p) {
-        GUM_ERROR(NotFound, "no ClassElement<GUM_SCALAR> with the given NodeId")
-      }
+      if (!p) { GUM_ERROR(NotFound, "no ClassElement<GUM_SCALAR> with the given NodeId") }
       return **p;
     }
 

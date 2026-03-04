@@ -155,8 +155,8 @@ namespace gum {
             for (i = std::size_t(0); i < cond_nb; ++i) {
               if (deja) str << ", ";
               else deja = true;
-              std::size_t             col = node2cols.empty() ? conditioning_nodes[i]
-                                                              : node2cols.second(conditioning_nodes[i]);
+              std::size_t col = node2cols.empty() ? conditioning_nodes[i]
+                                                  : node2cols.second(conditioning_nodes[i]);
               const DiscreteVariable& var
                   = dynamic_cast< const DiscreteVariable& >(database.variable(col));
               str << var.name() << "=" << var.labels()[values[i]];

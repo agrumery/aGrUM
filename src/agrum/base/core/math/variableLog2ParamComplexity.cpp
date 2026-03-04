@@ -79,7 +79,7 @@ namespace gum {
       } else {
         // try to find the value in the cache
         if (_use_cache_) {
-          const auto  key = std::pair< std::size_t, double >{r, n};
+          const auto key = std::pair< std::size_t, double >{r, n};
           if (auto p = _cache_.tryGet(key)) return *p;
         }
 
@@ -119,7 +119,7 @@ namespace gum {
     } else {
       // try to find the value in the cache
       if (_use_cache_) {
-        const auto  key = std::pair< std::size_t, double >{r, n};
+        const auto key = std::pair< std::size_t, double >{r, n};
         if (auto p = _cache_.tryGet(key)) return *p;
       }
 

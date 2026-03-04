@@ -150,8 +150,7 @@ namespace gum {
     template < typename GUM_SCALAR >
     INLINE const PRMClassElement< GUM_SCALAR >&
                  ClassBayesNet< GUM_SCALAR >::_get_(const std::string& name) const {
-      if (!_class_->exists(name))
-        GUM_ERROR(NotFound, "no element found with that id.")
+      if (!_class_->exists(name)) GUM_ERROR(NotFound, "no element found with that id.")
       return _class_->get(name);
     }
 

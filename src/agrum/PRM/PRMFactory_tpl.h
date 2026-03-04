@@ -124,68 +124,67 @@ namespace gum {
         // c->implements() throws NotFound if no interface is implemented
         const auto& interfaces = c->implements();
         for (const auto& i: interfaces) {
-        for (const auto& node: i->containerDag().nodes()) {
-          std::string name = i->get(node).name();
+          for (const auto& node: i->containerDag().nodes()) {
+            std::string name = i->get(node).name();
 
-          if (!c->exists(name)) {
-            std::stringstream msg;
-            msg << "class " << c->name() << " does not respect interface ";
-            GUM_ERROR(PRMTypeError, msg.str() + i->name())
-          }
+            if (!c->exists(name)) {
+              std::stringstream msg;
+              msg << "class " << c->name() << " does not respect interface ";
+              GUM_ERROR(PRMTypeError, msg.str() + i->name())
+            }
 
-          switch (i->get(node).elt_type()) {
-            case PRMClassElement< GUM_SCALAR >::prm_aggregate :
-            case PRMClassElement< GUM_SCALAR >::prm_attribute : {
-              if ((c->get(name).elt_type() == PRMClassElement< GUM_SCALAR >::prm_attribute)
-                  || (c->get(name).elt_type()
-                      == PRMClassElement< GUM_SCALAR >::prm_aggregate)) {
-                if (!c->get(name).type().isSubTypeOf(i->get(name).type())) {
+            switch (i->get(node).elt_type()) {
+              case PRMClassElement< GUM_SCALAR >::prm_aggregate :
+              case PRMClassElement< GUM_SCALAR >::prm_attribute : {
+                if ((c->get(name).elt_type() == PRMClassElement< GUM_SCALAR >::prm_attribute)
+                    || (c->get(name).elt_type() == PRMClassElement< GUM_SCALAR >::prm_aggregate)) {
+                  if (!c->get(name).type().isSubTypeOf(i->get(name).type())) {
+                    std::stringstream msg;
+                    msg << "class " << c->name() << " does not respect interface ";
+                    GUM_ERROR(PRMTypeError, msg.str() + i->name())
+                  }
+                } else {
                   std::stringstream msg;
                   msg << "class " << c->name() << " does not respect interface ";
                   GUM_ERROR(PRMTypeError, msg.str() + i->name())
                 }
-              } else {
-                std::stringstream msg;
-                msg << "class " << c->name() << " does not respect interface ";
-                GUM_ERROR(PRMTypeError, msg.str() + i->name())
+
+                break;
               }
 
-              break;
-            }
+              case PRMClassElement< GUM_SCALAR >::prm_refslot : {
+                if (c->get(name).elt_type() == PRMClassElement< GUM_SCALAR >::prm_refslot) {
+                  const PRMReferenceSlot< GUM_SCALAR >& ref_i
+                      = static_cast< const PRMReferenceSlot< GUM_SCALAR >& >(i->get(name));
+                  const PRMReferenceSlot< GUM_SCALAR >& ref_this
+                      = static_cast< const PRMReferenceSlot< GUM_SCALAR >& >(c->get(name));
 
-            case PRMClassElement< GUM_SCALAR >::prm_refslot : {
-              if (c->get(name).elt_type() == PRMClassElement< GUM_SCALAR >::prm_refslot) {
-                const PRMReferenceSlot< GUM_SCALAR >& ref_i
-                    = static_cast< const PRMReferenceSlot< GUM_SCALAR >& >(i->get(name));
-                const PRMReferenceSlot< GUM_SCALAR >& ref_this
-                    = static_cast< const PRMReferenceSlot< GUM_SCALAR >& >(c->get(name));
-
-                if (!ref_this.slotType().isSubTypeOf(ref_i.slotType())) {
+                  if (!ref_this.slotType().isSubTypeOf(ref_i.slotType())) {
+                    std::stringstream msg;
+                    msg << "class " << c->name() << " does not respect interface ";
+                    GUM_ERROR(PRMTypeError, msg.str() + i->name())
+                  }
+                } else {
                   std::stringstream msg;
                   msg << "class " << c->name() << " does not respect interface ";
                   GUM_ERROR(PRMTypeError, msg.str() + i->name())
                 }
-              } else {
-                std::stringstream msg;
-                msg << "class " << c->name() << " does not respect interface ";
-                GUM_ERROR(PRMTypeError, msg.str() + i->name())
+
+                break;
               }
 
-              break;
-            }
+              case PRMClassElement< GUM_SCALAR >::prm_slotchain : {
+                // Nothing to check: they are automatically inherited
+                break;
+              }
 
-            case PRMClassElement< GUM_SCALAR >::prm_slotchain : {
-              // Nothing to check: they are automatically inherited
-              break;
-            }
-
-            default : {
-              std::string msg = "unexpected ClassElement<GUM_SCALAR> in interface ";
-              GUM_ERROR(FatalError, msg + i->name())
+              default : {
+                std::string msg = "unexpected ClassElement<GUM_SCALAR> in interface ";
+                GUM_ERROR(FatalError, msg + i->name())
+              }
             }
           }
         }
-      }
       } catch (NotFound const&) {
         // this Class does not implement any Interface
       }
@@ -933,7 +932,7 @@ namespace gum {
     template < typename GUM_SCALAR >
     INLINE PRMSlotChain< GUM_SCALAR >*
            PRMFactory< GUM_SCALAR >::_buildSlotChain_(PRMClassElementContainer< GUM_SCALAR >* start,
-                                                   const std::string&                      name) {
+                                                      const std::string&                      name) {
       std::vector< std::string > v;
       decomposePath(name, v);
       PRMClassElementContainer< GUM_SCALAR >*    current = start;

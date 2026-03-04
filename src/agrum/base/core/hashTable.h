@@ -59,9 +59,9 @@
 #include <agrum/agrum.h>
 
 #include <agrum/base/core/hashFunc.h>
-#include <agrum/base/core/optional_ref.h>
 #include <agrum/base/core/staticInitializer.h>
 
+#include <agrum/base/core/optional_ref.h>
 #include <initializer_list>
 
 namespace gum {
@@ -1073,10 +1073,10 @@ namespace gum {
      * @param key The key to search for.
      * @return A pointer to the mapped value, or nullptr if not found.
      */
-    optional_ref<Val> tryGet(const Key& key);
+    optional_ref< Val > tryGet(const Key& key);
 
     /// @copydoc tryGet(const Key&)
-    optional_ref<const Val> tryGet(const Key& key) const;
+    optional_ref< const Val > tryGet(const Key& key) const;
 
     /**
      * @brief Adds a new element (actually a copy of this element) into the

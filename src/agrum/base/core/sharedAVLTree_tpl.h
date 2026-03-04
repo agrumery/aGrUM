@@ -448,7 +448,7 @@ namespace gum {
   template < typename Val, typename Cmp >
   INLINE SharedAVLTreeReverseIterator< Val, Cmp >&
          SharedAVLTreeReverseIterator< Val, Cmp >::operator=(
-          const SharedAVLTreeReverseIterator< Val, Cmp >& from) noexcept {
+             const SharedAVLTreeReverseIterator< Val, Cmp >& from) noexcept {
     SharedAVLTreeIterator< Val, Cmp >::operator=(from);
     return *this;
   }
@@ -457,7 +457,7 @@ namespace gum {
   template < typename Val, typename Cmp >
   INLINE SharedAVLTreeReverseIterator< Val, Cmp >&
          SharedAVLTreeReverseIterator< Val, Cmp >::operator=(
-          SharedAVLTreeReverseIterator< Val, Cmp >&& from) noexcept {
+             SharedAVLTreeReverseIterator< Val, Cmp >&& from) noexcept {
     SharedAVLTreeIterator< Val, Cmp >::operator=(std::move(from));
     return *this;
   }
@@ -554,7 +554,7 @@ namespace gum {
   template < typename Val, typename Cmp >
   INLINE SharedAVLTreeReverseIteratorSafe< Val, Cmp >&
          SharedAVLTreeReverseIteratorSafe< Val, Cmp >::operator=(
-          const SharedAVLTreeReverseIteratorSafe< Val, Cmp >& from) {
+             const SharedAVLTreeReverseIteratorSafe< Val, Cmp >& from) {
     SharedAVLTreeIteratorSafe< Val, Cmp >::operator=(from);
     return *this;
   }
@@ -563,7 +563,7 @@ namespace gum {
   template < typename Val, typename Cmp >
   INLINE SharedAVLTreeReverseIteratorSafe< Val, Cmp >&
          SharedAVLTreeReverseIteratorSafe< Val, Cmp >::operator=(
-          SharedAVLTreeReverseIteratorSafe< Val, Cmp >&& from) {
+             SharedAVLTreeReverseIteratorSafe< Val, Cmp >&& from) {
     SharedAVLTreeIteratorSafe< Val, Cmp >::operator=(std::move(from));
     return *this;
   }

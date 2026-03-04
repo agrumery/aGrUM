@@ -245,7 +245,7 @@ namespace gum {
         // check that this is not a missing value
         if (this->isMissingSymbol(str)) {
           if (auto ptr_is_str_translated = _status_int_missing_symbols_.tryGet(str)) {
-            if (!*ptr_is_str_translated) { // the string is not translated yet
+            if (!*ptr_is_str_translated) {   // the string is not translated yet
               *ptr_is_str_translated = true;
               _translated_int_missing_symbols_.insert(std::stol(str));
             }

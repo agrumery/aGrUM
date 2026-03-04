@@ -38,6 +38,7 @@
 #                                                                          #
 ############################################################################
 
+
 class CustomShapleyCache:
   def __init__(self, max_capacity: int = 1000):
     if max_capacity <= 0:

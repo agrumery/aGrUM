@@ -128,21 +128,20 @@ namespace gum {
     virtual void   endParentsDeclaration()                                                     = 0;
     virtual void   startRawProbabilityDeclaration(const std::string& var)                      = 0;
     virtual void   rawConditionalTable(const std::vector< std::string >& variables,
-                                       const std::vector< float >&       rawTable)
-        = 0;
-    virtual void rawConditionalTable(const std::vector< float >& rawTable)                 = 0;
-    virtual void endRawProbabilityDeclaration()                                            = 0;
-    virtual void startFactorizedProbabilityDeclaration(const std::string& var)             = 0;
-    virtual void startFactorizedEntry()                                                    = 0;
-    virtual void endFactorizedEntry()                                                      = 0;
-    virtual void setParentModality(const std::string& parent, const std::string& modality) = 0;
-    virtual void setVariableValuesUnchecked(const std::vector< float >& values)            = 0;
-    virtual void setVariableValues(const std::vector< float >& values)                     = 0;
-    virtual void endFactorizedProbabilityDeclaration()                                     = 0;
-    virtual void setVariable(const DiscreteVariable& var)                                  = 0;
-    virtual void
-        setVariableCPT(const std::string& varName, MultiDimAdressable* table, bool redefineParents)
-        = 0;
+                                       const std::vector< float >&       rawTable)             = 0;
+    virtual void   rawConditionalTable(const std::vector< float >& rawTable)                   = 0;
+    virtual void   endRawProbabilityDeclaration()                                              = 0;
+    virtual void   startFactorizedProbabilityDeclaration(const std::string& var)               = 0;
+    virtual void   startFactorizedEntry()                                                      = 0;
+    virtual void   endFactorizedEntry()                                                        = 0;
+    virtual void   setParentModality(const std::string& parent, const std::string& modality)   = 0;
+    virtual void   setVariableValuesUnchecked(const std::vector< float >& values)              = 0;
+    virtual void   setVariableValues(const std::vector< float >& values)                       = 0;
+    virtual void   endFactorizedProbabilityDeclaration()                                       = 0;
+    virtual void   setVariable(const DiscreteVariable& var)                                    = 0;
+    virtual void   setVariableCPT(const std::string&  varName,
+                                  MultiDimAdressable* table,
+                                  bool                redefineParents)                         = 0;
     /// @}
 
     private:

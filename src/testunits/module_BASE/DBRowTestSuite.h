@@ -200,8 +200,8 @@ namespace gum_tests {
         CHECK((row5.weight()) == (1));
 
         std::vector< gum::learning::DBCell >          vect{gum::learning::DBCell(1),
-                                                  gum::learning::DBCell(2),
-                                                  gum::learning::DBCell(3)};
+                                                           gum::learning::DBCell(2),
+                                                           gum::learning::DBCell(3)};
         gum::learning::DBRow< gum::learning::DBCell > row6(vect, 4);
         CHECK((row6.size()) == (static_cast< gum::Size >(3)));
         CHECK((row6[1]) == (gum::learning::DBCell(2)));
@@ -277,8 +277,8 @@ namespace gum_tests {
           1.0);
 
       std::vector< gum::learning::DBCell >          vect{gum::learning::DBCell(1),
-                                                gum::learning::DBCell(2),
-                                                gum::learning::DBCell(3)};
+                                                         gum::learning::DBCell(2),
+                                                         gum::learning::DBCell(3)};
       gum::learning::DBRow< gum::learning::DBCell > row11(vect, 1.0);
 
       std::vector< gum::learning::DBCell > vect2(

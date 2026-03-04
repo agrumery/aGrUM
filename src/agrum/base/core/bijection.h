@@ -440,7 +440,7 @@ namespace gum {
      * @param second The second value to look up.
      * @return A pointer to the first value, or nullptr if not found.
      */
-    optional_ref<const T1> tryFirst(const T2& second) const;
+    optional_ref< const T1 > tryFirst(const T2& second) const;
 
     /**
      * @brief Returns an optional reference to the second value associated with the given
@@ -448,7 +448,7 @@ namespace gum {
      * @param first The first value to look up.
      * @return An optional_ref to the second value, or empty if not found.
      */
-    optional_ref<const T2> trySecond(const T1& first) const;
+    optional_ref< const T2 > trySecond(const T1& first) const;
 
     /**
      * @brief Inserts a new association in the gum::Bijection.
@@ -995,7 +995,7 @@ namespace gum {
      * @param second The second value to look up.
      * @return A pointer to the first value, or nullptr if not found.
      */
-    optional_ref<const T1> tryFirst(T2 second) const;
+    optional_ref< const T1 > tryFirst(T2 second) const;
 
     /**
      * @brief Returns an optional reference to the second value associated with the given
@@ -1003,7 +1003,7 @@ namespace gum {
      * @param first The first value to look up.
      * @return An optional_ref to the second value, or empty if not found.
      */
-    optional_ref<const T2> trySecond(T1 first) const;
+    optional_ref< const T2 > trySecond(T1 first) const;
 
     /**
      * @brief Inserts a new association in the gum::Bijection.

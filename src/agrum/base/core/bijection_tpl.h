@@ -258,18 +258,20 @@ namespace gum {
 
   // returns an optional reference to the first value or empty if not found
   template < typename T1, typename T2, bool Gen >
-  INLINE optional_ref<const T1> BijectionImplementation< T1, T2, Gen >::tryFirst(const T2& second) const {
+  INLINE optional_ref< const T1 >
+         BijectionImplementation< T1, T2, Gen >::tryFirst(const T2& second) const {
     auto ptr = _secondToFirst_.tryGet(second);
     if (!ptr) return {};
-    return optional_ref<const T1>(**ptr);
+    return optional_ref< const T1 >(**ptr);
   }
 
   // returns an optional reference to the second value or empty if not found
   template < typename T1, typename T2, bool Gen >
-  INLINE optional_ref<const T2> BijectionImplementation< T1, T2, Gen >::trySecond(const T1& first) const {
+  INLINE optional_ref< const T2 >
+         BijectionImplementation< T1, T2, Gen >::trySecond(const T1& first) const {
     auto ptr = _firstToSecond_.tryGet(first);
     if (!ptr) return {};
-    return optional_ref<const T2>(**ptr);
+    return optional_ref< const T2 >(**ptr);
   }
 
   // inserts a new association in the bijection
@@ -588,7 +590,7 @@ namespace gum {
   template < typename T1, typename T2 >
   INLINE BijectionImplementation< T1, T2, true >&
          BijectionImplementation< T1, T2, true >::operator=(
-          const BijectionImplementation< T1, T2, true >& toCopy) {
+             const BijectionImplementation< T1, T2, true >& toCopy) {
     // avoid self assignment
     if (this != &toCopy) {
       clear();
@@ -605,7 +607,7 @@ namespace gum {
   template < typename T1, typename T2 >
   INLINE BijectionImplementation< T1, T2, true >&
          BijectionImplementation< T1, T2, true >::operator=(
-          BijectionImplementation< T1, T2, true >&& toCopy) {
+             BijectionImplementation< T1, T2, true >&& toCopy) {
     // avoid self assignment
     if (this != &toCopy) {
       clear();
@@ -645,13 +647,15 @@ namespace gum {
 
   // returns an optional reference to the first value or empty if not found
   template < typename T1, typename T2 >
-  INLINE optional_ref<const T1> BijectionImplementation< T1, T2, true >::tryFirst(T2 second) const {
+  INLINE optional_ref< const T1 >
+         BijectionImplementation< T1, T2, true >::tryFirst(T2 second) const {
     return _secondToFirst_.tryGet(second);
   }
 
   // returns an optional reference to the second value or empty if not found
   template < typename T1, typename T2 >
-  INLINE optional_ref<const T2> BijectionImplementation< T1, T2, true >::trySecond(T1 first) const {
+  INLINE optional_ref< const T2 >
+         BijectionImplementation< T1, T2, true >::trySecond(T1 first) const {
     return _firstToSecond_.tryGet(first);
   }
 
