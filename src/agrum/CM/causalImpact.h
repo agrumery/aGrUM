@@ -47,7 +47,6 @@
 
 #include <agrum/CM/tools/causalFormula.h>
 #include <agrum/CM/tools/doCalculus.h>
-#include <agrum/CM/tools/doorCriteria.h>
 #include <agrum/CM/tools/separation.h>
 
 namespace gum {

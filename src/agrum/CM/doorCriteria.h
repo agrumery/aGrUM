@@ -17,7 +17,7 @@
  *   (see https://agrum.gitlab.io/articles/dual-licenses-lgplv3mit.html)    *
  *                                                                          *
  *   This aGrUM/pyAgrum library is distributed in the hope that it will be  *
- *   useful, but WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED,          *
+ *   useful, but WITHOUT ANY KIND, EXPRESS OR IMPLIED,          *
  *   INCLUDING BUT NOT LIMITED TO THE WARRANTIES MERCHANTABILITY or FITNESS *
  *   FOR A PARTICULAR PURPOSE  AND NONINFRINGEMENT. IN NO EVENT SHALL THE   *
  *   AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER *
@@ -40,7 +40,7 @@
 
 /**
  * @file
- * @brief Door criteria (backdoor/frontdoor) utilities bound to a single DAG.
+ * @brief Door criteria (backdoor/frontdoor) utilities for a DAG.
  */
 #ifndef GUM_DOOR_CRITERIA_H
 #define GUM_DOOR_CRITERIA_H
@@ -53,23 +53,26 @@ namespace gum {
 
   /**
    * @class DoorCriteria
-   * @brief Implements Backdoor and Frontdoor criteria utilities bound to a single DAG.
+   * @brief Implements Backdoor and Frontdoor criteria utilities for a DAG.
    *
    * This class provides helpers to:
    *  - Check whether a conditioning set satisfies the backdoor/frontdoor criterion.
    *  - Enumerate all valid backdoor/frontdoor adjustment sets.
    *
-   * The implementation mirrors pyAgrum functionality,.
+   * The DAG is passed as the first argument to each method rather than stored
+   * in the object, making DoorCriteria a stateless utility class.
+   *
+   * The implementation mirrors pyAgrum functionality.
    *
    * **Naming correspondences with pyAgrum:**
-   *  - enumerateBackdoorSets        ⇨ pyagrum: backdoor_generator
-   *  - enumerateFrontdoorSets       ⇨ pyagrum: frontdoor_generator
-   *  - existsUnblockedDirectedPath  ⇨ pyagrum: exists_unblocked_directed_path
-   *  - nodesOnDirectedPaths         ⇨ pyagrum: nodes_on_dipath
-   *  - backdoorReach                ⇨ pyagrum: backdoor_reach
-   *  - hasBackdoorPath              ⇨ pyagrum: backdoor_path
-   *  - satisfiesBackdoorCriterion   ⇨ pyagrum: is_backdoor
-   *  - satisfiesFrontdoorCriterion  ⇨ pyagrum: is_frontdoor
+   *  - enumerateBackdoorSets        => pyagrum: backdoor_generator
+   *  - enumerateFrontdoorSets       => pyagrum: frontdoor_generator
+   *  - existsUnblockedDirectedPath  => pyagrum: exists_unblocked_directed_path
+   *  - nodesOnDirectedPaths         => pyagrum: nodes_on_dipath
+   *  - backdoorReach                => pyagrum: backdoor_reach
+   *  - hasBackdoorPath              => pyagrum: backdoor_path
+   *  - satisfiesBackdoorCriterion   => pyagrum: is_backdoor
+   *  - satisfiesFrontdoorCriterion  => pyagrum: is_frontdoor
    */
   class DoorCriteria {
     public:
@@ -83,129 +86,132 @@ namespace gum {
      * Mirrors pyAgrum's pre-yield filters in *_generator functions.
      */
     struct EnumerationOptions {
-      NodeSet     excluded_nodes{};      ///< Nodes to exclude from candidate sets (e.g., {X, Y}).
-      std::size_t max_cardinality = 0;   ///< Maximum set size (0 = no limit).
+      NodeSet     excluded_nodes{};         ///< Nodes to exclude from candidate sets (e.g., {X, Y}).
+      std::size_t max_cardinality = 0;      ///< Maximum set size (0 = no limit).
       bool        only_minimal    = true;   ///< If true, return only minimal adjustment sets.
     };
-
-    /* ------------------------ Construction ------------------------ */
-
-    /**
-     * @brief Construct a DoorCriteria object bound to a given DAG.
-     * @param dag Directed acyclic graph representing the causal structure.
-     */
-    explicit DoorCriteria(const DAG& dag) noexcept : _dag{dag} {}
-
-    /**
-     * @brief Accessor for the bound DAG.
-     * @return Const reference to the DAG used by this instance.
-     */
-    inline const DAG& dag() const noexcept { return _dag; }
 
     /* ------------------------- Backdoor --------------------------- */
 
     /**
      * @brief Check if Z satisfies the backdoor criterion relative to (X, Y).
      *
+     * @param dag Directed acyclic graph representing the causal structure.
      * @param X Cause variable.
      * @param Y Effect variable.
      * @param Z Conditioning set.
      * @return True if Z blocks all backdoor paths from X to Y.
      */
-    bool satisfiesBackdoorCriterion(NodeId X, NodeId Y, const NodeSet& Z) const;
+    static bool satisfiesBackdoorCriterion(const DAG& dag,
+                                           NodeId     X,
+                                           NodeId     Y,
+                                           const NodeSet& Z);
 
-    /**
-     * @brief Enumerate valid backdoor adjustment sets.
-     *
-     * @param X Cause variable.
-     * @param Y Effect variable.
-     * @param opts Enumeration options (excluded nodes, maximal size, minimality).
-     * @return Vector of valid backdoor adjustment sets.
-     */
     /**
      * @brief Enumerate valid backdoor adjustment sets, with option to stop at first found.
      *
+     * @param dag Directed acyclic graph representing the causal structure.
      * @param X Cause variable.
      * @param Y Effect variable.
      * @param opts Enumeration options (excluded nodes, maximal size, minimality).
      * @param stopAtFirst If true, return only the first found set and stop computation early.
      * @return Vector of valid backdoor adjustment sets (at most one if stopAtFirst is true).
      */
-    NodeSetVec enumerateBackdoorSets(NodeId                    X,
-                                     NodeId                    Y,
-                                     const EnumerationOptions& opts,
-                                     bool                      stopAtFirst = false) const;
+    static NodeSetVec enumerateBackdoorSets(const DAG&                dag,
+                                            NodeId                    X,
+                                            NodeId                    Y,
+                                            const EnumerationOptions& opts,
+                                            bool                      stopAtFirst = false);
 
     /**
      * @brief Enumerate valid backdoor adjustment sets with default options, with option to stop at
      * first found.
      *
+     * @param dag Directed acyclic graph representing the causal structure.
      * @param X Cause variable.
      * @param Y Effect variable.
      * @param stopAtFirst If true, return only the first found set and stop computation early.
      * @return Vector of valid backdoor adjustment sets (at most one if stopAtFirst is true).
      */
-    NodeSetVec enumerateBackdoorSets(NodeId X, NodeId Y, bool stopAtFirst) const;
-    NodeSetVec enumerateBackdoorSets(NodeId X, NodeId Y) const;
+    static NodeSetVec enumerateBackdoorSets(const DAG& dag,
+                                            NodeId     X,
+                                            NodeId     Y,
+                                            bool       stopAtFirst);
+    static NodeSetVec enumerateBackdoorSets(const DAG& dag, NodeId X, NodeId Y);
 
     /* ------------------------- Frontdoor -------------------------- */
 
     /**
      * @brief Check if Z satisfies the frontdoor criterion relative to (X, Y).
      *
+     * @param dag Directed acyclic graph representing the causal structure.
      * @param X Cause variable.
      * @param Y Effect variable.
      * @param Z Conditioning set.
      * @return True if Z satisfies all three frontdoor conditions (FD-1, FD-2, FD-3).
      */
-    bool satisfiesFrontdoorCriterion(NodeId X, NodeId Y, const NodeSet& Z) const;
+    static bool satisfiesFrontdoorCriterion(const DAG& dag,
+                                            NodeId     X,
+                                            NodeId     Y,
+                                            const NodeSet& Z);
 
     /**
      * @brief Enumerate valid frontdoor adjustment sets, with option to stop at first found.
      *
+     * @param dag Directed acyclic graph representing the causal structure.
      * @param X Cause variable.
      * @param Y Effect variable.
      * @param opts Enumeration options (excluded nodes, maximal size, minimality).
      * @param stopAtFirst If true, return only the first found set and stop computation early.
      * @return Vector of valid frontdoor adjustment sets (at most one if stopAtFirst is true).
      */
-    NodeSetVec enumerateFrontdoorSets(NodeId                    X,
-                                      NodeId                    Y,
-                                      const EnumerationOptions& opts,
-                                      bool                      stopAtFirst = false) const;
+    static NodeSetVec enumerateFrontdoorSets(const DAG&                dag,
+                                             NodeId                    X,
+                                             NodeId                    Y,
+                                             const EnumerationOptions& opts,
+                                             bool                      stopAtFirst = false);
 
     /**
      * @brief Enumerate valid frontdoor adjustment sets with default options, with option to stop at
      * first found.
      *
+     * @param dag Directed acyclic graph representing the causal structure.
      * @param X Cause variable.
      * @param Y Effect variable.
      * @param stopAtFirst If true, return only the first found set and stop computation early.
      * @return Vector of valid frontdoor adjustment sets (at most one if stopAtFirst is true).
      */
-    NodeSetVec enumerateFrontdoorSets(NodeId X, NodeId Y, bool stopAtFirst) const;
-    NodeSetVec enumerateFrontdoorSets(NodeId X, NodeId Y) const;
+    static NodeSetVec enumerateFrontdoorSets(const DAG& dag,
+                                             NodeId     X,
+                                             NodeId     Y,
+                                             bool       stopAtFirst);
+    static NodeSetVec enumerateFrontdoorSets(const DAG& dag, NodeId X, NodeId Y);
 
     /* -------------------------- Utilities ------------------------- */
 
     /**
-     * @brief Check whether there exists a directed path X→…→Y unblocked by Z.
+     * @brief Check whether there exists a directed path X->..->Y unblocked by Z.
      *
+     * @param dag Directed acyclic graph representing the causal structure.
      * @param X Start node.
      * @param Y End node.
      * @param Z Conditioning set (nodes that block traversal if encountered).
      * @return True if an unblocked directed path exists from X to Y.
      */
-    bool existsUnblockedDirectedPath(NodeId X, NodeId Y, const NodeSet& Z) const;
+    static bool existsUnblockedDirectedPath(const DAG& dag,
+                                            NodeId     X,
+                                            NodeId     Y,
+                                            const NodeSet& Z);
 
     /**
      * @brief Compute nodes lying on some directed path from X to Y.
      *
+     * @param dag Directed acyclic graph representing the causal structure.
      * @param X Start node.
      * @param Y End node.
-     * @return Set of nodes on at least one X→…→Y directed path.
+     * @return Set of nodes on at least one X->..->Y directed path.
      */
-    NodeSet nodesOnDirectedPaths(NodeId X, NodeId Y) const;
+    static NodeSet nodesOnDirectedPaths(const DAG& dag, NodeId X, NodeId Y);
 
     /**
      * @brief Compute the "backdoor reach" of a node.
@@ -213,44 +219,51 @@ namespace gum {
      * Backdoor reach = set of nodes reachable from X by traversing one
      * incoming edge (parent step) followed by any sequence of child steps.
      *
+     * @param dag Directed acyclic graph representing the causal structure.
      * @param X Node of interest (typically the treatment).
      * @return Set of nodes in the backdoor reach of X.
      */
-    NodeSet backdoorReach(NodeId X) const;
+    static NodeSet backdoorReach(const DAG& dag, NodeId X);
 
     /**
      * @brief Test whether there exists an open backdoor path from X to Y given Z.
      *
+     * @param dag Directed acyclic graph representing the causal structure.
      * @param X Cause variable.
      * @param Y Effect variable.
      * @param Z Conditioning set.
      * @return True if there exists at least one unblocked backdoor path.
      */
-    bool hasBackdoorPath(NodeId X, NodeId Y, const NodeSet& Z) const;
+    static bool hasBackdoorPath(const DAG& dag, NodeId X, NodeId Y, const NodeSet& Z);
 
     private:
     /**
      * @brief Check whether Z is a minimal backdoor adjustment set.
      *
+     * @param dag Directed acyclic graph representing the causal structure.
      * @param X Cause variable.
      * @param Y Effect variable.
      * @param Z Candidate conditioning set.
      * @return True if Z is a valid backdoor set and no strict subset is valid.
      */
-    bool _isMinimalBackdoorAdjustment(NodeId X, NodeId Y, const NodeSet& Z) const;
+    static bool _isMinimalBackdoorAdjustment(const DAG&     dag,
+                                             NodeId         X,
+                                             NodeId         Y,
+                                             const NodeSet& Z);
 
     /**
      * @brief Check whether Z is a minimal frontdoor adjustment set.
      *
+     * @param dag Directed acyclic graph representing the causal structure.
      * @param X Cause variable.
      * @param Y Effect variable.
      * @param Z Candidate conditioning set.
      * @return True if Z is a valid frontdoor set and no strict subset is valid.
      */
-    bool _isMinimalFrontdoorAdjustment(NodeId X, NodeId Y, const NodeSet& Z) const;
-
-    /// Underlying causal DAG (bound reference).
-    const DAG& _dag;
+    static bool _isMinimalFrontdoorAdjustment(const DAG&     dag,
+                                              NodeId         X,
+                                              NodeId         Y,
+                                              const NodeSet& Z);
   };
 
 }   // namespace gum

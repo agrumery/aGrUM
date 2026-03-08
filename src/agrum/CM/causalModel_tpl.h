@@ -45,11 +45,10 @@
  */
 
 #pragma once
-
 #include <sstream>
 
 #include <agrum/CM/causalModel.h>
-#include <agrum/CM/tools/doorCriteria.h>
+#include <agrum/CM/doorCriteria.h>
 
 namespace gum {
 
@@ -354,11 +353,10 @@ namespace gum {
                 "CausalModel::backDoor: 'cause' and 'effect' must be observed (non-latent).");
     }
 
-    DoorCriteria                     dc(_causalDAG_);
     DoorCriteria::EnumerationOptions opts;
     opts.excluded_nodes = lat;   // never allow latents in adjustment sets
 
-    const auto candidates = dc.enumerateBackdoorSets(cause, effect, opts);
+    const auto candidates = DoorCriteria::enumerateBackdoorSets(_causalDAG_, cause, effect, opts);
     if (candidates.empty()) return NodeSet{};
     return candidates.front();   // first valid set
   }
@@ -372,11 +370,10 @@ namespace gum {
                 "CausalModel::frontDoor: 'cause' and 'effect' must be observed (non-latent).");
     }
 
-    DoorCriteria                     dc(_causalDAG_);
     DoorCriteria::EnumerationOptions opts;
     opts.excluded_nodes = lat;   // never allow latents in adjustment sets
 
-    const auto candidates = dc.enumerateFrontdoorSets(cause, effect, opts);
+    const auto candidates = DoorCriteria::enumerateFrontdoorSets(_causalDAG_, cause, effect, opts);
     if (candidates.empty()) return NodeSet{};
     return candidates.front();   // first valid set
   }
