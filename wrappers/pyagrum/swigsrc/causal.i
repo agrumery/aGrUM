@@ -38,3 +38,50 @@
  *                                                                          *
  ****************************************************************************/
 
+// causalImpact, counterfactual and counterfactualModel are renamed with a leading
+// underscore so that the %pythoncode wrappers below can expose them with explicit
+// keyword arguments and type coercion (str→set for on/doing/knowing).
+// %feature("kwargs") is NOT used here: it causes SIGSEGV on inline-constructed
+// temporaries because the **kwargs dispatch can drop the refcount of arguments
+// (e.g. gum.CausalModel(edex)) before the C++ call completes.
+%rename(_causalImpact) gum::causalImpact;
+%rename(_counterfactual) gum::counterfactual;
+%rename(_counterfactualModel) gum::counterfactualModel;
+
+// LatentDescriptorVector and LatentDescriptorIds are C++-internal types with no
+// Python representation. Ignoring them causes SWIG to suppress all overloads
+// that use them (including the LatentDescriptorVector constructors of CausalModel),
+// keeping the Python error messages free of internal C++ type names.
+%ignore gum::LatentDescriptorIds;
+%ignore gum::LatentDescriptorVector;
+
+
+%pythoncode %{
+def causalImpact(cm, on, doing, knowing=None, values=None):
+    if isinstance(on, str):
+        on = {on}
+    if isinstance(doing, str):
+        doing = {doing}
+    if isinstance(knowing, str):
+        knowing = {knowing}
+    lat, pot, expl = _causalImpact(cm, on, doing,
+                                   knowing if knowing is not None else set(),
+                                   values  if values  is not None else {})
+    pot._model = cm
+    return lat, (pot if lat.isIdentified() else None), expl
+
+def counterfactual(cm, on, whatif, profile=None, values=None):
+    p=_counterfactual(cm, on, whatif,
+                           profile if profile is not None else {},
+                           values  if values  is not None else {})
+    p._model=cm
+    return p
+
+def counterfactualModel(cm, profile=None, whatif=None):
+    p=_counterfactualModel(cm,
+                           profile if profile is not None else {},
+                           whatif  if whatif  is not None else set())
+    p._model=cm
+    return p
+
+%}

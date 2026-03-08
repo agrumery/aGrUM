@@ -335,11 +335,29 @@ namespace PyAgrumHelper {
       const std::string name = stringFromPyObject(key);
       if (name == "") { GUM_ERROR(gum::InvalidArgument, "A key is not a string"); }
 
-      const std::string val = stringFromPyObject(value);
-      if (val == "") { GUM_ERROR(gum::InvalidArgument, "A value is not a string"); }
+      std::string val = stringFromPyObject(value);
+      if (val == "") {
+        if (PyLong_Check(value)) {
+          val = std::to_string(PyLong_AsLong(value));
+        } else {
+          GUM_ERROR(gum::InvalidArgument, "A value is neither a string nor an integer");
+        }
+      }
 
       hash.insert(name, val);
     }
+  }
+
+  PyObject* PyDictFromHashTableStrStr(const gum::HashTable< std::string, std::string >& hash) {
+    PyObject* q = PyDict_New();
+    for (const auto& [k, v]: hash) {
+      PyObject* pykey = PyUnicode_FromString(k.c_str());
+      PyObject* pyval = PyUnicode_FromString(v.c_str());
+      PyDict_SetItem(q, pykey, pyval);
+      Py_DecRef(pykey);
+      Py_DecRef(pyval);
+    }
+    return q;
   }
 
   void populateNodeSetFromIntOrPySequenceOfInt(gum::NodeSet& nodeset, PyObject* seq) {

@@ -7,8 +7,6 @@
 """pyagrum module"""
 
 from sys import version_info as _swig_python_version_info
-# ## added by passForType (pyAgrum)
-from typing import List,Set,Dict,Tuple
 # ## recursive import for typehints annotation
 import pyagrum
 # ## end of added by passForType (pyAgrum)
@@ -254,7 +252,7 @@ class Vector(object):
     def __len__(self) -> int:
         return _pyagrum.Vector___len__(self)
 
-    def __getslice__(self, i: int, j: int) -> List[float]:
+    def __getslice__(self, i: int, j: int) -> list[float]:
         return _pyagrum.Vector___getslice__(self, i, j)
 
     def __setslice__(self, *args) -> None:
@@ -359,7 +357,7 @@ class Vector_uint(object):
     def __len__(self) -> int:
         return _pyagrum.Vector_uint___len__(self)
 
-    def __getslice__(self, i: int, j: int) -> List[int]:
+    def __getslice__(self, i: int, j: int) -> list[int]:
         return _pyagrum.Vector_uint___getslice__(self, i, j)
 
     def __setslice__(self, *args) -> None:
@@ -464,7 +462,7 @@ class Vector_int(object):
     def __len__(self) -> "std::vector< int >::size_type":
         return _pyagrum.Vector_int___len__(self)
 
-    def __getslice__(self, i: "std::vector< int >::difference_type", j: "std::vector< int >::difference_type") -> List[int]:
+    def __getslice__(self, i: "std::vector< int >::difference_type", j: "std::vector< int >::difference_type") -> list[int]:
         return _pyagrum.Vector_int___getslice__(self, i, j)
 
     def __setslice__(self, *args) -> None:
@@ -569,7 +567,7 @@ class Vector_string(object):
     def __len__(self) -> int:
         return _pyagrum.Vector_string___len__(self)
 
-    def __getslice__(self, i: int, j: int) -> List[str]:
+    def __getslice__(self, i: int, j: int) -> list[str]:
         return _pyagrum.Vector_string___getslice__(self, i, j)
 
     def __setslice__(self, *args) -> None:
@@ -599,7 +597,7 @@ class Vector_string(object):
     def size(self) -> int:
         return _pyagrum.Vector_string_size(self)
 
-    def swap(self, v: List[str]) -> None:
+    def swap(self, v: list[str]) -> None:
         return _pyagrum.Vector_string_swap(self, v)
 
     def begin(self) -> int:
@@ -909,6 +907,16 @@ class GraphError(GumException):
 
 # Register GraphError in _pyagrum:
 _pyagrum.GraphError_swigregister(GraphError)
+class HedgeException(GumException):
+    thisown = property(lambda x: x.this.own(), lambda x, v: x.this.own(v), doc="The membership flag")
+    __repr__ = _swig_repr
+
+    def __init__(self, *args):
+        _pyagrum.HedgeException_swiginit(self, _pyagrum.new_HedgeException(*args))
+    __swig_destroy__ = _pyagrum.delete_HedgeException
+
+# Register HedgeException in _pyagrum:
+_pyagrum.HedgeException_swigregister(HedgeException)
 class NoNeighbour(GraphError):
     thisown = property(lambda x: x.this.own(), lambda x, v: x.this.own(v), doc="The membership flag")
     __repr__ = _swig_repr
@@ -1474,7 +1482,7 @@ class DiscreteVariable(Variable):
         """
         return _pyagrum.DiscreteVariable_domainSize(self)
 
-    def labels(self) -> List[str]:
+    def labels(self) -> list[str]:
         r"""
 
         Returns
@@ -2543,7 +2551,7 @@ class IntegerVariable(DiscreteVariable):
         """
         return _pyagrum.IntegerVariable_stype(self)
 
-    def integerDomain(self) -> List[int]:
+    def integerDomain(self) -> list[int]:
         r"""
 
         Returns
@@ -2846,7 +2854,7 @@ class NumericalDiscreteVariable(DiscreteVariable):
         """
         return _pyagrum.NumericalDiscreteVariable_stype(self)
 
-    def numericalDomain(self) -> List[float]:
+    def numericalDomain(self) -> list[float]:
         r"""
 
         Returns
@@ -3222,7 +3230,7 @@ class UndiGraph(object):
         """
         return _pyagrum.UndiGraph_hasUndirectedCycle(self)
 
-    def partialUndiGraph(self, nodes: List[int]) -> "pyagrum.UndiGraph":
+    def partialUndiGraph(self, nodes: list[int]) -> "pyagrum.UndiGraph":
         r"""
 
         Parameters
@@ -3238,7 +3246,7 @@ class UndiGraph(object):
         """
         return _pyagrum.UndiGraph_partialUndiGraph(self, nodes)
 
-    def nodes2ConnectedComponent(self) -> Dict[int,int]:
+    def nodes2ConnectedComponent(self) -> dict[int,int]:
         return _pyagrum.UndiGraph_nodes2ConnectedComponent(self)
 
     def __repr__(self) -> str:
@@ -3640,7 +3648,7 @@ class DiGraph(object):
         """
         return _pyagrum.DiGraph_toDot(self)
 
-    def topologicalOrder(self) -> List[int]:
+    def topologicalOrder(self) -> list[int]:
         r"""
 
         Returns
@@ -4068,7 +4076,7 @@ class DAG(DiGraph):
     def moralGraph(self) -> "pyagrum.UndiGraph":
         return _pyagrum.DAG_moralGraph(self)
 
-    def minimalCondSet(self, *args) -> List[int]:
+    def minimalCondSet(self, *args) -> list[int]:
         return _pyagrum.DAG_minimalCondSet(self, *args)
 
     def __repr__(self) -> str:
@@ -4385,7 +4393,7 @@ class MixedGraph(UndiGraph, DiGraph):
         """
         return _pyagrum.MixedGraph_toDot(self)
 
-    def chainComponent(self, node: int) -> List[int]:
+    def chainComponent(self, node: int) -> list[int]:
         return _pyagrum.MixedGraph_chainComponent(self, node)
 
     def __repr__(self) -> str:
@@ -5162,7 +5170,7 @@ class CliqueGraph(UndiGraph):
         """
         return _pyagrum.CliqueGraph_container(self, idNode)
 
-    def setClique(self, idClique: int, new_clique: List[int]) -> None:
+    def setClique(self, idClique: int, new_clique: list[int]) -> None:
         r"""
 
         changes the set of nodes included into a given clique
@@ -5224,7 +5232,7 @@ class CliqueGraph(UndiGraph):
         """
         return _pyagrum.CliqueGraph_eraseFromClique(self, clique_id, node_id)
 
-    def containerPath(self, node1: int, node2: int) -> List[int]:
+    def containerPath(self, node1: int, node2: int) -> list[int]:
         r"""
 
         Parameters
@@ -5663,7 +5671,7 @@ class Instantiation(object):
         """
         return _pyagrum.Instantiation_contains(self, *args)
 
-    def variablesSequence(self) -> List[object]:
+    def variablesSequence(self) -> list[object]:
         r"""
 
         Returns
@@ -6212,7 +6220,7 @@ class GraphicalModel(object):
         """
         return _pyagrum.GraphicalModel_setProperty(self, name, value)
 
-    def properties(self) -> List[str]:
+    def properties(self) -> list[str]:
         return _pyagrum.GraphicalModel_properties(self)
 
     def variableNodeMap(self) -> "pyagrum.VariableNodeMap":
@@ -6252,7 +6260,7 @@ class GraphicalModel(object):
         """
         return _pyagrum.GraphicalModel_exists(self, *args)
 
-    def names(self, *args) -> List[str]:
+    def names(self, *args) -> list[str]:
         r"""
 
         Set of names of variables in the model
@@ -6265,7 +6273,7 @@ class GraphicalModel(object):
         """
         return _pyagrum.GraphicalModel_names(self, *args)
 
-    def ids(self, names: List[str]) -> List[int]:
+    def ids(self, names: list[str]) -> list[int]:
         r"""
 
         List of ids for a list of names of variables in the model
@@ -6283,7 +6291,7 @@ class GraphicalModel(object):
         """
         return _pyagrum.GraphicalModel_ids(self, names)
 
-    def nodeset(self, names: List[str]) -> List[int]:
+    def nodeset(self, names: list[str]) -> list[int]:
         r"""
 
         Set of ids for a list of names of variables in the model
@@ -6304,7 +6312,7 @@ class GraphicalModel(object):
     def variables(self, *args) -> "pyagrum.VariableSet":
         return _pyagrum.GraphicalModel_variables(self, *args)
 
-    def nodes(self) -> Set[int]:
+    def nodes(self) -> set[int]:
         return _pyagrum.GraphicalModel_nodes(self)
 
     def completeInstantiation(self) -> "pyagrum.Instantiation":
@@ -6372,7 +6380,7 @@ class GraphicalModel(object):
         """
         return _pyagrum.GraphicalModel_isIndependent(self, *args)
 
-    def family(self, *args) -> List[int]:
+    def family(self, *args) -> list[int]:
         return _pyagrum.GraphicalModel_family(self, *args)
 
 # Register GraphicalModel in _pyagrum:
@@ -6436,7 +6444,7 @@ class DAGmodel(GraphicalModel):
         """
         return _pyagrum.DAGmodel_sizeArcs(self)
 
-    def nodes(self) -> Set[int]:
+    def nodes(self) -> set[int]:
         r"""
 
         Returns
@@ -6465,7 +6473,7 @@ class DAGmodel(GraphicalModel):
         """
         return _pyagrum.DAGmodel_exists(self, *args)
 
-    def arcs(self) -> Set[Tuple[int,int]]:
+    def arcs(self) -> set[tuple[int,int]]:
         r"""
 
         Returns
@@ -6497,10 +6505,10 @@ class DAGmodel(GraphicalModel):
         """
         return _pyagrum.DAGmodel_existsArc(self, *args)
 
-    def parents(self, *args) -> List[int]:
+    def parents(self, *args) -> list[int]:
         return _pyagrum.DAGmodel_parents(self, *args)
 
-    def family(self, *args) -> List[int]:
+    def family(self, *args) -> list[int]:
         r"""
 
         give the set of parents of a node and the node
@@ -6518,10 +6526,10 @@ class DAGmodel(GraphicalModel):
         """
         return _pyagrum.DAGmodel_family(self, *args)
 
-    def children(self, *args) -> List[int]:
+    def children(self, *args) -> list[int]:
         return _pyagrum.DAGmodel_children(self, *args)
 
-    def descendants(self, *args) -> List[int]:
+    def descendants(self, *args) -> list[int]:
         r"""
 
         give the set of nodeid of descendants of a node
@@ -6539,7 +6547,7 @@ class DAGmodel(GraphicalModel):
         """
         return _pyagrum.DAGmodel_descendants(self, *args)
 
-    def ancestors(self, *args) -> List[int]:
+    def ancestors(self, *args) -> list[int]:
         r"""
 
         give the set of nodeid of ancestors of a node
@@ -6619,7 +6627,7 @@ class DAGmodel(GraphicalModel):
         """
         return _pyagrum.DAGmodel_moralGraph(self)
 
-    def topologicalOrder(self) -> List[int]:
+    def topologicalOrder(self) -> list[int]:
         r"""
 
         Returns
@@ -6651,7 +6659,7 @@ class DAGmodel(GraphicalModel):
         """
         return _pyagrum.DAGmodel_hasSameStructure(self, other)
 
-    def minimalCondSet(self, *args) -> List[int]:
+    def minimalCondSet(self, *args) -> list[int]:
         return _pyagrum.DAGmodel_minimalCondSet(self, *args)
 
 # Register DAGmodel in _pyagrum:
@@ -6673,7 +6681,7 @@ class UGmodel(GraphicalModel):
     def sizeEdges(self) -> int:
         return _pyagrum.UGmodel_sizeEdges(self)
 
-    def nodes(self) -> Set[int]:
+    def nodes(self) -> set[int]:
         return _pyagrum.UGmodel_nodes(self)
 
     def exists(self, *args) -> bool:
@@ -6694,13 +6702,13 @@ class UGmodel(GraphicalModel):
         """
         return _pyagrum.UGmodel_exists(self, *args)
 
-    def edges(self) -> Set[Tuple[int,int]]:
+    def edges(self) -> set[tuple[int,int]]:
         return _pyagrum.UGmodel_edges(self)
 
     def existsEdge(self, *args) -> bool:
         return _pyagrum.UGmodel_existsEdge(self, *args)
 
-    def neighbours(self, *args) -> List[int]:
+    def neighbours(self, *args) -> list[int]:
         return _pyagrum.UGmodel_neighbours(self, *args)
 
     def isIndependent(self, *args) -> bool:
@@ -6733,7 +6741,7 @@ class UGmodel(GraphicalModel):
     def hasSameStructure(self, other: "pyagrum.UGmodel") -> bool:
         return _pyagrum.UGmodel_hasSameStructure(self, other)
 
-    def family(self, *args) -> List[int]:
+    def family(self, *args) -> list[int]:
         return _pyagrum.UGmodel_family(self, *args)
 
 # Register UGmodel in _pyagrum:
@@ -7054,7 +7062,7 @@ class ApproximationScheme(object):
         """
         return _pyagrum.ApproximationScheme_nbrIterations(self)
 
-    def history(self) -> List[float]:
+    def history(self) -> list[float]:
         r"""
 
         Returns
@@ -7172,7 +7180,7 @@ def fastVariable(*args) -> "pyagrum.DiscreteVariable":
     """
     return _pyagrum.fastVariable(*args)
 
-def randomDistribution(n: int) -> List[float]:
+def randomDistribution(n: int) -> list[float]:
     r"""
 
     Parameters
@@ -7425,7 +7433,7 @@ class DiscretizedVariable(IDiscretizedVariable):
         """
         return _pyagrum.DiscretizedVariable_tick(self, i)
 
-    def ticks(self) -> List[float]:
+    def ticks(self) -> list[float]:
         r"""
 
         Returns
@@ -7690,7 +7698,7 @@ class Tensor(object):
         """
         return _pyagrum.Tensor_minNonZero(self)
 
-    def findAll(self, v: float) -> List[Dict[str,int]]:
+    def findAll(self, v: float) -> list[dict[str,int]]:
         r"""
 
         Find all the position of a value in the Tensor.
@@ -9416,7 +9424,7 @@ class PythonLoadListener(object):
 # Register PythonLoadListener in _pyagrum:
 _pyagrum.PythonLoadListener_swigregister(PythonLoadListener)
 
-def _fillLoadListeners_(py_listener: List["pyagrum.PythonLoadListener"], l: object) -> int:
+def _fillLoadListeners_(py_listener: "std::vector< PythonLoadListener,std::allocator< PythonLoadListener > > &", l: object) -> int:
     return _pyagrum._fillLoadListeners_(py_listener, l)
 class PythonApproximationListener(object):
     r"""
@@ -10062,7 +10070,7 @@ class PRMexplorer(object):
         Raises
         ------
         pyagrum.OperationNotAllowed
-        	If the class element doesn't have any pyagrum.Tensor (like a pyagrum.PRMReferenceSlot).
+        	If the class element doesn't have any "pyagrum.Tensor" (like a pyagrum.PRMReferenceSlot).
         pyagrum.IndexError
         	If the class is not in the PRM
         pyagrum.IndexError
@@ -11210,7 +11218,7 @@ class IBayesNet(DAGmodel):
         """
         return _pyagrum.IBayesNet_log2JointProbability(self, i)
 
-    def check(self) -> List[str]:
+    def check(self) -> list[str]:
         r"""
 
         Check if the BayesNet is consistent (variables, CPT, ...)
@@ -11444,7 +11452,7 @@ class IBayesNet(DAGmodel):
         """
         return _pyagrum.IBayesNet_memoryFootprint(self)
 
-    def ids(self, names: List[str]) -> object:
+    def ids(self, names: list[str]) -> object:
         r"""
 
         List of ids for a list of names of variables in the model
@@ -11462,7 +11470,7 @@ class IBayesNet(DAGmodel):
         """
         return _pyagrum.IBayesNet_ids(self, names)
 
-    def nodeset(self, names: List[str]) -> object:
+    def nodeset(self, names: list[str]) -> object:
         r"""
 
         Set of ids for a list of names of variables in the model
@@ -11913,9 +11921,9 @@ class BayesNet(IBayesNet):
     def erase(self, *args) -> None:
         r"""
 
-        Remove a variable from the pyagrum.BayesNet.
+        Remove a variable from the "pyagrum.BayesNet".
 
-        Removes the corresponding variable from the pyagrum.BayesNet and from all of it's children pyagrum.Tensor.
+        Removes the corresponding variable from the "pyagrum.BayesNet" and from all of it's children "pyagrum.Tensor".
 
         If no variable matches the given id, then nothing is done.
 
@@ -11953,9 +11961,9 @@ class BayesNet(IBayesNet):
     def changeVariableName(self, *args) -> None:
         r"""
 
-        Changes a variable's name in the pyagrum.BayesNet.
+        Changes a variable's name in the "pyagrum.BayesNet".
 
-        This will change the "pyagrum.DiscreteVariable" names in the pyagrum.BayesNet.
+        This will change the "pyagrum.DiscreteVariable" names in the "pyagrum.BayesNet".
 
         Parameters
         ----------
@@ -12605,7 +12613,7 @@ class BayesNet(IBayesNet):
         """
         return _pyagrum.BayesNet_log10DomainSize(self)
 
-    def ids(self, names: List[str]) -> object:
+    def ids(self, names: list[str]) -> object:
         r"""
 
         List of ids for a list of names of variables in the model
@@ -12623,7 +12631,7 @@ class BayesNet(IBayesNet):
         """
         return _pyagrum.BayesNet_ids(self, names)
 
-    def nodeset(self, names: List[str]) -> object:
+    def nodeset(self, names: list[str]) -> object:
         r"""
 
         Set of ids for a list of names of variables in the model
@@ -13699,7 +13707,7 @@ class BayesNetFragment(IBayesNet, ):
         return val
 
 
-    def ids(self, names: List[str]) -> object:
+    def ids(self, names: list[str]) -> object:
         r"""
 
         List of ids for a list of names of variables in the model
@@ -13717,7 +13725,7 @@ class BayesNetFragment(IBayesNet, ):
         """
         return _pyagrum.BayesNetFragment_ids(self, names)
 
-    def nodeset(self, names: List[str]) -> object:
+    def nodeset(self, names: list[str]) -> object:
         r"""
 
         Set of ids for a list of names of variables in the model
@@ -14215,7 +14223,7 @@ class LazyPropagation(object):
         """
         return _pyagrum.LazyPropagation_mpe(self)
 
-    def mpeLog2Posterior(self) -> Tuple["pyagrum.Instantiation",float]:
+    def mpeLog2Posterior(self) -> tuple["pyagrum.Instantiation",float]:
         r"""
 
         Find the Most Probable Explanation (MPE) given the evidence (if any) added into LazyPropagation as well as the log2 of its posterior probability
@@ -16822,7 +16830,7 @@ class GibbsSampling(object):
         """
         return _pyagrum.GibbsSampling_messageApproximationScheme(self)
 
-    def history(self) -> List[float]:
+    def history(self) -> list[float]:
         r"""
 
         Returns
@@ -17641,7 +17649,7 @@ class ImportanceSampling(object):
         """
         return _pyagrum.ImportanceSampling_messageApproximationScheme(self)
 
-    def history(self) -> List[float]:
+    def history(self) -> list[float]:
         r"""
 
         Returns
@@ -18416,7 +18424,7 @@ class WeightedSampling(object):
         """
         return _pyagrum.WeightedSampling_messageApproximationScheme(self)
 
-    def history(self) -> List[float]:
+    def history(self) -> list[float]:
         r"""
 
         Returns
@@ -19191,7 +19199,7 @@ class MonteCarloSampling(object):
         """
         return _pyagrum.MonteCarloSampling_messageApproximationScheme(self)
 
-    def history(self) -> List[float]:
+    def history(self) -> list[float]:
         r"""
 
         Returns
@@ -19980,7 +19988,7 @@ class LoopyImportanceSampling(ImportanceSampling):
         """
         return _pyagrum.LoopyImportanceSampling_messageApproximationScheme(self)
 
-    def history(self) -> List[float]:
+    def history(self) -> list[float]:
         r"""
 
         Returns
@@ -20769,7 +20777,7 @@ class LoopyWeightedSampling(WeightedSampling):
         """
         return _pyagrum.LoopyWeightedSampling_messageApproximationScheme(self)
 
-    def history(self) -> List[float]:
+    def history(self) -> list[float]:
         r"""
 
         Returns
@@ -21558,7 +21566,7 @@ class LoopyGibbsSampling(GibbsSampling):
         """
         return _pyagrum.LoopyGibbsSampling_messageApproximationScheme(self)
 
-    def history(self) -> List[float]:
+    def history(self) -> list[float]:
         r"""
 
         Returns
@@ -22413,7 +22421,7 @@ class LoopyMonteCarloSampling(MonteCarloSampling):
         """
         return _pyagrum.LoopyMonteCarloSampling_messageApproximationScheme(self)
 
-    def history(self) -> List[float]:
+    def history(self) -> list[float]:
         r"""
 
         Returns
@@ -23188,7 +23196,7 @@ class LoopyBeliefPropagation(object):
         """
         return _pyagrum.LoopyBeliefPropagation_messageApproximationScheme(self)
 
-    def history(self) -> List[float]:
+    def history(self) -> list[float]:
         r"""
 
         Returns
@@ -24021,7 +24029,7 @@ class GibbsBNdistance(ApproximationScheme):
         """
         return _pyagrum.GibbsBNdistance_messageApproximationScheme(self)
 
-    def history(self) -> List[float]:
+    def history(self) -> list[float]:
         r"""
 
         Returns
@@ -24308,7 +24316,7 @@ class BNDatabaseGenerator(object):
         """
         return _pyagrum.BNDatabaseGenerator_setRandomVarOrder(self)
 
-    def varOrderNames(self) -> List[str]:
+    def varOrderNames(self) -> list[str]:
         r"""
 
         The actual order for the variable (as a tuple of NodeId)
@@ -25572,7 +25580,7 @@ class BNLearner(object):
         """
         return _pyagrum.BNLearner_messageApproximationScheme(self)
 
-    def history(self) -> List[float]:
+    def history(self) -> list[float]:
         r"""
 
         Returns
@@ -25622,7 +25630,7 @@ class BNLearner(object):
         """
         return _pyagrum.BNLearner_learnPDAG(self)
 
-    def names(self) -> List[str]:
+    def names(self) -> list[str]:
         r"""
 
         Returns
@@ -25859,7 +25867,7 @@ class BNLearner(object):
         """
         return _pyagrum.BNLearner_correctedMutualInformation(self, *args)
 
-    def rawPseudoCount(self, *args) -> List[float]:
+    def rawPseudoCount(self, *args) -> list[float]:
         r"""
 
         computes the pseudoCount (taking priors into account) of the list of variables as a list of floats.
@@ -26045,7 +26053,7 @@ class BNLearner(object):
         """
         return _pyagrum.BNLearner_EMnbrIterations(self)
 
-    def EMHistory(self) -> List[float]:
+    def EMHistory(self) -> list[float]:
         r"""
 
         Returns a list containing the log-likelihoods recorded after each
@@ -27423,7 +27431,7 @@ class CNMonteCarloSampling(object):
         """
         return _pyagrum.CNMonteCarloSampling_messageApproximationScheme(self)
 
-    def history(self) -> List[float]:
+    def history(self) -> list[float]:
         r"""
 
         Returns
@@ -27516,7 +27524,7 @@ class CNMonteCarloSampling(object):
         """
         return _pyagrum.CNMonteCarloSampling_insertModalsFile(self, path)
 
-    def dynamicExpMax(self, varName: str) -> List[float]:
+    def dynamicExpMax(self, varName: str) -> list[float]:
         r"""
 
         Get the upper dynamic expectation of a given variable prefix.
@@ -27534,7 +27542,7 @@ class CNMonteCarloSampling(object):
         """
         return _pyagrum.CNMonteCarloSampling_dynamicExpMax(self, varName)
 
-    def dynamicExpMin(self, varName: str) -> List[float]:
+    def dynamicExpMin(self, varName: str) -> list[float]:
         r"""
 
         Get the lower dynamic expectation of a given variable prefix.
@@ -27864,7 +27872,7 @@ class CNLoopyPropagation(object):
         """
         return _pyagrum.CNLoopyPropagation_messageApproximationScheme(self)
 
-    def history(self) -> List[float]:
+    def history(self) -> list[float]:
         r"""
 
         Returns
@@ -27957,7 +27965,7 @@ class CNLoopyPropagation(object):
         """
         return _pyagrum.CNLoopyPropagation_insertModalsFile(self, path)
 
-    def dynamicExpMax(self, varName: str) -> List[float]:
+    def dynamicExpMax(self, varName: str) -> list[float]:
         r"""
 
         Get the upper dynamic expectation of a given variable prefix.
@@ -27975,7 +27983,7 @@ class CNLoopyPropagation(object):
         """
         return _pyagrum.CNLoopyPropagation_dynamicExpMax(self, varName)
 
-    def dynamicExpMin(self, varName: str) -> List[float]:
+    def dynamicExpMin(self, varName: str) -> list[float]:
         r"""
 
         Get the lower dynamic expectation of a given variable prefix.
@@ -28625,7 +28633,7 @@ class InfluenceDiagram(DAGmodel):
         """
         return _pyagrum.InfluenceDiagram_getDecisionGraph(self)
 
-    def decisionOrder(self) -> List[int]:
+    def decisionOrder(self) -> list[int]:
         return _pyagrum.InfluenceDiagram_decisionOrder(self)
 
     def existsPathBetween(self, *args) -> bool:
@@ -29549,26 +29557,6 @@ class ShaferShenoyLIMIDInference(object):
 
 # Register ShaferShenoyLIMIDInference in _pyagrum:
 _pyagrum.ShaferShenoyLIMIDInference_swigregister(ShaferShenoyLIMIDInference)
-__version__ = '2.3.2.9'
-__license__ = __doc__
-__project_url__ = 'https://agrum.org'
-__project_name__ = 'pyAgrum'
-__project_description__ = __doc__
-__project__ = __doc__
-
-
-def about():
-  """
-  about() for pyAgrum
-
-  """
-  print(f"pyAgrum {__version__}")
-  print("(c) 2015-2024 Pierre-Henri Wuillemin, Christophe Gonzales")
-  print("""
-    This is free software; see the source code for copying conditions.
-    There is ABSOLUTELY NO WARRANTY; not even for MERCHANTABILITY or
-    FITNESS FOR A PARTICULAR PURPOSE.  For details, see 'pyagrum.warranty'.
-    """)
 ############################################################################
 #   This file is part of the aGrUM/pyAgrum library.                        #
 #                                                                          #
@@ -29609,6 +29597,26 @@ def about():
 #                                                                          #
 ############################################################################
 
+__version__ = '2.3.2.9'
+__license__ = __doc__
+__project_url__ = 'https://agrum.org'
+__project_name__ = 'pyAgrum'
+__project_description__ = __doc__
+__project__ = __doc__
+
+
+def about():
+  """
+  about() for pyAgrum
+
+  """
+  print(f"pyAgrum {__version__}")
+  print("(c) 2015-2025 Pierre-Henri Wuillemin, Christophe Gonzales")
+  print("""
+    This is free software; see the source code for copying conditions.
+    There is ABSOLUTELY NO WARRANTY; not even for MERCHANTABILITY or
+    FITNESS FOR A PARTICULAR PURPOSE.
+    """)
 
 
 import os.path as ospath
@@ -29717,10 +29725,10 @@ class IMarkovRandomField(UGmodel):
         raise AttributeError("No constructor defined - class is abstract")
     __swig_destroy__ = _pyagrum.delete_IMarkovRandomField
 
-    def smallestFactorFromNode(self, *args) -> List[int]:
+    def smallestFactorFromNode(self, *args) -> list[int]:
         return _pyagrum.IMarkovRandomField_smallestFactorFromNode(self, *args)
 
-    def factors(self) -> List[Set[int]]:
+    def factors(self) -> list[set[int]]:
         return _pyagrum.IMarkovRandomField_factors(self)
 
     def variableNodeMap(self) -> "pyagrum.VariableNodeMap":
@@ -29977,10 +29985,10 @@ class MarkovRandomField(IMarkovRandomField):
     def __init__(self, *args):
         _pyagrum.MarkovRandomField_swiginit(self, _pyagrum.new_MarkovRandomField(*args))
 
-    def smallestFactorFromNode(self, node: int) -> List[int]:
+    def smallestFactorFromNode(self, node: int) -> list[int]:
         return _pyagrum.MarkovRandomField_smallestFactorFromNode(self, node)
 
-    def factors(self) -> List[Set[int]]:
+    def factors(self) -> list[set[int]]:
         return _pyagrum.MarkovRandomField_factors(self)
 
     def variableNodeMap(self) -> "pyagrum.VariableNodeMap":
@@ -30032,7 +30040,7 @@ class MarkovRandomField(IMarkovRandomField):
 
         Remove a variable from the pyagrum.MarkovRandomField.
 
-        Removes the corresponding variable from the pyagrum.MarkovRandomField and from all of it's children pyagrum.Tensor.
+        Removes the corresponding variable from the pyagrum.MarkovRandomField and from all of it's children "pyagrum.Tensor".
 
         If no variable matches the given id, then nothing is done.
 
@@ -30110,7 +30118,7 @@ class MarkovRandomField(IMarkovRandomField):
         """
         return _pyagrum.MarkovRandomField_generateFactors(self)
 
-    def generateFactor(self, vars: List[int]) -> None:
+    def generateFactor(self, vars: list[int]) -> None:
         r"""
 
         Randomly generate factor parameters for a given factor in a given structure.
@@ -31431,65 +31439,223 @@ def getPosterior(model, *, target, evs=None):
 # creating a new Tensor from posterior(will disappear with ie)
   return pyagrum.Tensor(inf.posterior(target))
 
-__version__ = '2.3.2.9'
-__license__ = __doc__
-__project_url__ = 'https://agrum.org'
-__project_name__ = 'pyAgrum'
-__project_description__ = __doc__
-__project__ = __doc__
+
+def causalImpact(cm, on, doing, knowing=None, values=None):
+    if isinstance(on, str):
+        on = {on}
+    if isinstance(doing, str):
+        doing = {doing}
+    if isinstance(knowing, str):
+        knowing = {knowing}
+    lat, pot, expl = _causalImpact(cm, on, doing,
+                                   knowing if knowing is not None else set(),
+                                   values  if values  is not None else {})
+    pot._model = cm
+    return lat, (pot if lat.isIdentified() else None), expl
+
+def counterfactual(cm, on, whatif, profile=None, values=None):
+    p=_counterfactual(cm, on, whatif,
+                           profile if profile is not None else {},
+                           values  if values  is not None else {})
+    p._model=cm
+    return p
+
+def counterfactualModel(cm, profile=None, whatif=None):
+    p=_counterfactualModel(cm,
+                           profile if profile is not None else {},
+                           whatif  if whatif  is not None else set())
+    p._model=cm
+    return p
 
 
-def about():
-  """
-  about() for pyAgrum
 
-  """
-  print(f"pyAgrum {__version__}")
-  print("(c) 2015-2024 Pierre-Henri Wuillemin, Christophe Gonzales")
-  print("""
-    This is free software; see the source code for copying conditions.
-    There is ABSOLUTELY NO WARRANTY; not even for MERCHANTABILITY or
-    FITNESS FOR A PARTICULAR PURPOSE.  For details, see 'pyagrum.warranty'.
-    """)
-############################################################################
-#   This file is part of the aGrUM/pyAgrum library.                        #
-#                                                                          #
-#   Copyright (c) 2005-2026 by                                             #
-#       - Pierre-Henri WUILLEMIN(_at_LIP6)                                 #
-#       - Christophe GONZALES(_at_AMU)                                     #
-#                                                                          #
-#   The aGrUM/pyAgrum library is free software; you can redistribute it    #
-#   and/or modify it under the terms of either :                           #
-#                                                                          #
-#    - the GNU Lesser General Public License as published by               #
-#      the Free Software Foundation, either version 3 of the License,      #
-#      or (at your option) any later version,                              #
-#    - the MIT license (MIT),                                              #
-#    - or both in dual license, as here.                                   #
-#                                                                          #
-#   (see https://agrum.gitlab.io/articles/dual-licenses-lgplv3mit.html)    #
-#                                                                          #
-#   This aGrUM/pyAgrum library is distributed in the hope that it will be  #
-#   useful, but WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED,          #
-#   INCLUDING BUT NOT LIMITED TO THE WARRANTIES MERCHANTABILITY or FITNESS #
-#   FOR A PARTICULAR PURPOSE  AND NONINFRINGEMENT. IN NO EVENT SHALL THE   #
-#   AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER #
-#   LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE,        #
-#   ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR  #
-#   OTHER DEALINGS IN THE SOFTWARE.                                        #
-#                                                                          #
-#   See LICENCES for more details.                                         #
-#                                                                          #
-#   SPDX-FileCopyrightText: Copyright 2005-2026                            #
-#       - Pierre-Henri WUILLEMIN(_at_LIP6)                                 #
-#       - Christophe GONZALES(_at_AMU)                                     #
-#   SPDX-License-Identifier: LGPL-3.0-or-later OR MIT                      #
-#                                                                          #
-#   Contact  : info_at_agrum_dot_org                                       #
-#   homepage : http://agrum.gitlab.io                                      #
-#   gitlab   : https://gitlab.com/agrumery/agrum                           #
-#                                                                          #
-############################################################################
+def _causalImpact(*args) -> tuple["pyagrum.CausalImpact","pyagrum.Tensor",str]:
+    return _pyagrum._causalImpact(*args)
+class CausalModel(object):
+    thisown = property(lambda x: x.this.own(), lambda x, v: x.this.own(v), doc="The membership flag")
+    __repr__ = _swig_repr
+    __swig_destroy__ = _pyagrum.delete_CausalModel
 
+    def addLatentVariable(self, *args) -> None:
+        return _pyagrum.CausalModel_addLatentVariable(self, *args)
+
+    def existsArc(self, *args) -> bool:
+        return _pyagrum.CausalModel_existsArc(self, *args)
+
+    def assumeSpurious(self, *args) -> None:
+        return _pyagrum.CausalModel_assumeSpurious(self, *args)
+
+    def assumeNonSpurious(self, *args) -> None:
+        return _pyagrum.CausalModel_assumeNonSpurious(self, *args)
+
+    def isAssumedSpurious(self, *args) -> bool:
+        return _pyagrum.CausalModel_isAssumedSpurious(self, *args)
+
+    def backDoor(self, cause: int, effect: int) -> list[int]:
+        return _pyagrum.CausalModel_backDoor(self, cause, effect)
+
+    def frontDoor(self, cause: int, effect: int) -> list[int]:
+        return _pyagrum.CausalModel_frontDoor(self, cause, effect)
+
+    def inducedCausalSubModel(self, cm: "CausalModel", subset: list[int]) -> "pyagrum.CausalModel< float >":
+        return _pyagrum.CausalModel_inducedCausalSubModel(self, cm, subset)
+
+    def toDot(self, *args) -> str:
+        return _pyagrum.CausalModel_toDot(self, *args)
+
+    def observationalBN(self) -> "pyagrum.BayesNet":
+        return _pyagrum.CausalModel_observationalBN(self)
+
+    def causalDAG(self) -> "pyagrum.DAG":
+        return _pyagrum.CausalModel_causalDAG(self)
+
+    def names(self) -> "pyagrum.Set< str >":
+        return _pyagrum.CausalModel_names(self)
+
+    def idFromName(self, name: str) -> int:
+        return _pyagrum.CausalModel_idFromName(self, name)
+
+    def nameFromId(self, id: int) -> str:
+        return _pyagrum.CausalModel_nameFromId(self, id)
+
+    def id2name(self, includeLatentVariable: bool=False) -> "Bijection< int,str >":
+        return _pyagrum.CausalModel_id2name(self, includeLatentVariable)
+
+    def latentVariablesIds(self) -> list[int]:
+        return _pyagrum.CausalModel_latentVariablesIds(self)
+
+    def latentVariablesNames(self) -> "pyagrum.Set< str >":
+        return _pyagrum.CausalModel_latentVariablesNames(self)
+
+    def parents(self, *args) -> list[int]:
+        return _pyagrum.CausalModel_parents(self, *args)
+
+    def children(self, *args) -> list[int]:
+        return _pyagrum.CausalModel_children(self, *args)
+
+    def connectedComponents(self) -> "HashTable< int,list[int] >":
+        return _pyagrum.CausalModel_connectedComponents(self)
+
+    def __init__(self, *args):
+        _pyagrum.CausalModel_swiginit(self, _pyagrum.new_CausalModel(*args))
+
+# Register CausalModel in _pyagrum:
+_pyagrum.CausalModel_swigregister(CausalModel)
+class CausalImpact(object):
+    thisown = property(lambda x: x.this.own(), lambda x, v: x.this.own(v), doc="The membership flag")
+    __repr__ = _swig_repr
+
+    def eval(self) -> "pyagrum.Tensor":
+        return _pyagrum.CausalImpact_eval(self)
+
+    def toString(self) -> str:
+        return _pyagrum.CausalImpact_toString(self)
+
+    def toLatex(self, *args) -> str:
+        return _pyagrum.CausalImpact_toLatex(self, *args)
+
+    def latexQuery(self, *args) -> str:
+        return _pyagrum.CausalImpact_latexQuery(self, *args)
+
+    def isIdentified(self) -> bool:
+        return _pyagrum.CausalImpact_isIdentified(self)
+
+    def root(self) -> "pyagrum.ASTtree< float > const &":
+        return _pyagrum.CausalImpact_root(self)
+
+    def getResult(self) -> "CausalFormula< float > const &":
+        return _pyagrum.CausalImpact_getResult(self)
+
+    def cm(self) -> "pyagrum.CausalModel< float > const &":
+        return _pyagrum.CausalImpact_cm(self)
+
+    def on(self) -> list[int]:
+        return _pyagrum.CausalImpact_on(self)
+
+    def doing(self) -> list[int]:
+        return _pyagrum.CausalImpact_doing(self)
+
+    def knowing(self) -> list[int]:
+        return _pyagrum.CausalImpact_knowing(self)
+
+    def explanation(self) -> str:
+        return _pyagrum.CausalImpact_explanation(self)
+
+    def onNames(self) -> list[str]:
+        return _pyagrum.CausalImpact_onNames(self)
+
+    def doingNames(self) -> list[str]:
+        return _pyagrum.CausalImpact_doingNames(self)
+
+    def knowingNames(self) -> list[str]:
+        return _pyagrum.CausalImpact_knowingNames(self)
+
+    def __init__(self, *args):
+        _pyagrum.CausalImpact_swiginit(self, _pyagrum.new_CausalImpact(*args))
+    __swig_destroy__ = _pyagrum.delete_CausalImpact
+
+# Register CausalImpact in _pyagrum:
+_pyagrum.CausalImpact_swigregister(CausalImpact)
+class Counterfactual(object):
+    thisown = property(lambda x: x.this.own(), lambda x, v: x.this.own(v), doc="The membership flag")
+    __repr__ = _swig_repr
+
+    def __init__(self, *args):
+        _pyagrum.Counterfactual_swiginit(self, _pyagrum.new_Counterfactual(*args))
+
+    @staticmethod
+    def counterFactualModel(*args) -> "pyagrum.CausalModel< float >":
+        return _pyagrum.Counterfactual_counterFactualModel(*args)
+
+    def run(self) -> None:
+        return _pyagrum.Counterfactual_run(self)
+
+    def originalModel(self) -> "pyagrum.CausalModel< float > const &":
+        return _pyagrum.Counterfactual_originalModel(self)
+
+    def twinModel(self) -> "pyagrum.CausalModel< float > const &":
+        return _pyagrum.Counterfactual_twinModel(self)
+
+    def getResult(self) -> "CausalFormula< float > const &":
+        return _pyagrum.Counterfactual_getResult(self)
+
+    def value(self) -> "pyagrum.Tensor":
+        return _pyagrum.Counterfactual_value(self)
+
+    def on(self) -> "pyagrum.Set< str > const &":
+        return _pyagrum.Counterfactual_on(self)
+
+    def whatif(self) -> "pyagrum.Set< str > const &":
+        return _pyagrum.Counterfactual_whatif(self)
+
+    def profile(self) -> "HashTable< pyagrum.Counterfactual< float >::VarName,pyagrum.Counterfactual< float >::ValName > const &":
+        return _pyagrum.Counterfactual_profile(self)
+
+    def values(self) -> "HashTable< pyagrum.Counterfactual< float >::VarName,pyagrum.Counterfactual< float >::ValName > const &":
+        return _pyagrum.Counterfactual_values(self)
+
+    def toString(self) -> str:
+        return _pyagrum.Counterfactual_toString(self)
+    __swig_destroy__ = _pyagrum.delete_Counterfactual
+
+# Register Counterfactual in _pyagrum:
+_pyagrum.Counterfactual_swigregister(Counterfactual)
+
+def _counterfactual(*args) -> "pyagrum.Tensor":
+    return _pyagrum._counterfactual(*args)
+
+def _counterfactualModel(cm: "CausalModel", profile: "HashTable< str,str > const &", whatif: "pyagrum.Set< str > const &") -> "pyagrum.CausalModel< float >":
+    return _pyagrum._counterfactualModel(cm, profile, whatif)
+
+_CausalModel_swig_init = CausalModel.__init__
+
+def _CausalModel_init(self, bn, latents=None, keepArcs=False):
+    if latents is None:
+        _CausalModel_swig_init(self, bn)
+    else:
+        _CausalModel_swig_init(self, bn, latents, keepArcs)
+
+CausalModel.__init__ = _CausalModel_init
+del _CausalModel_init
 
 

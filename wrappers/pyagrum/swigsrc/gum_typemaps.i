@@ -46,6 +46,29 @@
 
 
 /* Convert from C --> Python */
+
+// std::tuple<CausalImpact<double>, Tensor<double>, std::string>
+// returned by gum::causalImpact() → Python tuple (ci, pot, expl).
+// SWIG wraps the return value in SwigValueWrapper<T>, which is not directly
+// accessible via std::get. Binding it to a typed reference invokes
+// SwigValueWrapper::operator T&() and gives a proper tuple reference.
+// $descriptor() is resolved at SWIG code-gen time, so forward-declaration order
+// does not matter here.
+%typemap(out) std::tuple<gum::CausalImpact<double>, gum::Tensor<double>, std::string> {
+  // SwigValueWrapper<T> only exposes operator T&&(), not operator T&().
+  // Move-construct a local tuple to get an lvalue we can work with.
+  using _TupleT = std::tuple<gum::CausalImpact<double>, gum::Tensor<double>, std::string>;
+  _TupleT _tup  = std::move($1);
+  auto* _ci   = new gum::CausalImpact<double>(std::move(std::get<0>(_tup)));
+  auto* _tens = new gum::Tensor<double>(std::move(std::get<1>(_tup)));
+  $result = PyTuple_New(3);
+  PyTuple_SET_ITEM($result, 0,
+    SWIG_NewPointerObj(_ci,   $descriptor(gum::CausalImpact<double>*), SWIG_POINTER_OWN));
+  PyTuple_SET_ITEM($result, 1,
+    SWIG_NewPointerObj(_tens, $descriptor(gum::Tensor<double>*),       SWIG_POINTER_OWN));
+  PyTuple_SET_ITEM($result, 2, PyUnicode_FromString(std::get<2>(_tup).c_str()));
+}
+
 %typemap(out) gum::Set<gum::Instantiation> {
   $result = PyAgrumHelper::PySeqFromSetOfInstantiation($1);
 }
@@ -146,3 +169,35 @@
 %typemap(typecheck, precedence=SWIG_TYPECHECK_STRING_ARRAY) gum::Set<std::string>, const gum::Set<std::string>& {
   $1 = PySet_Check($input) || PyList_Check($input) || PyUnicode_Check($input) || PyBytes_Check($input);
 }
+
+// gum::HashTable<std::string, std::string> <-> Python dict[str, str|int]
+// Both gum:: and non-qualified forms are needed: SWIG sometimes drops the namespace
+// prefix when resolving types declared inside the gum namespace.
+%typemap(in) gum::HashTable<std::string, std::string> (gum::HashTable<std::string, std::string> temp) {
+  PyAgrumHelper::populateHashTableStrStrFromPyDict(temp, $input);
+  $1 = temp;
+}
+
+%typemap(in) const gum::HashTable<std::string, std::string>& (gum::HashTable<std::string, std::string> temp) {
+  PyAgrumHelper::populateHashTableStrStrFromPyDict(temp, $input);
+  $1 = &temp;
+}
+
+%typemap(out) gum::HashTable<std::string, std::string> {
+  $result = PyAgrumHelper::PyDictFromHashTableStrStr($1);
+}
+
+%typemap(out) const gum::HashTable<std::string, std::string>& {
+  $result = PyAgrumHelper::PyDictFromHashTableStrStr(*$1);
+}
+
+%typemap(typecheck, precedence=SWIG_TYPECHECK_POINTER) gum::HashTable<std::string, std::string>,
+                                                        const gum::HashTable<std::string, std::string>& {
+  $1 = PyDict_Check($input);
+}
+
+// SWIG does not follow transitive C++ #include directives, so it cannot resolve
+// HashTable to gum::HashTable. Both qualified and unqualified forms are registered.
+%apply gum::HashTable<std::string, std::string>        { HashTable<std::string, std::string> };
+%apply const gum::HashTable<std::string, std::string>& { const HashTable<std::string, std::string>& };
+

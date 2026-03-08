@@ -43,7 +43,7 @@ from typing import Set, List
 
 import pyagrum as gum
 from .pyAgrumTestSuite import pyAgrumTestCase, addTests
-import pyagrum.causal as csl
+#import pyagrum.causal as csl
 
 
 class TestDSep(pyAgrumTestCase):
@@ -108,7 +108,7 @@ class TestBackDoors(pyAgrumTestCase):
     bn = gum.fastBN(fbn)
     return [
       [bn.variable(i).name() for i in bd]
-      for bd in csl.backdoor_generator(bn.dag(), bn.idFromName(cause), bn.idFromName(effect), latent)
+      for bd in gum.backdoor_generator(bn.dag(), bn.idFromName(cause), bn.idFromName(effect), latent)
     ]
 
   def hasBackDoor(self, fbn: str, cause: int, effect: int, latent: Set[int] = None):
@@ -189,7 +189,7 @@ class TestFrontDoors(pyAgrumTestCase):
     bn = gum.fastBN(fbn)
     return [
       [bn.variable(i).name() for i in bd]
-      for bd in csl.frontdoor_generator(bn.dag(), bn.idFromName(cause), bn.idFromName(effect), latent)
+      for bd in gum.frontdoor_generator(bn.dag(), bn.idFromName(cause), bn.idFromName(effect), latent)
     ]
 
   def hasFrontDoor(self, fbn: str, cause: int, effect: int, latent: Set[int] = None):

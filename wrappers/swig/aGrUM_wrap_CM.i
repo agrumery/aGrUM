@@ -59,3 +59,5 @@
 %template (CausalModel) gum::CausalModel< double >;
 %template (CausalImpact) gum::CausalImpact< double >;
 %template (Counterfactual) gum::Counterfactual< double >;
+%template (counterfactual) gum::counterfactual< double >;
+%template (counterfactualModel) gum::counterfactualModel< double >;

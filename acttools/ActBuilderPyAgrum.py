@@ -40,6 +40,7 @@
 
 import os
 import glob
+import importlib.util
 import platform
 import time
 
@@ -49,14 +50,33 @@ from .utils import *
 from .ActBuilder import ActBuilder
 
 
+def _load_pyagrum_test_modules() -> set[str]:
+  gumtest_path = os.path.join(os.path.dirname(__file__), "..", "wrappers", "pyagrum", "testunits", "gumTest.py")
+  spec = importlib.util.spec_from_file_location("gumTest", os.path.normpath(gumtest_path))
+  mod = importlib.util.module_from_spec(spec)
+  spec.loader.exec_module(mod)
+  return mod.PYAGRUM_TEST_MODULES - {""}
+
+
 class ActBuilderPyAgrum(ActBuilder):
   def __init__(self, current: dict[str, str | bool]):
     super().__init__(current)
+
+  PYAGRUM_MODULES = _load_pyagrum_test_modules()
 
   def check_consistency(self) -> bool:
     cur_modules = self.current["modules"]
     if self.current["tests"] == "list":
       error("List of [[pyAgrum]]'s tests is not available for now. Sorry.")
+      return False
+
+    if cur_modules in {"list", "show"}:
+      notif("Available [[pyAgrum]] modules: " + ", ".join(sorted(self.PYAGRUM_MODULES)))
+      notif("Usage: -m all | -m quick | -m quick_<module>")
+      return False
+
+    if cur_modules not in {"", "all", "quick"} and not cur_modules.startswith("quick_"):
+      error(f"Unknown module [[{cur_modules}]]. Expected: all, list, show, quick, or quick_<module> with module in {{{', '.join(sorted(self.PYAGRUM_MODULES))}}}")
       return False
 
     if not self.check_compiler_and_maker():

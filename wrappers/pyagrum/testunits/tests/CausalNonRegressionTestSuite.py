@@ -42,7 +42,6 @@ import unittest
 
 import pyagrum as gum
 from .pyAgrumTestSuite import pyAgrumTestCase, addTests
-import pyagrum.causal as csl
 
 
 class TestSimpson(pyAgrumTestCase):
@@ -60,30 +59,30 @@ class TestSimpson(pyAgrumTestCase):
     m1.cpt("Patient")[{"Drug": 0, "Gender": 1}] = [0.6, 0.4]
     m1.cpt("Patient")[{"Drug": 1, "Gender": 0}] = [0.3, 0.7]  # Drug, Male -> healed 0.7 of cases
     m1.cpt("Patient")[{"Drug": 1, "Gender": 1}] = [0.8, 0.2]  # Drug, Female -> healed in 0.2 of cases
-    self.model = csl.CausalModel(m1)
+    self.model = gum.CausalModel(m1)
 
   def test_CausalImpactWithoutObservation(self):
     evs = {}
-    latex, impact, explain = csl.causalImpact(self.model, "Patient", doing="Drug", knowing=evs)
+    latex, impact, explain = gum.causalImpact(self.model, "Patient", doing="Drug", knowing=evs)
 
   def test_CausalImpactWithObservation(self):
     evs = {"Gender"}
-    latex, impact, explain = csl.causalImpact(self.model, "Patient", doing="Drug", knowing=evs)
+    latex, impact, explain = gum.causalImpact(self.model, "Patient", doing="Drug", knowing=evs)
 
 
 class TestFromUsers(pyAgrumTestCase):
   def test_AccentsInVariables(self):
     bn = gum.fastBN("héhé->hoho")
-    cm = csl.CausalModel(bn)
-    formula, impact, explanation = csl.causalImpact(cm, "héhé", "hoho")
+    cm = gum.CausalModel(bn)
+    formula, impact, explanation = gum.causalImpact(cm, "héhé", "hoho")
 
   def test_from_Musfiqshohan(self):
-    cm = csl.CausalModel(
+    cm = gum.CausalModel(
       gum.fastBN("A->B->C->F;A->D;A->E;C->D->E->F;C->E;"),
       [("U0", ("C", "F")), ("U1", ("C", "E")), ("U2", ("E", "F"))],
       keepArcs=True,
     )
-    csl.causalImpact(cm, on={"E"}, doing={"A", "D", "B"})
+    gum.causalImpact(cm, on={"E"}, doing={"A", "D", "B"})
 
 
 class TestFromR(pyAgrumTestCase):
@@ -109,12 +108,12 @@ class TestFromR(pyAgrumTestCase):
     m.cpt("y")[{"z1": 1, "z3": 0}] = [0.4, 0.6]
     m.cpt("y")[{"z1": 1, "z3": 1}] = [0.35, 0.65]
 
-    self.d = csl.CausalModel(
+    self.d = gum.CausalModel(
       m, [("X-Z2", ["x", "z2"]), ("X-Z3", ["x", "z3"]), ("X-Y", ["x", "y"]), ("Y-Z2", ["y", "z2"])], True
     )
     try:
-      formula, result, msg = csl.causalImpact(self.d, on={"y", "z2", "z1", "z3"}, doing={"x"})
-    except csl.HedgeException:
+      formula, result, msg = gum.causalImpact(self.d, on={"y", "z2", "z1", "z3"}, doing={"x"})
+    except gum.HedgeException:
       self.fail("Should not raise")
 
 
@@ -126,8 +125,8 @@ class TestsFromGumWhy(pyAgrumTestCase):
     ab.cpt("Bag on Carousel").fillWith(
       [1.0, 0.0] * 11 + [1 - i / 20 if i % 2 == 0 else (i - 1) / 20 for i in range(22)]
     )
-    abModele = csl.CausalModel(ab)
-    formula, impact, explanation = csl.causalImpact(
+    abModele = gum.CausalModel(ab)
+    formula, impact, explanation = gum.causalImpact(
       abModele,
       on={"Bag on Plane"},
       doing={"Elapsed time"},
@@ -138,8 +137,8 @@ class TestsFromGumWhy(pyAgrumTestCase):
 
   def test_DoCalculusp213(self):
     fd = gum.fastBN("w->z->x->y")
-    fdModele = csl.CausalModel(fd, [("u1", ["w", "x"]), ("u2", ["w", "y"])], True)
-    formula, impact, explanation = csl.causalImpact(fdModele, on="y", doing="x")
+    fdModele = gum.CausalModel(fd, [("u1", ["w", "x"]), ("u2", ["w", "y"])], True)
+    formula, impact, explanation = gum.causalImpact(fdModele, on="y", doing="x")
 
 
 ts = unittest.TestSuite()
