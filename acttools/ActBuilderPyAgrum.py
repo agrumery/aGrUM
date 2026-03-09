@@ -76,7 +76,9 @@ class ActBuilderPyAgrum(ActBuilder):
       return False
 
     if cur_modules not in {"", "all", "quick"} and not cur_modules.startswith("quick_"):
-      error(f"Unknown module [[{cur_modules}]]. Expected: all, list, show, quick, or quick_<module> with module in {{{', '.join(sorted(self.PYAGRUM_MODULES))}}}")
+      error(
+        f"Unknown module [[{cur_modules}]]. Expected: all, list, show, quick, or quick_<module> with module in {{{', '.join(sorted(self.PYAGRUM_MODULES))}}}"
+      )
       return False
 
     if not self.check_compiler_and_maker():

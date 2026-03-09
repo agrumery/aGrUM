@@ -17,7 +17,7 @@
  *   (see https://agrum.gitlab.io/articles/dual-licenses-lgplv3mit.html)    *
  *                                                                          *
  *   This aGrUM/pyAgrum library is distributed in the hope that it will be  *
- *   useful, but WITHOUT ANY KIND, EXPRESS OR IMPLIED,          *
+ *   useful, but WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED,          *
  *   INCLUDING BUT NOT LIMITED TO THE WARRANTIES MERCHANTABILITY or FITNESS *
  *   FOR A PARTICULAR PURPOSE  AND NONINFRINGEMENT. IN NO EVENT SHALL THE   *
  *   AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER *
@@ -37,6 +37,7 @@
  *   gitlab   : https://gitlab.com/agrumery/agrum                           *
  *                                                                          *
  ****************************************************************************/
+
 
 /**
  * @file
@@ -258,10 +259,8 @@ namespace gum {
     return out;
   }
 
-  DoorCriteria::NodeSetVec DoorCriteria::enumerateBackdoorSets(const DAG& dag,
-                                                               NodeId     X,
-                                                               NodeId     Y,
-                                                               bool       stopAtFirst) {
+  DoorCriteria::NodeSetVec
+      DoorCriteria::enumerateBackdoorSets(const DAG& dag, NodeId X, NodeId Y, bool stopAtFirst) {
     return enumerateBackdoorSets(dag, X, Y, NodeSet{}, 0, true, stopAtFirst);
   }
 
@@ -385,10 +384,8 @@ namespace gum {
     return out;
   }
 
-  DoorCriteria::NodeSetVec DoorCriteria::enumerateFrontdoorSets(const DAG& dag,
-                                                                NodeId     X,
-                                                                NodeId     Y,
-                                                                bool       stopAtFirst) {
+  DoorCriteria::NodeSetVec
+      DoorCriteria::enumerateFrontdoorSets(const DAG& dag, NodeId X, NodeId Y, bool stopAtFirst) {
     return enumerateFrontdoorSets(dag, X, Y, NodeSet{}, 0, true, stopAtFirst);
   }
 
@@ -472,10 +469,7 @@ namespace gum {
     return s;
   }
 
-  bool DoorCriteria::hasBackdoorPath(const DAG&     dag,
-                                     NodeId         X,
-                                     NodeId         Y,
-                                     const NodeSet& Z) {
+  bool DoorCriteria::hasBackdoorPath(const DAG& dag, NodeId X, NodeId Y, const NodeSet& Z) {
     NodeSet Xs;
     Xs.insert(X);
     NodeSet Ys;

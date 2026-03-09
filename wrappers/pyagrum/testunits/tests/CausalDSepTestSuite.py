@@ -42,7 +42,7 @@ import unittest
 
 import pyagrum as gum
 from .pyAgrumTestSuite import pyAgrumTestCase, addTests
-#import pyagrum.causal as csl
+# import pyagrum.causal as csl
 
 
 class TestDSep(pyAgrumTestCase):
@@ -106,12 +106,12 @@ class TestBackDoors(pyAgrumTestCase):
   @staticmethod
   def getBackDoors(fbn: str, cause: str, effect: str, latent: set[str] = None):
     bn = gum.fastBN(fbn)
-    icause=bn.idFromName(cause)
-    ieffect=bn.idFromName(effect)
-    ilatents={bn.idFromName(s) for s in latent} if latent is not None else set()
+    icause = bn.idFromName(cause)
+    ieffect = bn.idFromName(effect)
+    ilatents = {bn.idFromName(s) for s in latent} if latent is not None else set()
     return [
       [bn.variable(i).name() for i in bd]
-      for bd in gum.DoorCriteria.enumerateBackdoorSets(bn.dag(), icause,ieffect,excluded_nodes=ilatents)
+      for bd in gum.DoorCriteria.enumerateBackdoorSets(bn.dag(), icause, ieffect, excluded_nodes=ilatents)
     ]
 
   def hasBackDoor(self, fbn: str, cause: str, effect: str, latent: set[str] = None):
@@ -191,12 +191,12 @@ class TestFrontDoors(pyAgrumTestCase):
   @staticmethod
   def getFrontDoors(fbn: str, cause: str, effect: str, latent: set[str] = None):
     bn = gum.fastBN(fbn)
-    icause=bn.idFromName(cause)
-    ieffect=bn.idFromName(effect)
-    ilatents={bn.idFromName(s) for s in latent} if latent is not None else set()
+    icause = bn.idFromName(cause)
+    ieffect = bn.idFromName(effect)
+    ilatents = {bn.idFromName(s) for s in latent} if latent is not None else set()
     return [
       [bn.variable(i).name() for i in bd]
-      for bd in gum.DoorCriteria.enumerateFrontdoorSets(bn.dag(), icause,ieffect,excluded_nodes=ilatents)
+      for bd in gum.DoorCriteria.enumerateFrontdoorSets(bn.dag(), icause, ieffect, excluded_nodes=ilatents)
     ]
 
   def hasFrontDoor(self, fbn: str, cause: str, effect: str, latent: set[str] = None):

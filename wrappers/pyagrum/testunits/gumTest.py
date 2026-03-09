@@ -100,7 +100,9 @@ def go():
               print(f"[-m quick_module] but module '{test_module}' not in {sorted(test_modules - {''})}")
               sys.exit(1)
           else:
-            print(f"[-m] unknown value '{cde}'. Expected: all, list, show, or quick_<module> with module in {sorted(test_modules - {'', 'main'})}")
+            print(
+              f"[-m] unknown value '{cde}'. Expected: all, list, show, or quick_<module> with module in {sorted(test_modules - {'', 'main'})}"
+            )
             sys.exit(1)
         elif parseT == 1:
           parseT = 0

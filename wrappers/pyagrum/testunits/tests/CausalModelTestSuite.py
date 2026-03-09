@@ -42,7 +42,7 @@ import unittest
 
 import pyagrum as gum
 from .pyAgrumTestSuite import pyAgrumTestCase, addTests
-#import pyagrum.causal as csl
+# import pyagrum.causal as csl
 
 
 class TestCausalModel(pyAgrumTestCase):
@@ -54,13 +54,13 @@ class TestCausalModel(pyAgrumTestCase):
 
     modele1 = gum.CausalModel(obs1)
     _, pot, _ = gum.causalImpact(modele1, "Cancer", "Smoking")  # when doing is 1
-    p=gum.Tensor(obs1.cpt("Cancer")).fillWith(pot) # pot potential with the variables of obs1.cpt("Cancer")
+    p = gum.Tensor(obs1.cpt("Cancer")).fillWith(pot)  # pot potential with the variables of obs1.cpt("Cancer")
     self.assertEqual(p, obs1.cpt("Cancer"))
 
     modele2 = gum.CausalModel(obs1, [("Genotype", ["Smoking", "Cancer"])])
     _, pot, _ = gum.causalImpact(modele2, "Cancer", {"Smoking"}, values={"Smoking": 1})
     margCancer = (obs1.cpt("Smoking") * obs1.cpt("Cancer")).sumOut(["Smoking"])
-    p=gum.Tensor(margCancer).fillWith(pot) # pot potential with the variables of margCancer
+    p = gum.Tensor(margCancer).fillWith(pot)  # pot potential with the variables of margCancer
     self.assertEqual(p, margCancer)
 
     modele3 = gum.CausalModel(obs1, [("Genotype", ["Smoking", "Cancer"])], True)
@@ -86,7 +86,7 @@ class TestCausalModel(pyAgrumTestCase):
     margCancer = (margCancer * obs2.cpt("Tar")).sumOut(["Tar"])
 
     _, pot, _ = gum.causalImpact(modele4, "Cancer", "Smoking")  # when smoking=1
-    p=gum.Tensor(margCancer).fillWith(pot) # pot potential with the variables of margCancer
+    p = gum.Tensor(margCancer).fillWith(pot)  # pot potential with the variables of margCancer
     self.assertEqual(p, margCancer)
 
   def test_simpson(self):
@@ -119,7 +119,7 @@ class TestCausalModel(pyAgrumTestCase):
     margPatient = (m1.cpt("Patient") * m1.cpt("Gender")).sumOut(["Gender"])
 
     lat, pot, expl = gum.causalImpact(d1, on="Patient", doing={"Drug"})  # when drug=1
-    p=gum.Tensor(margPatient).fillWith(pot) # pot potential with the variables of margPatient
+    p = gum.Tensor(margPatient).fillWith(pot)  # pot potential with the variables of margPatient
     self.assertEqual(p, margPatient)
 
   def test_CRAN1(self):
@@ -145,10 +145,10 @@ class TestCausalModel(pyAgrumTestCase):
     marg = (marg * bn.cpt("w") * bn.cpt("z")).sumOut(["z", "w"])
 
     _, pot, _ = gum.causalImpact(d, on={"y"}, doing={"x"})  # when x=1
-    p=gum.Tensor(marg).fillWith(pot) # pot potential with the variables of marg
+    p = gum.Tensor(marg).fillWith(pot)  # pot potential with the variables of marg
     self.assertEqual(p, marg)
     _, pot, _ = gum.causalImpact(d, on="y", doing="x")  # when x=1
-    p=gum.Tensor(marg).fillWith(pot) # pot potential with the variables of marg
+    p = gum.Tensor(marg).fillWith(pot)  # pot potential with the variables of marg
     self.assertEqual(p, marg)
 
   def test_CRAN2(self):
@@ -218,7 +218,7 @@ class TestCausalModel(pyAgrumTestCase):
     edex.cpt("experience").fillFromFunction("10-4*education+Ux")
     edex.cpt("salary").fillFromFunction("round(65+2.5*experience+5*education+Us)")
 
-    cm=gum.CausalModel(edex)
+    cm = gum.CausalModel(edex)
     pot = gum.counterfactual(
       cm=cm,
       profile={"experience": 8, "education": "low", "salary": "86"},

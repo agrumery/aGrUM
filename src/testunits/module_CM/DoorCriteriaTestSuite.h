@@ -76,11 +76,11 @@ namespace gum_tests {
       auto        bn  = gum::BayesNet< double >::fastPrototype("A->B->C");
       const auto& dag = bn.dag();
 
-      
-      auto              idA = bn.idFromName("A");
-      auto              idC = bn.idFromName("C");
 
-      gum::NodeSet Z;                               // {}
+      auto idA = bn.idFromName("A");
+      auto idC = bn.idFromName("C");
+
+      gum::NodeSet Z;   // {}
       CHECK(gum::DoorCriteria::satisfiesBackdoorCriterion(dag, idA, idC, Z));
 
       auto sets = gum::DoorCriteria::enumerateBackdoorSets(dag, idA, idC);
@@ -92,7 +92,8 @@ namespace gum_tests {
       GUM_CHECK_EQ(sets, expected);
 
       // Test stopAtFirst returns only the first and is valid
-      auto sets_first = gum::DoorCriteria::enumerateBackdoorSets(dag, idA, idC, gum::NodeSet{}, 0, true, true);
+      auto sets_first
+          = gum::DoorCriteria::enumerateBackdoorSets(dag, idA, idC, gum::NodeSet{}, 0, true, true);
       GUM_CHECK_EQ(sets_first.size(), 1u);
       CHECK(gum::DoorCriteria::satisfiesBackdoorCriterion(dag, idA, idC, sets_first[0]));
     }
@@ -103,10 +104,10 @@ namespace gum_tests {
       auto        bn  = gum::BayesNet< double >::fastPrototype("U->X->Y;U->Y");
       const auto& dag = bn.dag();
 
-      
-      auto              idU = bn.idFromName("U");
-      auto              idX = bn.idFromName("X");
-      auto              idY = bn.idFromName("Y");
+
+      auto idU = bn.idFromName("U");
+      auto idX = bn.idFromName("X");
+      auto idY = bn.idFromName("Y");
 
       gum::NodeSet Z_bad;
       Z_bad.insert(idX);   // descendant of X ⇒ invalid for backdoor
@@ -125,7 +126,8 @@ namespace gum_tests {
       GUM_CHECK_EQ(sets, expected);
 
       // Test stopAtFirst returns only the first and is valid
-      auto sets_first = gum::DoorCriteria::enumerateBackdoorSets(dag, idX, idY, gum::NodeSet{}, 0, true, true);
+      auto sets_first
+          = gum::DoorCriteria::enumerateBackdoorSets(dag, idX, idY, gum::NodeSet{}, 0, true, true);
       GUM_CHECK_EQ(sets_first.size(), 1u);
       CHECK(gum::DoorCriteria::satisfiesBackdoorCriterion(dag, idX, idY, sets_first[0]));
     }
@@ -135,11 +137,11 @@ namespace gum_tests {
       auto        bn  = gum::BayesNet< double >::fastPrototype("U->X->Y;U->Y;W->X");
       const auto& dag = bn.dag();
 
-      
-      auto              idU = bn.idFromName("U");
-      auto              idW = bn.idFromName("W");
-      auto              idX = bn.idFromName("X");
-      auto              idY = bn.idFromName("Y");
+
+      auto idU = bn.idFromName("U");
+      auto idW = bn.idFromName("W");
+      auto idX = bn.idFromName("X");
+      auto idY = bn.idFromName("Y");
 
       auto mins = gum::DoorCriteria::enumerateBackdoorSets(dag, idX, idY);
       GUM_CHECK_EQ(mins.size(), 1u);
@@ -164,10 +166,10 @@ namespace gum_tests {
       auto        bn  = gum::BayesNet< double >::fastPrototype("U->X;U->Y;X->Z->Y");
       const auto& dag = bn.dag();
 
-      
-      auto              idX = bn.idFromName("X");
-      auto              idY = bn.idFromName("Y");
-      auto              idZ = bn.idFromName("Z");
+
+      auto idX = bn.idFromName("X");
+      auto idY = bn.idFromName("Y");
+      auto idZ = bn.idFromName("Z");
 
       NodeSet Z;
       Z.insert(idZ);
@@ -181,7 +183,8 @@ namespace gum_tests {
       GUM_CHECK_EQ(fds, fds_expected);
 
       // Test stopAtFirst returns only the first and is valid
-      auto fds_first = gum::DoorCriteria::enumerateFrontdoorSets(dag, idX, idY, gum::NodeSet{}, 0, true, true);
+      auto fds_first
+          = gum::DoorCriteria::enumerateFrontdoorSets(dag, idX, idY, gum::NodeSet{}, 0, true, true);
       GUM_CHECK_EQ(fds_first.size(), 1u);
       CHECK(gum::DoorCriteria::satisfiesFrontdoorCriterion(dag, idX, idY, fds_first[0]));
     }
@@ -193,11 +196,11 @@ namespace gum_tests {
       auto        bn  = gum::BayesNet< double >::fastPrototype("U->X;U->Y;X->Z1->Y;X->Z2->Y");
       const auto& dag = bn.dag();
 
-      
-      auto              idX  = bn.idFromName("X");
-      auto              idY  = bn.idFromName("Y");
-      auto              idZ1 = bn.idFromName("Z1");
-      auto              idZ2 = bn.idFromName("Z2");
+
+      auto idX  = bn.idFromName("X");
+      auto idY  = bn.idFromName("Y");
+      auto idZ1 = bn.idFromName("Z1");
+      auto idZ2 = bn.idFromName("Z2");
 
       NodeSet z1;
       z1.insert(idZ1);
@@ -228,12 +231,12 @@ namespace gum_tests {
       auto        bn  = gum::BayesNet< double >::fastPrototype("X->Z1->Z2->Y;X->W");
       const auto& dag = bn.dag();
 
-      
-      auto              idX  = bn.idFromName("X");
-      auto              idY  = bn.idFromName("Y");
-      auto              idZ1 = bn.idFromName("Z1");
-      auto              idZ2 = bn.idFromName("Z2");
-      auto              idW  = bn.idFromName("W");
+
+      auto idX  = bn.idFromName("X");
+      auto idY  = bn.idFromName("Y");
+      auto idZ1 = bn.idFromName("Z1");
+      auto idZ2 = bn.idFromName("Z2");
+      auto idW  = bn.idFromName("W");
 
       NodeSet Z_empty;
       NodeSet Z_blockZ1;
@@ -258,10 +261,10 @@ namespace gum_tests {
       auto        bn  = gum::BayesNet< double >::fastPrototype("X->Z->Y");
       const auto& dag = bn.dag();
 
-      
-      auto              idX = bn.idFromName("X");
-      auto              idY = bn.idFromName("Y");
-      auto              idZ = bn.idFromName("Z");
+
+      auto idX = bn.idFromName("X");
+      auto idY = bn.idFromName("Y");
+      auto idZ = bn.idFromName("Z");
 
       NodeSet Z;
       Z.insert(idZ);
@@ -279,9 +282,9 @@ namespace gum_tests {
       auto        bn  = gum::BayesNet< double >::fastPrototype("A->X;Y->B");
       const auto& dag = bn.dag();
 
-      
-      auto              idX = bn.idFromName("X");
-      auto              idY = bn.idFromName("Y");
+
+      auto idX = bn.idFromName("X");
+      auto idY = bn.idFromName("Y");
 
       auto fds = gum::DoorCriteria::enumerateFrontdoorSets(dag, idX, idY);
       GUM_CHECK_EQ(fds.size(), 0u);
@@ -291,8 +294,8 @@ namespace gum_tests {
       // Graph: X<-U1->Y; X<-U2->Y; X->W1->Y; X->W2->Y
       // Backdoor sets must block both X<-U1->Y and X<-U2->Y  ⇒ minimal set = {U1,U2}.
       auto bn = gum::BayesNet< double >::fastPrototype("U1->X;U1->Y;U2->X;U2->Y;X->W1->Y;X->W2->Y");
-      const auto&       dag = bn.dag();
-      
+      const auto& dag = bn.dag();
+
 
       auto idX  = bn.idFromName("X");
       auto idY  = bn.idFromName("Y");
@@ -318,7 +321,7 @@ namespace gum_tests {
       CHECK(!gum::DoorCriteria::satisfiesBackdoorCriterion(dag, idX, idY, Z_bad));
 
       // Enumeration (minimal-only): exactly [{U1,U2}]
-      auto                          sets_min = gum::DoorCriteria::enumerateBackdoorSets(dag, idX, idY);
+      auto sets_min = gum::DoorCriteria::enumerateBackdoorSets(dag, idX, idY);
       gum::DoorCriteria::NodeSetVec expected_min;
       expected_min.push_back(Z_u12);
       GUM_CHECK_EQ(sets_min, expected_min);
@@ -330,7 +333,13 @@ namespace gum_tests {
       CHECK(sets_excl.empty());
 
       // Limiting cardinality to 1 ⇒ cannot pick both U1 and U2 ⇒ empty
-      auto sets_cap1 = gum::DoorCriteria::enumerateBackdoorSets(dag, idX, idY, gum::NodeSet{}, 1, false);   // even with non-minimal, cap=1 blocks {U1,U2}
+      auto sets_cap1 = gum::DoorCriteria::enumerateBackdoorSets(
+          dag,
+          idX,
+          idY,
+          gum::NodeSet{},
+          1,
+          false);   // even with non-minimal, cap=1 blocks {U1,U2}
       CHECK(sets_cap1.empty());
     }
 
@@ -338,8 +347,8 @@ namespace gum_tests {
       // Same graph. Frontdoor must intercept both directed paths X->W1->Y and X->W2->Y.
       // Minimal frontdoor set = {W1, W2}. Singles fail (don’t intercept both paths).
       auto bn = gum::BayesNet< double >::fastPrototype("U1->X;U1->Y;U2->X;U2->Y;X->W1->Y;X->W2->Y");
-      const auto&       dag = bn.dag();
-      
+      const auto& dag = bn.dag();
+
 
       auto idX  = bn.idFromName("X");
       auto idY  = bn.idFromName("Y");
@@ -372,14 +381,20 @@ namespace gum_tests {
       CHECK(fds_excl.empty());
 
       // Limiting cardinality to 1 ⇒ cannot pick both mediators ⇒ empty
-      auto fds_cap1 = gum::DoorCriteria::enumerateFrontdoorSets(dag, idX, idY, gum::NodeSet{}, 1, false);   // even allowing non-minimal, cap=1 blocks {W1,W2}
+      auto fds_cap1 = gum::DoorCriteria::enumerateFrontdoorSets(
+          dag,
+          idX,
+          idY,
+          gum::NodeSet{},
+          1,
+          false);   // even allowing non-minimal, cap=1 blocks {W1,W2}
       CHECK(fds_cap1.empty());
     }
 
     static void testBackdoor_HasBackdoorPath_Equivalence() {
-      auto              bn  = gum::BayesNet< double >::fastPrototype("U->X;U->Y");
-      const auto&       dag = bn.dag();
-      
+      auto        bn  = gum::BayesNet< double >::fastPrototype("U->X;U->Y");
+      const auto& dag = bn.dag();
+
 
       auto idU = bn.idFromName("U");
       auto idX = bn.idFromName("X");
@@ -396,9 +411,9 @@ namespace gum_tests {
     }
 
     static void testFrontdoor_RejectsZInBackdoorReach() {
-      auto              bn  = gum::BayesNet< double >::fastPrototype("U->X;U->Z;Z->Y;X->Y");
-      const auto&       dag = bn.dag();
-      
+      auto        bn  = gum::BayesNet< double >::fastPrototype("U->X;U->Z;Z->Y;X->Y");
+      const auto& dag = bn.dag();
+
 
       auto idX = bn.idFromName("X");
       auto idY = bn.idFromName("Y");
@@ -413,9 +428,9 @@ namespace gum_tests {
     }
 
     static void testFrontdoor_PrunesImpossibleByFD3() {
-      auto              bn  = gum::BayesNet< double >::fastPrototype("X->Z->Y;V->Z;V->Y");
-      const auto&       dag = bn.dag();
-      
+      auto        bn  = gum::BayesNet< double >::fastPrototype("X->Z->Y;V->Z;V->Y");
+      const auto& dag = bn.dag();
+
 
       auto idX = bn.idFromName("X");
       auto idY = bn.idFromName("Y");
@@ -430,9 +445,9 @@ namespace gum_tests {
     }
 
     static void testFrontdoor_NoDiPath_PrunesParentsOfX() {
-      auto              bn  = gum::BayesNet< double >::fastPrototype("M->X;M->Y");
-      const auto&       dag = bn.dag();
-      
+      auto        bn  = gum::BayesNet< double >::fastPrototype("M->X;M->Y");
+      const auto& dag = bn.dag();
+
 
       auto idX = bn.idFromName("X");
       auto idY = bn.idFromName("Y");
@@ -442,9 +457,9 @@ namespace gum_tests {
     }
 
     static void testBackdoorReach_ContainsParents() {
-      auto              bn  = gum::BayesNet< double >::fastPrototype("M->X;M->Y");
-      const auto&       dag = bn.dag();
-      
+      auto        bn  = gum::BayesNet< double >::fastPrototype("M->X;M->Y");
+      const auto& dag = bn.dag();
+
 
       auto idX = bn.idFromName("X");
       auto idM = bn.idFromName("M");
@@ -454,9 +469,9 @@ namespace gum_tests {
     }
 
     static void testExistsUnblockedDirectedPath_EndpointsNotBlocked() {
-      auto              bn  = gum::BayesNet< double >::fastPrototype("X->Y");
-      const auto&       dag = bn.dag();
-      
+      auto        bn  = gum::BayesNet< double >::fastPrototype("X->Y");
+      const auto& dag = bn.dag();
+
 
       auto idX = bn.idFromName("X");
       auto idY = bn.idFromName("Y");
@@ -467,9 +482,9 @@ namespace gum_tests {
     }
 
     static void testBackdoor_DeterministicOrderAndNoDup() {
-      auto              bn  = gum::BayesNet< double >::fastPrototype("U->X;U->Y;V->X");
-      const auto&       dag = bn.dag();
-      
+      auto        bn  = gum::BayesNet< double >::fastPrototype("U->X;U->Y;V->X");
+      const auto& dag = bn.dag();
+
 
       auto idX = bn.idFromName("X");
       auto idY = bn.idFromName("Y");
@@ -497,10 +512,10 @@ namespace gum_tests {
       auto        bn  = gum::BayesNet< double >::fastPrototype("U->X->Y;U->Y");
       const auto& dag = bn.dag();
 
-      
-      const auto        idX = bn.idFromName("X");
-      const auto        idY = bn.idFromName("Y");
-      const auto        idU = bn.idFromName("U");
+
+      const auto idX = bn.idFromName("X");
+      const auto idY = bn.idFromName("Y");
+      const auto idU = bn.idFromName("U");
 
       // Z that contains X is invalid
       gum::NodeSet ZX;
@@ -520,9 +535,9 @@ namespace gum_tests {
 
     static void testFrontdoor_Rejects_X_or_Y_in_Z() {
       // Canonical frontdoor structure.
-      auto              bn  = gum::BayesNet< double >::fastPrototype("U->X;U->Y;X->Z->Y");
-      const auto&       dag = bn.dag();
-      
+      auto        bn  = gum::BayesNet< double >::fastPrototype("U->X;U->Y;X->Z->Y");
+      const auto& dag = bn.dag();
+
 
       const auto idX = bn.idFromName("X");
       const auto idY = bn.idFromName("Y");
@@ -544,9 +559,9 @@ namespace gum_tests {
 
     static void testFrontdoor_Fails_With_Direct_XY_Edge() {
       // Add a direct edge X->Y : FD-1 ("intercept all directed paths") should fail for {Z}.
-      auto              bn  = gum::BayesNet< double >::fastPrototype("U->X;U->Y;X->Z->Y;X->Y");
-      const auto&       dag = bn.dag();
-      
+      auto        bn  = gum::BayesNet< double >::fastPrototype("U->X;U->Y;X->Z->Y;X->Y");
+      const auto& dag = bn.dag();
+
 
       const auto idX = bn.idFromName("X");
       const auto idY = bn.idFromName("Y");
@@ -568,8 +583,8 @@ namespace gum_tests {
       // inclusion-minimal.
       auto bn = gum::BayesNet< double >::fastPrototype("U->X;U->Y;X->Z1->Z3;X->Z2->Z3;Z3->Y");
 
-      const auto&       dag = bn.dag();
-      
+      const auto& dag = bn.dag();
+
 
       const auto idX  = bn.idFromName("X");
       const auto idY  = bn.idFromName("Y");
@@ -591,14 +606,18 @@ namespace gum_tests {
       CHECK(!gum::DoorCriteria::satisfiesFrontdoorCriterion(dag, idX, idY, Z1));
       CHECK(!gum::DoorCriteria::satisfiesFrontdoorCriterion(dag, idX, idY, Z2));
       CHECK(gum::DoorCriteria::satisfiesFrontdoorCriterion(dag, idX, idY, Z3));
-      CHECK(gum::DoorCriteria::satisfiesFrontdoorCriterion(dag,
-                                           idX,
-                                           idY,
-                                           Z12));   // inclusion-minimal but larger than {Z3}
+      CHECK(gum::DoorCriteria::satisfiesFrontdoorCriterion(
+          dag,
+          idX,
+          idY,
+          Z12));   // inclusion-minimal but larger than {Z3}
 
       // ---------- Minimal enumeration (only_minimal=true) ----------
       {
-        auto fds_min = gum::DoorCriteria::enumerateFrontdoorSets(dag, idX, idY);   // default: only_minimal=true
+        auto fds_min
+            = gum::DoorCriteria::enumerateFrontdoorSets(dag,
+                                                        idX,
+                                                        idY);   // default: only_minimal=true
         CHECK(!fds_min.empty());
 
         // Presence: both {Z3} and {Z1,Z2} should appear (both are inclusion-minimal)
@@ -625,7 +644,8 @@ namespace gum_tests {
 
       // ---------- Non-minimal enumeration (only_minimal=false) ----------
       {
-        auto fds_all = gum::DoorCriteria::enumerateFrontdoorSets(dag, idX, idY, gum::NodeSet{}, 0, false);
+        auto fds_all
+            = gum::DoorCriteria::enumerateFrontdoorSets(dag, idX, idY, gum::NodeSet{}, 0, false);
 
         // Must include at least the two minimal solutions
         auto contains_all = [&](const gum::NodeSet& target) {
@@ -658,9 +678,9 @@ namespace gum_tests {
       using BN = gum::BayesNet< double >;
 
       // Canonical frontdoor: U->X; U->Y; X->Z->Y
-      auto              bn  = BN::fastPrototype("U->X;U->Y;X->Z->Y");
-      const auto&       dag = bn.dag();
-      
+      auto        bn  = BN::fastPrototype("U->X;U->Y;X->Z->Y");
+      const auto& dag = bn.dag();
+
 
       const auto idX = bn.idFromName("X");
       const auto idY = bn.idFromName("Y");
@@ -679,12 +699,16 @@ namespace gum_tests {
       CHECK(gum::DoorCriteria::satisfiesFrontdoorCriterion(dag, idX, idY, ZZ));
 
       // --- Enumeration (minimal) must return exactly {Z}
-      auto fds_min = gum::DoorCriteria::enumerateFrontdoorSets(dag, idX, idY);   // only_minimal=true (default)
+      auto fds_min
+          = gum::DoorCriteria::enumerateFrontdoorSets(dag,
+                                                      idX,
+                                                      idY);   // only_minimal=true (default)
       GUM_CHECK_EQ(fds_min.size(), 1u);
       CHECK(fds_min[0] == ZZ);
 
       // --- Enumeration (non-minimal) must NEVER include X or Y
-      auto fds_all = gum::DoorCriteria::enumerateFrontdoorSets(dag, idX, idY, gum::NodeSet{}, 0, false);
+      auto fds_all
+          = gum::DoorCriteria::enumerateFrontdoorSets(dag, idX, idY, gum::NodeSet{}, 0, false);
 
       // Positive control: {Z} still present
       auto contains = [&](const gum::NodeSet& target) {
@@ -727,9 +751,9 @@ namespace gum_tests {
       // With only_minimal=false, both {U} and {U,V} are valid backdoor sets.
       // They form a prefix pair in sorted order (whichever id is smaller).
       // The result must be strictly lex-sorted.
-      auto              bn  = gum::BayesNet< double >::fastPrototype("U->X->Y;U->Y;V->X");
-      const auto&       dag = bn.dag();
-      
+      auto        bn  = gum::BayesNet< double >::fastPrototype("U->X->Y;U->Y;V->X");
+      const auto& dag = bn.dag();
+
 
       auto idX = bn.idFromName("X");
       auto idY = bn.idFromName("Y");
@@ -765,9 +789,9 @@ namespace gum_tests {
       // in some order that depends on NodeId assignment.
       // Every consecutive pair in the result must satisfy strict lex order,
       // exercising all branches of the O(n) _lexLess implementation.
-      auto              bn  = gum::BayesNet< double >::fastPrototype("U->X->Y;U->Y;V->X;W->X");
-      const auto&       dag = bn.dag();
-      
+      auto        bn  = gum::BayesNet< double >::fastPrototype("U->X->Y;U->Y;V->X;W->X");
+      const auto& dag = bn.dag();
+
 
       auto idX = bn.idFromName("X");
       auto idY = bn.idFromName("Y");
@@ -820,9 +844,9 @@ namespace gum_tests {
 
       // No directed path X→Y; they are in the same weakly connected component:
       //   X → A ← B → Y
-      auto              bn  = BN::fastPrototype("X->A;B->A;B->Y");
-      const auto&       dag = bn.dag();
-      
+      auto        bn  = BN::fastPrototype("X->A;B->A;B->Y");
+      const auto& dag = bn.dag();
+
 
       const auto idX = bn.idFromName("X");
       const auto idY = bn.idFromName("Y");
@@ -841,7 +865,8 @@ namespace gum_tests {
       CHECK(fds_min[0] == ZB);
 
       // Non-minimal mode still must not introduce A, X, or Y.
-      auto fds_all = gum::DoorCriteria::enumerateFrontdoorSets(dag, idX, idY, gum::NodeSet{}, 0, false);
+      auto fds_all
+          = gum::DoorCriteria::enumerateFrontdoorSets(dag, idX, idY, gum::NodeSet{}, 0, false);
       GUM_CHECK_EQ(fds_all.size(), 1u);
       CHECK(fds_all[0] == ZB);
 

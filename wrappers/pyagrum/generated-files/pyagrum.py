@@ -31441,6 +31441,49 @@ def getPosterior(model, *, target, evs=None):
 
 
 def causalImpact(cm, on, doing, knowing=None, values=None):
+    """
+    Identify and evaluate the causal effect of do(doing) on on, optionally
+    conditioning on knowing.
+
+    The identification procedure tries in order: d-separation (no effect),
+    backdoor adjustment, frontdoor adjustment, and general do-calculus
+    (ID algorithm).
+
+    Parameters
+    ----------
+    cm : pyagrum.causal.CausalModel
+        The causal model.
+    on : str or set of str
+        Target variable(s) of the causal query. A single string is
+        automatically converted to a one-element set.
+    doing : str or set of str
+        Intervened variable(s) (the do-operator applies to these). A single
+        string is automatically converted to a one-element set.
+    knowing : str or set of str, optional
+        Observed variable(s) to condition on. Default is empty.
+    values : dict of str → str, optional
+        Specific values for the on/knowing variables as
+        ``{variable_name: value_name}``. When provided, the returned tensor
+        is sliced to those values. Default is no slicing.
+
+    Returns
+    -------
+    tuple (pyagrum.causal.CausalImpact, pyagrum.Tensor or None, str)
+        - The CausalImpact object encoding the identified formula.
+        - The evaluated tensor P(on | do(doing), knowing), or None if the
+          effect is not identifiable.
+        - A string explaining the identification method used or why
+          identification failed.
+
+    Examples
+    --------
+    >>> import pyagrum as gum
+    >>> import pyagrum.causal as csl
+    >>> bn = pyagrum.BayesNet.fastPrototype('X->Y->Z')
+    >>> cm = csl.CausalModel(bn)
+    >>> formula, tensor, expl = csl.causalImpact(cm, on='Z', doing='X')
+    >>> print(expl)
+    """
     if isinstance(on, str):
         on = {on}
     if isinstance(doing, str):
@@ -31454,6 +31497,51 @@ def causalImpact(cm, on, doing, knowing=None, values=None):
     return lat, (pot if lat.isIdentified() else None), expl
 
 def counterfactual(cm, on, whatif, profile=None, values=None):
+    """
+    Compute a counterfactual distribution using Pearl's twin network method.
+
+    Answers the question: 'Given that we observed *profile*, what would
+    *on* have been if *whatif* had been set as specified in *values*?'
+
+    The computation follows the three-step algorithm from Pearl (2018),
+    *The Book of Why*, chapter 8: abduction (update parentless node priors
+    from the profile), action (apply do(whatif) on the twin model), and
+    prediction (evaluate the causal effect on the twin).
+
+    Parameters
+    ----------
+    cm : pyagrum.causal.CausalModel
+        The causal model.
+    on : str or set of str
+        Target variable(s) of the counterfactual query. A single string is
+        automatically converted to a one-element set.
+    whatif : str or set of str
+        Variable(s) whose values are changed in the counterfactual scenario.
+        A single string is automatically converted to a one-element set.
+    profile : dict of str → str, optional
+        The factual observation as ``{variable_name: value_name}``. This
+        grounds the counterfactual (step 1: abduction). Default is empty
+        (no factual observation).
+    values : dict of str → str, optional
+        Counterfactual values for the *whatif* variables as
+        ``{variable_name: value_name}``. If omitted, the full distribution
+        over all *whatif* values is returned.
+
+    Returns
+    -------
+    pyagrum.Tensor
+        The counterfactual distribution P(on | do(whatif)) evaluated on the
+        twin model, optionally sliced by *values*.
+
+    Examples
+    --------
+    >>> import pyagrum as gum
+    >>> import pyagrum.causal as csl
+    >>> bn = pyagrum.BayesNet.fastPrototype('X->Y->Z')
+    >>> cm = csl.CausalModel(bn)
+    >>> t = csl.counterfactual(cm, on='Z', whatif='X',
+    ...                        profile={'Y': 'True'}, values={'X': 'False'})
+    """
     p=_counterfactual(cm, on, whatif,
                            profile if profile is not None else {},
                            values  if values  is not None else {})
@@ -31461,6 +31549,40 @@ def counterfactual(cm, on, whatif, profile=None, values=None):
     return p
 
 def counterfactualModel(cm, profile=None, whatif=None):
+    """
+    Build the twin causal model for a counterfactual query.
+
+    Implements steps 1-2 of Pearl's three-step counterfactual algorithm:
+    compute the posterior of parentless (idiosyncratic) nodes in the
+    observational BN given *profile* as evidence, then replace their priors
+    in a copy of the model with those posteriors.
+
+    Parameters
+    ----------
+    cm : pyagrum.causal.CausalModel
+        The original causal model.
+    profile : dict of str → str, optional
+        The factual observation as ``{variable_name: value_name}``.
+        Default is empty (no observation; the twin model equals the original).
+    whatif : str or set of str, optional
+        Intervened variable(s) in the counterfactual scenario. These are
+        excluded from the set of idiosyncratic nodes that get updated.
+        A single string is automatically converted to a one-element set.
+        Default is empty.
+
+    Returns
+    -------
+    pyagrum.causal.CausalModel
+        The twin causal model ready for the prediction step.
+
+    Examples
+    --------
+    >>> import pyagrum as gum
+    >>> import pyagrum.causal as csl
+    >>> bn = pyagrum.BayesNet.fastPrototype('X->Y->Z')
+    >>> cm = csl.CausalModel(bn)
+    >>> twin = csl.counterfactualModel(cm, profile={'Y': 'True'}, whatif='X')
+    """
     p=_counterfactualModel(cm,
                            profile if profile is not None else {},
                            whatif  if whatif  is not None else set())
@@ -31469,11 +31591,72 @@ def counterfactualModel(cm, profile=None, whatif=None):
 
 
 class DoorCriteria(object):
+    r"""
+
+    Utility class implementing the backdoor and frontdoor criteria on a causal DAG.
+
+    All methods are static and take the DAG as their first argument. This class is
+    stateless: it does not store any model.
+
+    A **backdoor adjustment set** Z between X and Y blocks all spurious (non-causal)
+    paths from X to Y while leaving all directed causal paths open.
+
+    A **frontdoor adjustment set** Z between X and Y intercepts every directed path
+    from X to Y, has no open backdoor path from X to Z, and all backdoor paths from
+    Z to Y are blocked by X.
+
+    Note
+    ----
+    High-level search for a single valid set is available via
+    :meth:`pyagrum.causal.CausalModel.backDoor` and
+    :meth:`pyagrum.causal.CausalModel.frontDoor`.
+
+    Examples
+    --------
+    >>> import pyagrum as gum
+    >>> import pyagrum.causal as csl
+    >>> bn = pyagrum.BayesNet.fastPrototype('X->Z->Y')
+    >>> dag = bn.dag()
+    >>> x, y, z = bn.idFromName('X'), bn.idFromName('Y'), bn.idFromName('Z')
+    >>> csl.DoorCriteria.satisfiesBackdoorCriterion(dag, x, y, set())
+    True
+    >>> csl.DoorCriteria.enumerateFrontdoorSets(dag, x, y)
+    [{z}]
+
+    """
+
     thisown = property(lambda x: x.this.own(), lambda x, v: x.this.own(v), doc="The membership flag")
     __repr__ = _swig_repr
 
     @staticmethod
     def satisfiesBackdoorCriterion(dag: "pyagrum.DAG", X: int, Y: int, Z: list[int]) -> bool:
+        r"""
+
+        Test whether Z satisfies the backdoor criterion for the effect of X on Y.
+
+        A set Z satisfies the backdoor criterion with respect to (X, Y) if:
+
+          1. No node in Z is a descendant of X in the causal DAG.
+          2. Z blocks every backdoor path between X and Y (paths that begin with an
+             arc pointing into X).
+
+        Parameters
+        ----------
+        dag : pyagrum.DAG
+        	The causal DAG.
+        X : int
+        	NodeId of the treatment variable.
+        Y : int
+        	NodeId of the outcome variable.
+        Z : set of int
+        	Candidate adjustment set (NodeIds).
+
+        Returns
+        -------
+        bool
+        	True if Z satisfies the backdoor criterion for (X, Y).
+
+        """
         return _pyagrum.DoorCriteria_satisfiesBackdoorCriterion(dag, X, Y, Z)
 
     @staticmethod
@@ -31482,6 +31665,33 @@ class DoorCriteria(object):
 
     @staticmethod
     def satisfiesFrontdoorCriterion(dag: "pyagrum.DAG", X: int, Y: int, Z: list[int]) -> bool:
+        r"""
+
+        Test whether Z satisfies the frontdoor criterion for the effect of X on Y.
+
+        A set Z satisfies the frontdoor criterion with respect to (X, Y) if:
+
+          1. Z intercepts all directed paths from X to Y.
+          2. There are no unblocked backdoor paths from X to Z.
+          3. All backdoor paths from Z to Y are blocked by X.
+
+        Parameters
+        ----------
+        dag : pyagrum.DAG
+        	The causal DAG.
+        X : int
+        	NodeId of the treatment variable.
+        Y : int
+        	NodeId of the outcome variable.
+        Z : set of int
+        	Candidate mediator set (NodeIds).
+
+        Returns
+        -------
+        bool
+        	True if Z satisfies the frontdoor criterion for (X, Y).
+
+        """
         return _pyagrum.DoorCriteria_satisfiesFrontdoorCriterion(dag, X, Y, Z)
 
     @staticmethod
@@ -31490,18 +31700,101 @@ class DoorCriteria(object):
 
     @staticmethod
     def existsUnblockedDirectedPath(dag: "pyagrum.DAG", X: int, Y: int, Z: list[int]) -> bool:
+        r"""
+
+        Test whether a directed path from X to Y exists that is not blocked by Z.
+
+        Parameters
+        ----------
+        dag : pyagrum.DAG
+        	The causal DAG.
+        X : int
+        	NodeId of the source variable.
+        Y : int
+        	NodeId of the target variable.
+        Z : set of int
+        	Blocking set (NodeIds). A directed path is blocked if it passes through
+        	a node in Z.
+
+        Returns
+        -------
+        bool
+        	True if at least one unblocked directed path from X to Y exists.
+
+        """
         return _pyagrum.DoorCriteria_existsUnblockedDirectedPath(dag, X, Y, Z)
 
     @staticmethod
     def nodesOnDirectedPaths(dag: "pyagrum.DAG", X: int, Y: int) -> list[int]:
+        r"""
+
+        Return the set of nodes lying on any directed path from X to Y.
+
+        Parameters
+        ----------
+        dag : pyagrum.DAG
+        	The causal DAG.
+        X : int
+        	NodeId of the source variable.
+        Y : int
+        	NodeId of the target variable.
+
+        Returns
+        -------
+        set of int
+        	NodeIds of all nodes (including X and Y) that lie on at least one
+        	directed path from X to Y. Empty if no directed path exists.
+
+        """
         return _pyagrum.DoorCriteria_nodesOnDirectedPaths(dag, X, Y)
 
     @staticmethod
     def backdoorReach(dag: "pyagrum.DAG", X: int) -> list[int]:
+        r"""
+
+        Return all nodes reachable from X via a backdoor path.
+
+        A backdoor path starts with an arc pointing *into* X (i.e. it begins by
+        going to a parent of X) and then follows any sequence of edges.
+
+        Parameters
+        ----------
+        dag : pyagrum.DAG
+        	The causal DAG.
+        X : int
+        	NodeId of the source variable.
+
+        Returns
+        -------
+        set of int
+        	NodeIds of all nodes reachable from X via a backdoor path.
+
+        """
         return _pyagrum.DoorCriteria_backdoorReach(dag, X)
 
     @staticmethod
     def hasBackdoorPath(dag: "pyagrum.DAG", X: int, Y: int, Z: list[int]) -> bool:
+        r"""
+
+        Test whether an open backdoor path from X to Y exists given evidence on Z.
+
+        Parameters
+        ----------
+        dag : pyagrum.DAG
+        	The causal DAG.
+        X : int
+        	NodeId of the treatment variable.
+        Y : int
+        	NodeId of the outcome variable.
+        Z : set of int
+        	Conditioning set (NodeIds).
+
+        Returns
+        -------
+        bool
+        	True if an open backdoor path from X to Y exists after conditioning on Z.
+
+        """
         return _pyagrum.DoorCriteria_hasBackdoorPath(dag, X, Y, Z)
 
     def __init__(self):
@@ -31514,68 +31807,442 @@ _pyagrum.DoorCriteria_swigregister(DoorCriteria)
 def _causalImpact(*args) -> tuple["pyagrum.CausalImpact","pyagrum.Tensor",str]:
     return _pyagrum._causalImpact(*args)
 class CausalModel(object):
+    r"""
+
+    A causal model pairing an observational Bayesian network with a causal DAG.
+
+    A CausalModel extends an observational BayesNet by adding latent (hidden)
+    variables that represent unobserved common causes between observed variables.
+    The causal DAG includes both observed and latent nodes, while the observational
+    BN contains only the observed ones.
+
+    CausalModel(bn) -> CausalModel
+        Parameters:
+            - **bn** (*pyagrum.BayesNet*) -- the observational Bayesian network.
+
+    CausalModel(bn, latents, keepArcs=False) -> CausalModel
+        Parameters:
+            - **bn** (*pyagrum.BayesNet*) -- the observational Bayesian network.
+            - **latents** (*list of (str, list of str)*) -- description of latent
+              variables. Each entry is a pair ``(name, children)`` where ``name``
+              is the latent variable name and ``children`` is the list of observed
+              variable names it affects.
+            - **keepArcs** (*bool) -- if True, existing arcs between the children
+              of each latent variable are preserved. Default is False (arcs between
+              affected children are removed as they are assumed to be explained by
+              the latent confounder).
+
+    Examples
+    --------
+    >>> import pyagrum as gum
+    >>> import pyagrum.causal as csl
+    >>> bn = pyagrum.BayesNet.fastPrototype('X->Y;X->Z;Y->Z')
+    >>> cm = csl.CausalModel(bn)
+
+    Create a model with a latent confounder U between X and Y:
+
+    >>> cm = csl.CausalModel(bn, [('U', ['X', 'Y'])], keepArcs=False)
+
+    """
+
     thisown = property(lambda x: x.this.own(), lambda x, v: x.this.own(v), doc="The membership flag")
     __repr__ = _swig_repr
     __swig_destroy__ = _pyagrum.delete_CausalModel
 
     def addLatentVariable(self, *args) -> None:
+        r"""
+
+        Add a latent (hidden) variable to the causal model.
+
+        The latent variable is added as a common cause of the specified children.
+        By default, any existing arc between two affected children is removed, as
+        it is assumed to be explained by the new latent confounder.
+
+        Parameters
+        ----------
+        name : str
+        	Name of the new latent variable.
+        children : list of str
+        	Names of the observed variables that are children of this latent variable.
+        keepArcs : bool, optional
+        	If True, preserve existing arcs between the specified children.
+        	Default is False.
+
+        """
         return _pyagrum.CausalModel_addLatentVariable(self, *args)
 
     def existsArc(self, *args) -> bool:
+        r"""
+
+        Check whether an arc exists in the causal DAG.
+
+        Parameters
+        ----------
+        x : int or str
+        	Tail of the arc (NodeId or variable name).
+        y : int or str
+        	Head of the arc (NodeId or variable name).
+
+        Returns
+        -------
+        bool
+        	True if the arc x→y exists in the causal DAG.
+
+        """
         return _pyagrum.CausalModel_existsArc(self, *args)
 
     def assumeSpurious(self, *args) -> None:
+        r"""
+
+        Mark an arc in the causal DAG as spurious.
+
+        A spurious arc x→y means the observed correlation between x and y is believed
+        to be explained by a latent common cause rather than a direct causal effect.
+        This changes the structural interpretation but does not remove the arc.
+
+        Parameters
+        ----------
+        x : int or str
+        	Tail of the arc (NodeId or variable name).
+        y : int or str
+        	Head of the arc (NodeId or variable name).
+
+        """
         return _pyagrum.CausalModel_assumeSpurious(self, *args)
 
     def assumeNonSpurious(self, *args) -> None:
+        r"""
+
+        Mark an arc in the causal DAG as non-spurious (a genuine causal effect).
+
+        Parameters
+        ----------
+        x : int or str
+        	Tail of the arc (NodeId or variable name).
+        y : int or str
+        	Head of the arc (NodeId or variable name).
+
+        """
         return _pyagrum.CausalModel_assumeNonSpurious(self, *args)
 
     def isAssumedSpurious(self, *args) -> bool:
+        r"""
+
+        Check whether the arc x→y is assumed spurious.
+
+        Parameters
+        ----------
+        x : int or str
+        	Tail of the arc (NodeId or variable name).
+        y : int or str
+        	Head of the arc (NodeId or variable name).
+
+        Returns
+        -------
+        bool
+        	True if the arc x→y is marked as spurious.
+
+        """
         return _pyagrum.CausalModel_isAssumedSpurious(self, *args)
 
     def backDoor(self, cause: int, effect: int) -> list[int]:
+        r"""
+
+        Find a backdoor adjustment set between cause and effect.
+
+        Returns the first valid backdoor adjustment set found. A backdoor set Z
+        blocks all spurious (non-causal) paths between cause and effect while
+        leaving all directed causal paths open, enabling estimation of the causal
+        effect P(effect | do(cause)) via standard conditioning on Z.
+
+        Parameters
+        ----------
+        cause : int or str
+        	The treatment variable (NodeId or variable name).
+        effect : int or str
+        	The outcome variable (NodeId or variable name).
+
+        Returns
+        -------
+        set of int
+        	A valid backdoor adjustment set as NodeIds. Empty if no backdoor set exists.
+
+        See Also
+        --------
+        pyagrum.causal.DoorCriteria.enumerateBackdoorSets : enumerate all valid sets.
+
+        """
         return _pyagrum.CausalModel_backDoor(self, cause, effect)
 
     def frontDoor(self, cause: int, effect: int) -> list[int]:
+        r"""
+
+        Find a frontdoor adjustment set between cause and effect.
+
+        Returns the first valid frontdoor adjustment set found. A frontdoor set Z
+        intercepts all directed paths from cause to effect and enables estimation of
+        P(effect | do(cause)) even in the presence of unobserved confounders.
+
+        Parameters
+        ----------
+        cause : int or str
+        	The treatment variable (NodeId or variable name).
+        effect : int or str
+        	The outcome variable (NodeId or variable name).
+
+        Returns
+        -------
+        set of int
+        	A valid frontdoor adjustment set as NodeIds. Empty if no frontdoor set exists.
+
+        See Also
+        --------
+        pyagrum.causal.DoorCriteria.enumerateFrontdoorSets : enumerate all valid sets.
+
+        """
         return _pyagrum.CausalModel_frontDoor(self, cause, effect)
 
     def inducedCausalSubModel(self, cm: "CausalModel", subset: list[int]) -> "pyagrum.CausalModel< float >":
+        r"""
+
+        Return the causal sub-model induced by a subset of observed nodes.
+
+        The sub-model is restricted to the specified nodes, preserving the relevant
+        portion of the causal DAG and latent structure.
+
+        Parameters
+        ----------
+        cm : pyagrum.causal.CausalModel
+        	The original causal model.
+        subset : set of int
+        	NodeIds of the observed variables to keep.
+
+        Returns
+        -------
+        pyagrum.causal.CausalModel
+        	The induced causal sub-model.
+
+        """
         return _pyagrum.CausalModel_inducedCausalSubModel(self, cm, subset)
 
     def toDot(self, *args) -> str:
+        r"""
+
+        Return a Graphviz dot string representing the causal model.
+
+        Observed nodes are shown with default styling. Latent nodes are displayed
+        with a distinct background colour. Their names are hidden by default.
+
+        Parameters
+        ----------
+        SHOW_LATENT_NAMES : bool, optional
+        	If True, display the names of latent nodes in the graph. Default is False.
+        NODE_BG : str, optional
+        	Background colour for latent nodes (hex or CSS colour name).
+        	Default is '#404040'.
+        NODE_FG : str, optional
+        	Text colour for latent nodes. Default is 'white'.
+        EDGE_COL : str, optional
+        	Edge colour. Default is '#4A4A4A'.
+
+        Returns
+        -------
+        str
+        	A dot-format string representation of the causal model.
+
+        Examples
+        --------
+        >>> import pyagrum as gum
+        >>> import pyagrum.causal as csl
+        >>> bn = pyagrum.BayesNet.fastPrototype('X->Y->Z')
+        >>> cm = csl.CausalModel(bn)
+        >>> print(cm.toDot())
+
+        """
         return _pyagrum.CausalModel_toDot(self, *args)
 
     def observationalBN(self) -> "pyagrum.BayesNet":
+        r"""
+
+        Return the observational Bayesian network underlying the causal model.
+
+        Warning
+        -------
+        Do not use this BN for causal inference. It represents the observational
+        distribution only. Use :func:`pyagrum.causal.causalImpact` for
+        interventional queries.
+
+        Returns
+        -------
+        pyagrum.BayesNet
+        	The observational BN (observed variables only).
+
+        """
         return _pyagrum.CausalModel_observationalBN(self)
 
     def causalDAG(self) -> "pyagrum.DAG":
+        r"""
+
+        Return the full causal DAG, including latent variables.
+
+        Returns
+        -------
+        pyagrum.DAG
+        	The causal DAG (observed + latent nodes).
+
+        """
         return _pyagrum.CausalModel_causalDAG(self)
 
     def names(self) -> "pyagrum.Set< str >":
+        r"""
+
+        Return the names of all variables in the causal model (observed and latent).
+
+        Returns
+        -------
+        set of str
+        	The set of all variable names.
+
+        """
         return _pyagrum.CausalModel_names(self)
 
     def idFromName(self, name: str) -> int:
+        r"""
+
+        Return the NodeId of a variable by name.
+
+        Parameters
+        ----------
+        name : str
+        	The variable name.
+
+        Returns
+        -------
+        int
+        	The NodeId of the variable.
+
+        Raises
+        ------
+        pyagrum.NotFound
+        	If no variable with that name exists in the causal model.
+
+        """
         return _pyagrum.CausalModel_idFromName(self, name)
 
     def nameFromId(self, id: int) -> str:
+        r"""
+
+        Return the name of a variable by NodeId.
+
+        Parameters
+        ----------
+        id : int
+        	The NodeId of the variable.
+
+        Returns
+        -------
+        str
+        	The variable name.
+
+        Raises
+        ------
+        pyagrum.NotFound
+        	If no variable with that NodeId exists in the causal model.
+
+        """
         return _pyagrum.CausalModel_nameFromId(self, id)
 
     def id2name(self, includeLatentVariable: bool=False) -> "Bijection< int,str >":
+        r"""
+
+        Return the full NodeId ↔ name bijection.
+
+        Parameters
+        ----------
+        includeLatentVariable : bool, optional
+        	If True, include latent variables in the mapping. Default is False.
+
+        Returns
+        -------
+        pyagrum.Bijection
+        	A bijection between NodeIds and variable names.
+
+        """
         return _pyagrum.CausalModel_id2name(self, includeLatentVariable)
 
     def latentVariablesIds(self) -> list[int]:
+        r"""
+
+        Return the NodeIds of all latent (hidden) variables in the causal model.
+
+        Returns
+        -------
+        set of int
+        	NodeIds of latent variables.
+
+        """
         return _pyagrum.CausalModel_latentVariablesIds(self)
 
     def latentVariablesNames(self) -> "pyagrum.Set< str >":
+        r"""
+
+        Return the names of all latent (hidden) variables in the causal model.
+
+        Returns
+        -------
+        set of str
+        	Names of latent variables.
+
+        """
         return _pyagrum.CausalModel_latentVariablesNames(self)
 
     def parents(self, *args) -> list[int]:
+        r"""
+
+        Return the parents of a variable in the causal DAG.
+
+        Parameters
+        ----------
+        x : int or str
+        	The variable (NodeId or name).
+
+        Returns
+        -------
+        set of int
+        	NodeIds of the variable's parents in the causal DAG.
+
+        """
         return _pyagrum.CausalModel_parents(self, *args)
 
     def children(self, *args) -> list[int]:
+        r"""
+
+        Return the children of a variable in the causal DAG.
+
+        Parameters
+        ----------
+        x : int or str
+        	The variable (NodeId or name).
+
+        Returns
+        -------
+        set of int
+        	NodeIds of the variable's children in the causal DAG.
+
+        """
         return _pyagrum.CausalModel_children(self, *args)
 
     def connectedComponents(self) -> "HashTable< int,list[int] >":
+        r"""
+
+        Return the connected components of the causal DAG (treating arcs as undirected).
+
+        Returns
+        -------
+        dict of int → set of int
+        	A mapping from component index to the set of NodeIds in that component.
+
+        """
         return _pyagrum.CausalModel_connectedComponents(self)
 
     def __init__(self, *args):
@@ -31584,52 +32251,260 @@ class CausalModel(object):
 # Register CausalModel in _pyagrum:
 _pyagrum.CausalModel_swigregister(CausalModel)
 class CausalImpact(object):
+    r"""
+
+    Represents the result of a causal identification query P(on | do(doing), knowing).
+
+    CausalImpact encodes the identified causal formula (when the effect is
+    identifiable) as an expression tree that can be evaluated numerically.
+    It also records the identification method used and an explanation string.
+
+    The identification procedure tries the following strategies in order:
+    d-separation (no effect), backdoor adjustment, frontdoor adjustment, and
+    general do-calculus (ID algorithm).
+
+    Note
+    ----
+    Prefer using the high-level function :func:`pyagrum.causal.causalImpact`
+    instead of constructing a CausalImpact object directly.
+
+    CausalImpact(cm, on, doing, knowing=set(), directDoCalculus=False) -> CausalImpact
+        Parameters:
+            - **cm** (*pyagrum.causal.CausalModel*) -- the causal model.
+            - **on** (*set of str or set of int) -- target variables of the query.
+            - **doing** (*set of str or set of int) -- intervened variables
+              (the do-operator applies to these).
+            - **knowing** (*set of str or set of int) -- observed variables to
+              condition on. Default is empty.
+            - **directDoCalculus** (*bool) -- if True, skip heuristics and go
+              directly to the ID algorithm. Default is False.
+
+    Examples
+    --------
+    >>> import pyagrum as gum
+    >>> import pyagrum.causal as csl
+    >>> bn = pyagrum.BayesNet.fastPrototype('X->Y->Z')
+    >>> cm = csl.CausalModel(bn)
+    >>> formula, tensor, expl = csl.causalImpact(cm, on='Z', doing='X')
+    >>> print(expl)
+
+    """
+
     thisown = property(lambda x: x.this.own(), lambda x, v: x.this.own(v), doc="The membership flag")
     __repr__ = _swig_repr
 
     def eval(self) -> "pyagrum.Tensor":
+        r"""
+
+        Evaluate the identified causal formula and return the result as a tensor.
+
+        Returns
+        -------
+        pyagrum.Tensor
+        	The distribution P(on | do(doing), knowing).
+
+        Raises
+        ------
+        pyagrum.OperationNotAllowed
+        	If the causal effect is not identified (:meth:`isIdentified` is False).
+
+        """
         return _pyagrum.CausalImpact_eval(self)
 
     def toString(self) -> str:
+        r"""
+
+        Return a string representation of the identified causal formula.
+
+        Returns
+        -------
+        str
+        	Human-readable form of the formula (e.g. a sum-product expression over
+        	conditional probabilities).
+
+        """
         return _pyagrum.CausalImpact_toString(self)
 
     def toLatex(self, *args) -> str:
+        r"""
+
+        Return a LaTeX representation of the identified causal formula.
+
+        Parameters
+        ----------
+        doOperatorPrefix : str, optional
+        	Prefix for the do-operator notation. Default is 'do('.
+        doOperatorSuffix : str, optional
+        	Suffix for the do-operator notation. Default is ')'.
+
+        Returns
+        -------
+        str
+        	LaTeX string of the identified formula.
+
+        """
         return _pyagrum.CausalImpact_toLatex(self, *args)
 
     def latexQuery(self, *args) -> str:
+        r"""
+
+        Return a LaTeX string for the original causal query before identification.
+
+        The query has the form P(on | do(doing), knowing).
+
+        Parameters
+        ----------
+        doOperatorPrefix : str, optional
+        	Prefix for the do-operator notation. Default is 'do('.
+        doOperatorSuffix : str, optional
+        	Suffix for the do-operator notation. Default is ')'.
+
+        Returns
+        -------
+        str
+        	LaTeX string of the causal query.
+
+        """
         return _pyagrum.CausalImpact_latexQuery(self, *args)
 
     def isIdentified(self) -> bool:
+        r"""
+
+        Return True if the causal effect was successfully identified.
+
+        If False, the effect cannot be computed from the available data given
+        the causal structure, and :meth:`eval` will raise an exception.
+
+        Returns
+        -------
+        bool
+        	True if the query is identifiable.
+
+        """
         return _pyagrum.CausalImpact_isIdentified(self)
 
     def root(self) -> "pyagrum.ASTtree< float > const &":
         return _pyagrum.CausalImpact_root(self)
 
     def getResult(self) -> "CausalFormula< float > const &":
+        r"""
+
+        Return the CausalFormula encoding the identified expression.
+
+        Returns
+        -------
+        pyagrum.causal.CausalFormula
+        	The identified causal formula as an expression tree.
+
+        """
         return _pyagrum.CausalImpact_getResult(self)
 
     def cm(self) -> "pyagrum.CausalModel< float > const &":
+        r"""
+
+        Return the causal model associated with this query.
+
+        Returns
+        -------
+        pyagrum.causal.CausalModel
+        	The causal model.
+
+        """
         return _pyagrum.CausalImpact_cm(self)
 
     def on(self) -> list[int]:
+        r"""
+
+        Return the NodeIds of the target variables.
+
+        Returns
+        -------
+        set of int
+        	NodeIds of the variables in the on-set.
+
+        """
         return _pyagrum.CausalImpact_on(self)
 
     def doing(self) -> list[int]:
+        r"""
+
+        Return the NodeIds of the intervened variables.
+
+        Returns
+        -------
+        set of int
+        	NodeIds of the variables in the doing-set (do-operator).
+
+        """
         return _pyagrum.CausalImpact_doing(self)
 
     def knowing(self) -> list[int]:
+        r"""
+
+        Return the NodeIds of the observed variables.
+
+        Returns
+        -------
+        set of int
+        	NodeIds of the variables in the knowing-set.
+
+        """
         return _pyagrum.CausalImpact_knowing(self)
 
     def explanation(self) -> str:
+        r"""
+
+        Return a human-readable explanation of the identification result.
+
+        Describes the method used (e.g. 'd-separation', 'backdoor adjustment',
+        'frontdoor adjustment', 'do-calculus (ID)') or explains why identification
+        failed.
+
+        Returns
+        -------
+        str
+        	Explanation of the identification outcome.
+
+        """
         return _pyagrum.CausalImpact_explanation(self)
 
     def onNames(self) -> list[str]:
+        r"""
+
+        Return the names of the target variables.
+
+        Returns
+        -------
+        list of str
+        	Variable names in the on-set.
+
+        """
         return _pyagrum.CausalImpact_onNames(self)
 
     def doingNames(self) -> list[str]:
+        r"""
+
+        Return the names of the intervened variables.
+
+        Returns
+        -------
+        list of str
+        	Variable names in the doing-set.
+
+        """
         return _pyagrum.CausalImpact_doingNames(self)
 
     def knowingNames(self) -> list[str]:
+        r"""
+
+        Return the names of the observed variables.
+
+        Returns
+        -------
+        list of str
+        	Variable names in the knowing-set.
+
+        """
         return _pyagrum.CausalImpact_knowingNames(self)
 
     def __init__(self, *args):
@@ -31639,6 +32514,54 @@ class CausalImpact(object):
 # Register CausalImpact in _pyagrum:
 _pyagrum.CausalImpact_swigregister(CausalImpact)
 class Counterfactual(object):
+    r"""
+
+    Computes a counterfactual distribution using Pearl's twin network method.
+
+    A counterfactual query asks: 'Given that we observed *profile*, what would
+    *on* have been if *whatif* had been set to the values in *values*?'
+
+    The computation follows the three-step algorithm from Pearl (2018),
+    *The Book of Why*, chapter 8:
+
+      1. **Abduction** -- compute the posterior distribution of parentless
+         (idiosyncratic) nodes in the original BN given the observed *profile*.
+      2. **Action** -- build a *twin* causal model in which the priors of those
+         nodes are replaced by their posteriors from step 1, then apply
+         ``do(whatif)`` on the twin.
+      3. **Prediction** -- evaluate the causal impact of the intervention on
+         the twin model to obtain the counterfactual distribution of *on*.
+
+    Note
+    ----
+    Prefer using the high-level function :func:`pyagrum.causal.counterfactual`
+    instead of constructing a Counterfactual object directly.
+
+    Counterfactual(cm, on, whatif, profile={}, values={}) -> Counterfactual
+        Parameters:
+            - **cm** (*pyagrum.causal.CausalModel*) -- the causal model.
+            - **on** (*set of str or set of int) -- target variables of the
+              counterfactual query.
+            - **whatif** (*set of str or set of int) -- variables whose values
+              are changed in the counterfactual scenario.
+            - **profile** (*dict of str → str*) -- the factual observation,
+              given as ``{variable_name: value_name}``. Default is empty.
+            - **values** (*dict of str → str*) -- counterfactual values for the
+              *whatif* variables, given as ``{variable_name: value_name}``.
+              If omitted, the full joint distribution over all *whatif* values
+              is returned.
+
+    Examples
+    --------
+    >>> import pyagrum as gum
+    >>> import pyagrum.causal as csl
+    >>> bn = pyagrum.BayesNet.fastPrototype('X->Y->Z')
+    >>> cm = csl.CausalModel(bn)
+    >>> t = csl.counterfactual(cm, on='Z', whatif='X',
+    ...                        profile={'Y': 'True'}, values={'X': 'False'})
+
+    """
+
     thisown = property(lambda x: x.this.own(), lambda x, v: x.this.own(v), doc="The membership flag")
     __repr__ = _swig_repr
 
@@ -31647,36 +32570,170 @@ class Counterfactual(object):
 
     @staticmethod
     def counterFactualModel(*args) -> "pyagrum.CausalModel< float >":
+        r"""
+
+        Build the twin causal model from the original model and a factual profile.
+
+        This static method implements steps 1-2 of the three-step counterfactual
+        algorithm: it computes the posterior of parentless (idiosyncratic) nodes
+        in the observational BN given the profile evidence, then replaces their
+        prior distributions in a copy of the model with those posteriors.
+
+        Parameters
+        ----------
+        cm : pyagrum.causal.CausalModel
+        	The original causal model.
+        profile : dict of str → str
+        	The factual observation as ``{variable_name: value_name}``.
+        whatif : set of str
+        	Intervened variables in the counterfactual scenario. These are excluded
+        	from the set of idiosyncratic nodes that get updated.
+
+        Returns
+        -------
+        pyagrum.causal.CausalModel
+        	The twin causal model ready for the prediction step.
+
+        See Also
+        --------
+        pyagrum.causal.counterfactualModel : high-level function wrapper.
+
+        """
         return _pyagrum.Counterfactual_counterFactualModel(*args)
 
     def run(self) -> None:
+        r"""
+
+        Execute the counterfactual computation (steps 2 and 3).
+
+        This method is called automatically by the constructor. Call it explicitly
+        only if you need to re-run after modifying the object's state.
+
+        """
         return _pyagrum.Counterfactual_run(self)
 
     def originalModel(self) -> "pyagrum.CausalModel< float > const &":
+        r"""
+
+        Return the original causal model.
+
+        Returns
+        -------
+        pyagrum.causal.CausalModel
+        	The original causal model passed to the constructor.
+
+        """
         return _pyagrum.Counterfactual_originalModel(self)
 
     def twinModel(self) -> "pyagrum.CausalModel< float > const &":
+        r"""
+
+        Return the twin causal model built during the abduction step.
+
+        The twin model has the same structure as the original but with updated
+        priors for parentless nodes (based on the observed profile).
+
+        Returns
+        -------
+        pyagrum.causal.CausalModel
+        	The twin model.
+
+        """
         return _pyagrum.Counterfactual_twinModel(self)
 
     def getResult(self) -> "CausalFormula< float > const &":
+        r"""
+
+        Return the CausalFormula used to compute the counterfactual distribution.
+
+        The formula is evaluated on the twin model.
+
+        Returns
+        -------
+        pyagrum.causal.CausalFormula
+        	The identified causal formula on the twin model.
+
+        """
         return _pyagrum.Counterfactual_getResult(self)
 
     def value(self) -> "pyagrum.Tensor":
+        r"""
+
+        Return the counterfactual distribution as a tensor.
+
+        Returns
+        -------
+        pyagrum.Tensor
+        	The distribution P(on | do(whatif)) evaluated on the twin model,
+        	optionally sliced by *values* if provided at construction.
+
+        """
         return _pyagrum.Counterfactual_value(self)
 
     def on(self) -> "pyagrum.Set< str > const &":
+        r"""
+
+        Return the names of the target variables.
+
+        Returns
+        -------
+        set of str
+        	Variable names in the on-set.
+
+        """
         return _pyagrum.Counterfactual_on(self)
 
     def whatif(self) -> "pyagrum.Set< str > const &":
+        r"""
+
+        Return the names of the intervened variables.
+
+        Returns
+        -------
+        set of str
+        	Variable names in the whatif-set.
+
+        """
         return _pyagrum.Counterfactual_whatif(self)
 
     def profile(self) -> "HashTable< pyagrum.Counterfactual< float >::VarName,pyagrum.Counterfactual< float >::ValName > const &":
+        r"""
+
+        Return the factual evidence used for abduction.
+
+        Returns
+        -------
+        dict of str → str
+        	The observed profile as ``{variable_name: value_name}``.
+
+        """
         return _pyagrum.Counterfactual_profile(self)
 
     def values(self) -> "HashTable< pyagrum.Counterfactual< float >::VarName,pyagrum.Counterfactual< float >::ValName > const &":
+        r"""
+
+        Return the counterfactual assignments for the whatif variables.
+
+        Returns
+        -------
+        dict of str → str
+        	The counterfactual values as ``{variable_name: value_name}``.
+        	Empty dict if no specific values were requested.
+
+        """
         return _pyagrum.Counterfactual_values(self)
 
     def toString(self) -> str:
+        r"""
+
+        Return a string description of the counterfactual query and its result.
+
+        Returns
+        -------
+        str
+        	Human-readable summary of the counterfactual computation.
+
+        """
         return _pyagrum.Counterfactual_toString(self)
     __swig_destroy__ = _pyagrum.delete_Counterfactual
 
@@ -31715,5 +32772,58 @@ def _enumerateFrontdoorSets_wrap(dag, X, Y, *, excluded_nodes=None, max_cardinal
 DoorCriteria.enumerateBackdoorSets  = staticmethod(_enumerateBackdoorSets_wrap)
 DoorCriteria.enumerateFrontdoorSets = staticmethod(_enumerateFrontdoorSets_wrap)
 del _enumerateBackdoorSets_wrap, _enumerateFrontdoorSets_wrap
+
+DoorCriteria.enumerateBackdoorSets.__doc__ = """
+Enumerate valid backdoor adjustment sets for the causal effect of X on Y.
+
+Parameters
+----------
+dag : pyagrum.DAG
+    The causal DAG.
+X : int
+    NodeId of the treatment variable.
+Y : int
+    NodeId of the outcome variable.
+excluded_nodes : set of int, optional
+    Nodes that cannot appear in any adjustment set. Default is empty.
+max_cardinality : int, optional
+    Maximum size of returned sets. 0 means no limit. Default is 0.
+only_minimal : bool, optional
+    If True, return only minimal adjustment sets (no redundant variables).
+    Default is True.
+stopAtFirst : bool, optional
+    If True, stop after finding the first valid set. Default is False.
+
+Returns
+-------
+list of set of int
+    All valid backdoor adjustment sets (as NodeId sets).
+"""
+
+DoorCriteria.enumerateFrontdoorSets.__doc__ = """
+Enumerate valid frontdoor adjustment sets for the causal effect of X on Y.
+
+Parameters
+----------
+dag : pyagrum.DAG
+    The causal DAG.
+X : int
+    NodeId of the treatment variable.
+Y : int
+    NodeId of the outcome variable.
+excluded_nodes : set of int, optional
+    Nodes that cannot appear in any adjustment set. Default is empty.
+max_cardinality : int, optional
+    Maximum size of returned sets. 0 means no limit. Default is 0.
+only_minimal : bool, optional
+    If True, return only minimal adjustment sets. Default is True.
+stopAtFirst : bool, optional
+    If True, stop after finding the first valid set. Default is False.
+
+Returns
+-------
+list of set of int
+    All valid frontdoor adjustment sets (as NodeId sets).
+"""
 
 

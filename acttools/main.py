@@ -140,7 +140,6 @@ def adapt_options_from_context(options: argparse.Namespace, args: set[str]) -> N
     notif("Options [[no-fun]] forced by platform")
 
 
-
 def load_current_from_pickle() -> dict[str, str]:
   current = {}
   shlv = {}

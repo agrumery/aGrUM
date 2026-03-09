@@ -83,7 +83,7 @@ namespace gum {
   template < typename GUM_ELEMENT, template < class > class TerminalNodePolicy >
   INLINE MultiDimFunctionGraph< GUM_ELEMENT, TerminalNodePolicy >&
          MultiDimFunctionGraph< GUM_ELEMENT, TerminalNodePolicy >::operator=(
-          const MultiDimFunctionGraph< GUM_ELEMENT, TerminalNodePolicy >& from) {
+             const MultiDimFunctionGraph< GUM_ELEMENT, TerminalNodePolicy >& from) {
     copy(from);
     return *this;
   }
@@ -102,7 +102,7 @@ namespace gum {
          MultiDimFunctionGraph< GUM_ELEMENT, TerminalNodePolicy >::newFactory() const {
     if (_isReduced_)
       return MultiDimFunctionGraph< GUM_ELEMENT,
-                                       TerminalNodePolicy >::getReducedAndOrderedInstance();
+                                    TerminalNodePolicy >::getReducedAndOrderedInstance();
     else return MultiDimFunctionGraph< GUM_ELEMENT, TerminalNodePolicy >::getTreeInstance();
   }
 
@@ -578,7 +578,7 @@ namespace gum {
   template < typename GUM_ELEMENT, template < class > class TerminalNodePolicy >
   INLINE const LinkedList< NodeId >*
                MultiDimFunctionGraph< GUM_ELEMENT, TerminalNodePolicy >::varNodeListe(
-          const DiscreteVariable* var) const {
+                   const DiscreteVariable* var) const {
     if (!this->variablesSequence().exists(var))
       GUM_ERROR(InvalidArgument,
                 "Var " << var->name() << " has not been inserted in the function graph")

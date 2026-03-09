@@ -927,9 +927,7 @@ namespace gum::credal {
     if (lmin == lmax && lmin == 1.) {
       ArcsL_min_[arc_XY] = lmin;
 
-      if (ArcsL_max_.exists(arc_XY)) {
-        ArcsL_max_.erase(arc_XY);
-      }
+      if (ArcsL_max_.exists(arc_XY)) { ArcsL_max_.erase(arc_XY); }
 
       return;
     }

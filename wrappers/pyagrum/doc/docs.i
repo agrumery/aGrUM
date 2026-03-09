@@ -69,6 +69,11 @@
 %include "doc_InfluenceDiagram.i"
 %include "doc_ShaferShenoyLIMIDInference.i"
 
+%include "doc_DoorCriteria.i"
+%include "doc_CausalModel.i"
+%include "doc_CausalImpact.i"
+%include "doc_Counterfactual.i"
+
 %include "doc_miscellaneous.i"
 %include "doc_JunctionTreeGenerator.i"
 %include "doc_IDGenerator.i"
