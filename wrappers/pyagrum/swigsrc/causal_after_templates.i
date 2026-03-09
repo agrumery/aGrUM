@@ -115,4 +115,20 @@ def _CausalModel_init(self, bn, latents=None, keepArcs=False):
 
 CausalModel.__init__ = _CausalModel_init
 del _CausalModel_init
+
+def _enumerateBackdoorSets_wrap(dag, X, Y, *, excluded_nodes=None, max_cardinality=0,
+                                              only_minimal=True, stopAtFirst=False):
+    return DoorCriteria._enumerateBackdoorSets(dag, X, Y,
+                                               excluded_nodes if excluded_nodes is not None else set(),
+                                               max_cardinality, only_minimal, stopAtFirst)
+
+def _enumerateFrontdoorSets_wrap(dag, X, Y, *, excluded_nodes=None, max_cardinality=0,
+                                               only_minimal=True, stopAtFirst=False):
+    return DoorCriteria._enumerateFrontdoorSets(dag, X, Y,
+                                                excluded_nodes if excluded_nodes is not None else set(),
+                                                max_cardinality, only_minimal, stopAtFirst)
+
+DoorCriteria.enumerateBackdoorSets  = staticmethod(_enumerateBackdoorSets_wrap)
+DoorCriteria.enumerateFrontdoorSets = staticmethod(_enumerateFrontdoorSets_wrap)
+del _enumerateBackdoorSets_wrap, _enumerateFrontdoorSets_wrap
 %}

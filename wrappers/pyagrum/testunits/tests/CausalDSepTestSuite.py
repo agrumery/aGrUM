@@ -39,7 +39,6 @@
 ############################################################################
 
 import unittest
-from typing import Set, List
 
 import pyagrum as gum
 from .pyAgrumTestSuite import pyAgrumTestCase, addTests
@@ -104,29 +103,33 @@ class TestDSep(pyAgrumTestCase):
 
 
 class TestBackDoors(pyAgrumTestCase):
-  def getBackDoors(self, fbn: str, cause: int, effect: int, latent: Set[int] = None):
+  @staticmethod
+  def getBackDoors(fbn: str, cause: str, effect: str, latent: set[str] = None):
     bn = gum.fastBN(fbn)
+    icause=bn.idFromName(cause)
+    ieffect=bn.idFromName(effect)
+    ilatents={bn.idFromName(s) for s in latent} if latent is not None else set()
     return [
       [bn.variable(i).name() for i in bd]
-      for bd in gum.backdoor_generator(bn.dag(), bn.idFromName(cause), bn.idFromName(effect), latent)
+      for bd in gum.DoorCriteria.enumerateBackdoorSets(bn.dag(), icause,ieffect,excluded_nodes=ilatents)
     ]
 
-  def hasBackDoor(self, fbn: str, cause: int, effect: int, latent: Set[int] = None):
+  def hasBackDoor(self, fbn: str, cause: str, effect: str, latent: set[str] = None):
     if self.verbose:
-      self.log.warning(f"{cause} to {effect} ?".format(cause, effect))
+      self.log.warning(f"{cause} to {effect} ?")
     res = self.getBackDoors(fbn, cause, effect, latent)
     if len(res) == 0:
       if self.verbose:
         self.log.warning("error : no backdoor found")
-        return False
+      return False
     else:
       if self.verbose:
         self.log.warning("OK")
       return True
 
-  def hasNoBackDoor(self, fbn: str, cause: int, effect: int, latent: Set[int] = None) -> object:
+  def hasNoBackDoor(self, fbn: str, cause: str, effect: str, latent: set[str] = None) -> object:
     if self.verbose:
-      self.log.warning(f"{cause} to {effect} ?".format(cause, effect))
+      self.log.warning(f"{cause} to {effect} ?")
     res = self.getBackDoors(fbn, cause, effect, latent)
     if len(res) > 0:
       if self.verbose:
@@ -137,9 +140,9 @@ class TestBackDoors(pyAgrumTestCase):
         self.log.warning("OK")
       return True
 
-  def hasAllBackDoors(self, awaited: List[List[str]], fbn: str, cause: int, effect: int, latent: Set[int] = None):
+  def hasAllBackDoors(self, awaited: list[list[str]], fbn: str, cause: str, effect: str, latent: set[str] = None):
     if self.verbose:
-      self.log.warning(f"{cause} to {effect} ?".format(cause, effect))
+      self.log.warning(f"{cause} to {effect} ?")
     res = self.getBackDoors(fbn, cause, effect, latent)
     if self.verbose:
       self.log.warning(res)
@@ -185,29 +188,33 @@ class TestBackDoors(pyAgrumTestCase):
 
 
 class TestFrontDoors(pyAgrumTestCase):
-  def getFrontDoors(self, fbn: str, cause: int, effect: int, latent: Set[int] = None):
+  @staticmethod
+  def getFrontDoors(fbn: str, cause: str, effect: str, latent: set[str] = None):
     bn = gum.fastBN(fbn)
+    icause=bn.idFromName(cause)
+    ieffect=bn.idFromName(effect)
+    ilatents={bn.idFromName(s) for s in latent} if latent is not None else set()
     return [
       [bn.variable(i).name() for i in bd]
-      for bd in gum.frontdoor_generator(bn.dag(), bn.idFromName(cause), bn.idFromName(effect), latent)
+      for bd in gum.DoorCriteria.enumerateFrontdoorSets(bn.dag(), icause,ieffect,excluded_nodes=ilatents)
     ]
 
-  def hasFrontDoor(self, fbn: str, cause: int, effect: int, latent: Set[int] = None):
+  def hasFrontDoor(self, fbn: str, cause: str, effect: str, latent: set[str] = None):
     if self.verbose:
-      self.log.warning(f"{cause} to {effect} ?".format(cause, effect))
+      self.log.warning(f"{cause} to {effect} ?")
     res = self.getFrontDoors(fbn, cause, effect, latent)
     if len(res) == 0:
       if self.verbose:
         self.log.warning("error : no backdoor found")
-        return False
+      return False
     else:
       if self.verbose:
         self.log.warning("OK")
       return True
 
-  def hasNoFrontDoor(self, fbn: str, cause: int, effect: int, latent: Set[int] = None) -> object:
+  def hasNoFrontDoor(self, fbn: str, cause: str, effect: str, latent: set[str] = None) -> object:
     if self.verbose:
-      self.log.warning(f"{cause} to {effect} ?".format(cause, effect))
+      self.log.warning(f"{cause} to {effect} ?")
     res = self.getFrontDoors(fbn, cause, effect, latent)
     if len(res) > 0:
       if self.verbose:
@@ -218,9 +225,9 @@ class TestFrontDoors(pyAgrumTestCase):
         self.log.warning("OK")
       return True
 
-  def hasAllFrontDoors(self, awaited: List[List[str]], fbn: str, cause: int, effect: int, latent: Set[int] = None):
+  def hasAllFrontDoors(self, awaited: list[list[str]], fbn: str, cause: str, effect: str, latent: set[str] = None):
     if self.verbose:
-      self.log.warning(f"{cause} to {effect} ?".format(cause, effect))
+      self.log.warning(f"{cause} to {effect} ?")
     res = self.getFrontDoors(fbn, cause, effect, latent)
     if self.verbose:
       self.log.warning(res)

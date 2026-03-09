@@ -121,6 +121,41 @@
   $result = PyAgrumHelper::PySetFromNodeSet(*$1);
 }
 
+// Python set/frozenset/list/tuple[int] -> gum::NodeSet (e.g. for excluded_nodes)
+%typemap(in) const gum::NodeSet& (gum::NodeSet _ns_temp) {
+  PyObject* _iter = PyObject_GetIter($input);
+  if (!_iter) {
+    PyErr_SetString(PyExc_TypeError, "expected an iterable of int (node IDs)");
+    SWIG_fail;
+  }
+  PyObject* _item;
+  while ((_item = PyIter_Next(_iter)) != nullptr) {
+    long _val = PyLong_AsLong(_item);
+    Py_DECREF(_item);
+    if (_val == -1 && PyErr_Occurred()) { Py_DECREF(_iter); SWIG_fail; }
+    _ns_temp.insert(static_cast< gum::NodeId >(_val));
+  }
+  Py_DECREF(_iter);
+  if (PyErr_Occurred()) SWIG_fail;
+  $1 = &_ns_temp;
+}
+%typemap(typecheck, precedence=SWIG_TYPECHECK_POINTER) const gum::NodeSet& {
+  $1 = (PySet_Check($input) || PyFrozenSet_Check($input) ||
+        PyList_Check($input) || PyTuple_Check($input)) ? 1 : 0;
+}
+
+// gum::DoorCriteria::NodeSetVec -> Python list[set[int]]
+// SwigValueWrapper<T> only exposes operator T&&(), not T&. Move-construct a
+// local lvalue so we can iterate safely.
+%typemap(out) gum::DoorCriteria::NodeSetVec {
+  using _VecT = std::vector< gum::NodeSet >;
+  _VecT _vec = std::move($1);
+  $result = PyList_New(static_cast< Py_ssize_t >(_vec.size()));
+  Py_ssize_t _i = 0;
+  for (const auto& _ns : _vec)
+    PyList_SET_ITEM($result, _i++, PyAgrumHelper::PySetFromNodeSet(_ns));
+}
+
 // gum::ArcSet -> Python set[tuple[int,int]]
 %typemap(out) gum::ArcSet {
   $result = PyAgrumHelper::PySetFromArcSet($1);

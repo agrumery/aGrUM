@@ -48,6 +48,12 @@
 %rename(_counterfactual) gum::counterfactual;
 %rename(_counterfactualModel) gum::counterfactualModel;
 
+// enumerateBackdoorSets and enumerateFrontdoorSets are renamed so that the
+// %pythoncode wrappers in causal_after_templates.i can enforce keyword-only
+// arguments starting from excluded_nodes.
+%rename(_enumerateBackdoorSets)  gum::DoorCriteria::enumerateBackdoorSets;
+%rename(_enumerateFrontdoorSets) gum::DoorCriteria::enumerateFrontdoorSets;
+
 // LatentDescriptorVector and LatentDescriptorIds are C++-internal types with no
 // Python representation. Ignoring them causes SWIG to suppress all overloads
 // that use them (including the LatentDescriptorVector constructors of CausalModel),

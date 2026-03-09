@@ -31468,6 +31468,48 @@ def counterfactualModel(cm, profile=None, whatif=None):
     return p
 
 
+class DoorCriteria(object):
+    thisown = property(lambda x: x.this.own(), lambda x, v: x.this.own(v), doc="The membership flag")
+    __repr__ = _swig_repr
+
+    @staticmethod
+    def satisfiesBackdoorCriterion(dag: "pyagrum.DAG", X: int, Y: int, Z: list[int]) -> bool:
+        return _pyagrum.DoorCriteria_satisfiesBackdoorCriterion(dag, X, Y, Z)
+
+    @staticmethod
+    def _enumerateBackdoorSets(*args) -> "pyagrum.DoorCriteria::NodeSetVec":
+        return _pyagrum.DoorCriteria__enumerateBackdoorSets(*args)
+
+    @staticmethod
+    def satisfiesFrontdoorCriterion(dag: "pyagrum.DAG", X: int, Y: int, Z: list[int]) -> bool:
+        return _pyagrum.DoorCriteria_satisfiesFrontdoorCriterion(dag, X, Y, Z)
+
+    @staticmethod
+    def _enumerateFrontdoorSets(*args) -> "pyagrum.DoorCriteria::NodeSetVec":
+        return _pyagrum.DoorCriteria__enumerateFrontdoorSets(*args)
+
+    @staticmethod
+    def existsUnblockedDirectedPath(dag: "pyagrum.DAG", X: int, Y: int, Z: list[int]) -> bool:
+        return _pyagrum.DoorCriteria_existsUnblockedDirectedPath(dag, X, Y, Z)
+
+    @staticmethod
+    def nodesOnDirectedPaths(dag: "pyagrum.DAG", X: int, Y: int) -> list[int]:
+        return _pyagrum.DoorCriteria_nodesOnDirectedPaths(dag, X, Y)
+
+    @staticmethod
+    def backdoorReach(dag: "pyagrum.DAG", X: int) -> list[int]:
+        return _pyagrum.DoorCriteria_backdoorReach(dag, X)
+
+    @staticmethod
+    def hasBackdoorPath(dag: "pyagrum.DAG", X: int, Y: int, Z: list[int]) -> bool:
+        return _pyagrum.DoorCriteria_hasBackdoorPath(dag, X, Y, Z)
+
+    def __init__(self):
+        _pyagrum.DoorCriteria_swiginit(self, _pyagrum.new_DoorCriteria())
+    __swig_destroy__ = _pyagrum.delete_DoorCriteria
+
+# Register DoorCriteria in _pyagrum:
+_pyagrum.DoorCriteria_swigregister(DoorCriteria)
 
 def _causalImpact(*args) -> tuple["pyagrum.CausalImpact","pyagrum.Tensor",str]:
     return _pyagrum._causalImpact(*args)
@@ -31657,5 +31699,21 @@ def _CausalModel_init(self, bn, latents=None, keepArcs=False):
 
 CausalModel.__init__ = _CausalModel_init
 del _CausalModel_init
+
+def _enumerateBackdoorSets_wrap(dag, X, Y, *, excluded_nodes=None, max_cardinality=0,
+                                              only_minimal=True, stopAtFirst=False):
+    return DoorCriteria._enumerateBackdoorSets(dag, X, Y,
+                                               excluded_nodes if excluded_nodes is not None else set(),
+                                               max_cardinality, only_minimal, stopAtFirst)
+
+def _enumerateFrontdoorSets_wrap(dag, X, Y, *, excluded_nodes=None, max_cardinality=0,
+                                               only_minimal=True, stopAtFirst=False):
+    return DoorCriteria._enumerateFrontdoorSets(dag, X, Y,
+                                                excluded_nodes if excluded_nodes is not None else set(),
+                                                max_cardinality, only_minimal, stopAtFirst)
+
+DoorCriteria.enumerateBackdoorSets  = staticmethod(_enumerateBackdoorSets_wrap)
+DoorCriteria.enumerateFrontdoorSets = staticmethod(_enumerateFrontdoorSets_wrap)
+del _enumerateBackdoorSets_wrap, _enumerateFrontdoorSets_wrap
 
 

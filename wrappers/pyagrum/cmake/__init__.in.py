@@ -186,6 +186,7 @@ except ImportError:
 
 # submodule CM
 try:
+    from .pyagrum import DoorCriteria
     from .pyagrum import CausalModel
     from .pyagrum import CausalImpact
     from .pyagrum import Counterfactual
