@@ -52,8 +52,8 @@ class ConditionalShapValues(ShapleyValues):
 
   def __init__(self, bn, target, logit=True):
     """
-    Parameters:
-    ------
+    Parameters
+    ----------
     bn : pyagrum.BayesNet
         The Bayesian Network.
     target : int | str
@@ -61,7 +61,7 @@ class ConditionalShapValues(ShapleyValues):
     logit : bool
         If True, applies the logit transformation to the probabilities.
 
-    Raises:
+    Raises
     ------
     TypeError : If bn is not a gum.BayesNet or target is not an integer or string.
     ValueError : If target is not a valid node id in the Bayesian Network.

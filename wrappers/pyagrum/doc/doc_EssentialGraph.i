@@ -60,7 +60,7 @@ EssentialGraph(m) -> EssentialGraph
 Returns
 -------
 list
-	The lisf of arcs in the EssentialGraph
+    The lisf of arcs in the EssentialGraph
 "
 
 %feature("docstring") gum::EssentialGraph::children
@@ -73,7 +73,7 @@ id : int
 Returns
 -------
 Set
-	the set of all the children
+    the set of all the children
 "
 
 %feature("docstring") gum::EssentialGraph::cpt
@@ -83,19 +83,19 @@ Returns the CPT of a variable.
 Parameters
 ----------
 VarId : int
-	A variable's id in the pyagrum.EssentialGraph.
+    A variable's id in the pyagrum.EssentialGraph.
 name : str
-	A variable's name in the pyagrum.EssentialGraph.
+    A variable's name in the pyagrum.EssentialGraph.
 
 Returns
 -------
 pyagrum.Tensor
-	The variable's CPT.
+    The variable's CPT.
 
 Raises
 ------
 pyagrum.NotFound
-	If no variable's id matches varId.
+    If no variable's id matches varId.
 "
 
 %feature("docstring") gum::EssentialGraph::parents
@@ -103,7 +103,7 @@ pyagrum.NotFound
 Parameters
 ----------
 id :
-	The id of the child node
+    The id of the child node
 
 Returns
 -------
@@ -161,7 +161,7 @@ int
 Returns
 -------
 int
-	the number of nodes in the graph
+    the number of nodes in the graph
 "
 
 %feature("docstring") gum::EssentialGraph::size
@@ -169,7 +169,7 @@ int
 Returns
 -------
 int
-	the number of nodes in the graph
+    the number of nodes in the graph
 "
 
 %feature("docstring") gum::EssentialGraph::pdag
@@ -177,7 +177,7 @@ int
 Returns
 -------
 pyagrum.PDAG
-	the PDAG (Partially Directed Graph)
+    the PDAG (Partially Directed Graph)
 "
 
 %feature("docstring") gum::EssentialGraph::idFromName

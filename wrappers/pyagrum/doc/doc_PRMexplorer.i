@@ -57,17 +57,17 @@ PRMexplorer() -> PRMexplorer
 Parameters
 ----------
 class_name : str
-	a class name
+    a class name
 
 Returns
 -------
 list
-	the list of aggregates in the class
+    the list of aggregates in the class
 
 Raises
 ------
   pyagrum.IndexError
-	If the class is not in the PRM
+    If the class is not in the PRM
 "
 
 %feature("docstring") PRMexplorer::classAttributes
@@ -75,17 +75,17 @@ Raises
 Parameters
 ----------
 class_name : str
-	a class name
+    a class name
 
 Returns
 -------
 list
-	the list of attributes
+    the list of attributes
 
 Raises
 ------
   pyagrum.IndexError
-	If the class is not in the PRM
+    If the class is not in the PRM
 "
 
 %feature("docstring") PRMexplorer::classDag
@@ -93,17 +93,17 @@ Raises
 Parameters
 ----------
 class_name : str
-	a class name
+    a class name
 
 Returns
 -------
 tuple
-	a description of the DAG
+    a description of the DAG
 
 Raises
 ------
   pyagrum.IndexError
-	If the class is not in the PRM
+    If the class is not in the PRM
 "
 
 %feature("docstring") PRMexplorer::classImplements
@@ -111,12 +111,12 @@ Raises
 Parameters
 ----------
 class_name : str
-	a class name
+    a class name
 
 Returns
 -------
 list
-	the list of interfaces implemented by the class
+    the list of interfaces implemented by the class
 "
 
 %feature("docstring") PRMexplorer::classParameters
@@ -124,17 +124,17 @@ list
 Parameters
 ----------
 class_name : str
-	a class name
+    a class name
 
 Returns
 -------
 list
-	the list of parameters
+    the list of parameters
 
 Raises
 ------
   pyagrum.IndexError
-	If the class is not in the PRM
+    If the class is not in the PRM
 "
 
 %feature("docstring") PRMexplorer::classReferences
@@ -142,17 +142,17 @@ Raises
 Parameters
 ----------
 class_name : str
-	a class name
+    a class name
 
 Returns
 -------
 list
-	the list of references
+    the list of references
 
 Raises
 ------
 pyagrum.IndexError
-	If the class is not in the PRM
+    If the class is not in the PRM
 "
 
 %feature("docstring") PRMexplorer::classSlotChains
@@ -160,17 +160,17 @@ pyagrum.IndexError
 Parameters
 ----------
 class_name : str
-	a class name
+    a class name
 
 Returns
 -------
 list
-	the list of class slot chains
+    the list of class slot chains
 
 Raises
 ------
 pyagrum.IndexError
-	if the class is not in the PRM
+    if the class is not in the PRM
 "
 
 %feature("docstring") PRMexplorer::classes
@@ -178,7 +178,7 @@ pyagrum.IndexError
 Returns
 -------
 list
-	the list of classes
+    the list of classes
 "
 
 %feature("docstring") PRMexplorer::cpf
@@ -186,24 +186,24 @@ list
 Parameters
 ----------
 class_name : str
-	a class name
+    a class name
 
 attribute : str
-	an attribute
+    an attribute
 
 Returns
 -------
 pyagrum.Tensor
-	the tensor of the attribute
+    the tensor of the attribute
 
 Raises
 ------
 pyagrum.OperationNotAllowed
-	If the class element doesn't have any gum::Tensor (like a gum::PRMReferenceSlot).
+    If the class element doesn't have any pyagrum.Tensor (like a pyagrum.PRMReferenceSlot).
 pyagrum.IndexError
-	If the class is not in the PRM
+    If the class is not in the PRM
 pyagrum.IndexError
-	If the attribute in parameters does not exist
+    If the attribute in parameters does not exist
 "
 
 %feature("docstring") PRMexplorer::getDirectSubClass
@@ -211,17 +211,17 @@ pyagrum.IndexError
 Parameters
 ----------
 class_name : str
-	a class name
+    a class name
 
 Returns
 -------
 list
-	the list of direct subclasses
+    the list of direct subclasses
 
 Raises
 ------
 pyagrum.IndexError
-	If the class is not in the PRM
+    If the class is not in the PRM
 "
 
 %feature("docstring") PRMexplorer::getDirectSubInterfaces
@@ -229,17 +229,17 @@ pyagrum.IndexError
 Parameters
 ----------
 interface_name : str
-	an interface name
+    an interface name
 
 Returns
 -------
 list
-	the list of direct subinterfaces
+    the list of direct subinterfaces
 
 Raises
 ------
 pyagrum.IndexError
-	If the interface is not in the PRM
+    If the interface is not in the PRM
 "
 
 %feature("docstring") PRMexplorer::getDirectSubTypes
@@ -247,17 +247,17 @@ pyagrum.IndexError
 Parameters
 ----------
 type_name : str
-	a type name
+    a type name
 
 Returns
 -------
 list
-	the list of direct subtypes
+    the list of direct subtypes
 
 Raises
 ------
 pyagrum.IndexError
-	If the type is not in the PRM
+    If the type is not in the PRM
 "
 
 %feature("docstring") PRMexplorer::getImplementations
@@ -265,17 +265,17 @@ pyagrum.IndexError
 Parameters
 ----------
 interface_name : str
-	an interface name
+    an interface name
 
 Returns
 -------
 str
-	the list of classes implementing the interface
+    the list of classes implementing the interface
 
 Raises
 ------
 pyagrum.IndexError
-	If the interface is not in the PRM
+    If the interface is not in the PRM
 "
 
 %feature("docstring") PRMexplorer::getLabelMap
@@ -283,17 +283,17 @@ pyagrum.IndexError
 Parameters
 ----------
 type_name : str
-	a type name
+    a type name
 
 Returns
 -------
 dict
-	a dict containing pairs of label and their values
+    a dict containing pairs of label and their values
 
 Raises
 ------
 pyagrum.IndexError
-	If the type is not in the PRM
+    If the type is not in the PRM
 "
 
 %feature("docstring") PRMexplorer::getLabels
@@ -301,17 +301,17 @@ pyagrum.IndexError
 Parameters
 ----------
 type_name : str
-	a type name
+    a type name
 
 Returns
 -------
 list
-	the list of type labels
+    the list of type labels
 
 Raises
 ------
 pyagrum.IndexError
-	If the type is not in the PRM
+    If the type is not in the PRM
 "
 
 %feature("docstring") PRMexplorer::getSuperClass
@@ -319,17 +319,17 @@ pyagrum.IndexError
 Parameters
 ----------
 class_name : str
-	a class name
+    a class name
 
 Returns
 -------
 str
-	the class extended by class_name
+    the class extended by class_name
 
 Raises
 ------
 pyagrum.IndexError
-	If the class is not in the PRM
+    If the class is not in the PRM
 "
 
 %feature("docstring") PRMexplorer::getSuperInterface
@@ -337,17 +337,17 @@ pyagrum.IndexError
 Parameters
 ----------
 interface_name : str
-	an interface name
+    an interface name
 
 Returns
 -------
 str
-	the interace extended by interface_name
+    the interace extended by interface_name
 
 Raises
 ------
 pyagrum.IndexError
-	If the interface is not in the PRM
+    If the interface is not in the PRM
 "
 
 %feature("docstring") PRMexplorer::getSuperType
@@ -355,17 +355,17 @@ pyagrum.IndexError
 Parameters
 ----------
 type_name : str
-	a type name
+    a type name
 
 Returns
 -------
 str
-	the type extended by type_name
+    the type extended by type_name
 
 Raises
 ------
 pyagrum.IndexError
-	If the type is not in the PRM
+    If the type is not in the PRM
 "
 
 %feature("docstring") PRMexplorer::getalltheSystems
@@ -373,7 +373,7 @@ pyagrum.IndexError
 Returns
 -------
 list
-	the list of all the systems and their components
+    the list of all the systems and their components
 "
 
 %feature("docstring") PRMexplorer::interAttributes
@@ -381,20 +381,20 @@ list
 Parameters
 ----------
 interface_name : str
-	an interface
+    an interface
 
 allAttributes : bool
-	True if supertypes of a custom type should be indicated
+    True if supertypes of a custom type should be indicated
 
 Returns
 -------
 list
-	the list of (<type>,<attribute_name>) for the given interface
+    the list of (<type>,<attribute_name>) for the given interface
 
 Raises
 ------
 pyagrum.IndexError
-	If the type is not in the PRM
+    If the type is not in the PRM
 "
 
 %feature("docstring") PRMexplorer::interReferences
@@ -402,17 +402,17 @@ pyagrum.IndexError
 Parameters
 ----------
 interface_name : str
-	an interface
+    an interface
 
 Returns
 -------
 list
-	the list of (<reference_type>,<reference_name>,<True if the reference is an array>) for the given interface
+    the list of (<reference_type>,<reference_name>,<True if the reference is an array>) for the given interface
 
 Raises
 ------
 pyagrum.IndexError
-	If the type is not in the PRM
+    If the type is not in the PRM
 "
 
 %feature("docstring") PRMexplorer::interfaces
@@ -420,7 +420,7 @@ pyagrum.IndexError
 Returns
 -------
 list
-	the list of interfaces in the PRM
+    the list of interfaces in the PRM
 "
 
 %feature("docstring") PRMexplorer::isAttribute
@@ -428,21 +428,21 @@ list
 Parameters
 ----------
 class_name : str
-	a class name
+    a class name
 att_name : str
-	the name of the attribute to be tested
+    the name of the attribute to be tested
 
 Returns
 -------
 bool
-	True if att_name is an attribute of class_name
+    True if att_name is an attribute of class_name
 
 Raises
 ------
 pyagrum.IndexError
-	If the class is not in the PRM
+    If the class is not in the PRM
 pyagrum.IndexError
-	If att_name is not an element of class_name
+    If att_name is not an element of class_name
 "
 
 %feature("docstring") PRMexplorer::isClass
@@ -450,12 +450,12 @@ pyagrum.IndexError
 Parameters
 ----------
 name : str
-	an element name
+    an element name
 
 Returns
 -------
 bool
-	True if the parameter correspond to a class in the PRM
+    True if the parameter correspond to a class in the PRM
 "
 
 %feature("docstring") PRMexplorer::isInterface
@@ -463,12 +463,12 @@ bool
 Parameters
 ----------
 name : str
-	an element name
+    an element name
 
 Returns
 -------
 bool
-	True if the parameter correspond to an interface in the PRM
+    True if the parameter correspond to an interface in the PRM
 "
 
 %feature("docstring") PRMexplorer::isType
@@ -476,12 +476,12 @@ bool
 Parameters
 ----------
 name : str
-	an element name
+    an element name
 
 Returns
 -------
 bool
-	True if the parameter correspond to a type in the PRM
+    True if the parameter correspond to a type in the PRM
 "
 
 %feature("docstring") PRMexplorer::load
@@ -491,14 +491,14 @@ Load a PRM into the explorer.
 Parameters
 ----------
 filename : str
-	the name of the o3prm file
+    the name of the o3prm file
 classpath : str
-	the classpath of the PRM
+    the classpath of the PRM
 
 Raises
 ------
 pyagrum.FatalError
-	If file not found
+    If file not found
 "
 
 %feature("docstring") PRMexplorer::types
@@ -506,7 +506,7 @@ pyagrum.FatalError
 Returns
 -------
 list
-	the list of the custom types in the PRM
+    the list of the custom types in the PRM
 "
 
 %feature("docstring") PRMexplorer::aggType

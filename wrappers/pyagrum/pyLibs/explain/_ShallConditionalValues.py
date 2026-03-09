@@ -56,12 +56,14 @@ class ConditionalShallValues(ShallValues, ConditionalComputation):
 
   def __init__(self, bn: gum.BayesNet, background: tuple | None, sample_size: int = 1000, log: bool = True):
     """
-    Note 1 : All rows in the background data that contain NaN values in columns corresponding to variables in the Bayesian Network will be dropped.
-    Note 2 : For small databases SHALL values can be incorrect.
+    Notes
+    -----
+    1. All rows in the background data that contain NaN values in columns corresponding to variables in the Bayesian Network will be dropped.
+    2. For small databases SHALL values can be incorrect.
 
-    Parameters:
-    ------
-     bn : pyagrum.BayesNet
+    Parameters
+    ----------
+    bn : pyagrum.BayesNet
         The Bayesian Network.
     background : tuple[pandas.DataFrame, bool] | None
         A tuple containing a pandas DataFrame and a boolean indicating whether the DataFrame includes labels or positional values.
@@ -71,12 +73,6 @@ class ConditionalShallValues(ShallValues, ConditionalComputation):
         If True, applies a logarithmic transformation to the probabilities.
 
     Raises
-    ------
-    TypeError : If bn is not a gum.BayesNet instance, background is not a tuple.
-    ValueError : If background data does not contain all variables present in the Bayesian Network or if
-        background data is empty after rows with NaNs were dropped.
-
-    Raises:
     ------
     TypeError : If bn is not a gum.BayesNet instance, background is not a tuple.
     ValueError : If background data does not contain all variables present in the Bayesian Network or if

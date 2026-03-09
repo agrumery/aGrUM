@@ -158,14 +158,21 @@ class PyAgrumConfiguration(metaclass=GumSingleton):
       >>> gum.config["dynamicBN", "default_graph_size"]
       "10"
 
-    Arguments:
-        section {str} -- the section name (has to exist in defaults)
-        option {str} -- the option/property name (has to exist in defaults)
-        value {str} -- the value (will be store as string)
-        no_hook {bool} -- (optional) should this call trigger the hooks ?
+    Parameters
+    ----------
+    section : str
+        The section name (has to exist in defaults).
+    option : str
+        The option/property name (has to exist in defaults).
+    value : str
+        The value (will be stored as string).
+    no_hook : bool, optional
+        Should this call trigger the hooks?
 
-    Raises:
-        SyntaxError: if the section name or the property name does not exist
+    Raises
+    ------
+    SyntaxError
+        If the section name or the property name does not exist.
     """
     if section in self.__parser.sections():
       if option in self.__parser[section]:
@@ -186,12 +193,17 @@ class PyAgrumConfiguration(metaclass=GumSingleton):
       >>> gum.config["dynamicBN", "default_graph_size"]
       "10"
 
-    Arguments:
-        section {str} -- the section
-        option {str} -- the property
+    Parameters
+    ----------
+    section : str
+        The section.
+    option : str
+        The property.
 
-    Returns:
-        str -- the value (as string)
+    Returns
+    -------
+    str
+        The value (as string).
     """
     return self.__parser.get(section, option)
 
@@ -229,8 +241,10 @@ class PyAgrumConfiguration(metaclass=GumSingleton):
   def load(self):
     """load pyagrum.ini in the current directory, and change the properties if needed
 
-    Raises:
-        FileNotFoundError: if there is no pyagrum.ini in the current directory
+    Raises
+    ------
+    FileNotFoundError
+        If there is no pyagrum.ini in the current directory.
     """
     if os.path.isfile("pyagrum.ini"):
       # to force to use the protected set() method
@@ -256,8 +270,10 @@ class PyAgrumConfiguration(metaclass=GumSingleton):
   def grep(self, search):
     """grep in the configuration any section or properties matching the argument. If a section match the argume, all the section is displayed.
 
-    Arguments:
-        search {str} -- the string to find
+    Parameters
+    ----------
+    search : str
+        The string to find.
     """
     mine = self.__parser
     lowsearch = search.lower()

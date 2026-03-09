@@ -60,8 +60,8 @@ class ShapleyValues(Explainer):
 
   def __init__(self, bn, target, logit):
     """
-    Parameters:
-    ------
+    Parameters
+    ----------
     bn : pyagrum.BayesNet
         The Bayesian Network.
     target : int | str
@@ -69,7 +69,7 @@ class ShapleyValues(Explainer):
     logit : bool
         If True, applies the logit transformation to the probabilities.
 
-    Raises:
+    Raises
     ------
     TypeError : If bn is not a gum.BayesNet or target is not an integer or string.
     ValueError : If target is not a valid node id in the Bayesian Network.
@@ -122,19 +122,19 @@ class ShapleyValues(Explainer):
     """
     Computes the Shapley values for the target node based on the provided data.
 
-    Parameters:
+    Parameters
     ----------
     data : tuple | None
         A tuple containing a pandas DataFrame, Series or a dictionary and a boolean indicating whether data are provided with labels. If None, a random sample of size N is generated.
     N : int
         The number of samples to generate if data is None.
 
-    Returns:
+    Returns
     -------
     Explanation
         An Explanation object containing the Shapley values and importances for the target node.
 
-    Raises:
+    Raises
     ------
     TypeError : If the first element of data is not a pd.DataFrame, pd.Series or dict, or if N is not an integer when data is None.
     ValueError : If N is less than 2 when data is None.

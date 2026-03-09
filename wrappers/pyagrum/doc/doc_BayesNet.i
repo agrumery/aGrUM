@@ -64,18 +64,18 @@ Add a variable to the pyagrum.BayesNet.
 Parameters
 ----------
 variable : pyagrum.DiscreteVariable
-	the variable added
+    the variable added
 descr : str
-	the description of the variable (following :ref:`fast syntax<Quick specification of (randomly parameterized) graphical models>`)
+    the description of the variable (following fast syntax)
 nbrmod : int
-	the number of modalities for the new variable
+    the number of modalities for the new variable
 id : int
-	the variable forced id in the pyagrum.BayesNet
+    the variable forced id in the pyagrum.BayesNet
 
 Returns
 -------
 int
-	the id of the new node
+    the id of the new node
 
 Raises
 ------
@@ -92,12 +92,12 @@ Others aggregators
 Parameters
 ----------
 variable : pyagrum.DiscreteVariable
-	the variable to be added
+    the variable to be added
 
 Returns
 -------
 int
-	the id of the added value
+    the id of the added value
 "
 
 %feature("docstring") gum::BayesNet::addAND
@@ -109,12 +109,12 @@ The id of the new variable is automatically generated.
 Parameters
 ----------
 variable : pyagrum.DiscreteVariable
-	The variable added by copy.
+    The variable added by copy.
 
 Returns
 -------
 int
-	the id of the added variable.
+    the id of the added variable.
 
 Raises
 ------
@@ -128,10 +128,10 @@ Add an arc in the BN, and update arc.head's CPT.
 
 Parameters
 ----------
-head : Union[int,str]
-	a variable's id (int) or name
-head : Union[int,str]
-	a variable's id (int) or name
+head : int | str
+    a variable's id (int) or name
+tail : int | str
+    a variable's id (int) or name
 
 Raises
 ------
@@ -148,12 +148,12 @@ Others aggregators
 Parameters
 ----------
 variable : pyagrum.DiscreteVariable
-	the variable to be added
+    the variable to be added
 
 Returns
 -------
 int
-	the id of the added value
+    the id of the added value
 "
 
 %feature("docstring") gum::BayesNet::addEXISTS
@@ -163,12 +163,12 @@ Others aggregators
 Parameters
 ----------
 variable : pyagrum.DiscreteVariable
-	the variable to be added
+    the variable to be added
 
 Returns
 -------
 int
-	the id of the added value
+    the id of the added value
 "
 
 %feature("docstring") gum::BayesNet::addFORALL
@@ -178,12 +178,12 @@ Others aggregators
 Parameters
 ----------
 variable : pyagrum.DiscreteVariable
-	the variable to be added
+    the variable to be added
 
 Returns
 -------
 int
-	the id of the added variable.
+    the id of the added variable.
 "
 
 %feature("docstring") gum::BayesNet::addLogit
@@ -195,15 +195,15 @@ Add a variable, its associate node and a Logit implementation.
 Parameters
 ----------
 variable : pyagrum.DiscreteVariable
-	The variable added by copy
+    The variable added by copy
 externalWeight : float
-	the added external weight
+    the added external weight
 id : int
-	The proposed id for the variable.
+    The proposed id for the variable.
 Returns
 -------
 int
-	the id of the added variable.
+    the id of the added variable.
 
 Raises
 ------
@@ -218,12 +218,12 @@ Others aggregators
 Parameters
 ----------
 variable : pyagrum.DiscreteVariable
-	the variable to be added
+    the variable to be added
 
 Returns
 -------
 int
-	the id of the added value
+    the id of the added value
 "
 
 %feature("docstring") gum::BayesNet::addMEDIAN
@@ -233,12 +233,12 @@ Others aggregators
 Parameters
 ----------
 variable : pyagrum.DiscreteVariable
-	the variable to be added
+    the variable to be added
 
 Returns
 -------
 int
-	the id of the added value
+    the id of the added value
 "
 
 %feature("docstring") gum::BayesNet::addMIN
@@ -248,12 +248,12 @@ Others aggregators
 Parameters
 ----------
 variable : pyagrum.DiscreteVariable
-	the variable to be added
+    the variable to be added
 
 Returns
 -------
 int
-	the id of the added value
+    the id of the added value
 "
 
 %feature("docstring") gum::BayesNet::addSUM
@@ -280,16 +280,16 @@ Add a variable, its associate node and a noisyAND implementation.
 Parameters
 ----------
 variable : pyagrum.DiscreteVariable
-	The variable added by copy
+    The variable added by copy
 externalWeight : float
-	the added external weight
+    the added external weight
 id : int
-	The proposed id for the variable.
+    The proposed id for the variable.
 
 Returns
 -------
 int
-	the id of the added variable.
+    the id of the added variable.
 
 Raises
 ------
@@ -308,19 +308,19 @@ Since it seems that the 'classical' noisyOR is the Compound noisyOR, we keep the
 Parameters
 ----------
 variable : pyagrum.DiscreteVariable
-	The variable added by copy
+    The variable added by copy
 externalWeight : float
-	the added external weight
+    the added external weight
 id : int
-	The proposed id for the variable.
+    The proposed id for the variable.
 
 Returns
 -------
 int
-	the id of the added variable.
+    the id of the added variable.
 
 Raises
---------
+------
 pyagrum.DuplicateElement
     If id is already used
 "
@@ -336,19 +336,19 @@ Since it seems that the 'classical' noisyOR is the Compound noisyOR, we keep the
 Parameters
 ----------
 variable : pyagrum.DiscreteVariable
-	The variable added by copy
+    The variable added by copy
 externalWeight : float
-	the added external weight
+    the added external weight
 id : int
-	The proposed id for the variable.
+    The proposed id for the variable.
 
 Returns
 -------
 int
-	the id of the added variable.
+    the id of the added variable.
 
 Raises
---------
+------
 pyagrum.DuplicateElement
     If id is already used
 "
@@ -364,16 +364,16 @@ Since it seems that the 'classical' noisyOR is the Compound noisyOR, we keep the
 Parameters
 ----------
 variable : pyagrum.DiscreteVariable
-	The variable added by copy
+    The variable added by copy
 externalWeight : float
-	the added external weight
+    the added external weight
 id : int
-	The proposed id for the variable.
+    The proposed id for the variable.
 
 Returns
 -------
 int
-	the id of the added variable.
+    the id of the added variable.
 "
 
 %feature("docstring") gum::BayesNet::addOR
@@ -384,17 +384,17 @@ The id of the new variable is automatically generated.
 
 Warnings
 --------
-	If parents are not boolean, all value>1 is True
+    If parents are not boolean, all value>1 is True
 
 Parameters
 ----------
 variable : pyagrum.DiscreteVariable
-	The variable added by copy
+    The variable added by copy
 
 Returns
 -------
 int
-	the id of the added variable.
+    the id of the added variable.
 
 Raises
 ------
@@ -408,12 +408,12 @@ Add an arc in the BN, and update arc.head's CPT.
 
 Parameters
 ----------
-head : Union[int,str]
-	a variable's id (int) or name
-tail : Union[int,str]
-	a variable's id (int) or name
+head : int | str
+    a variable's id (int) or name
+tail : int | str
+    a variable's id (int) or name
 causalWeight : float
-	the added causal weight
+    the added causal weight
 
 Raises
 ------
@@ -436,10 +436,10 @@ change the CPT associated to nodeId to newPot delete the old CPT associated to n
 
 Parameters
 ----------
-var : Union[int,str]
-	the current name or the id of the variable
+var : int | str
+    the current name or the id of the variable
 newPot : pyagrum.Tensor
-	the new tensor
+    the new tensor
 
 Raises
 ------
@@ -449,16 +449,16 @@ pyagrum.NotAllowed
 
 %feature("docstring") gum::BayesNet::changeVariableName
 "
-Changes a variable's name in the gum::BayesNet.
+Changes a variable's name in the pyagrum.BayesNet.
 
-This will change the gum::DiscreteVariable names in the gum::BayesNet.
+This will change the pyagrum.DiscreteVariable names in the pyagrum.BayesNet.
 
 Parameters
 ----------
-var : Union[int,str]
-	the current name or the id of the variable
+var : int | str
+    the current name or the id of the variable
 new_name : str
-	the new name of the variable
+    the new name of the variable
 
 Raises
 ------
@@ -474,12 +474,12 @@ change the label of the variable associated to nodeId to the new value.
 
 Parameters
 ----------
-var : Union[int,str]
-	the current name or the id of the variable
+var : int | str
+    the current name or the id of the variable
 old_label : str
-	the new label
+    the new label
 new_label : str
-	the new label
+    the new label
 
 Raises
 ------
@@ -504,16 +504,16 @@ Clear the whole BayesNet
 
 %feature("docstring") gum::BayesNet::erase
 "
-Remove a variable from the gum::BayesNet.
+Remove a variable from the pyagrum.BayesNet.
 
-Removes the corresponding variable from the gum::BayesNet and from all of it's children gum::Tensor.
+Removes the corresponding variable from the pyagrum.BayesNet and from all of it's children pyagrum.Tensor.
 
 If no variable matches the given id, then nothing is done.
 
 Parameters
 ----------
-var : Union[int,str,pyagrum.DiscreteVariable]
-	the current name, the id of the variable or a reference to the variable
+var : int | str | pyagrum.DiscreteVariable
+    the current name, the id of the variable or a reference to the variable
 "
 
 %feature("docstring") gum::BayesNet::eraseArc
@@ -525,11 +525,11 @@ If (tail, head) doesn't exist, the nothing happens.
 Parameters
 ----------
 arc : pyagrum.Arc when calling eraseArc(arc)
-	The arc to be removed.
-head : Union[int,str]
-	a variable's id (int) or name for the head when calling eraseArc(head,tail)
-tail : Union[int,str]
-	a variable's id (int) or name for the tail when calling eraseArc(head,tail)
+    The arc to be removed.
+head : int | str
+    a variable's id (int) or name for the head when calling eraseArc(head,tail)
+tail : int | str
+    a variable's id (int) or name for the tail when calling eraseArc(head,tail)
 "
 
 %feature("docstring") gum::BayesNet::fastPrototype
@@ -547,8 +547,8 @@ Create a Bayesian network with a dot-like syntax which specifies:
       - with 'a{-1|5|0|3}', the variable is a `pyagrum.IntegerVariable` using the sorted given values.
       - with 'a{-0.5|5.01|0|3.1415}', the variable is a `pyagrum.NumericalDiscreteVariable` using the sorted given values.
 
-Note
-----
+Notes
+-----
   - If the dot-like string contains such a specification more than once for a variable, the first specification will be used.
   - the CPTs are randomly generated.
   - see also the function pyagrum.fastBN.
@@ -577,8 +577,8 @@ Randomly generate CPT for a given node in a given structure.
 
 Parameters
 ----------
-node : Union[int,str]
-	a variable's id (int) or name
+node : int | str
+    a variable's id (int) or name
 "
 
 %feature("docstring") gum::BayesNet::generateCPTs
@@ -593,12 +593,12 @@ Load a BIF file.
 Parameters
 ----------
 name : str
-	the file's name
+    the file's name
 l : list
-	list of functions to execute
+    list of functions to execute
 
 Raises
---------
+------
 pyagrum.IOError
     If file not found
 pyagrum.FatalError
@@ -612,9 +612,9 @@ Load a BIFXML file.
 Parameters
 ----------
 name : str
-	the name's file
+    the name's file
 l : list
-	list of functions to execute
+    list of functions to execute
 
 Raises
 ------
@@ -631,9 +631,9 @@ Load a DSL file.
 Parameters
 ----------
 name : str
-	the file's name
+    the file's name
 l : list
-	list of functions to execute
+    list of functions to execute
 
 Raises
 ------
@@ -650,9 +650,9 @@ Load a XDSL file.
 Parameters
 ----------
 name : str
-	the file's name
+    the file's name
 l : list
-	list of functions to execute
+    list of functions to execute
 
 Raises
 ------
@@ -669,9 +669,9 @@ Load a NET file.
 Parameters
 ----------
 name : str
-	the name's file
+    the name's file
 l : list
-	list of functions to execute
+    list of functions to execute
 
 Raises
 ------
@@ -692,13 +692,13 @@ The O3PRM language is the only language allowing to manipulate not only Discreti
 Parameters
 ----------
 name : str
-	the file's name
+    the file's name
 system : str
-	the system's name
+    the system's name
 classpath : str
-	the classpath
+    the classpath
 l : list
-	list of functions to execute
+    list of functions to execute
 
 Raises
 ------
@@ -715,9 +715,9 @@ Load an UAI file.
 Parameters
 ----------
 name : str
-	the name's file
+    the name's file
 l : list
-	list of functions to execute
+    list of functions to execute
 
 Raises
 ------
@@ -734,20 +734,20 @@ Reverses an arc while preserving the same joint distribution.
 Parameters
 ----------
 tail
-	(int) the id of the tail variable
+    (int) the id of the tail variable
 head
-	(int) the id of the head variable
+    (int) the id of the head variable
 tail
-	(str) the name of the tail variable
+    (str) the name of the tail variable
 head
-	(str) the name of the head variable
+    (str) the name of the head variable
 arc : pyagrum.Arc
-	an arc
+    an arc
 
 Raises
 ------
 pyagrum.InvalidArc
-    If the arc does not exsit or if its reversal would induce a directed cycle.
+    If the arc does not exist or if its reversal would induce a directed cycle.
 "
 
 %feature("docstring") gum::BayesNet::saveBIF
@@ -757,7 +757,7 @@ Save the BayesNet in a BIF file.
 Parameters
 ----------
 name : str
-	the file's name
+    the file's name
 allowModificationWhenSaving: bool
         False by default.
         if true, syntax errors are corrected when saving the file. If false, they throw a FatalError.
@@ -770,7 +770,7 @@ Save the BayesNet in a BIFXML file.
 Parameters
 ----------
 name : str
-	the file's name
+    the file's name
 allowModificationWhenSaving: bool
         False by default.
         if true, syntax errors are corrected when saving the file. If false, they throw a FatalError.
@@ -783,7 +783,7 @@ Save the BayesNet in a DSL file.
 Parameters
 ----------
 name : str
-	the file's name
+    the file's name
 allowModificationWhenSaving: bool
         False by default.
         if true, syntax errors are corrected when saving the file. If false, they throw a FatalError.
@@ -796,7 +796,7 @@ Save the BayesNet in a XDSL file.
 Parameters
 ----------
 name : str
-	the file's name
+    the file's name
 allowModificationWhenSaving: bool
         (not used).
         if true, syntax errors are corrected when saving the file. If false, they throw a FatalError.
@@ -809,7 +809,7 @@ Save the BayesNet in a NET file.
 Parameters
 ----------
 name : str
-	the file's name
+    the file's name
 allowModificationWhenSaving: bool
         False by default.
         if true, syntax errors are corrected when saving the file. If false, they throw a FatalError.
@@ -826,7 +826,7 @@ The O3PRM language is the only language allowing to manipulate not only Discreti
 Parameters
 ----------
 name : str
-	the file's name
+    the file's name
 allowModificationWhenSaving: bool
         False by default.
         if true, syntax errors are corrected when saving the file. If false, they throw a FatalError.
@@ -839,7 +839,7 @@ Save the BayesNet in an UAI file.
 Parameters
 ----------
 name : str
-	the file's name
+    the file's name
 allowModificationWhenSaving: bool
         False by default.
         if true, syntax errors are corrected when saving the file. If false, they throw a FatalError.
@@ -851,13 +851,13 @@ Returns the CPT of a variable.
 
 Parameters
 ----------
-VarId :  Union[int,str]
-	a variable's id (int) or name
+VarId :  int | str
+    a variable's id (int) or name
 
 Returns
 -------
 pyagrum.Tensor
-	The variable's CPT.
+    The variable's CPT.
 
 Raises
 ------
@@ -871,30 +871,29 @@ Check if the BayesNet is consistent (variables, CPT, ...)
 
 Returns
 -------
-List[str]
+list of str
   list of found issues
 "
 
 %feature("docstring") gum::IBayesNet::memoryFootprint
 "
-get the size (in byte) of the (main footprint) of the BayesNet
+Returns the memory footprint in bytes of the Bayesian network.
 
 Returns
 -------
 int
-  the size in byte of the representation (of the parameters) of the BayesNet
+  the memory footprint in bytes of the Bayesian network
 "
 
 
 %feature("docstring") gum::IBayesNet::evEq
 "
-This method is used to set an observation on a quasi-continuous variables (:class:`pyagrum
-.DiscretizedVariable` with a large number of ticks)  that the variable is equal to a given value.
+This method is used to set an observation on a quasi-continuous variables (pyagrum.DiscretizedVariable with a large number of ticks) that the variable is equal to a given value.
 
-Note
-----
-  - see also :meth:`Tensor.evEq`
-  - see also :meth:`BayesNet.evGt`, :meth:`BayesNet.evLt`, :meth:`BayesNet.evIn`
+Notes
+-----
+  - see also Tensor.evEq
+  - see also BayesNet.evGt, BayesNet.evLt, BayesNet.evIn
 
 Examples
 --------
@@ -908,31 +907,30 @@ Examples
 
 Parameters
 ----------
-var : Union[int,str]
+var : int | str
   the current name or the id of the variable
 value: float
 
 Returns
 -------
-pyAgrum.Tensor
-  The representation of the evidence as a :class:`~pyagrum.Tensor`.
+pyagrum.Tensor
+  The representation of the evidence as a pyagrum.Tensor.
 "
 
 %feature("docstring") gum::IBayesNet::evGt
 "
-This method is used to set an obvervation on a quasi-continuous variables (:class:`pyagrum
-.DiscretizedVariable` with a large number of ticks) that the variable greater than a given value.
+This method is used to set an observation on a quasi-continuous variables (pyagrum.DiscretizedVariable with a large number of ticks) that the variable is greater than a given value.
 
-Note
-----
-  - see also :meth:`Tensor.evGt`
-  - see also :meth:`BayesNet.evEq`, :meth:`BayesNet.evLt`, :meth:`BayesNet.evIn`
+Notes
+-----
+  - see also Tensor.evGt
+  - see also BayesNet.evEq, BayesNet.evLt, BayesNet.evIn
 
 Examples
 --------
 >>> import pyagrum as gum
 >>> bn = gum.fastBN('A[0:10:20]'') # DiscretizedVariable from 0 to 10 in 20 steps
->>> print(bn.eGt('A',5)
+>>> print(bn.evGt('A',5)
   A                                                                                                                                                                                                    |
 [0;0.5[  |[0.5;1[  |[1;1.5[  |[1.5;2[  |[2;2.5[  |[2.5;3[  |[3;3.5[  |[3.5;4[  |[4;4.5[  |[4.5;5[  |[5;5.5[  |[5.5;6[  |[6;6.5[  |[6.5;7[  |[7;7.5[  |[7.5;8[  |[8;8.5[  |[8.5;9[  |[9;9.5[  |[9.5;10] |
 ---------|---------|---------|---------|---------|---------|---------|---------|---------|---------|---------|---------|---------|---------|---------|---------|---------|---------|---------|---------|
@@ -940,53 +938,51 @@ Examples
 
 Parameters
 ----------
-var : Union[int,str]
+var : int | str
   the current name or the id of the variable
 value: float
 
 Returns
 -------
-pyAgrum.Tensor
-  The representation of the evidence as a :class:`~pyagrum.Tensor`.
+pyagrum.Tensor
+  The representation of the evidence as a pyagrum.Tensor.
 "
 
 
 %feature("docstring") gum::IBayesNet::evLt
 "
-This method is used to set an obvervation on a quasi-continuous variables (:class:`pyagrum
-.DiscretizedVariable` with a large number of ticks) that the variable is less than a given value.
+This method is used to set an observation on a quasi-continuous variables (pyagrum.DiscretizedVariable with a large number of ticks) that the variable is less than a given value.
 
-Note
-----
-  - see also :meth:`Tensor.evLt`
-  - see also :meth:`BayesNet.evEq`, :meth:`BayesNet.evGt`, :meth:`BayesNet.evIn`
+Notes
+-----
+  - see also Tensor.evLt
+  - see also BayesNet.evEq, BayesNet.evGt, BayesNet.evIn
 
 Parameters
 ----------
-var : Union[int,str]
+var : int | str
   the current name or the id of the variable
 value: float
 
 Returns
 -------
-pyAgrum.Tensor
-  The representation of the evidence as a :class:`~pyagrum.Tensor`.
+pyagrum.Tensor
+  The representation of the evidence as a pyagrum.Tensor.
 "
 
 
 %feature("docstring") gum::IBayesNet::evIn
 "
-This method is used to set an obvervation on a quasi-continuous variables (:class:`pyagrum
-.DiscretizedVariable` with a large number of ticks) that the variable is less than a given value.
+This method is used to set an observation on a quasi-continuous variables (pyagrum.DiscretizedVariable with a large number of ticks) that the variable is in a given range.
 
-Note
-----
-  - see also :meth:`Tensor.evIn`
-  - see also :meth:`BayesNet.evEq`, :meth:`BayesNet.evGt`, :meth:`BayesNet.evLt`
+Notes
+-----
+  - see also Tensor.evIn
+  - see also BayesNet.evEq, BayesNet.evGt, BayesNet.evLt
 
 Parameters
 ----------
-var : Union[int,str]
+var : int | str
   the current name or the id of the variable
 valueMin: float
   the minimum value
@@ -996,5 +992,5 @@ valueMax: float
 Returns
 -------
 pyagrum.Tensor
-  The representation of the evidence as a :class:`~pyagrum.Tensor`.
+  The representation of the evidence as a pyagrum.Tensor.
 "

@@ -59,8 +59,8 @@ class CausalShapValues(ShapleyValues, CausalComputation):
 
   def __init__(self, bn, target, background: tuple | None, sample_size=1000, logit=True):
     """
-    Parameters:
-    ------
+    Parameters
+    ----------
     bn : pyagrum.BayesNet
         The Bayesian Network.
     target : int | str
@@ -72,7 +72,7 @@ class CausalShapValues(ShapleyValues, CausalComputation):
     logit : bool
         If True, applies the logit transformation to the probabilities.
 
-    Raises:
+    Raises
     ------
     TypeError : If bn is not a gum.BayesNet instance, background is not a tuple or target is not an integer or string.
     ValueError : If target is not a valid node id in the Bayesian Network or if sample_size is not a positive integer.

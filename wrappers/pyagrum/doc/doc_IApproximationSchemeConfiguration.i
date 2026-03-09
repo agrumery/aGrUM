@@ -49,7 +49,7 @@
 Returns
 -------
 int
-	size of burn in on number of iteration
+    size of burn in on number of iteration
 "
 
 %feature("docstring") gum::IApproximationSchemeConfiguration::currentTime
@@ -57,7 +57,7 @@ int
 Returns
 -------
 float
-	get the current running time in second (float)
+    get the current running time in second (float)
 "
 
 %feature("docstring") gum::IApproximationSchemeConfiguration::epsilon
@@ -65,7 +65,7 @@ float
 Returns
 -------
 float
-	the value of epsilon
+    the value of epsilon
 "
 
 %feature("docstring") gum::IApproximationSchemeConfiguration::history
@@ -73,12 +73,12 @@ float
 Returns
 -------
 tuple
-	the scheme history
+    the scheme history
 
 Raises
 ------
 pyagrum.OperationNotAllowed
-	If the scheme did not performed or if verbosity is set to false
+    If the scheme did not performed or if verbosity is set to false
 "
 
 %feature("docstring") gum::IApproximationSchemeConfiguration::maxIter
@@ -86,7 +86,7 @@ pyagrum.OperationNotAllowed
 Returns
 -------
 int
-	the criterion on number of iterations
+    the criterion on number of iterations
 "
 
 %feature("docstring") gum::IApproximationSchemeConfiguration::maxTime
@@ -94,7 +94,7 @@ int
 Returns
 -------
 float
-	the timeout(in seconds)
+    the timeout(in seconds)
 "
 
 %feature("docstring") gum::IApproximationSchemeConfiguration::messageApproximationScheme
@@ -102,7 +102,7 @@ float
 Returns
 -------
 str
-	the approximation scheme message
+    the approximation scheme message
 "
 
 %feature("docstring") gum::IApproximationSchemeConfiguration::minEpsilonRate
@@ -110,7 +110,7 @@ str
 Returns
 -------
 float
-	the value of the minimal epsilon rate
+    the value of the minimal epsilon rate
 "
 
 %feature("docstring") gum::IApproximationSchemeConfiguration::nbrIterations
@@ -118,7 +118,7 @@ float
 Returns
 -------
 int
-	the number of iterations
+    the number of iterations
 "
 
 %feature("docstring") gum::IApproximationSchemeConfiguration::periodSize
@@ -126,12 +126,12 @@ int
 Returns
 -------
 int
-	the number of samples between 2 stopping
+    the number of samples between 2 stopping
 
 Raises
 ------
 pyagrum.OutOfBounds
-	If p<1
+    If p<1
 "
 
 %feature("docstring") gum::IApproximationSchemeConfiguration::setBurnIn
@@ -139,7 +139,7 @@ pyagrum.OutOfBounds
 Parameters
 ----------
 b : int
-	size of burn in on number of iteration
+    size of burn in on number of iteration
 "
 
 %feature("docstring") gum::IApproximationSchemeConfiguration::setEpsilon
@@ -147,12 +147,12 @@ b : int
 Parameters
 ----------
 eps : float
-	the epsilon we want to use
+    the epsilon we want to use
 
 Raises
 ------
 pyagrum.OutOfBounds
-	If eps<0
+    If eps<0
 "
 
 
@@ -161,12 +161,12 @@ pyagrum.OutOfBounds
 Parameters
 ----------
 max : int
-	the maximum number of iteration
+    the maximum number of iteration
 
 Raises
 ------
 pyagrum.OutOfBounds
-	If max <= 1
+    If max <= 1
 "
 
 %feature("docstring") gum::IApproximationSchemeConfiguration::setMaxTime
@@ -174,12 +174,12 @@ pyagrum.OutOfBounds
 Parameters
 ----------
 tiemout : float
-	stopping criterion on timeout (in seconds)
+    stopping criterion on timeout (in seconds)
 
 Raises
 ------
 pyagrum.OutOfBounds
-	If timeout<=0.0
+    If timeout<=0.0
 "
 
 %feature("docstring") gum::IApproximationSchemeConfiguration::setMinEpsilonRate
@@ -187,7 +187,7 @@ pyagrum.OutOfBounds
 Parameters
 ----------
 rate : float
-	the minimal epsilon rate
+    the minimal epsilon rate
 "
 
 %feature("docstring") gum::IApproximationSchemeConfiguration::setPeriodSize
@@ -195,12 +195,12 @@ rate : float
 Parameters
 ----------
 p : int
-	number of samples between 2 stopping
+    number of samples between 2 stopping
 
 Raises
 ------
 pyagrum.OutOfBounds
-	If p<1
+    If p<1
 "
 
 
@@ -217,5 +217,5 @@ v : bool
 Returns
 -------
 bool
-	True if the verbosity is enabled
+    True if the verbosity is enabled
 "

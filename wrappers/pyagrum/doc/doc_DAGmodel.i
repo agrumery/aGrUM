@@ -54,7 +54,7 @@ Abstract class used by IBayesNet and InfluenceDiagram.
 Returns
 -------
 float
-	The log10 domain size of the joint probability for the model.
+    The log10 domain size of the joint probability for the model.
 "
 
 %feature("docstring") gum::DAGmodel::completeInstantiation
@@ -62,9 +62,9 @@ float
 Get an instantiation over all the variables of the model.
 
 Returns
-----------
+-------
   pyagrum.instantiation
-	the complete instantiation
+    the complete instantiation
 "
 
 %feature("docstring") gum::DAGmodel::dag
@@ -72,7 +72,7 @@ Returns
 Returns
 -------
 pyagrum.DAG
-	a constant reference to the dag of this BayesNet.
+    a constant reference to the dag of this BayesNet.
 "
 
 %feature("docstring") gum::DAGmodel::empty
@@ -80,7 +80,7 @@ pyagrum.DAG
 Returns
 -------
 bool
-	True if the model is empty
+    True if the model is empty
 "
 
 %feature("docstring") gum::DAGmodel::hasSameStructure
@@ -88,7 +88,7 @@ bool
 Parameters
 ----------
 pyagrum.DAGmodel
-	a direct acyclic model
+    a direct acyclic model
 
 Returns
 -------
@@ -122,7 +122,7 @@ List
 Raises
 ------
 pyagrum.InvalidDirectedCycle
-	If this graph contains cycles
+    If this graph contains cycles
 "
 
 %feature("docstring") gum::DAGmodel::moralGraph
@@ -132,7 +132,7 @@ Returns the moral graph of the BayesNet, formed by adding edges between all pair
 Returns
 -------
 pyagrum.UndiGraph
-	The moral graph
+    The moral graph
 "
 
 %feature("docstring") gum::DAGmodel::property
@@ -161,7 +161,7 @@ Unreferenced function
 Returns
 -------
 list
-	The lisf of arcs in the graph
+    The lisf of arcs in the graph
 "
 
 %feature("docstring") gum::DAGmodel::toDot
@@ -179,7 +179,7 @@ Returns a variable's id given its name in the graph.
 Parameters
 ----------
 name : str
-	The variable's name from which the id is returned.
+    The variable's name from which the id is returned.
 
 Notes
 -----
@@ -188,12 +188,12 @@ Notes
 Returns
 -------
 int :
-	The variable's node id.
+    The variable's node id.
 
 Raises
 ------
 pyagrum.NotFound
-	If name does not match a variable in the graph
+    If name does not match a variable in the graph
 "
 
 %feature("docstring") gum::DAGmodel::variableFromName
@@ -201,17 +201,17 @@ pyagrum.NotFound
 Parameters
 ----------
 name : str
-	a variable's name
+    a variable's name
 
 Returns
 -------
 pyagrum.DiscreteVariable
-	the variable
+    the variable
 
 Raises
 ------
 pyagrum.IndexError
-	If the graph does not contain the variable
+    If the graph does not contain the variable
 "
 
 
@@ -220,17 +220,17 @@ pyagrum.IndexError
 Parameters
 ----------
 var : pyagrum.DiscreteVariable
-	a variable
+    a variable
 
 Returns
 -------
 int
-	the id of the variable
+    the id of the variable
 
 Raises
 ------
 pyagrum.IndexError
-	If the graph does not contain the variable
+    If the graph does not contain the variable
 "
 
 %feature("docstring") gum::DAGmodel::nodes
@@ -246,19 +246,19 @@ set
 Parameters
 ----------
 id : int
-	a variable's id
+    a variable's id
 name : str
-	a variable's name
+    a variable's name
 
 Returns
 -------
 pyagrum.DiscreteVariable
-	the variable
+    the variable
 
 Raises
 ------
 pyagrum.IndexError
-	If the graph does not contain the variable
+    If the graph does not contain the variable
 "
 
 %feature("docstring") gum::DAGmodel::variableNodeMap
@@ -266,7 +266,7 @@ pyagrum.IndexError
 Returns
 -------
 pyagrum.variableNodeMap
-	the variable node map
+    the variable node map
 "
 
 
@@ -281,7 +281,7 @@ norid : str|int
 
 Returns
 -------
-Set[int]
+set
   the set of ids of the ancestors of node `norid`.
 "
 
@@ -297,7 +297,7 @@ norid : str|int
 
 Returns
 -------
-Set[int]
+set
   the set of ids of the descendants of node `norid`.
 "
 
@@ -306,7 +306,7 @@ Set[int]
 Check if an arc exists
 
 Parameters
----------
+----------
 tail : str|int
   the name or id of the tail of the arc
 
@@ -324,13 +324,13 @@ bool
 give the set of parents of a node and the node
 
 Parameters
----------
+----------
 norid : str|int
   the node
 
 Returns
 -------
-Set[int]
+set
   the set of nodeId of the family of the node `norid`
 "
 
@@ -340,7 +340,7 @@ build a UndiGraph by moralizing the Ancestral Graph of a list of nodes
 
 Parameters
 ----------
-nodes : str|int|List[str|int]
+nodes : str|int|list of str|int
   the list of of nodeIds or names
 
 Warnings

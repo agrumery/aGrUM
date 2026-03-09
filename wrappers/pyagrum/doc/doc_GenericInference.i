@@ -82,8 +82,8 @@ X : int or str
 Y : int or str
    another node Id or node name
 
-   Returns
--------
+      Returns
+      -------
 float
    the Mutual Information of X and Y given the observation
 "
@@ -97,8 +97,8 @@ X : int or str
 Y : int or str
    another node Id or node name
 
-   Returns
--------
+      Returns
+      -------
 float
    variation of information between X and Y
 "
@@ -183,7 +183,7 @@ nodeName : int
   a node name
 val : int|str
   a node value or the label of the node value
-vals : List[float]
+vals : list of float
   a list of values
 
 Raises
@@ -302,9 +302,9 @@ Create a pyagrum.Tensor for P(joint targets|evs) (for all instanciation of targe
 
 Parameters
 ----------
-targets : List[int|str]
+targets : list of int|str
   a list of node Ids or node names
-evs : Set[int|str]
+evs : set
   a set of nodes ids or names.
 
 Returns
@@ -719,7 +719,7 @@ If, on the contrary, nb is equal to 0, the parallelized inference engine will co
 Parameters
 ----------
 nb : int
-	the number of threads to be used by ShaferShenoyMRFInference
+    the number of threads to be used by ShaferShenoyMRFInference
 "
 
 %feature("docstring") gum::classname::getNumberOfThreads
@@ -729,7 +729,7 @@ returns the number of threads used by LazyPropagation during inferences.
 Returns
 -------
 int
-	the number of threads used by LazyPropagation during inferences
+    the number of threads used by LazyPropagation during inferences
 "
 
 %feature("docstring") gum::classname::isGumNumberOfThreadsOverriden
@@ -739,7 +739,7 @@ Indicates whether LazyPropagation currently overrides aGrUM's default number of 
 Returns
 -------
 bool
-	A Boolean indicating whether LazyPropagation currently overrides aGrUM's default number of threads
+    A Boolean indicating whether LazyPropagation currently overrides aGrUM's default number of threads
 "
 
 %feature("docstring") gum::classname::setMaxMemory

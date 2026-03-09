@@ -87,12 +87,12 @@ it is assumed to be explained by the new latent confounder.
 Parameters
 ----------
 name : str
-	Name of the new latent variable.
+    Name of the new latent variable.
 children : list of str
-	Names of the observed variables that are children of this latent variable.
+    Names of the observed variables that are children of this latent variable.
 keepArcs : bool, optional
-	If True, preserve existing arcs between the specified children.
-	Default is False.
+    If True, preserve existing arcs between the specified children.
+    Default is False.
 "
 
 %feature("docstring") gum::CausalModel::existsArc
@@ -102,14 +102,14 @@ Check whether an arc exists in the causal DAG.
 Parameters
 ----------
 x : int or str
-	Tail of the arc (NodeId or variable name).
+    Tail of the arc (NodeId or variable name).
 y : int or str
-	Head of the arc (NodeId or variable name).
+    Head of the arc (NodeId or variable name).
 
 Returns
 -------
 bool
-	True if the arc x→y exists in the causal DAG.
+    True if the arc x→y exists in the causal DAG.
 "
 
 %feature("docstring") gum::CausalModel::assumeSpurious
@@ -123,9 +123,9 @@ This changes the structural interpretation but does not remove the arc.
 Parameters
 ----------
 x : int or str
-	Tail of the arc (NodeId or variable name).
+    Tail of the arc (NodeId or variable name).
 y : int or str
-	Head of the arc (NodeId or variable name).
+    Head of the arc (NodeId or variable name).
 "
 
 %feature("docstring") gum::CausalModel::assumeNonSpurious
@@ -135,9 +135,9 @@ Mark an arc in the causal DAG as non-spurious (a genuine causal effect).
 Parameters
 ----------
 x : int or str
-	Tail of the arc (NodeId or variable name).
+    Tail of the arc (NodeId or variable name).
 y : int or str
-	Head of the arc (NodeId or variable name).
+    Head of the arc (NodeId or variable name).
 "
 
 %feature("docstring") gum::CausalModel::isAssumedSpurious
@@ -147,14 +147,14 @@ Check whether the arc x→y is assumed spurious.
 Parameters
 ----------
 x : int or str
-	Tail of the arc (NodeId or variable name).
+    Tail of the arc (NodeId or variable name).
 y : int or str
-	Head of the arc (NodeId or variable name).
+    Head of the arc (NodeId or variable name).
 
 Returns
 -------
 bool
-	True if the arc x→y is marked as spurious.
+    True if the arc x→y is marked as spurious.
 "
 
 %feature("docstring") gum::CausalModel::backDoor
@@ -169,14 +169,14 @@ effect P(effect | do(cause)) via standard conditioning on Z.
 Parameters
 ----------
 cause : int or str
-	The treatment variable (NodeId or variable name).
+    The treatment variable (NodeId or variable name).
 effect : int or str
-	The outcome variable (NodeId or variable name).
+    The outcome variable (NodeId or variable name).
 
 Returns
 -------
 set of int
-	A valid backdoor adjustment set as NodeIds. Empty if no backdoor set exists.
+    A valid backdoor adjustment set as NodeIds. Empty if no backdoor set exists.
 
 See Also
 --------
@@ -194,14 +194,14 @@ P(effect | do(cause)) even in the presence of unobserved confounders.
 Parameters
 ----------
 cause : int or str
-	The treatment variable (NodeId or variable name).
+    The treatment variable (NodeId or variable name).
 effect : int or str
-	The outcome variable (NodeId or variable name).
+    The outcome variable (NodeId or variable name).
 
 Returns
 -------
 set of int
-	A valid frontdoor adjustment set as NodeIds. Empty if no frontdoor set exists.
+    A valid frontdoor adjustment set as NodeIds. Empty if no frontdoor set exists.
 
 See Also
 --------
@@ -212,8 +212,8 @@ pyagrum.causal.DoorCriteria.enumerateFrontdoorSets : enumerate all valid sets.
 "
 Return the observational Bayesian network underlying the causal model.
 
-Warning
--------
+Warnings
+--------
 Do not use this BN for causal inference. It represents the observational
 distribution only. Use :func:`pyagrum.causal.causalImpact` for
 interventional queries.
@@ -221,7 +221,7 @@ interventional queries.
 Returns
 -------
 pyagrum.BayesNet
-	The observational BN (observed variables only).
+    The observational BN (observed variables only).
 "
 
 %feature("docstring") gum::CausalModel::causalDAG
@@ -231,7 +231,7 @@ Return the full causal DAG, including latent variables.
 Returns
 -------
 pyagrum.DAG
-	The causal DAG (observed + latent nodes).
+    The causal DAG (observed + latent nodes).
 "
 
 %feature("docstring") gum::CausalModel::names
@@ -241,7 +241,7 @@ Return the names of all variables in the causal model (observed and latent).
 Returns
 -------
 set of str
-	The set of all variable names.
+    The set of all variable names.
 "
 
 %feature("docstring") gum::CausalModel::idFromName
@@ -251,17 +251,17 @@ Return the NodeId of a variable by name.
 Parameters
 ----------
 name : str
-	The variable name.
+    The variable name.
 
 Returns
 -------
 int
-	The NodeId of the variable.
+    The NodeId of the variable.
 
 Raises
 ------
 pyagrum.NotFound
-	If no variable with that name exists in the causal model.
+    If no variable with that name exists in the causal model.
 "
 
 %feature("docstring") gum::CausalModel::nameFromId
@@ -271,17 +271,17 @@ Return the name of a variable by NodeId.
 Parameters
 ----------
 id : int
-	The NodeId of the variable.
+    The NodeId of the variable.
 
 Returns
 -------
 str
-	The variable name.
+    The variable name.
 
 Raises
 ------
 pyagrum.NotFound
-	If no variable with that NodeId exists in the causal model.
+    If no variable with that NodeId exists in the causal model.
 "
 
 %feature("docstring") gum::CausalModel::id2name
@@ -291,12 +291,12 @@ Return the full NodeId ↔ name bijection.
 Parameters
 ----------
 includeLatentVariable : bool, optional
-	If True, include latent variables in the mapping. Default is False.
+    If True, include latent variables in the mapping. Default is False.
 
 Returns
 -------
 pyagrum.Bijection
-	A bijection between NodeIds and variable names.
+    A bijection between NodeIds and variable names.
 "
 
 %feature("docstring") gum::CausalModel::latentVariablesIds
@@ -306,7 +306,7 @@ Return the NodeIds of all latent (hidden) variables in the causal model.
 Returns
 -------
 set of int
-	NodeIds of latent variables.
+    NodeIds of latent variables.
 "
 
 %feature("docstring") gum::CausalModel::latentVariablesNames
@@ -316,7 +316,7 @@ Return the names of all latent (hidden) variables in the causal model.
 Returns
 -------
 set of str
-	Names of latent variables.
+    Names of latent variables.
 "
 
 %feature("docstring") gum::CausalModel::parents
@@ -326,12 +326,12 @@ Return the parents of a variable in the causal DAG.
 Parameters
 ----------
 x : int or str
-	The variable (NodeId or name).
+    The variable (NodeId or name).
 
 Returns
 -------
 set of int
-	NodeIds of the variable's parents in the causal DAG.
+    NodeIds of the variable's parents in the causal DAG.
 "
 
 %feature("docstring") gum::CausalModel::children
@@ -341,12 +341,12 @@ Return the children of a variable in the causal DAG.
 Parameters
 ----------
 x : int or str
-	The variable (NodeId or name).
+    The variable (NodeId or name).
 
 Returns
 -------
 set of int
-	NodeIds of the variable's children in the causal DAG.
+    NodeIds of the variable's children in the causal DAG.
 "
 
 %feature("docstring") gum::CausalModel::connectedComponents
@@ -356,7 +356,7 @@ Return the connected components of the causal DAG (treating arcs as undirected).
 Returns
 -------
 dict of int → set of int
-	A mapping from component index to the set of NodeIds in that component.
+    A mapping from component index to the set of NodeIds in that component.
 "
 
 %feature("docstring") gum::CausalModel::inducedCausalSubModel
@@ -369,14 +369,14 @@ portion of the causal DAG and latent structure.
 Parameters
 ----------
 cm : pyagrum.causal.CausalModel
-	The original causal model.
+    The original causal model.
 subset : set of int
-	NodeIds of the observed variables to keep.
+    NodeIds of the observed variables to keep.
 
 Returns
 -------
 pyagrum.causal.CausalModel
-	The induced causal sub-model.
+    The induced causal sub-model.
 "
 
 %feature("docstring") gum::CausalModel::toDot
@@ -389,19 +389,19 @@ with a distinct background colour. Their names are hidden by default.
 Parameters
 ----------
 SHOW_LATENT_NAMES : bool, optional
-	If True, display the names of latent nodes in the graph. Default is False.
+    If True, display the names of latent nodes in the graph. Default is False.
 NODE_BG : str, optional
-	Background colour for latent nodes (hex or CSS colour name).
-	Default is '#404040'.
+    Background colour for latent nodes (hex or CSS colour name).
+    Default is '#404040'.
 NODE_FG : str, optional
-	Text colour for latent nodes. Default is 'white'.
+    Text colour for latent nodes. Default is 'white'.
 EDGE_COL : str, optional
-	Edge colour. Default is '#4A4A4A'.
+    Edge colour. Default is '#4A4A4A'.
 
 Returns
 -------
 str
-	A dot-format string representation of the causal model.
+    A dot-format string representation of the causal model.
 
 Examples
 --------

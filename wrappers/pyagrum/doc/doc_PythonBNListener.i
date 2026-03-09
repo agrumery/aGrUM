@@ -51,8 +51,8 @@ Listener for Bayesian Network's modifications. This listener is notified when th
 PythonBNListener(bn:gum.BayesNet,vnm:gum.VariableNodeMap) -> PythonBNListener
     default constructor
 
-Note
-----
+Notes
+-----
     This class est mainly automatically instantiated using the method gum.BayesNet.addStructureListener.
 
 Parameters

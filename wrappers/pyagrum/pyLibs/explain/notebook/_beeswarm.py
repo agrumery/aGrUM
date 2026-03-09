@@ -53,7 +53,7 @@ def beeswarm(
 ):
   """
   Plots a beeswarm plot of the Shapley values for a given target class.
-  Parameters:
+  Parameters
   ----------
   explanation : Explanation
       The explanation object containing the SHAP/SHALL values.
@@ -69,7 +69,7 @@ def beeswarm(
   sort : bool, optional
       If True, sorts the features by their importance before plotting (default is True).
 
-  Raises:
+  Raises
   ------
   TypeError
       If `explanation` is not an Explanation object, if `y` is not an integer or if the explanation is not global (i.e., does not contain lists of contributions for each feature).

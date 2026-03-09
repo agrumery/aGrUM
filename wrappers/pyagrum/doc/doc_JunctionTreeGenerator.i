@@ -59,21 +59,21 @@ Computes the junction tree for its parameters. If the first parameter is a graph
 Parameters
 ----------
 g : pyagrum.UndiGraph
-	a undirected graph
+    a undirected graph
 
 dag : pyagrum.DAG
-	a dag
+    a dag
 
 bn : pyagrum.BayesNet
-	a BayesianNetwork
+    a BayesianNetwork
 
-partial_order: List[List[int]]
-	a partial order among the nodeIDs
+partial_order: list of list of int
+    a partial order among the nodeIDs
 
 Returns
 -------
 pyagrum.CliqueGraph
-	the current junction tree.
+    the current junction tree.
 "
 
 %feature("docstring") JunctionTreeGenerator::binaryJoinTree
@@ -83,21 +83,21 @@ Computes the binary joint tree for its parameters. If the first parameter is a g
 Parameters
 ----------
 g : pyagrum.UndiGraph
-	a undirected graph
+    a undirected graph
 
 dag : pyagrum.DAG
-	a dag
+    a dag
 
 bn : pyagrum.BayesNet
-	a BayesianNetwork
+    a BayesianNetwork
 
-partial_order: List[List[int]]
-	a partial order among the nodeIDs
+partial_order: list of list of int
+    a partial order among the nodeIDs
 
 Returns
 -------
 pyagrum.CliqueGraph
-	the current binary joint tree
+    the current binary joint tree
 "
 
 %feature("docstring") JunctionTreeGenerator::eliminationOrder
@@ -107,19 +107,19 @@ Computes the elimination for its parameters. If the first parameter is a graph, 
 Parameters
 ----------
 g : pyagrum.UndiGraph
-	a undirected graph
+    a undirected graph
 
 dag : pyagrum.DAG
-	a dag
+    a dag
 
 bn : pyagrum.BayesNet
-	a BayesianNetwork
+    a BayesianNetwork
 
-partial_order: List[List[int]]
-	a partial order among the nodeIDs
+partial_order: list of list of int
+    a partial order among the nodeIDs
 
 Returns
 -------
 pyagrum.CliqueGraph
-	the current elimination order.
+    the current elimination order.
 "

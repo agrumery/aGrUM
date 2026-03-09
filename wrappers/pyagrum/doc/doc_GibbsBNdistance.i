@@ -61,7 +61,7 @@ GibbsBNdistance(gbnd) -> GibbsBNdistance
 Raises
 ------
   pyagrum.OperationNotAllowed
-	If the 2BNs have not the same domain size of compatible node sets
+    If the 2BNs have not the same domain size of compatible node sets
 "
 
 %feature("docstring") gum::GibbsBNdistance::nbrDrawnVar

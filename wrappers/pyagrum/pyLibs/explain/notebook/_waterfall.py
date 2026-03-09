@@ -63,7 +63,7 @@ def waterfall(explanation: Explanation, y: int = 1, ax=None, real_values: Dict =
   """
   Plots a waterfall chart of the SHAP/SHALL values.
 
-  Parameters:
+  Parameters
   ----------
   explanation : Explanation
       The explanation object containing the SHAP/SHALL values.
@@ -77,7 +77,7 @@ def waterfall(explanation: Explanation, y: int = 1, ax=None, real_values: Dict =
       For example, useful when continuous values have been discretized but you still want to show the original continuous values from the database.
       The keys of the dictionary must match the keys in the Explanation object, and the values are the values you want to display on the plot.
 
-  Raises :
+  Raises
   ------
   TypeError : If `explanation` is not an Explanation object or if `y` is not an integer.
   IndexError : If `y` is an integer but out of bounds for the explanation keys.

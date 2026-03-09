@@ -139,9 +139,10 @@ def _is_path_x_y(g_undi: "pyagrum.UndiGraph", sx: NodeSet, sy: NodeSet, marked: 
   marked: Set[int]
       forbidden nodes
 
-  :return:
+  Returns
+  -------
   bool
-      True if a path has been found
+      True if a path has been found.
   """
 
   def inner_ec(g_und: "pyagrum.UndiGraph", a: NodeId, b: NodeSet, m: NodeSet) -> bool:

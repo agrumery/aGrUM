@@ -59,18 +59,18 @@ Generate a new influence diagram given the parameters.
 Parameters
 ----------
 nbrNodes : int
-	the number of node
+    the number of node
 arcDensity : float
-	the density of arc (1 for a complete graph)
+    the density of arc (1 for a complete graph)
 chanceNodeDensity : float
-	the density of chance node
+    the density of chance node
 utilityNodeDensity : float
-	the density of utility node
+    the density of utility node
 max_modality : int
-	the maximum value for modalities
+    the maximum value for modalities
 
 Returns
 -------
 pyagrum.InfluenceDiagram
-	the generated influence diagram
+    the generated influence diagram
 "

@@ -255,20 +255,35 @@ def MRFinference2UGdot(
   view=None,
 ):
   """
-  create a pydot representation of an inference in a MRF as an UG
+  Create a pydot representation of an inference in a MRF as an undirected graph.
 
-  :param pyagrum.MarkovRandomField mrf:
-  :param string size: size of the rendered graph
-  :param pyAgrum Inference engine: inference algorithm used. If None, ShaferShenoyMRFInference will be used
-  :param dictionnary evs: map of evidence
-  :param set targets: set of targets. If targets={} then each node is a target
-  :param nodeColor: a nodeMap of values to be shown as color nodes (with special color for 0 and 1)
-  :param arcWidth: a arcMap of values to be shown as bold arcs
-  :param arcColor: a arcMap of values (between 0 and 1) to be shown as color of arcs
-  :param cmapNode: color map to show the vals of Nodes
-  :param cmapArc: color map to show the vals of Arcs
+  Parameters
+  ----------
+  mrf : pyagrum.MarkovRandomField
+      The Markov random field.
+  size : str, optional
+      Size of the rendered graph.
+  engine : pyagrum inference engine, optional
+      Inference algorithm used. If None, ShaferShenoyMRFInference will be used.
+  evs : dict, optional
+      Map of evidence.
+  targets : set, optional
+      Set of targets. If targets={} then each node is a target.
+  nodeColor : dict, optional
+      A nodeMap of values to be shown as color nodes (with special color for 0 and 1).
+  arcWidth : dict, optional
+      A arcMap of values to be shown as bold arcs.
+  arcColor : dict, optional
+      A arcMap of values (between 0 and 1) to be shown as color of arcs.
+  cmapNode : matplotlib.colors.Colormap, optional
+      Color map to show the node values.
+  cmapArc : matplotlib.colors.Colormap, optional
+      Color map to show the arc values.
 
-  :return: the desired representation of the inference
+  Returns
+  -------
+  pydot.Dot
+      The desired representation of the inference.
   """
   if evs is None:
     evs = {}
@@ -369,17 +384,29 @@ def MRFinference2FactorGraphdot(
   mrf, size=None, engine=None, evs=None, targets=None, nodeColor=None, factorColor=None, cmapNode=None
 ):
   """
-  create a pydot representation of an inference in a MRF as an factor graph
+  Create a pydot representation of an inference in a MRF as a factor graph.
 
-  :param pyagrum.MarkovRandomField mrf:
-  :param string size: size of the rendered graph
-  :param pyAgrum Inference engine: inference algorithm used. If None, ShaferShenoyMRFInference will be used
-  :param dictionnary evs: map of evidence
-  :param set targets: set of targets. If targets={} then each node is a target
-  :param nodeColor: a nodeMap of values to be shown as color nodes (with special color for 0 and 1)
-  :param cmapNode: color map to show the vals of Nodes
+  Parameters
+  ----------
+  mrf : pyagrum.MarkovRandomField
+      The Markov random field.
+  size : str, optional
+      Size of the rendered graph.
+  engine : pyagrum inference engine, optional
+      Inference algorithm used. If None, ShaferShenoyMRFInference will be used.
+  evs : dict, optional
+      Map of evidence.
+  targets : set, optional
+      Set of targets. If targets={} then each node is a target.
+  nodeColor : dict, optional
+      A nodeMap of values to be shown as color nodes (with special color for 0 and 1).
+  cmapNode : matplotlib.colors.Colormap, optional
+      Color map to show the node values.
 
-  :return: the desired representation of the inference
+  Returns
+  -------
+  pydot.Dot
+      The desired representation of the inference.
   """
   if evs is None:
     evs = {}

@@ -51,14 +51,14 @@ This class provides functionality for learning Bayesian Networks from data.
 BNLearner(filename,inducedTypes=True) -> BNLearner
     Parameters:
         - **source** (*str* or *pandas.DataFrame*) -- the data to learn from
-        - **missingSymbols** (*List[str]*) -- list of strings that will be interpreted as missing values (by default : `?`)
+        - **missingSymbols** (*list of str*) -- list of strings that will be interpreted as missing values (by default : `?`)
         - **inducedTypes** (*Bool*) -- whether BNLearner should try to automatically find the type of each variable
 
 BNLearner(filename,src) -> BNLearner
     Parameters:
         - **source** (*str* or *pandas.DataFrame*) -- the data to learn from
         - **src** (*pyagrum.BayesNet*) -- the Bayesian network used to find those modalities
-        - **missingSymbols** (*List[str]*) -- list of strings that will be interpreted as missing values (by default : `?`)
+        - **missingSymbols** (*list of str*) -- list of strings that will be interpreted as missing values (by default : `?`)
 
 BNLearner(learner) -> BNLearner
     Parameters:
@@ -77,7 +77,7 @@ Learns a BayesNet (both parameters and structure) from the BNLearner's database
 Returns
 -------
 pyagrum.BayesNet
-	the learnt BayesNet
+    the learnt BayesNet
 "
 
 
@@ -88,7 +88,7 @@ learn a structure from a file
 Returns
 -------
 pyagrum.DAG
-	the learned DAG
+    the learned DAG
 "
 
 
@@ -99,7 +99,7 @@ learn a partially directed acyclic graph (PDAG) from the BNLearner's database
 Returns
 -------
 pyagrum.PDAG
-	the learned PDAG
+    the learned PDAG
 
 Warnings
 --------
@@ -139,38 +139,38 @@ a subsequent perturbation controlled by the noise level is applied.
 Parameters
 ----------
 dag : pyagrum.DAG
-	specifies the graphical structure of the returned Bayes net.
+    specifies the graphical structure of the returned Bayes net.
 bn : pyagrum.BayesNet
-	specifies the graphical structure of the returned Bayes net and, when
-	the database contains missing values and EM is used for learning, force
-	EM to initialize the CPTs of the resulting Bayes net to the values of
-	those passed in argument (when they are not fully filled with zeroes)
-	before iterating over the expectation/maximization steps.
+    specifies the graphical structure of the returned Bayes net and, when
+    the database contains missing values and EM is used for learning, force
+    EM to initialize the CPTs of the resulting Bayes net to the values of
+    those passed in argument (when they are not fully filled with zeroes)
+    before iterating over the expectation/maximization steps.
 take_into_account_score : bool, default=True
-	The graphical structure passed in argument may have been learnt from a
-	structure learning. In this case, if the score used to learn the structure
-	has an implicit prior (like K2 which has a 1-smoothing prior), it is important
-	to also take into account this implicit prior for parameter learning. By
-	default (`take_into_account_score=True`), we will learn parameters by taking
-	into account the prior specified by methods usePriorXXX() + the implicit prior
-	of the score (if any). If `take_into_account_score=False`, we just take into
-	account the prior specified by `usePriorXXX()`.
+    The graphical structure passed in argument may have been learnt from a
+    structure learning. In this case, if the score used to learn the structure
+    has an implicit prior (like K2 which has a 1-smoothing prior), it is important
+    to also take into account this implicit prior for parameter learning. By
+    default (`take_into_account_score=True`), we will learn parameters by taking
+    into account the prior specified by methods usePriorXXX() + the implicit prior
+    of the score (if any). If `take_into_account_score=False`, we just take into
+    account the prior specified by `usePriorXXX()`.
 
 Returns
 -------
 pyagrum.BayesNet
-	the learnt BayesNet
+    the learnt BayesNet
 
 Raises
 ------
 pyagrum.MissingVariableInDatabase
-	If a variable of the Bayes net is not found in the database
+    If a variable of the Bayes net is not found in the database
 pyagrum.MissingValueInDatabase
-	If the database contains some missing values and EM is not used for the learning
+    If the database contains some missing values and EM is not used for the learning
 pyagrum.OperationNotAllowed
-	If EM is used but no stopping criterion has been selected
+    If EM is used but no stopping criterion has been selected
 pyagrum.UnknownLabelInDatabase
-	If a label is found in the database that do not correspond to the variable
+    If a label is found in the database that do not correspond to the variable
 
 Warnings
 --------
@@ -199,7 +199,7 @@ can be controlled using Method useEM().
 Parameters
 ----------
 bn : pyagrum.BayesNet
-	a BN which will directly have its parameters learned inplace.
+    a BN which will directly have its parameters learned inplace.
 
 take_into_account_score : bool
   The dag passed in argument may have been learnt from a structure learning. In this case,
@@ -208,11 +208,18 @@ take_into_account_score : bool
   (`take_into_account_score=True`), we will learn parameters by taking into account the prior specified
   by methods usePriorXXX () + the implicit prior of the score (if any). If `take_into_account_score=False`,
   we just take into account the prior specified by `usePriorXXX()`.
+
+Returns
+-------
+pyagrum.BayesNet
+    the Bayesian network with fitted parameters.
 "
 
 
 %feature("docstring") gum::learning::IBNLearner::learnMixedStructure
 "
+Learn a mixed structure using the MIIC algorithm.
+
 Warnings
 --------
 learner must be using MIIC algorithm
@@ -220,12 +227,14 @@ learner must be using MIIC algorithm
 Returns
 -------
 pyagrum.EssentialGraph
-	the learned structure as an EssentialGraph
+    the learned structure as an EssentialGraph
 "
 
 
 %feature("docstring") gum::learning::BNLearner::latentVariables
 "
+Returns the list of latent variables discovered by MIIC.
+
 Warnings
 --------
 learner must be using MIIC algorithm
@@ -233,7 +242,7 @@ learner must be using MIIC algorithm
 Returns
 -------
 list
-	the list of latent variables
+    the list of latent variables
 "
 
 
@@ -349,7 +358,7 @@ values.
 Parameters
 ----------
 weight : float
-	the prior weight
+    the prior weight
 "
 
 
@@ -406,7 +415,7 @@ Add to structure learning algorithms the constraint that this node cannot have a
 Parameters
 ----------
 node : int | str
-	a variable's id or name
+    a variable's id or name
 "
 
 %feature("docstring") gum::learning::BNLearner::eraseNoChildrenNode
@@ -416,7 +425,7 @@ Remove in structure learning algorithms the constraint that this node cannot hav
 Parameters
 ----------
 node : int | str
-	a variable's id or name
+    a variable's id or name
 "
 
 
@@ -427,7 +436,7 @@ Add the constraint that this node cannot have any parent.
 Parameters
 ----------
 node : int | str
-	a variable's id or name
+    a variable's id or name
 "
 
 
@@ -438,7 +447,7 @@ Remove the constraint that this node cannot have any parent.
 Parameters
 ----------
 node : int | str
-	a variable's id or name
+    a variable's id or name
 "
 
 
@@ -449,11 +458,11 @@ Allow the 2 arcs to be added if necessary.
 Parameters
 ----------
 arc : pyagrum.Arc
-	an arc
+    an arc
 head : int | str
-	a variable's id or name
+    a variable's id or name
 tail : int | str
-	a variable's id or name
+    a variable's id or name
 "
 
 
@@ -464,11 +473,11 @@ Allow the arc to be added if necessary.
 Parameters
 ----------
 arc: pyagrum.Arc
-	an arc
+    an arc
 head : int | str
-	a variable's id or name
+    a variable's id or name
 tail : int | str
-	a variable's id or name
+    a variable's id or name
 "
 
 
@@ -477,11 +486,11 @@ tail : int | str
 Parameters
 ----------
 arc: pyagrum.Arc
-	an arc
+    an arc
 head : int | str
-	a variable's id or name
+    a variable's id or name
 tail : int | str
-	a variable's id or name
+    a variable's id or name
 "
 
 
@@ -497,11 +506,11 @@ Usage:
 Parameters
 ----------
 arc : pyagrum.Arc
-	an arc
+    an arc
 head : int | str
-	a variable's id or name
+    a variable's id or name
 tail : int | str
-	a variable's id or name
+    a variable's id or name
 "
 
 
@@ -511,7 +520,7 @@ assign a set of forbidden arcs
 
 Parameters
 ----------
-arcs: Set[Tuple[int|str,int|str]]
+arcs : set
 "
 
 
@@ -521,7 +530,7 @@ assign a set of mandatory arcs
 
 Parameters
 ----------
-arcs: Set[Tuple[int|str,int|str]]
+arcs : set
 "
 
 
@@ -537,16 +546,16 @@ Usage:
 Parameters
 ----------
 arc : pyagrum.Arc
-	an arc
+    an arc
 head : int | str
-	a variable's id or name
+    a variable's id or name
 tail : int | str
-	a variable's id or name
+    a variable's id or name
 
 Raises
 ------
 pyagrum.InvalidDirectedCycle
-	If the added arc creates a directed cycle in the DAG
+    If the added arc creates a directed cycle in the DAG
 "
 
 
@@ -562,11 +571,11 @@ all other edges not declared possible are considered as impossible.
 Parameters
 ----------
 arc : pyagrum.Arc
-	an arc
+    an arc
 head : int | str
-	a variable's id or name
+    a variable's id or name
 tail : int | str
-	a variable's id or name
+    a variable's id or name
 "
 
 
@@ -586,7 +595,7 @@ l : list
 Parameters
 ----------
 max_indegree : int
-	the limit number of parents
+    the limit number of parents
 "
 
 
@@ -614,11 +623,11 @@ or `useEMWithDiffCriterion()`.
 Parameters
 ----------
 epsilon : float
-	if epsilon>0 then EM is used and stops whenever the relative difference between two
-	consecutive log-likelihoods (log-likelihood evolution rate) drops below epsilon.
+    if epsilon>0 then EM is used and stops whenever the relative difference between two
+    consecutive log-likelihoods (log-likelihood evolution rate) drops below epsilon.
 
-	if epsilon=0.0 then EM is not used. But if you wish to forbid the use of EM, prefer
-	executing Method `forbidEM()` rather than useEM(0.0) as it is more unequivocal.
+    if epsilon=0.0 then EM is not used. But if you wish to forbid the use of EM, prefer
+    executing Method `forbidEM()` rather than useEM(0.0) as it is more unequivocal.
 
 noise: float, default=0.1
         During EM's initialization, the CPTs are randomly perturbed using the following formula:
@@ -758,8 +767,8 @@ Returns
 pyagrum.BNLearner
         the BNLearner itself, so that we can chain useXXX() methods.
 
-Warnings:
----------
+Warnings
+--------
 Setting the min difference between two consecutive log-likelihoods as a stopping
 criterion disables the min log-likelihood evolution rate as a stopping criterion.
 "
@@ -792,7 +801,7 @@ parameter learning algorithm as a stopping criterion.
 Parameters
 ----------
 rate: float
-	the log-likelihood evolution rate below which EM stops its iterations
+    the log-likelihood evolution rate below which EM stops its iterations
 
 Returns
 -------
@@ -802,7 +811,7 @@ pyagrum.BNLearner
 Raises
 ------
 pyagrum.OutOfBounds
-	If rate <= 0.
+    If rate <= 0.
 
 Warnings
 --------
@@ -847,7 +856,7 @@ which the EM parameter learning algorithm stops its iterations.
 Returns
 -------
 float
-	the limit under which EM stops its expectation/maximization iterations
+    the limit under which EM stops its expectation/maximization iterations
 "
 
 
@@ -865,7 +874,7 @@ Enforces a limit on the number of expectation/maximization steps performed by EM
 Parameters
 ----------
 max : int
-	the maximal number of iterations that EM is allowed to perform
+    the maximal number of iterations that EM is allowed to perform
 
 Returns
 -------
@@ -875,7 +884,7 @@ pyagrum.BNLearner
 Raises
 ------
 pyagrum.OutOfBounds
-	If max <= 1.
+    If max <= 1.
 "
 
 
@@ -910,8 +919,8 @@ algorithm is allowed to perform when the max iterations stopping criterion is en
 
 Returns
 -------
-float
-	the max number of expectation/maximization iterations EM is allowed to perform
+int
+    the max number of expectation/maximization iterations EM is allowed to perform
 "
 
 
@@ -930,7 +939,7 @@ parameters.
 Parameters
 ----------
 timeout : float
-	the timeout in milliseconds
+    the timeout in milliseconds
 
 Returns
 -------
@@ -995,7 +1004,7 @@ See Method `EMHistory()`.
 Parameters
 ----------
 v : bool
-	sets EM's verbose mode if and only if v = True.
+    sets EM's verbose mode if and only if v = True.
 
 Returns
 -------
@@ -1065,7 +1074,7 @@ expectation/maximization iteration of the EM parameter learning algorithm.
 
 Returns
 -------
-List[float]
+list of float
         A list of all the log-likelihoods recorded during EM's execution
 
 Warnings
@@ -1085,17 +1094,17 @@ mode. See method `EMsetVerbosity()`.
 Parameters
 ----------
 var_names : str
-	a variable's name
+    a variable's name
 
 Returns
 -------
 int
-	the column id corresponding to a variable name
+    the column id corresponding to a variable name
 
 Raises
 ------
 pyagrum.MissingVariableInDatabase
-	If a variable of the BN is not found in the database.
+    If a variable of the BN is not found in the database.
 "
 
 
@@ -1103,7 +1112,7 @@ pyagrum.MissingVariableInDatabase
 "
 Parameters
 ----------
-id
+id : int
         a node id
 
 Returns
@@ -1117,7 +1126,7 @@ str
 "
 Returns
 -------
-Tuple[str]
+tuple
         the names of the variables in the database
 "
 
@@ -1246,15 +1255,15 @@ Returns the value of the score currently in use by the BNLearner of a variable g
 Parameters
 ----------
 name1: str
-	the name of the variable at the LHS of the conditioning bar
+    the name of the variable at the LHS of the conditioning bar
 
-knowing : List[str]
-	the list of names of the conditioning variables
+knowing : list of str
+    the list of names of the conditioning variables
 
 Returns
 -------
 float
-	the value of the score
+    the value of the score
 "
 
 
@@ -1275,7 +1284,7 @@ computes the pseudoCount (taking priors into account) of the list of variables
 
 Parameters
 ----------
-vars: List[int|str]
+vars: list of int|str
         the list of variables
 
 Returns
@@ -1292,12 +1301,12 @@ computes the pseudoCount (taking priors into account) of the list of variables a
 
 Parameters
 ----------
-vars: List[int|str]
+vars: list of int|str
         the list of variables
 
 Returns
 -------
-List[float]
+list of float
         the pseudo-count as a list of float
 "
 
@@ -1321,12 +1330,12 @@ name1: str
 name2 : str
         the name/column of another variable
 
-knowing : List[str]
+knowing : list of str
         the list of the column names of the conditioning variables
 
 Returns
 -------
-Tuple[float,float]
+tuple
         the chi2 statistics and the associated p-value as a Tuple
 "
 
@@ -1351,12 +1360,12 @@ name1: str
 name2 : str
         the name/column of another variable
 
-knowing : List[str]
+knowing : list of str
         the list of the column names of the conditioning variables
 
 Returns
 -------
-Tuple[float,float]
+tuple
         the G2 statistics and the corresponding p-value as a Tuple
 "
 
@@ -1378,7 +1387,7 @@ name1: str
 name2 : str
         the name of the second column
 
-knowing : List[str]
+knowing : list of str
         the list of names of conditioning columns
 
 Returns
@@ -1406,12 +1415,12 @@ name1: str
 name2 : str
         the name of the second column
 
-knowing : List[str]
+knowing : list of str
         the list of names of conditioning columns
 
 Returns
 -------
-Tuple[float,float]
+tuple
         the G2 statistic and the associated p-value as a Tuple
 "
 
@@ -1423,10 +1432,10 @@ logLikelihood computes the log-likelihood for the columns in vars, given the col
 
 Parameters
 ----------
-vars: List[str]
+vars: list of str
         the name of the columns of interest
 
-knowing : List[str]
+knowing : list of str
         the (optional) list of names of conditioning columns
 
 Returns
@@ -1468,7 +1477,7 @@ Returns a dictionary containing the current state of the BNLearner.
 
 Returns
 -------
-Dict[str,Any]
+dict
     a dictionary containing the current state of the BNLearner.
 "
 
@@ -1484,8 +1493,8 @@ Adds a constraint to the structure learning algorithm by fixing the set of possi
 
 Parameters
 ----------
-edges : Set[Tuple[int]]
-	a set of edges as couples of nodeIds.
+edges : set
+    a set of edges as couples of nodeIds.
 "
 
 %feature("docstring") gum::learning::BNLearner::setPossibleSkeleton
@@ -1495,7 +1504,7 @@ Add a constraint by fixing the set of possible edges as a pyagrum.UndiGraph.
 Parameters
 ----------
 g : pyagrum.UndiGraph
-	the fixed skeleton
+    the fixed skeleton
 "
 
 
@@ -1506,7 +1515,7 @@ Sets the initial structure (DAG) used by the structure learning algorithm.
 Parameters
 ----------
 dag : pyagrum.DAG
-	an initial pyagrum.DAG structure
+    an initial pyagrum.DAG structure
 "
 
 
@@ -1522,7 +1531,7 @@ Return the number of threads used by the BNLearner during structure and paramete
 Returns
 -------
 int
-	the number of threads used by the BNLearner during structure and parameter learning
+    the number of threads used by the BNLearner during structure and parameter learning
 "
 
 
@@ -1533,30 +1542,30 @@ Check if the number of threads use by the learner is the default one or not.
 Returns
 -------
 bool
-	True if the number of threads used by the BNLearner has been set.
+    True if the number of threads used by the BNLearner has been set.
 "
 
 
 %feature("docstring") gum::learning::IBNLearner::setNumberOfThreads
 "
-If the parameter n passed in argument is different from 0, the BNLearner will use n threads during learning, hence overriding pyAgrum default number of threads.
-If, on the contrary, n is equal to 0, the BNLearner will comply with pyAgrum default number of threads.
+If the parameter n passed in argument is different from 0, the BNLearner will use n threads during learning, hence overriding pyagrum default number of threads.
+If, on the contrary, n is equal to 0, the BNLearner will comply with pyagrum default number of threads.
 
 Parameters
 ----------
 n : int
-	the number of threads to be used by the BNLearner
+    the number of threads to be used by the BNLearner
 "
 
 
 %feature("docstring") gum::learning::IBNLearner::isGumNumberOfThreadsOverriden
 "
-Indicates whether the BNLearner currently overrides pyAgrum default number of threads (see method setNumberOfThreads).
+Indicates whether the BNLearner currently overrides pyagrum default number of threads (see method setNumberOfThreads).
 
 Returns
 -------
 bool
-	A Boolean indicating whether the BNLearner currently overrides pyAgrum default number of threads
+    A Boolean indicating whether the BNLearner currently overrides pyagrum default number of threads
 "
 
 
@@ -1566,6 +1575,6 @@ Copy the state of the given pyagrum.BNLearner (as argument).
 
 Parameters
 ----------
-pyagrum.BNLearner
-    the learner whose state is copied.
+learner : pyagrum.BNLearner
+    the BNLearner to copy state from.
 "

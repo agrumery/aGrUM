@@ -186,7 +186,9 @@ class CausalEffectEstimation:
     """
     Specify the Randomized Controlled Trial (RCT) Adjustment.
 
-    Note: This method does not verify if the specified adjustment is
+    Notes
+    -----
+    This method does not verify if the specified adjustment is
     appropriate within the causal graph. If unsure, use
     `.identifyAdjustment()` to automatically determine the correct
     adjustment set.
@@ -213,7 +215,9 @@ class CausalEffectEstimation:
     """
     Specify the Backdoor Adjustment.
 
-    Note: This method does not verify if the specified adjustment is
+    Notes
+    -----
+    This method does not verify if the specified adjustment is
     appropriate within the causal graph. If unsure, use
     `.identifyAdjustment()` to automatically determine the correct
     adjustment set.
@@ -243,7 +247,9 @@ class CausalEffectEstimation:
     Specify the (General) Frontdoor Adjustment.
     :cite:t:`guo2023targeted`.
 
-    Note: This method does not verify if the specified adjustment is
+    Notes
+    -----
+    This method does not verify if the specified adjustment is
     appropriate within the causal graph. If unsure, use
     `.identifyAdjustment()` to automatically determine the correct
     adjustment set.
@@ -277,7 +283,9 @@ class CausalEffectEstimation:
     :cite:t:`van2015efficiently`.
 
 
-    Note: This method does not verify if the specified adjustment is
+    Notes
+    -----
+    This method does not verify if the specified adjustment is
     appropriate within the causal graph. If unsure, use
     `.identifyAdjustment()` to automatically determine the correct
     adjustment set.
@@ -309,7 +317,9 @@ class CausalEffectEstimation:
     """
     Specify an Unknown Adjustment.
 
-    Note: This method does not verify if the specified adjustment is
+    Notes
+    -----
+    This method does not verify if the specified adjustment is
     appropriate within the causal graph. If unsure, use
     `.identifyAdjustment()` to automatically determine the correct
     adjustment set.
@@ -478,7 +488,9 @@ class CausalEffectEstimation:
     inference, implemented via the pyAgrum library's causal module,
     to determine the causal effect within Bayesian Networks.
 
-    Note: In the case of instrumental variables, the causal effect is
+    Notes
+    -----
+    In the case of instrumental variables, the causal effect is
     estimated using heuristic methods, as this adjustment is not
     identifiable through do-calculus.
     """
@@ -494,7 +506,9 @@ class CausalEffectEstimation:
     with CausalML estimators.
     :cite:t:`chen2020causalml`.
 
-    Note: Compatibility with the current adjustment is not guarenteed.
+    Notes
+    -----
+    Compatibility with the current adjustment is not guaranteed.
 
     Parameters
     ----------

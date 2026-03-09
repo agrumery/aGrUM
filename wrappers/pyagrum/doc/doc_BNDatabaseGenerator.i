@@ -65,18 +65,18 @@ Returns the log2likelihood of this database.
 Parameters
 ----------
 nbSamples : int
-	the number of samples that will be generated
-evs : gum::Instantiation or Dict[int|str,int|str]
+    the number of samples that will be generated
+evs : pyagrum.Instantiation or dict
   (optional) The evidence that will be observed by the resulting samples.
 timeout : int
   (optional) The maximum time in seconds to generate the samples (default 600)
 
-Warning
--------
+Warnings
+--------
 `nbSamples` is not the number of generated samples but the size of the database.It may happen that the evidence is very rare (or even impossible). In this case, the generation process may be *very* slow (it may even not stop). For this case a timeout is provided (default 600 seconds) and then the size of the database can be smaller than `nbSamples` (even equal to 0).
 
-Warning
--------
+Warnings
+--------
 For discretized variable, aGrum/pyAgrum defines 3 behaviors when generating sample with labels :
 - RANDOM (default) : the value is chosen randomly in the interval
 - MEDIAN : the value is the median of the interval
@@ -226,7 +226,7 @@ Set a specific order with a list of names
 
 Parameters
 ----------
-vars : List[str]
+vars : list of str
   order specified by the list of variable names.
 "
 
@@ -246,7 +246,7 @@ The actual order for the variable (as a tuple of NodeId)
 
 Returns
 -------
-Tuple[int]
+tuple
   the tuple of NodeId
 "
 
@@ -256,7 +256,7 @@ The actual order for the variable (as a tuple of NodeId)
 
 Returns
 -------
-Tuple[str]
+tuple
   the tuple of names
 "
 

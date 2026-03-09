@@ -52,7 +52,7 @@ def bar(explanation: Explanation, y: int = None, ax: plt.Axes = None, percentage
   """
   Plots a horizontal bar chart of the mean absolute SHAP/SHALL values for each feature in the explanation.
 
-  Parameters:
+  Parameters
   ----------
   explanation : Explanation
       The explanation object containing the SHAP/SHALL values.
@@ -64,7 +64,7 @@ def bar(explanation: Explanation, y: int = None, ax: plt.Axes = None, percentage
   percentage: bool
     if True, the importance plot is shown in percent.
 
-  Raises :
+  Raises
   ------
   TypeError : If `explanation` is not an Explanation object or if `y` is not an integer or None.
   IndexError : If `y` is an integer but out of bounds for the explanation keys.

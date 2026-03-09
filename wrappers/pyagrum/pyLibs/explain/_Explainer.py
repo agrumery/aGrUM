@@ -56,12 +56,12 @@ class Explainer(ABC):
 
   def __init__(self, bn: gum.BayesNet):
     """
-    Parameters:
-    ------
+    Parameters
+    ----------
     bn : pyagrum.BayesNet
         The Bayesian Network.
 
-    Raises:
+    Raises
     ------
     TypeError : If bn is not a gum.BayesNet.
     """

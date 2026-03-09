@@ -49,7 +49,7 @@
 Parameters
 ----------
 algo : IApproximationSchemeConfiguration
-	an approxmation scheme
+    an approxmation scheme
 "
 
 %feature("docstring") PythonApproximationListener::setWhenProgress
@@ -57,7 +57,7 @@ algo : IApproximationSchemeConfiguration
 Parameters
 ----------
 pyfunc
-	the function to execute
+    the function to execute
 "
 
 %feature("docstring") PythonApproximationListener::setWhenStop
@@ -65,5 +65,5 @@ pyfunc
 Parameters
 ----------
 pyfunc
-	the function to execute
+    the function to execute
 "

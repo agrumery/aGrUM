@@ -52,7 +52,7 @@ NumericalDiscreteVariable(aName, aDesc='', values=None) -> NumericalDiscreteVari
     Parameters:
         - **aName** (str) -- the name of the variable
         - **aDesc** (str) -- the (optional) description of the variable
-        - **values** (List[float]) -- the values to create equivalent to *fast* syntax `{v1|v2|v3|...|vn}`
+        - **values** (list of float) -- the values to create equivalent to *fast* syntax `{v1|v2|v3|...|vn}`
 
 NumericalDiscreteVariable(aName, aDesc='', first, last, nbr) -> NumericalDiscreteVariable
     Parameters:
@@ -92,7 +92,7 @@ c:NumericalDiscrete({1.2|1.85|2.5|3.15|3.8})
 "
 Returns
 -------
-Tuple[float]
+tuple
     the tuple of float values that form the domain of this variable
 "
 

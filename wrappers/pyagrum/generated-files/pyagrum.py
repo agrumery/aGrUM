@@ -147,21 +147,21 @@ class JunctionTreeGenerator(object):
         Parameters
         ----------
         g : pyagrum.UndiGraph
-        	a undirected graph
+            a undirected graph
 
         dag : pyagrum.DAG
-        	a dag
+            a dag
 
         bn : pyagrum.BayesNet
-        	a BayesianNetwork
+            a BayesianNetwork
 
-        partial_order: List[List[int]]
-        	a partial order among the nodeIDs
+        partial_order: list of list of int
+            a partial order among the nodeIDs
 
         Returns
         -------
         pyagrum.CliqueGraph
-        	the current junction tree.
+            the current junction tree.
 
         """
         return _pyagrum.JunctionTreeGenerator_junctionTree(self, *args)
@@ -174,21 +174,21 @@ class JunctionTreeGenerator(object):
         Parameters
         ----------
         g : pyagrum.UndiGraph
-        	a undirected graph
+            a undirected graph
 
         dag : pyagrum.DAG
-        	a dag
+            a dag
 
         bn : pyagrum.BayesNet
-        	a BayesianNetwork
+            a BayesianNetwork
 
-        partial_order: List[List[int]]
-        	a partial order among the nodeIDs
+        partial_order: list of list of int
+            a partial order among the nodeIDs
 
         Returns
         -------
         pyagrum.CliqueGraph
-        	the current elimination order.
+            the current elimination order.
 
         """
         return _pyagrum.JunctionTreeGenerator_eliminationOrder(self, *args)
@@ -201,21 +201,21 @@ class JunctionTreeGenerator(object):
         Parameters
         ----------
         g : pyagrum.UndiGraph
-        	a undirected graph
+            a undirected graph
 
         dag : pyagrum.DAG
-        	a dag
+            a dag
 
         bn : pyagrum.BayesNet
-        	a BayesianNetwork
+            a BayesianNetwork
 
-        partial_order: List[List[int]]
-        	a partial order among the nodeIDs
+        partial_order: list of list of int
+            a partial order among the nodeIDs
 
         Returns
         -------
         pyagrum.CliqueGraph
-        	the current binary joint tree
+            the current binary joint tree
 
         """
         return _pyagrum.JunctionTreeGenerator_binaryJoinTree(self, *args)
@@ -668,7 +668,7 @@ class GumException(Exception):
         Returns
         -------
         str
-        	the error message
+            the error message
 
         """
         return _pyagrum.GumException_what(self)
@@ -679,7 +679,7 @@ class GumException(Exception):
         Returns
         -------
         str
-        	the error content
+            the error content
 
         """
         return _pyagrum.GumException_errorContent(self)
@@ -690,7 +690,7 @@ class GumException(Exception):
         Returns
         -------
         str
-        	the error type
+            the error type
 
         """
         return _pyagrum.GumException_errorType(self)
@@ -701,7 +701,7 @@ class GumException(Exception):
         Returns
         -------
         str
-        	the error call stack
+            the error call stack
 
         """
         return _pyagrum.GumException_errorCallStack(self)
@@ -1240,7 +1240,7 @@ class SyntaxError(IOError):
         Returns
         -------
         int
-        	the indice of the colonne of the error
+            the indice of the colonne of the error
 
         """
         return _pyagrum.SyntaxError_col(self)
@@ -1251,7 +1251,7 @@ class SyntaxError(IOError):
         Returns
         -------
         int
-        	the indice of the line of the error
+            the indice of the line of the error
 
         """
         return _pyagrum.SyntaxError_line(self)
@@ -1372,7 +1372,7 @@ class Variable(object):
         Returns
         -------
         pyagrum.DiscreteVariable
-        	a pointer on a new copy of this
+            a pointer on a new copy of this
 
         """
         return _pyagrum.Variable_clone(self)
@@ -1388,7 +1388,7 @@ class Variable(object):
         Parameters
         ----------
         theValue : str
-        	the new description of the variable
+            the new description of the variable
 
         """
         return _pyagrum.Variable_setName(self, theValue)
@@ -1399,7 +1399,7 @@ class Variable(object):
         Returns
         -------
         str
-        	the name of the variable
+            the name of the variable
 
         """
         return _pyagrum.Variable_name(self)
@@ -1412,7 +1412,7 @@ class Variable(object):
         Parameters
         ----------
         theValue : str
-        	the new description of the variable
+            the new description of the variable
 
         """
         return _pyagrum.Variable_setDescription(self, theValue)
@@ -1423,7 +1423,7 @@ class Variable(object):
         Returns
         -------
         str
-        	the description of the variable
+            the description of the variable
 
         """
         return _pyagrum.Variable_description(self)
@@ -1455,7 +1455,7 @@ class DiscreteVariable(Variable):
         Returns
         -------
           pyagrum.DiscreteVariable
-        	a copy of the DiscreteVariable
+            a copy of the DiscreteVariable
 
         """
         return _pyagrum.DiscreteVariable_clone(self)
@@ -1466,7 +1466,7 @@ class DiscreteVariable(Variable):
         Returns
         -------
         bool
-        	True if the domain size < 2
+            True if the domain size < 2
 
         """
         return _pyagrum.DiscreteVariable_empty(self)
@@ -1477,7 +1477,7 @@ class DiscreteVariable(Variable):
         Returns
         -------
         int
-        	the number of modalities in the variable domain
+            the number of modalities in the variable domain
 
         """
         return _pyagrum.DiscreteVariable_domainSize(self)
@@ -1488,7 +1488,7 @@ class DiscreteVariable(Variable):
         Returns
         -------
         tuple
-        	a tuple containing the labels
+            a tuple containing the labels
 
         """
         return _pyagrum.DiscreteVariable_labels(self)
@@ -1498,13 +1498,13 @@ class DiscreteVariable(Variable):
 
         Parameters
         ----------
-        indice : int
-        	an index
+        index : int
+            an index
 
         Returns
         -------
         float
-        	the numerical representation of the indice-th value
+            the numerical representation of the value at the given index
 
         """
         return _pyagrum.DiscreteVariable_numerical(self, indice)
@@ -1515,7 +1515,7 @@ class DiscreteVariable(Variable):
     def closestIndex(self, val: float) -> int:
         r"""
 
-        For numerical discrete variables (all except :class:`pyagrum.LabelizedVariable`), this method returns the index of the closest value to a given float value in the variable's domain.
+        For numerical discrete variables (all except pyagrum.LabelizedVariable), this method returns the index of the closest value to a given float value in the variable's domain.
 
         Parameters
         ----------
@@ -1529,7 +1529,7 @@ class DiscreteVariable(Variable):
         Raises
         ------
         pyagrum.NotImplementedYet
-          if the variable is not numerical discrete (i.e., if it is a :class:`pyagrum.LabelizedVariable`).
+          if the variable is not numerical discrete (i.e., if it is a pyagrum.LabelizedVariable).
 
         """
         return _pyagrum.DiscreteVariable_closestIndex(self, val)
@@ -1537,7 +1537,7 @@ class DiscreteVariable(Variable):
     def closestLabel(self, val: float) -> str:
         r"""
 
-        For numerical discrete variables (all except :class:`pyagrum.LabelizedVariable`), this method returns the label of the closest value to a given float value in the variable's domain.
+        For numerical discrete variables (all except pyagrum.LabelizedVariable), this method returns the label of the closest value to a given float value in the variable's domain.
 
         Parameters
         ----------
@@ -1551,7 +1551,7 @@ class DiscreteVariable(Variable):
         Raises
         ------
         pyagrum.InvalidArgument
-          if the variable is not numerical discrete (i.e., if it is a :class:`pyagrum.LabelizedVariable`).
+          if the variable is not numerical discrete (i.e., if it is a pyagrum.LabelizedVariable).
 
         """
         return _pyagrum.DiscreteVariable_closestLabel(self, val)
@@ -1564,9 +1564,9 @@ class DiscreteVariable(Variable):
         Returns
         -------
         int :
-        	the type of the variable.
+            the type of the variable.
 
-        	0: DiscretizedVariable, 1: LabelizedVariable, 2: IntegerVariable, 3: RangeVariable, 4:
+            0: DiscretizedVariable, 1: LabelizedVariable, 2: IntegerVariable, 3: NumericalDiscreteVariable, 4: RangeVariable
 
         """
         return _pyagrum.DiscreteVariable_varType(self)
@@ -1580,12 +1580,12 @@ class DiscreteVariable(Variable):
         Parameters
         ----------
         label : str
-        	a label
+            a label
 
         Returns
         -------
         int
-        	the indice of the label
+            the index of the label
 
         """
         return _pyagrum.DiscreteVariable_index(self, label)
@@ -1596,17 +1596,17 @@ class DiscreteVariable(Variable):
         Parameters
         ----------
         i : int
-        	the index of the label we wish to return
+            the index of the label we wish to return
 
         Returns
         -------
         str
-        	the indice-th label
+            the label at the given index
 
         Raises
         ------
         pyagrum.OutOfBounds
-        	If the variable does not contain the label
+            If the variable does not contain the label
 
         """
         return _pyagrum.DiscreteVariable_label(self, i)
@@ -1617,7 +1617,7 @@ class DiscreteVariable(Variable):
         Returns
         -------
         str
-        	a description of the variable
+            a description of the variable
 
         """
         return _pyagrum.DiscreteVariable_toStringWithDescription(self)
@@ -1628,7 +1628,7 @@ class DiscreteVariable(Variable):
         Returns
         -------
         str
-        	the domain of the variable
+            the domain of the variable
 
         """
         return _pyagrum.DiscreteVariable_domain(self)
@@ -1639,7 +1639,7 @@ class DiscreteVariable(Variable):
         Returns
         -------
         str
-        	a description of its type
+            a description of its type
 
         """
         return _pyagrum.DiscreteVariable_stype(self)
@@ -1850,7 +1850,7 @@ class LabelizedVariable(DiscreteVariable):
         Parameters:
             - **aName** (str) -- the name of the variable
             - **aDesc** (str) -- the (optional) description of the variable
-            - **labels** (List[str]) -- the labels to create
+            - **labels** (list of str) -- the labels to create
 
     LabelizedVariable(aLDRV) -> LabelizedVariable
         Parameters:
@@ -1864,7 +1864,7 @@ class LabelizedVariable(DiscreteVariable):
     >>> print(va)
     a:Labelized(<0,1,2>)
     >>> va.addLabel('foo')
-    ("pyagrum.LabelizedVariable"@0x7fc4c840dd90) a:Labelized(<0,1,2,foo>)
+    (pyagrum.LabelizedVariable@0x7fc4c840dd90) a:Labelized(<0,1,2,foo>)
     >>> va.changeLabel(1,'bar')
     >>> print(va)
     a:Labelized(<0,bar,2,foo>)
@@ -1879,7 +1879,7 @@ class LabelizedVariable(DiscreteVariable):
     'C'
     >>> vc=pyagrum.LabelizedVariable('b','b',['one','two','three'])
     >>> vc
-    ("pyagrum.LabelizedVariable"@0x7fc4c840c130) b:Labelized(<one,two,three>)
+    (pyagrum.LabelizedVariable@0x7fc4c840c130) b:Labelized(<one,two,three>)
 
     """
 
@@ -1895,7 +1895,7 @@ class LabelizedVariable(DiscreteVariable):
         Returns
         -------
         pyagrum.LabelizedVariable
-        	a copy of the LabelizedVariable
+            a copy of the LabelizedVariable
 
         """
         return _pyagrum.LabelizedVariable_clone(self)
@@ -1906,12 +1906,12 @@ class LabelizedVariable(DiscreteVariable):
         Parameters
         ----------
         label : str
-        	a label
+            a label
 
         Returns
         -------
         int
-        	the indice of the label
+            the index of the label
 
         """
         return _pyagrum.LabelizedVariable_index(self, label)
@@ -1924,12 +1924,12 @@ class LabelizedVariable(DiscreteVariable):
         Parameters
         ----------
         aLabel : str
-        	the label to be tested
+            the label to be tested
 
         Returns
         -------
         bool
-        	True if the label already exists
+            True if the label already exists
 
         """
         return _pyagrum.LabelizedVariable_isLabel(self, aLabel)
@@ -1966,9 +1966,9 @@ class LabelizedVariable(DiscreteVariable):
         Parameters
         ----------
         pos : int
-        	the index of the label to be changed
+            the index of the label to be changed
         aLabel : str
-        	the label to be added to the labelized variable
+            the label to be added to the labelized variable
 
         Raises
         ------
@@ -1994,17 +1994,17 @@ class LabelizedVariable(DiscreteVariable):
         Parameters
         ----------
         i : int
-        	the index of the label we wish to return
+            the index of the label we wish to return
 
         Returns
         -------
         str
-        	the indice-th label
+            the label at the given index
 
         Raises
         ------
         pyagrum.OutOfBounds
-        	If the variable does not contain the label
+            If the variable does not contain the label
 
         """
         return _pyagrum.LabelizedVariable_label(self, i)
@@ -2017,13 +2017,13 @@ class LabelizedVariable(DiscreteVariable):
 
         Parameters
         ----------
-        indice : int
-        	an index
+        index : int
+            an index
 
         Returns
         -------
         float
-        	the numerical representation of the indice-th value
+            the numerical representation of the value at the given index
 
         """
         return _pyagrum.LabelizedVariable_numerical(self, index)
@@ -2031,7 +2031,7 @@ class LabelizedVariable(DiscreteVariable):
     def closestIndex(self, val: float) -> int:
         r"""
 
-        For numerical discrete variables (all except :class:`pyagrum.LabelizedVariable`), this method returns the index of the closest value to a given float value in the variable's domain.
+        For numerical discrete variables (all except pyagrum.LabelizedVariable), this method returns the index of the closest value to a given float value in the variable's domain.
 
         Parameters
         ----------
@@ -2045,7 +2045,7 @@ class LabelizedVariable(DiscreteVariable):
         Raises
         ------
         pyagrum.NotImplementedYet
-          if the variable is not numerical discrete (i.e., if it is a :class:`pyagrum.LabelizedVariable`).
+          if the variable is not numerical discrete (i.e., if it is a pyagrum.LabelizedVariable).
 
         """
         return _pyagrum.LabelizedVariable_closestIndex(self, val)
@@ -2056,7 +2056,7 @@ class LabelizedVariable(DiscreteVariable):
         Returns
         -------
         int
-        	the number of modalities in the variable domain
+            the number of modalities in the variable domain
 
         """
         return _pyagrum.LabelizedVariable_domainSize(self)
@@ -2069,9 +2069,9 @@ class LabelizedVariable(DiscreteVariable):
         Returns
         -------
         int :
-        	the type of the variable.
+            the type of the variable.
 
-        	0: DiscretizedVariable, 1: LabelizedVariable, 2: IntegerVariable, 3: RangeVariable, 4:
+            0: DiscretizedVariable, 1: LabelizedVariable, 2: IntegerVariable, 3: NumericalDiscreteVariable, 4: RangeVariable
 
         """
         return _pyagrum.LabelizedVariable_varType(self)
@@ -2093,7 +2093,7 @@ class LabelizedVariable(DiscreteVariable):
         Returns
         -------
         str
-        	a description of its type
+            a description of its type
 
         """
         return _pyagrum.LabelizedVariable_stype(self)
@@ -2162,7 +2162,7 @@ class RangeVariable(DiscreteVariable):
         Returns
         -------
         pyagrum.RangeVariable
-        	a copy of the RangeVariable
+            a copy of the RangeVariable
 
         """
         return _pyagrum.RangeVariable_clone(self)
@@ -2173,7 +2173,7 @@ class RangeVariable(DiscreteVariable):
         Returns
         -------
         int
-        	the number of modalities in the variable domain
+            the number of modalities in the variable domain
 
         """
         return _pyagrum.RangeVariable_domainSize(self)
@@ -2186,9 +2186,9 @@ class RangeVariable(DiscreteVariable):
         Returns
         -------
         int :
-        	the type of the variable.
+            the type of the variable.
 
-        	0: DiscretizedVariable, 1: LabelizedVariable, 2: IntegerVariable, 3: RangeVariable, 4:
+            0: DiscretizedVariable, 1: LabelizedVariable, 2: IntegerVariable, 3: NumericalDiscreteVariable, 4: RangeVariable
 
         """
         return _pyagrum.RangeVariable_varType(self)
@@ -2222,13 +2222,13 @@ class RangeVariable(DiscreteVariable):
 
         Parameters
         ----------
-        indice : int
-        	an index
+        index : int
+            an index
 
         Returns
         -------
         float
-        	the numerical representation of the indice-th value
+            the numerical representation of the value at the given index
 
         """
         return _pyagrum.RangeVariable_numerical(self, index)
@@ -2324,7 +2324,7 @@ class RangeVariable(DiscreteVariable):
     def closestIndex(self, val: float) -> int:
         r"""
 
-        For numerical discrete variables (all except :class:`pyagrum.LabelizedVariable`), this method returns the index of the closest value to a given float value in the variable's domain.
+        For numerical discrete variables (all except pyagrum.LabelizedVariable), this method returns the index of the closest value to a given float value in the variable's domain.
 
         Parameters
         ----------
@@ -2338,7 +2338,7 @@ class RangeVariable(DiscreteVariable):
         Raises
         ------
         pyagrum.NotImplementedYet
-          if the variable is not numerical discrete (i.e., if it is a :class:`pyagrum.LabelizedVariable`).
+          if the variable is not numerical discrete (i.e., if it is a pyagrum.LabelizedVariable).
 
         """
         return _pyagrum.RangeVariable_closestIndex(self, val)
@@ -2349,7 +2349,7 @@ class RangeVariable(DiscreteVariable):
         Returns
         -------
         str
-        	the domain of the variable
+            the domain of the variable
 
         """
         return _pyagrum.RangeVariable_domain(self)
@@ -2360,7 +2360,7 @@ class RangeVariable(DiscreteVariable):
         Returns
         -------
         str
-        	a description of its type
+            a description of its type
 
         """
         return _pyagrum.RangeVariable_stype(self)
@@ -2382,7 +2382,7 @@ class IntegerVariable(DiscreteVariable):
         Parameters:
             - **aName** (str) -- the name of the variable
             - **aDesc** (str) -- the (optional) description of the variable
-            - **values** (List[int]) -- the values to create
+            - **values** (list of int) -- the values to create
 
     IntegerVariable(aIDRV) -> IntegerVariable
         Parameters:
@@ -2419,7 +2419,7 @@ class IntegerVariable(DiscreteVariable):
         Returns
         -------
           pyagrum.DiscreteVariable
-        	a copy of the DiscreteVariable
+            a copy of the DiscreteVariable
 
         """
         return _pyagrum.IntegerVariable_clone(self)
@@ -2431,7 +2431,7 @@ class IntegerVariable(DiscreteVariable):
         Returns
         -------
         int
-        	the number of modalities in the variable domain
+            the number of modalities in the variable domain
 
         """
         return _pyagrum.IntegerVariable_domainSize(self)
@@ -2444,9 +2444,9 @@ class IntegerVariable(DiscreteVariable):
         Returns
         -------
         int :
-        	the type of the variable.
+            the type of the variable.
 
-        	0: DiscretizedVariable, 1: LabelizedVariable, 2: IntegerVariable, 3: RangeVariable, 4:
+            0: DiscretizedVariable, 1: LabelizedVariable, 2: IntegerVariable, 3: NumericalDiscreteVariable, 4: RangeVariable
 
         """
         return _pyagrum.IntegerVariable_varType(self)
@@ -2460,12 +2460,12 @@ class IntegerVariable(DiscreteVariable):
         Parameters
         ----------
         label : str
-        	a label
+            a label
 
         Returns
         -------
         int
-        	the indice of the label
+            the index of the label
 
         """
         return _pyagrum.IntegerVariable_index(self, label)
@@ -2473,7 +2473,7 @@ class IntegerVariable(DiscreteVariable):
     def closestIndex(self, val: float) -> int:
         r"""
 
-        For numerical discrete variables (all except :class:`pyagrum.LabelizedVariable`), this method returns the index of the closest value to a given float value in the variable's domain.
+        For numerical discrete variables (all except pyagrum.LabelizedVariable), this method returns the index of the closest value to a given float value in the variable's domain.
 
         Parameters
         ----------
@@ -2487,7 +2487,7 @@ class IntegerVariable(DiscreteVariable):
         Raises
         ------
         pyagrum.NotImplementedYet
-          if the variable is not numerical discrete (i.e., if it is a :class:`pyagrum.LabelizedVariable`).
+          if the variable is not numerical discrete (i.e., if it is a pyagrum.LabelizedVariable).
 
         """
         return _pyagrum.IntegerVariable_closestIndex(self, val)
@@ -2498,17 +2498,17 @@ class IntegerVariable(DiscreteVariable):
         Parameters
         ----------
         i : int
-        	the index of the label we wish to return
+            the index of the label we wish to return
 
         Returns
         -------
         str
-        	the indice-th label
+            the label at the given index
 
         Raises
         ------
         pyagrum.OutOfBounds
-        	If the variable does not contain the label
+            If the variable does not contain the label
 
         """
         return _pyagrum.IntegerVariable_label(self, index)
@@ -2518,13 +2518,13 @@ class IntegerVariable(DiscreteVariable):
 
         Parameters
         ----------
-        indice : int
-        	an index
+        index : int
+            an index
 
         Returns
         -------
         float
-        	the numerical representation of the indice-th value
+            the numerical representation of the value at the given index
 
         """
         return _pyagrum.IntegerVariable_numerical(self, index)
@@ -2535,7 +2535,7 @@ class IntegerVariable(DiscreteVariable):
         Returns
         -------
         str
-        	the domain of the variable
+            the domain of the variable
 
         """
         return _pyagrum.IntegerVariable_domain(self)
@@ -2546,7 +2546,7 @@ class IntegerVariable(DiscreteVariable):
         Returns
         -------
         str
-        	a description of its type
+            a description of its type
 
         """
         return _pyagrum.IntegerVariable_stype(self)
@@ -2556,7 +2556,7 @@ class IntegerVariable(DiscreteVariable):
 
         Returns
         -------
-        Tuple[int]
+        tuple
             the tuple of integer values that form the domain of this variable
 
         """
@@ -2638,7 +2638,7 @@ class IntegerVariable(DiscreteVariable):
     def closestLabel(self, val: float) -> str:
         r"""
 
-        For numerical discrete variables (all except :class:`pyagrum.LabelizedVariable`), this method returns the label of the closest value to a given float value in the variable's domain.
+        For numerical discrete variables (all except pyagrum.LabelizedVariable), this method returns the label of the closest value to a given float value in the variable's domain.
 
         Parameters
         ----------
@@ -2652,7 +2652,7 @@ class IntegerVariable(DiscreteVariable):
         Raises
         ------
         pyagrum.InvalidArgument
-          if the variable is not numerical discrete (i.e., if it is a :class:`pyagrum.LabelizedVariable`).
+          if the variable is not numerical discrete (i.e., if it is a pyagrum.LabelizedVariable).
 
         """
         return _pyagrum.IntegerVariable_closestLabel(self, val)
@@ -2674,7 +2674,7 @@ class NumericalDiscreteVariable(DiscreteVariable):
         Parameters:
             - **aName** (str) -- the name of the variable
             - **aDesc** (str) -- the (optional) description of the variable
-            - **values** (List[float]) -- the values to create equivalent to *fast* syntax `{v1|v2|v3|...|vn}`
+            - **values** (list of float) -- the values to create equivalent to *fast* syntax `{v1|v2|v3|...|vn}`
 
     NumericalDiscreteVariable(aName, aDesc='', first, last, nbr) -> NumericalDiscreteVariable
         Parameters:
@@ -2722,7 +2722,7 @@ class NumericalDiscreteVariable(DiscreteVariable):
         Returns
         -------
           pyagrum.DiscreteVariable
-        	a copy of the DiscreteVariable
+            a copy of the DiscreteVariable
 
         """
         return _pyagrum.NumericalDiscreteVariable_clone(self)
@@ -2734,7 +2734,7 @@ class NumericalDiscreteVariable(DiscreteVariable):
         Returns
         -------
         int
-        	the number of modalities in the variable domain
+            the number of modalities in the variable domain
 
         """
         return _pyagrum.NumericalDiscreteVariable_domainSize(self)
@@ -2747,9 +2747,9 @@ class NumericalDiscreteVariable(DiscreteVariable):
         Returns
         -------
         int :
-        	the type of the variable.
+            the type of the variable.
 
-        	0: DiscretizedVariable, 1: LabelizedVariable, 2: IntegerVariable, 3: RangeVariable, 4:
+            0: DiscretizedVariable, 1: LabelizedVariable, 2: IntegerVariable, 3: NumericalDiscreteVariable, 4: RangeVariable
 
         """
         return _pyagrum.NumericalDiscreteVariable_varType(self)
@@ -2763,12 +2763,12 @@ class NumericalDiscreteVariable(DiscreteVariable):
         Parameters
         ----------
         label : str
-        	a label
+            a label
 
         Returns
         -------
         int
-        	the indice of the label
+            the index of the label
 
         """
         return _pyagrum.NumericalDiscreteVariable_index(self, label)
@@ -2776,7 +2776,7 @@ class NumericalDiscreteVariable(DiscreteVariable):
     def closestIndex(self, val: float) -> int:
         r"""
 
-        For numerical discrete variables (all except :class:`pyagrum.LabelizedVariable`), this method returns the index of the closest value to a given float value in the variable's domain.
+        For numerical discrete variables (all except pyagrum.LabelizedVariable), this method returns the index of the closest value to a given float value in the variable's domain.
 
         Parameters
         ----------
@@ -2790,7 +2790,7 @@ class NumericalDiscreteVariable(DiscreteVariable):
         Raises
         ------
         pyagrum.NotImplementedYet
-          if the variable is not numerical discrete (i.e., if it is a :class:`pyagrum.LabelizedVariable`).
+          if the variable is not numerical discrete (i.e., if it is a pyagrum.LabelizedVariable).
 
         """
         return _pyagrum.NumericalDiscreteVariable_closestIndex(self, val)
@@ -2801,17 +2801,17 @@ class NumericalDiscreteVariable(DiscreteVariable):
         Parameters
         ----------
         i : int
-        	the index of the label we wish to return
+            the index of the label we wish to return
 
         Returns
         -------
         str
-        	the indice-th label
+            the label at the given index
 
         Raises
         ------
         pyagrum.OutOfBounds
-        	If the variable does not contain the label
+            If the variable does not contain the label
 
         """
         return _pyagrum.NumericalDiscreteVariable_label(self, index)
@@ -2821,13 +2821,13 @@ class NumericalDiscreteVariable(DiscreteVariable):
 
         Parameters
         ----------
-        indice : int
-        	an index
+        index : int
+            an index
 
         Returns
         -------
         float
-        	the numerical representation of the indice-th value
+            the numerical representation of the value at the given index
 
         """
         return _pyagrum.NumericalDiscreteVariable_numerical(self, index)
@@ -2838,7 +2838,7 @@ class NumericalDiscreteVariable(DiscreteVariable):
         Returns
         -------
         str
-        	the domain of the variable
+            the domain of the variable
 
         """
         return _pyagrum.NumericalDiscreteVariable_domain(self)
@@ -2849,7 +2849,7 @@ class NumericalDiscreteVariable(DiscreteVariable):
         Returns
         -------
         str
-        	a description of its type
+            a description of its type
 
         """
         return _pyagrum.NumericalDiscreteVariable_stype(self)
@@ -2859,7 +2859,7 @@ class NumericalDiscreteVariable(DiscreteVariable):
 
         Returns
         -------
-        Tuple[float]
+        tuple
             the tuple of float values that form the domain of this variable
 
         """
@@ -2941,7 +2941,7 @@ class NumericalDiscreteVariable(DiscreteVariable):
     def closestLabel(self, val: float) -> str:
         r"""
 
-        For numerical discrete variables (all except :class:`pyagrum.LabelizedVariable`), this method returns the label of the closest value to a given float value in the variable's domain.
+        For numerical discrete variables (all except pyagrum.LabelizedVariable), this method returns the label of the closest value to a given float value in the variable's domain.
 
         Parameters
         ----------
@@ -2955,7 +2955,7 @@ class NumericalDiscreteVariable(DiscreteVariable):
         Raises
         ------
         pyagrum.InvalidArgument
-          if the variable is not numerical discrete (i.e., if it is a :class:`pyagrum.LabelizedVariable`).
+          if the variable is not numerical discrete (i.e., if it is a pyagrum.LabelizedVariable).
 
         """
         return _pyagrum.NumericalDiscreteVariable_closestLabel(self, val)
@@ -2982,7 +2982,7 @@ class IDiscretizedVariable(DiscreteVariable):
         Returns
         -------
           pyagrum.DiscreteVariable
-        	a copy of the DiscreteVariable
+            a copy of the DiscreteVariable
 
         """
         return _pyagrum.IDiscretizedVariable_clone(self)
@@ -3031,7 +3031,7 @@ class Edge(object):
 
 
         Returns
-        ------
+        -------
         int
           the nodeId of the other node
 
@@ -3042,7 +3042,7 @@ class Edge(object):
         r"""
 
         Returns
-        ------
+        -------
         int
           the nodeId of the first node of the arc (the tail)
 
@@ -3053,7 +3053,7 @@ class Edge(object):
         r"""
 
         Returns
-        ------
+        -------
         int
           the nodeId of the second node of the arc (the head)
 
@@ -3103,7 +3103,7 @@ class Arc(object):
         r"""
 
         Returns
-        ------
+        -------
         int
           the id of the head node
 
@@ -3531,7 +3531,7 @@ class UndiGraph(object):
     def existsEdge(self, n1: int, n2: int) -> bool:
         r"""
 
-        Check if an edge exists bewteen n1 and n2.
+        Check if an edge exists between n1 and n2.
 
         Parameters
         ----------
@@ -3624,7 +3624,7 @@ class DiGraph(object):
         Parameters
         ----------
         id : int
-        	the id of the node
+            the id of the node
 
         """
         return _pyagrum.DiGraph_eraseNode(self, id)
@@ -3667,14 +3667,14 @@ class DiGraph(object):
     def hasDirectedPath(self, _from: int, to: int) -> bool:
         r"""
 
-        Check if a directedpath exists bewteen from and to.
+        Check if a directedpath exists between from and to.
 
         Parameters
         ----------
         from : int
-        	the id of the first node of the (possible) path
+            the id of the first node of the (possible) path
         to : int
-        	the id of the last node of the (possible) path
+            the id of the last node of the (possible) path
 
         Returns
         -------
@@ -3838,7 +3838,7 @@ class DiGraph(object):
         Returns
         -------
         Set
-        	the set of the arcs
+            the set of the arcs
 
         """
         return _pyagrum.DiGraph_arcs(self)
@@ -3849,7 +3849,7 @@ class DiGraph(object):
         Parameters
         ----------
         id :
-        	The id of the child node
+            The id of the child node
 
         Returns
         -------
@@ -3870,7 +3870,7 @@ class DiGraph(object):
         Returns
         -------
         Set
-        	the set of all the children
+            the set of all the children
 
         """
         return _pyagrum.DiGraph_children(self, id)
@@ -3974,9 +3974,9 @@ class DiGraph(object):
         Parameters
         ----------
         n1 : int
-        	the id of the tail node
+            the id of the tail node
         n2 : int
-        	the id of the head node
+            the id of the head node
 
         """
         return _pyagrum.DiGraph_eraseArc(self, n1, n2)
@@ -3984,14 +3984,14 @@ class DiGraph(object):
     def existsArc(self, n1: int, n2: int) -> bool:
         r"""
 
-        Check if an arc exists bewteen n1 and n2.
+        Check if an arc exists between n1 and n2.
 
         Parameters
         ----------
         n1 : int
-        	the id of the tail node
+            the id of the tail node
         n2 : int
-        	the id of the head node
+            the id of the head node
 
         Returns
         -------
@@ -4009,7 +4009,7 @@ class DiGraph(object):
         Parameters
         ----------
         n : int
-        	the id of the child node
+            the id of the child node
 
         """
         return _pyagrum.DiGraph_eraseParents(self, n)
@@ -4022,7 +4022,7 @@ class DiGraph(object):
         Parameters
         ----------
         n : int
-        	the id of the parent node
+            the id of the parent node
 
         """
         return _pyagrum.DiGraph_eraseChildren(self, n)
@@ -4116,8 +4116,8 @@ class DAG(DiGraph):
         nodes : int sequence of int
           a sequence of node ids (int) or a single node id (int)
         Returns
-        ------- 
-        "pyagrum.UndiGraph"
+        -------
+        pyagrum.UndiGraph
           the moralized ancestral graph of the nodes from the DAG.
 
         """
@@ -4188,7 +4188,7 @@ class DAG(DiGraph):
         Returns
         -------
         Set
-        	the set of the arcs
+            the set of the arcs
 
         """
         return _pyagrum.DAG_arcs(self)
@@ -4198,8 +4198,8 @@ class DAG(DiGraph):
 
         Parameters
         ----------
-        id :
-        	The id of the child node
+        id : int
+            The id of the child node
 
         Returns
         -------
@@ -4220,7 +4220,7 @@ class DAG(DiGraph):
         Returns
         -------
         Set
-        	the set of all the children
+            the set of all the children
 
         """
         return _pyagrum.DAG_children(self, id)
@@ -4256,9 +4256,9 @@ class DAG(DiGraph):
         Parameters
         ----------
         n1 : int
-        	the id of the tail node
+            the id of the tail node
         n2 : int
-        	the id of the head node
+            the id of the head node
 
         """
         return _pyagrum.DAG_eraseArc(self, n1, n2)
@@ -4266,14 +4266,14 @@ class DAG(DiGraph):
     def existsArc(self, n1: int, n2: int) -> bool:
         r"""
 
-        Check if an arc exists bewteen n1 and n2.
+        Check if an arc exists between n1 and n2.
 
         Parameters
         ----------
         n1 : int
-        	the id of the tail node
+            the id of the tail node
         n2 : int
-        	the id of the head node
+            the id of the head node
 
         Returns
         -------
@@ -4291,7 +4291,7 @@ class DAG(DiGraph):
         Parameters
         ----------
         n : int
-        	the id of the child node
+            the id of the child node
 
         """
         return _pyagrum.DAG_eraseParents(self, n)
@@ -4299,12 +4299,12 @@ class DAG(DiGraph):
     def eraseChildren(self, n: int) -> None:
         r"""
 
-        Erase the arcs heading through the node's children.
+        Erase the arcs heading to the node's children.
 
         Parameters
         ----------
         n : int
-        	the id of the parent node
+            the id of the parent node
 
         """
         return _pyagrum.DAG_eraseChildren(self, n)
@@ -4366,7 +4366,7 @@ class MixedGraph(UndiGraph, DiGraph):
         Parameters
         ----------
         id : int
-        	the id of the node
+            the id of the node
 
         """
         return _pyagrum.MixedGraph_eraseNode(self, node)
@@ -4482,7 +4482,7 @@ class MixedGraph(UndiGraph, DiGraph):
         Parameters
         ----------
         id : int
-        	the id of the node
+            the id of the node
 
         Returns
         -------
@@ -4498,14 +4498,14 @@ class MixedGraph(UndiGraph, DiGraph):
         Parameters
         ----------
         node1 : int
-        	the id form which the path begins
+            the id form which the path begins
         node2 : int
-        	the id to witch the path ends
+            the id to witch the path ends
 
         Returns
         -------
         List
-        	 a path from node1 to node2, using edges and/or arcs (following the direction of the arcs). If no path is found, the returned list is empty.
+             a path from node1 to node2, using edges and/or arcs (following the direction of the arcs). If no path is found, the returned list is empty.
 
         """
         return _pyagrum.MixedGraph_mixedOrientedPath(self, node1, node2)
@@ -4516,14 +4516,14 @@ class MixedGraph(UndiGraph, DiGraph):
         Parameters
         ----------
         node1 : int
-        	the id from which the path begins
+            the id from which the path begins
         node2 : int
-        	the id to which the path ends
+            the id to which the path ends
 
         Returns
         -------
         List
-        	 a path from node1 to node2, using edges and/or arcs (not necessarily following the direction of the arcs). If no path is found, the list is empty.
+             a path from node1 to node2, using edges and/or arcs (not necessarily following the direction of the arcs). If no path is found, the list is empty.
 
 
         """
@@ -4638,7 +4638,7 @@ class MixedGraph(UndiGraph, DiGraph):
     def existsEdge(self, n1: int, n2: int) -> bool:
         r"""
 
-        Check if an edge exists bewteen n1 and n2.
+        Check if an edge exists between n1 and n2.
 
         Parameters
         ----------
@@ -4703,9 +4703,9 @@ class MixedGraph(UndiGraph, DiGraph):
         Parameters
         ----------
         n1 : int
-        	the id of the tail node
+            the id of the tail node
         n2 : int
-        	the id of the head node
+            the id of the head node
 
         """
         return _pyagrum.MixedGraph_eraseArc(self, n1, n2)
@@ -4713,14 +4713,14 @@ class MixedGraph(UndiGraph, DiGraph):
     def existsArc(self, n1: int, n2: int) -> bool:
         r"""
 
-        Check if an arc exists bewteen n1 and n2.
+        Check if an arc exists between n1 and n2.
 
         Parameters
         ----------
         n1 : int
-        	the id of the tail node
+            the id of the tail node
         n2 : int
-        	the id of the head node
+            the id of the head node
 
         Returns
         -------
@@ -4738,7 +4738,7 @@ class MixedGraph(UndiGraph, DiGraph):
         Parameters
         ----------
         n : int
-        	the id of the child node
+            the id of the child node
 
         """
         return _pyagrum.MixedGraph_eraseParents(self, n)
@@ -4751,7 +4751,7 @@ class MixedGraph(UndiGraph, DiGraph):
         Parameters
         ----------
         n : int
-        	the id of the parent node
+            the id of the parent node
 
         """
         return _pyagrum.MixedGraph_eraseChildren(self, n)
@@ -4856,8 +4856,8 @@ class PDAG(MixedGraph):
         nodes : int sequence of int
           a sequence of node ids (int) or a single node id (int)
         Returns
-        ------- 
-        "pyagrum.UndiGraph"
+        -------
+        pyagrum.UndiGraph
           the moralized ancestral graph of the nodes from the DAG.
 
         """
@@ -4929,14 +4929,14 @@ class PDAG(MixedGraph):
         Parameters
         ----------
         node1 : int
-        	the id form which the path begins
+            the id form which the path begins
         node2 : int
-        	the id to witch the path ends
+            the id to witch the path ends
 
         Returns
         -------
         List
-        	 a path from node1 to node2, using edges and/or arcs (following the direction of the arcs). If no path is found, the returned list is empty.
+             a path from node1 to node2, using edges and/or arcs (following the direction of the arcs). If no path is found, the returned list is empty.
 
         """
         return _pyagrum.PDAG_mixedOrientedPath(self, node1, node2)
@@ -4947,14 +4947,14 @@ class PDAG(MixedGraph):
         Parameters
         ----------
         node1 : int
-        	the id from which the path begins
+            the id from which the path begins
         node2 : int
-        	the id to which the path ends
+            the id to which the path ends
 
         Returns
         -------
         List
-        	 a path from node1 to node2, using edges and/or arcs (not necessarily following the direction of the arcs). If no path is found, the list is empty.
+             a path from node1 to node2, using edges and/or arcs (not necessarily following the direction of the arcs). If no path is found, the list is empty.
 
 
         """
@@ -5179,7 +5179,7 @@ class CliqueGraph(UndiGraph):
         ----------
         idClique : int
           the id of the clique
-        new_clique : Set[int]
+        new_clique : set
           the new set of nodes to be included in the clique
 
         Raises
@@ -5304,7 +5304,7 @@ class CliqueGraph(UndiGraph):
 
         Returns
         -------
-        Set[int]
+        set
           The set of nodes included in the clique
 
         Raises
@@ -5329,7 +5329,7 @@ class CliqueGraph(UndiGraph):
 
         Returns
         -------
-        Set[int]
+        set
           the separator included in a given edge
 
         Raises
@@ -5451,7 +5451,7 @@ class Instantiation(object):
     Returns
     -------
     pyagrum.Instantiation
-    	An empty tuple or a copy of the one in parameters
+        An empty tuple or a copy of the one in parameters
 
     Instantiation is subscriptable therefore values can be easily accessed/modified.
 
@@ -5568,14 +5568,14 @@ class Instantiation(object):
         Parameters
         ----------
         i : int
-        	The index of the variable.
+            The index of the variable.
         var : pyagrum.DiscreteVariable
-        	The variable the value of which we wish to know
+            The variable the value of which we wish to know
 
         Returns
         -------
         int
-        	the current value of the variable.
+            the current value of the variable.
 
         Raises
         ------
@@ -6047,11 +6047,11 @@ class Instantiation(object):
         Parameters
         ----------
         withLabels : boolean
-        	The value will be a label (string) if True. It will be a position (int) if False. Default is False
+            The value will be a label (string) if True. It will be a position (int) if False. Default is False
 
         Returns
         -------
-        Dict[str,int]
+        dict
             The dictionary
 
         """
@@ -6237,7 +6237,7 @@ class GraphicalModel(object):
         Returns
         -------
         bool
-        	True if there is no variable in the model.
+            True if there is no variable in the model.
 
         """
         return _pyagrum.GraphicalModel_empty(self)
@@ -6255,7 +6255,7 @@ class GraphicalModel(object):
         Returns
         -------
         bool
-        	True if there is a node with such a name or id
+            True if there is a node with such a name or id
 
         """
         return _pyagrum.GraphicalModel_exists(self, *args)
@@ -6267,8 +6267,8 @@ class GraphicalModel(object):
 
         Returns
         -------
-        Set[str]
-        	The names of the graph variables
+        set
+            The names of the graph variables
 
         """
         return _pyagrum.GraphicalModel_names(self, *args)
@@ -6280,13 +6280,13 @@ class GraphicalModel(object):
 
         Parameters
         ----------
-        lov : List[str]
+        lov : list of str
           List of variable names
 
         Returns
         -------
-        List[int]
-        	The ids for the list of names of the graph variables
+        list of int
+            The ids for the list of names of the graph variables
 
         """
         return _pyagrum.GraphicalModel_ids(self, names)
@@ -6298,13 +6298,13 @@ class GraphicalModel(object):
 
         Parameters
         ----------
-        lov : List[str]
+        lov : list of str
           List of variable names
 
         Returns
         -------
-        Set[int]
-        	The set of ids for the list of names of the graph variables
+        set
+            The set of ids for the list of names of the graph variables
 
         """
         return _pyagrum.GraphicalModel_nodeset(self, names)
@@ -6348,7 +6348,7 @@ class GraphicalModel(object):
         Returns
         -------
         float
-        	the log10 domain size.
+            the log10 domain size.
 
         """
         return _pyagrum.GraphicalModel_log10DomainSize(self)
@@ -6360,11 +6360,11 @@ class GraphicalModel(object):
 
         Parameters
         ----------
-        X : str|intList[str|int]
+        X : str|intlist of str|int
               a list of of nodeIds or names
-        Y : str|intList[str|int]
+        Y : str|intlist of str|int
               a list of of nodeIds or names
-        Z : str|intList[str|int]
+        Z : str|intlist of str|int
               a list of of nodeIds or names
 
         Raises
@@ -6410,7 +6410,7 @@ class DAGmodel(GraphicalModel):
         Returns
         -------
         pyagrum.DAG
-        	a constant reference to the dag of this BayesNet.
+            a constant reference to the dag of this BayesNet.
 
         """
         val = _pyagrum.DAGmodel_dag(self)
@@ -6468,7 +6468,7 @@ class DAGmodel(GraphicalModel):
         Returns
         -------
         bool
-        	True if there is a node with such a name or id
+            True if there is a node with such a name or id
 
         """
         return _pyagrum.DAGmodel_exists(self, *args)
@@ -6479,7 +6479,7 @@ class DAGmodel(GraphicalModel):
         Returns
         -------
         list
-        	The lisf of arcs in the graph
+            The lisf of arcs in the graph
 
         """
         return _pyagrum.DAGmodel_arcs(self)
@@ -6490,7 +6490,7 @@ class DAGmodel(GraphicalModel):
         Check if an arc exists
 
         Parameters
-        ---------
+        ----------
         tail : str|int
           the name or id of the tail of the arc
 
@@ -6514,13 +6514,13 @@ class DAGmodel(GraphicalModel):
         give the set of parents of a node and the node
 
         Parameters
-        ---------
+        ----------
         norid : str|int
           the node
 
         Returns
         -------
-        Set[int]
+        set
           the set of nodeId of the family of the node `norid`
 
         """
@@ -6541,7 +6541,7 @@ class DAGmodel(GraphicalModel):
 
         Returns
         -------
-        Set[int]
+        set
           the set of ids of the descendants of node `norid`.
 
         """
@@ -6559,7 +6559,7 @@ class DAGmodel(GraphicalModel):
 
         Returns
         -------
-        Set[int]
+        set
           the set of ids of the ancestors of node `norid`.
 
         """
@@ -6572,7 +6572,7 @@ class DAGmodel(GraphicalModel):
 
         Parameters
         ----------
-        nodes : str|intList[str|int]
+        nodes : str|intlist of str|int
           the list of of nodeIds or names
 
         Warnings
@@ -6594,11 +6594,11 @@ class DAGmodel(GraphicalModel):
 
         Parameters
         ----------
-        X : str|intList[str|int]
+        X : str|intlist of str|int
               a list of of nodeIds or names
-        Y : str|intList[str|int]
+        Y : str|intlist of str|int
               a list of of nodeIds or names
-        Z : str|intList[str|int]
+        Z : str|intlist of str|int
               a list of of nodeIds or names
 
         Raises
@@ -6622,7 +6622,7 @@ class DAGmodel(GraphicalModel):
         Returns
         -------
         pyagrum.UndiGraph
-        	The moral graph
+            The moral graph
 
         """
         return _pyagrum.DAGmodel_moralGraph(self)
@@ -6638,7 +6638,7 @@ class DAGmodel(GraphicalModel):
         Raises
         ------
         pyagrum.InvalidDirectedCycle
-        	If this graph contains cycles
+            If this graph contains cycles
 
         """
         return _pyagrum.DAGmodel_topologicalOrder(self)
@@ -6649,7 +6649,7 @@ class DAGmodel(GraphicalModel):
         Parameters
         ----------
         pyagrum.DAGmodel
-        	a direct acyclic model
+            a direct acyclic model
 
         Returns
         -------
@@ -6697,7 +6697,7 @@ class UGmodel(GraphicalModel):
         Returns
         -------
         bool
-        	True if there is a node with such a name or id
+            True if there is a node with such a name or id
 
         """
         return _pyagrum.UGmodel_exists(self, *args)
@@ -6718,11 +6718,11 @@ class UGmodel(GraphicalModel):
 
         Parameters
         ----------
-        X : str|intList[str|int]
+        X : str|intlist of str|int
               a list of of nodeIds or names
-        Y : str|intList[str|int]
+        Y : str|intlist of str|int
               a list of of nodeIds or names
-        Z : str|intList[str|int]
+        Z : str|intlist of str|int
               a list of of nodeIds or names
 
         Raises
@@ -6770,12 +6770,12 @@ class ApproximationScheme(object):
         Parameters
         ----------
         eps : float
-        	the epsilon we want to use
+            the epsilon we want to use
 
         Raises
         ------
         pyagrum.OutOfBounds
-        	If eps<0
+            If eps<0
 
         """
         return _pyagrum.ApproximationScheme_setEpsilon(self, eps)
@@ -6786,7 +6786,7 @@ class ApproximationScheme(object):
         Returns
         -------
         float
-        	the value of epsilon
+            the value of epsilon
 
         """
         return _pyagrum.ApproximationScheme_epsilon(self)
@@ -6824,7 +6824,7 @@ class ApproximationScheme(object):
         Parameters
         ----------
         rate : float
-        	the minimal epsilon rate
+            the minimal epsilon rate
 
         """
         return _pyagrum.ApproximationScheme_setMinEpsilonRate(self, rate)
@@ -6835,7 +6835,7 @@ class ApproximationScheme(object):
         Returns
         -------
         float
-        	the value of the minimal epsilon rate
+            the value of the minimal epsilon rate
 
         """
         return _pyagrum.ApproximationScheme_minEpsilonRate(self)
@@ -6873,12 +6873,12 @@ class ApproximationScheme(object):
         Parameters
         ----------
         max : int
-        	the maximum number of iteration
+            the maximum number of iteration
 
         Raises
         ------
         pyagrum.OutOfBounds
-        	If max <= 1
+            If max <= 1
 
         """
         return _pyagrum.ApproximationScheme_setMaxIter(self, max)
@@ -6889,7 +6889,7 @@ class ApproximationScheme(object):
         Returns
         -------
         int
-        	the criterion on number of iterations
+            the criterion on number of iterations
 
         """
         return _pyagrum.ApproximationScheme_maxIter(self)
@@ -6927,12 +6927,12 @@ class ApproximationScheme(object):
         Parameters
         ----------
         tiemout : float
-        	stopping criterion on timeout (in seconds)
+            stopping criterion on timeout (in seconds)
 
         Raises
         ------
         pyagrum.OutOfBounds
-        	If timeout<=0.0
+            If timeout<=0.0
 
         """
         return _pyagrum.ApproximationScheme_setMaxTime(self, timeout)
@@ -6943,7 +6943,7 @@ class ApproximationScheme(object):
         Returns
         -------
         float
-        	the timeout(in seconds)
+            the timeout(in seconds)
 
         """
         return _pyagrum.ApproximationScheme_maxTime(self)
@@ -6954,7 +6954,7 @@ class ApproximationScheme(object):
         Returns
         -------
         float
-        	get the current running time in second (float)
+            get the current running time in second (float)
 
         """
         return _pyagrum.ApproximationScheme_currentTime(self)
@@ -6992,12 +6992,12 @@ class ApproximationScheme(object):
         Parameters
         ----------
         p : int
-        	number of samples between 2 stopping
+            number of samples between 2 stopping
 
         Raises
         ------
         pyagrum.OutOfBounds
-        	If p<1
+            If p<1
 
         """
         return _pyagrum.ApproximationScheme_setPeriodSize(self, p)
@@ -7008,12 +7008,12 @@ class ApproximationScheme(object):
         Returns
         -------
         int
-        	the number of samples between 2 stopping
+            the number of samples between 2 stopping
 
         Raises
         ------
         pyagrum.OutOfBounds
-        	If p<1
+            If p<1
 
         """
         return _pyagrum.ApproximationScheme_periodSize(self)
@@ -7035,7 +7035,7 @@ class ApproximationScheme(object):
         Returns
         -------
         bool
-        	True if the verbosity is enabled
+            True if the verbosity is enabled
 
         """
         return _pyagrum.ApproximationScheme_verbosity(self)
@@ -7057,7 +7057,7 @@ class ApproximationScheme(object):
         Returns
         -------
         int
-        	the number of iterations
+            the number of iterations
 
         """
         return _pyagrum.ApproximationScheme_nbrIterations(self)
@@ -7068,12 +7068,12 @@ class ApproximationScheme(object):
         Returns
         -------
         tuple
-        	the scheme history
+            the scheme history
 
         Raises
         ------
         pyagrum.OperationNotAllowed
-        	If the scheme did not performed or if verbosity is set to false
+            If the scheme did not performed or if verbosity is set to false
 
         """
         return _pyagrum.ApproximationScheme_history(self)
@@ -7240,7 +7240,7 @@ class DiscretizedVariable(IDiscretizedVariable):
         Returns
         -------
         pyagrum.DiscretizedVariable
-        	a copy of the DiscretizedVariable
+            a copy of the DiscretizedVariable
 
         """
         return _pyagrum.DiscretizedVariable_clone(self)
@@ -7253,9 +7253,9 @@ class DiscretizedVariable(IDiscretizedVariable):
         Returns
         -------
         int :
-        	the type of the variable.
+            the type of the variable.
 
-        	0: DiscretizedVariable, 1: LabelizedVariable, 2: IntegerVariable, 3: RangeVariable, 4:
+            0: DiscretizedVariable, 1: LabelizedVariable, 2: IntegerVariable, 3: NumericalDiscreteVariable, 4: RangeVariable
 
         """
         return _pyagrum.DiscretizedVariable_varType(self)
@@ -7266,12 +7266,12 @@ class DiscretizedVariable(IDiscretizedVariable):
         Parameters
         ----------
         aTick : float
-        	the Tick to be tested
+            the Tick to be tested
 
         Returns
         -------
         bool :
-        	True if the Tick already exists
+            True if the Tick already exists
 
         """
         return _pyagrum.DiscretizedVariable_isTick(self, aTick)
@@ -7312,17 +7312,17 @@ class DiscretizedVariable(IDiscretizedVariable):
         Parameters
         ----------
         i : int
-        	the index of the label we wish to return
+            the index of the label we wish to return
 
         Returns
         -------
         str
-        	the indice-th label
+            the label at the given index
 
         Raises
         ------
         pyagrum.OutOfBounds
-        	If the variable does not contain the label
+            If the variable does not contain the label
 
         """
         return _pyagrum.DiscretizedVariable_label(self, i)
@@ -7332,13 +7332,13 @@ class DiscretizedVariable(IDiscretizedVariable):
 
         Parameters
         ----------
-        indice : int
-        	an index
+        index : int
+            an index
 
         Returns
         -------
         float
-        	the numerical representation of the indice-th value
+            the numerical representation of the value at the given index
 
         """
         return _pyagrum.DiscretizedVariable_numerical(self, indice)
@@ -7351,12 +7351,12 @@ class DiscretizedVariable(IDiscretizedVariable):
         Parameters
         ----------
         i : int
-        	the index of the interval to draw
+            the index of the interval to draw
 
         Returns
         -------
         float :
-        	the value randomly drawn in the i-th interval
+            the value randomly drawn in the i-th interval
 
         """
         return _pyagrum.DiscretizedVariable_draw(self, indice)
@@ -7367,12 +7367,12 @@ class DiscretizedVariable(IDiscretizedVariable):
         Parameters
         ----------
         label : str
-        	a label
+            a label
 
         Returns
         -------
         int
-        	the indice of the label
+            the index of the label
 
         """
         return _pyagrum.DiscretizedVariable_index(self, *args)
@@ -7383,7 +7383,7 @@ class DiscretizedVariable(IDiscretizedVariable):
         Returns
         -------
         int
-        	the number of modalities in the variable domain
+            the number of modalities in the variable domain
 
         """
         return _pyagrum.DiscretizedVariable_domainSize(self)
@@ -7405,7 +7405,7 @@ class DiscretizedVariable(IDiscretizedVariable):
         Returns
         -------
         str
-        	a description of its type
+            a description of its type
 
         """
         return _pyagrum.DiscretizedVariable_stype(self)
@@ -7418,17 +7418,17 @@ class DiscretizedVariable(IDiscretizedVariable):
         Parameters
         ----------
         i : int
-        	the index of the Tick
+            the index of the Tick
 
         Returns
         -------
         aTick : float
-        	the i-th Tick
+            the i-th Tick
 
         Raises
         ------
         pyagrum.NotFound
-        	If the index is greater than the number of Ticks
+            If the index is greater than the number of Ticks
 
         """
         return _pyagrum.DiscretizedVariable_tick(self, i)
@@ -7439,7 +7439,7 @@ class DiscretizedVariable(IDiscretizedVariable):
         Returns
         -------
         tuple :
-        	a tuple containing all the Ticks
+            a tuple containing all the Ticks
 
         """
         return _pyagrum.DiscretizedVariable_ticks(self)
@@ -7447,7 +7447,7 @@ class DiscretizedVariable(IDiscretizedVariable):
     def closestIndex(self, val: float) -> int:
         r"""
 
-        For numerical discrete variables (all except :class:`pyagrum.LabelizedVariable`), this method returns the index of the closest value to a given float value in the variable's domain.
+        For numerical discrete variables (all except pyagrum.LabelizedVariable), this method returns the index of the closest value to a given float value in the variable's domain.
 
         Parameters
         ----------
@@ -7461,7 +7461,7 @@ class DiscretizedVariable(IDiscretizedVariable):
         Raises
         ------
         pyagrum.NotImplementedYet
-          if the variable is not numerical discrete (i.e., if it is a :class:`pyagrum.LabelizedVariable`).
+          if the variable is not numerical discrete (i.e., if it is a pyagrum.LabelizedVariable).
 
         """
         return _pyagrum.DiscretizedVariable_closestIndex(self, val)
@@ -7778,8 +7778,8 @@ class Tensor(object):
 
         mapping : list|tuple|dict
 
-        Warning
-        -------
+        Warnings
+        --------
             - if `v` is a list, the size of the list must be the size of the tensor
 
             - if `v` is a ref:pyagrum.Tensor, it must contain variables with exactly the same names and labels but not necessarily the same variables. If
@@ -7791,7 +7791,7 @@ class Tensor(object):
         Returns
         -------
         pyagrum.Tensor
-              a reference to the modified potentia
+              a reference to the modified tensor
 
         Raises
         ------
@@ -7857,8 +7857,8 @@ class Tensor(object):
 
         log2 all the values in the Tensor
 
-        Warning
-        -------
+        Warnings
+        --------
         When the Tensor contains 0 or negative values, no exception are raised but `-inf` or `nan` values are assigned.
 
         """
@@ -7913,7 +7913,7 @@ class Tensor(object):
     def KL(self, p: "Tensor") -> float:
         r"""
 
-        Check the compatibility and compute the Kullback-Leibler divergence between the tensor and.
+        Check the compatibility and compute the Kullback-Leibler divergence between the tensor and `p`.
 
         Parameters
         ----------
@@ -8089,8 +8089,8 @@ class Tensor(object):
         This static method generates a Tensor representing an observation where a quasi-continuous variable
         (a :class:`pyagrum.DiscretizedVariable` with many ticks) takes a specific given value.
 
-        Note
-        ----
+        Notes
+        -----
           - see also :meth:`BayesNet.evEq`
           - see also :meth:`Tensor.evGt`, :meth:`Tensor.evLt`, :meth:`Tensor.evIn`
 
@@ -8126,8 +8126,8 @@ class Tensor(object):
         This static method generates a Tensor representing an observation where a quasi-continuous variable
         (a :class:`pyagrum.DiscretizedVariable` with many ticks) takes a value between the 2 paramerts (min,max)
 
-        Note
-        ----
+        Notes
+        -----
           - see also :meth:`BayesNet.evIn`
           - see also :meth:`Tensor.evEq`, :meth:`Tensor.evLt`, :meth:`Tensor.evGt`
 
@@ -8142,7 +8142,7 @@ class Tensor(object):
 
         Returns
         -------
-        pyAgrum.Tensor
+        pyagrum.Tensor
           The representation of the evidence as a :class:`~pyagrum.Tensor`.
 
         """
@@ -8155,8 +8155,8 @@ class Tensor(object):
         This static method generates a Tensor representing an observation where a quasi-continuous variable
         (a :class:`pyagrum.DiscretizedVariable` with many ticks) takes a value greater than the parameter.
 
-        Note
-        ----
+        Notes
+        -----
           - see also :meth:`BayesNet.evGt`
           - see also :meth:`Tensor.evEq`, :meth:`Tensor.evLt`, :meth:`Tensor.evIn`
 
@@ -8192,8 +8192,8 @@ class Tensor(object):
         This static method generates a Tensor representing an observation where a quasi-continuous variable
         (a :class:`pyagrum.DiscretizedVariable` with many ticks) takes a value less than the parameter.
 
-        Note
-        ----
+        Notes
+        -----
           - see also :meth:`BayesNet.evLt`
           - see also :meth:`Tensor.evEq`, :meth:`Tensor.evGt`, :meth:`Tensor.evIn`
 
@@ -8224,7 +8224,7 @@ class Tensor(object):
 
         Parameters
         ----------
-        func : function(Dict[str,int])->float
+        func : function(dict)->float
             A function that takes a single argument, representing the value of a python representation of a `pyagrum.Instantiation` (as a dictionary), and returns a float.
 
         Warnings
@@ -8254,10 +8254,10 @@ class Tensor(object):
         ----------
         inst : pyagrum.instantiation
           a partial instantiation
-        dict : Dict[str,str|int]
+        dict : dict
           a dictionnary containing values for some discrete variables.
 
-        Warning
+        Warnings
         --------
             if the dictionnary contains a key that is not the name of a variable in the `pyagrum.Tensor`,
             this key is just not used without notification. Then `pyagrum.Tensor.extract` concerns
@@ -8439,7 +8439,7 @@ class Tensor(object):
 
         Returns
         -------
-        Tuple[Dict[str,int],float]
+        tuple
           the list of positions of the min and the min of all elements in the Tensor
 
         """
@@ -8450,7 +8450,7 @@ class Tensor(object):
 
         Returns
         -------
-        Tuple[Dict[str,int],float]
+        tuple
           the list of positions of the max and the max of all elements in the Tensor
 
         """
@@ -8982,7 +8982,8 @@ class Tensor(object):
 
         Returns
         -------
-            Returns the index of a variable.
+        int
+            the index of a variable.
 
         Raises
         ------
@@ -8995,10 +8996,12 @@ class Tensor(object):
     def contains(self, v: "pyagrum.DiscreteVariable") -> bool:
         r"""
 
+        Check whether a variable is in the tensor.
+
         Parameters
         ----------
-        v : pyagrum.Tensor
-            a DiscreteVariable.
+        v : pyagrum.DiscreteVariable
+            the variable to check.
 
         Returns
         -------
@@ -9018,7 +9021,7 @@ class Tensor(object):
 
         Returns
         -------
-          the varible at the ith index
+          the variable at the ith index
 
         Raises
         ------
@@ -9066,9 +9069,9 @@ class Tensor(object):
 
         Raises
         ------
-        DuplicateElement
+        pyagrum.DuplicateElement
           If the variable is already in this Tensor.
-        InvalidArgument
+        pyagrum.InvalidArgument
           If the variable is empty.
 
         Returns
@@ -9297,8 +9300,8 @@ class PythonBNListener(object):
     PythonBNListener(bn:pyagrum.BayesNet,vnm:pyagrum.VariableNodeMap) -> PythonBNListener
         default constructor
 
-    Note
-    ----
+    Notes
+    -----
         This class est mainly automatically instantiated using the method pyagrum.BayesNet.addStructureListener.
 
     Parameters
@@ -9321,8 +9324,8 @@ class PythonBNListener(object):
         PythonBNListener(bn:pyagrum.BayesNet,vnm:pyagrum.VariableNodeMap) -> PythonBNListener
             default constructor
 
-        Note
-        ----
+        Notes
+        -----
             This class est mainly automatically instantiated using the method pyagrum.BayesNet.addStructureListener.
 
         Parameters
@@ -9432,7 +9435,7 @@ class PythonApproximationListener(object):
     Parameters
     ----------
     algo : IApproximationSchemeConfiguration
-    	an approxmation scheme
+        an approxmation scheme
 
     """
 
@@ -9445,7 +9448,7 @@ class PythonApproximationListener(object):
         Parameters
         ----------
         algo : IApproximationSchemeConfiguration
-        	an approxmation scheme
+            an approxmation scheme
 
         """
         _pyagrum.PythonApproximationListener_swiginit(self, _pyagrum.new_PythonApproximationListener(algo))
@@ -9463,7 +9466,7 @@ class PythonApproximationListener(object):
         Parameters
         ----------
         pyfunc
-        	the function to execute
+            the function to execute
 
         """
         return _pyagrum.PythonApproximationListener_setWhenProgress(self, pyfunc)
@@ -9474,7 +9477,7 @@ class PythonApproximationListener(object):
         Parameters
         ----------
         pyfunc
-        	the function to execute
+            the function to execute
 
         """
         return _pyagrum.PythonApproximationListener_setWhenStop(self, pyfunc)
@@ -9524,23 +9527,23 @@ class BNGenerator(object):
         Parameters
         ----------
         n_nodes : int
-        	the number of nodes (default=10)
+            the number of nodes (default=10)
         n_arcs : int
-        	the number of arcs (default=15)
+            the number of arcs (default=15)
         n_nodmax : int
-        	the max number of modalities for a node (default=4)
+            the max number of modalities for a node (default=4)
 
         Returns
         -------
         pyagrum.BayesNet
-        	the generated Bayesian network
+            the generated Bayesian network
 
         Raises
         ------
           pyagrum.OperationNotAllowed
-        	If n_modmax < 2
+            If n_modmax < 2
           pyagrum.OperationNotAllowed
-        	If n_arcs is incompatible with n_nodes (not enough arcs)
+            If n_arcs is incompatible with n_nodes (not enough arcs)
 
         """
         return _pyagrum.BNGenerator_generate(self, n_nodes, n_arcs, n_modmax)
@@ -9578,9 +9581,7 @@ class InformationTheory(object):
         Z :  : int or str or iterable[int or str] (optional)
           a third (an optional) nodeset
 
-    Example
-    -------
-
+    Example-------
           .. code:: python
 
               import pyagrum as gum
@@ -9616,9 +9617,7 @@ class InformationTheory(object):
             Z :  : int or str or iterable[int or str] (optional)
               a third (an optional) nodeset
 
-        Example
-        -------
-
+        Example-------
               .. code:: python
 
                   import pyagrum as gum
@@ -9647,10 +9646,8 @@ class InformationTheory(object):
     def entropyX(self) -> float:
         r"""
 
-        Returns
-        -------
-        float
-          The entropy of nodeset X.
+        Returns  ---------  float
+        The entropy of nodeset X.
 
         """
         return _pyagrum.InformationTheory_entropyX(self)
@@ -9755,14 +9752,14 @@ class PRMexplorer(object):
         Parameters
         ----------
         filename : str
-        	the name of the o3prm file
+            the name of the o3prm file
         classpath : str
-        	the classpath of the PRM
+            the classpath of the PRM
 
         Raises
         ------
         pyagrum.FatalError
-        	If file not found
+            If file not found
 
         """
         return _pyagrum.PRMexplorer_load(self, *args)
@@ -9773,12 +9770,12 @@ class PRMexplorer(object):
         Parameters
         ----------
         name : str
-        	an element name
+            an element name
 
         Returns
         -------
         bool
-        	True if the parameter correspond to a type in the PRM
+            True if the parameter correspond to a type in the PRM
 
         """
         return _pyagrum.PRMexplorer_isType(self, name)
@@ -9789,12 +9786,12 @@ class PRMexplorer(object):
         Parameters
         ----------
         name : str
-        	an element name
+            an element name
 
         Returns
         -------
         bool
-        	True if the parameter correspond to a class in the PRM
+            True if the parameter correspond to a class in the PRM
 
         """
         return _pyagrum.PRMexplorer_isClass(self, name)
@@ -9805,12 +9802,12 @@ class PRMexplorer(object):
         Parameters
         ----------
         name : str
-        	an element name
+            an element name
 
         Returns
         -------
         bool
-        	True if the parameter correspond to an interface in the PRM
+            True if the parameter correspond to an interface in the PRM
 
         """
         return _pyagrum.PRMexplorer_isInterface(self, name)
@@ -9821,7 +9818,7 @@ class PRMexplorer(object):
         Returns
         -------
         list
-        	the list of classes
+            the list of classes
 
         """
         return _pyagrum.PRMexplorer_classes(self)
@@ -9832,17 +9829,17 @@ class PRMexplorer(object):
         Parameters
         ----------
         class_name : str
-        	a class name
+            a class name
 
         Returns
         -------
         list
-        	the list of attributes
+            the list of attributes
 
         Raises
         ------
           pyagrum.IndexError
-        	If the class is not in the PRM
+            If the class is not in the PRM
 
         """
         return _pyagrum.PRMexplorer_classAttributes(self, class_name)
@@ -9853,21 +9850,21 @@ class PRMexplorer(object):
         Parameters
         ----------
         class_name : str
-        	a class name
+            a class name
         att_name : str
-        	the name of the attribute to be tested
+            the name of the attribute to be tested
 
         Returns
         -------
         bool
-        	True if att_name is an attribute of class_name
+            True if att_name is an attribute of class_name
 
         Raises
         ------
         pyagrum.IndexError
-        	If the class is not in the PRM
+            If the class is not in the PRM
         pyagrum.IndexError
-        	If att_name is not an element of class_name
+            If att_name is not an element of class_name
 
         """
         return _pyagrum.PRMexplorer_isAttribute(self, class_name, att_name)
@@ -9878,17 +9875,17 @@ class PRMexplorer(object):
         Parameters
         ----------
         class_name : str
-        	a class name
+            a class name
 
         Returns
         -------
         list
-        	the list of references
+            the list of references
 
         Raises
         ------
         pyagrum.IndexError
-        	If the class is not in the PRM
+            If the class is not in the PRM
 
         """
         return _pyagrum.PRMexplorer_classReferences(self, class_name)
@@ -9899,17 +9896,17 @@ class PRMexplorer(object):
         Parameters
         ----------
         class_name : str
-        	a class name
+            a class name
 
         Returns
         -------
         list
-        	the list of parameters
+            the list of parameters
 
         Raises
         ------
           pyagrum.IndexError
-        	If the class is not in the PRM
+            If the class is not in the PRM
 
         """
         return _pyagrum.PRMexplorer_classParameters(self, class_name)
@@ -9920,12 +9917,12 @@ class PRMexplorer(object):
         Parameters
         ----------
         class_name : str
-        	a class name
+            a class name
 
         Returns
         -------
         list
-        	the list of interfaces implemented by the class
+            the list of interfaces implemented by the class
 
         """
         return _pyagrum.PRMexplorer_classImplements(self, class_name)
@@ -9941,17 +9938,17 @@ class PRMexplorer(object):
         Parameters
         ----------
         class_name : str
-        	a class name
+            a class name
 
         Returns
         -------
         list
-        	the list of aggregates in the class
+            the list of aggregates in the class
 
         Raises
         ------
           pyagrum.IndexError
-        	If the class is not in the PRM
+            If the class is not in the PRM
 
         """
         return _pyagrum.PRMexplorer_classAggregates(self, class_name)
@@ -9962,17 +9959,17 @@ class PRMexplorer(object):
         Parameters
         ----------
         class_name : str
-        	a class name
+            a class name
 
         Returns
         -------
         list
-        	the list of class slot chains
+            the list of class slot chains
 
         Raises
         ------
         pyagrum.IndexError
-        	if the class is not in the PRM
+            if the class is not in the PRM
 
         """
         return _pyagrum.PRMexplorer_classSlotChains(self, class_name)
@@ -9983,17 +9980,17 @@ class PRMexplorer(object):
         Parameters
         ----------
         class_name : str
-        	a class name
+            a class name
 
         Returns
         -------
         tuple
-        	a description of the DAG
+            a description of the DAG
 
         Raises
         ------
           pyagrum.IndexError
-        	If the class is not in the PRM
+            If the class is not in the PRM
 
         """
         return _pyagrum.PRMexplorer_classDag(self, class_name)
@@ -10004,7 +10001,7 @@ class PRMexplorer(object):
         Returns
         -------
         list
-        	the list of all the systems and their components
+            the list of all the systems and their components
 
         """
         return _pyagrum.PRMexplorer_getalltheSystems(self)
@@ -10015,17 +10012,17 @@ class PRMexplorer(object):
         Parameters
         ----------
         class_name : str
-        	a class name
+            a class name
 
         Returns
         -------
         str
-        	the class extended by class_name
+            the class extended by class_name
 
         Raises
         ------
         pyagrum.IndexError
-        	If the class is not in the PRM
+            If the class is not in the PRM
 
         """
         return _pyagrum.PRMexplorer_getSuperClass(self, class_name)
@@ -10036,17 +10033,17 @@ class PRMexplorer(object):
         Parameters
         ----------
         class_name : str
-        	a class name
+            a class name
 
         Returns
         -------
         list
-        	the list of direct subclasses
+            the list of direct subclasses
 
         Raises
         ------
         pyagrum.IndexError
-        	If the class is not in the PRM
+            If the class is not in the PRM
 
         """
         return _pyagrum.PRMexplorer_getDirectSubClass(self, class_name)
@@ -10057,24 +10054,24 @@ class PRMexplorer(object):
         Parameters
         ----------
         class_name : str
-        	a class name
+            a class name
 
         attribute : str
-        	an attribute
+            an attribute
 
         Returns
         -------
         pyagrum.Tensor
-        	the tensor of the attribute
+            the tensor of the attribute
 
         Raises
         ------
         pyagrum.OperationNotAllowed
-        	If the class element doesn't have any "pyagrum.Tensor" (like a pyagrum.PRMReferenceSlot).
+            If the class element doesn't have any pyagrum.Tensor (like a pyagrum.PRMReferenceSlot).
         pyagrum.IndexError
-        	If the class is not in the PRM
+            If the class is not in the PRM
         pyagrum.IndexError
-        	If the attribute in parameters does not exist
+            If the attribute in parameters does not exist
 
         """
         return _pyagrum.PRMexplorer_cpf(self, class_name, attribute)
@@ -10085,7 +10082,7 @@ class PRMexplorer(object):
         Returns
         -------
         list
-        	the list of the custom types in the PRM
+            the list of the custom types in the PRM
 
         """
         return _pyagrum.PRMexplorer_types(self)
@@ -10096,17 +10093,17 @@ class PRMexplorer(object):
         Parameters
         ----------
         type_name : str
-        	a type name
+            a type name
 
         Returns
         -------
         str
-        	the type extended by type_name
+            the type extended by type_name
 
         Raises
         ------
         pyagrum.IndexError
-        	If the type is not in the PRM
+            If the type is not in the PRM
 
         """
         return _pyagrum.PRMexplorer_getSuperType(self, type_name)
@@ -10117,17 +10114,17 @@ class PRMexplorer(object):
         Parameters
         ----------
         type_name : str
-        	a type name
+            a type name
 
         Returns
         -------
         list
-        	the list of direct subtypes
+            the list of direct subtypes
 
         Raises
         ------
         pyagrum.IndexError
-        	If the type is not in the PRM
+            If the type is not in the PRM
 
         """
         return _pyagrum.PRMexplorer_getDirectSubTypes(self, type_name)
@@ -10138,17 +10135,17 @@ class PRMexplorer(object):
         Parameters
         ----------
         type_name : str
-        	a type name
+            a type name
 
         Returns
         -------
         list
-        	the list of type labels
+            the list of type labels
 
         Raises
         ------
         pyagrum.IndexError
-        	If the type is not in the PRM
+            If the type is not in the PRM
 
         """
         return _pyagrum.PRMexplorer_getLabels(self, type_name)
@@ -10159,17 +10156,17 @@ class PRMexplorer(object):
         Parameters
         ----------
         type_name : str
-        	a type name
+            a type name
 
         Returns
         -------
         dict
-        	a dict containing pairs of label and their values
+            a dict containing pairs of label and their values
 
         Raises
         ------
         pyagrum.IndexError
-        	If the type is not in the PRM
+            If the type is not in the PRM
 
         """
         return _pyagrum.PRMexplorer_getLabelMap(self, type_name)
@@ -10180,7 +10177,7 @@ class PRMexplorer(object):
         Returns
         -------
         list
-        	the list of interfaces in the PRM
+            the list of interfaces in the PRM
 
         """
         return _pyagrum.PRMexplorer_interfaces(self)
@@ -10191,20 +10188,20 @@ class PRMexplorer(object):
         Parameters
         ----------
         interface_name : str
-        	an interface
+            an interface
 
         allAttributes : bool
-        	True if supertypes of a custom type should be indicated
+            True if supertypes of a custom type should be indicated
 
         Returns
         -------
         list
-        	the list of (<type>,<attribute_name>) for the given interface
+            the list of (<type>,<attribute_name>) for the given interface
 
         Raises
         ------
         pyagrum.IndexError
-        	If the type is not in the PRM
+            If the type is not in the PRM
 
         """
         return _pyagrum.PRMexplorer_interAttributes(self, interface_name, allAttributes)
@@ -10215,17 +10212,17 @@ class PRMexplorer(object):
         Parameters
         ----------
         interface_name : str
-        	an interface
+            an interface
 
         Returns
         -------
         list
-        	the list of (<reference_type>,<reference_name>,<True if the reference is an array>) for the given interface
+            the list of (<reference_type>,<reference_name>,<True if the reference is an array>) for the given interface
 
         Raises
         ------
         pyagrum.IndexError
-        	If the type is not in the PRM
+            If the type is not in the PRM
 
         """
         return _pyagrum.PRMexplorer_interReferences(self, interface_name)
@@ -10236,17 +10233,17 @@ class PRMexplorer(object):
         Parameters
         ----------
         interface_name : str
-        	an interface name
+            an interface name
 
         Returns
         -------
         str
-        	the interace extended by interface_name
+            the interace extended by interface_name
 
         Raises
         ------
         pyagrum.IndexError
-        	If the interface is not in the PRM
+            If the interface is not in the PRM
 
         """
         return _pyagrum.PRMexplorer_getSuperInterface(self, interface_name)
@@ -10257,17 +10254,17 @@ class PRMexplorer(object):
         Parameters
         ----------
         interface_name : str
-        	an interface name
+            an interface name
 
         Returns
         -------
         list
-        	the list of direct subinterfaces
+            the list of direct subinterfaces
 
         Raises
         ------
         pyagrum.IndexError
-        	If the interface is not in the PRM
+            If the interface is not in the PRM
 
         """
         return _pyagrum.PRMexplorer_getDirectSubInterfaces(self, interface_name)
@@ -10278,17 +10275,17 @@ class PRMexplorer(object):
         Parameters
         ----------
         interface_name : str
-        	an interface name
+            an interface name
 
         Returns
         -------
         str
-        	the list of classes implementing the interface
+            the list of classes implementing the interface
 
         Raises
         ------
         pyagrum.IndexError
-        	If the interface is not in the PRM
+            If the interface is not in the PRM
 
         """
         return _pyagrum.PRMexplorer_getImplementations(self, interface_name)
@@ -10321,7 +10318,7 @@ class EssentialGraph(object):
         Returns
         -------
         pyagrum.PDAG
-        	the PDAG (Partially Directed Graph)
+            the PDAG (Partially Directed Graph)
 
         """
         return _pyagrum.EssentialGraph_pdag(self)
@@ -10365,7 +10362,7 @@ class EssentialGraph(object):
         Returns
         -------
         int
-        	the number of nodes in the graph
+            the number of nodes in the graph
 
         """
         return _pyagrum.EssentialGraph_sizeNodes(self)
@@ -10376,7 +10373,7 @@ class EssentialGraph(object):
         Returns
         -------
         int
-        	the number of nodes in the graph
+            the number of nodes in the graph
 
         """
         return _pyagrum.EssentialGraph_size(self)
@@ -10497,7 +10494,7 @@ class EssentialGraph(object):
         Returns
         -------
         list
-        	The lisf of arcs in the EssentialGraph
+            The lisf of arcs in the EssentialGraph
 
         """
         return _pyagrum.EssentialGraph_arcs(self)
@@ -10508,7 +10505,7 @@ class EssentialGraph(object):
         Parameters
         ----------
         id :
-        	The id of the child node
+            The id of the child node
 
         Returns
         -------
@@ -10529,7 +10526,7 @@ class EssentialGraph(object):
         Returns
         -------
         Set
-        	the set of all the children
+            the set of all the children
 
         """
         return _pyagrum.EssentialGraph_children(self, id)
@@ -10698,7 +10695,7 @@ class MarkovBlanket(object):
         Returns
         -------
         int
-        	the number of nodes in the graph
+            the number of nodes in the graph
 
         """
         return _pyagrum.MarkovBlanket_sizeNodes(self)
@@ -10720,7 +10717,7 @@ class MarkovBlanket(object):
         Parameters
         ----------
         pyagrum.DAGmodel
-        	a direct acyclic model
+            a direct acyclic model
 
         Returns
         -------
@@ -10819,7 +10816,7 @@ class MarkovBlanket(object):
         Returns
         -------
         List
-        	the list of the arcs
+            the list of the arcs
 
         """
         return _pyagrum.MarkovBlanket_arcs(self)
@@ -10830,7 +10827,7 @@ class MarkovBlanket(object):
         Parameters
         ----------
         id :
-        	The id of the child node
+            The id of the child node
 
         Returns
         -------
@@ -10851,7 +10848,7 @@ class MarkovBlanket(object):
         Returns
         -------
         Set
-        	the set of all the children
+            the set of all the children
 
         """
         return _pyagrum.MarkovBlanket_children(self, id)
@@ -10948,9 +10945,9 @@ class StructuralComparator(object):
         Parameters
         ----------
         ref :
-        	the structure of reference
+            the structure of reference
         test :
-        	the structure we want to test
+            the structure we want to test
 
         """
         return _pyagrum.StructuralComparator_compare(self, *args)
@@ -10963,7 +10960,7 @@ class StructuralComparator(object):
         Returns
         -------
         float
-        	the precision of the tested graph skeleton
+            the precision of the tested graph skeleton
 
         """
         return _pyagrum.StructuralComparator_precision_skeleton(self)
@@ -10976,7 +10973,7 @@ class StructuralComparator(object):
         Returns
         -------
         float
-        	the recall of the tested graph skeleton
+            the recall of the tested graph skeleton
 
         """
         return _pyagrum.StructuralComparator_recall_skeleton(self)
@@ -10989,7 +10986,7 @@ class StructuralComparator(object):
         Returns
         -------
         float
-        	the tarmonic mean of the tested graph skeleton
+            the tarmonic mean of the tested graph skeleton
 
         """
         return _pyagrum.StructuralComparator_f_score_skeleton(self)
@@ -11002,7 +10999,7 @@ class StructuralComparator(object):
         Returns
         -------
         float
-        	the precision of the tested graph
+            the precision of the tested graph
 
         """
         return _pyagrum.StructuralComparator_precision(self)
@@ -11015,7 +11012,7 @@ class StructuralComparator(object):
         Returns
         -------
         float
-        	the recall of the tested graph
+            the recall of the tested graph
 
         """
         return _pyagrum.StructuralComparator_recall(self)
@@ -11028,7 +11025,7 @@ class StructuralComparator(object):
         Returns
         -------
         float
-        	the harmonic mean of the tested graph
+            the harmonic mean of the tested graph
 
         """
         return _pyagrum.StructuralComparator_f_score(self)
@@ -11058,19 +11055,19 @@ class IBayesNet(DAGmodel):
         Parameters
         ----------
         VarId : int
-        	A variable's id in the pyagrum.IBayesNet.
+            A variable's id in the pyagrum.IBayesNet.
         name : str
-        	A variable's name in the pyagrum.IBayesNet.
+            A variable's name in the pyagrum.IBayesNet.
 
         Returns
         -------
         pyagrum.Tensor
-        	The variable's CPT.
+            The variable's CPT.
 
         Raises
         ------
         pyagrum.NotFound
-        	If no variable's id matches varId.
+            If no variable's id matches varId.
 
         """
         return _pyagrum.IBayesNet_cpt(self, varId)
@@ -11081,7 +11078,7 @@ class IBayesNet(DAGmodel):
         Returns
         -------
         pyagrum.variableNodeMap
-        	the variable node map
+            the variable node map
 
         """
         return _pyagrum.IBayesNet_variableNodeMap(self)
@@ -11092,19 +11089,19 @@ class IBayesNet(DAGmodel):
         Parameters
         ----------
         id : int
-        	a variable's id
+            a variable's id
         name : str
-        	a variable's name
+            a variable's name
 
         Returns
         -------
         pyagrum.DiscreteVariable
-        	the variable
+            the variable
 
         Raises
         ------
         pyagrum.IndexError
-        	If the graph does not contain the variable
+            If the graph does not contain the variable
 
         """
         return _pyagrum.IBayesNet_variable(self, id)
@@ -11115,17 +11112,17 @@ class IBayesNet(DAGmodel):
         Parameters
         ----------
         var : pyagrum.DiscreteVariable
-        	a variable
+            a variable
 
         Returns
         -------
         int
-        	the id of the variable
+            the id of the variable
 
         Raises
         ------
         pyagrum.IndexError
-        	If the graph does not contain the variable
+            If the graph does not contain the variable
 
         """
         return _pyagrum.IBayesNet_nodeId(self, var)
@@ -11138,7 +11135,7 @@ class IBayesNet(DAGmodel):
         Parameters
         ----------
         name : str
-        	The variable's name from which the id is returned.
+            The variable's name from which the id is returned.
 
         Notes
         -----
@@ -11147,12 +11144,12 @@ class IBayesNet(DAGmodel):
         Returns
         -------
         int :
-        	The variable's node id.
+            The variable's node id.
 
         Raises
         ------
         pyagrum.NotFound
-        	If name does not match a variable in the graph
+            If name does not match a variable in the graph
 
         """
         return _pyagrum.IBayesNet_idFromName(self, name)
@@ -11163,17 +11160,17 @@ class IBayesNet(DAGmodel):
         Parameters
         ----------
         name : str
-        	a variable's name
+            a variable's name
 
         Returns
         -------
         pyagrum.DiscreteVariable
-        	the variable
+            the variable
 
         Raises
         ------
         pyagrum.IndexError
-        	If the graph does not contain the variable
+            If the graph does not contain the variable
 
         """
         return _pyagrum.IBayesNet_variableFromName(self, name)
@@ -11184,12 +11181,12 @@ class IBayesNet(DAGmodel):
         Parameters
         ----------
         i : pyagrum.instantiation
-        	an instantiation of the variables
+            an instantiation of the variables
 
         Returns
         -------
         float
-        	a parameter of the joint probability for the BayesNet
+            a parameter of the joint probability for the BayesNet
 
         Warnings
         --------
@@ -11204,12 +11201,12 @@ class IBayesNet(DAGmodel):
         Parameters
         ----------
         i : pyagrum.instantiation
-        	an instantiation of the variables
+            an instantiation of the variables
 
         Returns
         -------
         float
-        	a parameter of the log joint probability for the BayesNet
+            a parameter of the log joint probability for the BayesNet
 
         Warnings
         --------
@@ -11225,7 +11222,7 @@ class IBayesNet(DAGmodel):
 
         Returns
         -------
-        List[str]
+        list of str
           list of found issues
 
         """
@@ -11245,7 +11242,7 @@ class IBayesNet(DAGmodel):
         Returns
         -------
         int
-        	the dimension of the BayesNet
+            the dimension of the BayesNet
 
         """
         return _pyagrum.IBayesNet_dim(self)
@@ -11256,7 +11253,7 @@ class IBayesNet(DAGmodel):
         Returns
         -------
         int
-        	the biggest domain size among the variables of the BayesNet
+            the biggest domain size among the variables of the BayesNet
 
         """
         return _pyagrum.IBayesNet_maxVarDomainSize(self)
@@ -11300,7 +11297,7 @@ class IBayesNet(DAGmodel):
         Returns
         -------
         float
-        	The biggest value (not equal to 1) in the CPTs of the BayesNet
+            The biggest value (not equal to 1) in the CPTs of the BayesNet
 
         """
         return _pyagrum.IBayesNet_maxNonOneParam(self)
@@ -11319,13 +11316,12 @@ class IBayesNet(DAGmodel):
     def evEq(self, name: str, value: float) -> "pyagrum.Tensor":
         r"""
 
-        This method is used to set an observation on a quasi-continuous variables (:class:`pyagrum
-        .DiscretizedVariable` with a large number of ticks)  that the variable is equal to a given value.
+        This method is used to set an observation on a quasi-continuous variables (pyagrum.DiscretizedVariable with a large number of ticks) that the variable is equal to a given value.
 
-        Note
-        ----
-          - see also :meth:`Tensor.evEq`
-          - see also :meth:`BayesNet.evGt`, :meth:`BayesNet.evLt`, :meth:`BayesNet.evIn`
+        Notes
+        -----
+          - see also Tensor.evEq
+          - see also BayesNet.evGt, BayesNet.evLt, BayesNet.evIn
 
         Examples
         --------
@@ -11339,14 +11335,14 @@ class IBayesNet(DAGmodel):
 
         Parameters
         ----------
-        var : Union[int,str]
+        var : int str
           the current name or the id of the variable
         value: float
 
         Returns
         -------
-        pyAgrum.Tensor
-          The representation of the evidence as a :class:`~pyagrum.Tensor`.
+        pyagrum.Tensor
+          The representation of the evidence as a pyagrum.Tensor.
 
         """
         return _pyagrum.IBayesNet_evEq(self, name, value)
@@ -11354,17 +11350,16 @@ class IBayesNet(DAGmodel):
     def evIn(self, name: str, val1: float, val2: float) -> "pyagrum.Tensor":
         r"""
 
-        This method is used to set an obvervation on a quasi-continuous variables (:class:`pyagrum
-        .DiscretizedVariable` with a large number of ticks) that the variable is less than a given value.
+        This method is used to set an observation on a quasi-continuous variables (pyagrum.DiscretizedVariable with a large number of ticks) that the variable is in a given range.
 
-        Note
-        ----
-          - see also :meth:`Tensor.evIn`
-          - see also :meth:`BayesNet.evEq`, :meth:`BayesNet.evGt`, :meth:`BayesNet.evLt`
+        Notes
+        -----
+          - see also Tensor.evIn
+          - see also BayesNet.evEq, BayesNet.evGt, BayesNet.evLt
 
         Parameters
         ----------
-        var : Union[int,str]
+        var : int str
           the current name or the id of the variable
         valueMin: float
           the minimum value
@@ -11374,7 +11369,7 @@ class IBayesNet(DAGmodel):
         Returns
         -------
         pyagrum.Tensor
-          The representation of the evidence as a :class:`~pyagrum.Tensor`.
+          The representation of the evidence as a pyagrum.Tensor.
 
         """
         return _pyagrum.IBayesNet_evIn(self, name, val1, val2)
@@ -11382,24 +11377,23 @@ class IBayesNet(DAGmodel):
     def evLt(self, name: str, value: float) -> "pyagrum.Tensor":
         r"""
 
-        This method is used to set an obvervation on a quasi-continuous variables (:class:`pyagrum
-        .DiscretizedVariable` with a large number of ticks) that the variable is less than a given value.
+        This method is used to set an observation on a quasi-continuous variables (pyagrum.DiscretizedVariable with a large number of ticks) that the variable is less than a given value.
 
-        Note
-        ----
-          - see also :meth:`Tensor.evLt`
-          - see also :meth:`BayesNet.evEq`, :meth:`BayesNet.evGt`, :meth:`BayesNet.evIn`
+        Notes
+        -----
+          - see also Tensor.evLt
+          - see also BayesNet.evEq, BayesNet.evGt, BayesNet.evIn
 
         Parameters
         ----------
-        var : Union[int,str]
+        var : int str
           the current name or the id of the variable
         value: float
 
         Returns
         -------
-        pyAgrum.Tensor
-          The representation of the evidence as a :class:`~pyagrum.Tensor`.
+        pyagrum.Tensor
+          The representation of the evidence as a pyagrum.Tensor.
 
         """
         return _pyagrum.IBayesNet_evLt(self, name, value)
@@ -11407,19 +11401,18 @@ class IBayesNet(DAGmodel):
     def evGt(self, name: str, value: float) -> "pyagrum.Tensor":
         r"""
 
-        This method is used to set an obvervation on a quasi-continuous variables (:class:`pyagrum
-        .DiscretizedVariable` with a large number of ticks) that the variable greater than a given value.
+        This method is used to set an observation on a quasi-continuous variables (pyagrum.DiscretizedVariable with a large number of ticks) that the variable is greater than a given value.
 
-        Note
-        ----
-          - see also :meth:`Tensor.evGt`
-          - see also :meth:`BayesNet.evEq`, :meth:`BayesNet.evLt`, :meth:`BayesNet.evIn`
+        Notes
+        -----
+          - see also Tensor.evGt
+          - see also BayesNet.evEq, BayesNet.evLt, BayesNet.evIn
 
         Examples
         --------
         >>> import pyagrum as gum
         >>> bn = pyagrum.fastBN('A[0:10:20]'') # DiscretizedVariable from 0 to 10 in 20 steps
-        >>> print(bn.eGt('A',5)
+        >>> print(bn.evGt('A',5)
           A                                                                                                                                                                                                    |
         [0;0.5[  |[0.5;1[  |[1;1.5[  |[1.5;2[  |[2;2.5[  |[2.5;3[  |[3;3.5[  |[3.5;4[  |[4;4.5[  |[4.5;5[  |[5;5.5[  |[5.5;6[  |[6;6.5[  |[6.5;7[  |[7;7.5[  |[7.5;8[  |[8;8.5[  |[8.5;9[  |[9;9.5[  |[9.5;10] |
         ---------|---------|---------|---------|---------|---------|---------|---------|---------|---------|---------|---------|---------|---------|---------|---------|---------|---------|---------|---------|
@@ -11427,14 +11420,14 @@ class IBayesNet(DAGmodel):
 
         Parameters
         ----------
-        var : Union[int,str]
+        var : int str
           the current name or the id of the variable
         value: float
 
         Returns
         -------
-        pyAgrum.Tensor
-          The representation of the evidence as a :class:`~pyagrum.Tensor`.
+        pyagrum.Tensor
+          The representation of the evidence as a pyagrum.Tensor.
 
         """
         return _pyagrum.IBayesNet_evGt(self, name, value)
@@ -11442,12 +11435,12 @@ class IBayesNet(DAGmodel):
     def memoryFootprint(self) -> int:
         r"""
 
-        get the size (in byte) of the (main footprint) of the BayesNet
+        Returns the memory footprint in bytes of the Bayesian network.
 
         Returns
         -------
         int
-          the size in byte of the representation (of the parameters) of the BayesNet
+          the memory footprint in bytes of the Bayesian network
 
         """
         return _pyagrum.IBayesNet_memoryFootprint(self)
@@ -11459,13 +11452,13 @@ class IBayesNet(DAGmodel):
 
         Parameters
         ----------
-        lov : List[str]
+        lov : list of str
           List of variable names
 
         Returns
         -------
-        List[int]
-        	The ids for the list of names of the graph variables
+        list of int
+            The ids for the list of names of the graph variables
 
         """
         return _pyagrum.IBayesNet_ids(self, names)
@@ -11477,13 +11470,13 @@ class IBayesNet(DAGmodel):
 
         Parameters
         ----------
-        lov : List[str]
+        lov : list of str
           List of variable names
 
         Returns
         -------
-        Set[int]
-        	The set of ids for the list of names of the graph variables
+        set
+            The set of ids for the list of names of the graph variables
 
         """
         return _pyagrum.IBayesNet_nodeset(self, names)
@@ -11496,16 +11489,16 @@ class IBayesNet(DAGmodel):
         Parameters
         ----------
         target : int
-        	The id of the target
-        targets : List[int]
-        	The ids of the targets
-        list : List[int]
-        	The list of available variables
+            The id of the target
+        targets : list of int
+            The ids of the targets
+        list : list of int
+            The list of available variables
 
         Returns
         -------
-        Set[int]
-        	The minimal set of variables
+        set
+            The minimal set of variables
 
         """
         return _pyagrum.IBayesNet_minimalCondSet(self, *args)
@@ -11517,11 +11510,11 @@ class IBayesNet(DAGmodel):
 
         Parameters
         ----------
-        X : str|intList[str|int]
+        X : str|intlist of str|int
               a list of of nodeIds or names
-        Y : str|intList[str|int]
+        Y : str|intlist of str|int
               a list of of nodeIds or names
-        Z : str|intList[str|int]
+        Z : str|intlist of str|int
               a list of of nodeIds or names
 
         Raises
@@ -11544,8 +11537,8 @@ class IBayesNet(DAGmodel):
 
         Returns
         -------
-        Set[str]
-        	The names of the graph variables
+        set
+            The names of the graph variables
 
         """
         return _pyagrum.IBayesNet_names(self)
@@ -11576,7 +11569,7 @@ class IBayesNet(DAGmodel):
 
         Returns
         -------
-        Set[int]
+        set
             the set of ids
 
         """
@@ -11660,7 +11653,7 @@ class IBayesNet(DAGmodel):
         Returns
         -------
         list
-        	The lisf of arcs in the IBayesNet
+            The lisf of arcs in the IBayesNet
 
         """
         return _pyagrum.IBayesNet_arcs(self)
@@ -11671,7 +11664,7 @@ class IBayesNet(DAGmodel):
         Parameters
         ----------
         id :
-        	The id of the child node
+            The id of the child node
 
         Returns
         -------
@@ -11692,7 +11685,7 @@ class IBayesNet(DAGmodel):
         Returns
         -------
         Set
-        	the set of all the children
+            the set of all the children
 
         """
         return _pyagrum.IBayesNet_children(self, norid)
@@ -11703,13 +11696,13 @@ class IBayesNet(DAGmodel):
         give the set of parents of a node and the node
 
         Parameters
-        ---------
+        ----------
         norid : str|int
           the node
 
         Returns
         -------
-        Set[int]
+        set
           the set of nodeId of the family of the node `norid`
 
         """
@@ -11727,7 +11720,7 @@ class IBayesNet(DAGmodel):
 
         Returns
         -------
-        Set[int]
+        set
           the set of ids of the descendants of node `norid`.
 
         """
@@ -11745,7 +11738,7 @@ class IBayesNet(DAGmodel):
 
         Returns
         -------
-        Set[int]
+        set
           the set of ids of the ancestors of node `norid`.
 
         """
@@ -11758,7 +11751,7 @@ class IBayesNet(DAGmodel):
 
         Parameters
         ----------
-        nodes : str|intList[str|int]
+        nodes : str|intlist of str|int
           the list of of nodeIds or names
 
         Warnings
@@ -11815,8 +11808,8 @@ class BayesNet(IBayesNet):
               - with 'a{-1|5|0|3}', the variable is a `pyagrum.IntegerVariable` using the sorted given values.
               - with 'a{-0.5|5.01|0|3.1415}', the variable is a `pyagrum.NumericalDiscreteVariable` using the sorted given values.
 
-        Note
-        ----
+        Notes
+        -----
           - If the dot-like string contains such a specification more than once for a variable, the first specification will be used.
           - the CPTs are randomly generated.
           - see also the function pyagrum.fastBN.
@@ -11852,13 +11845,13 @@ class BayesNet(IBayesNet):
 
         Parameters
         ----------
-        VarId :  Union[int,str]
-        	a variable's id (int) or name
+        VarId :  int str
+            a variable's id (int) or name
 
         Returns
         -------
         pyagrum.Tensor
-        	The variable's CPT.
+            The variable's CPT.
 
         Raises
         ------
@@ -11874,7 +11867,7 @@ class BayesNet(IBayesNet):
         Returns
         -------
         pyagrum.variableNodeMap
-        	the variable node map
+            the variable node map
 
         """
         return _pyagrum.BayesNet_variableNodeMap(self)
@@ -11887,18 +11880,18 @@ class BayesNet(IBayesNet):
         Parameters
         ----------
         variable : pyagrum.DiscreteVariable
-        	the variable added
+            the variable added
         descr : str
-        	the description of the variable (following :ref:`fast syntax<Quick specification of (randomly parameterized) graphical models>`)
+            the description of the variable (following fast syntax)
         nbrmod : int
-        	the number of modalities for the new variable
+            the number of modalities for the new variable
         id : int
-        	the variable forced id in the pyagrum.BayesNet
+            the variable forced id in the pyagrum.BayesNet
 
         Returns
         -------
         int
-        	the id of the new node
+            the id of the new node
 
         Raises
         ------
@@ -11921,16 +11914,16 @@ class BayesNet(IBayesNet):
     def erase(self, *args) -> None:
         r"""
 
-        Remove a variable from the "pyagrum.BayesNet".
+        Remove a variable from the pyagrum.BayesNet.
 
-        Removes the corresponding variable from the "pyagrum.BayesNet" and from all of it's children "pyagrum.Tensor".
+        Removes the corresponding variable from the pyagrum.BayesNet and from all of it's children pyagrum.Tensor.
 
         If no variable matches the given id, then nothing is done.
 
         Parameters
         ----------
-        var : Union[int,str,pyagrum.DiscreteVariable]
-        	the current name, the id of the variable or a reference to the variable
+        var : int str | pyagrum.DiscreteVariable
+            the current name, the id of the variable or a reference to the variable
 
         """
         return _pyagrum.BayesNet_erase(self, *args)
@@ -11941,19 +11934,19 @@ class BayesNet(IBayesNet):
         Parameters
         ----------
         id : int
-        	a variable's id
+            a variable's id
         name : str
-        	a variable's name
+            a variable's name
 
         Returns
         -------
         pyagrum.DiscreteVariable
-        	the variable
+            the variable
 
         Raises
         ------
         pyagrum.IndexError
-        	If the graph does not contain the variable
+            If the graph does not contain the variable
 
         """
         return _pyagrum.BayesNet_variable(self, *args)
@@ -11961,16 +11954,16 @@ class BayesNet(IBayesNet):
     def changeVariableName(self, *args) -> None:
         r"""
 
-        Changes a variable's name in the "pyagrum.BayesNet".
+        Changes a variable's name in the pyagrum.BayesNet.
 
-        This will change the "pyagrum.DiscreteVariable" names in the "pyagrum.BayesNet".
+        This will change the pyagrum.DiscreteVariable names in the pyagrum.BayesNet.
 
         Parameters
         ----------
-        var : Union[int,str]
-        	the current name or the id of the variable
+        var : int str
+            the current name or the id of the variable
         new_name : str
-        	the new name of the variable
+            the new name of the variable
 
         Raises
         ------
@@ -11989,12 +11982,12 @@ class BayesNet(IBayesNet):
 
         Parameters
         ----------
-        var : Union[int,str]
-        	the current name or the id of the variable
+        var : int str
+            the current name or the id of the variable
         old_label : str
-        	the new label
+            the new label
         new_label : str
-        	the new label
+            the new label
 
         Raises
         ------
@@ -12010,17 +12003,17 @@ class BayesNet(IBayesNet):
         Parameters
         ----------
         var : pyagrum.DiscreteVariable
-        	a variable
+            a variable
 
         Returns
         -------
         int
-        	the id of the variable
+            the id of the variable
 
         Raises
         ------
         pyagrum.IndexError
-        	If the graph does not contain the variable
+            If the graph does not contain the variable
 
         """
         return _pyagrum.BayesNet_nodeId(self, var)
@@ -12033,7 +12026,7 @@ class BayesNet(IBayesNet):
         Parameters
         ----------
         name : str
-        	The variable's name from which the id is returned.
+            The variable's name from which the id is returned.
 
         Notes
         -----
@@ -12042,12 +12035,12 @@ class BayesNet(IBayesNet):
         Returns
         -------
         int :
-        	The variable's node id.
+            The variable's node id.
 
         Raises
         ------
         pyagrum.NotFound
-        	If name does not match a variable in the graph
+            If name does not match a variable in the graph
 
         """
         return _pyagrum.BayesNet_idFromName(self, name)
@@ -12058,17 +12051,17 @@ class BayesNet(IBayesNet):
         Parameters
         ----------
         name : str
-        	a variable's name
+            a variable's name
 
         Returns
         -------
         pyagrum.DiscreteVariable
-        	the variable
+            the variable
 
         Raises
         ------
         pyagrum.IndexError
-        	If the graph does not contain the variable
+            If the graph does not contain the variable
 
         """
         return _pyagrum.BayesNet_variableFromName(self, name)
@@ -12080,10 +12073,10 @@ class BayesNet(IBayesNet):
 
         Parameters
         ----------
-        head : Union[int,str]
-        	a variable's id (int) or name
-        head : Union[int,str]
-        	a variable's id (int) or name
+        head : int str
+            a variable's id (int) or name
+        tail : int str
+            a variable's id (int) or name
 
         Raises
         ------
@@ -12105,11 +12098,11 @@ class BayesNet(IBayesNet):
         Parameters
         ----------
         arc : pyagrum.Arc when calling eraseArc(arc)
-        	The arc to be removed.
-        head : Union[int,str]
-        	a variable's id (int) or name for the head when calling eraseArc(head,tail)
-        tail : Union[int,str]
-        	a variable's id (int) or name for the tail when calling eraseArc(head,tail)
+            The arc to be removed.
+        head : int str
+            a variable's id (int) or name for the head when calling eraseArc(head,tail)
+        tail : int str
+            a variable's id (int) or name for the tail when calling eraseArc(head,tail)
 
         """
         return _pyagrum.BayesNet_eraseArc(self, *args)
@@ -12145,20 +12138,20 @@ class BayesNet(IBayesNet):
         Parameters
         ----------
         tail
-        	(int) the id of the tail variable
+            (int) the id of the tail variable
         head
-        	(int) the id of the head variable
+            (int) the id of the head variable
         tail
-        	(str) the name of the tail variable
+            (str) the name of the tail variable
         head
-        	(str) the name of the head variable
+            (str) the name of the head variable
         arc : pyagrum.Arc
-        	an arc
+            an arc
 
         Raises
         ------
         pyagrum.InvalidArc
-            If the arc does not exsit or if its reversal would induce a directed cycle.
+            If the arc does not exist or if its reversal would induce a directed cycle.
 
         """
         return _pyagrum.BayesNet_reverseArc(self, *args)
@@ -12175,19 +12168,19 @@ class BayesNet(IBayesNet):
         Parameters
         ----------
         variable : pyagrum.DiscreteVariable
-        	The variable added by copy
+            The variable added by copy
         externalWeight : float
-        	the added external weight
+            the added external weight
         id : int
-        	The proposed id for the variable.
+            The proposed id for the variable.
 
         Returns
         -------
         int
-        	the id of the added variable.
+            the id of the added variable.
 
         Raises
-        --------
+        ------
         pyagrum.DuplicateElement
             If id is already used
 
@@ -12206,16 +12199,16 @@ class BayesNet(IBayesNet):
         Parameters
         ----------
         variable : pyagrum.DiscreteVariable
-        	The variable added by copy
+            The variable added by copy
         externalWeight : float
-        	the added external weight
+            the added external weight
         id : int
-        	The proposed id for the variable.
+            The proposed id for the variable.
 
         Returns
         -------
         int
-        	the id of the added variable.
+            the id of the added variable.
 
         """
         return _pyagrum.BayesNet_addNoisyORNet(self, *args)
@@ -12232,19 +12225,19 @@ class BayesNet(IBayesNet):
         Parameters
         ----------
         variable : pyagrum.DiscreteVariable
-        	The variable added by copy
+            The variable added by copy
         externalWeight : float
-        	the added external weight
+            the added external weight
         id : int
-        	The proposed id for the variable.
+            The proposed id for the variable.
 
         Returns
         -------
         int
-        	the id of the added variable.
+            the id of the added variable.
 
         Raises
-        --------
+        ------
         pyagrum.DuplicateElement
             If id is already used
 
@@ -12261,16 +12254,16 @@ class BayesNet(IBayesNet):
         Parameters
         ----------
         variable : pyagrum.DiscreteVariable
-        	The variable added by copy
+            The variable added by copy
         externalWeight : float
-        	the added external weight
+            the added external weight
         id : int
-        	The proposed id for the variable.
+            The proposed id for the variable.
 
         Returns
         -------
         int
-        	the id of the added variable.
+            the id of the added variable.
 
         Raises
         ------
@@ -12290,15 +12283,15 @@ class BayesNet(IBayesNet):
         Parameters
         ----------
         variable : pyagrum.DiscreteVariable
-        	The variable added by copy
+            The variable added by copy
         externalWeight : float
-        	the added external weight
+            the added external weight
         id : int
-        	The proposed id for the variable.
+            The proposed id for the variable.
         Returns
         -------
         int
-        	the id of the added variable.
+            the id of the added variable.
 
         Raises
         ------
@@ -12317,17 +12310,17 @@ class BayesNet(IBayesNet):
 
         Warnings
         --------
-        	If parents are not boolean, all value>1 is True
+            If parents are not boolean, all value>1 is True
 
         Parameters
         ----------
         variable : pyagrum.DiscreteVariable
-        	The variable added by copy
+            The variable added by copy
 
         Returns
         -------
         int
-        	the id of the added variable.
+            the id of the added variable.
 
         Raises
         ------
@@ -12347,12 +12340,12 @@ class BayesNet(IBayesNet):
         Parameters
         ----------
         variable : pyagrum.DiscreteVariable
-        	The variable added by copy.
+            The variable added by copy.
 
         Returns
         -------
         int
-        	the id of the added variable.
+            the id of the added variable.
 
         Raises
         ------
@@ -12370,12 +12363,12 @@ class BayesNet(IBayesNet):
         Parameters
         ----------
         variable : pyagrum.DiscreteVariable
-        	the variable to be added
+            the variable to be added
 
         Returns
         -------
         int
-        	the id of the added value
+            the id of the added value
 
         """
         return _pyagrum.BayesNet_addAMPLITUDE(self, var)
@@ -12388,12 +12381,12 @@ class BayesNet(IBayesNet):
         Parameters
         ----------
         variable : pyagrum.DiscreteVariable
-        	the variable to be added
+            the variable to be added
 
         Returns
         -------
         int
-        	the id of the added value
+            the id of the added value
 
         """
         return _pyagrum.BayesNet_addCOUNT(self, var, value)
@@ -12406,12 +12399,12 @@ class BayesNet(IBayesNet):
         Parameters
         ----------
         variable : pyagrum.DiscreteVariable
-        	the variable to be added
+            the variable to be added
 
         Returns
         -------
         int
-        	the id of the added value
+            the id of the added value
 
         """
         return _pyagrum.BayesNet_addEXISTS(self, var, value)
@@ -12424,12 +12417,12 @@ class BayesNet(IBayesNet):
         Parameters
         ----------
         variable : pyagrum.DiscreteVariable
-        	the variable to be added
+            the variable to be added
 
         Returns
         -------
         int
-        	the id of the added variable.
+            the id of the added variable.
 
         """
         return _pyagrum.BayesNet_addFORALL(self, var, value)
@@ -12442,12 +12435,12 @@ class BayesNet(IBayesNet):
         Parameters
         ----------
         variable : pyagrum.DiscreteVariable
-        	the variable to be added
+            the variable to be added
 
         Returns
         -------
         int
-        	the id of the added value
+            the id of the added value
 
         """
         return _pyagrum.BayesNet_addMAX(self, var)
@@ -12460,12 +12453,12 @@ class BayesNet(IBayesNet):
         Parameters
         ----------
         variable : pyagrum.DiscreteVariable
-        	the variable to be added
+            the variable to be added
 
         Returns
         -------
         int
-        	the id of the added value
+            the id of the added value
 
         """
         return _pyagrum.BayesNet_addMEDIAN(self, var)
@@ -12478,12 +12471,12 @@ class BayesNet(IBayesNet):
         Parameters
         ----------
         variable : pyagrum.DiscreteVariable
-        	the variable to be added
+            the variable to be added
 
         Returns
         -------
         int
-        	the id of the added value
+            the id of the added value
 
         """
         return _pyagrum.BayesNet_addMIN(self, var)
@@ -12513,12 +12506,12 @@ class BayesNet(IBayesNet):
 
         Parameters
         ----------
-        head : Union[int,str]
-        	a variable's id (int) or name
-        tail : Union[int,str]
-        	a variable's id (int) or name
+        head : int str
+            a variable's id (int) or name
+        tail : int str
+            a variable's id (int) or name
         causalWeight : float
-        	the added causal weight
+            the added causal weight
 
         Raises
         ------
@@ -12545,8 +12538,8 @@ class BayesNet(IBayesNet):
 
         Parameters
         ----------
-        node : Union[int,str]
-        	a variable's id (int) or name
+        node : int str
+            a variable's id (int) or name
 
         """
         return _pyagrum.BayesNet_generateCPT(self, *args)
@@ -12558,10 +12551,10 @@ class BayesNet(IBayesNet):
 
         Parameters
         ----------
-        var : Union[int,str]
-        	the current name or the id of the variable
+        var : int str
+            the current name or the id of the variable
         newPot : pyagrum.Tensor
-        	the new tensor
+            the new tensor
 
         Raises
         ------
@@ -12577,7 +12570,7 @@ class BayesNet(IBayesNet):
         Returns
         -------
         pyagrum.DAG
-        	a constant reference to the dag of this BayesNet.
+            a constant reference to the dag of this BayesNet.
 
         """
         val = _pyagrum.BayesNet_dag(self)
@@ -12608,7 +12601,7 @@ class BayesNet(IBayesNet):
         Returns
         -------
         float
-        	the log10 domain size.
+            the log10 domain size.
 
         """
         return _pyagrum.BayesNet_log10DomainSize(self)
@@ -12620,13 +12613,13 @@ class BayesNet(IBayesNet):
 
         Parameters
         ----------
-        lov : List[str]
+        lov : list of str
           List of variable names
 
         Returns
         -------
-        List[int]
-        	The ids for the list of names of the graph variables
+        list of int
+            The ids for the list of names of the graph variables
 
         """
         return _pyagrum.BayesNet_ids(self, names)
@@ -12638,13 +12631,13 @@ class BayesNet(IBayesNet):
 
         Parameters
         ----------
-        lov : List[str]
+        lov : list of str
           List of variable names
 
         Returns
         -------
-        Set[int]
-        	The set of ids for the list of names of the graph variables
+        set
+            The set of ids for the list of names of the graph variables
 
         """
         return _pyagrum.BayesNet_nodeset(self, names)
@@ -12657,16 +12650,16 @@ class BayesNet(IBayesNet):
         Parameters
         ----------
         target : int
-        	The id of the target
-        targets : List[int]
-        	The ids of the targets
-        list : List[int]
-        	The list of available variables
+            The id of the target
+        targets : list of int
+            The ids of the targets
+        list : list of int
+            The list of available variables
 
         Returns
         -------
-        Set[int]
-        	The minimal set of variables
+        set
+            The minimal set of variables
 
         """
         return _pyagrum.BayesNet_minimalCondSet(self, *args)
@@ -12678,11 +12671,11 @@ class BayesNet(IBayesNet):
 
         Parameters
         ----------
-        X : str|intList[str|int]
+        X : str|intlist of str|int
               a list of of nodeIds or names
-        Y : str|intList[str|int]
+        Y : str|intlist of str|int
               a list of of nodeIds or names
-        Z : str|intList[str|int]
+        Z : str|intlist of str|int
               a list of of nodeIds or names
 
         Raises
@@ -12705,8 +12698,8 @@ class BayesNet(IBayesNet):
 
         Returns
         -------
-        Set[str]
-        	The names of the graph variables
+        set
+            The names of the graph variables
 
         """
         return _pyagrum.BayesNet_names(self)
@@ -12737,7 +12730,7 @@ class BayesNet(IBayesNet):
 
         Returns
         -------
-        Set[int]
+        set
             the set of ids
 
         """
@@ -12821,7 +12814,7 @@ class BayesNet(IBayesNet):
         Returns
         -------
         list
-        	The lisf of arcs in the IBayesNet
+            The lisf of arcs in the IBayesNet
 
         """
         return _pyagrum.BayesNet_arcs(self)
@@ -12832,7 +12825,7 @@ class BayesNet(IBayesNet):
         Parameters
         ----------
         id :
-        	The id of the child node
+            The id of the child node
 
         Returns
         -------
@@ -12853,7 +12846,7 @@ class BayesNet(IBayesNet):
         Returns
         -------
         Set
-        	the set of all the children
+            the set of all the children
 
         """
         return _pyagrum.BayesNet_children(self, norid)
@@ -12864,13 +12857,13 @@ class BayesNet(IBayesNet):
         give the set of parents of a node and the node
 
         Parameters
-        ---------
+        ----------
         norid : str|int
           the node
 
         Returns
         -------
-        Set[int]
+        set
           the set of nodeId of the family of the node `norid`
 
         """
@@ -12888,7 +12881,7 @@ class BayesNet(IBayesNet):
 
         Returns
         -------
-        Set[int]
+        set
           the set of ids of the descendants of node `norid`.
 
         """
@@ -12906,7 +12899,7 @@ class BayesNet(IBayesNet):
 
         Returns
         -------
-        Set[int]
+        set
           the set of ids of the ancestors of node `norid`.
 
         """
@@ -12919,7 +12912,7 @@ class BayesNet(IBayesNet):
 
         Parameters
         ----------
-        nodes : str|intList[str|int]
+        nodes : str|intlist of str|int
           the list of of nodeIds or names
 
         Warnings
@@ -13009,12 +13002,12 @@ class BayesNet(IBayesNet):
         Parameters
         ----------
         name : str
-        	the file's name
+            the file's name
         l : list
-        	list of functions to execute
+            list of functions to execute
 
         Raises
-        --------
+        ------
         pyagrum.IOError
             If file not found
         pyagrum.FatalError
@@ -13031,7 +13024,7 @@ class BayesNet(IBayesNet):
         Parameters
         ----------
         name : str
-        	the file's name
+            the file's name
         allowModificationWhenSaving: bool
                 False by default.
                 if true, syntax errors are corrected when saving the file. If false, they throw a FatalError.
@@ -13047,9 +13040,9 @@ class BayesNet(IBayesNet):
         Parameters
         ----------
         name : str
-        	the file's name
+            the file's name
         l : list
-        	list of functions to execute
+            list of functions to execute
 
         Raises
         ------
@@ -13069,9 +13062,9 @@ class BayesNet(IBayesNet):
         Parameters
         ----------
         name : str
-        	the file's name
+            the file's name
         l : list
-        	list of functions to execute
+            list of functions to execute
 
         Raises
         ------
@@ -13091,7 +13084,7 @@ class BayesNet(IBayesNet):
         Parameters
         ----------
         name : str
-        	the file's name
+            the file's name
         allowModificationWhenSaving: bool
                 False by default.
                 if true, syntax errors are corrected when saving the file. If false, they throw a FatalError.
@@ -13107,7 +13100,7 @@ class BayesNet(IBayesNet):
         Parameters
         ----------
         name : str
-        	the file's name
+            the file's name
         allowModificationWhenSaving: bool
                 (not used).
                 if true, syntax errors are corrected when saving the file. If false, they throw a FatalError.
@@ -13123,9 +13116,9 @@ class BayesNet(IBayesNet):
         Parameters
         ----------
         name : str
-        	the name's file
+            the name's file
         l : list
-        	list of functions to execute
+            list of functions to execute
 
         Raises
         ------
@@ -13145,7 +13138,7 @@ class BayesNet(IBayesNet):
         Parameters
         ----------
         name : str
-        	the file's name
+            the file's name
         allowModificationWhenSaving: bool
                 False by default.
                 if true, syntax errors are corrected when saving the file. If false, they throw a FatalError.
@@ -13165,13 +13158,13 @@ class BayesNet(IBayesNet):
         Parameters
         ----------
         name : str
-        	the file's name
+            the file's name
         system : str
-        	the system's name
+            the system's name
         classpath : str
-        	the classpath
+            the classpath
         l : list
-        	list of functions to execute
+            list of functions to execute
 
         Raises
         ------
@@ -13195,7 +13188,7 @@ class BayesNet(IBayesNet):
         Parameters
         ----------
         name : str
-        	the file's name
+            the file's name
         allowModificationWhenSaving: bool
                 False by default.
                 if true, syntax errors are corrected when saving the file. If false, they throw a FatalError.
@@ -13211,9 +13204,9 @@ class BayesNet(IBayesNet):
         Parameters
         ----------
         name : str
-        	the name's file
+            the name's file
         l : list
-        	list of functions to execute
+            list of functions to execute
 
         Raises
         ------
@@ -13233,7 +13226,7 @@ class BayesNet(IBayesNet):
         Parameters
         ----------
         name : str
-        	the file's name
+            the file's name
         allowModificationWhenSaving: bool
                 False by default.
                 if true, syntax errors are corrected when saving the file. If false, they throw a FatalError.
@@ -13249,9 +13242,9 @@ class BayesNet(IBayesNet):
         Parameters
         ----------
         name : str
-        	the name's file
+            the name's file
         l : list
-        	list of functions to execute
+            list of functions to execute
 
         Raises
         ------
@@ -13271,7 +13264,7 @@ class BayesNet(IBayesNet):
         Parameters
         ----------
         name : str
-        	the file's name
+            the file's name
         allowModificationWhenSaving: bool
                 False by default.
                 if true, syntax errors are corrected when saving the file. If false, they throw a FatalError.
@@ -13394,19 +13387,19 @@ class BayesNetFragment(IBayesNet, ):
         Parameters
         ----------
         VarId : int
-        	A variable's id in the pyagrum.IBayesNet.
+            A variable's id in the pyagrum.IBayesNet.
         name : str
-        	A variable's name in the pyagrum.IBayesNet.
+            A variable's name in the pyagrum.IBayesNet.
 
         Returns
         -------
         pyagrum.Tensor
-        	The variable's CPT.
+            The variable's CPT.
 
         Raises
         ------
         pyagrum.NotFound
-        	If no variable's id matches varId.
+            If no variable's id matches varId.
 
         """
         return _pyagrum.BayesNetFragment_cpt(self, *args)
@@ -13417,7 +13410,7 @@ class BayesNetFragment(IBayesNet, ):
         Returns
         -------
         pyagrum.variableNodeMap
-        	the variable node map
+            the variable node map
 
         """
         return _pyagrum.BayesNetFragment_variableNodeMap(self)
@@ -13428,19 +13421,19 @@ class BayesNetFragment(IBayesNet, ):
         Parameters
         ----------
         id : int
-        	a variable's id
+            a variable's id
         name : str
-        	a variable's name
+            a variable's name
 
         Returns
         -------
         pyagrum.DiscreteVariable
-        	the variable
+            the variable
 
         Raises
         ------
         pyagrum.IndexError
-        	If the graph does not contain the variable
+            If the graph does not contain the variable
 
         """
         return _pyagrum.BayesNetFragment_variable(self, *args)
@@ -13451,17 +13444,17 @@ class BayesNetFragment(IBayesNet, ):
         Parameters
         ----------
         var : pyagrum.DiscreteVariable
-        	a variable
+            a variable
 
         Returns
         -------
         int
-        	the id of the variable
+            the id of the variable
 
         Raises
         ------
         pyagrum.IndexError
-        	If the graph does not contain the variable
+            If the graph does not contain the variable
 
         """
         return _pyagrum.BayesNetFragment_nodeId(self, var)
@@ -13474,7 +13467,7 @@ class BayesNetFragment(IBayesNet, ):
         Parameters
         ----------
         name : str
-        	The variable's name from which the id is returned.
+            The variable's name from which the id is returned.
 
         Notes
         -----
@@ -13483,12 +13476,12 @@ class BayesNetFragment(IBayesNet, ):
         Returns
         -------
         int :
-        	The variable's node id.
+            The variable's node id.
 
         Raises
         ------
         pyagrum.NotFound
-        	If name does not match a variable in the graph
+            If name does not match a variable in the graph
 
         """
         return _pyagrum.BayesNetFragment_idFromName(self, name)
@@ -13499,17 +13492,17 @@ class BayesNetFragment(IBayesNet, ):
         Parameters
         ----------
         name : str
-        	a variable's name
+            a variable's name
 
         Returns
         -------
         pyagrum.DiscreteVariable
-        	the variable
+            the variable
 
         Raises
         ------
         pyagrum.IndexError
-        	If the graph does not contain the variable
+            If the graph does not contain the variable
 
         """
         return _pyagrum.BayesNetFragment_variableFromName(self, name)
@@ -13533,7 +13526,7 @@ class BayesNetFragment(IBayesNet, ):
         Parameters
         ----------
         n : int, str
-        	the id or the name of the variable.
+            the id or the name of the variable.
 
         """
         return _pyagrum.BayesNetFragment_isInstalledNode(self, *args)
@@ -13548,7 +13541,7 @@ class BayesNetFragment(IBayesNet, ):
         Parameters
         ----------
         n : int, str
-        	the id or the name of the variable.
+            the id or the name of the variable.
 
         Raises
         ------
@@ -13566,7 +13559,7 @@ class BayesNetFragment(IBayesNet, ):
         Parameters
         ----------
         n : int, str
-        	the id or the name of the variable.
+            the id or the name of the variable.
 
         Raises
         ------
@@ -13584,7 +13577,7 @@ class BayesNetFragment(IBayesNet, ):
         Parameters
         ----------
         n : int, str
-        	the id or the name of the variable.
+            the id or the name of the variable.
 
         Raises
         ------
@@ -13602,7 +13595,7 @@ class BayesNetFragment(IBayesNet, ):
         Parameters
         ----------
         n : int, str
-        	the id or the name of the variable.
+            the id or the name of the variable.
         pot : Tensor
           the Tensor (marginal) to install
 
@@ -13622,7 +13615,7 @@ class BayesNetFragment(IBayesNet, ):
         Parameters
         ----------
         n : int, str
-        	the id or the name of the variable.
+            the id or the name of the variable.
         pot : Tensor
           the Tensor to install
 
@@ -13642,7 +13635,7 @@ class BayesNetFragment(IBayesNet, ):
         Parameters
         ----------
         n : int, str
-        	the id or the name of the variable.
+            the id or the name of the variable.
 
         Raises
         ------
@@ -13659,14 +13652,13 @@ class BayesNetFragment(IBayesNet, ):
 
         Parameters
         ----------
-
         n : int, str (optional)
-        	the id or the name of the variable. If no argument, the function checks all the variables.
+            the id or the name of the variable. If no argument, the function checks all the variables.
 
         Returns
         -------
         boolean
-        	True if the variable(s) is consistant.
+            True if the variable(s) is consistant.
 
         Raises
         ------
@@ -13695,7 +13687,7 @@ class BayesNetFragment(IBayesNet, ):
         Returns
         -------
         pyagrum.DAG
-        	a constant reference to the dag of this BayesNet.
+            a constant reference to the dag of this BayesNet.
 
         """
         val = _pyagrum.BayesNetFragment_dag(self)
@@ -13714,13 +13706,13 @@ class BayesNetFragment(IBayesNet, ):
 
         Parameters
         ----------
-        lov : List[str]
+        lov : list of str
           List of variable names
 
         Returns
         -------
-        List[int]
-        	The ids for the list of names of the graph variables
+        list of int
+            The ids for the list of names of the graph variables
 
         """
         return _pyagrum.BayesNetFragment_ids(self, names)
@@ -13732,13 +13724,13 @@ class BayesNetFragment(IBayesNet, ):
 
         Parameters
         ----------
-        lov : List[str]
+        lov : list of str
           List of variable names
 
         Returns
         -------
-        Set[int]
-        	The set of ids for the list of names of the graph variables
+        set
+            The set of ids for the list of names of the graph variables
 
         """
         return _pyagrum.BayesNetFragment_nodeset(self, names)
@@ -13751,16 +13743,16 @@ class BayesNetFragment(IBayesNet, ):
         Parameters
         ----------
         target : int
-        	The id of the target
-        targets : List[int]
-        	The ids of the targets
-        list : List[int]
-        	The list of available variables
+            The id of the target
+        targets : list of int
+            The ids of the targets
+        list : list of int
+            The list of available variables
 
         Returns
         -------
-        Set[int]
-        	The minimal set of variables
+        set
+            The minimal set of variables
 
         """
         return _pyagrum.BayesNetFragment_minimalCondSet(self, *args)
@@ -13772,11 +13764,11 @@ class BayesNetFragment(IBayesNet, ):
 
         Parameters
         ----------
-        X : str|intList[str|int]
+        X : str|intlist of str|int
               a list of of nodeIds or names
-        Y : str|intList[str|int]
+        Y : str|intlist of str|int
               a list of of nodeIds or names
-        Z : str|intList[str|int]
+        Z : str|intlist of str|int
               a list of of nodeIds or names
 
         Raises
@@ -13799,8 +13791,8 @@ class BayesNetFragment(IBayesNet, ):
 
         Returns
         -------
-        Set[str]
-        	The names of the graph variables
+        set
+            The names of the graph variables
 
         """
         return _pyagrum.BayesNetFragment_names(self)
@@ -13831,7 +13823,7 @@ class BayesNetFragment(IBayesNet, ):
 
         Returns
         -------
-        Set[int]
+        set
             the set of ids
 
         """
@@ -13915,7 +13907,7 @@ class BayesNetFragment(IBayesNet, ):
         Returns
         -------
         list
-        	The lisf of arcs in the IBayesNet
+            The lisf of arcs in the IBayesNet
 
         """
         return _pyagrum.BayesNetFragment_arcs(self)
@@ -13926,7 +13918,7 @@ class BayesNetFragment(IBayesNet, ):
         Parameters
         ----------
         id :
-        	The id of the child node
+            The id of the child node
 
         Returns
         -------
@@ -13947,7 +13939,7 @@ class BayesNetFragment(IBayesNet, ):
         Returns
         -------
         Set
-        	the set of all the children
+            the set of all the children
 
         """
         return _pyagrum.BayesNetFragment_children(self, norid)
@@ -13958,13 +13950,13 @@ class BayesNetFragment(IBayesNet, ):
         give the set of parents of a node and the node
 
         Parameters
-        ---------
+        ----------
         norid : str|int
           the node
 
         Returns
         -------
-        Set[int]
+        set
           the set of nodeId of the family of the node `norid`
 
         """
@@ -13982,7 +13974,7 @@ class BayesNetFragment(IBayesNet, ):
 
         Returns
         -------
-        Set[int]
+        set
           the set of ids of the descendants of node `norid`.
 
         """
@@ -14000,7 +13992,7 @@ class BayesNetFragment(IBayesNet, ):
 
         Returns
         -------
-        Set[int]
+        set
           the set of ids of the ancestors of node `norid`.
 
         """
@@ -14013,7 +14005,7 @@ class BayesNetFragment(IBayesNet, ):
 
         Parameters
         ----------
-        nodes : str|intList[str|int]
+        nodes : str|intlist of str|int
           the list of of nodeIds or names
 
         Warnings
@@ -14230,7 +14222,7 @@ class LazyPropagation(object):
 
         Returns
         -------
-        Tuple[pyagrum.Instantiation, float]
+        tuple
             A tuple with the instantiation of all the variables of the Bayes net representing the Most Probable Explanation and the log2 of its posterior probability
 
         """
@@ -14294,7 +14286,7 @@ class LazyPropagation(object):
           a node name
         val : intstr
           a node value or the label of the node value
-        vals : List[float]
+        vals : list of float
           a list of values
 
         Raises
@@ -14634,7 +14626,7 @@ class LazyPropagation(object):
         Parameters
         ----------
         nb : int
-        	the number of threads to be used by ShaferShenoyMRFInference
+            the number of threads to be used by ShaferShenoyMRFInference
 
         """
         return _pyagrum.LazyPropagation_setNumberOfThreads(self, nb)
@@ -14647,7 +14639,7 @@ class LazyPropagation(object):
         Returns
         -------
         int
-        	the number of threads used by LazyPropagation during inferences
+            the number of threads used by LazyPropagation during inferences
 
         """
         return _pyagrum.LazyPropagation_getNumberOfThreads(self)
@@ -14660,7 +14652,7 @@ class LazyPropagation(object):
         Returns
         -------
         bool
-        	A Boolean indicating whether LazyPropagation currently overrides aGrUM's default number of threads
+            A Boolean indicating whether LazyPropagation currently overrides aGrUM's default number of threads
 
         """
         return _pyagrum.LazyPropagation_isGumNumberOfThreadsOverriden(self)
@@ -14842,9 +14834,9 @@ class LazyPropagation(object):
 
         Parameters
         ----------
-        targets : List[intstr]
+        targets : list of intstr
           a list of node Ids or node names
-        evs : Set[intstr]
+        evs : set
           a set of nodes ids or names.
 
         Returns
@@ -15133,7 +15125,7 @@ class ShaferShenoyInference(object):
           a node name
         val : intstr
           a node value or the label of the node value
-        vals : List[float]
+        vals : list of float
           a list of values
 
         Raises
@@ -15473,7 +15465,7 @@ class ShaferShenoyInference(object):
         Parameters
         ----------
         nb : int
-        	the number of threads to be used by ShaferShenoyMRFInference
+            the number of threads to be used by ShaferShenoyMRFInference
 
         """
         return _pyagrum.ShaferShenoyInference_setNumberOfThreads(self, nb)
@@ -15486,7 +15478,7 @@ class ShaferShenoyInference(object):
         Returns
         -------
         int
-        	the number of threads used by LazyPropagation during inferences
+            the number of threads used by LazyPropagation during inferences
 
         """
         return _pyagrum.ShaferShenoyInference_getNumberOfThreads(self)
@@ -15499,7 +15491,7 @@ class ShaferShenoyInference(object):
         Returns
         -------
         bool
-        	A Boolean indicating whether LazyPropagation currently overrides aGrUM's default number of threads
+            A Boolean indicating whether LazyPropagation currently overrides aGrUM's default number of threads
 
         """
         return _pyagrum.ShaferShenoyInference_isGumNumberOfThreadsOverriden(self)
@@ -15681,9 +15673,9 @@ class ShaferShenoyInference(object):
 
         Parameters
         ----------
-        targets : List[intstr]
+        targets : list of intstr
           a list of node Ids or node names
-        evs : Set[intstr]
+        evs : set
           a set of nodes ids or names.
 
         Returns
@@ -15979,7 +15971,7 @@ class VariableElimination(object):
           a node name
         val : intstr
           a node value or the label of the node value
-        vals : List[float]
+        vals : list of float
           a list of values
 
         Raises
@@ -16267,7 +16259,7 @@ class VariableElimination(object):
         Parameters
         ----------
         nb : int
-        	the number of threads to be used by ShaferShenoyMRFInference
+            the number of threads to be used by ShaferShenoyMRFInference
 
         """
         return _pyagrum.VariableElimination_setNumberOfThreads(self, nb)
@@ -16280,7 +16272,7 @@ class VariableElimination(object):
         Returns
         -------
         int
-        	the number of threads used by LazyPropagation during inferences
+            the number of threads used by LazyPropagation during inferences
 
         """
         return _pyagrum.VariableElimination_getNumberOfThreads(self)
@@ -16293,7 +16285,7 @@ class VariableElimination(object):
         Returns
         -------
         bool
-        	A Boolean indicating whether LazyPropagation currently overrides aGrUM's default number of threads
+            A Boolean indicating whether LazyPropagation currently overrides aGrUM's default number of threads
 
         """
         return _pyagrum.VariableElimination_isGumNumberOfThreadsOverriden(self)
@@ -16475,9 +16467,9 @@ class VariableElimination(object):
 
         Parameters
         ----------
-        targets : List[intstr]
+        targets : list of intstr
           a list of node Ids or node names
-        evs : Set[intstr]
+        evs : set
           a set of nodes ids or names.
 
         Returns
@@ -16657,12 +16649,12 @@ class GibbsSampling(object):
         Parameters
         ----------
         eps : float
-        	the epsilon we want to use
+            the epsilon we want to use
 
         Raises
         ------
         pyagrum.OutOfBounds
-        	If eps<0
+            If eps<0
 
         """
         return _pyagrum.GibbsSampling_setEpsilon(self, eps)
@@ -16673,7 +16665,7 @@ class GibbsSampling(object):
         Parameters
         ----------
         rate : float
-        	the minimal epsilon rate
+            the minimal epsilon rate
 
         """
         return _pyagrum.GibbsSampling_setMinEpsilonRate(self, rate)
@@ -16684,12 +16676,12 @@ class GibbsSampling(object):
         Parameters
         ----------
         max : int
-        	the maximum number of iteration
+            the maximum number of iteration
 
         Raises
         ------
         pyagrum.OutOfBounds
-        	If max <= 1
+            If max <= 1
 
         """
         return _pyagrum.GibbsSampling_setMaxIter(self, max)
@@ -16700,12 +16692,12 @@ class GibbsSampling(object):
         Parameters
         ----------
         tiemout : float
-        	stopping criterion on timeout (in seconds)
+            stopping criterion on timeout (in seconds)
 
         Raises
         ------
         pyagrum.OutOfBounds
-        	If timeout<=0.0
+            If timeout<=0.0
 
         """
         return _pyagrum.GibbsSampling_setMaxTime(self, timeout)
@@ -16716,12 +16708,12 @@ class GibbsSampling(object):
         Parameters
         ----------
         p : int
-        	number of samples between 2 stopping
+            number of samples between 2 stopping
 
         Raises
         ------
         pyagrum.OutOfBounds
-        	If p<1
+            If p<1
 
         """
         return _pyagrum.GibbsSampling_setPeriodSize(self, p)
@@ -16732,7 +16724,7 @@ class GibbsSampling(object):
         Returns
         -------
         bool
-        	True if the verbosity is enabled
+            True if the verbosity is enabled
 
         """
         return _pyagrum.GibbsSampling_verbosity(self)
@@ -16743,7 +16735,7 @@ class GibbsSampling(object):
         Returns
         -------
         float
-        	the value of epsilon
+            the value of epsilon
 
         """
         return _pyagrum.GibbsSampling_epsilon(self)
@@ -16754,7 +16746,7 @@ class GibbsSampling(object):
         Returns
         -------
         float
-        	the value of the minimal epsilon rate
+            the value of the minimal epsilon rate
 
         """
         return _pyagrum.GibbsSampling_minEpsilonRate(self)
@@ -16765,7 +16757,7 @@ class GibbsSampling(object):
         Returns
         -------
         int
-        	the criterion on number of iterations
+            the criterion on number of iterations
 
         """
         return _pyagrum.GibbsSampling_maxIter(self)
@@ -16776,7 +16768,7 @@ class GibbsSampling(object):
         Returns
         -------
         float
-        	the timeout(in seconds)
+            the timeout(in seconds)
 
         """
         return _pyagrum.GibbsSampling_maxTime(self)
@@ -16787,12 +16779,12 @@ class GibbsSampling(object):
         Returns
         -------
         int
-        	the number of samples between 2 stopping
+            the number of samples between 2 stopping
 
         Raises
         ------
         pyagrum.OutOfBounds
-        	If p<1
+            If p<1
 
         """
         return _pyagrum.GibbsSampling_periodSize(self)
@@ -16803,7 +16795,7 @@ class GibbsSampling(object):
         Returns
         -------
         int
-        	the number of iterations
+            the number of iterations
 
         """
         return _pyagrum.GibbsSampling_nbrIterations(self)
@@ -16814,7 +16806,7 @@ class GibbsSampling(object):
         Returns
         -------
         float
-        	get the current running time in second (float)
+            get the current running time in second (float)
 
         """
         return _pyagrum.GibbsSampling_currentTime(self)
@@ -16825,7 +16817,7 @@ class GibbsSampling(object):
         Returns
         -------
         str
-        	the approximation scheme message
+            the approximation scheme message
 
         """
         return _pyagrum.GibbsSampling_messageApproximationScheme(self)
@@ -16836,12 +16828,12 @@ class GibbsSampling(object):
         Returns
         -------
         tuple
-        	the scheme history
+            the scheme history
 
         Raises
         ------
         pyagrum.OperationNotAllowed
-        	If the scheme did not performed or if verbosity is set to false
+            If the scheme did not performed or if verbosity is set to false
 
         """
         return _pyagrum.GibbsSampling_history(self)
@@ -16932,7 +16924,7 @@ class GibbsSampling(object):
           a node name
         val : intstr
           a node value or the label of the node value
-        vals : List[float]
+        vals : list of float
           a list of values
 
         Raises
@@ -17476,12 +17468,12 @@ class ImportanceSampling(object):
         Parameters
         ----------
         eps : float
-        	the epsilon we want to use
+            the epsilon we want to use
 
         Raises
         ------
         pyagrum.OutOfBounds
-        	If eps<0
+            If eps<0
 
         """
         return _pyagrum.ImportanceSampling_setEpsilon(self, eps)
@@ -17492,7 +17484,7 @@ class ImportanceSampling(object):
         Parameters
         ----------
         rate : float
-        	the minimal epsilon rate
+            the minimal epsilon rate
 
         """
         return _pyagrum.ImportanceSampling_setMinEpsilonRate(self, rate)
@@ -17503,12 +17495,12 @@ class ImportanceSampling(object):
         Parameters
         ----------
         max : int
-        	the maximum number of iteration
+            the maximum number of iteration
 
         Raises
         ------
         pyagrum.OutOfBounds
-        	If max <= 1
+            If max <= 1
 
         """
         return _pyagrum.ImportanceSampling_setMaxIter(self, max)
@@ -17519,12 +17511,12 @@ class ImportanceSampling(object):
         Parameters
         ----------
         tiemout : float
-        	stopping criterion on timeout (in seconds)
+            stopping criterion on timeout (in seconds)
 
         Raises
         ------
         pyagrum.OutOfBounds
-        	If timeout<=0.0
+            If timeout<=0.0
 
         """
         return _pyagrum.ImportanceSampling_setMaxTime(self, timeout)
@@ -17535,12 +17527,12 @@ class ImportanceSampling(object):
         Parameters
         ----------
         p : int
-        	number of samples between 2 stopping
+            number of samples between 2 stopping
 
         Raises
         ------
         pyagrum.OutOfBounds
-        	If p<1
+            If p<1
 
         """
         return _pyagrum.ImportanceSampling_setPeriodSize(self, p)
@@ -17551,7 +17543,7 @@ class ImportanceSampling(object):
         Returns
         -------
         bool
-        	True if the verbosity is enabled
+            True if the verbosity is enabled
 
         """
         return _pyagrum.ImportanceSampling_verbosity(self)
@@ -17562,7 +17554,7 @@ class ImportanceSampling(object):
         Returns
         -------
         float
-        	the value of epsilon
+            the value of epsilon
 
         """
         return _pyagrum.ImportanceSampling_epsilon(self)
@@ -17573,7 +17565,7 @@ class ImportanceSampling(object):
         Returns
         -------
         float
-        	the value of the minimal epsilon rate
+            the value of the minimal epsilon rate
 
         """
         return _pyagrum.ImportanceSampling_minEpsilonRate(self)
@@ -17584,7 +17576,7 @@ class ImportanceSampling(object):
         Returns
         -------
         int
-        	the criterion on number of iterations
+            the criterion on number of iterations
 
         """
         return _pyagrum.ImportanceSampling_maxIter(self)
@@ -17595,7 +17587,7 @@ class ImportanceSampling(object):
         Returns
         -------
         float
-        	the timeout(in seconds)
+            the timeout(in seconds)
 
         """
         return _pyagrum.ImportanceSampling_maxTime(self)
@@ -17606,12 +17598,12 @@ class ImportanceSampling(object):
         Returns
         -------
         int
-        	the number of samples between 2 stopping
+            the number of samples between 2 stopping
 
         Raises
         ------
         pyagrum.OutOfBounds
-        	If p<1
+            If p<1
 
         """
         return _pyagrum.ImportanceSampling_periodSize(self)
@@ -17622,7 +17614,7 @@ class ImportanceSampling(object):
         Returns
         -------
         int
-        	the number of iterations
+            the number of iterations
 
         """
         return _pyagrum.ImportanceSampling_nbrIterations(self)
@@ -17633,7 +17625,7 @@ class ImportanceSampling(object):
         Returns
         -------
         float
-        	get the current running time in second (float)
+            get the current running time in second (float)
 
         """
         return _pyagrum.ImportanceSampling_currentTime(self)
@@ -17644,7 +17636,7 @@ class ImportanceSampling(object):
         Returns
         -------
         str
-        	the approximation scheme message
+            the approximation scheme message
 
         """
         return _pyagrum.ImportanceSampling_messageApproximationScheme(self)
@@ -17655,12 +17647,12 @@ class ImportanceSampling(object):
         Returns
         -------
         tuple
-        	the scheme history
+            the scheme history
 
         Raises
         ------
         pyagrum.OperationNotAllowed
-        	If the scheme did not performed or if verbosity is set to false
+            If the scheme did not performed or if verbosity is set to false
 
         """
         return _pyagrum.ImportanceSampling_history(self)
@@ -17751,7 +17743,7 @@ class ImportanceSampling(object):
           a node name
         val : intstr
           a node value or the label of the node value
-        vals : List[float]
+        vals : list of float
           a list of values
 
         Raises
@@ -18251,12 +18243,12 @@ class WeightedSampling(object):
         Parameters
         ----------
         eps : float
-        	the epsilon we want to use
+            the epsilon we want to use
 
         Raises
         ------
         pyagrum.OutOfBounds
-        	If eps<0
+            If eps<0
 
         """
         return _pyagrum.WeightedSampling_setEpsilon(self, eps)
@@ -18267,7 +18259,7 @@ class WeightedSampling(object):
         Parameters
         ----------
         rate : float
-        	the minimal epsilon rate
+            the minimal epsilon rate
 
         """
         return _pyagrum.WeightedSampling_setMinEpsilonRate(self, rate)
@@ -18278,12 +18270,12 @@ class WeightedSampling(object):
         Parameters
         ----------
         max : int
-        	the maximum number of iteration
+            the maximum number of iteration
 
         Raises
         ------
         pyagrum.OutOfBounds
-        	If max <= 1
+            If max <= 1
 
         """
         return _pyagrum.WeightedSampling_setMaxIter(self, max)
@@ -18294,12 +18286,12 @@ class WeightedSampling(object):
         Parameters
         ----------
         tiemout : float
-        	stopping criterion on timeout (in seconds)
+            stopping criterion on timeout (in seconds)
 
         Raises
         ------
         pyagrum.OutOfBounds
-        	If timeout<=0.0
+            If timeout<=0.0
 
         """
         return _pyagrum.WeightedSampling_setMaxTime(self, timeout)
@@ -18310,12 +18302,12 @@ class WeightedSampling(object):
         Parameters
         ----------
         p : int
-        	number of samples between 2 stopping
+            number of samples between 2 stopping
 
         Raises
         ------
         pyagrum.OutOfBounds
-        	If p<1
+            If p<1
 
         """
         return _pyagrum.WeightedSampling_setPeriodSize(self, p)
@@ -18326,7 +18318,7 @@ class WeightedSampling(object):
         Returns
         -------
         bool
-        	True if the verbosity is enabled
+            True if the verbosity is enabled
 
         """
         return _pyagrum.WeightedSampling_verbosity(self)
@@ -18337,7 +18329,7 @@ class WeightedSampling(object):
         Returns
         -------
         float
-        	the value of epsilon
+            the value of epsilon
 
         """
         return _pyagrum.WeightedSampling_epsilon(self)
@@ -18348,7 +18340,7 @@ class WeightedSampling(object):
         Returns
         -------
         float
-        	the value of the minimal epsilon rate
+            the value of the minimal epsilon rate
 
         """
         return _pyagrum.WeightedSampling_minEpsilonRate(self)
@@ -18359,7 +18351,7 @@ class WeightedSampling(object):
         Returns
         -------
         int
-        	the criterion on number of iterations
+            the criterion on number of iterations
 
         """
         return _pyagrum.WeightedSampling_maxIter(self)
@@ -18370,7 +18362,7 @@ class WeightedSampling(object):
         Returns
         -------
         float
-        	the timeout(in seconds)
+            the timeout(in seconds)
 
         """
         return _pyagrum.WeightedSampling_maxTime(self)
@@ -18381,12 +18373,12 @@ class WeightedSampling(object):
         Returns
         -------
         int
-        	the number of samples between 2 stopping
+            the number of samples between 2 stopping
 
         Raises
         ------
         pyagrum.OutOfBounds
-        	If p<1
+            If p<1
 
         """
         return _pyagrum.WeightedSampling_periodSize(self)
@@ -18397,7 +18389,7 @@ class WeightedSampling(object):
         Returns
         -------
         int
-        	the number of iterations
+            the number of iterations
 
         """
         return _pyagrum.WeightedSampling_nbrIterations(self)
@@ -18408,7 +18400,7 @@ class WeightedSampling(object):
         Returns
         -------
         float
-        	get the current running time in second (float)
+            get the current running time in second (float)
 
         """
         return _pyagrum.WeightedSampling_currentTime(self)
@@ -18419,7 +18411,7 @@ class WeightedSampling(object):
         Returns
         -------
         str
-        	the approximation scheme message
+            the approximation scheme message
 
         """
         return _pyagrum.WeightedSampling_messageApproximationScheme(self)
@@ -18430,12 +18422,12 @@ class WeightedSampling(object):
         Returns
         -------
         tuple
-        	the scheme history
+            the scheme history
 
         Raises
         ------
         pyagrum.OperationNotAllowed
-        	If the scheme did not performed or if verbosity is set to false
+            If the scheme did not performed or if verbosity is set to false
 
         """
         return _pyagrum.WeightedSampling_history(self)
@@ -18526,7 +18518,7 @@ class WeightedSampling(object):
           a node name
         val : intstr
           a node value or the label of the node value
-        vals : List[float]
+        vals : list of float
           a list of values
 
         Raises
@@ -19026,12 +19018,12 @@ class MonteCarloSampling(object):
         Parameters
         ----------
         eps : float
-        	the epsilon we want to use
+            the epsilon we want to use
 
         Raises
         ------
         pyagrum.OutOfBounds
-        	If eps<0
+            If eps<0
 
         """
         return _pyagrum.MonteCarloSampling_setEpsilon(self, eps)
@@ -19042,7 +19034,7 @@ class MonteCarloSampling(object):
         Parameters
         ----------
         rate : float
-        	the minimal epsilon rate
+            the minimal epsilon rate
 
         """
         return _pyagrum.MonteCarloSampling_setMinEpsilonRate(self, rate)
@@ -19053,12 +19045,12 @@ class MonteCarloSampling(object):
         Parameters
         ----------
         max : int
-        	the maximum number of iteration
+            the maximum number of iteration
 
         Raises
         ------
         pyagrum.OutOfBounds
-        	If max <= 1
+            If max <= 1
 
         """
         return _pyagrum.MonteCarloSampling_setMaxIter(self, max)
@@ -19069,12 +19061,12 @@ class MonteCarloSampling(object):
         Parameters
         ----------
         tiemout : float
-        	stopping criterion on timeout (in seconds)
+            stopping criterion on timeout (in seconds)
 
         Raises
         ------
         pyagrum.OutOfBounds
-        	If timeout<=0.0
+            If timeout<=0.0
 
         """
         return _pyagrum.MonteCarloSampling_setMaxTime(self, timeout)
@@ -19085,12 +19077,12 @@ class MonteCarloSampling(object):
         Parameters
         ----------
         p : int
-        	number of samples between 2 stopping
+            number of samples between 2 stopping
 
         Raises
         ------
         pyagrum.OutOfBounds
-        	If p<1
+            If p<1
 
         """
         return _pyagrum.MonteCarloSampling_setPeriodSize(self, p)
@@ -19101,7 +19093,7 @@ class MonteCarloSampling(object):
         Returns
         -------
         bool
-        	True if the verbosity is enabled
+            True if the verbosity is enabled
 
         """
         return _pyagrum.MonteCarloSampling_verbosity(self)
@@ -19112,7 +19104,7 @@ class MonteCarloSampling(object):
         Returns
         -------
         float
-        	the value of epsilon
+            the value of epsilon
 
         """
         return _pyagrum.MonteCarloSampling_epsilon(self)
@@ -19123,7 +19115,7 @@ class MonteCarloSampling(object):
         Returns
         -------
         float
-        	the value of the minimal epsilon rate
+            the value of the minimal epsilon rate
 
         """
         return _pyagrum.MonteCarloSampling_minEpsilonRate(self)
@@ -19134,7 +19126,7 @@ class MonteCarloSampling(object):
         Returns
         -------
         int
-        	the criterion on number of iterations
+            the criterion on number of iterations
 
         """
         return _pyagrum.MonteCarloSampling_maxIter(self)
@@ -19145,7 +19137,7 @@ class MonteCarloSampling(object):
         Returns
         -------
         float
-        	the timeout(in seconds)
+            the timeout(in seconds)
 
         """
         return _pyagrum.MonteCarloSampling_maxTime(self)
@@ -19156,12 +19148,12 @@ class MonteCarloSampling(object):
         Returns
         -------
         int
-        	the number of samples between 2 stopping
+            the number of samples between 2 stopping
 
         Raises
         ------
         pyagrum.OutOfBounds
-        	If p<1
+            If p<1
 
         """
         return _pyagrum.MonteCarloSampling_periodSize(self)
@@ -19172,7 +19164,7 @@ class MonteCarloSampling(object):
         Returns
         -------
         int
-        	the number of iterations
+            the number of iterations
 
         """
         return _pyagrum.MonteCarloSampling_nbrIterations(self)
@@ -19183,7 +19175,7 @@ class MonteCarloSampling(object):
         Returns
         -------
         float
-        	get the current running time in second (float)
+            get the current running time in second (float)
 
         """
         return _pyagrum.MonteCarloSampling_currentTime(self)
@@ -19194,7 +19186,7 @@ class MonteCarloSampling(object):
         Returns
         -------
         str
-        	the approximation scheme message
+            the approximation scheme message
 
         """
         return _pyagrum.MonteCarloSampling_messageApproximationScheme(self)
@@ -19205,12 +19197,12 @@ class MonteCarloSampling(object):
         Returns
         -------
         tuple
-        	the scheme history
+            the scheme history
 
         Raises
         ------
         pyagrum.OperationNotAllowed
-        	If the scheme did not performed or if verbosity is set to false
+            If the scheme did not performed or if verbosity is set to false
 
         """
         return _pyagrum.MonteCarloSampling_history(self)
@@ -19301,7 +19293,7 @@ class MonteCarloSampling(object):
           a node name
         val : intstr
           a node value or the label of the node value
-        vals : List[float]
+        vals : list of float
           a list of values
 
         Raises
@@ -19815,12 +19807,12 @@ class LoopyImportanceSampling(ImportanceSampling):
         Parameters
         ----------
         eps : float
-        	the epsilon we want to use
+            the epsilon we want to use
 
         Raises
         ------
         pyagrum.OutOfBounds
-        	If eps<0
+            If eps<0
 
         """
         return _pyagrum.LoopyImportanceSampling_setEpsilon(self, eps)
@@ -19831,7 +19823,7 @@ class LoopyImportanceSampling(ImportanceSampling):
         Parameters
         ----------
         rate : float
-        	the minimal epsilon rate
+            the minimal epsilon rate
 
         """
         return _pyagrum.LoopyImportanceSampling_setMinEpsilonRate(self, rate)
@@ -19842,12 +19834,12 @@ class LoopyImportanceSampling(ImportanceSampling):
         Parameters
         ----------
         max : int
-        	the maximum number of iteration
+            the maximum number of iteration
 
         Raises
         ------
         pyagrum.OutOfBounds
-        	If max <= 1
+            If max <= 1
 
         """
         return _pyagrum.LoopyImportanceSampling_setMaxIter(self, max)
@@ -19858,12 +19850,12 @@ class LoopyImportanceSampling(ImportanceSampling):
         Parameters
         ----------
         tiemout : float
-        	stopping criterion on timeout (in seconds)
+            stopping criterion on timeout (in seconds)
 
         Raises
         ------
         pyagrum.OutOfBounds
-        	If timeout<=0.0
+            If timeout<=0.0
 
         """
         return _pyagrum.LoopyImportanceSampling_setMaxTime(self, timeout)
@@ -19874,12 +19866,12 @@ class LoopyImportanceSampling(ImportanceSampling):
         Parameters
         ----------
         p : int
-        	number of samples between 2 stopping
+            number of samples between 2 stopping
 
         Raises
         ------
         pyagrum.OutOfBounds
-        	If p<1
+            If p<1
 
         """
         return _pyagrum.LoopyImportanceSampling_setPeriodSize(self, p)
@@ -19890,7 +19882,7 @@ class LoopyImportanceSampling(ImportanceSampling):
         Returns
         -------
         bool
-        	True if the verbosity is enabled
+            True if the verbosity is enabled
 
         """
         return _pyagrum.LoopyImportanceSampling_verbosity(self)
@@ -19901,7 +19893,7 @@ class LoopyImportanceSampling(ImportanceSampling):
         Returns
         -------
         float
-        	the value of epsilon
+            the value of epsilon
 
         """
         return _pyagrum.LoopyImportanceSampling_epsilon(self)
@@ -19912,7 +19904,7 @@ class LoopyImportanceSampling(ImportanceSampling):
         Returns
         -------
         float
-        	the value of the minimal epsilon rate
+            the value of the minimal epsilon rate
 
         """
         return _pyagrum.LoopyImportanceSampling_minEpsilonRate(self)
@@ -19923,7 +19915,7 @@ class LoopyImportanceSampling(ImportanceSampling):
         Returns
         -------
         int
-        	the criterion on number of iterations
+            the criterion on number of iterations
 
         """
         return _pyagrum.LoopyImportanceSampling_maxIter(self)
@@ -19934,7 +19926,7 @@ class LoopyImportanceSampling(ImportanceSampling):
         Returns
         -------
         float
-        	the timeout(in seconds)
+            the timeout(in seconds)
 
         """
         return _pyagrum.LoopyImportanceSampling_maxTime(self)
@@ -19945,12 +19937,12 @@ class LoopyImportanceSampling(ImportanceSampling):
         Returns
         -------
         int
-        	the number of samples between 2 stopping
+            the number of samples between 2 stopping
 
         Raises
         ------
         pyagrum.OutOfBounds
-        	If p<1
+            If p<1
 
         """
         return _pyagrum.LoopyImportanceSampling_periodSize(self)
@@ -19961,7 +19953,7 @@ class LoopyImportanceSampling(ImportanceSampling):
         Returns
         -------
         int
-        	the number of iterations
+            the number of iterations
 
         """
         return _pyagrum.LoopyImportanceSampling_nbrIterations(self)
@@ -19972,7 +19964,7 @@ class LoopyImportanceSampling(ImportanceSampling):
         Returns
         -------
         float
-        	get the current running time in second (float)
+            get the current running time in second (float)
 
         """
         return _pyagrum.LoopyImportanceSampling_currentTime(self)
@@ -19983,7 +19975,7 @@ class LoopyImportanceSampling(ImportanceSampling):
         Returns
         -------
         str
-        	the approximation scheme message
+            the approximation scheme message
 
         """
         return _pyagrum.LoopyImportanceSampling_messageApproximationScheme(self)
@@ -19994,12 +19986,12 @@ class LoopyImportanceSampling(ImportanceSampling):
         Returns
         -------
         tuple
-        	the scheme history
+            the scheme history
 
         Raises
         ------
         pyagrum.OperationNotAllowed
-        	If the scheme did not performed or if verbosity is set to false
+            If the scheme did not performed or if verbosity is set to false
 
         """
         return _pyagrum.LoopyImportanceSampling_history(self)
@@ -20090,7 +20082,7 @@ class LoopyImportanceSampling(ImportanceSampling):
           a node name
         val : intstr
           a node value or the label of the node value
-        vals : List[float]
+        vals : list of float
           a list of values
 
         Raises
@@ -20604,12 +20596,12 @@ class LoopyWeightedSampling(WeightedSampling):
         Parameters
         ----------
         eps : float
-        	the epsilon we want to use
+            the epsilon we want to use
 
         Raises
         ------
         pyagrum.OutOfBounds
-        	If eps<0
+            If eps<0
 
         """
         return _pyagrum.LoopyWeightedSampling_setEpsilon(self, eps)
@@ -20620,7 +20612,7 @@ class LoopyWeightedSampling(WeightedSampling):
         Parameters
         ----------
         rate : float
-        	the minimal epsilon rate
+            the minimal epsilon rate
 
         """
         return _pyagrum.LoopyWeightedSampling_setMinEpsilonRate(self, rate)
@@ -20631,12 +20623,12 @@ class LoopyWeightedSampling(WeightedSampling):
         Parameters
         ----------
         max : int
-        	the maximum number of iteration
+            the maximum number of iteration
 
         Raises
         ------
         pyagrum.OutOfBounds
-        	If max <= 1
+            If max <= 1
 
         """
         return _pyagrum.LoopyWeightedSampling_setMaxIter(self, max)
@@ -20647,12 +20639,12 @@ class LoopyWeightedSampling(WeightedSampling):
         Parameters
         ----------
         tiemout : float
-        	stopping criterion on timeout (in seconds)
+            stopping criterion on timeout (in seconds)
 
         Raises
         ------
         pyagrum.OutOfBounds
-        	If timeout<=0.0
+            If timeout<=0.0
 
         """
         return _pyagrum.LoopyWeightedSampling_setMaxTime(self, timeout)
@@ -20663,12 +20655,12 @@ class LoopyWeightedSampling(WeightedSampling):
         Parameters
         ----------
         p : int
-        	number of samples between 2 stopping
+            number of samples between 2 stopping
 
         Raises
         ------
         pyagrum.OutOfBounds
-        	If p<1
+            If p<1
 
         """
         return _pyagrum.LoopyWeightedSampling_setPeriodSize(self, p)
@@ -20679,7 +20671,7 @@ class LoopyWeightedSampling(WeightedSampling):
         Returns
         -------
         bool
-        	True if the verbosity is enabled
+            True if the verbosity is enabled
 
         """
         return _pyagrum.LoopyWeightedSampling_verbosity(self)
@@ -20690,7 +20682,7 @@ class LoopyWeightedSampling(WeightedSampling):
         Returns
         -------
         float
-        	the value of epsilon
+            the value of epsilon
 
         """
         return _pyagrum.LoopyWeightedSampling_epsilon(self)
@@ -20701,7 +20693,7 @@ class LoopyWeightedSampling(WeightedSampling):
         Returns
         -------
         float
-        	the value of the minimal epsilon rate
+            the value of the minimal epsilon rate
 
         """
         return _pyagrum.LoopyWeightedSampling_minEpsilonRate(self)
@@ -20712,7 +20704,7 @@ class LoopyWeightedSampling(WeightedSampling):
         Returns
         -------
         int
-        	the criterion on number of iterations
+            the criterion on number of iterations
 
         """
         return _pyagrum.LoopyWeightedSampling_maxIter(self)
@@ -20723,7 +20715,7 @@ class LoopyWeightedSampling(WeightedSampling):
         Returns
         -------
         float
-        	the timeout(in seconds)
+            the timeout(in seconds)
 
         """
         return _pyagrum.LoopyWeightedSampling_maxTime(self)
@@ -20734,12 +20726,12 @@ class LoopyWeightedSampling(WeightedSampling):
         Returns
         -------
         int
-        	the number of samples between 2 stopping
+            the number of samples between 2 stopping
 
         Raises
         ------
         pyagrum.OutOfBounds
-        	If p<1
+            If p<1
 
         """
         return _pyagrum.LoopyWeightedSampling_periodSize(self)
@@ -20750,7 +20742,7 @@ class LoopyWeightedSampling(WeightedSampling):
         Returns
         -------
         int
-        	the number of iterations
+            the number of iterations
 
         """
         return _pyagrum.LoopyWeightedSampling_nbrIterations(self)
@@ -20761,7 +20753,7 @@ class LoopyWeightedSampling(WeightedSampling):
         Returns
         -------
         float
-        	get the current running time in second (float)
+            get the current running time in second (float)
 
         """
         return _pyagrum.LoopyWeightedSampling_currentTime(self)
@@ -20772,7 +20764,7 @@ class LoopyWeightedSampling(WeightedSampling):
         Returns
         -------
         str
-        	the approximation scheme message
+            the approximation scheme message
 
         """
         return _pyagrum.LoopyWeightedSampling_messageApproximationScheme(self)
@@ -20783,12 +20775,12 @@ class LoopyWeightedSampling(WeightedSampling):
         Returns
         -------
         tuple
-        	the scheme history
+            the scheme history
 
         Raises
         ------
         pyagrum.OperationNotAllowed
-        	If the scheme did not performed or if verbosity is set to false
+            If the scheme did not performed or if verbosity is set to false
 
         """
         return _pyagrum.LoopyWeightedSampling_history(self)
@@ -20879,7 +20871,7 @@ class LoopyWeightedSampling(WeightedSampling):
           a node name
         val : intstr
           a node value or the label of the node value
-        vals : List[float]
+        vals : list of float
           a list of values
 
         Raises
@@ -21393,12 +21385,12 @@ class LoopyGibbsSampling(GibbsSampling):
         Parameters
         ----------
         eps : float
-        	the epsilon we want to use
+            the epsilon we want to use
 
         Raises
         ------
         pyagrum.OutOfBounds
-        	If eps<0
+            If eps<0
 
         """
         return _pyagrum.LoopyGibbsSampling_setEpsilon(self, eps)
@@ -21409,7 +21401,7 @@ class LoopyGibbsSampling(GibbsSampling):
         Parameters
         ----------
         rate : float
-        	the minimal epsilon rate
+            the minimal epsilon rate
 
         """
         return _pyagrum.LoopyGibbsSampling_setMinEpsilonRate(self, rate)
@@ -21420,12 +21412,12 @@ class LoopyGibbsSampling(GibbsSampling):
         Parameters
         ----------
         max : int
-        	the maximum number of iteration
+            the maximum number of iteration
 
         Raises
         ------
         pyagrum.OutOfBounds
-        	If max <= 1
+            If max <= 1
 
         """
         return _pyagrum.LoopyGibbsSampling_setMaxIter(self, max)
@@ -21436,12 +21428,12 @@ class LoopyGibbsSampling(GibbsSampling):
         Parameters
         ----------
         tiemout : float
-        	stopping criterion on timeout (in seconds)
+            stopping criterion on timeout (in seconds)
 
         Raises
         ------
         pyagrum.OutOfBounds
-        	If timeout<=0.0
+            If timeout<=0.0
 
         """
         return _pyagrum.LoopyGibbsSampling_setMaxTime(self, timeout)
@@ -21452,12 +21444,12 @@ class LoopyGibbsSampling(GibbsSampling):
         Parameters
         ----------
         p : int
-        	number of samples between 2 stopping
+            number of samples between 2 stopping
 
         Raises
         ------
         pyagrum.OutOfBounds
-        	If p<1
+            If p<1
 
         """
         return _pyagrum.LoopyGibbsSampling_setPeriodSize(self, p)
@@ -21468,7 +21460,7 @@ class LoopyGibbsSampling(GibbsSampling):
         Returns
         -------
         bool
-        	True if the verbosity is enabled
+            True if the verbosity is enabled
 
         """
         return _pyagrum.LoopyGibbsSampling_verbosity(self)
@@ -21479,7 +21471,7 @@ class LoopyGibbsSampling(GibbsSampling):
         Returns
         -------
         float
-        	the value of epsilon
+            the value of epsilon
 
         """
         return _pyagrum.LoopyGibbsSampling_epsilon(self)
@@ -21490,7 +21482,7 @@ class LoopyGibbsSampling(GibbsSampling):
         Returns
         -------
         float
-        	the value of the minimal epsilon rate
+            the value of the minimal epsilon rate
 
         """
         return _pyagrum.LoopyGibbsSampling_minEpsilonRate(self)
@@ -21501,7 +21493,7 @@ class LoopyGibbsSampling(GibbsSampling):
         Returns
         -------
         int
-        	the criterion on number of iterations
+            the criterion on number of iterations
 
         """
         return _pyagrum.LoopyGibbsSampling_maxIter(self)
@@ -21512,7 +21504,7 @@ class LoopyGibbsSampling(GibbsSampling):
         Returns
         -------
         float
-        	the timeout(in seconds)
+            the timeout(in seconds)
 
         """
         return _pyagrum.LoopyGibbsSampling_maxTime(self)
@@ -21523,12 +21515,12 @@ class LoopyGibbsSampling(GibbsSampling):
         Returns
         -------
         int
-        	the number of samples between 2 stopping
+            the number of samples between 2 stopping
 
         Raises
         ------
         pyagrum.OutOfBounds
-        	If p<1
+            If p<1
 
         """
         return _pyagrum.LoopyGibbsSampling_periodSize(self)
@@ -21539,7 +21531,7 @@ class LoopyGibbsSampling(GibbsSampling):
         Returns
         -------
         int
-        	the number of iterations
+            the number of iterations
 
         """
         return _pyagrum.LoopyGibbsSampling_nbrIterations(self)
@@ -21550,7 +21542,7 @@ class LoopyGibbsSampling(GibbsSampling):
         Returns
         -------
         float
-        	get the current running time in second (float)
+            get the current running time in second (float)
 
         """
         return _pyagrum.LoopyGibbsSampling_currentTime(self)
@@ -21561,7 +21553,7 @@ class LoopyGibbsSampling(GibbsSampling):
         Returns
         -------
         str
-        	the approximation scheme message
+            the approximation scheme message
 
         """
         return _pyagrum.LoopyGibbsSampling_messageApproximationScheme(self)
@@ -21572,12 +21564,12 @@ class LoopyGibbsSampling(GibbsSampling):
         Returns
         -------
         tuple
-        	the scheme history
+            the scheme history
 
         Raises
         ------
         pyagrum.OperationNotAllowed
-        	If the scheme did not performed or if verbosity is set to false
+            If the scheme did not performed or if verbosity is set to false
 
         """
         return _pyagrum.LoopyGibbsSampling_history(self)
@@ -21668,7 +21660,7 @@ class LoopyGibbsSampling(GibbsSampling):
           a node name
         val : intstr
           a node value or the label of the node value
-        vals : List[float]
+        vals : list of float
           a list of values
 
         Raises
@@ -22248,12 +22240,12 @@ class LoopyMonteCarloSampling(MonteCarloSampling):
         Parameters
         ----------
         eps : float
-        	the epsilon we want to use
+            the epsilon we want to use
 
         Raises
         ------
         pyagrum.OutOfBounds
-        	If eps<0
+            If eps<0
 
         """
         return _pyagrum.LoopyMonteCarloSampling_setEpsilon(self, eps)
@@ -22264,7 +22256,7 @@ class LoopyMonteCarloSampling(MonteCarloSampling):
         Parameters
         ----------
         rate : float
-        	the minimal epsilon rate
+            the minimal epsilon rate
 
         """
         return _pyagrum.LoopyMonteCarloSampling_setMinEpsilonRate(self, rate)
@@ -22275,12 +22267,12 @@ class LoopyMonteCarloSampling(MonteCarloSampling):
         Parameters
         ----------
         max : int
-        	the maximum number of iteration
+            the maximum number of iteration
 
         Raises
         ------
         pyagrum.OutOfBounds
-        	If max <= 1
+            If max <= 1
 
         """
         return _pyagrum.LoopyMonteCarloSampling_setMaxIter(self, max)
@@ -22291,12 +22283,12 @@ class LoopyMonteCarloSampling(MonteCarloSampling):
         Parameters
         ----------
         tiemout : float
-        	stopping criterion on timeout (in seconds)
+            stopping criterion on timeout (in seconds)
 
         Raises
         ------
         pyagrum.OutOfBounds
-        	If timeout<=0.0
+            If timeout<=0.0
 
         """
         return _pyagrum.LoopyMonteCarloSampling_setMaxTime(self, timeout)
@@ -22307,12 +22299,12 @@ class LoopyMonteCarloSampling(MonteCarloSampling):
         Parameters
         ----------
         p : int
-        	number of samples between 2 stopping
+            number of samples between 2 stopping
 
         Raises
         ------
         pyagrum.OutOfBounds
-        	If p<1
+            If p<1
 
         """
         return _pyagrum.LoopyMonteCarloSampling_setPeriodSize(self, p)
@@ -22323,7 +22315,7 @@ class LoopyMonteCarloSampling(MonteCarloSampling):
         Returns
         -------
         bool
-        	True if the verbosity is enabled
+            True if the verbosity is enabled
 
         """
         return _pyagrum.LoopyMonteCarloSampling_verbosity(self)
@@ -22334,7 +22326,7 @@ class LoopyMonteCarloSampling(MonteCarloSampling):
         Returns
         -------
         float
-        	the value of epsilon
+            the value of epsilon
 
         """
         return _pyagrum.LoopyMonteCarloSampling_epsilon(self)
@@ -22345,7 +22337,7 @@ class LoopyMonteCarloSampling(MonteCarloSampling):
         Returns
         -------
         float
-        	the value of the minimal epsilon rate
+            the value of the minimal epsilon rate
 
         """
         return _pyagrum.LoopyMonteCarloSampling_minEpsilonRate(self)
@@ -22356,7 +22348,7 @@ class LoopyMonteCarloSampling(MonteCarloSampling):
         Returns
         -------
         int
-        	the criterion on number of iterations
+            the criterion on number of iterations
 
         """
         return _pyagrum.LoopyMonteCarloSampling_maxIter(self)
@@ -22367,7 +22359,7 @@ class LoopyMonteCarloSampling(MonteCarloSampling):
         Returns
         -------
         float
-        	the timeout(in seconds)
+            the timeout(in seconds)
 
         """
         return _pyagrum.LoopyMonteCarloSampling_maxTime(self)
@@ -22378,12 +22370,12 @@ class LoopyMonteCarloSampling(MonteCarloSampling):
         Returns
         -------
         int
-        	the number of samples between 2 stopping
+            the number of samples between 2 stopping
 
         Raises
         ------
         pyagrum.OutOfBounds
-        	If p<1
+            If p<1
 
         """
         return _pyagrum.LoopyMonteCarloSampling_periodSize(self)
@@ -22394,7 +22386,7 @@ class LoopyMonteCarloSampling(MonteCarloSampling):
         Returns
         -------
         int
-        	the number of iterations
+            the number of iterations
 
         """
         return _pyagrum.LoopyMonteCarloSampling_nbrIterations(self)
@@ -22405,7 +22397,7 @@ class LoopyMonteCarloSampling(MonteCarloSampling):
         Returns
         -------
         float
-        	get the current running time in second (float)
+            get the current running time in second (float)
 
         """
         return _pyagrum.LoopyMonteCarloSampling_currentTime(self)
@@ -22416,7 +22408,7 @@ class LoopyMonteCarloSampling(MonteCarloSampling):
         Returns
         -------
         str
-        	the approximation scheme message
+            the approximation scheme message
 
         """
         return _pyagrum.LoopyMonteCarloSampling_messageApproximationScheme(self)
@@ -22427,12 +22419,12 @@ class LoopyMonteCarloSampling(MonteCarloSampling):
         Returns
         -------
         tuple
-        	the scheme history
+            the scheme history
 
         Raises
         ------
         pyagrum.OperationNotAllowed
-        	If the scheme did not performed or if verbosity is set to false
+            If the scheme did not performed or if verbosity is set to false
 
         """
         return _pyagrum.LoopyMonteCarloSampling_history(self)
@@ -22523,7 +22515,7 @@ class LoopyMonteCarloSampling(MonteCarloSampling):
           a node name
         val : intstr
           a node value or the label of the node value
-        vals : List[float]
+        vals : list of float
           a list of values
 
         Raises
@@ -23023,12 +23015,12 @@ class LoopyBeliefPropagation(object):
         Parameters
         ----------
         eps : float
-        	the epsilon we want to use
+            the epsilon we want to use
 
         Raises
         ------
         pyagrum.OutOfBounds
-        	If eps<0
+            If eps<0
 
         """
         return _pyagrum.LoopyBeliefPropagation_setEpsilon(self, eps)
@@ -23039,7 +23031,7 @@ class LoopyBeliefPropagation(object):
         Parameters
         ----------
         rate : float
-        	the minimal epsilon rate
+            the minimal epsilon rate
 
         """
         return _pyagrum.LoopyBeliefPropagation_setMinEpsilonRate(self, rate)
@@ -23050,12 +23042,12 @@ class LoopyBeliefPropagation(object):
         Parameters
         ----------
         max : int
-        	the maximum number of iteration
+            the maximum number of iteration
 
         Raises
         ------
         pyagrum.OutOfBounds
-        	If max <= 1
+            If max <= 1
 
         """
         return _pyagrum.LoopyBeliefPropagation_setMaxIter(self, max)
@@ -23066,12 +23058,12 @@ class LoopyBeliefPropagation(object):
         Parameters
         ----------
         tiemout : float
-        	stopping criterion on timeout (in seconds)
+            stopping criterion on timeout (in seconds)
 
         Raises
         ------
         pyagrum.OutOfBounds
-        	If timeout<=0.0
+            If timeout<=0.0
 
         """
         return _pyagrum.LoopyBeliefPropagation_setMaxTime(self, timeout)
@@ -23082,12 +23074,12 @@ class LoopyBeliefPropagation(object):
         Parameters
         ----------
         p : int
-        	number of samples between 2 stopping
+            number of samples between 2 stopping
 
         Raises
         ------
         pyagrum.OutOfBounds
-        	If p<1
+            If p<1
 
         """
         return _pyagrum.LoopyBeliefPropagation_setPeriodSize(self, p)
@@ -23098,7 +23090,7 @@ class LoopyBeliefPropagation(object):
         Returns
         -------
         bool
-        	True if the verbosity is enabled
+            True if the verbosity is enabled
 
         """
         return _pyagrum.LoopyBeliefPropagation_verbosity(self)
@@ -23109,7 +23101,7 @@ class LoopyBeliefPropagation(object):
         Returns
         -------
         float
-        	the value of epsilon
+            the value of epsilon
 
         """
         return _pyagrum.LoopyBeliefPropagation_epsilon(self)
@@ -23120,7 +23112,7 @@ class LoopyBeliefPropagation(object):
         Returns
         -------
         float
-        	the value of the minimal epsilon rate
+            the value of the minimal epsilon rate
 
         """
         return _pyagrum.LoopyBeliefPropagation_minEpsilonRate(self)
@@ -23131,7 +23123,7 @@ class LoopyBeliefPropagation(object):
         Returns
         -------
         int
-        	the criterion on number of iterations
+            the criterion on number of iterations
 
         """
         return _pyagrum.LoopyBeliefPropagation_maxIter(self)
@@ -23142,7 +23134,7 @@ class LoopyBeliefPropagation(object):
         Returns
         -------
         float
-        	the timeout(in seconds)
+            the timeout(in seconds)
 
         """
         return _pyagrum.LoopyBeliefPropagation_maxTime(self)
@@ -23153,12 +23145,12 @@ class LoopyBeliefPropagation(object):
         Returns
         -------
         int
-        	the number of samples between 2 stopping
+            the number of samples between 2 stopping
 
         Raises
         ------
         pyagrum.OutOfBounds
-        	If p<1
+            If p<1
 
         """
         return _pyagrum.LoopyBeliefPropagation_periodSize(self)
@@ -23169,7 +23161,7 @@ class LoopyBeliefPropagation(object):
         Returns
         -------
         int
-        	the number of iterations
+            the number of iterations
 
         """
         return _pyagrum.LoopyBeliefPropagation_nbrIterations(self)
@@ -23180,7 +23172,7 @@ class LoopyBeliefPropagation(object):
         Returns
         -------
         float
-        	get the current running time in second (float)
+            get the current running time in second (float)
 
         """
         return _pyagrum.LoopyBeliefPropagation_currentTime(self)
@@ -23191,7 +23183,7 @@ class LoopyBeliefPropagation(object):
         Returns
         -------
         str
-        	the approximation scheme message
+            the approximation scheme message
 
         """
         return _pyagrum.LoopyBeliefPropagation_messageApproximationScheme(self)
@@ -23202,12 +23194,12 @@ class LoopyBeliefPropagation(object):
         Returns
         -------
         tuple
-        	the scheme history
+            the scheme history
 
         Raises
         ------
         pyagrum.OperationNotAllowed
-        	If the scheme did not performed or if verbosity is set to false
+            If the scheme did not performed or if verbosity is set to false
 
         """
         return _pyagrum.LoopyBeliefPropagation_history(self)
@@ -23298,7 +23290,7 @@ class LoopyBeliefPropagation(object):
           a node name
         val : intstr
           a node value or the label of the node value
-        vals : List[float]
+        vals : list of float
           a list of values
 
         Raises
@@ -23753,7 +23745,7 @@ class ExactBNdistance(object):
     Raises
     ------
       pyagrum.OperationNotAllowed
-    	If the 2BNs have not the same domain size of compatible node sets
+        If the 2BNs have not the same domain size of compatible node sets
 
     """
 
@@ -23769,8 +23761,8 @@ class ExactBNdistance(object):
 
         Returns
         -------
-        Dict[str,float]
-        	a dictionnary containing the different values after the computation.
+        dict
+            a dictionnary containing the different values after the computation.
 
         """
         return _pyagrum.ExactBNdistance_compute(self)
@@ -23795,7 +23787,7 @@ class GibbsBNdistance(ApproximationScheme):
     Raises
     ------
       pyagrum.OperationNotAllowed
-    	If the 2BNs have not the same domain size of compatible node sets
+        If the 2BNs have not the same domain size of compatible node sets
 
     """
 
@@ -23812,7 +23804,7 @@ class GibbsBNdistance(ApproximationScheme):
         Parameters
         ----------
         b : int
-        	size of burn in on number of iteration
+            size of burn in on number of iteration
 
         """
         return _pyagrum.GibbsBNdistance_setBurnIn(self, b)
@@ -23823,7 +23815,7 @@ class GibbsBNdistance(ApproximationScheme):
         Returns
         -------
         int
-        	size of burn in on number of iteration
+            size of burn in on number of iteration
 
         """
         return _pyagrum.GibbsBNdistance_burnIn(self)
@@ -23833,8 +23825,8 @@ class GibbsBNdistance(ApproximationScheme):
 
         Returns
         -------
-        Dict[str,float]
-        	a dictionnary containing the different values after the computation.
+        dict
+            a dictionnary containing the different values after the computation.
 
         """
         return _pyagrum.GibbsBNdistance_compute(self)
@@ -23856,12 +23848,12 @@ class GibbsBNdistance(ApproximationScheme):
         Parameters
         ----------
         eps : float
-        	the epsilon we want to use
+            the epsilon we want to use
 
         Raises
         ------
         pyagrum.OutOfBounds
-        	If eps<0
+            If eps<0
 
         """
         return _pyagrum.GibbsBNdistance_setEpsilon(self, eps)
@@ -23872,7 +23864,7 @@ class GibbsBNdistance(ApproximationScheme):
         Parameters
         ----------
         rate : float
-        	the minimal epsilon rate
+            the minimal epsilon rate
 
         """
         return _pyagrum.GibbsBNdistance_setMinEpsilonRate(self, rate)
@@ -23883,12 +23875,12 @@ class GibbsBNdistance(ApproximationScheme):
         Parameters
         ----------
         max : int
-        	the maximum number of iteration
+            the maximum number of iteration
 
         Raises
         ------
         pyagrum.OutOfBounds
-        	If max <= 1
+            If max <= 1
 
         """
         return _pyagrum.GibbsBNdistance_setMaxIter(self, max)
@@ -23899,12 +23891,12 @@ class GibbsBNdistance(ApproximationScheme):
         Parameters
         ----------
         tiemout : float
-        	stopping criterion on timeout (in seconds)
+            stopping criterion on timeout (in seconds)
 
         Raises
         ------
         pyagrum.OutOfBounds
-        	If timeout<=0.0
+            If timeout<=0.0
 
         """
         return _pyagrum.GibbsBNdistance_setMaxTime(self, timeout)
@@ -23915,12 +23907,12 @@ class GibbsBNdistance(ApproximationScheme):
         Parameters
         ----------
         p : int
-        	number of samples between 2 stopping
+            number of samples between 2 stopping
 
         Raises
         ------
         pyagrum.OutOfBounds
-        	If p<1
+            If p<1
 
         """
         return _pyagrum.GibbsBNdistance_setPeriodSize(self, p)
@@ -23931,7 +23923,7 @@ class GibbsBNdistance(ApproximationScheme):
         Returns
         -------
         bool
-        	True if the verbosity is enabled
+            True if the verbosity is enabled
 
         """
         return _pyagrum.GibbsBNdistance_verbosity(self)
@@ -23942,7 +23934,7 @@ class GibbsBNdistance(ApproximationScheme):
         Returns
         -------
         float
-        	the value of epsilon
+            the value of epsilon
 
         """
         return _pyagrum.GibbsBNdistance_epsilon(self)
@@ -23953,7 +23945,7 @@ class GibbsBNdistance(ApproximationScheme):
         Returns
         -------
         float
-        	the value of the minimal epsilon rate
+            the value of the minimal epsilon rate
 
         """
         return _pyagrum.GibbsBNdistance_minEpsilonRate(self)
@@ -23964,7 +23956,7 @@ class GibbsBNdistance(ApproximationScheme):
         Returns
         -------
         int
-        	the criterion on number of iterations
+            the criterion on number of iterations
 
         """
         return _pyagrum.GibbsBNdistance_maxIter(self)
@@ -23975,7 +23967,7 @@ class GibbsBNdistance(ApproximationScheme):
         Returns
         -------
         float
-        	the timeout(in seconds)
+            the timeout(in seconds)
 
         """
         return _pyagrum.GibbsBNdistance_maxTime(self)
@@ -23986,12 +23978,12 @@ class GibbsBNdistance(ApproximationScheme):
         Returns
         -------
         int
-        	the number of samples between 2 stopping
+            the number of samples between 2 stopping
 
         Raises
         ------
         pyagrum.OutOfBounds
-        	If p<1
+            If p<1
 
         """
         return _pyagrum.GibbsBNdistance_periodSize(self)
@@ -24002,7 +23994,7 @@ class GibbsBNdistance(ApproximationScheme):
         Returns
         -------
         int
-        	the number of iterations
+            the number of iterations
 
         """
         return _pyagrum.GibbsBNdistance_nbrIterations(self)
@@ -24013,7 +24005,7 @@ class GibbsBNdistance(ApproximationScheme):
         Returns
         -------
         float
-        	get the current running time in second (float)
+            get the current running time in second (float)
 
         """
         return _pyagrum.GibbsBNdistance_currentTime(self)
@@ -24024,7 +24016,7 @@ class GibbsBNdistance(ApproximationScheme):
         Returns
         -------
         str
-        	the approximation scheme message
+            the approximation scheme message
 
         """
         return _pyagrum.GibbsBNdistance_messageApproximationScheme(self)
@@ -24035,12 +24027,12 @@ class GibbsBNdistance(ApproximationScheme):
         Returns
         -------
         tuple
-        	the scheme history
+            the scheme history
 
         Raises
         ------
         pyagrum.OperationNotAllowed
-        	If the scheme did not performed or if verbosity is set to false
+            If the scheme did not performed or if verbosity is set to false
 
         """
         return _pyagrum.GibbsBNdistance_history(self)
@@ -24273,7 +24265,7 @@ class BNDatabaseGenerator(object):
 
         Parameters
         ----------
-        vars : List[str]
+        vars : list of str
           order specified by the list of variable names.
 
         """
@@ -24323,7 +24315,7 @@ class BNDatabaseGenerator(object):
 
         Returns
         -------
-        Tuple[str]
+        tuple
           the tuple of names
 
         """
@@ -24368,7 +24360,7 @@ class BNDatabaseGenerator(object):
 
         Returns
         -------
-        Tuple[int]
+        tuple
           the tuple of NodeId
 
         """
@@ -24386,18 +24378,18 @@ class BNDatabaseGenerator(object):
         Parameters
         ----------
         nbSamples : int
-        	the number of samples that will be generated
-        evs : "pyagrum.Instantiation" or Dict[intstr,intstr]
+            the number of samples that will be generated
+        evs : pyagrum.Instantiation or dict
           (optional) The evidence that will be observed by the resulting samples.
         timeout : int
           (optional) The maximum time in seconds to generate the samples (default 600)
 
-        Warning
-        -------
+        Warnings
+        --------
         `nbSamples` is not the number of generated samples but the size of the database.It may happen that the evidence is very rare (or even impossible). In this case, the generation process may be *very* slow (it may even not stop). For this case a timeout is provided (default 600 seconds) and then the size of the database can be smaller than `nbSamples` (even equal to 0).
 
-        Warning
-        -------
+        Warnings
+        --------
         For discretized variable, aGrum/pyAgrum defines 3 behaviors when generating sample with labels :
         - RANDOM (default) : the value is chosen randomly in the interval
         - MEDIAN : the value is the median of the interval
@@ -24474,14 +24466,14 @@ class BNLearner(object):
     BNLearner(filename,inducedTypes=True) -> BNLearner
         Parameters:
             - **source** (*str* or *pandas.DataFrame*) -- the data to learn from
-            - **missingSymbols** (*List[str]*) -- list of strings that will be interpreted as missing values (by default : `?`)
+            - **missingSymbols** (*list of str*) -- list of strings that will be interpreted as missing values (by default : `?`)
             - **inducedTypes** (*Bool*) -- whether BNLearner should try to automatically find the type of each variable
 
     BNLearner(filename,src) -> BNLearner
         Parameters:
             - **source** (*str* or *pandas.DataFrame*) -- the data to learn from
             - **src** (*pyagrum.BayesNet*) -- the Bayesian network used to find those modalities
-            - **missingSymbols** (*List[str]*) -- list of strings that will be interpreted as missing values (by default : `?`)
+            - **missingSymbols** (*list of str*) -- list of strings that will be interpreted as missing values (by default : `?`)
 
     BNLearner(learner) -> BNLearner
         Parameters:
@@ -24523,7 +24515,7 @@ class BNLearner(object):
         Returns
         -------
         pyagrum.BayesNet
-        	the learnt BayesNet
+            the learnt BayesNet
 
         """
         return _pyagrum.BNLearner_learnBN(self)
@@ -24560,38 +24552,38 @@ class BNLearner(object):
         Parameters
         ----------
         dag : pyagrum.DAG
-        	specifies the graphical structure of the returned Bayes net.
+            specifies the graphical structure of the returned Bayes net.
         bn : pyagrum.BayesNet
-        	specifies the graphical structure of the returned Bayes net and, when
-        	the database contains missing values and EM is used for learning, force
-        	EM to initialize the CPTs of the resulting Bayes net to the values of
-        	those passed in argument (when they are not fully filled with zeroes)
-        	before iterating over the expectation/maximization steps.
+            specifies the graphical structure of the returned Bayes net and, when
+            the database contains missing values and EM is used for learning, force
+            EM to initialize the CPTs of the resulting Bayes net to the values of
+            those passed in argument (when they are not fully filled with zeroes)
+            before iterating over the expectation/maximization steps.
         take_into_account_score : bool, default=True
-        	The graphical structure passed in argument may have been learnt from a
-        	structure learning. In this case, if the score used to learn the structure
-        	has an implicit prior (like K2 which has a 1-smoothing prior), it is important
-        	to also take into account this implicit prior for parameter learning. By
-        	default (`take_into_account_score=True`), we will learn parameters by taking
-        	into account the prior specified by methods usePriorXXX() + the implicit prior
-        	of the score (if any). If `take_into_account_score=False`, we just take into
-        	account the prior specified by `usePriorXXX()`.
+            The graphical structure passed in argument may have been learnt from a
+            structure learning. In this case, if the score used to learn the structure
+            has an implicit prior (like K2 which has a 1-smoothing prior), it is important
+            to also take into account this implicit prior for parameter learning. By
+            default (`take_into_account_score=True`), we will learn parameters by taking
+            into account the prior specified by methods usePriorXXX() + the implicit prior
+            of the score (if any). If `take_into_account_score=False`, we just take into
+            account the prior specified by `usePriorXXX()`.
 
         Returns
         -------
         pyagrum.BayesNet
-        	the learnt BayesNet
+            the learnt BayesNet
 
         Raises
         ------
         pyagrum.MissingVariableInDatabase
-        	If a variable of the Bayes net is not found in the database
+            If a variable of the Bayes net is not found in the database
         pyagrum.MissingValueInDatabase
-        	If the database contains some missing values and EM is not used for the learning
+            If the database contains some missing values and EM is not used for the learning
         pyagrum.OperationNotAllowed
-        	If EM is used but no stopping criterion has been selected
+            If EM is used but no stopping criterion has been selected
         pyagrum.UnknownLabelInDatabase
-        	If a label is found in the database that do not correspond to the variable
+            If a label is found in the database that do not correspond to the variable
 
         Warnings
         --------
@@ -24617,8 +24609,8 @@ class BNLearner(object):
 
         Parameters
         ----------
-        pyagrum.BNLearner
-            the learner whose state is copied.
+        learner : pyagrum.BNLearner
+            the BNLearner to copy state from.
 
         """
         val = _pyagrum.BNLearner_copyState(self, learner)
@@ -24637,7 +24629,7 @@ class BNLearner(object):
         Parameters
         ----------
         dag : pyagrum.DAG
-        	an initial pyagrum.DAG structure
+            an initial pyagrum.DAG structure
 
         """
         return _pyagrum.BNLearner_setInitialDAG(self, dag)
@@ -24661,11 +24653,11 @@ class BNLearner(object):
         Parameters
         ----------
         epsilon : float
-        	if epsilon>0 then EM is used and stops whenever the relative difference between two
-        	consecutive log-likelihoods (log-likelihood evolution rate) drops below epsilon.
+            if epsilon>0 then EM is used and stops whenever the relative difference between two
+            consecutive log-likelihoods (log-likelihood evolution rate) drops below epsilon.
 
-        	if epsilon=0.0 then EM is not used. But if you wish to forbid the use of EM, prefer
-        	executing Method `forbidEM()` rather than useEM(0.0) as it is more unequivocal.
+            if epsilon=0.0 then EM is not used. But if you wish to forbid the use of EM, prefer
+            executing Method `forbidEM()` rather than useEM(0.0) as it is more unequivocal.
 
         noise: float, default=0.1
                 During EM's initialization, the CPTs are randomly perturbed using the following formula:
@@ -24810,8 +24802,8 @@ class BNLearner(object):
         pyagrum.BNLearner
                 the BNLearner itself, so that we can chain useXXX() methods.
 
-        Warnings:
-        ---------
+        Warnings
+        --------
         Setting the min difference between two consecutive log-likelihoods as a stopping
         criterion disables the min log-likelihood evolution rate as a stopping criterion.
 
@@ -24827,7 +24819,7 @@ class BNLearner(object):
         Parameters
         ----------
         rate: float
-        	the log-likelihood evolution rate below which EM stops its iterations
+            the log-likelihood evolution rate below which EM stops its iterations
 
         Returns
         -------
@@ -24837,7 +24829,7 @@ class BNLearner(object):
         Raises
         ------
         pyagrum.OutOfBounds
-        	If rate <= 0.
+            If rate <= 0.
 
         Warnings
         --------
@@ -24887,7 +24879,7 @@ class BNLearner(object):
         Parameters
         ----------
         max : int
-        	the maximal number of iterations that EM is allowed to perform
+            the maximal number of iterations that EM is allowed to perform
 
         Returns
         -------
@@ -24897,7 +24889,7 @@ class BNLearner(object):
         Raises
         ------
         pyagrum.OutOfBounds
-        	If max <= 1.
+            If max <= 1.
 
         """
         return _pyagrum.BNLearner_EMsetMaxIter(self, max)
@@ -24939,7 +24931,7 @@ class BNLearner(object):
         Parameters
         ----------
         timeout : float
-        	the timeout in milliseconds
+            the timeout in milliseconds
 
         Returns
         -------
@@ -24997,7 +24989,7 @@ class BNLearner(object):
         Parameters
         ----------
         v : bool
-        	sets EM's verbose mode if and only if v = True.
+            sets EM's verbose mode if and only if v = True.
 
         Returns
         -------
@@ -25073,7 +25065,7 @@ class BNLearner(object):
         Parameters
         ----------
         weight : float
-        	the prior weight
+            the prior weight
 
         """
         return _pyagrum.BNLearner_useBDeuPrior(self, weight)
@@ -25168,7 +25160,7 @@ class BNLearner(object):
         Parameters
         ----------
         max_indegree : int
-        	the limit number of parents
+            the limit number of parents
 
         """
         return _pyagrum.BNLearner_setMaxIndegree(self, max_indegree)
@@ -25186,11 +25178,11 @@ class BNLearner(object):
         Parameters
         ----------
         arc : pyagrum.Arc
-        	an arc
+            an arc
         head : int str
-        	a variable's id or name
+            a variable's id or name
         tail : int str
-        	a variable's id or name
+            a variable's id or name
 
         """
         return _pyagrum.BNLearner_addForbiddenArc(self, *args)
@@ -25203,11 +25195,11 @@ class BNLearner(object):
         Parameters
         ----------
         arc: pyagrum.Arc
-        	an arc
+            an arc
         head : int str
-        	a variable's id or name
+            a variable's id or name
         tail : int str
-        	a variable's id or name
+            a variable's id or name
 
         """
         return _pyagrum.BNLearner_eraseForbiddenArc(self, *args)
@@ -25225,16 +25217,16 @@ class BNLearner(object):
         Parameters
         ----------
         arc : pyagrum.Arc
-        	an arc
+            an arc
         head : int str
-        	a variable's id or name
+            a variable's id or name
         tail : int str
-        	a variable's id or name
+            a variable's id or name
 
         Raises
         ------
         pyagrum.InvalidDirectedCycle
-        	If the added arc creates a directed cycle in the DAG
+            If the added arc creates a directed cycle in the DAG
 
         """
         return _pyagrum.BNLearner_addMandatoryArc(self, *args)
@@ -25245,11 +25237,11 @@ class BNLearner(object):
         Parameters
         ----------
         arc: pyagrum.Arc
-        	an arc
+            an arc
         head : int str
-        	a variable's id or name
+            a variable's id or name
         tail : int str
-        	a variable's id or name
+            a variable's id or name
 
         """
         return _pyagrum.BNLearner_eraseMandatoryArc(self, *args)
@@ -25267,11 +25259,11 @@ class BNLearner(object):
         Parameters
         ----------
         arc : pyagrum.Arc
-        	an arc
+            an arc
         head : int str
-        	a variable's id or name
+            a variable's id or name
         tail : int str
-        	a variable's id or name
+            a variable's id or name
 
         """
         return _pyagrum.BNLearner_addPossibleEdge(self, *args)
@@ -25284,11 +25276,11 @@ class BNLearner(object):
         Parameters
         ----------
         arc : pyagrum.Arc
-        	an arc
+            an arc
         head : int str
-        	a variable's id or name
+            a variable's id or name
         tail : int str
-        	a variable's id or name
+            a variable's id or name
 
         """
         return _pyagrum.BNLearner_erasePossibleEdge(self, *args)
@@ -25301,7 +25293,7 @@ class BNLearner(object):
         Parameters
         ----------
         g : pyagrum.UndiGraph
-        	the fixed skeleton
+            the fixed skeleton
 
         """
         return _pyagrum.BNLearner_setPossibleSkeleton(self, skeleton)
@@ -25314,7 +25306,7 @@ class BNLearner(object):
         Parameters
         ----------
         node : int str
-        	a variable's id or name
+            a variable's id or name
 
         """
         return _pyagrum.BNLearner_addNoParentNode(self, *args)
@@ -25327,7 +25319,7 @@ class BNLearner(object):
         Parameters
         ----------
         node : int str
-        	a variable's id or name
+            a variable's id or name
 
         """
         return _pyagrum.BNLearner_eraseNoParentNode(self, *args)
@@ -25340,7 +25332,7 @@ class BNLearner(object):
         Parameters
         ----------
         node : int str
-        	a variable's id or name
+            a variable's id or name
 
         """
         return _pyagrum.BNLearner_addNoChildrenNode(self, *args)
@@ -25353,7 +25345,7 @@ class BNLearner(object):
         Parameters
         ----------
         node : int str
-        	a variable's id or name
+            a variable's id or name
 
         """
         return _pyagrum.BNLearner_eraseNoChildrenNode(self, *args)
@@ -25407,12 +25399,12 @@ class BNLearner(object):
         Parameters
         ----------
         eps : float
-        	the epsilon we want to use
+            the epsilon we want to use
 
         Raises
         ------
         pyagrum.OutOfBounds
-        	If eps<0
+            If eps<0
 
         """
         return _pyagrum.BNLearner_setEpsilon(self, eps)
@@ -25423,7 +25415,7 @@ class BNLearner(object):
         Parameters
         ----------
         rate : float
-        	the minimal epsilon rate
+            the minimal epsilon rate
 
         """
         return _pyagrum.BNLearner_setMinEpsilonRate(self, rate)
@@ -25434,12 +25426,12 @@ class BNLearner(object):
         Parameters
         ----------
         max : int
-        	the maximum number of iteration
+            the maximum number of iteration
 
         Raises
         ------
         pyagrum.OutOfBounds
-        	If max <= 1
+            If max <= 1
 
         """
         return _pyagrum.BNLearner_setMaxIter(self, max)
@@ -25450,12 +25442,12 @@ class BNLearner(object):
         Parameters
         ----------
         tiemout : float
-        	stopping criterion on timeout (in seconds)
+            stopping criterion on timeout (in seconds)
 
         Raises
         ------
         pyagrum.OutOfBounds
-        	If timeout<=0.0
+            If timeout<=0.0
 
         """
         return _pyagrum.BNLearner_setMaxTime(self, timeout)
@@ -25466,12 +25458,12 @@ class BNLearner(object):
         Parameters
         ----------
         p : int
-        	number of samples between 2 stopping
+            number of samples between 2 stopping
 
         Raises
         ------
         pyagrum.OutOfBounds
-        	If p<1
+            If p<1
 
         """
         return _pyagrum.BNLearner_setPeriodSize(self, p)
@@ -25482,7 +25474,7 @@ class BNLearner(object):
         Returns
         -------
         bool
-        	True if the verbosity is enabled
+            True if the verbosity is enabled
 
         """
         return _pyagrum.BNLearner_verbosity(self)
@@ -25493,7 +25485,7 @@ class BNLearner(object):
         Returns
         -------
         float
-        	the value of epsilon
+            the value of epsilon
 
         """
         return _pyagrum.BNLearner_epsilon(self)
@@ -25504,7 +25496,7 @@ class BNLearner(object):
         Returns
         -------
         float
-        	the value of the minimal epsilon rate
+            the value of the minimal epsilon rate
 
         """
         return _pyagrum.BNLearner_minEpsilonRate(self)
@@ -25515,7 +25507,7 @@ class BNLearner(object):
         Returns
         -------
         int
-        	the criterion on number of iterations
+            the criterion on number of iterations
 
         """
         return _pyagrum.BNLearner_maxIter(self)
@@ -25526,7 +25518,7 @@ class BNLearner(object):
         Returns
         -------
         float
-        	the timeout(in seconds)
+            the timeout(in seconds)
 
         """
         return _pyagrum.BNLearner_maxTime(self)
@@ -25537,12 +25529,12 @@ class BNLearner(object):
         Returns
         -------
         int
-        	the number of samples between 2 stopping
+            the number of samples between 2 stopping
 
         Raises
         ------
         pyagrum.OutOfBounds
-        	If p<1
+            If p<1
 
         """
         return _pyagrum.BNLearner_periodSize(self)
@@ -25553,7 +25545,7 @@ class BNLearner(object):
         Returns
         -------
         int
-        	the number of iterations
+            the number of iterations
 
         """
         return _pyagrum.BNLearner_nbrIterations(self)
@@ -25564,7 +25556,7 @@ class BNLearner(object):
         Returns
         -------
         float
-        	get the current running time in second (float)
+            get the current running time in second (float)
 
         """
         return _pyagrum.BNLearner_currentTime(self)
@@ -25575,7 +25567,7 @@ class BNLearner(object):
         Returns
         -------
         str
-        	the approximation scheme message
+            the approximation scheme message
 
         """
         return _pyagrum.BNLearner_messageApproximationScheme(self)
@@ -25586,12 +25578,12 @@ class BNLearner(object):
         Returns
         -------
         tuple
-        	the scheme history
+            the scheme history
 
         Raises
         ------
         pyagrum.OperationNotAllowed
-        	If the scheme did not performed or if verbosity is set to false
+            If the scheme did not performed or if verbosity is set to false
 
         """
         return _pyagrum.BNLearner_history(self)
@@ -25607,7 +25599,7 @@ class BNLearner(object):
         Returns
         -------
         pyagrum.DAG
-        	the learned DAG
+            the learned DAG
 
         """
         return _pyagrum.BNLearner_learnDAG(self)
@@ -25620,7 +25612,7 @@ class BNLearner(object):
         Returns
         -------
         pyagrum.PDAG
-        	the learned PDAG
+            the learned PDAG
 
         Warnings
         --------
@@ -25635,7 +25627,7 @@ class BNLearner(object):
 
         Returns
         -------
-        Tuple[str]
+        tuple
                 the names of the variables in the database
 
         """
@@ -25647,17 +25639,17 @@ class BNLearner(object):
         Parameters
         ----------
         var_names : str
-        	a variable's name
+            a variable's name
 
         Returns
         -------
         int
-        	the column id corresponding to a variable name
+            the column id corresponding to a variable name
 
         Raises
         ------
         pyagrum.MissingVariableInDatabase
-        	If a variable of the BN is not found in the database.
+            If a variable of the BN is not found in the database.
 
         """
         return _pyagrum.BNLearner_idFromName(self, var_name)
@@ -25667,7 +25659,7 @@ class BNLearner(object):
 
         Parameters
         ----------
-        id
+        id : int
                 a node id
 
         Returns
@@ -25773,10 +25765,10 @@ class BNLearner(object):
 
         Parameters
         ----------
-        vars: List[str]
+        vars: list of str
                 the name of the columns of interest
 
-        knowing : List[str]
+        knowing : list of str
                 the (optional) list of names of conditioning columns
 
         Returns
@@ -25795,15 +25787,15 @@ class BNLearner(object):
         Parameters
         ----------
         name1: str
-        	the name of the variable at the LHS of the conditioning bar
+            the name of the variable at the LHS of the conditioning bar
 
-        knowing : List[str]
-        	the list of names of the conditioning variables
+        knowing : list of str
+            the list of names of the conditioning variables
 
         Returns
         -------
         float
-        	the value of the score
+            the value of the score
 
         """
         return _pyagrum.BNLearner_score(self, *args)
@@ -25826,7 +25818,7 @@ class BNLearner(object):
         name2 : str
                 the name of the second column
 
-        knowing : List[str]
+        knowing : list of str
                 the list of names of conditioning columns
 
         Returns
@@ -25856,12 +25848,12 @@ class BNLearner(object):
         name2 : str
                 the name of the second column
 
-        knowing : List[str]
+        knowing : list of str
                 the list of names of conditioning columns
 
         Returns
         -------
-        Tuple[float,float]
+        tuple
                 the G2 statistic and the associated p-value as a Tuple
 
         """
@@ -25875,12 +25867,12 @@ class BNLearner(object):
 
         Parameters
         ----------
-        vars: List[intstr]
+        vars: list of intstr
                 the list of variables
 
         Returns
         -------
-        List[float]
+        list of float
                 the pseudo-count as a list of float
 
         """
@@ -25968,7 +25960,7 @@ class BNLearner(object):
         Returns
         -------
         float
-        	the limit under which EM stops its expectation/maximization iterations
+            the limit under which EM stops its expectation/maximization iterations
 
         """
         return _pyagrum.BNLearner_EMMinEpsilonRate(self)
@@ -25990,8 +25982,8 @@ class BNLearner(object):
 
         Returns
         -------
-        float
-        	the max number of expectation/maximization iterations EM is allowed to perform
+        int
+            the max number of expectation/maximization iterations EM is allowed to perform
 
         """
         return _pyagrum.BNLearner_EMMaxIter(self)
@@ -26061,7 +26053,7 @@ class BNLearner(object):
 
         Returns
         -------
-        List[float]
+        list of float
                 A list of all the log-likelihoods recorded during EM's execution
 
         Warnings
@@ -26081,13 +26073,13 @@ class BNLearner(object):
     def setNumberOfThreads(self, nb: int) -> None:
         r"""
 
-        If the parameter n passed in argument is different from 0, the BNLearner will use n threads during learning, hence overriding pyAgrum default number of threads.
-        If, on the contrary, n is equal to 0, the BNLearner will comply with pyAgrum default number of threads.
+        If the parameter n passed in argument is different from 0, the BNLearner will use n threads during learning, hence overriding pyagrum default number of threads.
+        If, on the contrary, n is equal to 0, the BNLearner will comply with pyagrum default number of threads.
 
         Parameters
         ----------
         n : int
-        	the number of threads to be used by the BNLearner
+            the number of threads to be used by the BNLearner
 
         """
         return _pyagrum.BNLearner_setNumberOfThreads(self, nb)
@@ -26100,7 +26092,7 @@ class BNLearner(object):
         Returns
         -------
         int
-        	the number of threads used by the BNLearner during structure and parameter learning
+            the number of threads used by the BNLearner during structure and parameter learning
 
         """
         return _pyagrum.BNLearner_getNumberOfThreads(self)
@@ -26113,7 +26105,7 @@ class BNLearner(object):
         Returns
         -------
         bool
-        	True if the number of threads used by the BNLearner has been set.
+            True if the number of threads used by the BNLearner has been set.
 
         """
         return _pyagrum.BNLearner_isGumNumberOfThreadsOverriden(self)
@@ -26139,12 +26131,12 @@ class BNLearner(object):
         name2 : str
                 the name/column of another variable
 
-        knowing : List[str]
+        knowing : list of str
                 the list of the column names of the conditioning variables
 
         Returns
         -------
-        Tuple[float,float]
+        tuple
                 the chi2 statistics and the associated p-value as a Tuple
 
         """
@@ -26171,12 +26163,12 @@ class BNLearner(object):
         name2 : str
                 the name/column of another variable
 
-        knowing : List[str]
+        knowing : list of str
                 the list of the column names of the conditioning variables
 
         Returns
         -------
-        Tuple[float,float]
+        tuple
                 the G2 statistics and the corresponding p-value as a Tuple
 
         """
@@ -26214,6 +26206,8 @@ class BNLearner(object):
     def latentVariables(self) -> object:
         r"""
 
+        Returns the list of latent variables discovered by MIIC.
+
         Warnings
         --------
         learner must be using MIIC algorithm
@@ -26221,7 +26215,7 @@ class BNLearner(object):
         Returns
         -------
         list
-        	the list of latent variables
+            the list of latent variables
 
         """
         return _pyagrum.BNLearner_latentVariables(self)
@@ -26233,7 +26227,7 @@ class BNLearner(object):
 
         Returns
         -------
-        Dict[str,Any]
+        dict
             a dictionary containing the current state of the BNLearner.
 
         """
@@ -26246,8 +26240,8 @@ class BNLearner(object):
 
         Parameters
         ----------
-        edges : Set[Tuple[int]]
-        	a set of edges as couples of nodeIds.
+        edges : set
+            a set of edges as couples of nodeIds.
 
         """
         return _pyagrum.BNLearner_setPossibleEdges(self, *args)
@@ -26745,14 +26739,14 @@ class CredalNet(object):
         Parameters
         ----------
         name : str
-        	the name of the new variable
+            the name of the new variable
         card: int
             the domainSize of the new variable
 
         Returns
         -------
         int
-        	the id of the new node
+            the id of the new node
 
         """
         return _pyagrum.CredalNet_addVariable(self, name, card)
@@ -26765,18 +26759,18 @@ class CredalNet(object):
         Parameters
         ----------
         tail :
-        	the id of the tail node
+            the id of the tail node
         head : int
-        	the id of the head node
+            the id of the head node
 
         Raises
         ------
         pyagrum.InvalidDirectedCircle
-        	If any (directed) cycle is created by this arc
+            If any (directed) cycle is created by this arc
         pyagrum.InvalidNode
-        	If head or tail does not belong to the graph nodes
+            If head or tail does not belong to the graph nodes
         pyagrum.DuplicateElement
-        	If one of the arc already exists
+            If one of the arc already exists
 
         """
         return _pyagrum.CredalNet_addArc(self, tail, head)
@@ -26794,12 +26788,12 @@ class CredalNet(object):
         Parameters
         ----------
         id : int
-        	the NodeId of the node
-        cpt	: tbw
-        	the vertices of every credal set (for each instantiation of the parents)
+            the NodeId of the node
+        cpt    : tbw
+            the vertices of every credal set (for each instantiation of the parents)
 
-        Warning
-        -------
+        Warnings
+        --------
         DOES not change the BayesNet (s) associated to this credal net !
 
         """
@@ -26818,13 +26812,13 @@ class CredalNet(object):
         Parameters
         ----------
         id : int
-        	the Id of the node
+            the Id of the node
         entry : int
-        	the index of the instantiation (from 0 to K - 1) excluding the given node (only the parents are used to compute the index of the credal set)
+            the index of the instantiation (from 0 to K - 1) excluding the given node (only the parents are used to compute the index of the credal set)
         ins : pyagrum.Instantiation
-        	the Instantiation (only the parents matter to find the credal set index)
-        cpt	: tbw
-        	the vertices of every credal set (for each instantiation of the parents)
+            the Instantiation (only the parents matter to find the credal set index)
+        cpt    : tbw
+            the vertices of every credal set (for each instantiation of the parents)
 
         Warnings
         --------
@@ -26841,18 +26835,18 @@ class CredalNet(object):
         Parameters
         ----------
         id : int
-        	The id of the node
+            The id of the node
         lower : list
-        	The lower value for each probability in correct order
+            The lower value for each probability in correct order
         upper : list
-        	The upper value for each probability in correct order
+            The upper value for each probability in correct order
 
         Warnings
         --------
         You need to call intervalToCredal when done filling all constraints.
 
-        Warning
-        -------
+        Warnings
+        --------
         DOES change the BayesNet (s) associated to this credal net !
 
         """
@@ -26866,22 +26860,22 @@ class CredalNet(object):
         Parameters
         ----------
         id : int
-        	The id of the node
+            The id of the node
         entry : int
-        	The index of the instantiation excluding the given node (only the parents are used to compute the index of the credal set)
+            The index of the instantiation excluding the given node (only the parents are used to compute the index of the credal set)
         ins : pyagrum.Instantiation
-        	The Instantiation
+            The Instantiation
         lower : list
-        	The lower value for each probability in correct order
+            The lower value for each probability in correct order
         upper : list
-        	The upper value for each probability in correct order
+            The upper value for each probability in correct order
 
         Warnings
         --------
         You need to call intervalToCredal when done filling all constraints.
 
-        Warning
-        -------
+        Warnings
+        --------
         DOES change the BayesNet (s) associated to this credal net !
 
         """
@@ -26897,7 +26891,7 @@ class CredalNet(object):
         Parameters
         ----------
         id : int
-        	the id of the node we want an instantiation from
+            the id of the node we want an instantiation from
 
         Returns
         -------
@@ -26913,7 +26907,7 @@ class CredalNet(object):
         Parameters
         ----------
         id : int
-        	The id of the node
+            The id of the node
 
         Returns
         -------
@@ -26931,11 +26925,11 @@ class CredalNet(object):
         Parameters
         ----------
         beta : float
-        	The beta used to perturbate the network
+            The beta used to perturbate the network
         oneNet : bool
-        	used as a flag. Set to True if one BayesNet if provided with counts, to False if two BayesNet are provided; one with probabilities (the lower net) and one with denominators over the first modalities (the upper net)
+            used as a flag. Set to True if one BayesNet if provided with counts, to False if two BayesNet are provided; one with probabilities (the lower net) and one with denominators over the first modalities (the upper net)
         keepZeroes : bool
-        	used as a flag as whether or not - respectively True or False - we keep zeroes as zeroes. Default is False, i.e. zeroes are not kept
+            used as a flag as whether or not - respectively True or False - we keep zeroes as zeroes. Default is False, i.e. zeroes are not kept
 
         """
         return _pyagrum.CredalNet_bnToCredal(self, *args)
@@ -26987,9 +26981,9 @@ class CredalNet(object):
         Parameters
         ----------
         s : int
-        	the IDM parameter.
+            the IDM parameter.
         keepZeroes : bool
-        	used as a flag as whether or not - respectively True or False - we keep zeroes as zeroes. Default is False, i.e. zeroes are not kept.
+            used as a flag as whether or not - respectively True or False - we keep zeroes as zeroes. Default is False, i.e. zeroes are not kept.
 
         """
         return _pyagrum.CredalNet_idmLearning(self, s, keepZeroes)
@@ -27018,9 +27012,9 @@ class CredalNet(object):
         Parameters
         ----------
         min_path : str
-        	the path to save the BayesNet which contains the lower probabilities of each node X.
+            the path to save the BayesNet which contains the lower probabilities of each node X.
         max_path : str
-        	the path to save the BayesNet which contains the upper probabilities of each node X.
+            the path to save the BayesNet which contains the upper probabilities of each node X.
 
         """
         return _pyagrum.CredalNet_saveBNsMinMax(self, min_path, max_path)
@@ -27086,7 +27080,7 @@ class CredalNet(object):
         Parameters
         ----------
         id : int
-        	The constant reference to the choosen NodeId
+            The constant reference to the choosen NodeId
 
         Returns
         -------
@@ -27102,12 +27096,12 @@ class CredalNet(object):
         Parameters
         ----------
         id : int
-        	the constant reference to the choosen NodeId
+            the constant reference to the choosen NodeId
 
         Returns
         -------
         pyagrum.CredalNet
-        	the type of the choosen node in the (up-to-date) CredalNet in __src_bn.
+            the type of the choosen node in the (up-to-date) CredalNet in __src_bn.
 
         """
         return _pyagrum.CredalNet_nodeType(self, id)
@@ -27151,7 +27145,7 @@ class CredalNet(object):
         Returns
         -------
         bool
-        	True if this CredalNet is separately and interval specified, False otherwise.
+            True if this CredalNet is separately and interval specified, False otherwise.
 
         """
         return _pyagrum.CredalNet_isSeparatelySpecified(self)
@@ -27169,7 +27163,7 @@ class CredalNet(object):
         Returns
         -------
         tbw
-        	a constant reference to the lower probabilities of each node X over the 'True' modality
+            a constant reference to the lower probabilities of each node X over the 'True' modality
 
         """
         return _pyagrum.CredalNet_get_binaryCPT_min(self)
@@ -27184,7 +27178,7 @@ class CredalNet(object):
         Returns
         -------
         tbw
-        	a constant reference to the upper probabilities of each node X over the 'True' modality
+            a constant reference to the upper probabilities of each node X over the 'True' modality
 
         """
         return _pyagrum.CredalNet_get_binaryCPT_max(self)
@@ -27236,7 +27230,7 @@ class CNMonteCarloSampling(object):
         Parameters
         ----------
         path : str
-        	the path to the evidence file.
+            the path to the evidence file.
 
         """
         return _pyagrum.CNMonteCarloSampling_insertEvidenceFile(self, path)
@@ -27258,12 +27252,12 @@ class CNMonteCarloSampling(object):
         Parameters
         ----------
         eps : float
-        	the epsilon we want to use
+            the epsilon we want to use
 
         Raises
         ------
         pyagrum.OutOfBounds
-        	If eps<0
+            If eps<0
 
         """
         return _pyagrum.CNMonteCarloSampling_setEpsilon(self, eps)
@@ -27274,7 +27268,7 @@ class CNMonteCarloSampling(object):
         Parameters
         ----------
         rate : float
-        	the minimal epsilon rate
+            the minimal epsilon rate
 
         """
         return _pyagrum.CNMonteCarloSampling_setMinEpsilonRate(self, rate)
@@ -27285,12 +27279,12 @@ class CNMonteCarloSampling(object):
         Parameters
         ----------
         max : int
-        	the maximum number of iteration
+            the maximum number of iteration
 
         Raises
         ------
         pyagrum.OutOfBounds
-        	If max <= 1
+            If max <= 1
 
         """
         return _pyagrum.CNMonteCarloSampling_setMaxIter(self, max)
@@ -27301,12 +27295,12 @@ class CNMonteCarloSampling(object):
         Parameters
         ----------
         tiemout : float
-        	stopping criterion on timeout (in seconds)
+            stopping criterion on timeout (in seconds)
 
         Raises
         ------
         pyagrum.OutOfBounds
-        	If timeout<=0.0
+            If timeout<=0.0
 
         """
         return _pyagrum.CNMonteCarloSampling_setMaxTime(self, timeout)
@@ -27317,12 +27311,12 @@ class CNMonteCarloSampling(object):
         Parameters
         ----------
         p : int
-        	number of samples between 2 stopping
+            number of samples between 2 stopping
 
         Raises
         ------
         pyagrum.OutOfBounds
-        	If p<1
+            If p<1
 
         """
         return _pyagrum.CNMonteCarloSampling_setPeriodSize(self, p)
@@ -27333,7 +27327,7 @@ class CNMonteCarloSampling(object):
         Returns
         -------
         bool
-        	True if the verbosity is enabled
+            True if the verbosity is enabled
 
         """
         return _pyagrum.CNMonteCarloSampling_verbosity(self)
@@ -27344,7 +27338,7 @@ class CNMonteCarloSampling(object):
         Returns
         -------
         float
-        	the value of epsilon
+            the value of epsilon
 
         """
         return _pyagrum.CNMonteCarloSampling_epsilon(self)
@@ -27355,7 +27349,7 @@ class CNMonteCarloSampling(object):
         Returns
         -------
         float
-        	the value of the minimal epsilon rate
+            the value of the minimal epsilon rate
 
         """
         return _pyagrum.CNMonteCarloSampling_minEpsilonRate(self)
@@ -27366,7 +27360,7 @@ class CNMonteCarloSampling(object):
         Returns
         -------
         int
-        	the criterion on number of iterations
+            the criterion on number of iterations
 
         """
         return _pyagrum.CNMonteCarloSampling_maxIter(self)
@@ -27377,7 +27371,7 @@ class CNMonteCarloSampling(object):
         Returns
         -------
         float
-        	the timeout(in seconds)
+            the timeout(in seconds)
 
         """
         return _pyagrum.CNMonteCarloSampling_maxTime(self)
@@ -27388,12 +27382,12 @@ class CNMonteCarloSampling(object):
         Returns
         -------
         int
-        	the number of samples between 2 stopping
+            the number of samples between 2 stopping
 
         Raises
         ------
         pyagrum.OutOfBounds
-        	If p<1
+            If p<1
 
         """
         return _pyagrum.CNMonteCarloSampling_periodSize(self)
@@ -27404,7 +27398,7 @@ class CNMonteCarloSampling(object):
         Returns
         -------
         int
-        	the number of iterations
+            the number of iterations
 
         """
         return _pyagrum.CNMonteCarloSampling_nbrIterations(self)
@@ -27415,7 +27409,7 @@ class CNMonteCarloSampling(object):
         Returns
         -------
         float
-        	get the current running time in second (float)
+            get the current running time in second (float)
 
         """
         return _pyagrum.CNMonteCarloSampling_currentTime(self)
@@ -27426,7 +27420,7 @@ class CNMonteCarloSampling(object):
         Returns
         -------
         str
-        	the approximation scheme message
+            the approximation scheme message
 
         """
         return _pyagrum.CNMonteCarloSampling_messageApproximationScheme(self)
@@ -27437,12 +27431,12 @@ class CNMonteCarloSampling(object):
         Returns
         -------
         tuple
-        	the scheme history
+            the scheme history
 
         Raises
         ------
         pyagrum.OperationNotAllowed
-        	If the scheme did not performed or if verbosity is set to false
+            If the scheme did not performed or if verbosity is set to false
 
         """
         return _pyagrum.CNMonteCarloSampling_history(self)
@@ -27456,7 +27450,7 @@ class CNMonteCarloSampling(object):
         Parameters
         ----------
         flag : bool
-        	True if repetitive independence is to be used, false otherwise. Only usefull with dynamic networks.
+            True if repetitive independence is to be used, false otherwise. Only usefull with dynamic networks.
 
         """
         return _pyagrum.CNMonteCarloSampling_setRepetitiveInd(self, flag)
@@ -27469,9 +27463,9 @@ class CNMonteCarloSampling(object):
         Parameters
         ----------
         id : int
-        	the node id which upper marginals we want.
+            the node id which upper marginals we want.
         varName : str
-        	the variable name which upper marginals we want.
+            the variable name which upper marginals we want.
 
         Returns
         -------
@@ -27481,7 +27475,7 @@ class CNMonteCarloSampling(object):
         Raises
         ------
           pyagrum.IndexError
-        	If the node does not belong to the Credal network
+            If the node does not belong to the Credal network
 
         """
         return _pyagrum.CNMonteCarloSampling_marginalMax(self, *args)
@@ -27494,9 +27488,9 @@ class CNMonteCarloSampling(object):
         Parameters
         ----------
         id : int
-        	the node id which lower marginals we want.
+            the node id which lower marginals we want.
         varName : str
-        	the variable name which lower marginals we want.
+            the variable name which lower marginals we want.
 
         Returns
         -------
@@ -27506,7 +27500,7 @@ class CNMonteCarloSampling(object):
         Raises
         ------
           pyagrum.IndexError
-        	If the node does not belong to the Credal network
+            If the node does not belong to the Credal network
 
         """
         return _pyagrum.CNMonteCarloSampling_marginalMin(self, *args)
@@ -27519,7 +27513,7 @@ class CNMonteCarloSampling(object):
         Parameters
         ----------
         path : str
-        	The path to the modalities file.
+            The path to the modalities file.
 
         """
         return _pyagrum.CNMonteCarloSampling_insertModalsFile(self, path)
@@ -27532,7 +27526,7 @@ class CNMonteCarloSampling(object):
         Parameters
         ----------
         varName : str
-        	the variable name prefix which upper expectation we want.
+            the variable name prefix which upper expectation we want.
 
         Returns
         -------
@@ -27550,7 +27544,7 @@ class CNMonteCarloSampling(object):
         Parameters
         ----------
         varName : str
-        	the variable name prefix which lower expectation we want.
+            the variable name prefix which lower expectation we want.
 
         Returns
         -------
@@ -27642,7 +27636,7 @@ class CNLoopyPropagation(object):
         Returns
         -------
         int
-        	the inference type
+            the inference type
 
         """
         return _pyagrum.CNLoopyPropagation_inferenceType(self, *args)
@@ -27655,7 +27649,7 @@ class CNLoopyPropagation(object):
         Parameters
         ----------
         path : str
-        	The path to the file to save marginals.
+            The path to the file to save marginals.
 
         """
         return _pyagrum.CNLoopyPropagation_saveInference(self, path)
@@ -27677,7 +27671,7 @@ class CNLoopyPropagation(object):
         Parameters
         ----------
         path : str
-        	the path to the evidence file.
+            the path to the evidence file.
 
         """
         return _pyagrum.CNLoopyPropagation_insertEvidenceFile(self, path)
@@ -27699,12 +27693,12 @@ class CNLoopyPropagation(object):
         Parameters
         ----------
         eps : float
-        	the epsilon we want to use
+            the epsilon we want to use
 
         Raises
         ------
         pyagrum.OutOfBounds
-        	If eps<0
+            If eps<0
 
         """
         return _pyagrum.CNLoopyPropagation_setEpsilon(self, eps)
@@ -27715,7 +27709,7 @@ class CNLoopyPropagation(object):
         Parameters
         ----------
         rate : float
-        	the minimal epsilon rate
+            the minimal epsilon rate
 
         """
         return _pyagrum.CNLoopyPropagation_setMinEpsilonRate(self, rate)
@@ -27726,12 +27720,12 @@ class CNLoopyPropagation(object):
         Parameters
         ----------
         max : int
-        	the maximum number of iteration
+            the maximum number of iteration
 
         Raises
         ------
         pyagrum.OutOfBounds
-        	If max <= 1
+            If max <= 1
 
         """
         return _pyagrum.CNLoopyPropagation_setMaxIter(self, max)
@@ -27742,12 +27736,12 @@ class CNLoopyPropagation(object):
         Parameters
         ----------
         tiemout : float
-        	stopping criterion on timeout (in seconds)
+            stopping criterion on timeout (in seconds)
 
         Raises
         ------
         pyagrum.OutOfBounds
-        	If timeout<=0.0
+            If timeout<=0.0
 
         """
         return _pyagrum.CNLoopyPropagation_setMaxTime(self, timeout)
@@ -27758,12 +27752,12 @@ class CNLoopyPropagation(object):
         Parameters
         ----------
         p : int
-        	number of samples between 2 stopping
+            number of samples between 2 stopping
 
         Raises
         ------
         pyagrum.OutOfBounds
-        	If p<1
+            If p<1
 
         """
         return _pyagrum.CNLoopyPropagation_setPeriodSize(self, p)
@@ -27774,7 +27768,7 @@ class CNLoopyPropagation(object):
         Returns
         -------
         bool
-        	True if the verbosity is enabled
+            True if the verbosity is enabled
 
         """
         return _pyagrum.CNLoopyPropagation_verbosity(self)
@@ -27785,7 +27779,7 @@ class CNLoopyPropagation(object):
         Returns
         -------
         float
-        	the value of epsilon
+            the value of epsilon
 
         """
         return _pyagrum.CNLoopyPropagation_epsilon(self)
@@ -27796,7 +27790,7 @@ class CNLoopyPropagation(object):
         Returns
         -------
         float
-        	the value of the minimal epsilon rate
+            the value of the minimal epsilon rate
 
         """
         return _pyagrum.CNLoopyPropagation_minEpsilonRate(self)
@@ -27807,7 +27801,7 @@ class CNLoopyPropagation(object):
         Returns
         -------
         int
-        	the criterion on number of iterations
+            the criterion on number of iterations
 
         """
         return _pyagrum.CNLoopyPropagation_maxIter(self)
@@ -27818,7 +27812,7 @@ class CNLoopyPropagation(object):
         Returns
         -------
         float
-        	the timeout(in seconds)
+            the timeout(in seconds)
 
         """
         return _pyagrum.CNLoopyPropagation_maxTime(self)
@@ -27829,12 +27823,12 @@ class CNLoopyPropagation(object):
         Returns
         -------
         int
-        	the number of samples between 2 stopping
+            the number of samples between 2 stopping
 
         Raises
         ------
         pyagrum.OutOfBounds
-        	If p<1
+            If p<1
 
         """
         return _pyagrum.CNLoopyPropagation_periodSize(self)
@@ -27845,7 +27839,7 @@ class CNLoopyPropagation(object):
         Returns
         -------
         int
-        	the number of iterations
+            the number of iterations
 
         """
         return _pyagrum.CNLoopyPropagation_nbrIterations(self)
@@ -27856,7 +27850,7 @@ class CNLoopyPropagation(object):
         Returns
         -------
         float
-        	get the current running time in second (float)
+            get the current running time in second (float)
 
         """
         return _pyagrum.CNLoopyPropagation_currentTime(self)
@@ -27867,7 +27861,7 @@ class CNLoopyPropagation(object):
         Returns
         -------
         str
-        	the approximation scheme message
+            the approximation scheme message
 
         """
         return _pyagrum.CNLoopyPropagation_messageApproximationScheme(self)
@@ -27878,12 +27872,12 @@ class CNLoopyPropagation(object):
         Returns
         -------
         tuple
-        	the scheme history
+            the scheme history
 
         Raises
         ------
         pyagrum.OperationNotAllowed
-        	If the scheme did not performed or if verbosity is set to false
+            If the scheme did not performed or if verbosity is set to false
 
         """
         return _pyagrum.CNLoopyPropagation_history(self)
@@ -27897,7 +27891,7 @@ class CNLoopyPropagation(object):
         Parameters
         ----------
         flag : bool
-        	True if repetitive independence is to be used, false otherwise. Only usefull with dynamic networks.
+            True if repetitive independence is to be used, false otherwise. Only usefull with dynamic networks.
 
         """
         return _pyagrum.CNLoopyPropagation_setRepetitiveInd(self, flag)
@@ -27910,9 +27904,9 @@ class CNLoopyPropagation(object):
         Parameters
         ----------
         id : int
-        	the node id which upper marginals we want.
+            the node id which upper marginals we want.
         varName : str
-        	the variable name which upper marginals we want.
+            the variable name which upper marginals we want.
 
         Returns
         -------
@@ -27922,7 +27916,7 @@ class CNLoopyPropagation(object):
         Raises
         ------
           pyagrum.IndexError
-        	If the node does not belong to the Credal network
+            If the node does not belong to the Credal network
 
         """
         return _pyagrum.CNLoopyPropagation_marginalMax(self, *args)
@@ -27935,9 +27929,9 @@ class CNLoopyPropagation(object):
         Parameters
         ----------
         id : int
-        	the node id which lower marginals we want.
+            the node id which lower marginals we want.
         varName : str
-        	the variable name which lower marginals we want.
+            the variable name which lower marginals we want.
 
         Returns
         -------
@@ -27947,7 +27941,7 @@ class CNLoopyPropagation(object):
         Raises
         ------
           pyagrum.IndexError
-        	If the node does not belong to the Credal network
+            If the node does not belong to the Credal network
 
         """
         return _pyagrum.CNLoopyPropagation_marginalMin(self, *args)
@@ -27960,7 +27954,7 @@ class CNLoopyPropagation(object):
         Parameters
         ----------
         path : str
-        	The path to the modalities file.
+            The path to the modalities file.
 
         """
         return _pyagrum.CNLoopyPropagation_insertModalsFile(self, path)
@@ -27973,7 +27967,7 @@ class CNLoopyPropagation(object):
         Parameters
         ----------
         varName : str
-        	the variable name prefix which upper expectation we want.
+            the variable name prefix which upper expectation we want.
 
         Returns
         -------
@@ -27991,7 +27985,7 @@ class CNLoopyPropagation(object):
         Parameters
         ----------
         varName : str
-        	the variable name prefix which lower expectation we want.
+            the variable name prefix which lower expectation we want.
 
         Returns
         -------
@@ -28073,20 +28067,20 @@ class IDGenerator(object):
         Parameters
         ----------
         nbrNodes : int
-        	the number of node
+            the number of node
         arcDensity : float
-        	the density of arc (1 for a complete graph)
+            the density of arc (1 for a complete graph)
         chanceNodeDensity : float
-        	the density of chance node
+            the density of chance node
         utilityNodeDensity : float
-        	the density of utility node
+            the density of utility node
         max_modality : int
-        	the maximum value for modalities
+            the maximum value for modalities
 
         Returns
         -------
         pyagrum.InfluenceDiagram
-        	the generated influence diagram
+            the generated influence diagram
 
         """
         return _pyagrum.IDGenerator_generate(self, nbrNodes, arcDensity, chanceNodeDensity, utilityNodeDensity, max_modality)
@@ -28143,8 +28137,8 @@ class InfluenceDiagram(DAGmodel):
               - with 'a{-1|5|0|3}', the variable is a pyagrum.IntegerVariable using the sorted given values.
               - with 'a{-0.5|5.01|0|3.1415}', the variable is a pyagrum.NumericalDiscreteVariable using the sorted given values.
 
-        Note
-        ----
+        Notes
+        -----
           - If the dot-like string contains such a specification more than once for a variable, the first specification will be used.
           - the tensors (probabilities, utilities) are randomly generated.
           - see also pyagrum.fastID.
@@ -28200,18 +28194,18 @@ class InfluenceDiagram(DAGmodel):
 
         Parameters
         ----------
-        var : Union[int,str]
-        	a variable's id (int) or name
+        var : int str
+            a variable's id (int) or name
 
         Returns
         -------
         pyagrum.Tensor
-        	The variable's CPT.
+            The variable's CPT.
 
         Raises
         ------
         pyagrum.NotFound
-        	If no variable's id matches varId.
+            If no variable's id matches varId.
 
         """
         return _pyagrum.InfluenceDiagram_cpt(self, *args)
@@ -28221,18 +28215,18 @@ class InfluenceDiagram(DAGmodel):
 
         Parameters
         ----------
-        var : Union[int,str]
-        	a variable's id (int) or name
+        var : int str
+            a variable's id (int) or name
 
         Returns
         -------
         pyagrum.Tensor
-        	the utility table of the node
+            the utility table of the node
 
         Raises
         ------
         pyagrum.IndexError
-        	If the InfluenceDiagram does not contain the variable
+            If the InfluenceDiagram does not contain the variable
 
         """
         return _pyagrum.InfluenceDiagram_utility(self, *args)
@@ -28243,12 +28237,12 @@ class InfluenceDiagram(DAGmodel):
         Parameters
         ----------
         varId : int
-        	the tested node id.
+            the tested node id.
 
         Returns
         -------
         bool
-        	true if node is an utility node
+            true if node is an utility node
 
         """
         return _pyagrum.InfluenceDiagram_isUtilityNode(self, *args)
@@ -28259,12 +28253,12 @@ class InfluenceDiagram(DAGmodel):
         Parameters
         ----------
         varId : int
-        	the tested node id.
+            the tested node id.
 
         Returns
         -------
         bool
-        	true if node is a decision node
+            true if node is a decision node
 
         """
         return _pyagrum.InfluenceDiagram_isDecisionNode(self, *args)
@@ -28275,12 +28269,12 @@ class InfluenceDiagram(DAGmodel):
         Parameters
         ----------
         varId : int
-        	the tested node id.
+            the tested node id.
 
         Returns
         -------
         bool
-        	true if node is a chance node
+            true if node is a chance node
 
         """
         return _pyagrum.InfluenceDiagram_isChanceNode(self, *args)
@@ -28291,7 +28285,7 @@ class InfluenceDiagram(DAGmodel):
         Returns
         -------
         int
-        	the number of utility nodes
+            the number of utility nodes
 
         """
         return _pyagrum.InfluenceDiagram_utilityNodeSize(self)
@@ -28302,7 +28296,7 @@ class InfluenceDiagram(DAGmodel):
         Returns
         -------
         int
-        	the number of chance nodes.
+            the number of chance nodes.
 
         """
         return _pyagrum.InfluenceDiagram_chanceNodeSize(self)
@@ -28313,7 +28307,7 @@ class InfluenceDiagram(DAGmodel):
         Returns
         -------
         int
-        	the number of decision nodes
+            the number of decision nodes
 
         """
         return _pyagrum.InfluenceDiagram_decisionNodeSize(self)
@@ -28324,17 +28318,17 @@ class InfluenceDiagram(DAGmodel):
         Parameters
         ----------
         id : int
-         	the node id
+             the node id
 
         Returns
-        ------
+        -------
         pyagrum.DiscreteVariable
-        	a constant reference over a variabe given it's node id
+            a constant reference over a variabe given it's node id
 
         Raises
         ------
         pyagrum.NotFound
-        	If no variable's id matches the parameter
+            If no variable's id matches the parameter
 
         """
         return _pyagrum.InfluenceDiagram_variable(self, *args)
@@ -28345,17 +28339,17 @@ class InfluenceDiagram(DAGmodel):
         Parameters
         ----------
         var : pyagrum.DiscreteVariable
-        	a variable
+            a variable
 
         Returns
         -------
         int
-        	the id of the variable
+            the id of the variable
 
         Raises
         ------
         pyagrum.IndexError
-        	If the InfluenceDiagram does not contain the variable
+            If the InfluenceDiagram does not contain the variable
 
         """
         return _pyagrum.InfluenceDiagram_nodeId(self, var)
@@ -28368,17 +28362,17 @@ class InfluenceDiagram(DAGmodel):
         Parameters
         ----------
         name : str
-        	the variable's name from which the id is returned.
+            the variable's name from which the id is returned.
 
         Returns
         -------
         int
-        	the variable's node id.
+            the variable's node id.
 
         Raises
         ------
         pyagrum.NotFound
-        	If no such name exists in the graph.
+            If no such name exists in the graph.
 
         """
         return _pyagrum.InfluenceDiagram_idFromName(self, name)
@@ -28389,12 +28383,12 @@ class InfluenceDiagram(DAGmodel):
         Parameters
         ----------
         name : str
-        	a variable's name
+            a variable's name
 
         Returns
         -------
         pyagrum.DiscreteVariable
-        	the variable
+            the variable
 
         Notes
         -----
@@ -28403,7 +28397,7 @@ class InfluenceDiagram(DAGmodel):
         Raises
         ------
         pyagrum.IndexError
-        	If the InfluenceDiagram does not contain the variable
+            If the InfluenceDiagram does not contain the variable
 
         """
         return _pyagrum.InfluenceDiagram_variableFromName(self, name)
@@ -28418,12 +28412,12 @@ class InfluenceDiagram(DAGmodel):
         Parameters
         ----------
         variable : pyagrum.DiscreteVariable
-        	The variable added by copy that will be a chance node.
+            The variable added by copy that will be a chance node.
         descr: str
           the descr of the variable following :ref:`fast syntax<Quick specification of (randomly parameterized) graphical models>` extended for :func:`pyagrum.fastID`.
         nbr_mod_or_id : int
-        	if the first argument is `variable`, this set an optional fixed id for the node. If the first argument is `descr`, this gives the default number of modalities
-        	for the variable. Note that if a utility node is described in `descr`, this value is overriden by 1.
+            if the first argument is `variable`, this set an optional fixed id for the node. If the first argument is `descr`, this gives the default number of modalities
+            for the variable. Note that if a utility node is described in `descr`, this value is overriden by 1.
 
         Returns
         -------
@@ -28433,7 +28427,7 @@ class InfluenceDiagram(DAGmodel):
         Raises
         ------
           pyagrum.DuplicateElement
-        	  If already used id or name.
+              If already used id or name.
 
         """
         return _pyagrum.InfluenceDiagram_add(self, *args)
@@ -28448,9 +28442,9 @@ class InfluenceDiagram(DAGmodel):
         Parameters
         ----------
         variable : pyagrum.DiscreteVariable
-        	the variable added by copy.
+            the variable added by copy.
         id : int
-        	the chosen id. If 0, the NodeGraphPart will choose.
+            the chosen id. If 0, the NodeGraphPart will choose.
 
         Warnings
         --------
@@ -28464,7 +28458,7 @@ class InfluenceDiagram(DAGmodel):
         Raises
         ------
         pyagrum.DuplicateElement
-        	If id(<>0) is already used
+            If id(<>0) is already used
 
         """
         return _pyagrum.InfluenceDiagram_addChanceNode(self, *args)
@@ -28479,9 +28473,9 @@ class InfluenceDiagram(DAGmodel):
         Parameters
         ----------
         variable : pyagrum.DiscreteVariable
-        	the variable added by copy
+            the variable added by copy
         id : int
-        	the chosen id. If 0, the NodeGraphPart will choose
+            the chosen id. If 0, the NodeGraphPart will choose
 
         Warnings
         --------
@@ -28495,9 +28489,9 @@ class InfluenceDiagram(DAGmodel):
         Raises
         ------
         pyagrum.InvalidArgument
-        	If variable has more than one label
+            If variable has more than one label
         pyagrum.DuplicateElement
-        	If id(<>0) is already used
+            If id(<>0) is already used
 
         """
         return _pyagrum.InfluenceDiagram_addUtilityNode(self, *args)
@@ -28512,9 +28506,9 @@ class InfluenceDiagram(DAGmodel):
         Parameters
         ----------
         variable : pyagrum.DiscreteVariable
-        	the variable added by copy.
+            the variable added by copy.
         id : int
-        	the chosen id. If 0, the NodeGraphPart will choose.
+            the chosen id. If 0, the NodeGraphPart will choose.
 
         Warnings
         --------
@@ -28528,7 +28522,7 @@ class InfluenceDiagram(DAGmodel):
         Raises
         ------
         pyagrum.DuplicateElement
-        	If id(<>0) is already used
+            If id(<>0) is already used
 
         """
         return _pyagrum.InfluenceDiagram_addDecisionNode(self, *args)
@@ -28543,9 +28537,9 @@ class InfluenceDiagram(DAGmodel):
         Parameters
         ----------
         id : int
-        	The id of the variable to erase.
-        var :  Union[int,str,pyagrum.DiscreteVariable]
-        	a variable's id (int) or name or th reference on the variable to remove.
+            The id of the variable to erase.
+        var :  int str | pyagrum.DiscreteVariable
+            a variable's id (int) or name or th reference on the variable to remove.
 
         """
         return _pyagrum.InfluenceDiagram_erase(self, *args)
@@ -28555,17 +28549,17 @@ class InfluenceDiagram(DAGmodel):
 
         Parameters
         ----------
-        var : Union[int,str]
-        	a variable's id (int) or name
+        var : int str
+            a variable's id (int) or name
         new_name : str
-        	the name of the variable
+            the name of the variable
 
         Raises
         ------
         pyagrum.DuplicateLabel
-        	If this name already exists
+            If this name already exists
         pyagrum.NotFound
-        	If no nodes matches id.
+            If no nodes matches id.
 
         """
         return _pyagrum.InfluenceDiagram_changeVariableName(self, *args)
@@ -28577,17 +28571,17 @@ class InfluenceDiagram(DAGmodel):
 
         Parameters
         ----------
-        tail : Union[int,str]
-        	a variable's id (int) or name
-        head : Union[int,str]
-        	a variable's id (int) or name
+        tail : int str
+            a variable's id (int) or name
+        head : int str
+            a variable's id (int) or name
 
         Raises
         ------
           pyagrum.InvalidEdge
-        	If arc.tail and/or arc.head are not in the ID.
+            If arc.tail and/or arc.head are not in the ID.
           pyagrum.InvalidEdge
-        	If tail is a utility node
+            If tail is a utility node
 
         """
         return _pyagrum.InfluenceDiagram_addArc(self, *args)
@@ -28602,11 +28596,11 @@ class InfluenceDiagram(DAGmodel):
         Parameters
         ----------
         arc : pyagrum.Arc
-        	The arc to be removed whn calling eraseArc(arc)
-        tail : Union[int,str]
-        	a variable's id (int) or name when calling eraseArc(tail,head)
-        head : Union[int,str]
-        	a variable's id (int) or name when calling eraseArc(tail,head)
+            The arc to be removed whn calling eraseArc(arc)
+        tail : int str
+            a variable's id (int) or name when calling eraseArc(tail,head)
+        head : int str
+            a variable's id (int) or name when calling eraseArc(tail,head)
 
         """
         return _pyagrum.InfluenceDiagram_eraseArc(self, *args)
@@ -28617,7 +28611,7 @@ class InfluenceDiagram(DAGmodel):
         Returns
         -------
         bool
-        	True if a directed path exist with all decision node
+            True if a directed path exist with all decision node
 
         """
         return _pyagrum.InfluenceDiagram_decisionOrderExists(self)
@@ -28628,7 +28622,7 @@ class InfluenceDiagram(DAGmodel):
         Returns
         -------
         pyagrum.DAG
-        	the temporal Graph.
+            the temporal Graph.
 
         """
         return _pyagrum.InfluenceDiagram_getDecisionGraph(self)
@@ -28642,7 +28636,7 @@ class InfluenceDiagram(DAGmodel):
         Returns
         -------
         bool
-        	true if a path exists between two nodes.
+            true if a path exists between two nodes.
 
         """
         return _pyagrum.InfluenceDiagram_existsPathBetween(self, *args)
@@ -28658,8 +28652,8 @@ class InfluenceDiagram(DAGmodel):
 
         Returns
         -------
-        List[str]
-        	The names of the InfluenceDiagram variables
+        list of str
+            The names of the InfluenceDiagram variables
 
         """
         return _pyagrum.InfluenceDiagram_names(self)
@@ -28774,7 +28768,7 @@ class InfluenceDiagram(DAGmodel):
         Returns
         -------
         list:
-        	the list of all the arcs in the Influence Diagram.
+            the list of all the arcs in the Influence Diagram.
 
         """
         return _pyagrum.InfluenceDiagram_arcs(self)
@@ -28784,8 +28778,8 @@ class InfluenceDiagram(DAGmodel):
 
         Parameters
         ----------
-        var : Union[int,str]
-        	a variable's id (int) or name
+        var : int str
+            a variable's id (int) or name
 
         Returns
         -------
@@ -28800,13 +28794,13 @@ class InfluenceDiagram(DAGmodel):
 
         Parameters
         ----------
-        var : Union[int,str]
-        	a variable's id (int) or name
+        var : int str
+            a variable's id (int) or name
 
         Returns
         -------
         Set
-        	the set of all the children
+            the set of all the children
 
         """
         return _pyagrum.InfluenceDiagram_children(self, norid)
@@ -28817,13 +28811,13 @@ class InfluenceDiagram(DAGmodel):
         give the set of parents of a node and the node
 
         Parameters
-        ---------
+        ----------
         norid : str|int
           the node
 
         Returns
         -------
-        Set[int]
+        set
           the set of nodeId of the family of the node `norid`
 
         """
@@ -28841,7 +28835,7 @@ class InfluenceDiagram(DAGmodel):
 
         Returns
         -------
-        Set[int]
+        set
           the set of ids of the descendants of node `norid`.
 
         """
@@ -28859,7 +28853,7 @@ class InfluenceDiagram(DAGmodel):
 
         Returns
         -------
-        Set[int]
+        set
           the set of ids of the ancestors of node `norid`.
 
         """
@@ -28872,7 +28866,7 @@ class InfluenceDiagram(DAGmodel):
 
         Parameters
         ----------
-        nodes : str|intList[str|int]
+        nodes : str|intlist of str|int
           the list of of nodeIds or names
 
         Warnings
@@ -28895,14 +28889,14 @@ class InfluenceDiagram(DAGmodel):
         Parameters
         ----------
         name : str
-        	the name's file
+            the name's file
 
         Raises
         ------
         pyagrum.IOError
-        	If file not found
+            If file not found
         pyagrum.FatalError
-        	If file is not valid
+            If file is not valid
 
         """
         return _pyagrum.InfluenceDiagram_loadBIFXML(self, *args)
@@ -28915,7 +28909,7 @@ class InfluenceDiagram(DAGmodel):
         Parameters
         ----------
         name : str
-        	the file's name
+            the file's name
 
         """
         return _pyagrum.InfluenceDiagram_saveBIFXML(self, name)
@@ -29181,14 +29175,14 @@ class ShaferShenoyLIMIDInference(object):
         Parameters
         ----------
         decisionId : int,str
-        	the id or name of the decision variable
+            the id or name of the decision variable
 
         Raises
         ------
           pyagrum.OperationNotAllowed
-        	If no inference have yet been made
+            If no inference have yet been made
         pyagrum.InvalidNode
-        	If node given in parmaeter is not a decision node
+            If node given in parmaeter is not a decision node
 
         """
         return _pyagrum.ShaferShenoyLIMIDInference_optimalDecision(self, *args)
@@ -29289,7 +29283,7 @@ class ShaferShenoyLIMIDInference(object):
           a node name
         val : intstr
           a node value or the label of the node value
-        vals : List[float]
+        vals : list of float
           a list of values
 
         Raises
@@ -29446,7 +29440,7 @@ class ShaferShenoyLIMIDInference(object):
         Returns
         -------
         pyagrum.InfluenceDiagram
-        	the InfluenceDiagram on which this class work
+            the InfluenceDiagram on which this class work
 
         """
         return _pyagrum.ShaferShenoyLIMIDInference_influenceDiagram(self)
@@ -29532,7 +29526,7 @@ class ShaferShenoyLIMIDInference(object):
         Raises
         ------
         pyagrum.OperationNotAllowed
-        	If no inference have yet been made
+            If no inference have yet been made
 
         """
         return _pyagrum.ShaferShenoyLIMIDInference_MEU(self, *args)
@@ -29783,8 +29777,8 @@ class IMarkovRandomField(UGmodel):
 
         Returns
         -------
-        Set[str]
-        	The names of the graph variables
+        set
+            The names of the graph variables
 
         """
         return _pyagrum.IMarkovRandomField_names(self)
@@ -29904,11 +29898,11 @@ class IMarkovRandomField(UGmodel):
 
         Parameters
         ----------
-        X : str|intList[str|int]
+        X : str|intlist of str|int
               a list of of nodeIds or names
-        Y : str|intList[str|int]
+        Y : str|intlist of str|int
               a list of of nodeIds or names
-        Z : str|intList[str|int]
+        Z : str|intlist of str|int
               a list of of nodeIds or names
 
         Raises
@@ -30002,18 +29996,18 @@ class MarkovRandomField(IMarkovRandomField):
         Parameters
         ----------
         variable : pyagrum.DiscreteVariable
-        	the variable added
+            the variable added
         name : str
-        	the variable name
+            the variable name
         nbrmod : int
-        	the number of modalities for the new variable
+            the number of modalities for the new variable
         id : int
-        	the variable forced id in the pyagrum.MarkovRandomField
+            the variable forced id in the pyagrum.MarkovRandomField
 
         Returns
         -------
         int
-        	the id of the new node
+            the id of the new node
 
         Raises
         ------
@@ -30040,14 +30034,14 @@ class MarkovRandomField(IMarkovRandomField):
 
         Remove a variable from the pyagrum.MarkovRandomField.
 
-        Removes the corresponding variable from the pyagrum.MarkovRandomField and from all of it's children "pyagrum.Tensor".
+        Removes the corresponding variable from the pyagrum.MarkovRandomField and from all of it's children pyagrum.Tensor.
 
         If no variable matches the given id, then nothing is done.
 
         Parameters
         ----------
-        var :Union[int,str,pyagrum.DiscreteVariable]
-        	a variable's id (int) or name of variable or a reference of this variable to remove.
+        var :int str | pyagrum.DiscreteVariable
+            a variable's id (int) or name of variable or a reference of this variable to remove.
 
         """
         return _pyagrum.MarkovRandomField_erase(self, *args)
@@ -30060,14 +30054,14 @@ class MarkovRandomField(IMarkovRandomField):
 
         Changes a variable's name in the pyagrum.MarkovRandomField.
 
-        This will change the "pyagrum.DiscreteVariable" names in the pyagrum.MarkovRandomField.
+        This will change the pyagrum.DiscreteVariable names in the pyagrum.MarkovRandomField.
 
         Parameters
         ----------
-        car :Union[int,str]
-        	a variable's id (int) or name
+        car :int str
+            a variable's id (int) or name
         new_name : str
-        	the new name of the variable
+            the new name of the variable
 
         Raises
         ------
@@ -30086,12 +30080,12 @@ class MarkovRandomField(IMarkovRandomField):
 
         Parameters
         ----------
-        var :Union[int,str]
-        	a variable's id (int) or name
+        var :int str
+            a variable's id (int) or name
         old_label : str
-        	the old label
+            the old label
         new_label : str
-        	the new label
+            the new label
 
         Raises
         ------
@@ -30125,8 +30119,8 @@ class MarkovRandomField(IMarkovRandomField):
 
         Parameters
         ----------
-        node : Union[int,str]
-        	a variable's id (int) or name
+        node : int str
+            a variable's id (int) or name
 
         """
         return _pyagrum.MarkovRandomField_generateFactor(self, vars)
@@ -30161,7 +30155,7 @@ class MarkovRandomField(IMarkovRandomField):
         Returns
         -------
         float
-        	the log10 domain size.
+            the log10 domain size.
 
         """
         return _pyagrum.MarkovRandomField_log10DomainSize(self)
@@ -30173,8 +30167,8 @@ class MarkovRandomField(IMarkovRandomField):
 
         Returns
         -------
-        Set[str]
-        	The names of the graph variables
+        set
+            The names of the graph variables
 
         """
         return _pyagrum.MarkovRandomField_names(self)
@@ -30291,13 +30285,13 @@ class MarkovRandomField(IMarkovRandomField):
 
         Parameters
         ----------
-        vars : Union[Set[int],Set[str]]
-        	A set of ids or names of variable the pyagrum.MarkovRandomField.
+        vars : set
+            A set of ids or names of variable the pyagrum.MarkovRandomField.
 
         Returns
         -------
         pyagrum.Tensor
-        	The factor of the set of nodes.
+            The factor of the set of nodes.
 
         Raises
         ------
@@ -30314,11 +30308,11 @@ class MarkovRandomField(IMarkovRandomField):
 
         Parameters
         ----------
-        X : str|intList[str|int]
+        X : str|intlist of str|int
               a list of of nodeIds or names
-        Y : str|intList[str|int]
+        Y : str|intlist of str|int
               a list of of nodeIds or names
-        Z : str|intList[str|int]
+        Z : str|intlist of str|int
               a list of of nodeIds or names
 
         Raises
@@ -30342,9 +30336,9 @@ class MarkovRandomField(IMarkovRandomField):
         Parameters
         ----------
         name : str
-        	the name's file
+            the name's file
         l : list
-        	list of functions to execute
+            list of functions to execute
 
         Raises
         ------
@@ -30364,7 +30358,7 @@ class MarkovRandomField(IMarkovRandomField):
         Parameters
         ----------
         name : str
-        	the file's name
+            the file's name
 
         """
         return _pyagrum.MarkovRandomField_saveUAI(self, name)
@@ -30447,7 +30441,7 @@ class MarkovRandomField(IMarkovRandomField):
         Parameters
         ----------
         seq : sequence (list or set) of int or string
-        	The sequence (ordered or not) of node id or names
+            The sequence (ordered or not) of node id or names
 
         """
         return _pyagrum.MarkovRandomField_addFactor(self, *args)
@@ -30584,7 +30578,7 @@ class ShaferShenoyMRFInference(object):
         Parameters
         ----------
         nb : int
-        	the number of threads to be used by ShaferShenoyMRFInference
+            the number of threads to be used by ShaferShenoyMRFInference
 
         """
         return _pyagrum.ShaferShenoyMRFInference_setNumberOfThreads(self, nb)
@@ -30597,7 +30591,7 @@ class ShaferShenoyMRFInference(object):
         Returns
         -------
         int
-        	the number of threads used by LazyPropagation during inferences
+            the number of threads used by LazyPropagation during inferences
 
         """
         return _pyagrum.ShaferShenoyMRFInference_getNumberOfThreads(self)
@@ -30610,7 +30604,7 @@ class ShaferShenoyMRFInference(object):
         Returns
         -------
         bool
-        	A Boolean indicating whether LazyPropagation currently overrides aGrUM's default number of threads
+            A Boolean indicating whether LazyPropagation currently overrides aGrUM's default number of threads
 
         """
         return _pyagrum.ShaferShenoyMRFInference_isGumNumberOfThreadsOverriden(self)
@@ -30686,7 +30680,7 @@ class ShaferShenoyMRFInference(object):
           a node name
         val : intstr
           a node value or the label of the node value
-        vals : List[float]
+        vals : list of float
           a list of values
 
         Raises
@@ -31153,9 +31147,9 @@ class ShaferShenoyMRFInference(object):
 
         Parameters
         ----------
-        targets : List[intstr]
+        targets : list of intstr
           a list of node Ids or node names
-        evs : Set[intstr]
+        evs : set
           a set of nodes ids or names.
 
         Returns
@@ -31605,8 +31599,8 @@ class DoorCriteria(object):
     from X to Y, has no open backdoor path from X to Z, and all backdoor paths from
     Z to Y are blocked by X.
 
-    Note
-    ----
+    Notes
+    -----
     High-level search for a single valid set is available via
     :meth:`pyagrum.causal.CausalModel.backDoor` and
     :meth:`pyagrum.causal.CausalModel.frontDoor`.
@@ -31643,18 +31637,18 @@ class DoorCriteria(object):
         Parameters
         ----------
         dag : pyagrum.DAG
-        	The causal DAG.
+            The causal DAG.
         X : int
-        	NodeId of the treatment variable.
+            NodeId of the treatment variable.
         Y : int
-        	NodeId of the outcome variable.
+            NodeId of the outcome variable.
         Z : set of int
-        	Candidate adjustment set (NodeIds).
+            Candidate adjustment set (NodeIds).
 
         Returns
         -------
         bool
-        	True if Z satisfies the backdoor criterion for (X, Y).
+            True if Z satisfies the backdoor criterion for (X, Y).
 
         """
         return _pyagrum.DoorCriteria_satisfiesBackdoorCriterion(dag, X, Y, Z)
@@ -31678,18 +31672,18 @@ class DoorCriteria(object):
         Parameters
         ----------
         dag : pyagrum.DAG
-        	The causal DAG.
+            The causal DAG.
         X : int
-        	NodeId of the treatment variable.
+            NodeId of the treatment variable.
         Y : int
-        	NodeId of the outcome variable.
+            NodeId of the outcome variable.
         Z : set of int
-        	Candidate mediator set (NodeIds).
+            Candidate mediator set (NodeIds).
 
         Returns
         -------
         bool
-        	True if Z satisfies the frontdoor criterion for (X, Y).
+            True if Z satisfies the frontdoor criterion for (X, Y).
 
         """
         return _pyagrum.DoorCriteria_satisfiesFrontdoorCriterion(dag, X, Y, Z)
@@ -31707,19 +31701,19 @@ class DoorCriteria(object):
         Parameters
         ----------
         dag : pyagrum.DAG
-        	The causal DAG.
+            The causal DAG.
         X : int
-        	NodeId of the source variable.
+            NodeId of the source variable.
         Y : int
-        	NodeId of the target variable.
+            NodeId of the target variable.
         Z : set of int
-        	Blocking set (NodeIds). A directed path is blocked if it passes through
-        	a node in Z.
+            Blocking set (NodeIds). A directed path is blocked if it passes through
+            a node in Z.
 
         Returns
         -------
         bool
-        	True if at least one unblocked directed path from X to Y exists.
+            True if at least one unblocked directed path from X to Y exists.
 
         """
         return _pyagrum.DoorCriteria_existsUnblockedDirectedPath(dag, X, Y, Z)
@@ -31733,17 +31727,17 @@ class DoorCriteria(object):
         Parameters
         ----------
         dag : pyagrum.DAG
-        	The causal DAG.
+            The causal DAG.
         X : int
-        	NodeId of the source variable.
+            NodeId of the source variable.
         Y : int
-        	NodeId of the target variable.
+            NodeId of the target variable.
 
         Returns
         -------
         set of int
-        	NodeIds of all nodes (including X and Y) that lie on at least one
-        	directed path from X to Y. Empty if no directed path exists.
+            NodeIds of all nodes (including X and Y) that lie on at least one
+            directed path from X to Y. Empty if no directed path exists.
 
         """
         return _pyagrum.DoorCriteria_nodesOnDirectedPaths(dag, X, Y)
@@ -31760,14 +31754,14 @@ class DoorCriteria(object):
         Parameters
         ----------
         dag : pyagrum.DAG
-        	The causal DAG.
+            The causal DAG.
         X : int
-        	NodeId of the source variable.
+            NodeId of the source variable.
 
         Returns
         -------
         set of int
-        	NodeIds of all nodes reachable from X via a backdoor path.
+            NodeIds of all nodes reachable from X via a backdoor path.
 
         """
         return _pyagrum.DoorCriteria_backdoorReach(dag, X)
@@ -31781,18 +31775,18 @@ class DoorCriteria(object):
         Parameters
         ----------
         dag : pyagrum.DAG
-        	The causal DAG.
+            The causal DAG.
         X : int
-        	NodeId of the treatment variable.
+            NodeId of the treatment variable.
         Y : int
-        	NodeId of the outcome variable.
+            NodeId of the outcome variable.
         Z : set of int
-        	Conditioning set (NodeIds).
+            Conditioning set (NodeIds).
 
         Returns
         -------
         bool
-        	True if an open backdoor path from X to Y exists after conditioning on Z.
+            True if an open backdoor path from X to Y exists after conditioning on Z.
 
         """
         return _pyagrum.DoorCriteria_hasBackdoorPath(dag, X, Y, Z)
@@ -31861,12 +31855,12 @@ class CausalModel(object):
         Parameters
         ----------
         name : str
-        	Name of the new latent variable.
+            Name of the new latent variable.
         children : list of str
-        	Names of the observed variables that are children of this latent variable.
+            Names of the observed variables that are children of this latent variable.
         keepArcs : bool, optional
-        	If True, preserve existing arcs between the specified children.
-        	Default is False.
+            If True, preserve existing arcs between the specified children.
+            Default is False.
 
         """
         return _pyagrum.CausalModel_addLatentVariable(self, *args)
@@ -31879,14 +31873,14 @@ class CausalModel(object):
         Parameters
         ----------
         x : int or str
-        	Tail of the arc (NodeId or variable name).
+            Tail of the arc (NodeId or variable name).
         y : int or str
-        	Head of the arc (NodeId or variable name).
+            Head of the arc (NodeId or variable name).
 
         Returns
         -------
         bool
-        	True if the arc x→y exists in the causal DAG.
+            True if the arc x→y exists in the causal DAG.
 
         """
         return _pyagrum.CausalModel_existsArc(self, *args)
@@ -31903,9 +31897,9 @@ class CausalModel(object):
         Parameters
         ----------
         x : int or str
-        	Tail of the arc (NodeId or variable name).
+            Tail of the arc (NodeId or variable name).
         y : int or str
-        	Head of the arc (NodeId or variable name).
+            Head of the arc (NodeId or variable name).
 
         """
         return _pyagrum.CausalModel_assumeSpurious(self, *args)
@@ -31918,9 +31912,9 @@ class CausalModel(object):
         Parameters
         ----------
         x : int or str
-        	Tail of the arc (NodeId or variable name).
+            Tail of the arc (NodeId or variable name).
         y : int or str
-        	Head of the arc (NodeId or variable name).
+            Head of the arc (NodeId or variable name).
 
         """
         return _pyagrum.CausalModel_assumeNonSpurious(self, *args)
@@ -31933,14 +31927,14 @@ class CausalModel(object):
         Parameters
         ----------
         x : int or str
-        	Tail of the arc (NodeId or variable name).
+            Tail of the arc (NodeId or variable name).
         y : int or str
-        	Head of the arc (NodeId or variable name).
+            Head of the arc (NodeId or variable name).
 
         Returns
         -------
         bool
-        	True if the arc x→y is marked as spurious.
+            True if the arc x→y is marked as spurious.
 
         """
         return _pyagrum.CausalModel_isAssumedSpurious(self, *args)
@@ -31958,14 +31952,14 @@ class CausalModel(object):
         Parameters
         ----------
         cause : int or str
-        	The treatment variable (NodeId or variable name).
+            The treatment variable (NodeId or variable name).
         effect : int or str
-        	The outcome variable (NodeId or variable name).
+            The outcome variable (NodeId or variable name).
 
         Returns
         -------
         set of int
-        	A valid backdoor adjustment set as NodeIds. Empty if no backdoor set exists.
+            A valid backdoor adjustment set as NodeIds. Empty if no backdoor set exists.
 
         See Also
         --------
@@ -31986,14 +31980,14 @@ class CausalModel(object):
         Parameters
         ----------
         cause : int or str
-        	The treatment variable (NodeId or variable name).
+            The treatment variable (NodeId or variable name).
         effect : int or str
-        	The outcome variable (NodeId or variable name).
+            The outcome variable (NodeId or variable name).
 
         Returns
         -------
         set of int
-        	A valid frontdoor adjustment set as NodeIds. Empty if no frontdoor set exists.
+            A valid frontdoor adjustment set as NodeIds. Empty if no frontdoor set exists.
 
         See Also
         --------
@@ -32013,14 +32007,14 @@ class CausalModel(object):
         Parameters
         ----------
         cm : pyagrum.causal.CausalModel
-        	The original causal model.
+            The original causal model.
         subset : set of int
-        	NodeIds of the observed variables to keep.
+            NodeIds of the observed variables to keep.
 
         Returns
         -------
         pyagrum.causal.CausalModel
-        	The induced causal sub-model.
+            The induced causal sub-model.
 
         """
         return _pyagrum.CausalModel_inducedCausalSubModel(self, cm, subset)
@@ -32036,19 +32030,19 @@ class CausalModel(object):
         Parameters
         ----------
         SHOW_LATENT_NAMES : bool, optional
-        	If True, display the names of latent nodes in the graph. Default is False.
+            If True, display the names of latent nodes in the graph. Default is False.
         NODE_BG : str, optional
-        	Background colour for latent nodes (hex or CSS colour name).
-        	Default is '#404040'.
+            Background colour for latent nodes (hex or CSS colour name).
+            Default is '#404040'.
         NODE_FG : str, optional
-        	Text colour for latent nodes. Default is 'white'.
+            Text colour for latent nodes. Default is 'white'.
         EDGE_COL : str, optional
-        	Edge colour. Default is '#4A4A4A'.
+            Edge colour. Default is '#4A4A4A'.
 
         Returns
         -------
         str
-        	A dot-format string representation of the causal model.
+            A dot-format string representation of the causal model.
 
         Examples
         --------
@@ -32066,8 +32060,8 @@ class CausalModel(object):
 
         Return the observational Bayesian network underlying the causal model.
 
-        Warning
-        -------
+        Warnings
+        --------
         Do not use this BN for causal inference. It represents the observational
         distribution only. Use :func:`pyagrum.causal.causalImpact` for
         interventional queries.
@@ -32075,7 +32069,7 @@ class CausalModel(object):
         Returns
         -------
         pyagrum.BayesNet
-        	The observational BN (observed variables only).
+            The observational BN (observed variables only).
 
         """
         return _pyagrum.CausalModel_observationalBN(self)
@@ -32088,7 +32082,7 @@ class CausalModel(object):
         Returns
         -------
         pyagrum.DAG
-        	The causal DAG (observed + latent nodes).
+            The causal DAG (observed + latent nodes).
 
         """
         return _pyagrum.CausalModel_causalDAG(self)
@@ -32101,7 +32095,7 @@ class CausalModel(object):
         Returns
         -------
         set of str
-        	The set of all variable names.
+            The set of all variable names.
 
         """
         return _pyagrum.CausalModel_names(self)
@@ -32114,17 +32108,17 @@ class CausalModel(object):
         Parameters
         ----------
         name : str
-        	The variable name.
+            The variable name.
 
         Returns
         -------
         int
-        	The NodeId of the variable.
+            The NodeId of the variable.
 
         Raises
         ------
         pyagrum.NotFound
-        	If no variable with that name exists in the causal model.
+            If no variable with that name exists in the causal model.
 
         """
         return _pyagrum.CausalModel_idFromName(self, name)
@@ -32137,17 +32131,17 @@ class CausalModel(object):
         Parameters
         ----------
         id : int
-        	The NodeId of the variable.
+            The NodeId of the variable.
 
         Returns
         -------
         str
-        	The variable name.
+            The variable name.
 
         Raises
         ------
         pyagrum.NotFound
-        	If no variable with that NodeId exists in the causal model.
+            If no variable with that NodeId exists in the causal model.
 
         """
         return _pyagrum.CausalModel_nameFromId(self, id)
@@ -32160,12 +32154,12 @@ class CausalModel(object):
         Parameters
         ----------
         includeLatentVariable : bool, optional
-        	If True, include latent variables in the mapping. Default is False.
+            If True, include latent variables in the mapping. Default is False.
 
         Returns
         -------
         pyagrum.Bijection
-        	A bijection between NodeIds and variable names.
+            A bijection between NodeIds and variable names.
 
         """
         return _pyagrum.CausalModel_id2name(self, includeLatentVariable)
@@ -32178,7 +32172,7 @@ class CausalModel(object):
         Returns
         -------
         set of int
-        	NodeIds of latent variables.
+            NodeIds of latent variables.
 
         """
         return _pyagrum.CausalModel_latentVariablesIds(self)
@@ -32191,7 +32185,7 @@ class CausalModel(object):
         Returns
         -------
         set of str
-        	Names of latent variables.
+            Names of latent variables.
 
         """
         return _pyagrum.CausalModel_latentVariablesNames(self)
@@ -32204,12 +32198,12 @@ class CausalModel(object):
         Parameters
         ----------
         x : int or str
-        	The variable (NodeId or name).
+            The variable (NodeId or name).
 
         Returns
         -------
         set of int
-        	NodeIds of the variable's parents in the causal DAG.
+            NodeIds of the variable's parents in the causal DAG.
 
         """
         return _pyagrum.CausalModel_parents(self, *args)
@@ -32222,12 +32216,12 @@ class CausalModel(object):
         Parameters
         ----------
         x : int or str
-        	The variable (NodeId or name).
+            The variable (NodeId or name).
 
         Returns
         -------
         set of int
-        	NodeIds of the variable's children in the causal DAG.
+            NodeIds of the variable's children in the causal DAG.
 
         """
         return _pyagrum.CausalModel_children(self, *args)
@@ -32240,7 +32234,7 @@ class CausalModel(object):
         Returns
         -------
         dict of int → set of int
-        	A mapping from component index to the set of NodeIds in that component.
+            A mapping from component index to the set of NodeIds in that component.
 
         """
         return _pyagrum.CausalModel_connectedComponents(self)
@@ -32263,8 +32257,8 @@ class CausalImpact(object):
     d-separation (no effect), backdoor adjustment, frontdoor adjustment, and
     general do-calculus (ID algorithm).
 
-    Note
-    ----
+    Notes
+    -----
     Prefer using the high-level function :func:`pyagrum.causal.causalImpact`
     instead of constructing a CausalImpact object directly.
 
@@ -32301,12 +32295,12 @@ class CausalImpact(object):
         Returns
         -------
         pyagrum.Tensor
-        	The distribution P(on | do(doing), knowing).
+            The distribution P(on | do(doing), knowing).
 
         Raises
         ------
         pyagrum.OperationNotAllowed
-        	If the causal effect is not identified (:meth:`isIdentified` is False).
+            If the causal effect is not identified (:meth:`isIdentified` is False).
 
         """
         return _pyagrum.CausalImpact_eval(self)
@@ -32319,8 +32313,8 @@ class CausalImpact(object):
         Returns
         -------
         str
-        	Human-readable form of the formula (e.g. a sum-product expression over
-        	conditional probabilities).
+            Human-readable form of the formula (e.g. a sum-product expression over
+            conditional probabilities).
 
         """
         return _pyagrum.CausalImpact_toString(self)
@@ -32333,14 +32327,14 @@ class CausalImpact(object):
         Parameters
         ----------
         doOperatorPrefix : str, optional
-        	Prefix for the do-operator notation. Default is 'do('.
+            Prefix for the do-operator notation. Default is 'do('.
         doOperatorSuffix : str, optional
-        	Suffix for the do-operator notation. Default is ')'.
+            Suffix for the do-operator notation. Default is ')'.
 
         Returns
         -------
         str
-        	LaTeX string of the identified formula.
+            LaTeX string of the identified formula.
 
         """
         return _pyagrum.CausalImpact_toLatex(self, *args)
@@ -32355,14 +32349,14 @@ class CausalImpact(object):
         Parameters
         ----------
         doOperatorPrefix : str, optional
-        	Prefix for the do-operator notation. Default is 'do('.
+            Prefix for the do-operator notation. Default is 'do('.
         doOperatorSuffix : str, optional
-        	Suffix for the do-operator notation. Default is ')'.
+            Suffix for the do-operator notation. Default is ')'.
 
         Returns
         -------
         str
-        	LaTeX string of the causal query.
+            LaTeX string of the causal query.
 
         """
         return _pyagrum.CausalImpact_latexQuery(self, *args)
@@ -32378,7 +32372,7 @@ class CausalImpact(object):
         Returns
         -------
         bool
-        	True if the query is identifiable.
+            True if the query is identifiable.
 
         """
         return _pyagrum.CausalImpact_isIdentified(self)
@@ -32394,7 +32388,7 @@ class CausalImpact(object):
         Returns
         -------
         pyagrum.causal.CausalFormula
-        	The identified causal formula as an expression tree.
+            The identified causal formula as an expression tree.
 
         """
         return _pyagrum.CausalImpact_getResult(self)
@@ -32407,7 +32401,7 @@ class CausalImpact(object):
         Returns
         -------
         pyagrum.causal.CausalModel
-        	The causal model.
+            The causal model.
 
         """
         return _pyagrum.CausalImpact_cm(self)
@@ -32420,7 +32414,7 @@ class CausalImpact(object):
         Returns
         -------
         set of int
-        	NodeIds of the variables in the on-set.
+            NodeIds of the variables in the on-set.
 
         """
         return _pyagrum.CausalImpact_on(self)
@@ -32433,7 +32427,7 @@ class CausalImpact(object):
         Returns
         -------
         set of int
-        	NodeIds of the variables in the doing-set (do-operator).
+            NodeIds of the variables in the doing-set (do-operator).
 
         """
         return _pyagrum.CausalImpact_doing(self)
@@ -32446,7 +32440,7 @@ class CausalImpact(object):
         Returns
         -------
         set of int
-        	NodeIds of the variables in the knowing-set.
+            NodeIds of the variables in the knowing-set.
 
         """
         return _pyagrum.CausalImpact_knowing(self)
@@ -32463,7 +32457,7 @@ class CausalImpact(object):
         Returns
         -------
         str
-        	Explanation of the identification outcome.
+            Explanation of the identification outcome.
 
         """
         return _pyagrum.CausalImpact_explanation(self)
@@ -32476,7 +32470,7 @@ class CausalImpact(object):
         Returns
         -------
         list of str
-        	Variable names in the on-set.
+            Variable names in the on-set.
 
         """
         return _pyagrum.CausalImpact_onNames(self)
@@ -32489,7 +32483,7 @@ class CausalImpact(object):
         Returns
         -------
         list of str
-        	Variable names in the doing-set.
+            Variable names in the doing-set.
 
         """
         return _pyagrum.CausalImpact_doingNames(self)
@@ -32502,7 +32496,7 @@ class CausalImpact(object):
         Returns
         -------
         list of str
-        	Variable names in the knowing-set.
+            Variable names in the knowing-set.
 
         """
         return _pyagrum.CausalImpact_knowingNames(self)
@@ -32532,8 +32526,8 @@ class Counterfactual(object):
       3. **Prediction** -- evaluate the causal impact of the intervention on
          the twin model to obtain the counterfactual distribution of *on*.
 
-    Note
-    ----
+    Notes
+    -----
     Prefer using the high-level function :func:`pyagrum.causal.counterfactual`
     instead of constructing a Counterfactual object directly.
 
@@ -32582,17 +32576,17 @@ class Counterfactual(object):
         Parameters
         ----------
         cm : pyagrum.causal.CausalModel
-        	The original causal model.
+            The original causal model.
         profile : dict of str → str
-        	The factual observation as ``{variable_name: value_name}``.
+            The factual observation as ``{variable_name: value_name}``.
         whatif : set of str
-        	Intervened variables in the counterfactual scenario. These are excluded
-        	from the set of idiosyncratic nodes that get updated.
+            Intervened variables in the counterfactual scenario. These are excluded
+            from the set of idiosyncratic nodes that get updated.
 
         Returns
         -------
         pyagrum.causal.CausalModel
-        	The twin causal model ready for the prediction step.
+            The twin causal model ready for the prediction step.
 
         See Also
         --------
@@ -32620,7 +32614,7 @@ class Counterfactual(object):
         Returns
         -------
         pyagrum.causal.CausalModel
-        	The original causal model passed to the constructor.
+            The original causal model passed to the constructor.
 
         """
         return _pyagrum.Counterfactual_originalModel(self)
@@ -32636,7 +32630,7 @@ class Counterfactual(object):
         Returns
         -------
         pyagrum.causal.CausalModel
-        	The twin model.
+            The twin model.
 
         """
         return _pyagrum.Counterfactual_twinModel(self)
@@ -32651,7 +32645,7 @@ class Counterfactual(object):
         Returns
         -------
         pyagrum.causal.CausalFormula
-        	The identified causal formula on the twin model.
+            The identified causal formula on the twin model.
 
         """
         return _pyagrum.Counterfactual_getResult(self)
@@ -32664,8 +32658,8 @@ class Counterfactual(object):
         Returns
         -------
         pyagrum.Tensor
-        	The distribution P(on | do(whatif)) evaluated on the twin model,
-        	optionally sliced by *values* if provided at construction.
+            The distribution P(on | do(whatif)) evaluated on the twin model,
+            optionally sliced by *values* if provided at construction.
 
         """
         return _pyagrum.Counterfactual_value(self)
@@ -32678,7 +32672,7 @@ class Counterfactual(object):
         Returns
         -------
         set of str
-        	Variable names in the on-set.
+            Variable names in the on-set.
 
         """
         return _pyagrum.Counterfactual_on(self)
@@ -32691,7 +32685,7 @@ class Counterfactual(object):
         Returns
         -------
         set of str
-        	Variable names in the whatif-set.
+            Variable names in the whatif-set.
 
         """
         return _pyagrum.Counterfactual_whatif(self)
@@ -32704,7 +32698,7 @@ class Counterfactual(object):
         Returns
         -------
         dict of str → str
-        	The observed profile as ``{variable_name: value_name}``.
+            The observed profile as ``{variable_name: value_name}``.
 
         """
         return _pyagrum.Counterfactual_profile(self)
@@ -32717,8 +32711,8 @@ class Counterfactual(object):
         Returns
         -------
         dict of str → str
-        	The counterfactual values as ``{variable_name: value_name}``.
-        	Empty dict if no specific values were requested.
+            The counterfactual values as ``{variable_name: value_name}``.
+            Empty dict if no specific values were requested.
 
         """
         return _pyagrum.Counterfactual_values(self)
@@ -32731,7 +32725,7 @@ class Counterfactual(object):
         Returns
         -------
         str
-        	Human-readable summary of the counterfactual computation.
+            Human-readable summary of the counterfactual computation.
 
         """
         return _pyagrum.Counterfactual_toString(self)

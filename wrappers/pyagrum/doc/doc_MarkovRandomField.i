@@ -64,18 +64,18 @@ Add a variable to the pyagrum.MarkovRandomField.
 Parameters
 ----------
 variable : pyagrum.DiscreteVariable
-	the variable added
+    the variable added
 name : str
-	the variable name
+    the variable name
 nbrmod : int
-	the number of modalities for the new variable
+    the number of modalities for the new variable
 id : int
-	the variable forced id in the pyagrum.MarkovRandomField
+    the variable forced id in the pyagrum.MarkovRandomField
 
 Returns
 -------
 int
-	the id of the new node
+    the id of the new node
 
 Raises
 ------
@@ -94,21 +94,21 @@ Add a factor from a list or a set of id or str. If the argument is a set, the or
 Parameters
 ----------
 seq : sequence (list or set) of int or string
-	The sequence (ordered or not) of node id or names
+    The sequence (ordered or not) of node id or names
 "
 
 %feature("docstring") gum::MarkovRandomField::changeVariableName
 "
-Changes a variable's name in the gum::MarkovRandomField.
+Changes a variable's name in the pyagrum.MarkovRandomField.
 
-This will change the gum::DiscreteVariable names in the gum::MarkovRandomField.
+This will change the pyagrum.DiscreteVariable names in the pyagrum.MarkovRandomField.
 
 Parameters
 ----------
-car :Union[int,str]
-	a variable's id (int) or name
+car :int | str
+    a variable's id (int) or name
 new_name : str
-	the new name of the variable
+    the new name of the variable
 
 Raises
 ------
@@ -124,12 +124,12 @@ change the label of the variable associated to nodeId to the new value.
 
 Parameters
 ----------
-var :Union[int,str]
-	a variable's id (int) or name
+var :int | str
+    a variable's id (int) or name
 old_label : str
-	the old label
+    the old label
 new_label : str
-	the new label
+    the new label
 
 Raises
 ------
@@ -154,16 +154,16 @@ Clear the whole MarkovRandomField
 
 %feature("docstring") gum::MarkovRandomField::erase
 "
-Remove a variable from the gum::MarkovRandomField.
+Remove a variable from the pyagrum.MarkovRandomField.
 
-Removes the corresponding variable from the gum::MarkovRandomField and from all of it's children gum::Tensor.
+Removes the corresponding variable from the pyagrum.MarkovRandomField and from all of it's children pyagrum.Tensor.
 
 If no variable matches the given id, then nothing is done.
 
 Parameters
 ----------
-var :Union[int,str,pyagrum.DiscreteVariable]
-	a variable's id (int) or name of variable or a reference of this variable to remove.
+var :int | str | pyagrum.DiscreteVariable
+    a variable's id (int) or name of variable or a reference of this variable to remove.
 "
 
 %feature("docstring") gum::MarkovRandomField::eraseArc
@@ -175,11 +175,11 @@ If (tail, head) doesn't exist, the nothing happens.
 Parameters
 ----------
 arc : pyagrum.Arc
-	The arc to be removed.
-head : Union[int,str]
-	a variable's id (int) or name
-tail : Union[int,str]
-	a variable's id (int) or name
+    The arc to be removed.
+head : int | str
+    a variable's id (int) or name
+tail : int | str
+    a variable's id (int) or name
 "
 
 %feature("docstring") gum::MarkovRandomField::fastPrototype
@@ -212,8 +212,8 @@ Randomly generate factor parameters for a given factor in a given structure.
 
 Parameters
 ----------
-node : Union[int,str]
-	a variable's id (int) or name
+node : int | str
+    a variable's id (int) or name
 "
 
 %feature("docstring") gum::MarkovRandomField::generateFactors
@@ -228,9 +228,9 @@ Load an UAI file.
 Parameters
 ----------
 name : str
-	the name's file
+    the name's file
 l : list
-	list of functions to execute
+    list of functions to execute
 
 Raises
 ------
@@ -247,7 +247,7 @@ Save the MarkovRandomField in an UAI file.
 Parameters
 ----------
 name : str
-	the file's name
+    the file's name
 "
 
 %feature("docstring") gum::MarkovRandomField::factor
@@ -256,13 +256,13 @@ Returns the factor of a set of variables (if existing).
 
 Parameters
 ----------
-vars : Union[Set[int],Set[str]]
-	A set of ids or names of variable the pyagrum.MarkovRandomField.
+vars : set
+    A set of ids or names of variable the pyagrum.MarkovRandomField.
 
 Returns
 -------
 pyagrum.Tensor
-	The factor of the set of nodes.
+    The factor of the set of nodes.
 
 Raises
 ------

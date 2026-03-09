@@ -58,8 +58,8 @@ class ShapValues:
 
   def __init__(self, bn, target, logit=True):
     """
-    Parameters:
-    ------
+    Parameters
+    ----------
     bn : pyagrum.BayesNet
         The Bayesian Network.
     target : int | str
@@ -71,7 +71,7 @@ class ShapValues:
     logit : bool
         If True, applies the logit transformation to the probabilities.
 
-    Raises:
+    Raises
     ------
     TypeError : If bn is not a gum.BayesNet instance or target is not an integer or string.
     ValueError : If target is not a valid node id in the Bayesian Network.
@@ -135,7 +135,7 @@ class ShapValues:
     """
     Computes the conditional Shapley values for each variable.
 
-    Parameters:
+    Parameters
     ----------
     df : pandas DataFrame
         The input data for which to compute the Shapley values.
@@ -150,7 +150,7 @@ class ShapValues:
     filename : str, optional
         If provided, saves the plots to the specified filename instead of displaying them.
 
-    Returns:
+    Returns
     -------
     Dict[str, float]
         A dictionary containing the importances of each variable in the input data.
@@ -166,7 +166,7 @@ class ShapValues:
     """
     Computes the marginal Shapley values for each variable.
 
-    Parameters:
+    Parameters
     ----------
     df : pandas DataFrame
         The input data for which to compute the Shapley values.
@@ -181,7 +181,7 @@ class ShapValues:
     percentage: bool
       if True, the importance plot is shown in percent.
 
-    Returns:
+    Returns
     -------
     Dict[str, float]
         A dictionary containing the importances of each variable in the input data.
@@ -197,7 +197,7 @@ class ShapValues:
     """
     Computes the causal Shapley values for each variable.
 
-    Parameters:
+    Parameters
     ----------
     df : pandas DataFrame
         The input data for which to compute the Shapley values.
@@ -214,7 +214,7 @@ class ShapValues:
     filename : str, optional
         If provided, saves the plots to the specified filename instead of displaying them.
 
-    Returns:
+    Returns
     -------
     Dict[str, float]
         A dictionary containing the importances of each variable in the input data.

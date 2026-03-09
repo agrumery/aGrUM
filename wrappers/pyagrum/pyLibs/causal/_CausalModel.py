@@ -100,7 +100,10 @@ class CausalModel:
     """
     Copy a causal model
 
-    :return: the copy
+    Returns
+    -------
+    CausalModel
+        The copy.
     """
     return CausalModel(pyagrum.BayesNet(self.__observationalBN), self.__latentVarsDescriptor, self.__keepArcs)
 
@@ -138,7 +141,10 @@ class CausalModel:
     """
     Create a dot representation of the causal model
 
-    :return: the dot representation in a string
+    Returns
+    -------
+    str
+        The dot representation.
     """
     res = "digraph {"
 
@@ -181,15 +187,23 @@ class CausalModel:
 
   def causalBN(self) -> "pyagrum.BayesNet":
     """
-    :return: the causal Bayesian network
+    Returns
+    -------
+    pyagrum.BayesNet
+        The causal Bayesian network.
 
-    :warning: do not infer any computations in this model. It is strictly a structural model
+    Warnings
+    --------
+    Do not infer any computations in this model. It is strictly a structural model.
     """
     return self.__causalBN
 
   def observationalBN(self) -> "pyagrum.BayesNet":
     """
-    :return: the observational Bayesian network
+    Returns
+    -------
+    pyagrum.BayesNet
+        The observational Bayesian network.
     """
     return self.__observationalBN
 
@@ -321,14 +335,20 @@ class CausalModel:
 
   def nodes(self) -> NodeSet:
     """
-    :return: the set of nodes
+    Returns
+    -------
+    NodeSet
+        The set of nodes.
     """
 
     return self.__causalBN.nodes()
 
   def arcs(self) -> ArcSet:
     """
-    :return: the set of arcs
+    Returns
+    -------
+    ArcSet
+        The set of arcs.
     """
     return self.__causalBN.arcs()
 

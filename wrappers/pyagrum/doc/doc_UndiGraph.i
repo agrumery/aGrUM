@@ -179,7 +179,7 @@ id : int
 
 %feature("docstring") gum::UndiGraph::existsEdge
 "
-Check if an edge exists bewteen n1 and n2.
+Check if an edge exists between n1 and n2.
 
 Parameters
 ----------

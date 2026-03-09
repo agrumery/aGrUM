@@ -62,9 +62,7 @@ Parameters
     Z :  : int or str or iterable[int or str] (optional)
       a third (an optional) nodeset
 
-Example
--------
-
+Example-------
       .. code:: python
 
           import pyagrum as gum
@@ -79,9 +77,7 @@ Example
 
 %feature("docstring") InformationTheory::entropyX
 "
-  Returns
-  -------
-  float
+    Returns  ---------  float
     The entropy of nodeset X.
 "
 

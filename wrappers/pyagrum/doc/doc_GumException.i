@@ -49,7 +49,7 @@
 Returns
 -------
 str
-	the error content
+    the error content
 "
 
 %feature("docstring") gum::Exception::errorType
@@ -57,7 +57,7 @@ str
 Returns
 -------
 str
-	the error type
+    the error type
 "
 
 %feature("docstring") gum::Exception::errorCallStack
@@ -65,7 +65,7 @@ str
 Returns
 -------
 str
-	the error call stack
+    the error call stack
 "
 
 %feature("docstring") gum::Exception::what
@@ -73,5 +73,5 @@ str
 Returns
 -------
 str
-	the error message
+    the error message
 "

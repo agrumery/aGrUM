@@ -63,12 +63,12 @@ Removes all the evidence entered into the diagram.
 Parameters
 ----------
 evidence : pyagrum.Tensor
-	the evidence to remove
+    the evidence to remove
 
 Raises
 ------
   pyagrum.IndexError
-	If the evidence does not belong to the influence diagram
+    If the evidence does not belong to the influence diagram
 "
 
 %feature("docstring") gum::ShaferShenoyLIMIDInference::optimalDecision
@@ -78,14 +78,14 @@ Returns best choice for decision variable given in parameter ( based upon MEU cr
 Parameters
 ----------
 decisionId : int,str
-	the id or name of the decision variable
+    the id or name of the decision variable
 
 Raises
 ------
   pyagrum.OperationNotAllowed
-	If no inference have yet been made
+    If no inference have yet been made
 pyagrum.InvalidNode
-	If node given in parmaeter is not a decision node
+    If node given in parmaeter is not a decision node
 "
 
 %feature("docstring") gum::ShaferShenoyLIMIDInference::MEU
@@ -95,7 +95,7 @@ Returns maximum expected utility obtained from inference.
 Raises
 ------
 pyagrum.OperationNotAllowed
-	If no inference have yet been made
+    If no inference have yet been made
 "
 
 %feature("docstring") gum::ShaferShenoyLIMIDInference::influenceDiagram
@@ -105,7 +105,7 @@ Returns a constant reference over the InfluenceDiagram on which this class work.
 Returns
 -------
 pyagrum.InfluenceDiagram
-	the InfluenceDiagram on which this class work
+    the InfluenceDiagram on which this class work
 "
 
 %feature("docstring") gum::ShaferShenoyLIMIDInference::insertEvidence
@@ -115,7 +115,7 @@ Insert new evidence in the graph.
 Parameters
 ----------
 evidenceList : list
-	a list of tensors as evidences
+    a list of tensors as evidences
 
 Warnings
 --------
@@ -124,7 +124,7 @@ If an evidence already w.r.t. a given node and a new evidence w.r.t. this node i
 Raises
 ------
 pyagrum.OperationNotAllowed
-	If an evidence is over more than one variable
+    If an evidence is over more than one variable
 "
 
 
@@ -178,7 +178,7 @@ nodeName : int
   a node name
 val : int|str
   a node value or the label of the node value
-vals : List[float]
+vals : list of float
   a list of values
 
 Raises

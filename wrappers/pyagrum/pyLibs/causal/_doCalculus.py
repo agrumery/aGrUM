@@ -172,13 +172,22 @@ def _topological_sort(cm: CausalModel) -> List[int]:
 def doCalculus(cm: CausalModel, on: Union[str, NameSet], doing: Union[str, NameSet]) -> CausalFormula:
   """
   Compute the CausalFormula for computing an impact analysis given the causal model, the observed variables and the
-  variable on
-  which there will be intervention. Note that there is no value neither for ``on`` nor for ``doing`` variables
+  variable on which there will be intervention. Note that there is no value neither for ``on`` nor for ``doing``
+  variables.
 
-  :param on: the variables of interest
-  :param cm: the causal model
-  :param doing: the interventions
-  :return: the CausalFormula for computing this causal impact
+  Parameters
+  ----------
+  cm : CausalModel
+      The causal model.
+  on : str or set of str
+      The variables of interest.
+  doing : str or set of str
+      The interventions.
+
+  Returns
+  -------
+  CausalFormula
+      The CausalFormula for computing this causal impact.
   """
   X = doing if isinstance(doing, set) else {doing}  # set of keys in doing
   Y = on if isinstance(on, set) else {on}
@@ -189,13 +198,23 @@ def doCalculus(cm: CausalModel, on: Union[str, NameSet], doing: Union[str, NameS
 def identifyingIntervention(cm: CausalModel, Y: NameSet, X: NameSet, P: ASTtree = None) -> ASTtree:
   """
   Following Shpitser, Ilya and Judea Pearl. 'Identification of Conditional Interventional Distributions.' UAI2006 and
-  'Complete Identification Methods for the Causal Hierarchy' JMLR 2008
+  'Complete Identification Methods for the Causal Hierarchy' JMLR 2008.
 
-  :param cm: the causal model
-  :param Y: The variables of interest (named following the paper)
-  :param X: The variable of intervention (named following the paper)
-  :param P: The ASTtree representing the calculus in construction
-  :return: the ASTtree representing the calculus
+  Parameters
+  ----------
+  cm : CausalModel
+      The causal model.
+  Y : set of str
+      The variables of interest (named following the paper).
+  X : set of str
+      The variables of intervention (named following the paper).
+  P : ASTtree, optional
+      The ASTtree representing the calculus in construction.
+
+  Returns
+  -------
+  ASTtree
+      The ASTtree representing the calculus.
   """
   iX = {cm.idFromName(i) for i in X}
   iY = {cm.idFromName(i) for i in Y}
@@ -329,13 +348,23 @@ def identifyingIntervention(cm: CausalModel, Y: NameSet, X: NameSet, P: ASTtree 
 
 def getBackDoorTree(cm: CausalModel, x: str, y: str, zset: NodeSet) -> ASTtree:
   """
-  Create an CausalFormula representing a backdoor zset from x to y in the causal mode lcm
+  Create an ASTtree representing a backdoor set from x to y in the causal model.
 
-  :param cm: causal model
-  :param x: impacting node
-  :param y: impacted node
-  :param zset: backdoor set
-  :return: the ASTtree for the backoor criteria
+  Parameters
+  ----------
+  cm : CausalModel
+      The causal model.
+  x : str
+      Impacting node.
+  y : str
+      Impacted node.
+  zset : set of int
+      Backdoor set (node ids).
+
+  Returns
+  -------
+  ASTtree
+      The ASTtree for the backdoor criteria.
   """
   zp = [cm.names()[i] for i in zset]
   return ASTsum(zp, ASTmult(ASTposteriorProba(cm.causalBN(), {y}, set([x] + zp)), ASTjointProba(zp)))
@@ -343,13 +372,23 @@ def getBackDoorTree(cm: CausalModel, x: str, y: str, zset: NodeSet) -> ASTtree:
 
 def getFrontDoorTree(cm: CausalModel, x: str, y: str, zset: NodeSet) -> ASTtree:
   """
-  Create an AdsT representing a frontdoor zset from x to y in the causal model
+  Create an ASTtree representing a frontdoor set from x to y in the causal model.
 
-  :param cm: causal model
-  :param x: impacting node
-  :param y: impacted node
-  :param zset: frontdoor set
-  :return: the ASTtree for the frontdoot critreroia
+  Parameters
+  ----------
+  cm : CausalModel
+      The causal model.
+  x : str
+      Impacting node.
+  y : str
+      Impacted node.
+  zset : set of int
+      Frontdoor set (node ids).
+
+  Returns
+  -------
+  ASTtree
+      The ASTtree for the frontdoor criteria.
   """
   zp = [cm.names()[i] for i in zset]
   return ASTsum(

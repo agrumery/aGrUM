@@ -52,7 +52,7 @@ Get the upper dynamic expectation of a given variable prefix.
 Parameters
 ----------
 varName : str
-	the variable name prefix which upper expectation we want.
+    the variable name prefix which upper expectation we want.
 
 Returns
 -------
@@ -67,7 +67,7 @@ Get the lower dynamic expectation of a given variable prefix.
 Parameters
 ----------
 varName : str
-	the variable name prefix which lower expectation we want.
+    the variable name prefix which lower expectation we want.
 
 Returns
 -------
@@ -89,7 +89,7 @@ Insert evidence from file.
 Parameters
 ----------
 path : str
-	the path to the evidence file.
+    the path to the evidence file.
 "
 
 %feature("docstring") gum::credal::classname::insertModalsFile
@@ -99,7 +99,7 @@ Insert variables modalities from file to compute expectations.
 Parameters
 ----------
 path : str
-	The path to the modalities file.
+    The path to the modalities file.
 "
 
 %feature("docstring") gum::credal::classname::makeInference
@@ -114,9 +114,9 @@ Get the upper marginals of a given node id.
 Parameters
 ----------
 id : int
-	the node id which upper marginals we want.
+    the node id which upper marginals we want.
 varName : str
-	the variable name which upper marginals we want.
+    the variable name which upper marginals we want.
 
 Returns
 -------
@@ -126,7 +126,7 @@ list
 Raises
 ------
   pyagrum.IndexError
-	If the node does not belong to the Credal network
+    If the node does not belong to the Credal network
 "
 
 %feature("docstring") gum::credal::classname::marginalMin
@@ -136,9 +136,9 @@ Get the lower marginals of a given node id.
 Parameters
 ----------
 id : int
-	the node id which lower marginals we want.
+    the node id which lower marginals we want.
 varName : str
-	the variable name which lower marginals we want.
+    the variable name which lower marginals we want.
 
 Returns
 -------
@@ -148,7 +148,7 @@ list
 Raises
 ------
   pyagrum.IndexError
-	If the node does not belong to the Credal network
+    If the node does not belong to the Credal network
 "
 
 %feature("docstring") gum::credal::classname::saveInference
@@ -158,7 +158,7 @@ Saves marginals.
 Parameters
 ----------
 path : str
-	The path to the file to save marginals.
+    The path to the file to save marginals.
 "
 
 %feature("docstring") gum::credal::classname::setRepetitiveInd
@@ -166,7 +166,7 @@ path : str
 Parameters
 ----------
 flag : bool
-	True if repetitive independence is to be used, false otherwise. Only usefull with dynamic networks.
+    True if repetitive independence is to be used, false otherwise. Only usefull with dynamic networks.
 "
 
 %feature("docstring") gum::credal::classname::inferenceType
@@ -174,7 +174,7 @@ flag : bool
 Returns
 -------
 int
-	the inference type
+    the inference type
 "
 %enddef
 

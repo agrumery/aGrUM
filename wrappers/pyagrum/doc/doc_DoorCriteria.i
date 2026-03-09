@@ -53,8 +53,8 @@ A **frontdoor adjustment set** Z between X and Y intercepts every directed path
 from X to Y, has no open backdoor path from X to Z, and all backdoor paths from
 Z to Y are blocked by X.
 
-Note
-----
+Notes
+-----
 High-level search for a single valid set is available via
 :meth:`pyagrum.causal.CausalModel.backDoor` and
 :meth:`pyagrum.causal.CausalModel.frontDoor`.
@@ -85,18 +85,18 @@ A set Z satisfies the backdoor criterion with respect to (X, Y) if:
 Parameters
 ----------
 dag : pyagrum.DAG
-	The causal DAG.
+    The causal DAG.
 X : int
-	NodeId of the treatment variable.
+    NodeId of the treatment variable.
 Y : int
-	NodeId of the outcome variable.
+    NodeId of the outcome variable.
 Z : set of int
-	Candidate adjustment set (NodeIds).
+    Candidate adjustment set (NodeIds).
 
 Returns
 -------
 bool
-	True if Z satisfies the backdoor criterion for (X, Y).
+    True if Z satisfies the backdoor criterion for (X, Y).
 "
 
 %feature("docstring") gum::DoorCriteria::satisfiesFrontdoorCriterion
@@ -112,18 +112,18 @@ A set Z satisfies the frontdoor criterion with respect to (X, Y) if:
 Parameters
 ----------
 dag : pyagrum.DAG
-	The causal DAG.
+    The causal DAG.
 X : int
-	NodeId of the treatment variable.
+    NodeId of the treatment variable.
 Y : int
-	NodeId of the outcome variable.
+    NodeId of the outcome variable.
 Z : set of int
-	Candidate mediator set (NodeIds).
+    Candidate mediator set (NodeIds).
 
 Returns
 -------
 bool
-	True if Z satisfies the frontdoor criterion for (X, Y).
+    True if Z satisfies the frontdoor criterion for (X, Y).
 "
 
 %feature("docstring") gum::DoorCriteria::existsUnblockedDirectedPath
@@ -133,19 +133,19 @@ Test whether a directed path from X to Y exists that is not blocked by Z.
 Parameters
 ----------
 dag : pyagrum.DAG
-	The causal DAG.
+    The causal DAG.
 X : int
-	NodeId of the source variable.
+    NodeId of the source variable.
 Y : int
-	NodeId of the target variable.
+    NodeId of the target variable.
 Z : set of int
-	Blocking set (NodeIds). A directed path is blocked if it passes through
-	a node in Z.
+    Blocking set (NodeIds). A directed path is blocked if it passes through
+    a node in Z.
 
 Returns
 -------
 bool
-	True if at least one unblocked directed path from X to Y exists.
+    True if at least one unblocked directed path from X to Y exists.
 "
 
 %feature("docstring") gum::DoorCriteria::nodesOnDirectedPaths
@@ -155,17 +155,17 @@ Return the set of nodes lying on any directed path from X to Y.
 Parameters
 ----------
 dag : pyagrum.DAG
-	The causal DAG.
+    The causal DAG.
 X : int
-	NodeId of the source variable.
+    NodeId of the source variable.
 Y : int
-	NodeId of the target variable.
+    NodeId of the target variable.
 
 Returns
 -------
 set of int
-	NodeIds of all nodes (including X and Y) that lie on at least one
-	directed path from X to Y. Empty if no directed path exists.
+    NodeIds of all nodes (including X and Y) that lie on at least one
+    directed path from X to Y. Empty if no directed path exists.
 "
 
 %feature("docstring") gum::DoorCriteria::backdoorReach
@@ -178,14 +178,14 @@ going to a parent of X) and then follows any sequence of edges.
 Parameters
 ----------
 dag : pyagrum.DAG
-	The causal DAG.
+    The causal DAG.
 X : int
-	NodeId of the source variable.
+    NodeId of the source variable.
 
 Returns
 -------
 set of int
-	NodeIds of all nodes reachable from X via a backdoor path.
+    NodeIds of all nodes reachable from X via a backdoor path.
 "
 
 %feature("docstring") gum::DoorCriteria::hasBackdoorPath
@@ -195,16 +195,16 @@ Test whether an open backdoor path from X to Y exists given evidence on Z.
 Parameters
 ----------
 dag : pyagrum.DAG
-	The causal DAG.
+    The causal DAG.
 X : int
-	NodeId of the treatment variable.
+    NodeId of the treatment variable.
 Y : int
-	NodeId of the outcome variable.
+    NodeId of the outcome variable.
 Z : set of int
-	Conditioning set (NodeIds).
+    Conditioning set (NodeIds).
 
 Returns
 -------
 bool
-	True if an open backdoor path from X to Y exists after conditioning on Z.
+    True if an open backdoor path from X to Y exists after conditioning on Z.
 "

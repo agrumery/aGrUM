@@ -56,7 +56,9 @@ class ShallValues(Explainer):
 
   def __init__(self, bn: gum.BayesNet, background: tuple | None, sample_size: int = 1000, log: bool = True):
     """
-    Note: All rows in the background data that contain NaN values in columns corresponding to variables in the Bayesian Network will be dropped.
+    Notes
+    -----
+    All rows in the background data that contain NaN values in columns corresponding to variables in the Bayesian Network will be dropped.
 
     Parameters
     ----------
@@ -142,8 +144,10 @@ class ShallValues(Explainer):
     """
     Computes the SHALL values for all rows in the provided data.
 
-    Note 1: Since this is a partial explanation, all rows in `data` must contain all variables present in the initialized Bayesian Network.
-    Note 2: All rows containing NaN values in columns corresponding to variables in the Bayesian Network will be dropped.
+    Notes
+    -----
+    1. Since this is a partial explanation, all rows in `data` must contain all variables present in the initialized Bayesian Network.
+    2. All rows containing NaN values in columns corresponding to variables in the Bayesian Network will be dropped.
 
     Parameters
     ----------

@@ -89,7 +89,7 @@ str
 Returns
 -------
 pyagrum.DiscretizedVariable
-	a copy of the DiscretizedVariable
+    a copy of the DiscretizedVariable
 "
 
 %feature("docstring") gum::DiscretizedVariable::addTick
@@ -97,17 +97,17 @@ pyagrum.DiscretizedVariable
 Parameters
 ----------
 aTick : float
-	the Tick to be added
+    the Tick to be added
 
 Returns
 -------
 pyagrum.DiscretizedVariable
-	the discretized variable
+    the discretized variable
 
 Raises
 ------
 pyagrum.DefaultInLabel
-	If the Tick is already defined
+    If the Tick is already defined
 "
 
 %feature("docstring") gum::DiscretizedVariable::eraseTicks
@@ -120,12 +120,12 @@ erase all the Ticks
 Parameters
 ----------
 aTick : float
-	the Tick to be tested
+    the Tick to be tested
 
 Returns
 -------
 bool :
-	True if the Tick already exists
+    True if the Tick already exists
 "
 
 %feature("docstring") gum::DiscretizedVariable::tick
@@ -135,17 +135,17 @@ Indicate the index of the Tick
 Parameters
 ----------
 i : int
-	the index of the Tick
+    the index of the Tick
 
 Returns
 -------
 aTick : float
-	the i-th Tick
+    the i-th Tick
 
 Raises
 ------
 pyagrum.NotFound
-	If the index is greater than the number of Ticks
+    If the index is greater than the number of Ticks
 "
 
 %feature("docstring") gum::DiscretizedVariable::ticks
@@ -153,7 +153,7 @@ pyagrum.NotFound
 Returns
 -------
 tuple :
-	a tuple containing all the Ticks
+    a tuple containing all the Ticks
 "
 
 
@@ -164,10 +164,10 @@ Allow to draw a value in the i-th interval of the discretized variable.1
 Parameters
 ----------
 i : int
-	the index of the interval to draw
+    the index of the interval to draw
 
 Returns
 -------
 float :
-	the value randomly drawn in the i-th interval
+    the value randomly drawn in the i-th interval
 "

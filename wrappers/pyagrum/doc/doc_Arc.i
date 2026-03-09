@@ -69,7 +69,7 @@ int
 %feature("docstring") gum::Arc::head
 "
 Returns
-------
+-------
 int
   the id of the head node
 "

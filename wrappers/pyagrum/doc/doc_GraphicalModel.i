@@ -55,8 +55,8 @@ Set of names of variables in the model
 
 Returns
 -------
-Set[str]
-	The names of the graph variables
+set
+    The names of the graph variables
 "
 
 %feature("docstring") gum::GraphicalModel::ids
@@ -65,13 +65,13 @@ List of ids for a list of names of variables in the model
 
 Parameters
 ----------
-lov : List[str]
+lov : list of str
   List of variable names
 
 Returns
 -------
-List[int]
-	The ids for the list of names of the graph variables
+list of int
+    The ids for the list of names of the graph variables
 "
 
 %feature("docstring") gum::GraphicalModel::nodeset
@@ -80,13 +80,13 @@ Set of ids for a list of names of variables in the model
 
 Parameters
 ----------
-lov : List[str]
+lov : list of str
   List of variable names
 
 Returns
 -------
-Set[int]
-	The set of ids for the list of names of the graph variables
+set
+    The set of ids for the list of names of the graph variables
 "
 
 %feature("docstring") gum::GraphicalModel::empty
@@ -96,7 +96,7 @@ Check if there are some variables in the model.
 Returns
 -------
 bool
-	True if there is no variable in the model.
+    True if there is no variable in the model.
 "
 
 %feature("docstring") gum::GraphicalModel::exists
@@ -111,7 +111,7 @@ norid: str|int
 Returns
 -------
 bool
-	True if there is a node with such a name or id
+    True if there is a node with such a name or id
 "
 
 
@@ -122,7 +122,7 @@ returns the log10 of the domain size of the model defined as the product of the 
 Returns
 -------
 float
-	the log10 domain size.
+    the log10 domain size.
 "
 
 %feature("docstring") gum::GraphicalModel::completeInstantiation
@@ -141,11 +141,11 @@ check if nodes X and nodes Y are independent given nodes Z
 
 Parameters
 ----------
-X : str|int|List[str|int]
+X : str|int|list of str|int
       a list of of nodeIds or names
-Y : str|int|List[str|int]
+Y : str|int|list of str|int
       a list of of nodeIds or names
-Z : str|int|List[str|int]
+Z : str|int|list of str|int
       a list of of nodeIds or names
 
 Raises

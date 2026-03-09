@@ -51,8 +51,8 @@ The identification procedure tries the following strategies in order:
 d-separation (no effect), backdoor adjustment, frontdoor adjustment, and
 general do-calculus (ID algorithm).
 
-Note
-----
+Notes
+-----
 Prefer using the high-level function :func:`pyagrum.causal.causalImpact`
 instead of constructing a CausalImpact object directly.
 
@@ -87,7 +87,7 @@ the causal structure, and :meth:`eval` will raise an exception.
 Returns
 -------
 bool
-	True if the query is identifiable.
+    True if the query is identifiable.
 "
 
 %feature("docstring") gum::CausalImpact::eval
@@ -97,12 +97,12 @@ Evaluate the identified causal formula and return the result as a tensor.
 Returns
 -------
 pyagrum.Tensor
-	The distribution P(on | do(doing), knowing).
+    The distribution P(on | do(doing), knowing).
 
 Raises
 ------
 pyagrum.OperationNotAllowed
-	If the causal effect is not identified (:meth:`isIdentified` is False).
+    If the causal effect is not identified (:meth:`isIdentified` is False).
 "
 
 %feature("docstring") gum::CausalImpact::toString
@@ -112,8 +112,8 @@ Return a string representation of the identified causal formula.
 Returns
 -------
 str
-	Human-readable form of the formula (e.g. a sum-product expression over
-	conditional probabilities).
+    Human-readable form of the formula (e.g. a sum-product expression over
+    conditional probabilities).
 "
 
 %feature("docstring") gum::CausalImpact::toLatex
@@ -123,14 +123,14 @@ Return a LaTeX representation of the identified causal formula.
 Parameters
 ----------
 doOperatorPrefix : str, optional
-	Prefix for the do-operator notation. Default is 'do('.
+    Prefix for the do-operator notation. Default is 'do('.
 doOperatorSuffix : str, optional
-	Suffix for the do-operator notation. Default is ')'.
+    Suffix for the do-operator notation. Default is ')'.
 
 Returns
 -------
 str
-	LaTeX string of the identified formula.
+    LaTeX string of the identified formula.
 "
 
 %feature("docstring") gum::CausalImpact::latexQuery
@@ -142,14 +142,14 @@ The query has the form P(on | do(doing), knowing).
 Parameters
 ----------
 doOperatorPrefix : str, optional
-	Prefix for the do-operator notation. Default is 'do('.
+    Prefix for the do-operator notation. Default is 'do('.
 doOperatorSuffix : str, optional
-	Suffix for the do-operator notation. Default is ')'.
+    Suffix for the do-operator notation. Default is ')'.
 
 Returns
 -------
 str
-	LaTeX string of the causal query.
+    LaTeX string of the causal query.
 "
 
 %feature("docstring") gum::CausalImpact::getResult
@@ -159,7 +159,7 @@ Return the CausalFormula encoding the identified expression.
 Returns
 -------
 pyagrum.causal.CausalFormula
-	The identified causal formula as an expression tree.
+    The identified causal formula as an expression tree.
 "
 
 %feature("docstring") gum::CausalImpact::cm
@@ -169,7 +169,7 @@ Return the causal model associated with this query.
 Returns
 -------
 pyagrum.causal.CausalModel
-	The causal model.
+    The causal model.
 "
 
 %feature("docstring") gum::CausalImpact::on
@@ -179,7 +179,7 @@ Return the NodeIds of the target variables.
 Returns
 -------
 set of int
-	NodeIds of the variables in the on-set.
+    NodeIds of the variables in the on-set.
 "
 
 %feature("docstring") gum::CausalImpact::doing
@@ -189,7 +189,7 @@ Return the NodeIds of the intervened variables.
 Returns
 -------
 set of int
-	NodeIds of the variables in the doing-set (do-operator).
+    NodeIds of the variables in the doing-set (do-operator).
 "
 
 %feature("docstring") gum::CausalImpact::knowing
@@ -199,7 +199,7 @@ Return the NodeIds of the observed variables.
 Returns
 -------
 set of int
-	NodeIds of the variables in the knowing-set.
+    NodeIds of the variables in the knowing-set.
 "
 
 %feature("docstring") gum::CausalImpact::explanation
@@ -213,7 +213,7 @@ failed.
 Returns
 -------
 str
-	Explanation of the identification outcome.
+    Explanation of the identification outcome.
 "
 
 %feature("docstring") gum::CausalImpact::onNames
@@ -223,7 +223,7 @@ Return the names of the target variables.
 Returns
 -------
 list of str
-	Variable names in the on-set.
+    Variable names in the on-set.
 "
 
 %feature("docstring") gum::CausalImpact::doingNames
@@ -233,7 +233,7 @@ Return the names of the intervened variables.
 Returns
 -------
 list of str
-	Variable names in the doing-set.
+    Variable names in the doing-set.
 "
 
 %feature("docstring") gum::CausalImpact::knowingNames
@@ -243,5 +243,5 @@ Return the names of the observed variables.
 Returns
 -------
 list of str
-	Variable names in the knowing-set.
+    Variable names in the knowing-set.
 "

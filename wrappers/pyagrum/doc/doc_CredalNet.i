@@ -69,18 +69,18 @@ Adds an arc between two nodes
 Parameters
 ----------
 tail :
-	the id of the tail node
+    the id of the tail node
 head : int
-	the id of the head node
+    the id of the head node
 
 Raises
 ------
 pyagrum.InvalidDirectedCircle
-	If any (directed) cycle is created by this arc
+    If any (directed) cycle is created by this arc
 pyagrum.InvalidNode
-	If head or tail does not belong to the graph nodes
+    If head or tail does not belong to the graph nodes
 pyagrum.DuplicateElement
-	If one of the arc already exists
+    If one of the arc already exists
 "
 
 %feature("docstring") gum::credal::CredalNet::addNodeWithId
@@ -90,9 +90,9 @@ Adds a discrete node into the network.
 Parameters
 ----------
 name : str
-	The name of the discrete variable to be added
+    The name of the discrete variable to be added
 card : int
-	The cardinality of the variable
+    The cardinality of the variable
 
 Returns
 -------
@@ -102,7 +102,7 @@ int
 Raises
 ------
 pyagrum.DuplicateLabel
-	If a node with the label already exists.
+    If a node with the label already exists.
 "
 
 %feature("docstring") gum::credal::CredalNet::approximatedBinarization
@@ -123,11 +123,11 @@ Perturbates the BayesNet provided as input for this CredalNet by generating inte
 Parameters
 ----------
 beta : float
-	The beta used to perturbate the network
+    The beta used to perturbate the network
 oneNet : bool
-	used as a flag. Set to True if one BayesNet if provided with counts, to False if two BayesNet are provided; one with probabilities (the lower net) and one with denominators over the first modalities (the upper net)
+    used as a flag. Set to True if one BayesNet if provided with counts, to False if two BayesNet are provided; one with probabilities (the lower net) and one with denominators over the first modalities (the upper net)
 keepZeroes : bool
-	used as a flag as whether or not - respectively True or False - we keep zeroes as zeroes. Default is False, i.e. zeroes are not kept
+    used as a flag as whether or not - respectively True or False - we keep zeroes as zeroes. Default is False, i.e. zeroes are not kept
 "
 
 %feature("docstring") gum::credal::CredalNet::computeCPTMinMax
@@ -166,7 +166,7 @@ tbw
 Parameters
 ----------
 id : int
-	The constant reference to the choosen NodeId
+    The constant reference to the choosen NodeId
 
 Returns
 -------
@@ -187,7 +187,7 @@ pyagrum.BayesNet
 Parameters
 ----------
 id : int
-	The id of the node
+    The id of the node
 
 Returns
 -------
@@ -226,22 +226,22 @@ Set the interval constraints of a credal set of a given node (from an instantiat
 Parameters
 ----------
 id : int
-	The id of the node
+    The id of the node
 entry : int
-	The index of the instantiation excluding the given node (only the parents are used to compute the index of the credal set)
+    The index of the instantiation excluding the given node (only the parents are used to compute the index of the credal set)
 ins : pyagrum.Instantiation
-	The Instantiation
+    The Instantiation
 lower : list
-	The lower value for each probability in correct order
+    The lower value for each probability in correct order
 upper : list
-	The upper value for each probability in correct order
+    The upper value for each probability in correct order
 
 Warnings
 --------
 You need to call intervalToCredal when done filling all constraints.
 
-Warning
--------
+Warnings
+--------
 DOES change the BayesNet (s) associated to this credal net !
 "
 
@@ -252,18 +252,18 @@ Set the interval constraints of the credal sets of a given node (all instantiati
 Parameters
 ----------
 id : int
-	The id of the node
+    The id of the node
 lower : list
-	The lower value for each probability in correct order
+    The lower value for each probability in correct order
 upper : list
-	The upper value for each probability in correct order
+    The upper value for each probability in correct order
 
 Warnings
 --------
 You need to call intervalToCredal when done filling all constraints.
 
-Warning
--------
+Warnings
+--------
 DOES change the BayesNet (s) associated to this credal net !
 "
 
@@ -276,7 +276,7 @@ Experimental function - Return type to be wrapped
 Returns
 -------
 tbw
-	a constant reference to the upper probabilities of each node X over the 'True' modality
+    a constant reference to the upper probabilities of each node X over the 'True' modality
 "
 
 %feature("docstring") gum::credal::CredalNet::get_binaryCPT_min
@@ -288,7 +288,7 @@ Experimental function - Return type to be wrapped
 Returns
 -------
 tbw
-	a constant reference to the lower probabilities of each node X over the 'True' modality
+    a constant reference to the lower probabilities of each node X over the 'True' modality
 "
 
 %feature("docstring") gum::credal::CredalNet::hasComputedCPTMinMax
@@ -308,9 +308,9 @@ Use this method when using a single BayesNet storing counts of events. IDM model
 Parameters
 ----------
 s : int
-	the IDM parameter.
+    the IDM parameter.
 keepZeroes : bool
-	used as a flag as whether or not - respectively True or False - we keep zeroes as zeroes. Default is False, i.e. zeroes are not kept.
+    used as a flag as whether or not - respectively True or False - we keep zeroes as zeroes. Default is False, i.e. zeroes are not kept.
 "
 
 %feature("docstring") gum::credal::CredalNet::instantiation
@@ -322,7 +322,7 @@ bnet accessors / shortcuts.
 Parameters
 ----------
 id : int
-	the id of the node we want an instantiation from
+    the id of the node we want an instantiation from
 
 Returns
 -------
@@ -354,7 +354,7 @@ Use this method when using a single BayesNet storing counts of events.
 Returns
 -------
 bool
-	True if this CredalNet is separately and interval specified, False otherwise.
+    True if this CredalNet is separately and interval specified, False otherwise.
 "
 
 %feature("docstring") gum::credal::CredalNet::lagrangeNormalization
@@ -371,14 +371,14 @@ Doest not performs computations of the parameters but keeps normalized counts of
 Parameters
 ----------
 name : str
-	the name of the new variable
+    the name of the new variable
 card: int
     the domainSize of the new variable
 
 Returns
 -------
 int
-	the id of the new node
+    the id of the new node
 "
 
 %feature("docstring") gum::credal::CredalNet::nodeType
@@ -386,12 +386,12 @@ int
 Parameters
 ----------
 id : int
-	the constant reference to the choosen NodeId
+    the constant reference to the choosen NodeId
 
 Returns
 -------
 pyagrum.CredalNet
-	the type of the choosen node in the (up-to-date) CredalNet in __src_bn.
+    the type of the choosen node in the (up-to-date) CredalNet in __src_bn.
 "
 
 %feature("docstring") gum::credal::CredalNet::saveBNsMinMax
@@ -403,9 +403,9 @@ to call after bnToCredal(GUM_SCALAR beta) save a BN with lower probabilities and
 Parameters
 ----------
 min_path : str
-	the path to save the BayesNet which contains the lower probabilities of each node X.
+    the path to save the BayesNet which contains the lower probabilities of each node X.
 max_path : str
-	the path to save the BayesNet which contains the upper probabilities of each node X.
+    the path to save the BayesNet which contains the upper probabilities of each node X.
 "
 
 %feature("docstring") gum::credal::CredalNet::setCPT
@@ -420,13 +420,13 @@ Set the vertices of one credal set of a given node (any instantiation index)
 Parameters
 ----------
 id : int
-	the Id of the node
+    the Id of the node
 entry : int
-	the index of the instantiation (from 0 to K - 1) excluding the given node (only the parents are used to compute the index of the credal set)
+    the index of the instantiation (from 0 to K - 1) excluding the given node (only the parents are used to compute the index of the credal set)
 ins : pyagrum.Instantiation
-	the Instantiation (only the parents matter to find the credal set index)
-cpt	: tbw
-	the vertices of every credal set (for each instantiation of the parents)
+    the Instantiation (only the parents matter to find the credal set index)
+cpt    : tbw
+    the vertices of every credal set (for each instantiation of the parents)
 
 Warnings
 --------
@@ -445,12 +445,12 @@ Set the vertices of the credal sets (all of the conditionals) of a given node
 Parameters
 ----------
 id : int
-	the NodeId of the node
-cpt	: tbw
-	the vertices of every credal set (for each instantiation of the parents)
+    the NodeId of the node
+cpt    : tbw
+    the vertices of every credal set (for each instantiation of the parents)
 
-Warning
--------
+Warnings
+--------
 DOES not change the BayesNet (s) associated to this credal net !
 "
 

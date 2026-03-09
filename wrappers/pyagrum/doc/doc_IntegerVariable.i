@@ -52,7 +52,7 @@ IntegerVariable(aName, aDesc='', values=None) -> IntegerVariable
     Parameters:
         - **aName** (str) -- the name of the variable
         - **aDesc** (str) -- the (optional) description of the variable
-        - **values** (List[int]) -- the values to create
+        - **values** (list of int) -- the values to create
 
 IntegerVariable(aIDRV) -> IntegerVariable
     Parameters:
@@ -81,7 +81,7 @@ b:Integer(<1,34,142>)
 "
 Returns
 -------
-Tuple[int]
+tuple
     the tuple of integer values that form the domain of this variable
 "
 

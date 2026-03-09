@@ -62,7 +62,7 @@ Tensor(v1,v2, ...) -> Tensor
 
 %feature("docstring") gum::Tensor::KL
 "
-Check the compatibility and compute the Kullback-Leibler divergence between the tensor and.
+Check the compatibility and compute the Kullback-Leibler divergence between the tensor and `p`.
 
 Parameters
 ----------
@@ -103,9 +103,9 @@ v : pyagrum.DiscreteVariable
 
 Raises
 ------
-DuplicateElement
+pyagrum.DuplicateElement
   If the variable is already in this Tensor.
-InvalidArgument
+pyagrum.InvalidArgument
   If the variable is empty.
 
 Returns
@@ -116,10 +116,12 @@ pyagrum.Tensor
 
 %feature("docstring") gum::Tensor::contains
 "
+Check whether a variable is in the tensor.
+
 Parameters
 ----------
-v : pyagrum.Tensor
-    a DiscreteVariable.
+v : pyagrum.DiscreteVariable
+    the variable to check.
 
 Returns
 -------
@@ -151,10 +153,10 @@ Parameters
 ----------
 inst : pyagrum.instantiation
   a partial instantiation
-dict : Dict[str,str|int]
+dict : dict
   a dictionnary containing values for some discrete variables.
 
-Warning
+Warnings
 --------
     if the dictionnary contains a key that is not the name of a variable in the `pyagrum.Tensor`,
     this key is just not used without notification. Then `pyagrum.Tensor.extract` concerns
@@ -174,15 +176,15 @@ Parameters
 v : number or list or pyagrum.Tensor the number of parameters of the Tensor
     a value or a list/pyagrum.Tensor containing the values to fill the Tensor with.
 
-Warning
--------
-    if v is a list, the size of the list must be the
-    if v is a pyagrum.Tensor. It must to contain variables with exactly the same names and labels but not necessarily the same variables.
+Warnings
+--------
+    if v is a list, the size of the list must be equal to the domain size of the tensor.
+    if v is a pyagrum.Tensor. It must contain variables with exactly the same names and labels but not necessarily the same variables.
 
 Returns
 -------
 pyagrum.Tensor
-      a reference to the modified potentia
+      a reference to the modified tensor
 
 Raises
 ------
@@ -201,8 +203,8 @@ v : number or list of values or pyagrum.Tensor
 
 mapping : list|tuple|dict
 
-Warning
--------
+Warnings
+--------
     - if `v` is a list, the size of the list must be the size of the tensor
 
     - if `v` is a ref:pyagrum.Tensor, it must contain variables with exactly the same names and labels but not necessarily the same variables. If
@@ -214,7 +216,7 @@ Warning
 Returns
 -------
 pyagrum.Tensor
-      a reference to the modified potentia
+      a reference to the modified tensor
 
 Raises
 ------
@@ -226,8 +228,8 @@ pyagrum.ArgumentError
 
 %feature("docstring") gum::Tensor::populate
 "
-Raises:
---------
+Raises
+------
 pyagrum.SizeError
   if v size's does not matches the domain size.
 "
@@ -396,7 +398,7 @@ pyagrum.InvalidArgument
 "
 Returns
 -------
-Tuple[Dict[str,int],float]
+tuple
   the list of positions of the max and the max of all elements in the Tensor
 "
 
@@ -425,7 +427,7 @@ pyagrum.NotFound
 "
 Returns
 -------
-Tuple[Dict[str,int],float]
+tuple
   the list of positions of the min and the min of all elements in the Tensor
 "
 
@@ -492,7 +494,8 @@ v : pyagrum.DiscreteVariable
 
 Returns
 -------
-    Returns the index of a variable.
+int
+    the index of a variable.
 
 Raises
 ------
@@ -593,8 +596,8 @@ Square all the values in the Tensor
 "
 log2 all the values in the Tensor
 
-Warning
--------
+Warnings
+--------
 When the Tensor contains 0 or negative values, no exception are raised but `-inf` or `nan` values are assigned.
 "
 
@@ -629,7 +632,7 @@ i : int
 
 Returns
 -------
-  the varible at the ith index
+  the variable at the ith index
 
 Raises
 ------
@@ -654,7 +657,7 @@ Calculate the mathematical expected value of a (joint) random variable using the
 
 Parameters
 ----------
-func : function(Dict[str,int])->float
+func : function(dict)->float
     A function that takes a single argument, representing the value of a python representation of a `gum.Instantiation` (as a dictionary), and returns a float.
 
 Warnings
@@ -690,8 +693,8 @@ int
 This static method generates a Tensor representing an observation where a quasi-continuous variable
 (a :class:`pyagrum.DiscretizedVariable` with many ticks) takes a specific given value.
 
-Note
-----
+Notes
+-----
   - see also :meth:`BayesNet.evEq`
   - see also :meth:`Tensor.evGt`, :meth:`Tensor.evLt`, :meth:`Tensor.evIn`
 
@@ -723,8 +726,8 @@ pyagrum.Tensor
 This static method generates a Tensor representing an observation where a quasi-continuous variable
 (a :class:`pyagrum.DiscretizedVariable` with many ticks) takes a value greater than the parameter.
 
-Note
-----
+Notes
+-----
   - see also :meth:`BayesNet.evGt`
   - see also :meth:`Tensor.evEq`, :meth:`Tensor.evLt`, :meth:`Tensor.evIn`
 
@@ -756,8 +759,8 @@ pyagrum.Tensor
 This static method generates a Tensor representing an observation where a quasi-continuous variable
 (a :class:`pyagrum.DiscretizedVariable` with many ticks) takes a value less than the parameter.
 
-Note
-----
+Notes
+-----
   - see also :meth:`BayesNet.evLt`
   - see also :meth:`Tensor.evEq`, :meth:`Tensor.evGt`, :meth:`Tensor.evIn`
 
@@ -779,8 +782,8 @@ pyagrum.Tensor
 This static method generates a Tensor representing an observation where a quasi-continuous variable
 (a :class:`pyagrum.DiscretizedVariable` with many ticks) takes a value between the 2 paramerts (min,max)
 
-Note
-----
+Notes
+-----
   - see also :meth:`BayesNet.evIn`
   - see also :meth:`Tensor.evEq`, :meth:`Tensor.evLt`, :meth:`Tensor.evGt`
 
@@ -795,7 +798,7 @@ valueMax: float
 
 Returns
 -------
-pyAgrum.Tensor
+pyagrum.Tensor
   The representation of the evidence as a :class:`~pyagrum.Tensor`.
 "
 

@@ -60,7 +60,7 @@ Instantiation(aI) -> Instantiation
 Returns
 -------
 pyagrum.Instantiation
-	An empty tuple or a copy of the one in parameters
+    An empty tuple or a copy of the one in parameters
 
 Instantiation is subscriptable therefore values can be easily accessed/modified.
 
@@ -453,14 +453,14 @@ Removes the flag overflow.
 Parameters
 ----------
 i : int
-	The index of the variable.
+    The index of the variable.
 var : pyagrum.DiscreteVariable
-	The variable the value of which we wish to know
+    The variable the value of which we wish to know
 
 Returns
 -------
 int
-	the current value of the variable.
+    the current value of the variable.
 
 Raises
 ------
@@ -501,11 +501,11 @@ Create a dictionary `{variable_name:value}` from an instantiation
 Parameters
 ----------
 withLabels : boolean
-	The value will be a label (string) if True. It will be a position (int) if False. Default is False
+    The value will be a label (string) if True. It will be a position (int) if False. Default is False
 
 Returns
 -------
-Dict[str,int]
+dict
     The dictionary
 "
 

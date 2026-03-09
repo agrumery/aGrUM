@@ -49,7 +49,7 @@
 Returns
 -------
 int
-	the indice of the colonne of the error
+    the indice of the colonne of the error
 "
 
 %feature("docstring") gum::SyntaxError::line
@@ -57,5 +57,5 @@ int
 Returns
 -------
 int
-	the indice of the line of the error
+    the indice of the line of the error
 "

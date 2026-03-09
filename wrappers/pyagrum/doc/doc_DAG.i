@@ -121,7 +121,7 @@ Returns the set of arcs in the graph.
 Returns
 -------
 Set
-	the set of the arcs
+    the set of the arcs
 "
 
 %feature("docstring") gum::DAG::children
@@ -134,7 +134,7 @@ id : int
 Returns
 -------
 Set
-	the set of all the children
+    the set of all the children
 "
 
 %feature("docstring") gum::DAG::clear
@@ -169,18 +169,18 @@ Erase the arc between n1 and n2.
 Parameters
 ----------
 n1 : int
-	the id of the tail node
+    the id of the tail node
 n2 : int
-	the id of the head node
+    the id of the head node
 "
 %feature("docstring") gum::DAG::eraseChildren
 "
-Erase the arcs heading through the node's children.
+Erase the arcs heading to the node's children.
 
 Parameters
 ----------
 n : int
-	the id of the parent node
+    the id of the parent node
 "
 
 %feature("docstring") gum::DAG::eraseNode
@@ -190,7 +190,7 @@ Erase the node and all the related arcs.
 Parameters
 ----------
 id : int
-	the id of the node
+    the id of the node
 "
 
 %feature("docstring") gum::DAG::eraseParents
@@ -200,19 +200,19 @@ Erase the arcs coming to the node.
 Parameters
 ----------
 n : int
-	the id of the child node
+    the id of the child node
 "
 
 %feature("docstring") gum::DAG::existsArc
 "
-Check if an arc exists bewteen n1 and n2.
+Check if an arc exists between n1 and n2.
 
 Parameters
 ----------
 n1 : int
-	the id of the tail node
+    the id of the tail node
 n2 : int
-	the id of the head node
+    the id of the head node
 
 Returns
 -------
@@ -247,8 +247,8 @@ set
 "
 Parameters
 ----------
-id :
-	The id of the child node
+id : int
+    The id of the child node
 
 Returns
 -------
@@ -295,14 +295,14 @@ pyagrum.InvalidDirectedCycle
 
 %feature("docstring") gum::DAG::hasDirectedPath
 "
-Check if a directedpath exists bewteen from and to.
+Check if a directed path exists between from and to.
 
 Parameters
 ----------
 from : int
-	the id of the first node of the (possible) path
+    the id of the first node of the (possible) path
 to : int
-	the id of the last node of the (possible) path
+    the id of the last node of the (possible) path
 
 Returns
 -------
@@ -338,7 +338,7 @@ Parameters
 nodes : int | sequence of int
   a sequence of node ids (int) or a single node id (int)
 Returns
-------- 
-gum::UndiGraph
+-------
+pyagrum.UndiGraph
   the moralized ancestral graph of the nodes from the DAG.
 "

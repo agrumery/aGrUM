@@ -125,16 +125,22 @@ def showDot(dotstring, size=None):
 
 
 def showBNDiff(bn1, bn2, size=None):
-  """show a graphical diff between the arcs of _bn1 (reference) with those of _bn2.
+  """
+  Show a graphical diff between the arcs of bn1 (reference) with those of bn2.
 
   * full black line: the arc is common for both
-  * full red line: the arc is common but inverted in _bn2
-  * dotted black line: the arc is added in _bn2
-  * dotted red line: the arc is removed in _bn2
+  * full red line: the arc is common but inverted in bn2
+  * dotted black line: the arc is added in bn2
+  * dotted red line: the arc is removed in bn2
 
-  :param BayesNet bn1: referent model for the comparison
-  :param BayesNet bn2: bn compared to the referent model
-  :param size: size of the rendered graph
+  Parameters
+  ----------
+  bn1 : pyagrum.BayesNet
+      Referent model for the comparison.
+  bn2 : pyagrum.BayesNet
+      BN compared to the referent model.
+  size : int or str, optional
+      Size of the rendered graph.
   """
   if size is None:
     size = gum.config["notebook", "default_graph_size"]
@@ -144,11 +150,16 @@ def showBNDiff(bn1, bn2, size=None):
 
 def showJunctionTree(bn, withNames=True, size=None):
   """
-  Show a junction tree
+  Show a junction tree.
 
-  :param bn: the Bayesian network
-  :param boolean withNames: display the variable names or the node id in the clique
-  :param size: size of the rendered graph
+  Parameters
+  ----------
+  bn : pyagrum.BayesNet
+      The Bayesian network.
+  withNames : bool
+      Display the variable names or the node id in the clique.
+  size : int or str, optional
+      Size of the rendered graph.
   """
   jtg = gum.JunctionTreeGenerator()
   jt = jtg.junctionTree(bn)
@@ -160,14 +171,20 @@ def showJunctionTree(bn, withNames=True, size=None):
 
 def showBN(bn, size=None, nodeColor=None, arcWidth=None, arcColor=None, cmap=None, cmapArc=None):
   """
-  show a Bayesian network
+  Show a Bayesian network.
 
-  :param bn: the Bayesian network
-  :param size: size of the rendered graph
-  :param format: render as "png" or "svg"
-  :param vals: a nodeMap of values to be shown as color nodes
-  :param arcvals: a arcMap of values to be shown as bold arcs
-  :param cmap: color map to show the vals
+  Parameters
+  ----------
+  bn : pyagrum.BayesNet
+      The Bayesian network.
+  size : int or str, optional
+      Size of the rendered graph.
+  nodeColor : dict, optional
+      A nodeMap of values to be shown as color nodes.
+  arcWidth : dict, optional
+      A arcMap of values to be shown as bold arcs.
+  cmap : matplotlib.colors.Colormap, optional
+      Color map to show the node values.
   """
   if size is None:
     size = gum.config["notebook", "default_graph_size"]
@@ -180,10 +197,14 @@ def showBN(bn, size=None, nodeColor=None, arcWidth=None, arcColor=None, cmap=Non
 
 def showProba(p, scale=1.0):
   """
-  Show a mono-dim Tensor
+  Show a mono-dim Tensor.
 
-  :param p: the mono-dim Tensor
-  :return:
+  Parameters
+  ----------
+  p : pyagrum.Tensor
+      The mono-dim Tensor.
+  scale : float, optional
+      Scale factor.
   """
   _ = proba2histo(p, scale)
   #  fig.patch.set_facecolor(gum.config["notebook", "figure_facecolor"])
@@ -193,11 +214,16 @@ def showProba(p, scale=1.0):
 
 def showPosterior(bn, evs, target):
   """
-  shortcut for showProba(gum.getPosterior(bn,evs,target))
+  Shortcut for showProba(gum.getPosterior(bn, evs, target)).
 
-  :param bn: the BayesNet
-  :param evs: map of evidence
-  :param target: name of target variable
+  Parameters
+  ----------
+  bn : pyagrum.BayesNet
+      The Bayesian network.
+  evs : dict
+      Map of evidence.
+  target : str
+      Name of target variable.
   """
   showProba(gum.getPosterior(bn, evs=evs, target=target))
 
@@ -206,18 +232,34 @@ def showMRF(
   mrf, view=None, size=None, nodeColor=None, factorColor=None, edgeWidth=None, edgeColor=None, cmap=None, cmapEdge=None
 ):
   """
-  show a Markov random field
+  Show a Markov random field.
 
-  :param mrf: the Markov random field
-  :param view: 'graph' | 'factorgraph’ | None (default)
-  :param size: size of the rendered graph
-  :param nodeColor: a nodeMap of values (between 0 and 1) to be shown as color of nodes (with special colors for 0 and 1)
-  :param factorColor: a function returning a value (beeween 0 and 1) to be shown as a color of factor. (used when view='factorgraph')
-  :param edgeWidth: a edgeMap of values to be shown as width of edges  (used when view='graph')
-  :param edgeColor: a edgeMap of values (between 0 and 1) to be shown as color of edges (used when view='graph')
-  :param cmap: color map to show the colors
-  :param cmapEdge: color map to show the edge color if distinction is needed
-  :return: the graph
+  Parameters
+  ----------
+  mrf : pyagrum.MarkovRandomField
+      The Markov random field.
+  view : str, optional
+      ‘graph’ | ‘factorgraph’ | None (default).
+  size : int or str, optional
+      Size of the rendered graph.
+  nodeColor : dict, optional
+      A nodeMap of values (between 0 and 1) to be shown as color of nodes.
+  factorColor : callable, optional
+      A function returning a value (between 0 and 1) to be shown as a color of factor.
+      Used when view=’factorgraph’.
+  edgeWidth : dict, optional
+      A edgeMap of values to be shown as width of edges. Used when view=’graph’.
+  edgeColor : dict, optional
+      A edgeMap of values (between 0 and 1) to be shown as color of edges. Used when view=’graph’.
+  cmap : matplotlib.colors.Colormap, optional
+      Color map to show the node colors.
+  cmapEdge : matplotlib.colors.Colormap, optional
+      Color map to show the edge color if distinction is needed.
+
+  Returns
+  -------
+  pydot.Dot
+      The graph.
   """
   if view is None:
     view = gum.config["notebook", "default_markovrandomfield_view"]
@@ -238,11 +280,19 @@ def showMRF(
 
 def showInfluenceDiagram(diag, size=None):
   """
-  show an influence diagram as a graph
+  Show an influence diagram as a graph.
 
-  :param diag: the influence diagram
-  :param size: size of the rendered graph
-  :return: the representation of the influence diagram
+  Parameters
+  ----------
+  diag : pyagrum.InfluenceDiagram
+      The influence diagram.
+  size : int or str, optional
+      Size of the rendered graph.
+
+  Returns
+  -------
+  pydot.Dot
+      The representation of the influence diagram.
   """
   if size is None:
     size = gum.config["influenceDiagram", "default_id_size"]
@@ -278,11 +328,14 @@ def showTensor(p):
 
 def show(model, size=None):
   """
-  propose a (visual) representation of a model in ipython console
+  Propose a (visual) representation of a model in ipython console.
 
-  :param GraphicalModel model: the model to show (pyagrum.BayesNet, pyagrum.MarkovRandomField, pyagrum.InfluenceDiagram or pyagrum.Tensor)
-
-  :param int size: optional size for the graphical model (no effect for Tensor)
+  Parameters
+  ----------
+  model : pyagrum.BayesNet or pyagrum.MarkovRandomField or pyagrum.InfluenceDiagram or pyagrum.Tensor
+      The model to show.
+  size : int, optional
+      Size for the graphical model (no effect for Tensor).
   """
   if isinstance(model, gum.BayesNet):
     showBN(model, size)

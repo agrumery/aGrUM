@@ -60,8 +60,16 @@ def _splitName(name):
     - "Xt" for timeslice t in a 2TBN
     - "X"+str(i) for timelice i with integer i>0 in unrolled BN
     - other naes are not in a timeslice
-  @argument name : str (name of the dynamic variable)
-  @return static_name,timeslice with timeslice =noTimeCluster,"t" or str(i)
+
+  Parameters
+  ----------
+  name : str
+      Name of the dynamic variable.
+
+  Returns
+  -------
+  tuple
+      (static_name, timeslice) with timeslice = noTimeCluster, "t", or str(i).
   """
   if name[-1] == "t":
     return name[:-1], "t"
@@ -79,14 +87,20 @@ def _splitName(name):
 
 def _isInFirstTimeSlice(name):
   """
-  @return true if there is a 0 at the end of name
+  Returns
+  -------
+  bool
+      True if there is a 0 at the end of name.
   """
   return name[-1] == "0"
 
 
 def _isInSecondTimeSlice(name):
   """
-  @return true if there is a t at the end of name
+  Returns
+  -------
+  bool
+      True if there is a t at the end of name.
   """
   return name[-1] == "t"
 
@@ -97,7 +111,10 @@ def _isInNoTimeSlice(name):
 
 def realNameFrom2TBNname(name, ts):
   """
-  @return dynamic name from static name and timeslice (no check)
+  Returns
+  -------
+  str
+      The dynamic name from static name and timeslice (no check).
   """
   return f"{name[:-1]}{ts}" if not _isInNoTimeSlice(name) else name
 
@@ -331,13 +348,20 @@ def unroll2TBN(dbn, nbr):
 
 def plotFollowUnrolled(lovars, dbn, T, evs, vars_title=None):
   """
-  plot the dynamic evolution of a list of vars with a dBN
+  Plot the dynamic evolution of a list of vars with a dBN.
 
-  :param lovars: list of variables to follow
-  :param dbn: the unrolled dbn
-  :param T: the time range
-  :param evs: observations
-  :param vars_title: string for default or a dictionary with the variable name as key and the respective title as value.
+  Parameters
+  ----------
+  lovars : list
+      List of variables to follow.
+  dbn : pyagrum.BayesNet
+      The unrolled dBN.
+  T : int
+      The time range.
+  evs : dict
+      Observations.
+  vars_title : str or dict, optional
+      String for default title or a dictionary with the variable name as key and its title as value.
   """
   ie = gum.LazyPropagation(dbn)
   ie.setEvidence(evs)
@@ -380,11 +404,17 @@ def plotFollowUnrolled(lovars, dbn, T, evs, vars_title=None):
 
 def plotFollow(lovars, twoTdbn, T, evs):
   """
-  plots modifications of variables in a 2TDN knowing the size of the time window (T) and the evidence on the sequence.
+  Plot modifications of variables in a 2TBN knowing the size of the time window (T) and the evidence on the sequence.
 
-  :param lovars: list of variables to follow
-  :param twoTdbn: the two-timeslice dbn
-  :param T: the time range
-  :param evs: observations
+  Parameters
+  ----------
+  lovars : list
+      List of variables to follow.
+  twoTdbn : pyagrum.BayesNet
+      The two-timeslice dBN.
+  T : int
+      The time range.
+  evs : dict
+      Observations.
   """
   plotFollowUnrolled(lovars, unroll2TBN(twoTdbn, T), T, evs)

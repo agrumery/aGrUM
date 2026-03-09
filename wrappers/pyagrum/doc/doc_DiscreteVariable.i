@@ -54,7 +54,7 @@ DiscreteVariable is the (abstract) base class for discrete random variables.
 Returns
 -------
   pyagrum.DiscreteVariable
-	a copy of the DiscreteVariable
+    a copy of the DiscreteVariable
 "
 
 %feature("docstring") gum::DiscreteVariable::domain
@@ -62,7 +62,7 @@ Returns
 Returns
 -------
 str
-	the domain of the variable
+    the domain of the variable
 "
 
 %feature("docstring") gum::DiscreteVariable::stype
@@ -70,7 +70,7 @@ str
 Returns
 -------
 str
-	a description of its type
+    a description of its type
 "
 
 %feature("docstring") gum::DiscreteVariable::domainSize
@@ -78,7 +78,7 @@ str
 Returns
 -------
 int
-	the number of modalities in the variable domain
+    the number of modalities in the variable domain
 "
 
 %feature("docstring") gum::DiscreteVariable::empty
@@ -86,7 +86,7 @@ int
 Returns
 -------
 bool
-	True if the domain size < 2
+    True if the domain size < 2
 "
 
 %feature("docstring") gum::DiscreteVariable::index
@@ -94,12 +94,12 @@ bool
 Parameters
 ----------
 label : str
-	a label
+    a label
 
 Returns
 -------
 int
-	the indice of the label
+    the index of the label
 "
 
 %feature("docstring") gum::DiscreteVariable::label
@@ -107,17 +107,17 @@ int
 Parameters
 ----------
 i : int
-	the index of the label we wish to return
+    the index of the label we wish to return
 
 Returns
 -------
 str
-	the indice-th label
+    the label at the given index
 
 Raises
 ------
 pyagrum.OutOfBounds
-	If the variable does not contain the label
+    If the variable does not contain the label
 "
 
 %feature("docstring") gum::DiscreteVariable::labels
@@ -125,20 +125,20 @@ pyagrum.OutOfBounds
 Returns
 -------
 tuple
-	a tuple containing the labels
+    a tuple containing the labels
 "
 
 %feature("docstring") gum::DiscreteVariable::numerical
 "
 Parameters
 ----------
-indice : int
-	an index
+index : int
+    an index
 
 Returns
 -------
 float
-	the numerical representation of the indice-th value
+    the numerical representation of the value at the given index
 "
 
 %feature("docstring") gum::DiscreteVariable::toDiscretizedVar
@@ -146,12 +146,12 @@ float
 Returns
 -------
 pyagrum.DiscretizedVariable
-	the discretized variable
+    the discretized variable
 
 Raises
 ------
 pyagrum.RuntimeError
-	If the variable is not a DiscretizedVariable
+    If the variable is not a DiscretizedVariable
 "
 
 %feature("docstring") gum::DiscreteVariable::toLabelizedVar
@@ -159,12 +159,12 @@ pyagrum.RuntimeError
 Returns
 -------
 pyagrum.LabelizedVariable
-	the labelized variable
+    the labelized variable
 
 Raises
 ------
 pyagrum.RuntimeError
-	If the variable is not a LabelizedVariable
+    If the variable is not a LabelizedVariable
 "
 
 %feature("docstring") gum::DiscreteVariable::toRangeVar
@@ -172,12 +172,12 @@ pyagrum.RuntimeError
 Returns
 -------
 pyagrum.RangeVariable
-	the range variable
+    the range variable
 
 Raises
 ------
 pyagrum.RuntimeError
-	If the variable is not a RangeVariable
+    If the variable is not a RangeVariable
 "
 
 %feature("docstring") gum::DiscreteVariable::toStringWithDescription
@@ -185,7 +185,7 @@ pyagrum.RuntimeError
 Returns
 -------
 str
-	a description of the variable
+    a description of the variable
 "
 
 %feature("docstring") gum::DiscreteVariable::varType
@@ -195,9 +195,9 @@ returns the type of variable
 Returns
 -------
 int :
-	the type of the variable.
+    the type of the variable.
 
-	0: DiscretizedVariable, 1: LabelizedVariable, 2: IntegerVariable, 3: RangeVariable, 4:
+    0: DiscretizedVariable, 1: LabelizedVariable, 2: IntegerVariable, 3: NumericalDiscreteVariable, 4: RangeVariable
 "
 
 %feature("docstring") gum::DiscreteVariable::asLabelizedVar
@@ -272,7 +272,7 @@ gum.DiscretizedVar
 
 %feature("docstring") gum::DiscreteVariable::closestIndex
 "
-For numerical discrete variables (all except :class:`gum.LabelizedVariable`), this method returns the index of the closest value to a given float value in the variable's domain.
+For numerical discrete variables (all except gum.LabelizedVariable), this method returns the index of the closest value to a given float value in the variable's domain.
 
 Parameters
 ----------
@@ -286,12 +286,12 @@ int
 Raises
 ------
 gum.NotImplementedYet
-  if the variable is not numerical discrete (i.e., if it is a :class:`gum.LabelizedVariable`).
+  if the variable is not numerical discrete (i.e., if it is a gum.LabelizedVariable).
 "
 
 %feature("docstring") gum::DiscreteVariable::closestLabel
 "
-For numerical discrete variables (all except :class:`gum.LabelizedVariable`), this method returns the label of the closest value to a given float value in the variable's domain.
+For numerical discrete variables (all except gum.LabelizedVariable), this method returns the label of the closest value to a given float value in the variable's domain.
 
 Parameters
 ----------
@@ -305,5 +305,5 @@ str
 Raises
 ------
 gum.InvalidArgument
-  if the variable is not numerical discrete (i.e., if it is a :class:`gum.LabelizedVariable`).
+  if the variable is not numerical discrete (i.e., if it is a gum.LabelizedVariable).
 "

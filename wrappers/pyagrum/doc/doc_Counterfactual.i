@@ -57,8 +57,8 @@ The computation follows the three-step algorithm from Pearl (2018),
   3. **Prediction** -- evaluate the causal impact of the intervention on
      the twin model to obtain the counterfactual distribution of *on*.
 
-Note
-----
+Notes
+-----
 Prefer using the high-level function :func:`pyagrum.causal.counterfactual`
 instead of constructing a Counterfactual object directly.
 
@@ -98,17 +98,17 @@ prior distributions in a copy of the model with those posteriors.
 Parameters
 ----------
 cm : pyagrum.causal.CausalModel
-	The original causal model.
+    The original causal model.
 profile : dict of str → str
-	The factual observation as ``{variable_name: value_name}``.
+    The factual observation as ``{variable_name: value_name}``.
 whatif : set of str
-	Intervened variables in the counterfactual scenario. These are excluded
-	from the set of idiosyncratic nodes that get updated.
+    Intervened variables in the counterfactual scenario. These are excluded
+    from the set of idiosyncratic nodes that get updated.
 
 Returns
 -------
 pyagrum.causal.CausalModel
-	The twin causal model ready for the prediction step.
+    The twin causal model ready for the prediction step.
 
 See Also
 --------
@@ -130,7 +130,7 @@ Return the original causal model.
 Returns
 -------
 pyagrum.causal.CausalModel
-	The original causal model passed to the constructor.
+    The original causal model passed to the constructor.
 "
 
 %feature("docstring") gum::Counterfactual::twinModel
@@ -143,7 +143,7 @@ priors for parentless nodes (based on the observed profile).
 Returns
 -------
 pyagrum.causal.CausalModel
-	The twin model.
+    The twin model.
 "
 
 %feature("docstring") gum::Counterfactual::getResult
@@ -155,7 +155,7 @@ The formula is evaluated on the twin model.
 Returns
 -------
 pyagrum.causal.CausalFormula
-	The identified causal formula on the twin model.
+    The identified causal formula on the twin model.
 "
 
 %feature("docstring") gum::Counterfactual::value
@@ -165,8 +165,8 @@ Return the counterfactual distribution as a tensor.
 Returns
 -------
 pyagrum.Tensor
-	The distribution P(on | do(whatif)) evaluated on the twin model,
-	optionally sliced by *values* if provided at construction.
+    The distribution P(on | do(whatif)) evaluated on the twin model,
+    optionally sliced by *values* if provided at construction.
 "
 
 %feature("docstring") gum::Counterfactual::on
@@ -176,7 +176,7 @@ Return the names of the target variables.
 Returns
 -------
 set of str
-	Variable names in the on-set.
+    Variable names in the on-set.
 "
 
 %feature("docstring") gum::Counterfactual::whatif
@@ -186,7 +186,7 @@ Return the names of the intervened variables.
 Returns
 -------
 set of str
-	Variable names in the whatif-set.
+    Variable names in the whatif-set.
 "
 
 %feature("docstring") gum::Counterfactual::profile
@@ -196,7 +196,7 @@ Return the factual evidence used for abduction.
 Returns
 -------
 dict of str → str
-	The observed profile as ``{variable_name: value_name}``.
+    The observed profile as ``{variable_name: value_name}``.
 "
 
 %feature("docstring") gum::Counterfactual::values
@@ -206,8 +206,8 @@ Return the counterfactual assignments for the whatif variables.
 Returns
 -------
 dict of str → str
-	The counterfactual values as ``{variable_name: value_name}``.
-	Empty dict if no specific values were requested.
+    The counterfactual values as ``{variable_name: value_name}``.
+    Empty dict if no specific values were requested.
 "
 
 %feature("docstring") gum::Counterfactual::toString
@@ -217,5 +217,5 @@ Return a string description of the counterfactual query and its result.
 Returns
 -------
 str
-	Human-readable summary of the counterfactual computation.
+    Human-readable summary of the counterfactual computation.
 "

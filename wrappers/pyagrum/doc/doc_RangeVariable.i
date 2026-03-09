@@ -88,7 +88,7 @@ False
 Returns
 -------
 pyagrum.RangeVariable
-	a copy of the RangeVariable
+    a copy of the RangeVariable
 "
 
 %feature("docstring") gum::RangeVariable::belongs

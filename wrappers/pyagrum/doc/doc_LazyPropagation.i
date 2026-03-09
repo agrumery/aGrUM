@@ -69,6 +69,6 @@ Find the Most Probable Explanation (MPE) given the evidence (if any) added into 
 
 Returns
 -------
-Tuple[pyagrum.Instantiation, float]
+tuple
     A tuple with the instantiation of all the variables of the Bayes net representing the Most Probable Explanation and the log2 of its posterior probability
 "

@@ -56,7 +56,7 @@ Returns the dimension (the number of free parameters) in this BayesNet.
 Returns
 -------
 int
-	the dimension of the BayesNet
+    the dimension of the BayesNet
 "
 
 %feature("docstring") gum::IBayesNet::jointProbability
@@ -64,12 +64,12 @@ int
 Parameters
 ----------
 i : pyagrum.instantiation
-	an instantiation of the variables
+    an instantiation of the variables
 
 Returns
 -------
 float
-	a parameter of the joint probability for the BayesNet
+    a parameter of the joint probability for the BayesNet
 
 Warnings
 --------
@@ -81,12 +81,12 @@ a variable not present in the instantiation is assumed to be instantiated to 0
 Parameters
 ----------
 i : pyagrum.instantiation
-	an instantiation of the variables
+    an instantiation of the variables
 
 Returns
 -------
 float
-	a parameter of the log joint probability for the BayesNet
+    a parameter of the log joint probability for the BayesNet
 
 Warnings
 --------
@@ -98,7 +98,7 @@ a variable not present in the instantiation is assumed to be instantiated to 0
 Returns
 -------
 float
-	The biggest value (not equal to 1) in the CPTs of the BayesNet
+    The biggest value (not equal to 1) in the CPTs of the BayesNet
 "
 
 %feature("docstring") gum::IBayesNet::maxParam
@@ -114,7 +114,7 @@ float
 Returns
 -------
 int
-	the biggest domain size among the variables of the BayesNet
+    the biggest domain size among the variables of the BayesNet
 "
 
 %feature("docstring") gum::IBayesNet::minNonZeroParam
@@ -146,7 +146,7 @@ str
 Returns
 -------
 list
-	The lisf of arcs in the IBayesNet
+    The lisf of arcs in the IBayesNet
 "
 
 %feature("docstring") gum::IBayesNet::children
@@ -159,7 +159,7 @@ id : int
 Returns
 -------
 Set
-	the set of all the children
+    the set of all the children
 "
 
 %feature("docstring") gum::IBayesNet::cpt
@@ -169,19 +169,19 @@ Returns the CPT of a variable.
 Parameters
 ----------
 VarId : int
-	A variable's id in the pyagrum.IBayesNet.
+    A variable's id in the pyagrum.IBayesNet.
 name : str
-	A variable's name in the pyagrum.IBayesNet.
+    A variable's name in the pyagrum.IBayesNet.
 
 Returns
 -------
 pyagrum.Tensor
-	The variable's CPT.
+    The variable's CPT.
 
 Raises
 ------
 pyagrum.NotFound
-	If no variable's id matches varId.
+    If no variable's id matches varId.
 "
 
 %feature("docstring") gum::IBayesNet::parents
@@ -189,7 +189,7 @@ pyagrum.NotFound
 Parameters
 ----------
 id :
-	The id of the child node
+    The id of the child node
 
 Returns
 -------
@@ -201,7 +201,7 @@ Set
 "
 Returns
 -------
-Set[int]
+set
     the set of ids
 "
 
@@ -212,14 +212,14 @@ Returns, given one or many targets and a list of variables, the minimal set of t
 Parameters
 ----------
 target : int
-	The id of the target
-targets : List[int]
-	The ids of the targets
-list : List[int]
-	The list of available variables
+    The id of the target
+targets : list of int
+    The ids of the targets
+list : list of int
+    The list of available variables
 
 Returns
 -------
-Set[int]
-	The minimal set of variables
+set
+    The minimal set of variables
 "

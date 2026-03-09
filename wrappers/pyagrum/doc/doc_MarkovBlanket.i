@@ -80,7 +80,7 @@ str
 Parameters
 ----------
 id :
-	The id of the child node
+    The id of the child node
 
 Returns
 -------
@@ -98,7 +98,7 @@ id : int
 Returns
 -------
 Set
-	the set of all the children
+    the set of all the children
 "
 
 %feature("docstring") gum::MarkovBlanket::sizeArcs
@@ -114,7 +114,7 @@ int
 Returns
 -------
 List
-	the list of the arcs
+    the list of the arcs
 "
 
 %feature("docstring") gum::MarkovBlanket::nodes
@@ -138,7 +138,7 @@ int
 Returns
 -------
 int
-	the number of nodes in the graph
+    the number of nodes in the graph
 "
 
 %feature("docstring") gum::MarkovBlanket::hasSameStructure
@@ -146,7 +146,7 @@ int
 Parameters
 ----------
 pyagrum.DAGmodel
-	a direct acyclic model
+    a direct acyclic model
 
 Returns
 -------

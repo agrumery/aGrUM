@@ -89,7 +89,7 @@ idClique : int
 
 Returns
 -------
-Set[int]
+set
   The set of nodes included in the clique
 
 Raises
@@ -109,7 +109,7 @@ clique : int
 
 Returns
 -------
-Set[int]
+set
   the separator included in a given edge
 
 Raises
@@ -202,7 +202,7 @@ clique : int
 
 Returns
 -------
-Set[int]
+set
   the separator included in a given edge
 
 Raises
@@ -219,7 +219,7 @@ Parameters
 ----------
 idClique : int
   the id of the clique
-new_clique : Set[int]
+new_clique : set
   the new set of nodes to be included in the clique
 
 Raises

@@ -58,7 +58,7 @@ LabelizedVariable(aName, aDesc='', labels) -> LabelizedVariable
     Parameters:
         - **aName** (str) -- the name of the variable
         - **aDesc** (str) -- the (optional) description of the variable
-        - **labels** (List[str]) -- the labels to create
+        - **labels** (list of str) -- the labels to create
 
 LabelizedVariable(aLDRV) -> LabelizedVariable
     Parameters:
@@ -72,7 +72,7 @@ Examples
 >>> print(va)
 a:Labelized(<0,1,2>)
 >>> va.addLabel('foo')
-(gum::LabelizedVariable@0x7fc4c840dd90) a:Labelized(<0,1,2,foo>)
+(pyagrum.LabelizedVariable@0x7fc4c840dd90) a:Labelized(<0,1,2,foo>)
 >>> va.changeLabel(1,'bar')
 >>> print(va)
 a:Labelized(<0,bar,2,foo>)
@@ -87,7 +87,7 @@ False
 'C'
 >>> vc=gum.LabelizedVariable('b','b',['one','two','three'])
 >>> vc
-(gum::LabelizedVariable@0x7fc4c840c130) b:Labelized(<one,two,three>)
+(pyagrum.LabelizedVariable@0x7fc4c840c130) b:Labelized(<one,two,three>)
 "
 
 %feature("docstring") gum::LabelizedVariable::changeLabel
@@ -97,9 +97,9 @@ Change the label at the specified index
 Parameters
 ----------
 pos : int
-	the index of the label to be changed
+    the index of the label to be changed
 aLabel : str
-	the label to be added to the labelized variable
+    the label to be added to the labelized variable
 
 Raises
 ------
@@ -121,12 +121,12 @@ Indicates whether the variable already has the label passed in argument
 Parameters
 ----------
 aLabel : str
-	the label to be tested
+    the label to be tested
 
 Returns
 -------
 bool
-	True if the label already exists
+    True if the label already exists
 "
 
 %feature("docstring") gum::LabelizedVariable::domain
@@ -142,5 +142,5 @@ str
 Returns
 -------
 pyagrum.LabelizedVariable
-	a copy of the LabelizedVariable
+    a copy of the LabelizedVariable
 "

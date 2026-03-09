@@ -59,14 +59,13 @@ If a variable is added to the fragment but not its parents, there is no CPT cons
 
 Parameters
 ----------
-
 n : int, str (optional)
-	the id or the name of the variable. If no argument, the function checks all the variables.
+    the id or the name of the variable. If no argument, the function checks all the variables.
 
 Returns
 -------
 boolean
-	True if the variable(s) is consistant.
+    True if the variable(s) is consistant.
 
 Raises
 ------
@@ -81,7 +80,7 @@ Add the variable and all its ascendants in the fragment. No inconsistant node ar
 Parameters
 ----------
 n : int, str
-	the id or the name of the variable.
+    the id or the name of the variable.
 
 Raises
 ------
@@ -96,7 +95,7 @@ Install a local CPT for a node. Doing so, it changes the parents of the node in 
 Parameters
 ----------
 n : int, str
-	the id or the name of the variable.
+    the id or the name of the variable.
 pot : Tensor
   the Tensor to install
 
@@ -113,7 +112,7 @@ Install a local marginal for a node. Doing so, it removes the parents of the nod
 Parameters
 ----------
 n : int, str
-	the id or the name of the variable.
+    the id or the name of the variable.
 pot : Tensor
   the Tensor (marginal) to install
 
@@ -132,7 +131,7 @@ and the node is consistant, or the parents are not in the fragment and the node 
 Parameters
 ----------
 n : int, str
-	the id or the name of the variable.
+    the id or the name of the variable.
 
 Raises
 ------
@@ -147,7 +146,7 @@ Check if a node is in the fragment
 Parameters
 ----------
 n : int, str
-	the id or the name of the variable.
+    the id or the name of the variable.
 "
 
 %feature("docstring") gum::BayesNetFragment::uninstallCPT
@@ -157,7 +156,7 @@ Remove a local CPT. The fragment can become inconsistant.
 Parameters
 ----------
 n : int, str
-	the id or the name of the variable.
+    the id or the name of the variable.
 
 Raises
 ------
@@ -172,7 +171,7 @@ Remove a node from the fragment. The fragment can become inconsistant.
 Parameters
 ----------
 n : int, str
-	the id or the name of the variable.
+    the id or the name of the variable.
 
 Raises
 ------
