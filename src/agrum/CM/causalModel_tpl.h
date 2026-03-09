@@ -353,10 +353,7 @@ namespace gum {
                 "CausalModel::backDoor: 'cause' and 'effect' must be observed (non-latent).");
     }
 
-    DoorCriteria::EnumerationOptions opts;
-    opts.excluded_nodes = lat;   // never allow latents in adjustment sets
-
-    const auto candidates = DoorCriteria::enumerateBackdoorSets(_causalDAG_, cause, effect, opts);
+    const auto candidates = DoorCriteria::enumerateBackdoorSets(_causalDAG_, cause, effect, lat);
     if (candidates.empty()) return NodeSet{};
     return candidates.front();   // first valid set
   }
@@ -370,10 +367,7 @@ namespace gum {
                 "CausalModel::frontDoor: 'cause' and 'effect' must be observed (non-latent).");
     }
 
-    DoorCriteria::EnumerationOptions opts;
-    opts.excluded_nodes = lat;   // never allow latents in adjustment sets
-
-    const auto candidates = DoorCriteria::enumerateFrontdoorSets(_causalDAG_, cause, effect, opts);
+    const auto candidates = DoorCriteria::enumerateFrontdoorSets(_causalDAG_, cause, effect, lat);
     if (candidates.empty()) return NodeSet{};
     return candidates.front();   // first valid set
   }

@@ -83,8 +83,7 @@ namespace gum_tests {
       gum::NodeSet Z;                               // {}
       CHECK(gum::DoorCriteria::satisfiesBackdoorCriterion(dag, idA, idC, Z));
 
-      gum::DoorCriteria::EnumerationOptions opts;   // defaults ok
-      auto                                  sets = gum::DoorCriteria::enumerateBackdoorSets(dag, idA, idC, opts);
+      auto sets = gum::DoorCriteria::enumerateBackdoorSets(dag, idA, idC);
 
       // expected == [{ }]
       gum::DoorCriteria::NodeSetVec expected;
@@ -93,7 +92,7 @@ namespace gum_tests {
       GUM_CHECK_EQ(sets, expected);
 
       // Test stopAtFirst returns only the first and is valid
-      auto sets_first = gum::DoorCriteria::enumerateBackdoorSets(dag, idA, idC, opts, true);
+      auto sets_first = gum::DoorCriteria::enumerateBackdoorSets(dag, idA, idC, gum::NodeSet{}, 0, true, true);
       GUM_CHECK_EQ(sets_first.size(), 1u);
       CHECK(gum::DoorCriteria::satisfiesBackdoorCriterion(dag, idA, idC, sets_first[0]));
     }
@@ -126,7 +125,7 @@ namespace gum_tests {
       GUM_CHECK_EQ(sets, expected);
 
       // Test stopAtFirst returns only the first and is valid
-      auto sets_first = gum::DoorCriteria::enumerateBackdoorSets(dag, idX, idY, true);
+      auto sets_first = gum::DoorCriteria::enumerateBackdoorSets(dag, idX, idY, gum::NodeSet{}, 0, true, true);
       GUM_CHECK_EQ(sets_first.size(), 1u);
       CHECK(gum::DoorCriteria::satisfiesBackdoorCriterion(dag, idX, idY, sets_first[0]));
     }
@@ -142,14 +141,11 @@ namespace gum_tests {
       auto              idX = bn.idFromName("X");
       auto              idY = bn.idFromName("Y");
 
-      gum::DoorCriteria::EnumerationOptions opts_min;   // default only_minimal=true
-      auto                                  mins = gum::DoorCriteria::enumerateBackdoorSets(dag, idX, idY, opts_min);
+      auto mins = gum::DoorCriteria::enumerateBackdoorSets(dag, idX, idY);
       GUM_CHECK_EQ(mins.size(), 1u);
       CHECK((mins[0].contains(idU) && mins[0].size() == 1));
 
-      gum::DoorCriteria::EnumerationOptions opts_all;
-      opts_all.only_minimal = false;
-      auto all              = gum::DoorCriteria::enumerateBackdoorSets(dag, idX, idY, opts_all);
+      auto all = gum::DoorCriteria::enumerateBackdoorSets(dag, idX, idY, gum::NodeSet{}, 0, false);
 
       // must include {U} and {U,W} (order is deterministic but we just check membership)
       bool has_U  = false;
@@ -185,7 +181,7 @@ namespace gum_tests {
       GUM_CHECK_EQ(fds, fds_expected);
 
       // Test stopAtFirst returns only the first and is valid
-      auto fds_first = gum::DoorCriteria::enumerateFrontdoorSets(dag, idX, idY, true);
+      auto fds_first = gum::DoorCriteria::enumerateFrontdoorSets(dag, idX, idY, gum::NodeSet{}, 0, true, true);
       GUM_CHECK_EQ(fds_first.size(), 1u);
       CHECK(gum::DoorCriteria::satisfiesFrontdoorCriterion(dag, idX, idY, fds_first[0]));
     }
@@ -328,16 +324,13 @@ namespace gum_tests {
       GUM_CHECK_EQ(sets_min, expected_min);
 
       // Excluding U1 ⇒ no valid backdoor set remains
-      gum::DoorCriteria::EnumerationOptions opts_excl;
-      opts_excl.excluded_nodes.insert(idU1);
-      auto sets_excl = gum::DoorCriteria::enumerateBackdoorSets(dag, idX, idY, opts_excl);
+      gum::NodeSet excl_U1;
+      excl_U1.insert(idU1);
+      auto sets_excl = gum::DoorCriteria::enumerateBackdoorSets(dag, idX, idY, excl_U1);
       CHECK(sets_excl.empty());
 
       // Limiting cardinality to 1 ⇒ cannot pick both U1 and U2 ⇒ empty
-      gum::DoorCriteria::EnumerationOptions opts_cap1;
-      opts_cap1.max_cardinality = 1;
-      opts_cap1.only_minimal    = false;   // even with non-minimal, cap=1 blocks {U1,U2}
-      auto sets_cap1            = gum::DoorCriteria::enumerateBackdoorSets(dag, idX, idY, opts_cap1);
+      auto sets_cap1 = gum::DoorCriteria::enumerateBackdoorSets(dag, idX, idY, gum::NodeSet{}, 1, false);   // even with non-minimal, cap=1 blocks {U1,U2}
       CHECK(sets_cap1.empty());
     }
 
@@ -373,16 +366,13 @@ namespace gum_tests {
       GUM_CHECK_EQ(fds, expected_fds);
 
       // Excluding W1 ⇒ cannot intercept both paths ⇒ empty
-      gum::DoorCriteria::EnumerationOptions opts_excl;
-      opts_excl.excluded_nodes.insert(idW1);
-      auto fds_excl = gum::DoorCriteria::enumerateFrontdoorSets(dag, idX, idY, opts_excl);
+      gum::NodeSet excl_W1;
+      excl_W1.insert(idW1);
+      auto fds_excl = gum::DoorCriteria::enumerateFrontdoorSets(dag, idX, idY, excl_W1);
       CHECK(fds_excl.empty());
 
       // Limiting cardinality to 1 ⇒ cannot pick both mediators ⇒ empty
-      gum::DoorCriteria::EnumerationOptions opts_cap1;
-      opts_cap1.max_cardinality = 1;
-      opts_cap1.only_minimal    = false;   // even allowing non-minimal, cap=1 blocks {W1,W2}
-      auto fds_cap1             = gum::DoorCriteria::enumerateFrontdoorSets(dag, idX, idY, opts_cap1);
+      auto fds_cap1 = gum::DoorCriteria::enumerateFrontdoorSets(dag, idX, idY, gum::NodeSet{}, 1, false);   // even allowing non-minimal, cap=1 blocks {W1,W2}
       CHECK(fds_cap1.empty());
     }
 
@@ -484,9 +474,7 @@ namespace gum_tests {
       auto idX = bn.idFromName("X");
       auto idY = bn.idFromName("Y");
 
-      gum::DoorCriteria::EnumerationOptions opts;
-      opts.only_minimal = false;
-      auto sets         = gum::DoorCriteria::enumerateBackdoorSets(dag, idX, idY, opts);
+      auto sets = gum::DoorCriteria::enumerateBackdoorSets(dag, idX, idY, gum::NodeSet{}, 0, false);
 
       auto toVec = [](const gum::NodeSet& s) {
         std::vector< gum::NodeId > v;
@@ -637,9 +625,7 @@ namespace gum_tests {
 
       // ---------- Non-minimal enumeration (only_minimal=false) ----------
       {
-        gum::DoorCriteria::EnumerationOptions opts_all;
-        opts_all.only_minimal = false;
-        auto fds_all          = gum::DoorCriteria::enumerateFrontdoorSets(dag, idX, idY, opts_all);
+        auto fds_all = gum::DoorCriteria::enumerateFrontdoorSets(dag, idX, idY, gum::NodeSet{}, 0, false);
 
         // Must include at least the two minimal solutions
         auto contains_all = [&](const gum::NodeSet& target) {
@@ -698,9 +684,7 @@ namespace gum_tests {
       CHECK(fds_min[0] == ZZ);
 
       // --- Enumeration (non-minimal) must NEVER include X or Y
-      gum::DoorCriteria::EnumerationOptions opts_all;
-      opts_all.only_minimal = false;
-      auto fds_all          = gum::DoorCriteria::enumerateFrontdoorSets(dag, idX, idY, opts_all);
+      auto fds_all = gum::DoorCriteria::enumerateFrontdoorSets(dag, idX, idY, gum::NodeSet{}, 0, false);
 
       // Positive control: {Z} still present
       auto contains = [&](const gum::NodeSet& target) {
@@ -752,9 +736,7 @@ namespace gum_tests {
       auto idU = bn.idFromName("U");
       auto idV = bn.idFromName("V");
 
-      gum::DoorCriteria::EnumerationOptions opts;
-      opts.only_minimal = false;
-      auto sets         = gum::DoorCriteria::enumerateBackdoorSets(dag, idX, idY, opts);
+      auto sets = gum::DoorCriteria::enumerateBackdoorSets(dag, idX, idY, gum::NodeSet{}, 0, false);
 
       GUM_CHECK_EQ(sets.size(), 2u);
 
@@ -793,9 +775,7 @@ namespace gum_tests {
       auto idV = bn.idFromName("V");
       auto idW = bn.idFromName("W");
 
-      gum::DoorCriteria::EnumerationOptions opts;
-      opts.only_minimal = false;
-      auto sets         = gum::DoorCriteria::enumerateBackdoorSets(dag, idX, idY, opts);
+      auto sets = gum::DoorCriteria::enumerateBackdoorSets(dag, idX, idY, gum::NodeSet{}, 0, false);
 
       GUM_CHECK_EQ(sets.size(), 4u);
 
@@ -861,9 +841,7 @@ namespace gum_tests {
       CHECK(fds_min[0] == ZB);
 
       // Non-minimal mode still must not introduce A, X, or Y.
-      gum::DoorCriteria::EnumerationOptions opts_all;
-      opts_all.only_minimal = false;
-      auto fds_all          = gum::DoorCriteria::enumerateFrontdoorSets(dag, idX, idY, opts_all);
+      auto fds_all = gum::DoorCriteria::enumerateFrontdoorSets(dag, idX, idY, gum::NodeSet{}, 0, false);
       GUM_CHECK_EQ(fds_all.size(), 1u);
       CHECK(fds_all[0] == ZB);
 

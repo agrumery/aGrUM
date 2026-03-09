@@ -158,11 +158,13 @@ namespace gum {
     return true;
   }
 
-  DoorCriteria::NodeSetVec DoorCriteria::enumerateBackdoorSets(const DAG&                dag,
-                                                               NodeId                    X,
-                                                               NodeId                    Y,
-                                                               const EnumerationOptions& opts,
-                                                               bool stopAtFirst) {
+  DoorCriteria::NodeSetVec DoorCriteria::enumerateBackdoorSets(const DAG&     dag,
+                                                               NodeId         X,
+                                                               NodeId         Y,
+                                                               const NodeSet& excluded_nodes,
+                                                               std::size_t    max_cardinality,
+                                                               bool           only_minimal,
+                                                               bool           stopAtFirst) {
     NodeSetVec out;
 
     // Theoretical variant: if X has no parents, {} is a valid backdoor set.
@@ -182,12 +184,12 @@ namespace gum {
     NodeSet Zempty;
     DAG     G = Separation::reduceForDSeparation(dag, Xset, Yset, Zempty);
 
-    // Candidate pool = nodes(G) \ (Desc(X) ∪ {X,Y} ∪ opts.exclude)
+    // Candidate pool = nodes(G) \ (Desc(X) ∪ {X,Y} ∪ excluded_nodes)
     NodeSet descX = dag.descendants(X);
     NodeSet possible;
     for (auto n: G.nodes()) {
       if (n == X || n == Y) continue;
-      if (opts.excluded_nodes.contains(n)) continue;
+      if (excluded_nodes.contains(n)) continue;
       if (descX.contains(n)) continue;
       possible.insert(n);
     }
@@ -195,11 +197,11 @@ namespace gum {
 
     auto              cand = _sortedVec(possible);
     const std::size_t N    = cand.size();
-    const std::size_t Kmax = (opts.max_cardinality == 0) ? N : std::min(opts.max_cardinality, N);
+    const std::size_t Kmax = (max_cardinality == 0) ? N : std::min(max_cardinality, N);
 
-    // Only prune supersets in minimal_only mode
+    // Only prune supersets in only_minimal mode
     NodeSetVec chosen;
-    const bool prune_supersets = opts.only_minimal;
+    const bool prune_supersets = only_minimal;
 
     NodeSet Xs;
     Xs.insert(X);
@@ -233,7 +235,7 @@ namespace gum {
         }
 
         if (Separation::isBackdoorSeparated(G, Xs, Ys, Z)) {
-          if (opts.only_minimal) {
+          if (only_minimal) {
             chosen.push_back(Z);
             out.push_back(Z);
           } else {
@@ -260,21 +262,16 @@ namespace gum {
                                                                NodeId     X,
                                                                NodeId     Y,
                                                                bool       stopAtFirst) {
-    EnumerationOptions opts;
-    return enumerateBackdoorSets(dag, X, Y, opts, stopAtFirst);
+    return enumerateBackdoorSets(dag, X, Y, NodeSet{}, 0, true, stopAtFirst);
   }
 
-  DoorCriteria::NodeSetVec DoorCriteria::enumerateBackdoorSets(const DAG& dag,
-                                                               NodeId     X,
-                                                               NodeId     Y) {
-    return enumerateBackdoorSets(dag, X, Y, false);
-  }
-
-  DoorCriteria::NodeSetVec DoorCriteria::enumerateFrontdoorSets(const DAG&                dag,
-                                                                NodeId                    X,
-                                                                NodeId                    Y,
-                                                                const EnumerationOptions& opts,
-                                                                bool stopAtFirst) {
+  DoorCriteria::NodeSetVec DoorCriteria::enumerateFrontdoorSets(const DAG&     dag,
+                                                                NodeId         X,
+                                                                NodeId         Y,
+                                                                const NodeSet& excluded_nodes,
+                                                                std::size_t    max_cardinality,
+                                                                bool           only_minimal,
+                                                                bool           stopAtFirst) {
     NodeSetVec out;
 
     // pyagrum early exit: if X is a parent of Y, yield nothing
@@ -321,7 +318,7 @@ namespace gum {
     NodeSet br = backdoorReach(dag, X);
     for (auto n: br)
       possible.erase(n);
-    for (auto n: opts.excluded_nodes)
+    for (auto n: excluded_nodes)
       possible.erase(n);
 
     // Remove "impossible" z with a backdoor to Y given X, on a reduced graph:
@@ -359,7 +356,7 @@ namespace gum {
       }
     } else {
       const std::size_t N    = cand.size();
-      const std::size_t Kmax = (opts.max_cardinality == 0) ? N : std::min(opts.max_cardinality, N);
+      const std::size_t Kmax = (max_cardinality == 0) ? N : std::min(max_cardinality, N);
       for (std::size_t k = 1; k <= Kmax; ++k) {
         std::vector< bool > pick(N, false);
         std::fill_n(pick.begin(), k, true);
@@ -369,7 +366,7 @@ namespace gum {
             if (pick[i]) Z.insert(cand[i]);
           // (FD-1): must block all directed X->Y paths
           if (!existsUnblockedDirectedPath(dag, X, Y, Z)) {
-            if (!opts.only_minimal || _isMinimalFrontdoorAdjustment(dag, X, Y, Z)) {
+            if (!only_minimal || _isMinimalFrontdoorAdjustment(dag, X, Y, Z)) {
               out.push_back(Z);
               if (stopAtFirst) return out;
             }
@@ -392,14 +389,7 @@ namespace gum {
                                                                 NodeId     X,
                                                                 NodeId     Y,
                                                                 bool       stopAtFirst) {
-    EnumerationOptions opts;
-    return enumerateFrontdoorSets(dag, X, Y, opts, stopAtFirst);
-  }
-
-  DoorCriteria::NodeSetVec DoorCriteria::enumerateFrontdoorSets(const DAG& dag,
-                                                                NodeId     X,
-                                                                NodeId     Y) {
-    return enumerateFrontdoorSets(dag, X, Y, false);
+    return enumerateFrontdoorSets(dag, X, Y, NodeSet{}, 0, true, stopAtFirst);
   }
 
   /* ============================== Utilities =============================== */

@@ -51,6 +51,7 @@
 
 %include "forUsing.i"
 
+%include <agrum/CM/doorCriteria.h>
 %include <agrum/CM/causalModel.h>
 %include <agrum/CM/causalImpact.h>
 %include <agrum/CM/counterfactual.h>

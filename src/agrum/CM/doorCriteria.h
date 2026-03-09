@@ -79,18 +79,6 @@ namespace gum {
     /// Convenience type: list of candidate adjustment sets.
     using NodeSetVec = std::vector< NodeSet >;
 
-    /**
-     * @struct EnumerationOptions
-     * @brief Options controlling enumeration of adjustment sets.
-     *
-     * Mirrors pyAgrum's pre-yield filters in *_generator functions.
-     */
-    struct EnumerationOptions {
-      NodeSet     excluded_nodes{};         ///< Nodes to exclude from candidate sets (e.g., {X, Y}).
-      std::size_t max_cardinality = 0;      ///< Maximum set size (0 = no limit).
-      bool        only_minimal    = true;   ///< If true, return only minimal adjustment sets.
-    };
-
     /* ------------------------- Backdoor --------------------------- */
 
     /**
@@ -102,42 +90,38 @@ namespace gum {
      * @param Z Conditioning set.
      * @return True if Z blocks all backdoor paths from X to Y.
      */
-    static bool satisfiesBackdoorCriterion(const DAG& dag,
-                                           NodeId     X,
-                                           NodeId     Y,
-                                           const NodeSet& Z);
+    static bool satisfiesBackdoorCriterion(const DAG& dag, NodeId X, NodeId Y, const NodeSet& Z);
 
     /**
-     * @brief Enumerate valid backdoor adjustment sets, with option to stop at first found.
+     * @brief Enumerate valid backdoor adjustment sets.
      *
      * @param dag Directed acyclic graph representing the causal structure.
      * @param X Cause variable.
      * @param Y Effect variable.
-     * @param opts Enumeration options (excluded nodes, maximal size, minimality).
-     * @param stopAtFirst If true, return only the first found set and stop computation early.
+     * @param excluded_nodes Nodes to exclude from candidate sets (e.g., latent variables).
+     * @param max_cardinality Maximum set size (0 = no limit).
+     * @param only_minimal If true, return only minimal adjustment sets.
+     * @param stopAtFirst If true, return only the first found set and stop early.
      * @return Vector of valid backdoor adjustment sets (at most one if stopAtFirst is true).
      */
-    static NodeSetVec enumerateBackdoorSets(const DAG&                dag,
-                                            NodeId                    X,
-                                            NodeId                    Y,
-                                            const EnumerationOptions& opts,
-                                            bool                      stopAtFirst = false);
+    static NodeSetVec enumerateBackdoorSets(const DAG&     dag,
+                                            NodeId         X,
+                                            NodeId         Y,
+                                            const NodeSet& excluded_nodes  = NodeSet(),
+                                            std::size_t    max_cardinality = 0,
+                                            bool           only_minimal    = true,
+                                            bool           stopAtFirst     = false);
 
     /**
-     * @brief Enumerate valid backdoor adjustment sets with default options, with option to stop at
-     * first found.
+     * @brief Enumerate valid backdoor adjustment sets — shorthand to set stopAtFirst only.
      *
      * @param dag Directed acyclic graph representing the causal structure.
      * @param X Cause variable.
      * @param Y Effect variable.
-     * @param stopAtFirst If true, return only the first found set and stop computation early.
+     * @param stopAtFirst If true, return only the first found set and stop early.
      * @return Vector of valid backdoor adjustment sets (at most one if stopAtFirst is true).
      */
-    static NodeSetVec enumerateBackdoorSets(const DAG& dag,
-                                            NodeId     X,
-                                            NodeId     Y,
-                                            bool       stopAtFirst);
-    static NodeSetVec enumerateBackdoorSets(const DAG& dag, NodeId X, NodeId Y);
+    static NodeSetVec enumerateBackdoorSets(const DAG& dag, NodeId X, NodeId Y, bool stopAtFirst);
 
     /* ------------------------- Frontdoor -------------------------- */
 
@@ -150,42 +134,38 @@ namespace gum {
      * @param Z Conditioning set.
      * @return True if Z satisfies all three frontdoor conditions (FD-1, FD-2, FD-3).
      */
-    static bool satisfiesFrontdoorCriterion(const DAG& dag,
-                                            NodeId     X,
-                                            NodeId     Y,
-                                            const NodeSet& Z);
+    static bool satisfiesFrontdoorCriterion(const DAG& dag, NodeId X, NodeId Y, const NodeSet& Z);
 
     /**
-     * @brief Enumerate valid frontdoor adjustment sets, with option to stop at first found.
+     * @brief Enumerate valid frontdoor adjustment sets.
      *
      * @param dag Directed acyclic graph representing the causal structure.
      * @param X Cause variable.
      * @param Y Effect variable.
-     * @param opts Enumeration options (excluded nodes, maximal size, minimality).
-     * @param stopAtFirst If true, return only the first found set and stop computation early.
+     * @param excluded_nodes Nodes to exclude from candidate sets (e.g., latent variables).
+     * @param max_cardinality Maximum set size (0 = no limit).
+     * @param only_minimal If true, return only minimal adjustment sets.
+     * @param stopAtFirst If true, return only the first found set and stop early.
      * @return Vector of valid frontdoor adjustment sets (at most one if stopAtFirst is true).
      */
-    static NodeSetVec enumerateFrontdoorSets(const DAG&                dag,
-                                             NodeId                    X,
-                                             NodeId                    Y,
-                                             const EnumerationOptions& opts,
-                                             bool                      stopAtFirst = false);
+    static NodeSetVec enumerateFrontdoorSets(const DAG&     dag,
+                                             NodeId         X,
+                                             NodeId         Y,
+                                             const NodeSet& excluded_nodes  = NodeSet(),
+                                             std::size_t    max_cardinality = 0,
+                                             bool           only_minimal    = true,
+                                             bool           stopAtFirst     = false);
 
     /**
-     * @brief Enumerate valid frontdoor adjustment sets with default options, with option to stop at
-     * first found.
+     * @brief Enumerate valid frontdoor adjustment sets — shorthand to set stopAtFirst only.
      *
      * @param dag Directed acyclic graph representing the causal structure.
      * @param X Cause variable.
      * @param Y Effect variable.
-     * @param stopAtFirst If true, return only the first found set and stop computation early.
+     * @param stopAtFirst If true, return only the first found set and stop early.
      * @return Vector of valid frontdoor adjustment sets (at most one if stopAtFirst is true).
      */
-    static NodeSetVec enumerateFrontdoorSets(const DAG& dag,
-                                             NodeId     X,
-                                             NodeId     Y,
-                                             bool       stopAtFirst);
-    static NodeSetVec enumerateFrontdoorSets(const DAG& dag, NodeId X, NodeId Y);
+    static NodeSetVec enumerateFrontdoorSets(const DAG& dag, NodeId X, NodeId Y, bool stopAtFirst);
 
     /* -------------------------- Utilities ------------------------- */
 
@@ -198,10 +178,7 @@ namespace gum {
      * @param Z Conditioning set (nodes that block traversal if encountered).
      * @return True if an unblocked directed path exists from X to Y.
      */
-    static bool existsUnblockedDirectedPath(const DAG& dag,
-                                            NodeId     X,
-                                            NodeId     Y,
-                                            const NodeSet& Z);
+    static bool existsUnblockedDirectedPath(const DAG& dag, NodeId X, NodeId Y, const NodeSet& Z);
 
     /**
      * @brief Compute nodes lying on some directed path from X to Y.
@@ -246,10 +223,7 @@ namespace gum {
      * @param Z Candidate conditioning set.
      * @return True if Z is a valid backdoor set and no strict subset is valid.
      */
-    static bool _isMinimalBackdoorAdjustment(const DAG&     dag,
-                                             NodeId         X,
-                                             NodeId         Y,
-                                             const NodeSet& Z);
+    static bool _isMinimalBackdoorAdjustment(const DAG& dag, NodeId X, NodeId Y, const NodeSet& Z);
 
     /**
      * @brief Check whether Z is a minimal frontdoor adjustment set.
@@ -260,10 +234,7 @@ namespace gum {
      * @param Z Candidate conditioning set.
      * @return True if Z is a valid frontdoor set and no strict subset is valid.
      */
-    static bool _isMinimalFrontdoorAdjustment(const DAG&     dag,
-                                              NodeId         X,
-                                              NodeId         Y,
-                                              const NodeSet& Z);
+    static bool _isMinimalFrontdoorAdjustment(const DAG& dag, NodeId X, NodeId Y, const NodeSet& Z);
   };
 
 }   // namespace gum
