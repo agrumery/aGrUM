@@ -183,6 +183,13 @@ namespace gum {
     NodeSet Yset;
     Yset.insert(Y);
     NodeSet Zempty;
+
+    // test {} first
+    if (Separation::isBackdoorSeparated(dag, Xset, Yset, Zempty)) {
+      out.push_back(Zempty);
+      if (only_minimal || stopAtFirst) return out;
+    }
+
     DAG     G = Separation::reduceForDSeparation(dag, Xset, Yset, Zempty);
 
     // Candidate pool = nodes(G) \ (Desc(X) ∪ {X,Y} ∪ excluded_nodes)

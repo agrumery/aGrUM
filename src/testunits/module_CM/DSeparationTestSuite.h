@@ -165,7 +165,7 @@ namespace gum_tests {
         BN          bn  = BN::fastPrototype(spec);
         const auto& dag = bn.dag();
         auto        Xs  = mkNS(bn, {X});
-        auto        Ys  = mkNS(bn, {Y});
+        auto @Ys        = mkNS(bn, {Y});
         CHECK(gum::Separation::isBackdoorSeparated(dag, Xs, Ys, NodeSet{}));
       };
 

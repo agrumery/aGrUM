@@ -277,6 +277,22 @@ namespace gum_tests {
       GUM_CHECK_EQ(sets, expected);
     }
 
+    static void testBackdoor_pyAgrumExample1() {
+      // X -> Z, Z -> Y; conditioning on Z is invalid for backdoor sets
+      auto        bn  = gum::BayesNet< double >::fastPrototype("N0<-N1->N2;N0<-N3->N2;N0<-N4->N2;N2->N0;N1->N4;N1<-N5->N6<-N0");
+      const auto& dag = bn.dag();
+
+
+      auto idN0 = bn.idFromName("N0");
+      auto idN1 = bn.idFromName("N1");
+
+      // enumeration should not include {Z}; {} is valid since X has no parents
+      auto sets = gum::DoorCriteria::enumerateBackdoorSets(dag, idN1, idN0, gum::NodeSet{});
+      gum::DoorCriteria::NodeSetVec expected;
+      expected.emplace_back();
+      GUM_CHECK_EQ(sets, expected);
+    }
+
     static void testFrontdoor_NoDirectedPath_ReturnsEmptyEnumeration() {
       // No directed path X→Y: X and Y disconnected (or only via incoming to X).
       auto        bn  = gum::BayesNet< double >::fastPrototype("A->X;Y->B");
@@ -896,6 +912,7 @@ namespace gum_tests {
   GUM_TEST_ACTIF(Frontdoor_FailsWhenZDoesNotInterceptAllDirectedPaths)
   GUM_TEST_ACTIF(ExistsUnblockedDirectedPath_and_NodesOnDirectedPaths)
   GUM_TEST_ACTIF(Backdoor_DescendantInZIsRejected)
+  GUM_TEST_ACTIF(Backdoor_pyAgrumExample1)
   GUM_TEST_ACTIF(Frontdoor_NoDirectedPath_ReturnsEmptyEnumeration)
   GUM_TEST_ACTIF(Backdoor_TwoConfounders_EnumerationAndPruning)
   GUM_TEST_ACTIF(Frontdoor_TwoMediators_EnumerationAndPruning)
