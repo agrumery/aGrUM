@@ -48,7 +48,7 @@
  ****************************************************************************/
 
 #include <algorithm>
-#include <queue>
+#include <vector>
 
 #include <agrum/BN/algorithms/barrenNodesFinder.h>
 #include <agrum/CM/tools/separation.h>
@@ -66,9 +66,7 @@ namespace gum {
         if (ug.existsNode(z)) ug.eraseNode(z);
     }
 
-    static inline void removeConditioningNodes(UndiGraph& ug, const gum::NodeSet& Z) {
-      _eraseAll(ug, Z);
-    }
+    inline void removeConditioningNodes(UndiGraph& ug, const NodeSet& Z) { _eraseAll(ug, Z); }
   }   // namespace
 
   // ==========================================================================
@@ -156,9 +154,7 @@ namespace gum {
                                        const NodeSet& Y,
                                        const NodeSet& Z) {
     // Targets = X ∪ Y
-    NodeSet targets = X;
-    for (auto y: Y)
-      targets.insert(y);
+    const NodeSet targets{X + Y};
 
     // Configure finder
     gum::BarrenNodesFinder finder(&dag);
@@ -166,8 +162,8 @@ namespace gum {
     finder.setEvidence(&Z);        // observed nodes
 
     // Compute barren nodes and remove them from a copy
-    NodeSet barren  = finder.barrenNodes();
-    DAG     reduced = dag;
+    const NodeSet barren = finder.barrenNodes();
+    DAG           reduced{dag};
     for (auto n: barren)
       if (reduced.existsNode(n)) reduced.eraseNode(n);
 
@@ -182,9 +178,9 @@ namespace gum {
    *  If BarrenNodesFinder::barrenNodes() is available, you can implement this
    *  as a thin wrapper around it.
    */
-  Separation::NodeSet Separation::findBarrenNodes(const DAG&     dag,
-                                                  const NodeSet& evidenceZ,
-                                                  const NodeSet& targetsXY) {
+  NodeSet Separation::findBarrenNodes(const DAG&     dag,
+                                      const NodeSet& evidenceZ,
+                                      const NodeSet& targetsXY) {
     gum::BarrenNodesFinder finder(&dag);
     finder.setTargets(&targetsXY);
     finder.setEvidence(&evidenceZ);
@@ -199,18 +195,14 @@ namespace gum {
    * Pyagrum counterpart: _is_ascendant
    */
   bool Separation::isAncestorOf(const DAG& dag, NodeId x, NodeId y) {
-    for (const auto a: dag.ancestors(y))
-      if (a == x) return true;
-    return false;
+    return dag.ancestors(y).contains(x);
   }
 
   /**
    * Pyagrum counterpart: _is_descendant
    */
   bool Separation::isDescendantOf(const DAG& dag, NodeId x, NodeId y) {
-    for (const auto d: dag.descendants(y))
-      if (d == x) return true;
-    return false;
+    return dag.descendants(y).contains(x);
   }
 
   // ==========================================================================
@@ -222,35 +214,31 @@ namespace gum {
    */
   bool
       Separation::anyUndirectedConnection(const UndiGraph& ug, const NodeSet& A, const NodeSet& B) {
-    // Put all targets in a hash-set for O(1) hit-testing
-    std::unordered_set< NodeId > target;
-    target.reserve(B.size());
-    for (const auto b: B)
-      target.insert(b);
+    GUM_ASSERT(!A.empty() && !B.empty());
+    GUM_ASSERT(ug.nodes().supersetOf(A + B));
 
-    // BFS from each start node in A (skipping duplicates via 'visited')
-    NodeSet              globalVisited;
-    std::queue< NodeId > q;
+    // early exit if A and B share a node
+    if (!(A * B).empty()) return true;
+
+    // DFS seeded with all nodes of A at once
+    NodeSet               visited;
+    std::vector< NodeId > stack;
+    stack.reserve(ug.sizeNodes());
 
     for (const auto s: A) {
-      if (!ug.existsNode(s)) continue;
-      if (globalVisited.exists(s)) continue;
+      visited.insert(s);
+      stack.push_back(s);
+    }
 
-      q = std::queue< NodeId >();
-      q.push(s);
-      globalVisited.insert(s);
+    while (!stack.empty()) {
+      const NodeId u = stack.back();
+      stack.pop_back();
 
-      while (!q.empty()) {
-        NodeId u = q.front();
-        q.pop();
-        if (target.find(u) != target.end()) return true;
-
-        for (const auto v: ug.neighbours(u)) {
-          if (!globalVisited.exists(v)) {
-            globalVisited.insert(v);
-            q.push(v);
-          }
-        }
+      for (const auto v: ug.neighbours(u)) {
+        if (visited.exists(v)) continue;
+        if (B.contains(v)) return true;
+        visited.insert(v);
+        stack.push_back(v);
       }
     }
 

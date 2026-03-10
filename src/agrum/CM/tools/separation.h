@@ -74,8 +74,6 @@ namespace gum {
    */
   class Separation {
     public:
-    using NodeId  = gum::NodeId;
-    using NodeSet = gum::NodeSet;
 
     // =======================================================================
     // Core public API

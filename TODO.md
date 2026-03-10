@@ -4,9 +4,9 @@ Actions à réaliser lors d'une prochaine session.
 
 **Règle** : ne jamais traiter un item de cette liste sans l'avoir signalé à l'utilisateur et obtenu son accord explicite.
 
-## Documentation
+## C++
 
-- **Audit conformité NumPy docstring** : parcourir tous les fichiers `wrappers/pyagrum/doc/doc_*.i` et vérifier que chaque docstring respecte strictement la convention NumPy (sections, indentation, format des types, etc.). Corriger les écarts.
+- **Intégration `std::string_view`** : parcourir le code C++ (`src/agrum/`) et remplacer autant que possible les `const std::string&` (paramètres en entrée seulement, sans copie retournée) par `std::string_view`. Vérifier la compatibilité avec les appels existants, les bindings SWIG et les typemaps. Priorité aux interfaces publiques fréquemment utilisées.
 
 ## SWIG
 

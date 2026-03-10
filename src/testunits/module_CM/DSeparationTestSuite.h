@@ -160,12 +160,12 @@ namespace gum_tests {
       };
 
       // Helpers that reproduce the Python semantics:
-      // hasNoBackDoor(graph, X, Y)  -> backdoor separated with Z = ∅
-      auto hasNoBackDoor = [&](const std::string& spec, const char* X, const char* Y) {
+      // hasEmptyBackDoor(graph, X, Y)  -> backdoor separated with Z = ∅
+      auto hasEmptyBackDoor = [&](const std::string& spec, const char* X, const char* Y) {
         BN          bn  = BN::fastPrototype(spec);
         const auto& dag = bn.dag();
         auto        Xs  = mkNS(bn, {X});
-        auto @Ys        = mkNS(bn, {Y});
+        auto        Ys  = mkNS(bn, {Y});
         CHECK(gum::Separation::isBackdoorSeparated(dag, Xs, Ys, NodeSet{}));
       };
 
@@ -197,10 +197,10 @@ namespace gum_tests {
       };
 
       // ---- Tests copied from the Python suite ----
-      hasNoBackDoor("A->B->C", "A", "C");
+      hasEmptyBackDoor("A->B->C", "A", "C");
       hasBackDoor("A->B->C", "C", "A");
 
-      hasNoBackDoor("N0<-N1->N2;N0<-N3->N2;N0<-N4->N2;N2->N0;N1->N4", "N1", "N0");
+      hasEmptyBackDoor("N0<-N1->N2;N0<-N3->N2;N0<-N4->N2;N2->N0;N1->N4", "N1", "N0");
 
       hasAllBackDoors(
           {{"N5"}, {"N6"}},
@@ -208,7 +208,7 @@ namespace gum_tests {
           "N1",
           "N0");
 
-      hasNoBackDoor(
+      hasEmptyBackDoor(
           "N0[1,3]<-N1->N2[1,4];N0<-N3[0,3]->N2;N0<-N4[1,4]->N2;N2->N0;N1->N4;N1<-N5->N6<-N0",
           "N1",
           "N0");
