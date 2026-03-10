@@ -232,7 +232,7 @@ namespace gum {
     /**
      * @brief Initialize the partial instantiation functions.
      */
-    void init() { partialInstantiation4MultiDimInit< GUM_ELEMENT >(); };
+    void init() { partialInstantiation4MultiDimInit< GUM_ELEMENT >(); }
   };
 
   /**
@@ -259,7 +259,7 @@ namespace gum {
     /**
      * @brief Initialize the partial instantiation functions.
      */
-    void init() { pointerPartialInstantiation4MultiDimInit< GUM_ELEMENT >(); };
+    void init() { pointerPartialInstantiation4MultiDimInit< GUM_ELEMENT >(); }
   };
 
 } /* namespace gum */

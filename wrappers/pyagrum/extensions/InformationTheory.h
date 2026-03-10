@@ -80,15 +80,15 @@ class InformationTheory {
 #  define DEFINE_IT_FUNC(func) \
     double func() { return (_bnIT_ != nullptr) ? _bnIT_->func() : _mrfIT_->func(); }
 
-  DEFINE_IT_FUNC(entropyXY);
-  DEFINE_IT_FUNC(entropyX);
-  DEFINE_IT_FUNC(entropyY);
-  DEFINE_IT_FUNC(entropyXgivenY);
-  DEFINE_IT_FUNC(entropyYgivenX);
-  DEFINE_IT_FUNC(mutualInformationXY);
-  DEFINE_IT_FUNC(variationOfInformationXY);
-  DEFINE_IT_FUNC(entropyXYgivenZ);
-  DEFINE_IT_FUNC(mutualInformationXYgivenZ);
+  DEFINE_IT_FUNC(entropyXY)
+  DEFINE_IT_FUNC(entropyX)
+  DEFINE_IT_FUNC(entropyY)
+  DEFINE_IT_FUNC(entropyXgivenY)
+  DEFINE_IT_FUNC(entropyYgivenX)
+  DEFINE_IT_FUNC(mutualInformationXY)
+  DEFINE_IT_FUNC(variationOfInformationXY)
+  DEFINE_IT_FUNC(entropyXYgivenZ)
+  DEFINE_IT_FUNC(mutualInformationXYgivenZ)
 
 #  undef DEFINT_IT_FUNC
 

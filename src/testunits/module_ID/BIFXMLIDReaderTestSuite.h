@@ -80,7 +80,7 @@ namespace gum_tests {
     int _nbr_;
 
     public:
-    aSimpleListener() : _nbr_(0) {};
+    aSimpleListener() : _nbr_(0) {}
 
     void whenProceeding(const void* buffer, int percent, std::string status) {
       _nbr_ = percent;
@@ -89,7 +89,7 @@ namespace gum_tests {
       // std::endl;
     }
 
-    int getNbr() { return _nbr_; };
+    int getNbr() { return _nbr_; }
   };
 
   struct BIFXMLIDReaderTestSuite {

@@ -192,7 +192,7 @@ namespace gum {
     /**
      * @brief Returns the CPT of a variable.
      */
-    const Tensor< GUM_SCALAR >& cpt(std::string_view name) const { return cpt(idFromName(name)); };
+    const Tensor< GUM_SCALAR >& cpt(std::string_view name) const { return cpt(idFromName(name)); }
 
     /**
      * @brief Add a variable to the gum::BayesNet.
@@ -305,7 +305,7 @@ namespace gum {
     /**
      * @brief Removes a variable from the gum::BayesNet.
      */
-    void erase(std::string_view name) { erase(idFromName(name)); };
+    void erase(std::string_view name) { erase(idFromName(name)); }
 
     /**
      * @brief Remove a variable from the gum::BayesNet.
@@ -324,7 +324,7 @@ namespace gum {
      */
     const DiscreteVariable& variable(std::string_view name) const {
       return variable(idFromName(name));
-    };
+    }
 
     /**
      * @brief Changes a variable's name in the gum::BayesNet.
@@ -607,7 +607,7 @@ namespace gum {
      */
     void addWeightedArc(std::string_view tail, std::string_view head, GUM_SCALAR causalWeight) {
       addWeightedArc(idFromName(tail), idFromName(head), causalWeight);
-    };
+    }
 
     /// @}
 
@@ -617,7 +617,7 @@ namespace gum {
     /// randomly generate CPT for a given node in a given structure
     void generateCPT(NodeId node) const;
 
-    void generateCPT(std::string_view name) const { generateCPT(idFromName(name)); };
+    void generateCPT(std::string_view name) const { generateCPT(idFromName(name)); }
 
     /// change the CPT associated to nodeId to newPot
     /// delete the old CPT associated to nodeId.

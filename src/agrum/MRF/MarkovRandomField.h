@@ -298,7 +298,7 @@ namespace gum {
      */
     const DiscreteVariable& variable(std::string_view name) const {
       return variable(idFromName(name));
-    };
+    }
 
     /**
      * @brief Changes a variable's name in the gum::MarkovRandomField.

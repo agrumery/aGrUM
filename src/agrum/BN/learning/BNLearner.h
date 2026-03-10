@@ -412,7 +412,7 @@ namespace gum {
       BNLearner< GUM_SCALAR >& EMenableMaxTime() {
         IBNLearner::EMenableMaxTime();
         return *this;
-      };
+      }
 
       /**
        * @brief how many samples between 2 stoppings isEnabled

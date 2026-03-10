@@ -71,7 +71,7 @@ namespace gum_tests {
 
     public:
     explicit ASimpleDBGeneratorListener(gum::ProgressNotifier& notif) :
-        gum::ProgressListener(notif) {};
+        gum::ProgressListener(notif) {}
 
     void whenProgress(const void* buffer, const gum::Size a, const double c) override {
       _nbr_ += a;

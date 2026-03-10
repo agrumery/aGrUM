@@ -152,7 +152,7 @@ namespace gum {
 
     virtual const Tensor< GUM_SCALAR >& cpt(std::string_view name) const final {
       return cpt(idFromName(name));
-    };
+    }
 
     /**
      * Returns the utility table of a utility node.
@@ -162,28 +162,28 @@ namespace gum {
 
     virtual const Tensor< GUM_SCALAR >& utility(std::string_view name) const final {
       return utility(idFromName(name));
-    };
+    }
 
     /**
      * Returns true if node is a utility one
      */
     bool isUtilityNode(NodeId varId) const;
 
-    bool isUtilityNode(std::string_view name) const { return isUtilityNode(idFromName(name)); };
+    bool isUtilityNode(std::string_view name) const { return isUtilityNode(idFromName(name)); }
 
     /**
      * Returns true if node is a decision one
      */
     bool isDecisionNode(NodeId varId) const;
 
-    bool isDecisionNode(std::string_view name) const { return isDecisionNode(idFromName(name)); };
+    bool isDecisionNode(std::string_view name) const { return isDecisionNode(idFromName(name)); }
 
     /**
      * Returns true if node is a chance one
      */
     bool isChanceNode(NodeId varId) const;
 
-    bool isChanceNode(std::string_view name) const { return isChanceNode(idFromName(name)); };
+    bool isChanceNode(std::string_view name) const { return isChanceNode(idFromName(name)); }
 
     /**
      * Returns the number of utility nodes
@@ -202,7 +202,7 @@ namespace gum {
 
     const DiscreteVariable& variable(std::string_view name) const {
       return variable(idFromName(name));
-    };
+    }
 
     /**
      * Add a chance variable, it's associate node and it's CPT. The id of the
@@ -377,7 +377,7 @@ namespace gum {
      */
     void erase(NodeId id);
 
-    void erase(std::string_view name) { erase(idFromName(name)); };
+    void erase(std::string_view name) { erase(idFromName(name)); }
 
     /**
      * Erase a Variable from the network and remove the variable from

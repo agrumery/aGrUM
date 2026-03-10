@@ -76,7 +76,7 @@ namespace gum_tests {
 
     public:
     aSimpleLBPListener(gum::ApproximationScheme& sch) :
-        gum::ApproximationSchemeListener(sch), __mess("") {};
+        gum::ApproximationSchemeListener(sch), __mess("") {}
 
     void whenProgress(const void*     buffer,
                       const gum::Size a,

@@ -552,7 +552,7 @@ namespace gum {
    */
   template < typename GUM_ELEMENT >
   struct CompleteProjections4MultiDimInitialize {
-    void init() { completeProjections4MultiDimInit< GUM_ELEMENT >(); };
+    void init() { completeProjections4MultiDimInit< GUM_ELEMENT >(); }
   };
 
   /**
@@ -572,7 +572,7 @@ namespace gum {
    * */
   template < typename GUM_ELEMENT >
   struct CompleteProjections4MultiDimInitialize< GUM_ELEMENT* > {
-    void init() { pointerCompleteProjections4MultiDimInit< GUM_ELEMENT >(); };
+    void init() { pointerCompleteProjections4MultiDimInit< GUM_ELEMENT >(); }
   };
 
 } /* namespace gum */

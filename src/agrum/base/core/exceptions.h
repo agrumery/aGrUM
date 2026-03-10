@@ -93,8 +93,8 @@
   class TYPE: public SUPERCLASS {                                            \
     public:                                                                  \
     explicit TYPE(const std::string& aMsg, const std::string& aType = MSG) : \
-        SUPERCLASS(aMsg, aType) {};                                          \
-    TYPE(const TYPE& src) : SUPERCLASS(src) {};                              \
+        SUPERCLASS(aMsg, aType) {}                                           \
+    TYPE(const TYPE& src) : SUPERCLASS(src) {}                               \
   };
 
 #ifdef GUM_FOR_SWIG
@@ -137,25 +137,25 @@ namespace gum {
 
     /// @}
 
-    GUM_NODISCARD const char* what() const noexcept override { return what_.c_str(); };
+    GUM_NODISCARD const char* what() const noexcept override { return what_.c_str(); }
 
     /**
      * @brief Returns the message content.
      * @return Returns the message content.
      */
-    GUM_NODISCARD std::string errorContent() const { return msg_; };
+    GUM_NODISCARD std::string errorContent() const { return msg_; }
 
     /**
      * @brief Returns the error type.
      * @return Returns the error type.
      */
-    GUM_NODISCARD std::string errorType() const { return type_; };
+    GUM_NODISCARD std::string errorType() const { return type_; }
 
     /**
      * @brief Returns the error call stack.
      * @return Returns the error call stack.
      */
-    GUM_NODISCARD std::string errorCallStack() const { return callstack_; };
+    GUM_NODISCARD std::string errorCallStack() const { return callstack_; }
   };
 
 
@@ -672,11 +672,11 @@ namespace gum {
 #  endif   // GUM_FOR_SWIG
     }
 
-    GUM_NODISCARD Size col() const { return noCol_; };
+    GUM_NODISCARD Size col() const { return noCol_; }
 
-    GUM_NODISCARD Size line() const { return noLine_; };
+    GUM_NODISCARD Size line() const { return noLine_; }
 
-    GUM_NODISCARD std::string filename() const { return filename_; };
+    GUM_NODISCARD std::string filename() const { return filename_; }
   };
 #endif   // DOXYGEN_SHOULD_SKIP_THIS
 } /* namespace gum */

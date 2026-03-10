@@ -91,7 +91,7 @@ namespace gum {
 
     void setVirtualLBPSize(GUM_SCALAR vlbpsize) {
       if (vlbpsize > 0) virtualLBPSize_ = vlbpsize;
-    };
+    }
 
     protected:
     GUM_SCALAR virtualLBPSize_;

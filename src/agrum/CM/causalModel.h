@@ -127,7 +127,7 @@ namespace gum {
     CausalModel(CausalModel&& other) noexcept;
 
     /// Destructor
-    ~CausalModel() { GUM_DESTRUCTOR(CausalModel) };
+    ~CausalModel() { GUM_DESTRUCTOR(CausalModel) }
 
     /// Copy assignment
     CausalModel& operator=(const CausalModel& other) = default;

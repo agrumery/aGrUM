@@ -29,19 +29,19 @@ class PythonDatabaseGeneratorListener: public gum::ProgressListener {
 
   void _checkCallable_(PyObject* pyfunc) {
     if (!PyCallable_Check(pyfunc)) { PyErr_SetString(PyExc_TypeError, "Need a callable object!"); }
-  };
+  }
 
   public:
   explicit PythonDatabaseGeneratorListener(gum::learning::BNDatabaseGenerator< double >& notif) :
       gum::ProgressListener(notif) {
     _pyWhenProgress_ = _pyWhenStop_ = (PyObject*)0;
-  };
+  }
 
   ~PythonDatabaseGeneratorListener() {
     if (_pyWhenProgress_) Py_DECREF(_pyWhenProgress_);
 
     if (_pyWhenStop_) Py_DECREF(_pyWhenStop_);
-  };
+  }
 
   void whenProgress(const void* src, const gum::Size step, const double duration) {
     if (_pyWhenProgress_) {
@@ -49,7 +49,7 @@ class PythonDatabaseGeneratorListener: public gum::ProgressListener {
       PyObject_Call(_pyWhenProgress_, arglist, NULL);
       Py_DECREF(arglist);
     }
-  };
+  }
 
   void whenStop(const void* src, std::string_view message) {
     if (_pyWhenStop_) {
@@ -57,7 +57,7 @@ class PythonDatabaseGeneratorListener: public gum::ProgressListener {
       PyObject_Call(_pyWhenStop_, arglist, NULL);
       Py_DECREF(arglist);
     }
-  };
+  }
 
   void setWhenProgress(PyObject* pyfunc) {
     _checkCallable_(pyfunc);
@@ -66,7 +66,7 @@ class PythonDatabaseGeneratorListener: public gum::ProgressListener {
 
     _pyWhenProgress_ = pyfunc;
     Py_INCREF(pyfunc);
-  };
+  }
 
   void setWhenStop(PyObject* pyfunc) {
     _checkCallable_(pyfunc);
@@ -75,5 +75,5 @@ class PythonDatabaseGeneratorListener: public gum::ProgressListener {
 
     _pyWhenStop_ = pyfunc;
     Py_INCREF(pyfunc);
-  };
+  }
 };

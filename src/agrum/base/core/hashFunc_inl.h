@@ -70,7 +70,7 @@ namespace gum {
   INLINE unsigned int _hashTableLog2_(const Size nb) {
     unsigned int i = 0;
 
-    for (Size nbb = nb; nbb > Size(1); ++i, nbb >>= 1) {};
+    for (Size nbb = nb; nbb > Size(1); ++i, nbb >>= 1) {}
 
     return ((Size(1) << i) < nb ? i + Size(1) : i);
   }

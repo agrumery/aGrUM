@@ -91,11 +91,11 @@ namespace gum {
     // a class to enabling emplacing values in AVLNodes
     enum class Emplace { EMPLACE };
 
-    explicit AVLTreeNode(const Val& val) : value(val) { GUM_CONSTRUCTOR(AVLTreeNode); };
+    explicit AVLTreeNode(const Val& val) : value(val) { GUM_CONSTRUCTOR(AVLTreeNode); }
 
     explicit AVLTreeNode(Val&& val) noexcept : value(std::move(val)) {
       GUM_CONSTRUCTOR(AVLTreeNode);
-    };
+    }
 
     template < typename... Args >
     explicit AVLTreeNode(const Emplace& emplace, Args&&... args) :

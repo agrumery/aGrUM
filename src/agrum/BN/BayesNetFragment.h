@@ -143,7 +143,7 @@ namespace gum {
      */
     const Tensor< GUM_SCALAR >& cpt(NodeId varId) const final;
 
-    const Tensor< GUM_SCALAR >& cpt(std::string_view name) const { return cpt(idFromName(name)); };
+    const Tensor< GUM_SCALAR >& cpt(std::string_view name) const { return cpt(idFromName(name)); }
 
     /**
      * Returns a constant reference to the VariableNodeMap of this BN
@@ -159,7 +159,7 @@ namespace gum {
 
     virtual const DiscreteVariable& variable(std::string_view name) const final {
       return variable(idFromName(name));
-    };
+    }
 
     /**
      * Return id node from discrete var pointer.
@@ -198,7 +198,7 @@ namespace gum {
      */
     bool isInstalledNode(NodeId id) const;
 
-    bool isInstalledNode(std::string_view name) const { return isInstalledNode(idFromName(name)); };
+    bool isInstalledNode(std::string_view name) const { return isInstalledNode(idFromName(name)); }
 
     /**
      * install a node referenced by its nodeId
@@ -261,7 +261,7 @@ namespace gum {
 
     void installCPT(std::string_view name, const Tensor< GUM_SCALAR >& pot) {
       installCPT(_bn_.idFromName(name), pot);
-    };
+    }
 
     /**
      * uninstall a local CPT.

@@ -190,7 +190,7 @@ namespace gum {
     std::string domain() const override;
 
     /// string represent the type of the variable
-    std::string stype() const override final { return "Discretized"; };
+    std::string stype() const override final { return "Discretized"; }
 
     /// from the index to the tick.
     /// @throws NotFound

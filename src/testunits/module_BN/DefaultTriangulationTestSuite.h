@@ -72,8 +72,6 @@ namespace gum_tests {
   struct DefaultTriangulationTestSuite {
     public:
     gum::LabelizedVariable *var1, *var2, *var3, *var4, *var5;
-    ;
-    ;
 
     DefaultTriangulationTestSuite() {
       var1 = new gum::LabelizedVariable("var1", "1");
@@ -124,7 +122,7 @@ namespace gum_tests {
             == (log10(16)));   // clique of 4 binary variables
 
       GUM_CHECK_ASSERT_THROWS_NOTHING(if (triangle) delete triangle);
-    };
+    }
 
     void testjunctionTree() {
       gum::BayesNet< double >  topo;
@@ -152,51 +150,51 @@ namespace gum_tests {
       CHECK(triangle->junctionTree().hasRunningIntersection());
 
       GUM_CHECK_ASSERT_THROWS_NOTHING(if (triangle) delete triangle);
-    };
+    }
 
     void xxtestBIFtriangulation1() {
       GUM_CHECK_ASSERT_THROWS_NOTHING(_triangulate_bif_(GET_RESSOURCES_PATH("bif/Barley.bif")));
-    };
+    }
 
     void xxtestBIFtriangulation1bis() {
       GUM_CHECK_ASSERT_THROWS_NOTHING(_triangulate_bif_(GET_RESSOURCES_PATH("bif/alarm.bif")));
-    };
+    }
 
     void xxtestBIFtriangulation2() {
       GUM_CHECK_ASSERT_THROWS_NOTHING(_triangulate_bif_(GET_RESSOURCES_PATH("bif/carpo.bif")));
-    };
+    }
 
     void xxtestBIFtriangulation3() {
       GUM_CHECK_ASSERT_THROWS_NOTHING(_triangulate_bif_(GET_RESSOURCES_PATH("bif/Pigs.bif")));
-    };
+    }
 
     void xxtestBIFtriangulation4() {
       GUM_CHECK_ASSERT_THROWS_NOTHING(_triangulate_bif_(GET_RESSOURCES_PATH("bif/Water.bif")));
-    };
+    }
 
     void xxtestBIFtriangulation5() {
       GUM_CHECK_ASSERT_THROWS_NOTHING(_triangulate_bif_(GET_RESSOURCES_PATH("bif/Link.bif")));
-    };
+    }
 
     void xxtestBIFtriangulation6() {
       GUM_CHECK_ASSERT_THROWS_NOTHING(_triangulate_bif_(GET_RESSOURCES_PATH("bif/Mildew.bif")));
-    };
+    }
 
     void xxtestBIFtriangulation7() {
       GUM_CHECK_ASSERT_THROWS_NOTHING(_triangulate_bif_(GET_RESSOURCES_PATH("bif/Munin1.bif")));
-    };
+    }
 
     void xxtestBIFtriangulation8() {
       GUM_CHECK_ASSERT_THROWS_NOTHING(_triangulate_bif_(GET_RESSOURCES_PATH("bif/hailfinder.bif")));
-    };
+    }
 
     void xxtestBIFtriangulation9() {
       GUM_CHECK_ASSERT_THROWS_NOTHING(_triangulate_bif_(GET_RESSOURCES_PATH("bif/Diabetes.bif")));
-    };
+    }
 
     void xxtestBIFtriangulation10() {
       GUM_CHECK_ASSERT_THROWS_NOTHING(_triangulate_bif_(GET_RESSOURCES_PATH("bif/insurance.bif")));
-    };
+    }
 
     void testTriangulatedGraph1() {
       gum::NodeSet c1, c2, c3, c4, c5;
@@ -319,7 +317,7 @@ namespace gum_tests {
       gum::LazyPropagation< double > inf(bn);
 
       if (bn != 0) delete (bn);
-    };
+    }
 
     void fill(gum::BayesNet< double >& topo, gum::List< gum::NodeId >& idList) const {
       idList.clear();
@@ -335,7 +333,7 @@ namespace gum_tests {
       topo.addArc(idList[0], idList[3]);
       topo.addArc(idList[3], idList[4]);
       topo.addArc(idList[1], idList[4]);
-    };
+    }
   };
 
   GUM_TEST_ACTIF(triangulatedGraph)

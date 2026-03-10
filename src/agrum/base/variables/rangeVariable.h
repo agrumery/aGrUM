@@ -174,7 +174,7 @@ namespace gum {
     std::string domain() const final;
 
     /// string represent the type of the variable
-    std::string stype() const final { return "Range"; };
+    std::string stype() const final { return "Range"; }
 
     private:
     /// check the domain

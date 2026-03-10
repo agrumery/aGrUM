@@ -93,12 +93,12 @@ namespace gum {
     /// Construct an AST node with a descriptive `type` string (used in dumps).
     explicit ASTtree(std::string_view type);
 
-    virtual ~ASTtree() { GUM_DESTRUCTOR(ASTtree) };
+    virtual ~ASTtree() { GUM_DESTRUCTOR(ASTtree) }
 
     ASTtree(const ASTtree&)            = delete;
     ASTtree& operator=(const ASTtree&) = delete;
 
-    ASTtree(ASTtree&&) noexcept { GUM_CONS_MOV(ASTtree) };
+    ASTtree(ASTtree&&) noexcept { GUM_CONS_MOV(ASTtree) }
 
     ASTtree& operator=(ASTtree&&) noexcept = default;
 

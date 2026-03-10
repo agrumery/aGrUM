@@ -395,7 +395,7 @@ namespace gum {
       public:
       virtual void insertEvidenceFile(std::string_view path) {
         InferenceEngine< GUM_SCALAR >::insertEvidenceFile(path);
-      };
+      }
     };
 
 

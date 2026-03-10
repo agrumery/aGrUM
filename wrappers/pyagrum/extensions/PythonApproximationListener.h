@@ -30,19 +30,19 @@ class PythonApproximationListener: public gum::ApproximationSchemeListener {
 
   void _checkCallable_(PyObject* pyfunc) {
     if (!PyCallable_Check(pyfunc)) { PyErr_SetString(PyExc_TypeError, "Need a callable object!"); }
-  };
+  }
 
   public:
   PythonApproximationListener(gum::IApproximationSchemeConfiguration& algo) :
       gum::ApproximationSchemeListener(algo) {
     _pyWhenProgress_ = _pyWhenStop_ = (PyObject*)0;
-  };
+  }
 
   ~PythonApproximationListener() {
     if (_pyWhenProgress_) Py_DECREF(_pyWhenProgress_);
 
     if (_pyWhenStop_) Py_DECREF(_pyWhenStop_);
-  };
+  }
 
   void whenProgress(const void*     src,
                     const gum::Size step,
@@ -53,7 +53,7 @@ class PythonApproximationListener: public gum::ApproximationSchemeListener {
       PyObject_Call(_pyWhenProgress_, arglist, NULL);
       Py_DECREF(arglist);
     }
-  };
+  }
 
   void whenStop(const void* src, std::string_view message) {
     if (_pyWhenStop_) {
@@ -61,7 +61,7 @@ class PythonApproximationListener: public gum::ApproximationSchemeListener {
       PyObject_Call(_pyWhenStop_, arglist, NULL);
       Py_DECREF(arglist);
     }
-  };
+  }
 
   void setWhenProgress(PyObject* pyfunc) {
     _checkCallable_(pyfunc);
@@ -70,7 +70,7 @@ class PythonApproximationListener: public gum::ApproximationSchemeListener {
 
     _pyWhenProgress_ = pyfunc;
     Py_INCREF(pyfunc);
-  };
+  }
 
   void setWhenStop(PyObject* pyfunc) {
     _checkCallable_(pyfunc);
@@ -79,5 +79,5 @@ class PythonApproximationListener: public gum::ApproximationSchemeListener {
 
     _pyWhenStop_ = pyfunc;
     Py_INCREF(pyfunc);
-  };
+  }
 };

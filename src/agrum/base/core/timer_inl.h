@@ -92,5 +92,5 @@ namespace gum {
   }
 
   INLINE
-  std::ostream& operator<<(std::ostream& os, const Timer& t) { return os << t.toString(); };
+  std::ostream& operator<<(std::ostream& os, const Timer& t) { return os << t.toString(); }
 } /* namespace gum */

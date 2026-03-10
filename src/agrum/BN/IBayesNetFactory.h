@@ -88,7 +88,7 @@ namespace gum {
       FACT_ENTRY
     };
 
-    IBayesNetFactory() : _verbose_(false) {};
+    IBayesNetFactory() : _verbose_(false) {}
     // just to make some compilers happy
     virtual ~IBayesNetFactory() = default;
 
@@ -96,11 +96,11 @@ namespace gum {
      * @name verbosity control
      * @{
      */
-    void setVerbose() { _verbose_ = true; };
+    void setVerbose() { _verbose_ = true; }
 
-    void resetVerbose() { _verbose_ = false; };
+    void resetVerbose() { _verbose_ = false; }
 
-    bool isVerbose() { return _verbose_; };
+    bool isVerbose() { return _verbose_; }
 
     /**
      * @}

@@ -1090,7 +1090,7 @@ namespace gum::learning {
       setCurrentApproximationScheme(approximationScheme);
 
       if (onProgress.hasListener()) GUM_EMIT3(onProgress, pourcent, error, time);
-    };
+    }
 
     /// distribute signals
     INLINE void distributeStop(const ApproximationScheme* approximationScheme,
@@ -1098,7 +1098,7 @@ namespace gum::learning {
       setCurrentApproximationScheme(approximationScheme);
 
       if (onStop.hasListener()) GUM_EMIT1(onStop, message);
-    };
+    }
 
     /// @}
 
@@ -1110,7 +1110,7 @@ namespace gum::learning {
       algoK2_.approximationScheme().setEpsilon(eps);
       greedyHillClimbing_.setEpsilon(eps);
       localSearchWithTabuList_.setEpsilon(eps);
-    };
+    }
 
     /// Get the value of epsilon
     double epsilon() const override {
@@ -1123,14 +1123,14 @@ namespace gum::learning {
       algoK2_.approximationScheme().disableEpsilon();
       greedyHillClimbing_.disableEpsilon();
       localSearchWithTabuList_.disableEpsilon();
-    };
+    }
 
     /// Enable stopping criterion on epsilon
     void enableEpsilon() override {
       algoK2_.approximationScheme().enableEpsilon();
       greedyHillClimbing_.enableEpsilon();
       localSearchWithTabuList_.enableEpsilon();
-    };
+    }
 
     /// @return true if stopping criterion on epsilon is enabled, false
     /// otherwise
@@ -1150,7 +1150,7 @@ namespace gum::learning {
       algoK2_.approximationScheme().setMinEpsilonRate(rate);
       greedyHillClimbing_.setMinEpsilonRate(rate);
       localSearchWithTabuList_.setMinEpsilonRate(rate);
-    };
+    }
 
     /// Get the value of the minimal epsilon rate
     double minEpsilonRate() const override {
@@ -1163,14 +1163,14 @@ namespace gum::learning {
       algoK2_.approximationScheme().disableMinEpsilonRate();
       greedyHillClimbing_.disableMinEpsilonRate();
       localSearchWithTabuList_.disableMinEpsilonRate();
-    };
+    }
 
     /// Enable stopping criterion on epsilon rate
     void enableMinEpsilonRate() override {
       algoK2_.approximationScheme().enableMinEpsilonRate();
       greedyHillClimbing_.enableMinEpsilonRate();
       localSearchWithTabuList_.enableMinEpsilonRate();
-    };
+    }
 
     /// @return true if stopping criterion on epsilon rate is enabled, false
     /// otherwise
@@ -1190,7 +1190,7 @@ namespace gum::learning {
       algoK2_.approximationScheme().setMaxIter(max);
       greedyHillClimbing_.setMaxIter(max);
       localSearchWithTabuList_.setMaxIter(max);
-    };
+    }
 
     /// @return the criterion on number of iterations
     Size maxIter() const override {
@@ -1203,14 +1203,14 @@ namespace gum::learning {
       algoK2_.approximationScheme().disableMaxIter();
       greedyHillClimbing_.disableMaxIter();
       localSearchWithTabuList_.disableMaxIter();
-    };
+    }
 
     /// Enable stopping criterion on max iterations
     void enableMaxIter() override {
       algoK2_.approximationScheme().enableMaxIter();
       greedyHillClimbing_.enableMaxIter();
       localSearchWithTabuList_.enableMaxIter();
-    };
+    }
 
     /// @return true if stopping criterion on max iterations is enabled, false
     /// otherwise
@@ -1250,13 +1250,13 @@ namespace gum::learning {
       algoK2_.approximationScheme().disableMaxTime();
       greedyHillClimbing_.disableMaxTime();
       localSearchWithTabuList_.disableMaxTime();
-    };
+    }
 
     void enableMaxTime() override {
       algoK2_.approximationScheme().enableMaxTime();
       greedyHillClimbing_.enableMaxTime();
       localSearchWithTabuList_.enableMaxTime();
-    };
+    }
 
     /// @return true if stopping criterion on timeout is enabled, false
     /// otherwise
@@ -1274,7 +1274,7 @@ namespace gum::learning {
       algoK2_.approximationScheme().setPeriodSize(p);
       greedyHillClimbing_.setPeriodSize(p);
       localSearchWithTabuList_.setPeriodSize(p);
-    };
+    }
 
     Size periodSize() const override {
       if (currentAlgorithm_ != nullptr) return currentAlgorithm_->periodSize();
@@ -1289,7 +1289,7 @@ namespace gum::learning {
       algoK2_.approximationScheme().setVerbosity(v);
       greedyHillClimbing_.setVerbosity(v);
       localSearchWithTabuList_.setVerbosity(v);
-    };
+    }
 
     bool verbosity() const override {
       if (currentAlgorithm_ != nullptr) return currentAlgorithm_->verbosity();
@@ -1424,7 +1424,7 @@ namespace gum::learning {
     /// Disable EM's timeout stopping criterion
     void EMdisableMaxTime() { dag2BN_.disableMaxTime(); }
 
-    void EMenableMaxTime() { dag2BN_.enableMaxTime(); };
+    void EMenableMaxTime() { dag2BN_.enableMaxTime(); }
 
     /// @return true if stopping criterion on timeout is enabled, false otherwise
     bool EMisEnabledMaxTime() const { return dag2BN_.isEnabledMaxTime(); }

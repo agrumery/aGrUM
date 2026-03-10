@@ -87,11 +87,11 @@ namespace gum {
 
   INLINE NodeId EssentialGraph::idFromName(std::string_view name) const {
     return _dagmodel_->idFromName(name);
-  };
+  }
 
   INLINE const std::string& EssentialGraph::nameFromId(NodeId node) const {
     return _dagmodel_->variable(node).name();
-  };
+  }
 
   INLINE NodeProperty< NodeId > EssentialGraph::connectedComponents() const {
     return _pdag_.connectedComponents();

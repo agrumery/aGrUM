@@ -209,7 +209,7 @@ namespace gum {
       double log2likelihood() const;
 
       /// return const ref to the Bayes Net
-      const BayesNet< GUM_SCALAR >& bn(void) { return _bn_; };
+      const BayesNet< GUM_SCALAR >& bn(void) { return _bn_; }
 
       /// @}
 
