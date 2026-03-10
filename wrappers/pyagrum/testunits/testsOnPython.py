@@ -46,7 +46,7 @@ from sys import platform as os_platform
 
 if __name__ == "__main__":
   print(
-    "[pyAgrum] Please use 'act test pyAgrum release {installed|local} -m [module]|quick|quick_[module]|all' -t {all|test_suite_name}'",
+    "[pyAgrum] Please use 'act test pyAgrum release {installed|local} -m all|all+nb|<module>' -t {all|test_suite_name}'",
     end="\n",
   )
   sys.exit(0)

@@ -46,8 +46,8 @@ from sys import platform as os_platform
 import logging
 
 # List of modules to test (empty string means all modules) - Keep this list up to date with the modules.
-# This list is used to check the validity of the '-m quick_<module>' argument and to display the list of available modules with '-m list' or '-m show'
-# Note : the tool 'act' uses this variable to know which modules to test when the user asks for 'act -m quick_<module>'.
+# This list is used to check the validity of the '-m <module>' argument and to display the list of available modules with '-m list' or '-m show'
+# Note : the tool 'act' uses this variable to know which modules to test when the user asks for 'act -m <module>'.
 PYAGRUM_TEST_MODULES = {"", "main", "skbn", "causal", "causaleffect", "clg", "ctbn", "bnmixture", "explain"}
 
 
@@ -65,6 +65,7 @@ def go():
   mod = "release"  # release|debug
   islocal = True  # installed|local : test the installed version
   testNotebooks = False
+  notebooksOnly = False
   test_module = ""  # all modules
   test_suite = ""  # if test_suite!="" => only this test suite
 
@@ -83,30 +84,30 @@ def go():
       case "-t":
         parseT = 1
         continue
-      case "all":
-        if parseM == 1:
-          testNotebooks = True
-          parseM = 0
       case _:
         if parseM == 1:
           parseM = 0
           if cde in {"list", "show"}:
             print(f"Available modules: {sorted(test_modules - {'', 'main'})}")
-            print("(use '-m quick_<module>' to run only that module without notebooks)")
+            print("(use '-m <module>' to run only that module without notebooks)")
             sys.exit(0)
-          elif cde.startswith("quick"):
-            test_module = cde[6:]
-            if test_module not in test_modules:
-              print(f"[-m quick_module] but module '{test_module}' not in {sorted(test_modules - {''})}")
-              sys.exit(1)
+          elif cde == "all+nb":
+            testNotebooks = True
+          elif cde == "nb":
+            testNotebooks = True
+            notebooksOnly = True
+          elif cde == "all":
+            test_module = ""
+          elif cde in test_modules:
+            test_module = cde
           else:
             print(
-              f"[-m] unknown value '{cde}'. Expected: all, list, show, or quick_<module> with module in {sorted(test_modules - {'', 'main'})}"
+              f"[-m] unknown value '{cde}'. Expected: all, all+nb, nb, list, show, or <module> with module in {sorted(test_modules - {'', 'main'})}"
             )
             sys.exit(1)
         elif parseT == 1:
           parseT = 0
-          test_suite = cde
+          test_suite = "" if cde == "all" else cde
 
   logfilename = "/pyAgrumTests.log"
   if mod != "standAlone":
@@ -144,7 +145,8 @@ def go():
 
   import testsOnPython
 
-  total_errs += testsOnPython.runTests(local=islocal, test_module=test_module, test_suite=test_suite, log=log)
+  if not notebooksOnly:
+    total_errs += testsOnPython.runTests(local=islocal, test_module=test_module, test_suite=test_suite, log=log)
 
   if testNotebooks:
     log.info("Tests on notebooks")

@@ -27,7 +27,7 @@ if [ "${TARGET}" == "aGrUM" ]; then
     python act test release aGrUM -j halfexcept1 -t all -m all --compiler=clang 
 elif [ "${TARGET}" == "pyAgrum" ]; then
     echo "Building pyagrum..."
-    python act install release pyAgrum -j halfexcept1 -t all -m quick --compiler=clang -d build
+    python act install release pyAgrum -j halfexcept1 -m all -t all --compiler=clang -d build
     python act test
 else
     echo "Invalid target type: ${TARGET}. Expected 'aGrUM' or 'pyAgrum'"

@@ -154,6 +154,16 @@ def load_current_from_pickle() -> dict[str, str]:
     if key not in cfg.non_persistent and key in shlv:
       current[key] = shlv[key]
 
+  # Load per-target modules/tests into hidden keys for later resolution
+  for tgt in ("aGrUM", "pyAgrum"):
+    current[f"_modules_{tgt}"] = shlv.get(f"modules_{tgt}", cfg.default["modules"])
+    current[f"_tests_{tgt}"] = shlv.get(f"tests_{tgt}", cfg.default["tests"])
+
+  # Pre-set modules/tests to the current target's stored values
+  target = current["target"]
+  current["modules"] = current[f"_modules_{target}"]
+  current["tests"] = current[f"_tests_{target}"]
+
   return current
 
 
@@ -166,7 +176,16 @@ def save_current_to_pickle(current: dict[str, str | bool]) -> None:
   current : dict[str, str]
     The current configuration dictionary.
   """
-  shlv = {k: current[k] for k in current if k not in cfg.non_persistent}
+  target = current["target"]
+  shlv = {k: current[k] for k in current if k not in cfg.non_persistent and not k.startswith("_")}
+  # Save per-target modules/tests (current target gets updated values; others keep their stored values)
+  for tgt in ("aGrUM", "pyAgrum"):
+    if tgt == target:
+      shlv[f"modules_{tgt}"] = current["modules"]
+      shlv[f"tests_{tgt}"] = current["tests"]
+    else:
+      shlv[f"modules_{tgt}"] = current.get(f"_modules_{tgt}", cfg.default["modules"])
+      shlv[f"tests_{tgt}"] = current.get(f"_tests_{tgt}", cfg.default["tests"])
   with open(cfg.configFile, "wb") as fp:
     pickle.dump(shlv, fp, protocol=pickle.HIGHEST_PROTOCOL)
 
@@ -183,6 +202,13 @@ def main() -> int:
   options = cfg.parser.parse_intermixed_args()
   extract_cmd_from_args(current, options.cmds)
   update_options_from_args(current, options)
+
+  # Resolve per-target modules/tests: if not explicitly provided on CLI, use the target-specific stored value
+  target = current["target"]
+  if options.modules is None:
+    current["modules"] = current.get(f"_modules_{target}", cfg.default["modules"])
+  if options.tests is None:
+    current["tests"] = current.get(f"_tests_{target}", cfg.default["tests"])
 
   original_current = current.copy()  # keep a copy of the original current before any modification
 

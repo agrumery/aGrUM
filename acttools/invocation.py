@@ -89,7 +89,7 @@ def get_invocation(current: dict[str, str | bool], colored: bool = False) -> str
     invocation += _(current["mode"], c_warning)
 
   for opt in current.keys():
-    if opt not in ["action", "mode", "target"]:
+    if opt not in ["action", "mode", "target"] and not opt.startswith("_"):
       if opt not in cfg.non_persistent and opt not in cfg.swapOptions.keys() and opt in current.keys():
         invocation += _get_val_param(opt, current[opt], c_value, c_error, c_end)
 

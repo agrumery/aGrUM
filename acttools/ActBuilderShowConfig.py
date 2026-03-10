@@ -61,7 +61,7 @@ class ActBuilderShowConfig(ActBuilder):
     notif("")
 
     for k in self.current.keys():
-      if k not in cfg.mains and k not in cfg.non_persistent:
+      if k not in cfg.mains and k not in cfg.non_persistent and not k.startswith("_"):
         aff_key(k)
     print("")
 

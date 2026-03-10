@@ -25,7 +25,7 @@ if [ "${TARGET}" == "aGrUM" ]; then
 elif [ "${TARGET}" == "pyAgrum" ]; then
     echo "Building pyagrum..."
     /opt/python/${PYDIR}/bin/pip install -r wrappers/pyagrum/testunits/requirements.txt
-    /opt/python/${PYDIR}/bin/python act install release pyAgrum -j halfexcept1 -m quick -t all -d build
+    /opt/python/${PYDIR}/bin/python act install release pyAgrum -j halfexcept1 -m all -t all -d build
     /opt/python/${PYDIR}/bin/python act test 
 else
     echo "Invalid target type: ${TARGET}. Expected 'aGrUM' or 'pyAgrum'"

@@ -384,7 +384,7 @@ def configure_cli_options(current: dict[str, str | bool]) -> None:
     help="tests management : {show|all|test1+test2+test3}.",
     metavar="TESTS-COMMAND",
     dest="tests",
-    default=current["tests"],
+    default=None,
   )
   cfg.parser.add_argument(
     "-m",
@@ -392,7 +392,7 @@ def configure_cli_options(current: dict[str, str | bool]) -> None:
     help="module management : {show|all|module1+module2+module3}.",
     metavar="MODULES-COMMAND",
     dest="modules",
-    default=current["modules"],
+    default=None,
   )
   cfg.parser.add_argument(
     "--static_lib",
