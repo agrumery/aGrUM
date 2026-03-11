@@ -142,8 +142,10 @@ namespace gum {
 
         // --- Backdoor (Z may be empty; validate in G_{\underline X}) ---
         {
-          NodeSet Z = cm.backDoor(Xid, Yid);   // can be ∅
-          if (Separation::isBackdoorSeparated(cm.causalDAG(), NodeSet{Xid}, NodeSet{Yid}, Z)) {
+          auto optZ = cm.backDoor(Xid, Yid);   // nullopt = no set found
+          if (optZ.has_value()
+              && Separation::isBackdoorSeparated(cm.causalDAG(), NodeSet{Xid}, NodeSet{Yid}, *optZ)) {
+            NodeSet Z = *optZ;
             DoCalculus< GUM_SCALAR > dc(cm);
             auto                     ast = dc.getBackDoorTree(Xid, Yid, Z);
             return CausalFormula< GUM_SCALAR >(cm,
@@ -157,8 +159,9 @@ namespace gum {
 
         // --- Frontdoor (no trivial FD; require non-empty mediator set) ---
         {
-          NodeSet Z = cm.frontDoor(Xid, Yid);
-          if (!Z.empty()) {
+          auto optZ = cm.frontDoor(Xid, Yid);
+          if (optZ.has_value() && !optZ->empty()) {
+            NodeSet Z = *optZ;
             DoCalculus< GUM_SCALAR > dc(cm);
             auto                     ast = dc.getFrontDoorTree(Xid, Yid, Z);
             return CausalFormula< GUM_SCALAR >(cm,
