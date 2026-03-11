@@ -7,6 +7,14 @@ foreach (OPTION ${MODULES})
     message(STATUS "  (+) defining  BUILD_${OPTION}")
 endforeach ()
 
+# If BUILD_ALL was explicitly requested, propagate to all individual modules so
+# that stale cache entries from a previous partial build don't override it.
+if (BUILD_ALL)
+    foreach (OPTION ${MODULES})
+        set(BUILD_${OPTION} ON CACHE BOOL "build module ${OPTION}" FORCE)
+    endforeach ()
+endif ()
+
 ############### DEPENDENCIES BETWEEN OPTIONS ################
 message(STATUS "** aGrUM Notification: Checking dependencies ...")
 set(CHECK_DEPS 1)

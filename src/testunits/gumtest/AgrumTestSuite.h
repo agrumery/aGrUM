@@ -47,8 +47,11 @@
 
 #  include <gumtest/utils.h>
 
-#  include <agrum/agrum.h>
+#  ifndef GUM_TRACE_ON
+#    define GUM_TRACE_ON   // always enable traces in test units
+#  endif
 
+#  include <agrum/agrum.h>
 #  include <agrum/base/core/debug.h>
 
 #  include <doctest/doctest.h>

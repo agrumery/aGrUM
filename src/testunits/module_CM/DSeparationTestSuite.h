@@ -159,66 +159,48 @@ namespace gum_tests {
         return s;
       };
 
-      // Helpers that reproduce the Python semantics:
-      // hasEmptyBackDoor(graph, X, Y)  -> backdoor separated with Z = ∅
-      auto hasEmptyBackDoor = [&](const std::string& spec, const char* X, const char* Y) {
+      auto hasBackDoors = [&](std::initializer_list< std::initializer_list< const char* > > sets,
+                              const std::string&                                            spec,
+                              const char*                                                   X,
+                              const char* Y) -> bool {
         BN          bn  = BN::fastPrototype(spec);
         const auto& dag = bn.dag();
         auto        Xs  = mkNS(bn, {X});
         auto        Ys  = mkNS(bn, {Y});
-        CHECK(gum::Separation::isBackdoorSeparated(dag, Xs, Ys, NodeSet{}));
-      };
 
-      // hasBackDoor(graph, X, Y)    -> NOT backdoor separated with Z = ∅
-      auto hasBackDoor = [&](const std::string& spec, const char* X, const char* Y) {
-        BN          bn  = BN::fastPrototype(spec);
-        const auto& dag = bn.dag();
-        auto        Xs  = mkNS(bn, {X});
-        auto        Ys  = mkNS(bn, {Y});
-        CHECK(!gum::Separation::isBackdoorSeparated(dag, Xs, Ys, NodeSet{}));
-      };
-
-      // hasAllBackDoors(expectedSets, graph, X, Y) -> every Z in expectedSets backdoor-separates
-      // X and Y
-      auto hasAllBackDoors = [&](std::initializer_list< std::initializer_list< const char* > > sets,
-                                 const std::string&                                            spec,
-                                 const char*                                                   X,
-                                 const char*                                                   Y) {
-        BN          bn  = BN::fastPrototype(spec);
-        const auto& dag = bn.dag();
-        auto        Xs  = mkNS(bn, {X});
-        auto        Ys  = mkNS(bn, {Y});
         for (const auto& znames: sets) {
           NodeSet Z;
           for (auto n: znames)
             Z.insert(bn.idFromName(n));
-          CHECK(gum::Separation::isBackdoorSeparated(dag, Xs, Ys, Z));
+          if (!gum::Separation::isBackdoorSeparated(dag, Xs, Ys, Z)) { return false; }
         }
+        return true;
       };
 
       // ---- Tests copied from the Python suite ----
-      hasEmptyBackDoor("A->B->C", "A", "C");
-      hasBackDoor("A->B->C", "C", "A");
+      CHECK(hasBackDoors({{}}, "A->B->C", "A", "C"));
+      CHECK(!hasBackDoors({{}}, "A->B->C", "C", "A"));
 
-      hasEmptyBackDoor("N0<-N1->N2;N0<-N3->N2;N0<-N4->N2;N2->N0;N1->N4", "N1", "N0");
+      CHECK(hasBackDoors({{}}, "N0<-N1->N2;N0<-N3->N2;N0<-N4->N2;N2->N0;N1->N4", "N1", "N0"));
 
-      hasAllBackDoors(
+      CHECK(hasBackDoors(
           {{"N5"}, {"N6"}},
           "N0[1,3]<-N1->N2[1,4];N0<-N3[0,3]->N2;N0<-N4[1,4]->N2;N2->N0;N1->N4;N1<-N5->N6->N0",
           "N1",
-          "N0");
+          "N0"));
 
-      hasEmptyBackDoor(
+      CHECK(hasBackDoors(
+          {{}},
           "N0[1,3]<-N1->N2[1,4];N0<-N3[0,3]->N2;N0<-N4[1,4]->N2;N2->N0;N1->N4;N1<-N5->N6<-N0",
           "N1",
-          "N0");
+          "N0"));
 
-      hasBackDoor("Xi<-X3<-X1->X4<-X2->X5->Xj<-X6<-Xi<-X4->Xj", "Xi", "Xj");
+      CHECK(hasBackDoors({}, "Xi<-X3<-X1->X4<-X2->X5->Xj<-X6<-Xi<-X4->Xj", "Xi", "Xj"));
 
-      hasAllBackDoors({{"X3", "X4"}, {"X1", "X4"}, {"X4", "X2"}, {"X4", "X5"}},
-                      "Xi<-X3<-X1->X4<-X2->X5->Xj<-X6<-Xi<-X4->Xj",
-                      "Xi",
-                      "Xj");
+      CHECK(hasBackDoors({{"X3", "X4"}, {"X1", "X4"}, {"X4", "X2"}, {"X4", "X5"}},
+                         "Xi<-X3<-X1->X4<-X2->X5->Xj<-X6<-Xi<-X4->Xj",
+                         "Xi",
+                         "Xj"));
     }
 
     // -------------------------------------------------------------------
