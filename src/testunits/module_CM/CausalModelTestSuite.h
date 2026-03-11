@@ -268,13 +268,13 @@ namespace gum_tests {
       const auto Y = bn.idFromName("Y");
       const auto Z = bn.idFromName("Z");
 
-      gum::NodeSet bd = cm.backDoor(X, Y);
-      CHECK(!bd.empty());
-      GUM_CHECK_EQ(bd.size(), 1u);
-      CHECK(bd.contains(Z));
+      auto bd = cm.backDoor(X, Y);
+      CHECK(bd.has_value());
+      GUM_CHECK_EQ(bd.value().size(), 1u);
+      CHECK(bd.value().contains(Z));
 
       // Returned set must not contain latents.
-      for (auto n: bd)
+      for (auto n: bd.value())
         CHECK(!cm.latentVariablesIds().contains(n));
     }
 
@@ -287,8 +287,8 @@ namespace gum_tests {
       std::vector< gum::NodeId > kids{bn.idFromName("X"), bn.idFromName("Y")};
       cm.addLatentVariable("U", kids);
 
-      gum::NodeSet bd = cm.backDoor(bn.idFromName("X"), bn.idFromName("Y"));
-      CHECK(bd.empty());
+      auto bd = cm.backDoor(bn.idFromName("X"), bn.idFromName("Y"));
+      CHECK(!bd.has_value());
     }
 
     // Classic frontdoor with latent confounding:
@@ -305,12 +305,12 @@ namespace gum_tests {
       const auto Y = bn.idFromName("Y");
       const auto Z = bn.idFromName("Z");
 
-      gum::NodeSet fd = cm.frontDoor(X, Y);
-      CHECK(!fd.empty());
-      GUM_CHECK_EQ(fd.size(), 1u);
-      CHECK(fd.contains(Z));
+      auto fd = cm.frontDoor(X, Y);
+      CHECK(fd.has_value());
+      GUM_CHECK_EQ(fd.value().size(), 1u);
+      CHECK(fd.value().contains(Z));
 
-      for (auto n: fd)
+      for (auto n: fd.value())
         CHECK(!cm.latentVariablesIds().contains(n));
     }
 
@@ -319,8 +319,8 @@ namespace gum_tests {
       auto                       bn = gum::BayesNet< double >::fastPrototype("X->Y;X->Z;Z->Y");
       gum::CausalModel< double > cm(bn);
 
-      gum::NodeSet fd = cm.frontDoor(bn.idFromName("X"), bn.idFromName("Y"));
-      CHECK(fd.empty());
+      auto fd = cm.frontDoor(bn.idFromName("X"), bn.idFromName("Y"));
+      CHECK(!fd.has_value());
     }
 
     // Passing a latent as cause/effect must raise (guard in CausalModel).

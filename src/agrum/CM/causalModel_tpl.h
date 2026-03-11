@@ -45,6 +45,7 @@
  */
 
 #pragma once
+#include <optional>
 #include <sstream>
 
 #include <agrum/CM/causalModel.h>
@@ -345,7 +346,7 @@ namespace gum {
    * ======================================================================= */
 
   template < GUM_Numeric GUM_SCALAR >
-  NodeSet CausalModel< GUM_SCALAR >::backDoor(NodeId cause, NodeId effect) const {
+  std::optional< NodeSet > CausalModel< GUM_SCALAR >::backDoor(NodeId cause, NodeId effect) const {
     // Preconditions: cause/effect must be observed (non-latent).
     const NodeSet lat = latentVariablesIds();
     if (lat.contains(cause) || lat.contains(effect)) {
@@ -354,12 +355,12 @@ namespace gum {
     }
 
     const auto candidates = DoorCriteria::enumerateBackdoorSets(_causalDAG_, cause, effect, lat);
-    if (candidates.empty()) return NodeSet{};
-    return candidates.front();   // first valid set
+    if (candidates.empty()) return std::nullopt;
+    return candidates.front();   // first valid set (may itself be empty)
   }
 
   template < GUM_Numeric GUM_SCALAR >
-  NodeSet CausalModel< GUM_SCALAR >::frontDoor(NodeId cause, NodeId effect) const {
+  std::optional< NodeSet > CausalModel< GUM_SCALAR >::frontDoor(NodeId cause, NodeId effect) const {
     // Preconditions: cause/effect must be observed (non-latent).
     const NodeSet lat = latentVariablesIds();
     if (lat.contains(cause) || lat.contains(effect)) {
@@ -368,8 +369,8 @@ namespace gum {
     }
 
     const auto candidates = DoorCriteria::enumerateFrontdoorSets(_causalDAG_, cause, effect, lat);
-    if (candidates.empty()) return NodeSet{};
-    return candidates.front();   // first valid set
+    if (candidates.empty()) return std::nullopt;
+    return candidates.front();   // first valid set (may itself be empty)
   }
 
   // ===============================

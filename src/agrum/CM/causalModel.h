@@ -42,6 +42,7 @@
 #ifndef GUM_CAUSAL_MODEL_H
 #define GUM_CAUSAL_MODEL_H
 
+#include <optional>
 #include <string>
 
 #include <agrum/BN/BayesNet.h>
@@ -210,17 +211,18 @@ namespace gum {
      *
      * Enumerates admissible backdoor sets in the current causal DAG
      * (excluding latent variables) and returns the **first** valid one found.
-     * If none exists, returns an **empty** set.
+     * Returns `std::nullopt` if no backdoor set exists at all.
+     * Note: an **empty** set is a valid backdoor when X has no back-door paths.
      *
      * Preconditions:
      *  - `cause` and `effect` must be **observed** variables of the model.
      *
      * @param cause  NodeId of the cause \(X\).
      * @param effect NodeId of the effect \(Y\).
-     * @return NodeSet The backdoor adjustment set \(Z\) as NodeIds,
-     *                 or an empty set if none exists.
+     * @return std::optional<NodeSet> The backdoor adjustment set \(Z\) as NodeIds,
+     *                                or std::nullopt if no backdoor set exists.
      */
-    NodeSet backDoor(NodeId cause, NodeId effect) const;
+    std::optional< NodeSet > backDoor(NodeId cause, NodeId effect) const;
 
     /**
      * @brief Find a frontdoor adjustment set \(Z\) between `cause` and `effect`
@@ -228,17 +230,18 @@ namespace gum {
      *
      * Enumerates admissible frontdoor sets in the current causal DAG
      * (excluding latent variables) and returns the **first** valid one found.
-     * If none exists, returns an **empty** set.
+     * Returns `std::nullopt` if no frontdoor set exists at all.
+     * Note: an **empty** set is a valid frontdoor in degenerate cases.
      *
      * Preconditions:
      *  - `cause` and `effect` must be **observed** variables of the model.
      *
      * @param cause  NodeId of the cause \(X\).
      * @param effect NodeId of the effect \(Y\).
-     * @return NodeSet The frontdoor adjustment set \(Z\) as NodeIds,
-     *                 or an empty set if none exists.
+     * @return std::optional<NodeSet> The frontdoor adjustment set \(Z\) as NodeIds,
+     *                                or std::nullopt if no frontdoor set exists.
      */
-    NodeSet frontDoor(NodeId cause, NodeId effect) const;
+    std::optional< NodeSet > frontDoor(NodeId cause, NodeId effect) const;
 
 
     /**
