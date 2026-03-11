@@ -356,21 +356,34 @@ class CausalModel:
     self, cause: Union[NodeId, str], effect: Union[NodeId, str], withNames: bool = True
   ) -> Union[None, NameSet, NodeSet]:
     """
-    Check if a backdoor exists between `cause` and `effect`
+    Find a backdoor adjustment set between `cause` and `effect`.
+
+    Returns the first valid backdoor adjustment set found. A backdoor set Z
+    blocks all spurious paths from cause to effect while leaving all directed
+    causal paths open, enabling estimation of P(effect | do(cause)) by
+    conditioning on Z.
+
+    Note: an **empty set** is a valid backdoor (returned when cause has no
+    back-door paths). ``None`` means no backdoor set exists for this model.
 
     Parameters
     ----------
-    cause: int|str
-      the nodeId or the name of the cause
-    effect: int|str
-      the nodeId or the name of the effect
-    withNames: bool
-      wether we use ids (int) or names (str)
+    cause : int or str
+        The nodeId or the name of the cause variable.
+    effect : int or str
+        The nodeId or the name of the effect variable.
+    withNames : bool
+        If ``True`` (default), return variable names; otherwise return NodeIds.
 
     Returns
     -------
-    None|Set[str]|Set[int]
-      None if no found backdoor. Otherwise return the found backdoors as set of ids or set of names.
+    None or set of str or set of int
+        ``None`` if no backdoor set exists. Otherwise the first valid backdoor
+        adjustment set, as a set of names (if ``withNames``) or NodeIds.
+
+    See Also
+    --------
+    pyagrum.causal.DoorCriteria.enumerateBackdoorSets : enumerate all valid sets.
     """
     icause = self.__observationalBN.idFromName(cause) if isinstance(cause, str) else cause
     ieffect = self.__observationalBN.idFromName(effect) if isinstance(effect, str) else effect
@@ -387,21 +400,33 @@ class CausalModel:
     self, cause: Union[NodeId, str], effect: Union[NodeId, str], withNames: bool = True
   ) -> Union[None, NameSet, NodeSet]:
     """
-    Check if a frontdoor exists between cause and effet
+    Find a frontdoor adjustment set between `cause` and `effect`.
+
+    Returns the first valid frontdoor adjustment set found. A frontdoor set Z
+    intercepts all directed paths from cause to effect and enables estimation
+    of P(effect | do(cause)) even in the presence of unobserved confounders.
+
+    Note: an **empty set** is a valid frontdoor in degenerate cases. ``None``
+    means no frontdoor set exists for this model.
 
     Parameters
     ----------
-    cause: int|str
-      the nodeId or the name of the cause
-    effect: int|str
-      the nodeId or the name of the effect
-    withNames: bool
-      wether we use ids (int) or names (str)
+    cause : int or str
+        The nodeId or the name of the cause variable.
+    effect : int or str
+        The nodeId or the name of the effect variable.
+    withNames : bool
+        If ``True`` (default), return variable names; otherwise return NodeIds.
 
     Returns
     -------
-    None|Set[str]|Set[int]
-      None if no found frontdoot. Otherwise return the found frontdoors as set of ids or set of names.
+    None or set of str or set of int
+        ``None`` if no frontdoor set exists. Otherwise the first valid frontdoor
+        adjustment set, as a set of names (if ``withNames``) or NodeIds.
+
+    See Also
+    --------
+    pyagrum.causal.DoorCriteria.enumerateFrontdoorSets : enumerate all valid sets.
     """
     icause = self.__observationalBN.idFromName(cause) if isinstance(cause, str) else cause
     ieffect = self.__observationalBN.idFromName(effect) if isinstance(effect, str) else effect

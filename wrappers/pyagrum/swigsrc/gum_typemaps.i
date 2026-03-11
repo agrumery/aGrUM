@@ -121,6 +121,16 @@
   $result = PyAgrumHelper::PySetFromNodeSet(*$1);
 }
 
+// std::optional<gum::NodeSet> -> Python set[int] or None
+%typemap(out) std::optional< gum::NodeSet > {
+  if ($1.has_value()) {
+    $result = PyAgrumHelper::PySetFromNodeSet($1.value());
+  } else {
+    $result = Py_None;
+    Py_INCREF(Py_None);
+  }
+}
+
 // Python set/frozenset/list/tuple[int] -> gum::NodeSet (e.g. for excluded_nodes)
 %typemap(in) const gum::NodeSet& (gum::NodeSet _ns_temp) {
   PyObject* _iter = PyObject_GetIter($input);
