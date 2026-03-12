@@ -44,7 +44,7 @@ import pyagrum as gum
 from .pyAgrumTestSuite import pyAgrumTestCase, addTests
 import pyagrum.causal as csl
 
-from pyagrum.causal.causalEffectEstimation._utils import RCTError, BackdoorError, FrontdoorError, IVError
+from pyagrum.causalEffectEstimation._utils import RCTError, BackdoorError, FrontdoorError, IVError
 
 
 import pandas as pd

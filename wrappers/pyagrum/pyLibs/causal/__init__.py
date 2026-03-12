@@ -54,7 +54,7 @@ from ._doCalculus import doCalculusWithObservation, identifyingIntervention
 from ._CausalFormula import CausalFormula
 from ._CausalModel import CausalModel
 from ._exceptions import HedgeException, UnidentifiableException
-from .causalEffectEstimation import CausalEffectEstimation
+from pyagrum.causalEffectEstimation import CausalEffectEstimation
 import sys
 
 __all__ = [
