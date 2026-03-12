@@ -131,6 +131,7 @@ class TestBackDoors(pyAgrumTestCase):
     if self.verbose:
       self.log.warning(f"{cause} to {effect} ?")
     res = self.getBackDoors(fbn, cause, effect, latent)
+    print(f"{res=}")
     if len(res) > 0:
       if self.verbose:
         self.log.warning(f"error : backdoors={res}")
@@ -157,10 +158,10 @@ class TestBackDoors(pyAgrumTestCase):
 
   def test_backdoors(self):
     self.verbose = False
-    self.assertTrue(self.hasNoBackDoor("A->B->C", "A", "C"))
-    self.assertTrue(self.hasBackDoor("A->B->C", "C", "A"))
+    self.assertTrue(self.hasAllBackDoors([[]], "A->B->C", "A", "C"))
+    self.assertTrue(self.hasAllBackDoors([["B"]], "A->B->C", "C", "A"))
 
-    self.assertTrue(self.hasNoBackDoor("N0<-N1->N2;N0<-N3->N2;N0<-N4->N2;N2->N0;N1->N4", "N1", "N0"))
+    self.assertTrue(self.hasAllBackDoors([[]], "N0<-N1->N2;N0<-N3->N2;N0<-N4->N2;N2->N0;N1->N4", "N1", "N0"))
     self.assertTrue(
       self.hasAllBackDoors(
         [["N5"], ["N6"]],
@@ -171,8 +172,8 @@ class TestBackDoors(pyAgrumTestCase):
     )
 
     self.assertTrue(
-      self.hasNoBackDoor(
-        "N0[1,3]<-N1->N2[1,4];N0<-N3[0,3]->N2;N0<-N4[1,4]->N2;N2->N0;N1->N4;N1<-N5->N6<-N0", "N1", "N0"
+      self.hasAllBackDoors(
+        [[]], "N0[1,3]<-N1->N2[1,4];N0<-N3[0,3]->N2;N0<-N4[1,4]->N2;N2->N0;N1->N4;N1<-N5->N6<-N0", "N1", "N0"
       )
     )
     self.assertTrue(self.hasBackDoor("Xi<-X3<-X1->X4<-X2->X5->Xj<-X6<-Xi<-X4->Xj", "Xi", "Xj"))

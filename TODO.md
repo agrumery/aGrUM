@@ -4,6 +4,10 @@ Actions à réaliser lors d'une prochaine session.
 
 **Règle** : ne jamais traiter un item de cette liste sans l'avoir signalé à l'utilisateur et obtenu son accord explicite.
 
+## Documentation / Organisation
+
+- **Découper le CHANGELOG par version majeure** : scinder `CHANGELOG.md` en `CHANGELOG-0.x.md`, `CHANGELOG-1.x.md`, `CHANGELOG-2.x.md`. Remplacer `CHANGELOG.md` par un index pointant vers ces fichiers.
+
 ## C++
 
 - **Namespaces anonymes** : parcourir le code C++ (`src/agrum/`) et utiliser systématiquement `namespace { ... }` pour toute fonction ou variable de portée interne à un `.cpp` (au lieu de `static` ou d'une exposition accidentelle dans le namespace global). Améliore l'encapsulation et le linkage.

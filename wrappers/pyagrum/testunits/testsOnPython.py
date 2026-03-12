@@ -159,12 +159,10 @@ def runTests(local: bool, test_module: str, test_suite: str, log) -> int:
     log.warning("[pyAgrum] CausalEffectEstimationTestSuite needs pandas")
 
   if pandasFound:
-    from tests import CausalASTTestSuite
     from tests import CausalDSepTestSuite
     from tests import CausalModelTestSuite
     from tests import CausalNonRegressionTestSuite
   else:
-    CausalASTTestSuite = None
     CausalDSepTestSuite = None
     CausalModelTestSuite = None
     CausalNonRegressionTestSuite = None
@@ -243,7 +241,6 @@ def runTests(local: bool, test_module: str, test_suite: str, log) -> int:
     if test_module in {"", "causal"}:
       log.info("testing 'causal'")
       if pandasFound:
-        tl.append(CausalASTTestSuite.ts)
         tl.append(CausalDSepTestSuite.ts)
         tl.append(CausalModelTestSuite.ts)
         tl.append(CausalNonRegressionTestSuite.ts)

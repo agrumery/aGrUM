@@ -31939,7 +31939,7 @@ class CausalModel(object):
         """
         return _pyagrum.CausalModel_isAssumedSpurious(self, *args)
 
-    def backDoor(self, cause: int, effect: int) -> list[int]:
+    def backDoor(self, cause: int, effect: int) -> "std::optional< list[int] >":
         r"""
 
         Find a backdoor adjustment set between cause and effect.
@@ -31958,8 +31958,11 @@ class CausalModel(object):
 
         Returns
         -------
-        set of int
-            A valid backdoor adjustment set as NodeIds. Empty if no backdoor set exists.
+        set of int or None
+            A valid backdoor adjustment set as NodeIds, or ``None`` if no backdoor set
+            exists. Note: an empty set is a *valid* backdoor (returned when X has no
+            back-door paths); ``None`` means the causal effect cannot be identified via
+            the backdoor criterion.
 
         See Also
         --------
@@ -31968,7 +31971,7 @@ class CausalModel(object):
         """
         return _pyagrum.CausalModel_backDoor(self, cause, effect)
 
-    def frontDoor(self, cause: int, effect: int) -> list[int]:
+    def frontDoor(self, cause: int, effect: int) -> "std::optional< list[int] >":
         r"""
 
         Find a frontdoor adjustment set between cause and effect.
@@ -31986,8 +31989,11 @@ class CausalModel(object):
 
         Returns
         -------
-        set of int
-            A valid frontdoor adjustment set as NodeIds. Empty if no frontdoor set exists.
+        set of int or None
+            A valid frontdoor adjustment set as NodeIds, or ``None`` if no frontdoor
+            set exists. Note: an empty set is a *valid* frontdoor in degenerate cases;
+            ``None`` means the causal effect cannot be identified via the frontdoor
+            criterion.
 
         See Also
         --------

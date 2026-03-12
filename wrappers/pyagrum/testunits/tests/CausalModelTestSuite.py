@@ -42,7 +42,6 @@ import unittest
 
 import pyagrum as gum
 from .pyAgrumTestSuite import pyAgrumTestCase, addTests
-# import pyagrum.causal as csl
 
 
 class TestCausalModel(pyAgrumTestCase):
