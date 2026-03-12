@@ -62,6 +62,20 @@ namespace gum {
   }
 
   /*
+   * Constructor from an input stream.
+   */
+  template < typename GUM_SCALAR >
+  INLINE BIFXMLBNReader< GUM_SCALAR >::BIFXMLBNReader(BayesNet< GUM_SCALAR >* bn,
+                                                      std::istream&           stream) :
+      BNReader< GUM_SCALAR >(bn, "<stream>") {
+    GUM_CONSTRUCTOR(BIFXMLBNReader);
+    _bn_            = bn;
+    _isFromStream_  = true;
+    _xmlContent_    = std::string(std::istreambuf_iterator< char >(stream),
+                               std::istreambuf_iterator< char >());
+  }
+
+  /*
    * Default destructor.
    */
   template < typename GUM_SCALAR >
@@ -78,12 +92,17 @@ namespace gum {
   template < typename GUM_SCALAR >
   Size BIFXMLBNReader< GUM_SCALAR >::proceed() {
     try {
-      // Loading file
-      std::string status = "Loading File ...";
+      // Loading file or parsing string
+      std::string status = _isFromStream_ ? "Parsing XML content ..." : "Loading File ...";
       GUM_EMIT2(onProceed, 0, status);
 
-      ticpp::Document xmlDoc(_filePath_);
-      xmlDoc.LoadFile();
+      ticpp::Document xmlDoc;
+      if (_isFromStream_) {
+        xmlDoc.Parse(_xmlContent_);
+      } else {
+        xmlDoc = ticpp::Document(_filePath_);
+        xmlDoc.LoadFile();
+      }
 
       if (xmlDoc.NoChildren()) {
         GUM_ERROR(IOError, ": Loading fail, please check the file for any syntax error.")
@@ -100,6 +119,10 @@ namespace gum {
       GUM_EMIT2(onProceed, 7, status);
 
       ticpp::Element* networkElement = bifElement->FirstChildElement("NETWORK");
+
+      // Reading network name (optional)
+      ticpp::Element* nameElement = networkElement->FirstChildElement("NAME", false);
+      if (nameElement != nullptr) { _bn_->setProperty("name", nameElement->GetTextOrDefault("")); }
 
       // Finding id variables
       status = "Network found. Now proceeding variables instantiation...";

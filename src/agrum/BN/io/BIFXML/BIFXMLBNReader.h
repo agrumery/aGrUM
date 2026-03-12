@@ -93,6 +93,8 @@ GONZALES(_at_AMU)
 
 #define TIXML_USE_TICPP
 
+#include <iterator>
+#include <istream>
 #include <list>
 #include <sstream>
 #include <string>
@@ -126,6 +128,14 @@ namespace gum {
      * Note that an BN as to be created before and given in parameter.
      */
     BIFXMLBNReader(BayesNet< GUM_SCALAR >* bn, const std::string& filePath);
+
+    /**
+     * Constructor from an input stream.
+     * The entire stream content is consumed at construction time.
+     * @param bn     Bayesian network to fill.
+     * @param stream Input stream containing valid BIFXML data.
+     */
+    BIFXMLBNReader(BayesNet< GUM_SCALAR >* bn, std::istream& stream);
 
     /**
      * Default destructor.
@@ -168,6 +178,16 @@ namespace gum {
      * the path to the xml filePath
      */
     std::string _filePath_;
+
+    /**
+     * XML content when constructed from a stream (empty otherwise).
+     */
+    std::string _xmlContent_;
+
+    /**
+     * True when the XML was provided via a stream rather than a file path.
+     */
+    bool _isFromStream_{false};
   };
 
 

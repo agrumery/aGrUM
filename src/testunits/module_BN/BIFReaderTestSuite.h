@@ -992,7 +992,9 @@ namespace gum_tests {
       CHECK((reader.warnings()) == (static_cast< gum::Size >(826)));
       // 2 warnings : properties
       CHECK((reader.errors()) == (static_cast< gum::Size >(0)));
-    }
+
+
+static     }
   };
 
   GUM_TEST_ACTIF(Constuctor)
