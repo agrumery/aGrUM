@@ -35,11 +35,27 @@ explicite.
 
 ## 2. Modernisation C++ | I:3 D:3
 
-- **`src/agrum/` — Intégration `std::string_view`** | I:3 D:3
+- **`src/agrum/` — Intégration `std::string_view` — étape 1 : fonctions internes** | I:3 D:3
 
-  Remplacer les `const std::string&` (paramètres en entrée uniquement, sans copie retournée) par `std::string_view`.
-  Priorité aux interfaces publiques fréquemment utilisées. Vérifier la compatibilité avec les bindings SWIG et typemaps
-  en sortie.
+  Remplacer les `const std::string&` par `std::string_view` dans les fonctions C++ **non exposées via SWIG**
+  (paramètres en entrée uniquement, jamais retournés par référence). Exclure : fonctions virtuelles dont la hiérarchie
+  n'est pas entièrement interne, retours `const std::string&`, constructeurs qui copient dans un membre (gain nul).
+
+- **`src/agrum/` + `wrappers/pyagrum/swigsrc/gum_typemaps.i` — Intégration `std::string_view` — étape 2 : API publique
+  wrappée** | I:3 D:3
+
+  Prérequis : étape 1 terminée. Ajouter dans `gum_typemaps.i` un typemap `std::string_view` en entrée :
+  ```swig
+  %typemap(in) std::string_view (std::string temp) {
+    temp = PyAgrumHelper::stringFromPyObject($input);
+    $1 = std::string_view(temp);
+  }
+  %typemap(typecheck, precedence=SWIG_TYPECHECK_STRING) std::string_view {
+    $1 = PyUnicode_Check($input) ? 1 : 0;
+  }
+  ```
+  La variable locale `temp` garantit la durée de vie pendant l'appel. Puis étendre la migration aux fonctions
+  exposées via SWIG. Rebuild pyAgrum et tests Python complets.
 
 ---
 
@@ -58,16 +74,7 @@ explicite.
 
 ---
 
-## 4. Documentation | I:2 D:1
-
-- **`CHANGELOG.md` — Découper par version majeure** | I:2 D:1
-
-  Scinder `CHANGELOG.md` en `CHANGELOG-0.x.md`, `CHANGELOG-1.x.md`, `CHANGELOG-2.x.md`. Remplacer `CHANGELOG.md` par un
-  index pointant vers ces fichiers.
-
----
-
-## 5. Nettoyage | I:2 D:2
+## 4. Nettoyage | I:2 D:2
 
 - **`src/agrum/` — Namespaces anonymes** | I:3 D:2
 
