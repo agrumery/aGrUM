@@ -994,7 +994,7 @@ namespace gum_tests {
       GUM_CHECK_EQ(reader.errors(), static_cast< gum::Size >(0));
 
 
-static     }
+    }
   };
 
   GUM_TEST_ACTIF(Constuctor)

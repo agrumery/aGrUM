@@ -64,7 +64,7 @@ namespace gum {
   /*
    * Constructor from an input stream.
    */
-  template < typename GUM_SCALAR >
+  template < GUM_Numeric GUM_SCALAR >
   INLINE BIFXMLBNReader< GUM_SCALAR >::BIFXMLBNReader(BayesNet< GUM_SCALAR >* bn,
                                                       std::istream&           stream) :
       BNReader< GUM_SCALAR >(bn, "<stream>") {

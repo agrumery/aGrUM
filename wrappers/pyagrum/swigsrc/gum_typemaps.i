@@ -149,9 +149,33 @@
   if (PyErr_Occurred()) SWIG_fail;
   $1 = &_ns_temp;
 }
+// Typecheck for const gum::NodeSet&.
+//
+// Accepts any Python sequence (list, tuple, set, frozenset) whose elements
+// are all integers (NodeIds). Rejects as soon as a string element is found,
+// so that string-based calling conventions (variable names) fall through to
+// the appropriate overload:
+//   - list of strings  → vector<string> overload (SWIG sequence typemap)
+//   - set of strings   → PyObject* %extend dispatcher (e.g. MarkovRandomField)
+//
+// Without this check, the NodeSet 'in' typemap would call PyLong_AsLong on
+// string elements and raise "str object cannot be interpreted as an integer".
 %typemap(typecheck, precedence=SWIG_TYPECHECK_POINTER) const gum::NodeSet& {
-  $1 = (PySet_Check($input) || PyFrozenSet_Check($input) ||
-        PyList_Check($input) || PyTuple_Check($input)) ? 1 : 0;
+  if (PySet_Check($input) || PyFrozenSet_Check($input) ||
+      PyList_Check($input) || PyTuple_Check($input)) {
+    $1 = 1;
+    PyObject* _tc_iter = PyObject_GetIter($input);
+    if (_tc_iter) {
+      PyObject* _tc_item;
+      while ($1 && (_tc_item = PyIter_Next(_tc_iter)) != nullptr) {
+        if (PyUnicode_Check(_tc_item)) { $1 = 0; }
+        Py_DECREF(_tc_item);
+      }
+      Py_DECREF(_tc_iter);
+    }
+  } else {
+    $1 = 0;
+  }
 }
 
 // gum::DoorCriteria::NodeSetVec -> Python list[set[int]]

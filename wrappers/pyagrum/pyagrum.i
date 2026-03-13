@@ -170,6 +170,7 @@ ADD_UNDI_METHOD_TO_GRAPHCLASS(gum::EssentialGraph);
 
 /* extraction of the API for all wrappers */
 %include "aGrUM_wrap_MRF.i"
+%include "markovRandomField_after_templates.i"
 
 %include "gum_functions_MRF.i"
 

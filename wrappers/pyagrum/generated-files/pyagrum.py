@@ -30483,7 +30483,7 @@ class MarkovRandomField(IMarkovRandomField):
         whenEdgeDeleted : lambda expression
           a function for when an edge is removed
         """
-        if [whenNodeAdded,whenNodeDeleted,whenEdgeAdded,whenEdgeDeleted]==[None,None,None,None]:
+        if [whenNodeAdded,whenNodeDeleted,whenEdgeAdded,whenedgeDeleted]==[None,None,None,None]:
           return
 
         if not hasattr(self,"_listeners"):
@@ -30496,8 +30496,8 @@ class MarkovRandomField(IMarkovRandomField):
           nl.setWhenNodeDeleted(whenNodeDeleted)
         if whenEdgeAdded is not None:
           nl.setWhenEdgeAdded(whenEdgeAdded)
-        if whenEdgeDeleted is not None:
-          nl.setWhenArcDeleted(whenEdgeDeleted)
+        if whenedgeDeleted is not None:
+          nl.setWhenArcDeleted(whenedgeDeleted)
 
         self._listeners.append(nl)
 
